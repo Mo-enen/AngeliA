@@ -1,0 +1,12 @@
+{
+  "name": "com.moenengames.angeliaframework",
+  "displayName": "AngeliA Framework",
+  "version": "1.0.0",
+  "unity": "2020.1",
+  "description": "",
+  "type": "tools",
+  "hideInEditor": false,
+  "dependencies": {
+	"com.moenengames.standard":"1.0.0"
+  }
+}
