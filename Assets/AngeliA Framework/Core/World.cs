@@ -4,6 +4,7 @@ using UnityEngine;
 using Moenen.Standard;
 
 
+
 namespace AngeliaFramework.World {
 
 
@@ -26,18 +27,6 @@ namespace AngeliaFramework.World {
 
 
 
-	[System.Serializable]
-	public class WorldInfoJson {
-		[System.Serializable]
-		public class FileInfo {
-			public string ID;
-			public int X;
-			public int Y;
-		}
-		public List<FileInfo> Data;
-	}
-
-
 
 	// ===== World Stream ====
 	public static class WorldStream {
@@ -49,7 +38,16 @@ namespace AngeliaFramework.World {
 
 
 
-
+		[System.Serializable]
+		private class InfoJson {
+			[System.Serializable]
+			public class FileInfo {
+				public string ID;
+				public int X;
+				public int Y;
+			}
+			public List<FileInfo> Data = new List<FileInfo>();
+		}
 
 
 
@@ -61,49 +59,8 @@ namespace AngeliaFramework.World {
 		#region --- VAR ---
 
 
-		// Short
-		private static string RootPath => Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "World");
-		private static string InfoPath => Util.CombinePaths(RootPath, "World Info.json");
-
 		// Data
 		private static readonly Dictionary<Vector2Int, string> WorldMap = new Dictionary<Vector2Int, string>();
-
-
-		#endregion
-
-
-
-
-		#region --- MSG ---
-
-
-		[RuntimeInitializeOnLoadMethod]
-		private static void Init () {
-			string root = RootPath;
-			string infoPath = InfoPath;
-			if (!Util.FolderExists(root)) {
-				Util.CreateFolder(root);
-			}
-			if (Util.FileExists(infoPath)) {
-				string json = Util.FileToText(infoPath);
-				var info = JsonUtility.FromJson<WorldInfoJson>(json);
-				if (info != null) {
-					foreach (var fileInfo in info.Data) {
-						WorldMap.TryAdd(
-							new Vector2Int(fileInfo.X, fileInfo.Y),
-							fileInfo.ID
-						);
-					}
-				} else {
-					Debug.LogError("[World Stream] Info is null.");
-				}
-			} else {
-				Util.TextToFile(
-					JsonUtility.ToJson(new WorldInfoJson(), true),
-					infoPath
-				);
-			}
-		}
 
 
 		#endregion
@@ -114,7 +71,36 @@ namespace AngeliaFramework.World {
 		#region --- API ---
 
 
+		public static void LoadInfo (string infoPath) {
+			WorldMap.Clear();
+			InfoJson info = null;
+			if (Util.FileExists(infoPath)) {
+				string json = Util.FileToText(infoPath);
+				info = JsonUtility.FromJson<InfoJson>(json);
+			}
+			if (info == null) {
+				info = new InfoJson();
+				Util.TextToFile(
+					JsonUtility.ToJson(info, true),
+					infoPath
+				);
+			}
+			if (info != null) {
+				foreach (var fileInfo in info.Data) {
+					WorldMap.TryAdd(
+						new Vector2Int(fileInfo.X, fileInfo.Y),
+						fileInfo.ID
+					);
+				}
+			} else {
+				Debug.LogError("[World Stream] Info is not loaded.");
+			}
+		}
 
+
+		public static void Clear () {
+			WorldMap.Clear();
+		}
 
 
 		#endregion

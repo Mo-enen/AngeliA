@@ -49,7 +49,7 @@ namespace AngeliaFramework.Renderer {
 		public static int LayerCount => Layers.Length;
 
 		// Data
-		private static Layer[] Layers = null;
+		private static Layer[] Layers = new Layer[0];
 		private static Layer FocusedLayer = null;
 
 
@@ -85,80 +85,83 @@ namespace AngeliaFramework.Renderer {
 			));
 			GL.Begin(GL.QUADS);
 
-			Material prevMat = null;
-			int layerCount = Layers.Length;
-			for (int index = 0; index < layerCount; index++) {
+			try {
+				Material prevMat = null;
+				int layerCount = Layers.Length;
+				for (int index = 0; index < layerCount; index++) {
 
-				var layer = Layers[index];
-				var cells = layer.Cells;
-				int len = cells.Length;
-				var uvs = layer.UVs;
+					var layer = Layers[index];
+					var cells = layer.Cells;
+					int len = cells.Length;
+					var uvs = layer.UVs;
 
-				if (layer.Material != prevMat) {
-					layer.Material.SetPass(0);
-					prevMat = layer.Material;
-				}
-
-				var a = Vector3.zero;
-				var b = Vector3.zero;
-				var c = Vector3.zero;
-				var d = Vector3.zero;
-				var center = Vector3.zero;
-
-				for (int i = 0; i < len; i++) {
-
-					var cell = cells[i];
-					if (cell.ID < 0) { break; }
-					var uv = uvs[cell.ID];
-
-					// Color
-					GL.Color(cell.Color);
-
-					// Position
-					a.x = cell.X;
-					a.y = cell.Y;
-					b.x = cell.X;
-					b.y = cell.Y + UNIT_MULT;
-					c.x = cell.X + UNIT_MULT;
-					c.y = cell.Y + UNIT_MULT;
-					d.x = cell.X + UNIT_MULT;
-					d.y = cell.Y;
-
-					// Scale
-					if (cell.Scale != 1000) {
-						center = (a + c) / 2f;
-						float t01 = cell.Scale / 1000f;
-						a.x = Mathf.LerpUnclamped(center.x, a.x, t01);
-						a.y = Mathf.LerpUnclamped(center.y, a.y, t01);
-						b.x = Mathf.LerpUnclamped(center.x, b.x, t01);
-						b.y = Mathf.LerpUnclamped(center.y, b.y, t01);
-						c.x = Mathf.LerpUnclamped(center.x, c.x, t01);
-						c.y = Mathf.LerpUnclamped(center.y, c.y, t01);
-						d.x = Mathf.LerpUnclamped(center.x, d.x, t01);
-						d.y = Mathf.LerpUnclamped(center.y, d.y, t01);
+					if (layer.Material != prevMat) {
+						layer.Material.SetPass(0);
+						prevMat = layer.Material;
 					}
 
-					// Rotation
-					if (cell.Rotation != 0) {
-						var rot = Quaternion.Euler(0, 0, -cell.Rotation);
-						center = (a + c) / 2f;
-						a = rot * (a - center) + center;
-						b = rot * (b - center) + center;
-						c = rot * (c - center) + center;
-						d = rot * (d - center) + center;
-					}
+					var a = Vector3.zero;
+					var b = Vector3.zero;
+					var c = Vector3.zero;
+					var d = Vector3.zero;
+					var center = Vector3.zero;
 
-					// Final
-					GL.TexCoord2(uv.xMin, uv.yMin);
-					GL.Vertex(a);
-					GL.TexCoord2(uv.xMin, uv.yMax);
-					GL.Vertex(b);
-					GL.TexCoord2(uv.xMax, uv.yMax);
-					GL.Vertex(c);
-					GL.TexCoord2(uv.xMax, uv.yMin);
-					GL.Vertex(d);
+					for (int i = 0; i < len; i++) {
+
+						var cell = cells[i];
+						if (cell.ID < 0) { break; }
+						var uv = uvs[cell.ID];
+
+						// Color
+						GL.Color(cell.Color);
+
+						// Position
+						a.x = cell.X;
+						a.y = cell.Y;
+						b.x = cell.X;
+						b.y = cell.Y + UNIT_MULT;
+						c.x = cell.X + UNIT_MULT;
+						c.y = cell.Y + UNIT_MULT;
+						d.x = cell.X + UNIT_MULT;
+						d.y = cell.Y;
+
+						// Scale
+						if (cell.Scale != 1000) {
+							center = (a + c) / 2f;
+							float t01 = cell.Scale / 1000f;
+							a.x = Mathf.LerpUnclamped(center.x, a.x, t01);
+							a.y = Mathf.LerpUnclamped(center.y, a.y, t01);
+							b.x = Mathf.LerpUnclamped(center.x, b.x, t01);
+							b.y = Mathf.LerpUnclamped(center.y, b.y, t01);
+							c.x = Mathf.LerpUnclamped(center.x, c.x, t01);
+							c.y = Mathf.LerpUnclamped(center.y, c.y, t01);
+							d.x = Mathf.LerpUnclamped(center.x, d.x, t01);
+							d.y = Mathf.LerpUnclamped(center.y, d.y, t01);
+						}
+
+						// Rotation
+						if (cell.Rotation != 0) {
+							var rot = Quaternion.Euler(0, 0, -cell.Rotation);
+							center = (a + c) / 2f;
+							a = rot * (a - center) + center;
+							b = rot * (b - center) + center;
+							c = rot * (c - center) + center;
+							d = rot * (d - center) + center;
+						}
+
+						// Final
+						GL.TexCoord2(uv.xMin, uv.yMin);
+						GL.Vertex(a);
+						GL.TexCoord2(uv.xMin, uv.yMax);
+						GL.Vertex(b);
+						GL.TexCoord2(uv.xMax, uv.yMax);
+						GL.Vertex(c);
+						GL.TexCoord2(uv.xMax, uv.yMin);
+						GL.Vertex(d);
+					}
 				}
-			}
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+
 			GL.End();
 			GL.PopMatrix();
 		}
