@@ -83,9 +83,6 @@ namespace YayaMaker.UI {
 	public abstract class TileItem {
 
 
-		// Const
-		private const float TILE_GAP = 6f;
-
 		// Api
 		public Vector2Int Position = default;
 		public RectTransform RectTransform => RT;
@@ -103,14 +100,16 @@ namespace YayaMaker.UI {
 		}
 		public void RefreshLabel () => Label.text = GetDisplayName();
 		public void RefreshIcon () => Icon.sprite = GetIcon();
-		public void RefreshUI () {
+		public void RefreshUI (Vector2 gridSize) {
 			var rt = RT;
-			rt.anchorMin = rt.anchorMax = new Vector2(1f, Position.y >= 0 ? 0f : 1f);
-			rt.pivot = new Vector2(1f, 0f);
-			var size = rt.rect.size;
+			rt.anchorMin = rt.anchorMax = new Vector2(
+				Position.x >= 0 ? 0f : 1f,
+				Position.y >= 0 ? 0f : 1f
+			);
+			rt.pivot = Vector2.zero;
 			rt.anchoredPosition3D = new Vector2(
-				Position.x * (size.x + TILE_GAP),
-				Position.y * (size.y + TILE_GAP)
+				Position.x * gridSize.x,
+				Position.y * gridSize.y
 			);
 		}
 		public abstract string GetDisplayName ();
@@ -135,9 +134,12 @@ namespace YayaMaker.UI {
 
 		// Ser
 		[SerializeField] Grabber m_Template = null;
+		[SerializeField] Vector2 m_GridSize = new Vector2(86, 86);
 
 		// Data
 		private readonly List<TileItem> Tiles = new List<TileItem>();
+		private Coroutine MouseChecking = null;
+		private bool Dragging = false;
 
 		// Saving
 		private SavingString PositionStrs = new SavingString("TileLayout.PositionStrs", "");
@@ -167,10 +169,22 @@ namespace YayaMaker.UI {
 				}) as TileItem;
 				Tiles.Add(tile);
 				var trigger = grab.Grab<TriggerUI>();
-				trigger.CallbackLeft.AddListener(tile.OnLeftClick);
-				trigger.CallbackRight.AddListener(tile.OnRightClick);
-				trigger.CallbackDoubleClick.AddListener(tile.OnDoubleClick);
-				grab.Grab<DragToMove>().End.AddListener(() => OnTileDragEnd(tile));
+				trigger.CallbackLeft.AddListener(() => {
+					if (Dragging) { return; }
+					tile.OnLeftClick();
+				});
+				trigger.CallbackRight.AddListener(() => {
+					if (Dragging) { return; }
+					tile.OnRightClick();
+				});
+				trigger.CallbackDoubleClick.AddListener(() => {
+					if (Dragging) { return; }
+					tile.OnDoubleClick();
+				});
+				var drag = grab.Grab<DragToMove>();
+				drag.Begin.AddListener(OnTileDragBegin);
+				drag.Drag.AddListener(() => OnTileDrag(tile));
+				drag.End.AddListener(() => OnTileDragEnd(tile));
 				tile.RefreshLabel();
 				tile.RefreshIcon();
 			}
@@ -214,7 +228,7 @@ namespace YayaMaker.UI {
 
 		public void RefreshUI () {
 			foreach (var tile in Tiles) {
-				tile.RefreshUI();
+				tile.RefreshUI(m_GridSize);
 			}
 		}
 
@@ -227,11 +241,47 @@ namespace YayaMaker.UI {
 		#region --- LGC ---
 
 
+		private void OnTileDragBegin () {
+			if (MouseChecking != null) {
+				StopCoroutine(MouseChecking);
+			}
+			Dragging = true;
+			MouseChecking = StartCoroutine(MouseCheck());
+			IEnumerator MouseCheck () {
+				yield return new WaitUntil(() => !Input.GetMouseButton(0));
+				Dragging = false;
+			}
+		}
+
+
+		private void OnTileDrag (TileItem tile) => FixAnchor(tile);
+
+
 		private void OnTileDragEnd (TileItem tile) {
+			FixAnchor(tile);
 
 
 
+
+
+			Dragging = false;
 			SaveTilePositions();
+		}
+
+
+		private void FixAnchor (TileItem tile) {
+			var rt = tile.RectTransform;
+			var tilePos = rt.localPosition;
+			var newAnchor = new Vector2(
+				tilePos.x > 0f ? 1f : 0f,
+				tilePos.y > 0f ? 1f : 0f
+			);
+			if (rt.anchorMin.NotAlmost(newAnchor)) {
+				rt.anchorMin = newAnchor;
+			}
+			if (rt.anchorMax.NotAlmost(newAnchor)) {
+				rt.anchorMax = newAnchor;
+			}
 		}
 
 

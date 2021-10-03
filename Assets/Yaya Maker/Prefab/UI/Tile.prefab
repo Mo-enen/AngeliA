@@ -235,7 +235,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8effb6bfc232feb4291d868b741d8735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SnapSize: {x: 86, y: 86}
+  m_SnapSize: {x: 90, y: 120}
+  m_SnapLerp: 0.85
+  m_DragOnCenter: 1
+  m_ClampOnDrag: 1
+  m_ClampOnDragEnd: 1
   m_Begin:
     m_PersistentCalls:
       m_Calls: []
