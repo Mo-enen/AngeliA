@@ -42,11 +42,13 @@ namespace AngeliaFramework.Renderer {
 
 		// Const
 		public const int UNIT_MULT = 16 * 42;
+		public const float MAX_CELL_WIDTH = 48;
+		public const float TARGET_CELL_HEIGHT = 16;
 
 		// Api
-		public static int CellWidth { get; set; } = 24;
-		public static int CellHeight { get; set; } = 16;
 		public static int LayerCount => Layers.Length;
+		public static float CellWidth { get; private set; } = 24f;
+		public static float CellHeight { get; private set; } = 16f;
 
 		// Data
 		private static Layer[] Layers = new Layer[0];
@@ -68,7 +70,7 @@ namespace AngeliaFramework.Renderer {
 		}
 
 
-		private static void OnPostRender (Camera _) {
+		private static void OnPostRender (Camera camera) {
 
 #if UNITY_EDITOR
 			if (!UnityEditor.EditorApplication.isPlaying) {
@@ -77,6 +79,17 @@ namespace AngeliaFramework.Renderer {
 			}
 #endif
 
+			// Ratio
+			float ratio = camera.aspect;
+			if (ratio < MAX_CELL_WIDTH / TARGET_CELL_HEIGHT) {
+				CellWidth = TARGET_CELL_HEIGHT * ratio;
+				CellHeight = TARGET_CELL_HEIGHT;
+			} else {
+				CellWidth = MAX_CELL_WIDTH;
+				CellHeight = MAX_CELL_WIDTH / ratio;
+			}
+
+			// Render
 			GL.PushMatrix();
 			GL.LoadProjectionMatrix(Matrix4x4.TRS(
 				new Vector3(-1f, -1f, 0f),

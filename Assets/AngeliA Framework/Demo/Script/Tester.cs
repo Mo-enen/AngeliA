@@ -60,7 +60,9 @@ namespace AngeliaFramework.Demo {
 				$"res.width: {Screen.currentResolution.width}\n" +
 				$"res.height: {Screen.currentResolution.height}\n" +
 				$"scr.width: {Screen.width}\n" +
-				$"scr.height: {Screen.height}\n";
+				$"scr.height: {Screen.height}\n" +
+				$"cellWidth: {CellRenderer.CellWidth}\n" +
+				$"cellHeight: {CellRenderer.CellHeight}";
 
 			// FPS
 			if (Time.time > LastFpsTimeFixed + 0.5f) {
@@ -70,13 +72,15 @@ namespace AngeliaFramework.Demo {
 
 			// Cell
 			if (RandomRenderer) {
+				float xMax = (CellRenderer.CellWidth - 1) * CellRenderer.UNIT_MULT;
+				float yMax = (CellRenderer.CellHeight - 1) * CellRenderer.UNIT_MULT;
 				for (int i = 0; i < 6; i++) {
 					for (int j = 0; j < 512; j++) {
 						CellRenderer.FocusLayer(i);
 						CellRenderer.SetCell(
 							j, Random.Range(0, 4),
-							Random.Range(0, (CellRenderer.CellWidth - 1) * CellRenderer.UNIT_MULT),
-							Random.Range(0, (CellRenderer.CellHeight - 1) * CellRenderer.UNIT_MULT),
+							(int)Random.Range(xMax * 0.1f, xMax * 0.9f),
+							(int)Random.Range(yMax * 0.1f, yMax * 0.9f),
 							Random.Range(800, 1200),
 							Random.Range(-15, 15),
 							Random.ColorHSV(0, 1, 0.8f, 1f, 0.8f, 1f)
