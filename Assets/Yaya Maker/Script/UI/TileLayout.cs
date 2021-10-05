@@ -28,9 +28,6 @@ namespace YayaMaker.UI {
 		public override void OnLeftClick () {
 			Debug.Log("Left A");
 		}
-		public override void OnRightClick () {
-			Debug.Log("Right A");
-		}
 	}
 
 	public abstract class TestC : TileItem {
@@ -100,23 +97,9 @@ namespace YayaMaker.UI {
 		}
 		public void RefreshLabel () => Label.text = GetDisplayName();
 		public void RefreshIcon () => Icon.sprite = GetIcon();
-		public void RefreshUI (Vector2 gridSize) {
-			var rt = RT;
-			rt.anchorMin = rt.anchorMax = new Vector2(
-				Position.x >= 0 ? 0f : 1f,
-				Position.y >= 0 ? 0f : 1f
-			);
-			rt.pivot = Vector2.zero;
-			rt.anchoredPosition3D = new Vector2(
-				Position.x * gridSize.x,
-				Position.y * gridSize.y
-			);
-		}
 		public abstract string GetDisplayName ();
 		public abstract Sprite GetIcon ();
 		public virtual void OnLeftClick () { }
-		public virtual void OnRightClick () { }
-		public virtual void OnDoubleClick () { }
 
 
 	}
@@ -175,14 +158,10 @@ namespace YayaMaker.UI {
 				});
 				trigger.CallbackRight.AddListener(() => {
 					if (Dragging) { return; }
-					tile.OnRightClick();
-				});
-				trigger.CallbackDoubleClick.AddListener(() => {
-					if (Dragging) { return; }
-					tile.OnDoubleClick();
+					grab.transform.SetAsFirstSibling();
 				});
 				var drag = grab.Grab<DragToMove>();
-				drag.Begin.AddListener(OnTileDragBegin);
+				drag.Begin.AddListener(() => OnTileDragBegin(tile));
 				drag.Drag.AddListener(() => OnTileDrag(tile));
 				drag.End.AddListener(() => OnTileDragEnd(tile));
 				tile.RefreshLabel();
@@ -228,7 +207,16 @@ namespace YayaMaker.UI {
 
 		public void RefreshUI () {
 			foreach (var tile in Tiles) {
-				tile.RefreshUI(m_GridSize);
+				var rt = tile.RectTransform;
+				rt.anchorMin = rt.anchorMax = new Vector2(
+					tile.Position.x >= 0 ? 0f : 1f,
+					tile.Position.y >= 0 ? 0f : 1f
+				);
+				var pivotSize = rt.pivot * rt.rect.size;
+				rt.anchoredPosition3D = new Vector2(
+					tile.Position.x * m_GridSize.x + pivotSize.x,
+					tile.Position.y * m_GridSize.y + pivotSize.y
+				);
 			}
 		}
 
@@ -241,14 +229,34 @@ namespace YayaMaker.UI {
 		#region --- LGC ---
 
 
-		private void OnTileDragBegin () {
+		private void OnTileDragBegin (TileItem tile) {
 			if (MouseChecking != null) {
 				StopCoroutine(MouseChecking);
 			}
 			Dragging = true;
-			MouseChecking = StartCoroutine(MouseCheck());
-			IEnumerator MouseCheck () {
-				yield return new WaitUntil(() => !Input.GetMouseButton(0));
+			MouseChecking = StartCoroutine(DraggingTile());
+			tile.RectTransform.SetAsLastSibling();
+			IEnumerator DraggingTile () {
+				var rt = tile.RectTransform;
+				var pRT = rt.parent as RectTransform;
+				var prevPos = rt.anchoredPosition + rt.anchorMin * pRT.rect.size;
+				var jelly = rt.GetComponent<JellyImage>();
+				jelly.UseJelly = true;
+				while (Input.GetMouseButton(0)) {
+					float lerp = Time.deltaTime * 20f;
+					var pos = rt.anchoredPosition + rt.anchorMin * pRT.rect.size;
+					float deltaX = pos.x - prevPos.x;
+					float deltaY = pos.y - prevPos.y;
+					if (Mathf.Abs(deltaX) > rt.rect.width || Mathf.Abs(deltaY) > rt.rect.height) {
+						jelly.Size = rt.rect.size * 0.9f;
+						jelly.Point += new Vector2(-deltaX, -deltaY);
+					}
+					prevPos = pos;
+					jelly.Size = Vector2.Lerp(jelly.Size, rt.rect.size, lerp);
+					jelly.Point = Vector2.Lerp(jelly.Point, Vector2.zero, lerp);
+					yield return new WaitForEndOfFrame();
+				}
+				jelly.UseJelly = false;
 				Dragging = false;
 			}
 		}
@@ -259,13 +267,16 @@ namespace YayaMaker.UI {
 
 		private void OnTileDragEnd (TileItem tile) {
 			FixAnchor(tile);
-
-
-
-
-
+			var rt = tile.RectTransform;
+			var pivotSize = rt.pivot * rt.rect.size;
+			var pos = tile.RectTransform.anchoredPosition - pivotSize;
+			tile.Position.x = Mathf.RoundToInt(pos.x / m_GridSize.x);
+			tile.Position.y = Mathf.RoundToInt(pos.y / m_GridSize.y);
 			Dragging = false;
 			SaveTilePositions();
+#if UNITY_EDITOR
+			LoadTilePositions();
+#endif
 		}
 
 
