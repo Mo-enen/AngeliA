@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AngeliaFramework.World;
-using AngeliaFramework.Renderer;
 
 
 namespace AngeliaFramework.Demo {

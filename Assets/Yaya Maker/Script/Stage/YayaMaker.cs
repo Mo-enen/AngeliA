@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UIGadget;
-using AngeliaFramework.World;
-using YayaMaker.Stage;
+using AngeliaFramework;
 using Moenen.Stage;
+using YayaMaker.Stage;
 using YayaMaker.UI;
 
 
@@ -108,7 +108,7 @@ namespace YayaMaker {
 
 			};
 			StageProject.OnProjectSaved = (projectPath) => {
-
+				WorldStream.SaveInfo(Util.CombinePaths(projectPath, "Info.json"));
 
 
 			};

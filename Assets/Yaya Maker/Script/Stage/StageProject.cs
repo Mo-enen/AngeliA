@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Moenen.Standard;
 
 
 
@@ -97,7 +96,7 @@ namespace YayaMaker.Stage {
 		#region --- LGC ---
 
 
-		private string GetProjectPath (int slot) => Util.CombinePaths(RootPath, $"Slot_{slot}");
+		private string GetProjectPath (int slot) => Util.CombinePaths(RootPath, $"Slot_{slot:00}");
 
 
 		#endregion

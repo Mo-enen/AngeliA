@@ -115,9 +115,15 @@ namespace YayaMaker.UI {
 		#region --- VAR ---
 
 
+		// Const
+		private const float OVERLAP_THICKNESS = 6f;
+
 		// Ser
 		[SerializeField] Grabber m_Template = null;
 		[SerializeField] Vector2 m_GridSize = new Vector2(86, 86);
+		[SerializeField, Header("Jelly Trail")] float m_MaxLength = 64f;
+		[SerializeField] AnimationCurve m_SizeCurve = new AnimationCurve();
+		[SerializeField] AnimationCurve m_SwipeCurve = new AnimationCurve();
 
 		// Data
 		private readonly List<TileItem> Tiles = new List<TileItem>();
@@ -158,7 +164,7 @@ namespace YayaMaker.UI {
 				});
 				trigger.CallbackRight.AddListener(() => {
 					if (Dragging) { return; }
-					grab.transform.SetAsFirstSibling();
+					SwipeTileToBottom(tile, trigger);
 				});
 				var drag = grab.Grab<DragToMove>();
 				drag.Begin.AddListener(() => OnTileDragBegin(tile));
@@ -192,6 +198,7 @@ namespace YayaMaker.UI {
 					tile.Position = posMap[name];
 				}
 			}
+			// Pos
 			RefreshUI();
 		}
 
@@ -208,15 +215,9 @@ namespace YayaMaker.UI {
 		public void RefreshUI () {
 			foreach (var tile in Tiles) {
 				var rt = tile.RectTransform;
-				rt.anchorMin = rt.anchorMax = new Vector2(
-					tile.Position.x >= 0 ? 0f : 1f,
-					tile.Position.y >= 0 ? 0f : 1f
-				);
-				var pivotSize = rt.pivot * rt.rect.size;
-				rt.anchoredPosition3D = new Vector2(
-					tile.Position.x * m_GridSize.x + pivotSize.x,
-					tile.Position.y * m_GridSize.y + pivotSize.y
-				);
+				var uiPos = TilePos_to_UIPos(tile.Position, rt.pivot, rt.rect.size, out var anchor);
+				rt.anchorMin = rt.anchorMax = anchor;
+				rt.anchoredPosition3D = uiPos;
 			}
 		}
 
@@ -229,6 +230,7 @@ namespace YayaMaker.UI {
 		#region --- LGC ---
 
 
+		// Mouse Drag
 		private void OnTileDragBegin (TileItem tile) {
 			if (MouseChecking != null) {
 				StopCoroutine(MouseChecking);
@@ -248,12 +250,14 @@ namespace YayaMaker.UI {
 					float deltaX = pos.x - prevPos.x;
 					float deltaY = pos.y - prevPos.y;
 					if (Mathf.Abs(deltaX) > rt.rect.width || Mathf.Abs(deltaY) > rt.rect.height) {
-						jelly.Size = rt.rect.size * 0.9f;
-						jelly.Point += new Vector2(-deltaX, -deltaY);
+						jelly.Point = Vector2.ClampMagnitude(
+							jelly.Point + new Vector2(-deltaX, -deltaY),
+							m_MaxLength
+						);
 					}
 					prevPos = pos;
-					jelly.Size = Vector2.Lerp(jelly.Size, rt.rect.size, lerp);
 					jelly.Point = Vector2.Lerp(jelly.Point, Vector2.zero, lerp);
+					jelly.Size = rt.rect.size * m_SizeCurve.Evaluate(Vector2.Distance(jelly.Point, Vector2.zero));
 					yield return new WaitForEndOfFrame();
 				}
 				jelly.UseJelly = false;
@@ -268,18 +272,13 @@ namespace YayaMaker.UI {
 		private void OnTileDragEnd (TileItem tile) {
 			FixAnchor(tile);
 			var rt = tile.RectTransform;
-			var pivotSize = rt.pivot * rt.rect.size;
-			var pos = tile.RectTransform.anchoredPosition - pivotSize;
-			tile.Position.x = Mathf.RoundToInt(pos.x / m_GridSize.x);
-			tile.Position.y = Mathf.RoundToInt(pos.y / m_GridSize.y);
+			tile.Position = UIPos_to_TilePos(tile.RectTransform.anchoredPosition, rt.pivot, rt.rect.size);
 			Dragging = false;
 			SaveTilePositions();
-#if UNITY_EDITOR
-			LoadTilePositions();
-#endif
 		}
 
 
+		// Logic
 		private void FixAnchor (TileItem tile) {
 			var rt = tile.RectTransform;
 			var tilePos = rt.localPosition;
@@ -293,6 +292,82 @@ namespace YayaMaker.UI {
 			if (rt.anchorMax.NotAlmost(newAnchor)) {
 				rt.anchorMax = newAnchor;
 			}
+		}
+
+
+		private void SwipeTileToBottom (TileItem tile, TriggerUI trigger) {
+
+			if (!trigger.enabled) { return; }
+
+			foreach (var item in Tiles) {
+				if (item != tile && item.Position == tile.Position) {
+					StartCoroutine(Swipe());
+					return;
+				}
+			}
+
+			trigger.transform.SetAsFirstSibling();
+
+			// Func
+			IEnumerator Swipe () {
+
+				trigger.enabled = false;
+				var rt = trigger.transform as RectTransform;
+				var oldPos = rt.anchoredPosition;
+				float duration = m_SwipeCurve.Duration();
+				float startTime = m_SwipeCurve[0].time;
+				float rotMulti = Random.Range(-0.3f, 0.3f);
+
+				// Up
+				for (float time = 0; time < duration / 2f; time += Time.deltaTime) {
+					if (Input.GetMouseButton(0)) { break; }
+					float delta = m_SwipeCurve.Evaluate(startTime + time);
+					rt.anchoredPosition = oldPos + Vector2.up * delta;
+					rt.localScale = Vector3.one * (1f + delta * 0.0016f);
+					rt.localRotation = Quaternion.Euler(0, 0, delta * rotMulti);
+					yield return new WaitForEndOfFrame();
+				}
+
+				// Swipe
+				trigger.transform.SetAsFirstSibling();
+				rt.localScale = Vector3.one;
+
+				// Down
+				for (float time = 0; time < duration / 2f; time += Time.deltaTime) {
+					if (Input.GetMouseButton(0)) { break; }
+					float delta = m_SwipeCurve.Evaluate(startTime + duration / 2f + time);
+					rt.anchoredPosition = oldPos + Vector2.up * delta;
+					rt.localRotation = Quaternion.Euler(0, 0, delta * rotMulti);
+					yield return new WaitForEndOfFrame();
+				}
+
+				rt.anchoredPosition = oldPos;
+				rt.localRotation = Quaternion.identity;
+				trigger.enabled = true;
+			}
+		}
+
+
+		// Position
+		private Vector2 TilePos_to_UIPos (Vector2Int tilePos, Vector2 pivot, Vector2 size, out Vector2 anchor) {
+			anchor = new Vector2(
+				tilePos.x >= 0 ? 0f : 1f,
+				tilePos.y >= 0 ? 0f : 1f
+			);
+			var pivotSize = pivot * size;
+			return new Vector2(
+				tilePos.x * m_GridSize.x + pivotSize.x,
+				tilePos.y * m_GridSize.y + pivotSize.y
+			);
+		}
+
+
+		private Vector2Int UIPos_to_TilePos (Vector2 uiPos, Vector2 pivot, Vector2 size) {
+			var pos = uiPos - pivot * size;
+			return new Vector2Int(
+				Mathf.RoundToInt(pos.x / m_GridSize.x),
+				Mathf.RoundToInt(pos.y / m_GridSize.y)
+			);
 		}
 
 

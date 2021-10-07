@@ -418,7 +418,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -120.45422, y: -120}
+  m_SizeDelta: {x: -120.907715, y: -120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &418900219
 MonoBehaviour:
@@ -435,6 +435,118 @@ MonoBehaviour:
   m_Template: {fileID: 7376355855725272606, guid: 748994ed84cff684dbba6e3d4c5e8731,
     type: 3}
   m_GridSize: {x: 120, y: 120}
+  m_MaxLength: 128
+  m_SizeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.14617006
+    - serializedVersion: 3
+      time: 24.466621
+      value: 1.0818329
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 51.575302
+      value: 0.8950028
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 88.592575
+      value: 1.0545948
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 133.2883
+      value: 0.81666124
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 182.58165
+      value: 0.8924463
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 256
+      value: 0.5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.10541105
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_SwipeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: -0.20812817
+      inSlope: 1775.5796
+      outSlope: 1775.5796
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.15460296
+    - serializedVersion: 3
+      time: 0.15
+      value: 89.18355
+      inSlope: -712.8827
+      outSlope: -712.8827
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.1215742
+    - serializedVersion: 3
+      time: 0.24849956
+      value: 1.1110938
+      inSlope: -8.427044
+      outSlope: -8.427044
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.8582589
+    - serializedVersion: 3
+      time: 0.3
+      value: 0.17589949
+      inSlope: 8.624892
+      outSlope: 8.624892
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.5495432
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &418900220
 MonoBehaviour:
   m_ObjectHideFlags: 0
