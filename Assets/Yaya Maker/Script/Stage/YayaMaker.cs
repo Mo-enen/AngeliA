@@ -23,13 +23,16 @@ namespace YayaMaker {
 		[SerializeField] StageLanguage m_Language = null;
 		[SerializeField] StageProject m_Project = null;
 		[Header("UI")]
-		[SerializeField] TileLayout m_TileLayout = null;
+		[SerializeField] TileUI m_TileLayout = null;
 		[SerializeField] RectTransform m_WindowRoot = null;
 		[SerializeField] DialogWindow m_DialogTemplate = null;
 		[Header("Data")]
 		[SerializeField] Text[] m_LanguageTexts = null;
 
 		// Data
+		private Game Game = null;
+
+		// Save
 		private SavingInt ProjectSlot = new SavingInt("YayaMaker.ProjectSlot", 0);
 
 
@@ -42,12 +45,12 @@ namespace YayaMaker {
 
 
 		private void Awake () {
-			Awake_System();
+			Awake_Game();
 			Awake_Language();
 			Awake_Music();
 			Awake_Project();
 			Awake_Shortcut();
-			Awake_Misc();
+			Awake_UI();
 			Awake_Quit();
 		}
 
@@ -59,11 +62,18 @@ namespace YayaMaker {
 		}
 
 
-		private void Awake_System () {
+		private void Update () => Game.DrawUpdate();
+
+
+		private void FixedUpdate () => Game.FrameUpdate();
+
+
+		private void Awake_Game () {
+			Game = new Game();
+			Application.targetFrameRate = 120;
+#if UNITY_EDITOR
 			Application.targetFrameRate = 10000;
-
-
-
+#endif
 		}
 
 
@@ -102,13 +112,14 @@ namespace YayaMaker {
 
 		private void Awake_Project () {
 			StageProject.OnProjectLoaded = (projectPath) => {
-				WorldStream.LoadInfo(Util.CombinePaths(projectPath, "Info.json"));
+				WorldStream.LoadInfo(Util.CombinePaths(projectPath, "World", "Info.json"));
+				
 				ProjectSlot.Value = m_Project.CurrentSlot;
 
 
 			};
 			StageProject.OnProjectSaved = (projectPath) => {
-				WorldStream.SaveInfo(Util.CombinePaths(projectPath, "Info.json"));
+				WorldStream.SaveInfo(Util.CombinePaths(projectPath, "World", "Info.json"));
 
 
 			};
@@ -128,7 +139,7 @@ namespace YayaMaker {
 		}
 
 
-		private void Awake_Misc () {
+		private void Awake_UI () {
 
 			m_TileLayout.ReloadTiles();
 
@@ -161,6 +172,7 @@ namespace YayaMaker {
 
 
 		#endregion
+
 
 
 

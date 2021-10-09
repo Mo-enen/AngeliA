@@ -3,7 +3,7 @@
   "displayName": "AngeliA Framework",
   "version": "1.0.0",
   "unity": "2020.1",
-  "description": "",
+  "description": "The framework to make Yaya-like games.",
   "type": "tools",
   "hideInEditor": false,
   "dependencies": {

@@ -39,12 +39,13 @@ namespace AngeliaFramework {
 
 
 		[System.Serializable]
-		private class WorldInfoJson {
+		private class WorldInfo {
 			[System.Serializable]
 			public class FileInfo {
 				public string ID;
 				public int X;
 				public int Y;
+				public int Z;
 			}
 			public List<FileInfo> Data = new List<FileInfo>();
 		}
@@ -60,7 +61,7 @@ namespace AngeliaFramework {
 
 
 		// Data
-		private static readonly Dictionary<Vector2Int, string> WorldMap = new Dictionary<Vector2Int, string>();
+		private static readonly Dictionary<Vector3Int, string> WorldStreamMap = new Dictionary<Vector3Int, string>();
 
 
 		#endregion
@@ -72,14 +73,14 @@ namespace AngeliaFramework {
 
 
 		public static void LoadInfo (string infoPath) {
-			WorldMap.Clear();
-			WorldInfoJson info = null;
+			WorldStreamMap.Clear();
+			WorldInfo info = null;
 			if (Util.FileExists(infoPath)) {
 				string json = Util.FileToText(infoPath);
-				info = JsonUtility.FromJson<WorldInfoJson>(json);
+				info = JsonUtility.FromJson<WorldInfo>(json);
 			}
 			if (info == null) {
-				info = new WorldInfoJson();
+				info = new WorldInfo();
 				Util.TextToFile(
 					JsonUtility.ToJson(info, true),
 					infoPath
@@ -87,8 +88,8 @@ namespace AngeliaFramework {
 			}
 			if (info != null) {
 				foreach (var fileInfo in info.Data) {
-					WorldMap.TryAdd(
-						new Vector2Int(fileInfo.X, fileInfo.Y),
+					WorldStreamMap.TryAdd(
+						new Vector3Int(fileInfo.X, fileInfo.Y, fileInfo.Z),
 						fileInfo.ID
 					);
 				}
@@ -99,9 +100,9 @@ namespace AngeliaFramework {
 
 
 		public static void SaveInfo (string infoPath) {
-			var info = new WorldInfoJson();
-			foreach (var pair in WorldMap) {
-				info.Data.Add(new WorldInfoJson.FileInfo() {
+			var info = new WorldInfo();
+			foreach (var pair in WorldStreamMap) {
+				info.Data.Add(new WorldInfo.FileInfo() {
 					ID = pair.Value,
 					X = pair.Key.x,
 					Y = pair.Key.y,
@@ -111,9 +112,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void Clear () {
-			WorldMap.Clear();
-		}
+		public static void Clear () => WorldStreamMap.Clear();
 
 
 		// World
@@ -123,12 +122,12 @@ namespace AngeliaFramework {
 			Util.CreateFolder(Util.GetParentPath(path));
 			using var stream = File.Create(path);
 			using var writer = new BinaryWriter(stream);
-			writer.Write(width);
-			writer.Write(height);
+			writer.Write((ushort)width);
+			writer.Write((ushort)height);
 			for (int j = 0; j < height; j++) {
 				for (int i = 0; i < width; i++) {
 					var block = world.Blocks[i, j];
-					writer.Write(block.ID);
+					writer.Write((ushort)block.ID);
 				}
 			}
 		}
@@ -139,19 +138,27 @@ namespace AngeliaFramework {
 			var world = new World();
 			using var stream = File.OpenRead(path);
 			using var reader = new BinaryReader(stream);
-			int width = reader.ReadInt32();
-			int height = reader.ReadInt32();
+			int width = reader.ReadUInt16();
+			int height = reader.ReadUInt16();
 			world.Blocks = new Block[width, height];
 			for (int j = 0; j < height; j++) {
 				for (int i = 0; i < width; i++) {
 					var block = new Block() {
-						ID = reader.ReadInt32(),
+						ID = reader.ReadUInt16(),
 					};
 					world.Blocks[i, j] = block;
 				}
 			}
 			return world;
 		}
+
+
+		public static bool HasWorldAt (Vector3Int position) => WorldStreamMap.ContainsKey(position);
+
+
+		public static World LoadWorldAt (string rootPath, Vector3Int position) => FileToWorld(
+			Util.CombinePaths(rootPath, WorldStreamMap[position] + ".world")
+		);
 
 
 		#endregion

@@ -1,4 +1,4 @@
-Shader "Cell Renderer/Sprites"
+Shader "Cell"
 {
 	Properties
 	{

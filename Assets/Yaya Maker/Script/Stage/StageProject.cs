@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AngeliaFramework;
 
 
 
@@ -35,7 +36,7 @@ namespace YayaMaker.Stage {
 		public int CurrentSlot { get; private set; } = 0;
 
 		// Short
-		private string RootPath => Util.CombinePaths(Application.persistentDataPath, "World");
+		private string RootPath => Application.persistentDataPath;
 
 
 		#endregion
@@ -47,8 +48,11 @@ namespace YayaMaker.Stage {
 
 
 		private void Awake () {
+			// Init Project Folders
 			for (int i = 0; i < SLOT_COUNT; i++) {
 				Util.CreateFolder(GetProjectPath(i));
+				Util.CreateFolder(GetWorldRoot(i));
+				Util.CreateFolder(GetPrefabRoot(i));
 			}
 		}
 
@@ -65,7 +69,6 @@ namespace YayaMaker.Stage {
 			string projectPath = GetProjectPath(slot);
 			if (string.IsNullOrEmpty(projectPath)) { return LConst.ProjectPathEmpty; }
 			if (!Util.FolderExists(projectPath)) { return LConst.ProjectPathNotExists; }
-
 
 
 
@@ -97,6 +100,12 @@ namespace YayaMaker.Stage {
 
 
 		private string GetProjectPath (int slot) => Util.CombinePaths(RootPath, $"Slot_{slot:00}");
+
+
+		private string GetWorldRoot (int slot) => Util.CombinePaths(GetProjectPath(slot), "World");
+
+
+		private string GetPrefabRoot (int slot) => Util.CombinePaths(GetProjectPath(slot), "Prefab");
 
 
 		#endregion

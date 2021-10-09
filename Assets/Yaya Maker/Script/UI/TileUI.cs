@@ -6,75 +6,10 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using UIGadget;
 
 
 namespace YayaMaker.UI {
-
-
-
-
-	public class TestA : TileItem {
-		public TestA (RectTransform rt, Text label, Image icon) : base(rt, label, icon) { }
-
-		public override string GetDisplayName () {
-			return "AAA";
-		}
-
-		public override Sprite GetIcon () {
-			return null;
-		}
-		public override void OnLeftClick () {
-			Debug.Log("Left A");
-		}
-	}
-
-	public abstract class TestC : TileItem {
-		public TestC (RectTransform rt, Text label, Image icon) : base(rt, label, icon) { }
-
-		public override string GetDisplayName () {
-			return "CCC";
-		}
-
-		public override Sprite GetIcon () {
-			return null;
-		}
-		public override void OnLeftClick () {
-			Debug.Log("Left C");
-		}
-	}
-
-	public class TestB : TileItem {
-		public TestB (RectTransform rt, Text label, Image icon) : base(rt, label, icon) { }
-
-		public class TestBB : TileItem {
-			public override string GetDisplayName () {
-				return "BBBBBB";
-			}
-			public TestBB (RectTransform rt, Text label, Image icon) : base(rt, label, icon) { }
-
-			public override Sprite GetIcon () {
-				return null;
-			}
-			public override void OnLeftClick () {
-				Debug.Log("Left BB");
-			}
-		}
-
-		public override string GetDisplayName () {
-			return "BBB";
-		}
-
-		public override Sprite GetIcon () {
-			return null;
-		}
-		public override void OnLeftClick () {
-			Debug.Log("Left B");
-		}
-	}
-
-
 
 
 	public abstract class TileItem {
@@ -106,8 +41,7 @@ namespace YayaMaker.UI {
 
 
 
-
-	public class TileLayout : MonoBehaviour {
+	public class TileUI : MonoBehaviour {
 
 
 
@@ -121,7 +55,7 @@ namespace YayaMaker.UI {
 		// Ser
 		[SerializeField] Grabber m_Template = null;
 		[SerializeField] Vector2 m_GridSize = new Vector2(86, 86);
-		[SerializeField, Header("Jelly Trail")] float m_MaxLength = 64f;
+		[SerializeField] float m_MaxLength = 64f;
 		[SerializeField] AnimationCurve m_SizeCurve = new AnimationCurve();
 		[SerializeField] AnimationCurve m_SwipeCurve = new AnimationCurve();
 
@@ -378,3 +312,23 @@ namespace YayaMaker.UI {
 
 	}
 }
+
+
+
+#if UNITY_EDITOR
+namespace YayaMaker.Editor {
+	using UnityEditor;
+	using global::YayaMaker.UI;
+	[CustomEditor(typeof(TileUI))]
+	public class TileUI_Inspector : Editor {
+		public override void OnInspectorGUI () {
+			bool oldW = EditorGUIUtility.wideMode;
+			EditorGUIUtility.wideMode = true;
+			serializedObject.Update();
+			DrawPropertiesExcluding(serializedObject, "m_Script");
+			serializedObject.ApplyModifiedProperties();
+			EditorGUIUtility.wideMode = oldW;
+		}
+	}
+}
+#endif
