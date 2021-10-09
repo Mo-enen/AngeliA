@@ -34,9 +34,9 @@ namespace YayaMaker.Stage {
 		public static StringHandler OnProjectLoaded { get; set; } = null;
 		public static StringHandler OnProjectSaved { get; set; } = null;
 		public int CurrentSlot { get; private set; } = 0;
-
-		// Short
-		private string RootPath => Application.persistentDataPath;
+		public string WorldPath => GetWorldRoot(CurrentSlot);
+		public string WorldInfoPath => Util.CombinePaths(GetWorldRoot(CurrentSlot), "Info.json");
+		public string PrefabPath => GetPrefabRoot(CurrentSlot);
 
 
 		#endregion
@@ -99,7 +99,7 @@ namespace YayaMaker.Stage {
 		#region --- LGC ---
 
 
-		private string GetProjectPath (int slot) => Util.CombinePaths(RootPath, $"Slot_{slot:00}");
+		private string GetProjectPath (int slot) => Util.CombinePaths(Application.persistentDataPath, $"Slot_{slot:00}");
 
 
 		private string GetWorldRoot (int slot) => Util.CombinePaths(GetProjectPath(slot), "World");

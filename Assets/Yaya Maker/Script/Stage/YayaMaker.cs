@@ -112,14 +112,14 @@ namespace YayaMaker {
 
 		private void Awake_Project () {
 			StageProject.OnProjectLoaded = (projectPath) => {
-				WorldStream.LoadInfo(Util.CombinePaths(projectPath, "World", "Info.json"));
-				
 				ProjectSlot.Value = m_Project.CurrentSlot;
+				WorldStream.LoadInfo(m_Project.WorldInfoPath);
+				PrefabStream.LoadPool(m_Project.PrefabPath);
 
 
 			};
 			StageProject.OnProjectSaved = (projectPath) => {
-				WorldStream.SaveInfo(Util.CombinePaths(projectPath, "World", "Info.json"));
+				WorldStream.SaveInfo(m_Project.WorldInfoPath);
 
 
 			};

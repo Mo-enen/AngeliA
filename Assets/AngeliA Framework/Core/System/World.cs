@@ -116,24 +116,7 @@ namespace AngeliaFramework {
 
 
 		// World
-		public static void WorldToFile (World world, string path) {
-			int width = world.Width;
-			int height = world.Height;
-			Util.CreateFolder(Util.GetParentPath(path));
-			using var stream = File.Create(path);
-			using var writer = new BinaryWriter(stream);
-			writer.Write((ushort)width);
-			writer.Write((ushort)height);
-			for (int j = 0; j < height; j++) {
-				for (int i = 0; i < width; i++) {
-					var block = world.Blocks[i, j];
-					writer.Write((ushort)block.ID);
-				}
-			}
-		}
-
-
-		public static World FileToWorld (string path) {
+		public static World LoadWorld (string path) {
 			if (!Util.FileExists(path)) { return null; }
 			var world = new World();
 			using var stream = File.OpenRead(path);
@@ -153,10 +136,27 @@ namespace AngeliaFramework {
 		}
 
 
+		public static void SaveWorld (World world, string path) {
+			int width = world.Width;
+			int height = world.Height;
+			Util.CreateFolder(Util.GetParentPath(path));
+			using var stream = File.Create(path);
+			using var writer = new BinaryWriter(stream);
+			writer.Write((ushort)width);
+			writer.Write((ushort)height);
+			for (int j = 0; j < height; j++) {
+				for (int i = 0; i < width; i++) {
+					var block = world.Blocks[i, j];
+					writer.Write((ushort)block.ID);
+				}
+			}
+		}
+
+
 		public static bool HasWorldAt (Vector3Int position) => WorldStreamMap.ContainsKey(position);
 
 
-		public static World LoadWorldAt (string rootPath, Vector3Int position) => FileToWorld(
+		public static World LoadWorldAtPosition (string rootPath, Vector3Int position) => LoadWorld(
 			Util.CombinePaths(rootPath, WorldStreamMap[position] + ".world")
 		);
 
