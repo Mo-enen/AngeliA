@@ -22,15 +22,13 @@ namespace YayaMaker {
 		[Header("Stage")]
 		[SerializeField] StageLanguage m_Language = null;
 		[SerializeField] StageProject m_Project = null;
+		[Header("AngeliA")]
+		[SerializeField] Game m_Game = null;
 		[Header("UI")]
 		[SerializeField] TileUI m_TileLayout = null;
 		[SerializeField] RectTransform m_WindowRoot = null;
 		[SerializeField] DialogWindow m_DialogTemplate = null;
-		[Header("Data")]
 		[SerializeField] Text[] m_LanguageTexts = null;
-
-		// Data
-		private Game Game = null;
 
 		// Save
 		private SavingInt ProjectSlot = new SavingInt("YayaMaker.ProjectSlot", 0);
@@ -62,18 +60,12 @@ namespace YayaMaker {
 		}
 
 
-		private void Update () => Game.DrawUpdate();
-
-
-		private void FixedUpdate () => Game.FrameUpdate();
+		private void FixedUpdate () => m_Game.FrameUpdate();
 
 
 		private void Awake_Game () {
-			Game = new Game();
-			Application.targetFrameRate = 120;
-#if UNITY_EDITOR
-			Application.targetFrameRate = 10000;
-#endif
+			m_Game.Init();
+			
 		}
 
 
@@ -114,7 +106,6 @@ namespace YayaMaker {
 			StageProject.OnProjectLoaded = (projectPath) => {
 				ProjectSlot.Value = m_Project.CurrentSlot;
 				WorldStream.LoadInfo(m_Project.WorldInfoPath);
-				PrefabStream.LoadPool(m_Project.PrefabPath);
 
 
 			};

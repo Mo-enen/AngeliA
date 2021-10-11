@@ -36,8 +36,7 @@ namespace YayaMaker.Stage {
 		public int CurrentSlot { get; private set; } = 0;
 		public string WorldPath => GetWorldRoot(CurrentSlot);
 		public string WorldInfoPath => Util.CombinePaths(GetWorldRoot(CurrentSlot), "Info.json");
-		public string PrefabPath => GetPrefabRoot(CurrentSlot);
-
+		
 
 		#endregion
 
@@ -52,7 +51,6 @@ namespace YayaMaker.Stage {
 			for (int i = 0; i < SLOT_COUNT; i++) {
 				Util.CreateFolder(GetProjectPath(i));
 				Util.CreateFolder(GetWorldRoot(i));
-				Util.CreateFolder(GetPrefabRoot(i));
 			}
 		}
 
@@ -99,13 +97,11 @@ namespace YayaMaker.Stage {
 		#region --- LGC ---
 
 
+		// Path
 		private string GetProjectPath (int slot) => Util.CombinePaths(Application.persistentDataPath, $"Slot_{slot:00}");
 
 
 		private string GetWorldRoot (int slot) => Util.CombinePaths(GetProjectPath(slot), "World");
-
-
-		private string GetPrefabRoot (int slot) => Util.CombinePaths(GetProjectPath(slot), "Prefab");
 
 
 		#endregion

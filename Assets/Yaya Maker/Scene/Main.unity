@@ -910,6 +910,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Language: {fileID: 893708287}
   m_Project: {fileID: 381160255}
+  m_Game: {fileID: 11400000, guid: 15bbb29a002c02040b89ba3dec3766aa, type: 2}
   m_TileLayout: {fileID: 418900219}
   m_WindowRoot: {fileID: 165141598}
   m_DialogTemplate: {fileID: 4829637804927139047, guid: c020774fff881fd479f3ed333f32f503,

@@ -1,64 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 
 namespace AngeliaFramework {
-
-
-
-	public class TestPrefabA : Prefab {
-		public override void BeforeSave () { }
-		public override void OnLoaded () { }
-	}
-
-
-	public class TestPrefabB : Prefab {
-		public override void BeforeSave () { }
-		public override void OnLoaded () { }
-	}
-
-
-
-	public class TestPrefabC : Prefab {
-		public override void BeforeSave () { }
-		public override void OnLoaded () { }
-	}
-
-
-	public abstract class Prefab {
-
-
-		// VAR
-		public ushort GlobalID = 0;
-		public string RootPath = "";
-
-
-		// MSG
-		public abstract void OnLoaded ();
-		public abstract void BeforeSave ();
-
-
-	}
-
-
-	public static class PrefabStream {
-
-
-
-
-		#region --- SUB ---
-
-
-		[System.Serializable]
-		private class PrefabInfo {
-			public string Type;
-			public ushort GLobalID;
-		}
-
-
-		#endregion
+	[CreateAssetMenu(fileName = "New Prefab", menuName = "AngeliA/New Prefab", order = 99)]
+	public class Prefab : ScriptableObject {
 
 
 
@@ -66,9 +13,22 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
-		// Data
-		private static Dictionary<string, System.Type> TypeMap = new Dictionary<string, System.Type>();
-		private static Dictionary<ushort, Prefab> Pool = new Dictionary<ushort, Prefab>();
+		// Api
+		public ushort GlobalID => m_GlobalID;
+
+		// Ser
+		[SerializeField, Disable] ushort m_GlobalID = 0;
+		[SerializeField] Sprite[] m_Sprites = null;
+
+
+		#endregion
+
+
+
+
+		#region --- MSG ---
+
+
 
 
 		#endregion
@@ -79,66 +39,7 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		// Pool
-		public static void LoadPool (string prefabRootPath) {
-			// Type Map
-			TypeMap.Clear();
-			foreach (var type in Util.GetAllClass(typeof(Prefab))) {
-				TypeMap.TryAdd(GetTypeString(type), type);
-			}
-			// Pool
-			Pool.Clear();
-			foreach (var folder in Util.GetFoldersIn(prefabRootPath, true)) {
-				var prefab = LoadPrefab(folder.FullName);
-				if (prefab != null) {
-					Pool.TryAdd(prefab.GlobalID, prefab);
-				}
-			}
-		}
 
-
-		public static void ClearPool () => Pool.Clear();
-
-
-		public static ushort CreateEmptyPrefab (System.Type type) {
-
-
-
-
-			return 0;
-		}
-
-
-		// Prefab and File
-		public static Prefab LoadPrefab (string path) {
-			Prefab prefab = null;
-			try {
-				string json = Util.FileToText(Util.CombinePaths(path, "Info.json"));
-				var info = JsonUtility.FromJson<PrefabInfo>(json);
-				if (info == null || !TypeMap.ContainsKey(info.Type)) { return null; }
-				prefab = System.Activator.CreateInstance(TypeMap[info.Type]) as Prefab;
-				prefab.RootPath = path;
-				prefab.GlobalID = info.GLobalID;
-				prefab.OnLoaded();
-			} catch { }
-			return prefab;
-		}
-
-
-		public static void SavePrefab (Prefab prefab, string path) {
-			try {
-				prefab.RootPath = path;
-				prefab.BeforeSave();
-				var info = new PrefabInfo() {
-					GLobalID = prefab.GlobalID,
-					Type = GetTypeString(prefab.GetType()),
-				};
-				Util.TextToFile(
-					JsonUtility.ToJson(info, true),
-					Util.CombinePaths(path, "Info.json")
-				);
-			} catch { }
-		}
 
 
 		#endregion
@@ -149,7 +50,6 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private static string GetTypeString (System.Type type) => $"{type.Assembly.GetName().Name}-{type.Namespace}-{type.Name}";
 
 
 		#endregion
@@ -157,5 +57,63 @@ namespace AngeliaFramework {
 
 
 
+		#region --- EDT ---
+#if UNITY_EDITOR
+		public void SetGlobalID (ushort id) {
+			if (UnityEditor.EditorApplication.isPlaying) {
+				Debug.LogError("Can not set global id at runtime.");
+				return;
+			}
+			m_GlobalID = id;
+		}
+#endif
+		#endregion
+
+
+
+
 	}
 }
+
+
+#if UNITY_EDITOR
+namespace AngeliaFramework.Editor {
+	using UnityEngine;
+	using UnityEditor;
+	[CustomEditor(typeof(Prefab))]
+	public class Prefab_Inspector : Editor {
+		private int SpriteWarning = -1;
+		private void OnEnable () => CheckSprites();
+		public override void OnInspectorGUI () {
+			serializedObject.Update();
+			DrawPropertiesExcluding(serializedObject, "m_Script");
+			serializedObject.ApplyModifiedProperties();
+			if (GUI.changed) {
+				CheckSprites();
+			}
+			if (SpriteWarning >= 0) {
+				EditorGUILayout.HelpBox($"Element {SpriteWarning} has different texture.", MessageType.Error, true);
+			}
+		}
+		private void CheckSprites () {
+			SpriteWarning = -1;
+			serializedObject.Update();
+			var p_Sprites = serializedObject.FindProperty("m_Sprites");
+			int len = p_Sprites.arraySize;
+			if (len > 1) {
+				Texture2D texture = null;
+				for (int i = 0; i < len; i++) {
+					var sp = p_Sprites.GetArrayElementAtIndex(i).objectReferenceValue as Sprite;
+					if (sp == null) { continue; }
+					if (texture == null) {
+						texture = sp.texture;
+					} else if (sp.texture != texture) {
+						SpriteWarning = i;
+						break;
+					}
+				}
+			}
+		}
+	}
+}
+#endif

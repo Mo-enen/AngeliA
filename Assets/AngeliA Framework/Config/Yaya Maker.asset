@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da05428af58f0fa4d921db1f278225fc, type: 3}
+  m_Name: Yaya Maker
+  m_EditorClassIdentifier: 
+  m_Prefabs:
+  - {fileID: 11400000, guid: 0b5bd01a710c99b4191e3d0cc0c60cd8, type: 2}
+  - {fileID: 11400000, guid: 18a9ccbe1d183c5468d4bae54a2fbf35, type: 2}
+  - {fileID: 11400000, guid: 970d3950a389b8346bb1785a40650975, type: 2}
+  - {fileID: 11400000, guid: d79131ab9b6899f40917298d75a44b71, type: 2}
+  - {fileID: 11400000, guid: 5ece623daa2a67b41b794dec202f2e93, type: 2}
+  - {fileID: 11400000, guid: d7e71a34fd790344690e350f85c7ec35, type: 2}
+  - {fileID: 11400000, guid: 6e12f50194896c2499241f0c246dfc5f, type: 2}
+  m_Background: {fileID: 11400000, guid: fb8f3cfd6a234bc4eb851c464bf25e21, type: 2}
+  m_Level: {fileID: 11400000, guid: 79af000d2227bd34ca8c687afc30f693, type: 2}
+  m_Item: {fileID: 11400000, guid: a8af988212044dd48981a627250912e0, type: 2}
+  m_Character: {fileID: 11400000, guid: 2ce390cc5beaa5041821fb170da67744, type: 2}
+  m_Effect: {fileID: 11400000, guid: a1ebb915607e0a8439841017009a88a1, type: 2}
