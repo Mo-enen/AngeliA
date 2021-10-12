@@ -19,6 +19,8 @@ namespace AngeliaFramework {
 			public int Y;
 			public int Scale;
 			public int Rotation;
+			public int PivotX;
+			public int PivotY;
 			public Color32 Color;
 		}
 
@@ -28,6 +30,7 @@ namespace AngeliaFramework {
 			public Rect[] UVs;
 			public Material Material;
 			public Cell[] Cells;
+			public int UVCount;
 		}
 
 
@@ -41,7 +44,7 @@ namespace AngeliaFramework {
 
 
 		// Const
-		public const int UNIT_MULT = 16 * 42;
+		public const int UNIT_MULT = 512;
 		public const float MAX_CELL_WIDTH = 48;
 		public const float TARGET_CELL_HEIGHT = 16;
 
@@ -117,7 +120,6 @@ namespace AngeliaFramework {
 					var b = Vector3.zero;
 					var c = Vector3.zero;
 					var d = Vector3.zero;
-					var center = Vector3.zero;
 
 					for (int i = 0; i < len; i++) {
 
@@ -129,38 +131,47 @@ namespace AngeliaFramework {
 						GL.Color(cell.Color);
 
 						// Position
-						a.x = cell.X;
-						a.y = cell.Y;
-						b.x = cell.X;
-						b.y = cell.Y + UNIT_MULT;
-						c.x = cell.X + UNIT_MULT;
-						c.y = cell.Y + UNIT_MULT;
-						d.x = cell.X + UNIT_MULT;
-						d.y = cell.Y;
+						float pX = UNIT_MULT * cell.PivotX / 1000f;
+						float pY = UNIT_MULT * cell.PivotY / 1000f;
+						a.x = -pX;
+						a.y = -pY;
+						b.x = -pX;
+						b.y = UNIT_MULT - pY;
+						c.x = UNIT_MULT - pX;
+						c.y = UNIT_MULT - pY;
+						d.x = UNIT_MULT - pX;
+						d.y = -pY;
 
 						// Scale
 						if (cell.Scale != 1000) {
-							center = (a + c) / 2f;
 							float t01 = cell.Scale / 1000f;
-							a.x = Mathf.LerpUnclamped(center.x, a.x, t01);
-							a.y = Mathf.LerpUnclamped(center.y, a.y, t01);
-							b.x = Mathf.LerpUnclamped(center.x, b.x, t01);
-							b.y = Mathf.LerpUnclamped(center.y, b.y, t01);
-							c.x = Mathf.LerpUnclamped(center.x, c.x, t01);
-							c.y = Mathf.LerpUnclamped(center.y, c.y, t01);
-							d.x = Mathf.LerpUnclamped(center.x, d.x, t01);
-							d.y = Mathf.LerpUnclamped(center.y, d.y, t01);
+							a.x *= t01;
+							a.y *= t01;
+							b.x *= t01;
+							b.y *= t01;
+							c.x *= t01;
+							c.y *= t01;
+							d.x *= t01;
+							d.y *= t01;
 						}
 
 						// Rotation
 						if (cell.Rotation != 0) {
 							var rot = Quaternion.Euler(0, 0, -cell.Rotation);
-							center = (a + c) / 2f;
-							a = rot * (a - center) + center;
-							b = rot * (b - center) + center;
-							c = rot * (c - center) + center;
-							d = rot * (d - center) + center;
+							a = rot * a;
+							b = rot * b;
+							c = rot * c;
+							d = rot * d;
 						}
+
+						a.x += cell.X;
+						a.y += cell.Y;
+						b.x += cell.X;
+						b.y += cell.Y;
+						c.x += cell.X;
+						c.y += cell.Y;
+						d.x += cell.X;
+						d.y += cell.Y;
 
 						// Final
 						GL.TexCoord2(uv.xMin, uv.yMin);
@@ -189,9 +200,7 @@ namespace AngeliaFramework {
 
 
 		// Layer
-		public static void InitLayers (int layerCount) {
-			Layers = new Layer[layerCount];
-		}
+		public static void InitLayers (int layerCount) => Layers = new Layer[layerCount];
 
 
 		public static void SetupLayer (int layerIndex, int cellCapaticy, Material material, Rect[] uvs) => Layers[layerIndex] = new Layer() {
@@ -206,23 +215,31 @@ namespace AngeliaFramework {
 
 		// Cell
 		public static void SetCell (
-			int cellIndex, int id, int x, int y, int scale, int rotation, Color32 color
+			int index, int id,
+			int x, int y,
+			int pivotX, int pivotY,
+			int rotation, int scale,
+			Color32 color
 		) {
-#if UNITY_EDITOR
-			if (FocusedLayer == null) {
-				Debug.LogWarning("[Cell Renderer] No Layer is Focused.");
-			}
-#endif
-			var cell = FocusedLayer.Cells[cellIndex];
+			if (id >= FocusedLayer.UVCount) { return; }
+			var cell = FocusedLayer.Cells[index];
 			cell.ID = id;
 			cell.X = x;
 			cell.Y = y;
 			cell.Scale = scale;
 			cell.Rotation = rotation;
+			cell.PivotX = pivotX;
+			cell.PivotY = pivotY;
 			cell.Color = color;
-			FocusedLayer.Cells[cellIndex] = cell;
+			FocusedLayer.Cells[index] = cell;
 		}
 
+
+		public static void MarkAsRoadblock (int index) {
+			if (index >= 0 && index < FocusedLayer.Cells.Length) {
+				FocusedLayer.Cells[index].ID = -1;
+			}
+		}
 
 		#endregion
 

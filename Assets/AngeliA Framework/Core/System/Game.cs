@@ -4,26 +4,21 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
+
+
+
+	public enum Layer {
+		Background = 0,
+		Level = 1,
+		Item = 2,
+		Character = 3,
+		Effect = 4,
+	}
+
+
+
 	[CreateAssetMenu(fileName = "New Game", menuName = "AngeliA/New Game", order = 99)]
 	public class Game : ScriptableObject {
-
-
-
-
-		#region --- SUB ---
-
-
-		public enum Layer {
-			Background = 0,
-			BackLevel = 1,
-			Ground = 2,
-			Item = 3,
-			Character = 4,
-			Effect = 5,
-		}
-
-
-		#endregion
 
 
 
@@ -31,18 +26,26 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
+		// Const
+		private readonly int[] LAYER_CAPACITY = new int[] {
+			1024, 1024, 1024, 1024, 1024,
+		};
+
 		// Ser
-		[Header("Prefab")]
-		[SerializeField] Prefab[] m_Prefabs = null;
-		[Header("Sheet")]
-		[SerializeField] SpriteSheet m_Background = null;
-		[SerializeField] SpriteSheet m_Level = null;
-		[SerializeField] SpriteSheet m_Item = null;
-		[SerializeField] SpriteSheet m_Character = null;
-		[SerializeField] SpriteSheet m_Effect = null;
+		[SerializeField, LabeledByEnum(typeof(Layer))] SpriteSheet[] m_Sheets = null;
 
 		// Data
-		private Dictionary<ushort, Prefab> PrefabPool = new Dictionary<ushort, Prefab>();
+		private Dictionary<ushort, System.Type> EntityPool = new Dictionary<ushort, System.Type>();
+		private Dictionary<string, int>[] SpriteIndexMaps = new Dictionary<string, int>[0];
+
+		[Space(12)]
+		public int TestID = 0;
+		public Vector2Int TestPos = default;
+		public Vector2Int TestPivot = new Vector2Int(500, 500);
+		public int TestRot = 0;
+		public int TestScl = 1000;
+		public Color TestColor = Color.white;
+
 
 
 		#endregion
@@ -55,19 +58,36 @@ namespace AngeliaFramework {
 
 		public void Init () {
 
-			// Prefab
-			foreach (var prefab in m_Prefabs) {
-				PrefabPool.TryAdd(prefab.GlobalID, prefab);
+			// Entity Global ID Map
+			foreach (var eType in typeof(Entity).GetAllChildClass()) {
+				ushort id = (ushort)((uint)Mathf.Abs(eType.GetHashCode()) % ushort.MaxValue);
+				if (!EntityPool.ContainsKey(id)) {
+					EntityPool.Add(id, eType);
+				} else {
+					Debug.LogError($"{eType} has same global id with {EntityPool[id]}");
+				}
+			}
+
+			// Sprite Index Map
+			int layerCount = System.Enum.GetNames(typeof(Layer)).Length;
+			SpriteIndexMaps = new Dictionary<string, int>[layerCount];
+			for (int i = 0; i < layerCount; i++) {
+				var map = new Dictionary<string, int>();
+				var sheet = m_Sheets[i];
+				int len = sheet.Sprites.Length;
+				for (int j = 0; j < len; j++) {
+					map.TryAdd(sheet.Sprites[j].name, j);
+				}
+				SpriteIndexMaps[i] = map;
 			}
 
 			// Cell Renderer
-			CellRenderer.InitLayers(System.Enum.GetNames(typeof(Layer)).Length);
-			CellRenderer.SetupLayer((int)Layer.Background, 1024, m_Background.Material, m_Background.GetUVs());
-			CellRenderer.SetupLayer((int)Layer.BackLevel, 1024, m_Level.Material, m_Level.GetUVs());
-			CellRenderer.SetupLayer((int)Layer.Ground, 1024, m_Level.Material, m_Level.GetUVs());
-			CellRenderer.SetupLayer((int)Layer.Item, 1024, m_Item.Material, m_Item.GetUVs());
-			CellRenderer.SetupLayer((int)Layer.Character, 1024, m_Character.Material, m_Character.GetUVs());
-			CellRenderer.SetupLayer((int)Layer.Effect, 1024, m_Effect.Material, m_Effect.GetUVs());
+			CellRenderer.InitLayers(layerCount);
+			for (int i = 0; i < layerCount; i++) {
+				var sheet = m_Sheets[i];
+				CellRenderer.SetupLayer(i, LAYER_CAPACITY[i], sheet.Material, sheet.GetUVs());
+			}
+			CellRenderer.FocusLayer(0);
 
 			// FPS
 			Application.targetFrameRate = Application.platform == RuntimePlatform.WindowsEditor ? 10000 : 120;
@@ -77,7 +97,17 @@ namespace AngeliaFramework {
 
 		public void FrameUpdate () {
 
+			CellRenderer.FocusLayer(0);
 
+			CellRenderer.SetCell(
+				0, TestID,
+				TestPos.x, TestPos.y,
+				TestPivot.x, TestPivot.y,
+				TestRot, TestScl,
+				TestColor
+			);
+
+			CellRenderer.MarkAsRoadblock(1);
 
 		}
 
@@ -119,41 +149,10 @@ namespace AngeliaFramework.Editor {
 	using UnityEditor;
 	[CustomEditor(typeof(Game))]
 	public class Game_Inspector : Editor {
-		private void OnEnable () => FixDuplicateGlobalID();
-		private void OnDisable () => FixDuplicateGlobalID();
 		public override void OnInspectorGUI () {
 			serializedObject.Update();
 			DrawPropertiesExcluding(serializedObject, "m_Script");
 			serializedObject.ApplyModifiedProperties();
-			if (GUI.changed) {
-				FixDuplicateGlobalID();
-			}
-		}
-		private void FixDuplicateGlobalID () {
-			serializedObject.Update();
-			var p_Prefabs = serializedObject.FindProperty("m_Prefabs");
-			int len = p_Prefabs.arraySize;
-			if (len > ushort.MaxValue - 10) {
-				Debug.LogError("Too many prefabs in game.");
-				return;
-			}
-			bool changed = false;
-			var hash = new HashSet<ushort>();
-			var random = new System.Random(Random.Range(int.MinValue, int.MaxValue));
-			for (int i = 0; i < len; i++) {
-				var prefab = p_Prefabs.GetArrayElementAtIndex(i).objectReferenceValue as Prefab;
-				while (prefab.GlobalID == 0 || hash.Contains(prefab.GlobalID)) {
-					prefab.SetGlobalID((ushort)random.Next(1, ushort.MaxValue));
-					EditorUtility.SetDirty(prefab);
-					changed = true;
-				}
-				hash.Add(prefab.GlobalID);
-			}
-			serializedObject.ApplyModifiedProperties();
-			if (changed) {
-				AssetDatabase.Refresh();
-				AssetDatabase.SaveAssets();
-			}
 		}
 	}
 }

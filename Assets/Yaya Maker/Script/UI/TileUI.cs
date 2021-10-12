@@ -79,7 +79,7 @@ namespace YayaMaker.UI {
 		public void ReloadTiles () {
 			transform.DestroyAllChirldrenImmediate();
 			Tiles.Clear();
-			foreach (var tileType in Util.GetAllClass(typeof(TileItem))) {
+			foreach (var tileType in typeof(TileItem).GetAllChildClass()) {
 				var grab = Util.SpawnItemUI(m_Template, transform as RectTransform, tileType.Name);
 				var tile = System.Activator.CreateInstance(tileType, new object[] {
 					grab.transform as RectTransform,
