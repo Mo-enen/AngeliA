@@ -7,15 +7,14 @@ namespace AngeliaFramework {
 	[CreateAssetMenu(fileName = "New Sheet", menuName = "AngeliA/New Sheet", order = 99)]
 	public class SpriteSheet : ScriptableObject {
 
-		public Material Material => m_Material;
-		public Sprite[] Sprites => m_Sprites;
 
-		[SerializeField, Disable] Material m_Material = null;
+		public Sprite[] Sprites => m_Sprites;
 		[SerializeField] Sprite[] m_Sprites = null;
+
 
 		public Rect[] GetUVs () {
 			var uvs = new Rect[m_Sprites.Length];
-			var texture = Material.mainTexture;
+			var texture = m_Sprites.Length > 0 ? m_Sprites[0].texture : null;
 			if (texture == null) { return uvs; }
 			for (int i = 0; i < m_Sprites.Length; i++) {
 				var sp = m_Sprites[i];
@@ -30,6 +29,19 @@ namespace AngeliaFramework {
 			return uvs;
 		}
 
+
+		public Material GetMaterial () => new Material(Shader.Find("Cell")) {
+			name = "Material",
+			shader = Shader.Find("Cell"),
+			mainTexture = m_Sprites.Length > 0 ? m_Sprites[0].texture : null,
+			enableInstancing = true,
+			mainTextureOffset = Vector2.zero,
+			mainTextureScale = Vector2.one,
+			doubleSidedGI = false,
+			renderQueue = 3000
+		};
+
+
 	}
 }
 
@@ -40,17 +52,7 @@ namespace AngeliaFramework.Editor {
 	using UnityEditor;
 	[CustomEditor(typeof(SpriteSheet)), DisallowMultipleComponent]
 	public class SpriteSheet_Inspector : Editor {
-
-
-		// VAR
 		private int m_TextureWarning = -2;
-
-
-		// MSG
-		private void OnEnable () => FixMaterial();
-		private void OnDisable () => FixMaterial();
-
-
 		public override void OnInspectorGUI () {
 			serializedObject.Update();
 			DrawPropertiesExcluding(serializedObject, "m_Script");
@@ -61,7 +63,7 @@ namespace AngeliaFramework.Editor {
 			if (GUI.changed || m_TextureWarning == -2) {
 				var sheet = serializedObject.targetObject as SpriteSheet;
 				m_TextureWarning = -1;
-				if (sheet.Sprites.Length > 1) {
+				if (sheet.Sprites != null && sheet.Sprites.Length > 1 && sheet.Sprites[0] != null) {
 					var targetTexture = sheet.Sprites[0].texture;
 					for (int i = 0; i < sheet.Sprites.Length; i++) {
 						Sprite sp = sheet.Sprites[i];
@@ -73,51 +75,6 @@ namespace AngeliaFramework.Editor {
 				}
 			}
 		}
-
-
-		// LGC
-		private void FixMaterial () {
-			var objs = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(serializedObject.targetObject));
-			var sheet = serializedObject.targetObject as SpriteSheet;
-			Material mat = null;
-			for (int i = 0; i < objs.Length; i++) {
-				var obj = objs[i];
-				if (!(obj is Material)) { continue; }
-				mat = obj as Material;
-				RefreshMat();
-				serializedObject.Update();
-				serializedObject.FindProperty("m_Material").objectReferenceValue = mat;
-				serializedObject.ApplyModifiedProperties();
-				break;
-			}
-			for (int i = 0; i < objs.Length; i++) {
-				var obj = objs[i];
-				if (obj != mat && obj != sheet) {
-					DestroyImmediate(obj, true);
-				}
-			}
-			if (mat == null) {
-				mat = new Material(Shader.Find("Cell"));
-				RefreshMat();
-				AssetDatabase.AddObjectToAsset(mat, sheet);
-				serializedObject.Update();
-				serializedObject.FindProperty("m_Material").objectReferenceValue = mat;
-				serializedObject.ApplyModifiedProperties();
-			}
-			void RefreshMat () {
-				mat.name = "Material";
-				mat.shader = Shader.Find("Cell");
-				mat.hideFlags = HideFlags.NotEditable;
-				mat.mainTexture = sheet.Sprites.Length > 0 ? sheet.Sprites[0].texture : null;
-				mat.enableInstancing = true;
-				mat.mainTextureOffset = Vector2.zero;
-				mat.mainTextureScale = Vector2.one;
-				mat.doubleSidedGI = false;
-				mat.renderQueue = 3000;
-			}
-		}
-
-
 	}
 }
 #endif

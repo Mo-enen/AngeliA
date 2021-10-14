@@ -17,10 +17,11 @@ namespace AngeliaFramework {
 			public int ID;
 			public int X;
 			public int Y;
-			public int Scale;
+			public int Width;
+			public int Height;
 			public int Rotation;
-			public int PivotX;
-			public int PivotY;
+			public float PivotX;
+			public float PivotY;
 			public Color32 Color;
 		}
 
@@ -30,6 +31,7 @@ namespace AngeliaFramework {
 			public Rect[] UVs;
 			public Material Material;
 			public Cell[] Cells;
+			public int CellCount;
 			public int UVCount;
 		}
 
@@ -44,18 +46,18 @@ namespace AngeliaFramework {
 
 
 		// Const
-		public const int UNIT_MULT = 512;
-		public const float MAX_CELL_WIDTH = 48;
-		public const float TARGET_CELL_HEIGHT = 16;
+		public const int MAX_CELL_WIDTH = 48 * 512;
+		public const int TARGET_CELL_HEIGHT = 16 * 512;
 
 		// Api
 		public static int LayerCount => Layers.Length;
-		public static float CellWidth { get; private set; } = 24f;
-		public static float CellHeight { get; private set; } = 16f;
+		public static int Width { get; private set; } = 24 * 512;
+		public static int Height { get; private set; } = 16 * 512;
 
 		// Data
 		private static Layer[] Layers = new Layer[0];
 		private static Layer FocusedLayer = null;
+		private static int FocusedCell = 0;
 
 
 		#endregion
@@ -85,11 +87,11 @@ namespace AngeliaFramework {
 			// Ratio
 			float ratio = camera.aspect;
 			if (ratio < MAX_CELL_WIDTH / TARGET_CELL_HEIGHT) {
-				CellWidth = TARGET_CELL_HEIGHT * ratio;
-				CellHeight = TARGET_CELL_HEIGHT;
+				Width = Mathf.CeilToInt(TARGET_CELL_HEIGHT * ratio);
+				Height = TARGET_CELL_HEIGHT;
 			} else {
-				CellWidth = MAX_CELL_WIDTH;
-				CellHeight = MAX_CELL_WIDTH / ratio;
+				Width = MAX_CELL_WIDTH;
+				Height = Mathf.CeilToInt(MAX_CELL_WIDTH / ratio);
 			}
 
 			// Render
@@ -97,7 +99,7 @@ namespace AngeliaFramework {
 			GL.LoadProjectionMatrix(Matrix4x4.TRS(
 				new Vector3(-1f, -1f, 0f),
 				Quaternion.identity,
-				new Vector3(2f / CellWidth / UNIT_MULT, 2f / CellHeight / UNIT_MULT, 1f)
+				new Vector3(2f / Width, 2f / Height, 1f)
 			));
 			GL.Begin(GL.QUADS);
 
@@ -131,29 +133,16 @@ namespace AngeliaFramework {
 						GL.Color(cell.Color);
 
 						// Position
-						float pX = UNIT_MULT * cell.PivotX / 1000f;
-						float pY = UNIT_MULT * cell.PivotY / 1000f;
+						float pX = cell.Width * cell.PivotX;
+						float pY = cell.Height * cell.PivotY;
 						a.x = -pX;
 						a.y = -pY;
 						b.x = -pX;
-						b.y = UNIT_MULT - pY;
-						c.x = UNIT_MULT - pX;
-						c.y = UNIT_MULT - pY;
-						d.x = UNIT_MULT - pX;
+						b.y = cell.Height - pY;
+						c.x = cell.Width - pX;
+						c.y = cell.Height - pY;
+						d.x = cell.Width - pX;
 						d.y = -pY;
-
-						// Scale
-						if (cell.Scale != 1000) {
-							float t01 = cell.Scale / 1000f;
-							a.x *= t01;
-							a.y *= t01;
-							b.x *= t01;
-							b.y *= t01;
-							c.x *= t01;
-							c.y *= t01;
-							d.x *= t01;
-							d.y *= t01;
-						}
 
 						// Rotation
 						if (cell.Rotation != 0) {
@@ -203,43 +192,48 @@ namespace AngeliaFramework {
 		public static void InitLayers (int layerCount) => Layers = new Layer[layerCount];
 
 
-		public static void SetupLayer (int layerIndex, int cellCapaticy, Material material, Rect[] uvs) => Layers[layerIndex] = new Layer() {
+		public static void SetupLayer (int layerIndex, int cellCapaticy, Material material, Rect[] uvs) => Layers[layerIndex] = FocusedLayer = new Layer() {
 			Cells = new Cell[cellCapaticy],
 			Material = material,
 			UVs = uvs,
+			UVCount = uvs.Length,
+			CellCount = cellCapaticy,
 		};
 
 
-		public static void FocusLayer (int layerIndex) => FocusedLayer = Layers[layerIndex];
+		// Draw
+		public static void BeginDraw (int layerIndex) {
+			FocusedLayer = Layers[layerIndex];
+			FocusedCell = 0;
+		}
 
 
-		// Cell
-		public static void SetCell (
-			int index, int id,
-			int x, int y,
-			int pivotX, int pivotY,
-			int rotation, int scale,
-			Color32 color
-		) {
-			if (id >= FocusedLayer.UVCount) { return; }
-			var cell = FocusedLayer.Cells[index];
+		public static void Draw (int id, int x, int y, float pivotX, float pivotY, int rotation, int width, int height, Color32 color) {
+			if (id >= FocusedLayer.UVCount || FocusedCell < 0) { return; }
+			var cell = FocusedLayer.Cells[FocusedCell];
 			cell.ID = id;
 			cell.X = x;
 			cell.Y = y;
-			cell.Scale = scale;
+			cell.Width = width;
+			cell.Height = height;
 			cell.Rotation = rotation;
 			cell.PivotX = pivotX;
 			cell.PivotY = pivotY;
 			cell.Color = color;
-			FocusedLayer.Cells[index] = cell;
-		}
-
-
-		public static void MarkAsRoadblock (int index) {
-			if (index >= 0 && index < FocusedLayer.Cells.Length) {
-				FocusedLayer.Cells[index].ID = -1;
+			FocusedLayer.Cells[FocusedCell] = cell;
+			FocusedCell++;
+			if (FocusedCell >= FocusedLayer.CellCount) {
+				FocusedCell = -1;
 			}
 		}
+
+
+		public static void EndDraw () {
+			if (FocusedCell >= 0 && FocusedCell < FocusedLayer.CellCount) {
+				FocusedLayer.Cells[FocusedCell].ID = -1;
+			}
+		}
+
 
 		#endregion
 

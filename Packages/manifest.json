@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.flipbookgames.scriptinspector3": "file:C:/Data/Mine/Unity3D/Packages/Assets/ScriptInspector3",
+    "com.moenengames.asepritetoolbox": "file:C:/Data/Mine/Unity3D/Packages/Assets/Aseprite Toolbox",
     "com.moenengames.standard": "file:C:/Data/Mine/Unity3D/Packages/Assets/Standard",
     "com.moenengames.uigadget": "file:C:/Data/Mine/Unity3D/Packages/Assets/UI Gadget",
     "com.unity.2d.sprite": "1.0.0",

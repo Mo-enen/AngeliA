@@ -6,6 +6,12 @@
       "source": "local",
       "dependencies": {}
     },
+    "com.moenengames.asepritetoolbox": {
+      "version": "file:C:/Data/Mine/Unity3D/Packages/Assets/Aseprite Toolbox",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.moenengames.standard": {
       "version": "file:C:/Data/Mine/Unity3D/Packages/Assets/Standard",
       "depth": 0,

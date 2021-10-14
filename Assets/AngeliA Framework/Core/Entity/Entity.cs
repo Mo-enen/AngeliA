@@ -29,6 +29,8 @@ namespace AngeliaFramework {
 	public abstract class Entity {
 
 
+		public delegate int IntStringHandler (string str);
+		public static IntStringHandler GetSpriteIndex { get; set; } = null;
 
 
 	}
