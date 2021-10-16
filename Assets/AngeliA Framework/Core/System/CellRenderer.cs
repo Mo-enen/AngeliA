@@ -46,13 +46,16 @@ namespace AngeliaFramework {
 
 
 		// Const
-		public const int MAX_CELL_WIDTH = 48 * 512;
-		public const int TARGET_CELL_HEIGHT = 16 * 512;
+		public const int MAX_CELL_WIDTH = 32 * 512;
+		public const int CELL_HEIGHT = 16 * 512;
 
 		// Api
 		public static int LayerCount => Layers.Length;
 		public static int Width { get; private set; } = 24 * 512;
 		public static int Height { get; private set; } = 16 * 512;
+		public static int ViewPositionX { get; set; } = 0;
+		public static int ViewPositionY { get; set; } = 0;
+		public static float Zoom { get; set; } = 1f;
 
 		// Data
 		private static Layer[] Layers = new Layer[0];
@@ -85,21 +88,32 @@ namespace AngeliaFramework {
 #endif
 
 			// Ratio
-			float ratio = camera.aspect;
-			if (ratio < MAX_CELL_WIDTH / TARGET_CELL_HEIGHT) {
-				Width = Mathf.CeilToInt(TARGET_CELL_HEIGHT * ratio);
-				Height = TARGET_CELL_HEIGHT;
+			float ratio = (float)Screen.width / Screen.height;
+			float maxRatio = (float)MAX_CELL_WIDTH / CELL_HEIGHT;
+			if (ratio < maxRatio) {
+				// Normal
+				Width = Mathf.CeilToInt(CELL_HEIGHT * ratio);
+				Height = CELL_HEIGHT;
+				var rect = new Rect(0f, 0f, 1f, 1f);
+				if (camera.rect.NotAlmost(rect)) {
+					camera.rect = rect;
+				}
 			} else {
-				Width = MAX_CELL_WIDTH;
-				Height = Mathf.CeilToInt(MAX_CELL_WIDTH / ratio);
+				// Too Wide
+				Width = Mathf.CeilToInt(CELL_HEIGHT * maxRatio);
+				Height = CELL_HEIGHT;
+				var rect = new Rect(0.5f - 0.5f * maxRatio / ratio, 0f, maxRatio / ratio, 1f);
+				if (camera.rect.NotAlmost(rect)) {
+					camera.rect = rect;
+				}
 			}
 
 			// Render
 			GL.PushMatrix();
 			GL.LoadProjectionMatrix(Matrix4x4.TRS(
-				new Vector3(-1f, -1f, 0f),
+				new Vector3(-Zoom, -Zoom, 0f),
 				Quaternion.identity,
-				new Vector3(2f / Width, 2f / Height, 1f)
+				new Vector3(2f * Zoom / Width, 2f * Zoom / Height, 1f)
 			));
 			GL.Begin(GL.QUADS);
 
@@ -153,14 +167,14 @@ namespace AngeliaFramework {
 							d = rot * d;
 						}
 
-						a.x += cell.X;
-						a.y += cell.Y;
-						b.x += cell.X;
-						b.y += cell.Y;
-						c.x += cell.X;
-						c.y += cell.Y;
-						d.x += cell.X;
-						d.y += cell.Y;
+						a.x += cell.X - ViewPositionX;
+						a.y += cell.Y - ViewPositionY;
+						b.x += cell.X - ViewPositionX;
+						b.y += cell.Y - ViewPositionY;
+						c.x += cell.X - ViewPositionX;
+						c.y += cell.Y - ViewPositionY;
+						d.x += cell.X - ViewPositionX;
+						d.y += cell.Y - ViewPositionY;
 
 						// Final
 						GL.TexCoord2(uv.xMin, uv.yMin);

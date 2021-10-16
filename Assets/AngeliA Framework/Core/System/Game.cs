@@ -27,27 +27,19 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private readonly int[] LAYER_CAPACITY = new int[] {
-			1024, 1024, 1024, 1024, 1024,
-		};
+		private readonly int[] CELL_CAPACITY = new int[] { 1024, 1024, 1024, 1024, 1024, };
+		private readonly int[] ENTITY_CAPACITY = new int[] { 256, 256, 256, 256, 256, };
 
 		// Ser
 		[SerializeField, LabeledByEnum(typeof(Layer))] SpriteSheet[] m_Sheets = null;
 
 		// Data
 		private Dictionary<ushort, System.Type> EntityTypePool = new Dictionary<ushort, System.Type>();
-		private Dictionary<string, int>[] SpriteIndexMaps = new Dictionary<string, int>[0];
-		private Dictionary<string, int> CurrentSpriteIndexMap = null;
+		private Dictionary<string, int>[] SpriteIDMaps = new Dictionary<string, int>[0];
+		private Entity[][] Entities = null;
+		private int[] PrevEmptyEntityIndex = null;
+		private int LayerIndex = 0;
 		private int LayerCount = 0;
-
-		[Space(12)]
-		public int TestID = 0;
-		public Vector2Int TestPos = default;
-		[Range(0, 1)] public float TestPivotX = 0.5f;
-		[Range(0, 1)] public float TestPivotY = 0.5f;
-		public int TestRot = 0;
-		public Vector2Int TestSize = new Vector2Int(512, 512);
-		public Color TestColor = Color.white;
 
 
 		#endregion
@@ -59,6 +51,10 @@ namespace AngeliaFramework {
 
 
 		public void Init () {
+
+			// Entity
+			Entity.GetSpriteIndex = GetSpriteIDFromName;
+			Entity.CreateEntity = CreateEntity;
 
 			// Entity Global ID Map
 			foreach (var eType in typeof(Entity).GetAllChildClass()) {
@@ -72,7 +68,7 @@ namespace AngeliaFramework {
 
 			// Sprite Index Map
 			LayerCount = System.Enum.GetNames(typeof(Layer)).Length;
-			SpriteIndexMaps = new Dictionary<string, int>[LayerCount];
+			SpriteIDMaps = new Dictionary<string, int>[LayerCount];
 			for (int i = 0; i < LayerCount; i++) {
 				var map = new Dictionary<string, int>();
 				var sheet = m_Sheets[i];
@@ -80,15 +76,21 @@ namespace AngeliaFramework {
 				for (int j = 0; j < len; j++) {
 					map.TryAdd(sheet.Sprites[j].name, j);
 				}
-				SpriteIndexMaps[i] = map;
+				SpriteIDMaps[i] = map;
 			}
-			Entity.GetSpriteIndex = GetSpriteIndexFromName;
 
 			// Cell Renderer
 			CellRenderer.InitLayers(LayerCount);
 			for (int i = 0; i < LayerCount; i++) {
 				var sheet = m_Sheets[i];
-				CellRenderer.SetupLayer(i, LAYER_CAPACITY[i], sheet.GetMaterial(), sheet.GetUVs());
+				CellRenderer.SetupLayer(i, CELL_CAPACITY[i], sheet.GetMaterial(), sheet.GetUVs());
+			}
+
+			// Entity
+			Entities = new Entity[LayerCount][];
+			PrevEmptyEntityIndex = new int[LayerCount];
+			for (int layerIndex = 0; layerIndex < LayerCount; layerIndex++) {
+				Entities[layerIndex] = new Entity[ENTITY_CAPACITY[layerIndex]];
 			}
 
 			// FPS
@@ -99,54 +101,30 @@ namespace AngeliaFramework {
 
 		public void FrameUpdate () {
 
-
-			for (int layerIndex = 0; layerIndex < LayerCount; layerIndex++) {
-				CellRenderer.BeginDraw(layerIndex);
-				CurrentSpriteIndexMap = SpriteIndexMaps[layerIndex];
+			// Camera
 
 
 
+
+			// Level
+
+
+
+			// Update All Entities
+			for (LayerIndex = 0; LayerIndex < LayerCount; LayerIndex++) {
+				CellRenderer.BeginDraw(LayerIndex);
+				var entities = Entities[LayerIndex];
+				int len = entities.Length;
+				for (int i = 0; i < len; i++) {
+					var entity = entities[i];
+					if (entity == null) { continue; }
+					if (!entity.Active) { entities[i] = null; continue; }
+					entity.FrameUpdate();
+				}
 				CellRenderer.EndDraw();
 			}
 
-
-			// Test
-			CellRenderer.BeginDraw(0);
-			CellRenderer.Draw(
-				TestID,
-				TestPos.x, TestPos.y,
-				TestPivotX, TestPivotY,
-				TestRot, TestSize.x, TestSize.y,
-				TestColor
-			);
-			CellRenderer.Draw(
-				TestID + 1,
-				TestPos.x + 512, TestPos.y,
-				TestPivotX, TestPivotY,
-				TestRot, TestSize.x, TestSize.y,
-				TestColor
-			);
-			CellRenderer.Draw(
-				TestID + 2,
-				TestPos.x + 1024, TestPos.y,
-				TestPivotX, TestPivotY,
-				TestRot, TestSize.x, TestSize.y,
-				TestColor
-			);
-			CellRenderer.EndDraw();
-			// Test
-
 		}
-
-
-		#endregion
-
-
-
-
-		#region --- API ---
-
-
 
 
 		#endregion
@@ -157,7 +135,31 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private int GetSpriteIndexFromName (string name) => CurrentSpriteIndexMap.ContainsKey(name) ? CurrentSpriteIndexMap[name] : -1;
+		private int GetSpriteIDFromName (string name) {
+			var map = SpriteIDMaps[LayerIndex];
+			return map.ContainsKey(name) ? map[name] : -1;
+		}
+
+
+		private Entity CreateEntity (System.Type type, Layer layer) {
+			int layerIndex = (int)layer;
+			var entities = Entities[layerIndex];
+			int len = entities.Length;
+			int offset = PrevEmptyEntityIndex[layerIndex];
+			for (int i = 0; i < len; i++) {
+				int index = (i + offset) % len;
+				if (entities[index] == null) {
+					PrevEmptyEntityIndex[layerIndex] = index;
+					var entity = System.Activator.CreateInstance(type) as Entity;
+					if (entity != null) {
+						entity.Active = true;
+					}
+					entities[index] = entity;
+					return entity;
+				}
+			}
+			return null;
+		}
 
 
 		#endregion

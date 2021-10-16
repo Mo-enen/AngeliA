@@ -8,8 +8,11 @@ namespace AngeliaFramework {
 	public class SpriteSheet : ScriptableObject {
 
 
+		public Texture2D Texture => m_Texture;
 		public Sprite[] Sprites => m_Sprites;
-		[SerializeField] Sprite[] m_Sprites = null;
+
+		[SerializeField, NullAlert] Texture2D m_Texture = null;
+		[SerializeField, NullAlert, Disable] Sprite[] m_Sprites = null;
 
 
 		public Rect[] GetUVs () {
@@ -33,13 +36,18 @@ namespace AngeliaFramework {
 		public Material GetMaterial () => new Material(Shader.Find("Cell")) {
 			name = "Material",
 			shader = Shader.Find("Cell"),
-			mainTexture = m_Sprites.Length > 0 ? m_Sprites[0].texture : null,
+			mainTexture = m_Texture,
 			enableInstancing = true,
 			mainTextureOffset = Vector2.zero,
 			mainTextureScale = Vector2.one,
 			doubleSidedGI = false,
 			renderQueue = 3000
 		};
+
+
+#if UNITY_EDITOR
+		public void SetSprites (Sprite[] sprites) => m_Sprites = sprites;
+#endif
 
 
 	}
@@ -52,28 +60,54 @@ namespace AngeliaFramework.Editor {
 	using UnityEditor;
 	[CustomEditor(typeof(SpriteSheet)), DisallowMultipleComponent]
 	public class SpriteSheet_Inspector : Editor {
-		private int m_TextureWarning = -2;
+		[MenuItem("Tools/Reload Sheet Assets")]
+		private static void Init () {
+			foreach (var guid in AssetDatabase.FindAssets("t:SpriteSheet")) {
+				var path = AssetDatabase.GUIDToAssetPath(guid);
+				var sheet = AssetDatabase.LoadAssetAtPath<SpriteSheet>(path);
+				var sprites = new List<Sprite>();
+				var tPath = AssetDatabase.GetAssetPath(sheet.Texture);
+				var objs = AssetDatabase.LoadAllAssetRepresentationsAtPath(tPath);
+				for (int i = 0; i < objs.Length; i++) {
+					var obj = objs[i];
+					if (obj != null && obj is Sprite sp) {
+						sprites.Add(sp);
+					}
+				}
+				sheet.SetSprites(sprites.ToArray());
+				EditorUtility.SetDirty(sheet);
+			}
+			AssetDatabase.SaveAssets();
+			AssetDatabase.Refresh();
+		}
+		private void OnEnable () => ReloadSprites();
+		private void OnDisable () => ReloadSprites();
 		public override void OnInspectorGUI () {
 			serializedObject.Update();
 			DrawPropertiesExcluding(serializedObject, "m_Script");
 			serializedObject.ApplyModifiedProperties();
-			if (m_TextureWarning >= 0) {
-				EditorGUILayout.HelpBox($"Sprites must have same texture\nElement {m_TextureWarning} has different texture.", MessageType.Error, true);
+			if (GUI.Button(GUILayoutUtility.GetRect(0, 24, GUILayout.ExpandWidth(true)), "Reload Sprites")) {
+				ReloadSprites();
 			}
-			if (GUI.changed || m_TextureWarning == -2) {
-				var sheet = serializedObject.targetObject as SpriteSheet;
-				m_TextureWarning = -1;
-				if (sheet.Sprites != null && sheet.Sprites.Length > 1 && sheet.Sprites[0] != null) {
-					var targetTexture = sheet.Sprites[0].texture;
-					for (int i = 0; i < sheet.Sprites.Length; i++) {
-						Sprite sp = sheet.Sprites[i];
-						if (sp != null && sp.texture != targetTexture) {
-							m_TextureWarning = i;
-							break;
-						}
-					}
+		}
+		private void ReloadSprites () {
+			serializedObject.Update();
+			var p_Texture = serializedObject.FindProperty("m_Texture");
+			var p_Sprites = serializedObject.FindProperty("m_Sprites");
+			var texture = p_Texture.objectReferenceValue as Texture2D;
+			p_Sprites.ClearArray();
+			serializedObject.ApplyModifiedProperties();
+			if (texture != null) {
+				string path = AssetDatabase.GetAssetPath(texture);
+				var objs = AssetDatabase.LoadAllAssetRepresentationsAtPath(path);
+				for (int i = objs.Length - 1; i >= 0; i--) {
+					var obj = objs[i];
+					if (obj == null || !(obj is Sprite sprite)) { continue; }
+					p_Sprites.InsertArrayElementAtIndex(0);
+					p_Sprites.GetArrayElementAtIndex(0).objectReferenceValue = sprite;
 				}
 			}
+			serializedObject.ApplyModifiedProperties();
 		}
 	}
 }
