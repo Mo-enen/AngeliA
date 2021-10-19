@@ -90,23 +90,16 @@ namespace AngeliaFramework {
 			// Ratio
 			float ratio = (float)Screen.width / Screen.height;
 			float maxRatio = (float)MAX_CELL_WIDTH / CELL_HEIGHT;
-			if (ratio < maxRatio) {
-				// Normal
-				Width = Mathf.CeilToInt(CELL_HEIGHT * ratio);
-				Height = CELL_HEIGHT;
-				var rect = new Rect(0f, 0f, 1f, 1f);
-				if (camera.rect.NotAlmost(rect)) {
-					camera.rect = rect;
-				}
-			} else {
-				// Too Wide
-				Width = Mathf.CeilToInt(CELL_HEIGHT * maxRatio);
-				Height = CELL_HEIGHT;
-				var rect = new Rect(0.5f - 0.5f * maxRatio / ratio, 0f, maxRatio / ratio, 1f);
-				if (camera.rect.NotAlmost(rect)) {
-					camera.rect = rect;
-				}
+			var rect = new Rect(0f, 0f, 1f, 1f);
+			if (ratio > maxRatio) {
+				rect = new Rect(0.5f - 0.5f * maxRatio / ratio, 0f, maxRatio / ratio, 1f);
 			}
+			if (camera.rect.NotAlmost(rect)) {
+				camera.rect = rect;
+			}
+
+			// Size
+			(Width, Height) = GetCameraSize();
 
 			// Render
 			GL.PushMatrix();
@@ -247,6 +240,14 @@ namespace AngeliaFramework {
 				FocusedLayer.Cells[FocusedCell].ID = -1;
 			}
 		}
+
+
+		// Camera
+		public static (int width, int height) GetCameraSize () => (
+			Mathf.CeilToInt(CELL_HEIGHT * Mathf.Min((float)Screen.width / Screen.height, (float)MAX_CELL_WIDTH / CELL_HEIGHT)),
+			CELL_HEIGHT
+		);
+
 
 
 		#endregion

@@ -39,7 +39,7 @@ namespace AngeliaFramework {
 
 		// SUB
 		public delegate int IntStringHandler (string str);
-		public delegate Entity EntityTypeLayerHandler (System.Type type, Layer layer);
+		public delegate Entity EntityTypeLayerHandler (System.Type type, RendererLayer layer);
 
 		// Api
 		public static IntStringHandler GetSpriteIndex { get; set; } = null;

@@ -7,16 +7,6 @@ namespace AngeliaFramework {
 
 
 
-	public enum Layer {
-		Background = 0,
-		Level = 1,
-		Item = 2,
-		Character = 3,
-		Effect = 4,
-	}
-
-
-
 	[CreateAssetMenu(fileName = "New Game", menuName = "AngeliA/New Game", order = 99)]
 	public class Game : ScriptableObject {
 
@@ -27,11 +17,14 @@ namespace AngeliaFramework {
 
 
 		// Const
+		private int RENDERER_LAYER_COUNT = 5;
+		private int ENTITY_LAYER_COUNT = 3;
+		private int PHYSCIS_LAYER_COUNT = 4;
 		private readonly int[] CELL_CAPACITY = new int[] { 1024, 1024, 1024, 1024, 1024, };
-		private readonly int[] ENTITY_CAPACITY = new int[] { 256, 256, 256, 256, 256, };
+		private readonly int[] ENTITY_CAPACITY = new int[] { 256, 128, 1024, };
 
 		// Ser
-		[SerializeField, LabeledByEnum(typeof(Layer))] SpriteSheet[] m_Sheets = null;
+		[SerializeField, LabeledByEnum(typeof(RendererLayer))] SpriteSheet[] m_Sheets = null;
 
 		// Data
 		private Dictionary<ushort, System.Type> EntityTypePool = new Dictionary<ushort, System.Type>();
@@ -39,7 +32,8 @@ namespace AngeliaFramework {
 		private Entity[][] Entities = null;
 		private int[] PrevEmptyEntityIndex = null;
 		private int LayerIndex = 0;
-		private int LayerCount = 0;
+		private RectInt ViewRect = default;
+		private RectInt SpawnRect = new RectInt(0, 0, 36 * 512, 28 * 512);
 
 
 		#endregion
@@ -51,6 +45,10 @@ namespace AngeliaFramework {
 
 
 		public void Init () {
+
+			RENDERER_LAYER_COUNT = System.Enum.GetNames(typeof(RendererLayer)).Length;
+			ENTITY_LAYER_COUNT = System.Enum.GetNames(typeof(EntityLayer)).Length;
+			PHYSCIS_LAYER_COUNT = System.Enum.GetNames(typeof(PhysicsLayer)).Length;
 
 			// Entity
 			Entity.GetSpriteIndex = GetSpriteIDFromName;
@@ -67,9 +65,8 @@ namespace AngeliaFramework {
 			}
 
 			// Sprite Index Map
-			LayerCount = System.Enum.GetNames(typeof(Layer)).Length;
-			SpriteIDMaps = new Dictionary<string, int>[LayerCount];
-			for (int i = 0; i < LayerCount; i++) {
+			SpriteIDMaps = new Dictionary<string, int>[RENDERER_LAYER_COUNT];
+			for (int i = 0; i < RENDERER_LAYER_COUNT; i++) {
 				var map = new Dictionary<string, int>();
 				var sheet = m_Sheets[i];
 				int len = sheet.Sprites.Length;
@@ -80,18 +77,21 @@ namespace AngeliaFramework {
 			}
 
 			// Cell Renderer
-			CellRenderer.InitLayers(LayerCount);
-			for (int i = 0; i < LayerCount; i++) {
+			CellRenderer.InitLayers(RENDERER_LAYER_COUNT);
+			for (int i = 0; i < RENDERER_LAYER_COUNT; i++) {
 				var sheet = m_Sheets[i];
 				CellRenderer.SetupLayer(i, CELL_CAPACITY[i], sheet.GetMaterial(), sheet.GetUVs());
 			}
 
 			// Entity
-			Entities = new Entity[LayerCount][];
-			PrevEmptyEntityIndex = new int[LayerCount];
-			for (int layerIndex = 0; layerIndex < LayerCount; layerIndex++) {
+			Entities = new Entity[ENTITY_LAYER_COUNT][];
+			PrevEmptyEntityIndex = new int[ENTITY_LAYER_COUNT];
+			for (int layerIndex = 0; layerIndex < ENTITY_LAYER_COUNT; layerIndex++) {
 				Entities[layerIndex] = new Entity[ENTITY_CAPACITY[layerIndex]];
 			}
+
+			// Physics
+			CellPhysics.Init(SpawnRect.width / 512, SpawnRect.height / 512);
 
 			// FPS
 			Application.targetFrameRate = Application.platform == RuntimePlatform.WindowsEditor ? 10000 : 120;
@@ -100,18 +100,36 @@ namespace AngeliaFramework {
 
 
 		public void FrameUpdate () {
-
-			// Camera
-
-
-
-
-			// Level
+			CellPhysics.Clear();
+			FrameUpdate_View();
+			FrameUpdate_Level();
+			FrameUpdate_Entity();
+		}
 
 
+		private void FrameUpdate_View () {
+			(ViewRect.width, ViewRect.height) = CellRenderer.GetCameraSize();
+			//ViewRect.x = ;
+			//ViewRect.y = ;
+			SpawnRect.x = (int)ViewRect.center.x - SpawnRect.width / 2;
+			SpawnRect.y = (int)ViewRect.center.y - SpawnRect.height / 2;
 
-			// Update All Entities
-			for (LayerIndex = 0; LayerIndex < LayerCount; LayerIndex++) {
+
+
+		}
+
+
+		private void FrameUpdate_Level () {
+			// Draw Level, Update Physics
+
+
+
+
+		}
+
+
+		private void FrameUpdate_Entity () {
+			for (LayerIndex = 2; LayerIndex < ENTITY_LAYER_COUNT; LayerIndex++) {
 				CellRenderer.BeginDraw(LayerIndex);
 				var entities = Entities[LayerIndex];
 				int len = entities.Length;
@@ -123,7 +141,6 @@ namespace AngeliaFramework {
 				}
 				CellRenderer.EndDraw();
 			}
-
 		}
 
 
@@ -141,7 +158,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private Entity CreateEntity (System.Type type, Layer layer) {
+		private Entity CreateEntity (System.Type type, RendererLayer layer) {
 			int layerIndex = (int)layer;
 			var entities = Entities[layerIndex];
 			int len = entities.Length;

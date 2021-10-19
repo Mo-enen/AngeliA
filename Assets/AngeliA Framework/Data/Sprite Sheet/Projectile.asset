@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc80254344be64947a2b252f1bd6d5e9, type: 3}
-  m_Name: Effect
+  m_Name: Projectile
   m_EditorClassIdentifier: 
   m_Texture: {fileID: 2800000, guid: 1d69be97b0b591343aef742e65409e02, type: 3}
   m_Sprites:

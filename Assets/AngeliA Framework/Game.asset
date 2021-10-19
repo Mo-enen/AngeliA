@@ -15,8 +15,6 @@ MonoBehaviour:
   m_Sheets:
   - {fileID: 11400000, guid: 9dc2f2d1ac625974ca8df93fba240299, type: 2}
   - {fileID: 11400000, guid: ad5e18fa2382dbf40a6b2ec66ddb09e5, type: 2}
-  - {fileID: 11400000, guid: 96bc210b603b1ef45b8ef144615dd4ef, type: 2}
   - {fileID: 11400000, guid: 7e08faebe1901f447b4e4b91233b7c71, type: 2}
+  - {fileID: 11400000, guid: 96bc210b603b1ef45b8ef144615dd4ef, type: 2}
   - {fileID: 11400000, guid: 0987f8e622136b342a6a371f0b7ef4e6, type: 2}
-  TestX: 360
-  TestY: 0
