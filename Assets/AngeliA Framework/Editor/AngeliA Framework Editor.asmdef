@@ -2,7 +2,9 @@
     "name": "AngeliaFrameworkEditor",
     "rootNamespace": "AngeliaFramework.Editor",
     "references": [
-        "AngeliaFramework"
+        "AngeliaFramework",
+        "Moenen.EditorStandard",
+        "Moenen.Standard"
     ],
     "includePlatforms": [
         "Editor"

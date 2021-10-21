@@ -7,28 +7,24 @@ namespace AngeliaFramework {
 
 
 	public class TestA : Entity {
-		public override void FrameUpdate () {
-
-		}
+		public override void FrameUpdate () { }
+		public override void FillPhysics () { }
 	}
 
 
 	public class TestB : Entity {
-		public override void FrameUpdate () {
-
-		}
+		public override void FrameUpdate () { }
+		public override void FillPhysics () { }
 	}
 
 	public class TestC : Entity {
-		public override void FrameUpdate () {
-
-		}
+		public override void FrameUpdate () { }
+		public override void FillPhysics () { }
 	}
 
 	public class TestCC : Entity {
-		public override void FrameUpdate () {
-
-		}
+		public override void FrameUpdate () { }
+		public override void FillPhysics () { }
 	}
 
 
@@ -39,7 +35,7 @@ namespace AngeliaFramework {
 
 		// SUB
 		public delegate int IntStringHandler (string str);
-		public delegate Entity EntityTypeLayerHandler (System.Type type, RendererLayer layer);
+		public delegate Entity EntityTypeLayerHandler (System.Type type, Layer layer);
 
 		// Api
 		public static IntStringHandler GetSpriteIndex { get; set; } = null;
@@ -50,10 +46,11 @@ namespace AngeliaFramework {
 		public float PivotX { get; set; } = 0.5f;
 		public float PivotY { get; set; } = 0.5f;
 		public float Rotation { get; set; } = 0f;
-		
+
 
 		// MSG
 		public abstract void FrameUpdate ();
+		public abstract void FillPhysics ();
 
 
 		// API

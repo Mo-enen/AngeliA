@@ -17,23 +17,23 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private int RENDERER_LAYER_COUNT = 5;
-		private int ENTITY_LAYER_COUNT = 3;
-		private int PHYSCIS_LAYER_COUNT = 4;
-		private readonly int[] CELL_CAPACITY = new int[] { 1024, 1024, 1024, 1024, 1024, };
-		private readonly int[] ENTITY_CAPACITY = new int[] { 256, 128, 1024, };
+		private const int LAYER_COUNT = Const.LAYER_COUNT;
+		private readonly int[] ENTITY_BUFFER_CAPACITY = { 0, 0, 64, 64, 64, 64 };
+		private readonly int[] RENDER_CAPACITY = { 1024, 1024, 1024, 1024, 1024, 1024, };
+		private readonly int[] ENTITY_CAPACITY = { 0, 0, 128, 128, 1024, 128, };
 
 		// Ser
-		[SerializeField, LabeledByEnum(typeof(RendererLayer))] SpriteSheet[] m_Sheets = null;
+		[SerializeField, LabeledByEnum(typeof(Layer))] SpriteSheet[] m_Sheets = null;
 
 		// Data
 		private Dictionary<ushort, System.Type> EntityTypePool = new Dictionary<ushort, System.Type>();
 		private Dictionary<string, int>[] SpriteIDMaps = new Dictionary<string, int>[0];
 		private Entity[][] Entities = null;
-		private int[] PrevEmptyEntityIndex = null;
+		private Entity[][] EntityBuffers = null;
+		private int[] EntityBufferLength = null;
 		private int LayerIndex = 0;
 		private RectInt ViewRect = default;
-		private RectInt SpawnRect = new RectInt(0, 0, 36 * 512, 28 * 512);
+		private RectInt SpawnRect = new RectInt(0, 0, 36 * Const.CELL_SIZE, 28 * Const.CELL_SIZE);
 
 
 		#endregion
@@ -46,9 +46,18 @@ namespace AngeliaFramework {
 
 		public void Init () {
 
-			RENDERER_LAYER_COUNT = System.Enum.GetNames(typeof(RendererLayer)).Length;
-			ENTITY_LAYER_COUNT = System.Enum.GetNames(typeof(EntityLayer)).Length;
-			PHYSCIS_LAYER_COUNT = System.Enum.GetNames(typeof(PhysicsLayer)).Length;
+#if UNITY_EDITOR
+			// Const Array Count Check
+			if (
+				LAYER_COUNT != System.Enum.GetNames(typeof(Layer)).Length ||
+				ENTITY_BUFFER_CAPACITY.Length != LAYER_COUNT ||
+				RENDER_CAPACITY.Length != LAYER_COUNT ||
+				ENTITY_CAPACITY.Length != LAYER_COUNT
+			) {
+				Debug.LogError("Const Array Size is wrong.");
+				UnityEditor.EditorApplication.ExitPlaymode();
+			}
+#endif
 
 			// Entity
 			Entity.GetSpriteIndex = GetSpriteIDFromName;
@@ -65,8 +74,8 @@ namespace AngeliaFramework {
 			}
 
 			// Sprite Index Map
-			SpriteIDMaps = new Dictionary<string, int>[RENDERER_LAYER_COUNT];
-			for (int i = 0; i < RENDERER_LAYER_COUNT; i++) {
+			SpriteIDMaps = new Dictionary<string, int>[LAYER_COUNT];
+			for (int i = 0; i < LAYER_COUNT; i++) {
 				var map = new Dictionary<string, int>();
 				var sheet = m_Sheets[i];
 				int len = sheet.Sprites.Length;
@@ -77,21 +86,31 @@ namespace AngeliaFramework {
 			}
 
 			// Cell Renderer
-			CellRenderer.InitLayers(RENDERER_LAYER_COUNT);
-			for (int i = 0; i < RENDERER_LAYER_COUNT; i++) {
+			CellRenderer.InitLayers(LAYER_COUNT);
+			for (int i = 0; i < LAYER_COUNT; i++) {
 				var sheet = m_Sheets[i];
-				CellRenderer.SetupLayer(i, CELL_CAPACITY[i], sheet.GetMaterial(), sheet.GetUVs());
+				CellRenderer.SetupLayer(i, RENDER_CAPACITY[i], sheet.GetMaterial(), sheet.GetUVs());
 			}
 
 			// Entity
-			Entities = new Entity[ENTITY_LAYER_COUNT][];
-			PrevEmptyEntityIndex = new int[ENTITY_LAYER_COUNT];
-			for (int layerIndex = 0; layerIndex < ENTITY_LAYER_COUNT; layerIndex++) {
+			Entities = new Entity[LAYER_COUNT][];
+			for (int layerIndex = 0; layerIndex < LAYER_COUNT; layerIndex++) {
 				Entities[layerIndex] = new Entity[ENTITY_CAPACITY[layerIndex]];
 			}
+			EntityBuffers = new Entity[LAYER_COUNT][];
+			EntityBufferLength = new int[LAYER_COUNT];
 
 			// Physics
-			CellPhysics.Init(SpawnRect.width / 512, SpawnRect.height / 512);
+			CellPhysics.Init(
+				SpawnRect.width / Const.CELL_SIZE,
+				SpawnRect.height / Const.CELL_SIZE,
+				LAYER_COUNT
+			);
+			for (int i = 0; i < LAYER_COUNT; i++) {
+				if (ENTITY_CAPACITY[i] > 0) {
+					CellPhysics.SetupLayer(i);
+				}
+			}
 
 			// FPS
 			Application.targetFrameRate = Application.platform == RuntimePlatform.WindowsEditor ? 10000 : 120;
@@ -100,7 +119,6 @@ namespace AngeliaFramework {
 
 
 		public void FrameUpdate () {
-			CellPhysics.Clear();
 			FrameUpdate_View();
 			FrameUpdate_Level();
 			FrameUpdate_Entity();
@@ -111,8 +129,8 @@ namespace AngeliaFramework {
 			(ViewRect.width, ViewRect.height) = CellRenderer.GetCameraSize();
 			//ViewRect.x = ;
 			//ViewRect.y = ;
-			SpawnRect.x = (int)ViewRect.center.x - SpawnRect.width / 2;
-			SpawnRect.y = (int)ViewRect.center.y - SpawnRect.height / 2;
+			CellPhysics.PositionX = SpawnRect.x = (int)ViewRect.center.x - SpawnRect.width / 2;
+			CellPhysics.PositionY = SpawnRect.y = (int)ViewRect.center.y - SpawnRect.height / 2;
 
 
 
@@ -120,7 +138,7 @@ namespace AngeliaFramework {
 
 
 		private void FrameUpdate_Level () {
-			// Draw Level, Update Physics
+			// Draw BG/Level, Fill Physics
 
 
 
@@ -128,19 +146,85 @@ namespace AngeliaFramework {
 		}
 
 
+
+		public Layer TestLayer = default;
+		public int TestID = 0;
+		public int TestX = 0;
+		public int TestY = 0;
+		public float TestPivotX = 0;
+		public float TestPivotY = 0;
+		public int TestRot = 0;
+		public int TestWidth = 256;
+		public int TestHeight = 256;
+		public Color32 TestColor = new Color32(255, 255, 255, 255);
+		
+
 		private void FrameUpdate_Entity () {
-			for (LayerIndex = 2; LayerIndex < ENTITY_LAYER_COUNT; LayerIndex++) {
-				CellRenderer.BeginDraw(LayerIndex);
-				var entities = Entities[LayerIndex];
+
+			// Fill Physics
+			for (int layerIndex = 0; layerIndex < LAYER_COUNT; layerIndex++) {
+				CellPhysics.BeginFill((Layer)layerIndex);
+				var entities = Entities[layerIndex];
 				int len = entities.Length;
 				for (int i = 0; i < len; i++) {
 					var entity = entities[i];
 					if (entity == null) { continue; }
 					if (!entity.Active) { entities[i] = null; continue; }
+					entity.FillPhysics();
+				}
+			}
+
+			// Update/Draw
+			for (int layerIndex = 0; layerIndex < LAYER_COUNT; layerIndex++) {
+				CellRenderer.BeginDraw(layerIndex);
+				var entities = Entities[layerIndex];
+				int len = entities.Length;
+				for (int i = 0; i < len; i++) {
+					var entity = entities[i];
+					if (entity == null) { continue; }
 					entity.FrameUpdate();
 				}
+
+				if (layerIndex == (int)TestLayer) {
+					CellRenderer.Draw(
+						TestID, TestX, TestY, TestPivotX, TestPivotY, TestRot,
+						TestWidth, TestHeight, TestColor
+					);
+					CellRenderer.Draw(
+						TestID, TestX + 256, TestY, TestPivotX, TestPivotY, TestRot,
+						TestWidth, TestHeight, TestColor
+					);
+					CellRenderer.Draw(
+						TestID, TestX + 256 + 256, TestY, TestPivotX, TestPivotY, TestRot,
+						TestWidth, TestHeight, TestColor
+					);
+				}
+
 				CellRenderer.EndDraw();
 			}
+
+			// Add New Entities
+			for (int layerIndex = 0; layerIndex < LAYER_COUNT; layerIndex++) {
+				if (ENTITY_BUFFER_CAPACITY[layerIndex] <= 0) { continue; }
+				var entities = Entities[layerIndex];
+				var buffers = EntityBuffers[layerIndex];
+				int bufferLen = EntityBufferLength[layerIndex];
+				int entityLen = ENTITY_CAPACITY[layerIndex];
+				int emptyIndex = 0;
+				for (int i = 0; i < bufferLen; i++) {
+					while (emptyIndex < entityLen && entities[emptyIndex] != null) {
+						emptyIndex++;
+					}
+					if (emptyIndex >= entityLen) {
+						System.Array.Clear(buffers, 0, buffers.Length);
+						break;
+					}
+					entities[emptyIndex] = buffers[i];
+					buffers[i] = null;
+				}
+				EntityBufferLength[layerIndex] = 0;
+			}
+
 		}
 
 
@@ -158,20 +242,14 @@ namespace AngeliaFramework {
 		}
 
 
-		private Entity CreateEntity (System.Type type, RendererLayer layer) {
+		private Entity CreateEntity (System.Type type, Layer layer) {
 			int layerIndex = (int)layer;
-			var entities = Entities[layerIndex];
-			int len = entities.Length;
-			int offset = PrevEmptyEntityIndex[layerIndex];
-			for (int i = 0; i < len; i++) {
-				int index = (i + offset) % len;
-				if (entities[index] == null) {
-					PrevEmptyEntityIndex[layerIndex] = index;
-					var entity = System.Activator.CreateInstance(type) as Entity;
-					if (entity != null) {
-						entity.Active = true;
-					}
-					entities[index] = entity;
+			int bufferLen = EntityBufferLength[layerIndex];
+			if (bufferLen < ENTITY_BUFFER_CAPACITY[layerIndex]) {
+				if (System.Activator.CreateInstance(type) is Entity entity) {
+					entity.Active = true;
+					EntityBuffers[layerIndex][bufferLen] = entity;
+					EntityBufferLength[layerIndex]++;
 					return entity;
 				}
 			}
