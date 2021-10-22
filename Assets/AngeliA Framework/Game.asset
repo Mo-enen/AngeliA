@@ -15,17 +15,18 @@ MonoBehaviour:
   m_Sheets:
   - {fileID: 11400000, guid: 9dc2f2d1ac625974ca8df93fba240299, type: 2}
   - {fileID: 11400000, guid: ad5e18fa2382dbf40a6b2ec66ddb09e5, type: 2}
-  - {fileID: 11400000, guid: 7e08faebe1901f447b4e4b91233b7c71, type: 2}
   - {fileID: 11400000, guid: 96bc210b603b1ef45b8ef144615dd4ef, type: 2}
+  - {fileID: 11400000, guid: 1980e3122068b544a95a5ffce41e75fa, type: 2}
+  - {fileID: 11400000, guid: 7e08faebe1901f447b4e4b91233b7c71, type: 2}
   - {fileID: 11400000, guid: 0987f8e622136b342a6a371f0b7ef4e6, type: 2}
   - {fileID: 11400000, guid: df688a4ff326bf24cab37b0ee8cf6c08, type: 2}
-  TestLayer: 3
+  TestLayer: 2
   TestID: 4
   TestX: 1137
   TestY: 1308
   TestPivotX: 0.5
   TestPivotY: 0.5
-  TestRot: 286
+  TestRot: 692
   TestWidth: 256
   TestHeight: 256
   TestColor:

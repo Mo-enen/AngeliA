@@ -18,9 +18,9 @@ namespace AngeliaFramework {
 
 		// Const
 		private const int LAYER_COUNT = Const.LAYER_COUNT;
-		private readonly int[] ENTITY_BUFFER_CAPACITY = { 0, 0, 64, 64, 64, 64 };
-		private readonly int[] RENDER_CAPACITY = { 1024, 1024, 1024, 1024, 1024, 1024, };
-		private readonly int[] ENTITY_CAPACITY = { 0, 0, 128, 128, 1024, 128, };
+		private readonly int[] ENTITY_CAPACITY = { 0, 0, 128, 128, 128, 1024, 128, };
+		private readonly int[] ENTITY_BUFFER_CAPACITY = { 0, 0, 64, 64, 64, 64, 64 };
+		private readonly int[] RENDER_CAPACITY = { 1024, 1024, 1024, 1024, 1024, 1024, 1024, };
 
 		// Ser
 		[SerializeField, LabeledByEnum(typeof(Layer))] SpriteSheet[] m_Sheets = null;
@@ -34,6 +34,7 @@ namespace AngeliaFramework {
 		private int LayerIndex = 0;
 		private RectInt ViewRect = default;
 		private RectInt SpawnRect = new RectInt(0, 0, 36 * Const.CELL_SIZE, 28 * Const.CELL_SIZE);
+		private uint PhysicsFrame = uint.MinValue + 1;
 
 
 		#endregion
@@ -107,7 +108,7 @@ namespace AngeliaFramework {
 				LAYER_COUNT
 			);
 			for (int i = 0; i < LAYER_COUNT; i++) {
-				if (ENTITY_CAPACITY[i] > 0) {
+				if ((Layer)i != Layer.Background) {
 					CellPhysics.SetupLayer(i);
 				}
 			}
@@ -157,13 +158,14 @@ namespace AngeliaFramework {
 		public int TestWidth = 256;
 		public int TestHeight = 256;
 		public Color32 TestColor = new Color32(255, 255, 255, 255);
-		
+
 
 		private void FrameUpdate_Entity () {
 
 			// Fill Physics
 			for (int layerIndex = 0; layerIndex < LAYER_COUNT; layerIndex++) {
-				CellPhysics.BeginFill((Layer)layerIndex);
+				if (!CellPhysics.HasLayer(layerIndex)) { continue; }
+				CellPhysics.BeginFill(layerIndex, PhysicsFrame);
 				var entities = Entities[layerIndex];
 				int len = entities.Length;
 				for (int i = 0; i < len; i++) {
@@ -225,6 +227,7 @@ namespace AngeliaFramework {
 				EntityBufferLength[layerIndex] = 0;
 			}
 
+			PhysicsFrame++;
 		}
 
 

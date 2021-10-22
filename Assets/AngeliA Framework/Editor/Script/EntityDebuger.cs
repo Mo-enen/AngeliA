@@ -60,6 +60,12 @@ namespace AngeliaFramework.Editor {
 		#region --- API ---
 
 
+		public static void Test () {
+
+
+
+
+		}
 
 
 		#endregion
