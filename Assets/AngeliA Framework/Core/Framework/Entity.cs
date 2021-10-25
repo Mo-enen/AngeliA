@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -41,11 +41,11 @@ namespace AngeliaFramework {
 		public static IntStringHandler GetSpriteIndex { get; set; } = null;
 		public static EntityTypeLayerHandler CreateEntity { get; set; } = null;
 		public bool Active { get; set; } = true;
-		public int PositionX { get; set; } = 0;
-		public int PositionY { get; set; } = 0;
-		public float PivotX { get; set; } = 0.5f;
-		public float PivotY { get; set; } = 0.5f;
-		public float Rotation { get; set; } = 0f;
+		public int X { get; set; } = 0;
+		public int Y { get; set; } = 0;
+		public int PivotX { get; set; } = 0;
+		public int PivotY { get; set; } = 0;
+		public int Rotation { get; set; } = 0;
 
 
 		// MSG

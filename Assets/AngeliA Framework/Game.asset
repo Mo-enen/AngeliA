@@ -24,9 +24,9 @@ MonoBehaviour:
   TestID: 4
   TestX: 1137
   TestY: 1308
-  TestPivotX: 0.5
-  TestPivotY: 0.5
-  TestRot: 692
+  TestPivotX: 0
+  TestPivotY: 0
+  TestRot: 680
   TestWidth: 256
   TestHeight: 256
   TestColor:

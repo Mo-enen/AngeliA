@@ -20,8 +20,8 @@ namespace AngeliaFramework {
 			public int Width;
 			public int Height;
 			public int Rotation;
-			public float PivotX;
-			public float PivotY;
+			public int PivotX;
+			public int PivotY;
 			public Color32 Color;
 		}
 
@@ -150,8 +150,8 @@ namespace AngeliaFramework {
 				GL.Color(cell.Color);
 
 				// Position
-				float pX = cell.Width * cell.PivotX;
-				float pY = cell.Height * cell.PivotY;
+				float pX = cell.Width * (cell.PivotX / 1000f);
+				float pY = cell.Height * (cell.PivotY / 1000f);
 				a.x = -pX;
 				a.y = -pY;
 				a.z = 0f;
@@ -231,7 +231,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void Draw (int id, int x, int y, float pivotX, float pivotY, int rotation, int width, int height, Color32 color) {
+		public static void Draw (int id, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color) {
 			if (id >= FocusedLayer.UVCount || FocusedCell < 0) { return; }
 			var cell = new Cell {
 				ID = id,

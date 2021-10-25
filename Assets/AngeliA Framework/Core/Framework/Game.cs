@@ -18,7 +18,7 @@ namespace AngeliaFramework {
 
 		// Const
 		private const int LAYER_COUNT = Const.LAYER_COUNT;
-		private readonly int[] ENTITY_CAPACITY = { 0, 0, 128, 128, 128, 1024, 128, };
+		private readonly int[] ENTITY_CAPACITY = { 0, 0, 128, 136, 128, 1024, 128, };
 		private readonly int[] ENTITY_BUFFER_CAPACITY = { 0, 0, 64, 64, 64, 64, 64 };
 		private readonly int[] RENDER_CAPACITY = { 1024, 1024, 1024, 1024, 1024, 1024, 1024, };
 
@@ -30,10 +30,10 @@ namespace AngeliaFramework {
 		private Dictionary<string, int>[] SpriteIDMaps = new Dictionary<string, int>[0];
 		private Entity[][] Entities = null;
 		private Entity[][] EntityBuffers = null;
-		private int[] EntityBufferLength = null;
-		private int LayerIndex = 0;
 		private RectInt ViewRect = default;
 		private RectInt SpawnRect = new RectInt(0, 0, 36 * Const.CELL_SIZE, 28 * Const.CELL_SIZE);
+		private int[] EntityBufferLength = null;
+		private int LayerIndex = 0;
 		private uint PhysicsFrame = uint.MinValue + 1;
 
 
@@ -95,10 +95,11 @@ namespace AngeliaFramework {
 
 			// Entity
 			Entities = new Entity[LAYER_COUNT][];
+			EntityBuffers = new Entity[LAYER_COUNT][];
 			for (int layerIndex = 0; layerIndex < LAYER_COUNT; layerIndex++) {
 				Entities[layerIndex] = new Entity[ENTITY_CAPACITY[layerIndex]];
+				EntityBuffers[layerIndex] = new Entity[ENTITY_BUFFER_CAPACITY[layerIndex]];
 			}
-			EntityBuffers = new Entity[LAYER_COUNT][];
 			EntityBufferLength = new int[LAYER_COUNT];
 
 			// Physics
@@ -145,19 +146,6 @@ namespace AngeliaFramework {
 
 
 		}
-
-
-
-		public Layer TestLayer = default;
-		public int TestID = 0;
-		public int TestX = 0;
-		public int TestY = 0;
-		public float TestPivotX = 0;
-		public float TestPivotY = 0;
-		public int TestRot = 0;
-		public int TestWidth = 256;
-		public int TestHeight = 256;
-		public Color32 TestColor = new Color32(255, 255, 255, 255);
 
 
 		private void FrameUpdate_Entity () {
@@ -231,6 +219,18 @@ namespace AngeliaFramework {
 		}
 
 
+		public Layer TestLayer = default;
+		public int TestID = 0;
+		public int TestX = 0;
+		public int TestY = 0;
+		public int TestPivotX = 0;
+		public int TestPivotY = 0;
+		public int TestRot = 0;
+		public int TestWidth = 256;
+		public int TestHeight = 256;
+		public Color32 TestColor = new Color32(255, 255, 255, 255);
+
+
 		#endregion
 
 
@@ -250,7 +250,6 @@ namespace AngeliaFramework {
 			int bufferLen = EntityBufferLength[layerIndex];
 			if (bufferLen < ENTITY_BUFFER_CAPACITY[layerIndex]) {
 				if (System.Activator.CreateInstance(type) is Entity entity) {
-					entity.Active = true;
 					EntityBuffers[layerIndex][bufferLen] = entity;
 					EntityBufferLength[layerIndex]++;
 					return entity;

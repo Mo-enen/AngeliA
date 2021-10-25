@@ -2,7 +2,8 @@
     "name": "AngeliaFramework",
     "rootNamespace": "AngeliaFramework",
     "references": [
-        "Moenen.Standard"
+        "Moenen.Standard",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [
         "Editor",
