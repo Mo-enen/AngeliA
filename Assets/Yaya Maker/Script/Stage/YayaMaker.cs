@@ -18,6 +18,9 @@ namespace YayaMaker {
 		#region --- VAR ---
 
 
+		// Const
+		public const int SLOT_COUNT = 24;
+
 		// Ser
 		[Header("Stage")]
 		[SerializeField] StageLanguage m_Language = null;
@@ -54,7 +57,7 @@ namespace YayaMaker {
 
 
 		private void Start () {
-			m_Project.LoadProject(ProjectSlot.Value);
+			m_Project.LoadProject(GetProjectPathAtSlot(ProjectSlot.Value));
 
 
 		}
@@ -65,7 +68,7 @@ namespace YayaMaker {
 
 		private void Awake_Game () {
 			m_Game.Init();
-			
+
 		}
 
 
@@ -103,14 +106,21 @@ namespace YayaMaker {
 
 
 		private void Awake_Project () {
-			StageProject.OnProjectLoaded = (projectPath) => {
-				ProjectSlot.Value = m_Project.CurrentSlot;
-				WorldStream.LoadInfo(m_Project.WorldInfoPath);
 
+			// Init Project Folders
+			for (int i = 0; i < SLOT_COUNT; i++) {
+				Util.CreateFolder(GetProjectPathAtSlot(i));
+				Util.CreateFolder(GetWorldRoot(GetProjectPathAtSlot(i)));
+			}
+
+			// Message
+			StageProject.OnProjectLoaded = (projectPath) => {
+				WorldStream.LoadInfo(GetWorldInfoPath(projectPath));
+				
 
 			};
 			StageProject.OnProjectSaved = (projectPath) => {
-				WorldStream.SaveInfo(m_Project.WorldInfoPath);
+				WorldStream.SaveInfo(GetWorldInfoPath(projectPath));
 
 
 			};
@@ -179,6 +189,11 @@ namespace YayaMaker {
 
 		#region --- LGC ---
 
+
+		// Project
+		private string GetProjectPathAtSlot (int slot) => Util.CombinePaths(Application.persistentDataPath, $"Slot_{slot:00}");
+		private string GetWorldRoot (string projectPath) => Util.CombinePaths(projectPath, "World");
+		private string GetWorldInfoPath (string projectPath) => Util.CombinePaths(GetWorldRoot(projectPath), "Info.json");
 
 
 

@@ -121,10 +121,14 @@ namespace AngeliaFramework {
 
 
 		public void FrameUpdate () {
+			FrameUpdate_Input();
 			FrameUpdate_View();
 			FrameUpdate_Level();
 			FrameUpdate_Entity();
 		}
+
+
+		private void FrameUpdate_Input () => FrameInput.FrameUpdate();
 
 
 		private void FrameUpdate_View () {

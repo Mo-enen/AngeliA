@@ -323,12 +323,20 @@ namespace AngeliaFramework.Editor {
 
 
 		private static CellPhysicsDebuger GetOrCreateWindow () {
-			var window = GetWindow<CellPhysicsDebuger>(false, "Entity Debuger", true);
-			window.minSize = new Vector2(275, 480);
-			window.maxSize = new Vector2(1024, 1024);
-			window.titleContent = EditorGUIUtility.IconContent("UnityEditor.ConsoleWindow");
-			window.titleContent.text = "Entity Debuger";
-			return window;
+			try {
+				var inspector = typeof(UnityEditor.Editor).Assembly.GetType("UnityEditor.InspectorWindow");
+				var window = inspector != null ?
+					GetWindow<CellPhysicsDebuger>("Entity Debuger", true, inspector) :
+					GetWindow<CellPhysicsDebuger>("Entity Debuger", true);
+				window.minSize = new Vector2(275, 400);
+				window.maxSize = new Vector2(600, 1000);
+				window.titleContent = EditorGUIUtility.IconContent("UnityEditor.ConsoleWindow");
+				window.titleContent.text = "Entity Debuger";
+				return window;
+			} catch (System.Exception ex) {
+				Debug.LogWarning("Failed to open window.\n" + ex.Message);
+			}
+			return null;
 		}
 
 
