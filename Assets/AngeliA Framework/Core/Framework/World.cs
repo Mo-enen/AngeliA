@@ -10,18 +10,26 @@ namespace AngeliaFramework {
 
 
 	public struct Block {
-		public int ID;
-
+		public bool IsEmpty => InstanceID == 0;
+		public uint InstanceID;
+		public ushort BlockID;
 	}
 
 
 
 	public class World {
 
+		public Block this[int x, int y, int layer] {
+			get => Blocks[x, y, layer];
+			set => Blocks[x, y, layer] = value;
+		}
 		public int Width => Blocks.GetLength(0);
 		public int Height => Blocks.GetLength(1);
+		public int LayerCount => Blocks.GetLength(2);
 
-		public Block[,] Blocks = null;
+		public Block[,,] Blocks = null;
+		public readonly string[] Commands = new string[64];
+		public int CommandCount = 0;
 
 	}
 
@@ -42,7 +50,7 @@ namespace AngeliaFramework {
 		private class WorldInfo {
 			[System.Serializable]
 			public class FileInfo {
-				public string ID;
+				public string FileName;
 				public int X;
 				public int Y;
 				public int Z;
@@ -90,7 +98,7 @@ namespace AngeliaFramework {
 				foreach (var fileInfo in info.Data) {
 					WorldStreamMap.TryAdd(
 						new Vector3Int(fileInfo.X, fileInfo.Y, fileInfo.Z),
-						fileInfo.ID
+						fileInfo.FileName
 					);
 				}
 			} else {
@@ -103,7 +111,7 @@ namespace AngeliaFramework {
 			var info = new WorldInfo();
 			foreach (var pair in WorldStreamMap) {
 				info.Data.Add(new WorldInfo.FileInfo() {
-					ID = pair.Value,
+					FileName = pair.Value,
 					X = pair.Key.x,
 					Y = pair.Key.y,
 				});
@@ -116,47 +124,54 @@ namespace AngeliaFramework {
 
 
 		// World
-		public static World LoadWorld (string path) {
+		public static World LoadWorld (World world, string path) {
 			if (!Util.FileExists(path)) { return null; }
-			var world = new World();
 			using var stream = File.OpenRead(path);
 			using var reader = new BinaryReader(stream);
-			int width = reader.ReadUInt16();
-			int height = reader.ReadUInt16();
-			world.Blocks = new Block[width, height];
-			for (int j = 0; j < height; j++) {
-				for (int i = 0; i < width; i++) {
-					var block = new Block() {
-						ID = reader.ReadUInt16(),
-					};
-					world.Blocks[i, j] = block;
-				}
-			}
+
+
+
+
+
+
 			return world;
 		}
 
 
 		public static void SaveWorld (World world, string path) {
-			int width = world.Width;
-			int height = world.Height;
+
 			Util.CreateFolder(Util.GetParentPath(path));
 			using var stream = File.Create(path);
 			using var writer = new BinaryWriter(stream);
-			writer.Write((ushort)width);
-			writer.Write((ushort)height);
-			for (int j = 0; j < height; j++) {
-				for (int i = 0; i < width; i++) {
-					var block = world.Blocks[i, j];
-					writer.Write((ushort)block.ID);
+
+			int width = world.Width;
+			int height = world.Height;
+			int layerCount = world.LayerCount;
+			int cmdCount = world.CommandCount;
+			Vector3Int cursor = new Vector3Int(0, 0, 0);
+
+			for (int layer = 0; layer < layerCount; layer++) {
+				bool useEntity = (Layer)layer != Layer.Background && (Layer)layer != Layer.Level;
+				for (int y = 0; y < height; y++) {
+					for (int x = 0; x < width; x++) {
+						var block = world[x, y, layer];
+						if (block.IsEmpty) { continue; }
+
+
+
+
+					}
 				}
 			}
+
 		}
 
 
 		public static bool HasWorldAt (Vector3Int position) => WorldStreamMap.ContainsKey(position);
 
 
-		public static World LoadWorldAtPosition (string rootPath, Vector3Int position) => LoadWorld(
+		public static void LoadWorldAtPosition (World world, string rootPath, Vector3Int position) => LoadWorld(
+			world,
 			Util.CombinePaths(rootPath, WorldStreamMap[position] + ".world")
 		);
 

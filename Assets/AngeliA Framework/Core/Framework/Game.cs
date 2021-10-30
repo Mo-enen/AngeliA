@@ -18,9 +18,9 @@ namespace AngeliaFramework {
 
 		// Const
 		private const int LAYER_COUNT = Const.LAYER_COUNT;
-		private readonly int[] ENTITY_CAPACITY = { 0, 0, 128, 136, 128, 1024, 128, };
-		private readonly int[] ENTITY_BUFFER_CAPACITY = { 0, 0, 64, 64, 64, 64, 64 };
-		private readonly int[] RENDER_CAPACITY = { 1024, 1024, 1024, 1024, 1024, 1024, 1024, };
+		private readonly int[] ENTITY_CAPACITY = { 0, 0, 128, 128, 1024, 128, };
+		private readonly int[] ENTITY_BUFFER_CAPACITY = { 0, 0, 64, 64, 64, 64 };
+		private readonly int[] RENDER_CAPACITY = { 1024, 1024, 1024, 1024, 1024, 1024, };
 
 		// Ser
 		[SerializeField, LabeledByEnum(typeof(Layer))] SpriteSheet[] m_Sheets = null;
@@ -61,7 +61,7 @@ namespace AngeliaFramework {
 #endif
 
 			// Entity
-			Entity.GetSpriteIndex = GetSpriteIDFromName;
+			Entity.GetSpriteID = GetSpriteIDFromName;
 			Entity.CreateEntity = CreateEntity;
 
 			// Entity Global ID Map

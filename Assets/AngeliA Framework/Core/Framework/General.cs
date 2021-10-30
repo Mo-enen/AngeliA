@@ -11,10 +11,9 @@ namespace AngeliaFramework {
 		Background = 0,
 		Level = 1,
 		Item = 2,
-		Pickable = 3,
-		Character = 4,
-		Projectile = 5,
-		UI = 6,
+		Character = 3,
+		Projectile = 4,
+		UI = 5,
 	}
 
 
@@ -50,7 +49,7 @@ namespace AngeliaFramework {
 
 	public static class Const {
 		public const int CELL_SIZE = 256;
-		public const int LAYER_COUNT = 7;
+		public const int LAYER_COUNT = 6;
 	}
 
 

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 using UnityEngine;
 using UnityEditor;
 using Moenen.Standard;
@@ -27,9 +28,14 @@ namespace AngeliaFramework.Editor {
 		private static GUIStyle ScrollStyle => _ScrollStyle ??= new GUIStyle() {
 			padding = new RectOffset(6, 6, 2, 2),
 		};
+		private static GUIStyle TextArea => _TextArea ??= new GUIStyle(GUI.skin.textArea) {
+			fontSize = 16,
+			contentOffset = new Vector2(2, 4),
+		};
 
 		// Data
 		private static GUIStyle _ScrollStyle = null;
+		private static GUIStyle _TextArea = null;
 		private Game Game = null;
 		private Entity[][] Entities = null;
 		private readonly List<System.Type> EntityTypes = new List<System.Type>();
@@ -40,6 +46,7 @@ namespace AngeliaFramework.Editor {
 
 		// Saving
 		private static EditorSavingInt LayerIndex = new EditorSavingInt("CPD.LayerIndex", 0);
+		private static EditorSavingString EntityInitContent = new EditorSavingString("CPD.EntityInitContent", "");
 
 
 		#endregion
@@ -52,7 +59,9 @@ namespace AngeliaFramework.Editor {
 
 		[InitializeOnLoadMethod]
 		private static void Init () {
+
 			EditorApplication.playModeStateChanged += (mode) => {
+				// Reload Cache
 				if (mode == PlayModeStateChange.EnteredEditMode || mode == PlayModeStateChange.EnteredPlayMode) {
 					if (!HasOpenInstances<CellPhysicsDebuger>()) { return; }
 					var window = GetOrCreateWindow();
@@ -61,6 +70,33 @@ namespace AngeliaFramework.Editor {
 					window.EntityTypes.Clear();
 					window.EntityFieldMap.Clear();
 					window.FocusingEntity = null;
+					window.InitLayer();
+					window.InitCaches();
+				}
+				// Load Entity Init Content
+				if (mode == PlayModeStateChange.EnteredPlayMode) {
+					if (!HasOpenInstances<CellPhysicsDebuger>()) { return; }
+					var window = GetOrCreateWindow();
+					if (!string.IsNullOrEmpty(EntityInitContent.Value)) {
+						var lines = EntityInitContent.Value.Replace("\r", "").Replace(" ", "").Split('\n');
+						foreach (var line in lines) {
+							var _params = line.Split(',');
+							if (
+								_params != null && _params.Length >= 3 &&
+								System.Enum.TryParse(_params[1], true, out Layer layer) &&
+								int.TryParse(_params[2], out int count)
+							) {
+								var type = window.EntityTypes.Single(
+									(t) => t.Name == _params[0]
+								);
+								if (type != null) {
+									for (int i = 0; i < count; i++) {
+										Util.InvokeMethod(window.Game, "CreateEntity", type, layer);
+									}
+								}
+							}
+						}
+					}
 				}
 			};
 		}
@@ -71,23 +107,26 @@ namespace AngeliaFramework.Editor {
 
 
 		private void OnGUI () {
+			if (!EditorApplication.isPlaying) {
+				// Edit Mode
+				OnGUI_EntityInit();
+			} else {
+				// Play Mode
+				if (CellRenderer.DebugLayer == null) { InitLayer(); }
+				if (CellRenderer.DebugLayer == null) { return; }
+				if ((Game == null || Entities == null) && !InitCaches()) { return; }
 
-			if (!EditorApplication.isPlaying) { return; }
-			if (CellRenderer.DebugLayer == null) { InitLayer(); }
-			if (CellRenderer.DebugLayer == null) { return; }
-			if ((Game == null || Entities == null) && !InitCaches()) { return; }
+				using var scope = new GUILayout.ScrollViewScope(MasterScrollPos, ScrollStyle);
 
-			using (var scope = new GUILayout.ScrollViewScope(MasterScrollPos, ScrollStyle)) {
 				Layout.Space(12);
 				MasterScrollPos = scope.scrollPosition;
 				OnGUI_EntityView();
-			}
 
+			}
 			if (Event.current.type == EventType.MouseDown) {
 				GUI.FocusControl("");
 				Repaint();
 			}
-
 		}
 
 
@@ -134,10 +173,10 @@ namespace AngeliaFramework.Editor {
 				using (new GUILayout.HorizontalScope()) {
 					GUI.Label(Layout.Rect(24, HEIGHT), "#", Layout.MiniGreyLabel);
 					GUI.Label(Layout.Rect(0, HEIGHT), "type", Layout.MiniGreyLabel);
-					GUI.Label(Layout.Rect(0, HEIGHT), "pos", Layout.MiniGreyLabel);
-					GUI.Label(Layout.Rect(0, HEIGHT), "pivot", Layout.MiniGreyLabel);
+					GUI.Label(Layout.Rect(0, HEIGHT), "x", Layout.MiniGreyLabel);
+					GUI.Label(Layout.Rect(0, HEIGHT), "y", Layout.MiniGreyLabel);
 					GUI.Label(Layout.Rect(0, HEIGHT), "rot", Layout.MiniGreyLabel);
-
+					Layout.Space(24);
 				}
 
 				// Content
@@ -174,18 +213,21 @@ namespace AngeliaFramework.Editor {
 								// Type
 								GUI.color = new Color(0.4f, 1f, 0.9f, 1f);
 								GUI.Label(Layout.Rect(0, HEIGHT), entity.GetType().Name);
-
-								// Pos
 								GUI.color = oldC;
-								GUI.Label(Layout.Rect(0, HEIGHT), $"{entity.X}, {entity.Y}");
 
-								// Pivot
-								GUI.color = oldC;
-								GUI.Label(Layout.Rect(0, HEIGHT), $"{entity.PivotX}, {entity.PivotY}");
+								// X
+								GUI.Label(Layout.Rect(0, HEIGHT), entity.X.ToString());
+
+								// Y
+								GUI.Label(Layout.Rect(0, HEIGHT), entity.Y.ToString());
 
 								// Rot
-								GUI.color = oldC;
 								GUI.Label(Layout.Rect(0, HEIGHT), entity.Rotation.ToString());
+
+								// Destroy
+								if (GUI.Button(Layout.Rect(24, HEIGHT), "×")) {
+									entity.Destroy();
+								}
 
 							}
 						}
@@ -257,7 +299,7 @@ namespace AngeliaFramework.Editor {
 						}
 
 					} else {
-						Layout.Space(1);
+						Layout.Rect(0, 1);
 					}
 				}
 
@@ -265,6 +307,25 @@ namespace AngeliaFramework.Editor {
 				// No Entity Capacity
 				EditorGUILayout.HelpBox("Not Available for This Layer", MessageType.Info, true);
 			}
+		}
+
+
+		private void OnGUI_EntityInit () {
+			Layout.Space(6);
+			GUI.Label(Layout.Rect(0, 18).Expand(-6, 0, 0, 0), "Create Entity on Game Start");
+			Layout.Space(6);
+			EditorGUI.HelpBox(
+				Layout.Rect(0, 24).Expand(-16, -6, 0, 0),
+				" Type, Layer, Count",
+				MessageType.Info
+			);
+			Layout.Space(6);
+			EntityInitContent.Value = GUI.TextArea(
+				Layout.Rect(0, 420).Expand(-16, -6, 0, 0),
+				EntityInitContent.Value,
+				TextArea
+			);
+			EditorGUIUtility.AddCursorRect(Layout.LastRect(), MouseCursor.Text);
 		}
 
 
