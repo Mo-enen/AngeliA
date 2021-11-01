@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da05428af58f0fa4d921db1f278225fc, type: 3}
-  m_Name: Game
+  m_Name: Yaya Maker
   m_EditorClassIdentifier: 
   m_Sheets:
   - {fileID: 11400000, guid: 9dc2f2d1ac625974ca8df93fba240299, type: 2}
@@ -25,7 +25,7 @@ MonoBehaviour:
   TestY: 1308
   TestPivotX: 0
   TestPivotY: 0
-  TestRot: 680
+  TestRot: 1049
   TestWidth: 256
   TestHeight: 256
   TestColor:

@@ -30,13 +30,13 @@ namespace AngeliaFramework {
 		}
 
 
-		private class PhysicsLayer {
+		private class Layer {
 			public Cell this[int x, int y, int z] {
 				get => Cells[x, y, z];
 				set => Cells[x, y, z] = value;
 			}
 			private Cell[,,] Cells = null;
-			public PhysicsLayer (int width, int height) {
+			public Layer (int width, int height) {
 				Cells = new Cell[width, height, CELL_DEPTH];
 				for (int i = 0; i < width; i++) {
 					for (int j = 0; j < height; j++) {
@@ -67,8 +67,9 @@ namespace AngeliaFramework {
 		public static int PositionY { get; set; } = 0;
 
 		// Data
-		private static PhysicsLayer[] Layers = null;
-		private static PhysicsLayer CurrentLayer = null;
+		private static Layer[] Layers = null;
+		private static Layer CurrentLayer = null;
+		private static PhysicsLayer CurrentLayerEnum = PhysicsLayer.Item;
 		private static uint CurrentFrame = uint.MinValue;
 
 
@@ -84,24 +85,21 @@ namespace AngeliaFramework {
 		public static void Init (int width, int height, int layerCount) {
 			Width = width;
 			Height = height;
-			Layers = new PhysicsLayer[layerCount];
+			Layers = new Layer[layerCount];
 		}
 
 
-		public static void SetupLayer (int index) => Layers[index] = new PhysicsLayer(Width, Height);
+		public static void SetupLayer (int index) {
+			Layers[index] = CurrentLayer = new Layer(Width, Height);
+			CurrentLayerEnum = (PhysicsLayer)index;
+		}
 
 
 		// Fill
-		public static bool HasLayer (int layer) => Layers[layer] != null;
+		public static void BeginFill (uint frame) => CurrentFrame = frame;
 
 
-		public static void BeginFill (int layer, uint frame) {
-			CurrentLayer = Layers[layer];
-			CurrentFrame = frame;
-		}
-
-
-		public static void Fill (RectInt globalRect, Entity entity) {
+		public static void Fill (PhysicsLayer layer, RectInt globalRect, Entity entity) {
 			int i = globalRect.x.GetCellIndexX();
 			int j = globalRect.y.GetCellIndexY();
 			if (i < 0 || j < 0 || i >= Width || j >= Height) { return; }
@@ -110,6 +108,10 @@ namespace AngeliaFramework {
 				Debug.LogWarning("[CellPhysics] Rect size too large.");
 			}
 #endif
+			if (layer != CurrentLayerEnum) {
+				CurrentLayerEnum = layer;
+				CurrentLayer = Layers[(int)layer];
+			}
 			for (int dep = 0; dep < CELL_DEPTH; dep++) {
 				var cell = CurrentLayer[i, j, dep];
 				if (cell.Frame != CurrentFrame) {
@@ -124,11 +126,10 @@ namespace AngeliaFramework {
 
 
 		// Overlap
-		public static bool Overlap (Layer layer, RectInt globalRect, Entity ignore, out RectInt hitRect, out Entity result) {
+		public static bool Overlap (PhysicsLayer layer, RectInt globalRect, Entity ignore, out RectInt hitRect, out Entity result) {
 			result = null;
 			hitRect = default;
 			var layerItem = Layers[(int)layer];
-			if (layerItem == null) { return false; }
 			int l = Mathf.Max(globalRect.xMin.GetCellIndexX() - 1, 0);
 			int d = Mathf.Max(globalRect.yMin.GetCellIndexY() - 1, 0);
 			int r = Mathf.Min((globalRect.xMax - 1).GetCellIndexX() + 1, Width - 1);
@@ -151,9 +152,8 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void ForAllOverlaps (Layer layer, RectInt globalRect, System.Func<RectInt, Entity, bool> func) {
+		public static void ForAllOverlaps (PhysicsLayer layer, RectInt globalRect, System.Func<RectInt, Entity, bool> func) {
 			var layerItem = Layers[(int)layer];
-			if (layerItem == null) { return; }
 			int l = Mathf.Max(globalRect.xMin.GetCellIndexX() - 1, 0);
 			int d = Mathf.Max(globalRect.yMin.GetCellIndexY() - 1, 0);
 			int r = Mathf.Min((globalRect.xMax - 1).GetCellIndexX() + 1, Width - 1);

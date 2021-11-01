@@ -34,11 +34,11 @@ namespace AngeliaFramework {
 
 
 		// SUB
-		public delegate int IntStringHandler (string str);
-		public delegate Entity EntityTypeLayerHandler (System.Type type, Layer layer);
+		public delegate (int sheet, int id) IntIntStringHandler (string str);
+		public delegate Entity EntityTypeLayerHandler (System.Type type, EntityLayer layer);
 
 		// Api
-		public static IntStringHandler GetSpriteID { get; set; } = null;
+		public static IntIntStringHandler GetSpriteSheetAndID { get; set; } = null;
 		public static EntityTypeLayerHandler CreateEntity { get; set; } = null;
 		public bool Active { get; set; } = true;
 		public int X { get; set; } = 0;

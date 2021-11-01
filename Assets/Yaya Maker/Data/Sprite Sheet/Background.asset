@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc80254344be64947a2b252f1bd6d5e9, type: 3}
-  m_Name: Character
+  m_Name: Background
   m_EditorClassIdentifier: 
-  m_Texture: {fileID: 2800000, guid: 690d8fc8a6776684e932230e57858c66, type: 3}
+  m_Texture: {fileID: 2800000, guid: 8875925860900204e857f0a80583ac33, type: 3}
   m_Sprites:
-  - {fileID: 8253449523565351822, guid: 690d8fc8a6776684e932230e57858c66, type: 3}
-  - {fileID: 2948562266450053793, guid: 690d8fc8a6776684e932230e57858c66, type: 3}
-  - {fileID: -9017721865373151743, guid: 690d8fc8a6776684e932230e57858c66, type: 3}
+  - {fileID: 8253449523565351822, guid: 8875925860900204e857f0a80583ac33, type: 3}
+  m_RendererCapacity: 1024
+  m_Prefix: b_

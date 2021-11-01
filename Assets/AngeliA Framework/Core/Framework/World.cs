@@ -13,23 +13,21 @@ namespace AngeliaFramework {
 		public bool IsEmpty => InstanceID == 0;
 		public uint InstanceID;
 		public ushort BlockID;
+		public Block (uint instanceID, ushort blockID) {
+			InstanceID = instanceID;
+			BlockID = blockID;
+		}
 	}
 
 
 
 	public class World {
 
-		public Block this[int x, int y, int layer] {
-			get => Blocks[x, y, layer];
-			set => Blocks[x, y, layer] = value;
-		}
 		public int Width => Blocks.GetLength(0);
 		public int Height => Blocks.GetLength(1);
 		public int LayerCount => Blocks.GetLength(2);
 
-		public Block[,,] Blocks = null;
-		public readonly string[] Commands = new string[64];
-		public int CommandCount = 0;
+		public Block[,,] Blocks = new Block[0, 0, 0];
 
 	}
 
@@ -124,53 +122,101 @@ namespace AngeliaFramework {
 
 
 		// World
-		public static World LoadWorld (World world, string path) {
-			if (!Util.FileExists(path)) { return null; }
+		public static bool FileToWorld (World world, string path) {
+			if (!Util.FileExists(path)) { return false; }
 			using var stream = File.OpenRead(path);
 			using var reader = new BinaryReader(stream);
-
-
-
-
-
-
-			return world;
+			int width = reader.ReadInt32();
+			int height = reader.ReadInt32();
+			int layerCount = reader.ReadInt32();
+			if (world.Width != width || world.Height != height || world.LayerCount != layerCount) {
+				world.Blocks = new Block[width, height, layerCount];
+			} else {
+				System.Array.Clear(world.Blocks, 0, world.Blocks.Length);
+			}
+			uint cursorX = 0;
+			uint cursorY = 0;
+			uint cursorZ = 0;
+			for (int safe = 0; reader.NotEnd() && safe < 100000; safe++) {
+				uint id = reader.ReadUInt32();
+				if (id >= 128) {
+					// Block
+					ushort blockID = reader.ReadUInt16();
+					world.Blocks[cursorX, cursorY, cursorZ] = new Block(id, blockID);
+					cursorX++;
+				} else {
+					// Func
+					if (id >= 1 && id <= 9) {
+						// Hard-Coded ID
+						cursorX += id;
+					} else {
+						switch (id) {
+							case 0: // Set Cursor
+								cursorX = reader.ReadUInt32();
+								cursorY = reader.ReadUInt32();
+								cursorZ = reader.ReadUInt32();
+								break;
+						}
+					}
+				}
+			}
+			return true;
 		}
 
 
 		public static void SaveWorld (World world, string path) {
-
 			Util.CreateFolder(Util.GetParentPath(path));
 			using var stream = File.Create(path);
 			using var writer = new BinaryWriter(stream);
-
 			int width = world.Width;
 			int height = world.Height;
 			int layerCount = world.LayerCount;
-			int cmdCount = world.CommandCount;
-			Vector3Int cursor = new Vector3Int(0, 0, 0);
+			writer.Write(width);
+			writer.Write(height);
+			writer.Write(layerCount);
+			uint cursorX = 0;
+			uint cursorY = 0;
+			uint cursorZ = 0;
+			for (int k = 0; k < layerCount; k++) {
+				for (int j = 0; j < height; j++) {
+					for (int i = 0; i < width; i++) {
 
-			for (int layer = 0; layer < layerCount; layer++) {
-				bool useEntity = (Layer)layer != Layer.Background && (Layer)layer != Layer.Level;
-				for (int y = 0; y < height; y++) {
-					for (int x = 0; x < width; x++) {
-						var block = world[x, y, layer];
+						var block = world.Blocks[i, j, k];
 						if (block.IsEmpty) { continue; }
 
+						// Check Cusor
+						if (i != cursorX) {
+							if (
+								j == cursorY &&
+								k == cursorZ &&
+								i > cursorX &&
+								i <= cursorX + 9
+							) {
+								// Use Hard-Coded Command
+								writer.Write((uint)(i - cursorX));
+							} else {
+								// Just Set Cursor
+								writer.Write(0u);
+								writer.Write((uint)(i - cursorX));
+								writer.Write((uint)(j - cursorY));
+								writer.Write((uint)(k - cursorZ));
+							}
+						}
 
-
-
+						// Write Block
+						writer.Write(block.InstanceID);
+						writer.Write(block.BlockID);
+						cursorX++;
 					}
 				}
 			}
-
 		}
 
 
 		public static bool HasWorldAt (Vector3Int position) => WorldStreamMap.ContainsKey(position);
 
 
-		public static void LoadWorldAtPosition (World world, string rootPath, Vector3Int position) => LoadWorld(
+		public static void LoadWorldAtPosition (World world, string rootPath, Vector3Int position) => FileToWorld(
 			world,
 			Util.CombinePaths(rootPath, WorldStreamMap[position] + ".world")
 		);
@@ -182,7 +228,6 @@ namespace AngeliaFramework {
 
 
 		#region --- LGC ---
-
 
 
 

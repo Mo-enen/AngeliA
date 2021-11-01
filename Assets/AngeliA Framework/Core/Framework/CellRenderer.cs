@@ -33,6 +33,7 @@ namespace AngeliaFramework {
 			public Cell[] Cells;
 			public int CellCount;
 			public int UVCount;
+			public int FocusedCell;
 		}
 
 
@@ -61,7 +62,7 @@ namespace AngeliaFramework {
 		// Data
 		private static Layer[] Layers = new Layer[0];
 		private static Layer FocusedLayer = null;
-		private static int FocusedCell = 0;
+		private static int FocusedLayerIndex = -1;
 
 
 		#endregion
@@ -127,7 +128,7 @@ namespace AngeliaFramework {
 		private static void DrawLayer (Layer layer) {
 
 			var cells = layer.Cells;
-			int cellCount = cells.Length;
+			int cellCount = Mathf.Min(cells.Length, layer.FocusedCell);
 			var uvs = layer.UVs;
 
 			layer.Material.SetPass(0);
@@ -142,7 +143,7 @@ namespace AngeliaFramework {
 
 				var cell = cells[i];
 
-				if (cell.ID < 0) { break; }
+				if (cell.ID < 0) { continue; }
 
 				var uv = uvs[cell.ID];
 
@@ -214,25 +215,31 @@ namespace AngeliaFramework {
 			for (int i = 0; i < cellCapaticy; i++) {
 				cells[i] = new Cell() { ID = -1 };
 			}
-			Layers[layerIndex] = new Layer() {
+			Layers[layerIndex] = FocusedLayer = new Layer() {
 				Cells = cells,
 				Material = material,
 				UVs = uvs,
 				UVCount = uvs.Length,
 				CellCount = cellCapaticy,
 			};
+			FocusedLayerIndex = layerIndex;
 		}
 
 
 		// Draw
-		public static void BeginDraw (int layerIndex) {
-			FocusedLayer = Layers[layerIndex];
-			FocusedCell = 0;
+		public static void BeginDraw () {
+			for (int i = 0; i < Layers.Length; i++) {
+				Layers[i].FocusedCell = 0;
+			}
 		}
 
 
-		public static void Draw (int id, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color) {
-			if (id >= FocusedLayer.UVCount || FocusedCell < 0) { return; }
+		public static void Draw (int layerIndex, int id, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color) {
+			if (layerIndex != FocusedLayerIndex) {
+				FocusedLayerIndex = layerIndex;
+				FocusedLayer = Layers[layerIndex];
+			}
+			if (id >= FocusedLayer.UVCount || FocusedLayer.FocusedCell < 0) { return; }
 			var cell = new Cell {
 				ID = id,
 				X = x,
@@ -244,17 +251,10 @@ namespace AngeliaFramework {
 				PivotY = pivotY,
 				Color = color
 			};
-			FocusedLayer.Cells[FocusedCell] = cell;
-			FocusedCell++;
-			if (FocusedCell >= FocusedLayer.CellCount) {
-				FocusedCell = -1;
-			}
-		}
-
-
-		public static void EndDraw () {
-			if (FocusedCell >= 0 && FocusedCell < FocusedLayer.CellCount) {
-				FocusedLayer.Cells[FocusedCell] = new Cell() { ID = -1 };
+			FocusedLayer.Cells[FocusedLayer.FocusedCell] = cell;
+			FocusedLayer.FocusedCell++;
+			if (FocusedLayer.FocusedCell >= FocusedLayer.CellCount) {
+				FocusedLayer.FocusedCell = -1;
 			}
 		}
 

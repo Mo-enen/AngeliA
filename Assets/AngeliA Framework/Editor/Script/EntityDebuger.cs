@@ -21,8 +21,8 @@ namespace AngeliaFramework.Editor {
 		private const int PAGE_SIZE = 32;
 
 		// Short
-		private Layer CurrentLayer {
-			get => (Layer)LayerIndex.Value;
+		private EntityLayer CurrentLayer {
+			get => (EntityLayer)LayerIndex.Value;
 			set => LayerIndex.Value = (int)value;
 		}
 		private static GUIStyle ScrollStyle => _ScrollStyle ??= new GUIStyle() {
@@ -38,9 +38,9 @@ namespace AngeliaFramework.Editor {
 		private static GUIStyle _TextArea = null;
 		private Game Game = null;
 		private Entity[][] Entities = null;
+		private Entity FocusingEntity = null;
 		private readonly List<System.Type> EntityTypes = new List<System.Type>();
 		private readonly Dictionary<System.Type, FieldInfo[]> EntityFieldMap = new Dictionary<System.Type, FieldInfo[]>();
-		private Entity FocusingEntity = null;
 		private Vector2 MasterScrollPos = default;
 		private int PageIndex = 0;
 
@@ -83,7 +83,7 @@ namespace AngeliaFramework.Editor {
 							var _params = line.Split(',');
 							if (
 								_params != null && _params.Length >= 3 &&
-								System.Enum.TryParse(_params[1], true, out Layer layer) &&
+								System.Enum.TryParse(_params[1], true, out EntityLayer layer) &&
 								int.TryParse(_params[2], out int count)
 							) {
 								var type = window.EntityTypes.Single(
@@ -145,8 +145,8 @@ namespace AngeliaFramework.Editor {
 				Layout.Space(4);
 
 				// Layer
-				CurrentLayer = (Layer)Mathf.Clamp(
-					(int)(Layer)EditorGUI.EnumPopup(Layout.Rect(0, 18), CurrentLayer), 0, Entities.Length
+				CurrentLayer = (EntityLayer)Mathf.Clamp(
+					(int)(EntityLayer)EditorGUI.EnumPopup(Layout.Rect(0, 18), CurrentLayer), 0, Entities.Length
 				);
 
 			}

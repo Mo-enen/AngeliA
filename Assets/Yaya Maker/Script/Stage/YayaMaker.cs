@@ -31,7 +31,6 @@ namespace YayaMaker {
 		[SerializeField] TileUI m_TileLayout = null;
 		[SerializeField] RectTransform m_WindowRoot = null;
 		[SerializeField] DialogWindow m_DialogTemplate = null;
-		[SerializeField] Text[] m_LanguageTexts = null;
 
 		// Save
 		private SavingInt ProjectSlot = new SavingInt("YayaMaker.ProjectSlot", 0);
@@ -80,12 +79,6 @@ namespace YayaMaker {
 
 			LConst.GetLanguage = m_Language.Get;
 
-			// Reload Language Texts
-			foreach (var text in m_LanguageTexts) {
-				if (text != null) {
-					text.text = m_Language.Get(text.name);
-				}
-			}
 		}
 
 

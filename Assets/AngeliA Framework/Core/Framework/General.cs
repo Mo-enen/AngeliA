@@ -7,15 +7,19 @@ namespace AngeliaFramework {
 
 
 
-	public enum Layer {
-		Background = 0,
-		Level = 1,
-		Item = 2,
-		Character = 3,
-		Projectile = 4,
-		UI = 5,
+	public enum EntityLayer {
+		Item = 0,
+		Character = 1,
+		Projectile = 2,
+		UI = 3,
 	}
 
+
+	public enum PhysicsLayer {
+		Level = 0,
+		Item = 1,
+		Character = 2,
+	}
 
 
 	public enum Direction2 {
@@ -49,7 +53,8 @@ namespace AngeliaFramework {
 
 	public static class Const {
 		public const int CELL_SIZE = 256;
-		public const int LAYER_COUNT = 6;
+		public const int ENTITY_LAYER_COUNT = 4;
+		public const int PHYSICS_LAYER_COUNT = 3;
 	}
 
 
