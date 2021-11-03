@@ -1,44 +1,18 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 namespace AngeliaFramework {
-
-
-	public class TestA : Entity {
-
-
-	}
-
-
-	public class TestB : Entity {
-
-
-	}
-
-	public class TestC : Entity {
-
-
-	}
-
-	public class TestCC : Entity {
-
-
-	}
-
-
-
-
 	public abstract class Entity {
 
 
 		// SUB
-		public delegate (int sheet, int id) IntIntStringHandler (string str);
+		public delegate uint UIntStringHandler (string str);
 		public delegate Entity EntityTypeLayerHandler (System.Type type, EntityLayer layer);
 
 		// Api
-		public static IntIntStringHandler GetSpriteSheetAndID { get; set; } = null;
+		public static UIntStringHandler GetSpriteGlobalID { get; set; } = null;
 		public static EntityTypeLayerHandler CreateEntity { get; set; } = null;
 		public bool Active { get; set; } = true;
 		public int X { get; set; } = 0;

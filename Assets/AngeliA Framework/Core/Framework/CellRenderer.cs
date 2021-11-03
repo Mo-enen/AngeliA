@@ -29,8 +29,8 @@ namespace AngeliaFramework {
 
 		public class Layer {
 			public Rect[] UVs;
-			public Material Material;
 			public Cell[] Cells;
+			public Material Material;
 			public int CellCount;
 			public int UVCount;
 			public int FocusedCell;
@@ -45,19 +45,8 @@ namespace AngeliaFramework {
 
 		#region --- VAR ---
 
-
-		// Const
-		public const int MAX_CELL_WIDTH = 32 * Const.CELL_SIZE;
-		public const int CELL_HEIGHT = 16 * Const.CELL_SIZE;
-
 		// Api
-		public static int LayerCount => Layers.Length;
-		public static int Width { get; private set; } = 0;
-		public static int Height { get; private set; } = 0;
-		public static int ViewPositionX { get; set; } = 0;
-		public static int ViewPositionY { get; set; } = 0;
-		public static float Zoom { get; set; } = 1f;
-		public static Layer DebugLayer { get; set; } = null;
+		public static RectInt ViewRect { get; set; } = default;
 
 		// Data
 		private static Layer[] Layers = new Layer[0];
@@ -91,7 +80,7 @@ namespace AngeliaFramework {
 
 			// Ratio
 			float ratio = (float)Screen.width / Screen.height;
-			float maxRatio = (float)MAX_CELL_WIDTH / CELL_HEIGHT;
+			float maxRatio = (float)ViewRect.width / ViewRect.height;
 			var rect = new Rect(0f, 0f, 1f, 1f);
 			if (ratio > maxRatio) {
 				rect = new Rect(0.5f - 0.5f * maxRatio / ratio, 0f, maxRatio / ratio, 1f);
@@ -101,14 +90,18 @@ namespace AngeliaFramework {
 			}
 
 			// Size
-			(Width, Height) = GetCameraSize();
+			int width = Mathf.CeilToInt(ViewRect.height * Mathf.Min(
+				(float)Screen.width / Screen.height,
+				(float)ViewRect.width / ViewRect.height
+			));
+			int height = ViewRect.height;
 
 			// Render
 			GL.PushMatrix();
 			GL.LoadProjectionMatrix(Matrix4x4.TRS(
-				new Vector3(-Zoom, -Zoom, 0f),
+				new Vector3(-1f, -1f, 0f),
 				Quaternion.identity,
-				new Vector3(2f * Zoom / Width, 2f * Zoom / Height, 1f)
+				new Vector3(2f / width, 2f / height, 1f)
 			));
 
 			try {
@@ -116,9 +109,6 @@ namespace AngeliaFramework {
 				for (int index = 0; index < layerCount; index++) {
 					DrawLayer(Layers[index]);
 				}
-#if UNITY_EDITOR
-				if (DebugLayer != null) { DrawLayer(DebugLayer); }
-#endif
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 
 			GL.PopMatrix();
@@ -175,14 +165,14 @@ namespace AngeliaFramework {
 					d = rot * d;
 				}
 
-				a.x += cell.X - ViewPositionX;
-				a.y += cell.Y - ViewPositionY;
-				b.x += cell.X - ViewPositionX;
-				b.y += cell.Y - ViewPositionY;
-				c.x += cell.X - ViewPositionX;
-				c.y += cell.Y - ViewPositionY;
-				d.x += cell.X - ViewPositionX;
-				d.y += cell.Y - ViewPositionY;
+				a.x += cell.X - ViewRect.x;
+				a.y += cell.Y - ViewRect.y;
+				b.x += cell.X - ViewRect.x;
+				b.y += cell.Y - ViewRect.y;
+				c.x += cell.X - ViewRect.x;
+				c.y += cell.Y - ViewRect.y;
+				d.x += cell.X - ViewRect.x;
+				d.y += cell.Y - ViewRect.y;
 
 				// Final
 				GL.TexCoord2(uv.xMin, uv.yMin);
@@ -234,11 +224,14 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void Draw (int layerIndex, int id, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color) {
-			if (layerIndex != FocusedLayerIndex) {
-				FocusedLayerIndex = layerIndex;
-				FocusedLayer = Layers[layerIndex];
+		public static void Draw (uint globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color) {
+			if (globalID == uint.MaxValue) { return; }
+			uint sheet = globalID / Const.MAX_SPRITE_PER_SHEET;
+			if (sheet != FocusedLayerIndex) {
+				FocusedLayerIndex = (int)sheet;
+				FocusedLayer = Layers[sheet];
 			}
+			int id = (int)(globalID % Const.MAX_SPRITE_PER_SHEET);
 			if (id >= FocusedLayer.UVCount || FocusedLayer.FocusedCell < 0) { return; }
 			var cell = new Cell {
 				ID = id,
@@ -257,14 +250,6 @@ namespace AngeliaFramework {
 				FocusedLayer.FocusedCell = -1;
 			}
 		}
-
-
-		// Camera
-		public static (int width, int height) GetCameraSize () => (
-			Mathf.CeilToInt(CELL_HEIGHT * Mathf.Min((float)Screen.width / Screen.height, (float)MAX_CELL_WIDTH / CELL_HEIGHT)),
-			CELL_HEIGHT
-		);
-
 
 
 		#endregion

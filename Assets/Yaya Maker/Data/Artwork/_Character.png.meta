@@ -3,14 +3,14 @@ guid: 690d8fc8a6776684e932230e57858c66
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8253449523565351822
-    second: Slice 1
+      213: 2080440696385551974
+    second: Test Chr 0
   - first:
-      213: 2948562266450053793
-    second: Slice 2
+      213: -4614453085105144191
+    second: Test Chr 1
   - first:
-      213: -9017721865373151743
-    second: Slice 3
+      213: 5901351369432555412
+    second: Test Chr 2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -89,7 +89,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Slice 1
+      name: Test Chr 0
       rect:
         serializedVersion: 2
         x: 37
@@ -103,14 +103,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e83dabfec942a8270800000000000000
-      internalID: 8253449523565351822
+      spriteID: 66eb35c6ac53fdc10800000000000000
+      internalID: 2080440696385551974
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slice 2
+      name: Test Chr 1
       rect:
         serializedVersion: 2
         x: 68
@@ -124,14 +124,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1aa40e952c56be820800000000000000
-      internalID: 2948562266450053793
+      spriteID: 18e3a951e5b26ffb0800000000000000
+      internalID: -4614453085105144191
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slice 3
+      name: Test Chr 2
       rect:
         serializedVersion: 2
         x: 60
@@ -145,8 +145,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 10e092bcdbd9ad280800000000000000
-      internalID: -9017721865373151743
+      spriteID: 49fdac5cdcfc5e150800000000000000
+      internalID: 5901351369432555412
       vertices: []
       indices: 
       edges: []
@@ -162,9 +162,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Slice 1: 8253449523565351822
-      Slice 3: -9017721865373151743
-      Slice 2: 2948562266450053793
+      Test Chr 1: -4614453085105144191
+      Test Chr 2: 5901351369432555412
+      Test Chr 0: 2080440696385551974
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

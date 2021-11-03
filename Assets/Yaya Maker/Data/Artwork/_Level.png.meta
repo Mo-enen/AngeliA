@@ -3,8 +3,8 @@ guid: 7a42e1c284f03fa48b3f1c204e25f03a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8253449523565351822
-    second: Slice 1
+      213: -4457159654486767064
+    second: Test level
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -83,7 +83,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Slice 1
+      name: Test level
       rect:
         serializedVersion: 2
         x: 44
@@ -97,8 +97,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e83dabfec942a8270800000000000000
-      internalID: 8253449523565351822
+      spriteID: 82a0d17c8ecf422c0800000000000000
+      internalID: -4457159654486767064
       vertices: []
       indices: 
       edges: []
@@ -114,7 +114,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Slice 1: 8253449523565351822
+      Test level: -4457159654486767064
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

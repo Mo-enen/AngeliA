@@ -100,14 +100,14 @@ namespace AngeliaFramework {
 
 
 		public static void Fill (PhysicsLayer layer, RectInt globalRect, Entity entity) {
-			int i = globalRect.x.GetCellIndexX();
-			int j = globalRect.y.GetCellIndexY();
-			if (i < 0 || j < 0 || i >= Width || j >= Height) { return; }
 #if UNITY_EDITOR
 			if (globalRect.width > Const.CELL_SIZE || globalRect.height > Const.CELL_SIZE) {
 				Debug.LogWarning("[CellPhysics] Rect size too large.");
 			}
 #endif
+			int i = globalRect.x.GetCellIndexX();
+			int j = globalRect.y.GetCellIndexY();
+			if (i < 0 || j < 0 || i >= Width || j >= Height) { return; }
 			if (layer != CurrentLayerEnum) {
 				CurrentLayerEnum = layer;
 				CurrentLayer = Layers[(int)layer];

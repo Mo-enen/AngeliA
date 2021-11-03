@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Texture: {fileID: 2800000, guid: 1aacb5fbcc6589e46b9d4bcf3017301d, type: 3}
   m_Sprites:
-  - {fileID: 8253449523565351822, guid: 1aacb5fbcc6589e46b9d4bcf3017301d, type: 3}
+  - {fileID: -4190173952611691157, guid: 1aacb5fbcc6589e46b9d4bcf3017301d, type: 3}
   m_RendererCapacity: 1024
-  m_Prefix: p_

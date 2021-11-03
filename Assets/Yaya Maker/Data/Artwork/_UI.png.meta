@@ -3,8 +3,8 @@ guid: 70b3724b0b4427d4e83773a3f0acd9d8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8253449523565351822
-    second: Slice 1
+      213: -2078833997301817751
+    second: Pixel
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -83,13 +83,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Slice 1
+      name: Pixel
       rect:
         serializedVersion: 2
-        x: 40
-        y: 59
-        width: 36
-        height: 32
+        x: 1
+        y: 1
+        width: 1
+        height: 1
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -97,8 +97,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e83dabfec942a8270800000000000000
-      internalID: 8253449523565351822
+      spriteID: 96ed1db5e7f7623e0800000000000000
+      internalID: -2078833997301817751
       vertices: []
       indices: 
       edges: []
@@ -114,7 +114,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Slice 1: 8253449523565351822
+      Pixel: -2078833997301817751
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

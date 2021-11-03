@@ -4,9 +4,6 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-
-
-
 	[CreateAssetMenu(fileName = "New Game", menuName = "AngeliA/New Game", order = 99)]
 	public class Game : ScriptableObject {
 
@@ -17,6 +14,8 @@ namespace AngeliaFramework {
 
 
 		// Const
+		private const int MAX_SPAWN_WIDTH = 72 * Const.CELL_SIZE;
+		private const int MAX_SPAWN_HEIGHT = 56 * Const.CELL_SIZE;
 		private readonly int[] ENTITY_CAPACITY = { 128, 128, 1024, 128, };
 		private readonly int[] ENTITY_BUFFER_CAPACITY = { 64, 64, 64, 64 };
 
@@ -25,11 +24,11 @@ namespace AngeliaFramework {
 
 		// Data
 		private Dictionary<ushort, System.Type> EntityTypePool = new Dictionary<ushort, System.Type>();
-		private Dictionary<string, (int sheet, int id)> SpriteSheetIDMaps = new Dictionary<string, (int sheet, int id)>();
+		private Dictionary<string, uint> SpriteSheetIDMaps = new Dictionary<string, uint>();
 		private Entity[][] Entities = null;
 		private Entity[][] EntityBuffers = null;
 		private RectInt ViewRect = default;
-		private RectInt SpawnRect = new RectInt(0, 0, 36 * Const.CELL_SIZE, 28 * Const.CELL_SIZE);
+		private RectInt SpawnRect = default;
 		private int[] EntityBufferLength = null;
 		private uint PhysicsFrame = uint.MinValue + 1;
 
@@ -58,7 +57,7 @@ namespace AngeliaFramework {
 #endif
 
 			// Entity
-			Entity.GetSpriteSheetAndID = GetSpriteSheetAndID;
+			Entity.GetSpriteGlobalID = GetSpriteGlobalID;
 			Entity.CreateEntity = CreateEntity;
 
 			// Entity Global ID Map
@@ -72,12 +71,24 @@ namespace AngeliaFramework {
 			}
 
 			// Sprite Index Map
-			SpriteSheetIDMaps = new Dictionary<string, (int sheet, int id)>();
-			for (int i = 0; i < m_Sheets.Length; i++) {
-				var sheet = m_Sheets[i];
+			SpriteSheetIDMaps = new Dictionary<string, uint>();
+			for (uint sheetIndex = 0; sheetIndex < m_Sheets.Length; sheetIndex++) {
+				var sheet = m_Sheets[sheetIndex];
 				int len = sheet.Sprites.Length;
-				for (int j = 0; j < len; j++) {
-					SpriteSheetIDMaps.TryAdd(sheet.Prefix + sheet.Sprites[j].name, (i, j));
+				for (uint spIndex = 0; spIndex < len; spIndex++) {
+					var sp = sheet.Sprites[spIndex];
+					if (!SpriteSheetIDMaps.ContainsKey(sp.name)) {
+						SpriteSheetIDMaps.TryAdd(sp.name, sheetIndex * Const.MAX_SPRITE_PER_SHEET + spIndex);
+					}
+#if UNITY_EDITOR
+					else {
+						Debug.LogError(
+							$"<color=#ffcc00>{sp.name}</color> from " +
+							$"<color=#ffcc00>{sheet.name}</color> already exists in " +
+							$"<color=#ffcc00>{m_Sheets[SpriteSheetIDMaps[sp.name] / Const.MAX_SPRITE_PER_SHEET].name}</color>"
+						);
+					}
+#endif
 				}
 			}
 
@@ -99,8 +110,8 @@ namespace AngeliaFramework {
 
 			// Physics
 			CellPhysics.Init(
-				SpawnRect.width / Const.CELL_SIZE,
-				SpawnRect.height / Const.CELL_SIZE,
+				MAX_SPAWN_WIDTH / Const.CELL_SIZE,
+				MAX_SPAWN_HEIGHT / Const.CELL_SIZE,
 				Const.PHYSICS_LAYER_COUNT
 			);
 			for (int i = 0; i < Const.PHYSICS_LAYER_COUNT; i++) {
@@ -125,13 +136,23 @@ namespace AngeliaFramework {
 
 
 		private void FrameUpdate_View () {
-			(ViewRect.width, ViewRect.height) = CellRenderer.GetCameraSize();
-			//ViewRect.x = ;
-			//ViewRect.y = ;
+
+			// View
+			ViewRect.width = 32 * Const.CELL_SIZE;
+			ViewRect.height = 16 * Const.CELL_SIZE;
+			ViewRect.x = 0;
+			ViewRect.y = 0;
+			CellRenderer.ViewRect = ViewRect;
+
+			// Spawn Rect
+			SpawnRect.width = Mathf.Clamp(ViewRect.width + 12, 0, MAX_SPAWN_WIDTH);
+			SpawnRect.height = Mathf.Clamp(ViewRect.height + 12, 0, MAX_SPAWN_HEIGHT);
+			SpawnRect.x = ViewRect.x + (ViewRect.width - SpawnRect.width) / 2;
+			SpawnRect.y = ViewRect.y + (ViewRect.height - SpawnRect.height) / 2;
+
+			// Physics
 			CellPhysics.PositionX = SpawnRect.x = (int)ViewRect.center.x - SpawnRect.width / 2;
 			CellPhysics.PositionY = SpawnRect.y = (int)ViewRect.center.y - SpawnRect.height / 2;
-
-
 
 		}
 
@@ -177,15 +198,15 @@ namespace AngeliaFramework {
 
 			///////////////////////////// Test ///////////////////////////////////////////////
 			CellRenderer.Draw(
-				TestLayer, TestID, TestX, TestY, TestPivotX, TestPivotY, TestRot,
+				(uint)(TestLayer * Const.MAX_SPRITE_PER_SHEET + TestID), TestX, TestY, TestPivotX, TestPivotY, TestRot,
 				TestWidth, TestHeight, TestColor
 			);
 			CellRenderer.Draw(
-				TestLayer, TestID, TestX + 256, TestY, TestPivotX, TestPivotY, TestRot,
+				(uint)(TestLayer * Const.MAX_SPRITE_PER_SHEET + TestID), TestX + 256, TestY, TestPivotX, TestPivotY, TestRot,
 				TestWidth, TestHeight, TestColor
 			);
 			CellRenderer.Draw(
-				TestLayer, TestID, TestX + 256 + 256, TestY, TestPivotX, TestPivotY, TestRot,
+				(uint)(TestLayer * Const.MAX_SPRITE_PER_SHEET + TestID), TestX + 256 + 256, TestY, TestPivotX, TestPivotY, TestRot,
 				TestWidth, TestHeight, TestColor
 			);
 			//////////////////////////// Test ///////////////////////////////////////////////
@@ -240,7 +261,16 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private (int sheet, int id) GetSpriteSheetAndID (string name) => SpriteSheetIDMaps.ContainsKey(name) ? SpriteSheetIDMaps[name] : (-1, -1);
+		private uint GetSpriteGlobalID (string name) {
+			if (name != null && SpriteSheetIDMaps.ContainsKey(name)) {
+				return SpriteSheetIDMaps[name];
+			} else {
+#if UNITY_EDITOR
+				Debug.LogWarning($"Fail to get sprite {name}");
+#endif
+				return uint.MaxValue;
+			}
+		}
 
 
 		private Entity CreateEntity (System.Type type, EntityLayer layer) {

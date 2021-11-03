@@ -11,12 +11,10 @@ namespace AngeliaFramework {
 		public Texture2D Texture => m_Texture;
 		public Sprite[] Sprites => m_Sprites;
 		public int RendererCapacity => m_RendererCapacity;
-		public string Prefix => m_Prefix;
 
 		[SerializeField, NullAlert] Texture2D m_Texture = null;
 		[SerializeField, NullAlert, Disable] Sprite[] m_Sprites = null;
 		[SerializeField] int m_RendererCapacity = 1024;
-		[SerializeField] string m_Prefix = "_";
 
 
 		public Rect[] GetUVs () {

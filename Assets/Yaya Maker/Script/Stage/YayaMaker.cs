@@ -65,10 +65,7 @@ namespace YayaMaker {
 		private void FixedUpdate () => m_Game.FrameUpdate();
 
 
-		private void Awake_Game () {
-			m_Game.Init();
-
-		}
+		private void Awake_Game () => m_Game.Init();
 
 
 		private void Awake_Language () {
@@ -109,7 +106,7 @@ namespace YayaMaker {
 			// Message
 			StageProject.OnProjectLoaded = (projectPath) => {
 				WorldStream.LoadInfo(GetWorldInfoPath(projectPath));
-				
+
 
 			};
 			StageProject.OnProjectSaved = (projectPath) => {
