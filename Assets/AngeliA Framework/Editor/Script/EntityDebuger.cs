@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 using UnityEditor;
 using Moenen.Standard;
-using System.Text;
+
+
 
 namespace AngeliaFramework.Editor {
 
@@ -17,8 +19,9 @@ namespace AngeliaFramework.Editor {
 		public PhysicsLayer Layer = PhysicsLayer.Item;
 		public int Width = Const.CELL_SIZE;
 		public int Height = Const.CELL_SIZE;
-		public Color32 Color = new Color32(255, 255, 255, 255);
+		public Color32 Color = new(255, 255, 255, 255);
 		public string SpriteName = "Pixel";
+		public bool PhysicsCheck = false;
 
 
 		public override void FillPhysics () => CellPhysics.Fill(
@@ -27,22 +30,23 @@ namespace AngeliaFramework.Editor {
 
 
 		public override void FrameUpdate () {
-			Rotation = 0;
 			CellRenderer.Draw(
 				GetSpriteGlobalID(SpriteName),
 				X, Y, 0, 0,
-				Rotation, Width, Height, Color
+				0, Width, Height, Color
 			);
-			CellPhysics.ForAllOverlaps(Layer, new RectInt(X, Y, Width, Height), (_rect, _entity) => {
-				if (_entity != this && _entity is DebugEntity dEntity) {
-					CellRenderer.Draw(
-						GetSpriteGlobalID("Pixel"),
-						dEntity.X, dEntity.Y, 0, 0,
-						dEntity.Rotation, dEntity.Width, dEntity.Height, new Color(0, 1, 0, 1f)
-					);
-				}
-				return true;
-			});
+			if (PhysicsCheck) {
+				CellPhysics.ForAllOverlaps(Layer, new RectInt(X, Y, Width, Height), (_rect, _entity) => {
+					if (_entity != this && _entity is DebugEntity dEntity) {
+						CellRenderer.Draw(
+							GetSpriteGlobalID("Pixel"),
+							dEntity.X, dEntity.Y, 0, 0,
+							0, dEntity.Width, dEntity.Height, new Color(0, 1, 0, 1f)
+						);
+					}
+					return true;
+				});
+			}
 		}
 
 
@@ -53,16 +57,17 @@ namespace AngeliaFramework.Editor {
 
 				if (len > 0 && int.TryParse(lines[0], out int x)) { X = x; }
 				if (len > 1 && int.TryParse(lines[1], out int y)) { Y = y; }
-				if (len > 2 && int.TryParse(lines[2], out int r)) { Rotation = r; }
-				if (len > 3 && int.TryParse(lines[3], out int w)) { Width = w; }
-				if (len > 4 && int.TryParse(lines[4], out int h)) { Height = h; }
+				if (len > 2 && int.TryParse(lines[2], out int w)) { Width = w; }
+				if (len > 3 && int.TryParse(lines[3], out int h)) { Height = h; }
 
-				if (len > 5 && byte.TryParse(lines[5], out byte cr)) { Color.r = cr; }
-				if (len > 6 && byte.TryParse(lines[6], out byte cg)) { Color.g = cg; }
-				if (len > 7 && byte.TryParse(lines[7], out byte cb)) { Color.b = cb; }
-				if (len > 8 && byte.TryParse(lines[8], out byte ca)) { Color.a = ca; }
-				if (len > 9 && int.TryParse(lines[9], out int l)) { Layer = (PhysicsLayer)l; }
-				if (len > 10) { SpriteName = lines[10]; }
+				if (len > 4 && byte.TryParse(lines[4], out byte cr)) { Color.r = cr; }
+				if (len > 5 && byte.TryParse(lines[5], out byte cg)) { Color.g = cg; }
+				if (len > 6 && byte.TryParse(lines[6], out byte cb)) { Color.b = cb; }
+				if (len > 7 && byte.TryParse(lines[7], out byte ca)) { Color.a = ca; }
+
+				if (len > 8 && int.TryParse(lines[8], out int l)) { Layer = (PhysicsLayer)l; }
+				if (len > 9) { SpriteName = lines[9]; }
+				if (len > 10) { PhysicsCheck = lines[10] == "1"; }
 
 				return true;
 			}
@@ -71,9 +76,9 @@ namespace AngeliaFramework.Editor {
 
 
 		public string SaveToString () =>
-			$"{X},{Y},{Rotation},{Width},{Height}," +
+			$"{X},{Y},{Width},{Height}," +
 			$"{Color.r},{Color.g},{Color.b},{Color.a}," +
-			$"{(int)Layer},{SpriteName}";
+			$"{(int)Layer},{SpriteName},{(PhysicsCheck ? 1 : 0)}";
 
 
 	}
@@ -109,16 +114,16 @@ namespace AngeliaFramework.Editor {
 		private Game Game = null;
 		private Entity[][] Entities = null;
 		private Entity FocusingEntity = null;
-		private List<System.Type> EntityTypes = new List<System.Type>();
-		private Dictionary<System.Type, FieldInfo[]> EntityFieldMap = new Dictionary<System.Type, FieldInfo[]>();
+		private List<System.Type> EntityTypes = new();
+		private Dictionary<System.Type, FieldInfo[]> EntityFieldMap = new();
 		private Vector2 MasterScrollPos = default;
 		private int PageIndex = 0;
 
 		// Saving
-		private static EditorSavingInt EntityLayerIndex = new EditorSavingInt("EntityDebuger.EntityLayerIndex", 0);
-		private static EditorSavingInt PhysicsLayerIndex = new EditorSavingInt("EntityDebuger.PhysicsLayerIndex", 0);
-		private static EditorSavingString EntityInitContent = new EditorSavingString("EntityDebuger.EntityInitContent", "");
-		private static EditorSavingString DebugEntities = new EditorSavingString("EntityDebuger.DebugEntities", "");
+		private static EditorSavingInt EntityLayerIndex = new("EntityDebuger.EntityLayerIndex", 0);
+		private static EditorSavingInt PhysicsLayerIndex = new("EntityDebuger.PhysicsLayerIndex", 0);
+		private static EditorSavingString EntityInitContent = new("EntityDebuger.EntityInitContent", "");
+		private static EditorSavingString DebugEntities = new("EntityDebuger.DebugEntities", "");
 
 
 		#endregion
@@ -247,18 +252,17 @@ namespace AngeliaFramework.Editor {
 				using (new GUILayout.HorizontalScope()) {
 					GUI.Label(Layout.Rect(24, HEIGHT), "#", Layout.MiniGreyLabel);
 					GUI.Label(Layout.Rect(0, HEIGHT), "type", Layout.MiniGreyLabel);
-					Layout.Rect(0, HEIGHT);
 					GUI.Label(Layout.Rect(0, HEIGHT), "x", Layout.MiniGreyLabel);
 					Layout.Space(4);
 					GUI.Label(Layout.Rect(0, HEIGHT), "y", Layout.MiniGreyLabel);
 					Layout.Space(4);
-					GUI.Label(Layout.Rect(0, HEIGHT), "rot", Layout.MiniGreyLabel);
+					GUI.Label(Layout.Rect(64, HEIGHT), "rot", Layout.MiniGreyLabel);
 					Layout.Space(4);
 					Layout.Space(24);
 				}
 
 				// List
-				PageIndex = Layout.PageList(PageIndex, 32, capacity, (index, rect) => {
+				PageIndex = Layout.PageList(PageIndex, 16, capacity, (index, rect) => {
 
 					var entity = entities[index];
 
@@ -278,22 +282,33 @@ namespace AngeliaFramework.Editor {
 
 						// Type
 						var _rect = Layout.Rect(0, HEIGHT);
-						_rect.width += Layout.Rect(0, HEIGHT).width;
 						var oldC = GUI.color;
 						GUI.color = new Color(0.4f, 1f, 0.9f, 1f);
 						GUI.Label(_rect, entity.GetType().Name);
 						GUI.color = oldC;
 
+						float snap = Const.CELL_SIZE / 4;
+
 						// X
-						entity.X = EditorGUI.IntField(Layout.Rect(0, HEIGHT), entity.X);
+						_rect = Layout.Rect(0, HEIGHT);
+						entity.X = EditorGUI.IntField(_rect.Shrink(18, 18, 0, 0), entity.X);
+						if (GUI.Button(new Rect(_rect) { width = 18, }, "◀")) {
+							entity.X = (int)(Mathf.Round((entity.X - snap) / snap) * snap);
+						}
+						if (GUI.Button(new Rect(_rect) { x = _rect.xMax - 18, width = 18, }, "▶")) {
+							entity.X = (int)(Mathf.Round((entity.X + snap) / snap) * snap);
+						}
 						Layout.Space(4);
 
 						// Y
-						entity.Y = EditorGUI.IntField(Layout.Rect(0, HEIGHT), entity.Y);
-						Layout.Space(4);
-
-						// Rot
-						entity.Rotation = EditorGUI.IntField(Layout.Rect(0, HEIGHT), entity.Rotation);
+						_rect = Layout.Rect(0, HEIGHT);
+						entity.Y = EditorGUI.IntField(_rect.Shrink(18, 18, 0, 0), entity.Y);
+						if (GUI.Button(new Rect(_rect) { width = 18, }, "◀")) {
+							entity.Y = (int)(Mathf.Round((entity.Y - snap) / snap) * snap);
+						}
+						if (GUI.Button(new Rect(_rect) { x = _rect.xMax - 18, width = 18, }, "▶")) {
+							entity.Y = (int)(Mathf.Round((entity.Y + snap) / snap) * snap);
+						}
 						Layout.Space(4);
 
 						// Destroy
@@ -487,6 +502,7 @@ namespace AngeliaFramework.Editor {
 			float fValue => EditorGUI.FloatField(rect, label, fValue),
 			double dValue => (double)EditorGUI.DoubleField(rect, label, dValue),
 			string sValue => EditorGUI.DelayedTextField(rect, label, sValue),
+			bool boolValue => EditorGUI.Toggle(rect, label, boolValue),
 
 			System.Enum eValue => EditorGUI.EnumPopup(rect, label, eValue),
 

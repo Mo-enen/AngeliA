@@ -21,7 +21,7 @@ namespace AngeliaFramework {
 
 
 
-	public class World {
+	public class Map {
 
 		public int Width => Blocks.GetLength(0);
 		public int Height => Blocks.GetLength(1);
@@ -34,8 +34,8 @@ namespace AngeliaFramework {
 
 
 
-	// ===== World Stream ====
-	public static class WorldStream {
+	// ===== Map Stream ====
+	public static class MapStream {
 
 
 
@@ -45,7 +45,7 @@ namespace AngeliaFramework {
 
 
 		[System.Serializable]
-		private class WorldInfo {
+		private class MapInfo {
 			[System.Serializable]
 			public class FileInfo {
 				public string FileName;
@@ -53,7 +53,7 @@ namespace AngeliaFramework {
 				public int Y;
 				public int Z;
 			}
-			public List<FileInfo> Data = new List<FileInfo>();
+			public List<FileInfo> Data = new();
 		}
 
 
@@ -67,7 +67,7 @@ namespace AngeliaFramework {
 
 
 		// Data
-		private static readonly Dictionary<Vector3Int, string> WorldStreamMap = new Dictionary<Vector3Int, string>();
+		private static readonly Dictionary<Vector3Int, string> MapPos_FileName = new();
 
 
 		#endregion
@@ -79,14 +79,14 @@ namespace AngeliaFramework {
 
 
 		public static void LoadInfo (string infoPath) {
-			WorldStreamMap.Clear();
-			WorldInfo info = null;
+			MapPos_FileName.Clear();
+			MapInfo info = null;
 			if (Util.FileExists(infoPath)) {
 				string json = Util.FileToText(infoPath);
-				info = JsonUtility.FromJson<WorldInfo>(json);
+				info = JsonUtility.FromJson<MapInfo>(json);
 			}
 			if (info == null) {
-				info = new WorldInfo();
+				info = new MapInfo();
 				Util.TextToFile(
 					JsonUtility.ToJson(info, true),
 					infoPath
@@ -94,21 +94,21 @@ namespace AngeliaFramework {
 			}
 			if (info != null) {
 				foreach (var fileInfo in info.Data) {
-					WorldStreamMap.TryAdd(
+					MapPos_FileName.TryAdd(
 						new Vector3Int(fileInfo.X, fileInfo.Y, fileInfo.Z),
 						fileInfo.FileName
 					);
 				}
 			} else {
-				Debug.LogError("[World Stream] Info is not loaded.");
+				Debug.LogError("[Map Stream] Info is not loaded.");
 			}
 		}
 
 
 		public static void SaveInfo (string infoPath) {
-			var info = new WorldInfo();
-			foreach (var pair in WorldStreamMap) {
-				info.Data.Add(new WorldInfo.FileInfo() {
+			var info = new MapInfo();
+			foreach (var pair in MapPos_FileName) {
+				info.Data.Add(new MapInfo.FileInfo() {
 					FileName = pair.Value,
 					X = pair.Key.x,
 					Y = pair.Key.y,
@@ -118,31 +118,36 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void Clear () => WorldStreamMap.Clear();
+		public static void Clear () => MapPos_FileName.Clear();
 
 
-		// World
-		public static bool FileToWorld (World world, string path) {
+		// Map
+		public static bool LoadMap (Map map, string path) {
 			if (!Util.FileExists(path)) { return false; }
 			using var stream = File.OpenRead(path);
 			using var reader = new BinaryReader(stream);
-			int width = reader.ReadInt32();
-			int height = reader.ReadInt32();
-			int layerCount = reader.ReadInt32();
-			if (world.Width != width || world.Height != height || world.LayerCount != layerCount) {
-				world.Blocks = new Block[width, height, layerCount];
+			uint width = reader.ReadUInt32();
+			uint height = reader.ReadUInt32();
+			uint layerCount = reader.ReadUInt32();
+#if UNITY_EDITOR
+			if (map.Width != 0 && map.Height != 0 && map.LayerCount != 0 && (map.Width != width || map.Height != height || map.LayerCount != layerCount)) {
+				Debug.LogError($"Map is having unexpected size.\nsize: {width} x {height} x {layerCount}\npath:{path}");
+			}
+#endif
+			if (map.Width != width || map.Height != height || map.LayerCount != layerCount) {
+				map.Blocks = new Block[width, height, layerCount];
 			} else {
-				System.Array.Clear(world.Blocks, 0, world.Blocks.Length);
+				System.Array.Clear(map.Blocks, 0, map.Blocks.Length);
 			}
 			uint cursorX = 0;
 			uint cursorY = 0;
 			uint cursorZ = 0;
-			for (int safe = 0; reader.NotEnd() && safe < 100000; safe++) {
+			while (reader.NotEnd()) {
 				uint id = reader.ReadUInt32();
 				if (id >= 128) {
 					// Block
 					ushort blockID = reader.ReadUInt16();
-					world.Blocks[cursorX, cursorY, cursorZ] = new Block(id, blockID);
+					map.Blocks[cursorX, cursorY, cursorZ] = new Block(id, blockID);
 					cursorX++;
 				} else {
 					// Func
@@ -152,9 +157,9 @@ namespace AngeliaFramework {
 					} else {
 						switch (id) {
 							case 0: // Set Cursor
-								cursorX = reader.ReadUInt32();
-								cursorY = reader.ReadUInt32();
-								cursorZ = reader.ReadUInt32();
+								cursorX = reader.ReadUInt32().Clamp(0, width - 1);
+								cursorY = reader.ReadUInt32().Clamp(0, height - 1);
+								cursorZ = reader.ReadUInt32().Clamp(0, layerCount - 1);
 								break;
 						}
 					}
@@ -164,25 +169,26 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void SaveWorld (World world, string path) {
+		public static void SaveMap (Map map, string path) {
 			Util.CreateFolder(Util.GetParentPath(path));
 			using var stream = File.Create(path);
 			using var writer = new BinaryWriter(stream);
-			int width = world.Width;
-			int height = world.Height;
-			int layerCount = world.LayerCount;
+			uint width = (uint)map.Width;
+			uint height = (uint)map.Height;
+			uint layerCount = (uint)map.LayerCount;
 			writer.Write(width);
 			writer.Write(height);
 			writer.Write(layerCount);
 			uint cursorX = 0;
 			uint cursorY = 0;
 			uint cursorZ = 0;
-			for (int k = 0; k < layerCount; k++) {
-				for (int j = 0; j < height; j++) {
-					for (int i = 0; i < width; i++) {
+			for (uint k = 0; k < layerCount; k++) {
+				for (uint j = 0; j < height; j++) {
+					for (uint i = 0; i < width; i++) {
 
-						var block = world.Blocks[i, j, k];
+						var block = map.Blocks[i, j, k];
 						if (block.IsEmpty) { continue; }
+						if (block.InstanceID < 128) { continue; }
 
 						// Check Cusor
 						if (i != cursorX) {
@@ -193,13 +199,13 @@ namespace AngeliaFramework {
 								i <= cursorX + 9
 							) {
 								// Use Hard-Coded Command
-								writer.Write((uint)(i - cursorX));
+								writer.Write((i - cursorX));
 							} else {
 								// Just Set Cursor
 								writer.Write(0u);
-								writer.Write((uint)(i - cursorX));
-								writer.Write((uint)(j - cursorY));
-								writer.Write((uint)(k - cursorZ));
+								writer.Write((i - cursorX).Clamp(0, width - 1));
+								writer.Write((j - cursorY).Clamp(0, height - 1));
+								writer.Write((k - cursorZ).Clamp(0, layerCount - 1));
 							}
 						}
 
@@ -213,12 +219,12 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool HasWorldAt (Vector3Int position) => WorldStreamMap.ContainsKey(position);
+		public static bool HasMapAt (Vector3Int position) => MapPos_FileName.ContainsKey(position);
 
 
-		public static void LoadWorldAtPosition (World world, string rootPath, Vector3Int position) => FileToWorld(
-			world,
-			Util.CombinePaths(rootPath, WorldStreamMap[position] + ".world")
+		public static void LoadMapAtPosition (Map map, string rootPath, Vector3Int position) => LoadMap(
+			map,
+			Util.CombinePaths(rootPath, MapPos_FileName[position] + ".map")
 		);
 
 

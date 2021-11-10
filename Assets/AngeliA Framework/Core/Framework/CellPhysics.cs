@@ -172,11 +172,6 @@ namespace AngeliaFramework {
 		}
 
 
-		// Raycast
-
-
-
-
 		#endregion
 
 

@@ -19,15 +19,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7e08faebe1901f447b4e4b91233b7c71, type: 2}
   - {fileID: 11400000, guid: 0987f8e622136b342a6a371f0b7ef4e6, type: 2}
   - {fileID: 11400000, guid: df688a4ff326bf24cab37b0ee8cf6c08, type: 2}
-  TestLayer: 2
-  TestID: 6
-  TestX: 2276
-  TestY: 1308
-  TestPivotX: 500
-  TestPivotY: 500
-  TestRot: 1417
-  TestWidth: 494
-  TestHeight: 494
-  TestColor:
-    serializedVersion: 2
-    rgba: 4294967295
+  TestX: 0
+  TestY: 0
+  TestWidth: 8192
+  TestHeight: 4096

@@ -16,3 +16,4 @@ MonoBehaviour:
   m_Sprites:
   - {fileID: -276690949747384050, guid: 8875925860900204e857f0a80583ac33, type: 3}
   m_RendererCapacity: 1024
+  m_ShaderName: Cell

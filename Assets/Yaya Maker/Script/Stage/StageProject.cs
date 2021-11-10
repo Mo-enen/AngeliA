@@ -30,7 +30,7 @@ namespace YayaMaker.Stage {
 		// Api
 		public static StringHandler OnProjectLoaded { get; set; } = null;
 		public static StringHandler OnProjectSaved { get; set; } = null;
-		
+
 
 		#endregion
 
@@ -40,26 +40,45 @@ namespace YayaMaker.Stage {
 		#region --- API ---
 
 
-		public string LoadProject (string projectPath) {
-			if (string.IsNullOrEmpty(projectPath)) { return LConst.ProjectPathEmpty; }
-			if (!Util.FolderExists(projectPath)) { return LConst.ProjectPathNotExists; }
-
-
-
-			OnProjectLoaded?.Invoke(projectPath);
-			return "";
+		public bool LoadProject (string projectPath, System.Action<string> callback = null) {
+			if (string.IsNullOrEmpty(projectPath)) {
+				callback?.Invoke(LConst.ProjectPathEmpty);
+				return false;
+			}
+			if (!Util.FolderExists(projectPath)) {
+				callback?.Invoke(LConst.ProjectPathNotExists);
+				return false;
+			}
+			try {
+				ProjectStream.LoadProject(projectPath);
+				OnProjectLoaded?.Invoke(projectPath);
+			} catch (System.Exception ex) {
+				Debug.LogException(ex);
+				callback?.Invoke(ex.Message);
+				return false;
+			}
+			return true;
 		}
 
 
-		public string SaveProject (string projectPath) {
-			if (string.IsNullOrEmpty(projectPath)) { return LConst.ProjectPathEmpty; }
-			if (!Util.FolderExists(projectPath)) { return LConst.ProjectPathNotExists; }
-
-
-
-
-			OnProjectSaved?.Invoke(projectPath);
-			return "";
+		public bool SaveProject (string projectPath, System.Action<string> callback = null) {
+			if (string.IsNullOrEmpty(projectPath)) {
+				callback?.Invoke(LConst.ProjectPathEmpty);
+				return false;
+			}
+			if (!Util.FolderExists(projectPath)) {
+				callback?.Invoke(LConst.ProjectPathNotExists);
+				return false;
+			}
+			try {
+				ProjectStream.SaveProject(projectPath);
+				OnProjectSaved?.Invoke(projectPath);
+			} catch (System.Exception ex) {
+				Debug.LogException(ex);
+				callback?.Invoke(ex.Message);
+				return false;
+			}
+			return true;
 		}
 
 
@@ -69,6 +88,7 @@ namespace YayaMaker.Stage {
 
 
 		#region --- LGC ---
+
 
 
 

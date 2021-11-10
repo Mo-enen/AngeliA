@@ -23,8 +23,8 @@ namespace AngeliaFramework {
 		[SerializeField] SpriteSheet[] m_Sheets = null;
 
 		// Data
-		private Dictionary<ushort, System.Type> EntityTypePool = new Dictionary<ushort, System.Type>();
-		private Dictionary<string, uint> SpriteSheetIDMaps = new Dictionary<string, uint>();
+		private Dictionary<ushort, System.Type> EntityTypePool = new();
+		private Dictionary<string, uint> SpriteSheetIDMaps = new();
 		private Entity[][] Entities = null;
 		private Entity[][] EntityBuffers = null;
 		private RectInt ViewRect = default;
@@ -135,13 +135,20 @@ namespace AngeliaFramework {
 		private void FrameUpdate_Input () => FrameInput.FrameUpdate();
 
 
+
+		public int TestX = 0;
+		public int TestY = 0;
+		public int TestWidth = 32 * Const.CELL_SIZE;
+		public int TestHeight = 16 * Const.CELL_SIZE;
+
+
 		private void FrameUpdate_View () {
 
 			// View
-			ViewRect.width = 32 * Const.CELL_SIZE;
-			ViewRect.height = 16 * Const.CELL_SIZE;
-			ViewRect.x = 0;
-			ViewRect.y = 0;
+			ViewRect.width = TestWidth;
+			ViewRect.height = TestHeight;
+			ViewRect.x = TestX;
+			ViewRect.y = TestY;
 			CellRenderer.ViewRect = ViewRect;
 
 			// Spawn Rect
@@ -193,28 +200,6 @@ namespace AngeliaFramework {
 				}
 			}
 
-
-
-
-			///////////////////////////// Test ///////////////////////////////////////////////
-			CellRenderer.Draw(
-				(uint)(TestLayer * Const.MAX_SPRITE_PER_SHEET + TestID), TestX, TestY, TestPivotX, TestPivotY, TestRot,
-				TestWidth, TestHeight, TestColor
-			);
-			CellRenderer.Draw(
-				(uint)(TestLayer * Const.MAX_SPRITE_PER_SHEET + TestID), TestX + 256, TestY, TestPivotX, TestPivotY, TestRot,
-				TestWidth, TestHeight, TestColor
-			);
-			CellRenderer.Draw(
-				(uint)(TestLayer * Const.MAX_SPRITE_PER_SHEET + TestID), TestX + 256 + 256, TestY, TestPivotX, TestPivotY, TestRot,
-				TestWidth, TestHeight, TestColor
-			);
-			//////////////////////////// Test ///////////////////////////////////////////////
-
-
-
-
-
 			// Add New Entities
 			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
 				if (ENTITY_BUFFER_CAPACITY[layerIndex] <= 0) { continue; }
@@ -239,18 +224,6 @@ namespace AngeliaFramework {
 
 			PhysicsFrame++;
 		}
-
-
-		public int TestLayer = 0;
-		public int TestID = 0;
-		public int TestX = 0;
-		public int TestY = 0;
-		public int TestPivotX = 0;
-		public int TestPivotY = 0;
-		public int TestRot = 0;
-		public int TestWidth = 256;
-		public int TestHeight = 256;
-		public Color32 TestColor = new Color32(255, 255, 255, 255);
 
 
 		#endregion

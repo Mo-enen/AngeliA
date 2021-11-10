@@ -15,6 +15,7 @@ namespace AngeliaFramework {
 		[SerializeField, NullAlert] Texture2D m_Texture = null;
 		[SerializeField, NullAlert, Disable] Sprite[] m_Sprites = null;
 		[SerializeField] int m_RendererCapacity = 1024;
+		[SerializeField] string m_ShaderName = "Cell";
 
 
 		public Rect[] GetUVs () {
@@ -35,9 +36,8 @@ namespace AngeliaFramework {
 		}
 
 
-		public Material GetMaterial () => new Material(Shader.Find("Cell")) {
-			name = "Material",
-			shader = Shader.Find("Cell"),
+		public Material GetMaterial () => new(Shader.Find(m_ShaderName)) {
+			name = "Material-" + name,
 			mainTexture = m_Texture,
 			enableInstancing = true,
 			mainTextureOffset = Vector2.zero,

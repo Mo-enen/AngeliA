@@ -33,7 +33,7 @@ namespace YayaMaker {
 		[SerializeField] DialogWindow m_DialogTemplate = null;
 
 		// Save
-		private SavingInt ProjectSlot = new SavingInt("YayaMaker.ProjectSlot", 0);
+		private SavingInt ProjectSlot = new("YayaMaker.ProjectSlot", 0);
 
 
 		#endregion
@@ -100,17 +100,16 @@ namespace YayaMaker {
 			// Init Project Folders
 			for (int i = 0; i < SLOT_COUNT; i++) {
 				Util.CreateFolder(GetProjectPathAtSlot(i));
-				Util.CreateFolder(GetWorldRoot(GetProjectPathAtSlot(i)));
 			}
 
 			// Message
 			StageProject.OnProjectLoaded = (projectPath) => {
-				WorldStream.LoadInfo(GetWorldInfoPath(projectPath));
+				//MapStream.LoadInfo(GetWorldInfoPath(projectPath));
 
 
 			};
 			StageProject.OnProjectSaved = (projectPath) => {
-				WorldStream.SaveInfo(GetWorldInfoPath(projectPath));
+				//MapStream.SaveInfo(GetWorldInfoPath(projectPath));
 
 
 			};
@@ -180,11 +179,9 @@ namespace YayaMaker {
 		#region --- LGC ---
 
 
-		// Project
-		private string GetProjectPathAtSlot (int slot) => Util.CombinePaths(Application.persistentDataPath, $"Slot_{slot:00}");
-		private string GetWorldRoot (string projectPath) => Util.CombinePaths(projectPath, "World");
-		private string GetWorldInfoPath (string projectPath) => Util.CombinePaths(GetWorldRoot(projectPath), "Info.json");
-
+		private static string GetProjectPathAtSlot (int slot) => Util.CombinePaths(
+			Application.persistentDataPath, "Local", $"Slot_{slot:00}"
+		);
 
 
 		#endregion

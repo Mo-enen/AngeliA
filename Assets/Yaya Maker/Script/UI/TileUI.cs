@@ -54,18 +54,18 @@ namespace YayaMaker.UI {
 
 		// Ser
 		[SerializeField] Grabber m_Template = null;
-		[SerializeField] Vector2 m_GridSize = new Vector2(86, 86);
+		[SerializeField] Vector2 m_GridSize = new(86, 86);
 		[SerializeField] float m_MaxLength = 64f;
-		[SerializeField] AnimationCurve m_SizeCurve = new AnimationCurve();
-		[SerializeField] AnimationCurve m_SwipeCurve = new AnimationCurve();
+		[SerializeField] AnimationCurve m_SizeCurve = new();
+		[SerializeField] AnimationCurve m_SwipeCurve = new();
 
 		// Data
-		private readonly List<TileItem> Tiles = new List<TileItem>();
+		private readonly List<TileItem> Tiles = new();
 		private Coroutine MouseChecking = null;
 		private bool Dragging = false;
 
 		// Saving
-		private SavingString PositionStrs = new SavingString("TileLayout.PositionStrs", "");
+		private SavingString PositionStrs = new("TileLayout.PositionStrs", "");
 
 
 		#endregion

@@ -76,3 +76,4 @@ MonoBehaviour:
   - {fileID: 8144852046077913281, guid: 05873e43bc8d6bf4d96ef56c10bbc96a, type: 3}
   - {fileID: 4274404421808926417, guid: 05873e43bc8d6bf4d96ef56c10bbc96a, type: 3}
   m_RendererCapacity: 1024
+  m_ShaderName: Cell

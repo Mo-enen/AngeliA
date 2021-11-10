@@ -53,7 +53,7 @@ namespace AngeliaFramework {
 		// Data
 		private static Keyboard Keyboard = null;
 		private static Gamepad Gamepad = null;
-		private static readonly Dictionary<GameKey, KeyState> StateMap = new Dictionary<GameKey, KeyState>() {
+		private static readonly Dictionary<GameKey, KeyState> StateMap = new() {
 			{ GameKey.Left, KeyState.None },
 			{ GameKey.Right, KeyState.None },
 			{ GameKey.Down, KeyState.None },
@@ -63,7 +63,7 @@ namespace AngeliaFramework {
 			{ GameKey.Start, KeyState.None },
 			{ GameKey.Select, KeyState.None },
 		};
-		private static readonly Dictionary<GameKey, (Key a, Key b)> KeyboardMap = new Dictionary<GameKey, (Key a, Key b)>() {
+		private static readonly Dictionary<GameKey, (Key a, Key b)> KeyboardMap = new() {
 			{GameKey.Left, (Key.A, Key.LeftArrow)},
 			{GameKey.Right, (Key.D, Key.RightArrow)},
 			{GameKey.Down, (Key.S, Key.DownArrow)},
@@ -75,8 +75,8 @@ namespace AngeliaFramework {
 		};
 
 		// Saving
-		private static SavingBool SwapeAB = new SavingBool("FrameInput.SwapeAB", false);
-		private static SavingString KeyboardSetup = new SavingString("FrameInput.KeyboardSetup", "");
+		private static SavingBool SwapeAB = new("FrameInput.SwapeAB", false);
+		private static SavingString KeyboardSetup = new("FrameInput.KeyboardSetup", "");
 
 
 		#endregion
