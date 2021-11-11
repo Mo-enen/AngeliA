@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-
+using Moenen.Stage;
 
 
 namespace YayaMaker.Stage {
@@ -16,7 +16,6 @@ namespace YayaMaker.Stage {
 
 		// Handler
 		public delegate void VoidHandler ();
-		public delegate void StringHandler (string str);
 
 
 		#endregion
@@ -28,8 +27,11 @@ namespace YayaMaker.Stage {
 
 
 		// Api
-		public static StringHandler OnProjectLoaded { get; set; } = null;
-		public static StringHandler OnProjectSaved { get; set; } = null;
+		public static VoidHandler OnProjectLoaded { get; set; } = null;
+		public static VoidHandler OnProjectSaved { get; set; } = null;
+
+		// Data
+		private Project CurrentProject = new();
 
 
 		#endregion
@@ -40,45 +42,29 @@ namespace YayaMaker.Stage {
 		#region --- API ---
 
 
-		public bool LoadProject (string projectPath, System.Action<string> callback = null) {
+		public void LoadProject (string projectPath) {
 			if (string.IsNullOrEmpty(projectPath)) {
-				callback?.Invoke(LConst.ProjectPathEmpty);
-				return false;
+				throw new LanguageException(LConst.ProjectPathEmpty);
 			}
 			if (!Util.FolderExists(projectPath)) {
-				callback?.Invoke(LConst.ProjectPathNotExists);
-				return false;
+				throw new LanguageException(LConst.ProjectPathNotExists);
 			}
-			try {
-				ProjectStream.LoadProject(projectPath);
-				OnProjectLoaded?.Invoke(projectPath);
-			} catch (System.Exception ex) {
-				Debug.LogException(ex);
-				callback?.Invoke(ex.Message);
-				return false;
-			}
-			return true;
+			CurrentProject =
+				ProjectStream.LoadProject(projectPath) ??
+				throw new LanguageException(LConst.FailToLoadProject);
+			OnProjectLoaded?.Invoke();
 		}
 
 
-		public bool SaveProject (string projectPath, System.Action<string> callback = null) {
+		public void SaveProject (string projectPath) {
 			if (string.IsNullOrEmpty(projectPath)) {
-				callback?.Invoke(LConst.ProjectPathEmpty);
-				return false;
+				throw new LanguageException(LConst.ProjectPathEmpty);
 			}
 			if (!Util.FolderExists(projectPath)) {
-				callback?.Invoke(LConst.ProjectPathNotExists);
-				return false;
+				throw new LanguageException(LConst.ProjectPathNotExists);
 			}
-			try {
-				ProjectStream.SaveProject(projectPath);
-				OnProjectSaved?.Invoke(projectPath);
-			} catch (System.Exception ex) {
-				Debug.LogException(ex);
-				callback?.Invoke(ex.Message);
-				return false;
-			}
-			return true;
+			ProjectStream.SaveProject(projectPath, CurrentProject);
+			OnProjectSaved?.Invoke();
 		}
 
 

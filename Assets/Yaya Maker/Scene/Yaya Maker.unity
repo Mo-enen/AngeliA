@@ -720,6 +720,8 @@ MonoBehaviour:
   - Quit
   - Dialog.QuitConfirmContent
   - Quit now?
+  - Project.FailToLoadProject
+  - Fail to load project
   - Project.ProjectPathEmpty
   - Project path is empty
   - Project.ProjectPathNotExists

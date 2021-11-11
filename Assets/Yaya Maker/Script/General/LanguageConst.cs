@@ -22,6 +22,7 @@ namespace YayaMaker {
 		// Project
 		public static string ProjectPathEmpty => GetLanguage("Project.ProjectPathEmpty");
 		public static string ProjectPathNotExists => GetLanguage("Project.ProjectPathNotExists");
+		public static string FailToLoadProject => GetLanguage("Project.FailToLoadProject");
 
 
 

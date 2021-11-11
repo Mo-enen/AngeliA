@@ -56,9 +56,9 @@ namespace YayaMaker {
 
 
 		private void Start () {
-			m_Project.LoadProject(GetProjectPathAtSlot(ProjectSlot.Value));
-
-
+			try {
+				m_Project.LoadProject(GetProjectPathAtSlot(ProjectSlot.Value));
+			} catch (System.Exception ex) { LogException(ex); }
 		}
 
 
@@ -103,13 +103,13 @@ namespace YayaMaker {
 			}
 
 			// Message
-			StageProject.OnProjectLoaded = (projectPath) => {
-				//MapStream.LoadInfo(GetWorldInfoPath(projectPath));
+			StageProject.OnProjectLoaded = () => {
+
 
 
 			};
-			StageProject.OnProjectSaved = (projectPath) => {
-				//MapStream.SaveInfo(GetWorldInfoPath(projectPath));
+			StageProject.OnProjectSaved = () => {
+
 
 
 			};
@@ -166,22 +166,24 @@ namespace YayaMaker {
 
 
 
-		#region --- API ---
-
-
-
-
-		#endregion
-
-
-
-
 		#region --- LGC ---
 
 
-		private static string GetProjectPathAtSlot (int slot) => Util.CombinePaths(
+		private string GetProjectPathAtSlot (int slot) => Util.CombinePaths(
 			Application.persistentDataPath, "Local", $"Slot_{slot:00}"
 		);
+
+
+		private void LogException (System.Exception ex) {
+			switch (ex) {
+				case LanguageException lEx:
+
+					break;
+				default:
+
+					break;
+			}
+		}
 
 
 		#endregion

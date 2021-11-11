@@ -40,88 +40,9 @@ namespace AngeliaFramework {
 
 
 
-		#region --- SUB ---
-
-
-
-		[System.Serializable]
-		private class MapInfo {
-			[System.Serializable]
-			public class FileInfo {
-				public string FileName;
-				public int X;
-				public int Y;
-				public int Z;
-			}
-			public List<FileInfo> Data = new();
-		}
-
-
-
-		#endregion
-
-
-
-
-		#region --- VAR ---
-
-
-		// Data
-		private static readonly Dictionary<Vector3Int, string> MapPos_FileName = new();
-
-
-		#endregion
-
-
-
-
 		#region --- API ---
 
 
-		public static void LoadInfo (string infoPath) {
-			MapPos_FileName.Clear();
-			MapInfo info = null;
-			if (Util.FileExists(infoPath)) {
-				string json = Util.FileToText(infoPath);
-				info = JsonUtility.FromJson<MapInfo>(json);
-			}
-			if (info == null) {
-				info = new MapInfo();
-				Util.TextToFile(
-					JsonUtility.ToJson(info, true),
-					infoPath
-				);
-			}
-			if (info != null) {
-				foreach (var fileInfo in info.Data) {
-					MapPos_FileName.TryAdd(
-						new Vector3Int(fileInfo.X, fileInfo.Y, fileInfo.Z),
-						fileInfo.FileName
-					);
-				}
-			} else {
-				Debug.LogError("[Map Stream] Info is not loaded.");
-			}
-		}
-
-
-		public static void SaveInfo (string infoPath) {
-			var info = new MapInfo();
-			foreach (var pair in MapPos_FileName) {
-				info.Data.Add(new MapInfo.FileInfo() {
-					FileName = pair.Value,
-					X = pair.Key.x,
-					Y = pair.Key.y,
-				});
-			}
-			Util.TextToFile(JsonUtility.ToJson(info, true), infoPath);
-		}
-
-
-		public static void Clear () => MapPos_FileName.Clear();
-
-
-		// Map
 		public static bool LoadMap (Map map, string path) {
 			if (!Util.FileExists(path)) { return false; }
 			using var stream = File.OpenRead(path);
@@ -217,15 +138,6 @@ namespace AngeliaFramework {
 				}
 			}
 		}
-
-
-		public static bool HasMapAt (Vector3Int position) => MapPos_FileName.ContainsKey(position);
-
-
-		public static void LoadMapAtPosition (Map map, string rootPath, Vector3Int position) => LoadMap(
-			map,
-			Util.CombinePaths(rootPath, MapPos_FileName[position] + ".map")
-		);
 
 
 		#endregion
