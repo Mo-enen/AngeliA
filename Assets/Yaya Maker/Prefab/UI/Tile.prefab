@@ -28,6 +28,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7875468874435702944}
   m_RootOrder: 1
@@ -107,6 +108,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7875468874435702944}
   m_RootOrder: 0
@@ -165,7 +167,7 @@ GameObject:
   - component: {fileID: 7875468874435702944}
   - component: {fileID: 7875468874435703006}
   - component: {fileID: 7376355855725272606}
-  - component: {fileID: 1725245657568391543}
+  - component: {fileID: 1289518750184893528}
   - component: {fileID: 7875468874435703005}
   - component: {fileID: -3797652618866517118}
   - component: {fileID: 7875468874435703004}
@@ -187,6 +189,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8236348403467520669}
   - {fileID: 6984889614604345973}
@@ -223,7 +226,7 @@ MonoBehaviour:
   - {fileID: 9104533570346550719}
   - {fileID: 6697255718962920159}
   - {fileID: -3797652618866517118}
---- !u!114 &1725245657568391543
+--- !u!114 &1289518750184893528
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -232,7 +235,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7875468874435702945}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95eefd4ac5b945d42ba5a07bf2089855, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -243,9 +246,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 5206991976731461557, guid: 06d9fc2bdb4189241858066f6565a968,
-    type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 0}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -253,11 +255,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 0.5
-  m_UseJelly: 1
-  m_Point: {x: 0, y: 0}
-  m_Size: {x: 64, y: 64}
-  m_Detail: 6
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &7875468874435703005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,7 +296,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1725245657568391543}
+  m_TargetGraphic: {fileID: 0}
 --- !u!114 &-3797652618866517118
 MonoBehaviour:
   m_ObjectHideFlags: 0

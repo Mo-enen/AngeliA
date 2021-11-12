@@ -4,4 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Yaya Maker/Scene/Yaya Maker.unity
+    guid: 5f10db84d6d095a4082eef7a31c6b791
+  m_configObjects: {}

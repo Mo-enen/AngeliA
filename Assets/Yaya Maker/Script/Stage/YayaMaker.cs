@@ -80,16 +80,16 @@ namespace YayaMaker {
 
 
 		private void Awake_Music () {
-			StageMusic.OnMusicClipLoaded = () => {
+			StageAudio.OnMusicClipLoaded = () => {
 
 			};
-			StageMusic.OnMusicPlayPause = (playing) => {
+			StageAudio.OnMusicPlayPause = (playing) => {
 
 			};
-			StageMusic.OnMusicTimeChanged = (time) => {
+			StageAudio.OnMusicTimeChanged = (time) => {
 
 			};
-			StageMusic.OnPitchChanged = () => {
+			StageAudio.OnPitchChanged = () => {
 
 			};
 		}
@@ -175,14 +175,9 @@ namespace YayaMaker {
 
 
 		private void LogException (System.Exception ex) {
-			switch (ex) {
-				case LanguageException lEx:
-
-					break;
-				default:
-
-					break;
-			}
+			var dialog = Window.Spawn(m_DialogTemplate, m_WindowRoot);
+			dialog.SetContent("", ex is LanguageException ? m_Language.Get(ex.Message) : ex.Message);
+			dialog.AddOption(LConst.LabelOK, () => { });
 		}
 
 
@@ -193,19 +188,3 @@ namespace YayaMaker {
 
 	}
 }
-
-
-
-#if UNITY_EDITOR
-namespace YayaMaker.Editor {
-	using UnityEditor;
-	[CustomEditor(typeof(YayaMaker))]
-	public class YayaMaker_Inspector : Editor {
-		public override void OnInspectorGUI () {
-			serializedObject.Update();
-			DrawPropertiesExcluding(serializedObject, "m_Script");
-			serializedObject.ApplyModifiedProperties();
-		}
-	}
-}
-#endif

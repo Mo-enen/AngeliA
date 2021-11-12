@@ -6,10 +6,27 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using UIGadget;
 
 
 namespace YayaMaker.UI {
+
+
+
+	public class TestTileA : TileItem {
+		public TestTileA (RectTransform rt, Text label, Image icon) : base(rt, label, icon) { }
+		public override string GetDisplayName () => "Test A";
+	}
+	public class TestTileB : TileItem {
+		public TestTileB (RectTransform rt, Text label, Image icon) : base(rt, label, icon) { }
+		public override string GetDisplayName () => "Test B";
+	}
+	public class TestTileC : TileItem {
+		public TestTileC (RectTransform rt, Text label, Image icon) : base(rt, label, icon) { }
+		public override string GetDisplayName () => "Test C";
+	}
+
 
 
 	public abstract class TileItem {
@@ -32,8 +49,8 @@ namespace YayaMaker.UI {
 		}
 		public void RefreshLabel () => Label.text = GetDisplayName();
 		public void RefreshIcon () => Icon.sprite = GetIcon();
-		public abstract string GetDisplayName ();
-		public abstract Sprite GetIcon ();
+		public virtual string GetDisplayName () => "";
+		public virtual Sprite GetIcon () => null;
 		public virtual void OnLeftClick () { }
 
 
@@ -42,6 +59,17 @@ namespace YayaMaker.UI {
 
 
 	public class TileUI : MonoBehaviour {
+
+
+
+
+		#region --- SUB ---
+
+
+		[System.Serializable] public class VoidEvent : UnityEvent { }
+
+
+		#endregion
 
 
 
@@ -55,9 +83,8 @@ namespace YayaMaker.UI {
 		// Ser
 		[SerializeField] Grabber m_Template = null;
 		[SerializeField] Vector2 m_GridSize = new(86, 86);
-		[SerializeField] float m_MaxLength = 64f;
-		[SerializeField] AnimationCurve m_SizeCurve = new();
 		[SerializeField] AnimationCurve m_SwipeCurve = new();
+		[SerializeField] VoidEvent m_OnItemDragged = null;
 
 		// Data
 		private readonly List<TileItem> Tiles = new();
@@ -172,25 +199,19 @@ namespace YayaMaker.UI {
 				var rt = tile.RectTransform;
 				var pRT = rt.parent as RectTransform;
 				var prevPos = rt.anchoredPosition + rt.anchorMin * pRT.rect.size;
-				var jelly = rt.GetComponent<JellyImage>();
-				jelly.UseJelly = true;
 				while (Input.GetMouseButton(0)) {
-					float lerp = Time.deltaTime * 20f;
 					var pos = rt.anchoredPosition + rt.anchorMin * pRT.rect.size;
 					float deltaX = pos.x - prevPos.x;
 					float deltaY = pos.y - prevPos.y;
 					if (Mathf.Abs(deltaX) > rt.rect.width || Mathf.Abs(deltaY) > rt.rect.height) {
-						jelly.Point = Vector2.ClampMagnitude(
-							jelly.Point + new Vector2(-deltaX, -deltaY),
-							m_MaxLength
-						);
+						rt.localScale = Vector3.one * 1.2f;
+						m_OnItemDragged?.Invoke();
 					}
 					prevPos = pos;
-					jelly.Point = Vector2.Lerp(jelly.Point, Vector2.zero, lerp);
-					jelly.Size = rt.rect.size * m_SizeCurve.Evaluate(Vector2.Distance(jelly.Point, Vector2.zero));
+					rt.localScale = Vector3.Lerp(rt.localScale, Vector3.one, Time.deltaTime * 20f);
 					yield return new WaitForEndOfFrame();
 				}
-				jelly.UseJelly = false;
+				rt.localScale = Vector3.one;
 				Dragging = false;
 			}
 		}

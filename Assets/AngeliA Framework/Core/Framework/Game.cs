@@ -135,20 +135,13 @@ namespace AngeliaFramework {
 		private void FrameUpdate_Input () => FrameInput.FrameUpdate();
 
 
-
-		public int TestX = 0;
-		public int TestY = 0;
-		public int TestWidth = 32 * Const.CELL_SIZE;
-		public int TestHeight = 16 * Const.CELL_SIZE;
-
-
 		private void FrameUpdate_View () {
 
 			// View
-			ViewRect.width = TestWidth;
-			ViewRect.height = TestHeight;
-			ViewRect.x = TestX;
-			ViewRect.y = TestY;
+			ViewRect.width = 32 * Const.CELL_SIZE;
+			ViewRect.height = 16 * Const.CELL_SIZE;
+			ViewRect.x = 0;
+			ViewRect.y = 0;
 			CellRenderer.ViewRect = ViewRect;
 
 			// Spawn Rect
@@ -175,6 +168,20 @@ namespace AngeliaFramework {
 
 		private void FrameUpdate_Entity () {
 
+			// Remove Inactive
+			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
+				var entities = Entities[layerIndex];
+				int len = entities.Length;
+				for (int i = 0; i < len; i++) {
+					var entity = entities[i];
+					if (entity == null) { continue; }
+					if (!entity.Active || !SpawnRect.Contains(entity.X, entity.Y)) {
+						entities[i] = null;
+						continue;
+					}
+				}
+			}
+
 			// Fill Physics
 			CellPhysics.BeginFill(PhysicsFrame);
 			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
@@ -183,12 +190,11 @@ namespace AngeliaFramework {
 				for (int i = 0; i < len; i++) {
 					var entity = entities[i];
 					if (entity == null) { continue; }
-					if (!entity.Active) { entities[i] = null; continue; }
 					entity.FillPhysics();
 				}
 			}
 
-			// Update/Draw
+			// Update / Draw
 			CellRenderer.BeginDraw();
 			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
 				var entities = Entities[layerIndex];
