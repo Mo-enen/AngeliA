@@ -26,8 +26,10 @@ namespace AngeliaFramework {
 
 		// API
 		public void Destroy () => Active = false;
+		public static ushort GetGlobalTypeID (System.Type type) =>
+			(ushort)((uint)Mathf.Abs(type.FullName.GetHashCode()) % ushort.MaxValue);
 
-
+		 
 	}
 
 

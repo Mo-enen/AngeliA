@@ -62,7 +62,7 @@ namespace AngeliaFramework {
 
 			// Entity Global ID Map
 			foreach (var eType in typeof(Entity).GetAllChildClass()) {
-				ushort id = (ushort)((uint)Mathf.Abs(eType.GetHashCode()) % ushort.MaxValue);
+				ushort id = Entity.GetGlobalTypeID(eType);
 				if (!EntityTypePool.ContainsKey(id)) {
 					EntityTypePool.Add(id, eType);
 				} else {

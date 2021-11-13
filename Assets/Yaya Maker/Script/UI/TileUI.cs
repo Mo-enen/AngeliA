@@ -85,6 +85,7 @@ namespace YayaMaker.UI {
 		[SerializeField] Vector2 m_GridSize = new(86, 86);
 		[SerializeField] AnimationCurve m_SwipeCurve = new();
 		[SerializeField] VoidEvent m_OnItemDragged = null;
+		[SerializeField] VoidEvent m_OnItemSwiped = null;
 
 		// Data
 		private readonly List<TileItem> Tiles = new();
@@ -252,6 +253,7 @@ namespace YayaMaker.UI {
 
 			foreach (var item in Tiles) {
 				if (item != tile && item.Position == tile.Position) {
+					m_OnItemSwiped?.Invoke();
 					StartCoroutine(Swipe());
 					return;
 				}
