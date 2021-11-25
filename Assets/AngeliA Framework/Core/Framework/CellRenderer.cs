@@ -52,6 +52,7 @@ namespace AngeliaFramework {
 		private static Layer[] Layers = new Layer[0];
 		private static Layer FocusedLayer = null;
 		private static int FocusedLayerIndex = -1;
+		private static Dictionary<int, (int sheet, int id)> SheetIDMap = new();
 
 
 		#endregion
@@ -197,10 +198,13 @@ namespace AngeliaFramework {
 
 
 		// Layer
-		public static void InitLayers (int layerCount) => Layers = new Layer[layerCount];
+		public static void Init (int layerCount) {
+			Layers = new Layer[layerCount];
+			SheetIDMap.Clear();
+		}
 
 
-		public static void SetupLayer (int layerIndex, int cellCapaticy, Material material, Rect[] uvs) {
+		public static void SetupLayer (int layerIndex, int cellCapaticy, Material material, Sprite[] sprites, Rect[] uvs) {
 			var cells = new Cell[cellCapaticy];
 			for (int i = 0; i < cellCapaticy; i++) {
 				cells[i] = new Cell() { ID = -1 };
@@ -213,6 +217,18 @@ namespace AngeliaFramework {
 				CellCount = cellCapaticy,
 			};
 			FocusedLayerIndex = layerIndex;
+			for (int i = 0; i < sprites.Length; i++) {
+				Sprite sp = sprites[i];
+				int id = sp.name.GetAngeliaHashCode();
+				if (!SheetIDMap.ContainsKey(id)) {
+					SheetIDMap.Add(id, (layerIndex, i));
+				}
+#if UNITY_EDITOR
+				else {
+					Debug.LogError($"[Cell Renderer] Sprite {sp}'s id already exists.");
+				}
+#endif
+			}
 		}
 
 
@@ -224,14 +240,14 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void Draw (uint globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color) {
-			if (globalID == uint.MaxValue) { return; }
-			uint sheet = globalID / Const.MAX_SPRITE_PER_SHEET;
+		public static void Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color) {
+			if (!SheetIDMap.ContainsKey(globalID)) { return; }
+			int sheet = SheetIDMap[globalID].sheet;
 			if (sheet != FocusedLayerIndex) {
-				FocusedLayerIndex = (int)sheet;
+				FocusedLayerIndex = sheet;
 				FocusedLayer = Layers[sheet];
 			}
-			int id = (int)(globalID % Const.MAX_SPRITE_PER_SHEET);
+			int id = SheetIDMap[globalID].id;
 			if (id >= FocusedLayer.UVCount || FocusedLayer.FocusedCell < 0) { return; }
 			var cell = new Cell {
 				ID = id,

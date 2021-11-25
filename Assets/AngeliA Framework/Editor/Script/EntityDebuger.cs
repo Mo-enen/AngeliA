@@ -11,8 +11,6 @@ using Moenen.Standard;
 
 
 namespace AngeliaFramework.Editor {
-
-
 	public class DebugEntity : Entity {
 
 
@@ -31,7 +29,7 @@ namespace AngeliaFramework.Editor {
 
 		public override void FrameUpdate () {
 			CellRenderer.Draw(
-				GetSpriteGlobalID(SpriteName),
+				SpriteName.GetAngeliaHashCode(),
 				X, Y, 0, 0,
 				0, Width, Height, Color
 			);
@@ -39,7 +37,7 @@ namespace AngeliaFramework.Editor {
 				CellPhysics.ForAllOverlaps(Layer, new RectInt(X, Y, Width, Height), (_rect, _entity) => {
 					if (_entity != this && _entity is DebugEntity dEntity) {
 						CellRenderer.Draw(
-							GetSpriteGlobalID("Pixel"),
+							"Pixel".GetAngeliaHashCode(),
 							dEntity.X, dEntity.Y, 0, 0,
 							0, dEntity.Width, dEntity.Height, new Color(0, 1, 0, 1f)
 						);

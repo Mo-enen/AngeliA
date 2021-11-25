@@ -49,13 +49,12 @@ namespace AngeliaFramework {
 		DownRight = 7,
 	}
 
-
+	
 
 	public static class Const {
 		public const int CELL_SIZE = 256;
 		public const int ENTITY_LAYER_COUNT = 4;
 		public const int PHYSICS_LAYER_COUNT = 3;
-		public const uint MAX_SPRITE_PER_SHEET = uint.MaxValue / 128;
 	}
 
 

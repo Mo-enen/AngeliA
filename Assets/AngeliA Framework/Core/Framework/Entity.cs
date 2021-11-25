@@ -12,7 +12,6 @@ namespace AngeliaFramework {
 		public delegate Entity EntityTypeLayerHandler (System.Type type, EntityLayer layer);
 
 		// Api
-		public static UIntStringHandler GetSpriteGlobalID { get; set; } = null;
 		public static EntityTypeLayerHandler CreateEntity { get; set; } = null;
 		public bool Active { get; set; } = true;
 		public int X { get; set; } = 0;
@@ -26,10 +25,9 @@ namespace AngeliaFramework {
 
 		// API
 		public void Destroy () => Active = false;
-		public static ushort GetGlobalTypeID (System.Type type) =>
-			(ushort)((uint)Mathf.Abs(type.FullName.GetHashCode()) % ushort.MaxValue);
+		public static int GetGlobalTypeID (System.Type type) => type.FullName.GetAngeliaHashCode();
 
-		 
+
 	}
 
 

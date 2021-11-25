@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UIGadget;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,18 +16,19 @@ namespace YayaMaker.UI {
 
 
 		[System.Serializable]
-		public class LibraryItem {
-			public string Name = "";
-			public ushort EntityID = 0;
-			public Sprite Icon = null;
+		public struct LibraryItem {
+			public int EntityID;
+			public Sprite Icon;
 		}
 
 
 		[System.Serializable]
-		public class ItemGroup {
-			public string Name = "";
-			public List<LibraryItem> Items = new();
+		public struct ItemGroup {
+			public List<LibraryItem> Items;
 		}
+
+
+		public delegate void VoidUshortHandler (int? value);
 
 
 		#endregion
@@ -38,11 +40,15 @@ namespace YayaMaker.UI {
 
 
 		// Api
-		public List<ItemGroup> Groups => m_Groups;
+		public static VoidUshortHandler OnSelectionChanged { get; set; } = null;
 
 		// Ser
 		[SerializeField] List<ItemGroup> m_Groups = new();
-		[SerializeField] RectTransform m_Content = null;
+		[SerializeField] RectTransform m_View = null;
+		[SerializeField] Grabber m_ItemTemplate = null;
+
+		// Data
+		private readonly List<Toggle> AllToggles = new();
 
 
 		#endregion
@@ -53,9 +59,10 @@ namespace YayaMaker.UI {
 		#region --- MSG ---
 
 
-		private void Start () {
-			LoadGroup(0);
-		}
+		private void Awake () => ReloadUI();
+
+
+		private void Start () => ShowGroup(0);
 
 
 		#endregion
@@ -66,22 +73,38 @@ namespace YayaMaker.UI {
 		#region --- API ---
 
 
-		public void LoadGroup (int groupIndex) {
-			if (groupIndex < 0 || groupIndex >= m_Groups.Count) { return; }
-			m_Content.DestroyAllChirldrenImmediate();
-			var group = m_Groups[groupIndex];
-
-
-
-
-
+		public void ReloadUI () {
+			var viewGroup = m_View.GetComponent<ToggleGroup>();
+			foreach (RectTransform contentRT in m_View) {
+				contentRT.DestroyAllChirldrenImmediate();
+				int index = contentRT.GetSiblingIndex();
+				var group = m_Groups[index];
+				for (int i = 0; i < group.Items.Count; i++) {
+					var item = group.Items[i];
+					var grab = Util.SpawnItemUI(m_ItemTemplate, contentRT);
+					var tg = grab.Grab<Toggle>();
+					tg.SetIsOnWithoutNotify(false);
+					tg.group = viewGroup;
+					tg.onValueChanged.AddListener((isOn) => {
+						OnSelectionChanged?.Invoke(isOn ? item.EntityID : null);
+						foreach (var _tg in AllToggles) {
+							if (_tg.isOn && _tg != tg) {
+								_tg.SetIsOnWithoutNotify(false);
+							}
+						}
+					});
+					AllToggles.Add(tg);
+					grab.Grab<Image>("Icon").sprite = item.Icon;
+				}
+			}
 		}
 
 
-		public void UI_SwitchGroup (bool isOn) {
-			if (!isOn) { return; }
-			
-
+		public void ShowGroup (int groupIndex) {
+			if (groupIndex < 0 || groupIndex >= m_Groups.Count) { return; }
+			foreach (RectTransform contentRT in m_View) {
+				contentRT.gameObject.SetActive(contentRT.GetSiblingIndex() == groupIndex);
+			}
 		}
 
 
@@ -120,7 +143,7 @@ namespace YayaMaker.Editor {
 			if (GUI.Button(GUILayoutUtility.GetRect(0, 26, GUILayout.ExpandWidth(true)), "Copy Entity ID")) {
 				var menu = new GenericMenu();
 				foreach (var eType in typeof(Entity).GetAllChildClass()) {
-					menu.AddItem(new GUIContent(eType.Name), false, () => {
+					menu.AddItem(new GUIContent($"{eType.Name}: {Entity.GetGlobalTypeID(eType)}"), false, () => {
 						GUIUtility.systemCopyBuffer = Entity.GetGlobalTypeID(eType).ToString();
 					});
 				}

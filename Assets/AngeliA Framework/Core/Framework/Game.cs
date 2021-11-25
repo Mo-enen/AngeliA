@@ -23,8 +23,7 @@ namespace AngeliaFramework {
 		[SerializeField] SpriteSheet[] m_Sheets = null;
 
 		// Data
-		private Dictionary<ushort, System.Type> EntityTypePool = new();
-		private Dictionary<string, uint> SpriteSheetIDMaps = new();
+		private Dictionary<int, System.Type> EntityTypePool = new();
 		private Entity[][] Entities = null;
 		private Entity[][] EntityBuffers = null;
 		private RectInt ViewRect = default;
@@ -57,12 +56,11 @@ namespace AngeliaFramework {
 #endif
 
 			// Entity
-			Entity.GetSpriteGlobalID = GetSpriteGlobalID;
 			Entity.CreateEntity = CreateEntity;
 
 			// Entity Global ID Map
 			foreach (var eType in typeof(Entity).GetAllChildClass()) {
-				ushort id = Entity.GetGlobalTypeID(eType);
+				int id = Entity.GetGlobalTypeID(eType);
 				if (!EntityTypePool.ContainsKey(id)) {
 					EntityTypePool.Add(id, eType);
 				} else {
@@ -70,33 +68,14 @@ namespace AngeliaFramework {
 				}
 			}
 
-			// Sprite Index Map
-			SpriteSheetIDMaps = new Dictionary<string, uint>();
-			for (uint sheetIndex = 0; sheetIndex < m_Sheets.Length; sheetIndex++) {
-				var sheet = m_Sheets[sheetIndex];
-				int len = sheet.Sprites.Length;
-				for (uint spIndex = 0; spIndex < len; spIndex++) {
-					var sp = sheet.Sprites[spIndex];
-					if (!SpriteSheetIDMaps.ContainsKey(sp.name)) {
-						SpriteSheetIDMaps.TryAdd(sp.name, sheetIndex * Const.MAX_SPRITE_PER_SHEET + spIndex);
-					}
-#if UNITY_EDITOR
-					else {
-						Debug.LogError(
-							$"<color=#ffcc00>{sp.name}</color> from " +
-							$"<color=#ffcc00>{sheet.name}</color> already exists in " +
-							$"<color=#ffcc00>{m_Sheets[SpriteSheetIDMaps[sp.name] / Const.MAX_SPRITE_PER_SHEET].name}</color>"
-						);
-					}
-#endif
-				}
-			}
-
 			// Cell Renderer
-			CellRenderer.InitLayers(m_Sheets.Length);
+			CellRenderer.Init(m_Sheets.Length);
 			for (int i = 0; i < m_Sheets.Length; i++) {
 				var sheet = m_Sheets[i];
-				CellRenderer.SetupLayer(i, sheet.RendererCapacity, sheet.GetMaterial(), sheet.GetUVs());
+				CellRenderer.SetupLayer(
+					i, sheet.RendererCapacity, 
+					sheet.GetMaterial(), sheet.Sprites, sheet.GetUVs()
+				);
 			}
 
 			// Entity
@@ -238,18 +217,6 @@ namespace AngeliaFramework {
 
 
 		#region --- LGC ---
-
-
-		private uint GetSpriteGlobalID (string name) {
-			if (name != null && SpriteSheetIDMaps.ContainsKey(name)) {
-				return SpriteSheetIDMaps[name];
-			} else {
-#if UNITY_EDITOR
-				Debug.LogWarning($"Fail to get sprite {name}");
-#endif
-				return uint.MaxValue;
-			}
-		}
 
 
 		private Entity CreateEntity (System.Type type, EntityLayer layer) {

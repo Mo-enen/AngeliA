@@ -11,8 +11,8 @@ namespace AngeliaFramework {
 
 	public struct Block {
 		public uint InstanceID;
-		public ushort BlockID;
-		public Block (uint instanceID, ushort blockID) {
+		public int BlockID;
+		public Block (uint instanceID, int blockID) {
 			InstanceID = instanceID;
 			BlockID = blockID;
 		}
@@ -135,19 +135,19 @@ namespace AngeliaFramework {
 			uint cursorY = 0;
 			uint cursorZ = 0;
 			while (reader.NotEnd()) {
-				uint id = reader.ReadUInt32();
-				if (id >= 128) {
+				uint insID = reader.ReadUInt32();
+				if (insID >= 128) {
 					// Block
-					ushort blockID = reader.ReadUInt16();
-					map.Blocks[cursorX, cursorY, cursorZ] = new Block(id, blockID);
+					int blockID = reader.ReadInt32();
+					map.Blocks[cursorX, cursorY, cursorZ] = new Block(insID, blockID);
 					cursorX++;
 				} else {
 					// Func
-					if (id >= 1 && id <= 9) {
+					if (insID >= 1 && insID <= 9) {
 						// Hard-Coded ID
-						cursorX += id;
+						cursorX += insID;
 					} else {
-						switch (id) {
+						switch (insID) {
 							case 0: // Set Cursor
 								cursorX = reader.ReadUInt32().Clamp(0, width - 1);
 								cursorY = reader.ReadUInt32().Clamp(0, height - 1);
@@ -190,7 +190,7 @@ namespace AngeliaFramework {
 								i <= cursorX + 9
 							) {
 								// Use Hard-Coded Command
-								writer.Write((i - cursorX));
+								writer.Write(i - cursorX);
 							} else {
 								// Set Cursor
 								writer.Write(0u);
