@@ -1,5 +1,4 @@
-﻿#if UNITY_EDITOR
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
@@ -9,79 +8,7 @@ using UnityEditor;
 using Moenen.Standard;
 
 
-
 namespace AngeliaFramework.Editor {
-	public class DebugEntity : Entity {
-
-
-		public PhysicsLayer Layer = PhysicsLayer.Item;
-		public int Width = Const.CELL_SIZE;
-		public int Height = Const.CELL_SIZE;
-		public Color32 Color = new(255, 255, 255, 255);
-		public string SpriteName = "Pixel";
-		public bool PhysicsCheck = false;
-
-
-		public override void FillPhysics () => CellPhysics.Fill(
-			Layer, new RectInt(X, Y, Width, Height), this
-		);
-
-
-		public override void FrameUpdate () {
-			CellRenderer.Draw(
-				SpriteName.GetAngeliaHashCode(),
-				X, Y, 0, 0,
-				0, Width, Height, Color
-			);
-			if (PhysicsCheck) {
-				CellPhysics.ForAllOverlaps(Layer, new RectInt(X, Y, Width, Height), (_rect, _entity) => {
-					if (_entity != this && _entity is DebugEntity dEntity) {
-						CellRenderer.Draw(
-							"Pixel".GetAngeliaHashCode(),
-							dEntity.X, dEntity.Y, 0, 0,
-							0, dEntity.Width, dEntity.Height, new Color(0, 1, 0, 1f)
-						);
-					}
-					return true;
-				});
-			}
-		}
-
-
-		public bool LoadFromString (string str) {
-			var lines = str.Split(',');
-			if (lines != null && lines.Length > 1) {
-				int len = lines.Length;
-
-				if (len > 0 && int.TryParse(lines[0], out int x)) { X = x; }
-				if (len > 1 && int.TryParse(lines[1], out int y)) { Y = y; }
-				if (len > 2 && int.TryParse(lines[2], out int w)) { Width = w; }
-				if (len > 3 && int.TryParse(lines[3], out int h)) { Height = h; }
-
-				if (len > 4 && byte.TryParse(lines[4], out byte cr)) { Color.r = cr; }
-				if (len > 5 && byte.TryParse(lines[5], out byte cg)) { Color.g = cg; }
-				if (len > 6 && byte.TryParse(lines[6], out byte cb)) { Color.b = cb; }
-				if (len > 7 && byte.TryParse(lines[7], out byte ca)) { Color.a = ca; }
-
-				if (len > 8 && int.TryParse(lines[8], out int l)) { Layer = (PhysicsLayer)l; }
-				if (len > 9) { SpriteName = lines[9]; }
-				if (len > 10) { PhysicsCheck = lines[10] == "1"; }
-
-				return true;
-			}
-			return false;
-		}
-
-
-		public string SaveToString () =>
-			$"{X},{Y},{Width},{Height}," +
-			$"{Color.r},{Color.g},{Color.b},{Color.a}," +
-			$"{(int)Layer},{SpriteName},{(PhysicsCheck ? 1 : 0)}";
-
-
-	}
-
-
 	public class EntityDebuger : EditorWindow {
 
 
@@ -121,7 +48,6 @@ namespace AngeliaFramework.Editor {
 		private static EditorSavingInt EntityLayerIndex = new("EntityDebuger.EntityLayerIndex", 0);
 		private static EditorSavingInt PhysicsLayerIndex = new("EntityDebuger.PhysicsLayerIndex", 0);
 		private static EditorSavingString EntityInitContent = new("EntityDebuger.EntityInitContent", "");
-		private static EditorSavingString DebugEntities = new("EntityDebuger.DebugEntities", "");
 
 
 		#endregion
@@ -141,7 +67,7 @@ namespace AngeliaFramework.Editor {
 				var window = GetOrCreateWindow();
 
 				// Reload Cache
-				if (mode == PlayModeStateChange.EnteredEditMode || mode == PlayModeStateChange.EnteredPlayMode) {
+				if (mode == PlayModeStateChange.EnteredPlayMode) {
 					window.Game = null;
 					window.Entities = null;
 					window.EntityTypes.Clear();
@@ -158,32 +84,39 @@ namespace AngeliaFramework.Editor {
 							if (line.StartsWith("//")) { continue; }
 							var _params = line.Split(',');
 							if (
-								_params != null && _params.Length >= 3 &&
-								System.Enum.TryParse(_params[1], true, out EntityLayer layer) &&
-								int.TryParse(_params[2], out int count)
+								_params != null && _params.Length >= 2 &&
+								System.Enum.TryParse(_params[1], true, out EntityLayer layer)
 							) {
+								// Count
+								int count = 1;
+								if (_params.Length >= 3) {
+									int.TryParse(_params[2], out count);
+								}
+								// X
+								int x = 0;
+								if (_params.Length >= 4) {
+									int.TryParse(_params[3], out x);
+								}
+								// Y
+								int y = 0;
+								if (_params.Length >= 5) {
+									int.TryParse(_params[4], out y);
+								}
+								// Final
 								var type = window.EntityTypes.Single(
 									(t) => t.Name == _params[0]
 								);
 								if (type != null) {
 									for (int i = 0; i < count; i++) {
-										Util.InvokeMethod(window.Game, "CreateEntity", type, layer);
+										var e = window.Game.AddEntity(type, layer);
+										e.X = x;
+										e.Y = y;
 									}
 								}
 							}
 						}
 					}
 				}
-
-				// Debug Entities
-				if (mode == PlayModeStateChange.EnteredPlayMode) {
-					window.LoadDebugEntities();
-				}
-
-				if (mode == PlayModeStateChange.ExitingPlayMode) {
-					window.SaveDebugEntities();
-				}
-
 			};
 		}
 
@@ -248,13 +181,11 @@ namespace AngeliaFramework.Editor {
 
 				// Title Bar
 				using (new GUILayout.HorizontalScope()) {
-					GUI.Label(Layout.Rect(24, HEIGHT), "#", Layout.MiniGreyLabel);
-					GUI.Label(Layout.Rect(0, HEIGHT), "type", Layout.MiniGreyLabel);
-					GUI.Label(Layout.Rect(0, HEIGHT), "x", Layout.MiniGreyLabel);
+					GUI.Label(Layout.Rect(24, HEIGHT), "#", EditorStyles.centeredGreyMiniLabel);
+					GUI.Label(Layout.Rect(0, HEIGHT), "type", EditorStyles.centeredGreyMiniLabel);
+					GUI.Label(Layout.Rect(0, HEIGHT), "x", EditorStyles.centeredGreyMiniLabel);
 					Layout.Space(4);
-					GUI.Label(Layout.Rect(0, HEIGHT), "y", Layout.MiniGreyLabel);
-					Layout.Space(4);
-					GUI.Label(Layout.Rect(64, HEIGHT), "rot", Layout.MiniGreyLabel);
+					GUI.Label(Layout.Rect(0, HEIGHT), "y", EditorStyles.centeredGreyMiniLabel);
 					Layout.Space(4);
 					Layout.Space(24);
 				}
@@ -311,7 +242,7 @@ namespace AngeliaFramework.Editor {
 
 						// Destroy
 						if (GUI.Button(Layout.Rect(24, HEIGHT), "×")) {
-							entity.Destroy();
+							entity.Active = false;
 						}
 
 					}
@@ -345,7 +276,7 @@ namespace AngeliaFramework.Editor {
 								// Name (type)
 								GUI.Label(
 									Layout.Rect(0, HEIGHT),
-									$"{Util.GetDisplayName(field.Name)} <color=#666666>{Util.GetDisplayNameForTypes(field.FieldType.Name)}</color>",
+									$"{Util.GetDisplayName(field.Name)} <color=#666666> {Util.GetDisplayNameForTypes(field.FieldType.Name)}</color>",
 									Layout.RichLabel
 								);
 								// Value
@@ -359,7 +290,15 @@ namespace AngeliaFramework.Editor {
 						}
 
 					} else {
-						Layout.Rect(0, 1);
+						// State
+						var view = (RectInt)Util.GetFieldValue(Game, "ViewRect");
+						var spawn = (RectInt)Util.GetFieldValue(Game, "SpawnRect");
+						GUI.Label(Layout.Rect(0, 18), $"View:\t\t{view.x}, {view.y}, {view.width}, {view.height}");
+						Layout.Space(2);
+						GUI.Label(Layout.Rect(0, 18), $"Spawn:\t\t{spawn.x}, {spawn.y}, {spawn.width}, {spawn.height}");
+						Layout.Space(2);
+						GUI.Label(Layout.Rect(0, 18), $"Resolution:\t{Screen.currentResolution.width}, {Screen.currentResolution.height}");
+						Layout.Space(2);
 					}
 				}
 
@@ -377,7 +316,7 @@ namespace AngeliaFramework.Editor {
 			Layout.Space(6);
 			EditorGUI.HelpBox(
 				Layout.Rect(0, 24).Expand(-16, -6, 0, 0),
-				" Type, Layer, Count",
+				" Type, Layer, Count = 1, X = 0, Y = 0",
 				MessageType.Info
 			);
 			Layout.Space(6);
@@ -388,10 +327,6 @@ namespace AngeliaFramework.Editor {
 			);
 			EditorGUIUtility.AddCursorRect(Layout.LastRect(), MouseCursor.Text);
 			Layout.Space(22);
-
-
-
-
 
 		}
 
@@ -416,13 +351,9 @@ namespace AngeliaFramework.Editor {
 
 			// Entities
 			Entities = Util.GetFieldValue(Game, "Entities") as Entity[][];
-			if (Entities == null) {
-				Game.Init();
-			}
-			Entities = Util.GetFieldValue(Game, "Entities") as Entity[][];
 
 			// EntityTypes
-			var typePool = Util.GetFieldValue(Game, "EntityTypePool") as Dictionary<ushort, System.Type>;
+			var typePool = Util.GetFieldValue(Game, "EntityTypePool") as Dictionary<int, System.Type>;
 			EntityTypes.Clear();
 			EntityTypes.AddRange(typePool.Values);
 
@@ -433,40 +364,9 @@ namespace AngeliaFramework.Editor {
 		private void CreateEntityMenu () {
 			var menu = new GenericMenu();
 			foreach (var type in EntityTypes) {
-				menu.AddItem(new GUIContent(type.Name), false, () => Util.InvokeMethod(
-					Game, "CreateEntity", type, CurrentEntityLayer
-				));
+				menu.AddItem(new GUIContent(type.Name), false, () => Game.AddEntity(type, CurrentEntityLayer));
 			}
 			menu.ShowAsContext();
-		}
-
-
-		private void SaveDebugEntities () {
-			if (Entities == null) { return; }
-			var builder = new StringBuilder();
-			for (int i = 0; i < Const.ENTITY_LAYER_COUNT; i++) {
-				foreach (var e in Entities[i]) {
-					if (e is DebugEntity d) {
-						builder.Append(d.SaveToString());
-						builder.Append('\n');
-					}
-				}
-			}
-			DebugEntities.Value = builder.ToString();
-		}
-
-
-		private void LoadDebugEntities () {
-			if (Entities == null) { return; }
-			var lines = DebugEntities.Value.Split('\n');
-			if (lines != null) {
-				foreach (var line in lines) {
-					var entity = Util.InvokeMethod(
-						Game, "CreateEntity", typeof(DebugEntity), EntityLayer.Item
-					) as DebugEntity;
-					entity.Active = entity.LoadFromString(line);
-				}
-			}
 		}
 
 
@@ -523,4 +423,3 @@ namespace AngeliaFramework.Editor {
 
 	}
 }
-#endif

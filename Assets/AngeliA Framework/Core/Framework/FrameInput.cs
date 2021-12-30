@@ -49,10 +49,14 @@ namespace AngeliaFramework {
 			get => SwapeAB.Value;
 			set => SwapeAB.Value = value;
 		}
+		public static Vector2 MousePosition { get; private set; } = default;
+		public static bool MouseLeftDown { get; private set; } = false;
+		public static bool MouseRightDown { get; private set; } = false;
 
 		// Data
 		private static Keyboard Keyboard = null;
 		private static Gamepad Gamepad = null;
+		private static Mouse Mouse = null;
 		private static readonly Dictionary<GameKey, KeyState> StateMap = new() {
 			{ GameKey.Left, KeyState.None },
 			{ GameKey.Right, KeyState.None },
@@ -64,14 +68,14 @@ namespace AngeliaFramework {
 			{ GameKey.Select, KeyState.None },
 		};
 		private static readonly Dictionary<GameKey, (Key a, Key b)> KeyboardMap = new() {
-			{GameKey.Left, (Key.A, Key.LeftArrow)},
-			{GameKey.Right, (Key.D, Key.RightArrow)},
-			{GameKey.Down, (Key.S, Key.DownArrow)},
-			{GameKey.Up, (Key.W, Key.UpArrow)},
-			{GameKey.A, (Key.P, Key.LeftShift)},
-			{GameKey.B, (Key.L, Key.Z)},
-			{GameKey.Start, (Key.Enter, Key.Space)},
-			{GameKey.Select, (Key.Tab, Key.Tab)},
+			{ GameKey.Left, (Key.A, Key.LeftArrow) },
+			{ GameKey.Right, (Key.D, Key.RightArrow) },
+			{ GameKey.Down, (Key.S, Key.DownArrow) },
+			{ GameKey.Up, (Key.W, Key.UpArrow) },
+			{ GameKey.A, (Key.P, Key.LeftShift) },
+			{ GameKey.B, (Key.L, Key.Z) },
+			{ GameKey.Start, (Key.Enter, Key.Space) },
+			{ GameKey.Select, (Key.Tab, Key.Tab) },
 		};
 
 		// Saving
@@ -117,6 +121,11 @@ namespace AngeliaFramework {
 				Gamepad = Gamepad.current;
 			}
 
+			if (Mouse == null) {
+				Mouse = Mouse.current;
+			}
+
+			// Keys
 			StateMap[GameKey.Left] = GetState(GameKey.Left);
 			StateMap[GameKey.Right] = GetState(GameKey.Right);
 			StateMap[GameKey.Down] = GetState(GameKey.Down);
@@ -125,6 +134,17 @@ namespace AngeliaFramework {
 			StateMap[GameKey.B] = GetState(GameKey.B);
 			StateMap[GameKey.Start] = GetState(GameKey.Start);
 			StateMap[GameKey.Select] = GetState(GameKey.Select);
+
+			// Pointer
+			if (Mouse != null) {
+				MousePosition = Mouse.position.ReadValue();
+				MouseLeftDown = Mouse.leftButton.isPressed;
+				MouseRightDown = Mouse.rightButton.isPressed;
+			} else {
+				MousePosition = default;
+				MouseLeftDown = false;
+				MouseRightDown = false;
+			}
 
 		}
 

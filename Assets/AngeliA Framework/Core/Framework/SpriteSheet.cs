@@ -8,29 +8,32 @@ namespace AngeliaFramework {
 	public class SpriteSheet : ScriptableObject {
 
 
+		// SUB
+		[System.Serializable]
+		public class UvSprite {
+			public int GlobalID;
+			public UvRect Rect;
+		}
+
+
+		// Api
 		public Texture2D Texture => m_Texture;
-		public Sprite[] Sprites => m_Sprites;
+		public UvSprite[] Sprites => m_Sprites;
 		public int RendererCapacity => m_RendererCapacity;
 
+		// Ser
 		[SerializeField, NullAlert] Texture2D m_Texture = null;
-		[SerializeField, NullAlert, Disable] Sprite[] m_Sprites = null;
+		[SerializeField, Disable] UvSprite[] m_Sprites = null;
 		[SerializeField] int m_RendererCapacity = 1024;
 		[SerializeField] string m_ShaderName = "Cell";
 
 
-		public Rect[] GetUVs () {
-			var uvs = new Rect[m_Sprites.Length];
-			var texture = m_Sprites.Length > 0 ? m_Sprites[0].texture : null;
-			if (texture == null) { return uvs; }
+		// API
+		public UvRect[] GetUVs () {
+			var uvs = new UvRect[m_Sprites.Length];
 			for (int i = 0; i < m_Sprites.Length; i++) {
 				var sp = m_Sprites[i];
-				var rect = sp.rect;
-				float width = texture.width;
-				float height = texture.height;
-				uvs[i] = new Rect(
-					rect.x / width, rect.y / height,
-					rect.width / width, rect.height / height
-				);
+				uvs[i] = sp.Rect;
 			}
 			return uvs;
 		}
@@ -48,7 +51,34 @@ namespace AngeliaFramework {
 
 
 #if UNITY_EDITOR
-		public void SetSprites (Sprite[] sprites) => m_Sprites = sprites;
+
+
+		public void SetSprites (Sprite[] sprites) {
+			m_Sprites = new UvSprite[sprites.Length];
+			if (sprites.Length == 0) { return; }
+			float width = sprites[0].texture.width;
+			float height = sprites[0].texture.height;
+			for (int i = 0; i < sprites.Length; i++) {
+				var sp = sprites[i];
+				m_Sprites[i] = new UvSprite() {
+					GlobalID = sp.name.GetAngeliaHashCode(),
+					Rect = new UvRect() {
+						BottomLeft = new Vector2(sp.rect.xMin / width, sp.rect.yMin / height),
+						BottomRight = new Vector2(sp.rect.xMax / width, sp.rect.yMin / height),
+						TopLeft = new Vector2(sp.rect.xMin / width, sp.rect.yMax / height),
+						TopRight = new Vector2(sp.rect.xMax / width, sp.rect.yMax / height),
+					},
+				};
+			}
+		}
+
+
+		public void SetUvSprites (UvSprite[] sprites) => m_Sprites = sprites;
+
+
+		public void SetTexture (Texture2D texture) => m_Texture = texture;
+
+
 #endif
 
 
@@ -60,10 +90,14 @@ namespace AngeliaFramework {
 namespace AngeliaFramework.Editor {
 	using UnityEngine;
 	using UnityEditor;
-	[CustomEditor(typeof(SpriteSheet)), DisallowMultipleComponent]
+	using System.Text;
+
+	[CustomEditor(typeof(SpriteSheet), true), DisallowMultipleComponent]
 	public class SpriteSheet_Inspector : Editor {
+
+
 		[MenuItem("Tools/Reload Sheet Assets")]
-		private static void Init () {
+		private static void ReloadSheetAssets () {
 			foreach (var guid in AssetDatabase.FindAssets("t:SpriteSheet")) {
 				var path = AssetDatabase.GUIDToAssetPath(guid);
 				var sheet = AssetDatabase.LoadAssetAtPath<SpriteSheet>(path);
@@ -76,41 +110,140 @@ namespace AngeliaFramework.Editor {
 						sprites.Add(sp);
 					}
 				}
-				sheet.SetSprites(sprites.ToArray());
+				if (objs.Length > 0) {
+					sheet.SetSprites(sprites.ToArray());
+				}
 				EditorUtility.SetDirty(sheet);
 			}
 			AssetDatabase.SaveAssets();
 			AssetDatabase.Refresh();
 		}
+
+
 		private void OnEnable () => ReloadSprites();
+
+
 		private void OnDisable () => ReloadSprites();
+
+
 		public override void OnInspectorGUI () {
 			serializedObject.Update();
 			DrawPropertiesExcluding(serializedObject, "m_Script");
 			serializedObject.ApplyModifiedProperties();
-			if (GUI.Button(GUILayoutUtility.GetRect(0, 24, GUILayout.ExpandWidth(true)), "Reload Sprites")) {
+			GUILayout.Space(4);
+			if (GUI.Button(GUILayoutUtility.GetRect(0, 24, GUILayout.ExpandWidth(true)), "Reload Sprites fron Texture")) {
 				ReloadSprites();
 			}
+			if (target is CharSpriteSheet) {
+				GUILayout.Space(4);
+				if (GUI.Button(GUILayoutUtility.GetRect(0, 24, GUILayout.ExpandWidth(true)), "Load from Font")) {
+					CreateFontTexture();
+				}
+			}
 		}
+
+
 		private void ReloadSprites () {
 			serializedObject.Update();
 			var p_Texture = serializedObject.FindProperty("m_Texture");
-			var p_Sprites = serializedObject.FindProperty("m_Sprites");
 			var texture = p_Texture.objectReferenceValue as Texture2D;
-			p_Sprites.ClearArray();
 			serializedObject.ApplyModifiedProperties();
 			if (texture != null) {
 				string path = AssetDatabase.GetAssetPath(texture);
 				var objs = AssetDatabase.LoadAllAssetRepresentationsAtPath(path);
+				var spList = new List<Sprite>();
 				for (int i = objs.Length - 1; i >= 0; i--) {
 					var obj = objs[i];
 					if (obj == null || !(obj is Sprite sprite)) { continue; }
-					p_Sprites.InsertArrayElementAtIndex(0);
-					p_Sprites.GetArrayElementAtIndex(0).objectReferenceValue = sprite;
+					spList.Add(sprite);
+				}
+				if (spList.Count > 0) {
+					(serializedObject.targetObject as SpriteSheet).SetSprites(spList.ToArray());
 				}
 			}
 			serializedObject.ApplyModifiedProperties();
 		}
+
+
+		private void CreateFontTexture () {
+
+			if (!(target is CharSpriteSheet)) { return; }
+
+			string path = EditorUtility.OpenFilePanel("Pick a font", "Assets", "ttf");
+			if (string.IsNullOrEmpty(path)) { return; }
+			var font = AssetDatabase.LoadAssetAtPath<Font>("Assets" + path[Application.dataPath.Length..]);
+			if (font == null) { return; }
+
+			// Build Charset
+			string charSetPath = EditorUtility.OpenFilePanel("Pick txt as char set", "Assets", "txt");
+			if (!string.IsNullOrEmpty(charSetPath)) {
+				var builder = new StringBuilder();
+				for (int i = 1; i < 2048; i++) {
+					builder.Append((char)i);
+				}
+				string bg2312 = Util.FileToText(charSetPath, Encoding.GetEncoding("gb2312"));
+				builder.Append(bg2312);
+				font.RequestCharactersInTexture(builder.ToString(), 0, FontStyle.Normal);
+			}
+
+			// Get Texture
+			var fontTexture = font.material.mainTexture as Texture2D;
+			var texture = new Texture2D(
+				fontTexture.width, fontTexture.height,
+				fontTexture.format, false
+			);
+			Graphics.CopyTexture(font.material.mainTexture, texture);
+
+			// Get UV
+			var uvList = new List<SpriteSheet.UvSprite>();
+			var cSpriteList = new List<CharSpriteSheet.CharSprite>();
+
+			foreach (var info in font.characterInfo) {
+				string targetStr = char.ConvertFromUtf32(info.index);
+				uvList.Add(new SpriteSheet.UvSprite() {
+					GlobalID = ("c_" + targetStr).GetAngeliaHashCode(),
+					Rect = new UvRect() {
+						BottomLeft = info.uvBottomLeft,
+						BottomRight = info.uvBottomRight,
+						TopLeft = info.uvTopLeft,
+						TopRight = info.uvTopRight,
+					}
+				});
+				float size = info.size == 0 ? font.fontSize : info.size;
+
+				cSpriteList.Add(new CharSpriteSheet.CharSprite() {
+					FullWidth = targetStr.Length != Encoding.Default.GetByteCount(targetStr),
+					UvOffset = Rect.MinMaxRect(
+						info.minX / size, info.minY / size, info.maxX / size, info.maxY / size
+					),
+				});
+			}
+
+			// Data >> Sheet
+			var sheet = target as CharSpriteSheet;
+			sheet.SetUvSprites(uvList.ToArray());
+			sheet.SetCharSprites(cSpriteList.ToArray());
+			EditorUtility.SetDirty(sheet);
+
+			// Texture >> File
+			string resultPath = $"Assets/{font.name}.png";
+			if (sheet.Texture != null) {
+				resultPath = AssetDatabase.GetAssetPath(sheet.Texture);
+			}
+			Util.ByteToFile(texture.EncodeToPNG(), resultPath);
+			AssetDatabase.SaveAssets();
+			AssetDatabase.Refresh();
+
+			// Texture >> Sheet
+			var resultTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(resultPath);
+			sheet.SetTexture(resultTexture);
+			EditorUtility.SetDirty(sheet);
+			AssetDatabase.SaveAssets();
+			AssetDatabase.Refresh();
+
+		}
+
+
 	}
 }
 #endif

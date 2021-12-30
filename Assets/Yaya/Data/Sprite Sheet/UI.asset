@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc80254344be64947a2b252f1bd6d5e9, type: 3}
+  m_Name: UI
+  m_EditorClassIdentifier: 
+  m_Texture: {fileID: 2800000, guid: 70b3724b0b4427d4e83773a3f0acd9d8, type: 3}
+  m_Sprites:
+  - GlobalID: 11254534
+    Rect:
+      BottomLeft: {x: 0.0078125, y: 0.0078125}
+      BottomRight: {x: 0.015625, y: 0.0078125}
+      TopLeft: {x: 0.0078125, y: 0.015625}
+      TopRight: {x: 0.015625, y: 0.015625}
+  m_RendererCapacity: 1024
+  m_ShaderName: Cell

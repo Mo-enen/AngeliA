@@ -49,7 +49,16 @@ namespace AngeliaFramework {
 		DownRight = 7,
 	}
 
-	
+
+
+	[System.Serializable]
+	public struct UvRect {
+		public Vector2 BottomLeft;
+		public Vector2 BottomRight;
+		public Vector2 TopLeft;
+		public Vector2 TopRight;
+	}
+
 
 	public static class Const {
 		public const int CELL_SIZE = 256;

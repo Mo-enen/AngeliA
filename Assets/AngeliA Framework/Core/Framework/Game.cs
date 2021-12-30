@@ -14,21 +14,23 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private const int MAX_SPAWN_WIDTH = 72 * Const.CELL_SIZE;
-		private const int MAX_SPAWN_HEIGHT = 56 * Const.CELL_SIZE;
+		private const int MAX_VIEW_WIDTH = 72 * Const.CELL_SIZE;
+		private const int MAX_VIEW_HEIGHT = 56 * Const.CELL_SIZE;
+		private const int SPAWN_GAP = 12 * Const.CELL_SIZE;
 		private readonly int[] ENTITY_CAPACITY = { 128, 128, 1024, 128, };
 		private readonly int[] ENTITY_BUFFER_CAPACITY = { 64, 64, 64, 64 };
 
 		// Ser
 		[SerializeField] SpriteSheet[] m_Sheets = null;
+		[SerializeField] AudioClip[] m_Musics = null;
+		[SerializeField] AudioClip[] m_Sounds = null;
 
 		// Data
 		private Dictionary<int, System.Type> EntityTypePool = new();
 		private Entity[][] Entities = null;
-		private Entity[][] EntityBuffers = null;
+		private (Entity[] entity, int length)[] EntityBuffers = null;
 		private RectInt ViewRect = default;
 		private RectInt SpawnRect = default;
-		private int[] EntityBufferLength = null;
 		private uint PhysicsFrame = uint.MinValue + 1;
 
 
@@ -40,7 +42,8 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		public void Init () {
+		// Init
+		public void Initialize () {
 
 #if UNITY_EDITOR
 			// Const Array Count Check
@@ -52,84 +55,127 @@ namespace AngeliaFramework {
 			) {
 				Debug.LogError("Const Array Size is wrong.");
 				UnityEditor.EditorApplication.ExitPlaymode();
+				return;
 			}
 #endif
 
-			// Entity
-			Entity.CreateEntity = CreateEntity;
+			// System
+			Application.targetFrameRate = Application.platform == RuntimePlatform.WindowsEditor ? 10000 : 120;
 
-			// Entity Global ID Map
+			// Pipeline
+			Init_Entity();
+			Init_CellRenderer();
+			Init_Physics();
+			Init_Audio();
+
+		}
+
+
+		private void Init_Entity () {
+			// Entity
+			Entities = new Entity[Const.ENTITY_LAYER_COUNT][];
+			EntityBuffers = new (Entity[], int)[Const.ENTITY_LAYER_COUNT];
+			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
+				Entities[layerIndex] = new Entity[ENTITY_CAPACITY[layerIndex]];
+				EntityBuffers[layerIndex] = (new Entity[ENTITY_BUFFER_CAPACITY[layerIndex]], 0);
+			}
+			// ID Map
 			foreach (var eType in typeof(Entity).GetAllChildClass()) {
-				int id = Entity.GetGlobalTypeID(eType);
+				int id = eType.FullName.GetAngeliaHashCode();
 				if (!EntityTypePool.ContainsKey(id)) {
 					EntityTypePool.Add(id, eType);
-				} else {
+				}
+#if UNITY_EDITOR
+				else {
 					Debug.LogError($"{eType} has same global id with {EntityTypePool[id]}");
 				}
+#endif
 			}
+		}
 
+
+		private void Init_CellRenderer () {
 			// Cell Renderer
+			var rendererRoot = new GameObject("Renderer").transform;
+			rendererRoot.SetParent(null);
+			rendererRoot.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+			rendererRoot.localScale = Vector3.one;
 			CellRenderer.Init(m_Sheets.Length);
 			for (int i = 0; i < m_Sheets.Length; i++) {
 				var sheet = m_Sheets[i];
-				CellRenderer.SetupLayer(
-					i, sheet.RendererCapacity, 
-					sheet.GetMaterial(), sheet.Sprites, sheet.GetUVs()
-				);
+				// Mesh Renderer
+				var tf = new GameObject(sheet.name, typeof(MeshFilter), typeof(MeshRenderer)).transform;
+				tf.SetParent(rendererRoot);
+				tf.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+				tf.localScale = Vector3.one;
+				var mf = tf.GetComponent<MeshFilter>();
+				var mr = tf.GetComponent<MeshRenderer>();
+				mf.sharedMesh = new Mesh() { name = sheet.name, };
+				mr.material = sheet.GetMaterial();
+				mr.receiveShadows = false;
+				mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+				mr.staticShadowCaster = false;
+				mr.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+				mr.sortingOrder = i;
+				// Renderer
+				CellRenderer.SetupLayer(i, sheet, mf);
 			}
+		}
 
-			// Entity
-			Entities = new Entity[Const.ENTITY_LAYER_COUNT][];
-			EntityBuffers = new Entity[Const.ENTITY_LAYER_COUNT][];
-			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
-				Entities[layerIndex] = new Entity[ENTITY_CAPACITY[layerIndex]];
-				EntityBuffers[layerIndex] = new Entity[ENTITY_BUFFER_CAPACITY[layerIndex]];
-			}
-			EntityBufferLength = new int[Const.ENTITY_LAYER_COUNT];
 
+		private void Init_Physics () {
 			// Physics
 			CellPhysics.Init(
-				MAX_SPAWN_WIDTH / Const.CELL_SIZE,
-				MAX_SPAWN_HEIGHT / Const.CELL_SIZE,
+				(MAX_VIEW_WIDTH + SPAWN_GAP) / Const.CELL_SIZE,
+				(MAX_VIEW_HEIGHT + SPAWN_GAP) / Const.CELL_SIZE,
 				Const.PHYSICS_LAYER_COUNT
 			);
 			for (int i = 0; i < Const.PHYSICS_LAYER_COUNT; i++) {
 				CellPhysics.SetupLayer(i);
 			}
-
-			// FPS
-			Application.targetFrameRate = Application.platform == RuntimePlatform.WindowsEditor ? 10000 : 120;
-
 		}
 
 
+		private void Init_Audio () {
+			// Audio
+			Audio.Initialize();
+			foreach (var music in m_Musics) {
+				Audio.AddMusic(music);
+			}
+			foreach (var sound in m_Sounds) {
+				Audio.AddMusic(sound);
+			}
+		}
+
+
+		// Update
 		public void FrameUpdate () {
-			FrameUpdate_Input();
+			FrameInput.FrameUpdate();
 			FrameUpdate_View();
 			FrameUpdate_Level();
 			FrameUpdate_Entity();
+			CellRenderer.Update();
 		}
-
-
-		private void FrameUpdate_Input () => FrameInput.FrameUpdate();
 
 
 		private void FrameUpdate_View () {
 
-			// View
-			ViewRect.width = 32 * Const.CELL_SIZE;
-			ViewRect.height = 16 * Const.CELL_SIZE;
-			ViewRect.x = 0;
-			ViewRect.y = 0;
+			// Move View Rect
+			ViewRect.width = Mathf.Clamp(32 * Const.CELL_SIZE, 0, MAX_VIEW_WIDTH);
+			ViewRect.height = Mathf.Clamp(16 * Const.CELL_SIZE, 0, MAX_VIEW_HEIGHT);
+			ViewRect.x = Const.CELL_SIZE * 128;
+			ViewRect.y = Const.CELL_SIZE * 12;
 			CellRenderer.ViewRect = ViewRect;
 
 			// Spawn Rect
-			SpawnRect.width = Mathf.Clamp(ViewRect.width + 12, 0, MAX_SPAWN_WIDTH);
-			SpawnRect.height = Mathf.Clamp(ViewRect.height + 12, 0, MAX_SPAWN_HEIGHT);
+			SpawnRect.width = ViewRect.width + SPAWN_GAP;
+			SpawnRect.height = ViewRect.height + SPAWN_GAP;
 			SpawnRect.x = ViewRect.x + (ViewRect.width - SpawnRect.width) / 2;
 			SpawnRect.y = ViewRect.y + (ViewRect.height - SpawnRect.height) / 2;
+			Entity.SetSpawnRect(SpawnRect);
+			Entity.SetViewRect(ViewRect);
 
-			// Physics
+			// Physics Position
 			CellPhysics.PositionX = SpawnRect.x = (int)ViewRect.center.x - SpawnRect.width / 2;
 			CellPhysics.PositionY = SpawnRect.y = (int)ViewRect.center.y - SpawnRect.height / 2;
 
@@ -147,16 +193,18 @@ namespace AngeliaFramework {
 
 		private void FrameUpdate_Entity () {
 
-			// Remove Inactive
+			// Remove Inactive and Outside Spawnrect
 			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
 				var entities = Entities[layerIndex];
 				int len = entities.Length;
 				for (int i = 0; i < len; i++) {
 					var entity = entities[i];
 					if (entity == null) { continue; }
-					if (!entity.Active || !SpawnRect.Contains(entity.X, entity.Y)) {
+					if (
+						!entity.Active ||
+						(entity.Despawnable && !SpawnRect.Contains(entity.X, entity.Y))
+					) {
 						entities[i] = null;
-						continue;
 					}
 				}
 			}
@@ -168,10 +216,12 @@ namespace AngeliaFramework {
 				int len = entities.Length;
 				for (int i = 0; i < len; i++) {
 					var entity = entities[i];
-					if (entity == null) { continue; }
-					entity.FillPhysics();
+					if (entity != null) {
+						entity.FillPhysics();
+					}
 				}
 			}
+			PhysicsFrame++;
 
 			// Update / Draw
 			CellRenderer.BeginDraw();
@@ -180,8 +230,9 @@ namespace AngeliaFramework {
 				int len = entities.Length;
 				for (int i = 0; i < len; i++) {
 					var entity = entities[i];
-					if (entity == null) { continue; }
-					entity.FrameUpdate();
+					if (entity != null) {
+						entity.FrameUpdate();
+					}
 				}
 			}
 
@@ -189,25 +240,23 @@ namespace AngeliaFramework {
 			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
 				if (ENTITY_BUFFER_CAPACITY[layerIndex] <= 0) { continue; }
 				var entities = Entities[layerIndex];
-				var buffers = EntityBuffers[layerIndex];
-				int bufferLen = EntityBufferLength[layerIndex];
+				var (buffers, bufferLen) = EntityBuffers[layerIndex];
 				int entityLen = ENTITY_CAPACITY[layerIndex];
 				int emptyIndex = 0;
 				for (int i = 0; i < bufferLen; i++) {
 					while (emptyIndex < entityLen && entities[emptyIndex] != null) {
 						emptyIndex++;
 					}
-					if (emptyIndex >= entityLen) {
+					if (emptyIndex < entityLen) {
+						entities[emptyIndex] = buffers[i];
+						buffers[i] = null;
+					} else {
 						System.Array.Clear(buffers, 0, buffers.Length);
-						break;
 					}
-					entities[emptyIndex] = buffers[i];
-					buffers[i] = null;
 				}
-				EntityBufferLength[layerIndex] = 0;
+				EntityBuffers[layerIndex].length = 0;
 			}
 
-			PhysicsFrame++;
 		}
 
 
@@ -216,18 +265,22 @@ namespace AngeliaFramework {
 
 
 
-		#region --- LGC ---
+		#region --- API ---
 
 
-		private Entity CreateEntity (System.Type type, EntityLayer layer) {
+		public Entity AddEntity (System.Type type, EntityLayer layer) => AddEntity(
+			System.Activator.CreateInstance(type) as Entity,
+			layer
+		);
+
+
+		public T AddEntity<T> (T entity, EntityLayer layer) where T : Entity {
 			int layerIndex = (int)layer;
-			int bufferLen = EntityBufferLength[layerIndex];
-			if (bufferLen < ENTITY_BUFFER_CAPACITY[layerIndex]) {
-				if (System.Activator.CreateInstance(type) is Entity entity) {
-					EntityBuffers[layerIndex][bufferLen] = entity;
-					EntityBufferLength[layerIndex]++;
-					return entity;
-				}
+			ref var buffer = ref EntityBuffers[layerIndex];
+			if (buffer.length < ENTITY_BUFFER_CAPACITY[layerIndex]) {
+				buffer.entity[buffer.length] = entity;
+				buffer.length++;
+				return entity;
 			}
 			return null;
 		}
