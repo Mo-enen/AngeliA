@@ -50,6 +50,8 @@ namespace AngeliaFramework {
 			set => SwapeAB.Value = value;
 		}
 		public static Vector2 MousePosition { get; private set; } = default;
+		public static bool MouseLeft { get; private set; } = false;
+		public static bool MouseRight { get; private set; } = false;
 		public static bool MouseLeftDown { get; private set; } = false;
 		public static bool MouseRightDown { get; private set; } = false;
 
@@ -77,6 +79,8 @@ namespace AngeliaFramework {
 			{ GameKey.Start, (Key.Enter, Key.Space) },
 			{ GameKey.Select, (Key.Tab, Key.Tab) },
 		};
+		private static bool PrevMouseLeft = false;
+		private static bool PrevMouseRight = false;
 
 		// Saving
 		private static SavingBool SwapeAB = new("FrameInput.SwapeAB", false);
@@ -138,13 +142,19 @@ namespace AngeliaFramework {
 			// Pointer
 			if (Mouse != null) {
 				MousePosition = Mouse.position.ReadValue();
-				MouseLeftDown = Mouse.leftButton.isPressed;
-				MouseRightDown = Mouse.rightButton.isPressed;
+				MouseLeft = Mouse.leftButton.isPressed;
+				MouseRight = Mouse.rightButton.isPressed;
+				MouseLeftDown = !PrevMouseLeft && MouseLeft;
+				MouseRightDown = !PrevMouseRight && MouseRight;
 			} else {
 				MousePosition = default;
+				MouseLeft = false;
+				MouseRight = false;
 				MouseLeftDown = false;
 				MouseRightDown = false;
 			}
+			PrevMouseLeft = MouseLeft;
+			PrevMouseRight = MouseRight;
 
 		}
 

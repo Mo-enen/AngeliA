@@ -93,12 +93,15 @@ namespace AngeliaFramework {
 				MainCamera.rect = rect;
 			}
 			// Camera Rect
-			CameraRect = new(
-				ViewRect.x + (ViewRect.width - (int)(ViewRect.height * MainCamera.aspect)) / 2,
+			var cRect = new RectInt(
+				ViewRect.x,
 				ViewRect.y,
 				(int)(ViewRect.height * MainCamera.aspect),
 				ViewRect.height
 			);
+			int cOffsetX = (ViewRect.width - CameraRect.width) / 2;
+			cRect.x += cOffsetX;
+			CameraRect = cRect;
 			// Render
 			int layerCount = Layers.Length;
 			var pos = new Vector3(
@@ -106,6 +109,7 @@ namespace AngeliaFramework {
 				-MainCamera.orthographicSize,
 				0f
 			);
+			pos.x -= cOffsetX * MainCamera.orthographicSize * 2f * MainCamera.aspect / cRect.width;
 			var scl = new Vector3(
 				MainCamera.orthographicSize * 2f / ViewRect.height,
 				MainCamera.orthographicSize * 2f / ViewRect.height,
@@ -326,6 +330,39 @@ namespace AngeliaFramework {
 		}
 
 
+		public static void Draw_9Slice (
+			RectInt rect, RectOffset border, Color32 tint,
+			int id_ul, int id_um, int id_ur,
+			int id_ml, int id_mm, int id_mr,
+			int id_dl, int id_dm, int id_dr
+		) {
+
+			if (border.horizontal > rect.width) {
+				float oldH = border.horizontal;
+				border.left = Mathf.RoundToInt(rect.width * (border.left / oldH));
+				border.right = Mathf.RoundToInt(rect.width * (border.right / oldH));
+			}
+
+			if (border.vertical > rect.height) {
+				float oldV = border.vertical;
+				border.bottom = Mathf.RoundToInt(rect.height * (border.bottom / oldV));
+				border.top = Mathf.RoundToInt(rect.height * (border.top / oldV));
+			}
+
+			Draw(id_ul, rect.x, rect.yMax - border.top, 0, 0, 0, border.left, border.top, tint);
+			Draw(id_um, rect.x + border.left, rect.yMax - border.top, 0, 0, 0, rect.width - border.horizontal, border.top, tint);
+			Draw(id_ur, rect.xMax - border.right, rect.yMax - border.top, 0, 0, 0, border.right, border.top, tint);
+
+			Draw(id_ml, rect.x, rect.y + border.bottom, 0, 0, 0, border.left, rect.height - border.vertical, tint);
+			Draw(id_mm, rect.x + border.left, rect.y + border.bottom, 0, 0, 0, rect.width - border.horizontal, rect.height - border.vertical, tint);
+			Draw(id_mr, rect.xMax - border.right, rect.y + border.bottom, 0, 0, 0, border.right, rect.height - border.vertical, tint);
+
+			Draw(id_dl, rect.x, rect.y, 0, 0, 0, border.left, border.bottom, tint);
+			Draw(id_dm, rect.x + border.left, rect.y, 0, 0, 0, rect.width - border.horizontal, border.bottom, tint);
+			Draw(id_dr, rect.xMax - border.right, rect.y, 0, 0, 0, border.right, border.bottom, tint);
+		}
+
+
 		// Text Label
 		public static void DrawChar (int globalID, int x, int y, int width, int height, Color32 color, out bool fullWidth) {
 			fullWidth = false;
@@ -340,12 +377,25 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void DrawLabel (string content, RectInt rect, Color32 color, int charSize, int charSpace = 0, int lineSpace = 0, bool wrap = true, bool truncate = false, int count = -1) {
-			if (count == -1) {
-				count = content.Length;
-			}
+		public static void DrawLabel (string content, RectInt rect, Color32 color, int charSize, int charSpace = 0, int lineSpace = 0, bool wrap = true, Alignment alignment = Alignment.TopLeft) {
+			int count = content.Length;
 			int x = rect.x;
 			int y = rect.yMax - charSize;
+			int offsetX = 0;
+			int offsetY = 0;
+			if (alignment != Alignment.TopLeft) {
+				var textSize = GetLabelSize(content, rect.width, charSize, charSpace, lineSpace, wrap);
+				offsetX = alignment switch {
+					Alignment.TopMid or Alignment.MidMid or Alignment.BottomMid => (rect.width - textSize.x) / 2,
+					Alignment.TopRight or Alignment.MidRight or Alignment.BottomRight => rect.width - textSize.x,
+					_ => 0,
+				};
+				offsetY = alignment switch {
+					Alignment.MidLeft or Alignment.MidMid or Alignment.MidRight => (rect.height - textSize.y) / 2,
+					Alignment.BottomLeft or Alignment.BottomMid or Alignment.BottomRight => rect.height - textSize.y,
+					_ => 0,
+				};
+			}
 			for (int i = 0; i < count; i++) {
 				char c = content[i];
 				// Line
@@ -357,23 +407,38 @@ namespace AngeliaFramework {
 				// Draw Char
 				DrawChar(
 					("c_" + c).GetAngeliaHashCode(),
-					x, y, charSize, charSize, color, out bool fullWidth
+					x + offsetX, y - offsetY, charSize, charSize,
+					color, out bool fullWidth
 				);
 				x += fullWidth ? charSize + charSpace : charSize / 2 + charSpace;
-				if (wrap) {
-					if (x > rect.xMax - charSize) {
-						x = rect.x;
-						y -= charSize + lineSpace;
-					}
-					if (truncate && y < rect.y) { break; }
-				} else {
-					if (truncate && x > rect.xMax - charSize) { break; }
+				if (wrap && x > rect.xMax - charSize) {
+					x = rect.x;
+					y -= charSize + lineSpace;
 				}
 			}
 		}
 
 
-		public static Vector2Int GetLabelSize (string content, RectInt rect, int charSize, int charSpace = 0, int lineSpace = 0, bool wrap = true) {
+		// Button
+		public static bool DrawButton (RectInt rect, string label, int charSize, Color32 normal, Color32 highlight, Color32 pressed, Color32 labelColor, int spriteID) {
+			bool hover = rect.Contains(ScreenToCameraPosition(FrameInput.MousePosition));
+			bool pressing = FrameInput.MouseLeft;
+			var tint = hover ? pressing ? pressed : highlight : normal;
+			Draw(spriteID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, tint);
+			DrawLabel(label, rect, labelColor, charSize, 0, 0, false, Alignment.MidMid);
+			return hover && FrameInput.MouseLeftDown;
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- UTL ---
+
+
+		private static Vector2Int GetLabelSize (string content, float width, int charSize, int charSpace = 0, int lineSpace = 0, bool wrap = true) {
 			int x = 0;
 			int y = charSize;
 			int count = content.Length;
@@ -386,42 +451,13 @@ namespace AngeliaFramework {
 				}
 				x += fullWidth ? charSize + charSpace : charSize / 2 + charSpace;
 				xMax = Mathf.Max(x, xMax);
-				if (wrap && i < count - 1 && x > rect.width - charSize) {
+				if (wrap && i < count - 1 && x > width - charSize) {
 					x = 0;
 					y += charSize + lineSpace;
 				}
 			}
-			return new Vector2Int(xMax, y);
+			return new Vector2Int(xMax + 1, y + 1);
 		}
-
-
-		// Button
-		public static bool DrawButton (RectInt rect, string label, int charSize, Color32 normal, Color32 highlight, Color32 labelColor, int spriteID) {
-			var mousePos = ScreenToViewPosition(FrameInput.MousePosition);
-			var tint = rect.Contains(mousePos) ? highlight : normal;
-
-			// BG
-			Draw(spriteID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, tint);
-
-			// Label
-			var labelSize = GetLabelSize(label, rect, charSize, 0, 0, false);
-			DrawLabel(label, new RectInt(
-				Mathf.Max(rect.x + (rect.width - labelSize.x), rect.x),
-				rect.y,
-				Mathf.Min(labelSize.x, rect.width),
-				rect.height
-			), labelColor, charSize, 0, 0, false, true);
-
-			return false;
-		}
-
-
-		#endregion
-
-
-
-
-		#region --- UTL ---
 
 
 		private static int[] GetTriangles (int cellCount) {
@@ -438,9 +474,9 @@ namespace AngeliaFramework {
 		}
 
 
-		private static Vector2Int ScreenToViewPosition (Vector2 screenPos) => new(
-			(int)Mathf.LerpUnclamped(ViewRect.x, ViewRect.xMax, screenPos.x / Screen.width),
-			(int)Mathf.LerpUnclamped(ViewRect.y, ViewRect.yMax, screenPos.y / Screen.height)
+		private static Vector2Int ScreenToCameraPosition (Vector2 screenPos) => new(
+			(int)Mathf.LerpUnclamped(CameraRect.x, CameraRect.xMax, screenPos.x / Screen.width),
+			(int)Mathf.LerpUnclamped(CameraRect.y, CameraRect.yMax, screenPos.y / Screen.height)
 		);
 
 

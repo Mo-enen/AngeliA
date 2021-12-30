@@ -50,6 +50,18 @@ namespace AngeliaFramework {
 	}
 
 
+	public enum Alignment {
+		TopLeft,
+		TopMid,
+		TopRight,
+		MidLeft,
+		MidMid,
+		MidRight,
+		BottomLeft,
+		BottomMid,
+		BottomRight,
+	}
+
 
 	[System.Serializable]
 	public struct UvRect {

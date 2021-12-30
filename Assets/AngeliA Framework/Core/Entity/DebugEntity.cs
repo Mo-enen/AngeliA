@@ -64,20 +64,10 @@ namespace AngeliaFramework {
 
 
 		public override void FrameUpdate () {
-			var size = CellRenderer.GetLabelSize(
-				Content, 
-				new RectInt(0, 0, Width, Height), 
-				CharSize, CharSpace, LineSpace, Wrap
-			);
 			CellRenderer.Draw(
 				"Pixel".GetAngeliaHashCode(),
 				X, Y, 0, 0,
 				0, Width, Height, BGColor
-			);
-			CellRenderer.Draw(
-				"Pixel".GetAngeliaHashCode(),
-				X, Y + Height - size.y, 0, 0,
-				0, size.x, size.y, AreaColor
 			);
 			CellRenderer.DrawLabel(
 				Content,
