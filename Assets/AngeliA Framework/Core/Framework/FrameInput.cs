@@ -188,6 +188,16 @@ namespace AngeliaFramework {
 		}
 
 
+		public static void UseMouseLeftEvent () {
+			MouseLeft = false;
+			MouseLeftDown = false;
+		}
+		public static void UseMouseRightEvent () {
+			MouseRight = false;
+			MouseRightDown = false;
+		}
+
+
 		#endregion
 
 

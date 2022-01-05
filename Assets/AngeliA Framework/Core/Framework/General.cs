@@ -51,15 +51,15 @@ namespace AngeliaFramework {
 
 
 	public enum Alignment {
-		TopLeft,
-		TopMid,
-		TopRight,
-		MidLeft,
-		MidMid,
-		MidRight,
-		BottomLeft,
-		BottomMid,
-		BottomRight,
+		TopLeft = 0,
+		TopMid = 1,
+		TopRight = 2,
+		MidLeft = 3,
+		MidMid = 4,
+		MidRight = 5,
+		BottomLeft = 6,
+		BottomMid = 7,
+		BottomRight = 8,
 	}
 
 
@@ -69,6 +69,31 @@ namespace AngeliaFramework {
 		public Vector2 BottomRight;
 		public Vector2 TopLeft;
 		public Vector2 TopRight;
+	}
+
+
+	[System.Serializable]
+	public struct IntAlignment {
+		public int TopLeft;
+		public int TopMid;
+		public int TopRight;
+		public int MidLeft;
+		public int MidMid;
+		public int MidRight;
+		public int BottomLeft;
+		public int BottomMid;
+		public int BottomRight;
+		public IntAlignment (int topLeft, int topMid, int topRight, int midLeft, int midMid, int midRight, int bottomLeft, int bottomMid, int bottomRight) {
+			TopLeft = topLeft;
+			TopMid = topMid;
+			TopRight = topRight;
+			MidLeft = midLeft;
+			MidMid = midMid;
+			MidRight = midRight;
+			BottomLeft = bottomLeft;
+			BottomMid = bottomMid;
+			BottomRight = bottomRight;
+		}
 	}
 
 

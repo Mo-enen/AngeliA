@@ -1,0 +1,210 @@
+using UnityEngine;
+
+
+namespace AngeliaFramework {
+	public class eDialog : Entity {
+
+
+
+
+		#region --- VAR ---
+
+
+		// Api
+		public override bool Despawnable => false;
+
+		// Data
+		private int Width;
+		private int Height;
+		private string Message = "";
+		private string Label_OK = "";
+		private string Label_Cancel = "";
+		private string Label_Alt = "";
+		private System.Action OK = null;
+		private System.Action Cancel = null;
+		private System.Action Alt = null;
+
+		// Style
+		private static IntAlignment MAIN_SPRITES = new(
+			"Window UL".ACode(),
+			"Window UM".ACode(),
+			"Window UR".ACode(),
+			"Window ML".ACode(),
+			"Window MM".ACode(),
+			"Window MR".ACode(),
+			"Window DL".ACode(),
+			"Window DM".ACode(),
+			"Window DR".ACode()
+		);
+		private static IntAlignment BUTTON_SPRITES = new(
+			"Button UL".ACode(),
+			"Button UM".ACode(),
+			"Button UR".ACode(),
+			"Button ML".ACode(),
+			"Button MM".ACode(),
+			"Button MR".ACode(),
+			"Button DL".ACode(),
+			"Button DM".ACode(),
+			"Button DR".ACode()
+		);
+		private static int PIXEL_ID { get; } = "Pixel".ACode();
+		private static Color32 WINDOW_BG = new(240, 240, 240, 255);
+		private static Color32 CONTENT_CHAR = new(12, 12, 12, 255);
+		private static Color32 BUTTON_NORMAL = new(220, 220, 220, 255);
+		private static Color32 BUTTON_HIGHLIGHT = new(200, 200, 200, 255);
+		private static Color32 BUTTON_PRESS = new(180, 180, 180, 255);
+		private static Color32 BUTTON_CHAR = new(12, 12, 12, 255);
+		private static Color32 BG_PANEL = new(0, 0, 0, 64);
+		private const int CHAR_SIZE_TITLE = 90;
+		private const int WINDOW_BORDER = 32;
+		private const int CHAR_SIZE_CONTENT = 100;
+		private const int CONTENT_PADDING_X = 164;
+		private const int CONTENT_PADDING_TOP = 128;
+		private const int CONTENT_PADDING_BOTTOM = 256;
+		private const int BUTTON_WIDTH = 512;
+		private const int BUTTON_HEIGHT = 128;
+		private const int BUTTON_PADDING_X = 48;
+		private const int BUTTON_PADDING_Y = 48;
+		private const int BUTTON_GAP = 42;
+		private const int BUTTON_CHAR_SIZE = 84;
+		private const int BUTTON_BORDER = 24;
+
+
+		#endregion
+
+
+
+
+		#region --- MSG ---
+
+
+		public override void FrameUpdate () {
+
+			CellRenderer.BeginCharacterDraw();
+
+			// Pos
+			RefreshHeight();
+			X = CameraRect.x + (CameraRect.width - Width) / 2;
+			Y = CameraRect.y + (CameraRect.height - Height) / 2;
+
+			// Rect
+			var mainRect = new RectInt(X, Y, Width, Height);
+			var contentRect = new RectInt(
+				mainRect.x,
+				mainRect.y + BUTTON_HEIGHT,
+				mainRect.width,
+				mainRect.height - BUTTON_HEIGHT
+			).Shrink(
+				CONTENT_PADDING_X, CONTENT_PADDING_X,
+				CONTENT_PADDING_BOTTOM, CONTENT_PADDING_TOP
+			);
+			var buttonRect = new RectInt(
+				mainRect.x + BUTTON_PADDING_X,
+				mainRect.y + BUTTON_PADDING_Y,
+				mainRect.width - BUTTON_PADDING_X * 2,
+				BUTTON_HEIGHT
+			);
+
+			// BG Panel
+			CellGUI.DrawButton(
+				() => { }, CameraRect, "", 0,
+				BG_PANEL, BG_PANEL, BG_PANEL, BG_PANEL, PIXEL_ID
+			);
+
+			// Main
+			CellGUI.Draw_9Slice(
+				mainRect, new RectOffset(WINDOW_BORDER, WINDOW_BORDER, WINDOW_BORDER, WINDOW_BORDER),
+				WINDOW_BG, MAIN_SPRITES
+			);
+
+			// Content
+			CellGUI.DrawLabel(
+				Message, contentRect,
+				CONTENT_CHAR, CHAR_SIZE_CONTENT,
+				0, 0, true, Alignment.TopLeft
+			);
+
+			// Buttons 
+			int buttonCount = 1;
+			for (int i = 2; i >= 0; i--) {
+				var action = i == 0 ? OK : i == 1 ? Alt : Cancel;
+				if (action == null) { continue; }
+				CellGUI.DrawButton(
+					() => {
+						action();
+						Active = false;
+					},
+					new RectInt(
+						buttonRect.xMax - buttonCount * (BUTTON_WIDTH + BUTTON_GAP),
+						buttonRect.y, BUTTON_WIDTH, BUTTON_HEIGHT
+					),
+					GetButtonLabel(i), BUTTON_CHAR_SIZE,
+					BUTTON_NORMAL, BUTTON_HIGHLIGHT, BUTTON_PRESS, BUTTON_CHAR,
+					BUTTON_SPRITES, new RectOffset(BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER)
+				);
+				buttonCount++;
+			}
+
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+		public eDialog () { }
+
+
+		public eDialog (
+			int width, string message,
+			string label_ok, string label_cancel, string label_alt,
+			System.Action ok = null, System.Action cancel = null, System.Action alt = null
+		) {
+			Width = width;
+			Message = message;
+			Label_OK = label_ok;
+			Label_Cancel = label_cancel;
+			Label_Alt = label_alt;
+			OK = ok;
+			Cancel = cancel;
+			Alt = alt;
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+		private string GetButtonLabel (int index) => index switch {
+			2 => Label_Cancel,
+			1 => Label_Alt,
+			0 => Label_OK,
+			_ => "",
+		};
+
+
+		private void RefreshHeight () {
+			int contentHeight = CellGUI.GetLabelSize(
+				Message,
+				Width - CONTENT_PADDING_X * 2,
+				CHAR_SIZE_CONTENT
+			).y;
+			Height = contentHeight + CONTENT_PADDING_TOP + CONTENT_PADDING_BOTTOM + BUTTON_HEIGHT;
+		}
+
+
+		#endregion
+
+
+
+
+	}
+}

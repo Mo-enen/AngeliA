@@ -15,10 +15,6 @@ namespace Yaya {
 		public static string LabelCancel => GetLanguage("Dialog.Cancel");
 		public static string LabelQuit => GetLanguage("Dialog.Quit");
 
-		public const int Normal = 0;
-		public const int Green = 1;
-		public const int Red = 2;
-
 		// Project
 		public static string ProjectPathEmpty => GetLanguage("Project.ProjectPathEmpty");
 		public static string ProjectPathNotExists => GetLanguage("Project.ProjectPathNotExists");

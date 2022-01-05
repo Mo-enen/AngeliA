@@ -96,7 +96,7 @@ namespace AngeliaFramework {
 
 
 		// Fill
-		public static void BeginFill (uint frame) => CurrentFrame = frame;
+		public static void BeginFill () => CurrentFrame++;
 
 
 		public static void Fill (PhysicsLayer layer, RectInt globalRect, Entity entity) {

@@ -16,14 +16,18 @@ namespace AngeliaFramework {
 		// Const
 		private const int MAX_VIEW_WIDTH = 72 * Const.CELL_SIZE;
 		private const int MAX_VIEW_HEIGHT = 56 * Const.CELL_SIZE;
-		private const int SPAWN_GAP = 12 * Const.CELL_SIZE;
+		private const int SPAWN_GAP = 6 * Const.CELL_SIZE;
 		private readonly int[] ENTITY_CAPACITY = { 128, 128, 1024, 128, };
 		private readonly int[] ENTITY_BUFFER_CAPACITY = { 64, 64, 64, 64 };
+
+		// Api
+		public Language CurrentLanguage { get; private set; } = null;
 
 		// Ser
 		[SerializeField] SpriteSheet[] m_Sheets = null;
 		[SerializeField] AudioClip[] m_Musics = null;
 		[SerializeField] AudioClip[] m_Sounds = null;
+		[SerializeField] Language[] m_Languages = null;
 
 		// Data
 		private Dictionary<int, System.Type> EntityTypePool = new();
@@ -31,7 +35,9 @@ namespace AngeliaFramework {
 		private (Entity[] entity, int length)[] EntityBuffers = null;
 		private RectInt ViewRect = default;
 		private RectInt SpawnRect = default;
-		private uint PhysicsFrame = uint.MinValue + 1;
+
+		// Saving
+		private SavingInt LanguageIndex = new("Yaya.LanguageIndex", -1);
 
 
 		#endregion
@@ -64,9 +70,10 @@ namespace AngeliaFramework {
 
 			// Pipeline
 			Init_Entity();
-			Init_CellRenderer();
+			Init_Renderer();
 			Init_Physics();
 			Init_Audio();
+			Init_Language();
 
 		}
 
@@ -81,7 +88,7 @@ namespace AngeliaFramework {
 			}
 			// ID Map
 			foreach (var eType in typeof(Entity).GetAllChildClass()) {
-				int id = eType.FullName.GetAngeliaHashCode();
+				int id = eType.FullName.ACode();
 				if (!EntityTypePool.ContainsKey(id)) {
 					EntityTypePool.Add(id, eType);
 				}
@@ -94,13 +101,29 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Init_CellRenderer () {
+		private void Init_Renderer () {
 			// Cell Renderer
-			var rendererRoot = new GameObject("Renderer").transform;
+			var rendererRoot = new GameObject("Renderer", typeof(Camera)).transform;
 			rendererRoot.SetParent(null);
 			rendererRoot.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
 			rendererRoot.localScale = Vector3.one;
-			CellRenderer.Init(m_Sheets.Length);
+			var camera = rendererRoot.GetComponent<Camera>();
+			camera.clearFlags = CameraClearFlags.SolidColor;
+			camera.backgroundColor = new Color32(34, 34, 34, 0);
+			camera.cullingMask = -1;
+			camera.orthographic = true;
+			camera.orthographicSize = 1f;
+			camera.nearClipPlane = 0f;
+			camera.farClipPlane = 2f;
+			camera.rect = new Rect(0f, 0f, 1f, 1f);
+			camera.depth = 0f;
+			camera.renderingPath = RenderingPath.UsePlayerSettings;
+			camera.useOcclusionCulling = false;
+			camera.allowHDR = false;
+			camera.allowMSAA = false;
+			camera.allowDynamicResolution = false;
+			camera.targetDisplay = 0;
+			CellRenderer.Init(m_Sheets.Length, camera);
 			for (int i = 0; i < m_Sheets.Length; i++) {
 				var sheet = m_Sheets[i];
 				// Mesh Renderer
@@ -126,8 +149,8 @@ namespace AngeliaFramework {
 		private void Init_Physics () {
 			// Physics
 			CellPhysics.Init(
-				(MAX_VIEW_WIDTH + SPAWN_GAP) / Const.CELL_SIZE,
-				(MAX_VIEW_HEIGHT + SPAWN_GAP) / Const.CELL_SIZE,
+				(MAX_VIEW_WIDTH + SPAWN_GAP * 2) / Const.CELL_SIZE,
+				(MAX_VIEW_HEIGHT + SPAWN_GAP * 2) / Const.CELL_SIZE,
 				Const.PHYSICS_LAYER_COUNT
 			);
 			for (int i = 0; i < Const.PHYSICS_LAYER_COUNT; i++) {
@@ -143,8 +166,48 @@ namespace AngeliaFramework {
 				Audio.AddMusic(music);
 			}
 			foreach (var sound in m_Sounds) {
-				Audio.AddMusic(sound);
+				Audio.AddSound(sound);
 			}
+		}
+
+
+		private void Init_Language () {
+			foreach (var language in m_Languages) {
+				language.Init();
+			}
+			bool success;
+			if (LanguageIndex.Value < 0) {
+				// First Time
+				success = SetLanguage(Application.systemLanguage);
+				if (!success) {
+					switch (Application.systemLanguage) {
+						case SystemLanguage.Chinese:
+							success = SetLanguage(SystemLanguage.ChineseTraditional);
+							if (!success) {
+								success = SetLanguage(SystemLanguage.ChineseSimplified);
+							}
+							break;
+						case SystemLanguage.ChineseSimplified:
+							success = SetLanguage(SystemLanguage.ChineseTraditional);
+							break;
+						case SystemLanguage.ChineseTraditional:
+							success = SetLanguage(SystemLanguage.ChineseSimplified);
+							break;
+						default:
+							success = SetLanguage(SystemLanguage.English);
+							break;
+					}
+				}
+			} else {
+				// From Saving
+				success = SetLanguage((SystemLanguage)LanguageIndex.Value);
+			}
+
+			// Failback
+			if (!success) {
+				SetLanguage(m_Languages[0].LanguageID);
+			}
+
 		}
 
 
@@ -154,6 +217,8 @@ namespace AngeliaFramework {
 			FrameUpdate_View();
 			FrameUpdate_Level();
 			FrameUpdate_Entity();
+			CellGUI.PerformeEvent();
+			CellGUI.DrawButtonHighlight();
 			CellRenderer.Update();
 		}
 
@@ -161,19 +226,20 @@ namespace AngeliaFramework {
 		private void FrameUpdate_View () {
 
 			// Move View Rect
-			ViewRect.width = Mathf.Clamp(32 * Const.CELL_SIZE, 0, MAX_VIEW_WIDTH);
+			ViewRect.width = Mathf.Clamp(28 * Const.CELL_SIZE, 0, MAX_VIEW_WIDTH);
 			ViewRect.height = Mathf.Clamp(16 * Const.CELL_SIZE, 0, MAX_VIEW_HEIGHT);
 			ViewRect.x = Const.CELL_SIZE * 128;
 			ViewRect.y = Const.CELL_SIZE * 12;
 			CellRenderer.ViewRect = ViewRect;
 
 			// Spawn Rect
-			SpawnRect.width = ViewRect.width + SPAWN_GAP;
-			SpawnRect.height = ViewRect.height + SPAWN_GAP;
+			SpawnRect.width = ViewRect.width + SPAWN_GAP * 2;
+			SpawnRect.height = ViewRect.height + SPAWN_GAP * 2;
 			SpawnRect.x = ViewRect.x + (ViewRect.width - SpawnRect.width) / 2;
 			SpawnRect.y = ViewRect.y + (ViewRect.height - SpawnRect.height) / 2;
 			Entity.SetSpawnRect(SpawnRect);
 			Entity.SetViewRect(ViewRect);
+			Entity.SetCameraRect(CellRenderer.CameraRect);
 
 			// Physics Position
 			CellPhysics.PositionX = SpawnRect.x = (int)ViewRect.center.x - SpawnRect.width / 2;
@@ -184,8 +250,6 @@ namespace AngeliaFramework {
 
 		private void FrameUpdate_Level () {
 			// Draw BG/Level, Fill Physics
-
-
 
 
 		}
@@ -210,7 +274,7 @@ namespace AngeliaFramework {
 			}
 
 			// Fill Physics
-			CellPhysics.BeginFill(PhysicsFrame);
+			CellPhysics.BeginFill();
 			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
 				var entities = Entities[layerIndex];
 				int len = entities.Length;
@@ -221,7 +285,6 @@ namespace AngeliaFramework {
 					}
 				}
 			}
-			PhysicsFrame++;
 
 			// Update / Draw
 			CellRenderer.BeginDraw();
@@ -248,7 +311,8 @@ namespace AngeliaFramework {
 						emptyIndex++;
 					}
 					if (emptyIndex < entityLen) {
-						entities[emptyIndex] = buffers[i];
+						var e = entities[emptyIndex] = buffers[i];
+						e.OnCreate();
 						buffers[i] = null;
 					} else {
 						System.Array.Clear(buffers, 0, buffers.Length);
@@ -256,6 +320,7 @@ namespace AngeliaFramework {
 				}
 				EntityBuffers[layerIndex].length = 0;
 			}
+
 
 		}
 
@@ -268,21 +333,25 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public Entity AddEntity (System.Type type, EntityLayer layer) => AddEntity(
-			System.Activator.CreateInstance(type) as Entity,
-			layer
-		);
-
-
-		public T AddEntity<T> (T entity, EntityLayer layer) where T : Entity {
+		public void AddEntity<T> (T entity, EntityLayer layer) where T : Entity {
 			int layerIndex = (int)layer;
 			ref var buffer = ref EntityBuffers[layerIndex];
 			if (buffer.length < ENTITY_BUFFER_CAPACITY[layerIndex]) {
 				buffer.entity[buffer.length] = entity;
 				buffer.length++;
-				return entity;
 			}
-			return null;
+		}
+
+
+		public bool SetLanguage (SystemLanguage language) {
+			foreach (var l in m_Languages) {
+				if (l.LanguageID == language) {
+					LanguageIndex.Value = (int)language;
+					CurrentLanguage = l;
+					return true;
+				}
+			}
+			return false;
 		}
 
 
@@ -293,20 +362,3 @@ namespace AngeliaFramework {
 
 	}
 }
-
-
-
-
-#if UNITY_EDITOR
-namespace AngeliaFramework.Editor {
-	using UnityEditor;
-	[CustomEditor(typeof(Game))]
-	public class Game_Inspector : Editor {
-		public override void OnInspectorGUI () {
-			serializedObject.Update();
-			DrawPropertiesExcluding(serializedObject, "m_Script");
-			serializedObject.ApplyModifiedProperties();
-		}
-	}
-}
-#endif

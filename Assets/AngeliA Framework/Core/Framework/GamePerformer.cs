@@ -1,6 +1,7 @@
 using UnityEngine;
 namespace AngeliaFramework {
 	public class GamePerformer : MonoBehaviour {
+		protected Game Game => m_Game;
 		[SerializeField] Game m_Game = null;
 		private bool Initialized = false;
 		private void FixedUpdate () {

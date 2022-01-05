@@ -79,10 +79,37 @@ namespace AngeliaFramework.Editor {
 				// Load Entity Init Content
 				if (mode == PlayModeStateChange.EnteredPlayMode) {
 					if (!string.IsNullOrEmpty(EntityInitContent.Value)) {
-						var lines = EntityInitContent.Value.Replace("\r", "").Replace(" ", "").Split('\n');
+						var lines = EntityInitContent.Value.Replace("\r", "").Split('\n');
+						Entity prevEntity = null;
 						foreach (var line in lines) {
 							if (line.StartsWith("//")) { continue; }
-							var _params = line.Split(',');
+							if (line.StartsWith("::")) {
+								if (prevEntity != null) {
+									int _eIndex = line.IndexOf('=');
+									if (_eIndex < 0) { continue; }
+									string fieldName = line[2.._eIndex];
+									var type = Util.GetFieldType(prevEntity, fieldName);
+									if (type == typeof(int)) {
+										if (int.TryParse(line[(_eIndex + 1)..], out int _value)) {
+											Util.SetFieldValue(prevEntity, fieldName, _value);
+										}
+									} else if (type == typeof(float)) {
+										if (float.TryParse(line[(_eIndex + 1)..], out float _value)) {
+											Util.SetFieldValue(prevEntity, fieldName, _value);
+										}
+									} else if (type == typeof(string)) {
+										Util.SetFieldValue(prevEntity, fieldName, line[(_eIndex + 1)..]);
+									} else if (type == typeof(bool)) {
+										if (bool.TryParse(line[(_eIndex + 1)..], out bool _value)) {
+											Util.SetFieldValue(prevEntity, fieldName, _value);
+										}
+									} else {
+										Debug.LogWarning($"[Entity Debuger] type {type} not support/");
+									}
+								}
+								continue;
+							}
+							var _params = line.Replace(" ", "").Split(',');
 							if (
 								_params != null && _params.Length >= 2 &&
 								System.Enum.TryParse(_params[1], true, out EntityLayer layer)
@@ -108,9 +135,11 @@ namespace AngeliaFramework.Editor {
 								);
 								if (type != null) {
 									for (int i = 0; i < count; i++) {
-										var e = window.Game.AddEntity(type, layer);
+										var e = System.Activator.CreateInstance(type) as Entity;
+										window.Game.AddEntity(e, layer);
 										e.X = x;
 										e.Y = y;
+										prevEntity = e;
 									}
 								}
 							}
@@ -364,7 +393,23 @@ namespace AngeliaFramework.Editor {
 		private void CreateEntityMenu () {
 			var menu = new GenericMenu();
 			foreach (var type in EntityTypes) {
-				menu.AddItem(new GUIContent(type.Name), false, () => Game.AddEntity(type, CurrentEntityLayer));
+				if (type.GetConstructor(new System.Type[0]) != null) {
+					// Normal
+					menu.AddItem(
+						new GUIContent(type.Name),
+						false,
+						() => {
+							var spawnRect = (RectInt)Util.GetFieldValue(Game, "SpawnRect");
+							var e = System.Activator.CreateInstance(type) as Entity;
+							Game.AddEntity(e, CurrentEntityLayer);
+							e.X = spawnRect.center.x.RoundToInt();
+							e.Y = spawnRect.center.y.RoundToInt();
+						}
+					);
+				} else {
+					// No Constructor
+					menu.AddDisabledItem(new GUIContent(type.Name), false);
+				}
 			}
 			menu.ShowAsContext();
 		}

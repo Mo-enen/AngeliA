@@ -14,11 +14,167 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Texture: {fileID: 2800000, guid: 70b3724b0b4427d4e83773a3f0acd9d8, type: 3}
   m_Sprites:
+  - GlobalID: 1522382751
+    Rect:
+      BottomLeft: {x: 0.171875, y: 0.0078125}
+      BottomRight: {x: 0.1953125, y: 0.0078125}
+      TopLeft: {x: 0.171875, y: 0.03125}
+      TopRight: {x: 0.1953125, y: 0.03125}
+  - GlobalID: -285071712
+    Rect:
+      BottomLeft: {x: 0.1953125, y: 0.0078125}
+      BottomRight: {x: 0.203125, y: 0.0078125}
+      TopLeft: {x: 0.1953125, y: 0.03125}
+      TopRight: {x: 0.203125, y: 0.03125}
+  - GlobalID: -732409435
+    Rect:
+      BottomLeft: {x: 0.203125, y: 0.0078125}
+      BottomRight: {x: 0.2265625, y: 0.0078125}
+      TopLeft: {x: 0.203125, y: 0.03125}
+      TopRight: {x: 0.2265625, y: 0.03125}
+  - GlobalID: 1277785346
+    Rect:
+      BottomLeft: {x: 0.234375, y: 0.0078125}
+      BottomRight: {x: 0.2578125, y: 0.0078125}
+      TopLeft: {x: 0.234375, y: 0.03125}
+      TopRight: {x: 0.2578125, y: 0.03125}
+  - GlobalID: 433313475
+    Rect:
+      BottomLeft: {x: 0.2578125, y: 0.0078125}
+      BottomRight: {x: 0.265625, y: 0.0078125}
+      TopLeft: {x: 0.2578125, y: 0.03125}
+      TopRight: {x: 0.265625, y: 0.03125}
+  - GlobalID: 505921416
+    Rect:
+      BottomLeft: {x: 0.265625, y: 0.0078125}
+      BottomRight: {x: 0.2890625, y: 0.0078125}
+      TopLeft: {x: 0.265625, y: 0.03125}
+      TopRight: {x: 0.2890625, y: 0.03125}
+  - GlobalID: 894068761
+    Rect:
+      BottomLeft: {x: 0.234375, y: 0.03125}
+      BottomRight: {x: 0.2578125, y: 0.03125}
+      TopLeft: {x: 0.234375, y: 0.0390625}
+      TopRight: {x: 0.2578125, y: 0.0390625}
+  - GlobalID: 122204831
+    Rect:
+      BottomLeft: {x: 0.265625, y: 0.03125}
+      BottomRight: {x: 0.2890625, y: 0.03125}
+      TopLeft: {x: 0.265625, y: 0.0390625}
+      TopRight: {x: 0.2890625, y: 0.0390625}
+  - GlobalID: 1507424529
+    Rect:
+      BottomLeft: {x: 0.234375, y: 0.0390625}
+      BottomRight: {x: 0.2578125, y: 0.0390625}
+      TopLeft: {x: 0.234375, y: 0.0625}
+      TopRight: {x: 0.2578125, y: 0.0625}
+  - GlobalID: 662952658
+    Rect:
+      BottomLeft: {x: 0.2578125, y: 0.0390625}
+      BottomRight: {x: 0.265625, y: 0.0390625}
+      TopLeft: {x: 0.2578125, y: 0.0625}
+      TopRight: {x: 0.265625, y: 0.0625}
+  - GlobalID: 735560599
+    Rect:
+      BottomLeft: {x: 0.265625, y: 0.0390625}
+      BottomRight: {x: 0.2890625, y: 0.0390625}
+      TopLeft: {x: 0.265625, y: 0.0625}
+      TopRight: {x: 0.2890625, y: 0.0625}
+  - GlobalID: -1809658547
+    Rect:
+      BottomLeft: {x: 0.171875, y: 0.03125}
+      BottomRight: {x: 0.1953125, y: 0.03125}
+      TopLeft: {x: 0.171875, y: 0.0390625}
+      TopRight: {x: 0.1953125, y: 0.0390625}
+  - GlobalID: 677854286
+    Rect:
+      BottomLeft: {x: 0.1953125, y: 0.03125}
+      BottomRight: {x: 0.203125, y: 0.03125}
+      TopLeft: {x: 0.1953125, y: 0.0390625}
+      TopRight: {x: 0.203125, y: 0.0390625}
+  - GlobalID: 230516563
+    Rect:
+      BottomLeft: {x: 0.203125, y: 0.03125}
+      BottomRight: {x: 0.2265625, y: 0.03125}
+      TopLeft: {x: 0.203125, y: 0.0390625}
+      TopRight: {x: 0.2265625, y: 0.0390625}
+  - GlobalID: -752077755
+    Rect:
+      BottomLeft: {x: 0.171875, y: 0.0390625}
+      BottomRight: {x: 0.1953125, y: 0.0390625}
+      TopLeft: {x: 0.171875, y: 0.0625}
+      TopRight: {x: 0.1953125, y: 0.0625}
+  - GlobalID: 1735435078
+    Rect:
+      BottomLeft: {x: 0.1953125, y: 0.0390625}
+      BottomRight: {x: 0.203125, y: 0.0390625}
+      TopLeft: {x: 0.1953125, y: 0.0625}
+      TopRight: {x: 0.203125, y: 0.0625}
+  - GlobalID: 1288097355
+    Rect:
+      BottomLeft: {x: 0.203125, y: 0.0390625}
+      BottomRight: {x: 0.2265625, y: 0.0390625}
+      TopLeft: {x: 0.203125, y: 0.0625}
+      TopRight: {x: 0.2265625, y: 0.0625}
   - GlobalID: 11254534
     Rect:
       BottomLeft: {x: 0.0078125, y: 0.0078125}
       BottomRight: {x: 0.015625, y: 0.0078125}
       TopLeft: {x: 0.0078125, y: 0.015625}
       TopRight: {x: 0.015625, y: 0.015625}
+  - GlobalID: 1779562337
+    Rect:
+      BottomLeft: {x: 0.03125, y: 0.0078125}
+      BottomRight: {x: 0.078125, y: 0.0078125}
+      TopLeft: {x: 0.03125, y: 0.0546875}
+      TopRight: {x: 0.078125, y: 0.0546875}
+  - GlobalID: -27892126
+    Rect:
+      BottomLeft: {x: 0.078125, y: 0.0078125}
+      BottomRight: {x: 0.1171875, y: 0.0078125}
+      TopLeft: {x: 0.078125, y: 0.0546875}
+      TopRight: {x: 0.1171875, y: 0.0546875}
+  - GlobalID: -475229849
+    Rect:
+      BottomLeft: {x: 0.1171875, y: 0.0078125}
+      BottomRight: {x: 0.1640625, y: 0.0078125}
+      TopLeft: {x: 0.1171875, y: 0.0546875}
+      TopRight: {x: 0.1640625, y: 0.0546875}
+  - GlobalID: -1552478961
+    Rect:
+      BottomLeft: {x: 0.03125, y: 0.0546875}
+      BottomRight: {x: 0.078125, y: 0.0546875}
+      TopLeft: {x: 0.03125, y: 0.09375}
+      TopRight: {x: 0.078125, y: 0.09375}
+  - GlobalID: 935033872
+    Rect:
+      BottomLeft: {x: 0.078125, y: 0.0546875}
+      BottomRight: {x: 0.1171875, y: 0.0546875}
+      TopLeft: {x: 0.078125, y: 0.09375}
+      TopRight: {x: 0.1171875, y: 0.09375}
+  - GlobalID: 487696149
+    Rect:
+      BottomLeft: {x: 0.1171875, y: 0.0546875}
+      BottomRight: {x: 0.1640625, y: 0.0546875}
+      TopLeft: {x: 0.1171875, y: 0.09375}
+      TopRight: {x: 0.1640625, y: 0.09375}
+  - GlobalID: 125138869
+    Rect:
+      BottomLeft: {x: 0.03125, y: 0.09375}
+      BottomRight: {x: 0.078125, y: 0.09375}
+      TopLeft: {x: 0.03125, y: 0.140625}
+      TopRight: {x: 0.078125, y: 0.140625}
+  - GlobalID: 155149535
+    Rect:
+      BottomLeft: {x: 0.078125, y: 0.09375}
+      BottomRight: {x: 0.1171875, y: 0.09375}
+      TopLeft: {x: 0.078125, y: 0.140625}
+      TopRight: {x: 0.1171875, y: 0.140625}
+  - GlobalID: -292188188
+    Rect:
+      BottomLeft: {x: 0.1171875, y: 0.09375}
+      BottomRight: {x: 0.1640625, y: 0.09375}
+      TopLeft: {x: 0.1171875, y: 0.140625}
+      TopRight: {x: 0.1640625, y: 0.140625}
   m_RendererCapacity: 1024
   m_ShaderName: Cell

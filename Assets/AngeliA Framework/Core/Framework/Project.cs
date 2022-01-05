@@ -8,30 +8,6 @@ using UnityEngine;
 namespace AngeliaFramework {
 
 
-
-	public struct Block {
-		public uint InstanceID;
-		public int BlockID;
-		public Block (uint instanceID, int blockID) {
-			InstanceID = instanceID;
-			BlockID = blockID;
-		}
-	}
-
-
-
-	public class Map {
-
-		public int Width => Blocks.GetLength(0);
-		public int Height => Blocks.GetLength(1);
-		public int LayerCount => Blocks.GetLength(2);
-
-		public Block[,,] Blocks = new Block[0, 0, 0];
-
-	}
-
-
-
 	public class Project {
 
 		public readonly Dictionary<Vector3Int, string> MapPosToFileName = new();
@@ -48,6 +24,28 @@ namespace AngeliaFramework {
 
 		#region --- SUB ---
 
+
+
+		public struct Block {
+			public uint InstanceID;
+			public int BlockID;
+			public Block (uint instanceID, int blockID) {
+				InstanceID = instanceID;
+				BlockID = blockID;
+			}
+		}
+
+
+
+		public class Map {
+
+			public int Width => Blocks.GetLength(0);
+			public int Height => Blocks.GetLength(1);
+			public int LayerCount => Blocks.GetLength(2);
+
+			public Block[,,] Blocks = new Block[0, 0, 0];
+
+		}
 
 
 		[System.Serializable]

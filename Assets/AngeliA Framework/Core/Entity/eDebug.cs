@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public class DebugEntity : Entity {
+	public class eDebug : Entity {
 
 
 		public PhysicsLayer Layer = PhysicsLayer.Item;
@@ -13,11 +13,12 @@ namespace AngeliaFramework {
 		public Color32 Color = new(255, 255, 255, 255);
 		public string SpriteName = "Pixel";
 		public bool PhysicsCheck = false;
-		private static int PIXEL_CODE = "Pixel".GetAngeliaHashCode();
+		private static int PIXEL_CODE = "Pixel".ACode();
+		private Color32? PhysicsCheckTint = null;
 
 
 		public override void FillPhysics () {
-			if (Width < Const.CELL_SIZE && Height < Const.CELL_SIZE) {
+			if (Width <= Const.CELL_SIZE && Height <= Const.CELL_SIZE) {
 				CellPhysics.Fill(
 					Layer, new RectInt(X, Y, Width, Height), this
 				);
@@ -27,21 +28,29 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate () {
 			CellRenderer.Draw(
-				SpriteName.GetAngeliaHashCode(),
+				SpriteName.ACode(),
 				X, Y, 0, 0,
 				0, Width, Height, Color
 			);
 			if (PhysicsCheck) {
+				bool success = false;
 				CellPhysics.ForAllOverlaps(Layer, new RectInt(X, Y, Width, Height), (_rect, _entity) => {
-					if (_entity != this && _entity is DebugEntity dEntity) {
+					if (_entity != this && _entity is eDebug dEntity) {
+						if (!PhysicsCheckTint.HasValue) {
+							PhysicsCheckTint = Random.ColorHSV(0f, 1f, 1f, 1f, 1f, 1f);
+						}
 						CellRenderer.Draw(
 							PIXEL_CODE,
 							dEntity.X, dEntity.Y, 0, 0,
-							0, dEntity.Width, dEntity.Height, new Color(0, 1, 0, 1f)
+							0, dEntity.Width, dEntity.Height, PhysicsCheckTint.Value
 						);
+						success = true;
 					}
 					return true;
 				});
+				if (!success) {
+					PhysicsCheckTint = null;
+				}
 			}
 		}
 
@@ -49,7 +58,7 @@ namespace AngeliaFramework {
 	}
 
 
-	public class DebugChar : Entity {
+	public class eDebugChar : Entity {
 
 		public int Width = Const.CELL_SIZE * 16;
 		public int Height = Const.CELL_SIZE * 4;
@@ -65,11 +74,11 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate () {
 			CellRenderer.Draw(
-				"Pixel".GetAngeliaHashCode(),
+				"Pixel".ACode(),
 				X, Y, 0, 0,
 				0, Width, Height, BGColor
 			);
-			CellRenderer.DrawLabel(
+			CellGUI.DrawLabel(
 				Content,
 				new RectInt(X, Y, Width, Height),
 				Color, CharSize, CharSpace, LineSpace, Wrap

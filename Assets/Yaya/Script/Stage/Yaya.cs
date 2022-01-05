@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-using Moenen.Stage;
 
 
 namespace Yaya {
@@ -17,9 +16,6 @@ namespace Yaya {
 		// Short
 		private string ProjectRoot => Util.CombinePaths(Application.persistentDataPath, "Project");
 
-		// Ser
-		[SerializeField] StageLanguage m_Language = null;
-
 
 		#endregion
 
@@ -30,10 +26,8 @@ namespace Yaya {
 
 
 		private void Awake () {
-			Awake_Language();
-			Awake_Music();
 			Awake_Project();
-			Awake_Shortcut();
+			Awake_Misc();
 			Awake_Quit();
 		}
 
@@ -41,34 +35,9 @@ namespace Yaya {
 		private void Start () {
 			try {
 				LoadProject();
-			} catch (System.Exception ex) { LogException(ex); }
-		}
-
-
-		private void Awake_Language () {
-
-			StageLanguage.OnLanguageLoaded = () => {
-
-			};
-
-			LConst.GetLanguage = m_Language.Get;
-
-		}
-
-
-		private void Awake_Music () {
-			StageAudio.OnMusicClipLoaded = () => {
-
-			};
-			StageAudio.OnMusicPlayPause = (playing) => {
-
-			};
-			StageAudio.OnMusicTimeChanged = (time) => {
-
-			};
-			StageAudio.OnPitchChanged = () => {
-
-			};
+			} catch (System.Exception ex) {
+				LogException(ex);
+			}
 		}
 
 
@@ -80,12 +49,9 @@ namespace Yaya {
 		}
 
 
-		private void Awake_Shortcut () {
-			StageShortcut.IsTyping = () => {
+		private void Awake_Misc () {
+			LConst.GetLanguage = (key) => Game.CurrentLanguage ? Game.CurrentLanguage[key] : "";
 
-
-				return false;
-			};
 		}
 
 
@@ -99,9 +65,16 @@ namespace Yaya {
 					return true;
 				} else {
 					// Show Quit Dialog
-
-
-
+					var dialog = new eDialog(
+						2048, LConst.QuitConfirmContent, LConst.LabelQuit, LConst.LabelCancel, "",
+						() => {
+							willQuit = true;
+							Application.Quit();
+						},
+						() => { },
+						null
+					);
+					Game.AddEntity(dialog, EntityLayer.UI);
 					return false;
 				}
 			};
@@ -126,9 +99,9 @@ namespace Yaya {
 
 		private void LoadProject () {
 			string path = ProjectRoot;
-			if (string.IsNullOrEmpty(path)) throw new LanguageException(LConst.ProjectPathEmpty);
+			//if (string.IsNullOrEmpty(path)) throw new LanguageException(LConst.ProjectPathEmpty);
 			Util.CreateFolder(path);
-			var project = ProjectStream.LoadProject(path) ?? throw new LanguageException(LConst.FailToLoadProject);
+			//var project = ProjectStream.LoadProject(path) ?? throw new LanguageException(LConst.FailToLoadProject);
 
 
 

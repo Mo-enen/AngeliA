@@ -51,7 +51,7 @@ namespace AngeliaFramework {
 
 		// Music
 		public static void AddMusic (AudioClip clip) {
-			int id = clip.name.GetAngeliaHashCode();
+			int id = clip.name.ACode();
 			if (!MusicMap.ContainsKey(id)) {
 				MusicMap.Add(id, clip);
 			}
@@ -93,7 +93,7 @@ namespace AngeliaFramework {
 
 		// Sound
 		public static void AddSound (AudioClip clip) {
-			int id = clip.name.GetAngeliaHashCode();
+			int id = clip.name.ACode();
 			if (!SoundMap.ContainsKey(id)) {
 				SoundMap.Add(id, clip);
 			}
@@ -118,16 +118,6 @@ namespace AngeliaFramework {
 
 
 		public static void SetSoundVolume (float volume) => SoundVolume = volume;
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
 
 
 		#endregion
