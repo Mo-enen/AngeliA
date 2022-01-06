@@ -17,6 +17,9 @@ namespace AngeliaFramework {
 		private Color32? PhysicsCheckTint = null;
 
 
+		public override bool Despawnable => false;
+
+
 		public override void FillPhysics () {
 			if (Width <= Const.CELL_SIZE && Height <= Const.CELL_SIZE) {
 				CellPhysics.Fill(

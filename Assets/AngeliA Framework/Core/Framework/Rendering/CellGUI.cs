@@ -13,17 +13,16 @@ namespace AngeliaFramework {
 
 
 		// Data
-		private static System.Action FramePress = null;
-		private static RectInt? ButtonHighlight = null;
+		private static System.Action PressAction = null;
+		private static System.Action NavigationAction = null;
+		private static RectInt? ButtonNavigation = null;
 		private static IntAlignment ButtonNavigationFrame = new(
 			"Button Highlight UL".ACode(),
 			"Button Highlight UM".ACode(),
 			"Button Highlight UR".ACode(),
-
 			"Button Highlight ML".ACode(),
 			0,
 			"Button Highlight MR".ACode(),
-
 			"Button Highlight DL".ACode(),
 			"Button Highlight DM".ACode(),
 			"Button Highlight DR".ACode()
@@ -135,45 +134,61 @@ namespace AngeliaFramework {
 
 
 		// Button
-		public static void DrawButton (System.Action click, RectInt rect, string label, int charSize, Color32 normal, Color32 highlight, Color32 pressed, Color32 labelColor, int spriteID) {
+		public static void DrawButton (System.Action click, RectInt rect, string label, int charSize, Color32 normal, Color32 highlight, Color32 pressed, Color32 labelColor, int spriteID, bool nagigation = false) {
 			bool hover = rect.Contains(ScreenToCameraPosition(FrameInput.MousePosition));
 			bool pressing = FrameInput.MouseLeft;
 			var tint = hover ? pressing ? pressed : highlight : normal;
 			CellRenderer.Draw(spriteID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, tint);
 			DrawLabel(label, rect, labelColor, charSize, 0, 0, false, Alignment.MidMid);
 			if (hover && FrameInput.MouseLeftDown) {
-				FramePress = click;
+				PressAction = click;
+			}
+			if (nagigation) {
+				ButtonNavigation = rect;
 			}
 		}
 
 
-		public static void DrawButton (System.Action click, RectInt rect, string label, int charSize, Color32 normal, Color32 highlight, Color32 pressed, Color32 labelColor, IntAlignment spriteID, RectOffset border) {
+		public static void DrawButton (System.Action click, RectInt rect, string label, int charSize, Color32 normal, Color32 highlight, Color32 pressed, Color32 labelColor, IntAlignment spriteID, RectOffset border, bool nagigation = false) {
 			bool hover = rect.Contains(ScreenToCameraPosition(FrameInput.MousePosition));
 			bool pressing = FrameInput.MouseLeft;
 			var tint = hover ? pressing ? pressed : highlight : normal;
 			Draw_9Slice(rect, border, tint, spriteID);
 			DrawLabel(label, rect, labelColor, charSize, 0, 0, false, Alignment.MidMid);
 			if (hover && FrameInput.MouseLeftDown) {
-				FramePress = click;
+				PressAction = click;
+			}
+			if (nagigation) {
+				ButtonNavigation = rect;
 			}
 		}
 
 
-		public static void DrawButtonNavigation () {
-			if (ButtonHighlight != null) {
-				Draw_9Slice(
-					ButtonHighlight.Value, new RectOffset(24, 24, 24, 24), Color.white, ButtonHighlightFrame
-				);
-				ButtonHighlight = null;
-			}
-		}
+		public static void ActiveNavigation (System.Action action) => NavigationAction = action;
 
 
 		// Event
-		public static void PerformeEvent () {
-			if (FramePress != null) {
-				FramePress();
-				FramePress = null;
+		public static void PerformFrame (uint frame) {
+			if (PressAction != null) {
+				PressAction();
+				PressAction = null;
+				NavigationAction = null;
+			}
+			if (NavigationAction != null) {
+				NavigationAction();
+				PressAction = null;
+				NavigationAction = null;
+			}
+			if (ButtonNavigation != null) {
+				Draw_9Slice(
+					ButtonNavigation.Value.Expand(
+						12 + (int)Mathf.PingPong(frame % (48 * 2), 48) / 4
+					),
+					new RectOffset(30, 30, 30, 30),
+					new Color32(9, 181, 161, 255),
+					ButtonNavigationFrame
+				);
+				ButtonNavigation = null;
 			}
 		}
 

@@ -18,7 +18,7 @@ namespace AngeliaFramework {
 		private const int MAX_VIEW_HEIGHT = 56 * Const.CELL_SIZE;
 		private const int SPAWN_GAP = 6 * Const.CELL_SIZE;
 		private readonly int[] ENTITY_CAPACITY = { 128, 128, 1024, 128, };
-		private readonly int[] ENTITY_BUFFER_CAPACITY = { 64, 64, 64, 64 };
+		private readonly int[] ENTITY_BUFFER_CAPACITY = { 128, 128, 128, 128 };
 
 		// Api
 		public Language CurrentLanguage { get; private set; } = null;
@@ -33,8 +33,9 @@ namespace AngeliaFramework {
 		private Dictionary<int, System.Type> EntityTypePool = new();
 		private Entity[][] Entities = null;
 		private (Entity[] entity, int length)[] EntityBuffers = null;
-		private RectInt ViewRect = default;
+		private RectInt ViewRect = new(0, 0, Mathf.Clamp(28 * Const.CELL_SIZE, 0, MAX_VIEW_WIDTH), Mathf.Clamp(16 * Const.CELL_SIZE, 0, MAX_VIEW_HEIGHT));
 		private RectInt SpawnRect = default;
+		private uint GlobalFrame = 0;
 
 		// Saving
 		private SavingInt LanguageIndex = new("Yaya.LanguageIndex", -1);
@@ -98,6 +99,11 @@ namespace AngeliaFramework {
 				}
 #endif
 			}
+			// Handler
+			Entity.GetSpawnRect = () => SpawnRect;
+			Entity.GetViewRect = () => ViewRect;
+			Entity.GetCameraRect = () => CellRenderer.CameraRect;
+			Entity.AddNewEntity = AddEntity;
 		}
 
 
@@ -217,19 +223,15 @@ namespace AngeliaFramework {
 			FrameUpdate_View();
 			FrameUpdate_Level();
 			FrameUpdate_Entity();
-			CellGUI.PerformeEvent();
-			CellGUI.DrawButtonHighlight();
+			CellGUI.PerformFrame(GlobalFrame);
 			CellRenderer.Update();
+			GlobalFrame++;
 		}
 
 
 		private void FrameUpdate_View () {
 
 			// Move View Rect
-			ViewRect.width = Mathf.Clamp(28 * Const.CELL_SIZE, 0, MAX_VIEW_WIDTH);
-			ViewRect.height = Mathf.Clamp(16 * Const.CELL_SIZE, 0, MAX_VIEW_HEIGHT);
-			ViewRect.x = Const.CELL_SIZE * 128;
-			ViewRect.y = Const.CELL_SIZE * 12;
 			CellRenderer.ViewRect = ViewRect;
 
 			// Spawn Rect
@@ -237,9 +239,6 @@ namespace AngeliaFramework {
 			SpawnRect.height = ViewRect.height + SPAWN_GAP * 2;
 			SpawnRect.x = ViewRect.x + (ViewRect.width - SpawnRect.width) / 2;
 			SpawnRect.y = ViewRect.y + (ViewRect.height - SpawnRect.height) / 2;
-			Entity.SetSpawnRect(SpawnRect);
-			Entity.SetViewRect(ViewRect);
-			Entity.SetCameraRect(CellRenderer.CameraRect);
 
 			// Physics Position
 			CellPhysics.PositionX = SpawnRect.x = (int)ViewRect.center.x - SpawnRect.width / 2;
@@ -333,13 +332,18 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public void AddEntity<T> (T entity, EntityLayer layer) where T : Entity {
+		public void AddEntity (Entity entity, EntityLayer layer) {
 			int layerIndex = (int)layer;
 			ref var buffer = ref EntityBuffers[layerIndex];
 			if (buffer.length < ENTITY_BUFFER_CAPACITY[layerIndex]) {
 				buffer.entity[buffer.length] = entity;
 				buffer.length++;
 			}
+#if UNITY_EDITOR
+			else {
+				Debug.LogWarning($"[Entity] Entity buffer is full. (layer:{layer} capacity:{ENTITY_BUFFER_CAPACITY[layerIndex]})");
+			}
+#endif
 		}
 
 
@@ -362,3 +366,29 @@ namespace AngeliaFramework {
 
 	}
 }
+#if UNITY_EDITOR
+namespace AngeliaFramework.Editor {
+	using UnityEditor;
+	[CustomEditor(typeof(Game))]
+	public class Game_Inspector : Editor {
+		[InitializeOnLoadMethod]
+		private static void Init () {
+			int gameCount = 0;
+			foreach (var guid in AssetDatabase.FindAssets("t:Game")) {
+				if (AssetDatabase.LoadAssetAtPath<Game>(AssetDatabase.GUIDToAssetPath(guid)) != null) {
+					gameCount++;
+					if (gameCount > 1) {
+						Debug.LogError("[Game] only 1 game asset is allowed in the project.");
+						break;
+					}
+				}
+			}
+		}
+		public override void OnInspectorGUI () {
+			serializedObject.Update();
+			DrawPropertiesExcluding(serializedObject, "m_Script");
+			serializedObject.ApplyModifiedProperties();
+		}
+	}
+}
+#endif

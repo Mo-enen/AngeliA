@@ -42,10 +42,16 @@ namespace AngeliaFramework {
 		}
 
 
+
 		public class CharLayer : Layer {
 			public Rect[] UvOffsets;
 			public bool[] FullWidths;
 		}
+
+
+
+		public delegate void VoidHandler ();
+
 
 
 		#endregion
@@ -62,6 +68,7 @@ namespace AngeliaFramework {
 		// Api
 		public static RectInt ViewRect { get; set; } = default;
 		public static RectInt CameraRect { get; private set; } = default;
+		public static event VoidHandler BeforeUpdate = null;
 
 		// Data
 		private static Layer[] Layers = new Layer[0];
@@ -88,6 +95,9 @@ namespace AngeliaFramework {
 
 
 		public static void Update () {
+
+			BeforeUpdate?.Invoke();
+
 			// Ratio
 			float ratio = (float)Screen.width / Screen.height;
 			float maxRatio = (float)ViewRect.width / ViewRect.height;

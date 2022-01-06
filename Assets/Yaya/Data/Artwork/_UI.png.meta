@@ -564,9 +564,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 30
-        y: 5
-        width: 3
-        height: 3
+        y: 8
+        width: 6
+        height: 6
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -584,10 +584,10 @@ TextureImporter:
       name: Button Highlight UM
       rect:
         serializedVersion: 2
-        x: 33
-        y: 5
+        x: 36
+        y: 8
         width: 1
-        height: 3
+        height: 6
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -605,10 +605,10 @@ TextureImporter:
       name: Button Highlight UR
       rect:
         serializedVersion: 2
-        x: 34
-        y: 5
-        width: 3
-        height: 3
+        x: 37
+        y: 8
+        width: 6
+        height: 6
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -626,9 +626,9 @@ TextureImporter:
       name: Button Highlight MR
       rect:
         serializedVersion: 2
-        x: 34
-        y: 4
-        width: 3
+        x: 37
+        y: 7
+        width: 6
         height: 1
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
@@ -647,10 +647,10 @@ TextureImporter:
       name: Button Highlight DR
       rect:
         serializedVersion: 2
-        x: 34
+        x: 37
         y: 1
-        width: 3
-        height: 3
+        width: 6
+        height: 6
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -668,10 +668,10 @@ TextureImporter:
       name: Button Highlight DM
       rect:
         serializedVersion: 2
-        x: 33
+        x: 36
         y: 1
         width: 1
-        height: 3
+        height: 6
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -691,8 +691,8 @@ TextureImporter:
         serializedVersion: 2
         x: 30
         y: 1
-        width: 3
-        height: 3
+        width: 6
+        height: 6
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -711,8 +711,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 30
-        y: 4
-        width: 3
+        y: 7
+        width: 6
         height: 1
       alignment: 9
       pivot: {x: 0.5, y: 0.5}

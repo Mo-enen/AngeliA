@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEditor;
 using Moenen.Standard;
@@ -21,32 +20,31 @@ namespace AngeliaFramework.Editor {
 			get => (EntityLayer)EntityLayerIndex.Value;
 			set => EntityLayerIndex.Value = (int)value;
 		}
-		private PhysicsLayer CurrentPhysicsLayer {
-			get => (PhysicsLayer)PhysicsLayerIndex.Value;
-			set => PhysicsLayerIndex.Value = (int)value;
-		}
 		private static GUIStyle ScrollStyle => _ScrollStyle ??= new GUIStyle() {
 			padding = new RectOffset(6, 6, 2, 2),
 		};
-		private static GUIStyle TextArea => _TextArea ??= new GUIStyle(GUI.skin.textArea) {
-			fontSize = 16,
+		private static GUIStyle _ScrollStyle = null;
+		private static GUIStyle TextAreaStyle => _TextAreaStyle ??= new GUIStyle(GUI.skin.textArea) {
+			fontSize = 14,
 			contentOffset = new Vector2(2, 4),
 		};
+		private static GUIStyle _TextAreaStyle = null;
+		private static GUIStyle PaddingStyle => _PaddingStyle ??= new GUIStyle() {
+			padding = new RectOffset(24, 24, 0, 0),
+		};
+		private static GUIStyle _PaddingStyle = null;
 
 		// Data
-		private static GUIStyle _ScrollStyle = null;
-		private static GUIStyle _TextArea = null;
-		private Game Game = null;
-		private Entity[][] Entities = null;
-		private Entity FocusingEntity = null;
-		private List<System.Type> EntityTypes = new();
-		private Dictionary<System.Type, FieldInfo[]> EntityFieldMap = new();
-		private Vector2 MasterScrollPos = default;
+		private static EntityInspector SelectingInspector = null;
+		private static Game Game = null;
+		private static Entity[][] Entities = null;
+		private static Entity SelectingEntity = null;
+		private static List<System.Type> EntityTypes = new();
 		private int PageIndex = 0;
+		private Vector2 MasterScrollPos = default;
 
 		// Saving
 		private static EditorSavingInt EntityLayerIndex = new("EntityDebuger.EntityLayerIndex", 0);
-		private static EditorSavingInt PhysicsLayerIndex = new("EntityDebuger.PhysicsLayerIndex", 0);
 		private static EditorSavingString EntityInitContent = new("EntityDebuger.EntityInitContent", "");
 
 
@@ -60,20 +58,32 @@ namespace AngeliaFramework.Editor {
 
 		[InitializeOnLoadMethod]
 		private static void Init () {
-
 			EditorApplication.playModeStateChanged += (mode) => {
 
+				// Reload Game
+				if (mode == PlayModeStateChange.EnteredEditMode) {
+					Game game = null;
+					foreach (var guid in AssetDatabase.FindAssets("t:Game")) {
+						game = AssetDatabase.LoadAssetAtPath<Game>(AssetDatabase.GUIDToAssetPath(guid));
+						if (game != null) { break; }
+					}
+					if (game != null) {
+						AssetDatabase.ForceReserializeAssets(
+							new string[] { AssetDatabase.GetAssetPath(game) },
+							ForceReserializeAssetsOptions.ReserializeAssets
+						);
+					}
+				}
+
 				if (!HasOpenInstances<EntityDebuger>()) { return; }
-				var window = GetOrCreateWindow();
 
 				// Reload Cache
 				if (mode == PlayModeStateChange.EnteredPlayMode) {
-					window.Game = null;
-					window.Entities = null;
-					window.EntityTypes.Clear();
-					window.EntityFieldMap.Clear();
-					window.FocusingEntity = null;
-					window.InitCaches();
+					Game = null;
+					Entities = null;
+					EntityTypes.Clear();
+					ClearSelectionInspector();
+					InitCaches();
 				}
 
 				// Load Entity Init Content
@@ -130,13 +140,13 @@ namespace AngeliaFramework.Editor {
 									int.TryParse(_params[4], out y);
 								}
 								// Final
-								var type = window.EntityTypes.Single(
+								var type = EntityTypes.Single(
 									(t) => t.Name == _params[0]
 								);
 								if (type != null) {
 									for (int i = 0; i < count; i++) {
 										var e = System.Activator.CreateInstance(type) as Entity;
-										window.Game.AddEntity(e, layer);
+										Game.AddEntity(e, layer);
 										e.X = x;
 										e.Y = y;
 										prevEntity = e;
@@ -150,33 +160,78 @@ namespace AngeliaFramework.Editor {
 		}
 
 
+		[RuntimeInitializeOnLoadMethod]
+		private static void RuntimeInit () {
+			CellRenderer.BeforeUpdate += DrawGizmos;
+		}
+
+
 		[MenuItem("Tools/Entity Debuger")]
 		private static void OpenWindow () => GetOrCreateWindow();
 
 
 		private void OnGUI () {
+			using var scope = new GUILayout.ScrollViewScope(MasterScrollPos, ScrollStyle);
+			MasterScrollPos = scope.scrollPosition;
 			if (!EditorApplication.isPlaying) {
 				// Edit Mode
-				OnGUI_EntityInit();
+				OnGUI_Edittime();
 			} else {
 				// Play Mode
 				if ((Game == null || Entities == null) && !InitCaches()) { return; }
 
-				// Content
-				using var scope = new GUILayout.ScrollViewScope(MasterScrollPos, ScrollStyle);
-				Layout.Space(12);
-				MasterScrollPos = scope.scrollPosition;
-				OnGUI_EntityView();
+				if (SelectingInspector == null) {
+					SelectingInspector = CreateInstance<EntityInspector>();
+					SelectingInspector.Game = Game;
+				}
 
+				// Content
+				Layout.Space(12);
+				OnGUI_Runtime();
+				if (
+					(SelectingEntity != null || SelectingInspector.InspectorMode != EntityInspector.Mode.Entity) &&
+					Event.current.type == EventType.MouseDown
+				) {
+					ClearSelectionInspector();
+				}
 			}
 			if (Event.current.type == EventType.MouseDown) {
+				Selection.activeObject = null;
 				GUI.FocusControl("");
 				Repaint();
 			}
 		}
 
 
-		private void OnGUI_EntityView () {
+		private void OnGUI_Edittime () {
+			Layout.Space(6);
+			// CMD
+			EditorGUI.HelpBox(
+				Layout.Rect(0, 24).Expand(-16, -6, 0, 0),
+				" Type, Layer, Count = 1, X = 0, Y = 0",
+				MessageType.Info
+			);
+			Layout.Space(6);
+			EntityInitContent.Value = GUI.TextArea(
+				Layout.Rect(0, 320).Expand(-16, -6, 0, 0),
+				EntityInitContent.Value,
+				TextAreaStyle
+			);
+			EditorGUIUtility.AddCursorRect(Layout.LastRect(), MouseCursor.Text);
+			Layout.Space(6);
+			using (new GUILayout.VerticalScope(PaddingStyle)) {
+				// Language Editor
+				if (GUI.Button(Layout.Rect(0, 32), "Language Editor")) {
+					var gPer = FindObjectOfType<GamePerformer>();
+					if (gPer != null && gPer.Game != null) {
+						LanguageEditor.OpenEditor(gPer.Game);
+					}
+				}
+			}
+		}
+
+
+		private void OnGUI_Runtime () {
 
 			Layout.Space(6);
 
@@ -189,9 +244,13 @@ namespace AngeliaFramework.Editor {
 				}
 				Layout.Space(4);
 				// Layer
-				CurrentEntityLayer = (EntityLayer)Mathf.Clamp(
+				var newLayer = (EntityLayer)Mathf.Clamp(
 					(int)(EntityLayer)EditorGUI.EnumPopup(Layout.Rect(0, 18), CurrentEntityLayer), 0, Entities.Length
 				);
+				if (newLayer != CurrentEntityLayer) {
+					CurrentEntityLayer = newLayer;
+					PageIndex = 0;
+				}
 			}
 			Layout.Space(8);
 
@@ -199,8 +258,8 @@ namespace AngeliaFramework.Editor {
 			int capacity = entities.Length;
 			const int HEIGHT = 18;
 
-			if (FocusingEntity != null && !FocusingEntity.Active) {
-				FocusingEntity = null;
+			if (SelectingEntity != null && !SelectingEntity.Active) {
+				ClearSelectionInspector();
 			}
 
 			// Table
@@ -208,30 +267,20 @@ namespace AngeliaFramework.Editor {
 
 				bool mouseDown = Event.current.type == EventType.MouseDown;
 
-				// Title Bar
-				using (new GUILayout.HorizontalScope()) {
-					GUI.Label(Layout.Rect(24, HEIGHT), "#", EditorStyles.centeredGreyMiniLabel);
-					GUI.Label(Layout.Rect(0, HEIGHT), "type", EditorStyles.centeredGreyMiniLabel);
-					GUI.Label(Layout.Rect(0, HEIGHT), "x", EditorStyles.centeredGreyMiniLabel);
-					Layout.Space(4);
-					GUI.Label(Layout.Rect(0, HEIGHT), "y", EditorStyles.centeredGreyMiniLabel);
-					Layout.Space(4);
-					Layout.Space(24);
-				}
-
 				// List
 				PageIndex = Layout.PageList(PageIndex, 16, capacity, (index, rect) => {
 
 					var entity = entities[index];
 
-					// BG
+					// Mouse Down
 					if (mouseDown && rect.Contains(Event.current.mousePosition)) {
-						FocusingEntity = entity;
+						SetSelectionInspector(entity, EntityInspector.Mode.Entity);
+						Event.current.Use();
 						Repaint();
 					}
 
 					// Highlight
-					if (entity == FocusingEntity && entity != null) {
+					if (entity == SelectingEntity && entity != null) {
 						EditorGUI.DrawRect(rect.Expand(-24, 0, 0, 0), new Color32(44, 93, 135, 255));
 					}
 
@@ -239,97 +288,23 @@ namespace AngeliaFramework.Editor {
 					if (entity != null) {
 
 						// Type
-						var _rect = Layout.Rect(0, HEIGHT);
-						var oldC = GUI.color;
-						GUI.color = new Color(0.4f, 1f, 0.9f, 1f);
-						GUI.Label(_rect, entity.GetType().Name);
-						GUI.color = oldC;
-
-						float snap = Const.CELL_SIZE / 4;
-
-						// X
-						_rect = Layout.Rect(0, HEIGHT);
-						entity.X = EditorGUI.IntField(_rect.Shrink(18, 18, 0, 0), entity.X);
-						if (GUI.Button(new Rect(_rect) { width = 18, }, "◀")) {
-							entity.X = (int)(Mathf.Round((entity.X - snap) / snap) * snap);
-						}
-						if (GUI.Button(new Rect(_rect) { x = _rect.xMax - 18, width = 18, }, "▶")) {
-							entity.X = (int)(Mathf.Round((entity.X + snap) / snap) * snap);
-						}
-						Layout.Space(4);
-
-						// Y
-						_rect = Layout.Rect(0, HEIGHT);
-						entity.Y = EditorGUI.IntField(_rect.Shrink(18, 18, 0, 0), entity.Y);
-						if (GUI.Button(new Rect(_rect) { width = 18, }, "◀")) {
-							entity.Y = (int)(Mathf.Round((entity.Y - snap) / snap) * snap);
-						}
-						if (GUI.Button(new Rect(_rect) { x = _rect.xMax - 18, width = 18, }, "▶")) {
-							entity.Y = (int)(Mathf.Round((entity.Y + snap) / snap) * snap);
-						}
-						Layout.Space(4);
+						GUI.Label(Layout.Rect(0, HEIGHT), entity.GetType().Name);
 
 						// Destroy
-						if (GUI.Button(Layout.Rect(24, HEIGHT), "×")) {
+						if (GUI.Button(Layout.Rect(24, HEIGHT), "×", GUI.skin.label)) {
 							entity.Active = false;
 						}
+						EditorGUIUtility.AddCursorRect(Layout.LastRect(), MouseCursor.Link);
 
 					}
+				}, true, (bWidth, bHeight) => {
+					// More Button in Page Layout
+					if (GUI.Button(Layout.Rect(bWidth, bHeight), "View")) {
+						SetSelectionInspector(null, EntityInspector.Mode.View);
+						Event.current.Use();
+					}
+					Layout.Space(4);
 				});
-
-
-
-				// Focusing
-				using (new GUILayout.VerticalScope(GUI.skin.box)) {
-					if (FocusingEntity != null) {
-
-						// Type
-						var type = FocusingEntity.GetType();
-						Layout.Space(4);
-						var oldC = GUI.color;
-						GUI.color = new Color(0.4f, 1f, 0.9f, 1f);
-						GUI.Label(Layout.Rect(0, 18), Util.GetDisplayName(type.Name));
-						GUI.color = oldC;
-						Layout.Space(2);
-
-						// Fields
-						var fields = EntityFieldMap.ContainsKey(type) ?
-							EntityFieldMap[type] :
-							EntityFieldMap[type] = type.GetFields(
-								BindingFlags.Public | BindingFlags.NonPublic |
-								BindingFlags.Instance | BindingFlags.DeclaredOnly
-							);
-						foreach (var field in fields) {
-							if (!field.IsPublic && field.GetCustomAttribute<SerializeField>(false) == null) { continue; }
-							using (new GUILayout.HorizontalScope()) {
-								// Name (type)
-								GUI.Label(
-									Layout.Rect(0, HEIGHT),
-									$"{Util.GetDisplayName(field.Name)} <color=#666666> {Util.GetDisplayNameForTypes(field.FieldType.Name)}</color>",
-									Layout.RichLabel
-								);
-								// Value
-								field.SetValue(FocusingEntity, Field(
-									Layout.Rect(0, HEIGHT),
-									"",
-									field.GetValue(FocusingEntity)
-								));
-							}
-							Layout.Space(2);
-						}
-
-					} else {
-						// State
-						var view = (RectInt)Util.GetFieldValue(Game, "ViewRect");
-						var spawn = (RectInt)Util.GetFieldValue(Game, "SpawnRect");
-						GUI.Label(Layout.Rect(0, 18), $"View:\t\t{view.x}, {view.y}, {view.width}, {view.height}");
-						Layout.Space(2);
-						GUI.Label(Layout.Rect(0, 18), $"Spawn:\t\t{spawn.x}, {spawn.y}, {spawn.width}, {spawn.height}");
-						Layout.Space(2);
-						GUI.Label(Layout.Rect(0, 18), $"Resolution:\t{Screen.currentResolution.width}, {Screen.currentResolution.height}");
-						Layout.Space(2);
-					}
-				}
 
 			} else {
 				// No Entity Capacity
@@ -338,25 +313,20 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void OnGUI_EntityInit () {
-			Layout.Space(6);
-
-			GUI.Label(Layout.Rect(0, 18).Expand(-6, 0, 0, 0), "Create Entity");
-			Layout.Space(6);
-			EditorGUI.HelpBox(
-				Layout.Rect(0, 24).Expand(-16, -6, 0, 0),
-				" Type, Layer, Count = 1, X = 0, Y = 0",
-				MessageType.Info
-			);
-			Layout.Space(6);
-			EntityInitContent.Value = GUI.TextArea(
-				Layout.Rect(0, 320).Expand(-16, -6, 0, 0),
-				EntityInitContent.Value,
-				TextArea
-			);
-			EditorGUIUtility.AddCursorRect(Layout.LastRect(), MouseCursor.Text);
-			Layout.Space(22);
-
+		public static void DrawGizmos () {
+			// Selection
+			if (SelectingEntity != null) {
+				CellRenderer.Draw("Pixel".ACode(), new RectInt(
+					SelectingEntity.X - 24,
+					SelectingEntity.Y - 24,
+					48, 48
+				), new Color32(0, 0, 0, 255));
+				CellRenderer.Draw("Pixel".ACode(), new RectInt(
+					SelectingEntity.X - 16,
+					SelectingEntity.Y - 16,
+					32, 32
+				), new Color32(255, 255, 255, (byte)(Time.time % 0.618f > 0.618f / 2f ? 255 : 128)));
+			}
 		}
 
 
@@ -368,7 +338,7 @@ namespace AngeliaFramework.Editor {
 		#region --- LGC ---
 
 
-		private bool InitCaches () {
+		private static bool InitCaches () {
 
 			// Game
 			Game = null;
@@ -433,6 +403,125 @@ namespace AngeliaFramework.Editor {
 		}
 
 
+		private static void SetSelectionInspector (Entity entity, EntityInspector.Mode mode) {
+			SelectingEntity = entity;
+			SelectingInspector.SetTarget(entity);
+			SelectingInspector.InspectorMode = mode;
+			Selection.activeObject = SelectingInspector;
+		}
+
+
+		private static void ClearSelectionInspector () {
+			SelectingEntity = null;
+			Selection.activeObject = null;
+			SelectingInspector.SetTarget(null);
+			SelectingInspector.InspectorMode = EntityInspector.Mode.Entity;
+		}
+
+
+		#endregion
+
+
+
+
+	}
+
+
+
+	public class EntityInspector : ScriptableObject {
+		public enum Mode {
+			Entity = 0,
+			View = 1,
+		}
+		public Entity Target { get; private set; } = null;
+		public Game Game { get; set; } = null;
+		public Mode InspectorMode { get; set; } = Mode.Entity;
+		public void SetTarget (Entity target) {
+			Target = target;
+			name = target != null ? target.GetType().Name : "";
+		}
+	}
+
+
+
+	[CustomEditor(typeof(EntityInspector))]
+	public class EntityInspector_Inspector : UnityEditor.Editor {
+
+
+		private Dictionary<System.Type, FieldInfo[]> EntityFieldMap = new();
+
+
+		public override void OnInspectorGUI () {
+			switch ((target as EntityInspector).InspectorMode) {
+				case EntityInspector.Mode.Entity:
+					GUI_Entity();
+					break;
+				case EntityInspector.Mode.View:
+					GUI_View();
+					break;
+			}
+		}
+
+
+		private void GUI_View () {
+			var game = (target as EntityInspector).Game;
+			var viewRect = (RectInt)Util.GetFieldValue(game, "ViewRect");
+			var spawnRect = (RectInt)Util.GetFieldValue(game, "SpawnRect");
+			var cameraRect = CellRenderer.CameraRect;
+
+			var newView = EditorGUILayout.RectIntField(new GUIContent("View"), viewRect);
+			if (newView.IsNotSame(viewRect)) {
+				Util.SetFieldValue(game, "ViewRect", newView);
+			}
+			Layout.Space(2);
+
+			bool oldE = GUI.enabled;
+			GUI.enabled = false;
+			EditorGUILayout.RectIntField(new GUIContent("Spawn"), spawnRect);
+			Layout.Space(2);
+
+			EditorGUILayout.RectIntField(new GUIContent("Camera"), cameraRect);
+			Layout.Space(2);
+			GUI.enabled = oldE;
+		}
+
+
+		private void GUI_Entity () {
+			const int HEIGHT = 18;
+			var eTarget = target as EntityInspector;
+			if (eTarget.Target == null) { return; }
+			var type = eTarget.Target.GetType();
+			var fields = EntityFieldMap.ContainsKey(type) ?
+				EntityFieldMap[type] :
+				EntityFieldMap[type] = type.GetFields(
+					BindingFlags.Public | BindingFlags.NonPublic |
+					BindingFlags.Instance | BindingFlags.DeclaredOnly
+				);
+			Layout.Space(4);
+
+			// X
+			eTarget.Target.X = EditorGUI.IntField(Layout.Rect(0, HEIGHT), "X", eTarget.Target.X);
+			Layout.Space(2);
+
+			// Y
+			eTarget.Target.Y = EditorGUI.IntField(Layout.Rect(0, HEIGHT), "Y", eTarget.Target.Y);
+			Layout.Space(2);
+
+			// Fields
+			foreach (var field in fields) {
+				if (!field.IsPublic && field.GetCustomAttribute<SerializeField>(false) == null) { continue; }
+				using (new GUILayout.HorizontalScope()) {
+					field.SetValue(eTarget.Target, Field(
+						Layout.Rect(0, HEIGHT),
+						Util.GetDisplayName(field.Name),
+						field.GetValue(eTarget.Target)
+					));
+				}
+				Layout.Space(2);
+			}
+		}
+
+
 		private static object Field (Rect rect, string label, object value) => value switch {
 
 			sbyte sbValue => (sbyte)Mathf.Clamp(EditorGUI.IntField(rect, label, sbValue), sbyte.MinValue, sbyte.MaxValue),
@@ -461,10 +550,8 @@ namespace AngeliaFramework.Editor {
 		};
 
 
-		#endregion
-
-
-
-
 	}
+
+
+
 }

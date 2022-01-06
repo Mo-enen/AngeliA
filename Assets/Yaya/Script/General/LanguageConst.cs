@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 
@@ -14,14 +14,6 @@ namespace Yaya {
 		public static string LabelOK => GetLanguage("Dialog.Ok");
 		public static string LabelCancel => GetLanguage("Dialog.Cancel");
 		public static string LabelQuit => GetLanguage("Dialog.Quit");
-
-		// Project
-		public static string ProjectPathEmpty => GetLanguage("Project.ProjectPathEmpty");
-		public static string ProjectPathNotExists => GetLanguage("Project.ProjectPathNotExists");
-		public static string FailToLoadProject => GetLanguage("Project.FailToLoadProject");
-
-
-
 
 	}
 }

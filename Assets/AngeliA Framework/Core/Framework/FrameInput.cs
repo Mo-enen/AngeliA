@@ -13,8 +13,8 @@ namespace AngeliaFramework {
 		Right = 1,
 		Down = 2,
 		Up = 3,
-		A = 4,
-		B = 5,
+		Action = 4,
+		Jump = 5,
 		Start = 6,
 		Select = 7,
 	}
@@ -64,8 +64,8 @@ namespace AngeliaFramework {
 			{ GameKey.Right, KeyState.None },
 			{ GameKey.Down, KeyState.None },
 			{ GameKey.Up, KeyState.None },
-			{ GameKey.A, KeyState.None },
-			{ GameKey.B, KeyState.None },
+			{ GameKey.Action, KeyState.None },
+			{ GameKey.Jump, KeyState.None },
 			{ GameKey.Start, KeyState.None },
 			{ GameKey.Select, KeyState.None },
 		};
@@ -74,8 +74,8 @@ namespace AngeliaFramework {
 			{ GameKey.Right, (Key.D, Key.RightArrow) },
 			{ GameKey.Down, (Key.S, Key.DownArrow) },
 			{ GameKey.Up, (Key.W, Key.UpArrow) },
-			{ GameKey.A, (Key.P, Key.LeftShift) },
-			{ GameKey.B, (Key.L, Key.Z) },
+			{ GameKey.Action, (Key.P, Key.Z) },
+			{ GameKey.Jump, (Key.L, Key.LeftShift) },
 			{ GameKey.Start, (Key.Enter, Key.Space) },
 			{ GameKey.Select, (Key.Tab, Key.Tab) },
 		};
@@ -134,8 +134,8 @@ namespace AngeliaFramework {
 			StateMap[GameKey.Right] = GetState(GameKey.Right);
 			StateMap[GameKey.Down] = GetState(GameKey.Down);
 			StateMap[GameKey.Up] = GetState(GameKey.Up);
-			StateMap[GameKey.A] = GetState(GameKey.A);
-			StateMap[GameKey.B] = GetState(GameKey.B);
+			StateMap[GameKey.Action] = GetState(GameKey.Action);
+			StateMap[GameKey.Jump] = GetState(GameKey.Jump);
 			StateMap[GameKey.Start] = GetState(GameKey.Start);
 			StateMap[GameKey.Select] = GetState(GameKey.Select);
 
@@ -210,8 +210,8 @@ namespace AngeliaFramework {
 			bool prevHolding = StateMap[key] == KeyState.Holding || StateMap[key] == KeyState.Down;
 			bool holding = false;
 			if (Gamepad != null) {
-				if (SwapeAB.Value && (key == GameKey.A || key == GameKey.B)) {
-					key = key == GameKey.A ? GameKey.B : GameKey.A;
+				if (SwapeAB.Value && (key == GameKey.Action || key == GameKey.Jump)) {
+					key = key == GameKey.Action ? GameKey.Jump : GameKey.Action;
 				}
 				switch (key) {
 					case GameKey.Left:
@@ -234,14 +234,14 @@ namespace AngeliaFramework {
 							Gamepad.dpad.up.IsPressed() ||
 							Gamepad.leftStick.up.IsPressed();
 						break;
-					case GameKey.A:
+					case GameKey.Action:
 						holding =
 							Gamepad.buttonEast.IsPressed() ||
 							Gamepad.buttonWest.IsPressed() ||
 							Gamepad.leftTrigger.IsPressed() ||
 							Gamepad.leftShoulder.IsPressed();
 						break;
-					case GameKey.B:
+					case GameKey.Jump:
 						holding =
 							Gamepad.buttonNorth.IsPressed() ||
 							Gamepad.buttonSouth.IsPressed() ||

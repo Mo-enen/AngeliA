@@ -23,6 +23,7 @@ namespace AngeliaFramework {
 		private System.Action OK = null;
 		private System.Action Cancel = null;
 		private System.Action Alt = null;
+		private int NavIndex = 0;
 
 		// Style
 		private static IntAlignment MAIN_SPRITES = new(
@@ -84,8 +85,9 @@ namespace AngeliaFramework {
 
 			// Pos
 			RefreshHeight();
-			X = CameraRect.x + (CameraRect.width - Width) / 2;
-			Y = CameraRect.y + (CameraRect.height - Height) / 2;
+			var cameraRect = GetCameraRect();
+			X = cameraRect.x + (cameraRect.width - Width) / 2;
+			Y = cameraRect.y + (cameraRect.height - Height) / 2;
 
 			// Rect
 			var mainRect = new RectInt(X, Y, Width, Height);
@@ -107,7 +109,7 @@ namespace AngeliaFramework {
 
 			// BG Panel
 			CellGUI.DrawButton(
-				() => { }, CameraRect, "", 0,
+				() => { }, cameraRect, "", 0,
 				BG_PANEL, BG_PANEL, BG_PANEL, BG_PANEL, PIXEL_ID
 			);
 
@@ -123,6 +125,29 @@ namespace AngeliaFramework {
 				CONTENT_CHAR, CHAR_SIZE_CONTENT,
 				0, 0, true, Alignment.TopLeft
 			);
+
+			// Nav
+			if (FrameInput.KeyDown(GameKey.Left)) {
+				for (int i = 0; i < 3; i++) {
+					NavIndex = Mathf.Clamp(NavIndex - 1, 0, 2);
+					var action = NavIndex == 0 ? OK : NavIndex == 1 ? Alt : Cancel;
+					if (action != null) { break; }
+				}
+			}
+			if (FrameInput.KeyDown(GameKey.Right)) {
+				for (int i = 0; i < 3; i++) {
+					NavIndex = Mathf.Clamp(NavIndex + 1, 0, 2);
+					var action = NavIndex == 0 ? OK : NavIndex == 1 ? Alt : Cancel;
+					if (action != null) { break; }
+				}
+			}
+			if (FrameInput.KeyDown(GameKey.Start) || FrameInput.KeyDown(GameKey.Action)) {
+				CellGUI.ActiveNavigation(NavIndex == 0 ? OK : NavIndex == 1 ? Alt : Cancel);
+				Active = false;
+			}
+			if (FrameInput.KeyDown(GameKey.Select) || FrameInput.KeyDown(GameKey.Jump)) {
+				Active = false;
+			}
 
 			// Buttons 
 			int buttonCount = 1;
@@ -140,7 +165,8 @@ namespace AngeliaFramework {
 					),
 					GetButtonLabel(i), BUTTON_CHAR_SIZE,
 					BUTTON_NORMAL, BUTTON_HIGHLIGHT, BUTTON_PRESS, BUTTON_CHAR,
-					BUTTON_SPRITES, new RectOffset(BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER)
+					BUTTON_SPRITES, new RectOffset(BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER),
+					i == NavIndex
 				);
 				buttonCount++;
 			}
@@ -156,7 +182,16 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public eDialog () { }
+		public eDialog () {
+			Width = 2048;
+			Message = "Debug Test Message. ÖÐÎÄ²âÊÔ¡£";
+			Label_OK = "OK";
+			Label_Cancel = "Cancel";
+			Label_Alt = "Alt";
+			OK = () => { Debug.Log("OK"); };
+			Cancel = () => { Debug.Log("Cancel"); };
+			Alt = () => { Debug.Log("Alt"); };
+		}
 
 
 		public eDialog (
