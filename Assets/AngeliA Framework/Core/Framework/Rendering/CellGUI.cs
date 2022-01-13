@@ -168,7 +168,7 @@ namespace AngeliaFramework {
 
 
 		// Event
-		public static void PerformFrame (uint frame) {
+		public static void PerformFrame (int frame) {
 			if (PressAction != null) {
 				PressAction();
 				PressAction = null;

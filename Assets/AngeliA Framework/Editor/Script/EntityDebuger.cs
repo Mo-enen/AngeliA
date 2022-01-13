@@ -15,6 +15,17 @@ namespace AngeliaFramework.Editor {
 
 		#region --- VAR ---
 
+		// Const
+		private static readonly int PIXEL_CODE = "Pixel".ACode();
+		private static readonly Color32[] COLLIDER_TINT = {
+			new (255, 0, 0, 255),
+			new (255, 255, 0, 255),
+			new (0, 255, 0, 255),
+			new (0, 255, 255, 255),
+			new (0, 0, 255, 255),
+			new (255, 0, 255, 255),
+		};
+
 		// Short
 		private EntityLayer CurrentEntityLayer {
 			get => (EntityLayer)EntityLayerIndex.Value;
@@ -44,8 +55,9 @@ namespace AngeliaFramework.Editor {
 		private Vector2 MasterScrollPos = default;
 
 		// Saving
-		private static EditorSavingInt EntityLayerIndex = new("EntityDebuger.EntityLayerIndex", 0);
-		private static EditorSavingString EntityInitContent = new("EntityDebuger.EntityInitContent", "");
+		private static readonly EditorSavingInt EntityLayerIndex = new("EntityDebuger.EntityLayerIndex", 0);
+		private static readonly EditorSavingString EntityInitContent = new("EntityDebuger.EntityInitContent", "");
+		private static readonly EditorSavingBool ShowColliders = new("EntityDebuger.ShowColliders", false);
 
 
 		#endregion
@@ -124,33 +136,26 @@ namespace AngeliaFramework.Editor {
 								_params != null && _params.Length >= 2 &&
 								System.Enum.TryParse(_params[1], true, out EntityLayer layer)
 							) {
-								// Count
-								int count = 1;
-								if (_params.Length >= 3) {
-									int.TryParse(_params[2], out count);
-								}
 								// X
 								int x = 0;
-								if (_params.Length >= 4) {
-									int.TryParse(_params[3], out x);
+								if (_params.Length >= 3) {
+									int.TryParse(_params[2], out x);
 								}
 								// Y
 								int y = 0;
-								if (_params.Length >= 5) {
-									int.TryParse(_params[4], out y);
+								if (_params.Length >= 4) {
+									int.TryParse(_params[3], out y);
 								}
 								// Final
 								var type = EntityTypes.Single(
 									(t) => t.Name == _params[0]
 								);
 								if (type != null) {
-									for (int i = 0; i < count; i++) {
-										var e = System.Activator.CreateInstance(type) as Entity;
-										Game.AddEntity(e, layer);
-										e.X = x;
-										e.Y = y;
-										prevEntity = e;
-									}
+									var e = System.Activator.CreateInstance(type) as Entity;
+									Game.AddEntity(e, layer);
+									e.X = x;
+									e.Y = y;
+									prevEntity = e;
 								}
 							}
 						}
@@ -208,7 +213,7 @@ namespace AngeliaFramework.Editor {
 			// CMD
 			EditorGUI.HelpBox(
 				Layout.Rect(0, 24).Expand(-16, -6, 0, 0),
-				" Type, Layer, Count = 1, X = 0, Y = 0",
+				" Type, Layer, X = 0, Y = 0",
 				MessageType.Info
 			);
 			Layout.Space(6);
@@ -299,6 +304,15 @@ namespace AngeliaFramework.Editor {
 					}
 				}, true, (bWidth, bHeight) => {
 					// More Button in Page Layout
+					// Col
+					ShowColliders.Value = GUI.Toggle(
+						Layout.Rect(bWidth, bHeight),
+						ShowColliders.Value,
+						"Col",
+						GUI.skin.button
+					);
+					Layout.Space(4);
+					// View
 					if (GUI.Button(Layout.Rect(bWidth, bHeight), "View")) {
 						SetSelectionInspector(null, EntityInspector.Mode.View);
 						Event.current.Use();
@@ -314,14 +328,22 @@ namespace AngeliaFramework.Editor {
 
 
 		public static void DrawGizmos () {
+			// Colliders
+			if (ShowColliders.Value) {
+				CellPhysics.Editor_ForAllCells((layer, info) => {
+					var tint = COLLIDER_TINT[layer];
+					tint.a = (byte)(info.IsTrigger ? 128 : 255);
+					CellRenderer.Draw(PIXEL_CODE, info.Rect, tint);
+				});
+			}
 			// Selection
 			if (SelectingEntity != null) {
-				CellRenderer.Draw("Pixel".ACode(), new RectInt(
+				CellRenderer.Draw(PIXEL_CODE, new RectInt(
 					SelectingEntity.X - 24,
 					SelectingEntity.Y - 24,
 					48, 48
 				), new Color32(0, 0, 0, 255));
-				CellRenderer.Draw("Pixel".ACode(), new RectInt(
+				CellRenderer.Draw(PIXEL_CODE, new RectInt(
 					SelectingEntity.X - 16,
 					SelectingEntity.Y - 16,
 					32, 32
@@ -514,7 +536,8 @@ namespace AngeliaFramework.Editor {
 					field.SetValue(eTarget.Target, Field(
 						Layout.Rect(0, HEIGHT),
 						Util.GetDisplayName(field.Name),
-						field.GetValue(eTarget.Target)
+						field.GetValue(eTarget.Target),
+						field.FieldType
 					));
 				}
 				Layout.Space(2);
@@ -522,32 +545,43 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private static object Field (Rect rect, string label, object value) => value switch {
+		private static object Field (Rect rect, string label, object value, System.Type type) {
+			var _type = type;
+			if (_type.IsSubclassOf(typeof(Object))) {
+				_type = typeof(Object);
+			}
+			if (_type.IsSubclassOf(typeof(System.Enum))) {
+				_type = typeof(System.Enum);
+			}
+			return true switch {
 
-			sbyte sbValue => (sbyte)Mathf.Clamp(EditorGUI.IntField(rect, label, sbValue), sbyte.MinValue, sbyte.MaxValue),
-			byte bValue => (byte)Mathf.Clamp(EditorGUI.IntField(rect, label, bValue), byte.MinValue, byte.MaxValue),
-			ushort usValue => (ushort)Mathf.Clamp(EditorGUI.IntField(rect, label, usValue), ushort.MinValue, ushort.MaxValue),
-			short sValue => (short)Mathf.Clamp(EditorGUI.IntField(rect, label, sValue), short.MinValue, short.MaxValue),
-			int iValue => EditorGUI.IntField(rect, label, iValue),
-			long lValue => EditorGUI.LongField(rect, label, lValue),
-			ulong ulValue => (ulong)EditorGUI.LongField(rect, label, (long)ulValue),
-			float fValue => EditorGUI.FloatField(rect, label, fValue),
-			double dValue => (double)EditorGUI.DoubleField(rect, label, dValue),
-			string sValue => EditorGUI.DelayedTextField(rect, label, sValue),
-			bool boolValue => EditorGUI.Toggle(rect, label, boolValue),
+				bool when _type == typeof(sbyte) => (sbyte)Mathf.Clamp(EditorGUI.IntField(rect, label, (sbyte)value), sbyte.MinValue, sbyte.MaxValue),
+				bool when _type == typeof(byte) => (byte)Mathf.Clamp(EditorGUI.IntField(rect, label, (byte)value), byte.MinValue, byte.MaxValue),
+				bool when _type == typeof(ushort) => (ushort)Mathf.Clamp(EditorGUI.IntField(rect, label, (ushort)value), ushort.MinValue, ushort.MaxValue),
+				bool when _type == typeof(short) => (short)Mathf.Clamp(EditorGUI.IntField(rect, label, (short)value), short.MinValue, short.MaxValue),
+				bool when _type == typeof(int) => EditorGUI.IntField(rect, label, (int)value),
+				bool when _type == typeof(long) => EditorGUI.LongField(rect, label, (long)value),
+				bool when _type == typeof(ulong) => (ulong)EditorGUI.LongField(rect, label, (long)(ulong)value),
+				bool when _type == typeof(float) => EditorGUI.FloatField(rect, label, (float)value),
+				bool when _type == typeof(double) => (double)EditorGUI.DoubleField(rect, label, (double)value),
+				bool when _type == typeof(string) => EditorGUI.DelayedTextField(rect, label, (string)value),
+				bool when _type == typeof(bool) => EditorGUI.Toggle(rect, label, (bool)value),
 
-			System.Enum eValue => EditorGUI.EnumPopup(rect, label, eValue),
+				bool when _type == typeof(System.Enum) => EditorGUI.EnumPopup(rect, label, (System.Enum)value),
 
-			Vector2 v2Value => EditorGUI.Vector2Field(rect, label, v2Value),
-			Vector3 v3Value => EditorGUI.Vector3Field(rect, label, v3Value),
-			Vector4 v4Value => EditorGUI.Vector4Field(rect, label, v4Value),
-			Vector2Int v2iValue => EditorGUI.Vector2IntField(rect, label, v2iValue),
-			Vector3Int v3iValue => EditorGUI.Vector3IntField(rect, label, v3iValue),
-			Color32 c32Value => (Color32)EditorGUI.ColorField(rect, new GUIContent(label), c32Value, false, true, false),
-			Color cValue => EditorGUI.ColorField(rect, new GUIContent(label), cValue, false, true, false),
+				bool when _type == typeof(Vector2) => EditorGUI.Vector2Field(rect, label, (Vector2)value),
+				bool when _type == typeof(Vector3) => EditorGUI.Vector3Field(rect, label, (Vector3)value),
+				bool when _type == typeof(Vector4) => EditorGUI.Vector4Field(rect, label, (Vector4)value),
+				bool when _type == typeof(Vector2Int) => EditorGUI.Vector2IntField(rect, label, (Vector2Int)value),
+				bool when _type == typeof(Vector3Int) => EditorGUI.Vector3IntField(rect, label, (Vector3Int)value),
+				bool when _type == typeof(Color32) => (Color32)EditorGUI.ColorField(rect, new GUIContent(label), (Color32)value, false, true, false),
+				bool when _type == typeof(Color) => EditorGUI.ColorField(rect, new GUIContent(label), (Color)value, false, true, false),
 
-			_ => null,
-		};
+				bool when _type == typeof(Object) => EditorGUI.ObjectField(rect, new GUIContent(label), (Object)value, type, false),
+
+				_ => null,
+			};
+		}
 
 
 	}

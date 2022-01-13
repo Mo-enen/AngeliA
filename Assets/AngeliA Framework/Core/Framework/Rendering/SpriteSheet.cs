@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	[CreateAssetMenu(fileName = "New Sheet", menuName = "AngeliA/New Sheet", order = 99)]
+	[CreateAssetMenu(fileName = "New Sheet", menuName = "AngeliA/Sprite Sheet", order = 99)]
 	public class SpriteSheet : ScriptableObject {
 
 

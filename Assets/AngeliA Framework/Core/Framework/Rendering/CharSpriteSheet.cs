@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	[CreateAssetMenu(fileName = "New Char Sheet", menuName = "AngeliA/New Char Sheet", order = 99)]
+	[CreateAssetMenu(fileName = "New Char Sheet", menuName = "AngeliA/Char Sheet", order = 99)]
 	public class CharSpriteSheet : SpriteSheet {
 
 

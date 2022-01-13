@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
@@ -31,7 +31,7 @@ namespace Yaya {
 			Awake_Quit();
 		}
 
-
+		
 		private void Start () {
 			try {
 				LoadProject();

@@ -31,3 +31,5 @@ MonoBehaviour:
   m_Languages:
   - {fileID: 11400000, guid: 06c93f81fa998e448bc4bc7f0e46f0b1, type: 2}
   - {fileID: 11400000, guid: 40e3d0b1a57e2a04ba5d6930424cbba0, type: 2}
+  m_Assets:
+  - {fileID: 11400000, guid: a2c229053cd8f0644aa5309a7b9bf9db, type: 2}

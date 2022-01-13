@@ -1,13 +1,13 @@
 {
   "dependencies": {
     "com.flipbookgames.scriptinspector3": {
-      "version": "file:C:/Data/Mine/Unity3D/Packages/Assets/ScriptInspector3",
+      "version": "file:C:/Data/Unity/Packages/Assets/ScriptInspector3",
       "depth": 0,
       "source": "local",
       "dependencies": {}
     },
     "com.moenengames.asepritegadget": {
-      "version": "file:C:/Data/Mine/Unity3D/Packages/Assets/Aseprite Gadget",
+      "version": "file:C:/Data/Unity/Packages/Assets/Aseprite Gadget",
       "depth": 0,
       "source": "local",
       "dependencies": {
@@ -16,13 +16,13 @@
       }
     },
     "com.moenengames.asepritetoolbox": {
-      "version": "file:C:/Data/Mine/Unity3D/Packages/Assets/Aseprite Toolbox",
+      "version": "file:C:/Data/Unity/Packages/Assets/Aseprite Toolbox",
       "depth": 0,
       "source": "local",
       "dependencies": {}
     },
     "com.moenengames.standard": {
-      "version": "file:C:/Data/Mine/Unity3D/Packages/Assets/Standard",
+      "version": "file:C:/Data/Unity/Packages/Assets/Standard",
       "depth": 0,
       "source": "local",
       "dependencies": {}
@@ -38,7 +38,7 @@
       "depth": 2,
       "source": "registry",
       "dependencies": {},
-      "url": "https://packages.unity.com"
+      "url": "https://packages.unity.cn"
     },
     "com.unity.ide.visualstudio": {
       "version": "2.0.12",
@@ -47,7 +47,7 @@
       "dependencies": {
         "com.unity.test-framework": "1.1.9"
       },
-      "url": "https://packages.unity.com"
+      "url": "https://packages.unity.cn"
     },
     "com.unity.inputsystem": {
       "version": "1.2.0",
@@ -56,7 +56,7 @@
       "dependencies": {
         "com.unity.modules.uielements": "1.0.0"
       },
-      "url": "https://packages.unity.com"
+      "url": "https://packages.unity.cn"
     },
     "com.unity.test-framework": {
       "version": "1.1.29",
@@ -67,7 +67,7 @@
         "com.unity.modules.imgui": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0"
       },
-      "url": "https://packages.unity.com"
+      "url": "https://packages.unity.cn"
     },
     "com.unity.ugui": {
       "version": "1.0.0",

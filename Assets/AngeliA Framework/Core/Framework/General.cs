@@ -28,6 +28,12 @@ namespace AngeliaFramework {
 	}
 
 
+	public enum Direction3 {
+		None = 0,
+		Positive = 1,
+		Negative = 2,
+	}
+
 
 	public enum Direction4 {
 		Up = 0,

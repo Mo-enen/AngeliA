@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	[CreateAssetMenu(fileName = "New Language", menuName = "AngeliA/New Language", order = 99)]
+	[CreateAssetMenu(fileName = "New Language", menuName = "AngeliA/Language", order = 99)]
 	public class Language : ScriptableObject {
 
 

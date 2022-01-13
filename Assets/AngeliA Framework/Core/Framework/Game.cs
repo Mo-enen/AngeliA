@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	[CreateAssetMenu(fileName = "New Game", menuName = "AngeliA/New Game", order = 99)]
+	[CreateAssetMenu(fileName = "New Game", menuName = "AngeliA/Game", order = 99)]
 	public class Game : ScriptableObject {
 
 
@@ -28,17 +28,19 @@ namespace AngeliaFramework {
 		[SerializeField] AudioClip[] m_Musics = null;
 		[SerializeField] AudioClip[] m_Sounds = null;
 		[SerializeField] Language[] m_Languages = null;
+		[SerializeField] ScriptableObject[] m_Assets = null;
 
 		// Data
-		private Dictionary<int, System.Type> EntityTypePool = new();
+		private readonly Dictionary<int, System.Type> EntityTypePool = new();
+		private readonly Dictionary<int, ScriptableObject> AssetPool = new();
 		private Entity[][] Entities = null;
 		private (Entity[] entity, int length)[] EntityBuffers = null;
 		private RectInt ViewRect = new(0, 0, Mathf.Clamp(28 * Const.CELL_SIZE, 0, MAX_VIEW_WIDTH), Mathf.Clamp(16 * Const.CELL_SIZE, 0, MAX_VIEW_HEIGHT));
 		private RectInt SpawnRect = default;
-		private uint GlobalFrame = 0;
+		private int GlobalFrame = 0;
 
 		// Saving
-		private SavingInt LanguageIndex = new("Yaya.LanguageIndex", -1);
+		private readonly SavingInt LanguageIndex = new("Yaya.LanguageIndex", -1);
 
 
 		#endregion
@@ -75,6 +77,7 @@ namespace AngeliaFramework {
 			Init_Physics();
 			Init_Audio();
 			Init_Language();
+			Init_Asset();
 
 		}
 
@@ -100,10 +103,8 @@ namespace AngeliaFramework {
 #endif
 			}
 			// Handler
-			Entity.GetSpawnRect = () => SpawnRect;
-			Entity.GetViewRect = () => ViewRect;
-			Entity.GetCameraRect = () => CellRenderer.CameraRect;
 			Entity.AddNewEntity = AddEntity;
+			Entity.GetAsset = (id) => AssetPool.TryGet(id);
 		}
 
 
@@ -217,6 +218,13 @@ namespace AngeliaFramework {
 		}
 
 
+		private void Init_Asset () {
+			foreach (var asset in m_Assets) {
+				AssetPool.TryAdd(asset.name.ACode(), asset);
+			}
+		}
+
+
 		// Update
 		public void FrameUpdate () {
 			FrameInput.FrameUpdate();
@@ -256,6 +264,10 @@ namespace AngeliaFramework {
 
 		private void FrameUpdate_Entity () {
 
+			Entity.SpawnRect = SpawnRect;
+			Entity.ViewRect = ViewRect;
+			Entity.CameraRect = CellRenderer.CameraRect;
+
 			// Remove Inactive and Outside Spawnrect
 			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
 				var entities = Entities[layerIndex];
@@ -280,7 +292,7 @@ namespace AngeliaFramework {
 				for (int i = 0; i < len; i++) {
 					var entity = entities[i];
 					if (entity != null) {
-						entity.FillPhysics();
+						entity.FillPhysics(GlobalFrame);
 					}
 				}
 			}
@@ -293,7 +305,7 @@ namespace AngeliaFramework {
 				for (int i = 0; i < len; i++) {
 					var entity = entities[i];
 					if (entity != null) {
-						entity.FrameUpdate();
+						entity.FrameUpdate(GlobalFrame);
 					}
 				}
 			}
@@ -311,7 +323,7 @@ namespace AngeliaFramework {
 					}
 					if (emptyIndex < entityLen) {
 						var e = entities[emptyIndex] = buffers[i];
-						e.OnCreate();
+						e.OnCreate(GlobalFrame);
 						buffers[i] = null;
 					} else {
 						System.Array.Clear(buffers, 0, buffers.Length);

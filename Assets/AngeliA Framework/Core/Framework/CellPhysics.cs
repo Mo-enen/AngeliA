@@ -17,16 +17,9 @@ namespace AngeliaFramework {
 			public RectInt Rect;
 			public Entity Entity;
 			public uint Frame;
-			public Cell (RectInt rect, Entity entity, uint frame) {
-				Rect = rect;
-				Entity = entity;
-				Frame = frame;
-#if UNITY_EDITOR
-				if (entity == null) {
-					Debug.LogError("Entity of a physics cell is null");
-				}
-#endif
-			}
+			public bool IsTrigger;
+			public int Tag;
+			public HitInfo GetInfo () => new(Rect, Entity, IsTrigger, Tag);
 		}
 
 
@@ -35,7 +28,7 @@ namespace AngeliaFramework {
 				get => Cells[x, y, z];
 				set => Cells[x, y, z] = value;
 			}
-			private Cell[,,] Cells = null;
+			private readonly Cell[,,] Cells = null;
 			public Layer (int width, int height) {
 				Cells = new Cell[width, height, CELL_DEPTH];
 				for (int i = 0; i < width; i++) {
@@ -49,6 +42,27 @@ namespace AngeliaFramework {
 		}
 
 
+		public class HitInfo {
+			public RectInt Rect;
+			public Entity Entity;
+			public bool IsTrigger;
+			public int Tag;
+			public HitInfo (RectInt rect, Entity entity, bool isTrigger, int tag) {
+				Rect = rect;
+				Entity = entity;
+				IsTrigger = isTrigger;
+				Tag = tag;
+			}
+		}
+
+
+		public enum OperationMode {
+			ColliderOnly = 0,
+			TriggerOnly = 1,
+			ColliderAndTrigger = 2,
+		}
+
+
 		#endregion
 
 
@@ -58,7 +72,7 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private const int CELL_DEPTH = 8;
+		public const int CELL_DEPTH = 8;
 
 		// Api
 		public static int Width { get; private set; } = 0;
@@ -99,7 +113,7 @@ namespace AngeliaFramework {
 		public static void BeginFill () => CurrentFrame++;
 
 
-		public static void Fill (PhysicsLayer layer, RectInt globalRect, Entity entity) {
+		public static void Fill (PhysicsLayer layer, RectInt globalRect, Entity entity, bool isTrigger = false, int tag = 0) {
 #if UNITY_EDITOR
 			if (globalRect.width > Const.CELL_SIZE || globalRect.height > Const.CELL_SIZE) {
 				Debug.LogWarning("[CellPhysics] Rect size too large.");
@@ -118,6 +132,8 @@ namespace AngeliaFramework {
 					cell.Rect = globalRect;
 					cell.Entity = entity;
 					cell.Frame = CurrentFrame;
+					cell.IsTrigger = isTrigger;
+					cell.Tag = tag;
 					CurrentLayer[i, j, dep] = cell;
 					return;
 				}
@@ -126,33 +142,34 @@ namespace AngeliaFramework {
 
 
 		// Overlap
-		public static bool Overlap (PhysicsLayer layer, RectInt globalRect, Entity ignore, out RectInt hitRect, out Entity result) {
-			result = null;
-			hitRect = default;
+		public static HitInfo Overlap (PhysicsLayer layer, RectInt globalRect, Entity ignore, OperationMode mode = OperationMode.ColliderOnly) {
+			HitInfo result = null;
 			var layerItem = Layers[(int)layer];
 			int l = Mathf.Max(globalRect.xMin.GetCellIndexX() - 1, 0);
 			int d = Mathf.Max(globalRect.yMin.GetCellIndexY() - 1, 0);
 			int r = Mathf.Min((globalRect.xMax - 1).GetCellIndexX() + 1, Width - 1);
 			int u = Mathf.Min((globalRect.yMax - 1).GetCellIndexY() + 1, Height - 1);
+			bool useCollider = mode == OperationMode.ColliderOnly || mode == OperationMode.ColliderAndTrigger;
+			bool useTrigger = mode == OperationMode.TriggerOnly || mode == OperationMode.ColliderAndTrigger;
 			for (int j = d; j <= u; j++) {
 				for (int i = l; i <= r; i++) {
 					for (int dep = 0; dep < CELL_DEPTH; dep++) {
 						var cell = layerItem[i, j, dep];
 						if (cell.Frame != CurrentFrame) { break; }
 						if (cell.Entity == ignore) { continue; }
-						if (cell.Rect.Overlaps(globalRect)) {
-							result = cell.Entity;
-							hitRect = cell.Rect;
-							return true;
+						if ((cell.IsTrigger && useTrigger) || (!cell.IsTrigger && useCollider)) {
+							if (cell.Rect.Overlaps(globalRect)) {
+								return cell.GetInfo();
+							}
 						}
 					}
 				}
 			}
-			return false;
+			return result;
 		}
 
 
-		public static void ForAllOverlaps (PhysicsLayer layer, RectInt globalRect, System.Func<RectInt, Entity, bool> func) {
+		public static void ForAllOverlaps (PhysicsLayer layer, RectInt globalRect, System.Func<HitInfo, bool> func) {
 			var layerItem = Layers[(int)layer];
 			int l = Mathf.Max(globalRect.xMin.GetCellIndexX() - 1, 0);
 			int d = Mathf.Max(globalRect.yMin.GetCellIndexY() - 1, 0);
@@ -164,12 +181,31 @@ namespace AngeliaFramework {
 						var cell = layerItem[i, j, dep];
 						if (cell.Frame != CurrentFrame) { break; }
 						if (cell.Rect.Overlaps(globalRect)) {
-							if (!func(cell.Rect, cell.Entity)) { return; }
+							if (!func(cell.GetInfo())) { return; }
 						}
 					}
 				}
 			}
 		}
+
+
+		// Editor
+#if UNITY_EDITOR
+		public static void Editor_ForAllCells (System.Action<int, HitInfo> action) {
+			for (int i = 0; i < Layers.Length; i++) {
+				if (Layers[i] == null) { continue; }
+				for (int y = 0; y < Height; y++) {
+					for (int x = 0; x < Width; x++) {
+						for (int d = 0; d < CELL_DEPTH; d++) {
+							var cell = Layers[i][x, y, d];
+							if (cell.Frame != CurrentFrame) { break; }
+							action(i, cell.GetInfo());
+						}
+					}
+				}
+			}
+		}
+#endif
 
 
 		#endregion

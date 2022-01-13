@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -56,7 +56,6 @@ namespace AngeliaFramework {
 		private static Color32 BUTTON_PRESS = new(180, 180, 180, 255);
 		private static Color32 BUTTON_CHAR = new(12, 12, 12, 255);
 		private static Color32 BG_PANEL = new(0, 0, 0, 64);
-		private const int CHAR_SIZE_TITLE = 90;
 		private const int WINDOW_BORDER = 32;
 		private const int CHAR_SIZE_CONTENT = 100;
 		private const int CONTENT_PADDING_X = 164;
@@ -79,13 +78,13 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		public override void FrameUpdate () {
+		public override void FrameUpdate (int frame) {
 
 			CellRenderer.BeginCharacterDraw();
 
 			// Pos
 			RefreshHeight();
-			var cameraRect = GetCameraRect();
+			var cameraRect = CameraRect;
 			X = cameraRect.x + (cameraRect.width - Width) / 2;
 			Y = cameraRect.y + (cameraRect.height - Height) / 2;
 
@@ -184,7 +183,7 @@ namespace AngeliaFramework {
 
 		public eDialog () {
 			Width = 2048;
-			Message = "Debug Test Message. ÖÐÎÄ²âÊÔ¡£";
+			Message = "Debug Test Message. ä¸­æ–‡æµ‹è¯•";
 			Label_OK = "OK";
 			Label_Cancel = "Cancel";
 			Label_Alt = "Alt";
