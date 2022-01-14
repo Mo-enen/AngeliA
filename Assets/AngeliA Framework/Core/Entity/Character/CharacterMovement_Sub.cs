@@ -20,7 +20,7 @@ namespace AngeliaFramework {
 
 		[System.Serializable]
 		public class MoveConfig {
-			public int Speed = Const.CELL_SIZE;
+			public int Speed = Const.CELL_SIZE * 4;
 			public int Acceleration = Const.CELL_SIZE * 8 / 60;
 			public int Decceleration = Const.CELL_SIZE * 6 / 60;
 			public bool WalkOnWater = false;
@@ -49,9 +49,17 @@ namespace AngeliaFramework {
 		}
 
 
+		[System.Serializable]
+		public class SquatConfig {
+			public bool Available = true;
+			public int Speed = Const.CELL_SIZE * 2;
+			public int Acceleration = int.MaxValue;
+			public int Decceleration = int.MaxValue;
+		}
+
 
 		[System.Serializable]
-		public class GroundPoundConfig {
+		public class PoundConfig {
 			public bool Available = true;
 			public int Speed = Const.CELL_SIZE * 20;
 
@@ -63,7 +71,8 @@ namespace AngeliaFramework {
 		[SerializeField] MoveConfig m_Move = null;
 		[SerializeField] JumpConfig m_Jump = null;
 		[SerializeField] DashConfig m_Dash = null;
-		[SerializeField] GroundPoundConfig m_GroundPound = null;
+		[SerializeField] SquatConfig m_Squat = null;
+		[SerializeField] PoundConfig m_Pound = null;
 
 
 	}

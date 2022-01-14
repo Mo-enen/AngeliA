@@ -64,9 +64,9 @@ namespace AngeliaFramework {
 		private void Update_Cache (int frame, eCharacter character) {
 			IsGrounded = GroundCheck(character.X, character.Y);
 			InWater = WaterCheck(character.X, character.Y);
-			IsDashing = frame < LastDashFrame + m_Dash.Duration;
-			IsSquating = IsGrounded && ((!IsDashing && IntendedY < 0) || ForceSquatCheck(character.X, character.Y));
-			IsPounding = !IsGrounded && !InWater && !IsDashing && (IsPounding ? IntendedY < 0 : IntendedPound);
+			IsDashing = m_Dash.Available && frame < LastDashFrame + m_Dash.Duration;
+			IsSquating = m_Squat.Available && IsGrounded && ((!IsDashing && IntendedY < 0) || ForceSquatCheck(character.X, character.Y));
+			IsPounding = m_Pound.Available && !IsGrounded && !InWater && !IsDashing && (IsPounding ? IntendedY < 0 : IntendedPound);
 			if (IsGrounded) LastGroundedFrame = frame;
 		}
 
@@ -102,23 +102,36 @@ namespace AngeliaFramework {
 				IsGrounded &&
 				frame > LastDashFrame + m_Dash.Duration + m_Dash.Cooldown
 			) {
+				// Perform Dash
 				LastDashFrame = frame;
 				IsDashing = true;
+				VelocityY = 0;
 			}
 		}
 
 
 		private void Update_VelocityX () {
-
-
-
-
-			//VelocityX = 0;
+			int speed, acc, dcc;
+			if (IsDashing) {
+				speed = IntendedX * m_Dash.Speed;
+				acc = m_Dash.Acceleration;
+				dcc = m_Dash.Decceleration;
+			} else if (IsSquating) {
+				speed = IntendedX * m_Squat.Speed;
+				acc = m_Squat.Acceleration;
+				dcc = m_Squat.Decceleration;
+			} else {
+				speed = IntendedX * m_Move.Speed;
+				acc = m_Move.Acceleration;
+				dcc = m_Move.Decceleration;
+			}
+			VelocityX = VelocityX.MoveTowards(speed, acc, dcc);
 		}
 
 
 		private void Update_VelocityY () {
 
+			// Gravity
 
 
 
