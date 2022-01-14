@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.flipbookgames.scriptinspector3": "file:C:/Data/Unity/Packages/Assets/ScriptInspector3",
     "com.moenengames.asepritegadget": "file:C:/Data/Unity/Packages/Assets/Aseprite Gadget",
     "com.moenengames.asepritetoolbox": "file:C:/Data/Unity/Packages/Assets/Aseprite Toolbox",
     "com.moenengames.standard": "file:C:/Data/Unity/Packages/Assets/Standard",

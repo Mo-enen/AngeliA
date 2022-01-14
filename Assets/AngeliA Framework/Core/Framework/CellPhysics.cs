@@ -142,7 +142,7 @@ namespace AngeliaFramework {
 
 
 		// Overlap
-		public static HitInfo Overlap (PhysicsLayer layer, RectInt globalRect, Entity ignore, OperationMode mode = OperationMode.ColliderOnly) {
+		public static HitInfo Overlap (PhysicsLayer layer, RectInt globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
 			HitInfo result = null;
 			var layerItem = Layers[(int)layer];
 			int l = Mathf.Max(globalRect.xMin.GetCellIndexX() - 1, 0);
@@ -156,7 +156,8 @@ namespace AngeliaFramework {
 					for (int dep = 0; dep < CELL_DEPTH; dep++) {
 						var cell = layerItem[i, j, dep];
 						if (cell.Frame != CurrentFrame) { break; }
-						if (cell.Entity == ignore) { continue; }
+						if (ignore != null && cell.Entity == ignore) { continue; }
+						if (tag != 0 && cell.Tag != tag) { continue; }
 						if ((cell.IsTrigger && useTrigger) || (!cell.IsTrigger && useCollider)) {
 							if (cell.Rect.Overlaps(globalRect)) {
 								return cell.GetInfo();

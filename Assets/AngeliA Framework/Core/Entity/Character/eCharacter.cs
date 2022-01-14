@@ -25,7 +25,7 @@ namespace AngeliaFramework {
 
 
 		public override void FrameUpdate (int frame) {
-			Movement.FrameUpdate(frame);
+			Movement.FrameUpdate(frame, this);
 		}
 
 
@@ -37,24 +37,7 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public void Move (Direction3 x, Direction3 y) {
 
-		}
-
-
-		public void Jump (int frame) {
-
-		}
-
-
-		public void HoldJump (bool holding) {
-
-		}
-
-
-		public void Dash (int frame) {
-
-		}
 
 
 		#endregion

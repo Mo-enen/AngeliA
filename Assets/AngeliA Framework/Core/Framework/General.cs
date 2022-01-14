@@ -29,9 +29,9 @@ namespace AngeliaFramework {
 
 
 	public enum Direction3 {
+		Negative = -1,
 		None = 0,
 		Positive = 1,
-		Negative = 2,
 	}
 
 

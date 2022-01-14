@@ -1,11 +1,5 @@
 {
   "dependencies": {
-    "com.flipbookgames.scriptinspector3": {
-      "version": "file:C:/Data/Unity/Packages/Assets/ScriptInspector3",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {}
-    },
     "com.moenengames.asepritegadget": {
       "version": "file:C:/Data/Unity/Packages/Assets/Aseprite Gadget",
       "depth": 0,

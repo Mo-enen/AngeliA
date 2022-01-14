@@ -29,7 +29,7 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate (int frame) {
 			Update_Move(frame);
-			Update_JumpDash(frame);
+			Update_JumpDashPound();
 			base.FrameUpdate(frame);
 		}
 
@@ -87,31 +87,24 @@ namespace AngeliaFramework {
 				UpDownFrame = int.MinValue;
 			}
 
-			Move(x, y);
+			Movement.Move(x, y);
 
 		}
 
 
-		private void Update_JumpDash (int frame) {
-			HoldJump(FrameInput.KeyPressing(GameKey.Jump));
+		private void Update_JumpDashPound () {
+			Movement.HoldJump(FrameInput.KeyPressing(GameKey.Jump));
 			if (FrameInput.KeyDown(GameKey.Jump)) {
 				if (FrameInput.KeyPressing(GameKey.Down)) {
-					Dash(frame);
+					Movement.Dash();
 				} else {
-					Jump(frame);
+					Movement.Jump();
 				}
 			}
+			if (FrameInput.KeyDown(GameKey.Down)) {
+				Movement.Pound();
+			}
 		}
-
-
-		#endregion
-
-
-
-
-		#region --- API ---
-
-
 
 
 		#endregion
