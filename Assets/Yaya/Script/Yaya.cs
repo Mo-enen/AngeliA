@@ -13,8 +13,6 @@ namespace Yaya {
 		#region --- VAR ---
 
 
-		// Short
-		private string ProjectRoot => Util.CombinePaths(Application.persistentDataPath, "Project");
 
 
 		#endregion
@@ -26,26 +24,8 @@ namespace Yaya {
 
 
 		private void Awake () {
-			Awake_Project();
 			Awake_Misc();
 			Awake_Quit();
-		}
-
-		
-		private void Start () {
-			try {
-				LoadProject();
-			} catch (System.Exception ex) {
-				LogException(ex);
-			}
-		}
-
-
-		private void Awake_Project () {
-
-			// Init Project Folders
-
-
 		}
 
 
@@ -89,25 +69,6 @@ namespace Yaya {
 		#region --- LGC ---
 
 
-		private void LogException (System.Exception ex) {
-
-
-
-
-		}
-
-
-		private void LoadProject () {
-			string path = ProjectRoot;
-			//if (string.IsNullOrEmpty(path)) throw new LanguageException(LConst.ProjectPathEmpty);
-			Util.CreateFolder(path);
-			//var project = ProjectStream.LoadProject(path) ?? throw new LanguageException(LConst.FailToLoadProject);
-
-
-
-			//Debug.Log("Project loaded. " + project);
-
-		}
 
 
 		#endregion

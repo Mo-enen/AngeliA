@@ -47,11 +47,10 @@ namespace AngeliaFramework.Editor {
 		private static GUIContent _CameraIconContent = null;
 
 		// Data
-		private static EntityInspector SelectingInspector = null;
 		private static Game Game = null;
 		private static Entity[][] Entities = null;
 		private static Entity SelectingEntity = null;
-		private static List<System.Type> EntityTypes = new();
+		private static EntityInspector SelectingInspector = null;
 		private Vector2 MasterScrollPos = default;
 
 		// Saving
@@ -70,10 +69,14 @@ namespace AngeliaFramework.Editor {
 
 		[InitializeOnLoadMethod]
 		private static void Init () {
+			// State Change
 			EditorApplication.playModeStateChanged += (mode) => {
 
-				// Reload Game
+				if (!HasOpenInstances<EntityDebuger>()) { return; }
+
+				// Enter Edit
 				if (mode == PlayModeStateChange.EnteredEditMode) {
+					// Reload Game
 					Game game = null;
 					foreach (var guid in AssetDatabase.FindAssets("t:Game")) {
 						game = AssetDatabase.LoadAssetAtPath<Game>(AssetDatabase.GUIDToAssetPath(guid));
@@ -85,82 +88,21 @@ namespace AngeliaFramework.Editor {
 							ForceReserializeAssetsOptions.ReserializeAssets
 						);
 					}
-				}
-
-				if (!HasOpenInstances<EntityDebuger>()) { return; }
-
-				// Reload Cache
-				if (mode == PlayModeStateChange.EnteredPlayMode) {
+					// Clear Cache
 					Game = null;
 					Entities = null;
-					EntityTypes.Clear();
-					ClearSelectionInspector();
-					InitCaches();
 				}
 
-				// Load Entity Init Content
+				// Enter Play
 				if (mode == PlayModeStateChange.EnteredPlayMode) {
-					if (!string.IsNullOrEmpty(EntityInitContent.Value)) {
-						var lines = EntityInitContent.Value.Replace("\r", "").Split('\n');
-						Entity prevEntity = null;
-						foreach (var line in lines) {
-							if (line.StartsWith("//")) { continue; }
-							if (line.StartsWith("::")) {
-								if (prevEntity != null) {
-									int _eIndex = line.IndexOf('=');
-									if (_eIndex < 0) { continue; }
-									string fieldName = line[2.._eIndex];
-									var type = Util.GetFieldType(prevEntity, fieldName);
-									if (type == typeof(int)) {
-										if (int.TryParse(line[(_eIndex + 1)..], out int _value)) {
-											Util.SetFieldValue(prevEntity, fieldName, _value);
-										}
-									} else if (type == typeof(float)) {
-										if (float.TryParse(line[(_eIndex + 1)..], out float _value)) {
-											Util.SetFieldValue(prevEntity, fieldName, _value);
-										}
-									} else if (type == typeof(string)) {
-										Util.SetFieldValue(prevEntity, fieldName, line[(_eIndex + 1)..]);
-									} else if (type == typeof(bool)) {
-										if (bool.TryParse(line[(_eIndex + 1)..], out bool _value)) {
-											Util.SetFieldValue(prevEntity, fieldName, _value);
-										}
-									} else {
-										Debug.LogWarning($"[Entity Debuger] type {type} not support/");
-									}
-								}
-								continue;
-							}
-							var _params = line.Replace(" ", "").Split(',');
-							if (
-								_params != null && _params.Length >= 2 &&
-								System.Enum.TryParse(_params[1], true, out EntityLayer layer)
-							) {
-								// X
-								int x = 0;
-								if (_params.Length >= 3) {
-									int.TryParse(_params[2], out x);
-								}
-								// Y
-								int y = 0;
-								if (_params.Length >= 4) {
-									int.TryParse(_params[3], out y);
-								}
-								// Final
-								var type = EntityTypes.Single(
-									(t) => t.Name == _params[0]
-								);
-								if (type != null) {
-									var e = System.Activator.CreateInstance(type) as Entity;
-									Game.AddEntity(e, layer);
-									e.X = x;
-									e.Y = y;
-									prevEntity = e;
-								}
-							}
-						}
-					}
+					// Reload Cache
+					Game = TryGetGame();
+					Entities = null;
+					ClearSelectionInspector();
+					// CMD
+					PerformCMD(EntityInitContent.Value);
 				}
+
 			};
 		}
 
@@ -176,27 +118,12 @@ namespace AngeliaFramework.Editor {
 
 
 		private void OnGUI () {
-			bool isRuntime = EditorApplication.isPlaying;
-			if (!isRuntime) {
+			if (EditorApplication.isPlaying) {
+				// Play Mode
+				OnGUI_Runtime();
+			} else {
 				// Edit Mode
 				OnGUI_Edittime();
-			} else {
-				// Play Mode
-				if ((Game == null || Entities == null) && !InitCaches()) { return; }
-
-				if (SelectingInspector == null) {
-					SelectingInspector = CreateInstance<EntityInspector>();
-					SelectingInspector.Game = Game;
-				}
-
-				// Content
-				OnGUI_Runtime();
-				if (
-					(SelectingEntity != null || SelectingInspector.InspectorMode != EntityInspector.Mode.Entity) &&
-					Event.current.type == EventType.MouseDown
-				) {
-					ClearSelectionInspector();
-				}
 			}
 			if (Event.current.type == EventType.MouseDown) {
 				Selection.activeObject = null;
@@ -232,6 +159,23 @@ namespace AngeliaFramework.Editor {
 
 
 		private void OnGUI_Runtime () {
+
+			// Game
+			if (Game == null) {
+				Game = TryGetGame();
+				if (Game == null) { return; }
+			}
+
+			// Entities
+			if (Entities == null) {
+				Entities = Util.GetFieldValue(Game, "Entities") as Entity[][];
+				if (Entities == null) { return; }
+			}
+
+			if (SelectingInspector == null) {
+				SelectingInspector = CreateInstance<EntityInspector>();
+				SelectingInspector.Game = Game;
+			}
 
 			// Toolbar
 			using (new GUILayout.HorizontalScope(EditorStyles.toolbar)) {
@@ -316,6 +260,14 @@ namespace AngeliaFramework.Editor {
 				}
 			}
 
+			// Clear Selection on Mouse Down
+			if (
+				(SelectingEntity != null || SelectingInspector.InspectorMode != EntityInspector.Mode.Entity) &&
+				Event.current.type == EventType.MouseDown
+			) {
+				ClearSelectionInspector();
+			}
+
 		}
 
 
@@ -352,32 +304,22 @@ namespace AngeliaFramework.Editor {
 		#region --- LGC ---
 
 
-		private static bool InitCaches () {
-
-			// Game
-			Game = null;
+		private static Game TryGetGame () {
+			Game result = null;
 			foreach (var guid in AssetDatabase.FindAssets("t:Game")) {
-				Game = AssetDatabase.LoadAssetAtPath<Game>(AssetDatabase.GUIDToAssetPath(guid));
-				if (Game != null) { break; }
+				result = AssetDatabase.LoadAssetAtPath<Game>(AssetDatabase.GUIDToAssetPath(guid));
+				if (result != null) { break; }
 			}
-			if (Game == null) { return false; }
-
-			// Entities
-			Entities = Util.GetFieldValue(Game, "Entities") as Entity[][];
-
-			// EntityTypes
-			var typePool = Util.GetFieldValue(Game, "EntityTypePool") as Dictionary<int, System.Type>;
-			EntityTypes.Clear();
-			EntityTypes.AddRange(typePool.Values);
-
-			return Entities != null;
+			return result;
 		}
 
 
 		private void EntityMenu (Entity entity) {
 			var menu = new GenericMenu();
 			// Create
-			foreach (var type in EntityTypes) {
+			var typePool = Util.GetFieldValue(Game, "EntityTypePool") as Dictionary<int, System.Type>;
+			foreach (var pair in typePool) {
+				var type = pair.Value;
 				if (type.GetConstructor(new System.Type[0]) != null) {
 					// Normal
 					menu.AddItem(
@@ -447,6 +389,74 @@ namespace AngeliaFramework.Editor {
 			Selection.activeObject = null;
 			SelectingInspector.SetTarget(null);
 			SelectingInspector.InspectorMode = EntityInspector.Mode.Entity;
+		}
+
+
+		private static void PerformCMD (string cmd) {
+			if (!string.IsNullOrEmpty(cmd)) {
+				if (Game == null) {
+					Game = TryGetGame();
+					if (Game == null) { return; }
+				}
+				var lines = cmd.Replace("\r", "").Split('\n');
+				Entity prevEntity = null;
+				var typePool = Util.GetFieldValue(Game, "EntityTypePool") as Dictionary<int, System.Type>;
+				foreach (var line in lines) {
+					if (line.StartsWith("//")) { continue; }
+					if (line.StartsWith("::")) {
+						if (prevEntity != null) {
+							int _eIndex = line.IndexOf('=');
+							if (_eIndex < 0) { continue; }
+							string fieldName = line[2.._eIndex];
+							var type = Util.GetFieldType(prevEntity, fieldName);
+							if (type == typeof(int)) {
+								if (int.TryParse(line[(_eIndex + 1)..], out int _value)) {
+									Util.SetFieldValue(prevEntity, fieldName, _value);
+								}
+							} else if (type == typeof(float)) {
+								if (float.TryParse(line[(_eIndex + 1)..], out float _value)) {
+									Util.SetFieldValue(prevEntity, fieldName, _value);
+								}
+							} else if (type == typeof(string)) {
+								Util.SetFieldValue(prevEntity, fieldName, line[(_eIndex + 1)..]);
+							} else if (type == typeof(bool)) {
+								if (bool.TryParse(line[(_eIndex + 1)..], out bool _value)) {
+									Util.SetFieldValue(prevEntity, fieldName, _value);
+								}
+							} else {
+								Debug.LogWarning($"[Entity Debuger] type {type} not support/");
+							}
+						}
+						continue;
+					}
+					var _params = line.Replace(" ", "").Split(',');
+					if (
+						_params != null && _params.Length >= 2 &&
+						System.Enum.TryParse(_params[1], true, out EntityLayer layer)
+					) {
+						// X
+						int x = 0;
+						if (_params.Length >= 3) {
+							int.TryParse(_params[2], out x);
+						}
+						// Y
+						int y = 0;
+						if (_params.Length >= 4) {
+							int.TryParse(_params[3], out y);
+						}
+						// Final
+						var type = typePool.SingleOrDefault((pair) => pair.Value.Name == _params[0]).Value;
+						if (type != null) {
+							var e = System.Activator.CreateInstance(type) as Entity;
+							Game.AddEntity(e, layer);
+							e.X = x;
+							e.Y = y;
+							prevEntity = e;
+						}
+					}
+				}
+			}
+
 		}
 
 

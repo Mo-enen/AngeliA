@@ -8,11 +8,10 @@ using UnityEngine;
 namespace AngeliaFramework {
 
 
-	public class Project {
 
+	public class Project {
 		public readonly Dictionary<Vector3Int, string> MapPosToFileName = new();
 		public readonly Dictionary<string, string> PlayerProperty = new();
-
 	}
 
 
@@ -48,28 +47,33 @@ namespace AngeliaFramework {
 		}
 
 
+
 		[System.Serializable]
-		private class MapInfo {
+		private class ProjectInfo {
+
+
 			[System.Serializable]
-			public class FileInfo {
+			public class MapFileInfo {
 				public string FileName;
 				public int X;
 				public int Y;
 				public int Z;
 			}
-			public List<FileInfo> Data = new();
-		}
 
 
-
-		[System.Serializable]
-		private class PlayerInfo {
 			[System.Serializable]
-			public class Pair {
+			public class StringPair {
 				public string Key;
 				public string Value;
 			}
-			public List<Pair> Data = new();
+
+
+			public List<MapFileInfo> MapFile = new();
+			public List<StringPair> PlayerData = new();
+			public int MapWidth = 0;
+			public int MapHeight = 0;
+			public int MapLayerCount = 0;
+
 		}
 
 
@@ -82,37 +86,19 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public static Project LoadProject (string projectPath) {
-			var project = new Project();
-			LoadMapInfo(GetMapInfoPath(projectPath), project);
-			LoadPlayerInfo(GetPlayerInfoPath(projectPath), project);
-
-
-
-			return project;
-		}
+		public static void LoadProject (string projectPath, Project project) => 
+			LoadProjectInfo(GetInfoPath(projectPath), project);
 
 
 		public static void SaveProject (string projectPath, Project project) {
-			SaveMapInfo(GetMapInfoPath(projectPath), project);
-			SavePlayerInfo(GetPlayerInfoPath(projectPath), project);
+			Util.CreateFolder(projectPath);
 			Util.CreateFolder(GetMapRoot(projectPath));
-
-
-
+			SaveProjectInfo(GetInfoPath(projectPath), project);
 		}
 
 
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
 		// Map
-		public static bool LoadMap (Map map, string path) {
+		public static bool FileIntoMap (Map map, string path) {
 			if (!Util.FileExists(path)) { return false; }
 			using var stream = File.OpenRead(path);
 			using var reader = new BinaryReader(stream);
@@ -159,7 +145,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void SaveMap (Map map, string path) {
+		public static void MapIntoFile (Map map, string path) {
 			Util.CreateFolder(Util.GetParentPath(path));
 			using var stream = File.Create(path);
 			using var writer = new BinaryWriter(stream);
@@ -208,87 +194,72 @@ namespace AngeliaFramework {
 		}
 
 
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
 		// Map Info
-		private static void LoadMapInfo (string infoPath, Project project) {
+		private static void LoadProjectInfo (string infoPath, Project project) {
 			project.MapPosToFileName.Clear();
-			MapInfo info;
+			ProjectInfo info;
 			if (Util.FileExists(infoPath)) {
 				string json = Util.FileToText(infoPath);
-				info = JsonUtility.FromJson<MapInfo>(json);
+				info = JsonUtility.FromJson<ProjectInfo>(json);
 			} else {
-				info = new MapInfo();
+				info = new();
 			}
 			if (info != null) {
-				foreach (var fileInfo in info.Data) {
+				// Map File
+				foreach (var fileInfo in info.MapFile) {
 					project.MapPosToFileName.TryAdd(
 						new Vector3Int(fileInfo.X, fileInfo.Y, fileInfo.Z),
 						fileInfo.FileName
 					);
 				}
+				// Player Data
+				foreach (var pair in info.PlayerData) {
+					project.PlayerProperty.TryAdd(pair.Key, pair.Value);
+				}
 			} else {
-				throw new System.Exception($"Map info is not loaded\npath:{infoPath}");
+				throw new System.Exception($"Project info is not loaded\npath:{infoPath}");
 			}
 		}
 
 
-		private static void SaveMapInfo (string infoPath, Project project) {
-			var info = new MapInfo();
+		private static void SaveProjectInfo (string infoPath, Project project) {
+			var info = new ProjectInfo();
+			// Map File
 			foreach (var pair in project.MapPosToFileName) {
-				info.Data.Add(new MapInfo.FileInfo() {
+				info.MapFile.Add(new() {
 					FileName = pair.Value,
 					X = pair.Key.x,
 					Y = pair.Key.y,
 				});
 			}
-			Util.TextToFile(JsonUtility.ToJson(info, true), infoPath);
-		}
-
-
-		// Player Info
-		private static void LoadPlayerInfo (string infoPath, Project project) {
-			project.PlayerProperty.Clear();
-			PlayerInfo info;
-			if (Util.FileExists(infoPath)) {
-				string json = Util.FileToText(infoPath);
-				info = JsonUtility.FromJson<PlayerInfo>(json);
-			} else {
-				info = new PlayerInfo();
-			}
-			if (info != null) {
-				foreach (var pair in info.Data) {
-					project.PlayerProperty.TryAdd(pair.Key, pair.Value);
-				}
-			} else {
-				throw new System.Exception($"Player info is not loaded\npath:{infoPath}");
-			}
-		}
-
-
-		private static void SavePlayerInfo (string infoPath, Project project) {
-			var info = new PlayerInfo();
+			// Player Data
 			foreach (var pair in project.PlayerProperty) {
-				info.Data.Add(new PlayerInfo.Pair() {
+				info.PlayerData.Add(new() {
 					Key = pair.Key,
 					Value = pair.Value,
 				});
 			}
+			// To File
 			Util.TextToFile(JsonUtility.ToJson(info, true), infoPath);
 		}
 
 
-		// Misc
+		// Path
 		private static string GetMapRoot (string projectPath) => Util.CombinePaths(
 			projectPath, "Map"
 		);
 
 
-		private static string GetMapInfoPath (string projectPath) => Util.CombinePaths(
-			projectPath, "Map Info.json"
-		);
-
-
-		private static string GetPlayerInfoPath (string projectPath) => Util.CombinePaths(
-			projectPath, "Player Info.json"
+		private static string GetInfoPath (string projectPath) => Util.CombinePaths(
+			projectPath, "Info.json"
 		);
 
 

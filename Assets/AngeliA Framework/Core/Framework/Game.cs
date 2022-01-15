@@ -67,9 +67,11 @@ namespace AngeliaFramework {
 				return;
 			}
 #endif
-
 			// System
 			Application.targetFrameRate = Application.platform == RuntimePlatform.WindowsEditor ? 10000 : 120;
+
+			// World
+			World.LoadProject();
 
 			// Pipeline
 			Init_Entity();
@@ -219,6 +221,7 @@ namespace AngeliaFramework {
 
 
 		private void Init_Asset () {
+			// Asset Pool
 			foreach (var asset in m_Assets) {
 				AssetPool.TryAdd(asset.name.ACode(), asset);
 			}
@@ -229,7 +232,7 @@ namespace AngeliaFramework {
 		public void FrameUpdate () {
 			FrameInput.FrameUpdate();
 			FrameUpdate_View();
-			FrameUpdate_Level();
+			FrameUpdate_World();
 			FrameUpdate_Entity();
 			CellGUI.PerformFrame(GlobalFrame);
 			CellRenderer.Update();
@@ -255,8 +258,12 @@ namespace AngeliaFramework {
 		}
 
 
-		private void FrameUpdate_Level () {
+		private void FrameUpdate_World () {
+
+			World.FrameUpdate(ViewRect.center.RoundToInt());
+
 			// Draw BG/Level, Fill Physics
+
 
 
 		}
