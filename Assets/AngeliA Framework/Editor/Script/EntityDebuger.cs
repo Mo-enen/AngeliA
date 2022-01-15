@@ -16,6 +16,7 @@ namespace AngeliaFramework.Editor {
 		#region --- VAR ---
 
 		// Const
+		private const string WINDOW_TITLE = "Entity";
 		private static readonly int PIXEL_CODE = "Pixel".ACode();
 		private static readonly Color32[] COLLIDER_TINT = {
 			new (255, 0, 0, 255),
@@ -31,19 +32,19 @@ namespace AngeliaFramework.Editor {
 			get => (EntityLayer)EntityLayerIndex.Value;
 			set => EntityLayerIndex.Value = (int)value;
 		}
-		private static GUIStyle ScrollStyle => _ScrollStyle ??= new GUIStyle() {
-			padding = new RectOffset(6, 6, 2, 2),
-		};
-		private static GUIStyle _ScrollStyle = null;
-		private static GUIStyle TextAreaStyle => _TextAreaStyle ??= new GUIStyle(GUI.skin.textArea) {
+		private static GUIStyle CMDTextAreaStyle => _CMDTextAreaStyle ??= new GUIStyle(GUI.skin.textArea) {
 			fontSize = 14,
 			contentOffset = new Vector2(2, 4),
 		};
-		private static GUIStyle _TextAreaStyle = null;
-		private static GUIStyle PaddingStyle => _PaddingStyle ??= new GUIStyle() {
-			padding = new RectOffset(24, 24, 0, 0),
-		};
-		private static GUIStyle _PaddingStyle = null;
+		private static GUIStyle _CMDTextAreaStyle = null;
+		private static GUIContent EIconContent => _EIconContent ??= EditorGUIUtility.IconContent("d_GameObject Icon");
+		private static GUIContent _EIconContent = null;
+		private static GUIContent GlobalIconContent => _GlobalIconContent ??= EditorGUIUtility.IconContent("d_ToolHandleGlobal@2x");
+		private static GUIContent _GlobalIconContent = null;
+		private static GUIContent ColIconContent => _ColIconContent ??= EditorGUIUtility.IconContent("d_Physics2DRaycaster Icon");
+		private static GUIContent _ColIconContent = null;
+		private static GUIContent CameraIconContent => _CameraIconContent ??= EditorGUIUtility.IconContent("d_SceneViewCamera");
+		private static GUIContent _CameraIconContent = null;
 
 		// Data
 		private static EntityInspector SelectingInspector = null;
@@ -51,7 +52,6 @@ namespace AngeliaFramework.Editor {
 		private static Entity[][] Entities = null;
 		private static Entity SelectingEntity = null;
 		private static List<System.Type> EntityTypes = new();
-		private int PageIndex = 0;
 		private Vector2 MasterScrollPos = default;
 
 		// Saving
@@ -176,9 +176,8 @@ namespace AngeliaFramework.Editor {
 
 
 		private void OnGUI () {
-			using var scope = new GUILayout.ScrollViewScope(MasterScrollPos, ScrollStyle);
-			MasterScrollPos = scope.scrollPosition;
-			if (!EditorApplication.isPlaying) {
+			bool isRuntime = EditorApplication.isPlaying;
+			if (!isRuntime) {
 				// Edit Mode
 				OnGUI_Edittime();
 			} else {
@@ -191,7 +190,6 @@ namespace AngeliaFramework.Editor {
 				}
 
 				// Content
-				Layout.Space(12);
 				OnGUI_Runtime();
 				if (
 					(SelectingEntity != null || SelectingInspector.InspectorMode != EntityInspector.Mode.Entity) &&
@@ -209,56 +207,42 @@ namespace AngeliaFramework.Editor {
 
 
 		private void OnGUI_Edittime () {
-			Layout.Space(6);
-			// CMD
-			EditorGUI.HelpBox(
-				Layout.Rect(0, 24).Expand(-16, -6, 0, 0),
-				" Type, Layer, X = 0, Y = 0",
-				MessageType.Info
-			);
-			Layout.Space(6);
-			EntityInitContent.Value = GUI.TextArea(
-				Layout.Rect(0, 320).Expand(-16, -6, 0, 0),
-				EntityInitContent.Value,
-				TextAreaStyle
-			);
-			EditorGUIUtility.AddCursorRect(Layout.LastRect(), MouseCursor.Text);
-			Layout.Space(6);
-			using (new GUILayout.VerticalScope(PaddingStyle)) {
+			// Buttons
+			using (new GUILayout.HorizontalScope(EditorStyles.toolbar)) {
 				// Language Editor
-				if (GUI.Button(Layout.Rect(0, 32), "Language Editor")) {
+				if (GUI.Button(Layout.Rect(24, 20), GlobalIconContent, EditorStyles.toolbarButton)) {
 					var gPer = FindObjectOfType<GamePerformer>();
 					if (gPer != null && gPer.Game != null) {
 						LanguageEditor.OpenEditor(gPer.Game);
 					}
 				}
+				Layout.Rect(0, 20);
 			}
+			// CMD Text
+			var oldBC = GUI.backgroundColor;
+			GUI.backgroundColor = Color.clear;
+			EntityInitContent.Value = GUI.TextArea(
+				Layout.Rect(0, 0),
+				EntityInitContent.Value,
+				CMDTextAreaStyle
+			);
+			GUI.backgroundColor = oldBC;
+			EditorGUIUtility.AddCursorRect(Layout.LastRect(), MouseCursor.Text);
 		}
 
 
 		private void OnGUI_Runtime () {
 
-			Layout.Space(6);
-
 			// Toolbar
-			using (new GUILayout.HorizontalScope()) {
-				Layout.Space(4);
-				// New Entity
-				if (GUI.Button(Layout.Rect(72, 18), "+ Entity", EditorStyles.popup)) {
-					CreateEntityMenu();
-				}
-				Layout.Space(4);
+			using (new GUILayout.HorizontalScope(EditorStyles.toolbar)) {
 				// Layer
-				var newLayer = (EntityLayer)Mathf.Clamp(
-					(int)(EntityLayer)EditorGUI.EnumPopup(Layout.Rect(0, 18), CurrentEntityLayer), 0, Entities.Length
+				CurrentEntityLayer = (EntityLayer)Mathf.Clamp(
+					(int)(EntityLayer)EditorGUI.EnumPopup(Layout.Rect(0, 20), CurrentEntityLayer, EditorStyles.toolbarPopup), 0, Entities.Length
 				);
-				if (newLayer != CurrentEntityLayer) {
-					CurrentEntityLayer = newLayer;
-					PageIndex = 0;
-				}
 			}
-			Layout.Space(8);
 
+			using var scope = new GUILayout.ScrollViewScope(MasterScrollPos);
+			MasterScrollPos = scope.scrollPosition;
 			var entities = Entities[(int)CurrentEntityLayer];
 			int capacity = entities.Length;
 			const int HEIGHT = 18;
@@ -270,60 +254,68 @@ namespace AngeliaFramework.Editor {
 			// Table
 			if (capacity > 0) {
 
-				bool mouseDown = Event.current.type == EventType.MouseDown;
+				bool mouseLeftDown = Event.current.type == EventType.MouseDown && Event.current.button == 0;
+				bool mouseRightDown = Event.current.type == EventType.MouseDown && Event.current.button == 1;
+				bool mouseDown = mouseLeftDown || mouseRightDown;
 
 				// List
-				PageIndex = Layout.PageList(PageIndex, 16, capacity, (index, rect) => {
+				for (int i = 0; i < capacity; i++) {
+					var entity = entities[i];
+					if (entity == null) { continue; }
 
-					var entity = entities[index];
+					var rect = Layout.Rect(0, HEIGHT);
+
+					GUI.Label(rect, GUIContent.none, EditorStyles.toolbarButton);
+
+					// BG
+					if (entity == SelectingEntity && entity != null) {
+						EditorGUI.DrawRect(rect, new Color32(44, 93, 135, 255));
+					}
+
+					// Icon
+					GUI.Label(rect.Shrink(4, 0, 2, 2), EIconContent, EditorStyles.miniLabel);
 
 					// Mouse Down
 					if (mouseDown && rect.Contains(Event.current.mousePosition)) {
-						SetSelectionInspector(entity, EntityInspector.Mode.Entity);
+						if (mouseLeftDown) {
+							SetSelectionInspector(entity, EntityInspector.Mode.Entity);
+						}
+						if (mouseRightDown) {
+							EntityMenu(entity);
+						}
 						Event.current.Use();
 						Repaint();
 					}
 
-					// Highlight
-					if (entity == SelectingEntity && entity != null) {
-						EditorGUI.DrawRect(rect.Expand(-24, 0, 0, 0), new Color32(44, 93, 135, 255));
-					}
+					// Type
+					GUI.Label(rect.Shrink(20, 0, 0, 0), entity.GetType().Name);
 
-					// Entity
-					if (entity != null) {
-
-						// Type
-						GUI.Label(Layout.Rect(0, HEIGHT), entity.GetType().Name);
-
-						// Destroy
-						if (GUI.Button(Layout.Rect(24, HEIGHT), "×", GUI.skin.label)) {
-							entity.Active = false;
-						}
-						EditorGUIUtility.AddCursorRect(Layout.LastRect(), MouseCursor.Link);
-
-					}
-				}, true, (bWidth, bHeight) => {
-					// More Button in Page Layout
-					// Col
-					ShowColliders.Value = GUI.Toggle(
-						Layout.Rect(bWidth, bHeight),
-						ShowColliders.Value,
-						"Col",
-						GUI.skin.button
-					);
-					Layout.Space(4);
-					// View
-					if (GUI.Button(Layout.Rect(bWidth, bHeight), "View")) {
-						SetSelectionInspector(null, EntityInspector.Mode.View);
-						Event.current.Use();
-					}
-					Layout.Space(4);
-				});
+				}
 
 			} else {
 				// No Entity Capacity
 				EditorGUILayout.HelpBox("Not Available for This Layer", MessageType.Info, true);
 			}
+
+			// Menu on Empty Space
+			if (Event.current.type == EventType.MouseDown && Event.current.button == 1) {
+				EntityMenu(null);
+				Event.current.Use();
+				Repaint();
+			}
+
+			// Key
+			if (Event.current.type == EventType.KeyDown) {
+				switch (Event.current.keyCode) {
+					case KeyCode.Delete:
+						if (SelectingEntity != null) {
+							SelectingEntity.Active = false;
+							EditorApplication.delayCall += Repaint;
+						}
+						break;
+				}
+			}
+
 		}
 
 
@@ -382,13 +374,14 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void CreateEntityMenu () {
+		private void EntityMenu (Entity entity) {
 			var menu = new GenericMenu();
+			// Create
 			foreach (var type in EntityTypes) {
 				if (type.GetConstructor(new System.Type[0]) != null) {
 					// Normal
 					menu.AddItem(
-						new GUIContent(type.Name),
+						new GUIContent($"Create/{type.Name}"),
 						false,
 						() => {
 							var spawnRect = (RectInt)Util.GetFieldValue(Game, "SpawnRect");
@@ -403,20 +396,36 @@ namespace AngeliaFramework.Editor {
 					menu.AddDisabledItem(new GUIContent(type.Name), false);
 				}
 			}
+			// View
+			menu.AddItem(new GUIContent("Select View"), false, () => {
+				SetSelectionInspector(null, EntityInspector.Mode.View);
+			});
+			// Collider
+			menu.AddItem(new GUIContent("Show Colliders"), ShowColliders.Value, () =>
+				ShowColliders.Value = !ShowColliders.Value
+			);
+			// Delete
+			if (entity != null) {
+				menu.AddItem(new GUIContent("Delete"), false, () => {
+					if (entity != null) {
+						entity.Active = false;
+					}
+				});
+			} else {
+				menu.AddDisabledItem(new GUIContent("Delete"), false);
+			}
+			// Show
 			menu.ShowAsContext();
 		}
 
 
 		private static EntityDebuger GetOrCreateWindow () {
 			try {
-				var inspector = typeof(UnityEditor.Editor).Assembly.GetType("UnityEditor.InspectorWindow");
-				var window = inspector != null ?
-					GetWindow<EntityDebuger>("Entity Debuger", false, inspector) :
-					GetWindow<EntityDebuger>("Entity Debuger", false);
+				var window = GetWindow<EntityDebuger>(WINDOW_TITLE, false);
 				window.minSize = new Vector2(275, 400);
 				window.maxSize = new Vector2(600, 1000);
 				window.titleContent = EditorGUIUtility.IconContent("UnityEditor.ConsoleWindow");
-				window.titleContent.text = "Entity Debuger";
+				window.titleContent.text = WINDOW_TITLE;
 				return window;
 			} catch (System.Exception ex) {
 				Debug.LogWarning("Failed to open window.\n" + ex.Message);
