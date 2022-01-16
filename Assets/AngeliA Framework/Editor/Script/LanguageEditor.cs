@@ -142,6 +142,7 @@ namespace AngeliaFramework.Editor {
 				for (int y = 0; y < keyList.Count; y++) {
 					LanguageData[x, y] = lan[keyList[y]];
 				}
+				lan.ClearCache();
 			}
 			// Language Names
 			LanguageNames = new string[languages.Length];

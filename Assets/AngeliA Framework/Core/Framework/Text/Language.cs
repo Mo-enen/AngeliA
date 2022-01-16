@@ -39,6 +39,9 @@ namespace AngeliaFramework.Text {
 		}
 
 
+		public void ClearCache () => Map.Clear();
+
+
 	}
 }
 

@@ -13,6 +13,7 @@ namespace AngeliaFramework.Text {
 		#region --- VAR ---
 
 
+		
 
 
 		#endregion
@@ -25,12 +26,14 @@ namespace AngeliaFramework.Text {
 
 
 
+
 		#endregion
 
 
 
 
 		#region --- LGC ---
+
 
 
 

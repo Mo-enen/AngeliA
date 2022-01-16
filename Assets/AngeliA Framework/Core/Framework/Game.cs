@@ -29,6 +29,7 @@ namespace AngeliaFramework {
 
 		// Api
 		public Language CurrentLanguage { get; private set; } = null;
+		public Dialogue CurrentDialogue { get; private set; } = null;
 
 		// Ser
 		[SerializeField] SpriteSheet[] m_Sheets = null;
@@ -188,9 +189,6 @@ namespace AngeliaFramework {
 
 
 		private void Init_Language () {
-			foreach (var language in m_Languages) {
-				language.Init();
-			}
 			bool success;
 			if (LanguageIndex.Value < 0) {
 				// First Time
@@ -374,21 +372,22 @@ namespace AngeliaFramework {
 
 		public bool SetLanguage (SystemLanguage language) {
 			bool success = false;
-			// UI Languages
 			foreach (var l in m_Languages) {
 				if (l.LanguageID == language) {
 					LanguageIndex.Value = (int)language;
 					CurrentLanguage = l;
+					CurrentDialogue = Resources.Load<Dialogue>(l.name);
+					l.Init();
 					success = true;
 					break;
 				}
 			}
-			// Dialogue
 			if (success) {
-
-
-
-
+				foreach (var l in m_Languages) {
+					if (l.LanguageID != language) {
+						l.ClearCache();
+					}
+				}
 			}
 			return success;
 		}
