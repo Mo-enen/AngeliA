@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace AngeliaFramework.Language {
+namespace AngeliaFramework.Text {
 	[CreateAssetMenu(fileName = "New Language", menuName = "AngeliA/Language", order = 99)]
-	public class LanguageData : ScriptableObject {
+	public class Language : ScriptableObject {
 
 
 		// SUB
@@ -47,8 +47,8 @@ namespace AngeliaFramework.Language {
 #if UNITY_EDITOR
 namespace AngeliaFramework.Editor {
 	using UnityEditor;
-	using AngeliaFramework.Language;
-	[CustomEditor(typeof(LanguageData))]
+	using AngeliaFramework.Text;
+	[CustomEditor(typeof(Language))]
 	public class Language_Inspector : Editor {
 		public override void OnInspectorGUI () {
 			serializedObject.Update();

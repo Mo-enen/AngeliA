@@ -7,7 +7,7 @@ using AngeliaFramework.Physics;
 using AngeliaFramework.Rendering;
 using AngeliaFramework.Audio;
 using AngeliaFramework.Input;
-using AngeliaFramework.Language;
+using AngeliaFramework.Text;
 
 
 namespace AngeliaFramework {
@@ -28,13 +28,13 @@ namespace AngeliaFramework {
 		private readonly int[] ENTITY_BUFFER_CAPACITY = { 128, 128, 128, 128 };
 
 		// Api
-		public LanguageData CurrentLanguage { get; private set; } = null;
+		public Language CurrentLanguage { get; private set; } = null;
 
 		// Ser
 		[SerializeField] SpriteSheet[] m_Sheets = null;
 		[SerializeField] AudioClip[] m_Musics = null;
 		[SerializeField] AudioClip[] m_Sounds = null;
-		[SerializeField] LanguageData[] m_Languages = null;
+		[SerializeField] Language[] m_Languages = null;
 		[SerializeField] ScriptableObject[] m_Assets = null;
 
 		// Data
@@ -373,14 +373,24 @@ namespace AngeliaFramework {
 
 
 		public bool SetLanguage (SystemLanguage language) {
+			bool success = false;
+			// UI Languages
 			foreach (var l in m_Languages) {
 				if (l.LanguageID == language) {
 					LanguageIndex.Value = (int)language;
 					CurrentLanguage = l;
-					return true;
+					success = true;
+					break;
 				}
 			}
-			return false;
+			// Dialogue
+			if (success) {
+
+
+
+
+			}
+			return success;
 		}
 
 

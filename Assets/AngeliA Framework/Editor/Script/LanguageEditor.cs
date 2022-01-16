@@ -5,7 +5,7 @@ namespace AngeliaFramework.Editor {
 	using UnityEngine;
 	using UnityEditor;
 	using Moenen.Standard;
-	using AngeliaFramework.Language;
+	using AngeliaFramework.Text;
 
 
 	public class LanguageEditor : EditorWindow {
@@ -116,7 +116,7 @@ namespace AngeliaFramework.Editor {
 		// LGC
 		private bool Load (Game game) {
 			if (
-				Util.GetFieldValue(game, "m_Languages") is not LanguageData[] languages ||
+				Util.GetFieldValue(game, "m_Languages") is not Language[] languages ||
 				languages.Length == 0
 			) {
 				Debug.LogWarning("[Language Editor] No language data founded.");
@@ -154,14 +154,14 @@ namespace AngeliaFramework.Editor {
 
 		private void Save (Game game) {
 			// Language Data >> Game
-			var languages = Util.GetFieldValue(game, "m_Languages") as LanguageData[];
+			var languages = Util.GetFieldValue(game, "m_Languages") as Language[];
 			int keyCount = LanguageData.GetLength(1);
 			for (int valueIndex = 0; valueIndex < languages.Length; valueIndex++) {
-				var cells = new List<LanguageData.Cell>();
+				var cells = new List<Language.Cell>();
 				for (int keyIndex = 0; keyIndex < keyCount; keyIndex++) {
 					string key = LanguageData[0, keyIndex];
 					if (string.IsNullOrEmpty(key)) { continue; }
-					cells.Add(new LanguageData.Cell() {
+					cells.Add(new Language.Cell() {
 						Key = key,
 						Value = LanguageData[valueIndex + 1, keyIndex],
 					});
