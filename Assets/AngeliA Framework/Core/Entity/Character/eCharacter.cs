@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace AngeliaFramework {
+namespace AngeliaFramework.Entities {
 	public abstract class eCharacter : Entity {
 
 

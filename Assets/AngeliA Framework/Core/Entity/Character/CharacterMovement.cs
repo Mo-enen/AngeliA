@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AngeliaFramework.Physics;
 
 
-namespace AngeliaFramework {
+namespace AngeliaFramework.Entities {
 	[CreateAssetMenu(fileName = "New Movement", menuName = "AngeliA/Character/Movement", order = 99)]
 	public partial class CharacterMovement : ScriptableObject {
 
@@ -208,6 +209,7 @@ namespace AngeliaFramework {
 namespace AngeliaFramework.Editor {
 	using UnityEngine;
 	using UnityEditor;
+	using AngeliaFramework.Entities;
 	[CustomEditor(typeof(CharacterMovement))]
 	public class CharacterMovement_Inspector : Editor {
 		public override void OnInspectorGUI () {

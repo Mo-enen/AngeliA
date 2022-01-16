@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 
-namespace AngeliaFramework {
+namespace AngeliaFramework.World {
 
 
 
@@ -16,14 +16,7 @@ namespace AngeliaFramework {
 
 
 
-	public static class ProjectStream {
-
-
-
-
-		#region --- SUB ---
-
-
+	public class Map {
 
 		public struct Block {
 			public uint InstanceID;
@@ -34,17 +27,22 @@ namespace AngeliaFramework {
 			}
 		}
 
+		public int Width => Blocks.GetLength(0);
+		public int Height => Blocks.GetLength(1);
+		public int LayerCount => Blocks.GetLength(2);
+
+		public Block[,,] Blocks = new Block[0, 0, 0];
+
+	}
 
 
-		public class Map {
 
-			public int Width => Blocks.GetLength(0);
-			public int Height => Blocks.GetLength(1);
-			public int LayerCount => Blocks.GetLength(2);
+	public static class ProjectStream {
 
-			public Block[,,] Blocks = new Block[0, 0, 0];
 
-		}
+
+
+		#region --- SUB ---
 
 
 
@@ -86,7 +84,7 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public static void LoadProject (string projectPath, Project project) => 
+		public static void LoadProject (string projectPath, Project project) =>
 			LoadProjectInfo(GetInfoPath(projectPath), project);
 
 
@@ -111,7 +109,7 @@ namespace AngeliaFramework {
 			}
 #endif
 			if (map.Width != width || map.Height != height || map.LayerCount != layerCount) {
-				map.Blocks = new Block[width, height, layerCount];
+				map.Blocks = new Map.Block[width, height, layerCount];
 			} else {
 				System.Array.Clear(map.Blocks, 0, map.Blocks.Length);
 			}
@@ -123,7 +121,7 @@ namespace AngeliaFramework {
 				if (insID >= 128) {
 					// Block
 					int blockID = reader.ReadInt32();
-					map.Blocks[cursorX, cursorY, cursorZ] = new Block(insID, blockID);
+					map.Blocks[cursorX, cursorY, cursorZ] = new Map.Block(insID, blockID);
 					cursorX++;
 				} else {
 					// Func

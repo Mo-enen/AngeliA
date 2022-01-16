@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AngeliaFramework.Entities;
 
 
-
-namespace AngeliaFramework {
+namespace AngeliaFramework.Physics {
 	public static class CellPhysics {
 
 

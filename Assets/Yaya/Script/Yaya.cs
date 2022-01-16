@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
+using AngeliaFramework.Entities;
 
 
 namespace Yaya {

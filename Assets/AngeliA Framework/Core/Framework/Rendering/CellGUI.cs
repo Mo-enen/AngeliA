@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AngeliaFramework.Input;
 
 
-namespace AngeliaFramework {
+namespace AngeliaFramework.Rendering {
 	public static class CellGUI {
 
 

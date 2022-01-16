@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace AngeliaFramework {
+namespace AngeliaFramework.Entities {
 	public partial class CharacterMovement {
 
 

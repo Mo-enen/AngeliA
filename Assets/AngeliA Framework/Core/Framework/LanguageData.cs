@@ -3,29 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace AngeliaFramework {
+namespace AngeliaFramework.Language {
 	[CreateAssetMenu(fileName = "New Language", menuName = "AngeliA/Language", order = 99)]
-	public class Language : ScriptableObject {
+	public class LanguageData : ScriptableObject {
 
 
-
-
-		#region --- SUB ---
-
-
+		// SUB
 		[System.Serializable]
-		public class LanguageCell {
+		public class Cell {
 			public string Key;
 			public string Value;
 		}
-
-
-		#endregion
-
-
-
-
-		#region --- VAR ---
 
 
 		// Api
@@ -36,41 +24,19 @@ namespace AngeliaFramework {
 		// Ser
 		[SerializeField] SystemLanguage m_Language = SystemLanguage.English;
 		[SerializeField] string m_DisplayName = "";
-		[SerializeField] LanguageCell[] m_Cells = null;
+		[SerializeField] Cell[] m_Cells = null;
 
 		// Data
 		private Dictionary<string, string> Map = new();
 
 
-		#endregion
-
-
-
-
-		#region --- API ---
-
-
+		// API
 		public void Init () {
 			Map.Clear();
 			foreach (var cell in m_Cells) {
 				Map.TryAdd(cell.Key, cell.Value);
 			}
 		}
-
-
-		#endregion
-
-
-
-
-		#region --- EDT ---
-#if UNITY_EDITOR
-		public LanguageCell[] Editor_GetCells () => m_Cells;
-		public void Editor_SetCells (LanguageCell[] cells) => m_Cells = cells;
-#endif
-		#endregion
-
-
 
 
 	}
@@ -80,9 +46,9 @@ namespace AngeliaFramework {
 
 #if UNITY_EDITOR
 namespace AngeliaFramework.Editor {
-	using UnityEngine;
 	using UnityEditor;
-	[CustomEditor(typeof(Language))]
+	using AngeliaFramework.Language;
+	[CustomEditor(typeof(LanguageData))]
 	public class Language_Inspector : Editor {
 		public override void OnInspectorGUI () {
 			serializedObject.Update();

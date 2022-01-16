@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-namespace AngeliaFramework {
+namespace AngeliaFramework.Input {
 
 
 	public enum GameKey {

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace AngeliaFramework {
-	public static class Audio {
+namespace AngeliaFramework.Audio {
+	public static class AudioPool {
 
 
 
@@ -13,7 +13,7 @@ namespace AngeliaFramework {
 
 
 		// Data
-		public static AudioSource MusicSource = null;
+		private static AudioSource MusicSource = null;
 		private static AudioSource SoundSource = null;
 		private static Dictionary<int, AudioClip> MusicMap = new();
 		private static Dictionary<int, AudioClip> SoundMap = new();

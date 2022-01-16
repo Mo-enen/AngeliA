@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace AngeliaFramework {
+namespace AngeliaFramework.Rendering {
 	[CreateAssetMenu(fileName = "New Char Sheet", menuName = "AngeliA/Char Sheet", order = 99)]
 	public class CharSpriteSheet : SpriteSheet {
 

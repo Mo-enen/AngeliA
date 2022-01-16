@@ -1,6 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AngeliaFramework.World;
+using AngeliaFramework.Entities;
+using AngeliaFramework.Physics;
+using AngeliaFramework.Rendering;
+using AngeliaFramework.Audio;
+using AngeliaFramework.Input;
+using AngeliaFramework.Language;
 
 
 namespace AngeliaFramework {
@@ -21,13 +28,13 @@ namespace AngeliaFramework {
 		private readonly int[] ENTITY_BUFFER_CAPACITY = { 128, 128, 128, 128 };
 
 		// Api
-		public Language CurrentLanguage { get; private set; } = null;
+		public LanguageData CurrentLanguage { get; private set; } = null;
 
 		// Ser
 		[SerializeField] SpriteSheet[] m_Sheets = null;
 		[SerializeField] AudioClip[] m_Musics = null;
 		[SerializeField] AudioClip[] m_Sounds = null;
-		[SerializeField] Language[] m_Languages = null;
+		[SerializeField] LanguageData[] m_Languages = null;
 		[SerializeField] ScriptableObject[] m_Assets = null;
 
 		// Data
@@ -71,7 +78,7 @@ namespace AngeliaFramework {
 			Application.targetFrameRate = Application.platform == RuntimePlatform.WindowsEditor ? 10000 : 120;
 
 			// World
-			World.LoadProject();
+			WorldStream.LoadProject();
 
 			// Pipeline
 			Init_Entity();
@@ -170,12 +177,12 @@ namespace AngeliaFramework {
 
 		private void Init_Audio () {
 			// Audio
-			Audio.Initialize();
+			AudioPool.Initialize();
 			foreach (var music in m_Musics) {
-				Audio.AddMusic(music);
+				AudioPool.AddMusic(music);
 			}
 			foreach (var sound in m_Sounds) {
-				Audio.AddSound(sound);
+				AudioPool.AddSound(sound);
 			}
 		}
 
@@ -260,7 +267,7 @@ namespace AngeliaFramework {
 
 		private void FrameUpdate_World () {
 
-			World.FrameUpdate(ViewRect.center.RoundToInt());
+			WorldStream.UpdateView(ViewRect.center.RoundToInt());
 
 			// Draw BG/Level, Fill Physics
 
@@ -338,7 +345,6 @@ namespace AngeliaFramework {
 				}
 				EntityBuffers[layerIndex].length = 0;
 			}
-
 
 		}
 

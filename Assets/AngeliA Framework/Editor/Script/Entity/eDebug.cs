@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AngeliaFramework.Physics;
+using AngeliaFramework.Rendering;
 
 
-namespace AngeliaFramework {
+namespace AngeliaFramework.Entities.Editor {
 	public class eDebug : Entity {
 
 
@@ -26,7 +28,7 @@ namespace AngeliaFramework {
 		public override void FillPhysics (int frame) {
 			if (Width <= Const.CELL_SIZE && Height <= Const.CELL_SIZE) {
 				CellPhysics.Fill(
-					Layer, new RectInt(X, Y, Width, Height), this, 
+					Layer, new RectInt(X, Y, Width, Height), this,
 					IsTrigger, string.IsNullOrEmpty(Tag) ? 0 : Tag.ACode()
 				);
 			}

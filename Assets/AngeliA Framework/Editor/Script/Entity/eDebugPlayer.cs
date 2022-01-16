@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace AngeliaFramework.Editor {
+namespace AngeliaFramework.Entities.Editor {
 	public class eDebugPlayer : ePlayer {
 
 
@@ -22,7 +22,7 @@ namespace AngeliaFramework.Editor {
 		[SerializeField] private CharacterMovement _Movement = null;
 
 
-		
+
 
 
 	}

@@ -5,6 +5,7 @@ namespace AngeliaFramework.Editor {
 	using UnityEngine;
 	using UnityEditor;
 	using Moenen.Standard;
+	using AngeliaFramework.Language;
 
 
 	public class LanguageEditor : EditorWindow {
@@ -115,7 +116,7 @@ namespace AngeliaFramework.Editor {
 		// LGC
 		private bool Load (Game game) {
 			if (
-				Util.GetFieldValue(game, "m_Languages") is not Language[] languages ||
+				Util.GetFieldValue(game, "m_Languages") is not LanguageData[] languages ||
 				languages.Length == 0
 			) {
 				Debug.LogWarning("[Language Editor] No language data founded.");
@@ -124,8 +125,9 @@ namespace AngeliaFramework.Editor {
 			// Game >> Language Data
 			var keys = new HashSet<string>();
 			foreach (var language in languages) {
-				for (int i = 0; i < language.Editor_GetCells().Length; i++) {
-					keys.TryAdd(language.Editor_GetCells()[i].Key);
+				var cells = Util.GetFieldValue(language, "m_Cells") as object[];
+				for (int i = 0; i < cells.Length; i++) {
+					keys.TryAdd(Util.GetFieldValue(cells[i], "Key") as string);
 				}
 			}
 			var keyList = keys.ToList();
@@ -152,19 +154,19 @@ namespace AngeliaFramework.Editor {
 
 		private void Save (Game game) {
 			// Language Data >> Game
-			var languages = Util.GetFieldValue(game, "m_Languages") as Language[];
+			var languages = Util.GetFieldValue(game, "m_Languages") as LanguageData[];
 			int keyCount = LanguageData.GetLength(1);
 			for (int valueIndex = 0; valueIndex < languages.Length; valueIndex++) {
-				var cells = new List<Language.LanguageCell>();
+				var cells = new List<LanguageData.Cell>();
 				for (int keyIndex = 0; keyIndex < keyCount; keyIndex++) {
 					string key = LanguageData[0, keyIndex];
 					if (string.IsNullOrEmpty(key)) { continue; }
-					cells.Add(new Language.LanguageCell() {
+					cells.Add(new LanguageData.Cell() {
 						Key = key,
 						Value = LanguageData[valueIndex + 1, keyIndex],
 					});
 				}
-				languages[valueIndex].Editor_SetCells(cells.ToArray());
+				Util.SetFieldValue(languages[valueIndex], "m_Cells", cells.ToArray());
 			}
 			Util.SetFieldValue(game, "m_Languages", languages);
 			foreach (var lan in languages) {

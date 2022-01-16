@@ -5,6 +5,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 using Moenen.Standard;
+using AngeliaFramework.Entities;
+using AngeliaFramework.Physics;
+using AngeliaFramework.Rendering;
 
 
 namespace AngeliaFramework.Editor {

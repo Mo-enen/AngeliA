@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace AngeliaFramework {
-	public static class World {
+namespace AngeliaFramework.World {
+	public static class WorldStream {
 
 
 
@@ -35,7 +35,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void FrameUpdate (Vector2Int viewPosition) {
+		public static void UpdateView (Vector2Int viewPosition) {
 
 
 

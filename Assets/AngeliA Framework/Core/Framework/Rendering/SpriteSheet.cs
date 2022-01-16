@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace AngeliaFramework {
+namespace AngeliaFramework.Rendering {
 	[CreateAssetMenu(fileName = "New Sheet", menuName = "AngeliA/Sprite Sheet", order = 99)]
 	public class SpriteSheet : ScriptableObject {
 
@@ -91,7 +91,7 @@ namespace AngeliaFramework.Editor {
 	using UnityEngine;
 	using UnityEditor;
 	using System.Text;
-
+	using AngeliaFramework.Rendering;
 	[CustomEditor(typeof(SpriteSheet), true), DisallowMultipleComponent]
 	public class SpriteSheet_Inspector : Editor {
 
@@ -154,7 +154,7 @@ namespace AngeliaFramework.Editor {
 				var spList = new List<Sprite>();
 				for (int i = objs.Length - 1; i >= 0; i--) {
 					var obj = objs[i];
-					if (obj == null || !(obj is Sprite sprite)) { continue; }
+					if (obj == null || obj is not Sprite sprite) { continue; }
 					spList.Add(sprite);
 				}
 				if (spList.Count > 0) {
@@ -167,7 +167,7 @@ namespace AngeliaFramework.Editor {
 
 		private void CreateFontTexture () {
 
-			if (!(target is CharSpriteSheet)) { return; }
+			if (target is not CharSpriteSheet) { return; }
 
 			string path = EditorUtility.OpenFilePanel("Pick a font", "Assets", "ttf");
 			if (string.IsNullOrEmpty(path)) { return; }

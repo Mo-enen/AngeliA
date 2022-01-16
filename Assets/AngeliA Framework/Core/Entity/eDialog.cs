@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
+using AngeliaFramework.Rendering;
+using AngeliaFramework.Input;
 
 
-namespace AngeliaFramework {
+namespace AngeliaFramework.Entities {
 	public class eDialog : Entity {
 
 
