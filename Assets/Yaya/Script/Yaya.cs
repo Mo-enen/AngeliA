@@ -9,21 +9,6 @@ namespace Yaya {
 	public class Yaya : GamePerformer {
 
 
-
-
-		#region --- VAR ---
-
-
-
-
-		#endregion
-
-
-
-
-		#region --- MSG ---
-
-
 		private void Awake () {
 			Awake_Misc();
 			Awake_Quit();
@@ -60,21 +45,6 @@ namespace Yaya {
 				}
 			};
 		}
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
-
-
-		#endregion
-
-
 
 
 	}

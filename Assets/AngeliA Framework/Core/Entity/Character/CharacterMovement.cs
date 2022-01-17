@@ -48,6 +48,15 @@ namespace AngeliaFramework.Entities {
 		#region --- MSG ---
 
 
+		public void FillPhysics (eCharacter character) => CellPhysics.Fill(
+			PhysicsLayer.Character,
+			new RectInt(
+				character.X - m_General.Width / 2, character.Y, m_General.Width, m_General.Height
+			),
+			character
+		);
+
+
 		public void FrameUpdate (int frame, eCharacter character) {
 			Update_Cache(frame, character);
 			Update_Jump(frame);

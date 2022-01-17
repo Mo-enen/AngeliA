@@ -14,6 +14,7 @@ namespace AngeliaFramework.Entities {
 
 		// Api
 		public abstract CharacterMovement Movement { get; }
+		public abstract CharacterRenderer Renderer { get; }
 
 
 		#endregion
@@ -24,30 +25,15 @@ namespace AngeliaFramework.Entities {
 		#region --- MSG ---
 
 
-		public override void FrameUpdate (int frame) {
-			Movement.FrameUpdate(frame, this);
+		public override void FillPhysics (int frame) {
+			Movement.FillPhysics(this);
 		}
 
 
-		#endregion
-
-
-
-
-		#region --- API ---
-
-
-
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
+		public override void FrameUpdate (int frame) {
+			Movement.FrameUpdate(frame, this);
+			Renderer.FrameUpdate(frame, this);
+		}
 
 
 		#endregion

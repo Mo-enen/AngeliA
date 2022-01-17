@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d31605527b6725e40a1a71692e767209, type: 3}
-  m_Name: Debug Movement
+  m_Script: {fileID: 11500000, guid: 71ce15c7bfdcd514f9deaf34b46efa99, type: 3}
+  m_Name: Debug Character Renderer
   m_EditorClassIdentifier: 
