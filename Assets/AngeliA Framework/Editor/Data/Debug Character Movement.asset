@@ -12,3 +12,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31605527b6725e40a1a71692e767209, type: 3}
   m_Name: Debug Character Movement
   m_EditorClassIdentifier: 
+  m_General:
+    Width: 256
+    Height: 256
+    Gravity: 5120
+    MaxGravitySpeed: 6144
+  m_Move:
+    Speed: 1024
+    Acceleration: 34
+    Decceleration: 25
+    WalkOnWater: 0
+  m_Jump:
+    Speed: 1536
+    Count: 2
+    ReleaseLoseRate: 700
+    RaiseGravity: 4096
+  m_Dash:
+    Available: 1
+    Speed: 1536
+    Duration: 18
+    Cooldown: 6
+    Acceleration: 2147483647
+    Decceleration: 76
+  m_Squat:
+    Available: 1
+    Speed: 512
+    Acceleration: 2147483647
+    Decceleration: 2147483647
+  m_Pound:
+    Available: 1
+    Speed: 5120

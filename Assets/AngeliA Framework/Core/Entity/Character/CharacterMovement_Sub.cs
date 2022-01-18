@@ -10,8 +10,6 @@ namespace AngeliaFramework.Entities {
 
 		[System.Serializable]
 		public class GeneralConfig {
-			public int Width = Const.CELL_SIZE;
-			public int Height = Const.CELL_SIZE;
 			public int Gravity = Const.CELL_SIZE * 20;
 			public int MaxGravitySpeed = Const.CELL_SIZE * 24;
 		}
@@ -64,15 +62,6 @@ namespace AngeliaFramework.Entities {
 			public int Speed = Const.CELL_SIZE * 20;
 
 		}
-
-
-
-		[SerializeField] GeneralConfig m_General = null;
-		[SerializeField] MoveConfig m_Move = null;
-		[SerializeField] JumpConfig m_Jump = null;
-		[SerializeField] DashConfig m_Dash = null;
-		[SerializeField] SquatConfig m_Squat = null;
-		[SerializeField] PoundConfig m_Pound = null;
 
 
 	}

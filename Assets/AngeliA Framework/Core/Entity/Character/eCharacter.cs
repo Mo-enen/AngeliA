@@ -13,9 +13,14 @@ namespace AngeliaFramework.Entities {
 
 
 		// Api
-		public abstract CharacterMovement Movement { get; }
-		public abstract CharacterRenderer Renderer { get; }
+		protected abstract CharacterMovement Movement { get; }
+		protected abstract CharacterRenderer Renderer { get; }
+		public int Width => m_Width;
+		public int Height => m_Height;
 
+		// Ser
+		[SerializeField] int m_Width = Const.CELL_SIZE;
+		[SerializeField] int m_Height = Const.CELL_SIZE;
 
 		#endregion
 

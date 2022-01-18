@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71ce15c7bfdcd514f9deaf34b46efa99, type: 3}
   m_Name: Debug Character Renderer
   m_EditorClassIdentifier: 
+  m_Test: Test Pump

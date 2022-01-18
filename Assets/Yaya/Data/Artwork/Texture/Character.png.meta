@@ -3,14 +3,8 @@ guid: 690d8fc8a6776684e932230e57858c66
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2080440696385551974
-    second: Test Chr 0
-  - first:
-      213: -4614453085105144191
-    second: Test Chr 1
-  - first:
-      213: 5901351369432555412
-    second: Test Chr 2
+      213: -1972687094564485636
+    second: Test Pump
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -89,54 +83,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Test Chr 0
+      name: Test Pump
       rect:
         serializedVersion: 2
-        x: 37
-        y: 62
-        width: 17
-        height: 19
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 66eb35c6ac53fdc10800000000000000
-      internalID: 2080440696385551974
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Test Chr 1
-      rect:
-        serializedVersion: 2
-        x: 68
-        y: 62
-        width: 19
-        height: 26
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 18e3a951e5b26ffb0800000000000000
-      internalID: -4614453085105144191
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Test Chr 2
-      rect:
-        serializedVersion: 2
-        x: 60
-        y: 30
-        width: 18
+        x: 1
+        y: 1
+        width: 16
         height: 16
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
@@ -145,8 +97,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 49fdac5cdcfc5e150800000000000000
-      internalID: 5901351369432555412
+      spriteID: cf58c7b0a8b9f94e0800000000000000
+      internalID: -1972687094564485636
       vertices: []
       indices: 
       edges: []
@@ -162,9 +114,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Test Chr 1: -4614453085105144191
-      Test Chr 2: 5901351369432555412
-      Test Chr 0: 2080440696385551974
+      Test Pump: -1972687094564485636
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -28,6 +28,14 @@ namespace AngeliaFramework.Entities {
 		public int VelocityX { get; private set; } = 0;
 		public int VelocityY { get; private set; } = 0;
 
+		// Ser
+		[SerializeField] GeneralConfig m_General = null;
+		[SerializeField] MoveConfig m_Move = null;
+		[SerializeField] JumpConfig m_Jump = null;
+		[SerializeField] DashConfig m_Dash = null;
+		[SerializeField] SquatConfig m_Squat = null;
+		[SerializeField] PoundConfig m_Pound = null;
+
 		// Data
 		private int IntendedX = 0;
 		private int IntendedY = 0;
@@ -51,7 +59,7 @@ namespace AngeliaFramework.Entities {
 		public void FillPhysics (eCharacter character) => CellPhysics.Fill(
 			PhysicsLayer.Character,
 			new RectInt(
-				character.X - m_General.Width / 2, character.Y, m_General.Width, m_General.Height
+				character.X - character.Width / 2, character.Y, character.Width, character.Height
 			),
 			character
 		);
@@ -72,8 +80,8 @@ namespace AngeliaFramework.Entities {
 
 
 		private void Update_Cache (int frame, eCharacter character) {
-			IsGrounded = GroundCheck(character.X, character.Y);
-			InWater = WaterCheck(character.X, character.Y);
+			IsGrounded = GroundCheck(character);
+			InWater = WaterCheck(character);
 			IsDashing = m_Dash.Available && frame < LastDashFrame + m_Dash.Duration;
 			IsSquating = m_Squat.Available && IsGrounded && ((!IsDashing && IntendedY < 0) || ForceSquatCheck(character.X, character.Y));
 			IsPounding = m_Pound.Available && !IsGrounded && !InWater && !IsDashing && (IsPounding ? IntendedY < 0 : IntendedPound);
@@ -182,16 +190,16 @@ namespace AngeliaFramework.Entities {
 		#region --- LGC ---
 
 
-		private bool GroundCheck (int x, int y) {
+		private bool GroundCheck (eCharacter character) {
 
 
 			return false;
 		}
 
 
-		private bool WaterCheck (int x, int y) => CellPhysics.Overlap(
+		private bool WaterCheck (eCharacter character) => CellPhysics.Overlap(
 			PhysicsLayer.Level,
-			new RectInt(x - m_General.Width / 2, y, m_General.Width, m_General.Height),
+			new RectInt(character.X - character.Width / 2, character.Y, character.Width, character.Height),
 			null,
 			CellPhysics.OperationMode.TriggerOnly,
 			WATER_TAG

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AngeliaFramework.Rendering;
 
 
 namespace AngeliaFramework.Entities {
@@ -13,6 +14,7 @@ namespace AngeliaFramework.Entities {
 		#region --- VAR ---
 
 
+		[SerializeField] string m_Test = "";
 
 
 		#endregion
@@ -25,8 +27,10 @@ namespace AngeliaFramework.Entities {
 
 		public void FrameUpdate (int frame, eCharacter character) {
 
-
-
+			// Debug
+			CellRenderer.Draw(m_Test.ACode(), new RectInt(
+				character.X - character.Width / 2, character.Y, character.Width, character.Height
+			));
 		}
 
 

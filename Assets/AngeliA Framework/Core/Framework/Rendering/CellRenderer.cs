@@ -145,7 +145,8 @@ namespace AngeliaFramework.Rendering {
 			var mesh = layer.Mesh;
 
 			var cells = layer.Cells;
-			int cellCount = Mathf.Min(cells.Length, layer.FocusedCell);
+			int drawCount = layer.FocusedCell >= 0 ? layer.FocusedCell : cells.Length;
+			int cellCount = Mathf.Min(cells.Length, drawCount);
 			var uvs = layer.UVs;
 
 			var a = Vector3.zero;
@@ -212,7 +213,11 @@ namespace AngeliaFramework.Rendering {
 			if (cellCount < layer.PrevCellCount) {
 				var zero = Vector3.zero;
 				for (int i = cellCount; i < layer.PrevCellCount; i++) {
-					layer.VertexCache[i * 4 + 0] = zero;
+					try {
+						layer.VertexCache[i * 4 + 0] = zero;
+					} catch {
+						Debug.Log((i * 4) + " " + layer.VertexCache.Count);
+					}
 					layer.VertexCache[i * 4 + 1] = zero;
 					layer.VertexCache[i * 4 + 2] = zero;
 					layer.VertexCache[i * 4 + 3] = zero;
@@ -346,6 +351,9 @@ namespace AngeliaFramework.Rendering {
 			}
 			return ref cell;
 		}
+
+
+		public static ref Cell Draw (int globalID, RectInt rect) => ref Draw(globalID, rect, new Color32(255, 255, 255, 255));
 
 
 		public static ref Cell Draw (int globalID, RectInt rect, Color32 color) => ref Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color);

@@ -16,9 +16,10 @@ namespace AngeliaFramework {
 
 
 	public enum PhysicsLayer {
-		Level = 0,
-		Item = 1,
-		Character = 2,
+		Level = 0,		// Ground, Water, ...
+		Object = 1,		// Barrel, Chest, EventTrigger...
+		Item = 2,		// HealthPotion, Coin...
+		Character = 3,	// Player, Enemy, NPC...
 	}
 
 
@@ -106,7 +107,7 @@ namespace AngeliaFramework {
 	public static class Const {
 		public const int CELL_SIZE = 256;
 		public const int ENTITY_LAYER_COUNT = 4;
-		public const int PHYSICS_LAYER_COUNT = 3;
+		public const int PHYSICS_LAYER_COUNT = 4;
 	}
 
 

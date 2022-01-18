@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Texture: {fileID: 2800000, guid: 7a42e1c284f03fa48b3f1c204e25f03a, type: 3}
   m_Sprites:
-  - GlobalID: 1604199018
+  - GlobalID: -1773949471
     Rect:
-      BottomLeft: {x: 0.34375, y: 0.4609375}
-      BottomRight: {x: 0.484375, y: 0.4609375}
-      TopLeft: {x: 0.34375, y: 0.625}
-      TopRight: {x: 0.484375, y: 0.625}
+      BottomLeft: {x: 0.0078125, y: 0.0078125}
+      BottomRight: {x: 0.1328125, y: 0.0078125}
+      TopLeft: {x: 0.0078125, y: 0.1328125}
+      TopRight: {x: 0.1328125, y: 0.1328125}
   m_RendererCapacity: 1024
   m_ShaderName: Cell
