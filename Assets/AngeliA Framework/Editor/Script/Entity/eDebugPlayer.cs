@@ -41,6 +41,11 @@ namespace AngeliaFramework.Entities.Editor {
 		public string DebugGroundSprite = "Pixel";
 
 
+		public Vector2Int TestTo = default;
+		public Vector2Int TestSize = new(256, 256);
+
+
+
 		// MSG
 		public override void FillPhysics (int frame) {
 			// Debug Ground
@@ -71,6 +76,15 @@ namespace AngeliaFramework.Entities.Editor {
 					));
 				}
 			}
+
+			var _pos = new Vector2Int(X - Width / 2, Y);
+			var result = CellPhysics.Move(
+				PhysicsLayer.Level, _pos, _pos + TestTo, TestSize
+			);
+			CellRenderer.Draw("Pixel".ACode(), new RectInt(_pos + TestTo, TestSize), Color.cyan);
+			CellRenderer.Draw("Pixel".ACode(), new RectInt(result, TestSize), Color.green);
+
+
 			base.FrameUpdate(frame);
 		}
 

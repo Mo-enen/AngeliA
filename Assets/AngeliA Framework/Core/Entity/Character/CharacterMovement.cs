@@ -193,6 +193,8 @@ namespace AngeliaFramework.Entities {
 		private bool GroundCheck (eCharacter character) {
 
 
+
+
 			return false;
 		}
 
@@ -207,6 +209,8 @@ namespace AngeliaFramework.Entities {
 
 
 		private bool ForceSquatCheck (int x, int y) {
+
+
 
 
 			return false;
