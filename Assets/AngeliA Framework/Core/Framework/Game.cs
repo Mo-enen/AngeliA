@@ -26,6 +26,8 @@ namespace AngeliaFramework {
 		private const int SPAWN_GAP = 6 * Const.CELL_SIZE;
 		private readonly int[] ENTITY_CAPACITY = { 128, 128, 1024, 128, };
 		private readonly int[] ENTITY_BUFFER_CAPACITY = { 128, 128, 128, 128 };
+		private const int FRAME_RATE_LOW = 60;
+		private const int FRAME_RATE_HIGHT = 120;
 
 		// Api
 		public Language CurrentLanguage { get; private set; } = null;
@@ -49,6 +51,7 @@ namespace AngeliaFramework {
 
 		// Saving
 		private readonly SavingInt LanguageIndex = new("Yaya.LanguageIndex", -1);
+		private readonly SavingBool UseHighFramerate = new("Yaya.UseHighFramerate", true);
 
 
 		#endregion
@@ -75,13 +78,8 @@ namespace AngeliaFramework {
 				return;
 			}
 #endif
-			// System
-			Application.targetFrameRate = Application.platform == RuntimePlatform.WindowsEditor ? 10000 : 120;
-
-			// World
-			WorldStream.LoadProject();
-
 			// Pipeline
+			Init_System();
 			Init_Entity();
 			Init_Renderer();
 			Init_Physics();
@@ -89,6 +87,11 @@ namespace AngeliaFramework {
 			Init_Language();
 			Init_Asset();
 
+		}
+
+
+		private void Init_System () {
+			SetFramerate(UseHighFramerate.Value);
 		}
 
 
@@ -226,6 +229,8 @@ namespace AngeliaFramework {
 
 
 		private void Init_Asset () {
+			// World
+			WorldStream.LoadProject();
 			// Asset Pool
 			foreach (var asset in m_Assets) {
 				AssetPool.TryAdd(asset.name.ACode(), asset);
@@ -390,6 +395,12 @@ namespace AngeliaFramework {
 				}
 			}
 			return success;
+		}
+
+
+		public void SetFramerate (bool high) {
+			UseHighFramerate.Value = high;
+			Application.targetFrameRate = UseHighFramerate.Value ? FRAME_RATE_HIGHT : FRAME_RATE_LOW;
 		}
 
 

@@ -194,7 +194,6 @@ namespace AngeliaFramework.Physics {
 		public static Vector2Int Move (PhysicsLayer layer, Vector2Int from, Vector2Int to, Vector2Int size, Entity ignore = null) {
 			Vector2Int result = to;
 			int distance = int.MaxValue;
-			Vector2Int vel = to - from;
 			ForAllOverlaps(layer, new RectInt(to, size), (info) => {
 				if (ignore != null && info.Entity == ignore) { return true; }
 				var _hitRect = info.Rect;
@@ -207,25 +206,15 @@ namespace AngeliaFramework.Physics {
 					to.x,
 					to.y + size.y < _hitCenter.y ? _hitRect.y - size.y : _hitRect.y + _hitRect.height
 				);
-				Vector2Int _pos;
 				// Overlap Check
-				int _distance;
 				bool hHit = Overlap(layer, new RectInt(_posH, size), ignore) != null;
 				bool vHit = Overlap(layer, new RectInt(_posV, size), ignore) != null;
-				if (hHit != vHit) {
-					// Use Overlap Check Result
-					_pos = hHit ? _posV : _posH;
-				} else {
-					// Use Dis Check Result
-					if (Mathf.Abs(to.x - _posH.x) < Mathf.Abs(to.y - _posV.y)) {
-						_pos = _posH;
-					} else {
-						_pos = _posV;
-					}
-				}
-				_distance = Util.SqrtDistance(from, _pos);
-				if (_distance < distance) {
-					distance = _distance;
+				var _pos = hHit != vHit ? 
+					hHit ? _posV : _posH : 
+					Mathf.Abs(to.x - _posH.x) < Mathf.Abs(to.y - _posV.y) ? _posH : _posV;
+				int _dis = Util.SqrtDistance(from, _pos);
+				if (_dis < distance) {
+					distance = _dis;
 					result = _pos;
 				}
 				return true;

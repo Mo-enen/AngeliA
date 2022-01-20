@@ -70,7 +70,7 @@ namespace AngeliaFramework.Entities {
 					DownDownFrame = frame;
 				}
 				if (DownDownFrame > UpDownFrame) {
-					x = Direction3.Negative;
+					y = Direction3.Negative;
 				}
 			} else if (DownDownFrame > 0) {
 				DownDownFrame = int.MinValue;
@@ -82,7 +82,7 @@ namespace AngeliaFramework.Entities {
 					UpDownFrame = frame;
 				}
 				if (UpDownFrame > DownDownFrame) {
-					x = Direction3.Positive;
+					y = Direction3.Positive;
 				}
 			} else if (UpDownFrame > 0) {
 				UpDownFrame = int.MinValue;

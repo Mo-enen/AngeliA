@@ -31,6 +31,7 @@ namespace AngeliaFramework.Entities.Editor {
 				return _Renderer;
 			}
 		}
+		public override bool Despawnable => false;
 
 		[SerializeField] CharacterMovement _Movement = null;
 		[SerializeField] CharacterRenderer _Renderer = null;
@@ -76,14 +77,6 @@ namespace AngeliaFramework.Entities.Editor {
 					));
 				}
 			}
-
-			var _pos = new Vector2Int(X - Width / 2, Y);
-			var result = CellPhysics.Move(
-				PhysicsLayer.Level, _pos, _pos + TestTo, TestSize
-			);
-			CellRenderer.Draw("Pixel".ACode(), new RectInt(_pos + TestTo, TestSize), Color.cyan);
-			CellRenderer.Draw("Pixel".ACode(), new RectInt(result, TestSize), Color.green);
-
 
 			base.FrameUpdate(frame);
 		}

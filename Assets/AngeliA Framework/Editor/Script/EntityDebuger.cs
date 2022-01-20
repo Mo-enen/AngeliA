@@ -406,6 +406,14 @@ namespace AngeliaFramework.Editor {
 				var typePool = Util.GetFieldValue(Game, "EntityTypePool") as Dictionary<int, System.Type>;
 				foreach (var line in lines) {
 					if (line.StartsWith("//")) { continue; }
+					if (line.StartsWith("#")) {
+						if (line.StartsWith("#lowframerate", System.StringComparison.OrdinalIgnoreCase)) {
+							Game.SetFramerate(false);
+						} else if (line.StartsWith("#highframerate", System.StringComparison.OrdinalIgnoreCase)) {
+							Game.SetFramerate(true);
+						}
+						continue;
+					}
 					if (line.StartsWith("::")) {
 						if (prevEntity != null) {
 							int _eIndex = line.IndexOf('=');

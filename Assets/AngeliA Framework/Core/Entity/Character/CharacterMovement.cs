@@ -37,6 +37,7 @@ namespace AngeliaFramework.Entities {
 		[SerializeField] PoundConfig m_Pound = null;
 
 		// Data
+		private int CurrentFrame = 0;
 		private int IntendedX = 0;
 		private int IntendedY = 0;
 		private bool HoldingJump = false;
@@ -56,22 +57,21 @@ namespace AngeliaFramework.Entities {
 		#region --- MSG ---
 
 
-		public void FillPhysics (eCharacter character) => CellPhysics.Fill(
-			PhysicsLayer.Character,
-			new RectInt(
-				character.X - character.Width / 2, character.Y, character.Width, character.Height
-			),
-			character
-		);
+		public void Init () {
+			VelocityX = 0;
+			VelocityY = 0;
+			JumpCount = 0;
+		}
 
 
 		public void FrameUpdate (int frame, eCharacter character) {
-			Update_Cache(frame, character);
-			Update_Jump(frame);
-			Update_Dash(frame);
+			CurrentFrame = frame;
+			Update_Cache(character);
+			Update_Jump();
+			Update_Dash();
 			Update_VelocityX();
 			Update_VelocityY();
-			Update_ApplyPhysics();
+			Update_ApplyPhysics(character);
 			IntendedJump = false;
 			IntendedDash = false;
 			IntendedPound = false;
@@ -79,17 +79,17 @@ namespace AngeliaFramework.Entities {
 		}
 
 
-		private void Update_Cache (int frame, eCharacter character) {
+		private void Update_Cache (eCharacter character) {
 			IsGrounded = GroundCheck(character);
 			InWater = WaterCheck(character);
-			IsDashing = m_Dash.Available && frame < LastDashFrame + m_Dash.Duration;
+			IsDashing = m_Dash.Available && CurrentFrame < LastDashFrame + m_Dash.Duration;
 			IsSquating = m_Squat.Available && IsGrounded && ((!IsDashing && IntendedY < 0) || ForceSquatCheck(character.X, character.Y));
 			IsPounding = m_Pound.Available && !IsGrounded && !InWater && !IsDashing && (IsPounding ? IntendedY < 0 : IntendedPound);
-			if (IsGrounded) LastGroundedFrame = frame;
+			if (IsGrounded) LastGroundedFrame = CurrentFrame;
 		}
 
 
-		private void Update_Jump (int frame) {
+		private void Update_Jump () {
 			// Reset Count on Grounded
 			if (IsGrounded && !IntendedJump) {
 				JumpCount = 0;
@@ -97,11 +97,12 @@ namespace AngeliaFramework.Entities {
 			// Perform Jump
 			if (IntendedJump && JumpCount < m_Jump.Count) {
 				JumpCount++;
+				VelocityY = m_Jump.Speed;
 				LastDashFrame = int.MinValue;
 				IsDashing = false;
 			}
 			// Fall off Edge
-			if (JumpCount == 0 && !IsGrounded && frame > LastGroundedFrame + JUMP_TOLERANCE) {
+			if (JumpCount == 0 && !IsGrounded && CurrentFrame > LastGroundedFrame + JUMP_TOLERANCE) {
 				JumpCount++;
 			}
 			// Jump Release
@@ -114,14 +115,14 @@ namespace AngeliaFramework.Entities {
 		}
 
 
-		private void Update_Dash (int frame) {
+		private void Update_Dash () {
 			if (
 				IntendedDash &&
 				IsGrounded &&
-				frame > LastDashFrame + m_Dash.Duration + m_Dash.Cooldown
+				CurrentFrame > LastDashFrame + m_Dash.Duration + m_Dash.Cooldown
 			) {
 				// Perform Dash
-				LastDashFrame = frame;
+				LastDashFrame = CurrentFrame;
 				IsDashing = true;
 				VelocityY = 0;
 			}
@@ -148,19 +149,40 @@ namespace AngeliaFramework.Entities {
 
 
 		private void Update_VelocityY () {
-
 			// Gravity
-
-
-
-			//VelocityY = 0;
+			int vel = VelocityY;
+			if (HoldingJump && VelocityY > 0) {
+				vel = Mathf.Clamp(
+					vel - m_Jump.RaiseGravity,
+					-m_General.MaxGravitySpeed,
+					m_General.MaxGravitySpeed
+				);
+			} else {
+				vel = Mathf.Clamp(
+					vel - m_General.Gravity,
+					-m_General.MaxGravitySpeed,
+					m_General.MaxGravitySpeed
+				);
+			}
+			if (vel.InRange(-m_General.MaxGravitySpeed, m_General.MaxGravitySpeed)) {
+				VelocityY = vel;
+			}
 		}
 
 
-		private void Update_ApplyPhysics () {
-
-
-
+		private void Update_ApplyPhysics (eCharacter character) {
+			int x = character.X;
+			int y = character.Y;
+			int width = character.Width;
+			var pos = CellPhysics.Move(
+				PhysicsLayer.Level,
+				new Vector2Int(x - width / 2, y),
+				new Vector2Int(x - width / 2 + VelocityX, y + VelocityY),
+				new Vector2Int(character.Width, character.Height),
+				character
+			);
+			character.X = pos.x + width / 2;
+			character.Y = pos.y;
 		}
 
 
@@ -191,17 +213,21 @@ namespace AngeliaFramework.Entities {
 
 
 		private bool GroundCheck (eCharacter character) {
-
-
-
-
-			return false;
+			var rect = new RectInt(
+				character.X - character.Width / 4,
+				character.Y - 6,
+				character.Width / 2,
+				12
+			);
+			return
+				CellPhysics.Overlap(PhysicsLayer.Level, rect, character) != null ||
+				CellPhysics.Overlap(PhysicsLayer.Object, rect, character) != null;
 		}
 
 
 		private bool WaterCheck (eCharacter character) => CellPhysics.Overlap(
 			PhysicsLayer.Level,
-			new RectInt(character.X - character.Width / 2, character.Y, character.Width, character.Height),
+			character.Rect,
 			null,
 			CellPhysics.OperationMode.TriggerOnly,
 			WATER_TAG

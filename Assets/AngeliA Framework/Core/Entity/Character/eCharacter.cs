@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AngeliaFramework.Physics;
 
 
 namespace AngeliaFramework.Entities {
@@ -17,6 +18,7 @@ namespace AngeliaFramework.Entities {
 		protected abstract CharacterRenderer Renderer { get; }
 		public int Width => m_Width;
 		public int Height => m_Height;
+		public RectInt Rect => new(X - Width / 2, Y, Width, Height);
 
 		// Ser
 		[SerializeField] int m_Width = Const.CELL_SIZE;
@@ -30,9 +32,12 @@ namespace AngeliaFramework.Entities {
 		#region --- MSG ---
 
 
-		public override void FillPhysics (int frame) {
-			Movement.FillPhysics(this);
+		public override void OnCreate (int frame) {
+			Movement.Init();
 		}
+
+
+		public override void FillPhysics (int frame) => CellPhysics.Fill(PhysicsLayer.Character, Rect, this);
 
 
 		public override void FrameUpdate (int frame) {
