@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Debug Character Movement
   m_EditorClassIdentifier: 
   m_General:
-    Gravity: 12
+    Gravity: 6
     MaxGravitySpeed: 90
   m_Move:
     Speed: 17
@@ -21,14 +21,14 @@ MonoBehaviour:
     Decceleration: 25
     WalkOnWater: 0
   m_Jump:
-    Speed: 80
+    Speed: 60
     Count: 2
     ReleaseLoseRate: 700
-    RaiseGravity: 6
+    RaiseGravity: 3
   m_Dash:
     Available: 1
-    Speed: 25
-    Duration: 18
+    Speed: 42
+    Duration: 12
     Cooldown: 6
     Acceleration: 2147483647
     Decceleration: 76

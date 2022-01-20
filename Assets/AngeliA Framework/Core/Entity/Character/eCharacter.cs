@@ -42,7 +42,10 @@ namespace AngeliaFramework.Entities {
 
 		public override void FrameUpdate (int frame) {
 			Movement.FrameUpdate(frame, this);
-			Renderer.FrameUpdate(frame, this);
+			Renderer.FrameUpdate(
+				frame, this, 
+				Movement.CurrentFacing, Movement.IsSquating
+			);
 		}
 
 

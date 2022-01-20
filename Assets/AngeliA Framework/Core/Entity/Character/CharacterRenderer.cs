@@ -25,11 +25,14 @@ namespace AngeliaFramework.Entities {
 		#region --- MSG ---
 
 
-		public void FrameUpdate (int frame, eCharacter character) {
+		public void FrameUpdate (int frame, eCharacter ch, Direction2 facing, bool squating) {
 
 			// Debug
 			CellRenderer.Draw(m_Test.ACode(), new RectInt(
-				character.X - character.Width / 2, character.Y, character.Width, character.Height
+				ch.X - (int)facing * ch.Width / 2,
+				ch.Y,
+				(int)facing * ch.Width,
+				squating ? ch.Height / 2 : ch.Height
 			));
 		}
 

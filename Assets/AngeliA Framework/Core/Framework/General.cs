@@ -25,8 +25,8 @@ namespace AngeliaFramework {
 
 
 	public enum Direction2 {
-		Horizontal = 0,
-		Vertical = 1,
+		Negative = -1,
+		Positive = 1,
 	}
 
 

@@ -27,6 +27,7 @@ namespace AngeliaFramework.Entities {
 		public bool IsPounding { get; private set; } = false;
 		public int VelocityX { get; private set; } = 0;
 		public int VelocityY { get; private set; } = 0;
+		public Direction2 CurrentFacing { get; private set; } = Direction2.Positive;
 
 		// Ser
 		[SerializeField] GeneralConfig m_General = null;
@@ -132,7 +133,7 @@ namespace AngeliaFramework.Entities {
 		private void Update_VelocityX () {
 			int speed, acc, dcc;
 			if (IsDashing) {
-				speed = IntendedX * m_Dash.Speed;
+				speed = (int)CurrentFacing * m_Dash.Speed;
 				acc = m_Dash.Acceleration;
 				dcc = m_Dash.Decceleration;
 			} else if (IsSquating) {
@@ -197,6 +198,9 @@ namespace AngeliaFramework.Entities {
 		public void Move (Direction3 x, Direction3 y) {
 			IntendedX = (int)x;
 			IntendedY = (int)y;
+			if (x != Direction3.None) {
+				CurrentFacing = x == Direction3.Positive ? Direction2.Positive : Direction2.Negative;
+			}
 		}
 		public void HoldJump (bool holding) => HoldingJump = holding;
 		public void Jump () => IntendedJump = true;
