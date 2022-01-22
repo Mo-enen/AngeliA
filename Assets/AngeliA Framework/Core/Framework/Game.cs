@@ -24,8 +24,8 @@ namespace AngeliaFramework {
 		private const int MAX_VIEW_WIDTH = 72 * Const.CELL_SIZE;
 		private const int MAX_VIEW_HEIGHT = 56 * Const.CELL_SIZE;
 		private const int SPAWN_GAP = 6 * Const.CELL_SIZE;
-		private readonly int[] ENTITY_CAPACITY = { 128, 128, 1024, 128, };
-		private readonly int[] ENTITY_BUFFER_CAPACITY = { 128, 128, 128, 128 };
+		private readonly int[] ENTITY_CAPACITY = { 256, 128, 128, 1024, 128, };
+		private readonly int[] ENTITY_BUFFER_CAPACITY = { 128, 128, 128, 128, 128 };
 		private const int FRAME_RATE_LOW = 60;
 		private const int FRAME_RATE_HIGHT = 120;
 
@@ -381,7 +381,7 @@ namespace AngeliaFramework {
 				if (l.LanguageID == language) {
 					LanguageIndex.Value = (int)language;
 					CurrentLanguage = l;
-					CurrentDialogue = Resources.Load<Dialogue>(l.name);
+					CurrentDialogue = Resources.Load<Dialogue>($"Dialogue/{l.name}");
 					l.Init();
 					success = true;
 					break;

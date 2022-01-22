@@ -434,6 +434,10 @@ namespace AngeliaFramework.Editor {
 								if (bool.TryParse(line[(_eIndex + 1)..], out bool _value)) {
 									Util.SetFieldValue(prevEntity, fieldName, _value);
 								}
+							} else if (type.IsSubclassOf(typeof(System.Enum))) {
+								if (System.Enum.TryParse(type, line[(_eIndex + 1)..], out var _value)) {
+									Util.SetFieldValue(prevEntity, fieldName, _value);
+								}
 							} else {
 								Debug.LogWarning($"[Entity Debuger] type {type} not support/");
 							}

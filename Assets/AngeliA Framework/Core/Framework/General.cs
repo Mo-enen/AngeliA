@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
+
 
 namespace AngeliaFramework {
 
 
 
 	public enum EntityLayer {
-		Item = 0,
-		Character = 1,
-		Projectile = 2,
-		UI = 3,
+		Object = 0,
+		Item = 1,
+		Character = 2,
+		Projectile = 3,
+		UI = 4,
 	}
 
 
@@ -27,6 +30,8 @@ namespace AngeliaFramework {
 	public enum Direction2 {
 		Negative = -1,
 		Positive = 1,
+		Horizontal = -1,
+		Vertical = 1,
 	}
 
 
@@ -107,7 +112,7 @@ namespace AngeliaFramework {
 
 	public static class Const {
 		public const int CELL_SIZE = 256;
-		public const int ENTITY_LAYER_COUNT = 4;
+		public const int ENTITY_LAYER_COUNT = 5;
 		public const int PHYSICS_LAYER_COUNT = 4;
 	}
 

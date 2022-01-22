@@ -14,15 +14,9 @@ namespace AngeliaFramework.Entities {
 
 
 		// Api
-		protected abstract CharacterMovement Movement { get; }
-		protected abstract CharacterRenderer Renderer { get; }
-		public int Width => m_Width;
-		public int Height => m_Height;
-		public RectInt Rect => new(X - Width / 2, Y, Width, Height);
+		public abstract CharacterMovement Movement { get; }
+		public abstract CharacterRenderer Renderer { get; }
 
-		// Ser
-		[SerializeField] int m_Width = Const.CELL_SIZE;
-		[SerializeField] int m_Height = Const.CELL_SIZE;
 
 		#endregion
 
@@ -37,15 +31,14 @@ namespace AngeliaFramework.Entities {
 		}
 
 
-		public override void FillPhysics (int frame) => CellPhysics.Fill(PhysicsLayer.Character, Rect, this);
+		public override void FillPhysics (int frame) {
+			Movement.FillPhysics(this);
+		}
 
 
 		public override void FrameUpdate (int frame) {
 			Movement.FrameUpdate(frame, this);
-			Renderer.FrameUpdate(
-				frame, this, 
-				Movement.CurrentFacing, Movement.IsSquating
-			);
+			Renderer.FrameUpdate(frame, this);
 		}
 
 

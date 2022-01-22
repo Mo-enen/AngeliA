@@ -13,7 +13,7 @@ namespace AngeliaFramework.Text {
 		#region --- VAR ---
 
 
-		
+
 
 
 		#endregion
@@ -65,13 +65,13 @@ namespace AngeliaFramework.Editor {
 			if (game != null) {
 				var languages = Util.GetFieldValue(game, "m_Languages") as Language[];
 				foreach (var language in languages) {
-					string dPath = $"Assets/Resources/{language.name}.asset";
+					string dPath = $"Assets/Resources/Dialogue/{language.name}.asset";
 					if (!Util.FileExists(dPath)) {
 						Debug.LogWarning($"[Dialogue] {language.name} don't have dialogue asset.");
 					}
 				}
 			}
-		} 
+		}
 		public override void OnInspectorGUI () {
 			serializedObject.Update();
 			DrawPropertiesExcluding(serializedObject, "m_Script");

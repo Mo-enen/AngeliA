@@ -9,39 +9,25 @@ namespace AngeliaFramework.Entities.Editor {
 	public class eDebugPlayer : ePlayer {
 
 
-		protected override CharacterMovement Movement {
-			get {
-				if (_Movement == null) {
-					_Movement = GetAsset("Debug Character Movement".ACode()) as CharacterMovement;
-					if (_Movement == null) {
-						_Movement = new();
-					}
-				}
-				return _Movement;
-			}
-		}
-		protected override CharacterRenderer Renderer {
-			get {
-				if (_Renderer == null) {
-					_Renderer = GetAsset("Debug Character Renderer".ACode()) as CharacterRenderer;
-					if (_Renderer == null) {
-						_Renderer = new();
-					}
-				}
-				return _Renderer;
-			}
-		}
 		public override bool Despawnable => false;
+		public override CharacterMovement Movement => _Movement ??= new() {
 
-		[SerializeField] CharacterMovement _Movement = null;
-		[SerializeField] CharacterRenderer _Renderer = null;
+		};
+		private CharacterMovement _Movement = null;
+
+		public override CharacterRenderer Renderer => _Renderer ??= new() {
+
+		};
+		private CharacterRenderer _Renderer = null;
+
+
+
+
 		public int DebugGroundX = 0;
 		public int DebugGroundY = 0;
 		public int DebugGroundWidth = 24;
 		public int DebugGroundHeight = 2;
 		public string DebugGroundSprite = "Pixel";
-
-
 		public Vector2Int TestTo = default;
 		public Vector2Int TestSize = new(256, 256);
 

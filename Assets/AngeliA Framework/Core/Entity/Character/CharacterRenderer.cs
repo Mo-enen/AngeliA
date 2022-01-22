@@ -5,8 +5,7 @@ using AngeliaFramework.Rendering;
 
 
 namespace AngeliaFramework.Entities {
-	[CreateAssetMenu(fileName = "New Renderer", menuName = "AngeliA/Character/Renderer", order = 99)]
-	public class CharacterRenderer : ScriptableObject {
+	public class CharacterRenderer {
 
 
 
@@ -14,7 +13,10 @@ namespace AngeliaFramework.Entities {
 		#region --- VAR ---
 
 
-		[SerializeField] string m_Test = "";
+		public string Test { get; init; } = "Test Pump";
+		public int Width { get; init; } = 256;
+		public int Height { get; init; } = 256;
+		public int SqrtHeight { get; init; } = 158;
 
 
 		#endregion
@@ -25,15 +27,16 @@ namespace AngeliaFramework.Entities {
 		#region --- MSG ---
 
 
-		public void FrameUpdate (int frame, eCharacter ch, Direction2 facing, bool squating) {
+		public void FrameUpdate (int frame, eCharacter ch) {
 
 			// Debug
-			CellRenderer.Draw(m_Test.ACode(), new RectInt(
-				ch.X - (int)facing * ch.Width / 2,
+			CellRenderer.Draw(Test.ACode(),
+				ch.X,
 				ch.Y,
-				(int)facing * ch.Width,
-				squating ? ch.Height / 2 : ch.Height
-			));
+				500, 0, 0,
+				(int)ch.Movement.CurrentFacing * Width,
+				ch.Movement.IsSquating ? SqrtHeight : Height
+			);
 		}
 
 

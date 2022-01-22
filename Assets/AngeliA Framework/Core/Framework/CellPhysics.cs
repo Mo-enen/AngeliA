@@ -191,9 +191,16 @@ namespace AngeliaFramework.Physics {
 
 
 		// Move
-		public static Vector2Int Move (PhysicsLayer layer, Vector2Int from, Vector2Int to, Vector2Int size, Entity ignore = null) {
-			Vector2Int result = to;
+		public static bool Move (PhysicsLayer layer, Vector2Int from, Vector2Int to, Vector2Int size, Entity ignore, out Vector2Int result) =>
+			Move(layer, from, to, size, ignore, out result, out _);
+
+
+		public static bool Move (PhysicsLayer layer, Vector2Int from, Vector2Int to, Vector2Int size, Entity ignore, out Vector2Int result, out Direction2 dirction) {
+			var _result = result = to;
 			int distance = int.MaxValue;
+			bool success = false;
+			Direction2 _dirction = default;
+			Direction2 _velDir = Mathf.Abs((from - to).x) > Mathf.Abs((from - to).y) ? Direction2.Horizontal : Direction2.Vertical;
 			ForAllOverlaps(layer, new RectInt(to, size), (info) => {
 				if (ignore != null && info.Entity == ignore) { return true; }
 				var _hitRect = info.Rect;
@@ -209,17 +216,32 @@ namespace AngeliaFramework.Physics {
 				// Overlap Check
 				bool hHit = Overlap(layer, new RectInt(_posH, size), ignore) != null;
 				bool vHit = Overlap(layer, new RectInt(_posV, size), ignore) != null;
-				var _pos = hHit != vHit ? 
-					hHit ? _posV : _posH : 
-					Mathf.Abs(to.x - _posH.x) < Mathf.Abs(to.y - _posV.y) ? _posH : _posV;
+				Vector2Int _pos;
+				if (hHit != vHit) {
+					_pos = hHit ? _posV : _posH;
+					_dirction = hHit ? Direction2.Vertical : Direction2.Horizontal;
+				} else {
+					//if (Mathf.Abs(to.x - _posH.x) < Mathf.Abs(to.y - _posV.y)) { // Select by Distance
+					//if (_velDir == Direction2.Horizontal) { // Select by Velocity Direction
+					if (Util.SqrtDistance(from, _posH) < Util.SqrtDistance(from, _posV)) { // Select by Distance between from
+						_pos = _posH;
+						_dirction = Direction2.Horizontal;
+					} else {
+						_pos = _posV;
+						_dirction = Direction2.Vertical;
+					}
+				}
 				int _dis = Util.SqrtDistance(from, _pos);
 				if (_dis < distance) {
 					distance = _dis;
-					result = _pos;
+					_result = _pos;
 				}
+				success = true;
 				return true;
 			});
-			return result;
+			result = _result;
+			dirction = _dirction;
+			return success;
 		}
 
 

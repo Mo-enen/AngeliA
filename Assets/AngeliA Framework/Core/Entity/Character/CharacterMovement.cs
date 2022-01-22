@@ -5,8 +5,7 @@ using AngeliaFramework.Physics;
 
 
 namespace AngeliaFramework.Entities {
-	[CreateAssetMenu(fileName = "New Movement", menuName = "AngeliA/Character/Movement", order = 99)]
-	public partial class CharacterMovement : ScriptableObject {
+	public partial class CharacterMovement {
 
 
 
@@ -23,19 +22,11 @@ namespace AngeliaFramework.Entities {
 		public bool InWater { get; private set; } = false;
 		public bool IsDashing { get; private set; } = false;
 		public bool IsSquating { get; private set; } = false;
-		public int JumpCount { get; private set; } = 0;
 		public bool IsPounding { get; private set; } = false;
+		public int CurrentJumpCount { get; private set; } = 0;
 		public int VelocityX { get; private set; } = 0;
 		public int VelocityY { get; private set; } = 0;
 		public Direction2 CurrentFacing { get; private set; } = Direction2.Positive;
-
-		// Ser
-		[SerializeField] GeneralConfig m_General = null;
-		[SerializeField] MoveConfig m_Move = null;
-		[SerializeField] JumpConfig m_Jump = null;
-		[SerializeField] DashConfig m_Dash = null;
-		[SerializeField] SquatConfig m_Squat = null;
-		[SerializeField] PoundConfig m_Pound = null;
 
 		// Data
 		private int CurrentFrame = 0;
@@ -48,6 +39,7 @@ namespace AngeliaFramework.Entities {
 		private bool IntendedPound = false;
 		private int LastGroundedFrame = int.MinValue;
 		private int LastDashFrame = int.MinValue;
+		private RectInt Hitbox = default;
 
 
 		#endregion
@@ -61,7 +53,13 @@ namespace AngeliaFramework.Entities {
 		public void Init () {
 			VelocityX = 0;
 			VelocityY = 0;
-			JumpCount = 0;
+			CurrentJumpCount = 0;
+		}
+
+
+		public void FillPhysics (eCharacter ch) {
+			Hitbox = GetHitbox(ch);
+			CellPhysics.Fill(PhysicsLayer.Character, Hitbox, ch);
 		}
 
 
@@ -80,37 +78,41 @@ namespace AngeliaFramework.Entities {
 		}
 
 
-		private void Update_Cache (eCharacter character) {
-			IsGrounded = GroundCheck(character);
-			InWater = WaterCheck(character);
-			IsDashing = m_Dash.Available && CurrentFrame < LastDashFrame + m_Dash.Duration;
-			IsSquating = m_Squat.Available && IsGrounded && ((!IsDashing && IntendedY < 0) || ForceSquatCheck(character.X, character.Y));
-			IsPounding = m_Pound.Available && !IsGrounded && !InWater && !IsDashing && (IsPounding ? IntendedY < 0 : IntendedPound);
+		private void Update_Cache (eCharacter ch) {
+			bool prevSquating = IsSquating;
+			IsGrounded = GroundCheck();
+			InWater = WaterCheck();
+			IsDashing = DashAvailable && CurrentFrame < LastDashFrame + DashDuration;
+			IsSquating = SquatAvailable && IsGrounded && ((!IsDashing && IntendedY < 0) || ForceSquatCheck());
+			IsPounding = PoundAvailable && !IsGrounded && !InWater && !IsDashing && (IsPounding ? IntendedY < 0 : IntendedPound);
 			if (IsGrounded) LastGroundedFrame = CurrentFrame;
+			if (IsSquating != prevSquating) {
+				Hitbox = GetHitbox(ch);
+			}
 		}
 
 
 		private void Update_Jump () {
 			// Reset Count on Grounded
 			if (IsGrounded && !IntendedJump) {
-				JumpCount = 0;
+				CurrentJumpCount = 0;
 			}
 			// Perform Jump
-			if (IntendedJump && JumpCount < m_Jump.Count) {
-				JumpCount++;
-				VelocityY = m_Jump.Speed;
+			if (IntendedJump && CurrentJumpCount < JumpCount && !IsSquating) {
+				CurrentJumpCount++;
+				VelocityY = JumpSpeed;
 				LastDashFrame = int.MinValue;
 				IsDashing = false;
 			}
 			// Fall off Edge
-			if (JumpCount == 0 && !IsGrounded && CurrentFrame > LastGroundedFrame + JUMP_TOLERANCE) {
-				JumpCount++;
+			if (CurrentJumpCount == 0 && !IsGrounded && CurrentFrame > LastGroundedFrame + JUMP_TOLERANCE) {
+				CurrentJumpCount++;
 			}
 			// Jump Release
 			if (PrevHoldingJump && !HoldingJump) {
 				// Lose Speed if Raising
-				if (!IsGrounded && JumpCount <= m_Jump.Count && VelocityY > 0) {
-					VelocityY = VelocityY * m_Jump.ReleaseLoseRate / 1000;
+				if (!IsGrounded && CurrentJumpCount <= JumpCount && VelocityY > 0) {
+					VelocityY = VelocityY * JumpReleaseLoseRate / 1000;
 				}
 			}
 		}
@@ -120,7 +122,7 @@ namespace AngeliaFramework.Entities {
 			if (
 				IntendedDash &&
 				IsGrounded &&
-				CurrentFrame > LastDashFrame + m_Dash.Duration + m_Dash.Cooldown
+				CurrentFrame > LastDashFrame + DashDuration + DashCooldown
 			) {
 				// Perform Dash
 				LastDashFrame = CurrentFrame;
@@ -133,17 +135,17 @@ namespace AngeliaFramework.Entities {
 		private void Update_VelocityX () {
 			int speed, acc, dcc;
 			if (IsDashing) {
-				speed = (int)CurrentFacing * m_Dash.Speed;
-				acc = m_Dash.Acceleration;
-				dcc = m_Dash.Decceleration;
+				speed = (int)CurrentFacing * DashSpeed;
+				acc = DashAcceleration;
+				dcc = int.MaxValue;
 			} else if (IsSquating) {
-				speed = IntendedX * m_Squat.Speed;
-				acc = m_Squat.Acceleration;
-				dcc = m_Squat.Decceleration;
+				speed = IntendedX * SquatSpeed;
+				acc = SquatAcceleration;
+				dcc = SquatDecceleration;
 			} else {
-				speed = IntendedX * m_Move.Speed;
-				acc = m_Move.Acceleration;
-				dcc = m_Move.Decceleration;
+				speed = IntendedX * MoveSpeed;
+				acc = MoveAcceleration;
+				dcc = MoveDecceleration;
 			}
 			VelocityX = VelocityX.MoveTowards(speed, acc, dcc);
 		}
@@ -151,39 +153,43 @@ namespace AngeliaFramework.Entities {
 
 		private void Update_VelocityY () {
 			// Gravity
-			int vel = VelocityY;
 			if (HoldingJump && VelocityY > 0) {
-				vel = Mathf.Clamp(
-					vel - m_Jump.RaiseGravity,
-					-m_General.MaxGravitySpeed,
-					m_General.MaxGravitySpeed
-				);
+				// Jumping Raise
+				VelocityY = Mathf.Clamp(VelocityY - JumpRaiseGravity, -MaxGravitySpeed, MaxGravitySpeed);
+			} else if (IsPounding) {
+				// Pound
+				VelocityY = -PoundSpeed;
+			} else if (!IsGrounded) {
+				// In Air
+				VelocityY = Mathf.Clamp(VelocityY - Gravity, -MaxGravitySpeed, MaxGravitySpeed);
 			} else {
-				vel = Mathf.Clamp(
-					vel - m_General.Gravity,
-					-m_General.MaxGravitySpeed,
-					m_General.MaxGravitySpeed
-				);
-			}
-			if (vel.InRange(-m_General.MaxGravitySpeed, m_General.MaxGravitySpeed)) {
-				VelocityY = vel;
+				VelocityY = 0;
 			}
 		}
 
 
 		private void Update_ApplyPhysics (eCharacter character) {
-			int x = character.X;
-			int y = character.Y;
-			int width = character.Width;
-			var pos = CellPhysics.Move(
-				PhysicsLayer.Level,
-				new Vector2Int(x - width / 2, y),
-				new Vector2Int(x - width / 2 + VelocityX, y + VelocityY),
-				new Vector2Int(character.Width, character.Height),
-				character
+			var newPos = Hitbox.position;
+			newPos.x += VelocityX;
+			newPos.y += VelocityY;
+			bool hitted = CellPhysics.Move(
+				PhysicsLayer.Level, Hitbox.position,
+				newPos, Hitbox.size, character,
+				out var _pos, out var _dir
+			) || CellPhysics.Move(
+				PhysicsLayer.Object, Hitbox.position,
+				newPos, Hitbox.size, character,
+				out _pos, out _dir
 			);
-			character.X = pos.x + width / 2;
-			character.Y = pos.y;
+			character.X = _pos.x + Hitbox.width / 2;
+			character.Y = _pos.y;
+			if (hitted) {
+				if (_dir == Direction2.Horizontal) {
+					VelocityX = 0;
+				} else {
+					VelocityY = 0;
+				}
+			}
 		}
 
 
@@ -202,9 +208,17 @@ namespace AngeliaFramework.Entities {
 				CurrentFacing = x == Direction3.Positive ? Direction2.Positive : Direction2.Negative;
 			}
 		}
+
+
 		public void HoldJump (bool holding) => HoldingJump = holding;
+
+
 		public void Jump () => IntendedJump = true;
+
+
 		public void Dash () => IntendedDash = true;
+
+
 		public void Pound () => IntendedPound = true;
 
 
@@ -216,34 +230,40 @@ namespace AngeliaFramework.Entities {
 		#region --- LGC ---
 
 
-		private bool GroundCheck (eCharacter character) {
-			var rect = new RectInt(
-				character.X - character.Width / 4,
-				character.Y - 6,
-				character.Width / 2,
-				12
-			);
+		private RectInt GetHitbox (eCharacter ch) => new RectInt(
+			ch.X - Width / 2,
+			ch.Y,
+			Width,
+			IsSquating || IsDashing ? Height * SquatHeightRate / 1000 : Height
+		);
+
+
+		private bool GroundCheck () {
+			var rect = Hitbox;
+			rect.y -= 6;
+			rect.height = 12;
 			return
-				CellPhysics.Overlap(PhysicsLayer.Level, rect, character) != null ||
-				CellPhysics.Overlap(PhysicsLayer.Object, rect, character) != null;
+				CellPhysics.Overlap(PhysicsLayer.Level, rect) != null ||
+				CellPhysics.Overlap(PhysicsLayer.Object, rect) != null;
 		}
 
 
-		private bool WaterCheck (eCharacter character) => CellPhysics.Overlap(
+		private bool WaterCheck () => CellPhysics.Overlap(
 			PhysicsLayer.Level,
-			character.Rect,
+			Hitbox,
 			null,
 			CellPhysics.OperationMode.TriggerOnly,
 			WATER_TAG
 		) != null;
 
 
-		private bool ForceSquatCheck (int x, int y) {
-
-
-
-
-			return false;
+		private bool ForceSquatCheck () {
+			var rect = new RectInt(
+				Hitbox.x, Hitbox.y + Height / 2, Hitbox.width, Height / 2
+			);
+			return
+				CellPhysics.Overlap(PhysicsLayer.Level, rect) != null ||
+				CellPhysics.Overlap(PhysicsLayer.Object, rect) != null;
 		}
 
 

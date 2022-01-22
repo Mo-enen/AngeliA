@@ -327,6 +327,17 @@ namespace AngeliaFramework.Rendering {
 		public static void BeginCharacterDraw () => CharacterLayer.FocusedCell = 0;
 
 
+		public static ref Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height) => ref Draw(
+			globalID, x, y, pivotX, pivotY, rotation, width, height, new Color32(255, 255, 255, 255)
+		);
+
+
+		public static ref Cell Draw (int globalID, RectInt rect) => ref Draw(globalID, rect, new Color32(255, 255, 255, 255));
+
+
+		public static ref Cell Draw (int globalID, RectInt rect, Color32 color) => ref Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color);
+
+
 		public static ref Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color) {
 			if (!SheetIDMap.ContainsKey(globalID)) { return ref EMPTY_CELL; }
 			int sheet = SheetIDMap[globalID].sheet;
@@ -351,12 +362,6 @@ namespace AngeliaFramework.Rendering {
 			}
 			return ref cell;
 		}
-
-
-		public static ref Cell Draw (int globalID, RectInt rect) => ref Draw(globalID, rect, new Color32(255, 255, 255, 255));
-
-
-		public static ref Cell Draw (int globalID, RectInt rect, Color32 color) => ref Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color);
 
 
 		public static void DrawChar (int globalID, int x, int y, int width, int height, Color32 color, out bool fullWidth) {
