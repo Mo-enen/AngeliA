@@ -58,7 +58,7 @@ namespace AngeliaFramework.Entities {
 
 
 		public void FillPhysics (eCharacter ch) {
-			Hitbox = GetHitbox(ch);
+			Hitbox = GetHitbox(ch.X, ch.Y);
 			CellPhysics.Fill(PhysicsLayer.Character, Hitbox, ch);
 		}
 
@@ -88,7 +88,7 @@ namespace AngeliaFramework.Entities {
 			IsPounding = PoundAvailable && !IsGrounded && !InWater && !IsDashing && (IsPounding ? IntendedY < 0 : IntendedPound);
 			if (IsGrounded) LastGroundedFrame = CurrentFrame;
 			if (IsSquating != prevSquating) {
-				Hitbox = GetHitbox(ch);
+				Hitbox = GetHitbox(ch.X, ch.Y);
 			}
 			if (prevInWater && !InWater && VelocityY > 0) {
 				VelocityY = JumpSpeed;
@@ -160,13 +160,13 @@ namespace AngeliaFramework.Entities {
 			int maxSpeed = InWater ? MaxGravitySpeed * SwimSpeedRate / 1000 : MaxGravitySpeed;
 			if (HoldingJump && VelocityY > 0) {
 				// Jumping Raise
-				VelocityY = Mathf.Clamp(VelocityY - JumpRaiseGravity, -maxSpeed, maxSpeed);
+				VelocityY = Mathf.Clamp(VelocityY - JumpRaiseGravity, -maxSpeed, int.MaxValue);
 			} else if (IsPounding) {
 				// Pound
 				VelocityY = -PoundSpeed;
 			} else if (!IsGrounded) {
 				// In Air
-				VelocityY = Mathf.Clamp(VelocityY - Gravity, -maxSpeed, maxSpeed);
+				VelocityY = Mathf.Clamp(VelocityY - Gravity, -maxSpeed, int.MaxValue);
 			} else {
 				VelocityY = 0;
 			}
@@ -240,11 +240,11 @@ namespace AngeliaFramework.Entities {
 		#region --- LGC ---
 
 
-		private RectInt GetHitbox (eCharacter ch) => new RectInt(
-			ch.X - Width / 2,
-			ch.Y,
+		private RectInt GetHitbox (int x, int y) => new(
+			x - Width / 2,
+			y,
 			Width,
-			IsSquating || IsDashing ? Height * SquatHeightRate / 1000 : Height
+			IsSquating || IsDashing ? SquatHeight : Height
 		);
 
 
