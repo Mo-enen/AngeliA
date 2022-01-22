@@ -20,5 +20,11 @@ MonoBehaviour:
       BottomRight: {x: 0.1328125, y: 0.0078125}
       TopLeft: {x: 0.0078125, y: 0.1328125}
       TopRight: {x: 0.1328125, y: 0.1328125}
+  - GlobalID: 1378205015
+    Rect:
+      BottomLeft: {x: 0.140625, y: 0.0078125}
+      BottomRight: {x: 0.265625, y: 0.0078125}
+      TopLeft: {x: 0.140625, y: 0.1328125}
+      TopRight: {x: 0.265625, y: 0.1328125}
   m_RendererCapacity: 1024
   m_ShaderName: Cell

@@ -5,6 +5,9 @@ TextureImporter:
   - first:
       213: 3920572134941378574
     second: Test Block
+  - first:
+      213: -4393783392769447400
+    second: Test Water
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -103,6 +106,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Test Water
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 1
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81a67f598452603c0800000000000000
+      internalID: -4393783392769447400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -114,6 +138,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      Test Water: -4393783392769447400
       Test Block: 3920572134941378574
   spritePackingTag: 
   pSDRemoveMatte: 0

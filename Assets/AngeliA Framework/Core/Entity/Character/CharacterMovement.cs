@@ -80,6 +80,7 @@ namespace AngeliaFramework.Entities {
 
 		private void Update_Cache (eCharacter ch) {
 			bool prevSquating = IsSquating;
+			bool prevInWater = InWater;
 			IsGrounded = GroundCheck();
 			InWater = WaterCheck();
 			IsDashing = DashAvailable && CurrentFrame < LastDashFrame + DashDuration;
@@ -89,12 +90,15 @@ namespace AngeliaFramework.Entities {
 			if (IsSquating != prevSquating) {
 				Hitbox = GetHitbox(ch);
 			}
+			if (prevInWater && !InWater && VelocityY > 0) {
+				VelocityY = JumpSpeed;
+			}
 		}
 
 
 		private void Update_Jump () {
 			// Reset Count on Grounded
-			if (IsGrounded && !IntendedJump) {
+			if ((IsGrounded || InWater) && !IntendedJump) {
 				CurrentJumpCount = 0;
 			}
 			// Perform Jump
@@ -105,7 +109,7 @@ namespace AngeliaFramework.Entities {
 				IsDashing = false;
 			}
 			// Fall off Edge
-			if (CurrentJumpCount == 0 && !IsGrounded && CurrentFrame > LastGroundedFrame + JUMP_TOLERANCE) {
+			if (CurrentJumpCount == 0 && !IsGrounded && !InWater && CurrentFrame > LastGroundedFrame + JUMP_TOLERANCE) {
 				CurrentJumpCount++;
 			}
 			// Jump Release
@@ -153,15 +157,16 @@ namespace AngeliaFramework.Entities {
 
 		private void Update_VelocityY () {
 			// Gravity
+			int maxSpeed = InWater ? MaxGravitySpeed * SwimSpeedRate / 1000 : MaxGravitySpeed;
 			if (HoldingJump && VelocityY > 0) {
 				// Jumping Raise
-				VelocityY = Mathf.Clamp(VelocityY - JumpRaiseGravity, -MaxGravitySpeed, MaxGravitySpeed);
+				VelocityY = Mathf.Clamp(VelocityY - JumpRaiseGravity, -maxSpeed, maxSpeed);
 			} else if (IsPounding) {
 				// Pound
 				VelocityY = -PoundSpeed;
 			} else if (!IsGrounded) {
 				// In Air
-				VelocityY = Mathf.Clamp(VelocityY - Gravity, -MaxGravitySpeed, MaxGravitySpeed);
+				VelocityY = Mathf.Clamp(VelocityY - Gravity, -maxSpeed, maxSpeed);
 			} else {
 				VelocityY = 0;
 			}
@@ -170,8 +175,13 @@ namespace AngeliaFramework.Entities {
 
 		private void Update_ApplyPhysics (eCharacter character) {
 			var newPos = Hitbox.position;
-			newPos.x += VelocityX;
-			newPos.y += VelocityY;
+			if (InWater) {
+				newPos.x += VelocityX * SwimSpeedRate / 1000;
+				newPos.y += VelocityY * SwimSpeedRate / 1000;
+			} else {
+				newPos.x += VelocityX;
+				newPos.y += VelocityY;
+			}
 			bool hitted = CellPhysics.Move(
 				PhysicsLayer.Level, Hitbox.position,
 				newPos, Hitbox.size, character,

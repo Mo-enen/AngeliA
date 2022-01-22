@@ -203,6 +203,7 @@ namespace AngeliaFramework.Physics {
 			Direction2 _velDir = Mathf.Abs((from - to).x) > Mathf.Abs((from - to).y) ? Direction2.Horizontal : Direction2.Vertical;
 			ForAllOverlaps(layer, new RectInt(to, size), (info) => {
 				if (ignore != null && info.Entity == ignore) { return true; }
+				if (info.IsTrigger) { return true; }
 				var _hitRect = info.Rect;
 				var _hitCenter = _hitRect.center.RoundToInt();
 				var _posH = new Vector2Int(
