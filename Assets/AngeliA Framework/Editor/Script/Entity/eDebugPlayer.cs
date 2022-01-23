@@ -13,12 +13,12 @@ namespace AngeliaFramework.Entities.Editor {
 		public override CharacterMovement Movement => _Movement ??= new() {
 
 		};
-		private CharacterMovement _Movement = null;
+		[AngeliaInspector] CharacterMovement _Movement = null;
 
 		public override CharacterRenderer Renderer => _Renderer ??= new() {
 
 		};
-		private CharacterRenderer _Renderer = null;
+		[AngeliaInspector] CharacterRenderer _Renderer = null;
 
 
 

@@ -5,6 +5,12 @@ using UnityEngine;
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 
 
+
+[System.AttributeUsage(System.AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+public class AngeliaInspectorAttribute : System.Attribute { }
+
+
+
 namespace AngeliaFramework {
 
 

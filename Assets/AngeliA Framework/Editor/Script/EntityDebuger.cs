@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEditor;
 using Moenen.Standard;
@@ -504,7 +505,9 @@ namespace AngeliaFramework.Editor {
 	public class EntityInspector_Inspector : UnityEditor.Editor {
 
 
-		private Dictionary<System.Type, FieldInfo[]> EntityFieldMap = new();
+		private static readonly Dictionary<System.Type, FieldInfo[]> EntityFieldMap = new();
+		private static readonly Dictionary<System.Type, bool> AngeliaInspectorOpening = new();
+
 
 
 		public override void OnInspectorGUI () {
@@ -517,6 +520,9 @@ namespace AngeliaFramework.Editor {
 					break;
 			}
 		}
+
+
+		public override bool RequiresConstantRepaint () => (target as EntityInspector).Target != null;
 
 
 		private void GUI_View () {
@@ -546,13 +552,7 @@ namespace AngeliaFramework.Editor {
 			const int HEIGHT = 18;
 			var eTarget = target as EntityInspector;
 			if (eTarget.Target == null) { return; }
-			var type = eTarget.Target.GetType();
-			var fields = EntityFieldMap.ContainsKey(type) ?
-				EntityFieldMap[type] :
-				EntityFieldMap[type] = type.GetFields(
-					BindingFlags.Public | BindingFlags.NonPublic |
-					BindingFlags.Instance | BindingFlags.DeclaredOnly
-				);
+			FieldInfo[] fields = GetFieldsFromPool(eTarget.Target.GetType());
 			Layout.Space(4);
 
 			// X
@@ -565,10 +565,20 @@ namespace AngeliaFramework.Editor {
 
 			// Fields
 			foreach (var field in fields) {
+				if (field.GetCustomAttribute<AngeliaInspectorAttribute>(false) != null) {
+					bool open = GetOpeningFromPool(field.FieldType);
+					if (Layout.Fold(field.Name, ref open, false, 18)) {
+						using (new EditorGUI.IndentLevelScope(1)) {
+							DrawAngeliaInspector(field.GetValue(eTarget.Target), field.FieldType);
+						}
+						Layout.Space(4);
+					}
+					SetOpeningToPool(field.FieldType, open);
+					continue;
+				}
 				if (!field.IsPublic && field.GetCustomAttribute<SerializeField>(false) == null) { continue; }
 				using (new GUILayout.HorizontalScope()) {
 					field.SetValue(eTarget.Target, Field(
-						Layout.Rect(0, HEIGHT),
 						Util.GetDisplayName(field.Name),
 						field.GetValue(eTarget.Target),
 						field.FieldType
@@ -579,7 +589,35 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private static object Field (Rect rect, string label, object value, System.Type type) {
+		private void DrawAngeliaInspector (object target, System.Type type) {
+			var fields = GetFieldsFromPool(type);
+			foreach (var field in fields) {
+				var cAtt = field.GetCustomAttribute<CompilerGeneratedAttribute>();
+				if (
+					field.IsPublic || field.GetCustomAttribute<SerializeField>(false) != null ||
+					cAtt != null
+				) {
+					string fName = Util.GetDisplayName(field.Name);
+					if (cAtt != null && fName.StartsWith('<')) {
+						int _index = fName.IndexOf('>');
+						if (_index >= 0) {
+							fName = fName[1.._index];
+						}
+					}
+					using (new GUILayout.HorizontalScope()) {
+						field.SetValue(target, Field(
+							fName,
+							field.GetValue(target),
+							field.FieldType
+						));
+					}
+					Layout.Space(2);
+				}
+			}
+		}
+
+
+		private object Field (string label, object value, System.Type type) {
 			var _type = type;
 			if (_type.IsSubclassOf(typeof(Object))) {
 				_type = typeof(Object);
@@ -589,32 +627,65 @@ namespace AngeliaFramework.Editor {
 			}
 			return true switch {
 
-				bool when _type == typeof(sbyte) => (sbyte)Mathf.Clamp(EditorGUI.IntField(rect, label, (sbyte)value), sbyte.MinValue, sbyte.MaxValue),
-				bool when _type == typeof(byte) => (byte)Mathf.Clamp(EditorGUI.IntField(rect, label, (byte)value), byte.MinValue, byte.MaxValue),
-				bool when _type == typeof(ushort) => (ushort)Mathf.Clamp(EditorGUI.IntField(rect, label, (ushort)value), ushort.MinValue, ushort.MaxValue),
-				bool when _type == typeof(short) => (short)Mathf.Clamp(EditorGUI.IntField(rect, label, (short)value), short.MinValue, short.MaxValue),
-				bool when _type == typeof(int) => EditorGUI.IntField(rect, label, (int)value),
-				bool when _type == typeof(long) => EditorGUI.LongField(rect, label, (long)value),
-				bool when _type == typeof(ulong) => (ulong)EditorGUI.LongField(rect, label, (long)(ulong)value),
-				bool when _type == typeof(float) => EditorGUI.FloatField(rect, label, (float)value),
-				bool when _type == typeof(double) => (double)EditorGUI.DoubleField(rect, label, (double)value),
-				bool when _type == typeof(string) => EditorGUI.DelayedTextField(rect, label, (string)value),
-				bool when _type == typeof(bool) => EditorGUI.Toggle(rect, label, (bool)value),
+				bool when _type == typeof(sbyte) => (sbyte)Mathf.Clamp(EditorGUILayout.IntField(label, (sbyte)value), sbyte.MinValue, sbyte.MaxValue),
+				bool when _type == typeof(byte) => (byte)Mathf.Clamp(EditorGUILayout.IntField(label, (byte)value), byte.MinValue, byte.MaxValue),
+				bool when _type == typeof(ushort) => (ushort)Mathf.Clamp(EditorGUILayout.IntField(label, (ushort)value), ushort.MinValue, ushort.MaxValue),
+				bool when _type == typeof(short) => (short)Mathf.Clamp(EditorGUILayout.IntField(label, (short)value), short.MinValue, short.MaxValue),
+				bool when _type == typeof(int) => EditorGUILayout.IntField(label, (int)value),
+				bool when _type == typeof(long) => EditorGUILayout.LongField(label, (long)value),
+				bool when _type == typeof(ulong) => (ulong)EditorGUILayout.LongField(label, (long)(ulong)value),
+				bool when _type == typeof(float) => EditorGUILayout.FloatField(label, (float)value),
+				bool when _type == typeof(double) => (double)EditorGUILayout.DoubleField(label, (double)value),
+				bool when _type == typeof(string) => EditorGUILayout.DelayedTextField(label, (string)value),
+				bool when _type == typeof(bool) => EditorGUILayout.Toggle(label, (bool)value),
 
-				bool when _type == typeof(System.Enum) => EditorGUI.EnumPopup(rect, label, (System.Enum)value),
+				bool when _type == typeof(System.Enum) => EditorGUILayout.EnumPopup(label, (System.Enum)value),
 
-				bool when _type == typeof(Vector2) => EditorGUI.Vector2Field(rect, label, (Vector2)value),
-				bool when _type == typeof(Vector3) => EditorGUI.Vector3Field(rect, label, (Vector3)value),
-				bool when _type == typeof(Vector4) => EditorGUI.Vector4Field(rect, label, (Vector4)value),
-				bool when _type == typeof(Vector2Int) => EditorGUI.Vector2IntField(rect, label, (Vector2Int)value),
-				bool when _type == typeof(Vector3Int) => EditorGUI.Vector3IntField(rect, label, (Vector3Int)value),
-				bool when _type == typeof(Color32) => (Color32)EditorGUI.ColorField(rect, new GUIContent(label), (Color32)value, false, true, false),
-				bool when _type == typeof(Color) => EditorGUI.ColorField(rect, new GUIContent(label), (Color)value, false, true, false),
+				bool when _type == typeof(Vector2) => EditorGUILayout.Vector2Field(label, (Vector2)value),
+				bool when _type == typeof(Vector3) => EditorGUILayout.Vector3Field(label, (Vector3)value),
+				bool when _type == typeof(Vector4) => EditorGUILayout.Vector4Field(label, (Vector4)value),
+				bool when _type == typeof(Vector2Int) => EditorGUILayout.Vector2IntField(label, (Vector2Int)value),
+				bool when _type == typeof(Vector3Int) => EditorGUILayout.Vector3IntField(label, (Vector3Int)value),
+				bool when _type == typeof(Color32) => (Color32)EditorGUILayout.ColorField(new GUIContent(label), (Color32)value, false, true, false),
+				bool when _type == typeof(Color) => EditorGUILayout.ColorField(new GUIContent(label), (Color)value, false, true, false),
 
-				bool when _type == typeof(Object) => EditorGUI.ObjectField(rect, new GUIContent(label), (Object)value, type, false),
+				bool when _type == typeof(Object) => EditorGUILayout.ObjectField(new GUIContent(label), (Object)value, type, false),
 
 				_ => null,
 			};
+		}
+
+
+		private FieldInfo[] GetFieldsFromPool (System.Type type) {
+			if (EntityFieldMap.ContainsKey(type)) {
+				return EntityFieldMap[type];
+			} else {
+				var fList = new List<FieldInfo>();
+				for (
+					var _type = type;
+					_type != null && _type != typeof(Entity) && _type != typeof(object);
+					_type = _type.BaseType
+				) {
+					fList.InsertRange(0, _type.GetFields(
+						BindingFlags.Public | BindingFlags.NonPublic |
+						BindingFlags.Instance | BindingFlags.DeclaredOnly
+					));
+				}
+				return fList.ToArray();
+			}
+		}
+
+
+		private bool GetOpeningFromPool (System.Type type) {
+			if (!AngeliaInspectorOpening.ContainsKey(type)) {
+				AngeliaInspectorOpening.Add(type, false);
+			}
+			return AngeliaInspectorOpening[type];
+		}
+
+
+		private void SetOpeningToPool (System.Type type, bool opening) {
+			AngeliaInspectorOpening.SetOrAdd(type, opening);
 		}
 
 

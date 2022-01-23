@@ -124,6 +124,7 @@ namespace AngeliaFramework.Entities {
 
 		private void Update_Dash () {
 			if (
+				DashAvailable &&
 				IntendedDash &&
 				IsGrounded &&
 				CurrentFrame > LastDashFrame + DashDuration + DashCooldown
