@@ -34,7 +34,7 @@ namespace AngeliaFramework.Entities {
 				ch.X,
 				ch.Y,
 				500, 0, 0,
-				(int)ch.Movement.CurrentFacing * Width,
+				(int)ch.Movement.CurrentFacingX * Width,
 				ch.Movement.IsSquating ? SqrtHeight : Height
 			);
 		}

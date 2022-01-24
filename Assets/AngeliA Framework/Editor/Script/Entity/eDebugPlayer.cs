@@ -11,7 +11,7 @@ namespace AngeliaFramework.Entities.Editor {
 
 		public override bool Despawnable => false;
 		public override CharacterMovement Movement => _Movement ??= new() {
-
+			SwimInFreeStyle = true,
 		};
 		[AngeliaInspector] CharacterMovement _Movement = null;
 
@@ -89,15 +89,15 @@ namespace AngeliaFramework.Entities.Editor {
 				}
 			}
 			// Debug Info
-			CellRenderer.DrawChar(
-				$"c_{Movement.CurrentJumpCount.ToString()[0]}".ACode(),
-				X - Renderer.Width / 2, Y + Renderer.Height + 64, 256, 256, new Color32(255, 255, 255, 255), out _
-			);
+			for (int i = 0; i < Movement.JumpCount - Movement.CurrentJumpCount; i++) {
+				CellRenderer.DrawChar(
+					"c_.".ACode(),
+					X - Renderer.Width / 2 + i * 32, Y + Renderer.Height + 64, 128, 128, new Color32(255, 255, 255, 255), out _
+				);
+			}
 
 			base.FrameUpdate(frame);
 		}
-
-
 
 
 

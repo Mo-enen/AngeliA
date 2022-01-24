@@ -26,7 +26,11 @@ namespace AngeliaFramework.Entities {
 		public int CurrentJumpCount { get; private set; } = 0;
 		public int VelocityX { get; private set; } = 0;
 		public int VelocityY { get; private set; } = 0;
-		public Direction2 CurrentFacing { get; private set; } = Direction2.Positive;
+		public Direction2 CurrentFacingX { get; private set; } = Direction2.Positive;
+
+		// Short
+		private int CurrentDashDuration => InWater && SwimInFreeStyle ? FreeSwimDashDuration : DashDuration;
+		private int CurrentDashCooldown => InWater && SwimInFreeStyle ? FreeSwimDashCooldown : DashCooldown;
 
 		// Data
 		private int CurrentFrame = 0;
@@ -40,6 +44,7 @@ namespace AngeliaFramework.Entities {
 		private int LastGroundedFrame = int.MinValue;
 		private int LastDashFrame = int.MinValue;
 		private RectInt Hitbox = default;
+		private Vector2Int LastMoveDirection = Vector2Int.zero;
 
 
 		#endregion
@@ -83,7 +88,7 @@ namespace AngeliaFramework.Entities {
 			bool prevInWater = InWater;
 			IsGrounded = GroundCheck();
 			InWater = WaterCheck();
-			IsDashing = DashAvailable && CurrentFrame < LastDashFrame + DashDuration;
+			IsDashing = DashAvailable && CurrentFrame < LastDashFrame + CurrentDashDuration;
 			IsSquating = SquatAvailable && IsGrounded && ((!IsDashing && IntendedY < 0) || ForceSquatCheck());
 			IsPounding = PoundAvailable && !IsGrounded && !InWater && !IsDashing && (IsPounding ? IntendedY < 0 : IntendedPound);
 			if (IsGrounded) LastGroundedFrame = CurrentFrame;
@@ -92,6 +97,10 @@ namespace AngeliaFramework.Entities {
 			}
 			if (prevInWater && !InWater && VelocityY > 0) {
 				VelocityY = JumpSpeed;
+			}
+			if (prevInWater != InWater) {
+				LastDashFrame = int.MinValue;
+				IsDashing = false;
 			}
 		}
 
@@ -103,10 +112,19 @@ namespace AngeliaFramework.Entities {
 			}
 			// Perform Jump
 			if (IntendedJump && CurrentJumpCount < JumpCount && !IsSquating) {
-				CurrentJumpCount++;
-				VelocityY = JumpSpeed;
-				LastDashFrame = int.MinValue;
-				IsDashing = false;
+				if (InWater && SwimInFreeStyle) {
+					// Free Dash In Water
+					LastDashFrame = CurrentFrame;
+					IsDashing = true;
+					VelocityX = 0;
+					VelocityY = 0;
+				} else {
+					// Jump
+					CurrentJumpCount++;
+					VelocityY = JumpSpeed;
+					LastDashFrame = int.MinValue;
+					IsDashing = false;
+				}
 			}
 			// Fall off Edge
 			if (CurrentJumpCount == 0 && !IsGrounded && !InWater && CurrentFrame > LastGroundedFrame + JUMP_TOLERANCE) {
@@ -124,10 +142,8 @@ namespace AngeliaFramework.Entities {
 
 		private void Update_Dash () {
 			if (
-				DashAvailable &&
-				IntendedDash &&
-				IsGrounded &&
-				CurrentFrame > LastDashFrame + DashDuration + DashCooldown
+				DashAvailable && IntendedDash && IsGrounded && (!InWater || !SwimInFreeStyle) &&
+				CurrentFrame > LastDashFrame + CurrentDashDuration + CurrentDashCooldown
 			) {
 				// Perform Dash
 				LastDashFrame = CurrentFrame;
@@ -140,13 +156,25 @@ namespace AngeliaFramework.Entities {
 		private void Update_VelocityX () {
 			int speed, acc, dcc;
 			if (IsDashing) {
-				speed = (int)CurrentFacing * DashSpeed;
-				acc = DashAcceleration;
-				dcc = int.MaxValue;
+				if (InWater && SwimInFreeStyle) {
+					// Free Water Dash
+					speed = LastMoveDirection.x * DashSpeed;
+					acc = FreeSwimDashAcceleration;
+					dcc = int.MaxValue;
+				} else {
+					// Normal Dash
+					speed = (int)CurrentFacingX * DashSpeed;
+					acc = DashAcceleration;
+					dcc = int.MaxValue;
+				}
 			} else if (IsSquating) {
 				speed = IntendedX * SquatSpeed;
 				acc = SquatAcceleration;
 				dcc = SquatDecceleration;
+			} else if (InWater && SwimInFreeStyle) {
+				speed = IntendedX * FreeSwimSpeed;
+				acc = FreeSwimAcceleration;
+				dcc = FreeSwimDecceleration;
 			} else {
 				speed = IntendedX * MoveSpeed;
 				acc = MoveAcceleration;
@@ -157,26 +185,41 @@ namespace AngeliaFramework.Entities {
 
 
 		private void Update_VelocityY () {
-			// Gravity
-			int maxSpeed = InWater ? MaxGravitySpeed * SwimSpeedRate / 1000 : MaxGravitySpeed;
-			if (HoldingJump && VelocityY > 0) {
-				// Jumping Raise
-				VelocityY = Mathf.Clamp(VelocityY - JumpRaiseGravity, -maxSpeed, int.MaxValue);
-			} else if (IsPounding) {
-				// Pound
-				VelocityY = -PoundSpeed;
-			} else if (!IsGrounded) {
-				// In Air
-				VelocityY = Mathf.Clamp(VelocityY - Gravity, -maxSpeed, int.MaxValue);
+			if (InWater && SwimInFreeStyle) {
+				if (IsDashing) {
+					// Free Dash
+					VelocityY = VelocityY.MoveTowards(
+						LastMoveDirection.y * FreeSwimDashSpeed, FreeSwimDashAcceleration, int.MaxValue
+					);
+				} else {
+					// Free Swim In Water
+					VelocityY = VelocityY.MoveTowards(
+						IntendedY * FreeSwimSpeed, FreeSwimAcceleration, FreeSwimDecceleration
+					);
+				}
 			} else {
-				VelocityY = 0;
+				// Gravity
+				int maxSpeed = InWater ? MaxGravitySpeed * SwimSpeedRate / 1000 : MaxGravitySpeed;
+				if (HoldingJump && VelocityY > 0) {
+					// Jumping Raise
+					VelocityY = Mathf.Clamp(VelocityY - JumpRaiseGravity, -maxSpeed, int.MaxValue);
+				} else if (IsPounding) {
+					// Pound
+					VelocityY = -PoundSpeed;
+				} else if (!IsGrounded) {
+					// In Air
+					VelocityY = Mathf.Clamp(VelocityY - Gravity, -maxSpeed, int.MaxValue);
+				} else {
+					// Grounded
+					VelocityY = 0;
+				}
 			}
 		}
 
 
 		private void Update_ApplyPhysics (eCharacter character) {
 			var newPos = Hitbox.position;
-			if (InWater) {
+			if (InWater && !SwimInFreeStyle) {
 				newPos.x += VelocityX * SwimSpeedRate / 1000;
 				newPos.y += VelocityY * SwimSpeedRate / 1000;
 			} else {
@@ -216,7 +259,11 @@ namespace AngeliaFramework.Entities {
 			IntendedX = (int)x;
 			IntendedY = (int)y;
 			if (x != Direction3.None) {
-				CurrentFacing = x == Direction3.Positive ? Direction2.Positive : Direction2.Negative;
+				CurrentFacingX = x == Direction3.Positive ? Direction2.Positive : Direction2.Negative;
+			}
+			if (x != Direction3.None || y != Direction3.None) {
+				LastMoveDirection.x = IntendedX;
+				LastMoveDirection.y = IntendedY;
 			}
 		}
 

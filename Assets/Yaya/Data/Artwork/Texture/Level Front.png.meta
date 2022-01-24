@@ -1,10 +1,7 @@
 fileFormatVersion: 2
-guid: 7a42e1c284f03fa48b3f1c204e25f03a
+guid: 869fef19c577a8e47b287bc4aa217af0
 TextureImporter:
   internalIDToNameTable:
-  - first:
-      213: 3920572134941378574
-    second: Test Block
   - first:
       213: -4393783392769447400
     second: Test Water
@@ -86,27 +83,6 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Test Block
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 1
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e08c97ba59ba86630800000000000000
-      internalID: 3920572134941378574
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Test Water
       rect:
         serializedVersion: 2
@@ -139,7 +115,6 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Test Water: -4393783392769447400
-      Test Block: 3920572134941378574
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
