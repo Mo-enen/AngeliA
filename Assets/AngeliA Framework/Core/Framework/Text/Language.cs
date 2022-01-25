@@ -17,7 +17,7 @@ namespace AngeliaFramework.Text {
 
 
 		// Api
-		public string this[string key] => Map.ContainsKey(key) ? Map[key] : "";
+		public string this[int key] => Map.ContainsKey(key) ? Map[key] : "";
 		public SystemLanguage LanguageID => m_Language;
 		public string DisplayName => m_DisplayName;
 
@@ -27,14 +27,14 @@ namespace AngeliaFramework.Text {
 		[SerializeField] Cell[] m_Cells = null;
 
 		// Data
-		private Dictionary<string, string> Map = new();
+		private Dictionary<int, string> Map = new();
 
 
 		// API
 		public void Init () {
 			Map.Clear();
 			foreach (var cell in m_Cells) {
-				Map.TryAdd(cell.Key, cell.Value);
+				Map.TryAdd(cell.Key.ACode(), cell.Value);
 			}
 		}
 

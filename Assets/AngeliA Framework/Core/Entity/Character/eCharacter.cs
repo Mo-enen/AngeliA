@@ -5,7 +5,7 @@ using AngeliaFramework.Physics;
 
 
 namespace AngeliaFramework.Entities {
-	public abstract class eCharacter : Entity {
+	public abstract class eCharacter : eRigidbody {
 
 
 
@@ -27,18 +27,16 @@ namespace AngeliaFramework.Entities {
 
 
 		public override void OnCreate (int frame) {
-			Movement.Init();
-		}
-
-
-		public override void FillPhysics (int frame) {
-			Movement.FillPhysics(this);
+			Movement.Init(this);
+			Renderer.Init(this);
+			base.OnCreate(frame);
 		}
 
 
 		public override void FrameUpdate (int frame) {
-			Movement.FrameUpdate(frame, this);
-			Renderer.FrameUpdate(frame, this);
+			Movement.FrameUpdate(frame);
+			Renderer.FrameUpdate(frame, Movement.CurrentFacingX, Movement.IsSquating);
+			base.FrameUpdate(frame);
 		}
 
 

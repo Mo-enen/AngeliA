@@ -11,6 +11,7 @@ namespace AngeliaFramework.Entities {
 		public int Height { get; init; } = 188;
 		public int Gravity { get; init; } = 5;
 		public int MaxGravitySpeed { get; init; } = 64;
+		public int InWaterSpeedLoseRate { get; init; } = 500;
 
 		// Move
 		public int MoveSpeed { get; init; } = 17;
@@ -35,7 +36,7 @@ namespace AngeliaFramework.Entities {
 		public int SquatSpeed { get; init; } = 8;
 		public int SquatAcceleration { get; init; } = 48;
 		public int SquatDecceleration { get; init; } = 48;
-		public int SquatHeight { get; init; } = 158;
+		public int SquatHeight { get; init; } = 116;
 
 		// Pound
 		public bool PoundAvailable { get; init; } = true;
@@ -46,8 +47,8 @@ namespace AngeliaFramework.Entities {
 		public int FreeSwimSpeed { get; init; } = 20;
 		public int FreeSwimAcceleration { get; init; } = 4;
 		public int FreeSwimDecceleration { get; init; } = 4;
-		public int FreeSwimDashSpeed { get; init; } = 32;
-		public int FreeSwimDashDuration { get; init; } = 16;
+		public int FreeSwimDashSpeed { get; init; } = 64;
+		public int FreeSwimDashDuration { get; init; } = 4;
 		public int FreeSwimDashCooldown { get; init; } = 4;
 		public int FreeSwimDashAcceleration { get; init; } = 128;
 		public int SwimSpeedRate { get; init; } = 400;

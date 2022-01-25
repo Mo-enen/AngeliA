@@ -6,14 +6,19 @@ namespace Yaya {
 	public static class LConst {
 
 
-		public delegate string StringStringHandler (string key);
-		public static StringStringHandler GetLanguage { get; set; } = null;
+		public delegate string StringIntHandler (int key);
+		public static StringIntHandler GetLanguage { get; set; } = null;
+
+		private static readonly int QuitConfirmContentID = "Dialog.QuitConfirmContent".ACode();
+		private static readonly int LabelOKID = "Dialog.Ok".ACode();
+		private static readonly int LabelCancelID = "Dialog.Cancel".ACode();
+		private static readonly int LabelQuitID = "Dialog.Quit".ACode();
 
 		// Dialog
-		public static string QuitConfirmContent => GetLanguage("Dialog.QuitConfirmContent");
-		public static string LabelOK => GetLanguage("Dialog.Ok");
-		public static string LabelCancel => GetLanguage("Dialog.Cancel");
-		public static string LabelQuit => GetLanguage("Dialog.Quit");
+		public static string QuitConfirmContent => GetLanguage(QuitConfirmContentID);
+		public static string LabelOK => GetLanguage(LabelOKID);
+		public static string LabelCancel => GetLanguage(LabelCancelID);
+		public static string LabelQuit => GetLanguage(LabelQuitID);
 
 	}
 }

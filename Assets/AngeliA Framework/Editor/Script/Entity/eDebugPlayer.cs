@@ -13,11 +13,11 @@ namespace AngeliaFramework.Entities.Editor {
 		public override CharacterMovement Movement => _Movement ??= new() {
 			SwimInFreeStyle = true,
 		};
-		[AngeliaInspector] CharacterMovement _Movement = null;
-
 		public override CharacterRenderer Renderer => _Renderer ??= new() {
 
 		};
+
+		[AngeliaInspector] CharacterMovement _Movement = null;
 		[AngeliaInspector] CharacterRenderer _Renderer = null;
 
 
@@ -28,7 +28,7 @@ namespace AngeliaFramework.Entities.Editor {
 		public string GroundSprite = "Pixel";
 		public Vector2Int WaterPos = new(12, 4);
 		public Vector2Int WaterSize = new(6, 2);
-		public string WaterSprite = "Test Water";
+		public string WaterSprite = "Pixel";
 
 
 

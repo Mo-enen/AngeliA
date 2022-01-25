@@ -18,6 +18,9 @@ namespace AngeliaFramework.Entities {
 		public int Height { get; init; } = 256;
 		public int SqrtHeight { get; init; } = 158;
 
+		// Data
+		private eRigidbody Rig = null;
+
 
 		#endregion
 
@@ -27,15 +30,21 @@ namespace AngeliaFramework.Entities {
 		#region --- MSG ---
 
 
-		public void FrameUpdate (int frame, eCharacter ch) {
+		public void Init (eCharacter ch) {
+			Rig = ch;
+		}
+
+
+		public void FrameUpdate (int frame, Direction2 facingX, bool squating) {
 
 			// Debug
-			CellRenderer.Draw(Test.ACode(),
-				ch.X,
-				ch.Y,
+			CellRenderer.Draw(
+				Test.ACode(),
+				Rig.X,
+				Rig.Y,
 				500, 0, 0,
-				(int)ch.Movement.CurrentFacingX * Width,
-				ch.Movement.IsSquating ? SqrtHeight : Height
+				(int)facingX * Width,
+				squating ? SqrtHeight : Height
 			);
 		}
 
