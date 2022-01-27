@@ -4,7 +4,8 @@ using UnityEngine;
 
 
 namespace AngeliaFramework.Text {
-	[CreateAssetMenu(fileName = "New Language", menuName = "AngeliA/Language", order = 99)]
+	[CreateAssetMenu(fileName = "New Language", menuName = "бя AngeliA/Language", order = 99)]
+	[PreferBinarySerialization]
 	public class Language : ScriptableObject {
 
 

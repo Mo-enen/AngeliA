@@ -26,13 +26,6 @@ namespace AngeliaFramework.Entities {
 		#region --- MSG ---
 
 
-		public override void OnCreate (int frame) {
-			Movement.Init(this);
-			Renderer.Init(this);
-			base.OnCreate(frame);
-		}
-
-
 		public override void FrameUpdate (int frame) {
 			Movement.FrameUpdate(frame);
 			Renderer.FrameUpdate(frame, Movement.CurrentFacingX, Movement.IsSquating);

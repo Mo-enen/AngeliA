@@ -4,7 +4,8 @@ using UnityEngine;
 
 
 namespace AngeliaFramework.Text {
-	[CreateAssetMenu(fileName = "New Dialogue", menuName = "AngeliA/Dialogue", order = 99)]
+	[CreateAssetMenu(fileName = "New Dialogue", menuName = "бя AngeliA/Dialogue", order = 99)]
+	[PreferBinarySerialization]
 	public class Dialogue : ScriptableObject {
 
 

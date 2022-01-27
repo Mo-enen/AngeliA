@@ -39,7 +39,7 @@ namespace AngeliaFramework.Entities {
 				newPos, new(Width, Height), this,
 				out var _pos, out var _dir
 			) || CellPhysics.Move(
-				PhysicsLayer.Object, pos,
+				PhysicsLayer.Environment, pos,
 				newPos, new(Width, Height), this,
 				out _pos, out _dir
 			);

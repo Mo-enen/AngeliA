@@ -15,8 +15,14 @@ namespace AngeliaFramework {
 
 
 
+	public enum BlockLayer {
+		Background = 0,
+		Level = 1,
+	}
+
+
 	public enum EntityLayer {
-		Object = 0,
+		Environment = 0,
 		Item = 1,
 		Character = 2,
 		Projectile = 3,
@@ -27,7 +33,7 @@ namespace AngeliaFramework {
 
 	public enum PhysicsLayer {
 		Level = 0,      // Ground, Water, OnewayGate...
-		Object = 1,     // Barrel, Chest, EventTrigger...
+		Environment = 1,// Barrel, Chest, EventTrigger...
 		Item = 2,       // HealthPotion, Coin, BouncyBall...
 		Character = 3,  // Player, Enemy, NPC...
 	}
@@ -118,6 +124,7 @@ namespace AngeliaFramework {
 
 	public static class Const {
 		public const int CELL_SIZE = 256;
+		public const int BLOCK_LAYER_COUNT = 2;
 		public const int ENTITY_LAYER_COUNT = 5;
 		public const int PHYSICS_LAYER_COUNT = 4;
 	}

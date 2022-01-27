@@ -10,10 +10,10 @@ namespace AngeliaFramework.Entities.Editor {
 
 
 		public override bool Despawnable => false;
-		public override CharacterMovement Movement => _Movement ??= new() {
+		public override CharacterMovement Movement => _Movement ??= new(this) {
 			SwimInFreeStyle = true,
 		};
-		public override CharacterRenderer Renderer => _Renderer ??= new() {
+		public override CharacterRenderer Renderer => _Renderer ??= new(this) {
 
 		};
 

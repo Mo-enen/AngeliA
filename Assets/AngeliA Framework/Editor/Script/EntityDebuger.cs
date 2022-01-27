@@ -485,6 +485,7 @@ namespace AngeliaFramework.Editor {
 
 
 
+	[PreferBinarySerialization]
 	public class EntityInspector : ScriptableObject {
 		public enum Mode {
 			Entity = 0,

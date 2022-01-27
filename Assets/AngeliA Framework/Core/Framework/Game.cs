@@ -11,7 +11,8 @@ using AngeliaFramework.Text;
 
 
 namespace AngeliaFramework {
-	[CreateAssetMenu(fileName = "New Game", menuName = "AngeliA/Game", order = 99)]
+	[CreateAssetMenu(fileName = "New Game", menuName = "бя AngeliA/Game", order = 99)]
+	[PreferBinarySerialization]
 	public class Game : ScriptableObject {
 
 
@@ -68,6 +69,7 @@ namespace AngeliaFramework {
 #if UNITY_EDITOR
 			// Const Array Count Check
 			if (
+				Const.BLOCK_LAYER_COUNT != System.Enum.GetNames(typeof(BlockLayer)).Length ||
 				Const.ENTITY_LAYER_COUNT != System.Enum.GetNames(typeof(EntityLayer)).Length ||
 				Const.PHYSICS_LAYER_COUNT != System.Enum.GetNames(typeof(PhysicsLayer)).Length ||
 				ENTITY_BUFFER_CAPACITY.Length != Const.ENTITY_LAYER_COUNT ||
@@ -86,6 +88,9 @@ namespace AngeliaFramework {
 			Init_Audio();
 			Init_Language();
 			Init_Asset();
+
+			// World
+			WorldStream.Init();
 
 		}
 
@@ -229,8 +234,6 @@ namespace AngeliaFramework {
 
 
 		private void Init_Asset () {
-			// World
-			WorldStream.LoadProject();
 			// Asset Pool
 			foreach (var asset in m_Assets) {
 				AssetPool.TryAdd(asset.name.ACode(), asset);

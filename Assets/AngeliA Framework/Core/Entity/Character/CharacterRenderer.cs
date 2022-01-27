@@ -30,7 +30,7 @@ namespace AngeliaFramework.Entities {
 		#region --- MSG ---
 
 
-		public void Init (eCharacter ch) {
+		public CharacterRenderer (eCharacter ch) {
 			Rig = ch;
 		}
 

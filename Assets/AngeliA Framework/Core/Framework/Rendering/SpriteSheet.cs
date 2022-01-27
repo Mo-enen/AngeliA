@@ -4,7 +4,8 @@ using UnityEngine;
 
 
 namespace AngeliaFramework.Rendering {
-	[CreateAssetMenu(fileName = "New Sheet", menuName = "AngeliA/Sprite Sheet", order = 99)]
+	[CreateAssetMenu(fileName = "New Sheet", menuName = "бя AngeliA/Sprite Sheet", order = 99)]
+	[PreferBinarySerialization]
 	public class SpriteSheet : ScriptableObject {
 
 
@@ -96,7 +97,7 @@ namespace AngeliaFramework.Editor {
 	public class SpriteSheet_Inspector : Editor {
 
 
-		[MenuItem("Tools/Reload Sheet Assets")]
+		[MenuItem("AngeliA/Reload Sheet Assets")]
 		private static void ReloadSheetAssets () {
 			foreach (var guid in AssetDatabase.FindAssets("t:SpriteSheet")) {
 				var path = AssetDatabase.GUIDToAssetPath(guid);
