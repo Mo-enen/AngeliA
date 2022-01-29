@@ -213,7 +213,7 @@ namespace AngeliaFramework.Editor {
 
 					// BG
 					if (entity == SelectingEntity && entity != null) {
-						EditorGUI.DrawRect(rect, new Color32(44, 93, 135, 255));
+						EditorGUI.DrawRect(rect, Layout.HighlightColor);
 					}
 
 					// Icon

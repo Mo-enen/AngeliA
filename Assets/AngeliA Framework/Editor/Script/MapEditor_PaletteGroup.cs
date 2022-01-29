@@ -25,12 +25,9 @@ namespace AngeliaFramework.Editor {
 
 
 		// Api
-		public bool Opening { get => m_Opening; set => m_Opening = value; }
-
-		// Ser
-		[SerializeField] bool m_Opening = false;
-		[SerializeField] Block[] m_Blocks = null;
-		[SerializeField] Entity[] m_Entities = null;
+		public bool Opening = false;
+		public Block[] Blocks = null;
+		public Entity[] Entities = null;
 
 
 	}

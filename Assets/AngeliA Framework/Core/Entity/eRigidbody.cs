@@ -5,7 +5,7 @@ using AngeliaFramework.Physics;
 
 
 namespace AngeliaFramework.Entities {
-	public class eRigidbody : Entity {
+	public abstract class eRigidbody : Entity {
 
 
 		public int VelocityX { get; set; } = 0;

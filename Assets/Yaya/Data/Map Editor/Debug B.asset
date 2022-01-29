@@ -12,3 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99b6395937f4f764585de8ebad864a9f, type: 3}
   m_Name: Debug B
   m_EditorClassIdentifier: 
+  Opening: 0
+  Blocks:
+  - Sprite: {fileID: -675867551309064602, guid: 0f21d90af5b1cf5438efe4ff0f785570,
+      type: 3}
+  - Sprite: {fileID: 817608236852665575, guid: 0f21d90af5b1cf5438efe4ff0f785570, type: 3}
+  - Sprite: {fileID: -5447181578315132137, guid: 0f21d90af5b1cf5438efe4ff0f785570,
+      type: 3}
+  Entities:
+  - Icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    TypeFullName: AngeliaFramework.Entities.eDialog
