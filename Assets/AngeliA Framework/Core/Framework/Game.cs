@@ -8,7 +8,7 @@ using AngeliaFramework.Rendering;
 using AngeliaFramework.Audio;
 using AngeliaFramework.Input;
 using AngeliaFramework.Text;
-
+using System.Threading.Tasks;
 
 namespace AngeliaFramework {
 	[CreateAssetMenu(fileName = "New Game", menuName = "бя AngeliA/Game", order = 99)]
@@ -46,7 +46,8 @@ namespace AngeliaFramework {
 		private readonly Dictionary<int, ScriptableObject> AssetPool = new();
 		private Entity[][] Entities = null;
 		private (Entity[] entity, int length)[] EntityBuffers = null;
-		private RectInt ViewRect = new(0, 0, Mathf.Clamp(28 * Const.CELL_SIZE, 0, MAX_VIEW_WIDTH), Mathf.Clamp(16 * Const.CELL_SIZE, 0, MAX_VIEW_HEIGHT));
+		private RectInt ViewRect = new(0, 0, Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, MAX_VIEW_WIDTH), Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, 0, MAX_VIEW_HEIGHT));
+		private RectInt PrevSpawnRect = default;
 		private RectInt SpawnRect = default;
 		private int GlobalFrame = 0;
 
@@ -65,7 +66,6 @@ namespace AngeliaFramework {
 
 		// Init
 		public void Initialize () {
-
 #if UNITY_EDITOR
 			// Const Array Count Check
 			if (
@@ -88,10 +88,6 @@ namespace AngeliaFramework {
 			Init_Audio();
 			Init_Language();
 			Init_Asset();
-
-			// World
-			WorldStream.Init();
-
 		}
 
 
@@ -246,9 +242,11 @@ namespace AngeliaFramework {
 			FrameInput.FrameUpdate();
 			FrameUpdate_View();
 			FrameUpdate_World();
+			FrameUpdate_Level();
 			FrameUpdate_Entity();
 			CellGUI.PerformFrame(GlobalFrame);
 			CellRenderer.Update();
+			PrevSpawnRect = SpawnRect;
 			GlobalFrame++;
 		}
 
@@ -272,9 +270,20 @@ namespace AngeliaFramework {
 
 
 		private void FrameUpdate_World () {
+			// 9-Swap Worlds
+			//SpawnRect, PrevSpawnRect
 
-			WorldStream.UpdateView(ViewRect.center.RoundToInt());
 
+
+			//Load Blocks and Entities
+
+
+
+
+		}
+
+
+		private void FrameUpdate_Level () {
 			// Draw BG/Level, Fill Physics
 
 

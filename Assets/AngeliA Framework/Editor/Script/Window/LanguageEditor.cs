@@ -99,10 +99,7 @@ namespace AngeliaFramework.Editor {
 			}
 
 			// Final
-			if (Event.current.type == EventType.MouseDown) {
-				GUI.FocusControl("");
-				Repaint();
-			}
+			Layout.CancelFocusOnClick(this);
 
 		}
 

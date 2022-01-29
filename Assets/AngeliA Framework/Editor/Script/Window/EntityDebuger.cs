@@ -117,7 +117,7 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		[MenuItem("Tools/Entity Debuger")]
+		[MenuItem("AngeliA/Entity Debuger")]
 		private static void OpenWindow () => GetOrCreateWindow();
 
 
@@ -129,11 +129,7 @@ namespace AngeliaFramework.Editor {
 				// Edit Mode
 				OnGUI_Edittime();
 			}
-			if (Event.current.type == EventType.MouseDown) {
-				Selection.activeObject = null;
-				GUI.FocusControl("");
-				Repaint();
-			}
+			Layout.CancelFocusOnClick(this, true);
 		}
 
 

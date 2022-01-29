@@ -8,7 +8,6 @@ namespace AngeliaFramework.World {
 	[PreferBinarySerialization]
 	public class Map : ScriptableObject {
 
-
 		[System.Serializable]
 		public struct Block {
 			public int TypeID;
@@ -16,7 +15,6 @@ namespace AngeliaFramework.World {
 			public int Y;
 			public int Layer;
 		}
-
 
 		[System.Serializable]
 		public struct Entity {
@@ -27,10 +25,8 @@ namespace AngeliaFramework.World {
 			public int Layer;
 		}
 
-
 		public Block[] Blocks = new Block[0];
-		public Entity[] Entitys = new Entity[0];
-
+		public Entity[] Entities = new Entity[0];
 
 	}
 }

@@ -124,6 +124,8 @@ namespace AngeliaFramework {
 
 	public static class Const {
 		public const int CELL_SIZE = 256;
+		public const int DEFAULT_VIEW_WIDTH = 28 * CELL_SIZE;
+		public const int DEFAULT_VIEW_HEIGHT = 16 * CELL_SIZE;
 		public const int BLOCK_LAYER_COUNT = 2;
 		public const int ENTITY_LAYER_COUNT = 5;
 		public const int PHYSICS_LAYER_COUNT = 4;
