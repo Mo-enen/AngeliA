@@ -387,6 +387,28 @@ namespace AngeliaFramework {
 		}
 
 
+		public T FindEntityOfType<T> () where T : Entity {
+			for (int i = 0; i < Const.ENTITY_LAYER_COUNT; i++) {
+				var e = FindEntityOfType<T>((EntityLayer)i);
+				if (e != null) {
+					return e;
+				}
+			}
+			return null;
+		}
+
+
+		public T FindEntityOfType<T> (EntityLayer layer) where T : Entity {
+			var entities = Entities[(int)layer];
+			foreach (var e in entities) {
+				if (e is T) {
+					return e as T;
+				}
+			}
+			return null;
+		}
+
+
 		public bool SetLanguage (SystemLanguage language) {
 			bool success = false;
 			foreach (var l in m_Languages) {

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
 using Moenen.Standard;
+using AngeliaFramework.Entities;
 
 
 namespace AngeliaFramework.Editor {
@@ -16,7 +17,7 @@ namespace AngeliaFramework.Editor {
 		#region --- VAR ---
 
 
-		// SUB
+		// Tool
 		private enum Tool {
 			Selection = 0,
 			Paint = 1,
@@ -24,6 +25,10 @@ namespace AngeliaFramework.Editor {
 
 		// Const
 		private const string WINDOW_TITLE = "Map Editor";
+		private readonly static Color HIGHLIGHT = new Color32(36, 181, 161, 255);
+
+		// Api
+		public static MapEditor Main { get; private set; } = null;
 
 		// Short
 		private static GUIContent PaletteIconSizeContent => _PaletteIconSizeContent ??= EditorGUIUtility.IconContent("d_CameraPreview@2x");
@@ -38,15 +43,14 @@ namespace AngeliaFramework.Editor {
 		}
 
 		// Data
-		private Vector2 MasterScrollPosition = default;
 		private readonly List<MapEditor_PaletteGroup> PaletteGroups = new();
-		private ReorderableList PaletteGroupList = null;
+		private Game Game = null;
+		private Vector2 PaletteScrollPosition = default;
 		private int SelectingPaletteGroupIndex = 0;
 		private int SelectingPaletteItemIndex = 0;
+		private static bool NeedReloadAsset = false;
 
 		// Saving
-		private EditorSavingString GroupAssetsGuids = new("MapEditor.GroupAssetsGuids", "");
-		private EditorSavingBool UseBigPaletteItem = new("MapEditor.UseBigPaletteItem", true);
 		private EditorSavingInt SelectingToolIndex = new("MapEditor.SelectingToolIndex", 0);
 
 
@@ -59,94 +63,127 @@ namespace AngeliaFramework.Editor {
 
 
 		[MenuItem("AngeliA/Map Editor")]
-		private static void OpenWindow () => GetOrCreateWindow();
-
-
-		private void OnEnable () {
-			LoadGroupAssets();
-			Enable_PaletteGroupList();
+		private static void OpenWindow () {
+			try {
+				var window = GetWindow<MapEditor>(WINDOW_TITLE, false);
+				window.minSize = new Vector2(275, 400);
+				window.maxSize = new Vector2(600, 1000);
+				window.titleContent = EditorGUIUtility.IconContent("TerrainInspector.TerrainToolSplat");
+				window.titleContent.text = WINDOW_TITLE;
+			} catch (System.Exception ex) {
+				Debug.LogWarning("Failed to open window.\n" + ex.Message);
+			}
 		}
 
 
-		private void Enable_PaletteGroupList () {
-			PaletteGroupList = new ReorderableList(
-				PaletteGroups, typeof(MapEditor_PaletteGroup),
-				true, true, true, true
-			) {
-				elementHeight = 20,
-				drawElementCallback = (rect, index, active, focus) => {
-					rect.height -= 2;
-					rect.y++;
-					PaletteGroups[index] = EditorGUI.ObjectField(rect, PaletteGroups[index], typeof(MapEditor_PaletteGroup), false) as MapEditor_PaletteGroup;
-				},
-				onAddCallback = (list) => list.list.Add(null),
-				drawHeaderCallback = (rect) => GUI.Label(rect, "Palette Group Assets"),
-			};
+		[MenuItem("Tools/Map Editor Hotkeys/Select Tool _1")]
+		private static void HotKey_SelectTool () {
+			if (Main == null) return;
+			Main.CurrentTool = Tool.Selection;
+			Main.Repaint();
+			Event.current.Use();
+		}
+
+
+		[MenuItem("Tools/Map Editor Hotkeys/Paint Tool _2")]
+		private static void HotKey_PaintTool () {
+			if (Main == null) return;
+			Main.CurrentTool = Tool.Paint;
+			Main.Repaint();
+			Event.current.Use();
+		}
+
+
+		private void OnEnable () {
+			ReloadGameAsset();
+			ReloadPaletteGroupAssets();
+		}
+
+
+		private void Update () {
+			if (EditorApplication.isPlaying) {
+				if (Game != null && Game.FindEntityOfType<eMapEditor>(EntityLayer.UI) == null) {
+					Game.AddEntity(new eMapEditor(), EntityLayer.UI);
+				}
+			}
+			if (Game == null) {
+				ReloadGameAsset();
+			}
+			if (NeedReloadAsset) {
+				ReloadGameAsset();
+				ReloadPaletteGroupAssets();
+				NeedReloadAsset = false;
+			}
 		}
 
 
 		private void OnGUI () {
-			if (EditorApplication.isPlaying) {
-				// Runtime
-				GUI_Toolbar();
-				Layout.Space(2);
-				GUI_Palette();
-			} else {
-				// Edittime
-				GUI_Resource();
-			}
+			if (Main != this) Main = this;
+			GUI_Toolbar();
+			GUI_Palette();
 			Layout.CancelFocusOnClick(this);
 		}
 
 
+		private void OnDestroy () {
+			if (Main == this) Main = null;
+		}
+
+
 		private void GUI_Toolbar () {
-			// Bar
-			using (new GUILayout.HorizontalScope(EditorStyles.toolbar)) {
-				const int HEIGHT = 22;
-				UseBigPaletteItem.Value = GUI.Toggle(
-					Layout.Rect(22, HEIGHT),
-					UseBigPaletteItem.Value,
-					PaletteIconSizeContent,
-					EditorStyles.toolbarButton
-				);
-				Layout.Rect(0, HEIGHT);
-			}
-			Layout.Space(2);
 			// Tools
+			Layout.Space(6);
 			using (new GUILayout.HorizontalScope()) {
 				const int WIDTH = 28;
 				const int HEIGHT = 28;
-				var oldB = GUI.backgroundColor;
-				Layout.Rect(0, HEIGHT);
+				Layout.Space(6);
 
-				GUI.backgroundColor = CurrentTool == Tool.Selection ? new Color32(128, 128, 128, 255) : oldB;
+				// Select
 				if (GUI.Button(Layout.Rect(WIDTH, HEIGHT), SelectionToolContent)) {
 					CurrentTool = Tool.Selection;
 				}
+				if (CurrentTool == Tool.Selection) {
+					var _rect = Layout.LastRect();
+					EditorGUI.DrawRect(_rect.Shrink(2, 2, _rect.height - 3, 1), HIGHLIGHT);
+				}
 				Layout.Space(2);
 
-				GUI.backgroundColor = CurrentTool == Tool.Paint ? new Color32(128, 128, 128, 255) : oldB;
+				// Paint
 				if (GUI.Button(Layout.Rect(WIDTH, HEIGHT), PaintToolContent)) {
 					CurrentTool = Tool.Paint;
 				}
+				if (CurrentTool == Tool.Paint) {
+					var _rect = Layout.LastRect();
+					EditorGUI.DrawRect(_rect.Shrink(2, 2, _rect.height - 3, 1), HIGHLIGHT);
+				}
 
 				Layout.Rect(0, HEIGHT);
-				GUI.backgroundColor = oldB;
 			}
 			Layout.Space(2);
 		}
 
 
 		private void GUI_Palette () {
-			using var scroll = new GUILayout.ScrollViewScope(MasterScrollPosition, Layout.MasterScrollStyle);
-			MasterScrollPosition = scroll.scrollPosition;
+			using var scroll = new GUILayout.ScrollViewScope(
+				PaletteScrollPosition, Layout.MasterScrollStyle
+			);
+			PaletteScrollPosition = scroll.scrollPosition;
 			bool mouseDown = Event.current.type == EventType.MouseDown;
 			int clickGroup = -1;
 			int clickItem = -1;
+			// Remove Null
+			for (int i = 0; i < PaletteGroups.Count; i++) {
+				if (PaletteGroups[i] == null) {
+					PaletteGroups.RemoveAt(i);
+					i--;
+				}
+			}
+			// All Groups
 			for (int groupIndex = 0; groupIndex < PaletteGroups.Count; groupIndex++) {
 				var pGroup = PaletteGroups[groupIndex];
+				if (pGroup == null) { continue; }
 				const int ITEM_GAP = 4;
-				int ITEM_SIZE = UseBigPaletteItem.Value ? 48 : 32;
+				const int ITEM_SIZE = 48;
 				int COLUMN = ((EditorGUIUtility.currentViewWidth - 24f) / ITEM_SIZE).FloorToInt();
 				bool opening = pGroup.Opening;
 				if (Layout.Fold(pGroup.name, ref opening)) {
@@ -169,7 +206,7 @@ namespace AngeliaFramework.Editor {
 									float tWidth = icon.texture.width;
 									float tHeight = icon.texture.height;
 									GUI.DrawTextureWithTexCoords(
-										rect.Shrink(2).Fit(icon.rect.width / icon.rect.height),
+										rect.Shrink(12).Shift(0, 4).Fit(icon.rect.width / icon.rect.height),
 										icon.texture,
 										new Rect(
 											icon.rect.x / tWidth,
@@ -181,7 +218,7 @@ namespace AngeliaFramework.Editor {
 								}
 								// Highlight
 								if (SelectingPaletteGroupIndex == groupIndex && SelectingPaletteItemIndex == i) {
-									Layout.FrameGUI(rect.Shrink(2), 4f, new Color32(36, 181, 161, 255));
+									Layout.FrameGUI(rect.Shrink(2), 2f, HIGHLIGHT);
 								}
 								// Click
 								if (mouseDown && rect.Contains(Event.current.mousePosition)) {
@@ -204,15 +241,15 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void GUI_Resource () {
-			using var scroll = new GUILayout.ScrollViewScope(MasterScrollPosition, Layout.MasterScrollStyle);
-			MasterScrollPosition = scroll.scrollPosition;
-			using var change = new EditorGUI.ChangeCheckScope();
-			PaletteGroupList.DoLayoutList();
-			if (change.changed) {
-				SaveGroupAssets();
-			}
-		}
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+		public static void SetNeedReloadAsset () => NeedReloadAsset = true;
 
 
 		#endregion
@@ -223,44 +260,27 @@ namespace AngeliaFramework.Editor {
 		#region --- LGC ---
 
 
-		private static MapEditor GetOrCreateWindow () {
-			try {
-				var window = GetWindow<MapEditor>(WINDOW_TITLE, false);
-				window.minSize = new Vector2(275, 400);
-				window.maxSize = new Vector2(600, 1000);
-				window.titleContent = EditorGUIUtility.IconContent("TerrainInspector.TerrainToolSplat");
-				window.titleContent.text = WINDOW_TITLE;
-				return window;
-			} catch (System.Exception ex) {
-				Debug.LogWarning("Failed to open window.\n" + ex.Message);
-			}
-			return null;
-		}
-
-
-		private void LoadGroupAssets () {
+		private void ReloadPaletteGroupAssets () {
 			PaletteGroups.Clear();
-			var guids = GroupAssetsGuids.Value.Split('\n');
+			var guids = AssetDatabase.FindAssets("t:MapEditor_PaletteGroup");
 			foreach (var guid in guids) {
 				var path = AssetDatabase.GUIDToAssetPath(guid);
 				var group = AssetDatabase.LoadAssetAtPath<MapEditor_PaletteGroup>(path);
-				if (group != null) {
-					PaletteGroups.Add(group);
-				}
+				PaletteGroups.Add(group);
 			}
 		}
 
 
-		private void SaveGroupAssets () {
-			var builder = new StringBuilder();
-			foreach (var group in PaletteGroups) {
-				var guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(group));
-				if (!string.IsNullOrEmpty(guid)) {
-					builder.Append(guid);
-					builder.Append('\n');
+		private void ReloadGameAsset () {
+			Game = null;
+			foreach (var guid in AssetDatabase.FindAssets("t:Game")) {
+				var path = AssetDatabase.GUIDToAssetPath(guid);
+				var game = AssetDatabase.LoadAssetAtPath<Game>(path);
+				if (game != null) {
+					Game = game;
+					break;
 				}
 			}
-			GroupAssetsGuids.Value = builder.ToString();
 		}
 
 

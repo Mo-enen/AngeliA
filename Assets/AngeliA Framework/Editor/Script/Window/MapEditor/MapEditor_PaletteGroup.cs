@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -31,6 +32,19 @@ namespace AngeliaFramework.Editor {
 
 
 	}
+
+
+	public class MapEditorGroupPost : AssetPostprocessor {
+		private static void OnPostprocessAllAssets (string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths) {
+			foreach (var path in importedAssets) {
+				if (AssetDatabase.LoadAssetAtPath<MapEditor_PaletteGroup>(path) != null) {
+					MapEditor.SetNeedReloadAsset();
+					return;
+				}
+			}
+		}
+	}
+
 }
 
 
