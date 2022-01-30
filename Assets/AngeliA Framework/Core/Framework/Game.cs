@@ -296,6 +296,10 @@ namespace AngeliaFramework {
 			Entity.SpawnRect = SpawnRect;
 			Entity.ViewRect = ViewRect;
 			Entity.CameraRect = CellRenderer.CameraRect;
+			Entity.MousePosition = new(
+				(int)Mathf.LerpUnclamped(CellRenderer.CameraRect.x, CellRenderer.CameraRect.xMax, FrameInput.MousePosition.x / Screen.width),
+				(int)Mathf.LerpUnclamped(CellRenderer.CameraRect.y, CellRenderer.CameraRect.yMax, FrameInput.MousePosition.y / Screen.height)
+			);
 
 			// Remove Inactive and Outside Spawnrect
 			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {

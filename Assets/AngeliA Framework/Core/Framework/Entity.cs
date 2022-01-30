@@ -17,6 +17,7 @@ namespace AngeliaFramework.Entities {
 		public static RectInt SpawnRect { get; set; }
 		public static RectInt ViewRect { get; set; }
 		public static RectInt CameraRect { get; set; }
+		public static Vector2Int MousePosition { get; set; }
 		public bool Active { get; set; } = true;
 		public virtual bool Despawnable { get; } = true;
 		public int X { get; set; } = 0;
@@ -26,7 +27,6 @@ namespace AngeliaFramework.Entities {
 		public virtual void OnCreate (int frame) { }
 		public virtual void FrameUpdate (int frame) { }
 		public virtual void FillPhysics (int frame) { }
-
-
+		
 	}
 }

@@ -83,6 +83,12 @@ TextureImporter:
   - first:
       213: 1071950943618935904
     second: Button Highlight ML
+  - first:
+      213: 3766845620059095655
+    second: LineV_4
+  - first:
+      213: -818455944832738681
+    second: LineH_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -727,6 +733,48 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: LineV_4
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 3
+        width: 1
+        height: 4
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 762cb534226864430800000000000000
+      internalID: 3766845620059095655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LineH_4
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 1
+        width: 4
+        height: 1
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78a10ff87a244a4f0800000000000000
+      internalID: -818455944832738681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -756,6 +804,7 @@ TextureImporter:
       Button Highlight UL: 5591338999344195665
       Window DR: -5607946330495087584
       Button ML: -3173719055946195214
+      LineV_4: 3766845620059095655
       Window UL: -6305525018894267574
       Button DM: -923660885011710959
       Button Highlight DR: -7208469581114419994
@@ -763,6 +812,7 @@ TextureImporter:
       Window DM: 8499756320157825743
       Button DR: 1042617251748791427
       Button Highlight DM: 2905883229601149106
+      LineH_4: -818455944832738681
       Button MM: -5295589304136099415
       Button MR: 7260588863626102288
   spritePackingTag: 

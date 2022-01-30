@@ -17,7 +17,7 @@ namespace AngeliaFramework.Rendering {
 		private static System.Action PressAction = null;
 		private static System.Action NavigationAction = null;
 		private static RectInt? ButtonNavigation = null;
-		private static IntAlignment ButtonNavigationFrame = new(
+		private static AlignmentInt ButtonNavigationFrame = new(
 			"Button Highlight UL".ACode(),
 			"Button Highlight UM".ACode(),
 			"Button Highlight UR".ACode(),
@@ -38,7 +38,7 @@ namespace AngeliaFramework.Rendering {
 		#region --- API ---
 
 
-		public static void Draw_9Slice (RectInt rect, RectOffset border, Color32 tint, IntAlignment spriteID) {
+		public static void Draw_9Slice (RectInt rect, RectOffset border, Color32 tint, AlignmentInt spriteID) {
 
 			if (border.horizontal > rect.width) {
 				float oldH = border.horizontal;
@@ -150,7 +150,7 @@ namespace AngeliaFramework.Rendering {
 		}
 
 
-		public static void DrawButton (System.Action click, RectInt rect, string label, int charSize, Color32 normal, Color32 highlight, Color32 pressed, Color32 labelColor, IntAlignment spriteID, RectOffset border, bool nagigation = false) {
+		public static void DrawButton (System.Action click, RectInt rect, string label, int charSize, Color32 normal, Color32 highlight, Color32 pressed, Color32 labelColor, AlignmentInt spriteID, RectOffset border, bool nagigation = false) {
 			bool hover = rect.Contains(ScreenToCameraPosition(FrameInput.MousePosition));
 			bool pressing = FrameInput.MouseLeft;
 			var tint = hover ? pressing ? pressed : highlight : normal;

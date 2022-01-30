@@ -31,8 +31,6 @@ namespace AngeliaFramework.Editor {
 		public static MapEditor Main { get; private set; } = null;
 
 		// Short
-		private static GUIContent PaletteIconSizeContent => _PaletteIconSizeContent ??= EditorGUIUtility.IconContent("d_CameraPreview@2x");
-		private static GUIContent _PaletteIconSizeContent = null;
 		private static GUIContent SelectionToolContent => _SelectionToolContent ??= EditorGUIUtility.IconContent("d_Outline Icon");
 		private static GUIContent _SelectionToolContent = null;
 		private static GUIContent PaintToolContent => _PaintToolContent ??= EditorGUIUtility.IconContent("d_Grid.PaintTool@2x");
@@ -43,12 +41,12 @@ namespace AngeliaFramework.Editor {
 		}
 
 		// Data
-		private readonly List<MapEditor_PaletteGroup> PaletteGroups = new();
+		private readonly List<MapPalette> Palettes = new();
 		private Game Game = null;
 		private Vector2 PaletteScrollPosition = default;
-		private int SelectingPaletteGroupIndex = 0;
+		private int SelectingPaletteIndex = 0;
 		private int SelectingPaletteItemIndex = 0;
-		private static bool NeedReloadAsset = false;
+		private bool NeedReloadAsset = false;
 
 		// Saving
 		private EditorSavingInt SelectingToolIndex = new("MapEditor.SelectingToolIndex", 0);
@@ -81,7 +79,7 @@ namespace AngeliaFramework.Editor {
 			if (Main == null) return;
 			Main.CurrentTool = Tool.Selection;
 			Main.Repaint();
-			Event.current.Use();
+			Event.current?.Use();
 		}
 
 
@@ -90,13 +88,14 @@ namespace AngeliaFramework.Editor {
 			if (Main == null) return;
 			Main.CurrentTool = Tool.Paint;
 			Main.Repaint();
-			Event.current.Use();
+			Event.current?.Use();
 		}
 
 
 		private void OnEnable () {
+			wantsMouseEnterLeaveWindow = true;
 			ReloadGameAsset();
-			ReloadPaletteGroupAssets();
+			ReloadPaletteAssets();
 		}
 
 
@@ -111,7 +110,7 @@ namespace AngeliaFramework.Editor {
 			}
 			if (NeedReloadAsset) {
 				ReloadGameAsset();
-				ReloadPaletteGroupAssets();
+				ReloadPaletteAssets();
 				NeedReloadAsset = false;
 			}
 		}
@@ -122,6 +121,9 @@ namespace AngeliaFramework.Editor {
 			GUI_Toolbar();
 			GUI_Palette();
 			Layout.CancelFocusOnClick(this);
+			if (Event.current.type == EventType.MouseLeaveWindow && EditorApplication.isPlaying) {
+				EditorApplication.ExecuteMenuItem("Window/General/Game");
+			}
 		}
 
 
@@ -132,7 +134,7 @@ namespace AngeliaFramework.Editor {
 
 		private void GUI_Toolbar () {
 			// Tools
-			Layout.Space(6);
+			Layout.Space(10);
 			using (new GUILayout.HorizontalScope()) {
 				const int WIDTH = 28;
 				const int HEIGHT = 28;
@@ -159,7 +161,6 @@ namespace AngeliaFramework.Editor {
 
 				Layout.Rect(0, HEIGHT);
 			}
-			Layout.Space(2);
 		}
 
 
@@ -169,26 +170,30 @@ namespace AngeliaFramework.Editor {
 			);
 			PaletteScrollPosition = scroll.scrollPosition;
 			bool mouseDown = Event.current.type == EventType.MouseDown;
-			int clickGroup = -1;
+			int clickPal = -1;
 			int clickItem = -1;
+			bool enable = CurrentTool == Tool.Paint;
 			// Remove Null
-			for (int i = 0; i < PaletteGroups.Count; i++) {
-				if (PaletteGroups[i] == null) {
-					PaletteGroups.RemoveAt(i);
+			for (int i = 0; i < Palettes.Count; i++) {
+				if (Palettes[i] == null) {
+					Palettes.RemoveAt(i);
 					i--;
 				}
 			}
-			// All Groups
-			for (int groupIndex = 0; groupIndex < PaletteGroups.Count; groupIndex++) {
-				var pGroup = PaletteGroups[groupIndex];
-				if (pGroup == null) { continue; }
+			// All Palettes
+			bool oldE = GUI.enabled;
+			var oldC = GUI.color;
+			for (int palIndex = 0; palIndex < Palettes.Count; palIndex++) {
+				var pal = Palettes[palIndex];
+				if (pal == null) { continue; }
 				const int ITEM_GAP = 4;
 				const int ITEM_SIZE = 48;
 				int COLUMN = ((EditorGUIUtility.currentViewWidth - 24f) / ITEM_SIZE).FloorToInt();
-				bool opening = pGroup.Opening;
-				if (Layout.Fold(pGroup.name, ref opening)) {
-					int bCount = pGroup.Blocks.Length;
-					int eCount = pGroup.Entities.Length;
+				bool opening = pal.Opening;
+				if (Layout.Fold(pal.name, ref opening)) {
+					GUI.enabled = enable;
+					int bCount = pal.Blocks.Length;
+					int eCount = pal.Entities.Length;
 					int count = bCount + eCount;
 					int rowCount = Mathf.CeilToInt(count / (float)COLUMN);
 					for (int y = 0, i = 0; y < rowCount; y++) {
@@ -200,11 +205,12 @@ namespace AngeliaFramework.Editor {
 								GUI.Label(rect, GUIContent.none, GUI.skin.textField);
 								// Icon
 								var icon = i < bCount ?
-									pGroup.Blocks[i].Sprite :
-									pGroup.Entities[i - bCount].Icon;
+									pal.Blocks[i].Sprite :
+									pal.Entities[i - bCount].Sprite;
 								if (icon != null && icon.texture != null) {
 									float tWidth = icon.texture.width;
 									float tHeight = icon.texture.height;
+									GUI.color = enable ? oldC : new Color(1, 1, 1, 0.3f);
 									GUI.DrawTextureWithTexCoords(
 										rect.Shrink(12).Shift(0, 4).Fit(icon.rect.width / icon.rect.height),
 										icon.texture,
@@ -215,27 +221,29 @@ namespace AngeliaFramework.Editor {
 											icon.rect.height / tHeight
 										)
 									);
+									GUI.color = oldC;
 								}
 								// Highlight
-								if (SelectingPaletteGroupIndex == groupIndex && SelectingPaletteItemIndex == i) {
+								if (enable && SelectingPaletteIndex == palIndex && SelectingPaletteItemIndex == i) {
 									Layout.FrameGUI(rect.Shrink(2), 2f, HIGHLIGHT);
 								}
 								// Click
 								if (mouseDown && rect.Contains(Event.current.mousePosition)) {
-									clickGroup = groupIndex;
+									clickPal = palIndex;
 									clickItem = i;
 								}
 							}
 						}
 						Layout.Space(ITEM_GAP);
 					}
+					GUI.enabled = oldE;
 				}
 				Layout.Space(2);
-				pGroup.Opening = opening;
+				pal.Opening = opening;
 			}
 			// Click
-			if (clickGroup >= 0 && clickItem >= 0) {
-				SelectingPaletteGroupIndex = clickGroup;
+			if (enable && clickPal >= 0 && clickItem >= 0) {
+				SelectingPaletteIndex = clickPal;
 				SelectingPaletteItemIndex = clickItem;
 			}
 		}
@@ -249,7 +257,20 @@ namespace AngeliaFramework.Editor {
 		#region --- API ---
 
 
-		public static void SetNeedReloadAsset () => NeedReloadAsset = true;
+		public void SetNeedReloadAsset () => NeedReloadAsset = true;
+
+
+		public MapPalette.Block GetSelection () {
+			if (
+				SelectingPaletteIndex >= 0 &&
+				SelectingPaletteIndex < Palettes.Count &&
+				SelectingPaletteItemIndex >= 0 &&
+				SelectingPaletteItemIndex < Palettes[SelectingPaletteIndex].AllCount
+			) {
+				return Palettes[SelectingPaletteIndex][SelectingPaletteItemIndex];
+			}
+			return null;
+		}
 
 
 		#endregion
@@ -260,13 +281,13 @@ namespace AngeliaFramework.Editor {
 		#region --- LGC ---
 
 
-		private void ReloadPaletteGroupAssets () {
-			PaletteGroups.Clear();
-			var guids = AssetDatabase.FindAssets("t:MapEditor_PaletteGroup");
+		private void ReloadPaletteAssets () {
+			Palettes.Clear();
+			var guids = AssetDatabase.FindAssets($"t:{nameof(MapPalette)}");
 			foreach (var guid in guids) {
 				var path = AssetDatabase.GUIDToAssetPath(guid);
-				var group = AssetDatabase.LoadAssetAtPath<MapEditor_PaletteGroup>(path);
-				PaletteGroups.Add(group);
+				var pal = AssetDatabase.LoadAssetAtPath<MapPalette>(path);
+				Palettes.Add(pal);
 			}
 		}
 

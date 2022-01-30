@@ -28,7 +28,7 @@ namespace AngeliaFramework.Entities {
 		private int NavIndex = 0;
 
 		// Style
-		private static IntAlignment MAIN_SPRITES = new(
+		private static AlignmentInt MAIN_SPRITES = new(
 			"Window UL".ACode(),
 			"Window UM".ACode(),
 			"Window UR".ACode(),
@@ -39,7 +39,7 @@ namespace AngeliaFramework.Entities {
 			"Window DM".ACode(),
 			"Window DR".ACode()
 		);
-		private static IntAlignment BUTTON_SPRITES = new(
+		private static AlignmentInt BUTTON_SPRITES = new(
 			"Button UL".ACode(),
 			"Button UM".ACode(),
 			"Button UR".ACode(),

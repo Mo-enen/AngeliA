@@ -98,7 +98,7 @@ namespace AngeliaFramework {
 
 
 	[System.Serializable]
-	public struct IntAlignment {
+	public struct AlignmentInt {
 		public int TopLeft;
 		public int TopMid;
 		public int TopRight;
@@ -108,7 +108,7 @@ namespace AngeliaFramework {
 		public int BottomLeft;
 		public int BottomMid;
 		public int BottomRight;
-		public IntAlignment (int topLeft, int topMid, int topRight, int midLeft, int midMid, int midRight, int bottomLeft, int bottomMid, int bottomRight) {
+		public AlignmentInt (int topLeft, int topMid, int topRight, int midLeft, int midMid, int midRight, int bottomLeft, int bottomMid, int bottomRight) {
 			TopLeft = topLeft;
 			TopMid = topMid;
 			TopRight = topRight;
