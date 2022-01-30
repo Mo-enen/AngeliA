@@ -18,9 +18,12 @@ MonoBehaviour:
       type: 3}
   - Sprite: {fileID: -4393783392769447400, guid: 869fef19c577a8e47b287bc4aa217af0,
       type: 3}
-  - Sprite: {fileID: -4190173952611691157, guid: 1aacb5fbcc6589e46b9d4bcf3017301d,
+  - Sprite: {fileID: -8927879117219696891, guid: 05873e43bc8d6bf4d96ef56c10bbc96a,
       type: 3}
   Entities:
-  - Sprite: {fileID: -2078833997301817751, guid: 70b3724b0b4427d4e83773a3f0acd9d8,
+  - Sprite: {fileID: 2467314271473265160, guid: 0f21d90af5b1cf5438efe4ff0f785570,
+      type: 3}
+    TypeFullName: AngeliaFramework.Entities.eDialog
+  - Sprite: {fileID: -7392174416458314448, guid: 05873e43bc8d6bf4d96ef56c10bbc96a,
       type: 3}
     TypeFullName: AngeliaFramework.Entities.eDialog

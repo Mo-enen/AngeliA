@@ -35,7 +35,7 @@ namespace AngeliaFramework.Editor {
 		public override bool Despawnable => false;
 
 		// Data
-		private MapPalette.Block SelectingBlock = null;
+		private MapPalette.Unit SelectingBlock = null;
 
 
 		#endregion
@@ -56,7 +56,6 @@ namespace AngeliaFramework.Editor {
 		public override void FrameUpdate (int frame) {
 			if (MapEditor.Main == null) return;
 			SelectingBlock = MapEditor.Main.GetSelection();
-
 			Update_Grid();
 			Update_Cursor();
 		}
@@ -102,8 +101,11 @@ namespace AngeliaFramework.Editor {
 			);
 
 			// Icon
-			if (SelectingBlock != null) {
-				CellRenderer.Draw(SelectingBlock.Sprite.name.ACode(), cursorRect.Fit((int)SelectingBlock.Sprite.rect.width, (int)SelectingBlock.Sprite.rect.height));
+			if (SelectingBlock != null && MapEditor.Main.Painting) {
+				CellRenderer.Draw(
+					SelectingBlock.Sprite.name.ACode(),
+					cursorRect.Fit((int)SelectingBlock.Sprite.rect.width, (int)SelectingBlock.Sprite.rect.height)
+				);
 			}
 
 		}

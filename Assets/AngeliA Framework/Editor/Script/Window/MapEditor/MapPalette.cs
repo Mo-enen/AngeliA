@@ -8,31 +8,100 @@ namespace AngeliaFramework.Editor {
 	[CreateAssetMenu(fileName = "New Palette", menuName = "бя AngeliA/Map Palette", order = 99)]
 	public class MapPalette : ScriptableObject {
 
-		[System.Serializable]
-		public class Block {
+
+
+		#region --- SUB ---
+
+
+		public abstract class Unit {
 			public Sprite Sprite;
 		}
 
+
 		[System.Serializable]
-		public class Entity : Block {
+		public class Block : Unit {
+
+		}
+
+
+		[System.Serializable]
+		public class Entity : Unit {
 			[TypeEnum(typeof(Entities.Entity))]
 			public string TypeFullName;
 		}
 
-		public int AllCount => Blocks.Length + Entities.Length;
-		public Block this[int index] {
+
+		#endregion
+
+
+
+
+		#region --- VAR ---
+
+
+		// Api
+		public int AllCount => Blocks.Count + Entities.Count;
+		public Unit this[int index] {
 			get {
-				if (index < Blocks.Length) {
+				if (index < Blocks.Count) {
 					return Blocks[index];
 				} else {
-					return Entities[index - Blocks.Length];
+					return Entities[index - Blocks.Count];
 				}
 			}
 		}
 
+
 		public bool Opening = false;
-		public Block[] Blocks = null;
-		public Entity[] Entities = null;
+		public List<Block> Blocks = null;
+		public List<Entity> Entities = null;
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+		public void RemoveUnit (int index) {
+			if (index < Blocks.Count) {
+				Blocks.RemoveAt(index);
+			} else {
+				Entities.RemoveAt(index - Blocks.Count);
+			}
+		}
+
+
+		public void AddBlock (Block block) => Blocks.Add(block);
+
+
+		public void AddEntity (Entity entity) => Entities.Add(entity);
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+
+
+		#endregion
+
+
+
+
+
+
+
+
+
+
+
 
 	}
 

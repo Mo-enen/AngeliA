@@ -243,9 +243,6 @@ namespace AngeliaFramework.Rendering {
 		#region --- API ---
 
 
-
-
-
 		// Layer
 		public static void SetupLayer (int layerIndex, SpriteSheet sheet, MeshFilter filter) {
 			int cellCapaticy = sheet.RendererCapacity;
@@ -377,13 +374,16 @@ namespace AngeliaFramework.Rendering {
 		}
 
 
-		// Data
+		// Misc
 		public static bool IsFullWidth (int charID) {
 			if (SheetIDMap.ContainsKey(charID)) {
 				return CharacterLayer.FullWidths[SheetIDMap[charID].id];
 			}
 			return false;
 		}
+
+
+		public static bool CheckSpriteID (int globalID) => SheetIDMap.ContainsKey(globalID);
 
 
 		#endregion

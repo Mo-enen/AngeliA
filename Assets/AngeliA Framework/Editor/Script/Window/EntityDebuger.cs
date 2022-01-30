@@ -564,7 +564,7 @@ namespace AngeliaFramework.Editor {
 			foreach (var field in fields) {
 				if (field.GetCustomAttribute<AngeliaInspectorAttribute>(false) != null) {
 					bool open = GetOpeningFromPool(field.FieldType);
-					if (Layout.Fold(field.Name, ref open, false, 18)) {
+					if (Layout.Fold(field.Name, ref open)) {
 						using (new EditorGUI.IndentLevelScope(1)) {
 							DrawAngeliaInspector(field.GetValue(eTarget.Target), field.FieldType);
 						}
