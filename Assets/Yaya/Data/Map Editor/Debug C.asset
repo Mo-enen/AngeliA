@@ -12,16 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99b6395937f4f764585de8ebad864a9f, type: 3}
   m_Name: Debug C
   m_EditorClassIdentifier: 
-  Opening: 1
-  Blocks:
-  - Sprite: {fileID: -1990573304441356779, guid: 0f21d90af5b1cf5438efe4ff0f785570,
+  m_Opening: 1
+  m_Units:
+  - Sprite: {fileID: 2467314271473265160, guid: 0f21d90af5b1cf5438efe4ff0f785570,
       type: 3}
-  Entities:
-  - Sprite: {fileID: 4838036656706846203, guid: 05873e43bc8d6bf4d96ef56c10bbc96a,
-      type: 3}
-    TypeFullName: AngeliaFramework.Editor.eMapEditor
-  - Sprite: {fileID: -6976759025684088644, guid: 95be115a114557a4aafa560d8f6f5de9,
-      type: 3}
-    TypeFullName: AngeliaFramework.Entities.Editor.eDebug
-  - Sprite: {fileID: 817608236852665575, guid: 0f21d90af5b1cf5438efe4ff0f785570, type: 3}
-    TypeFullName: AngeliaFramework.Entities.Editor.eDebugPlayer
+    TypeFullName: 

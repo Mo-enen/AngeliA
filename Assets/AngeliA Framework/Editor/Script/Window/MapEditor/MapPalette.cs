@@ -13,21 +13,14 @@ namespace AngeliaFramework.Editor {
 		#region --- SUB ---
 
 
-		public abstract class Unit {
+		[System.Serializable]
+		public class Unit {
+
+			public bool IsEntity => string.IsNullOrEmpty(TypeFullName);
+
 			public Sprite Sprite;
-		}
+			[TypeEnum(typeof(Entities.Entity))] public string TypeFullName;
 
-
-		[System.Serializable]
-		public class Block : Unit {
-
-		}
-
-
-		[System.Serializable]
-		public class Entity : Unit {
-			[TypeEnum(typeof(Entities.Entity))]
-			public string TypeFullName;
 		}
 
 
@@ -40,21 +33,13 @@ namespace AngeliaFramework.Editor {
 
 
 		// Api
-		public int AllCount => Blocks.Count + Entities.Count;
-		public Unit this[int index] {
-			get {
-				if (index < Blocks.Count) {
-					return Blocks[index];
-				} else {
-					return Entities[index - Blocks.Count];
-				}
-			}
-		}
+		public int Count => m_Units.Count;
+		public Unit this[int index] => m_Units[index];
+		public bool Opening { get => m_Opening; set => m_Opening = value; }
 
-
-		public bool Opening = false;
-		public List<Block> Blocks = null;
-		public List<Entity> Entities = null;
+		// Ser
+		[SerializeField] bool m_Opening = false;
+		[SerializeField] List<Unit> m_Units = null;
 
 
 		#endregion
@@ -65,40 +50,32 @@ namespace AngeliaFramework.Editor {
 		#region --- API ---
 
 
-		public void RemoveUnit (int index) {
-			if (index < Blocks.Count) {
-				Blocks.RemoveAt(index);
-			} else {
-				Entities.RemoveAt(index - Blocks.Count);
-			}
+		public void RemoveUnit (int index) => m_Units.RemoveAt(index);
+
+
+		public void Add (Unit unit) {
+			m_Units.Add(unit);
 		}
 
 
-		public void AddBlock (Block block) => Blocks.Add(block);
-
-
-		public void AddEntity (Entity entity) => Entities.Add(entity);
+		public void Sort () {
+			m_Units.Sort((a, b) => {
+				int result = a.TypeFullName.CompareTo(b.TypeFullName);
+				if (result != 0) {
+					return result;
+				} else {
+					if (a.Sprite != null && b.Sprite != null) {
+						result = a.Sprite.texture.name.CompareTo(b.Sprite.texture.name);
+						return result == 0 ? a.Sprite.name.CompareTo(b.Sprite.name) : result;
+					} else {
+						return a.Sprite != null ? -1 : b.Sprite != null ? 1 : 0;
+					}
+				}
+			});
+		}
 
 
 		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
-
-
-		#endregion
-
-
-
-
-
-
-
-
 
 
 

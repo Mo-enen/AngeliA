@@ -147,7 +147,7 @@ namespace AngeliaFramework.Editor {
 				}
 				if (CurrentTool == Tool.Selection) {
 					var _rect = Layout.LastRect();
-					EditorGUI.DrawRect(_rect.Shrink(2, 2, _rect.height - 3, 1), HIGHLIGHT);
+					EditorGUI.DrawRect(_rect.Shrink(2, 2, _rect.height - 2.5f, 1), HIGHLIGHT);
 				}
 				Layout.Space(2);
 
@@ -157,7 +157,7 @@ namespace AngeliaFramework.Editor {
 				}
 				if (CurrentTool == Tool.Paint) {
 					var _rect = Layout.LastRect();
-					EditorGUI.DrawRect(_rect.Shrink(2, 2, _rect.height - 3, 1), HIGHLIGHT);
+					EditorGUI.DrawRect(_rect.Shrink(2, 2, _rect.height - 2.5f, 1), HIGHLIGHT);
 				}
 
 				Layout.Rect(0, HEIGHT);
@@ -166,7 +166,9 @@ namespace AngeliaFramework.Editor {
 
 
 		private void GUI_Palette () {
-			using var scroll = new GUILayout.ScrollViewScope(PaletteScrollPosition, Layout.MasterScrollStyle);
+			using var scroll = new GUILayout.ScrollViewScope(
+				PaletteScrollPosition, false, false, GUIStyle.none, GUI.skin.verticalScrollbar, Layout.MasterScrollStyle
+			);
 			PaletteScrollPosition = scroll.scrollPosition;
 			bool mouseDown = Event.current.type == EventType.MouseDown;
 			int clickPal = -1;
@@ -187,55 +189,49 @@ namespace AngeliaFramework.Editor {
 				if (pal == null) { continue; }
 				const int ITEM_GAP = 4;
 				const int ITEM_SIZE = 40;
-				int COLUMN = ((EditorGUIUtility.currentViewWidth - 30f) / ITEM_SIZE).FloorToInt();
+				int COLUMN = ((EditorGUIUtility.currentViewWidth - 8f) / (ITEM_SIZE + ITEM_GAP)).FloorToInt();
 				//int COLUMN = 4;
 				bool opening = pal.Opening;
 				if (Layout.Fold(pal.name, ref opening)) {
 					Layout.Space(2);
 					GUI.enabled = enable;
-					int count = pal.AllCount;
+					int count = pal.Count;
 					int rowCount = Mathf.CeilToInt(count / (float)COLUMN);
 					for (int y = 0, i = 0; y < rowCount; y++) {
 						using (new GUILayout.HorizontalScope()) {
-							Layout.Rect(0, 1);
-							for (int x = 0; x < COLUMN; x++, i++) {
+							for (int x = 0; x < COLUMN && i < count; x++, i++) {
 								var rect = Layout.Rect(ITEM_SIZE, ITEM_SIZE);
 								Layout.Space(ITEM_GAP);
-								if (i < count) {
-									// Background
-									GUI.Label(rect, GUIContent.none, GUI.skin.textField);
-									// Icon
-									var icon = pal[i].Sprite;
-									if (icon != null && icon.texture != null) {
-										float tWidth = icon.texture.width;
-										float tHeight = icon.texture.height;
-										GUI.color = enable ? oldC : new Color(1, 1, 1, 0.3f);
-										GUI.DrawTextureWithTexCoords(
-											rect.Shrink(8).Shift(0, 4).Fit(icon.rect.width / icon.rect.height),
-											icon.texture,
-											new Rect(
-												icon.rect.x / tWidth,
-												icon.rect.y / tHeight,
-												icon.rect.width / tWidth,
-												icon.rect.height / tHeight
-											)
-										);
-										GUI.color = oldC;
-									}
-									// Highlight
-									if (enable && SelectingPaletteIndex == palIndex && SelectingPaletteItemIndex == i) {
-										Layout.FrameGUI(rect.Shrink(1.5f), 1.5f, HIGHLIGHT);
-									}
-									// Click
-									if (mouseDown && rect.Contains(Event.current.mousePosition)) {
-										clickPal = palIndex;
-										clickItem = i;
-									}
-								} else if (y == 0) {
-									break;
+								// Background
+								GUI.Label(rect, GUIContent.none, GUI.skin.textField);
+								// Icon
+								var icon = pal[i].Sprite;
+								if (icon != null && icon.texture != null) {
+									float tWidth = icon.texture.width;
+									float tHeight = icon.texture.height;
+									GUI.color = enable ? oldC : new Color(1, 1, 1, 0.3f);
+									GUI.DrawTextureWithTexCoords(
+										rect.Shrink(8).Shift(0, 2).Fit(icon.rect.width / icon.rect.height),
+										icon.texture,
+										new Rect(
+											icon.rect.x / tWidth,
+											icon.rect.y / tHeight,
+											icon.rect.width / tWidth,
+											icon.rect.height / tHeight
+										)
+									);
+									GUI.color = oldC;
+								}
+								// Highlight
+								if (enable && SelectingPaletteIndex == palIndex && SelectingPaletteItemIndex == i) {
+									Layout.FrameGUI(rect.Shrink(1.5f), 1.5f, HIGHLIGHT);
+								}
+								// Click
+								if (mouseDown && rect.Contains(Event.current.mousePosition)) {
+									clickPal = palIndex;
+									clickItem = i;
 								}
 							}
-							Layout.Rect(0, 1);
 						}
 						Layout.Space(ITEM_GAP);
 					}
@@ -243,7 +239,9 @@ namespace AngeliaFramework.Editor {
 					// Add Button
 					if (count == 0) {
 						if (GUI.Button(Layout.Rect(96, 18).Shrink(24, 0, 0, 0), "New Block", EditorStyles.linkLabel)) {
+							PickerTaskID = 0;
 							PickingPalette = palIndex;
+							PickingItem = -1;
 							CurrentPickerID = GUIUtility.GetControlID(FocusType.Passive) + 100;
 							EditorGUIUtility.ShowObjectPicker<Sprite>(null, false, "", CurrentPickerID);
 						}
@@ -260,7 +258,11 @@ namespace AngeliaFramework.Editor {
 					}
 				}
 				Layout.Space(2);
-				pal.Opening = opening;
+				if (pal.Opening != opening) {
+					pal.Opening = opening;
+					EditorUtility.SetDirty(pal);
+					AssetDatabase.SaveAssets();
+				}
 			}
 			// Click
 			if (clickPal >= 0 && clickItem >= 0) {
@@ -270,7 +272,7 @@ namespace AngeliaFramework.Editor {
 					SelectingPaletteItemIndex = clickItem;
 				} else if (Event.current.button == 1) {
 					// Right Button
-					OpenPaletteMenu(clickPal, clickItem);
+					ShowPaletteMenu(clickPal, clickItem);
 				}
 			}
 		}
@@ -297,14 +299,16 @@ namespace AngeliaFramework.Editor {
 					var pal = Palettes[PickingPalette];
 					switch (PickerTaskID) {
 						case 0: // Add Block
-							pal.AddBlock(new MapPalette.Block() {
+							pal.Add(new MapPalette.Unit() {
 								Sprite = sprite,
+								TypeFullName = "",
 							});
 							break;
 						case 1: // Set Sprite
 							pal[PickingItem].Sprite = sprite;
 							break;
 					}
+					pal.Sort();
 					EditorUtility.SetDirty(pal);
 					AssetDatabase.SaveAssetIfDirty(pal);
 					AssetDatabase.Refresh();
@@ -333,7 +337,7 @@ namespace AngeliaFramework.Editor {
 				SelectingPaletteIndex >= 0 &&
 				SelectingPaletteIndex < Palettes.Count &&
 				SelectingPaletteItemIndex >= 0 &&
-				SelectingPaletteItemIndex < Palettes[SelectingPaletteIndex].AllCount
+				SelectingPaletteItemIndex < Palettes[SelectingPaletteIndex].Count
 			) {
 				return Palettes[SelectingPaletteIndex][SelectingPaletteItemIndex];
 			}
@@ -349,17 +353,6 @@ namespace AngeliaFramework.Editor {
 		#region --- LGC ---
 
 
-		private void ReloadPaletteAssets () {
-			Palettes.Clear();
-			var guids = AssetDatabase.FindAssets($"t:{nameof(MapPalette)}");
-			foreach (var guid in guids) {
-				var path = AssetDatabase.GUIDToAssetPath(guid);
-				var pal = AssetDatabase.LoadAssetAtPath<MapPalette>(path);
-				Palettes.Add(pal);
-			}
-		}
-
-
 		private void ReloadGameAsset () {
 			Game = null;
 			foreach (var guid in AssetDatabase.FindAssets("t:Game")) {
@@ -373,11 +366,23 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void OpenPaletteMenu (int paletteIndex, int itemIndex) {
+		private void ReloadPaletteAssets () {
+			Palettes.Clear();
+			var guids = AssetDatabase.FindAssets($"t:{nameof(MapPalette)}");
+			foreach (var guid in guids) {
+				var path = AssetDatabase.GUIDToAssetPath(guid);
+				var pal = AssetDatabase.LoadAssetAtPath<MapPalette>(path);
+				pal.Sort();
+				Palettes.Add(pal);
+			}
+		}
+
+
+		private void ShowPaletteMenu (int paletteIndex, int itemIndex) {
 
 			if (paletteIndex < 0 || paletteIndex >= Palettes.Count) return;
 			var pal = Palettes[paletteIndex];
-			if (itemIndex < 0 || itemIndex >= pal.AllCount) return;
+			if (itemIndex < 0 || itemIndex >= pal.Count) return;
 			var unit = pal[itemIndex];
 
 			var menu = new GenericMenu();
@@ -393,6 +398,9 @@ namespace AngeliaFramework.Editor {
 			Menu_NewEntity(menu, pal, true);
 
 			menu.AddSeparator("");
+			menu.AddItem(new GUIContent("Select"), false, () => {
+				Selection.activeObject = pal;
+			});
 			menu.AddItem(new GUIContent("Set Sprite"), false, () => {
 				PickerTaskID = 1;
 				PickingPalette = paletteIndex;
@@ -419,10 +427,11 @@ namespace AngeliaFramework.Editor {
 			foreach (var type in typeof(Entity).GetAllChildClass()) {
 				string fullName = type.FullName;
 				menu.AddItem(new GUIContent(prefix ? $"Add Entity/{type.Name}" : type.Name), false, () => {
-					pal.AddEntity(new MapPalette.Entity() {
+					pal.Add(new MapPalette.Unit() {
 						Sprite = null,
 						TypeFullName = fullName,
 					});
+					pal.Sort();
 					EditorUtility.SetDirty(pal);
 					AssetDatabase.SaveAssetIfDirty(pal);
 					AssetDatabase.Refresh();

@@ -12,18 +12,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99b6395937f4f764585de8ebad864a9f, type: 3}
   m_Name: Debug B
   m_EditorClassIdentifier: 
-  Opening: 1
-  Blocks:
-  - Sprite: {fileID: 3920572134941378574, guid: 7a42e1c284f03fa48b3f1c204e25f03a,
-      type: 3}
-  - Sprite: {fileID: -4393783392769447400, guid: 869fef19c577a8e47b287bc4aa217af0,
-      type: 3}
-  - Sprite: {fileID: -8927879117219696891, guid: 05873e43bc8d6bf4d96ef56c10bbc96a,
-      type: 3}
-  Entities:
+  m_Opening: 1
+  m_Units:
   - Sprite: {fileID: 2467314271473265160, guid: 0f21d90af5b1cf5438efe4ff0f785570,
       type: 3}
-    TypeFullName: AngeliaFramework.Entities.eDialog
-  - Sprite: {fileID: -7392174416458314448, guid: 05873e43bc8d6bf4d96ef56c10bbc96a,
+    TypeFullName: 
+  - Sprite: {fileID: 2467314271473265160, guid: 0f21d90af5b1cf5438efe4ff0f785570,
       type: 3}
+    TypeFullName: 
+  - Sprite: {fileID: -675867551309064602, guid: 0f21d90af5b1cf5438efe4ff0f785570,
+      type: 3}
+    TypeFullName: 
+  - Sprite: {fileID: 7416581687768683424, guid: 0f21d90af5b1cf5438efe4ff0f785570,
+      type: 3}
+    TypeFullName: 
+  - Sprite: {fileID: -6198151762491004249, guid: 0f21d90af5b1cf5438efe4ff0f785570,
+      type: 3}
+    TypeFullName: 
+  - Sprite: {fileID: 5054648824193114955, guid: 0f21d90af5b1cf5438efe4ff0f785570,
+      type: 3}
+    TypeFullName: 
+  - Sprite: {fileID: -629828992618788031, guid: 0f21d90af5b1cf5438efe4ff0f785570,
+      type: 3}
+    TypeFullName: 
+  - Sprite: {fileID: 7935155221148233608, guid: 0f21d90af5b1cf5438efe4ff0f785570,
+      type: 3}
+    TypeFullName: 
+  - Sprite: {fileID: -3964464101972430144, guid: 0f21d90af5b1cf5438efe4ff0f785570,
+      type: 3}
+    TypeFullName: 
+  - Sprite: {fileID: 1088941413460374886, guid: 05873e43bc8d6bf4d96ef56c10bbc96a,
+      type: 3}
+    TypeFullName: AngeliaFramework.Editor.eMapEditor
+  - Sprite: {fileID: 21300002, guid: 4005dc3a08ad1a342be7284a3b7d42b9, type: 3}
     TypeFullName: AngeliaFramework.Entities.eDialog
+  - Sprite: {fileID: -276690949747384050, guid: 8875925860900204e857f0a80583ac33,
+      type: 3}
+    TypeFullName: AngeliaFramework.Entities.Editor.eDebug
+  - Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    TypeFullName: AngeliaFramework.Entities.Editor.eDebugChar

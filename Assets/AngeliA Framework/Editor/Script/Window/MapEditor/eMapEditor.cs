@@ -92,7 +92,7 @@ namespace AngeliaFramework.Editor {
 			CellGUI.Draw_9Slice(
 				cursorRect,
 				new RectOffset(THICKNESS, THICKNESS, THICKNESS, THICKNESS),
-				Color.white, PixelFrame
+				Color.grey, PixelFrame
 			);
 			CellGUI.Draw_9Slice(
 				cursorRect.Shrink(THICKNESS),
@@ -109,16 +109,6 @@ namespace AngeliaFramework.Editor {
 			}
 
 		}
-
-
-		#endregion
-
-
-
-
-		#region --- API ---
-
-
 
 
 		#endregion
