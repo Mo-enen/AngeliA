@@ -46,13 +46,6 @@ namespace AngeliaFramework.Editor {
 		#region --- MSG ---
 
 
-		public override void OnCreate (int frame) {
-
-
-
-		}
-
-
 		public override void FrameUpdate (int frame) {
 			if (MapEditor.Main == null) return;
 			SelectingBlock = MapEditor.Main.GetSelection();

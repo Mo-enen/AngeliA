@@ -4,6 +4,8 @@ using UnityEngine;
 using AngeliaFramework;
 using AngeliaFramework.Entities;
 
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Yaya {
 	public class Yaya : GamePerformer {

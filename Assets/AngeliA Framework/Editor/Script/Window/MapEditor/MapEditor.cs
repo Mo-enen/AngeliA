@@ -323,7 +323,7 @@ namespace AngeliaFramework.Editor {
 
 		#endregion
 
-
+		 
 
 
 		#region --- API ---
@@ -387,7 +387,7 @@ namespace AngeliaFramework.Editor {
 
 			var menu = new GenericMenu();
 
-			menu.AddItem(new GUIContent("Add Block"), false, () => {
+			menu.AddItem(new GUIContent("New Block"), false, () => {
 				PickerTaskID = 0;
 				PickingPalette = paletteIndex;
 				PickingItem = itemIndex;
@@ -426,7 +426,7 @@ namespace AngeliaFramework.Editor {
 		private void Menu_NewEntity (GenericMenu menu, MapPalette pal, bool prefix) {
 			foreach (var type in typeof(Entity).GetAllChildClass()) {
 				string fullName = type.FullName;
-				menu.AddItem(new GUIContent(prefix ? $"Add Entity/{type.Name}" : type.Name), false, () => {
+				menu.AddItem(new GUIContent(prefix ? $"New Entity/{type.Name}" : type.Name), false, () => {
 					pal.Add(new MapPalette.Unit() {
 						Sprite = null,
 						TypeFullName = fullName,

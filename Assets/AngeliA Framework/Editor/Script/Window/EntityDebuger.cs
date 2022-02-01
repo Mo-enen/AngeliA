@@ -378,8 +378,10 @@ namespace AngeliaFramework.Editor {
 
 		private static void SetSelectionInspector (Entity entity, EntityInspector.Mode mode) {
 			SelectingEntity = entity;
-			SelectingInspector.SetTarget(entity);
-			SelectingInspector.InspectorMode = mode;
+			if (SelectingInspector != null) {
+				SelectingInspector.SetTarget(entity);
+				SelectingInspector.InspectorMode = mode;
+			}
 			Selection.activeObject = SelectingInspector;
 		}
 
@@ -387,8 +389,10 @@ namespace AngeliaFramework.Editor {
 		private static void ClearSelectionInspector () {
 			SelectingEntity = null;
 			Selection.activeObject = null;
-			SelectingInspector.SetTarget(null);
-			SelectingInspector.InspectorMode = EntityInspector.Mode.Entity;
+			if (SelectingInspector != null) {
+				SelectingInspector.SetTarget(null);
+				SelectingInspector.InspectorMode = EntityInspector.Mode.Entity;
+			}
 		}
 
 

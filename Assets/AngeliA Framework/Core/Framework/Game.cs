@@ -8,7 +8,7 @@ using AngeliaFramework.Rendering;
 using AngeliaFramework.Audio;
 using AngeliaFramework.Input;
 using AngeliaFramework.Text;
-using System.Threading.Tasks;
+
 
 namespace AngeliaFramework {
 	[CreateAssetMenu(fileName = "New Game", menuName = "бя AngeliA/Game", order = 99)]
@@ -44,6 +44,8 @@ namespace AngeliaFramework {
 		// Data
 		private readonly Dictionary<int, System.Type> EntityTypePool = new();
 		private readonly Dictionary<int, ScriptableObject> AssetPool = new();
+		private readonly WorldSquad WorldSquad = new();
+		private readonly Stack<Object> UnloadAssetStack = new();
 		private Entity[][] Entities = null;
 		private (Entity[] entity, int length)[] EntityBuffers = null;
 		private RectInt ViewRect = new(0, 0, Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, MAX_VIEW_WIDTH), Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, 0, MAX_VIEW_HEIGHT));
@@ -88,6 +90,9 @@ namespace AngeliaFramework {
 			Init_Audio();
 			Init_Language();
 			Init_Asset();
+
+			WorldSquad.Init();
+
 		}
 
 
@@ -230,6 +235,7 @@ namespace AngeliaFramework {
 
 
 		private void Init_Asset () {
+			WorldData.OnMapFilled += (obj) => UnloadAssetStack.Push(obj);
 			// Asset Pool
 			foreach (var asset in m_Assets) {
 				AssetPool.TryAdd(asset.name.ACode(), asset);
@@ -244,6 +250,7 @@ namespace AngeliaFramework {
 			FrameUpdate_World();
 			FrameUpdate_Level();
 			FrameUpdate_Entity();
+			FrameUpdate_Misc();
 			CellGUI.PerformFrame(GlobalFrame);
 			CellRenderer.Update();
 			PrevSpawnRect = SpawnRect;
@@ -270,10 +277,9 @@ namespace AngeliaFramework {
 
 
 		private void FrameUpdate_World () {
-			// 9-Swap Worlds
-			//SpawnRect, PrevSpawnRect
 
-
+			// World Squad
+			WorldSquad.Update(SpawnRect.center.RoundToInt());
 
 			//Load Blocks and Entities
 
@@ -365,6 +371,14 @@ namespace AngeliaFramework {
 				EntityBuffers[layerIndex].length = 0;
 			}
 
+		}
+
+
+		private void FrameUpdate_Misc () {
+			// Unload Assets
+			while (UnloadAssetStack.Count > 0) {
+				Resources.UnloadAsset(UnloadAssetStack.Pop());
+			}
 		}
 
 

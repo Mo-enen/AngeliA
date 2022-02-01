@@ -129,6 +129,7 @@ namespace AngeliaFramework {
 		public const int BLOCK_LAYER_COUNT = 2;
 		public const int ENTITY_LAYER_COUNT = 5;
 		public const int PHYSICS_LAYER_COUNT = 4;
+		public const int WORLD_MAP_SIZE = 128;
 	}
 
 

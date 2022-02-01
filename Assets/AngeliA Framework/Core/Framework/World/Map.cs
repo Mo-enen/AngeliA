@@ -10,7 +10,7 @@ namespace AngeliaFramework.World {
 
 		[System.Serializable]
 		public struct Block {
-			public int TypeID;
+			[ACodeInt] public int TypeID;
 			public int X;
 			public int Y;
 			public int Layer;
@@ -19,7 +19,7 @@ namespace AngeliaFramework.World {
 		[System.Serializable]
 		public struct Entity {
 			public int InstanceID;
-			public int TypeID;
+			[ACodeInt] public int TypeID;
 			public int X;
 			public int Y;
 			public int Layer;
@@ -37,6 +37,7 @@ namespace AngeliaFramework.Editor {
 	using UnityEditor;
 	using AngeliaFramework.World;
 	[CustomEditor(typeof(Map))]
+	[CanEditMultipleObjects]
 	public class Map_Inspector : Editor {
 		public override void OnInspectorGUI () {
 			serializedObject.Update();
