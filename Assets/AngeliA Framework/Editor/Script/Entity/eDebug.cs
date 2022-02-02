@@ -6,23 +6,36 @@ using AngeliaFramework.Rendering;
 
 
 namespace AngeliaFramework.Entities.Editor {
-	public class eDebug : Entity {
+	public class eDebug : eRigidbody {
 
 
-		public PhysicsLayer Layer = PhysicsLayer.Item;
-		public int Width = Const.CELL_SIZE;
-		public int Height = Const.CELL_SIZE;
+		private static readonly int PIXEL_CODE = "Pixel".ACode();
+
+		public override bool Despawnable => false;
+		public override int PushLevel => 0;
+
 		public Color32 Color = new(255, 255, 255, 255);
 		public string SpriteName = "Pixel";
 		public string Tag = "";
 		public bool PhysicsCheck = false;
 		public bool IsTrigger = false;
+		public int PingPongSpeedX = 0;
+		public int PingPongSpeedY = 0;
+		public int PingPongFrame = 0;
 
-		private static readonly int PIXEL_CODE = "Pixel".ACode();
 		private Color32? PhysicsCheckTint = null;
 
 
-		public override bool Despawnable => false;
+		// MSG
+		public override void OnCreate (int frame) {
+			if (Width == 0) {
+				Width = Const.CELL_SIZE;
+			}
+			if (Height == 0) {
+				Height = Const.CELL_SIZE;
+			}
+			base.OnCreate(frame);
+		}
 
 
 		public override void FillPhysics (int frame) {
@@ -35,12 +48,22 @@ namespace AngeliaFramework.Entities.Editor {
 		}
 
 
+		public override void PhysicsUpdate (int frame) {
+			// Ping Pong Movement
+			if (PingPongFrame > 0) {
+				if (PingPongSpeedX != 0) {
+					VelocityX = frame % (PingPongFrame * 2) >= PingPongFrame ? PingPongSpeedX : -PingPongSpeedX;
+				}
+				if (PingPongSpeedY != 0) {
+					VelocityY = frame % (PingPongFrame * 2) >= PingPongFrame ? PingPongSpeedY : -PingPongSpeedY;
+				}
+			}
+			base.PhysicsUpdate(frame);
+		}
+
+
 		public override void FrameUpdate (int frame) {
-			CellRenderer.Draw(
-				SpriteName.ACode(),
-				X, Y, 0, 0,
-				0, Width, Height, Color
-			);
+			// Physics Check
 			if (PhysicsCheck) {
 				bool success = false;
 				CellPhysics.ForAllOverlaps(Layer, new RectInt(X, Y, Width, Height), (info) => {
@@ -61,40 +84,15 @@ namespace AngeliaFramework.Entities.Editor {
 					PhysicsCheckTint = null;
 				}
 			}
-		}
-
-
-	}
-
-
-	public class eDebugChar : Entity {
-
-		public int Width = Const.CELL_SIZE * 16;
-		public int Height = Const.CELL_SIZE * 4;
-		public int CharSize = 256;
-		public int CharSpace = 8;
-		public int LineSpace = 8;
-		public Color32 BGColor = new(64, 64, 64, 255);
-		public Color32 AreaColor = new(255, 255, 255, 64);
-		public Color32 Color = new(255, 255, 255, 255);
-		public string Content = "笨笨丫南瓜瓜YaYaGuaGua";
-
-
-		public override void FrameUpdate (int frame) {
+			// Draw Sprite
 			CellRenderer.Draw(
-				"Pixel".ACode(),
+				SpriteName.ACode(),
 				X, Y, 0, 0,
-				0, Width, Height, BGColor
+				0, Width, Height, Color
 			);
-			CellGUI.DrawLabel(
-				Content,
-				new RectInt(X, Y, Width, Height),
-				Color, CharSize, CharSpace, LineSpace, true
-			);
+			base.FrameUpdate(frame);
 		}
 
 
 	}
-
-
 }

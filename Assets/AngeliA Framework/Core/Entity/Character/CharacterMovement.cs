@@ -111,7 +111,7 @@ namespace AngeliaFramework.Entities {
 		}
 
 
-		public void FrameUpdate (int frame) {
+		public void PhysicsUpdate (int frame) {
 			CurrentFrame = frame;
 			Update_Cache();
 			Update_Jump();
@@ -340,9 +340,10 @@ namespace AngeliaFramework.Entities {
 
 
 		private bool ForceSquatCheck () {
-			var rect = new RectInt(
-				Rig.X, Rig.Y + Height / 2, Rig.Width, Height / 2
-			);
+			var rect = Rig.Rect;
+			rect = rect.Shrink(rect.width / 4, rect.width / 4, 0, 0);
+			rect.height = Height / 2;
+			rect.y += Height / 2;
 			return
 				CellPhysics.Overlap(PhysicsLayer.Level, rect) != null ||
 				CellPhysics.Overlap(PhysicsLayer.Environment, rect) != null;

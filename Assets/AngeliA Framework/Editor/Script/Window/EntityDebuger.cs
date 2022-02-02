@@ -81,11 +81,7 @@ namespace AngeliaFramework.Editor {
 				// Enter Edit
 				if (mode == PlayModeStateChange.EnteredEditMode) {
 					// Reload Game
-					Game game = null;
-					foreach (var guid in AssetDatabase.FindAssets("t:Game")) {
-						game = AssetDatabase.LoadAssetAtPath<Game>(AssetDatabase.GUIDToAssetPath(guid));
-						if (game != null) { break; }
-					}
+					Game game = TryGetGame();
 					if (game != null) {
 						AssetDatabase.ForceReserializeAssets(
 							new string[] { AssetDatabase.GetAssetPath(game) },
@@ -306,9 +302,9 @@ namespace AngeliaFramework.Editor {
 
 		private static Game TryGetGame () {
 			Game result = null;
-			foreach (var guid in AssetDatabase.FindAssets("t:Game")) {
-				result = AssetDatabase.LoadAssetAtPath<Game>(AssetDatabase.GUIDToAssetPath(guid));
-				if (result != null) { break; }
+			var gPer = FindObjectOfType<GamePerformer>();
+			if (gPer != null) {
+				result = gPer.Game;
 			}
 			return result;
 		}

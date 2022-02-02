@@ -323,7 +323,7 @@ namespace AngeliaFramework.Editor {
 
 		#endregion
 
-		 
+
 
 
 		#region --- API ---
@@ -355,13 +355,9 @@ namespace AngeliaFramework.Editor {
 
 		private void ReloadGameAsset () {
 			Game = null;
-			foreach (var guid in AssetDatabase.FindAssets("t:Game")) {
-				var path = AssetDatabase.GUIDToAssetPath(guid);
-				var game = AssetDatabase.LoadAssetAtPath<Game>(path);
-				if (game != null) {
-					Game = game;
-					break;
-				}
+			var gPer = FindObjectOfType<GamePerformer>();
+			if (gPer != null) {
+				Game = gPer.Game;
 			}
 		}
 

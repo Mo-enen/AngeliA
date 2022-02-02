@@ -74,33 +74,30 @@ namespace AngeliaFramework.World {
 
 
 		public void FillAsync (Vector2Int pos) {
-			if (FilledPosition == pos || !AsyncReady) return;
+			if (!AsyncReady) return;
+			FilledPosition = pos;
 			LoadingRequest = Resources.LoadAsync<Map>($"Map/{pos.x}_{pos.y}");
 			LoadingRequest.completed += (_) => {
-				if (LoadingRequest.asset != null) {
-					FillAsync(LoadingRequest.asset as Map, pos);
-				}
+				FillAsync(LoadingRequest.asset as Map, pos);
 			};
 		}
 
 
 		public async void FillAsync (Map source, Vector2Int pos) {
-			if (FilledPosition == pos || !AsyncReady) return;
+			if (!AsyncReady) return;
+			FilledPosition = pos;
 			FillingTask = Task.Run(() => Fill(source, pos));
 			await FillingTask;
 		}
 
 
-		public void Fill (Vector2Int pos) {
-			if (FilledPosition == pos) return;
-			Fill(Resources.Load<Map>($"Map/{pos.x}_{pos.y}"), pos);
-		}
+		public void Fill (Vector2Int pos) => Fill(Resources.Load<Map>($"Map/{pos.x}_{pos.y}"), pos);
 
 
 		public void Fill (Map source, Vector2Int pos) {
-			if (FilledPosition == pos) return;
 			System.Array.Clear(Blocks, 0, Blocks.Length);
 			System.Array.Clear(Entities, 0, Entities.Length);
+			FilledPosition = pos;
 			if (source == null) return;
 			// Blocks
 			int bWidth = Blocks.GetLength(0);
@@ -130,7 +127,6 @@ namespace AngeliaFramework.World {
 					entity.InstanceID, entity.TypeID
 				);
 			}
-			FilledPosition = pos;
 			OnMapFilled(source);
 		}
 

@@ -26,10 +26,24 @@ namespace AngeliaFramework.Entities {
 		#region --- MSG ---
 
 
+		public override void PhysicsUpdate (int frame) {
+			Movement.PhysicsUpdate(frame);
+			base.PhysicsUpdate(frame);
+		}
+
+
 		public override void FrameUpdate (int frame) {
-			Movement.FrameUpdate(frame);
 			Renderer.FrameUpdate(frame, Movement.CurrentFacingX, Movement.IsSquating);
 			base.FrameUpdate(frame);
+		}
+
+
+		protected override void OnHitted (Direction2 hitDirection) {
+			if (hitDirection == Direction2.Horizontal) {
+				VelocityX = 0;
+			} else {
+				VelocityY = 0;
+			}
 		}
 
 

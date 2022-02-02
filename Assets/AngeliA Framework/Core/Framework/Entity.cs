@@ -25,8 +25,9 @@ namespace AngeliaFramework.Entities {
 
 		// API
 		public virtual void OnCreate (int frame) { }
-		public virtual void FrameUpdate (int frame) { }
 		public virtual void FillPhysics (int frame) { }
-		
+		public virtual void PhysicsUpdate (int frame) { }
+		public virtual void FrameUpdate (int frame) { }
+
 	}
 }

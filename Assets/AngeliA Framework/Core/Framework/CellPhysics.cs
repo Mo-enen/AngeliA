@@ -191,19 +191,30 @@ namespace AngeliaFramework.Physics {
 
 
 		// Move
-		public static bool Move (PhysicsLayer layer, Vector2Int from, Vector2Int to, Vector2Int size, Entity ignore, out Vector2Int result) =>
-			Move(layer, from, to, size, ignore, out result, out _);
+		public static bool Move (PhysicsLayer layer, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out Vector2Int result) =>
+			Move(layer, from, to, size, entity, out result, out _);
 
 
-		public static bool Move (PhysicsLayer layer, Vector2Int from, Vector2Int to, Vector2Int size, Entity ignore, out Vector2Int result, out Direction2 dirction) {
+		public static bool Move (PhysicsLayer layer, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out Vector2Int result, out Direction2 hitDirection) {
 			var _result = result = to;
 			int distance = int.MaxValue;
 			bool success = false;
-			Direction2 _dirction = default;
+			Direction2 _direction = default;
 			Direction2 _velDir = Mathf.Abs((from - to).x) > Mathf.Abs((from - to).y) ? Direction2.Horizontal : Direction2.Vertical;
+			int push = entity != null ? 0 : int.MaxValue;
+			if (entity is eRigidbody rig) {
+				push = rig.PushLevel;
+			}
 			ForAllOverlaps(layer, new RectInt(to, size), (info) => {
-				if (ignore != null && info.Entity == ignore) { return true; }
+				if (entity != null && info.Entity == entity) { return true; }
 				if (info.IsTrigger) { return true; }
+				int hitPush = info.Entity != null ? 0 : int.MaxValue;
+				if (info.Entity is eRigidbody hitRig) {
+					hitPush = hitRig.PushLevel;
+				}
+
+
+
 				var _hitRect = info.Rect;
 				var _hitCenter = _hitRect.center.RoundToInt();
 				var _posH = new Vector2Int(
@@ -215,21 +226,20 @@ namespace AngeliaFramework.Physics {
 					to.y + size.y < _hitCenter.y ? _hitRect.y - size.y : _hitRect.y + _hitRect.height
 				);
 				// Overlap Check
-				bool hHit = Overlap(layer, new RectInt(_posH, size), ignore) != null;
-				bool vHit = Overlap(layer, new RectInt(_posV, size), ignore) != null;
+				bool hHit = Overlap(layer, new RectInt(_posH, size), entity) != null;
+				bool vHit = Overlap(layer, new RectInt(_posV, size), entity) != null;
 				Vector2Int _pos;
 				if (hHit != vHit) {
 					_pos = hHit ? _posV : _posH;
-					_dirction = hHit ? Direction2.Vertical : Direction2.Horizontal;
+					_direction = hHit ? Direction2.Vertical : Direction2.Horizontal;
 				} else {
-					//if (Mathf.Abs(to.x - _posH.x) < Mathf.Abs(to.y - _posV.y)) { // Select by Distance
-					//if (_velDir == Direction2.Horizontal) { // Select by Velocity Direction
-					if (Util.SqrtDistance(from, _posH) < Util.SqrtDistance(from, _posV)) { // Select by Distance between from
+					// Select by Distance with "from"
+					if (Util.SqrtDistance(from, _posH) < Util.SqrtDistance(from, _posV)) {
 						_pos = _posH;
-						_dirction = Direction2.Horizontal;
+						_direction = Direction2.Horizontal;
 					} else {
 						_pos = _posV;
-						_dirction = Direction2.Vertical;
+						_direction = Direction2.Vertical;
 					}
 				}
 				int _dis = Util.SqrtDistance(from, _pos);
@@ -241,8 +251,47 @@ namespace AngeliaFramework.Physics {
 				return true;
 			});
 			result = _result;
-			dirction = _dirction;
+			hitDirection = _direction;
 			return success;
+		}
+
+
+		public static Vector2Int Push (
+			PhysicsLayer layer, RectInt heavy,
+			Vector2Int lightFrom, Vector2Int lightTo, Vector2Int lightSize, Entity lightEntity,
+			out Direction2 direction
+		) {
+
+			var _hitCenter = heavy.center.RoundToInt();
+			var _posH = new Vector2Int(
+				lightTo.x + lightSize.x < _hitCenter.x ? heavy.x - lightSize.x : heavy.x + heavy.width,
+				lightTo.y
+			);
+			var _posV = new Vector2Int(
+				lightTo.x,
+				lightTo.y + lightSize.y < _hitCenter.y ? heavy.y - lightSize.y : heavy.y + heavy.height
+			);
+
+			// Overlap Check
+			bool hHit = Overlap(layer, new RectInt(_posH, lightSize), lightEntity) != null;
+			bool vHit = Overlap(layer, new RectInt(_posV, lightSize), lightEntity) != null;
+
+			Vector2Int _pos;
+			if (hHit != vHit) {
+				_pos = hHit ? _posV : _posH;
+				direction = hHit ? Direction2.Vertical : Direction2.Horizontal;
+			} else {
+				// Select by Distance with "from"
+				if (Util.SqrtDistance(lightFrom, _posH) < Util.SqrtDistance(lightFrom, _posV)) {
+					_pos = _posH;
+					direction = Direction2.Horizontal;
+				} else {
+					_pos = _posV;
+					direction = Direction2.Vertical;
+				}
+			}
+
+			return _pos;
 		}
 
 

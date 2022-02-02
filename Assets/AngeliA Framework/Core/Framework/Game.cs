@@ -68,6 +68,7 @@ namespace AngeliaFramework {
 
 		// Init
 		public void Initialize () {
+
 #if UNITY_EDITOR
 			// Const Array Count Check
 			if (
@@ -89,7 +90,7 @@ namespace AngeliaFramework {
 			Init_Physics();
 			Init_Audio();
 			Init_Language();
-			Init_Asset();
+			Init_Misc();
 
 			WorldSquad.Init();
 
@@ -234,8 +235,10 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Init_Asset () {
-			WorldData.OnMapFilled += (obj) => UnloadAssetStack.Push(obj);
+		private void Init_Misc () {
+			WorldData.OnMapFilled += (obj) => {
+				UnloadAssetStack.Push(obj);
+			};
 			// Asset Pool
 			foreach (var asset in m_Assets) {
 				AssetPool.TryAdd(asset.name.ACode(), asset);
@@ -336,7 +339,19 @@ namespace AngeliaFramework {
 				}
 			}
 
-			// Update / Draw
+			// Physics Update
+			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
+				var entities = Entities[layerIndex];
+				int len = entities.Length;
+				for (int i = 0; i < len; i++) {
+					var entity = entities[i];
+					if (entity != null) {
+						entity.PhysicsUpdate(GlobalFrame);
+					}
+				}
+			}
+
+			// FrameUpdate
 			CellRenderer.BeginDraw();
 			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
 				var entities = Entities[layerIndex];

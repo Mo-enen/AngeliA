@@ -10,6 +10,7 @@ namespace AngeliaFramework.Entities.Editor {
 
 
 		public override bool Despawnable => false;
+		public override int PushLevel => 10;
 		public override CharacterMovement Movement => _Movement ??= new(this) {
 			//SwimInFreeStyle = true,
 		};

@@ -31,11 +31,23 @@ namespace AngeliaFramework.World {
 		public void Init () => FillSquad(0, 0);
 
 
-		public void Update (Vector2Int center) {
-
-			
-
-
+		public void Update (Vector2Int viewPos) {
+			var midZone = new RectInt(
+				Worlds[1, 1].FilledPosition * Const.WORLD_MAP_SIZE * Const.CELL_SIZE,
+				new Vector2Int(Const.WORLD_MAP_SIZE * Const.CELL_SIZE, Const.WORLD_MAP_SIZE * Const.CELL_SIZE)
+			).Expand(
+				Const.WORLD_MAP_SIZE * Const.CELL_SIZE / 2
+			);
+			if (!midZone.Contains(viewPos)) {
+				Shift(
+					viewPos.x > midZone.center.x ? Direction2.Negative : Direction2.Positive,
+					viewPos.y > midZone.center.y ? Direction2.Negative : Direction2.Positive
+				);
+				FillSquadAsync(
+					viewPos.x / Const.WORLD_MAP_SIZE / Const.CELL_SIZE,
+					viewPos.y / Const.WORLD_MAP_SIZE / Const.CELL_SIZE
+				);
+			}
 		}
 
 
