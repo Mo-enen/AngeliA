@@ -38,8 +38,8 @@ namespace AngeliaFramework.Entities {
 		}
 
 
-		protected override void OnHitted (Direction2 hitDirection) {
-			if (hitDirection == Direction2.Horizontal) {
+		protected override void OnHitted (Direction4 hitDirection) {
+			if (hitDirection == Direction4.Left || hitDirection == Direction4.Right) {
 				VelocityX = 0;
 			} else {
 				VelocityY = 0;

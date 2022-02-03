@@ -43,7 +43,7 @@ namespace AngeliaFramework.Entities {
 
 			bool hitted = false;
 			var _pos = newPos;
-			var _dir = Direction2.Horizontal;
+			var _dir = Direction4.Up;
 
 			// Level
 			for (int i = 0; i < Const.PHYSICS_LAYER_COUNT && !hitted; i++) {
@@ -66,7 +66,7 @@ namespace AngeliaFramework.Entities {
 
 
 		// LGC
-		protected virtual void OnHitted (Direction2 hitDirection) { }
+		protected virtual void OnHitted (Direction4 hitDirection) { }
 
 
 		private bool CollideCheck (PhysicsLayer layer) => layer switch {

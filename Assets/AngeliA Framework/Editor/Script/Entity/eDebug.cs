@@ -12,7 +12,7 @@ namespace AngeliaFramework.Entities.Editor {
 		private static readonly int PIXEL_CODE = "Pixel".ACode();
 
 		public override bool Despawnable => false;
-		public override int PushLevel => 0;
+		public override int PushLevel => Push;
 
 		public Color32 Color = new(255, 255, 255, 255);
 		public string SpriteName = "Pixel";
@@ -22,6 +22,7 @@ namespace AngeliaFramework.Entities.Editor {
 		public int PingPongSpeedX = 0;
 		public int PingPongSpeedY = 0;
 		public int PingPongFrame = 0;
+		public int Push = 0;
 
 		private Color32? PhysicsCheckTint = null;
 
