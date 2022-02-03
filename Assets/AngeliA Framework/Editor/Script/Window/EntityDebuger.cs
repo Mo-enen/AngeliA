@@ -622,6 +622,7 @@ namespace AngeliaFramework.Editor {
 			if (_type.IsSubclassOf(typeof(System.Enum))) {
 				_type = typeof(System.Enum);
 			}
+
 			return true switch {
 
 				bool when _type == typeof(sbyte) => (sbyte)Mathf.Clamp(EditorGUILayout.IntField(label, (sbyte)value), sbyte.MinValue, sbyte.MaxValue),
@@ -636,7 +637,9 @@ namespace AngeliaFramework.Editor {
 				bool when _type == typeof(string) => EditorGUILayout.DelayedTextField(label, (string)value),
 				bool when _type == typeof(bool) => EditorGUILayout.Toggle(label, (bool)value),
 
-				bool when _type == typeof(System.Enum) => EditorGUILayout.EnumPopup(label, (System.Enum)value),
+				bool when _type == typeof(System.Enum) => type.GetCustomAttribute<System.FlagsAttribute>() == null ?
+					EditorGUILayout.EnumPopup(label, (System.Enum)value) :
+					EditorGUILayout.EnumFlagsField(label, (System.Enum)value),
 
 				bool when _type == typeof(Vector2) => EditorGUILayout.Vector2Field(label, (Vector2)value),
 				bool when _type == typeof(Vector3) => EditorGUILayout.Vector3Field(label, (Vector3)value),

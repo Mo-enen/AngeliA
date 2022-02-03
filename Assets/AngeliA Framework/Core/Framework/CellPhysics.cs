@@ -142,8 +142,19 @@ namespace AngeliaFramework.Physics {
 
 
 		// Overlap
-		public static HitInfo Overlap (PhysicsLayer layer, RectInt globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+		public static HitInfo Overlap (PhysicsMask mask, RectInt globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
 			HitInfo result = null;
+			for (int layerIndex = 0; layerIndex < Const.PHYSICS_LAYER_COUNT; layerIndex++) {
+				var layer = (PhysicsLayer)layerIndex;
+				if (!mask.HasFlag(layer.ToMask())) continue;
+				result = Overlap(layer, globalRect, ignore, mode, tag);
+				if (result != null) break;
+			}
+			return result;
+		}
+
+
+		public static HitInfo Overlap (PhysicsLayer layer, RectInt globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
 			var layerItem = Layers[(int)layer];
 			int l = Mathf.Max(globalRect.xMin.GetCellIndexX() - 1, 0);
 			int d = Mathf.Max(globalRect.yMin.GetCellIndexY() - 1, 0);
@@ -155,9 +166,9 @@ namespace AngeliaFramework.Physics {
 				for (int i = l; i <= r; i++) {
 					for (int dep = 0; dep < CELL_DEPTH; dep++) {
 						var cell = layerItem[i, j, dep];
-						if (cell.Frame != CurrentFrame) { break; }
-						if (ignore != null && cell.Entity == ignore) { continue; }
-						if (tag != 0 && cell.Tag != tag) { continue; }
+						if (cell.Frame != CurrentFrame) break;
+						if (ignore != null && cell.Entity == ignore) continue;
+						if (tag != 0 && cell.Tag != tag) continue;
 						if ((cell.IsTrigger && useTrigger) || (!cell.IsTrigger && useCollider)) {
 							if (cell.Rect.Overlaps(globalRect)) {
 								return cell.GetInfo();
@@ -166,7 +177,16 @@ namespace AngeliaFramework.Physics {
 					}
 				}
 			}
-			return result;
+			return null;
+		}
+
+
+		public static void ForAllOverlaps (PhysicsMask mask, RectInt globalRect, System.Func<HitInfo, bool> func) {
+			for (int layerIndex = 0; layerIndex < Const.PHYSICS_LAYER_COUNT; layerIndex++) {
+				var layer = (PhysicsLayer)layerIndex;
+				if (!mask.HasFlag(layer.ToMask())) continue;
+				ForAllOverlaps(layer, globalRect, func);
+			}
 		}
 
 
@@ -191,95 +211,35 @@ namespace AngeliaFramework.Physics {
 
 
 		// Move
-		public static bool Move (PhysicsLayer layer, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out Vector2Int result) =>
-			Move(layer, from, to, size, entity, out result, out _);
+		public static bool Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out Vector2Int result) =>
+			Move(mask, from, to, size, entity, out result, out _);
 
 
-		public static bool Move (PhysicsLayer layer, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out Vector2Int result, out Direction4 hitDirection) {
+		public static bool Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out Vector2Int result, out Direction4 hitDirection) {
 			var _result = result = to;
 			int distance = int.MaxValue;
 			bool success = false;
 			Direction4 _direction = default;
-			int push = entity != null ? 0 : int.MaxValue;
-			if (entity is eRigidbody rig) {
-				push = rig.PushLevel;
-			}
-			ForAllOverlaps(layer, new RectInt(to, size), (info) => {
+			ForAllOverlaps(mask, new RectInt(to, size), (info) => {
 
 				if (entity != null && info.Entity == entity) return true;
 				if (info.IsTrigger) return true;
 
-				int hitPush = info.Entity != null ? 0 : int.MaxValue;
-				if (info.Entity is eRigidbody hitRig) {
-					hitPush = hitRig.PushLevel;
+				// Light move to Heavy
+				var _pos = Push(mask, info.Rect, from, to, size, entity, out var _dir);
+				int _dis = Util.SqrtDistance(from, _pos);
+				if (_dis < distance) {
+					distance = _dis;
+					_result = _pos;
+					_direction = _dir;
 				}
-
-				if (push <= hitPush) {
-					// Light move to Heavy
-					var _pos = Push(layer, info.Rect, from, to, size, entity, out var _dir);
-					int _dis = Util.SqrtDistance(from, _pos);
-					if (_dis < distance) {
-						distance = _dis;
-						_result = _pos;
-						_direction = _dir;
-					}
-					success = true;
-				} else {
-					// Heavy move to Light
-
-
-
-				}
+				success = true;
 
 				return true;
 			});
 			hitDirection = _direction;
 			result = _result;
 			return success;
-		}
-
-
-		public static Vector2Int Push (
-			PhysicsLayer layer, RectInt heavy,
-			Vector2Int lightFrom, Vector2Int lightTo, Vector2Int lightSize, Entity lightEntity,
-			out Direction4 direction
-		) {
-
-			var _hitCenter = heavy.center.RoundToInt();
-			bool leftSide = lightTo.x + lightSize.x < _hitCenter.x;
-			bool downSide = lightTo.y + lightSize.y < _hitCenter.y;
-			var _posH = new Vector2Int(
-				leftSide ? heavy.x - lightSize.x : heavy.x + heavy.width,
-				lightTo.y
-			);
-			var _posV = new Vector2Int(
-				lightTo.x,
-				downSide ? heavy.y - lightSize.y : heavy.y + heavy.height
-			);
-
-			// Overlap Check
-			bool hHit = Overlap(layer, new RectInt(_posH, lightSize), lightEntity) != null;
-			bool vHit = Overlap(layer, new RectInt(_posV, lightSize), lightEntity) != null;
-			Vector2Int _pos;
-
-			if (hHit != vHit) {
-				// Hit & No Hit
-				_pos = hHit ? _posV : _posH;
-				direction = hHit ?
-					downSide ? Direction4.Down : Direction4.Up :
-					leftSide ? Direction4.Left : Direction4.Right;
-			} else {
-				// Select by Distance with "from"
-				if (Util.SqrtDistance(lightFrom, _posH) < Util.SqrtDistance(lightFrom, _posV)) {
-					_pos = !hHit && !vHit ? _posH : lightFrom;
-					direction = leftSide ? Direction4.Left : Direction4.Right;
-				} else {
-					_pos = !hHit && !vHit ? _posV : lightFrom;
-					direction = downSide ? Direction4.Down : Direction4.Up;
-				}
-			}
-
-			return _pos;
 		}
 
 
@@ -312,6 +272,50 @@ namespace AngeliaFramework.Physics {
 
 		private static int GetCellIndexX (this int x) => (x - PositionX) / Const.CELL_SIZE;
 		private static int GetCellIndexY (this int y) => (y - PositionY) / Const.CELL_SIZE;
+
+
+		private static Vector2Int Push (
+			PhysicsMask mask, RectInt heavy,
+			Vector2Int lightFrom, Vector2Int lightTo, Vector2Int lightSize, Entity lightEntity,
+			out Direction4 direction
+		) {
+
+			var _hCenter = heavy.center.RoundToInt();
+			bool leftSide = lightTo.x + lightSize.x / 2 < _hCenter.x;
+			bool downSide = lightTo.y + lightSize.y / 2 < _hCenter.y;
+			var _posH = new Vector2Int(
+				leftSide ? heavy.x - lightSize.x : heavy.x + heavy.width,
+				lightTo.y
+			);
+			var _posV = new Vector2Int(
+				lightTo.x,
+				downSide ? heavy.y - lightSize.y : heavy.y + heavy.height
+			);
+
+			// Overlap Check
+			bool hHit = Overlap(mask, new RectInt(_posH, lightSize), lightEntity, OperationMode.ColliderOnly) != null;
+			bool vHit = Overlap(mask, new RectInt(_posV, lightSize), lightEntity, OperationMode.ColliderOnly) != null;
+			Vector2Int _pos;
+
+			if (hHit != vHit) {
+				// Hit & No Hit
+				_pos = hHit ? _posV : _posH;
+				direction = hHit ?
+					downSide ? Direction4.Down : Direction4.Up :
+					leftSide ? Direction4.Left : Direction4.Right;
+			} else {
+				// Select by Distance with "from"
+				if (Util.SqrtDistance(lightFrom, _posH) < Util.SqrtDistance(lightFrom, _posV)) {
+					_pos = !hHit && !vHit ? _posH : lightFrom;
+					direction = leftSide ? Direction4.Left : Direction4.Right;
+				} else {
+					_pos = !hHit && !vHit ? _posV : lightFrom;
+					direction = downSide ? Direction4.Down : Direction4.Up;
+				}
+			}
+
+			return _pos;
+		}
 
 
 		#endregion

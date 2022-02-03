@@ -12,7 +12,6 @@ namespace AngeliaFramework.Entities.Editor {
 		private static readonly int PIXEL_CODE = "Pixel".ACode();
 
 		public override bool Despawnable => false;
-		public override int PushLevel => Push;
 
 		public Color32 Color = new(255, 255, 255, 255);
 		public string SpriteName = "Pixel";
@@ -22,7 +21,6 @@ namespace AngeliaFramework.Entities.Editor {
 		public int PingPongSpeedX = 0;
 		public int PingPongSpeedY = 0;
 		public int PingPongFrame = 0;
-		public int Push = 0;
 
 		private Color32? PhysicsCheckTint = null;
 
@@ -42,7 +40,7 @@ namespace AngeliaFramework.Entities.Editor {
 		public override void FillPhysics (int frame) {
 			if (Width <= Const.CELL_SIZE && Height <= Const.CELL_SIZE) {
 				CellPhysics.Fill(
-					Layer, new RectInt(X, Y, Width, Height), this,
+					Layer, new RectInt(X + OffsetX, Y + OffsetY, Width, Height), this,
 					IsTrigger, string.IsNullOrEmpty(Tag) ? 0 : Tag.ACode()
 				);
 			}
@@ -67,7 +65,7 @@ namespace AngeliaFramework.Entities.Editor {
 			// Physics Check
 			if (PhysicsCheck) {
 				bool success = false;
-				CellPhysics.ForAllOverlaps(Layer, new RectInt(X, Y, Width, Height), (info) => {
+				CellPhysics.ForAllOverlaps(CollisionMask, new RectInt(X, Y, Width, Height), (info) => {
 					if (info.Entity != this && info.Entity is eDebug dEntity) {
 						if (!PhysicsCheckTint.HasValue) {
 							PhysicsCheckTint = Random.ColorHSV(0f, 1f, 1f, 1f, 1f, 1f);

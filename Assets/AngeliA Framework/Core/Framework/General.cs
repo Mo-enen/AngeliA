@@ -41,7 +41,7 @@ namespace AngeliaFramework {
 
 
 	[System.Flags]
-	public enum PhysicsLayerMask {
+	public enum PhysicsMask {
 		None = 0,
 		Level = 1 << 0,      // Ground, Water, OnewayGate...
 		Environment = 1 << 1,// Barrel, Chest, EventTrigger...
@@ -141,6 +141,11 @@ namespace AngeliaFramework {
 		public const int ENTITY_LAYER_COUNT = 5;
 		public const int PHYSICS_LAYER_COUNT = 4;
 		public const int WORLD_MAP_SIZE = 128;
+	}
+
+
+	public static class Extension {
+		public static PhysicsMask ToMask (this PhysicsLayer layer) => (PhysicsMask)(1 << ((int)layer));
 	}
 
 

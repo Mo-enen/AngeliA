@@ -10,21 +10,17 @@ namespace AngeliaFramework.Entities {
 
 		public RectInt Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
 
-		public virtual int PushLevel { get; } = 0;
-
 		public PhysicsLayer Layer = PhysicsLayer.Character;
+		public PhysicsMask CollisionMask = PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character;
 		public int VelocityX = 0;
 		public int VelocityY = 0;
-		public int Gravity = 0;
+		public int Gravity = 5;
+		public int MaxGravitySpeed = 64;
 		public int Width = 0;
 		public int Height = 0;
 		public int OffsetX = 0;
 		public int OffsetY = 0;
 		public int SpeedScale = 1000;
-		public bool CollideWithLevel = true;
-		public bool CollideWithEnvironment = true;
-		public bool CollideWithItem = false;
-		public bool CollideWithCharacter = true;
 
 
 		// MSG
@@ -35,25 +31,21 @@ namespace AngeliaFramework.Entities {
 
 		public override void PhysicsUpdate (int frame) {
 
+			if (Gravity != 0) {
+				VelocityY = Mathf.Clamp(VelocityY - Gravity, -MaxGravitySpeed, int.MaxValue);
+			}
+
 			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);
 			var newPos = new Vector2Int(
 				pos.x + VelocityX * SpeedScale / 1000,
 				pos.y + VelocityY * SpeedScale / 1000
 			);
 
-			bool hitted = false;
-			var _pos = newPos;
-			var _dir = Direction4.Up;
-
-			// Level
-			for (int i = 0; i < Const.PHYSICS_LAYER_COUNT && !hitted; i++) {
-				if (!CollideCheck((PhysicsLayer)i)) continue;
-				hitted = CellPhysics.Move(
-				   (PhysicsLayer)i, pos,
-				   newPos, new(Width, Height), this,
-				   out _pos, out _dir
-			   );
-			}
+			bool hitted = CellPhysics.Move(
+			   CollisionMask, pos,
+			   newPos, new(Width, Height), this,
+			   out var _pos, out var _dir
+			);
 
 			X = _pos.x - OffsetX;
 			Y = _pos.y - OffsetY;
@@ -67,15 +59,6 @@ namespace AngeliaFramework.Entities {
 
 		// LGC
 		protected virtual void OnHitted (Direction4 hitDirection) { }
-
-
-		private bool CollideCheck (PhysicsLayer layer) => layer switch {
-			PhysicsLayer.Level => CollideWithLevel,
-			PhysicsLayer.Environment => CollideWithEnvironment,
-			PhysicsLayer.Item => CollideWithItem,
-			PhysicsLayer.Character => CollideWithCharacter,
-			_ => false,
-		};
 
 
 	}

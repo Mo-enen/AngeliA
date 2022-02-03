@@ -258,22 +258,32 @@ namespace AngeliaFramework.Entities {
 						IntendedY * FreeSwimSpeed, FreeSwimAcceleration, FreeSwimDecceleration
 					);
 				}
+				Rig.Gravity = 0;
+				Rig.MaxGravitySpeed = 0;
 			} else {
 				// Gravity
 				int maxSpeed = InWater && !SwimInFreeStyle ?
 					MaxGravitySpeed * SwimSpeedRate / 1000 : MaxGravitySpeed;
 				if (HoldingJump && Rig.VelocityY > 0) {
 					// Jumping Raise
-					Rig.VelocityY = Mathf.Clamp(Rig.VelocityY - JumpRaiseGravity, -maxSpeed, int.MaxValue);
+					Rig.Gravity = JumpRaiseGravity;
+					Rig.MaxGravitySpeed = maxSpeed;
+					//Rig.VelocityY = Mathf.Clamp(Rig.VelocityY - JumpRaiseGravity, -maxSpeed, int.MaxValue);
 				} else if (IsPounding) {
 					// Pound
+					Rig.Gravity = 0;
+					Rig.MaxGravitySpeed = 0;
 					Rig.VelocityY = -PoundSpeed;
 				} else if (!IsGrounded) {
 					// In Air/Water
-					Rig.VelocityY = Mathf.Clamp(Rig.VelocityY - Gravity, -maxSpeed, int.MaxValue);
+					Rig.Gravity = Gravity;
+					Rig.MaxGravitySpeed = maxSpeed;
+					//Rig.VelocityY = Mathf.Clamp(Rig.VelocityY - Gravity, -maxSpeed, int.MaxValue);
 				} else {
 					// Grounded
-					Rig.VelocityY = 0;
+					Rig.Gravity = Gravity;
+					Rig.MaxGravitySpeed = maxSpeed;
+					//Rig.VelocityY = Mathf.Clamp(Rig.VelocityY - Gravity, -maxSpeed, int.MaxValue);
 				}
 			}
 		}
@@ -324,14 +334,15 @@ namespace AngeliaFramework.Entities {
 			var rect = Hitbox;
 			rect.y -= 6;
 			rect.height = 12;
-			return
-				CellPhysics.Overlap(PhysicsLayer.Level, rect) != null ||
-				CellPhysics.Overlap(PhysicsLayer.Environment, rect) != null;
+			return CellPhysics.Overlap(
+				PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character,
+				rect, Rig
+			) != null;
 		}
 
 
 		private bool WaterCheck () => CellPhysics.Overlap(
-			PhysicsLayer.Level,
+			PhysicsMask.Level,
 			Hitbox,
 			null,
 			CellPhysics.OperationMode.TriggerOnly,
@@ -344,9 +355,10 @@ namespace AngeliaFramework.Entities {
 			rect = rect.Shrink(rect.width / 4, rect.width / 4, 0, 0);
 			rect.height = Height / 2;
 			rect.y += Height / 2;
-			return
-				CellPhysics.Overlap(PhysicsLayer.Level, rect) != null ||
-				CellPhysics.Overlap(PhysicsLayer.Environment, rect) != null;
+			return CellPhysics.Overlap(
+				PhysicsMask.Level | PhysicsMask.Environment,
+				rect
+			) != null;
 		}
 
 

@@ -75,6 +75,7 @@ namespace AngeliaFramework {
 				Const.BLOCK_LAYER_COUNT != System.Enum.GetNames(typeof(BlockLayer)).Length ||
 				Const.ENTITY_LAYER_COUNT != System.Enum.GetNames(typeof(EntityLayer)).Length ||
 				Const.PHYSICS_LAYER_COUNT != System.Enum.GetNames(typeof(PhysicsLayer)).Length ||
+				Const.PHYSICS_LAYER_COUNT != System.Enum.GetNames(typeof(PhysicsMask)).Length - 1 ||
 				ENTITY_BUFFER_CAPACITY.Length != Const.ENTITY_LAYER_COUNT ||
 				ENTITY_CAPACITY.Length != Const.ENTITY_LAYER_COUNT
 			) {
