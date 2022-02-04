@@ -264,27 +264,24 @@ namespace AngeliaFramework.Entities {
 				// Gravity
 				int maxSpeed = InWater && !SwimInFreeStyle ?
 					MaxGravitySpeed * SwimSpeedRate / 1000 : MaxGravitySpeed;
-				if (HoldingJump && Rig.VelocityY > 0) {
-					// Jumping Raise
-					Rig.Gravity = JumpRaiseGravity;
-					Rig.MaxGravitySpeed = maxSpeed;
-					//Rig.VelocityY = Mathf.Clamp(Rig.VelocityY - JumpRaiseGravity, -maxSpeed, int.MaxValue);
-				} else if (IsPounding) {
+				if (IsPounding) {
 					// Pound
 					Rig.Gravity = 0;
 					Rig.MaxGravitySpeed = 0;
 					Rig.VelocityY = -PoundSpeed;
+				} else if (HoldingJump && Rig.VelocityY > 0) {
+					// Jumping Raise
+					Rig.Gravity = JumpRaiseGravity;
+					Rig.MaxGravitySpeed = maxSpeed;
 				} else if (!IsGrounded) {
 					// In Air/Water
 					Rig.Gravity = Gravity;
 					Rig.MaxGravitySpeed = maxSpeed;
-					//Rig.VelocityY = Mathf.Clamp(Rig.VelocityY - Gravity, -maxSpeed, int.MaxValue);
 				} else {
 					// Grounded
 					Rig.Gravity = 0;
 					Rig.MaxGravitySpeed = maxSpeed;
 					Rig.VelocityY = 0;
-					//Rig.VelocityY = Mathf.Clamp(Rig.VelocityY - Gravity, -maxSpeed, int.MaxValue);
 				}
 			}
 		}

@@ -73,6 +73,7 @@ namespace AngeliaFramework.Physics {
 
 		// Const
 		public const int CELL_DEPTH = 8;
+		public const int OVERLAP_RESULT_COUNT = CELL_DEPTH * Const.PHYSICS_LAYER_COUNT * 4;
 
 		// Api
 		public static int Width { get; private set; } = 0;
@@ -85,6 +86,7 @@ namespace AngeliaFramework.Physics {
 		private static Layer CurrentLayer = null;
 		private static PhysicsLayer CurrentLayerEnum = PhysicsLayer.Item;
 		private static uint CurrentFrame = uint.MinValue;
+		private static readonly HitInfo[] OverlapResults = new HitInfo[OVERLAP_RESULT_COUNT];
 
 
 		#endregion
@@ -181,32 +183,24 @@ namespace AngeliaFramework.Physics {
 		}
 
 
-		public static void ForAllOverlaps (PhysicsMask mask, RectInt globalRect, System.Func<HitInfo, bool> func) {
+		public static int ForAllOverlaps (PhysicsMask mask, RectInt globalRect, out HitInfo[] results, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+			int count = 0;
 			for (int layerIndex = 0; layerIndex < Const.PHYSICS_LAYER_COUNT; layerIndex++) {
 				var layer = (PhysicsLayer)layerIndex;
 				if (!mask.HasFlag(layer.ToMask())) continue;
-				ForAllOverlaps(layer, globalRect, func);
+				count = ForAllOverlapsLogic(layer, globalRect, count, ignore, mode, tag);
 			}
+			ClearOverlapResult(count);
+			results = OverlapResults;
+			return count;
 		}
 
 
-		public static void ForAllOverlaps (PhysicsLayer layer, RectInt globalRect, System.Func<HitInfo, bool> func) {
-			var layerItem = Layers[(int)layer];
-			int l = Mathf.Max(globalRect.xMin.GetCellIndexX() - 1, 0);
-			int d = Mathf.Max(globalRect.yMin.GetCellIndexY() - 1, 0);
-			int r = Mathf.Min((globalRect.xMax - 1).GetCellIndexX() + 1, Width - 1);
-			int u = Mathf.Min((globalRect.yMax - 1).GetCellIndexY() + 1, Height - 1);
-			for (int j = d; j <= u; j++) {
-				for (int i = l; i <= r; i++) {
-					for (int dep = 0; dep < CELL_DEPTH; dep++) {
-						var cell = layerItem[i, j, dep];
-						if (cell.Frame != CurrentFrame) { break; }
-						if (cell.Rect.Overlaps(globalRect)) {
-							if (!func(cell.GetInfo())) { return; }
-						}
-					}
-				}
-			}
+		public static int ForAllOverlaps (PhysicsLayer layer, RectInt globalRect, out HitInfo[] results, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+			results = OverlapResults;
+			int count = ForAllOverlapsLogic(layer, globalRect, 0, ignore, mode, tag);
+			ClearOverlapResult(count);
+			return count;
 		}
 
 
@@ -215,39 +209,51 @@ namespace AngeliaFramework.Physics {
 			Move(mask, from, to, size, entity, out _, out _);
 
 
-		public static Vector2Int Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out bool hitted, out Direction4 hitDirection) {
+		public static Vector2Int Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out Direction2? hitX, out Direction2? hitY) {
+
+			hitX = null;
+			hitY = null;
 			var result = to;
 			int distance = int.MaxValue;
-			bool _hitted = false;
-			Direction4 _direction = default;
-			ForAllOverlaps(mask, new RectInt(to, size), (info) => {
 
-				if (entity != null && info.Entity == entity) return true;
-				if (info.IsTrigger) return true;
-				if (distance == int.MaxValue) {
-					result = from;
-				}
+			/*
 
-				Vector2Int _pos = to;
-				Direction4 _dir = default;
-				bool _solved = false;
-				for (int i = 0; i < 2 && !_solved; i++) {
-					_pos = Push(mask, info.Rect, from, _pos, size, entity, out _dir, out _solved);
-				}
-				if (_solved) {
-					int _dis = Util.SqrtDistance(from, _pos);
-					if (_dis < distance) {
-						distance = _dis;
-						result = _pos;
-						_direction = _dir;
-					}
-					_hitted = true;
-				}
+				still care about X when solve Y
 
-				return true;
-			});
-			hitted = _hitted;
-			hitDirection = _direction;
+			*/
+
+			// Y
+			var toV = to;
+			toV.x = from.x;
+			int count = ForAllOverlaps(mask, new RectInt(toV, size), out var results, entity);
+			for (int index = 0; index < count; index++) {
+				var hit = results[index];
+				var centerY = hit.Rect.center.y.RoundToInt();
+				int newY = from.y + size.y / 2 < centerY ? hit.Rect.y - size.y : hit.Rect.yMax;
+				int _dis = Mathf.Abs(newY - from.y);
+				if (_dis < distance) {
+					distance = _dis;
+					result.y = newY;
+					hitY = from.y < centerY ? Direction2.Negative : Direction2.Positive;
+				}
+			}
+			from.y = to.y = result.y;
+
+			// X
+			distance = int.MaxValue;
+			count = ForAllOverlaps(mask, new RectInt(to, size), out results, entity);
+			for (int index = 0; index < count; index++) {
+				var hit = results[index];
+				var centerX = hit.Rect.center.x.RoundToInt();
+				int newX = from.x + size.x / 2 < centerX ? hit.Rect.x - size.x : hit.Rect.xMax;
+				int _dis = Mathf.Abs(newX - from.x);
+				if (_dis < distance) {
+					distance = _dis;
+					result.x = newX;
+					hitX = from.x < centerX ? Direction2.Negative : Direction2.Positive;
+				}
+			}
+
 			return result;
 		}
 
@@ -283,49 +289,41 @@ namespace AngeliaFramework.Physics {
 		private static int GetCellIndexY (this int y) => (y - PositionY) / Const.CELL_SIZE;
 
 
-		private static Vector2Int Push (
-			PhysicsMask mask, RectInt block,
-			Vector2Int from, Vector2Int to, Vector2Int size, Entity entity,
-			out Direction4 direction, out bool solved
-		) {
-			solved = true;
-			var _hCenter = block.center.RoundToInt();
-			bool leftSide = to.x + size.x / 2 < _hCenter.x;
-			bool downSide = to.y + size.y / 2 < _hCenter.y;
-			var _posH = new Vector2Int(
-				leftSide ? block.x - size.x : block.x + block.width,
-				to.y
-			);
-			var _posV = new Vector2Int(
-				to.x,
-				downSide ? block.y - size.y : block.y + block.height
-			);
-
-			// Overlap Check
-			bool hHit = Overlap(mask, new RectInt(_posH, size), entity, OperationMode.ColliderOnly) != null;
-			bool vHit = Overlap(mask, new RectInt(_posV, size), entity, OperationMode.ColliderOnly) != null;
-			Vector2Int _pos;
-
-			if (hHit != vHit) {
-				// Hit & No Hit
-				_pos = hHit ? _posV : _posH;
-				direction = hHit ?
-					downSide ? Direction4.Down : Direction4.Up :
-					leftSide ? Direction4.Left : Direction4.Right;
-			} else {
-				// Select by Distance with "from"
-				if (Util.SqrtDistance(from, _posH) < Util.SqrtDistance(from, _posV)) {
-					//_pos = !hHit && !vHit ? _posH : from;
-					_pos = _posH;
-					direction = leftSide ? Direction4.Left : Direction4.Right;
-				} else {
-					//_pos = !hHit && !vHit ? _posV : from;
-					_pos = _posV;
-					direction = downSide ? Direction4.Down : Direction4.Up;
+		private static int ForAllOverlapsLogic (PhysicsLayer layer, RectInt globalRect, int startIndex, Entity ignore, OperationMode mode, int tag) {
+			var layerItem = Layers[(int)layer];
+			int l = Mathf.Max(globalRect.xMin.GetCellIndexX() - 1, 0);
+			int d = Mathf.Max(globalRect.yMin.GetCellIndexY() - 1, 0);
+			int r = Mathf.Min((globalRect.xMax - 1).GetCellIndexX() + 1, Width - 1);
+			int u = Mathf.Min((globalRect.yMax - 1).GetCellIndexY() + 1, Height - 1);
+			int count = startIndex;
+			bool useCollider = mode == OperationMode.ColliderOnly || mode == OperationMode.ColliderAndTrigger;
+			bool useTrigger = mode == OperationMode.TriggerOnly || mode == OperationMode.ColliderAndTrigger;
+			for (int j = d; j <= u; j++) {
+				for (int i = l; i <= r; i++) {
+					for (int dep = 0; dep < CELL_DEPTH; dep++) {
+						var cell = layerItem[i, j, dep];
+						if (cell.Frame != CurrentFrame) { break; }
+						if (ignore != null && cell.Entity == ignore) continue;
+						if (tag != 0 && cell.Tag != tag) continue;
+						if ((cell.IsTrigger && useTrigger) || (!cell.IsTrigger && useCollider)) {
+							if (cell.Rect.Overlaps(globalRect)) {
+								OverlapResults[count] = cell.GetInfo();
+								count++;
+								if (count >= OVERLAP_RESULT_COUNT) { return count; }
+							}
+						}
+					}
 				}
-				solved = !hHit && !vHit;
 			}
-			return _pos;
+			return count;
+		}
+
+
+		private static void ClearOverlapResult (int count) {
+			for (int i = count; i < OVERLAP_RESULT_COUNT; i++) {
+				if (OverlapResults[i] == null) break;
+				OverlapResults[i] = null;
+			}
 		}
 
 

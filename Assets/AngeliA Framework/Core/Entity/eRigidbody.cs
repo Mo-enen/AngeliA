@@ -40,20 +40,19 @@ namespace AngeliaFramework.Entities {
 			);
 
 			var _pos = CellPhysics.Move(
-			   CollisionMask, pos,
-			   newPos, new(Width, Height), this,
-			   out var hitted, out var _dir
+				CollisionMask, pos,
+				newPos, new(Width, Height), this,
+				out var hitX, out var hitY
 			);
 
 			X = _pos.x - OffsetX;
 			Y = _pos.y - OffsetY;
 
-			if (hitted) {
-				if (_dir == Direction4.Left || _dir == Direction4.Right) {
-					VelocityX = 0;
-				} else {
-					VelocityY = 0;
-				}
+			if (hitX.HasValue) {
+				VelocityX = 0;
+			}
+			if (hitY.HasValue) {
+				VelocityY = 0;
 			}
 
 		}

@@ -9,20 +9,15 @@ namespace AngeliaFramework.Entities.Editor {
 	public class eDebug : eRigidbody {
 
 
-		private static readonly int PIXEL_CODE = "Pixel".ACode();
-
 		public override bool Despawnable => false;
 
 		public Color32 Color = new(255, 255, 255, 255);
 		public string SpriteName = "Pixel";
 		public string Tag = "";
-		public bool PhysicsCheck = false;
 		public bool IsTrigger = false;
 		public int PingPongSpeedX = 0;
 		public int PingPongSpeedY = 0;
 		public int PingPongFrame = 0;
-
-		private Color32? PhysicsCheckTint = null;
 
 
 		// MSG
@@ -62,27 +57,6 @@ namespace AngeliaFramework.Entities.Editor {
 
 
 		public override void FrameUpdate (int frame) {
-			// Physics Check
-			if (PhysicsCheck) {
-				bool success = false;
-				CellPhysics.ForAllOverlaps(CollisionMask, new RectInt(X, Y, Width, Height), (info) => {
-					if (info.Entity != this && info.Entity is eDebug dEntity) {
-						if (!PhysicsCheckTint.HasValue) {
-							PhysicsCheckTint = Random.ColorHSV(0f, 1f, 1f, 1f, 1f, 1f);
-						}
-						CellRenderer.Draw(
-							PIXEL_CODE,
-							dEntity.X, dEntity.Y, 0, 0,
-							0, dEntity.Width, dEntity.Height, PhysicsCheckTint.Value
-						);
-						success = true;
-					}
-					return true;
-				});
-				if (!success) {
-					PhysicsCheckTint = null;
-				}
-			}
 			// Draw Sprite
 			CellRenderer.Draw(
 				SpriteName.ACode(),
