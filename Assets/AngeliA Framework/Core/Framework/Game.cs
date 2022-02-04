@@ -46,6 +46,7 @@ namespace AngeliaFramework {
 		private readonly Dictionary<int, ScriptableObject> AssetPool = new();
 		private readonly WorldSquad WorldSquad = new();
 		private readonly Stack<Object> UnloadAssetStack = new();
+		private readonly HashSet<int> StagedEntityHash = new();
 		private Entity[][] Entities = null;
 		private (Entity[] entity, int length)[] EntityBuffers = null;
 		private RectInt ViewRect = new(0, 0, Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, MAX_VIEW_WIDTH), Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, 0, MAX_VIEW_HEIGHT));
@@ -54,8 +55,8 @@ namespace AngeliaFramework {
 		private int GlobalFrame = 0;
 
 		// Saving
-		private readonly SavingInt LanguageIndex = new("Yaya.LanguageIndex", -1);
-		private readonly SavingBool UseHighFramerate = new("Yaya.UseHighFramerate", true);
+		private readonly SavingInt LanguageIndex = new("Game.LanguageIndex", -1);
+		private readonly SavingBool UseHighFramerate = new("Game.UseHighFramerate", true);
 
 
 		#endregion
@@ -104,6 +105,14 @@ namespace AngeliaFramework {
 
 
 		private void Init_Entity () {
+
+			ViewRect = new(
+				0, 0, 
+				Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, MAX_VIEW_WIDTH), 
+				Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, 0, MAX_VIEW_HEIGHT)
+			);
+			GlobalFrame = 0;
+
 			// Entity
 			Entities = new Entity[Const.ENTITY_LAYER_COUNT][];
 			EntityBuffers = new (Entity[], int)[Const.ENTITY_LAYER_COUNT];
@@ -111,6 +120,7 @@ namespace AngeliaFramework {
 				Entities[layerIndex] = new Entity[ENTITY_CAPACITY[layerIndex]];
 				EntityBuffers[layerIndex] = (new Entity[ENTITY_BUFFER_CAPACITY[layerIndex]], 0);
 			}
+
 			// ID Map
 			foreach (var eType in typeof(Entity).GetAllChildClass()) {
 				int id = eType.FullName.ACode();
@@ -123,6 +133,7 @@ namespace AngeliaFramework {
 				}
 #endif
 			}
+
 			// Handler
 			Entity.AddNewEntity = AddEntity;
 			Entity.GetAsset = (id) => AssetPool.TryGet(id);
@@ -322,6 +333,8 @@ namespace AngeliaFramework {
 						!entity.Active ||
 						(entity.Despawnable && !SpawnRect.Contains(entity.X, entity.Y))
 					) {
+						entity.OnDespawn(GlobalFrame);
+						StagedEntityHash.Remove(entity.InstanceID);
 						entities[i] = null;
 					}
 				}
@@ -378,6 +391,10 @@ namespace AngeliaFramework {
 					}
 					if (emptyIndex < entityLen) {
 						var e = entities[emptyIndex] = buffers[i];
+						if (e.InstanceID == 0) {
+							e.InstanceID = Entity.NewDynamicInstanceID();
+						}
+						StagedEntityHash.TryAdd(e.InstanceID);
 						e.OnCreate(GlobalFrame);
 						buffers[i] = null;
 					} else {

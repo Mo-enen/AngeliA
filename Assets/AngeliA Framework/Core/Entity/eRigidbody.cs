@@ -8,8 +8,6 @@ namespace AngeliaFramework.Entities {
 	public abstract class eRigidbody : Entity {
 
 
-		public RectInt Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
-
 		public PhysicsLayer Layer = PhysicsLayer.Character;
 		public PhysicsMask CollisionMask = PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character;
 		public int VelocityX = 0;
@@ -41,24 +39,24 @@ namespace AngeliaFramework.Entities {
 				pos.y + VelocityY * SpeedScale / 1000
 			);
 
-			bool hitted = CellPhysics.Move(
+			var _pos = CellPhysics.Move(
 			   CollisionMask, pos,
 			   newPos, new(Width, Height), this,
-			   out var _pos, out var _dir
+			   out var hitted, out var _dir
 			);
 
 			X = _pos.x - OffsetX;
 			Y = _pos.y - OffsetY;
 
 			if (hitted) {
-				OnHitted(_dir);
+				if (_dir == Direction4.Left || _dir == Direction4.Right) {
+					VelocityX = 0;
+				} else {
+					VelocityY = 0;
+				}
 			}
 
 		}
-
-
-		// LGC
-		protected virtual void OnHitted (Direction4 hitDirection) { }
 
 
 	}

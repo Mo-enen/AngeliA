@@ -134,13 +134,14 @@ namespace AngeliaFramework.Editor {
 			using (new GUILayout.HorizontalScope(EditorStyles.toolbar)) {
 				// Language Editor
 				if (GUI.Button(Layout.Rect(24, 20), GlobalIconContent, EditorStyles.toolbarButton)) {
-					var gPer = FindObjectOfType<GamePerformer>();
-					if (gPer != null && gPer.Game != null) {
-						LanguageEditor.OpenEditor(gPer.Game);
+					var game = TryGetGame();
+					if (game != null) {
+						LanguageEditor.OpenEditor(game);
 					}
 				}
 				Layout.Rect(0, 20);
 			}
+
 			// CMD Text
 			var oldBC = GUI.backgroundColor;
 			GUI.backgroundColor = Color.clear;
@@ -302,9 +303,13 @@ namespace AngeliaFramework.Editor {
 
 		private static Game TryGetGame () {
 			Game result = null;
-			var gPer = FindObjectOfType<GamePerformer>();
-			if (gPer != null) {
-				result = gPer.Game;
+			foreach (var guid in AssetDatabase.FindAssets("t:Game")) {
+				var path = AssetDatabase.GUIDToAssetPath(guid);
+				var game = AssetDatabase.LoadAssetAtPath<Game>(path);
+				if (game != null) {
+					result = game;
+					break;
+				}
 			}
 			return result;
 		}
@@ -552,6 +557,12 @@ namespace AngeliaFramework.Editor {
 			FieldInfo[] fields = GetFieldsFromPool(eTarget.Target.GetType());
 			Layout.Space(4);
 
+			// Instance ID
+			using (new EditorGUI.DisabledGroupScope(true)) {
+				EditorGUI.TextField(Layout.Rect(0, HEIGHT), "Instance ID", eTarget.Target.InstanceID.ToString());
+			}
+			Layout.Space(2);
+
 			// X
 			eTarget.Target.X = EditorGUI.IntField(Layout.Rect(0, HEIGHT), "X", eTarget.Target.X);
 			Layout.Space(2);
@@ -566,7 +577,7 @@ namespace AngeliaFramework.Editor {
 					bool open = GetOpeningFromPool(field.FieldType);
 					if (Layout.Fold(field.Name, ref open)) {
 						using (new EditorGUI.IndentLevelScope(1)) {
-							DrawAngeliaInspector(field.GetValue(eTarget.Target), field.FieldType);
+							DrawEntityInspector(field.GetValue(eTarget.Target), field.FieldType);
 						}
 						Layout.Space(4);
 					}
@@ -586,7 +597,7 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void DrawAngeliaInspector (object target, System.Type type) {
+		private void DrawEntityInspector (object target, System.Type type) {
 			var fields = GetFieldsFromPool(type);
 			foreach (var field in fields) {
 				var cAtt = field.GetCustomAttribute<CompilerGeneratedAttribute>();

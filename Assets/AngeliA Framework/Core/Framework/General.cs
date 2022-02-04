@@ -144,8 +144,123 @@ namespace AngeliaFramework {
 	}
 
 
-	public static class Extension {
+	public static class AUtil {
+
+
+		// Physics Math
+		public static bool Intersect_SegementSegement (
+			Vector2Int a0, Vector2Int a1, Vector2Int b0, Vector2Int b1, out Vector2Int intersection
+		) {
+			intersection = default;
+
+			var qp = b0 - a0;
+			var r = a1 - a0;
+			var s = b1 - b0;
+			var rs = Cross(r, s);
+			var qpr = Cross(qp, r);
+			var qps = Cross(qp, s);
+
+			if (rs == 0 && qpr == 0) return false;
+			if (rs == 0 && qpr != 0) return false;
+			if (
+				rs != 0 &&
+				0f <= qps * rs && (rs > 0 ? qps <= rs : qps >= rs) &&
+				0f <= qpr * rs && (rs > 0 ? qpr <= rs : qpr >= rs)
+			) {
+				intersection = a0 + qps * r / rs;
+				return true;
+			}
+
+			return false;
+
+			static int Cross (Vector2Int a, Vector2Int b) => a.x * b.y - a.y * b.x;
+		}
+
+
+		public static int Intersect_SegementRect (
+			Vector2Int a0, Vector2Int a1, RectInt rect,
+			out Vector2Int intersection0, out Vector2Int intersection1
+		) => Intersect_SegementRect(a0, a1, rect, out intersection0, out intersection1, out _, out _);
+
+
+		public static int Intersect_SegementRect (
+			Vector2Int a0, Vector2Int a1, RectInt rect,
+			out Vector2Int intersection0, out Vector2Int intersection1,
+			out Direction4 normalDirection0, out Direction4 normalDirection1
+		) {
+			intersection0 = default;
+			intersection1 = default;
+			int interCount = 0;
+			normalDirection0 = default;
+			normalDirection1 = default;
+
+			// U
+			if (Intersect_SegementSegement(
+				a0, a1, new Vector2Int(rect.xMin, rect.yMax), new Vector2Int(rect.xMax, rect.yMax),
+				out var inter
+			)) {
+				intersection0 = inter;
+				normalDirection0 = Direction4.Up;
+				interCount++;
+			}
+
+			// D
+			if (Intersect_SegementSegement(
+				a0, a1, new Vector2Int(rect.xMin, rect.yMin), new Vector2Int(rect.xMax, rect.yMin),
+				out inter
+			)) {
+				if (interCount == 0) {
+					intersection0 = inter;
+					normalDirection0 = Direction4.Down;
+					interCount++;
+				} else {
+					intersection1 = inter;
+					normalDirection1 = Direction4.Down;
+					return 2;
+				}
+			}
+
+			// L 
+			if (Intersect_SegementSegement(
+				a0, a1, new Vector2Int(rect.xMin, rect.yMin), new Vector2Int(rect.xMin, rect.yMax),
+				out inter
+			)) {
+				if (interCount == 0) {
+					intersection0 = inter;
+					normalDirection0 = Direction4.Left;
+					interCount++;
+				} else {
+					intersection1 = inter;
+					normalDirection1 = Direction4.Left;
+					return 2;
+				}
+			}
+
+			// R
+			if (Intersect_SegementSegement(
+				a0, a1, new Vector2Int(rect.xMax, rect.yMin), new Vector2Int(rect.xMax, rect.yMax),
+				out inter
+			)) {
+				if (interCount == 0) {
+					intersection0 = inter;
+					normalDirection0 = Direction4.Right;
+					interCount++;
+				} else {
+					intersection1 = inter;
+					normalDirection1 = Direction4.Right;
+					return 2;
+				}
+			}
+
+			return interCount;
+		}
+
+
+
+		// Extension
 		public static PhysicsMask ToMask (this PhysicsLayer layer) => (PhysicsMask)(1 << ((int)layer));
+
+
 	}
 
 

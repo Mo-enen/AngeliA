@@ -7,9 +7,22 @@ namespace AngeliaFramework.Entities {
 	public abstract class Entity {
 
 
-		// SUB
+
+
+		#region --- SUB ---
+
+
 		public delegate void EntityLayerHandler (Entity entity, EntityLayer layer);
 		public delegate ScriptableObject ScriptableObjectIntHandler (int value);
+
+
+		#endregion
+
+
+
+
+		#region --- VAR ---
+
 
 		// Api
 		public static EntityLayerHandler AddNewEntity { get; set; } = null;
@@ -18,16 +31,52 @@ namespace AngeliaFramework.Entities {
 		public static RectInt ViewRect { get; set; }
 		public static RectInt CameraRect { get; set; }
 		public static Vector2Int MousePosition { get; set; }
+
 		public bool Active { get; set; } = true;
 		public virtual bool Despawnable { get; } = true;
+		public int InstanceID { get; set; } = 0;
 		public int X { get; set; } = 0;
 		public int Y { get; set; } = 0;
 
-		// API
+		// Data
+		private static int CurrentDynamicInstanceID = 0;
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
 		public virtual void OnCreate (int frame) { }
 		public virtual void FillPhysics (int frame) { }
 		public virtual void PhysicsUpdate (int frame) { }
 		public virtual void FrameUpdate (int frame) { }
+		public virtual void OnDespawn (int frame) { }
+
+
+		public static int NewDynamicInstanceID () {
+			CurrentDynamicInstanceID--;
+			return CurrentDynamicInstanceID;
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+
+
+		#endregion
+
+
+
 
 	}
 }

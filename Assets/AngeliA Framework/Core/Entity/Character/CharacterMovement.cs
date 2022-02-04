@@ -281,8 +281,9 @@ namespace AngeliaFramework.Entities {
 					//Rig.VelocityY = Mathf.Clamp(Rig.VelocityY - Gravity, -maxSpeed, int.MaxValue);
 				} else {
 					// Grounded
-					Rig.Gravity = Gravity;
+					Rig.Gravity = 0;
 					Rig.MaxGravitySpeed = maxSpeed;
+					Rig.VelocityY = 0;
 					//Rig.VelocityY = Mathf.Clamp(Rig.VelocityY - Gravity, -maxSpeed, int.MaxValue);
 				}
 			}
@@ -332,8 +333,8 @@ namespace AngeliaFramework.Entities {
 
 		private bool GroundCheck () {
 			var rect = Hitbox;
-			rect.y -= 6;
-			rect.height = 12;
+			rect.y -= 2;
+			rect.height = 4;
 			return CellPhysics.Overlap(
 				PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character,
 				rect, Rig
@@ -351,10 +352,12 @@ namespace AngeliaFramework.Entities {
 
 
 		private bool ForceSquatCheck () {
-			var rect = Rig.Rect;
-			rect = rect.Shrink(rect.width / 4, rect.width / 4, 0, 0);
-			rect.height = Height / 2;
-			rect.y += Height / 2;
+			var rect = new RectInt(
+				Rig.X + Rig.OffsetX + Rig.Width / 4,
+				Rig.Y + Rig.OffsetY + Height / 2,
+				Rig.Width / 2,
+				Height / 2
+			);
 			return CellPhysics.Overlap(
 				PhysicsMask.Level | PhysicsMask.Environment,
 				rect

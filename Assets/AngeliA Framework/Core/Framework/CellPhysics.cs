@@ -211,35 +211,44 @@ namespace AngeliaFramework.Physics {
 
 
 		// Move
-		public static bool Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out Vector2Int result) =>
-			Move(mask, from, to, size, entity, out result, out _);
+		public static Vector2Int Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) =>
+			Move(mask, from, to, size, entity, out _, out _);
 
 
-		public static bool Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out Vector2Int result, out Direction4 hitDirection) {
-			var _result = result = to;
+		public static Vector2Int Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out bool hitted, out Direction4 hitDirection) {
+			var result = to;
 			int distance = int.MaxValue;
-			bool success = false;
+			bool _hitted = false;
 			Direction4 _direction = default;
 			ForAllOverlaps(mask, new RectInt(to, size), (info) => {
 
 				if (entity != null && info.Entity == entity) return true;
 				if (info.IsTrigger) return true;
-
-				// Light move to Heavy
-				var _pos = Push(mask, info.Rect, from, to, size, entity, out var _dir);
-				int _dis = Util.SqrtDistance(from, _pos);
-				if (_dis < distance) {
-					distance = _dis;
-					_result = _pos;
-					_direction = _dir;
+				if (distance == int.MaxValue) {
+					result = from;
 				}
-				success = true;
+
+				Vector2Int _pos = to;
+				Direction4 _dir = default;
+				bool _solved = false;
+				for (int i = 0; i < 2 && !_solved; i++) {
+					_pos = Push(mask, info.Rect, from, _pos, size, entity, out _dir, out _solved);
+				}
+				if (_solved) {
+					int _dis = Util.SqrtDistance(from, _pos);
+					if (_dis < distance) {
+						distance = _dis;
+						result = _pos;
+						_direction = _dir;
+					}
+					_hitted = true;
+				}
 
 				return true;
 			});
+			hitted = _hitted;
 			hitDirection = _direction;
-			result = _result;
-			return success;
+			return result;
 		}
 
 
@@ -275,26 +284,26 @@ namespace AngeliaFramework.Physics {
 
 
 		private static Vector2Int Push (
-			PhysicsMask mask, RectInt heavy,
-			Vector2Int lightFrom, Vector2Int lightTo, Vector2Int lightSize, Entity lightEntity,
-			out Direction4 direction
+			PhysicsMask mask, RectInt block,
+			Vector2Int from, Vector2Int to, Vector2Int size, Entity entity,
+			out Direction4 direction, out bool solved
 		) {
-
-			var _hCenter = heavy.center.RoundToInt();
-			bool leftSide = lightTo.x + lightSize.x / 2 < _hCenter.x;
-			bool downSide = lightTo.y + lightSize.y / 2 < _hCenter.y;
+			solved = true;
+			var _hCenter = block.center.RoundToInt();
+			bool leftSide = to.x + size.x / 2 < _hCenter.x;
+			bool downSide = to.y + size.y / 2 < _hCenter.y;
 			var _posH = new Vector2Int(
-				leftSide ? heavy.x - lightSize.x : heavy.x + heavy.width,
-				lightTo.y
+				leftSide ? block.x - size.x : block.x + block.width,
+				to.y
 			);
 			var _posV = new Vector2Int(
-				lightTo.x,
-				downSide ? heavy.y - lightSize.y : heavy.y + heavy.height
+				to.x,
+				downSide ? block.y - size.y : block.y + block.height
 			);
 
 			// Overlap Check
-			bool hHit = Overlap(mask, new RectInt(_posH, lightSize), lightEntity, OperationMode.ColliderOnly) != null;
-			bool vHit = Overlap(mask, new RectInt(_posV, lightSize), lightEntity, OperationMode.ColliderOnly) != null;
+			bool hHit = Overlap(mask, new RectInt(_posH, size), entity, OperationMode.ColliderOnly) != null;
+			bool vHit = Overlap(mask, new RectInt(_posV, size), entity, OperationMode.ColliderOnly) != null;
 			Vector2Int _pos;
 
 			if (hHit != vHit) {
@@ -305,15 +314,17 @@ namespace AngeliaFramework.Physics {
 					leftSide ? Direction4.Left : Direction4.Right;
 			} else {
 				// Select by Distance with "from"
-				if (Util.SqrtDistance(lightFrom, _posH) < Util.SqrtDistance(lightFrom, _posV)) {
-					_pos = !hHit && !vHit ? _posH : lightFrom;
+				if (Util.SqrtDistance(from, _posH) < Util.SqrtDistance(from, _posV)) {
+					//_pos = !hHit && !vHit ? _posH : from;
+					_pos = _posH;
 					direction = leftSide ? Direction4.Left : Direction4.Right;
 				} else {
-					_pos = !hHit && !vHit ? _posV : lightFrom;
+					//_pos = !hHit && !vHit ? _posV : from;
+					_pos = _posV;
 					direction = downSide ? Direction4.Down : Direction4.Up;
 				}
+				solved = !hHit && !vHit;
 			}
-
 			return _pos;
 		}
 

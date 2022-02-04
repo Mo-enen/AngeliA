@@ -355,9 +355,13 @@ namespace AngeliaFramework.Editor {
 
 		private void ReloadGameAsset () {
 			Game = null;
-			var gPer = FindObjectOfType<GamePerformer>();
-			if (gPer != null) {
-				Game = gPer.Game;
+			foreach (var guid in AssetDatabase.FindAssets("t:Game")) {
+				var path = AssetDatabase.GUIDToAssetPath(guid);
+				var game = AssetDatabase.LoadAssetAtPath<Game>(path);
+				if (game != null) {
+					Game = game;
+					break;
+				}
 			}
 		}
 
