@@ -78,7 +78,6 @@ namespace AngeliaFramework.Physics {
 		// Const
 		private const int CELL_DEPTH = 8;
 		private const int OVERLAP_RESULT_COUNT = CELL_DEPTH * Const.PHYSICS_LAYER_COUNT * 4;
-		private const int ROOM_GAP = 2;
 
 		// Api
 		public static int Width { get; private set; } = 0;
@@ -187,16 +186,42 @@ namespace AngeliaFramework.Physics {
 		}
 
 
+		// Check
 		public static bool RoomCheck (PhysicsMask mask, Entity entity, Direction4 direction, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+			const int GAP = 1;
 			var eRect = entity.Rect;
 			RectInt rect = direction switch {
-				Direction4.Down => new(eRect.x, eRect.y - ROOM_GAP, eRect.width, ROOM_GAP),
-				Direction4.Up => new(eRect.x, eRect.yMax, eRect.width, ROOM_GAP),
-				Direction4.Left => new(eRect.x - ROOM_GAP, eRect.y, ROOM_GAP, eRect.height),
-				Direction4.Right => new(eRect.xMax, eRect.y, ROOM_GAP, eRect.height),
+				Direction4.Down => new(eRect.x, eRect.y - GAP, eRect.width, GAP),
+				Direction4.Up => new(eRect.x, eRect.yMax, eRect.width, GAP),
+				Direction4.Left => new(eRect.x - GAP, eRect.y, GAP, eRect.height),
+				Direction4.Right => new(eRect.xMax, eRect.y, GAP, eRect.height),
 				_ => throw new System.NotImplementedException(),
 			};
 			return Overlap(mask, rect, entity, mode, tag) == null;
+		}
+
+
+		public static bool PushCheck (PhysicsMask mask, int pushLevel, Entity target, Direction4 direction) =>
+			target != null &&
+			pushLevel > eRigidbody.GetPushLevel(target) &&
+			RoomCheck(mask, target, direction);
+
+
+		public static bool StopCheck (PhysicsMask mask, eRigidbody rig, Direction4 dir) {
+			if (RoomCheck(mask, rig, dir)) return false;
+			var rect = rig.Rect;
+			int count = ForAllOverlaps(
+				mask, new(
+					rect.x,
+					rect.y + (dir == Direction4.Up ? rect.height : -1),
+					rect.width,
+					1
+				), out var results, rig
+			);
+			for (int i = 0; i < count; i++) {
+				if (!PushCheck(mask, rig.PushLevel, results[i].Entity, dir)) return true;
+			}
+			return false;
 		}
 
 
@@ -221,14 +246,10 @@ namespace AngeliaFramework.Physics {
 					bool useH = Util.SqrtDistance(ghostH, from) < Util.SqrtDistance(ghostV, from);
 					var ghostPos = useH ? ghostH : ghostV;
 					// Push Level
-					if (hit.Entity != null && pushLevel > eRigidbody.GetPushLevel(hit.Entity)) {
-						var roomDir = useH ?
-							leftSide ? Direction4.Right : Direction4.Left :
-							downSide ? Direction4.Up : Direction4.Down;
-						if (RoomCheck(mask, hit.Entity, roomDir)) {
-							continue;
-						}
-					}
+					var roomDir = useH ?
+						leftSide ? Direction4.Right : Direction4.Left :
+						downSide ? Direction4.Up : Direction4.Down;
+					if (PushCheck(mask, pushLevel, hit.Entity, roomDir)) continue;
 					// Solve
 					int _dis = Util.SqrtDistance(ghostPos, from);
 					if (_dis < distance) {

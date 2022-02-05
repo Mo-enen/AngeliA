@@ -8,11 +8,16 @@ namespace AngeliaFramework.Entities {
 	public abstract class eRigidbody : Entity {
 
 
+		// Const
+		private static readonly int WATER_TAG = "Water".ACode();
+		private const int WATER_RATE = 400;
+
 		// Api
 		public int FinalVelocityX => X - PrevX;
 		public int FinalVelocityY => Y - PrevY;
 		public virtual int PushLevel => 0;
 		public virtual bool CarryOnTop => true;
+		public bool InWater { get; private set; } = false;
 
 		// Api-Ser
 		public PhysicsLayer Layer = PhysicsLayer.Character;
@@ -23,7 +28,6 @@ namespace AngeliaFramework.Entities {
 		public int MaxGravitySpeed = 64;
 		public int OffsetX = 0;
 		public int OffsetY = 0;
-		public int SpeedScale = 1000;
 
 		// Data
 		private int PrevX = 0;
@@ -44,26 +48,40 @@ namespace AngeliaFramework.Entities {
 
 
 		public override void PhysicsUpdate (int frame) {
-
+			// Water
+			InWater = CellPhysics.Overlap(
+				PhysicsMask.Level, Rect, null,
+				CellPhysics.OperationMode.TriggerOnly,
+				WATER_TAG
+			) != null;
+			// Gravity
 			if (Gravity != 0) {
-				VelocityY = Mathf.Clamp(VelocityY - Gravity, -MaxGravitySpeed, int.MaxValue);
+				VelocityY = Mathf.Clamp(
+					VelocityY - Gravity,
+					-MaxGravitySpeed * (InWater ? WATER_RATE : 1000) / 1000,
+					int.MaxValue
+				);
 			}
-
+			// Vertical Stopping
+			if (VelocityY != 0 && CellPhysics.StopCheck(
+				CollisionMask, this, VelocityY > 0 ? Direction4.Up : Direction4.Down
+			)) {
+				VelocityY = 0;
+			}
+			// Move
 			PrevX = X;
 			PrevY = Y;
-
-			PerformCancelOut();
 			PerformMove(VelocityX, VelocityY, true);
-
 		}
 
 
 		private void PerformMove (int speedX, int speedY, bool carry) {
 
+			int speedScale = InWater ? WATER_RATE : 1000;
 			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);
 			var newPos = new Vector2Int(
-				pos.x + speedX * SpeedScale / 1000,
-				pos.y + speedY * SpeedScale / 1000
+				pos.x + speedX * speedScale / 1000,
+				pos.y + speedY * speedScale / 1000
 			);
 
 			var _pos = CellPhysics.Move(
@@ -108,16 +126,6 @@ namespace AngeliaFramework.Entities {
 				}
 			}
 
-		}
-
-
-		private void PerformCancelOut () {
-			if (VelocityY > 0 && !CellPhysics.RoomCheck(CollisionMask, this, Direction4.Up)) {
-				VelocityY = 0;
-			}
-			if (VelocityY < 0 && !CellPhysics.RoomCheck(CollisionMask, this, Direction4.Down)) {
-				VelocityY = 0;
-			}
 		}
 
 

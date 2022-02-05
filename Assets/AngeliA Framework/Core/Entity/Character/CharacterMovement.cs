@@ -57,19 +57,17 @@ namespace AngeliaFramework.Entities {
 		public int FreeSwimDashDuration { get; init; } = 4;
 		public int FreeSwimDashCooldown { get; init; } = 4;
 		public int FreeSwimDashAcceleration { get; init; } = 128;
-		public int SwimSpeedRate { get; init; } = 400;
 
 
 		// Const
-		private static readonly int WATER_TAG = "Water".ACode();
 		private const int JUMP_TOLERANCE = 4;
 
 		// Api
 		public bool IsGrounded { get; private set; } = false;
-		public bool InWater { get; private set; } = false;
 		public bool IsDashing { get; private set; } = false;
 		public bool IsSquating { get; private set; } = false;
 		public bool IsPounding { get; private set; } = false;
+		public bool InWater => Rig.InWater;
 		public int CurrentJumpCount { get; private set; } = 0;
 		public Direction2 CurrentFacingX { get; private set; } = Direction2.Positive;
 
@@ -86,6 +84,7 @@ namespace AngeliaFramework.Entities {
 		private bool IntendedJump = false;
 		private bool IntendedDash = false;
 		private bool IntendedPound = false;
+		private bool PrevInWater = false;
 		private int LastGroundedFrame = int.MinValue;
 		private int LastDashFrame = int.MinValue;
 		private RectInt Hitbox = default;
@@ -131,10 +130,8 @@ namespace AngeliaFramework.Entities {
 			if (IsGrounded) LastGroundedFrame = CurrentFrame;
 			IsDashing = DashAvailable && CurrentFrame < LastDashFrame + CurrentDashDuration;
 			// Water
-			bool prevInWater = InWater;
-			InWater = WaterCheck();
 			// In/Out Water
-			if (prevInWater != InWater) {
+			if (PrevInWater != InWater) {
 				LastDashFrame = int.MinValue;
 				IsDashing = false;
 				if (InWater) {
@@ -147,6 +144,7 @@ namespace AngeliaFramework.Entities {
 					}
 				}
 			}
+			PrevInWater = InWater;
 			// Squat
 			IsSquating = SquatAvailable && IsGrounded && ((!IsDashing && IntendedY < 0) || ForceSquatCheck());
 			// Pound
@@ -162,7 +160,7 @@ namespace AngeliaFramework.Entities {
 			Rig.Height = Hitbox.height;
 			Rig.OffsetX = -Width / 2;
 			Rig.OffsetY = 0;
-			Rig.SpeedScale = InWater && !SwimInFreeStyle ? SwimSpeedRate : 1000;
+			//Rig.SpeedScale = InWater && !SwimInFreeStyle ? SwimSpeedRate : 1000;
 		}
 
 
@@ -262,8 +260,6 @@ namespace AngeliaFramework.Entities {
 				Rig.MaxGravitySpeed = 0;
 			} else {
 				// Gravity
-				int maxSpeed = InWater && !SwimInFreeStyle ?
-					MaxGravitySpeed * SwimSpeedRate / 1000 : MaxGravitySpeed;
 				if (IsPounding) {
 					// Pound
 					Rig.Gravity = 0;
@@ -272,15 +268,15 @@ namespace AngeliaFramework.Entities {
 				} else if (HoldingJump && Rig.VelocityY > 0) {
 					// Jumping Raise
 					Rig.Gravity = JumpRaiseGravity;
-					Rig.MaxGravitySpeed = maxSpeed;
+					Rig.MaxGravitySpeed = MaxGravitySpeed;
 				} else if (!IsGrounded) {
 					// In Air/Water
 					Rig.Gravity = Gravity;
-					Rig.MaxGravitySpeed = maxSpeed;
+					Rig.MaxGravitySpeed = MaxGravitySpeed;
 				} else {
 					// Grounded
 					Rig.Gravity = Gravity;
-					Rig.MaxGravitySpeed = maxSpeed;
+					Rig.MaxGravitySpeed = MaxGravitySpeed;
 				}
 			}
 		}
@@ -338,15 +334,6 @@ namespace AngeliaFramework.Entities {
 		}
 
 
-		private bool WaterCheck () => CellPhysics.Overlap(
-			PhysicsMask.Level,
-			Hitbox,
-			null,
-			CellPhysics.OperationMode.TriggerOnly,
-			WATER_TAG
-		) != null;
-
-
 		private bool ForceSquatCheck () {
 			var rect = new RectInt(
 				Rig.X + Rig.OffsetX + Rig.Width / 4,
@@ -354,10 +341,18 @@ namespace AngeliaFramework.Entities {
 				Rig.Width / 2,
 				Height / 2
 			);
-			return CellPhysics.Overlap(
+			bool overlap = CellPhysics.Overlap(
 				PhysicsMask.Level | PhysicsMask.Environment,
 				rect
 			) != null;
+			if (overlap && IsSquating && IntendedY >= 0) {
+				// Want to Stand Up but Overlaps
+				return CellPhysics.StopCheck(
+					PhysicsMask.Level | PhysicsMask.Environment,
+					Rig, Direction4.Up
+				);
+			}
+			return overlap;
 		}
 
 
