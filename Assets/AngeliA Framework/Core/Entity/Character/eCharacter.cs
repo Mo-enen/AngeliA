@@ -14,6 +14,7 @@ namespace AngeliaFramework.Entities {
 
 
 		// Api
+		public override int PushLevel => 100;
 		public abstract CharacterMovement Movement { get; }
 		public abstract CharacterRenderer Renderer { get; }
 

@@ -78,6 +78,7 @@ namespace AngeliaFramework.Physics {
 		// Const
 		public const int CELL_DEPTH = 8;
 		public const int OVERLAP_RESULT_COUNT = CELL_DEPTH * Const.PHYSICS_LAYER_COUNT * 4;
+		public const int ROOM_GAP = 2;
 
 		// Api
 		public static int Width { get; private set; } = 0;
@@ -188,11 +189,11 @@ namespace AngeliaFramework.Physics {
 
 		// Move
 		public static Vector2Int Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) {
-			var result0 = Push(mask, from, new Vector2Int(from.x, to.y), size, entity);
-			var result1 = Push(mask, new(from.x, result0.y), new(to.x, result0.y), size, entity);
-
-			return result1;
+			var pos = Push(mask, from, new Vector2Int(from.x, to.y), size, entity);
+			return Push(mask, new(from.x, pos.y), new(to.x, pos.y), size, entity);
+			// Func
 			static Vector2Int Push (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) {
+				int pushLevel = eRigidbody.GetPushLevel(entity);
 				Vector2Int result = to;
 				int distance = int.MaxValue;
 				int count = ForAllOverlaps(mask, new RectInt(to, size), out var results, entity);
@@ -204,6 +205,16 @@ namespace AngeliaFramework.Physics {
 					var ghostH = new Vector2Int(leftSide ? hit.Rect.x - size.x : hit.Rect.xMax, to.y);
 					var ghostV = new Vector2Int(to.x, downSide ? hit.Rect.y - size.y : hit.Rect.yMax);
 					bool useH = Util.SqrtDistance(ghostH, from) < Util.SqrtDistance(ghostV, from);
+					// Push Level
+					if (hit.Entity != null && pushLevel > eRigidbody.GetPushLevel(hit.Entity)) {
+						var roomDir = useH ?
+							leftSide ? Direction4.Right : Direction4.Left :
+							downSide ? Direction4.Up : Direction4.Down;
+						if (RoomCheck(mask, hit.Entity, roomDir)) {
+							continue;
+						}
+					}
+					// Solve
 					var ghostPos = useH ? ghostH : ghostV;
 					int _dis = Util.SqrtDistance(ghostPos, from);
 					if (_dis < distance) {
@@ -310,6 +321,19 @@ namespace AngeliaFramework.Physics {
 				if (OverlapResults[i] == null) break;
 				OverlapResults[i] = null;
 			}
+		}
+
+
+		private static bool RoomCheck (PhysicsMask mask, Entity entity, Direction4 direction, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+			var eRect = entity.Rect;
+			RectInt rect = direction switch {
+				Direction4.Down => new(eRect.x, eRect.y - ROOM_GAP, eRect.width, ROOM_GAP),
+				Direction4.Up => new(eRect.x, eRect.yMax, eRect.width, ROOM_GAP),
+				Direction4.Left => new(eRect.x - ROOM_GAP, eRect.y, ROOM_GAP, eRect.height),
+				Direction4.Right => new(eRect.xMax, eRect.y, ROOM_GAP, eRect.height),
+				_ => throw new System.NotImplementedException(),
+			};
+			return Overlap(mask, rect, entity, mode, tag) == null;
 		}
 
 

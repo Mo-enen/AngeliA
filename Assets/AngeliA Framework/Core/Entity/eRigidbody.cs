@@ -11,6 +11,7 @@ namespace AngeliaFramework.Entities {
 		// Api
 		public int FinalVelocityX => X - PrevX;
 		public int FinalVelocityY => Y - PrevY;
+		public virtual int PushLevel => 0;
 
 		// Api-Ser
 		public PhysicsLayer Layer = PhysicsLayer.Character;
@@ -74,7 +75,9 @@ namespace AngeliaFramework.Entities {
 			// Carry
 			if (carry && speedY <= 0) {
 				const int GAP = 2;
-				int count = CellPhysics.ForAllOverlaps(CollisionMask, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), out var results, this);
+				int count = CellPhysics.ForAllOverlaps(
+					CollisionMask, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), out var results, this
+				);
 				int finalL = 0;
 				int finalR = 0;
 				for (int i = 0; i < count; i++) {
@@ -99,6 +102,12 @@ namespace AngeliaFramework.Entities {
 			}
 
 		}
+
+
+		// API
+		public static int GetPushLevel (Entity entity) => 
+			entity == null ? int.MaxValue : 
+			entity is eRigidbody rig ? rig.PushLevel : 0;
 
 
 	}

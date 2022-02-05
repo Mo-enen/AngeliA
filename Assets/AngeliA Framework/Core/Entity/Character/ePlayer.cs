@@ -13,6 +13,9 @@ namespace AngeliaFramework.Entities {
 		#region --- VAR ---
 
 
+		// Api
+		public override int PushLevel => 110;
+
 		// Data
 		private int LeftDownFrame = int.MinValue;
 		private int RightDownFrame = int.MinValue;
