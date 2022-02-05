@@ -15,6 +15,7 @@ namespace AngeliaFramework.Entities {
 
 		// Api
 		public override int PushLevel => 100;
+		public override bool CarryOnTop => !Movement.IsSquating;
 		public abstract CharacterMovement Movement { get; }
 		public abstract CharacterRenderer Renderer { get; }
 
@@ -29,18 +30,7 @@ namespace AngeliaFramework.Entities {
 
 		public override void PhysicsUpdate (int frame) {
 			Movement.PhysicsUpdate(frame);
-			PhysicsUpdate_CancelOut();
 			base.PhysicsUpdate(frame);
-		}
-
-
-		private void PhysicsUpdate_CancelOut () {
-			const int GAP = 2;
-			if (VelocityY > 0 && CellPhysics.Overlap(
-				CollisionMask, new(X + OffsetX, Y + OffsetY + Height, Width, GAP), this
-			) != null) {
-				VelocityY = 0;
-			}
 		}
 
 

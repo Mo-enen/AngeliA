@@ -12,6 +12,7 @@ namespace AngeliaFramework.Entities {
 		public int FinalVelocityX => X - PrevX;
 		public int FinalVelocityY => Y - PrevY;
 		public virtual int PushLevel => 0;
+		public virtual bool CarryOnTop => true;
 
 		// Api-Ser
 		public PhysicsLayer Layer = PhysicsLayer.Character;
@@ -51,6 +52,7 @@ namespace AngeliaFramework.Entities {
 			PrevX = X;
 			PrevY = Y;
 
+			PerformCancelOut();
 			PerformMove(VelocityX, VelocityY, true);
 
 		}
@@ -74,7 +76,7 @@ namespace AngeliaFramework.Entities {
 
 			// Carry
 			if (carry && speedY <= 0) {
-				const int GAP = 2;
+				const int GAP = 1;
 				int count = CellPhysics.ForAllOverlaps(
 					CollisionMask, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), out var results, this
 				);
@@ -82,7 +84,12 @@ namespace AngeliaFramework.Entities {
 				int finalR = 0;
 				for (int i = 0; i < count; i++) {
 					var hit = results[i];
-					if (hit != null && hit.Entity is eRigidbody hitRig && hitRig.FinalVelocityX != 0) {
+					if (
+						hit.Entity is eRigidbody hitRig &&
+						hitRig.CarryOnTop &&
+						hitRig.FinalVelocityX != 0 &&
+						hitRig.Rect.yMax == Rect.y
+					) {
 						if (hitRig.FinalVelocityX < 0) {
 							// L
 							if (Mathf.Abs(hitRig.FinalVelocityX) > Mathf.Abs(finalL)) {
@@ -104,9 +111,19 @@ namespace AngeliaFramework.Entities {
 		}
 
 
+		private void PerformCancelOut () {
+			if (VelocityY > 0 && !CellPhysics.RoomCheck(CollisionMask, this, Direction4.Up)) {
+				VelocityY = 0;
+			}
+			if (VelocityY < 0 && !CellPhysics.RoomCheck(CollisionMask, this, Direction4.Down)) {
+				VelocityY = 0;
+			}
+		}
+
+
 		// API
-		public static int GetPushLevel (Entity entity) => 
-			entity == null ? int.MaxValue : 
+		public static int GetPushLevel (Entity entity) =>
+			entity == null ? int.MaxValue :
 			entity is eRigidbody rig ? rig.PushLevel : 0;
 
 
