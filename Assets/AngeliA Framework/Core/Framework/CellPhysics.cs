@@ -206,55 +206,39 @@ namespace AngeliaFramework.Physics {
 
 		// Move
 		public static Vector2Int Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) =>
-			Move(mask, from, to, size, entity, out _, out _);
+			Move(mask, from, to, size, entity, out _);
 
 
-		public static Vector2Int Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out Direction2? hitX, out Direction2? hitY) {
-
-			hitX = null;
-			hitY = null;
-			var result = to;
-			int distance = int.MaxValue;
-
-			/*
-
-				still care about X when solve Y
-
-			*/
-
-			// Y
-			var toV = to;
-			toV.x = from.x;
-			int count = ForAllOverlaps(mask, new RectInt(toV, size), out var results, entity);
-			for (int index = 0; index < count; index++) {
-				var hit = results[index];
-				var centerY = hit.Rect.center.y.RoundToInt();
-				int newY = from.y + size.y / 2 < centerY ? hit.Rect.y - size.y : hit.Rect.yMax;
-				int _dis = Mathf.Abs(newY - from.y);
-				if (_dis < distance) {
-					distance = _dis;
-					result.y = newY;
-					hitY = from.y < centerY ? Direction2.Negative : Direction2.Positive;
+		public static Vector2Int Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out Direction4? hit) {
+			var result0 = Push(mask, from, new Vector2Int(from.x, to.y), size, entity, out var hit0, out int dis0);
+			var result1 = Push(mask, new(from.x, result0.y), new(to.x, result0.y), size, entity, out var hit1, out var dis1);
+			hit = dis0 < dis1 ? hit0 : hit1;
+			return result1;
+			static Vector2Int Push (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out Direction4? hitDirection, out int distance) {
+				Vector2Int result = to;
+				hitDirection = null;
+				distance = int.MaxValue;
+				int count = ForAllOverlaps(mask, new RectInt(to, size), out var results, entity);
+				for (int index = 0; index < count; index++) {
+					var hit = results[index];
+					var center = hit.Rect.center.RoundToInt();
+					bool leftSide = to.x < center.x;
+					bool downSide = to.y < center.y;
+					var ghostH = new Vector2Int(leftSide ? hit.Rect.x - size.x : hit.Rect.xMax, to.y);
+					var ghostV = new Vector2Int(to.x, downSide ? hit.Rect.y - size.y : hit.Rect.yMax);
+					bool useH = Util.SqrtDistance(ghostH, from) < Util.SqrtDistance(ghostV, from);
+					var ghostPos = useH ? ghostH : ghostV;
+					int _dis = Util.SqrtDistance(ghostPos, from);
+					if (_dis < distance) {
+						distance = _dis;
+						result = ghostPos;
+						hitDirection = useH ?
+							leftSide ? Direction4.Left : Direction4.Right :
+							downSide ? Direction4.Down : Direction4.Up;
+					}
 				}
+				return result;
 			}
-			from.y = to.y = result.y;
-
-			// X
-			distance = int.MaxValue;
-			count = ForAllOverlaps(mask, new RectInt(to, size), out results, entity);
-			for (int index = 0; index < count; index++) {
-				var hit = results[index];
-				var centerX = hit.Rect.center.x.RoundToInt();
-				int newX = from.x + size.x / 2 < centerX ? hit.Rect.x - size.x : hit.Rect.xMax;
-				int _dis = Mathf.Abs(newX - from.x);
-				if (_dis < distance) {
-					distance = _dis;
-					result.x = newX;
-					hitX = from.x < centerX ? Direction2.Negative : Direction2.Positive;
-				}
-			}
-
-			return result;
 		}
 
 
