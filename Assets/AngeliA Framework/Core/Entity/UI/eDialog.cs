@@ -16,8 +16,6 @@ namespace AngeliaFramework.Entities {
 		public override bool Despawnable => false;
 
 		// Data
-		private int Width;
-		private int Height;
 		private string Message = "";
 		private string Label_OK = "";
 		private string Label_Cancel = "";

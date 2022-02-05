@@ -34,8 +34,8 @@ namespace AngeliaFramework.Entities.Editor {
 
 		public override void FillPhysics (int frame) {
 			if (Width <= Const.CELL_SIZE && Height <= Const.CELL_SIZE) {
-				CellPhysics.Fill(
-					Layer, new RectInt(X + OffsetX, Y + OffsetY, Width, Height), this,
+				CellPhysics.FillEntity(
+					Layer, this,
 					IsTrigger, string.IsNullOrEmpty(Tag) ? 0 : Tag.ACode()
 				);
 			}

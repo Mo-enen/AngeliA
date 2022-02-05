@@ -28,7 +28,18 @@ namespace AngeliaFramework.Entities {
 
 		public override void PhysicsUpdate (int frame) {
 			Movement.PhysicsUpdate(frame);
+			PhysicsUpdate_CancelOut();
 			base.PhysicsUpdate(frame);
+		}
+
+
+		private void PhysicsUpdate_CancelOut () {
+			const int GAP = 2;
+			if (VelocityY > 0 && CellPhysics.Overlap(
+				CollisionMask, new(X + OffsetX, Y + OffsetY + Height, Width, GAP), this
+			) != null) {
+				VelocityY = 0;
+			}
 		}
 
 
@@ -36,6 +47,17 @@ namespace AngeliaFramework.Entities {
 			Renderer.FrameUpdate(frame, Movement.CurrentFacingX, Movement.IsSquating);
 			base.FrameUpdate(frame);
 		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+
 
 
 		#endregion

@@ -40,34 +40,34 @@ namespace AngeliaFramework.Entities.Editor {
 			// Debug Ground
 			for (int y = 0; y < GroundSizeA.y; y++) {
 				for (int x = 0; x < GroundSizeA.x; x++) {
-					CellPhysics.Fill(PhysicsLayer.Level, new RectInt(
+					CellPhysics.FillBlock(PhysicsLayer.Level, new RectInt(
 						(x + GroundPosA.x) * Const.CELL_SIZE,
 						(y + GroundPosA.y) * Const.CELL_SIZE,
 						Const.CELL_SIZE,
 						Const.CELL_SIZE
-					), null);
+					));
 				}
 			}
 			for (int y = 0; y < GroundSizeB.y; y++) {
 				for (int x = 0; x < GroundSizeB.x; x++) {
-					CellPhysics.Fill(PhysicsLayer.Level, new RectInt(
+					CellPhysics.FillBlock(PhysicsLayer.Level, new RectInt(
 						(x + GroundPosB.x) * Const.CELL_SIZE,
 						(y + GroundPosB.y) * Const.CELL_SIZE,
 						Const.CELL_SIZE,
 						Const.CELL_SIZE
-					), null);
+					));
 				}
 			}
 			// Debug Water
 			int waterTag = "Water".ACode();
 			for (int y = 0; y < WaterSize.y; y++) {
 				for (int x = 0; x < WaterSize.x; x++) {
-					CellPhysics.Fill(PhysicsLayer.Level, new RectInt(
+					CellPhysics.FillBlock(PhysicsLayer.Level, new RectInt(
 						(x + WaterPos.x) * Const.CELL_SIZE,
 						(y + WaterPos.y) * Const.CELL_SIZE,
 						Const.CELL_SIZE,
 						Const.CELL_SIZE
-					), null, true, waterTag);
+					), true, waterTag);
 				}
 			}
 

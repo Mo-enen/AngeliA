@@ -279,9 +279,8 @@ namespace AngeliaFramework.Entities {
 					Rig.MaxGravitySpeed = maxSpeed;
 				} else {
 					// Grounded
-					Rig.Gravity = 0;
+					Rig.Gravity = Gravity;
 					Rig.MaxGravitySpeed = maxSpeed;
-					Rig.VelocityY = 0;
 				}
 			}
 		}

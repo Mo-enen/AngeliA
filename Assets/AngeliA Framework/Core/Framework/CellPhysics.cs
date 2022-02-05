@@ -14,12 +14,16 @@ namespace AngeliaFramework.Physics {
 
 
 		private struct Cell {
+
+			public RectInt GlobalRect => Entity != null ? Entity.Rect : Rect;
+
 			public RectInt Rect;
 			public Entity Entity;
 			public uint Frame;
 			public bool IsTrigger;
 			public int Tag;
-			public HitInfo GetInfo () => new(Rect, Entity, IsTrigger, Tag);
+
+			public HitInfo GetInfo () => new(GlobalRect, Entity, IsTrigger, Tag);
 		}
 
 
@@ -115,32 +119,10 @@ namespace AngeliaFramework.Physics {
 		public static void BeginFill () => CurrentFrame++;
 
 
-		public static void Fill (PhysicsLayer layer, RectInt globalRect, Entity entity, bool isTrigger = false, int tag = 0) {
-#if UNITY_EDITOR
-			if (globalRect.width > Const.CELL_SIZE || globalRect.height > Const.CELL_SIZE) {
-				Debug.LogWarning("[CellPhysics] Rect size too large.");
-			}
-#endif
-			int i = globalRect.x.GetCellIndexX();
-			int j = globalRect.y.GetCellIndexY();
-			if (i < 0 || j < 0 || i >= Width || j >= Height) { return; }
-			if (layer != CurrentLayerEnum) {
-				CurrentLayerEnum = layer;
-				CurrentLayer = Layers[(int)layer];
-			}
-			for (int dep = 0; dep < CELL_DEPTH; dep++) {
-				var cell = CurrentLayer[i, j, dep];
-				if (cell.Frame != CurrentFrame) {
-					cell.Rect = globalRect;
-					cell.Entity = entity;
-					cell.Frame = CurrentFrame;
-					cell.IsTrigger = isTrigger;
-					cell.Tag = tag;
-					CurrentLayer[i, j, dep] = cell;
-					return;
-				}
-			}
-		}
+		public static void FillBlock (PhysicsLayer layer, RectInt globalRect, bool isTrigger = false, int tag = 0) => FillLogic(layer, globalRect, null, isTrigger, tag);
+
+
+		public static void FillEntity (PhysicsLayer layer, Entity entity, bool isTrigger = false, int tag = 0) => FillLogic(layer, entity.Rect, entity, isTrigger, tag);
 
 
 		// Overlap
@@ -172,7 +154,7 @@ namespace AngeliaFramework.Physics {
 						if (ignore != null && cell.Entity == ignore) continue;
 						if (tag != 0 && cell.Tag != tag) continue;
 						if ((cell.IsTrigger && useTrigger) || (!cell.IsTrigger && useCollider)) {
-							if (cell.Rect.Overlaps(globalRect)) {
+							if (cell.GlobalRect.Overlaps(globalRect)) {
 								return cell.GetInfo();
 							}
 						}
@@ -205,19 +187,14 @@ namespace AngeliaFramework.Physics {
 
 
 		// Move
-		public static Vector2Int Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) =>
-			Move(mask, from, to, size, entity, out _);
+		public static Vector2Int Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) {
+			var result0 = Push(mask, from, new Vector2Int(from.x, to.y), size, entity);
+			var result1 = Push(mask, new(from.x, result0.y), new(to.x, result0.y), size, entity);
 
-
-		public static Vector2Int Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out Direction4? hit) {
-			var result0 = Push(mask, from, new Vector2Int(from.x, to.y), size, entity, out var hit0, out int dis0);
-			var result1 = Push(mask, new(from.x, result0.y), new(to.x, result0.y), size, entity, out var hit1, out var dis1);
-			hit = dis0 < dis1 ? hit0 : hit1;
 			return result1;
-			static Vector2Int Push (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out Direction4? hitDirection, out int distance) {
+			static Vector2Int Push (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) {
 				Vector2Int result = to;
-				hitDirection = null;
-				distance = int.MaxValue;
+				int distance = int.MaxValue;
 				int count = ForAllOverlaps(mask, new RectInt(to, size), out var results, entity);
 				for (int index = 0; index < count; index++) {
 					var hit = results[index];
@@ -232,9 +209,6 @@ namespace AngeliaFramework.Physics {
 					if (_dis < distance) {
 						distance = _dis;
 						result = ghostPos;
-						hitDirection = useH ?
-							leftSide ? Direction4.Left : Direction4.Right :
-							downSide ? Direction4.Down : Direction4.Up;
 					}
 				}
 				return result;
@@ -273,6 +247,34 @@ namespace AngeliaFramework.Physics {
 		private static int GetCellIndexY (this int y) => (y - PositionY) / Const.CELL_SIZE;
 
 
+		private static void FillLogic (PhysicsLayer layer, RectInt globalRect, Entity entity, bool isTrigger, int tag) {
+#if UNITY_EDITOR
+			if (globalRect.width > Const.CELL_SIZE || globalRect.height > Const.CELL_SIZE) {
+				Debug.LogWarning("[CellPhysics] Rect size too large.");
+			}
+#endif
+			int i = globalRect.x.GetCellIndexX();
+			int j = globalRect.y.GetCellIndexY();
+			if (i < 0 || j < 0 || i >= Width || j >= Height) { return; }
+			if (layer != CurrentLayerEnum) {
+				CurrentLayerEnum = layer;
+				CurrentLayer = Layers[(int)layer];
+			}
+			for (int dep = 0; dep < CELL_DEPTH; dep++) {
+				var cell = CurrentLayer[i, j, dep];
+				if (cell.Frame != CurrentFrame) {
+					cell.Rect = globalRect;
+					cell.Entity = entity;
+					cell.Frame = CurrentFrame;
+					cell.IsTrigger = isTrigger;
+					cell.Tag = tag;
+					CurrentLayer[i, j, dep] = cell;
+					return;
+				}
+			}
+		}
+
+
 		private static int ForAllOverlapsLogic (PhysicsLayer layer, RectInt globalRect, int startIndex, Entity ignore, OperationMode mode, int tag) {
 			var layerItem = Layers[(int)layer];
 			int l = Mathf.Max(globalRect.xMin.GetCellIndexX() - 1, 0);
@@ -290,7 +292,7 @@ namespace AngeliaFramework.Physics {
 						if (ignore != null && cell.Entity == ignore) continue;
 						if (tag != 0 && cell.Tag != tag) continue;
 						if ((cell.IsTrigger && useTrigger) || (!cell.IsTrigger && useCollider)) {
-							if (cell.Rect.Overlaps(globalRect)) {
+							if (cell.GlobalRect.Overlaps(globalRect)) {
 								OverlapResults[count] = cell.GetInfo();
 								count++;
 								if (count >= OVERLAP_RESULT_COUNT) { return count; }

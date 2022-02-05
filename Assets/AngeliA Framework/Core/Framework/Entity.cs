@@ -32,11 +32,15 @@ namespace AngeliaFramework.Entities {
 		public static RectInt CameraRect { get; set; }
 		public static Vector2Int MousePosition { get; set; }
 
+		public virtual RectInt Rect => new(X, Y, Width, Height);
+
 		public bool Active { get; set; } = true;
 		public virtual bool Despawnable { get; } = true;
 		public int InstanceID { get; set; } = 0;
 		public int X { get; set; } = 0;
 		public int Y { get; set; } = 0;
+		public int Width { get; set; } = Const.CELL_SIZE;
+		public int Height { get; set; } = Const.CELL_SIZE;
 
 		// Data
 		private static int CurrentDynamicInstanceID = 0;

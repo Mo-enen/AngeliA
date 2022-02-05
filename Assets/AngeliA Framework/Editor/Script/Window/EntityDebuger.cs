@@ -571,6 +571,14 @@ namespace AngeliaFramework.Editor {
 			eTarget.Target.Y = EditorGUI.IntField(Layout.Rect(0, HEIGHT), "Y", eTarget.Target.Y);
 			Layout.Space(2);
 
+			// Width
+			eTarget.Target.Width = EditorGUI.IntField(Layout.Rect(0, HEIGHT), "Width", eTarget.Target.Width);
+			Layout.Space(2);
+
+			// Height
+			eTarget.Target.Height = EditorGUI.IntField(Layout.Rect(0, HEIGHT), "Height", eTarget.Target.Height);
+			Layout.Space(2);
+
 			// Fields
 			foreach (var field in fields) {
 				if (field.GetCustomAttribute<AngeliaInspectorAttribute>(false) != null) {

@@ -7,8 +7,6 @@ using AngeliaFramework.Rendering;
 namespace AngeliaFramework.Entities.Editor {
 	public class eDebugChar : Entity {
 
-		public int Width = Const.CELL_SIZE * 16;
-		public int Height = Const.CELL_SIZE * 4;
 		public int CharSize = 256;
 		public int CharSpace = 8;
 		public int LineSpace = 8;
