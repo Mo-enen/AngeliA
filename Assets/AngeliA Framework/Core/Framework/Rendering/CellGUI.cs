@@ -13,6 +13,9 @@ namespace AngeliaFramework.Rendering {
 		#region --- VAR ---
 
 
+		// Api
+		public static bool HoverOnGUI { get; private set; } = false;
+
 		// Data
 		private static System.Action PressAction = null;
 		private static System.Action NavigationAction = null;
@@ -135,8 +138,9 @@ namespace AngeliaFramework.Rendering {
 
 
 		// Button
-		public static void DrawButton (System.Action click, RectInt rect, string label, int charSize, Color32 normal, Color32 highlight, Color32 pressed, Color32 labelColor, int spriteID, bool nagigation = false) {
+		public static void DrawButton (System.Action click, RectInt rect, string label, int charSize, Color32 normal, Color32 highlight, Color32 pressed, Color32 labelColor, int spriteID, bool navigation = false) {
 			bool hover = rect.Contains(ScreenToCameraPosition(FrameInput.MousePosition));
+			HoverOnGUI = HoverOnGUI || hover;
 			bool pressing = FrameInput.MouseLeft;
 			var tint = hover ? pressing ? pressed : highlight : normal;
 			CellRenderer.Draw(spriteID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, tint);
@@ -144,7 +148,7 @@ namespace AngeliaFramework.Rendering {
 			if (hover && FrameInput.MouseLeftDown) {
 				PressAction = click;
 			}
-			if (nagigation) {
+			if (navigation) {
 				ButtonNavigation = rect;
 			}
 		}
@@ -152,6 +156,7 @@ namespace AngeliaFramework.Rendering {
 
 		public static void DrawButton (System.Action click, RectInt rect, string label, int charSize, Color32 normal, Color32 highlight, Color32 pressed, Color32 labelColor, AlignmentInt spriteID, RectOffset border, bool nagigation = false) {
 			bool hover = rect.Contains(ScreenToCameraPosition(FrameInput.MousePosition));
+			HoverOnGUI = HoverOnGUI || hover;
 			bool pressing = FrameInput.MouseLeft;
 			var tint = hover ? pressing ? pressed : highlight : normal;
 			Draw_9Slice(rect, border, tint, spriteID);
@@ -191,6 +196,7 @@ namespace AngeliaFramework.Rendering {
 				);
 				ButtonNavigation = null;
 			}
+			HoverOnGUI = false;
 		}
 
 

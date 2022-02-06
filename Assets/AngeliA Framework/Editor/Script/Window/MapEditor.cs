@@ -27,6 +27,7 @@ namespace AngeliaFramework.Editor {
 
 		// Api
 		public static MapEditor Main { get; private set; } = null;
+		public Game Game { get; private set; } = null;
 		public bool Painting => CurrentTool == Tool.Paint;
 
 		// Short
@@ -41,7 +42,6 @@ namespace AngeliaFramework.Editor {
 
 		// Data
 		private readonly List<MapPalette> Palettes = new();
-		private Game Game = null;
 		private Vector2 PaletteScrollPosition = default;
 		private int SelectingPaletteIndex = 0;
 		private int SelectingPaletteItemIndex = 0;
@@ -102,8 +102,8 @@ namespace AngeliaFramework.Editor {
 
 		private void Update () {
 			if (EditorApplication.isPlaying) {
-				if (Game != null && Game.FindEntityOfType<eMapEditor>(EntityLayer.UI) == null) {
-					Game.AddEntity(new eMapEditor(), EntityLayer.UI);
+				if (Game != null && Game.FindEntityOfType<eMapEditor>(EntityLayer.Debug) == null) {
+					Game.AddEntity(new eMapEditor(), EntityLayer.Debug);
 				}
 			}
 			if (Game == null) {
@@ -119,10 +119,15 @@ namespace AngeliaFramework.Editor {
 
 		private void OnGUI () {
 			if (Main != this) Main = this;
-			GUI_Toolbar();
+			bool oldE = GUI.enabled;
+			GUI.enabled = !EditorApplication.isPlaying || Game.DebugMode;
+			if (EditorApplication.isPlaying) {
+				GUI_Toolbar();
+			}
 			GUI_Inspector();
 			GUI_Palette();
 			GUI_Misc();
+			GUI.enabled = oldE;
 		}
 
 
@@ -163,6 +168,41 @@ namespace AngeliaFramework.Editor {
 		}
 
 
+		private void GUI_Inspector () {
+
+			using var _ = new GUILayout.VerticalScope(Layout.PaddingPanelStyle);
+			if (SelectingPaletteIndex < 0 || SelectingPaletteIndex >= Palettes.Count) return;
+			var pal = Palettes[SelectingPaletteIndex];
+			if (SelectingPaletteItemIndex < 0 || SelectingPaletteItemIndex >= pal.Count) return;
+			var unit = pal[SelectingPaletteItemIndex];
+
+			const int HEIGHT = 18;
+			const int ICON_SIZE = 56;
+
+			GUI.changed = false;
+
+			Layout.Space(4);
+			using (new GUILayout.HorizontalScope()) {
+				// Icon
+				unit.Sprite = EditorGUI.ObjectField(Layout.Rect(ICON_SIZE, ICON_SIZE), unit.Sprite, typeof(Sprite), false) as Sprite;
+				Layout.Space(8);
+				using (new GUILayout.VerticalScope()) {
+					// Name
+					GUI.Label(Layout.Rect(0, HEIGHT), unit.DisplayName, EditorStyles.boldLabel);
+					// Dot
+					var oldC = GUI.color;
+					GUI.color = unit.IsEntity ? new Color32(0, 255, 200, 255) : new Color32(255, 200, 0, 255);
+					GUI.Label(Layout.Rect(0, HEIGHT), unit.IsEntity ? "¡ñ Entity" : "¡ñ Block");
+					GUI.color = oldC;
+				}
+			}
+			if (GUI.changed) {
+				EditorUtility.SetDirty(pal);
+				AssetDatabase.SaveAssetIfDirty(pal);
+			}
+		}
+
+
 		private void GUI_Palette () {
 			using var scroll = new GUILayout.ScrollViewScope(
 				PaletteScrollPosition, false, false, GUIStyle.none, GUI.skin.verticalScrollbar, Layout.MasterScrollStyle
@@ -171,7 +211,7 @@ namespace AngeliaFramework.Editor {
 			bool mouseDown = Event.current.type == EventType.MouseDown;
 			int clickPal = -1;
 			int clickItem = -1;
-			bool enable = CurrentTool == Tool.Paint;
+			bool enable = GUI.enabled && CurrentTool == Tool.Paint;
 			// Remove Null
 			for (int i = 0; i < Palettes.Count; i++) {
 				if (Palettes[i] == null) {
@@ -271,39 +311,6 @@ namespace AngeliaFramework.Editor {
 					// Right Button
 					ShowPaletteMenu(clickPal, clickItem);
 				}
-			}
-		}
-
-
-		private void GUI_Inspector () {
-
-			using var _ = new GUILayout.VerticalScope(Layout.PaddingPanelStyle);
-			if (SelectingPaletteIndex < 0 || SelectingPaletteIndex >= Palettes.Count) return;
-			var pal = Palettes[SelectingPaletteIndex];
-			if (SelectingPaletteItemIndex < 0 || SelectingPaletteItemIndex >= pal.Count) return;
-			var unit = pal[SelectingPaletteItemIndex];
-
-			const int HEIGHT = 18;
-			const int ICON_SIZE = 56;
-
-			GUI.changed = false;
-
-			Layout.Space(4);
-			using (new GUILayout.HorizontalScope()) {
-				// Icon
-				unit.Sprite = EditorGUI.ObjectField(Layout.Rect(ICON_SIZE, ICON_SIZE), unit.Sprite, typeof(Sprite), false) as Sprite;
-				Layout.Space(2);
-				// Dot
-				var oldC = GUI.color;
-				GUI.color = unit.IsEntity ? new Color32(0, 255, 200, 255) : new Color32(255, 200, 0, 255);
-				GUI.Label(Layout.Rect(HEIGHT, HEIGHT), "¡ñ");
-				GUI.color = oldC;
-				// Name
-				GUI.Label(Layout.Rect(0, HEIGHT), unit.DisplayName);
-			}
-			if (GUI.changed) {
-				EditorUtility.SetDirty(pal);
-				AssetDatabase.SaveAssetIfDirty(pal);
 			}
 		}
 

@@ -25,14 +25,21 @@ namespace AngeliaFramework {
 		private const int MAX_VIEW_WIDTH = 72 * Const.CELL_SIZE;
 		private const int MAX_VIEW_HEIGHT = 56 * Const.CELL_SIZE;
 		private const int SPAWN_GAP = 6 * Const.CELL_SIZE;
-		private readonly int[] ENTITY_CAPACITY = { 256, 128, 128, 1024, 128, };
-		private readonly int[] ENTITY_BUFFER_CAPACITY = { 128, 128, 128, 128, 128 };
+#if UNITY_EDITOR
+		private readonly int[] ENTITY_CAPACITY = { 256, 128, 128, 1024, 128, 128, };
+#else
+		private readonly int[] ENTITY_CAPACITY = { 256, 128, 128, 1024, 128, 1, };
+#endif
+		private readonly int[] ENTITY_BUFFER_CAPACITY = { 128, 128, 128, 128, 128, 128 };
 		private const int FRAME_RATE_LOW = 60;
 		private const int FRAME_RATE_HIGHT = 120;
 
 		// Api
 		public Language CurrentLanguage { get; private set; } = null;
 		public Dialogue CurrentDialogue { get; private set; } = null;
+#if UNITY_EDITOR
+		public bool DebugMode { get; set; } = false;
+#endif
 
 		// Ser
 		[SerializeField] SpriteSheet[] m_Sheets = null;
@@ -84,6 +91,7 @@ namespace AngeliaFramework {
 				UnityEditor.EditorApplication.ExitPlaymode();
 				return;
 			}
+			DebugMode = false;
 #endif
 			// Pipeline
 			Init_System();
@@ -107,8 +115,8 @@ namespace AngeliaFramework {
 		private void Init_Entity () {
 
 			ViewRect = new(
-				0, 0, 
-				Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, MAX_VIEW_WIDTH), 
+				0, 0,
+				Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, MAX_VIEW_WIDTH),
 				Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, 0, MAX_VIEW_HEIGHT)
 			);
 			GlobalFrame = 0;
@@ -309,6 +317,15 @@ namespace AngeliaFramework {
 
 
 
+
+
+
+#if UNITY_EDITOR
+			if (DebugMode) {
+
+
+			}
+#endif
 		}
 
 
@@ -330,6 +347,9 @@ namespace AngeliaFramework {
 					var entity = entities[i];
 					if (entity == null) { continue; }
 					if (
+#if UNITY_EDITOR
+						(DebugMode && layerIndex != (int)EntityLayer.Debug) ||
+#endif
 						!entity.Active ||
 						(entity.Despawnable && !SpawnRect.Contains(entity.X, entity.Y))
 					) {

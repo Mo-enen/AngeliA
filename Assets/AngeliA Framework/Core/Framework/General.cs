@@ -27,6 +27,7 @@ namespace AngeliaFramework {
 		Character = 2,
 		Projectile = 3,
 		UI = 4,
+		Debug = 5,
 	}
 
 
@@ -138,7 +139,7 @@ namespace AngeliaFramework {
 		public const int DEFAULT_VIEW_WIDTH = 28 * CELL_SIZE;
 		public const int DEFAULT_VIEW_HEIGHT = 16 * CELL_SIZE;
 		public const int BLOCK_LAYER_COUNT = 2;
-		public const int ENTITY_LAYER_COUNT = 5;
+		public const int ENTITY_LAYER_COUNT = 6;
 		public const int PHYSICS_LAYER_COUNT = 4;
 		public const int WORLD_MAP_SIZE = 128;
 	}
