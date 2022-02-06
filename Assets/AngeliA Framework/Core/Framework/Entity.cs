@@ -32,7 +32,15 @@ namespace AngeliaFramework.Entities {
 		public static RectInt CameraRect { get; set; }
 		public static Vector2Int MousePosition { get; set; }
 
-		public virtual RectInt Rect => new(X, Y, Width, Height);
+		public virtual RectInt Rect {
+			get {
+				_Rect.x = X;
+				_Rect.y = Y;
+				_Rect.width = Width;
+				_Rect.height = Height;
+				return _Rect;
+			}
+		}
 
 		public bool Active { get; set; } = true;
 		public virtual bool Despawnable { get; } = true;
@@ -44,6 +52,7 @@ namespace AngeliaFramework.Entities {
 
 		// Data
 		private static int CurrentDynamicInstanceID = 0;
+		private RectInt _Rect = new();
 
 
 		#endregion

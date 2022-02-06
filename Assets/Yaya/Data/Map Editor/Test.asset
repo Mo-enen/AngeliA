@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 99b6395937f4f764585de8ebad864a9f, type: 3}
-  m_Name: Debug A
+  m_Name: Test
   m_EditorClassIdentifier: 
   m_Opening: 1
   m_Units:
   - Sprite: {fileID: 2467314271473265160, guid: 0f21d90af5b1cf5438efe4ff0f785570,
       type: 3}
     TypeFullName: 
-  - Sprite: {fileID: 7193980130009374402, guid: 0f21d90af5b1cf5438efe4ff0f785570,
+  - Sprite: {fileID: -1658372433226461222, guid: 0f21d90af5b1cf5438efe4ff0f785570,
       type: 3}
-    TypeFullName: 
+    TypeFullName: AngeliaFramework.Editor.eMapEditor

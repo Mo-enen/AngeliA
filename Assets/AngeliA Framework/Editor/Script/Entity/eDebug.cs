@@ -10,8 +10,9 @@ namespace AngeliaFramework.Entities.Editor {
 
 
 		public override bool Despawnable => false;
-		public override int PushLevel => 1;
+		public override int PushLevel => _PushLevel;
 
+		public int _PushLevel = 1;
 		public Color32 Color = new(255, 255, 255, 255);
 		public string SpriteName = "Pixel";
 		public string Tag = "";

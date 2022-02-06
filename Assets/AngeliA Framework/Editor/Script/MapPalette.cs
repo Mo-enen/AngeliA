@@ -16,7 +16,23 @@ namespace AngeliaFramework.Editor {
 		[System.Serializable]
 		public class Unit {
 
-			public bool IsEntity => string.IsNullOrEmpty(TypeFullName);
+			public string DisplayName {
+				get {
+					if (IsEntity) {
+						int dotIndex = TypeFullName.LastIndexOf('.');
+						if (dotIndex >= 0 && TypeFullName[dotIndex + 1] == 'e') {
+							dotIndex++;
+						}
+						return Util.GetDisplayName(
+							dotIndex >= 0 ? TypeFullName[(dotIndex + 1)..] : TypeFullName
+						);
+					} else {
+						return Sprite != null ? Sprite.name : "";
+					}
+				}
+			}
+
+			public bool IsEntity => !string.IsNullOrEmpty(TypeFullName);
 
 			public Sprite Sprite;
 			[TypeEnum(typeof(Entities.Entity))] public string TypeFullName;

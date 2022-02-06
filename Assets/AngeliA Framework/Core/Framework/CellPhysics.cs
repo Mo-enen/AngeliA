@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 using AngeliaFramework.Entities;
 
@@ -13,32 +14,39 @@ namespace AngeliaFramework.Physics {
 		#region --- SUB ---
 
 
-		private struct Cell {
+		private class Cell {
 
 			public RectInt GlobalRect => Entity != null ? Entity.Rect : Rect;
 
-			public RectInt Rect;
-			public Entity Entity;
-			public uint Frame;
-			public bool IsTrigger;
-			public int Tag;
+			public RectInt Rect = default;
+			public Entity Entity = null;
+			public uint Frame = uint.MinValue;
+			public bool IsTrigger = false;
+			public int Tag = 0;
 
-			public HitInfo GetInfo () => new(GlobalRect, Entity, IsTrigger, Tag);
+			private HitInfo Info;
+
+			public HitInfo GetInfo () {
+				if (Info == null) {
+					Info = new();
+				}
+				Info.Rect = GlobalRect;
+				Info.Entity = Entity;
+				Info.IsTrigger = IsTrigger;
+				Info.Tag = Tag;
+				return Info;
+			}
 		}
 
 
 		private class Layer {
-			public Cell this[int x, int y, int z] {
-				get => Cells[x, y, z];
-				set => Cells[x, y, z] = value;
-			}
-			private readonly Cell[,,] Cells = null;
+			public readonly Cell[,,] Cells = null;
 			public Layer (int width, int height) {
 				Cells = new Cell[width, height, CELL_DEPTH];
 				for (int i = 0; i < width; i++) {
 					for (int j = 0; j < height; j++) {
 						for (int z = 0; z < CELL_DEPTH; z++) {
-							Cells[i, j, z].Frame = uint.MinValue;
+							Cells[i, j, z] = new();
 						}
 					}
 				}
@@ -51,12 +59,6 @@ namespace AngeliaFramework.Physics {
 			public Entity Entity;
 			public bool IsTrigger;
 			public int Tag;
-			public HitInfo (RectInt rect, Entity entity, bool isTrigger, int tag) {
-				Rect = rect;
-				Entity = entity;
-				IsTrigger = isTrigger;
-				Tag = tag;
-			}
 		}
 
 
@@ -84,13 +86,13 @@ namespace AngeliaFramework.Physics {
 		public static int Height { get; private set; } = 0;
 		public static int PositionX { get; set; } = 0;
 		public static int PositionY { get; set; } = 0;
+		public static HitInfo[] OverlapResults { get; } = new HitInfo[OVERLAP_RESULT_COUNT];
 
 		// Data
 		private static Layer[] Layers = null;
 		private static Layer CurrentLayer = null;
 		private static PhysicsLayer CurrentLayerEnum = PhysicsLayer.Item;
 		private static uint CurrentFrame = uint.MinValue;
-		private static readonly HitInfo[] OverlapResults = new HitInfo[OVERLAP_RESULT_COUNT];
 
 
 		#endregion
@@ -149,7 +151,7 @@ namespace AngeliaFramework.Physics {
 			for (int j = d; j <= u; j++) {
 				for (int i = l; i <= r; i++) {
 					for (int dep = 0; dep < CELL_DEPTH; dep++) {
-						var cell = layerItem[i, j, dep];
+						var cell = layerItem.Cells[i, j, dep];
 						if (cell.Frame != CurrentFrame) break;
 						if (ignore != null && cell.Entity == ignore) continue;
 						if (tag != 0 && cell.Tag != tag) continue;
@@ -165,7 +167,7 @@ namespace AngeliaFramework.Physics {
 		}
 
 
-		public static int ForAllOverlaps (PhysicsMask mask, RectInt globalRect, out HitInfo[] results, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+		public static int ForAllOverlaps (PhysicsMask mask, RectInt globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
 			int count = 0;
 			for (int layerIndex = 0; layerIndex < Const.PHYSICS_LAYER_COUNT; layerIndex++) {
 				var layer = (PhysicsLayer)layerIndex;
@@ -173,13 +175,11 @@ namespace AngeliaFramework.Physics {
 				count = ForAllOverlapsLogic(layer, globalRect, count, ignore, mode, tag);
 			}
 			ClearOverlapResult(count);
-			results = OverlapResults;
 			return count;
 		}
 
 
-		public static int ForAllOverlaps (PhysicsLayer layer, RectInt globalRect, out HitInfo[] results, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
-			results = OverlapResults;
+		public static int ForAllOverlaps (PhysicsLayer layer, RectInt globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
 			int count = ForAllOverlapsLogic(layer, globalRect, 0, ignore, mode, tag);
 			ClearOverlapResult(count);
 			return count;
@@ -216,10 +216,10 @@ namespace AngeliaFramework.Physics {
 					rect.y + (dir == Direction4.Up ? rect.height : -1),
 					rect.width,
 					1
-				), out var results, rig
+				), rig
 			);
 			for (int i = 0; i < count; i++) {
-				if (!PushCheck(mask, rig.PushLevel, results[i].Entity, dir)) return true;
+				if (!PushCheck(mask, rig.PushLevel, OverlapResults[i].Entity, dir)) return true;
 			}
 			return false;
 		}
@@ -234,27 +234,32 @@ namespace AngeliaFramework.Physics {
 				int pushLevel = eRigidbody.GetPushLevel(entity);
 				Vector2Int result = to;
 				int distance = int.MaxValue;
-				int count = ForAllOverlaps(mask, new RectInt(to, size), out var results, entity);
+				int count = ForAllOverlaps(mask, new RectInt(to, size), entity);
+				Vector2Int center = default;
+				Vector2Int ghostH = default;
+				Vector2Int ghostV = default;
 				for (int index = 0; index < count; index++) {
-					var hit = results[index];
+					var hit = OverlapResults[index];
 					var hitRect = hit.Rect;
-					var center = hitRect.center.RoundToInt();
+					center.x = hitRect.x + hitRect.width / 2;
+					center.y = hitRect.y + hitRect.height / 2;
 					bool leftSide = to.x < center.x;
 					bool downSide = to.y < center.y;
-					var ghostH = new Vector2Int(leftSide ? hitRect.x - size.x : hitRect.xMax, to.y);
-					var ghostV = new Vector2Int(to.x, downSide ? hitRect.y - size.y : hitRect.yMax);
+					ghostH.x = leftSide ? hitRect.x - size.x : hitRect.xMax;
+					ghostH.y = to.y;
+					ghostV.x = to.x;
+					ghostV.y = downSide ? hitRect.y - size.y : hitRect.yMax;
 					bool useH = Util.SqrtDistance(ghostH, from) < Util.SqrtDistance(ghostV, from);
-					var ghostPos = useH ? ghostH : ghostV;
 					// Push Level
 					var roomDir = useH ?
 						leftSide ? Direction4.Right : Direction4.Left :
 						downSide ? Direction4.Up : Direction4.Down;
 					if (PushCheck(mask, pushLevel, hit.Entity, roomDir)) continue;
 					// Solve
-					int _dis = Util.SqrtDistance(ghostPos, from);
+					int _dis = Util.SqrtDistance(useH ? ghostH : ghostV, from);
 					if (_dis < distance) {
 						distance = _dis;
-						result = ghostPos;
+						result = useH ? ghostH : ghostV;
 					}
 				}
 				return result;
@@ -266,11 +271,12 @@ namespace AngeliaFramework.Physics {
 #if UNITY_EDITOR
 		public static void Editor_ForAllCells (System.Action<int, HitInfo> action) {
 			for (int i = 0; i < Layers.Length; i++) {
-				if (Layers[i] == null) { continue; }
+				var layer = Layers[i];
+				if (layer == null) { continue; }
 				for (int y = 0; y < Height; y++) {
 					for (int x = 0; x < Width; x++) {
 						for (int d = 0; d < CELL_DEPTH; d++) {
-							var cell = Layers[i][x, y, d];
+							var cell = layer.Cells[x, y, d];
 							if (cell.Frame != CurrentFrame) { break; }
 							action(i, cell.GetInfo());
 						}
@@ -290,6 +296,8 @@ namespace AngeliaFramework.Physics {
 
 
 		private static int GetCellIndexX (this int x) => (x - PositionX) / Const.CELL_SIZE;
+
+
 		private static int GetCellIndexY (this int y) => (y - PositionY) / Const.CELL_SIZE;
 
 
@@ -307,14 +315,13 @@ namespace AngeliaFramework.Physics {
 				CurrentLayer = Layers[(int)layer];
 			}
 			for (int dep = 0; dep < CELL_DEPTH; dep++) {
-				var cell = CurrentLayer[i, j, dep];
+				var cell = CurrentLayer.Cells[i, j, dep];
 				if (cell.Frame != CurrentFrame) {
 					cell.Rect = globalRect;
 					cell.Entity = entity;
 					cell.Frame = CurrentFrame;
 					cell.IsTrigger = isTrigger;
 					cell.Tag = tag;
-					CurrentLayer[i, j, dep] = cell;
 					return;
 				}
 			}
@@ -333,7 +340,7 @@ namespace AngeliaFramework.Physics {
 			for (int j = d; j <= u; j++) {
 				for (int i = l; i <= r; i++) {
 					for (int dep = 0; dep < CELL_DEPTH; dep++) {
-						var cell = layerItem[i, j, dep];
+						var cell = layerItem.Cells[i, j, dep];
 						if (cell.Frame != CurrentFrame) { break; }
 						if (ignore != null && cell.Entity == ignore) continue;
 						if (tag != 0 && cell.Tag != tag) continue;

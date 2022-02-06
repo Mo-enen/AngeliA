@@ -58,7 +58,6 @@ namespace AngeliaFramework.Entities {
 		public int FreeSwimDashCooldown { get; init; } = 4;
 		public int FreeSwimDashAcceleration { get; init; } = 128;
 
-
 		// Const
 		private const int JUMP_TOLERANCE = 4;
 
@@ -79,14 +78,14 @@ namespace AngeliaFramework.Entities {
 		private int CurrentFrame = 0;
 		private int IntendedX = 0;
 		private int IntendedY = 0;
+		private int LastGroundedFrame = int.MinValue;
+		private int LastDashFrame = int.MinValue;
 		private bool HoldingJump = false;
 		private bool PrevHoldingJump = false;
 		private bool IntendedJump = false;
 		private bool IntendedDash = false;
 		private bool IntendedPound = false;
 		private bool PrevInWater = false;
-		private int LastGroundedFrame = int.MinValue;
-		private int LastDashFrame = int.MinValue;
 		private RectInt Hitbox = default;
 		private Vector2Int LastMoveDirection = default;
 		private eRigidbody Rig = null;
@@ -126,7 +125,10 @@ namespace AngeliaFramework.Entities {
 
 		private void Update_Cache () {
 			// Ground
-			IsGrounded = GroundCheck();
+			IsGrounded = !CellPhysics.RoomCheck(
+				PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character,
+				Rig, Direction4.Down
+			);
 			if (IsGrounded) LastGroundedFrame = CurrentFrame;
 			IsDashing = DashAvailable && CurrentFrame < LastDashFrame + CurrentDashDuration;
 			// Water
@@ -160,7 +162,6 @@ namespace AngeliaFramework.Entities {
 			Rig.Height = Hitbox.height;
 			Rig.OffsetX = -Width / 2;
 			Rig.OffsetY = 0;
-			//Rig.SpeedScale = InWater && !SwimInFreeStyle ? SwimSpeedRate : 1000;
 		}
 
 
@@ -323,27 +324,15 @@ namespace AngeliaFramework.Entities {
 		#region --- LGC ---
 
 
-		private bool GroundCheck () {
-			var rect = Hitbox;
-			rect.y -= 2;
-			rect.height = 4;
-			return CellPhysics.Overlap(
-				PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character,
-				rect, Rig
-			) != null;
-		}
-
-
 		private bool ForceSquatCheck () {
-			var rect = new RectInt(
-				Rig.X + Rig.OffsetX + Rig.Width / 4,
-				Rig.Y + Rig.OffsetY + Height / 2,
-				Rig.Width / 2,
-				Height / 2
-			);
 			bool overlap = CellPhysics.Overlap(
 				PhysicsMask.Level | PhysicsMask.Environment,
-				rect
+				new RectInt(
+					Rig.X + Rig.OffsetX + Rig.Width / 4,
+					Rig.Y + Rig.OffsetY + Height / 2,
+					Rig.Width / 2,
+					Height / 2
+				)
 			) != null;
 			if (overlap && IsSquating && IntendedY >= 0) {
 				// Want to Stand Up but Overlaps

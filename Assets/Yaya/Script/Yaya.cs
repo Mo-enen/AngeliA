@@ -4,8 +4,6 @@ using UnityEngine;
 using AngeliaFramework;
 using AngeliaFramework.Entities;
 
-using System.Threading.Tasks;
-using System.Threading;
 
 namespace Yaya {
 	public class Yaya : GamePerformer {
@@ -33,7 +31,7 @@ namespace Yaya {
 					return true;
 				} else {
 					// Show Quit Dialog
-					var dialog = new eDialog(
+					Game.AddEntity(new eDialog(
 						2048, LConst.QuitConfirmContent, LConst.LabelQuit, LConst.LabelCancel, "",
 						() => {
 							willQuit = true;
@@ -41,8 +39,7 @@ namespace Yaya {
 						},
 						() => { },
 						null
-					);
-					Game.AddEntity(dialog, EntityLayer.UI);
+					), EntityLayer.UI);
 					return false;
 				}
 			};

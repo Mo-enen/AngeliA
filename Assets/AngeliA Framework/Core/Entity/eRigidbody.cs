@@ -96,12 +96,12 @@ namespace AngeliaFramework.Entities {
 			if (carry && speedY <= 0) {
 				const int GAP = 1;
 				int count = CellPhysics.ForAllOverlaps(
-					CollisionMask, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), out var results, this
+					CollisionMask, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), this
 				);
 				int finalL = 0;
 				int finalR = 0;
 				for (int i = 0; i < count; i++) {
-					var hit = results[i];
+					var hit = CellPhysics.OverlapResults[i];
 					if (
 						hit.Entity is eRigidbody hitRig &&
 						hitRig.CarryOnTop &&

@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 using UnityEditor;
-using Moenen.Standard;
 using AngeliaFramework.Entities;
 using AngeliaFramework.Rendering;
+using Moenen.Standard;
+
 
 namespace AngeliaFramework.Editor {
 	public class MapEditor : EditorWindow {
@@ -24,7 +24,6 @@ namespace AngeliaFramework.Editor {
 
 		// Const
 		private const string WINDOW_TITLE = "Map Editor";
-		private readonly static Color HIGHLIGHT = new Color32(36, 181, 161, 255);
 
 		// Api
 		public static MapEditor Main { get; private set; } = null;
@@ -49,8 +48,6 @@ namespace AngeliaFramework.Editor {
 		private bool NeedReloadAsset = false;
 		private int CurrentPickerID = 0;
 		private int PickingPalette = -1;
-		private int PickingItem = -1;
-		private int PickerTaskID = 0;
 
 		// Saving
 		private EditorSavingInt SelectingToolIndex = new("MapEditor.SelectingToolIndex", 0);
@@ -123,6 +120,7 @@ namespace AngeliaFramework.Editor {
 		private void OnGUI () {
 			if (Main != this) Main = this;
 			GUI_Toolbar();
+			GUI_Inspector();
 			GUI_Palette();
 			GUI_Misc();
 		}
@@ -147,7 +145,7 @@ namespace AngeliaFramework.Editor {
 				}
 				if (CurrentTool == Tool.Selection) {
 					var _rect = Layout.LastRect();
-					EditorGUI.DrawRect(_rect.Shrink(2, 2, _rect.height - 2.5f, 1), HIGHLIGHT);
+					EditorGUI.DrawRect(_rect.Shrink(2, 2, _rect.height - 2.5f, 1), Layout.HighlightColor_Alt);
 				}
 				Layout.Space(2);
 
@@ -157,7 +155,7 @@ namespace AngeliaFramework.Editor {
 				}
 				if (CurrentTool == Tool.Paint) {
 					var _rect = Layout.LastRect();
-					EditorGUI.DrawRect(_rect.Shrink(2, 2, _rect.height - 2.5f, 1), HIGHLIGHT);
+					EditorGUI.DrawRect(_rect.Shrink(2, 2, _rect.height - 2.5f, 1), Layout.HighlightColor_Alt);
 				}
 
 				Layout.Rect(0, HEIGHT);
@@ -200,12 +198,13 @@ namespace AngeliaFramework.Editor {
 					for (int y = 0, i = 0; y < rowCount; y++) {
 						using (new GUILayout.HorizontalScope()) {
 							for (int x = 0; x < COLUMN && i < count; x++, i++) {
+								var unit = pal[i];
 								var rect = Layout.Rect(ITEM_SIZE, ITEM_SIZE);
 								Layout.Space(ITEM_GAP);
 								// Background
 								GUI.Label(rect, GUIContent.none, GUI.skin.textField);
 								// Icon
-								var icon = pal[i].Sprite;
+								var icon = unit.Sprite;
 								if (icon != null && icon.texture != null) {
 									float tWidth = icon.texture.width;
 									float tHeight = icon.texture.height;
@@ -224,7 +223,7 @@ namespace AngeliaFramework.Editor {
 								}
 								// Highlight
 								if (enable && SelectingPaletteIndex == palIndex && SelectingPaletteItemIndex == i) {
-									Layout.FrameGUI(rect.Shrink(1.5f), 1.5f, HIGHLIGHT);
+									Layout.FrameGUI(rect.Shrink(1.5f), 1.5f, Layout.HighlightColor_Alt);
 								}
 								// Click
 								if (mouseDown && rect.Contains(Event.current.mousePosition)) {
@@ -239,9 +238,7 @@ namespace AngeliaFramework.Editor {
 					// Add Button
 					if (count == 0) {
 						if (GUI.Button(Layout.Rect(96, 18).Shrink(24, 0, 0, 0), "New Block", EditorStyles.linkLabel)) {
-							PickerTaskID = 0;
 							PickingPalette = palIndex;
-							PickingItem = -1;
 							CurrentPickerID = GUIUtility.GetControlID(FocusType.Passive) + 100;
 							EditorGUIUtility.ShowObjectPicker<Sprite>(null, false, "", CurrentPickerID);
 						}
@@ -278,6 +275,39 @@ namespace AngeliaFramework.Editor {
 		}
 
 
+		private void GUI_Inspector () {
+
+			using var _ = new GUILayout.VerticalScope(Layout.PaddingPanelStyle);
+			if (SelectingPaletteIndex < 0 || SelectingPaletteIndex >= Palettes.Count) return;
+			var pal = Palettes[SelectingPaletteIndex];
+			if (SelectingPaletteItemIndex < 0 || SelectingPaletteItemIndex >= pal.Count) return;
+			var unit = pal[SelectingPaletteItemIndex];
+
+			const int HEIGHT = 18;
+			const int ICON_SIZE = 56;
+
+			GUI.changed = false;
+
+			Layout.Space(4);
+			using (new GUILayout.HorizontalScope()) {
+				// Icon
+				unit.Sprite = EditorGUI.ObjectField(Layout.Rect(ICON_SIZE, ICON_SIZE), unit.Sprite, typeof(Sprite), false) as Sprite;
+				Layout.Space(2);
+				// Dot
+				var oldC = GUI.color;
+				GUI.color = unit.IsEntity ? new Color32(0, 255, 200, 255) : new Color32(255, 200, 0, 255);
+				GUI.Label(Layout.Rect(HEIGHT, HEIGHT), "¡ñ");
+				GUI.color = oldC;
+				// Name
+				GUI.Label(Layout.Rect(0, HEIGHT), unit.DisplayName);
+			}
+			if (GUI.changed) {
+				EditorUtility.SetDirty(pal);
+				AssetDatabase.SaveAssetIfDirty(pal);
+			}
+		}
+
+
 		private void GUI_Misc () {
 
 			Layout.CancelFocusOnClick(this);
@@ -294,27 +324,19 @@ namespace AngeliaFramework.Editor {
 				EditorGUIUtility.GetObjectPickerControlID() == CurrentPickerID &&
 				PickingPalette >= 0 && PickingPalette < Palettes.Count
 			) {
+				// Add Block
 				var sprite = EditorGUIUtility.GetObjectPickerObject() as Sprite;
 				if (sprite != null) {
 					var pal = Palettes[PickingPalette];
-					switch (PickerTaskID) {
-						case 0: // Add Block
-							pal.Add(new MapPalette.Unit() {
-								Sprite = sprite,
-								TypeFullName = "",
-							});
-							break;
-						case 1: // Set Sprite
-							pal[PickingItem].Sprite = sprite;
-							break;
-					}
+					pal.Add(new MapPalette.Unit() {
+						Sprite = sprite,
+						TypeFullName = "",
+					});
 					pal.Sort();
 					EditorUtility.SetDirty(pal);
 					AssetDatabase.SaveAssetIfDirty(pal);
 					AssetDatabase.Refresh();
 					PickingPalette = -1;
-					PickingItem = -1;
-					PickerTaskID = -1;
 				}
 			}
 
@@ -388,9 +410,7 @@ namespace AngeliaFramework.Editor {
 			var menu = new GenericMenu();
 
 			menu.AddItem(new GUIContent("New Block"), false, () => {
-				PickerTaskID = 0;
 				PickingPalette = paletteIndex;
-				PickingItem = itemIndex;
 				CurrentPickerID = GUIUtility.GetControlID(FocusType.Passive) + 100;
 				EditorGUIUtility.ShowObjectPicker<Sprite>(null, false, "", CurrentPickerID);
 			});
@@ -398,15 +418,8 @@ namespace AngeliaFramework.Editor {
 			Menu_NewEntity(menu, pal, true);
 
 			menu.AddSeparator("");
-			menu.AddItem(new GUIContent("Select"), false, () => {
+			menu.AddItem(new GUIContent("Select Asset"), false, () => {
 				Selection.activeObject = pal;
-			});
-			menu.AddItem(new GUIContent("Set Sprite"), false, () => {
-				PickerTaskID = 1;
-				PickingPalette = paletteIndex;
-				PickingItem = itemIndex;
-				CurrentPickerID = GUIUtility.GetControlID(FocusType.Passive) + 100;
-				EditorGUIUtility.ShowObjectPicker<Sprite>(null, false, "", CurrentPickerID);
 			});
 			menu.AddItem(new GUIContent("Delete"), false, () => {
 				var sp = pal[itemIndex].Sprite;

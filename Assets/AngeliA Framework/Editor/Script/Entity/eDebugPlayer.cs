@@ -28,7 +28,7 @@ namespace AngeliaFramework.Entities.Editor {
 		public Vector2Int GroundSizeA = new(26, 2);
 		public Vector2Int GroundSizeB = new(8, 2);
 		public string GroundSprite = "Pixel";
-		public Vector2Int WaterPos = new(12, 4);
+		public Vector2Int WaterPos = new(12, 5);
 		public Vector2Int WaterSize = new(6, 2);
 		public string WaterSprite = "Pixel";
 

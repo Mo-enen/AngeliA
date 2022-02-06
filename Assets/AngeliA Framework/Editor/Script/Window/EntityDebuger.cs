@@ -9,7 +9,7 @@ using Moenen.Standard;
 using AngeliaFramework.Entities;
 using AngeliaFramework.Physics;
 using AngeliaFramework.Rendering;
-
+using System.Text;
 
 namespace AngeliaFramework.Editor {
 	public class EntityDebuger : EditorWindow {
@@ -32,10 +32,6 @@ namespace AngeliaFramework.Editor {
 		};
 
 		// Short
-		private EntityLayer CurrentEntityLayer {
-			get => (EntityLayer)EntityLayerIndex.Value;
-			set => EntityLayerIndex.Value = (int)value;
-		}
 		private static GUIStyle CMDTextAreaStyle => _CMDTextAreaStyle ??= new GUIStyle(GUI.skin.textArea) {
 			fontSize = 14,
 			contentOffset = new Vector2(2, 4),
@@ -58,9 +54,9 @@ namespace AngeliaFramework.Editor {
 		private Vector2 MasterScrollPos = default;
 
 		// Saving
-		private static readonly EditorSavingInt EntityLayerIndex = new("EntityDebuger.EntityLayerIndex", 0);
 		private static readonly EditorSavingString EntityInitContent = new("EntityDebuger.EntityInitContent", "");
 		private static readonly EditorSavingBool ShowColliders = new("EntityDebuger.ShowColliders", false);
+		private static readonly EditorSavingString EntityLayerVisible = new("EntityDebuger.EntityLayerVisible", "");
 
 
 		#endregion
@@ -130,7 +126,8 @@ namespace AngeliaFramework.Editor {
 
 
 		private void OnGUI_Edittime () {
-			// Buttons
+
+			// Toolbar
 			using (new GUILayout.HorizontalScope(EditorStyles.toolbar)) {
 				// Language Editor
 				if (GUI.Button(Layout.Rect(24, 20), GlobalIconContent, EditorStyles.toolbarButton)) {
@@ -141,6 +138,9 @@ namespace AngeliaFramework.Editor {
 				}
 				Layout.Rect(0, 20);
 			}
+
+			using var scope = new GUILayout.ScrollViewScope(MasterScrollPos);
+			MasterScrollPos = scope.scrollPosition;
 
 			// CMD Text
 			var oldBC = GUI.backgroundColor;
@@ -177,14 +177,74 @@ namespace AngeliaFramework.Editor {
 			// Toolbar
 			using (new GUILayout.HorizontalScope(EditorStyles.toolbar)) {
 				// Layer
-				CurrentEntityLayer = (EntityLayer)Mathf.Clamp(
-					(int)(EntityLayer)EditorGUI.EnumPopup(Layout.Rect(0, 20), CurrentEntityLayer, EditorStyles.toolbarPopup), 0, Entities.Length
-				);
+				for (int i = 0; i < Const.ENTITY_LAYER_COUNT; i++) {
+					bool visible = GetLayerVisible(i);
+					string label = ((EntityLayer)i).ToString();
+					bool newVisible = GUI.Toggle(
+						Layout.Rect(0, 20),
+						visible,
+						label[..Mathf.Min(label.Length, 5)],
+						EditorStyles.toolbarButton
+					);
+					if (visible) {
+						var rect = Layout.LastRect();
+						EditorGUI.DrawRect(rect.Shrink(3, 3, rect.height - 2, 1), Layout.HighlightColor_Alt);
+					}
+					if (newVisible != visible) {
+						SetLayerVisible(i, newVisible);
+					}
+				}
 			}
 
+			// Content
 			using var scope = new GUILayout.ScrollViewScope(MasterScrollPos);
 			MasterScrollPos = scope.scrollPosition;
-			var entities = Entities[(int)CurrentEntityLayer];
+			bool oldE = GUI.enabled;
+			for (int i = 0; i < Const.ENTITY_LAYER_COUNT; i++) {
+				if (GetLayerVisible(i)) {
+					var rect = Layout.Rect(0, 20).Shrink(1, 0, 0, 0);
+					GUI.enabled = false;
+					GUI.Label(rect, GUIContent.none, EditorStyles.toolbarButton);
+					GUI.enabled = oldE;
+					GUI.Label(rect, ((EntityLayer)i).ToString(), EditorStyles.centeredGreyMiniLabel);
+					GUI_Entity(i);
+				}
+			}
+			GUI.enabled = oldE;
+
+			// Menu on Empty Space
+			if (Event.current.type == EventType.MouseDown && Event.current.button == 1) {
+				EntityMenu(null);
+				Event.current.Use();
+				Repaint();
+			}
+
+			// Key
+			if (Event.current.type == EventType.KeyDown) {
+				switch (Event.current.keyCode) {
+					case KeyCode.Delete:
+						if (SelectingEntity != null) {
+							SelectingEntity.Active = false;
+							EditorApplication.delayCall += Repaint;
+						}
+						break;
+				}
+			}
+
+			// Clear Selection on Mouse Down
+			if (
+				(SelectingEntity != null || SelectingInspector.InspectorMode != EntityInspector.Mode.Entity) &&
+				Event.current.type == EventType.MouseDown
+			) {
+				ClearSelectionInspector();
+			}
+
+		}
+
+
+		private void GUI_Entity (int layerIndex) {
+
+			var entities = Entities[layerIndex];
 			int capacity = entities.Length;
 			const int HEIGHT = 18;
 
@@ -233,38 +293,7 @@ namespace AngeliaFramework.Editor {
 
 				}
 
-			} else {
-				// No Entity Capacity
-				EditorGUILayout.HelpBox("Not Available for This Layer", MessageType.Info, true);
 			}
-
-			// Menu on Empty Space
-			if (Event.current.type == EventType.MouseDown && Event.current.button == 1) {
-				EntityMenu(null);
-				Event.current.Use();
-				Repaint();
-			}
-
-			// Key
-			if (Event.current.type == EventType.KeyDown) {
-				switch (Event.current.keyCode) {
-					case KeyCode.Delete:
-						if (SelectingEntity != null) {
-							SelectingEntity.Active = false;
-							EditorApplication.delayCall += Repaint;
-						}
-						break;
-				}
-			}
-
-			// Clear Selection on Mouse Down
-			if (
-				(SelectingEntity != null || SelectingInspector.InspectorMode != EntityInspector.Mode.Entity) &&
-				Event.current.type == EventType.MouseDown
-			) {
-				ClearSelectionInspector();
-			}
-
 		}
 
 
@@ -317,28 +346,6 @@ namespace AngeliaFramework.Editor {
 
 		private void EntityMenu (Entity entity) {
 			var menu = new GenericMenu();
-			// Create
-			var typePool = Util.GetFieldValue(Game, "EntityTypePool") as Dictionary<int, System.Type>;
-			foreach (var pair in typePool) {
-				var type = pair.Value;
-				if (type.GetConstructor(new System.Type[0]) != null) {
-					// Normal
-					menu.AddItem(
-						new GUIContent($"Create/{type.Name}"),
-						false,
-						() => {
-							var spawnRect = (RectInt)Util.GetFieldValue(Game, "SpawnRect");
-							var e = System.Activator.CreateInstance(type) as Entity;
-							Game.AddEntity(e, CurrentEntityLayer);
-							e.X = spawnRect.center.x.RoundToInt();
-							e.Y = spawnRect.center.y.RoundToInt();
-						}
-					);
-				} else {
-					// No Constructor
-					menu.AddDisabledItem(new GUIContent(type.Name), false);
-				}
-			}
 			// View
 			menu.AddItem(new GUIContent("Select View"), false, () => {
 				SetSelectionInspector(null, EntityInspector.Mode.View);
@@ -418,31 +425,33 @@ namespace AngeliaFramework.Editor {
 					}
 					if (line.StartsWith("::")) {
 						if (prevEntity != null) {
-							int _eIndex = line.IndexOf('=');
-							if (_eIndex < 0) { continue; }
-							string fieldName = line[2.._eIndex];
-							var type = Util.GetFieldType(prevEntity, fieldName);
-							if (type == typeof(int)) {
-								if (int.TryParse(line[(_eIndex + 1)..], out int _value)) {
-									Util.SetFieldValue(prevEntity, fieldName, _value);
+							try {
+								int _eIndex = line.IndexOf('=');
+								if (_eIndex < 0) { continue; }
+								string fieldName = line[2.._eIndex];
+								var type = Util.GetFieldType(prevEntity, fieldName);
+								if (type == typeof(int)) {
+									if (int.TryParse(line[(_eIndex + 1)..], out int _value)) {
+										Util.SetFieldValue(prevEntity, fieldName, _value);
+									}
+								} else if (type == typeof(float)) {
+									if (float.TryParse(line[(_eIndex + 1)..], out float _value)) {
+										Util.SetFieldValue(prevEntity, fieldName, _value);
+									}
+								} else if (type == typeof(string)) {
+									Util.SetFieldValue(prevEntity, fieldName, line[(_eIndex + 1)..]);
+								} else if (type == typeof(bool)) {
+									if (bool.TryParse(line[(_eIndex + 1)..], out bool _value)) {
+										Util.SetFieldValue(prevEntity, fieldName, _value);
+									}
+								} else if (type.IsSubclassOf(typeof(System.Enum))) {
+									if (System.Enum.TryParse(type, line[(_eIndex + 1)..], out var _value)) {
+										Util.SetFieldValue(prevEntity, fieldName, _value);
+									}
+								} else {
+									Debug.LogWarning($"[Entity Debuger] type {type} not support/");
 								}
-							} else if (type == typeof(float)) {
-								if (float.TryParse(line[(_eIndex + 1)..], out float _value)) {
-									Util.SetFieldValue(prevEntity, fieldName, _value);
-								}
-							} else if (type == typeof(string)) {
-								Util.SetFieldValue(prevEntity, fieldName, line[(_eIndex + 1)..]);
-							} else if (type == typeof(bool)) {
-								if (bool.TryParse(line[(_eIndex + 1)..], out bool _value)) {
-									Util.SetFieldValue(prevEntity, fieldName, _value);
-								}
-							} else if (type.IsSubclassOf(typeof(System.Enum))) {
-								if (System.Enum.TryParse(type, line[(_eIndex + 1)..], out var _value)) {
-									Util.SetFieldValue(prevEntity, fieldName, _value);
-								}
-							} else {
-								Debug.LogWarning($"[Entity Debuger] type {type} not support/");
-							}
+							} catch { }
 						}
 						continue;
 					}
@@ -474,6 +483,21 @@ namespace AngeliaFramework.Editor {
 				}
 			}
 
+		}
+
+
+		private bool GetLayerVisible (int index) =>
+			index < EntityLayerVisible.Value.Length && EntityLayerVisible.Value[index] == '1';
+
+
+		private void SetLayerVisible (int index, bool visible) {
+			if (index < 0 || index >= Const.ENTITY_LAYER_COUNT) return;
+			if (EntityLayerVisible.Value.Length != Const.ENTITY_LAYER_COUNT) {
+				EntityLayerVisible.Value = new string('0', Const.ENTITY_LAYER_COUNT);
+			}
+			var builder = new StringBuilder(EntityLayerVisible.Value);
+			builder[index] = visible ? '1' : '0';
+			EntityLayerVisible.Value = builder.ToString();
 		}
 
 
