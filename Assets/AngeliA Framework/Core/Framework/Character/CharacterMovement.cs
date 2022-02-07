@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AngeliaFramework.Physics;
 
 
-namespace AngeliaFramework.Entities {
+
+namespace AngeliaFramework {
 	public class CharacterMovement {
 
 
@@ -358,7 +358,7 @@ namespace AngeliaFramework.Entities {
 namespace AngeliaFramework.Editor {
 	using UnityEngine;
 	using UnityEditor;
-	using AngeliaFramework.Entities;
+	
 	[CustomEditor(typeof(CharacterMovement))]
 	public class CharacterMovement_Inspector : Editor {
 		public override void OnInspectorGUI () {

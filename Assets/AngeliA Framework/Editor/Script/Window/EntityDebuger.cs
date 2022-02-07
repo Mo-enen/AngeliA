@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using UnityEngine;
 using UnityEditor;
 using Moenen.Standard;
-using AngeliaFramework.Entities;
-using AngeliaFramework.Physics;
-using AngeliaFramework.Rendering;
-using System.Text;
+
 
 namespace AngeliaFramework.Editor {
 	public class EntityDebuger : EditorWindow {
@@ -30,6 +28,17 @@ namespace AngeliaFramework.Editor {
 			new (0, 0, 255, 255),
 			new (255, 0, 255, 255),
 		};
+		private static readonly AlignmentInt PixelFrame = new(
+			"Pixel".ACode(),
+			"Pixel".ACode(),
+			"Pixel".ACode(),
+			"Pixel".ACode(),
+			0,
+			"Pixel".ACode(),
+			"Pixel".ACode(),
+			"Pixel".ACode(),
+			"Pixel".ACode()
+		);
 
 		// Short
 		private static GUIStyle CMDTextAreaStyle => _CMDTextAreaStyle ??= new GUIStyle(GUI.skin.textArea) {
@@ -52,6 +61,7 @@ namespace AngeliaFramework.Editor {
 		private static Entity SelectingEntity = null;
 		private static EntityInspector SelectingInspector = null;
 		private Vector2 MasterScrollPos = default;
+		private int EntityDirtyFlag = 0;
 
 		// Saving
 		private static readonly EditorSavingString EntityInitContent = new("EntityDebuger.EntityInitContent", "");
@@ -199,18 +209,17 @@ namespace AngeliaFramework.Editor {
 			// Content
 			using var scope = new GUILayout.ScrollViewScope(MasterScrollPos);
 			MasterScrollPos = scope.scrollPosition;
-			bool oldE = GUI.enabled;
-			for (int i = 0; i < Const.ENTITY_LAYER_COUNT; i++) {
+			for (int i = 0, count = 0; i < Const.ENTITY_LAYER_COUNT; i++) {
 				if (GetLayerVisible(i)) {
-					var rect = Layout.Rect(0, 20).Shrink(1, 0, 0, 0);
-					GUI.enabled = false;
-					GUI.Label(rect, GUIContent.none, EditorStyles.toolbarButton);
-					GUI.enabled = oldE;
-					GUI.Label(rect, ((EntityLayer)i).ToString(), EditorStyles.centeredGreyMiniLabel);
+					if (count != 0) {
+						Layout.Space(1);
+						EditorGUI.DrawRect(Layout.Rect(0, 1), new Color32(50, 50, 50, 255));
+						Layout.Space(1);
+					}
 					GUI_Entity(i);
+					count++;
 				}
 			}
-			GUI.enabled = oldE;
 
 			// Menu on Empty Space
 			if (Event.current.type == EventType.MouseDown && Event.current.button == 1) {
@@ -297,6 +306,16 @@ namespace AngeliaFramework.Editor {
 		}
 
 
+		public void Update () {
+			if (EditorApplication.isPlaying) {
+				if (Game != null && Game.EntityDirtyFlag != EntityDirtyFlag) {
+					EntityDirtyFlag = Game.EntityDirtyFlag;
+					Repaint();
+				}
+			}
+		}
+
+
 		public static void DrawGizmos () {
 			// Colliders
 			if (ShowColliders.Value) {
@@ -308,16 +327,13 @@ namespace AngeliaFramework.Editor {
 			}
 			// Selection
 			if (SelectingEntity != null) {
-				CellRenderer.Draw(PIXEL_CODE, new RectInt(
-					SelectingEntity.X - 24,
-					SelectingEntity.Y - 24,
-					48, 48
-				), new Color32(0, 0, 0, 255));
-				CellRenderer.Draw(PIXEL_CODE, new RectInt(
-					SelectingEntity.X - 16,
-					SelectingEntity.Y - 16,
-					32, 32
-				), new Color32(255, 255, 255, (byte)(Time.time % 0.618f > 0.618f / 2f ? 255 : 128)));
+				byte alpha = (byte)(Time.time % 0.618f > 0.618f / 2f ? 255 : 128);
+				CellGUI.Draw_9Slice(
+					SelectingEntity.Rect, new(6, 6, 6, 6), new Color32(255, 255, 255, alpha), PixelFrame
+				);
+				CellGUI.Draw_9Slice(
+					SelectingEntity.Rect.Shrink(6), new(6, 6, 6, 6), new Color32(0, 0, 0, alpha), PixelFrame
+				);
 			}
 		}
 

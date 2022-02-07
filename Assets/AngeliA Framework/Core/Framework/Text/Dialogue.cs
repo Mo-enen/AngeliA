@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace AngeliaFramework.Text {
+namespace AngeliaFramework {
 	[CreateAssetMenu(fileName = "New Dialogue", menuName = "бя AngeliA/Dialogue", order = 99)]
 	[PreferBinarySerialization]
 	public class Dialogue : ScriptableObject {
@@ -52,7 +52,7 @@ namespace AngeliaFramework.Text {
 namespace AngeliaFramework.Editor {
 	using UnityEngine;
 	using UnityEditor;
-	using AngeliaFramework.Text;
+
 	[CustomEditor(typeof(Dialogue))]
 	public class Dialogue_Inspector : Editor {
 		[InitializeOnLoadMethod]

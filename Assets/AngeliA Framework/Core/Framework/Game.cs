@@ -1,13 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AngeliaFramework.World;
-using AngeliaFramework.Entities;
-using AngeliaFramework.Physics;
-using AngeliaFramework.Rendering;
-using AngeliaFramework.Audio;
-using AngeliaFramework.Input;
-using AngeliaFramework.Text;
 
 
 namespace AngeliaFramework {
@@ -37,6 +30,7 @@ namespace AngeliaFramework {
 		// Api
 		public Language CurrentLanguage { get; private set; } = null;
 		public Dialogue CurrentDialogue { get; private set; } = null;
+		public int EntityDirtyFlag { get; private set; } = 0;
 #if UNITY_EDITOR
 		public bool DebugMode { get; set; } = false;
 #endif
@@ -302,9 +296,11 @@ namespace AngeliaFramework {
 		private void FrameUpdate_World () {
 
 			// World Squad
-			WorldSquad.Update(SpawnRect.center.RoundToInt());
+			WorldSquad.FrameUpdate(SpawnRect.center.RoundToInt());
 
 			//Load Blocks and Entities
+			//SpawnRect
+
 
 
 
@@ -335,9 +331,11 @@ namespace AngeliaFramework {
 			Entity.ViewRect = ViewRect;
 			Entity.CameraRect = CellRenderer.CameraRect;
 			Entity.MousePosition = new(
-				(int)Mathf.LerpUnclamped(CellRenderer.CameraRect.x, CellRenderer.CameraRect.xMax, FrameInput.MousePosition.x / Screen.width),
-				(int)Mathf.LerpUnclamped(CellRenderer.CameraRect.y, CellRenderer.CameraRect.yMax, FrameInput.MousePosition.y / Screen.height)
+				CellRenderer.CameraRect.x.LerpTo(CellRenderer.CameraRect.xMax, FrameInput.MousePosition01.x),
+				CellRenderer.CameraRect.y.LerpTo(CellRenderer.CameraRect.yMax, FrameInput.MousePosition01.y)
 			);
+
+			bool changed = false;
 
 			// Remove Inactive and Outside Spawnrect
 			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
@@ -356,6 +354,7 @@ namespace AngeliaFramework {
 						entity.OnDespawn(GlobalFrame);
 						StagedEntityHash.Remove(entity.InstanceID);
 						entities[i] = null;
+						changed = true;
 					}
 				}
 			}
@@ -417,11 +416,16 @@ namespace AngeliaFramework {
 						StagedEntityHash.TryAdd(e.InstanceID);
 						e.OnCreate(GlobalFrame);
 						buffers[i] = null;
+						changed = true;
 					} else {
 						System.Array.Clear(buffers, 0, buffers.Length);
 					}
 				}
 				EntityBuffers[layerIndex].length = 0;
+			}
+
+			if (changed) {
+				EntityDirtyFlag++;
 			}
 
 		}

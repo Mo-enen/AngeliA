@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace AngeliaFramework.World {
+namespace AngeliaFramework {
 	public class WorldSquad {
 
 
@@ -31,7 +31,7 @@ namespace AngeliaFramework.World {
 		public void Init () => FillSquad(0, 0);
 
 
-		public void Update (Vector2Int viewPos) {
+		public void FrameUpdate (Vector2Int viewPos) {
 			var midZone = new RectInt(
 				Worlds[1, 1].FilledPosition * Const.WORLD_MAP_SIZE * Const.CELL_SIZE,
 				new Vector2Int(Const.WORLD_MAP_SIZE * Const.CELL_SIZE, Const.WORLD_MAP_SIZE * Const.CELL_SIZE)

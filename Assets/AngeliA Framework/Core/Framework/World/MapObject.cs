@@ -1,12 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 
-namespace AngeliaFramework.World {
+namespace AngeliaFramework {
+
+
+
 	[CreateAssetMenu(fileName = "New Map", menuName = "бя AngeliA/Map", order = 99)]
 	[PreferBinarySerialization]
-	public class Map : ScriptableObject {
+	public class MapObject : ScriptableObject {
+
+		public bool IsProcedure => !string.IsNullOrEmpty(GeneratorFullname);
+
+		public Map Map = null;
+		[TypeEnum(typeof(WorldGenerator))] public string GeneratorFullname = "";
+
+		public WorldGenerator CreateProcedureGenerator () {
+			try {
+				var generator = System.Activator.CreateInstance(
+					System.Type.GetType(GeneratorFullname, false)
+				) as WorldGenerator;
+				generator.SourceMap = Map;
+				return generator;
+			} catch { return null; }
+		}
+
+	}
+
+
+
+	[System.Serializable]
+	public class Map {
 
 		[System.Serializable]
 		public struct Block {
@@ -29,14 +55,16 @@ namespace AngeliaFramework.World {
 		public Entity[] Entities = new Entity[0];
 
 	}
+
+
+
 }
 
 
 #if UNITY_EDITOR
 namespace AngeliaFramework.Editor {
 	using UnityEditor;
-	using AngeliaFramework.World;
-	[CustomEditor(typeof(Map))]
+	[CustomEditor(typeof(MapObject))]
 	[CanEditMultipleObjects]
 	public class Map_Inspector : Editor {
 		public override void OnInspectorGUI () {

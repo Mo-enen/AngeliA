@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace AngeliaFramework.Audio {
+namespace AngeliaFramework {
 	public static class AudioPool {
 
 

@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AngeliaFramework.Rendering;
 
 
-namespace AngeliaFramework.Entities.Editor {
+namespace AngeliaFramework.Editor {
 	public class eDebugChar : Entity {
 
 		public int CharSize = 256;

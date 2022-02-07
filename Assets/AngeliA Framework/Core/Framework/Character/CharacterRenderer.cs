@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AngeliaFramework.Rendering;
 
 
-namespace AngeliaFramework.Entities {
+namespace AngeliaFramework {
 	public class CharacterRenderer {
 
 
@@ -81,7 +80,7 @@ namespace AngeliaFramework.Entities {
 #if UNITY_EDITOR
 namespace AngeliaFramework.Editor {
 	using UnityEditor;
-	using AngeliaFramework.Entities;
+	
 	[CustomEditor(typeof(CharacterRenderer))]
 	public class CharacterRenderer_Inspector : Editor {
 		public override void OnInspectorGUI () {

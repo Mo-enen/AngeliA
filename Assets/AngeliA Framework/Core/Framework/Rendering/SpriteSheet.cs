@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace AngeliaFramework.Rendering {
+namespace AngeliaFramework {
 	[CreateAssetMenu(fileName = "New Sheet", menuName = "бя AngeliA/Sprite Sheet", order = 99)]
 	[PreferBinarySerialization]
 	public class SpriteSheet : ScriptableObject {
@@ -92,7 +92,7 @@ namespace AngeliaFramework.Editor {
 	using UnityEngine;
 	using UnityEditor;
 	using System.Text;
-	using AngeliaFramework.Rendering;
+	
 	[CustomEditor(typeof(SpriteSheet), true), DisallowMultipleComponent]
 	public class SpriteSheet_Inspector : Editor {
 

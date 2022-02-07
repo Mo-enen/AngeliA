@@ -1,11 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using UnityEngine;
-using AngeliaFramework.Entities;
 
 
-namespace AngeliaFramework.Physics {
+namespace AngeliaFramework {
 	public static class CellPhysics {
 
 
@@ -14,15 +12,15 @@ namespace AngeliaFramework.Physics {
 		#region --- SUB ---
 
 
-		private class Cell {
+		private struct Cell {
 
 			public RectInt GlobalRect => Entity != null ? Entity.Rect : Rect;
 
-			public RectInt Rect = default;
-			public Entity Entity = null;
-			public uint Frame = uint.MinValue;
-			public bool IsTrigger = false;
-			public int Tag = 0;
+			public RectInt Rect;
+			public Entity Entity;
+			public uint Frame;
+			public bool IsTrigger;
+			public int Tag;
 
 			private HitInfo Info;
 
@@ -36,6 +34,7 @@ namespace AngeliaFramework.Physics {
 				Info.Tag = Tag;
 				return Info;
 			}
+
 		}
 
 
@@ -46,7 +45,7 @@ namespace AngeliaFramework.Physics {
 				for (int i = 0; i < width; i++) {
 					for (int j = 0; j < height; j++) {
 						for (int z = 0; z < CELL_DEPTH; z++) {
-							Cells[i, j, z] = new();
+							Cells[i, j, z] = new() { Frame = uint.MinValue };
 						}
 					}
 				}
@@ -132,7 +131,7 @@ namespace AngeliaFramework.Physics {
 			HitInfo result = null;
 			for (int layerIndex = 0; layerIndex < Const.PHYSICS_LAYER_COUNT; layerIndex++) {
 				var layer = (PhysicsLayer)layerIndex;
-				if (!mask.HasFlag(layer.ToMask())) continue;
+				if (!mask.HasLayer(layer)) continue;
 				result = Overlap(layer, globalRect, ignore, mode, tag);
 				if (result != null) break;
 			}
@@ -151,7 +150,7 @@ namespace AngeliaFramework.Physics {
 			for (int j = d; j <= u; j++) {
 				for (int i = l; i <= r; i++) {
 					for (int dep = 0; dep < CELL_DEPTH; dep++) {
-						var cell = layerItem.Cells[i, j, dep];
+						ref var cell = ref layerItem.Cells[i, j, dep];
 						if (cell.Frame != CurrentFrame) break;
 						if (ignore != null && cell.Entity == ignore) continue;
 						if (tag != 0 && cell.Tag != tag) continue;
@@ -168,10 +167,11 @@ namespace AngeliaFramework.Physics {
 
 
 		public static int ForAllOverlaps (PhysicsMask mask, RectInt globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+			//return 0;
 			int count = 0;
 			for (int layerIndex = 0; layerIndex < Const.PHYSICS_LAYER_COUNT; layerIndex++) {
 				var layer = (PhysicsLayer)layerIndex;
-				if (!mask.HasFlag(layer.ToMask())) continue;
+				if (!mask.HasLayer(layer)) continue;
 				count = ForAllOverlapsLogic(layer, globalRect, count, ignore, mode, tag);
 			}
 			ClearOverlapResult(count);
@@ -276,7 +276,7 @@ namespace AngeliaFramework.Physics {
 				for (int y = 0; y < Height; y++) {
 					for (int x = 0; x < Width; x++) {
 						for (int d = 0; d < CELL_DEPTH; d++) {
-							var cell = layer.Cells[x, y, d];
+							ref var cell = ref layer.Cells[x, y, d];
 							if (cell.Frame != CurrentFrame) { break; }
 							action(i, cell.GetInfo());
 						}
@@ -315,7 +315,7 @@ namespace AngeliaFramework.Physics {
 				CurrentLayer = Layers[(int)layer];
 			}
 			for (int dep = 0; dep < CELL_DEPTH; dep++) {
-				var cell = CurrentLayer.Cells[i, j, dep];
+				ref var cell = ref CurrentLayer.Cells[i, j, dep];
 				if (cell.Frame != CurrentFrame) {
 					cell.Rect = globalRect;
 					cell.Entity = entity;
@@ -340,7 +340,7 @@ namespace AngeliaFramework.Physics {
 			for (int j = d; j <= u; j++) {
 				for (int i = l; i <= r; i++) {
 					for (int dep = 0; dep < CELL_DEPTH; dep++) {
-						var cell = layerItem.Cells[i, j, dep];
+						ref var cell = ref layerItem.Cells[i, j, dep];
 						if (cell.Frame != CurrentFrame) { break; }
 						if (ignore != null && cell.Entity == ignore) continue;
 						if (tag != 0 && cell.Tag != tag) continue;

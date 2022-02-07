@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AngeliaFramework.Input;
 
 
-namespace AngeliaFramework.Rendering {
+namespace AngeliaFramework {
 	public static class CellGUI {
 
 
@@ -139,7 +138,7 @@ namespace AngeliaFramework.Rendering {
 
 		// Button
 		public static void DrawButton (System.Action click, RectInt rect, string label, int charSize, Color32 normal, Color32 highlight, Color32 pressed, Color32 labelColor, int spriteID, bool navigation = false) {
-			bool hover = rect.Contains(ScreenToCameraPosition(FrameInput.MousePosition));
+			bool hover = rect.Contains(ScreenToCameraPosition(FrameInput.MousePosition01));
 			HoverOnGUI = HoverOnGUI || hover;
 			bool pressing = FrameInput.MouseLeft;
 			var tint = hover ? pressing ? pressed : highlight : normal;
@@ -155,7 +154,7 @@ namespace AngeliaFramework.Rendering {
 
 
 		public static void DrawButton (System.Action click, RectInt rect, string label, int charSize, Color32 normal, Color32 highlight, Color32 pressed, Color32 labelColor, AlignmentInt spriteID, RectOffset border, bool nagigation = false) {
-			bool hover = rect.Contains(ScreenToCameraPosition(FrameInput.MousePosition));
+			bool hover = rect.Contains(ScreenToCameraPosition(FrameInput.MousePosition01));
 			HoverOnGUI = HoverOnGUI || hover;
 			bool pressing = FrameInput.MouseLeft;
 			var tint = hover ? pressing ? pressed : highlight : normal;
@@ -208,9 +207,9 @@ namespace AngeliaFramework.Rendering {
 		#region --- LGC ---
 
 
-		private static Vector2Int ScreenToCameraPosition (Vector2 screenPos) => new(
-			(int)Mathf.LerpUnclamped(CellRenderer.CameraRect.x, CellRenderer.CameraRect.xMax, screenPos.x / Screen.width),
-			(int)Mathf.LerpUnclamped(CellRenderer.CameraRect.y, CellRenderer.CameraRect.yMax, screenPos.y / Screen.height)
+		private static Vector2Int ScreenToCameraPosition (Vector2 screenPos01) => new(
+			(int)Mathf.LerpUnclamped(CellRenderer.CameraRect.x, CellRenderer.CameraRect.xMax, screenPos01.x),
+			(int)Mathf.LerpUnclamped(CellRenderer.CameraRect.y, CellRenderer.CameraRect.yMax, screenPos01.y)
 		);
 
 

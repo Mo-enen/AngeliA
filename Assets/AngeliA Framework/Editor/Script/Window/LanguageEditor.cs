@@ -5,7 +5,6 @@ namespace AngeliaFramework.Editor {
 	using UnityEngine;
 	using UnityEditor;
 	using Moenen.Standard;
-	using AngeliaFramework.Text;
 
 
 	public class LanguageEditor : EditorWindow {

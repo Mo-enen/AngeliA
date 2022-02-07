@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace AngeliaFramework.Text {
+namespace AngeliaFramework {
 	[CreateAssetMenu(fileName = "New Language", menuName = "бя AngeliA/Language", order = 99)]
 	[PreferBinarySerialization]
 	public class Language : ScriptableObject {
@@ -51,7 +51,6 @@ namespace AngeliaFramework.Text {
 #if UNITY_EDITOR
 namespace AngeliaFramework.Editor {
 	using UnityEditor;
-	using AngeliaFramework.Text;
 	[CustomEditor(typeof(Language))]
 	public class Language_Inspector : Editor {
 		public override void OnInspectorGUI () {

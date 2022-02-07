@@ -1,11 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AngeliaFramework.Physics;
-using AngeliaFramework.Rendering;
 
 
-namespace AngeliaFramework.Entities.Editor {
+namespace AngeliaFramework.Editor {
 	public class eDebug : eRigidbody {
 
 

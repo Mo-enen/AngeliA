@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace AngeliaFramework.Rendering {
+namespace AngeliaFramework {
 	public static class CellRenderer {
 
 

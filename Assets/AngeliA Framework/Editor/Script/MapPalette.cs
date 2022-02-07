@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 
@@ -35,7 +34,7 @@ namespace AngeliaFramework.Editor {
 			public bool IsEntity => !string.IsNullOrEmpty(TypeFullName);
 
 			public Sprite Sprite;
-			[TypeEnum(typeof(Entities.Entity))] public string TypeFullName;
+			[TypeEnum(typeof(Entity))] public string TypeFullName;
 
 		}
 
@@ -99,17 +98,7 @@ namespace AngeliaFramework.Editor {
 	}
 
 
-	public class MapEditorPalettePost : AssetPostprocessor {
-		private static void OnPostprocessAllAssets (string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths) {
-			if (MapEditor.Main == null) return;
-			foreach (var path in importedAssets) {
-				if (AssetDatabase.LoadAssetAtPath<MapPalette>(path) != null) {
-					MapEditor.Main.SetNeedReloadAsset();
-					return;
-				}
-			}
-		}
-	}
+
 
 
 }
@@ -119,13 +108,30 @@ namespace AngeliaFramework.Editor {
 namespace AngeliaFramework.Editor {
 	using UnityEngine;
 	using UnityEditor;
+
+
 	[CustomEditor(typeof(MapPalette))]
-	public class MapEditor_PaletteGroup_Inspector : Editor {
+	public class MapPalette_Inspector : Editor {
 		public override void OnInspectorGUI () {
 			serializedObject.Update();
 			DrawPropertiesExcluding(serializedObject, "m_Script");
 			serializedObject.ApplyModifiedProperties();
 		}
 	}
+
+
+	public class MapEditorPalettePost : AssetPostprocessor {
+		private static void OnPostprocessAllAssets (string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths) {
+			if (MapEditorWindow.Main == null) return;
+			foreach (var path in importedAssets) {
+				if (AssetDatabase.LoadAssetAtPath<MapPalette>(path) != null) {
+					MapEditorWindow.Main.SetNeedReloadAsset();
+					return;
+				}
+			}
+		}
+	}
+
+
 }
 #endif

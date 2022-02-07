@@ -259,7 +259,13 @@ namespace AngeliaFramework {
 
 
 		// Extension
-		public static PhysicsMask ToMask (this PhysicsLayer layer) => (PhysicsMask)(1 << ((int)layer));
+		public static bool HasLayer (this PhysicsMask mask, PhysicsLayer layer) => layer switch {
+			PhysicsLayer.Level => mask.HasFlag(PhysicsMask.Level),
+			PhysicsLayer.Environment => mask.HasFlag(PhysicsMask.Environment),
+			PhysicsLayer.Item => mask.HasFlag(PhysicsMask.Item),
+			PhysicsLayer.Character => mask.HasFlag(PhysicsMask.Character),
+			_ => throw new System.NotImplementedException(),
+		};
 
 
 	}

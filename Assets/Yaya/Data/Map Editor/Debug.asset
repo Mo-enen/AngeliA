@@ -22,3 +22,6 @@ MonoBehaviour:
     TypeFullName: 
   - Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
     TypeFullName: AngeliaFramework.Entities.Editor.eDebug
+  - Sprite: {fileID: -1972687094564485636, guid: 690d8fc8a6776684e932230e57858c66,
+      type: 3}
+    TypeFullName: AngeliaFramework.Entities.Editor.eDebugPlayer

@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AngeliaFramework.Physics;
 
 
-namespace AngeliaFramework.Entities {
+namespace AngeliaFramework {
 	public abstract class eRigidbody : Entity {
 
 

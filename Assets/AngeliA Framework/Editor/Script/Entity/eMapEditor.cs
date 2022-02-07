@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AngeliaFramework.Entities;
-using AngeliaFramework.Rendering;
 
 
 namespace AngeliaFramework.Editor {
@@ -26,17 +24,6 @@ namespace AngeliaFramework.Editor {
 			"Pixel".ACode(),
 			"Pixel".ACode()
 		);
-		private static AlignmentInt BUTTON_SPRITES = new(
-			"Button UL".ACode(),
-			"Button UM".ACode(),
-			"Button UR".ACode(),
-			"Button ML".ACode(),
-			"Button MM".ACode(),
-			"Button MR".ACode(),
-			"Button DL".ACode(),
-			"Button DM".ACode(),
-			"Button DR".ACode()
-		);
 		//private static readonly int PIXEL_CODE = "Pixel".ACode();
 		private static readonly int LINE_V_CODE = "LineV_4".ACode();
 		private static readonly int LINE_H_CODE = "LineH_4".ACode();
@@ -46,8 +33,7 @@ namespace AngeliaFramework.Editor {
 
 		// Data
 		private MapPalette.Unit SelectingBlock = null;
-		private bool PrevBackQuotePressed = false;
-		private bool HoverOnGUI = false;
+		private Vector2Int? ResetingPlayerPosition = null;
 
 
 		#endregion
@@ -59,14 +45,38 @@ namespace AngeliaFramework.Editor {
 
 
 		public override void FrameUpdate (int frame) {
-			if (MapEditor.Main == null) return;
-			SelectingBlock = MapEditor.Main.GetSelection();
-			if (MapEditor.Main.Game.DebugMode) {
+			if (MapEditorWindow.Main == null) return;
+			SelectingBlock = MapEditorWindow.Main.GetSelection();
+			Update_Workflow();
+			if (MapEditorWindow.Main.Game.DebugMode) {
 				Update_Grid();
 				Update_Cursor();
 			}
-			Update_UI();
-			HoverOnGUI = CellGUI.HoverOnGUI;
+		}
+
+
+		private void Update_Workflow () {
+			if (MapEditorWindow.Main.Game.DebugMode) {
+				// Editing 
+				if (PressingStartAndSelect()) {
+					ResetingPlayerPosition = MousePosition;
+					SetDebugMode(false);
+				}
+			} else {
+				// Playing
+				if (PressingStartAndSelect()) {
+					SetDebugMode(true);
+				}
+				if (ResetingPlayerPosition.HasValue) {
+					var game = MapEditorWindow.Main.Game;
+					var player = game.FindEntityOfType<ePlayer>(EntityLayer.Character);
+					if (player != null) {
+						player.X = ResetingPlayerPosition.Value.x;
+						player.Y = ResetingPlayerPosition.Value.y;
+						ResetingPlayerPosition = null;
+					}
+				}
+			}
 		}
 
 
@@ -92,8 +102,6 @@ namespace AngeliaFramework.Editor {
 
 		private void Update_Cursor () {
 
-			if (HoverOnGUI) return;
-
 			int cursorX = Mathf.FloorToInt((float)MousePosition.x / Const.CELL_SIZE) * Const.CELL_SIZE;
 			int cursorY = Mathf.FloorToInt((float)MousePosition.y / Const.CELL_SIZE) * Const.CELL_SIZE;
 			const int THICKNESS = 3;
@@ -112,37 +120,11 @@ namespace AngeliaFramework.Editor {
 			);
 
 			// Icon
-			if (SelectingBlock != null && MapEditor.Main.Painting) {
+			if (SelectingBlock != null && MapEditorWindow.Main.Painting) {
 				CellRenderer.Draw(
 					SelectingBlock.Sprite.name.ACode(),
 					cursorRect.Fit((int)SelectingBlock.Sprite.rect.width, (int)SelectingBlock.Sprite.rect.height)
 				);
-			}
-
-		}
-
-
-		private void Update_UI () {
-			{ // Play/Pause Button
-				const int WIDTH = 420;
-				const int HEIGHT = 160;
-				const int GAP = 24;
-				CellGUI.DrawButton(
-					() => SetDebugMode(!MapEditor.Main.Game.DebugMode),
-					new RectInt(CameraRect.x + GAP, CameraRect.yMax - HEIGHT - GAP, WIDTH, HEIGHT),
-					MapEditor.Main.Game.DebugMode ? "Play" : "Edit",
-					90,
-					new Color32(255, 255, 255, 255),
-					new Color32(245, 245, 245, 245),
-					new Color32(235, 235, 235, 235),
-					new Color32(16, 16, 16, 255),
-					BUTTON_SPRITES, new RectOffset(12, 12, 12, 12)
-				);
-				bool bPressed = UnityEngine.Input.GetKey(KeyCode.BackQuote);
-				if (bPressed && !PrevBackQuotePressed) {
-					SetDebugMode(!MapEditor.Main.Game.DebugMode);
-				}
-				PrevBackQuotePressed = bPressed;
 			}
 
 		}
@@ -157,9 +139,19 @@ namespace AngeliaFramework.Editor {
 
 
 		private void SetDebugMode (bool on) {
-			MapEditor.Main.Game.DebugMode = on;
+			MapEditorWindow.Main.Game.DebugMode = on;
+			if (!on) {
+				MapEditorWindow.Main.Game.AddEntity(new eDebugPlayer(), EntityLayer.Character);
+			}
+#if UNITY_EDITOR
 			UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+#endif
 		}
+
+
+		private bool PressingStartAndSelect () =>
+			(FrameInput.KeyDown(GameKey.Select) && FrameInput.KeyPressing(GameKey.Start)) ||
+			(FrameInput.KeyDown(GameKey.Start) && FrameInput.KeyPressing(GameKey.Select));
 
 
 		#endregion

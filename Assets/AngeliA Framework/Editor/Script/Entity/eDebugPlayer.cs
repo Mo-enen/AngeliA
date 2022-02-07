@@ -1,11 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AngeliaFramework.Physics;
-using AngeliaFramework.Rendering;
 
 
-namespace AngeliaFramework.Entities.Editor {
+namespace AngeliaFramework.Editor {
 	public class eDebugPlayer : ePlayer {
 
 
@@ -27,10 +25,10 @@ namespace AngeliaFramework.Entities.Editor {
 		public Vector2Int GroundPosB = new(0, 2);
 		public Vector2Int GroundSizeA = new(26, 2);
 		public Vector2Int GroundSizeB = new(8, 2);
-		public string GroundSprite = "Pixel";
+		public string GroundSprite = "Test Block";
 		public Vector2Int WaterPos = new(12, 5);
 		public Vector2Int WaterSize = new(6, 2);
-		public string WaterSprite = "Pixel";
+		public string WaterSprite = "Test Water";
 
 
 

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-namespace AngeliaFramework.Input {
+namespace AngeliaFramework {
 
 
 	public enum GameKey {
@@ -45,11 +45,7 @@ namespace AngeliaFramework.Input {
 
 
 		// Api
-		public static bool SwapeGamePadAB {
-			get => SwapeAB.Value;
-			set => SwapeAB.Value = value;
-		}
-		public static Vector2 MousePosition { get; private set; } = default;
+		public static Vector2 MousePosition01 { get; private set; } = default;
 		public static bool MouseLeft { get; private set; } = false;
 		public static bool MouseRight { get; private set; } = false;
 		public static bool MouseLeftDown { get; private set; } = false;
@@ -76,14 +72,13 @@ namespace AngeliaFramework.Input {
 			{ GameKey.Up, (Key.W, Key.UpArrow) },
 			{ GameKey.Action, (Key.P, Key.Z) },
 			{ GameKey.Jump, (Key.L, Key.LeftShift) },
-			{ GameKey.Start, (Key.Enter, Key.Space) },
-			{ GameKey.Select, (Key.Tab, Key.Tab) },
+			{ GameKey.Start, (Key.E, Key.Enter) },
+			{ GameKey.Select, (Key.Q, Key.Tab) },
 		};
 		private static bool PrevMouseLeft = false;
 		private static bool PrevMouseRight = false;
 
 		// Saving
-		private static SavingBool SwapeAB = new("FrameInput.SwapeAB", false);
 		private static SavingString KeyboardSetup = new("FrameInput.KeyboardSetup", "");
 
 
@@ -141,13 +136,14 @@ namespace AngeliaFramework.Input {
 
 			// Pointer
 			if (Mouse != null) {
-				MousePosition = Mouse.position.ReadValue();
+				var pos = Mouse.position.ReadValue();
+				MousePosition01 = new Vector2(pos.x / Screen.width, pos.y / Screen.height);
 				MouseLeft = Mouse.leftButton.isPressed;
 				MouseRight = Mouse.rightButton.isPressed;
 				MouseLeftDown = !PrevMouseLeft && MouseLeft;
 				MouseRightDown = !PrevMouseRight && MouseRight;
 			} else {
-				MousePosition = default;
+				MousePosition01 = default;
 				MouseLeft = false;
 				MouseRight = false;
 				MouseLeftDown = false;
@@ -210,9 +206,6 @@ namespace AngeliaFramework.Input {
 			bool prevHolding = StateMap[key] == KeyState.Holding || StateMap[key] == KeyState.Down;
 			bool holding = false;
 			if (Gamepad != null) {
-				if (SwapeAB.Value && (key == GameKey.Action || key == GameKey.Jump)) {
-					key = key == GameKey.Action ? GameKey.Jump : GameKey.Action;
-				}
 				switch (key) {
 					case GameKey.Left:
 						holding =

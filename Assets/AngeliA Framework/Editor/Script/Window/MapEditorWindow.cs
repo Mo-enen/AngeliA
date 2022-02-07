@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using AngeliaFramework.Entities;
-using AngeliaFramework.Rendering;
 using Moenen.Standard;
 
 
 namespace AngeliaFramework.Editor {
-	public class MapEditor : EditorWindow {
+	public class MapEditorWindow : EditorWindow {
 
 
 
@@ -26,7 +24,7 @@ namespace AngeliaFramework.Editor {
 		private const string WINDOW_TITLE = "Map Editor";
 
 		// Api
-		public static MapEditor Main { get; private set; } = null;
+		public static MapEditorWindow Main { get; private set; } = null;
 		public Game Game { get; private set; } = null;
 		public bool Painting => CurrentTool == Tool.Paint;
 
@@ -64,7 +62,7 @@ namespace AngeliaFramework.Editor {
 		[MenuItem("AngeliA/Map Editor")]
 		private static void OpenWindow () {
 			try {
-				var window = GetWindow<MapEditor>(WINDOW_TITLE, false);
+				var window = GetWindow<MapEditorWindow>(WINDOW_TITLE, false);
 				window.minSize = new Vector2(275, 400);
 				window.maxSize = new Vector2(600, 1000);
 				window.titleContent = EditorGUIUtility.IconContent("TerrainInspector.TerrainToolSplat");
