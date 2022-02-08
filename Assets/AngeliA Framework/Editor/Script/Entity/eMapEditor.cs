@@ -56,15 +56,18 @@ namespace AngeliaFramework.Editor {
 
 
 		private void Update_Workflow () {
+			bool pressingSS =
+				(FrameInput.KeyDown(GameKey.Select) && FrameInput.KeyPressing(GameKey.Start)) ||
+				(FrameInput.KeyDown(GameKey.Start) && FrameInput.KeyPressing(GameKey.Select));
 			if (MapEditorWindow.Main.Game.DebugMode) {
 				// Editing 
-				if (PressingStartAndSelect()) {
+				if (pressingSS) {
 					ResetingPlayerPosition = MousePosition;
 					SetDebugMode(false);
 				}
 			} else {
 				// Playing
-				if (PressingStartAndSelect()) {
+				if (pressingSS) {
 					SetDebugMode(true);
 				}
 				if (ResetingPlayerPosition.HasValue) {
@@ -147,11 +150,6 @@ namespace AngeliaFramework.Editor {
 			UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
 #endif
 		}
-
-
-		private bool PressingStartAndSelect () =>
-			(FrameInput.KeyDown(GameKey.Select) && FrameInput.KeyPressing(GameKey.Start)) ||
-			(FrameInput.KeyDown(GameKey.Start) && FrameInput.KeyPressing(GameKey.Select));
 
 
 		#endregion

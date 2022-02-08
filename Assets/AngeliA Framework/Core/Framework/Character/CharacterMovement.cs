@@ -18,6 +18,8 @@ namespace AngeliaFramework {
 		public int Gravity { get; init; } = 5;
 		public int MaxGravitySpeed { get; init; } = 64;
 		public int InWaterSpeedLoseRate { get; init; } = 500;
+		public int GroundStuckLoseX { get; init; } = 2;
+		public int GroundStuckLoseY { get; init; } = 6;
 
 		// Move
 		public int MoveSpeed { get; init; } = 17;
@@ -66,6 +68,7 @@ namespace AngeliaFramework {
 		public bool IsDashing { get; private set; } = false;
 		public bool IsSquating { get; private set; } = false;
 		public bool IsPounding { get; private set; } = false;
+		public bool IsInsideGround { get; private set; } = false;
 		public bool InWater => Rig.InWater;
 		public int CurrentJumpCount { get; private set; } = 0;
 		public Direction2 CurrentFacingX { get; private set; } = Direction2.Positive;
@@ -124,13 +127,22 @@ namespace AngeliaFramework {
 
 
 		private void Update_Cache () {
+
 			// Ground
 			IsGrounded = !CellPhysics.RoomCheck(
 				PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character,
 				Rig, Direction4.Down
 			);
 			if (IsGrounded) LastGroundedFrame = CurrentFrame;
-			IsDashing = DashAvailable && CurrentFrame < LastDashFrame + CurrentDashDuration;
+			IsInsideGround = CellPhysics.Overlap(
+				PhysicsMask.Level, new(
+					Rig.X, Rig.Y + Height / 4, 1, 1
+				), Rig
+			) != null;
+
+			// Dash
+			IsDashing = DashAvailable && CurrentFrame < LastDashFrame + CurrentDashDuration && !IsInsideGround;
+
 			// Water
 			// In/Out Water
 			if (PrevInWater != InWater) {
@@ -147,10 +159,13 @@ namespace AngeliaFramework {
 				}
 			}
 			PrevInWater = InWater;
+
 			// Squat
-			IsSquating = SquatAvailable && IsGrounded && ((!IsDashing && IntendedY < 0) || ForceSquatCheck());
+			IsSquating = SquatAvailable && IsGrounded && ((!IsDashing && IntendedY < 0) || ForceSquatCheck()) && !IsInsideGround;
+
 			// Pound
-			IsPounding = PoundAvailable && !IsGrounded && !InWater && !IsDashing && (IsPounding ? IntendedY < 0 : IntendedPound);
+			IsPounding = PoundAvailable && !IsGrounded && !InWater && !IsDashing && (IsPounding ? IntendedY < 0 : IntendedPound) && !IsInsideGround;
+
 			// Physics
 			Hitbox = new(
 				Rig.X - Width / 2,
@@ -241,6 +256,9 @@ namespace AngeliaFramework {
 				dcc = MoveDecceleration;
 			}
 			Rig.VelocityX = Rig.VelocityX.MoveTowards(speed, acc, dcc);
+			if (IsInsideGround) {
+				Rig.VelocityX = Rig.VelocityX.MoveTowards(0, GroundStuckLoseX);
+			}
 		}
 
 
@@ -279,6 +297,9 @@ namespace AngeliaFramework {
 					Rig.Gravity = Gravity;
 					Rig.MaxGravitySpeed = MaxGravitySpeed;
 				}
+			}
+			if (IsInsideGround) {
+				Rig.VelocityY = Rig.VelocityY.MoveTowards(0, GroundStuckLoseY);
 			}
 		}
 
@@ -325,15 +346,16 @@ namespace AngeliaFramework {
 
 
 		private bool ForceSquatCheck () {
-			bool overlap = CellPhysics.Overlap(
-				PhysicsMask.Level | PhysicsMask.Environment,
-				new RectInt(
-					Rig.X + Rig.OffsetX + Rig.Width / 4,
-					Rig.Y + Rig.OffsetY + Height / 2,
-					Rig.Width / 2,
-					Height / 2
-				)
-			) != null;
+			if (IsInsideGround) return false;
+			var rect = new RectInt(
+				Rig.X + Rig.OffsetX + Rig.Width / 4,
+				Rig.Y + Rig.OffsetY + Height / 2,
+				Rig.Width / 2,
+				Height / 2
+			);
+			bool overlap = CellPhysics.Overlap(PhysicsMask.Level, rect) != null;
+			if (overlap) return true;
+			overlap = CellPhysics.Overlap(PhysicsMask.Environment, rect) != null;
 			if (overlap && IsSquating && IntendedY >= 0) {
 				// Want to Stand Up but Overlaps
 				return CellPhysics.StopCheck(
@@ -358,7 +380,7 @@ namespace AngeliaFramework {
 namespace AngeliaFramework.Editor {
 	using UnityEngine;
 	using UnityEditor;
-	
+
 	[CustomEditor(typeof(CharacterMovement))]
 	public class CharacterMovement_Inspector : Editor {
 		public override void OnInspectorGUI () {

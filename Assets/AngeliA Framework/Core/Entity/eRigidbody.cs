@@ -7,6 +7,11 @@ namespace AngeliaFramework {
 	public abstract class eRigidbody : Entity {
 
 
+
+
+		#region --- VAR ---
+
+
 		// Const
 		private static readonly int WATER_TAG = "Water".ACode();
 		private const int WATER_RATE = 400;
@@ -17,6 +22,7 @@ namespace AngeliaFramework {
 		public virtual int PushLevel => 0;
 		public virtual bool CarryOnTop => true;
 		public bool InWater { get; private set; } = false;
+		public override RectInt Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
 
 		// Api-Ser
 		public PhysicsLayer Layer = PhysicsLayer.Character;
@@ -33,10 +39,14 @@ namespace AngeliaFramework {
 		private int PrevY = 0;
 
 
-		public override RectInt Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
+		#endregion
 
 
-		// MSG
+
+
+		#region --- MSG ---
+
+
 		public override void OnCreate (int frame) {
 			PrevX = X;
 			PrevY = Y;
@@ -74,7 +84,43 @@ namespace AngeliaFramework {
 		}
 
 
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+		public static int GetPushLevel (Entity entity) =>
+			entity == null ? int.MaxValue :
+			entity is eRigidbody rig ? rig.PushLevel : 0;
+
+
+		protected virtual bool InsideGroundCheck () => CellPhysics.Overlap(
+			PhysicsMask.Level, new(
+				X + OffsetX + Width / 2,
+				Y + OffsetY + Height / 2,
+				1, 1
+			), this
+		) != null;
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
 		private void PerformMove (int speedX, int speedY, bool carry) {
+
+			if (InsideGroundCheck()) {
+				X += VelocityX;
+				Y += VelocityY;
+				return;
+			}
 
 			int speedScale = InWater ? WATER_RATE : 1000;
 			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);
@@ -128,10 +174,12 @@ namespace AngeliaFramework {
 		}
 
 
-		// API
-		public static int GetPushLevel (Entity entity) =>
-			entity == null ? int.MaxValue :
-			entity is eRigidbody rig ? rig.PushLevel : 0;
+		#endregion
+
+
+
+
+
 
 
 	}

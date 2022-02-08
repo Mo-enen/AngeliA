@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 
@@ -14,8 +13,9 @@ namespace AngeliaFramework {
 
 		public bool IsProcedure => !string.IsNullOrEmpty(GeneratorFullname);
 
+		[TypeEnum(typeof(WorldGenerator))]
+		public string GeneratorFullname = "";
 		public Map Map = null;
-		[TypeEnum(typeof(WorldGenerator))] public string GeneratorFullname = "";
 
 		public WorldGenerator CreateProcedureGenerator () {
 			try {

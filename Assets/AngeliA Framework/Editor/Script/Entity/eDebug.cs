@@ -15,6 +15,7 @@ namespace AngeliaFramework.Editor {
 		public string SpriteName = "Pixel";
 		public string Tag = "";
 		public bool IsTrigger = false;
+		public bool IsRigidbody = true;
 		public int PingPongSpeedX = 0;
 		public int PingPongSpeedY = 0;
 		public int PingPongFrame = 0;
@@ -33,11 +34,15 @@ namespace AngeliaFramework.Editor {
 
 
 		public override void FillPhysics (int frame) {
-			if (Width <= Const.CELL_SIZE && Height <= Const.CELL_SIZE) {
-				CellPhysics.FillEntity(
-					Layer, this,
-					IsTrigger, string.IsNullOrEmpty(Tag) ? 0 : Tag.ACode()
-				);
+			if (IsRigidbody) {
+				if (Width <= Const.CELL_SIZE && Height <= Const.CELL_SIZE) {
+					CellPhysics.FillEntity(
+						Layer, this,
+						IsTrigger, string.IsNullOrEmpty(Tag) ? 0 : Tag.ACode()
+					);
+				}
+			} else {
+				CellPhysics.FillBlock(Layer, Rect, IsTrigger, string.IsNullOrEmpty(Tag) ? 0 : Tag.ACode());
 			}
 		}
 
@@ -52,7 +57,10 @@ namespace AngeliaFramework.Editor {
 					VelocityY = frame % (PingPongFrame * 2) >= PingPongFrame ? PingPongSpeedY : -PingPongSpeedY;
 				}
 			}
-			base.PhysicsUpdate(frame);
+			// Physics Update
+			if (IsRigidbody) {
+				base.PhysicsUpdate(frame);
+			}
 		}
 
 

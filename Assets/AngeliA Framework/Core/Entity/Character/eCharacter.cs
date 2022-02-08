@@ -40,6 +40,9 @@ namespace AngeliaFramework {
 		}
 
 
+		protected override bool InsideGroundCheck () => Movement.IsInsideGround;
+
+
 		#endregion
 
 
