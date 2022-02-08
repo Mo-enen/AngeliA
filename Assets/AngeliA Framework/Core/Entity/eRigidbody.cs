@@ -13,7 +13,6 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int WATER_TAG = "Water".ACode();
 		private const int WATER_RATE = 400;
 
 		// Api
@@ -57,12 +56,20 @@ namespace AngeliaFramework {
 
 
 		public override void PhysicsUpdate (int frame) {
+
 			// Water
 			InWater = CellPhysics.Overlap(
 				PhysicsMask.Level, Rect, null,
 				CellPhysics.OperationMode.TriggerOnly,
-				WATER_TAG
+				Const.WATER_TAG
 			) != null;
+
+			if (InsideGroundCheck()) {
+				X += VelocityX;
+				Y += VelocityY;
+				return;
+			}
+
 			// Gravity
 			if (Gravity != 0) {
 				VelocityY = Mathf.Clamp(
@@ -71,12 +78,14 @@ namespace AngeliaFramework {
 					int.MaxValue
 				);
 			}
+
 			// Vertical Stopping
 			if (VelocityY != 0 && CellPhysics.StopCheck(
 				CollisionMask, this, VelocityY > 0 ? Direction4.Up : Direction4.Down
 			)) {
 				VelocityY = 0;
 			}
+
 			// Move
 			PrevX = X;
 			PrevY = Y;
@@ -115,12 +124,6 @@ namespace AngeliaFramework {
 
 
 		private void PerformMove (int speedX, int speedY, bool carry) {
-
-			if (InsideGroundCheck()) {
-				X += VelocityX;
-				Y += VelocityY;
-				return;
-			}
 
 			int speedScale = InWater ? WATER_RATE : 1000;
 			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);

@@ -34,7 +34,10 @@ namespace AngeliaFramework.Editor {
 			public bool IsEntity => !string.IsNullOrEmpty(TypeFullName);
 
 			public Sprite Sprite;
-			[TypeEnum(typeof(Entity))] public string TypeFullName;
+			[TypeEnum(typeof(Entity))]
+			public string TypeFullName;
+			public int Tag;
+			public bool IsTrigger;
 
 		}
 

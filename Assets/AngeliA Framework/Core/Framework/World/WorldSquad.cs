@@ -12,11 +12,14 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
+		// Const
+		private static readonly WorldData.Block EMPTY_BLOCK = new();
+
 		// Data
 		private WorldData[,] Worlds = new WorldData[3, 3] {
-			{ new(Const.WORLD_MAP_SIZE), new(Const.WORLD_MAP_SIZE), new(Const.WORLD_MAP_SIZE) },
-			{ new(Const.WORLD_MAP_SIZE), new(Const.WORLD_MAP_SIZE), new(Const.WORLD_MAP_SIZE) },
-			{ new(Const.WORLD_MAP_SIZE), new(Const.WORLD_MAP_SIZE), new(Const.WORLD_MAP_SIZE) },
+			{ new(), new(), new() },
+			{ new(), new(), new() },
+			{ new(), new(), new() },
 		};
 
 
@@ -48,6 +51,21 @@ namespace AngeliaFramework {
 					viewPos.y / Const.WORLD_MAP_SIZE / Const.CELL_SIZE
 				);
 			}
+		}
+
+
+		public WorldData.Block GetBlock (int unitX, int unitY, int layerIndex) {
+			var uintPos00 = Worlds[0, 0].FilledPosition * Const.WORLD_MAP_SIZE;
+			unitX -= uintPos00.x;
+			unitY -= uintPos00.y;
+			int worldX = unitX / Const.WORLD_MAP_SIZE;
+			int worldY = unitY / Const.WORLD_MAP_SIZE;
+			if (worldX < 0 || worldX >= 2 || worldY < 0 || worldY >= 2) return EMPTY_BLOCK;
+			var world = Worlds[worldX, worldY];
+			if (world.IsFilling) return EMPTY_BLOCK;
+			unitX %= Const.WORLD_MAP_SIZE;
+			unitY %= Const.WORLD_MAP_SIZE;
+			return world.Blocks[unitX, unitY, layerIndex];
 		}
 
 

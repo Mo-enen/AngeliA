@@ -15,8 +15,12 @@ namespace AngeliaFramework {
 
 		public struct Block {
 			public int TypeID;
-			public void SetValues (int typeID) {
+			public int Tag;
+			public bool IsTrigger;
+			public void SetValues (int typeID, int tag, bool isTrigger) {
 				TypeID = typeID;
+				Tag = tag;
+				IsTrigger = isTrigger;
 			}
 		}
 
@@ -67,9 +71,9 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public WorldData (int size) {
-			Blocks = new Block[size, size, Const.BLOCK_LAYER_COUNT];
-			Entities = new Entity[size, size, Const.ENTITY_LAYER_COUNT];
+		public WorldData () {
+			Blocks = new Block[Const.WORLD_MAP_SIZE, Const.WORLD_MAP_SIZE, Const.BLOCK_LAYER_COUNT];
+			Entities = new Entity[Const.WORLD_MAP_SIZE, Const.WORLD_MAP_SIZE, Const.ENTITY_LAYER_COUNT];
 			FilledPosition = new(int.MinValue, int.MinValue);
 		}
 
@@ -116,7 +120,7 @@ namespace AngeliaFramework {
 							block.Layer < 0 || block.Layer >= bDepth
 						) continue;
 						Blocks[block.X, block.Y, block.Layer].SetValues(
-							block.TypeID
+							block.TypeID, block.Tag, block.IsTrigger
 						);
 					}
 					// Entities

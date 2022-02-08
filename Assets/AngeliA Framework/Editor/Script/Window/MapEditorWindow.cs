@@ -22,6 +22,12 @@ namespace AngeliaFramework.Editor {
 
 		// Const
 		private const string WINDOW_TITLE = "Map Editor";
+		private static readonly string[] PAL_TAGS_DISPLAY = new string[] {
+			"(None)", "Water", "Test 0", "Test 1"
+		};
+		private static readonly int[] PAL_TAGS_VALUE = new int[] {
+			0, "Water".ACode(), "Test 0".ACode(), "Test 1".ACode()
+		};
 
 		// Api
 		public static MapEditorWindow Main { get; private set; } = null;
@@ -148,7 +154,7 @@ namespace AngeliaFramework.Editor {
 				}
 				if (CurrentTool == Tool.Selection) {
 					var _rect = Layout.LastRect();
-					EditorGUI.DrawRect(_rect.Shrink(2, 2, _rect.height - 2.5f, 1), Layout.HighlightColor_Alt);
+					EditorGUI.DrawRect(_rect.Shrink(2, 2, _rect.height - 2.5f, 1), Layout.HighlightColor1);
 				}
 				Layout.Space(2);
 
@@ -158,7 +164,7 @@ namespace AngeliaFramework.Editor {
 				}
 				if (CurrentTool == Tool.Paint) {
 					var _rect = Layout.LastRect();
-					EditorGUI.DrawRect(_rect.Shrink(2, 2, _rect.height - 2.5f, 1), Layout.HighlightColor_Alt);
+					EditorGUI.DrawRect(_rect.Shrink(2, 2, _rect.height - 2.5f, 1), Layout.HighlightColor1);
 				}
 
 				Layout.Rect(0, HEIGHT);
@@ -167,37 +173,52 @@ namespace AngeliaFramework.Editor {
 
 
 		private void GUI_Inspector () {
+			using (new GUILayout.VerticalScope(Layout.BoxPaddingPanelStyle)) {
 
-			using var _ = new GUILayout.VerticalScope(Layout.PaddingPanelStyle);
-			if (SelectingPaletteIndex < 0 || SelectingPaletteIndex >= Palettes.Count) return;
-			var pal = Palettes[SelectingPaletteIndex];
-			if (SelectingPaletteItemIndex < 0 || SelectingPaletteItemIndex >= pal.Count) return;
-			var unit = pal[SelectingPaletteItemIndex];
+				if (SelectingPaletteIndex < 0 || SelectingPaletteIndex >= Palettes.Count) return;
+				var pal = Palettes[SelectingPaletteIndex];
+				if (SelectingPaletteItemIndex < 0 || SelectingPaletteItemIndex >= pal.Count) return;
+				var unit = pal[SelectingPaletteItemIndex];
 
-			const int HEIGHT = 18;
-			const int ICON_SIZE = 56;
+				const int HEIGHT = 18;
+				const int ICON_SIZE = 56;
 
-			GUI.changed = false;
+				GUI.changed = false;
 
-			Layout.Space(4);
-			using (new GUILayout.HorizontalScope()) {
-				// Icon
-				unit.Sprite = EditorGUI.ObjectField(Layout.Rect(ICON_SIZE, ICON_SIZE), unit.Sprite, typeof(Sprite), false) as Sprite;
-				Layout.Space(8);
-				using (new GUILayout.VerticalScope()) {
-					// Name
-					GUI.Label(Layout.Rect(0, HEIGHT), unit.DisplayName, EditorStyles.boldLabel);
-					// Dot
-					var oldC = GUI.color;
-					GUI.color = unit.IsEntity ? new Color32(0, 255, 200, 255) : new Color32(255, 200, 0, 255);
-					GUI.Label(Layout.Rect(0, HEIGHT), unit.IsEntity ? "¡ñ Entity" : "¡ñ Block");
-					GUI.color = oldC;
+				Layout.Space(4);
+				var oldL = EditorGUIUtility.labelWidth;
+				EditorGUIUtility.labelWidth = 46;
+				using (new GUILayout.HorizontalScope()) {
+					// Icon
+					unit.Sprite = EditorGUI.ObjectField(Layout.Rect(ICON_SIZE, ICON_SIZE), unit.Sprite, typeof(Sprite), false) as Sprite;
+					Layout.Space(8);
+					using (new GUILayout.VerticalScope()) {
+
+						// Name
+						GUI.Label(Layout.Rect(0, HEIGHT), unit.DisplayName, EditorStyles.boldLabel);
+						Layout.Space(2);
+
+						if (!unit.IsEntity) {
+							// Trigger
+							unit.IsTrigger = EditorGUI.Toggle(Layout.Rect(0, 16), "Trigger", unit.IsTrigger);
+							Layout.Space(4);
+
+							// Tag
+							unit.Tag = EditorGUI.IntPopup(
+								Layout.Rect(0, 16), "Tag", unit.Tag, PAL_TAGS_DISPLAY, PAL_TAGS_VALUE
+							);
+						}
+
+					}
+				}
+				EditorGUIUtility.labelWidth = oldL;
+				Layout.Space(2);
+				if (GUI.changed) {
+					EditorUtility.SetDirty(pal);
+					UnityEditor.SceneManagement.EditorSceneManager.MarkAllScenesDirty();
 				}
 			}
-			if (GUI.changed) {
-				EditorUtility.SetDirty(pal);
-				AssetDatabase.SaveAssetIfDirty(pal);
-			}
+			EditorGUI.DrawRect(Layout.Rect(0, 1), new Color32(26, 26, 26, 255));
 		}
 
 
@@ -226,7 +247,6 @@ namespace AngeliaFramework.Editor {
 				const int ITEM_GAP = 4;
 				const int ITEM_SIZE = 40;
 				int COLUMN = ((EditorGUIUtility.currentViewWidth - 8f) / (ITEM_SIZE + ITEM_GAP)).FloorToInt();
-				//int COLUMN = 4;
 				bool opening = pal.Opening;
 				if (Layout.Fold(pal.name, ref opening)) {
 					Layout.Space(2);
@@ -261,7 +281,7 @@ namespace AngeliaFramework.Editor {
 								}
 								// Highlight
 								if (enable && SelectingPaletteIndex == palIndex && SelectingPaletteItemIndex == i) {
-									Layout.FrameGUI(rect.Shrink(1.5f), 1.5f, Layout.HighlightColor_Alt);
+									Layout.FrameGUI(rect.Shrink(1.5f), 1.5f, Layout.HighlightColor1);
 								}
 								// Click
 								if (mouseDown && rect.Contains(Event.current.mousePosition)) {
@@ -369,6 +389,27 @@ namespace AngeliaFramework.Editor {
 				return Palettes[SelectingPaletteIndex][SelectingPaletteItemIndex];
 			}
 			return null;
+		}
+
+
+		public (int pal, int item) FindPaletteUnit (MapPalette.Unit unit) {
+			if (unit == null) return (-1, -1);
+			for (int palIndex = 0; palIndex < Palettes.Count; palIndex++) {
+				var pal = Palettes[palIndex];
+				for (int i = 0; i < pal.Count; i++) {
+					if (pal[i] == unit) {
+						return (palIndex, i);
+					}
+				}
+			}
+			return (-1, -1);
+		}
+
+
+		public void SetSelection (int palIndex, int itemIndex) {
+			SelectingPaletteIndex = palIndex;
+			SelectingPaletteItemIndex = itemIndex;
+			Repaint();
 		}
 
 

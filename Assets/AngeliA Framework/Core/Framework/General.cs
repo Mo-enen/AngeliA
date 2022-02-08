@@ -142,6 +142,7 @@ namespace AngeliaFramework {
 		public const int ENTITY_LAYER_COUNT = 6;
 		public const int PHYSICS_LAYER_COUNT = 4;
 		public const int WORLD_MAP_SIZE = 128;
+		public static int WATER_TAG = "Water".ACode();
 	}
 
 

@@ -51,7 +51,7 @@ namespace AngeliaFramework {
 		private Entity[][] Entities = null;
 		private (Entity[] entity, int length)[] EntityBuffers = null;
 		private RectInt ViewRect = new(0, 0, Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, MAX_VIEW_WIDTH), Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, 0, MAX_VIEW_HEIGHT));
-		private RectInt PrevSpawnRect = default;
+		private RectInt LoadedRect = default;
 		private RectInt SpawnRect = default;
 		private int GlobalFrame = 0;
 
@@ -263,6 +263,8 @@ namespace AngeliaFramework {
 		// Update
 		public void FrameUpdate () {
 			FrameInput.FrameUpdate();
+			CellPhysics.BeginFill();
+			CellRenderer.BeginDraw();
 			FrameUpdate_View();
 			FrameUpdate_World();
 			FrameUpdate_Level();
@@ -270,7 +272,7 @@ namespace AngeliaFramework {
 			FrameUpdate_Misc();
 			CellGUI.PerformFrame(GlobalFrame);
 			CellRenderer.Update();
-			PrevSpawnRect = SpawnRect;
+			LoadedRect = SpawnRect;
 			GlobalFrame++;
 		}
 
@@ -298,8 +300,34 @@ namespace AngeliaFramework {
 			// World Squad
 			WorldSquad.FrameUpdate(SpawnRect.center.RoundToInt());
 
-			//Load Blocks and Entities
-			//SpawnRect
+			// Load Blocks
+			int l = SpawnRect.x / Const.CELL_SIZE;
+			int r = SpawnRect.xMax / Const.CELL_SIZE + (SpawnRect.xMax % Const.CELL_SIZE != 0 ? 1 : 0);
+			int d = SpawnRect.y / Const.CELL_SIZE;
+			int u = SpawnRect.yMax / Const.CELL_SIZE + (SpawnRect.yMax % Const.CELL_SIZE != 0 ? 1 : 0);
+			for (int layerIndex = 0; layerIndex < Const.BLOCK_LAYER_COUNT; layerIndex++) {
+				var layer = (BlockLayer)layerIndex;
+				for (int y = d; y <= u; y++) {
+					for (int x = l; x <= r; x++) {
+						var block = WorldSquad.GetBlock(x, y, layerIndex);
+						if (block.TypeID == 0) continue;
+						var rect = new RectInt(
+							x * Const.CELL_SIZE,
+							y * Const.CELL_SIZE,
+							Const.CELL_SIZE,
+							Const.CELL_SIZE
+						);
+						// Physics
+						if (layer != BlockLayer.Background) {
+							CellPhysics.FillBlock(PhysicsLayer.Level, rect, block.IsTrigger, block.Tag);
+						}
+						// Draw
+						CellRenderer.Draw(block.TypeID, rect);
+					}
+				}
+			}
+
+			// Load Entities
 
 
 
@@ -359,44 +387,6 @@ namespace AngeliaFramework {
 				}
 			}
 
-			// Fill Physics
-			CellPhysics.BeginFill();
-			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
-				var entities = Entities[layerIndex];
-				int len = entities.Length;
-				for (int i = 0; i < len; i++) {
-					var entity = entities[i];
-					if (entity != null) {
-						entity.FillPhysics(GlobalFrame);
-					}
-				}
-			}
-
-			// Physics Update
-			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
-				var entities = Entities[layerIndex];
-				int len = entities.Length;
-				for (int i = 0; i < len; i++) {
-					var entity = entities[i];
-					if (entity != null) {
-						entity.PhysicsUpdate(GlobalFrame);
-					}
-				}
-			}
-
-			// FrameUpdate
-			CellRenderer.BeginDraw();
-			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
-				var entities = Entities[layerIndex];
-				int len = entities.Length;
-				for (int i = 0; i < len; i++) {
-					var entity = entities[i];
-					if (entity != null) {
-						entity.FrameUpdate(GlobalFrame);
-					}
-				}
-			}
-
 			// Add New Entities
 			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
 				if (ENTITY_BUFFER_CAPACITY[layerIndex] <= 0) { continue; }
@@ -422,6 +412,42 @@ namespace AngeliaFramework {
 					}
 				}
 				EntityBuffers[layerIndex].length = 0;
+			}
+
+			// Fill Physics
+			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
+				var entities = Entities[layerIndex];
+				int len = entities.Length;
+				for (int i = 0; i < len; i++) {
+					var entity = entities[i];
+					if (entity != null) {
+						entity.FillPhysics(GlobalFrame);
+					}
+				}
+			}
+
+			// Physics Update
+			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
+				var entities = Entities[layerIndex];
+				int len = entities.Length;
+				for (int i = 0; i < len; i++) {
+					var entity = entities[i];
+					if (entity != null) {
+						entity.PhysicsUpdate(GlobalFrame);
+					}
+				}
+			}
+
+			// FrameUpdate
+			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
+				var entities = Entities[layerIndex];
+				int len = entities.Length;
+				for (int i = 0; i < len; i++) {
+					var entity = entities[i];
+					if (entity != null) {
+						entity.FrameUpdate(GlobalFrame);
+					}
+				}
 			}
 
 			if (changed) {

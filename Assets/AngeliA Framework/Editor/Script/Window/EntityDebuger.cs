@@ -41,6 +41,7 @@ namespace AngeliaFramework.Editor {
 		);
 
 		// Short
+		private static EntityDebuger Main = null;
 		private static GUIStyle CMDTextAreaStyle => _CMDTextAreaStyle ??= new GUIStyle(GUI.skin.textArea) {
 			fontSize = 14,
 			contentOffset = new Vector2(2, 4),
@@ -54,6 +55,8 @@ namespace AngeliaFramework.Editor {
 		private static GUIContent _ColIconContent = null;
 		private static GUIContent CameraIconContent => _CameraIconContent ??= EditorGUIUtility.IconContent("d_SceneViewCamera");
 		private static GUIContent _CameraIconContent = null;
+		private static GUIContent SaveIconContent => _SaveIconContent ??= EditorGUIUtility.IconContent("d_SaveAs@2x");
+		private static GUIContent _SaveIconContent = null;
 
 		// Data
 		private static Game Game = null;
@@ -110,6 +113,14 @@ namespace AngeliaFramework.Editor {
 				}
 
 			};
+
+			// Scene Dirty
+			UnityEditor.SceneManagement.EditorSceneManager.sceneDirtied += (scene) => {
+				if (Main != null) {
+					Main.Repaint();
+				}
+			};
+
 		}
 
 
@@ -123,7 +134,13 @@ namespace AngeliaFramework.Editor {
 		private static void OpenWindow () => GetOrCreateWindow();
 
 
+		private void OnEnable () {
+			Main = this;
+		}
+
+
 		private void OnGUI () {
+			Main = this;
 			if (EditorApplication.isPlaying) {
 				// Play Mode
 				OnGUI_Runtime();
@@ -147,6 +164,17 @@ namespace AngeliaFramework.Editor {
 					}
 				}
 				Layout.Rect(0, 20);
+
+				// Dirty Mark
+				var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+				if (scene.IsValid() && scene.isLoaded && scene.isDirty) {
+					var oldC = GUI.color;
+					GUI.color = Layout.HighlightColor2;
+					GUI.Label(Layout.Rect(20, 20), SaveIconContent);
+					GUI.color = oldC;
+				}
+				Layout.Space(2);
+
 			}
 
 			using var scope = new GUILayout.ScrollViewScope(MasterScrollPos);
@@ -198,7 +226,7 @@ namespace AngeliaFramework.Editor {
 					);
 					if (visible) {
 						var rect = Layout.LastRect();
-						EditorGUI.DrawRect(rect.Shrink(3, 3, rect.height - 2, 1), Layout.HighlightColor_Alt);
+						EditorGUI.DrawRect(rect.Shrink(3, 3, rect.height - 2, 1), Layout.HighlightColor1);
 					}
 					if (newVisible != visible) {
 						SetLayerVisible(i, newVisible);

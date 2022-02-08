@@ -40,6 +40,8 @@ namespace AngeliaFramework {
 			public int X;
 			public int Y;
 			public int Layer;
+			public int Tag;
+			public bool IsTrigger;
 		}
 
 		[System.Serializable]
@@ -67,6 +69,21 @@ namespace AngeliaFramework.Editor {
 	[CustomEditor(typeof(MapObject))]
 	[CanEditMultipleObjects]
 	public class Map_Inspector : Editor {
+		//private void OnEnable () {
+		//	foreach (MapObject m in targets) {
+		//		for (int i = 0; i < m.Map.Blocks.Length; i++) {
+		//			m.Map.Blocks[i].X %= 128;
+		//			m.Map.Blocks[i].Y %= 128;
+		//		}
+		//		for (int i = 0; i < m.Map.Entities.Length; i++) {
+		//			m.Map.Entities[i].X %= 128;
+		//			m.Map.Entities[i].Y %= 128;
+		//		}
+		//		EditorUtility.SetDirty(m);
+		//	}
+		//	AssetDatabase.SaveAssets();
+		//	AssetDatabase.Refresh();
+		//}
 		public override void OnInspectorGUI () {
 			serializedObject.Update();
 			DrawPropertiesExcluding(serializedObject, "m_Script");
