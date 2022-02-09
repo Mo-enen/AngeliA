@@ -24,7 +24,6 @@ namespace AngeliaFramework.Editor {
 			"Pixel".ACode(),
 			"Pixel".ACode()
 		);
-		//private static readonly int PIXEL_CODE = "Pixel".ACode();
 		private static readonly int LINE_V_CODE = "LineV_4".ACode();
 		private static readonly int LINE_H_CODE = "LineH_4".ACode();
 

@@ -21,6 +21,14 @@ namespace AngeliaFramework {
 		public virtual int PushLevel => 0;
 		public virtual bool CarryRigidbodyOnTop => true;
 		public bool InWater { get; private set; } = false;
+		public override int X {
+			get => base.X;
+			set => base.X = PrevX = value;
+		}
+		public override int Y {
+			get => base.Y;
+			set => base.Y = PrevY = value;
+		}
 		public override RectInt Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
 
 		// Api-Ser
@@ -67,6 +75,8 @@ namespace AngeliaFramework {
 			if (InsideGroundCheck()) {
 				X += VelocityX;
 				Y += VelocityY;
+				PrevX = X;
+				PrevY = Y;
 				return;
 			}
 

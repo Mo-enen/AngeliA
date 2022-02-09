@@ -43,12 +43,12 @@ namespace AngeliaFramework {
 		}
 
 		public bool Active { get; set; } = true;
-		public virtual bool Despawnable { get; } = true;
 		public int InstanceID { get; set; } = 0;
-		public int X { get; set; } = 0;
-		public int Y { get; set; } = 0;
-		public int Width { get; set; } = Const.CELL_SIZE;
-		public int Height { get; set; } = Const.CELL_SIZE;
+		public virtual bool Despawnable { get; } = true;
+		public virtual int X { get; set; } = 0;
+		public virtual int Y { get; set; } = 0;
+		public virtual int Width { get; set; } = Const.CELL_SIZE;
+		public virtual int Height { get; set; } = Const.CELL_SIZE;
 
 		// Data
 		private static int CurrentDynamicInstanceID = 0;

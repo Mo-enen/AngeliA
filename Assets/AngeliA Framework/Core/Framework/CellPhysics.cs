@@ -232,15 +232,16 @@ namespace AngeliaFramework {
 			// Func
 			static Vector2Int Push (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) {
 				int pushLevel = eRigidbody.GetPushLevel(entity);
-				Vector2Int result = to;
 				int distance = int.MaxValue;
-				int count = ForAllOverlaps(mask, new RectInt(to, size), entity);
+				Vector2Int result = to;
 				Vector2Int center = default;
 				Vector2Int ghostH = default;
 				Vector2Int ghostV = default;
+				int count = ForAllOverlaps(mask, new RectInt(to, size), entity);
 				for (int index = 0; index < count; index++) {
 					var hit = OverlapResults[index];
 					var hitRect = hit.Rect;
+					// H or V
 					center.x = hitRect.x + hitRect.width / 2;
 					center.y = hitRect.y + hitRect.height / 2;
 					bool leftSide = to.x < center.x;
