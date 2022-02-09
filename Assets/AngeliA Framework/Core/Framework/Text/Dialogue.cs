@@ -58,9 +58,9 @@ namespace AngeliaFramework.Editor {
 		[InitializeOnLoadMethod]
 		private static void Init () {
 			// Check Dialogue Files
-			Game game = null;
-			foreach (var guid in AssetDatabase.FindAssets("t:Game")) {
-				game = AssetDatabase.LoadAssetAtPath<Game>(AssetDatabase.GUIDToAssetPath(guid));
+			GameData game = null;
+			foreach (var guid in AssetDatabase.FindAssets($"t:{nameof(GameData)}")) {
+				game = AssetDatabase.LoadAssetAtPath<GameData>(AssetDatabase.GUIDToAssetPath(guid));
 				if (game != null) { break; }
 			}
 			if (game != null) {

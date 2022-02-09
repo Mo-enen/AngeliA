@@ -23,10 +23,10 @@ namespace AngeliaFramework.Editor {
 		// Const
 		private const string WINDOW_TITLE = "Map Editor";
 		private static readonly string[] PAL_TAGS_DISPLAY = new string[] {
-			"(None)", "Water", "Test 0", "Test 1"
+			"(None)", "Water",
 		};
 		private static readonly int[] PAL_TAGS_VALUE = new int[] {
-			0, "Water".ACode(), "Test 0".ACode(), "Test 1".ACode()
+			0, "Water".ACode(),
 		};
 
 		// Api
@@ -52,6 +52,7 @@ namespace AngeliaFramework.Editor {
 		private bool NeedReloadAsset = false;
 		private int CurrentPickerID = 0;
 		private int PickingPalette = -1;
+		private int LastSpawnEditorEntityFrame = int.MinValue;
 
 		// Saving
 		private EditorSavingInt SelectingToolIndex = new("MapEditor.SelectingToolIndex", 0);
@@ -106,12 +107,13 @@ namespace AngeliaFramework.Editor {
 
 		private void Update () {
 			if (EditorApplication.isPlaying) {
-				if (Game != null && Game.FindEntityOfType<eMapEditor>(EntityLayer.Debug) == null) {
+				if (Game != null && Game.GlobalFrame != LastSpawnEditorEntityFrame && Game.FindEntityOfType<eMapEditor>(EntityLayer.Debug) == null) {
 					Game.AddEntity(new eMapEditor(), EntityLayer.Debug);
+					LastSpawnEditorEntityFrame = Game.GlobalFrame;
 				}
-			}
-			if (Game == null) {
-				ReloadGameAsset();
+				if (Game == null) {
+					ReloadGameAsset();
+				}
 			}
 			if (NeedReloadAsset) {
 				ReloadGameAsset();
@@ -124,7 +126,7 @@ namespace AngeliaFramework.Editor {
 		private void OnGUI () {
 			if (Main != this) Main = this;
 			bool oldE = GUI.enabled;
-			GUI.enabled = !EditorApplication.isPlaying || Game.DebugMode;
+			GUI.enabled = !EditorApplication.isPlaying || (Game != null && Game.DebugMode);
 			if (EditorApplication.isPlaying) {
 				GUI_Toolbar();
 			}
@@ -423,13 +425,9 @@ namespace AngeliaFramework.Editor {
 
 		private void ReloadGameAsset () {
 			Game = null;
-			foreach (var guid in AssetDatabase.FindAssets("t:Game")) {
-				var path = AssetDatabase.GUIDToAssetPath(guid);
-				var game = AssetDatabase.LoadAssetAtPath<Game>(path);
-				if (game != null) {
-					Game = game;
-					break;
-				}
+			var per = FindObjectOfType<GamePerformer>();
+			if (per != null) {
+				Game = per.Game;
 			}
 		}
 

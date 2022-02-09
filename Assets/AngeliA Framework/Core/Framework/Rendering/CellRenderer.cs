@@ -94,7 +94,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void Update () {
+		public static void FrameUpdate () {
 
 			BeforeUpdate?.Invoke();
 
@@ -108,6 +108,7 @@ namespace AngeliaFramework {
 			if (MainCamera.rect.NotAlmost(rect)) {
 				MainCamera.rect = rect;
 			}
+
 			// Camera Rect
 			var cRect = new RectInt(
 				ViewRect.x,
@@ -118,6 +119,7 @@ namespace AngeliaFramework {
 			int cOffsetX = (ViewRect.width - CameraRect.width) / 2;
 			cRect.x += cOffsetX;
 			CameraRect = cRect;
+
 			// Render
 			int layerCount = Layers.Length;
 			var pos = new Vector3(

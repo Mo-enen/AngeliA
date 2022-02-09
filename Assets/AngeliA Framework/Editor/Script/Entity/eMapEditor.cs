@@ -146,6 +146,7 @@ namespace AngeliaFramework.Editor {
 			if (!on) {
 				MapEditorWindow.Main.Game.AddEntity(new eDebugPlayer(), EntityLayer.Character);
 			}
+			Util.SetFieldValue(MapEditorWindow.Main.Game, "LoadedUnitRect", new RectInt());
 #if UNITY_EDITOR
 			UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
 #endif

@@ -1,15 +1,16 @@
 using UnityEngine;
 namespace AngeliaFramework {
 	public abstract class GamePerformer : MonoBehaviour {
-		protected Game Game => m_Game;
-		[SerializeField] Game m_Game = null;
+		public Game Game { get; private set; } = null;
+		protected GameData GameData => m_GameData;
+		[SerializeField] GameData m_GameData = null;
 		private bool Initialized = false;
 		private void FixedUpdate () {
 			if (!Initialized) {
 				Initialized = true;
-				m_Game.Initialize();
+				Game = new Game(m_GameData);
 			}
-			m_Game.FrameUpdate();
+			Game.FrameUpdate();
 		}
 	}
 }

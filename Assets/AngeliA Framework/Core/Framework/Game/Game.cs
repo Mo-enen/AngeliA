@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 using UnityEngine;
 
 
 namespace AngeliaFramework {
-	[CreateAssetMenu(fileName = "New Game", menuName = "бя AngeliA/Game", order = 99)]
-	[PreferBinarySerialization]
-	public class Game : ScriptableObject {
+	public class Game {
 
 
 
 
 		#region --- VAR ---
 
+
+		// Dele
+		public delegate Entity EntityHandler ();
 
 		// Const
 		private const int MAX_VIEW_WIDTH = 72 * Const.CELL_SIZE;
@@ -31,29 +34,24 @@ namespace AngeliaFramework {
 		public Language CurrentLanguage { get; private set; } = null;
 		public Dialogue CurrentDialogue { get; private set; } = null;
 		public int EntityDirtyFlag { get; private set; } = 0;
+		public int GlobalFrame { get; private set; } = 0;
 #if UNITY_EDITOR
 		public bool DebugMode { get; set; } = false;
 #endif
 
-		// Ser
-		[SerializeField] SpriteSheet[] m_Sheets = null;
-		[SerializeField] AudioClip[] m_Musics = null;
-		[SerializeField] AudioClip[] m_Sounds = null;
-		[SerializeField] Language[] m_Languages = null;
-		[SerializeField] ScriptableObject[] m_Assets = null;
 
 		// Data
-		private readonly Dictionary<int, System.Type> EntityTypePool = new();
+		private readonly Dictionary<int, EntityHandler> EntityHandlerPool = new();
 		private readonly Dictionary<int, ScriptableObject> AssetPool = new();
 		private readonly WorldSquad WorldSquad = new();
 		private readonly Stack<Object> UnloadAssetStack = new();
 		private readonly HashSet<int> StagedEntityHash = new();
+		private GameData m_Data = null;
 		private Entity[][] Entities = null;
 		private (Entity[] entity, int length)[] EntityBuffers = null;
 		private RectInt ViewRect = new(0, 0, Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, MAX_VIEW_WIDTH), Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, 0, MAX_VIEW_HEIGHT));
-		private RectInt LoadedRect = default;
+		private RectInt LoadedUnitRect = default;
 		private RectInt SpawnRect = default;
-		private int GlobalFrame = 0;
 
 		// Saving
 		private readonly SavingInt LanguageIndex = new("Game.LanguageIndex", -1);
@@ -68,8 +66,15 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
+		public Game (GameData data) {
+			m_Data = data;
+			Initialize();
+		}
+
+
 		// Init
-		public void Initialize () {
+		private void Initialize () {
+
 
 #if UNITY_EDITOR
 			// Const Array Count Check
@@ -113,6 +118,7 @@ namespace AngeliaFramework {
 				Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, MAX_VIEW_WIDTH),
 				Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, 0, MAX_VIEW_HEIGHT)
 			);
+			LoadedUnitRect = default;
 			GlobalFrame = 0;
 
 			// Entity
@@ -126,12 +132,13 @@ namespace AngeliaFramework {
 			// ID Map
 			foreach (var eType in typeof(Entity).GetAllChildClass()) {
 				int id = eType.FullName.ACode();
-				if (!EntityTypePool.ContainsKey(id)) {
-					EntityTypePool.Add(id, eType);
+				var handler = CreateEntityHandler(eType);
+				if (handler != null && !EntityHandlerPool.ContainsKey(id)) {
+					EntityHandlerPool.Add(id, handler);
 				}
 #if UNITY_EDITOR
 				else {
-					Debug.LogError($"{eType} has same global id with {EntityTypePool[id]}");
+					Debug.LogError($"{eType} has same global id with {EntityHandlerPool[id]}");
 				}
 #endif
 			}
@@ -164,9 +171,9 @@ namespace AngeliaFramework {
 			camera.allowMSAA = false;
 			camera.allowDynamicResolution = false;
 			camera.targetDisplay = 0;
-			CellRenderer.Init(m_Sheets.Length, camera);
-			for (int i = 0; i < m_Sheets.Length; i++) {
-				var sheet = m_Sheets[i];
+			CellRenderer.Init(m_Data.Sheets.Length, camera);
+			for (int i = 0; i < m_Data.Sheets.Length; i++) {
+				var sheet = m_Data.Sheets[i];
 				// Mesh Renderer
 				var tf = new GameObject(sheet.name, typeof(MeshFilter), typeof(MeshRenderer)).transform;
 				tf.SetParent(rendererRoot);
@@ -203,10 +210,10 @@ namespace AngeliaFramework {
 		private void Init_Audio () {
 			// Audio
 			AudioPool.Initialize();
-			foreach (var music in m_Musics) {
+			foreach (var music in m_Data.Musics) {
 				AudioPool.AddMusic(music);
 			}
-			foreach (var sound in m_Sounds) {
+			foreach (var sound in m_Data.Sounds) {
 				AudioPool.AddSound(sound);
 			}
 		}
@@ -243,7 +250,7 @@ namespace AngeliaFramework {
 
 			// Failback
 			if (!success) {
-				SetLanguage(m_Languages[0].LanguageID);
+				SetLanguage(m_Data.Languages[0].LanguageID);
 			}
 
 		}
@@ -254,7 +261,7 @@ namespace AngeliaFramework {
 				UnloadAssetStack.Push(obj);
 			};
 			// Asset Pool
-			foreach (var asset in m_Assets) {
+			foreach (var asset in m_Data.Assets) {
 				AssetPool.TryAdd(asset.name.ACode(), asset);
 			}
 		}
@@ -267,12 +274,10 @@ namespace AngeliaFramework {
 			CellRenderer.BeginDraw();
 			FrameUpdate_View();
 			FrameUpdate_World();
-			FrameUpdate_Level();
 			FrameUpdate_Entity();
 			FrameUpdate_Misc();
 			CellGUI.PerformFrame(GlobalFrame);
-			CellRenderer.Update();
-			LoadedRect = SpawnRect;
+			CellRenderer.FrameUpdate();
 			GlobalFrame++;
 		}
 
@@ -297,59 +302,94 @@ namespace AngeliaFramework {
 
 		private void FrameUpdate_World () {
 
+			int bgLayerIndex = (int)BlockLayer.Background;
+			int levelLayerIndex = (int)BlockLayer.Level;
+
 			// World Squad
 			WorldSquad.FrameUpdate(SpawnRect.center.RoundToInt());
 
-			// Load Blocks
-			int l = SpawnRect.x / Const.CELL_SIZE;
-			int r = SpawnRect.xMax / Const.CELL_SIZE + (SpawnRect.xMax % Const.CELL_SIZE != 0 ? 1 : 0);
-			int d = SpawnRect.y / Const.CELL_SIZE;
-			int u = SpawnRect.yMax / Const.CELL_SIZE + (SpawnRect.yMax % Const.CELL_SIZE != 0 ? 1 : 0);
-			for (int layerIndex = 0; layerIndex < Const.BLOCK_LAYER_COUNT; layerIndex++) {
-				var layer = (BlockLayer)layerIndex;
-				for (int y = d; y <= u; y++) {
-					for (int x = l; x <= r; x++) {
-						var block = WorldSquad.GetBlock(x, y, layerIndex);
-						if (block.TypeID == 0) continue;
-						var rect = new RectInt(
-							x * Const.CELL_SIZE,
-							y * Const.CELL_SIZE,
-							Const.CELL_SIZE,
-							Const.CELL_SIZE
-						);
-						// Physics
-						if (layer != BlockLayer.Background) {
-							CellPhysics.FillBlock(PhysicsLayer.Level, rect, block.IsTrigger, block.Tag);
-						}
-						// Draw
-						CellRenderer.Draw(block.TypeID, rect);
+			if (WorldSquad.IsReady) {
+				var spawnUnitRect = new RectInt(
+					SpawnRect.x / Const.CELL_SIZE,
+					SpawnRect.y / Const.CELL_SIZE,
+					SpawnRect.width / Const.CELL_SIZE,
+					SpawnRect.height / Const.CELL_SIZE
+				);
+				for (int worldI = 0; worldI <= 2; worldI++) {
+					for (int worldJ = 0; worldJ <= 2; worldJ++) {
+						TrySpawnAllUnits(WorldSquad.Worlds[worldI, worldJ], spawnUnitRect);
+					}
+				}
+				LoadedUnitRect = spawnUnitRect;
+			}
+
+			// Func
+			void TrySpawnAllUnits (WorldData world, RectInt spawnUnitRect) {
+				if (world.IsFilling) return;
+				var worldUnitRect = world.FilledUnitRect;
+				if (!worldUnitRect.Overlaps(spawnUnitRect)) return;
+				int unitL = Mathf.Max(spawnUnitRect.x, worldUnitRect.x);
+				int unitR = Mathf.Min(spawnUnitRect.xMax, worldUnitRect.xMax);
+				int unitD = Mathf.Max(spawnUnitRect.y, worldUnitRect.y);
+				int unitU = Mathf.Min(spawnUnitRect.yMax, worldUnitRect.yMax);
+				// Spawn BG/Entities for World
+				for (int j = unitD; j < unitU; j++) {
+					for (int i = unitL; i < unitR; i++) {
+						TrySpawnBlocksForBackground(world, i - worldUnitRect.x, j - worldUnitRect.y, i, j);
+						TrySpawnEntitiesForAllLayers(world, spawnUnitRect, i - worldUnitRect.x, j - worldUnitRect.y, i, j);
+					}
+				}
+				// Spawn Level Blocks for World
+				unitL = Mathf.Max(unitL - Const.BLOCK_SPAWN_PADDING, worldUnitRect.x);
+				unitR = Mathf.Min(unitR + Const.BLOCK_SPAWN_PADDING, worldUnitRect.xMax);
+				unitD = Mathf.Max(unitD - Const.BLOCK_SPAWN_PADDING, worldUnitRect.y);
+				unitU = Mathf.Min(unitU + Const.BLOCK_SPAWN_PADDING, worldUnitRect.yMax);
+				for (int j = unitD; j < unitU; j++) {
+					for (int i = unitL; i < unitR; i++) {
+						TrySpawnBlocksForLevel(world, i - worldUnitRect.x, j - worldUnitRect.y, i, j);
 					}
 				}
 			}
-
-			// Load Entities
-
-
-
-
-
-		}
-
-
-		private void FrameUpdate_Level () {
-			// Draw BG/Level, Fill Physics
-
-
-
-
-
-
-#if UNITY_EDITOR
-			if (DebugMode) {
-
-
+			void TrySpawnBlocksForBackground (WorldData world, int localX, int localY, int globalUnitX, int globalUnitY) {
+				var block = world.Blocks[localX, localY, bgLayerIndex];
+				if (block.TypeID == 0) return;
+				var rect = new RectInt(
+					globalUnitX * Const.CELL_SIZE, globalUnitY * Const.CELL_SIZE,
+					Const.CELL_SIZE, Const.CELL_SIZE
+				);
+				// Physics
+				if (bgLayerIndex != (int)BlockLayer.Background) {
+					CellPhysics.FillBlock(PhysicsLayer.Level, rect, block.IsTrigger, block.Tag);
+				}
+				// Draw
+				CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 128));
 			}
-#endif
+			void TrySpawnBlocksForLevel (WorldData world, int localX, int localY, int globalUnitX, int globalUnitY) {
+				var block = world.Blocks[localX, localY, levelLayerIndex];
+				if (block.TypeID == 0) return;
+				var rect = new RectInt(
+					globalUnitX * Const.CELL_SIZE, globalUnitY * Const.CELL_SIZE,
+					Const.CELL_SIZE, Const.CELL_SIZE
+				);
+				// Physics
+				CellPhysics.FillBlock(PhysicsLayer.Level, rect, block.IsTrigger, block.Tag);
+				// Draw
+				CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 128));
+			}
+			void TrySpawnEntitiesForAllLayers (WorldData world, RectInt spawnUnitRect, int localX, int localY, int globalUnitX, int globalUnitY) {
+				for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
+					var entity = world.Entities[localX, localY, layerIndex];
+					if (entity.TypeID == 0 || !EntityHandlerPool.ContainsKey(entity.TypeID)) continue;
+					if (LoadedUnitRect.Contains(globalUnitX, globalUnitY)) continue;
+					if (!spawnUnitRect.Contains(globalUnitX, globalUnitY)) continue;
+					if (StagedEntityHash.Contains(entity.InstanceID)) continue;
+					var e = EntityHandlerPool[entity.TypeID].Invoke();
+					e.InstanceID = entity.InstanceID;
+					e.X = globalUnitX * Const.CELL_SIZE;
+					e.Y = globalUnitY * Const.CELL_SIZE;
+					AddEntity(e, (EntityLayer)layerIndex);
+				}
+			}
 		}
 
 
@@ -512,7 +552,7 @@ namespace AngeliaFramework {
 
 		public bool SetLanguage (SystemLanguage language) {
 			bool success = false;
-			foreach (var l in m_Languages) {
+			foreach (var l in m_Data.Languages) {
 				if (l.LanguageID == language) {
 					LanguageIndex.Value = (int)language;
 					CurrentLanguage = l;
@@ -523,7 +563,7 @@ namespace AngeliaFramework {
 				}
 			}
 			if (success) {
-				foreach (var l in m_Languages) {
+				foreach (var l in m_Data.Languages) {
 					if (l.LanguageID != language) {
 						l.ClearCache();
 					}
@@ -543,32 +583,24 @@ namespace AngeliaFramework {
 
 
 
+		#region --- LGC ---
+
+
+		private static EntityHandler CreateEntityHandler (System.Type type) {
+			ConstructorInfo emptyConstructor = type.GetConstructor(System.Type.EmptyTypes);
+			var dynamicMethod = new DynamicMethod("CreateInstance", type, System.Type.EmptyTypes, true);
+			ILGenerator ilGenerator = dynamicMethod.GetILGenerator();
+			ilGenerator.Emit(OpCodes.Nop);
+			ilGenerator.Emit(OpCodes.Newobj, emptyConstructor);
+			ilGenerator.Emit(OpCodes.Ret);
+			return (EntityHandler)dynamicMethod.CreateDelegate(typeof(EntityHandler));
+		}
+
+
+		#endregion
+
+
+
 
 	}
 }
-#if UNITY_EDITOR
-namespace AngeliaFramework.Editor {
-	using UnityEditor;
-	[CustomEditor(typeof(Game))]
-	public class Game_Inspector : Editor {
-		[InitializeOnLoadMethod]
-		private static void Init () {
-			int gameCount = 0;
-			foreach (var guid in AssetDatabase.FindAssets("t:Game")) {
-				if (AssetDatabase.LoadAssetAtPath<Game>(AssetDatabase.GUIDToAssetPath(guid)) != null) {
-					gameCount++;
-					if (gameCount > 1) {
-						Debug.LogError("[Game] only 1 game asset is allowed in the project.");
-						break;
-					}
-				}
-			}
-		}
-		public override void OnInspectorGUI () {
-			serializedObject.Update();
-			DrawPropertiesExcluding(serializedObject, "m_Script");
-			serializedObject.ApplyModifiedProperties();
-		}
-	}
-}
-#endif

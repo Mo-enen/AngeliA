@@ -15,7 +15,7 @@ namespace AngeliaFramework {
 
 		// Api
 		public override int PushLevel => 100;
-		public override bool CarryOnTop => !Movement.IsSquating;
+		public override bool CarryRigidbodyOnTop => !Movement.IsSquating && !Movement.IsDashing;
 		public abstract CharacterMovement Movement { get; }
 		public abstract CharacterRenderer Renderer { get; }
 

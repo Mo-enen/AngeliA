@@ -19,7 +19,7 @@ namespace AngeliaFramework {
 		public int FinalVelocityX => X - PrevX;
 		public int FinalVelocityY => Y - PrevY;
 		public virtual int PushLevel => 0;
-		public virtual bool CarryOnTop => true;
+		public virtual bool CarryRigidbodyOnTop => true;
 		public bool InWater { get; private set; } = false;
 		public override RectInt Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
 
@@ -152,7 +152,7 @@ namespace AngeliaFramework {
 					var hit = CellPhysics.OverlapResults[i];
 					if (
 						hit.Entity is eRigidbody hitRig &&
-						hitRig.CarryOnTop &&
+						hitRig.CarryRigidbodyOnTop &&
 						hitRig.FinalVelocityX != 0 &&
 						hitRig.Rect.yMax == Rect.y
 					) {

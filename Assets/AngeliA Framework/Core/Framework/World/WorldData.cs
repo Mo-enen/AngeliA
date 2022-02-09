@@ -50,6 +50,12 @@ namespace AngeliaFramework {
 		public static event VoidObjectHandler OnMapFilled = null;
 
 		// Api
+		public RectInt FilledUnitRect => new(
+			FilledPosition.x * Const.WORLD_MAP_SIZE,
+			FilledPosition.y * Const.WORLD_MAP_SIZE,
+			Const.WORLD_MAP_SIZE,
+			Const.WORLD_MAP_SIZE
+		);
 		public Block[,,] Blocks { get; set; } = null;
 		public Entity[,,] Entities { get; set; } = null;
 		public Vector2Int FilledPosition { get; private set; } = default;

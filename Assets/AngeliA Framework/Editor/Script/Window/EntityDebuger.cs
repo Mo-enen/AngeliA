@@ -89,14 +89,6 @@ namespace AngeliaFramework.Editor {
 
 				// Enter Edit
 				if (mode == PlayModeStateChange.EnteredEditMode) {
-					// Reload Game
-					Game game = TryGetGame();
-					if (game != null) {
-						AssetDatabase.ForceReserializeAssets(
-							new string[] { AssetDatabase.GetAssetPath(game) },
-							ForceReserializeAssetsOptions.ReserializeAssets
-						);
-					}
 					// Clear Cache
 					Game = null;
 					Entities = null;
@@ -289,6 +281,10 @@ namespace AngeliaFramework.Editor {
 				ClearSelectionInspector();
 			}
 
+			bool setSelectionToPrev = Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.UpArrow;
+			bool setSelectionToNext = Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.DownArrow;
+			bool focusing = focusedWindow == this;
+
 			// Table
 			if (capacity > 0) {
 
@@ -297,6 +293,7 @@ namespace AngeliaFramework.Editor {
 				bool mouseDown = mouseLeftDown || mouseRightDown;
 
 				// List
+				Entity prevE = null;
 				for (int i = 0; i < capacity; i++) {
 					var entity = entities[i];
 					if (entity == null) { continue; }
@@ -307,7 +304,7 @@ namespace AngeliaFramework.Editor {
 
 					// BG
 					if (entity == SelectingEntity && entity != null) {
-						EditorGUI.DrawRect(rect, Layout.HighlightColor);
+						EditorGUI.DrawRect(rect, focusing ? Layout.HighlightColor : new Color32(72, 72, 72, 255));
 					}
 
 					// Icon
@@ -325,9 +322,24 @@ namespace AngeliaFramework.Editor {
 						Repaint();
 					}
 
+					// Key
+					if (SelectingEntity != null) {
+						if (setSelectionToPrev && entity == SelectingEntity && prevE != null) {
+							SetSelectionInspector(prevE, EntityInspector.Mode.Entity);
+							setSelectionToPrev = false;
+							Repaint();
+						}
+						if (setSelectionToNext && prevE == SelectingEntity) {
+							SetSelectionInspector(entity, EntityInspector.Mode.Entity);
+							setSelectionToNext = false;
+							Repaint();
+						}
+					}
+
 					// Type
 					GUI.Label(rect.Shrink(20, 0, 0, 0), entity.GetType().Name);
 
+					prevE = entity;
 				}
 
 			}
@@ -366,6 +378,12 @@ namespace AngeliaFramework.Editor {
 		}
 
 
+		private void OnFocus () => Repaint();
+
+
+		private void OnLostFocus () => Repaint();
+
+
 		#endregion
 
 
@@ -374,15 +392,25 @@ namespace AngeliaFramework.Editor {
 		#region --- LGC ---
 
 
-		private static Game TryGetGame () {
-			Game result = null;
-			foreach (var guid in AssetDatabase.FindAssets("t:Game")) {
+		private static GameData TryGetGameData () {
+			GameData result = null;
+			foreach (var guid in AssetDatabase.FindAssets($"t:{nameof(GameData)}")) {
 				var path = AssetDatabase.GUIDToAssetPath(guid);
-				var game = AssetDatabase.LoadAssetAtPath<Game>(path);
+				var game = AssetDatabase.LoadAssetAtPath<GameData>(path);
 				if (game != null) {
 					result = game;
 					break;
 				}
+			}
+			return result;
+		}
+
+
+		private static Game TryGetGame () {
+			Game result = null;
+			var per = FindObjectOfType<GamePerformer>();
+			if (per != null) {
+				result = per.Game;
 			}
 			return result;
 		}
@@ -456,7 +484,17 @@ namespace AngeliaFramework.Editor {
 				}
 				var lines = cmd.Replace("\r", "").Split('\n');
 				Entity prevEntity = null;
-				var typePool = Util.GetFieldValue(Game, "EntityTypePool") as Dictionary<int, System.Type>;
+
+				// ID Map
+				var typePool = new Dictionary<int, System.Type>();
+				foreach (var eType in typeof(Entity).GetAllChildClass()) {
+					int id = eType.FullName.ACode();
+					if (!typePool.ContainsKey(id)) {
+						typePool.Add(id, eType);
+					}
+				}
+
+				// Lines
 				foreach (var line in lines) {
 					if (line.StartsWith("//")) { continue; }
 					if (line.StartsWith("#")) {
