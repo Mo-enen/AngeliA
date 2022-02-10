@@ -24,28 +24,28 @@ namespace AngeliaFramework {
 		private int NavIndex = 0;
 
 		// Style
-		private static AlignmentInt MAIN_SPRITES = new(
-			"Window UL".ACode(),
-			"Window UM".ACode(),
-			"Window UR".ACode(),
-			"Window ML".ACode(),
-			"Window MM".ACode(),
-			"Window MR".ACode(),
-			"Window DL".ACode(),
-			"Window DM".ACode(),
-			"Window DR".ACode()
-		);
-		private static AlignmentInt BUTTON_SPRITES = new(
-			"Button UL".ACode(),
-			"Button UM".ACode(),
-			"Button UR".ACode(),
-			"Button ML".ACode(),
-			"Button MM".ACode(),
-			"Button MR".ACode(),
-			"Button DL".ACode(),
-			"Button DM".ACode(),
-			"Button DR".ACode()
-		);
+		private static NineSliceSprites MAIN_SPRITES = new() {
+			TopLeft = "Window UL".ACode(),
+			TopMid = "Window UM".ACode(),
+			TopRight = "Window UR".ACode(),
+			MidLeft = "Window ML".ACode(),
+			MidRight = "Window MR".ACode(),
+			BottomLeft = "Window DL".ACode(),
+			BottomMid = "Window DM".ACode(),
+			BottomRight = "Window DR".ACode(),
+			border = new(32, 32, 32, 32),
+		};
+		private static NineSliceSprites BUTTON_SPRITES = new() {
+			TopLeft = "Button UL".ACode(),
+			TopMid = "Button UM".ACode(),
+			TopRight = "Button UR".ACode(),
+			MidLeft = "Button ML".ACode(),
+			MidRight = "Button MR".ACode(),
+			BottomLeft = "Button DL".ACode(),
+			BottomMid = "Button DM".ACode(),
+			BottomRight = "Button DR".ACode(),
+			border = new(24, 24, 24, 24),
+		};
 		private static int PIXEL_ID { get; } = "Pixel".ACode();
 		private static Color32 WINDOW_BG = new(240, 240, 240, 255);
 		private static Color32 CONTENT_CHAR = new(12, 12, 12, 255);
@@ -54,7 +54,6 @@ namespace AngeliaFramework {
 		private static Color32 BUTTON_PRESS = new(180, 180, 180, 255);
 		private static Color32 BUTTON_CHAR = new(12, 12, 12, 255);
 		private static Color32 BG_PANEL = new(0, 0, 0, 64);
-		private const int WINDOW_BORDER = 32;
 		private const int CHAR_SIZE_CONTENT = 100;
 		private const int CONTENT_PADDING_X = 164;
 		private const int CONTENT_PADDING_TOP = 128;
@@ -65,7 +64,6 @@ namespace AngeliaFramework {
 		private const int BUTTON_PADDING_Y = 48;
 		private const int BUTTON_GAP = 42;
 		private const int BUTTON_CHAR_SIZE = 84;
-		private const int BUTTON_BORDER = 24;
 
 
 		#endregion
@@ -111,10 +109,7 @@ namespace AngeliaFramework {
 			);
 
 			// Main
-			CellGUI.Draw_9Slice(
-				mainRect, new RectOffset(WINDOW_BORDER, WINDOW_BORDER, WINDOW_BORDER, WINDOW_BORDER),
-				WINDOW_BG, MAIN_SPRITES
-			);
+			CellGUI.Draw_9Slice(mainRect, WINDOW_BG, MAIN_SPRITES);
 
 			// Content
 			CellGUI.DrawLabel(
@@ -162,8 +157,7 @@ namespace AngeliaFramework {
 					),
 					GetButtonLabel(i), BUTTON_CHAR_SIZE,
 					BUTTON_NORMAL, BUTTON_HIGHLIGHT, BUTTON_PRESS, BUTTON_CHAR,
-					BUTTON_SPRITES, new RectOffset(BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER),
-					i == NavIndex
+					BUTTON_SPRITES, i == NavIndex
 				);
 				buttonCount++;
 			}

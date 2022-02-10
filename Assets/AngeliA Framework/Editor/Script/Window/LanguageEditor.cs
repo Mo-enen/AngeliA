@@ -18,16 +18,14 @@ namespace AngeliaFramework.Editor {
 		private string[,] LanguageData = null;
 		private string[] LanguageNames = null;
 		private Vector2 MasterScrollPos = default;
-		private Game Game = null;
 
 
 		// API
-		public static void OpenEditor (Game game) {
+		public static void OpenEditor () {
 			var window = GetWindow<LanguageEditor>(true, "Language Editor", true);
 			window.minSize = new Vector2(256, 256);
 			window.maxSize = new Vector2(1024, 1024);
-			window.Game = game;
-			if (!window.Load(game)) {
+			if (!window.Load()) {
 				window.Close();
 			}
 		}
@@ -103,21 +101,17 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void OnLostFocus () {
-			Save(Game);
-			Close();
-		}
+		private void OnLostFocus () => Close();
+
+
+		private void OnDestroy () => Save();
 
 
 		// LGC
-		private bool Load (Game game) {
-			if (
-				Util.GetFieldValue(game, "m_Languages") is not Language[] languages ||
-				languages.Length == 0
-			) {
-				Debug.LogWarning("[Language Editor] No language data founded.");
-				return false;
-			}
+		private bool Load () {
+
+			var languages = Resources.LoadAll<Language>("Language");
+
 			// Game >> Language Data
 			var keys = new HashSet<string>();
 			foreach (var language in languages) {
@@ -134,11 +128,11 @@ namespace AngeliaFramework.Editor {
 			}
 			for (int x = 1; x <= languages.Length; x++) {
 				var lan = languages[x - 1];
-				lan.Init();
+				lan.Active();
 				for (int y = 0; y < keyList.Count; y++) {
 					LanguageData[x, y] = lan[keyList[y].ACode()];
 				}
-				lan.ClearCache();
+				Language.ClearCache();
 			}
 			// Language Names
 			LanguageNames = new string[languages.Length];
@@ -149,11 +143,11 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void Save (Game game) {
-			// Language Data >> Game
-			var languages = Util.GetFieldValue(game, "m_Languages") as Language[];
+		private void Save () {
+			var languages = Resources.LoadAll<Language>("Language");
 			int keyCount = LanguageData.GetLength(1);
 			for (int valueIndex = 0; valueIndex < languages.Length; valueIndex++) {
+				var language = languages[valueIndex];
 				var cells = new List<Language.Cell>();
 				for (int keyIndex = 0; keyIndex < keyCount; keyIndex++) {
 					string key = LanguageData[0, keyIndex];
@@ -163,11 +157,8 @@ namespace AngeliaFramework.Editor {
 						Value = LanguageData[valueIndex + 1, keyIndex],
 					});
 				}
-				Util.SetFieldValue(languages[valueIndex], "m_Cells", cells.ToArray());
-			}
-			Util.SetFieldValue(game, "m_Languages", languages);
-			foreach (var lan in languages) {
-				EditorUtility.SetDirty(lan);
+				Util.SetFieldValue(language, "m_Cells", cells.ToArray());
+				EditorUtility.SetDirty(language);
 			}
 			AssetDatabase.SaveAssets();
 			AssetDatabase.Refresh();

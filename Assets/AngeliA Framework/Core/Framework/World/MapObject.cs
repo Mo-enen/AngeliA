@@ -69,7 +69,7 @@ namespace AngeliaFramework.Editor {
 	[CustomEditor(typeof(MapObject))]
 	[CanEditMultipleObjects]
 	public class Map_Inspector : Editor {
-		///*
+		/*
 		private void OnEnable () {
 			int InstanceID = 0;
 			foreach (MapObject m in targets) {

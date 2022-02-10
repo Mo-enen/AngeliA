@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
 namespace AngeliaFramework {
 	public abstract class eCharacter : eRigidbody {
 
@@ -15,7 +14,7 @@ namespace AngeliaFramework {
 
 		// Api
 		public override int PushLevel => 100;
-		public override bool CarryRigidbodyOnTop => !Movement.IsSquating && !Movement.IsDashing;
+		public override bool CarryRigidbodyOnTop => false;
 		public abstract CharacterMovement Movement { get; }
 		public abstract CharacterRenderer Renderer { get; }
 

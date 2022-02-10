@@ -6,7 +6,7 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public class Game {
+	public abstract class Game : MonoBehaviour {
 
 
 
@@ -18,9 +18,6 @@ namespace AngeliaFramework {
 		public delegate Entity EntityHandler ();
 
 		// Const
-		private const int MAX_VIEW_WIDTH = 72 * Const.CELL_SIZE;
-		private const int MAX_VIEW_HEIGHT = 56 * Const.CELL_SIZE;
-		private const int SPAWN_GAP = 6 * Const.CELL_SIZE;
 #if UNITY_EDITOR
 		private readonly int[] ENTITY_CAPACITY = { 256, 128, 128, 1024, 128, 128, };
 #else
@@ -39,6 +36,8 @@ namespace AngeliaFramework {
 		public bool DebugMode { get; set; } = false;
 #endif
 
+		// Ser
+		[SerializeField] GameData m_Data = null;
 
 		// Data
 		private readonly Dictionary<int, EntityHandler> EntityHandlerPool = new();
@@ -46,12 +45,12 @@ namespace AngeliaFramework {
 		private readonly WorldSquad WorldSquad = new();
 		private readonly Stack<Object> UnloadAssetStack = new();
 		private readonly HashSet<int> StagedEntityHash = new();
-		private GameData m_Data = null;
 		private Entity[][] Entities = null;
 		private (Entity[] entity, int length)[] EntityBuffers = null;
-		private RectInt ViewRect = new(0, 0, Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, MAX_VIEW_WIDTH), Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, 0, MAX_VIEW_HEIGHT));
+		private RectInt ViewRect = new(0, 0, Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, Const.MAX_VIEW_WIDTH), Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, 0, Const.MAX_VIEW_HEIGHT));
 		private RectInt LoadedUnitRect = default;
 		private RectInt SpawnRect = default;
+		private bool Initialized = false;
 
 		// Saving
 		private readonly SavingInt LanguageIndex = new("Game.LanguageIndex", -1);
@@ -66,9 +65,21 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		public Game (GameData data) {
-			m_Data = data;
-			Initialize();
+		private void FixedUpdate () {
+			if (!Initialized) {
+				Initialized = true;
+				Initialize();
+			}
+			FrameInput.FrameUpdate();
+			CellRenderer.BeginDraw();
+			FrameUpdate_View();
+			CellPhysics.BeginFill(SpawnRect.x, SpawnRect.y);
+			FrameUpdate_World();
+			FrameUpdate_Entity();
+			FrameUpdate_Misc();
+			CellGUI.PerformFrame(GlobalFrame);
+			CellRenderer.FrameUpdate();
+			GlobalFrame++;
 		}
 
 
@@ -115,8 +126,8 @@ namespace AngeliaFramework {
 
 			ViewRect = new(
 				0, 0,
-				Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, MAX_VIEW_WIDTH),
-				Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, 0, MAX_VIEW_HEIGHT)
+				Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, Const.MAX_VIEW_WIDTH),
+				Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, 0, Const.MAX_VIEW_HEIGHT)
 			);
 			LoadedUnitRect = default;
 			GlobalFrame = 0;
@@ -196,11 +207,6 @@ namespace AngeliaFramework {
 
 		private void Init_Physics () {
 			// Physics
-			CellPhysics.Init(
-				(MAX_VIEW_WIDTH + SPAWN_GAP * 2) / Const.CELL_SIZE,
-				(MAX_VIEW_HEIGHT + SPAWN_GAP * 2) / Const.CELL_SIZE,
-				Const.PHYSICS_LAYER_COUNT
-			);
 			for (int i = 0; i < Const.PHYSICS_LAYER_COUNT; i++) {
 				CellPhysics.SetupLayer(i);
 			}
@@ -250,7 +256,7 @@ namespace AngeliaFramework {
 
 			// Failback
 			if (!success) {
-				SetLanguage(m_Data.Languages[0].LanguageID);
+				SetLanguage(SystemLanguage.English);
 			}
 
 		}
@@ -268,34 +274,16 @@ namespace AngeliaFramework {
 
 
 		// Update
-		public void FrameUpdate () {
-			FrameInput.FrameUpdate();
-			CellPhysics.BeginFill();
-			CellRenderer.BeginDraw();
-			FrameUpdate_View();
-			FrameUpdate_World();
-			FrameUpdate_Entity();
-			FrameUpdate_Misc();
-			CellGUI.PerformFrame(GlobalFrame);
-			CellRenderer.FrameUpdate();
-			GlobalFrame++;
-		}
-
-
 		private void FrameUpdate_View () {
 
 			// Move View Rect
 			CellRenderer.ViewRect = ViewRect;
 
 			// Spawn Rect
-			SpawnRect.width = ViewRect.width + SPAWN_GAP * 2;
-			SpawnRect.height = ViewRect.height + SPAWN_GAP * 2;
+			SpawnRect.width = ViewRect.width + Const.SPAWN_GAP * 2;
+			SpawnRect.height = ViewRect.height + Const.SPAWN_GAP * 2;
 			SpawnRect.x = ViewRect.x + (ViewRect.width - SpawnRect.width) / 2;
 			SpawnRect.y = ViewRect.y + (ViewRect.height - SpawnRect.height) / 2;
-
-			// Physics Position
-			CellPhysics.PositionX = SpawnRect.x = (int)ViewRect.center.x - SpawnRect.width / 2;
-			CellPhysics.PositionY = SpawnRect.y = (int)ViewRect.center.y - SpawnRect.height / 2;
 
 		}
 
@@ -306,7 +294,7 @@ namespace AngeliaFramework {
 			int levelLayerIndex = (int)BlockLayer.Level;
 
 			// World Squad
-			WorldSquad.FrameUpdate(SpawnRect.center.RoundToInt());
+			WorldSquad.FrameUpdate(SpawnRect.CenterInt());
 
 			if (WorldSquad.IsReady) {
 				var spawnUnitRect = new RectInt(
@@ -552,22 +540,13 @@ namespace AngeliaFramework {
 
 		public bool SetLanguage (SystemLanguage language) {
 			bool success = false;
-			foreach (var l in m_Data.Languages) {
-				if (l.LanguageID == language) {
-					LanguageIndex.Value = (int)language;
-					CurrentLanguage = l;
-					CurrentDialogue = Resources.Load<Dialogue>($"Dialogue/{l.name}");
-					l.Init();
-					success = true;
-					break;
-				}
-			}
-			if (success) {
-				foreach (var l in m_Data.Languages) {
-					if (l.LanguageID != language) {
-						l.ClearCache();
-					}
-				}
+			var lAsset = Resources.Load<Language>($"Language/{language}");
+			if (lAsset != null) {
+				LanguageIndex.Value = (int)language;
+				CurrentLanguage = lAsset;
+				CurrentDialogue = Resources.Load<Dialogue>($"Dialogue/{language}");
+				lAsset.Active();
+				success = true;
 			}
 			return success;
 		}

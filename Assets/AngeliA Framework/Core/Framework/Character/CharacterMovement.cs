@@ -38,6 +38,7 @@ namespace AngeliaFramework {
 		public int DashDuration { get; init; } = 12;
 		public int DashCooldown { get; init; } = 4;
 		public int DashAcceleration { get; init; } = 24;
+		public int DashCancelLoseRate { get; init; } = 300;
 
 		// Squat
 		public bool SquatAvailable { get; init; } = true;
@@ -142,6 +143,12 @@ namespace AngeliaFramework {
 
 			// Dash
 			IsDashing = DashAvailable && CurrentFrame < LastDashFrame + CurrentDashDuration && !IsInsideGround;
+			if (IsDashing && IntendedY != -1) {
+				// Stop when Dashing Without Holding Down
+				LastDashFrame = int.MinValue;
+				IsDashing = false;
+				Rig.VelocityX = Rig.VelocityX * DashCancelLoseRate / 1000;
+			}
 
 			// Water
 			// In/Out Water

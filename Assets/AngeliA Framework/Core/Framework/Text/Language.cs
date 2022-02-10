@@ -28,11 +28,11 @@ namespace AngeliaFramework {
 		[SerializeField] Cell[] m_Cells = null;
 
 		// Data
-		private Dictionary<int, string> Map = new();
+		private static readonly Dictionary<int, string> Map = new();
 
 
 		// API
-		public void Init () {
+		public void Active () {
 			Map.Clear();
 			foreach (var cell in m_Cells) {
 				Map.TryAdd(cell.Key.ACode(), cell.Value);
@@ -40,7 +40,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public void ClearCache () => Map.Clear();
+		public static void ClearCache () => Map.Clear();
 
 
 	}

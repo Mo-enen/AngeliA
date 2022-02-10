@@ -31,7 +31,6 @@ namespace AngeliaFramework.Editor {
 
 		// Api
 		public static MapEditorWindow Main { get; private set; } = null;
-		public Game Game { get; private set; } = null;
 		public bool Painting => CurrentTool == Tool.Paint;
 
 		// Short
@@ -39,6 +38,8 @@ namespace AngeliaFramework.Editor {
 		private static GUIContent _SelectionToolContent = null;
 		private static GUIContent PaintToolContent => _PaintToolContent ??= EditorGUIUtility.IconContent("d_Grid.PaintTool@2x");
 		private static GUIContent _PaintToolContent = null;
+		private static Game Game => _Game != null ? _Game : (_Game = FindObjectOfType<Game>());
+		private static Game _Game = null;
 		private Tool CurrentTool {
 			get => (Tool)SelectingToolIndex.Value;
 			set => SelectingToolIndex.Value = (int)value;
@@ -100,7 +101,6 @@ namespace AngeliaFramework.Editor {
 
 		private void OnEnable () {
 			wantsMouseEnterLeaveWindow = true;
-			ReloadGameAsset();
 			ReloadPaletteAssets();
 		}
 
@@ -111,12 +111,8 @@ namespace AngeliaFramework.Editor {
 					Game.AddEntity(new eMapEditor(), EntityLayer.Debug);
 					LastSpawnEditorEntityFrame = Game.GlobalFrame;
 				}
-				if (Game == null) {
-					ReloadGameAsset();
-				}
 			}
 			if (NeedReloadAsset) {
-				ReloadGameAsset();
 				ReloadPaletteAssets();
 				NeedReloadAsset = false;
 			}
@@ -421,15 +417,6 @@ namespace AngeliaFramework.Editor {
 
 
 		#region --- LGC ---
-
-
-		private void ReloadGameAsset () {
-			Game = null;
-			var per = FindObjectOfType<GamePerformer>();
-			if (per != null) {
-				Game = per.Game;
-			}
-		}
 
 
 		private void ReloadPaletteAssets () {

@@ -11,16 +11,7 @@ namespace AngeliaFramework {
 
 		#region --- VAR ---
 
-
-		// Const
-		private const int WATER_RATE = 400;
-
 		// Api
-		public int FinalVelocityX => X - PrevX;
-		public int FinalVelocityY => Y - PrevY;
-		public virtual int PushLevel => 0;
-		public virtual bool CarryRigidbodyOnTop => true;
-		public bool InWater { get; private set; } = false;
 		public override int X {
 			get => base.X;
 			set => base.X = PrevX = value;
@@ -30,16 +21,21 @@ namespace AngeliaFramework {
 			set => base.Y = PrevY = value;
 		}
 		public override RectInt Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
+		public virtual int PushLevel => 0;
+		public virtual PhysicsLayer CollisionLayer { get; } = PhysicsLayer.Character;
+		public virtual PhysicsMask CollisionMask { get; } = PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character;
+		public virtual bool CarryRigidbodyOnTop => true;
+		public int FinalVelocityX => X - PrevX;
+		public int FinalVelocityY => Y - PrevY;
+		public bool InWater { get; private set; } = false;
 
 		// Api-Ser
-		public PhysicsLayer Layer = PhysicsLayer.Character;
-		public PhysicsMask CollisionMask = PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character;
-		public int VelocityX = 0;
-		public int VelocityY = 0;
-		public int Gravity = 5;
-		public int MaxGravitySpeed = 64;
-		public int OffsetX = 0;
-		public int OffsetY = 0;
+		public int VelocityX { get; set; } = 0;
+		public int VelocityY { get; set; } = 0;
+		public int Gravity { get; set; } = 5;
+		public int MaxGravitySpeed { get; set; } = 64;
+		public int OffsetX { get; set; } = 0;
+		public int OffsetY { get; set; } = 0;
 
 		// Data
 		private int PrevX = 0;
@@ -60,7 +56,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public override void FillPhysics (int frame) => CellPhysics.FillEntity(Layer, this);
+		public override void FillPhysics (int frame) => CellPhysics.FillEntity(CollisionLayer, this);
 
 
 		public override void PhysicsUpdate (int frame) {
@@ -84,7 +80,7 @@ namespace AngeliaFramework {
 			if (Gravity != 0) {
 				VelocityY = Mathf.Clamp(
 					VelocityY - Gravity,
-					-MaxGravitySpeed * (InWater ? WATER_RATE : 1000) / 1000,
+					-MaxGravitySpeed * (InWater ? Const.WATER_SPEED_LOSE : 1000) / 1000,
 					int.MaxValue
 				);
 			}
@@ -135,7 +131,7 @@ namespace AngeliaFramework {
 
 		private void PerformMove (int speedX, int speedY, bool carry) {
 
-			int speedScale = InWater ? WATER_RATE : 1000;
+			int speedScale = InWater ? Const.WATER_SPEED_LOSE : 1000;
 			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);
 			var newPos = new Vector2Int(
 				pos.x + speedX * speedScale / 1000,

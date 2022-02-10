@@ -81,14 +81,14 @@ namespace AngeliaFramework {
 		private const int OVERLAP_RESULT_COUNT = CELL_DEPTH * Const.PHYSICS_LAYER_COUNT * 4;
 
 		// Api
-		public static int Width { get; private set; } = 0;
-		public static int Height { get; private set; } = 0;
-		public static int PositionX { get; set; } = 0;
-		public static int PositionY { get; set; } = 0;
+		public static int Width { get; } = (Const.MAX_VIEW_WIDTH + Const.SPAWN_GAP * 2) / Const.CELL_SIZE;
+		public static int Height { get; } = (Const.MAX_VIEW_HEIGHT + Const.SPAWN_GAP * 2) / Const.CELL_SIZE;
+		public static int PositionX { get; private set; } = 0;
+		public static int PositionY { get; private set; } = 0;
 		public static HitInfo[] OverlapResults { get; } = new HitInfo[OVERLAP_RESULT_COUNT];
 
 		// Data
-		private static Layer[] Layers = null;
+		private readonly static Layer[] Layers = new Layer[Const.PHYSICS_LAYER_COUNT];
 		private static Layer CurrentLayer = null;
 		private static PhysicsLayer CurrentLayerEnum = PhysicsLayer.Item;
 		private static uint CurrentFrame = uint.MinValue;
@@ -103,13 +103,6 @@ namespace AngeliaFramework {
 
 
 		// Setup
-		public static void Init (int width, int height, int layerCount) {
-			Width = width;
-			Height = height;
-			Layers = new Layer[layerCount];
-		}
-
-
 		public static void SetupLayer (int index) {
 			Layers[index] = CurrentLayer = new Layer(Width, Height);
 			CurrentLayerEnum = (PhysicsLayer)index;
@@ -117,7 +110,11 @@ namespace AngeliaFramework {
 
 
 		// Fill
-		public static void BeginFill () => CurrentFrame++;
+		public static void BeginFill (int positionX, int positionY) {
+			PositionX = positionX;
+			PositionY = positionY;
+			CurrentFrame++;
+		}
 
 
 		public static void FillBlock (PhysicsLayer layer, RectInt globalRect, bool isTrigger = false, int tag = 0) => FillLogic(layer, globalRect, null, isTrigger, tag);
@@ -227,8 +224,14 @@ namespace AngeliaFramework {
 
 		// Move
 		public static Vector2Int Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) {
-			var pos = Push(mask, from, new Vector2Int(from.x, to.y), size, entity);
-			return Push(mask, new(from.x, pos.y), new(to.x, pos.y), size, entity);
+			bool moveH = from.x != to.x;
+			bool moveV = from.y != to.y;
+			if (moveH != moveV) {
+				return Push(mask, from, to, size, entity);
+			} else {
+				var pos = Push(mask, from, new Vector2Int(from.x, to.y), size, entity);
+				return Push(mask, new(from.x, pos.y), new(to.x, pos.y), size, entity);
+			}
 			// Func
 			static Vector2Int Push (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) {
 				int pushLevel = eRigidbody.GetPushLevel(entity);

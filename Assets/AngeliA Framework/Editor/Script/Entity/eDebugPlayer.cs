@@ -20,12 +20,6 @@ namespace AngeliaFramework.Editor {
 
 
 		// MSG
-		public override void FillPhysics (int frame) {
-			
-			base.FillPhysics(frame);
-		}
-
-
 		public override void FrameUpdate (int frame) {
 
 			// Debug Info

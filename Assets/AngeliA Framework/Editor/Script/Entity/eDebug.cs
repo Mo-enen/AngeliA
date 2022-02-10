@@ -37,12 +37,12 @@ namespace AngeliaFramework.Editor {
 			if (IsRigidbody) {
 				if (Width <= Const.CELL_SIZE && Height <= Const.CELL_SIZE) {
 					CellPhysics.FillEntity(
-						Layer, this,
+						CollisionLayer, this,
 						IsTrigger, string.IsNullOrEmpty(Tag) ? 0 : Tag.ACode()
 					);
 				}
 			} else {
-				CellPhysics.FillBlock(Layer, Rect, IsTrigger, string.IsNullOrEmpty(Tag) ? 0 : Tag.ACode());
+				CellPhysics.FillBlock(CollisionLayer, Rect, IsTrigger, string.IsNullOrEmpty(Tag) ? 0 : Tag.ACode());
 			}
 		}
 

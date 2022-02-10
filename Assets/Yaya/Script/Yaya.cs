@@ -4,9 +4,8 @@ using UnityEngine;
 using AngeliaFramework;
 
 
-
 namespace Yaya {
-	public class Yaya : GamePerformer {
+	public class Yaya : Game {
 
 
 		private void Awake () {
@@ -16,7 +15,7 @@ namespace Yaya {
 
 
 		private void Awake_Misc () {
-			LConst.GetLanguage = (key) => Game.CurrentLanguage ? Game.CurrentLanguage[key] : "";
+			LConst.GetLanguage = (key) => CurrentLanguage ? CurrentLanguage[key] : "";
 
 		}
 
@@ -31,7 +30,7 @@ namespace Yaya {
 					return true;
 				} else {
 					// Show Quit Dialog
-					Game.AddEntity(new eDialog(
+					AddEntity(new eDialog(
 						2048, LConst.QuitConfirmContent, LConst.LabelQuit, LConst.LabelCancel, "",
 						() => {
 							willQuit = true;

@@ -110,7 +110,34 @@ namespace AngeliaFramework {
 
 
 	[System.Serializable]
-	public struct AlignmentInt {
+	public struct NineSliceSprites {
+
+
+		// Const
+		public static readonly NineSliceSprites PIXEL_FRAME_3 = new() {
+			BottomLeft = "Pixel".ACode(),
+			BottomMid = "Pixel".ACode(),
+			BottomRight = "Pixel".ACode(),
+			MidLeft = "Pixel".ACode(),
+			MidRight = "Pixel".ACode(),
+			TopLeft = "Pixel".ACode(),
+			TopMid = "Pixel".ACode(),
+			TopRight = "Pixel".ACode(),
+			border = new(3, 3, 3, 3),
+		};
+		public static readonly NineSliceSprites PIXEL_FRAME_6 = new() {
+			BottomLeft = "Pixel".ACode(),
+			BottomMid = "Pixel".ACode(),
+			BottomRight = "Pixel".ACode(),
+			MidLeft = "Pixel".ACode(),
+			MidRight = "Pixel".ACode(),
+			TopLeft = "Pixel".ACode(),
+			TopMid = "Pixel".ACode(),
+			TopRight = "Pixel".ACode(),
+			border = new(6, 6, 6, 6),
+		};
+
+		// Api-Ser
 		public int TopLeft;
 		public int TopMid;
 		public int TopRight;
@@ -120,17 +147,7 @@ namespace AngeliaFramework {
 		public int BottomLeft;
 		public int BottomMid;
 		public int BottomRight;
-		public AlignmentInt (int topLeft, int topMid, int topRight, int midLeft, int midMid, int midRight, int bottomLeft, int bottomMid, int bottomRight) {
-			TopLeft = topLeft;
-			TopMid = topMid;
-			TopRight = topRight;
-			MidLeft = midLeft;
-			MidMid = midMid;
-			MidRight = midRight;
-			BottomLeft = bottomLeft;
-			BottomMid = bottomMid;
-			BottomRight = bottomRight;
-		}
+		public RectOffset border;
 	}
 
 
@@ -143,6 +160,10 @@ namespace AngeliaFramework {
 		public const int PHYSICS_LAYER_COUNT = 4;
 		public const int WORLD_MAP_SIZE = 128;
 		public const int BLOCK_SPAWN_PADDING = 6;
+		public const int MAX_VIEW_WIDTH = 72 * CELL_SIZE;
+		public const int MAX_VIEW_HEIGHT = 56 * CELL_SIZE;
+		public const int SPAWN_GAP = 6 * CELL_SIZE;
+		public const int WATER_SPEED_LOSE = 400;
 		public static int WATER_TAG = "Water".ACode();
 	}
 

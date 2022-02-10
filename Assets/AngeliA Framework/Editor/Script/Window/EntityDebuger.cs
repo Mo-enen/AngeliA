@@ -28,17 +28,6 @@ namespace AngeliaFramework.Editor {
 			new (0, 0, 255, 255),
 			new (255, 0, 255, 255),
 		};
-		private static readonly AlignmentInt PixelFrame = new(
-			"Pixel".ACode(),
-			"Pixel".ACode(),
-			"Pixel".ACode(),
-			"Pixel".ACode(),
-			0,
-			"Pixel".ACode(),
-			"Pixel".ACode(),
-			"Pixel".ACode(),
-			"Pixel".ACode()
-		);
 
 		// Short
 		private static EntityDebuger Main = null;
@@ -57,9 +46,10 @@ namespace AngeliaFramework.Editor {
 		private static GUIContent _CameraIconContent = null;
 		private static GUIContent SaveIconContent => _SaveIconContent ??= EditorGUIUtility.IconContent("d_SaveAs@2x");
 		private static GUIContent _SaveIconContent = null;
+		private static Game Game => _Game != null ? _Game : (_Game = FindObjectOfType<Game>());
+		private static Game _Game = null;
 
 		// Data
-		private static Game Game = null;
 		private static Entity[][] Entities = null;
 		private static Entity SelectingEntity = null;
 		private static EntityInspector SelectingInspector = null;
@@ -90,14 +80,12 @@ namespace AngeliaFramework.Editor {
 				// Enter Edit
 				if (mode == PlayModeStateChange.EnteredEditMode) {
 					// Clear Cache
-					Game = null;
 					Entities = null;
 				}
 
 				// Enter Play
 				if (mode == PlayModeStateChange.EnteredPlayMode) {
 					// Reload Cache
-					Game = TryGetGame();
 					Entities = null;
 					ClearSelectionInspector();
 					// CMD
@@ -150,19 +138,17 @@ namespace AngeliaFramework.Editor {
 			using (new GUILayout.HorizontalScope(EditorStyles.toolbar)) {
 				// Language Editor
 				if (GUI.Button(Layout.Rect(24, 20), GlobalIconContent, EditorStyles.toolbarButton)) {
-					var game = TryGetGame();
-					if (game != null) {
-						LanguageEditor.OpenEditor(game);
-					}
+					LanguageEditor.OpenEditor();
 				}
 				Layout.Rect(0, 20);
 
 				// Dirty Mark
 				var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
 				if (scene.IsValid() && scene.isLoaded && scene.isDirty) {
+					EditorGUI.DrawRect(Layout.Rect(20, 20), new Color32(209, 136, 60, 255));
 					var oldC = GUI.color;
-					GUI.color = Layout.HighlightColor2;
-					GUI.Label(Layout.Rect(20, 20), SaveIconContent);
+					GUI.color = new Color32(42, 42, 42, 255);
+					GUI.Label(Layout.LastRect(), SaveIconContent);
 					GUI.color = oldC;
 				}
 				Layout.Space(2);
@@ -188,10 +174,7 @@ namespace AngeliaFramework.Editor {
 		private void OnGUI_Runtime () {
 
 			// Game
-			if (Game == null) {
-				Game = TryGetGame();
-				if (Game == null) { return; }
-			}
+			if (Game == null) return;
 
 			// Entities
 			if (Entities == null) {
@@ -369,10 +352,10 @@ namespace AngeliaFramework.Editor {
 			if (SelectingEntity != null) {
 				byte alpha = (byte)(Time.time % 0.618f > 0.618f / 2f ? 255 : 128);
 				CellGUI.Draw_9Slice(
-					SelectingEntity.Rect, new(6, 6, 6, 6), new Color32(255, 255, 255, alpha), PixelFrame
+					SelectingEntity.Rect, new Color32(255, 255, 255, alpha), NineSliceSprites.PIXEL_FRAME_6
 				);
 				CellGUI.Draw_9Slice(
-					SelectingEntity.Rect.Shrink(6), new(6, 6, 6, 6), new Color32(0, 0, 0, alpha), PixelFrame
+					SelectingEntity.Rect.Shrink(6), new Color32(0, 0, 0, alpha), NineSliceSprites.PIXEL_FRAME_6
 				);
 			}
 		}
@@ -390,30 +373,6 @@ namespace AngeliaFramework.Editor {
 
 
 		#region --- LGC ---
-
-
-		private static GameData TryGetGameData () {
-			GameData result = null;
-			foreach (var guid in AssetDatabase.FindAssets($"t:{nameof(GameData)}")) {
-				var path = AssetDatabase.GUIDToAssetPath(guid);
-				var game = AssetDatabase.LoadAssetAtPath<GameData>(path);
-				if (game != null) {
-					result = game;
-					break;
-				}
-			}
-			return result;
-		}
-
-
-		private static Game TryGetGame () {
-			Game result = null;
-			var per = FindObjectOfType<GamePerformer>();
-			if (per != null) {
-				result = per.Game;
-			}
-			return result;
-		}
 
 
 		private void EntityMenu (Entity entity) {
@@ -478,10 +437,7 @@ namespace AngeliaFramework.Editor {
 
 		private static void PerformCMD (string cmd) {
 			if (!string.IsNullOrEmpty(cmd)) {
-				if (Game == null) {
-					Game = TryGetGame();
-					if (Game == null) { return; }
-				}
+				if (Game == null) return;
 				var lines = cmd.Replace("\r", "").Split('\n');
 				Entity prevEntity = null;
 
