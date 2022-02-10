@@ -30,6 +30,8 @@ namespace AngeliaFramework {
 			{ new(), new(), new() },
 			{ new(), new(), new() },
 		};
+		private WorldData[,] WorldBuffer = new WorldData[3, 3];
+		private WorldData[] WorldBufferAlt = new WorldData[9];
 
 
 		#endregion
@@ -51,14 +53,11 @@ namespace AngeliaFramework {
 				Const.WORLD_MAP_SIZE * Const.CELL_SIZE / 2
 			);
 			if (!midZone.Contains(viewPos)) {
-				Shift(
-					viewPos.x > midZone.center.x ? Direction2.Negative : Direction2.Positive,
-					viewPos.y > midZone.center.y ? Direction2.Negative : Direction2.Positive
-				);
-				FillSquadAsync(
-					viewPos.x / Const.WORLD_MAP_SIZE / Const.CELL_SIZE,
-					viewPos.y / Const.WORLD_MAP_SIZE / Const.CELL_SIZE
-				);
+				int x = viewPos.x / Const.WORLD_MAP_SIZE / Const.CELL_SIZE;
+				int y = viewPos.y / Const.WORLD_MAP_SIZE / Const.CELL_SIZE;
+				Shift(x, y);
+				//FillSquadAsync(x, y);
+				FillSquad(x, y);
 			}
 		}
 
@@ -71,67 +70,68 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private void Shift (Direction2 deltaX, Direction2 deltaY) {
-			if (deltaX == Direction2.Positive) {
-				// R
-				for (int y = 0; y < 2; y++) {
-					(Worlds[0, y], Worlds[1, y]) = (Worlds[1, y], Worlds[0, y]);
-					(Worlds[0, y], Worlds[2, y]) = (Worlds[2, y], Worlds[0, y]);
-				}
-			} else {
-				// L
-				for (int y = 0; y < 2; y++) {
-					(Worlds[0, y], Worlds[2, y]) = (Worlds[2, y], Worlds[0, y]);
-					(Worlds[0, y], Worlds[1, y]) = (Worlds[1, y], Worlds[0, y]);
+		private void Shift (int x, int y) {
+			// Clear Buffer
+			for (int i = 0; i < 9; i++) {
+				WorldBuffer[i / 3, i % 3] = null;
+				WorldBufferAlt[i] = null;
+			}
+
+			// Worlds >> Buffer
+			int alt = 0;
+			for (int j = 0; j <= 2; j++) {
+				for (int i = 0; i <= 2; i++) {
+					var world = Worlds[i, j];
+					int localX = world.FilledPosition.x - x;
+					int localY = world.FilledPosition.y - y;
+					if (localX >= -1 && localX <= 1 && localY >= -1 && localY <= 1) {
+						WorldBuffer[localX + 1, localY + 1] = world;
+					} else {
+						WorldBufferAlt[alt] = world;
+						alt++;
+					}
 				}
 			}
-			if (deltaY == Direction2.Positive) {
-				// U
-				for (int x = 0; x < 2; x++) {
-					(Worlds[x, 0], Worlds[x, 1]) = (Worlds[x, 1], Worlds[x, 0]);
-					(Worlds[x, 0], Worlds[x, 2]) = (Worlds[x, 2], Worlds[x, 0]);
+
+			// Buffer >> Worlds
+			alt = 0;
+			for (int j = 0; j <= 2; j++) {
+				for (int i = 0; i <= 2; i++) {
+					var buffer = WorldBuffer[i, j];
+					if (buffer != null) {
+						Worlds[i, j] = buffer;
+					} else {
+						Worlds[i, j] = WorldBufferAlt[alt];
+						alt++;
+					}
 				}
-			} else {
-				// D
-				for (int x = 0; x < 2; x++) {
-					(Worlds[x, 0], Worlds[x, 2]) = (Worlds[x, 2], Worlds[x, 0]);
-					(Worlds[x, 0], Worlds[x, 1]) = (Worlds[x, 1], Worlds[x, 0]);
+			}
+		}
+
+
+		private void FillSquad (int x, int y) {
+			for (int j = 0; j <= 2; j++) {
+				for (int i = 0; i <= 2; i++) {
+					var world = Worlds[i, j];
+					var pos = new Vector2Int(x + i - 1, y + j - 1);
+					if (world.FilledPosition != pos) {
+						world.Fill(pos);
+					}
 				}
 			}
 		}
 
 
 		private void FillSquadAsync (int x, int y) {
-
-			Worlds[0, 0].FillAsync(new Vector2Int(x - 1, y - 1));
-			Worlds[0, 1].FillAsync(new Vector2Int(x - 1, y + 0));
-			Worlds[0, 2].FillAsync(new Vector2Int(x - 1, y + 1));
-
-			Worlds[1, 0].FillAsync(new Vector2Int(x + 0, y - 1));
-			Worlds[1, 1].FillAsync(new Vector2Int(x + 0, y + 0));
-			Worlds[1, 2].FillAsync(new Vector2Int(x + 0, y + 1));
-
-			Worlds[2, 0].FillAsync(new Vector2Int(x + 1, y - 1));
-			Worlds[2, 1].FillAsync(new Vector2Int(x + 1, y + 0));
-			Worlds[2, 2].FillAsync(new Vector2Int(x + 1, y + 1));
-
-		}
-
-
-		private void FillSquad (int x, int y) {
-
-			Worlds[0, 0].Fill(new Vector2Int(x - 1, y - 1));
-			Worlds[0, 1].Fill(new Vector2Int(x - 1, y + 0));
-			Worlds[0, 2].Fill(new Vector2Int(x - 1, y + 1));
-
-			Worlds[1, 0].Fill(new Vector2Int(x + 0, y - 1));
-			Worlds[1, 1].Fill(new Vector2Int(x + 0, y + 0));
-			Worlds[1, 2].Fill(new Vector2Int(x + 0, y + 1));
-
-			Worlds[2, 0].Fill(new Vector2Int(x + 1, y - 1));
-			Worlds[2, 1].Fill(new Vector2Int(x + 1, y + 0));
-			Worlds[2, 2].Fill(new Vector2Int(x + 1, y + 1));
-
+			for (int j = 0; j <= 2; j++) {
+				for (int i = 0; i <= 2; i++) {
+					var world = Worlds[i, j];
+					var pos = new Vector2Int(x + i - 1, y + j - 1);
+					if (world.FilledPosition != pos) {
+						world.FillAsync(pos);
+					}
+				}
+			}
 		}
 
 

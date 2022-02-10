@@ -36,6 +36,7 @@ namespace AngeliaFramework {
 
 
 		public delegate void VoidObjectHandler (Object obj);
+		public delegate bool BoolHandler ();
 
 
 		#endregion
@@ -48,6 +49,7 @@ namespace AngeliaFramework {
 
 		// Callback
 		public static event VoidObjectHandler OnMapFilled = null;
+		public static event BoolHandler AllowWorldGenerator = null;
 
 		// Api
 		public RectInt FilledUnitRect => new(
@@ -84,6 +86,7 @@ namespace AngeliaFramework {
 		}
 
 
+		// Fill
 		public void FillAsync (Vector2Int pos) {
 			if (!AsyncReady) return;
 			FilledPosition = pos;
@@ -109,8 +112,11 @@ namespace AngeliaFramework {
 				System.Array.Clear(Blocks, 0, Blocks.Length);
 				System.Array.Clear(Entities, 0, Entities.Length);
 				FilledPosition = pos;
-				if (source == null) return;
-				if (source.IsProcedure) {
+				if (source == null) {
+					IsFilling = false;
+					return;
+				}
+				if (source.IsProcedure && AllowWorldGenerator()) {
 					// Procedure
 					source.CreateProcedureGenerator().FillWorld(this, pos);
 				} else {
@@ -152,6 +158,44 @@ namespace AngeliaFramework {
 			IsFilling = false;
 			OnMapFilled(source);
 		}
+
+
+#if UNITY_EDITOR
+		public void EditorOnly_SaveToDisk (out MapObject mapObject) {
+			mapObject = null;
+			if (IsFilling) return;
+			mapObject = Resources.Load<MapObject>($"Map/{FilledPosition.x}_{FilledPosition.y}");
+			if (mapObject == null) return;
+			// Blocks
+			var blocks = new List<Map.Block>();
+			for (int layer = 0; layer < Const.BLOCK_LAYER_COUNT; layer++) {
+				for (int y = 0; y < Const.WORLD_MAP_SIZE; y++) {
+					for (int x = 0; x < Const.WORLD_MAP_SIZE; x++) {
+						var block = Blocks[x, y, layer];
+						if (block.TypeID == 0) continue;
+						blocks.Add(new(
+							block.TypeID, x, y, layer, block.Tag, block.IsTrigger
+						));
+					}
+				}
+			}
+			mapObject.Map.Blocks = blocks.ToArray();
+			// Entities
+			var entities = new List<Map.Entity>();
+			for (int layer = 0; layer < Const.ENTITY_LAYER_COUNT; layer++) {
+				for (int y = 0; y < Const.WORLD_MAP_SIZE; y++) {
+					for (int x = 0; x < Const.WORLD_MAP_SIZE; x++) {
+						var entity = Entities[x, y, layer];
+						if (entity.TypeID == 0) continue;
+						entities.Add(new(
+							entity.InstanceID, entity.TypeID, x, y, layer
+						));
+					}
+				}
+			}
+			mapObject.Map.Entities = entities.ToArray();
+		}
+#endif
 
 
 		#endregion

@@ -15,6 +15,7 @@ namespace AngeliaFramework.Editor {
 		// Const
 		private static readonly int LINE_V_CODE = "LineV_4".ACode();
 		private static readonly int LINE_H_CODE = "LineH_4".ACode();
+		private const int RIGHT_DRAG_TOLERANT = 24;
 
 		// Api
 		public override bool Despawnable => false;
@@ -25,8 +26,10 @@ namespace AngeliaFramework.Editor {
 
 		// Data
 		private MapPalette.Unit SelectingUnit = null;
-		private Vector2Int? MouseDownUnitPos = null;
+		private Vector2Int? MouseLeftDownUnitPos = null;
+		private Vector2Int? MouseRightDownPos = null;
 		private RectInt? MosueDragUnitRect = null;
+		private Vector2Int? ViewPivotPosition = null;
 
 
 		#endregion
@@ -41,7 +44,9 @@ namespace AngeliaFramework.Editor {
 			if (MapEditorWindow.Main == null) return;
 			SelectingUnit = MapEditorWindow.Main.GetSelection();
 			Update_Workflow();
-			Update_Paint();
+			Update_MouseLeft();
+			Update_MouseRight();
+			Update_MouseMid();
 			Update_Gizmos(frame);
 		}
 
@@ -136,50 +141,93 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void Update_Paint () {
+		private void Update_MouseLeft () {
+
 			if (!Game.DebugMode) return;
 
-			// Mouse Left
 			if (FrameInput.MouseLeft) {
 				if (SelectingUnit != null && MapEditorWindow.Main.Painting) {
 					var mouseUnitPos = new Vector2Int(
 						(int)Mathf.Lerp(CameraRect.xMin, CameraRect.xMax, FrameInput.MousePosition01.x) / Const.CELL_SIZE,
 						(int)Mathf.Lerp(CameraRect.yMin, CameraRect.yMax, FrameInput.MousePosition01.y) / Const.CELL_SIZE
 					);
-					if (!MouseDownUnitPos.HasValue) {
+					if (!MouseLeftDownUnitPos.HasValue) {
 						// Down
-						MouseDownUnitPos = mouseUnitPos;
+						MouseLeftDownUnitPos = mouseUnitPos;
 						MosueDragUnitRect = new RectInt(mouseUnitPos.x, mouseUnitPos.y, 0, 0);
 					} else {
 						// Pressing
 						var rect = MosueDragUnitRect.Value;
 						rect.SetMinMax(
-							Vector2Int.Min(mouseUnitPos, MouseDownUnitPos.Value),
-							Vector2Int.Max(mouseUnitPos, MouseDownUnitPos.Value)
+							Vector2Int.Min(mouseUnitPos, MouseLeftDownUnitPos.Value),
+							Vector2Int.Max(mouseUnitPos, MouseLeftDownUnitPos.Value)
 						);
 						MosueDragUnitRect = rect;
 					}
 				}
-			} else if (MouseDownUnitPos.HasValue) {
+			} else if (MouseLeftDownUnitPos.HasValue) {
 				// Up
 
 
 
 				RegisterUndo();
 				MosueDragUnitRect = null;
-				MouseDownUnitPos = null;
+				MouseLeftDownUnitPos = null;
 			}
 
-			// Mosue Right 
+
+
+		}
+
+
+		private void Update_MouseRight () {
+			if (!Game.DebugMode) return;
 			if (FrameInput.MouseRight) {
+				var mouseScreenPos = new Vector2Int(
+					(int)(FrameInput.MousePosition01.x * Screen.width),
+					(int)(FrameInput.MousePosition01.y * Screen.height)
+				);
+				if (!MouseRightDownPos.HasValue) {
+					// Down
+					MouseRightDownPos = mouseScreenPos;
+				} else {
+					// Pressing
+					if (ViewPivotPosition.HasValue) {
+						var size = Game.ViewRect.size;
+						Game.ViewRect = new(
+							(int)(ViewPivotPosition.Value.x + (MouseRightDownPos.Value.x - mouseScreenPos.x) * ((float)CameraRect.width / Screen.width)),
+							(int)(ViewPivotPosition.Value.y + (MouseRightDownPos.Value.y - mouseScreenPos.y) * ((float)CameraRect.height / Screen.height)),
+							size.x, size.y
+						);
+					} else {
+						float dis = Vector2Int.Distance(MouseRightDownPos.Value, mouseScreenPos);
+						if (dis > RIGHT_DRAG_TOLERANT) {
+							ViewPivotPosition = Game.ViewRect.position;
+							MouseRightDownPos = mouseScreenPos;
+						}
+					}
+				}
+			} else if (MouseRightDownPos.HasValue) {
+				// Up
+				if (!ViewPivotPosition.HasValue) {
+					// Pick
+
+
+				}
+				ViewPivotPosition = null;
+				MouseRightDownPos = null;
+			}
+		}
+
+
+		private void Update_MouseMid () {
+			if (!Game.DebugMode) return;
+			float deltaY = Input.mouseScrollDelta.y;
+			if (deltaY.NotAlmostZero()) {
+
 
 
 			}
-
-			// Mouse Wheel
-
-
-
 		}
 
 

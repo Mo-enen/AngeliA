@@ -42,6 +42,14 @@ namespace AngeliaFramework {
 			public int Layer;
 			public int Tag;
 			public bool IsTrigger;
+			public Block (int typeID, int x, int y, int layer, int tag, bool isTrigger) {
+				TypeID = typeID;
+				X = x;
+				Y = y;
+				Layer = layer;
+				Tag = tag;
+				IsTrigger = isTrigger;
+			}
 		}
 
 		[System.Serializable]
@@ -51,6 +59,13 @@ namespace AngeliaFramework {
 			public int X;
 			public int Y;
 			public int Layer;
+			public Entity (int instanceID, int typeID, int x, int y, int layer) {
+				InstanceID = instanceID;
+				TypeID = typeID;
+				X = x;
+				Y = y;
+				Layer = layer;
+			}
 		}
 
 		public Block[] Blocks = new Block[0];
@@ -69,28 +84,6 @@ namespace AngeliaFramework.Editor {
 	[CustomEditor(typeof(MapObject))]
 	[CanEditMultipleObjects]
 	public class Map_Inspector : Editor {
-		/*
-		private void OnEnable () {
-			int InstanceID = 0;
-			foreach (MapObject m in targets) {
-				for (int i = 0; i < m.Map.Blocks.Length; i++) {
-					//m.Map.Blocks[i].X %= 128;
-					//m.Map.Blocks[i].Y %= 128;
-				}
-				for (int i = 0; i < m.Map.Entities.Length; i++) {
-					m.Map.Entities[i].X = i;
-					m.Map.Entities[i].Y = 3;
-					m.Map.Entities[i].Layer = (int)EntityLayer.Environment;
-					m.Map.Entities[i].TypeID = typeof(eBarrel).FullName.ACode();
-					m.Map.Entities[i].InstanceID = InstanceID;
-					InstanceID++;
-				}
-				EditorUtility.SetDirty(m);
-			}
-			AssetDatabase.SaveAssets();
-			AssetDatabase.Refresh();
-		}
-		//*/
 		public override void OnInspectorGUI () {
 			serializedObject.Update();
 			DrawPropertiesExcluding(serializedObject, "m_Script");

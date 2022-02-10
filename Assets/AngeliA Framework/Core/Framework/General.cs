@@ -163,6 +163,7 @@ namespace AngeliaFramework {
 		public const int MAX_VIEW_WIDTH = 72 * CELL_SIZE;
 		public const int MAX_VIEW_HEIGHT = 56 * CELL_SIZE;
 		public const int SPAWN_GAP = 6 * CELL_SIZE;
+		public const int DESPAWN_GAP = 6 * CELL_SIZE;
 		public const int WATER_SPEED_LOSE = 400;
 		public static int WATER_TAG = "Water".ACode();
 	}

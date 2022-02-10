@@ -591,13 +591,13 @@ namespace AngeliaFramework.Editor {
 
 		private void GUI_View () {
 			var game = (target as EntityInspector).Game;
-			var viewRect = (RectInt)Util.GetFieldValue(game, "ViewRect");
+			var viewRect = game.ViewRect;
 			var spawnRect = (RectInt)Util.GetFieldValue(game, "SpawnRect");
 			var cameraRect = CellRenderer.CameraRect;
 
 			var newView = EditorGUILayout.RectIntField(new GUIContent("View"), viewRect);
 			if (newView.IsNotSame(viewRect)) {
-				Util.SetFieldValue(game, "ViewRect", newView);
+				game.ViewRect = newView;
 			}
 			Layout.Space(2);
 

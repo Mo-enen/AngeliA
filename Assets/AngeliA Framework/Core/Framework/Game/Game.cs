@@ -30,6 +30,8 @@ namespace AngeliaFramework {
 		// Api
 		public Language CurrentLanguage { get; private set; } = null;
 		public Dialogue CurrentDialogue { get; private set; } = null;
+		public WorldSquad WorldSquad { get; } = new();
+		public RectInt ViewRect { get; set; } = new(0, 0, Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, Const.MAX_VIEW_WIDTH), Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, 0, Const.MAX_VIEW_HEIGHT));
 		public int EntityDirtyFlag { get; private set; } = 0;
 		public int GlobalFrame { get; private set; } = 0;
 #if UNITY_EDITOR
@@ -42,14 +44,13 @@ namespace AngeliaFramework {
 		// Data
 		private readonly Dictionary<int, EntityHandler> EntityHandlerPool = new();
 		private readonly Dictionary<int, ScriptableObject> AssetPool = new();
-		private readonly WorldSquad WorldSquad = new();
 		private readonly Stack<Object> UnloadAssetStack = new();
 		private readonly HashSet<int> StagedEntityHash = new();
 		private Entity[][] Entities = null;
 		private (Entity[] entity, int length)[] EntityBuffers = null;
-		private RectInt ViewRect = new(0, 0, Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, Const.MAX_VIEW_WIDTH), Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, 0, Const.MAX_VIEW_HEIGHT));
 		private RectInt LoadedUnitRect = default;
 		private RectInt SpawnRect = default;
+		private RectInt DespawnRect = default;
 		private bool Initialized = false;
 
 		// Saving
@@ -266,6 +267,7 @@ namespace AngeliaFramework {
 			WorldData.OnMapFilled += (obj) => {
 				UnloadAssetStack.Push(obj);
 			};
+			WorldData.AllowWorldGenerator += () => !DebugMode;
 			// Asset Pool
 			foreach (var asset in m_Data.Assets) {
 				AssetPool.TryAdd(asset.name.ACode(), asset);
@@ -284,6 +286,12 @@ namespace AngeliaFramework {
 			SpawnRect.height = ViewRect.height + Const.SPAWN_GAP * 2;
 			SpawnRect.x = ViewRect.x + (ViewRect.width - SpawnRect.width) / 2;
 			SpawnRect.y = ViewRect.y + (ViewRect.height - SpawnRect.height) / 2;
+
+			// Despawn Rect
+			DespawnRect.x = SpawnRect.x - Const.DESPAWN_GAP;
+			DespawnRect.y = SpawnRect.y - Const.DESPAWN_GAP;
+			DespawnRect.width = SpawnRect.width + Const.DESPAWN_GAP * 2;
+			DespawnRect.height = SpawnRect.height + Const.DESPAWN_GAP * 2;
 
 		}
 
@@ -405,7 +413,7 @@ namespace AngeliaFramework {
 						(DebugMode && layerIndex != (int)EntityLayer.Debug) ||
 #endif
 						!entity.Active ||
-						(entity.Despawnable && !SpawnRect.Contains(entity.X, entity.Y))
+						(entity.Despawnable && !DespawnRect.Contains(entity.X, entity.Y))
 					) {
 						entity.OnDespawn(GlobalFrame);
 						StagedEntityHash.Remove(entity.InstanceID);
@@ -488,7 +496,8 @@ namespace AngeliaFramework {
 		private void FrameUpdate_Misc () {
 			// Unload Assets
 			while (UnloadAssetStack.Count > 0) {
-				Resources.UnloadAsset(UnloadAssetStack.Pop());
+				var asset = UnloadAssetStack.Pop();
+				if (asset != null) Resources.UnloadAsset(asset);
 			}
 		}
 
