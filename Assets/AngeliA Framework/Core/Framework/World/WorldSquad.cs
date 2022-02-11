@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+
 namespace AngeliaFramework {
 	public class WorldSquad {
 
@@ -11,6 +12,10 @@ namespace AngeliaFramework {
 
 		#region --- VAR ---
 
+
+		// Handler
+		public delegate void VoidHandler ();
+		public static VoidHandler BeforeWorldShift { get; set; } = null;
 
 		// Api
 		public bool IsReady {
@@ -53,6 +58,7 @@ namespace AngeliaFramework {
 				Const.WORLD_MAP_SIZE * Const.CELL_SIZE / 2
 			);
 			if (!midZone.Contains(viewPos)) {
+				BeforeWorldShift();
 				int x = viewPos.x / Const.WORLD_MAP_SIZE / Const.CELL_SIZE;
 				int y = viewPos.y / Const.WORLD_MAP_SIZE / Const.CELL_SIZE;
 				Shift(x, y);

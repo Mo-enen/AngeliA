@@ -45,11 +45,14 @@ namespace AngeliaFramework {
 
 
 		// Api
+		public static Vector2Int MousePosition { get; private set; } = default;
 		public static Vector2 MousePosition01 { get; private set; } = default;
 		public static bool MouseLeft { get; private set; } = false;
 		public static bool MouseRight { get; private set; } = false;
+		public static bool MouseMid { get; private set; } = false;
 		public static bool MouseLeftDown { get; private set; } = false;
 		public static bool MouseRightDown { get; private set; } = false;
+		public static bool MouseMidDown { get; private set; } = false;
 
 		// Data
 		private static Keyboard Keyboard = null;
@@ -77,6 +80,7 @@ namespace AngeliaFramework {
 		};
 		private static bool PrevMouseLeft = false;
 		private static bool PrevMouseRight = false;
+		private static bool PrevMouseMid = false;
 
 		// Saving
 		private static SavingString KeyboardSetup = new("FrameInput.KeyboardSetup", "");
@@ -137,20 +141,27 @@ namespace AngeliaFramework {
 			// Pointer
 			if (Mouse != null) {
 				var pos = Mouse.position.ReadValue();
+				MousePosition = pos.RoundToInt();
 				MousePosition01 = new Vector2(pos.x / Screen.width, pos.y / Screen.height);
 				MouseLeft = Mouse.leftButton.isPressed;
 				MouseRight = Mouse.rightButton.isPressed;
+				MouseMid = Mouse.middleButton.isPressed;
 				MouseLeftDown = !PrevMouseLeft && MouseLeft;
 				MouseRightDown = !PrevMouseRight && MouseRight;
+				MouseMidDown = !PrevMouseMid && MouseMid;
 			} else {
+				MousePosition = default;
 				MousePosition01 = default;
 				MouseLeft = false;
 				MouseRight = false;
+				MouseMid = false;
 				MouseLeftDown = false;
 				MouseRightDown = false;
+				MouseMidDown = false;
 			}
 			PrevMouseLeft = MouseLeft;
 			PrevMouseRight = MouseRight;
+			PrevMouseMid = MouseMid;
 
 		}
 
@@ -192,7 +203,10 @@ namespace AngeliaFramework {
 			MouseRight = false;
 			MouseRightDown = false;
 		}
-
+		public static void UseMouseMidEvent () {
+			MouseMid = false;
+			MouseMidDown = false;
+		}
 
 		#endregion
 

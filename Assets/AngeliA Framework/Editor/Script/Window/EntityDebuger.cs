@@ -597,7 +597,8 @@ namespace AngeliaFramework.Editor {
 
 			var newView = EditorGUILayout.RectIntField(new GUIContent("View"), viewRect);
 			if (newView.IsNotSame(viewRect)) {
-				game.ViewRect = newView;
+				game.SetViewPositionDely(newView.x, newView.y);
+				game.SetViewSizeDely(newView.width, newView.height);
 			}
 			Layout.Space(2);
 

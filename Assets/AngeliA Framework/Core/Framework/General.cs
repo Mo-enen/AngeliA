@@ -160,6 +160,8 @@ namespace AngeliaFramework {
 		public const int PHYSICS_LAYER_COUNT = 4;
 		public const int WORLD_MAP_SIZE = 128;
 		public const int BLOCK_SPAWN_PADDING = 6;
+		public const int MIN_VIEW_WIDTH = 4 * CELL_SIZE;
+		public const int MIN_VIEW_HEIGHT = 2 * CELL_SIZE;
 		public const int MAX_VIEW_WIDTH = 72 * CELL_SIZE;
 		public const int MAX_VIEW_HEIGHT = 56 * CELL_SIZE;
 		public const int SPAWN_GAP = 6 * CELL_SIZE;

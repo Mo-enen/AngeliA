@@ -31,7 +31,7 @@ namespace AngeliaFramework {
 		public Language CurrentLanguage { get; private set; } = null;
 		public Dialogue CurrentDialogue { get; private set; } = null;
 		public WorldSquad WorldSquad { get; } = new();
-		public RectInt ViewRect { get; set; } = new(0, 0, Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, Const.MAX_VIEW_WIDTH), Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, 0, Const.MAX_VIEW_HEIGHT));
+		public RectInt ViewRect { get; private set; } = new(0, 0, Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, Const.MIN_VIEW_WIDTH, Const.MAX_VIEW_WIDTH), Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, Const.MIN_VIEW_HEIGHT, Const.MAX_VIEW_HEIGHT));
 		public int EntityDirtyFlag { get; private set; } = 0;
 		public int GlobalFrame { get; private set; } = 0;
 #if UNITY_EDITOR
@@ -51,6 +51,8 @@ namespace AngeliaFramework {
 		private RectInt LoadedUnitRect = default;
 		private RectInt SpawnRect = default;
 		private RectInt DespawnRect = default;
+		private RectInt? NewViewRect = null;
+		private int ViewLerpRate = 1000;
 		private bool Initialized = false;
 
 		// Saving
@@ -268,6 +270,7 @@ namespace AngeliaFramework {
 				UnloadAssetStack.Push(obj);
 			};
 			WorldData.AllowWorldGenerator += () => !DebugMode;
+			WorldSquad.BeforeWorldShift += () => { };
 			// Asset Pool
 			foreach (var asset in m_Data.Assets) {
 				AssetPool.TryAdd(asset.name.ACode(), asset);
@@ -279,6 +282,22 @@ namespace AngeliaFramework {
 		private void FrameUpdate_View () {
 
 			// Move View Rect
+			if (NewViewRect.HasValue) {
+				if (ViewLerpRate >= 1000) {
+					ViewRect = NewViewRect.Value;
+					NewViewRect = null;
+				} else {
+					ViewRect = new(
+						ViewRect.x.LerpTo(NewViewRect.Value.x, ViewLerpRate),
+						ViewRect.y.LerpTo(NewViewRect.Value.y, ViewLerpRate),
+						ViewRect.width.LerpTo(NewViewRect.Value.width, ViewLerpRate),
+						ViewRect.height.LerpTo(NewViewRect.Value.height, ViewLerpRate)
+					);
+					if (ViewRect.IsSame(NewViewRect.Value)) {
+						NewViewRect = null;
+					}
+				}
+			}
 			CellRenderer.ViewRect = ViewRect;
 
 			// Spawn Rect
@@ -430,6 +449,12 @@ namespace AngeliaFramework {
 				var (buffers, bufferLen) = EntityBuffers[layerIndex];
 				int entityLen = ENTITY_CAPACITY[layerIndex];
 				int emptyIndex = 0;
+#if UNITY_EDITOR
+				if (DebugMode) {
+					EntityBuffers[layerIndex].length = 0;
+					continue;
+				}
+#endif
 				for (int i = 0; i < bufferLen; i++) {
 					while (emptyIndex < entityLen && entities[emptyIndex] != null) {
 						emptyIndex++;
@@ -564,6 +589,29 @@ namespace AngeliaFramework {
 		public void SetFramerate (bool high) {
 			UseHighFramerate.Value = high;
 			Application.targetFrameRate = UseHighFramerate.Value ? FRAME_RATE_HIGHT : FRAME_RATE_LOW;
+		}
+
+
+		// View
+		public void SetViewPositionDely (int x, int y, int lerp = 1000) {
+			NewViewRect = NewViewRect.HasValue ?
+				new RectInt(x, y, NewViewRect.Value.width, NewViewRect.Value.height) :
+				new RectInt(x, y, ViewRect.width, ViewRect.height);
+			ViewLerpRate = lerp;
+		}
+
+
+		public void SetViewSizeDely (int width, int height, int lerp = 1000) {
+			NewViewRect = NewViewRect.HasValue ?
+				new RectInt(NewViewRect.Value.x, NewViewRect.Value.y, width, height) :
+				new RectInt(ViewRect.x, ViewRect.y, width, height);
+			ViewLerpRate = lerp;
+		}
+
+
+		public void StopViewDely () {
+			NewViewRect = null;
+			ViewLerpRate = 1000;
 		}
 
 

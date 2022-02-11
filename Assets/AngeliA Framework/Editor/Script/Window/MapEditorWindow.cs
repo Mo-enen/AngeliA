@@ -213,7 +213,9 @@ namespace AngeliaFramework.Editor {
 				Layout.Space(2);
 				if (GUI.changed) {
 					EditorUtility.SetDirty(pal);
-					UnityEditor.SceneManagement.EditorSceneManager.MarkAllScenesDirty();
+					if (!EditorApplication.isPlaying) {
+						UnityEditor.SceneManagement.EditorSceneManager.MarkAllScenesDirty();
+					}
 				}
 			}
 			EditorGUI.DrawRect(Layout.Rect(0, 1), new Color32(26, 26, 26, 255));

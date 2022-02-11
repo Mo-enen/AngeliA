@@ -161,11 +161,8 @@ namespace AngeliaFramework {
 
 
 #if UNITY_EDITOR
-		public void EditorOnly_SaveToDisk (out MapObject mapObject) {
-			mapObject = null;
-			if (IsFilling) return;
-			mapObject = Resources.Load<MapObject>($"Map/{FilledPosition.x}_{FilledPosition.y}");
-			if (mapObject == null) return;
+		public void EditorOnly_SaveToDisk (MapObject mapObject) {
+			if (IsFilling || mapObject == null) return;
 			// Blocks
 			var blocks = new List<Map.Block>();
 			for (int layer = 0; layer < Const.BLOCK_LAYER_COUNT; layer++) {
