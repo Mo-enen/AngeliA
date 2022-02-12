@@ -81,7 +81,7 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		[MenuItem("Tools/Map Editor Hotkeys/Select Tool _1")]
+		[MenuItem("Tools/Hotkeys/Select Tool _1")]
 		private static void HotKey_SelectTool () {
 			if (Main == null) return;
 			Main.CurrentTool = Tool.Selection;
@@ -90,7 +90,7 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		[MenuItem("Tools/Map Editor Hotkeys/Paint Tool _2")]
+		[MenuItem("Tools/Hotkeys/Paint Tool _2")]
 		private static void HotKey_PaintTool () {
 			if (Main == null) return;
 			Main.CurrentTool = Tool.Paint;

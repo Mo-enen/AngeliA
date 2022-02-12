@@ -84,14 +84,22 @@ namespace AngeliaFramework.Editor {
 	[CustomEditor(typeof(MapObject))]
 	[CanEditMultipleObjects]
 	public class Map_Inspector : Editor {
-
 		//private void OnEnable () {
 		//	foreach (MapObject map in targets) {
 		//		var blocks = new List<Map.Block>();
 		//		for (int i = 0; i < Const.WORLD_MAP_SIZE; i++) {
+		//			// Frame
 		//			blocks.Add(new() {
 		//				TypeID = "Test Block".ACode(),
 		//				X = 0,
+		//				Y = i,
+		//				Layer = 1,
+		//				IsTrigger = false,
+		//				Tag = 0,
+		//			});
+		//			blocks.Add(new() {
+		//				TypeID = "Test Block".ACode(),
+		//				X = Const.WORLD_MAP_SIZE - 1,
 		//				Y = i,
 		//				Layer = 1,
 		//				IsTrigger = false,
@@ -107,6 +115,25 @@ namespace AngeliaFramework.Editor {
 		//					Tag = 0,
 		//				});
 		//			}
+		//			if (i != Const.WORLD_MAP_SIZE - 1) {
+		//				blocks.Add(new() {
+		//					TypeID = "Test Block".ACode(),
+		//					X = i,
+		//					Y = Const.WORLD_MAP_SIZE - 1,
+		//					Layer = 1,
+		//					IsTrigger = false,
+		//					Tag = 0,
+		//				});
+		//			}
+		//			// BG
+		//			blocks.Add(new() {
+		//				TypeID = "Test BG".ACode(),
+		//				X = i,
+		//				Y = Random.Range(0, Const.WORLD_MAP_SIZE),
+		//				Layer = 0,
+		//				IsTrigger = false,
+		//				Tag = 0,
+		//			});
 		//		}
 		//		map.Map.Blocks = blocks.ToArray();
 		//		EditorUtility.SetDirty(map);

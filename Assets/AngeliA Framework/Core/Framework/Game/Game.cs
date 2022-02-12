@@ -320,11 +320,14 @@ namespace AngeliaFramework {
 			int bgLayerIndex = (int)BlockLayer.Background;
 			int levelLayerIndex = (int)BlockLayer.Level;
 
+			int TestI, TestJ;
+
 			// World Squad
 			WorldSquad.FrameUpdate(SpawnRect.CenterInt());
 
+			RectInt spawnUnitRect;
 			if (WorldSquad.IsReady) {
-				var spawnUnitRect = new RectInt(
+				spawnUnitRect = new RectInt(
 					SpawnRect.x / Const.CELL_SIZE,
 					SpawnRect.y / Const.CELL_SIZE,
 					SpawnRect.width / Const.CELL_SIZE,
@@ -332,14 +335,16 @@ namespace AngeliaFramework {
 				);
 				for (int worldI = 0; worldI <= 2; worldI++) {
 					for (int worldJ = 0; worldJ <= 2; worldJ++) {
-						TrySpawnAllUnits(WorldSquad.Worlds[worldI, worldJ], spawnUnitRect);
+						TestI = worldI;
+						TestJ = worldJ;
+						TrySpawnAllUnits(WorldSquad.Worlds[worldI, worldJ]);
 					}
 				}
 				LoadedUnitRect = spawnUnitRect;
 			}
 
 			// Func
-			void TrySpawnAllUnits (WorldData world, RectInt spawnUnitRect) {
+			void TrySpawnAllUnits (WorldData world) {
 				if (world.IsFilling) return;
 				var worldUnitRect = world.FilledUnitRect;
 				if (!worldUnitRect.Overlaps(spawnUnitRect)) return;
@@ -389,7 +394,7 @@ namespace AngeliaFramework {
 				// Physics
 				CellPhysics.FillBlock(PhysicsLayer.Level, rect, block.IsTrigger, block.Tag);
 				// Draw
-				CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 128));
+				CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 255));
 			}
 			void TrySpawnEntitiesForAllLayers (WorldData world, RectInt spawnUnitRect, int localX, int localY, int globalUnitX, int globalUnitY) {
 				for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {

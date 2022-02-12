@@ -90,9 +90,13 @@ namespace AngeliaFramework.Editor {
 				// Editing 
 				if (pressingSS) {
 					// Goto Play
+					int x = MousePosition.x / Const.CELL_SIZE;
+					int y = MousePosition.y / Const.CELL_SIZE;
+					if (MousePosition.x < 0) x--;
+					if (MousePosition.y < 0) y--;
 					var player = new eDebugPlayer {
-						X = MousePosition.x / Const.CELL_SIZE * Const.CELL_SIZE + Const.CELL_SIZE / 2,
-						Y = MousePosition.y / Const.CELL_SIZE * Const.CELL_SIZE,
+						X = x * Const.CELL_SIZE + Const.CELL_SIZE / 2,
+						Y = y * Const.CELL_SIZE,
 					};
 					Game.AddEntity(player, EntityLayer.Character);
 					SetDebugMode(false);

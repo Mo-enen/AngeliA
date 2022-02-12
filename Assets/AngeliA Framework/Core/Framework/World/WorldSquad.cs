@@ -61,9 +61,11 @@ namespace AngeliaFramework {
 				BeforeWorldShift();
 				int x = viewPos.x / Const.WORLD_MAP_SIZE / Const.CELL_SIZE;
 				int y = viewPos.y / Const.WORLD_MAP_SIZE / Const.CELL_SIZE;
+				if (viewPos.x < 0) x--;
+				if (viewPos.y < 0) y--;
 				Shift(x, y);
-				//FillSquadAsync(x, y);
 				FillSquad(x, y);
+				//FillSquadAsync(x, y);
 			}
 		}
 
