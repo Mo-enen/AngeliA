@@ -99,11 +99,6 @@ namespace AngeliaFramework.Editor {
 
 
 	}
-
-
-
-
-
 }
 
 
@@ -125,10 +120,10 @@ namespace AngeliaFramework.Editor {
 
 	public class MapEditorPalettePost : AssetPostprocessor {
 		private static void OnPostprocessAllAssets (string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths) {
-			if (MapEditorWindow.Main == null) return;
+			if (MapPaletteWindow.Main == null) return;
 			foreach (var path in importedAssets) {
 				if (AssetDatabase.LoadAssetAtPath<MapPalette>(path) != null) {
-					MapEditorWindow.Main.SetNeedReloadAsset();
+					MapPaletteWindow.Main.SetNeedReloadAsset();
 					return;
 				}
 			}

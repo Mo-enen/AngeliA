@@ -84,6 +84,36 @@ namespace AngeliaFramework.Editor {
 	[CustomEditor(typeof(MapObject))]
 	[CanEditMultipleObjects]
 	public class Map_Inspector : Editor {
+
+		//private void OnEnable () {
+		//	foreach (MapObject map in targets) {
+		//		var blocks = new List<Map.Block>();
+		//		for (int i = 0; i < Const.WORLD_MAP_SIZE; i++) {
+		//			blocks.Add(new() {
+		//				TypeID = "Test Block".ACode(),
+		//				X = 0,
+		//				Y = i,
+		//				Layer = 1,
+		//				IsTrigger = false,
+		//				Tag = 0,
+		//			});
+		//			if (i != 0) {
+		//				blocks.Add(new() {
+		//					TypeID = "Test Block".ACode(),
+		//					X = i,
+		//					Y = 0,
+		//					Layer = 1,
+		//					IsTrigger = false,
+		//					Tag = 0,
+		//				});
+		//			}
+		//		}
+		//		map.Map.Blocks = blocks.ToArray();
+		//		EditorUtility.SetDirty(map);
+		//	}
+		//	AssetDatabase.SaveAssets();
+		//	AssetDatabase.Refresh();
+		//}
 		public override void OnInspectorGUI () {
 			serializedObject.Update();
 			DrawPropertiesExcluding(serializedObject, "m_Script");

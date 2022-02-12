@@ -6,7 +6,7 @@ using Moenen.Standard;
 
 
 namespace AngeliaFramework.Editor {
-	public class MapEditorWindow : EditorWindow {
+	public class MapPaletteWindow : EditorWindow {
 
 
 
@@ -21,7 +21,7 @@ namespace AngeliaFramework.Editor {
 		}
 
 		// Const
-		private const string WINDOW_TITLE = "Map Editor";
+		private const string WINDOW_TITLE = "Palette";
 		private static readonly string[] PAL_TAGS_DISPLAY = new string[] {
 			"(None)", "Water",
 		};
@@ -30,7 +30,7 @@ namespace AngeliaFramework.Editor {
 		};
 
 		// Api
-		public static MapEditorWindow Main { get; private set; } = null;
+		public static MapPaletteWindow Main { get; private set; } = null;
 		public bool Painting => CurrentTool == Tool.Paint;
 
 		// Short
@@ -67,10 +67,10 @@ namespace AngeliaFramework.Editor {
 		#region --- MSG ---
 
 
-		[MenuItem("AngeliA/Map Editor")]
+		[MenuItem("AngeliA/Map Palette")]
 		private static void OpenWindow () {
 			try {
-				var window = GetWindow<MapEditorWindow>(WINDOW_TITLE, false);
+				var window = GetWindow<MapPaletteWindow>(WINDOW_TITLE, false);
 				window.minSize = new Vector2(275, 400);
 				window.maxSize = new Vector2(600, 1000);
 				window.titleContent = EditorGUIUtility.IconContent("TerrainInspector.TerrainToolSplat");

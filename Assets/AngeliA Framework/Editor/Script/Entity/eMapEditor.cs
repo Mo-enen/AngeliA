@@ -32,6 +32,7 @@ namespace AngeliaFramework.Editor {
 		private Vector2Int? MouseRightDownPos = null;
 		private RectInt? MosueDragUnitRect = null;
 		private Vector2Int? ViewPivotPosition = null;
+		private bool FocusingGameView = false;
 
 
 		#endregion
@@ -66,8 +67,9 @@ namespace AngeliaFramework.Editor {
 
 
 		public override void FrameUpdate (int frame) {
-			if (MapEditorWindow.Main == null) return;
-			SelectingUnit = MapEditorWindow.Main.GetSelection();
+			if (MapPaletteWindow.Main == null) return;
+			SelectingUnit = MapPaletteWindow.Main.GetSelection();
+			FocusingGameView = EditorWindow.focusedWindow != null && EditorWindow.focusedWindow.GetType().Name == "GameView";
 			Update_Workflow();
 			Update_MouseLeft();
 			Update_MouseRight();
@@ -80,8 +82,10 @@ namespace AngeliaFramework.Editor {
 
 		private void Update_Workflow () {
 			bool pressingSS =
+				FocusingGameView && (
 				(FrameInput.KeyDown(GameKey.Select) && FrameInput.KeyPressing(GameKey.Start)) ||
-				(FrameInput.KeyDown(GameKey.Start) && FrameInput.KeyPressing(GameKey.Select));
+				(FrameInput.KeyDown(GameKey.Start) && FrameInput.KeyPressing(GameKey.Select))
+				);
 			if (Game.DebugMode) {
 				// Editing 
 				if (pressingSS) {
@@ -139,7 +143,7 @@ namespace AngeliaFramework.Editor {
 				CellGUI.Draw_9Slice(cursorRect.Shrink(3), Color.black, NineSliceSprites.PIXEL_FRAME_3);
 
 				// Icon
-				if (SelectingUnit != null && MapEditorWindow.Main.Painting) {
+				if (SelectingUnit != null && MapPaletteWindow.Main.Painting) {
 					CellRenderer.Draw(
 						SelectingUnit.Sprite.name.ACode(),
 						cursorRect.Fit((int)SelectingUnit.Sprite.rect.width, (int)SelectingUnit.Sprite.rect.height)
@@ -170,7 +174,7 @@ namespace AngeliaFramework.Editor {
 
 		private void Update_MouseLeft () {
 
-			if (!Game.DebugMode) return;
+			if (!Game.DebugMode || !FocusingGameView) return;
 
 			if (FrameInput.MouseLeft) {
 				var mouseUnitPos = new Vector2Int(
@@ -192,7 +196,7 @@ namespace AngeliaFramework.Editor {
 				}
 			} else if (MouseLeftDownUnitPos.HasValue) {
 				// Up
-				if (MapEditorWindow.Main.Painting) {
+				if (MapPaletteWindow.Main.Painting) {
 					if (SelectingUnit != null) {
 						// Paint
 
@@ -217,7 +221,7 @@ namespace AngeliaFramework.Editor {
 
 
 		private void Update_MouseRight () {
-			if (!Game.DebugMode) return;
+			if (!Game.DebugMode || !FocusingGameView) return;
 			// Right Drag/Click
 			if (FrameInput.MouseRight) {
 				var mouseScreenPos = FrameInput.MousePosition;
@@ -266,7 +270,7 @@ namespace AngeliaFramework.Editor {
 
 
 		private void Update_MouseMid () {
-			if (!Game.DebugMode) return;
+			if (!Game.DebugMode || !FocusingGameView) return;
 
 			// Zoom
 			int deltaY = -Input.mouseScrollDelta.y.RoundToInt();
@@ -285,7 +289,7 @@ namespace AngeliaFramework.Editor {
 
 
 		private void Update_Key () {
-			if (!Game.DebugMode) return;
+			if (!Game.DebugMode || !FocusingGameView) return;
 			bool control = Input.GetKey(KeyCode.LeftControl);
 			// Shift
 			if (!control) {
