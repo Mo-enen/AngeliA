@@ -52,7 +52,10 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void OnEnable () => Main = this;
+		private void OnEnable () {
+			Main = this;
+			wantsMouseMove = false;
+		}
 
 
 		private void OnGUI () {
@@ -108,19 +111,15 @@ namespace AngeliaFramework.Editor {
 			Layout.Space(6);
 			using (new GUILayout.HorizontalScope()) {
 				Layout.Space(6);
-				ContentRect = Layout.Rect(0, 0).Fit((float)(MapPositionMax.x - MapPositionMin.x) / (MapPositionMax.y - MapPositionMin.y));
+				ContentRect = Layout.Rect(0, 0).Fit((float)(MapPositionMax.x - MapPositionMin.x + 1) / (MapPositionMax.y - MapPositionMin.y + 1));
 				var normalColor = new Color32(96, 96, 96, 255);
-				var dotSize = new Vector2(
-					ContentRect.width / (MapPositionMax.x - MapPositionMin.x + 1),
-					ContentRect.height / (MapPositionMax.y - MapPositionMin.y + 1)
-				);
+				float dotSize = ContentRect.width / (MapPositionMax.x - MapPositionMin.x + 1);
 				foreach (var pos in MapPositions) {
 					EditorGUI.DrawRect(new Rect(
-						ContentRect.x + (pos.x - MapPositionMin.x) * dotSize.x,
-						ContentRect.y + (MapPositionMax.y - (pos.y - MapPositionMin.y) + 1) * dotSize.y,
-						dotSize.x,
-						dotSize.y
-					).Shrink(1), normalColor);
+						ContentRect.x + (pos.x - MapPositionMin.x) * dotSize,
+						ContentRect.y + (MapPositionMax.y - (pos.y - MapPositionMin.y) + 1) * dotSize,
+						dotSize, dotSize
+					).Shrink(dotSize > 3 ? 1 : 0), normalColor);
 				}
 				Layout.Space(6);
 			}
@@ -159,11 +158,26 @@ namespace AngeliaFramework.Editor {
 				viewContentSizeX, viewContentSizeY
 			), 1f, Color.white);
 
-
 			// Mosue Logic
-
-
-
+			if ((Event.current.type == EventType.MouseDrag || Event.current.type == EventType.MouseDown) && Event.current.button == 0) {
+				var viewSize = Game.ViewRect.size;
+				var mousePos = Event.current.mousePosition;
+				var mousePos01 = new Vector2(
+					Mathf.InverseLerp(ContentRect.xMin, ContentRect.xMax, mousePos.x).Clamp01(),
+					Mathf.InverseLerp(ContentRect.yMax, ContentRect.yMin, mousePos.y).Clamp01()
+				);
+				int viewX = (int)(Mathf.LerpUnclamped(
+					MapPositionMin.x * Const.WORLD_MAP_SIZE * Const.CELL_SIZE,
+					(MapPositionMax.x + 1) * Const.WORLD_MAP_SIZE * Const.CELL_SIZE,
+					mousePos01.x
+				) - viewSize.x / 2f);
+				int viewY = (int)(Mathf.LerpUnclamped(
+					MapPositionMin.y * Const.WORLD_MAP_SIZE * Const.CELL_SIZE,
+					(MapPositionMax.y + 1) * Const.WORLD_MAP_SIZE * Const.CELL_SIZE,
+					mousePos01.y
+				) - viewSize.y / 2f);
+				Game.SetViewPositionDely(viewX, viewY, 300);
+			}
 
 		}
 
