@@ -12,6 +12,7 @@ namespace AngeliaFramework {
 
 		// Api
 		public override bool Despawnable => false;
+		public override EntityLayer Layer => EntityLayer.UI;
 
 		// Data
 		private string Message = "";

@@ -45,7 +45,7 @@ namespace AngeliaFramework {
 		private readonly Dictionary<int, EntityHandler> EntityHandlerPool = new();
 		private readonly Dictionary<int, ScriptableObject> AssetPool = new();
 		private readonly Stack<Object> UnloadAssetStack = new();
-		private readonly HashSet<int> StagedEntityHash = new();
+		private readonly HashSet<long> StagedEntityHash = new();
 		private readonly Dictionary<int, Color32> MinimapColorPool = new();
 		private readonly Entity[][] Entities = new Entity[Const.ENTITY_LAYER_COUNT][];
 		private readonly int[] EntityLength = new int[Const.ENTITY_LAYER_COUNT];
@@ -144,7 +144,7 @@ namespace AngeliaFramework {
 
 			// ID Map
 			foreach (var eType in typeof(Entity).GetAllChildClass()) {
-				int id = eType.FullName.ACode();
+				int id = eType.ACode();
 				var handler = CreateEntityHandler(eType);
 				if (handler != null && !EntityHandlerPool.ContainsKey(id)) {
 					EntityHandlerPool.Add(id, handler);
@@ -336,29 +336,33 @@ namespace AngeliaFramework {
 				);
 
 				// BG
-				foreach (var (rect, block) in WorldSquad.ForAllBlocksInside(spawnUnitRect, BlockLayer.Background)) {
+				var rect = new RectInt(0, 0, Const.CELL_SIZE, Const.CELL_SIZE);
+				foreach (var (block, x, y, _) in WorldSquad.ForAllBlocksInside(spawnUnitRect, BlockLayer.Background)) {
+					rect.x = x;
+					rect.y = y;
 					CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 255));
 				}
 
 				// Level
-				foreach (var (rect, block) in WorldSquad.ForAllBlocksInside(spawnUnitRect.Expand(Const.BLOCK_SPAWN_PADDING), BlockLayer.Level)) {
+				foreach (var (block, x, y, _) in WorldSquad.ForAllBlocksInside(spawnUnitRect.Expand(Const.BLOCK_SPAWN_PADDING), BlockLayer.Level)) {
+					rect.x = x;
+					rect.y = y;
 					CellPhysics.FillBlock(PhysicsLayer.Level, rect, block.IsTrigger, block.Tag);
 					CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 255));
 				}
 
 				// Entities
-				foreach (var (entity, globalX, globalY, layer) in WorldSquad.ForAllEntitiesInsideAllLayers(spawnUnitRect)) {
+				foreach (var (entity, globalX, globalY) in WorldSquad.ForAllEntitiesInside(spawnUnitRect)) {
 					if (!EntityHandlerPool.ContainsKey(entity.TypeID)) continue;
 					int unitX = globalX / Const.CELL_SIZE;
 					int unitY = globalY / Const.CELL_SIZE;
 					if (LoadedUnitRect.Contains(unitX, unitY)) continue;
 					if (!spawnUnitRect.Contains(unitX, unitY)) continue;
-					if (StagedEntityHash.Contains(entity.InstanceID)) continue;
 					var e = EntityHandlerPool[entity.TypeID].Invoke();
 					e.InstanceID = entity.InstanceID;
 					e.X = globalX;
 					e.Y = globalY;
-					AddEntity(e, layer);
+					AddEntity(e);
 				}
 
 				LoadedUnitRect = spawnUnitRect;
@@ -478,9 +482,15 @@ namespace AngeliaFramework {
 
 
 		// Entity
-		public void AddEntity (Entity entity, EntityLayer layer) {
-			var entities = Entities[(int)layer];
-			ref int len = ref EntityLength[(int)layer];
+		public void AddEntity (Entity entity) {
+			if (entity.InstanceID == 0) {
+				entity.InstanceID = Entity.NewDynamicInstanceID();
+			}
+			if (StagedEntityHash.Contains(entity.InstanceID)) return;
+			StagedEntityHash.Add(entity.InstanceID);
+			int layer = (int)entity.Layer;
+			var entities = Entities[layer];
+			ref int len = ref EntityLength[layer];
 			if (len < entities.Length) {
 				entities[len] = entity;
 				len++;

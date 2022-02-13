@@ -12,7 +12,7 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
-		public delegate void EntityLayerHandler (Entity entity, EntityLayer layer);
+		public delegate void EntityLayerHandler (Entity entity);
 		public delegate ScriptableObject ScriptableObjectIntHandler (int value);
 
 
@@ -43,15 +43,16 @@ namespace AngeliaFramework {
 		}
 
 		public bool Active { get; set; } = true;
-		public int InstanceID { get; set; } = 0;
+		public long InstanceID { get; set; } = 0;
 		public virtual bool Despawnable { get; } = true;
+		public abstract EntityLayer Layer { get; }
 		public virtual int X { get; set; } = 0;
 		public virtual int Y { get; set; } = 0;
 		public virtual int Width { get; set; } = Const.CELL_SIZE;
 		public virtual int Height { get; set; } = Const.CELL_SIZE;
 
 		// Data
-		private static int CurrentDynamicInstanceID = 0;
+		private static long CurrentDynamicInstanceID = 0;
 		private RectInt _Rect = new();
 
 
@@ -70,7 +71,7 @@ namespace AngeliaFramework {
 		public virtual void OnDespawn (int frame) { }
 
 
-		public static int NewDynamicInstanceID () {
+		public static long NewDynamicInstanceID () {
 			CurrentDynamicInstanceID--;
 			return CurrentDynamicInstanceID;
 		}

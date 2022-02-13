@@ -13,6 +13,7 @@ namespace AngeliaFramework {
 
 
 		// Api
+		public override EntityLayer Layer => EntityLayer.Character;
 		public override int PushLevel => 100;
 		public override bool CarryRigidbodyOnTop => false;
 		public abstract CharacterMovement Movement { get; }

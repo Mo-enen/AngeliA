@@ -72,7 +72,6 @@ namespace AngeliaFramework.Editor {
 
 		private void OnGUI () {
 			Main = this;
-			GUI_Toolbar();
 			GUI_Maps();
 			GUI_View();
 			GUI_Misc();
@@ -88,25 +87,6 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void GUI_Toolbar () {
-			using (new GUILayout.HorizontalScope(EditorStyles.toolbar)) {
-				const int HEIGHT = 20;
-				if (EditorApplication.isPlaying) {
-					_GlobalMode.Value = GUI.Toggle(
-						Layout.Rect(24, HEIGHT),
-						_GlobalMode.Value,
-						_GlobalMode.Value ? GlobalContent : LocalContent,
-						EditorStyles.toolbarButton
-					);
-				}
-
-
-
-				Layout.Rect(0, HEIGHT);
-			}
-		}
-
-
 		private void GUI_Maps () {
 			// Get Maps
 			if (MapPositions.Count == 0) {
@@ -115,14 +95,12 @@ namespace AngeliaFramework.Editor {
 				foreach (var file in Util.GetFilesIn(Util.CombinePaths(Application.dataPath, "Resources", "Map"), true, "*.asset")) {
 					try {
 						string name = Util.GetNameWithoutExtension(file.Name);
-						int dIndex = name.IndexOf('_');
-						var pos = new Vector2Int(
-							int.Parse(name[..dIndex]),
-							int.Parse(name[(dIndex + 1)..])
-						);
-						MapPositions.Add(pos);
-						MapPositionMin = Vector2Int.Min(MapPositionMin, pos);
-						MapPositionMax = Vector2Int.Max(MapPositionMax, pos);
+						var pos = MapObject.GetPositionFromName(name);
+						if (pos.HasValue) {
+							MapPositions.Add(pos.Value);
+							MapPositionMin = Vector2Int.Min(MapPositionMin, pos.Value);
+							MapPositionMax = Vector2Int.Max(MapPositionMax, pos.Value);
+						}
 					} catch (System.Exception ex) { Debug.LogException(ex); }
 				}
 			}
@@ -133,18 +111,24 @@ namespace AngeliaFramework.Editor {
 				ContentRect = Layout.Rect(0, 0).Fit((float)(MapPositionMax.x - MapPositionMin.x + 1) / (MapPositionMax.y - MapPositionMin.y + 1));
 				GUI.Box(ContentRect, GUIContent.none);
 				if (GlobalMode) {
-					// Draw All Maps
-					var normalColor = new Color32(96, 96, 96, 255);
+					// Global
+					var filledColor = new Color32(64, 128, 96, 255);
+					var unFilledColor = new Color32(96, 96, 96, 255);
 					float dotSize = ContentRect.width / (MapPositionMax.x - MapPositionMin.x + 1);
+					var filledRect = EditorApplication.isPlaying ? new RectInt(
+						(Game.WorldSquad.Worlds[1, 1].FilledPosition - Vector2Int.one) * Const.WORLD_MAP_SIZE * Const.CELL_SIZE,
+						Vector2Int.one * 3 * Const.WORLD_MAP_SIZE * Const.CELL_SIZE
+					) : default;
 					foreach (var pos in MapPositions) {
+						bool filled = filledRect.width > 0 && filledRect.Contains(pos * Const.WORLD_MAP_SIZE * Const.CELL_SIZE);
 						EditorGUI.DrawRect(new Rect(
 							ContentRect.x + (pos.x - MapPositionMin.x) * dotSize,
 							ContentRect.y + (MapPositionMax.y - (pos.y - MapPositionMin.y) + 1) * dotSize,
 							dotSize, dotSize
-						).Shrink(dotSize > 3 ? 1 : 0), normalColor);
+						).Shrink(dotSize > 3 ? 1 : 0), filled ? filledColor : unFilledColor);
 					}
 				} else {
-					// Draw Local Zone
+					// Local
 					var zoneCenter = (Game.ViewRect.center / Const.CELL_SIZE).RoundToInt();
 					var zoneUnitRect = new RectInt(
 						zoneCenter.x - Const.WORLD_MAP_SIZE / 2,
@@ -162,22 +146,22 @@ namespace AngeliaFramework.Editor {
 					);
 
 					// Blocks
-					foreach (var (bRect, block) in Game.WorldSquad.ForAllBlocksInsideAllLayers(zoneUnitRect)) {
+					foreach (var (block, x, y, _) in Game.WorldSquad.ForAllBlocksInsideAllLayers(zoneUnitRect)) {
 						rect.x = Util.Remap(
 							zoneUnitRect.x, zoneUnitRect.xMax,
 							ContentRect.xMin, ContentRect.xMax,
-							bRect.x / Const.CELL_SIZE
+							x / Const.CELL_SIZE
 						);
 						rect.y = Util.Remap(
 							zoneUnitRect.y, zoneUnitRect.yMax,
 							ContentRect.yMax, ContentRect.yMin,
-							bRect.y / Const.CELL_SIZE
+							y / Const.CELL_SIZE
 						);
 						EditorGUI.DrawRect(rect, Game.GetMinimapColor(block.TypeID, blockTint));
 					}
 
 					// Entities
-					foreach (var (entity, globalX, globalY, layer) in Game.WorldSquad.ForAllEntitiesInsideAllLayers(zoneUnitRect)) {
+					foreach (var (entity, globalX, globalY) in Game.WorldSquad.ForAllEntitiesInside(zoneUnitRect)) {
 						rect.x = Util.Remap(
 							zoneUnitRect.x, zoneUnitRect.xMax,
 							ContentRect.xMin, ContentRect.xMax,
@@ -271,7 +255,12 @@ namespace AngeliaFramework.Editor {
 				// Local
 				bool perform = false;
 				if (Event.current.button == 1) {
-					perform = GUI.RepeatButton(ContentRect, GUIContent.none, GUIStyle.none);
+					if (ContentRect.Contains(Event.current.mousePosition)) {
+						perform = GUI.RepeatButton(ContentRect, GUIContent.none, GUIStyle.none);
+						Handles.BeginGUI();
+						Handles.DrawLine(ContentRect.center, Event.current.mousePosition, 2f);
+						Handles.EndGUI();
+					}
 				}
 
 				if (Event.current.button == 0) {
@@ -327,7 +316,11 @@ namespace AngeliaFramework.Editor {
 		#region --- API ---
 
 
-		public void ClearMapPositions () => MapPositions.Clear();
+		public static void ClearMapPositions () {
+			if (Main != null) {
+				Main.MapPositions.Clear();
+			}
+		}
 
 
 		#endregion
@@ -351,15 +344,9 @@ namespace AngeliaFramework.Editor {
 
 	public class MapNavigatorPost : AssetPostprocessor {
 		private static void OnPostprocessAllAssets (string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths) {
-			if (!EditorWindow.HasOpenInstances<MapNavigator>()) return;
 			foreach (var path in importedAssets) {
 				if (AssetDatabase.LoadAssetAtPath<MapObject>(path) != null) {
-					var oldF = EditorWindow.focusedWindow;
-					var navi = EditorWindow.GetWindow<MapNavigator>();
-					if (oldF != null) {
-						EditorWindow.FocusWindowIfItsOpen(oldF.GetType());
-					}
-					navi.ClearMapPositions();
+					MapNavigator.ClearMapPositions();
 					return;
 				}
 			}

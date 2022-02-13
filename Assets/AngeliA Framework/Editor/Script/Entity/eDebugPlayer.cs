@@ -8,6 +8,7 @@ namespace AngeliaFramework.Editor {
 
 
 		public override bool Despawnable => false;
+
 		public override CharacterMovement Movement => _Movement ??= new(this) {
 			//SwimInFreeStyle = true,
 		};

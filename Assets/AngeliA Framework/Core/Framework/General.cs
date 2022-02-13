@@ -152,13 +152,17 @@ namespace AngeliaFramework {
 
 
 	public static class Const {
-		public const int CELL_SIZE = 256;
-		public const int DEFAULT_VIEW_WIDTH = 28 * CELL_SIZE;
-		public const int DEFAULT_VIEW_HEIGHT = 16 * CELL_SIZE;
+
+		public const int CELL_SIZE = 256;       // N¡ÁN Pixels per Tile
+		public const int WORLD_MAP_SIZE = 128;  // N¡ÁN Tiles per Map
+		public const int GLOBAL_SIZE = 32768;   // (-N,N)¡Á(-N,N) Maps in Total (23726566 max)
+
 		public const int BLOCK_LAYER_COUNT = 2;
 		public const int ENTITY_LAYER_COUNT = 6;
+
 		public const int PHYSICS_LAYER_COUNT = 4;
-		public const int WORLD_MAP_SIZE = 128;
+		public const int DEFAULT_VIEW_WIDTH = 28 * CELL_SIZE;
+		public const int DEFAULT_VIEW_HEIGHT = 16 * CELL_SIZE;
 		public const int BLOCK_SPAWN_PADDING = 6;
 		public const int MIN_VIEW_WIDTH = 4 * CELL_SIZE;
 		public const int MIN_VIEW_HEIGHT = 2 * CELL_SIZE;
@@ -166,8 +170,10 @@ namespace AngeliaFramework {
 		public const int MAX_VIEW_HEIGHT = 56 * CELL_SIZE;
 		public const int SPAWN_GAP = 6 * CELL_SIZE;
 		public const int DESPAWN_GAP = 6 * CELL_SIZE;
+
 		public const int WATER_SPEED_LOSE = 400;
 		public static int WATER_TAG = "Water".ACode();
+
 	}
 
 
@@ -175,6 +181,7 @@ namespace AngeliaFramework {
 
 
 		// Physics Math
+		/*
 		public static bool Intersect_SegementSegement (
 			Vector2Int a0, Vector2Int a1, Vector2Int b0, Vector2Int b1, out Vector2Int intersection
 		) {
@@ -281,7 +288,7 @@ namespace AngeliaFramework {
 
 			return interCount;
 		}
-
+		*/
 
 
 		// Extension
@@ -292,6 +299,11 @@ namespace AngeliaFramework {
 			PhysicsLayer.Character => mask.HasFlag(PhysicsMask.Character),
 			_ => throw new System.NotImplementedException(),
 		};
+
+
+		public static long GetEntityInstanceID (int mapX, int mapY, int entityIndex) =>
+			(mapY + Const.GLOBAL_SIZE) * Const.GLOBAL_SIZE * 2 + mapX + Const.GLOBAL_SIZE +
+			(entityIndex * Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE);
 
 
 	}

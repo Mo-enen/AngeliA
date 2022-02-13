@@ -9,6 +9,7 @@ namespace AngeliaFramework.Editor {
 
 		public override bool Despawnable => false;
 		public override int PushLevel => _PushLevel;
+		public override EntityLayer Layer => EntityLayer.Debug;
 
 		public int _PushLevel = 1;
 		public Color32 Color = new(255, 255, 255, 255);

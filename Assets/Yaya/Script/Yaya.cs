@@ -38,7 +38,7 @@ namespace Yaya {
 						},
 						() => { },
 						null
-					), EntityLayer.UI);
+					));
 					return false;
 				}
 			};

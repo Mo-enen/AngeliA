@@ -20,6 +20,7 @@ namespace AngeliaFramework.Editor {
 
 		// Api
 		public override bool Despawnable => false;
+		public override EntityLayer Layer => EntityLayer.Debug;
 
 		// Short
 		private static Game Game => _Game != null ? _Game : (_Game = Object.FindObjectOfType<Game>());
@@ -98,7 +99,7 @@ namespace AngeliaFramework.Editor {
 						X = x * Const.CELL_SIZE + Const.CELL_SIZE / 2,
 						Y = y * Const.CELL_SIZE,
 					};
-					Game.AddEntity(player, EntityLayer.Character);
+					Game.AddEntity(player);
 					SetDebugMode(false);
 				}
 			} else {
@@ -325,6 +326,9 @@ namespace AngeliaFramework.Editor {
 			Game.DebugMode = on;
 			Util.SetFieldValue(Game, "LoadedUnitRect", new RectInt());
 			UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+			if (!on) {
+				Game.WorldSquad.ForceRefill();
+			}
 		}
 
 

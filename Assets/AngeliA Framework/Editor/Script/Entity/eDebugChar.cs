@@ -6,6 +6,8 @@ using UnityEngine;
 namespace AngeliaFramework.Editor {
 	public class eDebugChar : Entity {
 
+		public override EntityLayer Layer => EntityLayer.Debug;
+
 		public int CharSize = 256;
 		public int CharSpace = 8;
 		public int LineSpace = 8;

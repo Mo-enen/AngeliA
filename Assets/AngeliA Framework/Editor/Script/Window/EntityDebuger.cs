@@ -444,7 +444,7 @@ namespace AngeliaFramework.Editor {
 				// ID Map
 				var typePool = new Dictionary<int, System.Type>();
 				foreach (var eType in typeof(Entity).GetAllChildClass()) {
-					int id = eType.FullName.ACode();
+					int id = eType.ACode();
 					if (!typePool.ContainsKey(id)) {
 						typePool.Add(id, eType);
 					}
@@ -495,24 +495,23 @@ namespace AngeliaFramework.Editor {
 					}
 					var _params = line.Replace(" ", "").Split(',');
 					if (
-						_params != null && _params.Length >= 2 &&
-						System.Enum.TryParse(_params[1], true, out EntityLayer layer)
+						_params != null && _params.Length >= 1
 					) {
 						// X
 						int x = 0;
-						if (_params.Length >= 3) {
-							int.TryParse(_params[2], out x);
+						if (_params.Length >= 2) {
+							int.TryParse(_params[1], out x);
 						}
 						// Y
 						int y = 0;
-						if (_params.Length >= 4) {
-							int.TryParse(_params[3], out y);
+						if (_params.Length >= 3) {
+							int.TryParse(_params[2], out y);
 						}
 						// Final
 						var type = typePool.SingleOrDefault((pair) => pair.Value.Name == _params[0]).Value;
 						if (type != null) {
 							var e = System.Activator.CreateInstance(type) as Entity;
-							Game.AddEntity(e, layer);
+							Game.AddEntity(e);
 							e.X = x;
 							e.Y = y;
 							prevEntity = e;

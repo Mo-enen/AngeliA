@@ -108,7 +108,7 @@ namespace AngeliaFramework.Editor {
 		private void Update () {
 			if (EditorApplication.isPlaying) {
 				if (Game != null && Game.GlobalFrame != LastSpawnEditorEntityFrame && Game.FindEntityOfType<eMapEditor>(EntityLayer.Debug) == null) {
-					Game.AddEntity(new eMapEditor(), EntityLayer.Debug);
+					Game.AddEntity(new eMapEditor());
 					LastSpawnEditorEntityFrame = Game.GlobalFrame;
 				}
 			}
@@ -123,9 +123,7 @@ namespace AngeliaFramework.Editor {
 			if (Main != this) Main = this;
 			bool oldE = GUI.enabled;
 			GUI.enabled = !EditorApplication.isPlaying || (Game != null && Game.DebugMode);
-			if (EditorApplication.isPlaying) {
-				GUI_Toolbar();
-			}
+			GUI_Toolbar();
 			GUI_Inspector();
 			GUI_Palette();
 			GUI_Misc();
@@ -140,8 +138,8 @@ namespace AngeliaFramework.Editor {
 
 		private void GUI_Toolbar () {
 			// Tools
-			Layout.Space(10);
-			using (new GUILayout.HorizontalScope()) {
+			GUI.Box(Layout.Rect(0, 10), GUIContent.none, Layout.BoxMarginless);
+			using (new GUILayout.HorizontalScope(Layout.BoxMarginless)) {
 				const int WIDTH = 28;
 				const int HEIGHT = 28;
 				Layout.Space(6);
@@ -230,7 +228,7 @@ namespace AngeliaFramework.Editor {
 			bool mouseDown = Event.current.type == EventType.MouseDown;
 			int clickPal = -1;
 			int clickItem = -1;
-			bool enable = GUI.enabled && CurrentTool == Tool.Paint;
+			bool enable = !EditorApplication.isPlaying || (GUI.enabled && CurrentTool == Tool.Paint);
 			// Remove Null
 			for (int i = 0; i < Palettes.Count; i++) {
 				if (Palettes[i] == null) {
@@ -292,7 +290,6 @@ namespace AngeliaFramework.Editor {
 						}
 						Layout.Space(ITEM_GAP);
 					}
-					GUI.enabled = oldE;
 					// Add Button
 					if (count == 0) {
 						if (GUI.Button(Layout.Rect(96, 18).Shrink(24, 0, 0, 0), "New Block", EditorStyles.linkLabel)) {
@@ -311,6 +308,7 @@ namespace AngeliaFramework.Editor {
 						EditorGUIUtility.AddCursorRect(Layout.LastRect().Shrink(24, 0, 0, 0), MouseCursor.Link);
 						Layout.Space(2);
 					}
+					GUI.enabled = oldE;
 				}
 				Layout.Space(2);
 				if (pal.Opening != opening) {

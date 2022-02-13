@@ -26,11 +26,11 @@ namespace AngeliaFramework {
 
 
 		public struct Entity {
-			public int InstanceID;
+			public long InstanceID;
 			public int TypeID;
-			public void SetValues (int instanceID, int typeID) {
-				TypeID = typeID;
+			public void SetValues (long instanceID, int typeID) {
 				InstanceID = instanceID;
+				TypeID = typeID;
 			}
 		}
 
@@ -59,7 +59,7 @@ namespace AngeliaFramework {
 			Const.WORLD_MAP_SIZE
 		);
 		public Block[,,] Blocks { get; set; } = null;
-		public Entity[,,] Entities { get; set; } = null;
+		public Entity[,] Entities { get; set; } = null;
 		public Vector2Int FilledPosition { get; private set; } = default;
 		public bool IsFilling { get; private set; } = false;
 
@@ -81,7 +81,7 @@ namespace AngeliaFramework {
 
 		public WorldData () {
 			Blocks = new Block[Const.WORLD_MAP_SIZE, Const.WORLD_MAP_SIZE, Const.BLOCK_LAYER_COUNT];
-			Entities = new Entity[Const.WORLD_MAP_SIZE, Const.WORLD_MAP_SIZE, Const.ENTITY_LAYER_COUNT];
+			Entities = new Entity[Const.WORLD_MAP_SIZE, Const.WORLD_MAP_SIZE];
 			FilledPosition = new(int.MinValue, int.MinValue);
 		}
 
@@ -138,15 +138,15 @@ namespace AngeliaFramework {
 					// Entities
 					int eWidth = Entities.GetLength(0);
 					int eHeight = Entities.GetLength(1);
-					int eDepth = Entities.GetLength(2);
-					foreach (var entity in source.Map.Entities) {
+					for (int i = 0; i < source.Map.Entities.Length; i++) {
+						var entity = source.Map.Entities[i];
 						if (
 							entity.X < 0 || entity.X >= eWidth ||
-							entity.Y < 0 || entity.Y >= eHeight ||
-							entity.Layer < 0 || entity.Layer >= eDepth
+							entity.Y < 0 || entity.Y >= eHeight
 						) continue;
-						Entities[entity.X, entity.Y, entity.Layer].SetValues(
-							entity.InstanceID, entity.TypeID
+						Entities[entity.X, entity.Y].SetValues(
+							AUtil.GetEntityInstanceID(pos.x, pos.y, i),
+							entity.TypeID
 						);
 					}
 				}
@@ -179,15 +179,11 @@ namespace AngeliaFramework {
 			mapObject.Map.Blocks = blocks.ToArray();
 			// Entities
 			var entities = new List<Map.Entity>();
-			for (int layer = 0; layer < Const.ENTITY_LAYER_COUNT; layer++) {
-				for (int y = 0; y < Const.WORLD_MAP_SIZE; y++) {
-					for (int x = 0; x < Const.WORLD_MAP_SIZE; x++) {
-						var entity = Entities[x, y, layer];
-						if (entity.TypeID == 0) continue;
-						entities.Add(new(
-							entity.InstanceID, entity.TypeID, x, y, layer
-						));
-					}
+			for (int y = 0; y < Const.WORLD_MAP_SIZE; y++) {
+				for (int x = 0; x < Const.WORLD_MAP_SIZE; x++) {
+					var entity = Entities[x, y];
+					if (entity.TypeID == 0) continue;
+					entities.Add(new(entity.TypeID, x, y));
 				}
 			}
 			mapObject.Map.Entities = entities.ToArray();
