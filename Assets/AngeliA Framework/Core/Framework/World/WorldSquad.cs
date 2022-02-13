@@ -70,6 +70,76 @@ namespace AngeliaFramework {
 		}
 
 
+		public IEnumerable<(RectInt, WorldData.Block)> ForAllBlocksInsideAllLayers (RectInt globalUnitRect) {
+			for (int layer = 0; layer < Const.BLOCK_LAYER_COUNT; layer++) {
+				foreach (var pair in ForAllBlocksInside(globalUnitRect, (BlockLayer)layer)) {
+					yield return pair;
+				}
+			}
+		}
+
+
+		public IEnumerable<(RectInt, WorldData.Block)> ForAllBlocksInside (RectInt globalUnitRect, BlockLayer layer) {
+			int layerIndex = (int)layer;
+			for (int worldI = 0; worldI <= 2; worldI++) {
+				for (int worldJ = 0; worldJ <= 2; worldJ++) {
+					var world = Worlds[worldI, worldJ];
+					if (world.IsFilling) continue;
+					var worldUnitRect = world.FilledUnitRect;
+					if (!worldUnitRect.Overlaps(globalUnitRect)) continue;
+					int unitL = Mathf.Max(globalUnitRect.x, worldUnitRect.x);
+					int unitR = Mathf.Min(globalUnitRect.xMax, worldUnitRect.xMax);
+					int unitD = Mathf.Max(globalUnitRect.y, worldUnitRect.y);
+					int unitU = Mathf.Min(globalUnitRect.yMax, worldUnitRect.yMax);
+					for (int j = unitD; j < unitU; j++) {
+						for (int i = unitL; i < unitR; i++) {
+							var block = world.Blocks[i - worldUnitRect.x, j - worldUnitRect.y, layerIndex];
+							if (block.TypeID == 0) continue;
+							var rect = new RectInt(
+								i * Const.CELL_SIZE, j * Const.CELL_SIZE,
+								Const.CELL_SIZE, Const.CELL_SIZE
+							);
+							yield return (rect, block);
+						}
+					}
+				}
+			}
+		}
+
+
+		public IEnumerable<(WorldData.Entity entity, int globalX, int globalY, EntityLayer layer)> ForAllEntitiesInsideAllLayers (RectInt globalUnitRect) {
+			for (int layer = 0; layer < Const.ENTITY_LAYER_COUNT; layer++) {
+				foreach (var entity in ForAllEntitiesInside(globalUnitRect, (EntityLayer)layer)) {
+					yield return entity;
+				}
+			}
+		}
+
+
+		public IEnumerable<(WorldData.Entity entity, int globalX, int globalY, EntityLayer layer)> ForAllEntitiesInside (RectInt globalUnitRect, EntityLayer layer) {
+			int layerIndex = (int)layer;
+			for (int worldI = 0; worldI <= 2; worldI++) {
+				for (int worldJ = 0; worldJ <= 2; worldJ++) {
+					var world = Worlds[worldI, worldJ];
+					if (world.IsFilling) continue;
+					var worldUnitRect = world.FilledUnitRect;
+					if (!worldUnitRect.Overlaps(globalUnitRect)) continue;
+					int unitL = Mathf.Max(globalUnitRect.x, worldUnitRect.x);
+					int unitR = Mathf.Min(globalUnitRect.xMax, worldUnitRect.xMax);
+					int unitD = Mathf.Max(globalUnitRect.y, worldUnitRect.y);
+					int unitU = Mathf.Min(globalUnitRect.yMax, worldUnitRect.yMax);
+					for (int j = unitD; j < unitU; j++) {
+						for (int i = unitL; i < unitR; i++) {
+							var entity = world.Entities[i - worldUnitRect.x, j - worldUnitRect.y, layerIndex];
+							if (entity.TypeID == 0) continue;
+							yield return (entity, i * Const.CELL_SIZE, j * Const.CELL_SIZE, layer);
+						}
+					}
+				}
+			}
+		}
+
+
 		#endregion
 
 

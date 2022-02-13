@@ -46,8 +46,9 @@ namespace AngeliaFramework {
 		private readonly Dictionary<int, ScriptableObject> AssetPool = new();
 		private readonly Stack<Object> UnloadAssetStack = new();
 		private readonly HashSet<int> StagedEntityHash = new();
-		private Entity[][] Entities = null;
-		private (Entity[] entity, int length)[] EntityBuffers = null;
+		private readonly Dictionary<int, Color32> MinimapColorPool = new();
+		private readonly Entity[][] Entities = new Entity[Const.ENTITY_LAYER_COUNT][];
+		private readonly int[] EntityLength = new int[Const.ENTITY_LAYER_COUNT];
 		private RectInt LoadedUnitRect = default;
 		private RectInt SpawnRect = default;
 		private RectInt DespawnRect = default;
@@ -136,11 +137,9 @@ namespace AngeliaFramework {
 			GlobalFrame = 0;
 
 			// Entity
-			Entities = new Entity[Const.ENTITY_LAYER_COUNT][];
-			EntityBuffers = new (Entity[], int)[Const.ENTITY_LAYER_COUNT];
 			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
 				Entities[layerIndex] = new Entity[ENTITY_CAPACITY[layerIndex]];
-				EntityBuffers[layerIndex] = (new Entity[ENTITY_BUFFER_CAPACITY[layerIndex]], 0);
+				EntityLength[layerIndex] = 0;
 			}
 
 			// ID Map
@@ -275,6 +274,13 @@ namespace AngeliaFramework {
 			foreach (var asset in m_Data.Assets) {
 				AssetPool.TryAdd(asset.name.ACode(), asset);
 			}
+			// Minimap
+			foreach (var block in m_Data.MiniMap.Blocks) {
+				MinimapColorPool.TryAdd(block.Name.ACode(), block.Color);
+			}
+			foreach (var entity in m_Data.MiniMap.Entities) {
+				MinimapColorPool.TryAdd(entity.TypeFullName.ACode(), entity.Color);
+			}
 		}
 
 
@@ -317,11 +323,6 @@ namespace AngeliaFramework {
 
 		private void FrameUpdate_World () {
 
-			int bgLayerIndex = (int)BlockLayer.Background;
-			int levelLayerIndex = (int)BlockLayer.Level;
-
-			int TestI, TestJ;
-
 			// World Squad
 			WorldSquad.FrameUpdate(SpawnRect.CenterInt());
 
@@ -333,83 +334,36 @@ namespace AngeliaFramework {
 					SpawnRect.width / Const.CELL_SIZE,
 					SpawnRect.height / Const.CELL_SIZE
 				);
-				for (int worldI = 0; worldI <= 2; worldI++) {
-					for (int worldJ = 0; worldJ <= 2; worldJ++) {
-						TestI = worldI;
-						TestJ = worldJ;
-						TrySpawnAllUnits(WorldSquad.Worlds[worldI, worldJ]);
-					}
-				}
-				LoadedUnitRect = spawnUnitRect;
-			}
 
-			// Func
-			void TrySpawnAllUnits (WorldData world) {
-				if (world.IsFilling) return;
-				var worldUnitRect = world.FilledUnitRect;
-				if (!worldUnitRect.Overlaps(spawnUnitRect)) return;
-				int unitL = Mathf.Max(spawnUnitRect.x, worldUnitRect.x);
-				int unitR = Mathf.Min(spawnUnitRect.xMax, worldUnitRect.xMax);
-				int unitD = Mathf.Max(spawnUnitRect.y, worldUnitRect.y);
-				int unitU = Mathf.Min(spawnUnitRect.yMax, worldUnitRect.yMax);
-				// Spawn BG/Entities for World
-				for (int j = unitD; j < unitU; j++) {
-					for (int i = unitL; i < unitR; i++) {
-						TrySpawnBlocksForBackground(world, i - worldUnitRect.x, j - worldUnitRect.y, i, j);
-						TrySpawnEntitiesForAllLayers(world, spawnUnitRect, i - worldUnitRect.x, j - worldUnitRect.y, i, j);
-					}
+				// BG
+				foreach (var (rect, block) in WorldSquad.ForAllBlocksInside(spawnUnitRect, BlockLayer.Background)) {
+					CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 255));
 				}
-				// Spawn Level Blocks for World
-				unitL = Mathf.Max(unitL - Const.BLOCK_SPAWN_PADDING, worldUnitRect.x);
-				unitR = Mathf.Min(unitR + Const.BLOCK_SPAWN_PADDING, worldUnitRect.xMax);
-				unitD = Mathf.Max(unitD - Const.BLOCK_SPAWN_PADDING, worldUnitRect.y);
-				unitU = Mathf.Min(unitU + Const.BLOCK_SPAWN_PADDING, worldUnitRect.yMax);
-				for (int j = unitD; j < unitU; j++) {
-					for (int i = unitL; i < unitR; i++) {
-						TrySpawnBlocksForLevel(world, i - worldUnitRect.x, j - worldUnitRect.y, i, j);
-					}
-				}
-			}
-			void TrySpawnBlocksForBackground (WorldData world, int localX, int localY, int globalUnitX, int globalUnitY) {
-				var block = world.Blocks[localX, localY, bgLayerIndex];
-				if (block.TypeID == 0) return;
-				var rect = new RectInt(
-					globalUnitX * Const.CELL_SIZE, globalUnitY * Const.CELL_SIZE,
-					Const.CELL_SIZE, Const.CELL_SIZE
-				);
-				// Physics
-				if (bgLayerIndex != (int)BlockLayer.Background) {
+
+				// Level
+				foreach (var (rect, block) in WorldSquad.ForAllBlocksInside(spawnUnitRect.Expand(Const.BLOCK_SPAWN_PADDING), BlockLayer.Level)) {
 					CellPhysics.FillBlock(PhysicsLayer.Level, rect, block.IsTrigger, block.Tag);
+					CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 255));
 				}
-				// Draw
-				CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 128));
-			}
-			void TrySpawnBlocksForLevel (WorldData world, int localX, int localY, int globalUnitX, int globalUnitY) {
-				var block = world.Blocks[localX, localY, levelLayerIndex];
-				if (block.TypeID == 0) return;
-				var rect = new RectInt(
-					globalUnitX * Const.CELL_SIZE, globalUnitY * Const.CELL_SIZE,
-					Const.CELL_SIZE, Const.CELL_SIZE
-				);
-				// Physics
-				CellPhysics.FillBlock(PhysicsLayer.Level, rect, block.IsTrigger, block.Tag);
-				// Draw
-				CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 255));
-			}
-			void TrySpawnEntitiesForAllLayers (WorldData world, RectInt spawnUnitRect, int localX, int localY, int globalUnitX, int globalUnitY) {
-				for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
-					var entity = world.Entities[localX, localY, layerIndex];
-					if (entity.TypeID == 0 || !EntityHandlerPool.ContainsKey(entity.TypeID)) continue;
-					if (LoadedUnitRect.Contains(globalUnitX, globalUnitY)) continue;
-					if (!spawnUnitRect.Contains(globalUnitX, globalUnitY)) continue;
+
+				// Entities
+				foreach (var (entity, globalX, globalY, layer) in WorldSquad.ForAllEntitiesInsideAllLayers(spawnUnitRect)) {
+					if (!EntityHandlerPool.ContainsKey(entity.TypeID)) continue;
+					int unitX = globalX / Const.CELL_SIZE;
+					int unitY = globalY / Const.CELL_SIZE;
+					if (LoadedUnitRect.Contains(unitX, unitY)) continue;
+					if (!spawnUnitRect.Contains(unitX, unitY)) continue;
 					if (StagedEntityHash.Contains(entity.InstanceID)) continue;
 					var e = EntityHandlerPool[entity.TypeID].Invoke();
 					e.InstanceID = entity.InstanceID;
-					e.X = globalUnitX * Const.CELL_SIZE;
-					e.Y = globalUnitY * Const.CELL_SIZE;
-					AddEntity(e, (EntityLayer)layerIndex);
+					e.X = globalX;
+					e.Y = globalY;
+					AddEntity(e, layer);
 				}
+
+				LoadedUnitRect = spawnUnitRect;
 			}
+
 		}
 
 
@@ -428,10 +382,9 @@ namespace AngeliaFramework {
 			// Remove Inactive and Outside Spawnrect
 			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
 				var entities = Entities[layerIndex];
-				int len = entities.Length;
-				for (int i = 0; i < len; i++) {
+				ref int eLen = ref EntityLength[layerIndex];
+				for (int i = 0; i < eLen; i++) {
 					var entity = entities[i];
-					if (entity == null) { continue; }
 					if (
 #if UNITY_EDITOR
 						(DebugMode && layerIndex != (int)EntityLayer.Debug) ||
@@ -439,80 +392,43 @@ namespace AngeliaFramework {
 						!entity.Active ||
 						(entity.Despawnable && !DespawnRect.Contains(entity.X, entity.Y))
 					) {
+						changed = true;
 						entity.OnDespawn(GlobalFrame);
 						StagedEntityHash.Remove(entity.InstanceID);
-						entities[i] = null;
-						changed = true;
-					}
-				}
-			}
-
-			// Add New Entities
-			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
-				if (ENTITY_BUFFER_CAPACITY[layerIndex] <= 0) { continue; }
-				var entities = Entities[layerIndex];
-				var (buffers, bufferLen) = EntityBuffers[layerIndex];
-				int entityLen = ENTITY_CAPACITY[layerIndex];
-				int emptyIndex = 0;
-#if UNITY_EDITOR
-				if (DebugMode) {
-					EntityBuffers[layerIndex].length = 0;
-					continue;
-				}
-#endif
-				for (int i = 0; i < bufferLen; i++) {
-					while (emptyIndex < entityLen && entities[emptyIndex] != null) {
-						emptyIndex++;
-					}
-					if (emptyIndex < entityLen) {
-						var e = entities[emptyIndex] = buffers[i];
-						if (e.InstanceID == 0) {
-							e.InstanceID = Entity.NewDynamicInstanceID();
+						entities[i] = entities[eLen - 1];
+						entities[eLen - 1] = null;
+						if (eLen > 0) {
+							eLen--;
+							i--;
 						}
-						StagedEntityHash.TryAdd(e.InstanceID);
-						e.OnCreate(GlobalFrame);
-						buffers[i] = null;
-						changed = true;
-					} else {
-						System.Array.Clear(buffers, 0, buffers.Length);
 					}
 				}
-				EntityBuffers[layerIndex].length = 0;
 			}
 
 			// Fill Physics
 			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
 				var entities = Entities[layerIndex];
-				int len = entities.Length;
+				int len = EntityLength[layerIndex];
 				for (int i = 0; i < len; i++) {
-					var entity = entities[i];
-					if (entity != null) {
-						entity.FillPhysics(GlobalFrame);
-					}
+					entities[i].FillPhysics(GlobalFrame);
 				}
 			}
 
 			// Physics Update
 			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
 				var entities = Entities[layerIndex];
-				int len = entities.Length;
+				int len = EntityLength[layerIndex];
 				for (int i = 0; i < len; i++) {
-					var entity = entities[i];
-					if (entity != null) {
-						entity.PhysicsUpdate(GlobalFrame);
-					}
+					entities[i].PhysicsUpdate(GlobalFrame);
 				}
 			}
 
 			// FrameUpdate
 			for (int layerIndex = 0; layerIndex < Const.ENTITY_LAYER_COUNT; layerIndex++) {
 				var entities = Entities[layerIndex];
-				int len = entities.Length;
+				int len = EntityLength[layerIndex];
 				for (int i = 0; i < len; i++) {
-					var entity = entities[i];
-					if (entity != null) {
-						entity.FrameUpdate(GlobalFrame);
-					}
+					entities[i].FrameUpdate(GlobalFrame);
 				}
 			}
 
@@ -540,43 +456,7 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public void AddEntity (Entity entity, EntityLayer layer) {
-			int layerIndex = (int)layer;
-			ref var buffer = ref EntityBuffers[layerIndex];
-			if (buffer.length < ENTITY_BUFFER_CAPACITY[layerIndex]) {
-				buffer.entity[buffer.length] = entity;
-				buffer.length++;
-			}
-#if UNITY_EDITOR
-			else {
-				Debug.LogWarning($"[Entity] Entity buffer is full. (layer:{layer} capacity:{ENTITY_BUFFER_CAPACITY[layerIndex]})");
-			}
-#endif
-		}
-
-
-		public T FindEntityOfType<T> () where T : Entity {
-			for (int i = 0; i < Const.ENTITY_LAYER_COUNT; i++) {
-				var e = FindEntityOfType<T>((EntityLayer)i);
-				if (e != null) {
-					return e;
-				}
-			}
-			return null;
-		}
-
-
-		public T FindEntityOfType<T> (EntityLayer layer) where T : Entity {
-			var entities = Entities[(int)layer];
-			foreach (var e in entities) {
-				if (e is T) {
-					return e as T;
-				}
-			}
-			return null;
-		}
-
-
+		// System
 		public bool SetLanguage (SystemLanguage language) {
 			bool success = false;
 			var lAsset = Resources.Load<Language>($"Language/{language}");
@@ -594,6 +474,41 @@ namespace AngeliaFramework {
 		public void SetFramerate (bool high) {
 			UseHighFramerate.Value = high;
 			Application.targetFrameRate = UseHighFramerate.Value ? FRAME_RATE_HIGHT : FRAME_RATE_LOW;
+		}
+
+
+		// Entity
+		public void AddEntity (Entity entity, EntityLayer layer) {
+			var entities = Entities[(int)layer];
+			ref int len = ref EntityLength[(int)layer];
+			if (len < entities.Length) {
+				entities[len] = entity;
+				len++;
+			}
+		}
+
+
+		public T FindEntityOfType<T> () where T : Entity {
+			for (int i = 0; i < Const.ENTITY_LAYER_COUNT; i++) {
+				var e = FindEntityOfType<T>((EntityLayer)i);
+				if (e != null) {
+					return e;
+				}
+			}
+			return null;
+		}
+
+
+		public T FindEntityOfType<T> (EntityLayer layer) where T : Entity {
+			var entities = Entities[(int)layer];
+			int len = EntityLength[(int)layer];
+			for (int i = 0; i < len; i++) {
+				var e = entities[i];
+				if (e is T) {
+					return e as T;
+				}
+			}
+			return null;
 		}
 
 
@@ -618,6 +533,13 @@ namespace AngeliaFramework {
 			NewViewRect = null;
 			ViewLerpRate = 1000;
 		}
+
+
+		// Minimap
+		public Color32 GetMinimapColor (int id) => GetMinimapColor(id, new Color32(255, 255, 255, 255));
+
+
+		public Color32 GetMinimapColor (int id, Color32 defaultValue) => MinimapColorPool.ContainsKey(id) ? MinimapColorPool[id] : defaultValue;
 
 
 		#endregion

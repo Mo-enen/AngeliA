@@ -279,7 +279,7 @@ namespace AngeliaFramework.Editor {
 				Entity prevE = null;
 				for (int i = 0; i < capacity; i++) {
 					var entity = entities[i];
-					if (entity == null) { continue; }
+					if (entity == null) { break; }
 
 					var rect = Layout.Rect(0, HEIGHT);
 

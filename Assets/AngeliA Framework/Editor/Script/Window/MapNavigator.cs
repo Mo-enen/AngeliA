@@ -152,57 +152,49 @@ namespace AngeliaFramework.Editor {
 						Const.WORLD_MAP_SIZE,
 						Const.WORLD_MAP_SIZE
 					);
-					const int SKIP = 1;
 					var blockTint = new Color32(96, 96, 96, 255);
-					var entityTint = new Color32(128, 128, 128, 255);
-					const int BLOCK_LAYER = (int)BlockLayer.Level;
+					var entityTint = new Color32(0, 196, 96, 255);
+
 					var rect = new Rect(
 						0, 0,
-						ContentRect.width * SKIP / zoneUnitRect.width,
-						ContentRect.height * SKIP / zoneUnitRect.height
+						ContentRect.width / zoneUnitRect.width,
+						ContentRect.height / zoneUnitRect.height
 					);
-					for (int j = 0; j <= 2; j++) {
-						for (int i = 0; i <= 2; i++) {
-							var world = Game.WorldSquad.Worlds[i, j];
-							var wUnitRect = world.FilledUnitRect;
-							if (!zoneUnitRect.Overlaps(wUnitRect)) continue;
-							int unitL = Mathf.Max(zoneUnitRect.x, wUnitRect.x);
-							int unitR = Mathf.Min(zoneUnitRect.xMax, wUnitRect.xMax);
-							int unitD = Mathf.Max(zoneUnitRect.y, wUnitRect.y);
-							int unitU = Mathf.Min(zoneUnitRect.yMax, wUnitRect.yMax);
-							for (int y = unitD; y < unitU; y += SKIP) {
-								for (int x = unitL; x < unitR; x += SKIP) {
-									int localX = x - wUnitRect.x;
-									int localY = y - wUnitRect.y;
-									localX -= localX % SKIP;
-									localY -= localY % SKIP;
-									if (
-										localX < 0 || localX >= Const.WORLD_MAP_SIZE ||
-										localY < 0 || localY >= Const.WORLD_MAP_SIZE
-									) continue;
-									var block = world.Blocks[localX, localY, BLOCK_LAYER];
-									if (block.TypeID == 0) continue;
-									rect.x = Util.Remap(
-										zoneUnitRect.x, zoneUnitRect.xMax,
-										ContentRect.xMin, ContentRect.xMax,
-										x
-									);
-									rect.y = Util.Remap(
-										zoneUnitRect.y, zoneUnitRect.yMax,
-										ContentRect.yMax, ContentRect.yMin,
-										y
-									);
-									EditorGUI.DrawRect(rect, blockTint);
-								}
-							}
-						}
+
+					// Blocks
+					foreach (var (bRect, block) in Game.WorldSquad.ForAllBlocksInsideAllLayers(zoneUnitRect)) {
+						rect.x = Util.Remap(
+							zoneUnitRect.x, zoneUnitRect.xMax,
+							ContentRect.xMin, ContentRect.xMax,
+							bRect.x / Const.CELL_SIZE
+						);
+						rect.y = Util.Remap(
+							zoneUnitRect.y, zoneUnitRect.yMax,
+							ContentRect.yMax, ContentRect.yMin,
+							bRect.y / Const.CELL_SIZE
+						);
+						EditorGUI.DrawRect(rect, Game.GetMinimapColor(block.TypeID, blockTint));
 					}
+
+					// Entities
+					foreach (var (entity, globalX, globalY, layer) in Game.WorldSquad.ForAllEntitiesInsideAllLayers(zoneUnitRect)) {
+						rect.x = Util.Remap(
+							zoneUnitRect.x, zoneUnitRect.xMax,
+							ContentRect.xMin, ContentRect.xMax,
+							(float)globalX / Const.CELL_SIZE
+						);
+						rect.y = Util.Remap(
+							zoneUnitRect.y, zoneUnitRect.yMax,
+							ContentRect.yMax, ContentRect.yMin,
+							(float)globalY / Const.CELL_SIZE
+						);
+						EditorGUI.DrawRect(rect, Game.GetMinimapColor(entity.TypeID, entityTint));
+					}
+
 				}
 				Layout.Space(6);
 			}
 			Layout.Space(6);
-
-
 
 		}
 

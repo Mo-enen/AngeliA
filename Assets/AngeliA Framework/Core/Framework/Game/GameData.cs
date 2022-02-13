@@ -12,12 +12,14 @@ namespace AngeliaFramework {
 		public AudioClip[] Musics => m_Musics;
 		public AudioClip[] Sounds => m_Sounds;
 		public ScriptableObject[] Assets => m_Assets;
+		public MinimapConfig MiniMap => m_MiniMap;
 
 		// Ser
 		[SerializeField] SpriteSheet[] m_Sheets = null;
 		[SerializeField] AudioClip[] m_Musics = null;
 		[SerializeField] AudioClip[] m_Sounds = null;
 		[SerializeField] ScriptableObject[] m_Assets = null;
+		[SerializeField] MinimapConfig m_MiniMap = null;
 
 	}
 }
