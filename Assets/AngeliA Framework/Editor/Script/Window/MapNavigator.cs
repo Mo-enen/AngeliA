@@ -319,6 +319,11 @@ namespace AngeliaFramework.Editor {
 				EditorApplication.ExecuteMenuItem("Window/General/Game");
 			}
 
+			if (Event.current.type == EventType.MouseDown && Event.current.button == 2) {
+				_GlobalMode.Value = !_GlobalMode.Value;
+				Repaint();
+			}
+
 		}
 
 
