@@ -36,8 +36,9 @@ namespace AngeliaFramework.Editor {
 			public Sprite Sprite;
 			[TypeEnum(typeof(Entity))]
 			public string TypeFullName;
-			public int Tag;
-			public bool IsTrigger;
+			public int Tag = 0;
+			public bool IsTrigger = false;
+			public BlockLayer BlockLayer = BlockLayer.Level;
 
 		}
 

@@ -37,7 +37,6 @@ namespace AngeliaFramework {
 		};
 		private WorldData[,] WorldBuffer = new WorldData[3, 3];
 		private WorldData[] WorldBufferAlt = new WorldData[9];
-		private bool NeedForceRefill = false;
 
 
 		#endregion
@@ -51,9 +50,6 @@ namespace AngeliaFramework {
 		public void Init () => FillSquad(0, 0);
 
 
-		public void ForceRefill () => NeedForceRefill = true;
-
-
 		public void FrameUpdate (Vector2Int viewPos) {
 			var midZone = new RectInt(
 				Worlds[1, 1].FilledPosition * Const.WORLD_MAP_SIZE * Const.CELL_SIZE,
@@ -61,7 +57,7 @@ namespace AngeliaFramework {
 			).Expand(
 				Const.WORLD_MAP_SIZE * Const.CELL_SIZE / 2
 			);
-			if (!midZone.Contains(viewPos) || NeedForceRefill) {
+			if (!midZone.Contains(viewPos)) {
 				BeforeWorldShift();
 				int x = viewPos.x / Const.WORLD_MAP_SIZE / Const.CELL_SIZE;
 				int y = viewPos.y / Const.WORLD_MAP_SIZE / Const.CELL_SIZE;

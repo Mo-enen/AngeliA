@@ -14,22 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Opening: 1
   m_Units:
+  - Sprite: {fileID: -276690949747384050, guid: 8875925860900204e857f0a80583ac33,
+      type: 3}
+    TypeFullName: 
+    Tag: 0
+    IsTrigger: 0
+    BlockLayer: 0
   - Sprite: {fileID: 3920572134941378574, guid: 7a42e1c284f03fa48b3f1c204e25f03a,
       type: 3}
     TypeFullName: 
     Tag: 0
     IsTrigger: 0
+    BlockLayer: 1
   - Sprite: {fileID: -4393783392769447400, guid: 869fef19c577a8e47b287bc4aa217af0,
       type: 3}
     TypeFullName: 
     Tag: 16791575
     IsTrigger: 1
-  - Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-    TypeFullName: AngeliaFramework.Entities.Editor.eDebug
-    Tag: 0
-    IsTrigger: 0
-  - Sprite: {fileID: -1972687094564485636, guid: 690d8fc8a6776684e932230e57858c66,
+    BlockLayer: 1
+  - Sprite: {fileID: 8558797288850460786, guid: 05873e43bc8d6bf4d96ef56c10bbc96a,
       type: 3}
-    TypeFullName: AngeliaFramework.Entities.Editor.eDebugPlayer
+    TypeFullName: AngeliaFramework.eBarrel
     Tag: 0
     IsTrigger: 0
+    BlockLayer: 1

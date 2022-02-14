@@ -385,7 +385,11 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool CheckSpriteID (int globalID) => SheetIDMap.ContainsKey(globalID);
+		public static UvRect GetUVRect (int globalID) {
+			if (!SheetIDMap.ContainsKey(globalID)) return default;
+			var (sheet, id) = SheetIDMap[globalID];
+			return Layers[sheet].UVs[id];
+		}
 
 
 		#endregion

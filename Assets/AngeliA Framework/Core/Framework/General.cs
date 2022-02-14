@@ -102,10 +102,15 @@ namespace AngeliaFramework {
 
 	[System.Serializable]
 	public struct UvRect {
+
+		public float Width => TopRight.x - BottomLeft.x;
+		public float Height => TopRight.y - BottomLeft.y;
+
 		public Vector2 BottomLeft;
 		public Vector2 BottomRight;
 		public Vector2 TopLeft;
 		public Vector2 TopRight;
+
 	}
 
 
@@ -148,6 +153,22 @@ namespace AngeliaFramework {
 		public int BottomMid;
 		public int BottomRight;
 		public RectOffset border;
+
+		public NineSliceSprites (NineSliceSprites source) {
+			TopLeft = source.TopLeft;
+			TopMid = source.TopMid;
+			TopRight = source.TopRight;
+			MidLeft = source.MidLeft;
+			MidMid = source.MidMid;
+			MidRight = source.MidRight;
+			BottomLeft = source.BottomLeft;
+			BottomMid = source.BottomMid;
+			BottomRight = source.BottomRight;
+			border = new RectOffset(
+				source.border.left, source.border.right, source.border.top, source.border.bottom
+			);
+		}
+
 	}
 
 

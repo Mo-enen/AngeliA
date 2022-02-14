@@ -7,10 +7,8 @@ namespace AngeliaFramework {
 	public class eBarrel : eRigidbody {
 
 
-		private static readonly int BARREL_CODE = "Barrel 2".ACode();
-
 		public override EntityLayer Layer => EntityLayer.Environment;
-
+		protected override string ThumbnailName => "Barrel 2";
 		public override PhysicsLayer CollisionLayer => PhysicsLayer.Environment;
 		public override PhysicsMask CollisionMask => PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Level;
 
@@ -24,7 +22,7 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate (int frame) {
 
-			CellRenderer.Draw(BARREL_CODE, Rect);
+			CellRenderer.Draw(Thumbnail, Rect);
 
 			base.FrameUpdate(frame);
 		}

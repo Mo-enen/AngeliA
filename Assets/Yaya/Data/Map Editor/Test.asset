@@ -17,6 +17,6 @@ MonoBehaviour:
   - Sprite: {fileID: 2467314271473265160, guid: 0f21d90af5b1cf5438efe4ff0f785570,
       type: 3}
     TypeFullName: 
-  - Sprite: {fileID: -1658372433226461222, guid: 0f21d90af5b1cf5438efe4ff0f785570,
-      type: 3}
-    TypeFullName: AngeliaFramework.Editor.eMapEditor
+    Tag: 0
+    IsTrigger: 0
+    BlockLayer: 1

@@ -7,6 +7,30 @@ namespace AngeliaFramework {
 	[PreferBinarySerialization]
 	public class GameData : ScriptableObject {
 
+		// SUB
+		[System.Serializable]
+		public class MinimapConfig {
+
+			[System.Serializable]
+			public struct EntityItem {
+				[TypeEnum(typeof(Entity))] public string TypeFullName;
+				public Color32 Color;
+			}
+
+			[System.Serializable]
+			public struct BlockItem {
+				public string Name;
+				public Color32 Color;
+			}
+
+			public List<EntityItem> Entities => m_Entities;
+			public List<BlockItem> Blocks => m_Blocks;
+
+			[SerializeField] List<EntityItem> m_Entities = null;
+			[SerializeField] List<BlockItem> m_Blocks = null;
+
+		}
+
 		// Api
 		public SpriteSheet[] Sheets => m_Sheets;
 		public AudioClip[] Musics => m_Musics;

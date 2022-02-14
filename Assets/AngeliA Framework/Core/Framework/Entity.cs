@@ -44,16 +44,19 @@ namespace AngeliaFramework {
 
 		public bool Active { get; set; } = true;
 		public long InstanceID { get; set; } = 0;
-		public virtual bool Despawnable { get; } = true;
+		public int Thumbnail => _Thumbnail != 0 ? _Thumbnail : (_Thumbnail = ThumbnailName.ACode());
 		public abstract EntityLayer Layer { get; }
+		public virtual bool Despawnable { get; } = true;
 		public virtual int X { get; set; } = 0;
 		public virtual int Y { get; set; } = 0;
 		public virtual int Width { get; set; } = Const.CELL_SIZE;
 		public virtual int Height { get; set; } = Const.CELL_SIZE;
+		protected virtual string ThumbnailName { get; } = "Pixel";
 
 		// Data
 		private static long CurrentDynamicInstanceID = 0;
 		private RectInt _Rect = new();
+		private int _Thumbnail = 0;
 
 
 		#endregion

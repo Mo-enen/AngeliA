@@ -2,10 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Moenen.Standard;
 
 
 namespace AngeliaFramework.Editor {
 	public class eMapEditor : Entity {
+
+
+
+
+		#region --- SUB ---
+
+		private enum Tool {
+			Selection = 0,
+			Paint = 1,
+		}
+
+		#endregion
 
 
 
@@ -25,6 +38,11 @@ namespace AngeliaFramework.Editor {
 		// Short
 		private static Game Game => _Game != null ? _Game : (_Game = Object.FindObjectOfType<Game>());
 		private static Game _Game = null;
+		private static bool Painting => CurrentTool == Tool.Paint;
+		private static Tool CurrentTool {
+			get => (Tool)SelectingToolIndex.Value;
+			set => SelectingToolIndex.Value = (int)value;
+		}
 
 		// Data
 		private MapPalette.Unit SelectingUnit = null;
@@ -34,6 +52,10 @@ namespace AngeliaFramework.Editor {
 		private RectInt? MosueDragUnitRect = null;
 		private Vector2Int? ViewPivotPosition = null;
 		private bool FocusingGameView = false;
+		private NineSliceSprites DraggingRectFrame = new(NineSliceSprites.PIXEL_FRAME_3);
+
+		// Saving
+		private static readonly EditorSavingInt SelectingToolIndex = new("MapEditor.SelectingToolIndex", 0);
 
 
 		#endregion
@@ -64,6 +86,20 @@ namespace AngeliaFramework.Editor {
 					AssetDatabase.SaveAssets();
 				}
 			};
+		}
+
+
+		[MenuItem("Tools/Hotkeys/Select Tool _1")]
+		private static void HotKey_SelectTool () {
+			CurrentTool = Tool.Selection;
+			Event.current?.Use();
+		}
+
+
+		[MenuItem("Tools/Hotkeys/Paint Tool _2")]
+		private static void HotKey_PaintTool () {
+			CurrentTool = Tool.Paint;
+			Event.current?.Use();
 		}
 
 
@@ -99,8 +135,8 @@ namespace AngeliaFramework.Editor {
 						X = x * Const.CELL_SIZE + Const.CELL_SIZE / 2,
 						Y = y * Const.CELL_SIZE,
 					};
-					Game.AddEntity(player);
 					SetDebugMode(false);
+					Game.AddEntity(player);
 				}
 			} else {
 				// Playing
@@ -148,7 +184,7 @@ namespace AngeliaFramework.Editor {
 				CellGUI.Draw_9Slice(cursorRect.Shrink(3), Color.black, NineSliceSprites.PIXEL_FRAME_3);
 
 				// Icon
-				if (SelectingUnit != null && MapPaletteWindow.Main.Painting) {
+				if (SelectingUnit != null && Painting) {
 					CellRenderer.Draw(
 						SelectingUnit.Sprite.name.ACode(),
 						cursorRect.Fit((int)SelectingUnit.Sprite.rect.width, (int)SelectingUnit.Sprite.rect.height)
@@ -162,15 +198,17 @@ namespace AngeliaFramework.Editor {
 					(MosueDragUnitRect.Value.width + 1) * Const.CELL_SIZE,
 					(MosueDragUnitRect.Value.height + 1) * Const.CELL_SIZE
 				);
+				int cameraSacle = Mathf.Clamp(Mathf.Max(CameraRect.width, CameraRect.height) / 1000, 3, 64);
+				DraggingRectFrame.border = new RectOffset(cameraSacle, cameraSacle, cameraSacle, cameraSacle);
 				CellGUI.Draw_9Slice(
 					rect,
 					frame % 30 > 15 ? new Color32(255, 255, 255, 255) : new Color32(230, 230, 230, 255),
-					NineSliceSprites.PIXEL_FRAME_3
+					DraggingRectFrame
 				);
 				CellGUI.Draw_9Slice(
-					rect.Shrink(3),
+					rect.Shrink(cameraSacle),
 					frame % 30 > 15 ? new Color32(0, 0, 0, 255) : new Color32(20, 20, 20, 255),
-					NineSliceSprites.PIXEL_FRAME_3
+					DraggingRectFrame
 				);
 			}
 
@@ -201,7 +239,7 @@ namespace AngeliaFramework.Editor {
 				}
 			} else if (MouseLeftDownUnitPos.HasValue) {
 				// Up
-				if (MapPaletteWindow.Main.Painting) {
+				if (Painting) {
 					if (SelectingUnit != null) {
 						// Paint
 
@@ -307,8 +345,6 @@ namespace AngeliaFramework.Editor {
 				if (dir != Vector2Int.zero) {
 					var newPos = Game.ViewRect.position + dir;
 					Game.SetViewPositionDely(newPos.x, newPos.y);
-
-
 				}
 			}
 		}
@@ -326,9 +362,6 @@ namespace AngeliaFramework.Editor {
 			Game.DebugMode = on;
 			Util.SetFieldValue(Game, "LoadedUnitRect", new RectInt());
 			UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
-			if (!on) {
-				Game.WorldSquad.ForceRefill();
-			}
 		}
 
 
