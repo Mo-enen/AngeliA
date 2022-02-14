@@ -30,12 +30,12 @@ namespace AngeliaFramework.Editor {
 		}
 
 		// Data
-		private static MapNavigator Main = null;
+		private static RectInt PrevCameraRect = default;
 		private readonly List<Vector2Int> MapPositions = new();
 		private Vector2Int MapPositionMin = default;
 		private Vector2Int MapPositionMax = default;
 		private Rect ContentRect = default;
-		private RectInt PrevCameraRect = default;
+		private static bool NeedClearMapPositions = false;
 
 		// Saving
 		private EditorSavingBool _GlobalMode = new("MapNavigator.GlobalMode", false);
@@ -64,14 +64,12 @@ namespace AngeliaFramework.Editor {
 
 
 		private void OnEnable () {
-			Main = this;
 			wantsMouseMove = false;
 			wantsMouseEnterLeaveWindow = true;
 		}
 
 
 		private void OnGUI () {
-			Main = this;
 			GUI_Maps();
 			GUI_View();
 			GUI_Misc();
@@ -79,10 +77,13 @@ namespace AngeliaFramework.Editor {
 
 
 		private void Update () {
-			if (!EditorApplication.isPlaying || Main == null) return;
-			if (CellRenderer.CameraRect.IsNotSame(Main.PrevCameraRect)) {
-				Main.PrevCameraRect = CellRenderer.CameraRect;
-				Main.Repaint();
+			if (!EditorApplication.isPlaying) return;
+			if (CellRenderer.CameraRect.IsNotSame(PrevCameraRect)) {
+				PrevCameraRect = CellRenderer.CameraRect;
+				Repaint();
+			}
+			if (NeedClearMapPositions) {
+				MapPositions.Clear();
 			}
 		}
 
@@ -150,12 +151,12 @@ namespace AngeliaFramework.Editor {
 						rect.x = Util.Remap(
 							zoneUnitRect.x, zoneUnitRect.xMax,
 							ContentRect.xMin, ContentRect.xMax,
-							x / Const.CELL_SIZE
+							(float)x / Const.CELL_SIZE
 						);
 						rect.y = Util.Remap(
 							zoneUnitRect.y, zoneUnitRect.yMax,
 							ContentRect.yMax, ContentRect.yMin,
-							y / Const.CELL_SIZE
+							(float)y / Const.CELL_SIZE
 						);
 						EditorGUI.DrawRect(rect, Game.GetMinimapColor(block.TypeID, blockTint));
 					}
@@ -316,11 +317,7 @@ namespace AngeliaFramework.Editor {
 		#region --- API ---
 
 
-		public static void ClearMapPositions () {
-			if (Main != null) {
-				Main.MapPositions.Clear();
-			}
-		}
+		public static void ClearMapPositions () => NeedClearMapPositions = true;
 
 
 		#endregion

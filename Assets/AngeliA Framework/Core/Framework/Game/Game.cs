@@ -330,12 +330,8 @@ namespace AngeliaFramework {
 			WorldSquad.FrameUpdate(SpawnRect.CenterInt());
 
 			if (WorldSquad.IsReady) {
-				var spawnUnitRect = new RectInt(
-					SpawnRect.x / Const.CELL_SIZE,
-					SpawnRect.y / Const.CELL_SIZE,
-					SpawnRect.width / Const.CELL_SIZE,
-					SpawnRect.height / Const.CELL_SIZE
-				);
+
+				var spawnUnitRect = SpawnRect.Divide(Const.CELL_SIZE);
 
 				// BG
 				var rect = new RectInt(0, 0, Const.CELL_SIZE, Const.CELL_SIZE);
@@ -358,8 +354,8 @@ namespace AngeliaFramework {
 					// Real Entity
 					foreach (var (entity, x, y) in WorldSquad.ForAllEntitiesInside(spawnUnitRect)) {
 						if (!EntityHandlerPool.ContainsKey(entity.TypeID)) continue;
-						int unitX = x / Const.CELL_SIZE;
-						int unitY = y / Const.CELL_SIZE;
+						int unitX = x.Divide(Const.CELL_SIZE);
+						int unitY = y.Divide(Const.CELL_SIZE);
 						if (LoadedUnitRect.Contains(unitX, unitY)) continue;
 						if (!spawnUnitRect.Contains(unitX, unitY)) continue;
 						var e = EntityHandlerPool[entity.TypeID].Invoke();

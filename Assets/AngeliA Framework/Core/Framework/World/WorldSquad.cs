@@ -59,10 +59,8 @@ namespace AngeliaFramework {
 			);
 			if (!midZone.Contains(viewPos)) {
 				BeforeWorldShift();
-				int x = viewPos.x / Const.WORLD_MAP_SIZE / Const.CELL_SIZE;
-				int y = viewPos.y / Const.WORLD_MAP_SIZE / Const.CELL_SIZE;
-				if (viewPos.x < 0) x--;
-				if (viewPos.y < 0) y--;
+				int x = viewPos.x.Divide(Const.WORLD_MAP_SIZE * Const.CELL_SIZE);
+				int y = viewPos.y.Divide(Const.WORLD_MAP_SIZE * Const.CELL_SIZE);
 				Shift(x, y);
 				FillSquad(x, y);
 				//FillSquadAsync(x, y);

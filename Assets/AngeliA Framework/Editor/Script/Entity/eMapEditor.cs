@@ -34,6 +34,7 @@ namespace AngeliaFramework.Editor {
 		// Api
 		public override bool Despawnable => false;
 		public override EntityLayer Layer => EntityLayer.Debug;
+		public static MapPalette.Unit SelectingUnit { get; set; } = null;
 
 		// Short
 		private static Game Game => _Game != null ? _Game : (_Game = Object.FindObjectOfType<Game>());
@@ -45,7 +46,6 @@ namespace AngeliaFramework.Editor {
 		}
 
 		// Data
-		private MapPalette.Unit SelectingUnit = null;
 		private Vector2Int PrevMousePos = default;
 		private Vector2Int? MouseLeftDownUnitPos = null;
 		private Vector2Int? MouseRightDownPos = null;
@@ -104,8 +104,6 @@ namespace AngeliaFramework.Editor {
 
 
 		public override void FrameUpdate (int frame) {
-			if (MapPaletteWindow.Main == null) return;
-			SelectingUnit = MapPaletteWindow.Main.GetSelection();
 			FocusingGameView = EditorWindow.focusedWindow != null && EditorWindow.focusedWindow.GetType().Name == "GameView";
 			Update_Workflow();
 			Update_MouseLeft();
@@ -127,10 +125,8 @@ namespace AngeliaFramework.Editor {
 				// Editing 
 				if (pressingSS) {
 					// Goto Play
-					int x = MousePosition.x / Const.CELL_SIZE;
-					int y = MousePosition.y / Const.CELL_SIZE;
-					if (MousePosition.x < 0) x--;
-					if (MousePosition.y < 0) y--;
+					int x = MousePosition.x.Divide(Const.CELL_SIZE);
+					int y = MousePosition.y.Divide(Const.CELL_SIZE);
 					var player = new eDebugPlayer {
 						X = x * Const.CELL_SIZE + Const.CELL_SIZE / 2,
 						Y = y * Const.CELL_SIZE,
@@ -221,8 +217,8 @@ namespace AngeliaFramework.Editor {
 
 			if (FrameInput.MouseLeft) {
 				var mouseUnitPos = new Vector2Int(
-					(int)Mathf.Lerp(CameraRect.xMin, CameraRect.xMax, FrameInput.MousePosition01.x) / Const.CELL_SIZE,
-					(int)Mathf.Lerp(CameraRect.yMin, CameraRect.yMax, FrameInput.MousePosition01.y) / Const.CELL_SIZE
+					((int)Mathf.Lerp(CameraRect.xMin, CameraRect.xMax, FrameInput.MousePosition01.x)).Divide(Const.CELL_SIZE),
+					((int)Mathf.Lerp(CameraRect.yMin, CameraRect.yMax, FrameInput.MousePosition01.y)).Divide(Const.CELL_SIZE)
 				);
 				if (!MouseLeftDownUnitPos.HasValue) {
 					// Down
@@ -253,7 +249,6 @@ namespace AngeliaFramework.Editor {
 
 
 				}
-				RegisterUndo();
 				MosueDragUnitRect = null;
 				MouseLeftDownUnitPos = null;
 			}
@@ -291,9 +286,10 @@ namespace AngeliaFramework.Editor {
 				// Up
 				if (!ViewPivotPosition.HasValue) {
 					// Pick
-
-
-
+					Pick(
+						MouseRightDownPos.Value.x * ((float)CameraRect.width / Screen.width).RoundToInt(),
+						MouseRightDownPos.Value.y * ((float)CameraRect.height / Screen.height).RoundToInt()
+					);
 				} else {
 					// Moving
 					if (FrameInput.MousePosition != PrevMousePos) {
@@ -365,13 +361,6 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void RegisterUndo () {
-
-
-
-		}
-
-
 		private void Zoom (int delta) {
 			int width = Game.ViewRect.width;
 			int height = Game.ViewRect.height;
@@ -432,6 +421,17 @@ namespace AngeliaFramework.Editor {
 					EditorUtility.SetDirty(map);
 				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
+
+
+		// Pick
+		private void Pick (int globalX, int globalY) {
+			//int unitX = globalX;
+
+
+
+
+			MapPaletteWindow.RequireClearSelection();
 		}
 
 

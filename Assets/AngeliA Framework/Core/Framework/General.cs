@@ -327,6 +327,24 @@ namespace AngeliaFramework {
 			(entityIndex * Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE);
 
 
+		public static int Divide (this int global, int gap) => global > 0 || global % gap == 0 ?
+			global / gap :
+			global / gap - 1;
+
+
+		public static Vector2Int Divide (this Vector2Int v, int gap) {
+			v.x = v.x.Divide(gap);
+			v.y = v.y.Divide(gap);
+			return v;
+		}
+
+
+		public static RectInt Divide (this RectInt rect, int gap) {
+			rect.SetMinMax(rect.min.Divide(gap), rect.max.Divide(gap));
+			return rect;
+		}
+
+
 	}
 
 

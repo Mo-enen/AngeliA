@@ -23,9 +23,6 @@ namespace AngeliaFramework.Editor {
 			0, "Water".ACode(),
 		};
 
-		// Api
-		public static MapPaletteWindow Main { get; private set; } = null;
-
 		// Short
 		private static GUIContent SelectionToolContent => _SelectionToolContent ??= EditorGUIUtility.IconContent("d_Outline Icon");
 		private static GUIContent _SelectionToolContent = null;
@@ -37,9 +34,10 @@ namespace AngeliaFramework.Editor {
 		// Data
 		private readonly List<MapPalette> Palettes = new();
 		private Vector2 PaletteScrollPosition = default;
+		private static bool NeedReloadAsset = false;
+		private static bool NeedClearSelection = false;
 		private int SelectingPaletteIndex = 0;
 		private int SelectingPaletteItemIndex = 0;
-		private bool NeedReloadAsset = false;
 		private int CurrentPickerID = 0;
 		private int PickingPalette = -1;
 		private int LastSpawnEditorEntityFrame = int.MinValue;
@@ -84,12 +82,16 @@ namespace AngeliaFramework.Editor {
 				ReloadPaletteAssets();
 				NeedReloadAsset = false;
 			}
+			if (NeedClearSelection) {
+				SelectingPaletteIndex = -1;
+				SelectingPaletteItemIndex = -1;
+				NeedClearSelection = false;
+			}
 		}
 
 
 		private void OnGUI () {
 
-			if (Main != this) Main = this;
 			if (Palettes.Count == 0) return;
 			SelectingPaletteIndex = Mathf.Clamp(SelectingPaletteIndex, 0, Palettes.Count - 1);
 			var pal = Palettes[SelectingPaletteIndex];
@@ -101,11 +103,7 @@ namespace AngeliaFramework.Editor {
 			GUI_Palette();
 			GUI_Misc();
 			GUI.enabled = oldE;
-		}
 
-
-		private void OnDestroy () {
-			if (Main == this) Main = null;
 		}
 
 
@@ -271,8 +269,7 @@ namespace AngeliaFramework.Editor {
 			if (clickPal >= 0 && clickItem >= 0) {
 				if (Event.current.button == 0) {
 					// Left Button
-					SelectingPaletteIndex = clickPal;
-					SelectingPaletteItemIndex = clickItem;
+					SetSelection(clickPal, clickItem);
 				} else if (Event.current.button == 1) {
 					// Right Button
 					ShowPaletteMenu(clickPal, clickItem);
@@ -324,40 +321,22 @@ namespace AngeliaFramework.Editor {
 		#region --- API ---
 
 
-		public void SetNeedReloadAsset () => NeedReloadAsset = true;
+		public static void SetNeedReloadAsset () => NeedReloadAsset = true;
 
 
-		public MapPalette.Unit GetSelection () {
-			if (
-				SelectingPaletteIndex >= 0 &&
-				SelectingPaletteIndex < Palettes.Count &&
-				SelectingPaletteItemIndex >= 0 &&
-				SelectingPaletteItemIndex < Palettes[SelectingPaletteIndex].Count
-			) {
-				return Palettes[SelectingPaletteIndex][SelectingPaletteItemIndex];
-			}
-			return null;
-		}
-
-
-		public (int pal, int item) FindPaletteUnit (MapPalette.Unit unit) {
-			if (unit == null) return (-1, -1);
-			for (int palIndex = 0; palIndex < Palettes.Count; palIndex++) {
-				var pal = Palettes[palIndex];
-				for (int i = 0; i < pal.Count; i++) {
-					if (pal[i] == unit) {
-						return (palIndex, i);
-					}
-				}
-			}
-			return (-1, -1);
-		}
+		public static void RequireClearSelection () => NeedClearSelection = true;
 
 
 		public void SetSelection (int palIndex, int itemIndex) {
-			SelectingPaletteIndex = palIndex;
-			SelectingPaletteItemIndex = itemIndex;
-			Repaint();
+			if (
+				palIndex >= 0 && palIndex < Palettes.Count &&
+				itemIndex >= 0 && itemIndex < Palettes[palIndex].Count
+			) {
+				SelectingPaletteIndex = palIndex;
+				SelectingPaletteItemIndex = itemIndex;
+				Repaint();
+				eMapEditor.SelectingUnit = Palettes[SelectingPaletteIndex][SelectingPaletteItemIndex];
+			}
 		}
 
 
