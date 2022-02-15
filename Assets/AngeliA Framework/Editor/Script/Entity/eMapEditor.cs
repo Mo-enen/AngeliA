@@ -35,6 +35,7 @@ namespace AngeliaFramework.Editor {
 		public override bool Despawnable => false;
 		public override EntityLayer Layer => EntityLayer.Debug;
 		public static MapPalette.Unit SelectingUnit { get; set; } = null;
+		public static Dictionary<int, Sprite> SpritePool { get; } = new();
 
 		// Short
 		private static Game Game => _Game != null ? _Game : (_Game = Object.FindObjectOfType<Game>());
@@ -51,8 +52,9 @@ namespace AngeliaFramework.Editor {
 		private Vector2Int? MouseRightDownPos = null;
 		private RectInt? MosueDragUnitRect = null;
 		private Vector2Int? ViewPivotPosition = null;
-		private bool FocusingGameView = false;
 		private NineSliceSprites DraggingRectFrame = new(NineSliceSprites.PIXEL_FRAME_3);
+		private bool FocusingGameView = false;
+		private static bool RequireChangeDebugMode = false;
 
 		// Saving
 		private static readonly EditorSavingInt SelectingToolIndex = new("MapEditor.SelectingToolIndex", 0);
@@ -86,6 +88,8 @@ namespace AngeliaFramework.Editor {
 					AssetDatabase.SaveAssets();
 				}
 			};
+			ReloadSpritePool();
+			MoenenTools.OnDoTheThing += () => RequireChangeDebugMode = true;
 		}
 
 
@@ -103,7 +107,16 @@ namespace AngeliaFramework.Editor {
 		}
 
 
+		public override void OnCreate (int frame) {
+			RequireChangeDebugMode = false;
+			base.OnCreate(frame);
+		}
+
+
 		public override void FrameUpdate (int frame) {
+			if (SpritePool.Count == 0) {
+				ReloadSpritePool();
+			}
 			FocusingGameView = EditorWindow.focusedWindow != null && EditorWindow.focusedWindow.GetType().Name == "GameView";
 			Update_Workflow();
 			Update_MouseLeft();
@@ -116,14 +129,9 @@ namespace AngeliaFramework.Editor {
 
 
 		private void Update_Workflow () {
-			bool pressingSS =
-				FocusingGameView && (
-				(FrameInput.KeyDown(GameKey.Select) && FrameInput.KeyPressing(GameKey.Start)) ||
-				(FrameInput.KeyDown(GameKey.Start) && FrameInput.KeyPressing(GameKey.Select))
-				);
 			if (Game.DebugMode) {
 				// Editing 
-				if (pressingSS) {
+				if (RequireChangeDebugMode) {
 					// Goto Play
 					int x = MousePosition.x.Divide(Const.CELL_SIZE);
 					int y = MousePosition.y.Divide(Const.CELL_SIZE);
@@ -136,11 +144,12 @@ namespace AngeliaFramework.Editor {
 				}
 			} else {
 				// Playing
-				if (pressingSS) {
+				if (RequireChangeDebugMode) {
 					// Goto Edit
 					SetDebugMode(true);
 				}
 			}
+			RequireChangeDebugMode = false;
 		}
 
 
@@ -181,10 +190,14 @@ namespace AngeliaFramework.Editor {
 
 				// Icon
 				if (SelectingUnit != null && Painting) {
-					CellRenderer.Draw(
-						SelectingUnit.Sprite.name.ACode(),
-						cursorRect.Fit((int)SelectingUnit.Sprite.rect.width, (int)SelectingUnit.Sprite.rect.height)
-					);
+					int id = SelectingUnit.IsEntity ? SelectingUnit.TypeFullName.ACode() : SelectingUnit.BlockID;
+					if (SpritePool.ContainsKey(id)) {
+						var sp = SpritePool[id];
+						if (SelectingUnit.IsEntity) {
+							id = sp.name.ACode();
+						}
+						CellRenderer.Draw(id, cursorRect.Fit((int)sp.rect.width, (int)sp.rect.height));
+					}
 				}
 			} else {
 				// Draging Rect
@@ -426,12 +439,38 @@ namespace AngeliaFramework.Editor {
 
 		// Pick
 		private void Pick (int globalX, int globalY) {
-			//int unitX = globalX;
+			if (Game.WorldSquad.GetEntityAt(globalX, globalY, out var entity)) {
+				SelectingUnit = new() {
+					//TypeFullName = ,
+				};
+			} else if (Game.WorldSquad.GetBlockAt(globalX, globalY, out var block)) {
 
 
-
-
+			}
 			MapPaletteWindow.RequireClearSelection();
+		}
+
+
+		// Asset
+		private static void ReloadSpritePool () {
+			SpritePool.Clear();
+			// Sheets
+			foreach (var guid in AssetDatabase.FindAssets($"t:{nameof(SpriteSheet)}")) {
+				var sheet = AssetDatabase.LoadAssetAtPath<SpriteSheet>(AssetDatabase.GUIDToAssetPath(guid));
+				if (sheet == null || sheet.Texture == null) continue;
+				foreach (var obj in AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(sheet.Texture))) {
+					if (obj is Sprite sp) {
+						SpritePool.TryAdd(sp.name.ACode(), sp);
+					}
+				}
+			}
+			// Entity
+			foreach (var type in typeof(Entity).GetAllChildClass()) {
+				if (System.Activator.CreateInstance(type) is not Entity e) continue;
+				if (SpritePool.ContainsKey(e.Thumbnail)) {
+					SpritePool.TryAdd(type.ACode(), SpritePool[e.Thumbnail]);
+				}
+			}
 		}
 
 

@@ -15,30 +15,30 @@ namespace AngeliaFramework.Editor {
 		[System.Serializable]
 		public class Unit {
 
-			public string DisplayName {
+			public string EntityDisplayName {
 				get {
-					if (IsEntity) {
-						int dotIndex = TypeFullName.LastIndexOf('.');
-						if (dotIndex >= 0 && TypeFullName[dotIndex + 1] == 'e') {
-							dotIndex++;
-						}
-						return Util.GetDisplayName(
-							dotIndex >= 0 ? TypeFullName[(dotIndex + 1)..] : TypeFullName
-						);
-					} else {
-						return Sprite != null ? Sprite.name : "";
+					int dotIndex = TypeFullName.LastIndexOf('.');
+					if (dotIndex >= 0 && TypeFullName[dotIndex + 1] == 'e') {
+						dotIndex++;
 					}
+					return Util.GetDisplayName(
+						dotIndex >= 0 ? TypeFullName[(dotIndex + 1)..] : TypeFullName
+					);
 				}
 			}
+			public int EntityID => TypeFullName.ACode();
 
 			public bool IsEntity => !string.IsNullOrEmpty(TypeFullName);
 
-			public Sprite Sprite;
-			[TypeEnum(typeof(Entity))]
-			public string TypeFullName;
+			// Block
+			public int BlockID;
 			public int Tag = 0;
 			public bool IsTrigger = false;
 			public BlockLayer BlockLayer = BlockLayer.Level;
+
+			// Entity
+			[TypeEnum(typeof(Entity))]
+			public string TypeFullName;
 
 		}
 
@@ -83,11 +83,10 @@ namespace AngeliaFramework.Editor {
 				if (result != 0) {
 					return result;
 				} else {
-					if (a.Sprite != null && b.Sprite != null) {
-						result = a.Sprite.texture.name.CompareTo(b.Sprite.texture.name);
-						return result == 0 ? a.Sprite.name.CompareTo(b.Sprite.name) : result;
+					if (a.BlockID != 0 && b.BlockID != 0) {
+						return result == 0 ? a.BlockID.CompareTo(b.BlockID) : result;
 					} else {
-						return a.Sprite != null ? -1 : b.Sprite != null ? 1 : 0;
+						return a.BlockID != 0 ? -1 : b.BlockID != 0 ? 1 : 0;
 					}
 				}
 			});

@@ -30,6 +30,7 @@ namespace AngeliaFramework.Editor {
 		private static GUIContent _PaintToolContent = null;
 		private static Game Game => _Game != null ? _Game : (_Game = FindObjectOfType<Game>());
 		private static Game _Game = null;
+		private static Dictionary<int, Sprite> SpritePool => eMapEditor.SpritePool;
 
 		// Data
 		private readonly List<MapPalette> Palettes = new();
@@ -68,6 +69,7 @@ namespace AngeliaFramework.Editor {
 		private void OnEnable () {
 			wantsMouseEnterLeaveWindow = true;
 			ReloadPaletteAssets();
+			eMapEditor.SelectingUnit = Palettes[SelectingPaletteIndex][SelectingPaletteItemIndex];
 		}
 
 
@@ -123,13 +125,28 @@ namespace AngeliaFramework.Editor {
 				var oldL = EditorGUIUtility.labelWidth;
 				EditorGUIUtility.labelWidth = 46;
 				using (new GUILayout.HorizontalScope()) {
+
 					// Icon
-					unit.Sprite = EditorGUI.ObjectField(Layout.Rect(ICON_SIZE, ICON_SIZE), unit.Sprite, typeof(Sprite), false) as Sprite;
+					int id = unit.IsEntity ? unit.EntityID : unit.BlockID;
+					var sprite = SpritePool.ContainsKey(id) ? SpritePool[id] : null;
+					var newSprite = EditorGUI.ObjectField(Layout.Rect(ICON_SIZE, ICON_SIZE), sprite, typeof(Sprite), false) as Sprite;
+					if (newSprite != sprite && newSprite != null && !unit.IsEntity) {
+						// Change Block ID
+						int newID = newSprite.name.ACode();
+						if (SpritePool.ContainsKey(newID)) {
+							unit.BlockID = newID;
+						}
+					}
+
 					Layout.Space(8);
 					using (new GUILayout.VerticalScope()) {
 
 						// Name
-						GUI.Label(Layout.Rect(0, HEIGHT), unit.DisplayName, EditorStyles.boldLabel);
+						GUI.Label(
+							Layout.Rect(0, HEIGHT),
+							unit.IsEntity ? unit.EntityDisplayName : SpritePool.ContainsKey(unit.BlockID) ? SpritePool[unit.BlockID].name : "",
+							EditorStyles.boldLabel
+						);
 						Layout.Space(2);
 
 						if (!unit.IsEntity) {
@@ -210,7 +227,8 @@ namespace AngeliaFramework.Editor {
 								// Background
 								GUI.Label(rect, GUIContent.none, GUI.skin.textField);
 								// Icon
-								var icon = unit.Sprite;
+								int id = unit.IsEntity ? unit.EntityID : unit.BlockID;
+								var icon = SpritePool.ContainsKey(id) ? SpritePool[id] : null;
 								if (icon != null && icon.texture != null) {
 									float tWidth = icon.texture.width;
 									float tHeight = icon.texture.height;
@@ -297,15 +315,18 @@ namespace AngeliaFramework.Editor {
 				// Add Block
 				var sprite = EditorGUIUtility.GetObjectPickerObject() as Sprite;
 				if (sprite != null) {
-					var pal = Palettes[PickingPalette];
-					pal.Add(new MapPalette.Unit() {
-						Sprite = sprite,
-						TypeFullName = "",
-					});
-					pal.Sort();
-					EditorUtility.SetDirty(pal);
-					AssetDatabase.SaveAssetIfDirty(pal);
-					AssetDatabase.Refresh();
+					var id = sprite.name.ACode();
+					if (SpritePool.ContainsKey(id)) {
+						var pal = Palettes[PickingPalette];
+						pal.Add(new MapPalette.Unit() {
+							BlockID = id,
+							TypeFullName = "",
+						});
+						pal.Sort();
+						EditorUtility.SetDirty(pal);
+						AssetDatabase.SaveAssetIfDirty(pal);
+						AssetDatabase.Refresh();
+					}
 					PickingPalette = -1;
 				}
 			}
@@ -382,8 +403,7 @@ namespace AngeliaFramework.Editor {
 				Selection.activeObject = pal;
 			});
 			menu.AddItem(new GUIContent("Delete"), false, () => {
-				var sp = pal[itemIndex].Sprite;
-				if (EditorUtility.DisplayDialog("", $"Delete Item {(sp != null ? sp.name : "")}?", "Delete", "Cancel")) {
+				if (EditorUtility.DisplayDialog("", $"Delete Item?", "Delete", "Cancel")) {
 					pal.RemoveUnit(itemIndex);
 					EditorUtility.SetDirty(pal);
 					AssetDatabase.SaveAssetIfDirty(pal);
@@ -401,7 +421,6 @@ namespace AngeliaFramework.Editor {
 				string fullName = type.FullName;
 				menu.AddItem(new GUIContent(prefix ? $"New Entity/{type.Name}" : type.Name), false, () => {
 					pal.Add(new MapPalette.Unit() {
-						Sprite = null,
 						TypeFullName = fullName,
 					});
 					pal.Sort();

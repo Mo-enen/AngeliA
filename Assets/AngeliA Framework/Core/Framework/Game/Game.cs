@@ -24,8 +24,6 @@ namespace AngeliaFramework {
 		private readonly int[] ENTITY_CAPACITY = { 256, 128, 128, 1024, 128, 1, };
 #endif
 		private readonly int[] ENTITY_BUFFER_CAPACITY = { 128, 128, 128, 128, 128, 128 };
-		private const int FRAME_RATE_LOW = 60;
-		private const int FRAME_RATE_HIGHT = 120;
 
 		// Api
 		public Language CurrentLanguage { get; private set; } = null;
@@ -494,7 +492,7 @@ namespace AngeliaFramework {
 
 		public void SetFramerate (bool high) {
 			UseHighFramerate.Value = high;
-			Application.targetFrameRate = UseHighFramerate.Value ? FRAME_RATE_HIGHT : FRAME_RATE_LOW;
+			Application.targetFrameRate = UseHighFramerate.Value ? 120 : 60;
 		}
 
 

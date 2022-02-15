@@ -68,6 +68,7 @@ namespace AngeliaFramework {
 		}
 
 
+		// Iter
 		public IEnumerable<(WorldData.Block block, int globalX, int globalY, BlockLayer layer)> ForAllBlocksInsideAllLayers (RectInt globalUnitRect) {
 			for (int layer = 0; layer < Const.BLOCK_LAYER_COUNT; layer++) {
 				foreach (var pair in ForAllBlocksInside(globalUnitRect, (BlockLayer)layer)) {
@@ -121,6 +122,69 @@ namespace AngeliaFramework {
 					}
 				}
 			}
+		}
+
+
+		// Get
+		public bool GetBlockAt (int globalX, int globalY, out WorldData.Block block) {
+			for (int i = Const.BLOCK_LAYER_COUNT - 1; i >= 0; i--) {
+				if (GetBlockAt(globalX, globalY, (BlockLayer)i, out block)) {
+					return true;
+				}
+			}
+			block = default;
+			return false;
+		}
+
+
+		public bool GetBlockAt (int globalX, int globalY, BlockLayer layer, out WorldData.Block block) {
+			int unitX = globalX.Divide(Const.CELL_SIZE);
+			int unitY = globalY.Divide(Const.CELL_SIZE);
+			var allWorldUnitRect = new RectInt(Worlds[0, 0].FilledPosition * Const.WORLD_MAP_SIZE, Vector2Int.one * (3 * Const.WORLD_MAP_SIZE));
+			if (allWorldUnitRect.Contains(unitX, unitY)) {
+				for (int worldJ = 0; worldJ <= 2; worldJ++) {
+					for (int worldI = 0; worldI <= 2; worldI++) {
+						var world = Worlds[worldI, worldJ];
+						if (world.FilledUnitRect.Contains(unitX, unitY)) {
+							var _block = world.Blocks[
+								unitX - world.FilledPosition.x,
+								unitY - world.FilledPosition.y,
+								(int)layer
+							];
+							if (_block.TypeID == 0) continue;
+							block = _block;
+							return true;
+						}
+					}
+				}
+			}
+			block = default;
+			return false;
+		}
+
+
+		public bool GetEntityAt (int globalX, int globalY, out WorldData.Entity entity) {
+			int unitX = globalX.Divide(Const.CELL_SIZE);
+			int unitY = globalY.Divide(Const.CELL_SIZE);
+			var allWorldUnitRect = new RectInt(Worlds[0, 0].FilledPosition * Const.WORLD_MAP_SIZE, Vector2Int.one * (3 * Const.WORLD_MAP_SIZE));
+			if (allWorldUnitRect.Contains(unitX, unitY)) {
+				for (int worldJ = 0; worldJ <= 2; worldJ++) {
+					for (int worldI = 0; worldI <= 2; worldI++) {
+						var world = Worlds[worldI, worldJ];
+						if (world.FilledUnitRect.Contains(unitX, unitY)) {
+							var _entity = world.Entities[
+								unitX - world.FilledPosition.x,
+								unitY - world.FilledPosition.y
+							];
+							if (_entity.TypeID == 0) continue;
+							entity = _entity;
+							return true;
+						}
+					}
+				}
+			}
+			entity = default;
+			return false;
 		}
 
 
