@@ -69,7 +69,7 @@ namespace AngeliaFramework.Editor {
 		private void OnEnable () {
 			wantsMouseEnterLeaveWindow = true;
 			ReloadPaletteAssets();
-			eMapEditor.SelectingUnit = Palettes[SelectingPaletteIndex][SelectingPaletteItemIndex];
+			SetSelection(SelectingPaletteIndex, SelectingPaletteItemIndex);
 		}
 
 
@@ -83,11 +83,13 @@ namespace AngeliaFramework.Editor {
 			if (NeedReloadAsset) {
 				ReloadPaletteAssets();
 				NeedReloadAsset = false;
+				Repaint();
 			}
 			if (NeedClearSelection) {
 				SelectingPaletteIndex = -1;
 				SelectingPaletteItemIndex = -1;
 				NeedClearSelection = false;
+				Repaint();
 			}
 		}
 
@@ -95,9 +97,11 @@ namespace AngeliaFramework.Editor {
 		private void OnGUI () {
 
 			if (Palettes.Count == 0) return;
-			SelectingPaletteIndex = Mathf.Clamp(SelectingPaletteIndex, 0, Palettes.Count - 1);
-			var pal = Palettes[SelectingPaletteIndex];
-			SelectingPaletteItemIndex = Mathf.Clamp(SelectingPaletteItemIndex, 0, pal.Count - 1);
+			SelectingPaletteIndex = Mathf.Clamp(SelectingPaletteIndex, -1, Palettes.Count - 1);
+			if (SelectingPaletteIndex >= 0) {
+				var pal = Palettes[SelectingPaletteIndex];
+				SelectingPaletteItemIndex = Mathf.Clamp(SelectingPaletteItemIndex, -1, pal.Count - 1);
+			}
 
 			bool oldE = GUI.enabled;
 			GUI.enabled = !EditorApplication.isPlaying || (Game != null && Game.DebugMode);
@@ -113,11 +117,18 @@ namespace AngeliaFramework.Editor {
 			const int HEIGHT = 18;
 			const int ICON_SIZE = 56;
 			using (new GUILayout.VerticalScope(Layout.BoxPaddingPanelStyle)) {
-
-				if (SelectingPaletteIndex < 0 || SelectingPaletteIndex >= Palettes.Count) return;
-				var pal = Palettes[SelectingPaletteIndex];
-				if (SelectingPaletteItemIndex < 0 || SelectingPaletteItemIndex >= pal.Count) return;
-				var unit = pal[SelectingPaletteItemIndex];
+				MapPalette pal = null;
+				MapPalette.Unit unit = null;
+				if (SelectingPaletteIndex >= 0 && SelectingPaletteIndex < Palettes.Count) {
+					pal = Palettes[SelectingPaletteIndex];
+					if (SelectingPaletteItemIndex >= 0 && SelectingPaletteItemIndex < pal.Count) {
+						unit = pal[SelectingPaletteItemIndex];
+					}
+				}
+				if (pal == null || unit == null) {
+					Layout.Rect(0, 83);
+					return;
+				}
 
 				EditorGUI.BeginChangeCheck();
 

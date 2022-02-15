@@ -45,7 +45,7 @@ namespace AngeliaFramework {
 
 
 		// Api
-		public static Vector2Int MousePosition { get; private set; } = default;
+		public static Vector2Int MouseScreenPosition { get; private set; } = default;
 		public static Vector2 MousePosition01 { get; private set; } = default;
 		public static bool MouseLeft { get; private set; } = false;
 		public static bool MouseRight { get; private set; } = false;
@@ -141,7 +141,7 @@ namespace AngeliaFramework {
 			// Pointer
 			if (Mouse != null) {
 				var pos = Mouse.position.ReadValue();
-				MousePosition = pos.RoundToInt();
+				MouseScreenPosition = pos.RoundToInt();
 				MousePosition01 = new Vector2(pos.x / Screen.width, pos.y / Screen.height);
 				MouseLeft = Mouse.leftButton.isPressed;
 				MouseRight = Mouse.rightButton.isPressed;
@@ -150,7 +150,7 @@ namespace AngeliaFramework {
 				MouseRightDown = !PrevMouseRight && MouseRight;
 				MouseMidDown = !PrevMouseMid && MouseMid;
 			} else {
-				MousePosition = default;
+				MouseScreenPosition = default;
 				MousePosition01 = default;
 				MouseLeft = false;
 				MouseRight = false;

@@ -5,6 +5,9 @@ TextureImporter:
   - first:
       213: -276690949747384050
     second: Test BG
+  - first:
+      213: -8936743885129895090
+    second: Pixel BG
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -88,8 +91,8 @@ TextureImporter:
       name: Test BG
       rect:
         serializedVersion: 2
-        x: 46
-        y: 59
+        x: 1
+        y: 1
         width: 16
         height: 16
       alignment: 9
@@ -101,6 +104,27 @@ TextureImporter:
       bones: []
       spriteID: e01edb31c0ff82cf0800000000000000
       internalID: -276690949747384050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pixel BG
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 1
+        width: 1
+        height: 1
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e43303e09ce4af380800000000000000
+      internalID: -8936743885129895090
       vertices: []
       indices: 
       edges: []
@@ -117,6 +141,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Test BG: -276690949747384050
+      Pixel BG: -8936743885129895090
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

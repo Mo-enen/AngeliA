@@ -55,6 +55,7 @@ namespace AngeliaFramework.Editor {
 		private NineSliceSprites DraggingRectFrame = new(NineSliceSprites.PIXEL_FRAME_3);
 		private bool FocusingGameView = false;
 		private static bool RequireChangeDebugMode = false;
+		private static readonly Dictionary<int, System.Type> EntityPool = new();
 
 		// Saving
 		private static readonly EditorSavingInt SelectingToolIndex = new("MapEditor.SelectingToolIndex", 0);
@@ -124,7 +125,7 @@ namespace AngeliaFramework.Editor {
 			Update_MouseMid();
 			Update_Key();
 			Update_Gizmos(frame);
-			PrevMousePos = FrameInput.MousePosition;
+			PrevMousePos = FrameInput.MouseScreenPosition;
 		}
 
 
@@ -275,7 +276,7 @@ namespace AngeliaFramework.Editor {
 			if (!Game.DebugMode || !FocusingGameView) return;
 			// Right Drag/Click
 			if (FrameInput.MouseRight) {
-				var mouseScreenPos = FrameInput.MousePosition;
+				var mouseScreenPos = FrameInput.MouseScreenPosition;
 				if (!MouseRightDownPos.HasValue) {
 					// Down
 					MouseRightDownPos = mouseScreenPos;
@@ -300,13 +301,13 @@ namespace AngeliaFramework.Editor {
 				if (!ViewPivotPosition.HasValue) {
 					// Pick
 					Pick(
-						MouseRightDownPos.Value.x * ((float)CameraRect.width / Screen.width).RoundToInt(),
-						MouseRightDownPos.Value.y * ((float)CameraRect.height / Screen.height).RoundToInt()
+						(int)Util.RemapUnclamped(0, Screen.width, CameraRect.xMin, CameraRect.xMax, FrameInput.MouseScreenPosition.x),
+						(int)Util.RemapUnclamped(0, Screen.height, CameraRect.yMin, CameraRect.yMax, FrameInput.MouseScreenPosition.y)
 					);
 				} else {
 					// Moving
-					if (FrameInput.MousePosition != PrevMousePos) {
-						var delta = (PrevMousePos - FrameInput.MousePosition) * 7;
+					if (FrameInput.MouseScreenPosition != PrevMousePos) {
+						var delta = (PrevMousePos - FrameInput.MouseScreenPosition) * 7;
 						Game.SetViewPositionDely(
 							(int)(Game.ViewRect.x + delta.x * (float)CameraRect.width / Screen.width),
 							(int)(Game.ViewRect.y + delta.y * (float)CameraRect.height / Screen.height),
@@ -439,13 +440,19 @@ namespace AngeliaFramework.Editor {
 
 		// Pick
 		private void Pick (int globalX, int globalY) {
+			SelectingUnit = null;
 			if (Game.WorldSquad.GetEntityAt(globalX, globalY, out var entity)) {
 				SelectingUnit = new() {
-					//TypeFullName = ,
+					TypeFullName = GetEntityTypeWithID(entity.TypeID).FullName,
 				};
-			} else if (Game.WorldSquad.GetBlockAt(globalX, globalY, out var block)) {
-
-
+			} else if (Game.WorldSquad.GetBlockAt(globalX, globalY, out var block, out var layer)) {
+				SelectingUnit = new() {
+					BlockID = block.TypeID,
+					BlockLayer = layer,
+					IsTrigger = block.IsTrigger,
+					Tag = block.Tag,
+					TypeFullName = "",
+				};
 			}
 			MapPaletteWindow.RequireClearSelection();
 		}
@@ -471,6 +478,16 @@ namespace AngeliaFramework.Editor {
 					SpritePool.TryAdd(type.ACode(), SpritePool[e.Thumbnail]);
 				}
 			}
+		}
+
+
+		private static System.Type GetEntityTypeWithID (int id) {
+			if (EntityPool.Count == 0) {
+				foreach (var type in typeof(Entity).GetAllChildClass()) {
+					EntityPool.TryAdd(type.ACode(), type);
+				}
+			}
+			return EntityPool.ContainsKey(id) ? EntityPool[id] : null;
 		}
 
 
