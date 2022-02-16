@@ -10,7 +10,7 @@ using Moenen.Standard;
 
 
 namespace AngeliaFramework.Editor {
-	public class EntityDebuger : EditorWindow {
+	public class EntityDebugger : EditorWindow {
 
 
 
@@ -30,7 +30,7 @@ namespace AngeliaFramework.Editor {
 		};
 
 		// Short
-		private static EntityDebuger Main = null;
+		private static EntityDebugger Main = null;
 		private static GUIStyle CMDTextAreaStyle => _CMDTextAreaStyle ??= new GUIStyle(GUI.skin.textArea) {
 			fontSize = 14,
 			contentOffset = new Vector2(2, 4),
@@ -75,7 +75,7 @@ namespace AngeliaFramework.Editor {
 			// State Change
 			EditorApplication.playModeStateChanged += (mode) => {
 
-				if (!HasOpenInstances<EntityDebuger>()) { return; }
+				if (!HasOpenInstances<EntityDebugger>()) { return; }
 
 				// Enter Edit
 				if (mode == PlayModeStateChange.EnteredEditMode) {
@@ -140,6 +140,14 @@ namespace AngeliaFramework.Editor {
 				if (GUI.Button(Layout.Rect(24, 20), GlobalIconContent, EditorStyles.toolbarButton)) {
 					LanguageEditor.OpenEditor();
 				}
+
+				// LDTK
+				if (GUI.Button(Layout.Rect(24, 20), "", EditorStyles.toolbarButton)) {
+					LdtkToolkitWindow.OpenWindow();
+				}
+				GUI.Label(Layout.LastRect(), "L D\nT K", Layout.CenteredMiniMiniBoldLabel);
+
+
 				Layout.Rect(0, 20);
 
 				// Dirty Mark
@@ -335,6 +343,10 @@ namespace AngeliaFramework.Editor {
 					EntityDirtyFlag = Game.EntityDirtyFlag;
 					Repaint();
 				}
+				if (SelectingEntity != null && !SelectingEntity.Active) {
+					SelectingEntity = null;
+					Selection.activeObject = null;
+				}
 			}
 		}
 
@@ -349,7 +361,7 @@ namespace AngeliaFramework.Editor {
 				});
 			}
 			// Selection
-			if (SelectingEntity != null) {
+			if (SelectingEntity != null && SelectingEntity.Active) {
 				byte alpha = (byte)(Time.time % 0.618f > 0.618f / 2f ? 255 : 128);
 				CellGUI.Draw_9Slice(
 					SelectingEntity.Rect, new Color32(255, 255, 255, alpha), NineSliceSprites.PIXEL_FRAME_6
@@ -400,9 +412,9 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private static EntityDebuger GetOrCreateWindow () {
+		private static EntityDebugger GetOrCreateWindow () {
 			try {
-				var window = GetWindow<EntityDebuger>(WINDOW_TITLE, false);
+				var window = GetWindow<EntityDebugger>(WINDOW_TITLE, false);
 				window.minSize = new Vector2(275, 400);
 				window.maxSize = new Vector2(600, 1000);
 				window.titleContent = EditorGUIUtility.IconContent("UnityEditor.ConsoleWindow");
