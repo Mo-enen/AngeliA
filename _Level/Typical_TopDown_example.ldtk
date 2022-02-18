@@ -9,7 +9,7 @@
 		"url": "https://ldtk.io"
 	},
 	"jsonVersion": "0.9.3",
-	"nextUid": 86,
+	"nextUid": 99,
 	"worldLayout": "Free",
 	"worldGridWidth": 256,
 	"worldGridHeight": 256,
@@ -323,7 +323,7 @@
 			"pxOffsetY": 0,
 			"requiredTags": [],
 			"excludedTags": [],
-			"intGridValues": [{ "value": 1, "identifier": "walls", "color": "#7E7E7E" }],
+			"intGridValues": [{ "value": 1, "identifier": "walls", "color": "#BFBFBF" }],
 			"autoTilesetDefUid": 1,
 			"autoRuleGroups": [
 				{ "uid": 78, "name": "walls", "active": true, "collapsed": false, "isOptional": false, "rules": [
@@ -767,7 +767,7 @@
 			"padding": 0,
 			"tagsSourceEnumUid": null,
 			"enumTags": [],
-			"customData": [],
+			"customData": [ { "tileId": 0, "data": "Test Data" }, { "tileId": 1, "data": "Test data 2\n123\n\nasfd" } ],
 			"savedSelections": [
 				{ "ids": [83,84,85], "mode": "Random" },
 				{ "ids": [77,78,79,80,81,82], "mode": "Random" },
@@ -804,12 +804,12 @@
 			}
 		}
 	], "enums": [{ "identifier": "Item", "uid": 66, "values": [
-		{ "id": "Scraps", "tileId": 235, "color": -1, "__tileSrcRect": [176,224,16,16] },
-		{ "id": "Battery", "tileId": 234, "color": -1, "__tileSrcRect": [160,224,16,16] },
-		{ "id": "Food", "tileId": 297, "color": -1, "__tileSrcRect": [144,288,16,16] },
-		{ "id": "Health", "tileId": 542, "color": -1, "__tileSrcRect": [224,528,16,16] },
-		{ "id": "PowerOrb", "tileId": 1365, "color": -1, "__tileSrcRect": [80,1360,16,16] },
-		{ "id": "Key", "tileId": 510, "color": -1, "__tileSrcRect": [224,496,16,16] }
+		{ "id": "Scraps", "tileId": 235, "color": 7829367, "__tileSrcRect": [176,224,16,16] },
+		{ "id": "Battery", "tileId": 234, "color": 10057557, "__tileSrcRect": [160,224,16,16] },
+		{ "id": "Food", "tileId": 297, "color": 10057574, "__tileSrcRect": [144,288,16,16] },
+		{ "id": "Health", "tileId": 542, "color": 11176072, "__tileSrcRect": [224,528,16,16] },
+		{ "id": "PowerOrb", "tileId": 1365, "color": 10053171, "__tileSrcRect": [80,1360,16,16] },
+		{ "id": "Key", "tileId": 510, "color": 8947848, "__tileSrcRect": [224,496,16,16] }
 	], "iconTilesetUid": 67, "externalRelPath": null, "externalFileChecksum": null }], "externalEnums": [], "levelFields": [
 		{
 			"identifier": "tutorial",

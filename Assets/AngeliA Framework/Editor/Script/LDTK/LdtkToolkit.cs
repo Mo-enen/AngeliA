@@ -20,8 +20,8 @@ namespace LdtkToAngeliA {
 			foreach (var file in Util.GetFilesIn(Util.GetParentPath(Application.dataPath), false, "*.ldtk")) {
 				try {
 					var json = Util.FileToText(file.FullName);
-					var ldtkLevel = JsonUtility.FromJson<LdtkLevel>(json);
-					bool success = LoadLdtkLevel(ldtkLevel, mapRoot);
+					var ldtk = JsonUtility.FromJson<LdtkProject>(json);
+					bool success = LoadLdtkLevel(ldtk, mapRoot);
 					if (success) successCount++;
 				} catch (System.Exception ex) {
 					Debug.LogException(ex);
@@ -44,8 +44,10 @@ namespace LdtkToAngeliA {
 		}
 
 
-		private static bool LoadLdtkLevel (LdtkLevel level, string mapRoot) {
-			if (level == null) return false;
+		private static bool LoadLdtkLevel (LdtkProject project, string mapRoot) {
+
+
+
 
 
 
