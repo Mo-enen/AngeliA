@@ -5,7 +5,8 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public class WorldData {
+	[System.Serializable]
+	public class World {
 
 
 
@@ -13,6 +14,8 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
+
+		[System.Serializable]
 		public struct Block {
 			public int TypeID;
 			public int Tag;
@@ -25,6 +28,8 @@ namespace AngeliaFramework {
 		}
 
 
+
+		[System.Serializable]
 		public struct Entity {
 			public long InstanceID;
 			public int TypeID;
@@ -49,7 +54,6 @@ namespace AngeliaFramework {
 
 		// Callback
 		public static event VoidObjectHandler OnMapFilled = null;
-		public static event BoolHandler AllowWorldGenerator = null;
 
 		// Api
 		public RectInt FilledUnitRect => new(
@@ -58,13 +62,15 @@ namespace AngeliaFramework {
 			Const.WORLD_MAP_SIZE,
 			Const.WORLD_MAP_SIZE
 		);
-		public Block[,,] Blocks { get; set; } = null;
-		public Entity[,] Entities { get; set; } = null;
 		public Vector2Int FilledPosition { get; private set; } = default;
 		public bool IsFilling { get; private set; } = false;
 
 		// Short
 		private bool AsyncReady => FillingTask.IsCompleted && (LoadingRequest == null || LoadingRequest.isDone);
+
+		// Ser
+		[SerializeField] Block[] m_Blocks = null;
+		[SerializeField] Entity[] m_Entities = null;
 
 		// Data
 		private Task FillingTask = Task.CompletedTask;
@@ -79,11 +85,23 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public WorldData () {
-			Blocks = new Block[Const.WORLD_MAP_SIZE, Const.WORLD_MAP_SIZE, Const.BLOCK_LAYER_COUNT];
-			Entities = new Entity[Const.WORLD_MAP_SIZE, Const.WORLD_MAP_SIZE];
+		public World () {
+			m_Blocks = new Block[Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE * Const.BLOCK_LAYER_COUNT];
+			m_Entities = new Entity[Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE];
 			FilledPosition = new(int.MinValue, int.MinValue);
 		}
+
+
+		// Get
+		public Block GetBlock (int localX, int localY, int layer) => m_Blocks[
+			layer * Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE +
+			localY * Const.WORLD_MAP_SIZE + localX
+		];
+
+
+		public Entity GetEntity (int localX, int localY) => m_Entities[
+			localY * Const.WORLD_MAP_SIZE + localX
+		];
 
 
 		// Fill
@@ -103,72 +121,79 @@ namespace AngeliaFramework {
 		}
 
 
-		public void Fill (Vector2Int pos) => Fill(Resources.Load<MapObject>($"Map/{pos.x}_{pos.y}"), pos);
+		public bool Fill (Vector2Int pos) => Fill(Resources.Load<MapObject>($"Map/{pos.x}_{pos.y}"), pos);
 
 
-		public void Fill (MapObject source, Vector2Int pos) {
+		public bool Fill (Vector2Int pos, out MapObject map) => Fill(map = Resources.Load<MapObject>($"Map/{pos.x}_{pos.y}"), pos);
+
+
+		public bool Fill (MapObject source, Vector2Int pos) {
 			IsFilling = true;
+			bool success = false;
 			try {
-				System.Array.Clear(Blocks, 0, Blocks.Length);
-				System.Array.Clear(Entities, 0, Entities.Length);
+				System.Array.Clear(m_Blocks, 0, m_Blocks.Length);
+				System.Array.Clear(m_Entities, 0, m_Entities.Length);
 				FilledPosition = pos;
 				if (source == null) {
 					IsFilling = false;
-					return;
+					return false;
 				}
-				if (source.IsProcedure && AllowWorldGenerator()) {
+				if (source.IsProcedure) {
 					// Procedure
 					source.CreateProcedureGenerator().FillWorld(this, pos);
 				} else {
 					// Static
 					// Blocks
-					int bWidth = Blocks.GetLength(0);
-					int bHeight = Blocks.GetLength(1);
-					int bDepth = Blocks.GetLength(2);
+					int bWidth = Const.WORLD_MAP_SIZE;
+					int bHeight = Const.WORLD_MAP_SIZE;
+					int bDepth = Const.BLOCK_LAYER_COUNT;
 					foreach (var block in source.Map.Blocks) {
 						if (
 							block.X < 0 || block.X >= bWidth ||
 							block.Y < 0 || block.Y >= bHeight ||
 							block.Layer < 0 || block.Layer >= bDepth
 						) continue;
-						Blocks[block.X, block.Y, block.Layer].SetValues(
+						m_Blocks[block.Layer * bWidth * bHeight + block.Y * bWidth + block.X].SetValues(
 							block.TypeID, block.Tag, block.IsTrigger
 						);
 					}
 					// Entities
-					int eWidth = Entities.GetLength(0);
-					int eHeight = Entities.GetLength(1);
+					int eWidth = Const.WORLD_MAP_SIZE;
+					int eHeight = Const.WORLD_MAP_SIZE;
 					for (int i = 0; i < source.Map.Entities.Length; i++) {
 						var entity = source.Map.Entities[i];
 						if (
 							entity.X < 0 || entity.X >= eWidth ||
 							entity.Y < 0 || entity.Y >= eHeight
 						) continue;
-						Entities[entity.X, entity.Y].SetValues(
+						m_Entities[entity.Y * eWidth + entity.X].SetValues(
 							AUtil.GetEntityInstanceID(pos.x, pos.y, i),
 							entity.TypeID
 						);
 					}
 				}
+				success = true;
 			} catch (System.Exception ex) {
 #if UNITY_EDITOR
 				Debug.LogException(ex);
 #endif
 			}
 			IsFilling = false;
-			OnMapFilled(source);
+			OnMapFilled?.Invoke(source);
+			return success;
 		}
 
 
 #if UNITY_EDITOR
 		public void EditorOnly_SaveToDisk (MapObject mapObject) {
 			if (IsFilling || mapObject == null) return;
+			const int SIZE = Const.WORLD_MAP_SIZE;
 			// Blocks
 			var blocks = new List<Map.Block>();
 			for (int layer = 0; layer < Const.BLOCK_LAYER_COUNT; layer++) {
-				for (int y = 0; y < Const.WORLD_MAP_SIZE; y++) {
-					for (int x = 0; x < Const.WORLD_MAP_SIZE; x++) {
-						var block = Blocks[x, y, layer];
+				for (int y = 0; y < SIZE; y++) {
+					for (int x = 0; x < SIZE; x++) {
+						var block = m_Blocks[layer * SIZE * SIZE + y * SIZE + x];
 						if (block.TypeID == 0) continue;
 						blocks.Add(new(
 							block.TypeID, x, y, layer, block.Tag, block.IsTrigger
@@ -179,9 +204,9 @@ namespace AngeliaFramework {
 			mapObject.Map.Blocks = blocks.ToArray();
 			// Entities
 			var entities = new List<Map.Entity>();
-			for (int y = 0; y < Const.WORLD_MAP_SIZE; y++) {
-				for (int x = 0; x < Const.WORLD_MAP_SIZE; x++) {
-					var entity = Entities[x, y];
+			for (int y = 0; y < SIZE; y++) {
+				for (int x = 0; x < SIZE; x++) {
+					var entity = m_Entities[y * SIZE + x];
 					if (entity.TypeID == 0) continue;
 					entities.Add(new(entity.TypeID, x, y));
 				}

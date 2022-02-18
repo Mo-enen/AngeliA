@@ -30,13 +30,13 @@ namespace AngeliaFramework {
 		}
 
 		// Data
-		public readonly WorldData[,] Worlds = new WorldData[3, 3] {
+		public readonly World[,] Worlds = new World[3, 3] {
 			{ new(), new(), new() },
 			{ new(), new(), new() },
 			{ new(), new(), new() },
 		};
-		private WorldData[,] WorldBuffer = new WorldData[3, 3];
-		private WorldData[] WorldBufferAlt = new WorldData[9];
+		private World[,] WorldBuffer = new World[3, 3];
+		private World[] WorldBufferAlt = new World[9];
 
 
 		#endregion
@@ -69,7 +69,7 @@ namespace AngeliaFramework {
 
 
 		// Iter
-		public IEnumerable<(WorldData.Block block, int globalX, int globalY, BlockLayer layer)> ForAllBlocksInsideAllLayers (RectInt globalUnitRect) {
+		public IEnumerable<(World.Block block, int globalX, int globalY, BlockLayer layer)> ForAllBlocksInsideAllLayers (RectInt globalUnitRect) {
 			for (int layer = 0; layer < Const.BLOCK_LAYER_COUNT; layer++) {
 				foreach (var pair in ForAllBlocksInside(globalUnitRect, (BlockLayer)layer)) {
 					yield return pair;
@@ -78,7 +78,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public IEnumerable<(WorldData.Block block, int globalX, int globalY, BlockLayer layer)> ForAllBlocksInside (RectInt globalUnitRect, BlockLayer layer) {
+		public IEnumerable<(World.Block block, int globalX, int globalY, BlockLayer layer)> ForAllBlocksInside (RectInt globalUnitRect, BlockLayer layer) {
 			int layerIndex = (int)layer;
 			for (int worldI = 0; worldI <= 2; worldI++) {
 				for (int worldJ = 0; worldJ <= 2; worldJ++) {
@@ -92,7 +92,7 @@ namespace AngeliaFramework {
 					int unitU = Mathf.Min(globalUnitRect.yMax, worldUnitRect.yMax);
 					for (int j = unitD; j < unitU; j++) {
 						for (int i = unitL; i < unitR; i++) {
-							var block = world.Blocks[i - worldUnitRect.x, j - worldUnitRect.y, layerIndex];
+							var block = world.GetBlock(i - worldUnitRect.x, j - worldUnitRect.y, layerIndex);
 							if (block.TypeID == 0) continue;
 							yield return (block, i * Const.CELL_SIZE, j * Const.CELL_SIZE, layer);
 						}
@@ -102,7 +102,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public IEnumerable<(WorldData.Entity entity, int globalX, int globalY)> ForAllEntitiesInside (RectInt globalUnitRect) {
+		public IEnumerable<(World.Entity entity, int globalX, int globalY)> ForAllEntitiesInside (RectInt globalUnitRect) {
 			for (int worldI = 0; worldI <= 2; worldI++) {
 				for (int worldJ = 0; worldJ <= 2; worldJ++) {
 					var world = Worlds[worldI, worldJ];
@@ -115,7 +115,7 @@ namespace AngeliaFramework {
 					int unitU = Mathf.Min(globalUnitRect.yMax, worldUnitRect.yMax);
 					for (int j = unitD; j < unitU; j++) {
 						for (int i = unitL; i < unitR; i++) {
-							var entity = world.Entities[i - worldUnitRect.x, j - worldUnitRect.y];
+							var entity = world.GetEntity(i - worldUnitRect.x, j - worldUnitRect.y);
 							if (entity.TypeID == 0) continue;
 							yield return (entity, i * Const.CELL_SIZE, j * Const.CELL_SIZE);
 						}
@@ -126,7 +126,7 @@ namespace AngeliaFramework {
 
 
 		// Get
-		public bool GetBlockAt (int globalX, int globalY, out WorldData.Block block, out BlockLayer layer) {
+		public bool GetBlockAt (int globalX, int globalY, out World.Block block, out BlockLayer layer) {
 			for (int i = Const.BLOCK_LAYER_COUNT - 1; i >= 0; i--) {
 				layer = (BlockLayer)i;
 				if (GetBlockAt(globalX, globalY, layer, out block)) {
@@ -139,7 +139,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public bool GetBlockAt (int globalX, int globalY, BlockLayer layer, out WorldData.Block block) {
+		public bool GetBlockAt (int globalX, int globalY, BlockLayer layer, out World.Block block) {
 			int unitX = globalX.Divide(Const.CELL_SIZE);
 			int unitY = globalY.Divide(Const.CELL_SIZE);
 			var allWorldUnitRect = new RectInt(
@@ -151,11 +151,11 @@ namespace AngeliaFramework {
 					for (int worldI = 0; worldI <= 2; worldI++) {
 						var world = Worlds[worldI, worldJ];
 						if (world.FilledUnitRect.Contains(unitX, unitY)) {
-							var _block = world.Blocks[
+							var _block = world.GetBlock(
 								unitX - world.FilledPosition.x * Const.WORLD_MAP_SIZE,
 								unitY - world.FilledPosition.y * Const.WORLD_MAP_SIZE,
 								(int)layer
-							];
+							);
 							if (_block.TypeID == 0) continue;
 							block = _block;
 							return true;
@@ -168,7 +168,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public bool GetEntityAt (int globalX, int globalY, out WorldData.Entity entity) {
+		public bool GetEntityAt (int globalX, int globalY, out World.Entity entity) {
 			int unitX = globalX.Divide(Const.CELL_SIZE);
 			int unitY = globalY.Divide(Const.CELL_SIZE);
 			var allWorldUnitRect = new RectInt(Worlds[0, 0].FilledPosition * Const.WORLD_MAP_SIZE, Vector2Int.one * (3 * Const.WORLD_MAP_SIZE));
@@ -177,10 +177,10 @@ namespace AngeliaFramework {
 					for (int worldI = 0; worldI <= 2; worldI++) {
 						var world = Worlds[worldI, worldJ];
 						if (world.FilledUnitRect.Contains(unitX, unitY)) {
-							var _entity = world.Entities[
+							var _entity = world.GetEntity(
 								unitX - world.FilledPosition.x * Const.WORLD_MAP_SIZE,
 								unitY - world.FilledPosition.y * Const.WORLD_MAP_SIZE
-							];
+							);
 							if (_entity.TypeID == 0) continue;
 							entity = _entity;
 							return true;
@@ -236,6 +236,12 @@ namespace AngeliaFramework {
 						alt++;
 					}
 				}
+			}
+
+			// Clear Buffer
+			for (int i = 0; i < 9; i++) {
+				WorldBuffer[i / 3, i % 3] = null;
+				WorldBufferAlt[i] = null;
 			}
 		}
 

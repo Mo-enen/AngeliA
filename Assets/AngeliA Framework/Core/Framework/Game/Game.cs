@@ -32,7 +32,6 @@ namespace AngeliaFramework {
 		public RectInt ViewRect { get; private set; } = new(0, 0, Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, Const.MIN_VIEW_WIDTH, Const.MAX_VIEW_WIDTH), Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, Const.MIN_VIEW_HEIGHT, Const.MAX_VIEW_HEIGHT));
 		public int EntityDirtyFlag { get; private set; } = 0;
 		public int GlobalFrame { get; private set; } = 0;
-		public bool DebugMode { get; set; } = false;
 
 		// Ser
 		[SerializeField] GameData m_Data = null;
@@ -105,7 +104,6 @@ namespace AngeliaFramework {
 				UnityEditor.EditorApplication.ExitPlaymode();
 				return;
 			}
-			DebugMode = false;
 #endif
 			// Pipeline
 			Init_System();
@@ -266,10 +264,9 @@ namespace AngeliaFramework {
 
 
 		private void Init_Misc () {
-			WorldData.OnMapFilled += (obj) => {
+			World.OnMapFilled += (obj) => {
 				UnloadAssetStack.Push(obj);
 			};
-			WorldData.AllowWorldGenerator += () => !DebugMode;
 			WorldSquad.BeforeWorldShift += () => { };
 			// Asset Pool
 			foreach (var asset in m_Data.Assets) {
@@ -348,37 +345,19 @@ namespace AngeliaFramework {
 				}
 
 				// Entities
-				if (!DebugMode) {
-					// Real Entity
-					foreach (var (entity, x, y) in WorldSquad.ForAllEntitiesInside(spawnUnitRect)) {
-						if (!EntityHandlerPool.ContainsKey(entity.TypeID)) continue;
-						int unitX = x.Divide(Const.CELL_SIZE);
-						int unitY = y.Divide(Const.CELL_SIZE);
-						if (LoadedUnitRect.Contains(unitX, unitY)) continue;
-						if (!spawnUnitRect.Contains(unitX, unitY)) continue;
-						var e = EntityHandlerPool[entity.TypeID].Invoke();
-						e.InstanceID = entity.InstanceID;
-						e.X = x;
-						e.Y = y;
-						AddEntity(e);
-					}
-				} else {
-					// Thumbnail Only
-					var _rect = rect;
-					foreach (var (entity, x, y) in WorldSquad.ForAllEntitiesInside(spawnUnitRect)) {
-						if (EntityThumbnailPool.TryGetValue(entity.TypeID, out int thumbnail)) {
-							_rect.x = x;
-							_rect.y = y;
-							_rect.width = rect.width;
-							_rect.height = rect.height;
-							var uv = CellRenderer.GetUVRect(thumbnail);
-							if ((uv.Width * uv.Height).NotAlmostZero()) {
-								_rect = _rect.Fit((int)(uv.Width * 100000), (int)(uv.Height * 100000));
-							}
-							CellRenderer.Draw(thumbnail, _rect, new Color32(255, 255, 255, 255));
-						}
-					}
+				foreach (var (entity, x, y) in WorldSquad.ForAllEntitiesInside(spawnUnitRect)) {
+					if (!EntityHandlerPool.ContainsKey(entity.TypeID)) continue;
+					int unitX = x.Divide(Const.CELL_SIZE);
+					int unitY = y.Divide(Const.CELL_SIZE);
+					if (LoadedUnitRect.Contains(unitX, unitY)) continue;
+					if (!spawnUnitRect.Contains(unitX, unitY)) continue;
+					var e = EntityHandlerPool[entity.TypeID].Invoke();
+					e.InstanceID = entity.InstanceID;
+					e.X = x;
+					e.Y = y;
+					AddEntity(e);
 				}
+
 
 				LoadedUnitRect = spawnUnitRect;
 			}
@@ -404,13 +383,7 @@ namespace AngeliaFramework {
 				ref int eLen = ref EntityLength[layerIndex];
 				for (int i = 0; i < eLen; i++) {
 					var entity = entities[i];
-					if (
-#if UNITY_EDITOR
-						(DebugMode && layerIndex != (int)EntityLayer.Debug) ||
-#endif
-						!entity.Active ||
-						(entity.Despawnable && !DespawnRect.Contains(entity.X, entity.Y))
-					) {
+					if (!entity.Active || (entity.Despawnable && !DespawnRect.Contains(entity.X, entity.Y))) {
 						changed = true;
 						entity.OnDespawn(GlobalFrame);
 						StagedEntityHash.Remove(entity.InstanceID);
@@ -498,9 +471,6 @@ namespace AngeliaFramework {
 
 		// Entity
 		public void AddEntity (Entity entity) {
-#if UNITY_EDITOR
-			if (DebugMode && entity.Layer != EntityLayer.Debug) return;
-#endif
 			if (entity.InstanceID == 0) {
 				entity.InstanceID = Entity.NewDynamicInstanceID();
 			}
@@ -571,6 +541,7 @@ namespace AngeliaFramework {
 
 
 		#endregion
+
 
 
 

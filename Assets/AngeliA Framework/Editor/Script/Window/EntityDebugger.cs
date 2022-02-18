@@ -136,14 +136,15 @@ namespace AngeliaFramework.Editor {
 
 			// Toolbar
 			using (new GUILayout.HorizontalScope(EditorStyles.toolbar)) {
+
 				// Language Editor
 				if (GUI.Button(Layout.Rect(24, 20), GlobalIconContent, EditorStyles.toolbarButton)) {
 					LanguageEditor.OpenEditor();
 				}
 
-				// LDTK
-				if (GUI.Button(Layout.Rect(24, 20), "", EditorStyles.toolbarButton)) {
-					LdtkToolkitWindow.OpenWindow();
+				// LDtk
+				if (GUI.Button(Layout.Rect(24, 20), GUIContent.none, EditorStyles.toolbarButton)) {
+					LdtkToAngeliA.LDtkToolkit.ReloadAllLevels();
 				}
 				GUI.Label(Layout.LastRect(), "L D\nT K", Layout.CenteredMiniMiniBoldLabel);
 
