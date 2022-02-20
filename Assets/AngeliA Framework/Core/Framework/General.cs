@@ -10,8 +10,35 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 public class AngeliaInspectorAttribute : System.Attribute { }
 
 
+[System.AttributeUsage(System.AttributeTargets.Field)]
+public class ACodeIntAttribute : PropertyAttribute { }
+
 
 namespace AngeliaFramework {
+
+
+#if UNITY_EDITOR
+	using UnityEditor;
+	[CustomPropertyDrawer(typeof(ACodeIntAttribute))]
+	public class ACodeIntAttribute_AttributeDrawer : PropertyDrawer {
+		public override void OnGUI (Rect position, SerializedProperty property, GUIContent label) {
+			if (property.propertyType == SerializedPropertyType.Integer) {
+				const int INT_WIDTH = 86;
+				string newText = EditorGUI.DelayedTextField(position.Shrink(0, INT_WIDTH, 0, 0), label, "");
+				if (!string.IsNullOrEmpty(newText)) {
+					property.intValue = newText.ACode();
+				}
+				GUI.Label(
+					position.Shrink(position.width - INT_WIDTH, 0, 0, 0),
+					" " + property.intValue.ToString(),
+					EditorStyles.centeredGreyMiniLabel
+				);
+			} else {
+				EditorGUI.PropertyField(position, property, label, true);
+			}
+		}
+	}
+#endif
 
 
 
@@ -327,14 +354,21 @@ namespace AngeliaFramework {
 			(entityIndex * Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE);
 
 
-		public static int Divide (this int global, int gap) => global > 0 || global % gap == 0 ?
-			global / gap :
-			global / gap - 1;
+		public static int AltDivide (this int value, int gap) =>
+			value > 0 || value % gap == 0 ?
+			value / gap :
+			value / gap - 1;
+
+
+		public static int AltMode (this int value, int gap) =>
+			value > 0 || value % gap == 0 ?
+			value % gap :
+			value % gap + gap;
 
 
 		public static Vector2Int Divide (this Vector2Int v, int gap) {
-			v.x = v.x.Divide(gap);
-			v.y = v.y.Divide(gap);
+			v.x = v.x.AltDivide(gap);
+			v.y = v.y.AltDivide(gap);
 			return v;
 		}
 
@@ -342,6 +376,21 @@ namespace AngeliaFramework {
 		public static RectInt Divide (this RectInt rect, int gap) {
 			rect.SetMinMax(rect.min.Divide(gap), rect.max.Divide(gap));
 			return rect;
+		}
+
+
+		// AngeliA Hash Code
+		public static int ACode (this System.Type type) => type.Name.ACode();
+		public static int ACode (this string str) {
+			const int p = 31;
+			const int m = 1837465129;
+			int hash_value = 0;
+			int p_pow = 1;
+			foreach (var c in str) {
+				hash_value = (hash_value + (c - 'a' + 1) * p_pow) % m;
+				p_pow = (p_pow * p) % m;
+			}
+			return hash_value == 0 ? 1 : hash_value;
 		}
 
 

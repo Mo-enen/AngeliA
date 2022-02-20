@@ -3,14 +3,16 @@
 namespace LdtkToAngeliA {
 	[System.Serializable]
 	public partial class EntityInstance {
+
 		/// <summary>
 		/// Entity definition identifier
 		/// </summary>
 		public string __identifier;
+
 		/// <summary>
 		/// Grid-based coordinates (`[x,y]` format)
 		/// </summary>
-		public long[] __grid;
+		public int[] __grid;
 
 
 		/// <summary>
@@ -27,7 +29,7 @@ namespace LdtkToAngeliA {
 		/// <summary>
 		/// Reference of the **Entity definition** UID
 		/// </summary>
-		public long defUid;
+		public int defUid;
 
 		/// <summary>
 		/// An array of all custom fields and their values.
@@ -38,18 +40,18 @@ namespace LdtkToAngeliA {
 		/// Entity height in pixels. For non-resizable entities, it will be the same as Entity
 		/// definition.
 		/// </summary>
-		public long height;
+		public int height;
 
 		/// <summary>
 		/// Pixel coordinates (`[x,y]` format) in current level coordinate space. Don't forget
 		/// optional layer offsets, if they exist!
 		/// </summary>
-		public long[] px;
+		public int[] px;
 
 		/// <summary>
 		/// Entity width in pixels. For non-resizable entities, it will be the same as Entity
 		/// definition.
 		/// </summary>
-		public long width;
+		public int width;
 	}
 }

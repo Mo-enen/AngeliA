@@ -13,7 +13,7 @@ namespace AngeliaFramework {
 
 			[System.Serializable]
 			public struct EntityItem {
-				[TypeEnum(typeof(Entity))] public string TypeFullName;
+				[TypeEnum(typeof(Entity))] public string TypeName;
 				public Color32 Color;
 			}
 

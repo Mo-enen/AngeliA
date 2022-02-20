@@ -16,7 +16,7 @@ namespace AngeliaFramework {
 
 		[TypeEnum(typeof(WorldGenerator))]
 		public string GeneratorFullname = "";
-		public Map Map = null;
+		public Map Map = new();
 
 
 		public WorldGenerator CreateProcedureGenerator () {

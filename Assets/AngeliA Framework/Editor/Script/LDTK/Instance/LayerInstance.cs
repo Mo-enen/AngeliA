@@ -2,7 +2,7 @@
 
 namespace LdtkToAngeliA {
 	[System.Serializable]
-	public partial class LayerInstance {
+	public class LayerInstance {
 
 		/// <summary>
 		/// Layer definition identifier

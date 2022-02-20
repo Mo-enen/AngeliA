@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using AngeliaFramework;
+using Moenen.Standard;
 
 
 namespace LdtkToAngeliA {
@@ -59,7 +60,7 @@ namespace LdtkToAngeliA {
 				try {
 					var json = Util.FileToText(file.FullName);
 					var ldtk = JsonUtility.FromJson<LdtkProject>(json);
-					bool success = LoadLdtkLevel(ldtk, mapRoot, tilesetPool);
+					bool success = LoadLdtkLevel(ldtk, tilesetPool);
 					if (success) successCount++;
 				} catch (System.Exception ex) {
 					Debug.LogException(ex);
@@ -85,32 +86,131 @@ namespace LdtkToAngeliA {
 
 		private static bool LoadLdtkLevel (
 			LdtkProject project,
-			string mapRoot,
 			Dictionary<string, Dictionary<Vector2Int, int>> spritePool
 		) {
-
-			// Ldtk >> Pool
-			var worldPool = new Dictionary<Vector2Int, World>();
+			// Ldtk >> World Pool
+			var worldPool = new Dictionary<(int x, int y), World>();
 			foreach (var level in project.levels) {
+				int levelPosX = level.worldX;
+				int levelPosY = level.worldY;
 				foreach (var layer in level.layerInstances) {
+					int gridSize = layer.__gridSize;
+					int offsetX = levelPosX + layer.__pxTotalOffsetX;
+					int offsetY = levelPosY + layer.__pxTotalOffsetY;
+					int blockLayerIndex = (int)LdtkLayerID_to_BlockLayer(layer.__identifier);
 					var tName = Util.GetNameWithoutExtension(layer.__tilesetRelPath);
-					if (!spritePool.ContainsKey(tName)) continue;
-					var sPool = spritePool[tName];
-					foreach (var tile in layer.autoLayerTiles) {
-						if (!sPool.ContainsKey(new(tile.src[0], tile.src[1]))) {
-
-							Debug.LogWarning(tName + " " + new Vector2Int(tile.src[0], tile.src[1]));
-
+					if (!spritePool.ContainsKey(tName) && layer.__type != "Entities") continue;
+					switch (layer.__type) {
+						case "Tiles": {
+							var sPool = spritePool[tName];
+							foreach (var tile in layer.gridTiles) {
+								var srcPos = new Vector2Int(tile.src[0], tile.src[1]);
+								if (sPool.ContainsKey(srcPos)) {
+									ForLdtkTile(
+										tile.px[0] + offsetX,
+										tile.px[1] + offsetY,
+										(_localX, _localY, world) => {
+											ref var block = ref world.Blocks[
+												blockLayerIndex * Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE +
+												_localY * Const.WORLD_MAP_SIZE + _localX
+											];
+											block.TypeID = sPool[srcPos];
+										}
+									);
+								}
+							}
+							break;
 						}
+
+						case "IntGrid":
+						case "AutoLayer": {
+							var sPool = spritePool[tName];
+							foreach (var tile in layer.autoLayerTiles) {
+								var srcPos = new Vector2Int(tile.src[0], tile.src[1]);
+								if (sPool.ContainsKey(srcPos)) {
+									ForLdtkTile(
+										tile.px[0] + offsetX,
+										tile.px[1] + offsetY,
+										(_localX, _localY, world) => {
+											ref var block = ref world.Blocks[
+												blockLayerIndex * Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE +
+												_localY * Const.WORLD_MAP_SIZE + _localX
+											];
+											block.TypeID = sPool[srcPos];
+										}
+									);
+								}
+							}
+							break;
+						}
+
+						case "Entities":
+							foreach (var entity in layer.entityInstances) {
+								ForLdtkTile(
+									entity.px[0] - (int)(entity.__pivot[0] * entity.width) + offsetX,
+									entity.px[1] - (int)(entity.__pivot[1] * entity.height) + offsetY,
+									(_localX, _localY, world) => {
+										ref var e = ref world.Entities[
+											_localY * Const.WORLD_MAP_SIZE + _localX
+										];
+										e.TypeID = entity.__identifier.ACode();
+									}
+								);
+							}
+							break;
+					}
+					// Func
+					void ForLdtkTile (int pixelX, int pixelY, System.Action<int, int, World> action) {
+						int globalX = pixelX * Const.CELL_SIZE / gridSize;
+						int globalY = -pixelY * Const.CELL_SIZE / gridSize - Const.CELL_SIZE;
+						int unitX = globalX.AltDivide(Const.CELL_SIZE);
+						int unitY = globalY.AltDivide(Const.CELL_SIZE);
+						int worldX = unitX.AltDivide(Const.WORLD_MAP_SIZE);
+						int worldY = unitY.AltDivide(Const.WORLD_MAP_SIZE);
+						if (!worldPool.ContainsKey((worldX, worldY))) {
+							worldPool.Add((worldX, worldY), new());
+						}
+						action(
+							unitX.AltMode(Const.WORLD_MAP_SIZE),
+							unitY.AltMode(Const.WORLD_MAP_SIZE),
+							worldPool[(worldX, worldY)]
+						);
 					}
 				}
 			}
 
-			// Pool >> Maps (add into, no replace)
-
-
-
+			// World Pool >> Maps (add into, no replace)
+			var mapPool = new Dictionary<(int x, int y), MapObject>();
+			foreach (var pair in worldPool) {
+				var (x, y) = pair.Key;
+				var world = pair.Value;
+				MapObject mapObj;
+				if (mapPool.ContainsKey((x, y))) {
+					mapObj = mapPool[(x, y)];
+				} else {
+					mapObj = ScriptableObject.CreateInstance<MapObject>();
+					mapPool.Add((x, y), mapObj);
+				}
+				world.EditorOnly_SaveToDisk(mapObj, false);
+			}
+			foreach (var pair in mapPool) {
+				var (x, y) = pair.Key;
+				string mapName = $"{x}_{y}";
+				AssetDatabase.CreateAsset(pair.Value, Util.CombinePaths("Assets", "Resources", "Map", mapName + ".asset"));
+			}
+			AssetDatabase.SaveAssets();
+			AssetDatabase.Refresh();
 			return true;
+		}
+
+
+		private static BlockLayer LdtkLayerID_to_BlockLayer (string id) {
+			for (int i = 0; i < Const.BLOCK_LAYER_COUNT; i++) {
+				if (id.StartsWith(((BlockLayer)i).ToString())) {
+					return (BlockLayer)i;
+				}
+			}
+			return BlockLayer.Background;
 		}
 
 

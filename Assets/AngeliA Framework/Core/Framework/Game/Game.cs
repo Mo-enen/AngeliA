@@ -277,7 +277,7 @@ namespace AngeliaFramework {
 				MinimapColorPool.TryAdd(block.Name.ACode(), block.Color);
 			}
 			foreach (var entity in m_Data.MiniMap.Entities) {
-				MinimapColorPool.TryAdd(entity.TypeFullName.ACode(), entity.Color);
+				MinimapColorPool.TryAdd(entity.TypeName.ACode(), entity.Color);
 			}
 		}
 
@@ -347,8 +347,8 @@ namespace AngeliaFramework {
 				// Entities
 				foreach (var (entity, x, y) in WorldSquad.ForAllEntitiesInside(spawnUnitRect)) {
 					if (!EntityHandlerPool.ContainsKey(entity.TypeID)) continue;
-					int unitX = x.Divide(Const.CELL_SIZE);
-					int unitY = y.Divide(Const.CELL_SIZE);
+					int unitX = x.AltDivide(Const.CELL_SIZE);
+					int unitY = y.AltDivide(Const.CELL_SIZE);
 					if (LoadedUnitRect.Contains(unitX, unitY)) continue;
 					if (!spawnUnitRect.Contains(unitX, unitY)) continue;
 					var e = EntityHandlerPool[entity.TypeID].Invoke();

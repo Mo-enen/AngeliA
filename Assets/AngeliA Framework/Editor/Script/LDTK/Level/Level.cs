@@ -36,22 +36,22 @@ namespace LdtkToAngeliA {
 		/// <summary>
 		/// Height of the level in pixels
 		/// </summary>
-		public long pxHei;
+		public int pxHei;
 
 		/// <summary>
 		/// Width of the level in pixels
 		/// </summary>
-		public long pxWid;
+		public int pxWid;
 
 		/// <summary>
 		/// World X coordinate in pixels
 		/// </summary>
-		public long worldX;
+		public int worldX;
 
 		/// <summary>
 		/// World Y coordinate in pixels
 		/// </summary>
-		public long worldY;
+		public int worldY;
 
 	}
 }

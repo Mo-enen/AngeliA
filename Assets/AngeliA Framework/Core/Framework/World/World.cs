@@ -61,9 +61,12 @@ namespace AngeliaFramework {
 		);
 		public Vector2Int FilledPosition { get; private set; } = default;
 		public bool IsFilling { get; private set; } = false;
+		public Block[] Blocks { get => m_Blocks; set => m_Blocks = value; }
+		public Entity[] Entities { get => m_Entities; set => m_Entities = value; }
 
 		// Short
 		private bool AsyncReady => FillingTask.IsCompleted && (LoadingRequest == null || LoadingRequest.isDone);
+
 
 		// Data
 		private Block[] m_Blocks = null;
@@ -180,11 +183,14 @@ namespace AngeliaFramework {
 
 
 #if UNITY_EDITOR
-		public void EditorOnly_SaveToDisk (MapObject mapObject) {
+		public void EditorOnly_SaveToDisk (MapObject mapObject, bool overrideData = true) {
 			if (IsFilling || mapObject == null) return;
 			const int SIZE = Const.WORLD_MAP_SIZE;
 			// Blocks
 			var blocks = new List<Map.Block>();
+			if (!overrideData) {
+				blocks.AddRange(mapObject.Map.Blocks);
+			}
 			for (int layer = 0; layer < Const.BLOCK_LAYER_COUNT; layer++) {
 				for (int y = 0; y < SIZE; y++) {
 					for (int x = 0; x < SIZE; x++) {
@@ -199,6 +205,9 @@ namespace AngeliaFramework {
 			mapObject.Map.Blocks = blocks.ToArray();
 			// Entities
 			var entities = new List<Map.Entity>();
+			if (!overrideData) {
+				entities.AddRange(mapObject.Map.Entities);
+			}
 			for (int y = 0; y < SIZE; y++) {
 				for (int x = 0; x < SIZE; x++) {
 					var entity = m_Entities[y * SIZE + x];

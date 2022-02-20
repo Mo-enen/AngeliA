@@ -59,8 +59,8 @@ namespace AngeliaFramework {
 			);
 			if (!midZone.Contains(viewPos)) {
 				BeforeWorldShift();
-				int x = viewPos.x.Divide(Const.WORLD_MAP_SIZE * Const.CELL_SIZE);
-				int y = viewPos.y.Divide(Const.WORLD_MAP_SIZE * Const.CELL_SIZE);
+				int x = viewPos.x.AltDivide(Const.WORLD_MAP_SIZE * Const.CELL_SIZE);
+				int y = viewPos.y.AltDivide(Const.WORLD_MAP_SIZE * Const.CELL_SIZE);
 				Shift(x, y);
 				FillSquad(x, y);
 				//FillSquadAsync(x, y);
@@ -140,8 +140,8 @@ namespace AngeliaFramework {
 
 
 		public bool GetBlockAt (int globalX, int globalY, BlockLayer layer, out World.Block block) {
-			int unitX = globalX.Divide(Const.CELL_SIZE);
-			int unitY = globalY.Divide(Const.CELL_SIZE);
+			int unitX = globalX.AltDivide(Const.CELL_SIZE);
+			int unitY = globalY.AltDivide(Const.CELL_SIZE);
 			var allWorldUnitRect = new RectInt(
 				Worlds[0, 0].FilledPosition * Const.WORLD_MAP_SIZE,
 				Vector2Int.one * (3 * Const.WORLD_MAP_SIZE)
@@ -169,8 +169,8 @@ namespace AngeliaFramework {
 
 
 		public bool GetEntityAt (int globalX, int globalY, out World.Entity entity) {
-			int unitX = globalX.Divide(Const.CELL_SIZE);
-			int unitY = globalY.Divide(Const.CELL_SIZE);
+			int unitX = globalX.AltDivide(Const.CELL_SIZE);
+			int unitY = globalY.AltDivide(Const.CELL_SIZE);
 			var allWorldUnitRect = new RectInt(Worlds[0, 0].FilledPosition * Const.WORLD_MAP_SIZE, Vector2Int.one * (3 * Const.WORLD_MAP_SIZE));
 			if (allWorldUnitRect.Contains(unitX, unitY)) {
 				for (int worldJ = 0; worldJ <= 2; worldJ++) {
