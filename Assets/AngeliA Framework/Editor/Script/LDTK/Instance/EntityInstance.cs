@@ -4,25 +4,25 @@ namespace LdtkToAngeliA {
 	[System.Serializable]
 	public partial class EntityInstance {
 		/// <summary>
-		/// Grid-based coordinates (`[x,y]` format)
-		/// </summary>
-		public long[] grid;
-
-		/// <summary>
 		/// Entity definition identifier
 		/// </summary>
-		public string identifier;
+		public string __identifier;
+		/// <summary>
+		/// Grid-based coordinates (`[x,y]` format)
+		/// </summary>
+		public long[] __grid;
+
 
 		/// <summary>
 		/// Pivot coordinates  (`[x,y]` format, values are from 0 to 1) of the Entity
 		/// </summary>
-		public double[] pivot;
+		public double[] __pivot;
 
 		/// <summary>
 		/// Optional Tile used to display this entity (it could either be the default Entity tile, or
 		/// some tile provided by a field value, like an Enum).
 		/// </summary>
-		public EntityInstanceTile tile;
+		public EntityInstanceTile __tile;
 
 		/// <summary>
 		/// Reference of the **Entity definition** UID

@@ -6,18 +6,18 @@ namespace LdtkToAngeliA {
 		/// <summary>
 		/// Field definition identifier
 		/// </summary>
-		public string identifier;
+		public string __identifier;
 
 		/// <summary>
 		/// Type of the field, such as `Int`, `Float`, `Enum(my_enum_name)`, `Bool`, etc.
 		/// </summary>
-		public string type;
+		public string __type;
 
 		/// <summary>
 		/// Actual value of the field instance. The value type may vary, depending on `__type`
 		/// (Integer, Boolean, String etc.)<br/>  It can also be an `Array` of those same types.
 		/// </summary>
-		public object value;
+		public object __value;
 
 		/// <summary>
 		/// Reference of the **Field definition** UID

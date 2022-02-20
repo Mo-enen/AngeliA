@@ -5,7 +5,6 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	[System.Serializable]
 	public class World {
 
 
@@ -15,7 +14,6 @@ namespace AngeliaFramework {
 
 
 
-		[System.Serializable]
 		public struct Block {
 			public int TypeID;
 			public int Tag;
@@ -29,7 +27,6 @@ namespace AngeliaFramework {
 
 
 
-		[System.Serializable]
 		public struct Entity {
 			public long InstanceID;
 			public int TypeID;
@@ -68,11 +65,9 @@ namespace AngeliaFramework {
 		// Short
 		private bool AsyncReady => FillingTask.IsCompleted && (LoadingRequest == null || LoadingRequest.isDone);
 
-		// Ser
-		[SerializeField] Block[] m_Blocks = null;
-		[SerializeField] Entity[] m_Entities = null;
-
 		// Data
+		private Block[] m_Blocks = null;
+		private Entity[] m_Entities = null;
 		private Task FillingTask = Task.CompletedTask;
 		private ResourceRequest LoadingRequest = null;
 

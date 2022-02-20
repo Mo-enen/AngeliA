@@ -92,14 +92,14 @@ namespace AngeliaFramework.Editor {
 	using UnityEngine;
 	using UnityEditor;
 	using System.Text;
-	
+
 	[CustomEditor(typeof(SpriteSheet), true), DisallowMultipleComponent]
 	public class SpriteSheet_Inspector : Editor {
 
 
-		[MenuItem("AngeliA/Reload Sheet Assets")]
+		[MenuItem("AngeliA/Command/Reload Sheet Assets")]
 		private static void ReloadSheetAssets () {
-			foreach (var guid in AssetDatabase.FindAssets("t:SpriteSheet")) {
+			foreach (var guid in AssetDatabase.FindAssets($"t:{nameof(SpriteSheet)}")) {
 				var path = AssetDatabase.GUIDToAssetPath(guid);
 				var sheet = AssetDatabase.LoadAssetAtPath<SpriteSheet>(path);
 				var sprites = new List<Sprite>();
@@ -132,7 +132,7 @@ namespace AngeliaFramework.Editor {
 			DrawPropertiesExcluding(serializedObject, "m_Script");
 			serializedObject.ApplyModifiedProperties();
 			GUILayout.Space(4);
-			if (GUI.Button(GUILayoutUtility.GetRect(0, 24, GUILayout.ExpandWidth(true)), "Reload Sprites fron Texture")) {
+			if (GUI.Button(GUILayoutUtility.GetRect(0, 24, GUILayout.ExpandWidth(true)), "Reload Sprites from Texture")) {
 				ReloadSprites();
 			}
 			if (target is CharSpriteSheet) {

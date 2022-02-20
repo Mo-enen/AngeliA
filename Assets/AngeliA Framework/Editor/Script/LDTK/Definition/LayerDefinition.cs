@@ -6,7 +6,7 @@ namespace LdtkToAngeliA {
 		/// <summary>
 		/// Type of the layer (*IntGrid, Entities, Tiles or AutoLayer*)
 		/// </summary>
-		public string type;
+		public string __type;
 
 		/// <summary>
 		/// Contains all the auto-layer rule definitions.
@@ -90,9 +90,5 @@ namespace LdtkToAngeliA {
 		/// </summary>
 		public TypeEnum layerDefinitionType;
 
-		/// <summary>
-		/// Unique Int identifier
-		/// </summary>
-		public long uid;
 	}
 }

@@ -144,7 +144,7 @@ namespace AngeliaFramework.Editor {
 
 				// LDtk
 				if (GUI.Button(Layout.Rect(24, 20), GUIContent.none, EditorStyles.toolbarButton)) {
-					LdtkToAngeliA.LDtkToolkit.ReloadAllLevels();
+					LdtkToAngeliA.LdtkToolkit.ReloadAllLevels();
 				}
 				GUI.Label(Layout.LastRect(), "L D\nT K", Layout.CenteredMiniMiniBoldLabel);
 

@@ -2,31 +2,20 @@
 
 
 namespace LdtkToAngeliA {
-
-
-	[System.Serializable]
-	public class CustomDataItem {
-		public int tileId;
-		public string data;
-	}
-
-
 	[System.Serializable]
 	public partial class TilesetDefinition {
+
+		public int tileGridSize;
+
 		/// <summary>
 		/// Grid-based height
 		/// </summary>
-		public long cHei;
+		public int cHei;
 
 		/// <summary>
 		/// Grid-based width
 		/// </summary>
-		public long cWid;
-
-		/// <summary>
-		/// An array of custom tile metadata
-		/// </summary>
-		public CustomDataItem[] customData;
+		public int cWid;
 
 		/// <summary>
 		/// Tileset tags using Enum values specified by `tagsSourceEnumId`. This array contains 1
@@ -42,17 +31,17 @@ namespace LdtkToAngeliA {
 		/// <summary>
 		/// Distance in pixels from image borders
 		/// </summary>
-		public long padding;
+		public int padding;
 
 		/// <summary>
 		/// Image height in pixels
 		/// </summary>
-		public long pxHei;
+		public int pxHei;
 
 		/// <summary>
 		/// Image width in pixels
 		/// </summary>
-		public long pxWid;
+		public int pxWid;
 
 		/// <summary>
 		/// Path to the source file, relative to the current project JSON file
@@ -62,18 +51,8 @@ namespace LdtkToAngeliA {
 		/// <summary>
 		/// Space in pixels between all tiles
 		/// </summary>
-		public long spacing;
+		public int spacing;
 
-		/// <summary>
-		/// Optional Enum definition UID used for this tileset meta-data
-		/// </summary>
-		public long? tagsSourceEnumUid;
 
-		public long tileGridSize;
-
-		/// <summary>
-		/// Unique Intidentifier
-		/// </summary>
-		public long uid;
 	}
 }

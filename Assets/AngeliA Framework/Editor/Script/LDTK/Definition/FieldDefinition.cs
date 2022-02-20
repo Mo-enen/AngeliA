@@ -7,7 +7,7 @@ namespace LdtkToAngeliA {
 		/// Human readable value type (eg. `Int`, `Float`, `Point`, etc.). If the field is an array,
 		/// this field will look like `Array<...>` (eg. `Array<Int>`, `Array<Point>` etc.)
 		/// </summary>
-		public string type;
+		public string __type;
 
 		/// <summary>
 		/// Optional list of accepted file extensions for FilePath value type. Includes the dot:
