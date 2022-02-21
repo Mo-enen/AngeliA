@@ -28,6 +28,7 @@ namespace AngeliaFramework.Editor {
 			new (0, 0, 255, 255),
 			new (255, 0, 255, 255),
 		};
+		private const double ARTWORK_ALRT_DURATION = 3d;
 
 		// Short
 		private static EntityDebugger Main = null;
@@ -53,6 +54,9 @@ namespace AngeliaFramework.Editor {
 		private static Entity[][] Entities = null;
 		private static Entity SelectingEntity = null;
 		private static EntityInspector SelectingInspector = null;
+		private static bool PrevUnityFocused = true;
+		private static double RequireAlertTime = double.MinValue;
+		private static string AlertMessage = "";
 		private Vector2 MasterScrollPos = default;
 		private int EntityDirtyFlag = 0;
 
@@ -60,6 +64,7 @@ namespace AngeliaFramework.Editor {
 		private static readonly EditorSavingString EntityInitContent = new("EntityDebuger.EntityInitContent", "");
 		private static readonly EditorSavingBool ShowColliders = new("EntityDebuger.ShowColliders", false);
 		private static readonly EditorSavingString EntityLayerVisible = new("EntityDebuger.EntityLayerVisible", "");
+		private static readonly EditorSavingString LastSyncTick = new("LdtkToolkit.LastSyncTick", "0");
 
 
 		#endregion
@@ -72,6 +77,7 @@ namespace AngeliaFramework.Editor {
 
 		[InitializeOnLoadMethod]
 		private static void Init () {
+
 			// State Change
 			EditorApplication.playModeStateChanged += (mode) => {
 
@@ -79,7 +85,6 @@ namespace AngeliaFramework.Editor {
 
 				// Enter Edit
 				if (mode == PlayModeStateChange.EnteredEditMode) {
-					// Clear Cache
 					Entities = null;
 				}
 
@@ -98,6 +103,41 @@ namespace AngeliaFramework.Editor {
 			UnityEditor.SceneManagement.EditorSceneManager.sceneDirtied += (scene) => {
 				if (Main != null) {
 					Main.Repaint();
+				}
+			};
+
+			// Artwork Dirty Check
+			EditorApplication.update += () => {
+				bool focused = UnityEditorInternal.InternalEditorUtility.isApplicationActive;
+				if (focused != PrevUnityFocused) {
+					PrevUnityFocused = focused;
+					if (focused) {
+						// On Back to Unity
+						if (!long.TryParse(LastSyncTick.Value, out long lastSyncTickValue)) {
+							lastSyncTickValue = 0;
+						}
+						bool ldtk = false;
+						bool ase = false;
+						foreach (var file in Util.GetFilesIn(LdtkToAngeliA.LdtkToolkit.LdtkRoot, false, "*.ldtk")) {
+							try {
+								if (Util.GetModifyDate(file.FullName) > lastSyncTickValue) {
+									ldtk = true;
+									break;
+								}
+							} catch (System.Exception ex) { Debug.LogException(ex); }
+						}
+						foreach (var file in Util.GetFilesIn(Application.dataPath, false, "*.ase", "*.aseprite")) {
+							try {
+								if (Util.GetModifyDate(file.FullName) > lastSyncTickValue) {
+									ase = true;
+									break;
+								}
+							} catch (System.Exception ex) { Debug.LogException(ex); }
+						}
+						if (ldtk || ase) {
+							SyncArtwork(ldtk, ase);
+						}
+					}
 				}
 			};
 
@@ -161,23 +201,35 @@ namespace AngeliaFramework.Editor {
 			// Toolbar
 			using (new GUILayout.HorizontalScope(EditorStyles.toolbar)) {
 
-				// Language Editor
-				if (GUI.Button(Layout.Rect(24, 20), GlobalIconContent, EditorStyles.toolbarButton)) {
-					LanguageEditor.OpenEditor();
-				}
+				double time = EditorApplication.timeSinceStartup;
+				if (time < RequireAlertTime + ARTWORK_ALRT_DURATION) {
+					// Alert
+					EditorGUI.DrawRect(
+						Layout.Rect(0, 20),
+						new Color32(64, 128, 128, (byte)Util.Remap(0f, 0.1f, 200, 255, Mathf.PingPong((float)(time - RequireAlertTime), 0.1f)))
+					);
+					GUI.Label(Layout.LastRect(), AlertMessage, Layout.CenteredLabel);
+				} else {
+					// Bar
+					// Language Editor
+					if (GUI.Button(Layout.Rect(24, 20), GlobalIconContent, EditorStyles.toolbarButton)) {
+						LanguageEditor.OpenEditor();
+					}
 
-				Layout.Rect(0, 20);
+					Layout.Rect(0, 20);
 
-				// Dirty Mark
-				var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-				if (scene.IsValid() && scene.isLoaded && scene.isDirty) {
-					EditorGUI.DrawRect(Layout.Rect(20, 20), new Color32(209, 136, 60, 255));
-					var oldC = GUI.color;
-					GUI.color = new Color32(42, 42, 42, 255);
-					GUI.Label(Layout.LastRect(), SaveIconContent);
-					GUI.color = oldC;
+					// Dirty Mark
+					var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+					if (scene.IsValid() && scene.isLoaded && scene.isDirty) {
+						EditorGUI.DrawRect(Layout.Rect(20, 20), new Color32(209, 136, 60, 255));
+						var oldC = GUI.color;
+						GUI.color = new Color32(42, 42, 42, 255);
+						GUI.Label(Layout.LastRect(), SaveIconContent);
+						GUI.color = oldC;
+					}
+					Layout.Space(2);
+
 				}
-				Layout.Space(2);
 
 			}
 
@@ -197,9 +249,7 @@ namespace AngeliaFramework.Editor {
 
 			// More Buttons
 			if (GUI.Button(Layout.Rect(0, 24), "Sync Artwork")) {
-				ReloadSheetAssets();
-				LdtkToAngeliA.LdtkToolkit.SaveTextureForLDTK();
-				LdtkToAngeliA.LdtkToolkit.ReloadAllLevels();
+				SyncArtwork(true, true);
 			}
 
 		}
@@ -373,6 +423,9 @@ namespace AngeliaFramework.Editor {
 					SelectingEntity = null;
 					Selection.activeObject = null;
 				}
+			}
+			if (EditorApplication.timeSinceStartup < RequireAlertTime + ARTWORK_ALRT_DURATION + 1f) {
+				Repaint();
 			}
 		}
 
@@ -573,6 +626,25 @@ namespace AngeliaFramework.Editor {
 			var builder = new StringBuilder(EntityLayerVisible.Value);
 			builder[index] = visible ? '1' : '0';
 			EntityLayerVisible.Value = builder.ToString();
+		}
+
+
+		private static void SyncArtwork (bool ldtk, bool aseprite) {
+			if (aseprite) {
+				ReloadSheetAssets();
+				LdtkToAngeliA.LdtkToolkit.SaveTextureForLDTK();
+			}
+			if (ldtk) {
+				LdtkToAngeliA.LdtkToolkit.ReloadAllLevels();
+			}
+			LastSyncTick.Value = System.DateTime.Now.Ticks.ToString();
+			LogAlert($"{(ldtk ? "LDTK " : "")}{(aseprite ? "ASE " : "")}Synced");
+		}
+
+
+		private static void LogAlert (string message) {
+			AlertMessage = message;
+			RequireAlertTime = EditorApplication.timeSinceStartup;
 		}
 
 

@@ -10,7 +10,8 @@ namespace LdtkToAngeliA {
 	public static class LdtkToolkit {
 
 
-		private static string LdtkRoot => Util.CombinePaths(Util.GetParentPath(Application.dataPath), "_Level");
+		// Data
+		public static string LdtkRoot => Util.CombinePaths(Util.GetParentPath(Application.dataPath), "_Level");
 
 
 		[MenuItem("AngeliA/Command/Save Texture for LDTK")]
