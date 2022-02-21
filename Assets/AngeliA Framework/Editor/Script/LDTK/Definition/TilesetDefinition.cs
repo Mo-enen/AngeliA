@@ -2,6 +2,15 @@
 
 
 namespace LdtkToAngeliA {
+
+
+	[System.Serializable]
+	public class CustomData {
+		public int tileId;
+		public string data;
+	}
+
+
 	[System.Serializable]
 	public partial class TilesetDefinition {
 
@@ -10,12 +19,12 @@ namespace LdtkToAngeliA {
 		/// <summary>
 		/// Grid-based height
 		/// </summary>
-		public int cHei;
+		public int __cHei;
 
 		/// <summary>
 		/// Grid-based width
 		/// </summary>
-		public int cWid;
+		public int __cWid;
 
 		/// <summary>
 		/// Tileset tags using Enum values specified by `tagsSourceEnumId`. This array contains 1
@@ -53,6 +62,7 @@ namespace LdtkToAngeliA {
 		/// </summary>
 		public int spacing;
 
+		public CustomData[] customData;
 
 	}
 }

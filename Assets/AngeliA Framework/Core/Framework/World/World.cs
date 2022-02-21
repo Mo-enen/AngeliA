@@ -61,15 +61,18 @@ namespace AngeliaFramework {
 		);
 		public Vector2Int FilledPosition { get; private set; } = default;
 		public bool IsFilling { get; private set; } = false;
-		public Block[] Blocks { get => m_Blocks; set => m_Blocks = value; }
+		public Block[] Background { get => m_Background; set => m_Background = value; }
+		public Block[] Level { get => m_Level; set => m_Level = value; }
 		public Entity[] Entities { get => m_Entities; set => m_Entities = value; }
 
 		// Short
 		private bool AsyncReady => FillingTask.IsCompleted && (LoadingRequest == null || LoadingRequest.isDone);
 
 
+
 		// Data
-		private Block[] m_Blocks = null;
+		private Block[] m_Background = null;
+		private Block[] m_Level = null;
 		private Entity[] m_Entities = null;
 		private Task FillingTask = Task.CompletedTask;
 		private ResourceRequest LoadingRequest = null;
@@ -84,17 +87,19 @@ namespace AngeliaFramework {
 
 
 		public World () {
-			m_Blocks = new Block[Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE * Const.BLOCK_LAYER_COUNT];
+			m_Level = new Block[Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE];
+			m_Background = new Block[Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE];
 			m_Entities = new Entity[Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE];
 			FilledPosition = new(int.MinValue, int.MinValue);
 		}
 
 
 		// Get
-		public Block GetBlock (int localX, int localY, int layer) => m_Blocks[
-			layer * Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE +
-			localY * Const.WORLD_MAP_SIZE + localX
+		public Block GetLevelBlock (int localX, int localY) => m_Level[localY * Const.WORLD_MAP_SIZE + localX
 		];
+
+
+		public Block GetBackgroundBlock (int localX, int localY) => m_Background[localY * Const.WORLD_MAP_SIZE + localX];
 
 
 		public Entity GetEntity (int localX, int localY) => m_Entities[
@@ -129,7 +134,8 @@ namespace AngeliaFramework {
 			IsFilling = true;
 			bool success = false;
 			try {
-				System.Array.Clear(m_Blocks, 0, m_Blocks.Length);
+				System.Array.Clear(m_Level, 0, m_Level.Length);
+				System.Array.Clear(m_Background, 0, m_Background.Length);
 				System.Array.Clear(m_Entities, 0, m_Entities.Length);
 				FilledPosition = pos;
 				if (source == null) {
@@ -144,16 +150,13 @@ namespace AngeliaFramework {
 					// Blocks
 					int bWidth = Const.WORLD_MAP_SIZE;
 					int bHeight = Const.WORLD_MAP_SIZE;
-					int bDepth = Const.BLOCK_LAYER_COUNT;
-					foreach (var block in source.Map.Blocks) {
-						if (
-							block.X < 0 || block.X >= bWidth ||
-							block.Y < 0 || block.Y >= bHeight ||
-							block.Layer < 0 || block.Layer >= bDepth
-						) continue;
-						m_Blocks[block.Layer * bWidth * bHeight + block.Y * bWidth + block.X].SetValues(
-							block.TypeID, block.Tag, block.IsTrigger
-						);
+					foreach (var block in source.Map.Level) {
+						if (block.X < 0 || block.X >= bWidth || block.Y < 0 || block.Y >= bHeight) continue;
+						m_Level[block.Y * bWidth + block.X].SetValues(block.TypeID, block.Tag, block.IsTrigger);
+					}
+					foreach (var block in source.Map.Background) {
+						if (block.X < 0 || block.X >= bWidth || block.Y < 0 || block.Y >= bHeight) continue;
+						m_Background[block.Y * bWidth + block.X].SetValues(block.TypeID, block.Tag, block.IsTrigger);
 					}
 					// Entities
 					int eWidth = Const.WORLD_MAP_SIZE;
@@ -186,23 +189,34 @@ namespace AngeliaFramework {
 		public void EditorOnly_SaveToDisk (MapObject mapObject, bool overrideData = true) {
 			if (IsFilling || mapObject == null) return;
 			const int SIZE = Const.WORLD_MAP_SIZE;
-			// Blocks
-			var blocks = new List<Map.Block>();
+			// Level
+			var level = new List<Map.Block>();
 			if (!overrideData) {
-				blocks.AddRange(mapObject.Map.Blocks);
+				level.AddRange(mapObject.Map.Level);
 			}
-			for (int layer = 0; layer < Const.BLOCK_LAYER_COUNT; layer++) {
-				for (int y = 0; y < SIZE; y++) {
-					for (int x = 0; x < SIZE; x++) {
-						var block = m_Blocks[layer * SIZE * SIZE + y * SIZE + x];
-						if (block.TypeID == 0) continue;
-						blocks.Add(new(
-							block.TypeID, x, y, layer, block.Tag, block.IsTrigger
-						));
-					}
+			for (int y = 0; y < SIZE; y++) {
+				for (int x = 0; x < SIZE; x++) {
+					var block = m_Level[y * SIZE + x];
+					if (block.TypeID == 0) continue;
+					level.Add(new(block.TypeID, x, y, block.Tag, block.IsTrigger));
 				}
 			}
-			mapObject.Map.Blocks = blocks.ToArray();
+			mapObject.Map.Level = level.ToArray();
+
+			// Background
+			var background = new List<Map.Block>();
+			if (!overrideData) {
+				background.AddRange(mapObject.Map.Background);
+			}
+			for (int y = 0; y < SIZE; y++) {
+				for (int x = 0; x < SIZE; x++) {
+					var block = m_Background[y * SIZE + x];
+					if (block.TypeID == 0) continue;
+					background.Add(new(block.TypeID, x, y, block.Tag, block.IsTrigger));
+				}
+			}
+			mapObject.Map.Background = background.ToArray();
+
 			// Entities
 			var entities = new List<Map.Entity>();
 			if (!overrideData) {

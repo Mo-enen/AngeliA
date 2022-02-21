@@ -69,37 +69,10 @@ namespace AngeliaFramework {
 
 
 		// Iter
-		public IEnumerable<(World.Block block, int globalX, int globalY, BlockLayer layer)> ForAllBlocksInsideAllLayers (RectInt globalUnitRect) {
-			for (int layer = 0; layer < Const.BLOCK_LAYER_COUNT; layer++) {
-				foreach (var pair in ForAllBlocksInside(globalUnitRect, (BlockLayer)layer)) {
-					yield return pair;
-				}
-			}
-		}
+		public IEnumerable<(World.Block block, int globalX, int globalY)> ForAllLevelBlocksInside (RectInt globalUnitRect) => ForAllBlocksInside(globalUnitRect, true);
 
 
-		public IEnumerable<(World.Block block, int globalX, int globalY, BlockLayer layer)> ForAllBlocksInside (RectInt globalUnitRect, BlockLayer layer) {
-			int layerIndex = (int)layer;
-			for (int worldI = 0; worldI <= 2; worldI++) {
-				for (int worldJ = 0; worldJ <= 2; worldJ++) {
-					var world = Worlds[worldI, worldJ];
-					if (world.IsFilling) continue;
-					var worldUnitRect = world.FilledUnitRect;
-					if (!worldUnitRect.Overlaps(globalUnitRect)) continue;
-					int unitL = Mathf.Max(globalUnitRect.x, worldUnitRect.x);
-					int unitR = Mathf.Min(globalUnitRect.xMax, worldUnitRect.xMax);
-					int unitD = Mathf.Max(globalUnitRect.y, worldUnitRect.y);
-					int unitU = Mathf.Min(globalUnitRect.yMax, worldUnitRect.yMax);
-					for (int j = unitD; j < unitU; j++) {
-						for (int i = unitL; i < unitR; i++) {
-							var block = world.GetBlock(i - worldUnitRect.x, j - worldUnitRect.y, layerIndex);
-							if (block.TypeID == 0) continue;
-							yield return (block, i * Const.CELL_SIZE, j * Const.CELL_SIZE, layer);
-						}
-					}
-				}
-			}
-		}
+		public IEnumerable<(World.Block block, int globalX, int globalY)> ForAllBackgroundBlocksInside (RectInt globalUnitRect) => ForAllBlocksInside(globalUnitRect, false);
 
 
 		public IEnumerable<(World.Entity entity, int globalX, int globalY)> ForAllEntitiesInside (RectInt globalUnitRect) {
@@ -126,46 +99,10 @@ namespace AngeliaFramework {
 
 
 		// Get
-		public bool GetBlockAt (int globalX, int globalY, out World.Block block, out BlockLayer layer) {
-			for (int i = Const.BLOCK_LAYER_COUNT - 1; i >= 0; i--) {
-				layer = (BlockLayer)i;
-				if (GetBlockAt(globalX, globalY, layer, out block)) {
-					return true;
-				}
-			}
-			block = default;
-			layer = default;
-			return false;
-		}
+		public bool GetLevelBlockAt (int globalX, int globalY, out World.Block block) => GetBlockAt(globalX, globalY, true, out block);
 
 
-		public bool GetBlockAt (int globalX, int globalY, BlockLayer layer, out World.Block block) {
-			int unitX = globalX.AltDivide(Const.CELL_SIZE);
-			int unitY = globalY.AltDivide(Const.CELL_SIZE);
-			var allWorldUnitRect = new RectInt(
-				Worlds[0, 0].FilledPosition * Const.WORLD_MAP_SIZE,
-				Vector2Int.one * (3 * Const.WORLD_MAP_SIZE)
-			);
-			if (allWorldUnitRect.Contains(unitX, unitY)) {
-				for (int worldJ = 0; worldJ <= 2; worldJ++) {
-					for (int worldI = 0; worldI <= 2; worldI++) {
-						var world = Worlds[worldI, worldJ];
-						if (world.FilledUnitRect.Contains(unitX, unitY)) {
-							var _block = world.GetBlock(
-								unitX - world.FilledPosition.x * Const.WORLD_MAP_SIZE,
-								unitY - world.FilledPosition.y * Const.WORLD_MAP_SIZE,
-								(int)layer
-							);
-							if (_block.TypeID == 0) continue;
-							block = _block;
-							return true;
-						}
-					}
-				}
-			}
-			block = default;
-			return false;
-		}
+		public bool GetBackgroundBlockAt (int globalX, int globalY, out World.Block block) => GetBlockAt(globalX, globalY, false, out block);
 
 
 		public bool GetEntityAt (int globalX, int globalY, out World.Entity entity) {
@@ -269,6 +206,64 @@ namespace AngeliaFramework {
 					}
 				}
 			}
+		}
+
+
+		private IEnumerable<(World.Block block, int globalX, int globalY)> ForAllBlocksInside (RectInt globalUnitRect, bool level) {
+			for (int worldI = 0; worldI <= 2; worldI++) {
+				for (int worldJ = 0; worldJ <= 2; worldJ++) {
+					var world = Worlds[worldI, worldJ];
+					if (world.IsFilling) continue;
+					var worldUnitRect = world.FilledUnitRect;
+					if (!worldUnitRect.Overlaps(globalUnitRect)) continue;
+					int unitL = Mathf.Max(globalUnitRect.x, worldUnitRect.x);
+					int unitR = Mathf.Min(globalUnitRect.xMax, worldUnitRect.xMax);
+					int unitD = Mathf.Max(globalUnitRect.y, worldUnitRect.y);
+					int unitU = Mathf.Min(globalUnitRect.yMax, worldUnitRect.yMax);
+					for (int j = unitD; j < unitU; j++) {
+						for (int i = unitL; i < unitR; i++) {
+							var block = level ?
+								world.GetLevelBlock(i - worldUnitRect.x, j - worldUnitRect.y) :
+								world.GetBackgroundBlock(i - worldUnitRect.x, j - worldUnitRect.y);
+							if (block.TypeID == 0) continue;
+							yield return (block, i * Const.CELL_SIZE, j * Const.CELL_SIZE);
+						}
+					}
+				}
+			}
+		}
+
+
+		private bool GetBlockAt (int globalX, int globalY, bool level, out World.Block block) {
+			int unitX = globalX.AltDivide(Const.CELL_SIZE);
+			int unitY = globalY.AltDivide(Const.CELL_SIZE);
+			var allWorldUnitRect = new RectInt(
+				Worlds[0, 0].FilledPosition * Const.WORLD_MAP_SIZE,
+				Vector2Int.one * (3 * Const.WORLD_MAP_SIZE)
+			);
+			if (allWorldUnitRect.Contains(unitX, unitY)) {
+				for (int worldJ = 0; worldJ <= 2; worldJ++) {
+					for (int worldI = 0; worldI <= 2; worldI++) {
+						var world = Worlds[worldI, worldJ];
+						if (world.FilledUnitRect.Contains(unitX, unitY)) {
+							var _block = level ?
+								world.GetLevelBlock(
+									unitX - world.FilledPosition.x * Const.WORLD_MAP_SIZE,
+									unitY - world.FilledPosition.y * Const.WORLD_MAP_SIZE
+								) :
+								world.GetBackgroundBlock(
+									unitX - world.FilledPosition.x * Const.WORLD_MAP_SIZE,
+									unitY - world.FilledPosition.y * Const.WORLD_MAP_SIZE
+								);
+							if (_block.TypeID == 0) continue;
+							block = _block;
+							return true;
+						}
+					}
+				}
+			}
+			block = default;
+			return false;
 		}
 
 

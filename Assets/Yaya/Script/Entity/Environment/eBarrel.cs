@@ -8,9 +8,10 @@ namespace AngeliaFramework {
 
 
 		public override EntityLayer Layer => EntityLayer.Environment;
-		protected override string ThumbnailName => "Barrel 2";
 		public override PhysicsLayer CollisionLayer => PhysicsLayer.Environment;
 		public override PhysicsMask CollisionMask => PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Level;
+
+		private static readonly int BARREL_CODE = "Barrel 2".ACode();
 
 
 		public override void OnCreate (int frame) {
@@ -22,7 +23,7 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate (int frame) {
 
-			CellRenderer.Draw(Thumbnail, Rect);
+			CellRenderer.Draw(BARREL_CODE, Rect);
 
 			base.FrameUpdate(frame);
 		}

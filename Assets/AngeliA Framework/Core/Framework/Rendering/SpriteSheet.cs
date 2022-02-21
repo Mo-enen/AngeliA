@@ -53,7 +53,6 @@ namespace AngeliaFramework {
 
 #if UNITY_EDITOR
 
-
 		public void SetSprites (Sprite[] sprites) {
 			m_Sprites = new UvSprite[sprites.Length];
 			if (sprites.Length == 0) { return; }
@@ -64,10 +63,16 @@ namespace AngeliaFramework {
 				m_Sprites[i] = new UvSprite() {
 					GlobalID = sp.name.ACode(),
 					Rect = new UvRect() {
-						BottomLeft = new Vector2(sp.rect.xMin / width, sp.rect.yMin / height),
-						BottomRight = new Vector2(sp.rect.xMax / width, sp.rect.yMin / height),
-						TopLeft = new Vector2(sp.rect.xMin / width, sp.rect.yMax / height),
-						TopRight = new Vector2(sp.rect.xMax / width, sp.rect.yMax / height),
+						BottomLeft = new(sp.rect.xMin / width, sp.rect.yMin / height),
+						BottomRight = new(sp.rect.xMax / width, sp.rect.yMin / height),
+						TopLeft = new(sp.rect.xMin / width, sp.rect.yMax / height),
+						TopRight = new(sp.rect.xMax / width, sp.rect.yMax / height),
+						Border = new(
+							(int)sp.border.x * Const.CELL_SIZE / (int)sp.rect.width,
+							(int)sp.border.z * Const.CELL_SIZE / (int)sp.rect.width,
+							(int)sp.border.w * Const.CELL_SIZE / (int)sp.rect.height,
+							(int)sp.border.y * Const.CELL_SIZE / (int)sp.rect.height
+						),
 					},
 				};
 			}
@@ -78,7 +83,6 @@ namespace AngeliaFramework {
 
 
 		public void SetTexture (Texture2D texture) => m_Texture = texture;
-
 
 #endif
 
@@ -95,30 +99,6 @@ namespace AngeliaFramework.Editor {
 
 	[CustomEditor(typeof(SpriteSheet), true), DisallowMultipleComponent]
 	public class SpriteSheet_Inspector : Editor {
-
-
-		[MenuItem("AngeliA/Command/Reload Sheet Assets")]
-		private static void ReloadSheetAssets () {
-			foreach (var guid in AssetDatabase.FindAssets($"t:{nameof(SpriteSheet)}")) {
-				var path = AssetDatabase.GUIDToAssetPath(guid);
-				var sheet = AssetDatabase.LoadAssetAtPath<SpriteSheet>(path);
-				var sprites = new List<Sprite>();
-				var tPath = AssetDatabase.GetAssetPath(sheet.Texture);
-				var objs = AssetDatabase.LoadAllAssetRepresentationsAtPath(tPath);
-				for (int i = 0; i < objs.Length; i++) {
-					var obj = objs[i];
-					if (obj != null && obj is Sprite sp) {
-						sprites.Add(sp);
-					}
-				}
-				if (objs.Length > 0) {
-					sheet.SetSprites(sprites.ToArray());
-				}
-				EditorUtility.SetDirty(sheet);
-			}
-			AssetDatabase.SaveAssets();
-			AssetDatabase.Refresh();
-		}
 
 
 		private void OnEnable () => ReloadSprites();

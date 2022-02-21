@@ -41,13 +41,6 @@ namespace AngeliaFramework {
 #endif
 
 
-
-	public enum BlockLayer {
-		Background = 0,
-		Level = 1,
-	}
-
-
 	public enum EntityLayer {
 		Environment = 0,
 		Item = 1,
@@ -137,6 +130,7 @@ namespace AngeliaFramework {
 		public Vector2 BottomRight;
 		public Vector2 TopLeft;
 		public Vector2 TopRight;
+		public RectOffset Border;
 
 	}
 
@@ -205,7 +199,6 @@ namespace AngeliaFramework {
 		public const int WORLD_MAP_SIZE = 128;  // N¡ÁN Tiles per Map
 		public const int GLOBAL_SIZE = 32768;   // (-N,N)¡Á(-N,N) Maps in Total (23726566 max)
 
-		public const int BLOCK_LAYER_COUNT = 2;
 		public const int ENTITY_LAYER_COUNT = 6;
 
 		public const int PHYSICS_LAYER_COUNT = 4;
@@ -218,6 +211,8 @@ namespace AngeliaFramework {
 		public const int MAX_VIEW_HEIGHT = 56 * CELL_SIZE;
 		public const int SPAWN_GAP = 6 * CELL_SIZE;
 		public const int DESPAWN_GAP = 6 * CELL_SIZE;
+
+		public const int RIGIDBODY_FAST_SPEED = CELL_SIZE / 8;
 
 		public const int WATER_SPEED_LOSE = 400;
 		public static int WATER_TAG = "Water".ACode();

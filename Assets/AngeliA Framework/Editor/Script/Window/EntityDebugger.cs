@@ -114,6 +114,30 @@ namespace AngeliaFramework.Editor {
 		private static void OpenWindow () => GetOrCreateWindow();
 
 
+		[MenuItem("AngeliA/Command/Reload Sheet Assets")]
+		private static void ReloadSheetAssets () {
+			foreach (var guid in AssetDatabase.FindAssets($"t:{nameof(SpriteSheet)}")) {
+				var path = AssetDatabase.GUIDToAssetPath(guid);
+				var sheet = AssetDatabase.LoadAssetAtPath<SpriteSheet>(path);
+				var sprites = new List<Sprite>();
+				var tPath = AssetDatabase.GetAssetPath(sheet.Texture);
+				var objs = AssetDatabase.LoadAllAssetRepresentationsAtPath(tPath);
+				for (int i = 0; i < objs.Length; i++) {
+					var obj = objs[i];
+					if (obj != null && obj is Sprite sp) {
+						sprites.Add(sp);
+					}
+				}
+				if (objs.Length > 0) {
+					sheet.SetSprites(sprites.ToArray());
+				}
+				EditorUtility.SetDirty(sheet);
+			}
+			AssetDatabase.SaveAssets();
+			AssetDatabase.Refresh();
+		}
+
+
 		private void OnEnable () {
 			Main = this;
 		}
@@ -141,13 +165,6 @@ namespace AngeliaFramework.Editor {
 				if (GUI.Button(Layout.Rect(24, 20), GlobalIconContent, EditorStyles.toolbarButton)) {
 					LanguageEditor.OpenEditor();
 				}
-
-				// LDtk
-				if (GUI.Button(Layout.Rect(24, 20), GUIContent.none, EditorStyles.toolbarButton)) {
-					LdtkToAngeliA.LdtkToolkit.ReloadAllLevels();
-				}
-				GUI.Label(Layout.LastRect(), "L D\nT K", Layout.CenteredMiniMiniBoldLabel);
-
 
 				Layout.Rect(0, 20);
 
@@ -177,6 +194,14 @@ namespace AngeliaFramework.Editor {
 			);
 			GUI.backgroundColor = oldBC;
 			EditorGUIUtility.AddCursorRect(Layout.LastRect(), MouseCursor.Text);
+
+			// More Buttons
+			if (GUI.Button(Layout.Rect(0, 24), "Sync Artwork")) {
+				ReloadSheetAssets();
+				LdtkToAngeliA.LdtkToolkit.SaveTextureForLDTK();
+				LdtkToAngeliA.LdtkToolkit.ReloadAllLevels();
+			}
+
 		}
 
 

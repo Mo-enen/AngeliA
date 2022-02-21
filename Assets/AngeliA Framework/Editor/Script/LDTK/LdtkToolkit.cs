@@ -10,9 +10,12 @@ namespace LdtkToAngeliA {
 	public static class LdtkToolkit {
 
 
+		private static string LdtkRoot => Util.CombinePaths(Util.GetParentPath(Application.dataPath), "_Level");
+
+
 		[MenuItem("AngeliA/Command/Save Texture for LDTK")]
-		private static void ReloadSheetAssets () {
-			string rootPath = Util.CombinePaths(Util.GetParentPath(Application.dataPath), "_Level", "Texture");
+		public static void SaveTextureForLDTK () {
+			string rootPath = Util.CombinePaths(LdtkRoot, "Texture");
 			Util.CreateFolder(rootPath);
 			foreach (var guid in AssetDatabase.FindAssets($"t:{nameof(SpriteSheet)}")) {
 				var path = AssetDatabase.GUIDToAssetPath(guid);
@@ -27,7 +30,8 @@ namespace LdtkToAngeliA {
 
 
 		public static void ReloadAllLevels () {
-			// Delete Maps
+
+			// Delete Old Maps
 			var mapRoot = Util.CombinePaths(Application.dataPath, "Resources", "Map");
 			Util.DeleteFolder(mapRoot);
 			Util.CreateFolder(mapRoot);
@@ -56,7 +60,7 @@ namespace LdtkToAngeliA {
 			// Load Levels
 			int successCount = 0;
 			int errorCount = 0;
-			foreach (var file in Util.GetFilesIn(Util.GetParentPath(Application.dataPath), false, "*.ldtk")) {
+			foreach (var file in Util.GetFilesIn(LdtkRoot, false, "*.ldtk")) {
 				try {
 					var json = Util.FileToText(file.FullName);
 					var ldtk = JsonUtility.FromJson<LdtkProject>(json);
@@ -79,15 +83,51 @@ namespace LdtkToAngeliA {
 				if (errorCount > 0) {
 					message += errorCount + " failed.";
 				}
-				EditorUtility.DisplayDialog("Done", message, "OK");
+				if (errorCount > 0) {
+					Debug.LogWarning(message);
+				}
 			}
 		}
 
 
-		private static bool LoadLdtkLevel (
-			LdtkProject project,
-			Dictionary<string, Dictionary<Vector2Int, int>> spritePool
-		) {
+		private static bool LoadLdtkLevel (LdtkProject project, Dictionary<string, Dictionary<Vector2Int, int>> spritePool) {
+			// Ldtk >> Custom Data Pool
+			var customDataPool = new Dictionary<int, (bool trigger, int tag)>();
+			foreach (var tileset in project.defs.tilesets) {
+				string tName = Util.GetNameWithoutExtension(tileset.relPath);
+				if (!spritePool.ContainsKey(tName)) continue;
+				var sPool = spritePool[tName];
+				int gridX = tileset.__cWid;
+				int gridY = tileset.__cHei;
+				int space = tileset.spacing;
+				int padding = tileset.padding;
+				int gSize = tileset.tileGridSize;
+				foreach (var data in tileset.customData) {
+					int id = data.tileId;
+					var tilePos = new Vector2Int(
+						padding + (id % gridX) * (gSize + space),
+						padding + (id / gridY) * (gSize + space)
+					);
+					if (sPool.TryGetValue(tilePos, out int blockID)) {
+						var lines = data.data.Split('\n');
+
+						// Is Trigger
+						bool isTrigger = false;
+						if (lines.Length > 0 && bool.TryParse(lines[0], out bool value)) {
+							isTrigger = value;
+						}
+
+						// Tag String
+						int tag = 0;
+						if (lines.Length > 1) {
+							tag = lines[1].ACode();
+						}
+
+						customDataPool.TryAdd(blockID, (isTrigger, tag));
+					}
+				}
+			}
+
 			// Ldtk >> World Pool
 			var worldPool = new Dictionary<(int x, int y), World>();
 			foreach (var level in project.levels) {
@@ -97,67 +137,48 @@ namespace LdtkToAngeliA {
 					int gridSize = layer.__gridSize;
 					int offsetX = levelPosX + layer.__pxTotalOffsetX;
 					int offsetY = levelPosY + layer.__pxTotalOffsetY;
-					int blockLayerIndex = (int)LdtkLayerID_to_BlockLayer(layer.__identifier);
+					bool isLevel = IsLevelBlock(layer.__identifier);
 					var tName = Util.GetNameWithoutExtension(layer.__tilesetRelPath);
 					if (!spritePool.ContainsKey(tName) && layer.__type != "Entities") continue;
+					TileInstance[] tiles = null;
+					EntityInstance[] entities = null;
 					switch (layer.__type) {
-						case "Tiles": {
-							var sPool = spritePool[tName];
-							foreach (var tile in layer.gridTiles) {
-								var srcPos = new Vector2Int(tile.src[0], tile.src[1]);
-								if (sPool.ContainsKey(srcPos)) {
-									ForLdtkTile(
-										tile.px[0] + offsetX,
-										tile.px[1] + offsetY,
-										(_localX, _localY, world) => {
-											ref var block = ref world.Blocks[
-												blockLayerIndex * Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE +
-												_localY * Const.WORLD_MAP_SIZE + _localX
-											];
-											block.TypeID = sPool[srcPos];
-										}
-									);
-								}
-							}
+						case "Tiles":
+							tiles = layer.gridTiles;
 							break;
-						}
-
 						case "IntGrid":
-						case "AutoLayer": {
-							var sPool = spritePool[tName];
-							foreach (var tile in layer.autoLayerTiles) {
-								var srcPos = new Vector2Int(tile.src[0], tile.src[1]);
-								if (sPool.ContainsKey(srcPos)) {
-									ForLdtkTile(
-										tile.px[0] + offsetX,
-										tile.px[1] + offsetY,
-										(_localX, _localY, world) => {
-											ref var block = ref world.Blocks[
-												blockLayerIndex * Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE +
-												_localY * Const.WORLD_MAP_SIZE + _localX
-											];
-											block.TypeID = sPool[srcPos];
-										}
-									);
-								}
-							}
+						case "AutoLayer":
+							tiles = layer.autoLayerTiles;
 							break;
-						}
-
 						case "Entities":
-							foreach (var entity in layer.entityInstances) {
+							entities = layer.entityInstances;
+							break;
+					}
+					if (tiles != null) {
+						var sPool = spritePool[tName];
+						foreach (var tile in tiles) {
+							var srcPos = new Vector2Int(tile.src[0], tile.src[1]);
+							if (sPool.ContainsKey(srcPos)) {
 								ForLdtkTile(
-									entity.px[0] - (int)(entity.__pivot[0] * entity.width) + offsetX,
-									entity.px[1] - (int)(entity.__pivot[1] * entity.height) + offsetY,
-									(_localX, _localY, world) => {
-										ref var e = ref world.Entities[
-											_localY * Const.WORLD_MAP_SIZE + _localX
-										];
-										e.TypeID = entity.__identifier.ACode();
-									}
+									tile.px[0] + offsetX,
+									tile.px[1] + offsetY,
+									(_localX, _localY, world) => SetBlock(world, _localX, _localY, srcPos)
 								);
 							}
-							break;
+						}
+					} else if (entities != null) {
+						foreach (var entity in entities) {
+							ForLdtkTile(
+								entity.px[0] - (int)(entity.__pivot[0] * entity.width) + offsetX,
+								entity.px[1] - (int)(entity.__pivot[1] * entity.height) + offsetY,
+								(_localX, _localY, world) => {
+									ref var e = ref world.Entities[
+										_localY * Const.WORLD_MAP_SIZE + _localX
+									];
+									e.TypeID = entity.__identifier.ACode();
+								}
+							);
+						}
 					}
 					// Func
 					void ForLdtkTile (int pixelX, int pixelY, System.Action<int, int, World> action) {
@@ -175,6 +196,18 @@ namespace LdtkToAngeliA {
 							unitY.AltMode(Const.WORLD_MAP_SIZE),
 							worldPool[(worldX, worldY)]
 						);
+					}
+					void SetBlock (World world, int _localX, int _localY, Vector2Int srcPos) {
+						var blocks = isLevel ? world.Level : world.Background;
+						ref var block = ref blocks[_localY * Const.WORLD_MAP_SIZE + _localX];
+						block.TypeID = spritePool[tName][srcPos];
+						if (customDataPool.TryGetValue(block.TypeID, out (bool _isT, int _tag) _value)) {
+							block.IsTrigger = _value._isT;
+							block.Tag = _value._tag;
+						} else {
+							block.IsTrigger = false;
+							block.Tag = 0;
+						}
 					}
 				}
 			}
@@ -204,14 +237,7 @@ namespace LdtkToAngeliA {
 		}
 
 
-		private static BlockLayer LdtkLayerID_to_BlockLayer (string id) {
-			for (int i = 0; i < Const.BLOCK_LAYER_COUNT; i++) {
-				if (id.StartsWith(((BlockLayer)i).ToString())) {
-					return (BlockLayer)i;
-				}
-			}
-			return BlockLayer.Background;
-		}
+		private static bool IsLevelBlock (string id) => id.StartsWith("level", System.StringComparison.CurrentCultureIgnoreCase);
 
 
 	}

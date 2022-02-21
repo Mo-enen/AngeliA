@@ -39,10 +39,9 @@ namespace AngeliaFramework {
 		// Data
 		private readonly Dictionary<int, EntityHandler> EntityHandlerPool = new();
 		private readonly Dictionary<int, ScriptableObject> AssetPool = new();
+		private readonly Dictionary<int, RectOffset> BlockColliderOffsetPool = new();
 		private readonly Stack<Object> UnloadAssetStack = new();
 		private readonly HashSet<long> StagedEntityHash = new();
-		private readonly Dictionary<int, Color32> MinimapColorPool = new();
-		private readonly Dictionary<int, int> EntityThumbnailPool = new();
 		private readonly Entity[][] Entities = new Entity[Const.ENTITY_LAYER_COUNT][];
 		private readonly int[] EntityLength = new int[Const.ENTITY_LAYER_COUNT];
 		private RectInt LoadedUnitRect = default;
@@ -89,11 +88,9 @@ namespace AngeliaFramework {
 		// Init
 		private void Initialize () {
 
-
 #if UNITY_EDITOR
 			// Const Array Count Check
 			if (
-				Const.BLOCK_LAYER_COUNT != System.Enum.GetNames(typeof(BlockLayer)).Length ||
 				Const.ENTITY_LAYER_COUNT != System.Enum.GetNames(typeof(EntityLayer)).Length ||
 				Const.PHYSICS_LAYER_COUNT != System.Enum.GetNames(typeof(PhysicsLayer)).Length ||
 				Const.PHYSICS_LAYER_COUNT != System.Enum.GetNames(typeof(PhysicsMask)).Length - 1 ||
@@ -146,7 +143,6 @@ namespace AngeliaFramework {
 				var handler = CreateEntityHandler(eType);
 				if (handler != null && !EntityHandlerPool.ContainsKey(id)) {
 					EntityHandlerPool.Add(id, handler);
-					EntityThumbnailPool.Add(id, handler().Thumbnail);
 				}
 #if UNITY_EDITOR
 				else {
@@ -211,6 +207,16 @@ namespace AngeliaFramework {
 			for (int i = 0; i < Const.PHYSICS_LAYER_COUNT; i++) {
 				CellPhysics.SetupLayer(i);
 			}
+			// Block Colliders
+			for (int i = 0; i < m_Data.Sheets.Length; i++) {
+				var sheet = m_Data.Sheets[i];
+				foreach (var sp in sheet.Sprites) {
+					var border = sp.Rect.Border;
+					if (border.IsNotZero()) {
+						BlockColliderOffsetPool.TryAdd(sp.GlobalID, border);
+					}
+				}
+			}
 		}
 
 
@@ -272,13 +278,6 @@ namespace AngeliaFramework {
 			foreach (var asset in m_Data.Assets) {
 				AssetPool.TryAdd(asset.name.ACode(), asset);
 			}
-			// Minimap
-			foreach (var block in m_Data.MiniMap.Blocks) {
-				MinimapColorPool.TryAdd(block.Name.ACode(), block.Color);
-			}
-			foreach (var entity in m_Data.MiniMap.Entities) {
-				MinimapColorPool.TryAdd(entity.TypeName.ACode(), entity.Color);
-			}
 		}
 
 
@@ -328,30 +327,36 @@ namespace AngeliaFramework {
 
 				var spawnUnitRect = SpawnRect.Divide(Const.CELL_SIZE);
 
-				// BG
+				// Block-BG
 				var rect = new RectInt(0, 0, Const.CELL_SIZE, Const.CELL_SIZE);
-				foreach (var (block, x, y, _) in WorldSquad.ForAllBlocksInside(spawnUnitRect, BlockLayer.Background)) {
+				foreach (var (block, x, y) in WorldSquad.ForAllBackgroundBlocksInside(spawnUnitRect)) {
 					rect.x = x;
 					rect.y = y;
 					CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 255));
 				}
 
-				// Level
-				foreach (var (block, x, y, _) in WorldSquad.ForAllBlocksInside(spawnUnitRect.Expand(Const.BLOCK_SPAWN_PADDING), BlockLayer.Level)) {
+				// Block-Level
+				RectInt colRect;
+				foreach (var (block, x, y) in WorldSquad.ForAllLevelBlocksInside(spawnUnitRect.Expand(Const.BLOCK_SPAWN_PADDING))) {
 					rect.x = x;
 					rect.y = y;
-					CellPhysics.FillBlock(PhysicsLayer.Level, rect, block.IsTrigger, block.Tag);
+					if (BlockColliderOffsetPool.TryGetValue(block.TypeID, out var border)) {
+						colRect = rect.Shrink(border.left, border.right, border.bottom, border.top);
+					} else {
+						colRect = rect;
+					}
+					CellPhysics.FillBlock(PhysicsLayer.Level, colRect, block.IsTrigger, block.Tag);
 					CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 255));
 				}
 
 				// Entities
 				foreach (var (entity, x, y) in WorldSquad.ForAllEntitiesInside(spawnUnitRect)) {
-					if (!EntityHandlerPool.ContainsKey(entity.TypeID)) continue;
+					if (!EntityHandlerPool.TryGetValue(entity.TypeID, out var eHandler)) continue;
 					int unitX = x.AltDivide(Const.CELL_SIZE);
 					int unitY = y.AltDivide(Const.CELL_SIZE);
 					if (LoadedUnitRect.Contains(unitX, unitY)) continue;
 					if (!spawnUnitRect.Contains(unitX, unitY)) continue;
-					var e = EntityHandlerPool[entity.TypeID].Invoke();
+					var e = eHandler.Invoke();
 					e.InstanceID = entity.InstanceID;
 					e.X = x;
 					e.Y = y;
@@ -531,13 +536,6 @@ namespace AngeliaFramework {
 			NewViewRect = null;
 			ViewLerpRate = 1000;
 		}
-
-
-		// Minimap
-		public Color32 GetMinimapColor (int id) => GetMinimapColor(id, new Color32(255, 255, 255, 255));
-
-
-		public Color32 GetMinimapColor (int id, Color32 defaultValue) => MinimapColorPool.ContainsKey(id) ? MinimapColorPool[id] : defaultValue;
 
 
 		#endregion

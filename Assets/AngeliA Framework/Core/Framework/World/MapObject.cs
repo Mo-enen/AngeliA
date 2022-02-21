@@ -54,14 +54,12 @@ namespace AngeliaFramework {
 			[ACodeInt] public int TypeID;
 			public int X;
 			public int Y;
-			public int Layer;
 			public int Tag;
 			public bool IsTrigger;
-			public Block (int typeID, int x, int y, int layer, int tag, bool isTrigger) {
+			public Block (int typeID, int x, int y, int tag, bool isTrigger) {
 				TypeID = typeID;
 				X = x;
 				Y = y;
-				Layer = layer;
 				Tag = tag;
 				IsTrigger = isTrigger;
 			}
@@ -79,7 +77,8 @@ namespace AngeliaFramework {
 			}
 		}
 
-		public Block[] Blocks = new Block[0];
+		public Block[] Level = new Block[0];
+		public Block[] Background = new Block[0];
 		public Entity[] Entities = new Entity[0];
 
 	}

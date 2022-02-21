@@ -133,18 +133,40 @@ namespace AngeliaFramework {
 
 			int speedScale = InWater ? Const.WATER_SPEED_LOSE : 1000;
 			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);
-			var newPos = new Vector2Int(
-				pos.x + speedX * speedScale / 1000,
-				pos.y + speedY * speedScale / 1000
-			);
 
-			var _pos = CellPhysics.Move(
-				CollisionMask, pos,
-				newPos, new(Width, Height), this
-			);
+			speedX = speedX * speedScale / 1000;
+			speedY = speedY * speedScale / 1000;
 
-			X = _pos.x - OffsetX;
-			Y = _pos.y - OffsetY;
+			if (Mathf.Abs(speedX) > Const.RIGIDBODY_FAST_SPEED || Mathf.Abs(speedY) > Const.RIGIDBODY_FAST_SPEED) {
+				// Too Fast
+				int _speedX = speedX;
+				int _speedY = speedY;
+				while (_speedX != 0 || _speedY != 0) {
+					int _sX = Mathf.Clamp(_speedX, -Const.RIGIDBODY_FAST_SPEED, Const.RIGIDBODY_FAST_SPEED);
+					int _sY = Mathf.Clamp(_speedY, -Const.RIGIDBODY_FAST_SPEED, Const.RIGIDBODY_FAST_SPEED);
+					_speedX -= _sX;
+					_speedY -= _sY;
+					var newPos = CellPhysics.Move(
+						CollisionMask, pos,
+						new Vector2Int(pos.x + _sX, pos.y + _sY),
+						new(Width, Height), this
+					);
+					if (newPos == pos) break;
+					pos = newPos;
+				}
+			} else {
+				// Normal
+				pos = CellPhysics.Move(
+					CollisionMask,
+					pos,
+					new Vector2Int(pos.x + speedX, pos.y + speedY),
+					new(Width, Height),
+					this
+				);
+			}
+
+			X = pos.x - OffsetX;
+			Y = pos.y - OffsetY;
 
 			// Carry
 			if (carry && speedY <= 0) {
