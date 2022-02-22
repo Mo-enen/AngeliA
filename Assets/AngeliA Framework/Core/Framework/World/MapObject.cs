@@ -51,30 +51,40 @@ namespace AngeliaFramework {
 
 		[System.Serializable]
 		public struct Block {
-			[ACodeInt] public int TypeID;
+
+			public int TypeID;
 			public int X;
 			public int Y;
 			public int Tag;
 			public bool IsTrigger;
-			public Block (int typeID, int x, int y, int tag, bool isTrigger) {
+			public Int4 ColliderBorder;
+
+			public Block (int typeID, int x, int y, int tag, bool isTrigger, Int4 border) {
 				TypeID = typeID;
 				X = x;
 				Y = y;
 				Tag = tag;
 				IsTrigger = isTrigger;
+				ColliderBorder = border;
 			}
+
 		}
 
 		[System.Serializable]
 		public struct Entity {
-			[ACodeInt] public int TypeID;
+
+			public int TypeID;
+			public long InstanceID;
 			public int X;
 			public int Y;
-			public Entity (int typeID, int x, int y) {
+
+			public Entity (int typeID, long instanceID, int x, int y) {
 				TypeID = typeID;
+				InstanceID = instanceID;
 				X = x;
 				Y = y;
 			}
+
 		}
 
 		public Block[] Level = new Block[0];

@@ -18,10 +18,12 @@ namespace AngeliaFramework {
 			public int TypeID;
 			public int Tag;
 			public bool IsTrigger;
-			public void SetValues (int typeID, int tag, bool isTrigger) {
+			public Int4 ColliderBorder;
+			public void SetValues (int typeID, int tag, bool isTrigger, Int4 border) {
 				TypeID = typeID;
 				Tag = tag;
 				IsTrigger = isTrigger;
+				ColliderBorder = border;
 			}
 		}
 
@@ -152,11 +154,15 @@ namespace AngeliaFramework {
 					int bHeight = Const.WORLD_MAP_SIZE;
 					foreach (var block in source.Map.Level) {
 						if (block.X < 0 || block.X >= bWidth || block.Y < 0 || block.Y >= bHeight) continue;
-						m_Level[block.Y * bWidth + block.X].SetValues(block.TypeID, block.Tag, block.IsTrigger);
+						m_Level[block.Y * bWidth + block.X].SetValues(
+							block.TypeID, block.Tag, block.IsTrigger, block.ColliderBorder
+						);
 					}
 					foreach (var block in source.Map.Background) {
 						if (block.X < 0 || block.X >= bWidth || block.Y < 0 || block.Y >= bHeight) continue;
-						m_Background[block.Y * bWidth + block.X].SetValues(block.TypeID, block.Tag, block.IsTrigger);
+						m_Background[block.Y * bWidth + block.X].SetValues(
+							block.TypeID, block.Tag, block.IsTrigger, block.ColliderBorder
+						);
 					}
 					// Entities
 					int eWidth = Const.WORLD_MAP_SIZE;
@@ -167,10 +173,7 @@ namespace AngeliaFramework {
 							entity.X < 0 || entity.X >= eWidth ||
 							entity.Y < 0 || entity.Y >= eHeight
 						) continue;
-						m_Entities[entity.Y * eWidth + entity.X].SetValues(
-							AUtil.GetEntityInstanceID(pos.x, pos.y, i),
-							entity.TypeID
-						);
+						m_Entities[entity.Y * eWidth + entity.X].SetValues(entity.InstanceID, entity.TypeID);
 					}
 				}
 				success = true;
@@ -198,7 +201,7 @@ namespace AngeliaFramework {
 				for (int x = 0; x < SIZE; x++) {
 					var block = m_Level[y * SIZE + x];
 					if (block.TypeID == 0) continue;
-					level.Add(new(block.TypeID, x, y, block.Tag, block.IsTrigger));
+					level.Add(new(block.TypeID, x, y, block.Tag, block.IsTrigger, block.ColliderBorder));
 				}
 			}
 			mapObject.Map.Level = level.ToArray();
@@ -212,7 +215,7 @@ namespace AngeliaFramework {
 				for (int x = 0; x < SIZE; x++) {
 					var block = m_Background[y * SIZE + x];
 					if (block.TypeID == 0) continue;
-					background.Add(new(block.TypeID, x, y, block.Tag, block.IsTrigger));
+					background.Add(new(block.TypeID, x, y, block.Tag, block.IsTrigger, block.ColliderBorder));
 				}
 			}
 			mapObject.Map.Background = background.ToArray();
@@ -226,7 +229,8 @@ namespace AngeliaFramework {
 				for (int x = 0; x < SIZE; x++) {
 					var entity = m_Entities[y * SIZE + x];
 					if (entity.TypeID == 0) continue;
-					entities.Add(new(entity.TypeID, x, y));
+					long insID = AUtil.GetEntityInstanceID(x, y, entities.Count);
+					entities.Add(new(entity.TypeID, insID, x, y));
 				}
 			}
 			mapObject.Map.Entities = entities.ToArray();

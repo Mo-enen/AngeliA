@@ -39,7 +39,6 @@ namespace AngeliaFramework {
 		// Data
 		private readonly Dictionary<int, EntityHandler> EntityHandlerPool = new();
 		private readonly Dictionary<int, ScriptableObject> AssetPool = new();
-		private readonly Dictionary<int, RectOffset> BlockColliderOffsetPool = new();
 		private readonly Stack<Object> UnloadAssetStack = new();
 		private readonly HashSet<long> StagedEntityHash = new();
 		private readonly Entity[][] Entities = new Entity[Const.ENTITY_LAYER_COUNT][];
@@ -207,16 +206,6 @@ namespace AngeliaFramework {
 			for (int i = 0; i < Const.PHYSICS_LAYER_COUNT; i++) {
 				CellPhysics.SetupLayer(i);
 			}
-			// Block Colliders
-			for (int i = 0; i < m_Data.Sheets.Length; i++) {
-				var sheet = m_Data.Sheets[i];
-				foreach (var sp in sheet.Sprites) {
-					var border = sp.Rect.Border;
-					if (border.IsNotZero()) {
-						BlockColliderOffsetPool.TryAdd(sp.GlobalID, border);
-					}
-				}
-			}
 		}
 
 
@@ -336,16 +325,15 @@ namespace AngeliaFramework {
 				}
 
 				// Block-Level
-				RectInt colRect;
 				foreach (var (block, x, y) in WorldSquad.ForAllLevelBlocksInside(spawnUnitRect.Expand(Const.BLOCK_SPAWN_PADDING))) {
 					rect.x = x;
 					rect.y = y;
-					if (BlockColliderOffsetPool.TryGetValue(block.TypeID, out var border)) {
-						colRect = rect.Shrink(border.left, border.right, border.bottom, border.top);
-					} else {
-						colRect = rect;
-					}
-					CellPhysics.FillBlock(PhysicsLayer.Level, colRect, block.IsTrigger, block.Tag);
+					CellPhysics.FillBlock(
+						PhysicsLayer.Level,
+						rect.Shrink(block.ColliderBorder.Left, block.ColliderBorder.Right, block.ColliderBorder.Down, block.ColliderBorder.Up),
+						block.IsTrigger,
+						block.Tag
+					);
 					CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 255));
 				}
 
@@ -486,6 +474,7 @@ namespace AngeliaFramework {
 			ref int len = ref EntityLength[layer];
 			if (len < entities.Length) {
 				entities[len] = entity;
+				entity.OnCreate(GlobalFrame);
 				len++;
 			}
 		}

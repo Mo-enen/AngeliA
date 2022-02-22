@@ -10,7 +10,6 @@ namespace LdtkToAngeliA {
 	public static class LdtkToolkit {
 
 
-		// Data
 		public static string LdtkRoot => Util.CombinePaths(Util.GetParentPath(Application.dataPath), "_Level");
 
 
@@ -39,20 +38,26 @@ namespace LdtkToAngeliA {
 			AssetDatabase.Refresh();
 
 			// Get Sprite Pool
-			var tilesetPool = new Dictionary<string, Dictionary<Vector2Int, int>>();
+			var tilesetPool = new Dictionary<string, Dictionary<Vector2Int, (int blockID, Int4 border)>>();
 			foreach (var guid in AssetDatabase.FindAssets($"t:{nameof(SpriteSheet)}")) {
 				var path = AssetDatabase.GUIDToAssetPath(guid);
 				var sheet = AssetDatabase.LoadAssetAtPath<SpriteSheet>(path);
 				if (sheet.Texture == null || !sheet.Texture.isReadable) continue;
 				var tPath = AssetDatabase.GetAssetPath(sheet.Texture);
-				var spritePool = new Dictionary<Vector2Int, int>();
+				var spritePool = new Dictionary<Vector2Int, (int blockID, Int4 border)>();
 				int tHeight = sheet.Texture.height;
 				foreach (var obj in AssetDatabase.LoadAllAssetsAtPath(tPath)) {
 					if (obj is Sprite sp) {
 						var _rect = sp.rect.ToRectInt();
 						var _pos = _rect.position;
 						_pos.y = tHeight - (_pos.y + _rect.height - 1) - 1;
-						spritePool.TryAdd(_pos, sp.name.ACode());
+						var border = new Int4() {
+							Left = (int)sp.border.x * Const.CELL_SIZE / (int)sp.rect.width,
+							Right = (int)sp.border.z * Const.CELL_SIZE / (int)sp.rect.width,
+							Up = (int)sp.border.w * Const.CELL_SIZE / (int)sp.rect.height,
+							Down = (int)sp.border.y * Const.CELL_SIZE / (int)sp.rect.height
+						};
+						spritePool.TryAdd(_pos, (sp.name.ACode(), border));
 					}
 				}
 				tilesetPool.TryAdd(sheet.Texture.name, spritePool);
@@ -91,7 +96,7 @@ namespace LdtkToAngeliA {
 		}
 
 
-		private static bool LoadLdtkLevel (LdtkProject project, Dictionary<string, Dictionary<Vector2Int, int>> spritePool) {
+		private static bool LoadLdtkLevel (LdtkProject project, Dictionary<string, Dictionary<Vector2Int, (int blockID, Int4 border)>> spritePool) {
 			// Ldtk >> Custom Data Pool
 			var customDataPool = new Dictionary<int, (bool trigger, int tag)>();
 			foreach (var tileset in project.defs.tilesets) {
@@ -109,7 +114,7 @@ namespace LdtkToAngeliA {
 						padding + (id % gridX) * (gSize + space),
 						padding + (id / gridY) * (gSize + space)
 					);
-					if (sPool.TryGetValue(tilePos, out int blockID)) {
+					if (sPool.TryGetValue(tilePos, out (int blockID, Int4 border) _value)) {
 						var lines = data.data.Split('\n');
 
 						// Is Trigger
@@ -124,7 +129,7 @@ namespace LdtkToAngeliA {
 							tag = lines[1].ACode();
 						}
 
-						customDataPool.TryAdd(blockID, (isTrigger, tag));
+						customDataPool.TryAdd(_value.blockID, (isTrigger, tag));
 					}
 				}
 			}
@@ -201,7 +206,9 @@ namespace LdtkToAngeliA {
 					void SetBlock (World world, int _localX, int _localY, Vector2Int srcPos) {
 						var blocks = isLevel ? world.Level : world.Background;
 						ref var block = ref blocks[_localY * Const.WORLD_MAP_SIZE + _localX];
-						block.TypeID = spritePool[tName][srcPos];
+						var (blockID, border) = spritePool[tName][srcPos];
+						block.TypeID = blockID;
+						block.ColliderBorder = border;
 						if (customDataPool.TryGetValue(block.TypeID, out (bool _isT, int _tag) _value)) {
 							block.IsTrigger = _value._isT;
 							block.Tag = _value._tag;

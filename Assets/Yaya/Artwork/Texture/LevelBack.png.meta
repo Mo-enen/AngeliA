@@ -44,6 +44,9 @@ TextureImporter:
   - first:
       213: 1666298949094619943
     second: Grass Ground 12
+  - first:
+      213: 4868905330301263945
+    second: Oneway
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -417,6 +420,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Oneway
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 940ec91f993d19340800000000000000
+      internalID: 4868905330301263945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -435,6 +459,7 @@ TextureImporter:
       Grass Ground 2: 1420340397046421190
       Grass Ground 6: -1440869216268820329
       Grass Ground 10: -7392979644268789809
+      Oneway: 4868905330301263945
       Brick: -6448832585698385253
       Grass Ground 3: -9072998069868027213
       Grass Ground 11: -8822198502774587252

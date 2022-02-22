@@ -67,12 +67,6 @@ namespace AngeliaFramework {
 						BottomRight = new(sp.rect.xMax / width, sp.rect.yMin / height),
 						TopLeft = new(sp.rect.xMin / width, sp.rect.yMax / height),
 						TopRight = new(sp.rect.xMax / width, sp.rect.yMax / height),
-						Border = new(
-							(int)sp.border.x * Const.CELL_SIZE / (int)sp.rect.width,
-							(int)sp.border.z * Const.CELL_SIZE / (int)sp.rect.width,
-							(int)sp.border.w * Const.CELL_SIZE / (int)sp.rect.height,
-							(int)sp.border.y * Const.CELL_SIZE / (int)sp.rect.height
-						),
 					},
 				};
 			}

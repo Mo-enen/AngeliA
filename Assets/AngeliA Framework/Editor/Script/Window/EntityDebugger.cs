@@ -202,6 +202,12 @@ namespace AngeliaFramework.Editor {
 			using (new GUILayout.HorizontalScope(EditorStyles.toolbar)) {
 
 				double time = EditorApplication.timeSinceStartup;
+
+				// Language Editor
+				if (GUI.Button(Layout.Rect(24, 20), GlobalIconContent, EditorStyles.toolbarButton)) {
+					LanguageEditor.OpenEditor();
+				}
+
 				if (time < RequireAlertTime + ARTWORK_ALRT_DURATION) {
 					// Alert
 					EditorGUI.DrawRect(
@@ -210,26 +216,23 @@ namespace AngeliaFramework.Editor {
 					);
 					GUI.Label(Layout.LastRect(), AlertMessage, Layout.CenteredLabel);
 				} else {
-					// Bar
-					// Language Editor
-					if (GUI.Button(Layout.Rect(24, 20), GlobalIconContent, EditorStyles.toolbarButton)) {
-						LanguageEditor.OpenEditor();
-					}
-
+					// Fake Alert
 					Layout.Rect(0, 20);
-
-					// Dirty Mark
-					var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-					if (scene.IsValid() && scene.isLoaded && scene.isDirty) {
-						EditorGUI.DrawRect(Layout.Rect(20, 20), new Color32(209, 136, 60, 255));
-						var oldC = GUI.color;
-						GUI.color = new Color32(42, 42, 42, 255);
-						GUI.Label(Layout.LastRect(), SaveIconContent);
-						GUI.color = oldC;
-					}
-					Layout.Space(2);
-
+					EditorGUI.DrawRect(default, Color.clear);
+					GUI.Label(default, GUIContent.none);
 				}
+
+				// Dirty Mark
+				var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+				if (scene.IsValid() && scene.isLoaded && scene.isDirty) {
+					EditorGUI.DrawRect(Layout.Rect(20, 20), new Color32(209, 136, 60, 255));
+					var oldC = GUI.color;
+					GUI.color = new Color32(42, 42, 42, 255);
+					GUI.Label(Layout.LastRect(), SaveIconContent);
+					GUI.color = oldC;
+				}
+				Layout.Space(2);
+
 
 			}
 
@@ -631,6 +634,7 @@ namespace AngeliaFramework.Editor {
 
 		private static void SyncArtwork (bool ldtk, bool aseprite) {
 			if (aseprite) {
+				EditorApplication.ExecuteMenuItem("Tools/Aseprite Toolbox/Create Sprite for All");
 				ReloadSheetAssets();
 				LdtkToAngeliA.LdtkToolkit.SaveTextureForLDTK();
 			}

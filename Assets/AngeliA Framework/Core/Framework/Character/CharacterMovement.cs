@@ -65,11 +65,11 @@ namespace AngeliaFramework {
 		private const int JUMP_TOLERANCE = 4;
 
 		// Api
-		public bool IsGrounded { get; private set; } = false;
 		public bool IsDashing { get; private set; } = false;
 		public bool IsSquating { get; private set; } = false;
 		public bool IsPounding { get; private set; } = false;
 		public bool IsInsideGround { get; private set; } = false;
+		public bool IsGrounded => Rig.IsGrounded;
 		public bool InWater => Rig.InWater;
 		public int CurrentJumpCount { get; private set; } = 0;
 		public Direction2 CurrentFacingX { get; private set; } = Direction2.Positive;
@@ -130,10 +130,6 @@ namespace AngeliaFramework {
 		private void Update_Cache () {
 
 			// Ground
-			IsGrounded = !CellPhysics.RoomCheck(
-				PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character,
-				Rig, Direction4.Down
-			);
 			if (IsGrounded) LastGroundedFrame = CurrentFrame;
 			IsInsideGround = CellPhysics.Overlap(
 				PhysicsMask.Level, new(
@@ -352,26 +348,13 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private bool ForceSquatCheck () {
-			if (IsInsideGround) return false;
-			var rect = new RectInt(
+		private bool ForceSquatCheck () =>
+			!IsInsideGround && CellPhysics.Overlap(PhysicsMask.Level, new RectInt(
 				Rig.X + Rig.OffsetX + Rig.Width / 4,
 				Rig.Y + Rig.OffsetY + Height / 2,
 				Rig.Width / 2,
 				Height / 2
-			);
-			bool overlap = CellPhysics.Overlap(PhysicsMask.Level, rect) != null;
-			if (overlap) return true;
-			overlap = CellPhysics.Overlap(PhysicsMask.Environment, rect) != null;
-			if (overlap && IsSquating && IntendedY >= 0) {
-				// Want to Stand Up but Overlaps
-				return CellPhysics.StopCheck(
-					PhysicsMask.Level | PhysicsMask.Environment,
-					Rig, Direction4.Up
-				);
-			}
-			return overlap;
-		}
+			)) != null;
 
 
 		#endregion

@@ -27,7 +27,8 @@ namespace AngeliaFramework {
 		public virtual bool CarryRigidbodyOnTop => true;
 		public int FinalVelocityX => X - PrevX;
 		public int FinalVelocityY => Y - PrevY;
-		public bool InWater { get; private set; } = false;
+		public bool IsGrounded { get; set; } = false;
+		public bool InWater { get; set; } = false;
 
 		// Api-Ser
 		public int VelocityX { get; set; } = 0;
@@ -61,6 +62,17 @@ namespace AngeliaFramework {
 
 		public override void PhysicsUpdate (int frame) {
 
+			PrevX = X;
+			PrevY = Y;
+
+			// Grounded
+			IsGrounded = !CellPhysics.RoomCheck(
+				PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character,
+				this, Direction4.Down
+			) || !CellPhysics.RoomCheck(
+				PhysicsMask.Environment, this, Direction4.Down, CellPhysics.OperationMode.TriggerOnly, Const.ONEWAY_TAG
+			);
+
 			// Water
 			InWater = CellPhysics.Overlap(
 				PhysicsMask.Level, Rect, null,
@@ -71,8 +83,6 @@ namespace AngeliaFramework {
 			if (InsideGroundCheck()) {
 				X += VelocityX;
 				Y += VelocityY;
-				PrevX = X;
-				PrevY = Y;
 				return;
 			}
 
@@ -93,9 +103,7 @@ namespace AngeliaFramework {
 			}
 
 			// Move
-			PrevX = X;
-			PrevY = Y;
-			PerformMove(VelocityX, VelocityY, true);
+			PerformMove(VelocityX, VelocityY, true, PushLevel);
 		}
 
 
@@ -121,6 +129,16 @@ namespace AngeliaFramework {
 		) != null;
 
 
+		public void Move (int x, int y) => Move(x, y, PushLevel);
+
+
+		public void Move (int x, int y, int pushLevel) {
+			PrevX = X;
+			PrevY = Y;
+			PerformMove(x - X, y - Y, true, pushLevel);
+		}
+
+
 		#endregion
 
 
@@ -129,7 +147,7 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private void PerformMove (int speedX, int speedY, bool carry) {
+		public void PerformMove (int speedX, int speedY, bool carry, int pushLevel) {
 
 			int speedScale = InWater ? Const.WATER_SPEED_LOSE : 1000;
 			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);
@@ -149,7 +167,7 @@ namespace AngeliaFramework {
 					var newPos = CellPhysics.Move(
 						CollisionMask, pos,
 						new Vector2Int(pos.x + _sX, pos.y + _sY),
-						new(Width, Height), this
+						new(Width, Height), this, pushLevel
 					);
 					if (newPos == pos) break;
 					pos = newPos;
@@ -161,44 +179,46 @@ namespace AngeliaFramework {
 					pos,
 					new Vector2Int(pos.x + speedX, pos.y + speedY),
 					new(Width, Height),
-					this
+					this, pushLevel
 				);
 			}
 
-			X = pos.x - OffsetX;
-			Y = pos.y - OffsetY;
+			base.X = pos.x - OffsetX;
+			base.Y = pos.y - OffsetY;
 
 			// Carry
 			if (carry && speedY <= 0) {
 				const int GAP = 1;
-				int count = CellPhysics.ForAllOverlaps(
-					CollisionMask, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), this
-				);
 				int finalL = 0;
 				int finalR = 0;
-				for (int i = 0; i < count; i++) {
-					var hit = CellPhysics.OverlapResults[i];
-					if (
-						hit.Entity is eRigidbody hitRig &&
-						hitRig.CarryRigidbodyOnTop &&
-						hitRig.FinalVelocityX != 0 &&
-						hitRig.Rect.yMax == Rect.y
-					) {
-						if (hitRig.FinalVelocityX < 0) {
-							// L
-							if (Mathf.Abs(hitRig.FinalVelocityX) > Mathf.Abs(finalL)) {
-								finalL = hitRig.FinalVelocityX;
-							}
-						} else {
-							// R
-							if (Mathf.Abs(hitRig.FinalVelocityX) > Mathf.Abs(finalR)) {
-								finalR = hitRig.FinalVelocityX;
+				using (var overlap = new CellPhysics.OverlapResultScope(
+					CollisionMask, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), this)
+				) {
+					int count = overlap.Count;
+					for (int i = 0; i < count; i++) {
+						var hit = overlap.Results[i];
+						if (
+							hit.Entity is eRigidbody hitRig &&
+							hitRig.CarryRigidbodyOnTop &&
+							hitRig.FinalVelocityX != 0 &&
+							hitRig.Rect.yMax == Rect.y
+						) {
+							if (hitRig.FinalVelocityX < 0) {
+								// L
+								if (Mathf.Abs(hitRig.FinalVelocityX) > Mathf.Abs(finalL)) {
+									finalL = hitRig.FinalVelocityX;
+								}
+							} else {
+								// R
+								if (Mathf.Abs(hitRig.FinalVelocityX) > Mathf.Abs(finalR)) {
+									finalR = hitRig.FinalVelocityX;
+								}
 							}
 						}
 					}
 				}
 				if (finalL + finalR != 0) {
-					PerformMove(finalL + finalR, 0, false);
+					PerformMove(finalL + finalR, 0, false, pushLevel);
 				}
 			}
 
@@ -206,9 +226,6 @@ namespace AngeliaFramework {
 
 
 		#endregion
-
-
-
 
 
 

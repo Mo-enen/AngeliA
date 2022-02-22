@@ -94,16 +94,12 @@ namespace AngeliaFramework {
 	}
 
 
-
-	public enum Direction8 {
+	public enum Direction5 {
 		Up = 0,
 		Down = 1,
 		Left = 2,
 		Right = 3,
-		UpLeft = 4,
-		UpRight = 5,
-		DownLeft = 6,
-		DownRight = 7,
+		Center = 4,
 	}
 
 
@@ -130,7 +126,6 @@ namespace AngeliaFramework {
 		public Vector2 BottomRight;
 		public Vector2 TopLeft;
 		public Vector2 TopRight;
-		public RectOffset Border;
 
 	}
 
@@ -193,6 +188,24 @@ namespace AngeliaFramework {
 	}
 
 
+
+	[System.Serializable]
+	public struct Int4 {
+
+		public int Left { get => A; set => A = value; }
+		public int Right { get => B; set => B = value; }
+		public int Down { get => C; set => C = value; }
+		public int Up { get => D; set => D = value; }
+
+		public int A;
+		public int B;
+		public int C;
+		public int D;
+
+	}
+
+
+
 	public static class Const {
 
 		public const int CELL_SIZE = 256;       // N¡ÁN Pixels per Tile
@@ -216,6 +229,7 @@ namespace AngeliaFramework {
 
 		public const int WATER_SPEED_LOSE = 400;
 		public static int WATER_TAG = "Water".ACode();
+		public static int ONEWAY_TAG = "Oneway".ACode();
 
 	}
 
