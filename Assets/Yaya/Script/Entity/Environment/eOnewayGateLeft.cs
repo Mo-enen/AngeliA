@@ -5,10 +5,13 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class eOnewayGate : eOneway {
+	public class eOnewayGateLeft : eOneway {
+
 
 
 		private static readonly int ONEWAY_CODE = "Oneway Gate".ACode();
+
+		public override Direction4 GateDirection => Direction4.Left;
 
 
 		public override void FrameUpdate (int frame) {

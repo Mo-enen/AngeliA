@@ -56,12 +56,16 @@ namespace AngeliaFramework {
 		}
 
 
-		public class HitInfo {
+		public class HitInfo : System.IDisposable {
 			public RectInt Rect;
 			public Entity Entity;
 			public bool IsTrigger;
 			public int Tag;
 			public uint Frame = uint.MinValue;
+
+			public void Dispose () {
+				Entity = null;
+			}
 		}
 
 
@@ -195,13 +199,13 @@ namespace AngeliaFramework {
 					Direction4.Right => new(eRect.xMax, eRect.y, GAP, eRect.height),
 					_ => throw new System.NotImplementedException(),
 				};
-				foreach (var hit in ForAllOverlaps(PhysicsLayer.Environment, rect, target, OperationMode.TriggerOnly, Const.ONEWAY_TAG)) {
+				using var iter = ForAllOverlaps(PhysicsLayer.Environment, rect, target, OperationMode.TriggerOnly, Const.ONEWAY_TAG);
+				while (iter.MoveNext()) {
+					var hit = iter.Current;
 					if (
 						hit.Entity is eOneway oneway &&
 						direction == oneway.GateDirection.Opposite()
-					) {
-						return false;
-					}
+					) return false;
 				}
 				return true;
 			}
@@ -212,14 +216,16 @@ namespace AngeliaFramework {
 		public static bool StopCheck (PhysicsMask mask, eRigidbody rig, Direction4 dir) {
 			if (RoomCheck(mask, rig, dir)) return false;
 			var rect = rig.Rect;
-			foreach (var hit in ForAllOverlaps(
+			using var iter = ForAllOverlaps(
 				mask, new(
 					rect.x + (dir == Direction4.Right ? rect.width : -1),
 					rect.y + (dir == Direction4.Up ? rect.height : -1),
 					dir == Direction4.Up || dir == Direction4.Down ? rect.width : 1,
 					dir == Direction4.Up || dir == Direction4.Down ? 1 : rect.height
 				), rig
-			)) {
+			);
+			while (iter.MoveNext()) {
+				var hit = iter.Current;
 				if (!PushCheck(mask, rig.PushLevel, hit.Entity, dir)) return true;
 			}
 			return false;
@@ -247,7 +253,10 @@ namespace AngeliaFramework {
 				Vector2Int center = default;
 				Vector2Int ghostH = default;
 				Vector2Int ghostV = default;
-				foreach (var hit in ForAllOverlaps(mask, new RectInt(to, size), entity)) {
+
+				using var iter = ForAllOverlaps(mask, new RectInt(to, size), entity);
+				while (iter.MoveNext()) {
+					var hit = iter.Current;
 					var hitRect = hit.Rect;
 					// H or V
 					center.x = hitRect.x + hitRect.width / 2;
@@ -304,21 +313,23 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		public static IEnumerable<HitInfo> ForAllOverlaps (
+		public static IEnumerator<HitInfo> ForAllOverlaps (
+			//System.Action<HitInfo> action,
 			PhysicsMask mask, RectInt globalRect, Entity ignore = null,
 			OperationMode mode = OperationMode.ColliderOnly, int tag = 0
 		) {
 			for (int layerIndex = 0; layerIndex < Const.PHYSICS_LAYER_COUNT; layerIndex++) {
 				var layer = (PhysicsLayer)layerIndex;
 				if (!mask.HasLayer(layer)) continue;
-				foreach (var hit in ForAllOverlaps(layer, globalRect, ignore, mode, tag)) {
-					yield return hit;
+				using var iter = ForAllOverlaps(layer, globalRect, ignore, mode, tag);
+				while (iter.MoveNext()) {
+					yield return iter.Current;
 				}
 			}
 		}
 
 
-		public static IEnumerable<HitInfo> ForAllOverlaps (
+		public static IEnumerator<HitInfo> ForAllOverlaps (
 			PhysicsLayer layer, RectInt globalRect, Entity ignore = null,
 			OperationMode mode = OperationMode.ColliderOnly, int tag = 0
 		) {

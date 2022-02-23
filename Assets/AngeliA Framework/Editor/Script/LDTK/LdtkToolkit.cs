@@ -100,6 +100,7 @@ namespace LdtkToAngeliA {
 			// Ldtk >> Custom Data Pool
 			var customDataPool = new Dictionary<int, (bool trigger, int tag)>();
 			foreach (var tileset in project.defs.tilesets) {
+				if (tileset.identifier.StartsWith("_")) continue;
 				string tName = Util.GetNameWithoutExtension(tileset.relPath);
 				if (!spritePool.ContainsKey(tName)) continue;
 				var sPool = spritePool[tName];

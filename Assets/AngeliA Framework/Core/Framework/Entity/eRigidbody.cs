@@ -191,7 +191,9 @@ namespace AngeliaFramework {
 				const int GAP = 1;
 				int finalL = 0;
 				int finalR = 0;
-				foreach (var hit in CellPhysics.ForAllOverlaps(CollisionMask, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), this)) {
+				using var iter = CellPhysics.ForAllOverlaps(CollisionMask, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), this);
+				while (iter.MoveNext()) {
+					var hit = iter.Current;
 					if (
 						hit.Entity is eRigidbody hitRig &&
 						hitRig.CarryRigidbodyOnTop &&

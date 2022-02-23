@@ -10,7 +10,7 @@ namespace AngeliaFramework {
 		// Api
 		public override EntityLayer Layer => EntityLayer.Environment;
 		protected virtual PhysicsMask Mask => PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Item;
-		public Direction4 GateDirection { get; set; } = Direction4.Up;
+		public abstract Direction4 GateDirection { get; }
 
 
 		// MSG
@@ -27,13 +27,12 @@ namespace AngeliaFramework {
 
 		public override void PhysicsUpdate (int frame) {
 			var rect = Rect;
-			foreach (var hit in CellPhysics.ForAllOverlaps(Mask, rect, this)) {
+			using var iter = CellPhysics.ForAllOverlaps(Mask, rect, this);
+			while (iter.MoveNext()) {
+				var hit = iter.Current;
 				if (hit.Entity is eRigidbody rig) {
-
 					var rRect = rig.Rect;
-
 					switch (GateDirection) {
-
 						case Direction4.Left:
 							if (
 								rig.FinalVelocityX > 0 &&
@@ -44,7 +43,6 @@ namespace AngeliaFramework {
 								rig.VelocityX = 0;
 							}
 							break;
-
 						case Direction4.Right:
 							if (
 								rig.FinalVelocityX < 0 &&
@@ -55,7 +53,6 @@ namespace AngeliaFramework {
 								rig.VelocityX = 0;
 							}
 							break;
-
 						case Direction4.Down:
 							if (
 								rig.FinalVelocityY > 0 &&
@@ -66,7 +63,6 @@ namespace AngeliaFramework {
 								rig.VelocityY = 0;
 							}
 							break;
-
 						case Direction4.Up:
 							if (
 								rig.FinalVelocityY < 0 &&
@@ -81,8 +77,6 @@ namespace AngeliaFramework {
 				}
 			}
 		}
-
-
 
 
 	}
