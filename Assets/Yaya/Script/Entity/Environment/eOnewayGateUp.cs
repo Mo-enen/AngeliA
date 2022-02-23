@@ -17,9 +17,9 @@ namespace Yaya {
 		public override void FrameUpdate (int frame) {
 			var rect = Rect;
 			int rotDelta = 0;
-			if (frame < LastReboundFrame + 4) {
-				rect.y -= (LastReboundFrame - frame + 4) * 8;
-				rotDelta = (LastReboundFrame - frame + 4) * 2 * (frame % 2 == 0 ? -1 : 1);
+			if (frame < ReboundFrame + 4) {
+				rect.y -= (ReboundFrame - frame + 4) * 8;
+				rotDelta = (ReboundFrame - frame + 4) * 2 * (frame % 2 == 0 ? -1 : 1);
 			}
 			CellRenderer.Draw(
 				ONEWAY_CODE,
