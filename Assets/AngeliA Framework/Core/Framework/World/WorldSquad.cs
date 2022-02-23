@@ -69,13 +69,43 @@ namespace AngeliaFramework {
 
 
 		// Iter
-		public IEnumerable<(World.Block block, int globalX, int globalY)> ForAllLevelBlocksInside (RectInt globalUnitRect) => ForAllBlocksInside(globalUnitRect, true);
+		public void DrawBlocksInside (RectInt globalUnitRect, bool level) {
+			var rect = new RectInt(0, 0, Const.CELL_SIZE, Const.CELL_SIZE);
+			for (int worldI = 0; worldI <= 2; worldI++) {
+				for (int worldJ = 0; worldJ <= 2; worldJ++) {
+					var world = Worlds[worldI, worldJ];
+					if (world.IsFilling) continue;
+					var worldUnitRect = world.FilledUnitRect;
+					if (!worldUnitRect.Overlaps(globalUnitRect)) continue;
+					int unitL = Mathf.Max(globalUnitRect.x, worldUnitRect.x);
+					int unitR = Mathf.Min(globalUnitRect.xMax, worldUnitRect.xMax);
+					int unitD = Mathf.Max(globalUnitRect.y, worldUnitRect.y);
+					int unitU = Mathf.Min(globalUnitRect.yMax, worldUnitRect.yMax);
+					for (int j = unitD; j < unitU; j++) {
+						for (int i = unitL; i < unitR; i++) {
+							var block = level ?
+								world.GetLevelBlock(i - worldUnitRect.x, j - worldUnitRect.y) :
+								world.GetBackgroundBlock(i - worldUnitRect.x, j - worldUnitRect.y);
+							if (block.TypeID == 0) continue;
+							rect.x = i * Const.CELL_SIZE;
+							rect.y = j * Const.CELL_SIZE;
+							if (level) {
+								CellPhysics.FillBlock(
+									PhysicsLayer.Level,
+									rect.Shrink(block.ColliderBorder.Left, block.ColliderBorder.Right, block.ColliderBorder.Down, block.ColliderBorder.Up),
+									block.IsTrigger,
+									block.Tag
+								);
+							}
+							CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 255));
+						}
+					}
+				}
+			}
+		}
 
 
-		public IEnumerable<(World.Block block, int globalX, int globalY)> ForAllBackgroundBlocksInside (RectInt globalUnitRect) => ForAllBlocksInside(globalUnitRect, false);
-
-
-		public IEnumerable<(World.Entity entity, int globalX, int globalY)> ForAllEntitiesInside (RectInt globalUnitRect) {
+		public void SpawnEntitiesInside (RectInt globalUnitRect, Game game) {
 			for (int worldI = 0; worldI <= 2; worldI++) {
 				for (int worldJ = 0; worldJ <= 2; worldJ++) {
 					var world = Worlds[worldI, worldJ];
@@ -90,7 +120,9 @@ namespace AngeliaFramework {
 						for (int i = unitL; i < unitR; i++) {
 							var entity = world.GetEntity(i - worldUnitRect.x, j - worldUnitRect.y);
 							if (entity.TypeID == 0) continue;
-							yield return (entity, i * Const.CELL_SIZE, j * Const.CELL_SIZE);
+							game.TryAddEntity(
+								globalUnitRect, entity, i * Const.CELL_SIZE, j * Const.CELL_SIZE
+							);
 						}
 					}
 				}
@@ -203,31 +235,6 @@ namespace AngeliaFramework {
 					var pos = new Vector2Int(x + i - 1, y + j - 1);
 					if (world.FilledPosition != pos) {
 						world.FillAsync(pos);
-					}
-				}
-			}
-		}
-
-
-		private IEnumerable<(World.Block block, int globalX, int globalY)> ForAllBlocksInside (RectInt globalUnitRect, bool level) {
-			for (int worldI = 0; worldI <= 2; worldI++) {
-				for (int worldJ = 0; worldJ <= 2; worldJ++) {
-					var world = Worlds[worldI, worldJ];
-					if (world.IsFilling) continue;
-					var worldUnitRect = world.FilledUnitRect;
-					if (!worldUnitRect.Overlaps(globalUnitRect)) continue;
-					int unitL = Mathf.Max(globalUnitRect.x, worldUnitRect.x);
-					int unitR = Mathf.Min(globalUnitRect.xMax, worldUnitRect.xMax);
-					int unitD = Mathf.Max(globalUnitRect.y, worldUnitRect.y);
-					int unitU = Mathf.Min(globalUnitRect.yMax, worldUnitRect.yMax);
-					for (int j = unitD; j < unitU; j++) {
-						for (int i = unitL; i < unitR; i++) {
-							var block = level ?
-								world.GetLevelBlock(i - worldUnitRect.x, j - worldUnitRect.y) :
-								world.GetBackgroundBlock(i - worldUnitRect.x, j - worldUnitRect.y);
-							if (block.TypeID == 0) continue;
-							yield return (block, i * Const.CELL_SIZE, j * Const.CELL_SIZE);
-						}
 					}
 				}
 			}

@@ -24,54 +24,6 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
-		public class OverlapAllScope : System.IDisposable {
-
-
-			public int Count;
-			private HitInfo[] Results;
-
-
-			public OverlapAllScope (
-				HitInfo[] hits,
-				PhysicsMask mask, RectInt globalRect, Entity ignore = null,
-				OperationMode mode = OperationMode.ColliderOnly, int tag = 0
-			) {
-				Results = hits;
-				Count = 0;
-				for (int layerIndex = 0; layerIndex < Const.PHYSICS_LAYER_COUNT; layerIndex++) {
-					var layer = (PhysicsLayer)layerIndex;
-					if (!mask.HasLayer(layer)) continue;
-					Count = ForAllOverlapsLogic(hits, Count, layer, globalRect, ignore, mode, tag);
-				}
-			}
-
-
-			public OverlapAllScope (
-				HitInfo[] hits,
-				PhysicsLayer layer, RectInt globalRect, Entity ignore = null,
-				OperationMode mode = OperationMode.ColliderOnly, int tag = 0
-			) {
-				Results = hits;
-				Count = ForAllOverlapsLogic(hits, 0, layer, globalRect, ignore, mode, tag);
-			}
-
-
-			public void Dispose () {
-				int len = Results.Length;
-				if (len < 128) {
-					for (int i = 0; i < len; i++) {
-						Results[i] = null;
-					}
-				} else {
-					System.Array.Clear(Results, 0, len);
-				}
-			}
-
-
-		}
-
-
-
 		private struct Cell {
 
 			public RectInt GlobalRect => Entity != null ? Entity.Rect : Rect;
@@ -81,13 +33,9 @@ namespace AngeliaFramework {
 			public uint Frame;
 			public bool IsTrigger;
 			public int Tag;
-
-			private HitInfo Info;
+			public HitInfo Info;
 
 			public HitInfo GetInfo () {
-				if (Info == null) {
-					Info = new();
-				}
 				if (Info.Frame != Frame) {
 					Info.Rect = GlobalRect;
 					Info.Entity = Entity;
@@ -108,7 +56,10 @@ namespace AngeliaFramework {
 				for (int i = 0; i < width; i++) {
 					for (int j = 0; j < height; j++) {
 						for (int z = 0; z < CELL_DEPTH; z++) {
-							Cells[i, j, z] = new() { Frame = uint.MinValue };
+							Cells[i, j, z] = new() {
+								Frame = uint.MinValue,
+								Info = new(),
+							};
 						}
 					}
 				}
@@ -144,7 +95,7 @@ namespace AngeliaFramework {
 		private static readonly HitInfo[] c_PushCheck_OnewayCheck = new HitInfo[16];
 		private static readonly HitInfo[] c_StopCheck = new HitInfo[16];
 		private static readonly HitInfo[] c_MoveLogic = new HitInfo[32];
-		private readonly static Layer[] Layers = new Layer[Const.PHYSICS_LAYER_COUNT];
+		private static readonly Layer[] Layers = new Layer[Const.PHYSICS_LAYER_COUNT];
 		private static Layer CurrentLayer = null;
 		private static PhysicsLayer CurrentLayerEnum = PhysicsLayer.Item;
 		private static uint CurrentFrame = uint.MinValue;
@@ -219,6 +170,28 @@ namespace AngeliaFramework {
 		}
 
 
+		public static int OverlapAll (
+			HitInfo[] hits,
+			PhysicsMask mask, RectInt globalRect, Entity ignore = null,
+			OperationMode mode = OperationMode.ColliderOnly, int tag = 0
+		) {
+			int count = 0;
+			for (int layerIndex = 0; layerIndex < Const.PHYSICS_LAYER_COUNT; layerIndex++) {
+				var layer = (PhysicsLayer)layerIndex;
+				if (!mask.HasLayer(layer)) continue;
+				count = OverlapAllLogic(hits, count, layer, globalRect, ignore, mode, tag);
+			}
+			return count;
+		}
+
+
+		public static int OverlapAll (
+			HitInfo[] hits,
+			PhysicsLayer layer, RectInt globalRect, Entity ignore = null,
+			OperationMode mode = OperationMode.ColliderOnly, int tag = 0
+		) => OverlapAllLogic(hits, 0, layer, globalRect, ignore, mode, tag);
+
+
 		// Check
 		public static bool RoomCheck (PhysicsMask mask, Entity entity, Direction4 direction, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
 			const int GAP = 1;
@@ -244,11 +217,11 @@ namespace AngeliaFramework {
 				Direction4.Right => new(eRect.xMax, eRect.y, GAP, eRect.height),
 				_ => throw new System.NotImplementedException(),
 			};
-			using var overlap = new OverlapAllScope(
+			int count = OverlapAll(
 				c_PushCheck_OnewayCheck,
 				PhysicsLayer.Environment, rect, entity, OperationMode.TriggerOnly, Const.ONEWAY_TAG
 			);
-			for (int i = 0; i < overlap.Count; i++) {
+			for (int i = 0; i < count; i++) {
 				var hit = c_PushCheck_OnewayCheck[i];
 				if (
 					hit.Entity is eOneway oneway &&
@@ -258,15 +231,15 @@ namespace AngeliaFramework {
 					return false;
 				}
 			}
+			c_PushCheck_OnewayCheck.Dispose();
 			return true;
 		}
 
 
 		public static bool PushCheck (int pushLevel, Entity target, Direction4 direction) {
-			const PhysicsMask MASK = PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Level;
 			bool colCheck = target != null &&
 				pushLevel > eRigidbody.GetPushLevel(target) &&
-				RoomCheck(MASK, target, direction);
+				RoomCheck(PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Level, target, direction);
 			if (colCheck && target != null) {
 				return RoomCheck_Oneway(target, direction);
 			}
@@ -278,7 +251,7 @@ namespace AngeliaFramework {
 			const PhysicsMask MASK = PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Level;
 			if (RoomCheck(MASK, rig, dir)) return false;
 			var rect = rig.Rect;
-			using var overlap = new OverlapAllScope(
+			int count = OverlapAll(
 				c_StopCheck,
 				MASK, new(
 					rect.x + (dir == Direction4.Right ? rect.width : -1),
@@ -287,10 +260,11 @@ namespace AngeliaFramework {
 					dir == Direction4.Up || dir == Direction4.Down ? 1 : rect.height
 				), rig
 			);
-			for (int i = 0; i < overlap.Count; i++) {
+			for (int i = 0; i < count; i++) {
 				var hit = c_StopCheck[i];
 				if (hit.Entity == null || !PushCheck(rig.PushLevel, hit.Entity, dir)) return true;
 			}
+			c_StopCheck.Dispose();
 			return false;
 		}
 
@@ -318,8 +292,8 @@ namespace AngeliaFramework {
 			Vector2Int center = default;
 			Vector2Int ghostH = default;
 			Vector2Int ghostV = default;
-			using var overlap = new OverlapAllScope(c_MoveLogic, mask, new RectInt(to, size), entity);
-			for (int i = 0; i < overlap.Count; i++) {
+			int count = OverlapAll(c_MoveLogic, mask, new RectInt(to, size), entity);
+			for (int i = 0; i < count; i++) {
 				var hit = c_MoveLogic[i];
 				var hitRect = hit.Rect;
 				// H or V
@@ -344,6 +318,7 @@ namespace AngeliaFramework {
 					result = useH ? ghostH : ghostV;
 				}
 			}
+			c_MoveLogic.Dispose();
 			return result;
 		}
 
@@ -376,7 +351,7 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private static int ForAllOverlapsLogic (
+		private static int OverlapAllLogic (
 			HitInfo[] hits, int startIndex,
 			PhysicsLayer layer, RectInt globalRect, Entity ignore = null,
 			OperationMode mode = OperationMode.ColliderOnly, int tag = 0
@@ -394,7 +369,7 @@ namespace AngeliaFramework {
 			for (int j = d; j <= u; j++) {
 				for (int i = l; i <= r; i++) {
 					for (int dep = 0; dep < CELL_DEPTH; dep++) {
-						var cell = layerItem.Cells[i, j, dep];
+						ref var cell = ref layerItem.Cells[i, j, dep];
 						if (cell.Frame != CurrentFrame) { break; }
 						if (ignore != null && cell.Entity == ignore) continue;
 						if (tag != 0 && cell.Tag != tag) continue;
@@ -402,13 +377,12 @@ namespace AngeliaFramework {
 							if (cell.GlobalRect.Overlaps(globalRect)) {
 								hits[count] = cell.GetInfo();
 								count++;
-								if (count >= maxLength) goto LoopEnd;
+								if (count >= maxLength) return count;
 							}
 						}
 					}
 				}
 			}
-		LoopEnd:
 			return count;
 		}
 

@@ -421,6 +421,15 @@ namespace AngeliaFramework {
 		}
 
 
+		public static void Dispose (this HitInfo[] hits) {
+			int len = hits.Length;
+			for (int i = 0; i < len; i++) {
+				if (hits[i] == null) break;
+				hits[i] = null;
+			}
+		}
+
+
 	}
 
 

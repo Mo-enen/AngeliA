@@ -203,9 +203,8 @@ namespace AngeliaFramework {
 				const int GAP = 1;
 				int finalL = 0;
 				int finalR = 0;
-
-				using var overlap = new CellPhysics.OverlapAllScope(c_PerformMove, COL_MASK, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), this);
-				for (int i = 0; i < overlap.Count; i++) {
+				int count = CellPhysics.OverlapAll(c_PerformMove, COL_MASK, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), this);
+				for (int i = 0; i < count; i++) {
 					var hit = c_PerformMove[i];
 					if (
 						hit.Entity is eRigidbody hitRig &&
@@ -226,6 +225,7 @@ namespace AngeliaFramework {
 						}
 					}
 				}
+				c_PerformMove.Dispose();
 				if (finalL + finalR != 0) {
 					PerformMove(finalL + finalR, 0, false, pushLevel);
 				}

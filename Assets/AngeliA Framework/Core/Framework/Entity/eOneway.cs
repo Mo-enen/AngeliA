@@ -35,9 +35,9 @@ namespace AngeliaFramework {
 
 		public override void PhysicsUpdate (int frame) {
 			var rect = Rect;
-			using var overlap = new CellPhysics.OverlapAllScope(c_PhysicsUpdate, Mask, rect, this);
+			int count = CellPhysics.OverlapAll(c_PhysicsUpdate, Mask, rect, this);
 			bool contact = false;
-			for (int i = 0; i < overlap.Count; i++) {
+			for (int i = 0; i < count; i++) {
 				var hit = c_PhysicsUpdate[i];
 				if (hit.Entity is eRigidbody rig) {
 					var rRect = rig.Rect;
@@ -88,6 +88,7 @@ namespace AngeliaFramework {
 					}
 				}
 			}
+			c_PhysicsUpdate.Dispose();
 			// Contact Check
 			if (!contact) {
 				const int GAP = 1;
@@ -98,8 +99,8 @@ namespace AngeliaFramework {
 					Direction4.Right => new(rect.xMax, rect.y, GAP, rect.height),
 					_ => throw new System.NotImplementedException(),
 				};
-				using var rebound = new CellPhysics.OverlapAllScope(c_Rebound, Mask, edge, this);
-				for (int i = 0; i < rebound.Count; i++) {
+				int rCount = CellPhysics.OverlapAll(c_Rebound, Mask, edge, this);
+				for (int i = 0; i < rCount; i++) {
 					var hit = c_Rebound[i];
 					if (
 						hit.Entity is eRigidbody rig &&
@@ -109,6 +110,7 @@ namespace AngeliaFramework {
 						break;
 					}
 				}
+				c_Rebound.Dispose();
 			}
 			if (contact) {
 				if (LastContactFrame < frame - 1) {

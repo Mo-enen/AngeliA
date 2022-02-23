@@ -308,53 +308,14 @@ namespace AngeliaFramework {
 
 
 		private void FrameUpdate_World () {
-
-			// World Squad
 			WorldSquad.FrameUpdate(SpawnRect.CenterInt());
-
 			if (WorldSquad.IsReady) {
-
 				var spawnUnitRect = SpawnRect.Divide(Const.CELL_SIZE);
-
-				// Block-BG
-				var rect = new RectInt(0, 0, Const.CELL_SIZE, Const.CELL_SIZE);
-				foreach (var (block, x, y) in WorldSquad.ForAllBackgroundBlocksInside(spawnUnitRect)) {
-					rect.x = x;
-					rect.y = y;
-					CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 255));
-				}
-
-				// Block-Level
-				foreach (var (block, x, y) in WorldSquad.ForAllLevelBlocksInside(spawnUnitRect.Expand(Const.BLOCK_SPAWN_PADDING))) {
-					rect.x = x;
-					rect.y = y;
-					CellPhysics.FillBlock(
-						PhysicsLayer.Level,
-						rect.Shrink(block.ColliderBorder.Left, block.ColliderBorder.Right, block.ColliderBorder.Down, block.ColliderBorder.Up),
-						block.IsTrigger,
-						block.Tag
-					);
-					CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 255));
-				}
-
-				// Entities
-				foreach (var (entity, x, y) in WorldSquad.ForAllEntitiesInside(spawnUnitRect)) {
-					if (!EntityHandlerPool.TryGetValue(entity.TypeID, out var eHandler)) continue;
-					int unitX = x.AltDivide(Const.CELL_SIZE);
-					int unitY = y.AltDivide(Const.CELL_SIZE);
-					if (LoadedUnitRect.Contains(unitX, unitY)) continue;
-					if (!spawnUnitRect.Contains(unitX, unitY)) continue;
-					var e = eHandler.Invoke();
-					e.InstanceID = entity.InstanceID;
-					e.X = x;
-					e.Y = y;
-					AddEntity(e);
-				}
-
-
+				WorldSquad.DrawBlocksInside(spawnUnitRect, false);
+				WorldSquad.DrawBlocksInside(spawnUnitRect.Expand(Const.BLOCK_SPAWN_PADDING), true);
+				WorldSquad.SpawnEntitiesInside(spawnUnitRect, this);
 				LoadedUnitRect = spawnUnitRect;
 			}
-
 		}
 
 
@@ -463,6 +424,20 @@ namespace AngeliaFramework {
 
 
 		// Entity
+		public void TryAddEntity (RectInt spawnUnitRect, World.Entity entity, int x, int y) {
+			if (!EntityHandlerPool.TryGetValue(entity.TypeID, out var eHandler)) return;
+			int unitX = x.AltDivide(Const.CELL_SIZE);
+			int unitY = y.AltDivide(Const.CELL_SIZE);
+			if (LoadedUnitRect.Contains(unitX, unitY)) return;
+			if (!spawnUnitRect.Contains(unitX, unitY)) return;
+			var e = eHandler.Invoke();
+			e.InstanceID = entity.InstanceID;
+			e.X = x;
+			e.Y = y;
+			AddEntity(e);
+		}
+
+
 		public void AddEntity (Entity entity) {
 			if (entity.InstanceID == 0) {
 				entity.InstanceID = Entity.NewDynamicInstanceID();
