@@ -526,7 +526,7 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "eOneway",
+			"identifier": "eOnewayGate",
 			"uid": 42,
 			"tags": [],
 			"width": 16,
@@ -741,7 +741,7 @@
 							"fieldInstances": []
 						},
 						{
-							"__identifier": "eOneway",
+							"__identifier": "eOnewayGate",
 							"__grid": [10,6],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
@@ -754,7 +754,7 @@
 							"fieldInstances": []
 						},
 						{
-							"__identifier": "eOneway",
+							"__identifier": "eOnewayGate",
 							"__grid": [11,6],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
@@ -767,7 +767,7 @@
 							"fieldInstances": []
 						},
 						{
-							"__identifier": "eOneway",
+							"__identifier": "eOnewayGate",
 							"__grid": [12,6],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
@@ -780,7 +780,7 @@
 							"fieldInstances": []
 						},
 						{
-							"__identifier": "eOneway",
+							"__identifier": "eOnewayGate",
 							"__grid": [13,6],
 							"__pivot": [0.5,0.5],
 							"__tags": [],

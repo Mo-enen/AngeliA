@@ -388,6 +388,15 @@ namespace AngeliaFramework {
 		}
 
 
+		public static Direction4 Opposite (this Direction4 dir) => dir switch {
+			Direction4.Down => Direction4.Up,
+			Direction4.Up => Direction4.Down,
+			Direction4.Left => Direction4.Right,
+			Direction4.Right => Direction4.Left,
+			_ => throw new System.NotImplementedException(),
+		};
+
+
 		// AngeliA Hash Code
 		public static int ACode (this System.Type type) => type.Name.ACode();
 		public static int ACode (this string str) {

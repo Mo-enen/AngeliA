@@ -45,8 +45,8 @@ TextureImporter:
       213: 1666298949094619943
     second: Grass Ground 12
   - first:
-      213: 4868905330301263945
-    second: Oneway
+      213: -1990186389894202535
+    second: Oneway Gate
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -421,7 +421,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Oneway
+      name: Oneway Gate
       rect:
         serializedVersion: 2
         x: 239
@@ -435,8 +435,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 940ec91f993d19340800000000000000
-      internalID: 4868905330301263945
+      spriteID: 95bf989d5007164e0800000000000000
+      internalID: -1990186389894202535
       vertices: []
       indices: 
       edges: []
@@ -452,6 +452,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      Oneway Gate: -1990186389894202535
       Grass Ground 8: 5945820847118747798
       Grass Ground 7: 6087002409126005373
       Grass Ground 1: -2243946855060729021
@@ -459,7 +460,6 @@ TextureImporter:
       Grass Ground 2: 1420340397046421190
       Grass Ground 6: -1440869216268820329
       Grass Ground 10: -7392979644268789809
-      Oneway: 4868905330301263945
       Brick: -6448832585698385253
       Grass Ground 3: -9072998069868027213
       Grass Ground 11: -8822198502774587252

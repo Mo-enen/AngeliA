@@ -191,28 +191,22 @@ namespace AngeliaFramework {
 				const int GAP = 1;
 				int finalL = 0;
 				int finalR = 0;
-				using (var overlap = new CellPhysics.OverlapResultScope(
-					CollisionMask, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), this)
-				) {
-					int count = overlap.Count;
-					for (int i = 0; i < count; i++) {
-						var hit = overlap.Results[i];
-						if (
-							hit.Entity is eRigidbody hitRig &&
-							hitRig.CarryRigidbodyOnTop &&
-							hitRig.FinalVelocityX != 0 &&
-							hitRig.Rect.yMax == Rect.y
-						) {
-							if (hitRig.FinalVelocityX < 0) {
-								// L
-								if (Mathf.Abs(hitRig.FinalVelocityX) > Mathf.Abs(finalL)) {
-									finalL = hitRig.FinalVelocityX;
-								}
-							} else {
-								// R
-								if (Mathf.Abs(hitRig.FinalVelocityX) > Mathf.Abs(finalR)) {
-									finalR = hitRig.FinalVelocityX;
-								}
+				foreach (var hit in CellPhysics.ForAllOverlaps(CollisionMask, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), this)) {
+					if (
+						hit.Entity is eRigidbody hitRig &&
+						hitRig.CarryRigidbodyOnTop &&
+						hitRig.FinalVelocityX != 0 &&
+						hitRig.Rect.yMax == Rect.y
+					) {
+						if (hitRig.FinalVelocityX < 0) {
+							// L
+							if (Mathf.Abs(hitRig.FinalVelocityX) > Mathf.Abs(finalL)) {
+								finalL = hitRig.FinalVelocityX;
+							}
+						} else {
+							// R
+							if (Mathf.Abs(hitRig.FinalVelocityX) > Mathf.Abs(finalR)) {
+								finalR = hitRig.FinalVelocityX;
 							}
 						}
 					}
@@ -221,7 +215,6 @@ namespace AngeliaFramework {
 					PerformMove(finalL + finalR, 0, false, pushLevel);
 				}
 			}
-
 		}
 
 

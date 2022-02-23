@@ -12,29 +12,6 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
-		public class OverlapResultScope : System.IDisposable {
-
-
-			public int Count = 0;
-			public HitInfo[] Results => CellPhysics.OverlapResults;
-
-
-			public OverlapResultScope (PhysicsMask mask, RectInt globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
-				Count = ForAllOverlaps(mask, globalRect, ignore, mode, tag);
-			}
-
-
-			public OverlapResultScope (PhysicsLayer layer, RectInt globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
-				Count = ForAllOverlaps(layer, globalRect, ignore, mode, tag);
-			}
-
-
-			public void Dispose () => ClearOverlapResult();
-
-
-		}
-
-
 		private struct Cell {
 
 			public RectInt GlobalRect => Entity != null ? Entity.Rect : Rect;
@@ -105,14 +82,12 @@ namespace AngeliaFramework {
 
 		// Const
 		private const int CELL_DEPTH = 8;
-		private const int OVERLAP_RESULT_COUNT = CELL_DEPTH * Const.PHYSICS_LAYER_COUNT * 4;
 
 		// Api
 		public static int Width { get; } = (Const.MAX_VIEW_WIDTH + Const.SPAWN_GAP * 2) / Const.CELL_SIZE;
 		public static int Height { get; } = (Const.MAX_VIEW_HEIGHT + Const.SPAWN_GAP * 2) / Const.CELL_SIZE;
 		public static int PositionX { get; private set; } = 0;
 		public static int PositionY { get; private set; } = 0;
-		private static HitInfo[] OverlapResults { get; } = new HitInfo[OVERLAP_RESULT_COUNT];
 
 		// Data
 		private readonly static Layer[] Layers = new Layer[Const.PHYSICS_LAYER_COUNT];
@@ -205,29 +180,47 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool PushCheck (PhysicsMask mask, int pushLevel, Entity target, Direction4 direction) =>
-			target != null &&
-			pushLevel > eRigidbody.GetPushLevel(target) &&
-			RoomCheck(mask, target, direction) &&
-			// Oneway Check
-			(direction != Direction4.Down ||
-				RoomCheck(PhysicsMask.Environment, target, direction, OperationMode.TriggerOnly, Const.ONEWAY_TAG)
-			);
+		public static bool PushCheck (PhysicsMask mask, int pushLevel, Entity target, Direction4 direction) {
+			bool colCheck = target != null &&
+				pushLevel > eRigidbody.GetPushLevel(target) &&
+				RoomCheck(mask, target, direction);
+			if (colCheck && target != null) {
+				// Oneway Check
+				const int GAP = 1;
+				var eRect = target.Rect;
+				RectInt rect = direction switch {
+					Direction4.Down => new(eRect.x, eRect.y - GAP, eRect.width, GAP),
+					Direction4.Up => new(eRect.x, eRect.yMax, eRect.width, GAP),
+					Direction4.Left => new(eRect.x - GAP, eRect.y, GAP, eRect.height),
+					Direction4.Right => new(eRect.xMax, eRect.y, GAP, eRect.height),
+					_ => throw new System.NotImplementedException(),
+				};
+				foreach (var hit in ForAllOverlaps(PhysicsLayer.Environment, rect, target, OperationMode.TriggerOnly, Const.ONEWAY_TAG)) {
+					if (
+						hit.Entity is eOneway oneway &&
+						direction == oneway.GateDirection.Opposite()
+					) {
+						return false;
+					}
+				}
+				return true;
+			}
+			return colCheck;
+		}
 
 
 		public static bool StopCheck (PhysicsMask mask, eRigidbody rig, Direction4 dir) {
 			if (RoomCheck(mask, rig, dir)) return false;
 			var rect = rig.Rect;
-			int count = ForAllOverlaps(
+			foreach (var hit in ForAllOverlaps(
 				mask, new(
 					rect.x + (dir == Direction4.Right ? rect.width : -1),
 					rect.y + (dir == Direction4.Up ? rect.height : -1),
 					dir == Direction4.Up || dir == Direction4.Down ? rect.width : 1,
 					dir == Direction4.Up || dir == Direction4.Down ? 1 : rect.height
 				), rig
-			);
-			for (int i = 0; i < count; i++) {
-				if (!PushCheck(mask, rig.PushLevel, OverlapResults[i].Entity, dir)) return true;
+			)) {
+				if (!PushCheck(mask, rig.PushLevel, hit.Entity, dir)) return true;
 			}
 			return false;
 		}
@@ -254,9 +247,7 @@ namespace AngeliaFramework {
 				Vector2Int center = default;
 				Vector2Int ghostH = default;
 				Vector2Int ghostV = default;
-				int count = ForAllOverlaps(mask, new RectInt(to, size), entity);
-				for (int index = 0; index < count; index++) {
-					var hit = OverlapResults[index];
+				foreach (var hit in ForAllOverlaps(mask, new RectInt(to, size), entity)) {
 					var hitRect = hit.Rect;
 					// H or V
 					center.x = hitRect.x + hitRect.width / 2;
@@ -313,26 +304,45 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private static int ForAllOverlaps (PhysicsMask mask, RectInt globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
-			int count = 0;
+		public static IEnumerable<HitInfo> ForAllOverlaps (
+			PhysicsMask mask, RectInt globalRect, Entity ignore = null,
+			OperationMode mode = OperationMode.ColliderOnly, int tag = 0
+		) {
 			for (int layerIndex = 0; layerIndex < Const.PHYSICS_LAYER_COUNT; layerIndex++) {
 				var layer = (PhysicsLayer)layerIndex;
 				if (!mask.HasLayer(layer)) continue;
-				count = ForAllOverlapsLogic(layer, globalRect, count, ignore, mode, tag);
+				foreach (var hit in ForAllOverlaps(layer, globalRect, ignore, mode, tag)) {
+					yield return hit;
+				}
 			}
-			return count;
 		}
 
 
-		private static int ForAllOverlaps (PhysicsLayer layer, RectInt globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
-			return ForAllOverlapsLogic(layer, globalRect, 0, ignore, mode, tag);
-		}
-
-
-		private static void ClearOverlapResult () {
-			for (int i = 0; i < OVERLAP_RESULT_COUNT; i++) {
-				if (OverlapResults[i] == null) break;
-				OverlapResults[i] = null;
+		public static IEnumerable<HitInfo> ForAllOverlaps (
+			PhysicsLayer layer, RectInt globalRect, Entity ignore = null,
+			OperationMode mode = OperationMode.ColliderOnly, int tag = 0
+		) {
+			var layerItem = Layers[(int)layer];
+			int l = Mathf.Max(globalRect.xMin.GetCellIndexX() - 1, 0);
+			int d = Mathf.Max(globalRect.yMin.GetCellIndexY() - 1, 0);
+			int r = Mathf.Min((globalRect.xMax - 1).GetCellIndexX() + 1, Width - 1);
+			int u = Mathf.Min((globalRect.yMax - 1).GetCellIndexY() + 1, Height - 1);
+			bool useCollider = mode == OperationMode.ColliderOnly || mode == OperationMode.ColliderAndTrigger;
+			bool useTrigger = mode == OperationMode.TriggerOnly || mode == OperationMode.ColliderAndTrigger;
+			for (int j = d; j <= u; j++) {
+				for (int i = l; i <= r; i++) {
+					for (int dep = 0; dep < CELL_DEPTH; dep++) {
+						var cell = layerItem.Cells[i, j, dep];
+						if (cell.Frame != CurrentFrame) { break; }
+						if (ignore != null && cell.Entity == ignore) continue;
+						if (tag != 0 && cell.Tag != tag) continue;
+						if ((cell.IsTrigger && useTrigger) || (!cell.IsTrigger && useCollider)) {
+							if (cell.GlobalRect.Overlaps(globalRect)) {
+								yield return cell.GetInfo();
+							}
+						}
+					}
+				}
 			}
 		}
 
@@ -367,36 +377,6 @@ namespace AngeliaFramework {
 					return;
 				}
 			}
-		}
-
-
-		private static int ForAllOverlapsLogic (PhysicsLayer layer, RectInt globalRect, int startIndex, Entity ignore, OperationMode mode, int tag) {
-			var layerItem = Layers[(int)layer];
-			int l = Mathf.Max(globalRect.xMin.GetCellIndexX() - 1, 0);
-			int d = Mathf.Max(globalRect.yMin.GetCellIndexY() - 1, 0);
-			int r = Mathf.Min((globalRect.xMax - 1).GetCellIndexX() + 1, Width - 1);
-			int u = Mathf.Min((globalRect.yMax - 1).GetCellIndexY() + 1, Height - 1);
-			int count = startIndex;
-			bool useCollider = mode == OperationMode.ColliderOnly || mode == OperationMode.ColliderAndTrigger;
-			bool useTrigger = mode == OperationMode.TriggerOnly || mode == OperationMode.ColliderAndTrigger;
-			for (int j = d; j <= u; j++) {
-				for (int i = l; i <= r; i++) {
-					for (int dep = 0; dep < CELL_DEPTH; dep++) {
-						ref var cell = ref layerItem.Cells[i, j, dep];
-						if (cell.Frame != CurrentFrame) { break; }
-						if (ignore != null && cell.Entity == ignore) continue;
-						if (tag != 0 && cell.Tag != tag) continue;
-						if ((cell.IsTrigger && useTrigger) || (!cell.IsTrigger && useCollider)) {
-							if (cell.GlobalRect.Overlaps(globalRect)) {
-								OverlapResults[count] = cell.GetInfo();
-								count++;
-								if (count >= OVERLAP_RESULT_COUNT) { return count; }
-							}
-						}
-					}
-				}
-			}
-			return count;
 		}
 
 
