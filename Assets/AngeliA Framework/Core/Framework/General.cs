@@ -397,6 +397,15 @@ namespace AngeliaFramework {
 		};
 
 
+		public static Vector2Int Normal (this Direction4 dir) => dir switch {
+			Direction4.Down => new(0, -1),
+			Direction4.Up => new(0, 1),
+			Direction4.Left => new(-1, 0),
+			Direction4.Right => new(1, 0),
+			_ => throw new System.NotImplementedException(),
+		};
+
+
 		// AngeliA Hash Code
 		public static int ACode (this System.Type type) => type.Name.ACode();
 		public static int ACode (this string str) {

@@ -16,12 +16,16 @@ namespace Yaya {
 
 		public override void FrameUpdate (int frame) {
 			var rect = Rect;
+			int rotDelta = 0;
+			if (frame < LastReboundFrame + 4) {
+				rect.x += (LastReboundFrame - frame + 4) * 8;
+				rotDelta = (LastReboundFrame - frame + 4) * 2 * (frame % 2 == 0 ? -1 : 1);
+			}
 			CellRenderer.Draw(
 				ONEWAY_CODE,
 				rect.x + rect.width / 2,
 				rect.y + rect.height / 2,
-				500, 500,
-				GateDirection == Direction4.Up ? 0 : GateDirection == Direction4.Down ? 180 : GateDirection == Direction4.Left ? 270 : 90,
+				500, 500, 270 + rotDelta,
 				rect.width,
 				rect.height
 			);

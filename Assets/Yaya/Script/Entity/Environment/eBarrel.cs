@@ -9,10 +9,8 @@ namespace AngeliaFramework {
 
 		public override EntityLayer Layer => EntityLayer.Environment;
 		public override PhysicsLayer CollisionLayer => PhysicsLayer.Environment;
-		public override PhysicsMask CollisionMask => PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Level;
-
+		
 		private static readonly int BARREL_CODE = "Barrel 2".ACode();
-		public override bool CarryRigidbodyOnTop => true;
 
 
 		public override void OnCreate (int frame) {

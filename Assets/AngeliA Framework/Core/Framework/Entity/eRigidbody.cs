@@ -11,22 +11,20 @@ namespace AngeliaFramework {
 
 		#region --- VAR ---
 
+		// Const
+		private PhysicsMask COL_MASK { get; } = PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character;
+
 		// Api
-		public override int X {
-			get => base.X;
-			set => base.X = PrevX = value;
-		}
-		public override int Y {
-			get => base.Y;
-			set => base.Y = PrevY = value;
-		}
+		public int FinalVelocityX => X - PrevX;
+		public int FinalVelocityY => Y - PrevY;
+		public override int X { get; set; } = 0;
+		public override int Y { get; set; } = 0;
+		public int PrevX { get; private set; } = 0;
+		public int PrevY { get; private set; } = 0;
 		public override RectInt Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
 		public virtual int PushLevel => 0;
 		public virtual PhysicsLayer CollisionLayer { get; } = PhysicsLayer.Character;
-		public virtual PhysicsMask CollisionMask { get; } = PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character;
-		public virtual bool CarryRigidbodyOnTop => true;
-		public int FinalVelocityX => X - PrevX;
-		public int FinalVelocityY => Y - PrevY;
+		public virtual bool CarryRigidbodyOnTop => _CarryRigidbodyOnTop;
 		public bool IsGrounded { get; set; } = false;
 		public bool InWater { get; set; } = false;
 
@@ -39,8 +37,9 @@ namespace AngeliaFramework {
 		public int OffsetY { get; set; } = 0;
 
 		// Data
-		private int PrevX = 0;
-		private int PrevY = 0;
+		private static readonly HitInfo[] c_PerformMove = new HitInfo[16];
+		private bool _CarryRigidbodyOnTop = true;
+		private int TopCarryFrame = 0;
 
 
 		#endregion
@@ -65,12 +64,14 @@ namespace AngeliaFramework {
 			PrevX = X;
 			PrevY = Y;
 
+			_CarryRigidbodyOnTop = frame >= TopCarryFrame;
+
 			// Grounded
 			IsGrounded = !CellPhysics.RoomCheck(
 				PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character,
 				this, Direction4.Down
-			) || !CellPhysics.RoomCheck(
-				PhysicsMask.Environment, this, Direction4.Down, CellPhysics.OperationMode.TriggerOnly, Const.ONEWAY_TAG
+			) || !CellPhysics.RoomCheck_Oneway(
+				this, Direction4.Down, true
 			);
 
 			// Water
@@ -97,7 +98,7 @@ namespace AngeliaFramework {
 
 			// Vertical Stopping
 			if (VelocityY != 0 && CellPhysics.StopCheck(
-				CollisionMask, this, VelocityY > 0 ? Direction4.Up : Direction4.Down
+				this, VelocityY > 0 ? Direction4.Up : Direction4.Down
 			)) {
 				VelocityY = 0;
 			}
@@ -129,6 +130,12 @@ namespace AngeliaFramework {
 		) != null;
 
 
+		public void SetPosition (int x, int y) {
+			X = PrevX = x;
+			Y = PrevY = y;
+		}
+
+
 		public void Move (int x, int y) => Move(x, y, PushLevel);
 
 
@@ -136,6 +143,11 @@ namespace AngeliaFramework {
 			PrevX = X;
 			PrevY = Y;
 			PerformMove(x - X, y - Y, true, pushLevel);
+		}
+
+
+		public void DisableTopCarryUntil (int frame) {
+			TopCarryFrame = frame;
 		}
 
 
@@ -165,7 +177,7 @@ namespace AngeliaFramework {
 					_speedX -= _sX;
 					_speedY -= _sY;
 					var newPos = CellPhysics.Move(
-						CollisionMask, pos,
+						COL_MASK, pos,
 						new Vector2Int(pos.x + _sX, pos.y + _sY),
 						new(Width, Height), this, pushLevel
 					);
@@ -175,7 +187,7 @@ namespace AngeliaFramework {
 			} else {
 				// Normal
 				pos = CellPhysics.Move(
-					CollisionMask,
+					COL_MASK,
 					pos,
 					new Vector2Int(pos.x + speedX, pos.y + speedY),
 					new(Width, Height),
@@ -183,17 +195,18 @@ namespace AngeliaFramework {
 				);
 			}
 
-			base.X = pos.x - OffsetX;
-			base.Y = pos.y - OffsetY;
+			X = pos.x - OffsetX;
+			Y = pos.y - OffsetY;
 
 			// Carry
 			if (carry && speedY <= 0) {
 				const int GAP = 1;
 				int finalL = 0;
 				int finalR = 0;
-				using var iter = CellPhysics.ForAllOverlaps(CollisionMask, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), this);
-				while (iter.MoveNext()) {
-					var hit = iter.Current;
+
+				using var overlap = new CellPhysics.OverlapAllScope(c_PerformMove, COL_MASK, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), this);
+				for (int i = 0; i < overlap.Count; i++) {
+					var hit = c_PerformMove[i];
 					if (
 						hit.Entity is eRigidbody hitRig &&
 						hitRig.CarryRigidbodyOnTop &&

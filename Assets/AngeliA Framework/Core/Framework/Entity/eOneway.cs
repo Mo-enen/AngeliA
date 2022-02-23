@@ -11,6 +11,11 @@ namespace AngeliaFramework {
 		public override EntityLayer Layer => EntityLayer.Environment;
 		protected virtual PhysicsMask Mask => PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Item;
 		public abstract Direction4 GateDirection { get; }
+		protected int LastReboundFrame { get; private set; } = int.MinValue;
+
+		// Data
+		private static readonly HitInfo[] c_PhysicsUpdate = new HitInfo[16];
+		private bool PrevFrameRebound = false;
 
 
 		// MSG
@@ -27,9 +32,10 @@ namespace AngeliaFramework {
 
 		public override void PhysicsUpdate (int frame) {
 			var rect = Rect;
-			using var iter = CellPhysics.ForAllOverlaps(Mask, rect, this);
-			while (iter.MoveNext()) {
-				var hit = iter.Current;
+			using var overlap = new CellPhysics.OverlapAllScope(c_PhysicsUpdate, Mask, rect, this);
+			bool rebound = false;
+			for (int i = 0; i < overlap.Count; i++) {
+				var hit = c_PhysicsUpdate[i];
 				if (hit.Entity is eRigidbody rig) {
 					var rRect = rig.Rect;
 					switch (GateDirection) {
@@ -39,8 +45,13 @@ namespace AngeliaFramework {
 								rRect.xMax - rig.FinalVelocityX <= rect.xMin &&
 								rRect.xMax > rect.xMin
 							) {
-								rig.Move(rect.xMin - rig.Width - rig.OffsetX, rig.Y, int.MaxValue - 1);
+								rig.Move(rect.xMin - rig.Width - rig.OffsetX, rig.Y, int.MaxValue);
+								rig.DisableTopCarryUntil(frame + 1);
 								rig.VelocityX = 0;
+								if (!PrevFrameRebound) {
+									LastReboundFrame = frame;
+								}
+								rebound = true;
 							}
 							break;
 						case Direction4.Right:
@@ -49,8 +60,13 @@ namespace AngeliaFramework {
 								rRect.xMin - rig.FinalVelocityX >= rect.xMax &&
 								rRect.xMin < rect.xMax
 							) {
-								rig.Move(rect.xMax - rig.OffsetX, rig.Y, int.MaxValue - 1);
+								rig.Move(rect.xMax - rig.OffsetX, rig.Y, int.MaxValue);
+								rig.DisableTopCarryUntil(frame + 1);
 								rig.VelocityX = 0;
+								if (!PrevFrameRebound) {
+									LastReboundFrame = frame;
+								}
+								rebound = true;
 							}
 							break;
 						case Direction4.Down:
@@ -59,8 +75,12 @@ namespace AngeliaFramework {
 								rRect.yMax - rig.FinalVelocityY <= rect.yMin &&
 								rRect.yMax > rect.yMin
 							) {
-								rig.Move(rig.X, rect.yMin - rig.Height, int.MaxValue - 1);
+								rig.Move(rig.X, rect.yMin - rig.Height, int.MaxValue);
 								rig.VelocityY = 0;
+								if (!PrevFrameRebound) {
+									LastReboundFrame = frame;
+								}
+								rebound = true;
 							}
 							break;
 						case Direction4.Up:
@@ -69,13 +89,18 @@ namespace AngeliaFramework {
 								rRect.yMin - rig.FinalVelocityY >= rect.yMax &&
 								rRect.yMin < rect.yMax
 							) {
-								rig.Move(rig.X, rect.yMax, int.MaxValue - 1);
+								rig.Move(rig.X, rect.yMax, int.MaxValue);
 								rig.VelocityY = 0;
+								if (!PrevFrameRebound) {
+									LastReboundFrame = frame;
+								}
+								rebound = true;
 							}
 							break;
 					}
 				}
 			}
+			PrevFrameRebound = rebound;
 		}
 
 
