@@ -33,8 +33,16 @@ namespace AngeliaFramework {
 
 
 		public override void PhysicsUpdate (int frame) {
-			return;
-			// Contact Check
+			if (ContactReboundUpdate(frame)) {
+				if (LastContactFrame < frame - 1) {
+					ReboundFrame = frame;
+				}
+				LastContactFrame = frame;
+			}
+		}
+
+
+		protected virtual bool ContactReboundUpdate (int frame) {
 			var rect = Rect;
 			bool contact = false;
 			const int GAP = 1;
@@ -57,16 +65,11 @@ namespace AngeliaFramework {
 				}
 			}
 			c_Rebound.Dispose();
-			if (contact) {
-				if (LastContactFrame < frame - 1) {
-					ReboundFrame = frame;
-				}
-				LastContactFrame = frame;
-			}
+			return contact;
 		}
 
 
-		public bool PassCheck (Vector2Int from, Vector2Int to, Vector2Int size, out Vector2Int newPos) {
+		public virtual bool PassCheck (Vector2Int from, Vector2Int to, Vector2Int size, out Vector2Int newPos) {
 			newPos = to;
 			var rect = Rect;
 			switch (GateDirection) {
