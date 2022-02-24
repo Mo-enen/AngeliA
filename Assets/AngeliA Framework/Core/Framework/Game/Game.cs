@@ -18,12 +18,8 @@ namespace AngeliaFramework {
 		public delegate Entity EntityHandler ();
 
 		// Const
-#if UNITY_EDITOR
-		private readonly int[] ENTITY_CAPACITY = { 256, 128, 128, 1024, 128, 128, };
-#else
-		private readonly int[] ENTITY_CAPACITY = { 256, 128, 128, 1024, 128, 1, };
-#endif
-		private readonly int[] ENTITY_BUFFER_CAPACITY = { 128, 128, 128, 128, 128, 128 };
+		private readonly int[] ENTITY_CAPACITY = { 256, 128, 128, 1024, 128, };
+		private readonly int[] ENTITY_BUFFER_CAPACITY = { 128, 128, 128, 128, 128 };
 
 		// Api
 		public Language CurrentLanguage { get; private set; } = null;
