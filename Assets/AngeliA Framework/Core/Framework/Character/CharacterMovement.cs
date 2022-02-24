@@ -348,13 +348,25 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private bool ForceSquatCheck () =>
-			!IsInsideGround && CellPhysics.Overlap(PhysicsMask.Level, new RectInt(
-				Rig.X + Rig.OffsetX + Rig.Width / 4,
+		private bool ForceSquatCheck () {
+			if (IsInsideGround) return false;
+			var rect = new RectInt(
+				Rig.X + Rig.OffsetX,
 				Rig.Y + Rig.OffsetY + Height / 2,
-				Rig.Width / 2,
+				Rig.Width,
 				Height / 2
-			)) != null;
+			);
+			bool overlap = CellPhysics.Overlap(PhysicsMask.Level, rect) != null;
+			if (overlap) return true;
+			overlap = CellPhysics.Overlap(PhysicsMask.Environment, rect) != null;
+			if (overlap && IsSquating && IntendedY >= 0) {
+				// Want to Stand Up but Overlaps
+				return CellPhysics.StopCheck(
+					PhysicsMask.Level | PhysicsMask.Environment, rect, Rig, Direction4.Up
+				);
+			}
+			return overlap;
+		}
 
 
 		#endregion

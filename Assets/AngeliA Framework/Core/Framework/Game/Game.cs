@@ -64,9 +64,6 @@ namespace AngeliaFramework {
 
 
 		private void FixedUpdate () {
-#if !UNITY_EDITOR
-			DebugMode = false;
-#endif
 			if (!Initialized) {
 				Initialized = true;
 				Initialize();

@@ -963,6 +963,32 @@
 							"defUid": 42,
 							"px": [216,24],
 							"fieldInstances": []
+						},
+						{
+							"__identifier": "eOnewayGateRight",
+							"__grid": [2,4],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 52, "y": 1, "w": 16, "h": 16 },
+							"iid": "18b24b40-8dc0-11ec-a522-ed196d4bc3b6",
+							"width": 16,
+							"height": 16,
+							"defUid": 45,
+							"px": [40,72],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "eOnewayGateUp",
+							"__grid": [6,4],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 1, "y": 1, "w": 16, "h": 16 },
+							"iid": "1d3f9b90-8dc0-11ec-a522-ff6aa000e574",
+							"width": 16,
+							"height": 16,
+							"defUid": 43,
+							"px": [104,72],
+							"fieldInstances": []
 						}
 					]
 				},

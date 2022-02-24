@@ -13,7 +13,6 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
-
 		public struct Block {
 			public int TypeID;
 			public int Tag;
@@ -26,7 +25,6 @@ namespace AngeliaFramework {
 				ColliderBorder = border;
 			}
 		}
-
 
 
 		public struct Entity {
@@ -69,8 +67,6 @@ namespace AngeliaFramework {
 
 		// Short
 		private bool AsyncReady => FillingTask.IsCompleted && (LoadingRequest == null || LoadingRequest.isDone);
-
-
 
 		// Data
 		private Block[] m_Background = null;

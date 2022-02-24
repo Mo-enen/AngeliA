@@ -193,40 +193,38 @@ namespace AngeliaFramework {
 
 
 		// Check
-		public static bool RoomCheck (PhysicsMask mask, Entity entity, Direction4 direction, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+		public static bool RoomCheck (PhysicsMask mask, RectInt rect, Entity entity, Direction4 direction, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
 			const int GAP = 1;
-			var eRect = entity.Rect;
-			RectInt rect = direction switch {
-				Direction4.Down => new(eRect.x, eRect.y - GAP, eRect.width, GAP),
-				Direction4.Up => new(eRect.x, eRect.yMax, eRect.width, GAP),
-				Direction4.Left => new(eRect.x - GAP, eRect.y, GAP, eRect.height),
-				Direction4.Right => new(eRect.xMax, eRect.y, GAP, eRect.height),
+			RectInt _rect = direction switch {
+				Direction4.Down => new(rect.x, rect.y - GAP, rect.width, GAP),
+				Direction4.Up => new(rect.x, rect.yMax, rect.width, GAP),
+				Direction4.Left => new(rect.x - GAP, rect.y, GAP, rect.height),
+				Direction4.Right => new(rect.xMax, rect.y, GAP, rect.height),
 				_ => throw new System.NotImplementedException(),
 			};
-			return Overlap(mask, rect, entity, mode, tag) == null;
+			return Overlap(mask, _rect, entity, mode, tag) == null;
 		}
 
 
-		public static bool RoomCheck_Oneway (Entity entity, Direction4 direction, bool overlapCheck = false) {
+		public static bool RoomCheck_Oneway (RectInt rect, Entity entity, Direction4 direction, bool overlapCheck = false) {
 			const int GAP = 1;
-			var eRect = entity.Rect;
-			RectInt rect = direction switch {
-				Direction4.Down => new(eRect.x, eRect.y - GAP, eRect.width, GAP),
-				Direction4.Up => new(eRect.x, eRect.yMax, eRect.width, GAP),
-				Direction4.Left => new(eRect.x - GAP, eRect.y, GAP, eRect.height),
-				Direction4.Right => new(eRect.xMax, eRect.y, GAP, eRect.height),
+			RectInt _rect = direction switch {
+				Direction4.Down => new(rect.x, rect.y - GAP, rect.width, GAP),
+				Direction4.Up => new(rect.x, rect.yMax, rect.width, GAP),
+				Direction4.Left => new(rect.x - GAP, rect.y, GAP, rect.height),
+				Direction4.Right => new(rect.xMax, rect.y, GAP, rect.height),
 				_ => throw new System.NotImplementedException(),
 			};
 			int count = OverlapAll(
 				c_PushCheck_OnewayCheck,
-				PhysicsLayer.Environment, rect, entity, OperationMode.TriggerOnly, Const.ONEWAY_TAG
+				PhysicsLayer.Environment, _rect, entity, OperationMode.TriggerOnly, Const.ONEWAY_TAG
 			);
 			for (int i = 0; i < count; i++) {
 				var hit = c_PushCheck_OnewayCheck[i];
 				if (
 					hit.Entity is eOneway oneway &&
 					direction == oneway.GateDirection.Opposite() &&
-					(!overlapCheck || !oneway.Rect.Shrink(1).Overlaps(eRect))
+					(!overlapCheck || !oneway.Rect.Shrink(1).Overlaps(rect))
 				) {
 					return false;
 				}
@@ -236,24 +234,22 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool PushCheck (int pushLevel, Entity target, Direction4 direction) {
+		public static bool PushCheck (PhysicsMask mask, RectInt rect, Entity target, int pushLevel, Direction4 direction) {
 			bool colCheck = target != null &&
 				pushLevel > eRigidbody.GetPushLevel(target) &&
-				RoomCheck(PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Level, target, direction);
+				RoomCheck(mask, rect, target, direction);
 			if (colCheck && target != null) {
-				return RoomCheck_Oneway(target, direction);
+				return RoomCheck_Oneway(rect, target, direction);
 			}
 			return colCheck;
 		}
 
 
-		public static bool StopCheck (eRigidbody rig, Direction4 dir) {
-			const PhysicsMask MASK = PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Level;
-			if (RoomCheck(MASK, rig, dir)) return false;
-			var rect = rig.Rect;
+		public static bool StopCheck (PhysicsMask mask, RectInt rect, eRigidbody rig, Direction4 dir) {
+			if (RoomCheck(mask, rect, rig, dir)) return false;
 			int count = OverlapAll(
 				c_StopCheck,
-				MASK, new(
+				mask, new(
 					rect.x + (dir == Direction4.Right ? rect.width : -1),
 					rect.y + (dir == Direction4.Up ? rect.height : -1),
 					dir == Direction4.Up || dir == Direction4.Down ? rect.width : 1,
@@ -262,7 +258,7 @@ namespace AngeliaFramework {
 			);
 			for (int i = 0; i < count; i++) {
 				var hit = c_StopCheck[i];
-				if (hit.Entity == null || !PushCheck(rig.PushLevel, hit.Entity, dir)) return true;
+				if (hit.Entity == null || !PushCheck(mask, hit.Rect, hit.Entity, rig.PushLevel, dir)) return true;
 			}
 			c_StopCheck.Dispose();
 			return false;
@@ -270,28 +266,25 @@ namespace AngeliaFramework {
 
 
 		// Move
-		public static Vector2Int Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) =>
-			Move(mask, from, to, size, entity, eRigidbody.GetPushLevel(entity));
-
-
-		public static Vector2Int Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, int pushLevel) {
+		public static Vector2Int Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) {
 			bool moveH = from.x != to.x;
 			bool moveV = from.y != to.y;
 			if (moveH != moveV) {
-				return MoveLogic(mask, from, to, size, entity, pushLevel);
+				return MoveLogic(mask, from, to, size, entity);
 			} else {
-				var pos = MoveLogic(mask, from, new Vector2Int(from.x, to.y), size, entity, pushLevel);
-				return MoveLogic(mask, new(from.x, pos.y), new(to.x, pos.y), size, entity, pushLevel);
+				var pos = MoveLogic(mask, from, new Vector2Int(from.x, to.y), size, entity);
+				return MoveLogic(mask, new(from.x, pos.y), new(to.x, pos.y), size, entity);
 			}
 		}
 
 
-		public static Vector2Int MoveLogic (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, int pushLevel) {
+		public static Vector2Int MoveLogic (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) {
 			int distance = int.MaxValue;
 			Vector2Int result = to;
 			Vector2Int center = default;
 			Vector2Int ghostH = default;
 			Vector2Int ghostV = default;
+			int pushLevel = eRigidbody.GetPushLevel(entity);
 			int count = OverlapAll(c_MoveLogic, mask, new RectInt(to, size), entity);
 			for (int i = 0; i < count; i++) {
 				var hit = c_MoveLogic[i];
@@ -310,7 +303,7 @@ namespace AngeliaFramework {
 				var roomDir = useH ?
 					leftSide ? Direction4.Right : Direction4.Left :
 					downSide ? Direction4.Up : Direction4.Down;
-				if (PushCheck(pushLevel, hit.Entity, roomDir)) continue;
+				if (PushCheck(mask, hitRect, hit.Entity, pushLevel, roomDir)) continue;
 				// Solve
 				int _dis = Util.SqrtDistance(useH ? ghostH : ghostV, from);
 				if (_dis < distance) {

@@ -12,7 +12,7 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 		// Const
-		private PhysicsMask COL_MASK { get; } = PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character;
+		private const PhysicsMask COL_MASK = PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character;
 
 		// Api
 		public int FinalVelocityX => X - PrevX;
@@ -24,7 +24,7 @@ namespace AngeliaFramework {
 		public override RectInt Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
 		public virtual int PushLevel => 0;
 		public virtual PhysicsLayer CollisionLayer { get; } = PhysicsLayer.Character;
-		public virtual bool CarryRigidbodyOnTop => _CarryRigidbodyOnTop;
+		public virtual bool CarryRigidbodyOnTop => true;
 		public bool IsGrounded { get; set; } = false;
 		public bool InWater { get; set; } = false;
 
@@ -38,8 +38,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private static readonly HitInfo[] c_PerformMove = new HitInfo[16];
-		private bool _CarryRigidbodyOnTop = true;
-		private int TopCarryFrame = 0;
+		private static readonly HitInfo[] c_Oneway = new HitInfo[16];
 
 
 		#endregion
@@ -63,15 +62,14 @@ namespace AngeliaFramework {
 
 			PrevX = X;
 			PrevY = Y;
-
-			_CarryRigidbodyOnTop = frame >= TopCarryFrame;
+			var rect = Rect;
 
 			// Grounded
 			IsGrounded = !CellPhysics.RoomCheck(
 				PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character,
-				this, Direction4.Down
+				rect, this, Direction4.Down
 			) || !CellPhysics.RoomCheck_Oneway(
-				this, Direction4.Down, true
+				rect, this, Direction4.Down, true
 			);
 
 			// Water
@@ -98,13 +96,13 @@ namespace AngeliaFramework {
 
 			// Vertical Stopping
 			if (VelocityY != 0 && CellPhysics.StopCheck(
-				this, VelocityY > 0 ? Direction4.Up : Direction4.Down
+				COL_MASK, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down
 			)) {
 				VelocityY = 0;
 			}
 
 			// Move
-			PerformMove(VelocityX, VelocityY, true, PushLevel);
+			PerformMove(VelocityX, VelocityY, false, false);
 		}
 
 
@@ -130,27 +128,6 @@ namespace AngeliaFramework {
 		) != null;
 
 
-		public void SetPosition (int x, int y) {
-			X = PrevX = x;
-			Y = PrevY = y;
-		}
-
-
-		public void Move (int x, int y) => Move(x, y, PushLevel);
-
-
-		public void Move (int x, int y, int pushLevel) {
-			PrevX = X;
-			PrevY = Y;
-			PerformMove(x - X, y - Y, true, pushLevel);
-		}
-
-
-		public void DisableTopCarryUntil (int frame) {
-			TopCarryFrame = frame;
-		}
-
-
 		#endregion
 
 
@@ -159,7 +136,7 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		public void PerformMove (int speedX, int speedY, bool carry, int pushLevel) {
+		private void PerformMove (int speedX, int speedY, bool ignoreCarry, bool ignoreOneway) {
 
 			int speedScale = InWater ? Const.WATER_SPEED_LOSE : 1000;
 			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);
@@ -179,7 +156,7 @@ namespace AngeliaFramework {
 					var newPos = CellPhysics.Move(
 						COL_MASK, pos,
 						new Vector2Int(pos.x + _sX, pos.y + _sY),
-						new(Width, Height), this, pushLevel
+						new(Width, Height), this
 					);
 					if (newPos == pos) break;
 					pos = newPos;
@@ -191,15 +168,15 @@ namespace AngeliaFramework {
 					pos,
 					new Vector2Int(pos.x + speedX, pos.y + speedY),
 					new(Width, Height),
-					this, pushLevel
+					this
 				);
 			}
 
 			X = pos.x - OffsetX;
 			Y = pos.y - OffsetY;
 
-			// Carry
-			if (carry && speedY <= 0) {
+			// Being Carry
+			if (!ignoreCarry && speedY <= 0) {
 				const int GAP = 1;
 				int finalL = 0;
 				int finalR = 0;
@@ -227,9 +204,41 @@ namespace AngeliaFramework {
 				}
 				c_PerformMove.Dispose();
 				if (finalL + finalR != 0) {
-					PerformMove(finalL + finalR, 0, false, pushLevel);
+					PerformMove(finalL + finalR, 0, true, true);
 				}
 			}
+
+			// Oneway
+			if (!ignoreOneway) {
+				var rect = Rect;
+				int oCount = CellPhysics.OverlapAll(c_Oneway, PhysicsLayer.Environment, rect, this, CellPhysics.OperationMode.TriggerOnly, Const.ONEWAY_TAG);
+				for (int i = 0; i < oCount; i++) {
+					var hit = c_Oneway[i];
+					if (hit.Entity is eOneway oneway) {
+						if (!oneway.PassCheck(
+							new(PrevX + OffsetX, PrevY + OffsetY),
+							new(X + OffsetX, Y + OffsetY),
+							new(Width, Height),
+							out var newPos
+						)) {
+							X = newPos.x - OffsetX;
+							Y = newPos.y - OffsetY;
+							switch (oneway.GateDirection) {
+								case Direction4.Up:
+								case Direction4.Down:
+									VelocityY = 0;
+									break;
+								case Direction4.Left:
+								case Direction4.Right:
+									VelocityX = 0;
+									break;
+							}
+						}
+					}
+				}
+				c_Oneway.Dispose();
+			}
+
 		}
 
 
