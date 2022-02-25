@@ -120,7 +120,7 @@ namespace AngeliaFramework {
 						for (int i = unitL; i < unitR; i++) {
 							var entity = world.GetEntity(i - worldUnitRect.x, j - worldUnitRect.y);
 							if (entity.TypeID == 0) continue;
-							game.TryAddEntity(
+							game.TrySpawnEntity(
 								globalUnitRect, entity, i * Const.CELL_SIZE, j * Const.CELL_SIZE
 							);
 						}

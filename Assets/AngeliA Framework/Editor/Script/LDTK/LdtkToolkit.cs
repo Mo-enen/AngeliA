@@ -10,23 +10,7 @@ namespace LdtkToAngeliA {
 	public static class LdtkToolkit {
 
 
-		public static string LdtkRoot => Util.CombinePaths(Util.GetParentPath(Application.dataPath), "_Level");
-
-
-		[MenuItem("AngeliA/Command/Save Texture for LDTK")]
-		public static void SaveTextureForLDTK () {
-			string rootPath = Util.CombinePaths(LdtkRoot, "Texture");
-			Util.CreateFolder(rootPath);
-			foreach (var guid in AssetDatabase.FindAssets($"t:{nameof(SpriteSheet)}")) {
-				var path = AssetDatabase.GUIDToAssetPath(guid);
-				var sheet = AssetDatabase.LoadAssetAtPath<SpriteSheet>(path);
-				if (sheet.Texture == null || !sheet.Texture.isReadable) continue;
-				Util.ByteToFile(
-					sheet.Texture.EncodeToPNG(),
-					Util.CombinePaths(rootPath, sheet.Texture.name + ".png")
-				);
-			}
-		}
+		public static string LdtkRoot => Application.dataPath;
 
 
 		public static void ReloadAllLevels () {

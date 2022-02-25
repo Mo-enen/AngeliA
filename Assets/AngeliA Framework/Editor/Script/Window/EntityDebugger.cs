@@ -636,7 +636,6 @@ namespace AngeliaFramework.Editor {
 			if (aseprite) {
 				EditorApplication.ExecuteMenuItem("Tools/Aseprite Toolbox/Create Sprite for All");
 				ReloadSheetAssets();
-				LdtkToAngeliA.LdtkToolkit.SaveTextureForLDTK();
 			}
 			if (ldtk) {
 				LdtkToAngeliA.LdtkToolkit.ReloadAllLevels();

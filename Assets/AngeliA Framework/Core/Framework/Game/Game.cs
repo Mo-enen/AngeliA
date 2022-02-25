@@ -39,16 +39,18 @@ namespace AngeliaFramework {
 		private readonly HashSet<long> StagedEntityHash = new();
 		private readonly Entity[][] Entities = new Entity[Const.ENTITY_LAYER_COUNT][];
 		private readonly int[] EntityLength = new int[Const.ENTITY_LAYER_COUNT];
-		private RectInt LoadedUnitRect = default;
 		private RectInt SpawnRect = default;
+		private RectInt PrevSpawnRect = default;
 		private RectInt DespawnRect = default;
-		private RectInt? NewViewRect = null;
+		private RectInt? ViewRectDelay = null;
 		private int ViewLerpRate = 1000;
+		private int ViewDelayPriority = int.MinValue;
 		private bool Initialized = false;
 
 		// Saving
 		private readonly SavingInt LanguageIndex = new("Game.LanguageIndex", -1);
 		private readonly SavingBool UseHighFramerate = new("Game.UseHighFramerate", true);
+		private readonly SavingBool UseVSync = new("Game.UseVSync", true);
 
 
 		#endregion
@@ -105,11 +107,14 @@ namespace AngeliaFramework {
 
 			WorldSquad.Init();
 
+			OnGameStart();
+
 		}
 
 
 		private void Init_System () {
 			SetFramerate(UseHighFramerate.Value);
+			SetUseVSync(UseVSync.Value);
 		}
 
 
@@ -120,7 +125,6 @@ namespace AngeliaFramework {
 				Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, 0, Const.MAX_VIEW_WIDTH),
 				Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, 0, Const.MAX_VIEW_HEIGHT)
 			);
-			LoadedUnitRect = default;
 			GlobalFrame = 0;
 
 			// Entity
@@ -146,6 +150,8 @@ namespace AngeliaFramework {
 			// Handler
 			Entity.AddNewEntity = AddEntity;
 			Entity.GetAsset = (id) => AssetPool.TryGet(id);
+			Entity.SetViewPosition = SetViewPositionDely;
+			Entity.SetViewSize = SetViewSizeDely;
 		}
 
 
@@ -252,6 +258,7 @@ namespace AngeliaFramework {
 
 
 		private void Init_Misc () {
+			// World
 			World.OnMapFilled += (obj) => {
 				UnloadAssetStack.Push(obj);
 			};
@@ -267,22 +274,23 @@ namespace AngeliaFramework {
 		private void FrameUpdate_View () {
 
 			// Move View Rect
-			if (NewViewRect.HasValue) {
+			if (ViewRectDelay.HasValue) {
 				if (ViewLerpRate >= 1000) {
-					ViewRect = NewViewRect.Value;
-					NewViewRect = null;
+					ViewRect = ViewRectDelay.Value;
+					ViewRectDelay = null;
 				} else {
 					ViewRect = new(
-						ViewRect.x.LerpTo(NewViewRect.Value.x, ViewLerpRate),
-						ViewRect.y.LerpTo(NewViewRect.Value.y, ViewLerpRate),
-						ViewRect.width.LerpTo(NewViewRect.Value.width, ViewLerpRate),
-						ViewRect.height.LerpTo(NewViewRect.Value.height, ViewLerpRate)
+						ViewRect.x.LerpTo(ViewRectDelay.Value.x, ViewLerpRate),
+						ViewRect.y.LerpTo(ViewRectDelay.Value.y, ViewLerpRate),
+						ViewRect.width.LerpTo(ViewRectDelay.Value.width, ViewLerpRate),
+						ViewRect.height.LerpTo(ViewRectDelay.Value.height, ViewLerpRate)
 					);
-					if (ViewRect.IsSame(NewViewRect.Value)) {
-						NewViewRect = null;
+					if (ViewRect.IsSame(ViewRectDelay.Value)) {
+						ViewRectDelay = null;
 					}
 				}
 			}
+			ViewDelayPriority = int.MinValue;
 			CellRenderer.ViewRect = ViewRect;
 
 			// Spawn Rect
@@ -307,7 +315,7 @@ namespace AngeliaFramework {
 				WorldSquad.DrawBlocksInside(spawnUnitRect, false);
 				WorldSquad.DrawBlocksInside(spawnUnitRect.Expand(Const.BLOCK_SPAWN_PADDING), true);
 				WorldSquad.SpawnEntitiesInside(spawnUnitRect, this);
-				LoadedUnitRect = spawnUnitRect;
+				PrevSpawnRect = spawnUnitRect;
 			}
 		}
 
@@ -395,6 +403,9 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
+		protected virtual void OnGameStart () { }
+
+
 		// System
 		public bool SetLanguage (SystemLanguage language) {
 			bool success = false;
@@ -416,12 +427,19 @@ namespace AngeliaFramework {
 		}
 
 
+		public void SetUseVSync (bool vsync) {
+			UseVSync.Value = vsync;
+			QualitySettings.vSyncCount = vsync ? 1 : 0;
+		}
+
+
 		// Entity
-		public void TryAddEntity (RectInt spawnUnitRect, World.Entity entity, int x, int y) {
+		public void TrySpawnEntity (RectInt spawnUnitRect, World.Entity entity, int x, int y) {
+			if (StagedEntityHash.Contains(entity.InstanceID)) return;
 			if (!EntityHandlerPool.TryGetValue(entity.TypeID, out var eHandler)) return;
 			int unitX = x.AltDivide(Const.CELL_SIZE);
 			int unitY = y.AltDivide(Const.CELL_SIZE);
-			if (LoadedUnitRect.Contains(unitX, unitY)) return;
+			if (PrevSpawnRect.Contains(unitX, unitY)) return;
 			if (!spawnUnitRect.Contains(unitX, unitY)) return;
 			var e = eHandler.Invoke();
 			e.InstanceID = entity.InstanceID;
@@ -473,25 +491,25 @@ namespace AngeliaFramework {
 
 
 		// View
-		public void SetViewPositionDely (int x, int y, int lerp = 1000) {
-			NewViewRect = NewViewRect.HasValue ?
-				new RectInt(x, y, NewViewRect.Value.width, NewViewRect.Value.height) :
-				new RectInt(x, y, ViewRect.width, ViewRect.height);
-			ViewLerpRate = lerp;
+		public void SetViewPositionDely (int x, int y, int lerp = 1000, int priority = int.MinValue) {
+			if (priority >= ViewDelayPriority) {
+				ViewRectDelay = ViewRectDelay.HasValue ?
+					new RectInt(x, y, ViewRectDelay.Value.width, ViewRectDelay.Value.height) :
+					new RectInt(x, y, ViewRect.width, ViewRect.height);
+				ViewLerpRate = lerp;
+				ViewDelayPriority = priority;
+			}
 		}
 
 
-		public void SetViewSizeDely (int width, int height, int lerp = 1000) {
-			NewViewRect = NewViewRect.HasValue ?
-				new RectInt(NewViewRect.Value.x, NewViewRect.Value.y, width, height) :
+		public void SetViewSizeDely (int width, int height, int lerp = 1000, int priority = int.MinValue) {
+			if (priority >= ViewDelayPriority) {
+				ViewRectDelay = ViewRectDelay.HasValue ?
+				new RectInt(ViewRectDelay.Value.x, ViewRectDelay.Value.y, width, height) :
 				new RectInt(ViewRect.x, ViewRect.y, width, height);
-			ViewLerpRate = lerp;
-		}
-
-
-		public void StopViewDely () {
-			NewViewRect = null;
-			ViewLerpRate = 1000;
+				ViewLerpRate = lerp;
+				ViewDelayPriority = priority;
+			}
 		}
 
 

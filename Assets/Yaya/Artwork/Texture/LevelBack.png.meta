@@ -188,6 +188,30 @@ TextureImporter:
   - first:
       213: 752452623582085803
     second: Beige Stone Brick 46
+  - first:
+      213: 8907882337906562157
+    second: Dirt 0
+  - first:
+      213: 4852683948325826139
+    second: Dirt 1
+  - first:
+      213: 5538900435535778069
+    second: Dirt 2
+  - first:
+      213: 3336473368765289266
+    second: Dirt 3
+  - first:
+      213: 6029145628362800124
+    second: Dirt 4
+  - first:
+      213: -2423243540190136625
+    second: Dirt 5
+  - first:
+      213: 1860219219872992056
+    second: Dirt 6
+  - first:
+      213: -7367832210483215483
+    second: Dirt 7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -1569,6 +1593,174 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Dirt 0
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6495e35ac72f9b70800000000000000
+      internalID: 8907882337906562157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt 1
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5e63332752385340800000000000000
+      internalID: 4852683948325826139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt 2
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 511dd5a89902edc40800000000000000
+      internalID: 5538900435535778069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt 3
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2335ecbf9d88d4e20800000000000000
+      internalID: 3336473368765289266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt 4
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfbf9a55104dba350800000000000000
+      internalID: 6029145628362800124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt 5
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc6f4bec6d8ee5ed0800000000000000
+      internalID: -2423243540190136625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt 6
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83b42ec4683d0d910800000000000000
+      internalID: 1860219219872992056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt 7
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 583877914a330c990800000000000000
+      internalID: -7367832210483215483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1583,7 +1775,9 @@ TextureImporter:
       Oneway Gate: -1990186389894202535
       Beige Stone Brick 8: 8706770528525637964
       Grass Ground 8: 5945820847118747798
+      Dirt 2: 5538900435535778069
       Beige Stone Brick 1: 6530134688746852137
+      Dirt 1: 4852683948325826139
       Beige Stone Brick 42: -1101745400263493449
       Beige Stone Brick 2: 8991689829470932167
       Beige Stone Brick 34: -7098673986329981606
@@ -1595,6 +1789,7 @@ TextureImporter:
       Beige Stone Brick 12: 2593510430790744039
       Beige Stone Brick 39: 904036688567334270
       Beige Stone Brick 6: 8434545445632794260
+      Dirt 4: 6029145628362800124
       Beige Stone Brick 30: -2360902616382221995
       Beige Stone Brick 19: 7994141658667751961
       Beige Stone Brick 13: 2398557270760592056
@@ -1613,10 +1808,13 @@ TextureImporter:
       Beige Stone Brick 36: 3200871473405960115
       Beige Stone Brick 10: -6529053662184205970
       Beige Stone Brick 21: 3431917313603722460
+      Dirt 5: -2423243540190136625
       Beige Stone Brick 9: 8572754387582376017
+      Dirt 7: -7367832210483215483
       Beige Stone Brick 3: -4541245494493896079
       Beige Stone Brick 23: 5607178658038529593
       Grass Ground 7: 6087002409126005373
+      Dirt 6: 1860219219872992056
       Beige Stone Brick 11: -8094389247986156121
       Beige Stone Brick 15: 7053429870135826346
       Beige Stone Brick 20: -8558082501948854600
@@ -1633,9 +1831,11 @@ TextureImporter:
       Beige Stone Brick 45: -8997463825446045499
       Beige Stone Brick 44: -5253698981126251776
       Brick: -6448832585698385253
+      Dirt 0: 8907882337906562157
       Grass Ground 3: -9072998069868027213
       Beige Stone Brick 35: -8238786727047090582
       Grass Ground 11: -8822198502774587252
+      Dirt 3: 3336473368765289266
       Grass Ground 9: -2794322698289958082
       Beige Stone Brick 7: -6589763822632885631
       Beige Stone Brick 25: 6877592551663312243

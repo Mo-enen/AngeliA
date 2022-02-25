@@ -14,6 +14,15 @@ namespace Yaya {
 		}
 
 
+		protected override void OnGameStart () {
+			var yaya = new eYaya() {
+				X = 3357,
+				Y = 3200,
+			};
+			AddEntity(yaya);
+		}
+
+
 		private void Awake_Misc () {
 			LConst.GetLanguage = (key) => CurrentLanguage ? CurrentLanguage[key] : "";
 

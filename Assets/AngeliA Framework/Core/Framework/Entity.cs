@@ -14,6 +14,7 @@ namespace AngeliaFramework {
 
 		public delegate void EntityLayerHandler (Entity entity);
 		public delegate ScriptableObject ScriptableObjectIntHandler (int value);
+		public delegate void ViewHandler (int x, int y, int lerp, int priority);
 
 
 		#endregion
@@ -27,6 +28,8 @@ namespace AngeliaFramework {
 		// Api
 		public static EntityLayerHandler AddNewEntity { get; set; } = null;
 		public static ScriptableObjectIntHandler GetAsset { get; set; } = null;
+		public static ViewHandler SetViewPosition { get; set; } = null;
+		public static ViewHandler SetViewSize { get; set; } = null;
 		public static RectInt SpawnRect { get; set; }
 		public static RectInt ViewRect { get; set; }
 		public static RectInt CameraRect { get; set; }

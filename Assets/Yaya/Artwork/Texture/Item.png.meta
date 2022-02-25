@@ -3,188 +3,680 @@ guid: 05873e43bc8d6bf4d96ef56c10bbc96a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4556984762503687192
-    second: Spear Small
+      213: 8560300127293090218
+    second: Cake 0
   - first:
-      213: 2314011499200257372
-    second: Ax Small
+      213: -5146280154676218375
+    second: Beef Raw
   - first:
-      213: 4274404421808926417
-    second: Sword Small
+      213: -1444924591229836603
+    second: Beef Cooked
   - first:
-      213: -2342588873937098837
-    second: Knife Small
+      213: 7989960413799313780
+    second: Cucumber
   - first:
-      213: -4751469883888294069
-    second: Hoe Small
+      213: 2402639745920847424
+    second: Apple Red
   - first:
-      213: -8194195363272226200
-    second: Shovel Small
+      213: 8704479238437469885
+    second: Apple Red Cut
   - first:
-      213: -5862101120941848166
-    second: Pitchfork Small
+      213: 3348018261516119843
+    second: Slice_0_6
   - first:
-      213: -8862222702200453989
-    second: Hammer Small
+      213: -1889279408408202126
+    second: Slice_0_7
   - first:
-      213: -2313266835999037447
-    second: Spear
+      213: 715400049412932046
+    second: Slice_0_8
   - first:
-      213: 1444496143744951008
-    second: Ax
+      213: -7600193983910985256
+    second: Slice_0_9
   - first:
-      213: -1879306598302859882
-    second: Sword
+      213: -8365491406040063676
+    second: Golden Pocket Watch
   - first:
-      213: -7392174416458314448
-    second: Knife
+      213: 3970608734599639246
+    second: Book 0
   - first:
-      213: -2784249298993774465
-    second: Hoe
+      213: -9194504705686796367
+    second: Rune Fire
   - first:
-      213: -2549507888115256439
-    second: Shovel
+      213: -8853817869284624083
+    second: Coin 0
   - first:
-      213: -3052977198090581773
-    second: Pitchfork
+      213: -6143386347607903237
+    second: Potion Red
   - first:
-      213: -8641429681060686985
-    second: Hammer
+      213: 3283700407493711012
+    second: Cake Roll 0
   - first:
-      213: -2769310440468721303
-    second: Spear Iron Small
+      213: 2976775915527822014
+    second: Chicken Legs Raw
   - first:
-      213: -4851726726293200444
-    second: Ax Iron Small
+      213: -916355234973051339
+    second: Chicken Legs Cooked
   - first:
-      213: 8144852046077913281
-    second: Sword Iron Small
+      213: 580331631342469037
+    second: Chinese Cabbage
   - first:
-      213: 2397691995071316091
-    second: Knife Iron Small
+      213: -9207441790826436818
+    second: Apple Green
   - first:
-      213: -7677290946879735273
-    second: Hoe Iron Small
+      213: -7240201281520470316
+    second: Apple Green Cut
   - first:
-      213: 351847227069406454
-    second: Shovel Iron Small
+      213: 6688784098700606053
+    second: Slice_1_6
   - first:
-      213: -1805176142960612388
-    second: Pitchfork Iron Small
+      213: 4489290596008711209
+    second: Slice_1_7
   - first:
-      213: -5376572423616855055
-    second: Hammer Iron Small
+      213: -7332906445561653602
+    second: Slice_1_8
   - first:
-      213: -2660583695328784781
-    second: Spear Iron
+      213: 5658034168707210458
+    second: Slice_1_9
   - first:
-      213: 259293854887058886
-    second: Ax Iron
+      213: 3339276480877567319
+    second: Golden Telescope
   - first:
-      213: 411970094750300594
-    second: Sword Iron
+      213: -1464063045819899514
+    second: Book 1
   - first:
-      213: 6071601736579623221
-    second: Knife Iron
+      213: 5016293125619049543
+    second: Rune Water
   - first:
-      213: -2875099770761918142
-    second: Hoe Iron
+      213: 2619668221281467793
+    second: Coin 1
   - first:
-      213: -4593849510093429792
-    second: Shovel Iron
+      213: 3576586167540094042
+    second: Potion Blue
   - first:
-      213: 2218590732730301146
-    second: Pitchfork Iron
+      213: 4318947371889346640
+    second: Hamburger 0
   - first:
-      213: -6579770101314538579
-    second: Hammer Iron
+      213: -8451564831904070747
+    second: Chicken Wings Raw
   - first:
-      213: -3624697583929719986
-    second: Pistol
+      213: -4515737198427190114
+    second: Chicken Wings Cooked
   - first:
-      213: -6088518344708910600
-    second: Shotgun
+      213: 4456751984861989714
+    second: Eggplant
   - first:
-      213: 6154213135802746688
-    second: Horn Pistol
+      213: 7234405449074107554
+    second: Pear
   - first:
-      213: -1234078421273417890
-    second: Horn Shotgun
+      213: 2639089546801784039
+    second: Pear Cut
   - first:
-      213: 2609991663740757119
-    second: Pistol Iron
+      213: 4446292579872590245
+    second: Slice_2_6
   - first:
-      213: -8688863825908454386
-    second: Horn Pistol  Iron
+      213: 4995987595557208326
+    second: Slice_2_7
   - first:
-      213: 1088941413460374886
-    second: Shotgun  Iron
+      213: -6063060876268685021
+    second: Slice_2_8
   - first:
-      213: -5037183034401069866
-    second: Horn Shotgun  Iron
+      213: -7320725599349326951
+    second: Slice_2_9
   - first:
-      213: 6596884251542266378
-    second: Elec Pistol
+      213: 447344861734753066
+    second: Golden Hourglass
   - first:
-      213: 5917114095238705270
-    second: Elec Shotgun
+      213: 7976869718584497138
+    second: Book 2
   - first:
-      213: 4560894789339811064
-    second: Elec Pistol Iron
+      213: 6516595925518278079
+    second: Rune Lightning
   - first:
-      213: 227042103472775321
-    second: Elec Shotgun Iron
+      213: -7445818638769322687
+    second: Coin 2
   - first:
-      213: -4643980119655357759
-    second: Magic Pistol
+      213: -7441692431401241830
+    second: Potion Orange
   - first:
-      213: 4838036656706846203
-    second: Magic Shotgun
+      213: 5597709460988816392
+    second: Bread 0
   - first:
-      213: 8458129665280517492
-    second: Magic Pistol Iron
+      213: -8588310423305267114
+    second: Steak Raw
   - first:
-      213: -3191147731975744910
-    second: Magic Shotgun Iron
+      213: 1053338039207312423
+    second: Steak Cooked
   - first:
-      213: -3199716808402776404
-    second: Barrel 0
+      213: -6031420317972535299
+    second: Spinach
   - first:
-      213: -6779765414454116111
-    second: Barrel 1
+      213: 1944106526218400674
+    second: Peach
   - first:
-      213: 8558797288850460786
-    second: Barrel 2
+      213: 3463451341184599687
+    second: Peach Cut
   - first:
-      213: -8927879117219696891
-    second: Pot 0
+      213: 4906449369445881146
+    second: Slice_3_6
   - first:
-      213: -1288905465663454058
-    second: Pot 1
+      213: -1472834624600309176
+    second: Slice_3_7
   - first:
-      213: -7883108066509466498
-    second: Pot 2
+      213: -6463595909616708112
+    second: Slice_3_8
   - first:
-      213: 6663519337665501583
-    second: Carton 0
+      213: -6239023897610536995
+    second: Slice_3_9
   - first:
-      213: -4861031132865999721
-    second: Carton 1
+      213: 2557358760942736110
+    second: Golden Begleri
   - first:
-      213: 1710293184913070975
-    second: Carton 0 Broken
+      213: -1291244315426958449
+    second: Book 3
   - first:
-      213: -1197683777420307212
-    second: Carton 1 Broken
+      213: 5961649359216022352
+    second: Rune Poison
   - first:
-      213: -2476908993579177925
-    second: Barrel Iron 0
+      213: -115133729626271356
+    second: Coin 3
   - first:
-      213: 1995401987340944262
-    second: Barrel Iron 1
+      213: -4643984269213692861
+    second: Potion Empty
   - first:
-      213: 5534621934320648569
-    second: Barrel Iron 2
+      213: -1709099646793210392
+    second: Donut 0
+  - first:
+      213: -2537601228077334834
+    second: Meatball Raw
+  - first:
+      213: -3967879649706991594
+    second: Meatball Cooked
+  - first:
+      213: -6731281561659528778
+    second: Tomato
+  - first:
+      213: -2723872406725829969
+    second: Banana
+  - first:
+      213: 8568856482150078548
+    second: Banana Cut
+  - first:
+      213: 5625893095485245600
+    second: Slice_4_6
+  - first:
+      213: -5717689655752346661
+    second: Slice_4_7
+  - first:
+      213: -7004577957407109305
+    second: Slice_4_8
+  - first:
+      213: 2045005639653390343
+    second: Slice_4_9
+  - first:
+      213: -709987303930517673
+    second: Golden Spring
+  - first:
+      213: -6030270022225767958
+    second: Key 0
+  - first:
+      213: -458016355626029732
+    second: Rune Empty
+  - first:
+      213: 2983329133290763648
+    second: Coin 4
+  - first:
+      213: -5677122844990731855
+    second: Vol Potion Red
+  - first:
+      213: 8661452940582640109
+    second: Cake 1
+  - first:
+      213: 6837572766838081306
+    second: Meat Skewers Raw
+  - first:
+      213: 9012186894514309117
+    second: Meat Skewers Cooked
+  - first:
+      213: 3424615978517398712
+    second: Potato
+  - first:
+      213: -4274051472841485391
+    second: Orange
+  - first:
+      213: 3360760331630241134
+    second: Orange Cut
+  - first:
+      213: -5946018410654580875
+    second: Slice_5_6
+  - first:
+      213: -4799689605212760886
+    second: Slice_5_7
+  - first:
+      213: -7073732810600591460
+    second: Slice_5_8
+  - first:
+      213: 5413467402781726324
+    second: Slice_5_9
+  - first:
+      213: 5707702512562186421
+    second: Golden Gameboy
+  - first:
+      213: -2915948515562410168
+    second: Key 1
+  - first:
+      213: 3776011452931145940
+    second: Skull
+  - first:
+      213: -1591476458089613959
+    second: Coin 5
+  - first:
+      213: -8482873678308682284
+    second: Vol Potion Blue
+  - first:
+      213: -7708907538973045582
+    second: Cake Roll 1
+  - first:
+      213: -5000897634649038911
+    second: Sausage Raw
+  - first:
+      213: 7845583087946123384
+    second: Sausage Cooked
+  - first:
+      213: -4512402356829033745
+    second: Broccoli
+  - first:
+      213: 4121210844738698960
+    second: Grape Purple
+  - first:
+      213: 4395072866912770175
+    second: Grape Purple Cut
+  - first:
+      213: 722544314481553590
+    second: Slice_6_6
+  - first:
+      213: 7114324797925993627
+    second: Slice_6_7
+  - first:
+      213: -7178938276527407011
+    second: Slice_6_8
+  - first:
+      213: 7438198558451389633
+    second: Slice_6_9
+  - first:
+      213: 4976311298372169113
+    second: Golden Game Pad
+  - first:
+      213: 1841227863021147202
+    second: Key 2
+  - first:
+      213: 6905434368797540076
+    second: Broken Bone
+  - first:
+      213: -8653133771427474647
+    second: Coin 6
+  - first:
+      213: 6146510235913844462
+    second: Vol Potion Orange
+  - first:
+      213: 3677917881914722176
+    second: Hamburger 1
+  - first:
+      213: -5323078958985355217
+    second: Fish Raw
+  - first:
+      213: -3830820648680856899
+    second: Fish Cooked
+  - first:
+      213: -2304985444753936970
+    second: Cauliflower
+  - first:
+      213: -2073946786391209326
+    second: Grape Green
+  - first:
+      213: -5038873608686554185
+    second: Grape Green Cut
+  - first:
+      213: 388603434142414527
+    second: Slice_7_6
+  - first:
+      213: -5736032937825068598
+    second: Slice_7_7
+  - first:
+      213: 7193467672936015387
+    second: Slice_7_8
+  - first:
+      213: -3891688386442080965
+    second: Slice_7_9
+  - first:
+      213: -5224571325463676339
+    second: Golden Pen
+  - first:
+      213: -8149732842175783862
+    second: Slice_7_11
+  - first:
+      213: 3078925675499212878
+    second: Cat Paw
+  - first:
+      213: -5045705960959992181
+    second: Coin 7
+  - first:
+      213: 2639523627199396340
+    second: Vol Potion Empty
+  - first:
+      213: -6718971694737617398
+    second: Bread 1
+  - first:
+      213: -5803765382201960583
+    second: Sea Fish Raw
+  - first:
+      213: -8644150645591026024
+    second: Sea Fish Cooked
+  - first:
+      213: 8006686719552075753
+    second: chili
+  - first:
+      213: -8137609707746988934
+    second: Strawberry
+  - first:
+      213: -3059026740910803073
+    second: Strawberry Cut
+  - first:
+      213: -8653321895781754833
+    second: Slice_8_6
+  - first:
+      213: -1260246258574527072
+    second: Slice_8_7
+  - first:
+      213: -6595551830526834826
+    second: Slice_8_8
+  - first:
+      213: -6836050678312307131
+    second: Slice_8_9
+  - first:
+      213: 3010068189764573314
+    second: Golden Notepad
+  - first:
+      213: 1686925162935976949
+    second: Slice_8_11
+  - first:
+      213: 672807302613651724
+    second: Bear Paw
+  - first:
+      213: 4675911378491080900
+    second: Gem Red
+  - first:
+      213: -5002481069793567372
+    second: Ruby Red
+  - first:
+      213: -7740983580959172396
+    second: Donut 1
+  - first:
+      213: 1719798874073752923
+    second: Flounder Raw
+  - first:
+      213: 8869286349637930576
+    second: Flounder Cooked
+  - first:
+      213: 6725719756485662612
+    second: carrot
+  - first:
+      213: 6940211693858774789
+    second: Blueberry
+  - first:
+      213: -1109550691758867926
+    second: Blueberry Cut
+  - first:
+      213: -143438974541281123
+    second: Slice_9_6
+  - first:
+      213: -1976462455084715236
+    second: Slice_9_7
+  - first:
+      213: -821165358600287549
+    second: Slice_9_8
+  - first:
+      213: 7297066340862083188
+    second: Slice_9_9
+  - first:
+      213: 2852210858950848473
+    second: Golden Hook
+  - first:
+      213: 6415608803579973960
+    second: Slice_9_11
+  - first:
+      213: 5208993810194939582
+    second: Branch
+  - first:
+      213: 8173781999632799413
+    second: Gem Green
+  - first:
+      213: -8939711402148985780
+    second: Ruby Green
+  - first:
+      213: -1814342034238720670
+    second: Fries
+  - first:
+      213: 3947735668136487082
+    second: Squid Raw
+  - first:
+      213: 8394321722114553177
+    second: Squid Cooked
+  - first:
+      213: 1726412205289849284
+    second: Enoki Mushroom
+  - first:
+      213: 9151845419729773776
+    second: Lemon
+  - first:
+      213: -7899947911229753242
+    second: Lemon Cut
+  - first:
+      213: -3495562137128163502
+    second: Slice_10_6
+  - first:
+      213: 1864673373281629975
+    second: Slice_10_7
+  - first:
+      213: -2582940814525997980
+    second: Slice_10_8
+  - first:
+      213: 6676536963785308031
+    second: Slice_10_9
+  - first:
+      213: 352727982192669898
+    second: Golden Fan
+  - first:
+      213: 479353784738710307
+    second: Slice_10_11
+  - first:
+      213: 921508970657664592
+    second: Trunk
+  - first:
+      213: 771535981585299745
+    second: Gem Orange
+  - first:
+      213: 4458494718924381150
+    second: Ruby Orange
+  - first:
+      213: -8616933595116563276
+    second: BaoZi
+  - first:
+      213: -2725175381910302429
+    second: Lobster Raw
+  - first:
+      213: 2225514744162887656
+    second: Lobster Cooked
+  - first:
+      213: -8513585604127203457
+    second: Mushroom Red
+  - first:
+      213: -9049683136500104806
+    second: Cherry
+  - first:
+      213: 4643866492775801204
+    second: Cherry Cut
+  - first:
+      213: 1457194999761598655
+    second: Slice_11_6
+  - first:
+      213: 5946321594212662681
+    second: Slice_11_7
+  - first:
+      213: -5381271991484548516
+    second: Slice_11_8
+  - first:
+      213: 448503520388280265
+    second: Slice_11_9
+  - first:
+      213: -9186267206772851321
+    second: Golden Key
+  - first:
+      213: -3523076556929452821
+    second: Slice_11_11
+  - first:
+      213: 5434903235138734717
+    second: Stump
+  - first:
+      213: -2222859685555020565
+    second: Gem Grey
+  - first:
+      213: -2025764284003004604
+    second: Ruby Grey
+  - first:
+      213: 3131907087342091442
+    second: Dumpling
+  - first:
+      213: -8238476385419446542
+    second: Crab Raw
+  - first:
+      213: 7455074537551028866
+    second: Crab Cooked
+  - first:
+      213: -3883462283988791598
+    second: Mushroom Green
+  - first:
+      213: -607322300321423868
+    second: Pitaya
+  - first:
+      213: 347687095762302424
+    second: Pitaya Cut
+  - first:
+      213: 1245653194130695336
+    second: Slice_12_6
+  - first:
+      213: 5899965386144021498
+    second: Slice_12_7
+  - first:
+      213: -7879477619082988809
+    second: Slice_12_8
+  - first:
+      213: -4192810563782645404
+    second: Slice_12_9
+  - first:
+      213: 2343252613997501148
+    second: Golden Pipe
+  - first:
+      213: -1111655222567929121
+    second: Slice_12_11
+  - first:
+      213: 4150903206124111602
+    second: Board
+  - first:
+      213: -1996137188706063342
+    second: Stone 0
+  - first:
+      213: -5597410798733579038
+    second: Flint 0
+  - first:
+      213: -8231821728584974286
+    second: Sushi
+  - first:
+      213: -8329269681130842621
+    second: Snail Raw
+  - first:
+      213: 279183876286233850
+    second: Snail Cooked
+  - first:
+      213: 4873310739333512082
+    second: Mushroom Blue
+  - first:
+      213: 1983952564101803308
+    second: Apricot
+  - first:
+      213: 7389741094005283192
+    second: Apricot Cut
+  - first:
+      213: 45755609090526363
+    second: Slice_13_6
+  - first:
+      213: 1040139800683114024
+    second: Slice_13_7
+  - first:
+      213: -7352331436398477488
+    second: Slice_13_8
+  - first:
+      213: 5465096837934585168
+    second: Slice_13_9
+  - first:
+      213: 3864587126216509406
+    second: Golden Cross
+  - first:
+      213: 7797693734060195170
+    second: Slice_13_11
+  - first:
+      213: -2645361854805593308
+    second: Bomb
+  - first:
+      213: 3403477462578683957
+    second: Stone 1
+  - first:
+      213: -3306222962087319197
+    second: Flint 1
+  - first:
+      213: 4738425515923839836
+    second: Chocolate
+  - first:
+      213: -2867681730806746958
+    second: Bone
+  - first:
+      213: -4687813135565831081
+    second: Fish Bone
+  - first:
+      213: -5639789306321423723
+    second: Mushroom Orange
+  - first:
+      213: -4561625771762586796
+    second: Honeydew
+  - first:
+      213: 1137858421071835356
+    second: Honeydew Cut
+  - first:
+      213: -3155934604320952834
+    second: Slice_14_6
+  - first:
+      213: -5499921870449854438
+    second: Slice_14_7
+  - first:
+      213: 2230732124332709619
+    second: Slice_14_8
+  - first:
+      213: 6968381806191096607
+    second: Slice_14_9
+  - first:
+      213: -2973392893987390915
+    second: Golden Feather
+  - first:
+      213: 4503230480317929995
+    second: Slice_14_11
+  - first:
+      213: 8993400817900114665
+    second: Firecracker
+  - first:
+      213: -8428597057389181968
+    second: Stone 2
+  - first:
+      213: -8640187496717279706
+    second: Flint 2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -265,1282 +757,4726 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Spear Small
+      name: Cake 0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa929028c9b4cc670800000000000000
+      internalID: 8560300127293090218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beef Raw
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f5b1e9277db498b0800000000000000
+      internalID: -5146280154676218375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beef Cooked
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c2e4846db892fbe0800000000000000
+      internalID: -1444924591229836603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cucumber
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 471f0f9e9aa02ee60800000000000000
+      internalID: 7989960413799313780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Apple Red
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04ec8d28e14e75120800000000000000
+      internalID: 2402639745920847424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Apple Red Cut
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 154
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbef3d1cfb58cc870800000000000000
+      internalID: 8704479238437469885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_0_6
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 137
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32f603bcedc867e20800000000000000
+      internalID: 3348018261516119843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_0_7
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 120
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2747e5c436ee7c5e0800000000000000
+      internalID: -1889279408408202126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_0_8
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 103
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec10e89fd8c9de900800000000000000
+      internalID: 715400049412932046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_0_9
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 86
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d1cce4d6dfa68690800000000000000
+      internalID: -7600193983910985256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Golden Pocket Watch
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 69
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 441266373edc7eb80800000000000000
+      internalID: -8365491406040063676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Book 0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 52
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec0ffdf5b9f6a1730800000000000000
+      internalID: 3970608734599639246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rune Fire
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 35
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b781eb4fae866080800000000000000
+      internalID: -9194504705686796367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Coin 0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 18
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d29b843be8be02580800000000000000
+      internalID: -8853817869284624083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Potion Red
       rect:
         serializedVersion: 2
         x: 1
         y: 1
-        width: 1
-        height: 8
+        width: 16
+        height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.0625}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 81c66ef5f79ad3f30800000000000000
-      internalID: 4556984762503687192
+      spriteID: bf3b8d87aae4ebaa0800000000000000
+      internalID: -6143386347607903237
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ax Small
+      name: Cake Roll 0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 1
-        width: 5
-        height: 8
+        x: 18
+        y: 239
+        width: 16
+        height: 16
       alignment: 9
-      pivot: {x: 0.1, y: 0.0625}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c5d1008c2350d1020800000000000000
-      internalID: 2314011499200257372
+      spriteID: 4a4d7717f1c029d20800000000000000
+      internalID: 3283700407493711012
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sword Small
+      name: Chicken Legs Raw
       rect:
         serializedVersion: 2
-        x: 9
-        y: 1
-        width: 3
-        height: 8
+        x: 18
+        y: 222
+        width: 16
+        height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.0625}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1dea744cc2cb15b30800000000000000
-      internalID: 4274404421808926417
+      spriteID: eba59fc6ce1af4920800000000000000
+      internalID: 2976775915527822014
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Knife Small
+      name: Chicken Legs Cooked
       rect:
         serializedVersion: 2
-        x: 13
-        y: 1
-        width: 3
-        height: 8
+        x: 18
+        y: 205
+        width: 16
+        height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.0625}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ba7623aa4d37d7fd0800000000000000
-      internalID: -2342588873937098837
+      spriteID: 5369c53d4c37843f0800000000000000
+      internalID: -916355234973051339
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hoe Small
+      name: Chinese Cabbage
       rect:
         serializedVersion: 2
-        x: 17
-        y: 1
-        width: 7
-        height: 8
+        x: 18
+        y: 188
+        width: 16
+        height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.0625}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b472fd1a0536f0eb0800000000000000
-      internalID: -4751469883888294069
+      spriteID: daf37124b80cd0800800000000000000
+      internalID: 580331631342469037
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Shovel Small
+      name: Apple Green
       rect:
         serializedVersion: 2
-        x: 25
-        y: 1
-        width: 3
-        height: 8
+        x: 18
+        y: 171
+        width: 16
+        height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.0625}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 86a81085bbe584e80800000000000000
-      internalID: -8194195363272226200
+      spriteID: e2724bf6978983080800000000000000
+      internalID: -9207441790826436818
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Pitchfork Small
+      name: Apple Green Cut
       rect:
         serializedVersion: 2
-        x: 29
-        y: 1
-        width: 5
-        height: 8
+        x: 18
+        y: 154
+        width: 16
+        height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.0625}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a9987d8d612a5aea0800000000000000
-      internalID: -5862101120941848166
+      spriteID: 4d6f4a07b43a58b90800000000000000
+      internalID: -7240201281520470316
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hammer Small
+      name: Slice_1_6
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 137
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56ab456f2b553dc50800000000000000
+      internalID: 6688784098700606053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_1_7
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 120
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 924d994030a2d4e30800000000000000
+      internalID: 4489290596008711209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_1_8
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 103
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e96102d60784c3a90800000000000000
+      internalID: -7332906445561653602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_1_9
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 86
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: adcd0d05910658e40800000000000000
+      internalID: 5658034168707210458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Golden Telescope
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 69
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75d1681644e775e20800000000000000
+      internalID: 3339276480877567319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Book 1
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 52
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 681e021ba6a9eabe0800000000000000
+      internalID: -1464063045819899514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rune Water
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 35
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 744e1c135047d9540800000000000000
+      internalID: 5016293125619049543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Coin 1
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 18
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19d7cde1e5eea5420800000000000000
+      internalID: 2619668221281467793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Potion Blue
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 1
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a549dc87b2692a130800000000000000
+      internalID: 3576586167540094042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hamburger 0
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 058421180cbffeb30800000000000000
+      internalID: 4318947371889346640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chicken Wings Raw
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a38c2e409206ba80800000000000000
+      internalID: -8451564831904070747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chicken Wings Cooked
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9ccab481f0e451c0800000000000000
+      internalID: -4515737198427190114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Eggplant
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25b47bd315099dd30800000000000000
+      internalID: 4456751984861989714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pear
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a466392d65c56460800000000000000
+      internalID: 7234405449074107554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pear Cut
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 154
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e42197d5fdef9420800000000000000
+      internalID: 2639089546801784039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_2_6
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 137
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a9c2ce3b8764bd30800000000000000
+      internalID: 4446292579872590245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_2_7
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 120
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 601027f8f30555540800000000000000
+      internalID: 4995987595557208326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_2_8
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 103
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 329bf6aa14eabdba0800000000000000
+      internalID: -6063060876268685021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_2_9
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 86
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99bbca0bade876a90800000000000000
+      internalID: -7320725599349326951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Golden Hourglass
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 69
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a23dbc718c9453600800000000000000
+      internalID: 447344861734753066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Book 2
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 52
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f39ccbeeb883be60800000000000000
+      internalID: 7976869718584497138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rune Lightning
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 35
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbd5645c7799f6a50800000000000000
+      internalID: 6516595925518278079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Coin 2
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 18
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1450c2ec5632ba890800000000000000
+      internalID: -7445818638769322687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Potion Orange
       rect:
         serializedVersion: 2
         x: 35
         y: 1
-        width: 5
-        height: 8
-      alignment: 9
-      pivot: {x: 0.5, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b9480fa086f030580800000000000000
-      internalID: -8862222702200453989
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Spear
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 10
-        width: 1
+        width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9f7e591a110a5efd0800000000000000
-      internalID: -2313266835999037447
+      spriteID: a13bd92592cc9b890800000000000000
+      internalID: -7441692431401241830
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ax
+      name: Bread 0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 10
-        width: 5
+        x: 52
+        y: 239
+        width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.1, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0e2e657e691eb0410800000000000000
-      internalID: 1444496143744951008
+      spriteID: 80ce41ac81f0fad40800000000000000
+      internalID: 5597709460988816392
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sword
+      name: Steak Raw
       rect:
         serializedVersion: 2
-        x: 9
-        y: 10
-        width: 3
+        x: 52
+        y: 222
+        width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 69d3c181b9c5be5e0800000000000000
-      internalID: -1879306598302859882
+      spriteID: 658da1e3c2130d880800000000000000
+      internalID: -8588310423305267114
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Knife
+      name: Steak Cooked
       rect:
         serializedVersion: 2
-        x: 13
-        y: 10
-        width: 3
+        x: 52
+        y: 205
+        width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 03d854d9888b96990800000000000000
-      internalID: -7392174416458314448
+      spriteID: 72cbb57ad553e9e00800000000000000
+      internalID: 1053338039207312423
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hoe
+      name: Spinach
       rect:
         serializedVersion: 2
-        x: 17
-        y: 10
-        width: 7
+        x: 52
+        y: 188
+        width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f70885f930c5c59d0800000000000000
-      internalID: -2784249298993774465
+      spriteID: df76c283d271c4ca0800000000000000
+      internalID: -6031420317972535299
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Shovel
+      name: Peach
       rect:
         serializedVersion: 2
-        x: 25
-        y: 10
-        width: 3
+        x: 52
+        y: 171
+        width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 98375d865145e9cd0800000000000000
-      internalID: -2549507888115256439
+      spriteID: 2a334c4d59adafa10800000000000000
+      internalID: 1944106526218400674
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Pitchfork
+      name: Peach Cut
       rect:
         serializedVersion: 2
-        x: 29
-        y: 10
-        width: 5
+        x: 52
+        y: 154
+        width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3f88178e965a1a5d0800000000000000
-      internalID: -3052977198090581773
+      spriteID: 786882805a6a01030800000000000000
+      internalID: 3463451341184599687
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hammer
+      name: Slice_3_6
       rect:
         serializedVersion: 2
-        x: 35
-        y: 10
-        width: 5
+        x: 52
+        y: 137
+        width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7735cd44d79731880800000000000000
-      internalID: -8641429681060686985
+      spriteID: a35d24eb4b5371440800000000000000
+      internalID: 4906449369445881146
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Spear Iron Small
+      name: Slice_3_7
       rect:
         serializedVersion: 2
-        x: 64
-        y: 1
-        width: 1
-        height: 8
-      alignment: 9
-      pivot: {x: 0.5, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 961d41ba3de6199d0800000000000000
-      internalID: -2769310440468721303
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ax Iron Small
-      rect:
-        serializedVersion: 2
-        x: 66
-        y: 1
-        width: 5
-        height: 8
-      alignment: 9
-      pivot: {x: 0.1, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4c1660c7f343bacb0800000000000000
-      internalID: -4851726726293200444
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sword Iron Small
-      rect:
-        serializedVersion: 2
-        x: 72
-        y: 1
-        width: 3
-        height: 8
-      alignment: 9
-      pivot: {x: 0.5, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1c8669a58c3580170800000000000000
-      internalID: 8144852046077913281
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Knife Iron Small
-      rect:
-        serializedVersion: 2
-        x: 76
-        y: 1
-        width: 3
-        height: 8
-      alignment: 9
-      pivot: {x: 0.5, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b70060f7a20564120800000000000000
-      internalID: 2397691995071316091
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Hoe Iron Small
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 1
-        width: 7
-        height: 8
-      alignment: 9
-      pivot: {x: 0.5, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 71a39e15f88c47590800000000000000
-      internalID: -7677290946879735273
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Shovel Iron Small
-      rect:
-        serializedVersion: 2
-        x: 88
-        y: 1
-        width: 3
-        height: 8
-      alignment: 9
-      pivot: {x: 0.5, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6fc9da8503302e400800000000000000
-      internalID: 351847227069406454
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pitchfork Iron Small
-      rect:
-        serializedVersion: 2
-        x: 92
-        y: 1
-        width: 5
-        height: 8
-      alignment: 9
-      pivot: {x: 0.5, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: cdba2d9bcd9b2f6e0800000000000000
-      internalID: -1805176142960612388
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Hammer Iron Small
-      rect:
-        serializedVersion: 2
-        x: 98
-        y: 1
-        width: 5
-        height: 8
-      alignment: 9
-      pivot: {x: 0.5, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1f30825fdd39265b0800000000000000
-      internalID: -5376572423616855055
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Spear Iron
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 10
-        width: 1
+        x: 52
+        y: 120
+        width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 37e4bb8b935b31bd0800000000000000
-      internalID: -2660583695328784781
+      spriteID: 8428dcb56b07f8be0800000000000000
+      internalID: -1472834624600309176
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ax Iron
+      name: Slice_3_8
       rect:
         serializedVersion: 2
-        x: 66
-        y: 10
-        width: 5
+        x: 52
+        y: 103
+        width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.1, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6cd1cf02362399300800000000000000
-      internalID: 259293854887058886
+      spriteID: 0f5d0ab04c1bc46a0800000000000000
+      internalID: -6463595909616708112
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sword Iron
+      name: Slice_3_9
       rect:
         serializedVersion: 2
-        x: 72
-        y: 10
-        width: 3
+        x: 52
+        y: 86
+        width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2b9fca35e9c97b500800000000000000
-      internalID: 411970094750300594
+      spriteID: dd730c522d88a69a0800000000000000
+      internalID: -6239023897610536995
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Knife Iron
+      name: Golden Begleri
       rect:
         serializedVersion: 2
-        x: 76
-        y: 10
-        width: 3
+        x: 52
+        y: 69
+        width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 53929765c99a24450800000000000000
-      internalID: 6071601736579623221
+      spriteID: ee2993d5e309d7320800000000000000
+      internalID: 2557358760942736110
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hoe Iron
+      name: Book 3
       rect:
         serializedVersion: 2
-        x: 80
-        y: 10
-        width: 7
+        x: 52
+        y: 52
+        width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 249cdedcdf79918d0800000000000000
-      internalID: -2875099770761918142
+      spriteID: f83dbbce224941ee0800000000000000
+      internalID: -1291244315426958449
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Shovel Iron
+      name: Rune Poison
       rect:
         serializedVersion: 2
-        x: 88
-        y: 10
-        width: 3
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.03125}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0e36747b53e5f30c0800000000000000
-      internalID: -4593849510093429792
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pitchfork Iron
-      rect:
-        serializedVersion: 2
-        x: 92
-        y: 10
-        width: 5
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.03125}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: adafc5e44840ace10800000000000000
-      internalID: 2218590732730301146
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Hammer Iron
-      rect:
-        serializedVersion: 2
-        x: 98
-        y: 10
-        width: 5
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.03125}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: da3396734f5ffa4a0800000000000000
-      internalID: -6579770101314538579
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pistol
-      rect:
-        serializedVersion: 2
-        x: 41
-        y: 1
-        width: 4
-        height: 8
-      alignment: 9
-      pivot: {x: 0.875, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e4307ab70cc72bdc0800000000000000
-      internalID: -3624697583929719986
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Shotgun
-      rect:
-        serializedVersion: 2
-        x: 41
-        y: 10
-        width: 4
-        height: 16
-      alignment: 9
-      pivot: {x: 0.875, y: 0.03125}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8f11d27e2dc318ba0800000000000000
-      internalID: -6088518344708910600
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Horn Pistol
-      rect:
-        serializedVersion: 2
-        x: 46
-        y: 1
-        width: 6
-        height: 8
-      alignment: 9
-      pivot: {x: 0.9166667, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 047c0979d38286550800000000000000
-      internalID: 6154213135802746688
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Horn Shotgun
-      rect:
-        serializedVersion: 2
-        x: 46
-        y: 10
-        width: 6
-        height: 16
-      alignment: 9
-      pivot: {x: 0.9166667, y: 0.03125}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e57e50bd63cafdee0800000000000000
-      internalID: -1234078421273417890
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pistol Iron
-      rect:
-        serializedVersion: 2
-        x: 104
-        y: 1
-        width: 4
-        height: 8
-      alignment: 9
-      pivot: {x: 0.875, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f74affff69d883420800000000000000
-      internalID: 2609991663740757119
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Horn Pistol  Iron
-      rect:
-        serializedVersion: 2
-        x: 109
-        y: 1
-        width: 6
-        height: 8
-      alignment: 9
-      pivot: {x: 0.9166667, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e0c2cfac264fa6780800000000000000
-      internalID: -8688863825908454386
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Shotgun  Iron
-      rect:
-        serializedVersion: 2
-        x: 104
-        y: 10
-        width: 4
-        height: 16
-      alignment: 9
-      pivot: {x: 0.875, y: 0.03125}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 66574823272bc1f00800000000000000
-      internalID: 1088941413460374886
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Horn Shotgun  Iron
-      rect:
-        serializedVersion: 2
-        x: 109
-        y: 10
-        width: 6
-        height: 16
-      alignment: 9
-      pivot: {x: 0.9166667, y: 0.03125}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6d466e5e7b4581ab0800000000000000
-      internalID: -5037183034401069866
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Elec Pistol
-      rect:
-        serializedVersion: 2
-        x: 53
-        y: 1
-        width: 4
-        height: 8
-      alignment: 9
-      pivot: {x: 0.875, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a02ab856647dc8b50800000000000000
-      internalID: 6596884251542266378
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Elec Shotgun
-      rect:
-        serializedVersion: 2
-        x: 53
-        y: 10
-        width: 4
-        height: 16
-      alignment: 9
-      pivot: {x: 0.875, y: 0.03125}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 670f82e5befcd1250800000000000000
-      internalID: 5917114095238705270
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Elec Pistol Iron
-      rect:
-        serializedVersion: 2
-        x: 116
-        y: 1
-        width: 4
-        height: 8
-      alignment: 9
-      pivot: {x: 0.875, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8fc878075ad8b4f30800000000000000
-      internalID: 4560894789339811064
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Elec Shotgun Iron
-      rect:
-        serializedVersion: 2
-        x: 116
-        y: 10
-        width: 4
-        height: 16
-      alignment: 9
-      pivot: {x: 0.875, y: 0.03125}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9906d86179d962300800000000000000
-      internalID: 227042103472775321
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Magic Pistol
-      rect:
-        serializedVersion: 2
-        x: 58
-        y: 1
-        width: 5
-        height: 8
-      alignment: 9
-      pivot: {x: 0.9, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1c267ff9fa44d8fb0800000000000000
-      internalID: -4643980119655357759
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Magic Shotgun
-      rect:
-        serializedVersion: 2
-        x: 58
-        y: 10
-        width: 5
-        height: 16
-      alignment: 9
-      pivot: {x: 0.9, y: 0.03125}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: bfd745dc4b8242340800000000000000
-      internalID: 4838036656706846203
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Magic Pistol Iron
-      rect:
-        serializedVersion: 2
-        x: 121
-        y: 1
-        width: 5
-        height: 8
-      alignment: 9
-      pivot: {x: 0.9, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4752d331e10516570800000000000000
-      internalID: 8458129665280517492
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Magic Shotgun Iron
-      rect:
-        serializedVersion: 2
-        x: 121
-        y: 10
-        width: 5
-        height: 16
-      alignment: 9
-      pivot: {x: 0.9, y: 0.03125}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 272dac19b04c6b3d0800000000000000
-      internalID: -3191147731975744910
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Barrel 0
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 27
-        width: 8
-        height: 7
-      alignment: 9
-      pivot: {x: 0.4375, y: 0.071428575}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: cae4e4df3825893d0800000000000000
-      internalID: -3199716808402776404
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Barrel 1
-      rect:
-        serializedVersion: 2
-        x: 1
+        x: 52
         y: 35
-        width: 8
-        height: 8
-      alignment: 9
-      pivot: {x: 0.4375, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1f0cbfab64f69e1a0800000000000000
-      internalID: -6779765414454116111
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Barrel 2
-      rect:
-        serializedVersion: 2
-        x: 10
-        y: 27
         width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.46875, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 270128aa9c4f6c670800000000000000
-      internalID: 8558797288850460786
+      spriteID: 053918b81880cb250800000000000000
+      internalID: 5961649359216022352
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Pot 0
+      name: Coin 3
       rect:
         serializedVersion: 2
-        x: 53
-        y: 27
-        width: 8
-        height: 7
+        x: 52
+        y: 18
+        width: 16
+        height: 16
       alignment: 9
-      pivot: {x: 0.4375, y: 0.071428575}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 50fed7cae3dc91480800000000000000
-      internalID: -8927879117219696891
+      spriteID: 481d5ff9b76f66ef0800000000000000
+      internalID: -115133729626271356
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Pot 1
+      name: Potion Empty
       rect:
         serializedVersion: 2
-        x: 53
+        x: 52
+        y: 1
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34c040b79e04d8fb0800000000000000
+      internalID: -4643984269213692861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Donut 0
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e5252b2dee0848e0800000000000000
+      internalID: -1709099646793210392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Meatball Raw
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecefadab021a8ccd0800000000000000
+      internalID: -2537601228077334834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Meatball Cooked
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 610a6b73b724fe8c0800000000000000
+      internalID: -3967879649706991594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tomato
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b9a522651fa592a0800000000000000
+      internalID: -6731281561659528778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Banana
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: faa5e9f4a7cd23ad0800000000000000
+      internalID: -2723872406725829969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Banana Cut
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 154
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 458dbdd1291bae670800000000000000
+      internalID: 8568856482150078548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_4_6
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 137
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a888bc86ff231e40800000000000000
+      internalID: 5625893095485245600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_4_7
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 120
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd3b4fc3d8fa6a0b0800000000000000
+      internalID: -5717689655752346661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_4_8
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 103
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74fc737a57dbace90800000000000000
+      internalID: -7004577957407109305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_4_9
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 86
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 708f53b5bc1516c10800000000000000
+      internalID: 2045005639653390343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Golden Spring
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 69
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7572f2a0f4e9526f0800000000000000
+      internalID: -709987303930517673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Key 0
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 52
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae1db815d5d205ca0800000000000000
+      internalID: -6030270022225767958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rune Empty
+      rect:
+        serializedVersion: 2
+        x: 69
         y: 35
-        width: 6
-        height: 8
-      alignment: 9
-      pivot: {x: 0.41666666, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6940212de43ec1ee0800000000000000
-      internalID: -1288905465663454058
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pot 2
-      rect:
-        serializedVersion: 2
-        x: 62
-        y: 27
         width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.46875, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e74dfa1eaf2999290800000000000000
-      internalID: -7883108066509466498
+      spriteID: c5d679d1d8cc4a9f0800000000000000
+      internalID: -458016355626029732
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Carton 0
+      name: Coin 4
       rect:
         serializedVersion: 2
-        x: 79
+        x: 69
+        y: 18
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 085bed55a0ae66920800000000000000
+      internalID: 2983329133290763648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vol Potion Red
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 1
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b98216e9dec631b0800000000000000
+      internalID: -5677122844990731855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cake 1
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de9d0322f89a33870800000000000000
+      internalID: 8661452940582640109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Meat Skewers Raw
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a17c4455430f3ee50800000000000000
+      internalID: 6837572766838081306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Meat Skewers Cooked
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df7c4f06b38b11d70800000000000000
+      internalID: 9012186894514309117
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Potato
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b408ab861ea68f20800000000000000
+      internalID: 3424615978517398712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Orange
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b35c8194d48fa4c0800000000000000
+      internalID: -4274051472841485391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Orange Cut
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 154
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e656b0e27b1d3ae20800000000000000
+      internalID: 3360760331630241134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_5_6
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 137
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57f300542cf7b7da0800000000000000
+      internalID: -5946018410654580875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_5_7
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 120
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac49821ebb3146db0800000000000000
+      internalID: -4799689605212760886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_5_8
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 103
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9f402cac7d05dd90800000000000000
+      internalID: -7073732810600591460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_5_9
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 86
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47616f9cbef702b40800000000000000
+      internalID: 5413467402781726324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Golden Gameboy
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 69
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b8afd8c135d53f40800000000000000
+      internalID: 5707702512562186421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Key 1
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 52
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84f239246487887d0800000000000000
+      internalID: -2915948515562410168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skull
+      rect:
+        serializedVersion: 2
+        x: 86
         y: 35
-        width: 8
-        height: 8
-      alignment: 9
-      pivot: {x: 0.4375, y: 0.0625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f899f736883997c50800000000000000
-      internalID: 6663519337665501583
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Carton 1
-      rect:
-        serializedVersion: 2
-        x: 88
-        y: 27
         width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.46875, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 79c486380f52a8cb0800000000000000
-      internalID: -4861031132865999721
+      spriteID: 4d084c70966176430800000000000000
+      internalID: 3776011452931145940
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Carton 0 Broken
+      name: Coin 5
       rect:
         serializedVersion: 2
-        x: 79
-        y: 27
-        width: 8
-        height: 7
-      alignment: 9
-      pivot: {x: 0.4375, y: 0.071428575}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f7bd384179e2cb710800000000000000
-      internalID: 1710293184913070975
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Carton 1 Broken
-      rect:
-        serializedVersion: 2
-        x: 105
-        y: 27
+        x: 86
+        y: 18
         width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.46875, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4f45d9533f8f06fe0800000000000000
-      internalID: -1197683777420307212
+      spriteID: 975fb27e790f9e9e0800000000000000
+      internalID: -1591476458089613959
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Barrel Iron 0
+      name: Vol Potion Blue
       rect:
         serializedVersion: 2
-        x: 27
-        y: 27
-        width: 8
-        height: 7
+        x: 86
+        y: 1
+        width: 16
+        height: 16
       alignment: 9
-      pivot: {x: 0.4375, y: 0.071428575}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b382eb0c46040add0800000000000000
-      internalID: -2476908993579177925
+      spriteID: 4d556e17557c64a80800000000000000
+      internalID: -8482873678308682284
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Barrel Iron 1
+      name: Cake Roll 1
       rect:
         serializedVersion: 2
-        x: 27
+        x: 103
+        y: 240
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bc4e25df65740590800000000000000
+      internalID: -7708907538973045582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sausage Raw
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1cf17a0e81e399ab0800000000000000
+      internalID: -5000897634649038911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sausage Cooked
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87847d4304c11ec60800000000000000
+      internalID: 7845583087946123384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Broccoli
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: feae195d6f9b061c0800000000000000
+      internalID: -4512402356829033745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grape Purple
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0de332d9d6b713930800000000000000
+      internalID: 4121210844738698960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grape Purple Cut
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 154
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f781b428c7f6efc30800000000000000
+      internalID: 4395072866912770175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_6_6
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 137
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b0b62fc93ef60a00800000000000000
+      internalID: 722544314481553590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_6_7
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 120
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9ca12dd5b82bb260800000000000000
+      internalID: 7114324797925993627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_6_8
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 103
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5001235ca94f5c90800000000000000
+      internalID: -7178938276527407011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_6_9
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 86
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c4515dfd2ac93760800000000000000
+      internalID: 7438198558451389633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Golden Game Pad
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 69
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99d6c3f92c86f0540800000000000000
+      internalID: 4976311298372169113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Key 2
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 52
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2445de57cfa5d8910800000000000000
+      internalID: 1841227863021147202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Broken Bone
+      rect:
+        serializedVersion: 2
+        x: 103
         y: 35
-        width: 8
-        height: 8
+        width: 16
+        height: 16
       alignment: 9
-      pivot: {x: 0.4375, y: 0.0625}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 683c09f098711bb10800000000000000
-      internalID: 1995401987340944262
+      spriteID: cee73fbc8f705df50800000000000000
+      internalID: 6905434368797540076
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Barrel Iron 2
+      name: Coin 6
       rect:
         serializedVersion: 2
-        x: 36
-        y: 27
+        x: 103
+        y: 18
         width: 16
         height: 16
       alignment: 9
-      pivot: {x: 0.46875, y: 0.03125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9718449535deecc40800000000000000
-      internalID: 5534621934320648569
+      spriteID: 92311206ea4e9e780800000000000000
+      internalID: -8653133771427474647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vol Potion Orange
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 1
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee672f37e7acc4550800000000000000
+      internalID: 6146510235913844462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hamburger 1
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0878590c3d69a0330800000000000000
+      internalID: 3677917881914722176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fish Raw
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f206252c3ef9026b0800000000000000
+      internalID: -5323078958985355217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fish Cooked
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db26525aae036dac0800000000000000
+      internalID: -3830820648680856899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cauliflower
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bdeef843fb0300e0800000000000000
+      internalID: -2304985444753936970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grape Green
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29ac612d26cd733e0800000000000000
+      internalID: -2073946786391209326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grape Green Cut
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 154
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b3b5266623521ab0800000000000000
+      internalID: -5038873608686554185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_7_6
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 137
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb63e82b3c8946500800000000000000
+      internalID: 388603434142414527
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_7_7
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 120
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac91ff01f648560b0800000000000000
+      internalID: -5736032937825068598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_7_8
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 103
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b166b946cb454d360800000000000000
+      internalID: 7193467672936015387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_7_9
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 86
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3d4b951802fdf9c0800000000000000
+      internalID: -3891688386442080965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Golden Pen
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 69
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4abb0a7f089e77b0800000000000000
+      internalID: -5224571325463676339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_7_11
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 52
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4c17cfb82556ee80800000000000000
+      internalID: -8149732842175783862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cat Paw
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 35
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e40d5f9c69a8aba20800000000000000
+      internalID: 3078925675499212878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Coin 7
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 18
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8e98eb692d0af9b0800000000000000
+      internalID: -5045705960959992181
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vol Potion Empty
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 1
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f9787f01c871a420800000000000000
+      internalID: 2639523627199396340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bread 1
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0e824f97da61c2a0800000000000000
+      internalID: -6718971694737617398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sea Fish Raw
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97794227222e47fa0800000000000000
+      internalID: -5803765382201960583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sea Fish Cooked
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 896559859cec90880800000000000000
+      internalID: -8644150645591026024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chili
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e73db276277d1f60800000000000000
+      internalID: 8006686719552075753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Strawberry
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7c68f0f517611f80800000000000000
+      internalID: -8137609707746988934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Strawberry Cut
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 154
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f773795f2672c85d0800000000000000
+      internalID: -3059026740910803073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_8_6
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 137
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2891d2459939e780800000000000000
+      internalID: -8653321895781754833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_8_7
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 120
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a5762474b4b28ee0800000000000000
+      internalID: -1260246258574527072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_8_8
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 103
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67745cb0e84e774a0800000000000000
+      internalID: -6595551830526834826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_8_9
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 86
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54670a480287121a0800000000000000
+      internalID: -6836050678312307131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Golden Notepad
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 70
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 288de901219e5c920800000000000000
+      internalID: 3010068189764573314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_8_11
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 52
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f3877b7f79296710800000000000000
+      internalID: 1686925162935976949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bear Paw
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 35
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0153925daa465900800000000000000
+      internalID: 672807302613651724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gem Red
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 18
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c00b2cef9c24e040800000000000000
+      internalID: 4675911378491080900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ruby Red
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 1
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47d9657a8fd939ab0800000000000000
+      internalID: -5002481069793567372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Donut 1
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d81cc45270829490800000000000000
+      internalID: -7740983580959172396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flounder Raw
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b55684ec6f3fdd710800000000000000
+      internalID: 1719798874073752923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flounder Cooked
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05ec36981f8061b70800000000000000
+      internalID: 8869286349637930576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: carrot
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4979720fb7e865d50800000000000000
+      internalID: 6725719756485662612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Blueberry
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50fd676c3c5905060800000000000000
+      internalID: 6940211693858774789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Blueberry Cut
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 154
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2a7c6546851a90f0800000000000000
+      internalID: -1109550691758867926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_9_6
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 137
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d98458b3307620ef0800000000000000
+      internalID: -143438974541281123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_9_7
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 120
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1377cc6ed13294e0800000000000000
+      internalID: -1976462455084715236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_9_8
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 103
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ca06c20572aa94f0800000000000000
+      internalID: -821165358600287549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_9_9
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 86
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4704b8dec23644560800000000000000
+      internalID: 7297066340862083188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Golden Hook
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 69
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9dfe6402aa6159720800000000000000
+      internalID: 2852210858950848473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_9_11
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 52
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 841d04b2732d80950800000000000000
+      internalID: 6415608803579973960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Branch
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 35
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebeb0ed95401a4840800000000000000
+      internalID: 5208993810194939582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gem Green
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 18
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b6589f0c6b1f6170800000000000000
+      internalID: 8173781999632799413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ruby Green
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 1
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c44866828d3cfe380800000000000000
+      internalID: -8939711402148985780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fries
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 265342c588922d6e0800000000000000
+      internalID: -1814342034238720670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Squid Raw
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 223
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa82a669cac29c630800000000000000
+      internalID: 3947735668136487082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Squid Cooked
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 955bbf8912f9e7470800000000000000
+      internalID: 8394321722114553177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enoki Mushroom
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c14338f0c275f710800000000000000
+      internalID: 1726412205289849284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lemon
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d46742bbe2e10f70800000000000000
+      internalID: 9151845419729773776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lemon Cut
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 154
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 668bf0ffa3fbd5290800000000000000
+      internalID: -7899947911229753242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_10_6
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 137
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 257ab2ea1c44d7fc0800000000000000
+      internalID: -3495562137128163502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_10_7
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 120
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 717b494bd86a0e910800000000000000
+      internalID: 1864673373281629975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_10_8
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 103
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46cd152a30d872cd0800000000000000
+      internalID: -2582940814525997980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_10_9
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 86
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f773038aef2d7ac50800000000000000
+      internalID: 6676536963785308031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Golden Fan
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 69
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac43fe02b3425e400800000000000000
+      internalID: 352727982192669898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_10_11
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 52
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 323071d3ab107a600800000000000000
+      internalID: 479353784738710307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Trunk
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 35
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05ec265c68bd9cc00800000000000000
+      internalID: 921508970657664592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gem Orange
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 18
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 129f2d133eb05ba00800000000000000
+      internalID: 771535981585299745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ruby Orange
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 1
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: edb51722351cfdd30800000000000000
+      internalID: 4458494718924381150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BaoZi
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 240
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b492f9bc808a6880800000000000000
+      internalID: -8616933595116563276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lobster Raw
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 321d892cd6b3e2ad0800000000000000
+      internalID: -2725175381910302429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lobster Cooked
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e729385edd92ee10800000000000000
+      internalID: 2225514744162887656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mushroom Red
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7f5e1dfffaa9d980800000000000000
+      internalID: -8513585604127203457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherry
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9181177221196280800000000000000
+      internalID: -9049683136500104806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherry Cut
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 154
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 471ad3e88f3527040800000000000000
+      internalID: 4643866492775801204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_11_6
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 137
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb8f349b12ff83410800000000000000
+      internalID: 1457194999761598655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_11_7
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 120
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99db7472cf3958250800000000000000
+      internalID: 5946321594212662681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_11_8
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 103
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5afdcb82a1e155b0800000000000000
+      internalID: -5381271991484548516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_11_9
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 86
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cf61455397693600800000000000000
+      internalID: 448503520388280265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Golden Key
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 69
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78dfb7875a2d38080800000000000000
+      internalID: -9186267206772851321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_11_11
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 52
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be4b6bb99848b1fc0800000000000000
+      internalID: -3523076556929452821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stump
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 35
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7ac01f62b7ac6b40800000000000000
+      internalID: 5434903235138734717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gem Grey
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 18
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: becd4f8a4e0d621e0800000000000000
+      internalID: -2222859685555020565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ruby Grey
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 1
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44fc35ddd1a03e3e0800000000000000
+      internalID: -2025764284003004604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dumpling
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bcbd8207e4c67b20800000000000000
+      internalID: 3131907087342091442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crab Raw
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f631a4706d0bad80800000000000000
+      internalID: -8238476385419446542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crab Cooked
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 282e9c01bceb57760800000000000000
+      internalID: 7455074537551028866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mushroom Green
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2de8830d0ab2b1ac0800000000000000
+      internalID: -3883462283988791598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pitaya
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40e1b29e59b5297f0800000000000000
+      internalID: -607322300321423868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pitaya Cut
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 154
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d536eb429b33d400800000000000000
+      internalID: 347687095762302424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_12_6
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 137
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a4ad75faf2794110800000000000000
+      internalID: 1245653194130695336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_12_7
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 120
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afbf6346243e0e150800000000000000
+      internalID: 5899965386144021498
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_12_8
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 103
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f2faea4ad876a290800000000000000
+      internalID: -7879477619082988809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_12_9
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 86
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 469ea37b10520d5c0800000000000000
+      internalID: -4192810563782645404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Golden Pipe
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 69
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cda935c56d7e48020800000000000000
+      internalID: 2343252613997501148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_12_11
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 52
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fda7122077b9290f0800000000000000
+      internalID: -1111655222567929121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Board
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 35
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f6ce0a3978fa9930800000000000000
+      internalID: 4150903206124111602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone 0
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 18
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21c6a388dcb4c44e0800000000000000
+      internalID: -1996137188706063342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flint 0
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 1
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ecac8fe8800252b0800000000000000
+      internalID: -5597410798733579038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sushi
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 230c95d70c1b2cd80800000000000000
+      internalID: -8231821728584974286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snail Raw
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 306d3c9fa5d786c80800000000000000
+      internalID: -8329269681130842621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snail Cooked
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afcbe0d914cdfd300800000000000000
+      internalID: 279183876286233850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mushroom Blue
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29bf11a2c4a71a340800000000000000
+      internalID: 4873310739333512082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Apricot
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2d638a785a688b10800000000000000
+      internalID: 1983952564101803308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Apricot Cut
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 154
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8799a4a5f52ad8660800000000000000
+      internalID: 7389741094005283192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_13_6
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 137
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9c825aeb7e82a000800000000000000
+      internalID: 45755609090526363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_13_7
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 120
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82e667843a15f6e00800000000000000
+      internalID: 1040139800683114024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_13_8
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 103
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05ff78e438547f990800000000000000
+      internalID: -7352331436398477488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_13_9
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 86
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05593386e9ce7db40800000000000000
+      internalID: 5465096837934585168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Golden Cross
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 69
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed7cead0485c1a530800000000000000
+      internalID: 3864587126216509406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_13_11
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 52
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26d72fd1329f63c60800000000000000
+      internalID: 7797693734060195170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bomb
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 35
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 423b1f5a869c94bd0800000000000000
+      internalID: -2645361854805593308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone 1
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 18
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 530ec0648b49b3f20800000000000000
+      internalID: 3403477462578683957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flint 1
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 1
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 369ab8cabbfed12d0800000000000000
+      internalID: -3306222962087319197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chocolate
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5b9947c6e442c140800000000000000
+      internalID: 4738425515923839836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bone
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 223
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b0f262d8a2f338d0800000000000000
+      internalID: -2867681730806746958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fish Bone
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75440315aca81feb0800000000000000
+      internalID: -4687813135565831081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mushroom Orange
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5923aacb1817bb1b0800000000000000
+      internalID: -5639789306321423723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Honeydew
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45be2d37789d1b0c0800000000000000
+      internalID: -4561625771762586796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Honeydew Cut
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 154
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd07ca0943c7acf00800000000000000
+      internalID: 1137858421071835356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_14_6
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 137
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efd261fb23ed334d0800000000000000
+      internalID: -3155934604320952834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_14_7
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 120
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a183f6bd23a5ca3b0800000000000000
+      internalID: -5499921870449854438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_14_8
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 103
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f657e35c0725fe10800000000000000
+      internalID: 2230732124332709619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_14_9
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 86
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f13b059255aa4b060800000000000000
+      internalID: 6968381806191096607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Golden Feather
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 69
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3af538aae26cb6d0800000000000000
+      internalID: -2973392893987390915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slice_14_11
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 52
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0adf014340be7e30800000000000000
+      internalID: 4503230480317929995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Firecracker
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 35
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e2d4a1156afecc70800000000000000
+      internalID: 8993400817900114665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone 2
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 18
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f34a6702ab970b80800000000000000
+      internalID: -8428597057389181968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flint 2
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 1
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62e1569df33e71880800000000000000
+      internalID: -8640187496717279706
       vertices: []
       indices: 
       edges: []
@@ -1556,67 +5492,231 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Ax Iron Small: -4851726726293200444
-      Elec Shotgun Iron: 227042103472775321
-      Magic Pistol Iron: 8458129665280517492
-      Sword Small: 4274404421808926417
-      Hoe Iron: -2875099770761918142
-      Horn Pistol: 6154213135802746688
-      Knife Iron: 6071601736579623221
-      Ax: 1444496143744951008
-      Magic Shotgun Iron: -3191147731975744910
-      Hoe: -2784249298993774465
-      Pot 2: -7883108066509466498
-      Ax Small: 2314011499200257372
-      Spear: -2313266835999037447
-      Hammer Iron Small: -5376572423616855055
-      Barrel 0: -3199716808402776404
-      Barrel Iron 1: 1995401987340944262
-      Barrel Iron 0: -2476908993579177925
-      Barrel 2: 8558797288850460786
-      Magic Shotgun: 4838036656706846203
-      Shovel: -2549507888115256439
-      Spear Iron: -2660583695328784781
-      Knife: -7392174416458314448
-      Ax Iron: 259293854887058886
-      Shovel Iron: -4593849510093429792
-      Barrel Iron 2: 5534621934320648569
-      Hoe Iron Small: -7677290946879735273
-      Pitchfork Iron: 2218590732730301146
-      Knife Iron Small: 2397691995071316091
-      Carton 1: -4861031132865999721
-      Pot 1: -1288905465663454058
-      Elec Pistol Iron: 4560894789339811064
-      Carton 0: 6663519337665501583
-      Shotgun: -6088518344708910600
-      Elec Shotgun: 5917114095238705270
-      Pistol: -3624697583929719986
-      Hammer Small: -8862222702200453989
-      Pot 0: -8927879117219696891
-      Hammer: -8641429681060686985
-      Horn Pistol  Iron: -8688863825908454386
-      Sword Iron: 411970094750300594
-      Pitchfork Iron Small: -1805176142960612388
-      Pistol Iron: 2609991663740757119
-      Elec Pistol: 6596884251542266378
-      Sword Iron Small: 8144852046077913281
-      Knife Small: -2342588873937098837
-      Spear Iron Small: -2769310440468721303
-      Sword: -1879306598302859882
-      Barrel 1: -6779765414454116111
-      Carton 1 Broken: -1197683777420307212
-      Carton 0 Broken: 1710293184913070975
-      Pitchfork: -3052977198090581773
-      Magic Pistol: -4643980119655357759
-      Shovel Iron Small: 351847227069406454
-      Shovel Small: -8194195363272226200
-      Horn Shotgun: -1234078421273417890
-      Hoe Small: -4751469883888294069
-      Horn Shotgun  Iron: -5037183034401069866
-      Shotgun  Iron: 1088941413460374886
-      Pitchfork Small: -5862101120941848166
-      Spear Small: 4556984762503687192
-      Hammer Iron: -6579770101314538579
+      Firecracker: 8993400817900114665
+      Golden Key: -9186267206772851321
+      Slice_6_7: 7114324797925993627
+      Slice_10_6: -3495562137128163502
+      Rune Fire: -9194504705686796367
+      Donut 1: -7740983580959172396
+      Slice_2_7: 4995987595557208326
+      Slice_12_11: -1111655222567929121
+      Meatball Raw: -2537601228077334834
+      Vol Potion Empty: 2639523627199396340
+      Enoki Mushroom: 1726412205289849284
+      Mushroom Red: -8513585604127203457
+      Slice_1_9: 5658034168707210458
+      Golden Hourglass: 447344861734753066
+      Hamburger 0: 4318947371889346640
+      Donut 0: -1709099646793210392
+      Rune Poison: 5961649359216022352
+      Cucumber: 7989960413799313780
+      Rune Lightning: 6516595925518278079
+      Sausage Raw: -5000897634649038911
+      Cherry: -9049683136500104806
+      Slice_3_6: 4906449369445881146
+      Apple Green Cut: -7240201281520470316
+      Golden Begleri: 2557358760942736110
+      Strawberry Cut: -3059026740910803073
+      Apple Red: 2402639745920847424
+      Grape Green Cut: -5038873608686554185
+      Coin 6: -8653133771427474647
+      Slice_9_7: -1976462455084715236
+      Book 1: -1464063045819899514
+      Slice_4_9: 2045005639653390343
+      Mushroom Green: -3883462283988791598
+      Slice_10_7: 1864673373281629975
+      Coin 7: -5045705960959992181
+      Slice_13_6: 45755609090526363
+      Flint 1: -3306222962087319197
+      Potato: 3424615978517398712
+      Potion Orange: -7441692431401241830
+      Slice_13_11: 7797693734060195170
+      Cat Paw: 3078925675499212878
+      Apricot: 1983952564101803308
+      Slice_14_11: 4503230480317929995
+      Slice_1_6: 6688784098700606053
+      Slice_12_7: 5899965386144021498
+      Golden Feather: -2973392893987390915
+      Slice_5_9: 5413467402781726324
+      Book 2: 7976869718584497138
+      Slice_12_8: -7879477619082988809
+      Skull: 3776011452931145940
+      Stone 2: -8428597057389181968
+      Golden Game Pad: 4976311298372169113
+      Key 2: 1841227863021147202
+      chili: 8006686719552075753
+      Potion Empty: -4643984269213692861
+      Ruby Grey: -2025764284003004604
+      Crab Raw: -8238476385419446542
+      Steak Raw: -8588310423305267114
+      Coin 4: 2983329133290763648
+      Gem Orange: 771535981585299745
+      Stone 1: 3403477462578683957
+      Gem Grey: -2222859685555020565
+      Bone: -2867681730806746958
+      Ruby Orange: 4458494718924381150
+      Slice_2_9: -7320725599349326951
+      Slice_7_8: 7193467672936015387
+      Apricot Cut: 7389741094005283192
+      Honeydew Cut: 1137858421071835356
+      Slice_14_6: -3155934604320952834
+      Apple Red Cut: 8704479238437469885
+      Ruby Red: -5002481069793567372
+      Coin 1: 2619668221281467793
+      Slice_12_6: 1245653194130695336
+      Slice_6_8: -7178938276527407011
+      Lobster Raw: -2725175381910302429
+      Slice_14_7: -5499921870449854438
+      Beef Cooked: -1444924591229836603
+      Slice_4_7: -5717689655752346661
+      Slice_7_9: -3891688386442080965
+      Golden Telescope: 3339276480877567319
+      Bread 0: 5597709460988816392
+      Gem Red: 4675911378491080900
+      Blueberry: 6940211693858774789
+      Cake Roll 1: -7708907538973045582
+      Coin 5: -1591476458089613959
+      Pitaya: -607322300321423868
+      Broccoli: -4512402356829033745
+      Blueberry Cut: -1109550691758867926
+      Slice_8_7: -1260246258574527072
+      Key 0: -6030270022225767958
+      Slice_10_9: 6676536963785308031
+      Slice_14_9: 6968381806191096607
+      Stone 0: -1996137188706063342
+      Slice_7_6: 388603434142414527
+      Slice_4_6: 5625893095485245600
+      Banana: -2723872406725829969
+      Hamburger 1: 3677917881914722176
+      Slice_7_7: -5736032937825068598
+      Flint 2: -8640187496717279706
+      Lemon Cut: -7899947911229753242
+      Vol Potion Orange: 6146510235913844462
+      Slice_8_8: -6595551830526834826
+      Sea Fish Raw: -5803765382201960583
+      Slice_0_8: 715400049412932046
+      Slice_0_9: -7600193983910985256
+      Chicken Legs Raw: 2976775915527822014
+      Squid Cooked: 8394321722114553177
+      Crab Cooked: 7455074537551028866
+      Slice_3_7: -1472834624600309176
+      Eggplant: 4456751984861989714
+      Chicken Legs Cooked: -916355234973051339
+      Bread 1: -6718971694737617398
+      Vol Potion Blue: -8482873678308682284
+      Sushi: -8231821728584974286
+      Snail Cooked: 279183876286233850
+      Strawberry: -8137609707746988934
+      Slice_8_11: 1686925162935976949
+      Meat Skewers Cooked: 9012186894514309117
+      Rune Water: 5016293125619049543
+      Broken Bone: 6905434368797540076
+      Chicken Wings Raw: -8451564831904070747
+      Slice_11_6: 1457194999761598655
+      Slice_3_8: -6463595909616708112
+      Slice_1_8: -7332906445561653602
+      Golden Fan: 352727982192669898
+      Orange Cut: 3360760331630241134
+      Slice_9_11: 6415608803579973960
+      Grape Purple: 4121210844738698960
+      Flint 0: -5597410798733579038
+      Slice_13_9: 5465096837934585168
+      Slice_8_9: -6836050678312307131
+      Coin 3: -115133729626271356
+      Slice_6_6: 722544314481553590
+      Slice_8_6: -8653321895781754833
+      Slice_0_7: -1889279408408202126
+      Meat Skewers Raw: 6837572766838081306
+      Slice_4_8: -7004577957407109305
+      Pear Cut: 2639089546801784039
+      Slice_10_11: 479353784738710307
+      Slice_5_8: -7073732810600591460
+      Key 1: -2915948515562410168
+      Slice_3_9: -6239023897610536995
+      Lobster Cooked: 2225514744162887656
+      Slice_9_8: -821165358600287549
+      Lemon: 9151845419729773776
+      Trunk: 921508970657664592
+      Sausage Cooked: 7845583087946123384
+      Golden Pipe: 2343252613997501148
+      Slice_14_8: 2230732124332709619
+      Golden Cross: 3864587126216509406
+      Chicken Wings Cooked: -4515737198427190114
+      Slice_6_9: 7438198558451389633
+      Meatball Cooked: -3967879649706991594
+      carrot: 6725719756485662612
+      Golden Notepad: 3010068189764573314
+      Slice_1_7: 4489290596008711209
+      Book 3: -1291244315426958449
+      Snail Raw: -8329269681130842621
+      Slice_13_8: -7352331436398477488
+      Cake 0: 8560300127293090218
+      Steak Cooked: 1053338039207312423
+      Gem Green: 8173781999632799413
+      Chocolate: 4738425515923839836
+      Slice_10_8: -2582940814525997980
+      Slice_11_7: 5946321594212662681
+      Slice_5_6: -5946018410654580875
+      Golden Spring: -709987303930517673
+      Squid Raw: 3947735668136487082
+      Slice_11_11: -3523076556929452821
+      Apple Green: -9207441790826436818
+      Fish Bone: -4687813135565831081
+      Spinach: -6031420317972535299
+      Board: 4150903206124111602
+      Slice_2_6: 4446292579872590245
+      Peach Cut: 3463451341184599687
+      Slice_9_9: 7297066340862083188
+      Ruby Green: -8939711402148985780
+      Slice_13_7: 1040139800683114024
+      Chinese Cabbage: 580331631342469037
+      Peach: 1944106526218400674
+      Bomb: -2645361854805593308
+      Banana Cut: 8568856482150078548
+      Fish Cooked: -3830820648680856899
+      Golden Pocket Watch: -8365491406040063676
+      Sea Fish Cooked: -8644150645591026024
+      Tomato: -6731281561659528778
+      Honeydew: -4561625771762586796
+      Golden Gameboy: 5707702512562186421
+      Slice_12_9: -4192810563782645404
+      Mushroom Blue: 4873310739333512082
+      Slice_11_9: 448503520388280265
+      Coin 0: -8853817869284624083
+      Grape Green: -2073946786391209326
+      Stump: 5434903235138734717
+      Mushroom Orange: -5639789306321423723
+      Cauliflower: -2304985444753936970
+      Potion Red: -6143386347607903237
+      Slice_2_8: -6063060876268685021
+      Fish Raw: -5323078958985355217
+      Vol Potion Red: -5677122844990731855
+      Slice_0_6: 3348018261516119843
+      Fries: -1814342034238720670
+      Flounder Cooked: 8869286349637930576
+      Coin 2: -7445818638769322687
+      Flounder Raw: 1719798874073752923
+      Pitaya Cut: 347687095762302424
+      Beef Raw: -5146280154676218375
+      Cake 1: 8661452940582640109
+      Slice_5_7: -4799689605212760886
+      Branch: 5208993810194939582
+      BaoZi: -8616933595116563276
+      Golden Pen: -5224571325463676339
+      Pear: 7234405449074107554
+      Book 0: 3970608734599639246
+      Potion Blue: 3576586167540094042
+      Cake Roll 0: 3283700407493711012
+      Slice_7_11: -8149732842175783862
+      Grape Purple Cut: 4395072866912770175
+      Orange: -4274051472841485391
+      Golden Hook: 2852210858950848473
+      Dumpling: 3131907087342091442
+      Slice_9_6: -143438974541281123
+      Cherry Cut: 4643866492775801204
+      Bear Paw: 672807302613651724
+      Slice_11_8: -5381271991484548516
+      Rune Empty: -458016355626029732
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

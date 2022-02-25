@@ -20,6 +20,9 @@ namespace AngeliaFramework {
 		private int RightDownFrame = int.MinValue;
 		private int DownDownFrame = int.MinValue;
 		private int UpDownFrame = int.MinValue;
+		private int LastGroundedY = 0;
+		private int AimX = 0;
+		private int AimY = 0;
 
 
 		#endregion
@@ -30,9 +33,18 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
+		public override void OnCreate (int frame) {
+			LastGroundedY = Y;
+			AimX = ViewRect.x;
+			AimY = ViewRect.y;
+			base.OnCreate(frame);
+		}
+
+
 		public override void FrameUpdate (int frame) {
 			Update_Move(frame);
 			Update_JumpDashPound();
+			Update_View();
 			base.FrameUpdate(frame);
 		}
 
@@ -107,6 +119,21 @@ namespace AngeliaFramework {
 			if (FrameInput.KeyDown(GameKey.Down)) {
 				Movement.Pound();
 			}
+		}
+
+
+		private void Update_View () {
+			const int LINGER_RATE = 62;
+			if (IsGrounded) LastGroundedY = Y;
+			int linger = ViewRect.width * LINGER_RATE / 1000;
+			int centerX = ViewRect.x + ViewRect.width / 2;
+			if (X < centerX - linger) {
+				AimX = X + linger - ViewRect.width / 2;
+			} else if (X > centerX + linger) {
+				AimX = X - linger - ViewRect.width / 2;
+			}
+			AimY = IsGrounded || Y < LastGroundedY ? Y - ViewRect.height / 2 : AimY;
+			SetViewPosition(AimX, AimY, 62, int.MinValue);
 		}
 
 

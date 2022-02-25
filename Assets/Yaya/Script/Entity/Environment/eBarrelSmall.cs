@@ -4,18 +4,18 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public class eBarrel : eRigidbody {
+	public class eBarrelSmall : eRigidbody {
 
 
 		public override EntityLayer Layer => EntityLayer.Environment;
 		public override PhysicsLayer CollisionLayer => PhysicsLayer.Environment;
 
-		private static readonly int BARREL_CODE = "Barrel".ACode();
+		private static readonly int BARREL_CODE = "Barrel Small".ACode();
 
 
 		public override void OnCreate (int frame) {
-			Width = Const.CELL_SIZE;
-			Height = Const.CELL_SIZE;
+			Width = Const.CELL_SIZE / 2;
+			Height = Const.CELL_SIZE / 2;
 			base.OnCreate(frame);
 		}
 
