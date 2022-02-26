@@ -419,6 +419,7 @@ namespace AngeliaFramework {
 				entity.OnCreate(GlobalFrame);
 				len++;
 			}
+			EntityDirtyFlag++;
 		}
 
 
