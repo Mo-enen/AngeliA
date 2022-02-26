@@ -9,6 +9,8 @@ namespace Yaya {
 
 		public override CharacterMovement Movement => _Movement ??= new(this) {
 			//SwimInFreeStyle = true,
+			Width = 150,
+			Height = 150,
 		};
 		public override CharacterRenderer Renderer => _Renderer ??= new(this) {
 

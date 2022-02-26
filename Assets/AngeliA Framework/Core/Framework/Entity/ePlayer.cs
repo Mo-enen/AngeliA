@@ -142,15 +142,5 @@ namespace AngeliaFramework {
 
 
 
-		#region --- LGC ---
-
-
-
-
-		#endregion
-
-
-
-
 	}
 }

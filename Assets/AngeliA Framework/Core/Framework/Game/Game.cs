@@ -96,17 +96,18 @@ namespace AngeliaFramework {
 				return;
 			}
 #endif
+
 			// Pipeline
+			CellRenderer.Init(m_Data.Sheets);
 			Init_System();
 			Init_Entity();
-			Init_Renderer();
 			Init_Physics();
 			Init_Audio();
 			Init_Language();
 			Init_Misc();
-
 			WorldSquad.Init();
 
+			// Game Start
 			OnGameStart();
 
 		}
@@ -152,51 +153,6 @@ namespace AngeliaFramework {
 			Entity.GetAsset = (id) => AssetPool.TryGet(id);
 			Entity.SetViewPosition = SetViewPositionDely;
 			Entity.SetViewSize = SetViewSizeDely;
-		}
-
-
-		private void Init_Renderer () {
-			// Cell Renderer
-			var rendererRoot = new GameObject("Renderer", typeof(Camera)).transform;
-			rendererRoot.SetParent(null);
-			rendererRoot.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-			rendererRoot.localScale = Vector3.one;
-			var camera = rendererRoot.GetComponent<Camera>();
-			camera.clearFlags = CameraClearFlags.SolidColor;
-			camera.backgroundColor = new Color32(34, 34, 34, 0);
-			camera.cullingMask = -1;
-			camera.orthographic = true;
-			camera.orthographicSize = 1f;
-			camera.nearClipPlane = 0f;
-			camera.farClipPlane = 2f;
-			camera.rect = new Rect(0f, 0f, 1f, 1f);
-			camera.depth = 0f;
-			camera.renderingPath = RenderingPath.UsePlayerSettings;
-			camera.useOcclusionCulling = false;
-			camera.allowHDR = false;
-			camera.allowMSAA = false;
-			camera.allowDynamicResolution = false;
-			camera.targetDisplay = 0;
-			CellRenderer.Init(m_Data.Sheets.Length, camera);
-			for (int i = 0; i < m_Data.Sheets.Length; i++) {
-				var sheet = m_Data.Sheets[i];
-				// Mesh Renderer
-				var tf = new GameObject(sheet.name, typeof(MeshFilter), typeof(MeshRenderer)).transform;
-				tf.SetParent(rendererRoot);
-				tf.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-				tf.localScale = Vector3.one;
-				var mf = tf.GetComponent<MeshFilter>();
-				var mr = tf.GetComponent<MeshRenderer>();
-				mf.sharedMesh = new Mesh() { name = sheet.name, };
-				mr.material = sheet.GetMaterial();
-				mr.receiveShadows = false;
-				mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-				mr.staticShadowCaster = false;
-				mr.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
-				mr.sortingOrder = i;
-				// Renderer
-				CellRenderer.SetupLayer(i, sheet, mf);
-			}
 		}
 
 

@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿//#define FIX_WATER_MARK
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 
 namespace AngeliaFramework {
 	public static class CellRenderer {
@@ -87,10 +87,79 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		public static void Init (int layerCount, Camera camera) {
+		public static void Init (SpriteSheet[] sheets) {
+
+			int layerCount = sheets.Length;
 			Layers = new Layer[layerCount];
 			SheetIDMap.Clear();
-			MainCamera = camera;
+
+			var rendererRoot = new GameObject("Renderer", typeof(Camera)).transform;
+			rendererRoot.SetParent(null);
+			rendererRoot.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+			rendererRoot.localScale = Vector3.one;
+			var camera = MainCamera = rendererRoot.GetComponent<Camera>();
+			camera.clearFlags = CameraClearFlags.SolidColor;
+			camera.backgroundColor = new Color32(34, 34, 34, 0);
+			camera.cullingMask = -1;
+			camera.orthographic = true;
+			camera.orthographicSize = 1f;
+			camera.nearClipPlane = 0f;
+			camera.farClipPlane = 2f;
+			camera.rect = new Rect(0f, 0f, 1f, 1f);
+			camera.depth = 0f;
+			camera.renderingPath = RenderingPath.UsePlayerSettings;
+			camera.useOcclusionCulling = false;
+			camera.allowHDR = false;
+			camera.allowMSAA = false;
+			camera.allowDynamicResolution = false;
+			camera.targetDisplay = 0;
+			for (int i = 0; i < sheets.Length; i++) {
+				var sheet = sheets[i];
+				// Mesh Renderer
+				var tf = new GameObject(sheet.name, typeof(MeshFilter), typeof(MeshRenderer)).transform;
+				tf.SetParent(rendererRoot);
+				tf.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+				tf.localScale = Vector3.one;
+				var mf = tf.GetComponent<MeshFilter>();
+				var mr = tf.GetComponent<MeshRenderer>();
+				mf.sharedMesh = new Mesh() { name = sheet.name, };
+				mr.material = sheet.GetMaterial();
+				mr.receiveShadows = false;
+				mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+				mr.staticShadowCaster = false;
+				mr.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+				mr.sortingOrder = i;
+				// Renderer
+				SetupLayer(i, sheet, mf);
+			}
+
+#if FIX_WATER_MARK
+			{
+				// Water Mark
+				var tf = GameObject.CreatePrimitive(PrimitiveType.Quad).transform;
+				try {
+					tf.name = "Water Mark";
+					tf.SetParent(rendererRoot);
+					tf.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+					tf.localScale = Vector3.one;
+					var mf = tf.GetComponent<MeshFilter>();
+					var mr = tf.GetComponent<MeshRenderer>();
+					Object.DestroyImmediate(tf.gameObject.GetComponent<MeshCollider>(), false);
+					mr.sortingOrder = sheets.Length;
+					mr.material = new Material(Shader.Find("Cell"));
+					mr.receiveShadows = false;
+					mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+					mr.staticShadowCaster = false;
+					mr.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+					RefreshWaterMarkPosition(tf);
+				} catch (System.Exception ex) {
+					if (tf != null) {
+						Object.DestroyImmediate(tf.gameObject, false);
+					}
+					Debug.LogException(ex);
+				}
+			}
+#endif
 		}
 
 
@@ -245,73 +314,6 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		// Layer
-		public static void SetupLayer (int layerIndex, SpriteSheet sheet, MeshFilter filter) {
-			int cellCapaticy = sheet.RendererCapacity;
-			var uvs = sheet.GetUVs();
-			var sprites = sheet.Sprites;
-			var cells = new Cell[cellCapaticy];
-			for (int i = 0; i < cellCapaticy; i++) {
-				cells[i] = new Cell() { ID = -1 };
-			}
-			// Layer
-			Layer layer = null;
-			if (sheet is CharSpriteSheet) {
-				layer = CharacterLayer = new CharLayer();
-			} else {
-				layer = new Layer();
-			}
-			layer.Cells = cells;
-			layer.UVs = uvs;
-			layer.Mesh = filter.sharedMesh;
-			layer.RendererRoot = filter.transform;
-			layer.UVCount = uvs.Length;
-			layer.CellCount = cellCapaticy;
-			layer.FocusedCell = 0;
-			layer.VertexCache = new();
-			layer.UvCache = new();
-			layer.ColorCache = new();
-			layer.PrevCellCount = 0;
-
-			Layers[layerIndex] = FocusedLayer = layer;
-			FocusedLayerIndex = layerIndex;
-			for (int i = 0; i < sprites.Length; i++) {
-				var sp = sprites[i];
-				int id = sp.GlobalID;
-				if (!SheetIDMap.ContainsKey(id)) {
-					SheetIDMap.Add(id, (layerIndex, i));
-				}
-#if UNITY_EDITOR
-				else {
-					Debug.LogError($"[Cell Renderer] Sprite id already exists.(layer:{layerIndex}, index:{i})");
-				}
-#endif
-			}
-			// Init Mesh
-			layer.VertexCache.AddRange(new Vector3[cellCapaticy * 4]);
-			layer.UvCache.AddRange(new Vector2[cellCapaticy * 4]);
-			layer.ColorCache.AddRange(new Color32[cellCapaticy * 4]);
-			var mesh = filter.sharedMesh;
-			mesh.MarkDynamic();
-			mesh.SetVertices(layer.VertexCache);
-			mesh.SetUVs(0, layer.UvCache);
-			mesh.SetColors(layer.ColorCache);
-			mesh.SetTriangles(GetTriangles(cellCapaticy), 0);
-			mesh.UploadMeshData(false);
-			// Init Char
-			if (sheet is CharSpriteSheet cSheet) {
-				var cLayer = layer as CharLayer;
-				cLayer.UvOffsets = new Rect[cSheet.CharSprites.Length];
-				cLayer.FullWidths = new bool[cSheet.CharSprites.Length];
-				for (int i = 0; i < cSheet.CharSprites.Length; i++) {
-					var sp = cSheet.CharSprites[i];
-					cLayer.UvOffsets[i] = sp.UvOffset;
-					cLayer.FullWidths[i] = sp.FullWidth;
-				}
-			}
-		}
-
-
 		// Draw
 		public static void BeginDraw () {
 			for (int i = 0; i < Layers.Length; i++) {
@@ -397,7 +399,73 @@ namespace AngeliaFramework {
 
 
 
-		#region --- UTL ---
+		#region --- LGC ---
+
+
+		private static void SetupLayer (int layerIndex, SpriteSheet sheet, MeshFilter filter) {
+			int cellCapaticy = sheet.RendererCapacity;
+			var uvs = sheet.GetUVs();
+			var sprites = sheet.Sprites;
+			var cells = new Cell[cellCapaticy];
+			for (int i = 0; i < cellCapaticy; i++) {
+				cells[i] = new Cell() { ID = -1 };
+			}
+			// Layer
+			Layer layer = null;
+			if (sheet is CharSpriteSheet) {
+				layer = CharacterLayer = new CharLayer();
+			} else {
+				layer = new Layer();
+			}
+			layer.Cells = cells;
+			layer.UVs = uvs;
+			layer.Mesh = filter.sharedMesh;
+			layer.RendererRoot = filter.transform;
+			layer.UVCount = uvs.Length;
+			layer.CellCount = cellCapaticy;
+			layer.FocusedCell = 0;
+			layer.VertexCache = new();
+			layer.UvCache = new();
+			layer.ColorCache = new();
+			layer.PrevCellCount = 0;
+
+			Layers[layerIndex] = FocusedLayer = layer;
+			FocusedLayerIndex = layerIndex;
+			for (int i = 0; i < sprites.Length; i++) {
+				var sp = sprites[i];
+				int id = sp.GlobalID;
+				if (!SheetIDMap.ContainsKey(id)) {
+					SheetIDMap.Add(id, (layerIndex, i));
+				}
+#if UNITY_EDITOR
+				else {
+					Debug.LogError($"[Cell Renderer] Sprite id already exists.(layer:{layerIndex}, index:{i})");
+				}
+#endif
+			}
+			// Init Mesh
+			layer.VertexCache.AddRange(new Vector3[cellCapaticy * 4]);
+			layer.UvCache.AddRange(new Vector2[cellCapaticy * 4]);
+			layer.ColorCache.AddRange(new Color32[cellCapaticy * 4]);
+			var mesh = filter.sharedMesh;
+			mesh.MarkDynamic();
+			mesh.SetVertices(layer.VertexCache);
+			mesh.SetUVs(0, layer.UvCache);
+			mesh.SetColors(layer.ColorCache);
+			mesh.SetTriangles(GetTriangles(cellCapaticy), 0);
+			mesh.UploadMeshData(false);
+			// Init Char
+			if (sheet is CharSpriteSheet cSheet) {
+				var cLayer = layer as CharLayer;
+				cLayer.UvOffsets = new Rect[cSheet.CharSprites.Length];
+				cLayer.FullWidths = new bool[cSheet.CharSprites.Length];
+				for (int i = 0; i < cSheet.CharSprites.Length; i++) {
+					var sp = cSheet.CharSprites[i];
+					cLayer.UvOffsets[i] = sp.UvOffset;
+					cLayer.FullWidths[i] = sp.FullWidth;
+				}
+			}
+		}
 
 
 		private static int[] GetTriangles (int cellCount) {
@@ -411,6 +479,18 @@ namespace AngeliaFramework {
 				tris[i * 6 + 5] = i * 4 + 3;
 			}
 			return tris;
+		}
+
+
+		private static void RefreshWaterMarkPosition (Transform tf) {
+			float width = 0.1f;
+			float height = 0.1f;
+			tf.localScale = new Vector3(width, height, 1f);
+			tf.localPosition = new Vector3(
+				MainCamera.orthographicSize * MainCamera.aspect - width / 2f,
+				-MainCamera.orthographicSize + height / 2,
+				0
+			);
 		}
 
 

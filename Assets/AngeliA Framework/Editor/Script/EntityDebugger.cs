@@ -32,19 +32,8 @@ namespace AngeliaFramework.Editor {
 
 		// Short
 		private static EntityDebugger Main = null;
-		private static GUIStyle CMDTextAreaStyle => _CMDTextAreaStyle ??= new GUIStyle(GUI.skin.textArea) {
-			fontSize = 14,
-			contentOffset = new Vector2(2, 4),
-		};
-		private static GUIStyle _CMDTextAreaStyle = null;
 		private static GUIContent EIconContent => _EIconContent ??= EditorGUIUtility.IconContent("d_GameObject Icon");
 		private static GUIContent _EIconContent = null;
-		private static GUIContent GlobalIconContent => _GlobalIconContent ??= EditorGUIUtility.IconContent("d_ToolHandleGlobal@2x");
-		private static GUIContent _GlobalIconContent = null;
-		private static GUIContent ColIconContent => _ColIconContent ??= EditorGUIUtility.IconContent("d_Physics2DRaycaster Icon");
-		private static GUIContent _ColIconContent = null;
-		private static GUIContent CameraIconContent => _CameraIconContent ??= EditorGUIUtility.IconContent("d_SceneViewCamera");
-		private static GUIContent _CameraIconContent = null;
 		private static GUIContent SaveIconContent => _SaveIconContent ??= EditorGUIUtility.IconContent("d_SaveAs@2x");
 		private static GUIContent _SaveIconContent = null;
 		private static Game Game => _Game != null ? _Game : (_Game = FindObjectOfType<Game>());
@@ -61,7 +50,6 @@ namespace AngeliaFramework.Editor {
 		private int EntityDirtyFlag = 0;
 
 		// Saving
-		private static readonly EditorSavingString EntityInitContent = new("EntityDebuger.EntityInitContent", "");
 		private static readonly EditorSavingBool ShowColliders = new("EntityDebuger.ShowColliders", false);
 		private static readonly EditorSavingString EntityLayerVisible = new("EntityDebuger.EntityLayerVisible", "");
 		private static readonly EditorSavingString LastSyncTick = new("LdtkToolkit.LastSyncTick", "0");
@@ -93,8 +81,6 @@ namespace AngeliaFramework.Editor {
 					// Reload Cache
 					Entities = null;
 					ClearSelectionInspector();
-					// CMD
-					PerformCMD(EntityInitContent.Value);
 				}
 
 			};
@@ -203,11 +189,6 @@ namespace AngeliaFramework.Editor {
 
 				double time = EditorApplication.timeSinceStartup;
 
-				// Language Editor
-				if (GUI.Button(Layout.Rect(24, 20), GlobalIconContent, EditorStyles.toolbarButton)) {
-					LanguageEditor.OpenEditor();
-				}
-
 				if (time < RequireAlertTime + ARTWORK_ALRT_DURATION) {
 					// Alert
 					EditorGUI.DrawRect(
@@ -236,24 +217,21 @@ namespace AngeliaFramework.Editor {
 
 			}
 
-			using var scope = new GUILayout.ScrollViewScope(MasterScrollPos);
-			MasterScrollPos = scope.scrollPosition;
+			Layout.Space(12);
 
-			// CMD Text
-			var oldBC = GUI.backgroundColor;
-			GUI.backgroundColor = Color.clear;
-			EntityInitContent.Value = GUI.TextArea(
-				Layout.Rect(0, 0),
-				EntityInitContent.Value,
-				CMDTextAreaStyle
-			);
-			GUI.backgroundColor = oldBC;
-			EditorGUIUtility.AddCursorRect(Layout.LastRect(), MouseCursor.Text);
-
-			// More Buttons
-			if (GUI.Button(Layout.Rect(0, 24), "Sync Artwork")) {
+			// Sync Artwork
+			if (GUI.Button(Layout.Rect(0, 24).Shrink(24, 24, 0, 0), "Sync Artwork")) {
 				SyncArtwork(true, true);
 			}
+
+			Layout.Space(12);
+
+			// Language Editor
+			if (GUI.Button(Layout.Rect(0, 24).Shrink(24, 24, 0, 0), "Language Editor")) {
+				LanguageEditor.OpenEditor();
+			}
+
+
 
 		}
 
@@ -526,94 +504,6 @@ namespace AngeliaFramework.Editor {
 				SelectingInspector.SetTarget(null);
 				SelectingInspector.InspectorMode = EntityInspector.Mode.Entity;
 			}
-		}
-
-
-		private static void PerformCMD (string cmd) {
-			if (!string.IsNullOrEmpty(cmd)) {
-				if (Game == null) return;
-				var lines = cmd.Replace("\r", "").Split('\n');
-				Entity prevEntity = null;
-
-				// ID Map
-				var typePool = new Dictionary<int, System.Type>();
-				foreach (var eType in typeof(Entity).GetAllChildClass()) {
-					int id = eType.ACode();
-					if (!typePool.ContainsKey(id)) {
-						typePool.Add(id, eType);
-					}
-				}
-
-				// Lines
-				foreach (var line in lines) {
-					if (line.StartsWith("//")) { continue; }
-					if (line.StartsWith("#")) {
-						if (line.StartsWith("#lowframerate", System.StringComparison.OrdinalIgnoreCase)) {
-							Game.SetFramerate(false);
-						} else if (line.StartsWith("#highframerate", System.StringComparison.OrdinalIgnoreCase)) {
-							Game.SetFramerate(true);
-						}
-						continue;
-					}
-					if (line.StartsWith("::")) {
-						if (prevEntity != null) {
-							try {
-								int _eIndex = line.IndexOf('=');
-								if (_eIndex < 0) { continue; }
-								string fieldName = line[2.._eIndex];
-								var type = Util.GetFieldType(prevEntity, fieldName);
-								if (type == typeof(int)) {
-									if (int.TryParse(line[(_eIndex + 1)..], out int _value)) {
-										Util.SetFieldValue(prevEntity, fieldName, _value);
-									}
-								} else if (type == typeof(float)) {
-									if (float.TryParse(line[(_eIndex + 1)..], out float _value)) {
-										Util.SetFieldValue(prevEntity, fieldName, _value);
-									}
-								} else if (type == typeof(string)) {
-									Util.SetFieldValue(prevEntity, fieldName, line[(_eIndex + 1)..]);
-								} else if (type == typeof(bool)) {
-									if (bool.TryParse(line[(_eIndex + 1)..], out bool _value)) {
-										Util.SetFieldValue(prevEntity, fieldName, _value);
-									}
-								} else if (type.IsSubclassOf(typeof(System.Enum))) {
-									if (System.Enum.TryParse(type, line[(_eIndex + 1)..], out var _value)) {
-										Util.SetFieldValue(prevEntity, fieldName, _value);
-									}
-								} else {
-									Debug.LogWarning($"[Entity Debuger] type {type} not support/");
-								}
-							} catch { }
-						}
-						continue;
-					}
-					var _params = line.Replace(" ", "").Split(',');
-					if (
-						_params != null && _params.Length >= 1
-					) {
-						// X
-						int x = 0;
-						if (_params.Length >= 2) {
-							int.TryParse(_params[1], out x);
-						}
-						// Y
-						int y = 0;
-						if (_params.Length >= 3) {
-							int.TryParse(_params[2], out y);
-						}
-						// Final
-						var type = typePool.SingleOrDefault((pair) => pair.Value.Name == _params[0]).Value;
-						if (type != null) {
-							var e = System.Activator.CreateInstance(type) as Entity;
-							Game.AddEntity(e);
-							e.X = x;
-							e.Y = y;
-							prevEntity = e;
-						}
-					}
-				}
-			}
-
 		}
 
 
