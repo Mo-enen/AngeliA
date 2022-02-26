@@ -13,6 +13,7 @@ namespace AngeliaFramework {
 
 		// Const
 		private const PhysicsMask COL_MASK = PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character;
+		private const PhysicsMask ONEWAY_MASK = PhysicsMask.Level | PhysicsMask.Environment;
 
 		// Api
 		public int FinalVelocityX => X - PrevX;
@@ -211,34 +212,84 @@ namespace AngeliaFramework {
 			// Oneway
 			if (!ignoreOneway) {
 				var rect = Rect;
-				int oCount = CellPhysics.OverlapAll(c_Oneway, PhysicsLayer.Environment, rect, this, CellPhysics.OperationMode.TriggerOnly, Const.ONEWAY_TAG);
-				for (int i = 0; i < oCount; i++) {
-					var hit = c_Oneway[i];
-					if (hit.Entity is eOneway oneway) {
-						if (!oneway.PassCheck(
-							new(PrevX + OffsetX, PrevY + OffsetY),
-							new(X + OffsetX, Y + OffsetY),
-							new(Width, Height),
-							out var newPos
-						)) {
-							X = newPos.x - OffsetX;
-							Y = newPos.y - OffsetY;
-							switch (oneway.GateDirection) {
-								case Direction4.Up:
-								case Direction4.Down:
-									VelocityY = 0;
-									break;
-								case Direction4.Left:
-								case Direction4.Right:
-									VelocityX = 0;
-									break;
-							}
-						}
-					}
+				int velX = FinalVelocityX;
+				int velY = FinalVelocityY;
+				if (velX != 0) {
+					OnewayCheck(rect, velX > 0 ? Direction4.Right : Direction4.Left);
 				}
-				c_Oneway.Dispose();
+				if (velY != 0) {
+					OnewayCheck(rect, velY > 0 ? Direction4.Up : Direction4.Down);
+				}
 			}
 
+		}
+
+
+		private void OnewayCheck (RectInt rect, Direction4 moveDirection) {
+			var gateDir = moveDirection.Opposite();
+			int oCount = CellPhysics.OverlapAll(
+				c_Oneway, ONEWAY_MASK, rect, this,
+				CellPhysics.OperationMode.TriggerOnly,
+				Const.GetOnewayTag(gateDir)
+			);
+			for (int i = 0; i < oCount; i++) {
+				var hit = c_Oneway[i];
+				if (!OnewayPassCheck(
+					hit.Rect,
+					gateDir,
+					new(PrevX + OffsetX, PrevY + OffsetY),
+					new(X + OffsetX, Y + OffsetY),
+					new(Width, Height),
+					out var newPos
+				)) {
+					X = newPos.x - OffsetX;
+					Y = newPos.y - OffsetY;
+					switch (gateDir) {
+						case Direction4.Up:
+						case Direction4.Down:
+							VelocityY = 0;
+							break;
+						case Direction4.Left:
+						case Direction4.Right:
+							VelocityX = 0;
+							break;
+					}
+				}
+			}
+			c_Oneway.Dispose();
+		}
+
+
+		private bool OnewayPassCheck (RectInt onewayRect, Direction4 gateDirection, Vector2Int from, Vector2Int to, Vector2Int size, out Vector2Int newPos) {
+			newPos = to;
+			var rect = onewayRect;
+			switch (gateDirection) {
+				case Direction4.Down:
+					if (from.y + size.y <= rect.yMin && to.y + size.y > rect.yMin) {
+						newPos.y = rect.yMin - size.y;
+						return false;
+					}
+					break;
+				case Direction4.Up:
+					if (from.y >= rect.yMax && to.y < rect.yMax) {
+						newPos.y = rect.yMax;
+						return false;
+					}
+					break;
+				case Direction4.Left:
+					if (from.x + size.x <= rect.xMin && to.x + size.x > rect.xMin) {
+						newPos.x = rect.xMin - size.x;
+						return false;
+					}
+					break;
+				case Direction4.Right:
+					if (from.x >= rect.xMax && to.x < rect.xMax) {
+						newPos.x = rect.xMax;
+						return false;
+					}
+					break;
+			}
+			return true;
 		}
 
 

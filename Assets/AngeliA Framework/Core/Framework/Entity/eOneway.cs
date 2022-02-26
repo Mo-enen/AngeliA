@@ -27,11 +27,6 @@ namespace AngeliaFramework {
 		}
 
 
-		public override void FillPhysics (int frame) {
-			CellPhysics.FillEntity(PhysicsLayer.Environment, this, true, Const.ONEWAY_TAG);
-		}
-
-
 		public override void PhysicsUpdate (int frame) {
 			if (ContactReboundUpdate(frame)) {
 				if (LastContactFrame < frame - 1) {
@@ -66,39 +61,6 @@ namespace AngeliaFramework {
 			}
 			c_Rebound.Dispose();
 			return contact;
-		}
-
-
-		public virtual bool PassCheck (Vector2Int from, Vector2Int to, Vector2Int size, out Vector2Int newPos) {
-			newPos = to;
-			var rect = Rect;
-			switch (GateDirection) {
-				case Direction4.Down:
-					if (from.y + size.y <= rect.yMin && to.y + size.y > rect.yMin) {
-						newPos.y = rect.yMin - size.y;
-						return false;
-					}
-					break;
-				case Direction4.Up:
-					if (from.y >= rect.yMax && to.y < rect.yMax) {
-						newPos.y = rect.yMax;
-						return false;
-					}
-					break;
-				case Direction4.Left:
-					if (from.x + size.x <= rect.xMin && to.x + size.x > rect.xMin) {
-						newPos.x = rect.xMin - size.x;
-						return false;
-					}
-					break;
-				case Direction4.Right:
-					if (from.x >= rect.xMax && to.x < rect.xMax) {
-						newPos.x = rect.xMax;
-						return false;
-					}
-					break;
-			}
-			return true;
 		}
 
 

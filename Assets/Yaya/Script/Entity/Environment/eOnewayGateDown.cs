@@ -14,6 +14,12 @@ namespace Yaya {
 		public override Direction4 GateDirection => Direction4.Down;
 
 
+		public override void FillPhysics (int frame) {
+			CellPhysics.FillEntity(PhysicsLayer.Environment, this, true, Const.ONEWAY_DOWN_TAG);
+		}
+
+
+
 		public override void FrameUpdate (int frame) {
 			var rect = Rect;
 			int rotDelta = 0;

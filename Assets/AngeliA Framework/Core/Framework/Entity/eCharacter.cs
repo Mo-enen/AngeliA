@@ -19,6 +19,9 @@ namespace AngeliaFramework {
 		public abstract CharacterMovement Movement { get; }
 		public abstract CharacterRenderer Renderer { get; }
 
+		// Debug
+		public bool Debug_FacingFront = true;
+
 
 		#endregion
 
@@ -35,7 +38,10 @@ namespace AngeliaFramework {
 
 
 		public override void FrameUpdate (int frame) {
-			Renderer.FrameUpdate(frame, Movement.CurrentFacingX, Movement.IsSquating);
+			Renderer.FacingFront = Debug_FacingFront;
+			Renderer.FacingRight = Movement.CurrentFacingX == Direction2.Right;
+			Renderer.Squating = Movement.IsSquating;
+			Renderer.FrameUpdate(frame);
 			base.FrameUpdate(frame);
 		}
 

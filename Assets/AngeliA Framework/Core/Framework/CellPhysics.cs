@@ -84,6 +84,7 @@ namespace AngeliaFramework {
 
 		// Const
 		private const int CELL_DEPTH = 8;
+		private const PhysicsMask ONEWAY_MASK = PhysicsMask.Level | PhysicsMask.Environment;
 
 		// Api
 		public static int Width { get; } = (Const.MAX_VIEW_WIDTH + Const.SPAWN_GAP * 2) / Const.CELL_SIZE;
@@ -215,17 +216,15 @@ namespace AngeliaFramework {
 				Direction4.Right => new(rect.xMax, rect.y, GAP, rect.height),
 				_ => throw new System.NotImplementedException(),
 			};
+			var gateDir = direction.Opposite();
 			int count = OverlapAll(
 				c_PushCheck_OnewayCheck,
-				PhysicsLayer.Environment, _rect, entity, OperationMode.TriggerOnly, Const.ONEWAY_TAG
+				ONEWAY_MASK, _rect, entity, OperationMode.TriggerOnly,
+				Const.GetOnewayTag(gateDir)
 			);
 			for (int i = 0; i < count; i++) {
 				var hit = c_PushCheck_OnewayCheck[i];
-				if (
-					hit.Entity is eOneway oneway &&
-					direction == oneway.GateDirection.Opposite() &&
-					(!overlapCheck || !oneway.Rect.Shrink(1).Overlaps(rect))
-				) {
+				if (!overlapCheck || !hit.Rect.Shrink(1).Overlaps(rect)) {
 					return false;
 				}
 			}

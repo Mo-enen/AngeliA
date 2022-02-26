@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public class CharacterRenderer {
+	public abstract class CharacterRenderer {
 
 
 
@@ -12,13 +12,19 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
-		public string Test { get; init; } = "Test Pump";
+		// Init
 		public int Width { get; init; } = 256;
 		public int Height { get; init; } = 256;
 		public int SqrtHeight { get; init; } = 158;
 
+		// Api
+		public bool Squating { get; set; } = false;
+		public bool FacingFront { get; set; } = true;
+		public bool FacingRight { get; set; } = true;
+		protected int CurrentFrame { get; private set; } = 0;
+
 		// Data
-		private eRigidbody Rig = null;
+		protected eRigidbody Rig { get; private set; } = null;
 
 
 		#endregion
@@ -34,17 +40,55 @@ namespace AngeliaFramework {
 		}
 
 
-		public void FrameUpdate (int frame, Direction2 facingX, bool squating) {
+		public void FrameUpdate (int frame) {
 
-			// Debug
-			CellRenderer.Draw(
-				Test.ACode(),
-				Rig.X,
-				Rig.Y,
-				500, 0, 0,
-				(int)facingX * Width,
-				squating ? SqrtHeight : Height
-			);
+			CurrentFrame = frame;
+
+			if (FacingFront) {
+				// Front
+
+				DrawTail();
+				DrawHair(false);
+
+				DrawArm(!FacingRight);
+				DrawHand(!FacingRight);
+				DrawLeg(!FacingRight);
+				DrawFoot(!FacingRight);
+
+				DrawBody();
+				DrawBoingBoing();
+				DrawHead();
+				DrawFace();
+				DrawHair(true);
+
+				DrawArm(FacingRight);
+				DrawHand(FacingRight);
+				DrawLeg(FacingRight);
+				DrawFoot(FacingRight);
+
+			} else {
+				// Back
+
+				DrawArm(!FacingRight);
+				DrawHand(!FacingRight);
+				DrawLeg(!FacingRight);
+				DrawFoot(!FacingRight);
+
+				DrawHair(true);
+				DrawFace();
+				DrawHead();
+				DrawBoingBoing();
+				DrawBody();
+
+				DrawArm(FacingRight);
+				DrawHand(FacingRight);
+				DrawLeg(FacingRight);
+				DrawFoot(FacingRight);
+
+				DrawHair(false);
+				DrawTail();
+			}
+
 		}
 
 
@@ -56,6 +100,16 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
+		protected virtual void DrawHair (bool front) { }
+		protected virtual void DrawHead () { }
+		protected virtual void DrawFace () { }
+		protected virtual void DrawBody () { }
+		protected virtual void DrawBoingBoing () { }
+		protected virtual void DrawTail () { }
+		protected virtual void DrawArm (bool right) { }
+		protected virtual void DrawHand (bool right) { }
+		protected virtual void DrawLeg (bool right) { }
+		protected virtual void DrawFoot (bool right) { }
 
 
 		#endregion
@@ -80,7 +134,7 @@ namespace AngeliaFramework {
 #if UNITY_EDITOR
 namespace AngeliaFramework.Editor {
 	using UnityEditor;
-	
+
 	[CustomEditor(typeof(CharacterRenderer))]
 	public class CharacterRenderer_Inspector : Editor {
 		public override void OnInspectorGUI () {

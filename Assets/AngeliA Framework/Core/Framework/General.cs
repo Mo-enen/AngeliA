@@ -71,10 +71,17 @@ namespace AngeliaFramework {
 
 
 	public enum Direction2 {
+
 		Negative = -1,
-		Positive = 1,
+		Left = -1,
+		Down = -1,
 		Horizontal = -1,
+
+		Positive = 1,
+		Up = 1,
+		Right = 1,
 		Vertical = 1,
+
 	}
 
 
@@ -228,7 +235,21 @@ namespace AngeliaFramework {
 
 		public const int WATER_SPEED_LOSE = 400;
 		public static int WATER_TAG = "Water".ACode();
-		public static int ONEWAY_TAG = "Oneway".ACode();
+		public static int ONEWAY_UP_TAG = "OnewayUp".ACode();
+		public static int ONEWAY_DOWN_TAG = "OnewayDown".ACode();
+		public static int ONEWAY_LEFT_TAG = "OnewayLeft".ACode();
+		public static int ONEWAY_RIGHT_TAG = "OnewayRight".ACode();
+
+		public static int GetOnewayTag (Direction4 gateDirection) =>
+			gateDirection switch {
+				Direction4.Down => ONEWAY_DOWN_TAG,
+				Direction4.Up => ONEWAY_UP_TAG,
+				Direction4.Left => ONEWAY_LEFT_TAG,
+				Direction4.Right => ONEWAY_RIGHT_TAG,
+				_ => throw new System.NotImplementedException(),
+			};
+
+
 
 	}
 
