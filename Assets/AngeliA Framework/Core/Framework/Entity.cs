@@ -48,6 +48,7 @@ namespace AngeliaFramework {
 		public int InstanceID { get; set; } = 0;
 		public abstract EntityLayer Layer { get; }
 		public virtual bool Despawnable { get; } = true;
+		public virtual bool ForceUpdate { get; } = false;
 		public virtual int X { get; set; } = 0;
 		public virtual int Y { get; set; } = 0;
 		public virtual int Width { get; set; } = Const.CELL_SIZE;

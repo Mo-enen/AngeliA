@@ -10,20 +10,6 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
-		// Api
-		public override bool Despawnable => false;
-		public override EntityLayer Layer => EntityLayer.UI;
-
-		// Data
-		private string Message = "";
-		private string Label_OK = "";
-		private string Label_Cancel = "";
-		private string Label_Alt = "";
-		private System.Action OK = null;
-		private System.Action Cancel = null;
-		private System.Action Alt = null;
-		private int NavIndex = 0;
-
 		// Style
 		private static NineSliceSprites MAIN_SPRITES = new() {
 			TopLeft = "Window UL".AngeHash(),
@@ -57,16 +43,33 @@ namespace AngeliaFramework {
 		private static Color32 BUTTON_PRESS = new(180, 180, 180, 255);
 		private static Color32 BUTTON_CHAR = new(12, 12, 12, 255);
 		private static Color32 BG_PANEL = new(0, 0, 0, 64);
-		private const int CHAR_SIZE_CONTENT = 100;
+		private const int CHAR_SIZE_CONTENT = 124;
 		private const int CONTENT_PADDING_X = 164;
 		private const int CONTENT_PADDING_TOP = 128;
 		private const int CONTENT_PADDING_BOTTOM = 256;
-		private const int BUTTON_WIDTH = 512;
-		private const int BUTTON_HEIGHT = 128;
+		private const int BUTTON_WIDTH = 600;
+		private const int BUTTON_HEIGHT = 186;
 		private const int BUTTON_PADDING_X = 48;
 		private const int BUTTON_PADDING_Y = 48;
 		private const int BUTTON_GAP = 42;
 		private const int BUTTON_CHAR_SIZE = 84;
+
+		// Api
+		public override bool Despawnable => false;
+		public override bool ForceUpdate => true;
+		public override EntityLayer Layer => EntityLayer.UI;
+
+		// Data
+		private string Message = "";
+		private string Label_OK = "";
+		private string Label_Cancel = "";
+		private string Label_Alt = "";
+		private System.Action OK = null;
+		private System.Action Cancel = null;
+		private System.Action Alt = null;
+		private int NavIndex = 0;
+		private bool PrevLeftDown = false;
+		private bool PrevRightDown = false;
 
 
 		#endregion
@@ -122,26 +125,40 @@ namespace AngeliaFramework {
 			);
 
 			// Nav
-			if (FrameInput.KeyDown(GameKey.Left)) {
-				for (int i = 0; i < 3; i++) {
-					NavIndex = Mathf.Clamp(NavIndex - 1, 0, 2);
-					var action = NavIndex == 0 ? OK : NavIndex == 1 ? Alt : Cancel;
-					if (action != null) { break; }
+			bool leftPress = FrameInput.KeyPressing(GameKey.Left);
+			bool rightPress = FrameInput.KeyPressing(GameKey.Right);
+			if (leftPress) {
+				FrameInput.ClearKeyState(GameKey.Left);
+				if (!PrevLeftDown) {
+					for (int i = 0; i < 3; i++) {
+						NavIndex = Mathf.Clamp(NavIndex - 1, 0, 2);
+						var action = NavIndex == 0 ? OK : NavIndex == 1 ? Alt : Cancel;
+						if (action != null) { break; }
+					}
 				}
 			}
-			if (FrameInput.KeyDown(GameKey.Right)) {
-				for (int i = 0; i < 3; i++) {
-					NavIndex = Mathf.Clamp(NavIndex + 1, 0, 2);
-					var action = NavIndex == 0 ? OK : NavIndex == 1 ? Alt : Cancel;
-					if (action != null) { break; }
+			if (rightPress) {
+				FrameInput.ClearKeyState(GameKey.Right);
+				if (!PrevRightDown) {
+					for (int i = 0; i < 3; i++) {
+						NavIndex = Mathf.Clamp(NavIndex + 1, 0, 2);
+						var action = NavIndex == 0 ? OK : NavIndex == 1 ? Alt : Cancel;
+						if (action != null) { break; }
+					}
 				}
 			}
+			PrevLeftDown = leftPress;
+			PrevRightDown = rightPress;
 			if (FrameInput.KeyDown(GameKey.Start) || FrameInput.KeyDown(GameKey.Action)) {
 				CellGUI.ActiveNavigation(NavIndex == 0 ? OK : NavIndex == 1 ? Alt : Cancel);
 				Active = false;
+				FrameInput.ClearKeyState(GameKey.Start);
+				FrameInput.ClearKeyState(GameKey.Action);
 			}
 			if (FrameInput.KeyDown(GameKey.Select) || FrameInput.KeyDown(GameKey.Jump)) {
 				Active = false;
+				FrameInput.ClearKeyState(GameKey.Select);
+				FrameInput.ClearKeyState(GameKey.Jump);
 			}
 
 			// Buttons 
@@ -174,18 +191,6 @@ namespace AngeliaFramework {
 
 
 		#region --- API ---
-
-
-		public eDialog () {
-			Width = 2048;
-			Message = "Debug Test Message. 中文测试";
-			Label_OK = "OK";
-			Label_Cancel = "Cancel";
-			Label_Alt = "Alt";
-			OK = () => { Debug.Log("OK"); };
-			Cancel = () => { Debug.Log("Cancel"); };
-			Alt = () => { Debug.Log("Alt"); };
-		}
 
 
 		public eDialog (

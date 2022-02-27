@@ -195,18 +195,20 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void UseMouseLeftEvent () {
+		public static void ClearMouseLeftEvent () {
 			MouseLeft = false;
 			MouseLeftDown = false;
 		}
-		public static void UseMouseRightEvent () {
+		public static void ClearMouseRightEvent () {
 			MouseRight = false;
 			MouseRightDown = false;
 		}
-		public static void UseMouseMidEvent () {
+		public static void ClearMouseMidEvent () {
 			MouseMid = false;
 			MouseMidDown = false;
 		}
+		public static void ClearKeyState (GameKey key) => StateMap[key] = KeyState.None;
+
 
 		#endregion
 

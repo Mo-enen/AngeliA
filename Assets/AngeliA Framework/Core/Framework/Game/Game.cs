@@ -19,7 +19,7 @@ namespace AngeliaFramework {
 		public delegate WorldGenerator WorldGeneratorHandler ();
 
 		// Const
-		private readonly int[] ENTITY_CAPACITY = { 512, 256, 256, 1024, 256, };
+		private readonly int[] ENTITY_CAPACITY = { 256, 512, 256, 256, 1024, };
 
 		// Api
 		public Language CurrentLanguage { get; private set; } = null;
@@ -137,7 +137,8 @@ namespace AngeliaFramework {
 			foreach (var eType in typeof(Entity).GetAllChildClass()) {
 				int id = eType.AngeHash();
 				var handler = CreateHandler<EntityHandler>(eType);
-				if (handler != null && !EntityHandlerPool.ContainsKey(id)) {
+				if (handler == null) continue;
+				if (!EntityHandlerPool.ContainsKey(id)) {
 					EntityHandlerPool.Add(id, handler);
 				}
 #if UNITY_EDITOR
@@ -274,7 +275,7 @@ namespace AngeliaFramework {
 
 		private void FrameUpdate_World () {
 			WorldSquad.FrameUpdate(SpawnRect.CenterInt());
-			var spawnUnitRect = SpawnRect.Divide(Const.CELL_SIZE);
+			var spawnUnitRect = SpawnRect.AltDivide(Const.CELL_SIZE);
 			WorldSquad.DrawBlocksInside(spawnUnitRect, false);
 			WorldSquad.DrawBlocksInside(spawnUnitRect.Expand(Const.BLOCK_SPAWN_PADDING_UNIT), true);
 			WorldSquad.SpawnEntitiesInside(spawnUnitRect, this);
@@ -329,7 +330,7 @@ namespace AngeliaFramework {
 				int len = EntityLength[layerIndex];
 				for (int i = 0; i < len; i++) {
 					var e = entities[i];
-					if (EntityUpdateRect.Contains(e.X, e.Y)) {
+					if (e.ForceUpdate || EntityUpdateRect.Contains(e.X, e.Y)) {
 						e.PhysicsUpdate(GlobalFrame);
 					}
 				}
@@ -341,7 +342,7 @@ namespace AngeliaFramework {
 				int len = EntityLength[layerIndex];
 				for (int i = 0; i < len; i++) {
 					var e = entities[i];
-					if (EntityUpdateRect.Contains(e.X, e.Y)) {
+					if (e.ForceUpdate || EntityUpdateRect.Contains(e.X, e.Y)) {
 						e.FrameUpdate(GlobalFrame);
 					}
 				}
@@ -478,6 +479,7 @@ namespace AngeliaFramework {
 
 		private static T CreateHandler<T> (System.Type type) where T : System.Delegate {
 			ConstructorInfo emptyConstructor = type.GetConstructor(System.Type.EmptyTypes);
+			if (emptyConstructor == null) return null;
 			var dynamicMethod = new DynamicMethod("CreateInstance", type, System.Type.EmptyTypes, true);
 			ILGenerator ilGenerator = dynamicMethod.GetILGenerator();
 			ilGenerator.Emit(OpCodes.Nop);

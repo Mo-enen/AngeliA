@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 
 
@@ -10,43 +11,16 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 public class AngeliaInspectorAttribute : System.Attribute { }
 
 
-[System.AttributeUsage(System.AttributeTargets.Field)]
-public class ACodeIntAttribute : PropertyAttribute { }
-
 
 namespace AngeliaFramework {
 
 
-#if UNITY_EDITOR
-	using UnityEditor;
-	[CustomPropertyDrawer(typeof(ACodeIntAttribute))]
-	public class ACodeIntAttribute_AttributeDrawer : PropertyDrawer {
-		public override void OnGUI (Rect position, SerializedProperty property, GUIContent label) {
-			if (property.propertyType == SerializedPropertyType.Integer) {
-				const int INT_WIDTH = 86;
-				string newText = EditorGUI.DelayedTextField(position.Shrink(0, INT_WIDTH, 0, 0), label, "");
-				if (!string.IsNullOrEmpty(newText)) {
-					property.intValue = newText.AngeHash();
-				}
-				GUI.Label(
-					position.Shrink(position.width - INT_WIDTH, 0, 0, 0),
-					" " + property.intValue.ToString(),
-					EditorStyles.centeredGreyMiniLabel
-				);
-			} else {
-				EditorGUI.PropertyField(position, property, label, true);
-			}
-		}
-	}
-#endif
-
-
 	public enum EntityLayer {
-		Environment = 0,
-		Item = 1,
-		Character = 2,
-		Projectile = 3,
-		UI = 4,
+		UI = 0,
+		Environment = 1,
+		Item = 2,
+		Character = 3,
+		Projectile = 4,
 	}
 
 
@@ -294,15 +268,15 @@ namespace AngeliaFramework {
 		public static string GetMapRoot () => Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Maps");
 
 
-		public static Vector2Int Divide (this Vector2Int v, int gap) {
+		public static Vector2Int AltDivide (this Vector2Int v, int gap) {
 			v.x = v.x.AltDivide(gap);
 			v.y = v.y.AltDivide(gap);
 			return v;
 		}
 
 
-		public static RectInt Divide (this RectInt rect, int gap) {
-			rect.SetMinMax(rect.min.Divide(gap), rect.max.Divide(gap));
+		public static RectInt AltDivide (this RectInt rect, int gap) {
+			rect.SetMinMax(rect.min.AltDivide(gap), rect.max.AltDivide(gap));
 			return rect;
 		}
 
@@ -327,6 +301,8 @@ namespace AngeliaFramework {
 
 		// AngeliA Hash Code
 		public static int AngeHash (this System.Type type) => type.Name.AngeHash();
+
+
 		public static int AngeHash (this string str) {
 			const int p = 31;
 			const int m = 1837465129;

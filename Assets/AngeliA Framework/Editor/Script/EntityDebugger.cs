@@ -19,17 +19,9 @@ namespace AngeliaFramework.Editor {
 
 		// Const
 		private const string WINDOW_TITLE = "Entity";
+		private const double ALRT_DURATION = 3d;
 		private static readonly int PIXEL_CODE = "Pixel".AngeHash();
-		private static readonly Color32[] COLLIDER_TINT = {
-			new (255, 128, 0, 255),
-			new (255, 255, 0, 255),
-			new (0, 255, 0, 255),
-			new (0, 255, 255, 255),
-			new (0, 0, 255, 255),
-			new (255, 0, 255, 255),
-			new (255, 0, 0, 255),
-		};
-		private const double ARTWORK_ALRT_DURATION = 3d;
+		private static readonly Color32[] COLLIDER_TINT = { new(255, 128, 0, 255), new(255, 255, 0, 255), new(0, 255, 0, 255), new(0, 255, 255, 255), new(0, 0, 255, 255), new(255, 0, 255, 255), new(255, 0, 0, 255), };
 
 		// Short
 		private static EntityDebugger Main = null;
@@ -257,7 +249,7 @@ namespace AngeliaFramework.Editor {
 				PrevUpdateMousePress = false;
 			}
 			// Repaint when Alert
-			if (EditorApplication.timeSinceStartup < RequireAlertTime + ARTWORK_ALRT_DURATION + 1f) {
+			if (EditorApplication.timeSinceStartup < RequireAlertTime + ALRT_DURATION + 1f) {
 				Repaint();
 			}
 		}
@@ -380,16 +372,19 @@ namespace AngeliaFramework.Editor {
 
 			Layout.Space(12);
 
-			// Sync Artwork
-			if (GUI.Button(Layout.Rect(0, 24).Shrink(24, 24, 0, 0), "Sync Artwork")) {
-				SyncArtwork(true, true);
-			}
+			using (new GUILayout.HorizontalScope()) {
 
-			Layout.Space(12);
+				// Sync Artwork
+				if (GUI.Button(Layout.Rect(64, 64), "Sync Artwork")) {
+					SyncArtwork(true, true);
+				}
 
-			// Language Editor
-			if (GUI.Button(Layout.Rect(0, 24).Shrink(24, 24, 0, 0), "Language Editor")) {
-				LanguageEditor.OpenEditor();
+				Layout.Space(6);
+
+				// Language Editor
+				if (GUI.Button(Layout.Rect(64, 64), "Language Editor")) {
+					LanguageEditor.OpenEditor();
+				}
 			}
 
 			Layout.Rect(0, 0);
@@ -399,7 +394,7 @@ namespace AngeliaFramework.Editor {
 
 				double time = EditorApplication.timeSinceStartup;
 
-				if (time < RequireAlertTime + ARTWORK_ALRT_DURATION) {
+				if (time < RequireAlertTime + ALRT_DURATION) {
 					// Alert
 					EditorGUI.DrawRect(
 						Layout.Rect(0, 20),
