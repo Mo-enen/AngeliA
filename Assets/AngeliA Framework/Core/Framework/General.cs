@@ -26,7 +26,7 @@ namespace AngeliaFramework {
 				const int INT_WIDTH = 86;
 				string newText = EditorGUI.DelayedTextField(position.Shrink(0, INT_WIDTH, 0, 0), label, "");
 				if (!string.IsNullOrEmpty(newText)) {
-					property.intValue = newText.ACode();
+					property.intValue = newText.AngeHash();
 				}
 				GUI.Label(
 					position.Shrink(position.width - INT_WIDTH, 0, 0, 0),
@@ -149,25 +149,25 @@ namespace AngeliaFramework {
 
 		// Const
 		public static readonly NineSliceSprites PIXEL_FRAME_3 = new() {
-			BottomLeft = "Pixel".ACode(),
-			BottomMid = "Pixel".ACode(),
-			BottomRight = "Pixel".ACode(),
-			MidLeft = "Pixel".ACode(),
-			MidRight = "Pixel".ACode(),
-			TopLeft = "Pixel".ACode(),
-			TopMid = "Pixel".ACode(),
-			TopRight = "Pixel".ACode(),
+			BottomLeft = "Pixel".AngeHash(),
+			BottomMid = "Pixel".AngeHash(),
+			BottomRight = "Pixel".AngeHash(),
+			MidLeft = "Pixel".AngeHash(),
+			MidRight = "Pixel".AngeHash(),
+			TopLeft = "Pixel".AngeHash(),
+			TopMid = "Pixel".AngeHash(),
+			TopRight = "Pixel".AngeHash(),
 			border = new(3, 3, 3, 3),
 		};
 		public static readonly NineSliceSprites PIXEL_FRAME_6 = new() {
-			BottomLeft = "Pixel".ACode(),
-			BottomMid = "Pixel".ACode(),
-			BottomRight = "Pixel".ACode(),
-			MidLeft = "Pixel".ACode(),
-			MidRight = "Pixel".ACode(),
-			TopLeft = "Pixel".ACode(),
-			TopMid = "Pixel".ACode(),
-			TopRight = "Pixel".ACode(),
+			BottomLeft = "Pixel".AngeHash(),
+			BottomMid = "Pixel".AngeHash(),
+			BottomRight = "Pixel".AngeHash(),
+			MidLeft = "Pixel".AngeHash(),
+			MidRight = "Pixel".AngeHash(),
+			TopLeft = "Pixel".AngeHash(),
+			TopMid = "Pixel".AngeHash(),
+			TopRight = "Pixel".AngeHash(),
 			border = new(6, 6, 6, 6),
 		};
 
@@ -244,11 +244,13 @@ namespace AngeliaFramework {
 		public const int RIGIDBODY_FAST_SPEED = CELL_SIZE / 8;
 
 		public const int WATER_SPEED_LOSE = 400;
-		public static int WATER_TAG = "Water".ACode();
-		public static int ONEWAY_UP_TAG = "OnewayUp".ACode();
-		public static int ONEWAY_DOWN_TAG = "OnewayDown".ACode();
-		public static int ONEWAY_LEFT_TAG = "OnewayLeft".ACode();
-		public static int ONEWAY_RIGHT_TAG = "OnewayRight".ACode();
+		public static int WATER_TAG = "Water".AngeHash();
+		public static int ONEWAY_UP_TAG = "OnewayUp".AngeHash();
+		public static int ONEWAY_DOWN_TAG = "OnewayDown".AngeHash();
+		public static int ONEWAY_LEFT_TAG = "OnewayLeft".AngeHash();
+		public static int ONEWAY_RIGHT_TAG = "OnewayRight".AngeHash();
+
+		public const string MAP_FILE_EXT = "aamap";
 
 		public static int GetOnewayTag (Direction4 gateDirection) =>
 			gateDirection switch {
@@ -277,21 +279,19 @@ namespace AngeliaFramework {
 		};
 
 
-		public static long GetEntityInstanceID (int mapX, int mapY, int entityIndex) =>
-			(mapY + Const.GLOBAL_SIZE) * Const.GLOBAL_SIZE * 2 + mapX + Const.GLOBAL_SIZE +
-			(entityIndex * Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE);
-
-
 		public static int AltDivide (this int value, int gap) =>
 			value > 0 || value % gap == 0 ?
 			value / gap :
 			value / gap - 1;
 
 
-		public static int AltMode (this int value, int gap) =>
+		public static int AltMod (this int value, int gap) =>
 			value > 0 || value % gap == 0 ?
 			value % gap :
 			value % gap + gap;
+
+
+		public static string GetMapRoot () => Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Maps");
 
 
 		public static Vector2Int Divide (this Vector2Int v, int gap) {
@@ -326,8 +326,8 @@ namespace AngeliaFramework {
 
 
 		// AngeliA Hash Code
-		public static int ACode (this System.Type type) => type.Name.ACode();
-		public static int ACode (this string str) {
+		public static int AngeHash (this System.Type type) => type.Name.AngeHash();
+		public static int AngeHash (this string str) {
 			const int p = 31;
 			const int m = 1837465129;
 			int hash_value = 0;

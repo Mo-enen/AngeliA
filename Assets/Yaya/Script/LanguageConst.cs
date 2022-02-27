@@ -10,10 +10,10 @@ namespace Yaya {
 		public delegate string StringIntHandler (int key);
 		public static StringIntHandler GetLanguage { get; set; } = null;
 
-		private static readonly int QuitConfirmContentID = "Dialog.QuitConfirmContent".ACode();
-		private static readonly int LabelOKID = "Dialog.Ok".ACode();
-		private static readonly int LabelCancelID = "Dialog.Cancel".ACode();
-		private static readonly int LabelQuitID = "Dialog.Quit".ACode();
+		private static readonly int QuitConfirmContentID = "Dialog.QuitConfirmContent".AngeHash();
+		private static readonly int LabelOKID = "Dialog.Ok".AngeHash();
+		private static readonly int LabelCancelID = "Dialog.Cancel".AngeHash();
+		private static readonly int LabelQuitID = "Dialog.Quit".AngeHash();
 
 		// Dialog
 		public static string QuitConfirmContent => GetLanguage(QuitConfirmContentID);

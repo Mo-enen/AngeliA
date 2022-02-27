@@ -130,7 +130,7 @@ namespace AngeliaFramework.Editor {
 				var lan = languages[x - 1];
 				lan.Active();
 				for (int y = 0; y < keyList.Count; y++) {
-					LanguageData[x, y] = lan[keyList[y].ACode()];
+					LanguageData[x, y] = lan[keyList[y].AngeHash()];
 				}
 				Language.ClearCache();
 			}

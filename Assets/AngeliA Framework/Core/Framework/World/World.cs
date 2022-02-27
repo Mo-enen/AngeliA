@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.IO;
 using UnityEngine;
 
 
@@ -11,6 +11,14 @@ namespace AngeliaFramework {
 
 
 		#region --- SUB ---
+
+
+		public struct BackgroundBlock {
+			public int TypeID;
+			public void SetValues (int typeID) {
+				TypeID = typeID;
+			}
+		}
 
 
 		public struct Block {
@@ -28,17 +36,16 @@ namespace AngeliaFramework {
 
 
 		public struct Entity {
-			public long InstanceID;
+			public int InstanceID;
 			public int TypeID;
-			public void SetValues (long instanceID, int typeID) {
+			public void SetValues (int instanceID, int typeID) {
 				InstanceID = instanceID;
 				TypeID = typeID;
 			}
 		}
 
 
-		public delegate void VoidObjectHandler (Object obj);
-		public delegate bool BoolHandler ();
+		public delegate WorldGenerator WorldGeneratorIntHandler (int id);
 
 
 		#endregion
@@ -49,31 +56,29 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
-		// Callback
-		public static event VoidObjectHandler OnMapFilled = null;
+		// Handler
+		public static WorldGeneratorIntHandler CreateGenerator { get; set; } = null;
 
 		// Api
-		public RectInt FilledUnitRect => new(
-			FilledPosition.x * Const.WORLD_MAP_SIZE,
-			FilledPosition.y * Const.WORLD_MAP_SIZE,
+		public RectInt WorldUnitRect => new(
+			WorldPosition.x * Const.WORLD_MAP_SIZE,
+			WorldPosition.y * Const.WORLD_MAP_SIZE,
 			Const.WORLD_MAP_SIZE,
 			Const.WORLD_MAP_SIZE
 		);
-		public Vector2Int FilledPosition { get; private set; } = default;
-		public bool IsFilling { get; private set; } = false;
-		public Block[] Background { get => m_Background; set => m_Background = value; }
+		public Vector2Int WorldPosition { get; private set; } = default;
+		public BackgroundBlock[] Background { get => m_Background; set => m_Background = value; }
 		public Block[] Level { get => m_Level; set => m_Level = value; }
 		public Entity[] Entities { get => m_Entities; set => m_Entities = value; }
 
 		// Short
-		private bool AsyncReady => FillingTask.IsCompleted && (LoadingRequest == null || LoadingRequest.isDone);
+		private string MapRoot => !string.IsNullOrEmpty(_MapRoot) ? _MapRoot : (_MapRoot = AUtil.GetMapRoot());
 
 		// Data
-		private Block[] m_Background = null;
+		private BackgroundBlock[] m_Background = null;
 		private Block[] m_Level = null;
 		private Entity[] m_Entities = null;
-		private Task FillingTask = Task.CompletedTask;
-		private ResourceRequest LoadingRequest = null;
+		private string _MapRoot = null;
 
 
 		#endregion
@@ -86,9 +91,9 @@ namespace AngeliaFramework {
 
 		public World () {
 			m_Level = new Block[Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE];
-			m_Background = new Block[Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE];
+			m_Background = new BackgroundBlock[Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE];
 			m_Entities = new Entity[Const.WORLD_MAP_SIZE * Const.WORLD_MAP_SIZE];
-			FilledPosition = new(int.MinValue, int.MinValue);
+			WorldPosition = new(int.MinValue, int.MinValue);
 		}
 
 
@@ -97,7 +102,7 @@ namespace AngeliaFramework {
 		];
 
 
-		public Block GetBackgroundBlock (int localX, int localY) => m_Background[localY * Const.WORLD_MAP_SIZE + localX];
+		public BackgroundBlock GetBackgroundBlock (int localX, int localY) => m_Background[localY * Const.WORLD_MAP_SIZE + localX];
 
 
 		public Entity GetEntity (int localX, int localY) => m_Entities[
@@ -105,71 +110,59 @@ namespace AngeliaFramework {
 		];
 
 
-		// Fill
-		public void FillAsync (Vector2Int pos) {
-			if (!AsyncReady) return;
-			FilledPosition = pos;
-			LoadingRequest = Resources.LoadAsync<MapObject>($"Map/{pos.x}_{pos.y}");
-			LoadingRequest.completed += (_) => FillAsync(LoadingRequest.asset as MapObject, pos);
-		}
-
-
-		public async void FillAsync (MapObject source, Vector2Int pos) {
-			if (!AsyncReady) return;
-			FilledPosition = pos;
-			FillingTask = Task.Run(() => Fill(source, pos));
-			await FillingTask;
-		}
-
-
-		public bool Fill (Vector2Int pos) => Fill(Resources.Load<MapObject>($"Map/{pos.x}_{pos.y}"), pos);
-
-
-		public bool Fill (Vector2Int pos, out MapObject map) => Fill(map = Resources.Load<MapObject>($"Map/{pos.x}_{pos.y}"), pos);
-
-
-		public bool Fill (MapObject source, Vector2Int pos) {
-			IsFilling = true;
+		// Load
+		public bool LoadFromDisk (int worldX, int worldY) {
 			bool success = false;
 			try {
 				System.Array.Clear(m_Level, 0, m_Level.Length);
 				System.Array.Clear(m_Background, 0, m_Background.Length);
 				System.Array.Clear(m_Entities, 0, m_Entities.Length);
-				FilledPosition = pos;
-				if (source == null) {
-					IsFilling = false;
-					return false;
-				}
-				if (source.IsProcedure) {
+				WorldPosition = new(worldX, worldY);
+
+				string path = Util.CombinePaths(MapRoot, $"{worldX}_{worldY}.{Const.MAP_FILE_EXT}");
+				if (!Util.FileExists(path)) return false;
+
+				using var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+				using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
+
+				int generatorID = reader.ReadInt32();
+				if (generatorID != 0) {
 					// Procedure
-					source.CreateProcedureGenerator().FillWorld(this, pos);
+					CreateGenerator(generatorID)?.FillWorld(this);
 				} else {
 					// Static
-					// Blocks
-					int bWidth = Const.WORLD_MAP_SIZE;
-					int bHeight = Const.WORLD_MAP_SIZE;
-					foreach (var block in source.Map.Level) {
-						if (block.X < 0 || block.X >= bWidth || block.Y < 0 || block.Y >= bHeight) continue;
-						m_Level[block.Y * bWidth + block.X].SetValues(
-							block.TypeID, block.Tag, block.IsTrigger, block.ColliderBorder
-						);
-					}
-					foreach (var block in source.Map.Background) {
-						if (block.X < 0 || block.X >= bWidth || block.Y < 0 || block.Y >= bHeight) continue;
-						m_Background[block.Y * bWidth + block.X].SetValues(
-							block.TypeID, block.Tag, block.IsTrigger, block.ColliderBorder
-						);
-					}
-					// Entities
-					int eWidth = Const.WORLD_MAP_SIZE;
-					int eHeight = Const.WORLD_MAP_SIZE;
-					for (int i = 0; i < source.Map.Entities.Length; i++) {
-						var entity = source.Map.Entities[i];
-						if (
-							entity.X < 0 || entity.X >= eWidth ||
-							entity.Y < 0 || entity.Y >= eHeight
-						) continue;
-						m_Entities[entity.Y * eWidth + entity.X].SetValues(entity.InstanceID, entity.TypeID);
+					int SIZE = Const.WORLD_MAP_SIZE;
+					while (reader.NotEnd()) {
+						int id = reader.ReadInt32();
+						int x = reader.ReadInt32();
+						int y = reader.ReadInt32();
+						if (x >= 0) {
+							// Entity +x +y
+							int instanceID = reader.ReadInt32();
+							if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) continue;
+							m_Entities[y * SIZE + x].SetValues(instanceID, id);
+						} else {
+							if (y >= 0) {
+								// Level -x +y
+								x = -x - 1;
+								int tag = reader.ReadInt32();
+								bool isTrigger = reader.ReadBoolean();
+								int borderL = reader.ReadInt32();
+								int borderR = reader.ReadInt32();
+								int borderD = reader.ReadInt32();
+								int borderU = reader.ReadInt32();
+								if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) continue;
+								m_Level[y * SIZE + x].SetValues(
+									id, tag, isTrigger, new Int4() { Left = borderL, Right = borderR, Down = borderD, Up = borderU, }
+								);
+							} else {
+								// Background -x -y
+								x = -x - 1;
+								y = -y - 1;
+								if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) continue;
+								m_Background[y * SIZE + x].SetValues(id);
+							}
+						}
 					}
 				}
 				success = true;
@@ -178,64 +171,70 @@ namespace AngeliaFramework {
 				Debug.LogException(ex);
 #endif
 			}
-			IsFilling = false;
-			OnMapFilled?.Invoke(source);
 			return success;
 		}
 
 
+
 #if UNITY_EDITOR
-		public void EditorOnly_SaveToDisk (MapObject mapObject, bool overrideData = true) {
-			if (IsFilling || mapObject == null) return;
+		public int EditorOnly_SaveToDisk (int worldX, int worldY, int instanceID) {
+
 			const int SIZE = Const.WORLD_MAP_SIZE;
-			// Level
-			var level = new List<Map.Block>();
-			if (!overrideData) {
-				level.AddRange(mapObject.Map.Level);
+			string path = Util.CombinePaths(MapRoot, $"{worldX}_{worldY}.{Const.MAP_FILE_EXT}");
+			using var stream = new FileStream(path, FileMode.Append, FileAccess.Write);
+			using var writer = new BinaryWriter(stream, System.Text.Encoding.ASCII);
+			if (stream.Position == 0) {
+				writer.Write((int)0);
 			}
+
+			// Level
 			for (int y = 0; y < SIZE; y++) {
 				for (int x = 0; x < SIZE; x++) {
 					var block = m_Level[y * SIZE + x];
 					if (block.TypeID == 0) continue;
-					level.Add(new(block.TypeID, x, y, block.Tag, block.IsTrigger, block.ColliderBorder));
+					writer.Write((int)block.TypeID);
+					writer.Write((int)-x - 1);
+					writer.Write((int)y);
+					writer.Write((int)block.Tag);
+					writer.Write((bool)block.IsTrigger);
+					writer.Write((int)block.ColliderBorder.Left);
+					writer.Write((int)block.ColliderBorder.Right);
+					writer.Write((int)block.ColliderBorder.Down);
+					writer.Write((int)block.ColliderBorder.Up);
 				}
 			}
-			mapObject.Map.Level = level.ToArray();
 
 			// Background
-			var background = new List<Map.Block>();
-			if (!overrideData) {
-				background.AddRange(mapObject.Map.Background);
-			}
 			for (int y = 0; y < SIZE; y++) {
 				for (int x = 0; x < SIZE; x++) {
 					var block = m_Background[y * SIZE + x];
 					if (block.TypeID == 0) continue;
-					background.Add(new(block.TypeID, x, y, block.Tag, block.IsTrigger, block.ColliderBorder));
+					writer.Write((int)block.TypeID);
+					writer.Write((int)-x - 1);
+					writer.Write((int)-y - 1);
 				}
 			}
-			mapObject.Map.Background = background.ToArray();
 
-			// Entities
-			var entities = new List<Map.Entity>();
-			if (!overrideData) {
-				entities.AddRange(mapObject.Map.Entities);
-			}
+			// Entity
 			for (int y = 0; y < SIZE; y++) {
 				for (int x = 0; x < SIZE; x++) {
 					var entity = m_Entities[y * SIZE + x];
 					if (entity.TypeID == 0) continue;
-					long insID = AUtil.GetEntityInstanceID(x, y, entities.Count);
-					entities.Add(new(entity.TypeID, insID, x, y));
+					int insID = instanceID;
+					instanceID++;
+					writer.Write((int)entity.TypeID);
+					writer.Write((int)x);
+					writer.Write((int)y);
+					writer.Write((int)insID);
 				}
 			}
-			mapObject.Map.Entities = entities.ToArray();
+
+			return instanceID;
 		}
 #endif
 
 
 		#endregion
-
 
 
 

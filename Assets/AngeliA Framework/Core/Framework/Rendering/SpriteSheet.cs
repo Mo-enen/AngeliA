@@ -61,7 +61,7 @@ namespace AngeliaFramework {
 			for (int i = 0; i < sprites.Length; i++) {
 				var sp = sprites[i];
 				m_Sprites[i] = new UvSprite() {
-					GlobalID = sp.name.ACode(),
+					GlobalID = sp.name.AngeHash(),
 					Rect = new UvRect() {
 						BottomLeft = new(sp.rect.xMin / width, sp.rect.yMin / height),
 						BottomRight = new(sp.rect.xMax / width, sp.rect.yMin / height),
@@ -176,7 +176,7 @@ namespace AngeliaFramework.Editor {
 			foreach (var info in font.characterInfo) {
 				string targetStr = char.ConvertFromUtf32(info.index);
 				uvList.Add(new SpriteSheet.UvSprite() {
-					GlobalID = ("c_" + targetStr).ACode(),
+					GlobalID = ("c_" + targetStr).AngeHash(),
 					Rect = new UvRect() {
 						BottomLeft = info.uvBottomLeft,
 						BottomRight = info.uvBottomRight,

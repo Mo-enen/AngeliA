@@ -35,7 +35,7 @@ namespace AngeliaFramework {
 		public void Active () {
 			Map.Clear();
 			foreach (var cell in m_Cells) {
-				Map.TryAdd(cell.Key.ACode(), cell.Value);
+				Map.TryAdd(cell.Key.AngeHash(), cell.Value);
 			}
 		}
 

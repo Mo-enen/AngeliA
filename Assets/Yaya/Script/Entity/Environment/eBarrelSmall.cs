@@ -10,7 +10,7 @@ namespace AngeliaFramework {
 		public override EntityLayer Layer => EntityLayer.Environment;
 		public override PhysicsLayer CollisionLayer => PhysicsLayer.Environment;
 
-		private static readonly int BARREL_CODE = "Barrel Small".ACode();
+		private static readonly int BARREL_CODE = "Barrel Small".AngeHash();
 
 
 		public override void OnCreate (int frame) {

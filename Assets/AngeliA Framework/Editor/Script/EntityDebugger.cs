@@ -19,7 +19,7 @@ namespace AngeliaFramework.Editor {
 
 		// Const
 		private const string WINDOW_TITLE = "Entity";
-		private static readonly int PIXEL_CODE = "Pixel".ACode();
+		private static readonly int PIXEL_CODE = "Pixel".AngeHash();
 		private static readonly Color32[] COLLIDER_TINT = {
 			new (255, 128, 0, 255),
 			new (255, 255, 0, 255),
@@ -110,7 +110,7 @@ namespace AngeliaFramework.Editor {
 						}
 						bool ldtk = false;
 						bool ase = false;
-						foreach (var file in Util.GetFilesIn(LdtkToAngeliA.LdtkToolkit.LdtkRoot, false, "*.ldtk")) {
+						foreach (var file in Util.GetFilesIn(Application.dataPath, false, "*.ldtk")) {
 							try {
 								if (Util.GetModifyDate(file.FullName) > lastSyncTickValue) {
 									ldtk = true;

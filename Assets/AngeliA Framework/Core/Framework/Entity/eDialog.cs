@@ -26,30 +26,30 @@ namespace AngeliaFramework {
 
 		// Style
 		private static NineSliceSprites MAIN_SPRITES = new() {
-			TopLeft = "Window UL".ACode(),
-			TopMid = "Window UM".ACode(),
-			TopRight = "Window UR".ACode(),
-			MidLeft = "Window ML".ACode(),
-			MidMid = "Window MM".ACode(),
-			MidRight = "Window MR".ACode(),
-			BottomLeft = "Window DL".ACode(),
-			BottomMid = "Window DM".ACode(),
-			BottomRight = "Window DR".ACode(),
+			TopLeft = "Window UL".AngeHash(),
+			TopMid = "Window UM".AngeHash(),
+			TopRight = "Window UR".AngeHash(),
+			MidLeft = "Window ML".AngeHash(),
+			MidMid = "Window MM".AngeHash(),
+			MidRight = "Window MR".AngeHash(),
+			BottomLeft = "Window DL".AngeHash(),
+			BottomMid = "Window DM".AngeHash(),
+			BottomRight = "Window DR".AngeHash(),
 			border = new(32, 32, 32, 32),
 		};
 		private static NineSliceSprites BUTTON_SPRITES = new() {
-			TopLeft = "Button UL".ACode(),
-			TopMid = "Button UM".ACode(),
-			TopRight = "Button UR".ACode(),
-			MidLeft = "Button ML".ACode(),
-			MidMid = "Button MM".ACode(),
-			MidRight = "Button MR".ACode(),
-			BottomLeft = "Button DL".ACode(),
-			BottomMid = "Button DM".ACode(),
-			BottomRight = "Button DR".ACode(),
+			TopLeft = "Button UL".AngeHash(),
+			TopMid = "Button UM".AngeHash(),
+			TopRight = "Button UR".AngeHash(),
+			MidLeft = "Button ML".AngeHash(),
+			MidMid = "Button MM".AngeHash(),
+			MidRight = "Button MR".AngeHash(),
+			BottomLeft = "Button DL".AngeHash(),
+			BottomMid = "Button DM".AngeHash(),
+			BottomRight = "Button DR".AngeHash(),
 			border = new(24, 24, 24, 24),
 		};
-		private static int PIXEL_ID { get; } = "Pixel".ACode();
+		private static int PIXEL_ID { get; } = "Pixel".AngeHash();
 		private static Color32 WINDOW_BG = new(240, 240, 240, 255);
 		private static Color32 CONTENT_CHAR = new(12, 12, 12, 255);
 		private static Color32 BUTTON_NORMAL = new(220, 220, 220, 255);

@@ -10,16 +10,12 @@ namespace LdtkToAngeliA {
 	public static class LdtkToolkit {
 
 
-		public static string LdtkRoot => Application.dataPath;
-
-
 		public static void ReloadAllLevels () {
 
 			// Delete Old Maps
-			var mapRoot = Util.CombinePaths(Application.dataPath, "Resources", "Map");
+			var mapRoot = AUtil.GetMapRoot();
 			Util.DeleteFolder(mapRoot);
 			Util.CreateFolder(mapRoot);
-			AssetDatabase.Refresh();
 
 			// Get Sprite Pool
 			var tilesetPool = new Dictionary<string, Dictionary<Vector2Int, (int blockID, Int4 border)>>();
@@ -41,7 +37,7 @@ namespace LdtkToAngeliA {
 							Up = (int)sp.border.w * Const.CELL_SIZE / (int)sp.rect.height,
 							Down = (int)sp.border.y * Const.CELL_SIZE / (int)sp.rect.height
 						};
-						spritePool.TryAdd(_pos, (sp.name.ACode(), border));
+						spritePool.TryAdd(_pos, (sp.name.AngeHash(), border));
 					}
 				}
 				tilesetPool.TryAdd(sheet.Texture.name, spritePool);
@@ -50,7 +46,7 @@ namespace LdtkToAngeliA {
 			// Load Levels
 			int successCount = 0;
 			int errorCount = 0;
-			foreach (var file in Util.GetFilesIn(LdtkRoot, false, "*.ldtk")) {
+			foreach (var file in Util.GetFilesIn(Application.dataPath, false, "*.ldtk")) {
 				try {
 					var json = Util.FileToText(file.FullName);
 					var ldtk = JsonUtility.FromJson<LdtkProject>(json);
@@ -111,7 +107,7 @@ namespace LdtkToAngeliA {
 						// Tag String
 						int tag = 0;
 						if (lines.Length > 1) {
-							tag = lines[1].ACode();
+							tag = lines[1].AngeHash();
 						}
 
 						customDataPool.TryAdd(_value.blockID, (isTrigger, tag));
@@ -128,7 +124,7 @@ namespace LdtkToAngeliA {
 					int gridSize = layer.__gridSize;
 					int offsetX = levelPosX + layer.__pxTotalOffsetX;
 					int offsetY = levelPosY + layer.__pxTotalOffsetY;
-					bool isLevel = IsLevelBlock(layer.__identifier);
+					bool isLevel = IsLevelLayer(layer.__identifier);
 					var tName = Util.GetNameWithoutExtension(layer.__tilesetRelPath);
 					if (!spritePool.ContainsKey(tName) && layer.__type != "Entities") continue;
 					TileInstance[] tiles = null;
@@ -166,7 +162,7 @@ namespace LdtkToAngeliA {
 									ref var e = ref world.Entities[
 										_localY * Const.WORLD_MAP_SIZE + _localX
 									];
-									e.TypeID = entity.__identifier.ACode();
+									e.TypeID = entity.__identifier.AngeHash();
 								}
 							);
 						}
@@ -183,54 +179,46 @@ namespace LdtkToAngeliA {
 							worldPool.Add((worldX, worldY), new());
 						}
 						action(
-							unitX.AltMode(Const.WORLD_MAP_SIZE),
-							unitY.AltMode(Const.WORLD_MAP_SIZE),
+							unitX.AltMod(Const.WORLD_MAP_SIZE),
+							unitY.AltMod(Const.WORLD_MAP_SIZE),
 							worldPool[(worldX, worldY)]
 						);
 					}
 					void SetBlock (World world, int _localX, int _localY, Vector2Int srcPos) {
-						var blocks = isLevel ? world.Level : world.Background;
-						ref var block = ref blocks[_localY * Const.WORLD_MAP_SIZE + _localX];
-						var (blockID, border) = spritePool[tName][srcPos];
-						block.TypeID = blockID;
-						block.ColliderBorder = border;
-						if (customDataPool.TryGetValue(block.TypeID, out (bool _isT, int _tag) _value)) {
-							block.IsTrigger = _value._isT;
-							block.Tag = _value._tag;
+						if (isLevel) {
+							var blocks = world.Level;
+							ref var block = ref blocks[_localY * Const.WORLD_MAP_SIZE + _localX];
+							var (blockID, border) = spritePool[tName][srcPos];
+							block.TypeID = blockID;
+							block.ColliderBorder = border;
+							if (customDataPool.TryGetValue(block.TypeID, out (bool _isT, int _tag) _value)) {
+								block.IsTrigger = _value._isT;
+								block.Tag = _value._tag;
+							} else {
+								block.IsTrigger = false;
+								block.Tag = 0;
+							}
 						} else {
-							block.IsTrigger = false;
-							block.Tag = 0;
+							var blocks = world.Background;
+							ref var block = ref blocks[_localY * Const.WORLD_MAP_SIZE + _localX];
+							var (blockID, border) = spritePool[tName][srcPos];
+							block.TypeID = blockID;
 						}
+
 					}
 				}
 			}
 
 			// World Pool >> Maps (add into, no replace)
-			var mapPool = new Dictionary<(int x, int y), MapObject>();
+			int insID = 1;
 			foreach (var pair in worldPool) {
-				var (x, y) = pair.Key;
-				var world = pair.Value;
-				MapObject mapObj;
-				if (mapPool.ContainsKey((x, y))) {
-					mapObj = mapPool[(x, y)];
-				} else {
-					mapObj = ScriptableObject.CreateInstance<MapObject>();
-					mapPool.Add((x, y), mapObj);
-				}
-				world.EditorOnly_SaveToDisk(mapObj, false);
+				insID = pair.Value.EditorOnly_SaveToDisk(pair.Key.x, pair.Key.y, insID);
 			}
-			foreach (var pair in mapPool) {
-				var (x, y) = pair.Key;
-				string mapName = $"{x}_{y}";
-				AssetDatabase.CreateAsset(pair.Value, Util.CombinePaths("Assets", "Resources", "Map", mapName + ".asset"));
-			}
-			AssetDatabase.SaveAssets();
-			AssetDatabase.Refresh();
 			return true;
 		}
 
 
-		private static bool IsLevelBlock (string id) => id.StartsWith("level", System.StringComparison.CurrentCultureIgnoreCase);
+		private static bool IsLevelLayer (string id) => id.StartsWith("level", System.StringComparison.CurrentCultureIgnoreCase);
 
 
 	}

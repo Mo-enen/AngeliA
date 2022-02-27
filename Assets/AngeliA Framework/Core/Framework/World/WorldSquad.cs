@@ -13,22 +13,6 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
-		// Handler
-		public delegate void VoidHandler ();
-		public static VoidHandler BeforeWorldShift { get; set; } = null;
-
-		// Api
-		public bool IsReady {
-			get {
-				for (int i = 0; i < 3; i++) {
-					for (int j = 0; j < 3; j++) {
-						if (Worlds[i, j].IsFilling) return false;
-					}
-				}
-				return true;
-			}
-		}
-
 		// Data
 		public readonly World[,] Worlds = new World[3, 3] {
 			{ new(), new(), new() },
@@ -47,23 +31,21 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public void Init () => FillSquad(0, 0);
+		public void Init () => LoadSquadFromDisk(0, 0);
 
 
 		public void FrameUpdate (Vector2Int viewPos) {
 			var midZone = new RectInt(
-				Worlds[1, 1].FilledPosition * Const.WORLD_MAP_SIZE * Const.CELL_SIZE,
+				Worlds[1, 1].WorldPosition * Const.WORLD_MAP_SIZE * Const.CELL_SIZE,
 				new Vector2Int(Const.WORLD_MAP_SIZE * Const.CELL_SIZE, Const.WORLD_MAP_SIZE * Const.CELL_SIZE)
 			).Expand(
 				Const.WORLD_MAP_SIZE * Const.CELL_SIZE / 2
 			);
 			if (!midZone.Contains(viewPos)) {
-				BeforeWorldShift();
 				int x = viewPos.x.AltDivide(Const.WORLD_MAP_SIZE * Const.CELL_SIZE);
 				int y = viewPos.y.AltDivide(Const.WORLD_MAP_SIZE * Const.CELL_SIZE);
 				Shift(x, y);
-				FillSquad(x, y);
-				//FillSquadAsync(x, y);
+				LoadSquadFromDisk(x, y);
 			}
 		}
 
@@ -74,8 +56,7 @@ namespace AngeliaFramework {
 			for (int worldI = 0; worldI <= 2; worldI++) {
 				for (int worldJ = 0; worldJ <= 2; worldJ++) {
 					var world = Worlds[worldI, worldJ];
-					if (world.IsFilling) continue;
-					var worldUnitRect = world.FilledUnitRect;
+					var worldUnitRect = world.WorldUnitRect;
 					if (!worldUnitRect.Overlaps(globalUnitRect)) continue;
 					int unitL = Mathf.Max(globalUnitRect.x, worldUnitRect.x);
 					int unitR = Mathf.Min(globalUnitRect.xMax, worldUnitRect.xMax);
@@ -83,21 +64,25 @@ namespace AngeliaFramework {
 					int unitU = Mathf.Min(globalUnitRect.yMax, worldUnitRect.yMax);
 					for (int j = unitD; j < unitU; j++) {
 						for (int i = unitL; i < unitR; i++) {
-							var block = level ?
-								world.GetLevelBlock(i - worldUnitRect.x, j - worldUnitRect.y) :
-								world.GetBackgroundBlock(i - worldUnitRect.x, j - worldUnitRect.y);
-							if (block.TypeID == 0) continue;
-							rect.x = i * Const.CELL_SIZE;
-							rect.y = j * Const.CELL_SIZE;
 							if (level) {
+								var block = world.GetLevelBlock(i - worldUnitRect.x, j - worldUnitRect.y);
+								if (block.TypeID == 0) continue;
+								rect.x = i * Const.CELL_SIZE;
+								rect.y = j * Const.CELL_SIZE;
 								CellPhysics.FillBlock(
 									PhysicsLayer.Level,
 									rect.Shrink(block.ColliderBorder.Left, block.ColliderBorder.Right, block.ColliderBorder.Down, block.ColliderBorder.Up),
 									block.IsTrigger,
 									block.Tag
 								);
+								CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 255));
+							} else {
+								var block = world.GetBackgroundBlock(i - worldUnitRect.x, j - worldUnitRect.y);
+								if (block.TypeID == 0) continue;
+								rect.x = i * Const.CELL_SIZE;
+								rect.y = j * Const.CELL_SIZE;
+								CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 255));
 							}
-							CellRenderer.Draw(block.TypeID, rect, new Color32(255, 255, 255, 255));
 						}
 					}
 				}
@@ -109,8 +94,7 @@ namespace AngeliaFramework {
 			for (int worldI = 0; worldI <= 2; worldI++) {
 				for (int worldJ = 0; worldJ <= 2; worldJ++) {
 					var world = Worlds[worldI, worldJ];
-					if (world.IsFilling) continue;
-					var worldUnitRect = world.FilledUnitRect;
+					var worldUnitRect = world.WorldUnitRect;
 					if (!worldUnitRect.Overlaps(globalUnitRect)) continue;
 					int unitL = Mathf.Max(globalUnitRect.x, worldUnitRect.x);
 					int unitR = Mathf.Min(globalUnitRect.xMax, worldUnitRect.xMax);
@@ -127,38 +111,6 @@ namespace AngeliaFramework {
 					}
 				}
 			}
-		}
-
-
-		// Get
-		public bool GetLevelBlockAt (int globalX, int globalY, out World.Block block) => GetBlockAt(globalX, globalY, true, out block);
-
-
-		public bool GetBackgroundBlockAt (int globalX, int globalY, out World.Block block) => GetBlockAt(globalX, globalY, false, out block);
-
-
-		public bool GetEntityAt (int globalX, int globalY, out World.Entity entity) {
-			int unitX = globalX.AltDivide(Const.CELL_SIZE);
-			int unitY = globalY.AltDivide(Const.CELL_SIZE);
-			var allWorldUnitRect = new RectInt(Worlds[0, 0].FilledPosition * Const.WORLD_MAP_SIZE, Vector2Int.one * (3 * Const.WORLD_MAP_SIZE));
-			if (allWorldUnitRect.Contains(unitX, unitY)) {
-				for (int worldJ = 0; worldJ <= 2; worldJ++) {
-					for (int worldI = 0; worldI <= 2; worldI++) {
-						var world = Worlds[worldI, worldJ];
-						if (world.FilledUnitRect.Contains(unitX, unitY)) {
-							var _entity = world.GetEntity(
-								unitX - world.FilledPosition.x * Const.WORLD_MAP_SIZE,
-								unitY - world.FilledPosition.y * Const.WORLD_MAP_SIZE
-							);
-							if (_entity.TypeID == 0) continue;
-							entity = _entity;
-							return true;
-						}
-					}
-				}
-			}
-			entity = default;
-			return false;
 		}
 
 
@@ -182,8 +134,8 @@ namespace AngeliaFramework {
 			for (int j = 0; j <= 2; j++) {
 				for (int i = 0; i <= 2; i++) {
 					var world = Worlds[i, j];
-					int localX = world.FilledPosition.x - x;
-					int localY = world.FilledPosition.y - y;
+					int localX = world.WorldPosition.x - x;
+					int localY = world.WorldPosition.y - y;
 					if (localX >= -1 && localX <= 1 && localY >= -1 && localY <= 1) {
 						WorldBuffer[localX + 1, localY + 1] = world;
 					} else {
@@ -215,62 +167,16 @@ namespace AngeliaFramework {
 		}
 
 
-		private void FillSquad (int x, int y) {
+		private void LoadSquadFromDisk (int x, int y) {
 			for (int j = 0; j <= 2; j++) {
 				for (int i = 0; i <= 2; i++) {
 					var world = Worlds[i, j];
 					var pos = new Vector2Int(x + i - 1, y + j - 1);
-					if (world.FilledPosition != pos) {
-						world.Fill(pos);
+					if (world.WorldPosition != pos) {
+						world.LoadFromDisk(pos.x, pos.y);
 					}
 				}
 			}
-		}
-
-
-		private void FillSquadAsync (int x, int y) {
-			for (int j = 0; j <= 2; j++) {
-				for (int i = 0; i <= 2; i++) {
-					var world = Worlds[i, j];
-					var pos = new Vector2Int(x + i - 1, y + j - 1);
-					if (world.FilledPosition != pos) {
-						world.FillAsync(pos);
-					}
-				}
-			}
-		}
-
-
-		private bool GetBlockAt (int globalX, int globalY, bool level, out World.Block block) {
-			int unitX = globalX.AltDivide(Const.CELL_SIZE);
-			int unitY = globalY.AltDivide(Const.CELL_SIZE);
-			var allWorldUnitRect = new RectInt(
-				Worlds[0, 0].FilledPosition * Const.WORLD_MAP_SIZE,
-				Vector2Int.one * (3 * Const.WORLD_MAP_SIZE)
-			);
-			if (allWorldUnitRect.Contains(unitX, unitY)) {
-				for (int worldJ = 0; worldJ <= 2; worldJ++) {
-					for (int worldI = 0; worldI <= 2; worldI++) {
-						var world = Worlds[worldI, worldJ];
-						if (world.FilledUnitRect.Contains(unitX, unitY)) {
-							var _block = level ?
-								world.GetLevelBlock(
-									unitX - world.FilledPosition.x * Const.WORLD_MAP_SIZE,
-									unitY - world.FilledPosition.y * Const.WORLD_MAP_SIZE
-								) :
-								world.GetBackgroundBlock(
-									unitX - world.FilledPosition.x * Const.WORLD_MAP_SIZE,
-									unitY - world.FilledPosition.y * Const.WORLD_MAP_SIZE
-								);
-							if (_block.TypeID == 0) continue;
-							block = _block;
-							return true;
-						}
-					}
-				}
-			}
-			block = default;
-			return false;
 		}
 
 

@@ -9,7 +9,7 @@ namespace Yaya {
 
 
 
-		private static readonly int ONEWAY_CODE = "Oneway Gate".ACode();
+		private static readonly int ONEWAY_CODE = "Oneway Gate".AngeHash();
 
 		public override Direction4 GateDirection => Direction4.Up;
 

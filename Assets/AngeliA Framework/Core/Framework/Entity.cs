@@ -45,7 +45,7 @@ namespace AngeliaFramework {
 		}
 
 		public bool Active { get; set; } = true;
-		public long InstanceID { get; set; } = 0;
+		public int InstanceID { get; set; } = 0;
 		public abstract EntityLayer Layer { get; }
 		public virtual bool Despawnable { get; } = true;
 		public virtual int X { get; set; } = 0;
@@ -54,7 +54,7 @@ namespace AngeliaFramework {
 		public virtual int Height { get; set; } = Const.CELL_SIZE;
 
 		// Data
-		private static long CurrentDynamicInstanceID = 0;
+		private static int CurrentDynamicInstanceID = 0;
 		private RectInt _Rect = new();
 
 
@@ -73,7 +73,7 @@ namespace AngeliaFramework {
 		public virtual void OnDespawn (int frame) { }
 
 
-		public static long NewDynamicInstanceID () {
+		public static int NewDynamicInstanceID () {
 			CurrentDynamicInstanceID--;
 			return CurrentDynamicInstanceID;
 		}

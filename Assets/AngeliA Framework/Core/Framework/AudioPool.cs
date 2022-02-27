@@ -51,7 +51,7 @@ namespace AngeliaFramework {
 
 		// Music
 		public static void AddMusic (AudioClip clip) {
-			int id = clip.name.ACode();
+			int id = clip.name.AngeHash();
 			if (!MusicMap.ContainsKey(id)) {
 				MusicMap.Add(id, clip);
 			}
@@ -93,7 +93,7 @@ namespace AngeliaFramework {
 
 		// Sound
 		public static void AddSound (AudioClip clip) {
-			int id = clip.name.ACode();
+			int id = clip.name.AngeHash();
 			if (!SoundMap.ContainsKey(id)) {
 				SoundMap.Add(id, clip);
 			}

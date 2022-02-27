@@ -43,7 +43,7 @@ namespace AngeliaFramework {
 		public void FrameUpdate (int frame) {
 
 			CellRenderer.Draw(
-				"Test Pump".ACode(),
+				"Test Pump".AngeHash(),
 				Rig.X + Rig.OffsetX + Rig.Width / 2,
 				Rig.Y + Rig.OffsetY,
 				500, 0, 0,

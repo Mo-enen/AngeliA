@@ -16,6 +16,7 @@ namespace AngeliaFramework {
 
 		// Dele
 		public delegate Entity EntityHandler ();
+		public delegate WorldGenerator WorldGeneratorHandler ();
 
 		// Const
 		private readonly int[] ENTITY_CAPACITY = { 512, 256, 256, 1024, 256, };
@@ -37,8 +38,8 @@ namespace AngeliaFramework {
 
 		// Data
 		private readonly Dictionary<int, EntityHandler> EntityHandlerPool = new();
-		private readonly Stack<Object> UnloadAssetStack = new();
-		private readonly HashSet<long> StagedEntityHash = new();
+		private readonly Dictionary<int, WorldGeneratorHandler> WorldGeneratorHandlerPool = new();
+		private readonly HashSet<int> StagedEntityHash = new();
 		private readonly Entity[][] Entities = new Entity[Const.ENTITY_LAYER_COUNT][];
 		private readonly int[] EntityLength = new int[Const.ENTITY_LAYER_COUNT];
 		private RectInt EntityUpdateRect = default;
@@ -75,7 +76,6 @@ namespace AngeliaFramework {
 			CellPhysics.BeginFill(SpawnRect.x, SpawnRect.y);
 			FrameUpdate_World();
 			FrameUpdate_Entity();
-			FrameUpdate_Misc();
 			CellGUI.PerformFrame(GlobalFrame);
 			CellRenderer.FrameUpdate();
 			GlobalFrame++;
@@ -135,8 +135,8 @@ namespace AngeliaFramework {
 
 			// Handler Pool
 			foreach (var eType in typeof(Entity).GetAllChildClass()) {
-				int id = eType.ACode();
-				var handler = CreateEntityHandler(eType);
+				int id = eType.AngeHash();
+				var handler = CreateHandler<EntityHandler>(eType);
 				if (handler != null && !EntityHandlerPool.ContainsKey(id)) {
 					EntityHandlerPool.Add(id, handler);
 				}
@@ -212,10 +212,19 @@ namespace AngeliaFramework {
 
 
 		private void Init_World () {
-			World.OnMapFilled += (obj) => {
-				UnloadAssetStack.Push(obj);
-			};
-			WorldSquad.BeforeWorldShift += () => { };
+			foreach (var gType in typeof(WorldGenerator).GetAllChildClass()) {
+				int id = gType.AngeHash();
+				var handler = CreateHandler<WorldGeneratorHandler>(gType);
+				if (handler != null && !WorldGeneratorHandlerPool.ContainsKey(id)) {
+					WorldGeneratorHandlerPool.Add(id, handler);
+				}
+#if UNITY_EDITOR
+				else {
+					Debug.LogError($"{gType} has same global id with {WorldGeneratorHandlerPool[id]}");
+				}
+#endif
+			}
+			World.CreateGenerator = (id) => WorldGeneratorHandlerPool.ContainsKey(id) ? WorldGeneratorHandlerPool[id].Invoke() : null;
 		}
 
 
@@ -265,13 +274,11 @@ namespace AngeliaFramework {
 
 		private void FrameUpdate_World () {
 			WorldSquad.FrameUpdate(SpawnRect.CenterInt());
-			if (WorldSquad.IsReady) {
-				var spawnUnitRect = SpawnRect.Divide(Const.CELL_SIZE);
-				WorldSquad.DrawBlocksInside(spawnUnitRect, false);
-				WorldSquad.DrawBlocksInside(spawnUnitRect.Expand(Const.BLOCK_SPAWN_PADDING_UNIT), true);
-				WorldSquad.SpawnEntitiesInside(spawnUnitRect, this);
-				PrevSpawnRect = spawnUnitRect;
-			}
+			var spawnUnitRect = SpawnRect.Divide(Const.CELL_SIZE);
+			WorldSquad.DrawBlocksInside(spawnUnitRect, false);
+			WorldSquad.DrawBlocksInside(spawnUnitRect.Expand(Const.BLOCK_SPAWN_PADDING_UNIT), true);
+			WorldSquad.SpawnEntitiesInside(spawnUnitRect, this);
+			PrevSpawnRect = spawnUnitRect;
 		}
 
 
@@ -342,15 +349,6 @@ namespace AngeliaFramework {
 
 			if (changed) EntityDirtyFlag++;
 
-		}
-
-
-		private void FrameUpdate_Misc () {
-			// Unload Assets
-			while (UnloadAssetStack.Count > 0) {
-				var asset = UnloadAssetStack.Pop();
-				if (asset != null) Resources.UnloadAsset(asset);
-			}
 		}
 
 
@@ -478,14 +476,14 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private static EntityHandler CreateEntityHandler (System.Type type) {
+		private static T CreateHandler<T> (System.Type type) where T : System.Delegate {
 			ConstructorInfo emptyConstructor = type.GetConstructor(System.Type.EmptyTypes);
 			var dynamicMethod = new DynamicMethod("CreateInstance", type, System.Type.EmptyTypes, true);
 			ILGenerator ilGenerator = dynamicMethod.GetILGenerator();
 			ilGenerator.Emit(OpCodes.Nop);
 			ilGenerator.Emit(OpCodes.Newobj, emptyConstructor);
 			ilGenerator.Emit(OpCodes.Ret);
-			return (EntityHandler)dynamicMethod.CreateDelegate(typeof(EntityHandler));
+			return (T)dynamicMethod.CreateDelegate(typeof(T));
 		}
 
 

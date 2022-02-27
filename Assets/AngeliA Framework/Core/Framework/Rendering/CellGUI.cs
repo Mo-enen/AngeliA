@@ -20,14 +20,14 @@ namespace AngeliaFramework {
 		private static System.Action NavigationAction = null;
 		private static RectInt? ButtonNavigation = null;
 		private static NineSliceSprites ButtonNavigationFrame = new() {
-			TopLeft = "Button Highlight UL".ACode(),
-			TopMid = "Button Highlight UM".ACode(),
-			TopRight = "Button Highlight UR".ACode(),
-			MidLeft = "Button Highlight ML".ACode(),
-			MidRight = "Button Highlight MR".ACode(),
-			BottomLeft = "Button Highlight DL".ACode(),
-			BottomMid = "Button Highlight DM".ACode(),
-			BottomRight = "Button Highlight DR".ACode(),
+			TopLeft = "Button Highlight UL".AngeHash(),
+			TopMid = "Button Highlight UM".AngeHash(),
+			TopRight = "Button Highlight UR".AngeHash(),
+			MidLeft = "Button Highlight ML".AngeHash(),
+			MidRight = "Button Highlight MR".AngeHash(),
+			BottomLeft = "Button Highlight DL".AngeHash(),
+			BottomMid = "Button Highlight DM".AngeHash(),
+			BottomRight = "Button Highlight DR".AngeHash(),
 			border = new(30, 30, 30, 30),
 		};
 
@@ -100,7 +100,7 @@ namespace AngeliaFramework {
 				}
 				// Draw Char
 				CellRenderer.DrawChar(
-					("c_" + c).ACode(),
+					("c_" + c).AngeHash(),
 					x + offsetX, y - offsetY, charSize, charSize,
 					color, out bool fullWidth
 				);
@@ -125,7 +125,7 @@ namespace AngeliaFramework {
 					y += charSize + lineSpace;
 					continue;
 				}
-				int id = ("c_" + c).ACode();
+				int id = ("c_" + c).AngeHash();
 				bool fullWidth = CellRenderer.IsFullWidth(id);
 				x += fullWidth ? charSize + charSpace : charSize / 2 + charSpace;
 				xMax = Mathf.Max(x, xMax);
