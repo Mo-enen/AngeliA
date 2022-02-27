@@ -15,8 +15,7 @@ namespace Yaya {
 	public class eYaya : ePlayer {
 
 		public override CharacterMovement Movement => _Movement ??= new(this) {
-			Width = 150,
-			Height = 150,
+			
 		};
 		public override CharacterRenderer Renderer => _Renderer ??= new(this) {
 			

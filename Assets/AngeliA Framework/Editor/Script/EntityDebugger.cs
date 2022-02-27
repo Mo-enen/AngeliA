@@ -10,7 +10,7 @@ using Moenen.Standard;
 
 
 namespace AngeliaFramework.Editor {
-	public class EntityDebugger : EditorWindow {
+	public class EntityDebugger : EditorWindow, IHasCustomMenu {
 
 
 
@@ -40,8 +40,9 @@ namespace AngeliaFramework.Editor {
 		private static Game Game => _Game != null ? _Game : (_Game = FindObjectOfType<Game>());
 		private static Game _Game = null;
 
-		// Data
+		// Data 
 		private static Entity[][] Entities = null;
+		private static int[] EntityLength = null;
 		private static Entity SelectingEntity = null;
 		private static Entity HoveringEntity = null;
 		private static EntityInspector SelectingInspector = null;
@@ -77,12 +78,14 @@ namespace AngeliaFramework.Editor {
 				// Enter Edit
 				if (mode == PlayModeStateChange.EnteredEditMode) {
 					Entities = null;
+					EntityLength = null;
 				}
 
 				// Enter Play
 				if (mode == PlayModeStateChange.EnteredPlayMode) {
 					// Reload Cache
 					Entities = null;
+					EntityLength = null;
 					if (Main != null) {
 						Main.ClearSelectionInspector();
 					}
@@ -168,6 +171,22 @@ namespace AngeliaFramework.Editor {
 			}
 			AssetDatabase.SaveAssets();
 			AssetDatabase.Refresh();
+		}
+
+
+		void IHasCustomMenu.AddItemsToMenu (GenericMenu menu) {
+			// View
+			if (EditorApplication.isPlaying) {
+				menu.AddItem(new GUIContent("Select View"), false, () => {
+					SetSelectionInspector(null, EntityInspector.Mode.View);
+				});
+			} else {
+				menu.AddDisabledItem(new GUIContent("Select View"));
+			}
+			// Collider
+			menu.AddItem(new GUIContent("Show Colliders"), ShowColliders.Value, () =>
+				ShowColliders.Value = !ShowColliders.Value
+			);
 		}
 
 
@@ -309,7 +328,12 @@ namespace AngeliaFramework.Editor {
 			// Entities
 			if (Entities == null) {
 				Entities = Util.GetFieldValue(Game, "Entities") as Entity[][];
-				if (Entities == null) { return; }
+				if (Entities == null) return;
+			}
+
+			if (EntityLength == null) {
+				EntityLength = Util.GetFieldValue(Game, "EntityLength") as int[];
+				if (EntityLength == null) return;
 			}
 
 			if (SelectingInspector == null) {
@@ -323,12 +347,30 @@ namespace AngeliaFramework.Editor {
 				for (int i = 0; i < Const.ENTITY_LAYER_COUNT; i++) {
 					bool visible = GetLayerVisible(i);
 					string label = ((EntityLayer)i).ToString();
+
+					/// Toggle
 					bool newVisible = GUI.Toggle(
 						Layout.Rect(0, 20),
 						visible,
-						label[..Mathf.Min(label.Length, 5)],
+						GUIContent.none,
 						EditorStyles.toolbarButton
 					);
+
+					// Fill Amount
+					int currentLen = EntityLength[i];
+					int totalLen = Entities[i].Length;
+					var fillRect = Layout.LastRect().Shrink(1);
+					fillRect.width = fillRect.width * currentLen / totalLen;
+					EditorGUI.DrawRect(fillRect, Color.Lerp(
+						new Color(0.5f, 1f, 0.4f, 0.3f),
+						new Color(1f, 0f, 0f, 0.3f),
+						(float)currentLen / totalLen
+					));
+
+					// Label
+					GUI.Label(Layout.LastRect(), label[..Mathf.Min(label.Length, 5)], Layout.CenteredMiniLabel);
+
+					// Mark
 					if (visible) {
 						var rect = Layout.LastRect();
 						EditorGUI.DrawRect(rect.Shrink(3, 3, rect.height - 2, 1), Layout.HighlightColor1);
@@ -528,14 +570,7 @@ namespace AngeliaFramework.Editor {
 
 		private void EntityMenu (Entity entity) {
 			var menu = new GenericMenu();
-			// View
-			menu.AddItem(new GUIContent("Select View"), false, () => {
-				SetSelectionInspector(null, EntityInspector.Mode.View);
-			});
-			// Collider
-			menu.AddItem(new GUIContent("Show Colliders"), ShowColliders.Value, () =>
-				ShowColliders.Value = !ShowColliders.Value
-			);
+
 			// Delete
 			if (entity != null) {
 				menu.AddItem(new GUIContent("Delete"), false, () => {

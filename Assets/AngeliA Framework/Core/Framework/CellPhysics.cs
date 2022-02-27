@@ -83,12 +83,14 @@ namespace AngeliaFramework {
 
 
 		// Const
+		public const int WIDTH =
+			(Const.MAX_VIEW_WIDTH + Const.SPAWN_GAP * 2 + Const.BLOCK_SPAWN_PADDING * 2) / Const.CELL_SIZE;
+		public const int HEIGHT =
+			(Const.MAX_VIEW_HEIGHT + Const.SPAWN_GAP * 2 + Const.BLOCK_SPAWN_PADDING * 2) / Const.CELL_SIZE;
 		private const int CELL_DEPTH = 8;
 		private const PhysicsMask ONEWAY_MASK = PhysicsMask.Level | PhysicsMask.Environment;
 
 		// Api
-		public static int Width { get; } = (Const.MAX_VIEW_WIDTH + Const.SPAWN_GAP * 2) / Const.CELL_SIZE;
-		public static int Height { get; } = (Const.MAX_VIEW_HEIGHT + Const.SPAWN_GAP * 2) / Const.CELL_SIZE;
 		public static int PositionX { get; private set; } = 0;
 		public static int PositionY { get; private set; } = 0;
 
@@ -112,7 +114,7 @@ namespace AngeliaFramework {
 
 		// Setup
 		public static void SetupLayer (int index) {
-			Layers[index] = CurrentLayer = new Layer(Width, Height);
+			Layers[index] = CurrentLayer = new Layer(WIDTH, HEIGHT);
 			CurrentLayerEnum = (PhysicsLayer)index;
 		}
 
@@ -132,24 +134,22 @@ namespace AngeliaFramework {
 
 
 		// Overlap
-		public static HitInfo Overlap (PhysicsMask mask, RectInt globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
-			HitInfo result = null;
+		public static bool Overlap (PhysicsMask mask, RectInt globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
 			for (int layerIndex = 0; layerIndex < Const.PHYSICS_LAYER_COUNT; layerIndex++) {
 				var layer = (PhysicsLayer)layerIndex;
 				if (!mask.HasLayer(layer)) continue;
-				result = Overlap(layer, globalRect, ignore, mode, tag);
-				if (result != null) break;
+				if (Overlap(layer, globalRect, ignore, mode, tag)) return true;
 			}
-			return result;
+			return false;
 		}
 
 
-		public static HitInfo Overlap (PhysicsLayer layer, RectInt globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+		public static bool Overlap (PhysicsLayer layer, RectInt globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
 			var layerItem = Layers[(int)layer];
 			int l = Mathf.Max(globalRect.xMin.GetCellIndexX() - 1, 0);
 			int d = Mathf.Max(globalRect.yMin.GetCellIndexY() - 1, 0);
-			int r = Mathf.Min((globalRect.xMax - 1).GetCellIndexX() + 1, Width - 1);
-			int u = Mathf.Min((globalRect.yMax - 1).GetCellIndexY() + 1, Height - 1);
+			int r = Mathf.Min((globalRect.xMax - 1).GetCellIndexX() + 1, WIDTH - 1);
+			int u = Mathf.Min((globalRect.yMax - 1).GetCellIndexY() + 1, HEIGHT - 1);
 			bool useCollider = mode == OperationMode.ColliderOnly || mode == OperationMode.ColliderAndTrigger;
 			bool useTrigger = mode == OperationMode.TriggerOnly || mode == OperationMode.ColliderAndTrigger;
 			for (int j = d; j <= u; j++) {
@@ -161,13 +161,13 @@ namespace AngeliaFramework {
 						if (tag != 0 && cell.Tag != tag) continue;
 						if ((cell.IsTrigger && useTrigger) || (!cell.IsTrigger && useCollider)) {
 							if (cell.GlobalRect.Overlaps(globalRect)) {
-								return cell.GetInfo();
+								return true;
 							}
 						}
 					}
 				}
 			}
-			return null;
+			return false;
 		}
 
 
@@ -203,7 +203,7 @@ namespace AngeliaFramework {
 				Direction4.Right => new(rect.xMax, rect.y, GAP, rect.height),
 				_ => throw new System.NotImplementedException(),
 			};
-			return Overlap(mask, _rect, entity, mode, tag) == null;
+			return !Overlap(mask, _rect, entity, mode, tag);
 		}
 
 
@@ -244,23 +244,23 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool StopCheck (PhysicsMask mask, RectInt rect, eRigidbody rig, Direction4 dir) {
-			if (RoomCheck(mask, rect, rig, dir)) return false;
+		public static bool MoveCheck (PhysicsMask mask, RectInt rect, eRigidbody target, Direction4 direction) {
+			if (RoomCheck(mask, rect, target, direction)) return true;
 			int count = OverlapAll(
 				c_StopCheck,
 				mask, new(
-					rect.x + (dir == Direction4.Right ? rect.width : -1),
-					rect.y + (dir == Direction4.Up ? rect.height : -1),
-					dir == Direction4.Up || dir == Direction4.Down ? rect.width : 1,
-					dir == Direction4.Up || dir == Direction4.Down ? 1 : rect.height
-				), rig
+					rect.x + (direction == Direction4.Right ? rect.width : -1),
+					rect.y + (direction == Direction4.Up ? rect.height : -1),
+					direction == Direction4.Up || direction == Direction4.Down ? rect.width : 1,
+					direction == Direction4.Up || direction == Direction4.Down ? 1 : rect.height
+				), target
 			);
 			for (int i = 0; i < count; i++) {
 				var hit = c_StopCheck[i];
-				if (hit.Entity == null || !PushCheck(mask, hit.Rect, hit.Entity, rig.PushLevel, dir)) return true;
+				if (hit.Entity == null || !PushCheck(mask, hit.Rect, hit.Entity, target.PushLevel, direction)) return false;
 			}
 			c_StopCheck.Dispose();
-			return false;
+			return true;
 		}
 
 
@@ -277,7 +277,106 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Vector2Int MoveLogic (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) {
+		// Editor
+#if UNITY_EDITOR
+		public static void Editor_ForAllCells (System.Action<int, HitInfo> action) {
+			for (int i = 0; i < Layers.Length; i++) {
+				var layer = Layers[i];
+				if (layer == null) { continue; }
+				for (int y = 0; y < HEIGHT; y++) {
+					for (int x = 0; x < WIDTH; x++) {
+						for (int d = 0; d < CELL_DEPTH; d++) {
+							ref var cell = ref layer.Cells[x, y, d];
+							if (cell.Frame != CurrentFrame) { break; }
+							action(i, cell.GetInfo());
+						}
+					}
+				}
+			}
+		}
+#endif
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+		private static int OverlapAllLogic (
+			HitInfo[] hits, int startIndex,
+			PhysicsLayer layer, RectInt globalRect, Entity ignore = null,
+			OperationMode mode = OperationMode.ColliderOnly, int tag = 0
+		) {
+			int count = startIndex;
+			int maxLength = hits.Length;
+			if (count >= maxLength) { return maxLength; }
+			var layerItem = Layers[(int)layer];
+			int l = Mathf.Max(globalRect.xMin.GetCellIndexX() - 1, 0);
+			int d = Mathf.Max(globalRect.yMin.GetCellIndexY() - 1, 0);
+			int r = Mathf.Min((globalRect.xMax - 1).GetCellIndexX() + 1, WIDTH - 1);
+			int u = Mathf.Min((globalRect.yMax - 1).GetCellIndexY() + 1, HEIGHT - 1);
+			bool useCollider = mode == OperationMode.ColliderOnly || mode == OperationMode.ColliderAndTrigger;
+			bool useTrigger = mode == OperationMode.TriggerOnly || mode == OperationMode.ColliderAndTrigger;
+			for (int j = d; j <= u; j++) {
+				for (int i = l; i <= r; i++) {
+					for (int dep = 0; dep < CELL_DEPTH; dep++) {
+						ref var cell = ref layerItem.Cells[i, j, dep];
+						if (cell.Frame != CurrentFrame) { break; }
+						if (ignore != null && cell.Entity == ignore) continue;
+						if (tag != 0 && cell.Tag != tag) continue;
+						if ((cell.IsTrigger && useTrigger) || (!cell.IsTrigger && useCollider)) {
+							if (cell.GlobalRect.Overlaps(globalRect)) {
+								hits[count] = cell.GetInfo();
+								count++;
+								if (count >= maxLength) return count;
+							}
+						}
+					}
+				}
+			}
+			return count;
+		}
+
+
+		private static int GetCellIndexX (this int x) =>
+			(x - PositionX + Const.BLOCK_SPAWN_PADDING) / Const.CELL_SIZE;
+
+
+		private static int GetCellIndexY (this int y) =>
+			(y - PositionY + Const.BLOCK_SPAWN_PADDING) / Const.CELL_SIZE;
+
+
+		private static void FillLogic (PhysicsLayer layer, RectInt globalRect, Entity entity, bool isTrigger, int tag) {
+#if UNITY_EDITOR
+			if (globalRect.width > Const.CELL_SIZE || globalRect.height > Const.CELL_SIZE) {
+				Debug.LogWarning("[CellPhysics] Rect size too large.");
+			}
+#endif
+			int i = globalRect.x.GetCellIndexX();
+			int j = globalRect.y.GetCellIndexY();
+			if (i < 0 || j < 0 || i >= WIDTH || j >= HEIGHT) { return; }
+			if (layer != CurrentLayerEnum) {
+				CurrentLayerEnum = layer;
+				CurrentLayer = Layers[(int)layer];
+			}
+			for (int dep = 0; dep < CELL_DEPTH; dep++) {
+				ref var cell = ref CurrentLayer.Cells[i, j, dep];
+				if (cell.Frame != CurrentFrame) {
+					cell.Rect = globalRect;
+					cell.Entity = entity;
+					cell.Frame = CurrentFrame;
+					cell.IsTrigger = isTrigger;
+					cell.Tag = tag;
+					return;
+				}
+			}
+		}
+
+
+		private static Vector2Int MoveLogic (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) {
 			int distance = int.MaxValue;
 			Vector2Int result = to;
 			Vector2Int center = default;
@@ -312,103 +411,6 @@ namespace AngeliaFramework {
 			}
 			c_MoveLogic.Dispose();
 			return result;
-		}
-
-
-		// Editor
-#if UNITY_EDITOR
-		public static void Editor_ForAllCells (System.Action<int, HitInfo> action) {
-			for (int i = 0; i < Layers.Length; i++) {
-				var layer = Layers[i];
-				if (layer == null) { continue; }
-				for (int y = 0; y < Height; y++) {
-					for (int x = 0; x < Width; x++) {
-						for (int d = 0; d < CELL_DEPTH; d++) {
-							ref var cell = ref layer.Cells[x, y, d];
-							if (cell.Frame != CurrentFrame) { break; }
-							action(i, cell.GetInfo());
-						}
-					}
-				}
-			}
-		}
-#endif
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
-		private static int OverlapAllLogic (
-			HitInfo[] hits, int startIndex,
-			PhysicsLayer layer, RectInt globalRect, Entity ignore = null,
-			OperationMode mode = OperationMode.ColliderOnly, int tag = 0
-		) {
-			int count = startIndex;
-			int maxLength = hits.Length;
-			if (count >= maxLength) { return maxLength; }
-			var layerItem = Layers[(int)layer];
-			int l = Mathf.Max(globalRect.xMin.GetCellIndexX() - 1, 0);
-			int d = Mathf.Max(globalRect.yMin.GetCellIndexY() - 1, 0);
-			int r = Mathf.Min((globalRect.xMax - 1).GetCellIndexX() + 1, Width - 1);
-			int u = Mathf.Min((globalRect.yMax - 1).GetCellIndexY() + 1, Height - 1);
-			bool useCollider = mode == OperationMode.ColliderOnly || mode == OperationMode.ColliderAndTrigger;
-			bool useTrigger = mode == OperationMode.TriggerOnly || mode == OperationMode.ColliderAndTrigger;
-			for (int j = d; j <= u; j++) {
-				for (int i = l; i <= r; i++) {
-					for (int dep = 0; dep < CELL_DEPTH; dep++) {
-						ref var cell = ref layerItem.Cells[i, j, dep];
-						if (cell.Frame != CurrentFrame) { break; }
-						if (ignore != null && cell.Entity == ignore) continue;
-						if (tag != 0 && cell.Tag != tag) continue;
-						if ((cell.IsTrigger && useTrigger) || (!cell.IsTrigger && useCollider)) {
-							if (cell.GlobalRect.Overlaps(globalRect)) {
-								hits[count] = cell.GetInfo();
-								count++;
-								if (count >= maxLength) return count;
-							}
-						}
-					}
-				}
-			}
-			return count;
-		}
-
-
-		private static int GetCellIndexX (this int x) => (x - PositionX) / Const.CELL_SIZE;
-
-
-		private static int GetCellIndexY (this int y) => (y - PositionY) / Const.CELL_SIZE;
-
-
-		private static void FillLogic (PhysicsLayer layer, RectInt globalRect, Entity entity, bool isTrigger, int tag) {
-#if UNITY_EDITOR
-			if (globalRect.width > Const.CELL_SIZE || globalRect.height > Const.CELL_SIZE) {
-				Debug.LogWarning("[CellPhysics] Rect size too large.");
-			}
-#endif
-			int i = globalRect.x.GetCellIndexX();
-			int j = globalRect.y.GetCellIndexY();
-			if (i < 0 || j < 0 || i >= Width || j >= Height) { return; }
-			if (layer != CurrentLayerEnum) {
-				CurrentLayerEnum = layer;
-				CurrentLayer = Layers[(int)layer];
-			}
-			for (int dep = 0; dep < CELL_DEPTH; dep++) {
-				ref var cell = ref CurrentLayer.Cells[i, j, dep];
-				if (cell.Frame != CurrentFrame) {
-					cell.Rect = globalRect;
-					cell.Entity = entity;
-					cell.Frame = CurrentFrame;
-					cell.IsTrigger = isTrigger;
-					cell.Tag = tag;
-					return;
-				}
-			}
 		}
 
 

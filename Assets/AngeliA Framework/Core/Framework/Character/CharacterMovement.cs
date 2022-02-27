@@ -13,8 +13,8 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
-		public int Width { get; init; } = 166;
-		public int Height { get; init; } = 188;
+		public int Width { get; init; } = 150;
+		public int Height { get; init; } = 150;
 		public int Gravity { get; init; } = 5;
 		public int MaxGravitySpeed { get; init; } = 64;
 		public int InWaterSpeedLoseRate { get; init; } = 500;
@@ -45,7 +45,7 @@ namespace AngeliaFramework {
 		public int SquatSpeed { get; init; } = 8;
 		public int SquatAcceleration { get; init; } = 48;
 		public int SquatDecceleration { get; init; } = 48;
-		public int SquatHeight { get; init; } = 116;
+		public int SquatHeight { get; init; } = 80;
 
 		// Pound
 		public bool PoundAvailable { get; init; } = true;
@@ -62,6 +62,7 @@ namespace AngeliaFramework {
 		public int FreeSwimDashAcceleration { get; init; } = 128;
 
 		// Const
+		private const int POUND_TOLERANCE = 60;
 		private const int JUMP_TOLERANCE = 4;
 
 		// Api
@@ -135,7 +136,7 @@ namespace AngeliaFramework {
 				PhysicsMask.Level, new(
 					Rig.X, Rig.Y + Height / 4, 1, 1
 				), Rig
-			) != null;
+			);
 
 			// Dash
 			IsDashing = DashAvailable && CurrentFrame < LastDashFrame + CurrentDashDuration && !IsInsideGround;
@@ -164,10 +165,13 @@ namespace AngeliaFramework {
 			PrevInWater = InWater;
 
 			// Squat
-			IsSquating = SquatAvailable && IsGrounded && ((!IsDashing && IntendedY < 0) || ForceSquatCheck()) && !IsInsideGround;
+			IsSquating =
+				SquatAvailable && IsGrounded && !IsInsideGround &&
+				((!IsDashing && IntendedY < 0) || ForceSquatCheck());
 
 			// Pound
-			IsPounding = PoundAvailable && !IsGrounded && !InWater && !IsDashing && (IsPounding ? IntendedY < 0 : IntendedPound) && !IsInsideGround;
+			IsPounding = PoundAvailable && !IsGrounded && !InWater && !IsDashing && !IsInsideGround &&
+				(IsPounding ? IntendedY < 0 : IntendedPound);
 
 			// Physics
 			Hitbox = new(
@@ -356,12 +360,12 @@ namespace AngeliaFramework {
 				Rig.Width,
 				Height / 2
 			);
-			bool overlap = CellPhysics.Overlap(PhysicsMask.Level, rect) != null;
+			bool overlap = CellPhysics.Overlap(PhysicsMask.Level, rect);
 			if (overlap) return true;
-			overlap = CellPhysics.Overlap(PhysicsMask.Environment, rect) != null;
+			overlap = CellPhysics.Overlap(PhysicsMask.Environment, rect);
 			if (overlap && IsSquating && IntendedY >= 0) {
 				// Want to Stand Up but Overlaps
-				return CellPhysics.StopCheck(
+				return !CellPhysics.MoveCheck(
 					PhysicsMask.Level | PhysicsMask.Environment, rect, Rig, Direction4.Up
 				);
 			}

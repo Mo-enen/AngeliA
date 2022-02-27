@@ -78,7 +78,7 @@ namespace AngeliaFramework {
 				PhysicsMask.Level, Rect, null,
 				CellPhysics.OperationMode.TriggerOnly,
 				Const.WATER_TAG
-			) != null;
+			);
 
 			if (InsideGroundCheck()) {
 				X += VelocityX;
@@ -96,7 +96,7 @@ namespace AngeliaFramework {
 			}
 
 			// Vertical Stopping
-			if (VelocityY != 0 && CellPhysics.StopCheck(
+			if (VelocityY != 0 && !CellPhysics.MoveCheck(
 				COL_MASK, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down
 			)) {
 				VelocityY = 0;
@@ -126,7 +126,7 @@ namespace AngeliaFramework {
 				Y + OffsetY + Height / 2,
 				1, 1
 			), this
-		) != null;
+		);
 
 
 		#endregion

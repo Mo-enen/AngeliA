@@ -39,6 +39,7 @@ namespace AngeliaFramework {
 		private readonly HashSet<long> StagedEntityHash = new();
 		private readonly Entity[][] Entities = new Entity[Const.ENTITY_LAYER_COUNT][];
 		private readonly int[] EntityLength = new int[Const.ENTITY_LAYER_COUNT];
+		private RectInt EntityUpdateRect = default;
 		private RectInt SpawnRect = default;
 		private RectInt PrevSpawnRect = default;
 		private RectInt DespawnRect = default;
@@ -249,6 +250,12 @@ namespace AngeliaFramework {
 			ViewDelayPriority = int.MinValue;
 			CellRenderer.ViewRect = ViewRect;
 
+			// Entity Update Rect
+			EntityUpdateRect.width = ViewRect.width + Const.ENTITY_UPDATE_GAP * 2;
+			EntityUpdateRect.height = ViewRect.height + Const.ENTITY_UPDATE_GAP * 2;
+			EntityUpdateRect.x = ViewRect.x + (ViewRect.width - EntityUpdateRect.width) / 2;
+			EntityUpdateRect.y = ViewRect.y + (ViewRect.height - EntityUpdateRect.height) / 2;
+
 			// Spawn Rect
 			SpawnRect.width = ViewRect.width + Const.SPAWN_GAP * 2;
 			SpawnRect.height = ViewRect.height + Const.SPAWN_GAP * 2;
@@ -269,7 +276,7 @@ namespace AngeliaFramework {
 			if (WorldSquad.IsReady) {
 				var spawnUnitRect = SpawnRect.Divide(Const.CELL_SIZE);
 				WorldSquad.DrawBlocksInside(spawnUnitRect, false);
-				WorldSquad.DrawBlocksInside(spawnUnitRect.Expand(Const.BLOCK_SPAWN_PADDING), true);
+				WorldSquad.DrawBlocksInside(spawnUnitRect.Expand(Const.BLOCK_SPAWN_PADDING_UNIT), true);
 				WorldSquad.SpawnEntitiesInside(spawnUnitRect, this);
 				PrevSpawnRect = spawnUnitRect;
 			}
@@ -322,7 +329,10 @@ namespace AngeliaFramework {
 				var entities = Entities[layerIndex];
 				int len = EntityLength[layerIndex];
 				for (int i = 0; i < len; i++) {
-					entities[i].PhysicsUpdate(GlobalFrame);
+					var e = entities[i];
+					if (EntityUpdateRect.Contains(e.X, e.Y)) {
+						e.PhysicsUpdate(GlobalFrame);
+					}
 				}
 			}
 
@@ -331,7 +341,10 @@ namespace AngeliaFramework {
 				var entities = Entities[layerIndex];
 				int len = EntityLength[layerIndex];
 				for (int i = 0; i < len; i++) {
-					entities[i].FrameUpdate(GlobalFrame);
+					var e = entities[i];
+					if (EntityUpdateRect.Contains(e.X, e.Y)) {
+						e.FrameUpdate(GlobalFrame);
+					}
 				}
 			}
 
