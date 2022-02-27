@@ -27,7 +27,6 @@ namespace AngeliaFramework {
 
 		// Api
 		public static EntityLayerHandler AddNewEntity { get; set; } = null;
-		public static ScriptableObjectIntHandler GetAsset { get; set; } = null;
 		public static ViewHandler SetViewPosition { get; set; } = null;
 		public static ViewHandler SetViewSize { get; set; } = null;
 		public static RectInt SpawnRect { get; set; }

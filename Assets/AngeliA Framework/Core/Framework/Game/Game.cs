@@ -18,8 +18,7 @@ namespace AngeliaFramework {
 		public delegate Entity EntityHandler ();
 
 		// Const
-		private readonly int[] ENTITY_CAPACITY = { 256, 128, 128, 1024, 128, };
-		private readonly int[] ENTITY_BUFFER_CAPACITY = { 128, 128, 128, 128, 128 };
+		private readonly int[] ENTITY_CAPACITY = { 512, 256, 256, 1024, 256, };
 
 		// Api
 		public Language CurrentLanguage { get; private set; } = null;
@@ -28,13 +27,16 @@ namespace AngeliaFramework {
 		public RectInt ViewRect { get; private set; } = new(0, 0, Mathf.Clamp(Const.DEFAULT_VIEW_WIDTH, Const.MIN_VIEW_WIDTH, Const.MAX_VIEW_WIDTH), Mathf.Clamp(Const.DEFAULT_VIEW_HEIGHT, Const.MIN_VIEW_HEIGHT, Const.MAX_VIEW_HEIGHT));
 		public int EntityDirtyFlag { get; private set; } = 0;
 		public int GlobalFrame { get; private set; } = 0;
+		public bool HighFramerate {
+			get => UseHighFramerate.Value;
+			set => SetFramerate(value);
+		}
 
 		// Ser
 		[SerializeField] GameData m_Data = null;
 
 		// Data
 		private readonly Dictionary<int, EntityHandler> EntityHandlerPool = new();
-		private readonly Dictionary<int, ScriptableObject> AssetPool = new();
 		private readonly Stack<Object> UnloadAssetStack = new();
 		private readonly HashSet<long> StagedEntityHash = new();
 		private readonly Entity[][] Entities = new Entity[Const.ENTITY_LAYER_COUNT][];
@@ -89,7 +91,6 @@ namespace AngeliaFramework {
 				Const.ENTITY_LAYER_COUNT != System.Enum.GetNames(typeof(EntityLayer)).Length ||
 				Const.PHYSICS_LAYER_COUNT != System.Enum.GetNames(typeof(PhysicsLayer)).Length ||
 				Const.PHYSICS_LAYER_COUNT != System.Enum.GetNames(typeof(PhysicsMask)).Length - 1 ||
-				ENTITY_BUFFER_CAPACITY.Length != Const.ENTITY_LAYER_COUNT ||
 				ENTITY_CAPACITY.Length != Const.ENTITY_LAYER_COUNT
 			) {
 				Debug.LogError("Const Array Size is wrong.");
@@ -105,11 +106,8 @@ namespace AngeliaFramework {
 			Init_Physics();
 			Init_Audio();
 			Init_Language();
-			Init_Misc();
+			Init_World();
 			WorldSquad.Init();
-
-			// Game Start
-			OnGameStart();
 
 		}
 
@@ -151,7 +149,6 @@ namespace AngeliaFramework {
 
 			// Handler
 			Entity.AddNewEntity = AddEntity;
-			Entity.GetAsset = (id) => AssetPool.TryGet(id);
 			Entity.SetViewPosition = SetViewPositionDely;
 			Entity.SetViewSize = SetViewSizeDely;
 		}
@@ -214,16 +211,11 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Init_Misc () {
-			// World
+		private void Init_World () {
 			World.OnMapFilled += (obj) => {
 				UnloadAssetStack.Push(obj);
 			};
 			WorldSquad.BeforeWorldShift += () => { };
-			// Asset Pool
-			foreach (var asset in m_Data.Assets) {
-				AssetPool.TryAdd(asset.name.ACode(), asset);
-			}
 		}
 
 
@@ -348,9 +340,7 @@ namespace AngeliaFramework {
 				}
 			}
 
-			if (changed) {
-				EntityDirtyFlag++;
-			}
+			if (changed) EntityDirtyFlag++;
 
 		}
 
@@ -370,9 +360,6 @@ namespace AngeliaFramework {
 
 
 		#region --- API ---
-
-
-		protected virtual void OnGameStart () { }
 
 
 		// System

@@ -123,7 +123,7 @@ namespace AngeliaFramework {
 
 
 		private void Update_View () {
-			const int LINGER_RATE = 62;
+			const int LINGER_RATE = 42;
 			if (IsGrounded) LastGroundedY = Y;
 			int linger = ViewRect.width * LINGER_RATE / 1000;
 			int centerX = ViewRect.x + ViewRect.width / 2;

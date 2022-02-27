@@ -35,8 +35,6 @@ namespace AngeliaFramework.Editor {
 		private static EntityDebugger Main = null;
 		private static GUIContent EIconContent => _EIconContent ??= EditorGUIUtility.IconContent("d_GameObject Icon");
 		private static GUIContent _EIconContent = null;
-		private static GUIContent SaveIconContent => _SaveIconContent ??= EditorGUIUtility.IconContent("d_SaveAs@2x");
-		private static GUIContent _SaveIconContent = null;
 		private static Game Game => _Game != null ? _Game : (_Game = FindObjectOfType<Game>());
 		private static Game _Game = null;
 
@@ -187,6 +185,10 @@ namespace AngeliaFramework.Editor {
 			menu.AddItem(new GUIContent("Show Colliders"), ShowColliders.Value, () =>
 				ShowColliders.Value = !ShowColliders.Value
 			);
+			// Framerate
+			menu.AddItem(new GUIContent("High Framerate"), Game.HighFramerate, () => {
+				Game.SetFramerate(!Game.HighFramerate);
+			});
 		}
 
 
@@ -247,6 +249,7 @@ namespace AngeliaFramework.Editor {
 							}
 						}
 					}
+					SetSelectionInspector(null, EntityInspector.Mode.Entity);
 				LoopEnd:;
 				}
 				PrevUpdateMousePress = mousePressing;
@@ -264,60 +267,6 @@ namespace AngeliaFramework.Editor {
 
 
 		private void OnLostFocus () => Repaint();
-
-
-		private void OnGUI_Edittime () {
-
-			// Toolbar
-			using (new GUILayout.HorizontalScope(EditorStyles.toolbar)) {
-
-				double time = EditorApplication.timeSinceStartup;
-
-				if (time < RequireAlertTime + ARTWORK_ALRT_DURATION) {
-					// Alert
-					EditorGUI.DrawRect(
-						Layout.Rect(0, 20),
-						new Color32(64, 128, 128, (byte)Util.Remap(0f, 0.1f, 200, 255, Mathf.PingPong((float)(time - RequireAlertTime), 0.1f)))
-					);
-					GUI.Label(Layout.LastRect(), AlertMessage, Layout.CenteredLabel);
-				} else {
-					// Fake Alert
-					Layout.Rect(0, 20);
-					EditorGUI.DrawRect(default, Color.clear);
-					GUI.Label(default, GUIContent.none);
-				}
-
-				// Dirty Mark
-				var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-				if (scene.IsValid() && scene.isLoaded && scene.isDirty) {
-					EditorGUI.DrawRect(Layout.Rect(20, 20), new Color32(209, 136, 60, 255));
-					var oldC = GUI.color;
-					GUI.color = new Color32(42, 42, 42, 255);
-					GUI.Label(Layout.LastRect(), SaveIconContent);
-					GUI.color = oldC;
-				}
-				Layout.Space(2);
-
-
-			}
-
-			Layout.Space(12);
-
-			// Sync Artwork
-			if (GUI.Button(Layout.Rect(0, 24).Shrink(24, 24, 0, 0), "Sync Artwork")) {
-				SyncArtwork(true, true);
-			}
-
-			Layout.Space(12);
-
-			// Language Editor
-			if (GUI.Button(Layout.Rect(0, 24).Shrink(24, 24, 0, 0), "Language Editor")) {
-				LanguageEditor.OpenEditor();
-			}
-
-
-
-		}
 
 
 		private void OnGUI_Runtime () {
@@ -422,6 +371,48 @@ namespace AngeliaFramework.Editor {
 				Event.current.type == EventType.MouseDown
 			) {
 				ClearSelectionInspector();
+			}
+
+		}
+
+
+		private void OnGUI_Edittime () {
+
+			Layout.Space(12);
+
+			// Sync Artwork
+			if (GUI.Button(Layout.Rect(0, 24).Shrink(24, 24, 0, 0), "Sync Artwork")) {
+				SyncArtwork(true, true);
+			}
+
+			Layout.Space(12);
+
+			// Language Editor
+			if (GUI.Button(Layout.Rect(0, 24).Shrink(24, 24, 0, 0), "Language Editor")) {
+				LanguageEditor.OpenEditor();
+			}
+
+			Layout.Rect(0, 0);
+
+			// Bottom Bar
+			using (new GUILayout.HorizontalScope()) {
+
+				double time = EditorApplication.timeSinceStartup;
+
+				if (time < RequireAlertTime + ARTWORK_ALRT_DURATION) {
+					// Alert
+					EditorGUI.DrawRect(
+						Layout.Rect(0, 20),
+						new Color32(64, 128, 128, (byte)Util.Remap(0f, 0.1f, 200, 255, Mathf.PingPong((float)(time - RequireAlertTime), 0.1f)))
+					);
+					GUI.Label(Layout.LastRect(), AlertMessage, Layout.CenteredLabel);
+				} else {
+					// Fake Alert
+					Layout.Rect(0, 20);
+					EditorGUI.DrawRect(default, Color.clear);
+					GUI.Label(default, GUIContent.none);
+				}
+
 			}
 
 		}
@@ -553,6 +544,18 @@ namespace AngeliaFramework.Editor {
 		#region --- LGC ---
 
 
+		private void SetSelectionInspector (Entity entity, EntityInspector.Mode mode) {
+			SelectingEntity = entity;
+			if (SelectingInspector != null) {
+				SelectingInspector.SetTarget(entity);
+				SelectingInspector.InspectorMode = mode;
+			}
+			Selection.activeObject =
+				mode != EntityInspector.Mode.Entity || entity != null ?
+				SelectingInspector : null;
+		}
+
+
 		private static EntityDebugger GetOrCreateWindow () {
 			try {
 				var window = GetWindow<EntityDebugger>(WINDOW_TITLE, false);
@@ -583,16 +586,6 @@ namespace AngeliaFramework.Editor {
 			}
 			// Show
 			menu.ShowAsContext();
-		}
-
-
-		private void SetSelectionInspector (Entity entity, EntityInspector.Mode mode) {
-			SelectingEntity = entity;
-			if (SelectingInspector != null) {
-				SelectingInspector.SetTarget(entity);
-				SelectingInspector.InspectorMode = mode;
-			}
-			Selection.activeObject = SelectingInspector;
 		}
 
 

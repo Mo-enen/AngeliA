@@ -12,13 +12,11 @@ namespace AngeliaFramework {
 		public SpriteSheet[] Sheets => m_Sheets;
 		public AudioClip[] Musics => m_Musics;
 		public AudioClip[] Sounds => m_Sounds;
-		public ScriptableObject[] Assets => m_Assets;
 
 		// Ser
 		[SerializeField] SpriteSheet[] m_Sheets = null;
 		[SerializeField] AudioClip[] m_Musics = null;
 		[SerializeField] AudioClip[] m_Sounds = null;
-		[SerializeField] ScriptableObject[] m_Assets = null;
 
 
 	}
