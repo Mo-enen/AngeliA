@@ -84,9 +84,9 @@ namespace AngeliaFramework {
 
 		// Const
 		public const int WIDTH =
-			(Const.MAX_VIEW_WIDTH + Const.SPAWN_GAP * 2 + Const.BLOCK_SPAWN_PADDING * 2) / Const.CELL_SIZE;
+			(Const.MAX_VIEW_WIDTH + Const.SPAWN_PADDING * 2 + Const.BLOCK_SPAWN_PADDING * 2) / Const.CELL_SIZE;
 		public const int HEIGHT =
-			(Const.MAX_VIEW_HEIGHT + Const.SPAWN_GAP * 2 + Const.BLOCK_SPAWN_PADDING * 2) / Const.CELL_SIZE;
+			(Const.MAX_VIEW_HEIGHT + Const.SPAWN_PADDING * 2 + Const.BLOCK_SPAWN_PADDING * 2) / Const.CELL_SIZE;
 		private const int CELL_DEPTH = 8;
 		private const PhysicsMask ONEWAY_MASK = PhysicsMask.Level | PhysicsMask.Environment;
 

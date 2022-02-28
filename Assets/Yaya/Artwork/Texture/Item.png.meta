@@ -21,18 +21,6 @@ TextureImporter:
       213: 8704479238437469885
     second: Apple Red Cut
   - first:
-      213: 3348018261516119843
-    second: Slice_0_6
-  - first:
-      213: -1889279408408202126
-    second: Slice_0_7
-  - first:
-      213: 715400049412932046
-    second: Slice_0_8
-  - first:
-      213: -7600193983910985256
-    second: Slice_0_9
-  - first:
       213: -8365491406040063676
     second: Golden Pocket Watch
   - first:
@@ -65,18 +53,6 @@ TextureImporter:
   - first:
       213: -7240201281520470316
     second: Apple Green Cut
-  - first:
-      213: 6688784098700606053
-    second: Slice_1_6
-  - first:
-      213: 4489290596008711209
-    second: Slice_1_7
-  - first:
-      213: -7332906445561653602
-    second: Slice_1_8
-  - first:
-      213: 5658034168707210458
-    second: Slice_1_9
   - first:
       213: 3339276480877567319
     second: Golden Telescope
@@ -111,18 +87,6 @@ TextureImporter:
       213: 2639089546801784039
     second: Pear Cut
   - first:
-      213: 4446292579872590245
-    second: Slice_2_6
-  - first:
-      213: 4995987595557208326
-    second: Slice_2_7
-  - first:
-      213: -6063060876268685021
-    second: Slice_2_8
-  - first:
-      213: -7320725599349326951
-    second: Slice_2_9
-  - first:
       213: 447344861734753066
     second: Golden Hourglass
   - first:
@@ -155,18 +119,6 @@ TextureImporter:
   - first:
       213: 3463451341184599687
     second: Peach Cut
-  - first:
-      213: 4906449369445881146
-    second: Slice_3_6
-  - first:
-      213: -1472834624600309176
-    second: Slice_3_7
-  - first:
-      213: -6463595909616708112
-    second: Slice_3_8
-  - first:
-      213: -6239023897610536995
-    second: Slice_3_9
   - first:
       213: 2557358760942736110
     second: Golden Begleri
@@ -201,18 +153,6 @@ TextureImporter:
       213: 8568856482150078548
     second: Banana Cut
   - first:
-      213: 5625893095485245600
-    second: Slice_4_6
-  - first:
-      213: -5717689655752346661
-    second: Slice_4_7
-  - first:
-      213: -7004577957407109305
-    second: Slice_4_8
-  - first:
-      213: 2045005639653390343
-    second: Slice_4_9
-  - first:
       213: -709987303930517673
     second: Golden Spring
   - first:
@@ -245,18 +185,6 @@ TextureImporter:
   - first:
       213: 3360760331630241134
     second: Orange Cut
-  - first:
-      213: -5946018410654580875
-    second: Slice_5_6
-  - first:
-      213: -4799689605212760886
-    second: Slice_5_7
-  - first:
-      213: -7073732810600591460
-    second: Slice_5_8
-  - first:
-      213: 5413467402781726324
-    second: Slice_5_9
   - first:
       213: 5707702512562186421
     second: Golden Gameboy
@@ -291,18 +219,6 @@ TextureImporter:
       213: 4395072866912770175
     second: Grape Purple Cut
   - first:
-      213: 722544314481553590
-    second: Slice_6_6
-  - first:
-      213: 7114324797925993627
-    second: Slice_6_7
-  - first:
-      213: -7178938276527407011
-    second: Slice_6_8
-  - first:
-      213: 7438198558451389633
-    second: Slice_6_9
-  - first:
       213: 4976311298372169113
     second: Golden Game Pad
   - first:
@@ -336,23 +252,8 @@ TextureImporter:
       213: -5038873608686554185
     second: Grape Green Cut
   - first:
-      213: 388603434142414527
-    second: Slice_7_6
-  - first:
-      213: -5736032937825068598
-    second: Slice_7_7
-  - first:
-      213: 7193467672936015387
-    second: Slice_7_8
-  - first:
-      213: -3891688386442080965
-    second: Slice_7_9
-  - first:
       213: -5224571325463676339
     second: Golden Pen
-  - first:
-      213: -8149732842175783862
-    second: Slice_7_11
   - first:
       213: 3078925675499212878
     second: Cat Paw
@@ -381,23 +282,8 @@ TextureImporter:
       213: -3059026740910803073
     second: Strawberry Cut
   - first:
-      213: -8653321895781754833
-    second: Slice_8_6
-  - first:
-      213: -1260246258574527072
-    second: Slice_8_7
-  - first:
-      213: -6595551830526834826
-    second: Slice_8_8
-  - first:
-      213: -6836050678312307131
-    second: Slice_8_9
-  - first:
       213: 3010068189764573314
     second: Golden Notepad
-  - first:
-      213: 1686925162935976949
-    second: Slice_8_11
   - first:
       213: 672807302613651724
     second: Bear Paw
@@ -426,23 +312,8 @@ TextureImporter:
       213: -1109550691758867926
     second: Blueberry Cut
   - first:
-      213: -143438974541281123
-    second: Slice_9_6
-  - first:
-      213: -1976462455084715236
-    second: Slice_9_7
-  - first:
-      213: -821165358600287549
-    second: Slice_9_8
-  - first:
-      213: 7297066340862083188
-    second: Slice_9_9
-  - first:
       213: 2852210858950848473
     second: Golden Hook
-  - first:
-      213: 6415608803579973960
-    second: Slice_9_11
   - first:
       213: 5208993810194939582
     second: Branch
@@ -471,23 +342,8 @@ TextureImporter:
       213: -7899947911229753242
     second: Lemon Cut
   - first:
-      213: -3495562137128163502
-    second: Slice_10_6
-  - first:
-      213: 1864673373281629975
-    second: Slice_10_7
-  - first:
-      213: -2582940814525997980
-    second: Slice_10_8
-  - first:
-      213: 6676536963785308031
-    second: Slice_10_9
-  - first:
       213: 352727982192669898
     second: Golden Fan
-  - first:
-      213: 479353784738710307
-    second: Slice_10_11
   - first:
       213: 921508970657664592
     second: Trunk
@@ -516,23 +372,8 @@ TextureImporter:
       213: 4643866492775801204
     second: Cherry Cut
   - first:
-      213: 1457194999761598655
-    second: Slice_11_6
-  - first:
-      213: 5946321594212662681
-    second: Slice_11_7
-  - first:
-      213: -5381271991484548516
-    second: Slice_11_8
-  - first:
-      213: 448503520388280265
-    second: Slice_11_9
-  - first:
       213: -9186267206772851321
     second: Golden Key
-  - first:
-      213: -3523076556929452821
-    second: Slice_11_11
   - first:
       213: 5434903235138734717
     second: Stump
@@ -561,23 +402,8 @@ TextureImporter:
       213: 347687095762302424
     second: Pitaya Cut
   - first:
-      213: 1245653194130695336
-    second: Slice_12_6
-  - first:
-      213: 5899965386144021498
-    second: Slice_12_7
-  - first:
-      213: -7879477619082988809
-    second: Slice_12_8
-  - first:
-      213: -4192810563782645404
-    second: Slice_12_9
-  - first:
       213: 2343252613997501148
     second: Golden Pipe
-  - first:
-      213: -1111655222567929121
-    second: Slice_12_11
   - first:
       213: 4150903206124111602
     second: Board
@@ -606,23 +432,8 @@ TextureImporter:
       213: 7389741094005283192
     second: Apricot Cut
   - first:
-      213: 45755609090526363
-    second: Slice_13_6
-  - first:
-      213: 1040139800683114024
-    second: Slice_13_7
-  - first:
-      213: -7352331436398477488
-    second: Slice_13_8
-  - first:
-      213: 5465096837934585168
-    second: Slice_13_9
-  - first:
       213: 3864587126216509406
     second: Golden Cross
-  - first:
-      213: 7797693734060195170
-    second: Slice_13_11
   - first:
       213: -2645361854805593308
     second: Bomb
@@ -651,23 +462,8 @@ TextureImporter:
       213: 1137858421071835356
     second: Honeydew Cut
   - first:
-      213: -3155934604320952834
-    second: Slice_14_6
-  - first:
-      213: -5499921870449854438
-    second: Slice_14_7
-  - first:
-      213: 2230732124332709619
-    second: Slice_14_8
-  - first:
-      213: 6968381806191096607
-    second: Slice_14_9
-  - first:
       213: -2973392893987390915
     second: Golden Feather
-  - first:
-      213: 4503230480317929995
-    second: Slice_14_11
   - first:
       213: 8993400817900114665
     second: Firecracker
@@ -878,90 +674,6 @@ TextureImporter:
       bones: []
       spriteID: dbef3d1cfb58cc870800000000000000
       internalID: 8704479238437469885
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_0_6
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 137
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 32f603bcedc867e20800000000000000
-      internalID: 3348018261516119843
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_0_7
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 120
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2747e5c436ee7c5e0800000000000000
-      internalID: -1889279408408202126
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_0_8
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 103
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ec10e89fd8c9de900800000000000000
-      internalID: 715400049412932046
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_0_9
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 86
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8d1cce4d6dfa68690800000000000000
-      internalID: -7600193983910985256
       vertices: []
       indices: 
       edges: []
@@ -1198,90 +910,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slice_1_6
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 137
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 56ab456f2b553dc50800000000000000
-      internalID: 6688784098700606053
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_1_7
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 120
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 924d994030a2d4e30800000000000000
-      internalID: 4489290596008711209
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_1_8
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 103
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e96102d60784c3a90800000000000000
-      internalID: -7332906445561653602
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_1_9
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 86
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: adcd0d05910658e40800000000000000
-      internalID: 5658034168707210458
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Golden Telescope
       rect:
         serializedVersion: 2
@@ -1508,90 +1136,6 @@ TextureImporter:
       bones: []
       spriteID: 7e42197d5fdef9420800000000000000
       internalID: 2639089546801784039
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_2_6
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 137
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5a9c2ce3b8764bd30800000000000000
-      internalID: 4446292579872590245
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_2_7
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 120
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 601027f8f30555540800000000000000
-      internalID: 4995987595557208326
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_2_8
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 103
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 329bf6aa14eabdba0800000000000000
-      internalID: -6063060876268685021
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_2_9
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 86
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 99bbca0bade876a90800000000000000
-      internalID: -7320725599349326951
       vertices: []
       indices: 
       edges: []
@@ -1828,90 +1372,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slice_3_6
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 137
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a35d24eb4b5371440800000000000000
-      internalID: 4906449369445881146
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_3_7
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 120
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8428dcb56b07f8be0800000000000000
-      internalID: -1472834624600309176
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_3_8
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 103
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0f5d0ab04c1bc46a0800000000000000
-      internalID: -6463595909616708112
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_3_9
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 86
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: dd730c522d88a69a0800000000000000
-      internalID: -6239023897610536995
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Golden Begleri
       rect:
         serializedVersion: 2
@@ -2138,90 +1598,6 @@ TextureImporter:
       bones: []
       spriteID: 458dbdd1291bae670800000000000000
       internalID: 8568856482150078548
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_4_6
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 137
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0a888bc86ff231e40800000000000000
-      internalID: 5625893095485245600
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_4_7
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 120
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: bd3b4fc3d8fa6a0b0800000000000000
-      internalID: -5717689655752346661
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_4_8
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 103
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 74fc737a57dbace90800000000000000
-      internalID: -7004577957407109305
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_4_9
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 86
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 708f53b5bc1516c10800000000000000
-      internalID: 2045005639653390343
       vertices: []
       indices: 
       edges: []
@@ -2458,90 +1834,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slice_5_6
-      rect:
-        serializedVersion: 2
-        x: 86
-        y: 137
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 57f300542cf7b7da0800000000000000
-      internalID: -5946018410654580875
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_5_7
-      rect:
-        serializedVersion: 2
-        x: 86
-        y: 120
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ac49821ebb3146db0800000000000000
-      internalID: -4799689605212760886
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_5_8
-      rect:
-        serializedVersion: 2
-        x: 86
-        y: 103
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c9f402cac7d05dd90800000000000000
-      internalID: -7073732810600591460
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_5_9
-      rect:
-        serializedVersion: 2
-        x: 86
-        y: 86
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 47616f9cbef702b40800000000000000
-      internalID: 5413467402781726324
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Golden Gameboy
       rect:
         serializedVersion: 2
@@ -2768,90 +2060,6 @@ TextureImporter:
       bones: []
       spriteID: f781b428c7f6efc30800000000000000
       internalID: 4395072866912770175
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_6_6
-      rect:
-        serializedVersion: 2
-        x: 103
-        y: 137
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6b0b62fc93ef60a00800000000000000
-      internalID: 722544314481553590
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_6_7
-      rect:
-        serializedVersion: 2
-        x: 103
-        y: 120
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b9ca12dd5b82bb260800000000000000
-      internalID: 7114324797925993627
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_6_8
-      rect:
-        serializedVersion: 2
-        x: 103
-        y: 103
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d5001235ca94f5c90800000000000000
-      internalID: -7178938276527407011
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_6_9
-      rect:
-        serializedVersion: 2
-        x: 103
-        y: 86
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1c4515dfd2ac93760800000000000000
-      internalID: 7438198558451389633
       vertices: []
       indices: 
       edges: []
@@ -3088,90 +2296,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slice_7_6
-      rect:
-        serializedVersion: 2
-        x: 120
-        y: 137
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fb63e82b3c8946500800000000000000
-      internalID: 388603434142414527
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_7_7
-      rect:
-        serializedVersion: 2
-        x: 120
-        y: 120
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ac91ff01f648560b0800000000000000
-      internalID: -5736032937825068598
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_7_8
-      rect:
-        serializedVersion: 2
-        x: 120
-        y: 103
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b166b946cb454d360800000000000000
-      internalID: 7193467672936015387
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_7_9
-      rect:
-        serializedVersion: 2
-        x: 120
-        y: 86
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b3d4b951802fdf9c0800000000000000
-      internalID: -3891688386442080965
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Golden Pen
       rect:
         serializedVersion: 2
@@ -3188,27 +2312,6 @@ TextureImporter:
       bones: []
       spriteID: d4abb0a7f089e77b0800000000000000
       internalID: -5224571325463676339
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_7_11
-      rect:
-        serializedVersion: 2
-        x: 120
-        y: 52
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a4c17cfb82556ee80800000000000000
-      internalID: -8149732842175783862
       vertices: []
       indices: 
       edges: []
@@ -3403,90 +2506,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slice_8_6
-      rect:
-        serializedVersion: 2
-        x: 137
-        y: 137
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f2891d2459939e780800000000000000
-      internalID: -8653321895781754833
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_8_7
-      rect:
-        serializedVersion: 2
-        x: 137
-        y: 120
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0a5762474b4b28ee0800000000000000
-      internalID: -1260246258574527072
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_8_8
-      rect:
-        serializedVersion: 2
-        x: 137
-        y: 103
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 67745cb0e84e774a0800000000000000
-      internalID: -6595551830526834826
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_8_9
-      rect:
-        serializedVersion: 2
-        x: 137
-        y: 86
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 54670a480287121a0800000000000000
-      internalID: -6836050678312307131
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Golden Notepad
       rect:
         serializedVersion: 2
@@ -3503,27 +2522,6 @@ TextureImporter:
       bones: []
       spriteID: 288de901219e5c920800000000000000
       internalID: 3010068189764573314
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_8_11
-      rect:
-        serializedVersion: 2
-        x: 137
-        y: 52
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5f3877b7f79296710800000000000000
-      internalID: 1686925162935976949
       vertices: []
       indices: 
       edges: []
@@ -3718,90 +2716,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slice_9_6
-      rect:
-        serializedVersion: 2
-        x: 154
-        y: 137
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d98458b3307620ef0800000000000000
-      internalID: -143438974541281123
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_9_7
-      rect:
-        serializedVersion: 2
-        x: 154
-        y: 120
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c1377cc6ed13294e0800000000000000
-      internalID: -1976462455084715236
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_9_8
-      rect:
-        serializedVersion: 2
-        x: 154
-        y: 103
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3ca06c20572aa94f0800000000000000
-      internalID: -821165358600287549
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_9_9
-      rect:
-        serializedVersion: 2
-        x: 154
-        y: 86
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4704b8dec23644560800000000000000
-      internalID: 7297066340862083188
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Golden Hook
       rect:
         serializedVersion: 2
@@ -3818,27 +2732,6 @@ TextureImporter:
       bones: []
       spriteID: 9dfe6402aa6159720800000000000000
       internalID: 2852210858950848473
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_9_11
-      rect:
-        serializedVersion: 2
-        x: 154
-        y: 52
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 841d04b2732d80950800000000000000
-      internalID: 6415608803579973960
       vertices: []
       indices: 
       edges: []
@@ -4033,90 +2926,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slice_10_6
-      rect:
-        serializedVersion: 2
-        x: 171
-        y: 137
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 257ab2ea1c44d7fc0800000000000000
-      internalID: -3495562137128163502
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_10_7
-      rect:
-        serializedVersion: 2
-        x: 171
-        y: 120
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 717b494bd86a0e910800000000000000
-      internalID: 1864673373281629975
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_10_8
-      rect:
-        serializedVersion: 2
-        x: 171
-        y: 103
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 46cd152a30d872cd0800000000000000
-      internalID: -2582940814525997980
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_10_9
-      rect:
-        serializedVersion: 2
-        x: 171
-        y: 86
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f773038aef2d7ac50800000000000000
-      internalID: 6676536963785308031
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Golden Fan
       rect:
         serializedVersion: 2
@@ -4133,27 +2942,6 @@ TextureImporter:
       bones: []
       spriteID: ac43fe02b3425e400800000000000000
       internalID: 352727982192669898
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_10_11
-      rect:
-        serializedVersion: 2
-        x: 171
-        y: 52
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 323071d3ab107a600800000000000000
-      internalID: 479353784738710307
       vertices: []
       indices: 
       edges: []
@@ -4348,90 +3136,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slice_11_6
-      rect:
-        serializedVersion: 2
-        x: 188
-        y: 137
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fb8f349b12ff83410800000000000000
-      internalID: 1457194999761598655
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_11_7
-      rect:
-        serializedVersion: 2
-        x: 188
-        y: 120
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 99db7472cf3958250800000000000000
-      internalID: 5946321594212662681
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_11_8
-      rect:
-        serializedVersion: 2
-        x: 188
-        y: 103
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c5afdcb82a1e155b0800000000000000
-      internalID: -5381271991484548516
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_11_9
-      rect:
-        serializedVersion: 2
-        x: 188
-        y: 86
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9cf61455397693600800000000000000
-      internalID: 448503520388280265
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Golden Key
       rect:
         serializedVersion: 2
@@ -4448,27 +3152,6 @@ TextureImporter:
       bones: []
       spriteID: 78dfb7875a2d38080800000000000000
       internalID: -9186267206772851321
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_11_11
-      rect:
-        serializedVersion: 2
-        x: 188
-        y: 52
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: be4b6bb99848b1fc0800000000000000
-      internalID: -3523076556929452821
       vertices: []
       indices: 
       edges: []
@@ -4663,90 +3346,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slice_12_6
-      rect:
-        serializedVersion: 2
-        x: 205
-        y: 137
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8a4ad75faf2794110800000000000000
-      internalID: 1245653194130695336
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_12_7
-      rect:
-        serializedVersion: 2
-        x: 205
-        y: 120
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: afbf6346243e0e150800000000000000
-      internalID: 5899965386144021498
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_12_8
-      rect:
-        serializedVersion: 2
-        x: 205
-        y: 103
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7f2faea4ad876a290800000000000000
-      internalID: -7879477619082988809
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_12_9
-      rect:
-        serializedVersion: 2
-        x: 205
-        y: 86
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 469ea37b10520d5c0800000000000000
-      internalID: -4192810563782645404
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Golden Pipe
       rect:
         serializedVersion: 2
@@ -4763,27 +3362,6 @@ TextureImporter:
       bones: []
       spriteID: cda935c56d7e48020800000000000000
       internalID: 2343252613997501148
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_12_11
-      rect:
-        serializedVersion: 2
-        x: 205
-        y: 52
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fda7122077b9290f0800000000000000
-      internalID: -1111655222567929121
       vertices: []
       indices: 
       edges: []
@@ -4978,90 +3556,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slice_13_6
-      rect:
-        serializedVersion: 2
-        x: 222
-        y: 137
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b9c825aeb7e82a000800000000000000
-      internalID: 45755609090526363
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_13_7
-      rect:
-        serializedVersion: 2
-        x: 222
-        y: 120
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 82e667843a15f6e00800000000000000
-      internalID: 1040139800683114024
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_13_8
-      rect:
-        serializedVersion: 2
-        x: 222
-        y: 103
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 05ff78e438547f990800000000000000
-      internalID: -7352331436398477488
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_13_9
-      rect:
-        serializedVersion: 2
-        x: 222
-        y: 86
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 05593386e9ce7db40800000000000000
-      internalID: 5465096837934585168
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Golden Cross
       rect:
         serializedVersion: 2
@@ -5078,27 +3572,6 @@ TextureImporter:
       bones: []
       spriteID: ed7cead0485c1a530800000000000000
       internalID: 3864587126216509406
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_13_11
-      rect:
-        serializedVersion: 2
-        x: 222
-        y: 52
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 26d72fd1329f63c60800000000000000
-      internalID: 7797693734060195170
       vertices: []
       indices: 
       edges: []
@@ -5293,90 +3766,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slice_14_6
-      rect:
-        serializedVersion: 2
-        x: 239
-        y: 137
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: efd261fb23ed334d0800000000000000
-      internalID: -3155934604320952834
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_14_7
-      rect:
-        serializedVersion: 2
-        x: 239
-        y: 120
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a183f6bd23a5ca3b0800000000000000
-      internalID: -5499921870449854438
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_14_8
-      rect:
-        serializedVersion: 2
-        x: 239
-        y: 103
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3f657e35c0725fe10800000000000000
-      internalID: 2230732124332709619
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_14_9
-      rect:
-        serializedVersion: 2
-        x: 239
-        y: 86
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f13b059255aa4b060800000000000000
-      internalID: 6968381806191096607
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Golden Feather
       rect:
         serializedVersion: 2
@@ -5393,27 +3782,6 @@ TextureImporter:
       bones: []
       spriteID: d3af538aae26cb6d0800000000000000
       internalID: -2973392893987390915
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Slice_14_11
-      rect:
-        serializedVersion: 2
-        x: 239
-        y: 52
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b0adf014340be7e30800000000000000
-      internalID: 4503230480317929995
       vertices: []
       indices: 
       edges: []
@@ -5492,230 +3860,162 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Firecracker: 8993400817900114665
+      Chicken Legs Cooked: -916355234973051339
+      Bread 1: -6718971694737617398
+      Vol Potion Blue: -8482873678308682284
+      Sushi: -8231821728584974286
       Golden Key: -9186267206772851321
-      Slice_6_7: 7114324797925993627
-      Slice_10_6: -3495562137128163502
+      Firecracker: 8993400817900114665
+      Snail Cooked: 279183876286233850
       Rune Fire: -9194504705686796367
       Donut 1: -7740983580959172396
-      Slice_2_7: 4995987595557208326
-      Slice_12_11: -1111655222567929121
+      Strawberry: -8137609707746988934
+      Mushroom Red: -8513585604127203457
       Meatball Raw: -2537601228077334834
       Vol Potion Empty: 2639523627199396340
+      Meat Skewers Cooked: 9012186894514309117
+      Rune Water: 5016293125619049543
+      Broken Bone: 6905434368797540076
+      Chicken Wings Raw: -8451564831904070747
       Enoki Mushroom: 1726412205289849284
-      Mushroom Red: -8513585604127203457
-      Slice_1_9: 5658034168707210458
+      Golden Fan: 352727982192669898
+      Orange Cut: 3360760331630241134
       Golden Hourglass: 447344861734753066
       Hamburger 0: 4318947371889346640
       Donut 0: -1709099646793210392
       Rune Poison: 5961649359216022352
       Cucumber: 7989960413799313780
       Rune Lightning: 6516595925518278079
-      Sausage Raw: -5000897634649038911
-      Cherry: -9049683136500104806
-      Slice_3_6: 4906449369445881146
-      Apple Green Cut: -7240201281520470316
-      Golden Begleri: 2557358760942736110
-      Strawberry Cut: -3059026740910803073
-      Apple Red: 2402639745920847424
-      Grape Green Cut: -5038873608686554185
-      Coin 6: -8653133771427474647
-      Slice_9_7: -1976462455084715236
-      Book 1: -1464063045819899514
-      Slice_4_9: 2045005639653390343
-      Mushroom Green: -3883462283988791598
-      Slice_10_7: 1864673373281629975
-      Coin 7: -5045705960959992181
-      Slice_13_6: 45755609090526363
-      Flint 1: -3306222962087319197
-      Potato: 3424615978517398712
-      Potion Orange: -7441692431401241830
-      Slice_13_11: 7797693734060195170
-      Cat Paw: 3078925675499212878
-      Apricot: 1983952564101803308
-      Slice_14_11: 4503230480317929995
-      Slice_1_6: 6688784098700606053
-      Slice_12_7: 5899965386144021498
-      Golden Feather: -2973392893987390915
-      Slice_5_9: 5413467402781726324
-      Book 2: 7976869718584497138
-      Slice_12_8: -7879477619082988809
-      Skull: 3776011452931145940
-      Stone 2: -8428597057389181968
-      Golden Game Pad: 4976311298372169113
-      Key 2: 1841227863021147202
-      chili: 8006686719552075753
-      Potion Empty: -4643984269213692861
-      Ruby Grey: -2025764284003004604
-      Crab Raw: -8238476385419446542
-      Steak Raw: -8588310423305267114
-      Coin 4: 2983329133290763648
-      Gem Orange: 771535981585299745
-      Stone 1: 3403477462578683957
-      Gem Grey: -2222859685555020565
-      Bone: -2867681730806746958
-      Ruby Orange: 4458494718924381150
-      Slice_2_9: -7320725599349326951
-      Slice_7_8: 7193467672936015387
-      Apricot Cut: 7389741094005283192
-      Honeydew Cut: 1137858421071835356
-      Slice_14_6: -3155934604320952834
-      Apple Red Cut: 8704479238437469885
-      Ruby Red: -5002481069793567372
-      Coin 1: 2619668221281467793
-      Slice_12_6: 1245653194130695336
-      Slice_6_8: -7178938276527407011
-      Lobster Raw: -2725175381910302429
-      Slice_14_7: -5499921870449854438
-      Beef Cooked: -1444924591229836603
-      Slice_4_7: -5717689655752346661
-      Slice_7_9: -3891688386442080965
-      Golden Telescope: 3339276480877567319
-      Bread 0: 5597709460988816392
-      Gem Red: 4675911378491080900
-      Blueberry: 6940211693858774789
-      Cake Roll 1: -7708907538973045582
-      Coin 5: -1591476458089613959
-      Pitaya: -607322300321423868
-      Broccoli: -4512402356829033745
-      Blueberry Cut: -1109550691758867926
-      Slice_8_7: -1260246258574527072
-      Key 0: -6030270022225767958
-      Slice_10_9: 6676536963785308031
-      Slice_14_9: 6968381806191096607
-      Stone 0: -1996137188706063342
-      Slice_7_6: 388603434142414527
-      Slice_4_6: 5625893095485245600
-      Banana: -2723872406725829969
-      Hamburger 1: 3677917881914722176
-      Slice_7_7: -5736032937825068598
-      Flint 2: -8640187496717279706
-      Lemon Cut: -7899947911229753242
-      Vol Potion Orange: 6146510235913844462
-      Slice_8_8: -6595551830526834826
-      Sea Fish Raw: -5803765382201960583
-      Slice_0_8: 715400049412932046
-      Slice_0_9: -7600193983910985256
-      Chicken Legs Raw: 2976775915527822014
-      Squid Cooked: 8394321722114553177
-      Crab Cooked: 7455074537551028866
-      Slice_3_7: -1472834624600309176
-      Eggplant: 4456751984861989714
-      Chicken Legs Cooked: -916355234973051339
-      Bread 1: -6718971694737617398
-      Vol Potion Blue: -8482873678308682284
-      Sushi: -8231821728584974286
-      Snail Cooked: 279183876286233850
-      Strawberry: -8137609707746988934
-      Slice_8_11: 1686925162935976949
-      Meat Skewers Cooked: 9012186894514309117
-      Rune Water: 5016293125619049543
-      Broken Bone: 6905434368797540076
-      Chicken Wings Raw: -8451564831904070747
-      Slice_11_6: 1457194999761598655
-      Slice_3_8: -6463595909616708112
-      Slice_1_8: -7332906445561653602
-      Golden Fan: 352727982192669898
-      Orange Cut: 3360760331630241134
-      Slice_9_11: 6415608803579973960
       Grape Purple: 4121210844738698960
       Flint 0: -5597410798733579038
-      Slice_13_9: 5465096837934585168
-      Slice_8_9: -6836050678312307131
+      Sausage Raw: -5000897634649038911
       Coin 3: -115133729626271356
-      Slice_6_6: 722544314481553590
-      Slice_8_6: -8653321895781754833
-      Slice_0_7: -1889279408408202126
+      Cherry: -9049683136500104806
+      Strawberry Cut: -3059026740910803073
+      Apple Green Cut: -7240201281520470316
+      Golden Begleri: 2557358760942736110
+      Flint 1: -3306222962087319197
+      Apple Red: 2402639745920847424
       Meat Skewers Raw: 6837572766838081306
-      Slice_4_8: -7004577957407109305
+      Grape Green Cut: -5038873608686554185
       Pear Cut: 2639089546801784039
-      Slice_10_11: 479353784738710307
-      Slice_5_8: -7073732810600591460
+      Coin 6: -8653133771427474647
+      Book 1: -1464063045819899514
       Key 1: -2915948515562410168
-      Slice_3_9: -6239023897610536995
+      Mushroom Green: -3883462283988791598
+      Coin 7: -5045705960959992181
       Lobster Cooked: 2225514744162887656
-      Slice_9_8: -821165358600287549
+      Potato: 3424615978517398712
+      Potion Orange: -7441692431401241830
       Lemon: 9151845419729773776
       Trunk: 921508970657664592
       Sausage Cooked: 7845583087946123384
+      Cat Paw: 3078925675499212878
       Golden Pipe: 2343252613997501148
-      Slice_14_8: 2230732124332709619
+      Apricot: 1983952564101803308
       Golden Cross: 3864587126216509406
       Chicken Wings Cooked: -4515737198427190114
-      Slice_6_9: 7438198558451389633
       Meatball Cooked: -3967879649706991594
       carrot: 6725719756485662612
       Golden Notepad: 3010068189764573314
-      Slice_1_7: 4489290596008711209
+      Golden Feather: -2973392893987390915
       Book 3: -1291244315426958449
+      Book 2: 7976869718584497138
       Snail Raw: -8329269681130842621
-      Slice_13_8: -7352331436398477488
       Cake 0: 8560300127293090218
       Steak Cooked: 1053338039207312423
+      Skull: 3776011452931145940
+      Stone 2: -8428597057389181968
+      Golden Game Pad: 4976311298372169113
       Gem Green: 8173781999632799413
       Chocolate: 4738425515923839836
-      Slice_10_8: -2582940814525997980
-      Slice_11_7: 5946321594212662681
-      Slice_5_6: -5946018410654580875
+      Key 2: 1841227863021147202
+      chili: 8006686719552075753
+      Potion Empty: -4643984269213692861
+      Fish Bone: -4687813135565831081
+      Ruby Grey: -2025764284003004604
       Golden Spring: -709987303930517673
       Squid Raw: 3947735668136487082
-      Slice_11_11: -3523076556929452821
+      Bomb: -2645361854805593308
       Apple Green: -9207441790826436818
-      Fish Bone: -4687813135565831081
+      Steak Raw: -8588310423305267114
       Spinach: -6031420317972535299
-      Board: 4150903206124111602
-      Slice_2_6: 4446292579872590245
       Peach Cut: 3463451341184599687
-      Slice_9_9: 7297066340862083188
+      Gem Orange: 771535981585299745
+      Crab Raw: -8238476385419446542
+      Coin 4: 2983329133290763648
       Ruby Green: -8939711402148985780
-      Slice_13_7: 1040139800683114024
+      Gem Grey: -2222859685555020565
       Chinese Cabbage: 580331631342469037
       Peach: 1944106526218400674
-      Bomb: -2645361854805593308
+      Ruby Orange: 4458494718924381150
       Banana Cut: 8568856482150078548
       Fish Cooked: -3830820648680856899
       Golden Pocket Watch: -8365491406040063676
+      Board: 4150903206124111602
+      Apricot Cut: 7389741094005283192
       Sea Fish Cooked: -8644150645591026024
       Tomato: -6731281561659528778
+      Honeydew Cut: 1137858421071835356
       Honeydew: -4561625771762586796
       Golden Gameboy: 5707702512562186421
-      Slice_12_9: -4192810563782645404
-      Mushroom Blue: 4873310739333512082
-      Slice_11_9: 448503520388280265
+      Apple Red Cut: 8704479238437469885
+      Ruby Red: -5002481069793567372
+      Coin 1: 2619668221281467793
       Coin 0: -8853817869284624083
       Grape Green: -2073946786391209326
       Stump: 5434903235138734717
+      Stone 1: 3403477462578683957
+      Mushroom Blue: 4873310739333512082
+      Bone: -2867681730806746958
       Mushroom Orange: -5639789306321423723
+      Lobster Raw: -2725175381910302429
       Cauliflower: -2304985444753936970
       Potion Red: -6143386347607903237
-      Slice_2_8: -6063060876268685021
       Fish Raw: -5323078958985355217
+      Beef Cooked: -1444924591229836603
       Vol Potion Red: -5677122844990731855
-      Slice_0_6: 3348018261516119843
       Fries: -1814342034238720670
-      Flounder Cooked: 8869286349637930576
+      Bread 0: 5597709460988816392
       Coin 2: -7445818638769322687
       Flounder Raw: 1719798874073752923
-      Pitaya Cut: 347687095762302424
+      Golden Telescope: 3339276480877567319
+      Gem Red: 4675911378491080900
+      Blueberry: 6940211693858774789
       Beef Raw: -5146280154676218375
+      Coin 5: -1591476458089613959
+      Pitaya: -607322300321423868
+      Broccoli: -4512402356829033745
+      Cake Roll 1: -7708907538973045582
+      Stone 0: -1996137188706063342
+      Key 0: -6030270022225767958
+      Pitaya Cut: 347687095762302424
+      Flounder Cooked: 8869286349637930576
       Cake 1: 8661452940582640109
-      Slice_5_7: -4799689605212760886
       Branch: 5208993810194939582
-      BaoZi: -8616933595116563276
+      Blueberry Cut: -1109550691758867926
+      Banana: -2723872406725829969
+      Hamburger 1: 3677917881914722176
       Golden Pen: -5224571325463676339
       Pear: 7234405449074107554
+      Lemon Cut: -7899947911229753242
+      Vol Potion Orange: 6146510235913844462
       Book 0: 3970608734599639246
       Potion Blue: 3576586167540094042
+      Flint 2: -8640187496717279706
       Cake Roll 0: 3283700407493711012
-      Slice_7_11: -8149732842175783862
+      BaoZi: -8616933595116563276
+      Sea Fish Raw: -5803765382201960583
+      Chicken Legs Raw: 2976775915527822014
       Grape Purple Cut: 4395072866912770175
       Orange: -4274051472841485391
+      Squid Cooked: 8394321722114553177
+      Crab Cooked: 7455074537551028866
       Golden Hook: 2852210858950848473
       Dumpling: 3131907087342091442
-      Slice_9_6: -143438974541281123
+      Eggplant: 4456751984861989714
       Cherry Cut: 4643866492775801204
       Bear Paw: 672807302613651724
-      Slice_11_8: -5381271991484548516
       Rune Empty: -458016355626029732
   spritePackingTag: 
   pSDRemoveMatte: 0

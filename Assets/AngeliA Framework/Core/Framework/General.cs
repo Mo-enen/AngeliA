@@ -197,13 +197,10 @@ namespace AngeliaFramework {
 
 		public const int CELL_SIZE = 256;       // N¡ÁN Pixels per Tile
 		public const int WORLD_MAP_SIZE = 128;  // N¡ÁN Tiles per Map
-		public const int GLOBAL_SIZE = 32768;   // (-N,N)¡Á(-N,N) Maps in Total (23726566 max)
 
-		public const int ENTITY_LAYER_COUNT = 5;
-		public const int PHYSICS_LAYER_COUNT = 4;
+		public static readonly int ENTITY_LAYER_COUNT = System.Enum.GetNames(typeof(EntityLayer)).Length;
+		public static readonly int PHYSICS_LAYER_COUNT = System.Enum.GetNames(typeof(PhysicsLayer)).Length;
 
-		public const int BLOCK_SPAWN_PADDING_UNIT = 6;
-		public const int BLOCK_SPAWN_PADDING = 6 * CELL_SIZE;
 		public const int DEFAULT_VIEW_WIDTH = 28 * CELL_SIZE;
 		public const int DEFAULT_VIEW_HEIGHT = 16 * CELL_SIZE;
 		public const int MIN_VIEW_WIDTH = 4 * CELL_SIZE;
@@ -211,9 +208,11 @@ namespace AngeliaFramework {
 		public const int MAX_VIEW_WIDTH = 72 * CELL_SIZE;
 		public const int MAX_VIEW_HEIGHT = 56 * CELL_SIZE;
 
+		public const int BLOCK_SPAWN_PADDING = BLOCK_SPAWN_PADDING_UNIT * CELL_SIZE;
+		public const int BLOCK_SPAWN_PADDING_UNIT = 6;
 		public const int ENTITY_UPDATE_GAP = 1 * CELL_SIZE;
-		public const int SPAWN_GAP = 8 * CELL_SIZE;
-		public const int DESPAWN_GAP = 6 * CELL_SIZE;
+		public const int SPAWN_PADDING = 6 * CELL_SIZE;
+		public const int DESPAWN_PADDING = 10 * CELL_SIZE;
 
 		public const int RIGIDBODY_FAST_SPEED = CELL_SIZE / 8;
 

@@ -613,7 +613,15 @@ namespace AngeliaFramework.Editor {
 
 		private void SyncArtwork (bool ldtk, bool aseprite) {
 			if (aseprite) {
-				EditorApplication.ExecuteMenuItem("Tools/Aseprite Toolbox/Create Sprite for All");
+				var list = new List<Object>();
+				foreach (var file in Util.GetFilesIn("Assets", false, "*.ase", "*.aseprite")) {
+					var path = EditorUtil.FixedRelativePath(file.FullName);
+					var obj = AssetDatabase.LoadAssetAtPath<Object>(path);
+					list.Add(obj);
+				}
+				Selection.objects = list.ToArray();
+				EditorApplication.ExecuteMenuItem("Tools/Aseprite Toolbox/Create Sprite for Selection");
+				Selection.objects = null;
 				ReloadSheetAssets();
 			}
 			if (ldtk) {

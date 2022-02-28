@@ -146,24 +146,6 @@ TextureImporter:
   - first:
       213: -4393783392769447400
     second: Test Water
-  - first:
-      213: -1762684513842207210
-    second: Grass 0
-  - first:
-      213: -587650059585142348
-    second: Grass 1
-  - first:
-      213: -5820585048729039126
-    second: Grass 2
-  - first:
-      213: -5048438320844973812
-    second: Grass 3
-  - first:
-      213: -3680228605072855999
-    second: Grass 4
-  - first:
-      213: 9026526397533968890
-    second: Grass 5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -1251,132 +1233,6 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: Grass 0
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 239
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6166a5516cfa987e0800000000000000
-      internalID: -1762684513842207210
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Grass 1
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 239
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4b1c032626f38d7f0800000000000000
-      internalID: -587650059585142348
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Grass 2
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 239
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: aee4e89acb0293fa0800000000000000
-      internalID: -5820585048729039126
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Grass 3
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 239
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c09d09f481850f9b0800000000000000
-      internalID: -5048438320844973812
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Grass 4
-      rect:
-        serializedVersion: 2
-        x: 86
-        y: 239
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 14ca66615933decc0800000000000000
-      internalID: -3680228605072855999
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Grass 5
-      rect:
-        serializedVersion: 2
-        x: 103
-        y: 239
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: af9d2b81fe9a44d70800000000000000
-      internalID: 9026526397533968890
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1389,7 +1245,6 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Cloud 7: -4419201832922323388
-      Grass 3: -5048438320844973812
       Cloud 20: -8612373889199713528
       Cloud 41: 1957317650131419016
       Cloud 34: 65591073882530385
@@ -1397,7 +1252,6 @@ TextureImporter:
       Cloud 44: -5395210672000561495
       Cloud 12: 8201017015425827234
       Cloud 10: -947249621694023818
-      Grass 1: -587650059585142348
       Cloud 14: 2327348251429522439
       Cloud 2: 5769025949576803154
       Cloud 6: 5737060264376376809
@@ -1405,11 +1259,9 @@ TextureImporter:
       Cloud 38: -7603390787171550179
       Cloud 4: -2720531075333172938
       Cloud 15: 2238671671063780011
-      Grass 4: -3680228605072855999
       Cloud 28: 1224622701478892006
       Cloud 43: 2314745734412332802
       Cloud 17: 3608687455373479765
-      Grass 2: -5820585048729039126
       Cloud 21: -4911106639718855390
       Cloud 29: 5277895407805958843
       Cloud 36: 7527442051877303455
@@ -1422,13 +1274,11 @@ TextureImporter:
       Cloud 27: -991859522461320497
       Cloud 22: -2806515148122556464
       Test Water: -4393783392769447400
-      Grass 0: -1762684513842207210
       Cloud 24: 1398946735273702322
       Cloud 30: 258555777961062944
       Cloud 39: 4786508926409197382
       Cloud 23: -7110577676570263793
       Cloud 40: -100122672259345468
-      Grass 5: 9026526397533968890
       Cloud 5: 8899829586541751646
       Cloud 45: 3904880230547835321
       Cloud 35: 3367601030906665895

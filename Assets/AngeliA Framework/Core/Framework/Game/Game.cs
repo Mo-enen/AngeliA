@@ -88,9 +88,6 @@ namespace AngeliaFramework {
 #if UNITY_EDITOR
 			// Const Array Count Check
 			if (
-				Const.ENTITY_LAYER_COUNT != System.Enum.GetNames(typeof(EntityLayer)).Length ||
-				Const.PHYSICS_LAYER_COUNT != System.Enum.GetNames(typeof(PhysicsLayer)).Length ||
-				Const.PHYSICS_LAYER_COUNT != System.Enum.GetNames(typeof(PhysicsMask)).Length - 1 ||
 				ENTITY_CAPACITY.Length != Const.ENTITY_LAYER_COUNT
 			) {
 				Debug.LogError("Const Array Size is wrong.");
@@ -259,16 +256,16 @@ namespace AngeliaFramework {
 			EntityUpdateRect.y = ViewRect.y + (ViewRect.height - EntityUpdateRect.height) / 2;
 
 			// Spawn Rect
-			SpawnRect.width = ViewRect.width + Const.SPAWN_GAP * 2;
-			SpawnRect.height = ViewRect.height + Const.SPAWN_GAP * 2;
+			SpawnRect.width = ViewRect.width + Const.SPAWN_PADDING * 2;
+			SpawnRect.height = ViewRect.height + Const.SPAWN_PADDING * 2;
 			SpawnRect.x = ViewRect.x + (ViewRect.width - SpawnRect.width) / 2;
 			SpawnRect.y = ViewRect.y + (ViewRect.height - SpawnRect.height) / 2;
 
 			// Despawn Rect
-			DespawnRect.x = SpawnRect.x - Const.DESPAWN_GAP;
-			DespawnRect.y = SpawnRect.y - Const.DESPAWN_GAP;
-			DespawnRect.width = SpawnRect.width + Const.DESPAWN_GAP * 2;
-			DespawnRect.height = SpawnRect.height + Const.DESPAWN_GAP * 2;
+			DespawnRect.width = ViewRect.width + Const.DESPAWN_PADDING * 2;
+			DespawnRect.height = ViewRect.height + Const.DESPAWN_PADDING * 2;
+			DespawnRect.x = ViewRect.x + (ViewRect.width - DespawnRect.width) / 2;
+			DespawnRect.y = ViewRect.y + (ViewRect.height - DespawnRect.height) / 2;
 
 		}
 
