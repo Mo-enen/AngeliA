@@ -374,17 +374,19 @@ namespace AngeliaFramework.Editor {
 
 			using (new GUILayout.HorizontalScope()) {
 
+				Layout.Space(12);
+
 				// Sync Artwork
-				if (GUI.Button(Layout.Rect(64, 64), "Sync Artwork")) {
+				if (GUI.Button(Layout.Rect(0, 86), "Sync\nArtwork")) {
 					SyncArtwork(true, true);
 				}
-
-				Layout.Space(6);
+				Layout.Space(12);
 
 				// Language Editor
-				if (GUI.Button(Layout.Rect(64, 64), "Language Editor")) {
+				if (GUI.Button(Layout.Rect(0, 86), "Language\nEditor")) {
 					LanguageEditor.OpenEditor();
 				}
+				Layout.Space(12);
 			}
 
 			Layout.Rect(0, 0);

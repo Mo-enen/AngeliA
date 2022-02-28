@@ -81,6 +81,7 @@ namespace AngeliaFramework {
 
 
 		public override void FrameUpdate (int frame) {
+			base.FrameUpdate(frame);
 
 			CellRenderer.BeginCharacterDraw();
 

@@ -330,7 +330,7 @@ namespace AngeliaFramework {
 				int len = EntityLength[layerIndex];
 				for (int i = 0; i < len; i++) {
 					var e = entities[i];
-					if (e.ForceUpdate || EntityUpdateRect.Contains(e.X, e.Y)) {
+					if (e.ForceUpdate || e.Updated || EntityUpdateRect.Contains(e.X, e.Y)) {
 						e.PhysicsUpdate(GlobalFrame);
 					}
 				}

@@ -34,6 +34,7 @@ namespace AngeliaFramework {
 				}
 				LastContactFrame = frame;
 			}
+			base.PhysicsUpdate(frame);
 		}
 
 

@@ -265,6 +265,12 @@ namespace AngeliaFramework {
 			value % gap + gap;
 
 
+		public static int PingPong (this int value, int length) {
+			value = value.AltMod(length * 2);
+			return length - Mathf.Abs(value - length);
+		}
+
+
 		public static string GetMapRoot () => Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Maps");
 
 

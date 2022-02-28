@@ -45,6 +45,7 @@ namespace AngeliaFramework {
 		}
 
 		public bool Active { get; set; } = true;
+		public bool Updated { get; private set; } = false;
 		public int InstanceID { get; set; } = 0;
 		public abstract EntityLayer Layer { get; }
 		public virtual bool Despawnable { get; } = true;
@@ -69,7 +70,7 @@ namespace AngeliaFramework {
 
 		public virtual void OnCreate (int frame) { }
 		public virtual void FillPhysics (int frame) { }
-		public virtual void PhysicsUpdate (int frame) { }
+		public virtual void PhysicsUpdate (int frame) => Updated = true;
 		public virtual void FrameUpdate (int frame) { }
 		public virtual void OnDespawn (int frame) { }
 

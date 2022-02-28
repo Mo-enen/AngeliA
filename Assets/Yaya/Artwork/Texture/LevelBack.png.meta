@@ -353,6 +353,12 @@ TextureImporter:
   - first:
       213: -4972767557568522755
     second: Grey Stone Brick 46
+  - first:
+      213: 1604666739716444649
+    second: Dirt Brittle
+  - first:
+      213: -1328718549187013623
+    second: Dirt Grass Brittle
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -2889,6 +2895,48 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Dirt Brittle
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e1deabd5ebe44610800000000000000
+      internalID: 1604666739716444649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt Grass Brittle
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 8}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9045c35f4817f8de0800000000000000
+      internalID: -1328718549187013623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -2960,6 +3008,7 @@ TextureImporter:
       Beige Stone Brick 43: 9063632593054017078
       Grey Stone Brick 42: 4493518693951563201
       Grey Stone Brick 10: -5721357015852061189
+      Dirt Brittle: 1604666739716444649
       Grass Ground 8: 5945820847118747798
       Grey Stone Brick 45: 4135185028875942793
       Grey Stone Brick 22: 3950108047379946619
@@ -3016,6 +3065,7 @@ TextureImporter:
       Beige Stone Brick 37: -7946356796935988009
       Beige Stone Brick 26: 4339595551674242603
       Grey Stone Brick 25: -1202684878612363242
+      Dirt Grass Brittle: -1328718549187013623
       Grey Stone Brick 32: 8386809361878594801
   spritePackingTag: 
   pSDRemoveMatte: 0

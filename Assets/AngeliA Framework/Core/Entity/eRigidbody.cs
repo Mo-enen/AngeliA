@@ -61,17 +61,14 @@ namespace AngeliaFramework {
 
 		public override void PhysicsUpdate (int frame) {
 
+			base.PhysicsUpdate(frame);
+
 			PrevX = X;
 			PrevY = Y;
 			var rect = Rect;
 
 			// Grounded
-			IsGrounded = !CellPhysics.RoomCheck(
-				PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character,
-				rect, this, Direction4.Down
-			) || !CellPhysics.RoomCheck_Oneway(
-				rect, this, Direction4.Down, true
-			);
+			IsGrounded = GroundedCheck(rect);
 
 			// Water
 			InWater = CellPhysics.Overlap(
@@ -104,6 +101,10 @@ namespace AngeliaFramework {
 
 			// Move
 			PerformMove(VelocityX, VelocityY, false, false);
+
+			if (!IsGrounded) {
+				IsGrounded = GroundedCheck(Rect);
+			}
 		}
 
 
@@ -115,9 +116,7 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public static int GetPushLevel (Entity entity) =>
-			entity == null ? int.MaxValue :
-			entity is eRigidbody rig ? rig.PushLevel : 0;
+		public static int GetPushLevel (Entity entity) => entity is eRigidbody rig ? rig.PushLevel : int.MaxValue;
 
 
 		protected virtual bool InsideGroundCheck () => CellPhysics.Overlap(
@@ -127,6 +126,16 @@ namespace AngeliaFramework {
 				1, 1
 			), this
 		);
+
+
+		protected virtual bool GroundedCheck (RectInt rect) =>
+			!CellPhysics.RoomCheck(
+				PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character,
+				rect, this, Direction4.Down
+			) || !CellPhysics.RoomCheck_Oneway(
+				rect, this, Direction4.Down, true
+			);
+
 
 
 		#endregion
