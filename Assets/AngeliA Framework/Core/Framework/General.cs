@@ -105,15 +105,12 @@ namespace AngeliaFramework {
 
 	[System.Serializable]
 	public struct UvRect {
-
-		public float Width => TopRight.x - BottomLeft.x;
-		public float Height => TopRight.y - BottomLeft.y;
-
+		public int Width;
+		public int Height;
 		public Vector2 BottomLeft;
 		public Vector2 BottomRight;
 		public Vector2 TopLeft;
 		public Vector2 TopRight;
-
 	}
 
 
@@ -271,6 +268,9 @@ namespace AngeliaFramework {
 
 
 		public static string GetMapRoot () => Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Maps");
+
+
+		public static string GetDialogueRoot () => Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Dialogues");
 
 
 		public static Vector2Int AltDivide (this Vector2Int v, int gap) {

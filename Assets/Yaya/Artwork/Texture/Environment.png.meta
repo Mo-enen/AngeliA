@@ -8,6 +8,87 @@ TextureImporter:
   - first:
       213: 7703836545563178338
     second: Barrel Small
+  - first:
+      213: -2329300805733206252
+    second: Road Sign 0
+  - first:
+      213: 1335569958529975340
+    second: Road Sign 1
+  - first:
+      213: -2651921403531159219
+    second: Road Sign 2
+  - first:
+      213: -7344258109906357230
+    second: Statue Stone 0
+  - first:
+      213: 5813947662235796185
+    second: Statue Stone 1
+  - first:
+      213: 7882186848137766039
+    second: Statue Stone 2
+  - first:
+      213: 7084439161143361213
+    second: Statue Stone 3
+  - first:
+      213: 4493509515930302244
+    second: Statue Stone 4
+  - first:
+      213: -7828503867456260715
+    second: Statue Stone 5
+  - first:
+      213: -6197272658652857645
+    second: Statue Stone 6
+  - first:
+      213: -6878705244577495233
+    second: Statue Stone 7
+  - first:
+      213: -179086573553171763
+    second: Statue Stone 8
+  - first:
+      213: -4156036431321919815
+    second: Statue Stone 9
+  - first:
+      213: 6607612819170858804
+    second: Statue Stone 10
+  - first:
+      213: -706272099325279058
+    second: Statue Stone 11
+  - first:
+      213: -6160374140608085397
+    second: Statue Stone 12
+  - first:
+      213: 5210914073453614556
+    second: Statue Stone 13
+  - first:
+      213: -613925231144685540
+    second: Statue Stone 14
+  - first:
+      213: -5210069633770090873
+    second: Statue Stone 15
+  - first:
+      213: -5906209360155419146
+    second: Statue Stone 16
+  - first:
+      213: -367880477389656533
+    second: Statue Stone 17
+  - first:
+      213: 1425568216204440266
+    second: Statue Stone 18
+  - first:
+      213: 1892188689487029548
+    second: Statue Stone 19
+  - first:
+      213: 1049483808235947416
+    second: Statue Stone 20
+  - first:
+      213: 4226112796901442097
+    second: Statue Stone 21
+  - first:
+      213: 807406176306049408
+    second: Statue Stone 22
+  - first:
+      213: -2727332506511647285
+    second: Statue Stone 23
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -91,8 +172,8 @@ TextureImporter:
       name: Barrel
       rect:
         serializedVersion: 2
-        x: 10
-        y: 1
+        x: 1
+        y: 239
         width: 16
         height: 16
       alignment: 9
@@ -112,8 +193,8 @@ TextureImporter:
       name: Barrel Small
       rect:
         serializedVersion: 2
-        x: 1
-        y: 1
+        x: 18
+        y: 247
         width: 8
         height: 8
       alignment: 9
@@ -129,6 +210,573 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Road Sign 0
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 239
+        width: 9
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 417bd332249acafd0800000000000000
+      internalID: -2329300805733206252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Road Sign 1
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 239
+        width: 9
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c24ccd61dc5e88210800000000000000
+      internalID: 1335569958529975340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Road Sign 2
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 206
+        width: 9
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d491542b88b723bd0800000000000000
+      internalID: -2651921403531159219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 214ff3c1924f31a90800000000000000
+      internalID: -7344258109906357230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d2074e589a4fa050800000000000000
+      internalID: 5813947662235796185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 794e1804d27236d60800000000000000
+      internalID: 7882186848137766039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbef0d0d1ebf05260800000000000000
+      internalID: 7084439161143361213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 427fcdbd8172c5e30800000000000000
+      internalID: 4493509515930302244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5957f71b5319b5390800000000000000
+      internalID: -7828503867456260715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3da71ccf95ddef9a0800000000000000
+      internalID: -6197272658652857645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f378756660ee980a0800000000000000
+      internalID: -6878705244577495233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 8
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc2425fc5b1c38df0800000000000000
+      internalID: -179086573553171763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 9
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9be8975a2eac256c0800000000000000
+      internalID: -4156036431321919815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 10
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4371ff3b9d4f2bb50800000000000000
+      internalID: 6607612819170858804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 11
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea482f48441d236f0800000000000000
+      internalID: -706272099325279058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 12
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b628d81bb54f18aa0800000000000000
+      internalID: -6160374140608085397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 13
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd5594fbdb2e05840800000000000000
+      internalID: 5210914073453614556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 14
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c10b8f64146ea77f0800000000000000
+      internalID: -613925231144685540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 15
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78e8510b54d12b7b0800000000000000
+      internalID: -5210069633770090873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 16
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fd59de11ede80ea0800000000000000
+      internalID: -5906209360155419146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 17
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2e6369a7a605eaf0800000000000000
+      internalID: -367880477389656533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 18
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac2f3f95db2a8c310800000000000000
+      internalID: 1425568216204440266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 19
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c25e2ec7697624a10800000000000000
+      internalID: 1892188689487029548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 20
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8958d6396f3809e00800000000000000
+      internalID: 1049483808235947416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 21
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1320b08a23b26aa30800000000000000
+      internalID: 4226112796901442097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 22
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 081bd28b3ab743b00800000000000000
+      internalID: 807406176306049408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Statue Stone 23
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bcd5ffc0981962ad0800000000000000
+      internalID: -2727332506511647285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -140,8 +788,35 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      Statue Stone 4: 4493509515930302244
+      Statue Stone 3: 7084439161143361213
+      Statue Stone 7: -6878705244577495233
+      Road Sign 0: -2329300805733206252
+      Statue Stone 19: 1892188689487029548
+      Statue Stone 9: -4156036431321919815
+      Statue Stone 21: 4226112796901442097
+      Road Sign 1: 1335569958529975340
+      Statue Stone 0: -7344258109906357230
+      Statue Stone 22: 807406176306049408
       Barrel: -8064411482835056307
+      Statue Stone 2: 7882186848137766039
+      Statue Stone 14: -613925231144685540
+      Statue Stone 17: -367880477389656533
+      Statue Stone 11: -706272099325279058
+      Statue Stone 12: -6160374140608085397
+      Statue Stone 18: 1425568216204440266
+      Road Sign 2: -2651921403531159219
+      Statue Stone 15: -5210069633770090873
+      Statue Stone 20: 1049483808235947416
+      Statue Stone 13: 5210914073453614556
+      Statue Stone 5: -7828503867456260715
+      Statue Stone 16: -5906209360155419146
+      Statue Stone 8: -179086573553171763
       Barrel Small: 7703836545563178338
+      Statue Stone 10: 6607612819170858804
+      Statue Stone 1: 5813947662235796185
+      Statue Stone 23: -2727332506511647285
+      Statue Stone 6: -6197272658652857645
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

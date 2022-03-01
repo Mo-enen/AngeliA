@@ -94,8 +94,7 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[RuntimeInitializeOnLoadMethod]
-		private static void Init () {
+		public static void Initialize () {
 			if (!string.IsNullOrEmpty(KeyboardSetup.Value)) {
 				var strs = KeyboardSetup.Value.Split(',');
 				if (strs != null && strs.Length >= 16) {

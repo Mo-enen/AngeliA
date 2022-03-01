@@ -19,9 +19,7 @@ namespace LdtkToAngeliA {
 
 			// Get Sprite Pool
 			var tilesetPool = new Dictionary<string, Dictionary<Vector2Int, (int blockID, Int4 border)>>();
-			foreach (var guid in AssetDatabase.FindAssets($"t:{nameof(SpriteSheet)}")) {
-				var path = AssetDatabase.GUIDToAssetPath(guid);
-				var sheet = AssetDatabase.LoadAssetAtPath<SpriteSheet>(path);
+			foreach (var sheet in EditorUtil.ForAllAssets<SpriteSheet>()) {
 				if (sheet.Texture == null || !sheet.Texture.isReadable) continue;
 				var tPath = AssetDatabase.GetAssetPath(sheet.Texture);
 				var spritePool = new Dictionary<Vector2Int, (int blockID, Int4 border)>();
@@ -31,12 +29,15 @@ namespace LdtkToAngeliA {
 						var _rect = sp.rect.ToRectInt();
 						var _pos = _rect.position;
 						_pos.y = tHeight - (_pos.y + _rect.height - 1) - 1;
-						var border = new Int4() {
+						bool hasCol =
+							(sp.border.x + sp.border.z).LessOrAlmost(sp.rect.width) &&
+							(sp.border.w + sp.border.y).LessOrAlmost(sp.rect.height);
+						var border = hasCol ? new Int4() {
 							Left = (int)sp.border.x * Const.CELL_SIZE / (int)sp.rect.width,
 							Right = (int)sp.border.z * Const.CELL_SIZE / (int)sp.rect.width,
 							Up = (int)sp.border.w * Const.CELL_SIZE / (int)sp.rect.height,
 							Down = (int)sp.border.y * Const.CELL_SIZE / (int)sp.rect.height
-						};
+						} : new Int4() { Left = -1, Right = -1, Up = -1, Down = -1, };
 						spritePool.TryAdd(_pos, (sp.name.AngeHash(), border));
 					}
 				}

@@ -96,7 +96,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private static readonly HitInfo[] c_PushCheck_OnewayCheck = new HitInfo[16];
-		private static readonly HitInfo[] c_StopCheck = new HitInfo[16];
+		private static readonly HitInfo[] c_MoveCheck = new HitInfo[16];
 		private static readonly HitInfo[] c_MoveLogic = new HitInfo[32];
 		private static readonly Layer[] Layers = new Layer[Const.PHYSICS_LAYER_COUNT];
 		private static Layer CurrentLayer = null;
@@ -247,7 +247,7 @@ namespace AngeliaFramework {
 		public static bool MoveCheck (PhysicsMask mask, RectInt rect, eRigidbody target, Direction4 direction) {
 			if (RoomCheck(mask, rect, target, direction)) return true;
 			int count = OverlapAll(
-				c_StopCheck,
+				c_MoveCheck,
 				mask, new(
 					rect.x + (direction == Direction4.Right ? rect.width : -1),
 					rect.y + (direction == Direction4.Up ? rect.height : -1),
@@ -256,10 +256,10 @@ namespace AngeliaFramework {
 				), target
 			);
 			for (int i = 0; i < count; i++) {
-				var hit = c_StopCheck[i];
+				var hit = c_MoveCheck[i];
 				if (hit.Entity == null || !PushCheck(mask, hit.Rect, hit.Entity, target.PushLevel, direction)) return false;
 			}
-			c_StopCheck.Dispose();
+			c_MoveCheck.Dispose();
 			return true;
 		}
 

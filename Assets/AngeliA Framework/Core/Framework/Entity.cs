@@ -8,24 +8,11 @@ namespace AngeliaFramework {
 
 
 
-
-		#region --- SUB ---
-
-
 		public delegate void EntityLayerHandler (Entity entity);
 		public delegate ScriptableObject ScriptableObjectIntHandler (int value);
 		public delegate void ViewHandler (int x, int y, int lerp, int priority);
 
 
-		#endregion
-
-
-
-
-		#region --- VAR ---
-
-
-		// Api
 		public static EntityLayerHandler AddNewEntity { get; set; } = null;
 		public static ViewHandler SetViewPosition { get; set; } = null;
 		public static ViewHandler SetViewSize { get; set; } = null;
@@ -43,6 +30,7 @@ namespace AngeliaFramework {
 				return _Rect;
 			}
 		}
+		private RectInt _Rect = new();
 
 		public bool Active { get; set; } = true;
 		public bool Updated { get; private set; } = false;
@@ -55,45 +43,12 @@ namespace AngeliaFramework {
 		public virtual int Width { get; set; } = Const.CELL_SIZE;
 		public virtual int Height { get; set; } = Const.CELL_SIZE;
 
-		// Data
-		private static int CurrentDynamicInstanceID = 0;
-		private RectInt _Rect = new();
-
-
-		#endregion
-
-
-
-
-		#region --- API ---
-
 
 		public virtual void OnCreate (int frame) { }
 		public virtual void FillPhysics (int frame) { }
 		public virtual void PhysicsUpdate (int frame) => Updated = true;
 		public virtual void FrameUpdate (int frame) { }
 		public virtual void OnDespawn (int frame) { }
-
-
-		public static int NewDynamicInstanceID () {
-			CurrentDynamicInstanceID--;
-			return CurrentDynamicInstanceID;
-		}
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
-
-
-		#endregion
-
-
 
 
 	}
