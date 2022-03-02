@@ -190,13 +190,7 @@ namespace AngeliaFramework.Editor {
 
 
 		private GameData TryGetGameData () {
-			foreach (var guid in AssetDatabase.FindAssets($"t:{nameof(GameData)}")) {
-				var path = AssetDatabase.GUIDToAssetPath(guid);
-				var data = AssetDatabase.LoadAssetAtPath<GameData>(path);
-				if (data != null) {
-					return data;
-				}
-			}
+			foreach (var data in EditorUtil.ForAllAssets<GameData>()) return data;
 			return null;
 		}
 

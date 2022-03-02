@@ -9,12 +9,17 @@ namespace AngeliaFramework.Editor {
 	public class DialogueEditor : EditorWindow {
 
 
-		// Data
+		// Short
 		private static GUIStyle MasterStyle => _MasterStyle ??= new GUIStyle() {
 			padding = new RectOffset(24, 24, 24, 24),
 		};
 		private static GUIStyle _MasterStyle = null;
+		private GameData GameData => _GameData != null ? _GameData : (_GameData = TryGetGameData());
+		private GameData _GameData = null;
+
+		// Data
 		private Vector2 MasterScrollPos = default;
+		private readonly Dictionary<SystemLanguage, Dialogue> DialoguePool = new();
 
 
 		// API
@@ -36,6 +41,8 @@ namespace AngeliaFramework.Editor {
 
 
 
+
+
 			}
 			Layout.CancelFocusOnClick(this);
 		}
@@ -48,17 +55,26 @@ namespace AngeliaFramework.Editor {
 
 
 		private bool Load () {
-
-
-
+			DialoguePool.Clear();
+			foreach (var lan in GameData.Languages) {
+				var dialogue = Dialogue.LoadFromDisk(lan.LanguageID);
+				if (dialogue == null) continue;
+				DialoguePool.TryAdd(lan.LanguageID, dialogue);
+			}
 			return true;
 		}
 
 
 		private void Save () {
+			foreach (var pair in DialoguePool) {
+				Dialogue.EditorOnly_SaveToDisk(pair.Value);
+			}
+		}
 
 
-
+		private GameData TryGetGameData () {
+			foreach (var data in EditorUtil.ForAllAssets<GameData>()) return data;
+			return null;
 		}
 
 

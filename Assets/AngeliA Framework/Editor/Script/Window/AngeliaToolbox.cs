@@ -385,14 +385,14 @@ namespace AngeliaFramework.Editor {
 
 			using (new GUILayout.HorizontalScope()) {
 				Layout.Space(12);
-				// Dialogue Editor
-				if (GUI.Button(Layout.Rect(0, 48), "Dialogue\nEditor")) {
-					DialogueEditor.OpenEditor();
-				}
-				Layout.Space(6);
 				// Language Editor
 				if (GUI.Button(Layout.Rect(0, 48), "Language\nEditor")) {
 					LanguageEditor.OpenEditor();
+				}
+				Layout.Space(6);
+				// Dialogue Editor
+				if (GUI.Button(Layout.Rect(0, 48), "Dialogue\nEditor")) {
+					DialogueEditor.OpenEditor();
 				}
 				Layout.Space(12);
 			}
@@ -621,13 +621,9 @@ namespace AngeliaFramework.Editor {
 		// Artwork
 		private void SyncArtwork () {
 			try {
-				var list = new List<Object>();
-				foreach (var file in Util.GetFilesIn("Assets", false, "*.ase", "*.aseprite")) {
-					var path = EditorUtil.FixedRelativePath(file.FullName);
-					var obj = AssetDatabase.LoadAssetAtPath<Object>(path);
-					list.Add(obj);
-				}
-				Selection.objects = list.ToArray();
+				Selection.objects = Util.GetFilesIn("Assets", false, "*.ase", "*.aseprite").Select(
+					file => AssetDatabase.LoadAssetAtPath<Object>(EditorUtil.FixedRelativePath(file.FullName))
+				).Where(obj => obj.name.ToLower() != "entity icon").ToArray();
 				EditorApplication.ExecuteMenuItem("Tools/Aseprite Toolbox/Create Sprite for Selection");
 				Selection.objects = null;
 				ReloadSheetAssets();

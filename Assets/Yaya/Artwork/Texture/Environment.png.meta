@@ -89,6 +89,54 @@ TextureImporter:
   - first:
       213: -2727332506511647285
     second: Statue Stone 23
+  - first:
+      213: 8869858959872106772
+    second: Conveyor Mid 0
+  - first:
+      213: 6273131541661454191
+    second: Conveyor Mid 1
+  - first:
+      213: 6894232776697334792
+    second: Conveyor Mid 2
+  - first:
+      213: 5286129505909953240
+    second: Conveyor Mid 3
+  - first:
+      213: 5597944055196095667
+    second: Conveyor Mid 4
+  - first:
+      213: -366553418290470181
+    second: Conveyor Mid 5
+  - first:
+      213: 4821765223392073288
+    second: Conveyor Mid 6
+  - first:
+      213: 7523519679850416278
+    second: Conveyor Mid 7
+  - first:
+      213: -6849436530788924678
+    second: Conveyor Left 0
+  - first:
+      213: -2686448938111358844
+    second: Conveyor Left 1
+  - first:
+      213: -452027482023640203
+    second: Conveyor Left 2
+  - first:
+      213: -700631615691403929
+    second: Conveyor Left 3
+  - first:
+      213: 4416833164111991290
+    second: Conveyor Left 4
+  - first:
+      213: 3014544715659330481
+    second: Conveyor Left 5
+  - first:
+      213: -8760762342703505
+    second: Conveyor Left 6
+  - first:
+      213: -816469386340296175
+    second: Conveyor Left 7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -777,6 +825,342 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4112efebab1181b70800000000000000
+      internalID: 8869858959872106772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6f870296e3ae0750800000000000000
+      internalID: 6273131541661454191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80c46e5ee2c3daf50800000000000000
+      internalID: 6894232776697334792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d2597c47ca1c5940800000000000000
+      internalID: 5286129505909953240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b419728574efad40800000000000000
+      internalID: 5597944055196095667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd2679fab9db9eaf0800000000000000
+      internalID: -366553418290470181
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 846dd928ce95ae240800000000000000
+      internalID: 4821765223392073288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 205
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 698052a9949e86860800000000000000
+      internalID: 7523519679850416278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af20ebed3c9e1f0a0800000000000000
+      internalID: -6849436530788924678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 488a5a89ce0d7bad0800000000000000
+      internalID: -2686448938111358844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 573444966631ab9f0800000000000000
+      internalID: -452027482023640203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76d4e44f14bd646f0800000000000000
+      internalID: -700631615691403929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af15f038c5ebb4d30800000000000000
+      internalID: 4416833164111991290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b3c7687270d5d920800000000000000
+      internalID: 3014544715659330481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6ef9901220e0eff0800000000000000
+      internalID: -8760762342703505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 188
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11a94314b615ba4f0800000000000000
+      internalID: -816469386340296175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -790,33 +1174,49 @@ TextureImporter:
     nameFileIdTable:
       Statue Stone 4: 4493509515930302244
       Statue Stone 3: 7084439161143361213
+      Conveyor Mid 4: 5597944055196095667
       Statue Stone 7: -6878705244577495233
       Road Sign 0: -2329300805733206252
-      Statue Stone 19: 1892188689487029548
       Statue Stone 9: -4156036431321919815
-      Statue Stone 21: 4226112796901442097
-      Road Sign 1: 1335569958529975340
-      Statue Stone 0: -7344258109906357230
-      Statue Stone 22: 807406176306049408
+      Conveyor Left 3: -700631615691403929
+      Conveyor Left 1: -2686448938111358844
       Barrel: -8064411482835056307
       Statue Stone 2: 7882186848137766039
-      Statue Stone 14: -613925231144685540
       Statue Stone 17: -367880477389656533
       Statue Stone 11: -706272099325279058
-      Statue Stone 12: -6160374140608085397
       Statue Stone 18: 1425568216204440266
-      Road Sign 2: -2651921403531159219
       Statue Stone 15: -5210069633770090873
-      Statue Stone 20: 1049483808235947416
-      Statue Stone 13: 5210914073453614556
-      Statue Stone 5: -7828503867456260715
+      Conveyor Left 2: -452027482023640203
+      Conveyor Left 6: -8760762342703505
+      Conveyor Mid 0: 8869858959872106772
+      Conveyor Mid 5: -366553418290470181
       Statue Stone 16: -5906209360155419146
-      Statue Stone 8: -179086573553171763
-      Barrel Small: 7703836545563178338
-      Statue Stone 10: 6607612819170858804
+      Conveyor Mid 6: 4821765223392073288
       Statue Stone 1: 5813947662235796185
       Statue Stone 23: -2727332506511647285
       Statue Stone 6: -6197272658652857645
+      Conveyor Left 7: -816469386340296175
+      Statue Stone 19: 1892188689487029548
+      Statue Stone 21: 4226112796901442097
+      Conveyor Mid 3: 5286129505909953240
+      Conveyor Left 5: 3014544715659330481
+      Road Sign 1: 1335569958529975340
+      Statue Stone 0: -7344258109906357230
+      Statue Stone 22: 807406176306049408
+      Statue Stone 14: -613925231144685540
+      Conveyor Left 0: -6849436530788924678
+      Statue Stone 12: -6160374140608085397
+      Conveyor Mid 7: 7523519679850416278
+      Road Sign 2: -2651921403531159219
+      Statue Stone 20: 1049483808235947416
+      Statue Stone 13: 5210914073453614556
+      Conveyor Mid 2: 6894232776697334792
+      Conveyor Left 4: 4416833164111991290
+      Statue Stone 5: -7828503867456260715
+      Statue Stone 8: -179086573553171763
+      Barrel Small: 7703836545563178338
+      Conveyor Mid 1: 6273131541661454191
+      Statue Stone 10: 6607612819170858804
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

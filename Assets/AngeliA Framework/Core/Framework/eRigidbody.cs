@@ -138,16 +138,7 @@ namespace AngeliaFramework {
 			);
 
 
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
-		private void PerformMove (int speedX, int speedY, bool ignoreCarry, bool ignoreOneway) {
+		public void PerformMove (int speedX, int speedY, bool ignoreCarry, bool ignoreOneway) {
 
 			int speedScale = InWater ? Const.WATER_SPEED_LOSE : 1000;
 			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);
@@ -233,6 +224,14 @@ namespace AngeliaFramework {
 			}
 
 		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
 
 
 		private void OnewayCheck (RectInt rect, Direction4 moveDirection) {

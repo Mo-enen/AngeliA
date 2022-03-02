@@ -52,7 +52,7 @@ namespace AngeliaFramework {
 			try {
 				var path = Util.CombinePaths(AUtil.GetDialogueRoot(), language.ToString());
 				if (Util.FileExists(path) && Util.FileToObject(path) is Dialogue dia) {
-					dia.ConversationPool.Clear();
+					dia.ConversationPool = new();
 					foreach (var con in dia.Conversations) {
 						dia.ConversationPool.TryAdd(con.GlobalKey.AngeHash(), con);
 					}
