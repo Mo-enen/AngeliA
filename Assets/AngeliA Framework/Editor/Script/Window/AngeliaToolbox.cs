@@ -7,15 +7,17 @@ using System.Text;
 using UnityEngine;
 using UnityEditor;
 using Moenen.Standard;
+using LdtkToAngeliA;
 
 
 namespace AngeliaFramework.Editor {
-	public class AngeliaConsole : EditorWindow, IHasCustomMenu {
+	public class AngeliaToolbox : EditorWindow, IHasCustomMenu {
 
 
 
 
 		#region --- VAR ---
+
 
 		// Const
 		private const string WINDOW_TITLE = "Angelia";
@@ -24,7 +26,7 @@ namespace AngeliaFramework.Editor {
 		private static readonly Color32[] COLLIDER_TINT = { new(255, 128, 0, 255), new(255, 255, 0, 255), new(0, 255, 0, 255), new(0, 255, 255, 255), new(0, 0, 255, 255), new(255, 0, 255, 255), new(255, 0, 0, 255), };
 
 		// Short
-		private static AngeliaConsole Main = null;
+		private static AngeliaToolbox Main = null;
 		private static GUIContent EIconContent => _EIconContent ??= EditorGUIUtility.IconContent("d_GameObject Icon");
 		private static GUIContent _EIconContent = null;
 		private static Game Game => _Game != null ? _Game : (_Game = FindObjectOfType<Game>());
@@ -39,9 +41,9 @@ namespace AngeliaFramework.Editor {
 		private static bool PrevUnityFocused = true;
 		private static double RequireAlertTime = double.MinValue;
 		private static string AlertMessage = "";
-		private Vector2 MasterScrollPos = default;
 		private int EntityDirtyFlag = 0;
 		private bool PrevUpdateMousePress = false;
+		private Vector2 MasterScrollPos = default;
 
 		// Saving
 		private static readonly EditorSavingBool ShowColliders = new("EntityDebuger.ShowColliders", false);
@@ -63,7 +65,7 @@ namespace AngeliaFramework.Editor {
 			// State Change
 			EditorApplication.playModeStateChanged += (mode) => {
 
-				if (!HasOpenInstances<AngeliaConsole>()) { return; }
+				if (!HasOpenInstances<AngeliaToolbox>()) { return; }
 
 				// Enter Edit
 				if (mode == PlayModeStateChange.EnteredEditMode) {
@@ -120,7 +122,8 @@ namespace AngeliaFramework.Editor {
 						}
 						if (ldtk || ase) {
 							if (Main != null) {
-								Main.SyncArtwork(ldtk, ase);
+								Main.SyncArtwork();
+								Main.CheckSpriteNameDuplication();
 							}
 						}
 					}
@@ -137,7 +140,17 @@ namespace AngeliaFramework.Editor {
 
 
 		[MenuItem("AngeliA/Angelia Console")]
-		private static void OpenWindow () => GetOrCreateWindow();
+		private static void OpenWindow () {
+			try {
+				var window = GetWindow<AngeliaToolbox>(WINDOW_TITLE, false);
+				window.minSize = new Vector2(275, 400);
+				window.maxSize = new Vector2(600, 1000);
+				window.titleContent = EditorGUIUtility.IconContent("UnityEditor.ConsoleWindow");
+				window.titleContent.text = WINDOW_TITLE;
+			} catch (System.Exception ex) {
+				Debug.LogWarning("Failed to open window.\n" + ex.Message);
+			}
+		}
 
 
 		[MenuItem("AngeliA/Command/Reload Sheet Assets")]
@@ -390,7 +403,8 @@ namespace AngeliaFramework.Editor {
 				Layout.Space(12);
 				// Sync Artwork
 				if (GUI.Button(Layout.Rect(0, 48), "Sync\nArtwork")) {
-					SyncArtwork(true, true);
+					SyncArtwork();
+					CheckSpriteNameDuplication();
 				}
 				Layout.Space(6);
 				Layout.Rect(0, 48);
@@ -561,21 +575,6 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private static AngeliaConsole GetOrCreateWindow () {
-			try {
-				var window = GetWindow<AngeliaConsole>(WINDOW_TITLE, false);
-				window.minSize = new Vector2(275, 400);
-				window.maxSize = new Vector2(600, 1000);
-				window.titleContent = EditorGUIUtility.IconContent("UnityEditor.ConsoleWindow");
-				window.titleContent.text = WINDOW_TITLE;
-				return window;
-			} catch (System.Exception ex) {
-				Debug.LogWarning("Failed to open window.\n" + ex.Message);
-			}
-			return null;
-		}
-
-
 		private void EntityMenu (Entity entity) {
 			var menu = new GenericMenu();
 
@@ -619,10 +618,9 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void SyncArtwork (bool ldtk, bool aseprite) {
-
-			// Sync Artwork
-			if (aseprite) {
+		// Artwork
+		private void SyncArtwork () {
+			try {
 				var list = new List<Object>();
 				foreach (var file in Util.GetFilesIn("Assets", false, "*.ase", "*.aseprite")) {
 					var path = EditorUtil.FixedRelativePath(file.FullName);
@@ -633,35 +631,247 @@ namespace AngeliaFramework.Editor {
 				EditorApplication.ExecuteMenuItem("Tools/Aseprite Toolbox/Create Sprite for Selection");
 				Selection.objects = null;
 				ReloadSheetAssets();
-			}
-			if (ldtk) {
-				LdtkToAngeliA.LdtkToolkit.ReloadAllLevels();
-			}
-			LastSyncTick.Value = System.DateTime.Now.Ticks.ToString();
-			LogAlert($"{(ldtk ? "LDTK " : "")}{(aseprite ? "ASE " : "")}Synced");
+				ReloadAllLevels();
+				LastSyncTick.Value = System.DateTime.Now.Ticks.ToString();
+				LogAlert("Artwork Synced");
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
 
-			// Check Sprite Name Duplication
-			string errorMsg = "";
-			var map = new Dictionary<string, SpriteSheet>();
+
+		private void ReloadAllLevels () {
+
+			// Delete Old Maps
+			var mapRoot = AUtil.GetMapRoot();
+			Util.DeleteFolder(mapRoot);
+			Util.CreateFolder(mapRoot);
+
+			// Get Sprite Pool
+			var tilesetPool = new Dictionary<string, Dictionary<Vector2Int, (int blockID, Int4 border)>>();
 			foreach (var sheet in EditorUtil.ForAllAssets<SpriteSheet>()) {
-				var texture = sheet.Texture;
-				if (texture == null) continue;
-				var sprites = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(texture));
-				foreach (var sprite in sprites) {
-					if (map.ContainsKey(sprite.name)) {
-						errorMsg += $"<color=#FFCC00>{sheet.name}</color> and <color=#FFCC00>{map[sprite.name].name}</color> is having duplicate sprite <color=#FFCC00>{sprite.name}</color>\n";
-					} else {
-						map.Add(sprite.name, sheet);
+				if (sheet.Texture == null || !sheet.Texture.isReadable) continue;
+				var tPath = AssetDatabase.GetAssetPath(sheet.Texture);
+				var spritePool = new Dictionary<Vector2Int, (int blockID, Int4 border)>();
+				int tHeight = sheet.Texture.height;
+				foreach (var obj in AssetDatabase.LoadAllAssetsAtPath(tPath)) {
+					if (obj is Sprite sp) {
+						var _rect = sp.rect.ToRectInt();
+						var _pos = _rect.position;
+						_pos.y = tHeight - (_pos.y + _rect.height - 1) - 1;
+						bool hasCol =
+							(sp.border.x + sp.border.z).LessOrAlmost(sp.rect.width) &&
+							(sp.border.w + sp.border.y).LessOrAlmost(sp.rect.height);
+						var border = hasCol ? new Int4() {
+							Left = (int)sp.border.x * Const.CELL_SIZE / (int)sp.rect.width,
+							Right = (int)sp.border.z * Const.CELL_SIZE / (int)sp.rect.width,
+							Up = (int)sp.border.w * Const.CELL_SIZE / (int)sp.rect.height,
+							Down = (int)sp.border.y * Const.CELL_SIZE / (int)sp.rect.height
+						} : new Int4() { Left = -1, Right = -1, Up = -1, Down = -1, };
+						spritePool.TryAdd(_pos, (sp.name.AngeHash(), border));
 					}
 				}
+				tilesetPool.TryAdd(sheet.Texture.name, spritePool);
+			}
+
+			// Load Levels
+			int successCount = 0;
+			int errorCount = 0;
+			foreach (var file in Util.GetFilesIn(Application.dataPath, false, "*.ldtk")) {
+				try {
+					var json = Util.FileToText(file.FullName);
+					var ldtk = JsonUtility.FromJson<LdtkProject>(json);
+					bool success = LoadLdtkLevel(ldtk, tilesetPool);
+					if (success) successCount++;
+				} catch (System.Exception ex) {
+					Debug.LogException(ex);
+					errorCount++;
+				}
+			}
+
+			// Dialog
+			if (successCount + errorCount == 0) {
+				EditorUtility.DisplayDialog("Done", "No Level Processesed.", "OK");
+			} else {
+				string message = "All Maps Reloaded. ";
+				if (successCount > 0) {
+					message += successCount + " success, ";
+				}
+				if (errorCount > 0) {
+					message += errorCount + " failed.";
+				}
+				if (errorCount > 0) {
+					Debug.LogWarning(message);
+				}
+			}
+		}
+
+
+		private bool LoadLdtkLevel (LdtkProject project, Dictionary<string, Dictionary<Vector2Int, (int blockID, Int4 border)>> spritePool) {
+			// Ldtk >> Custom Data Pool
+			var customDataPool = new Dictionary<int, (bool trigger, int tag)>();
+			foreach (var tileset in project.defs.tilesets) {
+				if (tileset.identifier.StartsWith("_")) continue;
+				string tName = Util.GetNameWithoutExtension(tileset.relPath);
+				if (!spritePool.ContainsKey(tName)) continue;
+				var sPool = spritePool[tName];
+				int gridX = tileset.__cWid;
+				int gridY = tileset.__cHei;
+				int space = tileset.spacing;
+				int padding = tileset.padding;
+				int gSize = tileset.tileGridSize;
+				foreach (var data in tileset.customData) {
+					int id = data.tileId;
+					var tilePos = new Vector2Int(
+						padding + (id % gridX) * (gSize + space),
+						padding + (id / gridY) * (gSize + space)
+					);
+					if (sPool.TryGetValue(tilePos, out (int blockID, Int4 border) _value)) {
+						var lines = data.data.Split('\n');
+
+						// Is Trigger
+						bool isTrigger = false;
+						if (lines.Length > 0 && bool.TryParse(lines[0], out bool value)) {
+							isTrigger = value;
+						}
+
+						// Tag String
+						int tag = 0;
+						if (lines.Length > 1) {
+							tag = lines[1].AngeHash();
+						}
+
+						customDataPool.TryAdd(_value.blockID, (isTrigger, tag));
+					}
+				}
+			}
+
+			// Ldtk >> World Pool
+			var worldPool = new Dictionary<(int x, int y), World>();
+			foreach (var level in project.levels) {
+				int levelPosX = level.worldX;
+				int levelPosY = level.worldY;
+				foreach (var layer in level.layerInstances) {
+					int gridSize = layer.__gridSize;
+					int offsetX = levelPosX + layer.__pxTotalOffsetX;
+					int offsetY = levelPosY + layer.__pxTotalOffsetY;
+					bool isLevel = layer.__identifier.ToLower().StartsWith("level");
+					var tName = Util.GetNameWithoutExtension(layer.__tilesetRelPath);
+					if (!spritePool.ContainsKey(tName) && layer.__type != "Entities") continue;
+					TileInstance[] tiles = null;
+					EntityInstance[] entities = null;
+					switch (layer.__type) {
+						case "Tiles":
+							tiles = layer.gridTiles;
+							break;
+						case "IntGrid":
+						case "AutoLayer":
+							tiles = layer.autoLayerTiles;
+							break;
+						case "Entities":
+							entities = layer.entityInstances;
+							break;
+					}
+					if (tiles != null) {
+						var sPool = spritePool[tName];
+						foreach (var tile in tiles) {
+							var srcPos = new Vector2Int(tile.src[0], tile.src[1]);
+							if (sPool.ContainsKey(srcPos)) {
+								ForLdtkTile(
+									tile.px[0] + offsetX,
+									tile.px[1] + offsetY,
+									(_localX, _localY, world) => SetBlock(world, _localX, _localY, srcPos)
+								);
+							}
+						}
+					} else if (entities != null) {
+						foreach (var entity in entities) {
+							ForLdtkTile(
+								entity.px[0] - (int)(entity.__pivot[0] * entity.width) + offsetX,
+								entity.px[1] - (int)(entity.__pivot[1] * entity.height) + offsetY,
+								(_localX, _localY, world) => {
+									ref var e = ref world.Entities[
+										_localY * Const.WORLD_MAP_SIZE + _localX
+									];
+									e.TypeID = entity.__identifier.AngeHash();
+								}
+							);
+						}
+					}
+					// Func
+					void ForLdtkTile (int pixelX, int pixelY, System.Action<int, int, World> action) {
+						int globalX = pixelX * Const.CELL_SIZE / gridSize;
+						int globalY = -pixelY * Const.CELL_SIZE / gridSize - Const.CELL_SIZE;
+						int unitX = globalX.AltDivide(Const.CELL_SIZE);
+						int unitY = globalY.AltDivide(Const.CELL_SIZE);
+						int worldX = unitX.AltDivide(Const.WORLD_MAP_SIZE);
+						int worldY = unitY.AltDivide(Const.WORLD_MAP_SIZE);
+						if (!worldPool.ContainsKey((worldX, worldY))) {
+							worldPool.Add((worldX, worldY), new());
+						}
+						action(
+							unitX.AltMod(Const.WORLD_MAP_SIZE),
+							unitY.AltMod(Const.WORLD_MAP_SIZE),
+							worldPool[(worldX, worldY)]
+						);
+					}
+					void SetBlock (World world, int _localX, int _localY, Vector2Int srcPos) {
+						if (isLevel) {
+							var blocks = world.Level;
+							ref var block = ref blocks[_localY * Const.WORLD_MAP_SIZE + _localX];
+							var (blockID, border) = spritePool[tName][srcPos];
+							block.TypeID = blockID;
+							block.ColliderBorder = border;
+							if (customDataPool.TryGetValue(block.TypeID, out (bool _isT, int _tag) _value)) {
+								block.IsTrigger = _value._isT;
+								block.Tag = _value._tag;
+							} else {
+								block.IsTrigger = false;
+								block.Tag = 0;
+							}
+						} else {
+							var blocks = world.Background;
+							ref var block = ref blocks[_localY * Const.WORLD_MAP_SIZE + _localX];
+							var (blockID, border) = spritePool[tName][srcPos];
+							block.TypeID = blockID;
+						}
+
+					}
+				}
+			}
+
+			// World Pool >> Maps (add into, no replace)
+			int insID = 1;
+			foreach (var pair in worldPool) {
+				insID = pair.Value.EditorOnly_SaveToDisk(pair.Key.x, pair.Key.y, insID);
+			}
+			return true;
+		}
+
+
+		private void CheckSpriteNameDuplication () {
+			string errorMsg = "";
+			foreach (var sheet in EditorUtil.ForAllAssets<SpriteSheet>()) {
+				var spriteSheetMap = new Dictionary<string, (SpriteSheet sheet, int index)>();
+				try {
+					var texture = sheet.Texture;
+					if (texture == null) continue;
+					var sprites = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(texture));
+					for (int i = 0; i < sprites.Length; i++) {
+						var sprite = sprites[i];
+						if (spriteSheetMap.ContainsKey(sprite.name)) {
+							errorMsg += $"<color=#FFCC00>{sheet.name}</color> and <color=#FFCC00>{spriteSheetMap[sprite.name].sheet.name}</color> is having duplicate sprite <color=#FFCC00>{sprite.name}</color>\n";
+						} else {
+							spriteSheetMap.Add(sprite.name, (sheet, i));
+						}
+					}
+				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
 			if (!string.IsNullOrEmpty(errorMsg)) {
 				Debug.LogError(errorMsg);
 			}
-
 		}
 
 
+		// Util
 		private void LogAlert (string message) {
 			AlertMessage = message;
 			RequireAlertTime = EditorApplication.timeSinceStartup;

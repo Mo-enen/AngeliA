@@ -17,7 +17,7 @@ namespace LdtkToAngeliA {
 		/// <summary>
 		/// Chances for this rule to be applied (0 to 1)
 		/// </summary>
-		public double chance;
+		public float chance;
 
 		/// <summary>
 		/// Checker mode Possible values: `None`, `Horizontal`, `Vertical`
@@ -37,43 +37,43 @@ namespace LdtkToAngeliA {
 		/// <summary>
 		/// Default IntGrid value when checking cells outside of level bounds
 		/// </summary>
-		public long? outOfBoundsValue;
+		public int? outOfBoundsValue;
 
 		/// <summary>
 		/// Rule pattern (size x size)
 		/// </summary>
-		public long[] pattern;
+		public int[] pattern;
 
 		/// <summary>
 		/// If TRUE, enable Perlin filtering to only apply rule on specific random area
 		/// </summary>
 		public bool perlinActive;
 
-		public double perlinOctaves;
+		public float perlinOctaves;
 
-		public double perlinScale;
+		public float perlinScale;
 
-		public double perlinSeed;
+		public float perlinSeed;
 
 		/// <summary>
 		/// X pivot of a tile stamp (0-1)
 		/// </summary>
-		public double pivotX;
+		public float pivotX;
 
 		/// <summary>
 		/// Y pivot of a tile stamp (0-1)
 		/// </summary>
-		public double pivotY;
+		public float pivotY;
 
 		/// <summary>
 		/// Pattern width & height. Should only be 1,3,5 or 7.
 		/// </summary>
-		public long size;
+		public int size;
 
 		/// <summary>
 		/// Array of all the tile IDs. They are used randomly or as stamps, based on `tileMode` value.
 		/// </summary>
-		public long[] tileIds;
+		public int[] tileIds;
 
 		/// <summary>
 		/// Defines how tileIds array is used Possible values: `Single`, `Stamp`
@@ -83,16 +83,16 @@ namespace LdtkToAngeliA {
 		/// <summary>
 		/// Unique Int identifier
 		/// </summary>
-		public long uid;
+		public int uid;
 
 		/// <summary>
 		/// X cell coord modulo
 		/// </summary>
-		public long xModulo;
+		public int xModulo;
 
 		/// <summary>
 		/// Y cell coord modulo
 		/// </summary>
-		public long yModulo;
+		public int yModulo;
 	}
 }
