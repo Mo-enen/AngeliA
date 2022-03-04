@@ -56,6 +56,7 @@ namespace AngeliaFramework {
 
 
 		public delegate WorldGenerator WorldGeneratorIntHandler (int id);
+		public delegate string PathHandler (Vector2Int pos);
 
 
 		#endregion
@@ -68,6 +69,7 @@ namespace AngeliaFramework {
 
 		// Handler
 		public static WorldGeneratorIntHandler CreateGenerator { get; set; } = null;
+		public static PathHandler GetWorldPath { get; set; } = null;
 
 		// Api
 		public RectInt WorldUnitRect => new(
@@ -129,8 +131,14 @@ namespace AngeliaFramework {
 				System.Array.Clear(m_Entities, 0, m_Entities.Length);
 				WorldPosition = new(worldX, worldY);
 
-				string path = Util.CombinePaths(MapRoot, $"{worldX}_{worldY}.{Const.MAP_FILE_EXT}");
-				if (!Util.FileExists(path)) return false;
+				string path;
+				if (GetWorldPath != null) {
+					path = GetWorldPath(WorldPosition);
+					if (string.IsNullOrEmpty(path)) return false;
+				} else {
+					path = Util.CombinePaths(MapRoot, $"{worldX}_{worldY}.{Const.MAP_FILE_EXT}");
+					if (!Util.FileExists(path)) return false;
+				}
 
 				using var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
 				using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);

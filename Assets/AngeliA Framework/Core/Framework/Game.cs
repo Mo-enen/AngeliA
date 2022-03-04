@@ -39,6 +39,7 @@ namespace AngeliaFramework {
 		// Data
 		private readonly Dictionary<int, EntityHandler> EntityHandlerPool = new();
 		private readonly Dictionary<int, WorldGeneratorHandler> WorldGeneratorHandlerPool = new();
+		private readonly Dictionary<Vector2Int, string> WorldFilePathPool = new();
 		private readonly HashSet<int> StagedEntityHash = new();
 		private readonly Entity[][] Entities = new Entity[Const.ENTITY_LAYER_COUNT][];
 		private readonly int[] EntityLength = new int[Const.ENTITY_LAYER_COUNT];
@@ -215,6 +216,19 @@ namespace AngeliaFramework {
 
 
 		private void Init_World () {
+
+			// Path
+			World.GetWorldPath = (pos) => WorldFilePathPool.ContainsKey(pos) ? WorldFilePathPool[pos] : "";
+			foreach (var file in Util.GetFilesIn(AUtil.GetMapRoot(), true, $"*.{Const.MAP_FILE_EXT}")) {
+				try {
+					string name = Util.GetNameWithoutExtension(file.Name);
+					int _index = name.IndexOf('_');
+					int worldX = int.Parse(name[.._index]);
+					int worldY = int.Parse(name[(_index + 1)..]);
+					WorldFilePathPool.TryAdd(new(worldX, worldY), file.FullName);
+				} catch (System.Exception ex) { Debug.LogException(ex); }
+			}
+
 			// Generator Pool
 			foreach (var gType in typeof(WorldGenerator).GetAllChildClass()) {
 				int id = gType.AngeHash();

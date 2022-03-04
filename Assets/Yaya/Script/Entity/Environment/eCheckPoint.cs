@@ -5,6 +5,20 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+
+
+	[System.Serializable]
+	public class CheckPointData {
+		[System.Serializable]
+		public struct Data {
+			public int ID;
+			public int X;
+			public int Y;
+		}
+		public Data[] CPs = null;
+	}
+
+
 	public class eCheckPoint : Entity {
 
 
@@ -20,10 +34,32 @@ namespace Yaya {
 		private bool IsStatue => Data > 0;
 
 		// Data
+		private static readonly Dictionary<int, Vector2Int> PositionPool = new();
 		private int ArtworkCode = 0;
 
 
 		// MSG
+		[RuntimeInitializeOnLoadMethod]
+		private static void Init () {
+			try {
+				PositionPool.Clear();
+				var path = Util.CombinePaths(AUtil.GetMapRoot(), $"{Application.productName}.cp");
+				if (Util.FileExists(path)) {
+					var data = JsonUtility.FromJson<CheckPointData>(Util.FileToText(path));
+					if (data != null) {
+						foreach (var cp in data.CPs) {
+							PositionPool.TryAdd(cp.ID, new(cp.X, cp.Y));
+						}
+					}
+				}
+			} catch (System.Exception ex) {
+#if UNITY_EDITOR
+				Debug.LogException(ex);
+#endif
+			}
+		}
+
+
 		public override void OnCreate (int frame) {
 			base.OnCreate(frame);
 #if UNITY_EDITOR
@@ -49,3 +85,56 @@ namespace Yaya {
 
 	}
 }
+#if UNITY_EDITOR
+namespace Yaya.Editor {
+	using System.Collections;
+	using System.Collections.Generic;
+	using UnityEngine;
+	using UnityEditor;
+	public static class CheckPointArtworkExtension {
+		[MenuItem("AngeliA/Command/Sync Check Point Position Files")]
+		private static void SyncCheckPointPositionFiles () {
+			var cpPool = new Dictionary<int, Vector2Int>();
+			var world = new World();
+			int cpID = typeof(eCheckPoint).AngeHash();
+			const int SIZE = Const.WORLD_MAP_SIZE;
+			// Get Positions
+			foreach (var file in Util.GetFilesIn(AUtil.GetMapRoot(), true, $"*.{Const.MAP_FILE_EXT}")) {
+				try {
+					string name = Util.GetNameWithoutExtension(file.Name);
+					int _index = name.IndexOf('_');
+					int worldX = int.Parse(name[.._index]);
+					int worldY = int.Parse(name[(_index + 1)..]);
+					if (!world.LoadFromDisk(worldX, worldY)) continue;
+					for (int i = 0; i < SIZE * SIZE; i++) {
+						var e = world.Entities[i];
+						if (e.TypeID == cpID) {
+							cpPool.TryAdd(e.Data, new(
+								(worldX * SIZE + i % SIZE) * Const.CELL_SIZE,
+								(worldY * SIZE + i / SIZE) * Const.CELL_SIZE
+							));
+						}
+					}
+				} catch (System.Exception ex) { Debug.LogException(ex); }
+			}
+			// Write Position File
+			try {
+				var cpData = new CheckPointData() { CPs = new CheckPointData.Data[cpPool.Count] };
+				int index = 0;
+				foreach (var (id, pos) in cpPool) {
+					cpData.CPs[index] = new CheckPointData.Data() {
+						ID = id,
+						X = pos.x,
+						Y = pos.y,
+					};
+					index++;
+				}
+				Util.TextToFile(
+					JsonUtility.ToJson(cpData, true),
+					Util.CombinePaths(AUtil.GetMapRoot(), $"{Application.productName}.cp")
+				);
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
+	}
+}
+#endif
