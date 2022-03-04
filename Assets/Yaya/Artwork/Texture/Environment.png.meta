@@ -18,77 +18,77 @@ TextureImporter:
       213: -2651921403531159219
     second: Road Sign 2
   - first:
-      213: -7344258109906357230
-    second: Statue Stone 0
+      213: 7479387283841934684
+    second: Check Point 0
   - first:
-      213: 5813947662235796185
-    second: Statue Stone 1
+      213: -2960945584983771309
+    second: Check Point 1
   - first:
-      213: 7882186848137766039
-    second: Statue Stone 2
+      213: 4753610733336185835
+    second: Check Point 2
   - first:
-      213: 7084439161143361213
-    second: Statue Stone 3
+      213: -3419148063050986649
+    second: Check Point 3
   - first:
-      213: 4493509515930302244
-    second: Statue Stone 4
+      213: 1442411387999201632
+    second: Check Point 4
   - first:
-      213: -7828503867456260715
-    second: Statue Stone 5
+      213: 4796682652488394807
+    second: Check Point 5
   - first:
-      213: -6197272658652857645
-    second: Statue Stone 6
+      213: 4967728438002143237
+    second: Check Point 6
   - first:
-      213: -6878705244577495233
-    second: Statue Stone 7
+      213: -6528081986525768833
+    second: Check Point 7
   - first:
-      213: -179086573553171763
-    second: Statue Stone 8
+      213: -3785873634103200544
+    second: Check Point 8
   - first:
-      213: -4156036431321919815
-    second: Statue Stone 9
+      213: 5545007316290427899
+    second: Check Point 9
   - first:
-      213: 6607612819170858804
-    second: Statue Stone 10
+      213: -5892295630428509985
+    second: Check Point 10
   - first:
-      213: -706272099325279058
-    second: Statue Stone 11
+      213: -2229717546262585461
+    second: Check Point 11
   - first:
-      213: -6160374140608085397
-    second: Statue Stone 12
+      213: 8129547225524646286
+    second: Check Point 12
   - first:
-      213: 5210914073453614556
-    second: Statue Stone 13
+      213: 2113546428365998978
+    second: Check Point 13
   - first:
-      213: -613925231144685540
-    second: Statue Stone 14
+      213: 7835424189843858348
+    second: Check Point 14
   - first:
-      213: -5210069633770090873
-    second: Statue Stone 15
+      213: 2790127909319181203
+    second: Check Point 15
   - first:
-      213: -5906209360155419146
-    second: Statue Stone 16
+      213: -2343149485283496944
+    second: Check Point 16
   - first:
-      213: -367880477389656533
-    second: Statue Stone 17
+      213: -6185748178116851796
+    second: Check Point 17
   - first:
-      213: 1425568216204440266
-    second: Statue Stone 18
+      213: -5392721861458921995
+    second: Check Point 18
   - first:
-      213: 1892188689487029548
-    second: Statue Stone 19
+      213: -8671748445071439811
+    second: Check Point 19
   - first:
-      213: 1049483808235947416
-    second: Statue Stone 20
+      213: 5585035996361870649
+    second: Check Point 20
   - first:
-      213: 4226112796901442097
-    second: Statue Stone 21
+      213: -3290744548033203628
+    second: Check Point 21
   - first:
-      213: 807406176306049408
-    second: Statue Stone 22
+      213: -1098087479343664158
+    second: Check Point 22
   - first:
-      213: -2727332506511647285
-    second: Statue Stone 23
+      213: 7696069845921684782
+    second: Check Point 23
   - first:
       213: 8869858959872106772
     second: Conveyor Mid 0
@@ -137,6 +137,126 @@ TextureImporter:
   - first:
       213: -816469386340296175
     second: Conveyor Left 7
+  - first:
+      213: 1277748799282487443
+    second: Conveyor Right 0
+  - first:
+      213: -2972611691506671692
+    second: Conveyor Right 1
+  - first:
+      213: -1598002019710971740
+    second: Conveyor Right 2
+  - first:
+      213: -713158668184193528
+    second: Conveyor Right 3
+  - first:
+      213: -1080687705925388806
+    second: Conveyor Right 4
+  - first:
+      213: 8654862003835209668
+    second: Conveyor Right 5
+  - first:
+      213: -8539665021158487183
+    second: Conveyor Right 6
+  - first:
+      213: 5458605334293113808
+    second: Conveyor Right 7
+  - first:
+      213: 3505626402946431825
+    second: Conveyor Single 0
+  - first:
+      213: 5639508038077653028
+    second: Conveyor Single 1
+  - first:
+      213: -8255140515171143345
+    second: Conveyor Single 2
+  - first:
+      213: -2169502823514170269
+    second: Conveyor Single 3
+  - first:
+      213: 2223780591514262014
+    second: Conveyor Single 4
+  - first:
+      213: 990678265378613858
+    second: Conveyor Single 5
+  - first:
+      213: 3879808583591258486
+    second: Conveyor Single 6
+  - first:
+      213: -4780002661236639766
+    second: Conveyor Single 7
+  - first:
+      213: -4542964733385252278
+    second: Check Point Statue 12
+  - first:
+      213: -7719987966218061050
+    second: Check Point Statue 0
+  - first:
+      213: 5548024884000164122
+    second: Check Point Statue 1
+  - first:
+      213: -4706806306275913673
+    second: Check Point Statue 12_1
+  - first:
+      213: 939141180456421438
+    second: Check Point Statue 13
+  - first:
+      213: 4085317018560648784
+    second: Check Point Statue 14
+  - first:
+      213: -745456960631479746
+    second: Check Point Statue 15
+  - first:
+      213: 6368496293478969206
+    second: Check Point Statue 16
+  - first:
+      213: 3556563255275395520
+    second: Check Point Statue 17
+  - first:
+      213: 3983025403656413959
+    second: Check Point Statue 18
+  - first:
+      213: -452438259229324884
+    second: Check Point Statue 19
+  - first:
+      213: 3143188977998280343
+    second: Check Point Statue 20
+  - first:
+      213: -327444478946842036
+    second: Check Point Statue 21
+  - first:
+      213: 4681020691150816156
+    second: Check Point Statue 22
+  - first:
+      213: 5376385502045861611
+    second: Check Point Statue 2
+  - first:
+      213: 4076745719988938914
+    second: Check Point Statue 3
+  - first:
+      213: -4679224785814080146
+    second: Check Point Statue 4
+  - first:
+      213: -1731061873775822204
+    second: Check Point Statue 5
+  - first:
+      213: -1255422287790059223
+    second: Check Point Statue 6
+  - first:
+      213: -6854052461108837351
+    second: Check Point Statue 7
+  - first:
+      213: -693925589386706004
+    second: Check Point Statue 8
+  - first:
+      213: 8655638043569500143
+    second: Check Point Statue 9
+  - first:
+      213: -1665159501723933806
+    second: Check Point Statue 10
+  - first:
+      213: 6571666721545244848
+    second: Check Point Statue 11
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -322,11 +442,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 0
+      name: Check Point 0
       rect:
         serializedVersion: 2
         x: 47
-        y: 239
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -336,18 +456,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 214ff3c1924f31a90800000000000000
-      internalID: -7344258109906357230
+      spriteID: c55e8fe6b1f1cc760800000000000000
+      internalID: 7479387283841934684
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 1
+      name: Check Point 1
       rect:
         serializedVersion: 2
         x: 64
-        y: 239
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -357,18 +477,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9d2074e589a4fa050800000000000000
-      internalID: 5813947662235796185
+      spriteID: 357f7cf9dab98e6d0800000000000000
+      internalID: -2960945584983771309
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 2
+      name: Check Point 2
       rect:
         serializedVersion: 2
         x: 81
-        y: 239
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -378,18 +498,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 794e1804d27236d60800000000000000
-      internalID: 7882186848137766039
+      spriteID: bebccf8b6c738f140800000000000000
+      internalID: 4753610733336185835
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 3
+      name: Check Point 3
       rect:
         serializedVersion: 2
         x: 98
-        y: 239
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -399,18 +519,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: dbef0d0d1ebf05260800000000000000
-      internalID: 7084439161143361213
+      spriteID: 76b816bb3febc80d0800000000000000
+      internalID: -3419148063050986649
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 4
+      name: Check Point 4
       rect:
         serializedVersion: 2
         x: 115
-        y: 239
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -420,18 +540,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 427fcdbd8172c5e30800000000000000
-      internalID: 4493509515930302244
+      spriteID: 069aba1e389740410800000000000000
+      internalID: 1442411387999201632
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 5
+      name: Check Point 5
       rect:
         serializedVersion: 2
         x: 132
-        y: 239
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -441,18 +561,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5957f71b5319b5390800000000000000
-      internalID: -7828503867456260715
+      spriteID: 73869d1657d319240800000000000000
+      internalID: 4796682652488394807
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 6
+      name: Check Point 6
       rect:
         serializedVersion: 2
         x: 149
-        y: 239
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -462,18 +582,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3da71ccf95ddef9a0800000000000000
-      internalID: -6197272658652857645
+      spriteID: 50059b7b1bae0f440800000000000000
+      internalID: 4967728438002143237
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 7
+      name: Check Point 7
       rect:
         serializedVersion: 2
         x: 166
-        y: 239
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -483,18 +603,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f378756660ee980a0800000000000000
-      internalID: -6878705244577495233
+      spriteID: f73518045089765a0800000000000000
+      internalID: -6528081986525768833
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 8
+      name: Check Point 8
       rect:
         serializedVersion: 2
         x: 183
-        y: 239
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -504,18 +624,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: dc2425fc5b1c38df0800000000000000
-      internalID: -179086573553171763
+      spriteID: 0e4f2cafcffd57bc0800000000000000
+      internalID: -3785873634103200544
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 9
+      name: Check Point 9
       rect:
         serializedVersion: 2
         x: 200
-        y: 239
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -525,18 +645,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9be8975a2eac256c0800000000000000
-      internalID: -4156036431321919815
+      spriteID: bfbde6486c2d3fc40800000000000000
+      internalID: 5545007316290427899
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 10
+      name: Check Point 10
       rect:
         serializedVersion: 2
         x: 217
-        y: 239
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -546,18 +666,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4371ff3b9d4f2bb50800000000000000
-      internalID: 6607612819170858804
+      spriteID: fd8e8b4c75c5a3ea0800000000000000
+      internalID: -5892295630428509985
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 11
+      name: Check Point 11
       rect:
         serializedVersion: 2
         x: 234
-        y: 239
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -567,18 +687,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ea482f48441d236f0800000000000000
-      internalID: -706272099325279058
+      spriteID: b8f109984b37e01e0800000000000000
+      internalID: -2229717546262585461
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 12
+      name: Check Point 12
       rect:
         serializedVersion: 2
         x: 47
-        y: 222
+        y: 156
         width: 16
         height: 16
       alignment: 9
@@ -588,18 +708,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b628d81bb54f18aa0800000000000000
-      internalID: -6160374140608085397
+      spriteID: e81b8222124f1d070800000000000000
+      internalID: 8129547225524646286
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 13
+      name: Check Point 13
       rect:
         serializedVersion: 2
         x: 64
-        y: 222
+        y: 156
         width: 16
         height: 16
       alignment: 9
@@ -609,18 +729,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cd5594fbdb2e05840800000000000000
-      internalID: 5210914073453614556
+      spriteID: 28b0d0f4743d45d10800000000000000
+      internalID: 2113546428365998978
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 14
+      name: Check Point 14
       rect:
         serializedVersion: 2
         x: 81
-        y: 222
+        y: 156
         width: 16
         height: 16
       alignment: 9
@@ -630,18 +750,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c10b8f64146ea77f0800000000000000
-      internalID: -613925231144685540
+      spriteID: ca3652c69c40dbc60800000000000000
+      internalID: 7835424189843858348
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 15
+      name: Check Point 15
       rect:
         serializedVersion: 2
         x: 98
-        y: 222
+        y: 156
         width: 16
         height: 16
       alignment: 9
@@ -651,18 +771,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 78e8510b54d12b7b0800000000000000
-      internalID: -5210069633770090873
+      spriteID: 3938fd00d8688b620800000000000000
+      internalID: 2790127909319181203
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 16
+      name: Check Point 16
       rect:
         serializedVersion: 2
         x: 115
-        y: 222
+        y: 156
         width: 16
         height: 16
       alignment: 9
@@ -672,18 +792,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6fd59de11ede80ea0800000000000000
-      internalID: -5906209360155419146
+      spriteID: 01ca90a25f57b7fd0800000000000000
+      internalID: -2343149485283496944
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 17
+      name: Check Point 17
       rect:
         serializedVersion: 2
         x: 132
-        y: 222
+        y: 156
         width: 16
         height: 16
       alignment: 9
@@ -693,18 +813,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b2e6369a7a605eaf0800000000000000
-      internalID: -367880477389656533
+      spriteID: ca743553ecec72aa0800000000000000
+      internalID: -6185748178116851796
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 18
+      name: Check Point 18
       rect:
         serializedVersion: 2
         x: 149
-        y: 222
+        y: 156
         width: 16
         height: 16
       alignment: 9
@@ -714,18 +834,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ac2f3f95db2a8c310800000000000000
-      internalID: 1425568216204440266
+      spriteID: 5f5f143f9043925b0800000000000000
+      internalID: -5392721861458921995
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 19
+      name: Check Point 19
       rect:
         serializedVersion: 2
         x: 166
-        y: 222
+        y: 156
         width: 16
         height: 16
       alignment: 9
@@ -735,18 +855,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c25e2ec7697624a10800000000000000
-      internalID: 1892188689487029548
+      spriteID: d3888fdebb2c7a780800000000000000
+      internalID: -8671748445071439811
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 20
+      name: Check Point 20
       rect:
         serializedVersion: 2
         x: 183
-        y: 222
+        y: 156
         width: 16
         height: 16
       alignment: 9
@@ -756,18 +876,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8958d6396f3809e00800000000000000
-      internalID: 1049483808235947416
+      spriteID: 93d4becd5a8028d40800000000000000
+      internalID: 5585035996361870649
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 21
+      name: Check Point 21
       rect:
         serializedVersion: 2
         x: 200
-        y: 222
+        y: 156
         width: 16
         height: 16
       alignment: 9
@@ -777,18 +897,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1320b08a23b26aa30800000000000000
-      internalID: 4226112796901442097
+      spriteID: 4527de7c44de452d0800000000000000
+      internalID: -3290744548033203628
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 22
+      name: Check Point 22
       rect:
         serializedVersion: 2
         x: 217
-        y: 222
+        y: 156
         width: 16
         height: 16
       alignment: 9
@@ -798,18 +918,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 081bd28b3ab743b00800000000000000
-      internalID: 807406176306049408
+      spriteID: 2e3ba65614fc2c0f0800000000000000
+      internalID: -1098087479343664158
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Statue Stone 23
+      name: Check Point 23
       rect:
         serializedVersion: 2
         x: 234
-        y: 222
+        y: 156
         width: 16
         height: 16
       alignment: 9
@@ -819,8 +939,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bcd5ffc0981962ad0800000000000000
-      internalID: -2727332506511647285
+      spriteID: e2dd1c4dfbeedca60800000000000000
+      internalID: 7696069845921684782
       vertices: []
       indices: 
       edges: []
@@ -830,7 +950,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 47
-        y: 205
+        y: 139
         width: 16
         height: 16
       alignment: 9
@@ -851,7 +971,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 205
+        y: 139
         width: 16
         height: 16
       alignment: 9
@@ -872,7 +992,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 81
-        y: 205
+        y: 139
         width: 16
         height: 16
       alignment: 9
@@ -893,7 +1013,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 98
-        y: 205
+        y: 139
         width: 16
         height: 16
       alignment: 9
@@ -914,7 +1034,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 115
-        y: 205
+        y: 139
         width: 16
         height: 16
       alignment: 9
@@ -935,7 +1055,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 132
-        y: 205
+        y: 139
         width: 16
         height: 16
       alignment: 9
@@ -956,7 +1076,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 149
-        y: 205
+        y: 139
         width: 16
         height: 16
       alignment: 9
@@ -977,7 +1097,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 166
-        y: 205
+        y: 139
         width: 16
         height: 16
       alignment: 9
@@ -998,7 +1118,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 47
-        y: 188
+        y: 122
         width: 16
         height: 16
       alignment: 9
@@ -1019,7 +1139,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 188
+        y: 122
         width: 16
         height: 16
       alignment: 9
@@ -1040,7 +1160,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 81
-        y: 188
+        y: 122
         width: 16
         height: 16
       alignment: 9
@@ -1061,7 +1181,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 98
-        y: 188
+        y: 122
         width: 16
         height: 16
       alignment: 9
@@ -1082,7 +1202,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 115
-        y: 188
+        y: 122
         width: 16
         height: 16
       alignment: 9
@@ -1103,7 +1223,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 132
-        y: 188
+        y: 122
         width: 16
         height: 16
       alignment: 9
@@ -1124,7 +1244,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 149
-        y: 188
+        y: 122
         width: 16
         height: 16
       alignment: 9
@@ -1145,7 +1265,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 166
-        y: 188
+        y: 122
         width: 16
         height: 16
       alignment: 9
@@ -1161,6 +1281,846 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3902a6d53c97bb110800000000000000
+      internalID: 1277748799282487443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bf52988a692fb6d0800000000000000
+      internalID: -2972611691506671692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a055c031a1c2d9e0800000000000000
+      internalID: -1598002019710971740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 806f36248f95a16f0800000000000000
+      internalID: -713158668184193528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af57f27d140a001f0800000000000000
+      internalID: -1080687705925388806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c78f96132f3c1870800000000000000
+      internalID: 8654862003835209668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17b050988e30d7980800000000000000
+      internalID: -8539665021158487183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dbe79f61acd0cb40800000000000000
+      internalID: 5458605334293113808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15b3adec3ac76a030800000000000000
+      internalID: 3505626402946431825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42024956eae834e40800000000000000
+      internalID: 5639508038077653028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f41f9466079df6d80800000000000000
+      internalID: -8255140515171143345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36c1b313da064e1e0800000000000000
+      internalID: -2169502823514170269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef99d977aa47cde10800000000000000
+      internalID: 2223780591514262014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26aa79e22a89fbd00800000000000000
+      internalID: 990678265378613858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 679e775c959d7d530800000000000000
+      internalID: 3879808583591258486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae77197b7e40aadb0800000000000000
+      internalID: -4780002661236639766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 12
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a42e17705a524f0c0800000000000000
+      internalID: -4542964733385252278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60b3843d8d71dd490800000000000000
+      internalID: -7719987966218061050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a198bdfbc3b8efc40800000000000000
+      internalID: 5548024884000164122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 12_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7301bd72a901eaeb0800000000000000
+      internalID: -4706806306275913673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 13
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e38cb078def780d00800000000000000
+      internalID: 939141180456421438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 14
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0565a26fe26f1b830800000000000000
+      internalID: 4085317018560648784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 15
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e32e73a08da97a5f0800000000000000
+      internalID: -745456960631479746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 16
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67fa43e13a1716850800000000000000
+      internalID: 6368496293478969206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 17
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c995ebef637b5130800000000000000
+      internalID: 3556563255275395520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 18
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7032c4c608c864730800000000000000
+      internalID: 3983025403656413959
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 19
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca907d3eccd98b9f0800000000000000
+      internalID: -452438259229324884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 20
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 796b28fd8b9de9b20800000000000000
+      internalID: 3143188977998280343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 21
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4ae5b43bfea47bf0800000000000000
+      internalID: -327444478946842036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 22
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c934c4a748356f040800000000000000
+      internalID: 4681020691150816156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be6f009f022cc9a40800000000000000
+      internalID: 5376385502045861611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a8e88ff1a2839830800000000000000
+      internalID: 4076745719988938914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e65395159dd001fb0800000000000000
+      internalID: -4679224785814080146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48abe59b5680af7e0800000000000000
+      internalID: -1731061873775822204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9215a2da418d39ee0800000000000000
+      internalID: -1255422287790059223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91447b7d99381e0a0800000000000000
+      internalID: -6854052461108837351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 8
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca34d006a5eae56f0800000000000000
+      internalID: -693925589386706004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 9
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fef215be0f00f1870800000000000000
+      internalID: 8655638043569500143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 10
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 293e06d614a24e8e0800000000000000
+      internalID: -1665159501723933806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Point Statue 11
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b0d5f7a010433b50800000000000000
+      internalID: 6571666721545244848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1172,51 +2132,91 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Statue Stone 4: 4493509515930302244
-      Statue Stone 3: 7084439161143361213
+      Check Point Statue 21: -327444478946842036
+      Check Point 6: 4967728438002143237
+      Check Point 8: -3785873634103200544
       Conveyor Mid 4: 5597944055196095667
-      Statue Stone 7: -6878705244577495233
       Road Sign 0: -2329300805733206252
-      Statue Stone 9: -4156036431321919815
+      Conveyor Right 2: -1598002019710971740
       Conveyor Left 3: -700631615691403929
       Conveyor Left 1: -2686448938111358844
       Barrel: -8064411482835056307
-      Statue Stone 2: 7882186848137766039
-      Statue Stone 17: -367880477389656533
-      Statue Stone 11: -706272099325279058
-      Statue Stone 18: 1425568216204440266
-      Statue Stone 15: -5210069633770090873
-      Conveyor Left 2: -452027482023640203
+      Conveyor Right 6: -8539665021158487183
+      Check Point 13: 2113546428365998978
+      Check Point 9: 5545007316290427899
+      Check Point 15: 2790127909319181203
+      Conveyor Single 5: 990678265378613858
+      Check Point 17: -6185748178116851796
+      Conveyor Right 1: -2972611691506671692
+      Check Point Statue 8: -693925589386706004
       Conveyor Left 6: -8760762342703505
+      Conveyor Left 2: -452027482023640203
+      Check Point Statue 19: -452438259229324884
       Conveyor Mid 0: 8869858959872106772
+      Check Point Statue 12: -4542964733385252278
+      Check Point 20: 5585035996361870649
       Conveyor Mid 5: -366553418290470181
-      Statue Stone 16: -5906209360155419146
+      Check Point 14: 7835424189843858348
+      Check Point 22: -1098087479343664158
+      Check Point Statue 0: -7719987966218061050
+      Check Point 23: 7696069845921684782
       Conveyor Mid 6: 4821765223392073288
-      Statue Stone 1: 5813947662235796185
-      Statue Stone 23: -2727332506511647285
-      Statue Stone 6: -6197272658652857645
+      Check Point Statue 9: 8655638043569500143
+      Check Point 18: -5392721861458921995
+      Check Point 4: 1442411387999201632
+      Check Point 16: -2343149485283496944
+      Check Point 11: -2229717546262585461
+      Check Point Statue 14: 4085317018560648784
+      Conveyor Single 3: -2169502823514170269
+      Check Point Statue 22: 4681020691150816156
+      Check Point 10: -5892295630428509985
+      Check Point Statue 3: 4076745719988938914
+      Check Point Statue 12_1: -4706806306275913673
       Conveyor Left 7: -816469386340296175
-      Statue Stone 19: 1892188689487029548
-      Statue Stone 21: 4226112796901442097
       Conveyor Mid 3: 5286129505909953240
+      Check Point 19: -8671748445071439811
       Conveyor Left 5: 3014544715659330481
       Road Sign 1: 1335569958529975340
-      Statue Stone 0: -7344258109906357230
-      Statue Stone 22: 807406176306049408
-      Statue Stone 14: -613925231144685540
+      Check Point Statue 20: 3143188977998280343
+      Check Point Statue 4: -4679224785814080146
+      Check Point Statue 13: 939141180456421438
+      Check Point Statue 15: -745456960631479746
+      Conveyor Right 4: -1080687705925388806
+      Conveyor Single 0: 3505626402946431825
+      Conveyor Single 4: 2223780591514262014
+      Conveyor Single 7: -4780002661236639766
+      Check Point Statue 11: 6571666721545244848
+      Check Point 2: 4753610733336185835
+      Check Point Statue 5: -1731061873775822204
       Conveyor Left 0: -6849436530788924678
-      Statue Stone 12: -6160374140608085397
       Conveyor Mid 7: 7523519679850416278
+      Check Point 7: -6528081986525768833
+      Check Point Statue 18: 3983025403656413959
+      Check Point 0: 7479387283841934684
       Road Sign 2: -2651921403531159219
-      Statue Stone 20: 1049483808235947416
-      Statue Stone 13: 5210914073453614556
+      Conveyor Right 3: -713158668184193528
+      Check Point 1: -2960945584983771309
+      Check Point Statue 16: 6368496293478969206
       Conveyor Mid 2: 6894232776697334792
       Conveyor Left 4: 4416833164111991290
-      Statue Stone 5: -7828503867456260715
-      Statue Stone 8: -179086573553171763
+      Conveyor Single 1: 5639508038077653028
+      Check Point 21: -3290744548033203628
+      Check Point 5: 4796682652488394807
+      Conveyor Right 5: 8654862003835209668
+      Check Point Statue 6: -1255422287790059223
       Barrel Small: 7703836545563178338
       Conveyor Mid 1: 6273131541661454191
-      Statue Stone 10: 6607612819170858804
+      Check Point 3: -3419148063050986649
+      Check Point Statue 1: 5548024884000164122
+      Check Point Statue 7: -6854052461108837351
+      Check Point 12: 8129547225524646286
+      Check Point Statue 10: -1665159501723933806
+      Check Point Statue 17: 3556563255275395520
+      Conveyor Right 7: 5458605334293113808
+      Conveyor Single 2: -8255140515171143345
+      Conveyor Single 6: 3879808583591258486
+      Check Point Statue 2: 5376385502045861611
+      Conveyor Right 0: 1277748799282487443
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

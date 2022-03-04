@@ -10,7 +10,7 @@
 	},
 	"jsonVersion": "0.10.0-beta1",
 	"appBuildId": 456924,
-	"nextUid": 278,
+	"nextUid": 283,
 	"identifierStyle": "Free",
 	"worldLayout": "Free",
 	"worldGridWidth": 256,
@@ -4005,34 +4005,37 @@
 			"limitBehavior": "MoveLastOne",
 			"pivotX": 0.5,
 			"pivotY": 0.5,
-			"fieldDefs": []
-		},
-		{
-			"identifier": "eBarrelSmall",
-			"uid": 117,
-			"tags": [],
-			"width": 16,
-			"height": 16,
-			"resizableX": false,
-			"resizableY": false,
-			"keepAspectRatio": false,
-			"tileOpacity": 1,
-			"fillOpacity": 0.08,
-			"lineOpacity": 0,
-			"hollow": false,
-			"color": "#868686",
-			"renderMode": "Tile",
-			"showName": false,
-			"tilesetId": 46,
-			"tileId": 5,
-			"tileRenderMode": "FitInside",
-			"tileRect": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
-			"maxCount": 0,
-			"limitScope": "PerLevel",
-			"limitBehavior": "MoveLastOne",
-			"pivotX": 0.5,
-			"pivotY": 0.5,
-			"fieldDefs": []
+			"fieldDefs": [
+				{
+					"identifier": "Data",
+					"__type": "Int",
+					"uid": 280,
+					"type": "F_Int",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayPos": "Above",
+					"editorAlwaysShow": false,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefTags": [],
+					"tilesetUid": null
+				}
+			]
 		},
 		{
 			"identifier": "eOnewayGateDown",
@@ -4197,7 +4200,7 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "eConveyorRight",
+			"identifier": "eConveyor",
 			"uid": 276,
 			"tags": [],
 			"width": 16,
@@ -4206,26 +4209,56 @@
 			"resizableY": false,
 			"keepAspectRatio": false,
 			"tileOpacity": 1,
-			"fillOpacity": 1,
-			"lineOpacity": 1,
+			"fillOpacity": 0.08,
+			"lineOpacity": 0,
 			"hollow": false,
-			"color": "#94D9B3",
-			"renderMode": "Rectangle",
+			"color": "#868686",
+			"renderMode": "Tile",
 			"showName": false,
-			"tilesetId": null,
-			"tileId": null,
+			"tilesetId": 46,
+			"tileId": 10,
 			"tileRenderMode": "FitInside",
-			"tileRect": null,
+			"tileRect": { "tilesetUid": 46, "x": 35, "y": 18, "w": 16, "h": 16 },
 			"maxCount": 0,
 			"limitScope": "PerLevel",
 			"limitBehavior": "MoveLastOne",
 			"pivotX": 0.5,
 			"pivotY": 0.5,
-			"fieldDefs": []
+			"fieldDefs": [
+				{
+					"identifier": "Data",
+					"__type": "Int",
+					"uid": 278,
+					"type": "F_Int",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "ValueOnly",
+					"editorDisplayPos": "Above",
+					"editorAlwaysShow": false,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefTags": [],
+					"tilesetUid": null
+				}
+			]
 		},
 		{
-			"identifier": "eConveyorLeft",
-			"uid": 277,
+			"identifier": "eCheckPoint",
+			"uid": 281,
 			"tags": [],
 			"width": 16,
 			"height": 16,
@@ -4233,22 +4266,52 @@
 			"resizableY": false,
 			"keepAspectRatio": false,
 			"tileOpacity": 1,
-			"fillOpacity": 1,
-			"lineOpacity": 1,
+			"fillOpacity": 0.08,
+			"lineOpacity": 0,
 			"hollow": false,
-			"color": "#94D9B3",
-			"renderMode": "Rectangle",
-			"showName": true,
-			"tilesetId": null,
-			"tileId": null,
+			"color": "#8A8A8A",
+			"renderMode": "Tile",
+			"showName": false,
+			"tilesetId": 46,
+			"tileId": 5,
 			"tileRenderMode": "FitInside",
-			"tileRect": null,
+			"tileRect": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
 			"maxCount": 0,
 			"limitScope": "PerLevel",
 			"limitBehavior": "MoveLastOne",
 			"pivotX": 0.5,
 			"pivotY": 0.5,
-			"fieldDefs": []
+			"fieldDefs": [
+				{
+					"identifier": "Data",
+					"__type": "Int",
+					"uid": 282,
+					"type": "F_Int",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "ValueOnly",
+					"editorDisplayPos": "Above",
+					"editorAlwaysShow": false,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefTags": [],
+					"tilesetUid": null
+				}
+			]
 		}
 	], "tilesets": [
 		{
@@ -4385,7 +4448,7 @@
 			"savedSelections": [],
 			"cachedPixelData": {
 				"opaqueTiles": "0000000100000001000000010000000100000001000000010000000111111111",
-				"averageColors": "f877f877f877f877eb873b87cb950000aa767a76000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+				"averageColors": "f877f877f877f877eb873b87cb950000aa767a769a879a870000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
 			}
 		}
 	], "enums": [], "externalEnums": [], "levelFields": [] },
@@ -4446,7 +4509,7 @@
 							"height": 16,
 							"defUid": 36,
 							"px": [152,136],
-							"fieldInstances": []
+							"fieldInstances": [{ "__identifier": "Data", "__value": 0, "__type": "Int", "__tile": null, "defUid": 280, "realEditorValues": [] }]
 						},
 						{
 							"__identifier": "eBarrel",
@@ -4459,7 +4522,7 @@
 							"height": 16,
 							"defUid": 36,
 							"px": [56,56],
-							"fieldInstances": []
+							"fieldInstances": [{ "__identifier": "Data", "__value": 0, "__type": "Int", "__tile": null, "defUid": 280, "realEditorValues": [] }]
 						},
 						{
 							"__identifier": "eBarrel",
@@ -4472,7 +4535,7 @@
 							"height": 16,
 							"defUid": 36,
 							"px": [56,40],
-							"fieldInstances": []
+							"fieldInstances": [{ "__identifier": "Data", "__value": 0, "__type": "Int", "__tile": null, "defUid": 280, "realEditorValues": [] }]
 						},
 						{
 							"__identifier": "eBarrel",
@@ -4485,7 +4548,7 @@
 							"height": 16,
 							"defUid": 36,
 							"px": [56,24],
-							"fieldInstances": []
+							"fieldInstances": [{ "__identifier": "Data", "__value": 0, "__type": "Int", "__tile": null, "defUid": 280, "realEditorValues": [] }]
 						},
 						{
 							"__identifier": "eOnewayGateUp",
@@ -4748,199 +4811,108 @@
 							"fieldInstances": []
 						},
 						{
-							"__identifier": "eBrittleDirtGrass",
-							"__grid": [12,12],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": { "tilesetUid": 46, "x": 18, "y": 18, "w": 16, "h": 16 },
-							"iid": "677a3910-8dc0-11ec-94b4-8fdc672211fc",
-							"width": 16,
-							"height": 16,
-							"defUid": 271,
-							"px": [200,200],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "eBrittleDirtGrass",
-							"__grid": [13,12],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": { "tilesetUid": 46, "x": 18, "y": 18, "w": 16, "h": 16 },
-							"iid": "67ace1d0-8dc0-11ec-94b4-4903149a2f19",
-							"width": 16,
-							"height": 16,
-							"defUid": 271,
-							"px": [216,200],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "eBrittleDirtGrass",
-							"__grid": [14,12],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": { "tilesetUid": 46, "x": 18, "y": 18, "w": 16, "h": 16 },
-							"iid": "67da8180-8dc0-11ec-94b4-cf825a35eeac",
-							"width": 16,
-							"height": 16,
-							"defUid": 271,
-							"px": [232,200],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "eConveyorRight",
+							"__identifier": "eConveyor",
 							"__grid": [2,11],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
-							"__tile": null,
+							"__tile": { "tilesetUid": 46, "x": 35, "y": 18, "w": 16, "h": 16 },
 							"iid": "2fe68100-8dc0-11ec-b4cc-abb19644bd47",
 							"width": 16,
 							"height": 16,
 							"defUid": 276,
 							"px": [40,184],
-							"fieldInstances": []
+							"fieldInstances": [{ "__identifier": "Data", "__value": 12, "__type": "Int", "__tile": null, "defUid": 278, "realEditorValues": [{ "id": "V_Int", "params": [12] }] }]
 						},
 						{
-							"__identifier": "eConveyorRight",
+							"__identifier": "eConveyor",
 							"__grid": [3,11],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
-							"__tile": null,
+							"__tile": { "tilesetUid": 46, "x": 35, "y": 18, "w": 16, "h": 16 },
 							"iid": "303f4f60-8dc0-11ec-b4cc-59a0694df9fe",
 							"width": 16,
 							"height": 16,
 							"defUid": 276,
 							"px": [56,184],
-							"fieldInstances": []
+							"fieldInstances": [{ "__identifier": "Data", "__value": 12, "__type": "Int", "__tile": null, "defUid": 278, "realEditorValues": [{ "id": "V_Int", "params": [12] }] }]
 						},
 						{
-							"__identifier": "eConveyorRight",
+							"__identifier": "eConveyor",
 							"__grid": [4,11],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
-							"__tile": null,
+							"__tile": { "tilesetUid": 46, "x": 35, "y": 18, "w": 16, "h": 16 },
 							"iid": "3074b740-8dc0-11ec-b4cc-c39d75a96166",
 							"width": 16,
 							"height": 16,
 							"defUid": 276,
 							"px": [72,184],
-							"fieldInstances": []
+							"fieldInstances": [{ "__identifier": "Data", "__value": 12, "__type": "Int", "__tile": null, "defUid": 278, "realEditorValues": [{ "id": "V_Int", "params": [12] }] }]
 						},
 						{
-							"__identifier": "eConveyorLeft",
-							"__grid": [7,12],
+							"__identifier": "eConveyor",
+							"__grid": [1,8],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
-							"__tile": null,
-							"iid": "33534620-8dc0-11ec-b4cc-e7a173aa80c8",
+							"__tile": { "tilesetUid": 46, "x": 35, "y": 18, "w": 16, "h": 16 },
+							"iid": "14fe3720-8dc0-11ec-9c7a-f1d78b6c31b4",
 							"width": 16,
 							"height": 16,
-							"defUid": 277,
-							"px": [120,200],
-							"fieldInstances": []
+							"defUid": 276,
+							"px": [24,136],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 48, "__type": "Int", "__tile": null, "defUid": 278, "realEditorValues": [{ "id": "V_Int", "params": [48] }] }]
 						},
 						{
-							"__identifier": "eConveyorLeft",
-							"__grid": [8,12],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": null,
-							"iid": "33b144a0-8dc0-11ec-b4cc-2fb19628264b",
-							"width": 16,
-							"height": 16,
-							"defUid": 277,
-							"px": [136,200],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "eConveyorLeft",
-							"__grid": [9,13],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": null,
-							"iid": "35522360-8dc0-11ec-b4cc-db9e0ad4cb36",
-							"width": 16,
-							"height": 16,
-							"defUid": 277,
-							"px": [152,216],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "eConveyorLeft",
+							"__identifier": "eConveyor",
 							"__grid": [10,13],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
-							"__tile": null,
-							"iid": "35825b20-8dc0-11ec-b4cc-c7c18597efc3",
+							"__tile": { "tilesetUid": 46, "x": 35, "y": 18, "w": 16, "h": 16 },
+							"iid": "c73a6110-8dc0-11ec-92d6-754977d591f7",
 							"width": 16,
 							"height": 16,
-							"defUid": 277,
+							"defUid": 276,
 							"px": [168,216],
-							"fieldInstances": []
+							"fieldInstances": [{ "__identifier": "Data", "__value": -12, "__type": "Int", "__tile": null, "defUid": 278, "realEditorValues": [{ "id": "V_Int", "params": [-12] }] }]
 						},
 						{
-							"__identifier": "eConveyorLeft",
+							"__identifier": "eConveyor",
 							"__grid": [11,13],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
-							"__tile": null,
-							"iid": "3b6ba1e0-8dc0-11ec-b140-5122932b3022",
+							"__tile": { "tilesetUid": 46, "x": 35, "y": 18, "w": 16, "h": 16 },
+							"iid": "cb0795b0-8dc0-11ec-92d6-c5bcc45cbff8",
 							"width": 16,
 							"height": 16,
-							"defUid": 277,
+							"defUid": 276,
 							"px": [184,216],
-							"fieldInstances": []
+							"fieldInstances": [{ "__identifier": "Data", "__value": -12, "__type": "Int", "__tile": null, "defUid": 278, "realEditorValues": [{ "id": "V_Int", "params": [-12] }] }]
 						},
 						{
-							"__identifier": "eConveyorLeft",
-							"__grid": [13,11],
+							"__identifier": "eConveyor",
+							"__grid": [12,13],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
-							"__tile": null,
-							"iid": "3c9295b0-8dc0-11ec-b140-17dac6073a23",
-							"width": 16,
-							"height": 16,
-							"defUid": 277,
-							"px": [216,184],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "eConveyorRight",
-							"__grid": [1,9],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": null,
-							"iid": "3f0395b0-8dc0-11ec-b140-1f7672f5744f",
+							"__tile": { "tilesetUid": 46, "x": 35, "y": 18, "w": 16, "h": 16 },
+							"iid": "cb6a9d40-8dc0-11ec-92d6-6340ce25671a",
 							"width": 16,
 							"height": 16,
 							"defUid": 276,
-							"px": [24,152],
-							"fieldInstances": []
+							"px": [200,216],
+							"fieldInstances": [{ "__identifier": "Data", "__value": -12, "__type": "Int", "__tile": null, "defUid": 278, "realEditorValues": [{ "id": "V_Int", "params": [-12] }] }]
 						},
 						{
-							"__identifier": "eConveyorRight",
-							"__grid": [0,9],
+							"__identifier": "eConveyor",
+							"__grid": [9,13],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
-							"__tile": null,
-							"iid": "404b57f0-8dc0-11ec-b140-93cdf14833bf",
+							"__tile": { "tilesetUid": 46, "x": 35, "y": 18, "w": 16, "h": 16 },
+							"iid": "d1c02a70-8dc0-11ec-92d6-c37ad02008c1",
 							"width": 16,
 							"height": 16,
 							"defUid": 276,
-							"px": [8,152],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "eConveyorRight",
-							"__grid": [0,7],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": null,
-							"iid": "40b627b0-8dc0-11ec-b140-b5dcf96445ad",
-							"width": 16,
-							"height": 16,
-							"defUid": 276,
-							"px": [8,120],
-							"fieldInstances": []
+							"px": [152,216],
+							"fieldInstances": [{ "__identifier": "Data", "__value": -12, "__type": "Int", "__tile": null, "defUid": 278, "realEditorValues": [{ "id": "V_Int", "params": [-12] }] }]
 						}
 					]
 				},
@@ -5148,7 +5120,21 @@
 					"seed": 4507130,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "eCheckPoint",
+							"__grid": [1,2],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
+							"iid": "32de1610-8dc0-11ec-bf26-3d5019e37f4c",
+							"width": 16,
+							"height": 16,
+							"defUid": 281,
+							"px": [24,40],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 2, "__type": "Int", "__tile": null, "defUid": 282, "realEditorValues": [{ "id": "V_Int", "params": [2] }] }]
+						}
+					]
 				},
 				{
 					"__identifier": "LevelFront",
@@ -5383,58 +5369,6 @@
 					"gridTiles": [],
 					"entityInstances": [
 						{
-							"__identifier": "eBarrelSmall",
-							"__grid": [6,4],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
-							"iid": "3e6f1aa0-8dc0-11ec-ae19-31e4b977da49",
-							"width": 16,
-							"height": 16,
-							"defUid": 117,
-							"px": [104,72],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "eBarrelSmall",
-							"__grid": [7,4],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
-							"iid": "3ec550f0-8dc0-11ec-ae19-653998a1f067",
-							"width": 16,
-							"height": 16,
-							"defUid": 117,
-							"px": [120,72],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "eBarrelSmall",
-							"__grid": [7,3],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
-							"iid": "3f191640-8dc0-11ec-ae19-25d21a29ed35",
-							"width": 16,
-							"height": 16,
-							"defUid": 117,
-							"px": [120,56],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "eBarrelSmall",
-							"__grid": [6,3],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
-							"iid": "3f605870-8dc0-11ec-ae19-89e5b63296b7",
-							"width": 16,
-							"height": 16,
-							"defUid": 117,
-							"px": [104,56],
-							"fieldInstances": []
-						},
-						{
 							"__identifier": "eBarrel",
 							"__grid": [8,11],
 							"__pivot": [0.5,0.5],
@@ -5445,7 +5379,7 @@
 							"height": 16,
 							"defUid": 36,
 							"px": [136,184],
-							"fieldInstances": []
+							"fieldInstances": [{ "__identifier": "Data", "__value": 0, "__type": "Int", "__tile": null, "defUid": 280, "realEditorValues": [] }]
 						},
 						{
 							"__identifier": "eYaya",
@@ -5537,6 +5471,110 @@
 							"defUid": 270,
 							"px": [8,168],
 							"fieldInstances": []
+						},
+						{
+							"__identifier": "eBarrel",
+							"__grid": [6,4],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 69, "y": 1, "w": 16, "h": 16 },
+							"iid": "7d43e9b0-8dc0-11ec-869f-c763ed207442",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [104,72],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 1, "__type": "Int", "__tile": null, "defUid": 280, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
+						},
+						{
+							"__identifier": "eBarrel",
+							"__grid": [7,4],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 69, "y": 1, "w": 16, "h": 16 },
+							"iid": "7d6c8050-8dc0-11ec-869f-aff3ba078b94",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [120,72],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 1, "__type": "Int", "__tile": null, "defUid": 280, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
+						},
+						{
+							"__identifier": "eBarrel",
+							"__grid": [7,5],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 69, "y": 1, "w": 16, "h": 16 },
+							"iid": "7d953e00-8dc0-11ec-869f-7105b8267bbe",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [120,88],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 1, "__type": "Int", "__tile": null, "defUid": 280, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
+						},
+						{
+							"__identifier": "eBarrel",
+							"__grid": [6,5],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 69, "y": 1, "w": 16, "h": 16 },
+							"iid": "7dbdd4a0-8dc0-11ec-869f-83889abfc601",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [104,88],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 1, "__type": "Int", "__tile": null, "defUid": 280, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
+						},
+						{
+							"__identifier": "eCheckPoint",
+							"__grid": [8,4],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
+							"iid": "2bb33780-8dc0-11ec-bf26-b732b9697264",
+							"width": 16,
+							"height": 16,
+							"defUid": 281,
+							"px": [136,72],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 4, "__type": "Int", "__tile": null, "defUid": 282, "realEditorValues": [{ "id": "V_Int", "params": [4] }] }]
+						},
+						{
+							"__identifier": "eCheckPoint",
+							"__grid": [3,4],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
+							"iid": "8716f4b0-8dc0-11ec-8ae3-3d270049eb39",
+							"width": 16,
+							"height": 16,
+							"defUid": 281,
+							"px": [56,72],
+							"fieldInstances": [{ "__identifier": "Data", "__value": -1, "__type": "Int", "__tile": null, "defUid": 282, "realEditorValues": [{ "id": "V_Int", "params": [-1] }] }]
+						},
+						{
+							"__identifier": "eCheckPoint",
+							"__grid": [2,4],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
+							"iid": "8cadc5c0-8dc0-11ec-8ae3-bd7e1983632c",
+							"width": 16,
+							"height": 16,
+							"defUid": 281,
+							"px": [40,72],
+							"fieldInstances": [{ "__identifier": "Data", "__value": -2, "__type": "Int", "__tile": null, "defUid": 282, "realEditorValues": [{ "id": "V_Int", "params": [-2] }] }]
+						},
+						{
+							"__identifier": "eCheckPoint",
+							"__grid": [1,4],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
+							"iid": "8edab7e0-8dc0-11ec-8ae3-e9b914b418b6",
+							"width": 16,
+							"height": 16,
+							"defUid": 281,
+							"px": [24,72],
+							"fieldInstances": [{ "__identifier": "Data", "__value": -3, "__type": "Int", "__tile": null, "defUid": 282, "realEditorValues": [{ "id": "V_Int", "params": [-3] }] }]
 						}
 					]
 				},
@@ -5824,7 +5862,21 @@
 					"seed": 3211891,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "eCheckPoint",
+							"__grid": [11,4],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
+							"iid": "305b14b0-8dc0-11ec-bf26-c74491e495e0",
+							"width": 16,
+							"height": 16,
+							"defUid": 281,
+							"px": [184,72],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 1, "__type": "Int", "__tile": null, "defUid": 282, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
+						}
+					]
 				},
 				{
 					"__identifier": "LevelFront",
@@ -6062,7 +6114,21 @@
 					"seed": 8506975,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "eCheckPoint",
+							"__grid": [10,9],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
+							"iid": "3a763560-8dc0-11ec-bf26-f5e7351d4713",
+							"width": 16,
+							"height": 16,
+							"defUid": 281,
+							"px": [168,152],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 3, "__type": "Int", "__tile": null, "defUid": 282, "realEditorValues": [{ "id": "V_Int", "params": [3] }] }]
+						}
+					]
 				},
 				{
 					"__identifier": "LevelFront",

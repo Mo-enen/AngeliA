@@ -46,9 +46,11 @@ namespace AngeliaFramework {
 		public struct Entity {
 			public int InstanceID;
 			public int TypeID;
-			public void SetValues (int instanceID, int typeID) {
+			public int Data;
+			public void SetValues (int instanceID, int typeID, int data) {
 				InstanceID = instanceID;
 				TypeID = typeID;
+				Data = data;
 			}
 		}
 
@@ -147,8 +149,9 @@ namespace AngeliaFramework {
 						if (x >= 0) {
 							// Entity +x +y
 							int instanceID = reader.ReadInt32();
+							int data = reader.ReadInt32();
 							if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) continue;
-							m_Entities[y * SIZE + x].SetValues(instanceID, id);
+							m_Entities[y * SIZE + x].SetValues(instanceID, id, data);
 						} else {
 							if (y >= 0) {
 								// Level -x +y
@@ -242,6 +245,7 @@ namespace AngeliaFramework {
 					writer.Write((int)x);
 					writer.Write((int)y);
 					writer.Write((int)insID);
+					writer.Write((int)entity.Data);
 				}
 			}
 

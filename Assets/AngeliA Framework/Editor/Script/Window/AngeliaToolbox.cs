@@ -49,6 +49,7 @@ namespace AngeliaFramework.Editor {
 		private static readonly EditorSavingBool ShowColliders = new("EntityDebuger.ShowColliders", false);
 		private static readonly EditorSavingString EntityLayerVisible = new("EntityDebuger.EntityLayerVisible", "");
 		private static readonly EditorSavingString LastSyncTick = new("LdtkToolkit.LastSyncTick", "0");
+		private static readonly EditorSavingBool ClickToSelectEntity = new("EntityDebuger.ClickToSelectEntity", true);
 
 
 		#endregion
@@ -192,6 +193,10 @@ namespace AngeliaFramework.Editor {
 			menu.AddItem(new GUIContent("High Framerate"), Game.HighFramerate, () => {
 				Game.SetFramerate(!Game.HighFramerate);
 			});
+			// Click to Select Entity
+			menu.AddItem(new GUIContent("Click to Select Entity"), ClickToSelectEntity.Value, () => {
+				ClickToSelectEntity.Value = !ClickToSelectEntity.Value;
+			});
 		}
 
 
@@ -232,30 +237,30 @@ namespace AngeliaFramework.Editor {
 					Repaint();
 				}
 				// Click to Select Entity
-				bool mousePressing = Input.GetMouseButton(0);
-				if (mousePressing && !PrevUpdateMousePress && Entities != null) {
-					var cRect = CellRenderer.CameraRect;
-					var mousePos = new Vector2Int(
-						(int)Mathf.LerpUnclamped(cRect.xMin, cRect.xMax, FrameInput.MousePosition01.x),
-						(int)Mathf.LerpUnclamped(cRect.yMin, cRect.yMax, FrameInput.MousePosition01.y)
-					);
-					for (int layerIndex = Entities.Length - 1; layerIndex >= 0; layerIndex--) {
-						var entities = Entities[layerIndex];
-						int len = entities.Length;
-						for (int i = 0; i < len; i++) {
-							var e = entities[i];
-							if (e == null) break;
-							if (e.Rect.Contains(mousePos)) {
-								SetSelectionInspector(e, EntityInspector.Mode.Entity);
-								Repaint();
-								goto LoopEnd;
+				if (ClickToSelectEntity.Value) {
+					bool mousePressing = Input.GetMouseButton(0);
+					if (mousePressing && !PrevUpdateMousePress && Entities != null) {
+						var mousePos = FrameInput.MouseGlobalPosition;
+						for (int layerIndex = Entities.Length - 1; layerIndex >= 0; layerIndex--) {
+							var entities = Entities[layerIndex];
+							int len = entities.Length;
+							for (int i = 0; i < len; i++) {
+								var e = entities[i];
+								if (e == null) break;
+								if (e.Rect.Contains(mousePos)) {
+									SetSelectionInspector(e, EntityInspector.Mode.Entity);
+									Repaint();
+									goto LoopEnd;
+								}
 							}
 						}
+						SetSelectionInspector(null, EntityInspector.Mode.Entity);
+					LoopEnd:;
 					}
-					SetSelectionInspector(null, EntityInspector.Mode.Entity);
-				LoopEnd:;
+					PrevUpdateMousePress = mousePressing;
+				} else {
+					PrevUpdateMousePress = false;
 				}
-				PrevUpdateMousePress = mousePressing;
 			} else {
 				PrevUpdateMousePress = false;
 			}
@@ -788,6 +793,14 @@ namespace AngeliaFramework.Editor {
 										_localY * Const.WORLD_MAP_SIZE + _localX
 									];
 									e.TypeID = entity.__identifier.AngeHash();
+									e.Data = 0;
+									foreach (var field in entity.fieldInstances) {
+										switch (field.__identifier.ToLower()) {
+											case "data":
+												e.Data = field.__value;
+												break;
+										}
+									}
 								}
 							);
 						}
@@ -839,6 +852,12 @@ namespace AngeliaFramework.Editor {
 			foreach (var pair in worldPool) {
 				insID = pair.Value.EditorOnly_SaveToDisk(pair.Key.x, pair.Key.y, insID);
 			}
+
+			// Check Point File
+
+
+
+
 			return true;
 		}
 

@@ -13,12 +13,12 @@ namespace LdtkToAngeliA {
 		/// </summary>
 		public FieldDefinition[] fieldDefs;
 
-		public double fillOpacity;
+		public float fillOpacity;
 
 		/// <summary>
 		/// Pixel height
 		/// </summary>
-		public long height;
+		public int height;
 
 		public bool hollow;
 
@@ -44,22 +44,22 @@ namespace LdtkToAngeliA {
 		/// </summary>
 		public LimitScope limitScope;
 
-		public double lineOpacity;
+		public float lineOpacity;
 
 		/// <summary>
 		/// Max instances count
 		/// </summary>
-		public long maxCount;
+		public int maxCount;
 
 		/// <summary>
 		/// Pivot X coordinate (from 0 to 1.0)
 		/// </summary>
-		public double pivotX;
+		public float pivotX;
 
 		/// <summary>
 		/// Pivot Y coordinate (from 0 to 1.0)
 		/// </summary>
-		public double pivotY;
+		public float pivotY;
 
 		/// <summary>
 		/// Possible values: `Rectangle`, `Ellipse`, `Tile`, `Cross`
@@ -89,7 +89,7 @@ namespace LdtkToAngeliA {
 		/// <summary>
 		/// Tile ID used for optional tile display
 		/// </summary>
-		public long? tileId;
+		public int? tileId;
 
 		/// <summary>
 		/// Possible values: `Cover`, `FitInside`, `Repeat`, `Stretch`
@@ -99,16 +99,16 @@ namespace LdtkToAngeliA {
 		/// <summary>
 		/// Tileset ID used for optional tile display
 		/// </summary>
-		public long? tilesetId;
+		public int? tilesetId;
 
 		/// <summary>
 		/// Unique Int identifier
 		/// </summary>
-		public long uid;
+		public int uid;
 
 		/// <summary>
 		/// Pixel width
 		/// </summary>
-		public long width;
+		public int width;
 	}
 }

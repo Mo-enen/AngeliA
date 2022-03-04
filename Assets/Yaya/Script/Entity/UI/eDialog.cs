@@ -184,6 +184,10 @@ namespace Yaya {
 				buttonCount++;
 			}
 
+			if (CellGUI.ButtonPressed) {
+				FrameInput.ClearMouseLeftEvent();
+			}
+
 		}
 
 

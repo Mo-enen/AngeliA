@@ -66,7 +66,7 @@ namespace AngeliaFramework {
 		private static Cell EMPTY_CELL = new() { ID = -1 };
 
 		// Api
-		public static RectInt ViewRect { get; set; } = default;
+		public static RectInt ViewRect { get; private set; } = default;
 		public static RectInt CameraRect { get; private set; } = default;
 		public static event VoidHandler BeforeUpdate = null;
 
@@ -163,10 +163,8 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void FrameUpdate () {
-
-			BeforeUpdate?.Invoke();
-
+		public static void CameraUpdate (RectInt viewRect) {
+			ViewRect = viewRect;
 			// Ratio
 			float ratio = (float)Screen.width / Screen.height;
 			float maxRatio = (float)ViewRect.width / ViewRect.height;
@@ -185,9 +183,15 @@ namespace AngeliaFramework {
 				(int)(ViewRect.height * MainCamera.aspect),
 				ViewRect.height
 			);
-			int cOffsetX = (ViewRect.width - CameraRect.width) / 2;
+			int cOffsetX = (ViewRect.width - cRect.width) / 2;
 			cRect.x += cOffsetX;
 			CameraRect = cRect;
+		}
+
+
+		public static void FrameUpdate () {
+
+			BeforeUpdate?.Invoke();
 
 			// Render
 			int layerCount = Layers.Length;
@@ -196,7 +200,7 @@ namespace AngeliaFramework {
 				-MainCamera.orthographicSize,
 				0f
 			);
-			pos.x -= cOffsetX * MainCamera.orthographicSize * 2f * MainCamera.aspect / cRect.width;
+			pos.x -= ((ViewRect.width - CameraRect.width) / 2) * MainCamera.orthographicSize * 2f * MainCamera.aspect / CameraRect.width;
 			var scl = new Vector3(
 				MainCamera.orthographicSize * 2f / ViewRect.height,
 				MainCamera.orthographicSize * 2f / ViewRect.height,

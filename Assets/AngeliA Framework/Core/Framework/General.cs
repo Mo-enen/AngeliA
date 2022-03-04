@@ -194,6 +194,7 @@ namespace AngeliaFramework {
 
 		public const int CELL_SIZE = 256;       // N¡ÁN Pixels per Tile
 		public const int WORLD_MAP_SIZE = 128;  // N¡ÁN Tiles per Map
+		public const int ASE_CELL_SIZE = 16;
 
 		public static readonly int ENTITY_LAYER_COUNT = System.Enum.GetNames(typeof(EntityLayer)).Length;
 		public static readonly int PHYSICS_LAYER_COUNT = System.Enum.GetNames(typeof(PhysicsLayer)).Length;

@@ -67,8 +67,8 @@ namespace AngeliaFramework {
 						BottomRight = new(sp.rect.xMax / width, sp.rect.yMin / height),
 						TopLeft = new(sp.rect.xMin / width, sp.rect.yMax / height),
 						TopRight = new(sp.rect.xMax / width, sp.rect.yMax / height),
-						Width = sp.rect.width.RoundToInt(),
-						Height = sp.rect.height.RoundToInt(),
+						Width = sp.rect.width.RoundToInt() * Const.CELL_SIZE / Const.ASE_CELL_SIZE,
+						Height = sp.rect.height.RoundToInt() * Const.CELL_SIZE / Const.ASE_CELL_SIZE,
 					},
 				};
 			}

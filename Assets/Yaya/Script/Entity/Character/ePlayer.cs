@@ -14,6 +14,7 @@ namespace Yaya {
 
 
 		// Api
+		public static ePlayer CurrentPlayer { get; private set; } = null;
 		public override int PushLevel => 110;
 
 		// Data
@@ -38,11 +39,13 @@ namespace Yaya {
 			LastGroundedY = Y;
 			AimX = ViewRect.x;
 			AimY = ViewRect.y;
+			CurrentPlayer = this;
 			base.OnCreate(frame);
 		}
 
 
 		public override void FrameUpdate (int frame) {
+			if (CurrentPlayer != this) CurrentPlayer = this;
 			Update_Move(frame);
 			Update_JumpDashPound();
 			Update_View();
@@ -135,6 +138,12 @@ namespace Yaya {
 			}
 			AimY = !IsInAir || Y < LastGroundedY ? Y - ViewRect.height / 2 : AimY;
 			SetViewPosition(AimX, AimY, 62, int.MinValue);
+		}
+
+
+		public override void OnDespawn (int frame) {
+			if (CurrentPlayer == this) CurrentPlayer = null;
+			base.OnDespawn(frame);
 		}
 
 

@@ -11,18 +11,21 @@ namespace AngeliaFramework {
 		public override PhysicsLayer CollisionLayer => PhysicsLayer.Environment;
 
 		private static readonly int BARREL_CODE = "Barrel".AngeHash();
+		private static readonly int BARREL_SMALL_CODE = "Barrel Small".AngeHash();
+
+		private bool IsSmallBarrel => Data == 1;
 
 
 		public override void OnCreate (int frame) {
-			Width = Const.CELL_SIZE;
-			Height = Const.CELL_SIZE;
+			Width = IsSmallBarrel ? Const.CELL_SIZE / 2 : Const.CELL_SIZE;
+			Height = IsSmallBarrel ? Const.CELL_SIZE / 2 : Const.CELL_SIZE;
 			base.OnCreate(frame);
 		}
 
 
 		public override void FrameUpdate (int frame) {
 
-			CellRenderer.Draw(BARREL_CODE, Rect);
+			CellRenderer.Draw(IsSmallBarrel ? BARREL_SMALL_CODE : BARREL_CODE, Rect);
 
 			base.FrameUpdate(frame);
 		}

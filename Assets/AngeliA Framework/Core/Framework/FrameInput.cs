@@ -46,7 +46,7 @@ namespace AngeliaFramework {
 
 		// Api
 		public static Vector2Int MouseScreenPosition { get; private set; } = default;
-		public static Vector2 MousePosition01 { get; private set; } = default;
+		public static Vector2Int MouseGlobalPosition { get; private set; } = default;
 		public static bool MouseLeft { get; private set; } = false;
 		public static bool MouseRight { get; private set; } = false;
 		public static bool MouseMid { get; private set; } = false;
@@ -113,7 +113,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void FrameUpdate () {
+		public static void FrameUpdate (RectInt cameraRect) {
 
 			if (Keyboard == null) {
 				Keyboard = Keyboard.current;
@@ -141,7 +141,10 @@ namespace AngeliaFramework {
 			if (Mouse != null) {
 				var pos = Mouse.position.ReadValue();
 				MouseScreenPosition = pos.RoundToInt();
-				MousePosition01 = new Vector2(pos.x / Screen.width, pos.y / Screen.height);
+				MouseGlobalPosition = new Vector2Int(
+					pos.x.RoundToInt() * cameraRect.width / Screen.width + cameraRect.x,
+					pos.y.RoundToInt() * cameraRect.height / Screen.height + cameraRect.y
+				);
 				MouseLeft = Mouse.leftButton.isPressed;
 				MouseRight = Mouse.rightButton.isPressed;
 				MouseMid = Mouse.middleButton.isPressed;
@@ -150,7 +153,7 @@ namespace AngeliaFramework {
 				MouseMidDown = !PrevMouseMid && MouseMid;
 			} else {
 				MouseScreenPosition = default;
-				MousePosition01 = default;
+				MouseGlobalPosition = default;
 				MouseLeft = false;
 				MouseRight = false;
 				MouseMid = false;

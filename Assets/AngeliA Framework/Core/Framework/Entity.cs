@@ -19,7 +19,6 @@ namespace AngeliaFramework {
 		public static RectInt SpawnRect { get; set; }
 		public static RectInt ViewRect { get; set; }
 		public static RectInt CameraRect { get; set; }
-		public static Vector2Int MousePosition { get; set; }
 
 		public virtual RectInt Rect {
 			get {
@@ -35,6 +34,7 @@ namespace AngeliaFramework {
 		public bool Active { get; set; } = true;
 		public bool Updated { get; private set; } = false;
 		public int InstanceID { get; set; } = 0;
+		public int Data { get; set; } = 0;
 		public abstract EntityLayer Layer { get; }
 		public virtual bool Despawnable { get; } = true;
 		public virtual bool ForceUpdate { get; } = false;

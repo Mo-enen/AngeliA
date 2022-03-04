@@ -13,7 +13,7 @@ namespace AngeliaFramework {
 
 
 		// Api
-		public static bool HoverOnGUI { get; private set; } = false;
+		public static bool ButtonPressed { get; private set; } = false;
 
 		// Data
 		private static System.Action PressAction = null;
@@ -30,6 +30,7 @@ namespace AngeliaFramework {
 			BottomRight = "Button Highlight DR".AngeHash(),
 			border = new(30, 30, 30, 30),
 		};
+		private static bool HoverOnGUI = false;
 
 
 		#endregion
@@ -140,7 +141,7 @@ namespace AngeliaFramework {
 
 		// Button
 		public static void DrawButton (System.Action click, RectInt rect, string label, int charSize, Color32 normal, Color32 highlight, Color32 pressed, Color32 labelColor, int spriteID, bool navigation = false) {
-			bool hover = rect.Contains(ScreenToCameraPosition(FrameInput.MousePosition01));
+			bool hover = rect.Contains(FrameInput.MouseGlobalPosition);
 			HoverOnGUI = HoverOnGUI || hover;
 			bool pressing = FrameInput.MouseLeft;
 			var tint = hover ? pressing ? pressed : highlight : normal;
@@ -148,6 +149,7 @@ namespace AngeliaFramework {
 			DrawLabel(label, rect, labelColor, charSize, 0, 0, false, Alignment.MidMid);
 			if (hover && FrameInput.MouseLeftDown) {
 				PressAction = click;
+				ButtonPressed = true;
 			}
 			if (navigation) {
 				ButtonNavigation = rect;
@@ -156,7 +158,7 @@ namespace AngeliaFramework {
 
 
 		public static void DrawButton (System.Action click, RectInt rect, string label, int charSize, Color32 normal, Color32 highlight, Color32 pressed, Color32 labelColor, NineSliceSprites sprite, bool nagigation = false) {
-			bool hover = rect.Contains(ScreenToCameraPosition(FrameInput.MousePosition01));
+			bool hover = rect.Contains(FrameInput.MouseGlobalPosition);
 			HoverOnGUI = HoverOnGUI || hover;
 			bool pressing = FrameInput.MouseLeft;
 			var tint = hover ? pressing ? pressed : highlight : normal;
@@ -164,6 +166,7 @@ namespace AngeliaFramework {
 			DrawLabel(label, rect, labelColor, charSize, 0, 0, false, Alignment.MidMid);
 			if (hover && FrameInput.MouseLeftDown) {
 				PressAction = click;
+				ButtonPressed = true;
 			}
 			if (nagigation) {
 				ButtonNavigation = rect;
@@ -197,21 +200,8 @@ namespace AngeliaFramework {
 				ButtonNavigation = null;
 			}
 			HoverOnGUI = false;
+			ButtonPressed = false;
 		}
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
-		private static Vector2Int ScreenToCameraPosition (Vector2 screenPos01) => new(
-			(int)Mathf.LerpUnclamped(CellRenderer.CameraRect.x, CellRenderer.CameraRect.xMax, screenPos01.x),
-			(int)Mathf.LerpUnclamped(CellRenderer.CameraRect.y, CellRenderer.CameraRect.yMax, screenPos01.y)
-		);
 
 
 		#endregion

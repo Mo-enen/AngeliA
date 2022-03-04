@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public abstract class eConveyor : Entity {
+	public class eConveyor : Entity {
 
 
 		// SUB
@@ -20,11 +20,15 @@ namespace Yaya {
 
 		// Const
 		private const PhysicsMask COL_MASK = PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Item;
+		private static readonly int[] MID_CODES = new int[8] { "Conveyor Mid 0".AngeHash(), "Conveyor Mid 1".AngeHash(), "Conveyor Mid 2".AngeHash(), "Conveyor Mid 3".AngeHash(), "Conveyor Mid 4".AngeHash(), "Conveyor Mid 5".AngeHash(), "Conveyor Mid 6".AngeHash(), "Conveyor Mid 7".AngeHash(), };
+		private static readonly int[] LEFT_CODES = new int[8] { "Conveyor Left 0".AngeHash(), "Conveyor Left 1".AngeHash(), "Conveyor Left 2".AngeHash(), "Conveyor Left 3".AngeHash(), "Conveyor Left 4".AngeHash(), "Conveyor Left 5".AngeHash(), "Conveyor Left 6".AngeHash(), "Conveyor Left 7".AngeHash(), };
+		private static readonly int[] RIGHT_CODES = new int[8] { "Conveyor Right 0".AngeHash(), "Conveyor Right 1".AngeHash(), "Conveyor Right 2".AngeHash(), "Conveyor Right 3".AngeHash(), "Conveyor Right 4".AngeHash(), "Conveyor Right 5".AngeHash(), "Conveyor Right 6".AngeHash(), "Conveyor Right 7".AngeHash(), };
+		private static readonly int[] SINGLE_CODES = new int[8] { "Conveyor Single 0".AngeHash(), "Conveyor Single 1".AngeHash(), "Conveyor Single 2".AngeHash(), "Conveyor Single 3".AngeHash(), "Conveyor Single 4".AngeHash(), "Conveyor Single 5".AngeHash(), "Conveyor Single 6".AngeHash(), "Conveyor Single 7".AngeHash(), };
 
 		// Api
 		public override EntityLayer Layer => EntityLayer.Environment;
-		public abstract int MovingSpeed { get; }
 		protected PartType Part { get; private set; } = PartType.None;
+		public int MoveSpeed => Data;
 
 		// Data
 		private static readonly HitInfo[] c_CheckPart = new HitInfo[8];
@@ -54,7 +58,7 @@ namespace Yaya {
 			for (int i = 0; i < count; i++) {
 				var hit = c_Update[i];
 				if (hit.Entity is eRigidbody rig) {
-					rig.PerformMove(MovingSpeed, 0, true, false);
+					rig.PerformMove(MoveSpeed, 0, true, false);
 					rig.Y = rect.yMax;
 					rig.VelocityY = 0;
 				}
@@ -90,6 +94,27 @@ namespace Yaya {
 				hasLeft && !hasRight ? PartType.RightEdge :
 				!hasLeft && hasRight ? PartType.LeftEdge :
 				PartType.Single;
+		}
+
+
+		public override void FrameUpdate (int frame) {
+			base.FrameUpdate(frame);
+			int aFrame = (frame * Mathf.Abs(MoveSpeed) / 16) % 8;
+			if (MoveSpeed > 0) aFrame = 7 - aFrame;
+			switch (Part) {
+				case PartType.LeftEdge:
+					CellRenderer.Draw(LEFT_CODES[aFrame], Rect);
+					break;
+				case PartType.Middle:
+					CellRenderer.Draw(MID_CODES[aFrame], Rect);
+					break;
+				case PartType.RightEdge:
+					CellRenderer.Draw(RIGHT_CODES[aFrame], Rect);
+					break;
+				case PartType.Single:
+					CellRenderer.Draw(SINGLE_CODES[aFrame], Rect);
+					break;
+			}
 		}
 
 

@@ -71,7 +71,8 @@ namespace AngeliaFramework {
 				Initialized = true;
 				Initialize();
 			}
-			FrameInput.FrameUpdate();
+			CellRenderer.CameraUpdate(ViewRect);
+			FrameInput.FrameUpdate(CellRenderer.CameraRect);
 			CellRenderer.BeginDraw();
 			FrameUpdate_View();
 			CellPhysics.BeginFill(SpawnRect.x, SpawnRect.y);
@@ -252,7 +253,6 @@ namespace AngeliaFramework {
 				}
 			}
 			ViewDelayPriority = int.MinValue;
-			CellRenderer.ViewRect = ViewRect;
 
 			// Entity Update Rect
 			EntityUpdateRect.width = ViewRect.width + Const.ENTITY_UPDATE_GAP * 2;
@@ -290,11 +290,6 @@ namespace AngeliaFramework {
 			Entity.SpawnRect = SpawnRect;
 			Entity.ViewRect = ViewRect;
 			Entity.CameraRect = CellRenderer.CameraRect;
-			Entity.MousePosition = new(
-				CellRenderer.CameraRect.x.LerpTo(CellRenderer.CameraRect.xMax, FrameInput.MousePosition01.x),
-				CellRenderer.CameraRect.y.LerpTo(CellRenderer.CameraRect.yMax, FrameInput.MousePosition01.y)
-			);
-
 			bool changed = false;
 
 			// Remove Inactive and Outside Spawnrect
@@ -406,6 +401,7 @@ namespace AngeliaFramework {
 			if (!spawnUnitRect.Contains(unitX, unitY)) return;
 			var e = eHandler.Invoke();
 			e.InstanceID = entity.InstanceID;
+			e.Data = entity.Data;
 			e.X = x;
 			e.Y = y;
 			AddEntity(e);
