@@ -33,10 +33,9 @@ namespace AngeliaFramework {
 		// Api-Ser
 		public int VelocityX { get; set; } = 0;
 		public int VelocityY { get; set; } = 0;
-		public int Gravity { get; set; } = 5;
-		public int MaxGravitySpeed { get; set; } = 64;
 		public int OffsetX { get; set; } = 0;
 		public int OffsetY { get; set; } = 0;
+		public int GravityScale { get; set; } = 1000;
 
 		// Data
 		private static readonly HitInfo[] c_PerformMove = new HitInfo[16];
@@ -85,10 +84,11 @@ namespace AngeliaFramework {
 			}
 
 			// Gravity
-			if (Gravity != 0) {
+			if (GravityScale != 0) {
+				int gravity = Const.GRAVITY * GravityScale / 1000;
 				VelocityY = Mathf.Clamp(
-					VelocityY - Gravity,
-					-MaxGravitySpeed * (InWater ? Const.WATER_SPEED_LOSE : 1000) / 1000,
+					VelocityY - gravity,
+					-Const.MAX_GRAVITY_SPEED * (InWater ? Const.WATER_SPEED_LOSE : 1000) / 1000,
 					int.MaxValue
 				);
 			}

@@ -108,6 +108,7 @@ namespace AngeliaFramework {
 			Init_Audio();
 			Init_Language();
 			Init_World();
+			Init_Custom();
 			WorldSquad.Initialize();
 
 		}
@@ -137,7 +138,7 @@ namespace AngeliaFramework {
 			}
 
 			// Handler Pool
-			foreach (var eType in typeof(Entity).GetAllChildClass()) {
+			foreach (var eType in typeof(Entity).AllChildClass()) {
 				int id = eType.AngeHash();
 				var handler = CreateHandler<EntityHandler>(eType);
 				if (handler == null) continue;
@@ -230,7 +231,7 @@ namespace AngeliaFramework {
 			}
 
 			// Generator Pool
-			foreach (var gType in typeof(WorldGenerator).GetAllChildClass()) {
+			foreach (var gType in typeof(WorldGenerator).AllChildClass()) {
 				int id = gType.AngeHash();
 				var handler = CreateHandler<WorldGeneratorHandler>(gType);
 				if (handler != null && !WorldGeneratorHandlerPool.ContainsKey(id)) {
@@ -243,6 +244,13 @@ namespace AngeliaFramework {
 #endif
 			}
 			World.CreateGenerator = (id) => WorldGeneratorHandlerPool.ContainsKey(id) ? WorldGeneratorHandlerPool[id].Invoke() : null;
+		}
+
+
+		private void Init_Custom () {
+			foreach (var type in typeof(IInitialize).AllClassImplemented()) {
+				Util.InvokeStaticMethod(type, nameof(IInitialize.Initialize));
+			}
 		}
 
 

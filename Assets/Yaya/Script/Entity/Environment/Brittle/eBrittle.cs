@@ -34,7 +34,7 @@ namespace Yaya {
 		// MSG
 		public override void PhysicsUpdate (int frame) {
 
-			Gravity = 0;
+			GravityScale = 0;
 			VelocityX = 0;
 			VelocityY = IsFalling ? -FallingVelocity : 0;
 			var rect = Rect;

@@ -15,6 +15,11 @@ public class AngeliaInspectorAttribute : System.Attribute { }
 namespace AngeliaFramework {
 
 
+
+	public interface IInitialize { public static void Initialize () { } }
+
+
+
 	public enum EntityLayer {
 		UI = 0,
 		Environment = 1,
@@ -213,6 +218,8 @@ namespace AngeliaFramework {
 		public const int DESPAWN_PADDING = 10 * CELL_SIZE;
 
 		public const int RIGIDBODY_FAST_SPEED = CELL_SIZE / 8;
+		public const int GRAVITY = 5;
+		public const int MAX_GRAVITY_SPEED = 64;
 
 		public const int WATER_SPEED_LOSE = 400;
 		public static int WATER_TAG = "Water".AngeHash();
@@ -220,6 +227,7 @@ namespace AngeliaFramework {
 		public static int ONEWAY_DOWN_TAG = "OnewayDown".AngeHash();
 		public static int ONEWAY_LEFT_TAG = "OnewayLeft".AngeHash();
 		public static int ONEWAY_RIGHT_TAG = "OnewayRight".AngeHash();
+		public static int ITEM_TAG = "Item".AngeHash();
 
 		public const string MAP_FILE_EXT = "aamap";
 

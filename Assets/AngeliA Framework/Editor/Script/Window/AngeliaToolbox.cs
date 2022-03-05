@@ -11,7 +11,7 @@ using LdtkToAngeliA;
 
 
 namespace AngeliaFramework.Editor {
-	public class AngeliaToolbox : EditorWindow, IHasCustomMenu {
+	public class AngeliaToolbox : EditorWindow, IHasCustomMenu, IInitialize {
 
 
 
@@ -62,7 +62,7 @@ namespace AngeliaFramework.Editor {
 
 
 		[InitializeOnLoadMethod]
-		private static void Initialize () {
+		private static void Initialize_Editor () {
 
 			// State Change
 			EditorApplication.playModeStateChanged += (mode) => {
@@ -135,12 +135,6 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		[RuntimeInitializeOnLoadMethod]
-		private static void RuntimeInit () {
-			CellRenderer.BeforeUpdate += () => { if (Main != null) Main.DrawGizmos(); };
-		}
-
-
 		[MenuItem("AngeliA/Angelia Console")]
 		private static void OpenWindow () {
 			try {
@@ -152,28 +146,6 @@ namespace AngeliaFramework.Editor {
 			} catch (System.Exception ex) {
 				Debug.LogWarning("Failed to open window.\n" + ex.Message);
 			}
-		}
-
-
-		[MenuItem("AngeliA/Command/Reload Sheet Assets")]
-		private static void ReloadSheetAssets () {
-			foreach (var sheet in EditorUtil.ForAllAssets<SpriteSheet>()) {
-				var sprites = new List<Sprite>();
-				var tPath = AssetDatabase.GetAssetPath(sheet.Texture);
-				var objs = AssetDatabase.LoadAllAssetRepresentationsAtPath(tPath);
-				for (int i = 0; i < objs.Length; i++) {
-					var obj = objs[i];
-					if (obj != null && obj is Sprite sp) {
-						sprites.Add(sp);
-					}
-				}
-				if (objs.Length > 0) {
-					sheet.SetSprites(sprites.ToArray());
-				}
-				EditorUtility.SetDirty(sheet);
-			}
-			AssetDatabase.SaveAssets();
-			AssetDatabase.Refresh();
 		}
 
 
@@ -198,6 +170,11 @@ namespace AngeliaFramework.Editor {
 			menu.AddItem(new GUIContent("Click to Select Entity"), ClickToSelectEntity.Value, () => {
 				ClickToSelectEntity.Value = !ClickToSelectEntity.Value;
 			});
+		}
+
+
+		public static void Initialize () {
+			CellRenderer.BeforeUpdate += () => { if (Main != null) Main.DrawGizmos(); };
 		}
 
 
@@ -634,17 +611,69 @@ namespace AngeliaFramework.Editor {
 		// Artwork
 		private void SyncArtwork () {
 			try {
+
+				EditorUtil.ProgressBar("", "Create Sprites", 0f);
+
+				// Create Sprites
 				Selection.objects = Util.GetFilesIn("Assets", false, "*.ase", "*.aseprite").Select(
 					file => AssetDatabase.LoadAssetAtPath<Object>(EditorUtil.FixedRelativePath(file.FullName))
 				).Where(obj => obj.name.ToLower() != "entity icon").ToArray();
 				EditorApplication.ExecuteMenuItem("Tools/Aseprite Toolbox/Create Sprite for Selection");
 				Selection.objects = null;
+
+				EditorUtil.ProgressBar("", "Create Sheets", 0.25f);
+
+				// Sprite Sheet
 				ReloadSheetAssets();
+
+				EditorUtil.ProgressBar("", "Create Maps from LDtk", 0.5f);
+
+				// Ldtk Level
 				ReloadAllLevels();
-				LastSyncTick.Value = System.DateTime.Now.Ticks.ToString();
+
+				EditorUtil.ProgressBar("", "Custom Events", 0.75f);
+
+				// Custom Events
 				PerformEvent("artwork");
+
+				EditorUtil.ProgressBar("Finish", "Custom Events", 1f);
+
+				// Finish
+				AssetDatabase.SaveAssets();
+				AssetDatabase.Refresh();
+				LastSyncTick.Value = System.DateTime.Now.Ticks.ToString();
 				LogAlert("Artwork Synced");
 			} catch (System.Exception ex) { Debug.LogException(ex); }
+
+			EditorUtil.ClearProgressBar();
+
+		}
+
+
+		private void ReloadSheetAssets () {
+			var allSheets = EditorUtil.ForAllAssets<SpriteSheet>();
+			foreach (var sheet in allSheets) {
+				var sprites = new List<Sprite>();
+				var tPath = AssetDatabase.GetAssetPath(sheet.Texture);
+				var objs = AssetDatabase.LoadAllAssetRepresentationsAtPath(tPath);
+				for (int i = 0; i < objs.Length; i++) {
+					var obj = objs[i];
+					if (obj != null && obj is Sprite sp) {
+						sprites.Add(sp);
+					}
+				}
+				if (objs.Length > 0) {
+					sheet.SetSprites(sprites.ToArray());
+				}
+				EditorUtility.SetDirty(sheet);
+			}
+			// Check Sheet in Game
+			if (Game != null) {
+				var data = Util.GetFieldValue(Game, "m_Data") as GameData;
+				if (data != null && data.Sheets.Length != allSheets.Count()) {
+					Debug.LogWarning($"There are {data.Sheets.Length} sheets in GameAsset but {allSheets.Count()} in total.");
+				}
+			}
 		}
 
 

@@ -5,21 +5,20 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+	public class eCheckPoint : Entity, IInitialize {
 
 
-	[System.Serializable]
-	public class CheckPointData {
+		// SUB
 		[System.Serializable]
-		public struct Data {
-			public int ID;
-			public int X;
-			public int Y;
+		public class CheckPointData {
+			[System.Serializable]
+			public struct Data {
+				public int ID;
+				public int X;
+				public int Y;
+			}
+			public Data[] CPs = null;
 		}
-		public Data[] CPs = null;
-	}
-
-
-	public class eCheckPoint : Entity {
 
 
 		// Const
@@ -39,8 +38,7 @@ namespace Yaya {
 
 
 		// MSG
-		[RuntimeInitializeOnLoadMethod]
-		private static void Init () {
+		public static void Initialize () {
 			try {
 				PositionPool.Clear();
 				var path = Util.CombinePaths(AUtil.GetMapRoot(), $"{Application.productName}.cp");
@@ -119,10 +117,10 @@ namespace Yaya.Editor {
 			}
 			// Write Position File
 			try {
-				var cpData = new CheckPointData() { CPs = new CheckPointData.Data[cpPool.Count] };
+				var cpData = new eCheckPoint.CheckPointData() { CPs = new eCheckPoint.CheckPointData.Data[cpPool.Count] };
 				int index = 0;
 				foreach (var (id, pos) in cpPool) {
-					cpData.CPs[index] = new CheckPointData.Data() {
+					cpData.CPs[index] = new eCheckPoint.CheckPointData.Data() {
 						ID = id,
 						X = pos.x,
 						Y = pos.y,

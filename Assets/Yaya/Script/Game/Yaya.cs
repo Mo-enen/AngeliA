@@ -5,6 +5,7 @@ using AngeliaFramework;
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 
+
 namespace Yaya {
 	public class Yaya : Game {
 

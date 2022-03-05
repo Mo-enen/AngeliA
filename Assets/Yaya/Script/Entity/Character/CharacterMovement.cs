@@ -15,8 +15,6 @@ namespace Yaya {
 
 		public int Width { get; init; } = 150;
 		public int Height { get; init; } = 150;
-		public int Gravity { get; init; } = 5;
-		public int MaxGravitySpeed { get; init; } = 64;
 		public int InWaterSpeedLoseRate { get; init; } = 500;
 		public int GroundStuckLoseX { get; init; } = 2;
 		public int GroundStuckLoseY { get; init; } = 6;
@@ -30,7 +28,7 @@ namespace Yaya {
 		public int JumpSpeed { get; init; } = 60;
 		public int JumpCount { get; init; } = 2;
 		public int JumpReleaseLoseRate { get; init; } = 700;
-		public int JumpRaiseGravity { get; init; } = 3;
+		public int JumpRaiseGravityRate { get; init; } = 600;
 
 		// Dash
 		public bool DashAvailable { get; init; } = true;
@@ -282,27 +280,22 @@ namespace Yaya {
 						IntendedY * FreeSwimSpeed, FreeSwimAcceleration, FreeSwimDecceleration
 					);
 				}
-				Rig.Gravity = 0;
-				Rig.MaxGravitySpeed = 0;
+				Rig.GravityScale = 0;
 			} else {
 				// Gravity
 				if (IsPounding) {
 					// Pound
-					Rig.Gravity = 0;
-					Rig.MaxGravitySpeed = 0;
+					Rig.GravityScale = 0;
 					Rig.VelocityY = -PoundSpeed;
 				} else if (HoldingJump && Rig.VelocityY > 0) {
 					// Jumping Raise
-					Rig.Gravity = JumpRaiseGravity;
-					Rig.MaxGravitySpeed = MaxGravitySpeed;
+					Rig.GravityScale = JumpRaiseGravityRate;
 				} else if (!IsGrounded) {
 					// In Air/Water
-					Rig.Gravity = Gravity;
-					Rig.MaxGravitySpeed = MaxGravitySpeed;
+					Rig.GravityScale = 1000;
 				} else {
 					// Grounded
-					Rig.Gravity = Gravity;
-					Rig.MaxGravitySpeed = MaxGravitySpeed;
+					Rig.GravityScale = 1000;
 				}
 			}
 			if (IsInsideGround) {
