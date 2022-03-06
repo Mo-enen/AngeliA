@@ -46,6 +46,9 @@ namespace AngeliaFramework {
 		Environment = 1 << 1,// Barrel, Chest, EventTrigger...
 		Item = 1 << 2,       // HealthPotion, Coin, BouncyBall...
 		Character = 1 << 3,  // Player, Enemy, NPC...
+
+		Solid = Level | Environment | Character,
+		Map = Level | Environment,
 	}
 
 
@@ -213,13 +216,15 @@ namespace AngeliaFramework {
 
 		public const int BLOCK_SPAWN_PADDING = BLOCK_SPAWN_PADDING_UNIT * CELL_SIZE;
 		public const int BLOCK_SPAWN_PADDING_UNIT = 6;
-		public const int ENTITY_UPDATE_GAP = 1 * CELL_SIZE;
-		public const int SPAWN_PADDING = 6 * CELL_SIZE;
-		public const int DESPAWN_PADDING = 10 * CELL_SIZE;
+		public const int ENTITY_UPDATE_GAP = 5 * CELL_SIZE;
+		public const int SPAWN_PADDING = 8 * CELL_SIZE;
+		public const int DESPAWN_PADDING = 12 * CELL_SIZE;
 
 		public const int RIGIDBODY_FAST_SPEED = CELL_SIZE / 8;
 		public const int GRAVITY = 5;
 		public const int MAX_GRAVITY_SPEED = 64;
+		public const int ITEM_PHYSICS_SIZE = CELL_SIZE / 2;
+		public const int ITEM_RENDER_SIZE = CELL_SIZE * 2 / 3;
 
 		public const int WATER_SPEED_LOSE = 400;
 		public static int WATER_TAG = "Water".AngeHash();

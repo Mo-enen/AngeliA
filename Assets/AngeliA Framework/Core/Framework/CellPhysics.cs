@@ -83,12 +83,9 @@ namespace AngeliaFramework {
 
 
 		// Const
-		public const int WIDTH =
-			(Const.MAX_VIEW_WIDTH + Const.SPAWN_PADDING * 2 + Const.BLOCK_SPAWN_PADDING * 2) / Const.CELL_SIZE;
-		public const int HEIGHT =
-			(Const.MAX_VIEW_HEIGHT + Const.SPAWN_PADDING * 2 + Const.BLOCK_SPAWN_PADDING * 2) / Const.CELL_SIZE;
+		public const int WIDTH = (Const.MAX_VIEW_WIDTH + Const.SPAWN_PADDING * 2 + Const.BLOCK_SPAWN_PADDING * 2) / Const.CELL_SIZE;
+		public const int HEIGHT = (Const.MAX_VIEW_HEIGHT + Const.SPAWN_PADDING * 2 + Const.BLOCK_SPAWN_PADDING * 2) / Const.CELL_SIZE;
 		private const int CELL_DEPTH = 8;
-		private const PhysicsMask ONEWAY_MASK = PhysicsMask.Level | PhysicsMask.Environment;
 
 		// Api
 		public static int PositionX { get; private set; } = 0;
@@ -98,6 +95,7 @@ namespace AngeliaFramework {
 		private static readonly HitInfo[] c_PushCheck_OnewayCheck = new HitInfo[16];
 		private static readonly HitInfo[] c_MoveCheck = new HitInfo[16];
 		private static readonly HitInfo[] c_MoveLogic = new HitInfo[32];
+		private static readonly HitInfo[] c_Oneway = new HitInfo[16];
 		private static readonly Layer[] Layers = new Layer[Const.PHYSICS_LAYER_COUNT];
 		private static Layer CurrentLayer = null;
 		private static PhysicsLayer CurrentLayerEnum = PhysicsLayer.Item;
@@ -219,7 +217,7 @@ namespace AngeliaFramework {
 			var gateDir = direction.Opposite();
 			int count = OverlapAll(
 				c_PushCheck_OnewayCheck,
-				ONEWAY_MASK, _rect, entity, OperationMode.TriggerOnly,
+				PhysicsMask.Map, _rect, entity, OperationMode.TriggerOnly,
 				Const.GetOnewayTag(gateDir)
 			);
 			for (int i = 0; i < count; i++) {
@@ -265,16 +263,19 @@ namespace AngeliaFramework {
 
 
 		// Move
-		public static Vector2Int Move (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) {
-			bool moveH = from.x != to.x;
-			bool moveV = from.y != to.y;
-			if (moveH != moveV) {
-				return MoveLogic(mask, from, to, size, entity);
-			} else {
-				var pos = MoveLogic(mask, from, new Vector2Int(from.x, to.y), size, entity);
-				return MoveLogic(mask, new(from.x, pos.y), new(to.x, pos.y), size, entity);
-			}
-		}
+		public static Vector2Int MoveIgnoreOneway (
+			PhysicsMask mask, Vector2Int from,
+			int speedX, int speedY,
+			Vector2Int size, Entity entity
+		) => MoveSafeLogic(mask, from, speedX, speedY, size, entity, true, out _, out _);
+
+
+		public static Vector2Int Move (
+			PhysicsMask mask, Vector2Int from,
+			int speedX, int speedY,
+			Vector2Int size, Entity entity,
+			out bool stopX, out bool stopY
+		) => MoveSafeLogic(mask, from, speedX, speedY, size, entity, false, out stopX, out stopY);
 
 
 		// Editor
@@ -376,6 +377,71 @@ namespace AngeliaFramework {
 		}
 
 
+		// Move
+		private static Vector2Int MoveSafeLogic (
+			PhysicsMask mask, Vector2Int from,
+			int speedX, int speedY,
+			Vector2Int size, Entity entity,
+			bool ignoreOneway, out bool stopX, out bool stopY
+		) {
+			var _from = from;
+			var result = from;
+			stopX = false;
+			stopY = false;
+			if (Mathf.Abs(speedX) > Const.RIGIDBODY_FAST_SPEED || Mathf.Abs(speedY) > Const.RIGIDBODY_FAST_SPEED) {
+				// Too Fast
+				int _speedX = speedX;
+				int _speedY = speedY;
+				while (_speedX != 0 || _speedY != 0) {
+					int _sX = Mathf.Clamp(_speedX, -Const.RIGIDBODY_FAST_SPEED, Const.RIGIDBODY_FAST_SPEED);
+					int _sY = Mathf.Clamp(_speedY, -Const.RIGIDBODY_FAST_SPEED, Const.RIGIDBODY_FAST_SPEED);
+					_speedX -= _sX;
+					_speedY -= _sY;
+					result = MoveLogic3(
+						mask, _from,
+						new Vector2Int(_from.x + _sX, _from.y + _sY),
+						new(size.x, size.y), entity
+					);
+					if (result == _from) break;
+					_from = result;
+				}
+			} else {
+				// Normal
+				result = MoveLogic3(
+					mask, _from,
+					new Vector2Int(_from.x + speedX, _from.y + speedY),
+					new(size.x, size.y),
+					entity
+				);
+			}
+			if (!ignoreOneway) {
+				int velX = result.x - from.x;
+				int velY = result.y - from.y;
+				if (velX != 0 && OnewayCheck(velX > 0 ? Direction4.Right : Direction4.Left, from, result, size, entity, out var newPos0)) {
+					result.x = newPos0.x;
+					stopX = true;
+				}
+				if (velY != 0 && OnewayCheck(velY > 0 ? Direction4.Up : Direction4.Down, from, result, size, entity, out var newPos1)) {
+					result.y = newPos1.y;
+					stopY = true;
+				}
+			}
+			return result;
+		}
+
+
+		private static Vector2Int MoveLogic3 (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) {
+			bool moveH = from.x != to.x;
+			bool moveV = from.y != to.y;
+			if (moveH != moveV) {
+				return MoveLogic(mask, from, to, size, entity);
+			} else {
+				var pos = MoveLogic(mask, from, new Vector2Int(from.x, to.y), size, entity);
+				return MoveLogic(mask, new(from.x, pos.y), new(to.x, pos.y), size, entity);
+			}
+		}
+
+
 		private static Vector2Int MoveLogic (PhysicsMask mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) {
 			int distance = int.MaxValue;
 			Vector2Int result = to;
@@ -411,6 +477,65 @@ namespace AngeliaFramework {
 			}
 			c_MoveLogic.Dispose();
 			return result;
+		}
+
+
+		private static bool OnewayCheck (Direction4 moveDirection, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out Vector2Int newPos) {
+			var gateDir = moveDirection.Opposite();
+			int oCount = OverlapAll(
+				c_Oneway, PhysicsMask.Map, new(to.x, to.y, size.x, size.y), entity,
+				OperationMode.TriggerOnly,
+				Const.GetOnewayTag(gateDir)
+			);
+			for (int i = 0; i < oCount; i++) {
+				var hit = c_Oneway[i];
+				if (!OnewayPassCheck(
+					hit.Rect,
+					gateDir,
+					new(from.x, from.y),
+					new(to.x, to.y),
+					size,
+					out newPos
+				)) {
+					c_Oneway.Dispose();
+					return true;
+				}
+			}
+			c_Oneway.Dispose();
+			newPos = to;
+			return false;
+			// Func
+			static bool OnewayPassCheck (RectInt onewayRect, Direction4 gateDirection, Vector2Int from, Vector2Int to, Vector2Int size, out Vector2Int newPos) {
+				newPos = to;
+				var rect = onewayRect;
+				switch (gateDirection) {
+					case Direction4.Down:
+						if (from.y + size.y <= rect.yMin && to.y + size.y > rect.yMin) {
+							newPos.y = rect.yMin - size.y;
+							return false;
+						}
+						break;
+					case Direction4.Up:
+						if (from.y >= rect.yMax && to.y < rect.yMax) {
+							newPos.y = rect.yMax;
+							return false;
+						}
+						break;
+					case Direction4.Left:
+						if (from.x + size.x <= rect.xMin && to.x + size.x > rect.xMin) {
+							newPos.x = rect.xMin - size.x;
+							return false;
+						}
+						break;
+					case Direction4.Right:
+						if (from.x >= rect.xMax && to.x < rect.xMax) {
+							newPos.x = rect.xMax;
+							return false;
+						}
+						break;
+				}
+				return true;
+			}
 		}
 
 

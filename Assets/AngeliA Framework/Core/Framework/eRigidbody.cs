@@ -39,7 +39,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private static readonly HitInfo[] c_PerformMove = new HitInfo[16];
-		private static readonly HitInfo[] c_Oneway = new HitInfo[16];
+		//private static readonly HitInfo[] c_Oneway = new HitInfo[16];
 
 
 		#endregion
@@ -146,32 +146,12 @@ namespace AngeliaFramework {
 			speedX = speedX * speedScale / 1000;
 			speedY = speedY * speedScale / 1000;
 
-			if (Mathf.Abs(speedX) > Const.RIGIDBODY_FAST_SPEED || Mathf.Abs(speedY) > Const.RIGIDBODY_FAST_SPEED) {
-				// Too Fast
-				int _speedX = speedX;
-				int _speedY = speedY;
-				while (_speedX != 0 || _speedY != 0) {
-					int _sX = Mathf.Clamp(_speedX, -Const.RIGIDBODY_FAST_SPEED, Const.RIGIDBODY_FAST_SPEED);
-					int _sY = Mathf.Clamp(_speedY, -Const.RIGIDBODY_FAST_SPEED, Const.RIGIDBODY_FAST_SPEED);
-					_speedX -= _sX;
-					_speedY -= _sY;
-					var newPos = CellPhysics.Move(
-						COL_MASK, pos,
-						new Vector2Int(pos.x + _sX, pos.y + _sY),
-						new(Width, Height), this
-					);
-					if (newPos == pos) break;
-					pos = newPos;
-				}
+			if (ignoreOneway) {
+				pos = CellPhysics.MoveIgnoreOneway(COL_MASK, pos, speedX, speedY, new(Width, Height), this);
 			} else {
-				// Normal
-				pos = CellPhysics.Move(
-					COL_MASK,
-					pos,
-					new Vector2Int(pos.x + speedX, pos.y + speedY),
-					new(Width, Height),
-					this
-				);
+				pos = CellPhysics.Move(COL_MASK, pos, speedX, speedY, new(Width, Height), this, out bool stopX, out bool stopY);
+				if (stopX) VelocityX = 0;
+				if (stopY) VelocityY = 0;
 			}
 
 			X = pos.x - OffsetX;
@@ -210,95 +190,6 @@ namespace AngeliaFramework {
 				}
 			}
 
-			// Oneway
-			if (!ignoreOneway) {
-				var rect = Rect;
-				int velX = FinalVelocityX;
-				int velY = FinalVelocityY;
-				if (velX != 0) {
-					OnewayCheck(rect, velX > 0 ? Direction4.Right : Direction4.Left);
-				}
-				if (velY != 0) {
-					OnewayCheck(rect, velY > 0 ? Direction4.Up : Direction4.Down);
-				}
-			}
-
-		}
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
-		private void OnewayCheck (RectInt rect, Direction4 moveDirection) {
-			var gateDir = moveDirection.Opposite();
-			int oCount = CellPhysics.OverlapAll(
-				c_Oneway, ONEWAY_MASK, rect, this,
-				CellPhysics.OperationMode.TriggerOnly,
-				Const.GetOnewayTag(gateDir)
-			);
-			for (int i = 0; i < oCount; i++) {
-				var hit = c_Oneway[i];
-				if (!OnewayPassCheck(
-					hit.Rect,
-					gateDir,
-					new(PrevX + OffsetX, PrevY + OffsetY),
-					new(X + OffsetX, Y + OffsetY),
-					new(Width, Height),
-					out var newPos
-				)) {
-					X = newPos.x - OffsetX;
-					Y = newPos.y - OffsetY;
-					switch (gateDir) {
-						case Direction4.Up:
-						case Direction4.Down:
-							VelocityY = 0;
-							break;
-						case Direction4.Left:
-						case Direction4.Right:
-							VelocityX = 0;
-							break;
-					}
-				}
-			}
-			c_Oneway.Dispose();
-		}
-
-
-		private bool OnewayPassCheck (RectInt onewayRect, Direction4 gateDirection, Vector2Int from, Vector2Int to, Vector2Int size, out Vector2Int newPos) {
-			newPos = to;
-			var rect = onewayRect;
-			switch (gateDirection) {
-				case Direction4.Down:
-					if (from.y + size.y <= rect.yMin && to.y + size.y > rect.yMin) {
-						newPos.y = rect.yMin - size.y;
-						return false;
-					}
-					break;
-				case Direction4.Up:
-					if (from.y >= rect.yMax && to.y < rect.yMax) {
-						newPos.y = rect.yMax;
-						return false;
-					}
-					break;
-				case Direction4.Left:
-					if (from.x + size.x <= rect.xMin && to.x + size.x > rect.xMin) {
-						newPos.x = rect.xMin - size.x;
-						return false;
-					}
-					break;
-				case Direction4.Right:
-					if (from.x >= rect.xMax && to.x < rect.xMax) {
-						newPos.x = rect.xMax;
-						return false;
-					}
-					break;
-			}
-			return true;
 		}
 
 
