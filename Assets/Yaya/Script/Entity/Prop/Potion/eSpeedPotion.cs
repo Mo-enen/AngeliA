@@ -5,12 +5,12 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class eHealthPotion : ePotion {
+	public class eSpeedPotion : ePotion {
 
 
-		protected override int ITEM_CODE => "Potion Red".AngeHash();
+		protected override int ITEM_CODE => "Potion Orange".AngeHash();
 
 
-
+		
 	}
 }

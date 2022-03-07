@@ -36,9 +36,7 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public CharacterRenderer (eCharacter ch) {
-			Rig = ch;
-		}
+		public CharacterRenderer (eCharacter ch) => Rig = ch;
 
 
 		public void FrameUpdate (int frame) {

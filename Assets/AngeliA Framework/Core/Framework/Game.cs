@@ -50,8 +50,8 @@ namespace AngeliaFramework {
 		private RectInt? ViewRectDelay = null;
 		private int ViewLerpRate = 1000;
 		private int ViewDelayPriority = int.MinValue;
-		private bool Initialized = false;
 		private int CurrentDynamicInstanceID = 0;
+		private bool Initialized = false;
 
 		// Saving
 		private readonly SavingInt LanguageIndex = new("Game.LanguageIndex", -1);

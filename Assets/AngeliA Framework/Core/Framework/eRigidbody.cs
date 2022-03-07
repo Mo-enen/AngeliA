@@ -71,11 +71,7 @@ namespace AngeliaFramework {
 			IsGrounded = GroundedCheck(rect);
 
 			// Water
-			InWater = CellPhysics.Overlap(
-				PhysicsMask.Level, Rect, null,
-				CellPhysics.OperationMode.TriggerOnly,
-				Const.WATER_TAG
-			);
+			InWater = CellPhysics.Overlap(PhysicsMask.Level, Rect, null, OperationMode.TriggerOnly, Const.WATER_TAG);
 
 			if (InsideGroundCheck()) {
 				X += VelocityX;

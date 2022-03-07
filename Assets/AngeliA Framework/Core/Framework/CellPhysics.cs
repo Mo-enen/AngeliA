@@ -16,6 +16,13 @@ namespace AngeliaFramework {
 
 
 
+	public enum OperationMode {
+		ColliderOnly = 0,
+		TriggerOnly = 1,
+		ColliderAndTrigger = 2,
+	}
+
+
 	public static class CellPhysics {
 
 
@@ -64,13 +71,6 @@ namespace AngeliaFramework {
 					}
 				}
 			}
-		}
-
-
-		public enum OperationMode {
-			ColliderOnly = 0,
-			TriggerOnly = 1,
-			ColliderAndTrigger = 2,
 		}
 
 

@@ -10,7 +10,7 @@
 	},
 	"jsonVersion": "0.10.0-beta1",
 	"appBuildId": 456924,
-	"nextUid": 283,
+	"nextUid": 285,
 	"identifierStyle": "Free",
 	"worldLayout": "Free",
 	"worldGridWidth": 256,
@@ -4257,7 +4257,7 @@
 			]
 		},
 		{
-			"identifier": "eCheckPoint",
+			"identifier": "eCheckAltar",
 			"uid": 281,
 			"tags": [],
 			"width": 16,
@@ -4286,6 +4286,63 @@
 					"identifier": "Data",
 					"__type": "Int",
 					"uid": 282,
+					"type": "F_Int",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "ValueOnly",
+					"editorDisplayPos": "Above",
+					"editorAlwaysShow": false,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefTags": [],
+					"tilesetUid": null
+				}
+			]
+		},
+		{
+			"identifier": "eCheckStatue",
+			"uid": 283,
+			"tags": [],
+			"width": 16,
+			"height": 16,
+			"resizableX": false,
+			"resizableY": false,
+			"keepAspectRatio": false,
+			"tileOpacity": 1,
+			"fillOpacity": 0.08,
+			"lineOpacity": 0,
+			"hollow": false,
+			"color": "#818181",
+			"renderMode": "Tile",
+			"showName": false,
+			"tilesetId": 46,
+			"tileId": 11,
+			"tileRenderMode": "FitInside",
+			"tileRect": { "tilesetUid": 46, "x": 52, "y": 18, "w": 16, "h": 16 },
+			"maxCount": 0,
+			"limitScope": "PerLevel",
+			"limitBehavior": "MoveLastOne",
+			"pivotX": 0.5,
+			"pivotY": 0.5,
+			"fieldDefs": [
+				{
+					"identifier": "Data",
+					"__type": "Int",
+					"uid": 284,
 					"type": "F_Int",
 					"isArray": false,
 					"canBeNull": false,
@@ -4448,7 +4505,7 @@
 			"savedSelections": [],
 			"cachedPixelData": {
 				"opaqueTiles": "0000000100000001000000010000000100000001000000010000000111111111",
-				"averageColors": "f877f877f877f877eb873b87cb950000aa767a769a879a870000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+				"averageColors": "f877f877f877f877eb879cbbcb950000aa767a7699997ccb0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
 			}
 		}
 	], "enums": [], "externalEnums": [], "levelFields": [] },
@@ -5122,7 +5179,7 @@
 					"gridTiles": [],
 					"entityInstances": [
 						{
-							"__identifier": "eCheckPoint",
+							"__identifier": "eCheckAltar",
 							"__grid": [1,2],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
@@ -5525,46 +5582,7 @@
 							"fieldInstances": [{ "__identifier": "Data", "__value": 1, "__type": "Int", "__tile": null, "defUid": 280, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
 						},
 						{
-							"__identifier": "eCheckPoint",
-							"__grid": [8,4],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
-							"iid": "2bb33780-8dc0-11ec-bf26-b732b9697264",
-							"width": 16,
-							"height": 16,
-							"defUid": 281,
-							"px": [136,72],
-							"fieldInstances": [{ "__identifier": "Data", "__value": 4, "__type": "Int", "__tile": null, "defUid": 282, "realEditorValues": [{ "id": "V_Int", "params": [4] }] }]
-						},
-						{
-							"__identifier": "eCheckPoint",
-							"__grid": [3,4],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
-							"iid": "8716f4b0-8dc0-11ec-8ae3-3d270049eb39",
-							"width": 16,
-							"height": 16,
-							"defUid": 281,
-							"px": [56,72],
-							"fieldInstances": [{ "__identifier": "Data", "__value": -1, "__type": "Int", "__tile": null, "defUid": 282, "realEditorValues": [{ "id": "V_Int", "params": [-1] }] }]
-						},
-						{
-							"__identifier": "eCheckPoint",
-							"__grid": [2,4],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
-							"iid": "8cadc5c0-8dc0-11ec-8ae3-bd7e1983632c",
-							"width": 16,
-							"height": 16,
-							"defUid": 281,
-							"px": [40,72],
-							"fieldInstances": [{ "__identifier": "Data", "__value": -2, "__type": "Int", "__tile": null, "defUid": 282, "realEditorValues": [{ "id": "V_Int", "params": [-2] }] }]
-						},
-						{
-							"__identifier": "eCheckPoint",
+							"__identifier": "eCheckAltar",
 							"__grid": [1,4],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
@@ -5574,7 +5592,46 @@
 							"height": 16,
 							"defUid": 281,
 							"px": [24,72],
-							"fieldInstances": [{ "__identifier": "Data", "__value": -3, "__type": "Int", "__tile": null, "defUid": 282, "realEditorValues": [{ "id": "V_Int", "params": [-3] }] }]
+							"fieldInstances": [{ "__identifier": "Data", "__value": 3, "__type": "Int", "__tile": null, "defUid": 282, "realEditorValues": [{ "id": "V_Int", "params": [3] }] }]
+						},
+						{
+							"__identifier": "eCheckStatue",
+							"__grid": [3,4],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 52, "y": 18, "w": 16, "h": 16 },
+							"iid": "0e97f1c0-8dc0-11ec-b483-95617a0f420c",
+							"width": 16,
+							"height": 16,
+							"defUid": 283,
+							"px": [56,72],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 6, "__type": "Int", "__tile": null, "defUid": 284, "realEditorValues": [{ "id": "V_Int", "params": [6] }] }]
+						},
+						{
+							"__identifier": "eCheckStatue",
+							"__grid": [2,4],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 52, "y": 18, "w": 16, "h": 16 },
+							"iid": "2687b8b0-8dc0-11ec-b483-b9a32228abce",
+							"width": 16,
+							"height": 16,
+							"defUid": 283,
+							"px": [40,72],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 0, "__type": "Int", "__tile": null, "defUid": 284, "realEditorValues": [] }]
+						},
+						{
+							"__identifier": "eCheckAltar",
+							"__grid": [10,0],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 86, "y": 1, "w": 16, "h": 16 },
+							"iid": "2c0c6150-8dc0-11ec-b483-e314521491f2",
+							"width": 16,
+							"height": 16,
+							"defUid": 281,
+							"px": [168,8],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 0, "__type": "Int", "__tile": null, "defUid": 282, "realEditorValues": [] }]
 						}
 					]
 				},
@@ -5864,7 +5921,7 @@
 					"gridTiles": [],
 					"entityInstances": [
 						{
-							"__identifier": "eCheckPoint",
+							"__identifier": "eCheckAltar",
 							"__grid": [11,4],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
@@ -6116,7 +6173,7 @@
 					"gridTiles": [],
 					"entityInstances": [
 						{
-							"__identifier": "eCheckPoint",
+							"__identifier": "eCheckAltar",
 							"__grid": [10,9],
 							"__pivot": [0.5,0.5],
 							"__tags": [],

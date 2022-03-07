@@ -50,8 +50,7 @@ namespace AngeliaFramework.Editor {
 		private static readonly EditorSavingString EntityLayerVisible = new("EntityDebuger.EntityLayerVisible", "");
 		private static readonly EditorSavingString LastSyncTick = new("EntityDebuger.LastSyncTick", "0");
 		private static readonly EditorSavingBool ClickToSelectEntity = new("EntityDebuger.ClickToSelectEntity", true);
-		private static readonly EditorSavingString EventList = new("EntityDebuger.EventList", "");
-
+	
 
 		#endregion
 
@@ -173,9 +172,7 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		public static void Initialize () {
-			CellRenderer.BeforeUpdate += () => { if (Main != null) Main.DrawGizmos(); };
-		}
+		public static void Initialize () => CellRenderer.BeforeUpdate += () => { if (Main != null) Main.DrawGizmos(); };
 
 
 		private void OnEnable () {
@@ -395,13 +392,6 @@ namespace AngeliaFramework.Editor {
 			}
 
 			Layout.Rect(0, 0);
-
-			// Event List
-			GUI.Label(Layout.Rect(0, 20).Shrink(6, 0, 0, 0), "Events");
-			EventList.Value = EditorGUI.TextArea(
-				Layout.Rect(0, 64).Shrink(6, 6, 0, 0),
-				EventList.Value
-			);
 
 			// Bottom Bar
 			using (new GUILayout.HorizontalScope()) {
@@ -634,7 +624,7 @@ namespace AngeliaFramework.Editor {
 				EditorUtil.ProgressBar("", "Custom Events", 0.75f);
 
 				// Custom Events
-				PerformEvent("artwork");
+				PerformArtworkEvent();
 
 				EditorUtil.ProgressBar("Finish", "Custom Events", 1f);
 
@@ -931,13 +921,9 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void PerformEvent (string eventName) {
-			eventName += ":";
-			var events = EventList.Value.Replace("\r", "").Split('\n');
-			foreach (var eStr in events) {
-				if (eStr.StartsWith(eventName)) {
-					EditorApplication.ExecuteMenuItem(eStr[eventName.Length..]);
-				}
+		private void PerformArtworkEvent () {
+			foreach (var type in typeof(IArtworkEvent).AllClassImplemented()) {
+				if (System.Activator.CreateInstance(type) is IArtworkEvent e) e.Invoke();
 			}
 		}
 

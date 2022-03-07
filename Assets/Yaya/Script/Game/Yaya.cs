@@ -16,17 +16,6 @@ namespace Yaya {
 		}
 
 
-
-		private void Update () {
-			if (Input.GetKeyDown(KeyCode.Alpha1)) {
-				AddEntity(new eHealthPotion() {
-					X = 2048,
-					Y = 1024,
-				});
-			}
-		}
-
-
 		private void Awake_Misc () {
 			LConst.GetLanguage = (key) => CurrentLanguage ? CurrentLanguage[key] : "";
 

@@ -16,11 +16,15 @@ namespace Yaya {
 		// Api
 		public override EntityLayer Layer => EntityLayer.Item;
 		public int VelocityY { get; private set; } = 0;
-		protected RectInt RenderRect => new(X + (Const.ITEM_PHYSICS_SIZE - Const.ITEM_RENDER_SIZE) / 2, Y, Const.ITEM_RENDER_SIZE, Const.ITEM_RENDER_SIZE);
+		protected abstract int ITEM_CODE { get; }
+
+		// Short
+		private int ItemCode => _ItemCode != 0 ? _ItemCode : (_ItemCode = ITEM_CODE);
 
 		// Data
 		private HitInfo[] c_MakeRoom = new HitInfo[5];
 		private bool MakingRoom = false;
+		private int _ItemCode = 0;
 
 
 		#endregion
@@ -65,9 +69,9 @@ namespace Yaya {
 			// Make Room
 			if (MakingRoom = MakingRoom || (
 				frame % 30 == 0 &&
-				CellPhysics.Overlap(PhysicsLayer.Item, Rect, this, CellPhysics.OperationMode.TriggerOnly)
+				CellPhysics.Overlap(PhysicsLayer.Item, Rect, this, OperationMode.TriggerOnly)
 			)) {
-				int count = CellPhysics.OverlapAll(c_MakeRoom, PhysicsLayer.Item, Rect, this, CellPhysics.OperationMode.TriggerOnly);
+				int count = CellPhysics.OverlapAll(c_MakeRoom, PhysicsLayer.Item, Rect, this, OperationMode.TriggerOnly);
 				int deltaX = 0;
 				for (int i = 0; i < count; i++) {
 					deltaX += c_MakeRoom[i].Rect.x - X;
@@ -85,6 +89,12 @@ namespace Yaya {
 				Y = Mathf.Min(rect.y, Y);
 				c_MakeRoom.Dispose();
 			}
+		}
+
+
+		public override void FrameUpdate (int frame) {
+			base.FrameUpdate(frame);
+			CellRenderer.Draw(ItemCode, new(X + (Const.ITEM_PHYSICS_SIZE - Const.ITEM_RENDER_SIZE) / 2, Y, Const.ITEM_RENDER_SIZE, Const.ITEM_RENDER_SIZE));
 		}
 
 
