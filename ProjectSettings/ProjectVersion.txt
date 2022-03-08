@@ -1,2 +1,2 @@
-m_EditorVersion: 2022.1.0b5
-m_EditorVersionWithRevision: 2022.1.0b5 (9f5ac7cea48f)
+m_EditorVersion: 2022.1.0b10
+m_EditorVersionWithRevision: 2022.1.0b10 (ae8cd2bb2a22)
