@@ -54,8 +54,8 @@ TextureImporter:
       213: 8384062892723935902
     second: Cabinet Stove 4
   - first:
-      213: -4210252151482390241
-    second: Cabinet Stove 3
+      213: -7868061883605148489
+    second: Cabinet Stove 6
   - first:
       213: 7483223502006234942
     second: Stove 3
@@ -95,12 +95,6 @@ TextureImporter:
   - first:
       213: -734038542042089356
     second: Chest 0
-  - first:
-      213: 6116669529158146777
-    second: Cabinet Idol 6
-  - first:
-      213: -7128515207855051663
-    second: Cabinet Idol 5
   - first:
       213: 5272579457668564615
     second: Cabinet Idol 4
@@ -243,12 +237,6 @@ TextureImporter:
       213: 7778252439724502268
     second: Bed 1
   - first:
-      213: 4962981543849305709
-    second: Bed 2
-  - first:
-      213: 3988514060308958830
-    second: Bed 3
-  - first:
       213: -2433156338662758541
     second: Basket 1
   - first:
@@ -269,6 +257,15 @@ TextureImporter:
   - first:
       213: -5448561748106697413
     second: Photo 3
+  - first:
+      213: -7128515207855051663
+    second: Cabinet Idol 5
+  - first:
+      213: -4210252151482390241
+    second: Cabinet Stove 3
+  - first:
+      213: -5076151734500336818
+    second: Cabinet Stove 7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -415,10 +412,10 @@ TextureImporter:
       name: TV 1
       rect:
         serializedVersion: 2
-        x: 193
-        y: 129
+        x: 86
+        y: 106
         width: 16
-        height: 16
+        height: 32
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -436,10 +433,10 @@ TextureImporter:
       name: TV 0
       rect:
         serializedVersion: 2
-        x: 176
-        y: 129
+        x: 69
+        y: 106
         width: 16
-        height: 16
+        height: 32
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -457,10 +454,10 @@ TextureImporter:
       name: Fridge 1 Open
       rect:
         serializedVersion: 2
-        x: 185
-        y: 146
-        width: 12
-        height: 16
+        x: 86
+        y: 40
+        width: 16
+        height: 32
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -478,10 +475,10 @@ TextureImporter:
       name: Fridge 0 Open
       rect:
         serializedVersion: 2
-        x: 176
-        y: 146
-        width: 8
-        height: 16
+        x: 86
+        y: 73
+        width: 16
+        height: 32
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -499,10 +496,10 @@ TextureImporter:
       name: Fridge 1
       rect:
         serializedVersion: 2
-        x: 185
-        y: 163
-        width: 12
-        height: 16
+        x: 69
+        y: 40
+        width: 16
+        height: 32
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -520,10 +517,10 @@ TextureImporter:
       name: Fridge 0
       rect:
         serializedVersion: 2
-        x: 176
-        y: 163
-        width: 8
-        height: 16
+        x: 69
+        y: 73
+        width: 16
+        height: 32
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -667,8 +664,8 @@ TextureImporter:
       name: Cabinet Stove 5
       rect:
         serializedVersion: 2
-        x: 145
-        y: 91
+        x: 52
+        y: 122
         width: 16
         height: 16
       alignment: 9
@@ -688,8 +685,8 @@ TextureImporter:
       name: Cabinet Stove 4
       rect:
         serializedVersion: 2
-        x: 128
-        y: 91
+        x: 35
+        y: 122
         width: 16
         height: 16
       alignment: 9
@@ -706,11 +703,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cabinet Stove 3
+      name: Cabinet Stove 6
       rect:
         serializedVersion: 2
-        x: 111
-        y: 91
+        x: 35
+        y: 105
         width: 16
         height: 16
       alignment: 9
@@ -720,8 +717,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f196110a9fd2295c0800000000000000
-      internalID: -4210252151482390241
+      spriteID: 7bc9ce457670fc290800000000000000
+      internalID: -7868061883605148489
       vertices: []
       indices: 
       edges: []
@@ -730,8 +727,8 @@ TextureImporter:
       name: Stove 3
       rect:
         serializedVersion: 2
-        x: 94
-        y: 91
+        x: 52
+        y: 139
         width: 16
         height: 16
       alignment: 9
@@ -751,8 +748,8 @@ TextureImporter:
       name: Stove 2
       rect:
         serializedVersion: 2
-        x: 77
-        y: 91
+        x: 35
+        y: 139
         width: 16
         height: 16
       alignment: 9
@@ -772,8 +769,8 @@ TextureImporter:
       name: Cabinet Stove 2
       rect:
         serializedVersion: 2
-        x: 145
-        y: 108
+        x: 1
+        y: 105
         width: 16
         height: 16
       alignment: 9
@@ -793,8 +790,8 @@ TextureImporter:
       name: Cabinet Stove 1
       rect:
         serializedVersion: 2
-        x: 128
-        y: 108
+        x: 18
+        y: 122
         width: 16
         height: 16
       alignment: 9
@@ -814,8 +811,8 @@ TextureImporter:
       name: Cabinet Stove 0
       rect:
         serializedVersion: 2
-        x: 111
-        y: 108
+        x: 1
+        y: 122
         width: 16
         height: 16
       alignment: 9
@@ -835,8 +832,8 @@ TextureImporter:
       name: Stove 1
       rect:
         serializedVersion: 2
-        x: 94
-        y: 108
+        x: 18
+        y: 139
         width: 16
         height: 16
       alignment: 9
@@ -856,8 +853,8 @@ TextureImporter:
       name: Stove 0
       rect:
         serializedVersion: 2
-        x: 77
-        y: 108
+        x: 1
+        y: 139
         width: 16
         height: 16
       alignment: 9
@@ -919,10 +916,10 @@ TextureImporter:
       name: Chest 1 Open
       rect:
         serializedVersion: 2
-        x: 189
-        y: 180
-        width: 12
-        height: 11
+        x: 52
+        y: 88
+        width: 16
+        height: 16
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -940,10 +937,10 @@ TextureImporter:
       name: Chest 0 Open
       rect:
         serializedVersion: 2
-        x: 176
-        y: 180
-        width: 12
-        height: 11
+        x: 18
+        y: 88
+        width: 16
+        height: 16
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -961,10 +958,10 @@ TextureImporter:
       name: Chest 1
       rect:
         serializedVersion: 2
-        x: 189
-        y: 192
-        width: 12
-        height: 8
+        x: 35
+        y: 88
+        width: 16
+        height: 16
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -982,10 +979,10 @@ TextureImporter:
       name: Chest 0
       rect:
         serializedVersion: 2
-        x: 176
-        y: 192
-        width: 12
-        height: 8
+        x: 1
+        y: 88
+        width: 16
+        height: 16
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1000,54 +997,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cabinet Idol 6
-      rect:
-        serializedVersion: 2
-        x: 155
-        y: 125
-        width: 12
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9da5ded7786c2e450800000000000000
-      internalID: 6116669529158146777
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cabinet Idol 5
-      rect:
-        serializedVersion: 2
-        x: 142
-        y: 125
-        width: 12
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 17c64dbdf2d621d90800000000000000
-      internalID: -7128515207855051663
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Cabinet Idol 4
       rect:
         serializedVersion: 2
-        x: 129
-        y: 125
-        width: 12
+        x: 69
+        y: 171
+        width: 16
         height: 16
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
@@ -1066,9 +1021,9 @@ TextureImporter:
       name: Cabinet Idol 3
       rect:
         serializedVersion: 2
-        x: 116
-        y: 125
-        width: 12
+        x: 86
+        y: 188
+        width: 16
         height: 16
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
@@ -1087,9 +1042,9 @@ TextureImporter:
       name: Cabinet Idol 2
       rect:
         serializedVersion: 2
-        x: 103
-        y: 125
-        width: 12
+        x: 69
+        y: 188
+        width: 16
         height: 16
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
@@ -1108,9 +1063,9 @@ TextureImporter:
       name: Cabinet Idol 1
       rect:
         serializedVersion: 2
-        x: 90
-        y: 125
-        width: 12
+        x: 86
+        y: 205
+        width: 16
         height: 16
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
@@ -1129,9 +1084,9 @@ TextureImporter:
       name: Cabinet Idol 0
       rect:
         serializedVersion: 2
-        x: 77
-        y: 125
-        width: 12
+        x: 69
+        y: 205
+        width: 16
         height: 16
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
@@ -1759,8 +1714,8 @@ TextureImporter:
       name: Basket 0
       rect:
         serializedVersion: 2
-        x: 102
-        y: 239
+        x: 69
+        y: 156
         width: 16
         height: 16
       alignment: 9
@@ -2029,53 +1984,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bed 2
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 205
-        width: 32
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d6625fb4b6d00e440800000000000000
-      internalID: 4962981543849305709
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bed 3
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 188
-        width: 32
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e6ecd52e76c0a5730800000000000000
-      internalID: 3988514060308958830
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Basket 1
       rect:
         serializedVersion: 2
-        x: 102
-        y: 222
+        x: 69
+        y: 139
         width: 16
         height: 16
       alignment: 9
@@ -2095,8 +2008,8 @@ TextureImporter:
       name: Basket 2
       rect:
         serializedVersion: 2
-        x: 102
-        y: 205
+        x: 86
+        y: 156
         width: 16
         height: 16
       alignment: 9
@@ -2116,8 +2029,8 @@ TextureImporter:
       name: Basket 3
       rect:
         serializedVersion: 2
-        x: 102
-        y: 188
+        x: 86
+        y: 139
         width: 16
         height: 16
       alignment: 9
@@ -2217,6 +2130,69 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Cabinet Idol 5
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 171
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17c64dbdf2d621d90800000000000000
+      internalID: -7128515207855051663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cabinet Stove 3
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f196110a9fd2295c0800000000000000
+      internalID: -4210252151482390241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cabinet Stove 7
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4bdf1f54e2ed89b0800000000000000
+      internalID: -5076151734500336818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -2228,11 +2204,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Dining Table 1: 8104653079036211636
+      Clock 0: 2663608072918939639
       Chair 2: -8508928456783481773
       Light 0: 4266539449291738496
       Basket 3: 4041137338011283254
-      Clock 0: 2663608072918939639
+      Cabinet Stove 3: -4210252151482390241
       Vase 1: 337168890041607808
       Cabinet Idol 0: 3048336242622540681
       Bed 0: 704033437376869423
@@ -2255,6 +2231,7 @@ TextureImporter:
       Lamp 5: -4807307639662669126
       TV 1: -2972401882360132890
       Light 1: 7789019521170512700
+      Cabinet Stove 7: -5076151734500336818
       Light 2: -7962080542218225778
       Lamp 2: -3621969586769268591
       Basket 2: 9071431351256446074
@@ -2279,7 +2256,6 @@ TextureImporter:
       Fridge 1 Open: -3993957332922132671
       Stove 1: 2195348648765899117
       Nightstand 0: 7235390386569320284
-      Bed 2: 4962981543849305709
       Cabinet Stove 1: -6389752107736459441
       Lamp 6: 2005179410948718285
       wardrobe 3 Open: -6242488068550221514
@@ -2296,6 +2272,7 @@ TextureImporter:
       Clock 2: -5915476295922998831
       Chest 1: 7426101085159056613
       Photo 0: -1017347523448416196
+      Cabinet Stove 6: -7868061883605148489
       Cabinet Stove 2: -8413385201370799033
       Basket 1: -2433156338662758541
       Cabinet Idol 1: 433145596346051637
@@ -2309,14 +2286,12 @@ TextureImporter:
       Stove 0: -8359845189509003210
       Chair 8: 8240863919393596647
       Chair 7: -229783588220067083
-      Cabinet Idol 6: 6116669529158146777
-      Bed 3: 3988514060308958830
       Chair 0: 364761029475331844
       Bed 1: 7778252439724502268
       Light 3: 3586697536399493897
       Basket 0: -5885043204060160468
       wardrobe 3: -6794393342262416966
-      Cabinet Stove 3: -4210252151482390241
+      Dining Table 1: 8104653079036211636
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

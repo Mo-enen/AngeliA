@@ -8,7 +8,7 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 
 namespace Yaya {
 
-
+	/*
 	public class Test : CellEffect {
 		public Test (int duration) : base(duration) { }
 		public override void Perform (CellLayer layer, int layerIndex) {
@@ -30,7 +30,7 @@ namespace Yaya {
 			}
 		}
 	}
-
+	//*/
 
 	public class Yaya : Game {
 
@@ -38,13 +38,6 @@ namespace Yaya {
 		private void Awake () {
 			Awake_Misc();
 			Awake_Quit();
-		}
-
-
-		private void Update () {
-			if (Input.GetKeyDown(KeyCode.Alpha1)) {
-				CellRenderer.AddEffect(new Test(120));
-			}
 		}
 
 

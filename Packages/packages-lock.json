@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.moenengames.angeliaframework": {
-      "version": "file:C:/Data/Unity/Packages/Assets/AngeliA Framework",
+      "version": "file:C:/Data/Unity/Packages/AngeliA Framework",
       "depth": 0,
       "source": "local",
       "dependencies": {
@@ -10,13 +10,13 @@
       }
     },
     "com.moenengames.asepritetoolbox": {
-      "version": "file:C:/Data/Unity/Packages/Assets/Aseprite Toolbox",
+      "version": "file:C:/Data/Unity/Packages/Aseprite Toolbox",
       "depth": 0,
       "source": "local",
       "dependencies": {}
     },
     "com.moenengames.standard": {
-      "version": "file:C:/Data/Unity/Packages/Assets/Standard",
+      "version": "file:C:/Data/Unity/Packages/Standard",
       "depth": 0,
       "source": "local",
       "dependencies": {}
