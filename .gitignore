@@ -1,4 +1,20 @@
-
-Packages/packages-lock.json
-Assets/Scene/Yaya.unity
-Packages/manifest.json
+/.vs
+/Library
+/Logs
+/obj/Debug
+/Temp
+/UIElementsSchema
+*.csproj
+*.ini
+*.sln
+*.config
+/Projects
+/QuickAccess Config.json
+/_BackUp
+/Log
+/_Release
+/_Paper
+/UserSettings
+/_Built
+.vsconfig
+.editorconfig

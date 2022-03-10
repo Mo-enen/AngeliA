@@ -21,14 +21,6 @@
       "source": "local",
       "dependencies": {}
     },
-    "com.moenengames.yayaframework": {
-      "version": "file:C:/Data/Unity/Packages/Yaya Framework",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {
-        "com.moenengames.angeliaframework": "1.0.0"
-      }
-    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
