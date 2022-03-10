@@ -1,0 +1,674 @@
+fileFormatVersion: 2
+guid: af692df1552613a4b8782eacf26c4d08
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6941177111702173795
+    second: Trunk Bottom 0
+  - first:
+      213: -3291065956356463283
+    second: Trunk Mid 0
+  - first:
+      213: -9191907662150973263
+    second: Trunk Bottom 1
+  - first:
+      213: -8492585721279832913
+    second: Trunk Mid 1
+  - first:
+      213: 2099708220728198015
+    second: Trunk Bottom 2
+  - first:
+      213: -4262015193642600341
+    second: Trunk Mid 2
+  - first:
+      213: 4760277309094755142
+    second: Trunk Bottom 3
+  - first:
+      213: 2404909476925590723
+    second: Trunk Mid 3
+  - first:
+      213: -5428447844661190588
+    second: Leaf Poplar 0
+  - first:
+      213: 5458088081292269897
+    second: Leaf Poplar 1
+  - first:
+      213: 7438108535209715118
+    second: Leaf Poplar 2
+  - first:
+      213: -7678963634722295320
+    second: Leaf Maple 0
+  - first:
+      213: 2894240417409491222
+    second: Leaf Maple 1
+  - first:
+      213: 8800351415834487592
+    second: Leaf Maple 2
+  - first:
+      213: 3368842661031126456
+    second: Leaf Willow 0
+  - first:
+      213: -2767977005067235476
+    second: Leaf Willow 1
+  - first:
+      213: 8708997741296689451
+    second: Leaf Willow 2
+  - first:
+      213: -372771659982220142
+    second: Leaf Pine 0
+  - first:
+      213: 1561089663153055055
+    second: Leaf Pine 1
+  - first:
+      213: -7068245487652895139
+    second: Leaf Pine 2
+  - first:
+      213: -1104180634249541273
+    second: Leaf Palm 0
+  - first:
+      213: -5168663107240081674
+    second: Leaf Palm 1
+  - first:
+      213: 4392931481301322492
+    second: Leaf Palm 2
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 0
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Trunk Bottom 0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 239
+        width: 5
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3687412aec3045060800000000000000
+      internalID: 6941177111702173795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Trunk Mid 0
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 239
+        width: 5
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d45edf213f8c352d0800000000000000
+      internalID: -3291065956356463283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Trunk Bottom 1
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 239
+        width: 5
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b8cc4d9ea8cf6080800000000000000
+      internalID: -9191907662150973263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Trunk Mid 1
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 239
+        width: 5
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fac9f8a3846442a80800000000000000
+      internalID: -8492585721279832913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Trunk Bottom 2
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 239
+        width: 5
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f73c8748089a32d10800000000000000
+      internalID: 2099708220728198015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Trunk Mid 2
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 239
+        width: 5
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b687d9333c74ad4c0800000000000000
+      internalID: -4262015193642600341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Trunk Bottom 3
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 239
+        width: 5
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64bf1f8ddf6ef0240800000000000000
+      internalID: 4760277309094755142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Trunk Mid 3
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 239
+        width: 5
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ccce117d64ff5120800000000000000
+      internalID: 2404909476925590723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Poplar 0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 232
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4402c3942774aa4b0800000000000000
+      internalID: -5428447844661190588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Poplar 1
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 232
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 949183611360fbb40800000000000000
+      internalID: 5458088081292269897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Poplar 2
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 232
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea5e9f1dd48793760800000000000000
+      internalID: 7438108535209715118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Maple 0
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 232
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e13c355247de6590800000000000000
+      internalID: -7678963634722295320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Maple 1
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 232
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 611654643586a2820800000000000000
+      internalID: 2894240417409491222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Maple 2
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 232
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82bab678cf0212a70800000000000000
+      internalID: 8800351415834487592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Willow 0
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 232
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b521f22d8880ce20800000000000000
+      internalID: 3368842661031126456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Willow 1
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 232
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6f848a449b2699d0800000000000000
+      internalID: -2767977005067235476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Willow 2
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 232
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b212bafad439cd870800000000000000
+      internalID: 8708997741296689451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Pine 0
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 232
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2945d687626a3daf0800000000000000
+      internalID: -372771659982220142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Pine 1
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 232
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f45a5c217ca1aa510800000000000000
+      internalID: 1561089663153055055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Pine 2
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 232
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d56013b9d2c88ed90800000000000000
+      internalID: -7068245487652895139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Palm 0
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 232
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 769c0b730992da0f0800000000000000
+      internalID: -1104180634249541273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Palm 1
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 232
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f6c949e9483548b0800000000000000
+      internalID: -5168663107240081674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Palm 2
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 232
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfa889158e3d6fc30800000000000000
+      internalID: 4392931481301322492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Leaf Palm 0: -1104180634249541273
+      Trunk Mid 0: -3291065956356463283
+      Trunk Bottom 0: 6941177111702173795
+      Leaf Willow 2: 8708997741296689451
+      Leaf Pine 2: -7068245487652895139
+      Leaf Palm 1: -5168663107240081674
+      Leaf Willow 1: -2767977005067235476
+      Trunk Mid 1: -8492585721279832913
+      Leaf Poplar 1: 5458088081292269897
+      Trunk Mid 3: 2404909476925590723
+      Leaf Maple 1: 2894240417409491222
+      Leaf Pine 1: 1561089663153055055
+      Trunk Bottom 2: 2099708220728198015
+      Leaf Maple 2: 8800351415834487592
+      Leaf Pine 0: -372771659982220142
+      Leaf Palm 2: 4392931481301322492
+      Trunk Bottom 3: 4760277309094755142
+      Trunk Bottom 1: -9191907662150973263
+      Trunk Mid 2: -4262015193642600341
+      Leaf Poplar 2: 7438108535209715118
+      Leaf Poplar 0: -5428447844661190588
+      Leaf Willow 0: 3368842661031126456
+      Leaf Maple 0: -7678963634722295320
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

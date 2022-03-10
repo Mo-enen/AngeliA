@@ -1,0 +1,824 @@
+fileFormatVersion: 2
+guid: 5442ba970b005cc4391076abec7d4361
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2078833997301817751
+    second: Pixel
+  - first:
+      213: -6305525018894267574
+    second: Window UL
+  - first:
+      213: 3449644848498340232
+    second: Window UR
+  - first:
+      213: -5411820802484931957
+    second: Window UM
+  - first:
+      213: 1112858160638600142
+    second: Window ML
+  - first:
+      213: 7743596390179051671
+    second: Window DL
+  - first:
+      213: 1627738625557134280
+    second: Window MR
+  - first:
+      213: 8499756320157825743
+    second: Window DM
+  - first:
+      213: -5607946330495087584
+    second: Window DR
+  - first:
+      213: 8920977586290502923
+    second: Window MM
+  - first:
+      213: -7727640098120863848
+    second: Button UL
+  - first:
+      213: 8239339572498582157
+    second: Button UM
+  - first:
+      213: 7996625936710371929
+    second: Button UR
+  - first:
+      213: -3173719055946195214
+    second: Button ML
+  - first:
+      213: -7823504150510535022
+    second: Button DL
+  - first:
+      213: -5295589304136099415
+    second: Button MM
+  - first:
+      213: -923660885011710959
+    second: Button DM
+  - first:
+      213: 1042617251748791427
+    second: Button DR
+  - first:
+      213: 7260588863626102288
+    second: Button MR
+  - first:
+      213: 5591338999344195665
+    second: Button Highlight UL
+  - first:
+      213: -5061205727579235168
+    second: Button Highlight UM
+  - first:
+      213: -4217707341951502129
+    second: Button Highlight UR
+  - first:
+      213: 2150337507027847861
+    second: Button Highlight MR
+  - first:
+      213: -7208469581114419994
+    second: Button Highlight DR
+  - first:
+      213: 2905883229601149106
+    second: Button Highlight DM
+  - first:
+      213: -8875638459122358484
+    second: Button Highlight DL
+  - first:
+      213: 1071950943618935904
+    second: Button Highlight ML
+  - first:
+      213: 3766845620059095655
+    second: LineV_4
+  - first:
+      213: -818455944832738681
+    second: LineH_4
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 0
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Pixel
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1
+        width: 1
+        height: 1
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96ed1db5e7f7623e0800000000000000
+      internalID: -2078833997301817751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Window UL
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 12
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4b087647664e78a0800000000000000
+      internalID: -6305525018894267574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Window UR
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 12
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 881fff376b99fdf20800000000000000
+      internalID: 3449644848498340232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Window UM
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 12
+        width: 5
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b82f0d737a955e4b0800000000000000
+      internalID: -5411820802484931957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Window ML
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 7
+        width: 6
+        height: 5
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec32246d99aa17f00800000000000000
+      internalID: 1112858160638600142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Window DL
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 1
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7989e98b3e7c67b60800000000000000
+      internalID: 7743596390179051671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Window MR
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 7
+        width: 6
+        height: 5
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8cbf383e7a3e69610800000000000000
+      internalID: 1627738625557134280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Window DM
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 1
+        width: 5
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fca736ce65335f570800000000000000
+      internalID: 8499756320157825743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Window DR
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 1
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02c826b46829c22b0800000000000000
+      internalID: -5607946330495087584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Window MM
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 7
+        width: 5
+        height: 5
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0d211079ddadcb70800000000000000
+      internalID: 8920977586290502923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button UL
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 5
+        width: 3
+        height: 3
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89fe0770648e1c490800000000000000
+      internalID: -7727640098120863848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button UM
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 5
+        width: 1
+        height: 3
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8ac892ffa3085270800000000000000
+      internalID: 8239339572498582157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button UR
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 5
+        width: 3
+        height: 3
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95a0c47ebe8b9fe60800000000000000
+      internalID: 7996625936710371929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button ML
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 4
+        width: 3
+        height: 1
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fe507d655fa4f3d0800000000000000
+      internalID: -3173719055946195214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button DL
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 1
+        width: 3
+        height: 3
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29e76020d645d6390800000000000000
+      internalID: -7823504150510535022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button MM
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 4
+        width: 1
+        height: 1
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a91c9ac5994286b0800000000000000
+      internalID: -5295589304136099415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button DM
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 1
+        width: 1
+        height: 3
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11c34ff915f7e23f0800000000000000
+      internalID: -923660885011710959
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button DR
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 1
+        width: 3
+        height: 3
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3844e2fcdde187e00800000000000000
+      internalID: 1042617251748791427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button MR
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 4
+        width: 3
+        height: 1
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 016479c6a1bc2c460800000000000000
+      internalID: 7260588863626102288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button Highlight UL
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 8
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 158e2ba123d689d40800000000000000
+      internalID: 5591338999344195665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button Highlight UM
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 8
+        width: 1
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ac9778c43cf2c9b0800000000000000
+      internalID: -5061205727579235168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button Highlight UR
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 8
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc87c64d481b775c0800000000000000
+      internalID: -4217707341951502129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button Highlight MR
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 7
+        width: 6
+        height: 1
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ba0895d19887dd10800000000000000
+      internalID: 2150337507027847861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button Highlight DR
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 1
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e4577bab1f56fb90800000000000000
+      internalID: -7208469581114419994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button Highlight DM
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 1
+        width: 1
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b0342bb665c35820800000000000000
+      internalID: 2905883229601149106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button Highlight DL
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 1
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c276739b8d563d480800000000000000
+      internalID: -8875638459122358484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button Highlight ML
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 7
+        width: 6
+        height: 1
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06c2d0b24b550ee00800000000000000
+      internalID: 1071950943618935904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LineV_4
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 3
+        width: 1
+        height: 4
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 762cb534226864430800000000000000
+      internalID: 3766845620059095655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LineH_4
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 1
+        width: 4
+        height: 1
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78a10ff87a244a4f0800000000000000
+      internalID: -818455944832738681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Button Highlight UM: -5061205727579235168
+      Button UL: -7727640098120863848
+      Button Highlight UR: -4217707341951502129
+      Window MM: 8920977586290502923
+      Window UR: 3449644848498340232
+      Button Highlight DL: -8875638459122358484
+      Button DL: -7823504150510535022
+      Button Highlight MR: 2150337507027847861
+      Button UR: 7996625936710371929
+      Button Highlight ML: 1071950943618935904
+      Pixel: -2078833997301817751
+      Window ML: 1112858160638600142
+      Window UM: -5411820802484931957
+      Window DL: 7743596390179051671
+      Window MR: 1627738625557134280
+      Button Highlight UL: 5591338999344195665
+      Window DR: -5607946330495087584
+      Button ML: -3173719055946195214
+      LineV_4: 3766845620059095655
+      Window UL: -6305525018894267574
+      Button DM: -923660885011710959
+      Button Highlight DR: -7208469581114419994
+      Button UM: 8239339572498582157
+      Window DM: 8499756320157825743
+      Button DR: 1042617251748791427
+      Button Highlight DM: 2905883229601149106
+      LineH_4: -818455944832738681
+      Button MM: -5295589304136099415
+      Button MR: 7260588863626102288
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

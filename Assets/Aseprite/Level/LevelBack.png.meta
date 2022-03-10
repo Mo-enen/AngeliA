@@ -1,0 +1,5324 @@
+fileFormatVersion: 2
+guid: 7cd822eccaa025a4a95fef70c7c71dd1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6448832585698385253
+    second: Brick
+  - first:
+      213: 2852532369218779076
+    second: Grass Ground 0
+  - first:
+      213: -2243946855060729021
+    second: Grass Ground 1
+  - first:
+      213: 1420340397046421190
+    second: Grass Ground 2
+  - first:
+      213: -9072998069868027213
+    second: Grass Ground 3
+  - first:
+      213: -1374700420600423414
+    second: Grass Ground 4
+  - first:
+      213: -7622445870050429426
+    second: Grass Ground 5
+  - first:
+      213: -1440869216268820329
+    second: Grass Ground 6
+  - first:
+      213: 6087002409126005373
+    second: Grass Ground 7
+  - first:
+      213: 5945820847118747798
+    second: Grass Ground 8
+  - first:
+      213: -2794322698289958082
+    second: Grass Ground 9
+  - first:
+      213: -7392979644268789809
+    second: Grass Ground 10
+  - first:
+      213: -8822198502774587252
+    second: Grass Ground 11
+  - first:
+      213: 1666298949094619943
+    second: Grass Ground 12
+  - first:
+      213: -1990186389894202535
+    second: Oneway Gate
+  - first:
+      213: -1319390578392551650
+    second: Beige Stone Brick 0
+  - first:
+      213: 6530134688746852137
+    second: Beige Stone Brick 1
+  - first:
+      213: 8991689829470932167
+    second: Beige Stone Brick 2
+  - first:
+      213: -4541245494493896079
+    second: Beige Stone Brick 3
+  - first:
+      213: 6728500399613978231
+    second: Beige Stone Brick 4
+  - first:
+      213: -6905566312594337147
+    second: Beige Stone Brick 5
+  - first:
+      213: 8434545445632794260
+    second: Beige Stone Brick 6
+  - first:
+      213: -6589763822632885631
+    second: Beige Stone Brick 7
+  - first:
+      213: 8706770528525637964
+    second: Beige Stone Brick 8
+  - first:
+      213: 8572754387582376017
+    second: Beige Stone Brick 9
+  - first:
+      213: -6529053662184205970
+    second: Beige Stone Brick 10
+  - first:
+      213: -8094389247986156121
+    second: Beige Stone Brick 11
+  - first:
+      213: 2593510430790744039
+    second: Beige Stone Brick 12
+  - first:
+      213: 2398557270760592056
+    second: Beige Stone Brick 13
+  - first:
+      213: -1260596444792528852
+    second: Beige Stone Brick 14
+  - first:
+      213: 7053429870135826346
+    second: Beige Stone Brick 15
+  - first:
+      213: 58269437115293342
+    second: Beige Stone Brick 16
+  - first:
+      213: 741723431143094602
+    second: Beige Stone Brick 17
+  - first:
+      213: -1016190136770986679
+    second: Beige Stone Brick 18
+  - first:
+      213: 7994141658667751961
+    second: Beige Stone Brick 19
+  - first:
+      213: -8558082501948854600
+    second: Beige Stone Brick 20
+  - first:
+      213: 3431917313603722460
+    second: Beige Stone Brick 21
+  - first:
+      213: -5150803622294236526
+    second: Beige Stone Brick 22
+  - first:
+      213: 5607178658038529593
+    second: Beige Stone Brick 23
+  - first:
+      213: 7785969650700756453
+    second: Beige Stone Brick 24
+  - first:
+      213: 6877592551663312243
+    second: Beige Stone Brick 25
+  - first:
+      213: 4339595551674242603
+    second: Beige Stone Brick 26
+  - first:
+      213: 7253234972958099141
+    second: Beige Stone Brick 27
+  - first:
+      213: 1239060263347576239
+    second: Beige Stone Brick 28
+  - first:
+      213: -2673283007635420503
+    second: Beige Stone Brick 29
+  - first:
+      213: -5253698981126251776
+    second: Beige Stone Brick 44
+  - first:
+      213: 9063632593054017078
+    second: Beige Stone Brick 43
+  - first:
+      213: -1101745400263493449
+    second: Beige Stone Brick 42
+  - first:
+      213: -7884320598242375135
+    second: Beige Stone Brick 41
+  - first:
+      213: -8580629345542647091
+    second: Beige Stone Brick 40
+  - first:
+      213: 904036688567334270
+    second: Beige Stone Brick 39
+  - first:
+      213: -4344068780593401849
+    second: Beige Stone Brick 38
+  - first:
+      213: -7946356796935988009
+    second: Beige Stone Brick 37
+  - first:
+      213: 3200871473405960115
+    second: Beige Stone Brick 36
+  - first:
+      213: -8238786727047090582
+    second: Beige Stone Brick 35
+  - first:
+      213: -7098673986329981606
+    second: Beige Stone Brick 34
+  - first:
+      213: 5040571767455968935
+    second: Beige Stone Brick 33
+  - first:
+      213: -875609479063009801
+    second: Beige Stone Brick 32
+  - first:
+      213: -3958262400098225800
+    second: Beige Stone Brick 31
+  - first:
+      213: -2360902616382221995
+    second: Beige Stone Brick 30
+  - first:
+      213: -8997463825446045499
+    second: Beige Stone Brick 45
+  - first:
+      213: 752452623582085803
+    second: Beige Stone Brick 46
+  - first:
+      213: -2423243540190136625
+    second: Dirt 5
+  - first:
+      213: 1860219219872992056
+    second: Dirt 6
+  - first:
+      213: -7367832210483215483
+    second: Dirt 7
+  - first:
+      213: -1579450839979878935
+    second: Dirt 8
+  - first:
+      213: -683901389372600605
+    second: Dirt 9
+  - first:
+      213: 7512883479365378987
+    second: Dirt 10
+  - first:
+      213: -6897806147178779538
+    second: Dirt 11
+  - first:
+      213: -8176437375353509645
+    second: Dirt 12
+  - first:
+      213: -1563969844260571892
+    second: Grey Stone Brick 0
+  - first:
+      213: -2700638979270710096
+    second: Grey Stone Brick 1
+  - first:
+      213: -7011215532495296011
+    second: Grey Stone Brick 2
+  - first:
+      213: -5066824972190791654
+    second: Grey Stone Brick 3
+  - first:
+      213: 6066470399074144201
+    second: Grey Stone Brick 4
+  - first:
+      213: 5974681267454611254
+    second: Grey Stone Brick 5
+  - first:
+      213: 1974983621603219542
+    second: Grey Stone Brick 6
+  - first:
+      213: -8840042980905726699
+    second: Grey Stone Brick 7
+  - first:
+      213: -7638473846260071944
+    second: Grey Stone Brick 8
+  - first:
+      213: -1847640954062615731
+    second: Grey Stone Brick 9
+  - first:
+      213: -5721357015852061189
+    second: Grey Stone Brick 10
+  - first:
+      213: -3689902791762370894
+    second: Grey Stone Brick 11
+  - first:
+      213: -1517619197050988946
+    second: Grey Stone Brick 12
+  - first:
+      213: -2785656464013620079
+    second: Grey Stone Brick 13
+  - first:
+      213: -5901387839313482666
+    second: Grey Stone Brick 14
+  - first:
+      213: 436491044212757667
+    second: Grey Stone Brick 15
+  - first:
+      213: -5006427450494394233
+    second: Grey Stone Brick 16
+  - first:
+      213: -6853596967865961826
+    second: Grey Stone Brick 17
+  - first:
+      213: -4126870410426363894
+    second: Grey Stone Brick 18
+  - first:
+      213: -7683605959516533707
+    second: Grey Stone Brick 19
+  - first:
+      213: -4529543417160469600
+    second: Grey Stone Brick 20
+  - first:
+      213: 2837366840089116456
+    second: Grey Stone Brick 21
+  - first:
+      213: 3950108047379946619
+    second: Grey Stone Brick 22
+  - first:
+      213: 5500151472511051715
+    second: Grey Stone Brick 23
+  - first:
+      213: -8634199179896566
+    second: Grey Stone Brick 24
+  - first:
+      213: -1202684878612363242
+    second: Grey Stone Brick 25
+  - first:
+      213: 6823743818949862499
+    second: Grey Stone Brick 26
+  - first:
+      213: -8192244484582306187
+    second: Grey Stone Brick 27
+  - first:
+      213: -4239764260493559063
+    second: Grey Stone Brick 28
+  - first:
+      213: 2543400608979338170
+    second: Grey Stone Brick 29
+  - first:
+      213: -5358811418266856601
+    second: Grey Stone Brick 30
+  - first:
+      213: -5610303693049937472
+    second: Grey Stone Brick 31
+  - first:
+      213: 8386809361878594801
+    second: Grey Stone Brick 32
+  - first:
+      213: 4787018380545051608
+    second: Grey Stone Brick 33
+  - first:
+      213: 7644383573314237961
+    second: Grey Stone Brick 34
+  - first:
+      213: -7668372638356674487
+    second: Grey Stone Brick 35
+  - first:
+      213: 7493919083063165418
+    second: Grey Stone Brick 36
+  - first:
+      213: 1085964386155385099
+    second: Grey Stone Brick 37
+  - first:
+      213: -163896682709244646
+    second: Grey Stone Brick 38
+  - first:
+      213: 2143149074231433306
+    second: Grey Stone Brick 39
+  - first:
+      213: -8416438717223198981
+    second: Grey Stone Brick 40
+  - first:
+      213: -4802563165767959518
+    second: Grey Stone Brick 41
+  - first:
+      213: 4493518693951563201
+    second: Grey Stone Brick 42
+  - first:
+      213: 7833370775472542787
+    second: Grey Stone Brick 43
+  - first:
+      213: 8881771107590019351
+    second: Grey Stone Brick 44
+  - first:
+      213: 4135185028875942793
+    second: Grey Stone Brick 45
+  - first:
+      213: -4972767557568522755
+    second: Grey Stone Brick 46
+  - first:
+      213: 1604666739716444649
+    second: Dirt Brittle
+  - first:
+      213: -1328718549187013623
+    second: Dirt Grass Brittle
+  - first:
+      213: -1762684513842207210
+    second: Grass 0
+  - first:
+      213: -587650059585142348
+    second: Grass 1
+  - first:
+      213: -5820585048729039126
+    second: Grass 2
+  - first:
+      213: -5048438320844973812
+    second: Grass 3
+  - first:
+      213: -3680228605072855999
+    second: Grass 4
+  - first:
+      213: 9026526397533968890
+    second: Grass 5
+  - first:
+      213: 1529483579008949169
+    second: Wooden Floor 0
+  - first:
+      213: 751395818869890105
+    second: Wooden Floor 1
+  - first:
+      213: -1572017419379060659
+    second: Wooden Floor 2
+  - first:
+      213: 4635944399496838365
+    second: Wooden Floor 3
+  - first:
+      213: 8132115248491839871
+    second: Wooden Floor 4
+  - first:
+      213: -2887235767190852805
+    second: Wooden Floor 5
+  - first:
+      213: 2882459633976459614
+    second: Wooden Floor 6
+  - first:
+      213: 7608509180125371070
+    second: Wooden Floor 7
+  - first:
+      213: -8612486685363326746
+    second: Wooden Floor 8
+  - first:
+      213: -380901704900021633
+    second: Wooden Floor 9
+  - first:
+      213: 2164780313122189483
+    second: Wooden Floor 10
+  - first:
+      213: 1515845541671521246
+    second: Wooden Floor 11
+  - first:
+      213: -5508197036107903187
+    second: Wooden Floor 12
+  - first:
+      213: -9061681759067033011
+    second: Wooden Floor 13
+  - first:
+      213: -8709466039747051524
+    second: Board Floor 0
+  - first:
+      213: -3344111693652459231
+    second: Board Floor 1
+  - first:
+      213: -4874960679387248159
+    second: Board Floor 2
+  - first:
+      213: 4231138782505367989
+    second: Board Floor 3
+  - first:
+      213: 2564409720553820411
+    second: Board Floor 4
+  - first:
+      213: 7785960573116592867
+    second: Board Floor 5
+  - first:
+      213: 7107072896869389756
+    second: Board Floor 6
+  - first:
+      213: 2399577739065711212
+    second: Board Floor 7
+  - first:
+      213: -4759930008714636266
+    second: Board Floor 8
+  - first:
+      213: -4992296108539046972
+    second: Board Floor 9
+  - first:
+      213: 6306104361350746449
+    second: Board Floor 10
+  - first:
+      213: 1031841322078906511
+    second: Board Floor 11
+  - first:
+      213: -5221294822708961750
+    second: Board Floor 12
+  - first:
+      213: -6057557763418563322
+    second: Board Floor 13
+  - first:
+      213: -1100844343701806612
+    second: Wooden Board 0
+  - first:
+      213: 7504850729068728018
+    second: Wooden Board 1
+  - first:
+      213: -5063208223145990354
+    second: Wooden Board 2
+  - first:
+      213: -4711279793165227925
+    second: Wooden Board 3
+  - first:
+      213: 304311408646129325
+    second: Wooden Board 4
+  - first:
+      213: 2072634981402615595
+    second: Wooden Board 5
+  - first:
+      213: 1936139386564394534
+    second: Wooden Board 6
+  - first:
+      213: -1602587713372403926
+    second: Wooden Board 7
+  - first:
+      213: 4951936417506345250
+    second: Wooden Board 8
+  - first:
+      213: -4185087315048791515
+    second: Wooden Board 9
+  - first:
+      213: 9050763555968021357
+    second: Wooden Board 10
+  - first:
+      213: -9009651001973292180
+    second: Wooden Board 11
+  - first:
+      213: -4638697747037036134
+    second: Wooden Board 12
+  - first:
+      213: -8783337748492466754
+    second: Wooden Board 13
+  - first:
+      213: 8064150449787181952
+    second: Stone Tile 0
+  - first:
+      213: -8620618025251734351
+    second: Stone Tile 1
+  - first:
+      213: 5268638715005989480
+    second: Stone Tile 2
+  - first:
+      213: -7177050704751584311
+    second: Stone Tile 3
+  - first:
+      213: -444212223007856284
+    second: Stone Tile 4
+  - first:
+      213: -5037546735598075958
+    second: Stone Tile 5
+  - first:
+      213: 4413065088453647387
+    second: Stone Tile 6
+  - first:
+      213: 213694892278675843
+    second: Cat Ceramic Tile 0
+  - first:
+      213: -4637060798134572500
+    second: Cat Ceramic Tile 1
+  - first:
+      213: 5280858851048240196
+    second: Cat Ceramic Tile 2
+  - first:
+      213: 3032485920394042436
+    second: Cat Ceramic Tile 3
+  - first:
+      213: -1108619311921700072
+    second: Cat Ceramic Tile 4
+  - first:
+      213: -1447696863374060046
+    second: Cat Ceramic Tile 5
+  - first:
+      213: 8872517883307573959
+    second: Cat Ceramic Tile 6
+  - first:
+      213: -6665299372870173045
+    second: Cat Ceramic Tile 7
+  - first:
+      213: -1489132429991641120
+    second: Cat Ceramic Tile 8
+  - first:
+      213: -2896772985271083250
+    second: Cat Ceramic Tile 9
+  - first:
+      213: 4966700020957020653
+    second: Cat Ceramic Tile 10
+  - first:
+      213: -8764398590311363118
+    second: Cat Ceramic Tile 11
+  - first:
+      213: 23344685086603275
+    second: Cat Ceramic Tile 12
+  - first:
+      213: 5725526591648697202
+    second: Cat Ceramic Tile 13
+  - first:
+      213: -2760488092958431295
+    second: Window 0
+  - first:
+      213: 5013892625601264860
+    second: Window 1
+  - first:
+      213: -6380754634594152707
+    second: Window 2
+  - first:
+      213: 8154123562238407807
+    second: Window 3
+  - first:
+      213: 6105896141448632093
+    second: Window 4
+  - first:
+      213: -4924555663534363087
+    second: Window 5
+  - first:
+      213: 254697319718837894
+    second: Window 6
+  - first:
+      213: 4079501938272229767
+    second: Brick Wall 0
+  - first:
+      213: -3664327775275696364
+    second: Brick Wall 1
+  - first:
+      213: -658028453874885815
+    second: Brick Wall 2
+  - first:
+      213: 2906805880640940717
+    second: Brick Wall 3
+  - first:
+      213: -1886514246580114948
+    second: Brick Wall 4
+  - first:
+      213: -4057731770585345755
+    second: Brick Wall 5
+  - first:
+      213: 1848463796892781462
+    second: Brick Wall 6
+  - first:
+      213: -2688131302855655286
+    second: Brick Wall 7
+  - first:
+      213: -9123744450239256094
+    second: Brick Wall 8
+  - first:
+      213: -5595196975314054822
+    second: Brick Wall 9
+  - first:
+      213: -4414268469399392571
+    second: Brick Wall 10
+  - first:
+      213: -978100735930625119
+    second: Brick Wall 11
+  - first:
+      213: 78591024089753062
+    second: Brick Wall 12
+  - first:
+      213: -8941194099623108755
+    second: Brick Wall 13
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 0
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Brick
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b92eb714ee42186a0800000000000000
+      internalID: -6448832585698385253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Ground 0
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c7b691931b369720800000000000000
+      internalID: 2852532369218779076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Ground 1
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34310496936ebd0e0800000000000000
+      internalID: -2243946855060729021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Ground 2
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c6d61ad01016b310800000000000000
+      internalID: 1420340397046421190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Ground 3
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b226b5835c361280800000000000000
+      internalID: -9072998069868027213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Ground 4
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0c188d30451cece0800000000000000
+      internalID: -1374700420600423414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Ground 5
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 8}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e06300cddd1a73690800000000000000
+      internalID: -7622445870050429426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Ground 6
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 8}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7906084f411010ce0800000000000000
+      internalID: -1440869216268820329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Ground 7
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 8}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7a07e6d070697450800000000000000
+      internalID: 6087002409126005373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Ground 8
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 8}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69800a2ee8cc38250800000000000000
+      internalID: 5945820847118747798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Ground 9
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 0, w: 8}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e33bd949f429839d0800000000000000
+      internalID: -2794322698289958082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Ground 10
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 4, y: 4, z: 0, w: 8}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcf3aa7ee2cd66990800000000000000
+      internalID: -7392979644268789809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Ground 11
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 4, w: 8}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8043282431419580800000000000000
+      internalID: -8822198502774587252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Ground 12
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 4, y: 4, z: 4, w: 8}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72b3466d012ef1710800000000000000
+      internalID: 1666298949094619943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Oneway Gate
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95bf989d5007164e0800000000000000
+      internalID: -1990186389894202535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 0
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1f2ae6624590bde0800000000000000
+      internalID: -1319390578392551650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 1
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92f463ab6e2bf9a50800000000000000
+      internalID: 6530134688746852137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 2
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7cc8b188246e8cc70800000000000000
+      internalID: 8991689829470932167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 3
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17229d688414af0c0800000000000000
+      internalID: -4541245494493896079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 4
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 776a01ed67f606d50800000000000000
+      internalID: 6728500399613978231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 5
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58219e4a6008a20a0800000000000000
+      internalID: -6905566312594337147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 6
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49ed4d805668d0570800000000000000
+      internalID: 8434545445632794260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 7
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1822f36a7b47c84a0800000000000000
+      internalID: -6589763822632885631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 8
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c495c9d4aa9a4d870800000000000000
+      internalID: 8706770528525637964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 9
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 158d482f1ba88f670800000000000000
+      internalID: 8572754387582376017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 10
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e611c0269442465a0800000000000000
+      internalID: -6529053662184205970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 11
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ad3b086dd3faaf80800000000000000
+      internalID: -8094389247986156121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 12
+      rect:
+        serializedVersion: 2
+        x: 460
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e77d8ceefffdf320800000000000000
+      internalID: 2593510430790744039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 13
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b29d113123694120800000000000000
+      internalID: 2398557270760592056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 14
+      rect:
+        serializedVersion: 2
+        x: 494
+        y: 495
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c20650f5636718ee0800000000000000
+      internalID: -1260596444792528852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 15
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa75391a811d2e160800000000000000
+      internalID: 7053429870135826346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 16
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9ed48c8eb30fc000800000000000000
+      internalID: 58269437115293342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 17
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a493ed2e7812b4a00800000000000000
+      internalID: 741723431143094602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 18
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94d72816474c5e1f0800000000000000
+      internalID: -1016190136770986679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 19
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91a1b09db75e0fe60800000000000000
+      internalID: 7994141658667751961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 20
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8be2ad0ae459b3980800000000000000
+      internalID: -8558082501948854600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 21
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cdcdcd71d9e90af20800000000000000
+      internalID: 3431917313603722460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 22
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2925b59456ba488b0800000000000000
+      internalID: -5150803622294236526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 23
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93eb9880843b0dd40800000000000000
+      internalID: 5607178658038529593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 24
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e5adfd35225d0c60800000000000000
+      internalID: 7785969650700756453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 25
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37d93c79cfd127f50800000000000000
+      internalID: 6877592551663312243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 26
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b26986e7927593c30800000000000000
+      internalID: 4339595551674242603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 27
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c68b9357caa8a460800000000000000
+      internalID: 7253234972958099141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 28
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fad5224aeb6023110800000000000000
+      internalID: 1239060263347576239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 29
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9aa8dc9a44796ead0800000000000000
+      internalID: -2673283007635420503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 44
+      rect:
+        serializedVersion: 2
+        x: 494
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00b5329ac9c1717b0800000000000000
+      internalID: -5253698981126251776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 43
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63623ab72dd78cd70800000000000000
+      internalID: 9063632593054017078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 42
+      rect:
+        serializedVersion: 2
+        x: 460
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b8bf505560d5b0f0800000000000000
+      internalID: -1101745400263493449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 41
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12ac7765034459290800000000000000
+      internalID: -7884320598242375135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 40
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc253a5821b7be880800000000000000
+      internalID: -8580629345542647091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 39
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e75f9f51498cb8c00800000000000000
+      internalID: 904036688567334270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 38
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 700bddcb574c6b3c0800000000000000
+      internalID: -4344068780593401849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 37
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7dc9e14489ed8b190800000000000000
+      internalID: -7946356796935988009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 36
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bf1b0865a7cb6c20800000000000000
+      internalID: 3200871473405960115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 35
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6ea72a6f13f9ad80800000000000000
+      internalID: -8238786727047090582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 34
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5dce7cae917c7d90800000000000000
+      internalID: -7098673986329981606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 33
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ae63100155b3f540800000000000000
+      internalID: 5040571767455968935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 32
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f50c7661d539d3f0800000000000000
+      internalID: -875609479063009801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 31
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8713c52a15d6119c0800000000000000
+      internalID: -3958262400098225800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 30
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 478
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5515f3934936c3fd0800000000000000
+      internalID: -2360902616382221995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 45
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c87cd44256922380800000000000000
+      internalID: -8997463825446045499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Beige Stone Brick 46
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba2cbeaacaf317a00800000000000000
+      internalID: 752452623582085803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt 5
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc6f4bec6d8ee5ed0800000000000000
+      internalID: -2423243540190136625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt 6
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83b42ec4683d0d910800000000000000
+      internalID: 1860219219872992056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt 7
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 583877914a330c990800000000000000
+      internalID: -7367832210483215483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt 8
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e59ece44d9a41ae0800000000000000
+      internalID: -1579450839979878935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt 9
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3eecc015f4b4286f0800000000000000
+      internalID: -683901389372600605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt 10
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba3697238bf134860800000000000000
+      internalID: 7512883479365378987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt 11
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6c27e3fad11640a0800000000000000
+      internalID: -6897806147178779538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt 12
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f8a3d91785778e80800000000000000
+      internalID: -8176437375353509645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 0
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c05fc6186b9ab4ae0800000000000000
+      internalID: -1563969844260571892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 1
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0bceefd2827658ad0800000000000000
+      internalID: -2700638979270710096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 2
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f9aae5ce9823be90800000000000000
+      internalID: -7011215532495296011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 3
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a184d7178850fa9b0800000000000000
+      internalID: -5066824972190791654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 4
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cf8c39bfae603450800000000000000
+      internalID: 6066470399074144201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 5
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63f00d025f45ae250800000000000000
+      internalID: 5974681267454611254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 6
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 658dfd2d32d886b10800000000000000
+      internalID: 1974983621603219542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 7
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51dcde3debbd15580800000000000000
+      internalID: -8840042980905726699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 8
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f18e87d180bef590800000000000000
+      internalID: -7638473846260071944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 9
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4b42ac675cdb56e0800000000000000
+      internalID: -1847640954062615731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 10
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfde2fc6b18a990b0800000000000000
+      internalID: -5721357015852061189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 11
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2be1849f5f4daccc0800000000000000
+      internalID: -3689902791762370894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 12
+      rect:
+        serializedVersion: 2
+        x: 460
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e665677816550fae0800000000000000
+      internalID: -1517619197050988946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 13
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19c823c743c5759d0800000000000000
+      internalID: -2785656464013620079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 14
+      rect:
+        serializedVersion: 2
+        x: 494
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65ce8ebe60f0a1ea0800000000000000
+      internalID: -5901387839313482666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 15
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a4d0f5ca4abe0600800000000000000
+      internalID: 436491044212757667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 16
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 780648b42c8958ab0800000000000000
+      internalID: -5006427450494394233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 17
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e92b7a0aed123e0a0800000000000000
+      internalID: -6853596967865961826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 18
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0057701a396ab6c0800000000000000
+      internalID: -4126870410426363894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 19
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53c41fcd6195e5590800000000000000
+      internalID: -7683605959516533707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 20
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a3f079b244d321c0800000000000000
+      internalID: -4529543417160469600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 21
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82ffbf8ab1a506720800000000000000
+      internalID: 2837366840089116456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 22
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7c5e7c275a91d630800000000000000
+      internalID: 3950108047379946619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 23
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c7ecd98f96745c40800000000000000
+      internalID: 5500151472511051715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 24
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0956f8dd3351eff0800000000000000
+      internalID: -8634199179896566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 25
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 618839999743f4fe0800000000000000
+      internalID: -1202684878612363242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 26
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36426ce79dec2be50800000000000000
+      internalID: 6823743818949862499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 27
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57e815fab0d4f4e80800000000000000
+      internalID: -8192244484582306187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 28
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ea72e94ed45925c0800000000000000
+      internalID: -4239764260493559063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 29
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab3c9bbd069fb4320800000000000000
+      internalID: 2543400608979338170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 30
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76395e3486da1a5b0800000000000000
+      internalID: -5358811418266856601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 31
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c142bd04823422b0800000000000000
+      internalID: -5610303693049937472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 32
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f4b1bdedaee36470800000000000000
+      internalID: 8386809361878594801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 33
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8db47a9bad7ee6240800000000000000
+      internalID: 4787018380545051608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 34
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 906f936bb5e461a60800000000000000
+      internalID: 7644383573314237961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 35
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 948ec65d6b7749590800000000000000
+      internalID: -7668372638356674487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 36
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae1408993bfbff760800000000000000
+      internalID: 7493919083063165418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 37
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0154830bde121f00800000000000000
+      internalID: 1085964386155385099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 38
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a15204fd5d8b9bdf0800000000000000
+      internalID: -163896682709244646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 39
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5895466abefdbd10800000000000000
+      internalID: 2143149074231433306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 40
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfe1112349dc23b80800000000000000
+      internalID: -8416438717223198981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 41
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22c760dee3ed95db0800000000000000
+      internalID: -4802563165767959518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 42
+      rect:
+        serializedVersion: 2
+        x: 460
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c56f88c17f2c5e30800000000000000
+      internalID: 4493518693951563201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 43
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34497f1a739b5bc60800000000000000
+      internalID: 7833370775472542787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 44
+      rect:
+        serializedVersion: 2
+        x: 494
+        y: 444
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7191b34c3c3624b70800000000000000
+      internalID: 8881771107590019351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 45
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98bf9a6efd0236930800000000000000
+      internalID: 4135185028875942793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grey Stone Brick 46
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df59a84d04e2dfab0800000000000000
+      internalID: -4972767557568522755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt Brittle
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e1deabd5ebe44610800000000000000
+      internalID: 1604666739716444649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dirt Grass Brittle
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 461
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 8}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9045c35f4817f8de0800000000000000
+      internalID: -1328718549187013623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass 0
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 16}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6166a5516cfa987e0800000000000000
+      internalID: -1762684513842207210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass 1
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 16}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b1c032626f38d7f0800000000000000
+      internalID: -587650059585142348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass 2
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 16}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aee4e89acb0293fa0800000000000000
+      internalID: -5820585048729039126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass 3
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 16}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c09d09f481850f9b0800000000000000
+      internalID: -5048438320844973812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass 4
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 16}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14ca66615933decc0800000000000000
+      internalID: -3680228605072855999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass 5
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 16}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af9d2b81fe9a44d70800000000000000
+      internalID: 9026526397533968890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Floor 0
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bb1f982631d93510800000000000000
+      internalID: 1529483579008949169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Floor 1
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93c1475248e7d6a00800000000000000
+      internalID: 751395818869890105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Floor 2
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d405f296c721f2ae0800000000000000
+      internalID: -1572017419379060659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Floor 3
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ddc787a7ede265040800000000000000
+      internalID: 4635944399496838365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Floor 4
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f71c4e29bb31bd070800000000000000
+      internalID: 8132115248491839871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Floor 5
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3b69c1fd5a7ee7d0800000000000000
+      internalID: -2887235767190852805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Floor 6
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e51c192e3cd800820800000000000000
+      internalID: 2882459633976459614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Floor 7
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebadba7a9cad69960800000000000000
+      internalID: 7608509180125371070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Floor 8
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e033269dfc4a7880800000000000000
+      internalID: -8612486685363326746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Floor 9
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f72f711eae3c6baf0800000000000000
+      internalID: -380901704900021633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Floor 10
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba0386ca938da0e10800000000000000
+      internalID: 2164780313122189483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Floor 11
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: edbc0b52d7d590510800000000000000
+      internalID: 1515845541671521246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Floor 12
+      rect:
+        serializedVersion: 2
+        x: 460
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2fcde5baf3fe83b0800000000000000
+      internalID: -5508197036107903187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Floor 13
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d423c2373707e3280800000000000000
+      internalID: -9061681759067033011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Board Floor 0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cff7c8518c2c12780800000000000000
+      internalID: -8709466039747051524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Board Floor 1
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1218d9ae1245791d0800000000000000
+      internalID: -3344111693652459231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Board Floor 2
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e9402b3719a85cb0800000000000000
+      internalID: -4874960679387248159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Board Floor 3
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b97c9e1e4608ba30800000000000000
+      internalID: 4231138782505367989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Board Floor 4
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf05b24dd0d969320800000000000000
+      internalID: 2564409720553820411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Board Floor 5
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e2bfc3b3e94d0c60800000000000000
+      internalID: 7785960573116592867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Board Floor 6
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb5d4b2152561a260800000000000000
+      internalID: 7107072896869389756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Board Floor 7
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6a52fb7d330d4120800000000000000
+      internalID: 2399577739065711212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Board Floor 8
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61497d250e451fdb0800000000000000
+      internalID: -4759930008714636266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Board Floor 9
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c317fcb32dc7bab0800000000000000
+      internalID: -4992296108539046972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Board Floor 10
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1515ad66188c38750800000000000000
+      internalID: 6306104361350746449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Board Floor 11
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f88251b2736d15e00800000000000000
+      internalID: 1031841322078906511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Board Floor 12
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2e98d8b50c3a87b0800000000000000
+      internalID: -5221294822708961750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Board Floor 13
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60dd609fe4b3feba0800000000000000
+      internalID: -6057557763418563322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Board 0
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce1e7a4e6e309b0f0800000000000000
+      internalID: -1100844343701806612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Board 1
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2de0976c9f5962860800000000000000
+      internalID: 7504850729068728018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Board 2
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e27eb8372fedbb9b0800000000000000
+      internalID: -5063208223145990354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Board 3
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6829e25dfb2e9eb0800000000000000
+      internalID: -4711279793165227925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Board 4
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da683752d91293400800000000000000
+      internalID: 304311408646129325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Board 5
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2f1d87c88a73cc10800000000000000
+      internalID: 2072634981402615595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Board 6
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62e30d3938c8eda10800000000000000
+      internalID: 1936139386564394534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Board 7
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a27480f27f672c9e0800000000000000
+      internalID: -1602587713372403926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Board 8
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22149cb6fefc8b440800000000000000
+      internalID: 4951936417506345250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Board 9
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5220680b2459be5c0800000000000000
+      internalID: -4185087315048791515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Board 10
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d63768b4085ca9d70800000000000000
+      internalID: 9050763555968021357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Board 11
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c63c32d162a47f280800000000000000
+      internalID: -9009651001973292180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Board 12
+      rect:
+        serializedVersion: 2
+        x: 460
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a91e377d9f800afb0800000000000000
+      internalID: -4638697747037036134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden Board 13
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 410
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb5c3d69ad05b1680800000000000000
+      internalID: -8783337748492466754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone Tile 0
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08b1fdebb1e99ef60800000000000000
+      internalID: 8064150449787181952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone Tile 1
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bc7a8c74996d5880800000000000000
+      internalID: -8620618025251734351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone Tile 2
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8627dc13ff6fd1940800000000000000
+      internalID: 5268638715005989480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone Tile 3
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cb9050e86ef56c90800000000000000
+      internalID: -7177050704751584311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone Tile 4
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 469eab23657d5d9f0800000000000000
+      internalID: -444212223007856284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone Tile 5
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acf7f3d1fe9071ab0800000000000000
+      internalID: -5037546735598075958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone Tile 6
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 427
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1c15f7015b5e3d30800000000000000
+      internalID: 4413065088453647387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cat Ceramic Tile 0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 389f5905f5237f200800000000000000
+      internalID: 213694892278675843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cat Ceramic Tile 1
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2aac45b5c9d5afb0800000000000000
+      internalID: -4637060798134572500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cat Ceramic Tile 2
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44435b55521694940800000000000000
+      internalID: 5280858851048240196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cat Ceramic Tile 3
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44cd577b0ed851a20800000000000000
+      internalID: 3032485920394042436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cat Ceramic Tile 4
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 813e4c90c946d90f0800000000000000
+      internalID: -1108619311921700072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cat Ceramic Tile 5
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f5542c7f5fb8ebe0800000000000000
+      internalID: -1447696863374060046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cat Ceramic Tile 6
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c249d99104812b70800000000000000
+      internalID: 8872517883307573959
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cat Ceramic Tile 7
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8e707ed8891083a0800000000000000
+      internalID: -6665299372870173045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cat Ceramic Tile 8
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ef75d6d1f9855be0800000000000000
+      internalID: -1489132429991641120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cat Ceramic Tile 9
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0f18f151589cc7d0800000000000000
+      internalID: -2896772985271083250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cat Ceramic Tile 10
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de18117ba534de440800000000000000
+      internalID: 4966700020957020653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cat Ceramic Tile 11
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2dd8e8afae99e5680800000000000000
+      internalID: -8764398590311363118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cat Ceramic Tile 12
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b08fafd0edfe25000800000000000000
+      internalID: 23344685086603275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cat Ceramic Tile 13
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27b06479918257f40800000000000000
+      internalID: 5725526591648697202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Window 0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 376
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c7648484b6c0b9d0800000000000000
+      internalID: -2760488092958431295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Window 1
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 376
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cdcf9ea37cce49540800000000000000
+      internalID: 5013892625601264860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Window 2
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 376
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfe861e67710377a0800000000000000
+      internalID: -6380754634594152707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Window 3
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 376
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f74fcdd6d24492170800000000000000
+      internalID: 8154123562238407807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Window 4
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 376
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d175972b0308cb450800000000000000
+      internalID: 6105896141448632093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Window 5
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 376
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13e656627b678abb0800000000000000
+      internalID: -4924555663534363087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Window 6
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 376
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68ed513ecddd88300800000000000000
+      internalID: 254697319718837894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Brick Wall 0
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 789db33166d4d9830800000000000000
+      internalID: 4079501938272229767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Brick Wall 1
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41f38168d41b52dc0800000000000000
+      internalID: -3664327775275696364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Brick Wall 2
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94b10ba8b963ed6f0800000000000000
+      internalID: -658028453874885815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Brick Wall 3
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: daaae9a2c8c075820800000000000000
+      internalID: 2906805880640940717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Brick Wall 4
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf9e0e4b941c1d5e0800000000000000
+      internalID: -1886514246580114948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Brick Wall 5
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5219174147a00b7c0800000000000000
+      internalID: -4057731770585345755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Brick Wall 6
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69bc6f9970017a910800000000000000
+      internalID: 1848463796892781462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Brick Wall 7
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a804ea782d6d1bad0800000000000000
+      internalID: -2688131302855655286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Brick Wall 8
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e92c0e13c2f16180800000000000000
+      internalID: -9123744450239256094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Brick Wall 9
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a51d01edefdd952b0800000000000000
+      internalID: -5595196975314054822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Brick Wall 10
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ceed32073e5db2c0800000000000000
+      internalID: -4414268469399392571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Brick Wall 11
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a39e4810961d62f0800000000000000
+      internalID: -978100735930625119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Brick Wall 12
+      rect:
+        serializedVersion: 2
+        x: 460
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e56769be16371100800000000000000
+      internalID: 78591024089753062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Brick Wall 13
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 393
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6f5520c65f7ae380800000000000000
+      internalID: -8941194099623108755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Brick Wall 0: 4079501938272229767
+      Oneway Gate: -1990186389894202535
+      Beige Stone Brick 8: 8706770528525637964
+      Cat Ceramic Tile 3: 3032485920394042436
+      Grey Stone Brick 0: -1563969844260571892
+      Grey Stone Brick 36: 7493919083063165418
+      Beige Stone Brick 1: 6530134688746852137
+      Window 2: -6380754634594152707
+      Grey Stone Brick 20: -4529543417160469600
+      Window 5: -4924555663534363087
+      Wooden Floor 10: 2164780313122189483
+      Beige Stone Brick 39: 904036688567334270
+      Grey Stone Brick 12: -1517619197050988946
+      Grey Stone Brick 13: -2785656464013620079
+      Brick Wall 9: -5595196975314054822
+      Beige Stone Brick 30: -2360902616382221995
+      Cat Ceramic Tile 9: -2896772985271083250
+      Wooden Floor 8: -8612486685363326746
+      Cat Ceramic Tile 10: 4966700020957020653
+      Brick Wall 11: -978100735930625119
+      Wooden Floor 4: 8132115248491839871
+      Beige Stone Brick 46: 752452623582085803
+      Wooden Board 9: -4185087315048791515
+      Grey Stone Brick 37: 1085964386155385099
+      Beige Stone Brick 14: -1260596444792528852
+      Grey Stone Brick 33: 4787018380545051608
+      Beige Stone Brick 22: -5150803622294236526
+      Grey Stone Brick 6: 1974983621603219542
+      Beige Stone Brick 21: 3431917313603722460
+      Wooden Board 5: 2072634981402615595
+      Grey Stone Brick 35: -7668372638356674487
+      Beige Stone Brick 11: -8094389247986156121
+      Brick Wall 7: -2688131302855655286
+      Wooden Floor 1: 751395818869890105
+      Beige Stone Brick 20: -8558082501948854600
+      Grass Ground 2: 1420340397046421190
+      Grass 5: 9026526397533968890
+      Beige Stone Brick 32: -875609479063009801
+      Wooden Board 13: -8783337748492466754
+      Board Floor 12: -5221294822708961750
+      Brick Wall 4: -1886514246580114948
+      Brick Wall 1: -3664327775275696364
+      Grey Stone Brick 23: 5500151472511051715
+      Dirt 10: 7512883479365378987
+      Grey Stone Brick 29: 2543400608979338170
+      Dirt 8: -1579450839979878935
+      Grey Stone Brick 5: 5974681267454611254
+      Board Floor 7: 2399577739065711212
+      Grey Stone Brick 40: -8416438717223198981
+      Wooden Board 2: -5063208223145990354
+      Dirt 12: -8176437375353509645
+      Grey Stone Brick 14: -5901387839313482666
+      Beige Stone Brick 43: 9063632593054017078
+      Grey Stone Brick 42: 4493518693951563201
+      Grass Ground 8: 5945820847118747798
+      Wooden Board 11: -9009651001973292180
+      Grey Stone Brick 45: 4135185028875942793
+      Brick Wall 3: 2906805880640940717
+      Beige Stone Brick 2: 8991689829470932167
+      Window 4: 6105896141448632093
+      Board Floor 6: 7107072896869389756
+      Stone Tile 5: -5037546735598075958
+      Grey Stone Brick 1: -2700638979270710096
+      Cat Ceramic Tile 5: -1447696863374060046
+      Wooden Board 0: -1100844343701806612
+      Grass 1: -587650059585142348
+      Beige Stone Brick 6: 8434545445632794260
+      Beige Stone Brick 19: 7994141658667751961
+      Board Floor 8: -4759930008714636266
+      Board Floor 2: -4874960679387248159
+      Window 3: 8154123562238407807
+      Board Floor 11: 1031841322078906511
+      Beige Stone Brick 4: 6728500399613978231
+      Grass Ground 0: 2852532369218779076
+      Beige Stone Brick 18: -1016190136770986679
+      Cat Ceramic Tile 7: -6665299372870173045
+      Grass Ground 12: 1666298949094619943
+      Grey Stone Brick 11: -3689902791762370894
+      Beige Stone Brick 38: -4344068780593401849
+      Beige Stone Brick 36: 3200871473405960115
+      Grey Stone Brick 39: 2143149074231433306
+      Grey Stone Brick 28: -4239764260493559063
+      Beige Stone Brick 9: 8572754387582376017
+      Wooden Floor 0: 1529483579008949169
+      Beige Stone Brick 3: -4541245494493896079
+      Beige Stone Brick 23: 5607178658038529593
+      Cat Ceramic Tile 0: 213694892278675843
+      Grass Ground 7: 6087002409126005373
+      Stone Tile 6: 4413065088453647387
+      Grey Stone Brick 17: -6853596967865961826
+      Grey Stone Brick 41: -4802563165767959518
+      Grass Ground 6: -1440869216268820329
+      Beige Stone Brick 29: -2673283007635420503
+      Beige Stone Brick 27: 7253234972958099141
+      Cat Ceramic Tile 12: 23344685086603275
+      Beige Stone Brick 16: 58269437115293342
+      Beige Stone Brick 44: -5253698981126251776
+      Grey Stone Brick 31: -5610303693049937472
+      Wooden Board 3: -4711279793165227925
+      Dirt 11: -6897806147178779538
+      Brick Wall 13: -8941194099623108755
+      Wooden Floor 11: 1515845541671521246
+      Grey Stone Brick 7: -8840042980905726699
+      Brick Wall 12: 78591024089753062
+      Beige Stone Brick 7: -6589763822632885631
+      Grey Stone Brick 18: -4126870410426363894
+      Window 6: 254697319718837894
+      Grey Stone Brick 25: -1202684878612363242
+      Cat Ceramic Tile 13: 5725526591648697202
+      Grey Stone Brick 32: 8386809361878594801
+      Grey Stone Brick 46: -4972767557568522755
+      Beige Stone Brick 42: -1101745400263493449
+      Cat Ceramic Tile 4: -1108619311921700072
+      Beige Stone Brick 34: -7098673986329981606
+      Grass Ground 1: -2243946855060729021
+      Grey Stone Brick 16: -5006427450494394233
+      Cat Ceramic Tile 11: -8764398590311363118
+      Grey Stone Brick 3: -5066824972190791654
+      Wooden Floor 5: -2887235767190852805
+      Grey Stone Brick 15: 436491044212757667
+      Grass 4: -3680228605072855999
+      Grey Stone Brick 27: -8192244484582306187
+      Beige Stone Brick 13: 2398557270760592056
+      Grey Stone Brick 4: 6066470399074144201
+      Grey Stone Brick 24: -8634199179896566
+      Brick Wall 6: 1848463796892781462
+      Board Floor 1: -3344111693652459231
+      Grey Stone Brick 8: -7638473846260071944
+      Grass 2: -5820585048729039126
+      Beige Stone Brick 17: 741723431143094602
+      Cat Ceramic Tile 6: 8872517883307573959
+      Wooden Board 4: 304311408646129325
+      Beige Stone Brick 5: -6905566312594337147
+      Grey Stone Brick 43: 7833370775472542787
+      Grey Stone Brick 19: -7683605959516533707
+      Grey Stone Brick 2: -7011215532495296011
+      Brick Wall 2: -658028453874885815
+      Grey Stone Brick 38: -163896682709244646
+      Dirt 6: 1860219219872992056
+      Stone Tile 2: 5268638715005989480
+      Cat Ceramic Tile 2: 5280858851048240196
+      Wooden Board 8: 4951936417506345250
+      Grass Ground 10: -7392979644268789809
+      Grey Stone Brick 9: -1847640954062615731
+      Brick Wall 8: -9123744450239256094
+      Grey Stone Brick 30: -5358811418266856601
+      Wooden Board 12: -4638697747037036134
+      Stone Tile 4: -444212223007856284
+      Beige Stone Brick 45: -8997463825446045499
+      Brick: -6448832585698385253
+      Board Floor 10: 6306104361350746449
+      Grass Ground 3: -9072998069868027213
+      Board Floor 4: 2564409720553820411
+      Wooden Board 10: 9050763555968021357
+      Wooden Floor 13: -9061681759067033011
+      Grass Ground 11: -8822198502774587252
+      Wooden Board 7: -1602587713372403926
+      Beige Stone Brick 25: 6877592551663312243
+      Grey Stone Brick 10: -5721357015852061189
+      Dirt Brittle: 1604666739716444649
+      Board Floor 9: -4992296108539046972
+      Window 0: -2760488092958431295
+      Grass 3: -5048438320844973812
+      Cat Ceramic Tile 8: -1489132429991641120
+      Brick Wall 10: -4414268469399392571
+      Board Floor 0: -8709466039747051524
+      Grey Stone Brick 22: 3950108047379946619
+      Stone Tile 0: 8064150449787181952
+      Beige Stone Brick 31: -3958262400098225800
+      Beige Stone Brick 0: -1319390578392551650
+      Beige Stone Brick 40: -8580629345542647091
+      Grass Ground 4: -1374700420600423414
+      Grey Stone Brick 26: 6823743818949862499
+      Beige Stone Brick 12: 2593510430790744039
+      Board Floor 5: 7785960573116592867
+      Wooden Board 1: 7504850729068728018
+      Stone Tile 1: -8620618025251734351
+      Wooden Floor 9: -380901704900021633
+      Grey Stone Brick 21: 2837366840089116456
+      Dirt 9: -683901389372600605
+      Beige Stone Brick 41: -7884320598242375135
+      Grey Stone Brick 34: 7644383573314237961
+      Board Floor 3: 4231138782505367989
+      Grass Ground 5: -7622445870050429426
+      Dirt 7: -7367832210483215483
+      Dirt 5: -2423243540190136625
+      Beige Stone Brick 10: -6529053662184205970
+      Window 1: 5013892625601264860
+      Wooden Floor 3: 4635944399496838365
+      Grass 0: -1762684513842207210
+      Wooden Floor 2: -1572017419379060659
+      Beige Stone Brick 15: 7053429870135826346
+      Beige Stone Brick 33: 5040571767455968935
+      Beige Stone Brick 24: 7785969650700756453
+      Grey Stone Brick 44: 8881771107590019351
+      Brick Wall 5: -4057731770585345755
+      Beige Stone Brick 28: 1239060263347576239
+      Wooden Board 6: 1936139386564394534
+      Stone Tile 3: -7177050704751584311
+      Wooden Floor 12: -5508197036107903187
+      Beige Stone Brick 35: -8238786727047090582
+      Wooden Floor 7: 7608509180125371070
+      Wooden Floor 6: 2882459633976459614
+      Grass Ground 9: -2794322698289958082
+      Beige Stone Brick 37: -7946356796935988009
+      Beige Stone Brick 26: 4339595551674242603
+      Dirt Grass Brittle: -1328718549187013623
+      Board Floor 13: -6057557763418563322
+      Cat Ceramic Tile 1: -4637060798134572500
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
