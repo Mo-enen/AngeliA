@@ -1,0 +1,56 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "7d88390d-8b5b-4e1d-ab1d-5fa2039e1996": {
+      "ProjectGuid": "7d88390d-8b5b-4e1d-ab1d-5fa2039e1996",
+      "DisplayName": "AngeliaFramework",
+      "ColorIndex": 0
+    },
+    "3c77e953-0204-d49d-bc01-04e24c113eb7": {
+      "ProjectGuid": "3c77e953-0204-d49d-bc01-04e24c113eb7",
+      "DisplayName": "Yaya",
+      "ColorIndex": 1
+    },
+    "c38f992d-8b4d-ef00-fa39-235e39fac8eb": {
+      "ProjectGuid": "c38f992d-8b4d-ef00-fa39-235e39fac8eb",
+      "DisplayName": "Moenen.Standard",
+      "ColorIndex": 2
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "杂项文件",
+      "ColorIndex": -1
+    },
+    "ee04a519-cc01-d8f4-7a80-5596381a56fa": {
+      "ProjectGuid": "ee04a519-cc01-d8f4-7a80-5596381a56fa",
+      "DisplayName": "AngeliaFrameworkEditor",
+      "ColorIndex": 3
+    },
+    "e0a315fa-2d1e-4941-8777-b70e7ce1855a": {
+      "ProjectGuid": "e0a315fa-2d1e-4941-8777-b70e7ce1855a",
+      "DisplayName": "Moenen.EditorStandard",
+      "ColorIndex": 4
+    },
+    "5e7b0634-e439-e7d7-2b6e-40843f28470e": {
+      "ProjectGuid": "5e7b0634-e439-e7d7-2b6e-40843f28470e",
+      "DisplayName": "AseGadget.Editor",
+      "ColorIndex": 5
+    },
+    "a29a2500-8fba-ab7f-67ed-e60551fbbf75": {
+      "ProjectGuid": "a29a2500-8fba-ab7f-67ed-e60551fbbf75",
+      "DisplayName": "AsepriteToolbox",
+      "ColorIndex": 6
+    },
+    "858a8876-d594-ce17-f9a6-374c4f24c91c": {
+      "ProjectGuid": "858a8876-d594-ce17-f9a6-374c4f24c91c",
+      "DisplayName": "Assembly-CSharp",
+      "ColorIndex": 7
+    },
+    "f28830fd-a831-0b49-1adb-8a08154cd3eb": {
+      "ProjectGuid": "f28830fd-a831-0b49-1adb-8a08154cd3eb",
+      "DisplayName": "Yaya.Editor",
+      "ColorIndex": 8
+    }
+  },
+  "NextColorIndex": 9
+}
