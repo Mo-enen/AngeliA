@@ -1,0 +1,11 @@
+{
+  "name": "com.moenengames.yayaframework", 
+  "displayName": "Yaya Framework",
+  "version": "1.0.0",
+  "description": "Framework for Yaya-like game by Moenen",
+  "type": "tool",
+  "hideInEditor": false,
+  "dependencies": { 
+    "com.moenengames.angeliaframework":"1.0.0"
+  }
+}
