@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: aeeeb21fb41e2fa428c16bc69e3b3464
+guid: 36343aededa9e3a49bc9f37886c0de77
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7641593940822152935
-    second: addPixel
+      213: -276690949747384050
+    second: Test BG
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -53,7 +53,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -71,30 +71,6 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 8192
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Standalone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -109,13 +85,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: addPixel
+      name: Test BG
       rect:
         serializedVersion: 2
         x: 1
-        y: 1
-        width: 1
-        height: 1
+        y: 239
+        width: 16
+        height: 16
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -123,8 +99,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7e65b78c3356c0a60800000000000000
-      internalID: 7641593940822152935
+      spriteID: e01edb31c0ff82cf0800000000000000
+      internalID: -276690949747384050
       vertices: []
       indices: 
       edges: []
@@ -140,7 +116,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      addPixel: 7641593940822152935
+      Test BG: -276690949747384050
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9d5ae27a9ba3ffa46b3c5a8ec8e1de19
+guid: a3905883178a3d94680f6d267e7b1ef2
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -272,7 +272,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -290,30 +290,6 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 8192
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Standalone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -1897,7 +1873,7 @@ TextureImporter:
       Chair 2: -8508928456783481773
       Light 0: 4266539449291738496
       Dining Table 2: -1603106750639174641
-      Cabinet Stove 3: -4210252151482390241
+      Clock 0: 2663608072918939639
       wardrobe 2 Open: -4807947064997562465
       Fridge 1 Open: -3993957332922132671
       Stove 1: 2195348648765899117
@@ -1909,10 +1885,10 @@ TextureImporter:
       wardrobe 0 Open: -630581257394132918
       Basket 3: 4041137338011283254
       Cabinet Idol 3: -209117302046931215
-      Clock 0: 2663608072918939639
+      Clock 3: -3836417823762442374
       grandfather clock 0: 8062667126369937696
       wardrobe 3 Open: -6242488068550221514
-      Dining Table 1: 8104653079036211636
+      Cabinet Stove 3: -4210252151482390241
       wardrobe 1 Open: -1188421456448583803
       grandfather clock 1: 3779846451854236628
       Fridge 0 Open: -2877124134693989291
@@ -1965,7 +1941,7 @@ TextureImporter:
       Basket 0: -5885043204060160468
       Cabinet Stove 5: -1507502999364227839
       wardrobe 3: -6794393342262416966
-      Clock 3: -3836417823762442374
+      Dining Table 1: 8104653079036211636
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

@@ -305,7 +305,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -323,6 +323,30 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -2133,7 +2157,6 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Check Altar 1: 1466546089408830051
-      Check Altar 12: 2358907889829948367
       Conveyor Mid 4: 5597944055196095667
       Check Altar 18: 8560999289625563613
       Road Sign 0: -2329300805733206252
@@ -2141,7 +2164,6 @@ TextureImporter:
       Check Altar 15: -1417421675341320699
       Check Altar 22: -8982672191386649648
       Check Altar 20: 2708758425910553369
-      Check Altar 2: -2556948644422940918
       Check Statue 4: -2694794741775303629
       Conveyor Right 2: -1598002019710971740
       Conveyor Left 3: -700631615691403929
@@ -2206,16 +2228,18 @@ TextureImporter:
       Check Altar 19: 8057227050989782220
       Conveyor Right 5: 8654862003835209668
       Check Altar 11: -2215026977936886246
+      Check Altar 2: -2556948644422940918
       Barrel Small: 7703836545563178338
       Conveyor Mid 1: 6273131541661454191
       Check Statue 6: 2823302363922060993
       Check Statue 16: -6690533626487108229
       Check Statue 22: 5580500136950929075
       Check Statue 12: 644681182985282808
-      Conveyor Right 7: 5458605334293113808
-      Conveyor Single 2: -8255140515171143345
-      Check Statue 10: -3071352666662964425
       Conveyor Single 6: 3879808583591258486
+      Conveyor Right 7: 5458605334293113808
+      Check Statue 10: -3071352666662964425
+      Check Altar 12: 2358907889829948367
+      Conveyor Single 2: -8255140515171143345
       Conveyor Right 0: 1277748799282487443
   spritePackingTag: 
   pSDRemoveMatte: 0

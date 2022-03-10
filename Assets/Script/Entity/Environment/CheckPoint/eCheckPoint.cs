@@ -13,6 +13,7 @@ namespace Yaya {
 		public class CheckPointData {
 			[System.Serializable]
 			public struct Data {
+				public int Type;
 				public int ID;
 				public int X;
 				public int Y;
@@ -24,9 +25,6 @@ namespace Yaya {
 		// Api
 		public override EntityLayer Layer => EntityLayer.Environment;
 		protected abstract int ArtCode { get; }
-
-		// Short
-		private int CheckPointID => Data;
 
 		// Data
 		private static readonly Dictionary<int, Vector2Int> PositionPool = new();
@@ -79,9 +77,12 @@ namespace Yaya.Editor {
 	using UnityEngine;
 	public class CheckPointArtworkExtension : IArtworkEvent {
 		public void Invoke () {
-			var cpPool = new Dictionary<int, Vector2Int>();
+			var cpPool = new Dictionary<(int type, int data), Vector2Int>();
 			var world = new World();
-			int cpID = typeof(eCheckPoint).AngeHash();
+			var cpIdHash = new HashSet<int>();
+			foreach (var type in typeof(eCheckPoint).AllChildClass()) {
+				cpIdHash.TryAdd(type.AngeHash());
+			}
 			const int SIZE = Const.WORLD_MAP_SIZE;
 			// Get Positions
 			foreach (var file in Util.GetFilesIn(AUtil.GetMapRoot(), true, $"*.{Const.MAP_FILE_EXT}")) {
@@ -93,8 +94,8 @@ namespace Yaya.Editor {
 					if (!world.LoadFromDisk(worldX, worldY)) continue;
 					for (int i = 0; i < SIZE * SIZE; i++) {
 						var e = world.Entities[i];
-						if (e.TypeID == cpID) {
-							cpPool.TryAdd(e.Data, new(
+						if (cpIdHash.Contains(e.TypeID)) {
+							cpPool.TryAdd((e.TypeID, e.Data), new(
 								(worldX * SIZE + i % SIZE) * Const.CELL_SIZE,
 								(worldY * SIZE + i / SIZE) * Const.CELL_SIZE
 							));
@@ -106,8 +107,9 @@ namespace Yaya.Editor {
 			try {
 				var cpData = new eCheckPoint.CheckPointData() { CPs = new eCheckPoint.CheckPointData.Data[cpPool.Count] };
 				int index = 0;
-				foreach (var (id, pos) in cpPool) {
+				foreach (var ((typeID, id), pos) in cpPool) {
 					cpData.CPs[index] = new eCheckPoint.CheckPointData.Data() {
+						Type = typeID,
 						ID = id,
 						X = pos.x,
 						Y = pos.y,

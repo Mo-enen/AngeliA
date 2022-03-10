@@ -1,229 +1,262 @@
 fileFormatVersion: 2
-guid: 9d5ae27a9ba3ffa46b3c5a8ec8e1de19
+guid: c68ba7591b68f39449935093d7263f8e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 56846498049244760
-    second: Vase 0
+      213: -8064411482835056307
+    second: Barrel
   - first:
-      213: 337168890041607808
-    second: Vase 1
+      213: 7703836545563178338
+    second: Barrel Small
   - first:
-      213: -2972401882360132890
-    second: TV 1
+      213: -2329300805733206252
+    second: Road Sign 0
   - first:
-      213: -9155499100642948165
-    second: TV 0
+      213: 1335569958529975340
+    second: Road Sign 1
   - first:
-      213: -3993957332922132671
-    second: Fridge 1 Open
+      213: -2651921403531159219
+    second: Road Sign 2
   - first:
-      213: -2877124134693989291
-    second: Fridge 0 Open
+      213: -3017414032195783511
+    second: Check Statue 0
   - first:
-      213: 5997599811625174951
-    second: Fridge 1
+      213: 1944208467503500670
+    second: Check Statue 1
   - first:
-      213: -5662199165190298199
-    second: Fridge 0
+      213: -8498937215571585253
+    second: Check Statue 2
   - first:
-      213: -6242488068550221514
-    second: wardrobe 3 Open
+      213: -191683756101331330
+    second: Check Statue 3
   - first:
-      213: -4807947064997562465
-    second: wardrobe 2 Open
+      213: -2694794741775303629
+    second: Check Statue 4
   - first:
-      213: -1188421456448583803
-    second: wardrobe 1 Open
+      213: -3748405529400348166
+    second: Check Statue 5
   - first:
-      213: -630581257394132918
-    second: wardrobe 0 Open
+      213: 2823302363922060993
+    second: Check Statue 6
   - first:
-      213: -1507502999364227839
-    second: Cabinet Stove 5
+      213: 1487383059906042525
+    second: Check Statue 7
   - first:
-      213: 8384062892723935902
-    second: Cabinet Stove 4
+      213: -6411399449253671942
+    second: Check Statue 8
   - first:
-      213: -7868061883605148489
-    second: Cabinet Stove 6
+      213: -6818115816181018279
+    second: Check Statue 9
   - first:
-      213: 7483223502006234942
-    second: Stove 3
+      213: -3071352666662964425
+    second: Check Statue 10
   - first:
-      213: 7817429469655514673
-    second: Stove 2
+      213: -5825363922162019945
+    second: Check Statue 11
   - first:
-      213: -8413385201370799033
-    second: Cabinet Stove 2
+      213: 644681182985282808
+    second: Check Statue 12
   - first:
-      213: -6389752107736459441
-    second: Cabinet Stove 1
+      213: -5989634162843368052
+    second: Check Statue 13
   - first:
-      213: 5821770520766018075
-    second: Cabinet Stove 0
+      213: -5285278482251831875
+    second: Check Statue 14
   - first:
-      213: 2195348648765899117
-    second: Stove 1
+      213: 4944008287388056097
+    second: Check Statue 15
   - first:
-      213: -8359845189509003210
-    second: Stove 0
+      213: -6690533626487108229
+    second: Check Statue 16
   - first:
-      213: 8627040623882228100
-    second: Clock 1
+      213: -3671804437716007452
+    second: Check Statue 17
   - first:
-      213: 2663608072918939639
-    second: Clock 0
+      213: -2128449853204128481
+    second: Check Statue 18
   - first:
-      213: 8871599316087489604
-    second: Chest 1 Open
+      213: 7460502040331209267
+    second: Check Statue 19
   - first:
-      213: -3477718846896939505
-    second: Chest 0 Open
+      213: 2240303879370529683
+    second: Check Statue 20
   - first:
-      213: 7426101085159056613
-    second: Chest 1
+      213: -616177163836558573
+    second: Check Statue 21
   - first:
-      213: -734038542042089356
-    second: Chest 0
+      213: 5580500136950929075
+    second: Check Statue 22
   - first:
-      213: 5272579457668564615
-    second: Cabinet Idol 4
+      213: 2908209397192423333
+    second: Check Statue 23
   - first:
-      213: -209117302046931215
-    second: Cabinet Idol 3
+      213: 8869858959872106772
+    second: Conveyor Mid 0
   - first:
-      213: -868349078414055628
-    second: Cabinet Idol 2
+      213: 6273131541661454191
+    second: Conveyor Mid 1
   - first:
-      213: 433145596346051637
-    second: Cabinet Idol 1
+      213: 6894232776697334792
+    second: Conveyor Mid 2
   - first:
-      213: 3048336242622540681
-    second: Cabinet Idol 0
+      213: 5286129505909953240
+    second: Conveyor Mid 3
   - first:
-      213: 4468669968130164308
-    second: Chair 3
+      213: 5597944055196095667
+    second: Conveyor Mid 4
   - first:
-      213: -8508928456783481773
-    second: Chair 2
+      213: -366553418290470181
+    second: Conveyor Mid 5
   - first:
-      213: 5969469820197433439
-    second: Chair 1
+      213: 4821765223392073288
+    second: Conveyor Mid 6
   - first:
-      213: 364761029475331844
-    second: Chair 0
+      213: 7523519679850416278
+    second: Conveyor Mid 7
   - first:
-      213: 6412135472776649086
-    second: Dining Table 3
+      213: -6849436530788924678
+    second: Conveyor Left 0
   - first:
-      213: -1603106750639174641
-    second: Dining Table 2
+      213: -2686448938111358844
+    second: Conveyor Left 1
   - first:
-      213: 8104653079036211636
-    second: Dining Table 1
+      213: -452027482023640203
+    second: Conveyor Left 2
   - first:
-      213: -4698251005128190590
-    second: Dining Table 0
+      213: -700631615691403929
+    second: Conveyor Left 3
   - first:
-      213: 3586697536399493897
-    second: Light 3
+      213: 4416833164111991290
+    second: Conveyor Left 4
   - first:
-      213: -7962080542218225778
-    second: Light 2
+      213: 3014544715659330481
+    second: Conveyor Left 5
   - first:
-      213: 7789019521170512700
-    second: Light 1
+      213: -8760762342703505
+    second: Conveyor Left 6
   - first:
-      213: 4266539449291738496
-    second: Light 0
+      213: -816469386340296175
+    second: Conveyor Left 7
   - first:
-      213: -170994505960045991
-    second: Lamp 3
+      213: 1277748799282487443
+    second: Conveyor Right 0
   - first:
-      213: -3621969586769268591
-    second: Lamp 2
+      213: -2972611691506671692
+    second: Conveyor Right 1
   - first:
-      213: -7924551839152304284
-    second: Lamp 1
+      213: -1598002019710971740
+    second: Conveyor Right 2
   - first:
-      213: 7602637929360236233
-    second: Lamp 0
+      213: -713158668184193528
+    second: Conveyor Right 3
   - first:
-      213: -5885043204060160468
-    second: Basket 0
+      213: -1080687705925388806
+    second: Conveyor Right 4
   - first:
-      213: -6794393342262416966
-    second: wardrobe 3
+      213: 8654862003835209668
+    second: Conveyor Right 5
   - first:
-      213: -3797916077790963600
-    second: wardrobe 2
+      213: -8539665021158487183
+    second: Conveyor Right 6
   - first:
-      213: 3871543770641544115
-    second: wardrobe 1
+      213: 5458605334293113808
+    second: Conveyor Right 7
   - first:
-      213: -2187376427083215
-    second: wardrobe 0
+      213: 3505626402946431825
+    second: Conveyor Single 0
   - first:
-      213: 1871164503059460400
-    second: Nightstand 3
+      213: 5639508038077653028
+    second: Conveyor Single 1
   - first:
-      213: -1807455637129885132
-    second: Nightstand 2
+      213: -8255140515171143345
+    second: Conveyor Single 2
   - first:
-      213: 5299957156025092988
-    second: Nightstand 1
+      213: -2169502823514170269
+    second: Conveyor Single 3
   - first:
-      213: 7235390386569320284
-    second: Nightstand 0
+      213: 2223780591514262014
+    second: Conveyor Single 4
   - first:
-      213: -5915476295922998831
-    second: Clock 2
+      213: 990678265378613858
+    second: Conveyor Single 5
   - first:
-      213: -3836417823762442374
-    second: Clock 3
+      213: 3879808583591258486
+    second: Conveyor Single 6
   - first:
-      213: 704033437376869423
-    second: Bed 0
+      213: -4780002661236639766
+    second: Conveyor Single 7
   - first:
-      213: 7778252439724502268
-    second: Bed 1
+      213: 2358907889829948367
+    second: Check Altar 12
   - first:
-      213: -2433156338662758541
-    second: Basket 1
+      213: 4312572546759824597
+    second: Check Altar 0
   - first:
-      213: 9071431351256446074
-    second: Basket 2
+      213: 1466546089408830051
+    second: Check Altar 1
   - first:
-      213: 4041137338011283254
-    second: Basket 3
+      213: 2489991742835665880
+    second: Check Altar 13
   - first:
-      213: -1017347523448416196
-    second: Photo 0
+      213: 8839838725664564805
+    second: Check Altar 14
   - first:
-      213: 1029403805412778191
-    second: Photo 1
+      213: -1417421675341320699
+    second: Check Altar 15
   - first:
-      213: -2397915846546918307
-    second: Photo 2
+      213: -4441763328246351736
+    second: Check Altar 16
   - first:
-      213: -5448561748106697413
-    second: Photo 3
+      213: 2681472824583667158
+    second: Check Altar 17
   - first:
-      213: -7128515207855051663
-    second: Cabinet Idol 5
+      213: 8560999289625563613
+    second: Check Altar 18
   - first:
-      213: -4210252151482390241
-    second: Cabinet Stove 3
+      213: 8057227050989782220
+    second: Check Altar 19
   - first:
-      213: -5076151734500336818
-    second: Cabinet Stove 7
+      213: 2708758425910553369
+    second: Check Altar 20
   - first:
-      213: 8062667126369937696
-    second: grandfather clock 0
+      213: -8526181882031685216
+    second: Check Altar 21
   - first:
-      213: 3779846451854236628
-    second: grandfather clock 1
+      213: -8982672191386649648
+    second: Check Altar 22
+  - first:
+      213: -7055169885375930191
+    second: Check Altar 23
+  - first:
+      213: -2556948644422940918
+    second: Check Altar 2
+  - first:
+      213: -8994282571601530582
+    second: Check Altar 3
+  - first:
+      213: -654089517717540796
+    second: Check Altar 4
+  - first:
+      213: 8604615731192563585
+    second: Check Altar 5
+  - first:
+      213: -2401578804588704402
+    second: Check Altar 6
+  - first:
+      213: -7763231266587370518
+    second: Check Altar 7
+  - first:
+      213: 2538238195986311769
+    second: Check Altar 8
+  - first:
+      213: -7770977609402098439
+    second: Check Altar 9
+  - first:
+      213: -637101586808039641
+    second: Check Altar 10
+  - first:
+      213: -2215026977936886246
+    second: Check Altar 11
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -272,7 +305,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -290,30 +323,6 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 8192
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Standalone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -328,997 +337,10 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Vase 0
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 4
-        width: 16
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 85e33fab695f9c000800000000000000
-      internalID: 56846498049244760
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Vase 1
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 4
-        width: 16
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0862e30b15ddda400800000000000000
-      internalID: 337168890041607808
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TV 1
-      rect:
-        serializedVersion: 2
-        x: 86
-        y: 104
-        width: 16
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6eac8388c38efb6d0800000000000000
-      internalID: -2972401882360132890
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TV 0
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 104
-        width: 16
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: bbbc4cc631221f080800000000000000
-      internalID: -9155499100642948165
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Fridge 1 Open
-      rect:
-        serializedVersion: 2
-        x: 86
-        y: 38
-        width: 16
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1471c1377fc9298c0800000000000000
-      internalID: -3993957332922132671
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Fridge 0 Open
-      rect:
-        serializedVersion: 2
-        x: 86
-        y: 71
-        width: 16
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5549cd8d7d66218d0800000000000000
-      internalID: -2877124134693989291
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Fridge 1
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 38
-        width: 16
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7a74ed48041cb3350800000000000000
-      internalID: 5997599811625174951
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Fridge 0
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 71
-        width: 16
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9a5a15fdbd3db61b0800000000000000
-      internalID: -5662199165190298199
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wardrobe 3 Open
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 173
-        width: 16
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 631237ffc2a3e59a0800000000000000
-      internalID: -6242488068550221514
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wardrobe 2 Open
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 173
-        width: 16
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f9730f33e9db64db0800000000000000
-      internalID: -4807947064997562465
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wardrobe 1 Open
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 173
-        width: 16
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5870eec5bf0e18fe0800000000000000
-      internalID: -1188421456448583803
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wardrobe 0 Open
+      name: Barrel
       rect:
         serializedVersion: 2
         x: 1
-        y: 173
-        width: 16
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a48e007ffa9bf37f0800000000000000
-      internalID: -630581257394132918
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cabinet Stove 5
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 122
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 10d2f095206441be0800000000000000
-      internalID: -1507502999364227839
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cabinet Stove 4
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 122
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e9a185fb7cc2a5470800000000000000
-      internalID: 8384062892723935902
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cabinet Stove 6
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 105
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7bc9ce457670fc290800000000000000
-      internalID: -7868061883605148489
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Stove 3
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 139
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e3fafe39020c9d760800000000000000
-      internalID: 7483223502006234942
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Stove 2
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 139
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 13ebc732fa61d7c60800000000000000
-      internalID: 7817429469655514673
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cabinet Stove 2
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 105
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 744e3c14cb6ad3b80800000000000000
-      internalID: -8413385201370799033
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cabinet Stove 1
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 122
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f479097ff4a0357a0800000000000000
-      internalID: -6389752107736459441
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cabinet Stove 0
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 122
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b12791e81751bc050800000000000000
-      internalID: 5821770520766018075
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Stove 1
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 139
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d6143dfe6f1777e10800000000000000
-      internalID: 2195348648765899117
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Stove 0
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 139
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 638ce0ea71ddbfb80800000000000000
-      internalID: -8359845189509003210
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Clock 1
-      rect:
-        serializedVersion: 2
-        x: 86
-        y: 21
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4815d594db769b770800000000000000
-      internalID: 8627040623882228100
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Clock 0
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 21
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7f7323f0e6907f420800000000000000
-      internalID: 2663608072918939639
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Chest 1 Open
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 88
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4444ef003904e1b70800000000000000
-      internalID: 8871599316087489604
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Chest 0 Open
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 88
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f0ed60e6229acbfc0800000000000000
-      internalID: -3477718846896939505
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Chest 1
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 88
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5e46c0f779fce0760800000000000000
-      internalID: 7426101085159056613
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Chest 0
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 88
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 478b22ac5db20d5f0800000000000000
-      internalID: -734038542042089356
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cabinet Idol 4
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 171
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7864b58d417fb2940800000000000000
-      internalID: 5272579457668564615
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cabinet Idol 3
-      rect:
-        serializedVersion: 2
-        x: 86
-        y: 188
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1f6ca17fbe0191df0800000000000000
-      internalID: -209117302046931215
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cabinet Idol 2
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 188
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 437a7182d1103f3f0800000000000000
-      internalID: -868349078414055628
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cabinet Idol 1
-      rect:
-        serializedVersion: 2
-        x: 86
-        y: 205
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 53c2b3eff97d20600800000000000000
-      internalID: 433145596346051637
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cabinet Idol 0
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 205
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 98b277179addd4a20800000000000000
-      internalID: 3048336242622540681
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Chair 3
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 37
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 456cad4f8a7e30e30800000000000000
-      internalID: 4468669968130164308
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Chair 2
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 37
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 354353a96a63ae980800000000000000
-      internalID: -8508928456783481773
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Chair 1
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 37
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f5078428c21d7d250800000000000000
-      internalID: 5969469820197433439
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Chair 0
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 37
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 40f68c54934ef0500800000000000000
-      internalID: 364761029475331844
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dining Table 3
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 54
-        width: 32
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e7998825d3b7cf850800000000000000
-      internalID: 6412135472776649086
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dining Table 2
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 54
-        width: 32
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f0c0f1767ee90c9e0800000000000000
-      internalID: -1603106750639174641
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dining Table 1
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 71
-        width: 32
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4b1babbf803897070800000000000000
-      internalID: 8104653079036211636
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dining Table 0
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 71
-        width: 32
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 28556bd6a957cceb0800000000000000
-      internalID: -4698251005128190590
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Light 3
-      rect:
-        serializedVersion: 2
-        x: 120
-        y: 188
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 90b4cddf76286c130800000000000000
-      internalID: 3586697536399493897
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Light 2
-      rect:
-        serializedVersion: 2
-        x: 103
-        y: 188
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e8778088ee1018190800000000000000
-      internalID: -7962080542218225778
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Light 1
-      rect:
-        serializedVersion: 2
-        x: 120
-        y: 205
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c3b93fb8cf7281c60800000000000000
-      internalID: 7789019521170512700
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Light 0
-      rect:
-        serializedVersion: 2
-        x: 103
-        y: 205
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 08d8937260bc53b30800000000000000
-      internalID: 4266539449291738496
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Lamp 3
-      rect:
-        serializedVersion: 2
-        x: 120
-        y: 222
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 95245bd176180adf0800000000000000
-      internalID: -170994505960045991
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Lamp 2
-      rect:
-        serializedVersion: 2
-        x: 103
-        y: 222
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1907951d9dd2cbdc0800000000000000
-      internalID: -3621969586769268591
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Lamp 1
-      rect:
-        serializedVersion: 2
-        x: 120
         y: 239
         width: 16
         height: 16
@@ -1329,104 +351,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 46f882f9616560290800000000000000
-      internalID: -7924551839152304284
+      spriteID: d490903cb74751090800000000000000
+      internalID: -8064411482835056307
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lamp 0
-      rect:
-        serializedVersion: 2
-        x: 103
-        y: 239
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9ce9d6f8aeef18960800000000000000
-      internalID: 7602637929360236233
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Basket 0
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 154
-        width: 16
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c2eda2ed260245ea0800000000000000
-      internalID: -5885043204060160468
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wardrobe 3
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 206
-        width: 16
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ab96b22e04775b1a0800000000000000
-      internalID: -6794393342262416966
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wardrobe 2
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 206
-        width: 16
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 078568013771b4bc0800000000000000
-      internalID: -3797916077790963600
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wardrobe 1
+      name: Barrel Small
       rect:
         serializedVersion: 2
         x: 18
-        y: 206
-        width: 16
-        height: 32
+        y: 247
+        width: 8
+        height: 8
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1434,19 +372,61 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3b3377d0c8c7ab530800000000000000
-      internalID: 3871543770641544115
+      spriteID: 26537f1858689ea60800000000000000
+      internalID: 7703836545563178338
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wardrobe 0
+      name: Road Sign 0
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 239
+        width: 9
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 417bd332249acafd0800000000000000
+      internalID: -2329300805733206252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Road Sign 1
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 239
+        width: 9
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c24ccd61dc5e88210800000000000000
+      internalID: 1335569958529975340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Road Sign 2
       rect:
         serializedVersion: 2
         x: 1
         y: 206
-        width: 16
+        width: 9
         height: 32
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
@@ -1455,18 +435,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 13ad21db79a38fff0800000000000000
-      internalID: -2187376427083215
+      spriteID: d491542b88b723bd0800000000000000
+      internalID: -2651921403531159219
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Nightstand 3
+      name: Check Statue 0
       rect:
         serializedVersion: 2
-        x: 52
-        y: 239
+        x: 47
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -1476,18 +456,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 031fd21a336b7f910800000000000000
-      internalID: 1871164503059460400
+      spriteID: 9a4f0b6bcedff16d0800000000000000
+      internalID: -3017414032195783511
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Nightstand 2
+      name: Check Statue 1
       rect:
         serializedVersion: 2
-        x: 35
-        y: 239
+        x: 64
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -1497,18 +477,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 43a8891aca0aae6e0800000000000000
-      internalID: -1807455637129885132
+      spriteID: e7d4ad2ec473bfa10800000000000000
+      internalID: 1944208467503500670
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Nightstand 1
+      name: Check Statue 2
       rect:
         serializedVersion: 2
-        x: 18
-        y: 239
+        x: 81
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -1518,18 +498,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c7b4aa9f3fa3d8940800000000000000
-      internalID: 5299957156025092988
+      spriteID: b171289b1a5bd0a80800000000000000
+      internalID: -8498937215571585253
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Nightstand 0
+      name: Check Statue 3
       rect:
         serializedVersion: 2
-        x: 1
-        y: 239
+        x: 98
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -1539,18 +519,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c579dbac835496460800000000000000
-      internalID: 7235390386569320284
+      spriteID: e761e50b3a0075df0800000000000000
+      internalID: -191683756101331330
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Clock 2
+      name: Check Statue 4
       rect:
         serializedVersion: 2
-        x: 69
-        y: 4
+        x: 115
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -1560,18 +540,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1d1244086a108eda0800000000000000
-      internalID: -5915476295922998831
+      spriteID: 33c74e1c57a2a9ad0800000000000000
+      internalID: -2694794741775303629
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Clock 3
+      name: Check Statue 5
       rect:
         serializedVersion: 2
-        x: 86
-        y: 4
+        x: 132
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -1581,60 +561,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a7799a4c05e42cac0800000000000000
-      internalID: -3836417823762442374
+      spriteID: af17bf9e70dfafbc0800000000000000
+      internalID: -3748405529400348166
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bed 0
+      name: Check Statue 6
       rect:
         serializedVersion: 2
-        x: 69
-        y: 239
-        width: 32
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f2478d06eaa35c900800000000000000
-      internalID: 704033437376869423
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bed 1
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 222
-        width: 32
-        height: 16
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: cfc281b0267e1fb60800000000000000
-      internalID: 7778252439724502268
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Basket 1
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 137
+        x: 149
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -1644,18 +582,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 377240f8331bb3ed0800000000000000
-      internalID: -2433156338662758541
+      spriteID: 1c6581f9a826e2720800000000000000
+      internalID: 2823302363922060993
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Basket 2
+      name: Check Statue 7
       rect:
         serializedVersion: 2
-        x: 86
-        y: 154
+        x: 166
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -1665,18 +603,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a747bff50c234ed70800000000000000
-      internalID: 9071431351256446074
+      spriteID: d9a12a2330f34a410800000000000000
+      internalID: 1487383059906042525
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Basket 3
+      name: Check Statue 8
       rect:
         serializedVersion: 2
-        x: 86
-        y: 137
+        x: 183
+        y: 173
         width: 16
         height: 16
       alignment: 9
@@ -1686,17 +624,80 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 63feab08ff0051830800000000000000
-      internalID: 4041137338011283254
+      spriteID: afb89128b222607a0800000000000000
+      internalID: -6411399449253671942
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Photo 0
+      name: Check Statue 9
       rect:
         serializedVersion: 2
-        x: 1
+        x: 200
+        y: 173
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 951de030acf2161a0800000000000000
+      internalID: -6818115816181018279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 10
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 173
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 733fa9bb50d5065d0800000000000000
+      internalID: -3071352666662964425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 11
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 173
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 791182c7066282fa0800000000000000
+      internalID: -5825363922162019945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 12
+      rect:
+        serializedVersion: 2
+        x: 47
         y: 156
         width: 16
         height: 16
@@ -1707,17 +708,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c38dbbb41d7a1e1f0800000000000000
-      internalID: -1017347523448416196
+      spriteID: 8f46739ce1e52f800800000000000000
+      internalID: 644681182985282808
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Photo 1
+      name: Check Statue 13
       rect:
         serializedVersion: 2
-        x: 18
+        x: 64
         y: 156
         width: 16
         height: 16
@@ -1728,17 +729,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fc060189e4d294e00800000000000000
-      internalID: 1029403805412778191
+      spriteID: c854d2d967b80eca0800000000000000
+      internalID: -5989634162843368052
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Photo 2
+      name: Check Statue 14
       rect:
         serializedVersion: 2
-        x: 35
+        x: 81
         y: 156
         width: 16
         height: 16
@@ -1749,17 +750,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d547a450e34e8bed0800000000000000
-      internalID: -2397915846546918307
+      spriteID: db52d56193be6a6b0800000000000000
+      internalID: -5285278482251831875
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Photo 3
+      name: Check Statue 15
       rect:
         serializedVersion: 2
-        x: 52
+        x: 98
         y: 156
         width: 16
         height: 16
@@ -1770,18 +771,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b35a15335f1d264b0800000000000000
-      internalID: -5448561748106697413
+      spriteID: 12a3a58c755ac9440800000000000000
+      internalID: 4944008287388056097
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cabinet Idol 5
+      name: Check Statue 16
       rect:
         serializedVersion: 2
-        x: 86
-        y: 171
+        x: 115
+        y: 156
         width: 16
         height: 16
       alignment: 9
@@ -1791,17 +792,500 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 17c64dbdf2d621d90800000000000000
-      internalID: -7128515207855051663
+      spriteID: b7d0e6b5d137623a0800000000000000
+      internalID: -6690533626487108229
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cabinet Stove 3
+      name: Check Statue 17
       rect:
         serializedVersion: 2
-        x: 18
+        x: 132
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e50c3561512b0dc0800000000000000
+      internalID: -3671804437716007452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 18
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1d1981b22a3672e0800000000000000
+      internalID: -2128449853204128481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 19
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33ac4080417098760800000000000000
+      internalID: 7460502040331209267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 20
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39b5fc63288271f10800000000000000
+      internalID: 2240303879370529683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 21
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31370d65226e277f0800000000000000
+      internalID: -616177163836558573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 22
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b69afbce4be17d40800000000000000
+      internalID: 5580500136950929075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 23
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a77b14d9090c5820800000000000000
+      internalID: 2908209397192423333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4112efebab1181b70800000000000000
+      internalID: 8869858959872106772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6f870296e3ae0750800000000000000
+      internalID: 6273131541661454191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80c46e5ee2c3daf50800000000000000
+      internalID: 6894232776697334792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d2597c47ca1c5940800000000000000
+      internalID: 5286129505909953240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b419728574efad40800000000000000
+      internalID: 5597944055196095667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd2679fab9db9eaf0800000000000000
+      internalID: -366553418290470181
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 846dd928ce95ae240800000000000000
+      internalID: 4821765223392073288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 698052a9949e86860800000000000000
+      internalID: 7523519679850416278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af20ebed3c9e1f0a0800000000000000
+      internalID: -6849436530788924678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 488a5a89ce0d7bad0800000000000000
+      internalID: -2686448938111358844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 573444966631ab9f0800000000000000
+      internalID: -452027482023640203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76d4e44f14bd646f0800000000000000
+      internalID: -700631615691403929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af15f038c5ebb4d30800000000000000
+      internalID: 4416833164111991290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b3c7687270d5d920800000000000000
+      internalID: 3014544715659330481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6ef9901220e0eff0800000000000000
+      internalID: -8760762342703505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11a94314b615ba4f0800000000000000
+      internalID: -816469386340296175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 0
+      rect:
+        serializedVersion: 2
+        x: 47
         y: 105
         width: 16
         height: 16
@@ -1812,17 +1296,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f196110a9fd2295c0800000000000000
-      internalID: -4210252151482390241
+      spriteID: 3902a6d53c97bb110800000000000000
+      internalID: 1277748799282487443
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cabinet Stove 7
+      name: Conveyor Right 1
       rect:
         serializedVersion: 2
-        x: 52
+        x: 64
         y: 105
         width: 16
         height: 16
@@ -1833,18 +1317,312 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e4bdf1f54e2ed89b0800000000000000
-      internalID: -5076151734500336818
+      spriteID: 4bf52988a692fb6d0800000000000000
+      internalID: -2972611691506671692
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: grandfather clock 0
+      name: Conveyor Right 2
       rect:
         serializedVersion: 2
-        x: 1
-        y: 4
+        x: 81
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a055c031a1c2d9e0800000000000000
+      internalID: -1598002019710971740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 806f36248f95a16f0800000000000000
+      internalID: -713158668184193528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af57f27d140a001f0800000000000000
+      internalID: -1080687705925388806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c78f96132f3c1870800000000000000
+      internalID: 8654862003835209668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17b050988e30d7980800000000000000
+      internalID: -8539665021158487183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dbe79f61acd0cb40800000000000000
+      internalID: 5458605334293113808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15b3adec3ac76a030800000000000000
+      internalID: 3505626402946431825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42024956eae834e40800000000000000
+      internalID: 5639508038077653028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f41f9466079df6d80800000000000000
+      internalID: -8255140515171143345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36c1b313da064e1e0800000000000000
+      internalID: -2169502823514170269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef99d977aa47cde10800000000000000
+      internalID: 2223780591514262014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26aa79e22a89fbd00800000000000000
+      internalID: 990678265378613858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 679e775c959d7d530800000000000000
+      internalID: 3879808583591258486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae77197b7e40aadb0800000000000000
+      internalID: -4780002661236639766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 12
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 190
         width: 16
         height: 32
       alignment: 9
@@ -1854,18 +1632,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 029ef79980954ef60800000000000000
-      internalID: 8062667126369937696
+      spriteID: fcb2e2f4a368cb020800000000000000
+      internalID: 2358907889829948367
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: grandfather clock 1
+      name: Check Altar 0
       rect:
         serializedVersion: 2
-        x: 18
-        y: 4
+        x: 47
+        y: 223
         width: 16
         height: 32
       alignment: 9
@@ -1875,8 +1653,470 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4dbda4c4256b47430800000000000000
-      internalID: 3779846451854236628
+      spriteID: 5d498bdd1e559db30800000000000000
+      internalID: 4312572546759824597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36a93f1f5e73a5410800000000000000
+      internalID: 1466546089408830051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 13
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8db206d2c4a3e8220800000000000000
+      internalID: 2489991742835665880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 14
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5466afa4c7a6daa70800000000000000
+      internalID: 8839838725664564805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 15
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50e67500f7e445ce0800000000000000
+      internalID: -1417421675341320699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 16
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 888f48359cfab52c0800000000000000
+      internalID: -4441763328246351736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 17
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6dd3c20b351863520800000000000000
+      internalID: 2681472824583667158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 18
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd1d08cee77cec670800000000000000
+      internalID: 8560999289625563613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 19
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc40ae8505501df60800000000000000
+      internalID: 8057227050989782220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 20
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91baebecf61779520800000000000000
+      internalID: 2708758425910553369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 21
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a1412f70caeca980800000000000000
+      internalID: -8526181882031685216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 22
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0db7e92fb33275380800000000000000
+      internalID: -8982672191386649648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 23
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b062208e50071e90800000000000000
+      internalID: -7055169885375930191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a07014451c4e38cd0800000000000000
+      internalID: -2556948644422940918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a213436a7a3ed2380800000000000000
+      internalID: -8994282571601530582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 440b3259c053ce6f0800000000000000
+      internalID: -654089517717540796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18788761b6cb96770800000000000000
+      internalID: 8604615731192563585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6d02642dc0ebaed0800000000000000
+      internalID: -2401578804588704402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aeb9add5b46734490800000000000000
+      internalID: -7763231266587370518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 8
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95aa71be032a93320800000000000000
+      internalID: 2538238195986311769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 9
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fcd2126901f72490800000000000000
+      internalID: -7770977609402098439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 10
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72718787b7f8827f0800000000000000
+      internalID: -637101586808039641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 11
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a163a2403b4a241e0800000000000000
+      internalID: -2215026977936886246
       vertices: []
       indices: 
       edges: []
@@ -1892,80 +2132,91 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Chest 0: -734038542042089356
-      Chair 3: 4468669968130164308
-      Chair 2: -8508928456783481773
-      Light 0: 4266539449291738496
-      Dining Table 2: -1603106750639174641
-      Cabinet Stove 3: -4210252151482390241
-      wardrobe 2 Open: -4807947064997562465
-      Fridge 1 Open: -3993957332922132671
-      Stove 1: 2195348648765899117
-      Vase 1: 337168890041607808
-      Cabinet Idol 0: 3048336242622540681
-      Bed 0: 704033437376869423
-      Nightstand 0: 7235390386569320284
-      Cabinet Stove 1: -6389752107736459441
-      wardrobe 0 Open: -630581257394132918
-      Basket 3: 4041137338011283254
-      Cabinet Idol 3: -209117302046931215
-      Clock 0: 2663608072918939639
-      grandfather clock 0: 8062667126369937696
-      wardrobe 3 Open: -6242488068550221514
-      Dining Table 1: 8104653079036211636
-      wardrobe 1 Open: -1188421456448583803
-      grandfather clock 1: 3779846451854236628
-      Fridge 0 Open: -2877124134693989291
-      Clock 1: 8627040623882228100
-      Lamp 3: -170994505960045991
-      Fridge 0: -5662199165190298199
-      Stove 3: 7483223502006234942
-      Cabinet Stove 0: 5821770520766018075
-      Lamp 0: 7602637929360236233
-      Nightstand 2: -1807455637129885132
-      Photo 1: 1029403805412778191
-      Chest 1 Open: 8871599316087489604
-      TV 0: -9155499100642948165
-      Cabinet Stove 4: 8384062892723935902
-      Nightstand 1: 5299957156025092988
-      Cabinet Idol 2: -868349078414055628
-      Clock 2: -5915476295922998831
-      Chest 1: 7426101085159056613
-      wardrobe 2: -3797916077790963600
-      Photo 0: -1017347523448416196
-      Cabinet Stove 6: -7868061883605148489
-      Cabinet Stove 2: -8413385201370799033
-      Basket 1: -2433156338662758541
-      Cabinet Idol 1: 433145596346051637
-      TV 1: -2972401882360132890
-      Fridge 1: 5997599811625174951
-      Cabinet Stove 7: -5076151734500336818
-      Light 2: -7962080542218225778
-      Light 1: 7789019521170512700
-      Vase 0: 56846498049244760
-      Chest 0 Open: -3477718846896939505
-      Basket 2: 9071431351256446074
-      Lamp 2: -3621969586769268591
-      Photo 2: -2397915846546918307
-      Lamp 1: -7924551839152304284
-      Stove 2: 7817429469655514673
-      Stove 0: -8359845189509003210
-      Cabinet Idol 4: 5272579457668564615
-      Dining Table 3: 6412135472776649086
-      wardrobe 0: -2187376427083215
-      Cabinet Idol 5: -7128515207855051663
-      Nightstand 3: 1871164503059460400
-      wardrobe 1: 3871543770641544115
-      Dining Table 0: -4698251005128190590
-      Chair 1: 5969469820197433439
-      Photo 3: -5448561748106697413
-      Chair 0: 364761029475331844
-      Bed 1: 7778252439724502268
-      Light 3: 3586697536399493897
-      Basket 0: -5885043204060160468
-      Cabinet Stove 5: -1507502999364227839
-      wardrobe 3: -6794393342262416966
-      Clock 3: -3836417823762442374
+      Check Altar 1: 1466546089408830051
+      Check Altar 12: 2358907889829948367
+      Conveyor Mid 4: 5597944055196095667
+      Check Altar 18: 8560999289625563613
+      Road Sign 0: -2329300805733206252
+      Check Altar 14: 8839838725664564805
+      Check Altar 15: -1417421675341320699
+      Check Altar 22: -8982672191386649648
+      Check Altar 20: 2708758425910553369
+      Check Altar 2: -2556948644422940918
+      Check Statue 4: -2694794741775303629
+      Conveyor Right 2: -1598002019710971740
+      Conveyor Left 3: -700631615691403929
+      Conveyor Left 1: -2686448938111358844
+      Check Altar 10: -637101586808039641
+      Barrel: -8064411482835056307
+      Conveyor Right 6: -8539665021158487183
+      Check Statue 17: -3671804437716007452
+      Conveyor Single 5: 990678265378613858
+      Check Statue 14: -5285278482251831875
+      Conveyor Right 1: -2972611691506671692
+      Check Altar 23: -7055169885375930191
+      Conveyor Left 6: -8760762342703505
+      Conveyor Left 2: -452027482023640203
+      Check Statue 23: 2908209397192423333
+      Check Statue 20: 2240303879370529683
+      Check Statue 9: -6818115816181018279
+      Conveyor Mid 0: 8869858959872106772
+      Check Altar 9: -7770977609402098439
+      Conveyor Mid 5: -366553418290470181
+      Check Altar 8: 2538238195986311769
+      Check Altar 3: -8994282571601530582
+      Check Statue 5: -3748405529400348166
+      Check Altar 5: 8604615731192563585
+      Check Altar 7: -7763231266587370518
+      Conveyor Mid 6: 4821765223392073288
+      Check Statue 7: 1487383059906042525
+      Check Altar 13: 2489991742835665880
+      Check Statue 3: -191683756101331330
+      Check Altar 0: 4312572546759824597
+      Conveyor Single 3: -2169502823514170269
+      Check Statue 21: -616177163836558573
+      Check Statue 1: 1944208467503500670
+      Check Altar 21: -8526181882031685216
+      Conveyor Left 7: -816469386340296175
+      Conveyor Mid 3: 5286129505909953240
+      Check Statue 2: -8498937215571585253
+      Conveyor Left 5: 3014544715659330481
+      Road Sign 1: 1335569958529975340
+      Conveyor Right 4: -1080687705925388806
+      Conveyor Single 0: 3505626402946431825
+      Conveyor Single 4: 2223780591514262014
+      Conveyor Single 7: -4780002661236639766
+      Check Altar 6: -2401578804588704402
+      Check Altar 16: -4441763328246351736
+      Check Altar 17: 2681472824583667158
+      Check Statue 18: -2128449853204128481
+      Conveyor Left 0: -6849436530788924678
+      Check Statue 0: -3017414032195783511
+      Conveyor Mid 7: 7523519679850416278
+      Check Statue 13: -5989634162843368052
+      Check Statue 11: -5825363922162019945
+      Road Sign 2: -2651921403531159219
+      Check Statue 15: 4944008287388056097
+      Conveyor Right 3: -713158668184193528
+      Check Statue 8: -6411399449253671942
+      Check Altar 4: -654089517717540796
+      Check Statue 19: 7460502040331209267
+      Conveyor Mid 2: 6894232776697334792
+      Conveyor Left 4: 4416833164111991290
+      Conveyor Single 1: 5639508038077653028
+      Check Altar 19: 8057227050989782220
+      Conveyor Right 5: 8654862003835209668
+      Check Altar 11: -2215026977936886246
+      Barrel Small: 7703836545563178338
+      Conveyor Mid 1: 6273131541661454191
+      Check Statue 6: 2823302363922060993
+      Check Statue 16: -6690533626487108229
+      Check Statue 22: 5580500136950929075
+      Check Statue 12: 644681182985282808
+      Conveyor Right 7: 5458605334293113808
+      Conveyor Single 2: -8255140515171143345
+      Check Statue 10: -3071352666662964425
+      Conveyor Single 6: 3879808583591258486
+      Conveyor Right 0: 1277748799282487443
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 
