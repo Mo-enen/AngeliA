@@ -4015,7 +4015,7 @@
 					"canBeNull": false,
 					"arrayMinLength": null,
 					"arrayMaxLength": null,
-					"editorDisplayMode": "Hidden",
+					"editorDisplayMode": "ValueOnly",
 					"editorDisplayPos": "Above",
 					"editorAlwaysShow": false,
 					"editorCutLongValues": true,
@@ -5510,7 +5510,7 @@
 						},
 						{
 							"__identifier": "eYaya",
-							"__grid": [13,9],
+							"__grid": [13,10],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
 							"__tile": { "tilesetUid": 46, "x": 96, "y": 0, "w": 16, "h": 16 },
@@ -5518,7 +5518,7 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 219,
-							"px": [216,152],
+							"px": [216,168],
 							"fieldInstances": []
 						},
 						{
@@ -5701,7 +5701,7 @@
 							"height": 48,
 							"defUid": 281,
 							"px": [168,8],
-							"fieldInstances": [{ "__identifier": "Data", "__value": 0, "__type": "Int", "__tile": null, "defUid": 282, "realEditorValues": [] }]
+							"fieldInstances": [{ "__identifier": "Data", "__value": 12, "__type": "Int", "__tile": null, "defUid": 282, "realEditorValues": [{ "id": "V_Int", "params": [12] }] }]
 						},
 						{
 							"__identifier": "eWardrobe",
