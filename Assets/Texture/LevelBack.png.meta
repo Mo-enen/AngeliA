@@ -677,7 +677,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -695,30 +695,6 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 8192
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Standalone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -5132,7 +5108,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Dirt Grass Brittle: -1328718549187013623
+      Brick Wall 0: 4079501938272229767
       Oneway Gate: -1990186389894202535
       Beige Stone Brick 8: 8706770528525637964
       Cat Ceramic Tile 3: 3032485920394042436
@@ -5159,9 +5135,9 @@ TextureImporter:
       Beige Stone Brick 14: -1260596444792528852
       Grey Stone Brick 33: 4787018380545051608
       Beige Stone Brick 22: -5150803622294236526
-      Wooden Board 5: 2072634981402615595
-      Beige Stone Brick 21: 3431917313603722460
       Grey Stone Brick 6: 1974983621603219542
+      Beige Stone Brick 21: 3431917313603722460
+      Wooden Board 5: 2072634981402615595
       Grey Stone Brick 35: -7668372638356674487
       Beige Stone Brick 11: -8094389247986156121
       Brick Wall 7: -2688131302855655286
@@ -5287,8 +5263,8 @@ TextureImporter:
       Board Floor 4: 2564409720553820411
       Wooden Board 10: 9050763555968021357
       Wooden Floor 13: -9061681759067033011
-      Wooden Board 7: -1602587713372403926
       Grass Ground 11: -8822198502774587252
+      Wooden Board 7: -1602587713372403926
       Beige Stone Brick 25: 6877592551663312243
       Grey Stone Brick 10: -5721357015852061189
       Dirt Brittle: 1604666739716444649
@@ -5338,8 +5314,8 @@ TextureImporter:
       Grass Ground 9: -2794322698289958082
       Beige Stone Brick 37: -7946356796935988009
       Beige Stone Brick 26: 4339595551674242603
+      Dirt Grass Brittle: -1328718549187013623
       Board Floor 13: -6057557763418563322
-      Brick Wall 0: 4079501938272229767
       Cat Ceramic Tile 1: -4637060798134572500
   spritePackingTag: 
   pSDRemoveMatte: 0

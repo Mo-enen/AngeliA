@@ -521,7 +521,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -539,30 +539,6 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 8192
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Standalone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -3889,7 +3865,7 @@ TextureImporter:
       Vol Potion Blue: -8482873678308682284
       Sushi: -8231821728584974286
       Golden Key: -9186267206772851321
-      Rune Empty: -458016355626029732
+      Firecracker: 8993400817900114665
       Snail Cooked: 279183876286233850
       Rune Fire: -9194504705686796367
       Donut 1: -7740983580959172396
@@ -3963,21 +3939,20 @@ TextureImporter:
       Bomb: -2645361854805593308
       Apple Green: -9207441790826436818
       Steak Raw: -8588310423305267114
-      Crab Raw: -8238476385419446542
+      Spinach: -6031420317972535299
       Peach Cut: 3463451341184599687
       Gem Orange: 771535981585299745
-      Board: 4150903206124111602
+      Crab Raw: -8238476385419446542
+      Coin 4: 2983329133290763648
       Ruby Green: -8939711402148985780
-      Stone 1: 3403477462578683957
       Gem Grey: -2222859685555020565
       Chinese Cabbage: 580331631342469037
-      Spinach: -6031420317972535299
       Peach: 1944106526218400674
       Ruby Orange: 4458494718924381150
       Banana Cut: 8568856482150078548
       Fish Cooked: -3830820648680856899
-      Coin 4: 2983329133290763648
       Golden Pocket Watch: -8365491406040063676
+      Board: 4150903206124111602
       Apricot Cut: 7389741094005283192
       Sea Fish Cooked: -8644150645591026024
       Tomato: -6731281561659528778
@@ -3990,6 +3965,7 @@ TextureImporter:
       Coin 0: -8853817869284624083
       Grape Green: -2073946786391209326
       Stump: 5434903235138734717
+      Stone 1: 3403477462578683957
       Mushroom Blue: 4873310739333512082
       Bone: -2867681730806746958
       Mushroom Orange: -5639789306321423723
@@ -4040,7 +4016,7 @@ TextureImporter:
       Eggplant: 4456751984861989714
       Cherry Cut: 4643866492775801204
       Bear Paw: 672807302613651724
-      Firecracker: 8993400817900114665
+      Rune Empty: -458016355626029732
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 
