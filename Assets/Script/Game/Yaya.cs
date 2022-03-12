@@ -12,6 +12,16 @@ namespace Yaya {
 	public class Yaya : Game {
 
 
+		// Api
+		public override string MapRoot => !string.IsNullOrEmpty(_MapRoot) ? _MapRoot : (_MapRoot = Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Maps"));
+		public override string DialogueRoot => !string.IsNullOrEmpty(_DialogueRoot) ? _DialogueRoot : (_DialogueRoot = Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Dialogues"));
+
+		// Data
+		private string _MapRoot = null;
+		private string _DialogueRoot = null;
+
+
+		// MSG
 		private void Awake () {
 			Awake_Misc();
 			Awake_Quit();

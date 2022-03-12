@@ -13,19 +13,8 @@ namespace Yaya {
 		#region --- VAR ---
 
 
-		// Init
-		public int Width { get; init; } = 256;
-		public int Height { get; init; } = 256;
-		public int SqrtHeight { get; init; } = 158;
-
 		// Api
-		public bool Squating { get; set; } = false;
-		public bool FacingFront { get; set; } = true;
-		public bool FacingRight { get; set; } = true;
-		protected int CurrentFrame { get; private set; } = 0;
-
-		// Data
-		protected eRigidbody Rig { get; private set; } = null;
+		protected eCharacter Character { get; init; } = null;
 
 
 		#endregion
@@ -36,66 +25,54 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public CharacterRenderer (eCharacter ch) => Rig = ch;
+		public CharacterRenderer (eCharacter ch) => Character = ch;
 
 
-		public void FrameUpdate (int frame) {
+		public virtual void FrameUpdate (CharacterPose pose) {
 
-			CellRenderer.Draw(
-				"Test Pump".AngeHash(),
-				Rig.X + Rig.OffsetX + Rig.Width / 2,
-				Rig.Y + Rig.OffsetY,
-				500, 0, 0,
-				FacingRight ? Width : -Width,
-				!Squating ? Height : SqrtHeight,
-				Color.white
-			);
-
-			CurrentFrame = frame;
-
-			if (FacingFront) {
+			if (pose.FacingFront) {
 				// Front
 
-				DrawTail();
-				DrawHair(false);
+				DrawTail(pose);
+				DrawHair(pose, false);
 
-				DrawArm(!FacingRight);
-				DrawHand(!FacingRight);
-				DrawLeg(!FacingRight);
-				DrawFoot(!FacingRight);
+				DrawArm(pose, !pose.FacingRight);
+				DrawHand(pose, !pose.FacingRight);
+				DrawLeg(pose, !pose.FacingRight);
+				DrawFoot(pose, !pose.FacingRight);
 
-				DrawBody();
-				DrawBoingBoing();
-				DrawHead();
-				DrawFace();
-				DrawHair(true);
+				DrawBody(pose);
+				DrawBoingBoing(pose);
+				DrawHead(pose);
+				DrawFace(pose);
+				DrawHair(pose, true);
 
-				DrawArm(FacingRight);
-				DrawHand(FacingRight);
-				DrawLeg(FacingRight);
-				DrawFoot(FacingRight);
+				DrawArm(pose, pose.FacingRight);
+				DrawHand(pose, pose.FacingRight);
+				DrawLeg(pose, pose.FacingRight);
+				DrawFoot(pose, pose.FacingRight);
 
 			} else {
 				// Back
 
-				DrawArm(!FacingRight);
-				DrawHand(!FacingRight);
-				DrawLeg(!FacingRight);
-				DrawFoot(!FacingRight);
+				DrawArm(pose, !pose.FacingRight);
+				DrawHand(pose, !pose.FacingRight);
+				DrawLeg(pose, !pose.FacingRight);
+				DrawFoot(pose, !pose.FacingRight);
 
-				DrawHair(true);
-				DrawFace();
-				DrawHead();
-				DrawBoingBoing();
-				DrawBody();
+				DrawHair(pose, true);
+				DrawFace(pose);
+				DrawHead(pose);
+				DrawBoingBoing(pose);
+				DrawBody(pose);
 
-				DrawArm(FacingRight);
-				DrawHand(FacingRight);
-				DrawLeg(FacingRight);
-				DrawFoot(FacingRight);
+				DrawArm(pose, pose.FacingRight);
+				DrawHand(pose, pose.FacingRight);
+				DrawLeg(pose, pose.FacingRight);
+				DrawFoot(pose, pose.FacingRight);
 
-				DrawHair(false);
-				DrawTail();
+				DrawHair(pose, false);
+				DrawTail(pose);
 			}
 
 		}
@@ -109,16 +86,16 @@ namespace Yaya {
 		#region --- API ---
 
 
-		protected virtual void DrawHair (bool front) { }
-		protected virtual void DrawHead () { }
-		protected virtual void DrawFace () { }
-		protected virtual void DrawBody () { }
-		protected virtual void DrawBoingBoing () { }
-		protected virtual void DrawTail () { }
-		protected virtual void DrawArm (bool right) { }
-		protected virtual void DrawHand (bool right) { }
-		protected virtual void DrawLeg (bool right) { }
-		protected virtual void DrawFoot (bool right) { }
+		protected virtual void DrawHair (CharacterPose pose, bool front) { }
+		protected virtual void DrawHead (CharacterPose pose) { }
+		protected virtual void DrawFace (CharacterPose pose) { }
+		protected virtual void DrawBody (CharacterPose pose) { }
+		protected virtual void DrawBoingBoing (CharacterPose pose) { }
+		protected virtual void DrawTail (CharacterPose pose) { }
+		protected virtual void DrawArm (CharacterPose pose, bool right) { }
+		protected virtual void DrawHand (CharacterPose pose, bool right) { }
+		protected virtual void DrawLeg (CharacterPose pose, bool right) { }
+		protected virtual void DrawFoot (CharacterPose pose, bool right) { }
 
 
 		#endregion

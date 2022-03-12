@@ -19,9 +19,7 @@ namespace Yaya {
 		public override bool CarryRigidbodyOnTop => false;
 		public abstract CharacterMovement Movement { get; }
 		public abstract CharacterRenderer Renderer { get; }
-
-		// Debug
-		public bool Debug_FacingFront = true;
+		public abstract CharacterPose Pose { get; }
 
 
 		#endregion
@@ -39,10 +37,8 @@ namespace Yaya {
 
 
 		public override void FrameUpdate (int frame) {
-			Renderer.FacingFront = Debug_FacingFront;
-			Renderer.FacingRight = Movement.CurrentFacingX == Direction2.Right;
-			Renderer.Squating = Movement.IsSquating;
-			Renderer.FrameUpdate(frame);
+			Pose.CalculatePose(frame);
+			Renderer.FrameUpdate(Pose);
 			base.FrameUpdate(frame);
 		}
 

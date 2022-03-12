@@ -9,7 +9,6 @@
 *.sln
 *.config
 /Projects
-/QuickAccess Config.json
 /_BackUp
 /Log
 /_Release
