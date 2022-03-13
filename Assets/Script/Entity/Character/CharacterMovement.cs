@@ -139,7 +139,7 @@ namespace Yaya {
 			// Ground
 			if (IsGrounded) LastGroundedFrame = CurrentFrame;
 			IsInsideGround = CellPhysics.Overlap(
-				PhysicsMask.Level, new(
+				(int)PhysicsMask.Level, new(
 					Rig.X, Rig.Y + Height / 4, 1, 1
 				), Rig
 			);
@@ -388,13 +388,13 @@ namespace Yaya {
 				Rig.Width,
 				Height / 2
 			);
-			bool overlap = CellPhysics.Overlap(PhysicsMask.Level, rect);
+			bool overlap = CellPhysics.Overlap((int)PhysicsMask.Level, rect);
 			if (overlap) return true;
-			overlap = CellPhysics.Overlap(PhysicsMask.Environment, rect);
+			overlap = CellPhysics.Overlap((int)PhysicsMask.Environment, rect);
 			if (overlap && IsSquating && IntendedY >= 0) {
 				// Want to Stand Up but Overlaps
 				return !CellPhysics.MoveCheck(
-					PhysicsMask.Level | PhysicsMask.Environment, rect, Rig, Direction4.Up
+					(int)PhysicsMask.Map, rect, Rig, Direction4.Up
 				);
 			}
 			return overlap;
@@ -404,11 +404,11 @@ namespace Yaya {
 		private bool VineCheck (bool up = false) {
 			if (IsInsideGround) return false;
 			return CellPhysics.Overlap(
-				PhysicsMask.Environment,
+				(int)PhysicsMask.Environment,
 				up ? Rig.Rect.Shift(0, VineSpeedY) : Rig.Rect,
 				Rig,
 				OperationMode.TriggerOnly,
-				YayaUtil.VINE_TAG
+				YayaConst.VINE_TAG
 			);
 		}
 

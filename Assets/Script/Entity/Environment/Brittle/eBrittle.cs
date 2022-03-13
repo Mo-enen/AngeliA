@@ -17,8 +17,8 @@ namespace Yaya {
 
 		// Api
 		public override int PushLevel => int.MaxValue;
-		public override EntityLayer Layer => EntityLayer.Environment;
-		public override PhysicsLayer CollisionLayer => PhysicsLayer.Environment;
+		public override int Layer => (int)EntityLayer.Environment;
+		public override int CollisionLayer => (int)PhysicsLayer.Environment;
 		protected virtual BreakMode BreakCondition { get; } = BreakMode.BreakOnCollideGround;
 		public override bool CarryRigidbodyOnTop => false;
 		protected virtual int HoldDuration { get; } = 60;
@@ -41,7 +41,7 @@ namespace Yaya {
 
 			// Fall Check
 			if (!IsFalling) {
-				IsHolding = !CellPhysics.RoomCheck(PhysicsMask.Character, rect, this, Direction4.Up);
+				IsHolding = !CellPhysics.RoomCheck((int)PhysicsMask.Character, rect, this, Direction4.Up);
 				if (IsHolding) {
 					if (!LastHolding) HoldStartFrame = frame;
 					if (frame - HoldStartFrame > HoldDuration) {
@@ -58,10 +58,9 @@ namespace Yaya {
 			if (IsFalling) {
 				switch (BreakCondition) {
 					case BreakMode.BreakOnCollideGround: {
-						const PhysicsMask MASK = PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Level;
 						if (
-							!CellPhysics.RoomCheck(MASK, rect, this, Direction4.Down) ||
-							!CellPhysics.RoomCheck_Oneway(rect, this, Direction4.Down)
+							!CellPhysics.RoomCheck((int)PhysicsMask.Solid, rect, this, Direction4.Down) ||
+							!CellPhysics.RoomCheck_Oneway((int)PhysicsMask.Environment, rect, this, Direction4.Down)
 						) {
 							Break();
 						}

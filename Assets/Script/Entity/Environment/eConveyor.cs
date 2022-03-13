@@ -19,14 +19,13 @@ namespace Yaya {
 
 
 		// Const
-		private const PhysicsMask COL_MASK = PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Item;
 		private static readonly int[] MID_CODES = new int[8] { "Conveyor Mid 0".AngeHash(), "Conveyor Mid 1".AngeHash(), "Conveyor Mid 2".AngeHash(), "Conveyor Mid 3".AngeHash(), "Conveyor Mid 4".AngeHash(), "Conveyor Mid 5".AngeHash(), "Conveyor Mid 6".AngeHash(), "Conveyor Mid 7".AngeHash(), };
 		private static readonly int[] LEFT_CODES = new int[8] { "Conveyor Left 0".AngeHash(), "Conveyor Left 1".AngeHash(), "Conveyor Left 2".AngeHash(), "Conveyor Left 3".AngeHash(), "Conveyor Left 4".AngeHash(), "Conveyor Left 5".AngeHash(), "Conveyor Left 6".AngeHash(), "Conveyor Left 7".AngeHash(), };
 		private static readonly int[] RIGHT_CODES = new int[8] { "Conveyor Right 0".AngeHash(), "Conveyor Right 1".AngeHash(), "Conveyor Right 2".AngeHash(), "Conveyor Right 3".AngeHash(), "Conveyor Right 4".AngeHash(), "Conveyor Right 5".AngeHash(), "Conveyor Right 6".AngeHash(), "Conveyor Right 7".AngeHash(), };
 		private static readonly int[] SINGLE_CODES = new int[8] { "Conveyor Single 0".AngeHash(), "Conveyor Single 1".AngeHash(), "Conveyor Single 2".AngeHash(), "Conveyor Single 3".AngeHash(), "Conveyor Single 4".AngeHash(), "Conveyor Single 5".AngeHash(), "Conveyor Single 6".AngeHash(), "Conveyor Single 7".AngeHash(), };
 
 		// Api
-		public override EntityLayer Layer => EntityLayer.Environment;
+		public override int Layer => (int)EntityLayer.Environment;
 		protected PartType Part { get; private set; } = PartType.None;
 		public int MoveSpeed => Data;
 
@@ -44,7 +43,7 @@ namespace Yaya {
 
 		public override void FillPhysics (int frame) {
 			base.FillPhysics(frame);
-			CellPhysics.FillEntity(PhysicsLayer.Environment, this);
+			CellPhysics.FillEntity((int)PhysicsLayer.Environment, this);
 		}
 
 
@@ -54,7 +53,7 @@ namespace Yaya {
 			var rect = Rect;
 			rect.y += rect.height;
 			rect.height = 1;
-			int count = CellPhysics.OverlapAll(c_Update, COL_MASK, rect, this);
+			int count = CellPhysics.OverlapAll(c_Update, (int)PhysicsMask.Solid, rect, this);
 			for (int i = 0; i < count; i++) {
 				var hit = c_Update[i];
 				if (hit.Entity is eRigidbody rig) {
@@ -74,7 +73,7 @@ namespace Yaya {
 			int width = rect.width;
 			rect.width = 1;
 			rect.x -= 1;
-			int count = CellPhysics.OverlapAll(c_CheckPart, PhysicsLayer.Environment, rect, this);
+			int count = CellPhysics.OverlapAll(c_CheckPart, (int)PhysicsMask.Environment, rect, this);
 			for (int i = 0; i < count; i++) {
 				if (c_CheckPart[i].Entity is eConveyor) {
 					hasLeft = true;
@@ -82,7 +81,7 @@ namespace Yaya {
 				}
 			}
 			rect.x += width + 1;
-			count = CellPhysics.OverlapAll(c_CheckPart, PhysicsMask.Environment, rect, this);
+			count = CellPhysics.OverlapAll(c_CheckPart, (int)PhysicsMask.Environment, rect, this);
 			for (int i = 0; i < count; i++) {
 				if (c_CheckPart[i].Entity is eConveyor) {
 					hasRight = true;

@@ -8,9 +8,51 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 namespace Yaya {
 
 
-	public static class YayaUtil {
+
+	public enum EntityLayer {
+		UI = 0,
+		Environment = 1,
+		Item = 2,
+		Character = 3,
+		Projectile = 4,
+	}
+
+
+
+	public enum PhysicsLayer {
+		Level = 0,      // Ground, Water, OnewayGate...
+		Environment = 1,// Barrel, Chest, EventTrigger...
+		Item = 2,       // HealthPotion, Coin, BouncyBall...
+		Character = 3,  // Player, Enemy, NPC...
+
+	}
+
+
+
+	[System.Flags]
+	public enum PhysicsMask {
+		None = 0,
+		Level = 1 << 0,      // Ground, Water, OnewayGate...
+		Environment = 1 << 1,// Barrel, Chest, EventTrigger...
+		Item = 1 << 2,       // HealthPotion, Coin, BouncyBall...
+		Character = 1 << 3,  // Player, Enemy, NPC...
+
+		Solid = Level | Environment | Character,
+		Map = Level | Environment,
+
+		Count = 4,
+
+	}
+
+
+	public static class YayaConst {
+
+
+		public static readonly int ENTITY_LAYER_COUNT = System.Enum.GetNames(typeof(EntityLayer)).Length;
+		public static readonly int PHYSICS_LAYER_COUNT = System.Enum.GetNames(typeof(PhysicsLayer)).Length;
 
 		public static readonly int VINE_TAG = "Vine".AngeHash();
+
 
 	}
 

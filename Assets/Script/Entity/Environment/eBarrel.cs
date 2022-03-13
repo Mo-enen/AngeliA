@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AngeliaFramework;
 
 
-namespace AngeliaFramework {
+namespace Yaya {
 	public class eBarrel : eRigidbody {
 
 
-		public override EntityLayer Layer => EntityLayer.Environment;
-		public override PhysicsLayer CollisionLayer => PhysicsLayer.Environment;
+		public override int Layer => (int)EntityLayer.Environment;
+		public override int CollisionLayer => (int)PhysicsLayer.Environment;
 
 		private static readonly int BARREL_CODE = "Barrel".AngeHash();
 		private static readonly int BARREL_SMALL_CODE = "Barrel Small".AngeHash();

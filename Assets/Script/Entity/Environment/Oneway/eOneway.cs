@@ -9,10 +9,10 @@ namespace Yaya {
 
 
 		// Const
-		private const PhysicsMask Mask = PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Item;
+		private const int MASK = (int)(PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Item);
 
 		// Api
-		public override EntityLayer Layer => EntityLayer.Environment;
+		public override int Layer => (int)EntityLayer.Environment;
 		public abstract Direction4 GateDirection { get; }
 		protected int ReboundFrame { get; private set; } = int.MinValue;
 
@@ -50,7 +50,7 @@ namespace Yaya {
 				Direction4.Right => new(rect.xMax, rect.y, GAP, rect.height),
 				_ => throw new System.NotImplementedException(),
 			};
-			int rCount = CellPhysics.OverlapAll(c_Rebound, Mask, edge, this);
+			int rCount = CellPhysics.OverlapAll(c_Rebound, MASK, edge, this);
 			for (int i = 0; i < rCount; i++) {
 				var hit = c_Rebound[i];
 				if (
@@ -65,15 +65,6 @@ namespace Yaya {
 			return contact;
 		}
 
-
-		// LGC
-		private static bool HasVelocityInDirection (eRigidbody rig, Direction4 dir) => dir switch {
-			Direction4.Down => rig.FinalVelocityY < 0,
-			Direction4.Up => rig.FinalVelocityY > 0,
-			Direction4.Left => rig.FinalVelocityX < 0,
-			Direction4.Right => rig.FinalVelocityX > 0,
-			_ => throw new System.NotImplementedException(),
-		};
 
 
 	}

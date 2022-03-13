@@ -8,12 +8,12 @@ namespace Yaya {
 	public abstract class eVine : Entity {
 
 
-		public override EntityLayer Layer => EntityLayer.Environment;
+		public override int Layer => (int)EntityLayer.Environment;
 
 
 		public override void FillPhysics (int frame) {
 			base.FillPhysics(frame);
-			CellPhysics.FillBlock(PhysicsLayer.Environment, Rect, true, YayaUtil.VINE_TAG);
+			CellPhysics.FillBlock((int)PhysicsLayer.Environment, Rect, true, YayaConst.VINE_TAG);
 		}
 
 

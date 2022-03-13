@@ -14,7 +14,7 @@ namespace Yaya {
 
 
 		// Api
-		public override EntityLayer Layer => EntityLayer.Item;
+		public override int Layer => (int)EntityLayer.Item;
 		public int VelocityY { get; private set; } = 0;
 		protected abstract int ITEM_CODE { get; }
 
@@ -45,19 +45,19 @@ namespace Yaya {
 
 		public override void FillPhysics (int frame) {
 			base.FillPhysics(frame);
-			CellPhysics.FillEntity(PhysicsLayer.Item, this, true);
+			CellPhysics.FillEntity((int)PhysicsLayer.Item, this, true);
 		}
 
 
 		public override void PhysicsUpdate (int frame) {
 			base.PhysicsUpdate(frame);
 			// Fall
-			bool grounded = !CellPhysics.RoomCheck(PhysicsMask.Map, Rect, this, Direction4.Down);
+			bool grounded = !CellPhysics.RoomCheck((int)PhysicsMask.Map, Rect, this, Direction4.Down);
 			if (!grounded) {
 				if (VelocityY != 0) {
 					var rect = Rect;
 					rect.position = CellPhysics.Move(
-						PhysicsMask.Map, rect.position, 0, VelocityY, rect.size, this, out _, out bool stopY
+						(int)PhysicsMask.Map, rect.position, 0, VelocityY, rect.size, this, out _, out bool stopY
 					);
 					Y = Mathf.Min(rect.y, Y);
 					if (stopY) VelocityY = 0;
@@ -69,9 +69,9 @@ namespace Yaya {
 			// Make Room
 			if (MakingRoom = MakingRoom || (
 				frame % 30 == 0 &&
-				CellPhysics.Overlap(PhysicsLayer.Item, Rect, this, OperationMode.TriggerOnly)
+				CellPhysics.Overlap((int)PhysicsMask.Item, Rect, this, OperationMode.TriggerOnly)
 			)) {
-				int count = CellPhysics.OverlapAll(c_MakeRoom, PhysicsLayer.Item, Rect, this, OperationMode.TriggerOnly);
+				int count = CellPhysics.OverlapAll(c_MakeRoom, (int)PhysicsMask.Item, Rect, this, OperationMode.TriggerOnly);
 				int deltaX = 0;
 				for (int i = 0; i < count; i++) {
 					deltaX += c_MakeRoom[i].Rect.x - X;
@@ -81,7 +81,7 @@ namespace Yaya {
 				}
 				var rect = Rect;
 				rect.position = CellPhysics.MoveIgnoreOneway(
-					PhysicsMask.Map, rect.position,
+					(int)PhysicsMask.Map, rect.position,
 					Mathf.Clamp(-deltaX, -6, 6), 0,
 					rect.size, this
 				);

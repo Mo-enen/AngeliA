@@ -23,7 +23,7 @@ namespace Yaya {
 
 
 		// Api
-		public override EntityLayer Layer => EntityLayer.Environment;
+		public override int Layer => (int)EntityLayer.Environment;
 		protected abstract int ArtCode { get; }
 
 		// Data
