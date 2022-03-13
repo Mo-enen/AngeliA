@@ -44,6 +44,7 @@ namespace Yaya {
 						2048, LConst.QuitConfirmContent, LConst.LabelQuit, LConst.LabelCancel, "",
 						() => {
 							willQuit = true;
+							PlayerData.SaveToDisk(Slot);
 							Application.Quit();
 						},
 						() => { },
