@@ -257,6 +257,9 @@ TextureImporter:
   - first:
       213: -2215026977936886246
     second: Check Altar 11
+  - first:
+      213: 7290062980355784187
+    second: Ladder
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -2121,6 +2124,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Ladder
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfdf45ef7a18b2560800000000000000
+      internalID: 7290062980355784187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -2133,90 +2157,91 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Check Altar 1: 1466546089408830051
-      Check Altar 12: 2358907889829948367
-      Conveyor Mid 4: 5597944055196095667
       Check Altar 18: 8560999289625563613
       Road Sign 0: -2329300805733206252
-      Check Altar 14: 8839838725664564805
-      Check Altar 15: -1417421675341320699
       Check Altar 22: -8982672191386649648
-      Check Altar 20: 2708758425910553369
-      Check Altar 2: -2556948644422940918
       Check Statue 4: -2694794741775303629
-      Conveyor Right 2: -1598002019710971740
-      Conveyor Left 3: -700631615691403929
-      Conveyor Left 1: -2686448938111358844
       Check Altar 10: -637101586808039641
-      Barrel: -8064411482835056307
+      Ladder: 7290062980355784187
       Conveyor Right 6: -8539665021158487183
-      Check Statue 17: -3671804437716007452
       Conveyor Single 5: 990678265378613858
-      Check Statue 14: -5285278482251831875
-      Conveyor Right 1: -2972611691506671692
-      Check Altar 23: -7055169885375930191
       Conveyor Left 6: -8760762342703505
-      Conveyor Left 2: -452027482023640203
       Check Statue 23: 2908209397192423333
       Check Statue 20: 2240303879370529683
       Check Statue 9: -6818115816181018279
       Conveyor Mid 0: 8869858959872106772
       Check Altar 9: -7770977609402098439
       Conveyor Mid 5: -366553418290470181
-      Check Altar 8: 2538238195986311769
-      Check Altar 3: -8994282571601530582
-      Check Statue 5: -3748405529400348166
       Check Altar 5: 8604615731192563585
-      Check Altar 7: -7763231266587370518
-      Conveyor Mid 6: 4821765223392073288
-      Check Statue 7: 1487383059906042525
-      Check Altar 13: 2489991742835665880
       Check Statue 3: -191683756101331330
       Check Altar 0: 4312572546759824597
       Conveyor Single 3: -2169502823514170269
       Check Statue 21: -616177163836558573
       Check Statue 1: 1944208467503500670
-      Check Altar 21: -8526181882031685216
-      Conveyor Left 7: -816469386340296175
-      Conveyor Mid 3: 5286129505909953240
       Check Statue 2: -8498937215571585253
       Conveyor Left 5: 3014544715659330481
-      Road Sign 1: 1335569958529975340
       Conveyor Right 4: -1080687705925388806
       Conveyor Single 0: 3505626402946431825
-      Conveyor Single 4: 2223780591514262014
-      Conveyor Single 7: -4780002661236639766
-      Check Altar 6: -2401578804588704402
       Check Altar 16: -4441763328246351736
-      Check Altar 17: 2681472824583667158
+      Check Altar 6: -2401578804588704402
       Check Statue 18: -2128449853204128481
       Conveyor Left 0: -6849436530788924678
       Check Statue 0: -3017414032195783511
-      Conveyor Mid 7: 7523519679850416278
       Check Statue 13: -5989634162843368052
-      Check Statue 11: -5825363922162019945
       Road Sign 2: -2651921403531159219
-      Check Statue 15: 4944008287388056097
-      Conveyor Right 3: -713158668184193528
       Check Statue 8: -6411399449253671942
       Check Altar 4: -654089517717540796
+      Check Altar 19: 8057227050989782220
+      Check Altar 11: -2215026977936886246
+      Check Altar 2: -2556948644422940918
+      Conveyor Mid 1: 6273131541661454191
+      Check Statue 6: 2823302363922060993
+      Check Statue 16: -6690533626487108229
+      Check Statue 12: 644681182985282808
+      Conveyor Right 7: 5458605334293113808
+      Check Altar 12: 2358907889829948367
+      Conveyor Right 0: 1277748799282487443
+      Conveyor Mid 4: 5597944055196095667
+      Check Altar 20: 2708758425910553369
+      Check Altar 14: 8839838725664564805
+      Check Altar 15: -1417421675341320699
+      Conveyor Right 2: -1598002019710971740
+      Conveyor Left 3: -700631615691403929
+      Conveyor Left 1: -2686448938111358844
+      Barrel: -8064411482835056307
+      Check Statue 17: -3671804437716007452
+      Check Statue 14: -5285278482251831875
+      Conveyor Right 1: -2972611691506671692
+      Check Altar 23: -7055169885375930191
+      Conveyor Left 2: -452027482023640203
+      Check Altar 8: 2538238195986311769
+      Check Altar 3: -8994282571601530582
+      Check Statue 5: -3748405529400348166
+      Check Altar 7: -7763231266587370518
+      Conveyor Mid 6: 4821765223392073288
+      Check Statue 7: 1487383059906042525
+      Check Altar 13: 2489991742835665880
+      Check Altar 21: -8526181882031685216
+      Conveyor Left 7: -816469386340296175
+      Conveyor Mid 3: 5286129505909953240
+      Road Sign 1: 1335569958529975340
+      Conveyor Single 4: 2223780591514262014
+      Conveyor Single 7: -4780002661236639766
+      Check Altar 17: 2681472824583667158
+      Conveyor Mid 7: 7523519679850416278
+      Conveyor Right 3: -713158668184193528
+      Check Statue 11: -5825363922162019945
+      Check Statue 15: 4944008287388056097
       Check Statue 19: 7460502040331209267
       Conveyor Mid 2: 6894232776697334792
       Conveyor Left 4: 4416833164111991290
       Conveyor Single 1: 5639508038077653028
-      Check Altar 19: 8057227050989782220
       Conveyor Right 5: 8654862003835209668
-      Check Altar 11: -2215026977936886246
       Barrel Small: 7703836545563178338
-      Conveyor Mid 1: 6273131541661454191
-      Check Statue 6: 2823302363922060993
-      Check Statue 16: -6690533626487108229
       Check Statue 22: 5580500136950929075
-      Check Statue 12: 644681182985282808
-      Conveyor Right 7: 5458605334293113808
+      Conveyor Single 6: 3879808583591258486
       Conveyor Single 2: -8255140515171143345
       Check Statue 10: -3071352666662964425
-      Conveyor Single 6: 3879808583591258486
-      Conveyor Right 0: 1277748799282487443
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

@@ -6,6 +6,15 @@ using AngeliaFramework;
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 
 namespace Yaya {
+
+
+	public static class YayaUtil {
+
+		public static readonly int VINE_TAG = "Vine".AngeHash();
+
+	}
+
+
 	public static class LConst {
 
 

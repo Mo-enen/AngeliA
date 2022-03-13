@@ -22,6 +22,11 @@ namespace Yaya {
 
 		public virtual void CalculatePose (int frame) {
 			Frame = frame;
+			FacingRight = Character.Movement.CurrentFacingX == AngeliaFramework.Direction2.Right;
+
+
+
+
 		}
 
 

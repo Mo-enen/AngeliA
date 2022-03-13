@@ -10,7 +10,7 @@
 	},
 	"jsonVersion": "0.10.0-beta1",
 	"appBuildId": 456924,
-	"nextUid": 287,
+	"nextUid": 288,
 	"identifierStyle": "Free",
 	"worldLayout": "Free",
 	"worldGridWidth": 256,
@@ -4426,6 +4426,33 @@
 					"tilesetUid": null
 				}
 			]
+		},
+		{
+			"identifier": "eLadder",
+			"uid": 287,
+			"tags": [],
+			"width": 16,
+			"height": 16,
+			"resizableX": false,
+			"resizableY": false,
+			"keepAspectRatio": false,
+			"tileOpacity": 1,
+			"fillOpacity": 0,
+			"lineOpacity": 0,
+			"hollow": false,
+			"color": "#949494",
+			"renderMode": "Tile",
+			"showName": false,
+			"tilesetId": 46,
+			"tileId": 7,
+			"tileRenderMode": "FitInside",
+			"tileRect": { "tilesetUid": 46, "x": 112, "y": 0, "w": 16, "h": 16 },
+			"maxCount": 0,
+			"limitScope": "PerLevel",
+			"limitBehavior": "MoveLastOne",
+			"pivotX": 0.5,
+			"pivotY": 0.5,
+			"fieldDefs": []
 		}
 	], "tilesets": [
 		{
@@ -4562,7 +4589,7 @@
 			"savedSelections": [],
 			"cachedPixelData": {
 				"opaqueTiles": "0000000000001000000010000000000000000000000000000000000000000000",
-				"averageColors": "f877f877f877f877eb87adcbcb950000aa767a7699999bbafb86bcbb000000000000000000000000fb850000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+				"averageColors": "f877f877f877f877eb87adcbcb959b85aa767a7699999bbafb86bcbb000000000000000000000000fb850000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
 			}
 		}
 	], "enums": [], "externalEnums": [], "levelFields": [] },
@@ -5728,6 +5755,201 @@
 							"defUid": 285,
 							"px": [40,152],
 							"fieldInstances": [{ "__identifier": "Data", "__value": 1, "__type": "Int", "__tile": null, "defUid": 286, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
+						},
+						{
+							"__identifier": "eLadder",
+							"__grid": [15,10],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 112, "y": 0, "w": 16, "h": 16 },
+							"iid": "49356140-8dc0-11ec-8d21-a39458247b86",
+							"width": 16,
+							"height": 16,
+							"defUid": 287,
+							"px": [248,168],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "eLadder",
+							"__grid": [15,9],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 112, "y": 0, "w": 16, "h": 16 },
+							"iid": "49bfee00-8dc0-11ec-8d21-754ee20736ef",
+							"width": 16,
+							"height": 16,
+							"defUid": 287,
+							"px": [248,152],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "eLadder",
+							"__grid": [15,8],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 112, "y": 0, "w": 16, "h": 16 },
+							"iid": "4a548ce0-8dc0-11ec-8d21-d5e78e1bbb39",
+							"width": 16,
+							"height": 16,
+							"defUid": 287,
+							"px": [248,136],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "eLadder",
+							"__grid": [15,7],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 112, "y": 0, "w": 16, "h": 16 },
+							"iid": "4aa87940-8dc0-11ec-8d21-d3a47e2ed02d",
+							"width": 16,
+							"height": 16,
+							"defUid": 287,
+							"px": [248,120],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "eLadder",
+							"__grid": [15,6],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 112, "y": 0, "w": 16, "h": 16 },
+							"iid": "4ae55b30-8dc0-11ec-8d21-fb3973df1888",
+							"width": 16,
+							"height": 16,
+							"defUid": 287,
+							"px": [248,104],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "eLadder",
+							"__grid": [15,5],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 112, "y": 0, "w": 16, "h": 16 },
+							"iid": "4b276d40-8dc0-11ec-8d21-07badd0792e3",
+							"width": 16,
+							"height": 16,
+							"defUid": 287,
+							"px": [248,88],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "eLadder",
+							"__grid": [15,4],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 112, "y": 0, "w": 16, "h": 16 },
+							"iid": "4b6eaf70-8dc0-11ec-8d21-a3e4065906cf",
+							"width": 16,
+							"height": 16,
+							"defUid": 287,
+							"px": [248,72],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "eLadder",
+							"__grid": [10,9],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 112, "y": 0, "w": 16, "h": 16 },
+							"iid": "5190a980-8dc0-11ec-8d21-25d0c0350b7c",
+							"width": 16,
+							"height": 16,
+							"defUid": 287,
+							"px": [168,152],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "eLadder",
+							"__grid": [10,8],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 112, "y": 0, "w": 16, "h": 16 },
+							"iid": "51dd9100-8dc0-11ec-8d21-b764dcd6cf20",
+							"width": 16,
+							"height": 16,
+							"defUid": 287,
+							"px": [168,136],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "eLadder",
+							"__grid": [10,7],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 112, "y": 0, "w": 16, "h": 16 },
+							"iid": "5224ac20-8dc0-11ec-8d21-77594271dda2",
+							"width": 16,
+							"height": 16,
+							"defUid": 287,
+							"px": [168,120],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "eLadder",
+							"__grid": [10,6],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 112, "y": 0, "w": 16, "h": 16 },
+							"iid": "52649b50-8dc0-11ec-8d21-2927301858d1",
+							"width": 16,
+							"height": 16,
+							"defUid": 287,
+							"px": [168,104],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "eLadder",
+							"__grid": [10,5],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 112, "y": 0, "w": 16, "h": 16 },
+							"iid": "52971d00-8dc0-11ec-8d21-e5d58752543f",
+							"width": 16,
+							"height": 16,
+							"defUid": 287,
+							"px": [168,88],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "eLadder",
+							"__grid": [10,4],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 112, "y": 0, "w": 16, "h": 16 },
+							"iid": "52c754c0-8dc0-11ec-8d21-a95ce8b00f64",
+							"width": 16,
+							"height": 16,
+							"defUid": 287,
+							"px": [168,72],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "eLadder",
+							"__grid": [15,3],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 112, "y": 0, "w": 16, "h": 16 },
+							"iid": "5610da70-8dc0-11ec-8d21-eb86800b5c25",
+							"width": 16,
+							"height": 16,
+							"defUid": 287,
+							"px": [248,56],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "eLadder",
+							"__grid": [15,2],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 112, "y": 0, "w": 16, "h": 16 },
+							"iid": "57d287a0-8dc0-11ec-8d21-411f9e107b46",
+							"width": 16,
+							"height": 16,
+							"defUid": 287,
+							"px": [248,40],
+							"fieldInstances": []
 						}
 					]
 				},

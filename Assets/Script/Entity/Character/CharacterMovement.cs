@@ -21,7 +21,7 @@ namespace Yaya {
 
 		// Move
 		public int MoveSpeed { get; init; } = 17;
-		public int MoveAcceleration { get; init; } = 6;
+		public int MoveAcceleration { get; init; } = 3;
 		public int MoveDecceleration { get; init; } = 4;
 
 		// Jump
@@ -59,15 +59,22 @@ namespace Yaya {
 		public int FreeSwimDashCooldown { get; init; } = 4;
 		public int FreeSwimDashAcceleration { get; init; } = 128;
 
+		// Vine
+		public bool VineAvailable { get; init; } = true;
+		public bool JumpOnVineAvailable { get; init; } = true;
+		public int VineSpeedX { get; init; } = 12;
+		public int VineSpeedY { get; init; } = 18;
+
 		// Const
-		private const int POUND_TOLERANCE = 60;
 		private const int JUMP_TOLERANCE = 4;
+		private const int JUMP_GAP = 1;
 
 		// Api
 		public bool IsDashing { get; private set; } = false;
 		public bool IsSquating { get; private set; } = false;
 		public bool IsPounding { get; private set; } = false;
 		public bool IsInsideGround { get; private set; } = false;
+		public bool IsClimbingVine { get; private set; } = false;
 		public bool IsGrounded => Rig.IsGrounded;
 		public bool InWater => Rig.InWater;
 		public int CurrentJumpCount { get; private set; } = 0;
@@ -82,6 +89,7 @@ namespace Yaya {
 		private int IntendedX = 0;
 		private int IntendedY = 0;
 		private int LastGroundedFrame = int.MinValue;
+		private int LastJumpFrame = int.MinValue;
 		private int LastDashFrame = int.MinValue;
 		private bool HoldingJump = false;
 		private bool PrevHoldingJump = false;
@@ -91,7 +99,7 @@ namespace Yaya {
 		private bool PrevInWater = false;
 		private RectInt Hitbox = default;
 		private Vector2Int LastMoveDirection = default;
-		private eRigidbody Rig = null;
+		private readonly eRigidbody Rig = null;
 
 
 		#endregion
@@ -102,7 +110,7 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public CharacterMovement (eCharacter ch) {
+		public CharacterMovement (eRigidbody ch) {
 			ch.VelocityX = 0;
 			ch.VelocityY = 0;
 			CurrentJumpCount = 0;
@@ -136,8 +144,24 @@ namespace Yaya {
 				), Rig
 			);
 
+			// Vine
+			if (VineAvailable) {
+				if (HoldingJump && CurrentJumpCount > 0 && Rig.VelocityY > 0) {
+					IsClimbingVine = false;
+				} else {
+					bool overlapVine = VineCheck();
+					if (!IsClimbingVine) {
+						if (overlapVine && IntendedY > 0) IsClimbingVine = true;
+					} else {
+						if (IsGrounded || !overlapVine) IsClimbingVine = false;
+					}
+				}
+			} else {
+				IsClimbingVine = false;
+			}
+
 			// Dash
-			IsDashing = DashAvailable && CurrentFrame < LastDashFrame + CurrentDashDuration && !IsInsideGround;
+			IsDashing = DashAvailable && !IsClimbingVine && CurrentFrame < LastDashFrame + CurrentDashDuration && !IsInsideGround;
 			if (IsDashing && IntendedY != -1) {
 				// Stop when Dashing Without Holding Down
 				LastDashFrame = int.MinValue;
@@ -164,11 +188,11 @@ namespace Yaya {
 
 			// Squat
 			IsSquating =
-				SquatAvailable && IsGrounded && !IsInsideGround &&
+				SquatAvailable && IsGrounded && !IsClimbingVine && !IsInsideGround &&
 				((!IsDashing && IntendedY < 0) || ForceSquatCheck());
 
 			// Pound
-			IsPounding = PoundAvailable && !IsGrounded && !InWater && !IsDashing && !IsInsideGround &&
+			IsPounding = PoundAvailable && !IsGrounded && !IsClimbingVine && !InWater && !IsDashing && !IsInsideGround &&
 				(IsPounding ? IntendedY < 0 : IntendedPound);
 
 			// Physics
@@ -187,11 +211,11 @@ namespace Yaya {
 
 		private void Update_Jump () {
 			// Reset Count on Grounded
-			if ((IsGrounded || InWater) && !IntendedJump) {
+			if (CurrentFrame > LastJumpFrame + JUMP_GAP && (IsGrounded || InWater || IsClimbingVine) && !IntendedJump) {
 				CurrentJumpCount = 0;
 			}
 			// Perform Jump
-			if (IntendedJump && CurrentJumpCount < JumpCount && !IsSquating) {
+			if (IntendedJump && CurrentJumpCount < JumpCount && !IsSquating && (!IsClimbingVine || JumpOnVineAvailable)) {
 				if (InWater && SwimInFreeStyle) {
 					// Free Dash In Water
 					LastDashFrame = CurrentFrame;
@@ -204,10 +228,12 @@ namespace Yaya {
 					Rig.VelocityY = JumpSpeed;
 					LastDashFrame = int.MinValue;
 					IsDashing = false;
+					LastJumpFrame = CurrentFrame;
 				}
+				IsClimbingVine = false;
 			}
 			// Fall off Edge
-			if (CurrentJumpCount == 0 && !IsGrounded && !InWater && CurrentFrame > LastGroundedFrame + JUMP_TOLERANCE) {
+			if (CurrentJumpCount == 0 && !IsGrounded && !InWater && !IsClimbingVine && CurrentFrame > LastGroundedFrame + JUMP_TOLERANCE) {
 				CurrentJumpCount++;
 			}
 			// Jump Release
@@ -235,7 +261,12 @@ namespace Yaya {
 
 		private void Update_VelocityX () {
 			int speed, acc, dcc;
-			if (IsDashing) {
+			if (IsClimbingVine) {
+				// Vine
+				speed = IntendedX * VineSpeedX;
+				acc = int.MaxValue;
+				dcc = int.MaxValue;
+			} else if (IsDashing) {
 				if (InWater && SwimInFreeStyle) {
 					// Free Water Dash
 					speed = LastMoveDirection.x * DashSpeed;
@@ -268,7 +299,11 @@ namespace Yaya {
 
 
 		private void Update_VelocityY () {
-			if (InWater && SwimInFreeStyle) {
+			if (IsClimbingVine) {
+				// Vine
+				Rig.VelocityY = (IntendedY <= 0 || VineCheck(true) ? IntendedY : 0) * VineSpeedY;
+				Rig.GravityScale = 0;
+			} else if (InWater && SwimInFreeStyle) {
 				if (IsDashing) {
 					// Free Dash
 					Rig.VelocityY = Rig.VelocityY.MoveTowards(
@@ -363,6 +398,18 @@ namespace Yaya {
 				);
 			}
 			return overlap;
+		}
+
+
+		private bool VineCheck (bool up = false) {
+			if (IsInsideGround) return false;
+			return CellPhysics.Overlap(
+				PhysicsMask.Environment,
+				up ? Rig.Rect.Shift(0, VineSpeedY) : Rig.Rect,
+				Rig,
+				OperationMode.TriggerOnly,
+				YayaUtil.VINE_TAG
+			);
 		}
 
 
