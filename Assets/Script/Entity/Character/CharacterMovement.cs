@@ -229,7 +229,7 @@ namespace Yaya {
 				} else {
 					// Jump
 					CurrentJumpCount++;
-					Rig.VelocityY = JumpSpeed;
+					Rig.VelocityY = Mathf.Max(JumpSpeed, Rig.VelocityY);
 					LastDashFrame = int.MinValue;
 					IsDashing = false;
 					LastJumpFrame = CurrentFrame;

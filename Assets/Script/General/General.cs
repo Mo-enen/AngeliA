@@ -37,6 +37,7 @@ namespace Yaya {
 		Item = 1 << 2,       // HealthPotion, Coin, BouncyBall...
 		Character = 1 << 3,  // Player, Enemy, NPC...
 
+		Rigidbody = Environment | Character,
 		Solid = Level | Environment | Character,
 		Map = Level | Environment,
 

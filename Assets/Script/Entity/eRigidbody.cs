@@ -12,9 +12,6 @@ namespace Yaya {
 
 		#region --- VAR ---
 
-		// Const
-		private const int COL_MASK = (int)(PhysicsMask.Level | PhysicsMask.Environment | PhysicsMask.Character);
-
 		// Api
 		public int FinalVelocityX => X - PrevX;
 		public int FinalVelocityY => Y - PrevY;
@@ -88,9 +85,16 @@ namespace Yaya {
 				);
 			}
 
+			// Hori Stopping
+			if (VelocityX != 0 && !CellPhysics.MoveCheck(
+				(int)PhysicsMask.Solid, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left
+			)) {
+				VelocityX = 0;
+			}
+
 			// Vertical Stopping
 			if (VelocityY != 0 && !CellPhysics.MoveCheck(
-				COL_MASK, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down
+				(int)PhysicsMask.Solid, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down
 			)) {
 				VelocityY = 0;
 			}
@@ -138,10 +142,12 @@ namespace Yaya {
 			speedX = speedX * speedScale / 1000;
 			speedY = speedY * speedScale / 1000;
 
+			int mask = (int)PhysicsMask.Solid;
+
 			if (ignoreOneway) {
-				pos = CellPhysics.MoveIgnoreOneway(COL_MASK, pos, speedX, speedY, new(Width, Height), this);
+				pos = CellPhysics.MoveIgnoreOneway(mask, pos, speedX, speedY, new(Width, Height), this);
 			} else {
-				pos = CellPhysics.Move(COL_MASK, pos, speedX, speedY, new(Width, Height), this, out bool stopX, out bool stopY);
+				pos = CellPhysics.Move(mask, pos, speedX, speedY, new(Width, Height), this, out bool stopX, out bool stopY);
 				if (stopX) VelocityX = 0;
 				if (stopY) VelocityY = 0;
 			}
@@ -154,7 +160,7 @@ namespace Yaya {
 				const int GAP = 1;
 				int finalL = 0;
 				int finalR = 0;
-				int count = CellPhysics.OverlapAll(c_PerformMove, COL_MASK, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), this);
+				int count = CellPhysics.OverlapAll(c_PerformMove, mask, new(X + OffsetX, Y + OffsetY - GAP, Width, GAP), this);
 				for (int i = 0; i < count; i++) {
 					var hit = c_PerformMove[i];
 					if (

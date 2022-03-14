@@ -260,6 +260,30 @@ TextureImporter:
   - first:
       213: 7290062980355784187
     second: Ladder
+  - first:
+      213: 5932062655124953560
+    second: Spring Metal 0
+  - first:
+      213: 1715421729086798147
+    second: Spring Wood 0
+  - first:
+      213: -3155572544858409605
+    second: Spring Metal 1
+  - first:
+      213: -3808369590986428234
+    second: Spring Metal 2
+  - first:
+      213: 639580775015427638
+    second: Spring Metal 3
+  - first:
+      213: -6317842551684591803
+    second: Spring Wood 1
+  - first:
+      213: 9215108347373453466
+    second: Spring Wood 2
+  - first:
+      213: 2077876861282791539
+    second: Spring Wood 3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -2145,6 +2169,174 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Spring Metal 0
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d955103e8be25250800000000000000
+      internalID: 5932062655124953560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spring Wood 0
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 349743259f66ec710800000000000000
+      internalID: 1715421729086798147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spring Metal 1
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b753db84d772534d0800000000000000
+      internalID: -3155572544858409605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spring Metal 2
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b0badbd804f52bc0800000000000000
+      internalID: -3808369590986428234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spring Metal 3
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63ea6f3835f30e800800000000000000
+      internalID: 639580775015427638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spring Wood 1
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54f0eff2ca38258a0800000000000000
+      internalID: -6317842551684591803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spring Wood 2
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a908eebd734a2ef70800000000000000
+      internalID: 9215108347373453466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spring Wood 3
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 370b3cb0ff916dc10800000000000000
+      internalID: 2077876861282791539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -2165,6 +2357,7 @@ TextureImporter:
       Ladder: 7290062980355784187
       Conveyor Right 6: -8539665021158487183
       Conveyor Single 5: 990678265378613858
+      Spring Metal 2: -3808369590986428234
       Conveyor Left 6: -8760762342703505
       Check Statue 23: 2908209397192423333
       Check Statue 20: 2240303879370529683
@@ -2178,10 +2371,12 @@ TextureImporter:
       Conveyor Single 3: -2169502823514170269
       Check Statue 21: -616177163836558573
       Check Statue 1: 1944208467503500670
+      Spring Wood 3: 2077876861282791539
       Check Statue 2: -8498937215571585253
       Conveyor Left 5: 3014544715659330481
       Conveyor Right 4: -1080687705925388806
       Conveyor Single 0: 3505626402946431825
+      Spring Wood 0: 1715421729086798147
       Check Altar 16: -4441763328246351736
       Check Altar 6: -2401578804588704402
       Check Statue 18: -2128449853204128481
@@ -2192,6 +2387,7 @@ TextureImporter:
       Check Statue 8: -6411399449253671942
       Check Altar 4: -654089517717540796
       Check Altar 19: 8057227050989782220
+      Spring Metal 3: 639580775015427638
       Check Altar 11: -2215026977936886246
       Check Altar 2: -2556948644422940918
       Conveyor Mid 1: 6273131541661454191
@@ -2208,6 +2404,7 @@ TextureImporter:
       Conveyor Right 2: -1598002019710971740
       Conveyor Left 3: -700631615691403929
       Conveyor Left 1: -2686448938111358844
+      Spring Wood 1: -6317842551684591803
       Barrel: -8064411482835056307
       Check Statue 17: -3671804437716007452
       Check Statue 14: -5285278482251831875
@@ -2228,10 +2425,12 @@ TextureImporter:
       Conveyor Single 4: 2223780591514262014
       Conveyor Single 7: -4780002661236639766
       Check Altar 17: 2681472824583667158
+      Spring Metal 0: 5932062655124953560
       Conveyor Mid 7: 7523519679850416278
       Conveyor Right 3: -713158668184193528
       Check Statue 11: -5825363922162019945
       Check Statue 15: 4944008287388056097
+      Spring Wood 2: 9215108347373453466
       Check Statue 19: 7460502040331209267
       Conveyor Mid 2: 6894232776697334792
       Conveyor Left 4: 4416833164111991290
@@ -2239,6 +2438,7 @@ TextureImporter:
       Conveyor Right 5: 8654862003835209668
       Barrel Small: 7703836545563178338
       Check Statue 22: 5580500136950929075
+      Spring Metal 1: -3155572544858409605
       Conveyor Single 6: 3879808583591258486
       Conveyor Single 2: -8255140515171143345
       Check Statue 10: -3071352666662964425

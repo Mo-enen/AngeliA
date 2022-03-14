@@ -17,6 +17,9 @@ namespace Yaya {
 		public static ePlayer CurrentPlayer { get; private set; } = null;
 		public override int PushLevel => 110;
 
+		// Short
+		private RectInt ViewRect => Game.Current.ViewRect;
+
 		// Data
 		private int LeftDownFrame = int.MinValue;
 		private int RightDownFrame = int.MinValue;
@@ -136,7 +139,14 @@ namespace Yaya {
 				AimX = X - linger - ViewRect.width / 2;
 			}
 			AimY = !IsInAir || Y < LastGroundedY ? Y - ViewRect.height / 2 : AimY;
-			SetViewPosition(AimX, AimY, 62, int.MinValue);
+			Game.Current.SetViewPositionDely(AimX, AimY, 62);
+			if (!ViewRect.Contains(X, Y)) {
+				if (X >= ViewRect.xMax) AimX = X - ViewRect.width + 1;
+				if (X <= ViewRect.xMin) AimX = X - 1;
+				if (Y >= ViewRect.yMax) AimY = Y - ViewRect.height + 1;
+				if (Y <= ViewRect.yMin) AimY = Y - 1;
+				Game.Current.SetViewPositionDely(AimX, AimY, 1000, int.MinValue + 1);
+			}
 		}
 
 

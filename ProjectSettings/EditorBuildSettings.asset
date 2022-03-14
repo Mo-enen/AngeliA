@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scene/Yaya.unity
+    path: Assets/Data/Yaya.unity
     guid: 5f10db84d6d095a4082eef7a31c6b791
   m_configObjects: {}

@@ -61,13 +61,13 @@ namespace Yaya {
 		public override int Layer => (int)EntityLayer.UI;
 
 		// Data
-		private string Message = "";
-		private string Label_OK = "";
-		private string Label_Cancel = "";
-		private string Label_Alt = "";
-		private System.Action OK = null;
-		private System.Action Cancel = null;
-		private System.Action Alt = null;
+		private readonly string Message = "";
+		private readonly string Label_OK = "";
+		private readonly string Label_Cancel = "";
+		private readonly string Label_Alt = "";
+		private readonly System.Action OK = null;
+		private readonly System.Action Cancel = null;
+		private readonly System.Action Alt = null;
 		private int NavIndex = 0;
 		private bool PrevLeftDown = false;
 		private bool PrevRightDown = false;
@@ -88,7 +88,7 @@ namespace Yaya {
 
 			// Pos
 			RefreshHeight();
-			var cameraRect = CameraRect;
+			var cameraRect = CellRenderer.CameraRect;
 			X = cameraRect.x + (cameraRect.width - Width) / 2;
 			Y = cameraRect.y + (cameraRect.height - Height) / 2;
 
