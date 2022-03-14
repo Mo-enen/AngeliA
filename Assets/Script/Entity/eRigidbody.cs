@@ -126,7 +126,7 @@ namespace Yaya {
 				(int)PhysicsMask.Solid,
 				rect, this, Direction4.Down
 			) || !CellPhysics.RoomCheck_Oneway(
-				(int)PhysicsMask.Environment, rect, this, Direction4.Down, true
+				(int)PhysicsMask.Map, rect, this, Direction4.Down, true
 			);
 
 

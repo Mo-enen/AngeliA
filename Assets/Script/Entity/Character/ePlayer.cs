@@ -114,10 +114,9 @@ namespace Yaya {
 		private void Update_JumpDashPound () {
 			Movement.HoldJump(FrameInput.KeyPressing(GameKey.Jump));
 			if (FrameInput.KeyDown(GameKey.Jump)) {
+				Movement.Jump();
 				if (FrameInput.KeyPressing(GameKey.Down)) {
 					Movement.Dash();
-				} else {
-					Movement.Jump();
 				}
 			}
 			if (FrameInput.KeyDown(GameKey.Down)) {

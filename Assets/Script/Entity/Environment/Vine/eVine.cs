@@ -9,11 +9,12 @@ namespace Yaya {
 
 
 		public override int Layer => (int)EntityLayer.Environment;
+		public virtual bool CorrectPosition { get; } = true;
 
 
 		public override void FillPhysics (int frame) {
 			base.FillPhysics(frame);
-			CellPhysics.FillBlock((int)PhysicsLayer.Environment, Rect, true, YayaConst.VINE_TAG);
+			CellPhysics.FillEntity((int)PhysicsLayer.Environment, this, true, YayaConst.VINE_TAG);
 		}
 
 
