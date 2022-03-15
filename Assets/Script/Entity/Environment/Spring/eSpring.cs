@@ -73,6 +73,11 @@ namespace Yaya {
 				);
 				for (int i = 0; i < count; i++) {
 					if (c_PerformBounce[i].Entity is eRigidbody rig) {
+						if (Horizontal) {
+							rig.X += BounceSide == Direction4.Left ? i * -Power : i * Power;
+						} else {
+							rig.Y += i * (Power - Const.GRAVITY);
+						}
 						PerformBounce(rig);
 					}
 				}

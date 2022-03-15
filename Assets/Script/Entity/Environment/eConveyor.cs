@@ -62,6 +62,7 @@ namespace Yaya {
 					rig.VelocityY = 0;
 				}
 			}
+			c_Update.Dispose();
 		}
 
 
@@ -93,6 +94,7 @@ namespace Yaya {
 				hasLeft && !hasRight ? PartType.RightEdge :
 				!hasLeft && hasRight ? PartType.LeftEdge :
 				PartType.Single;
+			c_CheckPart.Dispose();
 		}
 
 

@@ -6063,7 +6063,7 @@
 							"height": 16,
 							"defUid": 288,
 							"px": [184,200],
-							"fieldInstances": [{ "__identifier": "Data", "__value": 120, "__type": "Int", "__tile": null, "defUid": 289, "realEditorValues": [{ "id": "V_Int", "params": [120] }] }]
+							"fieldInstances": [{ "__identifier": "Data", "__value": 96, "__type": "Int", "__tile": null, "defUid": 289, "realEditorValues": [{ "id": "V_Int", "params": [96] }] }]
 						},
 						{
 							"__identifier": "eSpringH",
