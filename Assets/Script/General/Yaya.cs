@@ -29,13 +29,8 @@ namespace Yaya {
 		private static readonly int[] ENTITY_CAPACITY = new int[] { 512, 512, 256, 512, 1024 };
 
 		// Api
-		public override string MapRoot => !string.IsNullOrEmpty(_MapRoot) ? _MapRoot : (_MapRoot = Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Maps"));
 		protected override int EntityLayerCount => YayaConst.ENTITY_LAYER_COUNT;
 		protected override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
-
-
-		// Data
-		private string _MapRoot = null;
 
 
 		// MSG
@@ -64,7 +59,7 @@ namespace Yaya {
 						2048, LConst.QuitConfirmContent, LConst.LabelQuit, LConst.LabelCancel, "",
 						() => {
 							willQuit = true;
-							PlayerData.SaveToDisk(DataSlot);
+							PlayerData.SaveToDisk();
 							Application.Quit();
 						},
 						() => { },

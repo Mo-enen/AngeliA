@@ -10,6 +10,7 @@ namespace Yaya {
 
 		public override int Layer => (int)EntityLayer.Environment;
 		public override int CollisionLayer => (int)PhysicsLayer.Environment;
+		public override bool DestroyOnInsideGround => true;
 
 		private static readonly int BARREL_CODE = "Barrel".AngeHash();
 		private static readonly int BARREL_SMALL_CODE = "Barrel Small".AngeHash();

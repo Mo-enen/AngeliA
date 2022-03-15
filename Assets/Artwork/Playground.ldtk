@@ -5664,19 +5664,6 @@
 						},
 						{
 							"__identifier": "eBrittleDirt",
-							"__grid": [11,6],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": { "tilesetUid": 46, "x": 0, "y": 16, "w": 16, "h": 16 },
-							"iid": "4dfa0e20-8dc0-11ec-94b4-3b25dd169c4a",
-							"width": 16,
-							"height": 16,
-							"defUid": 270,
-							"px": [184,104],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "eBrittleDirt",
 							"__grid": [5,6],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
@@ -6067,7 +6054,7 @@
 						},
 						{
 							"__identifier": "eSpringV",
-							"__grid": [11,9],
+							"__grid": [11,12],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
 							"__tile": { "tilesetUid": 46, "x": 96, "y": 16, "w": 16, "h": 16 },
@@ -6075,7 +6062,7 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 288,
-							"px": [184,152],
+							"px": [184,200],
 							"fieldInstances": [{ "__identifier": "Data", "__value": 120, "__type": "Int", "__tile": null, "defUid": 289, "realEditorValues": [{ "id": "V_Int", "params": [120] }] }]
 						},
 						{
@@ -6116,6 +6103,58 @@
 							"defUid": 290,
 							"px": [72,152],
 							"fieldInstances": [{ "__identifier": "Data", "__value": 480, "__type": "Int", "__tile": null, "defUid": 291, "realEditorValues": [{ "id": "V_Int", "params": [480] }] }]
+						},
+						{
+							"__identifier": "eBarrel",
+							"__grid": [11,10],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 64, "y": 0, "w": 16, "h": 16 },
+							"iid": "5b19da60-8dc0-11ec-909e-a1c2d43b70bb",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [184,168],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 0, "__type": "Int", "__tile": null, "defUid": 280, "realEditorValues": [] }]
+						},
+						{
+							"__identifier": "eBarrel",
+							"__grid": [11,7],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 64, "y": 0, "w": 16, "h": 16 },
+							"iid": "088a1140-8dc0-11ec-8330-8974629812aa",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [184,120],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 0, "__type": "Int", "__tile": null, "defUid": 280, "realEditorValues": [] }]
+						},
+						{
+							"__identifier": "eBarrel",
+							"__grid": [11,8],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 64, "y": 0, "w": 16, "h": 16 },
+							"iid": "0b0179e0-8dc0-11ec-8330-b39985337390",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [184,136],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 0, "__type": "Int", "__tile": null, "defUid": 280, "realEditorValues": [] }]
+						},
+						{
+							"__identifier": "eBarrel",
+							"__grid": [11,9],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 64, "y": 0, "w": 16, "h": 16 },
+							"iid": "0b621070-8dc0-11ec-8330-3324e7dbb884",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [184,152],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 0, "__type": "Int", "__tile": null, "defUid": 280, "realEditorValues": [] }]
 						}
 					]
 				},

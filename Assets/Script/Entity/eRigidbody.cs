@@ -21,11 +21,16 @@ namespace Yaya {
 		public int PrevX { get; private set; } = 0;
 		public int PrevY { get; private set; } = 0;
 		public override RectInt Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
+		public bool IsGrounded { get; set; } = false;
+		public bool InWater { get; set; } = false;
+		public bool InsideGround { get; set; } = false;
+
+
+		// Virtual
 		public virtual int CollisionLayer { get; } = 0;
 		public virtual bool CarryRigidbodyOnTop => true;
 		public virtual bool IsInAir => !IsGrounded && !InWater;
-		public bool IsGrounded { get; set; } = false;
-		public bool InWater { get; set; } = false;
+		public virtual bool DestroyOnInsideGround => false;
 
 		// Api-Ser
 		public int VelocityX { get; set; } = 0;
@@ -65,13 +70,15 @@ namespace Yaya {
 
 			// Grounded
 			IsGrounded = GroundedCheck(rect);
+			InsideGround = InsideGroundCheck();
 
 			// Water
 			InWater = CellPhysics.Overlap((int)PhysicsMask.Level, Rect, null, OperationMode.TriggerOnly, Const.WATER_TAG);
 
-			if (InsideGroundCheck()) {
+			if (InsideGround) {
 				X += VelocityX;
 				Y += VelocityY;
+				if (DestroyOnInsideGround) Active = false;
 				return;
 			}
 
@@ -125,7 +132,7 @@ namespace Yaya {
 		);
 
 
-		protected bool GroundedCheck (RectInt rect) =>
+		protected virtual bool GroundedCheck (RectInt rect) =>
 			!CellPhysics.RoomCheck(
 				(int)PhysicsMask.Solid,
 				rect, this, Direction4.Down
@@ -184,7 +191,7 @@ namespace Yaya {
 				}
 				c_PerformMove.Dispose();
 				if (finalL + finalR != 0) {
-					PerformMove(finalL + finalR, 0, true, true);
+					PerformMove(finalL + finalR, 0, true, false);
 				}
 			}
 

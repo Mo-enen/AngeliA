@@ -15,7 +15,7 @@ namespace Yaya {
 
 		// Api
 		public static ePlayer CurrentPlayer { get; private set; } = null;
-		public override int PushLevel => 110;
+		public override int PushLevel => IsGrounded ? 128 : 0;
 
 		// Short
 		private RectInt ViewRect => Game.Current.ViewRect;

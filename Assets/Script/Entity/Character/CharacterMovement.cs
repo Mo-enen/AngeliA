@@ -74,7 +74,7 @@ namespace Yaya {
 		public bool IsDashing { get; private set; } = false;
 		public bool IsSquating { get; private set; } = false;
 		public bool IsPounding { get; private set; } = false;
-		public bool IsInsideGround { get; private set; } = false;
+		public bool IsInsideGround => Rig.InsideGround;
 		public bool IsClimbingVine { get; private set; } = false;
 		public bool IsGrounded => Rig.IsGrounded;
 		public bool InWater => Rig.InWater;
@@ -140,11 +140,6 @@ namespace Yaya {
 
 			// Ground
 			if (IsGrounded) LastGroundedFrame = CurrentFrame;
-			IsInsideGround = CellPhysics.Overlap(
-				(int)PhysicsMask.Level, new(
-					Rig.X, Rig.Y + Height / 4, 1, 1
-				), Rig
-			);
 
 			// Vine
 			VinePositionCorrect = null;

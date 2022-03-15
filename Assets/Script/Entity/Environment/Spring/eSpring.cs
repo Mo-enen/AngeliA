@@ -68,7 +68,9 @@ namespace Yaya {
 
 			} else if (frame > LastBounceFrame + BOUNCE_DELY && RequireBouncePerform) {
 				// Try Perform Bounce
-				int count = CellPhysics.OverlapAll(c_PerformBounce, (int)PhysicsMask.Rigidbody, FullRect, this);
+				int count = CellPhysics.ForAllTouched<eRigidbody>(
+					c_PerformBounce, (int)PhysicsMask.Rigidbody, FullRect, this, BounceSide
+				);
 				for (int i = 0; i < count; i++) {
 					if (c_PerformBounce[i].Entity is eRigidbody rig) {
 						PerformBounce(rig);
