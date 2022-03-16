@@ -30,7 +30,7 @@ namespace Yaya {
 		private RectInt FullRect => new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE);
 
 		// Data
-		private readonly HitInfo[] c_PerformBounce = new HitInfo[8];
+		private readonly HitInfo[] c_PerformBounce = new HitInfo[64];
 		private int LastBounceFrame = -BOUNCE_COOLDOWN;
 		private bool RequireBouncePerform = false;
 		private Direction4 BounceSide = default;
@@ -65,18 +65,15 @@ namespace Yaya {
 						StartBounce(frame, Direction4.Up);
 					}
 				}
-
 			} else if (frame > LastBounceFrame + BOUNCE_DELY && RequireBouncePerform) {
 				// Try Perform Bounce
 				int count = CellPhysics.ForAllTouched<eRigidbody>(
 					c_PerformBounce, (int)PhysicsMask.Rigidbody, FullRect, this, BounceSide
 				);
-				for (int i = 0; i < count; i++) {
+				for (int i = count - 1; i >= 0; i--) {
 					if (c_PerformBounce[i].Entity is eRigidbody rig) {
-						if (Horizontal) {
-							rig.X += BounceSide == Direction4.Left ? i * -Power : i * Power;
-						} else {
-							rig.Y += i * (Power - Const.GRAVITY);
+						if (!Horizontal) {
+							rig.PerformMove(0, i * (Power - Const.GRAVITY), true, true);
 						}
 						PerformBounce(rig);
 					}
@@ -117,7 +114,7 @@ namespace Yaya {
 		}
 
 
-		public void StartBounce (int frame, Direction4 side) {
+		private void StartBounce (int frame, Direction4 side) {
 			LastBounceFrame = frame;
 			BounceSide = side;
 			RequireBouncePerform = true;
