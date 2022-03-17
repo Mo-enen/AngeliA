@@ -4500,7 +4500,7 @@
 					"max": null,
 					"regex": null,
 					"acceptFileTypes": null,
-					"defaultOverride": null,
+					"defaultOverride": { "id": "V_Int", "params": [64] },
 					"textLanguageMode": null,
 					"symmetricalRef": false,
 					"autoChainRef": true,
@@ -4557,7 +4557,7 @@
 					"max": null,
 					"regex": null,
 					"acceptFileTypes": null,
-					"defaultOverride": null,
+					"defaultOverride": { "id": "V_Int", "params": [64] },
 					"textLanguageMode": null,
 					"symmetricalRef": false,
 					"autoChainRef": true,
@@ -6131,7 +6131,7 @@
 						},
 						{
 							"__identifier": "eCheckStatue",
-							"__grid": [3,4],
+							"__grid": [12,5],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
 							"__tile": { "tilesetUid": 46, "x": 48, "y": 16, "w": 16, "h": 16 },
@@ -6139,7 +6139,7 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 283,
-							"px": [56,72],
+							"px": [200,88],
 							"fieldInstances": [{ "__identifier": "Data", "__value": 6, "__type": "Int", "__tile": null, "defUid": 284, "realEditorValues": [{ "id": "V_Int", "params": [6] }] }]
 						},
 						{
@@ -6183,7 +6183,7 @@
 						},
 						{
 							"__identifier": "eWardrobe",
-							"__grid": [1,9],
+							"__grid": [12,5],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
 							"__tile": { "tilesetUid": 46, "x": 64, "y": 16, "w": 16, "h": 48 },
@@ -6191,7 +6191,7 @@
 							"width": 16,
 							"height": 48,
 							"defUid": 285,
-							"px": [24,152],
+							"px": [200,88],
 							"fieldInstances": [{ "__identifier": "Data", "__value": 0, "__type": "Int", "__tile": null, "defUid": 286, "realEditorValues": [] }]
 						},
 						{
@@ -6492,6 +6492,32 @@
 							"defUid": 36,
 							"px": [184,152],
 							"fieldInstances": [{ "__identifier": "Data", "__value": 0, "__type": "Int", "__tile": null, "defUid": 280, "realEditorValues": [] }]
+						},
+						{
+							"__identifier": "eBarrel",
+							"__grid": [12,5],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 64, "y": 0, "w": 16, "h": 16 },
+							"iid": "56cbeed0-8dc0-11ec-aa52-f72fc1ce007c",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [200,88],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 0, "__type": "Int", "__tile": null, "defUid": 280, "realEditorValues": [] }]
+						},
+						{
+							"__identifier": "eSpringV",
+							"__grid": [12,5],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 46, "x": 96, "y": 16, "w": 16, "h": 16 },
+							"iid": "586d69d0-8dc0-11ec-aa52-1d18211e9e8e",
+							"width": 16,
+							"height": 16,
+							"defUid": 288,
+							"px": [200,88],
+							"fieldInstances": [{ "__identifier": "Data", "__value": 64, "__type": "Int", "__tile": null, "defUid": 289, "realEditorValues": [{ "id": "V_Int", "params": [64] }] }]
 						}
 					]
 				},

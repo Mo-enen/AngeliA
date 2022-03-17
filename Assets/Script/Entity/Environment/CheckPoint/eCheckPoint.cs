@@ -99,6 +99,7 @@ namespace Yaya.Editor {
 					if (!world.LoadFromDisk(mapRoot, worldX, worldY)) continue;
 					for (int i = 0; i < SIZE * SIZE; i++) {
 						var e = world.Entities[i];
+						if (e == null) continue;
 						if (cpIdHash.Contains(e.TypeID)) {
 							cpPool.TryAdd((e.TypeID, e.Data), new(
 								(worldX * SIZE + i % SIZE) * Const.CELL_SIZE,
