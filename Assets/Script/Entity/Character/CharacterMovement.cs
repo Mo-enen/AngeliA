@@ -415,7 +415,7 @@ namespace Yaya {
 				YayaConst.CLIMB_TAG
 			)) {
 				if (info.Entity is eClimbable climb && (climb.CorrectPosition || ClimbSpeedX == 0)) {
-					ClimbPositionCorrect = climb.X + climb.Width / 2;
+					ClimbPositionCorrect = climb.Rect.CenterInt().x;
 					return 2;
 				}
 				return 1;

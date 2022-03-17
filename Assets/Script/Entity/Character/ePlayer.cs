@@ -138,7 +138,7 @@ namespace Yaya {
 			} else if (X > centerX + linger) {
 				AimX = X - linger - ViewRect.width / 2;
 			}
-			AimY = !IsInAir || Y < LastGroundedY ? Y - ViewRect.height / 2 : AimY;
+			AimY = !IsInAir || Y < LastGroundedY ? Y - ViewRect.height * 382 / 1000 : AimY;
 			Game.Current.SetViewPositionDely(AimX, AimY, 62);
 			if (!ViewRect.Contains(X, Y)) {
 				if (X >= ViewRect.xMax) AimX = X - ViewRect.width + 1;

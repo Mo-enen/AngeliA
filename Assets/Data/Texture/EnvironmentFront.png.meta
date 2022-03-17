@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 8875925860900204e857f0a80583ac33
+guid: 7678305a37e354a4da679b3f69a2b462
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -276690949747384050
-    second: Test BG
+      213: -3949216721298672496
+    second: Test E Front
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -85,7 +85,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Test BG
+      name: Test E Front
       rect:
         serializedVersion: 2
         x: 1
@@ -99,8 +99,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e01edb31c0ff82cf0800000000000000
-      internalID: -276690949747384050
+      spriteID: 094b5f9d0509139c0800000000000000
+      internalID: -3949216721298672496
       vertices: []
       indices: 
       edges: []
@@ -116,7 +116,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Test BG: -276690949747384050
+      Test E Front: -3949216721298672496
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 
