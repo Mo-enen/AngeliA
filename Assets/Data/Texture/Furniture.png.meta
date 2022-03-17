@@ -153,17 +153,17 @@ TextureImporter:
       213: -5885043204060160468
     second: Basket 0
   - first:
-      213: -6794393342262416966
-    second: wardrobe 3
+      213: -4017874565697999668
+    second: Wardrobe 3
   - first:
-      213: -3797916077790963600
-    second: wardrobe 2
+      213: -1874318994816455538
+    second: Wardrobe 2
   - first:
-      213: 3871543770641544115
-    second: wardrobe 1
+      213: 6455032667957726335
+    second: Wardrobe 1
   - first:
-      213: -2187376427083215
-    second: wardrobe 0
+      213: 835399287606199555
+    second: Wardrobe 0
   - first:
       213: 1871164503059460400
     second: Nightstand 3
@@ -1354,7 +1354,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wardrobe 3
+      name: Wardrobe 3
       rect:
         serializedVersion: 2
         x: 52
@@ -1368,14 +1368,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ab96b22e04775b1a0800000000000000
-      internalID: -6794393342262416966
+      spriteID: ccc6e7fbe54ad38c0800000000000000
+      internalID: -4017874565697999668
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wardrobe 2
+      name: Wardrobe 2
       rect:
         serializedVersion: 2
         x: 35
@@ -1389,14 +1389,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 078568013771b4bc0800000000000000
-      internalID: -3797916077790963600
+      spriteID: e8ca2360ec41df5e0800000000000000
+      internalID: -1874318994816455538
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wardrobe 1
+      name: Wardrobe 1
       rect:
         serializedVersion: 2
         x: 18
@@ -1410,14 +1410,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3b3377d0c8c7ab530800000000000000
-      internalID: 3871543770641544115
+      spriteID: f7c8923e202e49950800000000000000
+      internalID: 6455032667957726335
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wardrobe 0
+      name: Wardrobe 0
       rect:
         serializedVersion: 2
         x: 1
@@ -1431,8 +1431,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 13ad21db79a38fff0800000000000000
-      internalID: -2187376427083215
+      spriteID: 305c167d93fe79b00800000000000000
+      internalID: 835399287606199555
       vertices: []
       indices: 
       edges: []
@@ -1899,6 +1899,7 @@ TextureImporter:
       Cabinet Stove 0: 5821770520766018075
       Lamp 0: 7602637929360236233
       Nightstand 2: -1807455637129885132
+      Wardrobe 2: -1874318994816455538
       Photo 1: 1029403805412778191
       Chest 1 Open: 8871599316087489604
       TV 0: -9155499100642948165
@@ -1907,7 +1908,6 @@ TextureImporter:
       Cabinet Idol 2: -868349078414055628
       Clock 2: -5915476295922998831
       Chest 1: 7426101085159056613
-      wardrobe 2: -3797916077790963600
       Photo 0: -1017347523448416196
       Cabinet Stove 6: -7868061883605148489
       Cabinet Stove 2: -8413385201370799033
@@ -1915,8 +1915,9 @@ TextureImporter:
       Cabinet Idol 1: 433145596346051637
       TV 1: -2972401882360132890
       Fridge 1: 5997599811625174951
-      Cabinet Stove 7: -5076151734500336818
+      Wardrobe 1: 6455032667957726335
       Light 2: -7962080542218225778
+      Cabinet Stove 7: -5076151734500336818
       Light 1: 7789019521170512700
       Vase 0: 56846498049244760
       Chest 0 Open: -3477718846896939505
@@ -1926,21 +1927,20 @@ TextureImporter:
       Lamp 1: -7924551839152304284
       Stove 2: 7817429469655514673
       Stove 0: -8359845189509003210
+      Wardrobe 3: -4017874565697999668
       Cabinet Idol 4: 5272579457668564615
       Dining Table 3: 6412135472776649086
-      wardrobe 0: -2187376427083215
+      Wardrobe 0: 835399287606199555
       Cabinet Idol 5: -7128515207855051663
       Nightstand 3: 1871164503059460400
-      wardrobe 1: 3871543770641544115
+      Photo 3: -5448561748106697413
       Dining Table 0: -4698251005128190590
       Chair 1: 5969469820197433439
-      Photo 3: -5448561748106697413
       Chair 0: 364761029475331844
       Bed 1: 7778252439724502268
       Light 3: 3586697536399493897
       Basket 0: -5885043204060160468
       Cabinet Stove 5: -1507502999364227839
-      wardrobe 3: -6794393342262416966
       Dining Table 1: 8104653079036211636
   spritePackingTag: 
   pSDRemoveMatte: 0

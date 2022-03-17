@@ -18,7 +18,7 @@ namespace Yaya {
 		public override int CollisionLayer => (int)PhysicsLayer.Character;
 		public override int PushLevel => 64;
 		public override bool CarryRigidbodyOnTop => false;
-		public override bool IsInAir => base.IsInAir && !Movement.IsClimbingVine;
+		public override bool IsInAir => base.IsInAir && !Movement.IsClimbing;
 		public abstract CharacterMovement Movement { get; }
 		public abstract CharacterRenderer Renderer { get; }
 		public abstract CharacterPose Pose { get; }

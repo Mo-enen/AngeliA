@@ -52,7 +52,7 @@ namespace Yaya {
 		public static readonly int ENTITY_LAYER_COUNT = System.Enum.GetNames(typeof(EntityLayer)).Length;
 		public static readonly int PHYSICS_LAYER_COUNT = System.Enum.GetNames(typeof(PhysicsLayer)).Length;
 
-		public static readonly int VINE_TAG = "Vine".AngeHash();
+		public static readonly int CLIMB_TAG = "Climb".AngeHash();
 
 
 	}

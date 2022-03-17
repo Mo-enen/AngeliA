@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public abstract class eVine : Entity {
+	public abstract class eClimbable : Entity {
 
 
 		public override int Layer => (int)EntityLayer.Environment;
@@ -14,7 +14,7 @@ namespace Yaya {
 
 		public override void FillPhysics (int frame) {
 			base.FillPhysics(frame);
-			CellPhysics.FillEntity((int)PhysicsLayer.Environment, this, true, YayaConst.VINE_TAG);
+			CellPhysics.FillEntity((int)PhysicsLayer.Environment, this, true, YayaConst.CLIMB_TAG);
 		}
 
 

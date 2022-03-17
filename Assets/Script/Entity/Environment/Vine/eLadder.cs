@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class eLadder : eVine {
+	public class eLadder : eClimbable {
 
 		private static readonly int VINE_CODE = "Ladder".AngeHash();
 
