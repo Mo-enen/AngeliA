@@ -9,6 +9,15 @@
         "com.moenengames.asepritetoolbox": "1.0.0"
       }
     },
+    "com.moenengames.asepritegadget": {
+      "version": "file:C:/Data/Unity/Packages/Aseprite Gadget",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.moenengames.standard": "1.0.0",
+        "com.moenengames.asepritetoolbox": "1.0.0"
+      }
+    },
     "com.moenengames.asepritetoolbox": {
       "version": "file:C:/Data/Unity/Packages/Aseprite Toolbox",
       "depth": 0,
@@ -19,12 +28,6 @@
       "version": "file:C:/Data/Unity/Packages/Standard",
       "depth": 0,
       "source": "local",
-      "dependencies": {}
-    },
-    "com.unity.2d.sprite": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
       "dependencies": {}
     },
     "com.unity.ext.nunit": {

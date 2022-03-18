@@ -13,6 +13,9 @@ namespace Yaya {
 		#region --- VAR ---
 
 
+		// Const
+		private static readonly int[] LEAF_SHIFT_PATTERN = new int[256] { 125, 35, 244, 61, 180, 216, 86, 204, 39, 4, 214, 71, 34, 118, 19, 173, 246, 19, 151, 117, 70, 207, 21, 115, 34, 110, 34, 238, 157, 164, 212, 243, 62, 55, 179, 125, 184, 67, 126, 64, 70, 19, 231, 159, 169, 98, 86, 75, 221, 52, 242, 65, 83, 241, 111, 174, 14, 128, 27, 70, 181, 104, 47, 130, 48, 226, 9, 235, 194, 149, 245, 179, 149, 87, 46, 50, 232, 117, 202, 191, 23, 215, 16, 104, 178, 146, 160, 76, 199, 5, 110, 55, 39, 56, 139, 222, 228, 100, 111, 199, 89, 107, 136, 72, 62, 62, 172, 252, 195, 60, 198, 153, 181, 92, 46, 221, 87, 198, 208, 157, 65, 188, 35, 189, 39, 190, 140, 93, 203, 80, 78, 131, 6, 3, 101, 172, 79, 200, 42, 115, 230, 164, 137, 139, 62, 213, 129, 202, 9, 173, 135, 29, 148, 209, 133, 156, 72, 203, 32, 128, 178, 79, 48, 114, 238, 66, 146, 178, 247, 130, 142, 142, 156, 92, 183, 157, 51, 152, 126, 81, 60, 193, 83, 30, 201, 48, 239, 52, 126, 200, 99, 132, 167, 169, 192, 151, 115, 22, 156, 251, 66, 207, 211, 134, 30, 248, 128, 55, 26, 232, 105, 176, 76, 207, 68, 241, 251, 18, 169, 189, 83, 94, 51, 46, 30, 10, 230, 243, 155, 32, 41, 28, 251, 130, 14, 108, 237, 204, 255, 208, 175, 183, 25, 149, 95, 179, 55, 216, 101, 207, 155, 97, 108, 222, 168, 228, };
+
 		// Virtual
 		protected abstract int TrunkBottomCode { get; }
 		protected abstract int TrunkMidCode { get; }
@@ -30,7 +33,6 @@ namespace Yaya {
 
 		// Data
 		private Vector2Int LeafShift = default;
-		private Vector2Int LeafShiftAdd = default;
 		private int LeafCount = 0;
 		private int LeafCountAdd = 0;
 
@@ -50,12 +52,10 @@ namespace Yaya {
 			LeafSize = CellRenderer.GetUVRect(GetLeafCode(0), out var lRect) ? lRect.Width : Const.CELL_SIZE;
 			Width = TrunkWidth;
 			Height = Const.CELL_SIZE * Tall;
-			LeafShift.x = (X * 081620 / 1534 + Y * 040471 / 7354).AltMod(Const.CELL_SIZE / 2) + Const.CELL_SIZE / 4;
-			LeafShift.y = (X * 142568 / 1543 + Y * 9364312 / 7206).AltMod(Const.CELL_SIZE / 2) + Const.CELL_SIZE / 4;
-			LeafShiftAdd.x = (X * 081620 / 7321 + Y * 040471 / 1047).AltMod(Const.CELL_SIZE * 7 / 8) + Const.CELL_SIZE / 8;
-			LeafShiftAdd.y = (X * 432846 / 1824 + Y * 172890 / 7835).AltMod(Const.CELL_SIZE * 7 / 8) + Const.CELL_SIZE / 8;
-			LeafCount = (X * 040471 / 8376 + Y * 081620 / 1835).AltMod(LeafCountMax - LeafCountMin + 1) + LeafCountMin;
-			LeafCountAdd = (X * 040471 / 1724 + Y * 081620 / 4842).AltMod(5) - 2;
+			LeafShift.x = X.UMod(Const.CELL_SIZE);
+			LeafShift.y = Y.UMod(Const.CELL_SIZE);
+			LeafCount = (X * 040471 / 8376 + Y * 081620 / 1835).UMod(LeafCountMax - LeafCountMin + 1) + LeafCountMin;
+			LeafCountAdd = (X * 040471 / 1724 + Y * 081620 / 4842).UMod(5) - 2;
 		}
 
 
@@ -65,18 +65,25 @@ namespace Yaya {
 			// Leaf
 			int tall = Tall;
 			int count = LeafCount;
-			var shift = LeafShift;
+			int shiftIndexX = LeafShift.x;
+			int shiftIndexY = LeafShift.y;
+			var shift = new Vector2Int(
+				LEAF_SHIFT_PATTERN[shiftIndexX.UMod(LEAF_SHIFT_PATTERN.Length)],
+				LEAF_SHIFT_PATTERN[shiftIndexY.UMod(LEAF_SHIFT_PATTERN.Length)]
+			);
 			int leafCodeIndex = shift.x;
 			for (int step = 0; step < tall; step++) {
 				if (step == 0 && tall > 1) continue;
 				for (int i = 0; i < count; i++) {
 					DrawLeaf(frame, GetLeafCode(leafCodeIndex), step, shift);
 					leafCodeIndex++;
-					shift.x = (shift.x + LeafShiftAdd.x).AltMod(Const.CELL_SIZE);
-					shift.y = (shift.y + LeafShiftAdd.y).AltMod(Const.CELL_SIZE);
-					if (step == 0) shift.y = shift.y.AltMod(Const.CELL_SIZE / 2) + Const.CELL_SIZE / 2;
+					shiftIndexX++;
+					shiftIndexY++;
+					shift.x = (shift.x + LEAF_SHIFT_PATTERN[shiftIndexX.UMod(LEAF_SHIFT_PATTERN.Length)] * 6).UMod(Const.CELL_SIZE);
+					shift.y = (shift.y + LEAF_SHIFT_PATTERN[shiftIndexY.UMod(LEAF_SHIFT_PATTERN.Length)]).UMod(Const.CELL_SIZE);
+					if (step == 0) shift.y = shift.y.UMod(Const.CELL_SIZE / 2) + Const.CELL_SIZE / 2;
 				}
-				count = (count - 2 + LeafCountAdd).AltMod(LeafCountMax - LeafCountMin + 1) + LeafCountMin;
+				count = (count - 2 + LeafCountAdd).UMod(LeafCountMax - LeafCountMin + 1) + LeafCountMin;
 			}
 		}
 

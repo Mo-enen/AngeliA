@@ -33,7 +33,7 @@ namespace Yaya {
 		}
 
 
-		protected override int GetLeafCode (int index) => LEAF_CODES[index.AltMod(LEAF_CODES.Length)];
+		protected override int GetLeafCode (int index) => LEAF_CODES[index.UMod(LEAF_CODES.Length)];
 
 
 	}
@@ -83,7 +83,7 @@ namespace Yaya {
 		}
 
 
-		protected override int GetLeafCode (int index) => LEAF_CODES[index.AltMod(LEAF_CODES.Length)];
+		protected override int GetLeafCode (int index) => LEAF_CODES[index.UMod(LEAF_CODES.Length)];
 
 
 	}
@@ -118,7 +118,7 @@ namespace Yaya {
 		}
 
 
-		protected override int GetLeafCode (int index) => LEAF_CODES[index.AltMod(LEAF_CODES.Length)];
+		protected override int GetLeafCode (int index) => LEAF_CODES[index.UMod(LEAF_CODES.Length)];
 
 
 	}
@@ -151,7 +151,7 @@ namespace Yaya {
 		}
 
 
-		protected override int GetLeafCode (int index) => LEAF_CODES[index.AltMod(LEAF_CODES.Length)];
+		protected override int GetLeafCode (int index) => LEAF_CODES[index.UMod(LEAF_CODES.Length)];
 
 
 	}
@@ -177,7 +177,7 @@ namespace Yaya {
 			int countY = (Tall - 1) * Const.CELL_SIZE / LeafSize;
 			const int SPAN = 6;
 			for (int lIndex = 0; lIndex < SPAN; lIndex++) {
-				code = LEAF_CODES[(shift.x + lIndex).AltMod(LEAF_CODES.Length)];
+				code = LEAF_CODES[(shift.x + lIndex).UMod(LEAF_CODES.Length)];
 				for (int i = 0; i < countY; i++) {
 					int offsetX = lIndex * LeafSize * 2 / 3;
 					const int SHRINK_COUNT = 4;
@@ -209,7 +209,7 @@ namespace Yaya {
 		}
 
 
-		protected override int GetLeafCode (int index) => LEAF_CODES[index.AltMod(LEAF_CODES.Length)];
+		protected override int GetLeafCode (int index) => LEAF_CODES[index.UMod(LEAF_CODES.Length)];
 
 
 	}

@@ -3,146 +3,146 @@ guid: c1442b09f260c734199bcf22e3bc73b9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2802559794033431377
-    second: Cloud 0
+      213: 6009960910363358413
+    second: _rCloud 0
   - first:
-      213: 4328878469160090734
-    second: Cloud 1
+      213: 4217917258765156711
+    second: _rCloud 1
   - first:
-      213: 5769025949576803154
-    second: Cloud 2
+      213: 4506467597220089112
+    second: _rCloud 2
   - first:
-      213: 2714702919660709286
-    second: Cloud 3
+      213: -4351559918782858312
+    second: _rCloud 3
   - first:
-      213: -2720531075333172938
-    second: Cloud 4
+      213: -1413614651846171593
+    second: _rCloud 4
   - first:
-      213: 8899829586541751646
-    second: Cloud 5
+      213: -323176110000851651
+    second: _rCloud 5
   - first:
-      213: 5737060264376376809
-    second: Cloud 6
+      213: -1048275594104921611
+    second: _rCloud 6
   - first:
-      213: -4419201832922323388
-    second: Cloud 7
+      213: -6201166160311318264
+    second: _rCloud 7
   - first:
-      213: -8239576986384678445
-    second: Cloud 8
+      213: 2116509122771045774
+    second: _rCloud 8
   - first:
-      213: -4113370542907552267
-    second: Cloud 9
+      213: 826449566710084238
+    second: _rCloud 9
   - first:
-      213: -947249621694023818
-    second: Cloud 10
+      213: 7017118505962373697
+    second: _rCloud 10
   - first:
-      213: -6560006563402762253
-    second: Cloud 11
+      213: 4689481732934761693
+    second: _rCloud 11
   - first:
-      213: 8201017015425827234
-    second: Cloud 12
+      213: -924151282869542684
+    second: _rCloud 12
   - first:
-      213: 4333643545067810409
-    second: Cloud 13
+      213: -1970258213288772435
+    second: _rCloud 13
   - first:
-      213: 2327348251429522439
-    second: Cloud 14
+      213: 4621516858598927809
+    second: _rCloud 14
   - first:
-      213: 2238671671063780011
-    second: Cloud 15
+      213: -7215549268926979847
+    second: _rCloud 15
   - first:
-      213: 6897661512127344500
-    second: Cloud 16
+      213: -7631130090548849256
+    second: _rCloud 16
   - first:
-      213: 3608687455373479765
-    second: Cloud 17
+      213: -8075429889771932852
+    second: _rCloud 17
   - first:
-      213: -4021841786275578916
-    second: Cloud 18
+      213: 7136174676724557563
+    second: _rCloud 18
   - first:
-      213: -2396796259463794396
-    second: Cloud 19
+      213: -7495322414759941917
+    second: _rCloud 19
   - first:
-      213: -8612373889199713528
-    second: Cloud 20
+      213: 1162943037333097451
+    second: _rCloud 20
   - first:
-      213: -4911106639718855390
-    second: Cloud 21
+      213: -7644667906713341353
+    second: _rCloud 21
   - first:
-      213: -2806515148122556464
-    second: Cloud 22
+      213: 3280802955488156187
+    second: _rCloud 22
   - first:
-      213: -7110577676570263793
-    second: Cloud 23
+      213: 7109285257870724532
+    second: _rCloud 23
   - first:
-      213: 1398946735273702322
-    second: Cloud 24
+      213: 563322809535820799
+    second: _rCloud 24
   - first:
-      213: -4878058836387684447
-    second: Cloud 25
+      213: 7195252943896659827
+    second: _rCloud 25
   - first:
-      213: 2899334393589813881
-    second: Cloud 26
+      213: 8749526740549754862
+    second: _rCloud 26
   - first:
-      213: -991859522461320497
-    second: Cloud 27
+      213: 3365878960505000615
+    second: _rCloud 27
   - first:
-      213: 1224622701478892006
-    second: Cloud 28
+      213: 1048938767572362702
+    second: _rCloud 28
   - first:
-      213: 5277895407805958843
-    second: Cloud 29
+      213: -8166623724463086672
+    second: _rCloud 29
   - first:
-      213: 258555777961062944
-    second: Cloud 30
+      213: -3746866048012014659
+    second: _rCloud 30
   - first:
-      213: 8037410251554839184
-    second: Cloud 31
+      213: 4810554039986183320
+    second: _rCloud 31
   - first:
-      213: -4852713215975516927
-    second: Cloud 32
+      213: 694900731084367664
+    second: _rCloud 32
   - first:
-      213: 5887266762015711824
-    second: Cloud 33
+      213: 2256413226779499269
+    second: _rCloud 33
   - first:
-      213: 65591073882530385
-    second: Cloud 34
+      213: -96881025268159326
+    second: _rCloud 34
   - first:
-      213: 3367601030906665895
-    second: Cloud 35
+      213: 1424375726077996218
+    second: _rCloud 35
   - first:
-      213: 7527442051877303455
-    second: Cloud 36
+      213: 7946517809997102160
+    second: _rCloud 36
   - first:
-      213: -2772122458551925694
-    second: Cloud 37
+      213: 6349470904106921754
+    second: _rCloud 37
   - first:
-      213: -7603390787171550179
-    second: Cloud 38
+      213: -6966924711121936382
+    second: _rCloud 38
   - first:
-      213: 4786508926409197382
-    second: Cloud 39
+      213: -4511942635048218066
+    second: _rCloud 39
   - first:
-      213: -100122672259345468
-    second: Cloud 40
+      213: 4299017164842506886
+    second: _rCloud 40
   - first:
-      213: 1957317650131419016
-    second: Cloud 41
+      213: 6789311557531212659
+    second: _rCloud 41
   - first:
-      213: -5463491579268494477
-    second: Cloud 42
+      213: -9119312481074947814
+    second: _rCloud 42
   - first:
-      213: 2314745734412332802
-    second: Cloud 43
+      213: 5084615605688712455
+    second: _rCloud 43
   - first:
-      213: -5395210672000561495
-    second: Cloud 44
+      213: 8913536582905549975
+    second: _rCloud 44
   - first:
-      213: 3904880230547835321
-    second: Cloud 45
+      213: -7878892073156041994
+    second: _rCloud 45
   - first:
-      213: -6561216658446010382
-    second: Cloud 46
+      213: -1844404622893063354
+    second: _rCloud 46
   - first:
       213: -4393783392769447400
     second: Test Water
@@ -226,7 +226,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Cloud 0
+      name: _rCloud 0
       rect:
         serializedVersion: 2
         x: 1
@@ -240,14 +240,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1539729b841b4e620800000000000000
-      internalID: 2802559794033431377
+      spriteID: dc4f0381b9ba76350800000000000000
+      internalID: 6009960910363358413
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 1
+      name: _rCloud 1
       rect:
         serializedVersion: 2
         x: 18
@@ -261,14 +261,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e6cbf164804431c30800000000000000
-      internalID: 4328878469160090734
+      spriteID: 761cfac366d098a30800000000000000
+      internalID: 4217917258765156711
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 2
+      name: _rCloud 2
       rect:
         serializedVersion: 2
         x: 35
@@ -282,14 +282,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 25339881982bf0050800000000000000
-      internalID: 5769025949576803154
+      spriteID: 81d8c1447603a8e30800000000000000
+      internalID: 4506467597220089112
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 3
+      name: _rCloud 3
       rect:
         serializedVersion: 2
         x: 52
@@ -303,14 +303,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6a5a71d1cef8ca520800000000000000
-      internalID: 2714702919660709286
+      spriteID: 8bbbe163f472c93c0800000000000000
+      internalID: -4351559918782858312
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 4
+      name: _rCloud 4
       rect:
         serializedVersion: 2
         x: 69
@@ -324,14 +324,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 631da56a66bbe3ad0800000000000000
-      internalID: -2720531075333172938
+      spriteID: 734eb6bb6f4d16ce0800000000000000
+      internalID: -1413614651846171593
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 5
+      name: _rCloud 5
       rect:
         serializedVersion: 2
         x: 86
@@ -345,14 +345,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e5d255b0bdb828b70800000000000000
-      internalID: 8899829586541751646
+      spriteID: d35b18b4a09d38bf0800000000000000
+      internalID: -323176110000851651
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 6
+      name: _rCloud 6
       rect:
         serializedVersion: 2
         x: 103
@@ -366,14 +366,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9ed99290ae12e9f40800000000000000
-      internalID: 5737060264376376809
+      spriteID: 5f12aa2b6e6c371f0800000000000000
+      internalID: -1048275594104921611
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 7
+      name: _rCloud 7
       rect:
         serializedVersion: 2
         x: 120
@@ -387,14 +387,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 446e8edc857dba2c0800000000000000
-      internalID: -4419201832922323388
+      spriteID: 809887d7b3801f9a0800000000000000
+      internalID: -6201166160311318264
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 8
+      name: _rCloud 8
       rect:
         serializedVersion: 2
         x: 137
@@ -408,14 +408,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3d1ce03d26427ad80800000000000000
-      internalID: -8239576986384678445
+      spriteID: e8d44aa55d95f5d10800000000000000
+      internalID: 2116509122771045774
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 9
+      name: _rCloud 9
       rect:
         serializedVersion: 2
         x: 154
@@ -429,14 +429,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5fd8078e84f5ae6c0800000000000000
-      internalID: -4113370542907552267
+      spriteID: e82b7809083287b00800000000000000
+      internalID: 826449566710084238
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 10
+      name: _rCloud 10
       rect:
         serializedVersion: 2
         x: 171
@@ -450,14 +450,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 677fd41ec71bad2f0800000000000000
-      internalID: -947249621694023818
+      spriteID: 14205b65a10d16160800000000000000
+      internalID: 7017118505962373697
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 11
+      name: _rCloud 11
       rect:
         serializedVersion: 2
         x: 188
@@ -471,14 +471,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3f7b52879cc26f4a0800000000000000
-      internalID: -6560006563402762253
+      spriteID: ddc72484ac2641140800000000000000
+      internalID: 4689481732934761693
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 12
+      name: _rCloud 12
       rect:
         serializedVersion: 2
         x: 205
@@ -492,14 +492,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2a10461568ddfc170800000000000000
-      internalID: 8201017015425827234
+      spriteID: 4e0e6d9fd41cc23f0800000000000000
+      internalID: -924151282869542684
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 13
+      name: _rCloud 13
       rect:
         serializedVersion: 2
         x: 222
@@ -513,14 +513,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 96e6ee6f7d1342c30800000000000000
-      internalID: 4333643545067810409
+      spriteID: dac7029089c38a4e0800000000000000
+      internalID: -1970258213288772435
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 14
+      name: _rCloud 14
       rect:
         serializedVersion: 2
         x: 239
@@ -534,14 +534,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 70c451367e66c4020800000000000000
-      internalID: 2327348251429522439
+      spriteID: 1cda448d81de22040800000000000000
+      internalID: 4621516858598927809
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 15
+      name: _rCloud 15
       rect:
         serializedVersion: 2
         x: 1
@@ -555,14 +555,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: baa9c7a160c511f10800000000000000
-      internalID: 2238671671063780011
+      spriteID: 9f027466b283ddb90800000000000000
+      internalID: -7215549268926979847
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 16
+      name: _rCloud 16
       rect:
         serializedVersion: 2
         x: 18
@@ -576,14 +576,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 47feb33999a69bf50800000000000000
-      internalID: 6897661512127344500
+      spriteID: 8959a063d97c81690800000000000000
+      internalID: -7631130090548849256
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 17
+      name: _rCloud 17
       rect:
         serializedVersion: 2
         x: 35
@@ -597,14 +597,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 55fc1fafe12a41230800000000000000
-      internalID: 3608687455373479765
+      spriteID: c43729bfc4f4eef80800000000000000
+      internalID: -8075429889771932852
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 18
+      name: _rCloud 18
       rect:
         serializedVersion: 2
         x: 52
@@ -618,14 +618,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cdbb83a343c8f28c0800000000000000
-      internalID: -4021841786275578916
+      spriteID: bf62e453f09c80360800000000000000
+      internalID: 7136174676724557563
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 19
+      name: _rCloud 19
       rect:
         serializedVersion: 2
         x: 69
@@ -639,14 +639,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 421fca3308edcbed0800000000000000
-      internalID: -2396796259463794396
+      spriteID: 3e8e537c9f34bf790800000000000000
+      internalID: -7495322414759941917
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 20
+      name: _rCloud 20
       rect:
         serializedVersion: 2
         x: 86
@@ -660,14 +660,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 803d66df393ba7880800000000000000
-      internalID: -8612373889199713528
+      spriteID: bebc04ae78a932010800000000000000
+      internalID: 1162943037333097451
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 21
+      name: _rCloud 21
       rect:
         serializedVersion: 2
         x: 103
@@ -681,14 +681,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 22dce75088e38dbb0800000000000000
-      internalID: -4911106639718855390
+      spriteID: 752b582ca0fa8e590800000000000000
+      internalID: -7644667906713341353
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 22
+      name: _rCloud 22
       rect:
         serializedVersion: 2
         x: 120
@@ -702,14 +702,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0d7f663a7514d09d0800000000000000
-      internalID: -2806515148122556464
+      spriteID: b1a5ce3d7e0c78d20800000000000000
+      internalID: 3280802955488156187
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 23
+      name: _rCloud 23
       rect:
         serializedVersion: 2
         x: 137
@@ -723,14 +723,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f0ff430d647225d90800000000000000
-      internalID: -7110577676570263793
+      spriteID: 4bd4e42864149a260800000000000000
+      internalID: 7109285257870724532
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 24
+      name: _rCloud 24
       rect:
         serializedVersion: 2
         x: 154
@@ -744,14 +744,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2b37eafc4ae0a6310800000000000000
-      internalID: 1398946735273702322
+      spriteID: ff3f1445c1351d700800000000000000
+      internalID: 563322809535820799
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 25
+      name: _rCloud 25
       rect:
         serializedVersion: 2
         x: 171
@@ -765,14 +765,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1af18a75557ad4cb0800000000000000
-      internalID: -4878058836387684447
+      spriteID: 3774b0e2e6caad360800000000000000
+      internalID: 7195252943896659827
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 26
+      name: _rCloud 26
       rect:
         serializedVersion: 2
         x: 188
@@ -786,14 +786,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9725ef605418c3820800000000000000
-      internalID: 2899334393589813881
+      spriteID: eefdf3ba6309c6970800000000000000
+      internalID: 8749526740549754862
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 27
+      name: _rCloud 27
       rect:
         serializedVersion: 2
         x: 205
@@ -807,14 +807,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fcaba98f4053c32f0800000000000000
-      internalID: -991859522461320497
+      spriteID: 7a29cd5d41106be20800000000000000
+      internalID: 3365878960505000615
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 28
+      name: _rCloud 28
       rect:
         serializedVersion: 2
         x: 222
@@ -828,14 +828,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6e15781dbdbbef010800000000000000
-      internalID: 1224622701478892006
+      spriteID: ec5694860449e8e00800000000000000
+      internalID: 1048938767572362702
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 29
+      name: _rCloud 29
       rect:
         serializedVersion: 2
         x: 239
@@ -849,14 +849,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bba80ffe8e9de3940800000000000000
-      internalID: 5277895407805958843
+      spriteID: 0b3a911cdf25aae80800000000000000
+      internalID: -8166623724463086672
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 30
+      name: _rCloud 30
       rect:
         serializedVersion: 2
         x: 1
@@ -870,14 +870,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0227ef33c13969300800000000000000
-      internalID: 258555777961062944
+      spriteID: dbba54b5e25700cc0800000000000000
+      internalID: -3746866048012014659
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 31
+      name: _rCloud 31
       rect:
         serializedVersion: 2
         x: 18
@@ -891,14 +891,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 09a520e2a0e9a8f60800000000000000
-      internalID: 8037410251554839184
+      spriteID: 89c5236796582c240800000000000000
+      internalID: 4810554039986183320
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 32
+      name: _rCloud 32
       rect:
         serializedVersion: 2
         x: 35
@@ -912,14 +912,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1059fe47a03b7acb0800000000000000
-      internalID: -4852713215975516927
+      spriteID: 037617e7888c4a900800000000000000
+      internalID: 694900731084367664
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 33
+      name: _rCloud 33
       rect:
         serializedVersion: 2
         x: 52
@@ -933,14 +933,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 05229ef8de5c3b150800000000000000
-      internalID: 5887266762015711824
+      spriteID: 50b5fa0ffd3605f10800000000000000
+      internalID: 2256413226779499269
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 34
+      name: _rCloud 34
       rect:
         serializedVersion: 2
         x: 69
@@ -954,14 +954,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1526433fbb609e000800000000000000
-      internalID: 65591073882530385
+      spriteID: 2ac6a67883fc7aef0800000000000000
+      internalID: -96881025268159326
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 35
+      name: _rCloud 35
       rect:
         serializedVersion: 2
         x: 86
@@ -975,14 +975,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7ab5e689b4f1cbe20800000000000000
-      internalID: 3367601030906665895
+      spriteID: abc619b1d2664c310800000000000000
+      internalID: 1424375726077996218
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 36
+      name: _rCloud 36
       rect:
         serializedVersion: 2
         x: 103
@@ -996,14 +996,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f94fb710aa8d67860800000000000000
-      internalID: 7527442051877303455
+      spriteID: 05c313288d3b74e60800000000000000
+      internalID: 7946517809997102160
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 37
+      name: _rCloud 37
       rect:
         serializedVersion: 2
         x: 120
@@ -1017,14 +1017,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2444120bf417789d0800000000000000
-      internalID: -2772122458551925694
+      spriteID: a1fa8f6752add1850800000000000000
+      internalID: 6349470904106921754
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 38
+      name: _rCloud 38
       rect:
         serializedVersion: 2
         x: 137
@@ -1038,14 +1038,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d1c79221d545b7690800000000000000
-      internalID: -7603390787171550179
+      spriteID: 200afa833e2805f90800000000000000
+      internalID: -6966924711121936382
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 39
+      name: _rCloud 39
       rect:
         serializedVersion: 2
         x: 154
@@ -1059,14 +1059,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6474bd032881d6240800000000000000
-      internalID: 4786508926409197382
+      spriteID: e22d207241c5261c0800000000000000
+      internalID: -4511942635048218066
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 40
+      name: _rCloud 40
       rect:
         serializedVersion: 2
         x: 171
@@ -1080,14 +1080,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4c3d406c5fa4c9ef0800000000000000
-      internalID: -100122672259345468
+      spriteID: 68a9eb1955d29ab30800000000000000
+      internalID: 4299017164842506886
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 41
+      name: _rCloud 41
       rect:
         serializedVersion: 2
         x: 188
@@ -1101,14 +1101,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 88f7fa0580ac92b10800000000000000
-      internalID: 1957317650131419016
+      spriteID: 37b1a18e3ea783e50800000000000000
+      internalID: 6789311557531212659
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 42
+      name: _rCloud 42
       rect:
         serializedVersion: 2
         x: 205
@@ -1122,14 +1122,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 37b0d500b57cd24b0800000000000000
-      internalID: -5463491579268494477
+      spriteID: a19ddb95d91b17180800000000000000
+      internalID: -9119312481074947814
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 43
+      name: _rCloud 43
       rect:
         serializedVersion: 2
         x: 222
@@ -1143,14 +1143,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 20f6ffc3bf0af1020800000000000000
-      internalID: 2314745734412332802
+      spriteID: 70dbb7434fe209640800000000000000
+      internalID: 5084615605688712455
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 44
+      name: _rCloud 44
       rect:
         serializedVersion: 2
         x: 239
@@ -1164,14 +1164,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9ae82079a7c5025b0800000000000000
-      internalID: -5395210672000561495
+      spriteID: 794d884db4e33bb70800000000000000
+      internalID: 8913536582905549975
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 45
+      name: _rCloud 45
       rect:
         serializedVersion: 2
         x: 1
@@ -1185,14 +1185,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9b9cf3871ebe03630800000000000000
-      internalID: 3904880230547835321
+      spriteID: 6f2a4e3576d88a290800000000000000
+      internalID: -7878892073156041994
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cloud 46
+      name: _rCloud 46
       rect:
         serializedVersion: 2
         x: 18
@@ -1206,8 +1206,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2f733f24630e1f4a0800000000000000
-      internalID: -6561216658446010382
+      spriteID: 643ee5e74cb5766e0800000000000000
+      internalID: -1844404622893063354
       vertices: []
       indices: 
       edges: []
@@ -1244,54 +1244,54 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Cloud 7: -4419201832922323388
-      Cloud 20: -8612373889199713528
-      Cloud 41: 1957317650131419016
-      Cloud 34: 65591073882530385
-      Cloud 33: 5887266762015711824
-      Cloud 44: -5395210672000561495
-      Cloud 12: 8201017015425827234
-      Cloud 10: -947249621694023818
-      Cloud 14: 2327348251429522439
-      Cloud 2: 5769025949576803154
-      Cloud 6: 5737060264376376809
-      Cloud 0: 2802559794033431377
-      Cloud 38: -7603390787171550179
-      Cloud 4: -2720531075333172938
-      Cloud 15: 2238671671063780011
-      Cloud 28: 1224622701478892006
-      Cloud 43: 2314745734412332802
-      Cloud 17: 3608687455373479765
-      Cloud 21: -4911106639718855390
-      Cloud 29: 5277895407805958843
-      Cloud 36: 7527442051877303455
-      Cloud 46: -6561216658446010382
-      Cloud 11: -6560006563402762253
-      Cloud 9: -4113370542907552267
-      Cloud 42: -5463491579268494477
-      Cloud 1: 4328878469160090734
-      Cloud 18: -4021841786275578916
-      Cloud 27: -991859522461320497
-      Cloud 22: -2806515148122556464
+      _rCloud 36: 7946517809997102160
+      _rCloud 29: -8166623724463086672
+      _rCloud 40: 4299017164842506886
+      _rCloud 32: 694900731084367664
+      _rCloud 27: 3365878960505000615
+      _rCloud 28: 1048938767572362702
+      _rCloud 42: -9119312481074947814
+      _rCloud 37: 6349470904106921754
+      _rCloud 16: -7631130090548849256
+      _rCloud 46: -1844404622893063354
+      _rCloud 19: -7495322414759941917
+      _rCloud 10: 7017118505962373697
+      _rCloud 45: -7878892073156041994
+      _rCloud 20: 1162943037333097451
+      _rCloud 34: -96881025268159326
+      _rCloud 43: 5084615605688712455
+      _rCloud 41: 6789311557531212659
+      _rCloud 44: 8913536582905549975
+      _rCloud 30: -3746866048012014659
+      _rCloud 9: 826449566710084238
+      _rCloud 17: -8075429889771932852
+      _rCloud 7: -6201166160311318264
+      _rCloud 31: 4810554039986183320
+      _rCloud 14: 4621516858598927809
+      _rCloud 21: -7644667906713341353
+      _rCloud 6: -1048275594104921611
       Test Water: -4393783392769447400
-      Cloud 24: 1398946735273702322
-      Cloud 30: 258555777961062944
-      Cloud 39: 4786508926409197382
-      Cloud 23: -7110577676570263793
-      Cloud 40: -100122672259345468
-      Cloud 5: 8899829586541751646
-      Cloud 45: 3904880230547835321
-      Cloud 35: 3367601030906665895
-      Cloud 19: -2396796259463794396
-      Cloud 37: -2772122458551925694
-      Cloud 16: 6897661512127344500
-      Cloud 32: -4852713215975516927
-      Cloud 8: -8239576986384678445
-      Cloud 31: 8037410251554839184
-      Cloud 25: -4878058836387684447
-      Cloud 26: 2899334393589813881
-      Cloud 13: 4333643545067810409
-      Cloud 3: 2714702919660709286
+      _rCloud 12: -924151282869542684
+      _rCloud 11: 4689481732934761693
+      _rCloud 0: 6009960910363358413
+      _rCloud 2: 4506467597220089112
+      _rCloud 18: 7136174676724557563
+      _rCloud 25: 7195252943896659827
+      _rCloud 22: 3280802955488156187
+      _rCloud 38: -6966924711121936382
+      _rCloud 3: -4351559918782858312
+      _rCloud 1: 4217917258765156711
+      _rCloud 39: -4511942635048218066
+      _rCloud 5: -323176110000851651
+      _rCloud 15: -7215549268926979847
+      _rCloud 24: 563322809535820799
+      _rCloud 35: 1424375726077996218
+      _rCloud 4: -1413614651846171593
+      _rCloud 8: 2116509122771045774
+      _rCloud 26: 8749526740549754862
+      _rCloud 33: 2256413226779499269
+      _rCloud 13: -1970258213288772435
+      _rCloud 23: 7109285257870724532
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

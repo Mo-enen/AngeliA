@@ -1,14 +1,14 @@
 {
-    "name": "Yaya",
-    "rootNamespace": "Yaya",
+    "name": "Yaya.Editor",
+    "rootNamespace": "Yaya.Editor",
     "references": [
         "Moenen.Standard",
-        "AngeliaFramework"
+        "AngeliaFramework",
+        "AngeliaFrameworkEditor",
+        "Yaya"
     ],
     "includePlatforms": [
-        "Editor",
-        "WindowsStandalone32",
-        "WindowsStandalone64"
+        "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
