@@ -74734,6 +74734,7 @@ MonoBehaviour:
       BottomRight: {x: 0.5620117, y: 0.9736328}
       TopLeft: {x: 0.5527344, y: 0.96777344}
       TopRight: {x: 0.5620117, y: 0.96777344}
+  m_SpriteChains: []
   m_RendererCapacity: 512
   m_ShaderName: GUI/Text Shader
   m_CharSprites:
