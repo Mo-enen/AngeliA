@@ -30,6 +30,10 @@ namespace Yaya.Editor {
 			public string IgnoreFolders => "";
 			public string IgnoreFiles => "";
 			public string Title => "Yaya";
+			public IScriptHubRootPath.FileExtension[] FileExtensions => new IScriptHubRootPath.FileExtension[]{
+				new ("cs", "", true),
+			};
+			public int Order => 0;
 
 			private string GetPath () {
 				var req = Client.List(true, false);
@@ -45,7 +49,32 @@ namespace Yaya.Editor {
 			}
 		}
 
+		public class YayaArtworkHub : IScriptHubRootPath {
+			public string Path => !string.IsNullOrEmpty(_Path) ? _Path : (_Path = GetPath());
+			private string _Path = "";
+			public string IgnoreFolders => "";
+			public string IgnoreFiles => "";
+			public string Title => "Yaya Artwork";
+			public IScriptHubRootPath.FileExtension[] FileExtensions => new IScriptHubRootPath.FileExtension[]{
 
+				new ("ase", "Ase", false),
+				new ("aseprite", "Aseprite", false),
+			};
+			public int Order => 0 + 1;
+
+			private string GetPath () {
+				var req = Client.List(true, false);
+				while (!req.IsCompleted) { }
+				if (req.Status == StatusCode.Success) {
+					foreach (var package in req.Result) {
+						if (package.name == "com.moenengames.yaya") {
+							return "Packages/com.moenengames.yaya";
+						}
+					}
+				}
+				return "Assets";
+			}
+		}
 
 	}
 }

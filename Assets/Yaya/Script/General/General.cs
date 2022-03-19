@@ -55,12 +55,7 @@ namespace Yaya {
 		public static readonly int CLIMB_TAG = "Climb".AngeHash();
 
 
-	}
-
-
-	public static class LConst {
-
-
+		// Language
 		public delegate string StringIntHandler (int key);
 		public static StringIntHandler GetLanguage { get; set; } = null;
 
@@ -76,4 +71,5 @@ namespace Yaya {
 		public static string LabelQuit => GetLanguage(LabelQuitID);
 
 	}
+
 }

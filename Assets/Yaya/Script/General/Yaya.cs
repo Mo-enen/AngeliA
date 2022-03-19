@@ -34,18 +34,19 @@ namespace Yaya {
 
 
 		// MSG
-		private void Awake () {
-			Awake_Misc();
-			Awake_Quit();
+		protected override void Initialize () {
+			base.Initialize();
+			Initialize_Misc();
+			Initialize_Quit();
 		}
 
 
-		private void Awake_Misc () {
-			LConst.GetLanguage = (key) => CurrentLanguage ? CurrentLanguage[key] : "";
+		private void Initialize_Misc () {
+			YayaConst.GetLanguage = (key) => CurrentLanguage ? CurrentLanguage[key] : "";
 		}
 
 
-		private void Awake_Quit () {
+		private void Initialize_Quit () {
 			bool willQuit = false;
 			Application.wantsToQuit += () => {
 #if UNITY_EDITOR
@@ -56,7 +57,7 @@ namespace Yaya {
 				} else {
 					// Show Quit Dialog
 					AddEntity(new eDialog(
-						2048, LConst.QuitConfirmContent, LConst.LabelQuit, LConst.LabelCancel, "",
+						2048, YayaConst.QuitConfirmContent, YayaConst.LabelQuit, YayaConst.LabelCancel, "",
 						() => {
 							willQuit = true;
 							PlayerData.SaveToDisk();
