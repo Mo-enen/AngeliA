@@ -1,0 +1,3249 @@
+fileFormatVersion: 2
+guid: 72617419da190394f8bd46769ea3803e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8064411482835056307
+    second: Barrel
+  - first:
+      213: 7703836545563178338
+    second: Barrel Small
+  - first:
+      213: -2329300805733206252
+    second: Road Sign 0
+  - first:
+      213: 1335569958529975340
+    second: Road Sign 1
+  - first:
+      213: -2651921403531159219
+    second: Road Sign 2
+  - first:
+      213: -3017414032195783511
+    second: Check Statue 0
+  - first:
+      213: 1944208467503500670
+    second: Check Statue 1
+  - first:
+      213: -8498937215571585253
+    second: Check Statue 2
+  - first:
+      213: -191683756101331330
+    second: Check Statue 3
+  - first:
+      213: -2694794741775303629
+    second: Check Statue 4
+  - first:
+      213: -3748405529400348166
+    second: Check Statue 5
+  - first:
+      213: 2823302363922060993
+    second: Check Statue 6
+  - first:
+      213: 1487383059906042525
+    second: Check Statue 7
+  - first:
+      213: -6411399449253671942
+    second: Check Statue 8
+  - first:
+      213: -6818115816181018279
+    second: Check Statue 9
+  - first:
+      213: -3071352666662964425
+    second: Check Statue 10
+  - first:
+      213: -5825363922162019945
+    second: Check Statue 11
+  - first:
+      213: 644681182985282808
+    second: Check Statue 12
+  - first:
+      213: -5989634162843368052
+    second: Check Statue 13
+  - first:
+      213: -5285278482251831875
+    second: Check Statue 14
+  - first:
+      213: 4944008287388056097
+    second: Check Statue 15
+  - first:
+      213: -6690533626487108229
+    second: Check Statue 16
+  - first:
+      213: -3671804437716007452
+    second: Check Statue 17
+  - first:
+      213: -2128449853204128481
+    second: Check Statue 18
+  - first:
+      213: 7460502040331209267
+    second: Check Statue 19
+  - first:
+      213: 2240303879370529683
+    second: Check Statue 20
+  - first:
+      213: -616177163836558573
+    second: Check Statue 21
+  - first:
+      213: 5580500136950929075
+    second: Check Statue 22
+  - first:
+      213: 2908209397192423333
+    second: Check Statue 23
+  - first:
+      213: 8869858959872106772
+    second: Conveyor Mid 0
+  - first:
+      213: 6273131541661454191
+    second: Conveyor Mid 1
+  - first:
+      213: 6894232776697334792
+    second: Conveyor Mid 2
+  - first:
+      213: 5286129505909953240
+    second: Conveyor Mid 3
+  - first:
+      213: 5597944055196095667
+    second: Conveyor Mid 4
+  - first:
+      213: -366553418290470181
+    second: Conveyor Mid 5
+  - first:
+      213: 4821765223392073288
+    second: Conveyor Mid 6
+  - first:
+      213: 7523519679850416278
+    second: Conveyor Mid 7
+  - first:
+      213: -6849436530788924678
+    second: Conveyor Left 0
+  - first:
+      213: -2686448938111358844
+    second: Conveyor Left 1
+  - first:
+      213: -452027482023640203
+    second: Conveyor Left 2
+  - first:
+      213: -700631615691403929
+    second: Conveyor Left 3
+  - first:
+      213: 4416833164111991290
+    second: Conveyor Left 4
+  - first:
+      213: 3014544715659330481
+    second: Conveyor Left 5
+  - first:
+      213: -8760762342703505
+    second: Conveyor Left 6
+  - first:
+      213: -816469386340296175
+    second: Conveyor Left 7
+  - first:
+      213: 1277748799282487443
+    second: Conveyor Right 0
+  - first:
+      213: -2972611691506671692
+    second: Conveyor Right 1
+  - first:
+      213: -1598002019710971740
+    second: Conveyor Right 2
+  - first:
+      213: -713158668184193528
+    second: Conveyor Right 3
+  - first:
+      213: -1080687705925388806
+    second: Conveyor Right 4
+  - first:
+      213: 8654862003835209668
+    second: Conveyor Right 5
+  - first:
+      213: -8539665021158487183
+    second: Conveyor Right 6
+  - first:
+      213: 5458605334293113808
+    second: Conveyor Right 7
+  - first:
+      213: 3505626402946431825
+    second: Conveyor Single 0
+  - first:
+      213: 5639508038077653028
+    second: Conveyor Single 1
+  - first:
+      213: -8255140515171143345
+    second: Conveyor Single 2
+  - first:
+      213: -2169502823514170269
+    second: Conveyor Single 3
+  - first:
+      213: 2223780591514262014
+    second: Conveyor Single 4
+  - first:
+      213: 990678265378613858
+    second: Conveyor Single 5
+  - first:
+      213: 3879808583591258486
+    second: Conveyor Single 6
+  - first:
+      213: -4780002661236639766
+    second: Conveyor Single 7
+  - first:
+      213: 2358907889829948367
+    second: Check Altar 12
+  - first:
+      213: 4312572546759824597
+    second: Check Altar 0
+  - first:
+      213: 1466546089408830051
+    second: Check Altar 1
+  - first:
+      213: 2489991742835665880
+    second: Check Altar 13
+  - first:
+      213: 8839838725664564805
+    second: Check Altar 14
+  - first:
+      213: -1417421675341320699
+    second: Check Altar 15
+  - first:
+      213: -4441763328246351736
+    second: Check Altar 16
+  - first:
+      213: 2681472824583667158
+    second: Check Altar 17
+  - first:
+      213: 8560999289625563613
+    second: Check Altar 18
+  - first:
+      213: 8057227050989782220
+    second: Check Altar 19
+  - first:
+      213: 2708758425910553369
+    second: Check Altar 20
+  - first:
+      213: -8526181882031685216
+    second: Check Altar 21
+  - first:
+      213: -8982672191386649648
+    second: Check Altar 22
+  - first:
+      213: -7055169885375930191
+    second: Check Altar 23
+  - first:
+      213: -2556948644422940918
+    second: Check Altar 2
+  - first:
+      213: -8994282571601530582
+    second: Check Altar 3
+  - first:
+      213: -654089517717540796
+    second: Check Altar 4
+  - first:
+      213: 8604615731192563585
+    second: Check Altar 5
+  - first:
+      213: -2401578804588704402
+    second: Check Altar 6
+  - first:
+      213: -7763231266587370518
+    second: Check Altar 7
+  - first:
+      213: 2538238195986311769
+    second: Check Altar 8
+  - first:
+      213: -7770977609402098439
+    second: Check Altar 9
+  - first:
+      213: -637101586808039641
+    second: Check Altar 10
+  - first:
+      213: -2215026977936886246
+    second: Check Altar 11
+  - first:
+      213: 7290062980355784187
+    second: Ladder
+  - first:
+      213: 5932062655124953560
+    second: Spring Metal 0
+  - first:
+      213: 1715421729086798147
+    second: Spring Wood 0
+  - first:
+      213: -3155572544858409605
+    second: Spring Metal 1
+  - first:
+      213: -3808369590986428234
+    second: Spring Metal 2
+  - first:
+      213: 639580775015427638
+    second: Spring Metal 3
+  - first:
+      213: -6317842551684591803
+    second: Spring Wood 1
+  - first:
+      213: 9215108347373453466
+    second: Spring Wood 2
+  - first:
+      213: 2077876861282791539
+    second: Spring Wood 3
+  - first:
+      213: 5955200535594524435
+    second: Rock 0
+  - first:
+      213: -3600162799094846877
+    second: Rock 1
+  - first:
+      213: -5611854857341473124
+    second: Rock 2
+  - first:
+      213: 5805727874582909396
+    second: Rock 3
+  - first:
+      213: -9088269654632666071
+    second: Rock 4
+  - first:
+      213: 7509405098246851045
+    second: Rock 5
+  - first:
+      213: 6194295475607757931
+    second: Rock 6
+  - first:
+      213: 1706575635377595977
+    second: Rock 7
+  - first:
+      213: -4695454222259582860
+    second: Rock 8
+  - first:
+      213: 898104420542370431
+    second: Rock 9
+  - first:
+      213: -3331911818303322132
+    second: Rock 10
+  - first:
+      213: 6586171972744889760
+    second: Rock 11
+  - first:
+      213: 4987768307214808864
+    second: Rock 12
+  - first:
+      213: -5819539617497405963
+    second: Rock 13
+  - first:
+      213: 4604620840369684041
+    second: Rock 14
+  - first:
+      213: -7368122238353771936
+    second: Rock 15
+  - first:
+      213: -3874546223122678074
+    second: Rock 16
+  - first:
+      213: -4627166008051024337
+    second: Rock 17
+  - first:
+      213: -6667639585085171205
+    second: Rock 18
+  - first:
+      213: 5454190475271853803
+    second: Rock 19
+  - first:
+      213: 6810799561604486206
+    second: Rock 20
+  - first:
+      213: 1973045571039179873
+    second: Rock 21
+  - first:
+      213: 8871908971985078320
+    second: Rock 22
+  - first:
+      213: 7676554144059720746
+    second: Rock 23
+  - first:
+      213: -1443453744664191403
+    second: Rock 24
+  - first:
+      213: -1768687678998355537
+    second: Rock 25
+  - first:
+      213: 6086789710757788119
+    second: Rock 26
+  - first:
+      213: -8854742647187290801
+    second: Rock 27
+  - first:
+      213: 4411762208032804622
+    second: Rock 28
+  - first:
+      213: 4416081791566604222
+    second: Rock 29
+  - first:
+      213: 4466487989744839872
+    second: Rock 30
+  - first:
+      213: 3664738349284897174
+    second: Rock 31
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 0
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Barrel
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 239
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d490903cb74751090800000000000000
+      internalID: -8064411482835056307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Barrel Small
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 247
+        width: 8
+        height: 8
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26537f1858689ea60800000000000000
+      internalID: 7703836545563178338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Road Sign 0
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 239
+        width: 9
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 417bd332249acafd0800000000000000
+      internalID: -2329300805733206252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Road Sign 1
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 239
+        width: 9
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c24ccd61dc5e88210800000000000000
+      internalID: 1335569958529975340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Road Sign 2
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 206
+        width: 9
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d491542b88b723bd0800000000000000
+      internalID: -2651921403531159219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 173
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a4f0b6bcedff16d0800000000000000
+      internalID: -3017414032195783511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 173
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7d4ad2ec473bfa10800000000000000
+      internalID: 1944208467503500670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 173
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b171289b1a5bd0a80800000000000000
+      internalID: -8498937215571585253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 173
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e761e50b3a0075df0800000000000000
+      internalID: -191683756101331330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 173
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33c74e1c57a2a9ad0800000000000000
+      internalID: -2694794741775303629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 173
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af17bf9e70dfafbc0800000000000000
+      internalID: -3748405529400348166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 173
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c6581f9a826e2720800000000000000
+      internalID: 2823302363922060993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 173
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9a12a2330f34a410800000000000000
+      internalID: 1487383059906042525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 8
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 173
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afb89128b222607a0800000000000000
+      internalID: -6411399449253671942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 9
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 173
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 951de030acf2161a0800000000000000
+      internalID: -6818115816181018279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 10
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 173
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 733fa9bb50d5065d0800000000000000
+      internalID: -3071352666662964425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 11
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 173
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 791182c7066282fa0800000000000000
+      internalID: -5825363922162019945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 12
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f46739ce1e52f800800000000000000
+      internalID: 644681182985282808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 13
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c854d2d967b80eca0800000000000000
+      internalID: -5989634162843368052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 14
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db52d56193be6a6b0800000000000000
+      internalID: -5285278482251831875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 15
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12a3a58c755ac9440800000000000000
+      internalID: 4944008287388056097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 16
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7d0e6b5d137623a0800000000000000
+      internalID: -6690533626487108229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 17
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e50c3561512b0dc0800000000000000
+      internalID: -3671804437716007452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 18
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1d1981b22a3672e0800000000000000
+      internalID: -2128449853204128481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 19
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33ac4080417098760800000000000000
+      internalID: 7460502040331209267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 20
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39b5fc63288271f10800000000000000
+      internalID: 2240303879370529683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 21
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31370d65226e277f0800000000000000
+      internalID: -616177163836558573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 22
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b69afbce4be17d40800000000000000
+      internalID: 5580500136950929075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Statue 23
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 156
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a77b14d9090c5820800000000000000
+      internalID: 2908209397192423333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4112efebab1181b70800000000000000
+      internalID: 8869858959872106772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6f870296e3ae0750800000000000000
+      internalID: 6273131541661454191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80c46e5ee2c3daf50800000000000000
+      internalID: 6894232776697334792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d2597c47ca1c5940800000000000000
+      internalID: 5286129505909953240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b419728574efad40800000000000000
+      internalID: 5597944055196095667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd2679fab9db9eaf0800000000000000
+      internalID: -366553418290470181
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 846dd928ce95ae240800000000000000
+      internalID: 4821765223392073288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Mid 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 698052a9949e86860800000000000000
+      internalID: 7523519679850416278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af20ebed3c9e1f0a0800000000000000
+      internalID: -6849436530788924678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 488a5a89ce0d7bad0800000000000000
+      internalID: -2686448938111358844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 573444966631ab9f0800000000000000
+      internalID: -452027482023640203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76d4e44f14bd646f0800000000000000
+      internalID: -700631615691403929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af15f038c5ebb4d30800000000000000
+      internalID: 4416833164111991290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b3c7687270d5d920800000000000000
+      internalID: 3014544715659330481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6ef9901220e0eff0800000000000000
+      internalID: -8760762342703505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Left 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11a94314b615ba4f0800000000000000
+      internalID: -816469386340296175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3902a6d53c97bb110800000000000000
+      internalID: 1277748799282487443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bf52988a692fb6d0800000000000000
+      internalID: -2972611691506671692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a055c031a1c2d9e0800000000000000
+      internalID: -1598002019710971740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 806f36248f95a16f0800000000000000
+      internalID: -713158668184193528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af57f27d140a001f0800000000000000
+      internalID: -1080687705925388806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c78f96132f3c1870800000000000000
+      internalID: 8654862003835209668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17b050988e30d7980800000000000000
+      internalID: -8539665021158487183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Right 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 105
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dbe79f61acd0cb40800000000000000
+      internalID: 5458605334293113808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15b3adec3ac76a030800000000000000
+      internalID: 3505626402946431825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42024956eae834e40800000000000000
+      internalID: 5639508038077653028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f41f9466079df6d80800000000000000
+      internalID: -8255140515171143345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36c1b313da064e1e0800000000000000
+      internalID: -2169502823514170269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef99d977aa47cde10800000000000000
+      internalID: 2223780591514262014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26aa79e22a89fbd00800000000000000
+      internalID: 990678265378613858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 679e775c959d7d530800000000000000
+      internalID: 3879808583591258486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Single 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 88
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae77197b7e40aadb0800000000000000
+      internalID: -4780002661236639766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 12
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcb2e2f4a368cb020800000000000000
+      internalID: 2358907889829948367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d498bdd1e559db30800000000000000
+      internalID: 4312572546759824597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36a93f1f5e73a5410800000000000000
+      internalID: 1466546089408830051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 13
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8db206d2c4a3e8220800000000000000
+      internalID: 2489991742835665880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 14
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5466afa4c7a6daa70800000000000000
+      internalID: 8839838725664564805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 15
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50e67500f7e445ce0800000000000000
+      internalID: -1417421675341320699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 16
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 888f48359cfab52c0800000000000000
+      internalID: -4441763328246351736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 17
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6dd3c20b351863520800000000000000
+      internalID: 2681472824583667158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 18
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd1d08cee77cec670800000000000000
+      internalID: 8560999289625563613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 19
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc40ae8505501df60800000000000000
+      internalID: 8057227050989782220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 20
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91baebecf61779520800000000000000
+      internalID: 2708758425910553369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 21
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a1412f70caeca980800000000000000
+      internalID: -8526181882031685216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 22
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0db7e92fb33275380800000000000000
+      internalID: -8982672191386649648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 23
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 190
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b062208e50071e90800000000000000
+      internalID: -7055169885375930191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a07014451c4e38cd0800000000000000
+      internalID: -2556948644422940918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a213436a7a3ed2380800000000000000
+      internalID: -8994282571601530582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 440b3259c053ce6f0800000000000000
+      internalID: -654089517717540796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18788761b6cb96770800000000000000
+      internalID: 8604615731192563585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6d02642dc0ebaed0800000000000000
+      internalID: -2401578804588704402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aeb9add5b46734490800000000000000
+      internalID: -7763231266587370518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 8
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95aa71be032a93320800000000000000
+      internalID: 2538238195986311769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 9
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fcd2126901f72490800000000000000
+      internalID: -7770977609402098439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 10
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72718787b7f8827f0800000000000000
+      internalID: -637101586808039641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check Altar 11
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 223
+        width: 16
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a163a2403b4a241e0800000000000000
+      internalID: -2215026977936886246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ladder
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 222
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfdf45ef7a18b2560800000000000000
+      internalID: 7290062980355784187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spring Metal 0
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d955103e8be25250800000000000000
+      internalID: 5932062655124953560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spring Wood 0
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 349743259f66ec710800000000000000
+      internalID: 1715421729086798147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spring Metal 1
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b753db84d772534d0800000000000000
+      internalID: -3155572544858409605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spring Metal 2
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b0badbd804f52bc0800000000000000
+      internalID: -3808369590986428234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spring Metal 3
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 139
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63ea6f3835f30e800800000000000000
+      internalID: 639580775015427638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spring Wood 1
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54f0eff2ca38258a0800000000000000
+      internalID: -6317842551684591803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spring Wood 2
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a908eebd734a2ef70800000000000000
+      internalID: 9215108347373453466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spring Wood 3
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 122
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 370b3cb0ff916dc10800000000000000
+      internalID: 2077876861282791539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 71
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31fd35ac55f15a250800000000000000
+      internalID: 5955200535594524435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 71
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36a206a3207a90ec0800000000000000
+      internalID: -3600162799094846877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 2
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 71
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9e6c197dbfae12b0800000000000000
+      internalID: -5611854857341473124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 71
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d1191bedb6129050800000000000000
+      internalID: 5805727874582909396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 4
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 71
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92c68ac96eaffd180800000000000000
+      internalID: -9088269654632666071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 71
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e9c28b7624c63860800000000000000
+      internalID: 7509405098246851045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 6
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 71
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b64e8619aee86f550800000000000000
+      internalID: 6194295475607757931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 71
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 946a401af79fea710800000000000000
+      internalID: 1706575635377595977
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 8
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 54
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4780c1f234566deb0800000000000000
+      internalID: -4695454222259582860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 9
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 54
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f72d2ad4635b67c00800000000000000
+      internalID: 898104420542370431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 10
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 54
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce7ca1fbadba2c1d0800000000000000
+      internalID: -3331911818303322132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 11
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 54
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a5c711a388c66b50800000000000000
+      internalID: 6586171972744889760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 12
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 54
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0277d7d59dc183540800000000000000
+      internalID: 4987768307214808864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 13
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 54
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f521c61d87dc3fa0800000000000000
+      internalID: -5819539617497405963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 14
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 54
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94e789b0246e6ef30800000000000000
+      internalID: 4604620840369684041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 15
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 54
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0627449bcdb2fb990800000000000000
+      internalID: -7368122238353771936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 16
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 37
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6cef0f00db8da3ac0800000000000000
+      internalID: -3874546223122678074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 17
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 37
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2e3b5d080109cfb0800000000000000
+      internalID: -4627166008051024337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 18
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 37
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf95aa0cf19c773a0800000000000000
+      internalID: -6667639585085171205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 19
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 37
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be6d5e7f65d21bb40800000000000000
+      internalID: 5454190475271853803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 20
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 37
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3452d9bd12d48e50800000000000000
+      internalID: 6810799561604486206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 21
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 37
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 164b2734e7aa16b10800000000000000
+      internalID: 1973045571039179873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 22
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 37
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03885c2643a5f1b70800000000000000
+      internalID: 8871908971985078320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 23
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 37
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a248bb76259988a60800000000000000
+      internalID: 7676554144059720746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 24
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 20
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55e559b8772d7fbe0800000000000000
+      internalID: -1443453744664191403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 25
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 20
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa161b64deb5477e0800000000000000
+      internalID: -1768687678998355537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 26
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 20
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d978342efe987450800000000000000
+      internalID: 6086789710757788119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 27
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 20
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4546e01a72ad1580800000000000000
+      internalID: -8854742647187290801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 28
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 20
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0fc94b8a5ab93d30800000000000000
+      internalID: 4411762208032804622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 29
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 20
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb7e565fdf2194d30800000000000000
+      internalID: 4416081791566604222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 30
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 20
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0cc2a4689272cfd30800000000000000
+      internalID: 4466487989744839872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rock 31
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 20
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 691b0efac14cbd230800000000000000
+      internalID: 3664738349284897174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Check Altar 1: 1466546089408830051
+      Rock 25: -1768687678998355537
+      Check Altar 18: 8560999289625563613
+      Road Sign 0: -2329300805733206252
+      Rock 3: 5805727874582909396
+      Rock 7: 1706575635377595977
+      Check Altar 22: -8982672191386649648
+      Rock 4: -9088269654632666071
+      Check Statue 4: -2694794741775303629
+      Check Altar 10: -637101586808039641
+      Ladder: 7290062980355784187
+      Rock 21: 1973045571039179873
+      Conveyor Right 6: -8539665021158487183
+      Conveyor Single 5: 990678265378613858
+      Spring Metal 2: -3808369590986428234
+      Conveyor Left 6: -8760762342703505
+      Check Statue 23: 2908209397192423333
+      Check Statue 20: 2240303879370529683
+      Check Statue 9: -6818115816181018279
+      Conveyor Mid 0: 8869858959872106772
+      Check Altar 9: -7770977609402098439
+      Conveyor Mid 5: -366553418290470181
+      Rock 19: 5454190475271853803
+      Check Altar 5: 8604615731192563585
+      Check Statue 3: -191683756101331330
+      Rock 8: -4695454222259582860
+      Check Altar 0: 4312572546759824597
+      Conveyor Single 3: -2169502823514170269
+      Check Statue 21: -616177163836558573
+      Check Statue 1: 1944208467503500670
+      Spring Wood 3: 2077876861282791539
+      Check Statue 2: -8498937215571585253
+      Conveyor Left 5: 3014544715659330481
+      Conveyor Right 4: -1080687705925388806
+      Conveyor Single 0: 3505626402946431825
+      Spring Wood 0: 1715421729086798147
+      Check Altar 16: -4441763328246351736
+      Check Altar 6: -2401578804588704402
+      Check Statue 18: -2128449853204128481
+      Conveyor Left 0: -6849436530788924678
+      Check Statue 0: -3017414032195783511
+      Check Statue 13: -5989634162843368052
+      Road Sign 2: -2651921403531159219
+      Check Statue 8: -6411399449253671942
+      Check Altar 4: -654089517717540796
+      Rock 14: 4604620840369684041
+      Check Altar 19: 8057227050989782220
+      Spring Metal 3: 639580775015427638
+      Rock 27: -8854742647187290801
+      Check Altar 11: -2215026977936886246
+      Check Altar 2: -2556948644422940918
+      Conveyor Mid 1: 6273131541661454191
+      Rock 12: 4987768307214808864
+      Check Statue 6: 2823302363922060993
+      Check Statue 16: -6690533626487108229
+      Rock 0: 5955200535594524435
+      Check Statue 12: 644681182985282808
+      Conveyor Right 7: 5458605334293113808
+      Check Altar 12: 2358907889829948367
+      Conveyor Right 0: 1277748799282487443
+      Rock 22: 8871908971985078320
+      Conveyor Mid 4: 5597944055196095667
+      Check Altar 20: 2708758425910553369
+      Check Altar 14: 8839838725664564805
+      Check Altar 15: -1417421675341320699
+      Rock 16: -3874546223122678074
+      Rock 5: 7509405098246851045
+      Conveyor Right 2: -1598002019710971740
+      Conveyor Left 3: -700631615691403929
+      Conveyor Left 1: -2686448938111358844
+      Rock 23: 7676554144059720746
+      Spring Wood 1: -6317842551684591803
+      Barrel: -8064411482835056307
+      Check Statue 17: -3671804437716007452
+      Check Statue 14: -5285278482251831875
+      Conveyor Right 1: -2972611691506671692
+      Rock 24: -1443453744664191403
+      Check Altar 23: -7055169885375930191
+      Conveyor Left 2: -452027482023640203
+      Check Altar 8: 2538238195986311769
+      Check Altar 3: -8994282571601530582
+      Check Statue 5: -3748405529400348166
+      Rock 17: -4627166008051024337
+      Check Altar 7: -7763231266587370518
+      Rock 30: 4466487989744839872
+      Conveyor Mid 6: 4821765223392073288
+      Check Statue 7: 1487383059906042525
+      Rock 29: 4416081791566604222
+      Check Altar 13: 2489991742835665880
+      Rock 20: 6810799561604486206
+      Rock 26: 6086789710757788119
+      Check Altar 21: -8526181882031685216
+      Rock 9: 898104420542370431
+      Rock 18: -6667639585085171205
+      Conveyor Left 7: -816469386340296175
+      Conveyor Mid 3: 5286129505909953240
+      Rock 6: 6194295475607757931
+      Road Sign 1: 1335569958529975340
+      Rock 13: -5819539617497405963
+      Rock 10: -3331911818303322132
+      Rock 15: -7368122238353771936
+      Rock 31: 3664738349284897174
+      Conveyor Single 4: 2223780591514262014
+      Conveyor Single 7: -4780002661236639766
+      Check Altar 17: 2681472824583667158
+      Spring Metal 0: 5932062655124953560
+      Conveyor Mid 7: 7523519679850416278
+      Conveyor Right 3: -713158668184193528
+      Rock 11: 6586171972744889760
+      Check Statue 11: -5825363922162019945
+      Check Statue 15: 4944008287388056097
+      Spring Wood 2: 9215108347373453466
+      Check Statue 19: 7460502040331209267
+      Conveyor Mid 2: 6894232776697334792
+      Conveyor Left 4: 4416833164111991290
+      Conveyor Single 1: 5639508038077653028
+      Conveyor Right 5: 8654862003835209668
+      Barrel Small: 7703836545563178338
+      Rock 2: -5611854857341473124
+      Check Statue 22: 5580500136950929075
+      Spring Metal 1: -3155572544858409605
+      Conveyor Single 6: 3879808583591258486
+      Conveyor Single 2: -8255140515171143345
+      Check Statue 10: -3071352666662964425
+      Rock 1: -3600162799094846877
+      Rock 28: 4411762208032804622
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

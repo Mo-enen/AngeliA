@@ -1,0 +1,974 @@
+fileFormatVersion: 2
+guid: e9983d2b59e54df48896f2db343e0be8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -372771659982220142
+    second: Leaf Pine 0
+  - first:
+      213: 1561089663153055055
+    second: Leaf Pine 1
+  - first:
+      213: -7068245487652895139
+    second: Leaf Pine 2
+  - first:
+      213: -1104180634249541273
+    second: Leaf Palm 0
+  - first:
+      213: -5168663107240081674
+    second: Leaf Palm 1
+  - first:
+      213: 4392931481301322492
+    second: Leaf Palm 2
+  - first:
+      213: 8708997741296689451
+    second: Leaf Willow 2
+  - first:
+      213: -2767977005067235476
+    second: Leaf Willow 1
+  - first:
+      213: 3368842661031126456
+    second: Leaf Willow 0
+  - first:
+      213: 8800351415834487592
+    second: Leaf Maple 2
+  - first:
+      213: 2894240417409491222
+    second: Leaf Maple 1
+  - first:
+      213: -7678963634722295320
+    second: Leaf Maple 0
+  - first:
+      213: 7438108535209715118
+    second: Leaf Poplar 2
+  - first:
+      213: 5458088081292269897
+    second: Leaf Poplar 1
+  - first:
+      213: -5428447844661190588
+    second: Leaf Poplar 0
+  - first:
+      213: -9201548516188836079
+    second: Shrub 0
+  - first:
+      213: 4045220454783996221
+    second: Shrub 1
+  - first:
+      213: -1520456697795606905
+    second: Shrub 2
+  - first:
+      213: 1749916669303840519
+    second: Shrub 3
+  - first:
+      213: 3070268825783588656
+    second: Shrub 4
+  - first:
+      213: 1026475236708387653
+    second: Shrub 5
+  - first:
+      213: -3308392313293387024
+    second: Shrub 6
+  - first:
+      213: 640674822740088301
+    second: Shrub 7
+  - first:
+      213: 4089835260697963599
+    second: Shrub 8
+  - first:
+      213: -7354869720048613395
+    second: Shrub 9
+  - first:
+      213: -5111172397849505810
+    second: Shrub 10
+  - first:
+      213: -5414286593844431998
+    second: Shrub 11
+  - first:
+      213: -182292683153274137
+    second: Fiddle Leaf 1
+  - first:
+      213: 4737857114161523545
+    second: Fiddle Leaf 2
+  - first:
+      213: 116606616440243101
+    second: Fiddle Leaf 3
+  - first:
+      213: 2556294296473241649
+    second: Fiddle Leaf 4
+  - first:
+      213: 7572563970276764444
+    second: Fiddle Leaf 5
+  - first:
+      213: -3273407139662745961
+    second: Fiddle Leaf 6
+  - first:
+      213: -468300578377016924
+    second: Fiddle Leaf 7
+  - first:
+      213: 9196856240984989582
+    second: Fiddle Leaf 0
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 0
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Leaf Pine 0
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 249
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2945d687626a3daf0800000000000000
+      internalID: -372771659982220142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Pine 1
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 249
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f45a5c217ca1aa510800000000000000
+      internalID: 1561089663153055055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Pine 2
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 249
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d56013b9d2c88ed90800000000000000
+      internalID: -7068245487652895139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Palm 0
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 249
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 769c0b730992da0f0800000000000000
+      internalID: -1104180634249541273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Palm 1
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 249
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f6c949e9483548b0800000000000000
+      internalID: -5168663107240081674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Palm 2
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 249
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfa889158e3d6fc30800000000000000
+      internalID: 4392931481301322492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Willow 2
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 249
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b212bafad439cd870800000000000000
+      internalID: 8708997741296689451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Willow 1
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 249
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6f848a449b2699d0800000000000000
+      internalID: -2767977005067235476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Willow 0
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 249
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b521f22d8880ce20800000000000000
+      internalID: 3368842661031126456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Maple 2
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 249
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82bab678cf0212a70800000000000000
+      internalID: 8800351415834487592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Maple 1
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 249
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 611654643586a2820800000000000000
+      internalID: 2894240417409491222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Maple 0
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 249
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e13c355247de6590800000000000000
+      internalID: -7678963634722295320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Poplar 2
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 249
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea5e9f1dd48793760800000000000000
+      internalID: 7438108535209715118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Poplar 1
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 249
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 949183611360fbb40800000000000000
+      internalID: 5458088081292269897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leaf Poplar 0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 249
+        width: 6
+        height: 6
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4402c3942774aa4b0800000000000000
+      internalID: -5428447844661190588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shrub 0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 232
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11faa0d50688d4080800000000000000
+      internalID: -9201548516188836079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shrub 1
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 232
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d315b853292832830800000000000000
+      internalID: 4045220454783996221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shrub 2
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 232
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 786878760b046eae0800000000000000
+      internalID: -1520456697795606905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shrub 3
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 232
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70fd36470f3f84810800000000000000
+      internalID: 1749916669303840519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shrub 4
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 198
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03759c5ea39cb9a20800000000000000
+      internalID: 3070268825783588656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shrub 5
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 198
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54b0dbe0ac5ce3e00800000000000000
+      internalID: 1026475236708387653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shrub 6
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 198
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fac38c38ba3612d0800000000000000
+      internalID: -3308392313293387024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shrub 7
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 198
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de595f95b5224e800800000000000000
+      internalID: 640674822740088301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shrub 8
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 215
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4ce4cf208302c830800000000000000
+      internalID: 4089835260697963599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shrub 9
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 215
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de7c93715f04ee990800000000000000
+      internalID: -7354869720048613395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shrub 10
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 215
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eef0668c8c77119b0800000000000000
+      internalID: -5111172397849505810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shrub 11
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 215
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2833ebd67079cd4b0800000000000000
+      internalID: -5414286593844431998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fiddle Leaf 1
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 232
+        width: 32
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ea0f7f35cd587df0800000000000000
+      internalID: -182292683153274137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fiddle Leaf 2
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 232
+        width: 32
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95ba72e61ff30c140800000000000000
+      internalID: 4737857114161523545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fiddle Leaf 3
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 232
+        width: 32
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d93816f89154e9100800000000000000
+      internalID: 116606616440243101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fiddle Leaf 4
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 215
+        width: 32
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13805aa6e18c97320800000000000000
+      internalID: 2556294296473241649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fiddle Leaf 5
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 215
+        width: 32
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1ba44f4fc6271960800000000000000
+      internalID: 7572563970276764444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fiddle Leaf 6
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 215
+        width: 32
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79eac2bbc858292d0800000000000000
+      internalID: -3273407139662745961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fiddle Leaf 7
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 215
+        width: 32
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a95ab9ea134089f0800000000000000
+      internalID: -468300578377016924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fiddle Leaf 0
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 232
+        width: 32
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8f9e3e260cc1af70800000000000000
+      internalID: 9196856240984989582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Shrub 3: 1749916669303840519
+      Leaf Palm 0: -1104180634249541273
+      Fiddle Leaf 5: 7572563970276764444
+      Leaf Willow 2: 8708997741296689451
+      Shrub 10: -5111172397849505810
+      Leaf Pine 2: -7068245487652895139
+      Fiddle Leaf 7: -468300578377016924
+      Leaf Palm 1: -5168663107240081674
+      Shrub 7: 640674822740088301
+      Fiddle Leaf 3: 116606616440243101
+      Leaf Willow 1: -2767977005067235476
+      Fiddle Leaf 1: -182292683153274137
+      Leaf Poplar 1: 5458088081292269897
+      Shrub 9: -7354869720048613395
+      Shrub 5: 1026475236708387653
+      Shrub 8: 4089835260697963599
+      Fiddle Leaf 4: 2556294296473241649
+      Shrub 0: -9201548516188836079
+      Fiddle Leaf 6: -3273407139662745961
+      Shrub 6: -3308392313293387024
+      Leaf Maple 1: 2894240417409491222
+      Leaf Pine 1: 1561089663153055055
+      Leaf Pine 0: -372771659982220142
+      Leaf Maple 2: 8800351415834487592
+      Shrub 1: 4045220454783996221
+      Fiddle Leaf 0: 9196856240984989582
+      Leaf Palm 2: 4392931481301322492
+      Shrub 2: -1520456697795606905
+      Shrub 4: 3070268825783588656
+      Fiddle Leaf 2: 4737857114161523545
+      Leaf Poplar 2: 7438108535209715118
+      Shrub 11: -5414286593844431998
+      Leaf Willow 0: 3368842661031126456
+      Leaf Poplar 0: -5428447844661190588
+      Leaf Maple 0: -7678963634722295320
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

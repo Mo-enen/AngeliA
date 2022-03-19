@@ -1,0 +1,22 @@
+{
+    "name": "Yaya.Editor",
+    "rootNamespace": "Yaya.Editor",
+    "references": [
+        "Moenen.Standard",
+        "AngeliaFramework",
+        "AngeliaFrameworkEditor",
+        "Yaya",
+        "Moenen.EditorStandard"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
