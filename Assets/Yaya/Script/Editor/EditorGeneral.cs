@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.PackageManager;
@@ -36,15 +37,8 @@ namespace Yaya.Editor {
 			public int Order => 0;
 
 			private string GetPath () {
-				var req = Client.List(true, false);
-				while (!req.IsCompleted) { }
-				if (req.Status == StatusCode.Success) {
-					foreach (var package in req.Result) {
-						if (package.name == "com.moenengames.yaya") {
-							return "Packages/com.moenengames.yaya";
-						}
-					}
-				}
+				const string TARGET = "Packages/com.moenengames.yaya";
+				if (EditorUtil.ForAllPackages().Any(package => package == TARGET)) return TARGET;
 				return "Assets";
 			}
 		}
@@ -63,15 +57,8 @@ namespace Yaya.Editor {
 			public int Order => 0 + 1;
 
 			private string GetPath () {
-				var req = Client.List(true, false);
-				while (!req.IsCompleted) { }
-				if (req.Status == StatusCode.Success) {
-					foreach (var package in req.Result) {
-						if (package.name == "com.moenengames.yaya") {
-							return "Packages/com.moenengames.yaya";
-						}
-					}
-				}
+				const string TARGET = "Packages/com.moenengames.yaya";
+				if (EditorUtil.ForAllPackages().Any(package => package == TARGET)) return TARGET;
 				return "Assets";
 			}
 		}

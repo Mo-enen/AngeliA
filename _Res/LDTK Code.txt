@@ -1,0 +1,229 @@
+private void ReloadAllLevels () {
+
+			if (!Util.HasFileIn(Application.dataPath, false, "*.ldtk")) return;
+
+			// Delete Old Maps
+			var mapRoot = Game.MapRoot;
+			Util.DeleteFolder(mapRoot);
+			Util.CreateFolder(mapRoot);
+
+			// Get Sprite Pool
+			var tilesetPool = new Dictionary<string, Dictionary<Vector2Int, (int blockID, Int4 border)>>();
+			foreach (var sheet in EditorUtil.ForAllAssets<SpriteSheet>()) {
+				if (sheet.Texture == null || !sheet.Texture.isReadable) continue;
+				var tPath = AssetDatabase.GetAssetPath(sheet.Texture);
+				var spritePool = new Dictionary<Vector2Int, (int blockID, Int4 border)>();
+				int tHeight = sheet.Texture.height;
+				foreach (var obj in AssetDatabase.LoadAllAssetsAtPath(tPath)) {
+					if (obj is Sprite sp) {
+						var _rect = sp.rect.ToRectInt();
+						var _pos = _rect.position;
+						_pos.y = tHeight - (_pos.y + _rect.height - 1) - 1;
+						bool hasCol =
+							(sp.border.x + sp.border.z).LessOrAlmost(sp.rect.width) &&
+							(sp.border.w + sp.border.y).LessOrAlmost(sp.rect.height);
+						var border = hasCol ? new Int4() {
+							Left = (int)sp.border.x * Const.CELL_SIZE / (int)sp.rect.width,
+							Right = (int)sp.border.z * Const.CELL_SIZE / (int)sp.rect.width,
+							Up = (int)sp.border.w * Const.CELL_SIZE / (int)sp.rect.height,
+							Down = (int)sp.border.y * Const.CELL_SIZE / (int)sp.rect.height
+						} : new Int4() { Left = -1, Right = -1, Up = -1, Down = -1, };
+						string name = sp.name;
+						if (name.StartsWith("_a")) name = name.TrimEnd(' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+						spritePool.TryAdd(_pos, (name.AngeHash(), border));
+					}
+				}
+				tilesetPool.TryAdd(sheet.Texture.name, spritePool);
+			}
+
+			// Load Levels
+			int successCount = 0;
+			int errorCount = 0;
+			foreach (var file in Util.GetFilesIn(Application.dataPath, false, "*.ldtk")) {
+				try {
+					var json = Util.FileToText(file.FullName);
+					var ldtk = LdtkProject.FromJson(json);
+					bool success = LoadLdtkLevel(ldtk, tilesetPool);
+					if (success) successCount++;
+				} catch (System.Exception ex) {
+					Debug.LogException(ex);
+					errorCount++;
+				}
+			}
+
+			// Dialog
+			if (successCount + errorCount == 0) {
+				EditorUtility.DisplayDialog("Done", "No Level Processesed.", "OK");
+			} else {
+				string message = "All Maps Reloaded. ";
+				if (successCount > 0) {
+					message += successCount + " success, ";
+				}
+				if (errorCount > 0) {
+					message += errorCount + " failed.";
+				}
+				if (errorCount > 0) {
+					Debug.LogWarning(message);
+				}
+			}
+		}
+
+
+		private bool LoadLdtkLevel (LdtkProject project, Dictionary<string, Dictionary<Vector2Int, (int blockID, Int4 border)>> spritePool) {
+
+			// Ldtk >> Custom Data Pool
+			var customDataPool = new Dictionary<int, (bool trigger, int tag)>();
+			foreach (var tileset in project.Defs.Tilesets) {
+				if (tileset.Identifier.StartsWith("_")) continue;
+				string tName = Util.GetNameWithoutExtension(tileset.RelPath);
+				if (!spritePool.ContainsKey(tName)) continue;
+				var sPool = spritePool[tName];
+				int gridX = tileset.CWid;
+				int gridY = tileset.CHei;
+				int space = tileset.Spacing;
+				int padding = tileset.Padding;
+				int gSize = tileset.TileGridSize;
+				foreach (var customMap in tileset.CustomData) {
+					if (customMap.Count == 0) continue;
+					if (!customMap.ContainsKey("tileId") || !customMap.ContainsKey("data")) continue;
+					int id = System.Convert.ToInt32(customMap["tileId"]);
+					string data = customMap["data"] as string;
+
+					var tilePos = new Vector2Int(
+						padding + (id % gridX) * (gSize + space),
+						padding + (id / gridY) * (gSize + space)
+					);
+					if (sPool.TryGetValue(tilePos, out (int blockID, Int4 border) _value)) {
+						var lines = data.Split('\n');
+
+						// Is Trigger
+						bool isTrigger = false;
+						if (lines.Length > 0 && bool.TryParse(lines[0], out bool value)) {
+							isTrigger = value;
+						}
+
+						// Tag String
+						int tag = 0;
+						if (lines.Length > 1) {
+							tag = lines[1].AngeHash();
+						}
+
+						customDataPool.TryAdd(_value.blockID, (isTrigger, tag));
+					}
+
+				}
+			}
+
+			// Ldtk >> World Pool
+			var worldPool = new Dictionary<(int x, int y), World>();
+			foreach (var level in project.Levels) {
+				int levelPosX = level.WorldX;
+				int levelPosY = level.WorldY;
+				foreach (var layer in level.LayerInstances) {
+					int gridSize = layer.GridSize;
+					int offsetX = levelPosX + layer.PxTotalOffsetX;
+					int offsetY = levelPosY + layer.PxTotalOffsetY;
+					bool isLevel = layer.Identifier.ToLower().StartsWith("level");
+					var tName = Util.GetNameWithoutExtension(layer.TilesetRelPath);
+					if (string.IsNullOrEmpty(tName)) tName = "";
+					if (!spritePool.ContainsKey(tName) && layer.Type != "Entities") continue;
+					TileInstance[] tiles = null;
+					EntityInstance[] entities = null;
+					switch (layer.Type) {
+						case "Tiles":
+							tiles = layer.GridTiles;
+							break;
+						case "IntGrid":
+						case "AutoLayer":
+							tiles = layer.AutoLayerTiles;
+							break;
+						case "Entities":
+							entities = layer.EntityInstances;
+							break;
+					}
+					if (tiles != null) {
+						var sPool = spritePool[tName];
+						foreach (var tile in tiles) {
+							var srcPos = new Vector2Int(tile.Src[0], tile.Src[1]);
+							if (sPool.ContainsKey(srcPos)) {
+								ForLdtkTile(
+									tile.Px[0] + offsetX,
+									tile.Px[1] + offsetY,
+									(_localX, _localY, world) => SetBlock(world, _localX, _localY, srcPos)
+								);
+							}
+						}
+					} else if (entities != null) {
+						foreach (var entity in entities) {
+							ForLdtkTile(
+								entity.Px[0] - (int)(entity.Pivot[0] * gridSize) + offsetX,
+								entity.Px[1] - (int)(entity.Pivot[1] * gridSize) + offsetY,
+								(_localX, _localY, world) => {
+									var e = world.Entities[_localY * Const.WORLD_MAP_SIZE + _localX];
+									if (e == null) {
+										e = world.Entities[_localY * Const.WORLD_MAP_SIZE + _localX] = new(0, entity.Identifier.AngeHash(), 0);
+									} else {
+										e = e.Last.Next = new(0, entity.Identifier.AngeHash(), 0);
+									}
+									foreach (var field in entity.FieldInstances) {
+										switch (field.Identifier.ToLower()) {
+											case "data":
+												e.Data = System.Convert.ToInt32(field.Value);
+												break;
+										}
+									}
+								}
+							);
+						}
+					}
+					// Func
+					void ForLdtkTile (int pixelX, int pixelY, System.Action<int, int, World> action) {
+						int globalX = pixelX * Const.CELL_SIZE / gridSize;
+						int globalY = -pixelY * Const.CELL_SIZE / gridSize - Const.CELL_SIZE;
+						int unitX = globalX.UDivide(Const.CELL_SIZE);
+						int unitY = globalY.UDivide(Const.CELL_SIZE);
+						int worldX = unitX.UDivide(Const.WORLD_MAP_SIZE);
+						int worldY = unitY.UDivide(Const.WORLD_MAP_SIZE);
+						if (!worldPool.ContainsKey((worldX, worldY))) {
+							worldPool.Add((worldX, worldY), new());
+						}
+						action(
+							unitX.UMod(Const.WORLD_MAP_SIZE),
+							unitY.UMod(Const.WORLD_MAP_SIZE),
+							worldPool[(worldX, worldY)]
+						);
+					}
+					void SetBlock (World world, int _localX, int _localY, Vector2Int srcPos) {
+						if (isLevel) {
+							var blocks = world.Level;
+							ref var block = ref blocks[_localY * Const.WORLD_MAP_SIZE + _localX];
+							var (blockID, border) = spritePool[tName][srcPos];
+							block.TypeID = blockID;
+							block.ColliderBorder = border;
+							if (customDataPool.TryGetValue(block.TypeID, out (bool _isT, int _tag) _value)) {
+								block.IsTrigger = _value._isT;
+								block.Tag = _value._tag;
+							} else {
+								block.IsTrigger = false;
+								block.Tag = 0;
+							}
+						} else {
+							var blocks = world.Background;
+							ref var block = ref blocks[_localY * Const.WORLD_MAP_SIZE + _localX];
+							var (blockID, border) = spritePool[tName][srcPos];
+							block.TypeID = blockID;
+						}
+
+					}
+				}
+			}
+
+			// World Pool >> Maps (add into, no replace)
+			int insID = 1;
+			string mapRoot = Game.MapRoot;
+			foreach (var pair in worldPool) {
+				insID = pair.Value.EditorOnly_SaveToDisk(mapRoot, pair.Key.x, pair.Key.y, insID);
+			}
+
+			return true;
+		}
