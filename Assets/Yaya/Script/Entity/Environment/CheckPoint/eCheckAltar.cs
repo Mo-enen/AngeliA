@@ -69,7 +69,7 @@ namespace Yaya.Editor {
 
 			int altaID = typeof(eCheckAltar).AngeHash();
 
-			const int SIZE = Const.WORLD_MAP_SIZE;
+			const int SIZE = Const.MAP_SIZE;
 			// Get Positions
 			string mapRoot = game.MapRoot;
 			foreach (var file in Util.GetFilesIn(mapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {

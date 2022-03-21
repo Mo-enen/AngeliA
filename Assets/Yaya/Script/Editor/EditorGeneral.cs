@@ -29,7 +29,7 @@ namespace Yaya.Editor {
 			public string Path => !string.IsNullOrEmpty(_Path) ? _Path : (_Path = GetPath());
 			private string _Path = "";
 			public string IgnoreFolders => "";
-			public string IgnoreFiles => "";
+			public string IgnoreFiles => "EditorGeneral.cs";
 			public string Title => "Yaya";
 			public IScriptHubRootPath.FileExtension[] FileExtensions => new IScriptHubRootPath.FileExtension[]{
 				new ("cs", "", true),
