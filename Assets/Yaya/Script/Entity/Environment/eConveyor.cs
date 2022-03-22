@@ -100,7 +100,7 @@ namespace Yaya {
 
 		public override void FrameUpdate (int frame) {
 			base.FrameUpdate(frame);
-			int aFrame = (frame * Mathf.Abs(MoveSpeed) / 16) % 8;
+			int aFrame = (frame * Mathf.Abs(MoveSpeed) / 16).UMod(8);
 			if (MoveSpeed > 0) aFrame = 7 - aFrame;
 			switch (Part) {
 				case PartType.LeftEdge:
@@ -113,6 +113,7 @@ namespace Yaya {
 					CellRenderer.Draw(RIGHT_CODES[aFrame], Rect);
 					break;
 				case PartType.Single:
+				case PartType.None:
 					CellRenderer.Draw(SINGLE_CODES[aFrame], Rect);
 					break;
 			}

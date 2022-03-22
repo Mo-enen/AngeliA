@@ -61,7 +61,7 @@ namespace Yaya {
 
 		public override void FrameUpdate (int frame) {
 			base.FrameUpdate(frame);
-			DrawTrunk();
+			DrawTrunk(Tall, TrunkWidth, HasBottom);
 			// Leaf
 			int tall = Tall;
 			int count = LeafCount;
@@ -88,12 +88,11 @@ namespace Yaya {
 		}
 
 
-		private void DrawTrunk () {
-			int tall = Tall;
-			var rect = new RectInt(X + Const.CELL_SIZE / 2 - TrunkWidth / 2, Y, TrunkWidth, Const.CELL_SIZE);
+		private void DrawTrunk (int tall, int trunkWidth, bool hasBottom) {
+			var rect = new RectInt(X + Const.CELL_SIZE / 2 - trunkWidth / 2, Y, trunkWidth, Const.CELL_SIZE);
 			for (int step = 0; step < tall; step++) {
 				rect.y = Y + step * Const.CELL_SIZE;
-				CellRenderer.Draw(step == 0 && HasBottom ? TrunkBottomCode : TrunkMidCode, rect);
+				CellRenderer.Draw(step == 0 && hasBottom ? TrunkBottomCode : TrunkMidCode, rect);
 			}
 		}
 

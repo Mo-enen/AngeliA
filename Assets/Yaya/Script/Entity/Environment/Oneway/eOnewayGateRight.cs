@@ -36,7 +36,5 @@ namespace Yaya {
 			);
 			base.FrameUpdate(frame);
 		}
-
-
 	}
 }

@@ -13,14 +13,10 @@ namespace Yaya {
 		public override int Layer => (int)EntityLayer.Environment;
 		protected abstract int ArtCode { get; }
 
-		// Data
-		private int ArtworkCode = 0;
-
 
 		public override void OnCreate (int frame) {
 			base.OnCreate(frame);
-			ArtworkCode = ArtCode;
-			if (CellRenderer.GetUVRect(ArtworkCode, out var rect)) {
+			if (CellRenderer.GetUVRect(ArtCode, out var rect)) {
 				Width = rect.Width;
 				Height = rect.Height;
 			}
@@ -29,7 +25,7 @@ namespace Yaya {
 
 		public override void FrameUpdate (int frame) {
 			base.FrameUpdate(frame);
-			CellRenderer.Draw(ArtworkCode, Rect);
+			CellRenderer.Draw(ArtCode, Rect);
 		}
 
 

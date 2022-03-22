@@ -14,15 +14,14 @@ namespace Yaya {
 		// Api
 		public override int Layer => (int)EntityLayer.Environment;
 
-		// Data
-		private int CODE = 0;
+		// Short
+		private int Code => CODES[Data.UMod(CODES.Length)];
 
 
 		// MSG
 		public override void OnCreate (int frame) {
 			base.OnCreate(frame);
-			CODE = CODES[Mathf.Clamp(Data, 0, CODES.Length - 1)];
-			if (CellRenderer.GetUVRect(CODE, out var rect)) {
+			if (CellRenderer.GetUVRect(Code, out var rect)) {
 				Width = rect.Width;
 				Height = rect.Height;
 			}
@@ -31,7 +30,7 @@ namespace Yaya {
 
 		public override void FrameUpdate (int frame) {
 			base.FrameUpdate(frame);
-			CellRenderer.Draw(CODE, Rect);
+			CellRenderer.Draw(Code, Rect);
 		}
 
 

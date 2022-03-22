@@ -26,12 +26,10 @@ namespace Yaya {
 
 
 		public override void FrameUpdate (int frame) {
-
-			CellRenderer.Draw(IsSmallBarrel ? BARREL_SMALL_CODE : BARREL_CODE, Rect);
-
+			int size = IsSmallBarrel ? Const.CELL_SIZE / 2 : Const.CELL_SIZE;
+			CellRenderer.Draw(IsSmallBarrel ? BARREL_SMALL_CODE : BARREL_CODE, X, Y, size, size);
 			base.FrameUpdate(frame);
 		}
-
 
 
 	}
