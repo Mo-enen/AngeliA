@@ -25,7 +25,7 @@ namespace Yaya {
 		public int MoveDecceleration { get; init; } = 4;
 
 		// Jump
-		public int JumpSpeed { get; init; } = 60;
+		public int JumpSpeed { get; init; } = 62;
 		public int JumpCount { get; init; } = 2;
 		public int JumpReleaseLoseRate { get; init; } = 700;
 		public int JumpRaiseGravityRate { get; init; } = 600;

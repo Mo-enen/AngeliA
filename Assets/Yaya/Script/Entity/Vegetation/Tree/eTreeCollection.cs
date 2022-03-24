@@ -18,7 +18,6 @@ namespace Yaya {
 
 
 		protected override void DrawLeaf (int frame, int code, int step, Vector2Int shift) {
-			base.DrawLeaf(frame, code, step, shift);
 			const int SPAN = Const.CELL_SIZE * 3;
 			int xMin = step < Tall - 1 ? Const.CELL_SIZE / 2 - SPAN / 2 : 0;
 			int xMax = step < Tall - 1 ? Const.CELL_SIZE / 2 + SPAN / 2 : Const.CELL_SIZE;
@@ -52,7 +51,6 @@ namespace Yaya {
 
 
 		protected override void DrawLeaf (int frame, int code, int step, Vector2Int shift) {
-			base.DrawLeaf(frame, code, step, shift);
 			if (step != Tall - 1) return;
 			for (int lIndex = 0; lIndex < LEAF_CODES.Length; lIndex++) {
 				code = LEAF_CODES[lIndex];
@@ -103,7 +101,6 @@ namespace Yaya {
 
 
 		protected override void DrawLeaf (int frame, int code, int step, Vector2Int shift) {
-			base.DrawLeaf(frame, code, step, shift);
 			int SPAN = (int)Util.Remap(0, Tall - 1, Const.CELL_SIZE * 4, Const.CELL_SIZE, step);
 			int xMin = step < Tall - 1 ? Const.CELL_SIZE / 2 - SPAN / 2 : 0;
 			int xMax = step < Tall - 1 ? Const.CELL_SIZE / 2 + SPAN / 2 : Const.CELL_SIZE;
@@ -136,7 +133,6 @@ namespace Yaya {
 
 
 		protected override void DrawLeaf (int frame, int code, int step, Vector2Int shift) {
-			base.DrawLeaf(frame, code, step, shift);
 			const int SPAN = Const.CELL_SIZE * 3;
 			int xMin = step < Tall - 1 ? Const.CELL_SIZE / 2 - SPAN / 2 : 0;
 			int xMax = step < Tall - 1 ? Const.CELL_SIZE / 2 + SPAN / 2 : Const.CELL_SIZE;
@@ -171,7 +167,6 @@ namespace Yaya {
 
 
 		protected override void DrawLeaf (int frame, int code, int step, Vector2Int shift) {
-			base.DrawLeaf(frame, code, step, shift);
 			if (step != Tall - 1) return;
 			int basicY = Y + step * Const.CELL_SIZE + Const.CELL_SIZE - LeafSize / 2;
 			int countY = (Tall - 1) * Const.CELL_SIZE / LeafSize;

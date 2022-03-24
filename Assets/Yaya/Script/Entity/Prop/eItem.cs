@@ -17,7 +17,6 @@ namespace Yaya {
 		public override int Layer => (int)EntityLayer.Item;
 		public int VelocityY { get; private set; } = 0;
 		protected abstract int ITEM_CODE { get; }
-		public override bool MapAvailable => false;
 
 		// Short
 		private int ItemCode => _ItemCode != 0 ? _ItemCode : (_ItemCode = ITEM_CODE);

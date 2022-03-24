@@ -39,11 +39,7 @@ namespace Yaya {
 						}
 					}
 				}
-			} catch (System.Exception ex) {
-#if UNITY_EDITOR
-				Debug.LogException(ex);
-#endif
-			}
+			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
 
@@ -60,7 +56,7 @@ namespace Yaya.Editor {
 	using System.Collections.Generic;
 	using UnityEngine;
 	public class CheckPointArtworkExtension : IArtworkEvent {
-		public void Invoke () {
+		public void OnArtworkSynced () {
 			var game = Object.FindObjectOfType<Game>();
 			if (game == null) return;
 			var cpPool = new Dictionary<(int type, int data), Vector2Int>();
@@ -73,18 +69,14 @@ namespace Yaya.Editor {
 			string mapRoot = game.MapRoot;
 			foreach (var file in Util.GetFilesIn(mapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
 				try {
-					string name = Util.GetNameWithoutExtension(file.Name);
-					int _index = name.IndexOf('_');
-					int worldX = int.Parse(name[.._index]);
-					int worldY = int.Parse(name[(_index + 1)..]);
-					if (!world.LoadFromDisk(mapRoot, worldX, worldY)) continue;
+					if (!world.LoadFromDisk(file.FullName)) continue;
 					for (int i = 0; i < SIZE * SIZE; i++) {
 						var e = world.Entities[i];
 						if (e == null) continue;
 						if (e.TypeID == altaID) {
 							cpPool.TryAdd((e.TypeID, e.Data), new(
-								(worldX * SIZE + i % SIZE) * Const.CELL_SIZE,
-								(worldY * SIZE + i / SIZE) * Const.CELL_SIZE
+								(world.WorldPosition.x * SIZE + i % SIZE) * Const.CELL_SIZE,
+								(world.WorldPosition.y * SIZE + i / SIZE) * Const.CELL_SIZE
 							));
 						}
 					}

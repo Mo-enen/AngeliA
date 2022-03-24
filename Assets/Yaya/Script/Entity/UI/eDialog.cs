@@ -58,7 +58,6 @@ namespace Yaya {
 		// Api
 		public override bool Despawnable => false;
 		public override bool ForceUpdate => true;
-		public override bool MapAvailable => false;
 		public override int Layer => (int)EntityLayer.UI;
 
 		// Data
