@@ -19,6 +19,7 @@ namespace Yaya {
 		public override int PushLevel => 64;
 		public override bool CarryRigidbodyOnTop => false;
 		public override bool IsInAir => base.IsInAir && !Movement.IsClimbing;
+		public override RectInt Bounds => Renderer.LocalBounds.Shift(X, Y);
 		public abstract CharacterMovement Movement { get; }
 		public abstract CharacterRenderer Renderer { get; }
 		public abstract CharacterPose Pose { get; }

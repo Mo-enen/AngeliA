@@ -36,12 +36,12 @@ namespace Yaya {
 		public override RectInt Rect => new(X + Const.CELL_SIZE / 2 - TrunkWidth / 2, Y, Width, Height);
 		public override int Layer => (int)EntityLayer.Environment;
 		public override bool CorrectPosition => true;
-		protected int Tall => Mathf.Min(Data, MAX_TALL);
+		protected int Tall => Mathf.Clamp(Data, 1, MAX_TALL);
 		protected int TrunkWidth { get; private set; } = 16;
 		protected int LeafSize { get; private set; } = 16;
 
 		// Data
-		private HitInfo[] c_PoseCheck = new HitInfo[16];
+		private static readonly HitInfo[] c_PoseCheck = new HitInfo[16];
 		private TreePose Pose = TreePose.None;
 		private Vector2Int LeafShift = default;
 		private int LeafCount = 0;
@@ -73,12 +73,12 @@ namespace Yaya {
 		public override void PhysicsUpdate (int frame) {
 			base.PhysicsUpdate(frame);
 			if (Pose == TreePose.None) {
-				var cRect = CellRect;
+				var rect = Rect;
 				// Top Check
 				bool top = false;
 				int count = CellPhysics.OverlapAll(
 					c_PoseCheck, (int)PhysicsMask.Environment,
-					new(cRect.x, cRect.yMax, Const.CELL_SIZE, Const.CELL_SIZE), this, OperationMode.ColliderAndTrigger
+					new(rect.x, rect.yMax, rect.width, Const.CELL_SIZE), this, OperationMode.ColliderAndTrigger
 				);
 				for (int i = 0; i < count; i++) {
 					if (c_PoseCheck[i].Entity is eTree) {
@@ -90,7 +90,7 @@ namespace Yaya {
 				bool bottom = false;
 				count = CellPhysics.OverlapAll(
 					c_PoseCheck, (int)PhysicsMask.Environment,
-					new(cRect.x, cRect.yMin - Const.CELL_SIZE, Const.CELL_SIZE, Const.CELL_SIZE), this, OperationMode.ColliderAndTrigger
+					new(rect.x, rect.yMin - Const.CELL_SIZE, rect.width, Const.CELL_SIZE), this, OperationMode.ColliderAndTrigger
 				);
 				for (int i = 0; i < count; i++) {
 					if (c_PoseCheck[i].Entity is eTree) {
@@ -98,6 +98,7 @@ namespace Yaya {
 						break;
 					}
 				}
+				c_PoseCheck.Dispose();
 				// Final
 				Pose = top && bottom ? TreePose.Mid : !top && !bottom ? TreePose.Single : bottom && !top ? TreePose.Top : TreePose.Bottom;
 			}

@@ -23,6 +23,8 @@ namespace Yaya {
 		public override int Layer => (int)EntityLayer.Environment;
 		public override int CollisionLayer => (int)PhysicsLayer.Environment;
 		protected abstract bool Horizontal { get; }
+		public override int PushLevel => Horizontal ? int.MaxValue - 1 : 1;
+		public override RectInt Bounds => new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE);
 
 		// Short
 		private int Power => Data;
@@ -41,9 +43,7 @@ namespace Yaya {
 			base.OnCreate(frame);
 			Width = Horizontal ? Const.CELL_SIZE / 2 : Const.CELL_SIZE;
 			Height = !Horizontal ? Const.CELL_SIZE / 2 : Const.CELL_SIZE;
-			if (Horizontal) {
-				OffsetX = Const.CELL_SIZE / 4;
-			}
+			if (Horizontal) OffsetX = Const.CELL_SIZE / 4;
 		}
 
 

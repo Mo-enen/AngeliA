@@ -11,6 +11,9 @@ namespace Yaya {
 		private static readonly int TRUNK_MID_CODE = "Trunk Mid 0".AngeHash();
 		private static readonly int[] LEAF_CODES = new int[] { "Leaf Maple 0".AngeHash(), "Leaf Maple 1".AngeHash(), "Leaf Maple 2".AngeHash(), };
 
+		private const int SPAN = Const.CELL_SIZE * 3;
+
+		public override RectInt Bounds => Rect.Expand(SPAN / 2, SPAN / 2, 0, LeafSize / 2);
 		protected override int TrunkBottomCode => TRUNK_BOTTOM_CODE;
 		protected override int TrunkMidCode => TRUNK_MID_CODE;
 		protected override int LeafCountMin => 6;
@@ -18,7 +21,6 @@ namespace Yaya {
 
 
 		protected override void DrawLeaf (int frame, int code, int step, Vector2Int shift) {
-			const int SPAN = Const.CELL_SIZE * 3;
 			int xMin = step < Tall - 1 ? Const.CELL_SIZE / 2 - SPAN / 2 : 0;
 			int xMax = step < Tall - 1 ? Const.CELL_SIZE / 2 + SPAN / 2 : Const.CELL_SIZE;
 			CellRenderer.Draw(
@@ -43,7 +45,14 @@ namespace Yaya {
 		private static readonly int TRUNK_MID_CODE = "Trunk Mid 1".AngeHash();
 		private static readonly int[] LEAF_CODES = new int[] { "Leaf Palm 0".AngeHash(), "Leaf Palm 1".AngeHash(), "Leaf Palm 2".AngeHash(), };
 
+		private int SPAN => LeafSize * 2;
+		private const int LEAF_LENGTH = 2;
 
+		public override RectInt Bounds => Rect.Expand(
+			LEAF_LENGTH * SPAN,
+			LEAF_LENGTH * SPAN,
+			0, LeafSize / 2
+		);
 		protected override int TrunkBottomCode => TRUNK_BOTTOM_CODE;
 		protected override int TrunkMidCode => TRUNK_MID_CODE;
 		protected override int LeafCountMin => 1;
@@ -57,7 +66,7 @@ namespace Yaya {
 				int x = X + Const.CELL_SIZE / 2;
 				int y = Y + step * Const.CELL_SIZE + Const.CELL_SIZE - lIndex * LeafSize / 3;
 				int offsetY = lIndex % 2 == 0 ? LeafSize / 11 : -LeafSize / 11;
-				for (int i = 0; i < 2; i++) {
+				for (int i = 0; i < LEAF_LENGTH; i++) {
 					int rot = (int)Util.Remap(
 						0f, 120f, 0f, 12f,
 						Mathf.PingPong(frame + shift.x + lIndex * 96 - i * 12, 120)
@@ -65,7 +74,7 @@ namespace Yaya {
 					CellRenderer.Draw(
 						code, x, y + offsetY,
 						0 - 998 * i, 500, rot,
-						LeafSize * 2, LeafSize * 2
+						SPAN, SPAN
 					);
 					rot = (int)Util.Remap(
 						0f, 120f, 0f, 12f,
@@ -74,7 +83,7 @@ namespace Yaya {
 					CellRenderer.Draw(
 						code, x, y - offsetY,
 						0 - 998 * i, 500, -rot,
-						-LeafSize * 2, LeafSize * 2
+						-SPAN, SPAN
 					);
 				}
 			}
@@ -93,7 +102,9 @@ namespace Yaya {
 		private static readonly int TRUNK_MID_CODE = "Trunk Mid 0".AngeHash();
 		private static readonly int[] LEAF_CODES = new int[] { "Leaf Pine 0".AngeHash(), "Leaf Pine 1".AngeHash(), "Leaf Pine 2".AngeHash(), };
 
+		private const int MAX_SPAN = Const.CELL_SIZE * 4;
 
+		public override RectInt Bounds => Rect.Expand(MAX_SPAN / 2, MAX_SPAN / 2, 0, LeafSize / 2);
 		protected override int TrunkBottomCode => TRUNK_BOTTOM_CODE;
 		protected override int TrunkMidCode => TRUNK_MID_CODE;
 		protected override int LeafCountMin => 8;
@@ -127,13 +138,14 @@ namespace Yaya {
 		private static readonly int TRUNK_MID_CODE = "Trunk Mid 0".AngeHash();
 		private static readonly int[] LEAF_CODES = new int[] { "Leaf Poplar 0".AngeHash(), "Leaf Poplar 1".AngeHash(), "Leaf Poplar 2".AngeHash(), };
 
+		private const int SPAN = Const.CELL_SIZE * 3;
 
+		public override RectInt Bounds => Rect.Expand(SPAN / 2, SPAN / 2, 0, LeafSize / 2);
 		protected override int TrunkBottomCode => TRUNK_BOTTOM_CODE;
 		protected override int TrunkMidCode => TRUNK_MID_CODE;
 
 
 		protected override void DrawLeaf (int frame, int code, int step, Vector2Int shift) {
-			const int SPAN = Const.CELL_SIZE * 3;
 			int xMin = step < Tall - 1 ? Const.CELL_SIZE / 2 - SPAN / 2 : 0;
 			int xMax = step < Tall - 1 ? Const.CELL_SIZE / 2 + SPAN / 2 : Const.CELL_SIZE;
 			CellRenderer.Draw(
@@ -159,7 +171,10 @@ namespace Yaya {
 		private static readonly int TRUNK_MID_CODE = "Trunk Mid 2".AngeHash();
 		private static readonly int[] LEAF_CODES = new int[] { "Leaf Willow 0".AngeHash(), "Leaf Willow 1".AngeHash(), "Leaf Willow 2".AngeHash(), };
 
+		private const int SPAN = 6;
+		private int MaxSpan => SPAN * LeafSize * 2 / 3;
 
+		public override RectInt Bounds => Rect.Expand(MaxSpan, MaxSpan, 0, LeafSize / 2);
 		protected override int TrunkBottomCode => TRUNK_BOTTOM_CODE;
 		protected override int TrunkMidCode => TRUNK_MID_CODE;
 		protected override int LeafCountMin => 1;
@@ -170,7 +185,6 @@ namespace Yaya {
 			if (step != Tall - 1) return;
 			int basicY = Y + step * Const.CELL_SIZE + Const.CELL_SIZE - LeafSize / 2;
 			int countY = (Tall - 1) * Const.CELL_SIZE / LeafSize;
-			const int SPAN = 6;
 			for (int lIndex = 0; lIndex < SPAN; lIndex++) {
 				code = LEAF_CODES[(shift.x + lIndex).UMod(LEAF_CODES.Length)];
 				for (int i = 0; i < countY; i++) {

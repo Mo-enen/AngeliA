@@ -20,6 +20,7 @@ namespace Yaya {
 
 
 		public override void FrameUpdate (int frame) {
+			base.FrameUpdate(frame);
 			var tint = IsHolding || IsFalling ? new Color32(255, 196, 164, 255) : new Color32(255, 255, 255, 255);
 			int rot = IsHolding ? GetHoldedFrame(frame * 4).PingPong(12) - 6 : 0;
 			CellRenderer.Draw(

@@ -15,8 +15,6 @@ namespace Yaya {
 		// Api
 		public int FinalVelocityX => X - PrevX;
 		public int FinalVelocityY => Y - PrevY;
-		public override int X { get; set; } = 0;
-		public override int Y { get; set; } = 0;
 		public override int PushLevel => 0;
 		public int PrevX { get; private set; } = 0;
 		public int PrevY { get; private set; } = 0;
