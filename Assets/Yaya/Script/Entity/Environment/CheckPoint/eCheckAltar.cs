@@ -56,6 +56,7 @@ namespace Yaya.Editor {
 	using System.Collections.Generic;
 	using UnityEngine;
 	public class CheckPointArtworkExtension : IArtworkEvent {
+		public string Message => "Refreshing Check Altar Position";
 		public void OnArtworkSynced () {
 			var game = Object.FindObjectOfType<Game>();
 			if (game == null) return;
