@@ -6,7 +6,8 @@
       "source": "local",
       "dependencies": {
         "com.moenengames.standard": "1.0.0",
-        "com.moenengames.asepritetoolbox": "1.0.0"
+        "com.moenengames.asepritetoolbox": "1.0.0",
+        "com.unity.inputsystem": "1.0.0"
       }
     },
     "com.moenengames.asepritegadget": {

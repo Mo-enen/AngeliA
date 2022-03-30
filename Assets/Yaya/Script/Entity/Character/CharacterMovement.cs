@@ -79,7 +79,8 @@ namespace Yaya {
 		public bool IsGrounded => Rig.IsGrounded;
 		public bool InWater => Rig.InWater;
 		public int CurrentJumpCount { get; private set; } = 0;
-		public Direction2 CurrentFacingX { get; private set; } = Direction2.Positive;
+		public bool FacingRight { get; private set; } = true;
+		public bool FacingFront { get; private set; } = true;
 
 		// Short
 		private int CurrentDashDuration => InWater && SwimInFreeStyle ? FreeSwimDashDuration : DashDuration;
@@ -194,6 +195,10 @@ namespace Yaya {
 			IsPounding = PoundAvailable && !IsGrounded && !IsClimbing && !InWater && !IsDashing && !IsInsideGround &&
 				(IsPounding ? IntendedY < 0 : IntendedPound);
 
+			// Facing
+			FacingRight = LastMoveDirection.x > 0;
+			FacingFront = !IsClimbing;
+			
 			// Physics
 			Hitbox = new(
 				Rig.X - Width / 2,
@@ -274,7 +279,7 @@ namespace Yaya {
 					dcc = int.MaxValue;
 				} else {
 					// Normal Dash
-					speed = (int)CurrentFacingX * DashSpeed;
+					speed = FacingRight ? DashSpeed : -DashSpeed;
 					acc = DashAcceleration;
 					dcc = int.MaxValue;
 				}
@@ -350,13 +355,8 @@ namespace Yaya {
 		public void Move (Direction3 x, Direction3 y) {
 			IntendedX = (int)x;
 			IntendedY = (int)y;
-			if (x != Direction3.None) {
-				CurrentFacingX = x == Direction3.Positive ? Direction2.Positive : Direction2.Negative;
-			}
-			if (x != Direction3.None || y != Direction3.None) {
-				LastMoveDirection.x = IntendedX;
-				LastMoveDirection.y = IntendedY;
-			}
+			if (x != Direction3.None) LastMoveDirection.x = IntendedX;
+			if (y != Direction3.None) LastMoveDirection.y = IntendedY;
 		}
 
 

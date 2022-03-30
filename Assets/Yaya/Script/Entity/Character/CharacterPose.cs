@@ -4,10 +4,10 @@ using UnityEngine;
 
 
 namespace Yaya {
-	public abstract class CharacterPose {
+	public class CharacterPose {
 
 
-		// Api-Pose
+		// Pose
 		public bool FacingFront { get; set; } = true;
 		public bool FacingRight { get; set; } = true;
 
@@ -22,7 +22,9 @@ namespace Yaya {
 
 		public virtual void CalculatePose (int frame) {
 			Frame = frame;
-			FacingRight = Character.Movement.CurrentFacingX == AngeliaFramework.Direction2.Right;
+			FacingRight = Character.Movement.FacingRight;
+			FacingFront = Character.Movement.FacingFront;
+
 
 
 

@@ -18,8 +18,11 @@ namespace Yaya {
 			var rect = Character.Rect;
 			var movement = Character.Movement;
 
+
+
+			////////////////////////// Test ////////////////////////
 			CellRenderer.Draw(
-				"Test Pump".AngeHash(),
+				pose.FacingFront ? "Test Pump".AngeHash() : "Test Pump Back".AngeHash(),
 				rect.x + rect.width / 2,
 				rect.y,
 				500, 0, 0,
@@ -32,6 +35,9 @@ namespace Yaya {
 				CellRenderer.Draw("Pixel".AngeHash(), new(rect.xMin + i * 64, rect.y + Const.CELL_SIZE, 48, 48), Color.black);
 				CellRenderer.Draw("Pixel".AngeHash(), new(rect.xMin + i * 64 + 8, rect.y + Const.CELL_SIZE + 8, 32, 32));
 			}
+			////////////////////////// Test ////////////////////////
+
+
 
 		}
 	}

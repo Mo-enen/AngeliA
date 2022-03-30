@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public abstract class CharacterRenderer {
+	public class CharacterRenderer {
 
 
 
