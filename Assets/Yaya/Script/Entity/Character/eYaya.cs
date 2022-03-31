@@ -71,5 +71,6 @@ namespace Yaya {
 		[AngeliaInspector] YayaRenderer _Renderer = null;
 		[AngeliaInspector] YayaPose _Pose = null;
 
+
 	}
 }

@@ -46,11 +46,6 @@ namespace Yaya {
 		}
 
 
-		protected override bool InsideGroundCheck () => CellPhysics.Overlap(
-			(int)PhysicsMask.Level, new(
-				X, Y + Height / 4, 1, 1
-			), this
-		);
 
 
 		#endregion
@@ -58,10 +53,10 @@ namespace Yaya {
 
 
 
-		#region --- LGC ---
+		#region --- OVR ---
 
 
-
+		protected override bool InsideGroundCheck () => CellPhysics.Overlap((int)PhysicsMask.Level, new(X, Y + Height / 4, 1, 1), this);
 
 
 		#endregion

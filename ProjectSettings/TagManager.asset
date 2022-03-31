@@ -3,10 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - RH_Open
-  - RH_Fold
-  - RH_Hide
+  tags: []
   layers:
   - Default
   - TransparentFX

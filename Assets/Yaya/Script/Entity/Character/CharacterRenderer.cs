@@ -15,7 +15,7 @@ namespace Yaya {
 
 		// Api
 		protected eCharacter Character { get; init; } = null;
-		public RectInt LocalBounds { get; private set; } = new(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE);
+		public virtual RectInt LocalBounds => new(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE);
 
 
 		#endregion

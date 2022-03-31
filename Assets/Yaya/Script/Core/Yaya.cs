@@ -75,20 +75,6 @@ namespace Yaya {
 		}
 
 
-#if UNITY_EDITOR
-		private void Update () {
-			if (Input.GetKeyDown(KeyCode.F11)) {
-				if (FindEntityOfType<eYaya>() == null) {
-					AddEntity(new eYaya() {
-						X = CellRenderer.CameraRect.CenterInt().x,
-						Y = CellRenderer.CameraRect.CenterInt().y,
-					});
-				}
-			}
-		}
-#endif
-
-
 		// Override
 		protected override int GetEntityCapacity (int layer) => ENTITY_CAPACITY[layer.Clamp(0, EntityLayerCount - 1)];
 		protected override WorldSquad CreateWorldSquad () => new YayaWorldSquad(MapRoot);

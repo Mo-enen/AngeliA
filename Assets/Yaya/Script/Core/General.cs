@@ -54,7 +54,7 @@ namespace Yaya {
 
 		public static readonly int CLIMB_TAG = "Climb".AngeHash();
 
-
+		
 		// Language
 		public delegate string StringIntHandler (int key);
 		public static StringIntHandler GetLanguage { get; set; } = null;
