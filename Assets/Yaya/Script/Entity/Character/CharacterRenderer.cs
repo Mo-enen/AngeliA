@@ -13,9 +13,13 @@ namespace Yaya {
 		#region --- VAR ---
 
 
+		// Init
+		public int Width { get; init; } = Const.CELL_SIZE;
+		public int Height { get; init; } = Const.CELL_SIZE;
+
 		// Api
 		protected eCharacter Character { get; init; } = null;
-		public virtual RectInt LocalBounds => new(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE);
+		public virtual RectInt LocalBounds => new(-Width / 2, 0, Width, Height);
 
 
 		#endregion
@@ -29,51 +33,51 @@ namespace Yaya {
 		public CharacterRenderer (eCharacter ch) => Character = ch;
 
 
-		public virtual void FrameUpdate (CharacterPose pose) {
+		public virtual void FrameUpdate (int frame) {
 
-			if (pose.FacingFront) {
+			if (Character.Movement.FacingFront) {
 				// Front
 
-				DrawTail(pose);
-				DrawHair(pose, false);
+				DrawTail();
+				DrawHair(false);
 
-				DrawArm(pose, !pose.FacingRight);
-				DrawHand(pose, !pose.FacingRight);
-				DrawLeg(pose, !pose.FacingRight);
-				DrawFoot(pose, !pose.FacingRight);
+				DrawArm(!Character.Movement.FacingRight);
+				DrawHand(!Character.Movement.FacingRight);
+				DrawLeg(!Character.Movement.FacingRight);
+				DrawFoot(!Character.Movement.FacingRight);
 
-				DrawBody(pose);
-				DrawBoingBoing(pose);
-				DrawHead(pose);
-				DrawFace(pose);
-				DrawHair(pose, true);
+				DrawBody();
+				DrawBoingBoing();
+				DrawHead();
+				DrawFace();
+				DrawHair(true);
 
-				DrawArm(pose, pose.FacingRight);
-				DrawHand(pose, pose.FacingRight);
-				DrawLeg(pose, pose.FacingRight);
-				DrawFoot(pose, pose.FacingRight);
+				DrawArm(Character.Movement.FacingRight);
+				DrawHand(Character.Movement.FacingRight);
+				DrawLeg(Character.Movement.FacingRight);
+				DrawFoot(Character.Movement.FacingRight);
 
 			} else {
 				// Back
 
-				DrawArm(pose, !pose.FacingRight);
-				DrawHand(pose, !pose.FacingRight);
-				DrawLeg(pose, !pose.FacingRight);
-				DrawFoot(pose, !pose.FacingRight);
+				DrawArm(!Character.Movement.FacingRight);
+				DrawHand(!Character.Movement.FacingRight);
+				DrawLeg(!Character.Movement.FacingRight);
+				DrawFoot(!Character.Movement.FacingRight);
 
-				DrawHair(pose, true);
-				DrawFace(pose);
-				DrawHead(pose);
-				DrawBoingBoing(pose);
-				DrawBody(pose);
+				DrawHair(true);
+				DrawFace();
+				DrawHead();
+				DrawBoingBoing();
+				DrawBody();
 
-				DrawArm(pose, pose.FacingRight);
-				DrawHand(pose, pose.FacingRight);
-				DrawLeg(pose, pose.FacingRight);
-				DrawFoot(pose, pose.FacingRight);
+				DrawArm(Character.Movement.FacingRight);
+				DrawHand(Character.Movement.FacingRight);
+				DrawLeg(Character.Movement.FacingRight);
+				DrawFoot(Character.Movement.FacingRight);
 
-				DrawHair(pose, false);
-				DrawTail(pose);
+				DrawHair(false);
+				DrawTail();
 			}
 
 		}
@@ -84,19 +88,19 @@ namespace Yaya {
 
 
 
-		#region --- API ---
+		#region --- OVR ---
 
 
-		protected virtual void DrawHair (CharacterPose pose, bool front) { }
-		protected virtual void DrawHead (CharacterPose pose) { }
-		protected virtual void DrawFace (CharacterPose pose) { }
-		protected virtual void DrawBody (CharacterPose pose) { }
-		protected virtual void DrawBoingBoing (CharacterPose pose) { }
-		protected virtual void DrawTail (CharacterPose pose) { }
-		protected virtual void DrawArm (CharacterPose pose, bool right) { }
-		protected virtual void DrawHand (CharacterPose pose, bool right) { }
-		protected virtual void DrawLeg (CharacterPose pose, bool right) { }
-		protected virtual void DrawFoot (CharacterPose pose, bool right) { }
+		protected virtual void DrawHair (bool front) { }
+		protected virtual void DrawHead () { }
+		protected virtual void DrawFace () { }
+		protected virtual void DrawBody () { }
+		protected virtual void DrawBoingBoing () { }
+		protected virtual void DrawTail () { }
+		protected virtual void DrawArm (bool right) { }
+		protected virtual void DrawHand (bool right) { }
+		protected virtual void DrawLeg (bool right) { }
+		protected virtual void DrawFoot (bool right) { }
 
 
 		#endregion

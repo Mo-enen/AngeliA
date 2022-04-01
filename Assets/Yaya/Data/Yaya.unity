@@ -168,3 +168,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Data: {fileID: 11400000, guid: 98eae04a610a7e94ca4f059b4a36efcd, type: 2}
+  TestID: UI Window
+  TestRect:
+    x: 4096
+    y: 2264
+    width: 512
+    height: 1024
+  TestPivot: {x: 0, y: 0}
+  TestRot: 0
+  TestOffset:
+    m_Left: 128
+    m_Right: 128
+    m_Top: 128
+    m_Bottom: 128

@@ -22,7 +22,6 @@ namespace Yaya {
 		public override RectInt Bounds => Renderer.LocalBounds.Shift(X, Y);
 		public abstract CharacterMovement Movement { get; }
 		public abstract CharacterRenderer Renderer { get; }
-		public abstract CharacterPose Pose { get; }
 
 
 		#endregion
@@ -40,12 +39,9 @@ namespace Yaya {
 
 
 		public override void FrameUpdate (int frame) {
-			Pose.CalculatePose(frame);
-			Renderer.FrameUpdate(Pose);
+			Renderer.FrameUpdate(frame);
 			base.FrameUpdate(frame);
 		}
-
-
 
 
 		#endregion

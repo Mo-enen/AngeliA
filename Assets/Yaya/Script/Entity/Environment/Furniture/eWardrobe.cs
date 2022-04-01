@@ -22,8 +22,8 @@ namespace Yaya {
 		public override void OnCreate (int frame) {
 			base.OnCreate(frame);
 			if (CellRenderer.GetUVRect(Code, out var rect)) {
-				Width = rect.Width;
-				Height = rect.Height;
+				Width = rect.GlobalWidth;
+				Height = rect.GlobalHeight;
 			}
 		}
 
