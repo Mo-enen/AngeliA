@@ -53,8 +53,8 @@ namespace Yaya {
 
 		};
 
-		[AngeliaInspector] CharacterMovement _Movement = null;
-		[AngeliaInspector] YayaRenderer _Renderer = null;
+		private CharacterMovement _Movement = null;
+		private YayaRenderer _Renderer = null;
 
 
 	}

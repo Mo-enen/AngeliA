@@ -5,7 +5,8 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class CharacterRenderer {
+	// === Main ===
+	public partial class CharacterRenderer {
 
 
 
@@ -14,12 +15,11 @@ namespace Yaya {
 
 
 		// Init
-		public int Width { get; init; } = Const.CELL_SIZE;
-		public int Height { get; init; } = Const.CELL_SIZE;
+		
 
 		// Api
 		protected eCharacter Character { get; init; } = null;
-		public virtual RectInt LocalBounds => new(-Width / 2, 0, Width, Height);
+		public virtual RectInt LocalBounds => new(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2);
 
 
 		#endregion
@@ -81,26 +81,6 @@ namespace Yaya {
 			}
 
 		}
-
-
-		#endregion
-
-
-
-
-		#region --- OVR ---
-
-
-		protected virtual void DrawHair (bool front) { }
-		protected virtual void DrawHead () { }
-		protected virtual void DrawFace () { }
-		protected virtual void DrawBody () { }
-		protected virtual void DrawBoingBoing () { }
-		protected virtual void DrawTail () { }
-		protected virtual void DrawArm (bool right) { }
-		protected virtual void DrawHand (bool right) { }
-		protected virtual void DrawLeg (bool right) { }
-		protected virtual void DrawFoot (bool right) { }
 
 
 		#endregion

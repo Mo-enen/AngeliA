@@ -12,30 +12,9 @@ namespace Yaya {
 
 
 		// Style
-		private static NineSliceSprites MAIN_SPRITES = new() {
-			TopLeft = "Window UL".AngeHash(),
-			TopMid = "Window UM".AngeHash(),
-			TopRight = "Window UR".AngeHash(),
-			MidLeft = "Window ML".AngeHash(),
-			MidMid = "Window MM".AngeHash(),
-			MidRight = "Window MR".AngeHash(),
-			BottomLeft = "Window DL".AngeHash(),
-			BottomMid = "Window DM".AngeHash(),
-			BottomRight = "Window DR".AngeHash(),
-			border = new(32, 32, 32, 32),
-		};
-		private static NineSliceSprites BUTTON_SPRITES = new() {
-			TopLeft = "Button UL".AngeHash(),
-			TopMid = "Button UM".AngeHash(),
-			TopRight = "Button UR".AngeHash(),
-			MidLeft = "Button ML".AngeHash(),
-			MidMid = "Button MM".AngeHash(),
-			MidRight = "Button MR".AngeHash(),
-			BottomLeft = "Button DL".AngeHash(),
-			BottomMid = "Button DM".AngeHash(),
-			BottomRight = "Button DR".AngeHash(),
-			border = new(24, 24, 24, 24),
-		};
+		private static readonly int MAIN_SPRITES = "UI Window".AngeHash();
+		private static readonly int BUTTON_SPRITES = "UI Button".AngeHash();
+
 		private static int PIXEL_ID { get; } = "Pixel".AngeHash();
 		private static Color32 WINDOW_BG = new(240, 240, 240, 255);
 		private static Color32 CONTENT_CHAR = new(12, 12, 12, 255);
@@ -117,7 +96,7 @@ namespace Yaya {
 			);
 
 			// Main
-			CellGUI.Draw_9Slice(mainRect, WINDOW_BG, MAIN_SPRITES);
+			CellRenderer.Draw_9Slice(MAIN_SPRITES, mainRect.x, mainRect.y, 0, 0, 0, mainRect.width, mainRect.height, WINDOW_BG);
 
 			// Content
 			CellGUI.DrawLabel(
@@ -151,17 +130,22 @@ namespace Yaya {
 			}
 			PrevLeftDown = leftPress;
 			PrevRightDown = rightPress;
-			if (FrameInput.KeyDown(GameKey.Start) || FrameInput.KeyDown(GameKey.Action)) {
-				CellGUI.ActiveNavigation(NavIndex == 0 ? OK : NavIndex == 1 ? Alt : Cancel);
+			if (FrameInput.KeyDown(GameKey.Start)) {
+				CellGUI.SetPressAction(NavIndex == 0 ? OK : NavIndex == 1 ? Alt : Cancel);
 				Active = false;
-				FrameInput.ClearKeyState(GameKey.Start);
-				FrameInput.ClearKeyState(GameKey.Action);
 			}
-			if (FrameInput.KeyDown(GameKey.Select) || FrameInput.KeyDown(GameKey.Jump)) {
+			if (FrameInput.KeyDown(GameKey.Select)) {
 				Active = false;
-				FrameInput.ClearKeyState(GameKey.Select);
-				FrameInput.ClearKeyState(GameKey.Jump);
 			}
+
+			FrameInput.ClearKeyState(GameKey.Start);
+			FrameInput.ClearKeyState(GameKey.Select);
+			FrameInput.ClearKeyState(GameKey.Jump);
+			FrameInput.ClearKeyState(GameKey.Action);
+			FrameInput.ClearKeyState(GameKey.Up);
+			FrameInput.ClearKeyState(GameKey.Down);
+			FrameInput.ClearKeyState(GameKey.Left);
+			FrameInput.ClearKeyState(GameKey.Right);
 
 			// Buttons 
 			int buttonCount = 1;
@@ -182,10 +166,6 @@ namespace Yaya {
 					BUTTON_SPRITES, i == NavIndex
 				);
 				buttonCount++;
-			}
-
-			if (CellGUI.ButtonPressed) {
-				FrameInput.ClearMouseLeftEvent();
 			}
 
 		}
