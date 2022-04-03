@@ -59,8 +59,8 @@ namespace Yaya {
 
 		public override void OnCreate (int frame) {
 			base.OnCreate(frame);
-			TrunkWidth = CellRenderer.GetUVRect(TrunkBottomCode, out var rect) ? rect.GlobalWidth : Const.CELL_SIZE;
-			LeafSize = CellRenderer.GetUVRect(GetLeafCode(0), out var lRect) ? lRect.GlobalWidth : Const.CELL_SIZE;
+			TrunkWidth = CellRenderer.GetAngeSprite(TrunkBottomCode, out var rect) ? rect.GlobalWidth : Const.CELL_SIZE;
+			LeafSize = CellRenderer.GetAngeSprite(GetLeafCode(0), out var lRect) ? lRect.GlobalWidth : Const.CELL_SIZE;
 			Width = TrunkWidth;
 			Height = Const.CELL_SIZE * Tall;
 			LeafShift.x = X.UMod(Const.CELL_SIZE);
@@ -136,6 +136,19 @@ namespace Yaya {
 				}
 				count = (count - 2 + LeafCountAdd).UMod(LeafCountMax - LeafCountMin + 1) + LeafCountMin;
 			}
+		}
+
+
+		public override void FrameUpdate_Thumbnail (int frame) {
+			TrunkWidth = CellRenderer.GetAngeSprite(TrunkBottomCode, out var rect) ? rect.GlobalWidth : Const.CELL_SIZE;
+			LeafSize = CellRenderer.GetAngeSprite(GetLeafCode(0), out var lRect) ? lRect.GlobalWidth : Const.CELL_SIZE;
+			Width = TrunkWidth;
+			Height = Const.CELL_SIZE * Tall;
+			LeafShift.x = X.UMod(Const.CELL_SIZE);
+			LeafShift.y = Y.UMod(Const.CELL_SIZE);
+			LeafCount = (X * 040471 / 8376 + Y * 081620 / 1835).UMod(LeafCountMax - LeafCountMin + 1) + LeafCountMin;
+			LeafCountAdd = (X * 040471 / 1724 + Y * 081620 / 4842).UMod(5) - 2;
+			base.FrameUpdate_Thumbnail(frame);
 		}
 
 
