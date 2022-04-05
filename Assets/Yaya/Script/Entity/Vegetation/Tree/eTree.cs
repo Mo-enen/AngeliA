@@ -139,19 +139,6 @@ namespace Yaya {
 		}
 
 
-		public override void FrameUpdate_Thumbnail (int frame) {
-			TrunkWidth = CellRenderer.GetAngeSprite(TrunkBottomCode, out var rect) ? rect.GlobalWidth : Const.CELL_SIZE;
-			LeafSize = CellRenderer.GetAngeSprite(GetLeafCode(0), out var lRect) ? lRect.GlobalWidth : Const.CELL_SIZE;
-			Width = TrunkWidth;
-			Height = Const.CELL_SIZE * Tall;
-			LeafShift.x = X.UMod(Const.CELL_SIZE);
-			LeafShift.y = Y.UMod(Const.CELL_SIZE);
-			LeafCount = (X * 040471 / 8376 + Y * 081620 / 1835).UMod(LeafCountMax - LeafCountMin + 1) + LeafCountMin;
-			LeafCountAdd = (X * 040471 / 1724 + Y * 081620 / 4842).UMod(5) - 2;
-			base.FrameUpdate_Thumbnail(frame);
-		}
-
-
 		protected abstract void DrawLeaf (int frame, int code, int step, Vector2Int shift);
 
 

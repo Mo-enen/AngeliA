@@ -51,8 +51,8 @@ namespace Yaya.Editor {
 			public string Title => "Yaya Artwork";
 			public IScriptHubRootPath.FileExtension[] FileExtensions => new IScriptHubRootPath.FileExtension[]{
 
-				new ("ase", "Ase", false),
-				new ("aseprite", "Aseprite", false),
+				new ("ase", "Ase", true),
+				new ("aseprite", "Aseprite", true),
 			};
 			public int Order => 0 + 1;
 
