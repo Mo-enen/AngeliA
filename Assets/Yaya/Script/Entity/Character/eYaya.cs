@@ -8,6 +8,7 @@ namespace Yaya {
 
 
 	public class YayaRenderer : CharacterRenderer {
+		public override RectInt LocalBounds => new(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE);
 		public YayaRenderer (eCharacter ch) : base(ch) { }
 		public override void FrameUpdate (int frame) {
 			base.FrameUpdate(frame);
@@ -55,6 +56,8 @@ namespace Yaya {
 
 		private CharacterMovement _Movement = null;
 		private YayaRenderer _Renderer = null;
+
+
 
 
 	}

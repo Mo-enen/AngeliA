@@ -12,6 +12,7 @@ namespace Yaya {
 		public override RectInt Rect => new(X + Const.CELL_SIZE / 4, Y, Const.CELL_SIZE / 2, Const.CELL_SIZE);
 		public override RectInt Bounds => new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE);
 
+
 		public override void FrameUpdate (int frame) {
 			base.FrameUpdate(frame);
 			CellRenderer.Draw(LADDER_CODE, new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE));

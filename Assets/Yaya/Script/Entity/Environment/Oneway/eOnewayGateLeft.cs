@@ -14,10 +14,10 @@ namespace Yaya {
 		public override Direction4 GateDirection => Direction4.Left;
 
 
+
 		public override void FillPhysics (int frame) {
 			CellPhysics.FillEntity((int)PhysicsLayer.Environment, this, true, Const.ONEWAY_LEFT_TAG);
 		}
-
 
 
 		public override void FrameUpdate (int frame) {
@@ -37,6 +37,7 @@ namespace Yaya {
 			);
 			base.FrameUpdate(frame);
 		}
+
 
 	}
 }

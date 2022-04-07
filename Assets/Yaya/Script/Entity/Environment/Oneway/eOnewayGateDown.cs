@@ -19,7 +19,6 @@ namespace Yaya {
 		}
 
 
-
 		public override void FrameUpdate (int frame) {
 			var rect = Rect;
 			int rotDelta = 0;
@@ -37,6 +36,7 @@ namespace Yaya {
 			);
 			base.FrameUpdate(frame);
 		}
+
 
 	}
 }

@@ -18,14 +18,14 @@ namespace Yaya {
 		protected override int TrunkBottomCode => TRUNK_BOTTOM_CODE;
 		protected override int TrunkMidCode => TRUNK_MID_CODE;
 
-
-		protected override void DrawLeaf (int frame, int code, int step, Vector2Int shift) {
-			int xMin = step < Tall - 1 ? Const.CELL_SIZE / 2 - SPAN / 2 : 0;
-			int xMax = step < Tall - 1 ? Const.CELL_SIZE / 2 + SPAN / 2 : Const.CELL_SIZE;
+		protected override void DrawLeaf (int frame, int code, Vector2Int shift) {
+			if (!HasTreesOnBottom && TreesOnTop > 0) return;
+			int xMin = TreesOnTop != 0 ? Const.CELL_SIZE / 2 - SPAN / 2 : 0;
+			int xMax = TreesOnTop != 0 ? Const.CELL_SIZE / 2 + SPAN / 2 : Const.CELL_SIZE;
 			CellRenderer.Draw(
 				code,
 				X + LeafSize / 2 + (int)Util.Remap(0, Const.CELL_SIZE, xMin, xMax - LeafSize, shift.x),
-				Y + step * Const.CELL_SIZE + shift.y + LeafSize / 2,
+				Y + shift.y + LeafSize / 2,
 				500, 500,
 				(int)Util.Remap(0f, 120f, -6f, 6f, Mathf.PingPong(frame + shift.x, 120)),
 				LeafSize * 5 / 2, LeafSize * 5 / 2

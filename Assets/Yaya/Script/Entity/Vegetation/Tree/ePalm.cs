@@ -25,12 +25,12 @@ namespace Yaya {
 		protected override int LeafCountMax => 1;
 
 
-		protected override void DrawLeaf (int frame, int code, int step, Vector2Int shift) {
-			if (step != Tall - 1) return;
+		protected override void DrawLeaf (int frame, int code, Vector2Int shift) {
+			if (TreesOnTop != 0 && (HasTreesOnBottom || TreesOnTop > 0)) return;
 			for (int lIndex = 0; lIndex < LEAF_CODES.Length; lIndex++) {
 				code = LEAF_CODES[lIndex];
 				int x = X + Const.CELL_SIZE / 2;
-				int y = Y + step * Const.CELL_SIZE + Const.CELL_SIZE - lIndex * LeafSize / 3;
+				int y = Y + Const.CELL_SIZE - lIndex * LeafSize / 3;
 				int offsetY = lIndex % 2 == 0 ? LeafSize / 11 : -LeafSize / 11;
 				for (int i = 0; i < LEAF_LENGTH; i++) {
 					int rot = (int)Util.Remap(

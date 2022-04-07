@@ -12,6 +12,5 @@ namespace Yaya {
 		protected override int ArtCode => Data >= 0 && Data < ARTWORK_STATUE_CODES.Length ? ARTWORK_STATUE_CODES[Data] : 0;
 
 
-
 	}
 }

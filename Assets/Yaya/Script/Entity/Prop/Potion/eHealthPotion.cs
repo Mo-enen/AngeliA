@@ -11,6 +11,5 @@ namespace Yaya {
 		protected override int ITEM_CODE => "Potion Red".AngeHash();
 
 
-
 	}
 }

@@ -12,8 +12,8 @@ namespace Yaya {
 		private static readonly int TRUNK_MID_CODE = "Trunk Mid 2".AngeHash();
 		private static readonly int[] LEAF_CODES = new int[] { "Leaf Willow 0".AngeHash(), "Leaf Willow 1".AngeHash(), "Leaf Willow 2".AngeHash(), };
 
-		private const int SPAN = 6;
-		private int MaxSpan => SPAN * LeafSize * 2 / 3;
+		private const int SPAN = 2;
+		private int MaxSpan => SPAN * Const.CELL_SIZE;
 
 		public override RectInt Bounds => Rect.Expand(MaxSpan, MaxSpan, 0, LeafSize / 2);
 		protected override int TrunkBottomCode => TRUNK_BOTTOM_CODE;
@@ -22,39 +22,27 @@ namespace Yaya {
 		protected override int LeafCountMax => 1;
 
 
-		protected override void DrawLeaf (int frame, int code, int step, Vector2Int shift) {
-			if (step != Tall - 1) return;
-			int basicY = Y + step * Const.CELL_SIZE + Const.CELL_SIZE - LeafSize / 2;
-			int countY = (Tall - 1) * Const.CELL_SIZE / LeafSize;
+		protected override void DrawLeaf (int frame, int code, Vector2Int shift) {
+			if (!HasTreesOnBottom && TreesOnTop > 0) return;
+			int stepY = 3 - TreesOnTop;
 			for (int lIndex = 0; lIndex < SPAN; lIndex++) {
 				code = LEAF_CODES[(shift.x + lIndex).UMod(LEAF_CODES.Length)];
-				for (int i = 0; i < countY; i++) {
-					int offsetX = lIndex * LeafSize * 2 / 3;
-					const int SHRINK_COUNT = 4;
-					if (i < SHRINK_COUNT) {
-						offsetX -= (int)Util.Remap(
-							0, SHRINK_COUNT,
-							SPAN * LeafSize / 3, 0,
-							i
-						);
-					}
-					int deltaX = (int)Util.Remap(
-						0f, 120f, -12f, 12f,
-						Mathf.PingPong(frame + shift.x + lIndex * 24 + i * 12, 120)
-					);
-					CellRenderer.Draw(
-						code,
-						X + Const.CELL_SIZE / 2 + offsetX + deltaX,
-						basicY - i * LeafSize,
-						LeafSize, LeafSize
-					);
-					CellRenderer.Draw(
-						code,
-						X + Const.CELL_SIZE / 2 - offsetX + deltaX,
-						basicY - i * LeafSize,
-						-LeafSize, LeafSize
-					);
-				}
+				int deltaX = (int)Util.Remap(
+					0f, 120f, -12f, 12f,
+					Mathf.PingPong(frame + shift.x + lIndex * 24 + stepY * 12, 120)
+				);
+				CellRenderer.Draw(
+					code,
+					X + Const.CELL_SIZE / 2 + lIndex * Const.CELL_SIZE + deltaX,
+					Y,
+					Const.CELL_SIZE, Const.CELL_SIZE
+				);
+				CellRenderer.Draw(
+					code,
+					X + Const.CELL_SIZE / 2 - lIndex * Const.CELL_SIZE + deltaX,
+					Y,
+					-Const.CELL_SIZE, Const.CELL_SIZE
+				);
 			}
 		}
 

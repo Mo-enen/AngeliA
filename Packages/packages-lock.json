@@ -1,12 +1,20 @@
 {
   "dependencies": {
+    "com.moenengames.angeliaeditor": {
+      "version": "file:C:/Data/Unity/Packages/AngeliA Editor",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.moenengames.angeliaframework": "1.0.0",
+        "com.moenengames.asepritetoolbox": "1.0.0"
+      }
+    },
     "com.moenengames.angeliaframework": {
       "version": "file:C:/Data/Unity/Packages/AngeliA Framework",
       "depth": 0,
       "source": "local",
       "dependencies": {
         "com.moenengames.standard": "1.0.0",
-        "com.moenengames.asepritetoolbox": "1.0.0",
         "com.unity.inputsystem": "1.0.0"
       }
     },
@@ -39,7 +47,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.14",
+      "version": "2.0.15",
       "depth": 0,
       "source": "registry",
       "dependencies": {

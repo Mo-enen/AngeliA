@@ -179,6 +179,9 @@ namespace Yaya {
 		#region --- API ---
 
 
+		public eDialog () { }
+
+
 		public eDialog (
 			int width, string message,
 			string label_ok, string label_cancel, string label_alt,
