@@ -21,7 +21,7 @@ namespace Yaya {
 		// MSG
 		public override void OnCreate (int frame) {
 			base.OnCreate(frame);
-			if (CellRenderer.GetAngeSprite(Code, out var rect)) {
+			if (CellRenderer.GetSprite(Code, out var rect)) {
 				Width = rect.GlobalWidth;
 				Height = rect.GlobalHeight;
 			}

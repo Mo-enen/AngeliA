@@ -47,8 +47,8 @@ namespace Yaya {
 
 		public override void OnCreate (int frame) {
 			base.OnCreate(frame);
-			TrunkWidth = CellRenderer.GetAngeSprite(TrunkBottomCode, out var rect) ? rect.GlobalWidth : Const.CELL_SIZE;
-			LeafSize = CellRenderer.GetAngeSprite(GetLeafCode(0), out var lRect) ? lRect.GlobalWidth : Const.CELL_SIZE;
+			TrunkWidth = CellRenderer.GetSprite(TrunkBottomCode, out var rect) ? rect.GlobalWidth : Const.CELL_SIZE;
+			LeafSize = CellRenderer.GetSprite(GetLeafCode(0), out var lRect) ? lRect.GlobalWidth : Const.CELL_SIZE;
 			Width = TrunkWidth;
 			Height = Const.CELL_SIZE;
 			LeafShift.x = X.UMod(Const.CELL_SIZE);

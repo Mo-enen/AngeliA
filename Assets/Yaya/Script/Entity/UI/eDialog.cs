@@ -3,6 +3,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+	[ExcludeInMapEditor]
 	public class eDialog : Entity {
 
 
