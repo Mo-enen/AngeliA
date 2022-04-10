@@ -1,0 +1,881 @@
+Test Pump,1430882989,0,False,0
+Test Pump Back,1474474758,0,False,0
+cHead 0,-1479041453,0,False,0
+cBody 0,-1459548715,0,False,0
+cBoingBoing 0,1563040028,0,False,0
+cArm 0,-1432900969,0,False,0
+cHip 0,-1432820028,0,False,0
+cHand 0,-1478658014,0,False,0
+cLeg 1,-1404462716,0,False,0
+cLeg 0,-1433091867,0,False,0
+cHairBack 0,160601541,0,False,0
+cHairFront 0,-1752547499,0,False,0
+cEye 0,-1433132446,0,False,0
+cEye 1,-1404503295,0,False,0
+cEar 0,-1432768227,0,False,0
+cBody 2,315458647,0,False,0
+cArm 1,-1404271818,0,False,0
+cHip 2,-1375561726,0,False,0
+cLeg 2,-1375833565,0,False,0
+cFoot 0,-1463838495,0,False,0
+cFoot 1,-576334814,0,False,0
+cTail 0,-1471418429,0,False,0
+cBoingBoing 1,1269637021,0,False,0
+cBody 1,-572045034,0,False,0
+cHip 1,-1404190877,0,False,0
+Barrel,348720954,0,False,0
+Barrel Small,1738157395,0,False,0
+Road Sign 0,-1207071699,0,False,0
+Road Sign 1,1290944238,0,False,0
+Road Sign 2,-506007121,0,False,0
+Check Statue 0,238126772,0,False,0
+Check Statue 1,-267431853,0,False,0
+Check Statue 2,-772990478,0,False,0
+Check Statue 3,-1278549103,0,False,0
+Check Statue 4,-1784107728,0,False,0
+Check Statue 5,167835814,0,False,0
+Check Statue 6,1499742318,0,False,0
+Check Statue 7,994183693,0,False,0
+Check Statue 8,488625068,0,False,0
+Check Statue 9,-16933557,0,False,0
+Check Statue 10,384525347,0,False,0
+Check Statue 11,54612027,0,False,0
+Check Statue 12,-895338331,0,False,0
+Check Statue 13,612213478,0,False,0
+Check Statue 14,282300158,0,False,0
+Check Statue 15,-667650200,0,False,0
+Check Statue 16,839901609,0,False,0
+Check Statue 17,-110048749,0,False,0
+Check Statue 18,-439962069,0,False,0
+Check Statue 19,1067589740,0,False,0
+Check Statue 20,-121033278,0,False,0
+Check Statue 21,1386518531,0,False,0
+Check Statue 22,-1400896956,0,False,0
+Check Statue 23,106654853,0,False,0
+Conveyor Mid 0,-1690191121,0,False,0
+Conveyor Mid 1,261752421,0,False,0
+Conveyor Mid 2,1593658925,0,False,0
+Conveyor Mid 3,1088100300,0,False,0
+Conveyor Mid 4,582541675,0,False,0
+Conveyor Mid 5,76983050,0,False,0
+Conveyor Mid 6,-428575575,0,False,0
+Conveyor Mid 7,-934134200,0,False,0
+Conveyor Left 0,474735591,0,False,0
+Conveyor Left 1,144822271,0,False,0
+Conveyor Left 2,-805128087,0,False,0
+Conveyor Left 3,702423722,0,False,0
+Conveyor Left 4,-247526636,0,False,0
+Conveyor Left 5,-577439956,0,False,0
+Conveyor Left 6,930111853,0,False,0
+Conveyor Left 7,-19838505,0,False,0
+Conveyor Right 0,-297132855,0,False,0
+Conveyor Right 1,-807667032,0,False,0
+Conveyor Right 2,-1318201209,0,False,0
+Conveyor Right 3,-1828735386,0,False,0
+Conveyor Right 4,118232604,0,False,0
+Conveyor Right 5,1445163556,0,False,0
+Conveyor Right 6,934629379,0,False,0
+Conveyor Right 7,424095202,0,False,0
+Conveyor Single 0,-181083713,0,False,0
+Conveyor Single 1,-665239145,0,False,0
+Conveyor Single 2,688070552,0,False,0
+Conveyor Single 3,203915120,0,False,0
+Conveyor Single 4,-900277350,0,False,0
+Conveyor Single 5,453032347,0,False,0
+Conveyor Single 6,1806342044,0,False,0
+Conveyor Single 7,-1135315555,0,False,0
+Check Altar 12,-1082645535,0,False,0
+Check Altar 0,1724864498,0,False,0
+Check Altar 1,1431461491,0,False,0
+Check Altar 13,-1588204160,0,False,0
+Check Altar 14,-256297656,0,False,0
+Check Altar 15,1695645886,0,False,0
+Check Altar 16,1190087261,0,False,0
+Check Altar 17,684528636,0,False,0
+Check Altar 18,178970011,0,False,0
+Check Altar 19,-326588614,0,False,0
+Check Altar 20,-364931292,0,False,0
+Check Altar 21,-870489917,0,False,0
+Check Altar 22,-1376048542,0,False,0
+Check Altar 23,-44142038,0,False,0
+Check Altar 2,1138058484,0,False,0
+Check Altar 3,844655477,0,False,0
+Check Altar 4,551252470,0,False,0
+Check Altar 5,257849463,0,False,0
+Check Altar 6,-35553544,0,False,0
+Check Altar 7,-328956551,0,False,0
+Check Altar 8,-622359558,0,False,0
+Check Altar 9,-915762565,0,False,0
+Check Altar 10,-71528285,0,False,0
+Check Altar 11,-577086910,0,False,0
+Spring Metal 0,258634748,0,False,0
+Spring Wood 0,1219496249,0,False,0
+Spring Metal 1,-246923877,0,False,0
+Spring Metal 2,-752482502,0,False,0
+Spring Metal 3,-1258041127,0,False,0
+Spring Wood 1,926093242,0,False,0
+Spring Wood 2,632690235,0,False,0
+Spring Wood 3,339287228,0,False,0
+Rock 0,-1432973557,0,False,0
+Rock 1,-1404344406,0,False,0
+Rock 2,-1375715255,0,False,0
+Rock 3,-1347086104,0,False,0
+Rock 4,-1318456953,0,False,0
+Rock 5,-1289827802,0,False,0
+Rock 6,-1261198651,0,False,0
+Rock 7,-1232569500,0,False,0
+Rock 8,-1203940349,0,False,0
+Rock 9,-1175311198,0,False,0
+Rock 10,-1054848134,0,False,0
+Rock 11,-167344453,0,False,0
+Rock 12,720159228,0,False,0
+Rock 13,1607662909,0,False,0
+Rock 14,-1799800706,0,False,0
+Rock 15,-912297025,0,False,0
+Rock 16,-24793344,0,False,0
+Rock 17,862710337,0,False,0
+Rock 18,1750214018,0,False,0
+Rock 19,-1657249597,0,False,0
+Rock 20,-1026218983,0,False,0
+Rock 21,-138715302,0,False,0
+Rock 22,748788379,0,False,0
+Rock 23,1636292060,0,False,0
+Rock 24,-1771171555,0,False,0
+Rock 25,-883667874,0,False,0
+Rock 26,3835807,0,False,0
+Rock 27,891339488,0,False,0
+Rock 28,1778843169,0,False,0
+Rock 29,-1628620446,0,False,0
+Rock 30,-997589832,0,False,0
+Rock 31,-110086151,0,False,0
+Skeleton Pile 0,-228304578,0,False,0
+Skeleton Pile 1,-558217898,0,False,0
+Skeleton Pile 2,949333911,0,False,0
+Skeleton Pile 3,-616447,0,False,0
+Skeleton Pile 4,-330529767,0,False,0
+Skeleton Pile 5,1177022042,0,False,0
+Skeleton Pile 6,-1610393445,0,False,0
+Skeleton Pile 7,-102841636,0,False,0
+Skeleton Pile 8,1404710173,0,False,0
+Skeleton Pile 9,-1382705314,0,False,0
+Skeleton Pile 10,-1822381178,0,False,0
+Skeleton Pile 11,124586812,0,False,0
+Skeleton Pile 12,1451517764,0,False,0
+Skeleton Pile 13,940983587,0,False,0
+Skeleton Pile 14,430449410,0,False,0
+Skeleton Pile 15,-80084767,0,False,0
+Box,23499,0,False,0
+Wood Board,-165380330,0,False,0
+Dirt Brittle,1647866896,0,False,0
+Dirt Grass Brittle,912373740,0,False,0
+Test E Front,-1468503058,0,False,0
+Vase 0,-1433137357,0,False,0
+Vase 1,-1404508206,0,False,0
+TV 1,-1462003,0,False,0
+TV 0,-1491794,0,False,0
+Fridge 1 Open,401426978,0,False,0
+Fridge 0 Open,496081772,0,False,0
+Fridge 1,-1123629110,0,False,0
+Fridge 0,1428527851,0,False,0
+wardrobe 3 Open,-463627699,0,False,0
+wardrobe 2 Open,-267114194,0,False,0
+wardrobe 1 Open,-70600689,0,False,0
+wardrobe 0 Open,-1711552313,0,False,0
+Cabinet Stove 5,-810725151,0,False,0
+Cabinet Stove 4,139225207,0,False,0
+Cabinet Stove 6,696826658,0,False,0
+Stove 3,1185029680,0,False,0
+Stove 2,297525999,0,False,0
+Cabinet Stove 2,-1038413282,0,False,0
+Cabinet Stove 1,1749002205,0,False,0
+Cabinet Stove 0,241450396,0,False,0
+Stove 1,-589977682,0,False,0
+Stove 0,-1477481363,0,False,0
+Clock 1,-585002849,0,False,0
+Clock 0,-1472506530,0,False,0
+Chest 1 Open,-1516861400,0,False,0
+Chest 0 Open,53137086,0,False,0
+Chest 1,-576224238,0,False,0
+Chest 0,-1463727919,0,False,0
+Cabinet Idol 4,1423755756,0,False,0
+Cabinet Idol 3,91849252,0,False,0
+Cabinet Idol 2,-22629161,0,False,0
+Cabinet Idol 1,-1354535665,0,False,0
+Cabinet Idol 0,-848977040,0,False,0
+Chair 3,1196634328,0,False,0
+Chair 2,309130647,0,False,0
+Chair 1,-578373034,0,False,0
+Chair 0,-1465876715,0,False,0
+Dining Table 3,-1418858065,0,False,0
+Dining Table 2,-913299440,0,False,0
+Dining Table 1,-407740815,0,False,0
+Dining Table 0,97817810,0,False,0
+Light 3,1198457385,0,False,0
+Light 2,310953704,0,False,0
+Light 1,-576549977,0,False,0
+Light 0,-1464053658,0,False,0
+Lamp 3,-1346927979,0,False,0
+Lamp 2,-1375557130,0,False,0
+Lamp 1,-1404186281,0,False,0
+Lamp 0,-1432815432,0,False,0
+Basket 0,18870561,0,False,0
+Wardrobe 3,-146038822,0,False,0
+Wardrobe 2,50474683,0,False,0
+Wardrobe 1,246988188,0,False,0
+Wardrobe 0,443501693,0,False,0
+Nightstand 3,82086575,0,False,0
+Nightstand 2,-46996144,0,False,0
+Nightstand 1,-176078863,0,False,0
+Nightstand 0,-305161582,0,False,0
+Clock 2,302500832,0,False,0
+Clock 3,1190004513,0,False,0
+Bed 0,-46231663,0,False,0
+Bed 1,-45308142,0,False,0
+Basket 1,-695821271,0,False,0
+Basket 2,1046989064,0,False,0
+Basket 3,-1505167897,0,False,0
+Photo 0,-1468306110,0,False,0
+Photo 1,-580802429,0,False,0
+Photo 2,306701252,0,False,0
+Photo 3,1194204933,0,False,0
+Cabinet Idol 5,918197131,0,False,0
+Cabinet Stove 3,469138527,0,False,0
+Cabinet Stove 7,-253123700,0,False,0
+grandfather clock 0,1570275718,0,False,0
+grandfather clock 1,725803847,0,False,0
+Oneway Gate,-248980743,0,False,0
+Ladder,520065342,0,False,0
+Test BG,-1630121197,0,False,0
+_rGrass Ground 8,-1244425560,1,False,0
+_rGrass Ground 9,-1754959737,1,False,0
+_rGrass Ground 10,-662544504,1,False,0
+_rGrass Ground 11,690765193,1,False,0
+_rGrass Ground 12,206609761,1,False,0
+_rGrass Ground 1,-128188488,1,False,0
+_rGrass Ground 2,1818779502,1,False,0
+_rGrass Ground 3,1308245325,1,False,0
+_rGrass Ground 4,797711148,1,False,0
+_rGrass Ground 5,287176971,1,False,0
+_rGrass Ground 6,-223357206,1,False,0
+_rGrass Ground 7,-733891383,1,False,0
+_rGrass Ground 0,-1455119440,1,False,0
+_rBeige Stone Brick 0,-1660508130,1,False,0
+_rBeige Stone Brick 1,-1449157217,1,False,0
+_rBeige Stone Brick 2,-1237806304,1,False,0
+_rBeige Stone Brick 3,-1026455391,1,False,0
+_rBeige Stone Brick 4,-815104478,1,False,0
+_rBeige Stone Brick 5,-603753565,1,False,0
+_rBeige Stone Brick 6,-392402652,1,False,0
+_rBeige Stone Brick 7,-181051739,1,False,0
+_rBeige Stone Brick 8,30299174,1,False,0
+_rBeige Stone Brick 9,241650087,1,False,0
+_rBeige Stone Brick 10,-410716129,1,False,0
+_rBeige Stone Brick 11,-611307289,1,False,0
+_rBeige Stone Brick 12,-811898449,1,False,0
+_rBeige Stone Brick 13,-1012489609,1,False,0
+_rBeige Stone Brick 14,-1213080769,1,False,0
+_rBeige Stone Brick 15,-1413671929,1,False,0
+_rBeige Stone Brick 16,-1614263089,1,False,0
+_rBeige Stone Brick 17,-1814854249,1,False,0
+_rBeige Stone Brick 18,-177980280,1,False,0
+_rBeige Stone Brick 19,241465598,1,False,0
+_rBeige Stone Brick 20,-199365216,1,False,0
+_rBeige Stone Brick 21,-399956376,1,False,0
+_rBeige Stone Brick 22,-600547536,1,False,0
+_rBeige Stone Brick 23,-801138696,1,False,0
+_rBeige Stone Brick 24,-1001729856,1,False,0
+_rBeige Stone Brick 25,-1202321016,1,False,0
+_rBeige Stone Brick 26,-1402912176,1,False,0
+_rBeige Stone Brick 27,-1603503336,1,False,0
+_rBeige Stone Brick 28,-1804094496,1,False,0
+_rBeige Stone Brick 29,-167220527,1,False,0
+_rBeige Stone Brick 44,-579028030,1,False,0
+_rBeige Stone Brick 43,-378436870,1,False,0
+_rBeige Stone Brick 42,-177845710,1,False,0
+_rBeige Stone Brick 41,22745450,1,False,0
+_rBeige Stone Brick 40,223336610,1,False,0
+_rBeige Stone Brick 39,-1793334743,1,False,0
+_rBeige Stone Brick 38,-1592743583,1,False,0
+_rBeige Stone Brick 37,-1392152423,1,False,0
+_rBeige Stone Brick 36,-1191561263,1,False,0
+_rBeige Stone Brick 35,-990970103,1,False,0
+_rBeige Stone Brick 34,-790378943,1,False,0
+_rBeige Stone Brick 33,-589787783,1,False,0
+_rBeige Stone Brick 32,-389196623,1,False,0
+_rBeige Stone Brick 31,-188605463,1,False,0
+_rBeige Stone Brick 30,11985697,1,False,0
+_rBeige Stone Brick 45,-779619190,1,False,0
+_rBeige Stone Brick 46,-980210350,1,False,0
+_rDirt 5,154889224,1,False,0
+_rDirt 6,-559802608,1,False,0
+_rDirt 7,1183007727,1,False,0
+_rDirt 8,-1369149234,1,False,0
+_rDirt 9,373661101,1,False,0
+_rDirt 10,174548613,1,False,0
+_rDirt 11,-1632905850,1,False,0
+_rDirt 12,854606983,1,False,0
+_rGrey Stone Brick 0,1757763306,1,False,0
+_rGrey Stone Brick 1,1348939081,1,False,0
+_rGrey Stone Brick 2,940114856,1,False,0
+_rGrey Stone Brick 3,531290631,1,False,0
+_rGrey Stone Brick 4,122466406,1,False,0
+_rGrey Stone Brick 5,-286357819,1,False,0
+_rGrey Stone Brick 6,-695182044,1,False,0
+_rGrey Stone Brick 7,-1104006269,1,False,0
+_rGrey Stone Brick 8,-1512830494,1,False,0
+_rGrey Stone Brick 9,-84189590,1,False,0
+_rGrey Stone Brick 10,-205970151,1,False,0
+_rGrey Stone Brick 11,5380762,1,False,0
+_rGrey Stone Brick 12,216731675,1,False,0
+_rGrey Stone Brick 13,428082588,1,False,0
+_rGrey Stone Brick 14,639433501,1,False,0
+_rGrey Stone Brick 15,850784414,1,False,0
+_rGrey Stone Brick 16,1062135327,1,False,0
+_rGrey Stone Brick 17,1273486240,1,False,0
+_rGrey Stone Brick 18,1484837153,1,False,0
+_rGrey Stone Brick 19,1696188066,1,False,0
+_rGrey Stone Brick 20,-614794376,1,False,0
+_rGrey Stone Brick 21,-403443463,1,False,0
+_rGrey Stone Brick 22,-192092550,1,False,0
+_rGrey Stone Brick 23,19258363,1,False,0
+_rGrey Stone Brick 24,230609276,1,False,0
+_rGrey Stone Brick 25,441960189,1,False,0
+_rGrey Stone Brick 26,653311102,1,False,0
+_rGrey Stone Brick 27,864662015,1,False,0
+_rGrey Stone Brick 28,1076012928,1,False,0
+_rGrey Stone Brick 29,1287363841,1,False,0
+_rGrey Stone Brick 30,-1023618601,1,False,0
+_rGrey Stone Brick 31,-812267688,1,False,0
+_rGrey Stone Brick 32,-600916775,1,False,0
+_rGrey Stone Brick 33,-389565862,1,False,0
+_rGrey Stone Brick 34,-178214949,1,False,0
+_rGrey Stone Brick 35,33135964,1,False,0
+_rGrey Stone Brick 36,244486877,1,False,0
+_rGrey Stone Brick 37,455837790,1,False,0
+_rGrey Stone Brick 38,667188703,1,False,0
+_rGrey Stone Brick 39,878539616,1,False,0
+_rGrey Stone Brick 40,-1432442826,1,False,0
+_rGrey Stone Brick 41,-1221091913,1,False,0
+_rGrey Stone Brick 42,-1009741000,1,False,0
+_rGrey Stone Brick 43,-798390087,1,False,0
+_rGrey Stone Brick 44,-587039174,1,False,0
+_rGrey Stone Brick 45,-375688261,1,False,0
+_rGrey Stone Brick 46,-164337348,1,False,0
+_RGrass 0,1215846483,2,False,0
+_RGrass 1,-591607980,2,False,0
+_RGrass 2,58439724,2,False,0
+_RGrass 3,88450390,2,False,0
+_RGrass 4,-1719004073,2,False,0
+_RGrass 5,768508760,2,False,0
+_RWooden Floor 0,1696482939,2,False,0
+_RWooden Floor 1,1185948762,2,False,0
+_RWooden Floor 2,675414585,2,False,0
+_RWooden Floor 3,164880408,2,False,0
+_RWooden Floor 4,-345653769,2,False,0
+_RWooden Floor 5,-856187946,2,False,0
+_RWooden Floor 6,-1366722123,2,False,0
+_RWooden Floor Dark 0,-1197608079,2,False,0
+_RWooden Floor Dark 1,-986257166,2,False,0
+_RWooden Floor Dark 2,-774906253,2,False,0
+_RWooden Floor Dark 3,-563555340,2,False,0
+_RWooden Floor Dark 4,-352204427,2,False,0
+_RWooden Floor Dark 5,-140853514,2,False,0
+_RWooden Floor Dark 6,70497399,2,False,0
+_RBoard Floor 0,440719,2,False,0
+_RBoard Floor Dark 0,738366937,2,False,0
+_RWooden Board 0,1482136545,2,False,0
+_RWooden Board 1,971602368,2,False,0
+_RWooden Board 2,461068191,2,False,0
+_RWooden Board 3,-49465986,2,False,0
+_RWooden Board 4,-560000163,2,False,0
+_RWooden Board 5,-1070534340,2,False,0
+_RWooden Board 6,-1581068517,2,False,0
+_RWooden Board Dark 0,-1411954473,2,False,0
+_RWooden Board Dark 1,-1200603560,2,False,0
+_RWooden Board Dark 2,-989252647,2,False,0
+_RWooden Board Dark 3,-777901734,2,False,0
+_RWooden Board Dark 4,-566550821,2,False,0
+_RWooden Board Dark 5,-355199908,2,False,0
+_RWooden Board Dark 6,-143848995,2,False,0
+_RStone Tile 0,-215154028,2,False,0
+_RStone Tile 1,-720712653,2,False,0
+_RStone Tile 2,-1226271278,2,False,0
+_RStone Tile 3,-1731829903,2,False,0
+_RStone Tile 4,220113639,2,False,0
+_RStone Tile 5,1552020143,2,False,0
+_RStone Tile 6,1046461518,2,False,0
+_RCat Ceramic Tile 0,-309843434,2,False,0
+_RCat Ceramic Tile 1,1738834508,2,False,0
+_RCat Ceramic Tile 2,1330010283,2,False,0
+_RCat Ceramic Tile 3,921186058,2,False,0
+_RCat Ceramic Tile 4,512361833,2,False,0
+_RCat Ceramic Tile 5,103537608,2,False,0
+_RCat Ceramic Tile 6,-305286617,2,False,0
+_RCat Ceramic Tile Red 0,-907795127,2,False,0
+_RCat Ceramic Tile Red 1,724472584,2,False,0
+_RCat Ceramic Tile Red 2,-100761872,2,False,0
+_RCat Ceramic Tile Red 3,-305959290,2,False,0
+_RCat Ceramic Tile Red 4,1326308421,2,False,0
+_RCat Ceramic Tile Red 5,-1336391164,2,False,0
+_RCat Ceramic Tile Red 6,295876547,2,False,0
+_RWindow 0,703507460,2,False,0
+_RWindow 1,506993955,2,False,0
+_RWindow 2,310480450,2,False,0
+_RWindow 3,113966945,2,False,0
+_RWindow 4,-82546560,2,False,0
+_RWindow 5,-279060065,2,False,0
+_RWindow 6,-475573570,2,False,0
+_RBrick Wall 0,5188907,2,False,0
+_RBrick Wall 1,1337095411,2,False,0
+_RBrick Wall 2,831536786,2,False,0
+_RBrick Wall 3,325978161,2,False,0
+_RBrick Wall 4,-179580464,2,False,0
+_RBrick Wall 5,-685139089,2,False,0
+_RBrick Wall 6,-1190697714,2,False,0
+Brick Wall Alt 0,-588275545,0,False,0
+Brick Wall Alt 1,-1098809722,0,False,0
+Brick Wall Alt 2,-1609343899,0,False,0
+Brick Wall Alt 3,-282412947,0,False,0
+Brick Wall Alt 4,1664555043,0,False,0
+Brick Wall Alt 5,1154020866,0,False,0
+Brick Wall Alt 6,643486689,0,False,0
+_RBoard Floor Dark 6,-1714578413,2,False,0
+_RBoard Floor Dark 5,-1305754188,2,False,0
+_RBoard Floor Dark 4,-896929963,2,False,0
+_RBoard Floor Dark 3,-488105738,2,False,0
+_RBoard Floor Dark 2,-79281513,2,False,0
+_RBoard Floor Dark 1,329542712,2,False,0
+_RBoard Floor 6,-164220057,2,False,0
+_RBoard Floor 5,785730301,2,False,0
+_RBoard Floor 4,-721821508,2,False,0
+_RBoard Floor 3,228128850,2,False,0
+_RBoard Floor 2,558042170,2,False,0
+_RBoard Floor 1,-949509639,2,False,0
+Ice,4875,0,False,0
+Iron,432024,0,False,0
+Marble,154304899,0,False,0
+Sand,132636,0,False,0
+Stone Crack,1279674742,0,False,0
+_rDirt 13,-952847480,1,False,0
+_rDirt 14,1534665353,1,False,0
+_rDirt 15,-272789110,1,False,0
+_rDirt 16,-242778444,1,False,0
+_rDirt 17,407269260,1,False,0
+Brick,10257281,0,False,0
+_rCloud 0,858199154,1,True,1659898396
+_rCloud 1,-949255309,1,True,1659898396
+_rCloud 2,1538257524,1,True,1659898396
+_rCloud 3,-269196939,1,True,1659898396
+_rCloud 4,-239186273,1,True,1659898396
+_rCloud 5,410861431,1,True,1659898396
+_rCloud 6,-1396593032,1,True,1659898396
+_rCloud 7,1090919801,1,True,1659898396
+_rCloud 8,-716534662,1,True,1659898396
+_rCloud 9,1770978171,1,True,1659898396
+_rCloud 10,-106541661,1,True,1659898396
+_rCloud 11,-303055166,1,True,1659898396
+_rCloud 12,-499568671,1,True,1659898396
+_rCloud 13,-696082176,1,True,1659898396
+_rCloud 14,-892595681,1,True,1659898396
+_rCloud 15,-1089109186,1,True,1659898396
+_rCloud 16,-1285622691,1,True,1659898396
+_rCloud 17,-1482136196,1,True,1659898396
+_rCloud 18,-1678649701,1,True,1659898396
+_rCloud 19,-37698077,1,True,1659898396
+_rCloud 20,-76530995,1,True,1659898396
+_rCloud 21,-273044500,1,True,1659898396
+_rCloud 22,150479033,1,True,1659898396
+_rCloud 23,1791430657,1,True,1659898396
+_rCloud 24,1594917152,1,True,1659898396
+_rCloud 25,1398403647,1,True,1659898396
+_rCloud 26,1201890142,1,True,1659898396
+_rCloud 27,1005376637,1,True,1659898396
+_rCloud 28,808863132,1,True,1659898396
+_rCloud 29,612349627,1,True,1659898396
+_rCloud 30,573516709,1,True,1659898396
+_rCloud 31,377003204,1,True,1659898396
+_rCloud 32,180489699,1,True,1659898396
+_rCloud 33,-16023806,1,True,1659898396
+_rCloud 34,-212537311,1,True,1659898396
+_rCloud 35,-409050816,1,True,1659898396
+_rCloud 36,-605564321,1,True,1659898396
+_rCloud 37,-802077826,1,True,1659898396
+_rCloud 38,-998591331,1,True,1659898396
+_rCloud 39,-1195104836,1,True,1659898396
+_rCloud 40,603527375,1,True,1659898396
+_rCloud 41,407013870,1,True,1659898396
+_rCloud 42,210500365,1,True,1659898396
+_rCloud 43,13986860,1,True,1659898396
+_rCloud 44,-182526645,1,True,1659898396
+_rCloud 45,-379040150,1,True,1659898396
+_rCloud 46,-575553655,1,True,1659898396
+_aWater 0,-55409019,3,True,16791575
+_aWater 3,-1182805112,3,True,16791575
+_aWater 6,147300962,3,True,16791575
+_aWater 9,857369998,3,True,16791575
+_aWater Top 0,1651171697,3,True,16791575
+_aWater Top 3,770962676,3,True,16791575
+_aWater Top 6,-109246345,3,True,16791575
+_aWater Top 9,-989455366,3,True,16791575
+_aWater 12,424288285,3,True,16791575
+_aWater 15,-165252230,3,True,16791575
+_aWater 18,-754792745,3,True,16791575
+_aWater 21,1270849494,3,True,16791575
+_aWater Top 12,-1156338336,3,True,16791575
+_aWater Top 15,1621953085,3,True,16791575
+_aWater Top 18,105277210,3,True,16791575
+_aWater Top 21,-944182718,3,True,16791575
+addPixel,276377275,0,False,0
+eSpringH,991952243,0,False,0
+eBarrel,-237087180,0,False,0
+eLadder,-1057843577,0,False,0
+eBrittleDirt,-1460103677,0,False,0
+eBrittleDirtGrass,1410301049,0,False,0
+eCheckAltar,1717603945,0,False,0
+eCheckStatue,1663015755,0,False,0
+eWardrobe,-309475295,0,False,0
+eOnewayGateUp,780199252,0,False,0
+eOnewayGateRight,-1699909466,0,False,0
+eOnewayGateDown,-232861605,0,False,0
+eOnewayGateLeft,-101198784,0,False,0
+eSpringV,-378506843,0,False,0
+eHealthPotion,-867810636,0,False,0
+eManaPotion,-955042593,0,False,0
+eSpeedPotion,536178699,0,False,0
+eMaple,154705040,0,False,0
+ePalm,12363735,0,False,0
+ePine,5042837,0,False,0
+ePoplar,-1164600943,0,False,0
+eWillow,-621366433,0,False,0
+eConveyor,-1220408656,0,False,0
+Test Pro,-1349009215,0,False,0
+Pixel,11254534,0,False,0
+UI Window,1414408444,0,False,0
+UI Button,161552853,0,False,0
+UI Button Highlight,1787029705,0,False,0
+LineH_4,-446087287,0,False,0
+LineV_4,-433157993,0,False,0
+Cake 0,-1433145064,0,False,0
+Beef Raw,20240811,0,False,0
+Beef Cooked,85771418,0,False,0
+Cucumber,1518259258,0,False,0
+Apple Red,116809451,0,False,0
+Apple Red Cut,1518397997,0,False,0
+Slice_0_6,1481416186,0,False,0
+Slice_0_7,-326038277,0,False,0
+Slice_0_8,-296027611,0,False,0
+Slice_0_9,354020093,0,False,0
+Golden Pocket Watch,1705555516,0,False,0
+Book 0,-1432962041,0,False,0
+Rune Fire,-547224452,0,False,0
+Coin 0,-1432878433,0,False,0
+Potion Red,-413644676,0,False,0
+Cake Roll 0,-761548395,0,False,0
+Chicken Legs Raw,1829447784,0,False,0
+Chicken Legs Cooked,13775488,0,False,0
+Chinese Cabbage,-586898633,0,False,0
+Apple Green,-214170682,0,False,0
+Apple Green Cut,-69843791,0,False,0
+Slice_1_6,-88582300,0,False,0
+Slice_1_7,561465404,0,False,0
+Slice_1_8,-1245989059,0,False,0
+Slice_1_9,1241523774,0,False,0
+Golden Telescope,92963067,0,False,0
+Book 1,-1404332890,0,False,0
+Rune Water,1377753839,0,False,0
+Coin 1,-1404249282,0,False,0
+Potion Blue,-1736670105,0,False,0
+Hamburger 0,153338777,0,False,0
+Chicken Wings Raw,1208760915,0,False,0
+Chicken Wings Cooked,-369349564,0,False,0
+Eggplant,76812954,0,False,0
+Pear,537338,0,False,0
+Pear Cut,1065363064,0,False,0
+Slice_2_6,1418958419,0,False,0
+Slice_2_7,-388496044,0,False,0
+Slice_2_8,261551660,0,False,0
+Slice_2_9,291562326,0,False,0
+Golden Hourglass,43555615,0,False,0
+Book 2,-1375703739,0,False,0
+Rune Lightning,1425883525,0,False,0
+Coin 2,-1375620131,0,False,0
+Potion Orange,-273088494,0,False,0
+Bread 0,-1479040184,0,False,0
+Steak Raw,1758809270,0,False,0
+Steak Cooked,-504709209,0,False,0
+Spinach,-1402667964,0,False,0
+Peach,7478641,0,False,0
+Peach Cut,-1342662221,0,False,0
+Slice_3_6,-151040067,0,False,0
+Slice_3_7,-121029401,0,False,0
+Slice_3_8,529018303,0,False,0
+Slice_3_9,-1278436160,0,False,0
+Golden Begleri,482715267,0,False,0
+Book 3,-1347074588,0,False,0
+Rune Poison,393921486,0,False,0
+Coin 3,-1346990980,0,False,0
+Potion Empty,-1422957097,0,False,0
+Donut 0,-1463659470,0,False,0
+Meatball Raw,-1586290345,0,False,0
+Meatball Cooked,1836253300,0,False,0
+Tomato,447950422,0,False,0
+Banana,41601691,0,False,0
+Banana Cut,1136907929,0,False,0
+Slice_4_6,-1101001515,0,False,0
+Slice_4_7,1386511318,0,False,0
+Slice_4_8,-420943145,0,False,0
+Slice_4_9,229104559,0,False,0
+Golden Spring,922066084,0,False,0
+Key 0,-46211473,0,False,0
+Rune Empty,-633877918,0,False,0
+Coin 4,-1318361829,0,False,0
+Vol Potion Red,-433045576,0,False,0
+Cake 1,-1404515913,0,False,0
+Meat Skewers Raw,1712381530,0,False,0
+Meat Skewers Cooked,516746272,0,False,0
+Potato,447957145,0,False,0
+Orange,150028978,0,False,0
+Orange Cut,1245335216,0,False,0
+Slice_5_6,1623967295,0,False,0
+Slice_5_7,-183487168,0,False,0
+Slice_5_8,-153476502,0,False,0
+Slice_5_9,496571202,0,False,0
+Golden Gameboy,-1244650339,0,False,0
+Key 1,-45287952,0,False,0
+Skull,11460253,0,False,0
+Coin 5,-1289732678,0,False,0
+Vol Potion Blue,-1313960413,0,False,0
+Cake Roll 1,1736467542,0,False,0
+Sausage Raw,1431590075,0,False,0
+Sausage Cooked,-556216468,0,False,0
+Broccoli,997845555,0,False,0
+Grape Purple,792629638,0,False,0
+Grape Purple Cut,1682416941,0,False,0
+Slice_6_6,-1783496320,0,False,0
+Slice_6_7,704016513,0,False,0
+Slice_6_8,-1103437950,0,False,0
+Slice_6_9,1384074883,0,False,0
+Golden Game Pad,315128476,0,False,0
+Key 2,-44364431,0,False,0
+Broken Bone,-1497652017,0,False,0
+Coin 6,-1261103527,0,False,0
+Vol Potion Orange,-294158857,0,False,0
+Hamburger 1,-1643612582,0,False,0
+Fish Raw,20313975,0,False,0
+Fish Cooked,85844582,0,False,0
+Cauliflower,-1729277672,0,False,0
+Grape Green,-214065865,0,False,0
+Grape Green Cut,-69738974,0,False,0
+Slice_7_6,-1516029677,0,False,0
+Slice_7_7,971483156,0,False,0
+Slice_7_8,-835971307,0,False,0
+Slice_7_9,1651541526,0,False,0
+Golden Pen,-1578824962,0,False,0
+Slice_7_11,-422491811,0,False,0
+Cat Paw,-1050286404,0,False,0
+Coin 7,-1232474376,0,False,0
+Vol Potion Empty,730200851,0,False,0
+Bread 1,-591536503,0,False,0
+Sea Fish Raw,313168431,0,False,0
+Sea Fish Cooked,60781818,0,False,0
+chili,8678081,0,False,0
+Strawberry,-1560366543,0,False,0
+Strawberry Cut,-1680831615,0,False,0
+Slice_8_6,-8488958,0,False,0
+Slice_8_7,-1815943421,0,False,0
+Slice_8_8,671569412,0,False,0
+Slice_8_9,-1135885051,0,False,0
+Golden Notepad,-1650905889,0,False,0
+Slice_8_11,1085048908,0,False,0
+Bear Paw,1800801286,0,False,0
+Gem Red,-616630112,0,False,0
+Ruby Red,-97843138,0,False,0
+Donut 1,-576155789,0,False,0
+Flounder Raw,-1539908238,0,False,0
+Flounder Cooked,45170278,0,False,0
+carrot,586989405,0,False,0
+Blueberry,-153049179,0,False,0
+Blueberry Cut,1248539367,0,False,0
+Slice_9_6,-1578487444,0,False,0
+Slice_9_7,909025389,0,False,0
+Slice_9_8,-898429074,0,False,0
+Slice_9_9,1589083759,0,False,0
+Golden Hook,-181758045,0,False,0
+Slice_9_11,-484949578,0,False,0
+Branch,232222334,0,False,0
+Gem Green,1222452178,0,False,0
+Ruby Green,1079133004,0,False,0
+Fries,17705035,0,False,0
+Squid Raw,1752598234,0,False,0
+Squid Cooked,-510920245,0,False,0
+Enoki Mushroom,746444044,0,False,0
+Lemon,13388787,0,False,0
+Lemon Cut,-1336752075,0,False,0
+Slice_10_6,633656413,0,False,0
+Slice_10_7,437142908,0,False,0
+Slice_10_8,240629403,0,False,0
+Slice_10_9,44115898,0,False,0
+Golden Fan,1107791428,0,False,0
+Slice_10_11,173591891,0,False,0
+Trunk,10596532,0,False,0
+Gem Orange,-735071423,0,False,0
+Ruby Orange,-1312021612,0,False,0
+BaoZi,8147359,0,False,0
+Lobster Raw,44506805,0,False,0
+Lobster Cooked,-105834609,0,False,0
+Mushroom Red,346368151,0,False,0
+Cherry,732893415,0,False,0
+Cherry Cut,1828199653,0,False,0
+Slice_11_6,-81035419,0,False,0
+Slice_11_7,-277548924,0,False,0
+Slice_11_8,145974609,0,False,0
+Slice_11_9,1786926233,0,False,0
+Golden Key,430376696,0,False,0
+Slice_11_11,78937097,0,False,0
+Stump,15184407,0,False,0
+Gem Grey,1253479216,0,False,0
+Ruby Grey,203506053,0,False,0
+Dumpling,-875845514,0,False,0
+Crab Raw,20118207,0,False,0
+Crab Cooked,85648814,0,False,0
+Mushroom Green,-1040798084,0,False,0
+Pitaya,51766450,0,False,0
+Pitaya Cut,1147072688,0,False,0
+Slice_12_6,-175690213,0,False,0
+Slice_12_7,-372203718,0,False,0
+Slice_12_8,-568717223,0,False,0
+Slice_12_9,-765230728,0,False,0
+Golden Pipe,-1006557435,0,False,0
+Slice_12_11,-635754735,0,False,0
+Board,4231718,0,False,0
+Stone 0,-1477719691,0,False,0
+Flint 0,-1463872903,0,False,0
+Sushi,8568914,0,False,0
+Snail Raw,1759967089,0,False,0
+Snail Cooked,-503551390,0,False,0
+Mushroom Blue,-1608214631,0,False,0
+Apricot,1002698146,0,False,0
+Apricot Cut,-1240011973,0,False,0
+Slice_13_6,-270345007,0,False,0
+Slice_13_7,-466858512,0,False,0
+Slice_13_8,-663372017,0,False,0
+Slice_13_9,-859885522,0,False,0
+Golden Cross,-471408544,0,False,0
+Slice_13_11,-730409529,0,False,0
+Bomb,72510,0,False,0
+Stone 1,-590216010,0,False,0
+Flint 1,-576369222,0,False,0
+Chocolate,1294140924,0,False,0
+Bone,162844,0,False,0
+Fish Bone,-470401387,0,False,0
+Mushroom Orange,-825627068,0,False,0
+Honeydew,1710250629,0,False,0
+Honeydew Cut,195092698,0,False,0
+Slice_14_6,1472465328,0,False,0
+Slice_14_7,1275951823,0,False,0
+Slice_14_8,1079438318,0,False,0
+Slice_14_9,882924813,0,False,0
+Golden Feather,-1796146316,0,False,0
+Slice_14_11,-1445101361,0,False,0
+Firecracker,-1788356518,0,False,0
+Stone 2,297287671,0,False,0
+Flint 2,311134459,0,False,0
+Trunk Bottom 0,1774268327,0,False,0
+Trunk Mid 0,244917557,0,False,0
+Trunk Bottom 1,1268709702,0,False,0
+Trunk Mid 1,-1552033802,0,False,0
+Trunk Bottom 2,763151077,0,False,0
+Trunk Mid 2,945982135,0,False,0
+Paspalum 0,-754910753,0,False,0
+Paspalum 1,-951424258,0,False,0
+Paspalum 2,-1147937763,0,False,0
+Paspalum 3,-1344451268,0,False,0
+Paspalum 4,-1540964773,0,False,0
+Paspalum 5,-1737478278,0,False,0
+Flower 0,1799431381,0,False,0
+Flower 1,-752725580,0,False,0
+Flower 2,990084755,0,False,0
+Flower 3,-1562072206,0,False,0
+Flower 4,180738129,0,False,0
+Flower 5,86083335,0,False,0
+Flower 6,-628608497,0,False,0
+Flower 7,1114201838,0,False,0
+Flower 8,-1437955123,0,False,0
+Flower 9,304855212,0,False,0
+Flower 10,105742724,0,False,0
+Flower 11,-1701711739,0,False,0
+Flower 12,785801094,0,False,0
+Flower 13,-1021653369,0,False,0
+Flower 14,1465859464,0,False,0
+Flower 15,-341594999,0,False,0
+Flower 16,308452705,0,False,0
+Flower 17,338463371,0,False,0
+Flower 18,-1468991092,0,False,0
+Flower 19,1018521741,0,False,0
+Cactus 0,5270490,0,False,0
+Cactus 1,-709421342,0,False,0
+Cactus 2,1033388993,0,False,0
+Cactus 3,-1518767968,0,False,0
+Cactus 4,224042367,0,False,0
+Cactus 5,129387573,0,False,0
+Cactus 6,-585304259,0,False,0
+Cactus 7,1157506076,0,False,0
+Coral 0,-1471639615,0,False,0
+Coral 1,-584135934,0,False,0
+Coral 2,303367747,0,False,0
+Coral 3,1190871428,0,False,0
+Coral 4,240909980,0,False,0
+Coral 5,-1329088506,0,False,0
+Coral 6,-441584825,0,False,0
+Coral 7,445918856,0,False,0
+Coral 8,1333422537,0,False,0
+Coral 9,-236575949,0,False,0
+Coral 10,1660313906,0,False,0
+Coral 11,-891843055,0,False,0
+Mushroom 0,773886223,0,False,0
+Mushroom 1,577372718,0,False,0
+Mushroom 2,380859213,0,False,0
+Mushroom 3,184345708,0,False,0
+Mushroom 4,-12167797,0,False,0
+Mushroom 5,-208681302,0,False,0
+Mushroom 6,-405194807,0,False,0
+Mushroom 7,-601708312,0,False,0
+Mushroom 8,-798221817,0,False,0
+Mushroom 9,-994735322,0,False,0
+Mushroom 10,931692030,0,False,0
+Mushroom 11,-865259329,0,False,0
+Leaf Pine 0,1404058850,0,False,0
+Leaf Pine 1,-392892509,0,False,0
+Leaf Pine 2,267658299,0,False,0
+Leaf Palm 0,291111675,0,False,0
+Leaf Palm 1,-1505839684,0,False,0
+Leaf Palm 2,992176253,0,False,0
+Leaf Willow 2,-244887593,0,False,0
+Leaf Willow 1,-1788949715,0,False,0
+Leaf Willow 0,-1495546708,0,False,0
+Leaf Maple 2,-1399466501,0,False,0
+Leaf Maple 1,-1528549220,0,False,0
+Leaf Maple 0,-1657631939,0,False,0
+Leaf Poplar 2,894653070,0,False,0
+Leaf Poplar 1,1188056077,0,False,0
+Leaf Poplar 0,1481459084,0,False,0
+Shrub 0,-1480279206,0,False,0
+Shrub 1,-592775525,0,False,0
+Shrub 2,294728156,0,False,0
+Shrub 3,1182231837,0,False,0
+Shrub 4,232270389,0,False,0
+Shrub 5,-1337728097,0,False,0
+Shrub 6,-450224416,0,False,0
+Shrub 7,437279265,0,False,0
+Shrub 8,1324782946,0,False,0
+Shrub 9,-245215540,0,False,0
+Shrub 10,1651674315,0,False,0
+Shrub 11,-900482646,0,False,0
+Fiddle Leaf 1,1385244723,0,False,0
+Fiddle Leaf 2,1091841716,0,False,0
+Fiddle Leaf 3,798438709,0,False,0
+Fiddle Leaf 4,505035702,0,False,0
+Fiddle Leaf 5,211632695,0,False,0
+Fiddle Leaf 6,-81770312,0,False,0
+Fiddle Leaf 7,-375173319,0,False,0
+Fiddle Leaf 0,1678647730,0,False,0
