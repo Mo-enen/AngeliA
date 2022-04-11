@@ -306,14 +306,14 @@ _rBeige Stone Brick 31,-188605463,1,False,0
 _rBeige Stone Brick 30,11985697,1,False,0
 _rBeige Stone Brick 45,-779619190,1,False,0
 _rBeige Stone Brick 46,-980210350,1,False,0
+_rDirt 1,-683919691,1,False,0
+_rDirt 2,1058890644,1,False,0
+_rDirt 3,-1493266317,1,False,0
+_rDirt 4,249544018,1,False,0
 _rDirt 5,154889224,1,False,0
 _rDirt 6,-559802608,1,False,0
 _rDirt 7,1183007727,1,False,0
-_rDirt 8,-1369149234,1,False,0
-_rDirt 9,373661101,1,False,0
-_rDirt 10,174548613,1,False,0
-_rDirt 11,-1632905850,1,False,0
-_rDirt 12,854606983,1,False,0
+_rDirt 0,30772141,1,False,0
 _rGrey Stone Brick 0,1757763306,1,False,0
 _rGrey Stone Brick 1,1348939081,1,False,0
 _rGrey Stone Brick 2,940114856,1,False,0
@@ -456,11 +456,11 @@ Iron,432024,0,False,0
 Marble,154304899,0,False,0
 Sand,132636,0,False,0
 Stone Crack,1279674742,0,False,0
-_rDirt 13,-952847480,1,False,0
-_rDirt 14,1534665353,1,False,0
-_rDirt 15,-272789110,1,False,0
-_rDirt 16,-242778444,1,False,0
-_rDirt 17,407269260,1,False,0
+_rDirt 8,-1369149234,1,False,0
+_rDirt 9,373661101,1,False,0
+_rDirt 10,174548613,1,False,0
+_rDirt 11,-1632905850,1,False,0
+_rDirt 12,854606983,1,False,0
 Brick,10257281,0,False,0
 _rCloud 0,858199154,1,True,1659898396
 _rCloud 1,-949255309,1,True,1659898396

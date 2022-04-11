@@ -12,6 +12,7 @@ namespace Yaya {
 
 		#region --- VAR ---
 
+
 		// Api
 		public int FinalVelocityX => X - PrevX;
 		public int FinalVelocityY => Y - PrevY;
@@ -23,12 +24,13 @@ namespace Yaya {
 		public bool InWater { get; set; } = false;
 		public bool InsideGround { get; set; } = false;
 
-
 		// Virtual
 		public virtual int CollisionLayer { get; } = 0;
 		public virtual bool CarryRigidbodyOnTop => true;
 		public virtual bool IsInAir => !IsGrounded && !InWater;
 		public virtual bool DestroyOnInsideGround => false;
+		public virtual int AirDragX { get; } = 3;
+		public virtual int AirDragY { get; } = 0;
 
 		// Api-Ser
 		public int VelocityX { get; set; } = 0;
@@ -110,6 +112,10 @@ namespace Yaya {
 			if (!IsGrounded) {
 				IsGrounded = GroundedCheck(Rect);
 			}
+
+			// Ari Drag
+			VelocityX = VelocityX.MoveTowards(0, AirDragX);
+			VelocityY = VelocityY.MoveTowards(0, AirDragY);
 		}
 
 
