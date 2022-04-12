@@ -61,7 +61,7 @@ namespace Yaya {
 					}
 				} else {
 					// Vert
-					if (CellPhysics.Overlap((int)PhysicsMask.Rigidbody, new(X, Y + Const.CELL_SIZE - 1, Const.CELL_SIZE, 1), this)) {
+					if (CellPhysics.Overlap((int)PhysicsMask.Rigidbody, new(X, Y + Const.CELL_SIZE, Const.CELL_SIZE, 1), this)) {
 						StartBounce(frame, Direction4.Up);
 					}
 				}
