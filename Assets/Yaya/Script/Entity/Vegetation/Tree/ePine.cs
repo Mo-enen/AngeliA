@@ -14,7 +14,7 @@ namespace Yaya {
 
 		private const int MAX_SPAN = Const.CELL_SIZE * 4;
 
-		public override RectInt Bounds => Rect.Expand(MAX_SPAN / 2, MAX_SPAN / 2, 0, LeafSize / 2);
+		public override RectInt Bounds => Rect.Expand(MAX_SPAN / 2, MAX_SPAN / 2, 0, Const.CELL_SIZE / 2);
 		protected override int TrunkBottomCode => TRUNK_BOTTOM_CODE;
 		protected override int TrunkMidCode => TRUNK_MID_CODE;
 		protected override int LeafCountMin => 8;

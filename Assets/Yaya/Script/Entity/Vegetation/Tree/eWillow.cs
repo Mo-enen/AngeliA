@@ -13,9 +13,9 @@ namespace Yaya {
 		private static readonly int[] LEAF_CODES = new int[] { "Leaf Willow 0".AngeHash(), "Leaf Willow 1".AngeHash(), "Leaf Willow 2".AngeHash(), };
 
 		private const int SPAN = 2;
-		private int MaxSpan => SPAN * Const.CELL_SIZE;
+		private const int MAX_SPAN = SPAN * Const.CELL_SIZE;
 
-		public override RectInt Bounds => Rect.Expand(MaxSpan, MaxSpan, 0, LeafSize / 2);
+		public override RectInt Bounds => Rect.Expand(MAX_SPAN, MAX_SPAN, 0, Const.CELL_SIZE / 2);
 		protected override int TrunkBottomCode => TRUNK_BOTTOM_CODE;
 		protected override int TrunkMidCode => TRUNK_MID_CODE;
 		protected override int LeafCountMin => 1;
