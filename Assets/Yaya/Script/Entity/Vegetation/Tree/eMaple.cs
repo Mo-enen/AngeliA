@@ -7,36 +7,48 @@ using AngeliaFramework;
 namespace Yaya {
 	public class eMaple : eTree {
 
+
 		private static readonly int TRUNK_BOTTOM_CODE = "Trunk Bottom 0".AngeHash();
 		private static readonly int TRUNK_MID_CODE = "Trunk Mid 0".AngeHash();
-		private static readonly int[] LEAF_CODES = new int[] { "Leaf Maple 0".AngeHash(), "Leaf Maple 1".AngeHash(), "Leaf Maple 2".AngeHash(), };
+		private static readonly int LEAF_CODE = "Leaf Maple".AngeHash();
 
-		private const int SPAN = Const.CELL_SIZE * 3;
-
-		public override RectInt Bounds => Rect.Expand(SPAN / 2, SPAN / 2, 0, Const.CELL_SIZE / 2);
 		protected override int TrunkBottomCode => TRUNK_BOTTOM_CODE;
 		protected override int TrunkMidCode => TRUNK_MID_CODE;
-		protected override int LeafCountMin => 6;
-		protected override int LeafCountMax => 12;
 
 
-
-		protected override void DrawLeaf (int frame, int code, Vector2Int shift) {
-			if (!HasTreesOnBottom && TreesOnTop > 0) return;
-			int xMin = TreesOnTop > 0 ? Const.CELL_SIZE / 2 - SPAN / 2 : 0;
-			int xMax = TreesOnTop > 0 ? Const.CELL_SIZE / 2 + SPAN / 2 : Const.CELL_SIZE;
-			CellRenderer.Draw(
-				code,
-				X + LeafSize / 2 + (int)Util.Remap(0, Const.CELL_SIZE, xMin, xMax - LeafSize, shift.x),
-				Y + shift.y + LeafSize / 2,
-				500, 500,
-				(int)Util.Remap(0f, 120f, -6f, 6f, Mathf.PingPong(frame + shift.x, 120)),
-				LeafSize * 5 / 2, LeafSize * 5 / 2
-			);
+		public override void FrameUpdate (int frame) {
+			base.FrameUpdate(frame);
+			// Leaf
+			if (IsBigTree) {
+				// Big
+				CellRenderer.Draw(LEAF_CODE, new(
+					X, Y + Const.CELL_SIZE / 2 - (Mathf.PingPong(frame + TreesOnTop * 40f, 120f) / 6f).RoundToInt(), Const.CELL_SIZE, Const.CELL_SIZE
+				));
+				if (TreesOnTop > 0) {
+					// 3
+					CellRenderer.Draw(LEAF_CODE, new(
+						X - Const.CELL_SIZE, Y + Const.CELL_SIZE / 2 - (Mathf.PingPong(frame + TreesOnTop * 40f - 40f, 120f) / 6f).RoundToInt(), Const.CELL_SIZE, Const.CELL_SIZE
+					));
+					CellRenderer.Draw(LEAF_CODE, new(
+						X + Const.CELL_SIZE, Y + Const.CELL_SIZE / 2 - (Mathf.PingPong(frame + TreesOnTop * 40f + 40f, 120f) / 6f).RoundToInt(), Const.CELL_SIZE, Const.CELL_SIZE
+					));
+				}
+				if (HasTreesOnBottom) {
+					// 2
+					CellRenderer.Draw(LEAF_CODE, new(
+						X - Const.CELL_SIZE * 2 / 3 + 6, Y - 36 - (Mathf.PingPong(frame + TreesOnTop * 40f - 40f, 120f) / 6f).RoundToInt(), Const.CELL_SIZE, Const.CELL_SIZE
+					));
+					CellRenderer.Draw(LEAF_CODE, new(
+						X + Const.CELL_SIZE * 2 / 3 - 6, Y - 36 - (Mathf.PingPong(frame + TreesOnTop * 40f + 40f, 120f) / 6f).RoundToInt(), Const.CELL_SIZE, Const.CELL_SIZE
+					));
+				}
+			} else {
+				// Small
+				CellRenderer.Draw(LEAF_CODE, new(
+					X, Y + Const.CELL_SIZE / 2 - (Mathf.PingPong(frame, 120f) / 6f).RoundToInt(), Const.CELL_SIZE, Const.CELL_SIZE
+				));
+			}
 		}
-
-
-		protected override int GetLeafCode (int index) => LEAF_CODES[index.UMod(LEAF_CODES.Length)];
 
 
 	}

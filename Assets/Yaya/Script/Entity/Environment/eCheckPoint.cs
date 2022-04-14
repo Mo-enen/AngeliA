@@ -122,6 +122,15 @@ namespace Yaya.Editor {
 			var world = new World();
 			int TARGET_ID = typeof(eCheckPoint).AngeHash();
 
+			// Meta
+			var tagPool = new Dictionary<int, int>();
+			var data = Util.GetFieldValue(game, "m_Data") as GameData;
+			foreach (var sheet in data.Sheets) {
+				foreach (var sp in sheet.Sprites) {
+					tagPool.TryAdd(sp.GlobalID, sp.Tag);
+				}
+			}
+
 			// Get All Cp Positions
 			foreach (var file in Util.GetFilesIn(game.MapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
 				try {
@@ -154,7 +163,8 @@ namespace Yaya.Editor {
 							world.WorldPosition.y * Const.MAP_SIZE + i / Const.MAP_SIZE
 						);
 						if (allCpPool.Contains(new(globalUnitPos.x, globalUnitPos.y + 1))) {
-							allCpBlockPool.Add(globalUnitPos, b.Last.Tag);
+							tagPool.TryGetValue(b.Last.TypeID, out int tag);
+							allCpBlockPool.Add(globalUnitPos, tag);
 						}
 					}
 				} catch (System.Exception ex) { Debug.LogException(ex); }

@@ -10,13 +10,13 @@ namespace Yaya {
 		protected override void DrawLevelBlock (World.Block block, int unitX, int unitY) {
 			base.DrawLevelBlock(block, unitX, unitY);
 			while (block != null) {
-				if (block.HasCollider) {
+				if (CellRenderer.GetSprite(block.TypeID, out var sp) && sp.HasCollider) {
 					var rect = new RectInt(unitX * Const.CELL_SIZE, unitY * Const.CELL_SIZE, Const.CELL_SIZE, Const.CELL_SIZE);
 					CellPhysics.FillBlock(
 						(int)PhysicsLayer.Level,
-						rect.Shrink(block.ColliderBorder.Left, block.ColliderBorder.Right, block.ColliderBorder.Down, block.ColliderBorder.Up),
-						block.IsTrigger,
-						block.Tag
+						rect.Shrink(sp.GlobalBorder.Left, sp.GlobalBorder.Right, sp.GlobalBorder.Down, sp.GlobalBorder.Up),
+						sp.IsTrigger,
+						sp.Tag
 					);
 				}
 				block = block.Next;
