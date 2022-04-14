@@ -259,53 +259,53 @@ _rGrass Ground 5,287176971,1,False,0
 _rGrass Ground 6,-223357206,1,False,0
 _rGrass Ground 7,-733891383,1,False,0
 _rGrass Ground 0,-1455119440,1,False,0
-_rBeige Stone Brick 0,-1660508130,1,False,0
-_rBeige Stone Brick 1,-1449157217,1,False,0
-_rBeige Stone Brick 2,-1237806304,1,False,0
-_rBeige Stone Brick 3,-1026455391,1,False,0
-_rBeige Stone Brick 4,-815104478,1,False,0
-_rBeige Stone Brick 5,-603753565,1,False,0
-_rBeige Stone Brick 6,-392402652,1,False,0
-_rBeige Stone Brick 7,-181051739,1,False,0
-_rBeige Stone Brick 8,30299174,1,False,0
-_rBeige Stone Brick 9,241650087,1,False,0
-_rBeige Stone Brick 10,-410716129,1,False,0
-_rBeige Stone Brick 11,-611307289,1,False,0
-_rBeige Stone Brick 12,-811898449,1,False,0
-_rBeige Stone Brick 13,-1012489609,1,False,0
-_rBeige Stone Brick 14,-1213080769,1,False,0
-_rBeige Stone Brick 15,-1413671929,1,False,0
-_rBeige Stone Brick 16,-1614263089,1,False,0
-_rBeige Stone Brick 17,-1814854249,1,False,0
-_rBeige Stone Brick 18,-177980280,1,False,0
-_rBeige Stone Brick 19,241465598,1,False,0
-_rBeige Stone Brick 20,-199365216,1,False,0
-_rBeige Stone Brick 21,-399956376,1,False,0
-_rBeige Stone Brick 22,-600547536,1,False,0
-_rBeige Stone Brick 23,-801138696,1,False,0
-_rBeige Stone Brick 24,-1001729856,1,False,0
-_rBeige Stone Brick 25,-1202321016,1,False,0
-_rBeige Stone Brick 26,-1402912176,1,False,0
-_rBeige Stone Brick 27,-1603503336,1,False,0
-_rBeige Stone Brick 28,-1804094496,1,False,0
-_rBeige Stone Brick 29,-167220527,1,False,0
-_rBeige Stone Brick 44,-579028030,1,False,0
-_rBeige Stone Brick 43,-378436870,1,False,0
-_rBeige Stone Brick 42,-177845710,1,False,0
-_rBeige Stone Brick 41,22745450,1,False,0
-_rBeige Stone Brick 40,223336610,1,False,0
-_rBeige Stone Brick 39,-1793334743,1,False,0
-_rBeige Stone Brick 38,-1592743583,1,False,0
-_rBeige Stone Brick 37,-1392152423,1,False,0
-_rBeige Stone Brick 36,-1191561263,1,False,0
-_rBeige Stone Brick 35,-990970103,1,False,0
-_rBeige Stone Brick 34,-790378943,1,False,0
-_rBeige Stone Brick 33,-589787783,1,False,0
-_rBeige Stone Brick 32,-389196623,1,False,0
-_rBeige Stone Brick 31,-188605463,1,False,0
-_rBeige Stone Brick 30,11985697,1,False,0
-_rBeige Stone Brick 45,-779619190,1,False,0
-_rBeige Stone Brick 46,-980210350,1,False,0
+_rStone Brick Beige 0,1412809456,1,False,0
+_rStone Brick Beige 1,1624160369,1,False,0
+_rStone Brick Beige 2,1835511282,1,False,0
+_rStone Brick Beige 3,209397066,1,False,0
+_rStone Brick Beige 4,-199289059,1,False,0
+_rStone Brick Beige 5,-1825403275,1,False,0
+_rStone Brick Beige 6,-1614052362,1,False,0
+_rStone Brick Beige 7,-1402701449,1,False,0
+_rStone Brick Beige 8,-1191350536,1,False,0
+_rStone Brick Beige 9,-979999623,1,False,0
+_rStone Brick Beige 10,-1632365839,1,False,0
+_rStone Brick Beige 11,-1832956999,1,False,0
+_rStone Brick Beige 12,-196083030,1,False,0
+_rStone Brick Beige 13,223362848,1,False,0
+_rStone Brick Beige 14,22771688,1,False,0
+_rStone Brick Beige 15,1659645657,1,False,0
+_rStone Brick Beige 16,1459054497,1,False,0
+_rStone Brick Beige 17,1258463337,1,False,0
+_rStone Brick Beige 18,1057872177,1,False,0
+_rStone Brick Beige 19,857281017,1,False,0
+_rStone Brick Beige 20,-1421014926,1,False,0
+_rStone Brick Beige 21,-1621606086,1,False,0
+_rStone Brick Beige 22,-1822197246,1,False,0
+_rStone Brick Beige 23,-185323277,1,False,0
+_rStone Brick Beige 24,234122601,1,False,0
+_rStone Brick Beige 25,33531441,1,False,0
+_rStone Brick Beige 26,1670405410,1,False,0
+_rStone Brick Beige 27,1469814250,1,False,0
+_rStone Brick Beige 28,1269223090,1,False,0
+_rStone Brick Beige 29,1068631930,1,False,0
+_rStone Brick Beige 44,36787389,1,False,0
+_rStone Brick Beige 43,237378549,1,False,0
+_rStone Brick Beige 42,437969709,1,False,0
+_rStone Brick Beige 41,638560869,1,False,0
+_rStone Brick Beige 40,839152029,1,False,0
+_rStone Brick Beige 39,-557482286,1,False,0
+_rStone Brick Beige 38,-356891126,1,False,0
+_rStone Brick Beige 37,-156299966,1,False,0
+_rStone Brick Beige 36,44291194,1,False,0
+_rStone Brick Beige 35,244882354,1,False,0
+_rStone Brick Beige 34,445473514,1,False,0
+_rStone Brick Beige 33,646064674,1,False,0
+_rStone Brick Beige 32,846655834,1,False,0
+_rStone Brick Beige 31,1047246994,1,False,0
+_rStone Brick Beige 30,1247838154,1,False,0
+_rStone Brick Beige 45,-163803771,1,False,0
+_rStone Brick Beige 46,-364394931,1,False,0
 _rDirt 1,-683919691,1,False,0
 _rDirt 2,1058890644,1,False,0
 _rDirt 3,-1493266317,1,False,0
@@ -314,53 +314,53 @@ _rDirt 5,154889224,1,False,0
 _rDirt 6,-559802608,1,False,0
 _rDirt 7,1183007727,1,False,0
 _rDirt 0,30772141,1,False,0
-_rGrey Stone Brick 0,1757763306,1,False,0
-_rGrey Stone Brick 1,1348939081,1,False,0
-_rGrey Stone Brick 2,940114856,1,False,0
-_rGrey Stone Brick 3,531290631,1,False,0
-_rGrey Stone Brick 4,122466406,1,False,0
-_rGrey Stone Brick 5,-286357819,1,False,0
-_rGrey Stone Brick 6,-695182044,1,False,0
-_rGrey Stone Brick 7,-1104006269,1,False,0
-_rGrey Stone Brick 8,-1512830494,1,False,0
-_rGrey Stone Brick 9,-84189590,1,False,0
-_rGrey Stone Brick 10,-205970151,1,False,0
-_rGrey Stone Brick 11,5380762,1,False,0
-_rGrey Stone Brick 12,216731675,1,False,0
-_rGrey Stone Brick 13,428082588,1,False,0
-_rGrey Stone Brick 14,639433501,1,False,0
-_rGrey Stone Brick 15,850784414,1,False,0
-_rGrey Stone Brick 16,1062135327,1,False,0
-_rGrey Stone Brick 17,1273486240,1,False,0
-_rGrey Stone Brick 18,1484837153,1,False,0
-_rGrey Stone Brick 19,1696188066,1,False,0
-_rGrey Stone Brick 20,-614794376,1,False,0
-_rGrey Stone Brick 21,-403443463,1,False,0
-_rGrey Stone Brick 22,-192092550,1,False,0
-_rGrey Stone Brick 23,19258363,1,False,0
-_rGrey Stone Brick 24,230609276,1,False,0
-_rGrey Stone Brick 25,441960189,1,False,0
-_rGrey Stone Brick 26,653311102,1,False,0
-_rGrey Stone Brick 27,864662015,1,False,0
-_rGrey Stone Brick 28,1076012928,1,False,0
-_rGrey Stone Brick 29,1287363841,1,False,0
-_rGrey Stone Brick 30,-1023618601,1,False,0
-_rGrey Stone Brick 31,-812267688,1,False,0
-_rGrey Stone Brick 32,-600916775,1,False,0
-_rGrey Stone Brick 33,-389565862,1,False,0
-_rGrey Stone Brick 34,-178214949,1,False,0
-_rGrey Stone Brick 35,33135964,1,False,0
-_rGrey Stone Brick 36,244486877,1,False,0
-_rGrey Stone Brick 37,455837790,1,False,0
-_rGrey Stone Brick 38,667188703,1,False,0
-_rGrey Stone Brick 39,878539616,1,False,0
-_rGrey Stone Brick 40,-1432442826,1,False,0
-_rGrey Stone Brick 41,-1221091913,1,False,0
-_rGrey Stone Brick 42,-1009741000,1,False,0
-_rGrey Stone Brick 43,-798390087,1,False,0
-_rGrey Stone Brick 44,-587039174,1,False,0
-_rGrey Stone Brick 45,-375688261,1,False,0
-_rGrey Stone Brick 46,-164337348,1,False,0
+_rStone Brick Grey 0,-286909450,1,False,0
+_rStone Brick Grey 1,1761768492,1,False,0
+_rStone Brick Grey 2,1352944267,1,False,0
+_rStone Brick Grey 3,944120042,1,False,0
+_rStone Brick Grey 4,535295817,1,False,0
+_rStone Brick Grey 5,126471592,1,False,0
+_rStone Brick Grey 6,-282352633,1,False,0
+_rStone Brick Grey 7,-691176858,1,False,0
+_rStone Brick Grey 8,-1100001083,1,False,0
+_rStone Brick Grey 9,-1508825308,1,False,0
+_rStone Brick Grey 10,206859260,1,False,0
+_rStone Brick Grey 11,418210173,1,False,0
+_rStone Brick Grey 12,629561086,1,False,0
+_rStone Brick Grey 13,840911999,1,False,0
+_rStone Brick Grey 14,1052262912,1,False,0
+_rStone Brick Grey 15,1263613825,1,False,0
+_rStone Brick Grey 16,1474964738,1,False,0
+_rStone Brick Grey 17,1686315651,1,False,0
+_rStone Brick Grey 18,60201435,1,False,0
+_rStone Brick Grey 19,271552348,1,False,0
+_rStone Brick Grey 20,-201964965,1,False,0
+_rStone Brick Grey 21,9385948,1,False,0
+_rStone Brick Grey 22,220736861,1,False,0
+_rStone Brick Grey 23,432087774,1,False,0
+_rStone Brick Grey 24,643438687,1,False,0
+_rStone Brick Grey 25,854789600,1,False,0
+_rStone Brick Grey 26,1066140513,1,False,0
+_rStone Brick Grey 27,1277491426,1,False,0
+_rStone Brick Grey 28,1488842339,1,False,0
+_rStone Brick Grey 29,1700193252,1,False,0
+_rStone Brick Grey 30,-610789190,1,False,0
+_rStone Brick Grey 31,-399438277,1,False,0
+_rStone Brick Grey 32,-188087364,1,False,0
+_rStone Brick Grey 33,23263549,1,False,0
+_rStone Brick Grey 34,234614462,1,False,0
+_rStone Brick Grey 35,445965375,1,False,0
+_rStone Brick Grey 36,657316288,1,False,0
+_rStone Brick Grey 37,868667201,1,False,0
+_rStone Brick Grey 38,1080018114,1,False,0
+_rStone Brick Grey 39,1291369027,1,False,0
+_rStone Brick Grey 40,-1019613415,1,False,0
+_rStone Brick Grey 41,-808262502,1,False,0
+_rStone Brick Grey 42,-596911589,1,False,0
+_rStone Brick Grey 43,-385560676,1,False,0
+_rStone Brick Grey 44,-174209763,1,False,0
+_rStone Brick Grey 45,37141150,1,False,0
+_rStone Brick Grey 46,248492063,1,False,0
 _RGrass 0,1215846483,2,False,0
 _RGrass 1,-591607980,2,False,0
 _RGrass 2,58439724,2,False,0
@@ -539,9 +539,6 @@ eOnewayGateRight,-1699909466,0,False,0
 eOnewayGateDown,-232861605,0,False,0
 eOnewayGateLeft,-101198784,0,False,0
 eSpringV,-378506843,0,False,0
-eHealthPotion,-867810636,0,False,0
-eManaPotion,-955042593,0,False,0
-eSpeedPotion,536178699,0,False,0
 eMaple,154705040,0,False,0
 ePalm,12363735,0,False,0
 ePine,5042837,0,False,0
