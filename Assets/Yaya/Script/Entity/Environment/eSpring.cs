@@ -5,6 +5,22 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+	public class eSpringWoodHorizontal : eSpring {
+		protected override bool Horizontal => true;
+		protected override int Power => 96;
+	}
+	public class eSpringWoodVertical : eSpring {
+		protected override bool Horizontal => false;
+		protected override int Power => 96;
+	}
+	public class eSpringMetalHorizontal : eSpring {
+		protected override bool Horizontal => true;
+		protected override int Power => 164;
+	}
+	public class eSpringMetalVertical : eSpring {
+		protected override bool Horizontal => false;
+		protected override int Power => 164;
+	}
 	public abstract class eSpring : eRigidbody {
 
 
@@ -25,9 +41,9 @@ namespace Yaya {
 		protected abstract bool Horizontal { get; }
 		public override int PushLevel => Horizontal ? int.MaxValue - 1 : 1;
 		public override RectInt Bounds => new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE);
+		protected abstract int Power { get; }
 
 		// Short
-		private int Power => Data;
 		private bool IsMetal => Power >= METAL_LINE;
 		private RectInt FullRect => new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE);
 

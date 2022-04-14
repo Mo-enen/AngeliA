@@ -526,25 +526,30 @@ _aWater Top 15,1621953085,3,True,16791575
 _aWater Top 18,105277210,3,True,16791575
 _aWater Top 21,-944182718,3,True,16791575
 addPixel,276377275,0,False,0
-eSpringH,991952243,0,False,0
+eSpringWoodHorizontal,-479905428,0,False,0
 eBarrel,-237087180,0,False,0
 eLadder,-1057843577,0,False,0
 eBrittleDirt,-1460103677,0,False,0
 eBrittleDirtGrass,1410301049,0,False,0
-eCheckAltar,1717603945,0,False,0
-eCheckStatue,1663015755,0,False,0
+eCheckPoint,252309645,0,False,0
 eWardrobe,-309475295,0,False,0
 eOnewayGateUp,780199252,0,False,0
 eOnewayGateRight,-1699909466,0,False,0
 eOnewayGateDown,-232861605,0,False,0
 eOnewayGateLeft,-101198784,0,False,0
-eSpringV,-378506843,0,False,0
+eSpringWoodVertical,-1648227161,0,False,0
 eMaple,154705040,0,False,0
 ePalm,12363735,0,False,0
 ePine,5042837,0,False,0
 ePoplar,-1164600943,0,False,0
 eWillow,-621366433,0,False,0
-eConveyor,-1220408656,0,False,0
+eConveyorLeftSlow,1782759626,0,False,0
+eBarrelSmall,280544868,0,False,0
+eSpringMetalHorizontal,1802686643,0,False,0
+eSpringMetalVertical,80327198,0,False,0
+eConveyorRightSlow,1280373203,0,False,0
+eConveyorLeftFast,1012290108,0,False,0
+eConveyorRightFast,-2501224,0,False,0
 Test Pro,-1349009215,0,False,0
 Pixel,11254534,0,False,0
 UI Window,1414408444,0,False,0

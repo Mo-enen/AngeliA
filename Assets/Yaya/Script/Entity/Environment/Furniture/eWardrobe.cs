@@ -15,7 +15,7 @@ namespace Yaya {
 		public override int Layer => (int)EntityLayer.Environment;
 
 		// Short
-		private int Code => CODES[Data.UMod(CODES.Length)];
+		private int Code => CODES[0];
 
 
 		// MSG

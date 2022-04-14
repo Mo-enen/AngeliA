@@ -5,7 +5,11 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class eConveyor : Entity {
+	public class eConveyorLeftSlow : eConveyor { protected override int MoveSpeed => -12; }
+	public class eConveyorRightSlow : eConveyor { protected override int MoveSpeed => 12; }
+	public class eConveyorLeftFast : eConveyor { protected override int MoveSpeed => -24; }
+	public class eConveyorRightFast : eConveyor { protected override int MoveSpeed => 24; }
+	public abstract class eConveyor : Entity {
 
 
 		// SUB
@@ -27,7 +31,7 @@ namespace Yaya {
 		// Api
 		public override int Layer => (int)EntityLayer.Environment;
 		protected PartType Part { get; private set; } = PartType.None;
-		public int MoveSpeed => Data;
+		protected abstract int MoveSpeed { get; }
 
 		// Data
 		private static readonly HitInfo[] c_CheckPart = new HitInfo[8];
