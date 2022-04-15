@@ -38,7 +38,7 @@ namespace Yaya {
 		// Api
 		public override bool Despawnable => false;
 		public override bool ForceUpdate => true;
-		public override int Layer => (int)EntityLayer.UI;
+		public override int Capacity => 1;
 
 		// Data
 		private readonly string Message = "";

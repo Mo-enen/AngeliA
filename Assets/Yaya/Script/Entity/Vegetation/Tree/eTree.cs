@@ -20,12 +20,12 @@ namespace Yaya {
 		// Api
 		public override RectInt Rect => new(X + Const.CELL_SIZE / 2 - TrunkWidth / 2, Y, Width, Height);
 		public override RectInt Bounds => Rect.Expand(Const.CELL_SIZE, Const.CELL_SIZE, 0, Const.CELL_SIZE / 2);
-		public override int Layer => (int)EntityLayer.Environment;
 		public override bool CorrectPosition => true;
 		protected int TrunkWidth { get; private set; } = 16;
 		protected int TreesOnTop { get; private set; } = -1;
 		protected bool HasTreesOnBottom { get; private set; } = false;
 		protected bool IsBigTree => HasTreesOnBottom || TreesOnTop > 0;
+		public override int Capacity => 256;
 
 		// Data
 		private static readonly HitInfo[] c_PoseCheck = new HitInfo[16];
@@ -39,8 +39,8 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnCreate (int frame) {
-			base.OnCreate(frame);
+		public override void OnActived (int frame) {
+			base.OnActived(frame);
 			TrunkWidth = CellRenderer.GetSprite(TrunkBottomCode, out var rect) ? rect.GlobalWidth : Const.CELL_SIZE;
 			Width = TrunkWidth;
 			Height = Const.CELL_SIZE;

@@ -12,15 +12,15 @@ namespace Yaya {
 
 
 		// Api
-		public override int Layer => (int)EntityLayer.Environment;
+		public override int Capacity => 8;
 
 		// Short
 		private int Code => CODES[0];
 
 
 		// MSG
-		public override void OnCreate (int frame) {
-			base.OnCreate(frame);
+		public override void OnActived (int frame) {
+			base.OnActived(frame);
 			if (CellRenderer.GetSprite(Code, out var rect)) {
 				Width = rect.GlobalWidth;
 				Height = rect.GlobalHeight;

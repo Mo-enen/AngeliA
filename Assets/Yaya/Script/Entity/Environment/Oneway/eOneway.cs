@@ -12,9 +12,9 @@ namespace Yaya {
 		private const int MASK = (int)(PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Item);
 
 		// Api
-		public override int Layer => (int)EntityLayer.Environment;
 		public abstract Direction4 GateDirection { get; }
 		protected int ReboundFrame { get; private set; } = int.MinValue;
+		public override int Capacity => 64;
 
 		// Data
 		private static readonly HitInfo[] c_Rebound = new HitInfo[4];
@@ -22,7 +22,7 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnCreate (int frame) {
+		public override void OnActived (int frame) {
 			Width = Const.CELL_SIZE;
 			Height = Const.CELL_SIZE;
 		}

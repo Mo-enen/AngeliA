@@ -8,17 +8,17 @@ namespace Yaya {
 	public class eBarrelSmall : eRigidbody {
 
 
-		public override int Layer => (int)EntityLayer.Environment;
 		public override int CollisionLayer => (int)PhysicsLayer.Environment;
 		public override bool DestroyOnInsideGround => true;
+		public override int Capacity => 32;
 
 		private static readonly int BARREL_CODE = "Barrel Small".AngeHash();
 
 
-		public override void OnCreate (int frame) {
+		public override void OnActived (int frame) {
 			Width = Const.CELL_SIZE / 2;
 			Height = Const.CELL_SIZE / 2;
-			base.OnCreate(frame);
+			base.OnActived(frame);
 		}
 
 

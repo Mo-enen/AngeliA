@@ -18,6 +18,7 @@ namespace Yaya {
 		public static ePlayer CurrentPlayer { get; private set; } = null;
 		public override int PushLevel => 128;
 		public override bool ForceUpdate => true;
+		public override int Capacity => 1;
 
 		// Short
 		private RectInt ViewRect => Game.Current.ViewRect;
@@ -40,12 +41,12 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnCreate (int frame) {
+		public override void OnActived (int frame) {
 			LastGroundedY = Y;
 			AimX = ViewRect.x;
 			AimY = ViewRect.y;
 			CurrentPlayer = this;
-			base.OnCreate(frame);
+			base.OnActived(frame);
 		}
 
 

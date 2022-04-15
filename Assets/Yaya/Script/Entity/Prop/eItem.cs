@@ -15,9 +15,9 @@ namespace Yaya {
 
 
 		// Api
-		public override int Layer => (int)EntityLayer.Item;
 		public int VelocityY { get; private set; } = 0;
 		protected abstract int ITEM_CODE { get; }
+		public override int Capacity => 128;
 
 		// Short
 		private int ItemCode => _ItemCode != 0 ? _ItemCode : (_ItemCode = ITEM_CODE);
@@ -37,8 +37,8 @@ namespace Yaya {
 
 
 
-		public override void OnCreate (int frame) {
-			base.OnCreate(frame);
+		public override void OnActived (int frame) {
+			base.OnActived(frame);
 			Width = Const.ITEM_PHYSICS_SIZE;
 			Height = Const.ITEM_PHYSICS_SIZE;
 		}

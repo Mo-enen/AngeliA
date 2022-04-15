@@ -32,7 +32,7 @@ namespace Yaya {
 		private static readonly int[] ENTITY_CAPACITY = new int[] { 512, 512, 256, 512, 1024 };
 
 		// Api
-		protected override int EntityLayerCount => YayaConst.ENTITY_LAYER_COUNT;
+		//protected override int EntityLayerCount => YayaConst.ENTITY_LAYER_COUNT;
 		protected override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
 
 
@@ -76,7 +76,7 @@ namespace Yaya {
 
 
 		// Override
-		protected override int GetEntityCapacity (int layer) => ENTITY_CAPACITY[layer.Clamp(0, EntityLayerCount - 1)];
+		//protected override int GetEntityCapacity (int layer) => ENTITY_CAPACITY[layer.Clamp(0, EntityLayerCount - 1)];
 		protected override WorldSquad CreateWorldSquad () => new YayaWorldSquad(MapRoot);
 
 

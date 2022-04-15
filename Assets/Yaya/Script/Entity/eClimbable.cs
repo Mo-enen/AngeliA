@@ -8,7 +8,6 @@ namespace Yaya {
 	public abstract class eClimbable : Entity {
 
 
-		public override int Layer => (int)EntityLayer.Environment;
 		public virtual bool CorrectPosition { get; } = true;
 
 

@@ -33,7 +33,7 @@ namespace Yaya {
 		};
 
 		// Api
-		public override int Layer => (int)EntityLayer.Environment;
+		public override int Capacity => 8;
 
 		// Data
 		private static readonly Dictionary<int, Vector2Int> AltarPool = new();
@@ -65,8 +65,8 @@ namespace Yaya {
 		}
 
 
-		public override void OnCreate (int frame) {
-			base.OnCreate(frame);
+		public override void OnActived (int frame) {
+			base.OnActived(frame);
 			var globalUnitPos = new Vector2Int(X.UDivide(Const.CELL_SIZE), Y.UDivide(Const.CELL_SIZE));
 			IsAltar = AllAltarPosition.Contains(globalUnitPos);
 			if (AllAltarPosition.Contains(new(globalUnitPos.x, globalUnitPos.y - 1))) {

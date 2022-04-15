@@ -51,7 +51,7 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnCreate (int frame) {
+		public override void OnActived (int frame) {
 			PrevX = X;
 			PrevY = Y;
 		}

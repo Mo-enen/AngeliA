@@ -14,7 +14,6 @@ namespace Yaya {
 
 
 		// Api
-		public override int Layer => (int)EntityLayer.Character;
 		public override int CollisionLayer => (int)PhysicsLayer.Character;
 		public override int PushLevel => 64;
 		public override bool CarryRigidbodyOnTop => false;

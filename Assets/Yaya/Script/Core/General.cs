@@ -9,13 +9,13 @@ namespace Yaya {
 
 
 
-	public enum EntityLayer {
-		UI = 0,
-		Environment = 1,
-		Item = 2,
-		Character = 3,
-		Projectile = 4,
-	}
+	//public enum EntityLayer {
+	//	UI = 0,
+	//	Environment = 1,
+	//	Item = 2,
+	//	Character = 3,
+	//	Projectile = 4,
+	//}
 
 
 
@@ -49,12 +49,12 @@ namespace Yaya {
 	public static class YayaConst {
 
 
-		public static readonly int ENTITY_LAYER_COUNT = System.Enum.GetNames(typeof(EntityLayer)).Length;
+		//public static readonly int ENTITY_LAYER_COUNT = System.Enum.GetNames(typeof(EntityLayer)).Length;
 		public static readonly int PHYSICS_LAYER_COUNT = System.Enum.GetNames(typeof(PhysicsLayer)).Length;
 
 		public static readonly int CLIMB_TAG = "Climb".AngeHash();
 
-		
+
 		// Language
 		public delegate string StringIntHandler (int key);
 		public static StringIntHandler GetLanguage { get; set; } = null;

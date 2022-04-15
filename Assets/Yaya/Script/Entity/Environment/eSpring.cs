@@ -36,12 +36,12 @@ namespace Yaya {
 		private const int RED_LINE_MAX = 512;
 
 		// Api
-		public override int Layer => (int)EntityLayer.Environment;
 		public override int CollisionLayer => (int)PhysicsLayer.Environment;
 		protected abstract bool Horizontal { get; }
 		public override int PushLevel => Horizontal ? int.MaxValue - 1 : 1;
 		public override RectInt Bounds => new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE);
 		protected abstract int Power { get; }
+		public override int Capacity => 64;
 
 		// Short
 		private bool IsMetal => Power >= METAL_LINE;
@@ -55,8 +55,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnCreate (int frame) {
-			base.OnCreate(frame);
+		public override void OnActived (int frame) {
+			base.OnActived(frame);
 			Width = Horizontal ? Const.CELL_SIZE / 2 : Const.CELL_SIZE;
 			Height = !Horizontal ? Const.CELL_SIZE / 2 : Const.CELL_SIZE;
 			if (Horizontal) OffsetX = Const.CELL_SIZE / 4;

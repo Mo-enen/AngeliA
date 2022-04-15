@@ -29,9 +29,9 @@ namespace Yaya {
 		private static readonly int[] SINGLE_CODES = new int[8] { "Conveyor Single 0".AngeHash(), "Conveyor Single 1".AngeHash(), "Conveyor Single 2".AngeHash(), "Conveyor Single 3".AngeHash(), "Conveyor Single 4".AngeHash(), "Conveyor Single 5".AngeHash(), "Conveyor Single 6".AngeHash(), "Conveyor Single 7".AngeHash(), };
 
 		// Api
-		public override int Layer => (int)EntityLayer.Environment;
 		protected PartType Part { get; private set; } = PartType.None;
 		protected abstract int MoveSpeed { get; }
+		public override int Capacity => 32;
 
 		// Data
 		private static readonly HitInfo[] c_CheckPart = new HitInfo[8];
@@ -39,9 +39,9 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnCreate (int frame) {
+		public override void OnActived (int frame) {
 			Part = PartType.None;
-			base.OnCreate(frame);
+			base.OnActived(frame);
 		}
 
 
