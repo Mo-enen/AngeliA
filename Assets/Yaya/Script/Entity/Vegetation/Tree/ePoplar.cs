@@ -24,24 +24,27 @@ namespace Yaya {
 				if (HasTreesOnBottom) {
 					// Mid or Top
 					CellRenderer.Draw(LEAF_CODE, new(
-						X, Y - (Mathf.PingPong(frame + TreesOnTop * 40f, 120f) / 6f).RoundToInt(), Const.CELL_SIZE, Const.CELL_SIZE
+						X, Y + AOffset(frame, TreesOnTop), Const.CELL_SIZE, Const.CELL_SIZE
 					));
 					if (TreesOnTop > 0) {
 						CellRenderer.Draw(LEAF_CODE, new(
-							X - Const.CELL_SIZE, Y - (Mathf.PingPong(frame + TreesOnTop * 40f - 40f, 120f) / 6f).RoundToInt(), Const.CELL_SIZE, Const.CELL_SIZE
+							X - Const.CELL_SIZE, Y + AOffset(frame, TreesOnTop - 1), Const.CELL_SIZE, Const.CELL_SIZE
 						));
 						CellRenderer.Draw(LEAF_CODE, new(
-							X + Const.CELL_SIZE, Y - (Mathf.PingPong(frame + TreesOnTop * 40f + 40f, 120f) / 6f).RoundToInt(), Const.CELL_SIZE, Const.CELL_SIZE
+							X + Const.CELL_SIZE, Y + AOffset(frame, TreesOnTop + 1), Const.CELL_SIZE, Const.CELL_SIZE
 						));
 					}
 				}
 			} else {
 				// Small
 				CellRenderer.Draw(LEAF_CODE, new(
-					X, Y + Const.CELL_SIZE / 2 - (Mathf.PingPong(frame, 120f) / 6f).RoundToInt(), Const.CELL_SIZE, Const.CELL_SIZE
+					X, Y + Const.CELL_SIZE / 2 + AOffset(frame, TreesOnTop), Const.CELL_SIZE, Const.CELL_SIZE
 				));
 			}
 		}
+
+
+		private int AOffset (int frame, int offset) => -(Mathf.PingPong(frame + offset * 40f, 120f) / 6f).RoundToInt();
 
 
 	}

@@ -22,33 +22,36 @@ namespace Yaya {
 			if (IsBigTree) {
 				// Big
 				CellRenderer.Draw(LEAF_CODE, new(
-					X, Y + Const.CELL_SIZE / 2 - (Mathf.PingPong(frame + TreesOnTop * 40f, 120f) / 6f).RoundToInt(), Const.CELL_SIZE, Const.CELL_SIZE
+					X, Y + Const.CELL_SIZE / 2 + AOffset(frame, TreesOnTop), Const.CELL_SIZE, Const.CELL_SIZE
 				));
 				if (TreesOnTop > 0) {
 					// 3
 					CellRenderer.Draw(LEAF_CODE, new(
-						X - Const.CELL_SIZE, Y + Const.CELL_SIZE / 2 - (Mathf.PingPong(frame + TreesOnTop * 40f - 40f, 120f) / 6f).RoundToInt(), Const.CELL_SIZE, Const.CELL_SIZE
+						X - Const.CELL_SIZE, Y + Const.CELL_SIZE / 2 + AOffset(frame, TreesOnTop - 1), Const.CELL_SIZE, Const.CELL_SIZE
 					));
 					CellRenderer.Draw(LEAF_CODE, new(
-						X + Const.CELL_SIZE, Y + Const.CELL_SIZE / 2 - (Mathf.PingPong(frame + TreesOnTop * 40f + 40f, 120f) / 6f).RoundToInt(), Const.CELL_SIZE, Const.CELL_SIZE
+						X + Const.CELL_SIZE, Y + Const.CELL_SIZE / 2 + AOffset(frame, TreesOnTop + 1), Const.CELL_SIZE, Const.CELL_SIZE
 					));
 				}
 				if (HasTreesOnBottom) {
 					// 2
 					CellRenderer.Draw(LEAF_CODE, new(
-						X - Const.CELL_SIZE * 2 / 3 + 6, Y - 36 - (Mathf.PingPong(frame + TreesOnTop * 40f - 40f, 120f) / 6f).RoundToInt(), Const.CELL_SIZE, Const.CELL_SIZE
+						X - Const.CELL_SIZE * 2 / 3 + 6, Y - 36 + AOffset(frame, TreesOnTop - 1), Const.CELL_SIZE, Const.CELL_SIZE
 					));
 					CellRenderer.Draw(LEAF_CODE, new(
-						X + Const.CELL_SIZE * 2 / 3 - 6, Y - 36 - (Mathf.PingPong(frame + TreesOnTop * 40f + 40f, 120f) / 6f).RoundToInt(), Const.CELL_SIZE, Const.CELL_SIZE
+						X + Const.CELL_SIZE * 2 / 3 - 6, Y - 36 + AOffset(frame, TreesOnTop + 1), Const.CELL_SIZE, Const.CELL_SIZE
 					));
 				}
 			} else {
 				// Small
 				CellRenderer.Draw(LEAF_CODE, new(
-					X, Y + Const.CELL_SIZE / 2 - (Mathf.PingPong(frame, 120f) / 6f).RoundToInt(), Const.CELL_SIZE, Const.CELL_SIZE
+					X, Y + Const.CELL_SIZE / 2 + AOffset(frame, TreesOnTop), Const.CELL_SIZE, Const.CELL_SIZE
 				));
 			}
 		}
+
+
+		private int AOffset (int frame, int offset) => -(Mathf.PingPong(frame + offset * 40f, 120f) / 6f).RoundToInt();
 
 
 	}
