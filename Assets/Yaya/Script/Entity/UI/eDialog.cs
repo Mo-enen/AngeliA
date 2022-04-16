@@ -41,13 +41,13 @@ namespace Yaya {
 		public override int Capacity => 1;
 
 		// Data
-		private readonly string Message = "";
-		private readonly string Label_OK = "";
-		private readonly string Label_Cancel = "";
-		private readonly string Label_Alt = "";
-		private readonly System.Action OK = null;
-		private readonly System.Action Cancel = null;
-		private readonly System.Action Alt = null;
+		private string Message = "";
+		private string Label_OK = "";
+		private string Label_Cancel = "";
+		private string Label_Alt = "";
+		private System.Action OK = null;
+		private System.Action Cancel = null;
+		private System.Action Alt = null;
 		private int NavIndex = 0;
 		private bool PrevLeftDown = false;
 		private bool PrevRightDown = false;
@@ -180,10 +180,7 @@ namespace Yaya {
 		#region --- API ---
 
 
-		public eDialog () { }
-
-
-		public eDialog (
+		public void Setup (
 			int width, string message,
 			string label_ok, string label_cancel, string label_alt,
 			System.Action ok = null, System.Action cancel = null, System.Action alt = null

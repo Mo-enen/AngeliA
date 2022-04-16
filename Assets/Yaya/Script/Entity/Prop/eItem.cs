@@ -46,7 +46,7 @@ namespace Yaya {
 
 		public override void FillPhysics (int frame) {
 			base.FillPhysics(frame);
-			CellPhysics.FillEntity((int)PhysicsLayer.Item, this, true);
+			CellPhysics.FillEntity((int)PhysicsLayer.Item, this, true, YayaConst.ITEM_TAG);
 		}
 
 

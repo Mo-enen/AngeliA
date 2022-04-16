@@ -28,11 +28,12 @@ namespace Yaya.Editor {
 
 
 		public static void Initialize () {
-			if (SpawnPlayerAtStart.Value && Game != null && Game.FindEntityOfType<eYaya>() == null) {
-				Game.AddEntity(new eYaya() {
-					X = Game.ViewRect.CenterInt().x,
-					Y = Game.ViewRect.CenterInt().y,
-				});
+			if (SpawnPlayerAtStart.Value && Game != null && Game.FirstEntityOfType(typeof(eYaya).AngeHash()) == null) {
+				Game.AddEntity(
+					typeof(eYaya).AngeHash(),
+					Game.ViewRect.CenterInt().x,
+					Game.ViewRect.CenterInt().y
+				);
 			}
 		}
 

@@ -5,12 +5,12 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class ePine : eTree {
+	public class eTreeMaple : eTree {
 
 
 		private static readonly int TRUNK_BOTTOM_CODE = "Trunk Bottom 0".AngeHash();
 		private static readonly int TRUNK_MID_CODE = "Trunk Mid 0".AngeHash();
-		private static readonly int LEAF_CODE = "Leaf Pine".AngeHash();
+		private static readonly int LEAF_CODE = "Leaf Maple".AngeHash();
 
 		protected override int TrunkBottomCode => TRUNK_BOTTOM_CODE;
 		protected override int TrunkMidCode => TRUNK_MID_CODE;
@@ -21,38 +21,31 @@ namespace Yaya {
 			// Leaf
 			if (IsBigTree) {
 				// Big
-				if (HasTreesOnBottom) {
-					int offsetX = (Const.CELL_SIZE * (TreesOnTop + 1) / 3).Clamp(0, Const.CELL_SIZE);
+				CellRenderer.Draw(LEAF_CODE, new(
+					X, Y + Const.CELL_SIZE / 2 + AOffset(frame, TreesOnTop), Const.CELL_SIZE, Const.CELL_SIZE
+				));
+				if (TreesOnTop > 0) {
+					// 3
 					CellRenderer.Draw(LEAF_CODE, new(
-						X + AOffset(frame, TreesOnTop),
-						Y,
-						Const.CELL_SIZE, Const.CELL_SIZE
+						X - Const.CELL_SIZE, Y + Const.CELL_SIZE / 2 + AOffset(frame, TreesOnTop - 1), Const.CELL_SIZE, Const.CELL_SIZE
 					));
 					CellRenderer.Draw(LEAF_CODE, new(
-						X + AOffset(frame, TreesOnTop - 1) - offsetX,
-						Y,
-						Const.CELL_SIZE, Const.CELL_SIZE
-					));
-					CellRenderer.Draw(LEAF_CODE, new(
-						X + AOffset(frame, TreesOnTop + 1) + offsetX,
-						Y,
-						Const.CELL_SIZE, Const.CELL_SIZE
+						X + Const.CELL_SIZE, Y + Const.CELL_SIZE / 2 + AOffset(frame, TreesOnTop + 1), Const.CELL_SIZE, Const.CELL_SIZE
 					));
 				}
-				// Top
-				if (TreesOnTop == 0) {
+				if (HasTreesOnBottom) {
+					// 2
 					CellRenderer.Draw(LEAF_CODE, new(
-						X + AOffset(frame, TreesOnTop),
-						Y + Const.CELL_SIZE / 2,
-						Const.CELL_SIZE, Const.CELL_SIZE
+						X - Const.CELL_SIZE * 2 / 3 + 6, Y - 36 + AOffset(frame, TreesOnTop - 1), Const.CELL_SIZE, Const.CELL_SIZE
+					));
+					CellRenderer.Draw(LEAF_CODE, new(
+						X + Const.CELL_SIZE * 2 / 3 - 6, Y - 36 + AOffset(frame, TreesOnTop + 1), Const.CELL_SIZE, Const.CELL_SIZE
 					));
 				}
 			} else {
 				// Small
 				CellRenderer.Draw(LEAF_CODE, new(
-					X + AOffset(frame, TreesOnTop),
-					Y + Const.CELL_SIZE / 2,
-					Const.CELL_SIZE, Const.CELL_SIZE
+					X, Y + Const.CELL_SIZE / 2 + AOffset(frame, TreesOnTop), Const.CELL_SIZE, Const.CELL_SIZE
 				));
 			}
 		}

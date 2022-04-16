@@ -34,7 +34,6 @@ namespace Yaya {
 		public override int Capacity => 32;
 
 		// Data
-		private static readonly HitInfo[] c_CheckPart = new HitInfo[8];
 		private static readonly HitInfo[] c_Update = new HitInfo[16];
 
 
@@ -72,33 +71,18 @@ namespace Yaya {
 
 		private void Update_Part () {
 			if (Part != PartType.None) return;
-			bool hasLeft = false;
-			bool hasRight = false;
 			var rect = Rect;
 			int width = rect.width;
 			rect.width = 1;
 			rect.x -= 1;
-			int count = CellPhysics.OverlapAll(c_CheckPart, (int)PhysicsMask.Environment, rect, this);
-			for (int i = 0; i < count; i++) {
-				if (c_CheckPart[i].Entity is eConveyor) {
-					hasLeft = true;
-					break;
-				}
-			}
+			bool hasLeft = CellPhysics.HasEntity<eConveyor>(rect, (int)PhysicsMask.Environment, this);
 			rect.x += width + 1;
-			count = CellPhysics.OverlapAll(c_CheckPart, (int)PhysicsMask.Environment, rect, this);
-			for (int i = 0; i < count; i++) {
-				if (c_CheckPart[i].Entity is eConveyor) {
-					hasRight = true;
-					break;
-				}
-			}
+			bool hasRight = CellPhysics.HasEntity<eConveyor>(rect, (int)PhysicsMask.Environment, this);
 			Part =
 				hasLeft && hasRight ? PartType.Middle :
 				hasLeft && !hasRight ? PartType.RightEdge :
 				!hasLeft && hasRight ? PartType.LeftEdge :
 				PartType.Single;
-			c_CheckPart.Dispose();
 		}
 
 

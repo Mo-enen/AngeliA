@@ -70,9 +70,9 @@ namespace Yaya {
 				RequireBouncePerform = false;
 				if (Horizontal) {
 					// Hori
-					if (CellPhysics.Overlap((int)PhysicsMask.Rigidbody, new RectInt(X, Y, 1, Const.CELL_SIZE), this)) {
+					if (CellPhysics.Overlap((int)PhysicsMask.Rigidbody, new RectInt(X - 1, Y, 1, Const.CELL_SIZE), this)) {
 						StartBounce(frame, Direction4.Left);
-					} else if (CellPhysics.Overlap((int)PhysicsMask.Rigidbody, new RectInt(X + Const.CELL_SIZE - 1, Y, 1, Const.CELL_SIZE), this)) {
+					} else if (CellPhysics.Overlap((int)PhysicsMask.Rigidbody, new RectInt(X + Const.CELL_SIZE, Y, 1, Const.CELL_SIZE), this)) {
 						StartBounce(frame, Direction4.Right);
 					}
 				} else {

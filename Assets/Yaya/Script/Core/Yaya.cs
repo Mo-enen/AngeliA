@@ -59,8 +59,10 @@ namespace Yaya {
 					return true;
 				} else {
 					// Show Quit Dialog
-					AddEntity(new eDialog(
-						2048, YayaConst.QuitConfirmContent, YayaConst.LabelQuit, YayaConst.LabelCancel, "",
+					var dialog = AddEntity(typeof(eDialog).AngeHash(), 0, 0) as eDialog;
+					dialog.Setup(
+						2048,
+						YayaConst.QuitConfirmContent, YayaConst.LabelQuit, YayaConst.LabelCancel, "",
 						() => {
 							willQuit = true;
 							PlayerData.SaveToDisk();
@@ -68,7 +70,7 @@ namespace Yaya {
 						},
 						() => { },
 						null
-					));
+					);
 					return false;
 				}
 			};

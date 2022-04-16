@@ -153,9 +153,9 @@ namespace Yaya {
 		}
 
 
-		public override void OnDespawn (int frame) {
+		public override void OnInactived (int frame) {
 			if (CurrentPlayer == this) CurrentPlayer = null;
-			base.OnDespawn(frame);
+			base.OnInactived(frame);
 		}
 
 

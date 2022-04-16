@@ -73,7 +73,7 @@ namespace Yaya {
 			InsideGround = InsideGroundCheck();
 
 			// Water
-			InWater = CellPhysics.Overlap((int)PhysicsMask.Level, Rect, null, OperationMode.TriggerOnly, Const.WATER_TAG);
+			InWater = CellPhysics.Overlap((int)PhysicsMask.Level, Rect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
 
 			if (InsideGround) {
 				X += VelocityX;

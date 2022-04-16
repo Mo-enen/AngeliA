@@ -21,10 +21,14 @@ namespace Yaya {
 		// MSG
 		public override void OnActived (int frame) {
 			base.OnActived(frame);
-			if (CellRenderer.GetSprite(Code, out var rect)) {
-				Width = rect.GlobalWidth;
-				Height = rect.GlobalHeight;
-			}
+			Width = Const.CELL_SIZE;
+			Height = Const.CELL_SIZE;
+		}
+
+
+		public override void FillPhysics (int frame) {
+			base.FillPhysics(frame);
+			CellPhysics.FillEntity((int)PhysicsLayer.Environment, this, true, Const.ONEWAY_UP_TAG);
 		}
 
 

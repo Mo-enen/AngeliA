@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class ePoplar : eTree {
+	public class eTreePoplar : eTree {
 
 
 		private static readonly int TRUNK_BOTTOM_CODE = "Trunk Bottom 0".AngeHash();

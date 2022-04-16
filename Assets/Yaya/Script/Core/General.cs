@@ -8,17 +8,6 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 namespace Yaya {
 
 
-
-	//public enum EntityLayer {
-	//	UI = 0,
-	//	Environment = 1,
-	//	Item = 2,
-	//	Character = 3,
-	//	Projectile = 4,
-	//}
-
-
-
 	public enum PhysicsLayer {
 		Level = 0,      // Ground, Water, OnewayGate...
 		Environment = 1,// Barrel, Chest, EventTrigger...
@@ -46,14 +35,25 @@ namespace Yaya {
 	}
 
 
+	public enum FurniturePose {
+		Unknown = 0,
+		Left = 1,
+		Down = 1,
+		Mid = 2,
+		Right = 3,
+		Up = 3,
+		Single = 4,
+	}
+
+
 	public static class YayaConst {
 
 
-		//public static readonly int ENTITY_LAYER_COUNT = System.Enum.GetNames(typeof(EntityLayer)).Length;
 		public static readonly int PHYSICS_LAYER_COUNT = System.Enum.GetNames(typeof(PhysicsLayer)).Length;
 
 		public static readonly int CLIMB_TAG = "Climb".AngeHash();
-
+		public static readonly int ITEM_TAG = "Item".AngeHash();
+		public static readonly int WATER_TAG = "Water".AngeHash();
 
 		// Language
 		public delegate string StringIntHandler (int key);

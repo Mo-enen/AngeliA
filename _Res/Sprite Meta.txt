@@ -169,14 +169,9 @@ Wood Board,-165380330,0
 Dirt Brittle,1647866896,0
 Dirt Grass Brittle,912373740,0
 Test E Front,-1468503058,0
-Vase 0,-1433137357,0
-Vase 1,-1404508206,0
-TV 1,-1462003,0
-TV 0,-1491794,0
-Fridge 1 Open,401426978,0
-Fridge 0 Open,496081772,0
-Fridge 1,-1123629110,0
-Fridge 0,1428527851,0
+Vase Up,941298238,0
+Fridge Open,396490277,0
+Fridge,149738747,0
 wardrobe 3 Open,-463627699,0
 wardrobe 2 Open,-267114194,0
 wardrobe 1 Open,-70600689,0
@@ -202,14 +197,14 @@ Cabinet Idol 3,91849252,0
 Cabinet Idol 2,-22629161,0
 Cabinet Idol 1,-1354535665,0
 Cabinet Idol 0,-848977040,0
-Chair 3,1196634328,0
-Chair 2,309130647,0
 Chair 1,-578373034,0
+Chair Docked 1,193485154,0
 Chair 0,-1465876715,0
-Dining Table 3,-1418858065,0
-Dining Table 2,-913299440,0
-Dining Table 1,-407740815,0
-Dining Table 0,97817810,0
+Chair Docked 0,-1758458388,0
+Dining Table Left 3,-962295268,0
+Dining Table Left 2,-117823397,0
+Dining Table Left 1,726648474,0
+Dining Table Left 0,1571120345,0
 Light 3,1198457385,0
 Light 2,310953704,0
 Light 1,-576549977,0
@@ -229,8 +224,8 @@ Nightstand 1,-176078863,0
 Nightstand 0,-305161582,0
 Clock 2,302500832,0
 Clock 3,1190004513,0
-Bed 0,-46231663,0
-Bed 1,-45308142,0
+Bed Left 0,-252524077,0
+Bed Left 1,170999456,0
 Basket 1,-695821271,0
 Basket 2,1046989064,0
 Basket 3,-1505167897,0
@@ -241,10 +236,39 @@ Photo 3,1194204933,0
 Cabinet Idol 5,918197131,0
 Cabinet Stove 3,469138527,0
 Cabinet Stove 7,-253123700,0
-grandfather clock 0,1570275718,0
-grandfather clock 1,725803847,0
+Grandfather Clock Up 0,-660786597,0
 Oneway Gate,-248980743,0
 Ladder,520065342,0
+Bed Mid 0,481016793,0
+Bed Right 0,-982601642,0
+Bed Mid 1,-1326437670,0
+Bed Right 1,1515414295,0
+Bed Single 0,1173688626,0
+Bed Single 1,1302771345,0
+Dining Table Mid 0,1159772554,0
+Dining Table Right 0,1623269814,0
+Dining Table Single 0,-32934269,0
+Dining Table Mid 2,-834372152,0
+Dining Table Right 2,805621364,0
+Dining Table Single 2,-1447697572,0
+Dining Table Mid 1,162700201,0
+Dining Table Right 1,1214445589,0
+Dining Table Single 1,-1659048485,0
+Dining Table Mid 3,-1831444505,0
+Dining Table Right 3,396797139,0
+Dining Table Single 3,-1236346659,0
+TV 0,-1491794,0
+TV 1,-1462003,0
+Grandfather Clock Down 0,-1257119390,0
+Grandfather Clock Single 0,-1351075354,0
+Grandfather Clock Mid 0,596197198,0
+Grandfather Clock Up 1,-861377757,0
+Grandfather Clock Mid 1,510303663,0
+Grandfather Clock Down 1,375148321,0
+Grandfather Clock Single 1,-404868123,0
+Vase Down,1462472325,0
+Vase Single,-629273941,0
+Vase Mid,1470980603,0
 Test BG,-1630121197,0
 _rGrass Ground 8,-1244425560,1
 _rGrass Ground 9,-1754959737,1
@@ -538,11 +562,11 @@ eOnewayGateRight,-1699909466,0
 eOnewayGateDown,-232861605,0
 eOnewayGateLeft,-101198784,0
 eSpringWoodVertical,-1648227161,0
-eMaple,154705040,0
-ePalm,12363735,0
-ePine,5042837,0
-ePoplar,-1164600943,0
-eWillow,-621366433,0
+eTreeMaple,-1191191881,0
+eTreePalm,308538924,0
+eTreePine,-415979030,0
+eTreePoplar,18085053,0
+eTreeWillow,1336046557,0
 eConveyorLeftSlow,1782759626,0
 eBarrelSmall,280544868,0
 eSpringMetalHorizontal,1802686643,0
@@ -550,6 +574,8 @@ eSpringMetalVertical,80327198,0
 eConveyorRightSlow,1280373203,0
 eConveyorLeftFast,1012290108,0
 eConveyorRightFast,-2501224,0
+eBed,123044,0
+eDiningTable,624530850,0
 Test Pro,-1349009215,0
 Pixel,11254534,0
 UI Window,1414408444,0

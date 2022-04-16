@@ -27,9 +27,6 @@ namespace Yaya {
 		protected bool IsBigTree => HasTreesOnBottom || TreesOnTop > 0;
 		public override int Capacity => 256;
 
-		// Data
-		private static readonly HitInfo[] c_PoseCheck = new HitInfo[16];
-
 
 		#endregion
 
@@ -51,39 +48,18 @@ namespace Yaya {
 			base.PhysicsUpdate(frame);
 			const int MAX_TALL = 7;
 			if (TreesOnTop < 0) {
-				var rect = new RectInt(Rect.x, 0, Const.CELL_SIZE, Const.CELL_SIZE);
+				var rect = new RectInt(Rect.x + Width / 2, 0, 1, 1);
 				TreesOnTop = 0;
 				// Top
 				for (int i = 0; i < MAX_TALL; i++) {
-					rect.y = Rect.yMax + rect.height * i;
-					int count = CellPhysics.OverlapAll(
-						c_PoseCheck, (int)PhysicsMask.Environment,
-						rect, this, OperationMode.TriggerOnly, YayaConst.CLIMB_TAG
-					);
-					for (int j = 0; j < count; j++) {
-						if (c_PoseCheck[j].Entity is eTree) {
-							TreesOnTop = i + 1;
-							break;
-						}
-					}
-					if (count == 0) break;
+					rect.y = Rect.yMax + Const.CELL_SIZE * i + Const.CELL_SIZE / 2;
+					if (CellPhysics.HasEntity<eTree>(rect, (int)PhysicsMask.Environment, this, OperationMode.TriggerOnly, YayaConst.CLIMB_TAG)) {
+						TreesOnTop = i + 1;
+					} else break;
 				}
 				// Bottom
-				{
-					rect.y = Rect.yMin - rect.height;
-					int count = CellPhysics.OverlapAll(
-						c_PoseCheck, (int)PhysicsMask.Environment,
-						rect, this, OperationMode.TriggerOnly, YayaConst.CLIMB_TAG
-					);
-					HasTreesOnBottom = false;
-					for (int j = 0; j < count; j++) {
-						if (c_PoseCheck[j].Entity is eTree) {
-							HasTreesOnBottom = true;
-							break;
-						}
-					}
-				}
-				c_PoseCheck.Dispose();
+				rect.y = Rect.yMin - Const.CELL_SIZE / 2;
+				HasTreesOnBottom = CellPhysics.HasEntity<eTree>(rect, (int)PhysicsMask.Environment, this, OperationMode.TriggerOnly, YayaConst.CLIMB_TAG);
 			}
 		}
 
