@@ -7,19 +7,16 @@ using AngeliaFramework;
 namespace Yaya {
 	public class YayaWorldSquad : WorldSquad {
 		public YayaWorldSquad (string mapRoot) : base(mapRoot) { }
-		protected override void DrawLevelBlock (World.Block block, int unitX, int unitY) {
-			base.DrawLevelBlock(block, unitX, unitY);
-			while (block != null) {
-				if (CellRenderer.GetSprite(block.TypeID, out var sp) && sp.HasCollider) {
-					var rect = new RectInt(unitX * Const.CELL_SIZE, unitY * Const.CELL_SIZE, Const.CELL_SIZE, Const.CELL_SIZE);
-					CellPhysics.FillBlock(
-						(int)PhysicsLayer.Level,
-						rect.Shrink(sp.GlobalBorder.Left, sp.GlobalBorder.Right, sp.GlobalBorder.Down, sp.GlobalBorder.Up),
-						sp.IsTrigger,
-						sp.Tag
-					);
-				}
-				block = block.Next;
+		protected override void DrawLevelBlock (int id, int unitX, int unitY) {
+			base.DrawLevelBlock(id, unitX, unitY);
+			if (CellRenderer.GetSprite(id, out var sp) && sp.HasCollider) {
+				var rect = new RectInt(unitX * Const.CELL_SIZE, unitY * Const.CELL_SIZE, Const.CELL_SIZE, Const.CELL_SIZE);
+				CellPhysics.FillBlock(
+					(int)PhysicsLayer.Level,
+					rect.Shrink(sp.GlobalBorder.Left, sp.GlobalBorder.Right, sp.GlobalBorder.Down, sp.GlobalBorder.Up),
+					sp.IsTrigger,
+					sp.Tag
+				);
 			}
 		}
 	}

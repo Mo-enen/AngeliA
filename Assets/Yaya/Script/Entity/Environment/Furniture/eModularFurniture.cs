@@ -19,6 +19,7 @@ namespace Yaya {
 			base.OnActived(frame);
 			Width = Const.CELL_SIZE;
 			Height = Const.CELL_SIZE;
+			Pose = FurniturePose.Unknown;
 		}
 
 

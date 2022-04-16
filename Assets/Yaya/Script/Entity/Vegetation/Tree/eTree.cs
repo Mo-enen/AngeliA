@@ -41,6 +41,7 @@ namespace Yaya {
 			TrunkWidth = CellRenderer.GetSprite(TrunkBottomCode, out var rect) ? rect.GlobalWidth : Const.CELL_SIZE;
 			Width = TrunkWidth;
 			Height = Const.CELL_SIZE;
+			TreesOnTop = -1;
 		}
 
 

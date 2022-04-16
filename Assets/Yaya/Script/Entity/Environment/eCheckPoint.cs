@@ -136,15 +136,11 @@ namespace Yaya.Editor {
 				try {
 					if (!world.LoadFromDisk(file.FullName)) continue;
 					for (int i = 0; i < Const.MAP_SIZE * Const.MAP_SIZE; i++) {
-						for (var e = world.Entities[i]; e != null; e = e.Next) {
-							if (e.TypeID == TARGET_ID) {
-								var globalUnitPos = new Vector2Int(
-									world.WorldPosition.x * Const.MAP_SIZE + i % Const.MAP_SIZE,
-									world.WorldPosition.y * Const.MAP_SIZE + i / Const.MAP_SIZE
-								);
-								allCpPool.Add(globalUnitPos);
-							}
-						}
+						if (world.Entities[i] != TARGET_ID) continue;
+						allCpPool.Add(new(
+							world.WorldPosition.x * Const.MAP_SIZE + i % Const.MAP_SIZE,
+							world.WorldPosition.y * Const.MAP_SIZE + i / Const.MAP_SIZE
+						));
 					}
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
@@ -154,16 +150,14 @@ namespace Yaya.Editor {
 				try {
 					if (!world.LoadFromDisk(file.FullName)) continue;
 					for (int i = 0; i < Const.MAP_SIZE * Const.MAP_SIZE; i++) {
-						var b = world.Level[i];
-						if (b == null) continue;
-						int blockID = b.Last.TypeID;
-						if (blockID == 0) continue;
+						var id = world.Level[i];
+						if (id == 0) continue;
 						var globalUnitPos = new Vector2Int(
 							world.WorldPosition.x * Const.MAP_SIZE + i % Const.MAP_SIZE,
 							world.WorldPosition.y * Const.MAP_SIZE + i / Const.MAP_SIZE
 						);
 						if (allCpPool.Contains(new(globalUnitPos.x, globalUnitPos.y + 1))) {
-							tagPool.TryGetValue(b.Last.TypeID, out int tag);
+							tagPool.TryGetValue(id, out int tag);
 							allCpBlockPool.Add(globalUnitPos, tag);
 						}
 					}
