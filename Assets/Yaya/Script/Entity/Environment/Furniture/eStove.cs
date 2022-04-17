@@ -5,16 +5,19 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class eWardrobe : eFurniture {
+	public class eStove : eFurniture {
 
-
-		private static readonly int[] CODES = new int[] { "Wardrobe 0".AngeHash(), "Wardrobe 1".AngeHash(), "Wardrobe 2".AngeHash(), "Wardrobe 3".AngeHash(), };
+		private static readonly int[] CODES = new int[] { "Stove 0".AngeHash(), "Stove 1".AngeHash(), "Stove 2".AngeHash(), "Stove 3".AngeHash(), };
 
 		protected override Direction3 Direction => Direction3.None;
 		protected override int[] ArtworkCodes_LeftDown => CODES;
 		protected override int[] ArtworkCodes_Mid => CODES;
 		protected override int[] ArtworkCodes_RightUp => CODES;
 		protected override int[] ArtworkCodes_Single => CODES;
+
+		public override void FillPhysics (int frame) {
+			CellPhysics.FillEntity((int)PhysicsLayer.Environment, this, true);
+		}
 
 	}
 }

@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
 
-
 namespace Yaya {
-	public class eWardrobe : eFurniture {
+	public class eBasket : eFurniture {
 
-
-		private static readonly int[] CODES = new int[] { "Wardrobe 0".AngeHash(), "Wardrobe 1".AngeHash(), "Wardrobe 2".AngeHash(), "Wardrobe 3".AngeHash(), };
+		private static readonly int[] CODES = new int[] { "Basket 0".AngeHash(), "Basket 1".AngeHash(), "Basket 2".AngeHash(), "Basket 3".AngeHash(), };
 
 		protected override Direction3 Direction => Direction3.None;
 		protected override int[] ArtworkCodes_LeftDown => CODES;

@@ -5,6 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+	[MapEditorGroup("Vegetation")]
 	public abstract class eTree : eClimbable {
 
 
@@ -38,7 +39,7 @@ namespace Yaya {
 
 		public override void OnActived (int frame) {
 			base.OnActived(frame);
-			TrunkWidth = CellRenderer.GetSprite(TrunkBottomCode, out var rect) ? rect.GlobalWidth : Const.CELL_SIZE;
+			TrunkWidth = CellRenderer.TryGetSprite(TrunkBottomCode, out var rect) ? rect.GlobalWidth : Const.CELL_SIZE;
 			Width = TrunkWidth;
 			Height = Const.CELL_SIZE;
 			TreesOnTop = -1;

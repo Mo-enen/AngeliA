@@ -169,21 +169,19 @@ Wood Board,-165380330,0
 Dirt Brittle,1647866896,0
 Dirt Grass Brittle,912373740,0
 Test E Front,-1468503058,0
-Vase Up,941298238,0
-Fridge Open,396490277,0
-Fridge,149738747,0
+Vase Up 0,91589669,0
+Fridge Open 0,86108172,0
+Fridge 0,1428527851,0
 wardrobe 3 Open,-463627699,0
 wardrobe 2 Open,-267114194,0
 wardrobe 1 Open,-70600689,0
 wardrobe 0 Open,-1711552313,0
-Cabinet Stove 5,-810725151,0
-Cabinet Stove 4,139225207,0
-Cabinet Stove 6,696826658,0
-Stove 3,1185029680,0
-Stove 2,297525999,0
-Cabinet Stove 2,-1038413282,0
-Cabinet Stove 1,1749002205,0
-Cabinet Stove 0,241450396,0
+Stove Cabinet 5,435034634,0
+Stove Cabinet 4,-1072517175,0
+Stove Cabinet 6,105121314,0
+Stove Cabinet 2,207346503,0
+Stove Cabinet 1,-1300205306,0
+Stove Cabinet 0,1487210181,0
 Stove 1,-589977682,0
 Stove 0,-1477481363,0
 Clock 1,-585002849,0
@@ -234,8 +232,8 @@ Photo 1,-580802429,0
 Photo 2,306701252,0
 Photo 3,1194204933,0
 Cabinet Idol 5,918197131,0
-Cabinet Stove 3,469138527,0
-Cabinet Stove 7,-253123700,0
+Stove Cabinet 3,1714898312,0
+Stove Cabinet 7,-844829044,0
 Grandfather Clock Up 0,-660786597,0
 Oneway Gate,-248980743,0
 Ladder,520065342,0
@@ -266,9 +264,9 @@ Grandfather Clock Up 1,-861377757,0
 Grandfather Clock Mid 1,510303663,0
 Grandfather Clock Down 1,375148321,0
 Grandfather Clock Single 1,-404868123,0
-Vase Down,1462472325,0
-Vase Single,-629273941,0
-Vase Mid,1470980603,0
+Vase Down 0,1508754069,0
+Vase Single 0,897809083,0
+Vase Mid 0,189197762,0
 Test BG,-1630121197,0
 _rGrass Ground 8,-1244425560,1
 _rGrass Ground 9,-1754959737,1
@@ -576,6 +574,21 @@ eConveyorLeftFast,1012290108,0
 eConveyorRightFast,-2501224,0
 eBed,123044,0
 eDiningTable,624530850,0
+eNightstand,60344698,0
+ePhoto,448361747,0
+eStoveCabinet,-1302286537,0
+eStove,163928904,0
+eCabinetIdol,1705952748,0
+eBasket,724074987,0
+eChest,590285668,0
+eTV,-9977,0
+eChair,523672992,0
+eClock,318148727,0
+eGrandfatherClock,1222924459,0
+eLamp,15163965,0
+eLight,580187759,0
+eVase,5184290,0
+eFridge,346933866,0
 Test Pro,-1349009215,0
 Pixel,11254534,0
 UI Window,1414408444,0

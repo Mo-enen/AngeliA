@@ -9,7 +9,7 @@ namespace Yaya {
 		public YayaWorldSquad (string mapRoot) : base(mapRoot) { }
 		protected override void DrawLevelBlock (int id, int unitX, int unitY) {
 			base.DrawLevelBlock(id, unitX, unitY);
-			if (CellRenderer.GetSprite(id, out var sp) && sp.HasCollider) {
+			if (CellRenderer.TryGetSprite(id, out var sp) && sp.HasCollider) {
 				var rect = new RectInt(unitX * Const.CELL_SIZE, unitY * Const.CELL_SIZE, Const.CELL_SIZE, Const.CELL_SIZE);
 				CellPhysics.FillBlock(
 					(int)PhysicsLayer.Level,
