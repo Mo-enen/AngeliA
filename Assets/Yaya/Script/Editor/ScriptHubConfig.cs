@@ -11,6 +11,7 @@ namespace Yaya.Editor {
 				new ("cs", "", true),
 			};
 		public int Order => 0;
+		public int Column => 3;
 	}
 
 

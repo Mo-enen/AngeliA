@@ -39,9 +39,7 @@ namespace Yaya {
 		public override int CollisionLayer => (int)PhysicsLayer.Environment;
 		protected abstract bool Horizontal { get; }
 		public override int PushLevel => Horizontal ? int.MaxValue - 1 : 1;
-		public override RectInt Bounds => new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE);
 		protected abstract int Power { get; }
-		public override int Capacity => 64;
 
 		// Short
 		private bool IsMetal => Power >= METAL_LINE;
@@ -70,27 +68,38 @@ namespace Yaya {
 				RequireBouncePerform = false;
 				if (Horizontal) {
 					// Hori
-					if (CellPhysics.Overlap((int)PhysicsMask.Rigidbody, new RectInt(X - 1, Y, 1, Const.CELL_SIZE), this)) {
+					if (CellPhysics.Overlap(
+						(int)PhysicsMask.Rigidbody,
+						new(X - 1, Y, Const.CELL_SIZE / 2, Const.CELL_SIZE),
+						this
+					)) {
 						StartBounce(frame, Direction4.Left);
-					} else if (CellPhysics.Overlap((int)PhysicsMask.Rigidbody, new RectInt(X + Const.CELL_SIZE, Y, 1, Const.CELL_SIZE), this)) {
+					} else if (CellPhysics.Overlap(
+						(int)PhysicsMask.Rigidbody,
+						new(X + Const.CELL_SIZE / 2, Y, Const.CELL_SIZE / 2 + 1, Const.CELL_SIZE),
+						this
+					)) {
 						StartBounce(frame, Direction4.Right);
 					}
 				} else {
 					// Vert
-					if (CellPhysics.Overlap((int)PhysicsMask.Rigidbody, new(X, Y + Const.CELL_SIZE, Const.CELL_SIZE, 1), this)) {
+					if (CellPhysics.Overlap(
+						(int)PhysicsMask.Rigidbody,
+						new(X, Y + Const.CELL_SIZE / 2, Const.CELL_SIZE, Const.CELL_SIZE / 2 + 1),
+						this
+					)) {
 						StartBounce(frame, Direction4.Up);
 					}
 				}
 			} else if (frame > LastBounceFrame + BOUNCE_DELY && RequireBouncePerform) {
 				// Try Perform Bounce
 				int count = CellPhysics.ForAllTouched<eRigidbody>(
-					c_PerformBounce, (int)PhysicsMask.Rigidbody, FullRect, this, BounceSide
+					c_PerformBounce, (int)PhysicsMask.Rigidbody,
+					FullRect.Expand(Horizontal ? 1 : 0, Horizontal ? 1 : 0, Horizontal ? 0 : 1, Horizontal ? 0 : 1),
+					this, BounceSide
 				);
 				for (int i = count - 1; i >= 0; i--) {
 					if (c_PerformBounce[i].Entity is eRigidbody rig) {
-						if (!Horizontal) {
-							rig.PerformMove(0, i * (Power - Const.GRAVITY), true, true);
-						}
 						PerformBounce(rig);
 					}
 				}

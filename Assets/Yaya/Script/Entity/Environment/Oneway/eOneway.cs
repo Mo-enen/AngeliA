@@ -14,7 +14,6 @@ namespace Yaya {
 		// Api
 		public abstract Direction4 GateDirection { get; }
 		protected int ReboundFrame { get; private set; } = int.MinValue;
-		public override int Capacity => 64;
 
 		// Data
 		private static readonly HitInfo[] c_Rebound = new HitInfo[4];

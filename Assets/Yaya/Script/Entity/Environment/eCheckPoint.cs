@@ -5,6 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+	[EntityCapacity(8)]
 	public class eCheckPoint : Entity, IInitialize {
 
 
@@ -31,9 +32,6 @@ namespace Yaya {
 			{ "cp1.1".AngeHash(), 1 },
 
 		};
-
-		// Api
-		public override int Capacity => 8;
 
 		// Data
 		private static readonly Dictionary<int, Vector2Int> AltarPool = new();

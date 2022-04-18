@@ -20,7 +20,6 @@ namespace Yaya {
 		public override bool IsInAir => base.IsInAir && !Movement.IsClimbing;
 		public override int AirDragX => 0;
 		public override int AirDragY => 0;
-		public override RectInt Bounds => Renderer.LocalBounds.Shift(X, Y);
 		public abstract CharacterMovement Movement { get; }
 		public abstract CharacterRenderer Renderer { get; }
 
@@ -41,6 +40,7 @@ namespace Yaya {
 
 		public override void FrameUpdate (int frame) {
 			Renderer.FrameUpdate(frame);
+			LocalBounds = Renderer.LocalBounds;
 			base.FrameUpdate(frame);
 		}
 

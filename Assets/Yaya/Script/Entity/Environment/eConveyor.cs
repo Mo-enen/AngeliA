@@ -31,7 +31,6 @@ namespace Yaya {
 		// Api
 		protected PartType Part { get; private set; } = PartType.None;
 		protected abstract int MoveSpeed { get; }
-		public override int Capacity => 32;
 
 		// Data
 		private static readonly HitInfo[] c_Update = new HitInfo[16];

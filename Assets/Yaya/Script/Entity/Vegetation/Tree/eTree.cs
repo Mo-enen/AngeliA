@@ -6,6 +6,8 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[MapEditorGroup("Vegetation")]
+	[EntityCapacity(256)]
+	[EntityBounds(-Const.CELL_SIZE, 0, Const.CELL_SIZE * 3, Const.CELL_SIZE + Const.CELL_SIZE / 2)]
 	public abstract class eTree : eClimbable {
 
 
@@ -20,13 +22,11 @@ namespace Yaya {
 
 		// Api
 		public override RectInt Rect => new(X + Const.CELL_SIZE / 2 - TrunkWidth / 2, Y, Width, Height);
-		public override RectInt Bounds => Rect.Expand(Const.CELL_SIZE, Const.CELL_SIZE, 0, Const.CELL_SIZE / 2);
 		public override bool CorrectPosition => true;
 		protected int TrunkWidth { get; private set; } = 16;
 		protected int TreesOnTop { get; private set; } = -1;
 		protected bool HasTreesOnBottom { get; private set; } = false;
 		protected bool IsBigTree => HasTreesOnBottom || TreesOnTop > 0;
-		public override int Capacity => 256;
 
 
 		#endregion

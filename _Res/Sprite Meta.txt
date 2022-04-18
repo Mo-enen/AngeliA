@@ -24,7 +24,6 @@ cBoingBoing 1,1269637021,0
 cBody 1,-572045034,0
 cHip 1,-1404190877,0
 Barrel,348720954,0
-Barrel Small,1738157395,0
 Road Sign 0,-1207071699,0
 Road Sign 1,1290944238,0
 Road Sign 2,-506007121,0
@@ -267,6 +266,9 @@ Grandfather Clock Single 1,-404868123,0
 Vase Down 0,1508754069,0
 Vase Single 0,897809083,0
 Vase Mid 0,189197762,0
+Stove 2,297525999,0
+Stove 3,1185029680,0
+Clock Hand,-225057057,0
 Test BG,-1630121197,0
 _rGrass Ground 8,-1244425560,1
 _rGrass Ground 9,-1754959737,1
@@ -566,7 +568,6 @@ eTreePine,-415979030,0
 eTreePoplar,18085053,0
 eTreeWillow,1336046557,0
 eConveyorLeftSlow,1782759626,0
-eBarrelSmall,280544868,0
 eSpringMetalHorizontal,1802686643,0
 eSpringMetalVertical,80327198,0
 eConveyorRightSlow,1280373203,0
@@ -612,8 +613,8 @@ Rune Fire,-547224452,0
 Coin 0,-1432878433,0
 Potion Red,-413644676,0
 Cake Roll 0,-761548395,0
-Chicken Legs Raw,1829447784,0
-Chicken Legs Cooked,13775488,0
+Chicken Leg Raw,885576363,0
+Chicken Leg Cooked,490638556,0
 Chinese Cabbage,-586898633,0
 Apple Green,-214170682,0
 Apple Green Cut,-69843791,0
@@ -627,8 +628,8 @@ Rune Water,1377753839,0
 Coin 1,-1404249282,0
 Potion Blue,-1736670105,0
 Hamburger 0,153338777,0
-Chicken Wings Raw,1208760915,0
-Chicken Wings Cooked,-369349564,0
+Chicken Wing Raw,-443984231,0
+Chicken Wing Cooked,197845640,0
 Eggplant,76812954,0
 Pear,537338,0
 Pear Cut,1065363064,0
@@ -702,8 +703,8 @@ Broken Bone,-1497652017,0
 Coin 6,-1261103527,0
 Vol Potion Orange,-294158857,0
 Hamburger 1,-1643612582,0
-Fish Raw,20313975,0
-Fish Cooked,85844582,0
+Fish 0 Raw,-603045017,0
+Fish 0 Cooked,-215176001,0
 Cauliflower,-1729277672,0
 Grape Green,-214065865,0
 Grape Green Cut,-69738974,0
@@ -717,9 +718,9 @@ Cat Paw,-1050286404,0
 Coin 7,-1232474376,0
 Vol Potion Empty,730200851,0
 Bread 1,-591536503,0
-Sea Fish Raw,313168431,0
-Sea Fish Cooked,60781818,0
-chili,8678081,0
+Fish 1 Raw,-574415866,0
+Fish 1 Cooked,-186546850,0
+Chili,8678049,0
 Strawberry,-1560366543,0
 Strawberry Cut,-1680831615,0
 Slice_8_6,-8488958,0
@@ -732,9 +733,9 @@ Bear Paw,1800801286,0
 Gem Red,-616630112,0
 Ruby Red,-97843138,0
 Donut 1,-576155789,0
-Flounder Raw,-1539908238,0
-Flounder Cooked,45170278,0
-carrot,586989405,0
+Fish 2 Raw,-545786715,0
+Fish 2 Cooked,-157917699,0
+Carrot,586989373,0
 Blueberry,-153049179,0
 Blueberry Cut,1248539367,0
 Slice_9_6,-1578487444,0
@@ -743,7 +744,7 @@ Slice_9_8,-898429074,0
 Slice_9_9,1589083759,0
 Golden Hook,-181758045,0
 Slice_9_11,-484949578,0
-Branch,232222334,0
+eTimber 0,-71658004,0
 Gem Green,1222452178,0
 Ruby Green,1079133004,0
 Fries,17705035,0
@@ -758,7 +759,7 @@ Slice_10_8,240629403,0
 Slice_10_9,44115898,0
 Golden Fan,1107791428,0
 Slice_10_11,173591891,0
-Trunk,10596532,0
+eTimber 1,-41647338,0
 Gem Orange,-735071423,0
 Ruby Orange,-1312021612,0
 BaoZi,8147359,0
@@ -773,7 +774,7 @@ Slice_11_8,145974609,0
 Slice_11_9,1786926233,0
 Golden Key,430376696,0
 Slice_11_11,78937097,0
-Stump,15184407,0
+eTimber 2,608400366,0
 Gem Grey,1253479216,0
 Ruby Grey,203506053,0
 Dumpling,-875845514,0
@@ -788,7 +789,7 @@ Slice_12_8,-568717223,0
 Slice_12_9,-765230728,0
 Golden Pipe,-1006557435,0
 Slice_12_11,-635754735,0
-Board,4231718,0
+eTimber 3,-1199054097,0
 Stone 0,-1477719691,0
 Flint 0,-1463872903,0
 Sushi,8568914,0
@@ -807,8 +808,8 @@ Bomb,72510,0
 Stone 1,-590216010,0
 Flint 1,-576369222,0
 Chocolate,1294140924,0
-Bone,162844,0
-Fish Bone,-470401387,0
+Meat Bone 0,-423779566,0
+Meat Bone 1,236771242,0
 Mushroom Orange,-825627068,0
 Honeydew,1710250629,0
 Honeydew Cut,195092698,0

@@ -4,6 +4,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[ExcludeInMapEditor]
+	[EntityCapacity(1)]
 	public class eDialog : Entity {
 
 
@@ -38,7 +39,6 @@ namespace Yaya {
 		// Api
 		public override bool Despawnable => false;
 		public override bool ForceUpdate => true;
-		public override int Capacity => 1;
 
 		// Data
 		private string Message = "";

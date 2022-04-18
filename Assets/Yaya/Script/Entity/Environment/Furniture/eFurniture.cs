@@ -6,6 +6,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[MapEditorGroup("Furniture")]
+	[EntityCapacity(32)]
 	public abstract class eFurniture : Entity {
 
 
@@ -15,7 +16,6 @@ namespace Yaya {
 		protected abstract int[] ArtworkCodes_Mid { get; }
 		protected abstract int[] ArtworkCodes_RightUp { get; }
 		protected abstract int[] ArtworkCodes_Single { get; }
-		public override int Capacity => 32;
 
 		// Data
 		protected FurniturePose Pose = FurniturePose.Unknown;
@@ -51,6 +51,31 @@ namespace Yaya {
 		}
 
 
+		// API
+		protected void DrawClockHands (RectInt rect, int handCode, int thickness, int thicknessSecond) {
+			var now = System.DateTime.Now;
+			// Sec
+			CellRenderer.Draw(
+				handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
+				500, 0, now.Second * 360 / 60,
+				thicknessSecond, rect.height * 900 / 2000
+			);
+			// Min
+			CellRenderer.Draw(
+				handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
+				500, 0, now.Minute * 360 / 60,
+				thickness, rect.height * 800 / 2000
+			);
+			// Hour
+			CellRenderer.Draw(
+				handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
+				500, 0, (now.Hour * 360 / 12) + (now.Minute * 360 / 12 / 60),
+				thickness, rect.height * 400 / 2000
+			);
+		}
+
+
+		// LGC
 		private void Update_Pose () {
 			if (Pose != FurniturePose.Unknown) return;
 

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
 
-
 namespace Yaya {
 	[ExcludeInMapEditor]
+	[EntityCapacity(8)]
 	public abstract class eItem : Entity {
 
 
@@ -16,16 +16,11 @@ namespace Yaya {
 
 		// Api
 		public int VelocityY { get; private set; } = 0;
-		protected abstract int ITEM_CODE { get; }
-		public override int Capacity => 128;
-
-		// Short
-		private int ItemCode => _ItemCode != 0 ? _ItemCode : (_ItemCode = ITEM_CODE);
+		protected abstract int ItemCode { get; }
 
 		// Data
-		private HitInfo[] c_MakeRoom = new HitInfo[5];
+		private static readonly HitInfo[] c_MakeRoom = new HitInfo[5];
 		private bool MakingRoom = false;
-		private int _ItemCode = 0;
 
 
 		#endregion
@@ -34,7 +29,6 @@ namespace Yaya {
 
 
 		#region --- MSG ---
-
 
 
 		public override void OnActived (int frame) {
@@ -97,26 +91,6 @@ namespace Yaya {
 			base.FrameUpdate(frame);
 			CellRenderer.Draw(ItemCode, new(X + (Const.ITEM_PHYSICS_SIZE - Const.ITEM_RENDER_SIZE) / 2, Y, Const.ITEM_RENDER_SIZE, Const.ITEM_RENDER_SIZE));
 		}
-
-
-		#endregion
-
-
-
-
-		#region --- API ---
-
-
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
 
 
 		#endregion
