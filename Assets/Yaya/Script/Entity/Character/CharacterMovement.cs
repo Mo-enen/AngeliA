@@ -18,6 +18,7 @@ namespace Yaya {
 		public int InWaterSpeedLoseRate { get; init; } = 500;
 		public int GroundStuckLoseX { get; init; } = 2;
 		public int GroundStuckLoseY { get; init; } = 6;
+		public int OppositeAccelerationXRate { get; init; } = 3000;
 
 		// Move
 		public int MoveSpeed { get; init; } = 17;
@@ -179,9 +180,7 @@ namespace Yaya {
 					Rig.VelocityY = Rig.VelocityY * InWaterSpeedLoseRate / 1000;
 				} else {
 					// Out Water
-					if (Rig.VelocityY > 0) {
-						Rig.VelocityY = JumpSpeed;
-					}
+					if (Rig.VelocityY > 0) Rig.VelocityY = JumpSpeed;
 				}
 			}
 			PrevInWater = InWater;
@@ -198,7 +197,7 @@ namespace Yaya {
 			// Facing
 			FacingRight = LastMoveDirection.x > 0;
 			FacingFront = !IsClimbing;
-			
+
 			// Physics
 			Hitbox = new(
 				Rig.X - Width / 2,
@@ -295,6 +294,10 @@ namespace Yaya {
 				speed = IntendedX * MoveSpeed;
 				acc = MoveAcceleration;
 				dcc = MoveDecceleration;
+			}
+			if ((speed > 0 && Rig.VelocityX < 0) || (speed < 0 && Rig.VelocityX > 0)) {
+				acc *= OppositeAccelerationXRate / 1000;
+				dcc *= OppositeAccelerationXRate / 1000;
 			}
 			Rig.VelocityX = Rig.VelocityX.MoveTowards(speed, acc, dcc);
 			if (IsInsideGround) {
@@ -431,20 +434,3 @@ namespace Yaya {
 
 	}
 }
-
-
-#if UNITY_EDITOR
-namespace Yaya.Editor {
-	using UnityEngine;
-	using UnityEditor;
-
-	[CustomEditor(typeof(CharacterMovement))]
-	public class CharacterMovement_Inspector : Editor {
-		public override void OnInspectorGUI () {
-			serializedObject.Update();
-			DrawPropertiesExcluding(serializedObject, "m_Script");
-			serializedObject.ApplyModifiedProperties();
-		}
-	}
-}
-#endif

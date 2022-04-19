@@ -6,16 +6,13 @@ using AngeliaFramework;
 
 namespace Yaya {
 	// === Main ===
-	public partial class CharacterRenderer {
+	public class CharacterRenderer {
 
 
 
 
 		#region --- VAR ---
 
-
-		// Init
-		
 
 		// Api
 		protected eCharacter Character { get; init; } = null;
@@ -88,6 +85,44 @@ namespace Yaya {
 
 
 
+		#region --- OVR ---
+
+
+		protected virtual void DrawHair (bool front) { }
+
+
+		protected virtual void DrawHead () { }
+
+
+		protected virtual void DrawFace () { }
+
+
+		protected virtual void DrawBody () { }
+
+
+		protected virtual void DrawBoingBoing () { }
+
+
+		protected virtual void DrawTail () { }
+
+
+		protected virtual void DrawArm (bool right) { }
+
+
+		protected virtual void DrawHand (bool right) { }
+
+
+		protected virtual void DrawLeg (bool right) { }
+
+
+		protected virtual void DrawFoot (bool right) { }
+
+
+		#endregion
+
+
+
+
 		#region --- LGC ---
 
 
@@ -100,19 +135,3 @@ namespace Yaya {
 
 	}
 }
-
-
-#if UNITY_EDITOR
-namespace Yaya.Editor {
-	using UnityEditor;
-
-	[CustomEditor(typeof(CharacterRenderer))]
-	public class CharacterRenderer_Inspector : Editor {
-		public override void OnInspectorGUI () {
-			serializedObject.Update();
-			DrawPropertiesExcluding(serializedObject, "m_Script");
-			serializedObject.ApplyModifiedProperties();
-		}
-	}
-}
-#endif
