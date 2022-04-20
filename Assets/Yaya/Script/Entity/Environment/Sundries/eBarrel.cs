@@ -15,16 +15,8 @@ namespace Yaya {
 		private static readonly int BARREL_CODE = "Barrel".AngeHash();
 
 
-		public override void OnActived (int frame) {
-			Width = Const.CELL_SIZE;
-			Height = Const.CELL_SIZE;
-			base.OnActived(frame);
-		}
-
-
 		public override void FrameUpdate (int frame) {
-			int size = Const.CELL_SIZE;
-			CellRenderer.Draw(BARREL_CODE, X, Y, size, size);
+			CellRenderer.Draw(BARREL_CODE, Rect);
 			base.FrameUpdate(frame);
 		}
 
