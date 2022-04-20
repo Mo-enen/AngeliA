@@ -5,10 +5,10 @@ using UnityEngine;
 using AngeliaFramework;
 namespace Yaya {
 	public class eChineseCabbage : eItem {
-        private static readonly int CODE = "".AngeHash();
-        protected override int ItemCode => CODE;
-        
-        
-         
-    }
+		private static readonly int CODE = "Chinese Cabbage".AngeHash();
+		protected override int ItemCode => CODE;
+
+
+
+	}
 }

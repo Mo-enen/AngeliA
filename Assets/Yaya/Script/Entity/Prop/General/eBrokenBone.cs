@@ -5,7 +5,8 @@ using AngeliaFramework;
 
 namespace Yaya {
 	public class eBrokenBone : eItem {
-		private static readonly int CODE = "".AngeHash(); protected override int ItemCode => CODE;
+		private static readonly int CODE = "Broken Bone".AngeHash();
+		protected override int ItemCode => CODE;
 
 
 

@@ -5,7 +5,8 @@ using UnityEngine;
 using AngeliaFramework;
 namespace Yaya {
 	public class eGoldenGamePad : eGoldenItem {
-		private static readonly int CODE = "".AngeHash(); protected override int ItemCode => CODE;
+		private static readonly int CODE = "Golden Game Pad".AngeHash();
+		protected override int ItemCode => CODE;
 
 
 

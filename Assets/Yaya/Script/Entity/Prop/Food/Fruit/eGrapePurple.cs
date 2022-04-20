@@ -4,12 +4,13 @@ using UnityEngine;
 
 using AngeliaFramework;
 namespace Yaya {
-	public class eHoneydew : eItem {
-		private static readonly int CODE = "Honeydew".AngeHash();
-		private static readonly int CODE_CUT = "Honeydew Cut".AngeHash();
+	public class eGrapePurple : eItem {
+		private static readonly int CODE = "Grape Purple".AngeHash();
+		private static readonly int CODE_CUT = "Grape Purple Cut".AngeHash();
 
 		protected override int ItemCode => Cut ? CODE_CUT : CODE;
 		private bool Cut = false;
+
 
 
 

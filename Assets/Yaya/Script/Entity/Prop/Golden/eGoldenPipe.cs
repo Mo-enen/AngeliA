@@ -5,7 +5,8 @@ using UnityEngine;
 using AngeliaFramework;
 namespace Yaya {
 	public class eGoldenPipe : eGoldenItem {
-		private static readonly int CODE = "".AngeHash(); protected override int ItemCode => CODE;
+		private static readonly int CODE = "Golden Pipe".AngeHash();
+		protected override int ItemCode => CODE;
 
 
 

@@ -4,8 +4,9 @@ using UnityEngine;
 
 using AngeliaFramework;
 namespace Yaya {
-	public class GoldenHook : eGoldenItem {
-		private static readonly int CODE = "".AngeHash(); protected override int ItemCode => CODE;
+	public class eGoldenHook : eGoldenItem {
+		private static readonly int CODE = "Golden Hook".AngeHash();
+		protected override int ItemCode => CODE;
 
 
 

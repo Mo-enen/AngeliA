@@ -5,7 +5,7 @@ using UnityEngine;
 using AngeliaFramework;
 namespace Yaya {
 	public class eCauliflower : eItem {
-		private static readonly int CODE = "".AngeHash(); 
+		private static readonly int CODE = "Cauliflower".AngeHash();
 		protected override int ItemCode => CODE;
 
 
