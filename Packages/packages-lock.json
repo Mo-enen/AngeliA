@@ -5,8 +5,7 @@
       "depth": 0,
       "source": "local",
       "dependencies": {
-        "com.moenengames.angeliaframework": "1.0.0",
-        "com.moenengames.asepritetoolbox": "1.0.0"
+        "com.moenengames.angeliaframework": "1.0.0"
       }
     },
     "com.moenengames.angeliaframework": {
@@ -17,21 +16,6 @@
         "com.moenengames.standard": "1.0.0",
         "com.unity.inputsystem": "1.0.0"
       }
-    },
-    "com.moenengames.asepritegadget": {
-      "version": "file:C:/Data/Unity/Packages/Aseprite Gadget",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {
-        "com.moenengames.standard": "1.0.0",
-        "com.moenengames.asepritetoolbox": "1.0.0"
-      }
-    },
-    "com.moenengames.asepritetoolbox": {
-      "version": "file:C:/Data/Unity/Packages/Aseprite Toolbox",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {}
     },
     "com.moenengames.standard": {
       "version": "file:C:/Data/Unity/Packages/Standard",
