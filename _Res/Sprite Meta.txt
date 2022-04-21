@@ -24,8 +24,6 @@ cBoingBoing 1,1269637021,0
 cBody 1,-572045034,0
 cHip 1,-1404190877,0
 Barrel,348720954,0
-Road Message,903981634,0
-Road Sign,-1253353443,0
 Check Statue 0,238126772,0
 Check Statue 1,-267431853,0
 Check Statue 2,-772990478,0
@@ -241,6 +239,10 @@ Vase Mid 0,189197762,0
 Stove 2,297525999,0
 Stove 3,1185029680,0
 Clock Hand,-225057057,0
+Message Sign Single,289815561,0
+Message Sign Down,1166853132,0
+Message Sign Mid,-199835262,0
+Message Sign Up,-239239483,0
 Test BG,-1630121197,0
 _rGrass Ground 8,-1244425560,1
 _rGrass Ground 9,-1754959737,1
@@ -565,6 +567,8 @@ eFridge,346933866,0
 eWoodBoard,-102253931,0
 eBox,728474,0
 eSkeletonPile,1500917444,0
+eRock,10262090,0
+eMessageSign,160304993,0
 Test Pro,-1349009215,0
 Pixel,11254534,0
 UI Window,1414408444,0

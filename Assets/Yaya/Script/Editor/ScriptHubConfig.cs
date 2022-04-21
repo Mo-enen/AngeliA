@@ -5,7 +5,7 @@ namespace Yaya.Editor {
 	public class YayaScriptHub : IScriptHubConfig {
 		public string[] Paths => new string[] { "Assets", };
 		public string IgnoreFolders => "";
-		public string IgnoreFiles => "ScriptHubConfig.cs";
+		public string IgnoreFiles => "";
 		public string Title => "Yaya";
 		public IScriptHubConfig.FileExtension[] FileExtensions => new IScriptHubConfig.FileExtension[]{
 				new ("cs", "", true),
