@@ -14,8 +14,8 @@ namespace Yaya {
 
 
 		public override void OnActived (int frame) {
-			Height = Const.CELL_SIZE / 2;
 			base.OnActived(frame);
+			Height = Const.CELL_SIZE / 2;
 		}
 
 

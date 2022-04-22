@@ -569,6 +569,8 @@ eBox,728474,0
 eSkeletonPile,1500917444,0
 eRock,10262090,0
 eMessageSign,160304993,0
+eHideBlock,-1710713670,0
+eDecolliderBlock,130176813,0
 Test Pro,-1349009215,0
 Pixel,11254534,0
 UI Window,1414408444,0

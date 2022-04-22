@@ -7,7 +7,7 @@ using Moenen.Standard;
 
 
 namespace Yaya.Editor {
-	public class YayaBlankInspector : BlankInspector.IBlankInspector, IInitialize {
+	public class YayaBlankInspector : IBlankInspector, IInitialize {
 		public string Label => "";
 		public int Order => 0;
 		public bool AvailableOnEdittime => false;
