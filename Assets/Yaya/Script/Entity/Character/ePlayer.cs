@@ -7,6 +7,7 @@ using AngeliaFramework;
 namespace Yaya {
 	[ExcludeInMapEditor]
 	[EntityCapacity(1)]
+	[ForceUpdate]
 	public abstract class ePlayer : eCharacter {
 
 
@@ -17,8 +18,6 @@ namespace Yaya {
 
 		// Api
 		public static ePlayer CurrentPlayer { get; private set; } = null;
-		public override int PushLevel => 128;
-		public override bool ForceUpdate => true;
 
 		// Short
 		private RectInt ViewRect => Game.Current.ViewRect;

@@ -16,8 +16,7 @@ namespace Yaya {
 		}
 
 		// Api
-		public override int PushLevel => int.MaxValue;
-		public override int CollisionLayer => (int)PhysicsLayer.Environment;
+		public override int CollisionLayer => YayaConst.ENVIRONMENT;
 		protected virtual BreakMode BreakCondition { get; } = BreakMode.BreakOnCollideGround;
 		public override bool CarryRigidbodyOnTop => false;
 		protected virtual int HoldDuration { get; } = 60;
@@ -31,6 +30,15 @@ namespace Yaya {
 
 
 		// MSG
+		public override void OnActived (int frame) {
+			base.OnActived(frame);
+			HoldStartFrame = int.MaxValue;
+			LastHolding = false;
+			IsFalling = false;
+			IsHolding = false;
+		}
+
+
 		public override void PhysicsUpdate (int frame) {
 
 			GravityScale = 0;

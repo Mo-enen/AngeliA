@@ -16,7 +16,6 @@ namespace Yaya {
 		// Api
 		public int FinalVelocityX => X - PrevX;
 		public int FinalVelocityY => Y - PrevY;
-		public override int PushLevel => 0;
 		public int PrevX { get; private set; } = 0;
 		public int PrevY { get; private set; } = 0;
 		public override RectInt Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
@@ -57,7 +56,9 @@ namespace Yaya {
 		}
 
 
-		public override void FillPhysics (int frame) => CellPhysics.FillEntity(CollisionLayer, this);
+		public override void FillPhysics (int frame) {
+			CellPhysics.FillEntity(CollisionLayer, this);
+		}
 
 
 		public override void PhysicsUpdate (int frame) {
@@ -93,18 +94,20 @@ namespace Yaya {
 			}
 
 			// Hori Stopping
-			if (VelocityX != 0 && !CellPhysics.MoveCheck(
-				(int)PhysicsMask.Solid, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left
-			)) {
-				VelocityX = 0;
-			}
+			if (
+				VelocityX != 0 &&
+				(!CellPhysics.RoomCheck((int)PhysicsMask.Solid, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left) ||
+				!CellPhysics.RoomCheck_Oneway((int)PhysicsMask.Solid, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left, true))
+			) VelocityX = 0;
+
 
 			// Vertical Stopping
-			if (VelocityY != 0 && !CellPhysics.MoveCheck(
-				(int)PhysicsMask.Solid, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down
-			)) {
-				VelocityY = 0;
-			}
+			if (
+				VelocityY != 0 &&
+				(!CellPhysics.RoomCheck((int)PhysicsMask.Solid, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down) ||
+				!CellPhysics.RoomCheck_Oneway((int)PhysicsMask.Solid, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down, true))
+			) VelocityY = 0;
+
 
 			// Move
 			PerformMove(VelocityX, VelocityY, false, false);

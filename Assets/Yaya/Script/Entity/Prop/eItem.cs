@@ -40,7 +40,7 @@ namespace Yaya {
 
 		public override void FillPhysics (int frame) {
 			base.FillPhysics(frame);
-			CellPhysics.FillEntity((int)PhysicsLayer.Item, this, true, YayaConst.ITEM_TAG);
+			CellPhysics.FillEntity(YayaConst.ITEM, this, true, YayaConst.ITEM_TAG);
 		}
 
 

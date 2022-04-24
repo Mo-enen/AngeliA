@@ -396,7 +396,7 @@ namespace Yaya {
 			overlap = CellPhysics.Overlap((int)PhysicsMask.Environment, rect, null);
 			if (overlap && IsSquating && IntendedY >= 0) {
 				// Want to Stand Up but Overlaps
-				return !CellPhysics.MoveCheck(
+				return !CellPhysics.RoomCheck(
 					(int)PhysicsMask.Map, rect, Rig, Direction4.Up
 				);
 			}

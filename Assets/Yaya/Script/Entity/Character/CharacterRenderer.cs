@@ -5,7 +5,6 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	// === Main ===
 	public class CharacterRenderer {
 
 
@@ -14,9 +13,13 @@ namespace Yaya {
 		#region --- VAR ---
 
 
-		// Api
+		// Init
 		protected eCharacter Character { get; init; } = null;
-		public virtual RectInt LocalBounds => new(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2);
+		public int Width { get; init; } = Const.CELL_SIZE;
+		public int Height { get; init; } = Const.CELL_SIZE * 2;
+
+		// Api
+		public virtual RectInt LocalBounds => new(-Width / 2, 0, Width, Height);
 
 
 		#endregion

@@ -5,6 +5,8 @@ using AngeliaFramework;
 namespace Yaya {
 	[ExcludeInMapEditor]
 	[EntityCapacity(1)]
+	[DontDepawnWhenOutOfRange]
+	[ForceUpdate]
 	public class eDialog : Entity {
 
 
@@ -35,10 +37,6 @@ namespace Yaya {
 		private const int BUTTON_PADDING_Y = 48;
 		private const int BUTTON_GAP = 42;
 		private const int BUTTON_CHAR_SIZE = 84;
-
-		// Api
-		public override bool Despawnable => false;
-		public override bool ForceUpdate => true;
 
 		// Data
 		private string Message = "";
@@ -91,7 +89,7 @@ namespace Yaya {
 			);
 
 			// BG Panel
-			CellGUI.DrawButton(
+			CellUI.DrawButton(
 				() => { }, cameraRect, "", 0,
 				BG_PANEL, BG_PANEL, BG_PANEL, BG_PANEL, PIXEL_ID
 			);
@@ -100,7 +98,7 @@ namespace Yaya {
 			CellRenderer.Draw_9Slice(MAIN_SPRITES, mainRect.x, mainRect.y, 0, 0, 0, mainRect.width, mainRect.height, WINDOW_BG);
 
 			// Content
-			CellGUI.DrawLabel(
+			CellUI.DrawLabel(
 				Message, contentRect,
 				CONTENT_CHAR, CHAR_SIZE_CONTENT,
 				0, 0, true, Alignment.TopLeft
@@ -132,7 +130,7 @@ namespace Yaya {
 			PrevLeftDown = leftPress;
 			PrevRightDown = rightPress;
 			if (FrameInput.KeyDown(GameKey.Start)) {
-				CellGUI.SetPressAction(NavIndex == 0 ? OK : NavIndex == 1 ? Alt : Cancel);
+				CellUI.SetPressAction(NavIndex == 0 ? OK : NavIndex == 1 ? Alt : Cancel);
 				Active = false;
 			}
 			if (FrameInput.KeyDown(GameKey.Select)) {
@@ -153,7 +151,7 @@ namespace Yaya {
 			for (int i = 2; i >= 0; i--) {
 				var action = i == 0 ? OK : i == 1 ? Alt : Cancel;
 				if (action == null) { continue; }
-				CellGUI.DrawButton(
+				CellUI.DrawButton(
 					() => {
 						action();
 						Active = false;
@@ -213,7 +211,7 @@ namespace Yaya {
 
 
 		private void RefreshHeight () {
-			int contentHeight = CellGUI.GetLabelSize(
+			int contentHeight = CellUI.GetLabelSize(
 				Message,
 				Width - CONTENT_PADDING_X * 2,
 				CHAR_SIZE_CONTENT

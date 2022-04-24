@@ -14,12 +14,12 @@ namespace Yaya {
 
 
 		// Api
-		public override int CollisionLayer => (int)PhysicsLayer.Character;
-		public override int PushLevel => 64;
+		public override int CollisionLayer => YayaConst.CHARACTER;
 		public override bool CarryRigidbodyOnTop => false;
 		public override bool IsInAir => base.IsInAir && !Movement.IsClimbing;
 		public override int AirDragX => 0;
 		public override int AirDragY => 0;
+		public override RectInt GlobalBounds => Renderer.LocalBounds.Shift(X, Y);
 		public abstract CharacterMovement Movement { get; }
 		public abstract CharacterRenderer Renderer { get; }
 
@@ -40,7 +40,6 @@ namespace Yaya {
 
 		public override void FrameUpdate (int frame) {
 			Renderer.FrameUpdate(frame);
-			LocalBounds = Renderer.LocalBounds;
 			base.FrameUpdate(frame);
 		}
 

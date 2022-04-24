@@ -15,7 +15,7 @@ namespace Yaya {
 		protected override int[] ArtworkCodes_Single => CODES;
 
 		public override void FillPhysics (int frame) {
-			CellPhysics.FillEntity((int)PhysicsLayer.Environment, this, true);
+			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true);
 		}
 
 	}

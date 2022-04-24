@@ -36,9 +36,8 @@ namespace Yaya {
 		private const int RED_LINE_MAX = 512;
 
 		// Api
-		public override int CollisionLayer => (int)PhysicsLayer.Environment;
+		public override int CollisionLayer => YayaConst.ENVIRONMENT;
 		protected abstract bool Horizontal { get; }
-		public override int PushLevel => Horizontal ? int.MaxValue - 1 : 1;
 		protected abstract int Power { get; }
 
 		// Short

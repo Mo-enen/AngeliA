@@ -8,9 +8,6 @@ namespace Yaya {
 	public class Yaya : Game {
 
 
-		// Const
-		private static readonly int[] ENTITY_CAPACITY = new int[] { 512, 512, 256, 512, 1024 };
-
 		// Api
 		protected override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
 
@@ -57,7 +54,7 @@ namespace Yaya {
 
 
 		// Override
-		protected override WorldSquad CreateWorldSquad () => new(MapRoot, (int)PhysicsLayer.Level);
+		protected override WorldSquad CreateWorldSquad () => new(MapRoot, YayaConst.LEVEL);
 
 
 	}

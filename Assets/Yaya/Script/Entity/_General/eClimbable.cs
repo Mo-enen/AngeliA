@@ -13,7 +13,7 @@ namespace Yaya {
 
 		public override void FillPhysics (int frame) {
 			base.FillPhysics(frame);
-			CellPhysics.FillEntity((int)PhysicsLayer.Environment, this, true, YayaConst.CLIMB_TAG);
+			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true, YayaConst.CLIMB_TAG);
 		}
 
 

@@ -9,7 +9,7 @@ namespace Yaya {
 	public class eBarrel : eRigidbody {
 
 
-		public override int CollisionLayer => (int)PhysicsLayer.Environment;
+		public override int CollisionLayer => YayaConst.ENVIRONMENT;
 		public override bool DestroyOnInsideGround => true;
 
 		private static readonly int BARREL_CODE = "Barrel".AngeHash();

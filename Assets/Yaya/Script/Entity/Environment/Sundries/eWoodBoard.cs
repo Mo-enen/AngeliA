@@ -6,7 +6,7 @@ using AngeliaFramework;
 namespace Yaya {
 	public class eWoodBoard : eRigidbody {
 
-		public override int CollisionLayer => (int)PhysicsLayer.Environment;
+		public override int CollisionLayer => YayaConst.ENVIRONMENT;
 		public override bool DestroyOnInsideGround => true;
 
 		private static readonly int BARREL_CODE = "Wood Board".AngeHash();

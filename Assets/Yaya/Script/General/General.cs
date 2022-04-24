@@ -8,15 +8,6 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 namespace Yaya {
 
 
-	public enum PhysicsLayer {
-		Level = 0,      // Ground, Water, OnewayGate...
-		Environment = 1,// Barrel, Chest, EventTrigger...
-		Item = 2,       // HealthPotion, Coin, BouncyBall...
-		Character = 3,  // Player, Enemy, NPC...
-
-	}
-
-
 
 	[System.Flags]
 	public enum PhysicsMask {
@@ -49,7 +40,12 @@ namespace Yaya {
 	public static class YayaConst {
 
 
-		public static readonly int PHYSICS_LAYER_COUNT = System.Enum.GetNames(typeof(PhysicsLayer)).Length;
+		public const int LEVEL = 0;
+		public const int ENVIRONMENT = 1;
+		public const int ITEM = 2;
+		public const int CHARACTER = 3;
+		public const int PHYSICS_LAYER_COUNT = (int)PhysicsMask.Count;
+
 
 		public static readonly int CLIMB_TAG = "Climb".AngeHash();
 		public static readonly int ITEM_TAG = "Item".AngeHash();
