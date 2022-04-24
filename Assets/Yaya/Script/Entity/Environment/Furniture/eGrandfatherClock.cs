@@ -12,7 +12,7 @@ namespace Yaya {
 		private static readonly int[] CODES_SINGLE = new int[] { "Grandfather Clock Single 0".AngeHash(), "Grandfather Clock Single 1".AngeHash(), };
 		private static readonly int HAND_CODE = "Clock Hand".AngeHash();
 
-		protected override Direction3 Direction => Direction3.Vertical;
+		protected override Direction3 ModuleType => Direction3.Vertical;
 		protected override int[] ArtworkCodes_LeftDown => CODES_DOWN;
 		protected override int[] ArtworkCodes_Mid => CODES_MID;
 		protected override int[] ArtworkCodes_RightUp => CODES_UP;

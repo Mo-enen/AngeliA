@@ -145,9 +145,6 @@ wardrobe 3 Open,-463627699,0
 wardrobe 2 Open,-267114194,0
 wardrobe 1 Open,-70600689,0
 wardrobe 0 Open,-1711552313,0
-Stove Cabinet 5,435034634,0
-Stove Cabinet 4,-1072517175,0
-Stove Cabinet 6,105121314,0
 Stove Cabinet 2,207346503,0
 Stove Cabinet 1,-1300205306,0
 Stove Cabinet 0,1487210181,0
@@ -202,7 +199,6 @@ Photo 2,306701252,0
 Photo 3,1194204933,0
 Cabinet Idol 5,918197131,0
 Stove Cabinet 3,1714898312,0
-Stove Cabinet 7,-844829044,0
 Grandfather Clock Up 0,-660786597,0
 Oneway Gate,-248980743,0
 Ladder,520065342,0

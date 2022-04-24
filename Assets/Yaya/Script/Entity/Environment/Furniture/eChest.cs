@@ -9,7 +9,7 @@ namespace Yaya {
 		private static readonly int[] CODES = new int[] { "Chest 0".AngeHash(), "Chest 1".AngeHash(), };
 		private static readonly int[] CODES_OPEN = new int[] { "Chest 0 Open".AngeHash(), "Chest 1 Open".AngeHash(), };
 
-		protected override Direction3 Direction => Direction3.None;
+		protected override Direction3 ModuleType => Direction3.None;
 		protected override int[] ArtworkCodes_LeftDown => CODES;
 		protected override int[] ArtworkCodes_Mid => CODES;
 		protected override int[] ArtworkCodes_RightUp => CODES;

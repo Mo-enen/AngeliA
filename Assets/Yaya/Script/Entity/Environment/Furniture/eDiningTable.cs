@@ -12,7 +12,7 @@ namespace Yaya {
 		private static readonly int[] CODES_RIGHT = new int[] { "Dining Table Right 0".AngeHash(), "Dining Table Right 1".AngeHash(), "Dining Table Right 2".AngeHash(), "Dining Table Right 3".AngeHash(), };
 		private static readonly int[] CODES_SINGLE = new int[] { "Dining Table Single 0".AngeHash(), "Dining Table Single 1".AngeHash(), "Dining Table Single 2".AngeHash(), "Dining Table Single 3".AngeHash(), };
 
-		protected override Direction3 Direction => Direction3.Horizontal;
+		protected override Direction3 ModuleType => Direction3.Horizontal;
 		protected override int[] ArtworkCodes_LeftDown => CODES_LEFT;
 		protected override int[] ArtworkCodes_Mid => CODES_MID;
 		protected override int[] ArtworkCodes_RightUp => CODES_RIGHT;

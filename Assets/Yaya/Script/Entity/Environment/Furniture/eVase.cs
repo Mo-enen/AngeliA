@@ -11,7 +11,7 @@ namespace Yaya {
 		private static readonly int[] CODES_UP = new int[] { "Vase Up 0".AngeHash(), };
 		private static readonly int[] CODES_SINGLE = new int[] { "Vase Single 0".AngeHash(), };
 
-		protected override Direction3 Direction => Direction3.Vertical;
+		protected override Direction3 ModuleType => Direction3.Vertical;
 		protected override int[] ArtworkCodes_LeftDown => CODES_DOWN;
 		protected override int[] ArtworkCodes_Mid => CODES_MID;
 		protected override int[] ArtworkCodes_RightUp => CODES_UP;

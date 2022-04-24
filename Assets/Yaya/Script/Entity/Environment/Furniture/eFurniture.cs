@@ -11,7 +11,7 @@ namespace Yaya {
 
 
 		// VAR
-		protected abstract Direction3 Direction { get; }
+		protected abstract Direction3 ModuleType { get; }
 		protected abstract int[] ArtworkCodes_LeftDown { get; }
 		protected abstract int[] ArtworkCodes_Mid { get; }
 		protected abstract int[] ArtworkCodes_RightUp { get; }
@@ -79,7 +79,7 @@ namespace Yaya {
 		private void Update_Pose () {
 			if (Pose != FurniturePose.Unknown) return;
 
-			if (Direction == Direction3.Horizontal) {
+			if (ModuleType == Direction3.Horizontal) {
 				var rect = Rect;
 				rect.x = Rect.x - Const.CELL_SIZE;
 				bool hasLeft = CellPhysics.HasEntity(GetType(), rect, (int)PhysicsMask.Environment, this, OperationMode.TriggerOnly);
@@ -90,7 +90,7 @@ namespace Yaya {
 					!hasLeft && !hasRight ? FurniturePose.Single :
 					!hasLeft && hasRight ? FurniturePose.Left :
 					FurniturePose.Right;
-			} else if (Direction == Direction3.Vertical) {
+			} else if (ModuleType == Direction3.Vertical) {
 				var rect = Rect;
 				rect.y = Rect.y - Const.CELL_SIZE;
 				bool hasDown = CellPhysics.HasEntity(GetType(), rect, (int)PhysicsMask.Environment, this, OperationMode.TriggerOnly);
