@@ -6,7 +6,7 @@ using AngeliaFramework;
 namespace Yaya {
 	public class eBasket : eFurniture {
 
-		private static readonly int[] CODES = new int[] { "Basket 0".AngeHash(), "Basket 1".AngeHash(), "Basket 2".AngeHash(), "Basket 3".AngeHash(), };
+		private static readonly int[] CODES = new int[] { "Basket".AngeHash(), };
 
 		protected override Direction3 ModuleType => Direction3.None;
 		protected override int[] ArtworkCodes_LeftDown => CODES;

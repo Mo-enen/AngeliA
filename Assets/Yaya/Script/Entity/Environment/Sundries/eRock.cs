@@ -21,6 +21,7 @@ namespace Yaya {
 		public override void OnActived (int frame) {
 			base.OnActived(frame);
 			FullRect = new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE);
+			Width = Height = Const.CELL_SIZE;
 			ArtworkIndex = (X.UDivide(Const.CELL_SIZE) + Y.UDivide(Const.CELL_SIZE)).UMod(CODES.Length);
 			if (CellRenderer.TryGetSprite(CODES[ArtworkIndex % CODES.Length], out var sprite)) {
 				var rect = Rect.Shrink(sprite.GlobalBorder.Left, sprite.GlobalBorder.Right, sprite.GlobalBorder.Down, sprite.GlobalBorder.Up);

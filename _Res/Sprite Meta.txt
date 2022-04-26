@@ -177,7 +177,7 @@ Lamp 3,-1346927979,0
 Lamp 2,-1375557130,0
 Lamp 1,-1404186281,0
 Lamp 0,-1432815432,0
-Basket 0,18870561,0
+Basket,577546586,0
 Wardrobe 3,-146038822,0
 Wardrobe 2,50474683,0
 Wardrobe 1,246988188,0
@@ -190,9 +190,6 @@ Clock 2,302500832,0
 Clock 3,1190004513,0
 Bed Left 0,-252524077,0
 Bed Left 1,170999456,0
-Basket 1,-695821271,0
-Basket 2,1046989064,0
-Basket 3,-1505167897,0
 Photo 0,-1468306110,0
 Photo 1,-580802429,0
 Photo 2,306701252,0
@@ -220,8 +217,7 @@ Dining Table Single 1,-1659048485,0
 Dining Table Mid 3,-1831444505,0
 Dining Table Right 3,396797139,0
 Dining Table Single 3,-1236346659,0
-TV 0,-1491794,0
-TV 1,-1462003,0
+TV,-322,0
 Grandfather Clock Down 0,-1257119390,0
 Grandfather Clock Single 0,-1351075354,0
 Grandfather Clock Mid 0,596197198,0

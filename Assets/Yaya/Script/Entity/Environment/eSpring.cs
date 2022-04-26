@@ -100,6 +100,7 @@ namespace Yaya {
 				for (int i = count - 1; i >= 0; i--) {
 					if (c_PerformBounce[i].Entity is eRigidbody rig) {
 						PerformBounce(rig);
+						break;
 					}
 				}
 				c_PerformBounce.Dispose();

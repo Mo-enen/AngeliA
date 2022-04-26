@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Yaya.Editor {
 	public class CheckPointArtworkExtension : IArtworkEvent {
-		public string Message => "Refreshing Check Altar Position";
+		public string Message => "Refreshing Check Point Position";
 		public void OnArtworkSynced () {
 
 			var game = Object.FindObjectOfType<Game>();
@@ -55,7 +55,7 @@ namespace Yaya.Editor {
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
 
-			// Write Altar Position File
+			// Write Position File
 			try {
 				var cpList = new List<eCheckPoint.CheckPointData.Data>();
 				foreach (var (pos, id) in allCpPool) {
@@ -68,8 +68,9 @@ namespace Yaya.Editor {
 						IsAltar = allCpPool.ContainsKey(new(pos.x, pos.y + 1)) && !allCpPool.ContainsKey(new(pos.x, pos.y - 1)),
 					});
 				}
+				var jsonData = new eCheckPoint.CheckPointData() { CPs = cpList.ToArray() };
 				Util.TextToFile(
-					JsonUtility.ToJson(new eCheckPoint.CheckPointData() { CPs = cpList.ToArray() }, true),
+					JsonUtility.ToJson(jsonData, false),
 					Util.CombinePaths(game.MapRoot, $"{Application.productName}.cp")
 				);
 			} catch (System.Exception ex) { Debug.LogException(ex); }
