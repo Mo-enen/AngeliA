@@ -16,6 +16,34 @@ namespace Yaya {
 		protected override int TrunkMidCode => TRUNK_MID_CODE;
 
 
+		public override void FillPhysics (int frame) {
+			base.FillPhysics(frame);
+			// Leaf
+			if (IsBigTree) {
+				// Big
+				if (HasTreesOnBottom) {
+					// Mid or Top
+					CellPhysics.FillBlock(YayaConst.ENVIRONMENT, new(
+						X, Y - 24, Const.CELL_SIZE, Const.CELL_SIZE
+					), true, Const.ONEWAY_UP_TAG);
+					if (TreesOnTop > 0) {
+						CellPhysics.FillBlock(YayaConst.ENVIRONMENT, new(
+							X - Const.CELL_SIZE, Y - 24, Const.CELL_SIZE, Const.CELL_SIZE
+						), true, Const.ONEWAY_UP_TAG);
+						CellPhysics.FillBlock(YayaConst.ENVIRONMENT, new(
+							X + Const.CELL_SIZE, Y - 24, Const.CELL_SIZE, Const.CELL_SIZE
+						), true, Const.ONEWAY_UP_TAG);
+					}
+				}
+			} else {
+				// Small
+				CellPhysics.FillBlock(YayaConst.ENVIRONMENT, new(
+					X, Y + Const.CELL_SIZE / 2 - 24, Const.CELL_SIZE, Const.CELL_SIZE
+				), true, Const.ONEWAY_UP_TAG);
+			}
+		}
+
+
 		public override void FrameUpdate (int frame) {
 			base.FrameUpdate(frame);
 			// Leaf
