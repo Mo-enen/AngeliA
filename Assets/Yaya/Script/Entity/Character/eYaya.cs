@@ -7,10 +7,12 @@ using AngeliaFramework;
 namespace Yaya {
 
 
+	public class YayaRendererConfig : CharacterRendererConfig {
+
+	}
+
+
 	public class YayaRenderer : CharacterRenderer {
-
-
-		public override RectInt LocalBounds => new(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE);
 
 
 		public YayaRenderer (eCharacter ch) : base(ch) { }
@@ -30,8 +32,8 @@ namespace Yaya {
 			CellRenderer.Draw(
 				movement.FacingFront ? "Test Pump".AngeHash() : "Test Pump Back".AngeHash(),
 				Character.X, Character.Y, 500, 0, 0,
-				movement.FacingRight ? Width : -Width,
-				movement.IsSquating ? Height * movement.SquatHeight / movement.Height : Height
+				movement.FacingRight ? Const.CELL_SIZE : -Const.CELL_SIZE,
+				movement.IsSquating ? Const.CELL_SIZE * movement.SquatHeight / movement.Height : Const.CELL_SIZE
 			);
 
 			// Jump Dots
@@ -58,12 +60,14 @@ namespace Yaya {
 
 		};
 		public override CharacterRenderer Renderer => _Renderer ??= new(this) {
-			Width = Const.CELL_SIZE,
-			Height = Const.CELL_SIZE,
+			Configs = new YayaRendererConfig[] {
+				new () {   },
+			},
+
 		};
 
-		private CharacterMovement _Movement = null;
-		private YayaRenderer _Renderer = null;
+		private static CharacterMovement _Movement = null;
+		private static YayaRenderer _Renderer = null;
 
 
 

@@ -88,6 +88,7 @@ namespace Yaya {
 		private int CurrentDashCooldown => InWater && SwimInFreeStyle ? FreeSwimDashCooldown : DashCooldown;
 
 		// Data
+		private readonly eRigidbody Rig = null;
 		private int CurrentFrame = 0;
 		private int IntendedX = 0;
 		private int IntendedY = 0;
@@ -103,7 +104,6 @@ namespace Yaya {
 		private int? ClimbPositionCorrect = null;
 		private RectInt Hitbox = default;
 		private Vector2Int LastMoveDirection = default;
-		private readonly eRigidbody Rig = null;
 
 
 		#endregion
@@ -373,6 +373,24 @@ namespace Yaya {
 
 
 		public void Pound () => IntendedPound = true;
+
+
+		public void Reset () {
+			CurrentJumpCount = 0;
+			FacingRight = true;
+			FacingFront = true;
+			LastGroundedFrame = int.MinValue;
+			LastJumpFrame = int.MinValue;
+			LastDashFrame = int.MinValue;
+			HoldingJump = false;
+			PrevHoldingJump = false;
+			IntendedJump = false;
+			IntendedDash = false;
+			IntendedPound = false;
+			PrevInWater = false;
+			ClimbPositionCorrect = null;
+			LastMoveDirection = default;
+		}
 
 
 		#endregion

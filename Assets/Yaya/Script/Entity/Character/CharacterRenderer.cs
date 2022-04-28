@@ -5,7 +5,22 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class CharacterRenderer {
+
+
+	public class CharacterRendererConfig {
+		public int Head { get; init; } = 0;
+		public int HairF { get; init; } = 0;
+		public int HairB { get; init; } = 0;
+		public int BodyF { get; init; } = 0;
+		public int BodyB { get; init; } = 0;
+		public int ArmL { get; init; } = 0;
+		public int ArmR { get; init; } = 0;
+		public int LegL { get; init; } = 0;
+		public int LegR { get; init; } = 0;
+	}
+
+
+	public abstract class CharacterRenderer {
 
 
 
@@ -15,11 +30,15 @@ namespace Yaya {
 
 		// Init
 		protected eCharacter Character { get; init; } = null;
-		public int Width { get; init; } = Const.CELL_SIZE;
-		public int Height { get; init; } = Const.CELL_SIZE * 2;
+		public CharacterRendererConfig[] Configs { get; init; } = null;
 
 		// Api
 		public virtual RectInt LocalBounds => new(-Width / 2, 0, Width, Height);
+		public int ConfigIndex { get; set; } = 0;
+
+		// Data
+		private int Width = Const.CELL_SIZE;
+		private int Height = Const.CELL_SIZE * 2;
 
 
 		#endregion
@@ -35,49 +54,52 @@ namespace Yaya {
 
 		public virtual void FrameUpdate (int frame) {
 
+			if (Configs == null || Configs.Length == 0) return;
+
+			var config = Configs[ConfigIndex % Configs.Length];
+
+			// Calculate Part Size
+
+
+
+
+
+			// Draw
 			if (Character.Movement.FacingFront) {
 				// Front
 
-				DrawTail();
+				Draw_Back();
 				DrawHair(false);
 
 				DrawArm(!Character.Movement.FacingRight);
-				DrawHand(!Character.Movement.FacingRight);
 				DrawLeg(!Character.Movement.FacingRight);
-				DrawFoot(!Character.Movement.FacingRight);
 
 				DrawBody();
-				DrawBoingBoing();
 				DrawHead();
 				DrawFace();
 				DrawHair(true);
 
 				DrawArm(Character.Movement.FacingRight);
-				DrawHand(Character.Movement.FacingRight);
 				DrawLeg(Character.Movement.FacingRight);
-				DrawFoot(Character.Movement.FacingRight);
+				Draw_Front();
 
 			} else {
 				// Back
 
+				Draw_Front();
 				DrawArm(!Character.Movement.FacingRight);
-				DrawHand(!Character.Movement.FacingRight);
 				DrawLeg(!Character.Movement.FacingRight);
-				DrawFoot(!Character.Movement.FacingRight);
 
 				DrawHair(true);
 				DrawFace();
 				DrawHead();
-				DrawBoingBoing();
 				DrawBody();
 
 				DrawArm(Character.Movement.FacingRight);
-				DrawHand(Character.Movement.FacingRight);
 				DrawLeg(Character.Movement.FacingRight);
-				DrawFoot(Character.Movement.FacingRight);
 
 				DrawHair(false);
-				DrawTail();
+				Draw_Back();
 			}
 
 		}
@@ -88,37 +110,52 @@ namespace Yaya {
 
 
 
-		#region --- OVR ---
+		#region --- API ---
 
 
-		protected virtual void DrawHair (bool front) { }
+		// Body-Part
+		protected virtual void DrawHair (bool front) {
+
+		}
 
 
-		protected virtual void DrawHead () { }
+		protected virtual void DrawHead () {
+
+
+		}
 
 
 		protected virtual void DrawFace () { }
 
 
-		protected virtual void DrawBody () { }
+		protected virtual void DrawBody () {
+
+		}
 
 
-		protected virtual void DrawBoingBoing () { }
+		protected virtual void DrawArm (bool right) {
+
+		}
 
 
-		protected virtual void DrawTail () { }
+		protected virtual void DrawLeg (bool right) {
+
+		}
 
 
-		protected virtual void DrawArm (bool right) { }
+		// Extra
+		protected virtual void Draw_Front () { }
 
 
-		protected virtual void DrawHand (bool right) { }
+		protected virtual void Draw_Back () { }
 
 
-		protected virtual void DrawLeg (bool right) { }
-
-
-		protected virtual void DrawFoot (bool right) { }
+		// Misc
+		public void Reset () {
+			ConfigIndex = 0;
+			Width = Const.CELL_SIZE;
+			Height = Const.CELL_SIZE * 2;
+		}
 
 
 		#endregion

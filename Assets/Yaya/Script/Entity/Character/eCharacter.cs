@@ -32,6 +32,13 @@ namespace Yaya {
 		#region --- MSG ---
 
 
+		public override void OnActived (int frame) {
+			base.OnActived(frame);
+			Movement.Reset();
+			Renderer.Reset();
+		}
+
+
 		public override void PhysicsUpdate (int frame) {
 			Movement.PhysicsUpdate(frame);
 			base.PhysicsUpdate(frame);
