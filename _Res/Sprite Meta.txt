@@ -1,5 +1,9 @@
 Test Pump,1430882989,0
 Test Pump Back,1474474758,0
+_a NPC0 Head Idle 0,-53940536,3
+_a NPC0 Head Run 0,1443688736,3
+_a NPC0 Head Run 2,-550455970,3
+_a NPC0 Head Run 3,-1547528323,3
 Barrel,348720954,0
 Check Statue 0,238126772,0
 Check Statue 1,-267431853,0
