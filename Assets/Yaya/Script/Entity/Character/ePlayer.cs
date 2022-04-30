@@ -60,6 +60,8 @@ namespace Yaya {
 
 		private void Update_Move (int frame) {
 
+			if (Movement == null) return;
+
 			var x = Direction3.None;
 			var y = Direction3.None;
 

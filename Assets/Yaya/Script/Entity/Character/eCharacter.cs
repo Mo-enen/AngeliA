@@ -20,8 +20,8 @@ namespace Yaya {
 		public override int AirDragX => 0;
 		public override int AirDragY => 0;
 		public override RectInt GlobalBounds => Renderer.LocalBounds.Shift(X, Y);
-		public abstract CharacterMovement Movement { get; }
-		public abstract CharacterRenderer Renderer { get; }
+		public CharacterMovement Movement { get; private set; } = null;
+		public CharacterRenderer Renderer { get; private set; } = null;
 
 
 		#endregion
@@ -34,19 +34,21 @@ namespace Yaya {
 
 		public override void OnActived (int frame) {
 			base.OnActived(frame);
-			Movement.Reset();
-			Renderer.Reset();
+			if (Movement == null) Movement = GetAsset($"{GetType().Name}.Movement".AngeHash()) as CharacterMovement;
+			if (Renderer == null) Renderer = GetAsset($"{GetType().Name}.Renderer".AngeHash()) as CharacterRenderer;
+			if (Movement != null) Movement.Init(this);
+			if (Renderer != null) Renderer.Init(this);
 		}
 
 
 		public override void PhysicsUpdate (int frame) {
-			Movement.PhysicsUpdate(frame);
+			if (Movement != null) Movement.PhysicsUpdate(frame);
 			base.PhysicsUpdate(frame);
 		}
 
 
 		public override void FrameUpdate (int frame) {
-			Renderer.FrameUpdate(frame);
+			if (Renderer != null) Renderer.FrameUpdate(frame);
 			base.FrameUpdate(frame);
 		}
 

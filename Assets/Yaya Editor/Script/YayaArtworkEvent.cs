@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using AngeliaFramework;
 using AngeliaFramework.Editor;
 using UnityEngine;
+using Moenen.Standard;
 
 
 namespace Yaya.Editor {
+
+
 	public class CheckPointArtworkExtension : IArtworkEvent {
 		public string Message => "Refreshing Check Point Position";
 		public void OnArtworkSynced () {
@@ -77,4 +81,8 @@ namespace Yaya.Editor {
 
 		}
 	}
+
+
+	
+
 }

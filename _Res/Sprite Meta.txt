@@ -1,9 +1,78 @@
 Test Pump,1430882989,0
 Test Pump Back,1474474758,0
-_a NPC0 Head Idle 0,-53940536,3
-_a NPC0 Head Run 0,1443688736,3
-_a NPC0 Head Run 2,-550455970,3
-_a NPC0 Head Run 3,-1547528323,3
+NormalBoy Head 0,-681596564,0
+NormalBoy Head 1,-1192130741,0
+NormalBoy Head 2,-1702664918,0
+NormalBoy Body Idle 0,-870968555,0
+NormalBoy Body Walk 0,34661834,0
+NormalBoy Body Walk 1,246012747,0
+NormalBoy Body Walk 2,-162673378,0
+NormalBoy Body Walk 3,-1788787594,0
+NormalBoy Body Walk 4,-1577436681,0
+NormalBoy Body Walk 5,-1366085768,0
+NormalBoy Body Walk 6,-1154734855,0
+NormalBoy Body Walk 7,-943383942,0
+NormalBoy Body Run 2,-1328537498,0
+NormalBoy Body Run 1,-919713273,0
+NormalBoy Body Run 0,-510889048,0
+NormalBoy Body Run 3,-1737361723,0
+NormalBoy Body Run 4,-308720819,0
+NormalBoy Body Run 5,1739957123,0
+NormalBoy Body Run 6,1331132898,0
+NormalBoy Body Run 7,922308673,0
+NormalBoy ArmL Idle 0,-52094457,0
+NormalBoy ArmR Idle 0,-1247981078,0
+NormalBoy ArmL Idle 1,-1678208673,0
+NormalBoy ArmR Idle 1,-1036630165,0
+NormalBoy ArmL Walk 0,-983929197,0
+NormalBoy ArmL Walk 1,-772578284,0
+NormalBoy ArmL Walk 2 6,-1295733845,0
+NormalBoy ArmL Walk 3,-349876458,0
+NormalBoy ArmL Walk 4,-138525545,0
+NormalBoy ArmL Walk 5,72825368,0
+NormalBoy ArmL Walk 7,495527194,0
+NormalBoy ArmR Walk 0,277686349,0
+NormalBoy ArmR Walk 1 7,-951399785,0
+NormalBoy ArmR Walk 2 6,1803346830,0
+NormalBoy ArmR Walk 3,-1545763079,0
+NormalBoy ArmR Walk 4,-1334412166,0
+NormalBoy ArmR Walk 5,-1123061253,0
+NormalBoy ArmL Run 0,-909443041,0
+NormalBoy ArmL Run 1,-1318267266,0
+NormalBoy ArmL Run 2,-1727091491,0
+NormalBoy ArmL Run 3,-298450587,0
+NormalBoy ArmL Run 4,1750227355,0
+NormalBoy ArmL Run 5,1341403130,0
+NormalBoy ArmL Run 6,932578905,0
+NormalBoy ArmL Run 7,523754680,0
+NormalBoy ArmR Run 0,-267864533,0
+NormalBoy ArmR Run 1,1780813409,0
+NormalBoy ArmR Run 2,1371989184,0
+NormalBoy ArmR Run 3,963164959,0
+NormalBoy ArmR Run 4,554340734,0
+NormalBoy ArmR Run 5,145516509,0
+NormalBoy ArmR Run 6,-263307716,0
+NormalBoy ArmR Run 7,-672131941,0
+EyeL 0,-1433894859,0
+EyeR 0,-1433716113,0
+NormalBoy Leg Walk 2,20120774,0
+NormalBoy Leg Walk 3,-388703451,0
+NormalBoy Leg Walk 4,-797527676,0
+NormalBoy Leg Walk 5,-1206351901,0
+NormalBoy Leg Walk 6,-1615176126,0
+NormalBoy Leg Walk 7,-186535222,0
+NormalBoy Leg Walk 1,428944999,0
+NormalBoy Leg Walk 0,837769224,0
+NormalBoy Leg Idle 1,333883406,0
+NormalBoy Leg Idle 0,742707631,0
+NormalBoy Leg Run 0,-1406083209,0
+NormalBoy Leg Run 1,206947087,0
+NormalBoy Leg Run 2,1199940345,0
+NormalBoy Leg Run 3,355468474,0
+NormalBoy Leg Run 4,-489003397,0
+NormalBoy Leg Run 5,-1333475268,0
+NormalBoy Leg Run 6,279555028,0
+NormalBoy Leg Run 7,1272548286,0
 Barrel,348720954,0
 Check Statue 0,238126772,0
 Check Statue 1,-267431853,0

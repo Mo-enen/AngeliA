@@ -5,17 +5,13 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-
-
-	public class YayaRendererConfig : CharacterRendererConfig {
-
-	}
-
-
+	[CreateAssetMenu(fileName = "eYaya.Renderer.asset", menuName = "бя Yaya/Yaya Renderer", order = 99)]
 	public class YayaRenderer : CharacterRenderer {
 
 
-		public YayaRenderer (eCharacter ch) : base(ch) { }
+		private class YayaRendererConfig : CRConfig {
+
+		}
 
 
 		public override void FrameUpdate (int frame) {
@@ -49,25 +45,6 @@ namespace Yaya {
 
 		}
 
-
-	}
-
-
-	public class eYaya : ePlayer {
-
-
-		public override CharacterMovement Movement => _Movement ??= new(this) {
-
-		};
-		public override CharacterRenderer Renderer => _Renderer ??= new(this) {
-			Configs = new YayaRendererConfig[] {
-				new () {   },
-			},
-
-		};
-
-		private static CharacterMovement _Movement = null;
-		private static YayaRenderer _Renderer = null;
 
 
 
