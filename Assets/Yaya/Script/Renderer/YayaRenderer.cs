@@ -5,14 +5,9 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[CreateAssetMenu(fileName = "eYaya.Renderer.asset", menuName = "бя Yaya/Yaya Renderer", order = 99)]
 	public class YayaRenderer : CharacterRenderer {
 
-
-		private class YayaRendererConfig : CRConfig {
-
-		}
-
+		public YayaRenderer (eCharacter ch) : base(ch) { }
 
 		public override void FrameUpdate (int frame) {
 			base.FrameUpdate(frame);
@@ -44,8 +39,6 @@ namespace Yaya {
 
 
 		}
-
-
 
 
 	}

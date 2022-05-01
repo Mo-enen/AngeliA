@@ -19,9 +19,8 @@ namespace Yaya {
 		public override bool IsInAir => base.IsInAir && !Movement.IsClimbing;
 		public override int AirDragX => 0;
 		public override int AirDragY => 0;
-		public override RectInt GlobalBounds => Renderer.LocalBounds.Shift(X, Y);
-		public CharacterMovement Movement { get; private set; } = null;
-		public CharacterRenderer Renderer { get; private set; } = null;
+		public abstract CharacterMovement Movement { get; }
+		public abstract CharacterRenderer Renderer { get; }
 
 
 		#endregion
@@ -30,15 +29,6 @@ namespace Yaya {
 
 
 		#region --- MSG ---
-
-
-		public override void OnActived (int frame) {
-			base.OnActived(frame);
-			if (Movement == null) Movement = GetAsset($"{GetType().Name}.Movement".AngeHash()) as CharacterMovement;
-			if (Renderer == null) Renderer = GetAsset($"{GetType().Name}.Renderer".AngeHash()) as CharacterRenderer;
-			if (Movement != null) Movement.Init(this);
-			if (Renderer != null) Renderer.Init(this);
-		}
 
 
 		public override void PhysicsUpdate (int frame) {
