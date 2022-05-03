@@ -27,7 +27,7 @@ namespace Yaya.Editor {
 			if (data != null) {
 				foreach (var sheet in data.Sheets) {
 					foreach (var sp in sheet.Sprites) {
-						string realName = AngeEditorUtil.GetBlockProperty(sp.EditorOnly_Name, out _, out _, out int cpIndex);
+						string realName = AngeEditorUtil.GetBlockProperty(sp.EditorOnly_Name, out _, out _, out int cpIndex, out _);
 						artworkIndexPool.TryAdd(realName.AngeHash(), cpIndex);
 					}
 				}
@@ -83,6 +83,6 @@ namespace Yaya.Editor {
 	}
 
 
-	
+
 
 }

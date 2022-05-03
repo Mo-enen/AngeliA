@@ -18,6 +18,7 @@ namespace Yaya {
 		private const int JUMP_TOLERANCE = 4;
 		private const int JUMP_GAP = 1;
 		private const int CLIMB_CORRECT_DELTA = 36;
+		private const int RUN_BREAK_GAP = 6;
 
 		// Init
 		public int Width { get; init; } = 150;
@@ -25,27 +26,35 @@ namespace Yaya {
 		public int InWaterSpeedLoseRate { get; init; } = 500;
 		public int GroundStuckLoseX { get; init; } = 2;
 		public int GroundStuckLoseY { get; init; } = 6;
-		public int OppositeAccelerationXRate { get; init; } = 3000;
+
 		public int MoveSpeed { get; init; } = 17;
 		public int MoveAcceleration { get; init; } = 3;
 		public int MoveDecceleration { get; init; } = 4;
+		public int OppositeXAccelerationRate { get; init; } = 3000;
+		public int RunTrigger { get; init; } = 60;
+		public int RunSpeed { get; init; } = 32;
+
 		public int JumpSpeed { get; init; } = 62;
 		public int JumpCount { get; init; } = 2;
 		public int JumpReleaseLoseRate { get; init; } = 700;
 		public int JumpRaiseGravityRate { get; init; } = 600;
+
 		public bool DashAvailable { get; init; } = true;
 		public int DashSpeed { get; init; } = 42;
 		public int DashDuration { get; init; } = 12;
 		public int DashCooldown { get; init; } = 4;
 		public int DashAcceleration { get; init; } = 24;
 		public int DashCancelLoseRate { get; init; } = 300;
+
 		public bool SquatAvailable { get; init; } = true;
 		public int SquatSpeed { get; init; } = 8;
 		public int SquatAcceleration { get; init; } = 48;
 		public int SquatDecceleration { get; init; } = 48;
 		public int SquatHeight { get; init; } = 80;
+
 		public bool PoundAvailable { get; init; } = true;
 		public int PoundSpeed { get; init; } = 96;
+
 		public bool SwimInFreeStyle { get; init; } = false;
 		public int FreeSwimSpeed { get; init; } = 20;
 		public int FreeSwimAcceleration { get; init; } = 4;
@@ -54,6 +63,7 @@ namespace Yaya {
 		public int FreeSwimDashDuration { get; init; } = 4;
 		public int FreeSwimDashCooldown { get; init; } = 4;
 		public int FreeSwimDashAcceleration { get; init; } = 128;
+
 		public bool ClimbAvailable { get; init; } = true;
 		public bool JumpWhenClimbAvailable { get; init; } = true;
 		public int ClimbSpeedX { get; init; } = 12;
@@ -67,9 +77,14 @@ namespace Yaya {
 		public bool IsClimbing { get; private set; } = false;
 		public bool IsGrounded => Rig.IsGrounded;
 		public bool InWater => Rig.InWater;
+		public bool IsInAir => Rig.IsInAir;
 		public int CurrentJumpCount { get; private set; } = 0;
 		public bool FacingRight { get; private set; } = true;
 		public bool FacingFront { get; private set; } = true;
+		public bool IsMoving => IntendedX != 0;
+		public bool IsRunning => IsMoving && MovingAccumulateFrame >= RunTrigger;
+		public int FinalVelocityX => Rig.FinalVelocityX;
+		public int FinalVelocityY => Rig.FinalVelocityY;
 
 		// Short
 		private int CurrentDashDuration => InWater && SwimInFreeStyle ? FreeSwimDashDuration : DashDuration;
@@ -81,6 +96,8 @@ namespace Yaya {
 		private int IntendedX = 0;
 		private int IntendedY = 0;
 		private int LastGroundedFrame = int.MinValue;
+		private int LastEndMoveFrame = int.MinValue;
+		private int MovingAccumulateFrame = 0;
 		private int LastJumpFrame = int.MinValue;
 		private int LastDashFrame = int.MinValue;
 		private bool HoldingJump = false;
@@ -276,13 +293,13 @@ namespace Yaya {
 				acc = FreeSwimAcceleration;
 				dcc = FreeSwimDecceleration;
 			} else {
-				speed = IntendedX * MoveSpeed;
+				speed = IntendedX * (MovingAccumulateFrame >= RunTrigger ? RunSpeed : MoveSpeed);
 				acc = MoveAcceleration;
 				dcc = MoveDecceleration;
 			}
 			if ((speed > 0 && Rig.VelocityX < 0) || (speed < 0 && Rig.VelocityX > 0)) {
-				acc *= OppositeAccelerationXRate / 1000;
-				dcc *= OppositeAccelerationXRate / 1000;
+				acc *= OppositeXAccelerationRate / 1000;
+				dcc *= OppositeXAccelerationRate / 1000;
 			}
 			Rig.VelocityX = Rig.VelocityX.MoveTowards(speed, acc, dcc);
 			if (IsInsideGround) {
@@ -341,6 +358,9 @@ namespace Yaya {
 
 
 		public void Move (Direction3 x, Direction3 y) {
+			if (IntendedX != 0 && x == Direction3.None) LastEndMoveFrame = CurrentFrame;
+			if (x != Direction3.None) MovingAccumulateFrame++;
+			if (x == Direction3.None && CurrentFrame > LastEndMoveFrame + RUN_BREAK_GAP) MovingAccumulateFrame = 0;
 			IntendedX = (int)x;
 			IntendedY = (int)y;
 			if (x != Direction3.None) LastMoveDirection.x = IntendedX;
