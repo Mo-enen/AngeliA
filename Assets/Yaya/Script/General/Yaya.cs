@@ -29,25 +29,22 @@ namespace Yaya {
 			bool willQuit = false;
 			Application.wantsToQuit += () => {
 #if UNITY_EDITOR
-				if (UnityEditor.EditorApplication.isPlaying) { return true; }
+				if (UnityEditor.EditorApplication.isPlaying) return true;
 #endif
 				if (willQuit) {
 					return true;
 				} else {
 					// Show Quit Dialog
-					var dialog = AddEntity(typeof(eDialog).AngeHash(), 0, 0) as eDialog;
-					dialog.Setup(
-						2048,
-						YayaConst.QuitConfirmContent, YayaConst.LabelQuit, YayaConst.LabelCancel, "",
-						() => {
-							willQuit = true;
-							PlayerData.SaveToDisk();
-							Application.Quit();
-						},
-						() => { },
-						null
-					);
+
+
+
+					willQuit = true;
+					PlayerData.SaveToDisk();
+					Application.Quit();
 					return false;
+
+
+
 				}
 			};
 		}

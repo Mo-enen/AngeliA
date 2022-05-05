@@ -5,7 +5,6 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[AddIntoGameData]
 	public class CharacterMovement {
 
 
