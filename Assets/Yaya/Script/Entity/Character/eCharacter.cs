@@ -5,6 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+	[MapEditorGroup("Character")]
 	public abstract class eCharacter : eRigidbody {
 
 

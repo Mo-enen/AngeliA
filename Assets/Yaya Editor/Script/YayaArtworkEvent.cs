@@ -21,18 +21,6 @@ namespace Yaya.Editor {
 			var blockCheckingWorld = new World();
 			int TARGET_ID = typeof(eCheckPoint).AngeHash();
 
-			// Get ID-ArtworkIndex Pool
-			var artworkIndexPool = new Dictionary<int, int>();
-			var data = Util.GetFieldValue(game, "m_Data") as GameData;
-			if (data != null) {
-				foreach (var sheet in data.Sheets) {
-					foreach (var sp in sheet.Sprites) {
-						string realName = AngeEditorUtil.GetBlockProperty(sp.EditorOnly_Name, out _, out _, out int cpIndex, out _);
-						artworkIndexPool.TryAdd(realName.AngeHash(), cpIndex);
-					}
-				}
-			}
-
 			// Get All Cp Positions
 			var allCpPool = new Dictionary<Vector2Int, int>();
 			foreach (var file in Util.GetFilesIn(game.MapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
@@ -64,25 +52,26 @@ namespace Yaya.Editor {
 				var cpList = new List<eCheckPoint.CheckPointData.Data>();
 				foreach (var (pos, id) in allCpPool) {
 					if (id == 0) continue;
-					if (!artworkIndexPool.TryGetValue(id, out int aIndex)) continue;
-					cpList.Add(new eCheckPoint.CheckPointData.Data() {
-						Index = aIndex,
-						X = pos.x,
-						Y = pos.y,
-						IsAltar = allCpPool.ContainsKey(new(pos.x, pos.y + 1)) && !allCpPool.ContainsKey(new(pos.x, pos.y - 1)),
-					});
+					for (int i = 1; i < Const.MAP_SIZE; i++) {
+						if (AngeEditorUtil.TryGetMapSystemNumber(pos.x, pos.y + i, out int cpIndex)) {
+							cpList.Add(new eCheckPoint.CheckPointData.Data() {
+								Index = cpIndex,
+								X = pos.x,
+								Y = pos.y,
+								IsAltar = allCpPool.ContainsKey(new(pos.x, pos.y + 1)) && !allCpPool.ContainsKey(new(pos.x, pos.y - 1)),
+							});
+							break;
+						}
+					}
 				}
 				var jsonData = new eCheckPoint.CheckPointData() { CPs = cpList.ToArray() };
 				Util.TextToFile(
-					JsonUtility.ToJson(jsonData, false),
+					JsonUtility.ToJson(jsonData, true),
 					Util.CombinePaths(game.MapRoot, $"{Application.productName}.cp")
 				);
 			} catch (System.Exception ex) { Debug.LogException(ex); }
-
 		}
 	}
-
-
 
 
 }
