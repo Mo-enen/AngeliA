@@ -17,7 +17,13 @@ namespace Yaya {
 		public override void OnInitialize () {
 			base.OnInitialize();
 			_Movement = new(this) {
-
+				Width = 150,
+				Height = 384,
+				SquatHeight = 250,
+				//DashThroughOneway = true,
+				//DashSpeed = 0,
+				//DashDuration = 0,
+				//DashCooldown = 0,
 			};
 			_Renderer = new(this) {
 

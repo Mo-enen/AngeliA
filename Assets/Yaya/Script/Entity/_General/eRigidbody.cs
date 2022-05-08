@@ -205,6 +205,12 @@ namespace Yaya {
 		}
 
 
+		public void SetPosition (int x, int y) {
+			if (x != X) X = PrevX = x;
+			if (y != Y) Y = PrevY = y;
+		}
+
+
 		#endregion
 
 

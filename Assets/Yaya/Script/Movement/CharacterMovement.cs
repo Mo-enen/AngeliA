@@ -39,6 +39,7 @@ namespace Yaya {
 		public int JumpRaiseGravityRate { get; init; } = 600;
 
 		public bool DashAvailable { get; init; } = true;
+		public bool DashThroughOneway { get; init; } = false;
 		public int DashSpeed { get; init; } = 42;
 		public int DashDuration { get; init; } = 12;
 		public int DashCooldown { get; init; } = 4;
@@ -163,7 +164,7 @@ namespace Yaya {
 			}
 
 			// Dash
-			IsDashing = DashAvailable && !IsClimbing && CurrentFrame < LastDashFrame + CurrentDashDuration && !IsInsideGround;
+			IsDashing = DashAvailable && DashSpeed > 0 && !IsClimbing && CurrentFrame < LastDashFrame + CurrentDashDuration && !IsInsideGround;
 			if (IsDashing && IntendedY != -1) {
 				// Stop when Dashing Without Holding Down
 				LastDashFrame = int.MinValue;
@@ -373,7 +374,14 @@ namespace Yaya {
 		public void Jump () => IntendedJump = IntendedY >= 0 || IsClimbing;
 
 
-		public void Dash () => IntendedDash = true;
+		public void Dash () {
+			if (!DashAvailable) return;
+			IntendedDash = DashSpeed > 0;
+			// Dash Through Oneway
+			if (DashThroughOneway) {
+				Rig.SetPosition(Rig.X, Rig.Y - 2);
+			}
+		}
 
 
 		public void Pound () => IntendedPound = true;

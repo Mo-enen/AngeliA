@@ -51,21 +51,6 @@ namespace Yaya {
 		public static readonly int ITEM_TAG = "Item".AngeHash();
 		public static readonly int WATER_TAG = "Water".AngeHash();
 
-		// Language
-		public delegate string StringIntHandler (int key);
-		public static StringIntHandler GetLanguage { get; set; } = null;
-
-		private static readonly int QuitConfirmContentID = "Dialog.QuitConfirmContent".AngeHash();
-		private static readonly int LabelOKID = "Dialog.Ok".AngeHash();
-		private static readonly int LabelCancelID = "Dialog.Cancel".AngeHash();
-		private static readonly int LabelQuitID = "Dialog.Quit".AngeHash();
-
-		// Dialog
-		public static string QuitConfirmContent => GetLanguage(QuitConfirmContentID);
-		public static string LabelOK => GetLanguage(LabelOKID);
-		public static string LabelCancel => GetLanguage(LabelCancelID);
-		public static string LabelQuit => GetLanguage(LabelQuitID);
-
 	}
 
 }
