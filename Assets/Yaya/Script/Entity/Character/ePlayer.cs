@@ -19,10 +19,8 @@ namespace Yaya {
 		// Api
 		public static ePlayer CurrentPlayer { get; private set; } = null;
 
-		// Short
-		private RectInt ViewRect => Game.Current.ViewRect;
-
 		// Data
+		private Game Game = null;
 		private int LeftDownFrame = int.MinValue;
 		private int RightDownFrame = int.MinValue;
 		private int DownDownFrame = int.MinValue;
@@ -40,10 +38,16 @@ namespace Yaya {
 		#region --- MSG ---
 
 
+		public override void OnInitialize () {
+			base.OnInitialize();
+			Game = Object.FindObjectOfType<Game>();
+		}
+
+
 		public override void OnActived (int frame) {
 			LastGroundedY = Y;
-			AimX = ViewRect.x;
-			AimY = ViewRect.y;
+			AimX = Game.ViewRect.x;
+			AimY = Game.ViewRect.y;
 			CurrentPlayer = this;
 			base.OnActived(frame);
 		}
@@ -133,23 +137,24 @@ namespace Yaya {
 
 
 		private void Update_View () {
+			var viewRect = Game.ViewRect;
 			const int LINGER_RATE = 42;
 			if (!IsInAir) LastGroundedY = Y;
-			int linger = ViewRect.width * LINGER_RATE / 1000;
-			int centerX = ViewRect.x + ViewRect.width / 2;
+			int linger = viewRect.width * LINGER_RATE / 1000;
+			int centerX = viewRect.x + viewRect.width / 2;
 			if (X < centerX - linger) {
-				AimX = X + linger - ViewRect.width / 2;
+				AimX = X + linger - viewRect.width / 2;
 			} else if (X > centerX + linger) {
-				AimX = X - linger - ViewRect.width / 2;
+				AimX = X - linger - viewRect.width / 2;
 			}
-			AimY = !IsInAir || Y < LastGroundedY ? Y - ViewRect.height * 382 / 1000 : AimY;
-			Game.Current.SetViewPositionDely(AimX, AimY, 62);
-			if (!ViewRect.Contains(X, Y)) {
-				if (X >= ViewRect.xMax) AimX = X - ViewRect.width + 1;
-				if (X <= ViewRect.xMin) AimX = X - 1;
-				if (Y >= ViewRect.yMax) AimY = Y - ViewRect.height + 1;
-				if (Y <= ViewRect.yMin) AimY = Y - 1;
-				Game.Current.SetViewPositionDely(AimX, AimY, 1000, int.MinValue + 1);
+			AimY = !IsInAir || Y < LastGroundedY ? Y - viewRect.height * 382 / 1000 : AimY;
+			Game.SetViewPositionDely(AimX, AimY, 62);
+			if (!viewRect.Contains(X, Y)) {
+				if (X >= viewRect.xMax) AimX = X - viewRect.width + 1;
+				if (X <= viewRect.xMin) AimX = X - 1;
+				if (Y >= viewRect.yMax) AimY = Y - viewRect.height + 1;
+				if (Y <= viewRect.yMin) AimY = Y - 1;
+				Game.SetViewPositionDely(AimX, AimY, 1000, int.MinValue + 1);
 			}
 		}
 

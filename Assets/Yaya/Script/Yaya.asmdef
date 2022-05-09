@@ -3,7 +3,8 @@
     "rootNamespace": "Yaya",
     "references": [
         "Moenen.Standard",
-        "AngeliaFrameworkRuntime"
+        "AngeliaFrameworkRuntime",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [
         "Editor",

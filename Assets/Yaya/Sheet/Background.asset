@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40ea028ac689fb6458d727473cc1bd2d, type: 3}
   m_Name: Background
   m_EditorClassIdentifier: 
-  m_Texture: {fileID: 2695884282745833844}
+  m_Texture: {fileID: 1791190957827573651}
   m_Sprites:
   - EditorOnly_Name: Test BG
     EditorOnly_TextureRect:
@@ -40,7 +40,7 @@ MonoBehaviour:
   m_Metas:
   - IgnoreParallax: 0
     IgnoreTint: 0
---- !u!28 &2695884282745833844
+--- !u!28 &1791190957827573651
 Texture2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

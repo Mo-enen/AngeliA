@@ -8,59 +8,29 @@ namespace Yaya {
 	public class Yaya : Game {
 
 
+
+
+		#region --- VAR ---
+
+
 		// Const
-		private readonly HashSet<SystemLanguage> SupportedLanguages = new() {
-			SystemLanguage.English,
-			SystemLanguage.ChineseSimplified,
-		};
+		private readonly HashSet<SystemLanguage> SupportedLanguages = new() { SystemLanguage.English, SystemLanguage.ChineseSimplified, };
 
 		// Api
 		protected override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
 
-		// Saving
-		private readonly SavingInt LanguageIndex = new("Game.LanguageIndex", -1);
+
+		#endregion
 
 
 
-		// MSG
+
+		#region --- MSG ---
+
+
 		protected override void Initialize () {
 			base.Initialize();
-			Initialize_Language();
 			Initialize_Quit();
-		}
-
-
-		private void Initialize_Language () {
-
-			var targetLanguage = LanguageIndex.Value < 0 ?
-				Application.systemLanguage :
-				(SystemLanguage)LanguageIndex.Value;
-
-			if (SupportedLanguages.Contains(targetLanguage)) {
-				SetLanguage(targetLanguage);
-			} else {
-				switch (targetLanguage) {
-					case SystemLanguage.Chinese:
-					case SystemLanguage.ChineseTraditional:
-						if (SupportedLanguages.Contains(SystemLanguage.ChineseSimplified)) {
-							SetLanguage(SystemLanguage.ChineseSimplified);
-						} else {
-							SetLanguage(SystemLanguage.English);
-						}
-						break;
-					case SystemLanguage.ChineseSimplified:
-						if (SupportedLanguages.Contains(SystemLanguage.ChineseTraditional)) {
-							SetLanguage(SystemLanguage.ChineseTraditional);
-						} else {
-							SetLanguage(SystemLanguage.English);
-						}
-						break;
-					default:
-						SetLanguage(SystemLanguage.English);
-						break;
-				}
-			}
-
 		}
 
 
@@ -89,14 +59,33 @@ namespace Yaya {
 		}
 
 
-		// Override
+		#endregion
+
+
+
+
+		#region --- PRO ---
+
+
 		protected override WorldSquad CreateWorldSquad () => new(MapRoot, YayaConst.LEVEL);
 
 
-		public override void SetLanguage (SystemLanguage language) {
-			base.SetLanguage(language);
-			LanguageIndex.Value = (int)language;
-		}
+		protected override bool LanguageSupported (SystemLanguage language) => SupportedLanguages.Contains(language);
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+
+
+		#endregion
+
+
 
 
 	}
