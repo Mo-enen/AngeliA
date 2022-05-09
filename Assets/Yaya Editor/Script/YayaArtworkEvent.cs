@@ -67,7 +67,7 @@ namespace Yaya.Editor {
 				var jsonData = new eCheckPoint.CheckPointData() { CPs = cpList.ToArray() };
 				Util.TextToFile(
 					JsonUtility.ToJson(jsonData, true),
-					Util.CombinePaths(game.MapRoot, $"{Application.productName}.cp")
+					Util.CombinePaths(game.MapRoot, "CheckPoint.json")
 				);
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}

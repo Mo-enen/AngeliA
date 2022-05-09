@@ -18,6 +18,12 @@ namespace Yaya {
 
 		// Api
 		protected override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
+		public override string SheetRoot => Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Universes", UniverseName.Value, "Sheets");
+		public override string MapRoot => Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Universes", UniverseName.Value, "Maps");
+		public override string MapThumbnailRoot => Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Universes", UniverseName.Value, "Map Thumbnails");
+
+		// Saving
+		private readonly SavingString UniverseName = new("Yaya.UniverseName", "Moenen.Yaya");
 
 
 		#endregion
@@ -29,8 +35,22 @@ namespace Yaya {
 
 
 		protected override void Initialize () {
+			Initialize_Universe();
 			base.Initialize();
 			Initialize_Quit();
+		}
+
+
+		private void Initialize_Universe () {
+			string uniRoot = Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Universes", UniverseName.Value);
+			if (!Util.FolderExists(uniRoot)) UniverseName.Value = UniverseName.DefaultValue;
+			uniRoot = Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Universes", UniverseName.Value);
+			if (!Util.FolderExists(uniRoot)) {
+				foreach (var folder in Util.GetFoldersIn(Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Universes"), true)) {
+					UniverseName.Value = folder.Name;
+					break;
+				}
+			}
 		}
 
 

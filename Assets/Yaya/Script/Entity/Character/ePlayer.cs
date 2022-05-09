@@ -137,8 +137,9 @@ namespace Yaya {
 
 
 		private void Update_View () {
+			const int LINGER_RATE = 32;
+			const int LERP_RATE = 96;
 			var viewRect = Game.ViewRect;
-			const int LINGER_RATE = 42;
 			if (!IsInAir) LastGroundedY = Y;
 			int linger = viewRect.width * LINGER_RATE / 1000;
 			int centerX = viewRect.x + viewRect.width / 2;
@@ -148,7 +149,7 @@ namespace Yaya {
 				AimX = X - linger - viewRect.width / 2;
 			}
 			AimY = !IsInAir || Y < LastGroundedY ? Y - viewRect.height * 382 / 1000 : AimY;
-			Game.SetViewPositionDely(AimX, AimY, 62);
+			Game.SetViewPositionDely(AimX, AimY, LERP_RATE);
 			if (!viewRect.Contains(X, Y)) {
 				if (X >= viewRect.xMax) AimX = X - viewRect.width + 1;
 				if (X <= viewRect.xMin) AimX = X - 1;

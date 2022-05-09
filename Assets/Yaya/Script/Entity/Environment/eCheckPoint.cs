@@ -44,7 +44,7 @@ namespace Yaya {
 			// Cp Pool
 			try {
 				CpPool.Clear();
-				var path = Util.CombinePaths(game.MapRoot, $"{Application.productName}.cp");
+				var path = Util.CombinePaths(game.MapRoot, "CheckPoint.json");
 				if (Util.FileExists(path)) {
 					var data = JsonUtility.FromJson<CheckPointData>(Util.FileToText(path));
 					if (data != null) {
