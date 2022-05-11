@@ -5,6 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+	[System.Serializable]
 	public class CharacterMovement {
 
 
@@ -18,56 +19,6 @@ namespace Yaya {
 		private const int JUMP_GAP = 1;
 		private const int CLIMB_CORRECT_DELTA = 36;
 		private const int RUN_BREAK_GAP = 6;
-
-		// Init
-		public int Width { get; init; } = 150;
-		public int Height { get; init; } = 150;
-		public int InWaterSpeedLoseRate { get; init; } = 500;
-		public int GroundStuckLoseX { get; init; } = 2;
-		public int GroundStuckLoseY { get; init; } = 6;
-
-		public int MoveSpeed { get; init; } = 17;
-		public int MoveAcceleration { get; init; } = 3;
-		public int MoveDecceleration { get; init; } = 4;
-		public int OppositeXAccelerationRate { get; init; } = 3000;
-		public int RunTrigger { get; init; } = 60;
-		public int RunSpeed { get; init; } = 32;
-
-		public int JumpSpeed { get; init; } = 62;
-		public int JumpCount { get; init; } = 2;
-		public int JumpReleaseLoseRate { get; init; } = 700;
-		public int JumpRaiseGravityRate { get; init; } = 600;
-
-		public bool DashAvailable { get; init; } = true;
-		public bool DashThroughOneway { get; init; } = false;
-		public int DashSpeed { get; init; } = 42;
-		public int DashDuration { get; init; } = 12;
-		public int DashCooldown { get; init; } = 4;
-		public int DashAcceleration { get; init; } = 24;
-		public int DashCancelLoseRate { get; init; } = 300;
-
-		public bool SquatAvailable { get; init; } = true;
-		public int SquatSpeed { get; init; } = 8;
-		public int SquatAcceleration { get; init; } = 48;
-		public int SquatDecceleration { get; init; } = 48;
-		public int SquatHeight { get; init; } = 80;
-
-		public bool PoundAvailable { get; init; } = true;
-		public int PoundSpeed { get; init; } = 96;
-
-		public bool SwimInFreeStyle { get; init; } = false;
-		public int FreeSwimSpeed { get; init; } = 20;
-		public int FreeSwimAcceleration { get; init; } = 4;
-		public int FreeSwimDecceleration { get; init; } = 4;
-		public int FreeSwimDashSpeed { get; init; } = 64;
-		public int FreeSwimDashDuration { get; init; } = 4;
-		public int FreeSwimDashCooldown { get; init; } = 4;
-		public int FreeSwimDashAcceleration { get; init; } = 128;
-
-		public bool ClimbAvailable { get; init; } = true;
-		public bool JumpWhenClimbAvailable { get; init; } = true;
-		public int ClimbSpeedX { get; init; } = 12;
-		public int ClimbSpeedY { get; init; } = 18;
 
 		// Api
 		public bool IsDashing { get; private set; } = false;
@@ -90,8 +41,58 @@ namespace Yaya {
 		private int CurrentDashDuration => InWater && SwimInFreeStyle ? FreeSwimDashDuration : DashDuration;
 		private int CurrentDashCooldown => InWater && SwimInFreeStyle ? FreeSwimDashCooldown : DashCooldown;
 
+		// Ser
+		[SerializeField] int Width = 150;
+		[SerializeField] int Height = 150;
+		[SerializeField] int InWaterSpeedLoseRate = 500;
+		[SerializeField] int GroundStuckLoseX = 2;
+		[SerializeField] int GroundStuckLoseY = 6;
+
+		[SerializeField] int MoveSpeed = 17;
+		[SerializeField] int MoveAcceleration = 3;
+		[SerializeField] int MoveDecceleration = 4;
+		[SerializeField] int OppositeXAccelerationRate = 3000;
+		[SerializeField] int RunTrigger = 60;
+		[SerializeField] int RunSpeed = 32;
+
+		[SerializeField] int JumpSpeed = 62;
+		[SerializeField] int JumpCount = 2;
+		[SerializeField] int JumpReleaseLoseRate = 700;
+		[SerializeField] int JumpRaiseGravityRate = 600;
+
+		[SerializeField] bool DashAvailable = true;
+		[SerializeField] bool DashThroughOneway = false;
+		[SerializeField] int DashSpeed = 42;
+		[SerializeField] int DashDuration = 12;
+		[SerializeField] int DashCooldown = 4;
+		[SerializeField] int DashAcceleration = 24;
+		[SerializeField] int DashCancelLoseRate = 300;
+
+		[SerializeField] bool SquatAvailable = true;
+		[SerializeField] int SquatSpeed = 8;
+		[SerializeField] int SquatAcceleration = 48;
+		[SerializeField] int SquatDecceleration = 48;
+		[SerializeField] int SquatHeight = 80;
+
+		[SerializeField] bool PoundAvailable = true;
+		[SerializeField] int PoundSpeed = 96;
+
+		[SerializeField] bool SwimInFreeStyle = false;
+		[SerializeField] int FreeSwimSpeed = 20;
+		[SerializeField] int FreeSwimAcceleration = 4;
+		[SerializeField] int FreeSwimDecceleration = 4;
+		[SerializeField] int FreeSwimDashSpeed = 64;
+		[SerializeField] int FreeSwimDashDuration = 4;
+		[SerializeField] int FreeSwimDashCooldown = 4;
+		[SerializeField] int FreeSwimDashAcceleration = 128;
+
+		[SerializeField] bool ClimbAvailable = true;
+		[SerializeField] bool JumpWhenClimbAvailable = true;
+		[SerializeField] int ClimbSpeedX = 12;
+		[SerializeField] int ClimbSpeedY = 18;
+
 		// Data
-		private readonly eRigidbody Rig = null;
+		private eRigidbody Rig = null;
 		private int CurrentFrame = 0;
 		private int IntendedX = 0;
 		private int IntendedY = 0;
@@ -119,7 +120,7 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public CharacterMovement (eRigidbody ch) {
+		public void Init (eRigidbody ch) {
 			Rig = ch;
 			Rig.Width = Width;
 			Rig.Height = Height;

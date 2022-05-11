@@ -18,9 +18,12 @@ namespace Yaya {
 
 		// Api
 		protected override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
-		public override string SheetRoot => Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Universes", UniverseName.Value, "Sheets");
-		public override string MapRoot => Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Universes", UniverseName.Value, "Maps");
-		public override string MapThumbnailRoot => Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Universes", UniverseName.Value, "Map Thumbnails");
+		public override string UniverseRoot => !string.IsNullOrEmpty(__UniverseRoot) ? __UniverseRoot : (
+			__UniverseRoot = Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Universes", UniverseName.Value)
+		);
+
+		// Data
+		private string __UniverseRoot = null;
 
 		// Saving
 		private readonly SavingString UniverseName = new("Yaya.UniverseName", "Moenen.Yaya");
@@ -38,6 +41,7 @@ namespace Yaya {
 			Initialize_Universe();
 			base.Initialize();
 			Initialize_Quit();
+			Initialize_Player();
 		}
 
 
@@ -76,6 +80,12 @@ namespace Yaya {
 
 				}
 			};
+		}
+
+
+		private void Initialize_Player () {
+			var pos = ViewRect.CenterInt();
+			AddEntity(typeof(eYaya).AngeHash(), pos.x, pos.y);
 		}
 
 

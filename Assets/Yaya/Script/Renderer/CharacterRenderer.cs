@@ -5,6 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+	[System.Serializable]
 	public class CharacterRenderer {
 
 
@@ -54,22 +55,25 @@ namespace Yaya {
 
 
 		// Api
-		protected eCharacter Character { get; init; } = null;
+		protected eCharacter Character { get; private set; } = null;
+
+		// Ser
+
 
 		// Data
-		private readonly AniCode Ani_Idle = null;
-		private readonly AniCode Ani_Walk = null;
-		private readonly AniCode Ani_Run = null;
-		private readonly AniCode Ani_JumpU = null;
-		private readonly AniCode Ani_JumpD = null;
-		private readonly AniCode Ani_Dash = null;
-		private readonly AniCode Ani_SquatIdle = null;
-		private readonly AniCode Ani_SquatMove = null;
-		private readonly AniCode Ani_SwimIdle = null;
-		private readonly AniCode Ani_SwimMove = null;
-		private readonly AniCode Ani_SwimDash = null;
-		private readonly AniCode Ani_Pound = null;
-		private readonly AniCode Ani_Climb = null;
+		private AniCode Ani_Idle = null;
+		private AniCode Ani_Walk = null;
+		private AniCode Ani_Run = null;
+		private AniCode Ani_JumpU = null;
+		private AniCode Ani_JumpD = null;
+		private AniCode Ani_Dash = null;
+		private AniCode Ani_SquatIdle = null;
+		private AniCode Ani_SquatMove = null;
+		private AniCode Ani_SwimIdle = null;
+		private AniCode Ani_SwimMove = null;
+		private AniCode Ani_SwimDash = null;
+		private AniCode Ani_Pound = null;
+		private AniCode Ani_Climb = null;
 		private AniCode CurrentAni = null;
 		private int CurrentAniFrame = 0;
 
@@ -82,7 +86,7 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public CharacterRenderer (eCharacter ch) {
+		public void Init (eCharacter ch) {
 			Character = ch;
 			string name = ch.GetType().Name;
 			if (name.StartsWith('e')) name = name[1..];
@@ -99,7 +103,6 @@ namespace Yaya {
 			Ani_SwimDash = new($"_a{name}.SwimDash", $"_a{name}.Run");
 			Ani_Pound = new($"_a{name}.Pound", $"_a{name}.Idle");
 			Ani_Climb = new($"_a{name}.Climb", $"_a{name}.Idle");
-
 		}
 
 

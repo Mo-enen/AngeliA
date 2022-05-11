@@ -11,9 +11,18 @@ namespace Yaya.Editor {
 
 
 	public class CheckPointArtworkExtension : IArtworkEvent {
-		public string Message => "Refreshing Check Point Position";
-		public void OnArtworkSynced () {
 
+
+		public string Message => "Yaya Artwork Events";
+
+
+		public void OnArtworkSynced () {
+			CreateCheckPointFile();
+			SaveRenderingConfig();
+		}
+
+
+		private void CreateCheckPointFile () {
 			var game = Object.FindObjectOfType<Game>();
 			if (game == null) return;
 
@@ -71,6 +80,18 @@ namespace Yaya.Editor {
 				);
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
+
+
+		private void SaveRenderingConfig () {
+			try {
+				var game = Object.FindObjectOfType<Game>();
+				if (game == null) return;
+				var config = Util.GetFieldValue(game, "m_DefaultRenderConfig");
+				Util.TextToFile(JsonUtility.ToJson(config, true), Util.CombinePaths(game.JsonConfigRoot, "RenderingConfig.json"));
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
+
+
 	}
 
 

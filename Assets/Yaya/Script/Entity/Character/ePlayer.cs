@@ -38,9 +38,9 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnInitialize () {
-			base.OnInitialize();
-			Game = Object.FindObjectOfType<Game>();
+		public override void OnInitialize (Game game) {
+			base.OnInitialize(game);
+			Game = game;
 		}
 
 
