@@ -8,7 +8,8 @@ namespace Yaya {
 	[ExcludeInMapEditor]
 	[EntityCapacity(1)]
 	[ForceUpdate]
-	public abstract class ePlayer : eCharacter {
+	[EntityBounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
+	public class ePlayer : eCharacter {
 
 
 
@@ -18,6 +19,8 @@ namespace Yaya {
 
 		// Api
 		public static ePlayer CurrentPlayer { get; private set; } = null;
+		protected override System.Type RendererType => typeof(PlayerRenderer);
+		protected override System.Type MovementType => typeof(PlayerMovement);
 
 		// Data
 		private Game Game = null;

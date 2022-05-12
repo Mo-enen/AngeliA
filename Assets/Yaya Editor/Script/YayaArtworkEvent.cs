@@ -90,7 +90,7 @@ namespace Yaya.Editor {
 				Util.TextToFile(JsonUtility.ToJson(config, true), Util.CombinePaths(game.JsonConfigRoot, "RenderingConfig.json"));
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
-
+		 
 
 	}
 

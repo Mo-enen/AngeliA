@@ -28,9 +28,9 @@ namespace Yaya.Editor {
 
 
 		public static void Initialize () {
-			if (SpawnPlayerAtStart.Value && Game != null && Game.FirstEntityOfType(typeof(eYaya).AngeHash()) == null) {
+			if (SpawnPlayerAtStart.Value && Game != null && Game.FirstEntityOfType(typeof(ePlayer).AngeHash()) == null) {
 				Game.AddEntity(
-					typeof(eYaya).AngeHash(),
+					typeof(ePlayer).AngeHash(),
 					Game.ViewRect.CenterInt().x,
 					Game.ViewRect.CenterInt().y
 				);

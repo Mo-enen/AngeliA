@@ -20,28 +20,28 @@ _aAthlete_0.Run 25,1057734888,3
 _aAthlete_0.Run 30,-1193528242,3
 _aAthlete_0.Run 35,-46457582,3
 _aAthlete_0.Run 39,-1577244827,3
-_aYaya.Idle 0,1625479936,3
-_aYaya.Idle 48,-800623572,3
-_aYaya.Idle 59,-1599585204,3
-_aYaya.Idle 65,129246289,3
-_aYaya.Walk 0,1648145548,3
-_aYaya.Walk 7,-405675501,3
-_aYaya.Walk 14,287020432,3
-_aYaya.Walk 21,-947208867,3
-_aYaya.Walk 28,-191151946,3
-_aYaya.Walk 35,1032120922,3
-_aYaya.Walk 42,-202108377,3
-_aYaya.Walk 49,-1283516585,3
-_aYaya.Walk 55,445314908,3
-_aYaya.Run 0,1215860330,3
-_aYaya.Run 5,23808796,3
-_aYaya.Run 10,-1751581799,3
-_aYaya.Run 15,1076370462,3
-_aYaya.Run 20,-1622499080,3
-_aYaya.Run 25,1205453181,3
-_aYaya.Run 30,-1493416361,3
-_aYaya.Run 35,1334535900,3
-_aYaya.Run 39,160923872,3
+_aPlayer.Idle 0,243189176,3
+_aPlayer.Idle 48,-912505413,3
+_aPlayer.Idle 59,84512219,3
+_aPlayer.Idle 65,1176698569,3
+_aPlayer.Walk 0,1122436141,3
+_aPlayer.Walk 7,-1209603084,3
+_aPlayer.Walk 14,-676312038,3
+_aPlayer.Walk 21,-94659865,3
+_aPlayer.Walk 28,-1210896937,3
+_aPlayer.Walk 35,1828257403,3
+_aPlayer.Walk 42,572444447,3
+_aPlayer.Walk 49,1293672504,3
+_aPlayer.Walk 55,548393725,3
+_aPlayer.Run 0,1163308729,3
+_aPlayer.Run 5,-1364484396,3
+_aPlayer.Run 10,1309707304,3
+_aPlayer.Run 15,257531757,3
+_aPlayer.Run 20,804148679,3
+_aPlayer.Run 25,-248026868,3
+_aPlayer.Run 30,298590054,3
+_aPlayer.Run 35,-753585493,3
+_aPlayer.Run 39,981654447,3
 _aAthlete_1.Idle 0,744409899,3
 _aAthlete_1.Idle 48,470224255,3
 _aAthlete_1.Idle 59,-1371319969,3
@@ -1318,8 +1318,8 @@ _aStudent_9.Run 25,-1360908883,3
 _aStudent_9.Run 30,682795283,3
 _aStudent_9.Run 35,-7599186,3
 _aStudent_9.Run 39,299078698,3
-Test Pump,1430882989,0
 Test Pump Back,1474474758,0
+Test Pump,1430882989,0
 Barrel,348720954,0
 Check Statue 0,238126772,0
 Check Statue 1,-267431853,0

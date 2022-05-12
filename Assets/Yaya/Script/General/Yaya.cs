@@ -17,16 +17,31 @@ namespace Yaya {
 		private readonly HashSet<SystemLanguage> SupportedLanguages = new() { SystemLanguage.English, SystemLanguage.ChineseSimplified, };
 
 		// Api
+		public override string UniversePath {
+			get {
+				if (string.IsNullOrEmpty(_YayaUniversePath)) {
+					if (!string.IsNullOrEmpty(UniverseName.Value)) {
+						_YayaUniversePath = Util.CombinePaths(CustomUniverseRoot, UniverseName.Value);
+					} else {
+						_YayaUniversePath = base.UniversePath;
+					}
+				}
+				return _YayaUniversePath;
+			}
+		}
 		protected override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
-		public override string UniverseRoot => !string.IsNullOrEmpty(__UniverseRoot) ? __UniverseRoot : (
-			__UniverseRoot = Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Universes", UniverseName.Value)
-		);
 
-		// Data
-		private string __UniverseRoot = null;
+		// Short
+		private string CustomUniverseRoot => !string.IsNullOrEmpty(_CustomUniverseRoot) ?
+			_CustomUniverseRoot :
+			(_CustomUniverseRoot = Util.CombinePaths(Application.persistentDataPath, "Universes"));
+
+		// Data 
+		[System.NonSerialized] string _YayaUniversePath = null;
+		[System.NonSerialized] string _CustomUniverseRoot = null;
 
 		// Saving
-		private readonly SavingString UniverseName = new("Yaya.UniverseName", "Moenen.Yaya");
+		private readonly SavingString UniverseName = new("Yaya.UniverseName", "");
 
 
 		#endregion
@@ -46,15 +61,21 @@ namespace Yaya {
 
 
 		private void Initialize_Universe () {
-			string uniRoot = Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Universes", UniverseName.Value);
-			if (!Util.FolderExists(uniRoot)) UniverseName.Value = UniverseName.DefaultValue;
-			uniRoot = Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Universes", UniverseName.Value);
-			if (!Util.FolderExists(uniRoot)) {
-				foreach (var folder in Util.GetFoldersIn(Util.CombinePaths(Util.GetRuntimeBuiltRootPath(), "Universes"), true)) {
-					UniverseName.Value = folder.Name;
-					break;
-				}
+
+			if (Util.FolderExists(UniversePath)) return;
+
+			// Load Default Universe
+			UniverseName.Value = "";
+			_YayaUniversePath = "";
+			if (Util.FolderExists(UniversePath)) return;
+
+			// Load First Custom Universe
+			_YayaUniversePath = "";
+			foreach (var folder in Util.GetFoldersIn(Util.CombinePaths(Application.persistentDataPath, "Universes"), true)) {
+				UniverseName.Value = folder.Name;
+				break;
 			}
+
 		}
 
 
@@ -85,7 +106,7 @@ namespace Yaya {
 
 		private void Initialize_Player () {
 			var pos = ViewRect.CenterInt();
-			AddEntity(typeof(eYaya).AngeHash(), pos.x, pos.y);
+			AddEntity(typeof(ePlayer).AngeHash(), pos.x, pos.y);
 		}
 
 
