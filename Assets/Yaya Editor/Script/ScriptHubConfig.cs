@@ -12,6 +12,7 @@ namespace Yaya.Editor {
 			};
 		public int Order => 0;
 		public int Column => 3;
+		public string GetName (string name) => name.StartsWith('e') ? name[1..] : name;
 	}
 
 
@@ -25,6 +26,7 @@ namespace Yaya.Editor {
 				new ("aseprite", "Aseprite", true),
 			};
 		public int Order => 0 + 1;
+		public string GetName (string name) => name.StartsWith('e') ? name[1..] : name;
 
 	}
 }

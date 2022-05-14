@@ -17,31 +17,7 @@ namespace Yaya {
 		private readonly HashSet<SystemLanguage> SupportedLanguages = new() { SystemLanguage.English, SystemLanguage.ChineseSimplified, };
 
 		// Api
-		public override string UniversePath {
-			get {
-				if (string.IsNullOrEmpty(_YayaUniversePath)) {
-					if (!string.IsNullOrEmpty(UniverseName.Value)) {
-						_YayaUniversePath = Util.CombinePaths(CustomUniverseRoot, UniverseName.Value);
-					} else {
-						_YayaUniversePath = base.UniversePath;
-					}
-				}
-				return _YayaUniversePath;
-			}
-		}
-		protected override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
-
-		// Short
-		private string CustomUniverseRoot => !string.IsNullOrEmpty(_CustomUniverseRoot) ?
-			_CustomUniverseRoot :
-			(_CustomUniverseRoot = Util.CombinePaths(Application.persistentDataPath, "Universes"));
-
-		// Data 
-		[System.NonSerialized] string _YayaUniversePath = null;
-		[System.NonSerialized] string _CustomUniverseRoot = null;
-
-		// Saving
-		private readonly SavingString UniverseName = new("Yaya.UniverseName", "");
+		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
 
 
 		#endregion
@@ -53,29 +29,9 @@ namespace Yaya {
 
 
 		protected override void Initialize () {
-			Initialize_Universe();
 			base.Initialize();
 			Initialize_Quit();
 			Initialize_Player();
-		}
-
-
-		private void Initialize_Universe () {
-
-			if (Util.FolderExists(UniversePath)) return;
-
-			// Load Default Universe
-			UniverseName.Value = "";
-			_YayaUniversePath = "";
-			if (Util.FolderExists(UniversePath)) return;
-
-			// Load First Custom Universe
-			_YayaUniversePath = "";
-			foreach (var folder in Util.GetFoldersIn(Util.CombinePaths(Application.persistentDataPath, "Universes"), true)) {
-				UniverseName.Value = folder.Name;
-				break;
-			}
-
 		}
 
 

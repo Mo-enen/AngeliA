@@ -14,6 +14,7 @@
 /_Release
 /_Paper
 /UserSettings
+/_Built
 .vsconfig
 .editorconfig
 *.suo
