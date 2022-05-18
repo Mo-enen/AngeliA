@@ -22,8 +22,6 @@ namespace Yaya {
 		public override int AirDragY => 0;
 		public CharacterMovement Movement { get; private set; }
 		public CharacterRenderer Renderer { get; private set; }
-		protected virtual System.Type MovementType => typeof(CharacterMovement);
-		protected virtual System.Type RendererType => typeof(CharacterRenderer);
 
 
 		#endregion
@@ -41,13 +39,13 @@ namespace Yaya {
 			if (typeName.StartsWith("e")) typeName = typeName[1..];
 
 			// Movement
-			var movement = game.LoadJsonConfig($"{typeName}.Movement", MovementType);
-			Movement = movement != null ? movement as CharacterMovement : new CharacterMovement();
+			var movement = game.LoadJsonConfig<CharacterMovement>($"{typeName}.Movement");
+			Movement = movement ?? new CharacterMovement();
 			Movement.Init(this);
 
 			// Renderer
-			var renderer = game.LoadJsonConfig($"{typeName}.Renderer", RendererType);
-			Renderer = renderer != null ? renderer as CharacterRenderer : new CharacterRenderer();
+			var renderer = game.LoadJsonConfig<CharacterRenderer>($"{typeName}.Renderer");
+			Renderer = renderer ?? new CharacterRenderer();
 			Renderer.Init(this);
 
 		}
@@ -60,7 +58,7 @@ namespace Yaya {
 
 
 		public override void FrameUpdate (int frame) {
-			if (Renderer != null) Renderer.FrameUpdate(frame);
+			if (Renderer != null) Renderer.FrameUpdate();
 			base.FrameUpdate(frame);
 		}
 

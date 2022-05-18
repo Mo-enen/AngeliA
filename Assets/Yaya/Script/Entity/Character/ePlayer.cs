@@ -19,8 +19,6 @@ namespace Yaya {
 
 		// Api
 		public static ePlayer CurrentPlayer { get; private set; } = null;
-		protected override System.Type RendererType => typeof(PlayerRenderer);
-		protected override System.Type MovementType => typeof(PlayerMovement);
 
 		// Data
 		private Game Game = null;

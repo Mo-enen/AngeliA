@@ -46,6 +46,30 @@ namespace Yaya {
 		}
 
 
+		private class GroupCode {
+
+			public int this[int i] => Codes.Length > 0 ? Codes[i.Clamp(0, Codes.Length - 1)] : 0;
+			public int Count => Codes.Length;
+
+			private readonly int[] Codes = new int[0];
+			public GroupCode (string name) {
+				var codes = new List<int>();
+				int code = name.AngeHash();
+				if (CellRenderer.TryGetSprite(code, out _, 0)) {
+					codes.Add(code);
+				}
+				for (int i = 0; i < 1024; i++) {
+					code = $"{name} {i}".AngeHash();
+					if (CellRenderer.TryGetSprite(code, out _, 0)) {
+						codes.Add(code);
+					} else break;
+				}
+				Codes = codes.ToArray();
+			}
+
+		}
+
+
 		#endregion
 
 
@@ -56,9 +80,7 @@ namespace Yaya {
 
 		// Api
 		protected eCharacter Character { get; private set; } = null;
-
-		// Ser
-
+		public int FaceIndex { get; set; } = 0;
 
 		// Data
 		private AniCode Ani_Idle = null;
@@ -75,7 +97,9 @@ namespace Yaya {
 		private AniCode Ani_Pound = null;
 		private AniCode Ani_Climb = null;
 		private AniCode CurrentAni = null;
+		private GroupCode Face = null;
 		private int CurrentAniFrame = 0;
+		private int CurrentCode = 0;
 
 
 		#endregion
@@ -103,10 +127,17 @@ namespace Yaya {
 			Ani_SwimDash = new($"_a{name}.SwimDash", $"_a{name}.Run");
 			Ani_Pound = new($"_a{name}.Pound", $"_a{name}.Idle");
 			Ani_Climb = new($"_a{name}.Climb", $"_a{name}.Idle");
+			Face = new($"{name}.Face");
 		}
 
 
-		public virtual void FrameUpdate (int frame) {
+		public void FrameUpdate () {
+			DrawCharacter();
+			DrawFace();
+		}
+
+
+		private void DrawCharacter () {
 			var movement = Character.Movement;
 			AniCode ani;
 			if (movement.IsClimbing) {
@@ -136,7 +167,23 @@ namespace Yaya {
 				CurrentAniFrame,
 				ani.LoopStart
 			);
+			CurrentCode = CellRenderer.LastDrawnID;
 			CurrentAniFrame++;
+		}
+
+
+		private void DrawFace () {
+			if (Face.Count > 0 && CellRenderer.TryGetCharacterMeta(CurrentCode, out var cMeta)) {
+				var movement = Character.Movement;
+				CellRenderer.Draw_9Slice(
+					Face[FaceIndex],
+					Character.X - CurrentAni.Width / 2 + (movement.FacingRight ? cMeta.Head.X : CurrentAni.Width - (cMeta.Head.X + cMeta.Head.Width)),
+					Character.Y + cMeta.Head.Y + cMeta.Head.Height,
+					0, 1000, 0,
+					cMeta.Head.Width,
+					Const.ORIGINAL_SIZE
+				);
+			}
 		}
 
 
