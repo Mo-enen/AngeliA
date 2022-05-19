@@ -44,9 +44,6 @@ namespace Yaya {
 		// Ser
 		[SerializeField] int Width = 150;
 		[SerializeField] int Height = 150;
-		[SerializeField] int InWaterSpeedLoseRate = 500;
-		[SerializeField] int GroundStuckLoseX = 2;
-		[SerializeField] int GroundStuckLoseY = 6;
 
 		[SerializeField] int MoveSpeed = 17;
 		[SerializeField] int MoveAcceleration = 3;
@@ -54,6 +51,8 @@ namespace Yaya {
 		[SerializeField] int OppositeXAccelerationRate = 3000;
 		[SerializeField] int RunTrigger = 60;
 		[SerializeField] int RunSpeed = 32;
+		[SerializeField] int GroundStuckLoseX = 2;
+		[SerializeField] int GroundStuckLoseY = 6;
 
 		[SerializeField] int JumpSpeed = 62;
 		[SerializeField] int JumpCount = 2;
@@ -85,6 +84,7 @@ namespace Yaya {
 		[SerializeField] int FreeSwimDashDuration = 4;
 		[SerializeField] int FreeSwimDashCooldown = 4;
 		[SerializeField] int FreeSwimDashAcceleration = 128;
+		[SerializeField] int InWaterSpeedLoseRate = 500;
 
 		[SerializeField] bool ClimbAvailable = true;
 		[SerializeField] bool JumpWhenClimbAvailable = true;
