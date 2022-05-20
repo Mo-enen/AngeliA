@@ -18,7 +18,6 @@ namespace Yaya.Editor {
 
 		public void OnArtworkSynced () {
 			CreateCheckPointFile();
-			SaveRenderingConfig();
 		}
 
 
@@ -58,12 +57,12 @@ namespace Yaya.Editor {
 
 			// Write Position File
 			try {
-				var cpList = new List<eCheckPoint.CheckPointData.Data>();
+				var cpList = new List<CheckPointConfig.Data>();
 				foreach (var (pos, id) in allCpPool) {
 					if (id == 0) continue;
 					for (int i = 1; i < Const.MAP_SIZE; i++) {
 						if (AngeEditorUtil.TryGetMapSystemNumber(pos.x, pos.y + i, out int cpIndex)) {
-							cpList.Add(new eCheckPoint.CheckPointData.Data() {
+							cpList.Add(new() {
 								Index = cpIndex,
 								X = pos.x,
 								Y = pos.y,
@@ -73,24 +72,14 @@ namespace Yaya.Editor {
 						}
 					}
 				}
-				var jsonData = new eCheckPoint.CheckPointData() { CPs = cpList.ToArray() };
+				var jsonData = new CheckPointConfig() { CPs = cpList.ToArray() };
 				Util.TextToFile(
 					JsonUtility.ToJson(jsonData, true),
-					Util.CombinePaths(game.MapRoot, "CheckPoint.json")
+					Util.CombinePaths(game.JsonConfigRoot, $"{nameof(CheckPointConfig)}.json")
 				);
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
-
-		private void SaveRenderingConfig () {
-			try {
-				var game = Object.FindObjectOfType<Game>();
-				if (game == null) return;
-				var config = Util.GetFieldValue(game, "m_DefaultRenderConfig");
-				Util.TextToFile(JsonUtility.ToJson(config, true), Util.CombinePaths(game.JsonConfigRoot, "RenderingConfig.json"));
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-		}
-		 
 
 	}
 

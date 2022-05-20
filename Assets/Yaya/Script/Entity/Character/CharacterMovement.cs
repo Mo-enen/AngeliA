@@ -58,9 +58,9 @@ namespace Yaya {
 		[SerializeField] int JumpCount = 2;
 		[SerializeField] int JumpReleaseLoseRate = 700;
 		[SerializeField] int JumpRaiseGravityRate = 600;
+		[SerializeField] bool JumpThroughOneway = false;
 
 		[SerializeField] bool DashAvailable = true;
-		[SerializeField] bool DashThroughOneway = false;
 		[SerializeField] int DashSpeed = 42;
 		[SerializeField] int DashDuration = 12;
 		[SerializeField] int DashCooldown = 4;
@@ -378,8 +378,8 @@ namespace Yaya {
 		public void Dash () {
 			if (!DashAvailable) return;
 			IntendedDash = DashSpeed > 0;
-			// Dash Through Oneway
-			if (DashThroughOneway) {
+			// Jump Through Oneway
+			if (JumpThroughOneway) {
 				Rig.SetPosition(Rig.X, Rig.Y - 2);
 			}
 		}

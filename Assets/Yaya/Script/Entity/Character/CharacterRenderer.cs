@@ -16,25 +16,19 @@ namespace Yaya {
 
 		private class AniCode {
 			public int Code = 0;
-			public int Width = 0;
-			public int Height = 0;
 			public int LoopStart = 0;
 			public AniCode (string name, params string[] failbacks) {
 				int code = name.AngeHash();
-				if (CellRenderer.TryGetSprite(code, out var sprite, 0)) {
+				if (CellRenderer.TryGetSprite(code, out _, 0)) {
 					Code = code;
-					Width = sprite.GlobalWidth;
-					Height = sprite.GlobalHeight;
 					if (CellRenderer.TryGetSpriteChain(code, out var chain)) {
 						LoopStart = chain.LoopStart;
 					}
 				} else {
 					foreach (var failback in failbacks) {
 						code = failback.AngeHash();
-						if (CellRenderer.TryGetSprite(code, out sprite, 0)) {
+						if (CellRenderer.TryGetSprite(code, out _, 0)) {
 							Code = code;
-							Width = sprite.GlobalWidth;
-							Height = sprite.GlobalHeight;
 							if (CellRenderer.TryGetSpriteChain(code, out var chain)) {
 								LoopStart = chain.LoopStart;
 							}
@@ -145,7 +139,7 @@ namespace Yaya {
 			} else if (movement.IsPounding) {
 				ani = Ani_Pound;
 			} else if (movement.IsDashing) {
-				ani = movement.InWater ? Ani_SwimDash : Ani_Dash;
+				ani = !movement.IsGrounded && movement.InWater ? Ani_SwimDash : Ani_Dash;
 			} else if (movement.IsSquating) {
 				ani = movement.IsMoving ? Ani_SquatMove : Ani_SquatIdle;
 			} else if (movement.InWater) {
@@ -162,8 +156,8 @@ namespace Yaya {
 			CellRenderer.Draw_Animation(
 				CurrentAni.Code,
 				Character.X, Character.Y, 500, 0, 0,
-				movement.FacingRight ? CurrentAni.Width : -CurrentAni.Width,
-				CurrentAni.Height,
+				movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+				Const.ORIGINAL_SIZE,
 				CurrentAniFrame,
 				ani.LoopStart
 			);
@@ -173,11 +167,15 @@ namespace Yaya {
 
 
 		private void DrawFace () {
-			if (Face.Count > 0 && CellRenderer.TryGetCharacterMeta(CurrentCode, out var cMeta)) {
+			if (Face.Count > 0 && CellRenderer.TryGetCharacterMeta(CurrentCode, out var cMeta) && cMeta.Head.IsVailed) {
 				var movement = Character.Movement;
 				CellRenderer.Draw_9Slice(
 					Face[FaceIndex],
-					Character.X - CurrentAni.Width / 2 + (movement.FacingRight ? cMeta.Head.X : CurrentAni.Width - (cMeta.Head.X + cMeta.Head.Width)),
+					Character.X - cMeta.SpriteWidth / 2 +
+						(movement.FacingRight ?
+							cMeta.Head.X :
+							cMeta.SpriteWidth - (cMeta.Head.X + cMeta.Head.Width)
+						),
 					Character.Y + cMeta.Head.Y + cMeta.Head.Height,
 					0, 1000, 0,
 					cMeta.Head.Width,

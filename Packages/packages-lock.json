@@ -8,6 +8,12 @@
         "com.unity.inputsystem": "1.0.0"
       }
     },
+    "com.samuelschultze.fullscreen": {
+      "version": "file:C:/Data/Unity/Packages/Fullscreen",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.unity.ext.nunit": {
       "version": "1.0.6",
       "depth": 2,

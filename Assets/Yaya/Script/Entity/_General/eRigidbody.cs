@@ -98,16 +98,18 @@ namespace Yaya {
 				VelocityX != 0 &&
 				(!CellPhysics.RoomCheck((int)PhysicsMask.Solid, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left) ||
 				!CellPhysics.RoomCheck_Oneway((int)PhysicsMask.Solid, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left, true))
-			) VelocityX = 0;
-
+			) {
+				VelocityX = VelocityX.MoveTowards(0, Const.COLLISION_SPEED_REDUCE);
+			}
 
 			// Vertical Stopping
 			if (
 				VelocityY != 0 &&
 				(!CellPhysics.RoomCheck((int)PhysicsMask.Solid, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down) ||
 				!CellPhysics.RoomCheck_Oneway((int)PhysicsMask.Solid, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down, true))
-			) VelocityY = 0;
-
+			) {
+				VelocityY = VelocityY.MoveTowards(0, Const.COLLISION_SPEED_REDUCE);
+			}
 
 			// Move
 			PerformMove(VelocityX, VelocityY, false, false);
@@ -117,8 +119,8 @@ namespace Yaya {
 			}
 
 			// Ari Drag
-			VelocityX = VelocityX.MoveTowards(0, AirDragX);
-			VelocityY = VelocityY.MoveTowards(0, AirDragY);
+			if (AirDragX != 0) VelocityX = VelocityX.MoveTowards(0, AirDragX);
+			if (AirDragY != 0) VelocityY = VelocityY.MoveTowards(0, AirDragY);
 		}
 
 
