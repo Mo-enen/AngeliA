@@ -58,7 +58,7 @@ namespace Yaya {
 
 
 		public override void FrameUpdate (int frame) {
-			if (Renderer != null) Renderer.FrameUpdate();
+			if (Renderer != null) Renderer.FrameUpdate(frame);
 			base.FrameUpdate(frame);
 		}
 

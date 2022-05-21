@@ -29,13 +29,25 @@ namespace Yaya {
 		public bool IsGrounded => Rig.IsGrounded;
 		public bool InWater => Rig.InWater;
 		public bool IsInAir => Rig.IsInAir;
+		public bool IsMoving => IntendedX != 0;
+		public bool IsRunning => IsMoving && MovingAccumulateFrame >= RunTrigger;
+		public bool IsRolling => !InWater && !IsPounding && ((JumpRoll && CurrentJumpCount > 0) || (JumpSecondRoll && CurrentJumpCount > 1));
 		public int CurrentJumpCount { get; private set; } = 0;
 		public bool FacingRight { get; private set; } = true;
 		public bool FacingFront { get; private set; } = true;
-		public bool IsMoving => IntendedX != 0;
-		public bool IsRunning => IsMoving && MovingAccumulateFrame >= RunTrigger;
 		public int FinalVelocityX => Rig.FinalVelocityX;
 		public int FinalVelocityY => Rig.FinalVelocityY;
+		public bool JumpWithRoll => JumpRoll;
+		public bool JumpSecondWithRoll => JumpSecondRoll;
+		public int MovingAccumulateFrame { get; private set; } = 0;
+		public int LastGroundFrame { get; private set; } = int.MinValue;
+		public int LastGroundingFrame { get; private set; } = int.MinValue;
+		public int LastEndMoveFrame { get; private set; } = int.MinValue;
+		public int LastJumpFrame { get; private set; } = int.MinValue;
+		public int LastDashFrame { get; private set; } = int.MinValue;
+		public int LastSquatFrame { get; private set; } = int.MinValue;
+		public int LastSquatingFrame { get; private set; } = int.MinValue;
+		public int LastPoundingFrame { get; private set; } = int.MinValue;
 
 		// Short
 		private int CurrentDashDuration => InWater && SwimInFreeStyle ? FreeSwimDashDuration : DashDuration;
@@ -59,6 +71,8 @@ namespace Yaya {
 		[SerializeField] int JumpReleaseLoseRate = 700;
 		[SerializeField] int JumpRaiseGravityRate = 600;
 		[SerializeField] bool JumpThroughOneway = false;
+		[SerializeField] bool JumpRoll = false;
+		[SerializeField] bool JumpSecondRoll = false;
 
 		[SerializeField] bool DashAvailable = true;
 		[SerializeField] int DashSpeed = 42;
@@ -71,7 +85,7 @@ namespace Yaya {
 		[SerializeField] int SquatSpeed = 8;
 		[SerializeField] int SquatAcceleration = 48;
 		[SerializeField] int SquatDecceleration = 48;
-		[SerializeField] int SquatHeight = 80;
+		[SerializeField] int SquatHeight = 200;
 
 		[SerializeField] bool PoundAvailable = true;
 		[SerializeField] int PoundSpeed = 96;
@@ -96,17 +110,13 @@ namespace Yaya {
 		private int CurrentFrame = 0;
 		private int IntendedX = 0;
 		private int IntendedY = 0;
-		private int LastGroundedFrame = int.MinValue;
-		private int LastEndMoveFrame = int.MinValue;
-		private int MovingAccumulateFrame = 0;
-		private int LastJumpFrame = int.MinValue;
-		private int LastDashFrame = int.MinValue;
 		private bool HoldingJump = false;
 		private bool PrevHoldingJump = false;
 		private bool IntendedJump = false;
 		private bool IntendedDash = false;
 		private bool IntendedPound = false;
 		private bool PrevInWater = false;
+		private bool PrevGrounded = false;
 		private int? ClimbPositionCorrect = null;
 		private RectInt Hitbox = default;
 		private Vector2Int LastMoveDirection = default;
@@ -144,7 +154,9 @@ namespace Yaya {
 		private void Update_Cache () {
 
 			// Ground
-			if (IsGrounded) LastGroundedFrame = CurrentFrame;
+			if (IsGrounded) LastGroundingFrame = CurrentFrame;
+			if (!PrevGrounded && IsGrounded) LastGroundFrame = CurrentFrame;
+			PrevGrounded = IsGrounded;
 
 			// Climb
 			ClimbPositionCorrect = null;
@@ -189,25 +201,24 @@ namespace Yaya {
 			PrevInWater = InWater;
 
 			// Squat
-			IsSquating =
+			bool squating =
 				SquatAvailable && IsGrounded && !IsClimbing && !IsInsideGround &&
 				((!IsDashing && IntendedY < 0) || ForceSquatCheck());
+			if (!IsSquating && squating) LastSquatFrame = CurrentFrame;
+			if (squating) LastSquatingFrame = CurrentFrame;
+			IsSquating = squating;
 
 			// Pound
 			IsPounding = PoundAvailable && !IsGrounded && !IsClimbing && !InWater && !IsDashing && !IsInsideGround &&
 				(IsPounding ? IntendedY < 0 : IntendedPound);
+			if (IsPounding) LastPoundingFrame = CurrentFrame;
 
 			// Facing
 			FacingRight = LastMoveDirection.x > 0;
 			FacingFront = !IsClimbing;
 
 			// Physics
-			Hitbox = new(
-				Rig.X - Width / 2,
-				Rig.Y,
-				Width,
-				IsSquating || (IsDashing && (!InWater || !SwimInFreeStyle)) ? SquatHeight : Height
-			);
+			Hitbox = new(Rig.X - Width / 2, Rig.Y, Width, GetCurrentHeight());
 			Rig.Width = Hitbox.width;
 			Rig.Height = Hitbox.height;
 			Rig.OffsetX = -Width / 2;
@@ -239,7 +250,7 @@ namespace Yaya {
 				IsClimbing = false;
 			}
 			// Fall off Edge
-			if (CurrentJumpCount == 0 && !IsGrounded && !InWater && !IsClimbing && CurrentFrame > LastGroundedFrame + JUMP_TOLERANCE) {
+			if (CurrentJumpCount == 0 && !IsGrounded && !InWater && !IsClimbing && CurrentFrame > LastGroundingFrame + JUMP_TOLERANCE) {
 				CurrentJumpCount++;
 			}
 			// Jump Release
@@ -437,6 +448,17 @@ namespace Yaya {
 				return 1;
 			}
 			return 0;
+		}
+
+
+		private int GetCurrentHeight () {
+			if (IsSquating) return SquatHeight;
+			if (IsDashing && (!InWater || !SwimInFreeStyle)) return SquatHeight;
+			if (!IsPounding && !InWater) {
+				if (JumpRoll && CurrentJumpCount > 0) return SquatHeight;
+				if (JumpSecondRoll && CurrentJumpCount > 1) return SquatHeight;
+			}
+			return Height;
 		}
 
 
