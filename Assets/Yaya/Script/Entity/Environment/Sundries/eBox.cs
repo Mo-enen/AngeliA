@@ -7,7 +7,7 @@ using AngeliaFramework;
 namespace Yaya {
 	public class eBox : eRigidbody {
 
-		public override int CollisionLayer => YayaConst.ENVIRONMENT;
+		public override int PhysicsLayer => YayaConst.ENVIRONMENT;
 		public override bool DestroyOnInsideGround => true;
 
 		private static readonly int BARREL_CODE = "Box".AngeHash();

@@ -16,7 +16,7 @@ namespace Yaya {
 		}
 
 		// Api
-		public override int CollisionLayer => YayaConst.ENVIRONMENT;
+		public override int PhysicsLayer => YayaConst.ENVIRONMENT;
 		protected virtual BreakMode BreakCondition { get; } = BreakMode.BreakOnCollideGround;
 		public override bool CarryRigidbodyOnTop => false;
 		protected virtual int HoldDuration { get; } = 60;

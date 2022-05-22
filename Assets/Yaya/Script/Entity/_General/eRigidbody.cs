@@ -24,7 +24,8 @@ namespace Yaya {
 		public bool InsideGround { get; set; } = false;
 
 		// Virtual
-		public virtual int CollisionLayer { get; } = 0;
+		public virtual int PhysicsLayer { get; } = 0;
+		public virtual int CollisionMask { get; } = (int)PhysicsMask.Solid;
 		public virtual bool CarryRigidbodyOnTop => true;
 		public virtual bool IsInAir => !IsGrounded && !InWater;
 		public virtual bool DestroyOnInsideGround => false;
@@ -57,7 +58,7 @@ namespace Yaya {
 
 
 		public override void FillPhysics (int frame) {
-			CellPhysics.FillEntity(CollisionLayer, this);
+			CellPhysics.FillEntity(PhysicsLayer, this);
 		}
 
 
@@ -96,27 +97,21 @@ namespace Yaya {
 			// Hori Stopping
 			if (
 				VelocityX != 0 &&
-				(!CellPhysics.RoomCheck((int)PhysicsMask.Solid, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left) ||
-				!CellPhysics.RoomCheck_Oneway((int)PhysicsMask.Solid, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left, true))
-			) {
-				VelocityX = VelocityX.MoveTowards(0, Const.COLLISION_SPEED_REDUCE);
-			}
+				(!CellPhysics.RoomCheck(CollisionMask, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left) ||
+				!CellPhysics.RoomCheck_Oneway(CollisionMask, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left, true))
+			) VelocityX = 0;
 
 			// Vertical Stopping
 			if (
 				VelocityY != 0 &&
-				(!CellPhysics.RoomCheck((int)PhysicsMask.Solid, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down) ||
-				!CellPhysics.RoomCheck_Oneway((int)PhysicsMask.Solid, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down, true))
-			) {
-				VelocityY = VelocityY.MoveTowards(0, Const.COLLISION_SPEED_REDUCE);
-			}
+				(!CellPhysics.RoomCheck(CollisionMask, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down) ||
+				!CellPhysics.RoomCheck_Oneway(CollisionMask, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down, true))
+			) VelocityY = 0;
 
 			// Move
 			PerformMove(VelocityX, VelocityY, false, false);
 
-			if (!IsGrounded) {
-				IsGrounded = GroundedCheck(Rect);
-			}
+			if (!IsGrounded) IsGrounded = GroundedCheck(Rect);
 
 			// Ari Drag
 			if (AirDragX != 0) VelocityX = VelocityX.MoveTowards(0, AirDragX);
@@ -158,7 +153,7 @@ namespace Yaya {
 			speedX = speedX * speedScale / 1000;
 			speedY = speedY * speedScale / 1000;
 
-			int mask = (int)PhysicsMask.Solid;
+			int mask = CollisionMask;
 
 			if (ignoreOneway) {
 				pos = CellPhysics.MoveIgnoreOneway(mask, pos, speedX, speedY, new(Width, Height), this);

@@ -48,6 +48,8 @@ namespace Yaya {
 		public int LastSquatFrame { get; private set; } = int.MinValue;
 		public int LastSquatingFrame { get; private set; } = int.MinValue;
 		public int LastPoundingFrame { get; private set; } = int.MinValue;
+		public bool UseFreeStypeSwim => SwimInFreeStyle;
+		public Vector2Int LastMoveDirection { get; private set; } = default;
 
 		// Short
 		private int CurrentDashDuration => InWater && SwimInFreeStyle ? FreeSwimDashDuration : DashDuration;
@@ -55,7 +57,9 @@ namespace Yaya {
 
 		// Ser
 		[SerializeField] int Width = 150;
-		[SerializeField] int Height = 150;
+		[SerializeField] int Height = 384;
+		[SerializeField] int SquatHeight = 200;
+		[SerializeField] int SwimHeight = 384;
 
 		[SerializeField] int MoveSpeed = 17;
 		[SerializeField] int MoveAcceleration = 3;
@@ -85,20 +89,19 @@ namespace Yaya {
 		[SerializeField] int SquatSpeed = 8;
 		[SerializeField] int SquatAcceleration = 48;
 		[SerializeField] int SquatDecceleration = 48;
-		[SerializeField] int SquatHeight = 200;
 
 		[SerializeField] bool PoundAvailable = true;
 		[SerializeField] int PoundSpeed = 96;
 
 		[SerializeField] bool SwimInFreeStyle = false;
-		[SerializeField] int FreeSwimSpeed = 20;
+		[SerializeField] int InWaterSpeedLoseRate = 500;
+		[SerializeField] int FreeSwimSpeed = 40;
 		[SerializeField] int FreeSwimAcceleration = 4;
 		[SerializeField] int FreeSwimDecceleration = 4;
-		[SerializeField] int FreeSwimDashSpeed = 64;
-		[SerializeField] int FreeSwimDashDuration = 4;
+		[SerializeField] int FreeSwimDashSpeed = 84;
+		[SerializeField] int FreeSwimDashDuration = 12;
 		[SerializeField] int FreeSwimDashCooldown = 4;
 		[SerializeField] int FreeSwimDashAcceleration = 128;
-		[SerializeField] int InWaterSpeedLoseRate = 500;
 
 		[SerializeField] bool ClimbAvailable = true;
 		[SerializeField] bool JumpWhenClimbAvailable = true;
@@ -119,7 +122,7 @@ namespace Yaya {
 		private bool PrevGrounded = false;
 		private int? ClimbPositionCorrect = null;
 		private RectInt Hitbox = default;
-		private Vector2Int LastMoveDirection = default;
+		private int LastIntendedX = 0;
 
 
 		#endregion
@@ -177,12 +180,16 @@ namespace Yaya {
 			}
 
 			// Dash
-			IsDashing = DashAvailable && DashSpeed > 0 && !IsClimbing && CurrentFrame < LastDashFrame + CurrentDashDuration && !IsInsideGround;
-			if (IsDashing && IntendedY != -1) {
-				// Stop when Dashing Without Holding Down
-				LastDashFrame = int.MinValue;
-				IsDashing = false;
-				Rig.VelocityX = Rig.VelocityX * DashCancelLoseRate / 1000;
+			if (InWater && SwimInFreeStyle) {
+				IsDashing = DashAvailable && FreeSwimDashSpeed > 0 && !IsClimbing && CurrentFrame < LastDashFrame + FreeSwimDashDuration;
+			} else {
+				IsDashing = DashAvailable && DashSpeed > 0 && !IsClimbing && CurrentFrame < LastDashFrame + CurrentDashDuration && !IsInsideGround;
+				if (IsDashing && IntendedY != -1) {
+					// Stop when Dashing Without Holding Down
+					LastDashFrame = int.MinValue;
+					IsDashing = false;
+					Rig.VelocityX = Rig.VelocityX * DashCancelLoseRate / 1000;
+				}
 			}
 
 			// Water
@@ -214,7 +221,7 @@ namespace Yaya {
 			if (IsPounding) LastPoundingFrame = CurrentFrame;
 
 			// Facing
-			FacingRight = LastMoveDirection.x > 0;
+			FacingRight = LastIntendedX > 0;
 			FacingFront = !IsClimbing;
 
 			// Physics
@@ -265,7 +272,7 @@ namespace Yaya {
 
 		private void Update_Dash () {
 			if (
-				DashAvailable && IntendedDash && IsGrounded && (!InWater || !SwimInFreeStyle) &&
+				DashAvailable && IntendedDash && IsGrounded &&
 				CurrentFrame > LastDashFrame + CurrentDashDuration + CurrentDashCooldown
 			) {
 				// Perform Dash
@@ -285,9 +292,9 @@ namespace Yaya {
 				dcc = int.MaxValue;
 				if (ClimbPositionCorrect.HasValue) Rig.X = Rig.X.MoveTowards(ClimbPositionCorrect.Value, CLIMB_CORRECT_DELTA);
 			} else if (IsDashing) {
-				if (InWater && SwimInFreeStyle) {
+				if (InWater && SwimInFreeStyle && !IsGrounded) {
 					// Free Water Dash
-					speed = LastMoveDirection.x * DashSpeed;
+					speed = LastMoveDirection.x * FreeSwimDashSpeed;
 					acc = FreeSwimDashAcceleration;
 					dcc = int.MaxValue;
 				} else {
@@ -327,7 +334,7 @@ namespace Yaya {
 				Rig.GravityScale = 0;
 			} else if (InWater && SwimInFreeStyle) {
 				if (IsDashing) {
-					// Free Dash
+					// Free Water Dash
 					Rig.VelocityY = Rig.VelocityY.MoveTowards(
 						LastMoveDirection.y * FreeSwimDashSpeed, FreeSwimDashAcceleration, int.MaxValue
 					);
@@ -375,15 +382,17 @@ namespace Yaya {
 			if (x == Direction3.None && CurrentFrame > LastEndMoveFrame + RUN_BREAK_GAP) MovingAccumulateFrame = 0;
 			IntendedX = (int)x;
 			IntendedY = (int)y;
-			if (x != Direction3.None) LastMoveDirection.x = IntendedX;
-			if (y != Direction3.None) LastMoveDirection.y = IntendedY;
+			if (x != Direction3.None) LastIntendedX = IntendedX;
+			if (x != Direction3.None || y != Direction3.None) {
+				LastMoveDirection = new(IntendedX, IntendedY);
+			}
 		}
 
 
 		public void HoldJump (bool holding) => HoldingJump = holding;
 
 
-		public void Jump () => IntendedJump = IntendedY >= 0 || IsClimbing;
+		public void Jump () => IntendedJump = InWater || IntendedY >= 0 || IsClimbing;
 
 
 		public void Dash () {
@@ -452,12 +461,23 @@ namespace Yaya {
 
 
 		private int GetCurrentHeight () {
+
+			// Squating
 			if (IsSquating) return SquatHeight;
-			if (IsDashing && (!InWater || !SwimInFreeStyle)) return SquatHeight;
+
+			// Dashing
+			if (IsDashing && (!InWater || IsGrounded)) return SquatHeight;
+
+			// Swimming
+			if (InWater) return SwimHeight;
+
+			// Rolling
 			if (!IsPounding && !InWater) {
 				if (JumpRoll && CurrentJumpCount > 0) return SquatHeight;
 				if (JumpSecondRoll && CurrentJumpCount > 1) return SquatHeight;
 			}
+
+			// Normal
 			return Height;
 		}
 

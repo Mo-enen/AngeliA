@@ -80,7 +80,8 @@ namespace Yaya {
 		[SerializeField] int[] BounceAmounts = new int[] { 500, 200, 100, 50, 25, 50, 100, 200, 500, };
 		[SerializeField] int[] BounceAmountsBig = new int[] { 0, -600, -900, -1200, -1400, -1200, -900, -600, 0, };
 		[SerializeField] int Bouncy = 150;
-		[SerializeField] int PoundingBounce = 2000;
+		[SerializeField] int PoundingBounce = 1500;
+		[SerializeField] int SwimRotationLerp = 100;
 
 		// Data
 		private AniCode Ani_Idle = null;
@@ -102,6 +103,8 @@ namespace Yaya {
 		private int CurrentAniFrame = 0;
 		private int CurrentCode = 0;
 		private int CurrentBounce = 1000;
+		private float TargetSwimRotation = 0f;
+		private int LastCellHeight = Const.CELL_SIZE;
 
 
 		#endregion
@@ -116,7 +119,7 @@ namespace Yaya {
 			Character = ch;
 			string name = ch.GetType().Name;
 			if (name.StartsWith('e')) name = name[1..];
-			Ani_Idle = new($"_a{name}.Idle");
+			Ani_Idle = new($"_a{name}.Idle", $"_a{name}");
 			Ani_Walk = new($"_a{name}.Walk", $"_a{name}.Run", $"_a{name}.Idle");
 			Ani_Run = new($"_a{name}.Run", $"_a{name}.Walk", $"_a{name}.Idle");
 			Ani_JumpU = new($"_a{name}.JumpU", $"_a{name}.Idle");
@@ -125,9 +128,9 @@ namespace Yaya {
 			Ani_Dash = new($"_a{name}.Dash", $"_a{name}.Roll");
 			Ani_SquatIdle = new($"_a{name}.SquatIdle", $"_a{name}.Idle");
 			Ani_SquatMove = new($"_a{name}.SquatMove", $"_a{name}.Walk");
-			Ani_SwimIdle = new($"_a{name}.SwimIdle", $"_a{name}.Idle");
-			Ani_SwimMove = new($"_a{name}.SwimMove", $"_a{name}.Run");
-			Ani_SwimDash = new($"_a{name}.SwimDash", $"_a{name}.Run");
+			Ani_SwimIdle = new($"_a{name}.SwimIdle", $"_a{name}.Swim", $"_a{name}.Idle");
+			Ani_SwimMove = new($"_a{name}.SwimMove", $"_a{name}.Swim", $"_a{name}.Run");
+			Ani_SwimDash = new($"_a{name}.SwimDash", $"_a{name}.Swim", $"_a{name}.Dash");
 			Ani_Pound = new($"_a{name}.Pound", $"_a{name}.Idle");
 			Ani_Climb = new($"_a{name}.Climb", $"_a{name}.Walk");
 			Face = new($"{name}.Face");
@@ -168,11 +171,28 @@ namespace Yaya {
 				CurrentAni = ani;
 			}
 
+			// Swim Rotation
+			int pivotY = 0;
+			int offsetY = 0;
+			if (movement.UseFreeStypeSwim && movement.InWater && !movement.IsGrounded) {
+				TargetSwimRotation = Quaternion.LerpUnclamped(
+					Quaternion.Euler(0, 0, TargetSwimRotation),
+					Quaternion.FromToRotation(
+						Vector3.up, new(-movement.LastMoveDirection.x, movement.LastMoveDirection.y)
+					),
+					SwimRotationLerp / 1000f
+				).eulerAngles.z;
+				pivotY = 500;
+				offsetY = LastCellHeight / 2;
+			} else {
+				TargetSwimRotation = 0f;
+			}
+
 			// Draw
 			ref var cell = ref CellRenderer.Draw_Animation(
 				CurrentAni.Code,
-				Character.X, Character.Y, 500, 0, 0,
-				movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+				Character.X, Character.Y + offsetY, 500, pivotY, (int)TargetSwimRotation,
+				movement.FacingRight || movement.IsPounding || movement.IsClimbing ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 				Const.ORIGINAL_SIZE,
 				CurrentAniFrame,
 				ani.LoopStart
@@ -194,7 +214,7 @@ namespace Yaya {
 					bounce = BounceAmounts[frame - movement.LastSquatingFrame];
 					reverse = true;
 				}
-				if (!movement.IsPounding && frame.InRangeExculde(movement.LastPoundingFrame, movement.LastPoundingFrame + duration)) {
+				if (!movement.IsPounding && movement.IsGrounded && frame.InRangeExculde(movement.LastPoundingFrame, movement.LastPoundingFrame + duration)) {
 					bounce = BounceAmountsBig[frame - movement.LastPoundingFrame];
 				}
 				if (movement.IsPounding) {
@@ -223,6 +243,8 @@ namespace Yaya {
 			} else {
 				CurrentAniFrame++;
 			}
+			LastCellHeight = cell.Height;
+
 		}
 
 

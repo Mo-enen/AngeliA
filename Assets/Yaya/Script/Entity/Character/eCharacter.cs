@@ -15,7 +15,7 @@ namespace Yaya {
 
 
 		// Api
-		public override int CollisionLayer => YayaConst.CHARACTER;
+		public override int PhysicsLayer => YayaConst.CHARACTER;
 		public override bool CarryRigidbodyOnTop => false;
 		public override bool IsInAir => base.IsInAir && !Movement.IsClimbing;
 		public override int AirDragX => 0;
