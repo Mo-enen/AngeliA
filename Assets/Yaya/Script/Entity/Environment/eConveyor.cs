@@ -37,20 +37,20 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived (int frame) {
+		public override void OnActived () {
 			Part = PartType.None;
-			base.OnActived(frame);
+			base.OnActived();
 		}
 
 
-		public override void FillPhysics (int frame) {
-			base.FillPhysics(frame);
+		public override void FillPhysics () {
+			base.FillPhysics();
 			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this);
 		}
 
 
-		public override void PhysicsUpdate (int frame) {
-			base.PhysicsUpdate(frame);
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
 			Update_Part();
 			var rect = Rect;
 			rect.y += rect.height;
@@ -64,7 +64,6 @@ namespace Yaya {
 					rig.VelocityY = 0;
 				}
 			}
-			c_Update.Dispose();
 		}
 
 
@@ -85,8 +84,9 @@ namespace Yaya {
 		}
 
 
-		public override void FrameUpdate (int frame) {
-			base.FrameUpdate(frame);
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			int frame = Game.GlobalFrame;
 			int aFrame = (frame * Mathf.Abs(MoveSpeed) / 16).UMod(8);
 			if (MoveSpeed > 0) aFrame = 7 - aFrame;
 			switch (Part) {

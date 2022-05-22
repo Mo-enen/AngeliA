@@ -11,8 +11,8 @@ namespace Yaya {
 		public virtual bool CorrectPosition { get; } = true;
 
 
-		public override void FillPhysics (int frame) {
-			base.FillPhysics(frame);
+		public override void FillPhysics () {
+			base.FillPhysics();
 			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true, YayaConst.CLIMB_TAG);
 		}
 

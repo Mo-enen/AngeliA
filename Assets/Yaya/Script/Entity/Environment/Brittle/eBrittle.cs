@@ -30,8 +30,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived (int frame) {
-			base.OnActived(frame);
+		public override void OnActived () {
+			base.OnActived();
 			HoldStartFrame = int.MaxValue;
 			LastHolding = false;
 			IsFalling = false;
@@ -39,8 +39,9 @@ namespace Yaya {
 		}
 
 
-		public override void PhysicsUpdate (int frame) {
+		public override void PhysicsUpdate () {
 
+			int frame = Game.GlobalFrame;
 			GravityScale = 0;
 			VelocityX = 0;
 			VelocityY = IsFalling ? -FallingVelocity : 0;
@@ -80,7 +81,7 @@ namespace Yaya {
 				}
 			}
 
-			base.PhysicsUpdate(frame);
+			base.PhysicsUpdate();
 		}
 
 

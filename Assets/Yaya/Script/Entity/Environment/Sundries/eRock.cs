@@ -18,8 +18,8 @@ namespace Yaya {
 		private RectInt FullRect = default;
 
 
-		public override void OnActived (int frame) {
-			base.OnActived(frame);
+		public override void OnActived () {
+			base.OnActived();
 			FullRect = new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE);
 			Width = Height = Const.CELL_SIZE;
 			ArtworkIndex = (X.UDivide(Const.CELL_SIZE) + Y.UDivide(Const.CELL_SIZE)).UMod(CODES.Length);
@@ -33,15 +33,15 @@ namespace Yaya {
 		}
 
 
-		public override void FillPhysics (int frame) {
-			base.FillPhysics(frame);
+		public override void FillPhysics () {
+			base.FillPhysics();
 			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this);
 		}
 
 
-		public override void FrameUpdate (int frame) {
+		public override void FrameUpdate () {
 			CellRenderer.Draw(CODES[ArtworkIndex % CODES.Length], FullRect);
-			base.FrameUpdate(frame);
+			base.FrameUpdate();
 		}
 
 

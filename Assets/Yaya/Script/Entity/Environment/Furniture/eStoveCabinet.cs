@@ -20,15 +20,15 @@ namespace Yaya {
 
 
 
-		public override void OnActived (int frame) {
-			base.OnActived(frame);
+		public override void OnActived () {
+			base.OnActived();
 			CabinetLeft = -1;
 			CabinetRight = -1;
 		}
 
 
-		public override void PhysicsUpdate (int frame) {
-			base.PhysicsUpdate(frame);
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
 			if (CabinetLeft < 0 || CabinetRight < 0) {
 				// L
 				CabinetLeft = 0;

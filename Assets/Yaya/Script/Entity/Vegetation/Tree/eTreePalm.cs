@@ -16,8 +16,8 @@ namespace Yaya {
 		protected override int TrunkMidCode => TRUNK_MID_CODE;
 
 
-		public override void FillPhysics (int frame) {
-			base.FillPhysics(frame);
+		public override void FillPhysics () {
+			base.FillPhysics();
 			if (TreesOnTop == 0) {
 				CellPhysics.FillBlock(
 					YayaConst.ENVIRONMENT,
@@ -28,8 +28,9 @@ namespace Yaya {
 		}
 
 
-		public override void FrameUpdate (int frame) {
-			base.FrameUpdate(frame);
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			int frame = Game.GlobalFrame;
 			// Leaf
 			if (TreesOnTop == 0) {
 				CellRenderer.Draw(LEAF_CODE, new(

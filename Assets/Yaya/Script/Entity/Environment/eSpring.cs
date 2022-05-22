@@ -52,16 +52,17 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived (int frame) {
-			base.OnActived(frame);
+		public override void OnActived () {
+			base.OnActived();
 			Width = Horizontal ? Const.CELL_SIZE / 2 : Const.CELL_SIZE;
 			Height = !Horizontal ? Const.CELL_SIZE / 2 : Const.CELL_SIZE;
 			if (Horizontal) OffsetX = Const.CELL_SIZE / 4;
 		}
 
 
-		public override void PhysicsUpdate (int frame) {
-			base.PhysicsUpdate(frame);
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
+			int frame = Game.GlobalFrame;
 			if (frame > LastBounceFrame + BOUNCE_COOLDOWN) {
 				// Check for Bounce
 				RequireBouncePerform = false;
@@ -103,13 +104,13 @@ namespace Yaya {
 						break;
 					}
 				}
-				c_PerformBounce.Dispose();
 			}
 		}
 
 
-		public override void FrameUpdate (int frame) {
-			base.FrameUpdate(frame);
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			int frame = Game.GlobalFrame;
 			var codes = IsMetal ? METAL_CODE : WOOD_CODE;
 			var tint = IsMetal ?
 				(Color32)Color.Lerp(Const.WHITE, RED, Mathf.InverseLerp(RED_LINE_MIN, RED_LINE_MAX, Power)) :

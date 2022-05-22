@@ -15,12 +15,13 @@ namespace Yaya {
 
 
 
-		public override void FillPhysics (int frame) {
+		public override void FillPhysics () {
 			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true, Const.ONEWAY_LEFT_TAG);
 		}
 
 
-		public override void FrameUpdate (int frame) {
+		public override void FrameUpdate () {
+			int frame = Game.GlobalFrame;
 			var rect = Rect;
 			int rotDelta = 0;
 			if (frame < ReboundFrame + 4) {
@@ -35,7 +36,7 @@ namespace Yaya {
 				rect.width,
 				rect.height
 			);
-			base.FrameUpdate(frame);
+			base.FrameUpdate();
 		}
 
 

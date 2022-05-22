@@ -16,13 +16,13 @@ namespace Yaya {
 		protected override int[] ArtworkCodes_Single => CODES;
 
 
-		public override void FillPhysics (int frame) {
+		public override void FillPhysics () {
 			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true);
 		}
 
 
-		public override void FrameUpdate (int frame) {
-			base.FrameUpdate(frame);
+		public override void FrameUpdate () {
+			base.FrameUpdate();
 			DrawClockHands(Rect.Shrink(8), HAND_CODE, 20, 10);
 		}
 

@@ -31,21 +31,22 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnActived (int frame) {
-			base.OnActived(frame);
+		public override void OnActived () {
+			base.OnActived();
 			Width = Const.ITEM_PHYSICS_SIZE;
 			Height = Const.ITEM_PHYSICS_SIZE;
 		}
 
 
-		public override void FillPhysics (int frame) {
-			base.FillPhysics(frame);
+		public override void FillPhysics () {
+			base.FillPhysics();
 			CellPhysics.FillEntity(YayaConst.ITEM, this, true, YayaConst.ITEM_TAG);
 		}
 
 
-		public override void PhysicsUpdate (int frame) {
-			base.PhysicsUpdate(frame);
+		public override void PhysicsUpdate () {
+			int frame = Game.GlobalFrame;
+			base.PhysicsUpdate();
 			// Fall
 			bool grounded = !CellPhysics.RoomCheck((int)PhysicsMask.Map, Rect, this, Direction4.Down);
 			if (!grounded) {
@@ -82,13 +83,12 @@ namespace Yaya {
 				);
 				X = rect.x;
 				Y = Mathf.Min(rect.y, Y);
-				c_MakeRoom.Dispose();
 			}
 		}
 
 
-		public override void FrameUpdate (int frame) {
-			base.FrameUpdate(frame);
+		public override void FrameUpdate () {
+			base.FrameUpdate();
 			CellRenderer.Draw(ItemCode, new(X + (Const.ITEM_PHYSICS_SIZE - Const.ITEM_RENDER_SIZE) / 2, Y, Const.ITEM_RENDER_SIZE, Const.ITEM_RENDER_SIZE));
 		}
 

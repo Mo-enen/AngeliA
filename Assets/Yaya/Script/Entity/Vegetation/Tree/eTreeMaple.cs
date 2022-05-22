@@ -16,8 +16,9 @@ namespace Yaya {
 		protected override int TrunkMidCode => TRUNK_MID_CODE;
 
 
-		public override void FrameUpdate (int frame) {
-			base.FrameUpdate(frame);
+		public override void FrameUpdate () {
+			int frame = Game.GlobalFrame;
+			base.FrameUpdate();
 			// Leaf
 			if (IsBigTree) {
 				// Big

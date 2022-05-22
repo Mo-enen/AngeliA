@@ -21,20 +21,21 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived (int frame) {
+		public override void OnActived () {
 			Width = Const.CELL_SIZE;
 			Height = Const.CELL_SIZE;
 		}
 
 
-		public override void PhysicsUpdate (int frame) {
+		public override void PhysicsUpdate () {
+			int frame = Game.GlobalFrame;
 			if (ContactReboundUpdate(frame)) {
 				if (LastContactFrame < frame - 1) {
 					ReboundFrame = frame;
 				}
 				LastContactFrame = frame;
 			}
-			base.PhysicsUpdate(frame);
+			base.PhysicsUpdate();
 		}
 
 
@@ -60,7 +61,6 @@ namespace Yaya {
 					break;
 				}
 			}
-			c_Rebound.Dispose();
 			return contact;
 		}
 

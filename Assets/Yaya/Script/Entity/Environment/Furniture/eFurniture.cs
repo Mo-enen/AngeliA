@@ -24,8 +24,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived (int frame) {
-			base.OnActived(frame);
+		public override void OnActived () {
+			base.OnActived();
 			Width = Const.CELL_SIZE;
 			Height = Const.CELL_SIZE;
 			Pose = FurniturePose.Unknown;
@@ -33,20 +33,20 @@ namespace Yaya {
 		}
 
 
-		public override void FillPhysics (int frame) {
-			base.FillPhysics(frame);
+		public override void FillPhysics () {
+			base.FillPhysics();
 			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
 		}
 
 
-		public override void PhysicsUpdate (int frame) {
-			base.PhysicsUpdate(frame);
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
 			Update_Pose();
 		}
 
 
-		public override void FrameUpdate (int frame) {
-			base.FrameUpdate(frame);
+		public override void FrameUpdate () {
+			base.FrameUpdate();
 			if (Pose != FurniturePose.Unknown) CellRenderer.Draw(GetArtworkCode(Pose), RenderingRect);
 		}
 

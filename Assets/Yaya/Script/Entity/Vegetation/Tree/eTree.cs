@@ -37,8 +37,8 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnActived (int frame) {
-			base.OnActived(frame);
+		public override void OnActived () {
+			base.OnActived();
 			TrunkWidth = CellRenderer.TryGetSprite(TrunkBottomCode, out var rect) ? rect.GlobalWidth : Const.CELL_SIZE;
 			Width = TrunkWidth;
 			Height = Const.CELL_SIZE;
@@ -46,8 +46,8 @@ namespace Yaya {
 		}
 
 
-		public override void PhysicsUpdate (int frame) {
-			base.PhysicsUpdate(frame);
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
 			const int MAX_TALL = 7;
 			if (TreesOnTop < 0) {
 				var rect = new RectInt(Rect.x + Width / 2, 0, 1, 1);
@@ -66,8 +66,8 @@ namespace Yaya {
 		}
 
 
-		public override void FrameUpdate (int frame) {
-			base.FrameUpdate(frame);
+		public override void FrameUpdate () {
+			base.FrameUpdate();
 			CellRenderer.Draw(
 				HasTreesOnBottom ? TrunkMidCode : TrunkBottomCode,
 				new(X + Const.CELL_SIZE / 2 - TrunkWidth / 2, Y, TrunkWidth, Const.CELL_SIZE)

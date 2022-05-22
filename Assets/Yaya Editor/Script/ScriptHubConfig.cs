@@ -25,7 +25,7 @@ namespace Yaya.Editor {
 				new ("ase", "Ase", true),
 				new ("aseprite", "Aseprite", true),
 			};
-		public int Order => 0 + 1;
+		public int Order => 1;
 		public string GetName (string name) => name.StartsWith('e') ? name[1..] : name;
 
 	}

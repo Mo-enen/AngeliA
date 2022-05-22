@@ -19,7 +19,7 @@ namespace Yaya {
 		public int PrevX { get; private set; } = 0;
 		public int PrevY { get; private set; } = 0;
 		public override RectInt Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
-		public bool IsGrounded { get; set; } = false;
+		public bool IsGrounded { get; private set; } = false;
 		public bool InWater { get; set; } = false;
 		public bool InsideGround { get; set; } = false;
 
@@ -41,6 +41,8 @@ namespace Yaya {
 
 		// Data
 		private static readonly HitInfo[] c_PerformMove = new HitInfo[16];
+		private int IgnoreGroundCheckFrame = int.MinValue;
+		private int IgnoreGravityFrame = int.MinValue;
 
 
 		#endregion
@@ -51,20 +53,21 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnActived (int frame) {
+		public override void OnActived () {
 			PrevX = X;
 			PrevY = Y;
 		}
 
 
-		public override void FillPhysics (int frame) {
+		public override void FillPhysics () {
 			CellPhysics.FillEntity(PhysicsLayer, this);
 		}
 
 
-		public override void PhysicsUpdate (int frame) {
+		public override void PhysicsUpdate () {
 
-			base.PhysicsUpdate(frame);
+			int frame = Game.GlobalFrame;
+			base.PhysicsUpdate();
 
 			PrevX = X;
 			PrevY = Y;
@@ -85,7 +88,7 @@ namespace Yaya {
 			}
 
 			// Gravity
-			if (GravityScale != 0) {
+			if (GravityScale != 0 && frame > IgnoreGravityFrame) {
 				int gravity = Const.GRAVITY * GravityScale / 1000;
 				VelocityY = Mathf.Clamp(
 					VelocityY - gravity,
@@ -116,6 +119,7 @@ namespace Yaya {
 			// Ari Drag
 			if (AirDragX != 0) VelocityX = VelocityX.MoveTowards(0, AirDragX);
 			if (AirDragY != 0) VelocityY = VelocityY.MoveTowards(0, AirDragY);
+
 		}
 
 
@@ -136,13 +140,15 @@ namespace Yaya {
 		);
 
 
-		protected virtual bool GroundedCheck (RectInt rect) =>
-			!CellPhysics.RoomCheck(
+		protected virtual bool GroundedCheck (RectInt rect) {
+			if (Game.GlobalFrame <= IgnoreGroundCheckFrame) return IsGrounded;
+			return !CellPhysics.RoomCheck(
 				(int)PhysicsMask.Solid,
 				rect, this, Direction4.Down
 			) || !CellPhysics.RoomCheck_Oneway(
 				(int)PhysicsMask.Map, rect, this, Direction4.Down, true
 			);
+		}
 
 
 		public void PerformMove (int speedX, int speedY, bool ignoreCarry, bool ignoreOneway) {
@@ -193,7 +199,6 @@ namespace Yaya {
 						}
 					}
 				}
-				c_PerformMove.Dispose();
 				if (finalL + finalR != 0) {
 					PerformMove(finalL + finalR, 0, true, false);
 				}
@@ -206,6 +211,15 @@ namespace Yaya {
 			if (x != X) X = PrevX = x;
 			if (y != Y) Y = PrevY = y;
 		}
+
+
+		public void MakeGrounded (int frame = 0) {
+			IsGrounded = true;
+			IgnoreGroundCheckFrame = Game.GlobalFrame + frame;
+		}
+
+
+		public void IgnoreGravity (int frame = 0) => IgnoreGravityFrame = Game.GlobalFrame + frame;
 
 
 		#endregion

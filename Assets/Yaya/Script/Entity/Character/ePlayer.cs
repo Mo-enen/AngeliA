@@ -17,9 +17,6 @@ namespace Yaya {
 		#region --- VAR ---
 
 
-		// Api
-		public static ePlayer CurrentPlayer { get; private set; } = null;
-
 		// Data
 		private Game Game = null;
 		private int LeftDownFrame = int.MinValue;
@@ -45,28 +42,27 @@ namespace Yaya {
 		}
 
 
-		public override void OnActived (int frame) {
+		public override void OnActived () {
 			LastGroundedY = Y;
 			AimX = Game.ViewRect.x;
 			AimY = Game.ViewRect.y;
-			CurrentPlayer = this;
-			base.OnActived(frame);
+			base.OnActived();
 		}
 
 
-		public override void FrameUpdate (int frame) {
-			if (CurrentPlayer != this) CurrentPlayer = this;
-			Update_Move(frame);
+		public override void FrameUpdate () {
+			Update_Move();
 			Update_JumpDashPound();
 			Update_View();
-			base.FrameUpdate(frame);
+			base.FrameUpdate();
 		}
 
 
-		private void Update_Move (int frame) {
+		private void Update_Move () {
 
 			if (Movement == null) return;
 
+			int frame = Game.GlobalFrame;
 			var x = Direction3.None;
 			var y = Direction3.None;
 
@@ -158,12 +154,6 @@ namespace Yaya {
 				if (Y <= viewRect.yMin) AimY = Y - 1;
 				Game.SetViewPositionDely(AimX, AimY, 1000, int.MinValue + 1);
 			}
-		}
-
-
-		public override void OnInactived (int frame) {
-			if (CurrentPlayer == this) CurrentPlayer = null;
-			base.OnInactived(frame);
 		}
 
 

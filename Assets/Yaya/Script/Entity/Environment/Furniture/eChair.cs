@@ -18,15 +18,15 @@ namespace Yaya {
 		private FurniturePose DockPose = FurniturePose.Unknown;
 
 
-		public override void OnActived (int frame) {
-			base.OnActived(frame);
+		public override void OnActived () {
+			base.OnActived();
 			DockPose = FurniturePose.Unknown;
 		}
 
 
-		public override void PhysicsUpdate (int frame) {
+		public override void PhysicsUpdate () {
 			var oldRect = Rect;
-			base.PhysicsUpdate(frame);
+			base.PhysicsUpdate();
 			if (DockPose == FurniturePose.Unknown) {
 				var rect = oldRect;
 				rect.x = oldRect.x - Const.CELL_SIZE;

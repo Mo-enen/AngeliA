@@ -20,7 +20,7 @@ namespace Yaya {
 		protected override int[] ArtworkCodes_Single => CODES_SINGLE;
 
 
-		public override void FillPhysics (int frame) {
+		public override void FillPhysics () {
 			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true);
 		}
 

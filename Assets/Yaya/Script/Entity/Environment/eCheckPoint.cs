@@ -37,8 +37,8 @@ namespace Yaya {
 		}
 
 
-		public override void OnActived (int frame) {
-			base.OnActived(frame);
+		public override void OnActived () {
+			base.OnActived();
 			var globalUnitPos = new Vector2Int(X.UDivide(Const.CELL_SIZE), Y.UDivide(Const.CELL_SIZE));
 			if (CpPool.TryGetValue(globalUnitPos, out var _cpData) && _cpData.Index >= 0) {
 				IsAltar = _cpData.IsAltar;
@@ -52,8 +52,8 @@ namespace Yaya {
 		}
 
 
-		public override void PhysicsUpdate (int frame) {
-			base.PhysicsUpdate(frame);
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
 			if (ArtCode == 0) {
 				int artIndex = 0;
 				var globalUnitPos = new Vector2Int(X.UDivide(Const.CELL_SIZE), Y.UDivide(Const.CELL_SIZE));
@@ -67,8 +67,8 @@ namespace Yaya {
 		}
 
 
-		public override void FrameUpdate (int frame) {
-			base.FrameUpdate(frame);
+		public override void FrameUpdate () {
+			base.FrameUpdate();
 			CellRenderer.Draw(ArtCode, Rect);
 		}
 

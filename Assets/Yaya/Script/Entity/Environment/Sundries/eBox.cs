@@ -13,9 +13,9 @@ namespace Yaya {
 		private static readonly int BARREL_CODE = "Box".AngeHash();
 
 
-		public override void FrameUpdate (int frame) {
+		public override void FrameUpdate () {
 			CellRenderer.Draw(BARREL_CODE, Rect);
-			base.FrameUpdate(frame);
+			base.FrameUpdate();
 		}
 
 	}

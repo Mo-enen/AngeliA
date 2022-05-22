@@ -19,8 +19,8 @@ namespace Yaya {
 		protected override int[] ArtworkCodes_Single => CODES_SINGLE;
 
 
-		public override void FrameUpdate (int frame) {
-			base.FrameUpdate(frame);
+		public override void FrameUpdate () {
+			base.FrameUpdate();
 			if (Pose == FurniturePose.Up) {
 				DrawClockHands(Rect.Shrink(36), HAND_CODE, 16, 8);
 			} else if (Pose == FurniturePose.Single) {

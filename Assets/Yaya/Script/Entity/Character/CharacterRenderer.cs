@@ -137,14 +137,15 @@ namespace Yaya {
 		}
 
 
-		public void FrameUpdate (int frame) {
-			DrawCharacter(frame);
+		public void FrameUpdate () {
+			DrawCharacter();
 			DrawFace();
 		}
 
 
-		private void DrawCharacter (int frame) {
+		private void DrawCharacter () {
 
+			int frame = Game.GlobalFrame;
 			var movement = Character.Movement;
 			AniCode ani;
 			if (movement.IsClimbing) {

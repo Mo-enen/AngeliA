@@ -19,19 +19,19 @@ namespace Yaya {
 		private int LeftStoveCount = -1;
 
 
-		public override void OnActived (int frame) {
-			base.OnActived(frame);
+		public override void OnActived () {
+			base.OnActived();
 			LeftStoveCount = -1;
 		}
 
 
-		public override void FillPhysics (int frame) {
+		public override void FillPhysics () {
 			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true);
 		}
 
 
-		public override void PhysicsUpdate (int frame) {
-			base.PhysicsUpdate(frame);
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
 			if (LeftStoveCount < 0) {
 				LeftStoveCount = 0;
 				for (int i = 1; i <= CODES.Length; i++) {

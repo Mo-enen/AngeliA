@@ -51,15 +51,15 @@ namespace Yaya {
 		}
 
 
-		public override void PhysicsUpdate (int frame) {
-			if (Movement != null) Movement.PhysicsUpdate(frame);
-			base.PhysicsUpdate(frame);
+		public override void PhysicsUpdate () {
+			if (Movement != null) Movement.PhysicsUpdate();
+			base.PhysicsUpdate();
 		}
 
 
-		public override void FrameUpdate (int frame) {
-			if (Renderer != null) Renderer.FrameUpdate(frame);
-			base.FrameUpdate(frame);
+		public override void FrameUpdate () {
+			if (Renderer != null) Renderer.FrameUpdate();
+			base.FrameUpdate();
 		}
 
 

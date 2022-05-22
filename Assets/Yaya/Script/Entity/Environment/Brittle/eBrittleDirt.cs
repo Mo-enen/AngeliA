@@ -13,8 +13,9 @@ namespace Yaya {
 		protected override int HoldDuration => 60;
 
 
-		public override void FrameUpdate (int frame) {
-			base.FrameUpdate(frame);
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			int frame = Game.GlobalFrame;
 			var tint = IsHolding || IsFalling ? new Color32(255, 196, 164, 255) : new Color32(255, 255, 255, 255);
 			int rot = IsHolding ? GetHoldedFrame(frame * 4).PingPong(12) - 6 : 0;
 			CellRenderer.Draw(

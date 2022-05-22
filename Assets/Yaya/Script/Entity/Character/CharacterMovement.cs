@@ -140,8 +140,8 @@ namespace Yaya {
 		}
 
 
-		public void PhysicsUpdate (int frame) {
-			CurrentFrame = frame;
+		public void PhysicsUpdate () {
+			CurrentFrame = Game.GlobalFrame;
 			Update_Cache();
 			Update_Jump();
 			Update_Dash();

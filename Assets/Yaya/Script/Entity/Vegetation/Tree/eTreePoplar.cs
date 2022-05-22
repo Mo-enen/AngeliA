@@ -16,8 +16,8 @@ namespace Yaya {
 		protected override int TrunkMidCode => TRUNK_MID_CODE;
 
 
-		public override void FillPhysics (int frame) {
-			base.FillPhysics(frame);
+		public override void FillPhysics () {
+			base.FillPhysics();
 			// Leaf
 			if (IsBigTree) {
 				// Big
@@ -44,8 +44,9 @@ namespace Yaya {
 		}
 
 
-		public override void FrameUpdate (int frame) {
-			base.FrameUpdate(frame);
+		public override void FrameUpdate () {
+			int frame = Game.GlobalFrame;
+			base.FrameUpdate();
 			// Leaf
 			if (IsBigTree) {
 				// Big
