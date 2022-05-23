@@ -5,7 +5,7 @@
 	"DashDuration" : 20,
 	"RunTrigger": 48,
 	"JumpSpeed": 69,
-	"JumpSecondRoll" : true,
-	"SwimInFreeStyle" : false
-
+	"SwimInFreeStyle" : false,
+	"JumpRoll" : false,
+	"JumpSecondRoll" : true
 }

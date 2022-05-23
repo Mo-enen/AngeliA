@@ -20,6 +20,7 @@ namespace Yaya {
 
 		// Data
 		private readonly HitInfo[] c_Overlap = new HitInfo[16];
+		private bool? UnfillBottomBlock = null;
 
 
 		#endregion
@@ -30,8 +31,38 @@ namespace Yaya {
 		#region --- MSG ---
 
 
+		public override void OnActived () {
+			base.OnActived();
+			UnfillBottomBlock = null;
+		}
+
+
+		public override void FillPhysics () {
+			base.FillPhysics();
+			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true);
+		}
+
+
 		public override void BeforePhysicsUpdate () {
 			base.BeforePhysicsUpdate();
+			// Unfill
+			if (!UnfillBottomBlock.HasValue) {
+				if (DirectionVertical == Direction3.Up) {
+					UnfillBottomBlock = CellPhysics.HasEntity<eSlope>(
+						new(DirectionHorizontal == Direction3.Left ? X - Const.CELL_SIZE / 2 : X + Const.CELL_SIZE + Const.CELL_SIZE / 2, Y - Const.CELL_SIZE / 2, 1, 1), (int)PhysicsMask.Environment, this, OperationMode.TriggerOnly
+					);
+				} else {
+					UnfillBottomBlock = false;
+				}
+			}
+			if (UnfillBottomBlock.HasValue && UnfillBottomBlock.Value) {
+				CellPhysics.Unfill(
+					(int)PhysicsMask.Level,
+					new(X + Const.CELL_SIZE / 2, Y - Const.CELL_SIZE / 2, 1, 1),
+					false, true
+				);
+			}
+			// Fix Rig
 			int count = CellPhysics.OverlapAll(c_Overlap, CollisionMask, Rect);
 			for (int i = 0; i < count; i++) {
 				var hit = c_Overlap[i];
@@ -68,33 +99,39 @@ namespace Yaya {
 
 
 		private void FixPosition (eRigidbody target, int distance) {
-
-			// Fix Pos
 			if (DirectionVertical == Direction3.Up) {
-				target.MakeGrounded();
-				target.X += DirectionHorizontal == Direction3.Left ? -distance / 2 : distance / 2;
-				target.Y += DirectionVertical == Direction3.Down ? -distance / 2 : distance / 2;
+				// Fix Pos
+				target.MakeGrounded(4);
+				target.PerformMove(
+					DirectionHorizontal == Direction3.Left ? -distance / 2 : distance / 2,
+					DirectionVertical == Direction3.Down ? -distance / 2 : distance / 2,
+					true, false
+				);
+				// Fix Velocity
+				if (target.VelocityX == 0) {
+					// Fix X (Drop)
+					target.VelocityY = 0;
+					target.IgnoreGravity();
+				} else {
+					// Fix Y (Walk)
+					if ((DirectionHorizontal == Direction3.Left) == (target.VelocityX > 0)) {
+						// Walk Toward
+						target.VelocityY = DirectionVertical == Direction3.Down ?
+							-Mathf.Abs(target.VelocityX) :
+							Mathf.Abs(target.VelocityX);
+					} else {
+						// Walk Away
+						target.VelocityY = -Mathf.Abs(target.VelocityX);
+					}
+				}
 			} else {
+				// Down
+				// Fix Pos
 				if (target.VelocityX == 0) {
 					if (DirectionVertical == Direction3.Up) distance--;
-					target.X += DirectionHorizontal == Direction3.Left ? -distance : distance;
+					target.PerformMove(DirectionHorizontal == Direction3.Left ? -distance : distance, 0, true, false);
 				} else {
-					target.Y += DirectionVertical == Direction3.Down ? -distance : distance;
-				}
-			}
-
-			// Fix Velocity
-			if (target.VelocityX == 0) {
-				// Fix X (Drop)
-				if (DirectionVertical == Direction3.Up) target.VelocityY = 0;
-				target.IgnoreGravity();
-			} else {
-				// Fix Y (Walk)
-				if ((DirectionHorizontal == Direction3.Left) == (target.VelocityX > 0)) {
-					// Walk Toward
-					target.VelocityY = DirectionVertical == Direction3.Down ?
-						-Mathf.Abs(target.VelocityX) :
-						Mathf.Abs(target.VelocityX);
+					target.PerformMove(0, DirectionVertical == Direction3.Down ? -distance : distance, true, false);
 				}
 			}
 		}

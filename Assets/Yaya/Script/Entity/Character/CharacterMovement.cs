@@ -123,6 +123,8 @@ namespace Yaya {
 		private int? ClimbPositionCorrect = null;
 		private RectInt Hitbox = default;
 		private int LastIntendedX = 0;
+		private int PrevHitboxHeight = Const.CELL_SIZE;
+		private readonly HitInfo[] c_OnewayCollision = new HitInfo[8];
 
 
 		#endregion
@@ -137,6 +139,7 @@ namespace Yaya {
 			Rig = ch;
 			Rig.Width = Width;
 			Rig.Height = Height;
+			PrevHitboxHeight = Height;
 		}
 
 
@@ -147,10 +150,12 @@ namespace Yaya {
 			Update_Dash();
 			Update_VelocityX();
 			Update_VelocityY();
+			Update_Collision();
 			IntendedJump = false;
 			IntendedDash = false;
 			IntendedPound = false;
 			PrevHoldingJump = HoldingJump;
+			PrevHitboxHeight = Hitbox.height;
 		}
 
 
@@ -368,6 +373,34 @@ namespace Yaya {
 		}
 
 
+		private void Update_Collision () {
+			// Knock Back Down when Growing Hitbox
+			if (PrevHitboxHeight < Hitbox.height) {
+				var rect = new RectInt(
+					Rig.X + Rig.OffsetX,
+					Rig.Y + Rig.OffsetY + PrevHitboxHeight,
+					Rig.Width,
+					Hitbox.height - PrevHitboxHeight
+				);
+				int count = CellPhysics.OverlapAll(
+					c_OnewayCollision, (int)PhysicsMask.Map, rect, Rig,
+					OperationMode.TriggerOnly, Const.ONEWAY_DOWN_TAG
+				);
+				for (int i = 0; i < count; i++) {
+					var hit = c_OnewayCollision[i];
+					if (hit.Rect.yMin > rect.y) {
+						Rig.PerformMove(
+							0, -Hitbox.height + PrevHitboxHeight,
+							true, false
+						);
+						break;
+					}
+				}
+				if (IsGrounded) IsSquating = true;
+			}
+		}
+
+
 		#endregion
 
 
@@ -417,23 +450,23 @@ namespace Yaya {
 
 
 		private bool ForceSquatCheck () {
+
 			if (IsInsideGround) return false;
+
 			var rect = new RectInt(
 				Rig.X + Rig.OffsetX,
 				Rig.Y + Rig.OffsetY + Height / 2,
 				Rig.Width,
 				Height / 2
 			);
-			bool overlap = CellPhysics.Overlap((int)PhysicsMask.Level, rect, null);
-			if (overlap) return true;
-			overlap = CellPhysics.Overlap((int)PhysicsMask.Environment, rect, null);
-			if (overlap && IsSquating && IntendedY >= 0) {
-				// Want to Stand Up but Overlaps
-				return !CellPhysics.RoomCheck(
-					(int)PhysicsMask.Map, rect, Rig, Direction4.Up
-				);
-			}
-			return overlap;
+
+			// Oneway Check
+			if ((IsSquating || IsDashing) && !CellPhysics.RoomCheck_Oneway(
+				(int)PhysicsMask.Map, rect, Rig, Direction4.Up, false
+			)) return true;
+
+			// Overlap Check
+			return CellPhysics.Overlap((int)PhysicsMask.Map, rect, null);
 		}
 
 
