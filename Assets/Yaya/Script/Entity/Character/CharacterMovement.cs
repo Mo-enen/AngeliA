@@ -61,7 +61,7 @@ namespace Yaya {
 		[SerializeField] int SquatHeight = 200;
 		[SerializeField] int SwimHeight = 384;
 
-		[SerializeField] int MoveSpeed = 17;
+		[SerializeField] int MoveSpeed = 20;
 		[SerializeField] int MoveAcceleration = 3;
 		[SerializeField] int MoveDecceleration = 4;
 		[SerializeField] int OppositeXAccelerationRate = 3000;
@@ -86,7 +86,7 @@ namespace Yaya {
 		[SerializeField] int DashCancelLoseRate = 300;
 
 		[SerializeField] bool SquatAvailable = true;
-		[SerializeField] int SquatSpeed = 8;
+		[SerializeField] int SquatSpeed = 14;
 		[SerializeField] int SquatAcceleration = 48;
 		[SerializeField] int SquatDecceleration = 48;
 
@@ -95,6 +95,10 @@ namespace Yaya {
 
 		[SerializeField] bool SwimInFreeStyle = false;
 		[SerializeField] int InWaterSpeedLoseRate = 500;
+		[SerializeField] int SwimSpeed = 42;
+		[SerializeField] int SwimAcceleration = 4;
+		[SerializeField] int SwimDecceleration = 4;
+
 		[SerializeField] int FreeSwimSpeed = 40;
 		[SerializeField] int FreeSwimAcceleration = 4;
 		[SerializeField] int FreeSwimDecceleration = 4;
@@ -316,6 +320,10 @@ namespace Yaya {
 				speed = IntendedX * FreeSwimSpeed;
 				acc = FreeSwimAcceleration;
 				dcc = FreeSwimDecceleration;
+			} else if (InWater) {
+				speed = IntendedX * SwimSpeed;
+				acc = SwimAcceleration;
+				dcc = SwimDecceleration;
 			} else {
 				speed = IntendedX * (MovingAccumulateFrame >= RunTrigger ? RunSpeed : MoveSpeed);
 				acc = MoveAcceleration;
@@ -359,12 +367,16 @@ namespace Yaya {
 				} else if (HoldingJump && Rig.VelocityY > 0) {
 					// Jumping Raise
 					Rig.GravityScale = JumpRaiseGravityRate;
-				} else if (!IsGrounded) {
-					// In Air/Water
-					Rig.GravityScale = 1000;
 				} else {
-					// Grounded
+					// Else
 					Rig.GravityScale = 1000;
+					if (InWater && IntendedY != 0) {
+						// Normal Swim
+						Rig.GravityScale = 0;
+						Rig.VelocityY = Rig.VelocityY.MoveTowards(
+							IntendedY * SwimSpeed, SwimAcceleration, SwimDecceleration
+						);
+					}
 				}
 			}
 			if (IsInsideGround) {

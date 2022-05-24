@@ -129,8 +129,8 @@ namespace Yaya {
 			Ani_SquatIdle = new($"_a{name}.SquatIdle", $"_a{name}.Idle");
 			Ani_SquatMove = new($"_a{name}.SquatMove", $"_a{name}.Walk");
 			Ani_SwimIdle = new($"_a{name}.SwimIdle", $"_a{name}.Swim", $"_a{name}.Idle");
-			Ani_SwimMove = new($"_a{name}.SwimMove", $"_a{name}.Swim", $"_a{name}.Run");
-			Ani_SwimDash = new($"_a{name}.SwimDash", $"_a{name}.Swim", $"_a{name}.Dash");
+			Ani_SwimMove = new($"_a{name}.SwimMove", $"_a{name}.SwimIdle", $"_a{name}.Swim", $"_a{name}.Run");
+			Ani_SwimDash = new($"_a{name}.SwimDash", $"_a{name}.SwimMove", $"_a{name}.Swim", $"_a{name}.Dash");
 			Ani_Pound = new($"_a{name}.Pound", $"_a{name}.Idle");
 			Ani_Climb = new($"_a{name}.Climb", $"_a{name}.Walk");
 			Face = new($"{name}.Face");
@@ -158,7 +158,7 @@ namespace Yaya {
 				ani = !movement.IsGrounded && movement.InWater ? Ani_SwimDash : Ani_Dash;
 			} else if (movement.IsSquating) {
 				ani = movement.IsMoving ? Ani_SquatMove : Ani_SquatIdle;
-			} else if (movement.InWater) {
+			} else if (movement.InWater && !movement.IsGrounded) {
 				ani = movement.IsMoving ? Ani_SwimMove : Ani_SwimIdle;
 			} else if (movement.IsInAir) {
 				ani = movement.FinalVelocityY > 0 ? Ani_JumpU : Ani_JumpD;
