@@ -9,7 +9,7 @@ namespace Yaya {
 
 
 		// Const
-		private const int MASK = (int)(PhysicsMask.Character | PhysicsMask.Environment | PhysicsMask.Item);
+		private const int MASK = (int)(YayaConst.MASK_CHARACTER | YayaConst.MASK_ENVIRONMENT | YayaConst.MASK_ITEM);
 
 		// Api
 		public abstract Direction4 GateDirection { get; }

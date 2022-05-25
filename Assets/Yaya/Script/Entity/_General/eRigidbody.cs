@@ -25,7 +25,7 @@ namespace Yaya {
 
 		// Virtual
 		public virtual int PhysicsLayer { get; } = 0;
-		public virtual int CollisionMask { get; } = (int)PhysicsMask.Solid;
+		public virtual int CollisionMask { get; } = YayaConst.MASK_SOLID;
 		public virtual bool CarryRigidbodyOnTop => true;
 		public virtual bool IsInAir => !IsGrounded && !InWater;
 		public virtual bool DestroyOnInsideGround => false;
@@ -78,7 +78,7 @@ namespace Yaya {
 			InsideGround = InsideGroundCheck();
 
 			// Water
-			InWater = CellPhysics.Overlap((int)PhysicsMask.Level, Rect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
+			InWater = CellPhysics.Overlap(YayaConst.MASK_LEVEL, Rect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
 
 			if (InsideGround) {
 				X += VelocityX;
@@ -132,7 +132,7 @@ namespace Yaya {
 
 
 		protected virtual bool InsideGroundCheck () => CellPhysics.Overlap(
-			(int)PhysicsMask.Level, new(
+			YayaConst.MASK_LEVEL, new(
 				X + OffsetX + Width / 2,
 				Y + OffsetY + Height / 2,
 				1, 1
@@ -143,10 +143,10 @@ namespace Yaya {
 		protected virtual bool GroundedCheck (RectInt rect) {
 			if (Game.GlobalFrame <= IgnoreGroundCheckFrame) return IsGrounded;
 			return !CellPhysics.RoomCheck(
-				(int)PhysicsMask.Solid,
+				CollisionMask,
 				rect, this, Direction4.Down
 			) || !CellPhysics.RoomCheck_Oneway(
-				(int)PhysicsMask.Map, rect, this, Direction4.Down, true
+				YayaConst.MASK_MAP, rect, this, Direction4.Down, true
 			);
 		}
 

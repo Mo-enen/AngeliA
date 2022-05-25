@@ -55,7 +55,7 @@ namespace Yaya {
 			var rect = Rect;
 			rect.y += rect.height;
 			rect.height = 1;
-			int count = CellPhysics.OverlapAll(c_Update, (int)PhysicsMask.Solid, rect, this);
+			int count = CellPhysics.OverlapAll(c_Update, YayaConst.MASK_SOLID, rect, this);
 			for (int i = 0; i < count; i++) {
 				var hit = c_Update[i];
 				if (hit.Entity is eRigidbody rig) {
@@ -73,9 +73,9 @@ namespace Yaya {
 			int width = rect.width;
 			rect.width = 1;
 			rect.x -= 1;
-			bool hasLeft = CellPhysics.HasEntity<eConveyor>(rect, (int)PhysicsMask.Environment, this);
+			bool hasLeft = CellPhysics.HasEntity<eConveyor>(rect, YayaConst.MASK_ENVIRONMENT, this);
 			rect.x += width + 1;
-			bool hasRight = CellPhysics.HasEntity<eConveyor>(rect, (int)PhysicsMask.Environment, this);
+			bool hasRight = CellPhysics.HasEntity<eConveyor>(rect, YayaConst.MASK_ENVIRONMENT, this);
 			Part =
 				hasLeft && hasRight ? PartType.Middle :
 				hasLeft && !hasRight ? PartType.RightEdge :

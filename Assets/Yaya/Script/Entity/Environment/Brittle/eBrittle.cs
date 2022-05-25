@@ -49,7 +49,7 @@ namespace Yaya {
 
 			// Fall Check
 			if (!IsFalling) {
-				IsHolding = !CellPhysics.RoomCheck((int)PhysicsMask.Character, rect, this, Direction4.Up);
+				IsHolding = !CellPhysics.RoomCheck(YayaConst.MASK_CHARACTER, rect, this, Direction4.Up);
 				if (IsHolding) {
 					if (!LastHolding) HoldStartFrame = frame;
 					if (frame - HoldStartFrame > HoldDuration) {
@@ -67,8 +67,8 @@ namespace Yaya {
 				switch (BreakCondition) {
 					case BreakMode.BreakOnCollideGround: {
 						if (
-							!CellPhysics.RoomCheck((int)PhysicsMask.Solid, rect, this, Direction4.Down) ||
-							!CellPhysics.RoomCheck_Oneway((int)PhysicsMask.Map, rect, this, Direction4.Down, true)
+							!CellPhysics.RoomCheck(YayaConst.MASK_SOLID, rect, this, Direction4.Down) ||
+							!CellPhysics.RoomCheck_Oneway(YayaConst.MASK_MAP, rect, this, Direction4.Down, true)
 						) {
 							Break();
 						}

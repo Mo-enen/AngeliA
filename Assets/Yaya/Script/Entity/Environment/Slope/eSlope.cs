@@ -16,7 +16,7 @@ namespace Yaya {
 		// Api
 		public abstract Direction3 DirectionVertical { get; }
 		public abstract Direction3 DirectionHorizontal { get; }
-		public virtual int CollisionMask => (int)PhysicsMask.Rigidbody;
+		public virtual int CollisionMask => YayaConst.MASK_RIGIDBODY;
 
 		// Data
 		private readonly HitInfo[] c_Overlap = new HitInfo[16];
@@ -49,7 +49,7 @@ namespace Yaya {
 			if (!UnfillBottomBlock.HasValue) {
 				if (DirectionVertical == Direction3.Up) {
 					UnfillBottomBlock = CellPhysics.HasEntity<eSlope>(
-						new(DirectionHorizontal == Direction3.Left ? X - Const.CELL_SIZE / 2 : X + Const.CELL_SIZE + Const.CELL_SIZE / 2, Y - Const.CELL_SIZE / 2, 1, 1), (int)PhysicsMask.Environment, this, OperationMode.TriggerOnly
+						new(DirectionHorizontal == Direction3.Left ? X - Const.CELL_SIZE / 2 : X + Const.CELL_SIZE + Const.CELL_SIZE / 2, Y - Const.CELL_SIZE / 2, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 					);
 				} else {
 					UnfillBottomBlock = false;
@@ -57,7 +57,7 @@ namespace Yaya {
 			}
 			if (UnfillBottomBlock.HasValue && UnfillBottomBlock.Value) {
 				CellPhysics.Unfill(
-					(int)PhysicsMask.Level,
+					YayaConst.MASK_LEVEL,
 					new(X + Const.CELL_SIZE / 2, Y - Const.CELL_SIZE / 2, 1, 1),
 					false, true
 				);

@@ -419,3 +419,11 @@ MonoBehaviour:
       m_Mode: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
+  m_DefaultViewConfig:
+    DefaultHeight: 5120
+    MinHeight: 2048
+    MaxHeight: 14336
+    ViewRatio: 2000
+  m_GameAssets:
+    SkyboxShader: {fileID: 4800000, guid: ce2324baeaef2844ba1c8c3df2091636, type: 3}
+    FallbackShader: {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9, type: 3}

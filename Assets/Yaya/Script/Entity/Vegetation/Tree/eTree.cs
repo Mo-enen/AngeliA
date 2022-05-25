@@ -55,13 +55,13 @@ namespace Yaya {
 				// Top
 				for (int i = 0; i < MAX_TALL; i++) {
 					rect.y = Rect.yMax + Const.CELL_SIZE * i + Const.CELL_SIZE / 2;
-					if (CellPhysics.HasEntity<eTree>(rect, (int)PhysicsMask.Environment, this, OperationMode.TriggerOnly, YayaConst.CLIMB_TAG)) {
+					if (CellPhysics.HasEntity<eTree>(rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly, YayaConst.CLIMB_TAG)) {
 						TreesOnTop = i + 1;
 					} else break;
 				}
 				// Bottom
 				rect.y = Rect.yMin - Const.CELL_SIZE / 2;
-				HasTreesOnBottom = CellPhysics.HasEntity<eTree>(rect, (int)PhysicsMask.Environment, this, OperationMode.TriggerOnly, YayaConst.CLIMB_TAG);
+				HasTreesOnBottom = CellPhysics.HasEntity<eTree>(rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly, YayaConst.CLIMB_TAG);
 			}
 		}
 

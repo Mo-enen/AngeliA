@@ -35,7 +35,7 @@ namespace Yaya {
 				for (int i = 1; i <= CODES.Length; i++) {
 					var rect = Rect.Shift(-i * Const.CELL_SIZE, 0);
 					if (CellPhysics.HasEntity<eStoveCabinet>(
-						rect, (int)PhysicsMask.Environment, this, OperationMode.TriggerOnly
+						rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 					)) {
 						CabinetLeft++;
 					} else break;
@@ -45,7 +45,7 @@ namespace Yaya {
 				for (int i = 1; i <= CODES.Length; i++) {
 					var rect = Rect.Shift(i * Const.CELL_SIZE, 0);
 					if (CellPhysics.HasEntity<eStoveCabinet>(
-						rect, (int)PhysicsMask.Environment, this, OperationMode.TriggerOnly
+						rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 					)) {
 						CabinetRight++;
 					} else break;

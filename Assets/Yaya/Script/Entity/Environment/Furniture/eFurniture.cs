@@ -82,9 +82,9 @@ namespace Yaya {
 			if (ModuleType == Direction3.Horizontal) {
 				var rect = Rect;
 				rect.x = Rect.x - Const.CELL_SIZE;
-				bool hasLeft = CellPhysics.HasEntity(GetType(), rect, (int)PhysicsMask.Environment, this, OperationMode.TriggerOnly);
+				bool hasLeft = CellPhysics.HasEntity(GetType(), rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly);
 				rect.x = Rect.xMax;
-				bool hasRight = CellPhysics.HasEntity(GetType(), rect, (int)PhysicsMask.Environment, this, OperationMode.TriggerOnly);
+				bool hasRight = CellPhysics.HasEntity(GetType(), rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly);
 				Pose =
 					hasLeft && hasRight ? FurniturePose.Mid :
 					!hasLeft && !hasRight ? FurniturePose.Single :
@@ -93,9 +93,9 @@ namespace Yaya {
 			} else if (ModuleType == Direction3.Vertical) {
 				var rect = Rect;
 				rect.y = Rect.y - Const.CELL_SIZE;
-				bool hasDown = CellPhysics.HasEntity(GetType(), rect, (int)PhysicsMask.Environment, this, OperationMode.TriggerOnly);
+				bool hasDown = CellPhysics.HasEntity(GetType(), rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly);
 				rect.y = Rect.yMax;
-				bool hasUp = CellPhysics.HasEntity(GetType(), rect, (int)PhysicsMask.Environment, this, OperationMode.TriggerOnly);
+				bool hasUp = CellPhysics.HasEntity(GetType(), rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly);
 				Pose =
 					hasDown && hasUp ? FurniturePose.Mid :
 					!hasDown && !hasUp ? FurniturePose.Single :

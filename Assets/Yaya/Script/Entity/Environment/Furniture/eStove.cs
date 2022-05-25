@@ -41,7 +41,7 @@ namespace Yaya {
 						1, 1
 					);
 					if (CellPhysics.HasEntity<eStove>(
-						rect, (int)PhysicsMask.Environment, this, OperationMode.TriggerOnly
+						rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 					)) {
 						LeftStoveCount++;
 					} else break;

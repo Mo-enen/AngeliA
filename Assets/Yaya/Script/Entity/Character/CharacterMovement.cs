@@ -114,6 +114,7 @@ namespace Yaya {
 
 		// Data
 		private eRigidbody Rig = null;
+		private RectInt Hitbox = default;
 		private int CurrentFrame = 0;
 		private int IntendedX = 0;
 		private int IntendedY = 0;
@@ -125,8 +126,7 @@ namespace Yaya {
 		private bool PrevInWater = false;
 		private bool PrevGrounded = false;
 		private int? ClimbPositionCorrect = null;
-		private RectInt Hitbox = default;
-		private int LastIntendedX = 0;
+		private int LastIntendedX = 1;
 		private int PrevHitboxHeight = Const.CELL_SIZE;
 		private readonly HitInfo[] c_OnewayCollision = new HitInfo[8];
 
@@ -395,7 +395,7 @@ namespace Yaya {
 					Hitbox.height - PrevHitboxHeight
 				);
 				int count = CellPhysics.OverlapAll(
-					c_OnewayCollision, (int)PhysicsMask.Map, rect, Rig,
+					c_OnewayCollision, YayaConst.MASK_MAP, rect, Rig,
 					OperationMode.TriggerOnly, Const.ONEWAY_DOWN_TAG
 				);
 				for (int i = 0; i < count; i++) {
@@ -474,11 +474,11 @@ namespace Yaya {
 
 			// Oneway Check
 			if ((IsSquating || IsDashing) && !CellPhysics.RoomCheck_Oneway(
-				(int)PhysicsMask.Map, rect, Rig, Direction4.Up, false
+				YayaConst.MASK_MAP, rect, Rig, Direction4.Up, false
 			)) return true;
 
 			// Overlap Check
-			return CellPhysics.Overlap((int)PhysicsMask.Map, rect, null);
+			return CellPhysics.Overlap(YayaConst.MASK_MAP, rect, null);
 		}
 
 
@@ -488,7 +488,7 @@ namespace Yaya {
 			// 2: overlap and correct pos
 			if (IsInsideGround) return 0;
 			if (CellPhysics.Overlap(
-				(int)PhysicsMask.Environment,
+				YayaConst.MASK_ENVIRONMENT,
 				up ? Rig.Rect.Shift(0, ClimbSpeedY) : Rig.Rect,
 				Rig,
 				out var info,

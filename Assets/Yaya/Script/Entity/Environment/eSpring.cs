@@ -29,8 +29,8 @@ namespace Yaya {
 		private static readonly int[] WOOD_CODE = new int[] { "Spring Wood 0".AngeHash(), "Spring Wood 1".AngeHash(), "Spring Wood 2".AngeHash(), "Spring Wood 3".AngeHash(), };
 		private static readonly int[] BOUNCE_ANI = new int[] { 0, 1, 2, 3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 0, };
 		private static readonly Color RED = new(1f, 0.25f, 0.1f);
-		private const int BOUNCE_DELY = 1;
-		private const int BOUNCE_COOLDOWN = 9;
+		private const int BOUNCE_DELY = 0;
+		private const int BOUNCE_COOLDOWN = 1;
 		private const int METAL_LINE = 128;
 		private const int RED_LINE_MIN = 196;
 		private const int RED_LINE_MAX = 512;
@@ -45,7 +45,6 @@ namespace Yaya {
 		private RectInt FullRect => new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE);
 
 		// Data
-		private readonly HitInfo[] c_PerformBounce = new HitInfo[64];
 		private int LastBounceFrame = -BOUNCE_COOLDOWN;
 		private bool RequireBouncePerform = false;
 		private Direction4 BounceSide = default;
@@ -60,8 +59,8 @@ namespace Yaya {
 		}
 
 
-		public override void PhysicsUpdate () {
-			base.PhysicsUpdate();
+		public override void BeforePhysicsUpdate () {
+			base.BeforePhysicsUpdate();
 			int frame = Game.GlobalFrame;
 			if (frame > LastBounceFrame + BOUNCE_COOLDOWN) {
 				// Check for Bounce
@@ -69,13 +68,13 @@ namespace Yaya {
 				if (Horizontal) {
 					// Hori
 					if (CellPhysics.Overlap(
-						(int)PhysicsMask.Rigidbody,
+						YayaConst.MASK_RIGIDBODY,
 						new(X - 1, Y, Const.CELL_SIZE / 2, Const.CELL_SIZE),
 						this
 					)) {
 						StartBounce(frame, Direction4.Left);
 					} else if (CellPhysics.Overlap(
-						(int)PhysicsMask.Rigidbody,
+						YayaConst.MASK_RIGIDBODY,
 						new(X + Const.CELL_SIZE / 2, Y, Const.CELL_SIZE / 2 + 1, Const.CELL_SIZE),
 						this
 					)) {
@@ -84,7 +83,7 @@ namespace Yaya {
 				} else {
 					// Vert
 					if (CellPhysics.Overlap(
-						(int)PhysicsMask.Rigidbody,
+						YayaConst.MASK_RIGIDBODY,
 						new(X, Y + Const.CELL_SIZE / 2, Const.CELL_SIZE, Const.CELL_SIZE / 2 + 1),
 						this
 					)) {
@@ -93,17 +92,12 @@ namespace Yaya {
 				}
 			} else if (frame > LastBounceFrame + BOUNCE_DELY && RequireBouncePerform) {
 				// Try Perform Bounce
-				int count = CellPhysics.ForAllTouched<eRigidbody>(
-					c_PerformBounce, (int)PhysicsMask.Rigidbody,
+				var hit = CellPhysics.GetLastTouched<eRigidbody>(
+					YayaConst.MASK_RIGIDBODY,
 					FullRect.Expand(Horizontal ? 1 : 0, Horizontal ? 1 : 0, Horizontal ? 0 : 1, Horizontal ? 0 : 1),
-					this, BounceSide
+					this, BounceSide, 16
 				);
-				for (int i = count - 1; i >= 0; i--) {
-					if (c_PerformBounce[i].Entity is eRigidbody rig) {
-						PerformBounce(rig);
-						break;
-					}
-				}
+				if (hit != null) PerformBounce(hit.Entity as eRigidbody);
 			}
 		}
 
