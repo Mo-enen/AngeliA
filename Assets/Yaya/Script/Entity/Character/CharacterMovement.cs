@@ -405,10 +405,10 @@ namespace Yaya {
 							0, -Hitbox.height + PrevHitboxHeight,
 							true, false
 						);
+						if (IsGrounded) IsSquating = true;
 						break;
 					}
 				}
-				if (IsGrounded) IsSquating = true;
 			}
 		}
 

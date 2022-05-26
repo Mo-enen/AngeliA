@@ -60,6 +60,7 @@ namespace Yaya {
 
 
 		public override void FillPhysics () {
+			base.FillPhysics();
 			CellPhysics.FillEntity(PhysicsLayer, this);
 		}
 
@@ -74,16 +75,15 @@ namespace Yaya {
 			var rect = Rect;
 
 			// Grounded
-			IsGrounded = GroundedCheck(rect);
 			InsideGround = InsideGroundCheck();
+			IsGrounded = InsideGround || GroundedCheck(rect);
 
 			// Water
 			InWater = CellPhysics.Overlap(YayaConst.MASK_LEVEL, Rect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
 
 			if (InsideGround) {
-				X += VelocityX;
-				Y += VelocityY;
 				if (DestroyOnInsideGround) Active = false;
+				PerformMove(VelocityX, VelocityY, false, false, true);
 				return;
 			}
 
@@ -112,7 +112,7 @@ namespace Yaya {
 			) VelocityY = 0;
 
 			// Move
-			PerformMove(VelocityX, VelocityY, false, false);
+			PerformMove(VelocityX, VelocityY);
 
 			if (!IsGrounded) IsGrounded = GroundedCheck(Rect);
 
@@ -151,7 +151,7 @@ namespace Yaya {
 		}
 
 
-		public void PerformMove (int speedX, int speedY, bool ignoreCarry, bool ignoreOneway) {
+		public void PerformMove (int speedX, int speedY, bool ignoreCarry = false, bool ignoreOneway = false, bool ignoreLevel = false) {
 
 			int speedScale = InWater ? Const.WATER_SPEED_LOSE : 1000;
 			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);
@@ -160,6 +160,7 @@ namespace Yaya {
 			speedY = speedY * speedScale / 1000;
 
 			int mask = CollisionMask;
+			if (ignoreLevel) mask &= ~YayaConst.MASK_LEVEL;
 
 			if (ignoreOneway) {
 				pos = CellPhysics.MoveIgnoreOneway(mask, pos, speedX, speedY, new(Width, Height), this);

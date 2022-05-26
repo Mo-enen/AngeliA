@@ -54,8 +54,11 @@ namespace Yaya {
 		public override void OnActived () {
 			base.OnActived();
 			Width = Horizontal ? Const.CELL_SIZE / 2 : Const.CELL_SIZE;
-			Height = !Horizontal ? Const.CELL_SIZE / 2 : Const.CELL_SIZE;
+			Height = !Horizontal ? Const.CELL_SIZE - 16 : Const.CELL_SIZE;
 			if (Horizontal) OffsetX = Const.CELL_SIZE / 4;
+			LastBounceFrame = -BOUNCE_COOLDOWN;
+			RequireBouncePerform = false;
+			BounceSide = default;
 		}
 
 
