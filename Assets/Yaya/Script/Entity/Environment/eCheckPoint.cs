@@ -27,7 +27,7 @@ namespace Yaya {
 		public static void InitializeWithGame (Game game) {
 			try {
 				CpPool.Clear();
-				var data = game.LoadJsonConfig<CheckPointConfig>();
+				var data = game.LoadConfig<CheckPointConfig>();
 				if (data != null) {
 					foreach (var cpData in data.CPs) {
 						CpPool.TryAdd(new Vector2Int(cpData.X, cpData.Y), cpData);

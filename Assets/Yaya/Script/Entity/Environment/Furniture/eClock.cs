@@ -6,14 +6,14 @@ using AngeliaFramework;
 namespace Yaya {
 	public class eClock : eFurniture {
 
-		private static readonly int[] CODES = new int[] { "Clock 0".AngeHash(), "Clock 1".AngeHash(), "Clock 2".AngeHash(), "Clock 3".AngeHash(), };
+		private static readonly int CODE = "Clock".AngeHash();
 		private static readonly int HAND_CODE = "Clock Hand".AngeHash();
 
 		protected override Direction3 ModuleType => Direction3.None;
-		protected override int[] ArtworkCodes_LeftDown => CODES;
-		protected override int[] ArtworkCodes_Mid => CODES;
-		protected override int[] ArtworkCodes_RightUp => CODES;
-		protected override int[] ArtworkCodes_Single => CODES;
+		protected override int ArtworkCode_LeftDown => CODE;
+		protected override int ArtworkCode_Mid => CODE;
+		protected override int ArtworkCode_RightUp => CODE;
+		protected override int ArtworkCode_Single => CODE;
 
 
 		public override void FillPhysics () {

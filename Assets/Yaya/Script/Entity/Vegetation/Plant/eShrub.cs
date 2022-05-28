@@ -9,6 +9,7 @@ namespace Yaya {
 
 		// Api
 		protected override int ArtworkCode => "Shrub".AngeHash();
+		protected override RangeInt SizeOffset => new(12, 24);
 
 
 	}

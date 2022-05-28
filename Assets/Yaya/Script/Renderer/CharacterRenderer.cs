@@ -175,7 +175,7 @@ namespace Yaya {
 			// Swim Rotation
 			int pivotY = 0;
 			int offsetY = 0;
-			if (movement.UseFreeStypeSwim && movement.InWater && !movement.IsGrounded) {
+			if (movement.UseFreeStyleSwim && movement.InWater && !movement.IsGrounded) {
 				TargetSwimRotation = Quaternion.LerpUnclamped(
 					Quaternion.Euler(0, 0, TargetSwimRotation),
 					Quaternion.FromToRotation(

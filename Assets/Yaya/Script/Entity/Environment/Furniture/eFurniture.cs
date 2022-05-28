@@ -12,10 +12,10 @@ namespace Yaya {
 
 		// VAR
 		protected abstract Direction3 ModuleType { get; }
-		protected abstract int[] ArtworkCodes_LeftDown { get; }
-		protected abstract int[] ArtworkCodes_Mid { get; }
-		protected abstract int[] ArtworkCodes_RightUp { get; }
-		protected abstract int[] ArtworkCodes_Single { get; }
+		protected abstract int ArtworkCode_LeftDown { get; }
+		protected abstract int ArtworkCode_Mid { get; }
+		protected abstract int ArtworkCode_RightUp { get; }
+		protected abstract int ArtworkCode_Single { get; }
 
 		// Data
 		protected FurniturePose Pose = FurniturePose.Unknown;
@@ -47,7 +47,10 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (Pose != FurniturePose.Unknown) CellRenderer.Draw(GetArtworkCode(Pose), RenderingRect);
+			if (Pose == FurniturePose.Unknown) return;
+			if (TryGetSprite(Pose, out var sprite)) {
+				CellRenderer.Draw(sprite.GlobalID, RenderingRect);
+			}
 		}
 
 
@@ -105,8 +108,8 @@ namespace Yaya {
 				Pose = FurniturePose.Single;
 			}
 
-			int code = GetArtworkCode(Pose);
-			if (CellRenderer.TryGetSprite(code, out var sp)) {
+
+			if (TryGetSprite(Pose, out var sp)) {
 				var rect = Rect.Shrink(sp.GlobalBorder.Left, sp.GlobalBorder.Right, sp.GlobalBorder.Down, sp.GlobalBorder.Up);
 				X = rect.x;
 				Y = rect.y;
@@ -116,13 +119,15 @@ namespace Yaya {
 		}
 
 
-		private int GetArtworkCode (FurniturePose pose) => pose switch {
-			FurniturePose.Left => ArtworkCodes_LeftDown[ArtworkIndex % ArtworkCodes_LeftDown.Length],
-			FurniturePose.Mid => ArtworkCodes_Mid[ArtworkIndex % ArtworkCodes_Mid.Length],
-			FurniturePose.Right => ArtworkCodes_RightUp[ArtworkIndex % ArtworkCodes_RightUp.Length],
-			FurniturePose.Single => ArtworkCodes_Single[ArtworkIndex % ArtworkCodes_Single.Length],
-			_ => 0,
-		};
+		private bool TryGetSprite (FurniturePose pose, out AngeSprite sprite) =>
+			CellRenderer.TryGetSpriteFromGroup(
+			pose switch {
+				FurniturePose.Left => ArtworkCode_LeftDown,
+				FurniturePose.Mid => ArtworkCode_Mid,
+				FurniturePose.Right => ArtworkCode_RightUp,
+				FurniturePose.Single => ArtworkCode_Single,
+				_ => 0,
+			}, ArtworkIndex, out sprite, false);
 
 
 	}

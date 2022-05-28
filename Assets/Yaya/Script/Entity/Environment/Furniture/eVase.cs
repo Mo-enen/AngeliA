@@ -6,16 +6,16 @@ using AngeliaFramework;
 namespace Yaya {
 	public class eVase : eFurniture {
 
-		private static readonly int[] CODES_DOWN = new int[] { "Vase Down 0".AngeHash(), };
-		private static readonly int[] CODES_MID = new int[] { "Vase Mid 0".AngeHash(), };
-		private static readonly int[] CODES_UP = new int[] { "Vase Up 0".AngeHash(), };
-		private static readonly int[] CODES_SINGLE = new int[] { "Vase Single 0".AngeHash(), };
+		private static readonly int CODES_DOWN = "Vase Down".AngeHash();
+		private static readonly int CODES_MID = "Vase Mid".AngeHash();
+		private static readonly int CODES_UP = "Vase Up".AngeHash();
+		private static readonly int CODES_SINGLE = "Vase Single".AngeHash();
 
 		protected override Direction3 ModuleType => Direction3.Vertical;
-		protected override int[] ArtworkCodes_LeftDown => CODES_DOWN;
-		protected override int[] ArtworkCodes_Mid => CODES_MID;
-		protected override int[] ArtworkCodes_RightUp => CODES_UP;
-		protected override int[] ArtworkCodes_Single => CODES_SINGLE;
+		protected override int ArtworkCode_LeftDown => CODES_DOWN;
+		protected override int ArtworkCode_Mid => CODES_MID;
+		protected override int ArtworkCode_RightUp => CODES_UP;
+		protected override int ArtworkCode_Single => CODES_SINGLE;
 
 		public override void FillPhysics () {
 			if (Pose == FurniturePose.Up || Pose == FurniturePose.Single) {

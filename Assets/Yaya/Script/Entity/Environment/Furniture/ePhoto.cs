@@ -7,13 +7,13 @@ using AngeliaFramework;
 namespace Yaya {
 	public class ePhoto : eFurniture {
 
-		private static readonly int[] CODES = new int[] { "Photo 0".AngeHash(), "Photo 1".AngeHash(), "Photo 2".AngeHash(), "Photo 3".AngeHash(), };
+		private static readonly int CODE = "Photo".AngeHash();
 
 		protected override Direction3 ModuleType => Direction3.None;
-		protected override int[] ArtworkCodes_LeftDown => CODES;
-		protected override int[] ArtworkCodes_Mid => CODES;
-		protected override int[] ArtworkCodes_RightUp => CODES;
-		protected override int[] ArtworkCodes_Single => CODES;
+		protected override int ArtworkCode_LeftDown => CODE;
+		protected override int ArtworkCode_Mid => CODE;
+		protected override int ArtworkCode_RightUp => CODE;
+		protected override int ArtworkCode_Single => CODE;
 
 		public override void FillPhysics () {
 			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true);

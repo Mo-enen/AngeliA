@@ -8,25 +8,22 @@ namespace Yaya {
 	public class eSkeletonPile : Entity {
 
 
-		private static readonly int[] CODES = new int[] {
-			"Skeleton Pile 0".AngeHash(), "Skeleton Pile 1".AngeHash(), "Skeleton Pile 2".AngeHash(),
-			"Skeleton Pile 3".AngeHash(), "Skeleton Pile 4".AngeHash(), "Skeleton Pile 5".AngeHash(),
-			"Skeleton Pile 6".AngeHash(), "Skeleton Pile 7".AngeHash(),
-		};
-		private int ArtworkIndex = 0;
+		private static readonly int CODE = "Skeleton Pile".AngeHash();
+		private int ArtworkCode = 0;
 		private RectInt FullRect = default;
 
 
 		public override void OnActived () {
 			base.OnActived();
 			FullRect = Rect;
-			ArtworkIndex = (X.UDivide(Const.CELL_SIZE) + Y.UDivide(Const.CELL_SIZE)).UMod(CODES.Length);
-			if (CellRenderer.TryGetSprite(CODES[ArtworkIndex % CODES.Length], out var sprite)) {
+			int artworkIndex = X.UDivide(Const.CELL_SIZE) + Y.UDivide(Const.CELL_SIZE);
+			if (CellRenderer.TryGetSpriteFromGroup(CODE, artworkIndex, out var sprite)) {
 				var rect = Rect.Shrink(sprite.GlobalBorder.Left, sprite.GlobalBorder.Right, sprite.GlobalBorder.Down, sprite.GlobalBorder.Up);
 				X = rect.x;
 				Y = rect.y;
 				Width = rect.width;
 				Height = rect.height;
+				ArtworkCode = sprite.GlobalID;
 			}
 		}
 
@@ -38,7 +35,7 @@ namespace Yaya {
 
 
 		public override void FrameUpdate () {
-			CellRenderer.Draw(CODES[ArtworkIndex % CODES.Length], FullRect);
+			CellRenderer.Draw(ArtworkCode, FullRect);
 			base.FrameUpdate();
 		}
 

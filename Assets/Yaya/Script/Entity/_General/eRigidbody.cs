@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public abstract class eRigidbody : Entity {
+	public abstract class eRigidbody : Entity, IInitialize {
 
 
 
@@ -41,6 +41,10 @@ namespace Yaya {
 
 		// Data
 		private static readonly HitInfo[] c_PerformMove = new HitInfo[16];
+		private static int Gravity = 5;
+		private static int GravityRise = 3;
+		private static int MaxGravitySpeed = 64;
+		private static int WaterSpeedLose = 400;
 		private int IgnoreGroundCheckFrame = int.MinValue;
 		private int IgnoreGravityFrame = int.MinValue;
 
@@ -51,6 +55,14 @@ namespace Yaya {
 
 
 		#region --- MSG ---
+
+
+		public static void InitializeWithGame (Game game) {
+			Gravity = game.PhysicsConfig.Gravity;
+			GravityRise = game.PhysicsConfig.GravityRise;
+			MaxGravitySpeed = game.PhysicsConfig.MaxGravitySpeed;
+			WaterSpeedLose = game.PhysicsConfig.WaterSpeedLose;
+		}
 
 
 		public override void OnActived () {
@@ -89,10 +101,10 @@ namespace Yaya {
 
 			// Gravity
 			if (GravityScale != 0 && frame > IgnoreGravityFrame) {
-				int gravity = Const.GRAVITY * GravityScale / 1000;
+				int gravity = (VelocityY < 0 ? Gravity : GravityRise) * GravityScale / 1000;
 				VelocityY = Mathf.Clamp(
 					VelocityY - gravity,
-					-Const.MAX_GRAVITY_SPEED * (InWater ? Const.WATER_SPEED_LOSE : 1000) / 1000,
+					-MaxGravitySpeed * (InWater ? WaterSpeedLose : 1000) / 1000,
 					int.MaxValue
 				);
 			}
@@ -102,7 +114,7 @@ namespace Yaya {
 				VelocityX != 0 &&
 				(!CellPhysics.RoomCheck(CollisionMask, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left) ||
 				!CellPhysics.RoomCheck_Oneway(CollisionMask, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left, true))
-			) VelocityX = 0;
+			) VelocityX = VelocityX.Clamp(-1, 1);
 
 			// Vertical Stopping
 			if (
@@ -153,7 +165,7 @@ namespace Yaya {
 
 		public void PerformMove (int speedX, int speedY, bool ignoreCarry = false, bool ignoreOneway = false, bool ignoreLevel = false) {
 
-			int speedScale = InWater ? Const.WATER_SPEED_LOSE : 1000;
+			int speedScale = InWater ? WaterSpeedLose : 1000;
 			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);
 
 			speedX = speedX * speedScale / 1000;

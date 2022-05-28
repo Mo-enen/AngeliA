@@ -8,13 +8,13 @@ namespace Yaya {
 	public class eStove : eFurniture {
 
 
-		private static readonly int[] CODES = new int[] { "Stove 0".AngeHash(), "Stove 1".AngeHash(), "Stove 2".AngeHash(), "Stove 3".AngeHash(), };
+		private static readonly int CODE = "Stove".AngeHash();
 
 		protected override Direction3 ModuleType => Direction3.None;
-		protected override int[] ArtworkCodes_LeftDown => CODES;
-		protected override int[] ArtworkCodes_Mid => CODES;
-		protected override int[] ArtworkCodes_RightUp => CODES;
-		protected override int[] ArtworkCodes_Single => CODES;
+		protected override int ArtworkCode_LeftDown => CODE;
+		protected override int ArtworkCode_Mid => CODE;
+		protected override int ArtworkCode_RightUp => CODE;
+		protected override int ArtworkCode_Single => CODE;
 
 		private int LeftStoveCount = -1;
 
@@ -34,7 +34,7 @@ namespace Yaya {
 			base.PhysicsUpdate();
 			if (LeftStoveCount < 0) {
 				LeftStoveCount = 0;
-				for (int i = 1; i <= CODES.Length; i++) {
+				for (int i = 1; i < 1024; i++) {
 					var rect = new RectInt(
 						X + Const.CELL_SIZE / 2 - i * Const.CELL_SIZE,
 						Y + Const.CELL_SIZE / 2,
@@ -46,7 +46,7 @@ namespace Yaya {
 						LeftStoveCount++;
 					} else break;
 				}
-				ArtworkIndex = LeftStoveCount % CODES.Length;
+				ArtworkIndex = LeftStoveCount;
 			}
 		}
 

@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using AngeliaFramework;
-
+using System.IO;
 
 namespace Yaya {
 	[System.Serializable]
-	public class CharacterMovement {
+	public class CharacterMovement : ITxtConfig {
 
 
 
@@ -24,22 +25,11 @@ namespace Yaya {
 		public bool IsDashing { get; private set; } = false;
 		public bool IsSquating { get; private set; } = false;
 		public bool IsPounding { get; private set; } = false;
-		public bool IsInsideGround => Rig.InsideGround;
 		public bool IsClimbing { get; private set; } = false;
-		public bool IsGrounded => Rig.IsGrounded;
-		public bool InWater => Rig.InWater;
-		public bool IsInAir => Rig.IsInAir;
-		public bool IsMoving => IntendedX != 0;
-		public bool IsRunning => IsMoving && MovingAccumulateFrame >= RunTrigger;
-		public bool IsRolling => !InWater && !IsPounding && ((JumpRoll && CurrentJumpCount > 0) || (JumpSecondRoll && CurrentJumpCount > 1));
 		public int CurrentJumpCount { get; private set; } = 0;
 		public bool FacingRight { get; private set; } = true;
 		public bool FacingFront { get; private set; } = true;
-		public int FinalVelocityX => Rig.FinalVelocityX;
-		public int FinalVelocityY => Rig.FinalVelocityY;
-		public bool JumpWithRoll => JumpRoll;
-		public bool JumpSecondWithRoll => JumpSecondRoll;
-		public int MovingAccumulateFrame { get; private set; } = 0;
+		public int RunningAccumulateFrame { get; private set; } = 0;
 		public int LastGroundFrame { get; private set; } = int.MinValue;
 		public int LastGroundingFrame { get; private set; } = int.MinValue;
 		public int LastEndMoveFrame { get; private set; } = int.MinValue;
@@ -48,69 +38,78 @@ namespace Yaya {
 		public int LastSquatFrame { get; private set; } = int.MinValue;
 		public int LastSquatingFrame { get; private set; } = int.MinValue;
 		public int LastPoundingFrame { get; private set; } = int.MinValue;
-		public bool UseFreeStypeSwim => SwimInFreeStyle;
 		public Vector2Int LastMoveDirection { get; private set; } = default;
+		public bool IsInsideGround => Rig.InsideGround;
+		public bool IsGrounded => Rig.IsGrounded;
+		public bool InWater => Rig.InWater;
+		public bool IsInAir => Rig.IsInAir;
+		public bool IsMoving => IntendedX != 0;
+		public bool IsRunning => IsMoving && RunningAccumulateFrame >= RunTrigger;
+		public bool IsRolling => !InWater && !IsPounding && ((JumpRoll && CurrentJumpCount > 0) || (JumpSecondRoll && CurrentJumpCount > 1));
+		public int FinalVelocityX => Rig.FinalVelocityX;
+		public int FinalVelocityY => Rig.FinalVelocityY;
+		public bool UseFreeStyleSwim => SwimInFreeStyle;
 
 		// Short
 		private int CurrentDashDuration => InWater && SwimInFreeStyle ? FreeSwimDashDuration : DashDuration;
 		private int CurrentDashCooldown => InWater && SwimInFreeStyle ? FreeSwimDashCooldown : DashCooldown;
 
 		// Ser
-		[SerializeField] int Width = 150;
-		[SerializeField] int Height = 384;
-		[SerializeField] int SquatHeight = 200;
-		[SerializeField] int SwimHeight = 384;
+		[SerializeField] BuffInt Width = 150;
+		[SerializeField] BuffInt Height = 384;
+		[SerializeField] BuffInt SquatHeight = 200;
+		[SerializeField] BuffInt SwimHeight = 384;
 
-		[SerializeField] int MoveSpeed = 20;
-		[SerializeField] int MoveAcceleration = 3;
-		[SerializeField] int MoveDecceleration = 4;
-		[SerializeField] int OppositeXAccelerationRate = 3000;
-		[SerializeField] int RunTrigger = 60;
-		[SerializeField] int RunSpeed = 32;
-		[SerializeField] int GroundStuckLoseX = 2;
-		[SerializeField] int GroundStuckLoseY = 6;
+		[SerializeField] BuffInt WalkSpeed = 20;
+		[SerializeField] BuffInt WalkAcceleration = 3;
+		[SerializeField] BuffInt WalkDecceleration = 4;
+		[SerializeField] BuffInt RunTrigger = 60;
+		[SerializeField] BuffInt RunSpeed = 32;
+		[SerializeField] BuffInt RunAcceleration = 3;
+		[SerializeField] BuffInt RunDecceleration = 4;
+		[SerializeField] BuffInt OppositeXAccelerationRate = 3000;
 
-		[SerializeField] int JumpSpeed = 62;
-		[SerializeField] int JumpCount = 2;
-		[SerializeField] int JumpReleaseLoseRate = 700;
-		[SerializeField] int JumpRaiseGravityRate = 600;
-		[SerializeField] bool JumpThroughOneway = false;
-		[SerializeField] bool JumpRoll = false;
-		[SerializeField] bool JumpSecondRoll = false;
+		[SerializeField] BuffInt JumpSpeed = 62;
+		[SerializeField] BuffInt JumpCount = 2;
+		[SerializeField] BuffInt JumpReleaseLoseRate = 700;
+		[SerializeField] BuffInt JumpRiseGravityRate = 1000;
+		[SerializeField] BuffBool JumpThroughOneway = false;
+		[SerializeField] BuffBool JumpRoll = false;
+		[SerializeField] BuffBool JumpSecondRoll = true;
 
-		[SerializeField] bool DashAvailable = true;
-		[SerializeField] int DashSpeed = 42;
-		[SerializeField] int DashDuration = 12;
-		[SerializeField] int DashCooldown = 4;
-		[SerializeField] int DashAcceleration = 24;
-		[SerializeField] int DashCancelLoseRate = 300;
+		[SerializeField] BuffBool DashAvailable = true;
+		[SerializeField] BuffInt DashSpeed = 42;
+		[SerializeField] BuffInt DashDuration = 12;
+		[SerializeField] BuffInt DashCooldown = 4;
+		[SerializeField] BuffInt DashAcceleration = 24;
+		[SerializeField] BuffInt DashCancelLoseRate = 300;
 
-		[SerializeField] bool SquatAvailable = true;
-		[SerializeField] int SquatSpeed = 14;
-		[SerializeField] int SquatAcceleration = 48;
-		[SerializeField] int SquatDecceleration = 48;
+		[SerializeField] BuffBool SquatAvailable = true;
+		[SerializeField] BuffInt SquatSpeed = 14;
+		[SerializeField] BuffInt SquatAcceleration = 48;
+		[SerializeField] BuffInt SquatDecceleration = 48;
 
-		[SerializeField] bool PoundAvailable = true;
-		[SerializeField] int PoundSpeed = 96;
+		[SerializeField] BuffBool PoundAvailable = true;
+		[SerializeField] BuffInt PoundSpeed = 96;
 
-		[SerializeField] bool SwimInFreeStyle = false;
-		[SerializeField] int InWaterSpeedLoseRate = 500;
-		[SerializeField] int SwimSpeed = 42;
-		[SerializeField] int SwimAcceleration = 4;
-		[SerializeField] int SwimDecceleration = 4;
+		[SerializeField] BuffInt InWaterSpeedLoseRate = 500;
+		[SerializeField] BuffInt SwimSpeed = 42;
+		[SerializeField] BuffInt SwimAcceleration = 4;
+		[SerializeField] BuffInt SwimDecceleration = 4;
 
-		[SerializeField] int FreeSwimSpeed = 40;
-		[SerializeField] int FreeSwimAcceleration = 4;
-		[SerializeField] int FreeSwimDecceleration = 4;
-		[SerializeField] int FreeSwimDashSpeed = 84;
-		[SerializeField] int FreeSwimDashDuration = 12;
-		[SerializeField] int FreeSwimDashCooldown = 4;
-		[SerializeField] int FreeSwimDashAcceleration = 128;
+		[SerializeField] BuffBool SwimInFreeStyle = false;
+		[SerializeField] BuffInt FreeSwimSpeed = 40;
+		[SerializeField] BuffInt FreeSwimAcceleration = 4;
+		[SerializeField] BuffInt FreeSwimDecceleration = 4;
+		[SerializeField] BuffInt FreeSwimDashSpeed = 84;
+		[SerializeField] BuffInt FreeSwimDashDuration = 12;
+		[SerializeField] BuffInt FreeSwimDashCooldown = 4;
+		[SerializeField] BuffInt FreeSwimDashAcceleration = 128;
 
-		[SerializeField] bool ClimbAvailable = true;
-		[SerializeField] bool JumpWhenClimbAvailable = true;
-		[SerializeField] int ClimbSpeedX = 12;
-		[SerializeField] int ClimbSpeedY = 18;
+		[SerializeField] BuffBool ClimbAvailable = true;
+		[SerializeField] BuffBool JumpWhenClimbAvailable = true;
+		[SerializeField] BuffInt ClimbSpeedX = 12;
+		[SerializeField] BuffInt ClimbSpeedY = 18;
 
 		// Data
 		private eRigidbody Rig = null;
@@ -325,18 +324,16 @@ namespace Yaya {
 				acc = SwimAcceleration;
 				dcc = SwimDecceleration;
 			} else {
-				speed = IntendedX * (MovingAccumulateFrame >= RunTrigger ? RunSpeed : MoveSpeed);
-				acc = MoveAcceleration;
-				dcc = MoveDecceleration;
+				bool running = RunningAccumulateFrame >= RunTrigger;
+				speed = IntendedX * (running ? RunSpeed : WalkSpeed);
+				acc = running ? RunAcceleration : WalkAcceleration;
+				dcc = running ? RunDecceleration : WalkDecceleration;
 			}
 			if ((speed > 0 && Rig.VelocityX < 0) || (speed < 0 && Rig.VelocityX > 0)) {
 				acc *= OppositeXAccelerationRate / 1000;
 				dcc *= OppositeXAccelerationRate / 1000;
 			}
 			Rig.VelocityX = Rig.VelocityX.MoveTowards(speed, acc, dcc);
-			if (IsInsideGround) {
-				Rig.VelocityX = Rig.VelocityX.MoveTowards(0, GroundStuckLoseX);
-			}
 		}
 
 
@@ -366,7 +363,7 @@ namespace Yaya {
 					Rig.VelocityY = -PoundSpeed;
 				} else if (HoldingJump && Rig.VelocityY > 0) {
 					// Jumping Raise
-					Rig.GravityScale = JumpRaiseGravityRate;
+					Rig.GravityScale = JumpRiseGravityRate;
 				} else {
 					// Else
 					Rig.GravityScale = 1000;
@@ -378,9 +375,6 @@ namespace Yaya {
 						);
 					}
 				}
-			}
-			if (IsInsideGround) {
-				Rig.VelocityY = Rig.VelocityY.MoveTowards(0, GroundStuckLoseY);
 			}
 		}
 
@@ -421,10 +415,45 @@ namespace Yaya {
 		#region --- API ---
 
 
+		// Config
+		public void LoadFromText (string text) {
+			foreach (var (name, value) in text.LoadAsTextConfig()) {
+				var type = Util.GetFieldType(this, name);
+				if (type == typeof(BuffInt)) {
+					if (int.TryParse(value, out int iValue)) {
+						Util.SetFieldValue(this, name, new BuffInt(iValue));
+					}
+				} else if (type == typeof(BuffBool)) {
+					if (bool.TryParse(value, out bool bValue)) {
+						Util.SetFieldValue(this, name, new BuffBool(bValue));
+					}
+				}
+			}
+		}
+
+
+		public string SaveToText () {
+			var builder = new StringBuilder();
+			foreach (var (name, value) in this.AllFields<BuffValue>()) {
+				switch (value) {
+					default: throw new System.NotImplementedException();
+					case BuffInt iValue:
+						builder.AppendLine($"{name} = {iValue.Value}");
+						break;
+					case BuffBool bValue:
+						builder.AppendLine($"{name} = {bValue.Value}");
+						break;
+				}
+			}
+			return builder.ToString();
+		}
+
+
+		// Movement
 		public void Move (Direction3 x, Direction3 y) {
 			if (IntendedX != 0 && x == Direction3.None) LastEndMoveFrame = CurrentFrame;
-			if (x != Direction3.None) MovingAccumulateFrame++;
-			if (x == Direction3.None && CurrentFrame > LastEndMoveFrame + RUN_BREAK_GAP) MovingAccumulateFrame = 0;
+			if (x != Direction3.None) RunningAccumulateFrame++;
+			if (x == Direction3.None && CurrentFrame > LastEndMoveFrame + RUN_BREAK_GAP) RunningAccumulateFrame = 0;
 			IntendedX = (int)x;
 			IntendedY = (int)y;
 			if (x != Direction3.None) LastIntendedX = IntendedX;

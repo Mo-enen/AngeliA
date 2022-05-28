@@ -74,7 +74,7 @@ namespace Yaya {
 		#region --- PRO ---
 
 
-		protected override WorldSquad CreateWorldSquad () => new(MapRoot, YayaConst.LEVEL);
+		protected override WorldSquad CreateWorldSquad () => new(MapRoot, YayaConst.LEVEL, RenderConfig.BackgroundParallax);
 
 
 		protected override bool LanguageSupported (SystemLanguage language) => SupportedLanguages.Contains(language);

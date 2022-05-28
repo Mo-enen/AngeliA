@@ -6,7 +6,7 @@ using AngeliaFramework;
 namespace Yaya {
 	[ExcludeInMapEditor]
 	[EntityCapacity(4)]
-	public abstract class eItem : Entity {
+	public abstract class eItem : Entity, IInitialize {
 
 
 
@@ -14,12 +14,18 @@ namespace Yaya {
 		#region --- VAR ---
 
 
+		// Const
+		private const int ITEM_PHYSICS_SIZE = Const.CELL_SIZE / 2;
+		private const int ITEM_RENDER_SIZE = Const.CELL_SIZE * 2 / 3;
+
 		// Api
 		public int VelocityY { get; private set; } = 0;
 		protected abstract int ItemCode { get; }
 
 		// Data
 		private static readonly HitInfo[] c_MakeRoom = new HitInfo[5];
+		private static int Gravity = 5;
+		private static int MaxGravitySpeed = 64;
 		private bool MakingRoom = false;
 
 
@@ -31,10 +37,17 @@ namespace Yaya {
 		#region --- MSG ---
 
 
+		public static void InitializeWithGame (Game game) {
+			Gravity = game.PhysicsConfig.Gravity;
+			MaxGravitySpeed = game.PhysicsConfig.MaxGravitySpeed;
+		}
+
+
 		public override void OnActived () {
 			base.OnActived();
-			Width = Const.ITEM_PHYSICS_SIZE;
-			Height = Const.ITEM_PHYSICS_SIZE;
+			Width = ITEM_PHYSICS_SIZE;
+			Height = ITEM_PHYSICS_SIZE;
+			MakingRoom = false;
 		}
 
 
@@ -58,7 +71,7 @@ namespace Yaya {
 					Y = Mathf.Min(rect.y, Y);
 					if (stopY) VelocityY = 0;
 				}
-				VelocityY = Mathf.Clamp(VelocityY - Const.GRAVITY, -Const.MAX_GRAVITY_SPEED, 0);
+				VelocityY = Mathf.Clamp(VelocityY - Gravity, -MaxGravitySpeed, 0);
 			} else {
 				VelocityY = 0;
 			}
@@ -89,7 +102,15 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.Draw(ItemCode, new(X + (Const.ITEM_PHYSICS_SIZE - Const.ITEM_RENDER_SIZE) / 2, Y, Const.ITEM_RENDER_SIZE, Const.ITEM_RENDER_SIZE));
+			CellRenderer.Draw(
+				ItemCode,
+				new(
+					X + (ITEM_PHYSICS_SIZE - ITEM_RENDER_SIZE) / 2,
+					Y,
+					ITEM_RENDER_SIZE,
+					ITEM_RENDER_SIZE
+				)
+			);
 		}
 
 

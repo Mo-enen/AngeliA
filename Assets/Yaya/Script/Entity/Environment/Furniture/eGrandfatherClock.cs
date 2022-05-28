@@ -6,17 +6,17 @@ using AngeliaFramework;
 namespace Yaya {
 	public class eGrandfatherClock : eFurniture {
 
-		private static readonly int[] CODES_DOWN = new int[] { "Grandfather Clock Down 0".AngeHash(), "Grandfather Clock Down 1".AngeHash(), };
-		private static readonly int[] CODES_MID = new int[] { "Grandfather Clock Mid 0".AngeHash(), "Grandfather Clock Mid 1".AngeHash(), };
-		private static readonly int[] CODES_UP = new int[] { "Grandfather Clock Up 0".AngeHash(), "Grandfather Clock Up 1".AngeHash(), };
-		private static readonly int[] CODES_SINGLE = new int[] { "Grandfather Clock Single 0".AngeHash(), "Grandfather Clock Single 1".AngeHash(), };
+		private static readonly int CODE_DOWN = "Grandfather Clock Down".AngeHash();
+		private static readonly int CODE_MID = "Grandfather Clock Mid".AngeHash();
+		private static readonly int CODE_UP = "Grandfather Clock Up".AngeHash();
+		private static readonly int CODE_SINGLE = "Grandfather Clock Single".AngeHash();
 		private static readonly int HAND_CODE = "Clock Hand".AngeHash();
 
 		protected override Direction3 ModuleType => Direction3.Vertical;
-		protected override int[] ArtworkCodes_LeftDown => CODES_DOWN;
-		protected override int[] ArtworkCodes_Mid => CODES_MID;
-		protected override int[] ArtworkCodes_RightUp => CODES_UP;
-		protected override int[] ArtworkCodes_Single => CODES_SINGLE;
+		protected override int ArtworkCode_LeftDown => CODE_DOWN;
+		protected override int ArtworkCode_Mid => CODE_MID;
+		protected override int ArtworkCode_RightUp => CODE_UP;
+		protected override int ArtworkCode_Single => CODE_SINGLE;
 
 
 		public override void FrameUpdate () {

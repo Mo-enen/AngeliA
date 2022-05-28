@@ -7,13 +7,13 @@ using AngeliaFramework;
 namespace Yaya {
 	public class eNightstand : eFurniture {
 
-		private static readonly int[] CODES = new int[] { "Nightstand 0".AngeHash(), "Nightstand 1".AngeHash(), "Nightstand 2".AngeHash(), "Nightstand 3".AngeHash(), };
+		private static readonly int CODE = "Nightstand".AngeHash();
 
 		protected override Direction3 ModuleType => Direction3.None;
-		protected override int[] ArtworkCodes_LeftDown => CODES;
-		protected override int[] ArtworkCodes_Mid => CODES;
-		protected override int[] ArtworkCodes_RightUp => CODES;
-		protected override int[] ArtworkCodes_Single => CODES;
+		protected override int ArtworkCode_LeftDown => CODE;
+		protected override int ArtworkCode_Mid => CODE;
+		protected override int ArtworkCode_RightUp => CODE;
+		protected override int ArtworkCode_Single => CODE;
 
 	}
 }

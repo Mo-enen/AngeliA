@@ -127,12 +127,7 @@ namespace Yaya {
 			} else {
 				// Down
 				// Fix Pos
-				if (target.VelocityX == 0) {
-					if (DirectionVertical == Direction3.Up) distance--;
-					target.PerformMove(DirectionHorizontal == Direction3.Left ? -distance : distance, 0, true, false);
-				} else {
-					target.PerformMove(0, DirectionVertical == Direction3.Down ? -distance : distance, true, false);
-				}
+				target.PerformMove(DirectionHorizontal == Direction3.Left ? -distance : distance, 0, true, false);
 			}
 		}
 

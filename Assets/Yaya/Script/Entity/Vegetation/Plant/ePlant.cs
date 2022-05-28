@@ -9,23 +9,22 @@ namespace Yaya {
 	public abstract class ePlant : Entity {
 
 
-		// Const
-		private const int INTERACT_DURATION = 30;
-
 		// Api
 		protected abstract int ArtworkCode { get; }
 		protected virtual bool Interactable { get; } = true;
 		protected virtual bool Breath { get; } = true;
+		protected virtual RangeInt SizeOffset { get; } = default;
 
 		// Data
 		private int ArtworkID = 0;
 		private bool Interacting = false;
-		private int InteractFrame = int.MinValue;
 
 
 		// MSG
 		public override void OnActived () {
 			base.OnActived();
+			Interacting = false;
+			// Rect from Sprite
 			if (CellRenderer.TryGetSpriteFromGroup(
 					ArtworkCode,
 					(X * 3 + Y * 7) / Const.CELL_SIZE,
@@ -35,13 +34,18 @@ namespace Yaya {
 				ArtworkID = sp.GlobalID;
 				Width = sp.GlobalWidth;
 				Height = sp.GlobalHeight;
-				X = X + Const.CELL_SIZE / 2 - Width / 2;
+				X = X + Const.CELL_SIZE / 2 - sp.GlobalWidth / 2;
 			} else {
 				Width = Const.CELL_SIZE;
 				Height = Const.CELL_SIZE;
 			}
-			Interacting = false;
-			InteractFrame = int.MinValue;
+			// Size Offset
+			if (SizeOffset.length > 0) {
+				int offset = SizeOffset.start + ((X * 7 + Y * 3) / Const.CELL_SIZE).UMod(SizeOffset.length);
+				Width += offset;
+				Height += offset;
+				X -= offset / 2;
+			}
 		}
 
 
@@ -54,9 +58,7 @@ namespace Yaya {
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
 			if (Interactable) {
-				bool interacting = CellPhysics.HasEntity<eRigidbody>(Rect.Shrink(Width / 4, Width / 4, 0, 0), YayaConst.MASK_RIGIDBODY, this);
-				if (interacting && !Interacting) InteractFrame = Game.GlobalFrame;
-				Interacting = interacting;
+				Interacting = Interacting || CellPhysics.HasEntity<eRigidbody>(Rect.Shrink(Width / 4, Width / 4, 0, 0), YayaConst.MASK_RIGIDBODY, this);
 			}
 		}
 
@@ -66,11 +68,10 @@ namespace Yaya {
 			var rect = Rect;
 			int rot = 0;
 			// Interacting
-			if (Game.GlobalFrame < InteractFrame + INTERACT_DURATION) {
-				int frame = InteractFrame + INTERACT_DURATION - Game.GlobalFrame;
-				int amount = Height > Const.CELL_SIZE ? 1 : 3;
-				rot = frame.PingPong(6) * amount - 3 * amount;
-				rot = rot.MoveTowards(0, (INTERACT_DURATION - frame) / 2);
+			if (Interacting) {
+				Interacting = false;
+
+
 			}
 			// Breath
 			if (Breath) {

@@ -6,13 +6,13 @@ using AngeliaFramework;
 namespace Yaya {
 	public class eLight : eFurniture {
 
-		private static readonly int[] CODES = new int[] { "Light 0".AngeHash(), "Light 1".AngeHash(), "Light 2".AngeHash(), "Light 3".AngeHash(), };
+		private static readonly int CODE = "Light".AngeHash();
 
 		protected override Direction3 ModuleType => Direction3.None;
-		protected override int[] ArtworkCodes_LeftDown => CODES;
-		protected override int[] ArtworkCodes_Mid => CODES;
-		protected override int[] ArtworkCodes_RightUp => CODES;
-		protected override int[] ArtworkCodes_Single => CODES;
+		protected override int ArtworkCode_LeftDown => CODE;
+		protected override int ArtworkCode_Mid => CODE;
+		protected override int ArtworkCode_RightUp => CODE;
+		protected override int ArtworkCode_Single => CODE;
 
 		public override void FillPhysics () {
 			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true);
