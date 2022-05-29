@@ -21,6 +21,7 @@ namespace Yaya {
 		public override bool IsInAir => base.IsInAir && !Movement.IsClimbing;
 		public override int AirDragX => 0;
 		public override int AirDragY => 0;
+		public override bool IgnoreRiseGravityShift => true;
 		public CharacterMovement Movement { get; private set; }
 		public CharacterRenderer Renderer { get; private set; }
 

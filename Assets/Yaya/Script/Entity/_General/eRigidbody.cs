@@ -31,6 +31,7 @@ namespace Yaya {
 		public virtual bool DestroyOnInsideGround => false;
 		public virtual int AirDragX { get; } = 3;
 		public virtual int AirDragY { get; } = 0;
+		public virtual bool IgnoreRiseGravityShift => false;
 
 		// Api-Ser
 		public int VelocityX { get; set; } = 0;
@@ -101,7 +102,7 @@ namespace Yaya {
 
 			// Gravity
 			if (GravityScale != 0 && frame > IgnoreGravityFrame) {
-				int gravity = (VelocityY < 0 ? Gravity : GravityRise) * GravityScale / 1000;
+				int gravity = (VelocityY < 0 || IgnoreRiseGravityShift ? Gravity : GravityRise) * GravityScale / 1000;
 				VelocityY = Mathf.Clamp(
 					VelocityY - gravity,
 					-MaxGravitySpeed * (InWater ? WaterSpeedLose : 1000) / 1000,

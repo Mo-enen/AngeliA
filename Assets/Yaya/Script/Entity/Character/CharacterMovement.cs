@@ -72,7 +72,7 @@ namespace Yaya {
 		[SerializeField] BuffInt JumpSpeed = 62;
 		[SerializeField] BuffInt JumpCount = 2;
 		[SerializeField] BuffInt JumpReleaseLoseRate = 700;
-		[SerializeField] BuffInt JumpRiseGravityRate = 1000;
+		[SerializeField] BuffInt JumpRiseGravityRate = 600;
 		[SerializeField] BuffBool JumpThroughOneway = false;
 		[SerializeField] BuffBool JumpRoll = false;
 		[SerializeField] BuffBool JumpSecondRoll = true;
@@ -117,6 +117,7 @@ namespace Yaya {
 		private int CurrentFrame = 0;
 		private int IntendedX = 0;
 		private int IntendedY = 0;
+		private int LastIntendedX = 1;
 		private bool HoldingJump = false;
 		private bool PrevHoldingJump = false;
 		private bool IntendedJump = false;
@@ -125,8 +126,6 @@ namespace Yaya {
 		private bool PrevInWater = false;
 		private bool PrevGrounded = false;
 		private int? ClimbPositionCorrect = null;
-		private int LastIntendedX = 1;
-		private int PrevHitboxHeight = Const.CELL_SIZE;
 		private readonly HitInfo[] c_OnewayCollision = new HitInfo[8];
 
 
@@ -142,7 +141,6 @@ namespace Yaya {
 			Rig = ch;
 			Rig.Width = Width;
 			Rig.Height = Height;
-			PrevHitboxHeight = Height;
 		}
 
 
@@ -153,12 +151,10 @@ namespace Yaya {
 			Update_Dash();
 			Update_VelocityX();
 			Update_VelocityY();
-			Update_Collision();
 			IntendedJump = false;
 			IntendedDash = false;
 			IntendedPound = false;
 			PrevHoldingJump = HoldingJump;
-			PrevHitboxHeight = Hitbox.height;
 		}
 
 
@@ -200,7 +196,6 @@ namespace Yaya {
 				}
 			}
 
-			// Water
 			// In/Out Water
 			if (PrevInWater != InWater) {
 				LastDashFrame = int.MinValue;
@@ -233,11 +228,13 @@ namespace Yaya {
 			FacingFront = !IsClimbing;
 
 			// Physics
+			int prevHitboxHeight = Hitbox.height;
 			Hitbox = new(Rig.X - Width / 2, Rig.Y, Width, GetCurrentHeight());
 			Rig.Width = Hitbox.width;
 			Rig.Height = Hitbox.height;
 			Rig.OffsetX = -Width / 2;
 			Rig.OffsetY = 0;
+			CollisionFixOnHitboxChanged(prevHitboxHeight);
 		}
 
 
@@ -373,34 +370,6 @@ namespace Yaya {
 						Rig.VelocityY = Rig.VelocityY.MoveTowards(
 							IntendedY * SwimSpeed, SwimAcceleration, SwimDecceleration
 						);
-					}
-				}
-			}
-		}
-
-
-		private void Update_Collision () {
-			// Knock Back Down when Growing Hitbox
-			if (PrevHitboxHeight < Hitbox.height) {
-				var rect = new RectInt(
-					Rig.X + Rig.OffsetX,
-					Rig.Y + Rig.OffsetY + PrevHitboxHeight,
-					Rig.Width,
-					Hitbox.height - PrevHitboxHeight
-				);
-				int count = CellPhysics.OverlapAll(
-					c_OnewayCollision, YayaConst.MASK_MAP, rect, Rig,
-					OperationMode.TriggerOnly, Const.ONEWAY_DOWN_TAG
-				);
-				for (int i = 0; i < count; i++) {
-					var hit = c_OnewayCollision[i];
-					if (hit.Rect.yMin > rect.y) {
-						Rig.PerformMove(
-							0, -Hitbox.height + PrevHitboxHeight,
-							true, false
-						);
-						if (IsGrounded) IsSquating = true;
-						break;
 					}
 				}
 			}
@@ -553,6 +522,31 @@ namespace Yaya {
 
 			// Normal
 			return Height;
+		}
+
+
+		private void CollisionFixOnHitboxChanged (int prevHitboxHeight) {
+			var rect = new RectInt(
+				Rig.X + Rig.OffsetX,
+				Rig.Y + Rig.OffsetY + prevHitboxHeight,
+				Rig.Width,
+				Hitbox.height - prevHitboxHeight
+			);
+			int count = CellPhysics.OverlapAll(
+				c_OnewayCollision, YayaConst.MASK_MAP, rect, Rig,
+				OperationMode.TriggerOnly, Const.ONEWAY_DOWN_TAG
+			);
+			for (int i = 0; i < count; i++) {
+				var hit = c_OnewayCollision[i];
+				if (hit.Rect.yMin > rect.y) {
+					Rig.PerformMove(
+						0, -Hitbox.height + prevHitboxHeight,
+						true, false
+					);
+					if (IsGrounded) IsSquating = true;
+					break;
+				}
+			}
 		}
 
 
