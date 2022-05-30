@@ -7,10 +7,10 @@ QualitySettings:
   m_CurrentQuality: 0
   m_QualitySettings:
   - serializedVersion: 2
-    name: Medium
+    name: Main
     pixelLightCount: 1
-    shadows: 1
-    shadowResolution: 1
+    shadows: 0
+    shadowResolution: 0
     shadowProjection: 0
     shadowCascades: 1
     shadowDistance: 1000
@@ -20,7 +20,7 @@ QualitySettings:
     shadowmaskMode: 0
     skinWeights: 1
     textureQuality: 0
-    anisotropicTextures: 1
+    anisotropicTextures: 0
     antiAliasing: 0
     softParticles: 0
     softVegetation: 0

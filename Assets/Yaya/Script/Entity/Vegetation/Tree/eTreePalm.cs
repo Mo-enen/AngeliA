@@ -5,48 +5,42 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+	[EntityBounds(-Const.CELL_SIZE * 2, 0, Const.CELL_SIZE * 5, Const.CELL_SIZE)]
 	public class eTreePalm : eTree {
 
 
-		private static readonly int TRUNK_BOTTOM_CODE = "Trunk Bottom 1".AngeHash();
-		private static readonly int TRUNK_MID_CODE = "Trunk Mid 1".AngeHash();
-		private static readonly int LEAF_CODE = "Leaf Palm".AngeHash();
-
-		protected override int TrunkBottomCode => TRUNK_BOTTOM_CODE;
-		protected override int TrunkMidCode => TRUNK_MID_CODE;
+		// Api
+		protected override string TrunkCode => "Trunk Palm";
+		protected override string LeafCode => "Leaf Palm";
 
 
+		// MSG
 		public override void FillPhysics () {
 			base.FillPhysics();
-			if (TreesOnTop == 0) {
-				CellPhysics.FillBlock(
-					YayaConst.ENVIRONMENT,
-					new(X - Const.CELL_SIZE, Y + Const.CELL_SIZE / 2 - 24, Const.CELL_SIZE * 3, Const.CELL_SIZE),
-					true, Const.ONEWAY_UP_TAG
-				);
+			if (!HasTrunkOnTop) {
+				CellPhysics.FillBlock(YayaConst.ENVIRONMENT, Rect.Shift(-Const.CELL_SIZE * 2, Const.CELL_SIZE / 2), true, Const.ONEWAY_UP_TAG);
+				CellPhysics.FillBlock(YayaConst.ENVIRONMENT, Rect.Shift(-Const.CELL_SIZE, Const.CELL_SIZE / 2), true, Const.ONEWAY_UP_TAG);
+				CellPhysics.FillBlock(YayaConst.ENVIRONMENT, Rect.Shift(0, Const.CELL_SIZE / 2), true, Const.ONEWAY_UP_TAG);
+				CellPhysics.FillBlock(YayaConst.ENVIRONMENT, Rect.Shift(Const.CELL_SIZE, Const.CELL_SIZE / 2), true, Const.ONEWAY_UP_TAG);
+				CellPhysics.FillBlock(YayaConst.ENVIRONMENT, Rect.Shift(Const.CELL_SIZE * 2, Const.CELL_SIZE / 2), true, Const.ONEWAY_UP_TAG);
 			}
 		}
 
 
-		public override void FrameUpdate () {
-			base.FrameUpdate();
-			int frame = Game.GlobalFrame;
-			// Leaf
-			if (TreesOnTop == 0) {
-				CellRenderer.Draw(LEAF_CODE, new(
-					X, Y + Const.CELL_SIZE / 2 + AOffset(frame, 0), Const.CELL_SIZE, Const.CELL_SIZE
-				));
-				CellRenderer.Draw(LEAF_CODE, new(
-					X - Const.CELL_SIZE, Y + Const.CELL_SIZE / 2 + AOffset(frame, -1), Const.CELL_SIZE, Const.CELL_SIZE
-				));
-				CellRenderer.Draw(LEAF_CODE, new(
-					X + Const.CELL_SIZE, Y + Const.CELL_SIZE / 2 + AOffset(frame, +1), Const.CELL_SIZE, Const.CELL_SIZE
-				));
-			}
+		protected override Direction3 GetDirection () {
+			base.GetDirection();
+			return Direction3.Vertical;
 		}
 
 
-		private int AOffset (int frame, int offset) => -(Mathf.PingPong(frame + offset * 40f, 120f) / 6f).RoundToInt();
+		protected override void DrawLeaf () {
+			if (HasTrunkOnTop) return;
+			CellRenderer.Draw(LeafArtworkCode, Rect.Shift(-Const.CELL_SIZE * 2, GetLeafShiftY(-24) + Const.CELL_SIZE / 2));
+			CellRenderer.Draw(LeafArtworkCode, Rect.Shift(-Const.CELL_SIZE, GetLeafShiftY(-12) + Const.CELL_SIZE / 2));
+			CellRenderer.Draw(LeafArtworkCode, Rect.Shift(0, GetLeafShiftY(0) + Const.CELL_SIZE / 2));
+			CellRenderer.Draw(LeafArtworkCode, Rect.Shift(Const.CELL_SIZE, GetLeafShiftY(12) + Const.CELL_SIZE / 2));
+			CellRenderer.Draw(LeafArtworkCode, Rect.Shift(Const.CELL_SIZE * 2, GetLeafShiftY(24) + Const.CELL_SIZE / 2));
+		}
 
 
 	}
