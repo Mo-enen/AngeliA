@@ -34,6 +34,8 @@ namespace Yaya {
 
 		// Data
 		private Vector2Int[] LeafOffsets = null;
+		private Color32 LeafTint = new(255, 255, 255, 255);
+		private bool CharacterNearby = false;
 
 
 		#endregion
@@ -89,6 +91,7 @@ namespace Yaya {
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
 			if (Direction == Direction3.None) Direction = GetDirection();
+			CharacterNearby = CellPhysics.HasEntity<eCharacter>(Rect.Expand(Const.CELL_SIZE), YayaConst.MASK_CHARACTER, null);
 		}
 
 
@@ -107,18 +110,9 @@ namespace Yaya {
 		#region --- API ---
 
 
-		protected virtual void DrawTrunks () {
-			bool vertical = Direction == Direction3.Vertical;
-			CellRenderer.Draw(
-				TrunkArtworkCode,
-				X, vertical ? Y : Y + Const.CELL_SIZE, 0, 0,
-				vertical ? 0 : 90, Width, Height
-			);
-		}
-
-
 		protected virtual void DrawLeaf () {
 			// Leaf
+			LeafTint.a = (byte)Mathf.Lerp(LeafTint.a, CharacterNearby ? 64 : 255, 0.1f);
 			if (Direction != Direction3.Vertical || !HasTrunkOnTop) {
 				for (int i = 0; i < LeafOffsets.Length; i++) {
 					var offset = LeafOffsets[i];
@@ -132,8 +126,18 @@ namespace Yaya {
 					rect.x += rect.width;
 					rect.width = -rect.width;
 				}
-				CellRenderer.Draw(LeafArtworkCode, rect);
+				CellRenderer.Draw(LeafArtworkCode, rect, LeafTint);
 			}
+		}
+
+
+		protected virtual void DrawTrunks () {
+			bool vertical = Direction == Direction3.Vertical;
+			CellRenderer.Draw(
+				TrunkArtworkCode,
+				X, vertical ? Y : Y + Const.CELL_SIZE, 0, 0,
+				vertical ? 0 : 90, Width, Height
+			);
 		}
 
 
@@ -163,9 +167,9 @@ namespace Yaya {
 		}
 
 
-		protected int GetLeafShiftY (int frameOffset = 0, int duration = 60, int amount = 12) =>
-			(Game.GlobalFrame + X / Const.CELL_SIZE + frameOffset).PingPong(duration) * amount / duration - amount / 2;
-
+		protected int GetLeafShiftY (int frameOffset = 0, int duration = 60, int amount = 12) {
+			return ((Game.GlobalFrame + (X / Const.CELL_SIZE) + frameOffset).PingPong(duration) * amount / duration) - (amount / 2);
+		}
 
 
 		#endregion

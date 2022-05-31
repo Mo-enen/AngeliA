@@ -10,7 +10,6 @@ namespace Yaya {
 
 		// Api
 		protected override string LeafCode => "Leaf Maple";
-
 		
 
 	}
