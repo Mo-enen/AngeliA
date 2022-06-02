@@ -17,6 +17,9 @@ namespace Yaya {
 		#region --- VAR ---
 
 
+		// Api
+		public static RectInt PlayerRect { get; private set; } = default;
+
 		// Data
 		private Game Game = null;
 		private int LeftDownFrame = int.MinValue;
@@ -26,6 +29,7 @@ namespace Yaya {
 		private int LastGroundedY = 0;
 		private int AimX = 0;
 		private int AimY = 0;
+		private float BuildingAlpha01 = 1f;
 
 
 		#endregion
@@ -50,10 +54,21 @@ namespace Yaya {
 		}
 
 
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
+			float aimAlpha = CellPhysics.Overlap(
+				YayaConst.MASK_MAP, Rect, this, OperationMode.TriggerOnly, Const.BUILDING_TAG
+			) ? 0f : 1f;
+			BuildingAlpha01 = Mathf.Lerp(BuildingAlpha01, aimAlpha, 0.2f);
+			Game.WorldSquad.BuildingAlpha = (byte)(BuildingAlpha01 * 255);
+		}
+
+
 		public override void FrameUpdate () {
 			Update_Move();
 			Update_JumpDashPound();
 			Update_View();
+			PlayerRect = Rect;
 			base.FrameUpdate();
 		}
 

@@ -324,14 +324,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3362cae42eeb7d40b229963ccd046a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Audio:
-  - {fileID: 8300000, guid: 327951284ead91640bdc45dfddc44710, type: 3}
-  - {fileID: 8300000, guid: 39d9a000dc815ca499a0a067b3b65e01, type: 3}
-  - {fileID: 8300000, guid: 8da9015828e8f734bb689a685d83b40c, type: 3}
-  - {fileID: 8300000, guid: 3c3b115e89786514cbf5ea6f3f9db31c, type: 3}
-  - {fileID: 8300000, guid: 6241d9d5085f69a4b955e30777a6d81a, type: 3}
-  - {fileID: 8300000, guid: c197022eac765b84181ecc66777afeb3, type: 3}
-  m_DefaultRenderConfig:
+  m_DefaultRenderMeta:
+    BackgroundParallax: 1500
     BackgroundTintTop:
       serializedVersion: 2
       key0: {r: 0.078431375, g: 0.08235294, b: 0.12156863, a: 1}
@@ -419,11 +413,17 @@ MonoBehaviour:
       m_Mode: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-  m_DefaultViewConfig:
+  m_DefaultViewMeta:
     DefaultHeight: 5120
     MinHeight: 2048
     MaxHeight: 14336
     ViewRatio: 2000
+  m_DefaultPhysicsMeta:
+    Gravity: 5
+    GravityRise: 3
+    MaxGravitySpeed: 64
+    WaterSpeedLose: 400
   m_GameAssets:
     SkyboxShader: {fileID: 4800000, guid: ce2324baeaef2844ba1c8c3df2091636, type: 3}
     FallbackShader: {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9, type: 3}
+  m_Audio: []

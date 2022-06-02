@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Yaya {
 	[System.Serializable]
-	public class CharacterMovement : ITxtConfig {
+	public class CharacterMovement : ITxtMeta {
 
 
 
@@ -384,9 +384,9 @@ namespace Yaya {
 		#region --- API ---
 
 
-		// Config
+		// Meta
 		public void LoadFromText (string text) {
-			foreach (var (name, value) in text.LoadAsTextConfig()) {
+			foreach (var (name, value) in text.LoadAsTextMeta()) {
 				var type = Util.GetFieldType(this, name);
 				if (type == typeof(BuffInt)) {
 					if (int.TryParse(value, out int iValue)) {
@@ -490,14 +490,19 @@ namespace Yaya {
 				up ? Rig.Rect.Shift(0, ClimbSpeedY) : Rig.Rect,
 				Rig,
 				out var info,
-				OperationMode.TriggerOnly,
-				YayaConst.CLIMB_TAG
+				OperationMode.TriggerOnly
 			)) {
-				if (info.Entity is eClimbable climb && (climb.CorrectPosition || ClimbSpeedX == 0)) {
-					ClimbPositionCorrect = climb.Rect.CenterInt().x;
-					return 2;
+				int stable = 0;
+				if (info.Tag == YayaConst.CLIMB_TAG) {
+					stable = 1;
+				} else if (info.Tag == YayaConst.CLIMB_STABLE_TAG) {
+					stable = 2;
 				}
-				return 1;
+				if (stable != 0 && (stable == 2 || ClimbSpeedX == 0)) {
+					ClimbPositionCorrect = info.Rect.CenterInt().x;
+					stable = 1;
+				}
+				return stable;
 			}
 			return 0;
 		}

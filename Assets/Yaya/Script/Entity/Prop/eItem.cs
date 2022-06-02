@@ -38,8 +38,8 @@ namespace Yaya {
 
 
 		public static void InitializeWithGame (Game game) {
-			Gravity = game.PhysicsConfig.Gravity;
-			MaxGravitySpeed = game.PhysicsConfig.MaxGravitySpeed;
+			Gravity = game.Universe.PhysicsMeta.Gravity;
+			MaxGravitySpeed = game.Universe.PhysicsMeta.MaxGravitySpeed;
 		}
 
 

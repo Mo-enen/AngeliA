@@ -11,14 +11,14 @@ namespace Yaya {
 
 
 		// Const
-		private static readonly int[] ARTWORK_STATUE_CODES = new int[] { "Check Statue 0".AngeHash(), "Check Statue 1".AngeHash(), "Check Statue 2".AngeHash(), "Check Statue 3".AngeHash(), "Check Statue 4".AngeHash(), "Check Statue 5".AngeHash(), "Check Statue 6".AngeHash(), "Check Statue 7".AngeHash(), "Check Statue 8".AngeHash(), "Check Statue 9".AngeHash(), "Check Statue 10".AngeHash(), "Check Statue 11".AngeHash(), "Check Statue 12".AngeHash(), "Check Statue 13".AngeHash(), "Check Statue 14".AngeHash(), "Check Statue 15".AngeHash(), "Check Statue 16".AngeHash(), "Check Statue 17".AngeHash(), "Check Statue 18".AngeHash(), "Check Statue 19".AngeHash(), "Check Statue 20".AngeHash(), "Check Statue 21".AngeHash(), "Check Statue 22".AngeHash(), "Check Statue 23".AngeHash(), };
-		private static readonly int[] ARTWORK_ALTAR_CODES = new int[] { "Check Altar 0".AngeHash(), "Check Altar 1".AngeHash(), "Check Altar 2".AngeHash(), "Check Altar 3".AngeHash(), "Check Altar 4".AngeHash(), "Check Altar 5".AngeHash(), "Check Altar 6".AngeHash(), "Check Altar 7".AngeHash(), "Check Altar 8".AngeHash(), "Check Altar 9".AngeHash(), "Check Altar 10".AngeHash(), "Check Altar 11".AngeHash(), "Check Altar 12".AngeHash(), "Check Altar 13".AngeHash(), "Check Altar 14".AngeHash(), "Check Altar 15".AngeHash(), "Check Altar 16".AngeHash(), "Check Altar 17".AngeHash(), "Check Altar 18".AngeHash(), "Check Altar 19".AngeHash(), "Check Altar 20".AngeHash(), "Check Altar 21".AngeHash(), "Check Altar 22".AngeHash(), "Check Altar 23".AngeHash(), };
+		private static readonly int ARTWORK_STATUE_CODE = "Check Statue".AngeHash();
+		private static readonly int ARTWORK_ALTAR_CODE = "Check Altar 0".AngeHash();
 
 		// Api
 		public override RectInt GlobalBounds => Rect;
 
 		// Data
-		private static readonly Dictionary<Vector2Int, CheckPointConfig.Data> CpPool = new();
+		private static readonly Dictionary<Vector2Int, CheckPointMeta.Data> CpPool = new();
 		private int ArtCode = 0;
 		private bool IsAltar = false;
 
@@ -27,7 +27,7 @@ namespace Yaya {
 		public static void InitializeWithGame (Game game) {
 			try {
 				CpPool.Clear();
-				var data = game.LoadConfig<CheckPointConfig>();
+				var data = game.LoadMeta<CheckPointMeta>();
 				if (data != null) {
 					foreach (var cpData in data.CPs) {
 						CpPool.TryAdd(new Vector2Int(cpData.X, cpData.Y), cpData);
@@ -43,8 +43,8 @@ namespace Yaya {
 			if (CpPool.TryGetValue(globalUnitPos, out var _cpData) && _cpData.Index >= 0) {
 				IsAltar = _cpData.IsAltar;
 			} else {
+				IsAltar = false;
 				Active = false;
-				return;
 			}
 			Width = Const.CELL_SIZE;
 			Height = IsAltar ? Const.CELL_SIZE * 2 : Const.CELL_SIZE;
@@ -60,9 +60,11 @@ namespace Yaya {
 				if (CpPool.TryGetValue(globalUnitPos, out var _cpData)) {
 					artIndex = _cpData.Index;
 				}
-				ArtCode = IsAltar ?
-					ARTWORK_ALTAR_CODES[artIndex.Clamp(0, ARTWORK_ALTAR_CODES.Length - 1)] :
-					ARTWORK_STATUE_CODES[artIndex.Clamp(0, ARTWORK_STATUE_CODES.Length - 1)];
+				if (CellRenderer.TryGetSpriteFromGroup(IsAltar ? ARTWORK_ALTAR_CODE : ARTWORK_STATUE_CODE, artIndex, out var sprite, false)) {
+					ArtCode = sprite.GlobalID;
+				} else {
+					ArtCode = -1;
+				}
 			}
 		}
 

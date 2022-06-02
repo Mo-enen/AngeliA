@@ -41,12 +41,12 @@ namespace Yaya {
 			if (typeName.StartsWith("e")) typeName = typeName[1..];
 
 			// Movement
-			var movement = game.LoadConfig<CharacterMovement>($"{typeName}.Movement");
+			var movement = game.LoadMeta<CharacterMovement>($"{typeName}.Movement");
 			Movement = movement ?? new CharacterMovement();
 			Movement.Init(this);
 
 			// Renderer
-			var renderer = game.LoadConfig<CharacterRenderer>($"{typeName}.Renderer");
+			var renderer = game.LoadMeta<CharacterRenderer>($"{typeName}.Renderer");
 			Renderer = renderer ?? new CharacterRenderer();
 			Renderer.Init(this);
 

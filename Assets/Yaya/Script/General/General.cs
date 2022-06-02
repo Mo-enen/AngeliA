@@ -6,19 +6,6 @@ using AngeliaFramework;
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 
 namespace Yaya {
-
-
-	public enum FurniturePose {
-		Unknown = 0,
-		Left = 1,
-		Down = 1,
-		Mid = 2,
-		Right = 3,
-		Up = 3,
-		Single = 4,
-	}
-
-
 	public static class YayaConst {
 
 
@@ -38,9 +25,24 @@ namespace Yaya {
 		public const int MASK_MAP = MASK_LEVEL | MASK_ENVIRONMENT;
 
 		public static readonly int CLIMB_TAG = "Climb".AngeHash();
+		public static readonly int CLIMB_STABLE_TAG = "Climb Stable".AngeHash();
 		public static readonly int ITEM_TAG = "Item".AngeHash();
 		public static readonly int WATER_TAG = "Water".AngeHash();
 
 	}
+
+
+	[System.Serializable]
+	public class CheckPointMeta {
+		[System.Serializable]
+		public struct Data {
+			public int Index;
+			public int X;
+			public int Y;
+			public bool IsAltar;
+		}
+		public Data[] CPs = null;
+	}
+
 
 }

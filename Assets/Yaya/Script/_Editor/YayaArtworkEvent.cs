@@ -31,7 +31,7 @@ namespace Yaya.Editor {
 
 			// Get All Cp Positions
 			var allCpPool = new Dictionary<Vector2Int, int>();
-			foreach (var file in Util.GetFilesIn(game.MapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
+			foreach (var file in Util.GetFilesIn(game.Universe.MapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
 				try {
 					if (!world.LoadFromDisk(file.FullName)) continue;
 					for (int i = 0; i < Const.MAP_SIZE * Const.MAP_SIZE; i++) {
@@ -47,7 +47,7 @@ namespace Yaya.Editor {
 						int blockID = 0;
 						if (cpBlockWorldPos == world.WorldPosition) {
 							blockID = world.Level[bIndex];
-						} else if (blockCheckingWorld.LoadFromDisk(game.MapRoot, cpBlockWorldPos.x, cpBlockWorldPos.y)) {
+						} else if (blockCheckingWorld.LoadFromDisk(game.Universe.MapRoot, cpBlockWorldPos.x, cpBlockWorldPos.y)) {
 							blockID = blockCheckingWorld.Level[bIndex];
 						} else continue;
 						allCpPool.Add(cpPos, blockID);
@@ -57,7 +57,7 @@ namespace Yaya.Editor {
 
 			// Write Position File
 			try {
-				var cpList = new List<CheckPointConfig.Data>();
+				var cpList = new List<CheckPointMeta.Data>();
 				foreach (var (pos, id) in allCpPool) {
 					if (id == 0) continue;
 					for (int i = 1; i < Const.MAP_SIZE; i++) {
@@ -72,10 +72,10 @@ namespace Yaya.Editor {
 						}
 					}
 				}
-				var jsonData = new CheckPointConfig() { CPs = cpList.ToArray() };
+				var jsonData = new CheckPointMeta() { CPs = cpList.ToArray() };
 				Util.TextToFile(
 					JsonUtility.ToJson(jsonData, true),
-					Util.CombinePaths(game.JsonConfigRoot, $"{nameof(CheckPointConfig)}.json")
+					Util.CombinePaths(game.Universe.MetaRoot, $"{nameof(CheckPointMeta)}.json")
 				);
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}

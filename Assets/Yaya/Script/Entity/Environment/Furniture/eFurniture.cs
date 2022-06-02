@@ -10,6 +10,17 @@ namespace Yaya {
 	public abstract class eFurniture : Entity {
 
 
+		protected enum FurniturePose {
+			Unknown = 0,
+			Left = 1,
+			Down = 1,
+			Mid = 2,
+			Right = 3,
+			Up = 3,
+			Single = 4,
+		}
+
+
 		// VAR
 		protected abstract Direction3 ModuleType { get; }
 		protected abstract int ArtworkCode_LeftDown { get; }

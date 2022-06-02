@@ -42,10 +42,7 @@ namespace Yaya {
 
 		// Data
 		private static readonly HitInfo[] c_PerformMove = new HitInfo[16];
-		private static int Gravity = 5;
-		private static int GravityRise = 3;
-		private static int MaxGravitySpeed = 64;
-		private static int WaterSpeedLose = 400;
+		private static PhysicsMeta PhysicsMeta = null;
 		private int IgnoreGroundCheckFrame = int.MinValue;
 		private int IgnoreGravityFrame = int.MinValue;
 
@@ -59,10 +56,7 @@ namespace Yaya {
 
 
 		public static void InitializeWithGame (Game game) {
-			Gravity = game.PhysicsConfig.Gravity;
-			GravityRise = game.PhysicsConfig.GravityRise;
-			MaxGravitySpeed = game.PhysicsConfig.MaxGravitySpeed;
-			WaterSpeedLose = game.PhysicsConfig.WaterSpeedLose;
+			PhysicsMeta = game.Universe.PhysicsMeta ?? new();
 		}
 
 
@@ -102,10 +96,10 @@ namespace Yaya {
 
 			// Gravity
 			if (GravityScale != 0 && frame > IgnoreGravityFrame) {
-				int gravity = (VelocityY < 0 || IgnoreRiseGravityShift ? Gravity : GravityRise) * GravityScale / 1000;
+				int gravity = (VelocityY < 0 || IgnoreRiseGravityShift ? PhysicsMeta.Gravity : PhysicsMeta.GravityRise) * GravityScale / 1000;
 				VelocityY = Mathf.Clamp(
 					VelocityY - gravity,
-					-MaxGravitySpeed * (InWater ? WaterSpeedLose : 1000) / 1000,
+					-PhysicsMeta.MaxGravitySpeed * (InWater ? PhysicsMeta.WaterSpeedLose : 1000) / 1000,
 					int.MaxValue
 				);
 			}
@@ -166,7 +160,7 @@ namespace Yaya {
 
 		public void PerformMove (int speedX, int speedY, bool ignoreCarry = false, bool ignoreOneway = false, bool ignoreLevel = false) {
 
-			int speedScale = InWater ? WaterSpeedLose : 1000;
+			int speedScale = InWater ? PhysicsMeta.WaterSpeedLose : 1000;
 			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);
 
 			speedX = speedX * speedScale / 1000;

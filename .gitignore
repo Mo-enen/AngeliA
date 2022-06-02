@@ -8,13 +8,8 @@
 *.ini
 *.sln
 *.config
-/Projects
-/_BackUp
 /Log
-/_Release
-/_Paper
 /UserSettings
-/_Built
 /Packages
 .vsconfig
 .editorconfig
