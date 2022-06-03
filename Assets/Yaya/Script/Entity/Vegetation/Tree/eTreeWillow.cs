@@ -26,6 +26,16 @@ namespace Yaya {
 		}
 
 
+		public override void FillPhysics () {
+			base.FillPhysics();
+			for (int i = 0; i < GroundDistance - 1; i++) {
+				var rect = Rect.Shift(0, -i * Const.CELL_SIZE);
+				if (i == 0) rect.height = Rect.height / 2;
+				CellPhysics.FillBlock(YayaConst.ENVIRONMENT, rect, true, YayaConst.CLIMB_TAG);
+			}
+		}
+
+
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
 			if (GroundDistance < 0 && HasLeaf) {

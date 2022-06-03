@@ -235,14 +235,17 @@ namespace Yaya {
 			}
 
 			// Grow Ani Frame
-			if (ani == Ani_Climb) {
-				if (movement.FinalVelocityY > 0) {
+			if (ani != Ani_Climb) {
+				// Normal
+				CurrentAniFrame++;
+			} else {
+				// Climb
+				int climbVelocity = movement.IntendedY != 0 ? movement.IntendedY : movement.IntendedX;
+				if (climbVelocity > 0) {
 					CurrentAniFrame++;
-				} else if (movement.FinalVelocityY < 0) {
+				} else if (climbVelocity < 0) {
 					CurrentAniFrame--;
 				}
-			} else {
-				CurrentAniFrame++;
 			}
 			LastCellHeight = cell.Height;
 
@@ -278,16 +281,6 @@ namespace Yaya {
 				Const.ORIGINAL_SIZE
 			);
 		}
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
 
 
 		#endregion

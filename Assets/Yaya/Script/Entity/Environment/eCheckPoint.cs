@@ -14,9 +14,6 @@ namespace Yaya {
 		private static readonly int ARTWORK_STATUE_CODE = "Check Statue".AngeHash();
 		private static readonly int ARTWORK_ALTAR_CODE = "Check Altar 0".AngeHash();
 
-		// Api
-		public override RectInt GlobalBounds => Rect;
-
 		// Data
 		private static readonly Dictionary<Vector2Int, CheckPointMeta.Data> CpPool = new();
 		private int ArtCode = 0;
@@ -49,6 +46,12 @@ namespace Yaya {
 			Width = Const.CELL_SIZE;
 			Height = IsAltar ? Const.CELL_SIZE * 2 : Const.CELL_SIZE;
 			ArtCode = 0;
+		}
+
+
+		public override void FillPhysics () {
+			base.FillPhysics();
+			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
 		}
 
 

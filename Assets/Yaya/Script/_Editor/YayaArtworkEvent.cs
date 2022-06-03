@@ -30,27 +30,16 @@ namespace Yaya.Editor {
 			int TARGET_ID = typeof(eCheckPoint).AngeHash();
 
 			// Get All Cp Positions
-			var allCpPool = new Dictionary<Vector2Int, int>();
+			var allCpPool = new HashSet<Vector2Int>();
 			foreach (var file in Util.GetFilesIn(game.Universe.MapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
 				try {
 					if (!world.LoadFromDisk(file.FullName)) continue;
 					for (int i = 0; i < Const.MAP_SIZE * Const.MAP_SIZE; i++) {
 						if (world.Entities[i] != TARGET_ID) continue;
-						var cpPos = new Vector2Int(
+						allCpPool.Add(new Vector2Int(
 							world.WorldPosition.x * Const.MAP_SIZE + i % Const.MAP_SIZE,
 							world.WorldPosition.y * Const.MAP_SIZE + i / Const.MAP_SIZE
-						);
-						var cpBlockPos = cpPos;
-						cpBlockPos.y--;
-						var cpBlockWorldPos = cpBlockPos.UDivide(Const.MAP_SIZE);
-						int bIndex = cpBlockPos.y.UMod(Const.MAP_SIZE) * Const.MAP_SIZE + cpBlockPos.x.UMod(Const.MAP_SIZE);
-						int blockID = 0;
-						if (cpBlockWorldPos == world.WorldPosition) {
-							blockID = world.Level[bIndex];
-						} else if (blockCheckingWorld.LoadFromDisk(game.Universe.MapRoot, cpBlockWorldPos.x, cpBlockWorldPos.y)) {
-							blockID = blockCheckingWorld.Level[bIndex];
-						} else continue;
-						allCpPool.Add(cpPos, blockID);
+						));
 					}
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
@@ -58,15 +47,15 @@ namespace Yaya.Editor {
 			// Write Position File
 			try {
 				var cpList = new List<CheckPointMeta.Data>();
-				foreach (var (pos, id) in allCpPool) {
-					if (id == 0) continue;
+				foreach (var pos in allCpPool) {
+					if (allCpPool.Contains(new(pos.x, pos.y - 1))) continue;
 					for (int i = 1; i < Const.MAP_SIZE; i++) {
 						if (AngeEditorUtil.TryGetMapSystemNumber(pos.x, pos.y + i, out int cpIndex)) {
 							cpList.Add(new() {
 								Index = cpIndex,
 								X = pos.x,
 								Y = pos.y,
-								IsAltar = allCpPool.ContainsKey(new(pos.x, pos.y + 1)) && !allCpPool.ContainsKey(new(pos.x, pos.y - 1)),
+								IsAltar = allCpPool.Contains(new(pos.x, pos.y + 1)) && !allCpPool.Contains(new(pos.x, pos.y - 1)),
 							});
 							break;
 						}

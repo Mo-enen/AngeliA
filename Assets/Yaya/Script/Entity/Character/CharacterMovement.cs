@@ -22,6 +22,8 @@ namespace Yaya {
 		private const int RUN_BREAK_GAP = 6;
 
 		// Api
+		public int IntendedX { get; private set; } = 0;
+		public int IntendedY { get; private set; } = 0;
 		public bool IsDashing { get; private set; } = false;
 		public bool IsSquating { get; private set; } = false;
 		public bool IsPounding { get; private set; } = false;
@@ -115,8 +117,6 @@ namespace Yaya {
 		private eRigidbody Rig = null;
 		private RectInt Hitbox = default;
 		private int CurrentFrame = 0;
-		private int IntendedX = 0;
-		private int IntendedY = 0;
 		private int LastIntendedX = 1;
 		private bool HoldingJump = false;
 		private bool PrevHoldingJump = false;
@@ -171,8 +171,7 @@ namespace Yaya {
 				if (HoldingJump && CurrentJumpCount > 0 && Rig.VelocityY > 0) {
 					IsClimbing = false;
 				} else {
-					int climbID = ClimbCheck();
-					bool overlapClimb = climbID != 0;
+					bool overlapClimb = ClimbCheck();
 					if (!IsClimbing) {
 						if (overlapClimb && IntendedY > 0) IsClimbing = true;
 					} else {
@@ -337,7 +336,7 @@ namespace Yaya {
 		private void Update_VelocityY () {
 			if (IsClimbing) {
 				// Climb
-				Rig.VelocityY = (IntendedY <= 0 || ClimbCheck(true) != 0 ? IntendedY : 0) * ClimbSpeedY;
+				Rig.VelocityY = (IntendedY <= 0 || ClimbCheck(true) ? IntendedY : 0) * ClimbSpeedY;
 				Rig.GravityScale = 0;
 			} else if (InWater && SwimInFreeStyle) {
 				if (IsDashing) {
@@ -480,31 +479,29 @@ namespace Yaya {
 		}
 
 
-		private int ClimbCheck (bool up = false) {
-			// 0: not overlap
-			// 1: overlap without correct pos
-			// 2: overlap and correct pos
-			if (IsInsideGround) return 0;
+		private bool ClimbCheck (bool up = false) {
+			if (IsInsideGround) return false;
+			if (CellPhysics.Overlap(
+				YayaConst.MASK_ENVIRONMENT,
+				up ? Rig.Rect.Shift(0, ClimbSpeedY) : Rig.Rect,
+				Rig,
+				OperationMode.TriggerOnly,
+				YayaConst.CLIMB_TAG
+			)) {
+				return true;
+			}
 			if (CellPhysics.Overlap(
 				YayaConst.MASK_ENVIRONMENT,
 				up ? Rig.Rect.Shift(0, ClimbSpeedY) : Rig.Rect,
 				Rig,
 				out var info,
-				OperationMode.TriggerOnly
+				OperationMode.TriggerOnly,
+				YayaConst.CLIMB_STABLE_TAG
 			)) {
-				int stable = 0;
-				if (info.Tag == YayaConst.CLIMB_TAG) {
-					stable = 1;
-				} else if (info.Tag == YayaConst.CLIMB_STABLE_TAG) {
-					stable = 2;
-				}
-				if (stable != 0 && (stable == 2 || ClimbSpeedX == 0)) {
-					ClimbPositionCorrect = info.Rect.CenterInt().x;
-					stable = 1;
-				}
-				return stable;
+				ClimbPositionCorrect = info.Rect.CenterInt().x;
+				return true;
 			}
-			return 0;
+			return false;
 		}
 
 

@@ -163,7 +163,7 @@ namespace Yaya {
 				new(X + Const.CELL_SIZE / 2, Y + Const.CELL_SIZE + Const.CELL_SIZE / 2, 1, 1),
 				YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG
 			)) v++;
-			return h > v ? Direction3.Horizontal : Direction3.Vertical;
+			return h >= v ? Direction3.Horizontal : Direction3.Vertical;
 		}
 
 
