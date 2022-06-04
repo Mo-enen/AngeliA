@@ -326,93 +326,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_DefaultRenderMeta:
     BackgroundParallax: 1500
-    BackgroundTintTop:
-      serializedVersion: 2
-      key0: {r: 0.078431375, g: 0.08235294, b: 0.12156863, a: 1}
-      key1: {r: 0.27896446, g: 0.66835403, b: 0.8584906, a: 1}
-      key2: {r: 0.2784314, g: 0.6666667, b: 0.85882354, a: 0}
-      key3: {r: 0.07687591, g: 0.08084616, b: 0.122641504, a: 0}
-      key4: {r: 0.07687591, g: 0.08084613, b: 0.122641504, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 10601
-      ctime1: 28527
-      ctime2: 35852
-      ctime3: 54934
-      ctime4: 55512
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 4
-      m_NumAlphaKeys: 2
-    BackgroundTintBottom:
-      serializedVersion: 2
-      key0: {r: 0.11493589, g: 0.119115375, b: 0.16299999, a: 1}
-      key1: {r: 0.5010284, g: 0.7843156, b: 0.9245283, a: 1}
-      key2: {r: 0.5019608, g: 0.78431374, b: 0.9254902, a: 0}
-      key3: {r: 0.11372549, g: 0.11764706, b: 0.16470589, a: 0}
-      key4: {r: 0.21568628, g: 0.22352941, b: 0.30588236, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 10601
-      ctime1: 28913
-      ctime2: 35081
-      ctime3: 54356
-      ctime4: 51464
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 4
-      m_NumAlphaKeys: 2
-    BackgroundBlockTint:
-      serializedVersion: 2
-      key0: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 0.6901961}
-      key1: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 0.6901961}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
+    SkyTintTop: '#14151f, #20394c, #47aadb, #20394c, #14151f'
+    SkyTintBottom: '#1f1f23, #324252, #80c8ec, #324252, #1f1f23'
   m_DefaultViewMeta:
     DefaultHeight: 5120
     MinHeight: 2048
@@ -426,4 +341,3 @@ MonoBehaviour:
   m_GameAssets:
     SkyboxShader: {fileID: 4800000, guid: ce2324baeaef2844ba1c8c3df2091636, type: 3}
     FallbackShader: {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9, type: 3}
-  m_Audio: []
