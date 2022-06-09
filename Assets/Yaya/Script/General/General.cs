@@ -37,8 +37,8 @@ namespace Yaya {
 		[System.Serializable]
 		public struct Data {
 			public int Index;
-			public int X;
-			public int Y;
+			public int X; // Global Unit Pos
+			public int Y; // Global Unit Pos
 			public bool IsAltar;
 		}
 		public Data[] CPs = null;

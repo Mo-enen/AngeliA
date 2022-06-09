@@ -16,6 +16,7 @@ namespace Yaya {
 
 		// Data
 		private static readonly Dictionary<Vector2Int, CheckPointMeta.Data> CpPool = new();
+		private static readonly Dictionary<int, Vector2Int> CpAltarPool = new();
 		private int ArtCode = 0;
 		private bool IsAltar = false;
 
@@ -24,10 +25,13 @@ namespace Yaya {
 		public static void InitializeWithGame (Game game) {
 			try {
 				CpPool.Clear();
+				CpAltarPool.Clear();
 				var data = game.LoadMeta<CheckPointMeta>();
 				if (data != null) {
 					foreach (var cpData in data.CPs) {
-						CpPool.TryAdd(new Vector2Int(cpData.X, cpData.Y), cpData);
+						var pos = new Vector2Int(cpData.X, cpData.Y);
+						CpPool.TryAdd(pos, cpData);
+						if (cpData.IsAltar) CpAltarPool.TryAdd(cpData.Index, pos);
 					}
 				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }
@@ -76,6 +80,9 @@ namespace Yaya {
 			base.FrameUpdate();
 			CellRenderer.Draw(ArtCode, Rect);
 		}
+
+
+		public static bool TryGetAltarPosition (int index, out Vector2Int unitPos) => CpAltarPool.TryGetValue(index, out unitPos);
 
 
 	}
