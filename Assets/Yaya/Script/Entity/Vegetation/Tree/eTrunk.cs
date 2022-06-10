@@ -5,6 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+	[EntityBounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE)]
 	public class eTrunk : eTree {
 
 

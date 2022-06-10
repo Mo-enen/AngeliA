@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[EntityBounds(-Const.CELL_SIZE * 2, 0, Const.CELL_SIZE * 5, Const.CELL_SIZE)]
+	[EntityBounds(-Const.CELL_SIZE * 2, 0, Const.CELL_SIZE * 5, Const.CELL_SIZE + Const.CELL_SIZE / 2)]
 	public class eTreePalm : eTree {
 
 

@@ -5,58 +5,32 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[EntityBounds(0, -Const.CELL_SIZE * (LEAF_LENGTH - 1), Const.CELL_SIZE, Const.CELL_SIZE * LEAF_LENGTH)]
+	[EntityBounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE)]
 	public class eTreeWillow : eTree {
 
 
-		// Const
-		private const int LEAF_LENGTH = 10;
-
 		// Api
 		protected override string LeafCode => "Leaf Willow";
-		private bool HasLeaf => Direction == Direction3.Horizontal;
 
 		// Data
-		private int GroundDistance = -1;
-
-
-		public override void OnActived () {
-			base.OnActived();
-			GroundDistance = -1;
-		}
-
-
 		public override void FillPhysics () {
-			base.FillPhysics();
-			for (int i = 0; i < GroundDistance - 1; i++) {
-				var rect = Rect.Shift(0, -i * Const.CELL_SIZE);
-				if (i == 0) rect.height = Rect.height / 2;
-				CellPhysics.FillBlock(YayaConst.ENVIRONMENT, rect, true, YayaConst.CLIMB_TAG);
-			}
+			if (!HasTrunkOnTop) base.FillPhysics();
+			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true);
+			CellPhysics.FillBlock(
+				YayaConst.ENVIRONMENT,
+				HasTrunkOnTop ? Rect : Rect.Shrink(0, 0, 0, Height / 2),
+				true, YayaConst.CLIMB_TAG
+			);
 		}
 
 
-		public override void PhysicsUpdate () {
-			base.PhysicsUpdate();
-			if (GroundDistance < 0 && HasLeaf) {
-				for (int i = 1; i <= LEAF_LENGTH + 1; i++) {
-					GroundDistance = i;
-					if (CellPhysics.Overlap(
-						YayaConst.MASK_LEVEL,
-						new(X + Const.CELL_SIZE / 2, Y + Const.CELL_SIZE / 2 - i * Const.CELL_SIZE, 1, 1),
-						this
-					)) break;
-				}
-			}
+		protected override void DrawTrunk () {
+			if (!HasTrunkOnTop) base.DrawTrunk();
 		}
 
 
 		protected override void DrawLeaf () {
-			if (!HasLeaf) return;
-			for (int i = 0; i < GroundDistance - 1; i++) {
-				var rect = Rect.Shift(GetLeafShiftY(i * 12), -i * Const.CELL_SIZE);
-				CellRenderer.Draw(LeafArtworkCode, rect);
-			}
+			CellRenderer.Draw(LeafArtworkCode, Rect.Shift(GetLeafShiftY(0), 0));
 		}
 
 

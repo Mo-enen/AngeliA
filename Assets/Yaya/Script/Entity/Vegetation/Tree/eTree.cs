@@ -18,6 +18,7 @@ namespace Yaya {
 
 		// Const
 		private static readonly int[] LEAF_OFFSET_SEEDS = new int[] { 0, 6, 2, 8, 3, 7, 2, 3, 5, 2, 2, 6, 9, 3, 6, 1, 9, 0, 1, 7, 4, 2, 8, 4, 6, 5, 2, 4, 8, 7, };
+		private const byte LEAF_HIDE_ALPHA = 32;
 
 		// Virtual
 		protected virtual string TrunkCode => "Trunk";
@@ -55,9 +56,13 @@ namespace Yaya {
 		public override void OnActived () {
 
 			base.OnActived();
-			Direction = Direction3.None;
 			Width = Const.CELL_SIZE;
 			Height = Const.CELL_SIZE;
+			Direction = Direction3.None;
+			HasTrunkOnLeft = false;
+			HasTrunkOnRight = false;
+			HasTrunkOnBottom = false;
+			HasTrunkOnTop = false;
 
 			// Trunk
 			TrunkArtworkCode = CellRenderer.TryGetSpriteFromGroup(
@@ -97,7 +102,7 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawTrunks();
+			DrawTrunk();
 			DrawLeaf();
 		}
 
@@ -112,7 +117,7 @@ namespace Yaya {
 
 		protected virtual void DrawLeaf () {
 			// Leaf
-			LeafTint.a = (byte)Mathf.Lerp(LeafTint.a, CharacterNearby ? 64 : 255, 0.1f);
+			LeafTint.a = (byte)Mathf.Lerp(LeafTint.a, CharacterNearby ? LEAF_HIDE_ALPHA : 255, 0.1f);
 			if (Direction != Direction3.Vertical || !HasTrunkOnTop) {
 				for (int i = 0; i < LeafOffsets.Length; i++) {
 					var offset = LeafOffsets[i];
@@ -131,7 +136,7 @@ namespace Yaya {
 		}
 
 
-		protected virtual void DrawTrunks () {
+		protected virtual void DrawTrunk () {
 			bool vertical = Direction == Direction3.Vertical;
 			CellRenderer.Draw(
 				TrunkArtworkCode,
@@ -149,19 +154,19 @@ namespace Yaya {
 			int h = 0, v = 0;
 			if (HasTrunkOnLeft = CellPhysics.HasEntity<eTree>(
 				new(X - Const.CELL_SIZE / 2, Y + Const.CELL_SIZE / 2, 1, 1),
-				YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG
+				YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 			)) h++;
 			if (HasTrunkOnRight = CellPhysics.HasEntity<eTree>(
 				new(X + Const.CELL_SIZE + Const.CELL_SIZE / 2, Y + Const.CELL_SIZE / 2, 1, 1),
-				YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG
+				YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 			)) h++;
 			if (HasTrunkOnBottom = CellPhysics.HasEntity<eTree>(
 				new(X + Const.CELL_SIZE / 2, Y - Const.CELL_SIZE / 2, 1, 1),
-				YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG
+				YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 			)) v++;
 			if (HasTrunkOnTop = CellPhysics.HasEntity<eTree>(
 				new(X + Const.CELL_SIZE / 2, Y + Const.CELL_SIZE + Const.CELL_SIZE / 2, 1, 1),
-				YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG
+				YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 			)) v++;
 			return h >= v ? Direction3.Horizontal : Direction3.Vertical;
 		}
