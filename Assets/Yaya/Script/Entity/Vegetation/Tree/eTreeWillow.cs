@@ -14,8 +14,11 @@ namespace Yaya {
 
 		// Data
 		public override void FillPhysics () {
-			if (!HasTrunkOnTop) base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true);
+			if (!HasTrunkOnTop) {
+				base.FillPhysics();
+			} else {
+				CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true);
+			}
 			CellPhysics.FillBlock(
 				YayaConst.ENVIRONMENT,
 				HasTrunkOnTop ? Rect : Rect.Shrink(0, 0, 0, Height / 2),

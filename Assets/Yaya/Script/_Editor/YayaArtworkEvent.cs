@@ -17,16 +17,15 @@ namespace Yaya.Editor {
 
 
 		public void OnArtworkSynced () {
-			CreateCheckPointFile();
+			CreateCheckPointMetaFile();
 		}
 
 
-		private void CreateCheckPointFile () {
+		private void CreateCheckPointMetaFile () {
 			var game = Object.FindObjectOfType<Game>();
 			if (game == null) return;
 
 			var world = new World();
-			var blockCheckingWorld = new World();
 			int TARGET_ID = typeof(eCheckPoint).AngeHash();
 
 			// Get All Cp Positions
@@ -46,7 +45,7 @@ namespace Yaya.Editor {
 
 			// Write Position File
 			try {
-				var cpList = new List<CheckPointMeta.Data>();
+				var cpList = new List<YayaMeta.Data>();
 				foreach (var pos in allCpPool) {
 					if (allCpPool.Contains(new(pos.x, pos.y - 1))) continue;
 					for (int i = 1; i < Const.MAP_SIZE; i++) {
@@ -61,11 +60,7 @@ namespace Yaya.Editor {
 						}
 					}
 				}
-				var jsonData = new CheckPointMeta() { CPs = cpList.ToArray() };
-				Util.TextToFile(
-					JsonUtility.ToJson(jsonData, true),
-					Util.CombinePaths(game.Universe.MetaRoot, $"{nameof(CheckPointMeta)}.json")
-				);
+				game.SaveMeta(new YayaMeta() { CPs = cpList.ToArray(), });
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 

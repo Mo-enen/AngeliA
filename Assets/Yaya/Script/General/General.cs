@@ -33,7 +33,7 @@ namespace Yaya {
 
 
 	[System.Serializable]
-	public class CheckPointMeta {
+	public class YayaMeta {
 		[System.Serializable]
 		public struct Data {
 			public int Index;

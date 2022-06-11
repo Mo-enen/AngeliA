@@ -89,7 +89,7 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
+			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this);
 		}
 
 
@@ -154,20 +154,21 @@ namespace Yaya {
 			int h = 0, v = 0;
 			if (HasTrunkOnLeft = CellPhysics.HasEntity<eTree>(
 				new(X - Const.CELL_SIZE / 2, Y + Const.CELL_SIZE / 2, 1, 1),
-				YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
+				YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 			)) h++;
 			if (HasTrunkOnRight = CellPhysics.HasEntity<eTree>(
 				new(X + Const.CELL_SIZE + Const.CELL_SIZE / 2, Y + Const.CELL_SIZE / 2, 1, 1),
-				YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
+				YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 			)) h++;
 			if (HasTrunkOnBottom = CellPhysics.HasEntity<eTree>(
 				new(X + Const.CELL_SIZE / 2, Y - Const.CELL_SIZE / 2, 1, 1),
-				YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
+				YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 			)) v++;
 			if (HasTrunkOnTop = CellPhysics.HasEntity<eTree>(
 				new(X + Const.CELL_SIZE / 2, Y + Const.CELL_SIZE + Const.CELL_SIZE / 2, 1, 1),
-				YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
+				YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 			)) v++;
+			if (!HasTrunkOnLeft && !HasTrunkOnRight && !HasTrunkOnBottom && !HasTrunkOnTop) return Direction3.Vertical;
 			return h >= v ? Direction3.Horizontal : Direction3.Vertical;
 		}
 

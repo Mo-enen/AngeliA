@@ -27,6 +27,9 @@ namespace Yaya {
 		protected abstract int ArtworkCode_Mid { get; }
 		protected abstract int ArtworkCode_RightUp { get; }
 		protected abstract int ArtworkCode_Single { get; }
+		protected virtual bool LoopArtworkIndex { get; } = false;
+		protected bool HasSameFurnitureOnLeftOrDown { get; private set; } = false;
+		protected bool HasSameFurnitureOnRightOrUp { get; private set; } = false;
 
 		// Data
 		protected FurniturePose Pose = FurniturePose.Unknown;
@@ -41,6 +44,8 @@ namespace Yaya {
 			Height = Const.CELL_SIZE;
 			Pose = FurniturePose.Unknown;
 			RenderingRect = Rect;
+			HasSameFurnitureOnLeftOrDown = false;
+			HasSameFurnitureOnRightOrUp = false;
 		}
 
 
@@ -89,6 +94,21 @@ namespace Yaya {
 		}
 
 
+		protected void DrawClockPendulum (int artCodeLeg, int artCodeHead, int x, int y, int length, int thickness, int headSize, int maxRot, int deltaX = 0) {
+			float t11 = Mathf.Sin(Game.GlobalFrame * 6 * Mathf.Deg2Rad);
+			int rot = (t11 * maxRot).RoundToInt();
+			int dX = -(t11 * deltaX).RoundToInt();
+			// Leg
+			CellRenderer.Draw(artCodeLeg, x + dX, y, 500, 1000, rot, thickness, length);
+			// Head
+			CellRenderer.Draw(
+				artCodeHead, x + dX, y, 500,
+				500 * (headSize / 2 + length) / (headSize / 2),
+				rot, headSize, headSize
+			);
+		}
+
+
 		// LGC
 		private void Update_Pose () {
 			if (Pose != FurniturePose.Unknown) return;
@@ -104,6 +124,8 @@ namespace Yaya {
 					!hasLeft && !hasRight ? FurniturePose.Single :
 					!hasLeft && hasRight ? FurniturePose.Left :
 					FurniturePose.Right;
+				HasSameFurnitureOnLeftOrDown = hasLeft;
+				HasSameFurnitureOnRightOrUp = hasRight;
 			} else if (ModuleType == Direction3.Vertical) {
 				var rect = Rect;
 				rect.y = Rect.y - Const.CELL_SIZE;
@@ -115,6 +137,8 @@ namespace Yaya {
 					!hasDown && !hasUp ? FurniturePose.Single :
 					!hasDown && hasUp ? FurniturePose.Down :
 					FurniturePose.Up;
+				HasSameFurnitureOnLeftOrDown = hasDown;
+				HasSameFurnitureOnRightOrUp = hasUp;
 			} else {
 				Pose = FurniturePose.Single;
 			}
@@ -138,7 +162,7 @@ namespace Yaya {
 				FurniturePose.Right => ArtworkCode_RightUp,
 				FurniturePose.Single => ArtworkCode_Single,
 				_ => 0,
-			}, ArtworkIndex, out sprite, false);
+			}, ArtworkIndex, out sprite, LoopArtworkIndex);
 
 
 	}

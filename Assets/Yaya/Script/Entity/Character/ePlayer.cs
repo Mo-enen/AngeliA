@@ -17,9 +17,6 @@ namespace Yaya {
 		#region --- VAR ---
 
 
-		// Api
-		public static RectInt PlayerRect { get; private set; } = default;
-
 		// Data
 		private Game Game = null;
 		private int LeftDownFrame = int.MinValue;
@@ -48,8 +45,8 @@ namespace Yaya {
 
 		public override void OnActived () {
 			LastGroundedY = Y;
-			AimX = Game.ViewRect.x;
-			AimY = Game.ViewRect.y;
+			AimX = X - Game.ViewRect.width / 2;
+			AimY = GetAimY(Y, Game.ViewRect.height);
 			base.OnActived();
 		}
 
@@ -68,7 +65,6 @@ namespace Yaya {
 			Update_Move();
 			Update_JumpDashPound();
 			Update_View();
-			PlayerRect = Rect;
 			base.FrameUpdate();
 		}
 
@@ -160,8 +156,9 @@ namespace Yaya {
 			} else if (X > centerX + linger) {
 				AimX = X - linger - viewRect.width / 2;
 			}
-			AimY = !IsInAir || Y < LastGroundedY ? Y - viewRect.height * 382 / 1000 : AimY;
+			AimY = !IsInAir || Y < LastGroundedY ? GetAimY(Y, viewRect.height) : AimY;
 			Game.SetViewPositionDely(AimX, AimY, LERP_RATE);
+			// Clamp
 			if (!viewRect.Contains(X, Y)) {
 				if (X >= viewRect.xMax) AimX = X - viewRect.width + 1;
 				if (X <= viewRect.xMin) AimX = X - 1;
@@ -169,6 +166,27 @@ namespace Yaya {
 				if (Y <= viewRect.yMin) AimY = Y - 1;
 				Game.SetViewPositionDely(AimX, AimY, 1000, int.MinValue + 1);
 			}
+		}
+
+
+		private int GetAimY (int playerY, int viewHeight) => playerY - viewHeight * 382 / 1000;
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+		public void Wakeup () {
+
+		}
+
+
+		public void Sleep () {
+
 		}
 
 

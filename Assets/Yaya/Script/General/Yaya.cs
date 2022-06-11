@@ -18,6 +18,8 @@ namespace Yaya {
 
 		// Api
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
+		public static readonly Dictionary<Vector2Int, YayaMeta.Data> CpPool = new();
+		public static readonly Dictionary<int, Vector2Int> CpAltarPool = new();
 
 
 		#endregion
@@ -31,7 +33,7 @@ namespace Yaya {
 		protected override void Initialize () {
 			base.Initialize();
 			Initialize_Quit();
-			Initialize_Player();
+			Initialize_YayaMeta();
 		}
 
 
@@ -60,9 +62,35 @@ namespace Yaya {
 		}
 
 
-		private void Initialize_Player () {
-			var pos = ViewRect.CenterInt();
-			AddEntity(typeof(ePlayer).AngeHash(), pos.x, pos.y);
+		private void Initialize_YayaMeta () {
+			try {
+				// Check Points
+				CpPool.Clear();
+				CpAltarPool.Clear();
+				var cpMeta = LoadMeta<YayaMeta>();
+				if (cpMeta != null) {
+					foreach (var cpData in cpMeta.CPs) {
+						var pos = new Vector2Int(cpData.X, cpData.Y);
+						CpPool.TryAdd(pos, cpData);
+						if (cpData.IsAltar) CpAltarPool.TryAdd(cpData.Index, pos);
+					}
+				}
+				{
+					// Spawn Player
+					var pos = ViewRect.CenterInt();
+					if (!WorldSquad.FindBlock(typeof(ePlayerBed).AngeHash(), out _, BlockType.Entity)) {
+						AddEntity(typeof(ePlayer).AngeHash(), pos.x, pos.y);
+					}
+					// Fix View Position
+					var view = ViewRect;
+					view.x = pos.x - ViewRect.width / 2;
+					view.y = pos.y - ViewRect.height / 2;
+					SetViewPositionDely(view.x, view.y);
+					SetViewRectImmediately(view);
+
+
+				}
+			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
 

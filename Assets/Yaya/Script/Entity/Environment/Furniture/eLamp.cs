@@ -20,12 +20,15 @@ namespace Yaya {
 
 		// Data
 		private int BrightnessShift = 0;
+		private bool OpenLight = false;
 
 
 		// MSG
 		public override void OnActived () {
 			base.OnActived();
 			BrightnessShift = (X * 17 + Y * 9) / Const.CELL_SIZE;
+			int hour = System.DateTime.Now.Hour;
+			OpenLight = hour <= 6 || hour >= 18;
 		}
 
 
@@ -36,8 +39,10 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			byte brightness = (byte)(64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8);
-			CellRenderer.Draw(LIGHT, Rect.Expand(Const.CELL_SIZE), new(brightness, brightness, brightness, 255));
+			if (OpenLight) {
+				byte brightness = (byte)(64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8);
+				CellRenderer.Draw(LIGHT, Rect.Expand(Const.CELL_SIZE), new(brightness, brightness, brightness, 255));
+			}
 		}
 
 

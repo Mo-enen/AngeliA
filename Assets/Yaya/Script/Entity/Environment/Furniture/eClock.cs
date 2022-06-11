@@ -3,17 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
 
-namespace Yaya {
-	public class eClock : eFurniture {
 
-		private static readonly int CODE = "Clock".AngeHash();
+namespace Yaya {
+	public class eClockGreen : eClock {
+		private static readonly int CODE = "Clock 0".AngeHash();
+		protected override int ArtworkCode => CODE;
+	}
+	public class eClockPurple : eClock {
+		private static readonly int CODE = "Clock 1".AngeHash();
+		protected override int ArtworkCode => CODE;
+	}
+	public abstract class eClock : eFurniture {
+
 		private static readonly int HAND_CODE = "Clock Hand".AngeHash();
+		protected abstract int ArtworkCode { get; }
 
 		protected override Direction3 ModuleType => Direction3.None;
-		protected override int ArtworkCode_LeftDown => CODE;
-		protected override int ArtworkCode_Mid => CODE;
-		protected override int ArtworkCode_RightUp => CODE;
-		protected override int ArtworkCode_Single => CODE;
+		protected override int ArtworkCode_LeftDown => ArtworkCode;
+		protected override int ArtworkCode_Mid => ArtworkCode;
+		protected override int ArtworkCode_RightUp => ArtworkCode;
+		protected override int ArtworkCode_Single => ArtworkCode;
 
 
 		public override void FillPhysics () {

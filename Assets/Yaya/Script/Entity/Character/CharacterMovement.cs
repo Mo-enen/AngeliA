@@ -75,7 +75,6 @@ namespace Yaya {
 		[SerializeField] BuffInt JumpCount = 2;
 		[SerializeField] BuffInt JumpReleaseLoseRate = 700;
 		[SerializeField] BuffInt JumpRiseGravityRate = 600;
-		[SerializeField] BuffBool JumpThroughOneway = false;
 		[SerializeField] BuffBool JumpRoll = false;
 		[SerializeField] BuffBool JumpSecondRoll = true;
 
@@ -440,10 +439,6 @@ namespace Yaya {
 		public void Dash () {
 			if (!DashAvailable) return;
 			IntendedDash = DashSpeed > 0;
-			// Jump Through Oneway
-			if (JumpThroughOneway) {
-				Rig.SetPosition(Rig.X, Rig.Y - 2);
-			}
 		}
 
 

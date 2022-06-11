@@ -12,36 +12,18 @@ namespace Yaya {
 
 		// Const
 		private static readonly int ARTWORK_STATUE_CODE = "Check Statue".AngeHash();
-		private static readonly int ARTWORK_ALTAR_CODE = "Check Altar 0".AngeHash();
+		private static readonly int ARTWORK_ALTAR_CODE = "Check Altar".AngeHash();
 
 		// Data
-		private static readonly Dictionary<Vector2Int, CheckPointMeta.Data> CpPool = new();
-		private static readonly Dictionary<int, Vector2Int> CpAltarPool = new();
 		private int ArtCode = 0;
 		private bool IsAltar = false;
 
 
 		// MSG
-		public static void InitializeWithGame (Game game) {
-			try {
-				CpPool.Clear();
-				CpAltarPool.Clear();
-				var data = game.LoadMeta<CheckPointMeta>();
-				if (data != null) {
-					foreach (var cpData in data.CPs) {
-						var pos = new Vector2Int(cpData.X, cpData.Y);
-						CpPool.TryAdd(pos, cpData);
-						if (cpData.IsAltar) CpAltarPool.TryAdd(cpData.Index, pos);
-					}
-				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-		}
-
-
 		public override void OnActived () {
 			base.OnActived();
 			var globalUnitPos = new Vector2Int(X.UDivide(Const.CELL_SIZE), Y.UDivide(Const.CELL_SIZE));
-			if (CpPool.TryGetValue(globalUnitPos, out var _cpData) && _cpData.Index >= 0) {
+			if (Yaya.CpPool.TryGetValue(globalUnitPos, out var _cpData) && _cpData.Index >= 0) {
 				IsAltar = _cpData.IsAltar;
 			} else {
 				IsAltar = false;
@@ -64,7 +46,7 @@ namespace Yaya {
 			if (ArtCode == 0) {
 				int artIndex = 0;
 				var globalUnitPos = new Vector2Int(X.UDivide(Const.CELL_SIZE), Y.UDivide(Const.CELL_SIZE));
-				if (CpPool.TryGetValue(globalUnitPos, out var _cpData)) {
+				if (Yaya.CpPool.TryGetValue(globalUnitPos, out var _cpData)) {
 					artIndex = _cpData.Index;
 				}
 				if (CellRenderer.TryGetSpriteFromGroup(IsAltar ? ARTWORK_ALTAR_CODE : ARTWORK_STATUE_CODE, artIndex, out var sprite, false)) {
@@ -82,7 +64,7 @@ namespace Yaya {
 		}
 
 
-		public static bool TryGetAltarPosition (int index, out Vector2Int unitPos) => CpAltarPool.TryGetValue(index, out unitPos);
+		public static bool TryGetAltarPosition (int index, out Vector2Int unitPos) => Yaya.CpAltarPool.TryGetValue(index, out unitPos);
 
 
 	}
