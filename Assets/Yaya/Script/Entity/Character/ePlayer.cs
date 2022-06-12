@@ -157,14 +157,14 @@ namespace Yaya {
 				AimX = X - linger - viewRect.width / 2;
 			}
 			AimY = !IsInAir || Y < LastGroundedY ? GetAimY(Y, viewRect.height) : AimY;
-			Game.SetViewPositionDely(AimX, AimY, LERP_RATE);
+			Game.SetViewPositionDely(AimX, AimY, LERP_RATE, YayaConst.VIEW_PRIORITY_PLAYER);
 			// Clamp
 			if (!viewRect.Contains(X, Y)) {
 				if (X >= viewRect.xMax) AimX = X - viewRect.width + 1;
 				if (X <= viewRect.xMin) AimX = X - 1;
 				if (Y >= viewRect.yMax) AimY = Y - viewRect.height + 1;
 				if (Y <= viewRect.yMin) AimY = Y - 1;
-				Game.SetViewPositionDely(AimX, AimY, 1000, int.MinValue + 1);
+				Game.SetViewPositionDely(AimX, AimY, 1000, YayaConst.VIEW_PRIORITY_PLAYER + 1);
 			}
 		}
 

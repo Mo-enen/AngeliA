@@ -125,7 +125,7 @@ namespace Yaya {
 		private bool PrevInWater = false;
 		private bool PrevGrounded = false;
 		private int? ClimbPositionCorrect = null;
-		private readonly HitInfo[] c_OnewayCollision = new HitInfo[8];
+		private readonly HitInfo[] c_HitboxCollisionFix = new HitInfo[8];
 
 
 		#endregion
@@ -232,7 +232,7 @@ namespace Yaya {
 			Rig.Height = Hitbox.height;
 			Rig.OffsetX = -Width / 2;
 			Rig.OffsetY = 0;
-			CollisionFixOnHitboxChanged(prevHitboxHeight);
+			if (Hitbox.height > prevHitboxHeight) CollisionFixOnHitboxChanged(prevHitboxHeight);
 		}
 
 
@@ -337,6 +337,7 @@ namespace Yaya {
 				// Climb
 				Rig.VelocityY = (IntendedY <= 0 || ClimbCheck(true) ? IntendedY : 0) * ClimbSpeedY;
 				Rig.GravityScale = 0;
+
 			} else if (InWater && SwimInFreeStyle) {
 				if (IsDashing) {
 					// Free Water Dash
@@ -523,18 +524,16 @@ namespace Yaya {
 
 
 		private void CollisionFixOnHitboxChanged (int prevHitboxHeight) {
-			var rect = new RectInt(
-				Rig.X + Rig.OffsetX,
-				Rig.Y + Rig.OffsetY + prevHitboxHeight,
-				Rig.Width,
-				Hitbox.height - prevHitboxHeight
-			);
-			int count = CellPhysics.OverlapAll(
-				c_OnewayCollision, YayaConst.MASK_MAP, rect, Rig,
+			var rect = Hitbox.Shrink(0, 0, Const.CELL_SIZE / 4, 0);
+			// Fix for Oneway
+			int count = !IsClimbing ? CellPhysics.OverlapAll(
+				c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, Rig,
 				OperationMode.TriggerOnly, Const.ONEWAY_DOWN_TAG
+			) : CellPhysics.OverlapAll(
+				c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, Rig
 			);
 			for (int i = 0; i < count; i++) {
-				var hit = c_OnewayCollision[i];
+				var hit = c_HitboxCollisionFix[i];
 				if (hit.Rect.yMin > rect.y) {
 					Rig.PerformMove(
 						0, -Hitbox.height + prevHitboxHeight,

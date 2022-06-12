@@ -29,6 +29,11 @@ namespace Yaya {
 		public static readonly int ITEM_TAG = "Item".AngeHash();
 		public static readonly int WATER_TAG = "Water".AngeHash();
 
+		public const int VIEW_PRIORITY_PLAYER = int.MinValue + 0;
+		public const int VIEW_PRIORITY_SYSTEM = int.MinValue + 128;
+		public const int VIEW_PRIORITY_ANIMATION = int.MinValue + 256;
+
+
 	}
 
 

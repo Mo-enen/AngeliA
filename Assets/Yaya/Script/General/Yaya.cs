@@ -78,17 +78,14 @@ namespace Yaya {
 				{
 					// Spawn Player
 					var pos = ViewRect.CenterInt();
-					if (!WorldSquad.FindBlock(typeof(ePlayerBed).AngeHash(), out _, BlockType.Entity)) {
-						AddEntity(typeof(ePlayer).AngeHash(), pos.x, pos.y);
-					}
+					AddEntity(typeof(ePlayer).AngeHash(), pos.x, pos.y);
+
 					// Fix View Position
 					var view = ViewRect;
 					view.x = pos.x - ViewRect.width / 2;
 					view.y = pos.y - ViewRect.height / 2;
-					SetViewPositionDely(view.x, view.y);
+					SetViewPositionDely(view.x, view.y, 1000, int.MaxValue);
 					SetViewRectImmediately(view);
-
-
 				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
