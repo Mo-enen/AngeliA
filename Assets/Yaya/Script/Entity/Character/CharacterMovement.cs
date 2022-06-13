@@ -443,6 +443,12 @@ namespace Yaya {
 		}
 
 
+		public void StopDash () {
+			LastDashFrame = int.MinValue;
+			IsDashing = false;
+		}
+
+
 		public void Pound () => IntendedPound = true;
 
 

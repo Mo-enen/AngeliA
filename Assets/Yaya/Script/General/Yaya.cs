@@ -18,8 +18,12 @@ namespace Yaya {
 
 		// Api
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
-		public static readonly Dictionary<Vector2Int, YayaMeta.Data> CpPool = new();
-		public static readonly Dictionary<int, Vector2Int> CpAltarPool = new();
+		public PhysicsMeta PhysicsMeta { get; private set; } = new();
+		public static Dictionary<Vector2Int, YayaMeta.Data> CpPool { get; } = new();
+		public static Dictionary<int, Vector2Int> CpAltarPool { get; } = new();
+
+		// Ser
+		[SerializeField] PhysicsMeta m_DefaultPhysicsMeta = null;
 
 
 		#endregion
@@ -34,6 +38,7 @@ namespace Yaya {
 			base.Initialize();
 			Initialize_Quit();
 			Initialize_YayaMeta();
+			Initialize_Player();
 		}
 
 
@@ -63,8 +68,8 @@ namespace Yaya {
 
 
 		private void Initialize_YayaMeta () {
+			// Check Points
 			try {
-				// Check Points
 				CpPool.Clear();
 				CpAltarPool.Clear();
 				var cpMeta = LoadMeta<YayaMeta>();
@@ -75,18 +80,25 @@ namespace Yaya {
 						if (cpData.IsAltar) CpAltarPool.TryAdd(cpData.Index, pos);
 					}
 				}
-				{
-					// Spawn Player
-					var pos = ViewRect.CenterInt();
-					AddEntity(typeof(ePlayer).AngeHash(), pos.x, pos.y);
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+			// Physics
+			try {
+				PhysicsMeta = LoadMeta<PhysicsMeta>() ?? m_DefaultPhysicsMeta;
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
 
-					// Fix View Position
-					var view = ViewRect;
-					view.x = pos.x - ViewRect.width / 2;
-					view.y = pos.y - ViewRect.height / 2;
-					SetViewPositionDely(view.x, view.y, 1000, int.MaxValue);
-					SetViewRectImmediately(view);
-				}
+
+		private void Initialize_Player () {
+			try {
+				// Spawn Player
+				var pos = ViewRect.CenterInt();
+				AddEntity(typeof(ePlayer).AngeHash(), pos.x, pos.y);
+				// Fix View Position
+				var view = ViewRect;
+				view.x = pos.x - ViewRect.width / 2;
+				view.y = pos.y - ViewRect.height / 2;
+				SetViewPositionDely(view.x, view.y, 1000, int.MaxValue);
+				SetViewRectImmediately(view);
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 

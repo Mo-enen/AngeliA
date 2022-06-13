@@ -54,7 +54,10 @@ namespace Yaya {
 
 
 		public override void PhysicsUpdate () {
-			if (Movement != null) Movement.PhysicsUpdate();
+			if (Movement != null) {
+				Movement.PhysicsUpdate();
+				if (InSand) Movement.StopDash();
+			}
 			base.PhysicsUpdate();
 		}
 

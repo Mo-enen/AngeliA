@@ -28,6 +28,7 @@ namespace Yaya {
 		public static readonly int CLIMB_STABLE_TAG = "Climb Stable".AngeHash();
 		public static readonly int ITEM_TAG = "Item".AngeHash();
 		public static readonly int WATER_TAG = "Water".AngeHash();
+		public static readonly int QUICKSAND_TAG = "Quicksand".AngeHash();
 
 		public const int VIEW_PRIORITY_PLAYER = int.MinValue + 0;
 		public const int VIEW_PRIORITY_SYSTEM = int.MinValue + 128;
@@ -48,6 +49,21 @@ namespace Yaya {
 		}
 		public Data[] CPs = null;
 	}
+
+
+	[System.Serializable]
+	public class PhysicsMeta {
+		public int Gravity = 5;
+		public int GravityRise = 3;
+		public int MaxGravitySpeed = 64; // 72
+		public int WaterSpeedLose = 400;
+		public int QuicksandSinkSpeed = 1;
+		public int QuicksandJumpSpeed = 12;
+		public int QuicksandMaxRunSpeed = 4;
+		public int QuicksandJumpOutSpeed = 48;
+	}
+
+
 
 
 }

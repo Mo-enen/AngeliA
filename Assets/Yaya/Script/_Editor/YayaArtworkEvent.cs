@@ -18,6 +18,7 @@ namespace Yaya.Editor {
 
 		public void OnArtworkSynced () {
 			CreateCheckPointMetaFile();
+			CreateMetaFilesFromDefault();
 		}
 
 
@@ -62,6 +63,13 @@ namespace Yaya.Editor {
 				}
 				game.SaveMeta(new YayaMeta() { CPs = cpList.ToArray(), });
 			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
+
+
+		private void CreateMetaFilesFromDefault () {
+			var yaya = Object.FindObjectOfType<Yaya>();
+			if (yaya == null) return;
+			yaya.SaveMeta(Util.GetFieldValue(yaya, "m_DefaultPhysicsMeta") as PhysicsMeta);
 		}
 
 

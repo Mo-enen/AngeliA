@@ -1,0 +1,3 @@
+ ↖↑↗←→↙↓↘,↖↑↗←→↙↓↘,... 0=Whatever 1=SameTile 2=NotSameTile 3=Anytile 4=Empty NaN=Error
+ eg: "02022020,11111111,01022020,02012020,..."
+ digit: int32, reversed from ram, 10000000 000 000 000 000 000 000 000 000

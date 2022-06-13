@@ -21,6 +21,7 @@ namespace Yaya {
 		public override RectInt Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
 		public bool IsGrounded { get; private set; } = false;
 		public bool InWater { get; set; } = false;
+		public bool InSand { get; set; } = false;
 		public bool InsideGround { get; set; } = false;
 
 		// Virtual
@@ -56,13 +57,17 @@ namespace Yaya {
 
 
 		public static void InitializeWithGame (Game game) {
-			PhysicsMeta = game.Universe.PhysicsMeta ?? new();
+			if (game is Yaya yaya) {
+				PhysicsMeta = yaya.PhysicsMeta ?? new();
+			}
 		}
 
 
 		public override void OnActived () {
 			PrevX = X;
 			PrevY = Y;
+			InSand = false;
+			InWater = false;
 		}
 
 
@@ -85,8 +90,10 @@ namespace Yaya {
 			InsideGround = InsideGroundCheck();
 			IsGrounded = InsideGround || GroundedCheck(rect);
 
-			// Water
+			// Water & Sand
+			bool prevInSand = InSand;
 			InWater = CellPhysics.Overlap(YayaConst.MASK_LEVEL, Rect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
+			InSand = CellPhysics.Overlap(YayaConst.MASK_LEVEL, Rect, null, OperationMode.TriggerOnly, YayaConst.QUICKSAND_TAG);
 
 			if (InsideGround) {
 				if (DestroyOnInsideGround) Active = false;
@@ -104,6 +111,11 @@ namespace Yaya {
 				);
 			}
 
+			// Out Sand
+			if (prevInSand && !InSand) {
+				VelocityY = Mathf.Max(VelocityY, PhysicsMeta.QuicksandJumpOutSpeed);
+			}
+
 			// Hori Stopping
 			if (
 				VelocityX != 0 &&
@@ -118,6 +130,12 @@ namespace Yaya {
 				!CellPhysics.RoomCheck_Oneway(CollisionMask, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down, true))
 			) VelocityY = 0;
 
+			// Quicksand
+			if (InSand) {
+				VelocityX = VelocityX.Clamp(-PhysicsMeta.QuicksandMaxRunSpeed, PhysicsMeta.QuicksandMaxRunSpeed);
+				IsGrounded = true;
+			}
+
 			// Move
 			PerformMove(VelocityX, VelocityY);
 
@@ -127,6 +145,10 @@ namespace Yaya {
 			if (AirDragX != 0) VelocityX = VelocityX.MoveTowards(0, AirDragX);
 			if (AirDragY != 0) VelocityY = VelocityY.MoveTowards(0, AirDragY);
 
+			// Quicksand
+			if (InSand) {
+				VelocityY = VelocityY.Clamp(-PhysicsMeta.QuicksandSinkSpeed, PhysicsMeta.QuicksandJumpSpeed);
+			}
 		}
 
 
