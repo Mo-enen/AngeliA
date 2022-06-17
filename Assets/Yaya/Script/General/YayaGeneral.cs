@@ -10,36 +10,48 @@ namespace Yaya {
 
 
 		// Physics
-		public const int PHYSICS_LAYER_COUNT = 4;
-		public const int LEVEL = 0;
-		public const int ENVIRONMENT = 1;
-		public const int ITEM = 2;
-		public const int CHARACTER = 3;
+		public const int PHYSICS_LAYER_COUNT = 5;
+
+		public const int LAYER_LEVEL = 0;
+		public const int LAYER_ENVIRONMENT = 1;
+		public const int LAYER_ITEM = 2;
+		public const int LAYER_CHARACTER = 3;
+		public const int LAYER_DAMAGE = 4;
+
 		public const int MASK_NONE = 0;
-		public const int MASK_LEVEL = 1 << LEVEL;
-		public const int MASK_ENVIRONMENT = 1 << ENVIRONMENT;
-		public const int MASK_ITEM = 1 << ITEM;
-		public const int MASK_CHARACTER = 1 << CHARACTER;
+		public const int MASK_LEVEL = 1 << LAYER_LEVEL;
+		public const int MASK_ENVIRONMENT = 1 << LAYER_ENVIRONMENT;
+		public const int MASK_ITEM = 1 << LAYER_ITEM;
+		public const int MASK_CHARACTER = 1 << LAYER_CHARACTER;
+		public const int MASK_DAMAGE = 1 << LAYER_DAMAGE;
+
 		public const int MASK_RIGIDBODY = MASK_ENVIRONMENT | MASK_CHARACTER;
 		public const int MASK_SOLID = MASK_LEVEL | MASK_ENVIRONMENT | MASK_CHARACTER;
 		public const int MASK_MAP = MASK_LEVEL | MASK_ENVIRONMENT;
+		public const int MASK_ENTITY = MASK_ENVIRONMENT | MASK_ITEM | MASK_CHARACTER;
 
+		// Tag
 		public static readonly int CLIMB_TAG = "Climb".AngeHash();
 		public static readonly int CLIMB_STABLE_TAG = "Climb Stable".AngeHash();
 		public static readonly int ITEM_TAG = "Item".AngeHash();
 		public static readonly int WATER_TAG = "Water".AngeHash();
 		public static readonly int QUICKSAND_TAG = "Quicksand".AngeHash();
-
-		public const int VIEW_PRIORITY_PLAYER = int.MinValue + 0;
-		public const int VIEW_PRIORITY_SYSTEM = int.MinValue + 128;
-		public const int VIEW_PRIORITY_ANIMATION = int.MinValue + 256;
-
+		public static readonly int DAMAGE_TAG = "Damage".AngeHash();
 
 	}
 
 
+
+	// Meta
 	[System.Serializable]
 	public class YayaMeta {
+		public int LevelDamageExpand = 1;
+	}
+
+
+
+	[System.Serializable]
+	public class CheckPointMeta {
 		[System.Serializable]
 		public struct Data {
 			public int Index;
@@ -49,6 +61,7 @@ namespace Yaya {
 		}
 		public Data[] CPs = null;
 	}
+
 
 
 	[System.Serializable]
@@ -62,7 +75,6 @@ namespace Yaya {
 		public int QuicksandMaxRunSpeed = 4;
 		public int QuicksandJumpOutSpeed = 48;
 	}
-
 
 
 

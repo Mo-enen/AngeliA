@@ -15,15 +15,18 @@ namespace Yaya {
 
 		// Const
 		private readonly HashSet<SystemLanguage> SupportedLanguages = new() { SystemLanguage.English, SystemLanguage.ChineseSimplified, };
+		private static readonly int OPENING_ANI_ID = typeof(aOpening).AngeHash();
 
 		// Api
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
 		public PhysicsMeta PhysicsMeta { get; private set; } = new();
-		public static Dictionary<Vector2Int, YayaMeta.Data> CpPool { get; } = new();
+		public YayaMeta YayaMeta { get; private set; } = new();
+		public static Dictionary<Vector2Int, CheckPointMeta.Data> CpPool { get; } = new();
 		public static Dictionary<int, Vector2Int> CpAltarPool { get; } = new();
 
 		// Ser
 		[SerializeField] PhysicsMeta m_DefaultPhysicsMeta = null;
+		[SerializeField] YayaMeta m_DefaultYayaMeta = null;
 
 
 		#endregion
@@ -38,6 +41,7 @@ namespace Yaya {
 			base.Initialize();
 			Initialize_Quit();
 			Initialize_YayaMeta();
+			CellAnimation.Play(OPENING_ANI_ID);
 			Initialize_Player();
 		}
 
@@ -72,7 +76,7 @@ namespace Yaya {
 			try {
 				CpPool.Clear();
 				CpAltarPool.Clear();
-				var cpMeta = LoadMeta<YayaMeta>();
+				var cpMeta = LoadMeta<CheckPointMeta>();
 				if (cpMeta != null) {
 					foreach (var cpData in cpMeta.CPs) {
 						var pos = new Vector2Int(cpData.X, cpData.Y);
@@ -81,24 +85,27 @@ namespace Yaya {
 					}
 				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }
-			// Physics
+			// Metas
 			try {
 				PhysicsMeta = LoadMeta<PhysicsMeta>() ?? m_DefaultPhysicsMeta;
+				YayaMeta = LoadMeta<YayaMeta>() ?? m_DefaultYayaMeta;
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
 
 		private void Initialize_Player () {
 			try {
-				// Spawn Player
-				var pos = ViewRect.CenterInt();
-				AddEntity(typeof(ePlayer).AngeHash(), pos.x, pos.y);
-				// Fix View Position
-				var view = ViewRect;
-				view.x = pos.x - ViewRect.width / 2;
-				view.y = pos.y - ViewRect.height / 2;
-				SetViewPositionDely(view.x, view.y, 1000, int.MaxValue);
-				SetViewRectImmediately(view);
+				if (!CellAnimation.IsPlaying(OPENING_ANI_ID)) {
+					// Spawn Player
+					var pos = ViewRect.CenterInt();
+					AddEntity(typeof(ePlayer).AngeHash(), pos.x, pos.y);
+					// Fix View Position
+					var view = ViewRect;
+					view.x = pos.x - ViewRect.width / 2;
+					view.y = pos.y - ViewRect.height / 2;
+					SetViewPositionDely(view.x, view.y, 1000, int.MaxValue);
+					SetViewRectImmediately(view);
+				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
@@ -111,7 +118,9 @@ namespace Yaya {
 		#region --- PRO ---
 
 
-		protected override WorldSquad CreateWorldSquad () => new(Universe.MapRoot, YayaConst.LEVEL, Universe.RenderMeta.MaxParallax);
+		protected override WorldSquad CreateWorldSquad () => new YayaWorldSquad(
+			Universe.MapRoot, Universe.RenderMeta.MaxParallax, YayaMeta
+		);
 
 
 		protected override bool LanguageSupported (SystemLanguage language) => SupportedLanguages.Contains(language);

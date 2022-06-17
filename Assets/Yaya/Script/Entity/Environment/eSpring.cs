@@ -46,7 +46,7 @@ namespace Yaya {
 		private const int RED_LINE_MAX = 512;
 
 		// Api
-		public override int PhysicsLayer => YayaConst.ENVIRONMENT;
+		public override int PhysicsLayer => YayaConst.LAYER_ENVIRONMENT;
 		protected abstract bool Horizontal { get; }
 		protected abstract int Power { get; }
 

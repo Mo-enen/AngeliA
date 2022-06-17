@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Yaya {
 	[System.Serializable]
-	public class CharacterMovement : ITxtMeta {
+	public class Movement : EntityBehaviour<eRigidbody>, ITxtMeta {
 
 
 
@@ -41,15 +41,15 @@ namespace Yaya {
 		public int LastSquatingFrame { get; private set; } = int.MinValue;
 		public int LastPoundingFrame { get; private set; } = int.MinValue;
 		public Vector2Int LastMoveDirection { get; private set; } = default;
-		public bool IsInsideGround => Rig.InsideGround;
-		public bool IsGrounded => Rig.IsGrounded;
-		public bool InWater => Rig.InWater;
-		public bool IsInAir => Rig.IsInAir;
+		public bool IsInsideGround => Source.InsideGround;
+		public bool IsGrounded => Source.IsGrounded;
+		public bool InWater => Source.InWater;
+		public bool IsInAir => Source.IsInAir;
 		public bool IsMoving => IntendedX != 0;
 		public bool IsRunning => IsMoving && RunningAccumulateFrame >= RunTrigger;
 		public bool IsRolling => !InWater && !IsPounding && ((JumpRoll && CurrentJumpCount > 0) || (JumpSecondRoll && CurrentJumpCount > 1));
-		public int FinalVelocityX => Rig.FinalVelocityX;
-		public int FinalVelocityY => Rig.FinalVelocityY;
+		public int FinalVelocityX => Source.FinalVelocityX;
+		public int FinalVelocityY => Source.FinalVelocityY;
 		public bool UseFreeStyleSwim => SwimInFreeStyle;
 
 		// Short
@@ -113,7 +113,6 @@ namespace Yaya {
 		[SerializeField] BuffInt ClimbSpeedY = 18;
 
 		// Data
-		private eRigidbody Rig = null;
 		private RectInt Hitbox = default;
 		private int CurrentFrame = 0;
 		private int LastIntendedX = 1;
@@ -136,18 +135,20 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public void Init (eRigidbody ch) {
-			Rig = ch;
-			Rig.Width = Width;
-			Rig.Height = Height;
+		public override void Initialize (eRigidbody source) {
+			base.Initialize(source);
+			Source.Width = Width;
+			Source.Height = Height;
 		}
 
 
-		public void PhysicsUpdate () {
+		public override void Update () {
+			base.Update();
 			CurrentFrame = Game.GlobalFrame;
 			Update_Cache();
 			Update_Jump();
 			Update_Dash();
+			if (Source.InSand) StopDash();
 			Update_VelocityX();
 			Update_VelocityY();
 			IntendedJump = false;
@@ -167,7 +168,7 @@ namespace Yaya {
 			// Climb
 			ClimbPositionCorrect = null;
 			if (ClimbAvailable) {
-				if (HoldingJump && CurrentJumpCount > 0 && Rig.VelocityY > 0) {
+				if (HoldingJump && CurrentJumpCount > 0 && Source.VelocityY > 0) {
 					IsClimbing = false;
 				} else {
 					bool overlapClimb = ClimbCheck();
@@ -190,7 +191,7 @@ namespace Yaya {
 					// Stop when Dashing Without Holding Down
 					LastDashFrame = int.MinValue;
 					IsDashing = false;
-					Rig.VelocityX = Rig.VelocityX * DashCancelLoseRate / 1000;
+					Source.VelocityX = Source.VelocityX * DashCancelLoseRate / 1000;
 				}
 			}
 
@@ -200,17 +201,17 @@ namespace Yaya {
 				IsDashing = false;
 				if (InWater) {
 					// In Water
-					Rig.VelocityY = Rig.VelocityY * InWaterSpeedLoseRate / 1000;
+					Source.VelocityY = Source.VelocityY * InWaterSpeedLoseRate / 1000;
 				} else {
 					// Out Water
-					if (Rig.VelocityY > 0) Rig.VelocityY = JumpSpeed;
+					if (Source.VelocityY > 0) Source.VelocityY = JumpSpeed;
 				}
 			}
 			PrevInWater = InWater;
 
 			// Squat
 			bool squating =
-				SquatAvailable && IsGrounded && !IsClimbing && !IsInsideGround &&
+				SquatAvailable && IsGrounded && !IsClimbing && !Source.InSand && !IsInsideGround &&
 				((!IsDashing && IntendedY < 0) || ForceSquatCheck());
 			if (!IsSquating && squating) LastSquatFrame = CurrentFrame;
 			if (squating) LastSquatingFrame = CurrentFrame;
@@ -227,11 +228,11 @@ namespace Yaya {
 
 			// Physics
 			int prevHitboxHeight = Hitbox.height;
-			Hitbox = new(Rig.X - Width / 2, Rig.Y, Width, GetCurrentHeight());
-			Rig.Width = Hitbox.width;
-			Rig.Height = Hitbox.height;
-			Rig.OffsetX = -Width / 2;
-			Rig.OffsetY = 0;
+			Hitbox = new(Source.X - Width / 2, Source.Y, Width, GetCurrentHeight());
+			Source.Width = Hitbox.width;
+			Source.Height = Hitbox.height;
+			Source.OffsetX = -Width / 2;
+			Source.OffsetY = 0;
 			if (Hitbox.height > prevHitboxHeight) CollisionFixOnHitboxChanged(prevHitboxHeight);
 		}
 
@@ -247,12 +248,12 @@ namespace Yaya {
 					// Free Dash In Water
 					LastDashFrame = CurrentFrame;
 					IsDashing = true;
-					Rig.VelocityX = 0;
-					Rig.VelocityY = 0;
+					Source.VelocityX = 0;
+					Source.VelocityY = 0;
 				} else {
 					// Jump
 					CurrentJumpCount++;
-					Rig.VelocityY = Mathf.Max(JumpSpeed, Rig.VelocityY);
+					Source.VelocityY = Mathf.Max(JumpSpeed, Source.VelocityY);
 					LastDashFrame = int.MinValue;
 					IsDashing = false;
 					LastJumpFrame = CurrentFrame;
@@ -266,8 +267,8 @@ namespace Yaya {
 			// Jump Release
 			if (PrevHoldingJump && !HoldingJump) {
 				// Lose Speed if Raising
-				if (!IsGrounded && CurrentJumpCount <= JumpCount && Rig.VelocityY > 0) {
-					Rig.VelocityY = Rig.VelocityY * JumpReleaseLoseRate / 1000;
+				if (!IsGrounded && CurrentJumpCount <= JumpCount && Source.VelocityY > 0) {
+					Source.VelocityY = Source.VelocityY * JumpReleaseLoseRate / 1000;
 				}
 			}
 		}
@@ -281,7 +282,7 @@ namespace Yaya {
 				// Perform Dash
 				LastDashFrame = CurrentFrame;
 				IsDashing = true;
-				Rig.VelocityY = 0;
+				Source.VelocityY = 0;
 			}
 		}
 
@@ -293,7 +294,7 @@ namespace Yaya {
 				speed = ClimbPositionCorrect.HasValue ? 0 : IntendedX * ClimbSpeedX;
 				acc = int.MaxValue;
 				dcc = int.MaxValue;
-				if (ClimbPositionCorrect.HasValue) Rig.X = Rig.X.MoveTowards(ClimbPositionCorrect.Value, CLIMB_CORRECT_DELTA);
+				if (ClimbPositionCorrect.HasValue) Source.X = Source.X.MoveTowards(ClimbPositionCorrect.Value, CLIMB_CORRECT_DELTA);
 			} else if (IsDashing) {
 				if (InWater && SwimInFreeStyle && !IsGrounded) {
 					// Free Water Dash
@@ -324,49 +325,49 @@ namespace Yaya {
 				acc = running ? RunAcceleration : WalkAcceleration;
 				dcc = running ? RunDecceleration : WalkDecceleration;
 			}
-			if ((speed > 0 && Rig.VelocityX < 0) || (speed < 0 && Rig.VelocityX > 0)) {
+			if ((speed > 0 && Source.VelocityX < 0) || (speed < 0 && Source.VelocityX > 0)) {
 				acc *= OppositeXAccelerationRate / 1000;
 				dcc *= OppositeXAccelerationRate / 1000;
 			}
-			Rig.VelocityX = Rig.VelocityX.MoveTowards(speed, acc, dcc);
+			Source.VelocityX = Source.VelocityX.MoveTowards(speed, acc, dcc);
 		}
 
 
 		private void Update_VelocityY () {
 			if (IsClimbing) {
 				// Climb
-				Rig.VelocityY = (IntendedY <= 0 || ClimbCheck(true) ? IntendedY : 0) * ClimbSpeedY;
-				Rig.GravityScale = 0;
+				Source.VelocityY = (IntendedY <= 0 || ClimbCheck(true) ? IntendedY : 0) * ClimbSpeedY;
+				Source.GravityScale = 0;
 
 			} else if (InWater && SwimInFreeStyle) {
 				if (IsDashing) {
 					// Free Water Dash
-					Rig.VelocityY = Rig.VelocityY.MoveTowards(
+					Source.VelocityY = Source.VelocityY.MoveTowards(
 						LastMoveDirection.y * FreeSwimDashSpeed, FreeSwimDashAcceleration, int.MaxValue
 					);
 				} else {
 					// Free Swim In Water
-					Rig.VelocityY = Rig.VelocityY.MoveTowards(
+					Source.VelocityY = Source.VelocityY.MoveTowards(
 						IntendedY * FreeSwimSpeed, FreeSwimAcceleration, FreeSwimDecceleration
 					);
 				}
-				Rig.GravityScale = 0;
+				Source.GravityScale = 0;
 			} else {
 				// Gravity
 				if (IsPounding) {
 					// Pound
-					Rig.GravityScale = 0;
-					Rig.VelocityY = -PoundSpeed;
-				} else if (HoldingJump && Rig.VelocityY > 0) {
+					Source.GravityScale = 0;
+					Source.VelocityY = -PoundSpeed;
+				} else if (HoldingJump && Source.VelocityY > 0) {
 					// Jumping Raise
-					Rig.GravityScale = JumpRiseGravityRate;
+					Source.GravityScale = JumpRiseGravityRate;
 				} else {
 					// Else
-					Rig.GravityScale = 1000;
+					Source.GravityScale = 1000;
 					if (InWater && IntendedY != 0) {
 						// Normal Swim
-						Rig.GravityScale = 0;
-						Rig.VelocityY = Rig.VelocityY.MoveTowards(
+						Source.GravityScale = 0;
+						Source.VelocityY = Source.VelocityY.MoveTowards(
 							IntendedY * SwimSpeed, SwimAcceleration, SwimDecceleration
 						);
 					}
@@ -465,15 +466,15 @@ namespace Yaya {
 			if (IsInsideGround) return false;
 
 			var rect = new RectInt(
-				Rig.X + Rig.OffsetX,
-				Rig.Y + Rig.OffsetY + Height / 2,
-				Rig.Width,
+				Source.X + Source.OffsetX,
+				Source.Y + Source.OffsetY + Height / 2,
+				Source.Width,
 				Height / 2
 			);
 
 			// Oneway Check
 			if ((IsSquating || IsDashing) && !CellPhysics.RoomCheck_Oneway(
-				YayaConst.MASK_MAP, rect, Rig, Direction4.Up, false
+				YayaConst.MASK_MAP, rect, Source, Direction4.Up, false
 			)) return true;
 
 			// Overlap Check
@@ -485,8 +486,8 @@ namespace Yaya {
 			if (IsInsideGround) return false;
 			if (CellPhysics.Overlap(
 				YayaConst.MASK_ENVIRONMENT,
-				up ? Rig.Rect.Shift(0, ClimbSpeedY) : Rig.Rect,
-				Rig,
+				up ? Source.Rect.Shift(0, ClimbSpeedY) : Source.Rect,
+				Source,
 				OperationMode.TriggerOnly,
 				YayaConst.CLIMB_TAG
 			)) {
@@ -494,8 +495,8 @@ namespace Yaya {
 			}
 			if (CellPhysics.Overlap(
 				YayaConst.MASK_ENVIRONMENT,
-				up ? Rig.Rect.Shift(0, ClimbSpeedY) : Rig.Rect,
-				Rig,
+				up ? Source.Rect.Shift(0, ClimbSpeedY) : Source.Rect,
+				Source,
 				out var info,
 				OperationMode.TriggerOnly,
 				YayaConst.CLIMB_STABLE_TAG
@@ -533,15 +534,15 @@ namespace Yaya {
 			var rect = Hitbox.Shrink(0, 0, Const.CELL_SIZE / 4, 0);
 			// Fix for Oneway
 			int count = !IsClimbing ? CellPhysics.OverlapAll(
-				c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, Rig,
+				c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, Source,
 				OperationMode.TriggerOnly, Const.ONEWAY_DOWN_TAG
 			) : CellPhysics.OverlapAll(
-				c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, Rig
+				c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, Source
 			);
 			for (int i = 0; i < count; i++) {
 				var hit = c_HitboxCollisionFix[i];
 				if (hit.Rect.yMin > rect.y) {
-					Rig.PerformMove(
+					Source.PerformMove(
 						0, -Hitbox.height + prevHitboxHeight,
 						true, false
 					);

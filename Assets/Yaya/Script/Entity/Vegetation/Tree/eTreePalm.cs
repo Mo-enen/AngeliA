@@ -18,11 +18,11 @@ namespace Yaya {
 		public override void FillPhysics () {
 			base.FillPhysics();
 			if (!HasTrunkOnTop) {
-				CellPhysics.FillBlock(YayaConst.ENVIRONMENT, Rect.Shift(-Const.CELL_SIZE * 2, Const.CELL_SIZE / 2), true, Const.ONEWAY_UP_TAG);
-				CellPhysics.FillBlock(YayaConst.ENVIRONMENT, Rect.Shift(-Const.CELL_SIZE, Const.CELL_SIZE / 2), true, Const.ONEWAY_UP_TAG);
-				CellPhysics.FillBlock(YayaConst.ENVIRONMENT, Rect.Shift(0, Const.CELL_SIZE / 2), true, Const.ONEWAY_UP_TAG);
-				CellPhysics.FillBlock(YayaConst.ENVIRONMENT, Rect.Shift(Const.CELL_SIZE, Const.CELL_SIZE / 2), true, Const.ONEWAY_UP_TAG);
-				CellPhysics.FillBlock(YayaConst.ENVIRONMENT, Rect.Shift(Const.CELL_SIZE * 2, Const.CELL_SIZE / 2), true, Const.ONEWAY_UP_TAG);
+				CellPhysics.FillBlock(YayaConst.LAYER_ENVIRONMENT, Rect.Shift(-Const.CELL_SIZE * 2, Const.CELL_SIZE / 2), true, Const.ONEWAY_UP_TAG);
+				CellPhysics.FillBlock(YayaConst.LAYER_ENVIRONMENT, Rect.Shift(-Const.CELL_SIZE, Const.CELL_SIZE / 2), true, Const.ONEWAY_UP_TAG);
+				CellPhysics.FillBlock(YayaConst.LAYER_ENVIRONMENT, Rect.Shift(0, Const.CELL_SIZE / 2), true, Const.ONEWAY_UP_TAG);
+				CellPhysics.FillBlock(YayaConst.LAYER_ENVIRONMENT, Rect.Shift(Const.CELL_SIZE, Const.CELL_SIZE / 2), true, Const.ONEWAY_UP_TAG);
+				CellPhysics.FillBlock(YayaConst.LAYER_ENVIRONMENT, Rect.Shift(Const.CELL_SIZE * 2, Const.CELL_SIZE / 2), true, Const.ONEWAY_UP_TAG);
 			}
 		}
 

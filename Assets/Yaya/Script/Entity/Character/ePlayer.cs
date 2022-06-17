@@ -26,7 +26,6 @@ namespace Yaya {
 		private int LastGroundedY = 0;
 		private int AimX = 0;
 		private int AimY = 0;
-		private float BuildingAlpha01 = 1f;
 
 
 		#endregion
@@ -51,27 +50,32 @@ namespace Yaya {
 		}
 
 
-		public override void PhysicsUpdate () {
-			base.PhysicsUpdate();
-			float aimAlpha = CellPhysics.Overlap(
-				YayaConst.MASK_MAP, Rect, this, OperationMode.TriggerOnly, Const.BUILDING_TAG
-			) ? 0f : 1f;
-			BuildingAlpha01 = Mathf.Lerp(BuildingAlpha01, aimAlpha, 0.2f);
-			Game.WorldSquad.BuildingAlpha = (byte)(BuildingAlpha01 * 255);
-		}
-
-
 		public override void FrameUpdate () {
-			Update_Move();
-			Update_JumpDashPound();
+			switch (CharacterState) {
+				case State.General:
+					// General
+					Update_Move();
+					Update_JumpDashPound();
+					if (FrameInput.KeyDown(GameKey.Action)) {
+						bool performed = Action.TryInvokeAction();
+						if (!performed) Attackness.Attack();
+					}
+					break;
+				case State.Sleep:
+					// Sleep
+					if (FrameInput.KeyDown(GameKey.Action)) {
+						CharacterState = State.General;
+						X += Const.CELL_SIZE / 2;
+					}
+					break;
+			}
 			Update_View();
+			Game.WorldSquad.InBuilding = InBuilding;
 			base.FrameUpdate();
 		}
 
 
 		private void Update_Move () {
-
-			if (Movement == null) return;
 
 			int frame = Game.GlobalFrame;
 			var x = Direction3.None;
@@ -157,19 +161,16 @@ namespace Yaya {
 				AimX = X - linger - viewRect.width / 2;
 			}
 			AimY = !IsInAir || Y < LastGroundedY ? GetAimY(Y, viewRect.height) : AimY;
-			Game.SetViewPositionDely(AimX, AimY, LERP_RATE, YayaConst.VIEW_PRIORITY_PLAYER);
+			Game.SetViewPositionDely(AimX, AimY, LERP_RATE, Const.VIEW_PRIORITY_PLAYER);
 			// Clamp
 			if (!viewRect.Contains(X, Y)) {
 				if (X >= viewRect.xMax) AimX = X - viewRect.width + 1;
 				if (X <= viewRect.xMin) AimX = X - 1;
 				if (Y >= viewRect.yMax) AimY = Y - viewRect.height + 1;
 				if (Y <= viewRect.yMin) AimY = Y - 1;
-				Game.SetViewPositionDely(AimX, AimY, 1000, YayaConst.VIEW_PRIORITY_PLAYER + 1);
+				Game.SetViewPositionDely(AimX, AimY, 1000, Const.VIEW_PRIORITY_PLAYER + 1);
 			}
 		}
-
-
-		private int GetAimY (int playerY, int viewHeight) => playerY - viewHeight * 382 / 1000;
 
 
 		#endregion
@@ -180,14 +181,16 @@ namespace Yaya {
 		#region --- API ---
 
 
-		public void Wakeup () {
-
-		}
 
 
-		public void Sleep () {
+		#endregion
 
-		}
+
+
+		#region --- LGC ---
+
+
+		private int GetAimY (int playerY, int viewHeight) => playerY - viewHeight * 382 / 1000;
 
 
 		#endregion

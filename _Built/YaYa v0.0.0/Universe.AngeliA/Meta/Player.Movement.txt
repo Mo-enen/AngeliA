@@ -8,3 +8,4 @@ JumpSpeed = 69
 SwimInFreeStyle = false
 JumpRoll = false
 JumpSecondRoll = true
+JumpCount = 2

@@ -31,7 +31,7 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this);
+			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this);
 		}
 
 

@@ -4,7 +4,7 @@
     "MaxGravitySpeed": 64,
     "WaterSpeedLose": 400,
     "QuicksandSinkSpeed": 1,
-    "QuicksandJumpOutSpeed": 12,
+    "QuicksandJumpSpeed": 12,
     "QuicksandMaxRunSpeed": 4,
-    "QuicksandStartSinkDelay": 12
+    "QuicksandJumpOutSpeed": 48
 }

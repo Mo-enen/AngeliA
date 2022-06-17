@@ -6,7 +6,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[System.Serializable]
-	public class CharacterRenderer {
+	public class CharacterRenderer : EntityBehaviour<eCharacter> {
 
 
 
@@ -73,7 +73,6 @@ namespace Yaya {
 
 
 		// Api
-		protected eCharacter Character { get; private set; } = null;
 		public int FaceIndex { get; set; } = 0;
 
 		// Ser
@@ -98,6 +97,7 @@ namespace Yaya {
 		private AniCode Ani_Pound = null;
 		private AniCode Ani_Climb = null;
 		private AniCode Ani_Roll = null;
+		private AniCode Ani_Sleep = null;
 		private AniCode CurrentAni = null;
 		private GroupCode Face = null;
 		private int CurrentAniFrame = 0;
@@ -115,9 +115,9 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public void Init (eCharacter ch) {
-			Character = ch;
-			string name = ch.GetType().Name;
+		public override void Initialize (eCharacter source) {
+			base.Initialize(source);
+			string name = Source.GetType().Name;
 			if (name.StartsWith('e')) name = name[1..];
 			Ani_Idle = new($"_a{name}.Idle", $"_a{name}");
 			Ani_Walk = new($"_a{name}.Walk", $"_a{name}.Run", $"_a{name}.Idle");
@@ -133,21 +133,48 @@ namespace Yaya {
 			Ani_SwimDash = new($"_a{name}.SwimDash", $"_a{name}.SwimMove", $"_a{name}.Swim", $"_a{name}.Dash");
 			Ani_Pound = new($"_a{name}.Pound", $"_a{name}.Idle");
 			Ani_Climb = new($"_a{name}.Climb", $"_a{name}.Walk");
+			Ani_Sleep = new($"_a{name}.Sleep", $"_a{name}.Idle", $"_a{name}");
 			Face = new($"{name}.Face");
 		}
 
 
-		public void FrameUpdate () {
-			DrawCharacter();
-			DrawFace();
+		public override void Update () {
+			base.Update();
+			int frame = Game.GlobalFrame;
+
+			switch (Source.CharacterState) {
+				case eCharacter.State.General:
+					DrawCharacter_General(frame);
+					DrawFace();
+					break;
+				case eCharacter.State.Animate:
+
+					break;
+				case eCharacter.State.Sleep:
+					CellRenderer.Draw_Animation(
+						Ani_Sleep.Code,
+						Source.X, Source.Y,
+						Const.ORIGINAL_SIZE,
+						Const.ORIGINAL_SIZE,
+						Game.GlobalFrame,
+						Ani_Sleep.LoopStart
+					);
+
+					break;
+				case eCharacter.State.Passout:
+
+					break;
+			}
+
 		}
 
 
-		private void DrawCharacter () {
+		private void DrawCharacter_General (int frame) {
 
-			int frame = Game.GlobalFrame;
-			var movement = Character.Movement;
 			AniCode ani;
+
+			// Movement
+			var movement = Source.Movement;
 			if (movement.IsClimbing) {
 				ani = Ani_Climb;
 			} else if (movement.IsPounding) {
@@ -164,12 +191,6 @@ namespace Yaya {
 				ani = movement.FinalVelocityY > 0 ? Ani_JumpU : Ani_JumpD;
 			} else {
 				ani = movement.IsRunning ? Ani_Run : movement.IsMoving ? Ani_Walk : Ani_Idle;
-			}
-
-			// Reset Frame when Switch Ani
-			if (CurrentAni != ani) {
-				CurrentAniFrame = 0;
-				CurrentAni = ani;
 			}
 
 			// Swim Rotation
@@ -189,16 +210,23 @@ namespace Yaya {
 				TargetSwimRotation = 0f;
 			}
 
+			// Reset Frame when Switch Ani
+			if (CurrentAni != ani) {
+				CurrentAniFrame = 0;
+				CurrentAni = ani;
+			}
+
 			// Draw
 			ref var cell = ref CellRenderer.Draw_Animation(
 				CurrentAni.Code,
-				Character.X, Character.Y + offsetY, 500, pivotY, (int)TargetSwimRotation,
+				Source.X, Source.Y + offsetY, 500, pivotY, (int)TargetSwimRotation,
 				movement.FacingRight || movement.IsPounding || movement.IsClimbing ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 				Const.ORIGINAL_SIZE,
 				CurrentAniFrame,
 				ani.LoopStart
 			);
 			CurrentCode = CellRenderer.LastDrawnID;
+			LastCellHeight = cell.Height;
 
 			// Bouncy
 			if (Bouncy > 0) {
@@ -247,19 +275,19 @@ namespace Yaya {
 					CurrentAniFrame--;
 				}
 			}
-			LastCellHeight = cell.Height;
 
 		}
 
 
 		private void DrawFace () {
 			if (
+				Source.CharacterState != eCharacter.State.General ||
 				Face.Count <= 0 ||
 				!CellRenderer.TryGetCharacterMeta(CurrentCode, out var cMeta) ||
 				!cMeta.Head.IsVailed ||
 				!cMeta.Head.Front
 			) return;
-			var movement = Character.Movement;
+			var movement = Source.Movement;
 			int bounce = Mathf.Abs(CurrentBounce);
 			int offsetY;
 			if (CurrentBounce > 0) {
@@ -270,12 +298,12 @@ namespace Yaya {
 			}
 			CellRenderer.Draw_9Slice(
 				Face[FaceIndex],
-				Character.X - cMeta.SpriteWidth / 2 +
+				Source.X - cMeta.SpriteWidth / 2 +
 					(movement.FacingRight ?
 						cMeta.Head.X :
 						cMeta.SpriteWidth - (cMeta.Head.X + cMeta.Head.Width)
 					),
-				Character.Y + offsetY,
+				Source.Y + offsetY,
 				0, 1000, 0,
 				cMeta.Head.Width,
 				Const.ORIGINAL_SIZE

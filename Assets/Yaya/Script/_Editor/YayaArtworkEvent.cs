@@ -46,7 +46,7 @@ namespace Yaya.Editor {
 
 			// Write Position File
 			try {
-				var cpList = new List<YayaMeta.Data>();
+				var cpList = new List<CheckPointMeta.Data>();
 				foreach (var pos in allCpPool) {
 					if (allCpPool.Contains(new(pos.x, pos.y - 1))) continue;
 					for (int i = 1; i < Const.MAP_SIZE; i++) {
@@ -61,7 +61,7 @@ namespace Yaya.Editor {
 						}
 					}
 				}
-				game.SaveMeta(new YayaMeta() { CPs = cpList.ToArray(), });
+				game.SaveMeta(new CheckPointMeta() { CPs = cpList.ToArray(), });
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
@@ -70,6 +70,7 @@ namespace Yaya.Editor {
 			var yaya = Object.FindObjectOfType<Yaya>();
 			if (yaya == null) return;
 			yaya.SaveMeta(Util.GetFieldValue(yaya, "m_DefaultPhysicsMeta") as PhysicsMeta);
+			yaya.SaveMeta(Util.GetFieldValue(yaya, "m_DefaultYayaMeta") as YayaMeta);
 		}
 
 

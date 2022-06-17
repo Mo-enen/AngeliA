@@ -17,10 +17,10 @@ namespace Yaya {
 			if (!HasTrunkOnTop) {
 				base.FillPhysics();
 			} else {
-				CellPhysics.FillEntity(YayaConst.ENVIRONMENT, this, true);
+				CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
 			}
 			CellPhysics.FillBlock(
-				YayaConst.ENVIRONMENT,
+				YayaConst.LAYER_ENVIRONMENT,
 				HasTrunkOnTop ? Rect : Rect.Shrink(0, 0, 0, Height / 2),
 				true, YayaConst.CLIMB_TAG
 			);
