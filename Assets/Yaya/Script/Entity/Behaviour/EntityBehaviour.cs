@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AngeliaFramework;
 using UnityEngine;
 
+
 namespace Yaya {
 	public abstract class EntityBehaviour<E> where E : Entity {
 

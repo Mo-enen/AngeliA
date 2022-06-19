@@ -71,33 +71,33 @@ namespace Yaya {
 			// Movement
 			var movement = game.LoadMeta<Movement>($"{typeName}.Movement");
 			Movement = movement ?? new();
-			Movement.Initialize(this);
 
 			// Renderer
 			var renderer = game.LoadMeta<CharacterRenderer>($"{typeName}.Renderer");
 			Renderer = renderer ?? new();
-			Renderer.Initialize(this);
 
 			// Action
 			var action = game.LoadMeta<Action>($"{typeName}.Action");
 			Action = action ?? new();
-			Action.Initialize(this);
 
 			// Health
 			var health = game.LoadMeta<Health>($"{typeName}.Health");
 			Health = health ?? new();
-			Health.Initialize(this);
 
 			// Attackness
 			var attackness = game.LoadMeta<Attackness>($"{typeName}.Attackness");
 			Attackness = attackness ?? new();
-			Attackness.Initialize(this);
 
 		}
 
 
 		public override void OnActived () {
 			base.OnActived();
+			Movement.Initialize(this);
+			Renderer.Initialize(this);
+			Action.Initialize(this);
+			Health.Initialize(this);
+			Attackness.Initialize(this);
 			CharacterState = State.General;
 			PassoutFrame = int.MinValue;
 			DamageEndFrame = int.MinValue;
@@ -132,7 +132,7 @@ namespace Yaya {
 			}
 
 			// Passout Check
-			if (Health.EmptyHealth) {
+			if (CharacterState != State.Passout && Health.EmptyHealth) {
 				CharacterState = State.Passout;
 				PassoutFrame = frame;
 			}
@@ -157,6 +157,7 @@ namespace Yaya {
 				case State.Sleep:
 					VelocityX = 0;
 					VelocityY = 0;
+					Health.Heal(1);
 					break;
 				case State.Passout:
 					VelocityX = 0;
@@ -184,9 +185,11 @@ namespace Yaya {
 		public void TakeDamage (int damage) {
 			if (Health.Damage(damage)) {
 				DamageEndFrame = Game.GlobalFrame + Health.DamageFrameValue;
-				Renderer.Blink(Health.InvincibleFrameDuration);
-				Renderer.Damage(Health.DamageFrameValue);
 				VelocityX = Movement.FacingRight ? -Health.KnockBackSpeedValue : Health.KnockBackSpeedValue;
+				Renderer.Damage(Health.DamageFrameValue);
+				if (!Health.EmptyHealth) {
+					Renderer.Blink(Health.InvincibleFrameDuration);
+				}
 			}
 		}
 

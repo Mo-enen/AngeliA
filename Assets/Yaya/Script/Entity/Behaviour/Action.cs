@@ -42,6 +42,7 @@ namespace Yaya {
 
 		public override void Update () {
 			base.Update();
+			// Search for Active Trigger
 			if (Game.GlobalFrame % ScanFrequency == 0) {
 				CurrentTarget = null;
 				int count = CellPhysics.OverlapAll(

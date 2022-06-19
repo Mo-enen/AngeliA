@@ -69,6 +69,12 @@ namespace Yaya {
 						Renderer.Bounce();
 					}
 					break;
+				case State.Passout:
+					if (Game.GlobalFrame > PassoutFrame + 48 && FrameInput.KeyDown(GameKey.Action)) {
+						// Reload Game After Passout
+						CellAnimation.Play(typeof(aReopening).AngeHash());
+					}
+					break;
 			}
 			Update_View();
 			Game.WorldSquad.InBuilding = InBuilding;

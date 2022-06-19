@@ -97,7 +97,11 @@ namespace Yaya {
 		}
 
 
-		public void Heal (int heal) => HealthPoint = (HealthPoint + heal).Clamp(0, MaxHP);
+		public bool Heal (int heal) {
+			int oldPoint = HealthPoint;
+			HealthPoint = (HealthPoint + heal).Clamp(0, MaxHP);
+			return oldPoint != HealthPoint;
+		}
 
 
 		#endregion

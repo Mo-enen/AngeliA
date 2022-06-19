@@ -1,2 +1,2 @@
 
-MaxHP = 9
+MaxHP = 3

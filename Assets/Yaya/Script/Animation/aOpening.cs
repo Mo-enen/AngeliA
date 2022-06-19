@@ -30,21 +30,21 @@ namespace Yaya {
 		}
 
 
-		public override void FrameUpdate (int localFrame) {
-			base.FrameUpdate(localFrame);
+		public override void FrameUpdate (Game game, int localFrame) {
+			base.FrameUpdate(game, localFrame);
 			if (localFrame < SkipFrame) {
 				if (FrameInput.AnyKeyPressed) {
 					SkipFrame = localFrame;
 					SkipY = (int)Util.Remap(0, DURATION, VIEW_Y_START, VIEW_Y_END, localFrame);
 				}
-				Update_Opening(localFrame);
+				Update_Opening(game, localFrame);
 			} else {
-				Update_QuickSkip(localFrame);
+				Update_QuickSkip(game, localFrame);
 			}
 		}
 
 
-		private void Update_Opening (int localFrame) {
+		private void Update_Opening (Game game, int localFrame) {
 			// Black FadeIn
 			if (localFrame < BLACK_DURATION) {
 				CellRenderer.Draw(
@@ -61,13 +61,13 @@ namespace Yaya {
 				);
 			} else {
 				// End
-				SpawnPlayer();
+				SpawnPlayer(game);
 				Stop();
 			}
 		}
 
 
-		private void Update_QuickSkip (int localFrame) {
+		private void Update_QuickSkip (Game game, int localFrame) {
 			if (localFrame < SKIP_DURATION + SkipFrame) {
 				CellAnimation.SetViewPosition(
 					VIEW_X,
@@ -77,17 +77,23 @@ namespace Yaya {
 				);
 			} else {
 				// End
-				SpawnPlayer();
+				SpawnPlayer(game);
 				Stop();
 			}
 		}
 
 
-		private void SpawnPlayer () {
+		private void SpawnPlayer (Game game) {
 
-			var game = Object.FindObjectOfType<Game>();
-			if (game == null) return;
 			var pos = new Vector2Int(VIEW_X, VIEW_Y_END);
+
+			// Find Check Point
+
+
+
+			// Spawn on Check Point
+
+
 
 			// Find Best Bed
 			eBed finalBed = null;
@@ -120,6 +126,7 @@ namespace Yaya {
 			// Failback
 			game.AddEntity(typeof(ePlayer).AngeHash(), pos.x, pos.y);
 		}
+
 
 
 	}

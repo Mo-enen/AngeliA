@@ -80,9 +80,10 @@ namespace Yaya {
 		[SerializeField] int[] BounceAmountsBig = new int[] { 0, -600, -900, -1200, -1400, -1200, -900, -600, 0, };
 		[SerializeField] int Bouncy = 150;
 		[SerializeField] int PoundingBounce = 1500;
-		[SerializeField] int DamageBounce = 1100;
+		[SerializeField] int DamageScale = 1150;
+		[SerializeField] int PassoutScale = 1200;
 		[SerializeField] int SwimRotationLerp = 100;
-		[SerializeField] int BlinkRate = 12;
+		[SerializeField] int BlinkRate = 8;
 
 		// Data
 		private AniCode Ani_Idle = null;
@@ -152,6 +153,9 @@ namespace Yaya {
 			base.Update();
 			int frame = Game.GlobalFrame;
 
+			// Blink
+			if (frame < BlinkingTime && (BlinkingTime - frame) % BlinkRate < BlinkRate / 2) return;
+
 			// Damage
 			if (frame < DamagingTime) {
 				ref var cell = ref CellRenderer.Draw_Animation(
@@ -163,19 +167,16 @@ namespace Yaya {
 					Game.GlobalFrame,
 					Ani_Damage.LoopStart
 				);
-				int damageBounce = frame.PingPong(3) * 32 - 16 + DamageBounce;
-				cell.Width = cell.Width * damageBounce / 1000;
-				cell.Height = cell.Height * damageBounce / 1000;
+				int damageScl = frame.PingPong(3) * 32 - 16 + DamageScale;
+				cell.Width = cell.Width * damageScl / 1000;
+				cell.Height = cell.Height * damageScl / 1000;
 				return;
 			}
-
-			// Blink
-			if (frame < BlinkingTime && (BlinkingTime - frame) % BlinkRate < BlinkRate / 2) return;
 
 			// Draw
 			switch (Source.CharacterState) {
 				case eCharacter.State.General:
-					DrawCharacter_General();
+					DrawGeneral();
 					DrawFace();
 					break;
 				case eCharacter.State.Animate:
@@ -193,7 +194,7 @@ namespace Yaya {
 					);
 					break;
 				case eCharacter.State.Passout:
-					CellRenderer.Draw_Animation(
+					ref var cell = ref CellRenderer.Draw_Animation(
 						Ani_Passout.Code,
 						Source.X, Source.Y,
 						500, 0, 0,
@@ -202,13 +203,15 @@ namespace Yaya {
 						Game.GlobalFrame,
 						Ani_Passout.LoopStart
 					);
+					cell.Width = cell.Width * PassoutScale / 1000;
+					cell.Height = cell.Height * PassoutScale / 1000;
 					break;
 			}
 
 		}
 
 
-		private void DrawCharacter_General () {
+		private void DrawGeneral () {
 
 			AniCode ani;
 			int frame = Game.GlobalFrame;
@@ -335,7 +338,7 @@ namespace Yaya {
 				offsetY += offsetY * (1000 - bounce) / 1000;
 			}
 			CellRenderer.Draw_9Slice(
-				Face[FaceIndex],
+				Face[FaceIndex.UMod(Face.Count)],
 				Source.X - cMeta.SpriteWidth / 2 +
 					(movement.FacingRight ?
 						cMeta.Head.X :
