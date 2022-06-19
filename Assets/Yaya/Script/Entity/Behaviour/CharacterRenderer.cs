@@ -80,7 +80,9 @@ namespace Yaya {
 		[SerializeField] int[] BounceAmountsBig = new int[] { 0, -600, -900, -1200, -1400, -1200, -900, -600, 0, };
 		[SerializeField] int Bouncy = 150;
 		[SerializeField] int PoundingBounce = 1500;
+		[SerializeField] int DamageBounce = 1100;
 		[SerializeField] int SwimRotationLerp = 100;
+		[SerializeField] int BlinkRate = 12;
 
 		// Data
 		private AniCode Ani_Idle = null;
@@ -98,13 +100,18 @@ namespace Yaya {
 		private AniCode Ani_Climb = null;
 		private AniCode Ani_Roll = null;
 		private AniCode Ani_Sleep = null;
+		private AniCode Ani_Damage = null;
+		private AniCode Ani_Passout = null;
 		private AniCode CurrentAni = null;
 		private GroupCode Face = null;
+		private float TargetSwimRotation = 0f;
 		private int CurrentAniFrame = 0;
 		private int CurrentCode = 0;
 		private int CurrentBounce = 1000;
-		private float TargetSwimRotation = 0f;
 		private int LastCellHeight = Const.CELL_SIZE;
+		private int LastRequireBounceFrame = int.MinValue;
+		private int BlinkingTime = int.MinValue;
+		private int DamagingTime = int.MinValue;
 
 
 		#endregion
@@ -134,20 +141,45 @@ namespace Yaya {
 			Ani_Pound = new($"_a{name}.Pound", $"_a{name}.Idle");
 			Ani_Climb = new($"_a{name}.Climb", $"_a{name}.Walk");
 			Ani_Sleep = new($"_a{name}.Sleep", $"_a{name}.Idle", $"_a{name}");
+			Ani_Damage = new($"_a{name}.Damage", $"_a{name}.Idle", $"_a{name}");
+			Ani_Passout = new($"_a{name}.Passout", $"_a{name}.Idle", $"_a{name}");
 			Face = new($"{name}.Face");
 		}
 
 
 		public override void Update () {
+
 			base.Update();
 			int frame = Game.GlobalFrame;
 
+			// Damage
+			if (frame < DamagingTime) {
+				ref var cell = ref CellRenderer.Draw_Animation(
+					Ani_Damage.Code,
+					Source.X, Source.Y,
+					500, 0, 0,
+					Source.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+					Const.ORIGINAL_SIZE,
+					Game.GlobalFrame,
+					Ani_Damage.LoopStart
+				);
+				int damageBounce = frame.PingPong(3) * 32 - 16 + DamageBounce;
+				cell.Width = cell.Width * damageBounce / 1000;
+				cell.Height = cell.Height * damageBounce / 1000;
+				return;
+			}
+
+			// Blink
+			if (frame < BlinkingTime && (BlinkingTime - frame) % BlinkRate < BlinkRate / 2) return;
+
+			// Draw
 			switch (Source.CharacterState) {
 				case eCharacter.State.General:
-					DrawCharacter_General(frame);
+					DrawCharacter_General();
 					DrawFace();
 					break;
 				case eCharacter.State.Animate:
+
 
 					break;
 				case eCharacter.State.Sleep:
@@ -159,19 +191,27 @@ namespace Yaya {
 						Game.GlobalFrame,
 						Ani_Sleep.LoopStart
 					);
-
 					break;
 				case eCharacter.State.Passout:
-
+					CellRenderer.Draw_Animation(
+						Ani_Passout.Code,
+						Source.X, Source.Y,
+						500, 0, 0,
+						Source.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+						Const.ORIGINAL_SIZE,
+						Game.GlobalFrame,
+						Ani_Passout.LoopStart
+					);
 					break;
 			}
 
 		}
 
 
-		private void DrawCharacter_General (int frame) {
+		private void DrawCharacter_General () {
 
 			AniCode ani;
+			int frame = Game.GlobalFrame;
 
 			// Movement
 			var movement = Source.Movement;
@@ -233,21 +273,19 @@ namespace Yaya {
 				int bounce = 1000;
 				int duration = BounceAmounts.Length;
 				bool reverse = false;
-				if (movement.IsSquating && frame.InRangeExculde(movement.LastSquatFrame, movement.LastSquatFrame + duration)) {
+				if (frame < LastRequireBounceFrame + duration) {
+					bounce = BounceAmounts[frame - LastRequireBounceFrame];
+				} else if (movement.IsPounding) {
+					bounce = PoundingBounce;
+				} else if (!movement.IsPounding && movement.IsGrounded && frame.InRangeExculde(movement.LastPoundingFrame, movement.LastPoundingFrame + duration)) {
+					bounce = BounceAmountsBig[frame - movement.LastPoundingFrame];
+				} else if (movement.IsSquating && frame.InRangeExculde(movement.LastSquatFrame, movement.LastSquatFrame + duration)) {
 					bounce = BounceAmounts[frame - movement.LastSquatFrame];
-				}
-				if (movement.IsGrounded && frame.InRangeExculde(movement.LastGroundFrame, movement.LastGroundFrame + duration)) {
+				} else if (movement.IsGrounded && frame.InRangeExculde(movement.LastGroundFrame, movement.LastGroundFrame + duration)) {
 					bounce = BounceAmounts[frame - movement.LastGroundFrame];
-				}
-				if (!movement.IsSquating && frame.InRangeExculde(movement.LastSquatingFrame, movement.LastSquatingFrame + duration)) {
+				} else if (!movement.IsSquating && frame.InRangeExculde(movement.LastSquatingFrame, movement.LastSquatingFrame + duration)) {
 					bounce = BounceAmounts[frame - movement.LastSquatingFrame];
 					reverse = true;
-				}
-				if (!movement.IsPounding && movement.IsGrounded && frame.InRangeExculde(movement.LastPoundingFrame, movement.LastPoundingFrame + duration)) {
-					bounce = BounceAmountsBig[frame - movement.LastPoundingFrame];
-				}
-				if (movement.IsPounding) {
-					bounce = PoundingBounce;
 				}
 				if (bounce != 1000) {
 					bounce = (int)Util.RemapUnclamped(0, 1000, 1000 - Bouncy, 1000, bounce);
@@ -309,6 +347,23 @@ namespace Yaya {
 				Const.ORIGINAL_SIZE
 			);
 		}
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+		public void Bounce () => LastRequireBounceFrame = Game.GlobalFrame;
+
+
+		public void Blink (int duration) => BlinkingTime = Game.GlobalFrame + duration;
+
+
+		public void Damage (int duration) => DamagingTime = Game.GlobalFrame + duration;
 
 
 		#endregion

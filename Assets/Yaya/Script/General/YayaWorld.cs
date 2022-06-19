@@ -53,7 +53,7 @@ namespace Yaya {
 				// Damage
 				if (meta.Tag == YayaConst.DAMAGE_TAG) {
 					CellPhysics.FillBlock(
-						YayaConst.LAYER_DAMAGE, rect.Expand(YayaMeta.LevelDamageExpand), true
+						YayaConst.LAYER_DAMAGE, rect.Expand(YayaMeta.LevelDamageExpand), true, 1
 					);
 				}
 			}

@@ -66,6 +66,7 @@ namespace Yaya {
 					if (FrameInput.KeyDown(GameKey.Action)) {
 						CharacterState = State.General;
 						X += Const.CELL_SIZE / 2;
+						Renderer.Bounce();
 					}
 					break;
 			}

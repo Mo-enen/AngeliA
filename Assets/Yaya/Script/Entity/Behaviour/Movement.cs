@@ -57,62 +57,64 @@ namespace Yaya {
 		private int CurrentDashCooldown => InWater && SwimInFreeStyle ? FreeSwimDashCooldown : DashCooldown;
 
 		// Ser
-		[SerializeField] BuffInt Width = 150;
-		[SerializeField] BuffInt Height = 384;
-		[SerializeField] BuffInt SquatHeight = 200;
-		[SerializeField] BuffInt SwimHeight = 384;
+		[SerializeField] BuffInt Width = new(150);
+		[SerializeField] BuffInt Height = new(384);
+		[SerializeField] BuffInt SquatHeight = new(200);
+		[SerializeField] BuffInt SwimHeight = new(384);
+		[SerializeField] BuffInt AntiKnockbackSpeed = new(16);
 
-		[SerializeField] BuffInt WalkSpeed = 20;
-		[SerializeField] BuffInt WalkAcceleration = 3;
-		[SerializeField] BuffInt WalkDecceleration = 4;
-		[SerializeField] BuffInt RunTrigger = 60;
-		[SerializeField] BuffInt RunSpeed = 32;
-		[SerializeField] BuffInt RunAcceleration = 3;
-		[SerializeField] BuffInt RunDecceleration = 4;
-		[SerializeField] BuffInt OppositeXAccelerationRate = 3000;
+		[SerializeField] BuffInt WalkSpeed = new(20);
+		[SerializeField] BuffInt WalkAcceleration = new(3);
+		[SerializeField] BuffInt WalkDecceleration = new(4);
+		[SerializeField] BuffInt RunTrigger = new(60);
+		[SerializeField] BuffInt RunSpeed = new(32);
+		[SerializeField] BuffInt RunAcceleration = new(3);
+		[SerializeField] BuffInt RunDecceleration = new(4);
+		[SerializeField] BuffInt OppositeXAccelerationRate = new(3000);
 
-		[SerializeField] BuffInt JumpSpeed = 62;
-		[SerializeField] BuffInt JumpCount = 2;
-		[SerializeField] BuffInt JumpReleaseLoseRate = 700;
-		[SerializeField] BuffInt JumpRiseGravityRate = 600;
-		[SerializeField] BuffBool JumpRoll = false;
-		[SerializeField] BuffBool JumpSecondRoll = true;
+		[SerializeField] BuffInt JumpSpeed = new(62);
+		[SerializeField] BuffInt JumpCount = new(2);
+		[SerializeField] BuffInt JumpReleaseLoseRate = new(700);
+		[SerializeField] BuffInt JumpRiseGravityRate = new(600);
+		[SerializeField] BuffBool JumpRoll = new(false);
+		[SerializeField] BuffBool JumpSecondRoll = new(true);
 
-		[SerializeField] BuffBool DashAvailable = true;
-		[SerializeField] BuffInt DashSpeed = 42;
-		[SerializeField] BuffInt DashDuration = 12;
-		[SerializeField] BuffInt DashCooldown = 4;
-		[SerializeField] BuffInt DashAcceleration = 24;
-		[SerializeField] BuffInt DashCancelLoseRate = 300;
+		[SerializeField] BuffBool DashAvailable = new(true);
+		[SerializeField] BuffInt DashSpeed = new(42);
+		[SerializeField] BuffInt DashDuration = new(12);
+		[SerializeField] BuffInt DashCooldown = new(4);
+		[SerializeField] BuffInt DashAcceleration = new(24);
+		[SerializeField] BuffInt DashCancelLoseRate = new(300);
 
-		[SerializeField] BuffBool SquatAvailable = true;
-		[SerializeField] BuffInt SquatSpeed = 14;
-		[SerializeField] BuffInt SquatAcceleration = 48;
-		[SerializeField] BuffInt SquatDecceleration = 48;
+		[SerializeField] BuffBool SquatAvailable = new(true);
+		[SerializeField] BuffInt SquatSpeed = new(14);
+		[SerializeField] BuffInt SquatAcceleration = new(48);
+		[SerializeField] BuffInt SquatDecceleration = new(48);
 
-		[SerializeField] BuffBool PoundAvailable = true;
-		[SerializeField] BuffInt PoundSpeed = 96;
+		[SerializeField] BuffBool PoundAvailable = new(true);
+		[SerializeField] BuffInt PoundSpeed = new(96);
 
-		[SerializeField] BuffInt InWaterSpeedLoseRate = 500;
-		[SerializeField] BuffInt SwimSpeed = 42;
-		[SerializeField] BuffInt SwimAcceleration = 4;
-		[SerializeField] BuffInt SwimDecceleration = 4;
+		[SerializeField] BuffInt InWaterSpeedLoseRate = new(500);
+		[SerializeField] BuffInt SwimSpeed = new(42);
+		[SerializeField] BuffInt SwimAcceleration = new(4);
+		[SerializeField] BuffInt SwimDecceleration = new(4);
 
-		[SerializeField] BuffBool SwimInFreeStyle = false;
-		[SerializeField] BuffInt FreeSwimSpeed = 40;
-		[SerializeField] BuffInt FreeSwimAcceleration = 4;
-		[SerializeField] BuffInt FreeSwimDecceleration = 4;
-		[SerializeField] BuffInt FreeSwimDashSpeed = 84;
-		[SerializeField] BuffInt FreeSwimDashDuration = 12;
-		[SerializeField] BuffInt FreeSwimDashCooldown = 4;
-		[SerializeField] BuffInt FreeSwimDashAcceleration = 128;
+		[SerializeField] BuffBool SwimInFreeStyle = new(false);
+		[SerializeField] BuffInt FreeSwimSpeed = new(40);
+		[SerializeField] BuffInt FreeSwimAcceleration = new(4);
+		[SerializeField] BuffInt FreeSwimDecceleration = new(4);
+		[SerializeField] BuffInt FreeSwimDashSpeed = new(84);
+		[SerializeField] BuffInt FreeSwimDashDuration = new(12);
+		[SerializeField] BuffInt FreeSwimDashCooldown = new(4);
+		[SerializeField] BuffInt FreeSwimDashAcceleration = new(128);
 
-		[SerializeField] BuffBool ClimbAvailable = true;
-		[SerializeField] BuffBool JumpWhenClimbAvailable = true;
-		[SerializeField] BuffInt ClimbSpeedX = 12;
-		[SerializeField] BuffInt ClimbSpeedY = 18;
+		[SerializeField] BuffBool ClimbAvailable = new(true);
+		[SerializeField] BuffBool JumpWhenClimbAvailable = new(true);
+		[SerializeField] BuffInt ClimbSpeedX = new(12);
+		[SerializeField] BuffInt ClimbSpeedY = new(18);
 
 		// Data
+		private readonly HitInfo[] c_HitboxCollisionFix = new HitInfo[8];
 		private RectInt Hitbox = default;
 		private int CurrentFrame = 0;
 		private int LastIntendedX = 1;
@@ -124,7 +126,6 @@ namespace Yaya {
 		private bool PrevInWater = false;
 		private bool PrevGrounded = false;
 		private int? ClimbPositionCorrect = null;
-		private readonly HitInfo[] c_HitboxCollisionFix = new HitInfo[8];
 
 
 		#endregion
@@ -385,37 +386,10 @@ namespace Yaya {
 
 
 		// Meta
-		public void LoadFromText (string text) {
-			foreach (var (name, value) in text.LoadAsTextMeta()) {
-				var type = Util.GetFieldType(this, name);
-				if (type == typeof(BuffInt)) {
-					if (int.TryParse(value, out int iValue)) {
-						Util.SetFieldValue(this, name, new BuffInt(iValue));
-					}
-				} else if (type == typeof(BuffBool)) {
-					if (bool.TryParse(value, out bool bValue)) {
-						Util.SetFieldValue(this, name, new BuffBool(bValue));
-					}
-				}
-			}
-		}
+		public void LoadFromText (string text) => BuffValue.LoadBuffMetaFromText(this, text);
 
 
-		public string SaveToText () {
-			var builder = new StringBuilder();
-			foreach (var (name, value) in this.AllFields<BuffValue>()) {
-				switch (value) {
-					default: throw new System.NotImplementedException();
-					case BuffInt iValue:
-						builder.AppendLine($"{name} = {iValue.Value}");
-						break;
-					case BuffBool bValue:
-						builder.AppendLine($"{name} = {bValue.Value}");
-						break;
-				}
-			}
-			return builder.ToString();
-		}
+		public string SaveToText () => BuffValue.SaveBuffMetaToText(this);
 
 
 		// Movement
@@ -451,6 +425,9 @@ namespace Yaya {
 
 
 		public void Pound () => IntendedPound = true;
+
+
+		public void AntiKnockback () => Source.VelocityX = Source.VelocityX.MoveTowards(0, AntiKnockbackSpeed);
 
 
 		#endregion
