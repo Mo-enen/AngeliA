@@ -6,6 +6,14 @@ using AngeliaFramework;
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 
 namespace Yaya {
+
+
+	public interface IAttackReceiver {
+		Health Health { get; }
+		void TakeDamage (int damage);
+	}
+
+
 	public static class YayaConst {
 
 

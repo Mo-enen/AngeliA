@@ -57,22 +57,13 @@ namespace Yaya {
 					Update_Move();
 					Update_JumpDashPound();
 					if (FrameInput.KeyDown(GameKey.Action)) {
-						bool performed = Action.TryInvokeAction();
-						if (!performed) Attackness.Attack();
+						if (!InvokeAction()) InvokeAttack();
 					}
 					break;
 				case State.Sleep:
 					// Sleep
 					if (FrameInput.KeyDown(GameKey.Action)) {
-						CharacterState = State.General;
-						X += Const.CELL_SIZE / 2;
-						Renderer.Bounce();
-					}
-					break;
-				case State.Passout:
-					if (Game.GlobalFrame > PassoutFrame + 48 && FrameInput.KeyDown(GameKey.Action)) {
-						// Reload Game After Passout
-						CellAnimation.Play(typeof(aReopening).AngeHash());
+						Wakeup();
 					}
 					break;
 			}

@@ -118,7 +118,6 @@ namespace Yaya {
 			// Spawn on Bed
 			if (finalBed != null) {
 				var yaya = game.AddEntity(typeof(ePlayer).AngeHash(), finalBed.X, finalBed.Y) as ePlayer;
-				yaya.CharacterState = eCharacter.State.Sleep;
 				finalBed.Invoke(yaya);
 				return;
 			}

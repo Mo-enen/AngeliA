@@ -16,6 +16,7 @@ namespace Yaya {
 		// Const
 		private readonly HashSet<SystemLanguage> SupportedLanguages = new() { SystemLanguage.English, SystemLanguage.ChineseSimplified, };
 		private static readonly int OPENING_ANI_ID = typeof(aOpening).AngeHash();
+		private static readonly int REOPENING_ANI_ID = typeof(aReopening).AngeHash();
 
 		// Api
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
@@ -28,6 +29,10 @@ namespace Yaya {
 		[SerializeField] PhysicsMeta m_DefaultPhysicsMeta = null;
 		[SerializeField] YayaMeta m_DefaultYayaMeta = null;
 
+		// Data
+		private ePlayer Player => _Player ??= TryGetEntityInStage<ePlayer>(out var p) ? p : null;
+		private ePlayer _Player = null;
+
 
 		#endregion
 
@@ -37,6 +42,7 @@ namespace Yaya {
 		#region --- MSG ---
 
 
+		// Init
 		protected override void Initialize () {
 			base.Initialize();
 			Initialize_Quit();
@@ -107,6 +113,26 @@ namespace Yaya {
 					SetViewRectImmediately(view);
 				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
+
+
+		// Update
+		protected override void FrameUpdate () {
+			base.FrameUpdate();
+			Update_Player();
+		}
+
+
+		private void Update_Player () {
+			if (Player == null) return;
+			// Reload Game After Passout
+			if (
+				Player.CharacterState == eCharacter.State.Passout &&
+				GlobalFrame > Player.PassoutFrame + 48 &&
+				FrameInput.KeyDown(GameKey.Action)
+			) {
+				CellAnimation.Play(REOPENING_ANI_ID);
+			}
 		}
 
 

@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class eBed : eFurniture, IEntityAction {
+	public class eBed : eFurniture, IActionEntity {
 
 		private static readonly int CODE_LEFT = "Bed Left".AngeHash();
 		private static readonly int CODE_MID = "Bed Mid".AngeHash();
@@ -30,7 +30,7 @@ namespace Yaya {
 					} else break;
 				}
 			}
-			ch.CharacterState = eCharacter.State.Sleep;
+			ch.Sleep();
 			ch.X = bedX;
 			ch.Y = Y;
 		}

@@ -15,7 +15,7 @@ namespace Yaya {
 
 
 		// Api
-		public IEntityAction CurrentTarget { get; private set; } = null;
+		public IActionEntity CurrentTarget { get; private set; } = null;
 
 		// Ser
 		[SerializeField] int ScanRange = Const.CELL_SIZE / 4;
@@ -55,7 +55,7 @@ namespace Yaya {
 				int dis = int.MaxValue;
 				for (int i = 0; i < count; i++) {
 					var hit = c_ScanHits[i];
-					if (hit.Entity is IEntityAction eAct) {
+					if (hit.Entity is IActionEntity eAct) {
 						int _dis = Util.SqrtDistance(hit.Entity.X, hit.Entity.Y, Source.X, Source.Y);
 						if (_dis < dis) {
 							dis = _dis;
@@ -75,7 +75,7 @@ namespace Yaya {
 		#region --- API ---
 
 
-		public bool TryInvokeAction () {
+		public bool Invoke () {
 			if (CurrentTarget == null) return false;
 			CurrentTarget.Invoke(Source);
 			return true;

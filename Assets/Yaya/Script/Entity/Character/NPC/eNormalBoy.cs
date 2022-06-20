@@ -10,5 +10,48 @@ namespace Yaya {
 	public class eNormalBoy : eCharacter {
 
 
+
+
+		#region --- VAR ---
+
+
+
+
+
+		#endregion
+
+
+
+
+		#region --- MSG ---
+
+
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+
+
+		#endregion
+
+
+
+
 	}
 }

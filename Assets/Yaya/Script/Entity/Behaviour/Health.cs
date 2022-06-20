@@ -21,6 +21,7 @@ namespace Yaya {
 		public int InvincibleFrameDuration => InvincibleFrame;
 		public int KnockBackSpeedValue => KnockBackSpeed;
 		public int DamageFrameValue => DamageFrame;
+		public int MaxHealthPoint => MaxHP;
 
 		// Ser
 		[SerializeField] BuffInt MaxHP = new(1);

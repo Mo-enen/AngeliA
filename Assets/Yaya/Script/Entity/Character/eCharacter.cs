@@ -6,7 +6,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[MapEditorGroup("Character")]
-	public abstract class eCharacter : eRigidbody {
+	public abstract class eCharacter : eRigidbody, IAttackReceiver {
 
 
 
@@ -39,8 +39,8 @@ namespace Yaya {
 		public override int AirDragY => 0;
 		public override bool IgnoreRiseGravityShift => true;
 		public bool InBuilding { get; private set; } = false;
-		public State CharacterState { get; set; } = State.General;
-		protected int PassoutFrame { get; private set; } = int.MinValue;
+		public State CharacterState { get; private set; } = State.General;
+		public int PassoutFrame { get; private set; } = int.MinValue;
 
 		// Behaviour
 		public Movement Movement { get; private set; }
@@ -157,7 +157,7 @@ namespace Yaya {
 				case State.Sleep:
 					VelocityX = 0;
 					VelocityY = 0;
-					Health.Heal(1);
+					if (!Health.FullHealth) Health.Heal(Health.MaxHealthPoint);
 					break;
 				case State.Passout:
 					VelocityX = 0;
@@ -182,6 +182,7 @@ namespace Yaya {
 		#region --- API ---
 
 
+		// Invoke Behaviour
 		public void TakeDamage (int damage) {
 			if (Health.Damage(damage)) {
 				DamageEndFrame = Game.GlobalFrame + Health.DamageFrameValue;
@@ -194,6 +195,45 @@ namespace Yaya {
 		}
 
 
+		public void TakeHeal (int heal) {
+			Health.Heal(heal);
+
+
+		}
+
+
+		public bool InvokeAction () {
+			bool performed = Action.Invoke();
+
+
+
+			return performed;
+		}
+
+
+		public bool InvokeAttack () {
+			bool performed = Attackness.Attack();
+
+
+
+
+			return performed;
+		}
+
+
+		public void Sleep () {
+			CharacterState = State.Sleep;
+		}
+
+
+		public void Wakeup () {
+			CharacterState = State.General;
+			X += Const.CELL_SIZE / 2;
+			Renderer.Bounce();
+		}
+
+
+		// Misc
 		protected override bool GroundedCheck (RectInt rect) => base.GroundedCheck(rect);
 
 
