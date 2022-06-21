@@ -7,7 +7,7 @@ using AngeliaFramework;
 namespace Yaya {
 	[EntityCapacity(512)]
 	[ExcludeInMapEditor]
-	public abstract class eBullet : Entity {
+	public class eBullet : Entity {
 
 
 

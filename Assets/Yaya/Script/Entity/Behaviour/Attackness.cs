@@ -13,8 +13,15 @@ namespace Yaya {
 		#region --- VAR ---
 
 
-		// Ser
+		// Api
+		public int CurrentBulletID { get; set; } = 0;
 
+		// Ser
+		[SerializeField] BuffString DefaultBulletName = new("Bullet");
+		[SerializeField] BuffInt AttackColldown = new(12);
+
+		// Data
+		private int LastAttackFrame = int.MinValue;
 
 
 		#endregion
@@ -27,15 +34,8 @@ namespace Yaya {
 
 		public override void Initialize (Entity source) {
 			base.Initialize(source);
-
-
-		}
-
-
-		public override void Update () {
-			base.Update();
-
-
+			CurrentBulletID = DefaultBulletName.Value.AngeHash();
+			LastAttackFrame = int.MinValue;
 		}
 
 
@@ -56,11 +56,14 @@ namespace Yaya {
 
 		// Attackness
 		public bool Attack () {
+			int frame = Game.GlobalFrame;
+			if (frame <= LastAttackFrame + AttackColldown) return false;
 			// IAttackReceiver
 
 
 
 
+			LastAttackFrame = frame;
 			return true;
 		}
 

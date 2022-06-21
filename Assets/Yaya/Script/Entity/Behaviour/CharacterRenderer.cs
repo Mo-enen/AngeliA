@@ -14,13 +14,43 @@ namespace Yaya {
 		#region --- SUB ---
 
 
+		private class MovementCodes {
+			public AniCode Idle { get; init; } = null;
+			public AniCode Walk { get; init; } = null;
+			public AniCode Run { get; init; } = null;
+			public AniCode JumpU { get; init; } = null;
+			public AniCode JumpD { get; init; } = null;
+			public AniCode Dash { get; init; } = null;
+			public AniCode SquatIdle { get; init; } = null;
+			public AniCode SquatMove { get; init; } = null;
+			public AniCode SwimIdle { get; init; } = null;
+			public AniCode SwimMove { get; init; } = null;
+			public AniCode SwimDash { get; init; } = null;
+			public AniCode Pound { get; init; } = null;
+			public AniCode Climb { get; init; } = null;
+			public AniCode Roll { get; init; } = null;
+		}
+
+
+		private class GeneralCodes {
+			public AniCode Sleep { get; init; } = null;
+			public AniCode Damage { get; init; } = null;
+			public AniCode Passout { get; init; } = null;
+			public GroupCode Face { get; init; } = null;
+			public int FaceBlink { get; init; } = 0;
+			public AniCode[] Attacks { get; init; } = null;
+		}
+
+
 		private class AniCode {
-			public int Code = 0;
-			public int LoopStart = 0;
-			public AniCode (string name, params string[] failbacks) {
-				int code = name.AngeHash();
+			public readonly int Code = 0;
+			public readonly int LoopStart = 0;
+			public readonly bool UsingFailback = false;
+			public AniCode (string name, params string[] failbacks) : this(name.AngeHash(), failbacks) { }
+			public AniCode (int code, params string[] failbacks) {
 				if (CellRenderer.TryGetSprite(code, out _, 0)) {
 					Code = code;
+					UsingFailback = false;
 					if (CellRenderer.TryGetSpriteChain(code, out var chain)) {
 						LoopStart = chain.LoopStart;
 					}
@@ -29,6 +59,7 @@ namespace Yaya {
 						code = failback.AngeHash();
 						if (CellRenderer.TryGetSprite(code, out _, 0)) {
 							Code = code;
+							UsingFailback = true;
 							if (CellRenderer.TryGetSpriteChain(code, out var chain)) {
 								LoopStart = chain.LoopStart;
 							}
@@ -36,6 +67,20 @@ namespace Yaya {
 						}
 					}
 				}
+			}
+			public static AniCode[] GetAnimationArray (string keyName) {
+				var result = new List<AniCode>();
+				int code = keyName.AngeHash();
+				if (CellRenderer.TryGetSprite(code, out _, 0)) {
+					result.Add(new AniCode(code));
+				}
+				for (char c = 'A'; c <= 'Z'; c++) {
+					code = $"{keyName}{c}".AngeHash();
+					if (CellRenderer.TryGetSprite(code, out _, 0)) {
+						result.Add(new AniCode(code));
+					} else break;
+				}
+				return result.ToArray();
 			}
 		}
 
@@ -83,28 +128,13 @@ namespace Yaya {
 		[SerializeField] int DamageScale = 1150;
 		[SerializeField] int PassoutScale = 1200;
 		[SerializeField] int SwimRotationLerp = 100;
-		[SerializeField] int BlinkRate = 8;
+		[SerializeField] int DamageBlinkRate = 8;
+		[SerializeField] int EyeBlinkRate = 360;
 
 		// Data
-		private AniCode Ani_Idle = null;
-		private AniCode Ani_Walk = null;
-		private AniCode Ani_Run = null;
-		private AniCode Ani_JumpU = null;
-		private AniCode Ani_JumpD = null;
-		private AniCode Ani_Dash = null;
-		private AniCode Ani_SquatIdle = null;
-		private AniCode Ani_SquatMove = null;
-		private AniCode Ani_SwimIdle = null;
-		private AniCode Ani_SwimMove = null;
-		private AniCode Ani_SwimDash = null;
-		private AniCode Ani_Pound = null;
-		private AniCode Ani_Climb = null;
-		private AniCode Ani_Roll = null;
-		private AniCode Ani_Sleep = null;
-		private AniCode Ani_Damage = null;
-		private AniCode Ani_Passout = null;
+		private MovementCodes MovementAni = null;
+		private GeneralCodes GeneralAni = null;
 		private AniCode CurrentAni = null;
-		private GroupCode Face = null;
 		private float TargetSwimRotation = 0f;
 		private int CurrentAniFrame = 0;
 		private int CurrentCode = 0;
@@ -127,24 +157,30 @@ namespace Yaya {
 			base.Initialize(source);
 			string name = Source.GetType().Name;
 			if (name.StartsWith('e')) name = name[1..];
-			Ani_Idle = new($"_a{name}.Idle", $"_a{name}");
-			Ani_Walk = new($"_a{name}.Walk", $"_a{name}.Run", $"_a{name}.Idle");
-			Ani_Run = new($"_a{name}.Run", $"_a{name}.Walk", $"_a{name}.Idle");
-			Ani_JumpU = new($"_a{name}.JumpU", $"_a{name}.Idle");
-			Ani_JumpD = new($"_a{name}.JumpD", $"_a{name}.Idle");
-			Ani_Roll = new($"_a{name}.Roll", $"_a{name}.Run");
-			Ani_Dash = new($"_a{name}.Dash", $"_a{name}.Roll");
-			Ani_SquatIdle = new($"_a{name}.SquatIdle", $"_a{name}.Idle");
-			Ani_SquatMove = new($"_a{name}.SquatMove", $"_a{name}.Walk");
-			Ani_SwimIdle = new($"_a{name}.SwimIdle", $"_a{name}.Swim", $"_a{name}.Idle");
-			Ani_SwimMove = new($"_a{name}.SwimMove", $"_a{name}.SwimIdle", $"_a{name}.Swim", $"_a{name}.Run");
-			Ani_SwimDash = new($"_a{name}.SwimDash", $"_a{name}.SwimMove", $"_a{name}.Swim", $"_a{name}.Dash");
-			Ani_Pound = new($"_a{name}.Pound", $"_a{name}.Idle");
-			Ani_Climb = new($"_a{name}.Climb", $"_a{name}.Walk");
-			Ani_Sleep = new($"_a{name}.Sleep", $"_a{name}.Idle", $"_a{name}");
-			Ani_Damage = new($"_a{name}.Damage", $"_a{name}.Idle", $"_a{name}");
-			Ani_Passout = new($"_a{name}.Passout", $"_a{name}.Idle", $"_a{name}");
-			Face = new($"{name}.Face");
+			MovementAni = new() {
+				Idle = new($"_a{name}.Idle", $"_a{name}"),
+				Walk = new($"_a{name}.Walk", $"_a{name}.Run", $"_a{name}.Idle"),
+				Run = new($"_a{name}.Run", $"_a{name}.Walk", $"_a{name}.Idle"),
+				JumpU = new($"_a{name}.JumpU", $"_a{name}.Idle"),
+				JumpD = new($"_a{name}.JumpD", $"_a{name}.Idle"),
+				Roll = new($"_a{name}.Roll", $"_a{name}.Run"),
+				Dash = new($"_a{name}.Dash", $"_a{name}.Roll"),
+				SquatIdle = new($"_a{name}.SquatIdle", $"_a{name}.Idle"),
+				SquatMove = new($"_a{name}.SquatMove", $"_a{name}.Walk"),
+				SwimIdle = new($"_a{name}.SwimIdle", $"_a{name}.Swim", $"_a{name}.Idle"),
+				SwimMove = new($"_a{name}.SwimMove", $"_a{name}.SwimIdle", $"_a{name}.Swim", $"_a{name}.Run"),
+				SwimDash = new($"_a{name}.SwimDash", $"_a{name}.SwimMove", $"_a{name}.Swim", $"_a{name}.Dash"),
+				Pound = new($"_a{name}.Pound", $"_a{name}.Idle"),
+				Climb = new($"_a{name}.Climb", $"_a{name}.Walk"),
+			};
+			GeneralAni = new() {
+				Sleep = new($"_a{name}.Sleep", $"_a{name}.Idle", $"_a{name}"),
+				Damage = new($"_a{name}.Damage", $"_a{name}.Idle", $"_a{name}"),
+				Passout = new($"_a{name}.Passout", $"_a{name}.Idle", $"_a{name}"),
+				Attacks = AniCode.GetAnimationArray($"_a{name}.Attack"),
+				Face = new($"{name}.Face"),
+				FaceBlink = new AniCode($"{name}.Face.Blink", $"{name}.Face").Code,
+			};
 		}
 
 
@@ -154,18 +190,18 @@ namespace Yaya {
 			int frame = Game.GlobalFrame;
 
 			// Blink
-			if (frame < BlinkingTime && (BlinkingTime - frame) % BlinkRate < BlinkRate / 2) return;
+			if (frame < BlinkingTime && (BlinkingTime - frame) % DamageBlinkRate < DamageBlinkRate / 2) return;
 
 			// Damage
 			if (frame < DamagingTime) {
 				ref var cell = ref CellRenderer.Draw_Animation(
-					Ani_Damage.Code,
+					GeneralAni.Damage.Code,
 					Source.X, Source.Y,
 					500, 0, 0,
 					Source.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 					Const.ORIGINAL_SIZE,
 					Game.GlobalFrame,
-					Ani_Damage.LoopStart
+					GeneralAni.Damage.LoopStart
 				);
 				int damageScl = frame.PingPong(3) * 32 - 16 + DamageScale;
 				cell.Width = cell.Width * damageScl / 1000;
@@ -176,7 +212,7 @@ namespace Yaya {
 			// Draw
 			switch (Source.CharacterState) {
 				case eCharacter.State.General:
-					DrawGeneral();
+					Draw();
 					DrawFace();
 					break;
 				case eCharacter.State.Animate:
@@ -185,23 +221,23 @@ namespace Yaya {
 					break;
 				case eCharacter.State.Sleep:
 					CellRenderer.Draw_Animation(
-						Ani_Sleep.Code,
+						GeneralAni.Sleep.Code,
 						Source.X, Source.Y,
 						Const.ORIGINAL_SIZE,
 						Const.ORIGINAL_SIZE,
 						Game.GlobalFrame,
-						Ani_Sleep.LoopStart
+						GeneralAni.Sleep.LoopStart
 					);
 					break;
 				case eCharacter.State.Passout:
 					ref var cell = ref CellRenderer.Draw_Animation(
-						Ani_Passout.Code,
+						GeneralAni.Passout.Code,
 						Source.X, Source.Y,
 						500, 0, 0,
 						Source.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 						Const.ORIGINAL_SIZE,
 						Game.GlobalFrame,
-						Ani_Passout.LoopStart
+						GeneralAni.Passout.LoopStart
 					);
 					cell.Width = cell.Width * PassoutScale / 1000;
 					cell.Height = cell.Height * PassoutScale / 1000;
@@ -211,7 +247,7 @@ namespace Yaya {
 		}
 
 
-		private void DrawGeneral () {
+		private void Draw () {
 
 			AniCode ani;
 			int frame = Game.GlobalFrame;
@@ -219,21 +255,21 @@ namespace Yaya {
 			// Movement
 			var movement = Source.Movement;
 			if (movement.IsClimbing) {
-				ani = Ani_Climb;
+				ani = MovementAni.Climb;
 			} else if (movement.IsPounding) {
-				ani = Ani_Pound;
+				ani = MovementAni.Pound;
 			} else if (movement.IsRolling) {
-				ani = Ani_Roll;
+				ani = MovementAni.Roll;
 			} else if (movement.IsDashing) {
-				ani = !movement.IsGrounded && movement.InWater ? Ani_SwimDash : Ani_Dash;
+				ani = !movement.IsGrounded && movement.InWater ? MovementAni.SwimDash : MovementAni.Dash;
 			} else if (movement.IsSquating) {
-				ani = movement.IsMoving ? Ani_SquatMove : Ani_SquatIdle;
+				ani = movement.IsMoving ? MovementAni.SquatMove : MovementAni.SquatIdle;
 			} else if (movement.InWater && !movement.IsGrounded) {
-				ani = movement.IsMoving ? Ani_SwimMove : Ani_SwimIdle;
+				ani = movement.IsMoving ? MovementAni.SwimMove : MovementAni.SwimIdle;
 			} else if (movement.IsInAir) {
-				ani = movement.FinalVelocityY > 0 ? Ani_JumpU : Ani_JumpD;
+				ani = movement.FinalVelocityY > 0 ? MovementAni.JumpU : MovementAni.JumpD;
 			} else {
-				ani = movement.IsRunning ? Ani_Run : movement.IsMoving ? Ani_Walk : Ani_Idle;
+				ani = movement.IsRunning ? MovementAni.Run : movement.IsMoving ? MovementAni.Walk : MovementAni.Idle;
 			}
 
 			// Swim Rotation
@@ -304,7 +340,7 @@ namespace Yaya {
 			}
 
 			// Grow Ani Frame
-			if (ani != Ani_Climb) {
+			if (ani != MovementAni.Climb) {
 				// Normal
 				CurrentAniFrame++;
 			} else {
@@ -323,7 +359,7 @@ namespace Yaya {
 		private void DrawFace () {
 			if (
 				Source.CharacterState != eCharacter.State.General ||
-				Face.Count <= 0 ||
+				GeneralAni.Face.Count <= 0 ||
 				!CellRenderer.TryGetCharacterMeta(CurrentCode, out var cMeta) ||
 				!cMeta.Head.IsVailed ||
 				!cMeta.Head.Front
@@ -338,7 +374,9 @@ namespace Yaya {
 				offsetY += offsetY * (1000 - bounce) / 1000;
 			}
 			CellRenderer.Draw_9Slice(
-				Face[FaceIndex.UMod(Face.Count)],
+				Game.GlobalFrame % EyeBlinkRate > 8 ?
+					GeneralAni.Face[FaceIndex.UMod(GeneralAni.Face.Count)] :
+					GeneralAni.FaceBlink,
 				Source.X - cMeta.SpriteWidth / 2 +
 					(movement.FacingRight ?
 						cMeta.Head.X :
