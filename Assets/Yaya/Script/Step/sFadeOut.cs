@@ -5,8 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class aReopening : aOpening {
-
+	public class sFadeOut : Step {
 
 
 		// Data
@@ -14,10 +13,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnStart (int globalFrame) { }
-
-
-		public override void FrameUpdate (Game game, int localFrame) {
+		public override StepResult FrameUpdate (Game game) {
+			int localFrame = LocalFrame;
 			if (localFrame < FADE_OUT) {
 				// Fade Out
 				CellRenderer.Draw(
@@ -25,18 +22,11 @@ namespace Yaya {
 					CellRenderer.CameraRect.Expand(Const.CELL_SIZE),
 					new Color32(0, 0, 0, (byte)Util.Remap(0, FADE_OUT, byte.MinValue, byte.MaxValue, localFrame))
 				);
+				return StepResult.Continue;
 			} else {
-				if (localFrame == FADE_OUT) {
-					// First Frame of Fade In 
-					if (game.TryGetEntityInStage<ePlayer>(out var player)) {
-						player.Active = false;
-					}
-					base.OnStart(Game.GlobalFrame);
-				}
-				base.FrameUpdate(game, localFrame - FADE_OUT);
+				return StepResult.Over;
 			}
 		}
-
 
 
 	}

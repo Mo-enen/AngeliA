@@ -335,9 +335,16 @@ MonoBehaviour:
     ViewRatio: 2000
   m_GameAssets:
     SkyboxShader: {fileID: 4800000, guid: ce2324baeaef2844ba1c8c3df2091636, type: 3}
-    FallbackShader: {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9, type: 3}
+    CellFallbackShader: {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9,
+      type: 3}
   m_DefaultPhysicsMeta:
     Gravity: 5
     GravityRise: 3
     MaxGravitySpeed: 64
     WaterSpeedLose: 400
+    QuicksandSinkSpeed: 1
+    QuicksandJumpSpeed: 12
+    QuicksandMaxRunSpeed: 4
+    QuicksandJumpOutSpeed: 48
+  m_DefaultYayaMeta:
+    LevelDamageExpand: 1

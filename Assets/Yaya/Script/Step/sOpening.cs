@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class aOpening : Animation {
+	public class sOpening : Step {
 
 
 
@@ -23,28 +23,37 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnStart (int globalFrame) {
-			base.OnStart(globalFrame);
-			CellAnimation.SetViewPosition(VIEW_X, VIEW_Y_START);
+		public override void OnStart (Game game) {
+			base.OnStart(game);
+			SetViewPosition(game, VIEW_X, VIEW_Y_START);
 			SkipFrame = int.MaxValue;
+			if (game.TryGetEntityInStage<ePlayer>(out var player)) {
+				player.Active = false;
+				player.Wakeup();
+			}
+			CellRenderer.Draw(
+				Const.PIXEL,
+				CellRenderer.CameraRect.Expand(Const.CELL_SIZE),
+				new Color32(0, 0, 0, 255)
+			);
 		}
 
 
-		public override void FrameUpdate (Game game, int localFrame) {
-			base.FrameUpdate(game, localFrame);
+		public override StepResult FrameUpdate (Game game) {
+			int localFrame = LocalFrame;
 			if (localFrame < SkipFrame) {
 				if (FrameInput.AnyKeyPressed) {
 					SkipFrame = localFrame;
 					SkipY = (int)Util.Remap(0, DURATION, VIEW_Y_START, VIEW_Y_END, localFrame);
 				}
-				Update_Opening(game, localFrame);
+				return Update_Opening(game, localFrame);
 			} else {
-				Update_QuickSkip(game, localFrame);
+				return Update_QuickSkip(game, localFrame);
 			}
 		}
 
 
-		private void Update_Opening (Game game, int localFrame) {
+		private StepResult Update_Opening (Game game, int localFrame) {
 			// Black FadeIn
 			if (localFrame < BLACK_DURATION) {
 				CellRenderer.Draw(
@@ -55,34 +64,37 @@ namespace Yaya {
 			}
 			if (localFrame < DURATION) {
 				// Camera Down
-				CellAnimation.SetViewPosition(
+				SetViewPosition(
+					game,
 					VIEW_X,
 					(int)Util.Remap(0, DURATION, VIEW_Y_START, VIEW_Y_END, localFrame)
 				);
+				return StepResult.Continue;
 			} else {
 				// End
 				SpawnPlayer(game);
-				Stop();
+				return StepResult.Over;
 			}
 		}
 
 
-		private void Update_QuickSkip (Game game, int localFrame) {
+		private StepResult Update_QuickSkip (Game game, int localFrame) {
 			if (localFrame < SKIP_DURATION + SkipFrame) {
-				CellAnimation.SetViewPosition(
+				SetViewPosition(
+					game,
 					VIEW_X,
-					(int)Util.Remap(
-						SkipFrame, SKIP_DURATION + SkipFrame, SkipY, VIEW_Y_END, localFrame
-					)
+					(int)Util.Remap(SkipFrame, SKIP_DURATION + SkipFrame, SkipY, VIEW_Y_END, localFrame)
 				);
+				return StepResult.Continue;
 			} else {
 				// End
 				SpawnPlayer(game);
-				Stop();
+				return StepResult.Over;
 			}
 		}
 
 
+		// LGC
 		private void SpawnPlayer (Game game) {
 
 			var pos = new Vector2Int(VIEW_X, VIEW_Y_END);
@@ -126,6 +138,13 @@ namespace Yaya {
 			game.AddEntity(typeof(ePlayer).AngeHash(), pos.x, pos.y);
 		}
 
+
+		private void SetViewPosition (Game game, int x, int y) => game.SetViewPositionDely(
+			x - game.ViewRect.width / 2,
+			y - game.ViewRect.height / 2,
+			1000,
+			Const.VIEW_PRIORITY_ANIMATION
+		);
 
 
 	}

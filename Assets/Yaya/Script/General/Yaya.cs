@@ -15,8 +15,8 @@ namespace Yaya {
 
 		// Const
 		private readonly HashSet<SystemLanguage> SupportedLanguages = new() { SystemLanguage.English, SystemLanguage.ChineseSimplified, };
-		private static readonly int OPENING_ANI_ID = typeof(aOpening).AngeHash();
-		private static readonly int REOPENING_ANI_ID = typeof(aReopening).AngeHash();
+		private static readonly int OPENING_STEP_ID = typeof(sOpening).AngeHash();
+		private static readonly int FADEOUT_STEP_ID = typeof(sFadeOut).AngeHash();
 
 		// Api
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
@@ -47,7 +47,7 @@ namespace Yaya {
 			base.Initialize();
 			Initialize_Quit();
 			Initialize_YayaMeta();
-			CellAnimation.Play(OPENING_ANI_ID);
+			CellStep.AddStep(OPENING_STEP_ID);
 			Initialize_Player();
 		}
 
@@ -101,7 +101,7 @@ namespace Yaya {
 
 		private void Initialize_Player () {
 			try {
-				if (!CellAnimation.IsPlaying(OPENING_ANI_ID)) {
+				if (!CellStep.IsStepping(OPENING_STEP_ID)) {
 					// Spawn Player
 					var pos = ViewRect.CenterInt();
 					AddEntity(typeof(ePlayer).AngeHash(), pos.x, pos.y);
@@ -127,11 +127,13 @@ namespace Yaya {
 			if (Player == null) return;
 			// Reload Game After Passout
 			if (
+				Player.Active &&
 				Player.CharacterState == eCharacter.State.Passout &&
 				GlobalFrame > Player.PassoutFrame + 48 &&
 				FrameInput.KeyDown(GameKey.Action)
 			) {
-				CellAnimation.Play(REOPENING_ANI_ID);
+				CellStep.AddStep(FADEOUT_STEP_ID);
+				CellStep.AddStep(OPENING_STEP_ID);
 			}
 		}
 
