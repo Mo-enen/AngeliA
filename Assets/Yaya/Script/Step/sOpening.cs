@@ -55,7 +55,7 @@ namespace Yaya {
 
 		private StepResult Update_Opening (Game game, int localFrame) {
 			// Black FadeIn
-			if (localFrame < BLACK_DURATION) {
+			if (localFrame <= BLACK_DURATION) {
 				CellRenderer.Draw(
 					Const.PIXEL,
 					CellRenderer.CameraRect.Expand(Const.CELL_SIZE),
