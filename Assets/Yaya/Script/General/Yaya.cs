@@ -47,7 +47,7 @@ namespace Yaya {
 			base.Initialize();
 			Initialize_Quit();
 			Initialize_YayaMeta();
-			CellStep.AddStep(new sOpening());
+			CellStep.AddToLast(new sOpening());
 			Initialize_Player();
 		}
 
@@ -132,8 +132,8 @@ namespace Yaya {
 				GlobalFrame > Player.PassoutFrame + 48 &&
 				FrameInput.KeyDown(GameKey.Action)
 			) {
-				CellStep.AddStep(new sFadeOut());
-				CellStep.AddStep(new sOpening());
+				CellStep.AddToLast(new sFadeOut());
+				CellStep.AddToLast(new sOpening());
 			}
 		}
 
