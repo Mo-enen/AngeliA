@@ -47,8 +47,7 @@ namespace Yaya {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			if (OpenLight) {
-				float bAlpha01 = Game != null && Game.WorldSquad != null && Game.WorldSquad.InBuilding ? 1f : 0f;
-				byte brightness = (byte)((64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8) * bAlpha01);
+				byte brightness = (byte)((64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8));
 				CellRenderer.Draw(LIGHT, Rect.Expand(Const.CELL_SIZE), new(brightness, brightness, brightness, 255));
 			}
 		}

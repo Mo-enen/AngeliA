@@ -68,7 +68,6 @@ namespace Yaya {
 					break;
 			}
 			Update_View();
-			Game.WorldSquad.InBuilding = InBuilding;
 			base.FrameUpdate();
 		}
 

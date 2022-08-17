@@ -2,13 +2,11 @@
     "name": "Yaya",
     "rootNamespace": "Yaya",
     "references": [
-        "Moenen.Standard",
         "AngeliaFrameworkRuntime",
         "UnityEngine.UI"
     ],
     "includePlatforms": [
         "Editor",
-        "WindowsStandalone32",
         "WindowsStandalone64"
     ],
     "excludePlatforms": [],

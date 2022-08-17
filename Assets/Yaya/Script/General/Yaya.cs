@@ -15,8 +15,6 @@ namespace Yaya {
 
 		// Const
 		private readonly HashSet<SystemLanguage> SupportedLanguages = new() { SystemLanguage.English, SystemLanguage.ChineseSimplified, };
-		//private static readonly int OPENING_STEP_ID = typeof(sOpening).AngeHash();
-		//private static readonly int FADEOUT_STEP_ID = typeof(sFadeOut).AngeHash();
 
 		// Api
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
@@ -101,7 +99,7 @@ namespace Yaya {
 
 		private void Initialize_Player () {
 			try {
-				if (!CellStep.IsStepping<sOpening>()) {
+				if (CellStep.CurrentStep is not sOpening) {
 					// Spawn Player
 					var pos = ViewRect.CenterInt();
 					AddEntity(typeof(ePlayer).AngeHash(), pos.x, pos.y);
@@ -146,9 +144,7 @@ namespace Yaya {
 		#region --- PRO ---
 
 
-		protected override WorldSquad CreateWorldSquad () => new YayaWorldSquad(
-			Universe.MapRoot, Universe.RenderMeta.MaxParallax, YayaMeta
-		);
+		protected override WorldSquad CreateWorldSquad () => new YayaWorldSquad(Universe.MapRoot, YayaMeta);
 
 
 		protected override bool LanguageSupported (SystemLanguage language) => SupportedLanguages.Contains(language);

@@ -38,7 +38,6 @@ namespace Yaya {
 		public override int AirDragX => 0;
 		public override int AirDragY => 0;
 		public override bool IgnoreRiseGravityShift => true;
-		public bool InBuilding { get; private set; } = false;
 		public State CharacterState { get; private set; } = State.General;
 		public int PassoutFrame { get; private set; } = int.MinValue;
 
@@ -116,11 +115,6 @@ namespace Yaya {
 		public override void PhysicsUpdate () {
 
 			int frame = Game.GlobalFrame;
-
-			// Cache
-			InBuilding = CellPhysics.Overlap(
-				YayaConst.MASK_MAP, Rect, this, OperationMode.TriggerOnly, Const.BUILDING_TAG
-			);
 
 			// Level Damage Check
 			int count = CellPhysics.OverlapAll(

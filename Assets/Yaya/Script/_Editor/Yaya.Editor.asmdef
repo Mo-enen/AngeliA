@@ -2,11 +2,9 @@
     "name": "Yaya.Editor",
     "rootNamespace": "Yaya.Editor",
     "references": [
-        "Moenen.Standard",
         "AngeliaFrameworkEditor",
-        "Yaya",
-        "Moenen.EditorStandard",
-        "AngeliaFrameworkRuntime"
+        "AngeliaFrameworkRuntime",
+        "Yaya"
     ],
     "includePlatforms": [
         "Editor"

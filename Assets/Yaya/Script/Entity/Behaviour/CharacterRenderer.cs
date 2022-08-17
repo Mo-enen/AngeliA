@@ -360,31 +360,31 @@ namespace Yaya {
 			if (
 				Source.CharacterState != eCharacter.State.General ||
 				GeneralAni.Face.Count <= 0 ||
-				!CellRenderer.TryGetCharacterMeta(CurrentCode, out var cMeta) ||
-				!cMeta.Head.IsVailed ||
-				!cMeta.Head.Front
+				!CellRenderer.TryGetMeta(CurrentCode, out var meta) ||
+				!meta.Head.IsVailed ||
+				!meta.Head.Front
 			) return;
 			var movement = Source.Movement;
 			int bounce = Mathf.Abs(CurrentBounce);
 			int offsetY;
 			if (CurrentBounce > 0) {
-				offsetY = (cMeta.Head.Y + cMeta.Head.Height) * bounce / 1000;
+				offsetY = (meta.Head.Y + meta.Head.Height) * bounce / 1000;
 			} else {
-				offsetY = cMeta.Head.Y + cMeta.Head.Height;
+				offsetY = meta.Head.Y + meta.Head.Height;
 				offsetY += offsetY * (1000 - bounce) / 1000;
 			}
 			CellRenderer.Draw_9Slice(
 				Game.GlobalFrame % EyeBlinkRate > 8 ?
 					GeneralAni.Face[FaceIndex.UMod(GeneralAni.Face.Count)] :
 					GeneralAni.FaceBlink,
-				Source.X - cMeta.SpriteWidth / 2 +
+				Source.X - meta.SpriteWidth / 2 +
 					(movement.FacingRight ?
-						cMeta.Head.X :
-						cMeta.SpriteWidth - (cMeta.Head.X + cMeta.Head.Width)
+						meta.Head.X :
+						meta.SpriteWidth - (meta.Head.X + meta.Head.Width)
 					),
 				Source.Y + offsetY,
 				0, 1000, 0,
-				cMeta.Head.Width,
+				meta.Head.Width,
 				Const.ORIGINAL_SIZE
 			);
 		}

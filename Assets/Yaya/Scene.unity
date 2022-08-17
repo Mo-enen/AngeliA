@@ -183,6 +183,7 @@ MonoBehaviour:
     type: 3}
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
 --- !u!114 &29385202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,9 +326,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_DefaultRenderMeta:
-    MaxParallax: 2000
     SkyTintTop: '#14151f, #20394c, #47aadb, #20394c, #14151f'
     SkyTintBottom: '#1f1f23, #324252, #80c8ec, #324252, #1f1f23'
+    PointTextureFilter: 1
+    FrameRate: 120
   m_DefaultViewMeta:
     DefaultHeight: 5120
     MinHeight: 2048
@@ -335,8 +337,7 @@ MonoBehaviour:
     ViewRatio: 2000
   m_GameAssets:
     SkyboxShader: {fileID: 4800000, guid: ce2324baeaef2844ba1c8c3df2091636, type: 3}
-    CellFallbackShader: {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9,
-      type: 3}
+    CellShader: {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9, type: 3}
   m_DefaultPhysicsMeta:
     Gravity: 5
     GravityRise: 3
