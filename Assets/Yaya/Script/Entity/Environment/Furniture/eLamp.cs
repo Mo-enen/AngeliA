@@ -19,18 +19,11 @@ namespace Yaya {
 		protected override int ArtworkCode_Single => CODE;
 
 		// Data
-		private static Game Game = null;
 		private int BrightnessShift = 0;
 		private bool OpenLight = false;
 
 
 		// MSG
-		public override void OnInitialize (Game game) {
-			base.OnInitialize(game);
-			Game = game;
-		}
-
-
 		public override void OnActived () {
 			base.OnActived();
 			BrightnessShift = (X * 17 + Y * 9) / Const.CELL_SIZE;
@@ -47,8 +40,8 @@ namespace Yaya {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			if (OpenLight) {
-				byte brightness = (byte)((64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8));
-				CellRenderer.Draw(LIGHT, Rect.Expand(Const.CELL_SIZE), new(brightness, brightness, brightness, 255));
+				//byte brightness = (byte)((64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8));
+				//CellRenderer.Draw(LIGHT, Rect.Expand(Const.CELL_SIZE), new(brightness, brightness, brightness, 255));
 			}
 		}
 

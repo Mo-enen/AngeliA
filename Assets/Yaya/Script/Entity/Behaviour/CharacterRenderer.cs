@@ -357,6 +357,7 @@ namespace Yaya {
 
 
 		private void DrawFace () {
+			CellRenderer.TryGetMeta(CurrentCode, out var m);
 			if (
 				Source.CharacterState != eCharacter.State.General ||
 				GeneralAni.Face.Count <= 0 ||
