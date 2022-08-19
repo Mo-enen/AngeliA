@@ -3,5 +3,9 @@
     "SkyTintBottom": "#1f1f23, #324252, #80c8ec, #324252, #1f1f23",
     "PointTextureFilter": true,
     "FrameRate": 120,
-    "RendererCapacity": 4096
+    "RendererCapacity": [
+        4096,
+        64,
+        64
+    ]
 }

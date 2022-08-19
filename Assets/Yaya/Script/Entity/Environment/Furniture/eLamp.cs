@@ -40,8 +40,13 @@ namespace Yaya {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			if (OpenLight) {
-				//byte brightness = (byte)((64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8));
-				//CellRenderer.Draw(LIGHT, Rect.Expand(Const.CELL_SIZE), new(brightness, brightness, brightness, 255));
+				byte brightness = (byte)((64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8));
+				CellRenderer.Draw(
+					LIGHT,
+					Rect.Expand(Const.CELL_SIZE),
+					new Color32(brightness, brightness, brightness, 255),
+					YayaConst.DRAW_ADD
+				);
 			}
 		}
 
