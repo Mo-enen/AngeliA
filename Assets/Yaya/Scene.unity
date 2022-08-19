@@ -330,7 +330,6 @@ MonoBehaviour:
     SkyTintBottom: '#1f1f23, #324252, #80c8ec, #324252, #1f1f23'
     PointTextureFilter: 1
     FrameRate: 120
-    RendererCapacity: 001000004000000040000000
   m_DefaultViewMeta:
     DefaultHeight: 5120
     MinHeight: 2048
@@ -342,6 +341,7 @@ MonoBehaviour:
     - {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9, type: 3}
     - {fileID: 4800000, guid: b9fc8182fb006f74fa0719aaa99ba1f0, type: 3}
     - {fileID: 4800000, guid: 224adbf6b4903284c8203f851a24833c, type: 3}
+    RendererCapacity: 001000004000000040000000
   m_DefaultPhysicsMeta:
     Gravity: 5
     GravityRise: 3
