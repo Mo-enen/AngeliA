@@ -18,9 +18,9 @@ namespace Yaya {
 
 
 		// Render
-		public const int DRAW_CELL = 0;
-		public const int DRAW_ADD = 1;
-		public const int DRAW_MULT = 2;
+		public const int SHADER_CELL = 0;
+		public const int SHADER_ADD = 1;
+		public const int SHADER_MULT = 2;
 
 		// Physics
 		public const int PHYSICS_LAYER_COUNT = 5;

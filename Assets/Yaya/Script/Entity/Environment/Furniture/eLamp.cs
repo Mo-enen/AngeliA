@@ -39,13 +39,13 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (OpenLight) {
+			if (OpenLight && CellStep.CurrentStep is not sOpening && CellStep.CurrentStep is not sFadeOut) {
 				byte brightness = (byte)((64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8));
 				CellRenderer.Draw(
 					LIGHT,
 					Rect.Expand(Const.CELL_SIZE),
 					new Color32(brightness, brightness, brightness, 255),
-					YayaConst.DRAW_ADD
+					YayaConst.SHADER_ADD
 				);
 			}
 		}

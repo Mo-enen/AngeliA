@@ -194,7 +194,7 @@ namespace Yaya {
 
 			// Damage
 			if (frame < DamagingTime) {
-				ref var cell = ref CellRenderer.Draw_Animation(
+				var cell = CellRenderer.Draw_Animation(
 					GeneralAni.Damage.Code,
 					Source.X, Source.Y,
 					500, 0, 0,
@@ -219,7 +219,7 @@ namespace Yaya {
 
 
 					break;
-				case eCharacter.State.Sleep:
+				case eCharacter.State.Sleep: {
 					CellRenderer.Draw_Animation(
 						GeneralAni.Sleep.Code,
 						Source.X, Source.Y,
@@ -229,8 +229,9 @@ namespace Yaya {
 						GeneralAni.Sleep.LoopStart
 					);
 					break;
-				case eCharacter.State.Passout:
-					ref var cell = ref CellRenderer.Draw_Animation(
+				}
+				case eCharacter.State.Passout: {
+					var cell = CellRenderer.Draw_Animation(
 						GeneralAni.Passout.Code,
 						Source.X, Source.Y,
 						500, 0, 0,
@@ -242,6 +243,7 @@ namespace Yaya {
 					cell.Width = cell.Width * PassoutScale / 1000;
 					cell.Height = cell.Height * PassoutScale / 1000;
 					break;
+				}
 			}
 
 		}
@@ -296,7 +298,7 @@ namespace Yaya {
 			}
 
 			// Draw
-			ref var cell = ref CellRenderer.Draw_Animation(
+			var cell = CellRenderer.Draw_Animation(
 				CurrentAni.Code,
 				Source.X, Source.Y + offsetY, 500, pivotY, (int)TargetSwimRotation,
 				movement.FacingRight || movement.IsPounding || movement.IsClimbing ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
@@ -357,8 +359,8 @@ namespace Yaya {
 
 
 		private void DrawFace () {
+			CellRenderer.TryGetMeta(CurrentCode, out var m);
 			if (
-				Source.CharacterState != eCharacter.State.General ||
 				GeneralAni.Face.Count <= 0 ||
 				!CellRenderer.TryGetMeta(CurrentCode, out var meta) ||
 				!meta.Head.IsVailed ||
