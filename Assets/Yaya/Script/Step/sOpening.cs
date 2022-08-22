@@ -99,14 +99,6 @@ namespace Yaya {
 
 			var pos = new Vector2Int(VIEW_X, VIEW_Y_END);
 
-			// Find Check Point
-
-
-
-			// Spawn on Check Point
-
-
-
 			// Find Best Bed
 			eBed finalBed = null;
 			int finalDistance = int.MaxValue;

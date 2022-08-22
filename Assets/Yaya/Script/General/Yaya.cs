@@ -155,15 +155,5 @@ namespace Yaya {
 
 
 
-		#region --- LGC ---
-
-
-
-
-		#endregion
-
-
-
-
 	}
 }

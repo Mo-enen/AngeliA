@@ -330,6 +330,9 @@ MonoBehaviour:
     SkyTintBottom: '#1f1f23, #324252, #80c8ec, #324252, #1f1f23'
     PointTextureFilter: 1
     FrameRate: 120
+    SquadCount: 1
+    SquadTransitionDuration: 24
+    SquadParallax: 1500
   m_DefaultViewMeta:
     DefaultHeight: 5120
     MinHeight: 2048

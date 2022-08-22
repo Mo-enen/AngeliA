@@ -67,7 +67,7 @@ namespace Yaya {
 			PrevX = X;
 			PrevY = Y;
 			InSand = false;
-			InWater = false;
+			InWater = false;  																																			
 		}
 
 
