@@ -8,6 +8,7 @@ namespace Yaya {
 	[MapEditorGroup("Vegetation")]
 	[EntityCapacity(256)]
 	[EntityBounds(-Const.CELL_SIZE, -Const.CELL_SIZE, Const.CELL_SIZE * 3, Const.CELL_SIZE * 3)]
+	[DrawBehind]
 	public abstract class eTree : Entity {
 
 

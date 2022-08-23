@@ -330,9 +330,20 @@ MonoBehaviour:
     SkyTintBottom: '#1f1f23, #324252, #80c8ec, #324252, #1f1f23'
     PointTextureFilter: 1
     FrameRate: 120
-    SquadCount: 1
     SquadTransitionDuration: 24
-    SquadParallax: 1500
+    SquadMetas:
+    - CameraZ: 0
+      Tint:
+        serializedVersion: 2
+        rgba: 4294967295
+    - CameraZ: 1
+      Tint:
+        serializedVersion: 2
+        rgba: 1777196767
+    - CameraZ: 2
+      Tint:
+        serializedVersion: 2
+        rgba: 836816077
   m_DefaultViewMeta:
     DefaultHeight: 5120
     MinHeight: 2048
