@@ -9,6 +9,7 @@ namespace Yaya {
 	[EntityCapacity(1)]
 	[ForceUpdate]
 	[EntityBounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
+	[DontDestroyOnSquadTransitionAttribute]
 	public class ePlayer : eCharacter {
 
 
