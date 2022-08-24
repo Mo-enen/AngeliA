@@ -67,7 +67,7 @@ namespace Yaya {
 			PrevX = X;
 			PrevY = Y;
 			InSand = false;
-			InWater = false;  																																			
+			InWater = false;
 		}
 
 
@@ -112,7 +112,7 @@ namespace Yaya {
 			}
 
 			// Out Sand
-			if (prevInSand && !InSand) {
+			if (prevInSand && !InSand && VelocityY > 0) {
 				VelocityY = Mathf.Max(VelocityY, PhysicsMeta.QuicksandJumpOutSpeed);
 			}
 

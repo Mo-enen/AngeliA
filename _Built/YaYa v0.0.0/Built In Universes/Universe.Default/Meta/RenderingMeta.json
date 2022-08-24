@@ -4,33 +4,6 @@
     "PointTextureFilter": true,
     "FrameRate": 120,
     "SquadTransitionDuration": 24,
-    "SquadMetas": [
-        {
-            "CameraZ": 0,
-            "Tint": {
-                "r": 255,
-                "g": 255,
-                "b": 255,
-                "a": 255
-            }
-        },
-        {
-            "CameraZ": 1,
-            "Tint": {
-                "r": 223,
-                "g": 222,
-                "b": 237,
-                "a": 105
-            }
-        },
-        {
-            "CameraZ": 2,
-            "Tint": {
-                "r": 205,
-                "g": 204,
-                "b": 224,
-                "a": 49
-            }
-        }
-    ]
+    "SquadBehindParallax": 1800,
+    "SquadBehindAlpha": 128
 }
