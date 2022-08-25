@@ -5,11 +5,65 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+
+
+	public class eTreeMaple : eTreeLeaf {
+		protected override string LeafCode => "Leaf Maple";
+	}
+	public class eTreePine : eTreeLeaf {
+		protected override string LeafCode => "Leaf Pine";
+	}
+	public class eTreePoplar : eTreeLeaf {
+		protected override string LeafCode => "Leaf Poplar";
+	}
+	public class eTreePalm : eTreeLeaf {
+
+
+		// Api
+		protected override string LeafCode => "Leaf Palm";
+
+
+		// MSG
+		public override void FillPhysics () {
+			CellPhysics.FillBlock(YayaConst.LAYER_ENVIRONMENT, Rect, true, Const.ONEWAY_UP_TAG);
+		}
+
+
+		public override void FrameUpdate () {
+			CellRenderer.Draw(LeafArtworkCode, Rect.Shift(0, GetLeafShiftY(-24)));
+		}
+
+
+	}
+	public class eTreeWillow : eTreeLeaf {
+
+
+		// Api
+		protected override string LeafCode => "Leaf Willow";
+
+		// Data
+		public override void FillPhysics () {
+			CellPhysics.FillBlock(
+				YayaConst.LAYER_ENVIRONMENT,
+				Rect.Shrink(0, 0, 0, Height / 2),
+				true, YayaConst.CLIMB_TAG
+			);
+		}
+
+
+		public override void FrameUpdate () {
+			CellRenderer.Draw(LeafArtworkCode, Rect.Shift(GetLeafShiftY(0), 0));
+		}
+
+
+	}
+
+
 	[MapEditorGroup("Vegetation")]
 	[EntityCapacity(256)]
 	[EntityBounds(-Const.CELL_SIZE, -Const.CELL_SIZE, Const.CELL_SIZE * 3, Const.CELL_SIZE * 3)]
 	[DrawBehind]
-	public abstract class eTree : Entity {
+	public abstract class eTreeLeaf : Entity {
 
 
 
@@ -22,17 +76,10 @@ namespace Yaya {
 		private const byte LEAF_HIDE_ALPHA = 32;
 
 		// Virtual
-		protected virtual string TrunkCode => "Trunk";
 		protected virtual string LeafCode => "Leaf";
 		protected virtual int LeafCount => 3;
 		protected virtual int LeafExpand => Const.CELL_SIZE / 3;
-		protected Direction3 Direction { get; private set; } = Direction3.None;
-		protected int TrunkArtworkCode { get; private set; } = 0;
 		protected int LeafArtworkCode { get; private set; } = 0;
-		protected bool HasTrunkOnLeft { get; private set; } = false;
-		protected bool HasTrunkOnRight { get; private set; } = false;
-		protected bool HasTrunkOnBottom { get; private set; } = false;
-		protected bool HasTrunkOnTop { get; private set; } = false;
 
 		// Data
 		private Vector2Int[] LeafOffsets = null;
@@ -59,16 +106,6 @@ namespace Yaya {
 			base.OnActived();
 			Width = Const.CELL_SIZE;
 			Height = Const.CELL_SIZE;
-			Direction = Direction3.None;
-			HasTrunkOnLeft = false;
-			HasTrunkOnRight = false;
-			HasTrunkOnBottom = false;
-			HasTrunkOnTop = false;
-
-			// Trunk
-			TrunkArtworkCode = CellRenderer.TryGetSpriteFromGroup(
-				TrunkCode.AngeHash(), (X * 3 + Y * 11) / Const.CELL_SIZE, out var tSprite
-			) ? tSprite.GlobalID : 0;
 
 			// Leaf
 			LeafArtworkCode = CellRenderer.TryGetSpriteFromGroup(
@@ -88,42 +125,19 @@ namespace Yaya {
 		}
 
 
-		public override void FillPhysics () {
-			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this);
-		}
-
-
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
-			if (Direction == Direction3.None) Direction = GetDirection();
 			CharacterNearby = CellPhysics.HasEntity<eCharacter>(Rect.Expand(Const.CELL_SIZE), YayaConst.MASK_CHARACTER, null);
 		}
 
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawTrunk();
-			DrawLeaf();
-		}
-
-
-		#endregion
-
-
-
-
-		#region --- API ---
-
-
-		protected virtual void DrawLeaf () {
 			// Leaf
 			LeafTint.a = (byte)Mathf.Lerp(LeafTint.a, CharacterNearby ? LEAF_HIDE_ALPHA : 255, 0.1f);
-			if (Direction != Direction3.Vertical || !HasTrunkOnTop) {
-				for (int i = 0; i < LeafOffsets.Length; i++) {
-					var offset = LeafOffsets[i];
-					DrawLeaf(offset, 12 * i, LeafExpand, offset.x % 2 == 0);
-				}
+			for (int i = 0; i < LeafOffsets.Length; i++) {
+				var offset = LeafOffsets[i];
+				DrawLeaf(offset, 12 * i, LeafExpand, offset.x % 2 == 0);
 			}
 			// Func
 			void DrawLeaf (Vector2Int offset, int frameOffset, int expand, bool flipX = false) {
@@ -137,41 +151,12 @@ namespace Yaya {
 		}
 
 
-		protected virtual void DrawTrunk () {
-			bool vertical = Direction == Direction3.Vertical;
-			CellRenderer.Draw(
-				TrunkArtworkCode,
-				X, vertical ? Y : Y + Const.CELL_SIZE, 0, 0,
-				vertical ? 0 : 90, Width, Height
-			);
-		}
+		#endregion
 
 
-		protected virtual Direction3 GetDirection () {
-			HasTrunkOnLeft = false;
-			HasTrunkOnRight = false;
-			HasTrunkOnBottom = false;
-			HasTrunkOnTop = false;
-			int h = 0, v = 0;
-			if (HasTrunkOnLeft = CellPhysics.HasEntity<eTree>(
-				new(X - Const.CELL_SIZE / 2, Y + Const.CELL_SIZE / 2, 1, 1),
-				YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
-			)) h++;
-			if (HasTrunkOnRight = CellPhysics.HasEntity<eTree>(
-				new(X + Const.CELL_SIZE + Const.CELL_SIZE / 2, Y + Const.CELL_SIZE / 2, 1, 1),
-				YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
-			)) h++;
-			if (HasTrunkOnBottom = CellPhysics.HasEntity<eTree>(
-				new(X + Const.CELL_SIZE / 2, Y - Const.CELL_SIZE / 2, 1, 1),
-				YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
-			)) v++;
-			if (HasTrunkOnTop = CellPhysics.HasEntity<eTree>(
-				new(X + Const.CELL_SIZE / 2, Y + Const.CELL_SIZE + Const.CELL_SIZE / 2, 1, 1),
-				YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
-			)) v++;
-			if (!HasTrunkOnLeft && !HasTrunkOnRight && !HasTrunkOnBottom && !HasTrunkOnTop) return Direction3.Vertical;
-			return h >= v ? Direction3.Horizontal : Direction3.Vertical;
-		}
+
+
+		#region --- API ---
 
 
 		protected int GetLeafShiftY (int frameOffset = 0, int duration = 60, int amount = 12) {

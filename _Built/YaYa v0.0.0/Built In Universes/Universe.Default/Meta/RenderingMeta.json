@@ -13,12 +13,12 @@
                 "serializedVersion": "3",
                 "time": 0.0,
                 "value": 0.0,
-                "inSlope": 2.0,
-                "outSlope": 2.0,
+                "inSlope": 3.3849172592163088,
+                "outSlope": 3.3849172592163088,
                 "tangentMode": 0,
                 "weightedMode": 0,
                 "inWeight": 0.0,
-                "outWeight": 0.0
+                "outWeight": 0.035856571048498157
             },
             {
                 "serializedVersion": "3",
@@ -28,7 +28,7 @@
                 "outSlope": 0.0,
                 "tangentMode": 0,
                 "weightedMode": 0,
-                "inWeight": 0.0,
+                "inWeight": 0.10998862981796265,
                 "outWeight": 0.0
             }
         ],
