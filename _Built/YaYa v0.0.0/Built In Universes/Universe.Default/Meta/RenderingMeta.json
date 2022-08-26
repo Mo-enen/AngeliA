@@ -3,6 +3,14 @@
     "SkyTintBottom": "#1f1f23, #324252, #80c8ec, #324252, #1f1f23",
     "PointTextureFilter": true,
     "FrameRate": 120,
+    "DefaultLayer": 1,
+    "RendererCapacity": [
+        2048,
+        2048,
+        64,
+        64
+    ],
+    "SquadBehindLayer": 0,
     "SquadBehindAlpha": 64,
     "SquadBehindParallax": 1300,
     "SquadTransitionDuration": 24,

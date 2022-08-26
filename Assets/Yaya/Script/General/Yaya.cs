@@ -47,6 +47,14 @@ namespace Yaya {
 			Initialize_YayaMeta();
 			CellStep.AddToLast(new sOpening());
 			Initialize_Player();
+
+
+
+			FrameInput.AddCustomKey(KeyCode.Alpha1);
+			FrameInput.AddCustomKey(KeyCode.Alpha2);
+
+
+
 		}
 
 
@@ -118,6 +126,16 @@ namespace Yaya {
 		protected override void FrameUpdate () {
 			base.FrameUpdate();
 			Update_Player();
+
+
+			if (FrameInput.CustomKeyDown(KeyCode.Alpha1)) {
+				SetViewZ(ViewZ + 1);
+			}
+			if (FrameInput.CustomKeyDown(KeyCode.Alpha2)) {
+				SetViewZ(ViewZ - 1);
+			}
+
+
 		}
 
 
