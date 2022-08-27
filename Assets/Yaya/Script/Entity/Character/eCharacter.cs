@@ -6,7 +6,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[MapEditorGroup("Character")]
-	public abstract class eCharacter : eRigidbody, IAttackReceiver {
+	public abstract class eCharacter : eYayaRigidbody, IAttackReceiver {
 
 
 

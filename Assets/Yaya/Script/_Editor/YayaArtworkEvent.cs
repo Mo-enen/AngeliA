@@ -72,7 +72,6 @@ namespace Yaya.Editor {
 		private void CreateMetaFilesFromDefault () {
 			var yaya = Object.FindObjectOfType<Yaya>();
 			if (yaya == null) return;
-			yaya.SaveMeta(Util.GetFieldValue(yaya, "m_DefaultPhysicsMeta") as PhysicsMeta);
 			yaya.SaveMeta(Util.GetFieldValue(yaya, "m_DefaultYayaMeta") as YayaMeta);
 		}
 

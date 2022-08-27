@@ -66,7 +66,7 @@ namespace Yaya {
 			int count = CellPhysics.OverlapAll(c_Overlap, CollisionMask, Rect);
 			for (int i = 0; i < count; i++) {
 				var hit = c_Overlap[i];
-				if (hit.Entity is not eRigidbody rig) continue;
+				if (hit.Entity is not eYayaRigidbody rig) continue;
 				if (CheckOverlap(rig.Rect, out int dis)) FixPosition(rig, dis);
 			}
 		}
@@ -98,7 +98,7 @@ namespace Yaya {
 		}
 
 
-		private void FixPosition (eRigidbody target, int distance) {
+		private void FixPosition (eYayaRigidbody target, int distance) {
 			if (DirectionVertical == Direction3.Up) {
 				// Fix Pos
 				target.MakeGrounded(4);

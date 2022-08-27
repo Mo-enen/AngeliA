@@ -325,7 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3362cae42eeb7d40b229963ccd046a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DefaultRenderMeta:
+  m_DefaultMeta:
     SkyTintTop: '#14151f, #20394c, #47aadb, #20394c, #14151f'
     SkyTintBottom: '#1f1f23, #324252, #80c8ec, #324252, #1f1f23'
     PointTextureFilter: 1
@@ -335,32 +335,31 @@ MonoBehaviour:
     SquadBehindLayer: 0
     SquadBehindAlpha: 64
     SquadBehindParallax: 1300
-    SquadTransitionDuration: 24
+    SquadTransitionDuration: 16
     SquadTransitionCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 3.3849173
-        outSlope: 3.3849173
+        inSlope: 3.2190976
+        outSlope: 3.2190976
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0.03585657
+        outWeight: 0.029453613
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: -0
-        outSlope: -0
+        inSlope: 0
+        outSlope: 0
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.10998863
+        inWeight: 0
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  m_DefaultViewMeta:
     DefaultHeight: 5120
     MinHeight: 2048
     MaxHeight: 14336
@@ -372,14 +371,3 @@ MonoBehaviour:
     - {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9, type: 3}
     - {fileID: 4800000, guid: 1655d3a01ad8a234297735e19d9032da, type: 3}
     - {fileID: 4800000, guid: 224adbf6b4903284c8203f851a24833c, type: 3}
-  m_DefaultPhysicsMeta:
-    Gravity: 5
-    GravityRise: 3
-    MaxGravitySpeed: 96
-    WaterSpeedLose: 400
-    QuicksandSinkSpeed: 1
-    QuicksandJumpSpeed: 12
-    QuicksandMaxRunSpeed: 4
-    QuicksandJumpOutSpeed: 48
-  m_DefaultYayaMeta:
-    LevelDamageExpand: 1

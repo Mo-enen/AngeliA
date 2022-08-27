@@ -13,7 +13,7 @@
     "SquadBehindLayer": 0,
     "SquadBehindAlpha": 64,
     "SquadBehindParallax": 1300,
-    "SquadTransitionDuration": 24,
+    "SquadTransitionDuration": 12,
     "SquadTransitionCurve": {
         "serializedVersion": "2",
         "m_Curve": [

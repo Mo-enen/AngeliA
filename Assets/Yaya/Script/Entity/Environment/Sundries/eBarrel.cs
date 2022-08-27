@@ -6,11 +6,11 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityCapacity(32)]
-	public class eBarrel : eRigidbody {
+	public class eBarrel : eYayaRigidbody {
 
 
 		public override int PhysicsLayer => YayaConst.LAYER_ENVIRONMENT;
-		public override bool DestroyOnInsideGround => true;
+		public override bool DestroyWhenInsideGround => true;
 
 		private static readonly int BARREL_CODE = "Barrel".AngeHash();
 

@@ -8,15 +8,8 @@ namespace Yaya {
 	public class YayaWorldSquad : WorldSquad {
 
 
-
-		// Data
-		private readonly YayaMeta YayaMeta = new();
-
-
 		// API
-		public YayaWorldSquad (string mapRoot, YayaMeta yayaMeta) : base(mapRoot) {
-			YayaMeta = yayaMeta;
-		}
+		public YayaWorldSquad (string mapRoot) : base(mapRoot) { }
 
 
 		protected override void DrawBackgroundBlock (int id, int unitX, int unitY) {
@@ -61,7 +54,7 @@ namespace Yaya {
 				// Damage
 				if (tag == YayaConst.DAMAGE_TAG) {
 					CellPhysics.FillBlock(
-						YayaConst.LAYER_DAMAGE, rect.Expand(YayaMeta.LevelDamageExpand), true, 1
+						YayaConst.LAYER_DAMAGE, rect.Expand(1), true, 1
 					);
 				}
 			}

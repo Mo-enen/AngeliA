@@ -59,7 +59,9 @@ namespace Yaya {
 	// Meta
 	[System.Serializable]
 	public class YayaMeta {
-		public int LevelDamageExpand = 1;
+
+
+
 	}
 
 
@@ -75,21 +77,6 @@ namespace Yaya {
 		}
 		public Data[] CPs = null;
 	}
-
-
-
-	[System.Serializable]
-	public class PhysicsMeta {
-		public int Gravity = 5;
-		public int GravityRise = 3;
-		public int MaxGravitySpeed = 64; // 72
-		public int WaterSpeedLose = 400;
-		public int QuicksandSinkSpeed = 1;
-		public int QuicksandJumpSpeed = 12;
-		public int QuicksandMaxRunSpeed = 4;
-		public int QuicksandJumpOutSpeed = 48;
-	}
-
 
 
 }

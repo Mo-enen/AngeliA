@@ -31,7 +31,7 @@ namespace Yaya {
 	}
 
 
-	public abstract class eSpring : eRigidbody {
+	public abstract class eSpring : eYayaRigidbody {
 
 
 		// Const
@@ -106,12 +106,12 @@ namespace Yaya {
 				}
 			} else if (frame > LastBounceFrame + BOUNCE_DELY && RequireBouncePerform) {
 				// Try Perform Bounce
-				var hit = CellPhysics.GetLastTouched<eRigidbody>(
+				var hit = CellPhysics.GetLastTouched<eYayaRigidbody>(
 					YayaConst.MASK_RIGIDBODY,
 					FullRect.Expand(Horizontal ? 1 : 0, Horizontal ? 1 : 0, Horizontal ? 0 : 1, Horizontal ? 0 : 1),
 					this, BounceSide, 16
 				);
-				if (hit != null) PerformBounce(hit.Entity as eRigidbody);
+				if (hit != null) PerformBounce(hit.Entity as eYayaRigidbody);
 			}
 		}
 
@@ -159,7 +159,7 @@ namespace Yaya {
 		}
 
 
-		private void PerformBounce (eRigidbody target) {
+		private void PerformBounce (eYayaRigidbody target) {
 			RequireBouncePerform = false;
 			if (Horizontal) {
 				// Horizontal

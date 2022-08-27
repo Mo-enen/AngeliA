@@ -6,7 +6,7 @@ using AngeliaFramework;
 namespace Yaya {
 	[ExcludeInMapEditor]
 	[EntityCapacity(4)]
-	public abstract class eItem : Entity, IInitialize {
+	public abstract class eItem : Entity {
 
 
 
@@ -17,6 +17,8 @@ namespace Yaya {
 		// Const
 		private const int ITEM_PHYSICS_SIZE = Const.CELL_SIZE / 2;
 		private const int ITEM_RENDER_SIZE = Const.CELL_SIZE * 2 / 3;
+		private const int GRAVITY = 5;
+		private const int MAX_GRAVITY_SPEED = 64;
 
 		// Api
 		public int VelocityY { get; private set; } = 0;
@@ -24,8 +26,6 @@ namespace Yaya {
 
 		// Data
 		private static readonly HitInfo[] c_MakeRoom = new HitInfo[5];
-		private static int Gravity = 5;
-		private static int MaxGravitySpeed = 64;
 		private bool MakingRoom = false;
 
 
@@ -35,14 +35,6 @@ namespace Yaya {
 
 
 		#region --- MSG ---
-
-
-		public static void InitializeWithGame (Game game) {
-			if (game is Yaya yaya) {
-				Gravity = yaya.PhysicsMeta.Gravity;
-				MaxGravitySpeed = yaya.PhysicsMeta.MaxGravitySpeed;
-			}
-		}
 
 
 		public override void OnActived () {
@@ -73,7 +65,7 @@ namespace Yaya {
 					Y = Mathf.Min(rect.y, Y);
 					if (stopY) VelocityY = 0;
 				}
-				VelocityY = Mathf.Clamp(VelocityY - Gravity, -MaxGravitySpeed, 0);
+				VelocityY = Mathf.Clamp(VelocityY - GRAVITY, -MAX_GRAVITY_SPEED, 0);
 			} else {
 				VelocityY = 0;
 			}

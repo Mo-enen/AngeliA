@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Yaya {
 	[System.Serializable]
-	public class Movement : EntityBehaviour<eRigidbody>, ITxtMeta {
+	public class Movement : EntityBehaviour<eYayaRigidbody>, ITxtMeta {
 
 
 
@@ -136,7 +136,7 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void Initialize (eRigidbody source) {
+		public override void Initialize (eYayaRigidbody source) {
 			base.Initialize(source);
 			Source.Width = Width;
 			Source.Height = Height;

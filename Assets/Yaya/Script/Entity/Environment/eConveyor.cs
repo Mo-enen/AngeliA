@@ -58,7 +58,7 @@ namespace Yaya {
 			int count = CellPhysics.OverlapAll(c_Update, YayaConst.MASK_SOLID, rect, this);
 			for (int i = 0; i < count; i++) {
 				var hit = c_Update[i];
-				if (hit.Entity is eRigidbody rig) {
+				if (hit.Entity is eYayaRigidbody rig) {
 					rig.PerformMove(MoveSpeed, 0, true, false);
 					rig.Y = rect.yMax;
 					rig.VelocityY = 0;

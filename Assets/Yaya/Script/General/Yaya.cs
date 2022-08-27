@@ -18,14 +18,12 @@ namespace Yaya {
 
 		// Api
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
-		public PhysicsMeta PhysicsMeta { get; private set; } = new();
-		public YayaMeta YayaMeta { get; private set; } = new();
+		//public YayaMeta YayaMeta { get; private set; } = new();
 		public static Dictionary<Vector2Int, CheckPointMeta.Data> CpPool { get; } = new();
 		public static Dictionary<int, Vector2Int> CpAltarPool { get; } = new();
 
 		// Ser
-		[SerializeField] PhysicsMeta m_DefaultPhysicsMeta = null;
-		[SerializeField] YayaMeta m_DefaultYayaMeta = null;
+		//[SerializeField] YayaMeta m_DefaultYayaMeta = null;
 
 		// Data
 		private ePlayer Player => _Player ??= TryGetEntityInStage<ePlayer>(out var p) ? p : null;
@@ -45,7 +43,7 @@ namespace Yaya {
 			base.Initialize();
 			Initialize_Quit();
 			Initialize_YayaMeta();
-			CellStep.AddToLast(new sOpening());
+			FrameStep.AddToLast(new sOpening());
 			Initialize_Player();
 
 
@@ -98,16 +96,15 @@ namespace Yaya {
 				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 			// Metas
-			try {
-				PhysicsMeta = LoadMeta<PhysicsMeta>() ?? m_DefaultPhysicsMeta;
-				YayaMeta = LoadMeta<YayaMeta>() ?? m_DefaultYayaMeta;
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+			//try {
+			//	YayaMeta = LoadMeta<YayaMeta>() ?? m_DefaultYayaMeta;
+			//} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
 
 		private void Initialize_Player () {
 			try {
-				if (CellStep.CurrentStep is not sOpening) {
+				if (FrameStep.CurrentStep is not sOpening) {
 					// Spawn Player
 					var pos = ViewRect.CenterInt();
 					AddEntity(typeof(ePlayer).AngeHash(), pos.x, pos.y);
@@ -148,8 +145,8 @@ namespace Yaya {
 				GlobalFrame > Player.PassoutFrame + 48 &&
 				FrameInput.KeyDown(GameKey.Action)
 			) {
-				CellStep.AddToLast(new sFadeOut());
-				CellStep.AddToLast(new sOpening());
+				FrameStep.AddToLast(new sFadeOut());
+				FrameStep.AddToLast(new sOpening());
 			}
 		}
 
@@ -162,7 +159,7 @@ namespace Yaya {
 		#region --- PRO ---
 
 
-		protected override WorldSquad CreateWorldSquad () => new YayaWorldSquad(Universe.MapRoot, YayaMeta);
+		protected override WorldSquad CreateWorldSquad () => new YayaWorldSquad(Universe.MapRoot);
 
 
 		protected override bool LanguageSupported (SystemLanguage language) => SupportedLanguages.Contains(language);
