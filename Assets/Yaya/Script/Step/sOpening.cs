@@ -20,17 +20,21 @@ namespace Yaya {
 		// Data
 		private int SkipFrame = int.MaxValue;
 		private int SkipY = 0;
+		private YayaGame Yaya = null;
 
 
 		// MSG
 		public override void OnStart (Game game) {
 			base.OnStart(game);
+			Yaya = game as YayaGame;
 			SetViewPosition(game, VIEW_X, VIEW_Y_START);
 			SkipFrame = int.MaxValue;
+			// Remove Player
 			if (game.TryGetEntityInStage<ePlayer>(out var player)) {
 				player.Active = false;
 				player.Wakeup();
 			}
+			// Draw Black Fade Out
 			CellRenderer.Draw(
 				Const.PIXEL,
 				CellRenderer.CameraRect.Expand(Const.CELL_SIZE),
@@ -72,7 +76,7 @@ namespace Yaya {
 				return StepResult.Continue;
 			} else {
 				// End
-				SpawnPlayer(game);
+				Yaya.SpawnPlayer(VIEW_X, VIEW_Y_END, true);
 				return StepResult.Over;
 			}
 		}
@@ -88,49 +92,13 @@ namespace Yaya {
 				return StepResult.Continue;
 			} else {
 				// End
-				SpawnPlayer(game);
+				Yaya.SpawnPlayer(VIEW_X, VIEW_Y_END, true);
 				return StepResult.Over;
 			}
 		}
 
 
 		// LGC
-		private void SpawnPlayer (Game game) {
-
-			var pos = new Vector2Int(VIEW_X, VIEW_Y_END);
-
-			// Find Best Bed
-			eBed finalBed = null;
-			int finalDistance = int.MaxValue;
-			int count = game.StagedEntities.Length;
-			for (int i = 0; i < count; i++) {
-				var e = game.StagedEntities[i];
-				if (e == null) break;
-				if (e is not eBed bed) continue;
-				if (finalBed == null) {
-					finalBed = bed;
-					finalDistance = Util.SqrtDistance(bed.Rect.position, pos);
-				} else {
-					int dis = Util.SqrtDistance(bed.Rect.position, pos);
-					if (dis < finalDistance) {
-						finalDistance = dis;
-						finalBed = bed;
-					}
-				}
-			}
-
-			// Spawn on Bed
-			if (finalBed != null) {
-				var yaya = game.AddEntity(typeof(ePlayer).AngeHash(), finalBed.X, finalBed.Y) as ePlayer;
-				finalBed.Invoke(yaya);
-				return;
-			}
-
-			// Failback
-			game.AddEntity(typeof(ePlayer).AngeHash(), pos.x, pos.y);
-		}
-
-
 		private void SetViewPosition (Game game, int x, int y) => game.SetViewPositionDely(
 			x - game.ViewRect.width / 2,
 			y - game.ViewRect.height / 2,

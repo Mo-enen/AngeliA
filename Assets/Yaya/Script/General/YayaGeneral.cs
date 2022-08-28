@@ -6,14 +6,6 @@ using AngeliaFramework;
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 
 namespace Yaya {
-
-
-	public interface IAttackReceiver {
-		Health Health { get; }
-		void TakeDamage (int damage);
-	}
-
-
 	public static class YayaConst {
 
 
@@ -58,15 +50,6 @@ namespace Yaya {
 
 	// Meta
 	[System.Serializable]
-	public class YayaMeta {
-
-
-
-	}
-
-
-
-	[System.Serializable]
 	public class CheckPointMeta {
 		[System.Serializable]
 		public struct Data {
@@ -77,6 +60,12 @@ namespace Yaya {
 		}
 		public Data[] CPs = null;
 	}
+
+
+	// Attr
+	[System.AttributeUsage(System.AttributeTargets.Class)]
+	public class FirstSelectedPlayerAttribute : System.Attribute { }
+
 
 
 }

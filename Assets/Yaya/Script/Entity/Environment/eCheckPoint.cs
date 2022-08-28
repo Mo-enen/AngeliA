@@ -7,7 +7,7 @@ using AngeliaFramework;
 namespace Yaya {
 	[EntityCapacity(8)]
 	[EntityBounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
-	public class eCheckPoint : Entity, IInitialize {
+	public class eCheckPoint : Entity {
 
 
 		// Const
@@ -23,7 +23,7 @@ namespace Yaya {
 		public override void OnActived () {
 			base.OnActived();
 			var globalUnitPos = new Vector2Int(X.UDivide(Const.CELL_SIZE), Y.UDivide(Const.CELL_SIZE));
-			if (Yaya.CpPool.TryGetValue(globalUnitPos, out var _cpData) && _cpData.Index >= 0) {
+			if (YayaGame.CpPool.TryGetValue(globalUnitPos, out var _cpData) && _cpData.Index >= 0) {
 				IsAltar = _cpData.IsAltar;
 			} else {
 				IsAltar = false;
@@ -46,7 +46,7 @@ namespace Yaya {
 			if (ArtCode == 0) {
 				int artIndex = 0;
 				var globalUnitPos = new Vector2Int(X.UDivide(Const.CELL_SIZE), Y.UDivide(Const.CELL_SIZE));
-				if (Yaya.CpPool.TryGetValue(globalUnitPos, out var _cpData)) {
+				if (YayaGame.CpPool.TryGetValue(globalUnitPos, out var _cpData)) {
 					artIndex = _cpData.Index;
 				}
 				if (CellRenderer.TryGetSpriteFromGroup(IsAltar ? ARTWORK_ALTAR_CODE : ARTWORK_STATUE_CODE, artIndex, out var sprite, false)) {
@@ -64,7 +64,7 @@ namespace Yaya {
 		}
 
 
-		public static bool TryGetAltarPosition (int index, out Vector2Int unitPos) => Yaya.CpAltarPool.TryGetValue(index, out unitPos);
+		public static bool TryGetAltarPosition (int index, out Vector2Int unitPos) => YayaGame.CpAltarPool.TryGetValue(index, out unitPos);
 
 
 	}

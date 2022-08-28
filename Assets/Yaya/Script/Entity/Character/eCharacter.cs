@@ -43,14 +43,13 @@ namespace Yaya {
 
 		// Behaviour
 		public CharacterMovement Movement { get; private set; }
+		public CharacterRenderer Renderer { get; private set; }
 		public Action Action { get; private set; }
 		public Health Health { get; private set; }
 		public Attackness Attackness { get; private set; }
-		public CharacterRenderer Renderer { get; private set; }
 
 		// Data
 		private static readonly HitInfo[] c_DamageCheck = new HitInfo[16];
-		private int DamageEndFrame = int.MinValue;
 
 
 		#endregion
@@ -99,7 +98,6 @@ namespace Yaya {
 			Attackness.Initialize(this);
 			CharacterState = State.General;
 			PassoutFrame = int.MinValue;
-			DamageEndFrame = int.MinValue;
 		}
 
 
@@ -135,12 +133,17 @@ namespace Yaya {
 			switch (CharacterState) {
 				default:
 				case State.General:
-					if (frame > DamageEndFrame) {
+					if (frame < Health.LastDamageFrame + Health.DamageDurationValue) {
+						// Tacking Damage
+						Movement.AntiKnockback();
+					} else if (Attackness.StopOnAttackValue && frame < Attackness.LastAttackFrame + Attackness.AttackDurationValue) {
+						// Stop when Attacking
+						if (IsGrounded) VelocityX = 0;
+					} else {
+						// Move as Normal
 						Action.Update();
 						Attackness.Update();
 						Movement.Update();
-					} else {
-						Movement.AntiKnockback();
 					}
 					Health.Update();
 					base.PhysicsUpdate();
@@ -179,9 +182,8 @@ namespace Yaya {
 		// Invoke Behaviour
 		public void TakeDamage (int damage) {
 			if (Health.Damage(damage)) {
-				DamageEndFrame = Game.GlobalFrame + Health.DamageFrameValue;
 				VelocityX = Movement.FacingRight ? -Health.KnockBackSpeedValue : Health.KnockBackSpeedValue;
-				Renderer.Damage(Health.DamageFrameValue);
+				Renderer.Damage(Health.DamageDurationValue);
 				if (!Health.EmptyHealth) {
 					Renderer.Blink(Health.InvincibleFrameDuration);
 				}
@@ -198,16 +200,6 @@ namespace Yaya {
 
 		public bool InvokeAction () {
 			bool performed = Action.Invoke();
-
-
-
-			return performed;
-		}
-
-
-		public bool InvokeAttack () {
-			bool performed = Attackness.Attack();
-
 
 
 

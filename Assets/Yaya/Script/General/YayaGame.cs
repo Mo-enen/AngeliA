@@ -5,7 +5,8 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class Yaya : Game {
+	// === Main ===
+	public partial class YayaGame : Game {
 
 
 
@@ -18,16 +19,8 @@ namespace Yaya {
 
 		// Api
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
-		//public YayaMeta YayaMeta { get; private set; } = new();
 		public static Dictionary<Vector2Int, CheckPointMeta.Data> CpPool { get; } = new();
 		public static Dictionary<int, Vector2Int> CpAltarPool { get; } = new();
-
-		// Ser
-		//[SerializeField] YayaMeta m_DefaultYayaMeta = null;
-
-		// Data
-		private ePlayer Player => _Player ??= TryGetEntityInStage<ePlayer>(out var p) ? p : null;
-		private ePlayer _Player = null;
 
 
 		#endregion
@@ -40,12 +33,11 @@ namespace Yaya {
 
 		// Init
 		protected override void Initialize () {
+
 			base.Initialize();
 			Initialize_Quit();
 			Initialize_YayaMeta();
-			FrameStep.AddToLast(new sOpening());
 			Initialize_Player();
-
 
 
 			FrameInput.AddCustomKey(KeyCode.Alpha1);
@@ -95,27 +87,6 @@ namespace Yaya {
 					}
 				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }
-			// Metas
-			//try {
-			//	YayaMeta = LoadMeta<YayaMeta>() ?? m_DefaultYayaMeta;
-			//} catch (System.Exception ex) { Debug.LogException(ex); }
-		}
-
-
-		private void Initialize_Player () {
-			try {
-				if (FrameStep.CurrentStep is not sOpening) {
-					// Spawn Player
-					var pos = ViewRect.CenterInt();
-					AddEntity(typeof(ePlayer).AngeHash(), pos.x, pos.y);
-					// Fix View Position
-					var view = ViewRect;
-					view.x = pos.x - ViewRect.width / 2;
-					view.y = pos.y - ViewRect.height / 2;
-					SetViewPositionDely(view.x, view.y, 1000, int.MaxValue);
-					SetViewRectImmediately(view);
-				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
 
@@ -133,21 +104,6 @@ namespace Yaya {
 			}
 
 
-		}
-
-
-		private void Update_Player () {
-			if (Player == null) return;
-			// Reload Game After Passout
-			if (
-				Player.Active &&
-				Player.CharacterState == eCharacter.State.Passout &&
-				GlobalFrame > Player.PassoutFrame + 48 &&
-				FrameInput.KeyDown(GameKey.Action)
-			) {
-				FrameStep.AddToLast(new sFadeOut());
-				FrameStep.AddToLast(new sOpening());
-			}
 		}
 
 

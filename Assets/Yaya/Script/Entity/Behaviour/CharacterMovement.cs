@@ -118,7 +118,7 @@ namespace Yaya {
 		[SerializeField] BuffBool FlyAvailable = new(false);
 		[SerializeField] BuffInt FlyCount = new(1);
 		[SerializeField] BuffInt FlyCooldown = new(32);
-		[SerializeField] BuffInt FlySpeed = new(96);
+		[SerializeField] BuffInt FlySpeed = new(64);
 		[SerializeField] BuffInt FlyGravityRiseRate = new(800);
 		[SerializeField] BuffInt FlyGravityFallRate = new(200);
 		[SerializeField] BuffInt FlyFallSpeed = new(12);

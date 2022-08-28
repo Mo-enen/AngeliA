@@ -14,24 +14,23 @@ namespace Yaya {
 
 
 		// Api
+		public int HealthPoint { get; private set; } = 1;
+		public int LastDamageFrame { get; private set; } = int.MinValue;
 		public bool FullHealth => HealthPoint >= MaxHP;
 		public bool EmptyHealth => HealthPoint <= 0;
 		public bool Invincible => Game.GlobalFrame < InvincibleStartFrame + InvincibleFrame;
-		public int HealthPoint { get; private set; } = 1;
 		public int InvincibleFrameDuration => InvincibleFrame;
 		public int KnockBackSpeedValue => KnockBackSpeed;
-		public int DamageFrameValue => DamageFrame;
+		public int DamageDurationValue => DamageDuration;
 		public int MaxHealthPoint => MaxHP;
 
 		// Ser
 		[SerializeField] BuffInt MaxHP = new(1);
-		[SerializeField] BuffInt Recover = new(0);
 		[SerializeField] BuffInt InvincibleFrame = new(120);
 		[SerializeField] BuffInt KnockBackSpeed = new(64);
-		[SerializeField] BuffInt DamageFrame = new(24);
+		[SerializeField] BuffInt DamageDuration = new(24);
 
 		// Data
-		private int RecoveringHP = 0;
 		private int InvincibleStartFrame = int.MinValue;
 
 
@@ -46,30 +45,7 @@ namespace Yaya {
 		public override void Initialize (Entity source) {
 			base.Initialize(source);
 			HealthPoint = MaxHP.FinalValue;
-			RecoveringHP = 0;
 			InvincibleStartFrame = int.MinValue;
-		}
-
-
-		public override void Update () {
-			base.Update();
-			Update_Recover();
-		}
-
-
-		private void Update_Recover () {
-			if (HealthPoint < MaxHP) {
-				if (Recover != 0) {
-					RecoveringHP += Recover;
-				}
-				if (RecoveringHP >= 1000) {
-					int heal = RecoveringHP / 1000;
-					RecoveringHP -= heal * 1000;
-					Heal(heal);
-				}
-			} else if (RecoveringHP != 0) {
-				RecoveringHP = 0;
-			}
 		}
 
 
@@ -94,6 +70,7 @@ namespace Yaya {
 			if (HealthPoint <= 0) return false;
 			HealthPoint = (HealthPoint - damage).Clamp(0, MaxHP);
 			if (triggerInvincible) InvincibleStartFrame = Game.GlobalFrame;
+			LastDamageFrame = Game.GlobalFrame;
 			return true;
 		}
 
