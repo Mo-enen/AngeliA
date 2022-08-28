@@ -9,3 +9,4 @@ SwimInFreeStyle = false
 JumpRoll = false
 JumpSecondRoll = true
 JumpCount = 2
+FlyAvailable=true

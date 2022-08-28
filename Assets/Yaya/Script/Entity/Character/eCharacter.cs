@@ -42,7 +42,7 @@ namespace Yaya {
 		public int PassoutFrame { get; private set; } = int.MinValue;
 
 		// Behaviour
-		public Movement Movement { get; private set; }
+		public CharacterMovement Movement { get; private set; }
 		public Action Action { get; private set; }
 		public Health Health { get; private set; }
 		public Attackness Attackness { get; private set; }
@@ -68,7 +68,7 @@ namespace Yaya {
 			if (typeName.StartsWith("e")) typeName = typeName[1..];
 
 			// Movement
-			var movement = game.LoadMeta<Movement>($"{typeName}.Movement");
+			var movement = game.LoadMeta<CharacterMovement>($"{typeName}.Movement");
 			Movement = movement ?? new();
 
 			// Renderer

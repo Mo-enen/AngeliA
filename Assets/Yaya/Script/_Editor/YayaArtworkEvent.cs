@@ -72,7 +72,7 @@ namespace Yaya.Editor {
 		private void CreateMetaFilesFromDefault () {
 			var yaya = Object.FindObjectOfType<Yaya>();
 			if (yaya == null) return;
-			yaya.SaveMeta(Util.GetFieldValue(yaya, "m_DefaultYayaMeta") as YayaMeta);
+			yaya.SaveMeta(Util.GetFieldValue(yaya, "m_DefaultMeta") as YayaMeta);
 		}
 
 

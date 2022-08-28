@@ -29,6 +29,7 @@ namespace Yaya {
 			public AniCode Pound { get; init; } = null;
 			public AniCode Climb { get; init; } = null;
 			public AniCode Roll { get; init; } = null;
+			public AniCode Fly { get; init; } = null;
 		}
 
 
@@ -172,6 +173,7 @@ namespace Yaya {
 				SwimDash = new($"_a{name}.SwimDash", $"_a{name}.SwimMove", $"_a{name}.Swim", $"_a{name}.Dash"),
 				Pound = new($"_a{name}.Pound", $"_a{name}.Idle"),
 				Climb = new($"_a{name}.Climb", $"_a{name}.Walk"),
+				Fly = new($"_a{name}.Fly", $"_a{name}.Run"),
 			};
 			GeneralAni = new() {
 				Sleep = new($"_a{name}.Sleep", $"_a{name}.Idle", $"_a{name}"),

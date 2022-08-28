@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Yaya {
 	[System.Serializable]
-	public class Movement : EntityBehaviour<eYayaRigidbody>, ITxtMeta {
+	public class CharacterMovement : EntityBehaviour<eYayaRigidbody>, ITxtMeta {
 
 
 
@@ -22,15 +22,10 @@ namespace Yaya {
 		private const int RUN_BREAK_GAP = 6;
 
 		// Api
+		public Vector2Int LastMoveDirection { get; private set; } = default;
 		public int IntendedX { get; private set; } = 0;
 		public int IntendedY { get; private set; } = 0;
-		public bool IsDashing { get; private set; } = false;
-		public bool IsSquating { get; private set; } = false;
-		public bool IsPounding { get; private set; } = false;
-		public bool IsClimbing { get; private set; } = false;
 		public int CurrentJumpCount { get; private set; } = 0;
-		public bool FacingRight { get; private set; } = true;
-		public bool FacingFront { get; private set; } = true;
 		public int RunningAccumulateFrame { get; private set; } = 0;
 		public int LastGroundFrame { get; private set; } = int.MinValue;
 		public int LastGroundingFrame { get; private set; } = int.MinValue;
@@ -40,7 +35,16 @@ namespace Yaya {
 		public int LastSquatFrame { get; private set; } = int.MinValue;
 		public int LastSquatingFrame { get; private set; } = int.MinValue;
 		public int LastPoundingFrame { get; private set; } = int.MinValue;
-		public Vector2Int LastMoveDirection { get; private set; } = default;
+		public int LastFlyFrame { get; private set; } = int.MinValue;
+		public bool IsDashing { get; private set; } = false;
+		public bool IsSquating { get; private set; } = false;
+		public bool IsPounding { get; private set; } = false;
+		public bool IsClimbing { get; private set; } = false;
+		public bool IsFlying { get; private set; } = false;
+		public bool FacingRight { get; private set; } = true;
+		public int FinalVelocityX => Source.FinalVelocityX;
+		public int FinalVelocityY => Source.FinalVelocityY;
+		public bool FacingFront => !IsClimbing;
 		public bool IsInsideGround => Source.InsideGround;
 		public bool IsGrounded => Source.IsGrounded;
 		public bool InWater => Source.InWater;
@@ -48,8 +52,6 @@ namespace Yaya {
 		public bool IsMoving => IntendedX != 0;
 		public bool IsRunning => IsMoving && RunningAccumulateFrame >= RunTrigger;
 		public bool IsRolling => !InWater && !IsPounding && ((JumpRoll && CurrentJumpCount > 0) || (JumpSecondRoll && CurrentJumpCount > 1));
-		public int FinalVelocityX => Source.FinalVelocityX;
-		public int FinalVelocityY => Source.FinalVelocityY;
 		public bool UseFreeStyleSwim => SwimInFreeStyle;
 
 		// Short
@@ -112,6 +114,14 @@ namespace Yaya {
 		[SerializeField] BuffBool JumpWhenClimbAvailable = new(true);
 		[SerializeField] BuffInt ClimbSpeedX = new(12);
 		[SerializeField] BuffInt ClimbSpeedY = new(18);
+
+		[SerializeField] BuffBool FlyAvailable = new(false);
+		[SerializeField] BuffInt FlyCount = new(1);
+		[SerializeField] BuffInt FlyCooldown = new(32);
+		[SerializeField] BuffInt FlySpeed = new(96);
+		[SerializeField] BuffInt FlyGravityRiseRate = new(800);
+		[SerializeField] BuffInt FlyGravityFallRate = new(200);
+		[SerializeField] BuffInt FlyFallSpeed = new(12);
 
 		// Data
 		private readonly HitInfo[] c_HitboxCollisionFix = new HitInfo[8];
@@ -223,9 +233,16 @@ namespace Yaya {
 				(IsPounding ? IntendedY < 0 : IntendedPound);
 			if (IsPounding) LastPoundingFrame = CurrentFrame;
 
+			// Fly
+			if (
+				!HoldingJump || IsGrounded || InWater || IsClimbing ||
+				IsDashing || IsInsideGround || IsPounding
+			) {
+				IsFlying = false;
+			}
+
 			// Facing
 			FacingRight = LastIntendedX > 0;
-			FacingFront = !IsClimbing;
 
 			// Physics
 			int prevHitboxHeight = Hitbox.height;
@@ -239,32 +256,48 @@ namespace Yaya {
 
 
 		private void Update_Jump () {
+
 			// Reset Count on Grounded
 			if (CurrentFrame > LastJumpFrame + JUMP_GAP && (IsGrounded || InWater || IsClimbing) && !IntendedJump) {
 				CurrentJumpCount = 0;
 			}
+
 			// Perform Jump
-			if (IntendedJump && CurrentJumpCount < JumpCount && !IsSquating && (!IsClimbing || JumpWhenClimbAvailable)) {
-				if (InWater && SwimInFreeStyle) {
-					// Free Dash In Water
-					LastDashFrame = CurrentFrame;
-					IsDashing = true;
-					Source.VelocityX = 0;
-					Source.VelocityY = 0;
-				} else {
+			if (IntendedJump && !IsSquating && (!IsClimbing || JumpWhenClimbAvailable)) {
+				if (CurrentJumpCount < JumpCount) {
 					// Jump
-					CurrentJumpCount++;
-					Source.VelocityY = Mathf.Max(JumpSpeed, Source.VelocityY);
+					if (InWater && SwimInFreeStyle) {
+						// Free Dash in Water
+						LastDashFrame = CurrentFrame;
+						IsDashing = true;
+						Source.VelocityX = 0;
+						Source.VelocityY = 0;
+					} else {
+						// Perform Jump
+						CurrentJumpCount++;
+						Source.VelocityY = Mathf.Max(JumpSpeed, Source.VelocityY);
+						LastDashFrame = int.MinValue;
+						IsDashing = false;
+						LastJumpFrame = CurrentFrame;
+					}
+					IsClimbing = false;
+				} else if (FlyAvailable && CurrentJumpCount < JumpCount + FlyCount && CurrentFrame > LastFlyFrame + FlyCooldown) {
+					// Fly
 					LastDashFrame = int.MinValue;
+					IsFlying = true;
+					IsClimbing = false;
 					IsDashing = false;
-					LastJumpFrame = CurrentFrame;
+					CurrentJumpCount++;
+					Source.VelocityY = Mathf.Max(FlySpeed, Source.VelocityY);
+					LastFlyFrame = CurrentFrame;
 				}
-				IsClimbing = false;
 			}
+
 			// Fall off Edge
 			if (CurrentJumpCount == 0 && !IsGrounded && !InWater && !IsClimbing && CurrentFrame > LastGroundingFrame + JUMP_TOLERANCE) {
 				CurrentJumpCount++;
 			}
+
 			// Jump Release
 			if (PrevHoldingJump && !HoldingJump) {
 				// Lose Speed if Raising
@@ -335,11 +368,14 @@ namespace Yaya {
 
 
 		private void Update_VelocityY () {
-			if (IsClimbing) {
+			if (IsFlying) {
+				// Fly
+				Source.GravityScale = Source.VelocityY > 0 ? FlyGravityRiseRate : FlyGravityFallRate;
+				Source.VelocityY = Mathf.Max(Source.VelocityY, -FlyFallSpeed);
+			} else if (IsClimbing) {
 				// Climb
 				Source.VelocityY = (IntendedY <= 0 || ClimbCheck(true) ? IntendedY : 0) * ClimbSpeedY;
 				Source.GravityScale = 0;
-
 			} else if (InWater && SwimInFreeStyle) {
 				if (IsDashing) {
 					// Free Water Dash
