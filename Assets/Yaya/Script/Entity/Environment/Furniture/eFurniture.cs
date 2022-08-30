@@ -5,8 +5,8 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[MapEditorGroup("Furniture")]
-	[EntityCapacity(32)]
+	[EntityAttribute.MapEditorGroup("Furniture")]
+	[EntityAttribute.EntityCapacity(32)]
 	public abstract class eFurniture : Entity {
 
 

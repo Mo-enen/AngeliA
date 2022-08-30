@@ -4,9 +4,9 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
-	[MapEditorGroup("Vegetation")]
-	[EntityCapacity(128)]
-	[DrawBehind]
+	[EntityAttribute.MapEditorGroup("Vegetation")]
+	[EntityAttribute.EntityCapacity(128)]
+	[EntityAttribute.DrawBehind]
 	public abstract class ePlant : Entity {
 
 

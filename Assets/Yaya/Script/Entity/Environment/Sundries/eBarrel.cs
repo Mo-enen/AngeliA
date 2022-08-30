@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[EntityCapacity(32)]
+	[EntityAttribute.EntityCapacity(32)]
 	public class eBarrel : eYayaRigidbody {
 
 

@@ -5,15 +5,21 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public abstract class eBullet : Entity {
+	[EntityAttribute.EntityCapacity(128)]
+	[EntityAttribute.ExcludeInMapEditor]
+	[EntityAttribute.ForceUpdate]
+	[EntityAttribute.DontDespawnWhenOutOfRange]
+	public abstract class eBullet : Entity, IInitialize {
 
 
 		// Api
-		protected abstract string ArtworkName { get; }
 		protected virtual int CollisionMask => YayaConst.MASK_SOLID;
-		protected int VelocityX { get; set; } = 0;
-		protected int VelocityY { get; set; } = 0;
+		protected virtual bool DestroyOnCollide => true;
+		protected virtual bool DestroyOnHitReveiver => true;
+		public int VelocityX { get; protected set; } = 0;
+		public int VelocityY { get; protected set; } = 0;
 		protected int LocalFrame => Game.GlobalFrame - SpawnFrame;
+		public Attackness Attackness { get; set; } = null;
 
 		// Data
 		private int ArtworkCode = 0;
@@ -23,7 +29,11 @@ namespace Yaya {
 		// MSG
 		public override void OnInitialize (Game game) {
 			base.OnInitialize(game);
-			ArtworkCode = ArtworkName.AngeHash();
+			string typeName = GetType().Name;
+			if (!string.IsNullOrEmpty(typeName)) {
+				if (typeName[0] == 'e') typeName = typeName[1..];
+				ArtworkCode = $"_a{typeName}".AngeHash();
+			}
 		}
 
 
@@ -37,12 +47,20 @@ namespace Yaya {
 			base.BeforePhysicsUpdate();
 			X += VelocityX;
 			Y += VelocityY;
+			// Collide Check
+			if (DestroyOnCollide) {
+
+
+			}
+			// Hit Receiver Check
+
+
 		}
 
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.Draw(ArtworkCode, Rect);
+			CellRenderer.Draw_Animation(ArtworkCode, Rect, LocalFrame);
 		}
 
 

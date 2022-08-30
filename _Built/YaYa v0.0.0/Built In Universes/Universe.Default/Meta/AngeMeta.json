@@ -6,7 +6,7 @@
     "DefaultLayer": 1,
     "RendererCapacity": [
         2048,
-        2048,
+        4096,
         64,
         64
     ],

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
 using System.Reflection;
+using UnityEngine.Networking.Types;
 
 namespace Yaya {
 	// === Player ===
@@ -12,6 +13,9 @@ namespace Yaya {
 
 		#region --- VAR ---
 
+
+		// Const
+		private const int ATTACK_REQUIRE_GAP = 12;
 
 		// Api
 		public eCharacter CurrentPlayer { get; private set; } = null;
@@ -25,6 +29,7 @@ namespace Yaya {
 		private int LastGroundedY = 0;
 		private int AimX = 0;
 		private int AimY = 0;
+		private int AttackRequiringFrame = int.MinValue;
 
 
 		#endregion
@@ -69,14 +74,36 @@ namespace Yaya {
 
 			// Player Update
 			if (CurrentPlayer != null) {
+				var movement = CurrentPlayer.Movement;
+				var attackness = CurrentPlayer.Attackness;
 				switch (CurrentPlayer.CharacterState) {
 					case eCharacter.State.General:
 						// General
+
 						Update_Move();
 						Update_JumpDashPound();
+
 						if (FrameInput.KeyDown(GameKey.Action)) {
-							if (!CurrentPlayer.InvokeAction()) CurrentPlayer.Attackness.Attack();
+							bool performed = CurrentPlayer.InvokeAction();
+							if (performed) break;
+							if (
+								attackness.IsReady &&
+								(attackness.AttackInAir || !movement.InAir) &&
+								(attackness.AttackInWater || !movement.InWater)
+							) {
+								attackness.Attack();
+							} else {
+								AttackRequiringFrame = GlobalFrame;
+							}
+						} else if (
+							attackness.IsReady &&
+							GlobalFrame < AttackRequiringFrame + ATTACK_REQUIRE_GAP
+						) {
+							// Perform Required Attack
+							AttackRequiringFrame = int.MinValue;
+							attackness.Attack();
 						}
+
 						break;
 					case eCharacter.State.Sleep:
 						// Sleep
@@ -101,6 +128,7 @@ namespace Yaya {
 			if (FrameInput.KeyPressing(GameKey.Left)) {
 				if (LeftDownFrame < 0) {
 					LeftDownFrame = frame;
+					AttackRequiringFrame = int.MinValue;
 				}
 				if (LeftDownFrame > RightDownFrame) {
 					x = Direction3.Negative;
@@ -113,6 +141,7 @@ namespace Yaya {
 			if (FrameInput.KeyPressing(GameKey.Right)) {
 				if (RightDownFrame < 0) {
 					RightDownFrame = frame;
+					AttackRequiringFrame = int.MinValue;
 				}
 				if (RightDownFrame > LeftDownFrame) {
 					x = Direction3.Positive;
@@ -125,6 +154,7 @@ namespace Yaya {
 			if (FrameInput.KeyPressing(GameKey.Down)) {
 				if (DownDownFrame < 0) {
 					DownDownFrame = frame;
+					AttackRequiringFrame = int.MinValue;
 				}
 				if (DownDownFrame > UpDownFrame) {
 					y = Direction3.Negative;
@@ -137,6 +167,7 @@ namespace Yaya {
 			if (FrameInput.KeyPressing(GameKey.Up)) {
 				if (UpDownFrame < 0) {
 					UpDownFrame = frame;
+					AttackRequiringFrame = int.MinValue;
 				}
 				if (UpDownFrame > DownDownFrame) {
 					y = Direction3.Positive;
@@ -151,15 +182,21 @@ namespace Yaya {
 
 
 		private void Update_JumpDashPound () {
-			CurrentPlayer.Movement.HoldJump(FrameInput.KeyPressing(GameKey.Jump));
+			var movement = CurrentPlayer.Movement;
+			var attackness = CurrentPlayer.Attackness;
+			movement.HoldJump(FrameInput.KeyPressing(GameKey.Jump));
 			if (FrameInput.KeyDown(GameKey.Jump)) {
-				CurrentPlayer.Movement.Jump();
+				movement.Jump();
 				if (FrameInput.KeyPressing(GameKey.Down)) {
-					CurrentPlayer.Movement.Dash();
+					movement.Dash();
+				}
+				AttackRequiringFrame = int.MinValue;
+				if (attackness.CancelAttackOnJump) {
+					attackness.CancelAttack();
 				}
 			}
 			if (FrameInput.KeyDown(GameKey.Down)) {
-				CurrentPlayer.Movement.Pound();
+				movement.Pound();
 			}
 		}
 
@@ -168,7 +205,7 @@ namespace Yaya {
 			const int LINGER_RATE = 32;
 			const int LERP_RATE = 96;
 			var viewRect = ViewRect;
-			if (!CurrentPlayer.IsInAir) LastGroundedY = CurrentPlayer.Y;
+			if (!CurrentPlayer.InAir) LastGroundedY = CurrentPlayer.Y;
 			int linger = viewRect.width * LINGER_RATE / 1000;
 			int centerX = viewRect.x + viewRect.width / 2;
 			if (CurrentPlayer.X < centerX - linger) {
@@ -176,7 +213,7 @@ namespace Yaya {
 			} else if (CurrentPlayer.X > centerX + linger) {
 				AimX = CurrentPlayer.X - linger - viewRect.width / 2;
 			}
-			AimY = !CurrentPlayer.IsInAir || CurrentPlayer.Y < LastGroundedY ? GetAimY(CurrentPlayer.Y, viewRect.height) : AimY;
+			AimY = !CurrentPlayer.InAir || CurrentPlayer.Y < LastGroundedY ? GetAimY(CurrentPlayer.Y, viewRect.height) : AimY;
 			SetViewPositionDely(AimX, AimY, LERP_RATE, Const.VIEW_PRIORITY_PLAYER);
 			// Clamp
 			if (!viewRect.Contains(CurrentPlayer.X, CurrentPlayer.Y)) {

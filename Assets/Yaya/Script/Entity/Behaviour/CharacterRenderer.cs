@@ -118,6 +118,7 @@ namespace Yaya {
 		public GroupCode Face { get; private set; } = null;
 		public AniCode FaceBlink { get; private set; } = null;
 		public AniCode[] Attacks { get; private set; } = null;
+		public AniCode[] Attacks_Move { get; private set; } = null;
 		public AniCode Idle { get; private set; } = null;
 		public AniCode Walk { get; private set; } = null;
 		public AniCode Run { get; private set; } = null;
@@ -184,6 +185,8 @@ namespace Yaya {
 			Attacks = AniCode.GetAnimationArray($"_a{name}.Attack");
 			foreach (var att in Attacks) att.LoopStart = -1;
 
+			Attacks_Move = AniCode.GetAnimationArray($"_a{name}.AttackMove");
+			foreach (var att in Attacks) att.LoopStart = -1;
 
 		}
 
@@ -263,7 +266,11 @@ namespace Yaya {
 			// Get Ani
 			if (attackness.IsAttacking) {
 				// Attack
-				ani = Attacks[attackness.ActionIndex.Clamp(0, Attacks.Length - 1)];
+				if (movement.IsMoving && Attacks_Move.Length > 0) {
+					ani = Attacks_Move[attackness.ActionIndex.Clamp(0, Attacks_Move.Length - 1)];
+				} else if (Attacks.Length > 0) {
+					ani = Attacks[attackness.ActionIndex.Clamp(0, Attacks.Length - 1)];
+				}
 			} else {
 				// Movement
 				if (movement.IsFlying) {
@@ -280,7 +287,7 @@ namespace Yaya {
 					ani = movement.IsMoving ? SquatMove : SquatIdle;
 				} else if (movement.InWater && !movement.IsGrounded) {
 					ani = movement.IsMoving ? SwimMove : SwimIdle;
-				} else if (movement.IsInAir) {
+				} else if (movement.InAir) {
 					ani = movement.FinalVelocityY > 0 ? JumpU : JumpD;
 				} else if (movement.IsRunning) {
 					ani = Run;

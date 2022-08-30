@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Yaya {
 	[System.Serializable]
-	public class CharacterMovement : EntityBehaviour<eYayaRigidbody>, ITxtMeta {
+	public partial class CharacterMovement : EntityBehaviour<eYayaRigidbody> {
 
 
 
@@ -48,80 +48,17 @@ namespace Yaya {
 		public bool IsInsideGround => Source.InsideGround;
 		public bool IsGrounded => Source.IsGrounded;
 		public bool InWater => Source.InWater;
-		public bool IsInAir => Source.IsInAir;
+		public bool InAir => Source.InAir;
 		public bool IsMoving => IntendedX != 0;
 		public bool IsRunning => IsMoving && RunningAccumulateFrame >= RunTrigger;
-		public bool IsRolling => !InWater && !IsPounding && ((JumpRoll && CurrentJumpCount > 0) || (JumpSecondRoll && CurrentJumpCount > 1));
+		public bool IsRolling => !InWater && !IsPounding && !IsFlying && ((JumpRoll && CurrentJumpCount > 0) || (JumpSecondRoll && CurrentJumpCount > 1));
 		public bool UseFreeStyleSwim => SwimInFreeStyle;
 
 		// Short
 		private int CurrentDashDuration => InWater && SwimInFreeStyle ? FreeSwimDashDuration : DashDuration;
 		private int CurrentDashCooldown => InWater && SwimInFreeStyle ? FreeSwimDashCooldown : DashCooldown;
 
-		// Ser
-		[SerializeField] BuffInt Width = new(150);
-		[SerializeField] BuffInt Height = new(384);
-		[SerializeField] BuffInt SquatHeight = new(200);
-		[SerializeField] BuffInt SwimHeight = new(384);
-		[SerializeField] BuffInt AntiKnockbackSpeed = new(16);
 
-		[SerializeField] BuffInt WalkSpeed = new(20);
-		[SerializeField] BuffInt WalkAcceleration = new(3);
-		[SerializeField] BuffInt WalkDecceleration = new(4);
-		[SerializeField] BuffInt RunTrigger = new(60);
-		[SerializeField] BuffInt RunSpeed = new(32);
-		[SerializeField] BuffInt RunAcceleration = new(3);
-		[SerializeField] BuffInt RunDecceleration = new(4);
-		[SerializeField] BuffInt OppositeXAccelerationRate = new(3000);
-
-		[SerializeField] BuffInt JumpSpeed = new(62);
-		[SerializeField] BuffInt JumpCount = new(2);
-		[SerializeField] BuffInt JumpReleaseLoseRate = new(700);
-		[SerializeField] BuffInt JumpRiseGravityRate = new(600);
-		[SerializeField] BuffBool JumpRoll = new(false);
-		[SerializeField] BuffBool JumpSecondRoll = new(true);
-
-		[SerializeField] BuffBool DashAvailable = new(true);
-		[SerializeField] BuffInt DashSpeed = new(42);
-		[SerializeField] BuffInt DashDuration = new(12);
-		[SerializeField] BuffInt DashCooldown = new(4);
-		[SerializeField] BuffInt DashAcceleration = new(24);
-		[SerializeField] BuffInt DashCancelLoseRate = new(300);
-
-		[SerializeField] BuffBool SquatAvailable = new(true);
-		[SerializeField] BuffInt SquatSpeed = new(14);
-		[SerializeField] BuffInt SquatAcceleration = new(48);
-		[SerializeField] BuffInt SquatDecceleration = new(48);
-
-		[SerializeField] BuffBool PoundAvailable = new(true);
-		[SerializeField] BuffInt PoundSpeed = new(96);
-
-		[SerializeField] BuffInt InWaterSpeedLoseRate = new(500);
-		[SerializeField] BuffInt SwimSpeed = new(42);
-		[SerializeField] BuffInt SwimAcceleration = new(4);
-		[SerializeField] BuffInt SwimDecceleration = new(4);
-
-		[SerializeField] BuffBool SwimInFreeStyle = new(false);
-		[SerializeField] BuffInt FreeSwimSpeed = new(40);
-		[SerializeField] BuffInt FreeSwimAcceleration = new(4);
-		[SerializeField] BuffInt FreeSwimDecceleration = new(4);
-		[SerializeField] BuffInt FreeSwimDashSpeed = new(84);
-		[SerializeField] BuffInt FreeSwimDashDuration = new(12);
-		[SerializeField] BuffInt FreeSwimDashCooldown = new(4);
-		[SerializeField] BuffInt FreeSwimDashAcceleration = new(128);
-
-		[SerializeField] BuffBool ClimbAvailable = new(true);
-		[SerializeField] BuffBool JumpWhenClimbAvailable = new(true);
-		[SerializeField] BuffInt ClimbSpeedX = new(12);
-		[SerializeField] BuffInt ClimbSpeedY = new(18);
-
-		[SerializeField] BuffBool FlyAvailable = new(false);
-		[SerializeField] BuffInt FlyCount = new(1);
-		[SerializeField] BuffInt FlyCooldown = new(32);
-		[SerializeField] BuffInt FlySpeed = new(64);
-		[SerializeField] BuffInt FlyGravityRiseRate = new(800);
-		[SerializeField] BuffInt FlyGravityFallRate = new(200);
-		[SerializeField] BuffInt FlyFallSpeed = new(12);
 
 		// Data
 		private readonly HitInfo[] c_HitboxCollisionFix = new HitInfo[8];
@@ -421,13 +358,6 @@ namespace Yaya {
 		#region --- API ---
 
 
-		// Meta
-		public void LoadFromText (string text) => BuffValue.LoadBuffMetaFromText(this, text);
-
-
-		public string SaveToText () => BuffValue.SaveBuffMetaToText(this);
-
-
 		// Movement
 		public void Move (Direction3 x, Direction3 y) {
 			if (IntendedX != 0 && x == Direction3.None) LastEndMoveFrame = CurrentFrame;
@@ -533,10 +463,7 @@ namespace Yaya {
 			if (InWater) return SwimHeight;
 
 			// Rolling
-			if (!IsPounding && !InWater) {
-				if (JumpRoll && CurrentJumpCount > 0) return SquatHeight;
-				if (JumpSecondRoll && CurrentJumpCount > 1) return SquatHeight;
-			}
+			if (IsRolling) return SquatHeight;
 
 			// Normal
 			return Height;

@@ -4,7 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
-	[EntityBounds(0, 0, Const.CELL_SIZE * 2, Const.CELL_SIZE)]
+	[EntityAttribute.EntityBounds(0, 0, Const.CELL_SIZE * 2, Const.CELL_SIZE)]
 	public class eFiddleLeaf : ePlant {
 
 

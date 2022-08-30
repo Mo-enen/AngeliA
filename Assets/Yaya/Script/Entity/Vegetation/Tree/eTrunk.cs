@@ -26,10 +26,10 @@ namespace Yaya {
 	}
 
 
-	[EntityBounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE)]
-	[MapEditorGroup("Vegetation")]
-	[EntityCapacity(256)]
-	[DrawBehind]
+	[EntityAttribute.EntityBounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE)]
+	[EntityAttribute.MapEditorGroup("Vegetation")]
+	[EntityAttribute.EntityCapacity(256)]
+	[EntityAttribute.DrawBehind]
 	public abstract class eTrunk : Entity {
 
 

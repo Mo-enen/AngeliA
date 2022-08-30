@@ -331,7 +331,7 @@ MonoBehaviour:
     PointTextureFilter: 1
     FrameRate: 120
     DefaultLayer: 1
-    RendererCapacity: 00080000000800004000000040000000
+    RendererCapacity: 00080000001000004000000040000000
     SquadBehindLayer: 0
     SquadBehindAlpha: 64
     SquadBehindParallax: 1300
@@ -364,6 +364,14 @@ MonoBehaviour:
     MinHeight: 2048
     MaxHeight: 14336
     ViewRatio: 2000
+    Gravity: 5
+    GravityRise: 3
+    MaxGravitySpeed: 96
+    WaterSpeedLose: 400
+    QuickSandJumpoutSpeed: 48
+    QuickSandMaxRunSpeed: 4
+    QuickSandSinkSpeed: 1
+    QuickSandJumpSpeed: 12
   m_GameAssets:
     SkyboxShader: {fileID: 4800000, guid: ce2324baeaef2844ba1c8c3df2091636, type: 3}
     DrawShaders:

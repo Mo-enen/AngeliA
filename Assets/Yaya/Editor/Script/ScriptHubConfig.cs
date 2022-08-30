@@ -4,7 +4,7 @@ using Moenen.Standard;
 namespace Yaya.Editor {
 	public class YayaScriptHub : IScriptHubConfig {
 		public string[] Paths => new string[] { "Assets", };
-		public string IgnoreFolders => "";
+		public string IgnoreFolders => "Editor";
 		public string IgnoreFiles => "";
 		public string Title => "Yaya";
 		public IScriptHubConfig.FileExtension[] FileExtensions => new IScriptHubConfig.FileExtension[]{

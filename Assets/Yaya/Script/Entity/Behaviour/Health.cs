@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 namespace Yaya {
-	public class Health : EntityBehaviour<Entity>, ITxtMeta {
+	public class Health : EntityBehaviour<Entity>, ISerializationCallbackReceiver {
 
 
 
@@ -21,14 +21,22 @@ namespace Yaya {
 		public bool Invincible => Game.GlobalFrame < InvincibleStartFrame + InvincibleFrame;
 		public int InvincibleFrameDuration => InvincibleFrame;
 		public int KnockBackSpeedValue => KnockBackSpeed;
-		public int DamageDurationValue => DamageDuration;
-		public int MaxHealthPoint => MaxHP;
+		public int DamageStunDurationValue => DamageStunDuration;
+		public int MaxHpValue => MaxHP;
+
+		// Buff
+		public BuffInt MaxHP { get; private set; } = new(1);
+		public BuffInt InvincibleFrame { get; private set; } = new(120);
+		public BuffInt KnockBackSpeed { get; private set; } = new(64);
+		public BuffInt DamageStunDuration { get; private set; } = new(24);
 
 		// Ser
-		[SerializeField] BuffInt MaxHP = new(1);
-		[SerializeField] BuffInt InvincibleFrame = new(120);
-		[SerializeField] BuffInt KnockBackSpeed = new(64);
-		[SerializeField] BuffInt DamageDuration = new(24);
+#pragma warning disable
+		[SerializeField] int _MaxHP = 1;
+		[SerializeField] int _InvincibleFrame = 120;
+		[SerializeField] int _KnockBackSpeed = 64;
+		[SerializeField] int _DamageStunDuration = 24;
+#pragma warning restore
 
 		// Data
 		private int InvincibleStartFrame = int.MinValue;
@@ -49,19 +57,16 @@ namespace Yaya {
 		}
 
 
+		public void OnBeforeSerialize () => BuffValue.SerializeBuffValues(this);
+		public void OnAfterDeserialize () => BuffValue.DeserializeBuffValues(this);
+
+
 		#endregion
 
 
 
 
 		#region --- API ---
-
-
-		// Meta
-		public void LoadFromText (string text) => BuffValue.LoadBuffMetaFromText(this, text);
-
-
-		public string SaveToText () => BuffValue.SaveBuffMetaToText(this);
 
 
 		// Health

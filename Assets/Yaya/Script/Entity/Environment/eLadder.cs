@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[EntityCapacity(128)]
+	[EntityAttribute.EntityCapacity(128)]
 	public class eLadder : Entity {
 
 

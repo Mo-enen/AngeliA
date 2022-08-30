@@ -7,12 +7,12 @@ using AngeliaFramework;
 namespace Yaya {
 
 
-	[ExcludeInMapEditor]
-	[EntityCapacity(1)]
-	[ForceUpdate]
-	[EntityBounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
-	[DontDestroyOnSquadTransition]
-	public class ePlayer : eCharacter { }
+	[EntityAttribute.ExcludeInMapEditor]
+	[EntityAttribute.EntityCapacity(1)]
+	[EntityAttribute.ForceUpdate]
+	[EntityAttribute.EntityBounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
+	[EntityAttribute.DontDestroyOnSquadTransition]
+	public abstract class ePlayer : eCharacter { }
 
 
 

@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[EntityBounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
+	[EntityAttribute.EntityBounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
 	public class ePaspalum : ePlant {
 
 

@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[MapEditorGroup("Character")]
+	[EntityAttribute.MapEditorGroup("Character")]
 	public abstract class eCharacter : eYayaRigidbody, IAttackReceiver {
 
 
@@ -34,7 +34,7 @@ namespace Yaya {
 		public override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
 		public override int CollisionMask => YayaConst.MASK_SOLID;
 		public override bool CarryRigidbodyOnTop => false;
-		public override bool IsInAir => base.IsInAir && !Movement.IsClimbing;
+		public override bool InAir => base.InAir && !Movement.IsClimbing;
 		public override int AirDragX => 0;
 		public override int AirDragY => 0;
 		public override bool IgnoreRiseGravityShift => true;
@@ -66,26 +66,11 @@ namespace Yaya {
 			string typeName = GetType().Name;
 			if (typeName.StartsWith("e")) typeName = typeName[1..];
 
-			// Movement
-			var movement = game.LoadMeta<CharacterMovement>($"{typeName}.Movement");
-			Movement = movement ?? new();
-
-			// Renderer
-			var renderer = game.LoadMeta<CharacterRenderer>($"{typeName}.Renderer");
-			Renderer = renderer ?? new();
-
-			// Action
-			var action = game.LoadMeta<Action>($"{typeName}.Action");
-			Action = action ?? new();
-
-			// Health
-			var health = game.LoadMeta<Health>($"{typeName}.Health");
-			Health = health ?? new();
-
-			// Attackness
-			var attackness = game.LoadMeta<Attackness>($"{typeName}.Attackness");
-			Attackness = attackness ?? new();
-
+			Movement = game.LoadMeta<CharacterMovement>(typeName, "Movement") ?? new();
+			Renderer = game.LoadMeta<CharacterRenderer>(typeName, "Renderer") ?? new();
+			Action = game.LoadMeta<Action>(typeName, "Action") ?? new();
+			Health = game.LoadMeta<Health>(typeName, "Health") ?? new();
+			Attackness = game.LoadMeta<Attackness>(typeName, "Attackness") ?? new();
 		}
 
 
@@ -133,10 +118,10 @@ namespace Yaya {
 			switch (CharacterState) {
 				default:
 				case State.General:
-					if (frame < Health.LastDamageFrame + Health.DamageDurationValue) {
+					if (frame < Health.LastDamageFrame + Health.DamageStunDurationValue) {
 						// Tacking Damage
 						Movement.AntiKnockback();
-					} else if (Attackness.StopOnAttackValue && frame < Attackness.LastAttackFrame + Attackness.AttackDurationValue) {
+					} else if (Attackness.StopMoveOnAttack && frame < Attackness.LastAttackFrame + Attackness.AttackDuration) {
 						// Stop when Attacking
 						if (IsGrounded) VelocityX = 0;
 					} else {
@@ -154,7 +139,7 @@ namespace Yaya {
 				case State.Sleep:
 					VelocityX = 0;
 					VelocityY = 0;
-					if (!Health.FullHealth) Health.Heal(Health.MaxHealthPoint);
+					if (!Health.FullHealth) Health.Heal(Health.MaxHpValue);
 					break;
 				case State.Passout:
 					VelocityX = 0;
@@ -183,7 +168,7 @@ namespace Yaya {
 		public void TakeDamage (int damage) {
 			if (Health.Damage(damage)) {
 				VelocityX = Movement.FacingRight ? -Health.KnockBackSpeedValue : Health.KnockBackSpeedValue;
-				Renderer.Damage(Health.DamageDurationValue);
+				Renderer.Damage(Health.DamageStunDurationValue);
 				if (!Health.EmptyHealth) {
 					Renderer.Blink(Health.InvincibleFrameDuration);
 				}

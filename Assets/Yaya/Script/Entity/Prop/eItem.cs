@@ -4,8 +4,8 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
-	[ExcludeInMapEditor]
-	[EntityCapacity(4)]
+	[EntityAttribute.ExcludeInMapEditor]
+	[EntityAttribute.EntityCapacity(4)]
 	public abstract class eItem : Entity {
 
 

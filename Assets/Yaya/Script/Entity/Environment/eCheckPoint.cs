@@ -5,8 +5,8 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[EntityCapacity(8)]
-	[EntityBounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
+	[EntityAttribute.EntityCapacity(8)]
+	[EntityAttribute.EntityBounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
 	public class eCheckPoint : Entity {
 
 

@@ -5,8 +5,8 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[ExcludeInMapEditor]
-	[EntityCapacity(512)]
+	[EntityAttribute.ExcludeInMapEditor]
+	[EntityAttribute.EntityCapacity(512)]
 	public abstract class eParticle : Entity {
 
 

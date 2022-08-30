@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
+using UnityEngine.Networking.Types;
 
 
 namespace Yaya {
@@ -13,7 +14,7 @@ namespace Yaya {
 	}
 
 
-	public class Attackness : EntityBehaviour<Entity>, ITxtMeta {
+	public class Attackness : EntityBehaviour<Entity>, IInitialize, ISerializationCallbackReceiver {
 
 
 
@@ -22,25 +23,35 @@ namespace Yaya {
 
 
 		// Api
-		public int CurrentBulletID => _CurrentBulletID != 0 ? _CurrentBulletID : (_CurrentBulletID = BulletName.Value.AngeHash());
 		public bool IsAttacking => Game.GlobalFrame < LastAttackFrame + AttackDuration;
+		public bool IsReady => Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackColldown;
 		public int ActionIndex { get; private set; } = 0;
 		public int LastAttackFrame { get; private set; } = int.MinValue;
-		public int AttackDurationValue => AttackDuration;
-		public bool StopOnAttackValue => StopOnAttack;
+		public int BulletID => _BulletID != 0 ? _BulletID : (_BulletID = BulletName.Value.AngeHash());
+
+		// Buff
+		public BuffString BulletName { get; private set; } = new("eDefaultBullet");
+		public BuffInt AttackDuration { get; private set; } = new(12);
+		public BuffInt AttackColldown { get; private set; } = new(2);
+		public BuffBool AttackInAir { get; private set; } = new(true);
+		public BuffBool AttackInWater { get; private set; } = new(true);
+		public BuffBool StopMoveOnAttack { get; private set; } = new(true);
+		public BuffBool CancelAttackOnJump { get; private set; } = new(false);
 
 		// Ser
-		[SerializeField] BuffString BulletName = new("Bullet");
-		[SerializeField] BuffInt AttackDuration = new(24);
-		[SerializeField] BuffInt AttackColldown = new(12);
-		[SerializeField] BuffBool AttackInAir = new(true);
-		[SerializeField] BuffBool AttackInWater = new(true);
-		[SerializeField] BuffBool StopOnAttack = new(true);
+#pragma warning disable
+		[SerializeField] string _BulletName = "eDefaultBullet";
+		[SerializeField] int _AttackDuration = 12;
+		[SerializeField] int _AttackColldown = 2;
+		[SerializeField] bool _AttackInAir = true;
+		[SerializeField] bool _AttackInWater = true;
+		[SerializeField] bool _StopMoveOnAttack = true;
+		[SerializeField] bool _CancelAttackOnJump = false;
+#pragma warning restore
 
 		// Data
-		private eCharacter Character = null;
-		private int _CurrentBulletID = 0;
-		private HitInfo[] c_Attack = new HitInfo[32];
+		private static Game Game = null;
+		private int _BulletID = 0;
 
 
 		#endregion
@@ -51,11 +62,17 @@ namespace Yaya {
 		#region --- MSG ---
 
 
+		public static void InitializeWithGame (Game game) => Game = game;
+
+
 		public override void Initialize (Entity source) {
 			base.Initialize(source);
 			LastAttackFrame = int.MinValue;
-			Character = source as eCharacter;
 		}
+
+
+		public void OnBeforeSerialize () => BuffValue.SerializeBuffValues(this);
+		public void OnAfterDeserialize () => BuffValue.DeserializeBuffValues(this);
 
 
 		#endregion
@@ -66,32 +83,27 @@ namespace Yaya {
 		#region --- API ---
 
 
-		// Meta
-		public void LoadFromText (string text) => BuffValue.LoadBuffMetaFromText(this, text);
-
-
-		public string SaveToText () => BuffValue.SaveBuffMetaToText(this);
-
-
 		// Attackness
 		public bool Attack (int actionIndex = 0) {
+			if (BulletID == 0) return false;
 			int frame = Game.GlobalFrame;
 			if (frame < LastAttackFrame + AttackDuration + AttackColldown) return false;
-			if (Character != null) {
-				if (!AttackInAir && Character.Movement.IsInAir) return false;
-				if (!AttackInWater && Character.InWater) return false;
-			}
-
-
-
-			//IAttackReceiver
-			//YayaConst.MASK_RIGIDBODY
-			//c_Attack
-
-
 			ActionIndex = actionIndex;
 			LastAttackFrame = frame;
+			// Spawn Bullet
+			if (Game.AddEntity(BulletID, Source.X, Source.Y) is eBullet bullet) {
+				bullet.Attackness = this;
+			}
 			return true;
+		}
+
+
+		public void CancelAttack () => LastAttackFrame = int.MinValue;
+
+
+		public void SetBullet (string name) {
+			BulletName.Value = name;
+			_BulletID = 0;
 		}
 
 
