@@ -6,7 +6,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.MapEditorGroup("Character")]
-	public abstract class eCharacter : eYayaRigidbody, IAttackReceiver {
+	public abstract class eCharacter : eYayaRigidbody, IDamageReceiver {
 
 
 
@@ -47,9 +47,6 @@ namespace Yaya {
 		public Action Action { get; private set; }
 		public Health Health { get; private set; }
 		public Attackness Attackness { get; private set; }
-
-		// Data
-		private static readonly HitInfo[] c_DamageCheck = new HitInfo[16];
 
 
 		#endregion
@@ -99,15 +96,6 @@ namespace Yaya {
 
 			int frame = Game.GlobalFrame;
 
-			// Level Damage Check
-			int count = CellPhysics.OverlapAll(
-				c_DamageCheck, YayaConst.MASK_DAMAGE, Rect, this, OperationMode.TriggerOnly
-			);
-			for (int i = 0; i < count; i++) {
-				var hit = c_DamageCheck[i];
-				TakeDamage(hit.Tag);
-			}
-
 			// Passout Check
 			if (CharacterState != State.Passout && Health.EmptyHealth) {
 				CharacterState = State.Passout;
@@ -118,10 +106,10 @@ namespace Yaya {
 			switch (CharacterState) {
 				default:
 				case State.General:
-					if (frame < Health.LastDamageFrame + Health.DamageStunDurationValue) {
+					if (frame < Health.LastDamageFrame + Health.DamageStunDuration) {
 						// Tacking Damage
 						Movement.AntiKnockback();
-					} else if (Attackness.StopMoveOnAttack && frame < Attackness.LastAttackFrame + Attackness.AttackDuration) {
+					} else if (Attackness.StopMoveOnAttack && frame < Attackness.LastAttackFrame + Attackness.Duration) {
 						// Stop when Attacking
 						if (IsGrounded) VelocityX = 0;
 					} else {
@@ -139,7 +127,7 @@ namespace Yaya {
 				case State.Sleep:
 					VelocityX = 0;
 					VelocityY = 0;
-					if (!Health.FullHealth) Health.Heal(Health.MaxHpValue);
+					if (!Health.FullHealth) Health.Heal(Health.MaxHP);
 					break;
 				case State.Passout:
 					VelocityX = 0;
@@ -167,10 +155,10 @@ namespace Yaya {
 		// Invoke Behaviour
 		public void TakeDamage (int damage) {
 			if (Health.Damage(damage)) {
-				VelocityX = Movement.FacingRight ? -Health.KnockBackSpeedValue : Health.KnockBackSpeedValue;
-				Renderer.Damage(Health.DamageStunDurationValue);
+				VelocityX = Movement.FacingRight ? -Health.KnockBackSpeed : Health.KnockBackSpeed;
+				Renderer.Damage(Health.DamageStunDuration);
 				if (!Health.EmptyHealth) {
-					Renderer.Blink(Health.InvincibleFrameDuration);
+					Renderer.Blink(Health.InvincibleFrame);
 				}
 			}
 		}

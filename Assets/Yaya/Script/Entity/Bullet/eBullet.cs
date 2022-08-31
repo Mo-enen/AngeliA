@@ -16,9 +16,9 @@ namespace Yaya {
 		protected virtual int CollisionMask => YayaConst.MASK_SOLID;
 		protected virtual bool DestroyOnCollide => true;
 		protected virtual bool DestroyOnHitReveiver => true;
-		public int VelocityX { get; protected set; } = 0;
-		public int VelocityY { get; protected set; } = 0;
-		protected int LocalFrame => Game.GlobalFrame - SpawnFrame;
+		protected virtual int Duration => 60;
+		public int LocalFrame => Game.GlobalFrame - SpawnFrame;
+		public int Combo { get; set; } = 0;
 		public Attackness Attackness { get; set; } = null;
 
 		// Data
@@ -45,13 +45,19 @@ namespace Yaya {
 
 		public override void BeforePhysicsUpdate () {
 			base.BeforePhysicsUpdate();
-			X += VelocityX;
-			Y += VelocityY;
+
+			// Life Check
+			if (LocalFrame > Duration) {
+				Active = false;
+				return;
+			}
+
 			// Collide Check
 			if (DestroyOnCollide) {
 
 
 			}
+
 			// Hit Receiver Check
 
 

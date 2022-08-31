@@ -22,6 +22,9 @@ namespace Yaya {
 		public static Dictionary<Vector2Int, CheckPointMeta.Data> CpPool { get; } = new();
 		public static Dictionary<int, Vector2Int> CpAltarPool { get; } = new();
 
+		// Data
+		private static readonly HitInfo[] c_DamageCheck = new HitInfo[16];
+
 
 		#endregion
 
@@ -93,7 +96,9 @@ namespace Yaya {
 		// Update
 		protected override void FrameUpdate () {
 			base.FrameUpdate();
+			Update_Damage();
 			Update_Player();
+
 
 
 			if (FrameInput.CustomKeyDown(KeyCode.Alpha1)) {
@@ -104,6 +109,21 @@ namespace Yaya {
 			}
 
 
+		}
+
+
+		private void Update_Damage () {
+			int len = EntityLen;
+			for (int i = 0; i < len; i++) {
+				var entity = StagedEntities[i];
+				if (entity is not IDamageReceiver receiver) continue;
+				int count = YayaCellPhysics.OverlapAll_Damage(
+					c_DamageCheck, entity.Rect, entity, entity is ePlayer
+				);
+				for (int j = 0; j < count; j++) {
+					receiver.TakeDamage(c_DamageCheck[j].Tag);
+				}
+			}
 		}
 
 

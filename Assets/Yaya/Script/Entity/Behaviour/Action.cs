@@ -56,7 +56,11 @@ namespace Yaya {
 				for (int i = 0; i < count; i++) {
 					var hit = c_ScanHits[i];
 					if (hit.Entity is IActionEntity eAct) {
-						int _dis = Util.SqrtDistance(hit.Entity.X, hit.Entity.Y, Source.X, Source.Y);
+						int _dis = Util.SqrtDistance(
+							hit.Entity.X + hit.Entity.Width / 2,
+							hit.Entity.Y + hit.Entity.Height / 2,
+							Source.X, Source.Y
+						);
 						if (_dis < dis) {
 							dis = _dis;
 							CurrentTarget = eAct;
@@ -64,6 +68,8 @@ namespace Yaya {
 					}
 				}
 			}
+			// Highlight
+			if (CurrentTarget != null) CurrentTarget.Highlight();
 		}
 
 

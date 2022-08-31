@@ -19,10 +19,6 @@ namespace Yaya {
 		public bool FullHealth => HealthPoint >= MaxHP;
 		public bool EmptyHealth => HealthPoint <= 0;
 		public bool Invincible => Game.GlobalFrame < InvincibleStartFrame + InvincibleFrame;
-		public int InvincibleFrameDuration => InvincibleFrame;
-		public int KnockBackSpeedValue => KnockBackSpeed;
-		public int DamageStunDurationValue => DamageStunDuration;
-		public int MaxHpValue => MaxHP;
 
 		// Buff
 		public BuffInt MaxHP { get; private set; } = new(1);
@@ -71,6 +67,7 @@ namespace Yaya {
 
 		// Health
 		public bool Damage (int damage, bool ignoreInvincible = false, bool triggerInvincible = true) {
+			if (damage <= 0) return false;
 			if (!ignoreInvincible && Invincible) return false;
 			if (HealthPoint <= 0) return false;
 			HealthPoint = (HealthPoint - damage).Clamp(0, MaxHP);

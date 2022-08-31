@@ -267,9 +267,9 @@ namespace Yaya {
 			if (attackness.IsAttacking) {
 				// Attack
 				if (movement.IsMoving && Attacks_Move.Length > 0) {
-					ani = Attacks_Move[attackness.ActionIndex.Clamp(0, Attacks_Move.Length - 1)];
+					ani = Attacks_Move[attackness.Combo.Clamp(0, Attacks_Move.Length - 1)];
 				} else if (Attacks.Length > 0) {
-					ani = Attacks[attackness.ActionIndex.Clamp(0, Attacks.Length - 1)];
+					ani = Attacks[attackness.Combo.Clamp(0, Attacks.Length - 1)];
 				}
 			} else {
 				// Movement

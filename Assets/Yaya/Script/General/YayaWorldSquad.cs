@@ -48,14 +48,11 @@ namespace Yaya {
 				).Shrink(
 					sp.GlobalBorder.Left, sp.GlobalBorder.Right, sp.GlobalBorder.Down, sp.GlobalBorder.Up
 				);
-				CellPhysics.FillBlock(
-					YayaConst.LAYER_LEVEL, rect, isTrigger, tag
-				);
+				CellPhysics.FillBlock(YayaConst.LAYER_LEVEL, rect, isTrigger, tag);
 				// Damage
 				if (tag == YayaConst.DAMAGE_TAG) {
-					CellPhysics.FillBlock(
-						YayaConst.LAYER_DAMAGE, rect.Expand(1), true, 1
-					);
+					YayaCellPhysics.FillBlock_Damage(rect.Expand(1), true, 1);
+					YayaCellPhysics.FillBlock_Damage(rect.Expand(1), false, 1);
 				}
 			}
 		}

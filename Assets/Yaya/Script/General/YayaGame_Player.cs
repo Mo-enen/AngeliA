@@ -54,6 +54,7 @@ namespace Yaya {
 		public void Update_Player () {
 
 			// Spawn Player when No Player Entity
+			if (CurrentPlayer != null && !CurrentPlayer.Active) CurrentPlayer = null;
 			if (CurrentPlayer == null && !FrameStep.HasStep<sOpening>()) {
 				var center = CellRenderer.CameraRect.CenterInt();
 				SpawnPlayer(center.x, center.y, false);
@@ -224,7 +225,6 @@ namespace Yaya {
 				SetViewPositionDely(AimX, AimY, 1000, Const.VIEW_PRIORITY_PLAYER + 1);
 			}
 		}
-
 
 
 		#endregion
