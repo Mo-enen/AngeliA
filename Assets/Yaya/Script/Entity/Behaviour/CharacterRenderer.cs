@@ -46,16 +46,16 @@ namespace Yaya {
 			}
 
 
-			public static AniCode[] GetAnimationArray (string keyName) {
+			public static AniCode[] GetAnimationArray (string keyName, int defaultLoopStart = 0) {
 				var result = new List<AniCode>();
 				int code = keyName.AngeHash();
 				if (CellRenderer.TryGetSprite(code, out _, 0)) {
-					result.Add(new AniCode(code));
+					result.Add(new AniCode(code) { LoopStart = defaultLoopStart, });
 				}
 				for (char c = 'A'; c <= 'Z'; c++) {
 					code = $"{keyName}{c}".AngeHash();
 					if (CellRenderer.TryGetSprite(code, out _, 0)) {
-						result.Add(new AniCode(code));
+						result.Add(new AniCode(code) { LoopStart = defaultLoopStart, });
 					} else break;
 				}
 				return result.ToArray();
@@ -119,6 +119,8 @@ namespace Yaya {
 		public AniCode FaceBlink { get; private set; } = null;
 		public AniCode[] Attacks { get; private set; } = null;
 		public AniCode[] Attacks_Move { get; private set; } = null;
+		public AniCode[] Attacks_Air { get; private set; } = null;
+		public AniCode[] Attacks_Water { get; private set; } = null;
 		public AniCode Idle { get; private set; } = null;
 		public AniCode Walk { get; private set; } = null;
 		public AniCode Run { get; private set; } = null;
@@ -182,11 +184,10 @@ namespace Yaya {
 			Face = new($"{name}.Face");
 			FaceBlink = new AniCode($"{name}.Face.Blink", $"{name}.Face");
 
-			Attacks = AniCode.GetAnimationArray($"_a{name}.Attack");
-			foreach (var att in Attacks) att.LoopStart = -1;
-
-			Attacks_Move = AniCode.GetAnimationArray($"_a{name}.AttackMove");
-			foreach (var att in Attacks) att.LoopStart = -1;
+			Attacks = AniCode.GetAnimationArray($"_a{name}.Attack", -1);
+			Attacks_Move = AniCode.GetAnimationArray($"_a{name}.AttackMove", -1);
+			Attacks_Air = AniCode.GetAnimationArray($"_a{name}.AttackAir", -1);
+			Attacks_Water = AniCode.GetAnimationArray($"_a{name}.AttackWater", -1);
 
 		}
 
@@ -266,10 +267,16 @@ namespace Yaya {
 			// Get Ani
 			if (attackness.IsAttacking) {
 				// Attack
-				if (movement.IsMoving && Attacks_Move.Length > 0) {
-					ani = Attacks_Move[attackness.Combo.Clamp(0, Attacks_Move.Length - 1)];
-				} else if (Attacks.Length > 0) {
-					ani = Attacks[attackness.Combo.Clamp(0, Attacks.Length - 1)];
+				var attacks = Attacks;
+				if (movement.InWater && Attacks_Water.Length > 0) {
+					attacks = Attacks_Water;
+				} else if (movement.InAir && Attacks_Air.Length > 0) {
+					attacks = Attacks_Air;
+				} else if (movement.IsMoving && Attacks_Move.Length > 0) {
+					attacks = Attacks_Move;
+				}
+				if (attacks.Length > 0) {
+					ani = attacks[attackness.Combo.Clamp(0, attacks.Length - 1)];
 				}
 			} else {
 				// Movement

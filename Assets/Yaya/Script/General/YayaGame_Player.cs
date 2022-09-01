@@ -85,7 +85,7 @@ namespace Yaya {
 						Update_JumpDashPound();
 
 						if (FrameInput.KeyDown(GameKey.Action)) {
-							bool performed = CurrentPlayer.InvokeAction();
+							bool performed = CurrentPlayer.Action.Invoke();
 							if (performed) break;
 							if (
 								attackness.IsReady &&
@@ -187,13 +187,18 @@ namespace Yaya {
 			var attackness = CurrentPlayer.Attackness;
 			movement.HoldJump(FrameInput.KeyPressing(GameKey.Jump));
 			if (FrameInput.KeyDown(GameKey.Jump)) {
-				movement.Jump();
-				if (FrameInput.KeyPressing(GameKey.Down)) {
-					movement.Dash();
-				}
-				AttackRequiringFrame = int.MinValue;
-				if (attackness.CancelAttackOnJump) {
-					attackness.CancelAttack();
+				// Try Cancel Action
+				bool performed = CurrentPlayer.Action.CancelInvoke();
+				if (!performed) {
+					// Movement Jump
+					movement.Jump();
+					if (FrameInput.KeyPressing(GameKey.Down)) {
+						movement.Dash();
+					}
+					AttackRequiringFrame = int.MinValue;
+					if (attackness.CancelAttackOnJump) {
+						attackness.CancelAttack();
+					}
 				}
 			}
 			if (FrameInput.KeyDown(GameKey.Down)) {

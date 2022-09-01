@@ -4,7 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
-	public class eChest : eFurniture {
+	public class eChest : eOpenableFurniture {
 
 		private static readonly int CODE = "Chest".AngeHash();
 		private static readonly int CODE_OPEN = "Chest Open".AngeHash();
@@ -13,9 +13,10 @@ namespace Yaya {
 		protected override int ArtworkCode_LeftDown => CODE;
 		protected override int ArtworkCode_Mid => CODE;
 		protected override int ArtworkCode_RightUp => CODE;
-		protected override int ArtworkCode_Single => Opening ? CODE_OPEN : CODE;
+		protected override int ArtworkCode_Single => Open ? CODE_OPEN : CODE;
+		protected override bool UseHighlightAnimation => !Open;
 
-		private bool Opening = false;
+
 
 	}
 }

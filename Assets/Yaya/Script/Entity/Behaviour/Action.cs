@@ -18,7 +18,7 @@ namespace Yaya {
 		public IActionEntity CurrentTarget { get; private set; } = null;
 
 		// Ser
-		[SerializeField] int ScanRange = Const.CELL_SIZE / 4;
+		[SerializeField] int ScanRange = Const.CELL_SIZE / 2;
 		[SerializeField] int ScanFrequency = 6;
 
 		// Data
@@ -48,25 +48,40 @@ namespace Yaya {
 				int count = CellPhysics.OverlapAll(
 					c_ScanHits,
 					YayaConst.MASK_ENTITY,
-					Source.Rect.Expand(ScanRange),
+					Source.GlobalBounds.Expand(ScanRange, ScanRange, 0, ScanRange),
 					Source,
 					OperationMode.ColliderAndTrigger
 				);
 				int dis = int.MaxValue;
+				var sourceRect = Source.Rect;
+				int sourceX = sourceRect.x + sourceRect.width / 2;
+				Entity result = null;
 				for (int i = 0; i < count; i++) {
 					var hit = c_ScanHits[i];
-					if (hit.Entity is IActionEntity eAct) {
-						int _dis = Util.SqrtDistance(
-							hit.Entity.X + hit.Entity.Width / 2,
-							hit.Entity.Y + hit.Entity.Height / 2,
-							Source.X, Source.Y
-						);
-						if (_dis < dis) {
+					if (hit.Entity is not IActionEntity) continue;
+					// Comparer X Distance
+					int _dis =
+						sourceX >= hit.Rect.xMin && sourceX <= hit.Rect.xMax ? 0 :
+						sourceX > hit.Rect.xMax ? Mathf.Abs(sourceX - hit.Rect.xMax) :
+						Mathf.Abs(sourceX - hit.Rect.xMin);
+					if (_dis < dis) {
+						dis = _dis;
+						result = hit.Entity;
+					} else if (_dis == dis && result != null) {
+						// Comparer Y Distance
+						if (hit.Entity.Y < result.Y) {
 							dis = _dis;
-							CurrentTarget = eAct;
+							result = hit.Entity;
+						} else if (hit.Entity.Rect.y == result.Rect.y) {
+							// Comparer Size
+							if (hit.Entity.Width * hit.Entity.Height < result.Width * result.Height) {
+								dis = _dis;
+								result = hit.Entity;
+							}
 						}
 					}
 				}
+				CurrentTarget = result as IActionEntity;
 			}
 			// Highlight
 			if (CurrentTarget != null) CurrentTarget.Highlight();
@@ -81,11 +96,10 @@ namespace Yaya {
 		#region --- API ---
 
 
-		public bool Invoke () {
-			if (CurrentTarget == null) return false;
-			CurrentTarget.Invoke(Source);
-			return true;
-		}
+		public bool Invoke () => CurrentTarget != null && CurrentTarget.Invoke(Source);
+
+
+		public bool CancelInvoke () => CurrentTarget != null && CurrentTarget.CancelInvoke(Source);
 
 
 		#endregion

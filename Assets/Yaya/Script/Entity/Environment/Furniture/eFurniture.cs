@@ -10,6 +10,11 @@ namespace Yaya {
 	public abstract class eFurniture : Entity {
 
 
+
+
+		#region --- SUB ---
+
+
 		protected enum FurniturePose {
 			Unknown = 0,
 			Left = 1,
@@ -21,31 +26,50 @@ namespace Yaya {
 		}
 
 
-		// VAR
+		#endregion
+
+
+
+
+		#region --- VAR ---
+
+
+		// Over
 		protected abstract Direction3 ModuleType { get; }
 		protected abstract int ArtworkCode_LeftDown { get; }
 		protected abstract int ArtworkCode_Mid { get; }
 		protected abstract int ArtworkCode_RightUp { get; }
 		protected abstract int ArtworkCode_Single { get; }
-		protected virtual bool LoopArtworkIndex { get; } = false;
-		protected bool HasSameFurnitureOnLeftOrDown => FurnitureLeftOrDown != null;
-		protected bool HasSameFurnitureOnRightOrUp => FurnitureRightOrUp != null;
+		protected virtual bool LoopArtworkIndex => false;
+		protected virtual bool UseHighlightAnimation => true;
+		protected virtual RectInt RenderingRect => Rect.Expand(ColliderBorder);
+
+		// Api
+		public eFurniture FurnitureLeftOrDown { get; private set; } = null;
+		public eFurniture FurnitureRightOrUp { get; private set; } = null;
+		public bool IsHighlighted => Game.GlobalFrame <= HighlightFrame + 1;
+		public int HighlightFrame { get; set; } = int.MinValue;
+		protected RectOffset ColliderBorder { get; } = new();
+		protected FurniturePose Pose { get; private set; } = FurniturePose.Unknown;
+		protected int ArtworkIndex { get; set; } = 0;
 
 		// Data
-		protected FurniturePose Pose = FurniturePose.Unknown;
-		protected int ArtworkIndex = 0;
-		protected RectInt RenderingRect = default;
-		protected eFurniture FurnitureLeftOrDown = null;
-		protected eFurniture FurnitureRightOrUp = null;
+		private int LastUnhighlightFrame = int.MinValue;
 
 
-		// MSG
+		#endregion
+
+
+
+
+		#region --- MSG ---
+
+
 		public override void OnActived () {
 			base.OnActived();
 			Width = Const.CELL_SIZE;
 			Height = Const.CELL_SIZE;
 			Pose = FurniturePose.Unknown;
-			RenderingRect = Rect;
 			FurnitureLeftOrDown = null;
 			FurnitureRightOrUp = null;
 		}
@@ -67,12 +91,60 @@ namespace Yaya {
 			base.FrameUpdate();
 			if (Pose == FurniturePose.Unknown) return;
 			if (TryGetSprite(Pose, out var sprite)) {
-				CellRenderer.Draw(sprite.GlobalID, RenderingRect);
+				var cell = CellRenderer.Draw(sprite.GlobalID, RenderingRect);
+				Update_Highlight(cell);
 			}
 		}
 
 
-		// API
+		private void Update_Highlight (Cell cell) {
+			// Highlight
+			if (!UseHighlightAnimation || this is not IActionEntity iAct) return;
+			if (!iAct.IsHighlighted) return;
+			int offset =
+				(Game.GlobalFrame - LastUnhighlightFrame) % 30 > 15
+				? 0
+				: Const.CELL_SIZE / 20;
+			if (ModuleType == Direction3.Horizontal) {
+				// Horizontal
+				if (Pose == FurniturePose.Left || Pose == FurniturePose.Single) {
+					cell.X -= offset;
+				}
+				if (Pose != FurniturePose.Mid) {
+					if (Pose == FurniturePose.Left) {
+						cell.Width += offset;
+					} else {
+						cell.Width += offset * 2;
+					}
+				}
+				cell.Y -= offset;
+				cell.Height += offset * 2;
+			} else {
+				// Vertical
+				if (Pose == FurniturePose.Down || Pose == FurniturePose.Single) {
+					cell.Y -= offset;
+				}
+				if (Pose != FurniturePose.Mid) {
+					if (Pose == FurniturePose.Down) {
+						cell.Height += offset;
+					} else {
+						cell.Height += offset * 2;
+					}
+				}
+				cell.X -= offset;
+				cell.Width += offset * 2;
+			}
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
 		protected void DrawClockHands (RectInt rect, int handCode, int thickness, int thicknessSecond) {
 			var now = System.DateTime.Now;
 			// Sec
@@ -122,7 +194,40 @@ namespace Yaya {
 			}, ArtworkIndex, out sprite, LoopArtworkIndex);
 
 
-		// LGC
+		// Highlight
+		public void Highlight () {
+			if (this is not IActionEntity) return;
+			bool oldHighlight = IsHighlighted;
+			if (!oldHighlight) LastUnhighlightFrame = Game.GlobalFrame;
+			HighlightFrame = Game.GlobalFrame;
+			HighlightAllNeighbors(!oldHighlight);
+		}
+
+
+		public void HighlightAllNeighbors (bool firstFrame) => ForAllNeighbors((fur) => {
+			fur.HighlightFrame = Game.GlobalFrame;
+			if (firstFrame) fur.LastUnhighlightFrame = Game.GlobalFrame;
+		});
+
+
+		public void ForAllNeighbors (System.Action<eFurniture> action) {
+			for (eFurniture i = FurnitureLeftOrDown; i != null; i = i.FurnitureLeftOrDown) {
+				action(i);
+			}
+			for (eFurniture i = FurnitureRightOrUp; i != null; i = i.FurnitureRightOrUp) {
+				action(i);
+			}
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
 		private void Update_Pose () {
 			if (Pose != FurniturePose.Unknown) return;
 
@@ -168,15 +273,23 @@ namespace Yaya {
 				Pose = FurniturePose.Single;
 			}
 
-
+			// Shrink Rect
 			if (TryGetSprite(Pose, out var sp)) {
-				var rect = Rect.Shrink(sp.GlobalBorder.Left, sp.GlobalBorder.Right, sp.GlobalBorder.Down, sp.GlobalBorder.Up);
-				X = rect.x;
-				Y = rect.y;
-				Width = rect.width;
-				Height = rect.height;
+				ColliderBorder.left = sp.GlobalBorder.Left;
+				ColliderBorder.right = sp.GlobalBorder.Right;
+				ColliderBorder.bottom = sp.GlobalBorder.Down;
+				ColliderBorder.top = sp.GlobalBorder.Up;
+				X -= ColliderBorder.left;
+				Y -= ColliderBorder.bottom;
+				Width -= ColliderBorder.horizontal;
+				Height -= ColliderBorder.vertical;
 			}
 		}
+
+
+		#endregion
+
+
 
 
 	}

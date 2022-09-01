@@ -164,22 +164,6 @@ namespace Yaya {
 		}
 
 
-		public void TakeHeal (int heal) {
-			Health.Heal(heal);
-
-
-		}
-
-
-		public bool InvokeAction () {
-			bool performed = Action.Invoke();
-
-
-
-			return performed;
-		}
-
-
 		public void Sleep () {
 			CharacterState = State.Sleep;
 		}
