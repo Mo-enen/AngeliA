@@ -20,13 +20,13 @@ namespace Yaya {
 		// Data
 		private int SkipFrame = int.MaxValue;
 		private int SkipY = 0;
-		private YayaGame Yaya = null;
+		private Yaya Yaya = null;
 
 
 		// MSG
 		public override void OnStart (Game game) {
 			base.OnStart(game);
-			Yaya = game as YayaGame;
+			Yaya = game as Yaya;
 			SetViewPosition(game, VIEW_X, VIEW_Y_START);
 			SkipFrame = int.MaxValue;
 			// Remove Player

@@ -1,0 +1,22 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+using AngeliaFramework;
+namespace Yaya {
+	public class eGoldenFan : eGoldenItem {
+		private static readonly int CODE = "Golden Fan".AngeHash();
+		protected override int ItemCode => CODE;
+
+
+
+
+
+
+
+
+
+
+
+	}
+}
