@@ -30,6 +30,10 @@ namespace Yaya {
 		private int AimX = 0;
 		private int AimY = 0;
 		private int AttackRequiringFrame = int.MinValue;
+		private eGamePadUI GamePadUI = null;
+
+		// Saving
+		private readonly SavingBool ShowGamePadUI = new("Yaya.ShowGamePadUI", false);
 
 
 		#endregion
@@ -65,6 +69,7 @@ namespace Yaya {
 					break;
 			}
 			UpdatePlayer_View();
+			Update_UI();
 		}
 
 
@@ -245,6 +250,29 @@ namespace Yaya {
 				if (CurrentPlayer.Y <= viewRect.yMin) AimY = CurrentPlayer.Y - 1;
 				SetViewPositionDely(AimX, AimY, 1000, Const.VIEW_PRIORITY_PLAYER + 1);
 			}
+		}
+
+
+		private void Update_UI () {
+			// Game Pad UI
+			if (ShowGamePadUI.Value) {
+				if (GamePadUI == null) {
+					if (TryGetEntityInStage<eGamePadUI>(out var gPad)) {
+						GamePadUI = gPad;
+					} else {
+						GamePadUI = AddEntity(typeof(eGamePadUI).AngeHash(), 0, 0) as eGamePadUI;
+						GamePadUI.X = 12;
+						GamePadUI.Y = 12;
+						GamePadUI.Width = 660;
+						GamePadUI.Height = 300;
+					}
+				}
+			} else if (GamePadUI != null) {
+				GamePadUI.Active = false;
+				GamePadUI = null;
+			}
+
+
 		}
 
 

@@ -65,7 +65,6 @@ namespace Yaya {
 
 
 					willQuit = true;
-					PlayerData.SaveToDisk();
 					Application.Quit();
 					return false;
 

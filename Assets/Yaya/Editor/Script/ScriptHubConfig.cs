@@ -3,7 +3,7 @@ using Moenen.Standard;
 
 namespace Yaya.Editor {
 	public class YayaScriptHub : IScriptHubConfig {
-		public string[] Paths => new string[] { "Assets", };
+		public string[] Paths => new string[] { "Assets/Yaya", };
 		public string IgnoreFolders => "Editor";
 		public string IgnoreFiles => "";
 		public string Title => "Yaya";
@@ -12,12 +12,18 @@ namespace Yaya.Editor {
 			};
 		public int Order => 0;
 		public int Column => 3;
-		public string GetName (string name) => name.StartsWith('e') || name.StartsWith('a') ? name[1..] : name;
+		public string GetFileName (string name) => name.StartsWith('e') || name.StartsWith('a') ? name[1..] : name;
+		public string GetFolderName (string name) {
+			if (name.Equals("Entity")) {
+				name = "z.Entity";
+			}
+			return name;
+		}
 	}
 
 
 	public class YayaArtworkHub : IScriptHubConfig {
-		public string[] Paths => new string[] { "Assets", };
+		public string[] Paths => new string[] { "Assets/Yaya", };
 		public string IgnoreFolders => "";
 		public string IgnoreFiles => "";
 		public string Title => "Yaya Artwork";
@@ -26,7 +32,6 @@ namespace Yaya.Editor {
 				new ("aseprite", "Aseprite", true),
 			};
 		public int Order => 1;
-		public string GetName (string name) => name.StartsWith('e') || name.StartsWith('a') ? name[1..] : name;
-
+		public string GetFileName (string name) => name.StartsWith('e') || name.StartsWith('a') ? name[1..] : name;
 	}
 }
