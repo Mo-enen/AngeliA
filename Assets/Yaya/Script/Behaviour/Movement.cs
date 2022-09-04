@@ -83,8 +83,8 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void Initialize (eYayaRigidbody source) {
-			base.Initialize(source);
+		public override void OnActived (eYayaRigidbody source) {
+			base.OnActived(source);
 			Source.Width = Width;
 			Source.Height = Height;
 		}

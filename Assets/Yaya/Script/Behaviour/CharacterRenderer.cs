@@ -157,8 +157,8 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void Initialize (eCharacter source) {
-			base.Initialize(source);
+		public override void OnActived (eCharacter source) {
+			base.OnActived(source);
 			string name = Source.GetType().Name;
 			if (name.StartsWith('e')) name = name[1..];
 
@@ -394,6 +394,8 @@ namespace Yaya {
 				!meta.Head.IsVailed ||
 				!meta.Head.Front
 			) return;
+
+
 			var movement = Source.Movement;
 			int bounce = Mathf.Abs(CurrentBounce);
 			int offsetY;

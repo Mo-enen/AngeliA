@@ -73,11 +73,11 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
-			Movement.Initialize(this);
-			Renderer.Initialize(this);
-			Action.Initialize(this);
-			Health.Initialize(this);
-			Attackness.Initialize(this);
+			Movement.OnActived(this);
+			Renderer.OnActived(this);
+			Action.OnActived(this);
+			Health.OnActived(this);
+			Attackness.OnActived(this);
 			CharacterState = State.General;
 			PassoutFrame = int.MinValue;
 		}
@@ -173,6 +173,7 @@ namespace Yaya {
 			CharacterState = State.General;
 			X += Const.CELL_SIZE / 2;
 			Renderer.Bounce();
+			Action.Update();
 		}
 
 

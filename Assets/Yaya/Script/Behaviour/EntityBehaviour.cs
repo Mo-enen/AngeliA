@@ -11,7 +11,7 @@ namespace Yaya {
 		public E Source { get; private set; } = null;
 
 
-		public virtual void Initialize (E source) {
+		public virtual void OnActived (E source) {
 			Source = source;
 		}
 

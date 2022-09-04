@@ -21,9 +21,11 @@ namespace Yaya {
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
 		public static Dictionary<Vector2Int, CheckPointMeta.Data> CpPool { get; } = new();
 		public static Dictionary<int, Vector2Int> CpAltarPool { get; } = new();
+		public override RectInt CameraRect => YayaCameraRect;
 
 		// Data
 		private static readonly HitInfo[] c_DamageCheck = new HitInfo[16];
+		private RectInt YayaCameraRect = default;
 
 
 		#endregion
@@ -94,6 +96,7 @@ namespace Yaya {
 
 		// Update
 		protected override void FrameUpdate () {
+			Update_CameraRect();
 			base.FrameUpdate();
 			Update_Damage();
 			Update_Player();
@@ -108,6 +111,18 @@ namespace Yaya {
 			}
 
 
+		}
+
+
+		private void Update_CameraRect () {
+			if (CellRenderer.HasEffect<fSquadTransition>()) {
+				var exp = (
+					(Vector2)CellRenderer.CameraRect.size * (Universe.Meta.SquadBehindParallax / 1000f - 1f)
+				).CeilToInt();
+				YayaCameraRect = base.CameraRect.Expand(exp.x, exp.x, exp.y, exp.y);
+			} else {
+				YayaCameraRect = base.CameraRect;
+			}
 		}
 
 
@@ -138,6 +153,21 @@ namespace Yaya {
 
 
 		protected override bool LanguageSupported (SystemLanguage language) => SupportedLanguages.Contains(language);
+
+
+		protected override void BeforeViewZChange (int newZ) {
+			base.BeforeViewZChange(newZ);
+			// Add Effect
+			CellRenderer.RemoveEffect<fSquadTransition>();
+			CellRenderer.AddEffect(new fSquadTransition(
+				Universe.Meta.SquadTransitionDuration,
+				newZ > ViewZ ?
+					1000f / Universe.Meta.SquadBehindParallax :
+					Universe.Meta.SquadBehindParallax / 1000f,
+				Universe.Meta.SquadBehindAlpha / 255f,
+				Universe.Meta.SquadTransitionCurve
+			));
+		}
 
 
 		#endregion

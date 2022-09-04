@@ -22,7 +22,8 @@ namespace Yaya {
 		[SerializeField] int ScanFrequency = 6;
 
 		// Data
-		[System.NonSerialized] readonly HitInfo[] c_ScanHits = new HitInfo[16];
+		private readonly HitInfo[] c_ScanHits = new HitInfo[16];
+		private bool RequireRefresh = false;
 
 
 		#endregion
@@ -33,17 +34,19 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void Initialize (Entity source) {
-			base.Initialize(source);
+		public override void OnActived (Entity source) {
+			base.OnActived(source);
 			CurrentTarget = null;
 			ScanFrequency = ScanFrequency.Clamp(1, int.MaxValue);
+			RequireRefresh = true;
 		}
 
 
 		public override void Update () {
 			base.Update();
 			// Search for Active Trigger
-			if (Game.GlobalFrame % ScanFrequency == 0) {
+			if (Game.GlobalFrame % ScanFrequency == 0 || RequireRefresh) {
+				RequireRefresh = false;
 				CurrentTarget = null;
 				int count = CellPhysics.OverlapAll(
 					c_ScanHits,

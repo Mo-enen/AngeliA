@@ -45,18 +45,26 @@ namespace Yaya {
 
 
 		public void Initialize_Player () {
+
+			// Switch Player
 			int firstPlayerID = 0;
 			foreach (var type in typeof(ePlayer).AllChildClass()) {
 				firstPlayerID = type.AngeHash();
 				if (type.GetCustomAttribute<FirstSelectedPlayerAttribute>(true) != null) break;
 			}
 			SwitchPlayer(firstPlayerID, false);
+
+			// Gamepad UI
+			FrameInput.AddCustomKey(KeyCode.F2);
+
+			// Open the Game !!
 			FrameStep.AddToLast(new sOpening());
 		}
 
 
 		public void Update_Player () {
 			UpdatePlayer_Respawn();
+			Update_UI();
 			if (CurrentPlayer == null) return;
 			switch (CurrentPlayer.CharacterState) {
 				case eCharacter.State.General:
@@ -69,7 +77,6 @@ namespace Yaya {
 					break;
 			}
 			UpdatePlayer_View();
-			Update_UI();
 		}
 
 
@@ -161,7 +168,7 @@ namespace Yaya {
 
 		private void UpdatePlayer_JumpDashPound () {
 
-			//if (CurrentPlayer.Action.CurrentTarget is eOpenableFurniture oFur && oFur.Open) return;
+			if (CurrentPlayer.Action.CurrentTarget is eOpenableFurniture oFur && oFur.Open) return;
 
 			var movement = CurrentPlayer.Movement;
 			var attackness = CurrentPlayer.Attackness;
@@ -185,35 +192,41 @@ namespace Yaya {
 
 		private void UpdatePlayer_ActionAndAttack () {
 
-			if (CurrentPlayer.Action.CurrentTarget is eOpenableFurniture oFur && oFur.Open) {
-				// Try Cancel Action
-				if (FrameInput.KeyDown(GameKey.Jump)) {
-					CurrentPlayer.Action.CancelInvoke();
-					return;
-				}
-			}
 			var movement = CurrentPlayer.Movement;
 			var attackness = CurrentPlayer.Attackness;
 
+			// Try Perform Action
 			if (FrameInput.KeyDown(GameKey.Action)) {
-				// Try Perform Action
 				bool performed = CurrentPlayer.Action.Invoke();
 				if (performed) return;
-				// Try Perform Attack
+			}
+
+			// Try Cancel Action
+			if (CurrentPlayer.Action.CurrentTarget != null) {
+				if (FrameInput.KeyDown(GameKey.Jump)) {
+					CurrentPlayer.Action.CancelInvoke();
+				}
+				return;
+			}
+
+			// Try Perform Attack
+			bool attDown = FrameInput.KeyDown(GameKey.Action);
+			bool attHolding = FrameInput.KeyPressing(GameKey.Action) && attackness.KeepTriggerWhenHold;
+			if (CurrentPlayer.CharacterState == eCharacter.State.General && (attDown || attHolding)) {
 				if (
-					attackness.IsReady &&
+					attackness.CheckReady(!attDown) &&
 					(attackness.AttackInAir || !movement.InAir) &&
 					(attackness.AttackInWater || !movement.InWater)
 				) {
 					attackness.Attack();
-				} else {
+				} else if (attDown) {
 					AttackRequiringFrame = GlobalFrame;
 				}
 				return;
 			}
 
 			// Perform Required Attack
-			if (attackness.IsReady && GlobalFrame < AttackRequiringFrame + ATTACK_REQUIRE_GAP) {
+			if (attackness.CheckReady(false) && GlobalFrame < AttackRequiringFrame + ATTACK_REQUIRE_GAP) {
 				AttackRequiringFrame = int.MinValue;
 				attackness.Attack();
 			}
@@ -221,7 +234,10 @@ namespace Yaya {
 
 
 		private void UpdatePlayer_Sleep () {
-			if (FrameInput.KeyDown(GameKey.Action)) {
+			if (
+				FrameInput.KeyDown(GameKey.Action) ||
+				FrameInput.KeyDown(GameKey.Jump)
+			) {
 				CurrentPlayer.Wakeup();
 			}
 		}
@@ -255,6 +271,9 @@ namespace Yaya {
 
 		private void Update_UI () {
 			// Game Pad UI
+			if (FrameInput.CustomKeyDown(KeyCode.F2)) {
+				ShowGamePadUI.Value = !ShowGamePadUI.Value;
+			}
 			if (ShowGamePadUI.Value) {
 				if (GamePadUI == null) {
 					if (TryGetEntityInStage<eGamePadUI>(out var gPad)) {
@@ -265,6 +284,17 @@ namespace Yaya {
 						GamePadUI.Y = 12;
 						GamePadUI.Width = 660;
 						GamePadUI.Height = 300;
+						GamePadUI.DPadLeftPosition = new(50, 110, 60, 40);
+						GamePadUI.DPadRightPosition = new(110, 110, 60, 40);
+						GamePadUI.DPadDownPosition = new(90, 70, 40, 60);
+						GamePadUI.DPadUpPosition = new(90, 130, 40, 60);
+						GamePadUI.SelectPosition = new(220, 100, 60, 20);
+						GamePadUI.StartPosition = new(300, 100, 60, 20);
+						GamePadUI.ButtonAPosition = new(530, 90, 60, 60);
+						GamePadUI.ButtonBPosition = new(430, 90, 60, 60);
+						GamePadUI.ColorfulButtonTint = new(240, 86, 86, 255);
+						GamePadUI.DarkButtonTint = new(0, 0, 0, 255);
+						GamePadUI.PressingTint = new(0, 255, 0, 255);
 					}
 				}
 			} else if (GamePadUI != null) {

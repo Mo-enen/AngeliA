@@ -46,8 +46,8 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void Initialize (Entity source) {
-			base.Initialize(source);
+		public override void OnActived (Entity source) {
+			base.OnActived(source);
 			HealthPoint = MaxHP.FinalValue;
 			InvincibleStartFrame = int.MinValue;
 		}

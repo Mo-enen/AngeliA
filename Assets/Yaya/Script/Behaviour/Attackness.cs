@@ -16,7 +16,6 @@ namespace Yaya {
 
 		// Api
 		public bool IsAttacking => Game.GlobalFrame < LastAttackFrame + Duration;
-		public bool IsReady => Game.GlobalFrame >= LastAttackFrame + Duration + Colldown;
 		public int LastAttackFrame { get; private set; } = int.MinValue;
 		public int BulletID => _BulletID != 0 ? _BulletID : (_BulletID = BulletName.Value.AngeHash());
 		public int Combo { get; private set; } = -1;
@@ -31,6 +30,8 @@ namespace Yaya {
 		public BuffBool StopMoveOnAttack { get; private set; } = new(true);
 		public BuffBool CancelAttackOnJump { get; private set; } = new(false);
 		public BuffBool RandomCombo { get; private set; } = new(false);
+		public BuffBool KeepTriggerWhenHold { get; private set; } = new(true);
+		public BuffInt HoldTriggerPunish { get; private set; } = new(4);
 
 		// Ser
 #pragma warning disable
@@ -43,6 +44,8 @@ namespace Yaya {
 		[SerializeField] bool _StopMoveOnAttack = true;
 		[SerializeField] bool _CancelAttackOnJump = false;
 		[SerializeField] bool _RandomCombo = false;
+		[SerializeField] bool _KeepTriggerWhenHold = true;
+		[SerializeField] int _HoldTriggerPunish = 4;
 #pragma warning restore
 
 		// Data
@@ -62,8 +65,8 @@ namespace Yaya {
 		public static void InitializeWithGame (Game game) => Game = game;
 
 
-		public override void Initialize (Entity source) {
-			base.Initialize(source);
+		public override void OnActived (Entity source) {
+			base.OnActived(source);
 			LastAttackFrame = int.MinValue;
 		}
 
@@ -112,6 +115,11 @@ namespace Yaya {
 			BulletName.Value = name;
 			_BulletID = 0;
 		}
+
+
+		public bool CheckReady (bool isHoldingAttack) => isHoldingAttack ?
+			Game.GlobalFrame >= LastAttackFrame + Duration + Colldown + HoldTriggerPunish :
+			Game.GlobalFrame >= LastAttackFrame + Duration + Colldown;
 
 
 		#endregion

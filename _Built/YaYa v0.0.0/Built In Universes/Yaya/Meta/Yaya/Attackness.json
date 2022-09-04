@@ -1,4 +1,5 @@
 {
 	"_BulletName" : "eYayaPaw",
-	"_Duration" : 12
+	"_Duration" : 12,
+	"_KeepTriggerWhenHold" : false
 }

@@ -9,19 +9,37 @@ namespace Yaya {
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.ForceUpdate]
-	public abstract class EntityUI : Entity {
-
+	public abstract class ScreenUI : Entity {
 
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			CellRenderer.SetLayer(YayaConst.SHADER_UI);
-			UpdateForUI(CellRenderer.CameraRect);
+			UpdateForUI();
 			CellRenderer.SetLayerToDefault();
 		}
 
 
-		protected abstract void UpdateForUI (RectInt screenRect);
+		protected abstract void UpdateForUI ();
+
+
+	}
+
+
+	[EntityAttribute.ExcludeInMapEditor]
+	[EntityAttribute.ForceUpdate]
+	public abstract class WorldUI : Entity {
+
+
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			CellRenderer.SetLayer(YayaConst.SHADER_UI);
+			UpdateForUI();
+			CellRenderer.SetLayerToDefault();
+		}
+
+
+		protected abstract void UpdateForUI ();
 
 
 	}
