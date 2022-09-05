@@ -16,6 +16,9 @@ namespace Yaya {
 
 		// Const
 		private const int ATTACK_REQUIRE_GAP = 12;
+		private const int VIEW_X = 10 * Const.CELL_SIZE;
+		private const int VIEW_Y_START = 19 * Const.CELL_SIZE;
+		private const int VIEW_Y_END = 8 * Const.CELL_SIZE;
 
 		// Api
 		public ePlayer CurrentPlayer { get; private set; } = null;
@@ -58,7 +61,13 @@ namespace Yaya {
 			FrameInput.AddCustomKey(KeyCode.F2);
 
 			// Open the Game !!
-			FrameStep.AddToLast(new sOpening());
+			FrameStep.AddToLast(new sOpening() {
+				ViewX = VIEW_X,
+				ViewYStart = VIEW_Y_START,
+				ViewYEnd = VIEW_Y_END,
+				SpawnPlayerAtStart = true,
+				RemovePlayerAtStart = true,
+			});
 		}
 
 
@@ -98,7 +107,13 @@ namespace Yaya {
 				!FrameStep.HasStep<sOpening>()
 			) {
 				FrameStep.AddToLast(new sFadeOut());
-				FrameStep.AddToLast(new sOpening());
+				FrameStep.AddToLast(new sOpening() {
+					ViewX = VIEW_X,
+					ViewYStart = VIEW_Y_START,
+					ViewYEnd = VIEW_Y_END,
+					RemovePlayerAtStart = true,
+					SpawnPlayerAtStart = true,
+				});
 			}
 		}
 
@@ -234,16 +249,16 @@ namespace Yaya {
 
 
 		private void UpdatePlayer_Sleep () {
-			if (
-				FrameInput.KeyDown(GameKey.Action) ||
-				FrameInput.KeyDown(GameKey.Jump)
-			) {
+			if (FrameStep.HasStep<sOpening>()) return;
+			if (FrameInput.KeyDown(GameKey.Action) || FrameInput.KeyDown(GameKey.Jump)) {
 				CurrentPlayer.Wakeup();
 			}
 		}
 
 
 		private void UpdatePlayer_View () {
+
+			if (FrameStep.HasStep<sOpening>()) return;
 
 			const int LINGER_RATE = 32;
 			const int LERP_RATE = 96;
@@ -270,6 +285,7 @@ namespace Yaya {
 
 
 		private void Update_UI () {
+
 			// Game Pad UI
 			if (FrameInput.CustomKeyDown(KeyCode.F2)) {
 				ShowGamePadUI.Value = !ShowGamePadUI.Value;

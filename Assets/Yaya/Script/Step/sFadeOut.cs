@@ -15,11 +15,13 @@ namespace Yaya {
 		// MSG
 		public override StepResult FrameUpdate (Game game) {
 			int localFrame = LocalFrame;
+			CellRenderer.SetLayer(YayaConst.SHADER_UI);
 			CellRenderer.Draw(
 				Const.PIXEL,
 				CellRenderer.CameraRect.Expand(Const.CELL_SIZE),
 				new Color32(0, 0, 0, (byte)Util.Remap(0, FADE_OUT, byte.MinValue, byte.MaxValue, localFrame))
 			);
+			CellRenderer.SetLayerToDefault();
 			return localFrame < FADE_OUT ? StepResult.Continue : StepResult.Over;
 		}
 

@@ -10,45 +10,51 @@ namespace Yaya {
 
 
 		// Const
-		private const int VIEW_X = 10 * Const.CELL_SIZE;
-		private const int VIEW_Y_START = 19 * Const.CELL_SIZE;
-		private const int VIEW_Y_END = 8 * Const.CELL_SIZE;
 		private const int DURATION = 180;
 		private const int BLACK_DURATION = 120;
 		private const int SKIP_DURATION = 12;
 
+		// Api
+		public int ViewX = 0;
+		public int ViewYStart = 0;
+		public int ViewYEnd = 0;
+		public bool SpawnPlayerAtStart = false;
+		public bool RemovePlayerAtStart = false;
+
 		// Data
 		private int SkipFrame = int.MaxValue;
 		private int SkipY = 0;
-		private Yaya Yaya = null;
 
 
 		// MSG
 		public override void OnStart (Game game) {
 			base.OnStart(game);
-			Yaya = game as Yaya;
-			SetViewPosition(game, VIEW_X, VIEW_Y_START);
+			SetViewPosition(game, ViewX, ViewYStart);
 			SkipFrame = int.MaxValue;
-			// Remove Player
-			if (game.TryGetEntityInStage<ePlayer>(out var player)) {
-				player.Active = false;
-				player.Wakeup();
-			}
 			// Draw Black Fade Out
 			CellRenderer.Draw(
 				Const.PIXEL,
 				CellRenderer.CameraRect.Expand(Const.CELL_SIZE),
 				new Color32(0, 0, 0, 255)
 			);
+			// Remove Player
+			if (RemovePlayerAtStart && game.TryGetEntityInStage<ePlayer>(out var player)) {
+				player.Active = false;
+				player.Wakeup();
+			}
 		}
 
 
 		public override StepResult FrameUpdate (Game game) {
 			int localFrame = LocalFrame;
+			// Spawn Player
+			if (localFrame == 1 && SpawnPlayerAtStart) {
+				(game as Yaya).SpawnPlayer(ViewX, ViewYEnd, true);
+			}
 			if (localFrame < SkipFrame) {
 				if (FrameInput.AnyKeyPressed) {
 					SkipFrame = localFrame;
-					SkipY = (int)Util.Remap(0, DURATION, VIEW_Y_START, VIEW_Y_END, localFrame);
+					SkipY = (int)Util.Remap(0, DURATION, ViewYStart, ViewYEnd, localFrame);
 				}
 				return Update_Opening(game, localFrame);
 			} else {
@@ -60,23 +66,24 @@ namespace Yaya {
 		private StepResult Update_Opening (Game game, int localFrame) {
 			// Black FadeIn
 			if (localFrame <= BLACK_DURATION) {
+				CellRenderer.SetLayer(YayaConst.SHADER_UI);
 				CellRenderer.Draw(
 					Const.PIXEL,
 					CellRenderer.CameraRect.Expand(Const.CELL_SIZE),
 					new Color32(0, 0, 0, (byte)Util.Remap(0, BLACK_DURATION, byte.MaxValue, byte.MinValue, localFrame))
 				);
+				CellRenderer.SetLayerToDefault();
 			}
 			if (localFrame < DURATION) {
 				// Camera Down
 				SetViewPosition(
 					game,
-					VIEW_X,
-					(int)Util.Remap(0, DURATION, VIEW_Y_START, VIEW_Y_END, localFrame)
+					ViewX,
+					(int)Util.Remap(0, DURATION, ViewYStart, ViewYEnd, localFrame)
 				);
 				return StepResult.Continue;
 			} else {
 				// End
-				Yaya.SpawnPlayer(VIEW_X, VIEW_Y_END, true);
 				return StepResult.Over;
 			}
 		}
@@ -86,13 +93,12 @@ namespace Yaya {
 			if (localFrame < SKIP_DURATION + SkipFrame) {
 				SetViewPosition(
 					game,
-					VIEW_X,
-					(int)Util.Remap(SkipFrame, SKIP_DURATION + SkipFrame, SkipY, VIEW_Y_END, localFrame)
+					ViewX,
+					(int)Util.Remap(SkipFrame, SKIP_DURATION + SkipFrame, SkipY, ViewYEnd, localFrame)
 				);
 				return StepResult.Continue;
 			} else {
 				// End
-				Yaya.SpawnPlayer(VIEW_X, VIEW_Y_END, true);
 				return StepResult.Over;
 			}
 		}

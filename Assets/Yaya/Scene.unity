@@ -170,10 +170,12 @@ MonoBehaviour:
   m_DefaultMeta:
     SkyTintTop: '#14151f, #20394c, #47aadb, #20394c, #14151f'
     SkyTintBottom: '#1f1f23, #324252, #80c8ec, #324252, #1f1f23'
-    PointTextureFilter: 1
-    FrameRate: 120
     DefaultLayer: 1
-    RendererCapacity: 0008000000100000400000004000000000040000
+    Framerate: 120
+    AngeliaFramerate: 60
+    AngeliaFramerateLag: 30
+    LagSimulationForRenderingCell: 2000
+    LagSimulationForEntity: 2000
     SquadBehindLayer: 0
     SquadBehindAlpha: 64
     SquadBehindParallax: 1300
@@ -209,16 +211,22 @@ MonoBehaviour:
     Gravity: 5
     GravityRise: 3
     MaxGravitySpeed: 96
+  m_GameAsset:
+    Skybox: {fileID: 4800000, guid: ce2324baeaef2844ba1c8c3df2091636, type: 3}
+    RendererLayers:
+    - Shader: {fileID: 4800000, guid: 5ecea7c8f214b374c9f5de383c65b73c, type: 3}
+      Capacity: 2048
+    - Shader: {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9, type: 3}
+      Capacity: 4096
+    - Shader: {fileID: 4800000, guid: b9fc8182fb006f74fa0719aaa99ba1f0, type: 3}
+      Capacity: 64
+    - Shader: {fileID: 4800000, guid: 224adbf6b4903284c8203f851a24833c, type: 3}
+      Capacity: 64
+    - Shader: {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9, type: 3}
+      Capacity: 1024
+  m_YayaMeta:
     WaterSpeedLose: 400
     QuickSandJumpoutSpeed: 48
     QuickSandMaxRunSpeed: 4
     QuickSandSinkSpeed: 1
     QuickSandJumpSpeed: 12
-  m_GameAssets:
-    SkyboxShader: {fileID: 4800000, guid: ce2324baeaef2844ba1c8c3df2091636, type: 3}
-    DrawShaders:
-    - {fileID: 4800000, guid: 5ecea7c8f214b374c9f5de383c65b73c, type: 3}
-    - {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9, type: 3}
-    - {fileID: 4800000, guid: 1655d3a01ad8a234297735e19d9032da, type: 3}
-    - {fileID: 4800000, guid: 224adbf6b4903284c8203f851a24833c, type: 3}
-    - {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9, type: 3}

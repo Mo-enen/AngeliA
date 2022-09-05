@@ -58,6 +58,19 @@ namespace Yaya {
 
 	// Meta
 	[System.Serializable]
+	public class YayaMeta {
+
+		//[Header("Physics")]
+		public int WaterSpeedLose = 400;
+		public int QuickSandJumpoutSpeed = 48;
+		public int QuickSandMaxRunSpeed = 4;
+		public int QuickSandSinkSpeed = 1;
+		public int QuickSandJumpSpeed = 12;
+
+	}
+
+
+	[System.Serializable]
 	public class CheckPointMeta {
 		[System.Serializable]
 		public struct Data {

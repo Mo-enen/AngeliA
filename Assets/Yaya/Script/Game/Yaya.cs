@@ -22,6 +22,10 @@ namespace Yaya {
 		public static Dictionary<Vector2Int, CheckPointMeta.Data> CpPool { get; } = new();
 		public static Dictionary<int, Vector2Int> CpAltarPool { get; } = new();
 		public override RectInt CameraRect => YayaCameraRect;
+		public YayaMeta YayaMeta => m_YayaMeta;
+
+		// Ser
+		[SerializeField] YayaMeta m_YayaMeta = null;
 
 		// Data
 		private static readonly HitInfo[] c_DamageCheck = new HitInfo[16];

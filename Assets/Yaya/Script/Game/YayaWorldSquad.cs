@@ -78,7 +78,7 @@ namespace Yaya {
 			base.DrawBackgroundBlock(id, unitX, unitY);
 			if (!Behind) {
 				// Collider for Oneway
-				if (CellRenderer.TryGetMeta(id, out var meta) && Const.IsOnewayTag(meta.Tag)) {
+				if (CellRenderer.TryGetMeta(id, out var meta) && AngeUtil.IsOnewayTag(meta.Tag)) {
 					CellPhysics.FillBlock(
 						YayaConst.LAYER_LEVEL,
 						new RectInt(
