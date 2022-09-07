@@ -167,19 +167,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3362cae42eeb7d40b229963ccd046a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DefaultMeta:
+  m_GameMeta:
     SkyTintTop: '#14151f, #20394c, #47aadb, #20394c, #14151f'
     SkyTintBottom: '#1f1f23, #324252, #80c8ec, #324252, #1f1f23'
-    DefaultLayer: 1
-    Framerate: 120
-    AngeliaFramerate: 60
-    AngeliaFramerateLag: 30
-    LagSimulationForRenderingCell: 2000
-    LagSimulationForEntity: 2000
+    PausingTint: '#000000'
+    EntityCapacity: 2048
+    SoundFxCount: 6
+    GraphicFramerate: 120
+    LogicFramerate: 60
+    LogicFramerateLag: 30
+    LagSimulation_EntityMin: 1600
+    LagSimulation_EntityMax: 2000
+    UseLagSimulationOnAudio: 1
     SquadBehindLayer: 0
     SquadBehindAlpha: 64
     SquadBehindParallax: 1300
     SquadTransitionDuration: 16
+    DefaultHeight: 5120
+    MinHeight: 2048
+    MaxHeight: 14336
+    ViewRatio: 2000
+    Gravity: 5
+    GravityRise: 3
+    MaxGravitySpeed: 96
+  m_GameAsset:
+    DefaultLayer: 1
+    Skybox: {fileID: 4800000, guid: ce2324baeaef2844ba1c8c3df2091636, type: 3}
+    AudioMixerGroup: {fileID: -5649732288638014774, guid: 2d8922283b392334ca57b3d736565004,
+      type: 2}
+    RendererLayers:
+    - Shader: {fileID: 4800000, guid: 5ecea7c8f214b374c9f5de383c65b73c, type: 3}
+      Capacity: 2048
+    - Shader: {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9, type: 3}
+      Capacity: 4096
+    - Shader: {fileID: 4800000, guid: b9fc8182fb006f74fa0719aaa99ba1f0, type: 3}
+      Capacity: 64
+    - Shader: {fileID: 4800000, guid: 224adbf6b4903284c8203f851a24833c, type: 3}
+      Capacity: 64
+    - Shader: {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9, type: 3}
+      Capacity: 1024
+    TextLayer:
+      Shader: {fileID: 10101, guid: 0000000000000000e000000000000000, type: 0}
+      Capacity: 1024
+  m_YayaMeta:
+    WaterSpeedLose: 400
+    QuickSandJumpoutSpeed: 48
+    QuickSandMaxRunSpeed: 4
+    QuickSandSinkSpeed: 1
+    QuickSandJumpSpeed: 12
+  m_YayaAsset:
     SquadTransitionCurve:
       serializedVersion: 2
       m_Curve:
@@ -204,29 +240,3 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    DefaultHeight: 5120
-    MinHeight: 2048
-    MaxHeight: 14336
-    ViewRatio: 2000
-    Gravity: 5
-    GravityRise: 3
-    MaxGravitySpeed: 96
-  m_GameAsset:
-    Skybox: {fileID: 4800000, guid: ce2324baeaef2844ba1c8c3df2091636, type: 3}
-    RendererLayers:
-    - Shader: {fileID: 4800000, guid: 5ecea7c8f214b374c9f5de383c65b73c, type: 3}
-      Capacity: 2048
-    - Shader: {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9, type: 3}
-      Capacity: 4096
-    - Shader: {fileID: 4800000, guid: b9fc8182fb006f74fa0719aaa99ba1f0, type: 3}
-      Capacity: 64
-    - Shader: {fileID: 4800000, guid: 224adbf6b4903284c8203f851a24833c, type: 3}
-      Capacity: 64
-    - Shader: {fileID: 4800000, guid: 48cda5dea88aa854a93c2524c136dac9, type: 3}
-      Capacity: 1024
-  m_YayaMeta:
-    WaterSpeedLose: 400
-    QuickSandJumpoutSpeed: 48
-    QuickSandMaxRunSpeed: 4
-    QuickSandSinkSpeed: 1
-    QuickSandJumpSpeed: 12

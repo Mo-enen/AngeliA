@@ -33,11 +33,7 @@ namespace Yaya {
 		private int AimX = 0;
 		private int AimY = 0;
 		private int AttackRequiringFrame = int.MinValue;
-		private eGamePadUI GamePadUI = null;
-
-		// Saving
-		private readonly SavingBool ShowGamePadUI = new("Yaya.ShowGamePadUI", false);
-
+		
 
 		#endregion
 
@@ -73,7 +69,6 @@ namespace Yaya {
 
 		public void Update_Player () {
 			UpdatePlayer_Respawn();
-			Update_UI();
 			if (CurrentPlayer == null) return;
 			switch (CurrentPlayer.CharacterState) {
 				case eCharacter.State.General:
@@ -228,14 +223,19 @@ namespace Yaya {
 			bool attDown = FrameInput.KeyDown(GameKey.Action);
 			bool attHolding = FrameInput.KeyPressing(GameKey.Action) && attackness.KeepTriggerWhenHold;
 			if (CurrentPlayer.CharacterState == eCharacter.State.General && (attDown || attHolding)) {
-				if (
-					attackness.CheckReady(!attDown) &&
-					(attackness.AttackInAir || !movement.InAir) &&
-					(attackness.AttackInWater || !movement.InWater)
+				if ((attackness.AttackInAir || !movement.InAir) &&
+					(attackness.AttackInWater || !movement.InWater) &&
+					(attackness.AttackWhenClimbing || !movement.IsClimbing) &&
+					(attackness.AttackWhenFlying || !movement.IsFlying) &&
+					(attackness.AttackWhenRolling || !movement.IsRolling) &&
+					(attackness.AttackWhenSquating || !movement.IsSquating) &&
+					(attackness.AttackWhenDashing || !movement.IsDashing)
 				) {
-					attackness.Attack();
-				} else if (attDown) {
-					AttackRequiringFrame = GlobalFrame;
+					if (attackness.CheckReady(!attDown)) {
+						attackness.Attack();
+					} else if (attDown) {
+						AttackRequiringFrame = GlobalFrame;
+					}
 				}
 				return;
 			}
@@ -281,44 +281,6 @@ namespace Yaya {
 				if (CurrentPlayer.Y <= viewRect.yMin) AimY = CurrentPlayer.Y - 1;
 				SetViewPositionDely(AimX, AimY, 1000, Const.VIEW_PRIORITY_PLAYER + 1);
 			}
-		}
-
-
-		private void Update_UI () {
-
-			// Game Pad UI
-			if (FrameInput.CustomKeyDown(KeyCode.F2)) {
-				ShowGamePadUI.Value = !ShowGamePadUI.Value;
-			}
-			if (ShowGamePadUI.Value) {
-				if (GamePadUI == null) {
-					if (TryGetEntityInStage<eGamePadUI>(out var gPad)) {
-						GamePadUI = gPad;
-					} else {
-						GamePadUI = AddEntity(typeof(eGamePadUI).AngeHash(), 0, 0) as eGamePadUI;
-						GamePadUI.X = 12;
-						GamePadUI.Y = 12;
-						GamePadUI.Width = 660;
-						GamePadUI.Height = 300;
-						GamePadUI.DPadLeftPosition = new(50, 110, 60, 40);
-						GamePadUI.DPadRightPosition = new(110, 110, 60, 40);
-						GamePadUI.DPadDownPosition = new(90, 70, 40, 60);
-						GamePadUI.DPadUpPosition = new(90, 130, 40, 60);
-						GamePadUI.SelectPosition = new(220, 100, 60, 20);
-						GamePadUI.StartPosition = new(300, 100, 60, 20);
-						GamePadUI.ButtonAPosition = new(530, 90, 60, 60);
-						GamePadUI.ButtonBPosition = new(430, 90, 60, 60);
-						GamePadUI.ColorfulButtonTint = new(240, 86, 86, 255);
-						GamePadUI.DarkButtonTint = new(0, 0, 0, 255);
-						GamePadUI.PressingTint = new(0, 255, 0, 255);
-					}
-				}
-			} else if (GamePadUI != null) {
-				GamePadUI.Active = false;
-				GamePadUI = null;
-			}
-
-
 		}
 
 

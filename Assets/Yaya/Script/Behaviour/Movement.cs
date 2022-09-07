@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Yaya {
 	[System.Serializable]
-	public partial class Movement : EntityBehaviour<eYayaRigidbody> {
+	public partial class Movement {
 
 
 
@@ -22,6 +22,7 @@ namespace Yaya {
 		private const int RUN_BREAK_GAP = 6;
 
 		// Api
+		public eYayaRigidbody Source { get; private set; } = null;
 		public Vector2Int LastMoveDirection { get; private set; } = default;
 		public int IntendedX { get; private set; } = 0;
 		public int IntendedY { get; private set; } = 0;
@@ -83,15 +84,14 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnActived (eYayaRigidbody source) {
-			base.OnActived(source);
+		public void OnActived (eYayaRigidbody source) {
+			Source = source;
 			Source.Width = Width;
 			Source.Height = Height;
 		}
 
 
-		public override void Update () {
-			base.Update();
+		public void Update () {
 			CurrentFrame = Game.GlobalFrame;
 			Update_Cache();
 			Update_Jump();

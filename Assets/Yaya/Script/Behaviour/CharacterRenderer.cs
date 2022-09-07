@@ -6,7 +6,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[System.Serializable]
-	public class CharacterRenderer : EntityBehaviour<eCharacter> {
+	public class CharacterRenderer {
 
 
 
@@ -21,32 +21,35 @@ namespace Yaya {
 			public int LoopStart = 0;
 
 
-			public AniCode (string name, params string[] failbacks) : this(name.AngeHash(), failbacks) { }
-
-
-			public AniCode (int code, params string[] failbacks) {
-				if (Load(code)) return;
-				foreach (var failback in failbacks) {
-					code = failback.AngeHash();
-					if (Load(code)) break;
+			public AniCode (string name, params AniCode[] failbacks) : this(name.AngeHash(), failbacks) { }
+			public AniCode (int code, params AniCode[] failbacks) {
+				Load(code);
+				if (Code == 0) {
+					foreach (var failback in failbacks) {
+						if (failback.Code != 0) {
+							Code = failback.Code;
+							LoopStart = failback.LoopStart;
+							break;
+						}
+					}
 				}
 			}
 
-
-			public bool Load (int nameCode) {
+			public void Load (int nameCode) {
 				if (CellRenderer.TryGetSpriteChain(nameCode, out var chain)) {
 					Code = nameCode;
 					LoopStart = chain.LoopStart;
-					return true;
 				} else if (CellRenderer.TryGetSprite(nameCode, out _)) {
 					Code = nameCode;
 					LoopStart = 0;
+				} else {
+					Code = 0;
+					LoopStart = 0;
 				}
-				return false;
 			}
 
 
-			public static AniCode[] GetAnimationArray (string keyName, int defaultLoopStart = 0) {
+			public static AniCode[] GetAnimationArray (string keyName, int defaultLoopStart, AniCode[] failbacks = null) {
 				var result = new List<AniCode>();
 				int code = keyName.AngeHash();
 				if (CellRenderer.TryGetSprite(code, out _, 0)) {
@@ -57,6 +60,10 @@ namespace Yaya {
 					if (CellRenderer.TryGetSprite(code, out _, 0)) {
 						result.Add(new AniCode(code) { LoopStart = defaultLoopStart, });
 					} else break;
+				}
+				// Failback
+				if (failbacks != null && failbacks.Length > 0 && result.Count == 0) {
+					result.AddRange(failbacks);
 				}
 				return result.ToArray();
 			}
@@ -98,6 +105,7 @@ namespace Yaya {
 
 
 		// Api
+		public eCharacter Source { get; private set; } = null;
 		public int FaceIndex { get; set; } = 0;
 
 		// Ser
@@ -157,44 +165,47 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnActived (eCharacter source) {
-			base.OnActived(source);
+		public void OnActived (eCharacter source) {
+			Source = source;
 			string name = Source.GetType().Name;
 			if (name.StartsWith('e')) name = name[1..];
 
-			Idle = new($"_a{name}.Idle", $"_a{name}");
-			Walk = new($"_a{name}.Walk", $"_a{name}.Run", $"_a{name}.Idle");
-			Run = new($"_a{name}.Run", $"_a{name}.Walk", $"_a{name}.Idle");
-			JumpU = new($"_a{name}.JumpU", $"_a{name}.Idle");
-			JumpD = new($"_a{name}.JumpD", $"_a{name}.Idle");
-			Roll = new($"_a{name}.Roll", $"_a{name}.Run");
-			Dash = new($"_a{name}.Dash", $"_a{name}.Roll");
-			SquatIdle = new($"_a{name}.SquatIdle", $"_a{name}.Idle");
-			SquatMove = new($"_a{name}.SquatMove", $"_a{name}.Walk");
-			SwimIdle = new($"_a{name}.SwimIdle", $"_a{name}.Swim", $"_a{name}.Idle");
-			SwimMove = new($"_a{name}.SwimMove", $"_a{name}.SwimIdle", $"_a{name}.Swim", $"_a{name}.Run");
-			SwimDash = new($"_a{name}.SwimDash", $"_a{name}.SwimMove", $"_a{name}.Swim", $"_a{name}.Dash");
-			Pound = new($"_a{name}.Pound", $"_a{name}.Idle");
-			Climb = new($"_a{name}.Climb", $"_a{name}.Walk");
-			Fly = new($"_a{name}.Fly", $"_a{name}.Run");
+			Idle = new($"_a{name}.Idle");
+			if (Idle.Code == 0) Idle = new($"_a{name}");
+			Walk = new($"_a{name}.Walk", Idle);
+			Run = new($"_a{name}.Run", Walk);
+			var jump = new AniCode($"_a{name}.Jump", Idle);
+			JumpU = new($"_a{name}.JumpU", jump);
+			JumpD = new($"_a{name}.JumpD", jump);
+			Roll = new($"_a{name}.Roll", Run, Idle);
+			Dash = new($"_a{name}.Dash", Roll);
+			var squat = new AniCode($"_a{name}.Squat", Idle);
+			SquatIdle = new($"_a{name}.SquatIdle", squat);
+			SquatMove = new($"_a{name}.SquatMove", squat);
+			var swim = new AniCode($"_a{name}.Swim", Run);
+			SwimIdle = new($"_a{name}.SwimIdle", swim);
+			SwimMove = new($"_a{name}.SwimMove", swim);
+			SwimDash = new($"_a{name}.SwimDash", swim);
+			Pound = new($"_a{name}.Pound", Idle);
+			Climb = new($"_a{name}.Climb", Idle);
+			Fly = new($"_a{name}.Fly", Run);
 
-			Sleep = new($"_a{name}.Sleep", $"_a{name}.Idle", $"_a{name}");
-			Damaging = new($"_a{name}.Damage", $"_a{name}.Idle", $"_a{name}");
-			Passout = new($"_a{name}.Passout", $"_a{name}.Idle", $"_a{name}");
+			Sleep = new($"_a{name}.Sleep", Idle);
+			Damaging = new($"_a{name}.Damage", Idle);
+			Passout = new($"_a{name}.Passout", Idle);
 			Face = new($"{name}.Face");
-			FaceBlink = new AniCode($"{name}.Face.Blink", $"{name}.Face");
+			FaceBlink = new($"{name}.Face.Blink");
 
 			Attacks = AniCode.GetAnimationArray($"_a{name}.Attack", -1);
-			Attacks_Move = AniCode.GetAnimationArray($"_a{name}.AttackMove", -1);
-			Attacks_Air = AniCode.GetAnimationArray($"_a{name}.AttackAir", -1);
-			Attacks_Water = AniCode.GetAnimationArray($"_a{name}.AttackWater", -1);
+			Attacks_Move = AniCode.GetAnimationArray($"_a{name}.AttackMove", -1, Attacks);
+			Attacks_Air = AniCode.GetAnimationArray($"_a{name}.AttackAir", -1, Attacks);
+			Attacks_Water = AniCode.GetAnimationArray($"_a{name}.AttackWater", -1, Attacks);
 
 		}
 
 
-		public override void Update () {
+		public void Update () {
 
-			base.Update();
 			int frame = Game.GlobalFrame;
 
 			// Blink
@@ -267,13 +278,15 @@ namespace Yaya {
 			// Get Ani
 			if (attackness.IsAttacking) {
 				// Attack
-				var attacks = Attacks;
-				if (movement.InWater && Attacks_Water.Length > 0) {
+				AniCode[] attacks;
+				if (movement.InWater) {
 					attacks = Attacks_Water;
-				} else if (movement.InAir && Attacks_Air.Length > 0) {
+				} else if (movement.InAir) {
 					attacks = Attacks_Air;
-				} else if (movement.IsMoving && Attacks_Move.Length > 0) {
+				} else if (movement.IsMoving) {
 					attacks = Attacks_Move;
+				} else {
+					attacks = Attacks;
 				}
 				if (attacks.Length > 0) {
 					ani = attacks[attackness.Combo.Clamp(0, attacks.Length - 1)];

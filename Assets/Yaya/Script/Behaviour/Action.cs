@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Yaya {
 	[System.Serializable]
-	public class Action : EntityBehaviour<Entity> {
+	public class Action {
 
 
 
@@ -16,6 +16,7 @@ namespace Yaya {
 
 		// Api
 		public IActionEntity CurrentTarget { get; private set; } = null;
+		public Entity Source { get; private set; } = null;
 
 		// Ser
 		[SerializeField] int ScanRange = Const.CELL_SIZE / 2;
@@ -34,16 +35,15 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnActived (Entity source) {
-			base.OnActived(source);
+		public void OnActived (Entity source) {
+			Source = source;
 			CurrentTarget = null;
 			ScanFrequency = ScanFrequency.Clamp(1, int.MaxValue);
 			RequireRefresh = true;
 		}
 
 
-		public override void Update () {
-			base.Update();
+		public void Update () {
 			// Search for Active Trigger
 			if (Game.GlobalFrame % ScanFrequency == 0 || RequireRefresh) {
 				RequireRefresh = false;

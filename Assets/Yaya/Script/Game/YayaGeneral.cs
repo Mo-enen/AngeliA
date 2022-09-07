@@ -56,11 +56,18 @@ namespace Yaya {
 
 
 
+	// Data
+	[System.Serializable]
+	public class YayaAsset {
+		public AnimationCurve SquadTransitionCurve = null;
+	}
+
+
+
 	// Meta
 	[System.Serializable]
 	public class YayaMeta {
 
-		//[Header("Physics")]
 		public int WaterSpeedLose = 400;
 		public int QuickSandJumpoutSpeed = 48;
 		public int QuickSandMaxRunSpeed = 4;

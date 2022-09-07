@@ -26,10 +26,15 @@ namespace Yaya {
 
 		// Ser
 		[SerializeField] YayaMeta m_YayaMeta = null;
+		[SerializeField] YayaAsset m_YayaAsset = null;
 
 		// Data
 		private static readonly HitInfo[] c_DamageCheck = new HitInfo[16];
 		private RectInt YayaCameraRect = default;
+		private eGamePadUI GamePadUI = null;
+
+		// Saving
+		private readonly SavingBool ShowGamePadUI = new("Yaya.ShowGamePadUI", false);
 
 
 		#endregion
@@ -51,8 +56,10 @@ namespace Yaya {
 
 			FrameInput.AddCustomKey(KeyCode.Alpha1);
 			FrameInput.AddCustomKey(KeyCode.Alpha2);
-
-
+			FrameInput.AddCustomKey(KeyCode.Alpha3);
+			FrameInput.AddCustomKey(KeyCode.Alpha4);
+			FrameInput.AddCustomKey(KeyCode.Alpha5);
+			FrameInput.AddCustomKey(KeyCode.Alpha6);
 
 		}
 
@@ -100,20 +107,24 @@ namespace Yaya {
 
 		// Update
 		protected override void FrameUpdate () {
+
 			Update_CameraRect();
 			base.FrameUpdate();
 			Update_Damage();
 			Update_Player();
+			Update_UI();
 
 
 
 			if (FrameInput.CustomKeyDown(KeyCode.Alpha1)) {
-				SetViewZ(ViewZ + 1);
+				//SetViewZ(ViewZ + 1);
+				AudioPlayer.PlaySound("BloopDownPitch".AngeHash());
 			}
 			if (FrameInput.CustomKeyDown(KeyCode.Alpha2)) {
-				SetViewZ(ViewZ - 1);
-			}
+				//SetViewZ(ViewZ - 1);
+				AudioPlayer.PlaySound("Brassic".AngeHash());
 
+			}
 
 		}
 
@@ -145,6 +156,58 @@ namespace Yaya {
 		}
 
 
+		protected override void PauselessUpdate () {
+			base.PauselessUpdate();
+			// Pause
+			if (FrameInput.KeyDown(GameKey.Start)) {
+				IsPausing = !IsPausing;
+				if (IsPausing) {
+					AudioPlayer.Pause();
+				} else {
+					AudioPlayer.UnPause();
+				}
+			}
+		}
+
+
+		private void Update_UI () {
+
+			// Game Pad UI
+			if (FrameInput.CustomKeyDown(KeyCode.F2)) {
+				ShowGamePadUI.Value = !ShowGamePadUI.Value;
+			}
+			if (ShowGamePadUI.Value) {
+				if (GamePadUI == null) {
+					if (TryGetEntityInStage<eGamePadUI>(out var gPad)) {
+						GamePadUI = gPad;
+					} else {
+						GamePadUI = AddEntity(typeof(eGamePadUI).AngeHash(), 0, 0) as eGamePadUI;
+						GamePadUI.X = 12;
+						GamePadUI.Y = 12;
+						GamePadUI.Width = 660;
+						GamePadUI.Height = 300;
+						GamePadUI.DPadLeftPosition = new(50, 110, 60, 40);
+						GamePadUI.DPadRightPosition = new(110, 110, 60, 40);
+						GamePadUI.DPadDownPosition = new(90, 70, 40, 60);
+						GamePadUI.DPadUpPosition = new(90, 130, 40, 60);
+						GamePadUI.SelectPosition = new(220, 100, 60, 20);
+						GamePadUI.StartPosition = new(300, 100, 60, 20);
+						GamePadUI.ButtonAPosition = new(530, 90, 60, 60);
+						GamePadUI.ButtonBPosition = new(430, 90, 60, 60);
+						GamePadUI.ColorfulButtonTint = new(240, 86, 86, 255);
+						GamePadUI.DarkButtonTint = new(0, 0, 0, 255);
+						GamePadUI.PressingTint = new(0, 255, 0, 255);
+					}
+				}
+			} else if (GamePadUI != null) {
+				GamePadUI.Active = false;
+				GamePadUI = null;
+			}
+
+
+		}
+
+
 		#endregion
 
 
@@ -169,7 +232,7 @@ namespace Yaya {
 					1000f / Universe.Meta.SquadBehindParallax :
 					Universe.Meta.SquadBehindParallax / 1000f,
 				Universe.Meta.SquadBehindAlpha / 255f,
-				Universe.Meta.SquadTransitionCurve
+				m_YayaAsset.SquadTransitionCurve
 			));
 		}
 

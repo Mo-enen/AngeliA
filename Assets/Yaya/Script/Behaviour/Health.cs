@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 namespace Yaya {
-	public class Health : EntityBehaviour<Entity>, ISerializationCallbackReceiver {
+	public class Health : ISerializationCallbackReceiver {
 
 
 
@@ -14,6 +14,7 @@ namespace Yaya {
 
 
 		// Api
+		public Entity Source { get; private set; } = null;
 		public int HealthPoint { get; private set; } = 1;
 		public int LastDamageFrame { get; private set; } = int.MinValue;
 		public bool FullHealth => HealthPoint >= MaxHP;
@@ -46,8 +47,8 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnActived (Entity source) {
-			base.OnActived(source);
+		public void OnActived (Entity source) {
+			Source = source;
 			HealthPoint = MaxHP.FinalValue;
 			InvincibleStartFrame = int.MinValue;
 		}

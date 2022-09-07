@@ -118,7 +118,6 @@ namespace Yaya {
 						Attackness.Update();
 						Movement.Update();
 					}
-					Health.Update();
 					base.PhysicsUpdate();
 					break;
 				case State.Animate:
