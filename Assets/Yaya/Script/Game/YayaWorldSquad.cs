@@ -55,10 +55,10 @@ namespace Yaya {
 				c = cell.Color;
 				c.a = (byte)(alpha * 255);
 				cell.Color = c;
-				cell.X = cell.X.LerpTo(center.x.RoundToInt(), 1f - scale);
-				cell.Y = cell.Y.LerpTo(center.y.RoundToInt(), 1f - scale);
-				cell.Width = (cell.Width * scale).RoundToInt();
-				cell.Height = (cell.Height * scale).RoundToInt();
+				cell.X = cell.X.LerpTo(center.x.FloorToInt(), 1f - scale);
+				cell.Y = cell.Y.LerpTo(center.y.FloorToInt(), 1f - scale);
+				cell.Width = (cell.Width * scale).CeilToInt();
+				cell.Height = (cell.Height * scale).CeilToInt();
 			}
 		}
 

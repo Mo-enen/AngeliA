@@ -33,7 +33,7 @@ namespace Yaya {
 		private int AimX = 0;
 		private int AimY = 0;
 		private int AttackRequiringFrame = int.MinValue;
-		
+
 
 		#endregion
 

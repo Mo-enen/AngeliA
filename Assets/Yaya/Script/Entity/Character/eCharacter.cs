@@ -84,10 +84,8 @@ namespace Yaya {
 
 
 		public override void FillPhysics () {
-			switch (CharacterState) {
-				case State.General:
-					base.FillPhysics();
-					break;
+			if (CharacterState == State.General) {
+				base.FillPhysics();
 			}
 		}
 

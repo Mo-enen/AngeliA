@@ -112,17 +112,20 @@ namespace Yaya {
 			base.FrameUpdate();
 			Update_Damage();
 			Update_Player();
-			Update_UI();
+
+			UpdateUI_ControlHint();
+			UpdateUI_Gamepad();
+
 
 
 
 			if (FrameInput.CustomKeyDown(KeyCode.Alpha1)) {
-				//SetViewZ(ViewZ + 1);
-				AudioPlayer.PlaySound("BloopDownPitch".AngeHash());
+				SetViewZ(ViewZ + 1);
+				//AudioPlayer.PlaySound("BloopDownPitch".AngeHash());
 			}
 			if (FrameInput.CustomKeyDown(KeyCode.Alpha2)) {
-				//SetViewZ(ViewZ - 1);
-				AudioPlayer.PlaySound("Brassic".AngeHash());
+				SetViewZ(ViewZ - 1);
+				//AudioPlayer.PlaySound("Brassic".AngeHash());
 
 			}
 
@@ -156,23 +159,17 @@ namespace Yaya {
 		}
 
 
-		protected override void PauselessUpdate () {
-			base.PauselessUpdate();
-			// Pause
-			if (FrameInput.KeyDown(GameKey.Start)) {
-				IsPausing = !IsPausing;
-				if (IsPausing) {
-					AudioPlayer.Pause();
-				} else {
-					AudioPlayer.UnPause();
-				}
-			}
+		private void UpdateUI_ControlHint () {
+			if (CurrentPlayer == null || !CurrentPlayer.Active) return;
+			
+
+
+
+
 		}
 
 
-		private void Update_UI () {
-
-			// Game Pad UI
+		private void UpdateUI_Gamepad () {
 			if (FrameInput.CustomKeyDown(KeyCode.F2)) {
 				ShowGamePadUI.Value = !ShowGamePadUI.Value;
 			}
@@ -203,8 +200,21 @@ namespace Yaya {
 				GamePadUI.Active = false;
 				GamePadUI = null;
 			}
+		}
 
 
+		// Override
+		protected override void PauselessUpdate () {
+			base.PauselessUpdate();
+			// Pause
+			if (FrameInput.KeyDown(GameKey.Start)) {
+				IsPausing = !IsPausing;
+				if (IsPausing) {
+					AudioPlayer.Pause();
+				} else {
+					AudioPlayer.UnPause();
+				}
+			}
 		}
 
 

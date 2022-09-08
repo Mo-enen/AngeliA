@@ -59,8 +59,6 @@ namespace Yaya {
 		private int CurrentDashDuration => InWater && SwimInFreeStyle ? FreeSwimDashDuration : DashDuration;
 		private int CurrentDashCooldown => InWater && SwimInFreeStyle ? FreeSwimDashCooldown : DashCooldown;
 
-
-
 		// Data
 		private readonly HitInfo[] c_HitboxCollisionFix = new HitInfo[8];
 		private RectInt Hitbox = default;
@@ -464,6 +462,9 @@ namespace Yaya {
 
 			// Rolling
 			if (IsRolling) return SquatHeight;
+
+			// Fly
+			if (IsFlying) return FlyHeight;
 
 			// Normal
 			return Height;
