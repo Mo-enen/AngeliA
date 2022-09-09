@@ -14,7 +14,7 @@ namespace Yaya {
 
 
 		public override void FrameUpdate () {
-			CellRenderer.Draw(BARREL_CODE, Rect);
+            AngeliaFramework.Renderer.Draw(BARREL_CODE, base.Rect);
 			base.FrameUpdate();
 		}
 

@@ -19,9 +19,9 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			if (Pose == FurniturePose.Up || Pose == FurniturePose.Single) {
-				CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
+				Physics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
 			} else {
-				CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
+				Physics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
 			}
 		}
 

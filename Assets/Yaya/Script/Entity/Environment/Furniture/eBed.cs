@@ -27,7 +27,7 @@ namespace Yaya {
 				var rect = Rect;
 				for (int i = 1; i < 1024; i++) {
 					rect.x = X - i * Const.CELL_SIZE;
-					if (CellPhysics.HasEntity<eBed>(rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly)) {
+					if (Physics.HasEntity<eBed>(rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly)) {
 						bedX = rect.x;
 					} else break;
 				}

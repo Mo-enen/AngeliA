@@ -178,7 +178,7 @@ namespace Yaya {
 		protected override bool GroundedCheck (RectInt rect) => base.GroundedCheck(rect);
 
 
-		protected override bool InsideGroundCheck () => CellPhysics.Overlap(YayaConst.MASK_LEVEL, new(X, Y + Height / 4, 1, 1), this);
+		protected override bool InsideGroundCheck () => Physics.Overlap(YayaConst.MASK_LEVEL, new(X, Y + Height / 4, 1, 1), this);
 
 
 		#endregion

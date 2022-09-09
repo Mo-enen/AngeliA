@@ -39,7 +39,7 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
+			Physics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
 		}
 
 
@@ -48,7 +48,7 @@ namespace Yaya {
 			// Unfill
 			if (!UnfillBottomBlock.HasValue) {
 				if (DirectionVertical == Direction3.Up) {
-					UnfillBottomBlock = CellPhysics.HasEntity<eSlope>(
+					UnfillBottomBlock = Physics.HasEntity<eSlope>(
 						new(DirectionHorizontal == Direction3.Left ? X - Const.CELL_SIZE / 2 : X + Const.CELL_SIZE + Const.CELL_SIZE / 2, Y - Const.CELL_SIZE / 2, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 					);
 				} else {
@@ -56,14 +56,14 @@ namespace Yaya {
 				}
 			}
 			if (UnfillBottomBlock.HasValue && UnfillBottomBlock.Value) {
-				CellPhysics.Unfill(
+				Physics.Unfill(
 					YayaConst.MASK_LEVEL,
 					new(X + Const.CELL_SIZE / 2, Y - Const.CELL_SIZE / 2, 1, 1),
 					false, true
 				);
 			}
 			// Fix Rig
-			int count = CellPhysics.OverlapAll(c_Overlap, CollisionMask, Rect);
+			int count = Physics.OverlapAll(c_Overlap, CollisionMask, Rect);
 			for (int i = 0; i < count; i++) {
 				var hit = c_Overlap[i];
 				if (hit.Entity is not eYayaRigidbody rig) continue;

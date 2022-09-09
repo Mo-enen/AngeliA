@@ -29,14 +29,14 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, YayaConst.CLIMB_STABLE_TAG);
+			Physics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, YayaConst.CLIMB_STABLE_TAG);
 		}
 
 
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
 			if (!HasLadderOnTop.HasValue) {
-				HasLadderOnTop = CellPhysics.HasEntity<eLadder>(
+				HasLadderOnTop = Physics.HasEntity<eLadder>(
 					Rect.Shift(0, Const.CELL_SIZE),
 					YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly, YayaConst.CLIMB_STABLE_TAG
 				);
@@ -46,7 +46,7 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.Draw(LADDER_CODE, new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE));
+            AngeliaFramework.Renderer.Draw(LADDER_CODE, new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE));
 		}
 
 

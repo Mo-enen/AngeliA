@@ -81,13 +81,13 @@ namespace Yaya {
 				RequireBouncePerform = false;
 				if (Horizontal) {
 					// Hori
-					if (CellPhysics.Overlap(
+					if (Physics.Overlap(
 						YayaConst.MASK_RIGIDBODY,
 						new(X - 1, Y, Const.CELL_SIZE / 2, Const.CELL_SIZE),
 						this
 					)) {
 						StartBounce(frame, Direction4.Left);
-					} else if (CellPhysics.Overlap(
+					} else if (Physics.Overlap(
 						YayaConst.MASK_RIGIDBODY,
 						new(X + Const.CELL_SIZE / 2, Y, Const.CELL_SIZE / 2 + 1, Const.CELL_SIZE),
 						this
@@ -96,7 +96,7 @@ namespace Yaya {
 					}
 				} else {
 					// Vert
-					if (CellPhysics.Overlap(
+					if (Physics.Overlap(
 						YayaConst.MASK_RIGIDBODY,
 						new(X, Y + Const.CELL_SIZE / 2, Const.CELL_SIZE, Const.CELL_SIZE / 2 + 1),
 						this
@@ -106,7 +106,7 @@ namespace Yaya {
 				}
 			} else if (frame > LastBounceFrame + BOUNCE_DELY && RequireBouncePerform) {
 				// Try Perform Bounce
-				var hit = CellPhysics.GetLastTouched<eYayaRigidbody>(
+				var hit = Physics.GetLastTouched<eYayaRigidbody>(
 					YayaConst.MASK_RIGIDBODY,
 					FullRect.Expand(Horizontal ? 1 : 0, Horizontal ? 1 : 0, Horizontal ? 0 : 1, Horizontal ? 0 : 1),
 					this, BounceSide, 16
@@ -129,8 +129,8 @@ namespace Yaya {
 			}
 			int frame = CurrentArtworkFrame.UMod(BOUNCE_ANI.Length);
 			if (Horizontal) {
-				// Hori
-				CellRenderer.Draw(
+                // Hori
+                AngeliaFramework.Renderer.Draw(
 					globalID: codes[BOUNCE_ANI[frame]],
 					x: X + Const.CELL_SIZE / 2,
 					y: Y + Const.CELL_SIZE / 2,
@@ -140,12 +140,12 @@ namespace Yaya {
 					width: -Const.CELL_SIZE, height: Const.CELL_SIZE, color: tint
 				);
 			} else {
-				// Vert
-				CellRenderer.Draw(
+                // Vert
+                AngeliaFramework.Renderer.Draw(
 					codes[BOUNCE_ANI[frame]],
-					X + Const.CELL_SIZE / 2, Y,
+                    X + Const.CELL_SIZE / 2, Y,
 					500, 0, 0,
-					Const.CELL_SIZE, Const.CELL_SIZE, tint
+                    Const.CELL_SIZE, Const.CELL_SIZE, tint
 				);
 			}
 		}

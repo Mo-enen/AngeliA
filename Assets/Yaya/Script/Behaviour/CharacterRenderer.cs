@@ -36,15 +36,15 @@ namespace Yaya {
 			}
 
 			public void Load (int nameCode) {
-				if (CellRenderer.TryGetSpriteChain(nameCode, out var chain)) {
-					Code = nameCode;
-					LoopStart = chain.LoopStart;
-				} else if (CellRenderer.TryGetSprite(nameCode, out _)) {
-					Code = nameCode;
-					LoopStart = 0;
+				if (AngeliaFramework.Renderer.TryGetSpriteChain(nameCode, out var chain)) {
+                    Code = nameCode;
+                    LoopStart = chain.LoopStart;
+				} else if (AngeliaFramework.Renderer.TryGetSprite(nameCode, out _)) {
+                    Code = nameCode;
+                    LoopStart = 0;
 				} else {
-					Code = 0;
-					LoopStart = 0;
+                    Code = 0;
+                    LoopStart = 0;
 				}
 			}
 
@@ -52,12 +52,12 @@ namespace Yaya {
 			public static AniCode[] GetAnimationArray (string keyName, int defaultLoopStart, AniCode[] failbacks = null) {
 				var result = new List<AniCode>();
 				int code = keyName.AngeHash();
-				if (CellRenderer.TryGetSprite(code, out _, 0)) {
+				if (AngeliaFramework.Renderer.TryGetSprite(code, out _, 0)) {
 					result.Add(new AniCode(code) { LoopStart = defaultLoopStart, });
 				}
 				for (char c = 'A'; c <= 'Z'; c++) {
 					code = $"{keyName}{c}".AngeHash();
-					if (CellRenderer.TryGetSprite(code, out _, 0)) {
+					if (AngeliaFramework.Renderer.TryGetSprite(code, out _, 0)) {
 						result.Add(new AniCode(code) { LoopStart = defaultLoopStart, });
 					} else break;
 				}
@@ -81,12 +81,12 @@ namespace Yaya {
 			public GroupCode (string name) {
 				var codes = new List<int>();
 				int code = name.AngeHash();
-				if (CellRenderer.TryGetSprite(code, out _, 0)) {
+				if (AngeliaFramework.Renderer.TryGetSprite(code, out _, 0)) {
 					codes.Add(code);
 				}
 				for (int i = 0; i < 1024; i++) {
 					code = $"{name} {i}".AngeHash();
-					if (CellRenderer.TryGetSprite(code, out _, 0)) {
+					if (AngeliaFramework.Renderer.TryGetSprite(code, out _, 0)) {
 						codes.Add(code);
 					} else break;
 				}
@@ -213,14 +213,14 @@ namespace Yaya {
 
 			// Damage
 			if (frame < DamagingTime) {
-				var cell = CellRenderer.Draw_Animation(
-					Damaging.Code,
-					Source.X, Source.Y,
+				var cell = AngeliaFramework.Renderer.Draw_Animation(
+                    Damaging.Code,
+                    Source.X, Source.Y,
 					500, 0, 0,
-					Source.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
-					Const.ORIGINAL_SIZE,
-					Game.GlobalFrame,
-					Damaging.LoopStart
+                    Source.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+                    Const.ORIGINAL_SIZE,
+                    Game.GlobalFrame,
+                    Damaging.LoopStart
 				);
 				int damageScl = frame.PingPong(3) * 32 - 16 + DamageScale;
 				cell.Width = cell.Width * damageScl / 1000;
@@ -239,25 +239,25 @@ namespace Yaya {
 
 					break;
 				case eCharacter.State.Sleep: {
-					CellRenderer.Draw_Animation(
-						Sleep.Code,
-						Source.X, Source.Y,
-						Const.ORIGINAL_SIZE,
-						Const.ORIGINAL_SIZE,
-						Game.GlobalFrame,
-						Sleep.LoopStart
+                        AngeliaFramework.Renderer.Draw_Animation(
+                        Sleep.Code,
+                        Source.X, Source.Y,
+                        Const.ORIGINAL_SIZE,
+                        Const.ORIGINAL_SIZE,
+                        Game.GlobalFrame,
+                        Sleep.LoopStart
 					);
 					break;
 				}
 				case eCharacter.State.Passout: {
-					var cell = CellRenderer.Draw_Animation(
-						Passout.Code,
-						Source.X, Source.Y,
+					var cell = AngeliaFramework.Renderer.Draw_Animation(
+                        Passout.Code,
+                        Source.X, Source.Y,
 						500, 0, 0,
-						Source.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
-						Const.ORIGINAL_SIZE,
-						Game.GlobalFrame,
-						Passout.LoopStart
+                        Source.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+                        Const.ORIGINAL_SIZE,
+                        Game.GlobalFrame,
+                        Passout.LoopStart
 					);
 					cell.Width = cell.Width * PassoutScale / 1000;
 					cell.Height = cell.Height * PassoutScale / 1000;
@@ -340,15 +340,15 @@ namespace Yaya {
 			}
 
 			// Draw
-			var cell = CellRenderer.Draw_Animation(
-				CurrentAni.Code,
-				Source.X, Source.Y + offsetY, 500, pivotY, (int)TargetRotation,
+			var cell = AngeliaFramework.Renderer.Draw_Animation(
+                CurrentAni.Code,
+                Source.X, Source.Y + offsetY, 500, pivotY, (int)TargetRotation,
 				movement.FacingRight || movement.IsPounding || movement.IsClimbing ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
-				Const.ORIGINAL_SIZE,
-				CurrentAniFrame,
+                Const.ORIGINAL_SIZE,
+                CurrentAniFrame,
 				ani.LoopStart
 			);
-			CurrentCode = CellRenderer.LastDrawnID;
+            CurrentCode = AngeliaFramework.Renderer.LastDrawnID;
 			LastCellHeight = cell.Height;
 
 			// Bouncy
@@ -402,8 +402,8 @@ namespace Yaya {
 
 		private void DrawFace () {
 			if (
-				Face.Count <= 0 ||
-				!CellRenderer.TryGetMeta(CurrentCode, out var meta) ||
+                Face.Count <= 0 ||
+				!AngeliaFramework.Renderer.TryGetMeta(CurrentCode, out var meta) ||
 				!meta.Head.IsVailed ||
 				!meta.Head.Front
 			) return;
@@ -418,19 +418,19 @@ namespace Yaya {
 				offsetY = meta.Head.Y + meta.Head.Height;
 				offsetY += offsetY * (1000 - bounce) / 1000;
 			}
-			CellRenderer.Draw_9Slice(
-				Game.GlobalFrame % EyeBlinkRate > 8 ?
-					Face[FaceIndex.UMod(Face.Count)] :
-					FaceBlink.Code,
-				Source.X - meta.SpriteWidth / 2 +
+            AngeliaFramework.Renderer.Draw_9Slice(
+                Game.GlobalFrame % EyeBlinkRate > 8 ?
+                    Face[FaceIndex.UMod(Face.Count)] :
+                    FaceBlink.Code,
+                Source.X - meta.SpriteWidth / 2 +
 					(movement.FacingRight ?
 						meta.Head.X :
 						meta.SpriteWidth - (meta.Head.X + meta.Head.Width)
 					),
-				Source.Y + offsetY,
+                Source.Y + offsetY,
 				0, 1000, 0,
 				meta.Head.Width,
-				Const.ORIGINAL_SIZE
+                Const.ORIGINAL_SIZE
 			);
 		}
 

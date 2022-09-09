@@ -10,7 +10,7 @@ namespace Yaya {
 		private static readonly int Artwork = "Wood Log Slope 0".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.Draw(Artwork, Rect);
+            AngeliaFramework.Renderer.Draw(Artwork, base.Rect);
 		}
 	}
 
@@ -21,7 +21,7 @@ namespace Yaya {
 		private static readonly int Artwork = "Wood Log Slope 1".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.Draw(Artwork, Rect);
+            AngeliaFramework.Renderer.Draw(Artwork, base.Rect);
 		}
 	}
 

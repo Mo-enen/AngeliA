@@ -24,10 +24,10 @@ namespace Yaya {
 			int frame = Game.GlobalFrame;
 			var tint = IsHolding || IsFalling ? new Color32(255, 196, 164, 255) : new Color32(255, 255, 255, 255);
 			int rot = IsHolding ? GetHoldedFrame(frame * 4).PingPong(12) - 6 : 0;
-			CellRenderer.Draw(
-				DIRT_GRASS_CODE,
-				X + OffsetX + Width / 2,
-				Y + OffsetY + Height / 2,
+            AngeliaFramework.Renderer.Draw(
+                DIRT_GRASS_CODE,
+                X + OffsetX + Width / 2,
+                Y + OffsetY + Height / 2,
 				500, 250, rot, Width, Const.CELL_SIZE,
 				tint
 			);

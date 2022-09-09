@@ -33,21 +33,21 @@ namespace Yaya {
 
 
 		public override void FillPhysics () {
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
+			Physics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
 		}
 
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (OpenLight && FrameStep.CurrentStep is not sOpening && FrameStep.CurrentStep is not sFadeOut) {
+			if (OpenLight && Step.CurrentStep is not sOpening && Step.CurrentStep is not sFadeOut) {
 				byte brightness = (byte)((64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8));
-				CellRenderer.SetLayer(YayaConst.SHADER_ADD);
-				CellRenderer.Draw(
-					LIGHT,
-					Rect.Expand(Const.CELL_SIZE),
+                AngeliaFramework.Renderer.SetLayer(YayaConst.SHADER_ADD);
+                AngeliaFramework.Renderer.Draw(
+                    LIGHT,
+					base.Rect.Expand(Const.CELL_SIZE),
 					new Color32(brightness, brightness, brightness, 255)
 				);
-				CellRenderer.SetLayerToDefault();
+                AngeliaFramework.Renderer.SetLayerToDefault();
 			}
 		}
 

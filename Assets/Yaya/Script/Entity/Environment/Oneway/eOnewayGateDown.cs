@@ -15,7 +15,7 @@ namespace Yaya {
 
 
 		public override void FillPhysics () {
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_DOWN_TAG);
+			Physics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_DOWN_TAG);
 		}
 
 
@@ -27,8 +27,8 @@ namespace Yaya {
 				rect.y += (ReboundFrame - frame + 4) * 8;
 				rotDelta = (ReboundFrame - frame + 4) * 2 * (frame % 2 == 0 ? -1 : 1);
 			}
-			CellRenderer.Draw(
-				ONEWAY_CODE,
+            AngeliaFramework.Renderer.Draw(
+                ONEWAY_CODE,
 				rect.x + rect.width / 2,
 				rect.y + rect.height / 2,
 				500, 500, 180 + rotDelta,

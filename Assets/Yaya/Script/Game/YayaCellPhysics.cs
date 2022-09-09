@@ -8,17 +8,17 @@ namespace Yaya {
 	public static class YayaCellPhysics {
 
 
-		public static void FillEntity_Damage (Entity source, bool damagePlayer, int damage) => CellPhysics.FillEntity(
+		public static void FillEntity_Damage (Entity source, bool damagePlayer, int damage) => Physics.FillEntity(
 			YayaConst.LAYER_DAMAGE, source, damagePlayer, damage
 		);
 
 
-		public static void FillBlock_Damage (RectInt rect, bool damagePlayer, int damage) => CellPhysics.FillBlock(
+		public static void FillBlock_Damage (RectInt rect, bool damagePlayer, int damage) => Physics.FillBlock(
 			YayaConst.LAYER_DAMAGE, rect, damagePlayer, damage
 		);
 
 
-		public static int OverlapAll_Damage (HitInfo[] hits, RectInt globalRect, Entity ignore = null, bool forPlayer = false) => CellPhysics.OverlapAll(
+		public static int OverlapAll_Damage (HitInfo[] hits, RectInt globalRect, Entity ignore = null, bool forPlayer = false) => Physics.OverlapAll(
 			hits, YayaConst.MASK_DAMAGE, globalRect, ignore, forPlayer ? OperationMode.TriggerOnly : OperationMode.ColliderOnly
 		);
 

@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class sOpening : Step {
+	public class sOpening : StepItem {
 
 
 
@@ -31,10 +31,10 @@ namespace Yaya {
 			base.OnStart(game);
 			SetViewPosition(game, ViewX, ViewYStart);
 			SkipFrame = int.MaxValue;
-			// Draw Black Fade Out
-			CellRenderer.Draw(
-				Const.PIXEL,
-				CellRenderer.CameraRect.Expand(Const.CELL_SIZE),
+            // Draw Black Fade Out
+            AngeliaFramework.Renderer.Draw(
+                Const.PIXEL,
+                AngeliaFramework.Renderer.CameraRect.Expand(Const.CELL_SIZE),
 				new Color32(0, 0, 0, 255)
 			);
 			// Remove Player
@@ -52,9 +52,9 @@ namespace Yaya {
 				(game as Yaya).SpawnPlayer(ViewX, ViewYEnd, true);
 			}
 			if (localFrame < SkipFrame) {
-				if (FrameInput.AnyKeyPressed) {
-					SkipFrame = localFrame;
-					SkipY = (int)Util.Remap(0, DURATION, ViewYStart, ViewYEnd, localFrame);
+				if (AngeliaFramework.Input.AnyKeyPressed) {
+                    SkipFrame = localFrame;
+                    SkipY = (int)Util.Remap(0, DURATION, ViewYStart, ViewYEnd, localFrame);
 				}
 				return Update_Opening(game, localFrame);
 			} else {
@@ -66,13 +66,13 @@ namespace Yaya {
 		private StepResult Update_Opening (Game game, int localFrame) {
 			// Black FadeIn
 			if (localFrame <= BLACK_DURATION) {
-				CellRenderer.SetLayer(YayaConst.SHADER_UI);
-				CellRenderer.Draw(
-					Const.PIXEL,
-					CellRenderer.CameraRect.Expand(Const.CELL_SIZE),
+                AngeliaFramework.Renderer.SetLayer(YayaConst.SHADER_UI);
+                AngeliaFramework.Renderer.Draw(
+                    Const.PIXEL,
+                    AngeliaFramework.Renderer.CameraRect.Expand(Const.CELL_SIZE),
 					new Color32(0, 0, 0, (byte)Util.Remap(0, BLACK_DURATION, byte.MaxValue, byte.MinValue, localFrame))
 				);
-				CellRenderer.SetLayerToDefault();
+                AngeliaFramework.Renderer.SetLayerToDefault();
 			}
 			if (localFrame < DURATION) {
 				// Camera Down

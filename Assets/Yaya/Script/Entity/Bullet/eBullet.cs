@@ -66,7 +66,7 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.Draw_Animation(ArtworkCode, Rect, LocalFrame);
+            AngeliaFramework.Renderer.Draw_Animation(ArtworkCode, base.Rect, LocalFrame);
 		}
 
 

@@ -38,9 +38,9 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.SetLayer(YayaConst.SHADER_UI);
+            AngeliaFramework.Renderer.SetLayer(YayaConst.SHADER_UI);
 			UpdateForUI();
-			CellRenderer.SetLayerToDefault();
+            AngeliaFramework.Renderer.SetLayerToDefault();
 		}
 
 

@@ -53,11 +53,11 @@ namespace Yaya {
 			}
 			SwitchPlayer(firstPlayerID, false);
 
-			// Gamepad UI
-			FrameInput.AddCustomKey(KeyCode.F2);
+            // Gamepad UI
+            AngeliaFramework.Input.AddCustomKey(KeyCode.F2);
 
 			// Open the Game !!
-			FrameStep.AddToLast(new sOpening() {
+			Step.AddToLast(new sOpening() {
 				ViewX = VIEW_X,
 				ViewYStart = VIEW_Y_START,
 				ViewYEnd = VIEW_Y_END,
@@ -88,21 +88,21 @@ namespace Yaya {
 
 			// Spawn Player when No Player Entity
 			if (CurrentPlayer != null && !CurrentPlayer.Active) CurrentPlayer = null;
-			if (CurrentPlayer == null && !FrameStep.HasStep<sOpening>()) {
-				var center = CellRenderer.CameraRect.CenterInt();
+			if (CurrentPlayer == null && !Step.HasStep<sOpening>()) {
+				var center = AngeliaFramework.Renderer.CameraRect.CenterInt();
 				SpawnPlayer(center.x, center.y, false);
 			}
 
 			// Reload Game and Player After Passout
 			if (
-				CurrentPlayer != null && CurrentPlayer.Active &&
-				CurrentPlayer.CharacterState == eCharacter.State.Passout &&
-				GlobalFrame > CurrentPlayer.PassoutFrame + 48 &&
-				FrameInput.KeyDown(GameKey.Action) &&
-				!FrameStep.HasStep<sOpening>()
+                CurrentPlayer != null && CurrentPlayer.Active &&
+                CurrentPlayer.CharacterState == eCharacter.State.Passout &&
+                GlobalFrame > CurrentPlayer.PassoutFrame + 48 &&
+                AngeliaFramework.Input.KeyDown(GameKey.Action) &&
+				!Step.HasStep<sOpening>()
 			) {
-				FrameStep.AddToLast(new sFadeOut());
-				FrameStep.AddToLast(new sOpening() {
+                Step.AddToLast(new sFadeOut());
+                Step.AddToLast(new sOpening() {
 					ViewX = VIEW_X,
 					ViewYStart = VIEW_Y_START,
 					ViewYEnd = VIEW_Y_END,
@@ -120,55 +120,55 @@ namespace Yaya {
 			var y = Direction3.None;
 
 			// Left
-			if (FrameInput.KeyPressing(GameKey.Left)) {
+			if (AngeliaFramework.Input.KeyPressing(GameKey.Left)) {
 				if (LeftDownFrame < 0) {
-					LeftDownFrame = frame;
-					AttackRequiringFrame = int.MinValue;
+                    LeftDownFrame = frame;
+                    AttackRequiringFrame = int.MinValue;
 				}
 				if (LeftDownFrame > RightDownFrame) {
 					x = Direction3.Negative;
 				}
 			} else if (LeftDownFrame > 0) {
-				LeftDownFrame = int.MinValue;
+                LeftDownFrame = int.MinValue;
 			}
 
 			// Right
-			if (FrameInput.KeyPressing(GameKey.Right)) {
+			if (AngeliaFramework.Input.KeyPressing(GameKey.Right)) {
 				if (RightDownFrame < 0) {
-					RightDownFrame = frame;
-					AttackRequiringFrame = int.MinValue;
+                    RightDownFrame = frame;
+                    AttackRequiringFrame = int.MinValue;
 				}
 				if (RightDownFrame > LeftDownFrame) {
 					x = Direction3.Positive;
 				}
 			} else if (RightDownFrame > 0) {
-				RightDownFrame = int.MinValue;
+                RightDownFrame = int.MinValue;
 			}
 
 			// Down
-			if (FrameInput.KeyPressing(GameKey.Down)) {
+			if (AngeliaFramework.Input.KeyPressing(GameKey.Down)) {
 				if (DownDownFrame < 0) {
-					DownDownFrame = frame;
-					AttackRequiringFrame = int.MinValue;
+                    DownDownFrame = frame;
+                    AttackRequiringFrame = int.MinValue;
 				}
 				if (DownDownFrame > UpDownFrame) {
 					y = Direction3.Negative;
 				}
 			} else if (DownDownFrame > 0) {
-				DownDownFrame = int.MinValue;
+                DownDownFrame = int.MinValue;
 			}
 
 			// Up
-			if (FrameInput.KeyPressing(GameKey.Up)) {
+			if (AngeliaFramework.Input.KeyPressing(GameKey.Up)) {
 				if (UpDownFrame < 0) {
-					UpDownFrame = frame;
-					AttackRequiringFrame = int.MinValue;
+                    UpDownFrame = frame;
+                    AttackRequiringFrame = int.MinValue;
 				}
 				if (UpDownFrame > DownDownFrame) {
 					y = Direction3.Positive;
 				}
 			} else if (UpDownFrame > 0) {
-				UpDownFrame = int.MinValue;
+                UpDownFrame = int.MinValue;
 			}
 
 			CurrentPlayer.Movement.Move(x, y);
@@ -182,19 +182,19 @@ namespace Yaya {
 
 			var movement = CurrentPlayer.Movement;
 			var attackness = CurrentPlayer.Attackness;
-			movement.HoldJump(FrameInput.KeyPressing(GameKey.Jump));
-			if (FrameInput.KeyDown(GameKey.Jump)) {
+			movement.HoldJump(AngeliaFramework.Input.KeyPressing(GameKey.Jump));
+			if (AngeliaFramework.Input.KeyDown(GameKey.Jump)) {
 				// Movement Jump
 				movement.Jump();
-				if (FrameInput.KeyPressing(GameKey.Down)) {
+				if (AngeliaFramework.Input.KeyPressing(GameKey.Down)) {
 					movement.Dash();
 				}
-				AttackRequiringFrame = int.MinValue;
+                AttackRequiringFrame = int.MinValue;
 				if (attackness.CancelAttackOnJump) {
 					attackness.CancelAttack();
 				}
 			}
-			if (FrameInput.KeyDown(GameKey.Down)) {
+			if (AngeliaFramework.Input.KeyDown(GameKey.Down)) {
 				movement.Pound();
 			}
 		}
@@ -206,22 +206,22 @@ namespace Yaya {
 			var attackness = CurrentPlayer.Attackness;
 
 			// Try Perform Action
-			if (FrameInput.KeyDown(GameKey.Action)) {
+			if (AngeliaFramework.Input.KeyDown(GameKey.Action)) {
 				bool performed = CurrentPlayer.Action.Invoke();
 				if (performed) return;
 			}
 
 			// Try Cancel Action
 			if (CurrentPlayer.Action.CurrentTarget != null) {
-				if (FrameInput.KeyDown(GameKey.Jump)) {
-					CurrentPlayer.Action.CancelInvoke();
+				if (AngeliaFramework.Input.KeyDown(GameKey.Jump)) {
+                    CurrentPlayer.Action.CancelInvoke();
 				}
 				return;
 			}
 
 			// Try Perform Attack
-			bool attDown = FrameInput.KeyDown(GameKey.Action);
-			bool attHolding = FrameInput.KeyPressing(GameKey.Action) && attackness.KeepTriggerWhenHold;
+			bool attDown = AngeliaFramework.Input.KeyDown(GameKey.Action);
+			bool attHolding = AngeliaFramework.Input.KeyPressing(GameKey.Action) && attackness.KeepTriggerWhenHold;
 			if (CurrentPlayer.CharacterState == eCharacter.State.General && (attDown || attHolding)) {
 				if ((attackness.AttackInAir || !movement.InAir) &&
 					(attackness.AttackInWater || !movement.InWater) &&
@@ -249,16 +249,16 @@ namespace Yaya {
 
 
 		private void UpdatePlayer_Sleep () {
-			if (FrameStep.HasStep<sOpening>()) return;
-			if (FrameInput.KeyDown(GameKey.Action) || FrameInput.KeyDown(GameKey.Jump)) {
-				CurrentPlayer.Wakeup();
+			if (Step.HasStep<sOpening>()) return;
+			if (AngeliaFramework.Input.KeyDown(GameKey.Action) || AngeliaFramework.Input.KeyDown(GameKey.Jump)) {
+                CurrentPlayer.Wakeup();
 			}
 		}
 
 
 		private void UpdatePlayer_View () {
 
-			if (FrameStep.HasStep<sOpening>()) return;
+			if (Step.HasStep<sOpening>()) return;
 
 			const int LINGER_RATE = 32;
 			const int LERP_RATE = 96;
@@ -292,7 +292,7 @@ namespace Yaya {
 		#region --- API ---
 
 
-		public void SwitchPlayer (int newPlayerID, bool spawnEntity) => SwitchPlayer(newPlayerID, spawnEntity, CellRenderer.CameraRect.CenterInt());
+		public void SwitchPlayer (int newPlayerID, bool spawnEntity) => SwitchPlayer(newPlayerID, spawnEntity, AngeliaFramework.Renderer.CameraRect.CenterInt());
 		public void SwitchPlayer (int newPlayerID, bool spawnEntity, Vector2Int failbackPosition) {
 			if (!IsEntityIdValid(newPlayerID)) return;
 			PlayerTypeID = newPlayerID;

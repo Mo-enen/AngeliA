@@ -25,12 +25,12 @@ namespace Yaya {
 
 		// MSG
 		public override void FillPhysics () {
-			CellPhysics.FillBlock(YayaConst.LAYER_ENVIRONMENT, Rect, true, Const.ONEWAY_UP_TAG);
+			Physics.FillBlock(YayaConst.LAYER_ENVIRONMENT, Rect, true, Const.ONEWAY_UP_TAG);
 		}
 
 
 		public override void FrameUpdate () {
-			CellRenderer.Draw(LeafArtworkCode, Rect.Shift(0, GetLeafShiftY(-24)));
+            AngeliaFramework.Renderer.Draw(LeafArtworkCode, base.Rect.Shift(0, GetLeafShiftY(-24)));
 		}
 
 
@@ -43,7 +43,7 @@ namespace Yaya {
 
 		// Data
 		public override void FillPhysics () {
-			CellPhysics.FillBlock(
+			Physics.FillBlock(
 				YayaConst.LAYER_ENVIRONMENT,
 				Rect.Shrink(0, 0, 0, Height / 2),
 				true, YayaConst.CLIMB_TAG
@@ -52,7 +52,7 @@ namespace Yaya {
 
 
 		public override void FrameUpdate () {
-			CellRenderer.Draw(LeafArtworkCode, Rect.Shift(GetLeafShiftY(0), 0));
+            AngeliaFramework.Renderer.Draw(LeafArtworkCode, base.Rect.Shift(GetLeafShiftY(0), 0));
 		}
 
 
@@ -107,9 +107,9 @@ namespace Yaya {
 			Width = Const.CELL_SIZE;
 			Height = Const.CELL_SIZE;
 
-			// Leaf
-			LeafArtworkCode = CellRenderer.TryGetSpriteFromGroup(
-				LeafCode.AngeHash(), (X * 5 + Y * 7) / Const.CELL_SIZE, out var lSprite
+            // Leaf
+            LeafArtworkCode = AngeliaFramework.Renderer.TryGetSpriteFromGroup(
+                LeafCode.AngeHash(), (X * 5 + Y * 7) / Const.CELL_SIZE, out var lSprite
 			) ? lSprite.GlobalID : 0;
 
 			// Offset
@@ -127,7 +127,7 @@ namespace Yaya {
 
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
-			CharacterNearby = CellPhysics.HasEntity<eCharacter>(Rect.Expand(Const.CELL_SIZE), YayaConst.MASK_CHARACTER, null);
+			CharacterNearby = Physics.HasEntity<eCharacter>(Rect.Expand(Const.CELL_SIZE), YayaConst.MASK_CHARACTER, null);
 		}
 
 
@@ -146,7 +146,7 @@ namespace Yaya {
 					rect.x += rect.width;
 					rect.width = -rect.width;
 				}
-				CellRenderer.Draw(LeafArtworkCode, rect, LeafTint);
+                AngeliaFramework.Renderer.Draw(LeafArtworkCode, rect, LeafTint);
 			}
 		}
 

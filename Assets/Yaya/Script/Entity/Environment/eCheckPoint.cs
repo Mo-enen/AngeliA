@@ -37,7 +37,7 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
+			Physics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
 		}
 
 
@@ -49,10 +49,10 @@ namespace Yaya {
 				if (Yaya.CpPool.TryGetValue(globalUnitPos, out var _cpData)) {
 					artIndex = _cpData.Index;
 				}
-				if (CellRenderer.TryGetSpriteFromGroup(IsAltar ? ARTWORK_ALTAR_CODE : ARTWORK_STATUE_CODE, artIndex, out var sprite, false)) {
-					ArtCode = sprite.GlobalID;
+				if (AngeliaFramework.Renderer.TryGetSpriteFromGroup(IsAltar ? ARTWORK_ALTAR_CODE : ARTWORK_STATUE_CODE, artIndex, out var sprite, false)) {
+                    ArtCode = sprite.GlobalID;
 				} else {
-					ArtCode = -1;
+                    ArtCode = -1;
 				}
 			}
 		}
@@ -60,7 +60,7 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.Draw(ArtCode, Rect);
+            AngeliaFramework.Renderer.Draw(ArtCode, base.Rect);
 		}
 
 

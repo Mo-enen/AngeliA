@@ -52,12 +52,12 @@ namespace Yaya {
 			Initialize_Player();
 
 
-			FrameInput.AddCustomKey(KeyCode.Alpha1);
-			FrameInput.AddCustomKey(KeyCode.Alpha2);
-			FrameInput.AddCustomKey(KeyCode.Alpha3);
-			FrameInput.AddCustomKey(KeyCode.Alpha4);
-			FrameInput.AddCustomKey(KeyCode.Alpha5);
-			FrameInput.AddCustomKey(KeyCode.Alpha6);
+            AngeliaFramework.Input.AddCustomKey(KeyCode.Alpha1);
+            AngeliaFramework.Input.AddCustomKey(KeyCode.Alpha2);
+            AngeliaFramework.Input.AddCustomKey(KeyCode.Alpha3);
+            AngeliaFramework.Input.AddCustomKey(KeyCode.Alpha4);
+            AngeliaFramework.Input.AddCustomKey(KeyCode.Alpha5);
+            AngeliaFramework.Input.AddCustomKey(KeyCode.Alpha6);
 
 		}
 
@@ -117,12 +117,12 @@ namespace Yaya {
 
 
 
-			if (FrameInput.CustomKeyDown(KeyCode.Alpha1)) {
-				SetViewZ(ViewZ + 1);
+			if (AngeliaFramework.Input.CustomKeyDown(KeyCode.Alpha1)) {
+                SetViewZ(ViewZ + 1);
 				//AudioPlayer.PlaySound("BloopDownPitch".AngeHash());
 			}
-			if (FrameInput.CustomKeyDown(KeyCode.Alpha2)) {
-				SetViewZ(ViewZ - 1);
+			if (AngeliaFramework.Input.CustomKeyDown(KeyCode.Alpha2)) {
+                SetViewZ(ViewZ - 1);
 				//AudioPlayer.PlaySound("Brassic".AngeHash());
 
 			}
@@ -131,13 +131,13 @@ namespace Yaya {
 
 
 		private void Update_CameraRect () {
-			if (CellRenderer.HasEffect<fSquadTransition>()) {
+			if (AngeliaFramework.Renderer.HasEffect<fSquadTransition>()) {
 				var exp = (
-					(Vector2)CellRenderer.CameraRect.size * (Universe.Meta.SquadBehindParallax / 1000f - 1f)
+					(Vector2)AngeliaFramework.Renderer.CameraRect.size * (Universe.Meta.SquadBehindParallax / 1000f - 1f)
 				).CeilToInt();
-				YayaCameraRect = base.CameraRect.Expand(exp.x, exp.x, exp.y, exp.y);
+                YayaCameraRect = base.CameraRect.Expand(exp.x, exp.x, exp.y, exp.y);
 			} else {
-				YayaCameraRect = base.CameraRect;
+                YayaCameraRect = base.CameraRect;
 			}
 		}
 
@@ -158,8 +158,8 @@ namespace Yaya {
 
 
 		private void UpdateUI_Gamepad () {
-			if (FrameInput.CustomKeyDown(KeyCode.F2)) {
-				ShowGamePadUI.Value = !ShowGamePadUI.Value;
+			if (AngeliaFramework.Input.CustomKeyDown(KeyCode.F2)) {
+                ShowGamePadUI.Value = !ShowGamePadUI.Value;
 			}
 			if (ShowGamePadUI.Value) {
 				// Active
@@ -226,12 +226,12 @@ namespace Yaya {
 		protected override void PauselessUpdate () {
 			base.PauselessUpdate();
 			// Pause
-			if (FrameInput.KeyDown(GameKey.Start)) {
-				IsPausing = !IsPausing;
+			if (AngeliaFramework.Input.KeyDown(GameKey.Start)) {
+                IsPausing = !IsPausing;
 				if (IsPausing) {
-					AudioPlayer.Pause();
+                    Audio.Pause();
 				} else {
-					AudioPlayer.UnPause();
+                    Audio.UnPause();
 				}
 			}
 		}
@@ -250,15 +250,15 @@ namespace Yaya {
 
 		protected override void BeforeViewZChange (int newZ) {
 			base.BeforeViewZChange(newZ);
-			// Add Effect
-			CellRenderer.RemoveEffect<fSquadTransition>();
-			CellRenderer.AddEffect(new fSquadTransition(
-				Universe.Meta.SquadTransitionDuration,
+            // Add Effect
+            AngeliaFramework.Renderer.RemoveEffect<fSquadTransition>();
+            AngeliaFramework.Renderer.AddEffect(new fSquadTransition(
+                Universe.Meta.SquadTransitionDuration,
 				newZ > ViewZ ?
 					1000f / Universe.Meta.SquadBehindParallax :
-					Universe.Meta.SquadBehindParallax / 1000f,
-				Universe.Meta.SquadBehindAlpha / 255f,
-				m_YayaAsset.SquadTransitionCurve
+                    Universe.Meta.SquadBehindParallax / 1000f,
+                Universe.Meta.SquadBehindAlpha / 255f,
+                m_YayaAsset.SquadTransitionCurve
 			));
 		}
 

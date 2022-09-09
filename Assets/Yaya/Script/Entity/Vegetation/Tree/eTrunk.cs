@@ -51,21 +51,21 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
-			TrunkArtworkCode = CellRenderer.TryGetSpriteFromGroup(
-				TrunkCode.AngeHash(), (X * 3 + Y * 11) / Const.CELL_SIZE, out var tSprite
+            TrunkArtworkCode = AngeliaFramework.Renderer.TryGetSpriteFromGroup(
+                TrunkCode.AngeHash(), (X * 3 + Y * 11) / Const.CELL_SIZE, out var tSprite
 			) ? tSprite.GlobalID : 0;
 		}
 
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this);
+			Physics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this);
 		}
 
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.Draw(TrunkArtworkCode, Rect);
+            AngeliaFramework.Renderer.Draw(TrunkArtworkCode, base.Rect);
 		}
 
 

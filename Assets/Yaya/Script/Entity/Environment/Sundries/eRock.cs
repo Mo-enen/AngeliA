@@ -18,25 +18,25 @@ namespace Yaya {
 			FullRect = new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE);
 			Width = Height = Const.CELL_SIZE;
 			int artworkIndex = X.UDivide(Const.CELL_SIZE) + Y.UDivide(Const.CELL_SIZE);
-			if (CellRenderer.TryGetSpriteFromGroup(CODE, artworkIndex, out var sprite)) {
-				var rect = Rect.Shrink(sprite.GlobalBorder.Left, sprite.GlobalBorder.Right, sprite.GlobalBorder.Down, sprite.GlobalBorder.Up);
-				X = rect.x;
-				Y = rect.y;
-				Width = rect.width;
-				Height = rect.height;
-				ArtworkCode = sprite.GlobalID;
+			if (AngeliaFramework.Renderer.TryGetSpriteFromGroup(CODE, artworkIndex, out var sprite)) {
+				var rect = base.Rect.Shrink(sprite.GlobalBorder.Left, sprite.GlobalBorder.Right, sprite.GlobalBorder.Down, sprite.GlobalBorder.Up);
+                X = rect.x;
+                Y = rect.y;
+                Width = rect.width;
+                Height = rect.height;
+                ArtworkCode = sprite.GlobalID;
 			}
 		}
 
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this);
+			Physics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this);
 		}
 
 
 		public override void FrameUpdate () {
-			CellRenderer.Draw(ArtworkCode, FullRect);
+            AngeliaFramework.Renderer.Draw(ArtworkCode, FullRect);
 			base.FrameUpdate();
 		}
 
