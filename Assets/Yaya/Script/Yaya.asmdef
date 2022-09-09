@@ -3,7 +3,7 @@
     "rootNamespace": "Yaya",
     "references": [
         "AngeliaFrameworkRuntime",
-        "UnityEngine.UI"
+        "Unity.InputSystem"
     ],
     "includePlatforms": [
         "Editor",

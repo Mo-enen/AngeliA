@@ -14,15 +14,13 @@ namespace Yaya {
 		#region --- VAR ---
 
 
-		// Const
-		private readonly HashSet<SystemLanguage> SupportedLanguages = new() { SystemLanguage.English, SystemLanguage.ChineseSimplified, };
-
 		// Api
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
 		public static Dictionary<Vector2Int, CheckPointMeta.Data> CpPool { get; } = new();
 		public static Dictionary<int, Vector2Int> CpAltarPool { get; } = new();
 		public override RectInt CameraRect => YayaCameraRect;
 		public YayaMeta YayaMeta => m_YayaMeta;
+		public YayaAsset YayaAsset => m_YayaAsset;
 
 		// Ser
 		[SerializeField] YayaMeta m_YayaMeta = null;
@@ -113,8 +111,8 @@ namespace Yaya {
 			Update_Damage();
 			Update_Player();
 
-			UpdateUI_ControlHint();
 			UpdateUI_Gamepad();
+			UpdateUI_ControlHint();
 
 
 
@@ -159,28 +157,19 @@ namespace Yaya {
 		}
 
 
-		private void UpdateUI_ControlHint () {
-			if (CurrentPlayer == null || !CurrentPlayer.Active) return;
-			
-
-
-
-
-		}
-
-
 		private void UpdateUI_Gamepad () {
 			if (FrameInput.CustomKeyDown(KeyCode.F2)) {
 				ShowGamePadUI.Value = !ShowGamePadUI.Value;
 			}
 			if (ShowGamePadUI.Value) {
+				// Active
 				if (GamePadUI == null) {
 					if (TryGetEntityInStage<eGamePadUI>(out var gPad)) {
 						GamePadUI = gPad;
 					} else {
 						GamePadUI = AddEntity(typeof(eGamePadUI).AngeHash(), 0, 0) as eGamePadUI;
 						GamePadUI.X = 12;
-						GamePadUI.Y = 12;
+						GamePadUI.Y = -300;
 						GamePadUI.Width = 660;
 						GamePadUI.Height = 300;
 						GamePadUI.DPadLeftPosition = new(50, 110, 60, 40);
@@ -196,10 +185,40 @@ namespace Yaya {
 						GamePadUI.PressingTint = new(0, 255, 0, 255);
 					}
 				}
+				// Lerp
+				const int DURATION = 20;
+				if (GamePadUI.LocalFrame <= DURATION) {
+					float t01 = m_YayaAsset.UiPopCurve.Evaluate(Mathf.InverseLerp(0, DURATION, GamePadUI.LocalFrame));
+					GamePadUI.Y = Mathf.LerpUnclamped(-300, 12, t01).RoundToInt();
+				} else if (GamePadUI.Y != 12) {
+					GamePadUI.Y = 12;
+				}
 			} else if (GamePadUI != null) {
-				GamePadUI.Active = false;
-				GamePadUI = null;
+				// Inactive
+				if (GamePadUI.Y > -320) {
+					GamePadUI.Y = Mathf.LerpUnclamped(GamePadUI.Y, -340, 0.1f).RoundToInt();
+				} else {
+					GamePadUI.Active = false;
+					GamePadUI = null;
+				}
 			}
+		}
+
+
+		private void UpdateUI_ControlHint () {
+
+			if (CurrentPlayer == null || !CurrentPlayer.Active) return;
+
+			//int x = 12;
+			//int y = 12;
+			//if (ShowGamePadUI.Value && GamePadUI != null) {
+			//	y = Mathf.Max(GamePadUI.Y + GamePadUI.Height + 12, y);
+			//}
+
+			
+
+
+
 		}
 
 
@@ -227,9 +246,6 @@ namespace Yaya {
 
 
 		protected override WorldSquad CreateWorldSquad () => new YayaWorldSquad(Universe.MapRoot);
-
-
-		protected override bool LanguageSupported (SystemLanguage language) => SupportedLanguages.Contains(language);
 
 
 		protected override void BeforeViewZChange (int newZ) {
