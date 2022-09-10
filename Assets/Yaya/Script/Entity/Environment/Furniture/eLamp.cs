@@ -4,6 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
+	[EntityAttribute.EntityBounds(-Const.CELL_SIZE, -Const.CELL_SIZE, Const.CELL_SIZE * 2, Const.CELL_SIZE * 2)]
 	public class eLamp : eFurniture {
 
 
@@ -33,21 +34,21 @@ namespace Yaya {
 
 
 		public override void FillPhysics () {
-			Physics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
+			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
 		}
 
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (OpenLight && Step.CurrentStep is not sOpening && Step.CurrentStep is not sFadeOut) {
+			if (OpenLight && FrameStep.CurrentStep is not sOpening && FrameStep.CurrentStep is not sFadeOut) {
 				byte brightness = (byte)((64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8));
-                AngeliaFramework.Renderer.SetLayer(YayaConst.SHADER_ADD);
-                AngeliaFramework.Renderer.Draw(
-                    LIGHT,
+				CellRenderer.SetLayer(YayaConst.SHADER_ADD);
+				CellRenderer.Draw(
+					LIGHT,
 					base.Rect.Expand(Const.CELL_SIZE),
 					new Color32(brightness, brightness, brightness, 255)
 				);
-                AngeliaFramework.Renderer.SetLayerToDefault();
+				CellRenderer.SetLayerToDefault();
 			}
 		}
 

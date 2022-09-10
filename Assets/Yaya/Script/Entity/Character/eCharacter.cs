@@ -32,7 +32,7 @@ namespace Yaya {
 
 		// Api
 		public override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
-		public override int CollisionMask => YayaConst.MASK_SOLID;
+		public override int CollisionMask => YayaConst.MASK_MAP;
 		public override bool CarryRigidbodyOnTop => false;
 		public override bool InAir => base.InAir && !Movement.IsClimbing;
 		public override int AirDragX => 0;
@@ -178,7 +178,7 @@ namespace Yaya {
 		protected override bool GroundedCheck (RectInt rect) => base.GroundedCheck(rect);
 
 
-		protected override bool InsideGroundCheck () => Physics.Overlap(YayaConst.MASK_LEVEL, new(X, Y + Height / 4, 1, 1), this);
+		protected override bool InsideGroundCheck () => CellPhysics.Overlap(YayaConst.MASK_LEVEL, new(X, Y + Height / 4, 1, 1), this);
 
 
 		#endregion

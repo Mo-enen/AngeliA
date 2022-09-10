@@ -77,7 +77,7 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			Physics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
+			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
 		}
 
 
@@ -91,7 +91,7 @@ namespace Yaya {
 			base.FrameUpdate();
 			if (Pose == FurniturePose.Unknown) return;
 			if (TryGetSprite(Pose, out var sprite)) {
-				var cell = AngeliaFramework.Renderer.Draw(sprite.GlobalID, RenderingRect);
+				var cell = CellRenderer.Draw(sprite.GlobalID, RenderingRect);
 				Update_Highlight(cell);
 			}
 		}
@@ -148,19 +148,19 @@ namespace Yaya {
 		protected void DrawClockHands (RectInt rect, int handCode, int thickness, int thicknessSecond) {
 			var now = System.DateTime.Now;
             // Sec
-            AngeliaFramework.Renderer.Draw(
+            CellRenderer.Draw(
 				handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
 				500, 0, now.Second * 360 / 60,
 				thicknessSecond, rect.height * 900 / 2000
 			);
             // Min
-            AngeliaFramework.Renderer.Draw(
+            CellRenderer.Draw(
 				handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
 				500, 0, now.Minute * 360 / 60,
 				thickness, rect.height * 800 / 2000
 			);
             // Hour
-            AngeliaFramework.Renderer.Draw(
+            CellRenderer.Draw(
 				handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
 				500, 0, (now.Hour * 360 / 12) + (now.Minute * 360 / 12 / 60),
 				thickness, rect.height * 400 / 2000
@@ -173,9 +173,9 @@ namespace Yaya {
 			int rot = (t11 * maxRot).RoundToInt();
 			int dX = -(t11 * deltaX).RoundToInt();
             // Leg
-            AngeliaFramework.Renderer.Draw(artCodeLeg, x + dX, y, 500, 1000, rot, thickness, length);
+            CellRenderer.Draw(artCodeLeg, x + dX, y, 500, 1000, rot, thickness, length);
             // Head
-            AngeliaFramework.Renderer.Draw(
+            CellRenderer.Draw(
 				artCodeHead, x + dX, y, 500,
 				500 * (headSize / 2 + length) / (headSize / 2),
 				rot, headSize, headSize
@@ -184,7 +184,7 @@ namespace Yaya {
 
 
 		protected bool TryGetSprite (FurniturePose pose, out AngeSprite sprite) =>
-            AngeliaFramework.Renderer.TryGetSpriteFromGroup(
+            CellRenderer.TryGetSpriteFromGroup(
 			pose switch {
                 FurniturePose.Left => ArtworkCode_LeftDown,
                 FurniturePose.Mid => ArtworkCode_Mid,
@@ -234,12 +234,12 @@ namespace Yaya {
 			if (ModuleType == Direction3.Horizontal) {
 				var rect = Rect;
 				rect.x = Rect.x - Const.CELL_SIZE;
-				var eLeft = Physics.GetEntity(
+				var eLeft = CellPhysics.GetEntity(
 					GetType(), rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 				) as eFurniture;
 				bool hasLeft = eLeft != null;
 				rect.x = Rect.xMax;
-				var eRight = Physics.GetEntity(
+				var eRight = CellPhysics.GetEntity(
 					GetType(), rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 				) as eFurniture;
 				bool hasRight = eRight != null;
@@ -253,12 +253,12 @@ namespace Yaya {
 			} else if (ModuleType == Direction3.Vertical) {
 				var rect = Rect;
 				rect.y = Rect.y - Const.CELL_SIZE;
-				var eDown = Physics.GetEntity(
+				var eDown = CellPhysics.GetEntity(
 					GetType(), rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 				) as eFurniture;
 				bool hasDown = eDown != null;
 				rect.y = Rect.yMax;
-				var eUp = Physics.GetEntity(
+				var eUp = CellPhysics.GetEntity(
 					GetType(), rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 				) as eFurniture;
 				bool hasUp = eUp != null;

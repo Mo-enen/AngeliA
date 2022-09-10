@@ -30,6 +30,7 @@ namespace Yaya {
 		private static readonly HitInfo[] c_DamageCheck = new HitInfo[16];
 		private RectInt YayaCameraRect = default;
 		private eGamePadUI GamePadUI = null;
+		private eControlHint ControlHintUI = null;
 
 		// Saving
 		private readonly SavingBool ShowGamePadUI = new("Yaya.ShowGamePadUI", false);
@@ -50,14 +51,15 @@ namespace Yaya {
 			Initialize_Quit();
 			Initialize_YayaMeta();
 			Initialize_Player();
+			FrameInput.AddCustomKey(KeyCode.Escape);
 
 
-            AngeliaFramework.Input.AddCustomKey(KeyCode.Alpha1);
-            AngeliaFramework.Input.AddCustomKey(KeyCode.Alpha2);
-            AngeliaFramework.Input.AddCustomKey(KeyCode.Alpha3);
-            AngeliaFramework.Input.AddCustomKey(KeyCode.Alpha4);
-            AngeliaFramework.Input.AddCustomKey(KeyCode.Alpha5);
-            AngeliaFramework.Input.AddCustomKey(KeyCode.Alpha6);
+			FrameInput.AddCustomKey(KeyCode.Alpha1);
+			FrameInput.AddCustomKey(KeyCode.Alpha2);
+			FrameInput.AddCustomKey(KeyCode.Alpha3);
+			FrameInput.AddCustomKey(KeyCode.Alpha4);
+			FrameInput.AddCustomKey(KeyCode.Alpha5);
+			FrameInput.AddCustomKey(KeyCode.Alpha6);
 
 		}
 
@@ -117,12 +119,12 @@ namespace Yaya {
 
 
 
-			if (AngeliaFramework.Input.CustomKeyDown(KeyCode.Alpha1)) {
-                SetViewZ(ViewZ + 1);
+			if (FrameInput.CustomKeyDown(KeyCode.Alpha1)) {
+				SetViewZ(ViewZ + 1);
 				//AudioPlayer.PlaySound("BloopDownPitch".AngeHash());
 			}
-			if (AngeliaFramework.Input.CustomKeyDown(KeyCode.Alpha2)) {
-                SetViewZ(ViewZ - 1);
+			if (FrameInput.CustomKeyDown(KeyCode.Alpha2)) {
+				SetViewZ(ViewZ - 1);
 				//AudioPlayer.PlaySound("Brassic".AngeHash());
 
 			}
@@ -131,13 +133,13 @@ namespace Yaya {
 
 
 		private void Update_CameraRect () {
-			if (AngeliaFramework.Renderer.HasEffect<fSquadTransition>()) {
+			if (CellRenderer.HasEffect<fSquadTransition>()) {
 				var exp = (
-					(Vector2)AngeliaFramework.Renderer.CameraRect.size * (Universe.Meta.SquadBehindParallax / 1000f - 1f)
+					(Vector2)CellRenderer.CameraRect.size * (Universe.Meta.SquadBehindParallax / 1000f - 1f)
 				).CeilToInt();
-                YayaCameraRect = base.CameraRect.Expand(exp.x, exp.x, exp.y, exp.y);
+				YayaCameraRect = base.CameraRect.Expand(exp.x, exp.x, exp.y, exp.y);
 			} else {
-                YayaCameraRect = base.CameraRect;
+				YayaCameraRect = base.CameraRect;
 			}
 		}
 
@@ -158,8 +160,9 @@ namespace Yaya {
 
 
 		private void UpdateUI_Gamepad () {
-			if (AngeliaFramework.Input.CustomKeyDown(KeyCode.F2)) {
-                ShowGamePadUI.Value = !ShowGamePadUI.Value;
+			if (FrameInput.CustomKeyDown(KeyCode.F2)) {
+				ShowGamePadUI.Value = !ShowGamePadUI.Value;
+				if (GamePadUI != null) GamePadUI.ResetLocalFrame();
 			}
 			if (ShowGamePadUI.Value) {
 				// Active
@@ -209,15 +212,25 @@ namespace Yaya {
 
 			if (CurrentPlayer == null || !CurrentPlayer.Active) return;
 
-			//int x = 12;
-			//int y = 12;
-			//if (ShowGamePadUI.Value && GamePadUI != null) {
-			//	y = Mathf.Max(GamePadUI.Y + GamePadUI.Height + 12, y);
-			//}
+			// Spawn
+			if (ControlHintUI == null) {
+				if (TryGetEntityInStage<eControlHint>(out var cHint)) {
+					ControlHintUI = cHint;
+				} else {
+					ControlHintUI = AddEntity(typeof(eControlHint).AngeHash(), 0, 0) as eControlHint;
+					ControlHintUI.X = 32;
+					ControlHintUI.Y = 32;
+				}
+			}
+			if (ControlHintUI == null) return;
 
-			
-
-
+			// Y
+			ControlHintUI.Player = CurrentPlayer;
+			int y = 32;
+			if (GamePadUI != null && GamePadUI.Active) {
+				y = Mathf.Max(GamePadUI.Y + GamePadUI.Height + 32, y);
+			}
+			ControlHintUI.Y = y;
 
 		}
 
@@ -226,12 +239,12 @@ namespace Yaya {
 		protected override void PauselessUpdate () {
 			base.PauselessUpdate();
 			// Pause
-			if (AngeliaFramework.Input.KeyDown(GameKey.Start)) {
-                IsPausing = !IsPausing;
+			if (FrameInput.KeyDown(GameKey.Start) || FrameInput.CustomKeyDown(KeyCode.Escape)) {
+				IsPausing = !IsPausing;
 				if (IsPausing) {
-                    Audio.Pause();
+					AudioPlayer.Pause();
 				} else {
-                    Audio.UnPause();
+					AudioPlayer.UnPause();
 				}
 			}
 		}
@@ -250,15 +263,15 @@ namespace Yaya {
 
 		protected override void BeforeViewZChange (int newZ) {
 			base.BeforeViewZChange(newZ);
-            // Add Effect
-            AngeliaFramework.Renderer.RemoveEffect<fSquadTransition>();
-            AngeliaFramework.Renderer.AddEffect(new fSquadTransition(
-                Universe.Meta.SquadTransitionDuration,
+			// Add Effect
+			CellRenderer.RemoveEffect<fSquadTransition>();
+			CellRenderer.AddEffect(new fSquadTransition(
+				Universe.Meta.SquadTransitionDuration,
 				newZ > ViewZ ?
 					1000f / Universe.Meta.SquadBehindParallax :
-                    Universe.Meta.SquadBehindParallax / 1000f,
-                Universe.Meta.SquadBehindAlpha / 255f,
-                m_YayaAsset.SquadTransitionCurve
+					Universe.Meta.SquadBehindParallax / 1000f,
+				Universe.Meta.SquadBehindAlpha / 255f,
+				m_YayaAsset.SquadTransitionCurve
 			));
 		}
 

@@ -14,20 +14,11 @@ namespace Yaya {
 
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.ForceUpdate]
-	public abstract class UiEntity : Entity, IInitialize {
+	public abstract class UiEntity : Entity {
 
 
 		public int LocalFrame => Game.GlobalFrame - ActiveFrame;
 		private int ActiveFrame = 0;
-		private static readonly Dictionary<Key, int> KeyIdMap = new();
-
-
-		public static void Initialize () {
-			KeyIdMap.Clear();
-			foreach (var key in System.Enum.GetValues(typeof(Key))) {
-				KeyIdMap.TryAdd((Key)key, $"k_{key}".AngeHash());
-			}
-		}
 
 
 		public override void OnActived () {
@@ -38,16 +29,19 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-            AngeliaFramework.Renderer.SetLayer(YayaConst.SHADER_UI);
+			CellRenderer.SetLayer(YayaConst.SHADER_UI);
 			UpdateForUI();
-            AngeliaFramework.Renderer.SetLayerToDefault();
+			CellRenderer.SetLayerToDefault();
 		}
+
+
+		public void ResetLocalFrame () => ActiveFrame = Game.GlobalFrame;
 
 
 		protected abstract void UpdateForUI ();
 
 
-		protected int GetKeyID (Key key) => KeyIdMap.TryGetValue(key, out int id) ? id : 0;
+
 
 
 	}

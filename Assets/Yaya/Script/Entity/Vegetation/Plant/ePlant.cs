@@ -26,11 +26,11 @@ namespace Yaya {
 			base.OnActived();
 			Interacting = false;
 			// Rect from Sprite
-			if (AngeliaFramework.Renderer.TryGetSpriteFromGroup(
+			if (CellRenderer.TryGetSpriteFromGroup(
                     ArtworkCode,
 					(X * 3 + Y * 7) / Const.CELL_SIZE,
 					out var sp
-				) || AngeliaFramework.Renderer.TryGetSprite(ArtworkCode, out sp)
+				) || CellRenderer.TryGetSprite(ArtworkCode, out sp)
 			) {
                 ArtworkID = sp.GlobalID;
                 Width = sp.GlobalWidth;
@@ -52,14 +52,14 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			Physics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
+			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
 		}
 
 
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
 			if (Interactable) {
-				Interacting = Interacting || Physics.HasEntity<eYayaRigidbody>(Rect.Shrink(Width / 4, Width / 4, 0, 0), YayaConst.MASK_RIGIDBODY, this);
+				Interacting = Interacting || CellPhysics.HasEntity<eYayaRigidbody>(Rect.Shrink(Width / 4, Width / 4, 0, 0), YayaConst.MASK_RIGIDBODY, this);
 			}
 		}
 
@@ -80,7 +80,7 @@ namespace Yaya {
 				rect.height += (fixedGameFrame - X / Const.CELL_SIZE).PingPong(60) / 6 - 5;
 				rot += (Mathf.PingPong(fixedGameFrame, 120f) / 60f - 1f).RoundToInt();
 			}
-            AngeliaFramework.Renderer.Draw(ArtworkID, rect.x + rect.width / 2, rect.y, 500, 0, rot, rect.width, rect.height);
+            CellRenderer.Draw(ArtworkID, rect.x + rect.width / 2, rect.y, 500, 0, rot, rect.width, rect.height);
 		}
 
 

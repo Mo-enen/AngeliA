@@ -36,9 +36,9 @@ namespace Yaya {
 			if (DockPose == FurniturePose.Unknown) {
 				var rect = oldRect;
 				rect.x = oldRect.x - Const.CELL_SIZE;
-				bool hasLeft = Physics.HasEntity<eDiningTable>(rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger);
+				bool hasLeft = CellPhysics.HasEntity<eDiningTable>(rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger);
 				rect.x = oldRect.xMax;
-				bool hasRight = Physics.HasEntity<eDiningTable>(rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger);
+				bool hasRight = CellPhysics.HasEntity<eDiningTable>(rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger);
 				DockPose =
 					!hasLeft && hasRight ? FurniturePose.Right :
 					hasLeft && !hasRight ? FurniturePose.Left :

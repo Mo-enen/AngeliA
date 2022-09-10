@@ -25,12 +25,12 @@ namespace Yaya {
 
 		// MSG
 		public override void FillPhysics () {
-			Physics.FillBlock(YayaConst.LAYER_ENVIRONMENT, Rect, true, Const.ONEWAY_UP_TAG);
+			CellPhysics.FillBlock(YayaConst.LAYER_ENVIRONMENT, Rect, true, Const.ONEWAY_UP_TAG);
 		}
 
 
 		public override void FrameUpdate () {
-            AngeliaFramework.Renderer.Draw(LeafArtworkCode, base.Rect.Shift(0, GetLeafShiftY(-24)));
+            CellRenderer.Draw(LeafArtworkCode, base.Rect.Shift(0, GetLeafShiftY(-24)));
 		}
 
 
@@ -43,7 +43,7 @@ namespace Yaya {
 
 		// Data
 		public override void FillPhysics () {
-			Physics.FillBlock(
+			CellPhysics.FillBlock(
 				YayaConst.LAYER_ENVIRONMENT,
 				Rect.Shrink(0, 0, 0, Height / 2),
 				true, YayaConst.CLIMB_TAG
@@ -52,7 +52,7 @@ namespace Yaya {
 
 
 		public override void FrameUpdate () {
-            AngeliaFramework.Renderer.Draw(LeafArtworkCode, base.Rect.Shift(GetLeafShiftY(0), 0));
+            CellRenderer.Draw(LeafArtworkCode, base.Rect.Shift(GetLeafShiftY(0), 0));
 		}
 
 
@@ -108,7 +108,7 @@ namespace Yaya {
 			Height = Const.CELL_SIZE;
 
             // Leaf
-            LeafArtworkCode = AngeliaFramework.Renderer.TryGetSpriteFromGroup(
+            LeafArtworkCode = CellRenderer.TryGetSpriteFromGroup(
                 LeafCode.AngeHash(), (X * 5 + Y * 7) / Const.CELL_SIZE, out var lSprite
 			) ? lSprite.GlobalID : 0;
 
@@ -127,7 +127,7 @@ namespace Yaya {
 
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
-			CharacterNearby = Physics.HasEntity<eCharacter>(Rect.Expand(Const.CELL_SIZE), YayaConst.MASK_CHARACTER, null);
+			CharacterNearby = CellPhysics.HasEntity<eCharacter>(Rect.Expand(Const.CELL_SIZE), YayaConst.MASK_CHARACTER, null);
 		}
 
 
@@ -146,7 +146,7 @@ namespace Yaya {
 					rect.x += rect.width;
 					rect.width = -rect.width;
 				}
-                AngeliaFramework.Renderer.Draw(LeafArtworkCode, rect, LeafTint);
+                CellRenderer.Draw(LeafArtworkCode, rect, LeafTint);
 			}
 		}
 

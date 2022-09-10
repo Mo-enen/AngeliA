@@ -17,7 +17,7 @@ namespace Yaya {
 			base.OnActived();
 			FullRect = Rect;
 			int artworkIndex = X.UDivide(Const.CELL_SIZE) + Y.UDivide(Const.CELL_SIZE);
-			if (AngeliaFramework.Renderer.TryGetSpriteFromGroup(CODE, artworkIndex, out var sprite)) {
+			if (CellRenderer.TryGetSpriteFromGroup(CODE, artworkIndex, out var sprite)) {
 				var rect = base.Rect.Shrink(sprite.GlobalBorder.Left, sprite.GlobalBorder.Right, sprite.GlobalBorder.Down, sprite.GlobalBorder.Up);
                 X = rect.x;
                 Y = rect.y;
@@ -30,12 +30,12 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			Physics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this);
+			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this);
 		}
 
 
 		public override void FrameUpdate () {
-            AngeliaFramework.Renderer.Draw(ArtworkCode, FullRect);
+            CellRenderer.Draw(ArtworkCode, FullRect);
 			base.FrameUpdate();
 		}
 

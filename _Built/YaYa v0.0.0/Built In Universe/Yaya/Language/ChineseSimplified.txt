@@ -1,6 +1,9 @@
-﻿Test.1:一
-Test.3:三
-TestA.0:中文
-TestA.2:二
-TestB.4:四
-TestB.5:123
+﻿ActionHint.eFridge:打开
+ActionHint.ePhoto:切换
+ActionHint.eBed:睡觉
+CtrlHint.Attack:攻击
+CtrlHint.Cancel:取消
+CtrlHint.Jump:跳跃
+CtrlHint.Move:移动
+CtrlHint.Use:使用
+CtrlHint.WakeUp:起床

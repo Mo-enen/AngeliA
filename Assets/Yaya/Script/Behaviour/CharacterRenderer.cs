@@ -36,10 +36,10 @@ namespace Yaya {
 			}
 
 			public void Load (int nameCode) {
-				if (AngeliaFramework.Renderer.TryGetSpriteChain(nameCode, out var chain)) {
+				if (CellRenderer.TryGetSpriteChain(nameCode, out var chain)) {
                     Code = nameCode;
                     LoopStart = chain.LoopStart;
-				} else if (AngeliaFramework.Renderer.TryGetSprite(nameCode, out _)) {
+				} else if (CellRenderer.TryGetSprite(nameCode, out _)) {
                     Code = nameCode;
                     LoopStart = 0;
 				} else {
@@ -52,12 +52,12 @@ namespace Yaya {
 			public static AniCode[] GetAnimationArray (string keyName, int defaultLoopStart, AniCode[] failbacks = null) {
 				var result = new List<AniCode>();
 				int code = keyName.AngeHash();
-				if (AngeliaFramework.Renderer.TryGetSprite(code, out _, 0)) {
+				if (CellRenderer.TryGetSprite(code, out _, 0)) {
 					result.Add(new AniCode(code) { LoopStart = defaultLoopStart, });
 				}
 				for (char c = 'A'; c <= 'Z'; c++) {
 					code = $"{keyName}{c}".AngeHash();
-					if (AngeliaFramework.Renderer.TryGetSprite(code, out _, 0)) {
+					if (CellRenderer.TryGetSprite(code, out _, 0)) {
 						result.Add(new AniCode(code) { LoopStart = defaultLoopStart, });
 					} else break;
 				}
@@ -81,12 +81,12 @@ namespace Yaya {
 			public GroupCode (string name) {
 				var codes = new List<int>();
 				int code = name.AngeHash();
-				if (AngeliaFramework.Renderer.TryGetSprite(code, out _, 0)) {
+				if (CellRenderer.TryGetSprite(code, out _, 0)) {
 					codes.Add(code);
 				}
 				for (int i = 0; i < 1024; i++) {
 					code = $"{name} {i}".AngeHash();
-					if (AngeliaFramework.Renderer.TryGetSprite(code, out _, 0)) {
+					if (CellRenderer.TryGetSprite(code, out _, 0)) {
 						codes.Add(code);
 					} else break;
 				}
@@ -213,7 +213,7 @@ namespace Yaya {
 
 			// Damage
 			if (frame < DamagingTime) {
-				var cell = AngeliaFramework.Renderer.Draw_Animation(
+				var cell = CellRenderer.Draw_Animation(
                     Damaging.Code,
                     Source.X, Source.Y,
 					500, 0, 0,
@@ -239,7 +239,7 @@ namespace Yaya {
 
 					break;
 				case eCharacter.State.Sleep: {
-                        AngeliaFramework.Renderer.Draw_Animation(
+                        CellRenderer.Draw_Animation(
                         Sleep.Code,
                         Source.X, Source.Y,
                         Const.ORIGINAL_SIZE,
@@ -250,7 +250,7 @@ namespace Yaya {
 					break;
 				}
 				case eCharacter.State.Passout: {
-					var cell = AngeliaFramework.Renderer.Draw_Animation(
+					var cell = CellRenderer.Draw_Animation(
                         Passout.Code,
                         Source.X, Source.Y,
 						500, 0, 0,
@@ -340,7 +340,7 @@ namespace Yaya {
 			}
 
 			// Draw
-			var cell = AngeliaFramework.Renderer.Draw_Animation(
+			var cell = CellRenderer.Draw_Animation(
                 CurrentAni.Code,
                 Source.X, Source.Y + offsetY, 500, pivotY, (int)TargetRotation,
 				movement.FacingRight || movement.IsPounding || movement.IsClimbing ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
@@ -348,7 +348,7 @@ namespace Yaya {
                 CurrentAniFrame,
 				ani.LoopStart
 			);
-            CurrentCode = AngeliaFramework.Renderer.LastDrawnID;
+            CurrentCode = CellRenderer.LastDrawnID;
 			LastCellHeight = cell.Height;
 
 			// Bouncy
@@ -403,7 +403,7 @@ namespace Yaya {
 		private void DrawFace () {
 			if (
                 Face.Count <= 0 ||
-				!AngeliaFramework.Renderer.TryGetMeta(CurrentCode, out var meta) ||
+				!CellRenderer.TryGetMeta(CurrentCode, out var meta) ||
 				!meta.Head.IsVailed ||
 				!meta.Head.Front
 			) return;
@@ -418,7 +418,7 @@ namespace Yaya {
 				offsetY = meta.Head.Y + meta.Head.Height;
 				offsetY += offsetY * (1000 - bounce) / 1000;
 			}
-            AngeliaFramework.Renderer.Draw_9Slice(
+            CellRenderer.Draw_9Slice(
                 Game.GlobalFrame % EyeBlinkRate > 8 ?
                     Face[FaceIndex.UMod(Face.Count)] :
                     FaceBlink.Code,

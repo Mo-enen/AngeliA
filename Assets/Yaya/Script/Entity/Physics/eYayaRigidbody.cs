@@ -45,8 +45,8 @@ namespace Yaya {
 
 			// Water & Sand
 			bool prevInSand = InSand;
-			InWater = Physics.Overlap(Mask_Level, Rect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
-			InSand = Physics.Overlap(Mask_Level, Rect, null, OperationMode.TriggerOnly, YayaConst.QUICKSAND_TAG);
+			InWater = CellPhysics.Overlap(Mask_Level, Rect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
+			InSand = CellPhysics.Overlap(Mask_Level, Rect, null, OperationMode.TriggerOnly, YayaConst.QUICKSAND_TAG);
 
 			// Quicksand
 			if (InSand) {

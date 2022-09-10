@@ -10,7 +10,7 @@ namespace Yaya {
 		private static readonly int Artwork = "Brick Wall Slope 0".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-            AngeliaFramework.Renderer.Draw(Artwork, base.Rect);
+            CellRenderer.Draw(Artwork, base.Rect);
 		}
 	}
 
@@ -21,7 +21,7 @@ namespace Yaya {
 		private static readonly int Artwork = "Brick Wall Slope 1".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-            AngeliaFramework.Renderer.Draw(Artwork, base.Rect);
+            CellRenderer.Draw(Artwork, base.Rect);
 		}
 	}
 
@@ -32,7 +32,7 @@ namespace Yaya {
 		private static readonly int Artwork = "Brick Wall Slope 2".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-            AngeliaFramework.Renderer.Draw(Artwork, base.Rect);
+            CellRenderer.Draw(Artwork, base.Rect);
 		}
 	}
 
@@ -43,7 +43,7 @@ namespace Yaya {
 		private static readonly int Artwork = "Brick Wall Slope 3".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-            AngeliaFramework.Renderer.Draw(Artwork, base.Rect);
+            CellRenderer.Draw(Artwork, base.Rect);
 		}
 	}
 }

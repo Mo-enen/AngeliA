@@ -1,6 +1,9 @@
-﻿Test.1:One
-Test.3:Three
-TestA.0:TestTest
-TestA.2:Two
-TestB.4:
-TestB.5:Five
+﻿ActionHint.eFridge:Open
+ActionHint.ePhoto:Switch
+ActionHint.eBed:Sleep
+CtrlHint.Attack:Attack
+CtrlHint.Cancel:Cancel
+CtrlHint.Jump:Jump
+CtrlHint.Move:Move
+CtrlHint.Use:Use
+CtrlHint.WakeUp:Wake Up

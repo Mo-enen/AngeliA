@@ -13,7 +13,7 @@ namespace Yaya {
 
 
 		public override void FrameUpdate () {
-            AngeliaFramework.Renderer.Draw(BARREL_CODE, base.Rect);
+            CellRenderer.Draw(BARREL_CODE, base.Rect);
 			base.FrameUpdate();
 		}
 

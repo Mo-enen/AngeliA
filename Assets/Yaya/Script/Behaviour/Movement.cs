@@ -414,18 +414,18 @@ namespace Yaya {
 			);
 
 			// Oneway Check
-			if ((IsSquating || IsDashing) && !Physics.RoomCheck_Oneway(
+			if ((IsSquating || IsDashing) && !CellPhysics.RoomCheck_Oneway(
 				YayaConst.MASK_MAP, rect, Source, Direction4.Up, false
 			)) return true;
 
 			// Overlap Check
-			return Physics.Overlap(YayaConst.MASK_MAP, rect, null);
+			return CellPhysics.Overlap(YayaConst.MASK_MAP, rect, null);
 		}
 
 
 		private bool ClimbCheck (bool up = false) {
 			if (IsInsideGround) return false;
-			if (Physics.Overlap(
+			if (CellPhysics.Overlap(
 				YayaConst.MASK_ENVIRONMENT,
 				up ? Source.Rect.Shift(0, ClimbSpeedY) : Source.Rect,
 				Source,
@@ -434,7 +434,7 @@ namespace Yaya {
 			)) {
 				return true;
 			}
-			if (Physics.Overlap(
+			if (CellPhysics.Overlap(
 				YayaConst.MASK_ENVIRONMENT,
 				up ? Source.Rect.Shift(0, ClimbSpeedY) : Source.Rect,
 				Source,
@@ -474,10 +474,10 @@ namespace Yaya {
 		private void CollisionFixOnHitboxChanged (int prevHitboxHeight) {
 			var rect = Hitbox.Shrink(0, 0, Const.CELL_SIZE / 4, 0);
 			// Fix for Oneway
-			int count = !IsClimbing ? Physics.OverlapAll(
+			int count = !IsClimbing ? CellPhysics.OverlapAll(
 				c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, Source,
 				OperationMode.TriggerOnly, Const.ONEWAY_DOWN_TAG
-			) : Physics.OverlapAll(
+			) : CellPhysics.OverlapAll(
 				c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, Source
 			);
 			for (int i = 0; i < count; i++) {

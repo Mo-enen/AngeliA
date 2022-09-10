@@ -48,7 +48,7 @@ namespace Yaya {
 			if (Game.GlobalFrame % ScanFrequency == 0 || RequireRefresh) {
 				RequireRefresh = false;
 				CurrentTarget = null;
-				int count = Physics.OverlapAll(
+				int count = CellPhysics.OverlapAll(
 					c_ScanHits,
 					YayaConst.MASK_ENTITY,
 					Source.GlobalBounds.Expand(ScanRange, ScanRange, 0, ScanRange),

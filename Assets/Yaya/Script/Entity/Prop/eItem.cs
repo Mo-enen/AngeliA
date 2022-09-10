@@ -34,7 +34,7 @@ namespace Yaya {
 		private int ItemCode {
 			get {
 				if (_ItemCode == 0) {
-					if (AngeliaFramework.Renderer.TryGetSpriteFromGroup(GroupCode, _ArtworkIndex, out var sprite, false, true)) {
+					if (CellRenderer.TryGetSpriteFromGroup(GroupCode, _ArtworkIndex, out var sprite, false, true)) {
                         _ItemCode = sprite.GlobalID;
 					} else _ItemCode = -1;
 				}
@@ -76,7 +76,7 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			Physics.FillEntity(YayaConst.LAYER_ITEM, this, true, YayaConst.ITEM_TAG);
+			CellPhysics.FillEntity(YayaConst.LAYER_ITEM, this, true, YayaConst.ITEM_TAG);
 		}
 
 
@@ -84,11 +84,11 @@ namespace Yaya {
 			int frame = Game.GlobalFrame;
 			base.PhysicsUpdate();
 			// Fall
-			bool grounded = !Physics.RoomCheck(YayaConst.MASK_MAP, Rect, this, Direction4.Down);
+			bool grounded = !CellPhysics.RoomCheck(YayaConst.MASK_MAP, Rect, this, Direction4.Down);
 			if (!grounded) {
 				if (VelocityY != 0) {
 					var rect = Rect;
-					rect.position = Physics.Move(
+					rect.position = CellPhysics.Move(
 						YayaConst.MASK_MAP, rect.position, 0, VelocityY, rect.size, this, out _, out bool stopY
 					);
 					Y = Mathf.Min(rect.y, Y);
@@ -101,9 +101,9 @@ namespace Yaya {
 			// Make Room
 			if (MakingRoom = MakingRoom || (
 				frame % 30 == 0 &&
-				Physics.Overlap(YayaConst.MASK_ITEM, Rect, this, OperationMode.TriggerOnly)
+				CellPhysics.Overlap(YayaConst.MASK_ITEM, Rect, this, OperationMode.TriggerOnly)
 			)) {
-				int count = Physics.OverlapAll(c_MakeRoom, YayaConst.MASK_ITEM, Rect, this, OperationMode.TriggerOnly);
+				int count = CellPhysics.OverlapAll(c_MakeRoom, YayaConst.MASK_ITEM, Rect, this, OperationMode.TriggerOnly);
 				int deltaX = 0;
 				for (int i = 0; i < count; i++) {
 					deltaX += c_MakeRoom[i].Rect.x - X;
@@ -112,7 +112,7 @@ namespace Yaya {
 					deltaX = count % 2 == 0 ? 1 : -1;
 				}
 				var rect = Rect;
-				rect.position = Physics.MoveIgnoreOneway(
+				rect.position = CellPhysics.MoveIgnoreOneway(
 					YayaConst.MASK_MAP, rect.position,
 					Mathf.Clamp(-deltaX, -6, 6), 0,
 					rect.size, this
@@ -126,7 +126,7 @@ namespace Yaya {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			if (ItemCode != 0 && ItemCode != -1) {
-                AngeliaFramework.Renderer.Draw(
+                CellRenderer.Draw(
                     ItemCode,
 					new(
                         X + (ITEM_PHYSICS_SIZE - ITEM_RENDER_SIZE) / 2,

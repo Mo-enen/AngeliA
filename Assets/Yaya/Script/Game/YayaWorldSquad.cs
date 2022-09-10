@@ -27,7 +27,7 @@ namespace Yaya {
 			if (layerIndex == YayaConst.SHADER_UI) return;
 
 			float z01 = Mathf.InverseLerp(0, Duration, LocalFrame);
-            Vector2 center = AngeliaFramework.Renderer.CameraRect.center;
+            Vector2 center = CellRenderer.CameraRect.center;
 			var scl = Mathf.LerpUnclamped(Scale, 1f, Curve.Evaluate(z01));
 
 			// Behind
@@ -78,8 +78,8 @@ namespace Yaya {
 			base.DrawBackgroundBlock(id, unitX, unitY);
 			if (!Behind) {
 				// Collider for Oneway
-				if (AngeliaFramework.Renderer.TryGetMeta(id, out var meta) && AngeUtil.IsOnewayTag(meta.Tag)) {
-                    Physics.FillBlock(
+				if (CellRenderer.TryGetMeta(id, out var meta) && AngeUtil.IsOnewayTag(meta.Tag)) {
+                    CellPhysics.FillBlock(
                         YayaConst.LAYER_LEVEL,
 						new RectInt(
 							unitX * Const.CELL_SIZE,
@@ -98,10 +98,10 @@ namespace Yaya {
 			base.DrawLevelBlock(id, unitX, unitY);
 			if (!Behind) {
 				// Collider
-				if (!AngeliaFramework.Renderer.TryGetSprite(id, out var sp)) return;
+				if (!CellRenderer.TryGetSprite(id, out var sp)) return;
 				bool isTrigger = false;
 				int tag = 0;
-				if (AngeliaFramework.Renderer.TryGetMeta(id, out var meta)) {
+				if (CellRenderer.TryGetMeta(id, out var meta)) {
 					isTrigger = meta.IsTrigger;
 					tag = meta.Tag;
 				}
@@ -110,7 +110,7 @@ namespace Yaya {
 				).Shrink(
 					sp.GlobalBorder.Left, sp.GlobalBorder.Right, sp.GlobalBorder.Down, sp.GlobalBorder.Up
 				);
-				Physics.FillBlock(YayaConst.LAYER_LEVEL, rect, isTrigger, tag);
+				CellPhysics.FillBlock(YayaConst.LAYER_LEVEL, rect, isTrigger, tag);
 				// Damage
 				if (tag == YayaConst.DAMAGE_TAG) {
 					YayaCellPhysics.FillBlock_Damage(rect.Expand(1), true, 1);

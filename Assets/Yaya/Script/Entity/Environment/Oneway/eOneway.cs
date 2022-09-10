@@ -50,7 +50,7 @@ namespace Yaya {
 				Direction4.Right => new(rect.xMax, rect.y, GAP, rect.height),
 				_ => throw new System.NotImplementedException(),
 			};
-			int rCount = Physics.OverlapAll(c_Rebound, MASK, edge, this);
+			int rCount = CellPhysics.OverlapAll(c_Rebound, MASK, edge, this);
 			for (int i = 0; i < rCount; i++) {
 				var hit = c_Rebound[i];
 				if (

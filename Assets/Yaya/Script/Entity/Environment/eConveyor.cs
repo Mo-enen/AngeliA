@@ -45,7 +45,7 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			Physics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this);
+			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this);
 		}
 
 
@@ -55,7 +55,7 @@ namespace Yaya {
 			var rect = Rect;
 			rect.y += rect.height;
 			rect.height = 1;
-			int count = Physics.OverlapAll(c_Update, YayaConst.MASK_SOLID, rect, this);
+			int count = CellPhysics.OverlapAll(c_Update, YayaConst.MASK_SOLID, rect, this);
 			for (int i = 0; i < count; i++) {
 				var hit = c_Update[i];
 				if (hit.Entity is eYayaRigidbody rig) {
@@ -73,9 +73,9 @@ namespace Yaya {
 			int width = rect.width;
 			rect.width = 1;
 			rect.x -= 1;
-			bool hasLeft = Physics.HasEntity<eConveyor>(rect, YayaConst.MASK_ENVIRONMENT, this);
+			bool hasLeft = CellPhysics.HasEntity<eConveyor>(rect, YayaConst.MASK_ENVIRONMENT, this);
 			rect.x += width + 1;
-			bool hasRight = Physics.HasEntity<eConveyor>(rect, YayaConst.MASK_ENVIRONMENT, this);
+			bool hasRight = CellPhysics.HasEntity<eConveyor>(rect, YayaConst.MASK_ENVIRONMENT, this);
 			Part =
 				hasLeft && hasRight ? PartType.Middle :
 				hasLeft && !hasRight ? PartType.RightEdge :
@@ -91,17 +91,17 @@ namespace Yaya {
 			if (MoveSpeed > 0) aFrame = 7 - aFrame;
 			switch (Part) {
 				case PartType.LeftEdge:
-                    AngeliaFramework.Renderer.Draw(LEFT_CODES[aFrame], base.Rect);
+                    CellRenderer.Draw(LEFT_CODES[aFrame], base.Rect);
 					break;
 				case PartType.Middle:
-                    AngeliaFramework.Renderer.Draw(MID_CODES[aFrame], base.Rect);
+                    CellRenderer.Draw(MID_CODES[aFrame], base.Rect);
 					break;
 				case PartType.RightEdge:
-                    AngeliaFramework.Renderer.Draw(RIGHT_CODES[aFrame], base.Rect);
+                    CellRenderer.Draw(RIGHT_CODES[aFrame], base.Rect);
 					break;
 				case PartType.Single:
 				case PartType.None:
-                    AngeliaFramework.Renderer.Draw(SINGLE_CODES[aFrame], base.Rect);
+                    CellRenderer.Draw(SINGLE_CODES[aFrame], base.Rect);
 					break;
 			}
 		}
