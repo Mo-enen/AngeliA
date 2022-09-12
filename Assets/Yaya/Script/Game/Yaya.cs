@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-
+using UnityEngine.Video;
 
 namespace Yaya {
 	// === Main ===
@@ -117,7 +117,6 @@ namespace Yaya {
 
 
 
-
 			if (FrameInput.CustomKeyDown(KeyCode.Alpha1)) {
 				SetViewZ(ViewZ + 1);
 			}
@@ -125,10 +124,10 @@ namespace Yaya {
 				SetViewZ(ViewZ - 1);
 			}
 			if (FrameInput.CustomKeyDown(KeyCode.Alpha3)) {
-				CutscenePlayer.Play("Test Video".AngeHash());
+
 			}
 			if (FrameInput.CustomKeyDown(KeyCode.Alpha4)) {
-				CutscenePlayer.Stop();
+
 			}
 
 		}
@@ -244,34 +243,20 @@ namespace Yaya {
 		// Override
 		protected override void PauselessUpdate () {
 			base.PauselessUpdate();
-			if (!CutscenePlayer.IsPlaying) {
-				// GamePlay
-				// Pause
-				if (FrameInput.KeyDown(GameKey.Start)) {
-					IsPausing = !IsPausing;
-					if (IsPausing) {
-						AudioPlayer.Pause();
-					} else {
-						AudioPlayer.UnPause();
-					}
-				}
-				if (IsPausing && ControlHintUI != null && ControlHintUI.Active) {
-					ControlHintUI.FrameUpdate();
-				}
-			} else {
-				// Cutscene
-				if (FrameInput.KeyDown(GameKey.Start)) {
-					if (!ControlHintUI.TryingToSkipCutscene) {
-						ControlHintUI.TryingToSkipCutscene = true;
-					} else {
-						ControlHintUI.TryingToSkipCutscene = false;
-						CutscenePlayer.Stop();
-					}
-				}
-				if (ControlHintUI != null && ControlHintUI.Active) {
-					ControlHintUI.FrameUpdate();
+
+			// Pause
+			if (FrameInput.KeyDown(GameKey.Start)) {
+				IsPausing = !IsPausing;
+				if (IsPausing) {
+					AudioPlayer.Pause();
+				} else {
+					AudioPlayer.UnPause();
 				}
 			}
+			if (IsPausing && ControlHintUI != null && ControlHintUI.Active) {
+				ControlHintUI.FrameUpdate();
+			}
+
 		}
 
 

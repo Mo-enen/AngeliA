@@ -5,11 +5,9 @@ ActionHint.ePhoto:Switch
 ActionHint.eWardrobe:Open
 CtrlHint.Attack:Attack
 CtrlHint.Cancel:Cancel
-CtrlHint.DoubleSkip:Press twice to skip
 CtrlHint.Jump:Jump
 CtrlHint.Move:Move
 CtrlHint.Pause:Pause
-CtrlHint.Skip:Skip
 CtrlHint.UnPause:UnPause
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up

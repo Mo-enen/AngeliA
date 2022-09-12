@@ -213,7 +213,7 @@ MonoBehaviour:
       Capacity: 1024
       UpdateOnPause: 1
     TextLayer:
-      Shader: {fileID: 10101, guid: 0000000000000000e000000000000000, type: 0}
+      Shader: {fileID: 4800000, guid: 3cc8ea1201bc7db4dbc3fa00add91e41, type: 3}
       Capacity: 1024
       UpdateOnPause: 0
   m_YayaMeta:
