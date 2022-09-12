@@ -147,20 +147,20 @@ namespace Yaya {
 
 		protected void DrawClockHands (RectInt rect, int handCode, int thickness, int thicknessSecond) {
 			var now = System.DateTime.Now;
-            // Sec
-            CellRenderer.Draw(
+			// Sec
+			CellRenderer.Draw(
 				handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
 				500, 0, now.Second * 360 / 60,
 				thicknessSecond, rect.height * 900 / 2000
 			);
-            // Min
-            CellRenderer.Draw(
+			// Min
+			CellRenderer.Draw(
 				handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
 				500, 0, now.Minute * 360 / 60,
 				thickness, rect.height * 800 / 2000
 			);
-            // Hour
-            CellRenderer.Draw(
+			// Hour
+			CellRenderer.Draw(
 				handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
 				500, 0, (now.Hour * 360 / 12) + (now.Minute * 360 / 12 / 60),
 				thickness, rect.height * 400 / 2000
@@ -172,10 +172,10 @@ namespace Yaya {
 			float t11 = Mathf.Sin(Game.GlobalFrame * 6 * Mathf.Deg2Rad);
 			int rot = (t11 * maxRot).RoundToInt();
 			int dX = -(t11 * deltaX).RoundToInt();
-            // Leg
-            CellRenderer.Draw(artCodeLeg, x + dX, y, 500, 1000, rot, thickness, length);
-            // Head
-            CellRenderer.Draw(
+			// Leg
+			CellRenderer.Draw(artCodeLeg, x + dX, y, 500, 1000, rot, thickness, length);
+			// Head
+			CellRenderer.Draw(
 				artCodeHead, x + dX, y, 500,
 				500 * (headSize / 2 + length) / (headSize / 2),
 				rot, headSize, headSize
@@ -184,12 +184,12 @@ namespace Yaya {
 
 
 		protected bool TryGetSprite (FurniturePose pose, out AngeSprite sprite) =>
-            CellRenderer.TryGetSpriteFromGroup(
+			CellRenderer.TryGetSpriteFromGroup(
 			pose switch {
-                FurniturePose.Left => ArtworkCode_LeftDown,
-                FurniturePose.Mid => ArtworkCode_Mid,
-                FurniturePose.Right => ArtworkCode_RightUp,
-                FurniturePose.Single => ArtworkCode_Single,
+				FurniturePose.Left => ArtworkCode_LeftDown,
+				FurniturePose.Mid => ArtworkCode_Mid,
+				FurniturePose.Right => ArtworkCode_RightUp,
+				FurniturePose.Single => ArtworkCode_Single,
 				_ => 0,
 			}, ArtworkIndex, out sprite, LoopArtworkIndex);
 
@@ -204,18 +204,14 @@ namespace Yaya {
 		}
 
 
-		public void HighlightAllNeighbors (bool firstFrame) => ForAllNeighbors((fur) => {
-			fur.HighlightFrame = Game.GlobalFrame;
-			if (firstFrame) fur.LastUnhighlightFrame = Game.GlobalFrame;
-		});
-
-
-		public void ForAllNeighbors (System.Action<eFurniture> action) {
+		public void HighlightAllNeighbors (bool firstFrame) {
 			for (eFurniture i = FurnitureLeftOrDown; i != null; i = i.FurnitureLeftOrDown) {
-				action(i);
+				i.HighlightFrame = Game.GlobalFrame;
+				if (firstFrame) i.LastUnhighlightFrame = Game.GlobalFrame;
 			}
 			for (eFurniture i = FurnitureRightOrUp; i != null; i = i.FurnitureRightOrUp) {
-				action(i);
+				i.HighlightFrame = Game.GlobalFrame;
+				if (firstFrame) i.LastUnhighlightFrame = Game.GlobalFrame;
 			}
 		}
 

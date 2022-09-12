@@ -19,6 +19,8 @@ namespace Yaya {
 		private static readonly int HINT_WAKE_CODE = "CtrlHint.WakeUp".AngeHash();
 		private static readonly int HINT_CANCEL_CODE = "CtrlHint.Cancel".AngeHash();
 		private static readonly int HINT_UNPAUSE_CODE = "CtrlHint.UnPause".AngeHash();
+		private static readonly int HINT_SKIP_CODE = "CtrlHint.Skip".AngeHash();
+		private static readonly int HINT_DOUBLE_SKIP_CODE = "CtrlHint.DoubleSkip".AngeHash();
 
 		// Api
 		public ePlayer Player { get; set; } = null;
@@ -26,6 +28,7 @@ namespace Yaya {
 		public int Gap { get; set; } = 32;
 		public int TextSize { get; set; } = 100;
 		public Color32 Tint { get; set; } = Const.WHITE;
+		public bool TryingToSkipCutscene { get; set; } = false;
 
 		// Data
 		private static readonly Dictionary<int, int> TypeHintMap = new();
@@ -64,35 +67,52 @@ namespace Yaya {
 
 
 		protected override void UpdateForUI () {
+
+			bool cutscenePlaying = CutscenePlayer.IsPlaying;
+			if (!cutscenePlaying) TryingToSkipCutscene = false;
 			if (Player == null || !Player.Active) return;
 			if (FrameStep.HasStep<sOpening>() || FrameStep.HasStep<sFadeOut>()) return;
+
 			PositionY = Y + CellRenderer.CameraRect.y;
-			if (Game.IsPausing) {
-				DrawKey(GameKey.Start, HINT_UNPAUSE_CODE);
-				return;
-			}
-			switch (Player.CharacterState) {
-				case eCharacter.State.General:
-					if (Player.Action.CurrentTarget is Entity target) {
-						// Action
-						if (TypeHintMap.TryGetValue(target.TypeID, out int code)) {
-							DrawKey(GameKey.Action, code);
-						} else {
-							DrawKey(GameKey.Action, HINT_USE_CODE);
-						}
-						if (target is eOpenableFurniture open && open.Open) {
-							DrawKey(GameKey.Jump, HINT_CANCEL_CODE);
-						}
-					} else {
-						// General
-						DrawKey(GameKey.Left, GameKey.Right, HINT_MOVE_CODE);
-						DrawKey(GameKey.Action, HINT_ATTACK_CODE);
-						DrawKey(GameKey.Jump, HINT_JUMP_CODE);
+
+			if (!cutscenePlaying) {
+				if (!Game.IsPausing) {
+					// Game Playing
+					switch (Player.CharacterState) {
+						case eCharacter.State.General:
+							if (Player.Action.CurrentTarget is Entity target) {
+								// Action
+								if (TypeHintMap.TryGetValue(target.TypeID, out int code)) {
+									DrawKey(GameKey.Action, code);
+								} else {
+									DrawKey(GameKey.Action, HINT_USE_CODE);
+								}
+								if (target is eOpenableFurniture open && open.Open) {
+									DrawKey(GameKey.Jump, HINT_CANCEL_CODE);
+								}
+							} else {
+								// General
+								DrawKey(GameKey.Left, GameKey.Right, HINT_MOVE_CODE);
+								DrawKey(GameKey.Action, HINT_ATTACK_CODE);
+								DrawKey(GameKey.Jump, HINT_JUMP_CODE);
+							}
+							break;
+						case eCharacter.State.Sleep:
+							DrawKey(GameKey.Action, HINT_WAKE_CODE);
+							break;
 					}
-					break;
-				case eCharacter.State.Sleep:
-					DrawKey(GameKey.Action, HINT_WAKE_CODE);
-					break;
+
+				} else {
+					// Pausing
+					DrawKey(GameKey.Start, HINT_UNPAUSE_CODE);
+				}
+			} else {
+				// Cutscene
+				if (TryingToSkipCutscene) {
+					DrawKey(GameKey.Start, HINT_SKIP_CODE);
+				} else {
+					DrawKey(GameKey.Start, HINT_DOUBLE_SKIP_CODE);
+				}
 			}
 		}
 
@@ -110,10 +130,12 @@ namespace Yaya {
 
 			// Fix Width for A
 			if (CellRenderer.TryGetSprite(keyIdA, out var spriteA) && spriteA.GlobalWidth > spriteA.GlobalHeight) {
-				widthA = (KeySize * ((float)spriteA.GlobalWidth / spriteA.GlobalHeight)).RoundToInt();
+				widthA = ((KeySize - border.Vertical) * ((float)spriteA.GlobalWidth / spriteA.GlobalHeight)).RoundToInt();
+				widthA += border.Horizontal;
 			}
 			if (CellRenderer.TryGetSprite(keyIdB, out var spriteB) && spriteB.GlobalWidth > spriteB.GlobalHeight) {
-				widthB = (KeySize * ((float)spriteB.GlobalWidth / spriteB.GlobalHeight)).RoundToInt();
+				widthB = ((KeySize - border.Vertical) * ((float)spriteB.GlobalWidth / spriteB.GlobalHeight)).RoundToInt();
+				widthB += border.Horizontal;
 			}
 
 			// Button

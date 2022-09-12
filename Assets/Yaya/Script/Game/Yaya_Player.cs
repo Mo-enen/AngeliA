@@ -45,17 +45,6 @@ namespace Yaya {
 
 		public void Initialize_Player () {
 
-			CurrentPlayer = null;
-			PlayerTypeID = 0;
-			LeftDownFrame = int.MinValue;
-			RightDownFrame = int.MinValue;
-			DownDownFrame = int.MinValue;
-			UpDownFrame = int.MinValue;
-			LastGroundedY = 0;
-			AimX = 0;
-			AimY = 0;
-			AttackRequiringFrame = int.MinValue;
-
 			// Switch Player
 			int firstPlayerID = 0;
 			foreach (var type in typeof(ePlayer).AllChildClass()) {

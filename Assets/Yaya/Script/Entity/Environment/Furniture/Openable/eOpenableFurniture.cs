@@ -38,9 +38,12 @@ namespace Yaya {
 		// LGC
 		private void SetOpen (bool open) {
 			Open = open;
-			ForAllNeighbors((fur) => {
-				if (fur is eOpenableFurniture oFur) oFur.Open = open;
-			});
+			for (eFurniture i = FurnitureLeftOrDown; i != null; i = i.FurnitureLeftOrDown) {
+				if (i is eOpenableFurniture oFur) oFur.Open = open;
+			}
+			for (eFurniture i = FurnitureRightOrUp; i != null; i = i.FurnitureRightOrUp) {
+				if (i is eOpenableFurniture oFur) oFur.Open = open;
+			}
 		}
 
 

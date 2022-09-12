@@ -120,13 +120,17 @@ namespace Yaya {
 
 			if (FrameInput.CustomKeyDown(KeyCode.Alpha1)) {
 				SetViewZ(ViewZ + 1);
-				//AudioPlayer.PlaySound("BloopDownPitch".AngeHash());
 			}
 			if (FrameInput.CustomKeyDown(KeyCode.Alpha2)) {
 				SetViewZ(ViewZ - 1);
-				//AudioPlayer.PlaySound("Brassic".AngeHash());
-
 			}
+			if (FrameInput.CustomKeyDown(KeyCode.Alpha3)) {
+				CutscenePlayer.Play("Test Video".AngeHash());
+			}
+			if (FrameInput.CustomKeyDown(KeyCode.Alpha4)) {
+				CutscenePlayer.Stop();
+			}
+
 		}
 
 
@@ -240,16 +244,30 @@ namespace Yaya {
 		// Override
 		protected override void PauselessUpdate () {
 			base.PauselessUpdate();
-			// Pause
-			if (FrameInput.KeyDown(GameKey.Start)) {
-				IsPausing = !IsPausing;
-				if (IsPausing) {
-					AudioPlayer.Pause();
-				} else {
-					AudioPlayer.UnPause();
+			if (!CutscenePlayer.IsPlaying) {
+				// GamePlay
+				// Pause
+				if (FrameInput.KeyDown(GameKey.Start)) {
+					IsPausing = !IsPausing;
+					if (IsPausing) {
+						AudioPlayer.Pause();
+					} else {
+						AudioPlayer.UnPause();
+					}
 				}
-			}
-			if (IsPausing) {
+				if (IsPausing && ControlHintUI != null && ControlHintUI.Active) {
+					ControlHintUI.FrameUpdate();
+				}
+			} else {
+				// Cutscene
+				if (FrameInput.KeyDown(GameKey.Start)) {
+					if (!ControlHintUI.TryingToSkipCutscene) {
+						ControlHintUI.TryingToSkipCutscene = true;
+					} else {
+						ControlHintUI.TryingToSkipCutscene = false;
+						CutscenePlayer.Stop();
+					}
+				}
 				if (ControlHintUI != null && ControlHintUI.Active) {
 					ControlHintUI.FrameUpdate();
 				}

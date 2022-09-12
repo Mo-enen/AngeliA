@@ -27,7 +27,7 @@ namespace Yaya {
 			if (layerIndex == YayaConst.SHADER_UI) return;
 
 			float z01 = Mathf.InverseLerp(0, Duration, LocalFrame);
-            Vector2 center = CellRenderer.CameraRect.center;
+			Vector2 center = CellRenderer.CameraRect.center;
 			var scl = Mathf.LerpUnclamped(Scale, 1f, Curve.Evaluate(z01));
 
 			// Behind
@@ -45,10 +45,7 @@ namespace Yaya {
 		}
 
 
-		private void PerformLogic (
-			Cell[] cells, Vector2 center, int startIndex, int endIndex,
-			float scale, float alpha
-		) {
+		private void PerformLogic (Cell[] cells, Vector2 center, int startIndex, int endIndex, float scale, float alpha) {
 			Color32 c;
 			for (int i = startIndex; i <= endIndex; i++) {
 				var cell = cells[i];
@@ -79,13 +76,13 @@ namespace Yaya {
 			if (!Behind) {
 				// Collider for Oneway
 				if (CellRenderer.TryGetMeta(id, out var meta) && AngeUtil.IsOnewayTag(meta.Tag)) {
-                    CellPhysics.FillBlock(
-                        YayaConst.LAYER_LEVEL,
+					CellPhysics.FillBlock(
+						YayaConst.LAYER_LEVEL,
 						new RectInt(
 							unitX * Const.CELL_SIZE,
 							unitY * Const.CELL_SIZE,
-                            Const.CELL_SIZE,
-                            Const.CELL_SIZE
+							Const.CELL_SIZE,
+							Const.CELL_SIZE
 						),
 						true, meta.Tag
 					);
