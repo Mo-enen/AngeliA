@@ -34,6 +34,7 @@ namespace Yaya {
 
 		// Saving
 		private readonly SavingBool ShowGamePadUI = new("Yaya.ShowGamePadUI", false);
+		private readonly SavingBool ShowControlHint = new("Yaya.ShowControlHint", true);
 
 
 		#endregion
@@ -51,7 +52,7 @@ namespace Yaya {
 			Initialize_Quit();
 			Initialize_YayaMeta();
 			Initialize_Player();
-			FrameInput.AddCustomKey(KeyCode.Escape);
+
 
 
 			FrameInput.AddCustomKey(KeyCode.Alpha1);
@@ -112,9 +113,7 @@ namespace Yaya {
 			base.FrameUpdate();
 			Update_Damage();
 			Update_Player();
-
-			UpdateUI_Gamepad();
-			UpdateUI_ControlHint();
+			Update_HintUI();
 
 
 
@@ -128,7 +127,6 @@ namespace Yaya {
 				//AudioPlayer.PlaySound("Brassic".AngeHash());
 
 			}
-
 		}
 
 
@@ -159,11 +157,25 @@ namespace Yaya {
 		}
 
 
-		private void UpdateUI_Gamepad () {
+		private void Update_HintUI () {
+
 			if (FrameInput.CustomKeyDown(KeyCode.F2)) {
-				ShowGamePadUI.Value = !ShowGamePadUI.Value;
-				if (GamePadUI != null) GamePadUI.ResetLocalFrame();
+				if (ShowGamePadUI.Value != ShowControlHint.Value) {
+					// 1 >> 2
+					ShowGamePadUI.Value = true;
+					ShowControlHint.Value = true;
+				} else if (ShowGamePadUI.Value) {
+					// 2 >> 0
+					ShowGamePadUI.Value = false;
+					ShowControlHint.Value = false;
+				} else {
+					// 0 >> 1
+					ShowGamePadUI.Value = false;
+					ShowControlHint.Value = true;
+				}
 			}
+
+			// Gamepad
 			if (ShowGamePadUI.Value) {
 				// Active
 				if (GamePadUI == null) {
@@ -172,7 +184,7 @@ namespace Yaya {
 					} else {
 						GamePadUI = AddEntity(typeof(eGamePadUI).AngeHash(), 0, 0) as eGamePadUI;
 						GamePadUI.X = 12;
-						GamePadUI.Y = -300;
+						GamePadUI.Y = 12;
 						GamePadUI.Width = 660;
 						GamePadUI.Height = 300;
 						GamePadUI.DPadLeftPosition = new(50, 110, 60, 40);
@@ -188,49 +200,39 @@ namespace Yaya {
 						GamePadUI.PressingTint = new(0, 255, 0, 255);
 					}
 				}
-				// Lerp
-				const int DURATION = 20;
-				if (GamePadUI.LocalFrame <= DURATION) {
-					float t01 = m_YayaAsset.UiPopCurve.Evaluate(Mathf.InverseLerp(0, DURATION, GamePadUI.LocalFrame));
-					GamePadUI.Y = Mathf.LerpUnclamped(-300, 12, t01).RoundToInt();
-				} else if (GamePadUI.Y != 12) {
-					GamePadUI.Y = 12;
-				}
 			} else if (GamePadUI != null) {
 				// Inactive
-				if (GamePadUI.Y > -320) {
-					GamePadUI.Y = Mathf.LerpUnclamped(GamePadUI.Y, -340, 0.1f).RoundToInt();
-				} else {
-					GamePadUI.Active = false;
-					GamePadUI = null;
+				GamePadUI.Active = false;
+				GamePadUI = null;
+			}
+
+			// Ctrl Hint
+			if (ShowControlHint.Value && CurrentPlayer != null && CurrentPlayer.Active) {
+
+				// Spawn
+				if (ControlHintUI == null) {
+					if (TryGetEntityInStage<eControlHint>(out var cHint)) {
+						ControlHintUI = cHint;
+					} else {
+						ControlHintUI = AddEntity(typeof(eControlHint).AngeHash(), 0, 0) as eControlHint;
+						ControlHintUI.X = 32;
+						ControlHintUI.Y = 32;
+					}
 				}
-			}
-		}
+				ControlHintUI.Player = CurrentPlayer;
 
-
-		private void UpdateUI_ControlHint () {
-
-			if (CurrentPlayer == null || !CurrentPlayer.Active) return;
-
-			// Spawn
-			if (ControlHintUI == null) {
-				if (TryGetEntityInStage<eControlHint>(out var cHint)) {
-					ControlHintUI = cHint;
-				} else {
-					ControlHintUI = AddEntity(typeof(eControlHint).AngeHash(), 0, 0) as eControlHint;
-					ControlHintUI.X = 32;
-					ControlHintUI.Y = 32;
+				// Y
+				int y = 32;
+				if (GamePadUI != null && GamePadUI.Active) {
+					y = Mathf.Max(GamePadUI.Y + GamePadUI.Height + 32, y);
 				}
-			}
-			if (ControlHintUI == null) return;
+				ControlHintUI.Y = y;
 
-			// Y
-			ControlHintUI.Player = CurrentPlayer;
-			int y = 32;
-			if (GamePadUI != null && GamePadUI.Active) {
-				y = Mathf.Max(GamePadUI.Y + GamePadUI.Height + 32, y);
+			} else if (ControlHintUI != null) {
+				// Inactive
+				ControlHintUI.Active = false;
+				ControlHintUI = null;
 			}
-			ControlHintUI.Y = y;
 
 		}
 
@@ -239,12 +241,17 @@ namespace Yaya {
 		protected override void PauselessUpdate () {
 			base.PauselessUpdate();
 			// Pause
-			if (FrameInput.KeyDown(GameKey.Start) || FrameInput.CustomKeyDown(KeyCode.Escape)) {
+			if (FrameInput.KeyDown(GameKey.Start)) {
 				IsPausing = !IsPausing;
 				if (IsPausing) {
 					AudioPlayer.Pause();
 				} else {
 					AudioPlayer.UnPause();
+				}
+			}
+			if (IsPausing) {
+				if (ControlHintUI != null && ControlHintUI.Active) {
+					ControlHintUI.FrameUpdate();
 				}
 			}
 		}

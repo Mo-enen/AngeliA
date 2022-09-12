@@ -1,9 +1,13 @@
-﻿ActionHint.eFridge:Open
-ActionHint.ePhoto:Switch
+﻿ActionHint.eWardrobe:Open
+ActionHint.eChest:Open
 ActionHint.eBed:Sleep
+ActionHint.eFridge:Open
+ActionHint.ePhoto:Switch
 CtrlHint.Attack:Attack
 CtrlHint.Cancel:Cancel
 CtrlHint.Jump:Jump
 CtrlHint.Move:Move
+CtrlHint.Pause:Pause
+CtrlHint.UnPause:UnPause
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up

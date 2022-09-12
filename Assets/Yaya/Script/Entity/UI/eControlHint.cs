@@ -10,17 +10,19 @@ namespace Yaya {
 
 
 		// Const
-		private static readonly int KEY_BUTTON_CODE = "Keyboard Button".AngeHash();
+		private static readonly int KEYBOARD_BUTTON_CODE = "Keyboard Button".AngeHash();
+		private static readonly int GAMEPAD_BUTTON_CODE = "Gamepad Button".AngeHash();
 		private static readonly int HINT_MOVE_CODE = "CtrlHint.Move".AngeHash();
 		private static readonly int HINT_JUMP_CODE = "CtrlHint.Jump".AngeHash();
 		private static readonly int HINT_ATTACK_CODE = "CtrlHint.Attack".AngeHash();
 		private static readonly int HINT_USE_CODE = "CtrlHint.Use".AngeHash();
 		private static readonly int HINT_WAKE_CODE = "CtrlHint.WakeUp".AngeHash();
 		private static readonly int HINT_CANCEL_CODE = "CtrlHint.Cancel".AngeHash();
+		private static readonly int HINT_UNPAUSE_CODE = "CtrlHint.UnPause".AngeHash();
 
 		// Api
 		public ePlayer Player { get; set; } = null;
-		public int KeySize { get; set; } = 128;
+		public int KeySize { get; set; } = 142;
 		public int Gap { get; set; } = 32;
 		public int TextSize { get; set; } = 100;
 		public Color32 Tint { get; set; } = Const.WHITE;
@@ -28,7 +30,8 @@ namespace Yaya {
 		// Data
 		private static readonly Dictionary<int, int> TypeHintMap = new();
 		private int PositionY = 0;
-		private Int4 Border = default;
+		private Int4 Border_Keyboard = default;
+		private Int4 Border_Gamepad = default;
 
 
 		// MSG
@@ -45,11 +48,17 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
-			if (CellRenderer.TryGetSprite(KEY_BUTTON_CODE, out var sprite)) {
-				Border.Left = (int)(sprite.GlobalBorder.Left * ((float)KeySize / sprite.GlobalWidth));
-				Border.Right = (int)(sprite.GlobalBorder.Right * ((float)KeySize / sprite.GlobalWidth));
-				Border.Down = (int)(sprite.GlobalBorder.Down * ((float)KeySize / sprite.GlobalHeight));
-				Border.Up = (int)(sprite.GlobalBorder.Up * ((float)KeySize / sprite.GlobalHeight));
+			if (CellRenderer.TryGetSprite(KEYBOARD_BUTTON_CODE, out var sprite)) {
+				Border_Keyboard.Left = (int)(sprite.GlobalBorder.Left * ((float)KeySize / sprite.GlobalWidth));
+				Border_Keyboard.Right = (int)(sprite.GlobalBorder.Right * ((float)KeySize / sprite.GlobalWidth));
+				Border_Keyboard.Down = (int)(sprite.GlobalBorder.Down * ((float)KeySize / sprite.GlobalHeight));
+				Border_Keyboard.Up = (int)(sprite.GlobalBorder.Up * ((float)KeySize / sprite.GlobalHeight));
+			}
+			if (CellRenderer.TryGetSprite(GAMEPAD_BUTTON_CODE, out sprite)) {
+				Border_Gamepad.Left = (int)(sprite.GlobalBorder.Left * ((float)KeySize / sprite.GlobalWidth));
+				Border_Gamepad.Right = (int)(sprite.GlobalBorder.Right * ((float)KeySize / sprite.GlobalWidth));
+				Border_Gamepad.Down = (int)(sprite.GlobalBorder.Down * ((float)KeySize / sprite.GlobalHeight));
+				Border_Gamepad.Up = (int)(sprite.GlobalBorder.Up * ((float)KeySize / sprite.GlobalHeight));
 			}
 		}
 
@@ -58,6 +67,10 @@ namespace Yaya {
 			if (Player == null || !Player.Active) return;
 			if (FrameStep.HasStep<sOpening>() || FrameStep.HasStep<sFadeOut>()) return;
 			PositionY = Y + CellRenderer.CameraRect.y;
+			if (Game.IsPausing) {
+				DrawKey(GameKey.Start, HINT_UNPAUSE_CODE);
+				return;
+			}
 			switch (Player.CharacterState) {
 				case eCharacter.State.General:
 					if (Player.Action.CurrentTarget is Entity target) {
@@ -73,8 +86,8 @@ namespace Yaya {
 					} else {
 						// General
 						DrawKey(GameKey.Left, GameKey.Right, HINT_MOVE_CODE);
-						DrawKey(GameKey.Jump, HINT_JUMP_CODE);
 						DrawKey(GameKey.Action, HINT_ATTACK_CODE);
+						DrawKey(GameKey.Jump, HINT_JUMP_CODE);
 					}
 					break;
 				case eCharacter.State.Sleep:
@@ -87,27 +100,46 @@ namespace Yaya {
 		private void DrawKey (GameKey key, int labelID) => DrawKey(key, key, labelID);
 		private void DrawKey (GameKey keyA, GameKey keyB, int labelID) {
 
-			int x = X + CellRenderer.CameraRect.x;
+			int buttonCode = FrameInput.UsingGamepad ? GAMEPAD_BUTTON_CODE : KEYBOARD_BUTTON_CODE;
+			var border = FrameInput.UsingGamepad ? Border_Gamepad : Border_Keyboard;
+			var rect = new RectInt(X + CellRenderer.CameraRect.x, PositionY, KeySize, KeySize);
+			int keyIdA = FrameInput.GetGameKeyLabelID(keyA);
+			int keyIdB = FrameInput.GetGameKeyLabelID(keyB);
+			int widthA = KeySize;
+			int widthB = KeySize;
 
-			// Back
-			CellRenderer.Draw(KEY_BUTTON_CODE, new(x, PositionY, KeySize, KeySize));
+			// Fix Width for A
+			if (CellRenderer.TryGetSprite(keyIdA, out var spriteA) && spriteA.GlobalWidth > spriteA.GlobalHeight) {
+				widthA = (KeySize * ((float)spriteA.GlobalWidth / spriteA.GlobalHeight)).RoundToInt();
+			}
+			if (CellRenderer.TryGetSprite(keyIdB, out var spriteB) && spriteB.GlobalWidth > spriteB.GlobalHeight) {
+				widthB = (KeySize * ((float)spriteB.GlobalWidth / spriteB.GlobalHeight)).RoundToInt();
+			}
 
-			// Key Label
-			int keyID = FrameInput.GetGameKeyLabelID(keyA);
-			CellRenderer.Draw(keyID, new RectInt(x, PositionY, KeySize, KeySize).Shrink(Border));
-			x += KeySize + Gap;
+			// Button
+			rect.width = widthA;
+			CellRenderer.Draw_9Slice(buttonCode, rect, border.Left, border.Right, border.Down, border.Up);
 
-			// Key Label B
+			// Button Label
+			CellRenderer.Draw(keyIdA, rect.Shrink(border));
+			rect.x += rect.width + Gap;
+
+			// Button B
 			if (keyA != keyB) {
-				CellRenderer.Draw(KEY_BUTTON_CODE, new(x, PositionY, KeySize, KeySize));
-				keyID = FrameInput.GetGameKeyLabelID(keyB);
-				CellRenderer.Draw(keyID, new RectInt(x, PositionY, KeySize, KeySize).Shrink(Border));
-				x += KeySize + Gap;
+				// Button
+				rect.width = widthB;
+				CellRenderer.Draw_9Slice(buttonCode, rect, border.Left, border.Right, border.Down, border.Up);
+				// Button Label
+				CellRenderer.Draw(keyIdB, rect.Shrink(border));
+				rect.x += rect.width + Gap;
 			}
 
 			// Label
-			string content = Language.Get(labelID);
-			CellRenderer.DrawLabel(content, new(x, PositionY, 1, KeySize), Tint, TextSize, 0, 0, false, Alignment.MidLeft);
+			rect.width = 1;
+			CellRenderer.DrawLabel(
+				Language.Get(labelID),
+				rect, Tint, TextSize, 0, 0, false, Alignment.MidLeft
+			);
 
 			PositionY += KeySize + Gap;
 		}

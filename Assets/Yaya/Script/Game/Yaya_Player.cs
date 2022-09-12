@@ -45,6 +45,17 @@ namespace Yaya {
 
 		public void Initialize_Player () {
 
+			CurrentPlayer = null;
+			PlayerTypeID = 0;
+			LeftDownFrame = int.MinValue;
+			RightDownFrame = int.MinValue;
+			DownDownFrame = int.MinValue;
+			UpDownFrame = int.MinValue;
+			LastGroundedY = 0;
+			AimX = 0;
+			AimY = 0;
+			AttackRequiringFrame = int.MinValue;
+
 			// Switch Player
 			int firstPlayerID = 0;
 			foreach (var type in typeof(ePlayer).AllChildClass()) {
@@ -53,8 +64,8 @@ namespace Yaya {
 			}
 			SwitchPlayer(firstPlayerID, false);
 
-            // Gamepad UI
-            FrameInput.AddCustomKey(KeyCode.F2);
+			// Gamepad UI
+			FrameInput.AddCustomKey(KeyCode.F2);
 
 			// Open the Game !!
 			FrameStep.AddToLast(new sOpening() {
@@ -95,14 +106,14 @@ namespace Yaya {
 
 			// Reload Game and Player After Passout
 			if (
-                CurrentPlayer != null && CurrentPlayer.Active &&
-                CurrentPlayer.CharacterState == eCharacter.State.Passout &&
-                GlobalFrame > CurrentPlayer.PassoutFrame + 48 &&
-                FrameInput.KeyDown(GameKey.Action) &&
+				CurrentPlayer != null && CurrentPlayer.Active &&
+				CurrentPlayer.CharacterState == eCharacter.State.Passout &&
+				GlobalFrame > CurrentPlayer.PassoutFrame + 48 &&
+				FrameInput.KeyDown(GameKey.Action) &&
 				!FrameStep.HasStep<sOpening>()
 			) {
-                FrameStep.AddToLast(new sFadeOut());
-                FrameStep.AddToLast(new sOpening() {
+				FrameStep.AddToLast(new sFadeOut());
+				FrameStep.AddToLast(new sOpening() {
 					ViewX = VIEW_X,
 					ViewYStart = VIEW_Y_START,
 					ViewYEnd = VIEW_Y_END,
@@ -122,53 +133,53 @@ namespace Yaya {
 			// Left
 			if (FrameInput.KeyPressing(GameKey.Left)) {
 				if (LeftDownFrame < 0) {
-                    LeftDownFrame = frame;
-                    AttackRequiringFrame = int.MinValue;
+					LeftDownFrame = frame;
+					AttackRequiringFrame = int.MinValue;
 				}
 				if (LeftDownFrame > RightDownFrame) {
 					x = Direction3.Negative;
 				}
 			} else if (LeftDownFrame > 0) {
-                LeftDownFrame = int.MinValue;
+				LeftDownFrame = int.MinValue;
 			}
 
 			// Right
 			if (FrameInput.KeyPressing(GameKey.Right)) {
 				if (RightDownFrame < 0) {
-                    RightDownFrame = frame;
-                    AttackRequiringFrame = int.MinValue;
+					RightDownFrame = frame;
+					AttackRequiringFrame = int.MinValue;
 				}
 				if (RightDownFrame > LeftDownFrame) {
 					x = Direction3.Positive;
 				}
 			} else if (RightDownFrame > 0) {
-                RightDownFrame = int.MinValue;
+				RightDownFrame = int.MinValue;
 			}
 
 			// Down
 			if (FrameInput.KeyPressing(GameKey.Down)) {
 				if (DownDownFrame < 0) {
-                    DownDownFrame = frame;
-                    AttackRequiringFrame = int.MinValue;
+					DownDownFrame = frame;
+					AttackRequiringFrame = int.MinValue;
 				}
 				if (DownDownFrame > UpDownFrame) {
 					y = Direction3.Negative;
 				}
 			} else if (DownDownFrame > 0) {
-                DownDownFrame = int.MinValue;
+				DownDownFrame = int.MinValue;
 			}
 
 			// Up
 			if (FrameInput.KeyPressing(GameKey.Up)) {
 				if (UpDownFrame < 0) {
-                    UpDownFrame = frame;
-                    AttackRequiringFrame = int.MinValue;
+					UpDownFrame = frame;
+					AttackRequiringFrame = int.MinValue;
 				}
 				if (UpDownFrame > DownDownFrame) {
 					y = Direction3.Positive;
 				}
 			} else if (UpDownFrame > 0) {
-                UpDownFrame = int.MinValue;
+				UpDownFrame = int.MinValue;
 			}
 
 			CurrentPlayer.Movement.Move(x, y);
@@ -189,7 +200,7 @@ namespace Yaya {
 				if (FrameInput.KeyPressing(GameKey.Down)) {
 					movement.Dash();
 				}
-                AttackRequiringFrame = int.MinValue;
+				AttackRequiringFrame = int.MinValue;
 				if (attackness.CancelAttackOnJump) {
 					attackness.CancelAttack();
 				}
@@ -214,7 +225,7 @@ namespace Yaya {
 			// Try Cancel Action
 			if (CurrentPlayer.Action.CurrentTarget != null) {
 				if (FrameInput.KeyDown(GameKey.Jump)) {
-                    CurrentPlayer.Action.CancelInvoke();
+					CurrentPlayer.Action.CancelInvoke();
 				}
 				return;
 			}
@@ -251,7 +262,7 @@ namespace Yaya {
 		private void UpdatePlayer_Sleep () {
 			if (FrameStep.HasStep<sOpening>()) return;
 			if (FrameInput.KeyDown(GameKey.Action) || FrameInput.KeyDown(GameKey.Jump)) {
-                CurrentPlayer.Wakeup();
+				CurrentPlayer.Wakeup();
 			}
 		}
 

@@ -120,6 +120,8 @@ namespace Yaya {
 					break;
 				case State.Animate:
 
+
+
 					break;
 				case State.Sleep:
 					VelocityX = 0;
@@ -151,6 +153,7 @@ namespace Yaya {
 
 		// Invoke Behaviour
 		public void TakeDamage (int damage) {
+			if (CharacterState != State.General) return;
 			if (Health.Damage(damage)) {
 				VelocityX = Movement.FacingRight ? -Health.KnockBackSpeed : Health.KnockBackSpeed;
 				Renderer.Damage(Health.DamageStunDuration);
