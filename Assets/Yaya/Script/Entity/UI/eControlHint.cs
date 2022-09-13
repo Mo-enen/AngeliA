@@ -74,7 +74,7 @@ namespace Yaya {
 				// Game Playing
 				switch (Player.CharacterState) {
 					case eCharacter.State.General:
-						if (Player.Action.CurrentTarget is Entity target) {
+						if (Player.CurrentActionTarget is Entity target) {
 							// Action
 							if (TypeHintMap.TryGetValue(target.TypeID, out int code)) {
 								DrawKey(GameKey.Action, code);

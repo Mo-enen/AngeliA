@@ -9,7 +9,17 @@ namespace Yaya {
 
 
 	public interface IDamageReceiver {
-		void TakeDamage (int damage);
+		void InvokeDamage (int damage);
+	}
+
+
+
+	public enum MovementState {
+		Idle = 0,
+		Walk, Run, JumpUp, JumpDown,
+		SwimIdle, SwimMove, SwimDash,
+		SquatIdle, SquatMove,
+		Dash, Roll, Pound, Climb, Fly,
 	}
 
 

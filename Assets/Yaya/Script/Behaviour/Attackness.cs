@@ -121,12 +121,6 @@ namespace Yaya {
 		public void CancelAttack () => LastAttackFrame = int.MinValue;
 
 
-		public void SetBullet (string name) {
-			BulletName.Value = name;
-			_BulletID = 0;
-		}
-
-
 		public bool CheckReady (bool isHoldingAttack) => isHoldingAttack ?
 			Game.GlobalFrame >= LastAttackFrame + Duration + Colldown + HoldTriggerPunish :
 			Game.GlobalFrame >= LastAttackFrame + Duration + Colldown;

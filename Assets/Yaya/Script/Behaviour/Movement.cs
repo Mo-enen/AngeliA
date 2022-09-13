@@ -43,13 +43,7 @@ namespace Yaya {
 		public bool IsClimbing { get; private set; } = false;
 		public bool IsFlying { get; private set; } = false;
 		public bool FacingRight { get; private set; } = true;
-		public int FinalVelocityX => Source.FinalVelocityX;
-		public int FinalVelocityY => Source.FinalVelocityY;
 		public bool FacingFront => !IsClimbing;
-		public bool IsInsideGround => Source.InsideGround;
-		public bool IsGrounded => Source.IsGrounded;
-		public bool InWater => Source.InWater;
-		public bool InAir => Source.InAir;
 		public bool IsMoving => IntendedX != 0;
 		public bool IsRunning => IsMoving && RunningAccumulateFrame >= RunTrigger;
 		public bool IsRolling => !InWater && !IsPounding && !IsFlying && ((JumpRoll && CurrentJumpCount > 0) || (JumpSecondRoll && CurrentJumpCount > 1));
@@ -58,6 +52,9 @@ namespace Yaya {
 		// Short
 		private int CurrentDashDuration => InWater && SwimInFreeStyle ? FreeSwimDashDuration : DashDuration;
 		private int CurrentDashCooldown => InWater && SwimInFreeStyle ? FreeSwimDashCooldown : DashCooldown;
+		private bool IsGrounded => Source.IsGrounded;
+		private bool IsInsideGround => Source.InsideGround;
+		private bool InWater => Source.InWater;
 
 		// Data
 		private readonly HitInfo[] c_HitboxCollisionFix = new HitInfo[8];

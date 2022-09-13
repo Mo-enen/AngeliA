@@ -37,14 +37,14 @@ namespace Yaya {
 
 			public void Load (int nameCode) {
 				if (CellRenderer.TryGetSpriteChain(nameCode, out var chain)) {
-                    Code = nameCode;
-                    LoopStart = chain.LoopStart;
+					Code = nameCode;
+					LoopStart = chain.LoopStart;
 				} else if (CellRenderer.TryGetSprite(nameCode, out _)) {
-                    Code = nameCode;
-                    LoopStart = 0;
+					Code = nameCode;
+					LoopStart = 0;
 				} else {
-                    Code = 0;
-                    LoopStart = 0;
+					Code = 0;
+					LoopStart = 0;
 				}
 			}
 
@@ -105,7 +105,7 @@ namespace Yaya {
 
 
 		// Api
-		public eCharacter Source { get; private set; } = null;
+		public eCharacter Character { get; private set; } = null;
 		public int FaceIndex { get; set; } = 0;
 
 		// Ser
@@ -166,8 +166,8 @@ namespace Yaya {
 
 
 		public void OnActived (eCharacter source) {
-			Source = source;
-			string name = Source.GetType().Name;
+			Character = source;
+			string name = Character.GetType().Name;
 			if (name.StartsWith('e')) name = name[1..];
 
 			Idle = new($"_a{name}.Idle");
@@ -214,13 +214,13 @@ namespace Yaya {
 			// Damage
 			if (frame < DamagingTime) {
 				var cell = CellRenderer.Draw_Animation(
-                    Damaging.Code,
-                    Source.X, Source.Y,
+					Damaging.Code,
+					Character.X, Character.Y,
 					500, 0, 0,
-                    Source.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
-                    Const.ORIGINAL_SIZE,
-                    Game.GlobalFrame,
-                    Damaging.LoopStart
+					Character.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+					Const.ORIGINAL_SIZE,
+					Game.GlobalFrame,
+					Damaging.LoopStart
 				);
 				int damageScl = frame.PingPong(3) * 32 - 16 + DamageScale;
 				cell.Width = cell.Width * damageScl / 1000;
@@ -229,7 +229,7 @@ namespace Yaya {
 			}
 
 			// Draw
-			switch (Source.CharacterState) {
+			switch (Character.CharacterState) {
 				case eCharacter.State.General:
 					DrawBody();
 					DrawFace();
@@ -239,25 +239,25 @@ namespace Yaya {
 
 					break;
 				case eCharacter.State.Sleep: {
-                        CellRenderer.Draw_Animation(
-                        Sleep.Code,
-                        Source.X, Source.Y,
-                        Const.ORIGINAL_SIZE,
-                        Const.ORIGINAL_SIZE,
-                        Game.GlobalFrame,
-                        Sleep.LoopStart
-					);
+					CellRenderer.Draw_Animation(
+					Sleep.Code,
+					Character.X, Character.Y,
+					Const.ORIGINAL_SIZE,
+					Const.ORIGINAL_SIZE,
+					Game.GlobalFrame,
+					Sleep.LoopStart
+				);
 					break;
 				}
 				case eCharacter.State.Passout: {
 					var cell = CellRenderer.Draw_Animation(
-                        Passout.Code,
-                        Source.X, Source.Y,
+						Passout.Code,
+						Character.X, Character.Y,
 						500, 0, 0,
-                        Source.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
-                        Const.ORIGINAL_SIZE,
-                        Game.GlobalFrame,
-                        Passout.LoopStart
+						Character.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+						Const.ORIGINAL_SIZE,
+						Game.GlobalFrame,
+						Passout.LoopStart
 					);
 					cell.Width = cell.Width * PassoutScale / 1000;
 					cell.Height = cell.Height * PassoutScale / 1000;
@@ -270,60 +270,63 @@ namespace Yaya {
 
 		private void DrawBody () {
 
+			var movementState = Character.GetMovementState();
 			var ani = Idle;
 			int frame = Game.GlobalFrame;
-			var movement = Source.Movement;
-			var attackness = Source.Attackness;
+			//var movement = Character.Movement;
 
 			// Get Ani
-			if (attackness.IsAttacking) {
+			if (Character.IsAttacking) {
 				// Attack
-				AniCode[] attacks;
-				if (movement.InWater) {
-					attacks = Attacks_Water;
-				} else if (movement.InAir) {
-					attacks = Attacks_Air;
-				} else if (movement.IsMoving) {
-					attacks = Attacks_Move;
-				} else {
-					attacks = Attacks;
+				var attacks = Attacks;
+				switch (movementState) {
+					case MovementState.SwimDash:
+					case MovementState.SwimIdle:
+					case MovementState.SwimMove:
+						attacks = Attacks_Water;
+						break;
+					case MovementState.JumpDown:
+					case MovementState.JumpUp:
+					case MovementState.Roll:
+						if (Character.InAir) attacks = Attacks_Air;
+						break;
+					case MovementState.Walk:
+					case MovementState.Run:
+						attacks = Attacks_Move;
+						break;
 				}
 				if (attacks.Length > 0) {
-					ani = attacks[attackness.Combo.Clamp(0, attacks.Length - 1)];
+					ani = attacks[Character.AttackCombo.Clamp(0, attacks.Length - 1)];
 				}
 			} else {
 				// Movement
-				if (movement.IsFlying) {
-					ani = Fly;
-				} else if (movement.IsClimbing) {
-					ani = Climb;
-				} else if (movement.IsPounding) {
-					ani = Pound;
-				} else if (movement.IsRolling) {
-					ani = Roll;
-				} else if (movement.IsDashing) {
-					ani = !movement.IsGrounded && movement.InWater ? SwimDash : Dash;
-				} else if (movement.IsSquating) {
-					ani = movement.IsMoving ? SquatMove : SquatIdle;
-				} else if (movement.InWater && !movement.IsGrounded) {
-					ani = movement.IsMoving ? SwimMove : SwimIdle;
-				} else if (movement.InAir) {
-					ani = movement.FinalVelocityY > 0 ? JumpU : JumpD;
-				} else if (movement.IsRunning) {
-					ani = Run;
-				} else if (movement.IsMoving) {
-					ani = Walk;
-				}
+				ani = movementState switch {
+					MovementState.Walk => Walk,
+					MovementState.Run => Run,
+					MovementState.JumpUp => JumpU,
+					MovementState.JumpDown => JumpD,
+					MovementState.SwimIdle => SwimIdle,
+					MovementState.SwimMove => SwimMove,
+					MovementState.SwimDash => SwimDash,
+					MovementState.SquatIdle => SquatIdle,
+					MovementState.SquatMove => SquatMove,
+					MovementState.Dash => Dash,
+					MovementState.Roll => Roll,
+					MovementState.Pound => Pound,
+					MovementState.Climb => Climb,
+					MovementState.Fly => Fly,
+					_ => Idle,
+				};
 			}
 
 			// Rotation
 			int pivotY = 0;
 			int offsetY = 0;
-			if (movement.UseFreeStyleSwim && movement.InWater && !movement.IsGrounded) {
+			if (Character.UseFreeStyleSwim && Character.InWater && !Character.IsGrounded) {
 				TargetRotation = Quaternion.LerpUnclamped(
 					Quaternion.Euler(0, 0, TargetRotation),
 					Quaternion.FromToRotation(
-						Vector3.up, new(-movement.LastMoveDirection.x, movement.LastMoveDirection.y)
+						Vector3.up, new(-Character.LastMoveDirectionX, Character.LastMoveDirectionY)
 					),
 					SwimRotationLerp / 1000f
 				).eulerAngles.z;
@@ -340,15 +343,18 @@ namespace Yaya {
 			}
 
 			// Draw
+			bool isPounding = movementState == MovementState.Pound;
+			bool isClimbing = movementState == MovementState.Climb;
+			bool isSquating = movementState == MovementState.SquatIdle || movementState == MovementState.SquatMove;
 			var cell = CellRenderer.Draw_Animation(
-                CurrentAni.Code,
-                Source.X, Source.Y + offsetY, 500, pivotY, (int)TargetRotation,
-				movement.FacingRight || movement.IsPounding || movement.IsClimbing ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
-                Const.ORIGINAL_SIZE,
-                CurrentAniFrame,
+				CurrentAni.Code,
+				Character.X, Character.Y + offsetY, 500, pivotY, (int)TargetRotation,
+				Character.FacingRight || isPounding || isClimbing ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+				Const.ORIGINAL_SIZE,
+				CurrentAniFrame,
 				ani.LoopStart
 			);
-            CurrentCode = CellRenderer.LastDrawnID;
+			CurrentCode = CellRenderer.LastDrawnID;
 			LastCellHeight = cell.Height;
 
 			// Bouncy
@@ -358,16 +364,16 @@ namespace Yaya {
 				bool reverse = false;
 				if (frame < LastRequireBounceFrame + duration) {
 					bounce = BounceAmounts[frame - LastRequireBounceFrame];
-				} else if (movement.IsPounding) {
+				} else if (isPounding) {
 					bounce = PoundingBounce;
-				} else if (!movement.IsPounding && movement.IsGrounded && frame.InRangeExculde(movement.LastPoundingFrame, movement.LastPoundingFrame + duration)) {
-					bounce = BounceAmountsBig[frame - movement.LastPoundingFrame];
-				} else if (movement.IsSquating && frame.InRangeExculde(movement.LastSquatFrame, movement.LastSquatFrame + duration)) {
-					bounce = BounceAmounts[frame - movement.LastSquatFrame];
-				} else if (movement.IsGrounded && frame.InRangeExculde(movement.LastGroundFrame, movement.LastGroundFrame + duration)) {
-					bounce = BounceAmounts[frame - movement.LastGroundFrame];
-				} else if (!movement.IsSquating && frame.InRangeExculde(movement.LastSquatingFrame, movement.LastSquatingFrame + duration)) {
-					bounce = BounceAmounts[frame - movement.LastSquatingFrame];
+				} else if (!isPounding && Character.IsGrounded && frame.InRangeExculde(Character.LastPoundingFrame, Character.LastPoundingFrame + duration)) {
+					bounce = BounceAmountsBig[frame - Character.LastPoundingFrame];
+				} else if (isSquating && frame.InRangeExculde(Character.LastSquatFrame, Character.LastSquatFrame + duration)) {
+					bounce = BounceAmounts[frame - Character.LastSquatFrame];
+				} else if (Character.IsGrounded && frame.InRangeExculde(Character.LastGroundFrame, Character.LastGroundFrame + duration)) {
+					bounce = BounceAmounts[frame - Character.LastGroundFrame];
+				} else if (!isSquating && frame.InRangeExculde(Character.LastSquatingFrame, Character.LastSquatingFrame + duration)) {
+					bounce = BounceAmounts[frame - Character.LastSquatingFrame];
 					reverse = true;
 				}
 				if (bounce != 1000) {
@@ -389,7 +395,7 @@ namespace Yaya {
 				CurrentAniFrame++;
 			} else {
 				// Climb
-				int climbVelocity = movement.IntendedY != 0 ? movement.IntendedY : movement.IntendedX;
+				int climbVelocity = Character.IntendedY != 0 ? Character.IntendedY : Character.IntendedX;
 				if (climbVelocity > 0) {
 					CurrentAniFrame++;
 				} else if (climbVelocity < 0) {
@@ -402,14 +408,14 @@ namespace Yaya {
 
 		private void DrawFace () {
 			if (
-                Face.Count <= 0 ||
+				Face.Count <= 0 ||
 				!CellRenderer.TryGetMeta(CurrentCode, out var meta) ||
 				!meta.Head.IsVailed ||
 				!meta.Head.Front
 			) return;
 
 
-			var movement = Source.Movement;
+			//var movement = Character.Movement;
 			int bounce = Mathf.Abs(CurrentBounce);
 			int offsetY;
 			if (CurrentBounce > 0) {
@@ -418,19 +424,19 @@ namespace Yaya {
 				offsetY = meta.Head.Y + meta.Head.Height;
 				offsetY += offsetY * (1000 - bounce) / 1000;
 			}
-            CellRenderer.Draw_9Slice(
-                Game.GlobalFrame % EyeBlinkRate > 8 ?
-                    Face[FaceIndex.UMod(Face.Count)] :
-                    FaceBlink.Code,
-                Source.X - meta.SpriteWidth / 2 +
-					(movement.FacingRight ?
+			CellRenderer.Draw_9Slice(
+				Game.GlobalFrame % EyeBlinkRate > 8 ?
+					Face[FaceIndex.UMod(Face.Count)] :
+					FaceBlink.Code,
+				Character.X - meta.SpriteWidth / 2 +
+					(Character.FacingRight ?
 						meta.Head.X :
 						meta.SpriteWidth - (meta.Head.X + meta.Head.Width)
 					),
-                Source.Y + offsetY,
+				Character.Y + offsetY,
 				0, 1000, 0,
 				meta.Head.Width,
-                Const.ORIGINAL_SIZE
+				Const.ORIGINAL_SIZE
 			);
 		}
 

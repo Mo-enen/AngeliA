@@ -74,7 +74,7 @@ namespace Yaya {
 				case eCharacter.State.General:
 					UpdatePlayer_Move();
 					UpdatePlayer_JumpDashPound();
-					UpdatePlayer_ActionAndAttack();
+					UpdatePlayer_Action_Attack();
 					break;
 				case eCharacter.State.Sleep:
 					UpdatePlayer_Sleep();
@@ -171,68 +171,56 @@ namespace Yaya {
 				UpDownFrame = int.MinValue;
 			}
 
-			CurrentPlayer.Movement.Move(x, y);
-
+			CurrentPlayer.InvokeMove(x, y);
 		}
 
 
 		private void UpdatePlayer_JumpDashPound () {
 
-			if (CurrentPlayer.Action.CurrentTarget is eOpenableFurniture oFur && oFur.Open) return;
+			if (CurrentPlayer.CurrentActionTarget is eOpenableFurniture oFur && oFur.Open) return;
 
-			var movement = CurrentPlayer.Movement;
-			var attackness = CurrentPlayer.Attackness;
-			movement.HoldJump(FrameInput.KeyPressing(GameKey.Jump));
+			CurrentPlayer.InvokeHoldJump(FrameInput.KeyPressing(GameKey.Jump));
 			if (FrameInput.KeyDown(GameKey.Jump)) {
 				// Movement Jump
-				movement.Jump();
+				CurrentPlayer.InvokeJump();
 				if (FrameInput.KeyPressing(GameKey.Down)) {
-					movement.Dash();
+					CurrentPlayer.InvokeDash();
 				}
 				AttackRequiringFrame = int.MinValue;
-				if (attackness.CancelAttackOnJump) {
-					attackness.CancelAttack();
+				if (CurrentPlayer.CancelAttackOnJump) {
+					CurrentPlayer.CancelAttack();
 				}
 			}
 			if (FrameInput.KeyDown(GameKey.Down)) {
-				movement.Pound();
+				CurrentPlayer.InvokePound();
 			}
 		}
 
 
-		private void UpdatePlayer_ActionAndAttack () {
+		private void UpdatePlayer_Action_Attack () {
 
-			var movement = CurrentPlayer.Movement;
-			var attackness = CurrentPlayer.Attackness;
 
 			// Try Perform Action
 			if (FrameInput.KeyDown(GameKey.Action)) {
-				bool performed = CurrentPlayer.Action.Invoke();
+				bool performed = CurrentPlayer.InvokeAction();
 				if (performed) return;
 			}
 
 			// Try Cancel Action
-			if (CurrentPlayer.Action.CurrentTarget != null) {
+			if (CurrentPlayer.CurrentActionTarget != null) {
 				if (FrameInput.KeyDown(GameKey.Jump)) {
-					CurrentPlayer.Action.CancelInvoke();
+					CurrentPlayer.CancelAction();
 				}
 				return;
 			}
 
 			// Try Perform Attack
 			bool attDown = FrameInput.KeyDown(GameKey.Action);
-			bool attHolding = FrameInput.KeyPressing(GameKey.Action) && attackness.KeepTriggerWhenHold;
+			bool attHolding = FrameInput.KeyPressing(GameKey.Action) && CurrentPlayer.KeepTriggerAttackWhenHold;
 			if (CurrentPlayer.CharacterState == eCharacter.State.General && (attDown || attHolding)) {
-				if ((attackness.AttackInAir || !movement.InAir) &&
-					(attackness.AttackInWater || !movement.InWater) &&
-					(attackness.AttackWhenClimbing || !movement.IsClimbing) &&
-					(attackness.AttackWhenFlying || !movement.IsFlying) &&
-					(attackness.AttackWhenRolling || !movement.IsRolling) &&
-					(attackness.AttackWhenSquating || !movement.IsSquating) &&
-					(attackness.AttackWhenDashing || !movement.IsDashing)
-				) {
-					if (attackness.CheckReady(!attDown)) {
-						attackness.Attack();
+				if (CurrentPlayer.IsAttackAllowedByMovement()) {
+					if (CurrentPlayer.CheckAttackReady(!attDown)) {
+						CurrentPlayer.InvokeAttack();
 					} else if (attDown) {
 						AttackRequiringFrame = GlobalFrame;
 					}
@@ -241,9 +229,9 @@ namespace Yaya {
 			}
 
 			// Perform Required Attack
-			if (attackness.CheckReady(false) && GlobalFrame < AttackRequiringFrame + ATTACK_REQUIRE_GAP) {
+			if (CurrentPlayer.CheckAttackReady(false) && GlobalFrame < AttackRequiringFrame + ATTACK_REQUIRE_GAP) {
 				AttackRequiringFrame = int.MinValue;
-				attackness.Attack();
+				CurrentPlayer.InvokeAttack();
 			}
 		}
 
@@ -251,7 +239,7 @@ namespace Yaya {
 		private void UpdatePlayer_Sleep () {
 			if (FrameStep.HasStep<sOpening>()) return;
 			if (FrameInput.KeyDown(GameKey.Action) || FrameInput.KeyDown(GameKey.Jump)) {
-				CurrentPlayer.Wakeup();
+				CurrentPlayer.InvokeWakeup();
 			}
 		}
 

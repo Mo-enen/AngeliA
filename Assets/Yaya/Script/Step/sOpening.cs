@@ -40,7 +40,7 @@ namespace Yaya {
 			// Remove Player
 			if (RemovePlayerAtStart && game.TryGetEntityInStage<ePlayer>(out var player)) {
 				player.Active = false;
-				player.Wakeup();
+				player.InvokeWakeup();
 			}
 		}
 
