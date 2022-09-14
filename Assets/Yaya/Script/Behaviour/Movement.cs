@@ -30,6 +30,7 @@ namespace Yaya {
 		public int RunningAccumulateFrame { get; private set; } = 0;
 		public int LastGroundFrame { get; private set; } = int.MinValue;
 		public int LastGroundingFrame { get; private set; } = int.MinValue;
+		public int LastStartMoveFrame { get; private set; } = int.MinValue;
 		public int LastEndMoveFrame { get; private set; } = int.MinValue;
 		public int LastJumpFrame { get; private set; } = int.MinValue;
 		public int LastDashFrame { get; private set; } = int.MinValue;
@@ -356,6 +357,7 @@ namespace Yaya {
 		// Movement
 		public void Move (Direction3 x, Direction3 y) {
 			if (IntendedX != 0 && x == Direction3.None) LastEndMoveFrame = CurrentFrame;
+			if (IntendedX == 0 && x != Direction3.None) LastStartMoveFrame = CurrentFrame;
 			if (x != Direction3.None) RunningAccumulateFrame++;
 			if (x == Direction3.None && CurrentFrame > LastEndMoveFrame + RUN_BREAK_GAP) RunningAccumulateFrame = 0;
 			IntendedX = (int)x;

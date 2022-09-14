@@ -270,7 +270,7 @@ namespace Yaya {
 
 		private void DrawBody () {
 
-			var movementState = Character.GetMovementState();
+			var movementState = Character.MovementState;
 			var ani = Idle;
 			int frame = Game.GlobalFrame;
 			//var movement = Character.Movement;

@@ -19,7 +19,8 @@ namespace Yaya {
 
 
 		public static int OverlapAll_Damage (HitInfo[] hits, RectInt globalRect, Entity ignore = null, bool forPlayer = false) => CellPhysics.OverlapAll(
-			hits, YayaConst.MASK_DAMAGE, globalRect, ignore, forPlayer ? OperationMode.TriggerOnly : OperationMode.ColliderOnly
+			hits, YayaConst.MASK_DAMAGE, globalRect, ignore, 
+			forPlayer ? OperationMode.TriggerOnly : OperationMode.ColliderOnly
 		);
 
 

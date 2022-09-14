@@ -41,8 +41,5 @@ namespace Yaya {
 		protected abstract void UpdateForUI ();
 
 
-
-
-
 	}
 }

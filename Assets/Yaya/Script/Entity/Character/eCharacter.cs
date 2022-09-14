@@ -22,8 +22,9 @@ namespace Yaya {
 		public override int AirDragX => 0;
 		public override int AirDragY => 0;
 		public override bool IgnoreRiseGravityShift => true;
-		public CharacterState CharacterState { get; private set; } = CharacterState.General;
 		public int PassoutFrame { get; private set; } = int.MinValue;
+		public CharacterState CharacterState { get; private set; } = CharacterState.General;
+		public MovementState MovementState { get; private set; } = MovementState.Idle;
 
 		// Beh
 		public IActionEntity CurrentActionTarget => Action.CurrentTarget;
@@ -136,6 +137,19 @@ namespace Yaya {
 					break;
 			}
 
+			MovementState =
+				Movement.IsFlying ? MovementState.Fly :
+				Movement.IsClimbing ? MovementState.Climb :
+				Movement.IsPounding ? MovementState.Pound :
+				Movement.IsRolling ? MovementState.Roll :
+				Movement.IsDashing ? (!IsGrounded && InWater ? MovementState.SwimDash : MovementState.Dash) :
+				Movement.IsSquating ? (Movement.IsMoving ? MovementState.SquatMove : MovementState.SquatIdle) :
+				InWater && !IsGrounded ? (Movement.IsMoving ? MovementState.SwimMove : MovementState.SwimIdle) :
+				InAir ? (FinalVelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown) :
+				Movement.IsRunning ? MovementState.Run :
+				Movement.IsMoving ? MovementState.Walk :
+				MovementState.Idle;
+
 		}
 
 
@@ -199,20 +213,6 @@ namespace Yaya {
 			(Attackness.AttackWhenDashing || !Movement.IsDashing);
 
 
-		public MovementState GetMovementState () =>
-			Movement.IsFlying ? MovementState.Fly :
-			Movement.IsClimbing ? MovementState.Climb :
-			Movement.IsPounding ? MovementState.Pound :
-			Movement.IsRolling ? MovementState.Roll :
-			Movement.IsDashing ? (!IsGrounded && InWater ? MovementState.SwimDash : MovementState.Dash) :
-			Movement.IsSquating ? (Movement.IsMoving ? MovementState.SquatMove : MovementState.SquatIdle) :
-			InWater && !IsGrounded ? (Movement.IsMoving ? MovementState.SwimMove : MovementState.SwimIdle) :
-			InAir ? (FinalVelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown) :
-			Movement.IsRunning ? MovementState.Run :
-			Movement.IsMoving ? MovementState.Walk :
-			MovementState.Idle;
-
-
 		// Misc
 		protected override bool GroundedCheck (RectInt rect) => base.GroundedCheck(rect);
 
@@ -221,7 +221,6 @@ namespace Yaya {
 
 
 		#endregion
-
 
 
 
