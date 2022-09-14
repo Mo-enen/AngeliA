@@ -16,6 +16,7 @@ namespace Yaya {
 
 		// Api
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
+		public override int FrameStepLayerCount => 6;
 		public static Dictionary<Vector2Int, CheckPointMeta.Data> CpPool { get; } = new();
 		public static Dictionary<int, Vector2Int> CpAltarPool { get; } = new();
 		public override RectInt CameraRect => YayaCameraRect;

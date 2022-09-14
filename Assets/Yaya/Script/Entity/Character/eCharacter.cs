@@ -11,22 +11,6 @@ namespace Yaya {
 
 
 
-		#region --- SUB ---
-
-
-		public enum State {
-			General = 0,
-			Animate = 1,
-			Sleep = 2,
-			Passout = 3,
-		}
-
-
-		#endregion
-
-
-
-
 		#region --- VAR ---
 
 
@@ -38,7 +22,7 @@ namespace Yaya {
 		public override int AirDragX => 0;
 		public override int AirDragY => 0;
 		public override bool IgnoreRiseGravityShift => true;
-		public State CharacterState { get; private set; } = State.General;
+		public CharacterState CharacterState { get; private set; } = CharacterState.General;
 		public int PassoutFrame { get; private set; } = int.MinValue;
 
 		// Beh
@@ -46,14 +30,14 @@ namespace Yaya {
 		public bool KeepTriggerAttackWhenHold => Attackness.KeepTriggerWhenHold;
 		public bool CancelAttackOnJump => Attackness.CancelAttackOnJump;
 		public bool IsAttacking => Attackness.IsAttacking;
-		public int AttackCombo => Attackness.Combo;
 		public bool FacingFront => Movement.FacingFront;
 		public bool FacingRight => Movement.FacingRight;
+		public bool UseFreeStyleSwim => Movement.UseFreeStyleSwim;
 		public int IntendedX => Movement.IntendedX;
 		public int IntendedY => Movement.IntendedY;
 		public int LastMoveDirectionX => Movement.LastMoveDirection.x;
 		public int LastMoveDirectionY => Movement.LastMoveDirection.y;
-		public bool UseFreeStyleSwim => Movement.UseFreeStyleSwim;
+		public int AttackCombo => Attackness.Combo;
 		public int LastGroundFrame => Movement.LastGroundFrame;
 		public int LastSquatFrame => Movement.LastSquatFrame;
 		public int LastSquatingFrame => Movement.LastSquatingFrame;
@@ -96,13 +80,13 @@ namespace Yaya {
 			Action.OnActived(this);
 			Health.OnActived(this);
 			Attackness.OnActived(this);
-			CharacterState = State.General;
+			CharacterState = CharacterState.General;
 			PassoutFrame = int.MinValue;
 		}
 
 
 		public override void FillPhysics () {
-			if (CharacterState == State.General) {
+			if (CharacterState == CharacterState.General) {
 				base.FillPhysics();
 			}
 		}
@@ -113,15 +97,15 @@ namespace Yaya {
 			int frame = Game.GlobalFrame;
 
 			// Passout Check
-			if (CharacterState != State.Passout && Health.EmptyHealth) {
-				CharacterState = State.Passout;
+			if (CharacterState != CharacterState.Passout && Health.EmptyHealth) {
+				CharacterState = CharacterState.Passout;
 				PassoutFrame = frame;
 			}
 
 			// Behaviour
 			switch (CharacterState) {
 				default:
-				case State.General:
+				case CharacterState.General:
 					if (frame < Health.LastDamageFrame + Health.DamageStunDuration) {
 						// Tacking Damage
 						InvokeAntiKnockback();
@@ -136,17 +120,17 @@ namespace Yaya {
 					}
 					base.PhysicsUpdate();
 					break;
-				case State.Animate:
+				case CharacterState.Animate:
 
 
 
 					break;
-				case State.Sleep:
+				case CharacterState.Sleep:
 					VelocityX = 0;
 					VelocityY = 0;
 					if (!Health.FullHealth) InvokeHeal(Health.MaxHP);
 					break;
-				case State.Passout:
+				case CharacterState.Passout:
 					VelocityX = 0;
 					base.PhysicsUpdate();
 					break;
@@ -169,7 +153,7 @@ namespace Yaya {
 		#region --- API ---
 
 
-		// Virtual Msg
+		// Virtual
 		public virtual bool InvokeAction () => Action.Invoke();
 		public virtual bool CancelAction () => Action.CancelInvoke();
 
@@ -185,7 +169,7 @@ namespace Yaya {
 		public virtual void InvokeAntiKnockback () => Movement.AntiKnockback();
 
 		public virtual void InvokeDamage (int damage) {
-			if (CharacterState != State.General) return;
+			if (CharacterState != CharacterState.General) return;
 			if (!Health.Damage(damage)) return;
 			VelocityX = Movement.FacingRight ? -Health.KnockBackSpeed : Health.KnockBackSpeed;
 			Renderer.Damage(Health.DamageStunDuration);
@@ -196,9 +180,9 @@ namespace Yaya {
 		public virtual bool InvokeHeal (int heal) => Health.Heal(heal);
 
 		public virtual void InvokeBounce () => Renderer.Bounce();
-		public virtual void InvokeSleep () => CharacterState = State.Sleep;
+		public virtual void InvokeSleep () => CharacterState = CharacterState.Sleep;
 		public virtual void InvokeWakeup () {
-			CharacterState = State.General;
+			CharacterState = CharacterState.General;
 			X += Const.CELL_SIZE / 2;
 			Renderer.Bounce();
 			Action.Update();

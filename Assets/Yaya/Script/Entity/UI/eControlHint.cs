@@ -73,7 +73,7 @@ namespace Yaya {
 			if (!Game.IsPausing) {
 				// Game Playing
 				switch (Player.CharacterState) {
-					case eCharacter.State.General:
+					case CharacterState.General:
 						if (Player.CurrentActionTarget is Entity target) {
 							// Action
 							if (TypeHintMap.TryGetValue(target.TypeID, out int code)) {
@@ -91,7 +91,7 @@ namespace Yaya {
 							DrawKey(GameKey.Jump, HINT_JUMP_CODE);
 						}
 						break;
-					case eCharacter.State.Sleep:
+					case CharacterState.Sleep:
 						DrawKey(GameKey.Action, HINT_WAKE_CODE);
 						break;
 				}

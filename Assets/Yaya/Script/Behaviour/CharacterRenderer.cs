@@ -230,15 +230,15 @@ namespace Yaya {
 
 			// Draw
 			switch (Character.CharacterState) {
-				case eCharacter.State.General:
+				case CharacterState.General:
 					DrawBody();
 					DrawFace();
 					break;
-				case eCharacter.State.Animate:
+				case CharacterState.Animate:
 
 
 					break;
-				case eCharacter.State.Sleep: {
+				case CharacterState.Sleep: {
 					CellRenderer.Draw_Animation(
 					Sleep.Code,
 					Character.X, Character.Y,
@@ -249,7 +249,7 @@ namespace Yaya {
 				);
 					break;
 				}
-				case eCharacter.State.Passout: {
+				case CharacterState.Passout: {
 					var cell = CellRenderer.Draw_Animation(
 						Passout.Code,
 						Character.X, Character.Y,
