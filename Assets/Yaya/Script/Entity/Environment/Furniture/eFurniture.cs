@@ -35,11 +35,11 @@ namespace Yaya {
 
 
 		// Over
-		protected abstract Direction3 ModuleType { get; }
-		protected abstract int ArtworkCode_LeftDown { get; }
-		protected abstract int ArtworkCode_Mid { get; }
-		protected abstract int ArtworkCode_RightUp { get; }
-		protected abstract int ArtworkCode_Single { get; }
+		protected virtual Direction3 ModuleType => Direction3.None;
+		protected virtual int ArtworkCode_LeftDown => TrimedTypeID;
+		protected virtual int ArtworkCode_Mid => TrimedTypeID;
+		protected virtual int ArtworkCode_RightUp => TrimedTypeID;
+		protected virtual int ArtworkCode_Single => TrimedTypeID;
 		protected virtual bool LoopArtworkIndex => false;
 		protected virtual bool UseHighlightAnimation => true;
 		protected virtual RectInt RenderingRect => Rect.Expand(ColliderBorder);

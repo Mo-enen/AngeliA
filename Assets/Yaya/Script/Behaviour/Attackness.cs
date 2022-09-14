@@ -109,7 +109,7 @@ namespace Yaya {
 			if (frame < LastAttackFrame + Duration + Colldown) return false;
 			LastAttackFrame = frame;
 			// Spawn Bullet
-			if (Game.AddEntity(BulletID, Source.X, Source.Y) is eBullet bullet) {
+			if (Game.TryAddEntity<eBullet>(BulletID, Source.X, Source.Y, out var bullet)) {
 				bullet.Attackness = this;
 				bullet.Combo = Combo;
 			}

@@ -185,8 +185,7 @@ namespace Yaya {
 				if (GamePadUI == null) {
 					if (TryGetEntityInStage<eGamePadUI>(out var gPad)) {
 						GamePadUI = gPad;
-					} else {
-						GamePadUI = AddEntity(typeof(eGamePadUI).AngeHash(), 0, 0) as eGamePadUI;
+					} else if (TryAddEntity(typeof(eGamePadUI).AngeHash(), 0, 0, out GamePadUI)) {
 						GamePadUI.X = 12;
 						GamePadUI.Y = 12;
 						GamePadUI.Width = 660;
@@ -217,8 +216,7 @@ namespace Yaya {
 				if (ControlHintUI == null) {
 					if (TryGetEntityInStage<eControlHint>(out var cHint)) {
 						ControlHintUI = cHint;
-					} else {
-						ControlHintUI = AddEntity(typeof(eControlHint).AngeHash(), 0, 0) as eControlHint;
+					} else if (TryAddEntity(typeof(eControlHint).AngeHash(), 0, 0, out ControlHintUI)) {
 						ControlHintUI.X = 32;
 						ControlHintUI.Y = 32;
 					}

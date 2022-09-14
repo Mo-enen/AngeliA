@@ -297,8 +297,16 @@ namespace Yaya {
 				CurrentPlayer = result as ePlayer;
 			}
 
+			// Try Add Player
+			if (CurrentPlayer == null && TryAddEntity<ePlayer>(PlayerTypeID, pos.x, pos.y, out var player)) {
+				CurrentPlayer = player;
+			}
+
+			if (CurrentPlayer == null) return;
+
 			// Spawn to Bed
 			if (trySpawnToBed) {
+
 				// Find Best Bed
 				eBed finalBed = null;
 				int finalDistance = int.MaxValue;
@@ -318,27 +326,19 @@ namespace Yaya {
 						}
 					}
 				}
-				// Spawn on Bed
+
+				// Move to Bed
 				if (finalBed != null) {
-					CurrentPlayer ??= AddEntity(
-						PlayerTypeID,
-						finalBed.X, finalBed.Y
-					) as ePlayer;
+					CurrentPlayer.X = finalBed.X;
+					CurrentPlayer.Y = finalBed.Y;
 					finalBed.Invoke(CurrentPlayer);
 				}
 			}
 
-			// Failback
-			CurrentPlayer ??= AddEntity(
-				PlayerTypeID, pos.x, pos.y
-			) as ePlayer;
-
 			// Init Player
-			if (CurrentPlayer != null) {
-				LastGroundedY = CurrentPlayer.Y;
-				AimX = CurrentPlayer.X - ViewRect.width / 2;
-				AimY = GetAimY(CurrentPlayer.Y, ViewRect.height);
-			}
+			LastGroundedY = CurrentPlayer.Y;
+			AimX = CurrentPlayer.X - ViewRect.width / 2;
+			AimY = GetAimY(CurrentPlayer.Y, ViewRect.height);
 
 		}
 
