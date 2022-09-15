@@ -67,24 +67,16 @@ namespace Yaya {
 
 
 		private void Initialize_Quit () {
-			bool willQuit = false;
 			Application.wantsToQuit += () => {
 #if UNITY_EDITOR
 				if (UnityEditor.EditorApplication.isPlaying) return true;
 #endif
-				if (willQuit) {
+				if (TryGetEntityInStage<eQuitDialog>(out _)) {
 					return true;
 				} else {
-					// Show Quit Dialog
-
-
-
-					willQuit = true;
-					Application.Quit();
+					IsPausing = true;
+					TryAddEntity(typeof(eQuitDialog).AngeHash(), 0, 0, out _);
 					return false;
-
-
-
 				}
 			};
 		}
@@ -125,7 +117,8 @@ namespace Yaya {
 				SetViewZ(ViewZ - 1);
 			}
 			if (FrameInput.CustomKeyDown(KeyCode.Alpha3)) {
-
+				IsPausing = true;
+				TryAddEntity(typeof(eQuitDialog).AngeHash(), 0, 0, out _);
 			}
 			if (FrameInput.CustomKeyDown(KeyCode.Alpha4)) {
 
@@ -252,8 +245,15 @@ namespace Yaya {
 					AudioPlayer.UnPause();
 				}
 			}
+
+			// Ctrl Hint
 			if (IsPausing && ControlHintUI != null && ControlHintUI.Active) {
 				ControlHintUI.FrameUpdate();
+			}
+
+			// Quit Dialog
+			if (IsPausing && TryGetEntityInStage<eQuitDialog>(out var dialog)) {
+				dialog.FrameUpdate();
 			}
 
 		}

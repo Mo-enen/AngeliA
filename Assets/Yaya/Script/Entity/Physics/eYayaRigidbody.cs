@@ -23,8 +23,8 @@ namespace Yaya {
 
 
 
-		public static new void InitializeWithGame (Game game) {
-			var meta = (game as Yaya).YayaMeta;
+		public static new void Initialize () {
+			var meta = (Game.Current as Yaya).YayaMeta;
 			WaterSpeedScale = meta.WaterSpeedLose;
 			QuickSandJumpoutSpeed = meta.QuickSandJumpoutSpeed;
 			QuickSandMaxRunSpeed = meta.QuickSandMaxRunSpeed;

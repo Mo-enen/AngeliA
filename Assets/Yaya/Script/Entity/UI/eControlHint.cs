@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 
 namespace Yaya {
-	public class eControlHint : ScreenUI, IInitialize {
+	public class eControlHint : eYayaScreenUI, IInitialize {
 
 
 		// Const
@@ -99,6 +99,10 @@ namespace Yaya {
 			} else {
 				// Pausing
 				DrawKey(GameKey.Start, HINT_UNPAUSE_CODE);
+				if (Game.Current.TryGetEntityInStage<eQuitDialog>(out _)) {
+					DrawKey(GameKey.Left, GameKey.Right, HINT_MOVE_CODE);
+					DrawKey(GameKey.Action, YayaConst.UI_OK);
+				}
 			}
 
 		}

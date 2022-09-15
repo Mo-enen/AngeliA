@@ -70,6 +70,12 @@ namespace Yaya {
 		public static readonly int QUICKSAND_TAG = "Quicksand".AngeHash();
 		public static readonly int DAMAGE_TAG = "Damage".AngeHash();
 
+		// UI
+		public static readonly int UI_OK = "UI.OK".AngeHash();
+		public static readonly int UI_QUIT = "UI.Quit".AngeHash();
+		public static readonly int UI_CANCEL = "UI.Cancel".AngeHash();
+
+
 	}
 
 

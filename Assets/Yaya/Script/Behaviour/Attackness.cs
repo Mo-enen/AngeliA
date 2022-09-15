@@ -60,7 +60,6 @@ namespace Yaya {
 #pragma warning restore
 
 		// Data
-		private static Game Game = null;
 		private readonly static System.Random Random = new(19940516);
 		private int _BulletID = 0;
 
@@ -71,9 +70,6 @@ namespace Yaya {
 
 
 		#region --- MSG ---
-
-
-		public static void InitializeWithGame (Game game) => Game = game;
 
 
 		public void OnActived (Entity source) {
@@ -109,7 +105,7 @@ namespace Yaya {
 			if (frame < LastAttackFrame + Duration + Colldown) return false;
 			LastAttackFrame = frame;
 			// Spawn Bullet
-			if (Game.TryAddEntity<eBullet>(BulletID, Source.X, Source.Y, out var bullet)) {
+			if (Game.Current.TryAddEntity<eBullet>(BulletID, Source.X, Source.Y, out var bullet)) {
 				bullet.Attackness = this;
 				bullet.Combo = Combo;
 			}

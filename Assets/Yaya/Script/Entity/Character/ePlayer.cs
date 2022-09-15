@@ -12,10 +12,7 @@ namespace Yaya {
 	[EntityAttribute.ForceUpdate]
 	[EntityAttribute.EntityBounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
 	[EntityAttribute.DontDestroyOnSquadTransition]
-	public abstract class ePlayer : eCharacter {
-		protected static Game Game { get; private set; } = null;
-		public static new void InitializeWithGame (Game game) => Game = game;
-	}
+	public abstract class ePlayer : eCharacter { }
 
 
 
@@ -28,13 +25,13 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (MovementState == MovementState.Run || MovementState == MovementState.Walk) {
+			if (MovementState == MovementState.Run) {
 				if (LastStartRunFrame < 0) LastStartRunFrame = Game.GlobalFrame;
 			} else {
 				LastStartRunFrame = int.MinValue;
 			}
 			if (LastStartRunFrame >= 0 && (Game.GlobalFrame - LastStartRunFrame) % 20 == 19) {
-				if (Game.TryAddEntity<eYayaFootstep>(FOOTSTEP_CODE, X, Y, out var step)) {
+				if (Game.Current.TryAddEntity<eYayaFootstep>(FOOTSTEP_CODE, X, Y, out var step)) {
 					step.Width = FacingRight ? 1 : -1;
 				}
 			}

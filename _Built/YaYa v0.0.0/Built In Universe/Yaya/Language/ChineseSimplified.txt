@@ -1,4 +1,8 @@
-﻿ActionHint.eBed:睡觉
+﻿UI.Cancel:取消
+UI.QuitMessage:是否要退出游戏？
+UI.Quit:退出
+UI.OK:确定
+ActionHint.eBed:睡觉
 ActionHint.eChest:打开
 ActionHint.eFridge:打开
 ActionHint.ePhoto:切换

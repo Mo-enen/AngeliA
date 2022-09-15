@@ -6,7 +6,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.EntityCapacity(1)]
-	public class eGamePadUI : ScreenUI {
+	public class eGamePadUI : eYayaScreenUI {
 
 		private static readonly int BodyCode = "GamePad Body".AngeHash();
 		private static readonly int DPadDownCode = "GamePad Down".AngeHash();
@@ -37,22 +37,22 @@ namespace Yaya {
 
 			var screenRect = CellRenderer.CameraRect;
 
-            // Body
-            CellRenderer.Draw(BodyCode, base.Rect.Shift(screenRect.x, screenRect.y));
+			// Body
+			CellRenderer.Draw(BodyCode, base.Rect.Shift(screenRect.x, screenRect.y));
 
-            // DPad
-            CellRenderer.Draw(DPadLeftCode, DPadLeftPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.KeyPressing(GameKey.Left) ? PressingTint : DarkButtonTint);
-            CellRenderer.Draw(DPadRightCode, DPadRightPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.KeyPressing(GameKey.Right) ? PressingTint : DarkButtonTint);
-            CellRenderer.Draw(DPadDownCode, DPadDownPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.KeyPressing(GameKey.Down) ? PressingTint : DarkButtonTint);
-            CellRenderer.Draw(DPadUpCode, DPadUpPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.KeyPressing(GameKey.Up) ? PressingTint : DarkButtonTint);
+			// DPad
+			CellRenderer.Draw(DPadLeftCode, DPadLeftPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.KeyPressing(GameKey.Left) ? PressingTint : DarkButtonTint);
+			CellRenderer.Draw(DPadRightCode, DPadRightPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.KeyPressing(GameKey.Right) ? PressingTint : DarkButtonTint);
+			CellRenderer.Draw(DPadDownCode, DPadDownPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.KeyPressing(GameKey.Down) ? PressingTint : DarkButtonTint);
+			CellRenderer.Draw(DPadUpCode, DPadUpPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.KeyPressing(GameKey.Up) ? PressingTint : DarkButtonTint);
 
-            // Func
-            CellRenderer.Draw(ButtonSelectCode, SelectPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.KeyPressing(GameKey.Select) ? PressingTint : DarkButtonTint);
-            CellRenderer.Draw(ButtonStartCode, StartPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.KeyPressing(GameKey.Start) ? PressingTint : DarkButtonTint);
+			// Func
+			CellRenderer.Draw(ButtonSelectCode, SelectPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.KeyPressing(GameKey.Select) ? PressingTint : DarkButtonTint);
+			CellRenderer.Draw(ButtonStartCode, StartPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.KeyPressing(GameKey.Start) ? PressingTint : DarkButtonTint);
 
-            // Buttons
-            CellRenderer.Draw(ButtonACode, ButtonAPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.KeyPressing(GameKey.Jump) ? PressingTint : ColorfulButtonTint);
-            CellRenderer.Draw(ButtonBCode, ButtonBPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.KeyPressing(GameKey.Action) ? PressingTint : ColorfulButtonTint);
+			// Buttons
+			CellRenderer.Draw(ButtonACode, ButtonAPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.KeyPressing(GameKey.Jump) ? PressingTint : ColorfulButtonTint);
+			CellRenderer.Draw(ButtonBCode, ButtonBPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.KeyPressing(GameKey.Action) ? PressingTint : ColorfulButtonTint);
 
 		}
 

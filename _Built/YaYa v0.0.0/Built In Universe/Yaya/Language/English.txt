@@ -1,4 +1,8 @@
-﻿ActionHint.eBed:Sleep
+﻿UI.Cancel:Cancel
+UI.QuitMessage:Quit game now？
+UI.Quit:Quit
+UI.OK:OK
+ActionHint.eBed:Sleep
 ActionHint.eChest:Open
 ActionHint.eFridge:Open
 ActionHint.ePhoto:Switch
