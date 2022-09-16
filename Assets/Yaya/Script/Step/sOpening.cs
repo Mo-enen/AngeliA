@@ -49,7 +49,12 @@ namespace Yaya {
 			int localFrame = LocalFrame;
 			// Spawn Player
 			if (localFrame == 1 && SpawnPlayerAtStart) {
-				(game as Yaya).SpawnPlayer(ViewX, ViewYEnd, true);
+				var player = (game as Yaya).SpawnPlayer(ViewX, ViewYEnd);
+				if (player != null) {
+					if (game.TryGetEntityNearby<eBed>(new(ViewX, ViewYEnd), out var bed)) {
+						bed.Invoke(player);
+					}
+				}
 			}
 			if (localFrame < SkipFrame) {
 				if (FrameInput.AnyKeyPressed) {

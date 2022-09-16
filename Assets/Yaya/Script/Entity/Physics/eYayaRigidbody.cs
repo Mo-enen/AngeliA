@@ -2,7 +2,7 @@ using AngeliaFramework;
 using UnityEngine;
 
 namespace Yaya {
-	public class eYayaRigidbody : Rigidbody, IInitialize {
+	public abstract class eYayaRigidbody : Rigidbody, IInitialize {
 
 
 
