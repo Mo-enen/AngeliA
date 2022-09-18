@@ -20,8 +20,18 @@ namespace Yaya {
 	public class eYaya : ePlayer {
 
 
+		// VAR
 		private static readonly int FOOTSTEP_CODE = "eYayaFootstep".AngeHash();
+		private static readonly int GUA_CODE = typeof(eGua).AngeHash();
 		private int LastStartRunFrame = int.MinValue;
+		private eGua Gua = null;
+
+
+		// MSG
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
+			Update_Gua();
+		}
 
 
 		public override void FrameUpdate () {
@@ -44,6 +54,18 @@ namespace Yaya {
 					}
 				}
 			}
+
+		}
+
+
+		private void Update_Gua () {
+			if (Gua != null && Gua.Active) return;
+			if (!Game.Current.TryGetEntityInStage(out Gua)) {
+				Game.Current.TryAddEntity(GUA_CODE, X, Y, out Gua);
+			}
+
+
+
 
 		}
 

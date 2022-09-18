@@ -87,7 +87,7 @@ namespace Yaya {
 				CurrentTarget = result as IActionEntity;
 			}
 			// Highlight
-			if (CurrentTarget != null) CurrentTarget.Highlight();
+			if (CurrentTarget != null && Source is ePlayer) CurrentTarget.Highlight();
 		}
 
 

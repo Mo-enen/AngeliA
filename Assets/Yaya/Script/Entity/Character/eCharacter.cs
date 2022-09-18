@@ -6,6 +6,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.MapEditorGroup("Character")]
+	[EntityAttribute.EntityCapacity(1)]
 	public abstract class eCharacter : eYayaRigidbody, IDamageReceiver {
 
 
