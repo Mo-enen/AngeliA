@@ -13,13 +13,13 @@ namespace Yaya {
 		);
 
 
-		public static void FillBlock_Damage (RectInt rect, bool damagePlayer, int damage) => CellPhysics.FillBlock(
-			YayaConst.LAYER_DAMAGE, rect, damagePlayer, damage
+		public static void FillBlock_Damage (int blockID, RectInt rect, bool damagePlayer, int damage) => CellPhysics.FillBlock(
+			YayaConst.LAYER_DAMAGE, blockID, rect, damagePlayer, damage
 		);
 
 
 		public static int OverlapAll_Damage (HitInfo[] hits, RectInt globalRect, Entity ignore = null, bool forPlayer = false) => CellPhysics.OverlapAll(
-			hits, YayaConst.MASK_DAMAGE, globalRect, ignore, 
+			hits, YayaConst.MASK_DAMAGE, globalRect, ignore,
 			forPlayer ? OperationMode.TriggerOnly : OperationMode.ColliderOnly
 		);
 

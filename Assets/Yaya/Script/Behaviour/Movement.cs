@@ -413,7 +413,7 @@ namespace Yaya {
 			);
 
 			// Oneway Check
-			if ((IsSquating || IsDashing) && !CellPhysics.RoomCheck_Oneway(
+			if ((IsSquating || IsDashing) && !CellPhysics.RoomCheckOneway(
 				YayaConst.MASK_MAP, rect, Source, Direction4.Up, false
 			)) return true;
 

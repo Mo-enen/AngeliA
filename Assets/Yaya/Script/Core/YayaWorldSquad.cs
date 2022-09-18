@@ -77,7 +77,7 @@ namespace Yaya {
 				// Collider for Oneway
 				if (CellRenderer.TryGetMeta(id, out var meta) && AngeUtil.IsOnewayTag(meta.Tag)) {
 					CellPhysics.FillBlock(
-						YayaConst.LAYER_LEVEL,
+						YayaConst.LAYER_LEVEL, id,
 						new RectInt(
 							unitX * Const.CELL_SIZE,
 							unitY * Const.CELL_SIZE,
@@ -107,11 +107,11 @@ namespace Yaya {
 				).Shrink(
 					sp.GlobalBorder.Left, sp.GlobalBorder.Right, sp.GlobalBorder.Down, sp.GlobalBorder.Up
 				);
-				CellPhysics.FillBlock(YayaConst.LAYER_LEVEL, rect, isTrigger, tag);
+				CellPhysics.FillBlock(YayaConst.LAYER_LEVEL, id, rect, isTrigger, tag);
 				// Damage
 				if (tag == YayaConst.DAMAGE_TAG) {
-					YayaCellPhysics.FillBlock_Damage(rect.Expand(1), true, 1);
-					YayaCellPhysics.FillBlock_Damage(rect.Expand(1), false, 1);
+					YayaCellPhysics.FillBlock_Damage(id, rect.Expand(1), true, 1);
+					YayaCellPhysics.FillBlock_Damage(id, rect.Expand(1), false, 1);
 				}
 			}
 		}

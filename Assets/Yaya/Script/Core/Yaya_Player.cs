@@ -6,7 +6,6 @@ using System.Reflection;
 
 
 namespace Yaya {
-	// === Player ===
 	public partial class Yaya {
 
 

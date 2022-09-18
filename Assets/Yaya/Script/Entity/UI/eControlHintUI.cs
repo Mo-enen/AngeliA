@@ -6,10 +6,12 @@ using UnityEngine.InputSystem;
 
 
 namespace Yaya {
-	public class eControlHint : eYayaScreenUI, IInitialize {
+	public class eControlHintUI : eYayaScreenUI, IInitialize {
 
 
 		// Const
+		private static readonly int KEYBOARD_BUTTON_ANI_CODE = "_aKeyboard Button".AngeHash();
+		private static readonly int GAMEPAD_BUTTON_ANI_CODE = "_aGamepad Button".AngeHash();
 		private static readonly int KEYBOARD_BUTTON_CODE = "Keyboard Button".AngeHash();
 		private static readonly int GAMEPAD_BUTTON_CODE = "Gamepad Button".AngeHash();
 		private static readonly int HINT_MOVE_CODE = "CtrlHint.Move".AngeHash();
@@ -73,27 +75,42 @@ namespace Yaya {
 			if (!Game.IsPausing) {
 				// Game Playing
 				switch (Player.CharacterState) {
-					case CharacterState.General:
+
+					case CharacterState.General: {
+						// Move
+						DrawKey(GameKey.Left, GameKey.Right, HINT_MOVE_CODE);
+						// Action & Jump
 						if (Player.CurrentActionTarget is Entity target) {
-							// Action
-							if (TypeHintMap.TryGetValue(target.TypeID, out int code)) {
-								DrawKey(GameKey.Action, code);
-							} else {
-								DrawKey(GameKey.Action, HINT_USE_CODE);
-							}
+							// Action Target
+							//int x = Player.GlobalBounds.xMin;
+							//int y = Player.GlobalBounds.yMax + Const.CELL_SIZE / 2;
 							if (target is eOpenableFurniture open && open.Open) {
+								DrawKey(GameKey.Action, YayaConst.UI_OK);
+								//y += KeySize + Gap;
 								DrawKey(GameKey.Jump, HINT_CANCEL_CODE);
+							} else {
+								if (TypeHintMap.TryGetValue(target.TypeID, out int code)) {
+									DrawKey(GameKey.Action, code);
+								} else {
+									DrawKey(GameKey.Action, HINT_USE_CODE);
+								}
 							}
 						} else {
 							// General
-							DrawKey(GameKey.Left, GameKey.Right, HINT_MOVE_CODE);
 							DrawKey(GameKey.Action, HINT_ATTACK_CODE);
 							DrawKey(GameKey.Jump, HINT_JUMP_CODE);
 						}
 						break;
-					case CharacterState.Sleep:
+					}
+
+					case CharacterState.Sleep: {
+						int x = Player.X;
+						int y = Player.GlobalBounds.yMax;
+						DrawKey(x, y, GameKey.Action, HINT_WAKE_CODE, true, true);
 						DrawKey(GameKey.Action, HINT_WAKE_CODE);
 						break;
+					}
+
 				}
 
 			} else {
@@ -110,10 +127,22 @@ namespace Yaya {
 
 		private void DrawKey (GameKey key, int labelID) => DrawKey(key, key, labelID);
 		private void DrawKey (GameKey keyA, GameKey keyB, int labelID) {
+			int x = X + CellRenderer.CameraRect.x;
+			int y = PositionY;
+			DrawKey(x, y, keyA, keyB, labelID);
+			PositionY += KeySize + Gap;
+		}
+		private void DrawKey (int x, int y, GameKey key, int labelID, bool background = false, bool animated = false) => DrawKey(x, y, key, key, labelID, background, animated);
+		private void DrawKey (int x, int y, GameKey keyA, GameKey keyB, int labelID, bool background = false, bool animated = false) {
 
-			int buttonCode = FrameInput.UsingGamepad ? GAMEPAD_BUTTON_CODE : KEYBOARD_BUTTON_CODE;
+			const int BG_PADDING_X = 32;
+			const int BG_PADDING_Y = 32;
+			Cell bgCell = null;
+			int buttonCode = animated ?
+				FrameInput.UsingGamepad ? GAMEPAD_BUTTON_ANI_CODE : KEYBOARD_BUTTON_ANI_CODE :
+				FrameInput.UsingGamepad ? GAMEPAD_BUTTON_CODE : KEYBOARD_BUTTON_CODE;
 			var border = FrameInput.UsingGamepad ? Border_Gamepad : Border_Keyboard;
-			var rect = new RectInt(X + CellRenderer.CameraRect.x, PositionY, KeySize, KeySize);
+			var rect = new RectInt(x, y, KeySize, KeySize);
 			int keyIdA = FrameInput.GetGameKeyLabelID(keyA);
 			int keyIdB = FrameInput.GetGameKeyLabelID(keyB);
 			int widthA = KeySize;
@@ -131,6 +160,10 @@ namespace Yaya {
 
 			// Button
 			rect.width = widthA;
+			if (background) {
+				bgCell = CellRenderer.Draw(Const.PIXEL, rect.Expand(BG_PADDING_X), new(12, 12, 12, 255));
+				bgCell.Z = 63;
+			}
 			CellRenderer.Draw_9Slice(buttonCode, rect, border.Left, border.Right, border.Down, border.Up);
 
 			// Button Label
@@ -151,10 +184,14 @@ namespace Yaya {
 			rect.width = 1;
 			CellRenderer.DrawLabel(
 				Language.Get(labelID),
-				rect, Tint, TextSize, 0, 0, false, Alignment.MidLeft
+				rect, Tint, TextSize, out var bounds, 0, 0, false, Alignment.MidLeft
 			);
+			if (bgCell != null) {
+				bgCell.Y = Mathf.Min(bgCell.Y, bounds.y - BG_PADDING_Y);
+				bgCell.Width = Mathf.Max(bgCell.Width, bounds.xMax - bgCell.X + BG_PADDING_X);
+				bgCell.Height = Mathf.Max(bgCell.Height, bounds.yMax - bgCell.Y + BG_PADDING_Y);
+			}
 
-			PositionY += KeySize + Gap;
 		}
 
 

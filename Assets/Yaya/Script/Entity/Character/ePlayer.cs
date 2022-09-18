@@ -19,22 +19,32 @@ namespace Yaya {
 	[FirstSelectedPlayer]
 	public class eYaya : ePlayer {
 
+
 		private static readonly int FOOTSTEP_CODE = "eYayaFootstep".AngeHash();
 		private int LastStartRunFrame = int.MinValue;
 
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
+
+			// Last Start Run Frame
 			if (MovementState == MovementState.Run) {
 				if (LastStartRunFrame < 0) LastStartRunFrame = Game.GlobalFrame;
-			} else {
+			} else if (LastStartRunFrame >= 0) {
 				LastStartRunFrame = int.MinValue;
 			}
+
+			// Run Particle
 			if (LastStartRunFrame >= 0 && (Game.GlobalFrame - LastStartRunFrame) % 20 == 19) {
 				if (Game.Current.TryAddEntity<eYayaFootstep>(FOOTSTEP_CODE, X, Y, out var step)) {
-					step.Width = FacingRight ? 1 : -1;
+					if (CellRenderer.TryGetSprite(GroundedID, out var sprite)) {
+						step.Tint = sprite.Summary;
+					} else {
+						step.Tint = Const.WHITE;
+					}
 				}
 			}
+
 		}
 
 

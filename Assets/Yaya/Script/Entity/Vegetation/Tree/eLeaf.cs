@@ -25,12 +25,12 @@ namespace Yaya {
 
 		// MSG
 		public override void FillPhysics () {
-			CellPhysics.FillBlock(YayaConst.LAYER_ENVIRONMENT, Rect, true, Const.ONEWAY_UP_TAG);
+			CellPhysics.FillBlock(YayaConst.LAYER_ENVIRONMENT, TypeID, Rect, true, Const.ONEWAY_UP_TAG);
 		}
 
 
 		public override void FrameUpdate () {
-            CellRenderer.Draw(LeafArtworkCode, base.Rect.Shift(0, GetLeafShiftY(-24)));
+			CellRenderer.Draw(LeafArtworkCode, base.Rect.Shift(0, GetLeafShiftY(-24)));
 		}
 
 
@@ -44,7 +44,7 @@ namespace Yaya {
 		// Data
 		public override void FillPhysics () {
 			CellPhysics.FillBlock(
-				YayaConst.LAYER_ENVIRONMENT,
+				YayaConst.LAYER_ENVIRONMENT, TypeID,
 				Rect.Shrink(0, 0, 0, Height / 2),
 				true, YayaConst.CLIMB_TAG
 			);
@@ -52,7 +52,7 @@ namespace Yaya {
 
 
 		public override void FrameUpdate () {
-            CellRenderer.Draw(LeafArtworkCode, base.Rect.Shift(GetLeafShiftY(0), 0));
+			CellRenderer.Draw(LeafArtworkCode, base.Rect.Shift(GetLeafShiftY(0), 0));
 		}
 
 
@@ -107,9 +107,9 @@ namespace Yaya {
 			Width = Const.CELL_SIZE;
 			Height = Const.CELL_SIZE;
 
-            // Leaf
-            LeafArtworkCode = CellRenderer.TryGetSpriteFromGroup(
-                LeafCode.AngeHash(), (X * 5 + Y * 7) / Const.CELL_SIZE, out var lSprite
+			// Leaf
+			LeafArtworkCode = CellRenderer.TryGetSpriteFromGroup(
+				LeafCode.AngeHash(), (X * 5 + Y * 7) / Const.CELL_SIZE, out var lSprite
 			) ? lSprite.GlobalID : 0;
 
 			// Offset
@@ -146,7 +146,7 @@ namespace Yaya {
 					rect.x += rect.width;
 					rect.width = -rect.width;
 				}
-                CellRenderer.Draw(LeafArtworkCode, rect, LeafTint);
+				CellRenderer.Draw(LeafArtworkCode, rect, LeafTint);
 			}
 		}
 

@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-using UnityEngine.Video;
+
 
 namespace Yaya {
-	// === Main ===
 	public partial class Yaya : Game {
 
 
@@ -31,7 +30,7 @@ namespace Yaya {
 		private static readonly HitInfo[] c_DamageCheck = new HitInfo[16];
 		private RectInt YayaCameraRect = default;
 		private eGamePadUI GamePadUI = null;
-		private eControlHint ControlHintUI = null;
+		private eControlHintUI ControlHintUI = null;
 
 		// Saving
 		private readonly SavingBool ShowGamePadUI = new("Yaya.ShowGamePadUI", false);
@@ -121,7 +120,7 @@ namespace Yaya {
 				TryAddEntity(typeof(eQuitDialog).AngeHash(), 0, 0, out _);
 			}
 			if (FrameInput.CustomKeyDown(KeyCode.Alpha4)) {
-
+				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
 			}
 
 		}
@@ -207,9 +206,9 @@ namespace Yaya {
 
 				// Spawn
 				if (ControlHintUI == null) {
-					if (TryGetEntityInStage<eControlHint>(out var cHint)) {
+					if (TryGetEntityInStage<eControlHintUI>(out var cHint)) {
 						ControlHintUI = cHint;
-					} else if (TryAddEntity(typeof(eControlHint).AngeHash(), 0, 0, out ControlHintUI)) {
+					} else if (TryAddEntity(typeof(eControlHintUI).AngeHash(), 0, 0, out ControlHintUI)) {
 						ControlHintUI.X = 32;
 						ControlHintUI.Y = 32;
 					}

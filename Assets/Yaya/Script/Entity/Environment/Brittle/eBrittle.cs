@@ -68,7 +68,7 @@ namespace Yaya {
 					case BreakMode.BreakOnCollideGround: {
 						if (
 							!CellPhysics.RoomCheck(YayaConst.MASK_SOLID, rect, this, Direction4.Down) ||
-							!CellPhysics.RoomCheck_Oneway(YayaConst.MASK_MAP, rect, this, Direction4.Down, true)
+							!CellPhysics.RoomCheckOneway(YayaConst.MASK_MAP, rect, this, Direction4.Down, true)
 						) {
 							Break();
 						}
