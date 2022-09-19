@@ -85,6 +85,9 @@ namespace Yaya {
 		}
 
 
+		public void SetHealth (int health) => HealthPoint = health.Clamp(0, MaxHP);
+
+
 		#endregion
 
 

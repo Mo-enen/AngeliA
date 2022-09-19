@@ -95,8 +95,8 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnInitialize (Game game) {
-			base.OnInitialize(game);
+		public override void OnInitialize () {
+			base.OnInitialize();
 			LeafOffsets = new Vector2Int[LeafCount];
 		}
 

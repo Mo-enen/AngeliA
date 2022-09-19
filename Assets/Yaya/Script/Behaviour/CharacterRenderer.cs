@@ -14,7 +14,7 @@ namespace Yaya {
 		#region --- SUB ---
 
 
-		public class AniCode {
+		private class AniCode {
 
 
 			public int Code = 0;
@@ -107,6 +107,9 @@ namespace Yaya {
 		// Api
 		public eCharacter Character { get; private set; } = null;
 		public int FaceIndex { get; set; } = 0;
+		public int BodyArtworkID { get; private set; } = 0;
+		public int ArtworkOffsetZ { get; set; } = 0;
+		public int ArtworkScale { get; set; } = 1000;
 
 		// Ser
 		[SerializeField] int[] BounceAmounts = new int[] { 500, 200, 100, 50, 25, 50, 100, 200, 500, };
@@ -120,30 +123,30 @@ namespace Yaya {
 		[SerializeField] int EyeBlinkRate = 360;
 
 		// Config
-		public AniCode Sleep { get; private set; } = null;
-		public AniCode Damaging { get; private set; } = null;
-		public AniCode Passout { get; private set; } = null;
-		public GroupCode Face { get; private set; } = null;
-		public AniCode FaceBlink { get; private set; } = null;
-		public AniCode[] Attacks { get; private set; } = null;
-		public AniCode[] Attacks_Move { get; private set; } = null;
-		public AniCode[] Attacks_Air { get; private set; } = null;
-		public AniCode[] Attacks_Water { get; private set; } = null;
-		public AniCode Idle { get; private set; } = null;
-		public AniCode Walk { get; private set; } = null;
-		public AniCode Run { get; private set; } = null;
-		public AniCode JumpU { get; private set; } = null;
-		public AniCode JumpD { get; private set; } = null;
-		public AniCode Dash { get; private set; } = null;
-		public AniCode SquatIdle { get; private set; } = null;
-		public AniCode SquatMove { get; private set; } = null;
-		public AniCode SwimIdle { get; private set; } = null;
-		public AniCode SwimMove { get; private set; } = null;
-		public AniCode SwimDash { get; private set; } = null;
-		public AniCode Pound { get; private set; } = null;
-		public AniCode Climb { get; private set; } = null;
-		public AniCode Roll { get; private set; } = null;
-		public AniCode Fly { get; private set; } = null;
+		private AniCode Sleep = null;
+		private AniCode Damaging = null;
+		private AniCode Passout = null;
+		private GroupCode Face = null;
+		private AniCode FaceBlink = null;
+		private AniCode Idle = null;
+		private AniCode Walk = null;
+		private AniCode Run = null;
+		private AniCode JumpU = null;
+		private AniCode JumpD = null;
+		private AniCode Dash = null;
+		private AniCode SquatIdle = null;
+		private AniCode SquatMove = null;
+		private AniCode SwimIdle = null;
+		private AniCode SwimMove = null;
+		private AniCode SwimDash = null;
+		private AniCode Pound = null;
+		private AniCode Climb = null;
+		private AniCode Roll = null;
+		private AniCode Fly = null;
+		private AniCode[] Attacks = null;
+		private AniCode[] Attacks_Move = null;
+		private AniCode[] Attacks_Air = null;
+		private AniCode[] Attacks_Water = null;
 
 		// Data
 		private AniCode CurrentAni = null;
@@ -205,6 +208,8 @@ namespace Yaya {
 
 
 		public void Update () {
+
+			if (ArtworkScale == 0) return;
 
 			int frame = Game.GlobalFrame;
 
@@ -273,7 +278,6 @@ namespace Yaya {
 			var movementState = Character.MovementState;
 			var ani = Idle;
 			int frame = Game.GlobalFrame;
-			//var movement = Character.Movement;
 
 			// Get Ani
 			if (Character.IsAttacking) {
@@ -354,7 +358,15 @@ namespace Yaya {
 				CurrentAniFrame,
 				ani.LoopStart
 			);
+			if (ArtworkScale != 1000) {
+				cell.Width = cell.Width * ArtworkScale / 1000;
+				cell.Height = cell.Height * ArtworkScale / 1000;
+			}
+			if (ArtworkOffsetZ != 0) {
+				cell.Z += ArtworkOffsetZ;
+			}
 			CurrentCode = CellRenderer.LastDrawnID;
+			BodyArtworkID = CurrentCode;
 			LastCellHeight = cell.Height;
 
 			// Bouncy
@@ -407,6 +419,7 @@ namespace Yaya {
 
 
 		private void DrawFace () {
+
 			if (
 				Face.Count <= 0 ||
 				!CellRenderer.TryGetMeta(CurrentCode, out var meta) ||
@@ -414,8 +427,6 @@ namespace Yaya {
 				!meta.Head.Front
 			) return;
 
-
-			//var movement = Character.Movement;
 			int bounce = Mathf.Abs(CurrentBounce);
 			int offsetY;
 			if (CurrentBounce > 0) {
@@ -424,10 +435,9 @@ namespace Yaya {
 				offsetY = meta.Head.Y + meta.Head.Height;
 				offsetY += offsetY * (1000 - bounce) / 1000;
 			}
+			var faceID = Face[FaceIndex.UMod(Face.Count)];
 			CellRenderer.Draw_9Slice(
-				Game.GlobalFrame % EyeBlinkRate > 8 ?
-					Face[FaceIndex.UMod(Face.Count)] :
-					FaceBlink.Code,
+				Game.GlobalFrame % EyeBlinkRate > 8 ? faceID : FaceBlink.Code,
 				Character.X - meta.SpriteWidth / 2 +
 					(Character.FacingRight ?
 						meta.Head.X :

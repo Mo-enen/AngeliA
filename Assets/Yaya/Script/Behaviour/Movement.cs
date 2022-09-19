@@ -355,15 +355,18 @@ namespace Yaya {
 
 
 		// Movement
-		public void Move (Direction3 x, Direction3 y) {
-			if (IntendedX != 0 && x == Direction3.None) LastEndMoveFrame = CurrentFrame;
-			if (IntendedX == 0 && x != Direction3.None) LastStartMoveFrame = CurrentFrame;
-			if (x != Direction3.None) RunningAccumulateFrame++;
-			if (x == Direction3.None && CurrentFrame > LastEndMoveFrame + RUN_BREAK_GAP) RunningAccumulateFrame = 0;
-			IntendedX = (int)x;
-			IntendedY = (int)y;
-			if (x != Direction3.None) LastIntendedX = IntendedX;
-			if (x != Direction3.None || y != Direction3.None) {
+		public void Move (Direction3 x, Direction3 y) => Move((int)x, (int)y);
+
+
+		public void Move (int x, int y) {
+			if (IntendedX != 0 && x == 0) LastEndMoveFrame = CurrentFrame;
+			if (IntendedX == 0 && x != 0) LastStartMoveFrame = CurrentFrame;
+			if (x != 0) RunningAccumulateFrame++;
+			if (x == 0 && CurrentFrame > LastEndMoveFrame + RUN_BREAK_GAP) RunningAccumulateFrame = 0;
+			IntendedX = x;
+			IntendedY = y;
+			if (x != 0) LastIntendedX = IntendedX;
+			if (x != 0 || y != 0) {
 				LastMoveDirection = new(IntendedX, IntendedY);
 			}
 		}

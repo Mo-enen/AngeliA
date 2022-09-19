@@ -36,7 +36,21 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
+			Update_Run();
+		}
 
+
+		private void Update_Gua () {
+			// Respawn Gua
+			if (Gua == null || !Gua.Active) {
+				if (!Game.Current.TryGetEntityInStage(out Gua)) {
+					Game.Current.TryAddEntity(GUA_CODE, X, Y, out Gua);
+				}
+			}
+		}
+
+
+		private void Update_Run () {
 			// Last Start Run Frame
 			if (MovementState == MovementState.Run) {
 				if (LastStartRunFrame < 0) LastStartRunFrame = Game.GlobalFrame;
@@ -54,19 +68,6 @@ namespace Yaya {
 					}
 				}
 			}
-
-		}
-
-
-		private void Update_Gua () {
-			if (Gua != null && Gua.Active) return;
-			if (!Game.Current.TryGetEntityInStage(out Gua)) {
-				Game.Current.TryAddEntity(GUA_CODE, X, Y, out Gua);
-			}
-
-
-
-
 		}
 
 

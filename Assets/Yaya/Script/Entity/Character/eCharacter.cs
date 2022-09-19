@@ -26,14 +26,16 @@ namespace Yaya {
 		public int PassoutFrame { get; private set; } = int.MinValue;
 		public CharacterState CharacterState { get; private set; } = CharacterState.General;
 		public MovementState MovementState { get; private set; } = MovementState.Idle;
+		public int ArtworkOffsetZ { get => Renderer.ArtworkOffsetZ; set => Renderer.ArtworkOffsetZ = value; }
+		public int ArtworkScale { get => Renderer.ArtworkScale; set => Renderer.ArtworkScale = value; }
 
 		// Beh
 		public IActionEntity CurrentActionTarget => Action.CurrentTarget;
 		public bool KeepTriggerAttackWhenHold => Attackness.KeepTriggerWhenHold;
 		public bool CancelAttackOnJump => Attackness.CancelAttackOnJump;
 		public bool IsAttacking => Attackness.IsAttacking;
-		public bool FacingFront => Movement.FacingFront;
-		public bool FacingRight => Movement.FacingRight;
+		public virtual bool FacingFront => Movement.FacingFront;
+		public virtual bool FacingRight => Movement.FacingRight;
 		public bool UseFreeStyleSwim => Movement.UseFreeStyleSwim;
 		public int IntendedX => Movement.IntendedX;
 		public int IntendedY => Movement.IntendedY;
@@ -44,6 +46,8 @@ namespace Yaya {
 		public int LastSquatFrame => Movement.LastSquatFrame;
 		public int LastSquatingFrame => Movement.LastSquatingFrame;
 		public int LastPoundingFrame => Movement.LastPoundingFrame;
+		public int HealthPoint => Health.HealthPoint;
+		public int BodyArtworkID => Renderer.BodyArtworkID;
 
 		// Data
 		private Movement Movement = null;
@@ -61,12 +65,13 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnInitialize (Game game) {
+		public override void OnInitialize () {
 
-			base.OnInitialize(game);
+			base.OnInitialize();
 			string typeName = GetType().Name;
 			if (typeName.StartsWith("e")) typeName = typeName[1..];
 
+			var game = Game.Current;
 			Movement = game.LoadMeta<Movement>(typeName, "Movement") ?? new();
 			Renderer = game.LoadMeta<CharacterRenderer>(typeName, "Renderer") ?? new();
 			Action = game.LoadMeta<Action>(typeName, "Action") ?? new();
@@ -177,6 +182,7 @@ namespace Yaya {
 		public virtual bool CheckAttackReady (bool holding) => Attackness.CheckReady(holding);
 
 		public virtual void InvokeMove (Direction3 x, Direction3 y) => Movement.Move(x, y);
+		public virtual void InvokeMove (int x, int y) => Movement.Move(x, y);
 		public virtual void InvokeJump () => Movement.Jump();
 		public virtual void InvokeHoldJump (bool holding) => Movement.HoldJump(holding);
 		public virtual void InvokeDash () => Movement.Dash();
@@ -193,12 +199,17 @@ namespace Yaya {
 			}
 		}
 		public virtual bool InvokeHeal (int heal) => Health.Heal(heal);
+		public virtual void InvokeSetHealth (int health) => Health.SetHealth(health);
 
 		public virtual void InvokeBounce () => Renderer.Bounce();
 		public virtual void InvokeSleep () => CharacterState = CharacterState.Sleep;
+
+
 		public virtual void InvokeWakeup () {
+			if (CharacterState == CharacterState.Sleep) {
+				X += Const.CELL_SIZE / 2;
+			}
 			CharacterState = CharacterState.General;
-			X += Const.CELL_SIZE / 2;
 			Renderer.Bounce();
 			Action.Update();
 		}

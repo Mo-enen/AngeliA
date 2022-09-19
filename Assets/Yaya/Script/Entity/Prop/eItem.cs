@@ -35,7 +35,7 @@ namespace Yaya {
 			get {
 				if (_ItemCode == 0) {
 					if (CellRenderer.TryGetSpriteFromGroup(GroupCode, _ArtworkIndex, out var sprite, false, true)) {
-                        _ItemCode = sprite.GlobalID;
+						_ItemCode = sprite.GlobalID;
 					} else _ItemCode = -1;
 				}
 				return _ItemCode;
@@ -58,8 +58,8 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnInitialize (Game game) {
-			base.OnInitialize(game);
+		public override void OnInitialize () {
+			base.OnInitialize();
 			string typeName = GetType().Name;
 			if (typeName.StartsWith('e')) typeName = typeName[1..];
 			GroupCode = typeName.AngeHash();
@@ -126,14 +126,14 @@ namespace Yaya {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			if (ItemCode != 0 && ItemCode != -1) {
-                CellRenderer.Draw(
-                    ItemCode,
+				CellRenderer.Draw(
+					ItemCode,
 					new(
-                        X + (ITEM_PHYSICS_SIZE - ITEM_RENDER_SIZE) / 2,
-                        Y,
-                        ITEM_RENDER_SIZE,
-                        ITEM_RENDER_SIZE
-                    )
+						X + (ITEM_PHYSICS_SIZE - ITEM_RENDER_SIZE) / 2,
+						Y,
+						ITEM_RENDER_SIZE,
+						ITEM_RENDER_SIZE
+					)
 				);
 			}
 		}

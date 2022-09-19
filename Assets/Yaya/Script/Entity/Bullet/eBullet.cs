@@ -27,8 +27,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnInitialize (Game game) {
-			base.OnInitialize(game);
+		public override void OnInitialize () {
+			base.OnInitialize();
 			string typeName = GetType().Name;
 			if (!string.IsNullOrEmpty(typeName)) {
 				if (typeName[0] == 'e') typeName = typeName[1..];
@@ -66,7 +66,7 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-            CellRenderer.Draw_Animation(ArtworkCode, base.Rect, LocalFrame);
+			CellRenderer.Draw_Animation(ArtworkCode, base.Rect, LocalFrame);
 		}
 
 
