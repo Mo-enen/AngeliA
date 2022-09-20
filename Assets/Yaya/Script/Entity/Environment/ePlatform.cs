@@ -8,20 +8,35 @@ namespace Yaya {
 
 
 
-	public class eWoodPlatformH : ePingPongPlatform {
+	public class eWoodPlatformH : eWoodPlatform {
 		protected override Vector2Int Velocity => new(8, 0);
-		protected override Vector2Int Distance => new(Const.CELL_SIZE * 3, 0);
+		protected override Vector2Int Distance => new(Const.CELL_SIZE * 5, 0);
 		protected override bool RequireMove => true;
-		protected override int PlatformWidth => Const.CELL_SIZE * 3;
+		protected override int PlatformWidth => Const.CELL_SIZE * 5;
 	}
 
 
 
-	public class eWoodPlatformV : ePingPongPlatform {
+	public class eWoodPlatformV : eWoodPlatform {
 		protected override Vector2Int Velocity => new(0, 8);
-		protected override Vector2Int Distance => new(0, Const.CELL_SIZE * 3);
+		protected override Vector2Int Distance => new(0, Const.CELL_SIZE * 5);
 		protected override bool RequireMove => true;
-		protected override int PlatformWidth => Const.CELL_SIZE * 3;
+		protected override int PlatformWidth => Const.CELL_SIZE * 5;
+	}
+
+
+	public abstract class eWoodPlatform : ePingPongPlatform {
+
+		private static readonly int ART_CODE_LEFT = "WoodPlatform Left".AngeHash();
+		private static readonly int ART_CODE_MID = "WoodPlatform Mid".AngeHash();
+		private static readonly int ART_CODE_RIGHT = "WoodPlatform Right".AngeHash();
+		private static readonly int ART_CODE_SINGLE = "WoodPlatform Single".AngeHash();
+
+		protected override int ArtworkCode_Left => ART_CODE_LEFT;
+		protected override int ArtworkCode_Mid => ART_CODE_MID;
+		protected override int ArtworkCode_Right => ART_CODE_RIGHT;
+		protected override int ArtworkCode_Single => ART_CODE_SINGLE;
+
 	}
 
 
@@ -33,7 +48,6 @@ namespace Yaya {
 		protected abstract Vector2Int Distance { get; }
 		protected abstract bool RequireMove { get; }
 		protected abstract int PlatformWidth { get; }
-		protected sealed override bool IsOneWay => true;
 
 		// Data
 		private Vector2Int From = default;
@@ -108,7 +122,11 @@ namespace Yaya {
 		public override bool CarryRigidbodyOnTop => true;
 
 		// Platform
-		protected abstract bool IsOneWay { get; }
+		protected abstract int ArtworkCode_Left { get; }
+		protected abstract int ArtworkCode_Mid { get; }
+		protected abstract int ArtworkCode_Right { get; }
+		protected abstract int ArtworkCode_Single { get; }
+		protected FittingPose Pose { get; private set; } = FittingPose.Unknown;
 
 		// Data
 		private static readonly HitInfo[] c_Touchs = new HitInfo[32];
@@ -124,36 +142,64 @@ namespace Yaya {
 			TouchedByPlayer = false;
 			TouchedByCharacter = false;
 			TouchedByRigidbody = false;
+			Pose = FittingPose.Unknown;
 		}
 
 
-		public override void FillPhysics () => CellPhysics.FillEntity(PhysicsLayer, this, IsOneWay, IsOneWay ? Const.ONEWAY_UP_TAG : 0);
+		public override void FillPhysics () => CellPhysics.FillEntity(PhysicsLayer, this, true, Const.ONEWAY_UP_TAG);
 
 
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
-			// Touch Check
-			if (!TouchedByRigidbody || !TouchedByCharacter || !TouchedByPlayer) {
-				int count = CellPhysics.OverlapAll(c_Touchs, CollisionMask, Rect.Expand(1), this);
-				for (int i = 0; i < count; i++) {
-					var hit = c_Touchs[i];
-					if (hit.Entity is Rigidbody) {
-						TouchedByRigidbody = true;
-						if (hit.Entity is eCharacter) {
-							TouchedByCharacter = true;
-							if (hit.Entity is ePlayer) {
-								TouchedByPlayer = true;
-							}
-						}
-					}
-				}
-			}
+			Update_Touch();
+			Update_Pose();
+			Update_Carry();
 		}
 
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.Draw_9Slice(TrimedTypeID, Rect);
+			CellRenderer.Draw(Pose switch {
+				FittingPose.Left => ArtworkCode_Left,
+				FittingPose.Mid => ArtworkCode_Mid,
+				FittingPose.Right => ArtworkCode_Right,
+				FittingPose.Single => ArtworkCode_Single,
+				_ => 0,
+			}, Rect);
+		}
+
+
+		private void Update_Touch () {
+			if (!TouchedByRigidbody || !TouchedByCharacter || !TouchedByPlayer) {
+				int count = CellPhysics.OverlapAll(c_Touchs, CollisionMask, Rect.Expand(1), this);
+				for (int i = 0; i < count; i++) {
+					var hit = c_Touchs[i];
+					if (hit.Entity is not Rigidbody) continue;
+					TouchedByRigidbody = true;
+					if (hit.Entity is not eCharacter) continue;
+					TouchedByCharacter = true;
+					if (hit.Entity is not ePlayer) continue;
+					TouchedByPlayer = true;
+					break;
+				}
+			}
+		}
+
+
+		private void Update_Pose () {
+			if (Pose != FittingPose.Unknown) return;
+
+
+
+
+		}
+
+
+		private void Update_Carry () {
+
+
+
+
 		}
 
 

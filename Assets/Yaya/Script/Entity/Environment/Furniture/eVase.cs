@@ -18,7 +18,7 @@ namespace Yaya {
 		protected override int ArtworkCode_Single => CODES_SINGLE;
 
 		public override void FillPhysics () {
-			if (Pose == FurniturePose.Up || Pose == FurniturePose.Single) {
+			if (Pose == FittingPose.Up || Pose == FittingPose.Single) {
 				CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
 			} else {
 				CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);

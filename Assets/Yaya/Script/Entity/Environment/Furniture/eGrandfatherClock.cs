@@ -24,13 +24,13 @@ namespace Yaya {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			// Hands
-			if (Pose == FurniturePose.Up) {
+			if (Pose == FittingPose.Up) {
 				DrawClockHands(Rect.Shrink(36), HAND_CODE, 16, 8);
-			} else if (Pose == FurniturePose.Single) {
+			} else if (Pose == FittingPose.Single) {
 				DrawClockHands(Rect.Shrink(36).Shift(0, 24), HAND_CODE, 16, 8);
 			}
 			// Pendulum
-			if (Pose == FurniturePose.Mid) {
+			if (Pose == FittingPose.Mid) {
 				DrawClockPendulum(
 					artCodeLeg: PENDULUM_LEG_CODE,
 					artCodeHead: PENDULUM_HEAD_CODE,
@@ -42,7 +42,7 @@ namespace Yaya {
 					maxRot: 12,
 					deltaX: 16
 				);
-			} else if (Pose == FurniturePose.Down) {
+			} else if (Pose == FittingPose.Down) {
 				DrawClockPendulum(
 					artCodeLeg: PENDULUM_LEG_CODE,
 					artCodeHead: PENDULUM_HEAD_CODE,

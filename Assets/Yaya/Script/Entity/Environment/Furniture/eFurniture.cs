@@ -12,25 +12,6 @@ namespace Yaya {
 
 
 
-		#region --- SUB ---
-
-
-		protected enum FurniturePose {
-			Unknown = 0,
-			Left = 1,
-			Down = 1,
-			Mid = 2,
-			Right = 3,
-			Up = 3,
-			Single = 4,
-		}
-
-
-		#endregion
-
-
-
-
 		#region --- VAR ---
 
 
@@ -50,7 +31,7 @@ namespace Yaya {
 		public bool IsHighlighted => Game.GlobalFrame <= HighlightFrame + 1;
 		public int HighlightFrame { get; set; } = int.MinValue;
 		protected RectOffset ColliderBorder { get; } = new();
-		protected FurniturePose Pose { get; private set; } = FurniturePose.Unknown;
+		protected FittingPose Pose { get; private set; } = FittingPose.Unknown;
 		protected int ArtworkIndex { get; set; } = 0;
 
 		// Data
@@ -69,7 +50,7 @@ namespace Yaya {
 			base.OnActived();
 			Width = Const.CELL_SIZE;
 			Height = Const.CELL_SIZE;
-			Pose = FurniturePose.Unknown;
+			Pose = FittingPose.Unknown;
 			FurnitureLeftOrDown = null;
 			FurnitureRightOrUp = null;
 		}
@@ -89,7 +70,7 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (Pose == FurniturePose.Unknown) return;
+			if (Pose == FittingPose.Unknown) return;
 			if (TryGetSprite(Pose, out var sprite)) {
 				var cell = CellRenderer.Draw(sprite.GlobalID, RenderingRect);
 				Update_Highlight(cell);
@@ -107,11 +88,11 @@ namespace Yaya {
 				: Const.CELL_SIZE / 20;
 			if (ModuleType == Direction3.Horizontal) {
 				// Horizontal
-				if (Pose == FurniturePose.Left || Pose == FurniturePose.Single) {
+				if (Pose == FittingPose.Left || Pose == FittingPose.Single) {
 					cell.X -= offset;
 				}
-				if (Pose != FurniturePose.Mid) {
-					if (Pose == FurniturePose.Left) {
+				if (Pose != FittingPose.Mid) {
+					if (Pose == FittingPose.Left) {
 						cell.Width += offset;
 					} else {
 						cell.Width += offset * 2;
@@ -121,11 +102,11 @@ namespace Yaya {
 				cell.Height += offset * 2;
 			} else {
 				// Vertical
-				if (Pose == FurniturePose.Down || Pose == FurniturePose.Single) {
+				if (Pose == FittingPose.Down || Pose == FittingPose.Single) {
 					cell.Y -= offset;
 				}
-				if (Pose != FurniturePose.Mid) {
-					if (Pose == FurniturePose.Down) {
+				if (Pose != FittingPose.Mid) {
+					if (Pose == FittingPose.Down) {
 						cell.Height += offset;
 					} else {
 						cell.Height += offset * 2;
@@ -183,13 +164,13 @@ namespace Yaya {
 		}
 
 
-		protected bool TryGetSprite (FurniturePose pose, out AngeSprite sprite) =>
+		protected bool TryGetSprite (FittingPose pose, out AngeSprite sprite) =>
 			CellRenderer.TryGetSpriteFromGroup(
 			pose switch {
-				FurniturePose.Left => ArtworkCode_LeftDown,
-				FurniturePose.Mid => ArtworkCode_Mid,
-				FurniturePose.Right => ArtworkCode_RightUp,
-				FurniturePose.Single => ArtworkCode_Single,
+				FittingPose.Left => ArtworkCode_LeftDown,
+				FittingPose.Mid => ArtworkCode_Mid,
+				FittingPose.Right => ArtworkCode_RightUp,
+				FittingPose.Single => ArtworkCode_Single,
 				_ => 0,
 			}, ArtworkIndex, out sprite, LoopArtworkIndex);
 
@@ -225,7 +206,7 @@ namespace Yaya {
 
 
 		private void Update_Pose () {
-			if (Pose != FurniturePose.Unknown) return;
+			if (Pose != FittingPose.Unknown) return;
 
 			if (ModuleType == Direction3.Horizontal) {
 				var rect = Rect;
@@ -240,10 +221,10 @@ namespace Yaya {
 				) as eFurniture;
 				bool hasRight = eRight != null;
 				Pose =
-					hasLeft && hasRight ? FurniturePose.Mid :
-					!hasLeft && !hasRight ? FurniturePose.Single :
-					!hasLeft && hasRight ? FurniturePose.Left :
-					FurniturePose.Right;
+					hasLeft && hasRight ? FittingPose.Mid :
+					!hasLeft && !hasRight ? FittingPose.Single :
+					!hasLeft && hasRight ? FittingPose.Left :
+					FittingPose.Right;
 				FurnitureLeftOrDown = eLeft;
 				FurnitureRightOrUp = eRight;
 			} else if (ModuleType == Direction3.Vertical) {
@@ -259,14 +240,14 @@ namespace Yaya {
 				) as eFurniture;
 				bool hasUp = eUp != null;
 				Pose =
-					hasDown && hasUp ? FurniturePose.Mid :
-					!hasDown && !hasUp ? FurniturePose.Single :
-					!hasDown && hasUp ? FurniturePose.Down :
-					FurniturePose.Up;
+					hasDown && hasUp ? FittingPose.Mid :
+					!hasDown && !hasUp ? FittingPose.Single :
+					!hasDown && hasUp ? FittingPose.Down :
+					FittingPose.Up;
 				FurnitureLeftOrDown = eDown;
 				FurnitureRightOrUp = eUp;
 			} else {
-				Pose = FurniturePose.Single;
+				Pose = FittingPose.Single;
 			}
 
 			// Shrink Rect

@@ -23,7 +23,7 @@ namespace Yaya {
 		public bool Invoke (Entity target) {
 			if (target is not eCharacter ch) return false;
 			int bedX = Rect.x;
-			if (Pose != FurniturePose.Left) {
+			if (Pose != FittingPose.Left) {
 				var rect = Rect;
 				for (int i = 1; i < 1024; i++) {
 					rect.x = X - i * Const.CELL_SIZE;
