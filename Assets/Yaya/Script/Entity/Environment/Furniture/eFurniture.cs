@@ -206,49 +206,15 @@ namespace Yaya {
 
 
 		private void Update_Pose () {
+
 			if (Pose != FittingPose.Unknown) return;
 
-			if (ModuleType == Direction3.Horizontal) {
-				var rect = Rect;
-				rect.x = Rect.x - Const.CELL_SIZE;
-				var eLeft = CellPhysics.GetEntity(
-					GetType(), rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
-				) as eFurniture;
-				bool hasLeft = eLeft != null;
-				rect.x = Rect.xMax;
-				var eRight = CellPhysics.GetEntity(
-					GetType(), rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
-				) as eFurniture;
-				bool hasRight = eRight != null;
-				Pose =
-					hasLeft && hasRight ? FittingPose.Mid :
-					!hasLeft && !hasRight ? FittingPose.Single :
-					!hasLeft && hasRight ? FittingPose.Left :
-					FittingPose.Right;
-				FurnitureLeftOrDown = eLeft;
-				FurnitureRightOrUp = eRight;
-			} else if (ModuleType == Direction3.Vertical) {
-				var rect = Rect;
-				rect.y = Rect.y - Const.CELL_SIZE;
-				var eDown = CellPhysics.GetEntity(
-					GetType(), rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
-				) as eFurniture;
-				bool hasDown = eDown != null;
-				rect.y = Rect.yMax;
-				var eUp = CellPhysics.GetEntity(
-					GetType(), rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
-				) as eFurniture;
-				bool hasUp = eUp != null;
-				Pose =
-					hasDown && hasUp ? FittingPose.Mid :
-					!hasDown && !hasUp ? FittingPose.Single :
-					!hasDown && hasUp ? FittingPose.Down :
-					FittingPose.Up;
-				FurnitureLeftOrDown = eDown;
-				FurnitureRightOrUp = eUp;
-			} else {
-				Pose = FittingPose.Single;
-			}
+			Pose = YayaCellPhysics.GetEntityPose(
+				this, YayaConst.MASK_ENVIRONMENT, ModuleType == Direction3.Horizontal,
+				out var ld, out var ru, OperationMode.ColliderAndTrigger
+			);
+			FurnitureLeftOrDown = ld as eFurniture;
+			FurnitureRightOrUp = ru as eFurniture;
 
 			// Shrink Rect
 			if (TryGetSprite(Pose, out var sp)) {

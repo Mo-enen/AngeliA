@@ -18,11 +18,11 @@ namespace Yaya {
 		// Api
 		public override int PhysicsLayer => YayaConst.LAYER_ENVIRONMENT;
 		protected virtual BreakMode BreakCondition { get; } = BreakMode.BreakOnCollideGround;
-		public override bool CarryRigidbodyOnTop => false;
 		protected virtual int HoldDuration { get; } = 60;
 		protected virtual int FallingVelocity { get; } = 24;
 		protected bool IsFalling { get; private set; } = false;
 		protected bool IsHolding { get; private set; } = false;
+		public override int CarrierSpeed => 0;
 
 		// Data
 		private int HoldStartFrame = int.MaxValue;

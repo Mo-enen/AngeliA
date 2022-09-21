@@ -75,7 +75,7 @@ namespace Yaya {
 				// Game Playing
 				switch (Player.CharacterState) {
 
-					case CharacterState.General: {
+					case CharacterState.GamePlay: {
 						// Move
 						DrawKey(GameKey.Left, GameKey.Right, HINT_MOVE_CODE);
 						// Action & Jump

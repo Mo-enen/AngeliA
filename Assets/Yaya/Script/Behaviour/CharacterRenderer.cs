@@ -235,7 +235,7 @@ namespace Yaya {
 
 			// Draw
 			switch (Character.CharacterState) {
-				case CharacterState.General:
+				case CharacterState.GamePlay:
 					DrawBody();
 					DrawFace();
 					break;

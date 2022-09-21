@@ -18,16 +18,16 @@ namespace Yaya {
 		// Api
 		public override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
 		public override int CollisionMask => YayaConst.MASK_MAP;
-		public override bool CarryRigidbodyOnTop => false;
 		public override bool InAir => base.InAir && !Movement.IsClimbing;
 		public override int AirDragX => 0;
 		public override int AirDragY => 0;
 		public override bool IgnoreRiseGravityShift => true;
 		public int PassoutFrame { get; private set; } = int.MinValue;
-		public CharacterState CharacterState { get; private set; } = CharacterState.General;
+		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
 		public MovementState MovementState { get; private set; } = MovementState.Idle;
 		public int ArtworkOffsetZ { get => Renderer.ArtworkOffsetZ; set => Renderer.ArtworkOffsetZ = value; }
 		public int ArtworkScale { get => Renderer.ArtworkScale; set => Renderer.ArtworkScale = value; }
+		public override int CarrierSpeed => 0;
 
 		// Beh
 		public IActionEntity CurrentActionTarget => Action.CurrentTarget;
@@ -87,13 +87,13 @@ namespace Yaya {
 			Action.OnActived(this);
 			Health.OnActived(this);
 			Attackness.OnActived(this);
-			CharacterState = CharacterState.General;
+			CharacterState = CharacterState.GamePlay;
 			PassoutFrame = int.MinValue;
 		}
 
 
 		public override void FillPhysics () {
-			if (CharacterState == CharacterState.General) {
+			if (CharacterState == CharacterState.GamePlay) {
 				base.FillPhysics();
 			}
 		}
@@ -105,14 +105,13 @@ namespace Yaya {
 
 			// Passout Check
 			if (CharacterState != CharacterState.Passout && Health.EmptyHealth) {
-				CharacterState = CharacterState.Passout;
-				PassoutFrame = frame;
+				SetCharacterState(CharacterState.Passout);
 			}
 
 			// Behaviour
 			switch (CharacterState) {
 				default:
-				case CharacterState.General:
+				case CharacterState.GamePlay:
 					if (frame < Health.LastDamageFrame + Health.DamageStunDuration) {
 						// Tacking Damage
 						InvokeAntiKnockback();
@@ -190,7 +189,7 @@ namespace Yaya {
 		public virtual void InvokeAntiKnockback () => Movement.AntiKnockback();
 
 		public virtual void InvokeDamage (int damage) {
-			if (CharacterState != CharacterState.General) return;
+			if (CharacterState != CharacterState.GamePlay) return;
 			if (!Health.Damage(damage)) return;
 			VelocityX = Movement.FacingRight ? -Health.KnockBackSpeed : Health.KnockBackSpeed;
 			Renderer.Damage(Health.DamageStunDuration);
@@ -202,17 +201,6 @@ namespace Yaya {
 		public virtual void InvokeSetHealth (int health) => Health.SetHealth(health);
 
 		public virtual void InvokeBounce () => Renderer.Bounce();
-		public virtual void InvokeSleep () => CharacterState = CharacterState.Sleep;
-
-
-		public virtual void InvokeWakeup () {
-			if (CharacterState == CharacterState.Sleep) {
-				X += Const.CELL_SIZE / 2;
-			}
-			CharacterState = CharacterState.General;
-			Renderer.Bounce();
-			Action.Update();
-		}
 
 
 		// Behavior
@@ -223,6 +211,32 @@ namespace Yaya {
 			(Attackness.AttackWhenRolling || !Movement.IsRolling) &&
 			(Attackness.AttackWhenSquating || !Movement.IsSquating) &&
 			(Attackness.AttackWhenDashing || !Movement.IsDashing);
+
+
+		public void SetCharacterState (CharacterState state) {
+			switch (state) {
+				case CharacterState.GamePlay:
+					if (CharacterState == CharacterState.Sleep) {
+						X += Const.CELL_SIZE / 2;
+					}
+					CharacterState = CharacterState.GamePlay;
+					Renderer.Bounce();
+					Action.Update();
+					break;
+				case CharacterState.Animate:
+					CharacterState = CharacterState.Animate;
+					break;
+				case CharacterState.Sleep:
+					CharacterState = CharacterState.Sleep;
+					break;
+				case CharacterState.Passout:
+					CharacterState = CharacterState.Passout;
+					PassoutFrame = Game.GlobalFrame;
+					break;
+				default:
+					throw new System.NotImplementedException();
+			}
+		}
 
 
 		// Misc

@@ -32,7 +32,7 @@ namespace Yaya {
 					} else break;
 				}
 			}
-			ch.InvokeSleep();
+			ch.SetCharacterState(CharacterState.Sleep);
 			ch.X = bedX;
 			ch.Y = Y;
 			return true;

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
@@ -8,100 +8,60 @@ namespace Yaya {
 
 
 
-	public class eWoodPlatformH : eWoodPlatform {
-		protected override Vector2Int Velocity => new(8, 0);
+	public class eWoodPlatformH : ePingPongPlatform {
+		protected override uint SpeedX => 8;
 		protected override Vector2Int Distance => new(Const.CELL_SIZE * 5, 0);
-		protected override bool RequireMove => true;
-		protected override int PlatformWidth => Const.CELL_SIZE * 5;
 	}
 
 
 
-	public class eWoodPlatformV : eWoodPlatform {
-		protected override Vector2Int Velocity => new(0, 8);
+	public class eWoodPlatformV : ePingPongPlatform {
+		protected override uint SpeedY => 8;
 		protected override Vector2Int Distance => new(0, Const.CELL_SIZE * 5);
-		protected override bool RequireMove => true;
-		protected override int PlatformWidth => Const.CELL_SIZE * 5;
-	}
-
-
-	public abstract class eWoodPlatform : ePingPongPlatform {
-
-		private static readonly int ART_CODE_LEFT = "WoodPlatform Left".AngeHash();
-		private static readonly int ART_CODE_MID = "WoodPlatform Mid".AngeHash();
-		private static readonly int ART_CODE_RIGHT = "WoodPlatform Right".AngeHash();
-		private static readonly int ART_CODE_SINGLE = "WoodPlatform Single".AngeHash();
-
-		protected override int ArtworkCode_Left => ART_CODE_LEFT;
-		protected override int ArtworkCode_Mid => ART_CODE_MID;
-		protected override int ArtworkCode_Right => ART_CODE_RIGHT;
-		protected override int ArtworkCode_Single => ART_CODE_SINGLE;
-
 	}
 
 
 
-	public abstract class ePingPongPlatform : ePlatform {
+	public abstract class ePingPongPlatform : ePlatform, IRigidbodyCarrier {
+
 
 		// Abs
-		protected abstract Vector2Int Velocity { get; }
+		protected virtual uint SpeedX => 0;
+		protected virtual uint SpeedY => 0;
 		protected abstract Vector2Int Distance { get; }
-		protected abstract bool RequireMove { get; }
-		protected abstract int PlatformWidth { get; }
+		public int CarrierSpeed { get; set; } = 0;
 
 		// Data
 		private Vector2Int From = default;
 		private Vector2Int To = default;
-		private Vector2Int CurrentVelocity = default;
+		private int DurationX = 0;
+		private int DurationY = 0;
 
 
 		// MSG
 		public override void OnActived () {
 			base.OnActived();
-			CurrentVelocity = Velocity;
-			From.x = X - Velocity.x.Sign() * Distance.x / 2;
-			From.y = Y - Velocity.y.Sign() * Distance.y / 2;
-			To.x = X + Velocity.x.Sign() * Distance.x / 2;
-			To.y = Y + Velocity.y.Sign() * Distance.y / 2;
-			X -= (PlatformWidth - Const.CELL_SIZE) / 2;
-			Width = PlatformWidth;
+			From.x = X - Distance.x / 2;
+			From.y = Y - Distance.y / 2;
+			To.x = X + Distance.x / 2;
+			To.y = Y + Distance.y / 2;
+			DurationX = SpeedX > 0 ? Distance.x / (int)SpeedX : 0;
+			DurationY = SpeedY > 0 ? Distance.y / (int)SpeedY : 0;
 		}
 
 
-		public override void PhysicsUpdate () {
-			base.PhysicsUpdate();
-			if (RequireMove) {
-				int right = Mathf.Max(From.x, To.x);
-				int left = Mathf.Min(From.x, To.x);
-				// PingPong Check X
-				if (CurrentVelocity.x > 0) {
-					if (X >= right) {
-						SetPosition(right, Y);
-						CurrentVelocity.x = -Velocity.x;
-					}
-				} else if (CurrentVelocity.x < 0) {
-					if (X <= left) {
-						SetPosition(left, Y);
-						CurrentVelocity.x = Velocity.x;
-					}
-				}
-				// PingPong Check Y
-				int up = Mathf.Max(From.y, To.y);
-				int down = Mathf.Min(From.y, To.y);
-				if (CurrentVelocity.y > 0) {
-					if (Y >= up) {
-						SetPosition(X, up);
-						CurrentVelocity.y = -Velocity.y;
-					}
-				} else if (CurrentVelocity.y < 0) {
-					if (X <= down) {
-						SetPosition(X, down);
-						CurrentVelocity.y = Velocity.y;
-					}
-				}
-				// Final
-				VelocityX = CurrentVelocity.x;
-				VelocityY = CurrentVelocity.y;
+		protected override void Move () {
+			if (DurationX > 0) {
+				int localFrameX = Game.GlobalFrame.PingPong(DurationX);
+				int prevX = X;
+				X = Util.RemapUnclamped(0, DurationX, From.x, To.x, localFrameX);
+				CarrierSpeed = X - prevX;
+			} else {
+				CarrierSpeed = 0;
+			}
+			if (DurationY > 0) {
+				int localFrameY = Game.GlobalFrame.PingPong(DurationY);
+				Y = Util.RemapUnclamped(0, DurationY, From.y, To.y, localFrameY);
 			}
 		}
 
@@ -110,70 +70,47 @@ namespace Yaya {
 
 
 
-	public abstract class ePlatform : Rigidbody {
+	public abstract class ePlatform : Entity {
 
-
-		// Rig
-		public override int Mask_Level => YayaConst.MASK_LEVEL;
-		public override int CollisionMask => YayaConst.MASK_NONE;
-		public override int PhysicsLayer => YayaConst.LAYER_ENVIRONMENT;
-		public override int AirDragX => 0;
-		public override int AirDragY => 0;
-		public override bool CarryRigidbodyOnTop => true;
-
-		// Platform
-		protected abstract int ArtworkCode_Left { get; }
-		protected abstract int ArtworkCode_Mid { get; }
-		protected abstract int ArtworkCode_Right { get; }
-		protected abstract int ArtworkCode_Single { get; }
-		protected FittingPose Pose { get; private set; } = FittingPose.Unknown;
 
 		// Data
-		private static readonly HitInfo[] c_Touchs = new HitInfo[32];
+		private static readonly HitInfo[] c_Overlaps = new HitInfo[32];
 		protected bool TouchedByPlayer = false;
 		protected bool TouchedByCharacter = false;
 		protected bool TouchedByRigidbody = false;
+		private int PrevY = 0;
 
 
 		// MSG
 		public override void OnActived () {
 			base.OnActived();
-			GravityScale = 0;
 			TouchedByPlayer = false;
 			TouchedByCharacter = false;
 			TouchedByRigidbody = false;
-			Pose = FittingPose.Unknown;
+			PrevY = 0;
 		}
 
 
-		public override void FillPhysics () => CellPhysics.FillEntity(PhysicsLayer, this, true, Const.ONEWAY_UP_TAG);
+		public override void FillPhysics () => CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
 
 
-		public override void PhysicsUpdate () {
-			base.PhysicsUpdate();
+		public override void BeforePhysicsUpdate () {
+			base.BeforePhysicsUpdate();
+			PrevY = Y;
+			Move();
+			Update_CarryY();
 			Update_Touch();
-			Update_Pose();
-			Update_Carry();
 		}
 
 
-		public override void FrameUpdate () {
-			base.FrameUpdate();
-			CellRenderer.Draw(Pose switch {
-				FittingPose.Left => ArtworkCode_Left,
-				FittingPose.Mid => ArtworkCode_Mid,
-				FittingPose.Right => ArtworkCode_Right,
-				FittingPose.Single => ArtworkCode_Single,
-				_ => 0,
-			}, Rect);
-		}
+		public override void FrameUpdate () => CellRenderer.Draw(TrimedTypeID, Rect);
 
 
 		private void Update_Touch () {
 			if (!TouchedByRigidbody || !TouchedByCharacter || !TouchedByPlayer) {
-				int count = CellPhysics.OverlapAll(c_Touchs, CollisionMask, Rect.Expand(1), this);
+				int count = CellPhysics.OverlapAll(c_Overlaps, YayaConst.MASK_ENTITY, Rect.Expand(1), this);
 				for (int i = 0; i < count; i++) {
-					var hit = c_Touchs[i];
+					var hit = c_Overlaps[i];
 					if (hit.Entity is not Rigidbody) continue;
 					TouchedByRigidbody = true;
 					if (hit.Entity is not eCharacter) continue;
@@ -186,21 +123,42 @@ namespace Yaya {
 		}
 
 
-		private void Update_Pose () {
-			if (Pose != FittingPose.Unknown) return;
-
-
-
-
+		private void Update_CarryY () {
+			if (Y > PrevY) {
+				// Moving Up
+				var rect = Rect;
+				var prevRect = rect;
+				prevRect.y = PrevY;
+				prevRect.height -= rect.height / 3;
+				int count = CellPhysics.OverlapAll(c_Overlaps, YayaConst.MASK_RIGIDBODY, rect, this);
+				for (int i = 0; i < count; i++) {
+					var hit = c_Overlaps[i];
+					if (hit.Entity is not Rigidbody rig) continue;
+					if (!rig.Rect.Overlaps(prevRect)) {
+						rig.Y = rect.yMax;
+						rig.MakeGrounded(0, TrimedTypeID);
+					}
+				}
+			} else if (Y < PrevY) {
+				// Moving Down
+				var rect = Rect;
+				var prevRect = rect;
+				prevRect.y = PrevY;
+				prevRect = prevRect.Expand(0, 0, 0, 8);
+				int count = CellPhysics.OverlapAll(c_Overlaps, YayaConst.MASK_RIGIDBODY, prevRect, this);
+				for (int i = 0; i < count; i++) {
+					var hit = c_Overlaps[i];
+					if (hit.Entity is not Rigidbody rig) continue;
+					if (rig.VelocityY > 0) continue;
+					rig.Y = rect.yMax - 1;
+					rig.MakeGrounded(0, TrimedTypeID);
+				}
+			}
 		}
 
 
-		private void Update_Carry () {
-
-
-
-
-		}
+		// ABS
+		protected abstract void Move ();
 
 
 	}

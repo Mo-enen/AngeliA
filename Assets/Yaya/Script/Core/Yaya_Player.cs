@@ -71,7 +71,7 @@ namespace Yaya {
 			UpdatePlayer_Respawn();
 			if (CurrentPlayer == null) return;
 			switch (CurrentPlayer.CharacterState) {
-				case CharacterState.General:
+				case CharacterState.GamePlay:
 					UpdatePlayer_Move();
 					UpdatePlayer_JumpDashPound();
 					UpdatePlayer_Action_Attack();
@@ -217,7 +217,7 @@ namespace Yaya {
 			// Try Perform Attack
 			bool attDown = FrameInput.KeyDown(GameKey.Action);
 			bool attHolding = FrameInput.KeyPressing(GameKey.Action) && CurrentPlayer.KeepTriggerAttackWhenHold;
-			if (CurrentPlayer.CharacterState == CharacterState.General && (attDown || attHolding)) {
+			if (CurrentPlayer.CharacterState == CharacterState.GamePlay && (attDown || attHolding)) {
 				if (CurrentPlayer.IsAttackAllowedByMovement()) {
 					if (CurrentPlayer.CheckAttackReady(!attDown)) {
 						CurrentPlayer.InvokeAttack();
@@ -239,7 +239,7 @@ namespace Yaya {
 		private void UpdatePlayer_Sleep () {
 			if (FrameStep.HasStep<sOpening>()) return;
 			if (FrameInput.KeyDown(GameKey.Action) || FrameInput.KeyDown(GameKey.Jump)) {
-				CurrentPlayer.InvokeWakeup();
+				CurrentPlayer.SetCharacterState(CharacterState.GamePlay);
 			}
 		}
 

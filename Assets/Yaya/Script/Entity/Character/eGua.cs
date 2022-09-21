@@ -15,8 +15,8 @@ namespace Yaya {
 
 		// Api
 		public bool Picking { get; set; } = true;
-		public override bool FacingFront => Yaya.FacingFront;
-		public override bool FacingRight => Yaya.FacingRight;
+		public override bool FacingFront => Yaya == null || Yaya.FacingFront;
+		public override bool FacingRight => Yaya == null || Yaya.FacingRight;
 
 		// Data
 		private eYaya Yaya = null;
@@ -50,7 +50,7 @@ namespace Yaya {
 
 			Update_Sync();
 
-			if (CharacterState == CharacterState.General) {
+			if (CharacterState == CharacterState.GamePlay) {
 				if (Picking) {
 					Update_Picking();
 				} else {
@@ -68,27 +68,8 @@ namespace Yaya {
 				InvokeSetHealth(Yaya.HealthPoint);
 			}
 			// State
-			if (CharacterState != Yaya.CharacterState) {
-				switch (Yaya.CharacterState) {
-					case CharacterState.General:
-						InvokeWakeup();
-						break;
-					case CharacterState.Animate:
-
-
-						break;
-					case CharacterState.Sleep:
-						InvokeSleep();
-						if (Game.Current.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
-							X = basket.X;
-							Y = basket.Y;
-						}
-						break;
-					case CharacterState.Passout:
-
-
-						break;
-				}
+			if (CharacterState != CharacterState.Animate) {
+				SetCharacterState(CharacterState.Animate);
 			}
 		}
 
@@ -109,7 +90,7 @@ namespace Yaya {
 					X = X.LerpTo(FacingRight ? bounds.x + localX : bounds.xMax - localX, lerpX);
 					Y = Y.LerpTo(bounds.y + hand.Y, lerpY);
 					var mState = Yaya.MovementState;
-					if (mState == MovementState.Roll || mState == MovementState.Pound) {
+					if (mState == MovementState.Dash || mState == MovementState.Roll || mState == MovementState.Pound) {
 						ArtworkOffsetZ = hand.Front ? 1 : -1;
 					}
 				}
