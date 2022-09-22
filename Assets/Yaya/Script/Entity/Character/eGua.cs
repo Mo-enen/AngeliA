@@ -50,7 +50,7 @@ namespace Yaya {
 
 			Update_Sync();
 
-			if (CharacterState == CharacterState.GamePlay) {
+			if (Yaya.CharacterState == CharacterState.GamePlay) {
 				if (Picking) {
 					Update_Picking();
 				} else {

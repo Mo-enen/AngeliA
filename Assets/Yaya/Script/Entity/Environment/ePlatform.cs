@@ -25,6 +25,17 @@ namespace Yaya {
 	public abstract class ePingPongPlatform : ePlatform, IRigidbodyCarrier {
 
 
+		// Artwork
+		private static readonly int ARTCODE_LEFT = "WoodPlatform Left".AngeHash();
+		private static readonly int ARTCODE_MID = "WoodPlatform Mid".AngeHash();
+		private static readonly int ARTCODE_RIGHT = "WoodPlatform Right".AngeHash();
+		private static readonly int ARTCODE_SINGLE = "WoodPlatform Single".AngeHash();
+
+		protected override int ArtworkCode_Left => ARTCODE_LEFT;
+		protected override int ArtworkCode_Mid => ARTCODE_MID;
+		protected override int ArtworkCode_Right => ARTCODE_RIGHT;
+		protected override int ArtworkCode_Single => ARTCODE_SINGLE;
+
 		// Abs
 		protected virtual uint SpeedX => 0;
 		protected virtual uint SpeedY => 0;
@@ -73,12 +84,19 @@ namespace Yaya {
 	public abstract class ePlatform : Entity {
 
 
+		// Artwork
+		protected virtual int ArtworkCode_Left => TrimedTypeID;
+		protected virtual int ArtworkCode_Mid => TrimedTypeID;
+		protected virtual int ArtworkCode_Right => TrimedTypeID;
+		protected virtual int ArtworkCode_Single => TrimedTypeID;
+
 		// Data
 		private static readonly HitInfo[] c_Overlaps = new HitInfo[32];
 		protected bool TouchedByPlayer = false;
 		protected bool TouchedByCharacter = false;
 		protected bool TouchedByRigidbody = false;
 		private int PrevY = 0;
+		private FittingPose Pose = FittingPose.Unknown;
 
 
 		// MSG
@@ -88,6 +106,7 @@ namespace Yaya {
 			TouchedByCharacter = false;
 			TouchedByRigidbody = false;
 			PrevY = 0;
+			Pose = Yaya.Current.WorldSquad.GetEntityPose(TypeID, X, Y, true);
 		}
 
 
@@ -98,12 +117,18 @@ namespace Yaya {
 			base.BeforePhysicsUpdate();
 			PrevY = Y;
 			Move();
-			Update_CarryY();
+			Update_Carry();
 			Update_Touch();
 		}
 
 
-		public override void FrameUpdate () => CellRenderer.Draw(TrimedTypeID, Rect);
+		public override void FrameUpdate () => CellRenderer.Draw(Pose switch {
+			FittingPose.Left => ArtworkCode_Left,
+			FittingPose.Mid => ArtworkCode_Mid,
+			FittingPose.Right => ArtworkCode_Right,
+			FittingPose.Single => ArtworkCode_Single,
+			_ => TrimedTypeID,
+		}, Rect);
 
 
 		private void Update_Touch () {
@@ -123,19 +148,22 @@ namespace Yaya {
 		}
 
 
-		private void Update_CarryY () {
+		private void Update_Carry () {
 			if (Y > PrevY) {
 				// Moving Up
 				var rect = Rect;
 				var prevRect = rect;
 				prevRect.y = PrevY;
 				prevRect.height -= rect.height / 3;
+				rect.y = PrevY + prevRect.height;
+				rect.height = Y + Height - rect.y;
 				int count = CellPhysics.OverlapAll(c_Overlaps, YayaConst.MASK_RIGIDBODY, rect, this);
 				for (int i = 0; i < count; i++) {
 					var hit = c_Overlaps[i];
 					if (hit.Entity is not Rigidbody rig) continue;
+					if (rig.VelocityY > 0) continue;
 					if (!rig.Rect.Overlaps(prevRect)) {
-						rig.Y = rect.yMax;
+						rig.PerformMove(0, rect.yMax - rig.Y);
 						rig.MakeGrounded(0, TrimedTypeID);
 					}
 				}
@@ -144,13 +172,14 @@ namespace Yaya {
 				var rect = Rect;
 				var prevRect = rect;
 				prevRect.y = PrevY;
-				prevRect = prevRect.Expand(0, 0, 0, 8);
+				prevRect.height++;
 				int count = CellPhysics.OverlapAll(c_Overlaps, YayaConst.MASK_RIGIDBODY, prevRect, this);
 				for (int i = 0; i < count; i++) {
 					var hit = c_Overlaps[i];
 					if (hit.Entity is not Rigidbody rig) continue;
+					if (rig.Y <= rect.yMax) continue;
 					if (rig.VelocityY > 0) continue;
-					rig.Y = rect.yMax - 1;
+					rig.PerformMove(0, rect.yMax - 1 - rig.Y);
 					rig.MakeGrounded(0, TrimedTypeID);
 				}
 			}

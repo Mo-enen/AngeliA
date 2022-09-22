@@ -117,5 +117,39 @@ namespace Yaya {
 		}
 
 
+		public FittingPose GetEntityPose (Entity entity, bool horizontal) => GetEntityPose(entity.TypeID, entity.X, entity.Y, horizontal);
+		public FittingPose GetEntityPose (int typeID, int globalX, int globalY, bool horizontal) {
+			int unitX = globalX.UDivide(Const.CELL_SIZE);
+			int unitY = globalY.UDivide(Const.CELL_SIZE);
+			bool n = GetBlockAt(horizontal ? unitX - 1 : unitX, horizontal ? unitY : unitY - 1, BlockType.Entity) == typeID;
+			bool p = GetBlockAt(horizontal ? unitX + 1 : unitX, horizontal ? unitY : unitY + 1, BlockType.Entity) == typeID;
+			return
+				n && p ? FittingPose.Mid :
+				!n && p ? FittingPose.Left :
+				n && !p ? FittingPose.Right :
+				FittingPose.Single;
+		}
+		public FittingPose GetEntityPose (Entity entity, bool horizontal, int mask, out Entity left_down, out Entity right_up, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+			left_down = null;
+			right_up = null;
+			int unitX = entity.X.UDivide(Const.CELL_SIZE);
+			int unitY = entity.Y.UDivide(Const.CELL_SIZE);
+			int typeID = entity.TypeID;
+			bool n = GetBlockAt(horizontal ? unitX - 1 : unitX, horizontal ? unitY : unitY - 1, BlockType.Entity) == typeID;
+			bool p = GetBlockAt(horizontal ? unitX + 1 : unitX, horizontal ? unitY : unitY + 1, BlockType.Entity) == typeID;
+			if (n) {
+				left_down = CellPhysics.GetEntity(typeID, entity.Rect.Edge(horizontal ? Direction4.Left : Direction4.Down), mask, entity, mode, tag);
+			}
+			if (p) {
+				right_up = CellPhysics.GetEntity(typeID, entity.Rect.Edge(horizontal ? Direction4.Right : Direction4.Up), mask, entity, mode, tag);
+			}
+			return
+				n && p ? FittingPose.Mid :
+				!n && p ? FittingPose.Left :
+				n && !p ? FittingPose.Right :
+				FittingPose.Single;
+		}
+
+
 	}
 }

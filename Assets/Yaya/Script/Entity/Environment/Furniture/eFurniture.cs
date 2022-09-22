@@ -166,13 +166,14 @@ namespace Yaya {
 
 		protected bool TryGetSprite (FittingPose pose, out AngeSprite sprite) =>
 			CellRenderer.TryGetSpriteFromGroup(
-			pose switch {
-				FittingPose.Left => ArtworkCode_LeftDown,
-				FittingPose.Mid => ArtworkCode_Mid,
-				FittingPose.Right => ArtworkCode_RightUp,
-				FittingPose.Single => ArtworkCode_Single,
-				_ => 0,
-			}, ArtworkIndex, out sprite, LoopArtworkIndex);
+				pose switch {
+					FittingPose.Left => ArtworkCode_LeftDown,
+					FittingPose.Mid => ArtworkCode_Mid,
+					FittingPose.Right => ArtworkCode_RightUp,
+					FittingPose.Single => ArtworkCode_Single,
+					_ => 0,
+				}, ArtworkIndex, out sprite, LoopArtworkIndex
+			);
 
 
 		// Highlight
@@ -208,9 +209,12 @@ namespace Yaya {
 		private void Update_Pose () {
 
 			if (Pose != FittingPose.Unknown) return;
+			Pose = FittingPose.Single;
 
-			Pose = YayaCellPhysics.GetEntityPose(
-				this, YayaConst.MASK_ENVIRONMENT, ModuleType == Direction3.Horizontal,
+			if (ModuleType == Direction3.None) return;
+
+			Pose = Yaya.Current.WorldSquad.GetEntityPose(
+				this, ModuleType == Direction3.Horizontal, YayaConst.MASK_ENVIRONMENT,
 				out var ld, out var ru, OperationMode.ColliderAndTrigger
 			);
 			FurnitureLeftOrDown = ld as eFurniture;

@@ -14,6 +14,9 @@ namespace Yaya {
 
 
 		// Api
+		public static new Yaya Current => Game.Current as Yaya;
+		public new YayaWorldSquad WorldSquad_Behind => base.WorldSquad_Behind as YayaWorldSquad;
+		public new YayaWorldSquad WorldSquad => base.WorldSquad as YayaWorldSquad;
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
 		public override int FrameStepLayerCount => 6;
 		public static Dictionary<Vector2Int, CheckPointMeta.Data> CpPool { get; } = new();
