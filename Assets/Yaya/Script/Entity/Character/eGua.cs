@@ -15,8 +15,6 @@ namespace Yaya {
 
 		// Api
 		public bool Picking { get; set; } = true;
-		public override bool FacingFront => Yaya == null || Yaya.FacingFront;
-		public override bool FacingRight => Yaya == null || Yaya.FacingRight;
 
 		// Data
 		private eYaya Yaya = null;
@@ -40,6 +38,9 @@ namespace Yaya {
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
 
+			int targetSize = 1000;
+
+			// Find Yaya
 			if (Yaya == null || !Yaya.Active) {
 				Game.Current.TryGetEntityInStage(out Yaya);
 			}
@@ -48,46 +49,70 @@ namespace Yaya {
 				return;
 			}
 
-			Update_Sync();
-
-			if (Yaya.CharacterState == CharacterState.GamePlay) {
-				if (Picking) {
-					Update_Picking();
-				} else {
-					Update_Movement();
-				}
-			}
-		}
-
-
-		private void Update_Sync () {
-			// Size
-			ArtworkScale = Picking ? 900 : 1000;
 			// HP
-			if (Yaya.HealthPoint != HealthPoint) {
-				InvokeSetHealth(Yaya.HealthPoint);
+			if (Yaya.Health.HealthPoint != Health.HealthPoint) {
+				Health.SetHealth(Yaya.Health.HealthPoint);
 			}
-			// State
-			if (CharacterState != CharacterState.Animate) {
-				SetCharacterState(CharacterState.Animate);
+
+			// Update
+			switch (Yaya.CharacterState) {
+				case CharacterState.GamePlay:
+					if (Picking) {
+						Update_Picking();
+						targetSize = 850;
+					} else {
+						Update_Movement();
+					}
+					break;
+				case CharacterState.Animate:
+					if (CharacterState != CharacterState.Animate) {
+						SetCharacterState(CharacterState.Animate);
+					}
+					break;
+				case CharacterState.Sleep:
+					if (CharacterState != CharacterState.Sleep) {
+						SetCharacterState(CharacterState.Sleep);
+						// Goto Basket
+						if (Game.Current.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
+							X = basket.X;
+							Y = basket.Y;
+						}
+					}
+					break;
+				case CharacterState.Passout:
+					if (CharacterState != CharacterState.Passout) {
+						SetCharacterState(CharacterState.Passout);
+					}
+					break;
 			}
+
+			ArtworkScale = ArtworkScale.LerpTo(targetSize, 50);
+
 		}
 
 
 		private void Update_Picking () {
-			ArtworkOffsetZ = FacingFront ? 1 : -1;
+
+			ArtworkOffsetZ = Yaya.Movement.FacingFront ? 1 : -1;
+
+			// State
+			if (CharacterState != CharacterState.Animate) {
+				SetCharacterState(CharacterState.Animate);
+			}
+
 			// Picking
 			X = Yaya.X;
 			Y = Yaya.Y + Const.CELL_SIZE / 4;
+
 			// Position Lerp
-			if (CellRenderer.TryGetMeta(Yaya.BodyArtworkID, out var meta)) {
-				var hand = FacingRight ? meta.HandLeft : meta.HandRight;
+			if (CellRenderer.TryGetMeta(Yaya.Renderer.BodyArtworkID, out var meta)) {
+				var hand = Yaya.Movement.FacingRight ? meta.HandLeft : meta.HandRight;
 				if (hand != null && hand.IsVailed) {
-					int lerpX = Yaya.IsAttacking ? 900 : 500;
-					int lerpY = Yaya.IsAttacking ? 300 : 500;
+					int lerpX = Yaya.Attackness.IsAttacking ? 900 : 500;
+					int lerpY = Yaya.Attackness.IsAttacking ? 300 : 500;
 					var bounds = Yaya.GlobalBounds;
 					int localX = hand.X + hand.Width / 2;
-					X = X.LerpTo(FacingRight ? bounds.x + localX : bounds.xMax - localX, lerpX);
+					X = X.LerpTo(Yaya.Movement.FacingRight ? bounds.x + localX : bounds.xMax - localX, lerpX);
 					Y = Y.LerpTo(bounds.y + hand.Y, lerpY);
 					var mState = Yaya.MovementState;
 					if (mState == MovementState.Dash || mState == MovementState.Roll || mState == MovementState.Pound) {
@@ -95,10 +120,20 @@ namespace Yaya {
 					}
 				}
 			}
+
+			// Animation
+			Renderer.UpdateAnimation(TrimedTypeID, Game.GlobalFrame, 0, !Yaya.Movement.FacingRight);
+
 		}
 
 
 		private void Update_Movement () {
+
+			// State
+			if (CharacterState != CharacterState.GamePlay) {
+				SetCharacterState(CharacterState.GamePlay);
+			}
+
 			// Free Move 
 			ArtworkOffsetZ = -1;
 			if (Yaya.IsGrounded && Util.SqrtDistance(Yaya.X, Yaya.Y, TargetX, TargetY) > TARGET_DISTANCE_FAR * TARGET_DISTANCE_FAR) {
@@ -109,6 +144,7 @@ namespace Yaya {
 				TargetX = Yaya.X - deltaX * TARGET_DISTANCE_NEAR / dis;
 				TargetY = Yaya.Y - deltaY * TARGET_DISTANCE_NEAR / dis;
 			}
+
 			// Move to Target Position
 
 

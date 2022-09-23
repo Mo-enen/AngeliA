@@ -5,83 +5,8 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-
-
-
-	public class eWoodPlatformH : ePingPongPlatform {
-		protected override uint SpeedX => 8;
-		protected override Vector2Int Distance => new(Const.CELL_SIZE * 5, 0);
-	}
-
-
-
-	public class eWoodPlatformV : ePingPongPlatform {
-		protected override uint SpeedY => 8;
-		protected override Vector2Int Distance => new(0, Const.CELL_SIZE * 5);
-	}
-
-
-
-	public abstract class ePingPongPlatform : ePlatform, IRigidbodyCarrier {
-
-
-		// Artwork
-		private static readonly int ARTCODE_LEFT = "WoodPlatform Left".AngeHash();
-		private static readonly int ARTCODE_MID = "WoodPlatform Mid".AngeHash();
-		private static readonly int ARTCODE_RIGHT = "WoodPlatform Right".AngeHash();
-		private static readonly int ARTCODE_SINGLE = "WoodPlatform Single".AngeHash();
-
-		protected override int ArtworkCode_Left => ARTCODE_LEFT;
-		protected override int ArtworkCode_Mid => ARTCODE_MID;
-		protected override int ArtworkCode_Right => ARTCODE_RIGHT;
-		protected override int ArtworkCode_Single => ARTCODE_SINGLE;
-
-		// Abs
-		protected virtual uint SpeedX => 0;
-		protected virtual uint SpeedY => 0;
-		protected abstract Vector2Int Distance { get; }
-		public int CarrierSpeed { get; set; } = 0;
-
-		// Data
-		private Vector2Int From = default;
-		private Vector2Int To = default;
-		private int DurationX = 0;
-		private int DurationY = 0;
-
-
-		// MSG
-		public override void OnActived () {
-			base.OnActived();
-			From.x = X - Distance.x / 2;
-			From.y = Y - Distance.y / 2;
-			To.x = X + Distance.x / 2;
-			To.y = Y + Distance.y / 2;
-			DurationX = SpeedX > 0 ? Distance.x / (int)SpeedX : 0;
-			DurationY = SpeedY > 0 ? Distance.y / (int)SpeedY : 0;
-		}
-
-
-		protected override void Move () {
-			if (DurationX > 0) {
-				int localFrameX = Game.GlobalFrame.PingPong(DurationX);
-				int prevX = X;
-				X = Util.RemapUnclamped(0, DurationX, From.x, To.x, localFrameX);
-				CarrierSpeed = X - prevX;
-			} else {
-				CarrierSpeed = 0;
-			}
-			if (DurationY > 0) {
-				int localFrameY = Game.GlobalFrame.PingPong(DurationY);
-				Y = Util.RemapUnclamped(0, DurationY, From.y, To.y, localFrameY);
-			}
-		}
-
-
-	}
-
-
-
-	public abstract class ePlatform : Entity {
+	[EntityAttribute.EntityCapacity(128)]
+	public abstract class ePlatform : Entity, IRigidbodyCarrier {
 
 
 		// Artwork
@@ -89,14 +14,18 @@ namespace Yaya {
 		protected virtual int ArtworkCode_Mid => TrimedTypeID;
 		protected virtual int ArtworkCode_Right => TrimedTypeID;
 		protected virtual int ArtworkCode_Single => TrimedTypeID;
+		public int CarrierSpeed => X - PrevX;
+
+		// Short
+		protected bool TouchedByPlayer { get; private set; } = false;
+		protected bool TouchedByCharacter { get; private set; } = false;
+		protected bool TouchedByRigidbody { get; private set; } = false;
+		protected FittingPose Pose { get; private set; } = FittingPose.Unknown;
+		protected int PrevX { get; private set; } = 0;
+		protected int PrevY { get; private set; } = 0;
 
 		// Data
 		private static readonly HitInfo[] c_Overlaps = new HitInfo[32];
-		protected bool TouchedByPlayer = false;
-		protected bool TouchedByCharacter = false;
-		protected bool TouchedByRigidbody = false;
-		private int PrevY = 0;
-		private FittingPose Pose = FittingPose.Unknown;
 
 
 		// MSG
@@ -105,7 +34,8 @@ namespace Yaya {
 			TouchedByPlayer = false;
 			TouchedByCharacter = false;
 			TouchedByRigidbody = false;
-			PrevY = 0;
+			PrevX = X;
+			PrevY = Y;
 			Pose = Yaya.Current.WorldSquad.GetEntityPose(TypeID, X, Y, true);
 		}
 
@@ -115,6 +45,7 @@ namespace Yaya {
 
 		public override void BeforePhysicsUpdate () {
 			base.BeforePhysicsUpdate();
+			PrevX = X;
 			PrevY = Y;
 			Move();
 			Update_Carry();
@@ -136,6 +67,7 @@ namespace Yaya {
 				int count = CellPhysics.OverlapAll(c_Overlaps, YayaConst.MASK_ENTITY, Rect.Expand(1), this);
 				for (int i = 0; i < count; i++) {
 					var hit = c_Overlaps[i];
+					if (hit.Rect.y < Y + Height) continue;
 					if (hit.Entity is not Rigidbody) continue;
 					TouchedByRigidbody = true;
 					if (hit.Entity is not eCharacter) continue;
@@ -149,11 +81,20 @@ namespace Yaya {
 
 
 		private void Update_Carry () {
+			if (Y == PrevY) return;
+			var rect = Rect;
+			var prevRect = rect;
+			prevRect.y = PrevY;
+			int left = X;
+			int right = X + Width;
+			if (Pose == FittingPose.Single || Pose == FittingPose.Left) {
+				left = int.MinValue;
+			}
+			if (Pose == FittingPose.Single || Pose == FittingPose.Right) {
+				right = int.MaxValue;
+			}
 			if (Y > PrevY) {
 				// Moving Up
-				var rect = Rect;
-				var prevRect = rect;
-				prevRect.y = PrevY;
 				prevRect.height -= rect.height / 3;
 				rect.y = PrevY + prevRect.height;
 				rect.height = Y + Height - rect.y;
@@ -161,26 +102,25 @@ namespace Yaya {
 				for (int i = 0; i < count; i++) {
 					var hit = c_Overlaps[i];
 					if (hit.Entity is not Rigidbody rig) continue;
+					if (rig.X < left || rig.X >= right) continue;
 					if (rig.VelocityY > 0) continue;
 					if (!rig.Rect.Overlaps(prevRect)) {
 						rig.PerformMove(0, rect.yMax - rig.Y);
-						rig.MakeGrounded(0, TrimedTypeID);
+						rig.MakeGrounded(1, TrimedTypeID);
 					}
 				}
-			} else if (Y < PrevY) {
+			} else {
 				// Moving Down
-				var rect = Rect;
-				var prevRect = rect;
-				prevRect.y = PrevY;
-				prevRect.height++;
+				prevRect.height += PrevY - Y;
 				int count = CellPhysics.OverlapAll(c_Overlaps, YayaConst.MASK_RIGIDBODY, prevRect, this);
 				for (int i = 0; i < count; i++) {
 					var hit = c_Overlaps[i];
 					if (hit.Entity is not Rigidbody rig) continue;
+					if (rig.X < left || rig.X >= right) continue;
 					if (rig.Y <= rect.yMax) continue;
 					if (rig.VelocityY > 0) continue;
 					rig.PerformMove(0, rect.yMax - 1 - rig.Y);
-					rig.MakeGrounded(0, TrimedTypeID);
+					rig.MakeGrounded(1, TrimedTypeID);
 				}
 			}
 		}
@@ -188,6 +128,14 @@ namespace Yaya {
 
 		// ABS
 		protected abstract void Move ();
+
+
+		// API
+		public void InvokePlayerTouch () {
+			TouchedByRigidbody = true;
+			TouchedByCharacter = true;
+			TouchedByPlayer = true;
+		}
 
 
 	}

@@ -476,21 +476,22 @@ namespace Yaya {
 		private void CollisionFixOnHitboxChanged (int prevHitboxHeight) {
 			var rect = Hitbox.Shrink(0, 0, Const.CELL_SIZE / 4, 0);
 			// Fix for Oneway
-			int count = !IsClimbing ? CellPhysics.OverlapAll(
+			int count = CellPhysics.OverlapAll(
 				c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, Source,
 				OperationMode.TriggerOnly, Const.ONEWAY_DOWN_TAG
-			) : CellPhysics.OverlapAll(
-				c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, Source
 			);
-			for (int i = 0; i < count; i++) {
-				var hit = c_HitboxCollisionFix[i];
-				if (hit.Rect.yMin > rect.y) {
-					Source.PerformMove(
-						0, -Hitbox.height + prevHitboxHeight,
-						true, false
-					);
-					if (IsGrounded) IsSquating = true;
-					break;
+			FixNow();
+			count = CellPhysics.OverlapAll(c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, Source);
+			FixNow();
+			// Func
+			void FixNow () {
+				for (int i = 0; i < count; i++) {
+					var hit = c_HitboxCollisionFix[i];
+					if (hit.Rect.yMin > rect.y) {
+						Source.PerformMove(0, prevHitboxHeight - Hitbox.height, true);
+						if (IsGrounded) IsSquating = true;
+						break;
+					}
 				}
 			}
 		}

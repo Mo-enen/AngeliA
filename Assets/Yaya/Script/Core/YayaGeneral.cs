@@ -9,7 +9,7 @@ namespace Yaya {
 
 
 	public interface IDamageReceiver {
-		void InvokeDamage (int damage);
+		void TakeDamage (int damage);
 	}
 
 

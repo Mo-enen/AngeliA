@@ -116,8 +116,6 @@ namespace Yaya {
 		[SerializeField] int[] BounceAmountsBig = new int[] { 0, -600, -900, -1200, -1400, -1200, -900, -600, 0, };
 		[SerializeField] int Bouncy = 150;
 		[SerializeField] int PoundingBounce = 1500;
-		[SerializeField] int DamageScale = 1150;
-		[SerializeField] int PassoutScale = 1200;
 		[SerializeField] int SwimRotationLerp = 100;
 		[SerializeField] int DamageBlinkRate = 8;
 		[SerializeField] int EyeBlinkRate = 360;
@@ -158,7 +156,11 @@ namespace Yaya {
 		private int LastRequireBounceFrame = int.MinValue;
 		private int BlinkingTime = int.MinValue;
 		private int DamagingTime = int.MinValue;
-
+		private int AnimationCode = 0;
+		private int AnimationFrame = 0;
+		private int AnimationLoopStart = 0;
+		private bool AnimationFlipX = false;
+		private bool AnimationFlipY = false;
 
 		#endregion
 
@@ -207,7 +209,7 @@ namespace Yaya {
 		}
 
 
-		public void Update () {
+		public void FrameUpdate () {
 
 			if (ArtworkScale == 0) return;
 
@@ -218,55 +220,66 @@ namespace Yaya {
 
 			// Damage
 			if (frame < DamagingTime) {
-				var cell = CellRenderer.Draw_Animation(
+				CellRenderer.Draw_Animation(
 					Damaging.Code,
 					Character.X, Character.Y,
 					500, 0, 0,
-					Character.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+					Character.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 					Const.ORIGINAL_SIZE,
 					Game.GlobalFrame,
 					Damaging.LoopStart
 				);
-				int damageScl = frame.PingPong(3) * 32 - 16 + DamageScale;
-				cell.Width = cell.Width * damageScl / 1000;
-				cell.Height = cell.Height * damageScl / 1000;
 				return;
 			}
 
 			// Draw
+			Cell cell = null;
 			switch (Character.CharacterState) {
 				case CharacterState.GamePlay:
 					DrawBody();
 					DrawFace();
 					break;
 				case CharacterState.Animate:
-
-
+					cell = CellRenderer.Draw_Animation(
+						AnimationCode,
+						Character.X,
+						Character.Y,
+						500, 0, (int)TargetRotation,
+						AnimationFlipX ? Const.ORIGINAL_SIZE_NEGATAVE : Const.ORIGINAL_SIZE,
+						AnimationFlipY ? Const.ORIGINAL_SIZE_NEGATAVE : Const.ORIGINAL_SIZE,
+						AnimationFrame,
+						AnimationLoopStart
+					);
 					break;
-				case CharacterState.Sleep: {
-					CellRenderer.Draw_Animation(
-					Sleep.Code,
-					Character.X, Character.Y,
-					Const.ORIGINAL_SIZE,
-					Const.ORIGINAL_SIZE,
-					Game.GlobalFrame,
-					Sleep.LoopStart
-				);
+				case CharacterState.Sleep:
+					cell = CellRenderer.Draw_Animation(
+						Sleep.Code,
+						Character.X, Character.Y,
+						Const.ORIGINAL_SIZE,
+						Const.ORIGINAL_SIZE,
+						Game.GlobalFrame,
+						Sleep.LoopStart
+					);
 					break;
-				}
-				case CharacterState.Passout: {
-					var cell = CellRenderer.Draw_Animation(
+				case CharacterState.Passout:
+					cell = CellRenderer.Draw_Animation(
 						Passout.Code,
 						Character.X, Character.Y,
 						500, 0, 0,
-						Character.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+						Character.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 						Const.ORIGINAL_SIZE,
 						Game.GlobalFrame,
 						Passout.LoopStart
 					);
-					cell.Width = cell.Width * PassoutScale / 1000;
-					cell.Height = cell.Height * PassoutScale / 1000;
 					break;
+			}
+			if (cell != null) {
+				if (ArtworkOffsetZ != 0) {
+					cell.Z += ArtworkOffsetZ;
+				}
+				if (ArtworkScale != 1000) {
+					cell.Width = cell.Width * ArtworkScale / 1000;
+					cell.Height = cell.Height * ArtworkScale / 1000;
 				}
 			}
 
@@ -275,12 +288,13 @@ namespace Yaya {
 
 		private void DrawBody () {
 
+			var movement = Character.Movement;
 			var movementState = Character.MovementState;
 			var ani = Idle;
 			int frame = Game.GlobalFrame;
 
 			// Get Ani
-			if (Character.IsAttacking) {
+			if (Character.Attackness.IsAttacking) {
 				// Attack
 				var attacks = Attacks;
 				switch (movementState) {
@@ -300,7 +314,7 @@ namespace Yaya {
 						break;
 				}
 				if (attacks.Length > 0) {
-					ani = attacks[Character.AttackCombo.Clamp(0, attacks.Length - 1)];
+					ani = attacks[Character.Attackness.Combo.Clamp(0, attacks.Length - 1)];
 				}
 			} else {
 				// Movement
@@ -326,11 +340,11 @@ namespace Yaya {
 			// Rotation
 			int pivotY = 0;
 			int offsetY = 0;
-			if (Character.UseFreeStyleSwim && Character.InWater && !Character.IsGrounded) {
+			if (movement.UseFreeStyleSwim && Character.InWater && !Character.IsGrounded) {
 				TargetRotation = Quaternion.LerpUnclamped(
 					Quaternion.Euler(0, 0, TargetRotation),
 					Quaternion.FromToRotation(
-						Vector3.up, new(-Character.LastMoveDirectionX, Character.LastMoveDirectionY)
+						Vector3.up, new(-movement.LastMoveDirection.x, movement.LastMoveDirection.y)
 					),
 					SwimRotationLerp / 1000f
 				).eulerAngles.z;
@@ -353,7 +367,7 @@ namespace Yaya {
 			var cell = CellRenderer.Draw_Animation(
 				CurrentAni.Code,
 				Character.X, Character.Y + offsetY, 500, pivotY, (int)TargetRotation,
-				Character.FacingRight || isPounding || isClimbing ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+				movement.FacingRight || isPounding || isClimbing ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 				Const.ORIGINAL_SIZE,
 				CurrentAniFrame,
 				ani.LoopStart
@@ -378,14 +392,14 @@ namespace Yaya {
 					bounce = BounceAmounts[frame - LastRequireBounceFrame];
 				} else if (isPounding) {
 					bounce = PoundingBounce;
-				} else if (!isPounding && Character.IsGrounded && frame.InRangeExculde(Character.LastPoundingFrame, Character.LastPoundingFrame + duration)) {
-					bounce = BounceAmountsBig[frame - Character.LastPoundingFrame];
-				} else if (isSquating && frame.InRangeExculde(Character.LastSquatFrame, Character.LastSquatFrame + duration)) {
-					bounce = BounceAmounts[frame - Character.LastSquatFrame];
-				} else if (Character.IsGrounded && frame.InRangeExculde(Character.LastGroundFrame, Character.LastGroundFrame + duration)) {
-					bounce = BounceAmounts[frame - Character.LastGroundFrame];
-				} else if (!isSquating && frame.InRangeExculde(Character.LastSquatingFrame, Character.LastSquatingFrame + duration)) {
-					bounce = BounceAmounts[frame - Character.LastSquatingFrame];
+				} else if (!isPounding && Character.IsGrounded && frame.InRangeExculde(movement.LastPoundingFrame, movement.LastPoundingFrame + duration)) {
+					bounce = BounceAmountsBig[frame - movement.LastPoundingFrame];
+				} else if (isSquating && frame.InRangeExculde(movement.LastSquatFrame, movement.LastSquatFrame + duration)) {
+					bounce = BounceAmounts[frame - movement.LastSquatFrame];
+				} else if (Character.IsGrounded && frame.InRangeExculde(movement.LastGroundFrame, movement.LastGroundFrame + duration)) {
+					bounce = BounceAmounts[frame - movement.LastGroundFrame];
+				} else if (!isSquating && frame.InRangeExculde(movement.LastSquatingFrame, movement.LastSquatingFrame + duration)) {
+					bounce = BounceAmounts[frame - movement.LastSquatingFrame];
 					reverse = true;
 				}
 				if (bounce != 1000) {
@@ -407,7 +421,7 @@ namespace Yaya {
 				CurrentAniFrame++;
 			} else {
 				// Climb
-				int climbVelocity = Character.IntendedY != 0 ? Character.IntendedY : Character.IntendedX;
+				int climbVelocity = movement.IntendedY != 0 ? movement.IntendedY : movement.IntendedX;
 				if (climbVelocity > 0) {
 					CurrentAniFrame++;
 				} else if (climbVelocity < 0) {
@@ -439,7 +453,7 @@ namespace Yaya {
 			CellRenderer.Draw_9Slice(
 				Game.GlobalFrame % EyeBlinkRate > 8 ? faceID : FaceBlink.Code,
 				Character.X - meta.SpriteWidth / 2 +
-					(Character.FacingRight ?
+					(Character.Movement.FacingRight ?
 						meta.Head.X :
 						meta.SpriteWidth - (meta.Head.X + meta.Head.Width)
 					),
@@ -466,6 +480,15 @@ namespace Yaya {
 
 
 		public void Damage (int duration) => DamagingTime = Game.GlobalFrame + duration;
+
+
+		public void UpdateAnimation (int code, int frame, int loopStart = int.MinValue, bool flipX = false, bool flipY = false) {
+			AnimationCode = code;
+			AnimationFrame = frame;
+			AnimationLoopStart = loopStart;
+			AnimationFlipX = flipX;
+			AnimationFlipY = flipY;
+		}
 
 
 		#endregion

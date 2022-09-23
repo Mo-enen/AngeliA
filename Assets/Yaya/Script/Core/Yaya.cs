@@ -150,7 +150,7 @@ namespace Yaya {
 					c_DamageCheck, entity.Rect, entity, entity is ePlayer
 				);
 				for (int j = 0; j < count; j++) {
-					receiver.InvokeDamage(c_DamageCheck[j].Tag);
+					receiver.TakeDamage(c_DamageCheck[j].Tag);
 				}
 			}
 		}
@@ -264,7 +264,7 @@ namespace Yaya {
 		protected override void SetViewZ (int newZ) {
 			base.SetViewZ(newZ);
 			if (CurrentPlayer != null && CurrentPlayer.Active) {
-				CurrentPlayer.InvokeBounce();
+				CurrentPlayer.Renderer.Bounce();
 			}
 		}
 

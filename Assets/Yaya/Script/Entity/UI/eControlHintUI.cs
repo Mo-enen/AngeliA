@@ -79,10 +79,8 @@ namespace Yaya {
 						// Move
 						DrawKey(GameKey.Left, GameKey.Right, HINT_MOVE_CODE);
 						// Action & Jump
-						if (Player.CurrentActionTarget is Entity target) {
+						if (Player.Action.CurrentTarget is Entity target) {
 							// Action Target
-							//int x = Player.GlobalBounds.xMin;
-							//int y = Player.GlobalBounds.yMax + Const.CELL_SIZE / 2;
 							if (target is eOpenableFurniture open && open.Open) {
 								DrawKey(GameKey.Action, YayaConst.UI_OK);
 								//y += KeySize + Gap;
