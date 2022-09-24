@@ -10,6 +10,7 @@ namespace Yaya {
 	public class eWoodPlatformH : ePingPongPlatform {
 		protected override uint SpeedX => 8;
 		protected override Vector2Int Distance => new(Const.CELL_SIZE * 5, 0);
+		public override bool OneWay => true;
 	}
 
 
@@ -17,6 +18,7 @@ namespace Yaya {
 	public class eWoodPlatformV : ePingPongPlatform {
 		protected override uint SpeedY => 8;
 		protected override Vector2Int Distance => new(0, Const.CELL_SIZE * 5);
+		public override bool OneWay => true;
 	}
 
 

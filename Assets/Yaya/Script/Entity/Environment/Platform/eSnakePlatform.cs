@@ -14,9 +14,10 @@ namespace Yaya {
 
 
 
-	public class TestSnakePlatform : eSnakePlatform {
-		public override int EndBreakDuration => 12;
+	public class SnakePlatform_Quick : eSnakePlatform {
+		public override int EndBreakDuration => 120;
 		public override int Speed => 16;
+		public override bool OneWay => true;
 	}
 
 
@@ -34,8 +35,9 @@ namespace Yaya {
 		// Data
 		private Direction4 CurrentDirection = Direction4.Right;
 		private Vector2Int TargetPosition = default;
-		private bool PrevTouched = false;
+		private Vector2Int StartPosition = default;
 		private eSnakePlatform Head = null;
+		private bool PrevTouched = false;
 		private int EndReachingFrame = int.MinValue;
 
 
@@ -47,37 +49,34 @@ namespace Yaya {
 			CurrentDirection = Direction4.Right;
 			TargetPosition.x = X;
 			TargetPosition.y = Y;
+			StartPosition.x = X;
+			StartPosition.y = Y;
+			Head = null;
 		}
-
-
-		public override void FillPhysics () => CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
 
 
 		protected override void Move () {
 
-			if (!TouchedByPlayer) return;
-
-			if (!PrevTouched) {
-				PrevTouched = true;
-				TouchAllNeighbors();
+			// Touched Check
+			if (!TouchedByPlayer) {
+				return;
 			}
 
 			// Check Head Reach End
-			if (Head != null) EndReachingFrame = Head.EndReachingFrame;
+			if (Head != null && EndReachingFrame < 0) EndReachingFrame = Head.EndReachingFrame;
 
 			// Reached End
 			if (EndReachingFrame >= 0) {
 				if (Game.GlobalFrame > EndReachingFrame + EndBreakDuration) {
-					Active = false;
-				} else {
-					// End Shake
-					X -= X % Const.CELL_SIZE;
-					Y -= Y % Const.CELL_SIZE;
+					X = StartPosition.x;
+					Y = StartPosition.y;
+					OnActived();
 				}
 				return;
 			}
 
 			// Over Moved
+			int overMoved = 0;
 			if (CurrentDirection switch {
 				Direction4.Left => X <= TargetPosition.x,
 				Direction4.Right => X >= TargetPosition.x,
@@ -88,6 +87,7 @@ namespace Yaya {
 				// Fix Position Back
 				X -= X % Const.CELL_SIZE;
 				Y -= Y % Const.CELL_SIZE;
+
 				// Get Direction
 				if (GetDirectionIgnoreOpposite(CurrentDirection, out var newDirection)) {
 					CurrentDirection = newDirection;
@@ -102,92 +102,26 @@ namespace Yaya {
 
 			// Move
 			var currentNormal = CurrentDirection.Normal();
-			X += currentNormal.x * Speed;
-			Y += currentNormal.y * Speed;
+			X += currentNormal.x * (Speed + overMoved);
+			Y += currentNormal.y * (Speed + overMoved);
 
-		}
-
-
-		private void TouchAllNeighbors () {
-
-			var left = this;
-			var right = this;
-			int y = Y + Height / 2;
-
-			// L
-			for (int x = -Const.CELL_SIZE / 2; ; x -= Const.CELL_SIZE) {
-				var snake = CellPhysics.GetEntity<eSnakePlatform>(
-					new RectInt(X + x, y, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
-				);
-				if (snake == null) break;
-				snake.PrevTouched = true;
-				snake.InvokePlayerTouch();
-				left = snake;
-			}
-
-			// R
-			for (int x = Const.CELL_SIZE + Const.CELL_SIZE / 2; ; x += Const.CELL_SIZE) {
-				var snake = CellPhysics.GetEntity<eSnakePlatform>(
-					new RectInt(X + x, y, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
-				);
-				if (snake == null) break;
-				snake.PrevTouched = true;
-				snake.InvokePlayerTouch();
-				right = snake;
-			}
-
-			// Non-Head Snake Direction
-			if (left != right) {
-				// Get Head
-				Direction4 targetDir = Direction4.Right;
-				var head = right;
-				if (right.GetDirectionIgnoreOpposite(Direction4.Right, out var _resultR)) {
-					targetDir = Direction4.Right;
-					head = right;
-					right.CurrentDirection = _resultR;
-				} else if (left.GetDirectionIgnoreOpposite(Direction4.Left, out var _resultL)) {
-					targetDir = Direction4.Left;
-					head = left;
-					left.CurrentDirection = _resultL;
-				}
-				// Set Direction
-				int leftX = left.X + left.Width / 2;
-				int rightX = right.X + right.Width;
-				for (int x = leftX; x < rightX; x += Const.CELL_SIZE) {
-					var snake = CellPhysics.GetEntity<eSnakePlatform>(
-						new RectInt(x, y, 1, 1), YayaConst.MASK_ENVIRONMENT,
-						null, OperationMode.TriggerOnly
-					);
-					if (snake == null) continue;
-					if (snake == head) {
-						snake.Head = null;
-						continue;
-					}
-					snake.CurrentDirection = targetDir;
-					snake.Head = head;
-				}
-			} else {
-				// Single Snake
-				Head = null;
-				CurrentDirection = Direction4.Right;
-			}
 		}
 
 
 		public override void FrameUpdate () {
+			// Touch Check
+			if (TouchedByPlayer && !PrevTouched) {
+				PrevTouched = true;
+				TouchAllNeighbors();
+			}
+			// Artwork
 			if (EndReachingFrame < 0) {
 				base.FrameUpdate();
 			} else {
-				CellRenderer.Draw(Pose switch {
-					FittingPose.Left => ArtworkCode_Left,
-					FittingPose.Mid => ArtworkCode_Mid,
-					FittingPose.Right => ArtworkCode_Right,
-					FittingPose.Single => ArtworkCode_Single,
-					_ => TrimedTypeID,
-				}, Rect.Shift(
-					((Game.GlobalFrame + Y / Const.CELL_SIZE).PingPong(6) - 3) * 6,
-					((Game.GlobalFrame + X / Const.CELL_SIZE).PingPong(6) - 3) * 6
-				));
+				int shakeX = ((Game.GlobalFrame + Y / Const.CELL_SIZE).PingPong(6) - 3) * 6;
+				int shakeY = ((Game.GlobalFrame + X / Const.CELL_SIZE).PingPong(6) - 3) * 6;
+				int rot = (Game.GlobalFrame + (X + Y) / Const.CELL_SIZE).PingPong(6) - 3;
+				CellRenderer.Draw(ArtworkCode, X + Width / 2 + shakeX, Y + Height / 2 + shakeY, 500, 500, rot, Width, Height);
 			}
 		}
 
@@ -211,6 +145,73 @@ namespace Yaya {
 			var squad = Yaya.Current.WorldSquad;
 			int id = squad.GetBlockAt(unitX, unitY, BlockType.Entity);
 			return id == PATH_ID || id == TypeID;
+		}
+
+
+		// LGC
+		private void TouchAllNeighbors () {
+
+			var left = this;
+			var right = this;
+			int y = Y + Height / 2;
+
+			// L
+			for (int x = -Const.CELL_SIZE / 2; ; x -= Const.CELL_SIZE) {
+				var snake = CellPhysics.GetEntity<eSnakePlatform>(
+					new RectInt(X + x, y, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
+				);
+				if (snake == null) break;
+				snake.PrevTouched = true;
+				snake.SetPlayerTouch(true);
+				left = snake;
+			}
+
+			// R
+			for (int x = Const.CELL_SIZE + Const.CELL_SIZE / 2; ; x += Const.CELL_SIZE) {
+				var snake = CellPhysics.GetEntity<eSnakePlatform>(
+					new RectInt(X + x, y, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
+				);
+				if (snake == null) break;
+				snake.PrevTouched = true;
+				snake.SetPlayerTouch(true);
+				right = snake;
+			}
+
+			// Non-Head Snake Direction
+			if (left != right) {
+				// Get Head
+				Direction4 targetDir = Direction4.Right;
+				var head = right;
+				if (right.GetDirectionIgnoreOpposite(Direction4.Right, out var _resultR)) {
+					targetDir = Direction4.Right;
+					head = right;
+					right.CurrentDirection = _resultR;
+				} else if (left.GetDirectionIgnoreOpposite(Direction4.Left, out var _resultL)) {
+					targetDir = Direction4.Left;
+					head = left;
+					left.CurrentDirection = _resultL;
+				}
+				// Set Direction
+				int leftX = left.X + left.Width / 2;
+				int rightX = right.X + right.Width;
+				for (int x = leftX; x < rightX; x += Const.CELL_SIZE) {
+					var snake = CellPhysics.GetEntity<eSnakePlatform>(
+						new RectInt(x, y, 1, 1), YayaConst.MASK_ENVIRONMENT,
+						null, OperationMode.ColliderAndTrigger
+					);
+					if (snake == null) continue;
+					if (snake == head) {
+						snake.Head = null;
+						continue;
+					}
+					snake.CurrentDirection = targetDir;
+					snake.Head = head;
+				}
+			} else {
+				// Single Snake
+				Head = null;
+				CurrentDirection = Direction4.Right;
+			}
 		}
 
 
