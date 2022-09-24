@@ -14,12 +14,20 @@ namespace Yaya {
 
 
 
-	public class SnakePlatform_Quick : eSnakePlatform {
-		public override int EndBreakDuration => 120;
-		public override int Speed => 16;
-		public override bool OneWay => true;
-	}
+	public class SnakePlatform_Slow : eSnakePlatform {
 
+		public override int EndBreakDuration => 120;
+		public override int Speed => 12;
+		public override bool OneWay => true;
+
+	}
+	public class SnakePlatform_Quick : eSnakePlatform {
+
+		public override int EndBreakDuration => 120;
+		public override int Speed => 24;
+		public override bool OneWay => true;
+
+	}
 
 
 	public abstract class eSnakePlatform : ePlatform {
@@ -58,9 +66,7 @@ namespace Yaya {
 		protected override void Move () {
 
 			// Touched Check
-			if (!TouchedByPlayer) {
-				return;
-			}
+			if (!TouchedByPlayer) return;
 
 			// Check Head Reach End
 			if (Head != null && EndReachingFrame < 0) EndReachingFrame = Head.EndReachingFrame;
@@ -76,7 +82,6 @@ namespace Yaya {
 			}
 
 			// Over Moved
-			int overMoved = 0;
 			if (CurrentDirection switch {
 				Direction4.Left => X <= TargetPosition.x,
 				Direction4.Right => X >= TargetPosition.x,
@@ -85,9 +90,9 @@ namespace Yaya {
 				_ => false,
 			}) {
 				// Fix Position Back
-				X -= X % Const.CELL_SIZE;
-				Y -= Y % Const.CELL_SIZE;
-
+				const int HALF = Const.CELL_SIZE / 2;
+				X -= (X + HALF).UMod(Const.CELL_SIZE) - HALF;
+				Y -= (Y + HALF).UMod(Const.CELL_SIZE) - HALF;
 				// Get Direction
 				if (GetDirectionIgnoreOpposite(CurrentDirection, out var newDirection)) {
 					CurrentDirection = newDirection;
@@ -102,8 +107,8 @@ namespace Yaya {
 
 			// Move
 			var currentNormal = CurrentDirection.Normal();
-			X += currentNormal.x * (Speed + overMoved);
-			Y += currentNormal.y * (Speed + overMoved);
+			X += currentNormal.x * Speed;
+			Y += currentNormal.y * Speed;
 
 		}
 

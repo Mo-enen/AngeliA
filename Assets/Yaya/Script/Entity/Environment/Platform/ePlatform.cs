@@ -14,11 +14,12 @@ namespace Yaya {
 		protected virtual int ArtworkCode_Mid => TrimedTypeID;
 		protected virtual int ArtworkCode_Right => TrimedTypeID;
 		protected virtual int ArtworkCode_Single => TrimedTypeID;
+		protected virtual int ArtworkCode_Joint => 0;
+		protected virtual int JointSize => 64;
 		public abstract bool OneWay { get; }
 		public int CarrierSpeed => X - PrevX;
 
 		// Short
-		protected RectInt MovementRect = default;
 		protected bool TouchedByPlayer { get; private set; } = false;
 		protected bool TouchedByCharacter { get; private set; } = false;
 		protected bool TouchedByRigidbody { get; private set; } = false;
@@ -35,7 +36,6 @@ namespace Yaya {
 		// MSG
 		public override void OnActived () {
 			base.OnActived();
-			MovementRect = Rect;
 			TouchedByPlayer = false;
 			TouchedByCharacter = false;
 			TouchedByRigidbody = false;
@@ -140,14 +140,14 @@ namespace Yaya {
 			var rect = Rect;
 			var prevRect = rect;
 			prevRect.y = PrevY;
-			int left = X;
-			int right = X + Width;
-			if (Pose == FittingPose.Single || Pose == FittingPose.Left) {
-				left = int.MinValue;
-			}
-			if (Pose == FittingPose.Single || Pose == FittingPose.Right) {
-				right = int.MaxValue;
-			}
+			//int left = X;
+			//int right = X + Width;
+			//if (Pose == FittingPose.Single || Pose == FittingPose.Left) {
+			//	left = int.MinValue;
+			//}
+			//if (Pose == FittingPose.Single || Pose == FittingPose.Right) {
+			//	right = int.MaxValue;
+			//}
 			if (Y > PrevY) {
 				// Moving Up
 				prevRect.height -= rect.height / 3;
@@ -157,7 +157,7 @@ namespace Yaya {
 				for (int i = 0; i < count; i++) {
 					var hit = c_Overlaps[i];
 					if (hit.Entity is not Rigidbody rig) continue;
-					if (rig.X < left || rig.X >= right) continue;
+					//if (rig.X < left || rig.X >= right) continue;
 					if (rig.VelocityY > Y - PrevY) continue;
 					if (!rig.Rect.Overlaps(prevRect)) {
 						rig.PerformMove(0, rect.yMax - rig.Y);
@@ -171,7 +171,7 @@ namespace Yaya {
 				for (int i = 0; i < count; i++) {
 					var hit = c_Overlaps[i];
 					if (hit.Entity is not Rigidbody rig) continue;
-					if (rig.X < left || rig.X >= right) continue;
+					//if (rig.X < left || rig.X >= right) continue;
 					int rY = rig.Rect.y;
 					if (rY < rect.yMax) continue;
 					if (rig.VelocityY > 0) continue;
