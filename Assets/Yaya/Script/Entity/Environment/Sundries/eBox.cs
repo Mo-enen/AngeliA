@@ -8,13 +8,13 @@ namespace Yaya {
 	public class eBox : eYayaRigidbody {
 
 		public override int PhysicsLayer => YayaConst.LAYER_ENVIRONMENT;
-		public override bool DestroyWhenInsideGround => true;
+		protected override bool DestroyWhenInsideGround => true;
 
 		private static readonly int BARREL_CODE = "Box".AngeHash();
 
 
 		public override void FrameUpdate () {
-            CellRenderer.Draw(BARREL_CODE, base.Rect);
+			CellRenderer.Draw(BARREL_CODE, base.Rect);
 			base.FrameUpdate();
 		}
 

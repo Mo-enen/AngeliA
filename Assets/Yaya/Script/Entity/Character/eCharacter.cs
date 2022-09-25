@@ -19,9 +19,10 @@ namespace Yaya {
 		public override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
 		public override int CollisionMask => YayaConst.MASK_MAP;
 		public override bool InAir => base.InAir && !Movement.IsClimbing;
-		public override int AirDragX => 0;
-		public override int AirDragY => 0;
-		public override bool IgnoreRiseGravityShift => true;
+		public override int PushLevel => YayaConst.PUSH_CHARACTER;
+		protected override int AirDragX => 0;
+		protected override int AirDragY => 0;
+		protected override bool IgnoreRiseGravityShift => true;
 		public int PassoutFrame { get; private set; } = int.MinValue;
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
 		public MovementState MovementState { get; private set; } = MovementState.Idle;

@@ -1,0 +1,37 @@
+max		Sys
+
+34		Particle
+33		Item
+32		Projectile F
+
+18		Veg F
+17		En F
+16		Lv F
+
+1		Player
+-1		NPC
+
+-16		Projectile B
+
+-32		Veg B
+-33		En B
+-34		Fur
+-35		Lv B
+
+-64		BG Building
+-65		BG
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

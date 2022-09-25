@@ -73,6 +73,9 @@ namespace Yaya {
 		public const int MASK_MAP = MASK_LEVEL | MASK_ENVIRONMENT;
 		public const int MASK_ENTITY = MASK_ENVIRONMENT | MASK_ITEM | MASK_CHARACTER;
 
+		public const int PUSH_CHARACTER = 64;
+		public const int PUSH_PLAYER = 128;
+
 		// Tag
 		public static readonly int CLIMB_TAG = "Climb".AngeHash();
 		public static readonly int CLIMB_STABLE_TAG = "Climb Stable".AngeHash();

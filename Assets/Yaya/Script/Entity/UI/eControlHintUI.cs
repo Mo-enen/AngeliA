@@ -155,24 +155,24 @@ namespace Yaya {
 				widthB += border.Horizontal;
 			}
 
-			// Button
 			rect.width = widthA;
 			if (background) {
 				bgCell = CellRenderer.Draw(Const.PIXEL, rect.Expand(BG_PADDING_X), new(12, 12, 12, 255));
-				bgCell.Z = 63;
+				bgCell.Z = 0;
 			}
+			// Button A
 			CellRenderer.Draw_9Slice(buttonCode, rect, border.Left, border.Right, border.Down, border.Up);
 
-			// Button Label
+			// Button Label A
 			CellRenderer.Draw(keyIdA, rect.Shrink(border));
 			rect.x += rect.width + Gap;
 
 			// Button B
 			if (keyA != keyB) {
-				// Button
+				// Button B
 				rect.width = widthB;
 				CellRenderer.Draw_9Slice(buttonCode, rect, border.Left, border.Right, border.Down, border.Up);
-				// Button Label
+				// Button Label B
 				CellRenderer.Draw(keyIdB, rect.Shrink(border));
 				rect.x += rect.width + Gap;
 			}
