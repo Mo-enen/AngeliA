@@ -14,19 +14,15 @@ namespace Yaya {
 
 
 
-	public class SnakePlatform_Slow : eSnakePlatform {
-
+	public class eSnakePlatform_Slow : eSnakePlatform {
 		public override int EndBreakDuration => 120;
 		public override int Speed => 12;
 		public override bool OneWay => true;
-
 	}
-	public class SnakePlatform_Quick : eSnakePlatform {
-
+	public class eSnakePlatform_Quick : eSnakePlatform {
 		public override int EndBreakDuration => 120;
 		public override int Speed => 24;
 		public override bool OneWay => true;
-
 	}
 
 
@@ -47,6 +43,7 @@ namespace Yaya {
 		private eSnakePlatform Head = null;
 		private bool PrevTouched = false;
 		private int EndReachingFrame = int.MinValue;
+		private int ArtworkScale = 0;
 
 
 		// MSG
@@ -60,6 +57,7 @@ namespace Yaya {
 			StartPosition.x = X;
 			StartPosition.y = Y;
 			Head = null;
+			ArtworkScale = 0;
 		}
 
 
@@ -93,16 +91,22 @@ namespace Yaya {
 				const int HALF = Const.CELL_SIZE / 2;
 				X -= (X + HALF).UMod(Const.CELL_SIZE) - HALF;
 				Y -= (Y + HALF).UMod(Const.CELL_SIZE) - HALF;
+
 				// Get Direction
 				if (GetDirectionIgnoreOpposite(CurrentDirection, out var newDirection)) {
 					CurrentDirection = newDirection;
-					var normal = newDirection.Normal();
-					TargetPosition.x += normal.x * Const.CELL_SIZE;
-					TargetPosition.y += normal.y * Const.CELL_SIZE;
-				} else if (Head == null) {
-					// Stop
+				}
+				var normal = CurrentDirection.Normal();
+				TargetPosition.x += normal.x * Const.CELL_SIZE;
+				TargetPosition.y += normal.y * Const.CELL_SIZE;
+
+				// Stop Check
+				if (Head == null && CellPhysics.Overlap(
+					YayaConst.MASK_LEVEL, new(TargetPosition.x + HALF, TargetPosition.y + HALF, 1, 1), null
+				)) {
 					EndReachingFrame = Game.GlobalFrame;
 				}
+
 			}
 
 			// Move
@@ -120,14 +124,25 @@ namespace Yaya {
 				TouchAllNeighbors();
 			}
 			// Artwork
+			Cell cell;
 			if (EndReachingFrame < 0) {
-				base.FrameUpdate();
+				cell = CellRenderer.Draw(ArtworkCode, Rect);
+				if (ArtworkScale != 1000) {
+					cell.Width = cell.Width * ArtworkScale / 1000;
+					cell.Height = cell.Height * ArtworkScale / 1000;
+					int offset = Util.RemapUnclamped(0, 1000, Const.CELL_SIZE / 2, 0, ArtworkScale);
+					cell.X += offset;
+					cell.Y += offset;
+				}
 			} else {
 				int shakeX = ((Game.GlobalFrame + Y / Const.CELL_SIZE).PingPong(6) - 3) * 6;
 				int shakeY = ((Game.GlobalFrame + X / Const.CELL_SIZE).PingPong(6) - 3) * 6;
 				int rot = (Game.GlobalFrame + (X + Y) / Const.CELL_SIZE).PingPong(6) - 3;
-				CellRenderer.Draw(ArtworkCode, X + Width / 2 + shakeX, Y + Height / 2 + shakeY, 500, 500, rot, Width, Height);
+				int width = Width * ArtworkScale / 1000;
+				int height = Height * ArtworkScale / 1000;
+				CellRenderer.Draw(ArtworkCode, X + Width / 2 + shakeX, Y + Height / 2 + shakeY, 500, 500, rot, width, height);
 			}
+			ArtworkScale = ArtworkScale < 995 ? ArtworkScale.LerpTo(1000, 200) : 1000;
 		}
 
 

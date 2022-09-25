@@ -106,7 +106,7 @@ namespace Yaya {
 				}
 			} else if (frame > LastBounceFrame + BOUNCE_DELY && RequireBouncePerform) {
 				// Try Perform Bounce
-				var hit = CellPhysics.GetLastTouched<eYayaRigidbody>(
+				var hit = CellPhysics.TouchTransfer<eYayaRigidbody>(
 					YayaConst.MASK_RIGIDBODY,
 					FullRect.Expand(Horizontal ? 1 : 0, Horizontal ? 1 : 0, Horizontal ? 0 : 1, Horizontal ? 0 : 1),
 					this, BounceSide, 16
