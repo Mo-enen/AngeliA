@@ -13,8 +13,8 @@ max		Sys
 
 -16		Projectile B
 
--32		Veg B
--33		En B
+-32		En B
+-33		Veg B
 -34		Fur
 -35		Lv B
 

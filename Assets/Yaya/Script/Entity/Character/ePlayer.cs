@@ -21,7 +21,6 @@ namespace Yaya {
 
 
 		// VAR
-		public override int PushLevel => YayaConst.PUSH_PLAYER;
 		private static readonly int FOOTSTEP_CODE = "eYayaFootstep".AngeHash();
 		private static readonly int GUA_CODE = typeof(eGua).AngeHash();
 		private int LastStartRunFrame = int.MinValue;

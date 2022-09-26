@@ -19,7 +19,6 @@ namespace Yaya {
 		public override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
 		public override int CollisionMask => YayaConst.MASK_MAP;
 		public override bool InAir => base.InAir && !Movement.IsClimbing;
-		public override int PushLevel => YayaConst.PUSH_CHARACTER;
 		protected override int AirDragX => 0;
 		protected override int AirDragY => 0;
 		protected override bool IgnoreRiseGravityShift => true;

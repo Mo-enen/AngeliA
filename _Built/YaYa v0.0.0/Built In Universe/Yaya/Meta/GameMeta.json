@@ -21,5 +21,5 @@
     "Gravity": 5,
     "GravityRise": 3,
     "MaxGravitySpeed": 96,
-    "RigidbodyIterationCount": 4
+    "RigidbodyIterationCount": 2
 }
