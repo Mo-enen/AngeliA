@@ -35,12 +35,10 @@ namespace Yaya {
 		protected override int AirDragX => 0;
 		protected override int AirDragY => 0;
 		protected override bool IgnoreRiseGravityShift => true;
+		public override int CarrierSpeed => 0;
 		public int PassoutFrame { get; private set; } = int.MinValue;
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
 		public MovementState MovementState { get; private set; } = MovementState.Idle;
-		public int ArtworkOffsetZ { get => Renderer.ArtworkOffsetZ; set => Renderer.ArtworkOffsetZ = value; }
-		public int ArtworkScale { get => Renderer.ArtworkScale; set => Renderer.ArtworkScale = value; }
-		public override int CarrierSpeed => 0;
 
 		// Data
 		public Movement Movement { get; private set; } = null;
@@ -97,7 +95,7 @@ namespace Yaya {
 			int frame = Game.GlobalFrame;
 
 			// Passout Check
-			if (CharacterState != CharacterState.Passout && Health.EmptyHealth) {
+			if (Health.EmptyHealth) {
 				SetCharacterState(CharacterState.Passout);
 			}
 
@@ -189,6 +187,7 @@ namespace Yaya {
 
 
 		public void SetCharacterState (CharacterState state) {
+			if (CharacterState == state) return;
 			switch (state) {
 				case CharacterState.GamePlay:
 					if (CharacterState == CharacterState.Sleep) {

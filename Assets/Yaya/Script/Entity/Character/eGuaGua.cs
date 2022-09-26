@@ -6,12 +6,14 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.ExcludeInMapEditor]
+	[EntityAttribute.ForceUpdate]
 	public class eGuaGua : eCharacter {
 
 
-		// Const
-		private const int TARGET_DISTANCE_FAR = Const.CELL_SIZE * 3;
-		private const int TARGET_DISTANCE_NEAR = Const.CELL_SIZE;
+
+
+		#region --- VAR ---
+
 
 		// Api
 		public bool Picking { get; set; } = false;
@@ -20,13 +22,22 @@ namespace Yaya {
 		private eYaya Yaya = null;
 		private int TargetX = 0;
 		private int TargetY = 0;
+		private bool Flying = false;
 
 
-		// MSG
+		#endregion
+
+
+
+
+		#region --- MSG ---
+
+
 		public override void OnActived () {
 			base.OnActived();
 			TargetX = X;
 			TargetY = Y;
+			Flying = false;
 		}
 
 
@@ -37,8 +48,6 @@ namespace Yaya {
 
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
-
-			int targetSize = 1000;
 
 			// Find Yaya
 			if (Yaya == null || !Yaya.Active) {
@@ -55,19 +64,19 @@ namespace Yaya {
 			}
 
 			// Update
+			int targetSize = 1000;
 			switch (Yaya.CharacterState) {
 				case CharacterState.GamePlay:
 					if (Picking) {
+						SetCharacterState(CharacterState.Animate);
 						Update_Picking();
 						targetSize = 850;
 					} else {
-						Update_Movement();
+						Update_Moving();
 					}
 					break;
 				case CharacterState.Animate:
-					if (CharacterState != CharacterState.Animate) {
-						SetCharacterState(CharacterState.Animate);
-					}
+					SetCharacterState(CharacterState.Animate);
 					break;
 				case CharacterState.Sleep:
 					if (CharacterState != CharacterState.Sleep) {
@@ -80,25 +89,18 @@ namespace Yaya {
 					}
 					break;
 				case CharacterState.Passout:
-					if (CharacterState != CharacterState.Passout) {
-						SetCharacterState(CharacterState.Passout);
-					}
+					SetCharacterState(CharacterState.Passout);
 					break;
 			}
 
-			ArtworkScale = ArtworkScale.LerpTo(targetSize, 50);
+			Renderer.ArtworkScale = Renderer.ArtworkScale.LerpTo(targetSize, 50);
 
 		}
 
 
 		private void Update_Picking () {
 
-			ArtworkOffsetZ = Yaya.Movement.FacingFront ? 1 : -1;
-
-			// State
-			if (CharacterState != CharacterState.Animate) {
-				SetCharacterState(CharacterState.Animate);
-			}
+			Renderer.ArtworkOffsetZ = Yaya.Movement.FacingFront ? 1 : -1;
 
 			// Picking
 			X = Yaya.X;
@@ -116,7 +118,7 @@ namespace Yaya {
 					Y = Y.LerpTo(bounds.y + hand.Y, lerpY);
 					var mState = Yaya.MovementState;
 					if (mState == MovementState.Dash || mState == MovementState.Roll || mState == MovementState.Pound) {
-						ArtworkOffsetZ = hand.Front ? 1 : -1;
+						Renderer.ArtworkOffsetZ = hand.Front ? 1 : -1;
 					}
 				}
 			}
@@ -127,35 +129,68 @@ namespace Yaya {
 		}
 
 
-		private void Update_Movement () {
+		private void Update_Moving () {
 
-			// State
-			if (CharacterState != CharacterState.GamePlay) {
-				SetCharacterState(CharacterState.GamePlay);
+			const int TARGET_DIS_FAR = Const.CELL_SIZE * 4;
+			const int TARGET_DIS_NEAR = Const.CELL_SIZE * 2;
+
+			Renderer.ArtworkOffsetZ = 1;
+			SetCharacterState(CharacterState.Animate);
+
+			// Fly Check
+			bool oldFlying = Flying;
+			Flying = FlyCheck(Flying);
+			if (Flying && !oldFlying) {
+				// Take Off
+
+				Renderer.Bounce();
 			}
 
-			// Free Move 
-			ArtworkOffsetZ = -1;
-			if (Yaya.IsGrounded && Util.SqrtDistance(Yaya.X, Yaya.Y, TargetX, TargetY) > TARGET_DISTANCE_FAR * TARGET_DISTANCE_FAR) {
-				// Recalculate Target Position
-				int deltaX = Yaya.X - X;
-				int deltaY = Yaya.Y - Y;
-				if (deltaX != 0 || deltaY != 0) {
-					int dis = Util.BabyloniansSqrt(deltaX * deltaX + deltaY * deltaY);
-					TargetX = Yaya.X - deltaX * TARGET_DISTANCE_NEAR / dis;
-					TargetY = Yaya.Y - deltaY * TARGET_DISTANCE_NEAR / dis;
-				} else {
-					TargetX = Yaya.X;
-					TargetY = Yaya.Y;
-				}
+			// Get Target Position
+			if (Yaya.IsGrounded && Util.SqrtDistance(Yaya.X, Yaya.Y, TargetX, TargetY) > TARGET_DIS_FAR * TARGET_DIS_FAR) {
+				TargetX = Yaya.X;
+				TargetY = Yaya.Y;
 			}
 
-			// Move to Target Position
+			// Too Close Check
+			bool tooClose = Util.SqrtDistance(Yaya.X, Yaya.Y, X, Y) < TARGET_DIS_NEAR * TARGET_DIS_NEAR;
+
 
 
 
 
 		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+		private bool FlyCheck (bool isFlying) {
+			if (!isFlying) {
+				// Fly Start Check
+				// Fly when Outside Camera
+				var cRect = CellRenderer.CameraRect;
+				if (!cRect.Contains(X, Y)) return true;
+
+
+			} else {
+				// Fly Stop Check
+
+
+
+			}
+			return isFlying;
+		}
+
+
+		#endregion
+
+
 
 
 	}

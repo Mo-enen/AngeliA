@@ -12,46 +12,5 @@ namespace Yaya {
 
 
 
-		#region --- VAR ---
-
-
-
-
-
-		#endregion
-
-
-
-
-		#region --- MSG ---
-
-
-
-
-		#endregion
-
-
-
-
-		#region --- API ---
-
-
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
-
-
-		#endregion
-
-
-
-
 	}
 }

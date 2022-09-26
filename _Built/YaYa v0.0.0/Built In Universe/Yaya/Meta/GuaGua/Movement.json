@@ -1,0 +1,12 @@
+{
+	"_Width" :  150,
+	"_Height" :  150,
+	"_SquatHeight" :  150,
+	"_DashDuration" :  20,
+	"_RunTrigger"  :   48,
+	"_JumpSpeed"  :   69,
+	"_SwimInFreeStyle"  :  false,
+	"_JumpRoll"  :   false,
+	"_JumpCount"  :   1,
+	"_FlyAvailable" :  false
+}
