@@ -7,6 +7,7 @@ using AngeliaFramework;
 namespace Yaya {
 
 
+	[EntityAttribute.EntityBounds(-Const.CELL_SIZE * 5 / 2, 0, Const.CELL_SIZE * 5, Const.CELL_SIZE)]
 	public class eWoodPlatformH : ePingPongPlatform {
 		protected override uint SpeedX => 8;
 		protected override Vector2Int Distance => new(Const.CELL_SIZE * 5, 0);
@@ -14,7 +15,7 @@ namespace Yaya {
 	}
 
 
-
+	[EntityAttribute.EntityBounds(0, -Const.CELL_SIZE * 5 / 2, Const.CELL_SIZE, Const.CELL_SIZE * 5)]
 	public class eWoodPlatformV : ePingPongPlatform {
 		protected override uint SpeedY => 8;
 		protected override Vector2Int Distance => new(0, Const.CELL_SIZE * 5);

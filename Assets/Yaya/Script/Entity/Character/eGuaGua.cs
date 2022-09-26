@@ -6,7 +6,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.ExcludeInMapEditor]
-	public class eGua : eCharacter {
+	public class eGuaGua : eCharacter {
 
 
 		// Const
@@ -14,7 +14,7 @@ namespace Yaya {
 		private const int TARGET_DISTANCE_NEAR = Const.CELL_SIZE;
 
 		// Api
-		public bool Picking { get; set; } = true;
+		public bool Picking { get; set; } = false;
 
 		// Data
 		private eYaya Yaya = null;
@@ -140,9 +140,14 @@ namespace Yaya {
 				// Recalculate Target Position
 				int deltaX = Yaya.X - X;
 				int deltaY = Yaya.Y - Y;
-				int dis = Util.BabyloniansSqrt(deltaX * deltaX + deltaY * deltaY);
-				TargetX = Yaya.X - deltaX * TARGET_DISTANCE_NEAR / dis;
-				TargetY = Yaya.Y - deltaY * TARGET_DISTANCE_NEAR / dis;
+				if (deltaX != 0 || deltaY != 0) {
+					int dis = Util.BabyloniansSqrt(deltaX * deltaX + deltaY * deltaY);
+					TargetX = Yaya.X - deltaX * TARGET_DISTANCE_NEAR / dis;
+					TargetY = Yaya.Y - deltaY * TARGET_DISTANCE_NEAR / dis;
+				} else {
+					TargetX = Yaya.X;
+					TargetY = Yaya.Y;
+				}
 			}
 
 			// Move to Target Position

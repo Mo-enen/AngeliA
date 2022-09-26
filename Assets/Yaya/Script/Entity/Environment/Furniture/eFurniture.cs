@@ -48,8 +48,6 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
-			Width = Const.CELL_SIZE;
-			Height = Const.CELL_SIZE;
 			Pose = FittingPose.Unknown;
 			FurnitureLeftOrDown = null;
 			FurnitureRightOrUp = null;
@@ -211,14 +209,14 @@ namespace Yaya {
 			if (Pose != FittingPose.Unknown) return;
 			Pose = FittingPose.Single;
 
-			if (ModuleType == Direction3.None) return;
-
-			Pose = Yaya.Current.WorldSquad.GetEntityPose(
-				this, ModuleType == Direction3.Horizontal, YayaConst.MASK_ENVIRONMENT,
-				out var ld, out var ru, OperationMode.ColliderAndTrigger
-			);
-			FurnitureLeftOrDown = ld as eFurniture;
-			FurnitureRightOrUp = ru as eFurniture;
+			if (ModuleType != Direction3.None) {
+				Pose = Yaya.Current.WorldSquad.GetEntityPose(
+					this, ModuleType == Direction3.Horizontal, YayaConst.MASK_ENVIRONMENT,
+					out var ld, out var ru, OperationMode.ColliderAndTrigger
+				);
+				FurnitureLeftOrDown = ld as eFurniture;
+				FurnitureRightOrUp = ru as eFurniture;
+			}
 
 			// Shrink Rect
 			if (TryGetSprite(Pose, out var sp)) {
@@ -226,8 +224,8 @@ namespace Yaya {
 				ColliderBorder.right = sp.GlobalBorder.Right;
 				ColliderBorder.bottom = sp.GlobalBorder.Down;
 				ColliderBorder.top = sp.GlobalBorder.Up;
-				X -= ColliderBorder.left;
-				Y -= ColliderBorder.bottom;
+				X += ColliderBorder.left;
+				Y += ColliderBorder.bottom;
 				Width -= ColliderBorder.horizontal;
 				Height -= ColliderBorder.vertical;
 			}

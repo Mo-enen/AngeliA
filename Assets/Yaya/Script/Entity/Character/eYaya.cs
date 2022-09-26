@@ -5,26 +5,15 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-
-
-	[EntityAttribute.ExcludeInMapEditor]
-	[EntityAttribute.EntityCapacity(1)]
-	[EntityAttribute.ForceUpdate]
-	[EntityAttribute.EntityBounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
-	[EntityAttribute.DontDestroyOnSquadTransition]
-	public abstract class ePlayer : eCharacter { }
-
-
-
 	[FirstSelectedPlayer]
 	public class eYaya : ePlayer {
 
 
 		// VAR
 		private static readonly int FOOTSTEP_CODE = "eYayaFootstep".AngeHash();
-		private static readonly int GUA_CODE = typeof(eGua).AngeHash();
+		private static readonly int GUA_CODE = typeof(eGuaGua).AngeHash();
 		private int LastStartRunFrame = int.MinValue;
-		private eGua Gua = null;
+		private eGuaGua GuaGua = null;
 
 
 		// MSG
@@ -42,9 +31,9 @@ namespace Yaya {
 
 		private void Update_Gua () {
 			// Respawn Gua
-			if (Gua == null || !Gua.Active) {
-				if (!Game.Current.TryGetEntityInStage(out Gua)) {
-					Game.Current.TryAddEntity(GUA_CODE, X, Y, out Gua);
+			if (GuaGua == null || !GuaGua.Active) {
+				if (!Game.Current.TryGetEntityInStage(out GuaGua)) {
+					Game.Current.TryAddEntity(GUA_CODE, X, Y, out GuaGua);
 				}
 			}
 		}
@@ -72,7 +61,4 @@ namespace Yaya {
 
 
 	}
-
-
-
 }

@@ -260,6 +260,9 @@ namespace Yaya {
 						Game.GlobalFrame,
 						Sleep.LoopStart
 					);
+					if (CellRenderer.TryGetSprite(Sleep.Code, out var sprite) && sprite.GlobalBorder.Down != 0) {
+						cell.Y -= sprite.GlobalBorder.Down;
+					}
 					break;
 				case CharacterState.Passout:
 					cell = CellRenderer.Draw_Animation(

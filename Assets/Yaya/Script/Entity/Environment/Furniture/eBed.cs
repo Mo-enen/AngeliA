@@ -22,19 +22,19 @@ namespace Yaya {
 
 		public bool Invoke (Entity target) {
 			if (target is not eCharacter ch) return false;
-			int bedX = Rect.x;
-			if (Pose != FittingPose.Left) {
-				var rect = Rect;
-				for (int i = 1; i < 1024; i++) {
-					rect.x = X - i * Const.CELL_SIZE;
-					if (CellPhysics.HasEntity<eBed>(rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly)) {
-						bedX = rect.x;
-					} else break;
-				}
-			}
 			ch.SetCharacterState(CharacterState.Sleep);
-			ch.X = bedX;
-			ch.Y = Y;
+			var finalBed = this;
+			for (int safe = 0; safe < 1024; safe++) {
+				if (finalBed.FurnitureLeftOrDown is eBed leftBed) {
+					finalBed = leftBed;
+				} else break;
+			}
+			int offsetY = 0;
+			if (TryGetSprite(Pose, out var sprite)) {
+				offsetY += sprite.GlobalHeight - sprite.GlobalBorder.Up;
+			}
+			ch.X = finalBed.Rect.xMin;
+			ch.Y = Y + offsetY;
 			return true;
 		}
 

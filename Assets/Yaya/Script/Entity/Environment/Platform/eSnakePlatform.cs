@@ -147,24 +147,24 @@ namespace Yaya {
 
 
 		// API
-		public bool GetDirectionIgnoreOpposite (Direction4 currentDirection, out Direction4 result) {
+		public bool GetDirectionIgnoreOpposite (Direction4 currentDirection, out Direction4 result, bool ignoreTypeID = true) {
 			result = currentDirection;
-			if (HasSnakeBlockAtDirection(result)) return true;
+			if (HasSnakeBlockAtDirection(result, ignoreTypeID)) return true;
 			result = currentDirection.Clockwise();
-			if (HasSnakeBlockAtDirection(result)) return true;
+			if (HasSnakeBlockAtDirection(result, ignoreTypeID)) return true;
 			result = currentDirection.AntiClockwise();
-			if (HasSnakeBlockAtDirection(result)) return true;
+			if (HasSnakeBlockAtDirection(result, ignoreTypeID)) return true;
 			return false;
 		}
 
 
-		public bool HasSnakeBlockAtDirection (Direction4 direction) {
+		public bool HasSnakeBlockAtDirection (Direction4 direction, bool ignoreTypeID) {
 			var normal = direction.Normal();
 			int unitX = (X + Width / 2).UDivide(Const.CELL_SIZE) + normal.x;
 			int unitY = (Y + Height / 2).UDivide(Const.CELL_SIZE) + normal.y;
 			var squad = Yaya.Current.WorldSquad;
 			int id = squad.GetBlockAt(unitX, unitY, BlockType.Entity);
-			return id == PATH_ID || id == TypeID;
+			return id == PATH_ID || (!ignoreTypeID && id == TypeID);
 		}
 
 
@@ -202,11 +202,11 @@ namespace Yaya {
 				// Get Head
 				Direction4 targetDir = Direction4.Right;
 				var head = right;
-				if (right.GetDirectionIgnoreOpposite(Direction4.Right, out var _resultR)) {
+				if (right.GetDirectionIgnoreOpposite(Direction4.Right, out var _resultR, false)) {
 					targetDir = Direction4.Right;
 					head = right;
 					right.CurrentDirection = _resultR;
-				} else if (left.GetDirectionIgnoreOpposite(Direction4.Left, out var _resultL)) {
+				} else if (left.GetDirectionIgnoreOpposite(Direction4.Left, out var _resultL, false)) {
 					targetDir = Direction4.Left;
 					head = left;
 					left.CurrentDirection = _resultL;

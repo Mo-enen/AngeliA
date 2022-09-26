@@ -244,6 +244,7 @@ namespace Yaya {
 			if (FrameStep.HasStep<sOpening>()) return;
 			if (FrameInput.KeyDown(GameKey.Action) || FrameInput.KeyDown(GameKey.Jump)) {
 				CurrentPlayer.SetCharacterState(CharacterState.GamePlay);
+				CurrentPlayer.Y -= 2;
 			}
 		}
 

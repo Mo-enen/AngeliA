@@ -20,6 +20,5 @@
     "ViewRatio": 2000,
     "Gravity": 5,
     "GravityRise": 3,
-    "MaxGravitySpeed": 96,
-    "RigidbodyIterationCount": 2
+    "MaxGravitySpeed": 96
 }

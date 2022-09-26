@@ -5,6 +5,19 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+
+
+
+	[EntityAttribute.ExcludeInMapEditor]
+	[EntityAttribute.EntityCapacity(1)]
+	[EntityAttribute.ForceUpdate]
+	[EntityAttribute.EntityBounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
+	[EntityAttribute.DontDestroyOnSquadTransition]
+	public abstract class ePlayer : eCharacter { }
+
+
+
+
 	[EntityAttribute.MapEditorGroup("Character")]
 	[EntityAttribute.EntityCapacity(1)]
 	public abstract class eCharacter : eYayaRigidbody, IDamageReceiver {
