@@ -439,8 +439,8 @@ namespace Yaya {
 			if (CellPhysics.Overlap(
 				YayaConst.MASK_ENVIRONMENT,
 				up ? Source.Rect.Shift(0, ClimbSpeedY) : Source.Rect,
-				Source,
 				out var info,
+				Source,
 				OperationMode.TriggerOnly,
 				YayaConst.CLIMB_STABLE_TAG
 			)) {
