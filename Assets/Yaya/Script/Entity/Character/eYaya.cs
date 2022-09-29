@@ -9,32 +9,39 @@ namespace Yaya {
 	public class eYaya : ePlayer {
 
 
-		// VAR
+		// Const
 		private static readonly int FOOTSTEP_CODE = "eYayaFootstep".AngeHash();
-		private static readonly int GUA_CODE = typeof(eGuaGua).AngeHash();
+		private static readonly int GUAGUA_CODE = typeof(eGuaGua).AngeHash();
+
+		// Short
+		private eGuaGua GuaGua {
+			get {
+				if (_GuaGua == null) {
+					_GuaGua ??= Game.Current.PeekEntityInPool<eGuaGua>();
+					_GuaGua ??= Game.Current.GetEntityInStage<eGuaGua>();
+				}
+				return _GuaGua;
+			}
+		}
+
+		// Data
 		private int LastStartRunFrame = int.MinValue;
-		private eGuaGua GuaGua = null;
+		private eGuaGua _GuaGua = null;
 
 
 		// MSG
-		public override void PhysicsUpdate () {
-			base.PhysicsUpdate();
-			Update_Gua();
-		}
-
-
 		public override void FrameUpdate () {
 			base.FrameUpdate();
+			Update_Gua();
 			Update_Run();
 		}
 
 
 		private void Update_Gua () {
-			// Respawn Gua
-			if (GuaGua == null || !GuaGua.Active) {
-				if (!Game.Current.TryGetEntityInStage(out GuaGua)) {
-					Game.Current.TryAddEntity(GUA_CODE, X, Y, out GuaGua);
-				}
+			if (GuaGua == null) return;
+			// Respawn GuaGua when Fed and Inactive
+			if (!GuaGua.Active && GuaGua.Fed) {
+				Game.Current.TryAddEntity(GUAGUA_CODE, X, Y, out _);
 			}
 		}
 

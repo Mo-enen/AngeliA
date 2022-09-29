@@ -220,6 +220,7 @@ namespace Yaya {
 
 			// Damage
 			if (frame < DamagingTime) {
+				//var dCell = CellRenderer.Draw_Animation(
 				CellRenderer.Draw_Animation(
 					Damaging.Code,
 					Character.X, Character.Y,
@@ -229,6 +230,9 @@ namespace Yaya {
 					Game.GlobalFrame,
 					Damaging.LoopStart
 				);
+				//int scale = (DamagingTime - frame).PingPong(7) * 40 + 1000;
+				//dCell.Width = dCell.Width * scale / 1000;
+				//dCell.Height = dCell.Height * scale / 1000;
 				return;
 			}
 

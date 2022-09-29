@@ -12,7 +12,7 @@ namespace Yaya {
 		private static readonly HitInfo[] c_BlockUnder = new HitInfo[32];
 
 
-		// API
+		// Damage
 		public static void FillEntity_Damage (Entity source, bool damagePlayer, int damage) => CellPhysics.FillEntity(
 			YayaConst.LAYER_DAMAGE, source, damagePlayer, damage
 		);
@@ -29,11 +29,12 @@ namespace Yaya {
 		);
 
 
+		// Map Block Under
 		public static bool HasMapBlockUnder (int x, int y) {
-			int cameraHeight = CellRenderer.CameraRect.height;
+			int height = int.MaxValue / 4;
 			return CellPhysics.Overlap(
 				YayaConst.MASK_MAP,
-				new RectInt(x, y - cameraHeight, 1, cameraHeight),
+				new RectInt(x, y - height, 1, height),
 				null
 			);
 		}
@@ -41,8 +42,8 @@ namespace Yaya {
 
 		public static bool TryGetMapBlockUnder (int x, int y, out HitInfo hit) {
 			hit = null;
-			int cameraHeight = CellRenderer.CameraRect.height;
-			int count = CellPhysics.OverlapAll(c_BlockUnder, YayaConst.MASK_MAP, new RectInt(x, y - cameraHeight, 1, cameraHeight));
+			int height = int.MaxValue / 4;
+			int count = CellPhysics.OverlapAll(c_BlockUnder, YayaConst.MASK_MAP, new RectInt(x, y - height, 1, height));
 			int currentY = int.MinValue;
 			for (int i = 0; i < count; i++) {
 				var _hit = c_BlockUnder[i];

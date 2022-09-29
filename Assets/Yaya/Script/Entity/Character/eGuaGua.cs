@@ -5,8 +5,8 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.ForceUpdate]
+	[EntityAttribute.EntityCapacity(1)]
 	public class eGuaGua : eYayaRigidbody {
 
 
@@ -16,25 +16,34 @@ namespace Yaya {
 
 
 		// Const
+		private static readonly int IDLE_CODE = "_aGuaGua.Idle".AngeHash();
+		private static readonly int FLY_CODE = "_aGuaGua.Fly".AngeHash();
+		private static readonly int SLEEP_CODE = "_aGuaGua.Sleep".AngeHash();
 		private const int FLY_SHIFT_Y = Const.CELL_SIZE * 2;
 		private const int TARGET_DIS_FAR = Const.CELL_SIZE * 8;
 		private const int TARGET_DIS_NEAR = Const.CELL_SIZE * 4;
 		private const int FLY_CLOSE_DURATION = 60;
-		private static readonly int IDLE_CODE = "_aGuaGua.Idle".AngeHash();
-		private static readonly int FLY_CODE = "_aGuaGua.Fly".AngeHash();
-		private static readonly int SLEEP_CODE = "_aGuaGua.Sleep".AngeHash();
 
 		// Api
 		public override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
 		public override int CollisionMask => YayaConst.MASK_MAP;
+		public bool Fed { get; private set; } = false;
 
 		// Short
-		private bool TooCloseToYaya => Util.SqrtDistance(Yaya.X, Yaya.Y, X, Y) < TARGET_DIS_NEAR * TARGET_DIS_NEAR;
-		private bool TooFarToYaya => Util.SqrtDistance(Yaya.X, Yaya.Y, X, Y) > TARGET_DIS_FAR * TARGET_DIS_FAR;
+		private eYaya Yaya {
+			get {
+				if (_Yaya == null) {
+					_Yaya ??= Game.Current.PeekEntityInPool<eYaya>();
+					_Yaya ??= Game.Current.GetEntityInStage<eYaya>();
+				}
+				return _Yaya;
+			}
+		}
 
 		// Data
 		private Movement Movement = null;
-		private eYaya Yaya = null;
+		private Attackness Attackness = null;
+		private eYaya _Yaya = null;
 		private bool Flying = false;
 		private int TargetX = 0;
 		private int TargetY = 0;
@@ -55,6 +64,8 @@ namespace Yaya {
 			string typeName = GetType().Name;
 			if (typeName.StartsWith("e")) typeName = typeName[1..];
 			Movement = Game.Current.LoadMeta<Movement>(typeName, "Movement") ?? new();
+			Attackness = Game.Current.LoadMeta<Attackness>(typeName, "Attackness") ?? new();
+			Fed = false;
 		}
 
 
@@ -66,6 +77,7 @@ namespace Yaya {
 			Flying = false;
 			CloseYayaFrame = 0;
 			Movement.OnActived(this);
+			Attackness.OnActived(this);
 		}
 
 
@@ -74,23 +86,20 @@ namespace Yaya {
 		}
 
 
+		// Physics
 		public override void PhysicsUpdate () {
-			if (!Flying) base.PhysicsUpdate();
 
-			// Find Yaya
-			if (Yaya == null || !Yaya.Active) {
-				Game.Current.TryGetEntityInStage(out Yaya);
-			}
-			if (Yaya == null || !Yaya.Active) {
-				Active = false;
-				return;
-			}
+			if (!Flying) base.PhysicsUpdate();
 
 			// Update
 			switch (Yaya.CharacterState) {
 				case CharacterState.GamePlay:
 				case CharacterState.Passout:
-					Update_Gameplay();
+					if (Yaya.Active && Fed) {
+						Update_FollowYaya();
+					} else {
+						Update_FreeMove();
+					}
 					break;
 				case CharacterState.Sleep:
 					// Try Goto Basket
@@ -98,18 +107,18 @@ namespace Yaya {
 						X = basket.X;
 						Y = basket.Y + basket.Height;
 					}
-
+					Fed = false;
 					break;
 			}
 
 		}
 
 
-		private void Update_Gameplay () {
+		private void Update_FollowYaya () {
 
-			bool tooFar = TooFarToYaya;
-			bool tooClose = TooCloseToYaya;
-			bool isGrounded = GroundedCheck(Rect);
+			bool tooFar = Util.SqrtDistance(Yaya.X, Yaya.Y, X, Y) > TARGET_DIS_FAR * TARGET_DIS_FAR;
+			bool tooClose = Util.SqrtDistance(Yaya.X, Yaya.Y, X, Y) < TARGET_DIS_NEAR * TARGET_DIS_NEAR;
+			bool isGrounded = !Flying && IsGrounded;
 
 			CloseYayaFrame = (tooClose ? CloseYayaFrame + 1 : CloseYayaFrame - 1).Clamp(0, FLY_CLOSE_DURATION);
 
@@ -117,16 +126,16 @@ namespace Yaya {
 			bool oldFlying = Flying;
 			if (!oldFlying) {
 				// Start Fly when Outside Camera
-				if (!Game.Current.ViewRect.Contains(X, Y)) {
-					Flying = true;
-				}
-				// Start Fly when Too Far to Yaya and Not Grounded
-				if (isGrounded && tooFar) {
+				if (!Game.Current.ViewRect.Overlaps(Rect)) {
 					Flying = true;
 				}
 			} else {
 				// Stop Fly when Too Close to Yaya and Have Block to Land
-				if (CloseYayaFrame >= FLY_CLOSE_DURATION && YayaCellPhysics.HasMapBlockUnder(X, Y)) {
+				if (
+					CloseYayaFrame >= FLY_CLOSE_DURATION &&
+					YayaCellPhysics.TryGetMapBlockUnder(X, Y, out var block) &&
+					block.Rect.y >= Yaya.Y - Const.CELL_SIZE
+				) {
 					Flying = false;
 				}
 			}
@@ -172,13 +181,21 @@ namespace Yaya {
 		}
 
 
+		private void Update_FreeMove () {
+
+
+
+		}
+
+
+		// Render
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			if (Yaya.CharacterState != CharacterState.Sleep) {
 				if (!Flying) {
 					// Run
 					CellRenderer.Draw_Animation(
-						IDLE_CODE, X, Y, 500, 0, 0,
+						IDLE_CODE, X + Width / 2, Y, 500, 0, 0,
 						Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 						Const.ORIGINAL_SIZE,
 						Game.GlobalFrame, 0
@@ -186,7 +203,7 @@ namespace Yaya {
 				} else {
 					// Fly
 					CellRenderer.Draw_Animation(
-						FLY_CODE, X, Y, 500, 0, 0,
+						FLY_CODE, X + Width / 2, Y, 500, 0, 0,
 						Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 						Const.ORIGINAL_SIZE,
 						Game.GlobalFrame, 0
@@ -209,11 +226,15 @@ namespace Yaya {
 
 
 
-		#region --- LGC ---
+		#region --- API ---
+
+
+		public void Feed () {
+			Fed = true;
 
 
 
-
+		}
 
 
 		#endregion
