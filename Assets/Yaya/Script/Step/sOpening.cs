@@ -59,7 +59,7 @@ namespace Yaya {
 			if (localFrame < SkipFrame) {
 				if (FrameInput.AnyKeyPressed) {
 					SkipFrame = localFrame;
-					SkipY = (int)Util.Remap(0, DURATION, ViewYStart, ViewYEnd, localFrame);
+					SkipY = (int)Util.Remap(0f, DURATION, ViewYStart, ViewYEnd, localFrame);
 				}
 				return Update_Opening(game, localFrame);
 			} else {
@@ -75,7 +75,7 @@ namespace Yaya {
 				CellRenderer.Draw(
 					Const.PIXEL,
 					CellRenderer.CameraRect.Expand(Const.CELL_SIZE),
-					new Color32(0, 0, 0, (byte)Util.Remap(0, BLACK_DURATION, byte.MaxValue, byte.MinValue, localFrame))
+					new Color32(0, 0, 0, (byte)Util.Remap(0f, BLACK_DURATION, byte.MaxValue, byte.MinValue, localFrame))
 				);
 				CellRenderer.SetLayerToDefault();
 			}
@@ -84,7 +84,7 @@ namespace Yaya {
 				SetViewPosition(
 					game,
 					ViewX,
-					(int)Util.Remap(0, DURATION, ViewYStart, ViewYEnd, localFrame)
+					(int)Util.Remap(0f, DURATION, ViewYStart, ViewYEnd, localFrame)
 				);
 				return true;
 			} else {
@@ -99,7 +99,7 @@ namespace Yaya {
 				SetViewPosition(
 					game,
 					ViewX,
-					(int)Util.Remap(SkipFrame, SKIP_DURATION + SkipFrame, SkipY, ViewYEnd, localFrame)
+					(int)Util.Remap((float)SkipFrame, SKIP_DURATION + SkipFrame, SkipY, ViewYEnd, localFrame)
 				);
 				return true;
 			} else {

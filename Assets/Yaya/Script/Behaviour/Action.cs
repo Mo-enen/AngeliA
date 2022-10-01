@@ -99,7 +99,11 @@ namespace Yaya {
 		#region --- API ---
 
 
-		public bool Invoke () => CurrentTarget != null && CurrentTarget.Invoke(Source);
+		public bool Invoke () {
+			if (CurrentTarget == null) return false;
+			if (Source is ePlayer && !FrameInput.KeyDown(CurrentTarget.InvokeKey)) return false;
+			return CurrentTarget.Invoke(Source);
+		}
 
 
 		public bool CancelInvoke () => CurrentTarget != null && CurrentTarget.CancelInvoke(Source);

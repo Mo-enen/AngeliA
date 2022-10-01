@@ -115,8 +115,8 @@ namespace Yaya {
 			// Offset
 			int sLen = LEAF_OFFSET_SEEDS.Length;
 			for (int i = 0; i < LeafOffsets.Length; i++) {
-				int seedX = LEAF_OFFSET_SEEDS[(i + X / Const.CELL_SIZE) % sLen];
-				int seedY = LEAF_OFFSET_SEEDS[(i + Y / Const.CELL_SIZE) % sLen];
+				int seedX = LEAF_OFFSET_SEEDS[(i + X / Const.CELL_SIZE).UMod(sLen)];
+				int seedY = LEAF_OFFSET_SEEDS[(i + Y / Const.CELL_SIZE).UMod(sLen)];
 				LeafOffsets[i] = new(
 					((X * 137 * seedX + Y * 327 * seedY) / Const.CELL_SIZE).UMod(Const.CELL_SIZE) - Const.CELL_SIZE / 2,
 					((X * 149 * seedX + Y * 177 * seedY) / Const.CELL_SIZE).UMod(Const.CELL_SIZE) - Const.CELL_SIZE / 2

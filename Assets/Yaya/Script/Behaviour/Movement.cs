@@ -117,7 +117,7 @@ namespace Yaya {
 				} else {
 					bool overlapClimb = ClimbCheck();
 					if (!IsClimbing) {
-						if (overlapClimb && IntendedY > 0) IsClimbing = true;
+						if (overlapClimb && IntendedY > 0 && !IsSquating) IsClimbing = true;
 					} else {
 						if (IsGrounded || !overlapClimb) IsClimbing = false;
 					}

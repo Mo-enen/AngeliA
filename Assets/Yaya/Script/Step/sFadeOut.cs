@@ -19,7 +19,7 @@ namespace Yaya {
 			CellRenderer.Draw(
 				Const.PIXEL,
 				CellRenderer.CameraRect.Expand(Const.CELL_SIZE),
-				new Color32(0, 0, 0, (byte)Util.Remap(0, FADE_OUT, byte.MinValue, byte.MaxValue, localFrame))
+				new Color32(0, 0, 0, (byte)Util.Remap(0f, FADE_OUT, byte.MinValue, byte.MaxValue, localFrame))
 			);
 			CellRenderer.SetLayerToDefault();
 			return localFrame < FADE_OUT;

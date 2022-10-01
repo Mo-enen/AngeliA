@@ -38,8 +38,15 @@ namespace Yaya {
 		// MSG
 		public static void Initialize () {
 			TypeHintMap.Clear();
+			var objType = typeof(object);
+			var entityType = typeof(Entity);
 			foreach (var type in typeof(IActionEntity).AllClassImplemented()) {
-				int id = $"ActionHint.{type.Name}".AngeHash();
+				var _type = type;
+				int id = $"ActionHint.{_type.Name}".AngeHash();
+				while (!Language.Has(id) && _type != entityType && _type != objType) {
+					_type = _type.BaseType;
+					id = $"ActionHint.{_type.Name}".AngeHash();
+				}
 				if (Language.Has(id)) {
 					TypeHintMap.TryAdd(type.AngeHash(), id);
 				}
@@ -79,17 +86,16 @@ namespace Yaya {
 						// Move
 						DrawKey(GameKey.Left, GameKey.Right, HINT_MOVE_CODE);
 						// Action & Jump
-						if (Player.Action.CurrentTarget is Entity target) {
+						if (Player.Action.CurrentTarget is Entity target && target is IActionEntity iAct) {
 							// Action Target
 							if (target is eOpenableFurniture open && open.Open) {
-								DrawKey(GameKey.Action, YayaConst.UI_OK);
-								//y += KeySize + Gap;
+								DrawKey(iAct.InvokeKey, YayaConst.UI_OK);
 								DrawKey(GameKey.Jump, HINT_CANCEL_CODE);
 							} else {
 								if (TypeHintMap.TryGetValue(target.TypeID, out int code)) {
-									DrawKey(GameKey.Action, code);
+									DrawKey(iAct.InvokeKey, code);
 								} else {
-									DrawKey(GameKey.Action, HINT_USE_CODE);
+									DrawKey(iAct.InvokeKey, HINT_USE_CODE);
 								}
 							}
 						} else {

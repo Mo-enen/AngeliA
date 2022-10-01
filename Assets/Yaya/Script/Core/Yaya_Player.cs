@@ -205,7 +205,7 @@ namespace Yaya {
 			var attack = CurrentPlayer.Attackness;
 
 			// Try Perform Action
-			if (FrameInput.KeyDown(GameKey.Action)) {
+			if (FrameInput.AnyGameKeyDown()) {
 				bool performed = action.Invoke();
 				if (performed) return;
 			}

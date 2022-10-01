@@ -15,7 +15,7 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (Open && !IsHighlighted) {
+			if (Open && !(this as IActionEntity).IsHighlighted) {
 				Open = false;
 			}
 		}

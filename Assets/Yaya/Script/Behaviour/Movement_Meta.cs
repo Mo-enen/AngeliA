@@ -14,7 +14,7 @@ namespace Yaya {
 		public BuffInt Height { get; private set; } = new(384);
 		public BuffInt SquatHeight { get; private set; } = new(200);
 		public BuffInt SwimHeight { get; private set; } = new(384);
-		public BuffInt FlyHeight { get; private set; } = new(384);
+		public BuffInt FlyHeight { get; private set; } = new(200);
 		public BuffInt AntiKnockbackSpeed { get; private set; } = new(16);
 
 		public BuffInt WalkSpeed { get; private set; } = new(20);
@@ -82,7 +82,7 @@ namespace Yaya {
 		[SerializeField] int _Height = 384;
 		[SerializeField] int _SquatHeight = 200;
 		[SerializeField] int _SwimHeight = 384;
-		[SerializeField] int _FlyHeight = 384;
+		[SerializeField] int _FlyHeight = 200;
 		[SerializeField] int _AntiKnockbackSpeed = 16;
 
 		[SerializeField] int _WalkSpeed = 20;

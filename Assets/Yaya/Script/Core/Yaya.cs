@@ -261,7 +261,7 @@ namespace Yaya {
 		}
 
 
-		protected override void SetViewZ (int newZ) {
+		public override void SetViewZ (int newZ) {
 			base.SetViewZ(newZ);
 			if (CurrentPlayer != null && CurrentPlayer.Active) {
 				CurrentPlayer.Renderer.Bounce();

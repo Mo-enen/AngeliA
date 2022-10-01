@@ -1,12 +1,7 @@
-﻿UI.Cancel:取消
-UI.QuitMessage:是否要退出游戏？
-UI.Quit:退出
-UI.OK:确定
-ActionHint.eBed:睡觉
-ActionHint.eChest:打开
-ActionHint.eFridge:打开
+﻿ActionHint.eBed:睡觉
+ActionHint.eDoor:进门
+ActionHint.eOpenableFurniture:打开
 ActionHint.ePhoto:切换
-ActionHint.eWardrobe:打开
 CtrlHint.Attack:攻击
 CtrlHint.Cancel:取消
 CtrlHint.Jump:跳跃
@@ -15,3 +10,7 @@ CtrlHint.Pause:暂停
 CtrlHint.UnPause:继续
 CtrlHint.Use:使用
 CtrlHint.WakeUp:起床
+UI.Cancel:取消
+UI.OK:确定
+UI.Quit:退出
+UI.QuitMessage:是否要退出游戏？
