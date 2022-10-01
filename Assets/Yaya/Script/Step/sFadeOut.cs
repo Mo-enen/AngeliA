@@ -13,7 +13,7 @@ namespace Yaya {
 
 
 		// MSG
-		public override bool FrameUpdate (Game game) {
+		public override bool FrameUpdate () {
 			int localFrame = LocalFrame;
 			CellRenderer.SetLayer(YayaConst.SHADER_UI);
 			CellRenderer.Draw(

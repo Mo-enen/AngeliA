@@ -1,8 +1,8 @@
 max		Sys
 
-34		Particle
+34		Particle F
 33		Item
-32		Projectile F
+32		Projectile
 
 18		Veg F
 17		En F
@@ -13,6 +13,7 @@ max		Sys
 
 -16		Projectile B
 
+-31		Particle B
 -32		En B
 -33		Veg B
 -34		Fur

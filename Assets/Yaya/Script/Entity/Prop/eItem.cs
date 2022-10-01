@@ -60,9 +60,7 @@ namespace Yaya {
 
 		public override void OnInitialize () {
 			base.OnInitialize();
-			string typeName = GetType().Name;
-			if (typeName.StartsWith('e')) typeName = typeName[1..];
-			GroupCode = typeName.AngeHash();
+			GroupCode = TypeID;
 		}
 
 

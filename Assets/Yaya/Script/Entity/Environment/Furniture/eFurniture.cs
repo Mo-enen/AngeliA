@@ -17,10 +17,10 @@ namespace Yaya {
 
 		// Over
 		protected virtual Direction3 ModuleType => Direction3.None;
-		protected virtual int ArtworkCode_LeftDown => TrimedTypeID;
-		protected virtual int ArtworkCode_Mid => TrimedTypeID;
-		protected virtual int ArtworkCode_RightUp => TrimedTypeID;
-		protected virtual int ArtworkCode_Single => TrimedTypeID;
+		protected virtual int ArtworkCode_LeftDown => TypeID;
+		protected virtual int ArtworkCode_Mid => TypeID;
+		protected virtual int ArtworkCode_RightUp => TypeID;
+		protected virtual int ArtworkCode_Single => TypeID;
 		protected virtual bool LoopArtworkIndex => false;
 		protected virtual bool UseHighlightAnimation => true;
 		protected virtual RectInt RenderingRect => Rect.Expand(ColliderBorder);

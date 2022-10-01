@@ -45,6 +45,8 @@ namespace Yaya {
 	public static class YayaConst {
 
 
+		public static readonly int DEFAULT_PARTICLE_CODE = typeof(eDefaultParticle).AngeHash();
+
 		// Render
 		public const int SHADER_LERP = 0;
 		public const int SHADER_CELL = 1;

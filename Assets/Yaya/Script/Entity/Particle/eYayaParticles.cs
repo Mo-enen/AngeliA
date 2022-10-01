@@ -13,4 +13,16 @@ namespace Yaya {
 		public override bool IgnoreEntitySize => true;
 		public override int PivotX => 500;
 	}
+
+
+	[EntityAttribute.EntityCapacity(16)]
+	public class eDefaultParticle : Particle {
+		public override int FrameCount => 20;
+		public override bool Loop => false;
+		public override int FramePerSprite => 5;
+		public override bool IgnoreEntitySize => false;
+		public override int PivotX => 500;
+		public override int PivotY => 500;
+	}
+
 }

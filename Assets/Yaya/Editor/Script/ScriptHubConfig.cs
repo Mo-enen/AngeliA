@@ -12,7 +12,7 @@ namespace Yaya.Editor {
 			};
 		public int Order => 0;
 		public int Column => 3;
-		public string GetFileName (string name) => name.StartsWith('e') || name.StartsWith('s') || name.StartsWith('a') ? name[1..] : name;
+		public string GetFileName (string name) => name.StartsWith('s') || name.StartsWith('a') ? name[1..] : name;
 		public string GetFolderName (string name) {
 			if (name.Equals("Entity")) {
 				name = "z.Entity";
@@ -35,6 +35,6 @@ namespace Yaya.Editor {
 				new ("aseprite", "Aseprite", true),
 			};
 		public int Order => 1;
-		public string GetFileName (string name) => name.StartsWith('e') || name.StartsWith('a') ? name[1..] : name;
+		public string GetFileName (string name) => name.StartsWith('a') ? name[1..] : name;
 	}
 }

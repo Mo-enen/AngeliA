@@ -27,9 +27,11 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnStart (Game game) {
-			base.OnStart(game);
+		public override void OnStart () {
+			base.OnStart();
+			var game = Game.Current;
 			SetViewPosition(game, ViewX, ViewYStart);
+			game.SetViewZ(0);
 			SkipFrame = int.MaxValue;
 			// Draw Black Fade Out
 			CellRenderer.Draw(
@@ -45,10 +47,11 @@ namespace Yaya {
 		}
 
 
-		public override bool FrameUpdate (Game game) {
+		public override bool FrameUpdate () {
 			int localFrame = LocalFrame;
+			var game = Game.Current;
 			// Spawn Player
-			if (localFrame == 1 && SpawnPlayerAtStart) {
+			if (localFrame == 2 && SpawnPlayerAtStart) {
 				var player = (game as Yaya).SpawnPlayer(ViewX, ViewYEnd);
 				if (player != null) {
 					if (game.TryGetEntityNearby<eBed>(new(ViewX, ViewYEnd), out var bed)) {

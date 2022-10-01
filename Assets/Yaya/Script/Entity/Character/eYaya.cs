@@ -10,7 +10,7 @@ namespace Yaya {
 
 
 		// Const
-		private static readonly int FOOTSTEP_CODE = "eYayaFootstep".AngeHash();
+		private static readonly int FOOTSTEP_CODE = "YayaFootstep".AngeHash();
 		private static readonly int GUAGUA_CODE = typeof(eGuaGua).AngeHash();
 
 		// Short
@@ -56,7 +56,7 @@ namespace Yaya {
 
 			// Run Particle
 			if (LastStartRunFrame >= 0 && (Game.GlobalFrame - LastStartRunFrame) % 20 == 19) {
-				if (Game.Current.TryAddEntity<eYayaFootstep>(FOOTSTEP_CODE, X, Y, out var step)) {
+				if (Game.Current.TryAddEntity(FOOTSTEP_CODE, X, Y, out var entity) && entity is eYayaFootstep step) {
 					if (CellRenderer.TryGetSprite(GroundedID, out var sprite)) {
 						step.Tint = sprite.Summary;
 					} else {

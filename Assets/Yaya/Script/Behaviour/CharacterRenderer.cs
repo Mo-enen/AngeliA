@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
+using UnityEngine.TextCore.Text;
 
 
 namespace Yaya {
@@ -104,12 +105,12 @@ namespace Yaya {
 		#region --- VAR ---
 
 
+		// Const
+		private static readonly int SLEEP_PARTICLE_CODE = typeof(eDefaultParticle).AngeHash();
+
 		// Api
 		public eCharacter Character { get; private set; } = null;
 		public int FaceIndex { get; set; } = 0;
-		public int BodyArtworkID { get; private set; } = 0;
-		public int ArtworkOffsetZ { get; set; } = 0;
-		public int ArtworkScale { get; set; } = 1000;
 
 		// Ser
 		[SerializeField] int[] BounceAmounts = new int[] { 500, 200, 100, 50, 25, 50, 100, 200, 500, };
@@ -159,8 +160,10 @@ namespace Yaya {
 		private int AnimationCode = 0;
 		private int AnimationFrame = 0;
 		private int AnimationLoopStart = 0;
+		private int PrevSleepAmount = 0;
 		private bool AnimationFlipX = false;
 		private bool AnimationFlipY = false;
+
 
 		#endregion
 
@@ -211,8 +214,6 @@ namespace Yaya {
 
 		public void FrameUpdate () {
 
-			if (ArtworkScale == 0) return;
-
 			int frame = Game.GlobalFrame;
 
 			// Blink
@@ -237,14 +238,13 @@ namespace Yaya {
 			}
 
 			// Draw
-			Cell cell = null;
 			switch (Character.CharacterState) {
 				case CharacterState.GamePlay:
 					DrawBody();
 					DrawFace();
 					break;
 				case CharacterState.Animate:
-					cell = CellRenderer.Draw_Animation(
+					CellRenderer.Draw_Animation(
 						AnimationCode,
 						Character.X,
 						Character.Y,
@@ -256,20 +256,10 @@ namespace Yaya {
 					);
 					break;
 				case CharacterState.Sleep:
-					cell = CellRenderer.Draw_Animation(
-						Sleep.Code,
-						Character.X, Character.Y,
-						Const.ORIGINAL_SIZE,
-						Const.ORIGINAL_SIZE,
-						Game.GlobalFrame,
-						Sleep.LoopStart
-					);
-					if (CellRenderer.TryGetSprite(Sleep.Code, out var sprite) && sprite.GlobalBorder.Down != 0) {
-						cell.Y -= sprite.GlobalBorder.Down;
-					}
+					DrawSleep();
 					break;
 				case CharacterState.Passout:
-					cell = CellRenderer.Draw_Animation(
+					CellRenderer.Draw_Animation(
 						Passout.Code,
 						Character.X, Character.Y,
 						500, 0, 0,
@@ -280,16 +270,6 @@ namespace Yaya {
 					);
 					break;
 			}
-			if (cell != null) {
-				if (ArtworkOffsetZ != 0) {
-					cell.Z += ArtworkOffsetZ;
-				}
-				if (ArtworkScale != 1000) {
-					cell.Width = cell.Width * ArtworkScale / 1000;
-					cell.Height = cell.Height * ArtworkScale / 1000;
-				}
-			}
-
 		}
 
 
@@ -379,15 +359,7 @@ namespace Yaya {
 				CurrentAniFrame,
 				ani.LoopStart
 			);
-			if (ArtworkScale != 1000) {
-				cell.Width = cell.Width * ArtworkScale / 1000;
-				cell.Height = cell.Height * ArtworkScale / 1000;
-			}
-			if (ArtworkOffsetZ != 0) {
-				cell.Z += ArtworkOffsetZ;
-			}
 			CurrentCode = CellRenderer.LastDrawnID;
-			BodyArtworkID = CurrentCode;
 			LastCellHeight = cell.Height;
 
 			// Bouncy
@@ -469,6 +441,48 @@ namespace Yaya {
 				meta.Head.Width,
 				Const.ORIGINAL_SIZE
 			);
+		}
+
+
+		private void DrawSleep () {
+			var backCell = CellRenderer.Draw_Animation(
+				Sleep.Code,
+				Character.X, Character.Y,
+				Const.ORIGINAL_SIZE,
+				Const.ORIGINAL_SIZE,
+				Game.GlobalFrame,
+				Sleep.LoopStart
+			);
+			var cell = CellRenderer.Draw_Animation(
+				Sleep.Code,
+				Character.X, Character.Y,
+				Const.ORIGINAL_SIZE,
+				Const.ORIGINAL_SIZE,
+				Game.GlobalFrame,
+				Sleep.LoopStart
+			);
+			if (CellRenderer.TryGetSprite(Sleep.Code, out var sprite) && sprite.GlobalBorder.Down != 0) {
+				cell.Y -= sprite.GlobalBorder.Down;
+				backCell.Y -= sprite.GlobalBorder.Down;
+			}
+			backCell.Color.a = 128;
+			// Fill
+			if (Character.SleepAmount < 1000) {
+				cell.Shift.Up = Util.Remap(90, 0, 0, 1000, Character.SleepFrame);
+			} else if (Character.SleepAmount >= 1000 && PrevSleepAmount < 1000) {
+				// Spawn Particle
+				var rect = cell.Rect;
+				if (Game.Current.TryAddEntity(
+					SLEEP_PARTICLE_CODE,
+					rect.x + rect.width / 2,
+					rect.y + rect.height / 2,
+					out var particle
+				)) {
+					particle.Width = Const.CELL_SIZE * 2;
+					particle.Height = Const.CELL_SIZE * 2;
+				}
+			}
+			PrevSleepAmount = Character.SleepAmount;
 		}
 
 

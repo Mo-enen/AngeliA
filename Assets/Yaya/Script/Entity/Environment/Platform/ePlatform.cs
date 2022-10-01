@@ -10,10 +10,10 @@ namespace Yaya {
 
 
 		// Api
-		protected virtual int ArtworkCode_Left => TrimedTypeID;
-		protected virtual int ArtworkCode_Mid => TrimedTypeID;
-		protected virtual int ArtworkCode_Right => TrimedTypeID;
-		protected virtual int ArtworkCode_Single => TrimedTypeID;
+		protected virtual int ArtworkCode_Left => TypeID;
+		protected virtual int ArtworkCode_Mid => TypeID;
+		protected virtual int ArtworkCode_Right => TypeID;
+		protected virtual int ArtworkCode_Single => TypeID;
 		protected virtual int ArtworkCode_Joint => 0;
 		protected virtual int JointSize => 64;
 		public abstract bool OneWay { get; }
@@ -47,7 +47,7 @@ namespace Yaya {
 				FittingPose.Mid => ArtworkCode_Mid,
 				FittingPose.Right => ArtworkCode_Right,
 				FittingPose.Single => ArtworkCode_Single,
-				_ => TrimedTypeID,
+				_ => TypeID,
 			};
 			Border = CellRenderer.TryGetSprite(ArtworkCode, out var sprite) ? sprite.GlobalBorder : Int4.Zero;
 		}
@@ -161,7 +161,7 @@ namespace Yaya {
 					if (rig.VelocityY > Y - PrevY) continue;
 					if (!rig.Rect.Overlaps(prevRect)) {
 						rig.PerformMove(0, rect.yMax - rig.Y);
-						rig.MakeGrounded(1, TrimedTypeID);
+						rig.MakeGrounded(1, TypeID);
 					}
 				}
 			} else {
@@ -176,7 +176,7 @@ namespace Yaya {
 					if (rY < rect.yMax) continue;
 					if (rig.VelocityY > 0) continue;
 					rig.PerformMove(0, rect.yMax - 2 - rY);
-					rig.MakeGrounded(1, TrimedTypeID);
+					rig.MakeGrounded(1, TypeID);
 				}
 			}
 		}

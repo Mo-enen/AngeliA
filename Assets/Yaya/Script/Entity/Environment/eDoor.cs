@@ -51,8 +51,8 @@ namespace Yaya {
 		public GameKey InvokeKey => GameKey.Up;
 		public int HighlightFrame { get; set; } = int.MinValue;
 		public int HighlightStartFrame { get; set; } = int.MinValue;
-		protected virtual int ArtworkCode => TrimedTypeID;
-		protected virtual int ArtworkCode_Open => TrimedTypeID;
+		protected virtual int ArtworkCode => TypeID;
+		protected virtual int ArtworkCode_Open => TypeID;
 
 		// Data
 		protected abstract bool IsFrontDoor { get; }
@@ -74,8 +74,8 @@ namespace Yaya {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			// Draw
-			int artCode = CellPhysics.HasEntity<ePlayer>(Rect, YayaConst.MASK_CHARACTER, this) ?
-				ArtworkCode_Open : ArtworkCode;
+			var player = CellPhysics.GetEntity<ePlayer>(Rect, YayaConst.MASK_CHARACTER, this);
+			int artCode = player != null && player.IsGrounded ? ArtworkCode_Open : ArtworkCode;
 			if (CellRenderer.TryGetSprite(artCode, out var sprite)) {
 				var cell = CellRenderer.Draw(
 					sprite.GlobalID, X + Width / 2, Y, 500, 0, 0,

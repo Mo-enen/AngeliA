@@ -11,7 +11,7 @@ namespace Yaya {
 		private static readonly int CODE_DOCKED = "Chair Docked".AngeHash();
 
 		// Api
-		protected override int ArtworkCode_Single => DockPose == FittingPose.Single ? TrimedTypeID : CODE_DOCKED;
+		protected override int ArtworkCode_Single => DockPose == FittingPose.Single ? TypeID : CODE_DOCKED;
 		protected override RectInt RenderingRect => DockPose == FittingPose.Left ? base.RenderingRect.FlipHorizontal() : base.RenderingRect;
 
 		// Data

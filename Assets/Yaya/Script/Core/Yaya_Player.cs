@@ -313,7 +313,7 @@ namespace Yaya {
 			}
 
 			// Try Add Player
-			if (CurrentPlayer == null && TryAddEntity<ePlayer>(PlayerTypeID, pos.x, pos.y, out var player)) {
+			if (CurrentPlayer == null && TryAddEntity(PlayerTypeID, pos.x, pos.y, out var entity) && entity is ePlayer player) {
 				CurrentPlayer = player;
 			}
 

@@ -22,7 +22,7 @@ namespace Yaya {
 		public int Combo { get; private set; } = -1;
 
 		// Buff
-		public BuffString BulletName { get; private set; } = new("eDefaultBullet");
+		public BuffString BulletName { get; private set; } = new("DefaultBullet");
 		public BuffInt Duration { get; private set; } = new(12);
 		public BuffInt Colldown { get; private set; } = new(2);
 		public BuffInt ComboGap { get; private set; } = new(12);
@@ -41,7 +41,7 @@ namespace Yaya {
 
 		// Ser
 #pragma warning disable
-		[SerializeField] string _BulletName = "eDefaultBullet";
+		[SerializeField] string _BulletName = "DefaultBullet";
 		[SerializeField] int _Duration = 12;
 		[SerializeField] int _Colldown = 2;
 		[SerializeField] int _ComboGap = 12;
@@ -105,7 +105,7 @@ namespace Yaya {
 			if (frame < LastAttackFrame + Duration + Colldown) return false;
 			LastAttackFrame = frame;
 			// Spawn Bullet
-			if (Game.Current.TryAddEntity<eBullet>(BulletID, Source.X, Source.Y, out var bullet)) {
+			if (Game.Current.TryAddEntity(BulletID, Source.X, Source.Y, out var entity) && entity is eBullet bullet) {
 				bullet.Attackness = this;
 				bullet.Combo = Combo;
 			}

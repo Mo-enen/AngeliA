@@ -37,9 +37,9 @@ namespace Yaya {
 		public override bool InAir => base.InAir && !Movement.IsClimbing;
 		public override int CarrierSpeed => 0;
 		public bool TakingDamage => Game.GlobalFrame < Health.LastDamageFrame + Health.DamageStunDuration;
-		public int SleepAmount => Util.Remap(SleepFrame, SleepFrame + 90, 0, 1000, Game.GlobalFrame);
+		public int SleepAmount => Util.Remap(0, 90, 0, 1000, SleepFrame);
 		public int PassoutFrame { get; private set; } = int.MinValue;
-		public int SleepFrame { get; private set; } = int.MinValue;
+		public int SleepFrame { get; private set; } = 0;
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
 		public MovementState MovementState { get; private set; } = MovementState.Idle;
 		public Movement Movement { get; private set; } = null;
@@ -81,7 +81,6 @@ namespace Yaya {
 			Attackness.OnActived(this);
 			CharacterState = CharacterState.GamePlay;
 			PassoutFrame = int.MinValue;
-			SleepFrame = int.MinValue;
 		}
 
 
@@ -127,7 +126,8 @@ namespace Yaya {
 				case CharacterState.Sleep:
 					VelocityX = 0;
 					VelocityY = 0;
-					if (!Health.FullHealth && SleepAmount >= 1000) Health.Heal(Health.MaxHP);
+					SleepFrame++;
+					if (!Health.FullHealth && SleepFrame >= 1000) Health.Heal(Health.MaxHP);
 					break;
 				case CharacterState.Passout:
 					VelocityX = 0;
@@ -152,16 +152,7 @@ namespace Yaya {
 
 
 		public override void FrameUpdate () {
-			// Renderer
 			Renderer.FrameUpdate();
-			// Sleep
-			if (CharacterState == CharacterState.Sleep) {
-				int amount = SleepAmount;
-				if (amount < 1000) {
-
-
-				}
-			}
 			base.FrameUpdate();
 		}
 
@@ -198,7 +189,6 @@ namespace Yaya {
 
 		public void SetCharacterState (CharacterState state) {
 			if (CharacterState == state) return;
-			SleepFrame = int.MinValue;
 			PassoutFrame = int.MinValue;
 			switch (state) {
 				case CharacterState.GamePlay:
@@ -214,7 +204,7 @@ namespace Yaya {
 					break;
 				case CharacterState.Sleep:
 					CharacterState = CharacterState.Sleep;
-					SleepFrame = Game.GlobalFrame;
+					SleepFrame = 0;
 					break;
 				case CharacterState.Passout:
 					CharacterState = CharacterState.Passout;
