@@ -72,6 +72,12 @@ namespace Yaya {
 		}
 
 
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			CellRenderer.Draw(TypeID, Rect);
+		}
+
+
 		#endregion
 
 

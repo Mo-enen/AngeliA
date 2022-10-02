@@ -35,13 +35,10 @@ namespace Yaya {
 
 
 		// Const
-		private static readonly int[] METAL_CODE = new int[] { "Spring Metal 0".AngeHash(), "Spring Metal 1".AngeHash(), "Spring Metal 2".AngeHash(), "Spring Metal 3".AngeHash(), };
-		private static readonly int[] WOOD_CODE = new int[] { "Spring Wood 0".AngeHash(), "Spring Wood 1".AngeHash(), "Spring Wood 2".AngeHash(), "Spring Wood 3".AngeHash(), };
 		private static readonly int[] BOUNCE_ANI = new int[] { 0, 1, 2, 3, 3, 3, 3, 2, 2, 1, 1, 0, };
 		private static readonly Color RED = new(1f, 0.25f, 0.1f);
 		private const int BOUNCE_DELY = 0;
 		private const int BOUNCE_COOLDOWN = 1;
-		private const int METAL_LINE = 96;
 		private const int RED_LINE_MIN = 196;
 		private const int RED_LINE_MAX = 512;
 
@@ -51,7 +48,6 @@ namespace Yaya {
 		protected abstract int Power { get; }
 
 		// Short
-		private bool IsMetal => Power >= METAL_LINE;
 		private RectInt FullRect => new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE);
 
 		// Data
@@ -118,34 +114,19 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			var codes = IsMetal ? METAL_CODE : WOOD_CODE;
-			var tint = IsMetal ?
-				(Color32)Color.Lerp(Const.WHITE, RED, Mathf.InverseLerp(RED_LINE_MIN, RED_LINE_MAX, Power)) :
-				Const.WHITE;
+			var tint = (Color32)Color.Lerp(Const.WHITE, RED, Mathf.InverseLerp(RED_LINE_MIN, RED_LINE_MAX, Power));
 			if (Game.GlobalFrame < LastBounceFrame + BOUNCE_ANI.Length) {
 				CurrentArtworkFrame++;
 			} else {
 				CurrentArtworkFrame = 0;
 			}
 			int frame = CurrentArtworkFrame.UMod(BOUNCE_ANI.Length);
-			if (Horizontal) {
-                // Hori
-                CellRenderer.Draw(
-					globalID: codes[BOUNCE_ANI[frame]],
-					x: X + Const.CELL_SIZE / 2,
-					y: Y + Const.CELL_SIZE / 2,
-					pivotX: 500,
-					pivotY: 500,
-					rotation: BounceSide == Direction4.Left ? -90 : 90,
-					width: -Const.CELL_SIZE, height: Const.CELL_SIZE, color: tint
-				);
-			} else {
-                // Vert
-                CellRenderer.Draw(
-					codes[BOUNCE_ANI[frame]],
-                    X + Const.CELL_SIZE / 2, Y,
+			if (CellRenderer.TryGetSpriteFromGroup(TypeID, BOUNCE_ANI[frame], out var sprite, false, true)) {
+				CellRenderer.Draw(
+					sprite.GlobalID,
+					X + Const.CELL_SIZE / 2, Y,
 					500, 0, 0,
-                    Const.CELL_SIZE, Const.CELL_SIZE, tint
+					Const.CELL_SIZE, Const.CELL_SIZE, tint
 				);
 			}
 		}

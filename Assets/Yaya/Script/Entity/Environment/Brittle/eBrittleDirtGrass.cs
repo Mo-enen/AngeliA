@@ -8,7 +8,6 @@ namespace Yaya {
 	public class eBrittleDirtGrass : eBrittle {
 
 
-		private static readonly int DIRT_GRASS_CODE = "Dirt Grass Brittle".AngeHash();
 		protected override BreakMode BreakCondition => BreakMode.BreakOnCollideGround;
 		protected override int HoldDuration => 60;
 
@@ -24,10 +23,10 @@ namespace Yaya {
 			int frame = Game.GlobalFrame;
 			var tint = IsHolding || IsFalling ? new Color32(255, 196, 164, 255) : new Color32(255, 255, 255, 255);
 			int rot = IsHolding ? GetHoldedFrame(frame * 4).PingPong(12) - 6 : 0;
-            CellRenderer.Draw(
-                DIRT_GRASS_CODE,
-                X + OffsetX + Width / 2,
-                Y + OffsetY + Height / 2,
+			CellRenderer.Draw(
+				TypeID,
+				X + OffsetX + Width / 2,
+				Y + OffsetY + Height / 2,
 				500, 250, rot, Width, Const.CELL_SIZE,
 				tint
 			);

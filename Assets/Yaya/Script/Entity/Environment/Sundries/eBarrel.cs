@@ -12,12 +12,10 @@ namespace Yaya {
 		public override int PhysicsLayer => YayaConst.LAYER_ENVIRONMENT;
 		protected override bool DestroyWhenInsideGround => true;
 
-		private static readonly int BARREL_CODE = "Barrel".AngeHash();
-
 
 		public override void FrameUpdate () {
-			CellRenderer.Draw(BARREL_CODE, base.Rect);
 			base.FrameUpdate();
+			CellRenderer.Draw(TypeID, base.Rect);
 		}
 
 

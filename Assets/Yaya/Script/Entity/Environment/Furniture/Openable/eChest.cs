@@ -4,18 +4,22 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
-	public class eChest : eOpenableFurniture {
+	public class eChestWood : eChest {
+		private static readonly int CODE_OPEN = "ChestWood Open".AngeHash();
+		protected override int OpenCode => CODE_OPEN;
+	}
+	public class eChestIron : eChest {
+		private static readonly int CODE_OPEN = "ChestIcon Open".AngeHash();
+		protected override int OpenCode => CODE_OPEN;
+	}
+	public abstract class eChest : eOpenableFurniture {
 
-		private static readonly int CODE = "Chest".AngeHash();
-		private static readonly int CODE_OPEN = "Chest Open".AngeHash();
-
+		protected abstract int OpenCode { get; }
 		protected override Direction3 ModuleType => Direction3.None;
-		protected override int ArtworkCode_LeftDown => CODE;
-		protected override int ArtworkCode_Mid => CODE;
-		protected override int ArtworkCode_RightUp => CODE;
-		protected override int ArtworkCode_Single => Open ? CODE_OPEN : CODE;
-
-
+		protected override int ArtworkCode_LeftDown => TypeID;
+		protected override int ArtworkCode_Mid => TypeID;
+		protected override int ArtworkCode_RightUp => TypeID;
+		protected override int ArtworkCode_Single => Open ? OpenCode : TypeID;
 
 	}
 }
