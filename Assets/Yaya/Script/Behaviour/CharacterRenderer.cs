@@ -157,12 +157,7 @@ namespace Yaya {
 		private int LastRequireBounceFrame = int.MinValue;
 		private int BlinkingTime = int.MinValue;
 		private int DamagingTime = int.MinValue;
-		private int AnimationCode = 0;
-		private int AnimationFrame = 0;
-		private int AnimationLoopStart = 0;
 		private int PrevSleepAmount = 0;
-		private bool AnimationFlipX = false;
-		private bool AnimationFlipY = false;
 
 
 		#endregion
@@ -242,18 +237,6 @@ namespace Yaya {
 				case CharacterState.GamePlay:
 					DrawBody();
 					DrawFace();
-					break;
-				case CharacterState.Animate:
-					CellRenderer.Draw_Animation(
-						AnimationCode,
-						Character.X,
-						Character.Y,
-						500, 0, (int)TargetRotation,
-						AnimationFlipX ? Const.ORIGINAL_SIZE_NEGATAVE : Const.ORIGINAL_SIZE,
-						AnimationFlipY ? Const.ORIGINAL_SIZE_NEGATAVE : Const.ORIGINAL_SIZE,
-						AnimationFrame,
-						AnimationLoopStart
-					);
 					break;
 				case CharacterState.Sleep:
 					DrawSleep();
@@ -465,7 +448,10 @@ namespace Yaya {
 				cell.Y -= sprite.GlobalBorder.Down;
 				backCell.Y -= sprite.GlobalBorder.Down;
 			}
-			backCell.Color.a = 128;
+			backCell.Color.r = 128;
+			backCell.Color.g = 128;
+			backCell.Color.b = 128;
+			backCell.Color.a = 255;
 			// Fill
 			if (Character.SleepAmount < 1000) {
 				cell.Shift.Up = Util.Remap(90, 0, 0, 1000, Character.SleepFrame);
@@ -501,15 +487,6 @@ namespace Yaya {
 
 
 		public void Damage (int duration) => DamagingTime = Game.GlobalFrame + duration;
-
-
-		public void UpdateAnimation (int code, int frame, int loopStart = int.MinValue, bool flipX = false, bool flipY = false) {
-			AnimationCode = code;
-			AnimationFrame = frame;
-			AnimationLoopStart = loopStart;
-			AnimationFlipX = flipX;
-			AnimationFlipY = flipY;
-		}
 
 
 		#endregion

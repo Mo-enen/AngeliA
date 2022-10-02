@@ -93,7 +93,12 @@ namespace Yaya {
 
 		// API
 		public bool Invoke (Entity target) {
-			if (target is not eCharacter ch || !ch.IsGrounded) return false;
+			if (
+				target is not eCharacter ch ||
+				!ch.IsGrounded ||
+				ch.Movement.IsSquating ||
+				ch.Movement.IsClimbing
+			) return false;
 			ch.X = X + (Width - ch.Width) / 2 - ch.OffsetX;
 			ch.Y = Y;
 			Game.Current.SetViewZ(IsFrontDoor ? Game.Current.ViewZ - 1 : Game.Current.ViewZ + 1);

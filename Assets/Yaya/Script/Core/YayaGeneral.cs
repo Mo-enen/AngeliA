@@ -25,9 +25,8 @@ namespace Yaya {
 
 	public enum CharacterState {
 		GamePlay = 0,
-		Animate = 1,
-		Sleep = 2,
-		Passout = 3,
+		Sleep = 1,
+		Passout = 2,
 	}
 
 

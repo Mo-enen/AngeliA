@@ -96,9 +96,7 @@ namespace Yaya {
 			int frame = Game.GlobalFrame;
 
 			// Passout Check
-			if (Health.EmptyHealth) {
-				SetCharacterState(CharacterState.Passout);
-			}
+			if (Health.EmptyHealth) SetCharacterState(CharacterState.Passout);
 
 			// Behaviour
 			switch (CharacterState) {
@@ -117,11 +115,6 @@ namespace Yaya {
 						Movement.Update();
 					}
 					base.PhysicsUpdate();
-					break;
-				case CharacterState.Animate:
-
-
-
 					break;
 				case CharacterState.Sleep:
 					VelocityX = 0;
@@ -198,9 +191,6 @@ namespace Yaya {
 					}
 					CharacterState = CharacterState.GamePlay;
 					Action.Update();
-					break;
-				case CharacterState.Animate:
-					CharacterState = CharacterState.Animate;
 					break;
 				case CharacterState.Sleep:
 					CharacterState = CharacterState.Sleep;
