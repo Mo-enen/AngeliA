@@ -9,7 +9,7 @@ namespace Yaya {
 		protected override int OpenCode => CODE_OPEN;
 	}
 	public class eChestIron : eChest {
-		private static readonly int CODE_OPEN = "ChestIcon Open".AngeHash();
+		private static readonly int CODE_OPEN = "ChestIron Open".AngeHash();
 		protected override int OpenCode => CODE_OPEN;
 	}
 	public abstract class eChest : eOpenableFurniture {

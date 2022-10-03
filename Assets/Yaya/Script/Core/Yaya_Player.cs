@@ -211,25 +211,25 @@ namespace Yaya {
 			}
 
 			// Try Cancel Action
-			if (action.CurrentTarget != null) {
-				if (FrameInput.KeyDown(GameKey.Jump)) {
-					action.CancelInvoke();
-				}
+			if (action.CurrentTarget != null && FrameInput.KeyDown(GameKey.Jump)) {
+				action.CancelInvoke();
 				return;
 			}
 
 			// Try Perform Attack
-			bool attDown = FrameInput.KeyDown(GameKey.Action);
-			bool attHolding = FrameInput.KeyPressing(GameKey.Action) && attack.KeepTriggerWhenHold;
-			if (CurrentPlayer.CharacterState == CharacterState.GamePlay && (attDown || attHolding)) {
-				if (CurrentPlayer.IsAttackAllowedByMovement()) {
-					if (attack.CheckReady(!attDown)) {
-						attack.Attack();
-					} else if (attDown) {
-						AttackRequiringFrame = GlobalFrame;
+			if (CurrentPlayer.CharacterState == CharacterState.GamePlay) {
+				bool attDown = FrameInput.KeyDown(GameKey.Action);
+				bool attHolding = FrameInput.KeyPressing(GameKey.Action) && attack.KeepTriggerWhenHold;
+				if (attDown || attHolding) {
+					if (CurrentPlayer.IsAttackAllowedByMovement()) {
+						if (attack.CheckReady(!attDown)) {
+							attack.Attack();
+						} else if (attDown) {
+							AttackRequiringFrame = GlobalFrame;
+						}
 					}
+					return;
 				}
-				return;
 			}
 
 			// Perform Required Attack

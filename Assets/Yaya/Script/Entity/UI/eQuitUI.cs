@@ -15,6 +15,7 @@ namespace Yaya {
 		private static readonly int BUTTON_HIGHLIGHT = "Dialog Button Highlight".AngeHash();
 
 		// Api
+		protected override Vector2Int WindowSize => new(500, 200);
 		protected override int ButtonCount => 2;
 		protected override string Message => Language.Get(QUIT_MESSAGE);
 		protected override int ArtworkCode_Background => BACKGROUND;
@@ -30,7 +31,7 @@ namespace Yaya {
 
 		// Msg
 		protected override void UpdateForUI () {
-			if (!Game.IsPausing) {
+			if (!Game.Current.IsPausing) {
 				Active = false;
 				return;
 			}
@@ -40,7 +41,7 @@ namespace Yaya {
 
 		protected override void OnButtonClick (int index) {
 			if (index == 0) Application.Quit();
-			Game.IsPausing = false;
+			Game.Current.IsPausing = false;
 			base.OnButtonClick(index);
 		}
 		protected override Color32 GetButtonTint (int index) => index == 0 ? new(255, 64, 0, 255) : Const.WHITE;

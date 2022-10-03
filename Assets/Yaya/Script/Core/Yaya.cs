@@ -34,6 +34,8 @@ namespace Yaya {
 		private RectInt YayaCameraRect = default;
 		private eGamePadUI GamePadUI = null;
 		private eControlHintUI ControlHintUI = null;
+		private eQuitDialog QuitDialog = null;
+		private ePauseMenu PauseMenu = null;
 
 		// Saving
 		private readonly SavingBool ShowGamePadUI = new("Yaya.ShowGamePadUI", false);
@@ -52,6 +54,12 @@ namespace Yaya {
 		protected override void Initialize () {
 
 			base.Initialize();
+
+			GamePadUI = PeekOrGetEntity<eGamePadUI>();
+			ControlHintUI = PeekOrGetEntity<eControlHintUI>();
+			QuitDialog = PeekOrGetEntity<eQuitDialog>();
+			PauseMenu = PeekOrGetEntity<ePauseMenu>();
+
 			Initialize_Quit();
 			Initialize_YayaMeta();
 			Initialize_Player();
@@ -64,6 +72,10 @@ namespace Yaya {
 			FrameInput.AddCustomKey(KeyCode.Alpha4);
 			FrameInput.AddCustomKey(KeyCode.Alpha5);
 			FrameInput.AddCustomKey(KeyCode.Alpha6);
+			FrameInput.AddCustomKey(KeyCode.Alpha7);
+			FrameInput.AddCustomKey(KeyCode.Alpha8);
+			FrameInput.AddCustomKey(KeyCode.Alpha9);
+			FrameInput.AddCustomKey(KeyCode.Alpha0);
 
 		}
 
@@ -73,7 +85,7 @@ namespace Yaya {
 #if UNITY_EDITOR
 				if (UnityEditor.EditorApplication.isPlaying) return true;
 #endif
-				if (TryGetEntityInStage<eQuitDialog>(out _)) {
+				if (QuitDialog.Active) {
 					return true;
 				} else {
 					IsPausing = true;
@@ -177,11 +189,8 @@ namespace Yaya {
 			// Gamepad
 			if (ShowGamePadUI.Value) {
 				// Active
-				if (GamePadUI == null) {
-					if (TryGetEntityInStage<eGamePadUI>(out var gPad)) {
-						GamePadUI = gPad;
-					} else if (TryAddEntity(typeof(eGamePadUI).AngeHash(), 0, 0, out var gamepad)) {
-						GamePadUI = gamepad as eGamePadUI;
+				if (!GamePadUI.Active) {
+					if (TryAddEntity(typeof(eGamePadUI).AngeHash(), 0, 0, out _)) {
 						GamePadUI.X = 12;
 						GamePadUI.Y = 12;
 						GamePadUI.Width = 660;
@@ -199,21 +208,17 @@ namespace Yaya {
 						GamePadUI.PressingTint = new(0, 255, 0, 255);
 					}
 				}
-			} else if (GamePadUI != null) {
+			} else if (GamePadUI.Active) {
 				// Inactive
 				GamePadUI.Active = false;
-				GamePadUI = null;
 			}
 
 			// Ctrl Hint
 			if (ShowControlHint.Value && CurrentPlayer != null && CurrentPlayer.Active) {
 
 				// Spawn
-				if (ControlHintUI == null) {
-					if (TryGetEntityInStage<eControlHintUI>(out var cHint)) {
-						ControlHintUI = cHint;
-					} else if (TryAddEntity(typeof(eControlHintUI).AngeHash(), 0, 0, out var hintUI)) {
-						ControlHintUI = hintUI as eControlHintUI;
+				if (!ControlHintUI.Active) {
+					if (TryAddEntity(typeof(eControlHintUI).AngeHash(), 0, 0, out _)) {
 						ControlHintUI.X = 32;
 						ControlHintUI.Y = 32;
 					}
@@ -222,25 +227,24 @@ namespace Yaya {
 
 				// Y
 				int y = 32;
-				if (GamePadUI != null && GamePadUI.Active) {
+				if (GamePadUI.Active) {
 					y = Mathf.Max(GamePadUI.Y + GamePadUI.Height + 32, y);
 				}
 				ControlHintUI.Y = y;
 
-			} else if (ControlHintUI != null) {
+			} else if (ControlHintUI.Active) {
 				// Inactive
 				ControlHintUI.Active = false;
-				ControlHintUI = null;
 			}
 
 		}
 
 
-		// Override
+		// Pauseless
 		protected override void PauselessUpdate () {
 			base.PauselessUpdate();
 
-			// Pause
+			// Pause/Unpause
 			if (FrameInput.KeyDown(GameKey.Start)) {
 				IsPausing = !IsPausing;
 				if (IsPausing) {
@@ -250,19 +254,31 @@ namespace Yaya {
 				}
 			}
 
-			// Ctrl Hint
-			if (IsPausing && ControlHintUI != null && ControlHintUI.Active) {
-				ControlHintUI.FrameUpdate();
-			}
+			// Pausing
+			if (IsPausing) {
 
-			// Quit Dialog
-			if (IsPausing && TryGetEntityInStage<eQuitDialog>(out var dialog)) {
-				dialog.FrameUpdate();
+				// Update Entity
+				if (QuitDialog.Active) {
+					QuitDialog.FrameUpdate();
+				}
+				if (ControlHintUI.Active) {
+					ControlHintUI.FrameUpdate();
+				}
+				if (!PauseMenu.Active) {
+					TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
+				}
+				if (PauseMenu.Active) {
+					PauseMenu.FrameUpdate();
+				}
+
+			} else {
+				if (PauseMenu.Active) PauseMenu.Active = false;
 			}
 
 		}
 
 
+		// Misc
 		public override void SetViewZ (int newZ) {
 			base.SetViewZ(newZ);
 			if (CurrentPlayer != null && CurrentPlayer.Active) {

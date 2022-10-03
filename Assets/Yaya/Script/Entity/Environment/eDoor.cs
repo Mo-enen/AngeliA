@@ -106,7 +106,7 @@ namespace Yaya {
 		}
 
 
-		public bool CancelInvoke (Entity target) => false;
+		public void CancelInvoke (Entity target) { }
 
 
 	}

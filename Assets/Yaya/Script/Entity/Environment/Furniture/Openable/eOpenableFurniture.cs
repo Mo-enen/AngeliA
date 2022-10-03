@@ -28,10 +28,8 @@ namespace Yaya {
 		}
 
 
-		public bool CancelInvoke (Entity target) {
-			if (!Open) return false;
-			SetOpen(false);
-			return true;
+		public void CancelInvoke (Entity target) {
+			if (Open) SetOpen(false);
 		}
 
 

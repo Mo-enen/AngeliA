@@ -171,7 +171,8 @@ namespace Yaya {
 
 
 		// Behavior
-		public bool IsAttackAllowedByMovement () => (Attackness.AttackInAir || !InAir) &&
+		public bool IsAttackAllowedByMovement () =>
+			(Attackness.AttackInAir || !InAir) &&
 			(Attackness.AttackInWater || !InWater) &&
 			(Attackness.AttackWhenClimbing || !Movement.IsClimbing) &&
 			(Attackness.AttackWhenFlying || !Movement.IsFlying) &&

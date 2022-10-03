@@ -106,7 +106,7 @@ namespace Yaya {
 		}
 
 
-		public bool CancelInvoke () => CurrentTarget != null && CurrentTarget.CancelInvoke(Source);
+		public void CancelInvoke () => CurrentTarget?.CancelInvoke(Source);
 
 
 		#endregion

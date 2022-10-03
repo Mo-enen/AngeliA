@@ -30,6 +30,7 @@ namespace Yaya {
 
 		// Data
 		private static readonly Dictionary<int, int> TypeHintMap = new();
+		private static readonly List<eDialogUI> Dialogs = new();
 		private int PositionY = 0;
 		private Int4 Border_Keyboard = default;
 		private Int4 Border_Gamepad = default;
@@ -50,6 +51,13 @@ namespace Yaya {
 				if (Language.Has(id)) {
 					TypeHintMap.TryAdd(type.AngeHash(), id);
 				}
+			}
+			// Dialogs
+			Dialogs.Clear();
+			foreach (var type in typeof(eDialogUI).AllChildClass()) {
+				int id = type.AngeHash();
+				var dialog = Game.Current.PeekOrGetEntity(id);
+				Dialogs.Add(dialog as eDialogUI);
 			}
 		}
 
@@ -78,51 +86,59 @@ namespace Yaya {
 
 			PositionY = Y + CellRenderer.CameraRect.y;
 
-			if (!Game.IsPausing) {
-				// Game Playing
-				switch (Player.CharacterState) {
-
-					case CharacterState.GamePlay: {
-						// Move
-						DrawKey(GameKey.Left, GameKey.Right, HINT_MOVE_CODE);
-						// Action & Jump
-						if (Player.Action.CurrentTarget is Entity target && target is IActionEntity iAct) {
-							// Action Target
-							if (target is eOpenableFurniture open && open.Open) {
-								DrawKey(iAct.InvokeKey, YayaConst.UI_OK);
-								DrawKey(GameKey.Jump, HINT_CANCEL_CODE);
-							} else {
-								if (TypeHintMap.TryGetValue(target.TypeID, out int code)) {
-									DrawKey(iAct.InvokeKey, code);
-								} else {
-									DrawKey(iAct.InvokeKey, HINT_USE_CODE);
-								}
-							}
-						} else {
-							// General
-							DrawKey(GameKey.Action, HINT_ATTACK_CODE);
-							DrawKey(GameKey.Jump, HINT_JUMP_CODE);
-						}
-						break;
-					}
-
-					case CharacterState.Sleep: {
-						int x = Player.X;
-						int y = Player.GlobalBounds.yMax;
-						DrawKey(x, y, GameKey.Action, HINT_WAKE_CODE, true, true);
-						DrawKey(GameKey.Action, HINT_WAKE_CODE);
-						break;
-					}
-
-				}
-
-			} else {
-				// Pausing
-				DrawKey(GameKey.Start, HINT_UNPAUSE_CODE);
-				if (Game.Current.TryGetEntityInStage<eQuitDialog>(out _)) {
+			// Dialog Hint
+			foreach (var dialog in Dialogs) {
+				if (dialog.Active) {
 					DrawKey(GameKey.Left, GameKey.Right, HINT_MOVE_CODE);
 					DrawKey(GameKey.Action, YayaConst.UI_OK);
+					DrawKey(GameKey.Start, YayaConst.UI_CANCEL);
+					return;
 				}
+			}
+
+			// Pausing
+			if (Game.Current.IsPausing) {
+				DrawKey(GameKey.Up, GameKey.Down, HINT_MOVE_CODE);
+				DrawKey(GameKey.Action, YayaConst.UI_OK);
+				DrawKey(GameKey.Start, HINT_UNPAUSE_CODE);
+				return;
+			}
+
+			// Game Playing
+			switch (Player.CharacterState) {
+
+				case CharacterState.GamePlay: {
+					// Move
+					DrawKey(GameKey.Left, GameKey.Right, HINT_MOVE_CODE);
+					// Action & Jump
+					if (Player.Action.CurrentTarget is Entity target && target is IActionEntity iAct) {
+						// Action Target
+						if (target is eOpenableFurniture open && open.Open) {
+							DrawKey(iAct.InvokeKey, YayaConst.UI_OK);
+							DrawKey(GameKey.Jump, HINT_CANCEL_CODE);
+						} else {
+							if (TypeHintMap.TryGetValue(target.TypeID, out int code)) {
+								DrawKey(iAct.InvokeKey, code);
+							} else {
+								DrawKey(iAct.InvokeKey, HINT_USE_CODE);
+							}
+						}
+					} else {
+						// General
+						DrawKey(GameKey.Action, HINT_ATTACK_CODE);
+						DrawKey(GameKey.Jump, HINT_JUMP_CODE);
+					}
+					break;
+				}
+
+				case CharacterState.Sleep: {
+					int x = Player.X;
+					int y = Player.GlobalBounds.yMax;
+					DrawKey(x, y, GameKey.Action, HINT_WAKE_CODE, true, true);
+					DrawKey(GameKey.Action, HINT_WAKE_CODE);
+					break;
+				}
+
 			}
 
 		}
