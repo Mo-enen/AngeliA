@@ -5,8 +5,9 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[EntityAttribute.EntityCapacity(1)]
-	public class eGamePadUI : eYayaScreenUI {
+	[EntityAttribute.DontDespawnWhenOutOfRange]
+	[EntityAttribute.DontDestroyOnSquadTransition]
+	public class eGamePadUI : UI {
 
 		private static readonly int BodyCode = "GamePad Body".AngeHash();
 		private static readonly int DPadDownCode = "GamePad Down".AngeHash();

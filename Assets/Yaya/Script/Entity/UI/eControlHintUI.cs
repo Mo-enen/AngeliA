@@ -5,7 +5,9 @@ using UnityEngine;
 
 
 namespace Yaya {
-	public class eControlHintUI : eYayaScreenUI, IInitialize {
+	[EntityAttribute.DontDespawnWhenOutOfRange]
+	[EntityAttribute.DontDestroyOnSquadTransition]
+	public class eControlHintUI : UI, IInitialize {
 
 
 		// Const
@@ -30,7 +32,7 @@ namespace Yaya {
 
 		// Data
 		private static readonly Dictionary<int, int> TypeHintMap = new();
-		private static readonly List<eDialogUI> Dialogs = new();
+		private static readonly List<DialogUI> Dialogs = new();
 		private int PositionY = 0;
 		private Int4 Border_Keyboard = default;
 		private Int4 Border_Gamepad = default;
@@ -54,10 +56,10 @@ namespace Yaya {
 			}
 			// Dialogs
 			Dialogs.Clear();
-			foreach (var type in typeof(eDialogUI).AllChildClass()) {
+			foreach (var type in typeof(DialogUI).AllChildClass()) {
 				int id = type.AngeHash();
 				var dialog = Game.Current.PeekOrGetEntity(id);
-				Dialogs.Add(dialog as eDialogUI);
+				Dialogs.Add(dialog as DialogUI);
 			}
 		}
 

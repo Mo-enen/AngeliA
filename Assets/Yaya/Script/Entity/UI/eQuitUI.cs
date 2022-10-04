@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class eQuitDialog : eDialogUI {
+	public class eQuitDialog : DialogUI {
 
 
 		// Const
@@ -22,7 +22,6 @@ namespace Yaya {
 		protected override int ArtworkCode_Button => BUTTON;
 		protected override int ArtworkCode_Button_Highlight => BUTTON_HIGHLIGHT;
 		protected override Color32 BackMaskTint => new(0, 0, 0, 128);
-		protected override int LayerID => YayaConst.SHADER_UI;
 
 
 		// Override

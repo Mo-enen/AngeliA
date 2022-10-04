@@ -264,6 +264,9 @@ namespace Yaya {
 				if (ControlHintUI.Active) {
 					ControlHintUI.FrameUpdate();
 				}
+				if (GamePadUI.Active) {
+					GamePadUI.FrameUpdate();
+				}
 				if (!PauseMenu.Active) {
 					TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
 				}
