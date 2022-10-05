@@ -1,4 +1,5 @@
-﻿ActionHint.eBed:Sleep
+﻿Menu.Pause.Keyboard:Keyboard
+ActionHint.eBed:Sleep
 ActionHint.eDoor:Enter
 ActionHint.eOpenableFurniture:Open
 ActionHint.ePhoto:Switch
@@ -7,10 +8,12 @@ CtrlHint.Cancel:Cancel
 CtrlHint.Jump:Jump
 CtrlHint.Move:Move
 CtrlHint.Pause:Pause
-CtrlHint.UnPause:UnPause
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
+UI.Back:Back
 UI.Cancel:Cancel
+UI.Continue:Continue
 UI.OK:OK
 UI.Quit:Quit
 UI.QuitMessage:Quit game now？
+UI.Setting:Setting

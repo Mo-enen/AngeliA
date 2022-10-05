@@ -86,6 +86,9 @@ namespace Yaya {
 		public static readonly int UI_OK = "UI.OK".AngeHash();
 		public static readonly int UI_QUIT = "UI.Quit".AngeHash();
 		public static readonly int UI_CANCEL = "UI.Cancel".AngeHash();
+		public static readonly int UI_SETTING = "UI.Setting".AngeHash();
+		public static readonly int UI_CONTINUE = "UI.Continue".AngeHash();
+		public static readonly int UI_BACK = "UI.Back".AngeHash();
 
 		// Step
 		public const int STEP_DEFAULT = 0;

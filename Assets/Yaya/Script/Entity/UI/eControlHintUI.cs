@@ -21,7 +21,6 @@ namespace Yaya {
 		private static readonly int HINT_USE_CODE = "CtrlHint.Use".AngeHash();
 		private static readonly int HINT_WAKE_CODE = "CtrlHint.WakeUp".AngeHash();
 		private static readonly int HINT_CANCEL_CODE = "CtrlHint.Cancel".AngeHash();
-		private static readonly int HINT_UNPAUSE_CODE = "CtrlHint.UnPause".AngeHash();
 
 		// Api
 		public ePlayer Player { get; set; } = null;
@@ -32,7 +31,7 @@ namespace Yaya {
 
 		// Data
 		private static readonly Dictionary<int, int> TypeHintMap = new();
-		private static readonly List<DialogUI> Dialogs = new();
+		private static readonly List<Entity> Listening = new();
 		private int PositionY = 0;
 		private Int4 Border_Keyboard = default;
 		private Int4 Border_Gamepad = default;
@@ -54,12 +53,19 @@ namespace Yaya {
 					TypeHintMap.TryAdd(type.AngeHash(), id);
 				}
 			}
-			// Dialogs
-			Dialogs.Clear();
+			// Listening
+			Listening.Clear();
 			foreach (var type in typeof(DialogUI).AllChildClass()) {
 				int id = type.AngeHash();
-				var dialog = Game.Current.PeekOrGetEntity(id);
-				Dialogs.Add(dialog as DialogUI);
+				var e = Game.Current.PeekOrGetEntity(id);
+				if (e == null) continue;
+				Listening.Add(e);
+			}
+			foreach (var type in typeof(MenuUI).AllChildClass()) {
+				int id = type.AngeHash();
+				var e = Game.Current.PeekOrGetEntity(id);
+				if (e == null) continue;
+				Listening.Add(e);
 			}
 		}
 
@@ -84,27 +90,28 @@ namespace Yaya {
 		protected override void UpdateForUI () {
 
 			if (Player == null || !Player.Active) return;
-			if (FrameStep.HasStep<sOpening>() || FrameStep.HasStep<sFadeOut>()) return;
+			if (FrameStep.HasStep<sOpening>()) return;
 
 			PositionY = Y + CellRenderer.CameraRect.y;
 
-			// Dialog Hint
-			foreach (var dialog in Dialogs) {
-				if (dialog.Active) {
-					DrawKey(GameKey.Left, GameKey.Right, HINT_MOVE_CODE);
-					DrawKey(GameKey.Action, YayaConst.UI_OK);
-					DrawKey(GameKey.Start, YayaConst.UI_CANCEL);
-					return;
+			// Listening Hint
+			foreach (var e in Listening) {
+				if (!e.Active) continue;
+				switch (e) {
+					case DialogUI:
+						DrawKey(GameKey.Left, GameKey.Right, HINT_MOVE_CODE);
+						DrawKey(GameKey.Action, YayaConst.UI_OK);
+						DrawKey(GameKey.Start, YayaConst.UI_CANCEL);
+						break;
+					case MenuUI:
+						DrawKey(GameKey.Down, GameKey.Up, HINT_MOVE_CODE);
+						DrawKey(GameKey.Action, YayaConst.UI_OK);
+						DrawKey(GameKey.Start, YayaConst.UI_CANCEL);
+						break;
 				}
 			}
 
-			// Pausing
-			if (Game.Current.IsPausing) {
-				DrawKey(GameKey.Up, GameKey.Down, HINT_MOVE_CODE);
-				DrawKey(GameKey.Action, YayaConst.UI_OK);
-				DrawKey(GameKey.Start, HINT_UNPAUSE_CODE);
-				return;
-			}
+			if (Game.Current.IsPausing) return;
 
 			// Game Playing
 			switch (Player.CharacterState) {
@@ -205,7 +212,7 @@ namespace Yaya {
 			rect.width = 1;
 			CellRenderer.DrawLabel(
 				Language.Get(labelID),
-				rect, Tint, TextSize, out var bounds, 0, 0, false, Alignment.MidLeft
+				rect, Tint, TextSize, out var bounds, Alignment.MidLeft, false
 			);
 			if (bgCell != null) {
 				bgCell.Y = Mathf.Min(bgCell.Y, bounds.y - BG_PADDING_Y);

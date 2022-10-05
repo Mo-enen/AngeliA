@@ -64,8 +64,7 @@ namespace Yaya {
 			Initialize_YayaMeta();
 			Initialize_Player();
 
-
-
+			FrameInput.AddCustomKey(KeyCode.F2);
 			FrameInput.AddCustomKey(KeyCode.Alpha1);
 			FrameInput.AddCustomKey(KeyCode.Alpha2);
 			FrameInput.AddCustomKey(KeyCode.Alpha3);
@@ -249,6 +248,9 @@ namespace Yaya {
 				IsPausing = !IsPausing;
 				if (IsPausing) {
 					AudioPlayer.Pause();
+					if (!PauseMenu.Active) {
+						TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
+					}
 				} else {
 					AudioPlayer.UnPause();
 				}
@@ -266,9 +268,6 @@ namespace Yaya {
 				}
 				if (GamePadUI.Active) {
 					GamePadUI.FrameUpdate();
-				}
-				if (!PauseMenu.Active) {
-					TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
 				}
 				if (PauseMenu.Active) {
 					PauseMenu.FrameUpdate();

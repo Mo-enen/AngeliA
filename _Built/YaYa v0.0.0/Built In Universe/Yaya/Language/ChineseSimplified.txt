@@ -1,4 +1,5 @@
-﻿ActionHint.eBed:睡觉
+﻿Menu.Pause.Keyboard:按键分配
+ActionHint.eBed:睡觉
 ActionHint.eDoor:进门
 ActionHint.eOpenableFurniture:打开
 ActionHint.ePhoto:切换
@@ -7,10 +8,12 @@ CtrlHint.Cancel:取消
 CtrlHint.Jump:跳跃
 CtrlHint.Move:移动
 CtrlHint.Pause:暂停
-CtrlHint.UnPause:继续
 CtrlHint.Use:使用
 CtrlHint.WakeUp:起床
+UI.Back:返回
 UI.Cancel:取消
+UI.Continue:继续
 UI.OK:确定
 UI.Quit:退出
 UI.QuitMessage:是否要退出游戏？
+UI.Setting:设置

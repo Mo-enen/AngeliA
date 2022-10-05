@@ -53,9 +53,6 @@ namespace Yaya {
 			}
 			SwitchPlayer(firstPlayerID, false);
 
-			// Gamepad UI
-			FrameInput.AddCustomKey(KeyCode.F2);
-
 			// Open the Game !!
 			FrameStep.AddToLast(new sOpening() {
 				ViewX = VIEW_X,

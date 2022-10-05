@@ -29,6 +29,14 @@ namespace Yaya {
 
 
 		// Msg
+		public override void OnActived () {
+			base.OnActived();
+			if (Game.Current.TryGetEntityInStage<ePauseMenu>(out var menu)) {
+				menu.Active = false;
+			}
+		}
+
+
 		protected override void UpdateForUI () {
 			if (!Game.Current.IsPausing) {
 				Active = false;
@@ -39,9 +47,12 @@ namespace Yaya {
 
 
 		protected override void OnButtonClick (int index) {
-			if (index == 0) Application.Quit();
-			Game.Current.IsPausing = false;
-			base.OnButtonClick(index);
+			if (index == 0) {
+				Application.Quit();
+			} else {
+				Game.Current.IsPausing = false;
+				base.OnButtonClick(index);
+			}
 		}
 		protected override Color32 GetButtonTint (int index) => index == 0 ? new(255, 64, 0, 255) : Const.WHITE;
 		protected override Color32 GetButtonLabelTint (int index) => index == 0 ? Const.WHITE : new(16, 16, 16, 255);
