@@ -45,6 +45,7 @@ namespace Yaya {
 
 
 		public static readonly int DEFAULT_PARTICLE_CODE = typeof(eDefaultParticle).AngeHash();
+		public const int MAP_VERSION = 0;
 
 		// Render
 		public const int SHADER_LERP = 0;

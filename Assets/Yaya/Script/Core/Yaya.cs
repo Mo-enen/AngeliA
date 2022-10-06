@@ -244,7 +244,7 @@ namespace Yaya {
 			base.PauselessUpdate();
 
 			// Pause/Unpause
-			if (FrameInput.KeyDown(GameKey.Start)) {
+			if (FrameInput.GetKeyDown(GameKey.Start)) {
 				IsPausing = !IsPausing;
 				if (IsPausing) {
 					AudioPlayer.Pause();
@@ -297,7 +297,7 @@ namespace Yaya {
 		#region --- PRO ---
 
 
-		protected override WorldSquad CreateWorldSquad () => new YayaWorldSquad(Universe.MapRoot);
+		protected override WorldSquad CreateWorldSquad () => new YayaWorldSquad();
 
 
 		protected override void BeforeViewZChange (int newZ) {

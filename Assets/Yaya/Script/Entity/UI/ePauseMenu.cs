@@ -16,12 +16,14 @@ namespace Yaya {
 		// VAR
 		private static readonly int MENU_SELECTION_CODE = "Menu Selection Mark".AngeHash();
 		private static readonly int MENU_MORE_CODE = "Menu More Mark".AngeHash();
+		private static readonly int MENU_ARROW_MARK = "Menu Arrow Mark".AngeHash();
 		private static readonly int MENU_KEYBOARD = "Menu.Pause.Keyboard".AngeHash();
 
 		protected override Int4 ContentPadding => new(32, 32, 46, 46);
 		protected override Color32 ScreenTint => new(0, 0, 0, 128);
 		protected override int SelectionMarkCode => MENU_SELECTION_CODE;
 		protected override int MoreItemMarkCode => MENU_MORE_CODE;
+		protected override int ArrowMarkCode => MENU_ARROW_MARK;
 		protected override int TargetItemCount => Mode == MenuMode.Pause ? 4 : 7;
 
 		private MenuMode Mode = MenuMode.Pause;
@@ -39,6 +41,7 @@ namespace Yaya {
 			X = cameraRect.x + cameraRect.width / 2 - 250 * UNIT;
 			Y = cameraRect.y + cameraRect.height / 2 - 150 * UNIT;
 			Width = 400 * UNIT;
+			FrameInput.IgnoreMouseForThisFrame();
 			base.FrameUpdate();
 		}
 
@@ -105,8 +108,6 @@ namespace Yaya {
 				SetSelection(1);
 			}
 		}
-
-
 
 
 	}

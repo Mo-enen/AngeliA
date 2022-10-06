@@ -33,7 +33,7 @@ namespace Yaya.Editor {
 			var allCpPool = new HashSet<Vector3Int>();
 			foreach (var file in Util.GetFilesIn(game.Universe.MapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
 				try {
-					if (!world.LoadFromDisk(file.FullName)) continue;
+					if (!world.EditorOnly_LoadFromDisk(file.FullName)) continue;
 					for (int i = 0; i < Const.MAP_SIZE * Const.MAP_SIZE; i++) {
 						if (world.Entities[i] != TARGET_ID) continue;
 						allCpPool.Add(new Vector3Int(

@@ -101,7 +101,7 @@ namespace Yaya {
 
 		public bool Invoke () {
 			if (CurrentTarget == null) return false;
-			if (Source is ePlayer && !FrameInput.KeyDown(CurrentTarget.InvokeKey)) return false;
+			if (Source is ePlayer && !FrameInput.GetKeyDown(CurrentTarget.InvokeKey)) return false;
 			return CurrentTarget.Invoke(Source);
 		}
 

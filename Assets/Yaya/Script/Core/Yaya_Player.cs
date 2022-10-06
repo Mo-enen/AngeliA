@@ -95,7 +95,7 @@ namespace Yaya {
 				CurrentPlayer != null && CurrentPlayer.Active &&
 				CurrentPlayer.CharacterState == CharacterState.Passout &&
 				GlobalFrame > CurrentPlayer.PassoutFrame + 48 &&
-				FrameInput.KeyDown(GameKey.Action) &&
+				FrameInput.GetKeyDown(GameKey.Action) &&
 				!FrameStep.HasStep<sOpening>()
 			) {
 				FrameStep.AddToLast(new sFadeOut());
@@ -117,7 +117,7 @@ namespace Yaya {
 			var y = Direction3.None;
 
 			// Left
-			if (FrameInput.KeyPressing(GameKey.Left)) {
+			if (FrameInput.GetKey(GameKey.Left)) {
 				if (LeftDownFrame < 0) {
 					LeftDownFrame = frame;
 					AttackRequiringFrame = int.MinValue;
@@ -130,7 +130,7 @@ namespace Yaya {
 			}
 
 			// Right
-			if (FrameInput.KeyPressing(GameKey.Right)) {
+			if (FrameInput.GetKey(GameKey.Right)) {
 				if (RightDownFrame < 0) {
 					RightDownFrame = frame;
 					AttackRequiringFrame = int.MinValue;
@@ -143,7 +143,7 @@ namespace Yaya {
 			}
 
 			// Down
-			if (FrameInput.KeyPressing(GameKey.Down)) {
+			if (FrameInput.GetKey(GameKey.Down)) {
 				if (DownDownFrame < 0) {
 					DownDownFrame = frame;
 					AttackRequiringFrame = int.MinValue;
@@ -156,7 +156,7 @@ namespace Yaya {
 			}
 
 			// Up
-			if (FrameInput.KeyPressing(GameKey.Up)) {
+			if (FrameInput.GetKey(GameKey.Up)) {
 				if (UpDownFrame < 0) {
 					UpDownFrame = frame;
 					AttackRequiringFrame = int.MinValue;
@@ -178,11 +178,11 @@ namespace Yaya {
 
 			var movement = CurrentPlayer.Movement;
 			var attack = CurrentPlayer.Attackness;
-			movement.HoldJump(FrameInput.KeyPressing(GameKey.Jump));
-			if (FrameInput.KeyDown(GameKey.Jump)) {
+			movement.HoldJump(FrameInput.GetKey(GameKey.Jump));
+			if (FrameInput.GetKeyDown(GameKey.Jump)) {
 				// Movement Jump
 				movement.Jump();
-				if (FrameInput.KeyPressing(GameKey.Down)) {
+				if (FrameInput.GetKey(GameKey.Down)) {
 					movement.Dash();
 				}
 				AttackRequiringFrame = int.MinValue;
@@ -190,7 +190,7 @@ namespace Yaya {
 					attack.CancelAttack();
 				}
 			}
-			if (FrameInput.KeyDown(GameKey.Down)) {
+			if (FrameInput.GetKeyDown(GameKey.Down)) {
 				movement.Pound();
 			}
 		}
@@ -208,15 +208,15 @@ namespace Yaya {
 			}
 
 			// Try Cancel Action
-			if (action.CurrentTarget != null && FrameInput.KeyDown(GameKey.Jump)) {
+			if (action.CurrentTarget != null && FrameInput.GetKeyDown(GameKey.Jump)) {
 				action.CancelInvoke();
 				return;
 			}
 
 			// Try Perform Attack
 			if (CurrentPlayer.CharacterState == CharacterState.GamePlay) {
-				bool attDown = FrameInput.KeyDown(GameKey.Action);
-				bool attHolding = FrameInput.KeyPressing(GameKey.Action) && attack.KeepTriggerWhenHold;
+				bool attDown = FrameInput.GetKeyDown(GameKey.Action);
+				bool attHolding = FrameInput.GetKey(GameKey.Action) && attack.KeepTriggerWhenHold;
 				if (attDown || attHolding) {
 					if (CurrentPlayer.IsAttackAllowedByMovement()) {
 						if (attack.CheckReady(!attDown)) {
@@ -239,7 +239,7 @@ namespace Yaya {
 
 		private void UpdatePlayer_Sleep () {
 			if (FrameStep.HasStep<sOpening>()) return;
-			if (FrameInput.KeyDown(GameKey.Action) || FrameInput.KeyDown(GameKey.Jump)) {
+			if (FrameInput.GetKeyDown(GameKey.Action) || FrameInput.GetKeyDown(GameKey.Jump)) {
 				CurrentPlayer.SetCharacterState(CharacterState.GamePlay);
 				CurrentPlayer.Y -= 2;
 			}

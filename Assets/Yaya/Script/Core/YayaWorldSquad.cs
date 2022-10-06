@@ -68,9 +68,6 @@ namespace Yaya {
 
 
 		// API
-		public YayaWorldSquad (string mapRoot) : base(mapRoot) { }
-
-
 		protected override void DrawBackgroundBlock (int id, int unitX, int unitY) {
 			base.DrawBackgroundBlock(id, unitX, unitY);
 			if (!Behind) {
