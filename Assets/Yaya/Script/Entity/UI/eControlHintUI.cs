@@ -55,12 +55,6 @@ namespace Yaya {
 			}
 			// Listening
 			Listening.Clear();
-			foreach (var type in typeof(DialogUI).AllChildClass()) {
-				int id = type.AngeHash();
-				var e = Game.Current.PeekOrGetEntity(id);
-				if (e == null) continue;
-				Listening.Add(e);
-			}
 			foreach (var type in typeof(MenuUI).AllChildClass()) {
 				int id = type.AngeHash();
 				var e = Game.Current.PeekOrGetEntity(id);
@@ -98,11 +92,6 @@ namespace Yaya {
 			foreach (var e in Listening) {
 				if (!e.Active) continue;
 				switch (e) {
-					case DialogUI:
-						DrawKey(GameKey.Left, GameKey.Right, HINT_MOVE_CODE);
-						DrawKey(GameKey.Action, YayaConst.UI_OK);
-						DrawKey(GameKey.Start, YayaConst.UI_CANCEL);
-						break;
 					case MenuUI:
 						DrawKey(GameKey.Down, GameKey.Up, HINT_MOVE_CODE);
 						DrawKey(GameKey.Action, YayaConst.UI_OK);

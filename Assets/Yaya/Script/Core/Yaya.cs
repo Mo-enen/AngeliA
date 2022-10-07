@@ -34,7 +34,6 @@ namespace Yaya {
 		private RectInt YayaCameraRect = default;
 		private eGamePadUI GamePadUI = null;
 		private eControlHintUI ControlHintUI = null;
-		private eQuitDialog QuitDialog = null;
 		private ePauseMenu PauseMenu = null;
 
 		// Saving
@@ -57,7 +56,6 @@ namespace Yaya {
 
 			GamePadUI = PeekOrGetEntity<eGamePadUI>();
 			ControlHintUI = PeekOrGetEntity<eControlHintUI>();
-			QuitDialog = PeekOrGetEntity<eQuitDialog>();
 			PauseMenu = PeekOrGetEntity<ePauseMenu>();
 
 			Initialize_Quit();
@@ -84,11 +82,12 @@ namespace Yaya {
 #if UNITY_EDITOR
 				if (UnityEditor.EditorApplication.isPlaying) return true;
 #endif
-				if (QuitDialog.Active) {
+				if (IsPausing && PauseMenu.QuitMode) {
 					return true;
 				} else {
 					IsPausing = true;
-					TryAddEntity(typeof(eQuitDialog).AngeHash(), 0, 0, out _);
+					TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
+					PauseMenu.SetAsQuitMode();
 					return false;
 				}
 			};
@@ -130,8 +129,7 @@ namespace Yaya {
 				SetViewZ(ViewZ - 1);
 			}
 			if (FrameInput.CustomKeyDown(KeyCode.Alpha3)) {
-				IsPausing = true;
-				TryAddEntity(typeof(eQuitDialog).AngeHash(), 0, 0, out _);
+
 			}
 			if (FrameInput.CustomKeyDown(KeyCode.Alpha4)) {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
@@ -250,6 +248,7 @@ namespace Yaya {
 					AudioPlayer.Pause();
 					if (!PauseMenu.Active) {
 						TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
+						PauseMenu.SetAsPauseMode();
 					}
 				} else {
 					AudioPlayer.UnPause();
@@ -260,9 +259,6 @@ namespace Yaya {
 			if (IsPausing) {
 
 				// Update Entity
-				if (QuitDialog.Active) {
-					QuitDialog.FrameUpdate();
-				}
 				if (ControlHintUI.Active) {
 					ControlHintUI.FrameUpdate();
 				}
