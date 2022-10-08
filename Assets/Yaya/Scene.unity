@@ -173,7 +173,6 @@ MonoBehaviour:
     PausingTint: 
     EntityCapacity: 2048
     SoundFxCount: 6
-    GraphicFramerate: 120
     LogicFramerate: 60
     LogicFramerateLag: 30
     LagSimulation_EntityMin: 1600

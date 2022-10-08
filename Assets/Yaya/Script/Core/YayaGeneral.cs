@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 
@@ -95,7 +96,23 @@ namespace Yaya {
 		public const int STEP_DEFAULT = 0;
 		public const int STEP_ANIMATION = 1;
 
+		public static readonly Dictionary<GamepadButton, int> GAMEPAD_CODE = new() {
+			{ GamepadButton.DpadLeft, "k_Gamepad Left".AngeHash()},
+			{ GamepadButton.DpadRight, "k_Gamepad Right".AngeHash()},
+			{ GamepadButton.DpadUp, "k_Gamepad Up".AngeHash()},
+			{ GamepadButton.DpadDown, "k_Gamepad Down".AngeHash()},
+			{ GamepadButton.South, "k_Gamepad South".AngeHash()},
+			{ GamepadButton.North, "k_Gamepad North".AngeHash()},
+			{ GamepadButton.East, "k_Gamepad East".AngeHash()},
+			{ GamepadButton.West, "k_Gamepad West".AngeHash()},
+			{ GamepadButton.Select, "k_Gamepad Select".AngeHash()},
+			{ GamepadButton.Start, "k_Gamepad Start".AngeHash()},
 
+			{ GamepadButton.LeftTrigger, "k_Gamepad LeftTrigger".AngeHash()},
+			{ GamepadButton.RightTrigger, "k_Gamepad RightTrigger".AngeHash()},
+			{ GamepadButton.LeftShoulder, "k_Gamepad LeftShoulder".AngeHash()},
+			{ GamepadButton.RightShoulder, "k_Gamepad RightShoulder".AngeHash()},
+		};
 	}
 
 

@@ -1,8 +1,8 @@
-﻿Menu.Pause.Keyboard:Keyboard
-ActionHint.eBed:Sleep
+﻿ActionHint.eBed:Sleep
 ActionHint.eDoor:Enter
 ActionHint.eOpenableFurniture:Open
 ActionHint.ePhoto:Switch
+CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Cancel:Cancel
 CtrlHint.Jump:Jump
@@ -10,6 +10,19 @@ CtrlHint.Move:Move
 CtrlHint.Pause:Pause
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
+GameKey.Action:Action/Attack
+GameKey.Down:Down
+GameKey.Jump:Cancel/Jump
+GameKey.Left:Left
+GameKey.Right:Right
+GameKey.Select:Select
+GameKey.Start:Start
+GameKey.Up:Up
+Menu.KeySetter.Gamepad:Gamepad
+Menu.KeySetter.Keyboard:Keyboard
+Menu.Pause.KeySetter:Key Assignment
+Menu.Setting.Framerate:Framerate
+Menu.Setting.Language:Language
 UI.Back:Back
 UI.Cancel:Cancel
 UI.Continue:Continue

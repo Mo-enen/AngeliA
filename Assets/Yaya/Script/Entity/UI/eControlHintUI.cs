@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using AngeliaFramework;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
 
 namespace Yaya {
@@ -16,6 +18,7 @@ namespace Yaya {
 		private static readonly int KEYBOARD_BUTTON_CODE = "Keyboard Button".AngeHash();
 		private static readonly int GAMEPAD_BUTTON_CODE = "Gamepad Button".AngeHash();
 		private static readonly int HINT_MOVE_CODE = "CtrlHint.Move".AngeHash();
+		private static readonly int HINT_VALUE_CODE = "CtrlHint.Adjust".AngeHash();
 		private static readonly int HINT_JUMP_CODE = "CtrlHint.Jump".AngeHash();
 		private static readonly int HINT_ATTACK_CODE = "CtrlHint.Attack".AngeHash();
 		private static readonly int HINT_USE_CODE = "CtrlHint.Use".AngeHash();
@@ -32,6 +35,7 @@ namespace Yaya {
 		// Data
 		private static readonly Dictionary<int, int> TypeHintMap = new();
 		private static readonly List<Entity> Listening = new();
+		private static readonly Dictionary<Key, int> KeyNameIdMap = new();
 		private int PositionY = 0;
 		private Int4 Border_Keyboard = default;
 		private Int4 Border_Gamepad = default;
@@ -60,6 +64,11 @@ namespace Yaya {
 				var e = Game.Current.PeekOrGetEntity(id);
 				if (e == null) continue;
 				Listening.Add(e);
+			}
+			// Key Name Map
+			KeyNameIdMap.Clear();
+			foreach (var key in System.Enum.GetValues(typeof(Key))) {
+				KeyNameIdMap.TryAdd((Key)key, $"k_{key}".AngeHash());
 			}
 		}
 
@@ -92,10 +101,13 @@ namespace Yaya {
 			foreach (var e in Listening) {
 				if (!e.Active) continue;
 				switch (e) {
-					case MenuUI:
+					case MenuUI menu:
 						DrawKey(GameKey.Down, GameKey.Up, HINT_MOVE_CODE);
-						DrawKey(GameKey.Action, YayaConst.UI_OK);
-						DrawKey(GameKey.Start, YayaConst.UI_CANCEL);
+						if (menu.SelectionAdjustable) {
+							DrawKey(GameKey.Left, GameKey.Right, HINT_VALUE_CODE);
+						} else {
+							DrawKey(GameKey.Action, YayaConst.UI_OK);
+						}
 						break;
 				}
 			}
@@ -152,6 +164,11 @@ namespace Yaya {
 		private void DrawKey (int x, int y, GameKey key, int labelID, bool background = false, bool animated = false) => DrawKey(x, y, key, key, labelID, background, animated);
 		private void DrawKey (int x, int y, GameKey keyA, GameKey keyB, int labelID, bool background = false, bool animated = false) {
 
+			var keyboardA = FrameInput.GetKeyboardMap(keyA);
+			var keyboardB = FrameInput.GetKeyboardMap(keyB);
+			var gamepadA = FrameInput.GetGamepadMap(keyA);
+			var gamepadB = FrameInput.GetGamepadMap(keyB);
+
 			const int BG_PADDING_X = 32;
 			const int BG_PADDING_Y = 32;
 			Cell bgCell = null;
@@ -160,8 +177,8 @@ namespace Yaya {
 				FrameInput.UsingGamepad ? GAMEPAD_BUTTON_CODE : KEYBOARD_BUTTON_CODE;
 			var border = FrameInput.UsingGamepad ? Border_Gamepad : Border_Keyboard;
 			var rect = new RectInt(x, y, KeySize, KeySize);
-			int keyIdA = FrameInput.GetGameKeyLabelID(keyA);
-			int keyIdB = FrameInput.GetGameKeyLabelID(keyB);
+			int keyIdA = FrameInput.UsingGamepad ? (YayaConst.GAMEPAD_CODE.TryGetValue(gamepadA, out var _value0) ? _value0 : 0) : KeyNameIdMap[keyboardA];
+			int keyIdB = FrameInput.UsingGamepad ? (YayaConst.GAMEPAD_CODE.TryGetValue(gamepadB, out var _value1) ? _value1 : 0) : KeyNameIdMap[keyboardB];
 			int widthA = KeySize;
 			int widthB = KeySize;
 
@@ -200,8 +217,8 @@ namespace Yaya {
 			// Label
 			rect.width = 1;
 			CellRenderer.DrawLabel(
-				Language.Get(labelID),
-				rect, Tint, TextSize, out var bounds, Alignment.MidLeft, false
+				Language.Get(labelID), rect, Tint,
+				TextSize, out var bounds, Alignment.MidLeft
 			);
 			if (bgCell != null) {
 				bgCell.Y = Mathf.Min(bgCell.Y, bounds.y - BG_PADDING_Y);
