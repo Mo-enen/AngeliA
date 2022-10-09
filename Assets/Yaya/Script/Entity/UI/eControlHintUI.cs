@@ -17,13 +17,6 @@ namespace Yaya {
 		private static readonly int GAMEPAD_BUTTON_ANI_CODE = "_aGamepad Button".AngeHash();
 		private static readonly int KEYBOARD_BUTTON_CODE = "Keyboard Button".AngeHash();
 		private static readonly int GAMEPAD_BUTTON_CODE = "Gamepad Button".AngeHash();
-		private static readonly int HINT_MOVE_CODE = "CtrlHint.Move".AngeHash();
-		private static readonly int HINT_VALUE_CODE = "CtrlHint.Adjust".AngeHash();
-		private static readonly int HINT_JUMP_CODE = "CtrlHint.Jump".AngeHash();
-		private static readonly int HINT_ATTACK_CODE = "CtrlHint.Attack".AngeHash();
-		private static readonly int HINT_USE_CODE = "CtrlHint.Use".AngeHash();
-		private static readonly int HINT_WAKE_CODE = "CtrlHint.WakeUp".AngeHash();
-		private static readonly int HINT_CANCEL_CODE = "CtrlHint.Cancel".AngeHash();
 
 		// Api
 		public ePlayer Player { get; set; } = null;
@@ -48,10 +41,14 @@ namespace Yaya {
 			var entityType = typeof(Entity);
 			foreach (var type in typeof(IActionEntity).AllClassImplemented()) {
 				var _type = type;
-				int id = $"ActionHint.{_type.Name}".AngeHash();
+				string name = _type.Name;
+				if (name[0] == 'e') name = name[1..];
+				int id = $"ActionHint.{name}".AngeHash();
 				while (!Language.Has(id) && _type != entityType && _type != objType) {
 					_type = _type.BaseType;
-					id = $"ActionHint.{_type.Name}".AngeHash();
+					name = _type.Name;
+					if (name[0] == 'e') name = name[1..];
+					id = $"ActionHint.{name}".AngeHash();
 				}
 				if (Language.Has(id)) {
 					TypeHintMap.TryAdd(type.AngeHash(), id);
@@ -102,11 +99,11 @@ namespace Yaya {
 				if (!e.Active) continue;
 				switch (e) {
 					case MenuUI menu:
-						DrawKey(GameKey.Down, GameKey.Up, HINT_MOVE_CODE);
+						DrawKey(GameKey.Down, GameKey.Up, WORD.HINT_MOVE_CODE);
 						if (menu.SelectionAdjustable) {
-							DrawKey(GameKey.Left, GameKey.Right, HINT_VALUE_CODE);
+							DrawKey(GameKey.Left, GameKey.Right, WORD.HINT_VALUE_CODE);
 						} else {
-							DrawKey(GameKey.Action, YayaConst.UI_OK);
+							DrawKey(GameKey.Action, WORD.UI_OK);
 						}
 						break;
 				}
@@ -119,24 +116,24 @@ namespace Yaya {
 
 				case CharacterState.GamePlay: {
 					// Move
-					DrawKey(GameKey.Left, GameKey.Right, HINT_MOVE_CODE);
+					DrawKey(GameKey.Left, GameKey.Right, WORD.HINT_MOVE_CODE);
 					// Action & Jump
 					if (Player.Action.CurrentTarget is Entity target && target is IActionEntity iAct) {
 						// Action Target
 						if (target is eOpenableFurniture open && open.Open) {
-							DrawKey(iAct.InvokeKey, YayaConst.UI_OK);
-							DrawKey(GameKey.Jump, HINT_CANCEL_CODE);
+							DrawKey(iAct.InvokeKey, WORD.UI_OK);
+							DrawKey(GameKey.Jump, WORD.UI_CANCEL);
 						} else {
 							if (TypeHintMap.TryGetValue(target.TypeID, out int code)) {
 								DrawKey(iAct.InvokeKey, code);
 							} else {
-								DrawKey(iAct.InvokeKey, HINT_USE_CODE);
+								DrawKey(iAct.InvokeKey, WORD.HINT_USE_CODE);
 							}
 						}
 					} else {
 						// General
-						DrawKey(GameKey.Action, HINT_ATTACK_CODE);
-						DrawKey(GameKey.Jump, HINT_JUMP_CODE);
+						DrawKey(GameKey.Action, WORD.HINT_ATTACK_CODE);
+						DrawKey(GameKey.Jump, WORD.HINT_JUMP_CODE);
 					}
 					break;
 				}
@@ -144,8 +141,8 @@ namespace Yaya {
 				case CharacterState.Sleep: {
 					int x = Player.X;
 					int y = Player.GlobalBounds.yMax;
-					DrawKey(x, y, GameKey.Action, HINT_WAKE_CODE, true, true);
-					DrawKey(GameKey.Action, HINT_WAKE_CODE);
+					DrawKey(x, y, GameKey.Action, WORD.HINT_WAKE_CODE, true, true);
+					DrawKey(GameKey.Action, WORD.HINT_WAKE_CODE);
 					break;
 				}
 
@@ -217,8 +214,12 @@ namespace Yaya {
 			// Label
 			rect.width = 1;
 			CellRenderer.DrawLabel(
-				Language.Get(labelID), rect, Tint,
-				TextSize, out var bounds, Alignment.MidLeft
+				new CellLabel() {
+					Text = Language.Get(labelID),
+					Tint = Tint,
+					CharSize = TextSize,
+					Alignment = Alignment.MidLeft,
+				}, rect, out var bounds
 			);
 			if (bgCell != null) {
 				bgCell.Y = Mathf.Min(bgCell.Y, bounds.y - BG_PADDING_Y);

@@ -20,8 +20,6 @@ namespace Yaya {
 		public new YayaWorldSquad WorldSquad => base.WorldSquad as YayaWorldSquad;
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
 		public override int FrameStepLayerCount => 6;
-		public static Dictionary<Vector2Int, CheckPointMeta.Data> CpPool { get; } = new();
-		public static Dictionary<int, Vector2Int> CpAltarPool { get; } = new();
 		public override RectInt CameraRect => YayaCameraRect;
 		public YayaMeta YayaMeta => m_YayaMeta;
 		public YayaAsset YayaAsset => m_YayaAsset;
@@ -60,10 +58,8 @@ namespace Yaya {
 			PauseMenu = PeekOrGetEntity<ePauseMenu>();
 
 			Initialize_Quit();
-			Initialize_YayaMeta();
 			Initialize_Player();
 
-			FrameInput.AddCustomKey(Key.F2);
 			FrameInput.AddCustomKey(Key.Digit1);
 			FrameInput.AddCustomKey(Key.Digit2);
 			FrameInput.AddCustomKey(Key.Digit3);
@@ -92,23 +88,6 @@ namespace Yaya {
 					return false;
 				}
 			};
-		}
-
-
-		private void Initialize_YayaMeta () {
-			// Check Points
-			try {
-				CpPool.Clear();
-				CpAltarPool.Clear();
-				var cpMeta = LoadMeta<CheckPointMeta>();
-				if (cpMeta != null) {
-					foreach (var cpData in cpMeta.CPs) {
-						var pos = new Vector2Int(cpData.X, cpData.Y);
-						CpPool.TryAdd(pos, cpData);
-						if (cpData.IsAltar) CpAltarPool.TryAdd(cpData.Index, pos);
-					}
-				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
 
@@ -241,15 +220,9 @@ namespace Yaya {
 		protected override void PauselessUpdate () {
 			base.PauselessUpdate();
 
-			// Pause/Unpause
-			if (FrameInput.GetKeyDown(GameKey.Start)) {
-				IsPausing = !IsPausing;
+			if (IsPausing != AudioPlayer.IsMusicPausing) {
 				if (IsPausing) {
 					AudioPlayer.Pause();
-					if (!PauseMenu.Active) {
-						TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
-						PauseMenu.SetAsPauseMode();
-					}
 				} else {
 					AudioPlayer.UnPause();
 				}
@@ -267,10 +240,18 @@ namespace Yaya {
 				}
 				if (PauseMenu.Active) {
 					PauseMenu.FrameUpdate();
+				} else {
+					TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
+					PauseMenu.SetAsPauseMode();
 				}
 
 			} else {
 				if (PauseMenu.Active) PauseMenu.Active = false;
+			}
+
+			// Pause/Unpause
+			if (FrameInput.GetKeyDown(GameKey.Start)) {
+				IsPausing = !IsPausing;
 			}
 
 		}

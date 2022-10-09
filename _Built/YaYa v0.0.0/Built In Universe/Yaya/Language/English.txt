@@ -1,32 +1,35 @@
-﻿ActionHint.eBed:Sleep
-ActionHint.eDoor:Enter
-ActionHint.eOpenableFurniture:Open
-ActionHint.ePhoto:Switch
+﻿ActionHint.Bed:Sleep
+ActionHint.Door:Enter
+ActionHint.OpenableFurniture:Open
+ActionHint.Photo:Switch
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
-CtrlHint.Cancel:Cancel
 CtrlHint.Jump:Jump
 CtrlHint.Move:Move
-CtrlHint.Pause:Pause
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
-GameKey.Action:Action/Attack
-GameKey.Down:Down
-GameKey.Jump:Cancel/Jump
-GameKey.Left:Left
-GameKey.Right:Right
-GameKey.Select:Select
-GameKey.Start:Start
-GameKey.Up:Up
 Menu.KeySetter.Gamepad:Gamepad
+Menu.KeySetter.GamepadMessage:Press F1 key to reset
 Menu.KeySetter.Keyboard:Keyboard
+Menu.KeySetter.KeyboardMessage:Press F1 key to reset
+Menu.KeySetter.Record:Press key u want
+Menu.KeySetter.SaveAndBack:Save and Back
 Menu.Pause.KeySetter:Key Assignment
+Menu.Pause.QuitMessage:Quit game now？
 Menu.Setting.Framerate:Framerate
 Menu.Setting.Language:Language
 UI.Back:Back
 UI.Cancel:Cancel
 UI.Continue:Continue
+UI.GameKey.Action:Action/Attack
+UI.GameKey.Down:Down
+UI.GameKey.Jump:Cancel/Jump
+UI.GameKey.Left:Left
+UI.GameKey.Right:Right
+UI.GameKey.Select:Select
+UI.GameKey.Start:Start
+UI.GameKey.Up:Up
 UI.OK:OK
 UI.Quit:Quit
-UI.QuitMessage:Quit game now？
+UI.Save:Save
 UI.Setting:Setting

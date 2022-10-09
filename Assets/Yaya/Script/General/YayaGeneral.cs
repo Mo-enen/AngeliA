@@ -6,42 +6,8 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 
+
 namespace Yaya {
-
-
-	public interface IDamageReceiver {
-		void TakeDamage (int damage);
-	}
-
-
-
-	public enum MovementState {
-		Idle = 0,
-		Walk, Run, JumpUp, JumpDown,
-		SwimIdle, SwimMove, SwimDash,
-		SquatIdle, SquatMove,
-		Dash, Roll, Pound, Climb, Fly,
-	}
-
-
-	public enum CharacterState {
-		GamePlay = 0,
-		Sleep = 1,
-		Passout = 2,
-	}
-
-
-	public enum FittingPose {
-		Unknown = 0,
-		Left = 1,
-		Down = 1,
-		Mid = 2,
-		Right = 3,
-		Up = 3,
-		Single = 4,
-	}
-
-
 	public static class YayaConst {
 
 
@@ -84,18 +50,12 @@ namespace Yaya {
 		public static readonly int QUICKSAND_TAG = "Quicksand".AngeHash();
 		public static readonly int DAMAGE_TAG = "Damage".AngeHash();
 
-		// UI
-		public static readonly int UI_OK = "UI.OK".AngeHash();
-		public static readonly int UI_QUIT = "UI.Quit".AngeHash();
-		public static readonly int UI_CANCEL = "UI.Cancel".AngeHash();
-		public static readonly int UI_SETTING = "UI.Setting".AngeHash();
-		public static readonly int UI_CONTINUE = "UI.Continue".AngeHash();
-		public static readonly int UI_BACK = "UI.Back".AngeHash();
-
 		// Step
 		public const int STEP_DEFAULT = 0;
 		public const int STEP_ANIMATION = 1;
 
+		// Misc
+		public static readonly int UI_PIXEL = "UI Pixel".AngeHash();
 		public static readonly Dictionary<GamepadButton, int> GAMEPAD_CODE = new() {
 			{ GamepadButton.DpadLeft, "k_Gamepad Left".AngeHash()},
 			{ GamepadButton.DpadRight, "k_Gamepad Right".AngeHash()},
@@ -107,55 +67,10 @@ namespace Yaya {
 			{ GamepadButton.West, "k_Gamepad West".AngeHash()},
 			{ GamepadButton.Select, "k_Gamepad Select".AngeHash()},
 			{ GamepadButton.Start, "k_Gamepad Start".AngeHash()},
-
 			{ GamepadButton.LeftTrigger, "k_Gamepad LeftTrigger".AngeHash()},
 			{ GamepadButton.RightTrigger, "k_Gamepad RightTrigger".AngeHash()},
 			{ GamepadButton.LeftShoulder, "k_Gamepad LeftShoulder".AngeHash()},
 			{ GamepadButton.RightShoulder, "k_Gamepad RightShoulder".AngeHash()},
 		};
 	}
-
-
-
-	// Data
-	[System.Serializable]
-	public class YayaAsset {
-		public AnimationCurve SquadTransitionCurve = null;
-		public AnimationCurve UiPopCurve = null;
-	}
-
-
-
-	// Meta
-	[System.Serializable]
-	public class YayaMeta {
-
-		public int WaterSpeedLose = 400;
-		public int QuickSandJumpoutSpeed = 48;
-		public int QuickSandMaxRunSpeed = 4;
-		public int QuickSandSinkSpeed = 1;
-		public int QuickSandJumpSpeed = 12;
-
-	}
-
-
-	[System.Serializable]
-	public class CheckPointMeta {
-		[System.Serializable]
-		public struct Data {
-			public int Index;
-			public int X; // Global Unit Pos
-			public int Y; // Global Unit Pos
-			public bool IsAltar;
-		}
-		public Data[] CPs = null;
-	}
-
-
-	// Attr
-	[System.AttributeUsage(System.AttributeTargets.Class)]
-	public class FirstSelectedPlayerAttribute : System.Attribute { }
-
-
-
 }
