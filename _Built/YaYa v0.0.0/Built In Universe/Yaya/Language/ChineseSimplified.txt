@@ -8,9 +8,9 @@ CtrlHint.Jump:跳跃
 CtrlHint.Move:移动
 CtrlHint.Use:使用
 CtrlHint.WakeUp:起床
-Menu.KeySetter.Gamepad:设置手柄
+Menu.KeySetter.Gamepad:手柄
 Menu.KeySetter.GamepadMessage:按下F1键重置手柄设置
-Menu.KeySetter.Keyboard:设置键盘
+Menu.KeySetter.Keyboard:键盘
 Menu.KeySetter.KeyboardMessage:按下F1键重置键盘设置
 Menu.KeySetter.Record:按想要的按键
 Menu.KeySetter.SaveAndBack:保存并返回

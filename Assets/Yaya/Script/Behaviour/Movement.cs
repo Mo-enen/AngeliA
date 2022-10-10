@@ -80,10 +80,16 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public void OnActived (eYayaRigidbody source) {
+		public void OnInitialize (eYayaRigidbody source) {
 			Source = source;
+		}
+
+
+		public void OnActived () {
 			Source.Width = Width;
 			Source.Height = Height;
+			Source.OffsetX = -Width / 2;
+			Source.OffsetY = 0;
 		}
 
 
@@ -214,7 +220,7 @@ namespace Yaya {
 						LastJumpFrame = CurrentFrame;
 					}
 					IsClimbing = false;
-				} else if (FlyAvailable && CurrentJumpCount < JumpCount + FlyCount && CurrentFrame > LastFlyFrame + FlyCooldown) {
+				} else if (FlyAvailable && CurrentJumpCount < JumpCount + 1 && CurrentFrame > LastFlyFrame + FlyCooldown) {
 					// Fly
 					LastDashFrame = int.MinValue;
 					IsFlying = true;

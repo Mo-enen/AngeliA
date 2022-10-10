@@ -22,22 +22,22 @@ namespace Yaya {
 		public int Combo { get; private set; } = -1;
 
 		// Buff
-		public BuffString BulletName { get; private set; } = new("DefaultBullet");
-		public BuffInt Duration { get; private set; } = new(12);
-		public BuffInt Colldown { get; private set; } = new(2);
-		public BuffInt ComboGap { get; private set; } = new(12);
-		public BuffBool StopMoveOnAttack { get; private set; } = new(true);
-		public BuffBool CancelAttackOnJump { get; private set; } = new(false);
-		public BuffBool RandomCombo { get; private set; } = new(false);
-		public BuffBool KeepTriggerWhenHold { get; private set; } = new(true);
-		public BuffInt HoldTriggerPunish { get; private set; } = new(4);
-		public BuffBool AttackInAir { get; private set; } = new(true);
-		public BuffBool AttackInWater { get; private set; } = new(true);
-		public BuffBool AttackWhenFlying { get; private set; } = new(false);
-		public BuffBool AttackWhenClimbing { get; private set; } = new(false);
-		public BuffBool AttackWhenRolling { get; private set; } = new(false);
-		public BuffBool AttackWhenSquating { get; private set; } = new(false);
-		public BuffBool AttackWhenDashing { get; private set; } = new(false);
+		public BuffString BulletName { get; private set; } = new();
+		public BuffInt Duration { get; private set; } = new();
+		public BuffInt Colldown { get; private set; } = new();
+		public BuffInt ComboGap { get; private set; } = new();
+		public BuffBool StopMoveOnAttack { get; private set; } = new();
+		public BuffBool CancelAttackOnJump { get; private set; } = new();
+		public BuffBool RandomCombo { get; private set; } = new();
+		public BuffBool KeepTriggerWhenHold { get; private set; } = new();
+		public BuffInt HoldTriggerPunish { get; private set; } = new();
+		public BuffBool AttackInAir { get; private set; } = new();
+		public BuffBool AttackInWater { get; private set; } = new();
+		public BuffBool AttackWhenFlying { get; private set; } = new();
+		public BuffBool AttackWhenClimbing { get; private set; } = new();
+		public BuffBool AttackWhenRolling { get; private set; } = new();
+		public BuffBool AttackWhenSquating { get; private set; } = new();
+		public BuffBool AttackWhenDashing { get; private set; } = new();
 
 		// Ser
 #pragma warning disable
@@ -72,8 +72,12 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public void OnActived (Entity source) {
+		public void OnInitialize (Entity source) {
 			Source = source;
+		}
+
+
+		public void OnActived () {
 			LastAttackFrame = int.MinValue;
 		}
 

@@ -168,8 +168,13 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public void OnActived (eCharacter source) {
+		public void OnInitialize (eCharacter source) {
 			Character = source;
+		}
+
+
+		public void OnActived () {
+
 			string name = Character.GetType().Name;
 			if (name.StartsWith('e')) name = name[1..];
 
@@ -216,7 +221,6 @@ namespace Yaya {
 
 			// Damage
 			if (frame < DamagingTime) {
-				//var dCell = CellRenderer.Draw_Animation(
 				CellRenderer.Draw_Animation(
 					Damaging.Code,
 					Character.X, Character.Y,
@@ -226,9 +230,6 @@ namespace Yaya {
 					Game.GlobalFrame,
 					Damaging.LoopStart
 				);
-				//int scale = (DamagingTime - frame).PingPong(7) * 40 + 1000;
-				//dCell.Width = dCell.Width * scale / 1000;
-				//dCell.Height = dCell.Height * scale / 1000;
 				return;
 			}
 
@@ -431,6 +432,7 @@ namespace Yaya {
 			var backCell = CellRenderer.Draw_Animation(
 				Sleep.Code,
 				Character.X, Character.Y,
+				500, 0, 0,
 				Const.ORIGINAL_SIZE,
 				Const.ORIGINAL_SIZE,
 				Game.GlobalFrame,
@@ -439,6 +441,7 @@ namespace Yaya {
 			var cell = CellRenderer.Draw_Animation(
 				Sleep.Code,
 				Character.X, Character.Y,
+				500, 0, 0,
 				Const.ORIGINAL_SIZE,
 				Const.ORIGINAL_SIZE,
 				Game.GlobalFrame,

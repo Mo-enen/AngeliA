@@ -23,7 +23,8 @@ namespace Yaya {
 		public int KeySize { get; set; } = 142;
 		public int Gap { get; set; } = 32;
 		public int TextSize { get; set; } = 100;
-		public Color32 Tint { get; set; } = Const.WHITE;
+		public Color32 LabelTint { get; set; } = Const.WHITE;
+		public Color32 KeyLabelTint { get; set; } = new Color32(44, 49, 54, 255);
 
 		// Data
 		private static readonly Dictionary<int, int> TypeHintMap = new();
@@ -90,7 +91,6 @@ namespace Yaya {
 		protected override void UpdateForUI () {
 
 			if (Player == null || !Player.Active) return;
-			if (FrameStep.HasStep<sOpening>()) return;
 
 			PositionY = Y + CellRenderer.CameraRect.y;
 
@@ -110,6 +110,7 @@ namespace Yaya {
 			}
 
 			if (Game.Current.IsPausing) return;
+			if (FrameStep.HasStep<sOpening>()) return;
 
 			// Game Playing
 			switch (Player.CharacterState) {
@@ -139,7 +140,7 @@ namespace Yaya {
 				}
 
 				case CharacterState.Sleep: {
-					int x = Player.X;
+					int x = Player.GlobalBounds.xMin;
 					int y = Player.GlobalBounds.yMax;
 					DrawKey(x, y, GameKey.Action, WORD.HINT_WAKE_CODE, true, true);
 					DrawKey(GameKey.Action, WORD.HINT_WAKE_CODE);
@@ -198,7 +199,7 @@ namespace Yaya {
 			CellRenderer.Draw_9Slice(buttonCode, rect, border.Left, border.Right, border.Down, border.Up);
 
 			// Button Label A
-			CellRenderer.Draw(keyIdA, rect.Shrink(border));
+			CellRenderer.Draw(keyIdA, rect.Shrink(border), KeyLabelTint);
 			rect.x += rect.width + Gap;
 
 			// Button B
@@ -207,7 +208,7 @@ namespace Yaya {
 				rect.width = widthB;
 				CellRenderer.Draw_9Slice(buttonCode, rect, border.Left, border.Right, border.Down, border.Up);
 				// Button Label B
-				CellRenderer.Draw(keyIdB, rect.Shrink(border));
+				CellRenderer.Draw(keyIdB, rect.Shrink(border), KeyLabelTint);
 				rect.x += rect.width + Gap;
 			}
 
@@ -216,7 +217,7 @@ namespace Yaya {
 			CellRenderer.DrawLabel(
 				new CellLabel() {
 					Text = Language.Get(labelID),
-					Tint = Tint,
+					Tint = LabelTint,
 					CharSize = TextSize,
 					Alignment = Alignment.MidLeft,
 				}, rect, out var bounds

@@ -23,17 +23,26 @@ namespace Yaya {
 		public bool Invoke (Entity target) {
 			if (target is not eCharacter ch) return false;
 			ch.SetCharacterState(CharacterState.Sleep);
-			var finalBed = this;
+			// Get Bed Left and Right
+			var bedL = this;
+			var bedR = this;
 			for (int safe = 0; safe < 1024; safe++) {
-				if (finalBed.FurnitureLeftOrDown is eBed leftBed) {
-					finalBed = leftBed;
+				if (bedL.FurnitureLeftOrDown is eBed leftBed) {
+					bedL = leftBed;
 				} else break;
 			}
+			for (int safe = 0; safe < 1024; safe++) {
+				if (bedR.FurnitureRightOrUp is eBed rightBed) {
+					bedR = rightBed;
+				} else break;
+			}
+			// Get Offset Y
 			int offsetY = 0;
 			if (TryGetSprite(Pose, out var sprite)) {
 				offsetY += sprite.GlobalHeight - sprite.GlobalBorder.Up;
 			}
-			ch.X = finalBed.Rect.xMin;
+			// Set Character Pos
+			ch.X = (bedL.Rect.xMin + bedR.Rect.xMax) / 2;
 			ch.Y = Y + offsetY;
 			return true;
 		}

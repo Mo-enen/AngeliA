@@ -23,10 +23,10 @@ namespace Yaya {
 		public bool Invincible => Game.GlobalFrame < InvincibleStartFrame + InvincibleFrame;
 
 		// Buff
-		public BuffInt MaxHP { get; private set; } = new(1);
-		public BuffInt InvincibleFrame { get; private set; } = new(120);
-		public BuffInt KnockBackSpeed { get; private set; } = new(64);
-		public BuffInt DamageStunDuration { get; private set; } = new(24);
+		public BuffInt MaxHP { get; private set; } = new();
+		public BuffInt InvincibleFrame { get; private set; } = new();
+		public BuffInt KnockBackSpeed { get; private set; } = new();
+		public BuffInt DamageStunDuration { get; private set; } = new();
 
 		// Ser
 #pragma warning disable
@@ -48,8 +48,12 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public void OnActived (Entity source) {
+		public void OnInitialize (Entity source) {
 			Source = source;
+		}
+
+
+		public void OnActived () {
 			HealthPoint = MaxHP.FinalValue;
 			InvincibleStartFrame = int.MinValue;
 		}

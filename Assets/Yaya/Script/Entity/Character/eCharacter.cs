@@ -65,21 +65,28 @@ namespace Yaya {
 			if (typeName.StartsWith("e")) typeName = typeName[1..];
 
 			var game = Game.Current;
-			Movement = game.LoadMeta<Movement>(typeName, "Movement") ?? new();
-			Renderer = game.LoadMeta<CharacterRenderer>(typeName, "Renderer") ?? new();
-			Action = game.LoadMeta<Action>(typeName, "Action") ?? new();
-			Health = game.LoadMeta<Health>(typeName, "Health") ?? new();
-			Attackness = game.LoadMeta<Attackness>(typeName, "Attackness") ?? new();
+			Movement = game.LoadOrCreateMeta<Movement>(typeName, "Movement");
+			Renderer = game.LoadOrCreateMeta<CharacterRenderer>(typeName, "Renderer");
+			Action = game.LoadOrCreateMeta<Action>(typeName, "Action");
+			Health = game.LoadOrCreateMeta<Health>(typeName, "Health");
+			Attackness = game.LoadOrCreateMeta<Attackness>(typeName, "Attackness");
+
+			Movement.OnInitialize(this);
+			Renderer.OnInitialize(this);
+			Action.OnInitialize(this);
+			Health.OnInitialize(this);
+			Attackness.OnInitialize(this);
+
 		}
 
 
 		public override void OnActived () {
 			base.OnActived();
-			Movement.OnActived(this);
-			Renderer.OnActived(this);
-			Action.OnActived(this);
-			Health.OnActived(this);
-			Attackness.OnActived(this);
+			Movement.OnActived();
+			Renderer.OnActived();
+			Action.OnActived();
+			Health.OnActived();
+			Attackness.OnActived();
 			CharacterState = CharacterState.GamePlay;
 			PassoutFrame = int.MinValue;
 		}
@@ -94,19 +101,18 @@ namespace Yaya {
 
 		public override void PhysicsUpdate () {
 
-			int frame = Game.GlobalFrame;
-
 			// Passout Check
 			if (Health.EmptyHealth) SetCharacterState(CharacterState.Passout);
 
 			// Behaviour
+			MovementState = MovementState.Idle;
 			switch (CharacterState) {
 				default:
 				case CharacterState.GamePlay:
 					if (TakingDamage) {
 						// Tacking Damage
 						Movement.AntiKnockback();
-					} else if (Attackness.StopMoveOnAttack && frame < Attackness.LastAttackFrame + Attackness.Duration) {
+					} else if (Attackness.StopMoveOnAttack && Attackness.IsAttacking) {
 						// Stop when Attacking
 						if (IsGrounded) VelocityX = 0;
 					} else {
@@ -114,6 +120,18 @@ namespace Yaya {
 						Action.Update();
 						Attackness.Update();
 						Movement.Update();
+						MovementState =
+							Movement.IsFlying ? MovementState.Fly :
+							Movement.IsClimbing ? MovementState.Climb :
+							Movement.IsPounding ? MovementState.Pound :
+							Movement.IsRolling ? MovementState.Roll :
+							Movement.IsDashing ? (!IsGrounded && InWater ? MovementState.SwimDash : MovementState.Dash) :
+							Movement.IsSquating ? (Movement.IsMoving ? MovementState.SquatMove : MovementState.SquatIdle) :
+							InWater && !IsGrounded ? (Movement.IsMoving ? MovementState.SwimMove : MovementState.SwimIdle) :
+							InAir ? (FinalVelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown) :
+							Movement.IsRunning ? MovementState.Run :
+							Movement.IsMoving ? MovementState.Walk :
+							MovementState.Idle;
 					}
 					base.PhysicsUpdate();
 					break;
@@ -128,19 +146,6 @@ namespace Yaya {
 					base.PhysicsUpdate();
 					break;
 			}
-
-			MovementState =
-				Movement.IsFlying ? MovementState.Fly :
-				Movement.IsClimbing ? MovementState.Climb :
-				Movement.IsPounding ? MovementState.Pound :
-				Movement.IsRolling ? MovementState.Roll :
-				Movement.IsDashing ? (!IsGrounded && InWater ? MovementState.SwimDash : MovementState.Dash) :
-				Movement.IsSquating ? (Movement.IsMoving ? MovementState.SquatMove : MovementState.SquatIdle) :
-				InWater && !IsGrounded ? (Movement.IsMoving ? MovementState.SwimMove : MovementState.SwimIdle) :
-				InAir ? (FinalVelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown) :
-				Movement.IsRunning ? MovementState.Run :
-				Movement.IsMoving ? MovementState.Walk :
-				MovementState.Idle;
 
 		}
 
@@ -188,7 +193,6 @@ namespace Yaya {
 			switch (state) {
 				case CharacterState.GamePlay:
 					if (CharacterState == CharacterState.Sleep) {
-						X += Const.CELL_SIZE / 2;
 						Renderer.Bounce();
 					}
 					CharacterState = CharacterState.GamePlay;

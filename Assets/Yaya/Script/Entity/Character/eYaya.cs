@@ -13,23 +13,18 @@ namespace Yaya {
 		private static readonly int FOOTSTEP_CODE = "YayaFootstep".AngeHash();
 		private static readonly int GUAGUA_CODE = typeof(eGuaGua).AngeHash();
 
-		// Short
-		private eGuaGua GuaGua {
-			get {
-				if (_GuaGua == null) {
-					_GuaGua ??= Game.Current.PeekEntityInPool<eGuaGua>();
-					_GuaGua ??= Game.Current.GetEntityInStage<eGuaGua>();
-				}
-				return _GuaGua;
-			}
-		}
-
 		// Data
 		private int LastStartRunFrame = int.MinValue;
-		private eGuaGua _GuaGua = null;
+		private eGuaGua GuaGua = null;
 
 
 		// MSG
+		public override void OnInitialize () {
+			base.OnInitialize();
+			GuaGua = Game.Current.PeekOrGetEntity<eGuaGua>();
+		}
+
+
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			Update_Gua();

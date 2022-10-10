@@ -54,8 +54,8 @@ namespace Yaya {
 			base.Initialize();
 
 			GamePadUI = PeekOrGetEntity<eGamePadUI>();
-			ControlHintUI = PeekOrGetEntity<eControlHintUI>();
 			PauseMenu = PeekOrGetEntity<ePauseMenu>();
+			ControlHintUI = PeekOrGetEntity<eControlHintUI>();
 
 			Initialize_Quit();
 			Initialize_Player();

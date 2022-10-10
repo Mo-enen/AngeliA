@@ -15,30 +15,14 @@ namespace Yaya {
 		#region --- VAR ---
 
 
-		// Const
-		private static readonly int IDLE_CODE = "_aGuaGua.Idle".AngeHash();
-		private static readonly int FLY_CODE = "_aGuaGua.Fly".AngeHash();
-		private static readonly int SLEEP_CODE = "_aGuaGua.Sleep".AngeHash();
-
 		// Api
 		public override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
 		public override int CollisionMask => YayaConst.MASK_MAP;
 		public bool Fed { get; private set; } = false;
 		public Navigation Navigation { get; private set; } = null;
 
-		// Short
-		private eYaya Yaya {
-			get {
-				if (_Yaya == null) {
-					_Yaya ??= Game.Current.PeekEntityInPool<eYaya>();
-					_Yaya ??= Game.Current.GetEntityInStage<eYaya>();
-				}
-				return _Yaya;
-			}
-		}
-
 		// Data
-		private eYaya _Yaya = null;
+		private eYaya Yaya = null;
 
 
 		#endregion
@@ -51,23 +35,24 @@ namespace Yaya {
 
 		public override void OnInitialize () {
 			base.OnInitialize();
-			var game = Game.Current;
-			Navigation = game.LoadMeta<Navigation>("GuaGua", "Movement") ?? new();
+			Yaya = Game.Current.PeekOrGetEntity<eYaya>();
+			Navigation = Game.Current.LoadOrCreateMeta<Navigation>("GuaGua", "Navigation");
+			Navigation.OnInitialize(this);
 		}
 
 
 		public override void OnActived () {
 			base.OnActived();
-			Navigation.OnActived(this);
+			Navigation.OnActived();
 		}
 
 
 		public override void PhysicsUpdate () {
-			base.PhysicsUpdate();
-			switch (Yaya.CharacterState) {
+			bool stateChanged = CharacterState != Yaya.CharacterState;
+			if (stateChanged) SetCharacterState(Yaya.CharacterState);
+			Health.SetHealth(Yaya.Health.HealthPoint);
+			switch (CharacterState) {
 				case CharacterState.GamePlay:
-				case CharacterState.Passout:
-					SetCharacterState(CharacterState.GamePlay);
 					if (Fed) {
 						Update_FollowYaya();
 					} else {
@@ -75,14 +60,14 @@ namespace Yaya {
 					}
 					break;
 				case CharacterState.Sleep:
-					SetCharacterState(CharacterState.Sleep);
-					if (Game.Current.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
-						X = basket.X;
-						Y = basket.Y + basket.Height;
+					if (stateChanged && Game.Current.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
+						X = basket.X + basket.Width / 2;
+						Y = basket.Y + basket.Height - OffsetY;
 					}
-					Fed = false;
+					if (SleepAmount >= 1000) Fed = false;
 					break;
 			}
+			base.PhysicsUpdate();
 		}
 
 
@@ -96,9 +81,13 @@ namespace Yaya {
 
 
 		private void Update_FreeMove () {
+			// Find Target
 
 
 
+			//Navigation.SetTargetPosition(,);
+			// Navigate
+			Navigation.Navigate();
 		}
 
 

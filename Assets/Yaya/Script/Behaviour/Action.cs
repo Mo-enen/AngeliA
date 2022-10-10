@@ -35,8 +35,12 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public void OnActived (Entity source) {
+		public void OnInitialize (Entity source) {
 			Source = source;
+		}
+
+
+		public void OnActived () {
 			CurrentTarget = null;
 			ScanFrequency = ScanFrequency.Clamp(1, int.MaxValue);
 			RequireRefresh = true;

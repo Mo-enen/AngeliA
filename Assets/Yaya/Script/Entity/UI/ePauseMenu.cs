@@ -11,39 +11,39 @@ namespace Yaya {
 	public class ePauseMenu : MenuUI {
 
 
-		// SUB
+
+
+		#region --- SUB ---
+
+
 		private enum MenuMode { Pause, Setting, KeySetter, Quit, Setter_Keyboard, Setter_Gamepad }
 
-		// VAR
+
+		#endregion
+
+
+
+
+		#region --- VAR ---
+
+
+		// Const
 		private static readonly int MENU_SELECTION_CODE = "Menu Selection Mark".AngeHash();
 		private static readonly int MENU_MORE_CODE = "Menu More Mark".AngeHash();
 		private static readonly int MENU_ARROW_MARK = "Menu Arrow Mark".AngeHash();
 
+		// Api
 		public bool QuitMode => Mode == MenuMode.Quit;
 		protected override int BackgroundCode => YayaConst.UI_PIXEL;
 		protected override int SelectionMarkCode => MENU_SELECTION_CODE;
 		protected override int MoreItemMarkCode => MENU_MORE_CODE;
 		protected override int ArrowMarkCode => MENU_ARROW_MARK;
-		protected override Int4 ContentPadding => new(32, 32, 46, 46);
+		protected override Int4 ContentPadding => new(32, 32, 46, string.IsNullOrEmpty(Message) ? 46 : 23);
 		protected override Color32 ScreenTint => new(0, 0, 0, 128);
 		protected override Color32 BackgroundTint => new(0, 0, 0, 255);
-		protected override int TargetItemCount => Mode switch {
-			MenuMode.Pause => 4,
-			MenuMode.Setting => 3,
-			MenuMode.KeySetter => 3,
-			MenuMode.Quit => 2,
-			MenuMode.Setter_Keyboard => 10,
-			MenuMode.Setter_Gamepad => 10,
-			_ => throw new System.NotImplementedException(),
-		};
-		protected override string Message => Mode switch {
-			MenuMode.Setter_Gamepad => Language.Get(WORD.MENU_KEYSETTER_GAMEPAD_MESSAGE),
-			MenuMode.Setter_Keyboard => Language.Get(WORD.MENU_KEYSETTER_KEYBOARD_MESSAGE),
-			MenuMode.Quit => Language.Get(WORD.MENU_QUIT_MESSAGE),
-			_ => string.Empty,
-		};
 		protected override bool Interactable => (Mode != MenuMode.Setter_Gamepad && Mode != MenuMode.Setter_Keyboard) || RecordingKey < 0;
 
+		// Data
 		private readonly Key[] KeyboardKeys = new Key[8];
 		private readonly GamepadButton[] GamepadKeys = new GamepadButton[8];
 		private MenuMode Mode = MenuMode.Pause;
@@ -53,11 +53,18 @@ namespace Yaya {
 		private bool RecordLock = true;
 
 
-		// MSG
+		#endregion
+
+
+
+
+		#region --- MSG ---
+
+
 		public override void FrameUpdate () {
 			var cameraRect = CellRenderer.CameraRect;
 			X = cameraRect.x + cameraRect.width / 2 - 250 * UNIT;
-			Width = 400 * UNIT;
+			Width = 450 * UNIT;
 			Mode = RequireMode;
 			base.FrameUpdate();
 			Y = cameraRect.y + cameraRect.height / 2 - Height / 2;
@@ -76,20 +83,21 @@ namespace Yaya {
 				case MenuMode.Pause:
 					MenuPause();
 					break;
+				case MenuMode.KeySetter:
+					MenuKeySetterHub();
+					break;
 				case MenuMode.Setting:
 					MenuSetting();
-					break;
-				case MenuMode.KeySetter:
-					MenuKeySetter();
 					break;
 				case MenuMode.Quit:
 					MenuQuit();
 					break;
+
 				case MenuMode.Setter_Keyboard:
-					MenuSetter_Keyboard();
+					MenuKeySetter(false);
 					break;
 				case MenuMode.Setter_Gamepad:
-					MenuSetter_Gamepad();
+					MenuKeySetter(true);
 					break;
 			}
 		}
@@ -97,6 +105,8 @@ namespace Yaya {
 
 		// Menus
 		private void MenuPause () {
+
+			Message = string.Empty;
 
 			// 0-Continue
 			if (DrawItem(Language.Get(WORD.UI_CONTINUE)) || FrameInput.GetKeyDown(GameKey.Jump)) {
@@ -124,7 +134,7 @@ namespace Yaya {
 		}
 
 
-		private void MenuKeySetter () {
+		private void MenuKeySetterHub () {
 
 			if (DrawItem(Language.Get(WORD.MENU_SETTER_KEYBOARD))) {
 				RequireMode = MenuMode.Setter_Keyboard;
@@ -165,7 +175,11 @@ namespace Yaya {
 			}
 
 			// Language
-			if (DrawArrowItem(Language.Get(WORD.MENU_LANGUAGE), new(Util.GetLanguageDisplayName(Game.Current.CurrentLanguage)), out delta)) {
+			if (DrawArrowItem(
+				Language.Get(WORD.MENU_LANGUAGE),
+				new(Util.GetLanguageDisplayName(Game.Current.CurrentLanguage)),
+				out delta)
+			) {
 				// Get Current Index
 				int index = 0;
 				for (int i = 0; i < Language.LanguageCount; i++) {
@@ -192,6 +206,8 @@ namespace Yaya {
 
 		private void MenuQuit () {
 
+			Message = Language.Get(WORD.MENU_QUIT_MESSAGE);
+
 			if (DrawItem(Language.Get(WORD.UI_BACK)) || FrameInput.GetKeyDown(GameKey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(3);
@@ -204,45 +220,27 @@ namespace Yaya {
 		}
 
 
-		private void MenuSetter_Keyboard () {
+		private void MenuKeySetter (bool forGamepad) {
 
-
-
-
-			// Back
-			if (DrawItem(Language.Get(WORD.MENU_KEYSETTER_SAVE_BACK))) {
-				RequireMode = MenuMode.KeySetter;
-				SetSelection(0);
-				for (int i = 0; i < KeyboardKeys.Length; i++) {
-					FrameInput.SetKeyboardMap((GameKey)i, KeyboardKeys[i]);
-				}
-			}
-
-			// Back
-			if (DrawItem(Language.Get(WORD.UI_BACK))) {
-				RequireMode = MenuMode.KeySetter;
-				SetSelection(0);
-			}
-
-		}
-
-
-		private void MenuSetter_Gamepad () {
+			Message = Language.Get(forGamepad ? WORD.MENU_KEYSETTER_GAMEPAD_MESSAGE : WORD.MENU_KEYSETTER_KEYBOARD_MESSAGE);
 
 			// All Game Keys
 			for (int i = 0; i < WORD.GAMEKEY_UI_CODES.Length; i++) {
 				int code = WORD.GAMEKEY_UI_CODES[i];
-				var gamepadKey = GamepadKeys[i];
-				int gCode = YayaConst.GAMEPAD_CODE.TryGetValue(gamepadKey, out var _value0) ? _value0 : 0;
-				if (DrawItem(
-					Language.Get(code),
-					RecordingKey == i ?
-						new CellLabel(Language.Get(WORD.MENU_SETTER_RECORD)) {
-							Tint = PauselessFrame % 30 > 15 ? Const.BLACK : Const.WHITE,
-							BackgroundTint = PauselessFrame % 30 > 15 ? Const.GREEN : Const.CLEAR
-						} :
-						new CellLabel() { Image = gCode }
-				)) {
+				CellLabel valueLabel;
+				if (RecordingKey != i) {
+					// Normal
+					valueLabel = new(forGamepad ? string.Empty : Util.GetKeyDisplayName(KeyboardKeys[i])) {
+						Image = forGamepad && YayaConst.GAMEPAD_CODE.TryGetValue(GamepadKeys[i], out var _value0) ? _value0 : 0,
+					};
+				} else {
+					// Recording
+					valueLabel = new(Language.Get(WORD.MENU_SETTER_RECORD)) {
+						Tint = PauselessFrame % 30 > 15 ? Const.BLACK : Const.WHITE,
+						BackgroundTint = PauselessFrame % 30 > 15 ? Const.GREEN : Const.CLEAR,
+					};
+				}
+				if (DrawItem(Language.Get(code), valueLabel)) {
 					RecordLock = true;
 					RecordingKey = i;
 				}
@@ -251,36 +249,60 @@ namespace Yaya {
 			// Save Back
 			if (DrawItem(Language.Get(WORD.MENU_KEYSETTER_SAVE_BACK))) {
 				RequireMode = MenuMode.KeySetter;
-				SetSelection(1);
-				for (int i = 0; i < GamepadKeys.Length; i++) {
-					FrameInput.SetGamepadMap((GameKey)i, GamepadKeys[i]);
+				SetSelection(forGamepad ? 1 : 0);
+				if (forGamepad) {
+					for (int i = 0; i < GamepadKeys.Length; i++) {
+						FrameInput.SetGamepadMap((GameKey)i, GamepadKeys[i]);
+					}
+				} else {
+					for (int i = 0; i < KeyboardKeys.Length; i++) {
+						FrameInput.SetKeyboardMap((GameKey)i, KeyboardKeys[i]);
+					}
 				}
 			}
 
 			// Back
 			if (DrawItem(Language.Get(WORD.UI_BACK))) {
 				RequireMode = MenuMode.KeySetter;
-				SetSelection(1);
+				SetSelection(forGamepad ? 1 : 0);
 			}
 
 			// Record
 			if (RecordingKey >= 0 && !RecordLock) {
-				if (FrameInput.AnyGamepadButtonDown(out var button)) {
-					if (GamepadKeys[RecordingKey] != button) {
-						for (int i = 0; i < GamepadKeys.Length; i++) {
-							if (GamepadKeys[i] == button && GamepadKeys[RecordingKey] != button) {
-								GamepadKeys[i] = GamepadKeys[RecordingKey];
+				if (forGamepad) {
+					// Gamepad
+					if (FrameInput.AnyGamepadButtonDown(out var button)) {
+						if (GamepadKeys[RecordingKey] != button) {
+							for (int i = 0; i < GamepadKeys.Length; i++) {
+								if (GamepadKeys[i] == button && GamepadKeys[RecordingKey] != button) {
+									GamepadKeys[i] = GamepadKeys[RecordingKey];
+								}
 							}
+							GamepadKeys[RecordingKey] = button;
 						}
-						GamepadKeys[RecordingKey] = button;
+						RecordingKey = -1;
+						FrameInput.UseAllHoldingKeys();
+					} else if (FrameInput.AnyKeyboardButtonDown(out _)) {
+						RecordingKey = -1;
+						FrameInput.UseAllHoldingKeys();
 					}
-					RecordingKey = -1;
-					FrameInput.UseGameKey(GameKey.Start);
-					FrameInput.UseCustomKey(Key.Escape);
-				} else if (FrameInput.AnyKeyboardButtonDown(out _)) {
-					RecordingKey = -1;
-					FrameInput.UseGameKey(GameKey.Start);
-					FrameInput.UseCustomKey(Key.Escape);
+				} else {
+					// Keyboard
+					if (FrameInput.AnyKeyboardButtonDown(out var button)) {
+						if (KeyboardKeys[RecordingKey] != button) {
+							for (int i = 0; i < KeyboardKeys.Length; i++) {
+								if (KeyboardKeys[i] == button && KeyboardKeys[RecordingKey] != button) {
+									KeyboardKeys[i] = KeyboardKeys[RecordingKey];
+								}
+							}
+							KeyboardKeys[RecordingKey] = button;
+						}
+						RecordingKey = -1;
+						FrameInput.UseAllHoldingKeys();
+					} else if (FrameInput.AnyGamepadButtonDown(out _)) {
+						RecordingKey = -1;
+						FrameInput.UseAllHoldingKeys();
+					}
 				}
 			}
 
@@ -295,17 +317,35 @@ namespace Yaya {
 
 			// Reset
 			if (FrameInput.CustomKeyDown(Key.F1)) {
-				for (int i = 0; i < GamepadKeys.Length; i++) {
-					GamepadKeys[i] = FrameInput.GetDefaultGamepadMap((GameKey)i); ;
+				if (forGamepad) {
+					for (int i = 0; i < GamepadKeys.Length; i++) {
+						GamepadKeys[i] = FrameInput.GetDefaultGamepadMap((GameKey)i);
+					}
+				} else {
+					for (int i = 0; i < KeyboardKeys.Length; i++) {
+						KeyboardKeys[i] = FrameInput.GetDefaultKeyboardMap((GameKey)i);
+					}
 				}
 			}
 
 		}
 
 
-		// API
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
 		public void SetAsPauseMode () => Mode = RequireMode = MenuMode.Pause;
 		public void SetAsQuitMode () => Mode = RequireMode = MenuMode.Quit;
+
+
+		#endregion
+
+
 
 
 	}
