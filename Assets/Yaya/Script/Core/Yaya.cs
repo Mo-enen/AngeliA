@@ -109,7 +109,7 @@ namespace Yaya {
 				SetViewZ(ViewZ - 1);
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit3)) {
-
+				PeekOrGetEntity<eGuaGua>().Feed();
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit4)) {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());

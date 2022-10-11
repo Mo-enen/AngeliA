@@ -47,6 +47,13 @@ namespace Yaya {
 		}
 
 
+		public override void FillPhysics () {
+			if (Navigation.State == Navigation.NavigationState.Move) {
+				base.FillPhysics();
+			}
+		}
+
+
 		public override void PhysicsUpdate () {
 			bool stateChanged = CharacterState != Yaya.CharacterState;
 			if (stateChanged) SetCharacterState(Yaya.CharacterState);
@@ -67,16 +74,21 @@ namespace Yaya {
 					if (SleepAmount >= 1000) Fed = false;
 					break;
 			}
-			base.PhysicsUpdate();
+			if (Navigation.State == Navigation.NavigationState.Move) {
+				base.PhysicsUpdate();
+			}
 		}
 
 
 		private void Update_FollowYaya () {
-			// Yaya.Active
-
-
-
-
+			if (!Yaya.Active) return;
+			// Target Pos
+			const int FAR = Const.CELL_SIZE * 3;
+			if (Yaya.IsGrounded && (Navigation.TargetX.Distance(Yaya.X) > FAR || Navigation.TargetY.Distance(Yaya.Y) > FAR)) {
+				Navigation.SetTargetPosition(Yaya.X, Yaya.Y);
+			}
+			// Navigate
+			Navigation.Navigate();
 		}
 
 
@@ -84,10 +96,14 @@ namespace Yaya {
 			// Find Target
 
 
+			//Navigation.SetTargetPosition(Yaya.X, Yaya.Y);
 
-			//Navigation.SetTargetPosition(,);
+
+
+
+
 			// Navigate
-			Navigation.Navigate();
+			//Navigation.Navigate();
 		}
 
 

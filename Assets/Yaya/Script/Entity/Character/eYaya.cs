@@ -34,8 +34,8 @@ namespace Yaya {
 
 		private void Update_Gua () {
 			if (GuaGua == null) return;
-			// Respawn GuaGua when Fed and Inactive
-			if (!GuaGua.Active && GuaGua.Fed) {
+			// Respawn GuaGua when: Grounded & Fed & GuaGua Inactive
+			if (IsGrounded && !GuaGua.Active && GuaGua.Fed) {
 				Game.Current.TryAddEntity(GUAGUA_CODE, X, Y, out _);
 			}
 		}
