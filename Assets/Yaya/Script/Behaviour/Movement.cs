@@ -42,8 +42,8 @@ namespace Yaya {
 		public bool IsPounding { get; private set; } = false;
 		public bool IsClimbing { get; private set; } = false;
 		public bool IsFlying { get; private set; } = false;
-		public bool FacingRight { get; private set; } = true;
-		public bool FacingFront => !IsClimbing;
+		public bool FacingRight { get; set; } = true;
+		public bool FacingFront { get; set; } = true;
 		public bool IsMoving => IntendedX != 0;
 		public bool IsRunning => IsMoving && RunningAccumulateFrame >= RunTrigger;
 		public bool IsRolling => !InWater && !IsPounding && !IsFlying && ((JumpRoll && CurrentJumpCount > 0) || (JumpSecondRoll && CurrentJumpCount > 1));
@@ -181,6 +181,7 @@ namespace Yaya {
 
 			// Facing
 			FacingRight = LastIntendedX > 0;
+			FacingFront = !IsClimbing;
 
 			// Physics
 			int prevHitboxHeight = Hitbox.height;

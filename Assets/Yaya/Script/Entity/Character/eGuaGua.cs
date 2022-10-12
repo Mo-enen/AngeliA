@@ -19,7 +19,6 @@ namespace Yaya {
 		public override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
 		public override int CollisionMask => YayaConst.MASK_MAP;
 		public bool Fed { get; private set; } = false;
-		public Navigation Navigation { get; private set; } = null;
 
 		// Data
 		private eYaya Yaya = null;
@@ -36,19 +35,11 @@ namespace Yaya {
 		public override void OnInitialize () {
 			base.OnInitialize();
 			Yaya = Game.Current.PeekOrGetEntity<eYaya>();
-			Navigation = Game.Current.LoadOrCreateMeta<Navigation>("GuaGua", "Navigation");
-			Navigation.OnInitialize(this);
-		}
-
-
-		public override void OnActived () {
-			base.OnActived();
-			Navigation.OnActived();
 		}
 
 
 		public override void FillPhysics () {
-			if (Navigation.State == Navigation.NavigationState.Move) {
+			if (CharacterState == CharacterState.GamePlay) {
 				base.FillPhysics();
 			}
 		}
@@ -57,13 +48,14 @@ namespace Yaya {
 		public override void PhysicsUpdate () {
 			bool stateChanged = CharacterState != Yaya.CharacterState;
 			if (stateChanged) SetCharacterState(Yaya.CharacterState);
-			Health.SetHealth(Yaya.Health.HealthPoint);
+			Health.SetHealth(Yaya.Health.EmptyHealth ? 0 : Health.MaxHP);
 			switch (CharacterState) {
 				case CharacterState.GamePlay:
 					if (Fed) {
 						Update_FollowYaya();
 					} else {
 						Update_FreeMove();
+						base.PhysicsUpdate();
 					}
 					break;
 				case CharacterState.Sleep:
@@ -73,22 +65,21 @@ namespace Yaya {
 					}
 					if (SleepAmount >= 1000) Fed = false;
 					break;
-			}
-			if (Navigation.State == Navigation.NavigationState.Move) {
-				base.PhysicsUpdate();
+				case CharacterState.Passout:
+					VelocityX = 0;
+					break;
 			}
 		}
 
 
 		private void Update_FollowYaya () {
 			if (!Yaya.Active) return;
-			// Target Pos
-			const int FAR = Const.CELL_SIZE * 3;
-			if (Yaya.IsGrounded && (Navigation.TargetX.Distance(Yaya.X) > FAR || Navigation.TargetY.Distance(Yaya.Y) > FAR)) {
-				Navigation.SetTargetPosition(Yaya.X, Yaya.Y);
-			}
-			// Navigate
-			Navigation.Navigate();
+
+
+
+
+			Movement.FacingRight = Yaya.X >= X;
+			MovementState = MovementState.Fly;
 		}
 
 
@@ -96,14 +87,9 @@ namespace Yaya {
 			// Find Target
 
 
-			//Navigation.SetTargetPosition(Yaya.X, Yaya.Y);
+			// Move/Jump to Target
 
 
-
-
-
-			// Navigate
-			//Navigation.Navigate();
 		}
 
 

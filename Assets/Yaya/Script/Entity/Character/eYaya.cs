@@ -36,7 +36,7 @@ namespace Yaya {
 			if (GuaGua == null) return;
 			// Respawn GuaGua when: Grounded & Fed & GuaGua Inactive
 			if (IsGrounded && !GuaGua.Active && GuaGua.Fed) {
-				Game.Current.TryAddEntity(GUAGUA_CODE, X, Y, out _);
+				SummonGuaGua();
 			}
 		}
 
@@ -59,6 +59,17 @@ namespace Yaya {
 					}
 				}
 			}
+		}
+
+
+		// API
+		public void SummonGuaGua (bool fedOnly = false) {
+			if (fedOnly && !GuaGua.Fed) return;
+			if (!GuaGua.Active) {
+				Game.Current.TryAddEntity(GUAGUA_CODE, X, Y, out _);
+			}
+			GuaGua.X = X;
+			GuaGua.Y = Y;
 		}
 
 

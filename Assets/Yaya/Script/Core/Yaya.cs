@@ -257,15 +257,6 @@ namespace Yaya {
 		}
 
 
-		// Misc
-		public override void SetViewZ (int newZ) {
-			base.SetViewZ(newZ);
-			if (CurrentPlayer != null && CurrentPlayer.Active) {
-				CurrentPlayer.Renderer.Bounce();
-			}
-		}
-
-
 		#endregion
 
 
@@ -289,6 +280,11 @@ namespace Yaya {
 				Universe.Meta.SquadBehindAlpha / 255f,
 				m_YayaAsset.SquadTransitionCurve
 			));
+			// Player
+			if (CurrentPlayer != null && CurrentPlayer.Active) {
+				CurrentPlayer.Renderer.Bounce();
+				if (CurrentPlayer is eYaya yaya) yaya.SummonGuaGua(true);
+			}
 		}
 
 

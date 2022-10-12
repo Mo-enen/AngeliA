@@ -42,7 +42,7 @@ namespace Yaya {
 		public int PassoutFrame { get; private set; } = int.MinValue;
 		public int SleepFrame { get; private set; } = 0;
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
-		public MovementState MovementState { get; private set; } = MovementState.Idle;
+		public MovementState MovementState { get; protected set; } = MovementState.Idle;
 		public Movement Movement { get; private set; } = null;
 		public Health Health { get; private set; } = null;
 		public Action Action { get; private set; } = null;
