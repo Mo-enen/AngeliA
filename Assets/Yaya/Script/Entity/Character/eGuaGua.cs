@@ -64,6 +64,7 @@ namespace Yaya {
 						Y = basket.Y + basket.Height - OffsetY;
 					}
 					if (SleepAmount >= 1000) Fed = false;
+					base.PhysicsUpdate();
 					break;
 				case CharacterState.Passout:
 					VelocityX = 0;

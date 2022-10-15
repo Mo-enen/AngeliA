@@ -460,11 +460,10 @@ namespace Yaya {
 				cell.Shift.Up = Util.Remap(90, 0, 0, 1000, Character.SleepFrame);
 			} else if (Character.SleepAmount >= 1000 && PrevSleepAmount < 1000) {
 				// Spawn Particle
-				var rect = cell.Rect;
 				if (Game.Current.TryAddEntity(
 					SLEEP_PARTICLE_CODE,
-					rect.x + rect.width / 2,
-					rect.y + rect.height / 2,
+					cell.X - (int)(cell.PivotX * cell.Width) + cell.Width / 2,
+					cell.Y - (int)(cell.PivotY * cell.Height) + cell.Height / 2,
 					out var particle
 				)) {
 					particle.Width = Const.CELL_SIZE * 2;
@@ -472,6 +471,10 @@ namespace Yaya {
 				}
 			}
 			PrevSleepAmount = Character.SleepAmount;
+			// ZZZ
+			if (Game.GlobalFrame % 42 == 0) {
+				Game.Current.TryAddEntity(eSleepParticle.TYPE_ID, Character.X, Character.Y + Character.Height / 2, out _);
+			}
 		}
 
 

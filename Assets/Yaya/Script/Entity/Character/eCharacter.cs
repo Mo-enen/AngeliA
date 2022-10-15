@@ -21,6 +21,7 @@ namespace Yaya {
 
 	[EntityAttribute.MapEditorGroup("Character")]
 	[EntityAttribute.EntityCapacity(1)]
+	[EntityAttribute.EntityBounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE)]
 	public abstract class eCharacter : eYayaRigidbody, IDamageReceiver {
 
 
@@ -138,6 +139,10 @@ namespace Yaya {
 				case CharacterState.Sleep:
 					VelocityX = 0;
 					VelocityY = 0;
+					Width = Const.CELL_SIZE;
+					Height = Const.CELL_SIZE;
+					OffsetX = -Const.CELL_SIZE / 2;
+					OffsetY = 0;
 					SleepFrame++;
 					if (!Health.FullHealth && SleepFrame >= 1000) Health.Heal(Health.MaxHP);
 					break;

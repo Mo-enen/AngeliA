@@ -23,7 +23,6 @@ namespace Yaya {
 
 		// Data
 		private int ArtworkCode = 0;
-		private int SpawnFrame = int.MinValue;
 
 
 		// MSG
@@ -34,12 +33,6 @@ namespace Yaya {
 				if (typeName[0] == 'e') typeName = typeName[1..];
 				ArtworkCode = $"_a{typeName}".AngeHash();
 			}
-		}
-
-
-		public override void OnActived () {
-			base.OnActived();
-			SpawnFrame = Game.GlobalFrame;
 		}
 
 
