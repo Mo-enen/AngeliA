@@ -18,7 +18,6 @@ namespace Yaya {
 	public class eTimber : eItem { }
 	public class eBomb : eItem { }
 	public class eFirecracker : eItem { }
-	public class eCoin : eItem { }
 	public class eGemRed : eItem { }
 	public class eGemGreen : eItem { }
 	public class eGemOrange : eItem { }

@@ -200,7 +200,7 @@ namespace Yaya {
 
 			Sleep = new($"_a{name}.Sleep", Idle);
 			Damaging = new($"_a{name}.Damage", Idle);
-			Passout = new($"_a{name}.Passout", Idle);
+			Passout = new($"_a{name}.Passout");
 			Face = new($"{name}.Face");
 			FaceBlink = new($"{name}.Face.Blink");
 

@@ -10,7 +10,5 @@ namespace Yaya {
 	public class eNormalBoy : eCharacter {
 
 
-
-
 	}
 }

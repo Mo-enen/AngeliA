@@ -108,7 +108,6 @@ namespace Yaya {
 				// Damage
 				if (tag == YayaConst.DAMAGE_TAG) {
 					YayaCellPhysics.FillBlock_Damage(id, rect.Expand(1), true, 1);
-					YayaCellPhysics.FillBlock_Damage(id, rect.Expand(1), false, 1);
 				}
 			}
 		}

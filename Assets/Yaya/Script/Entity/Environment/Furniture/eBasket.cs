@@ -7,5 +7,9 @@ namespace Yaya {
 	public class eBasket : eFurniture {
 
 
+		protected override RectInt RenderingRect => base.RenderingRect.Expand(32, 32, 0, 0);
+
+
+
 	}
 }
