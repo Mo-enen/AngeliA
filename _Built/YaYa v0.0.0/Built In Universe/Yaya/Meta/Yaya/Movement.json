@@ -3,7 +3,7 @@
 	"_Height" :  384 ,
 	"_SquatHeight" :  200 ,
 	"_DashDuration" :  20,
-	"_RunTrigger"  :   48,
+	"_RunTrigger"  :   0,
 	"_JumpSpeed"  :   69 ,
 	"_SwimInFreeStyle"  :   false ,
 	"_JumpRoll"  :   false ,

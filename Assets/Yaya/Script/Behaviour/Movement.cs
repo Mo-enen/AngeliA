@@ -45,7 +45,7 @@ namespace Yaya {
 		public bool FacingRight { get; set; } = true;
 		public bool FacingFront { get; set; } = true;
 		public bool IsMoving => IntendedX != 0;
-		public bool IsRunning => IsMoving && RunningAccumulateFrame >= RunTrigger;
+		public bool IsRunning => IsMoving && (RunTrigger > 0 ? RunningAccumulateFrame >= RunTrigger : IntendedY == 0);
 		public bool IsRolling => !InWater && !IsPounding && !IsFlying && ((JumpRoll && CurrentJumpCount > 0) || (JumpSecondRoll && CurrentJumpCount > 1));
 		public bool UseFreeStyleSwim => SwimInFreeStyle;
 
@@ -293,7 +293,7 @@ namespace Yaya {
 				acc = SwimAcceleration;
 				dcc = SwimDecceleration;
 			} else {
-				bool running = RunningAccumulateFrame >= RunTrigger;
+				bool running = IsRunning;
 				speed = IntendedX * (running ? RunSpeed : WalkSpeed);
 				acc = running ? RunAcceleration : WalkAcceleration;
 				dcc = running ? RunDecceleration : WalkDecceleration;

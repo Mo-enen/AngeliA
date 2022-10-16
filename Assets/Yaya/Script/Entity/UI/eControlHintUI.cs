@@ -13,8 +13,8 @@ namespace Yaya {
 
 
 		// Const
-		private static readonly int KEYBOARD_BUTTON_ANI_CODE = "_aKeyboard Button".AngeHash();
-		private static readonly int GAMEPAD_BUTTON_ANI_CODE = "_aGamepad Button".AngeHash();
+		private static readonly int KEYBOARD_BUTTON_ANI_CODE = "Keyboard Button".AngeHash();
+		private static readonly int GAMEPAD_BUTTON_ANI_CODE = "Gamepad Button".AngeHash();
 		private static readonly int KEYBOARD_BUTTON_CODE = "Keyboard Button".AngeHash();
 		private static readonly int GAMEPAD_BUTTON_CODE = "Gamepad Button".AngeHash();
 

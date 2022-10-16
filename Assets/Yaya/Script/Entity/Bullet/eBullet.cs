@@ -31,7 +31,7 @@ namespace Yaya {
 			string typeName = GetType().Name;
 			if (!string.IsNullOrEmpty(typeName)) {
 				if (typeName[0] == 'e') typeName = typeName[1..];
-				ArtworkCode = $"_a{typeName}".AngeHash();
+				ArtworkCode = $"{typeName}".AngeHash();
 			}
 		}
 

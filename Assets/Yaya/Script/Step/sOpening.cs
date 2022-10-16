@@ -57,6 +57,7 @@ namespace Yaya {
 					if (game.TryGetEntityNearby<eBed>(new(ViewX, ViewYEnd), out var bed)) {
 						bed.Invoke(player);
 					}
+					player.SleepAmount = 1000;
 				}
 			}
 			if (localFrame < SkipFrame) {

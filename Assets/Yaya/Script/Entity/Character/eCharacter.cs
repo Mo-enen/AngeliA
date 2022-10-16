@@ -14,7 +14,32 @@ namespace Yaya {
 	[EntityAttribute.EntityBounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.ForceSpawn]
-	public abstract class ePlayer : eCharacter { }
+	public abstract class ePlayer : eCharacter {
+
+
+		// Data
+		private static readonly HitInfo[] Collects = new HitInfo[8];
+
+
+		// MSG
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
+			// Collect
+			int count = CellPhysics.OverlapAll(
+				Collects, YayaConst.MASK_ENTITY, Rect, this, OperationMode.TriggerOnly
+			);
+			for (int i = 0; i < count; i++) {
+				var hit = Collects[i];
+				if (hit.Entity is not eCollectable col) continue;
+				bool success = col.OnCollect(this);
+				if (success) {
+					hit.Entity.Active = false;
+				}
+			}
+		}
+
+
+	}
 
 
 
@@ -39,7 +64,10 @@ namespace Yaya {
 		public override bool InAir => base.InAir && !Movement.IsClimbing;
 		public override int CarrierSpeed => 0;
 		public bool TakingDamage => Game.GlobalFrame < Health.LastDamageFrame + Health.DamageStunDuration;
-		public int SleepAmount => Util.Remap(0, 90, 0, 1000, SleepFrame);
+		public int SleepAmount {
+			get => Util.Remap(0, 90, 0, 1000, SleepFrame);
+			set => SleepFrame = Util.Remap(0, 1000, 0, 90, value);
+		}
 		public int PassoutFrame { get; private set; } = int.MinValue;
 		public int SleepFrame { get; private set; } = 0;
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;

@@ -170,46 +170,44 @@ namespace Yaya {
 
 		public void OnInitialize (eCharacter source) {
 			Character = source;
-		}
-
-
-		public void OnActived () {
 
 			string name = Character.GetType().Name;
 			if (name.StartsWith('e')) name = name[1..];
 
-			Idle = new($"_a{name}.Idle");
-			if (Idle.Code == 0) Idle = new($"_a{name}");
-			Walk = new($"_a{name}.Walk", Idle);
-			Run = new($"_a{name}.Run", Walk);
-			var jump = new AniCode($"_a{name}.Jump", Idle);
-			JumpU = new($"_a{name}.JumpU", jump);
-			JumpD = new($"_a{name}.JumpD", jump);
-			Roll = new($"_a{name}.Roll", Run, Idle);
-			Dash = new($"_a{name}.Dash", Roll);
-			var squat = new AniCode($"_a{name}.Squat", Idle);
-			SquatIdle = new($"_a{name}.SquatIdle", squat);
-			SquatMove = new($"_a{name}.SquatMove", squat);
-			var swim = new AniCode($"_a{name}.Swim", Run);
-			SwimIdle = new($"_a{name}.SwimIdle", swim);
-			SwimMove = new($"_a{name}.SwimMove", swim);
-			SwimDash = new($"_a{name}.SwimDash", swim);
-			Pound = new($"_a{name}.Pound", Idle);
-			Climb = new($"_a{name}.Climb", Idle);
-			Fly = new($"_a{name}.Fly", Run);
+			Idle = new($"{name}.Idle");
+			if (Idle.Code == 0) Idle = new($"{name}");
+			Walk = new($"{name}.Walk", Idle);
+			Run = new($"{name}.Run", Walk);
+			var jump = new AniCode($"{name}.Jump", Idle);
+			JumpU = new($"{name}.JumpU", jump);
+			JumpD = new($"{name}.JumpD", jump);
+			Roll = new($"{name}.Roll", Run, Idle);
+			Dash = new($"{name}.Dash", Roll);
+			var squat = new AniCode($"{name}.Squat", Idle);
+			SquatIdle = new($"{name}.SquatIdle", squat);
+			SquatMove = new($"{name}.SquatMove", squat);
+			var swim = new AniCode($"{name}.Swim", Run);
+			SwimIdle = new($"{name}.SwimIdle", swim);
+			SwimMove = new($"{name}.SwimMove", swim);
+			SwimDash = new($"{name}.SwimDash", swim);
+			Pound = new($"{name}.Pound", Idle);
+			Climb = new($"{name}.Climb", Idle);
+			Fly = new($"{name}.Fly", Run);
 
-			Sleep = new($"_a{name}.Sleep", Idle);
-			Damaging = new($"_a{name}.Damage", Idle);
-			Passout = new($"_a{name}.Passout");
+			Sleep = new($"{name}.Sleep", Idle);
+			Damaging = new($"{name}.Damage", Idle);
+			Passout = new($"{name}.Passout");
 			Face = new($"{name}.Face");
 			FaceBlink = new($"{name}.Face.Blink");
 
-			Attacks = AniCode.GetAnimationArray($"_a{name}.Attack", -1);
-			Attacks_Move = AniCode.GetAnimationArray($"_a{name}.AttackMove", -1, Attacks);
-			Attacks_Air = AniCode.GetAnimationArray($"_a{name}.AttackAir", -1, Attacks);
-			Attacks_Water = AniCode.GetAnimationArray($"_a{name}.AttackWater", -1, Attacks);
-
+			Attacks = AniCode.GetAnimationArray($"{name}.Attack", -1);
+			Attacks_Move = AniCode.GetAnimationArray($"{name}.AttackMove", -1, Attacks);
+			Attacks_Air = AniCode.GetAnimationArray($"{name}.AttackAir", -1, Attacks);
+			Attacks_Water = AniCode.GetAnimationArray($"{name}.AttackWater", -1, Attacks);
 		}
+
+
+		public void OnActived () { }
 
 
 		public void FrameUpdate () {
@@ -396,33 +394,26 @@ namespace Yaya {
 
 
 		private void DrawFace () {
-
 			if (
 				Face.Count <= 0 ||
-				!CellRenderer.TryGetMeta(CurrentCode, out var meta) ||
-				!meta.Head.IsVailed ||
-				!meta.Head.Front
+				!CellRenderer.TryGetSprite(CurrentCode, out var sprite) ||
+				sprite.GlobalBorder.IsZero ||
+				!CellRenderer.TryGetMeta(CurrentCode, out var meta)
 			) return;
-
 			int bounce = Mathf.Abs(CurrentBounce);
-			int offsetY;
+			int offsetY = meta.SpriteHeight - sprite.GlobalBorder.Up;
 			if (CurrentBounce > 0) {
-				offsetY = (meta.Head.Y + meta.Head.Height) * bounce / 1000;
+				offsetY = offsetY * bounce / 1000;
 			} else {
-				offsetY = meta.Head.Y + meta.Head.Height;
 				offsetY += offsetY * (1000 - bounce) / 1000;
 			}
 			var faceID = Face[FaceIndex.UMod(Face.Count)];
 			CellRenderer.Draw_9Slice(
 				Game.GlobalFrame % EyeBlinkRate > 8 ? faceID : FaceBlink.Code,
-				Character.X - meta.SpriteWidth / 2 +
-					(Character.Movement.FacingRight ?
-						meta.Head.X :
-						meta.SpriteWidth - (meta.Head.X + meta.Head.Width)
-					),
+				Character.X - meta.SpriteWidth / 2 + (Character.Movement.FacingRight ? sprite.GlobalBorder.Left : sprite.GlobalBorder.Right),
 				Character.Y + offsetY,
 				0, 1000, 0,
-				meta.Head.Width,
+				sprite.GlobalWidth - sprite.GlobalBorder.Left - sprite.GlobalBorder.Right,
 				Const.ORIGINAL_SIZE
 			);
 		}
