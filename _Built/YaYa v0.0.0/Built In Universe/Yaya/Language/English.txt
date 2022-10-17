@@ -1,4 +1,6 @@
-﻿ActionHint.Bed:Sleep
+﻿Menu.Setting.MusicVolume:Music Volume
+Menu.Setting.SoundVolume:Sound Volume
+ActionHint.Bed:Sleep
 ActionHint.Door:Enter
 ActionHint.OpenableFurniture:Open
 ActionHint.Photo:Switch

@@ -209,6 +209,9 @@ MonoBehaviour:
     TextLayer:
       Shader: {fileID: 4800000, guid: 3cc8ea1201bc7db4dbc3fa00add91e41, type: 3}
       Capacity: 1024
+    CutsceneClips:
+    - {fileID: 32900000, guid: b4229cfc0e56de14d8d8f8f3dbf3915b, type: 3}
+    - {fileID: 32900000, guid: 375d004eef97a274791eefbfbcffe4d3, type: 3}
   m_YayaMeta:
     WaterSpeedLose: 400
     QuickSandJumpoutSpeed: 48

@@ -220,7 +220,7 @@ namespace Yaya {
 		protected override void PauselessUpdate () {
 			base.PauselessUpdate();
 
-			if (IsPausing != AudioPlayer.IsMusicPausing) {
+			if (IsPausing == AudioPlayer.IsMusicPlaying) {
 				if (IsPausing) {
 					AudioPlayer.Pause();
 				} else {

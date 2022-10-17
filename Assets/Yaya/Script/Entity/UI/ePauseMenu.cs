@@ -79,6 +79,7 @@ namespace Yaya {
 
 
 		protected override void DrawMenu () {
+			Message = string.Empty;
 			switch (Mode) {
 				case MenuMode.Pause:
 					MenuPause();
@@ -105,8 +106,6 @@ namespace Yaya {
 
 		// Menus
 		private void MenuPause () {
-
-			Message = string.Empty;
 
 			// 0-Continue
 			if (DrawItem(Language.Get(WORD.UI_CONTINUE)) || FrameInput.GetKeyDown(GameKey.Jump)) {
@@ -165,11 +164,29 @@ namespace Yaya {
 
 		private void MenuSetting () {
 
+			// Music Volume
+			if (DrawArrowItem(
+				Language.Get(WORD.MENU_MUSIC_VOLUME),
+				new((AudioPlayer.MusicVolume / 100).ToString()),
+				out int delta
+			)) {
+				AudioPlayer.SetMusicVolume(AudioPlayer.MusicVolume + delta * 100);
+			}
+
+			// Sound Volume
+			if (DrawArrowItem(
+				Language.Get(WORD.MENU_SOUND_VOLUME),
+				new((AudioPlayer.SoundVolume / 100).ToString()),
+				out delta
+			)) {
+				AudioPlayer.SetSoundVolume(AudioPlayer.SoundVolume + delta * 100);
+			}
+
 			// Framerate
 			if (DrawArrowItem(
 				Language.Get(WORD.MENU_FRAMERATE),
 				new(Game.Current.GraphicFramerate.ToString()),
-				out int delta
+				out delta
 			)) {
 				Game.Current.GraphicFramerate += delta * 30;
 			}

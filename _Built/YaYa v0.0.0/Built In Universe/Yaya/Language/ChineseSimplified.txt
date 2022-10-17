@@ -1,4 +1,6 @@
-﻿ActionHint.Bed:睡觉
+﻿Menu.Setting.MusicVolume:音乐音量
+Menu.Setting.SoundVolume:音效音量
+ActionHint.Bed:睡觉
 ActionHint.Door:进门
 ActionHint.OpenableFurniture:打开
 ActionHint.Photo:切换

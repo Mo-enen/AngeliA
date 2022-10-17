@@ -34,6 +34,8 @@ namespace Yaya {
 		public static readonly int MENU_SETTER_KEYBOARD = "Menu.KeySetter.Keyboard".AngeHash();
 		public static readonly int MENU_SETTER_GAMEPAD = "Menu.KeySetter.Gamepad".AngeHash();
 		public static readonly int MENU_SETTER_RECORD = "Menu.KeySetter.Record".AngeHash();
+		public static readonly int MENU_MUSIC_VOLUME = "Menu.Setting.MusicVolume".AngeHash();
+		public static readonly int MENU_SOUND_VOLUME = "Menu.Setting.SoundVolume".AngeHash();
 		public static readonly int MENU_FRAMERATE = "Menu.Setting.Framerate".AngeHash();
 		public static readonly int MENU_LANGUAGE = "Menu.Setting.Language".AngeHash();
 		public static readonly int MENU_KEYSETTER_SAVE_BACK = "Menu.KeySetter.SaveAndBack".AngeHash();
