@@ -5,6 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+	[EntityAttribute.MapEditorGroup("Collectable")]
 	public abstract class eCollectable : Entity {
 
 
@@ -27,7 +28,7 @@ namespace Yaya {
 	}
 
 
-	[EntityAttribute.EntityCapacity(128)]
+	[EntityAttribute.Capacity(128)]
 	public class eCoin : eCollectable {
 
 

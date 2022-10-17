@@ -37,9 +37,9 @@ namespace Yaya {
 	}
 
 
-	[EntityAttribute.EntityBounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE)]
+	[EntityAttribute.Bounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE)]
 	[EntityAttribute.MapEditorGroup("Vegetation")]
-	[EntityAttribute.EntityCapacity(256)]
+	[EntityAttribute.Capacity(256)]
 	[EntityAttribute.DrawBehind]
 	public abstract class eTrunk : Entity {
 

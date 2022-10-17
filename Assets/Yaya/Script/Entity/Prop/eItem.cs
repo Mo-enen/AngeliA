@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.ExcludeInMapEditor]
-	[EntityAttribute.EntityCapacity(4)]
+	[EntityAttribute.Capacity(4)]
 	public abstract class eItem : Entity {
 
 

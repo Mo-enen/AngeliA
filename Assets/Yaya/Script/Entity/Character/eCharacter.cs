@@ -9,11 +9,12 @@ namespace Yaya {
 
 
 	[EntityAttribute.ExcludeInMapEditor]
-	[EntityAttribute.EntityCapacity(1)]
-	[EntityAttribute.ForceUpdate]
-	[EntityAttribute.EntityBounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
+	[EntityAttribute.Capacity(1)]
+	[EntityAttribute.Bounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
 	[EntityAttribute.DontDestroyOnSquadTransition]
+	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.ForceSpawn]
+	[EntityAttribute.ForceUpdate]
 	public abstract class ePlayer : eCharacter {
 
 
@@ -45,8 +46,8 @@ namespace Yaya {
 
 
 	[EntityAttribute.MapEditorGroup("Character")]
-	[EntityAttribute.EntityCapacity(1)]
-	[EntityAttribute.EntityBounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE)]
+	[EntityAttribute.Capacity(1)]
+	[EntityAttribute.Bounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE)]
 	public abstract class eCharacter : eYayaRigidbody, IDamageReceiver {
 
 

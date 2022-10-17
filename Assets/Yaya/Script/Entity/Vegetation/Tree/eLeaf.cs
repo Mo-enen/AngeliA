@@ -60,8 +60,8 @@ namespace Yaya {
 
 
 	[EntityAttribute.MapEditorGroup("Vegetation")]
-	[EntityAttribute.EntityCapacity(256)]
-	[EntityAttribute.EntityBounds(-Const.CELL_SIZE, -Const.CELL_SIZE, Const.CELL_SIZE * 3, Const.CELL_SIZE * 3)]
+	[EntityAttribute.Capacity(256)]
+	[EntityAttribute.Bounds(-Const.CELL_SIZE, -Const.CELL_SIZE, Const.CELL_SIZE * 3, Const.CELL_SIZE * 3)]
 	[EntityAttribute.DrawBehind]
 	public abstract class eTreeLeaf : Entity {
 

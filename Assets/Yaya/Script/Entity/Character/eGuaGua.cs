@@ -6,7 +6,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.ForceUpdate]
-	[EntityAttribute.EntityCapacity(1)]
+	[EntityAttribute.Capacity(1)]
 	public class eGuaGua : eCharacter {
 
 

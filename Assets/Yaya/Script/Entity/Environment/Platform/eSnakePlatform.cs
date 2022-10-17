@@ -8,7 +8,7 @@ namespace Yaya {
 
 
 
-	[EntityAttribute.EntityCapacity(1)]
+	[EntityAttribute.Capacity(1)]
 	[EntityAttribute.AntiSpawn]
 	public class eSnakePath : Entity { }
 

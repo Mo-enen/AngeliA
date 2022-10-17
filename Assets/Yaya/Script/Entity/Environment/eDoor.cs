@@ -43,7 +43,7 @@ namespace Yaya {
 
 
 	[EntityAttribute.DrawBehind]
-	[EntityAttribute.EntityBounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
+	[EntityAttribute.Bounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
 	public abstract class eDoor : Entity, IActionEntity {
 
 

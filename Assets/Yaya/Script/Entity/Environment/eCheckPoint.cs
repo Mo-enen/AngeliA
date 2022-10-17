@@ -19,8 +19,8 @@ namespace Yaya {
 
 
 
-	[EntityAttribute.EntityCapacity(8)]
-	[EntityAttribute.EntityBounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
+	[EntityAttribute.Capacity(8)]
+	[EntityAttribute.Bounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
 	public class eCheckPoint : Entity, IInitialize {
 
 

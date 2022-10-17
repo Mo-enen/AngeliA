@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 
 namespace Yaya {
-	[EntityAttribute.DontDespawnWhenOutOfRange]
+	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	public class eControlHintUI : UI, IInitialize {
 

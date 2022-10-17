@@ -5,10 +5,10 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[EntityAttribute.EntityCapacity(128)]
+	[EntityAttribute.Capacity(128)]
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.ForceUpdate]
-	[EntityAttribute.DontDespawnWhenOutOfRange]
+	[EntityAttribute.DontDestroyOutOfRange]
 	public abstract class eBullet : Entity, IInitialize {
 
 

@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.MapEditorGroup("Vegetation")]
-	[EntityAttribute.EntityCapacity(128)]
+	[EntityAttribute.Capacity(128)]
 	[EntityAttribute.DrawBehind]
 	public abstract class ePlant : Entity {
 

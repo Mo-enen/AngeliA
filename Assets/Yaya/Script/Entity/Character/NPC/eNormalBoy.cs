@@ -5,8 +5,8 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[EntityAttribute.EntityCapacity(1)]
-	[EntityAttribute.EntityBounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
+	[EntityAttribute.Capacity(1)]
+	[EntityAttribute.Bounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
 	public class eNormalBoy : eCharacter {
 
 

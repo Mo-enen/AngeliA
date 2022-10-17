@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[EntityAttribute.EntityCapacity(4)]
+	[EntityAttribute.Capacity(4)]
 	public class eYayaFootstep : Particle {
 		public override int Duration => 20;
 		public override bool Loop => false;
@@ -15,7 +15,7 @@ namespace Yaya {
 	}
 
 
-	[EntityAttribute.EntityCapacity(16)]
+	[EntityAttribute.Capacity(16)]
 	public class eDefaultParticle : Particle {
 		public override int Duration => 20;
 		public override bool Loop => false;

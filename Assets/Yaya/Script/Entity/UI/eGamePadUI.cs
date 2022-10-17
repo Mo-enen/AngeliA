@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[EntityAttribute.DontDespawnWhenOutOfRange]
+	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	public class eGamePadUI : UI {
 
