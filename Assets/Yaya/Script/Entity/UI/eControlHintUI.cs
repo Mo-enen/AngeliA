@@ -90,9 +90,16 @@ namespace Yaya {
 
 		protected override void UpdateForUI () {
 
-			if (Player == null || !Player.Active) return;
 
 			PositionY = Y + CellRenderer.CameraRect.y;
+
+			// Cutscene
+			if (Game.Current.State == GameState.Cutscene) {
+				if (Game.GlobalFrame > Cutscene.StartFrame + Const.CUTSCENE_FADEOUT_DURATION) {
+					DrawKey(GameKey.Start, WORD.HINT_SKIP_CODE);
+				}
+				return;
+			}
 
 			// Listening Hint
 			foreach (var e in Listening) {
@@ -109,7 +116,8 @@ namespace Yaya {
 				}
 			}
 
-			if (Game.Current.IsPausing) return;
+			if (Player == null || !Player.Active) return;
+			if (Game.Current.State != GameState.Play) return;
 			if (FrameStep.HasStep<sOpening>()) return;
 
 			// Game Playing

@@ -53,18 +53,16 @@ namespace Yaya {
 			}
 			SwitchPlayer(firstPlayerID, false);
 
-			// Open the Game !!
-			FrameStep.AddToLast(new sOpening() {
-				ViewX = VIEW_X,
-				ViewYStart = VIEW_Y_START,
-				ViewYEnd = VIEW_Y_END,
-				SpawnPlayerAtStart = true,
-				RemovePlayerAtStart = true,
-			});
 		}
 
 
 		public void Update_Player () {
+			if (State != GameState.Play) {
+				if (CurrentPlayer != null) {
+					CurrentPlayer.Movement.Move(Direction3.None, Direction3.None);
+				}
+				return;
+			}
 			UpdatePlayer_Respawn();
 			if (CurrentPlayer == null) return;
 			switch (CurrentPlayer.CharacterState) {

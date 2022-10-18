@@ -1,5 +1,4 @@
-﻿Menu.Setting.MusicVolume:音乐音量
-Menu.Setting.SoundVolume:音效音量
+﻿CtrlHint.Skip:跳过
 ActionHint.Bed:睡觉
 ActionHint.Door:进门
 ActionHint.OpenableFurniture:打开
@@ -20,6 +19,8 @@ Menu.Pause.KeySetter:按键分配
 Menu.Pause.QuitMessage:是否要退出游戏？
 Menu.Setting.Framerate:帧频率
 Menu.Setting.Language:语言
+Menu.Setting.MusicVolume:音乐音量
+Menu.Setting.SoundVolume:音效音量
 UI.Back:返回
 UI.Cancel:取消
 UI.Continue:继续

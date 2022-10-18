@@ -47,6 +47,7 @@ namespace Yaya {
 		public static readonly int HINT_ATTACK_CODE = "CtrlHint.Attack".AngeHash();
 		public static readonly int HINT_USE_CODE = "CtrlHint.Use".AngeHash();
 		public static readonly int HINT_WAKE_CODE = "CtrlHint.WakeUp".AngeHash();
+		public static readonly int HINT_SKIP_CODE = "CtrlHint.Skip".AngeHash();
 
 
 

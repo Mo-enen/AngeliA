@@ -1,5 +1,4 @@
-﻿Menu.Setting.MusicVolume:Music Volume
-Menu.Setting.SoundVolume:Sound Volume
+﻿CtrlHint.Skip:Skip
 ActionHint.Bed:Sleep
 ActionHint.Door:Enter
 ActionHint.OpenableFurniture:Open
@@ -20,6 +19,8 @@ Menu.Pause.KeySetter:Key Assignment
 Menu.Pause.QuitMessage:Quit game now？
 Menu.Setting.Framerate:Framerate
 Menu.Setting.Language:Language
+Menu.Setting.MusicVolume:Music Volume
+Menu.Setting.SoundVolume:Sound Volume
 UI.Back:Back
 UI.Cancel:Cancel
 UI.Continue:Continue

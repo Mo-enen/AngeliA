@@ -19,7 +19,8 @@ namespace Yaya {
 		public new YayaWorldSquad WorldSquad_Behind => base.WorldSquad_Behind as YayaWorldSquad;
 		public new YayaWorldSquad WorldSquad => base.WorldSquad as YayaWorldSquad;
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
-		public override int FrameStepLayerCount => 6;
+		public override int StepLayerCount => 2;
+		public override int CutsceneStepLayer => YayaConst.STEP_CUTSCENE;
 		public override RectInt CameraRect => YayaCameraRect;
 		public YayaMeta YayaMeta => m_YayaMeta;
 		public YayaAsset YayaAsset => m_YayaAsset;
@@ -34,6 +35,7 @@ namespace Yaya {
 		private eGamePadUI GamePadUI = null;
 		private eControlHintUI ControlHintUI = null;
 		private ePauseMenu PauseMenu = null;
+		private bool CutsceneLock = true;
 
 		// Saving
 		private readonly SavingBool ShowGamePadUI = new("Yaya.ShowGamePadUI", false);
@@ -60,6 +62,15 @@ namespace Yaya {
 			Initialize_Quit();
 			Initialize_Player();
 
+			// Start the Game !!
+			FrameStep.AddToLast(new sOpening() {
+				ViewX = VIEW_X,
+				ViewYStart = VIEW_Y_START,
+				ViewYEnd = VIEW_Y_END,
+				SpawnPlayerAtStart = true,
+				RemovePlayerAtStart = true,
+			});
+
 			FrameInput.AddCustomKey(Key.Digit1);
 			FrameInput.AddCustomKey(Key.Digit2);
 			FrameInput.AddCustomKey(Key.Digit3);
@@ -79,10 +90,10 @@ namespace Yaya {
 #if UNITY_EDITOR
 				if (UnityEditor.EditorApplication.isPlaying) return true;
 #endif
-				if (IsPausing && PauseMenu.QuitMode) {
+				if (State == GameState.Pause && PauseMenu.QuitMode) {
 					return true;
 				} else {
-					IsPausing = true;
+					State = GameState.Pause;
 					TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
 					PauseMenu.SetAsQuitMode();
 					return false;
@@ -114,7 +125,12 @@ namespace Yaya {
 			if (FrameInput.CustomKeyDown(Key.Digit4)) {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
 			}
-
+			if (FrameInput.CustomKeyUp(Key.Digit5)) {
+				Cutscene.Play(typeof(TestCStep).AngeHash());
+			}
+			if (FrameInput.CustomKeyUp(Key.Digit6)) {
+				Cutscene.Play("Test Video 1".AngeHash());
+			}
 		}
 
 
@@ -131,6 +147,7 @@ namespace Yaya {
 
 
 		private void Update_Damage () {
+			if (State != GameState.Play) return;
 			int len = EntityLen;
 			for (int i = 0; i < len; i++) {
 				var entity = StagedEntities[i];
@@ -191,7 +208,7 @@ namespace Yaya {
 			}
 
 			// Ctrl Hint
-			if (ShowControlHint.Value && CurrentPlayer != null && CurrentPlayer.Active) {
+			if (ShowControlHint.Value) {
 
 				// Spawn
 				if (!ControlHintUI.Active) {
@@ -220,16 +237,8 @@ namespace Yaya {
 		protected override void PauselessUpdate () {
 			base.PauselessUpdate();
 
-			if (IsPausing == AudioPlayer.IsMusicPlaying) {
-				if (IsPausing) {
-					AudioPlayer.Pause();
-				} else {
-					AudioPlayer.UnPause();
-				}
-			}
-
 			// Pausing
-			if (IsPausing) {
+			if (State == GameState.Pause) {
 
 				// Update Entity
 				if (ControlHintUI.Active) {
@@ -249,9 +258,39 @@ namespace Yaya {
 				if (PauseMenu.Active) PauseMenu.Active = false;
 			}
 
-			// Pause/Unpause
+			// Cutscene Hint
+			if (
+				State == GameState.Cutscene &&
+				Cutscene.IsPlayingVideo &&
+				GlobalFrame > Cutscene.StartFrame + Const.CUTSCENE_FADEOUT_DURATION
+			) {
+				if (!CutsceneLock) {
+					if (ControlHintUI.Active) {
+						ControlHintUI.FrameUpdate();
+					}
+				} else if (FrameInput.AnyKeyboardKeyPressed(out _) || FrameInput.AnyGamepadButtonPressed(out _)) {
+					CutsceneLock = false;
+					FrameInput.UseGameKey(GameKey.Start);
+				}
+			} else if (!CutsceneLock) {
+				CutsceneLock = true;
+			}
+
+			// Start Key to Switch State
 			if (FrameInput.GetKeyDown(GameKey.Start)) {
-				IsPausing = !IsPausing;
+				switch (State) {
+					case GameState.Play:
+						State = GameState.Pause;
+						break;
+					case GameState.Pause:
+						State = GameState.Play;
+						break;
+					case GameState.Cutscene:
+						if (!CutsceneLock || Cutscene.IsPlayingStep) {
+							State = GameState.Play;
+						}
+						break;
+				}
 			}
 
 		}

@@ -53,7 +53,7 @@ namespace Yaya {
 
 		// Step
 		public const int STEP_DEFAULT = 0;
-		public const int STEP_ANIMATION = 1;
+		public const int STEP_CUTSCENE = 1;
 
 		// Misc
 		public static readonly int UI_PIXEL = "UI Pixel".AngeHash();

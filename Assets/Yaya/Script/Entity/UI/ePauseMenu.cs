@@ -74,7 +74,9 @@ namespace Yaya {
 
 		public override void OnInactived () {
 			base.OnInactived();
-			Game.Current.IsPausing = false;
+			if (Game.Current.State == GameState.Pause) {
+				Game.Current.State = GameState.Play;
+			}
 		}
 
 
@@ -109,7 +111,7 @@ namespace Yaya {
 
 			// 0-Continue
 			if (DrawItem(Language.Get(WORD.UI_CONTINUE)) || FrameInput.GetKeyDown(GameKey.Jump)) {
-				Game.Current.IsPausing = false;
+				Game.Current.State = GameState.Play;
 				Active = false;
 			}
 
@@ -288,7 +290,7 @@ namespace Yaya {
 			if (RecordingKey >= 0 && !RecordLock) {
 				if (forGamepad) {
 					// Gamepad
-					if (FrameInput.AnyGamepadButtonDown(out var button)) {
+					if (FrameInput.AnyGamepadButtonPressed(out var button)) {
 						if (GamepadKeys[RecordingKey] != button) {
 							for (int i = 0; i < GamepadKeys.Length; i++) {
 								if (GamepadKeys[i] == button && GamepadKeys[RecordingKey] != button) {
@@ -299,13 +301,13 @@ namespace Yaya {
 						}
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
-					} else if (FrameInput.AnyKeyboardButtonDown(out _)) {
+					} else if (FrameInput.AnyKeyboardKeyPressed(out _)) {
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
 					}
 				} else {
 					// Keyboard
-					if (FrameInput.AnyKeyboardButtonDown(out var button)) {
+					if (FrameInput.AnyKeyboardKeyPressed(out var button)) {
 						if (KeyboardKeys[RecordingKey] != button) {
 							for (int i = 0; i < KeyboardKeys.Length; i++) {
 								if (KeyboardKeys[i] == button && KeyboardKeys[RecordingKey] != button) {
@@ -316,7 +318,7 @@ namespace Yaya {
 						}
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
-					} else if (FrameInput.AnyGamepadButtonDown(out _)) {
+					} else if (FrameInput.AnyGamepadButtonPressed(out _)) {
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
 					}
@@ -326,8 +328,8 @@ namespace Yaya {
 			// Unlock Record
 			if (
 				RecordLock &&
-				!FrameInput.AnyGamepadButtonDown(out _) &&
-				!FrameInput.AnyKeyboardButtonDown(out _)
+				!FrameInput.AnyGamepadButtonPressed(out _) &&
+				!FrameInput.AnyKeyboardKeyPressed(out _)
 			) {
 				RecordLock = false;
 			}

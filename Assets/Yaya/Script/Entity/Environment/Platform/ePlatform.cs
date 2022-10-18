@@ -5,6 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+	[EntityAttribute.MapEditorGroup("Platform")]
 	[EntityAttribute.Capacity(128)]
 	public abstract class ePlatform : Entity, IRigidbodyCarrier {
 
