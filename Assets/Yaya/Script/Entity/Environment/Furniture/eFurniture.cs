@@ -29,7 +29,6 @@ namespace Yaya {
 		public eFurniture FurnitureLeftOrDown { get; private set; } = null;
 		public eFurniture FurnitureRightOrUp { get; private set; } = null;
 		public int HighlightFrame { get; set; } = int.MinValue;
-		public int HighlightStartFrame { get; set; } = int.MinValue;
 		protected RectOffset ColliderBorder { get; } = new();
 		protected FittingPose Pose { get; private set; } = FittingPose.Unknown;
 		protected int ArtworkIndex { get; set; } = 0;
@@ -78,7 +77,7 @@ namespace Yaya {
 		private void UpdateHighlight (Cell cell, IActionEntity iAct) {
 			// Highlight
 			if (!UseHighlightAnimation || !iAct.IsHighlighted) return;
-			int offset = (Game.GlobalFrame - HighlightStartFrame) % 30 > 15 ? 0 : Const.CELL_SIZE / 20;
+			int offset = Game.GlobalFrame % 30 > 15 ? 0 : Const.CELL_SIZE / 20;
 			if (ModuleType == Direction3.Horizontal) {
 				// Horizontal
 				if (Pose == FittingPose.Left || Pose == FittingPose.Single) {
@@ -171,22 +170,18 @@ namespace Yaya {
 
 		// Highlight
 		public void Highlight () {
-			if (this is not IActionEntity iAct) return;
-			bool oldHighlight = iAct.IsHighlighted;
-			if (!oldHighlight) HighlightStartFrame = Game.GlobalFrame;
+			if (this is not IActionEntity) return;
 			HighlightFrame = Game.GlobalFrame;
-			HighlightAllNeighbors(!oldHighlight);
+			HighlightAllNeighbors();
 		}
 
 
-		public void HighlightAllNeighbors (bool firstFrame) {
+		public void HighlightAllNeighbors () {
 			for (eFurniture i = FurnitureLeftOrDown; i != null; i = i.FurnitureLeftOrDown) {
 				i.HighlightFrame = Game.GlobalFrame;
-				if (firstFrame) i.HighlightStartFrame = Game.GlobalFrame;
 			}
 			for (eFurniture i = FurnitureRightOrUp; i != null; i = i.FurnitureRightOrUp) {
 				i.HighlightFrame = Game.GlobalFrame;
-				if (firstFrame) i.HighlightStartFrame = Game.GlobalFrame;
 			}
 		}
 

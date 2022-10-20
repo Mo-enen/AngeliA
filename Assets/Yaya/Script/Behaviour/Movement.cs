@@ -5,6 +5,14 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+	public enum MovementState {
+		Idle = 0,
+		Walk, Run, JumpUp, JumpDown,
+		SwimIdle, SwimMove, SwimDash,
+		SquatIdle, SquatMove,
+		Dash, Roll, Pound, Climb, Fly,
+	}
+
 	[System.Serializable]
 	public partial class Movement {
 
@@ -48,6 +56,17 @@ namespace Yaya {
 		public bool IsRunning => IsMoving && RunningAccumulateFrame >= RunTrigger;
 		public bool IsRolling => !InWater && !IsPounding && !IsFlying && ((JumpRoll && CurrentJumpCount > 0) || (JumpSecondRoll && CurrentJumpCount > 1));
 		public bool UseFreeStyleSwim => SwimInFreeStyle;
+		public MovementState State => IsFlying ? MovementState.Fly :
+							IsClimbing ? MovementState.Climb :
+							IsPounding ? MovementState.Pound :
+							IsRolling ? MovementState.Roll :
+							IsDashing ? (!IsGrounded && InWater ? MovementState.SwimDash : MovementState.Dash) :
+							IsSquating ? (IsMoving ? MovementState.SquatMove : MovementState.SquatIdle) :
+							InWater && !IsGrounded ? (IsMoving ? MovementState.SwimMove : MovementState.SwimIdle) :
+							Source.InAir ? (Source.FinalVelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown) :
+							IsRunning ? MovementState.Run :
+							IsMoving ? MovementState.Walk :
+							MovementState.Idle;
 
 		// Short
 		private int CurrentDashDuration => InWater && SwimInFreeStyle ? FreeSwimDashDuration : DashDuration;

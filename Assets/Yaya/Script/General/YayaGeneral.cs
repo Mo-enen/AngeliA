@@ -74,4 +74,24 @@ namespace Yaya {
 			{ GamepadButton.RightShoulder, "k_Gamepad RightShoulder".AngeHash()},
 		};
 	}
+
+
+	[System.AttributeUsage(System.AttributeTargets.Class)]
+	public class FirstSelectedPlayerAttribute : System.Attribute { }
+
+
+	public interface IDamageReceiver {
+		void TakeDamage (int damage);
+	}
+
+
+	public enum FittingPose {
+		Unknown = 0,
+		Left = 1,
+		Down = 1,
+		Mid = 2,
+		Right = 3,
+		Up = 3,
+		Single = 4,
+	}
 }

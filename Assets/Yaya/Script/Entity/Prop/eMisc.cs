@@ -10,7 +10,6 @@ namespace Yaya {
 	public class eRuneWater : eItem { }
 	public class eRuneLightning : eItem { }
 	public class eRunePoison : eItem { }
-	public class eRuneEmpty : eItem { }
 	public class eSkull : eItem { }
 	public class eBrokenBone : eItem { }
 	public class eCatPaw : eItem { }

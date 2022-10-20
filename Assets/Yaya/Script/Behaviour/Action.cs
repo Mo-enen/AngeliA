@@ -5,6 +5,25 @@ using UnityEngine;
 
 
 namespace Yaya {
+	public interface IActionEntity {
+
+		public int HighlightFrame { get; set; }
+		public bool Invoke (Entity target);
+		public void CancelInvoke (Entity target);
+
+		public bool LockInput => false;
+		public bool IsHighlighted => Game.GlobalFrame <= HighlightFrame + 1;
+		public GameKey InvokeKey => GameKey.Action;
+		public void Highlight () => HighlightFrame = Game.GlobalFrame;
+		public static void HighlightBlink (Cell cell, IActionEntity iAct) {
+			if (!iAct.IsHighlighted || Game.GlobalFrame % 30 > 15) return;
+			const int OFFSET = Const.CELL_SIZE / 20;
+			cell.Width += OFFSET * 2;
+			cell.Height += OFFSET * 2;
+		}
+	}
+
+
 	[System.Serializable]
 	public class Action {
 
@@ -17,6 +36,7 @@ namespace Yaya {
 		// Api
 		public IActionEntity CurrentTarget { get; private set; } = null;
 		public Entity Source { get; private set; } = null;
+		public bool LockingInput => CurrentTarget != null && CurrentTarget.LockInput;
 
 		// Ser
 		[SerializeField] int ScanRange = Const.CELL_SIZE / 2;

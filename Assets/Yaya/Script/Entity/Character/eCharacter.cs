@@ -44,6 +44,12 @@ namespace Yaya {
 
 
 
+	public enum CharacterState {
+		GamePlay = 0,
+		Sleep = 1,
+		Passout = 2,
+	}
+
 
 	[EntityAttribute.MapEditorGroup("Character")]
 	[EntityAttribute.Capacity(1)]
@@ -150,18 +156,7 @@ namespace Yaya {
 						Action.Update();
 						Attackness.Update();
 						Movement.Update();
-						MovementState =
-							Movement.IsFlying ? MovementState.Fly :
-							Movement.IsClimbing ? MovementState.Climb :
-							Movement.IsPounding ? MovementState.Pound :
-							Movement.IsRolling ? MovementState.Roll :
-							Movement.IsDashing ? (!IsGrounded && InWater ? MovementState.SwimDash : MovementState.Dash) :
-							Movement.IsSquating ? (Movement.IsMoving ? MovementState.SquatMove : MovementState.SquatIdle) :
-							InWater && !IsGrounded ? (Movement.IsMoving ? MovementState.SwimMove : MovementState.SwimIdle) :
-							InAir ? (FinalVelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown) :
-							Movement.IsRunning ? MovementState.Run :
-							Movement.IsMoving ? MovementState.Walk :
-							MovementState.Idle;
+						MovementState = Movement.State;
 					}
 					base.PhysicsUpdate();
 					break;

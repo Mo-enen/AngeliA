@@ -140,39 +140,43 @@ namespace Yaya {
 				RightDownFrame = int.MinValue;
 			}
 
-			// Down
-			if (FrameInput.GetKey(GameKey.Down)) {
-				if (DownDownFrame < 0) {
-					DownDownFrame = frame;
-					AttackRequiringFrame = int.MinValue;
+			if (!CurrentPlayer.Action.LockingInput) {
+				// Down
+				if (FrameInput.GetKey(GameKey.Down)) {
+					if (DownDownFrame < 0) {
+						DownDownFrame = frame;
+						AttackRequiringFrame = int.MinValue;
+					}
+					if (DownDownFrame > UpDownFrame) {
+						y = Direction3.Negative;
+					}
+				} else if (DownDownFrame > 0) {
+					DownDownFrame = int.MinValue;
 				}
-				if (DownDownFrame > UpDownFrame) {
-					y = Direction3.Negative;
+
+				// Up
+				if (FrameInput.GetKey(GameKey.Up)) {
+					if (UpDownFrame < 0) {
+						UpDownFrame = frame;
+						AttackRequiringFrame = int.MinValue;
+					}
+					if (UpDownFrame > DownDownFrame) {
+						y = Direction3.Positive;
+					}
+				} else if (UpDownFrame > 0) {
+					UpDownFrame = int.MinValue;
 				}
-			} else if (DownDownFrame > 0) {
-				DownDownFrame = int.MinValue;
+
 			}
 
-			// Up
-			if (FrameInput.GetKey(GameKey.Up)) {
-				if (UpDownFrame < 0) {
-					UpDownFrame = frame;
-					AttackRequiringFrame = int.MinValue;
-				}
-				if (UpDownFrame > DownDownFrame) {
-					y = Direction3.Positive;
-				}
-			} else if (UpDownFrame > 0) {
-				UpDownFrame = int.MinValue;
-			}
-
+			// Final
 			CurrentPlayer.Movement.Move(x, y);
 		}
 
 
 		private void UpdatePlayer_JumpDashPound () {
 
-			if (CurrentPlayer.Action.CurrentTarget is eOpenableFurniture oFur && oFur.Open) return;
+			if (CurrentPlayer.Action.LockingInput) return;
 
 			var movement = CurrentPlayer.Movement;
 			var attack = CurrentPlayer.Attackness;
@@ -200,7 +204,7 @@ namespace Yaya {
 			var attack = CurrentPlayer.Attackness;
 
 			// Try Perform Action
-			if (FrameInput.AnyGameKeyDown()) {
+			if (action.CurrentTarget != null && FrameInput.AnyGameKeyDown()) {
 				bool performed = action.Invoke();
 				if (performed) return;
 			}
@@ -210,6 +214,9 @@ namespace Yaya {
 				action.CancelInvoke();
 				return;
 			}
+
+			// Lock Input Check
+			if (action.LockingInput) return;
 
 			// Try Perform Attack
 			if (CurrentPlayer.CharacterState == CharacterState.GamePlay) {
