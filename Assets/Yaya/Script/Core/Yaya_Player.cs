@@ -16,9 +16,9 @@ namespace Yaya {
 
 		// Const
 		private const int ATTACK_REQUIRE_GAP = 12;
-		private const int VIEW_X = 10 * Const.CELL_SIZE;
-		private const int VIEW_Y_START = 19 * Const.CELL_SIZE;
-		private const int VIEW_Y_END = 8 * Const.CELL_SIZE;
+		private const int VIEW_X = 10 * Const.CEL;
+		private const int VIEW_Y_START = 19 * Const.CEL;
+		private const int VIEW_Y_END = 8 * Const.CEL;
 
 		// Api
 		public ePlayer CurrentPlayer { get; private set; } = null;
@@ -92,7 +92,7 @@ namespace Yaya {
 			if (
 				CurrentPlayer != null && CurrentPlayer.Active &&
 				CurrentPlayer.CharacterState == CharacterState.Passout &&
-				GlobalFrame > CurrentPlayer.PassoutFrame + 48 &&
+				GlobalFrame > CurrentPlayer.PassoutFrame + YayaConst.PASSOUT_WAIT &&
 				FrameInput.GetKeyDown(GameKey.Action) &&
 				!FrameStep.HasStep<sOpening>()
 			) {
@@ -258,7 +258,8 @@ namespace Yaya {
 			const int LINGER_RATE = 32;
 			const int LERP_RATE = 96;
 			var viewRect = ViewRect;
-			if (!CurrentPlayer.InAir) LastGroundedY = CurrentPlayer.Y;
+			bool flying = CurrentPlayer.Movement.IsFlying;
+			if (!CurrentPlayer.InAir || flying) LastGroundedY = CurrentPlayer.Y;
 			int linger = viewRect.width * LINGER_RATE / 1000;
 			int centerX = viewRect.x + viewRect.width / 2;
 			if (CurrentPlayer.X < centerX - linger) {
@@ -266,7 +267,10 @@ namespace Yaya {
 			} else if (CurrentPlayer.X > centerX + linger) {
 				AimX = CurrentPlayer.X - linger - viewRect.width / 2;
 			}
-			AimY = !CurrentPlayer.InAir || CurrentPlayer.Y < LastGroundedY ? GetAimY(CurrentPlayer.Y, viewRect.height) : AimY;
+
+			AimY = !CurrentPlayer.InAir || flying || CurrentPlayer.Y < LastGroundedY ?
+				GetAimY(CurrentPlayer.Y, viewRect.height) : AimY;
+
 			SetViewPositionDely(AimX, AimY, LERP_RATE, Const.VIEW_PRIORITY_PLAYER);
 			// Clamp
 			if (!viewRect.Contains(CurrentPlayer.X, CurrentPlayer.Y)) {

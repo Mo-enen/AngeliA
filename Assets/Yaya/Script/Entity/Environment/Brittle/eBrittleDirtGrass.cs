@@ -14,7 +14,7 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
-			Height = Const.CELL_SIZE / 2;
+			Height = Const.CEL / 2;
 		}
 
 
@@ -27,7 +27,7 @@ namespace Yaya {
 				TypeID,
 				X + OffsetX + Width / 2,
 				Y + OffsetY + Height / 2,
-				500, 250, rot, Width, Const.CELL_SIZE,
+				500, 250, rot, Width, Const.CEL,
 				tint
 			);
 

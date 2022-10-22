@@ -12,7 +12,7 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
-			ArtworkIndex = (X + Y * 17) / Const.CELL_SIZE;
+			ArtworkIndex = (X + Y * 17) / Const.CEL;
 		}
 
 

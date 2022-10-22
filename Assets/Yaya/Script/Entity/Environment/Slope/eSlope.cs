@@ -49,7 +49,7 @@ namespace Yaya {
 			if (!UnfillBottomBlock.HasValue) {
 				if (DirectionVertical == Direction3.Up) {
 					UnfillBottomBlock = CellPhysics.HasEntity<eSlope>(
-						new(DirectionHorizontal == Direction3.Left ? X - Const.CELL_SIZE / 2 : X + Const.CELL_SIZE + Const.CELL_SIZE / 2, Y - Const.CELL_SIZE / 2, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
+						new(DirectionHorizontal == Direction3.Left ? X - Const.CEL / 2 : X + Const.CEL + Const.CEL / 2, Y - Const.CEL / 2, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 					);
 				} else {
 					UnfillBottomBlock = false;
@@ -58,7 +58,7 @@ namespace Yaya {
 			if (UnfillBottomBlock.HasValue && UnfillBottomBlock.Value) {
 				CellPhysics.Unfill(
 					YayaConst.MASK_LEVEL,
-					new(X + Const.CELL_SIZE / 2, Y - Const.CELL_SIZE / 2, 1, 1),
+					new(X + Const.CEL / 2, Y - Const.CEL / 2, 1, 1),
 					false, true
 				);
 			}

@@ -14,8 +14,8 @@ namespace Yaya {
 		public override RectInt Rect => new(
 			X,
 			Y,
-			Const.CELL_SIZE,
-			HasLadderOnTop.HasValue && HasLadderOnTop.Value ? Const.CELL_SIZE : Const.CELL_SIZE / 4
+			Const.CEL,
+			HasLadderOnTop.HasValue && HasLadderOnTop.Value ? Const.CEL : Const.CEL / 4
 		);
 
 		private bool? HasLadderOnTop = null;
@@ -37,7 +37,7 @@ namespace Yaya {
 			base.PhysicsUpdate();
 			if (!HasLadderOnTop.HasValue) {
 				HasLadderOnTop = CellPhysics.HasEntity<eLadder>(
-					Rect.Shift(0, Const.CELL_SIZE),
+					Rect.Shift(0, Const.CEL),
 					YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly, YayaConst.CLIMB_STABLE_TAG
 				);
 			}
@@ -46,7 +46,7 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-            CellRenderer.Draw(LADDER_CODE, new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE));
+            CellRenderer.Draw(LADDER_CODE, new(X, Y, Const.CEL, Const.CEL));
 		}
 
 

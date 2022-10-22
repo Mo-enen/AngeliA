@@ -77,7 +77,7 @@ namespace Yaya {
 		private void UpdateHighlight (Cell cell, IActionEntity iAct) {
 			// Highlight
 			if (!UseHighlightAnimation || !iAct.IsHighlighted) return;
-			int offset = Game.GlobalFrame % 30 > 15 ? 0 : Const.CELL_SIZE / 20;
+			int offset = Game.GlobalFrame % 30 > 15 ? 0 : Const.CEL / 20;
 			if (ModuleType == Direction3.Horizontal) {
 				// Horizontal
 				if (Pose == FittingPose.Left || Pose == FittingPose.Single) {

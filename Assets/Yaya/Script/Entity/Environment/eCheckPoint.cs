@@ -4,66 +4,133 @@ using UnityEngine;
 using AngeliaFramework;
 
 
+/*
+LalynnA
+Mage
+Elf
+Dragon
+Torch
+Slime
+Insect
+Orc
+Tako
+Shark
+Bone
+Footman
+Knight
+Jesus
+Shield
+Gamble
+Science
+Spider
+Stalactite
+Sword
+Aerospace
+MachineGun
+Knowledge
+Cat
+*/
+
 namespace Yaya {
-	[System.Serializable]
-	public class CheckPointMeta {
+
+	public class AltarLalynnA : eCheckAltar { }
+	public class AltarMage : eCheckAltar { }
+	public class AltarElf : eCheckAltar { }
+	public class AltarDragon : eCheckAltar { }
+	public class AltarTorch : eCheckAltar { }
+	public class AltarSlime : eCheckAltar { }
+	public class AltarInsect : eCheckAltar { }
+	public class AltarOrc : eCheckAltar { }
+	public class AltarTako : eCheckAltar { }
+	public class AltarShark : eCheckAltar { }
+	public class AltarBone : eCheckAltar { }
+	public class AltarFootman : eCheckAltar { }
+	public class AltarKnight : eCheckAltar { }
+	public class AltarJesus : eCheckAltar { }
+	public class AltarShield : eCheckAltar { }
+	public class AltarGamble : eCheckAltar { }
+	public class AltarScience : eCheckAltar { }
+	public class AltarSpider : eCheckAltar { }
+	public class AltarStalactite : eCheckAltar { }
+	public class AltarSword : eCheckAltar { }
+	public class AltarAerospace : eCheckAltar { }
+	public class AltarMachineGun : eCheckAltar { }
+	public class AltarKnowledge : eCheckAltar { }
+	public class AltarCat : eCheckAltar { }
+
+	public class CheckLalynnA : eCheckPoint { }
+	public class CheckMage : eCheckPoint { }
+	public class CheckElf : eCheckPoint { }
+	public class CheckDragon : eCheckPoint { }
+	public class CheckTorch : eCheckPoint { }
+	public class CheckSlime : eCheckPoint { }
+	public class CheckInsect : eCheckPoint { }
+	public class CheckOrc : eCheckPoint { }
+	public class CheckTako : eCheckPoint { }
+	public class CheckShark : eCheckPoint { }
+	public class CheckBone : eCheckPoint { }
+	public class CheckFootman : eCheckPoint { }
+	public class CheckKnight : eCheckPoint { }
+	public class CheckJesus : eCheckPoint { }
+	public class CheckShield : eCheckPoint { }
+	public class CheckGamble : eCheckPoint { }
+	public class CheckScience : eCheckPoint { }
+	public class CheckSpider : eCheckPoint { }
+	public class CheckStalactite : eCheckPoint { }
+	public class CheckSword : eCheckPoint { }
+	public class CheckAerospace : eCheckPoint { }
+	public class CheckMachineGun : eCheckPoint { }
+	public class CheckKnowledge : eCheckPoint { }
+	public class CheckCat : eCheckPoint { }
+
+
+	[EntityAttribute.Capacity(1)]
+	[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
+	[EntityAttribute.MapEditorGroup("Check Point")]
+	public abstract class eCheckAltar : Entity, IInitialize {
+
+
 		[System.Serializable]
-		public struct Data {
-			public int Index;
-			public int X; // Global Unit Pos
-			public int Y; // Global Unit Pos
-			public bool IsAltar;
+		public class CheckPointMeta {
+			[System.Serializable]
+			public struct Data {
+				public int X; // Global Unit Pos
+				public int Y; // Global Unit Pos
+				public int Z; // Global Unit Pos
+				public int EntityID;
+			}
+			public Data[] CPs = null;
 		}
-		public Data[] CPs = null;
-	}
 
 
-
-	[EntityAttribute.Capacity(8)]
-	[EntityAttribute.Bounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
-	public class eCheckPoint : Entity, IInitialize {
+		public static Dictionary<int, Vector3Int> AltarPositionPool { get; } = new();
 
 
-		// Const
-		private static readonly int ARTWORK_STATUE_CODE = "Check Statue".AngeHash();
-		private static readonly int ARTWORK_ALTAR_CODE = "Check Altar".AngeHash();
-
-		// Api
-		public static Dictionary<Vector2Int, CheckPointMeta.Data> CheckPointPool { get; } = new();
-		public static Dictionary<int, Vector2Int> CheckPointAltarPool { get; } = new();
-
-		// Data
-		private int ArtCode = 0;
-		private bool IsAltar = false;
-
-
-		// MSG
 		public static void Initialize () {
-			CheckPointPool.Clear();
-			CheckPointAltarPool.Clear();
+			AltarPositionPool.Clear();
 			var cpMeta = Game.Current.LoadMeta<CheckPointMeta>();
 			if (cpMeta != null) {
 				foreach (var cpData in cpMeta.CPs) {
-					var pos = new Vector2Int(cpData.X, cpData.Y);
-					CheckPointPool.TryAdd(pos, cpData);
-					if (cpData.IsAltar) CheckPointAltarPool.TryAdd(cpData.Index, pos);
+					AltarPositionPool.TryAdd(cpData.EntityID, new Vector3Int(cpData.X, cpData.Y, cpData.Z));
 				}
+			}
+		}
+
+
+		public static bool TryGetAltarPosition (int id, out Vector3Int globalPos) {
+			if (AltarPositionPool.TryGetValue(id, out var unitPos)) {
+				globalPos = new(unitPos.x * Const.CEL, unitPos.y * Const.CEL, unitPos.z);
+				return true;
+			} else {
+				globalPos = default;
+				return false;
 			}
 		}
 
 
 		public override void OnActived () {
 			base.OnActived();
-			var globalUnitPos = new Vector2Int(X.UDivide(Const.CELL_SIZE), Y.UDivide(Const.CELL_SIZE));
-			if (CheckPointPool.TryGetValue(globalUnitPos, out var _cpData) && _cpData.Index >= 0) {
-				IsAltar = _cpData.IsAltar;
-			} else {
-				IsAltar = false;
-				Active = false;
-			}
-			Width = Const.CELL_SIZE;
-			Height = IsAltar ? Const.CELL_SIZE * 2 : Const.CELL_SIZE;
-			ArtCode = 0;
+			Height = Const.CEL * 2;
 		}
 
 
@@ -73,30 +140,30 @@ namespace Yaya {
 		}
 
 
-		public override void PhysicsUpdate () {
-			base.PhysicsUpdate();
-			if (ArtCode == 0) {
-				int artIndex = 0;
-				var globalUnitPos = new Vector2Int(X.UDivide(Const.CELL_SIZE), Y.UDivide(Const.CELL_SIZE));
-				if (CheckPointPool.TryGetValue(globalUnitPos, out var _cpData)) {
-					artIndex = _cpData.Index;
-				}
-				if (CellRenderer.TryGetSpriteFromGroup(IsAltar ? ARTWORK_ALTAR_CODE : ARTWORK_STATUE_CODE, artIndex, out var sprite, false)) {
-					ArtCode = sprite.GlobalID;
-				} else {
-					ArtCode = -1;
-				}
-			}
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			CellRenderer.Draw(TypeID, Rect);
+		}
+
+
+	}
+
+
+	[EntityAttribute.Capacity(1)]
+	[EntityAttribute.MapEditorGroup("Check Point")]
+	public abstract class eCheckPoint : Entity {
+
+
+		public override void FillPhysics () {
+			base.FillPhysics();
+			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
 		}
 
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.Draw(ArtCode, base.Rect);
+			CellRenderer.Draw(TypeID, Rect);
 		}
-
-
-		public static bool TryGetAltarPosition (int index, out Vector2Int unitPos) => CheckPointAltarPool.TryGetValue(index, out unitPos);
 
 
 	}

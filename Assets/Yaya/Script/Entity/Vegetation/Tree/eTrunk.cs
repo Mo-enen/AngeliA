@@ -37,7 +37,7 @@ namespace Yaya {
 	}
 
 
-	[EntityAttribute.Bounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE)]
+	[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL)]
 	[EntityAttribute.MapEditorGroup("Vegetation")]
 	[EntityAttribute.Capacity(256)]
 	[EntityAttribute.DrawBehind]
@@ -52,7 +52,7 @@ namespace Yaya {
 		public override void OnActived () {
 			base.OnActived();
             TrunkArtworkCode = CellRenderer.TryGetSpriteFromGroup(
-                TrunkCode.AngeHash(), (X * 3 + Y * 11) / Const.CELL_SIZE, out var tSprite
+                TrunkCode.AngeHash(), (X * 3 + Y * 11) / Const.CEL, out var tSprite
 			) ? tSprite.GlobalID : 0;
 		}
 

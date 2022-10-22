@@ -88,17 +88,17 @@ namespace Yaya {
 				_ => false,
 			}) {
 				// Fix Position Back
-				const int HALF = Const.CELL_SIZE / 2;
-				X -= (X + HALF).UMod(Const.CELL_SIZE) - HALF;
-				Y -= (Y + HALF).UMod(Const.CELL_SIZE) - HALF;
+				const int HALF = Const.CEL / 2;
+				X -= (X + HALF).UMod(Const.CEL) - HALF;
+				Y -= (Y + HALF).UMod(Const.CEL) - HALF;
 
 				// Get Direction
 				if (GetDirectionIgnoreOpposite(CurrentDirection, out var newDirection)) {
 					CurrentDirection = newDirection;
 				}
 				var normal = CurrentDirection.Normal();
-				TargetPosition.x += normal.x * Const.CELL_SIZE;
-				TargetPosition.y += normal.y * Const.CELL_SIZE;
+				TargetPosition.x += normal.x * Const.CEL;
+				TargetPosition.y += normal.y * Const.CEL;
 
 				// Stop Check
 				if (Head == null && CellPhysics.Overlap(
@@ -130,14 +130,14 @@ namespace Yaya {
 				if (ArtworkScale != 1000) {
 					cell.Width = cell.Width * ArtworkScale / 1000;
 					cell.Height = cell.Height * ArtworkScale / 1000;
-					int offset = Util.RemapUnclamped(0, 1000, Const.CELL_SIZE / 2, 0, ArtworkScale);
+					int offset = Util.RemapUnclamped(0, 1000, Const.CEL / 2, 0, ArtworkScale);
 					cell.X += offset;
 					cell.Y += offset;
 				}
 			} else {
-				int shakeX = ((Game.GlobalFrame + Y / Const.CELL_SIZE).PingPong(6) - 3) * 6;
-				int shakeY = ((Game.GlobalFrame + X / Const.CELL_SIZE).PingPong(6) - 3) * 6;
-				int rot = (Game.GlobalFrame + (X + Y) / Const.CELL_SIZE).PingPong(6) - 3;
+				int shakeX = ((Game.GlobalFrame + Y / Const.CEL).PingPong(6) - 3) * 6;
+				int shakeY = ((Game.GlobalFrame + X / Const.CEL).PingPong(6) - 3) * 6;
+				int rot = (Game.GlobalFrame + (X + Y) / Const.CEL).PingPong(6) - 3;
 				int width = Width * ArtworkScale / 1000;
 				int height = Height * ArtworkScale / 1000;
 				CellRenderer.Draw(ArtworkCode, X + Width / 2 + shakeX, Y + Height / 2 + shakeY, 500, 500, rot, width, height);
@@ -160,8 +160,8 @@ namespace Yaya {
 
 		public bool HasSnakeBlockAtDirection (Direction4 direction, bool ignoreTypeID) {
 			var normal = direction.Normal();
-			int unitX = (X + Width / 2).UDivide(Const.CELL_SIZE) + normal.x;
-			int unitY = (Y + Height / 2).UDivide(Const.CELL_SIZE) + normal.y;
+			int unitX = (X + Width / 2).UDivide(Const.CEL) + normal.x;
+			int unitY = (Y + Height / 2).UDivide(Const.CEL) + normal.y;
 			var squad = Yaya.Current.WorldSquad;
 			int id = squad.GetBlockAt(unitX, unitY, BlockType.Entity);
 			return id == PATH_ID || (!ignoreTypeID && id == TypeID);
@@ -176,7 +176,7 @@ namespace Yaya {
 			int y = Y + Height / 2;
 
 			// L
-			for (int x = -Const.CELL_SIZE / 2; ; x -= Const.CELL_SIZE) {
+			for (int x = -Const.CEL / 2; ; x -= Const.CEL) {
 				var snake = CellPhysics.GetEntity<eSnakePlatform>(
 					new RectInt(X + x, y, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 				);
@@ -187,7 +187,7 @@ namespace Yaya {
 			}
 
 			// R
-			for (int x = Const.CELL_SIZE + Const.CELL_SIZE / 2; ; x += Const.CELL_SIZE) {
+			for (int x = Const.CEL + Const.CEL / 2; ; x += Const.CEL) {
 				var snake = CellPhysics.GetEntity<eSnakePlatform>(
 					new RectInt(X + x, y, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 				);
@@ -214,7 +214,7 @@ namespace Yaya {
 				// Set Direction
 				int leftX = left.X + left.Width / 2;
 				int rightX = right.X + right.Width;
-				for (int x = leftX; x < rightX; x += Const.CELL_SIZE) {
+				for (int x = leftX; x < rightX; x += Const.CEL) {
 					var snake = CellPhysics.GetEntity<eSnakePlatform>(
 						new RectInt(x, y, 1, 1), YayaConst.MASK_ENVIRONMENT,
 						null, OperationMode.ColliderAndTrigger

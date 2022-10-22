@@ -4,7 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
-	[EntityAttribute.Bounds(-Const.CELL_SIZE, -Const.CELL_SIZE, Const.CELL_SIZE * 2, Const.CELL_SIZE * 2)]
+	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 2, Const.CEL * 2)]
 	public class eLamp : eFurniture {
 
 
@@ -19,7 +19,7 @@ namespace Yaya {
 		// MSG
 		public override void OnActived () {
 			base.OnActived();
-			BrightnessShift = (X * 17 + Y * 9) / Const.CELL_SIZE;
+			BrightnessShift = (X * 17 + Y * 9) / Const.CEL;
 			int hour = System.DateTime.Now.Hour;
 			OpenLight = hour <= 6 || hour >= 18;
 		}
@@ -37,7 +37,7 @@ namespace Yaya {
 				CellRenderer.SetLayer(YayaConst.SHADER_ADD);
 				CellRenderer.Draw(
 					LIGHT,
-					base.Rect.Expand(Const.CELL_SIZE),
+					base.Rect.Expand(Const.CEL),
 					new Color32(brightness, brightness, brightness, 255)
 				);
 				CellRenderer.SetLayerToDefault();

@@ -48,7 +48,7 @@ namespace Yaya {
 		protected abstract int Power { get; }
 
 		// Short
-		private RectInt FullRect => new(X, Y, Const.CELL_SIZE, Const.CELL_SIZE);
+		private RectInt FullRect => new(X, Y, Const.CEL, Const.CEL);
 
 		// Data
 		private int LastBounceFrame = int.MinValue;
@@ -60,9 +60,9 @@ namespace Yaya {
 		// MSG
 		public override void OnActived () {
 			base.OnActived();
-			Width = Horizontal ? Const.CELL_SIZE - 64 : Const.CELL_SIZE;
-			Height = !Horizontal ? Const.CELL_SIZE - 32 : Const.CELL_SIZE;
-			if (Horizontal) OffsetX = (Const.CELL_SIZE - Width) / 2;
+			Width = Horizontal ? Const.CEL - 64 : Const.CEL;
+			Height = !Horizontal ? Const.CEL - 32 : Const.CEL;
+			if (Horizontal) OffsetX = (Const.CEL - Width) / 2;
 			LastBounceFrame = int.MinValue;
 			RequireBouncePerform = false;
 			BounceSide = default;
@@ -79,13 +79,13 @@ namespace Yaya {
 					// Hori
 					if (CellPhysics.Overlap(
 						YayaConst.MASK_RIGIDBODY,
-						new(X - 1, Y, Const.CELL_SIZE / 2, Const.CELL_SIZE),
+						new(X - 1, Y, Const.CEL / 2, Const.CEL),
 						this
 					)) {
 						StartBounce(frame, Direction4.Left);
 					} else if (CellPhysics.Overlap(
 						YayaConst.MASK_RIGIDBODY,
-						new(X + Const.CELL_SIZE / 2, Y, Const.CELL_SIZE / 2 + 1, Const.CELL_SIZE),
+						new(X + Const.CEL / 2, Y, Const.CEL / 2 + 1, Const.CEL),
 						this
 					)) {
 						StartBounce(frame, Direction4.Right);
@@ -94,7 +94,7 @@ namespace Yaya {
 					// Vert
 					if (CellPhysics.Overlap(
 						YayaConst.MASK_RIGIDBODY,
-						new(X, Y + Const.CELL_SIZE / 2, Const.CELL_SIZE, Const.CELL_SIZE / 2 + 1),
+						new(X, Y + Const.CEL / 2, Const.CEL, Const.CEL / 2 + 1),
 						this
 					)) {
 						StartBounce(frame, Direction4.Up);
@@ -124,9 +124,9 @@ namespace Yaya {
 			if (CellRenderer.TryGetSpriteFromGroup(TypeID, BOUNCE_ANI[frame], out var sprite, false, true)) {
 				CellRenderer.Draw(
 					sprite.GlobalID,
-					X + Const.CELL_SIZE / 2, Y,
+					X + Const.CEL / 2, Y,
 					500, 0, 0,
-					Const.CELL_SIZE, Const.CELL_SIZE, tint
+					Const.CEL, Const.CEL, tint
 				);
 			}
 		}

@@ -9,5 +9,6 @@
 	"_JumpRoll"  :   false ,
 	"_JumpSecondRoll"  :   true ,
 	"_JumpCount"  :   2 ,
-	"_FlyAvailable" :  true
+	"_FlyAvailable" :  true,
+	"_FlyCount" : 99999
 }

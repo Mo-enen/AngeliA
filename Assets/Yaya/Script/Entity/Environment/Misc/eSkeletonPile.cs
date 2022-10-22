@@ -15,10 +15,10 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
-			Width = Const.CELL_SIZE;
-			Height = Const.CELL_SIZE;
+			Width = Const.CEL;
+			Height = Const.CEL;
 			FullRect = Rect;
-			int artworkIndex = X.UDivide(Const.CELL_SIZE) + Y.UDivide(Const.CELL_SIZE);
+			int artworkIndex = X.UDivide(Const.CEL) + Y.UDivide(Const.CEL);
 			if (CellRenderer.TryGetSpriteFromGroup(CODE, artworkIndex, out var sprite)) {
 				var rect = base.Rect.Shrink(sprite.GlobalBorder.Left, sprite.GlobalBorder.Right, sprite.GlobalBorder.Down, sprite.GlobalBorder.Up);
 				X = rect.x;

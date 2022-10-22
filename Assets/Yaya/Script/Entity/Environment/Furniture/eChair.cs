@@ -30,7 +30,7 @@ namespace Yaya {
 			base.PhysicsUpdate();
 			if (DockPose == FittingPose.Unknown) {
 				var rect = oldRect;
-				rect.x = oldRect.x - Const.CELL_SIZE;
+				rect.x = oldRect.x - Const.CEL;
 				bool hasLeft = CellPhysics.HasEntity<eDiningTable>(rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger);
 				rect.x = oldRect.xMax;
 				bool hasRight = CellPhysics.HasEntity<eDiningTable>(rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger);

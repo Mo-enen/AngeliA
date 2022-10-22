@@ -28,31 +28,25 @@ namespace Yaya {
 			// Rect from Sprite
 			if (CellRenderer.TryGetSpriteFromGroup(
                     ArtworkCode,
-					(X * 3 + Y * 7) / Const.CELL_SIZE,
+					(X * 3 + Y * 7) / Const.CEL,
 					out var sp
 				) || CellRenderer.TryGetSprite(ArtworkCode, out sp)
 			) {
                 ArtworkID = sp.GlobalID;
                 Width = sp.GlobalWidth;
                 Height = sp.GlobalHeight;
-                X = X + Const.CELL_SIZE / 2 - sp.GlobalWidth / 2;
+                X = X + Const.CEL / 2 - sp.GlobalWidth / 2;
 			} else {
-                Width = Const.CELL_SIZE;
-                Height = Const.CELL_SIZE;
+                Width = Const.CEL;
+                Height = Const.CEL;
 			}
 			// Size Offset
 			if (SizeOffset.length > 0) {
-				int offset = SizeOffset.start + ((X * 7 + Y * 3) / Const.CELL_SIZE).UMod(SizeOffset.length);
+				int offset = SizeOffset.start + ((X * 7 + Y * 3) / Const.CEL).UMod(SizeOffset.length);
 				Width += offset;
 				Height += offset;
 				X -= offset / 2;
 			}
-		}
-
-
-		public override void FillPhysics () {
-			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
 		}
 
 
@@ -76,8 +70,8 @@ namespace Yaya {
 			}
 			// Breath
 			if (Breath) {
-				int fixedGameFrame = Game.GlobalFrame - X * 6 / Const.CELL_SIZE;
-				rect.height += (fixedGameFrame - X / Const.CELL_SIZE).PingPong(60) / 6 - 5;
+				int fixedGameFrame = Game.GlobalFrame - X * 6 / Const.CEL;
+				rect.height += (fixedGameFrame - X / Const.CEL).PingPong(60) / 6 - 5;
 				rot += (Mathf.PingPong(fixedGameFrame, 120f) / 60f - 1f).RoundToInt();
 			}
             CellRenderer.Draw(ArtworkID, rect.x + rect.width / 2, rect.y, 500, 0, rot, rect.width, rect.height);

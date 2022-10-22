@@ -36,7 +36,7 @@ namespace Yaya {
 			// Draw Black Fade Out
 			CellRenderer.Draw(
 				Const.PIXEL,
-				CellRenderer.CameraRect.Expand(Const.CELL_SIZE),
+				CellRenderer.CameraRect.Expand(Const.CEL),
 				new Color32(0, 0, 0, 255)
 			);
 			// Remove Player
@@ -78,7 +78,7 @@ namespace Yaya {
 				CellRenderer.SetLayer(YayaConst.SHADER_UI);
 				CellRenderer.Draw(
 					Const.PIXEL,
-					CellRenderer.CameraRect.Expand(Const.CELL_SIZE),
+					CellRenderer.CameraRect.Expand(Const.CEL),
 					new Color32(0, 0, 0, (byte)Util.Remap(0f, BLACK_DURATION, byte.MaxValue, byte.MinValue, localFrame))
 				);
 				CellRenderer.SetLayerToDefault();

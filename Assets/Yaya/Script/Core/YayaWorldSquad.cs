@@ -72,14 +72,20 @@ namespace Yaya {
 			base.DrawBackgroundBlock(id, unitX, unitY);
 			if (!Behind) {
 				// Collider for Oneway
-				if (CellRenderer.TryGetMeta(id, out var meta) && AngeUtil.IsOnewayTag(meta.Tag)) {
+				if (
+					CellRenderer.TryGetSprite(id, out var sp) &&
+					CellRenderer.TryGetMeta(id, out var meta) &&
+					AngeUtil.IsOnewayTag(meta.Tag)
+				) {
 					CellPhysics.FillBlock(
 						YayaConst.LAYER_LEVEL, id,
 						new RectInt(
-							unitX * Const.CELL_SIZE,
-							unitY * Const.CELL_SIZE,
-							Const.CELL_SIZE,
-							Const.CELL_SIZE
+							unitX * Const.CEL,
+							unitY * Const.CEL,
+							Const.CEL,
+							Const.CEL
+						).Shrink(
+							sp.GlobalBorder.Left, sp.GlobalBorder.Right, sp.GlobalBorder.Down, sp.GlobalBorder.Up
 						),
 						true, meta.Tag
 					);
@@ -100,7 +106,7 @@ namespace Yaya {
 					tag = meta.Tag;
 				}
 				var rect = new RectInt(
-					unitX * Const.CELL_SIZE, unitY * Const.CELL_SIZE, Const.CELL_SIZE, Const.CELL_SIZE
+					unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL
 				).Shrink(
 					sp.GlobalBorder.Left, sp.GlobalBorder.Right, sp.GlobalBorder.Down, sp.GlobalBorder.Up
 				);
@@ -115,8 +121,8 @@ namespace Yaya {
 
 		public FittingPose GetEntityPose (Entity entity, bool horizontal) => GetEntityPose(entity.TypeID, entity.X, entity.Y, horizontal);
 		public FittingPose GetEntityPose (int typeID, int globalX, int globalY, bool horizontal) {
-			int unitX = globalX.UDivide(Const.CELL_SIZE);
-			int unitY = globalY.UDivide(Const.CELL_SIZE);
+			int unitX = globalX.UDivide(Const.CEL);
+			int unitY = globalY.UDivide(Const.CEL);
 			bool n = GetBlockAt(horizontal ? unitX - 1 : unitX, horizontal ? unitY : unitY - 1, BlockType.Entity) == typeID;
 			bool p = GetBlockAt(horizontal ? unitX + 1 : unitX, horizontal ? unitY : unitY + 1, BlockType.Entity) == typeID;
 			return
@@ -128,8 +134,8 @@ namespace Yaya {
 		public FittingPose GetEntityPose (Entity entity, bool horizontal, int mask, out Entity left_down, out Entity right_up, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
 			left_down = null;
 			right_up = null;
-			int unitX = entity.X.UDivide(Const.CELL_SIZE);
-			int unitY = entity.Y.UDivide(Const.CELL_SIZE);
+			int unitX = entity.X.UDivide(Const.CEL);
+			int unitY = entity.Y.UDivide(Const.CEL);
 			int typeID = entity.TypeID;
 			bool n = GetBlockAt(horizontal ? unitX - 1 : unitX, horizontal ? unitY : unitY - 1, BlockType.Entity) == typeID;
 			bool p = GetBlockAt(horizontal ? unitX + 1 : unitX, horizontal ? unitY : unitY + 1, BlockType.Entity) == typeID;

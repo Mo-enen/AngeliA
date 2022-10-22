@@ -12,6 +12,7 @@ namespace Yaya {
 		public override int FramePerSprite => 5;
 		public override bool IgnoreEntitySize => true;
 		public override int PivotX => 500;
+		public override int PivotY => 0;
 	}
 
 

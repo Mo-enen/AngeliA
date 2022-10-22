@@ -15,8 +15,8 @@ namespace Yaya {
 
 
 		// Const
-		private const int ITEM_PHYSICS_SIZE = Const.CELL_SIZE / 2;
-		private const int ITEM_RENDER_SIZE = Const.CELL_SIZE * 2 / 3;
+		private const int ITEM_PHYSICS_SIZE = Const.CEL / 2;
+		private const int ITEM_RENDER_SIZE = Const.CEL * 2 / 3;
 		private const int GRAVITY = 5;
 		private const int MAX_GRAVITY_SPEED = 64;
 

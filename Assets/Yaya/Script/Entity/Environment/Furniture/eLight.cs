@@ -15,7 +15,7 @@ namespace Yaya {
 		// MSG
 		public override void OnActived () {
 			base.OnActived();
-			BrightnessShift = (X * 17 + Y * 9) / Const.CELL_SIZE;
+			BrightnessShift = (X * 17 + Y * 9) / Const.CEL;
 		}
 
 
@@ -27,7 +27,7 @@ namespace Yaya {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			byte brightness = (byte)(64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8);
-            CellRenderer.Draw(LIGHT, base.Rect.Expand(Const.CELL_SIZE), new Color32(brightness, brightness, brightness, 255));
+            CellRenderer.Draw(LIGHT, base.Rect.Expand(Const.CEL), new Color32(brightness, brightness, brightness, 255));
 		}
 
 

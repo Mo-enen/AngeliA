@@ -10,6 +10,7 @@ namespace Yaya {
 		public int HighlightFrame { get; set; }
 		public bool Invoke (Entity target);
 		public void CancelInvoke (Entity target);
+		public bool AllowInvoke (Entity target) => true;
 
 		public bool LockInput => false;
 		public bool IsHighlighted => Game.GlobalFrame <= HighlightFrame + 1;
@@ -17,7 +18,7 @@ namespace Yaya {
 		public void Highlight () => HighlightFrame = Game.GlobalFrame;
 		public static void HighlightBlink (Cell cell, IActionEntity iAct) {
 			if (!iAct.IsHighlighted || Game.GlobalFrame % 30 > 15) return;
-			const int OFFSET = Const.CELL_SIZE / 20;
+			const int OFFSET = Const.CEL / 20;
 			cell.Width += OFFSET * 2;
 			cell.Height += OFFSET * 2;
 		}
@@ -39,7 +40,7 @@ namespace Yaya {
 		public bool LockingInput => CurrentTarget != null && CurrentTarget.LockInput;
 
 		// Ser
-		[SerializeField] int ScanRange = Const.CELL_SIZE / 2;
+		[SerializeField] int ScanRange = Const.CEL / 2;
 		[SerializeField] int ScanFrequency = 6;
 
 		// Data
@@ -85,7 +86,8 @@ namespace Yaya {
 				Entity result = null;
 				for (int i = 0; i < count; i++) {
 					var hit = c_ScanHits[i];
-					if (hit.Entity is not IActionEntity) continue;
+					if (hit.Entity is not IActionEntity act) continue;
+					if (!act.AllowInvoke(Source)) continue;
 					// Comparer X Distance
 					int _dis =
 						sourceX >= hit.Rect.xMin && sourceX <= hit.Rect.xMax ? 0 :

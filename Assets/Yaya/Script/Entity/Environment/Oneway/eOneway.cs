@@ -22,8 +22,8 @@ namespace Yaya {
 
 		// MSG
 		public override void OnActived () {
-			Width = Const.CELL_SIZE;
-			Height = Const.CELL_SIZE;
+			Width = Const.CEL;
+			Height = Const.CEL;
 		}
 
 

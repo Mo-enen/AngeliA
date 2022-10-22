@@ -81,6 +81,7 @@ namespace Yaya {
 		private int CurrentFrame = 0;
 		private int LastIntendedX = 1;
 		private bool HoldingJump = false;
+		private bool AllowHoldingJumpForFly = false;
 		private bool PrevHoldingJump = false;
 		private bool IntendedJump = false;
 		private bool IntendedDash = false;
@@ -191,10 +192,7 @@ namespace Yaya {
 			if (IsPounding) LastPoundingFrame = CurrentFrame;
 
 			// Fly
-			if (
-				!HoldingJump || IsGrounded || InWater || IsClimbing ||
-				IsDashing || IsInsideGround || IsPounding
-			) {
+			if ((!HoldingJump && CurrentFrame > LastFlyFrame + FlyCooldown) || IsGrounded || InWater || IsClimbing || IsDashing || IsInsideGround || IsPounding) {
 				IsFlying = false;
 			}
 
@@ -204,10 +202,11 @@ namespace Yaya {
 
 			// Physics
 			int prevHitboxHeight = Hitbox.height;
-			Hitbox = new(Source.X - Width / 2, Source.Y, Width, GetCurrentHeight());
+			int width = InWater ? SwimWidth : Width;
+			Hitbox = new(Source.X - width / 2, Source.Y, width, GetCurrentHeight());
 			Source.Width = Hitbox.width;
 			Source.Height = Hitbox.height;
-			Source.OffsetX = -Width / 2;
+			Source.OffsetX = -width / 2;
 			Source.OffsetY = 0;
 			if (Hitbox.height > prevHitboxHeight) CollisionFixOnHitboxChanged(prevHitboxHeight);
 		}
@@ -220,34 +219,47 @@ namespace Yaya {
 				CurrentJumpCount = 0;
 			}
 
-			// Perform Jump
-			if (IntendedJump && !IsSquating && (!IsClimbing || JumpWhenClimbAvailable)) {
+			// Perform Jump/Fly
+			if (!IsSquating && (!IsClimbing || JumpWhenClimbAvailable)) {
+				// Jump
 				if (CurrentJumpCount < JumpCount) {
 					// Jump
-					if (InWater && SwimInFreeStyle) {
-						// Free Dash in Water
-						LastDashFrame = CurrentFrame;
-						IsDashing = true;
-						Source.VelocityX = 0;
-						Source.VelocityY = 0;
-					} else {
-						// Perform Jump
-						CurrentJumpCount++;
-						Source.VelocityY = Mathf.Max(JumpSpeed, Source.VelocityY);
-						LastDashFrame = int.MinValue;
-						IsDashing = false;
-						LastJumpFrame = CurrentFrame;
+					if (IntendedJump) {
+						if (InWater && SwimInFreeStyle) {
+							// Free Dash in Water
+							LastDashFrame = CurrentFrame;
+							IsDashing = true;
+							Source.VelocityX = 0;
+							Source.VelocityY = 0;
+						} else {
+							// Perform Jump
+							CurrentJumpCount++;
+							Source.VelocityY = Mathf.Max(JumpSpeed, Source.VelocityY);
+							LastDashFrame = int.MinValue;
+							IsDashing = false;
+							LastJumpFrame = CurrentFrame;
+						}
+						IsClimbing = false;
 					}
-					IsClimbing = false;
-				} else if (FlyAvailable && CurrentJumpCount < JumpCount + 1 && CurrentFrame > LastFlyFrame + FlyCooldown) {
+				} else if (FlyAvailable && CurrentJumpCount < JumpCount + FlyCount) {
 					// Fly
-					LastDashFrame = int.MinValue;
-					IsFlying = true;
-					IsClimbing = false;
-					IsDashing = false;
-					CurrentJumpCount++;
-					Source.VelocityY = Mathf.Max(FlySpeed, Source.VelocityY);
-					LastFlyFrame = CurrentFrame;
+					if (CurrentFrame > LastFlyFrame + FlyCooldown) {
+						// Cooldown Ready
+						if (IntendedJump || (HoldingJump && AllowHoldingJumpForFly)) {
+							LastDashFrame = int.MinValue;
+							IsFlying = true;
+							IsClimbing = false;
+							IsDashing = false;
+							CurrentJumpCount++;
+							Source.VelocityY = Mathf.Max(FlySpeed, Source.VelocityY);
+							LastFlyFrame = CurrentFrame;
+							AllowHoldingJumpForFly = false;
+						}
+					} else {
+						// Not Cooldown
+						if (IntendedJump) AllowHoldingJumpForFly = true;
+						if (!HoldingJump) AllowHoldingJumpForFly = false;
+					}
 				}
 			}
 
@@ -499,7 +511,7 @@ namespace Yaya {
 
 
 		private void CollisionFixOnHitboxChanged (int prevHitboxHeight) {
-			var rect = Hitbox.Shrink(0, 0, Const.CELL_SIZE / 4, 0);
+			var rect = Hitbox.Shrink(0, 0, Const.CEL / 4, 0);
 			// Fix for Oneway
 			int count = CellPhysics.OverlapAll(
 				c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, Source,

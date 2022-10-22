@@ -13,6 +13,7 @@ namespace Yaya {
 		public BuffInt Width { get; private set; } = new();
 		public BuffInt Height { get; private set; } = new();
 		public BuffInt SquatHeight { get; private set; } = new();
+		public BuffInt SwimWidth { get; private set; } = new();
 		public BuffInt SwimHeight { get; private set; } = new();
 		public BuffInt FlyHeight { get; private set; } = new();
 		public BuffInt AntiKnockbackSpeed { get; private set; } = new();
@@ -69,6 +70,7 @@ namespace Yaya {
 		public BuffInt ClimbSpeedY { get; private set; } = new();
 
 		public BuffBool FlyAvailable { get; private set; } = new();
+		public BuffInt FlyCount { get; private set; } = new();
 		public BuffInt FlyCooldown { get; private set; } = new();
 		public BuffInt FlySpeed { get; private set; } = new();
 		public BuffInt FlyGravityRiseRate { get; private set; } = new();
@@ -80,6 +82,7 @@ namespace Yaya {
 		[SerializeField] int _Width = 150;
 		[SerializeField] int _Height = 384;
 		[SerializeField] int _SquatHeight = 200;
+		[SerializeField] int _SwimWidth = 256;
 		[SerializeField] int _SwimHeight = 384;
 		[SerializeField] int _FlyHeight = 200;
 		[SerializeField] int _AntiKnockbackSpeed = 16;
@@ -136,7 +139,8 @@ namespace Yaya {
 		[SerializeField] int _ClimbSpeedY = 18;
 
 		[SerializeField] bool _FlyAvailable = false;
-		[SerializeField] int _FlyCooldown = 32;
+		[SerializeField] int _FlyCount = 1;
+		[SerializeField] int _FlyCooldown = 24;
 		[SerializeField] int _FlySpeed = 64;
 		[SerializeField] int _FlyGravityRiseRate = 800;
 		[SerializeField] int _FlyGravityFallRate = 200;

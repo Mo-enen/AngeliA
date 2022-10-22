@@ -64,7 +64,7 @@ namespace Yaya {
 		}
 
 
-		protected override bool GroundedCheck (RectInt rect) => InSand || base.GroundedCheck(rect);
+		public override bool GroundedCheck () => InSand || base.GroundedCheck();
 
 
 	}

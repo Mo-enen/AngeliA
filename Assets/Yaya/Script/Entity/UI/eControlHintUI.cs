@@ -118,7 +118,7 @@ namespace Yaya {
 
 			if (Player == null || !Player.Active) return;
 			if (Game.Current.State != GameState.Play) return;
-			if (FrameStep.HasStep<sOpening>()) return;
+			if (FrameStep.IsSteping<sOpening>() || FrameStep.IsSteping<sFadeOut>()) return;
 
 			// Game Playing
 			switch (Player.CharacterState) {
@@ -152,6 +152,15 @@ namespace Yaya {
 					int y = Player.GlobalBounds.yMax;
 					DrawKey(x, y, GameKey.Action, WORD.HINT_WAKE_CODE, true, true);
 					DrawKey(GameKey.Action, WORD.HINT_WAKE_CODE);
+					break;
+				}
+
+				case CharacterState.Passout: {
+					if (Game.GlobalFrame < Player.PassoutFrame + YayaConst.PASSOUT_WAIT) break;
+					int x = Player.GlobalBounds.xMin;
+					int y = Player.GlobalBounds.yMax;
+					DrawKey(x, y, GameKey.Action, WORD.UI_CONTINUE, true, true);
+					DrawKey(GameKey.Action, WORD.UI_CONTINUE);
 					break;
 				}
 

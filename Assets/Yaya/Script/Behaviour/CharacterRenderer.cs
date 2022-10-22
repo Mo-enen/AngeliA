@@ -153,7 +153,7 @@ namespace Yaya {
 		private int CurrentAniFrame = 0;
 		private int CurrentCode = 0;
 		private int CurrentBounce = 1000;
-		private int LastCellHeight = Const.CELL_SIZE;
+		private int LastCellHeight = Const.CEL;
 		private int LastRequireBounceFrame = int.MinValue;
 		private int BlinkingTime = int.MinValue;
 		private int DamagingTime = int.MinValue;
@@ -457,8 +457,8 @@ namespace Yaya {
 					cell.Y - (int)(cell.PivotY * cell.Height) + cell.Height / 2,
 					out var particle
 				)) {
-					particle.Width = Const.CELL_SIZE * 2;
-					particle.Height = Const.CELL_SIZE * 2;
+					particle.Width = Const.CEL * 2;
+					particle.Height = Const.CEL * 2;
 				}
 			}
 			PrevSleepAmount = Character.SleepAmount;

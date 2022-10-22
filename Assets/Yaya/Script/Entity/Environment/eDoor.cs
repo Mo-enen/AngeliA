@@ -43,7 +43,7 @@ namespace Yaya {
 
 
 	[EntityAttribute.DrawBehind]
-	[EntityAttribute.Bounds(0, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
+	[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
 	public abstract class eDoor : Entity, IActionEntity {
 
 
@@ -61,7 +61,7 @@ namespace Yaya {
 		// MSG
 		public override void OnActived () {
 			base.OnActived();
-			Height = Const.CELL_SIZE * 2;
+			Height = Const.CEL * 2;
 		}
 
 
@@ -74,17 +74,17 @@ namespace Yaya {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			// Draw
-			var player = CellPhysics.GetEntity<ePlayer>(Rect, YayaConst.MASK_CHARACTER, this);
-			int artCode = player != null && player.IsGrounded ? ArtworkCode_Open : ArtworkCode;
+			var player = Yaya.Current.CurrentPlayer;
+			bool open = player != null && player.Action.CurrentTarget == this;
+			int artCode = open ? ArtworkCode_Open : ArtworkCode;
 			if (CellRenderer.TryGetSprite(artCode, out var sprite)) {
 				var cell = CellRenderer.Draw(
 					sprite.GlobalID, X + Width / 2, Y, 500, 0, 0,
 					Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE
 				);
-				cell.Z = IsFrontDoor ? cell.Z.Abs() : -cell.Z.Abs();
 				// Highlight
 				var iAct = this as IActionEntity;
-				if (iAct.IsHighlighted) {
+				if (open && iAct.IsHighlighted) {
 					IActionEntity.HighlightBlink(cell, iAct);
 				}
 			}
@@ -93,12 +93,7 @@ namespace Yaya {
 
 		// API
 		public bool Invoke (Entity target) {
-			if (
-				target is not eCharacter ch ||
-				!ch.IsGrounded ||
-				ch.Movement.IsSquating ||
-				ch.Movement.IsClimbing
-			) return false;
+			if (target is not eCharacter ch) return false;
 			ch.X = X + (Width - ch.Width) / 2 - ch.OffsetX;
 			ch.Y = Y;
 			Game.Current.SetViewZ(IsFrontDoor ? Game.Current.ViewZ - 1 : Game.Current.ViewZ + 1);
@@ -107,6 +102,9 @@ namespace Yaya {
 
 
 		public void CancelInvoke (Entity target) { }
+
+
+		public bool AllowInvoke (Entity target) => target is eCharacter ch && ch.IsGrounded && ch.Rect.y >= Y && !ch.Movement.IsSquating && !ch.Movement.IsClimbing;
 
 
 	}

@@ -61,7 +61,7 @@ namespace Yaya {
 
 	[EntityAttribute.MapEditorGroup("Vegetation")]
 	[EntityAttribute.Capacity(256)]
-	[EntityAttribute.Bounds(-Const.CELL_SIZE, -Const.CELL_SIZE, Const.CELL_SIZE * 3, Const.CELL_SIZE * 3)]
+	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
 	[EntityAttribute.DrawBehind]
 	public abstract class eTreeLeaf : Entity {
 
@@ -78,7 +78,7 @@ namespace Yaya {
 		// Virtual
 		protected virtual string LeafCode => "Leaf";
 		protected virtual int LeafCount => 3;
-		protected virtual int LeafExpand => Const.CELL_SIZE / 3;
+		protected virtual int LeafExpand => Const.CEL / 3;
 		protected int LeafArtworkCode { get; private set; } = 0;
 
 		// Data
@@ -104,22 +104,22 @@ namespace Yaya {
 		public override void OnActived () {
 
 			base.OnActived();
-			Width = Const.CELL_SIZE;
-			Height = Const.CELL_SIZE;
+			Width = Const.CEL;
+			Height = Const.CEL;
 
 			// Leaf
 			LeafArtworkCode = CellRenderer.TryGetSpriteFromGroup(
-				LeafCode.AngeHash(), (X * 5 + Y * 7) / Const.CELL_SIZE, out var lSprite
+				LeafCode.AngeHash(), (X * 5 + Y * 7) / Const.CEL, out var lSprite
 			) ? lSprite.GlobalID : 0;
 
 			// Offset
 			int sLen = LEAF_OFFSET_SEEDS.Length;
 			for (int i = 0; i < LeafOffsets.Length; i++) {
-				int seedX = LEAF_OFFSET_SEEDS[(i + X / Const.CELL_SIZE).UMod(sLen)];
-				int seedY = LEAF_OFFSET_SEEDS[(i + Y / Const.CELL_SIZE).UMod(sLen)];
+				int seedX = LEAF_OFFSET_SEEDS[(i + X / Const.CEL).UMod(sLen)];
+				int seedY = LEAF_OFFSET_SEEDS[(i + Y / Const.CEL).UMod(sLen)];
 				LeafOffsets[i] = new(
-					((X * 137 * seedX + Y * 327 * seedY) / Const.CELL_SIZE).UMod(Const.CELL_SIZE) - Const.CELL_SIZE / 2,
-					((X * 149 * seedX + Y * 177 * seedY) / Const.CELL_SIZE).UMod(Const.CELL_SIZE) - Const.CELL_SIZE / 2
+					((X * 137 * seedX + Y * 327 * seedY) / Const.CEL).UMod(Const.CEL) - Const.CEL / 2,
+					((X * 149 * seedX + Y * 177 * seedY) / Const.CEL).UMod(Const.CEL) - Const.CEL / 2
 				);
 			}
 		}
@@ -127,7 +127,7 @@ namespace Yaya {
 
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
-			CharacterNearby = CellPhysics.HasEntity<eCharacter>(Rect.Expand(Const.CELL_SIZE), YayaConst.MASK_CHARACTER, null);
+			CharacterNearby = CellPhysics.HasEntity<eCharacter>(Rect.Expand(Const.CEL), YayaConst.MASK_CHARACTER, null);
 		}
 
 
@@ -160,7 +160,7 @@ namespace Yaya {
 
 
 		protected int GetLeafShiftY (int frameOffset = 0, int duration = 60, int amount = 12) {
-			return ((Game.GlobalFrame + (X / Const.CELL_SIZE) + frameOffset).PingPong(duration) * amount / duration) - (amount / 2);
+			return ((Game.GlobalFrame + (X / Const.CEL) + frameOffset).PingPong(duration) * amount / duration) - (amount / 2);
 		}
 
 

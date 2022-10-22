@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using AngeliaFramework;
 using AngeliaFramework.Editor;
 using UnityEngine;
-using Moenen.Standard;
 
 
 namespace Yaya.Editor {
@@ -23,49 +21,35 @@ namespace Yaya.Editor {
 
 
 		private void CreateCheckPointMetaFile () {
+
 			var game = Object.FindObjectOfType<Game>();
 			if (game == null) return;
 
+			// Altar Entity ID
 			var world = new World();
-			int TARGET_ID = typeof(eCheckPoint).AngeHash();
+			var targetHash = new HashSet<int>();
+			foreach (var type in typeof(eCheckAltar).AllChildClass()) {
+				targetHash.TryAdd(type.AngeHash());
+			}
 
 			// Get All Cp Positions
-			var allCpPool = new HashSet<Vector3Int>();
+			var cpList = new List<eCheckAltar.CheckPointMeta.Data>();
 			foreach (var file in Util.GetFilesIn(game.Universe.MapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
 				try {
-					if (!world.EditorOnly_LoadFromDisk(file.FullName)) continue;
-					for (int i = 0; i < Const.MAP_SIZE * Const.MAP_SIZE; i++) {
-						if (world.Entities[i] != TARGET_ID) continue;
-						allCpPool.Add(new Vector3Int(
-							world.WorldPosition.x * Const.MAP_SIZE + i % Const.MAP_SIZE,
-							world.WorldPosition.y * Const.MAP_SIZE + i / Const.MAP_SIZE,
-							world.WorldPosition.z
-						));
-					}
+					World.EditorOnly_ForAllBlocks(file.FullName, entity: (id, pos) => {
+						if (!targetHash.Contains(id)) return;
+						cpList.Add(new eCheckAltar.CheckPointMeta.Data() {
+							EntityID = id,
+							X = world.WorldPosition.x * Const.MAP + pos.x,
+							Y = world.WorldPosition.y * Const.MAP + pos.y,
+							Z = world.WorldPosition.z,
+						});
+					});
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
 
 			// Write Position File
-			try {
-				var cpList = new List<CheckPointMeta.Data>();
-				foreach (var pos in allCpPool) {
-					if (allCpPool.Contains(new(pos.x, pos.y - 1))) continue;
-					for (int i = 1; i < Const.MAP_SIZE; i++) {
-						if (AngeEditorUtil.TryGetMapSystemNumber(pos.x, pos.y + i, pos.z, out int cpIndex)) {
-							cpList.Add(new() {
-								Index = cpIndex,
-								X = pos.x,
-								Y = pos.y,
-								IsAltar = allCpPool.Contains(
-									new(pos.x, pos.y + 1, pos.z)
-								) && !allCpPool.Contains(new(pos.x, pos.y - 1)),
-							});
-							break;
-						}
-					}
-				}
-				game.SaveMeta(new CheckPointMeta() { CPs = cpList.ToArray(), });
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+			game.SaveMeta(new eCheckAltar.CheckPointMeta() { CPs = cpList.ToArray(), });
 		}
 
 

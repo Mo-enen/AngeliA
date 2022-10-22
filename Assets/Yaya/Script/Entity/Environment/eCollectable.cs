@@ -10,6 +10,17 @@ namespace Yaya {
 
 
 		// MSG
+		public override void OnActived () {
+			base.OnActived();
+			if (CellRenderer.TryGetSprite(TypeID, out var sprite)) {
+				X += (Width - sprite.GlobalWidth) / 2;
+				Y += (Height - sprite.GlobalHeight) / 2;
+				Width = sprite.GlobalWidth;
+				Height = sprite.GlobalHeight;
+			}
+		}
+
+
 		public override void FillPhysics () {
 			base.FillPhysics();
 			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
@@ -18,7 +29,7 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.Draw(TypeID, X + Width / 2, Y + Height / 2, 500, 500, 0, Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE);
+			CellRenderer.Draw(TypeID, Rect);
 		}
 
 

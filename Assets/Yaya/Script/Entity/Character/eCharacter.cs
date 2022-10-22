@@ -10,7 +10,7 @@ namespace Yaya {
 
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.Capacity(1)]
-	[EntityAttribute.Bounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE * 2)]
+	[EntityAttribute.Bounds(-Const.CEL / 2, 0, Const.CEL, Const.CEL * 2)]
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.ForceSpawn]
@@ -53,7 +53,7 @@ namespace Yaya {
 
 	[EntityAttribute.MapEditorGroup("Character")]
 	[EntityAttribute.Capacity(1)]
-	[EntityAttribute.Bounds(-Const.CELL_SIZE / 2, 0, Const.CELL_SIZE, Const.CELL_SIZE)]
+	[EntityAttribute.Bounds(-Const.CEL / 2, 0, Const.CEL, Const.CEL)]
 	public abstract class eCharacter : eYayaRigidbody, IDamageReceiver {
 
 
@@ -163,9 +163,9 @@ namespace Yaya {
 				case CharacterState.Sleep:
 					VelocityX = 0;
 					VelocityY = 0;
-					Width = Const.CELL_SIZE;
-					Height = Const.CELL_SIZE;
-					OffsetX = -Const.CELL_SIZE / 2;
+					Width = Const.CEL;
+					Height = Const.CEL;
+					OffsetX = -Const.CEL / 2;
 					OffsetY = 0;
 					SleepFrame++;
 					if (!Health.FullHealth && SleepFrame >= 1000) Health.Heal(Health.MaxHP);

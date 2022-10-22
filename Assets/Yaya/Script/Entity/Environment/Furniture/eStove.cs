@@ -30,8 +30,8 @@ namespace Yaya {
 				LeftStoveCount = 0;
 				for (int i = 1; i < 1024; i++) {
 					var rect = new RectInt(
-						X + Const.CELL_SIZE / 2 - i * Const.CELL_SIZE,
-						Y + Const.CELL_SIZE / 2,
+						X + Const.CEL / 2 - i * Const.CEL,
+						Y + Const.CEL / 2,
 						1, 1
 					);
 					if (CellPhysics.HasEntity<eStove>(

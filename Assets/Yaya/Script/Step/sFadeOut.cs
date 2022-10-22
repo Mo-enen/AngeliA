@@ -18,7 +18,7 @@ namespace Yaya {
 			CellRenderer.SetLayer(YayaConst.SHADER_UI);
 			CellRenderer.Draw(
 				Const.PIXEL,
-				CellRenderer.CameraRect.Expand(Const.CELL_SIZE),
+				CellRenderer.CameraRect.Expand(Const.CEL),
 				new Color32(0, 0, 0, (byte)Util.Remap(0f, FADE_OUT, byte.MinValue, byte.MaxValue, localFrame))
 			);
 			CellRenderer.SetLayerToDefault();
