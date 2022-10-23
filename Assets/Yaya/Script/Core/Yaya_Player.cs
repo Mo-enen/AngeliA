@@ -29,10 +29,10 @@ namespace Yaya {
 		private int RightDownFrame = int.MinValue;
 		private int DownDownFrame = int.MinValue;
 		private int UpDownFrame = int.MinValue;
-		private int LastGroundedY = 0;
-		private int AimX = 0;
-		private int AimY = 0;
 		private int AttackRequiringFrame = int.MinValue;
+		//private int LastGroundedY = 0;
+		//private int AimX = 0;
+		//private int AimY = 0;
 
 
 		#endregion
@@ -299,22 +299,14 @@ namespace Yaya {
 			if (CurrentPlayer == null) return CurrentPlayer;
 
 			// Init Player
-			LastGroundedY = CurrentPlayer.Y;
-			AimX = CurrentPlayer.X - ViewRect.width / 2;
-			AimY = GetAimY(CurrentPlayer.Y, ViewRect.height);
+			//LastGroundedY = CurrentPlayer.Y;
+			//AimX = CurrentPlayer.X - ViewRect.width / 2;
+			//AimY = GetAimY(CurrentPlayer.Y, ViewRect.height);
 			return CurrentPlayer;
 		}
 
 
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
-		private int GetAimY (int playerY, int viewHeight) => playerY - viewHeight * 382 / 1000;
+		public override int GetCameraPositionY (int y) => y - ViewRect.height * 382 / 1000;
 
 
 		#endregion
