@@ -65,17 +65,23 @@ namespace Yaya {
 			}
 			UpdatePlayer_Respawn();
 			if (CurrentPlayer == null) return;
+			bool hasRoute = FrameStep.HasStep(YayaConst.STEP_ROUTE);
 			switch (CurrentPlayer.CharacterState) {
 				case CharacterState.GamePlay:
-					UpdatePlayer_Move();
-					UpdatePlayer_JumpDashPound();
-					UpdatePlayer_Action_Attack();
+					if (!hasRoute) {
+						UpdatePlayer_Move();
+						UpdatePlayer_JumpDashPound();
+						UpdatePlayer_Action_Attack();
+					} else {
+						CurrentPlayer.Movement.Move(Direction3.None, Direction3.None);
+					}
 					break;
 				case CharacterState.Sleep:
-					UpdatePlayer_Sleep();
+					if (!hasRoute) {
+						UpdatePlayer_Sleep();
+					}
 					break;
 			}
-			UpdatePlayer_View();
 		}
 
 
@@ -83,7 +89,7 @@ namespace Yaya {
 
 			// Spawn Player when No Player Entity
 			if (CurrentPlayer != null && !CurrentPlayer.Active) CurrentPlayer = null;
-			if (CurrentPlayer == null && !FrameStep.HasStep<sOpening>()) {
+			if (CurrentPlayer == null && !FrameStep.HasStep(YayaConst.STEP_ROUTE)) {
 				var center = CellRenderer.CameraRect.CenterInt();
 				SpawnPlayer(center.x, center.y);
 			}
@@ -94,16 +100,16 @@ namespace Yaya {
 				CurrentPlayer.CharacterState == CharacterState.Passout &&
 				GlobalFrame > CurrentPlayer.PassoutFrame + YayaConst.PASSOUT_WAIT &&
 				FrameInput.GetKeyDown(GameKey.Action) &&
-				!FrameStep.HasStep<sOpening>()
+				!FrameStep.HasStep(YayaConst.STEP_ROUTE)
 			) {
-				FrameStep.AddToLast(new sFadeOut());
-				FrameStep.AddToLast(new sOpening() {
-					ViewX = VIEW_X,
-					ViewYStart = VIEW_Y_START,
-					ViewYEnd = VIEW_Y_END,
-					RemovePlayerAtStart = true,
-					SpawnPlayerAtStart = true,
-				});
+				FrameStep.AddToLast(YayaConst.FADEOUT_ID, YayaConst.STEP_ROUTE);
+				if (FrameStep.TryAddToLast<sOpening>(YayaConst.OPENING_ID, YayaConst.STEP_ROUTE, out var step)) {
+					step.ViewX = VIEW_X;
+					step.ViewYStart = VIEW_Y_START;
+					step.ViewYEnd = VIEW_Y_END;
+					step.RemovePlayerAtStart = true;
+					step.SpawnPlayerAtStart = true;
+				}
 			}
 		}
 
@@ -243,42 +249,9 @@ namespace Yaya {
 
 
 		private void UpdatePlayer_Sleep () {
-			if (FrameStep.HasStep<sOpening>()) return;
 			if (FrameInput.GetKeyDown(GameKey.Action) || FrameInput.GetKeyDown(GameKey.Jump)) {
 				CurrentPlayer.SetCharacterState(CharacterState.GamePlay);
 				CurrentPlayer.Y -= 2;
-			}
-		}
-
-
-		private void UpdatePlayer_View () {
-
-			if (FrameStep.HasStep<sOpening>()) return;
-
-			const int LINGER_RATE = 32;
-			const int LERP_RATE = 96;
-			var viewRect = ViewRect;
-			bool flying = CurrentPlayer.Movement.IsFlying;
-			if (!CurrentPlayer.InAir || flying) LastGroundedY = CurrentPlayer.Y;
-			int linger = viewRect.width * LINGER_RATE / 1000;
-			int centerX = viewRect.x + viewRect.width / 2;
-			if (CurrentPlayer.X < centerX - linger) {
-				AimX = CurrentPlayer.X + linger - viewRect.width / 2;
-			} else if (CurrentPlayer.X > centerX + linger) {
-				AimX = CurrentPlayer.X - linger - viewRect.width / 2;
-			}
-
-			AimY = !CurrentPlayer.InAir || flying || CurrentPlayer.Y < LastGroundedY ?
-				GetAimY(CurrentPlayer.Y, viewRect.height) : AimY;
-
-			SetViewPositionDely(AimX, AimY, LERP_RATE, Const.VIEW_PRIORITY_PLAYER);
-			// Clamp
-			if (!viewRect.Contains(CurrentPlayer.X, CurrentPlayer.Y)) {
-				if (CurrentPlayer.X >= viewRect.xMax) AimX = CurrentPlayer.X - viewRect.width + 1;
-				if (CurrentPlayer.X <= viewRect.xMin) AimX = CurrentPlayer.X - 1;
-				if (CurrentPlayer.Y >= viewRect.yMax) AimY = CurrentPlayer.Y - viewRect.height + 1;
-				if (CurrentPlayer.Y <= viewRect.yMin) AimY = CurrentPlayer.Y - 1;
-				SetViewPositionDely(AimX, AimY, 1000, Const.VIEW_PRIORITY_PLAYER + 1);
 			}
 		}
 

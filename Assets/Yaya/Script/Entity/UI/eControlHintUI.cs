@@ -118,7 +118,7 @@ namespace Yaya {
 
 			if (Player == null || !Player.Active) return;
 			if (Game.Current.State != GameState.Play) return;
-			if (FrameStep.IsSteping<sOpening>() || FrameStep.IsSteping<sFadeOut>()) return;
+			if (FrameStep.IsSteping(YayaConst.STEP_ROUTE)) return;
 
 			// Game Playing
 			switch (Player.CharacterState) {

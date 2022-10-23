@@ -53,8 +53,11 @@ namespace Yaya {
 		public static readonly int DAMAGE_TAG = "Damage".AngeHash();
 
 		// Step
-		public const int STEP_DEFAULT = 0;
+		public const int STEP_ROUTE = 0;
 		public const int STEP_CUTSCENE = 1;
+		public static readonly int OPENING_ID = typeof(sOpening).AngeHash();
+		public static readonly int FADEOUT_ID = typeof(sFadeOut).AngeHash();
+		public static readonly int SQUAD_STEP_ID = typeof(sSquadTransitionStep).AngeHash();
 
 		// Misc
 		public static readonly int UI_PIXEL = "UI Pixel".AngeHash();

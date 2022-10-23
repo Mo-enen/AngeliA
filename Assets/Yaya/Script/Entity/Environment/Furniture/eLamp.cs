@@ -32,7 +32,7 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (OpenLight && !FrameStep.IsSteping<sOpening>() && !FrameStep.IsSteping<sFadeOut>()) {
+			if (OpenLight && !FrameStep.IsSteping(YayaConst.STEP_ROUTE)) {
 				byte brightness = (byte)(64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8);
 				CellRenderer.SetLayer(YayaConst.SHADER_ADD);
 				CellRenderer.Draw(

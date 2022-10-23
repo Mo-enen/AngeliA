@@ -4,7 +4,7 @@
 	"_SquatHeight" :  200 ,
 	"_DashDuration" :  20,
 	"_RunTrigger"  :   0,
-	"_JumpSpeed"  :   69 ,
+	"_JumpSpeed"  :   73 ,
 	"_SwimInFreeStyle"  :   false ,
 	"_JumpRoll"  :   false ,
 	"_JumpSecondRoll"  :   true ,

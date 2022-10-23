@@ -180,7 +180,7 @@ MonoBehaviour:
     SquadBehindLayer: 0
     SquadBehindAlpha: 64
     SquadBehindParallax: 1300
-    SquadTransitionDuration: 16
+    SquadTransitionDuration: 32
     DefaultHeight: 5120
     MinHeight: 2048
     MaxHeight: 14336
@@ -221,12 +221,12 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 3.2190976
-        outSlope: 3.2190976
+        inSlope: 0.0037483328
+        outSlope: 0.0037483328
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0.029453613
+        outWeight: 0.6529605
       - serializedVersion: 3
         time: 1
         value: 1

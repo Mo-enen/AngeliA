@@ -7,19 +7,16 @@ using AngeliaFramework;
 namespace Yaya {
 
 
+
 	public class fSquadTransition : CellEffect {
 
 
-		private float Scale { get; init; } = 1f;
-		private float Alpha { get; init; } = 1f;
-		private AnimationCurve Curve { get; init; } = null;
+		public static readonly fSquadTransition Instance = new();
 
 
-		public fSquadTransition (int duration, float scale, float alpha, AnimationCurve curve) : base(duration) {
-			Scale = scale;
-			Curve = curve;
-			Alpha = alpha;
-		}
+		public float Scale { get; set; } = 1f;
+		public float Alpha { get; set; } = 1f;
+		public AnimationCurve Curve { get; set; } = null;
 
 
 		public override void Perform (Cell[] cells, int cellCount, int layerIndex) {
@@ -37,10 +34,7 @@ namespace Yaya {
 			);
 
 			// Current
-			PerformLogic(
-				cells, center, ZSortBegin, cellCount - 1, scl,
-				1f//Scale > 1f ? z01 : Mathf.LerpUnclamped(Alpha, 1f, z01)
-			);
+			PerformLogic(cells, center, ZSortBegin, cellCount - 1, scl, 1f);
 
 		}
 
@@ -59,6 +53,22 @@ namespace Yaya {
 			}
 		}
 
+
+	}
+
+
+
+	public class sSquadTransitionStep : StepItem {
+
+		public int Duration { get; set; } = 0;
+		public bool ToFront { get; set; } = true;
+
+		public override bool FrameUpdate () {
+
+
+
+			return LocalFrame < Duration;
+		}
 
 	}
 

@@ -52,7 +52,6 @@ namespace Yaya {
 
 		// Init
 		protected override void Initialize () {
-
 			base.Initialize();
 
 			GamePadUI = PeekOrGetEntity<eGamePadUI>();
@@ -63,13 +62,13 @@ namespace Yaya {
 			Initialize_Player();
 
 			// Start the Game !!
-			FrameStep.AddToLast(new sOpening() {
-				ViewX = VIEW_X,
-				ViewYStart = VIEW_Y_START,
-				ViewYEnd = VIEW_Y_END,
-				SpawnPlayerAtStart = true,
-				RemovePlayerAtStart = true,
-			});
+			if (FrameStep.TryAddToLast<sOpening>(YayaConst.OPENING_ID, YayaConst.STEP_ROUTE, out var step)) {
+				step.ViewX = VIEW_X;
+				step.ViewYStart = VIEW_Y_START;
+				step.ViewYEnd = VIEW_Y_END;
+				step.SpawnPlayerAtStart = true;
+				step.RemovePlayerAtStart = true;
+			}
 
 			FrameInput.AddCustomKey(Key.Digit1);
 			FrameInput.AddCustomKey(Key.Digit2);
@@ -309,16 +308,24 @@ namespace Yaya {
 
 		protected override void BeforeViewZChange (int newZ) {
 			base.BeforeViewZChange(newZ);
+
+			// Add Step
+			if (FrameStep.TryAddToLast<sSquadTransitionStep>(YayaConst.SQUAD_STEP_ID, YayaConst.STEP_ROUTE, out var step)) {
+				step.Duration = Universe.Meta.SquadTransitionDuration;
+				step.ToFront = newZ < ViewZ;
+			}
+
 			// Add Effect
+			var effect = fSquadTransition.Instance;
+			effect.Duration = Universe.Meta.SquadTransitionDuration;
+			effect.Scale = newZ > ViewZ ?
+				1000f / Universe.Meta.SquadBehindParallax :
+				Universe.Meta.SquadBehindParallax / 1000f;
+			effect.Alpha = Universe.Meta.SquadBehindAlpha / 255f;
+			effect.Curve = m_YayaAsset.SquadTransitionCurve;
 			CellRenderer.RemoveEffect<fSquadTransition>();
-			CellRenderer.AddEffect(new fSquadTransition(
-				Universe.Meta.SquadTransitionDuration,
-				newZ > ViewZ ?
-					1000f / Universe.Meta.SquadBehindParallax :
-					Universe.Meta.SquadBehindParallax / 1000f,
-				Universe.Meta.SquadBehindAlpha / 255f,
-				m_YayaAsset.SquadTransitionCurve
-			));
+			CellRenderer.AddEffect(effect);
+
 			// Player
 			if (CurrentPlayer != null && CurrentPlayer.Active) {
 				CurrentPlayer.Renderer.Bounce();

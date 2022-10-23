@@ -11,7 +11,7 @@
     "SquadBehindLayer": 0,
     "SquadBehindAlpha": 64,
     "SquadBehindParallax": 1300,
-    "SquadTransitionDuration": 16,
+    "SquadTransitionDuration": 32,
     "DefaultHeight": 5120,
     "MinHeight": 2048,
     "MaxHeight": 14336,
