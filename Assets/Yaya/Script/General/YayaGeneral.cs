@@ -59,6 +59,11 @@ namespace Yaya {
 		public static readonly int FADEOUT_ID = typeof(sFadeOut).AngeHash();
 		public static readonly int SQUAD_STEP_ID = typeof(sSquadTransitionStep).AngeHash();
 
+		// View PRIORITY
+		public const int VIEW_PRIORITY_PLAYER = int.MinValue + 0;
+		public const int VIEW_PRIORITY_SYSTEM = int.MinValue + 128;
+		public const int VIEW_PRIORITY_CUTSCENE = int.MinValue + 256;
+
 		// Misc
 		public static readonly int UI_PIXEL = "UI Pixel".AngeHash();
 		public static readonly Dictionary<GamepadButton, int> GAMEPAD_CODE = new() {

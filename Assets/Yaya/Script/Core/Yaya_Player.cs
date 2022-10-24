@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
 using System.Reflection;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 
 namespace Yaya {
@@ -30,9 +31,9 @@ namespace Yaya {
 		private int DownDownFrame = int.MinValue;
 		private int UpDownFrame = int.MinValue;
 		private int AttackRequiringFrame = int.MinValue;
-		//private int LastGroundedY = 0;
-		//private int AimX = 0;
-		//private int AimY = 0;
+		private int LastGroundedY = 0;
+		private int AimX = 0;
+		private int AimY = 0;
 
 
 		#endregion
@@ -81,6 +82,9 @@ namespace Yaya {
 						UpdatePlayer_Sleep();
 					}
 					break;
+			}
+			if (!hasRoute) {
+				UpdatePlayer_View();
 			}
 		}
 
@@ -256,6 +260,39 @@ namespace Yaya {
 		}
 
 
+		private void UpdatePlayer_View () {
+
+			const int LINGER_RATE = 32;
+			const int LERP_RATE = 96;
+			var viewRect = ViewRect;
+			bool flying = CurrentPlayer.Movement.IsFlying;
+			int playerX = CurrentPlayer.X;
+			int playerY = CurrentPlayer.Y;
+			bool inAir = CurrentPlayer.InAir;
+
+			if (!inAir || flying) LastGroundedY = playerY;
+			int linger = viewRect.width * LINGER_RATE / 1000;
+			int centerX = viewRect.x + viewRect.width / 2;
+			if (playerX < centerX - linger) {
+				AimX = playerX + linger - viewRect.width / 2;
+			} else if (playerX > centerX + linger) {
+				AimX = playerX - linger - viewRect.width / 2;
+			}
+			AimY = !inAir || flying || playerY < LastGroundedY ? GetCameraY(playerY, viewRect.height) : AimY;
+			SetViewPositionDely(AimX, AimY, LERP_RATE, YayaConst.VIEW_PRIORITY_PLAYER);
+
+			// Clamp
+			if (!viewRect.Contains(playerX, playerY)) {
+				if (playerX >= viewRect.xMax) AimX = playerX - viewRect.width + 1;
+				if (playerX <= viewRect.xMin) AimX = playerX - 1;
+				if (playerY >= viewRect.yMax) AimY = playerY - viewRect.height + 1;
+				if (playerY <= viewRect.yMin) AimY = playerY - 1;
+				SetViewPositionDely(AimX, AimY, 1000, YayaConst.VIEW_PRIORITY_PLAYER + 1);
+			}
+
+		}
+
+
 		#endregion
 
 
@@ -299,14 +336,22 @@ namespace Yaya {
 			if (CurrentPlayer == null) return CurrentPlayer;
 
 			// Init Player
-			//LastGroundedY = CurrentPlayer.Y;
-			//AimX = CurrentPlayer.X - ViewRect.width / 2;
-			//AimY = GetAimY(CurrentPlayer.Y, ViewRect.height);
+			LastGroundedY = CurrentPlayer.Y;
+			AimX = CurrentPlayer.X - ViewRect.width / 2;
+			AimY = GetCameraY(CurrentPlayer.Y, ViewRect.height);
 			return CurrentPlayer;
 		}
 
 
-		public override int GetCameraPositionY (int y) => y - ViewRect.height * 382 / 1000;
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+		private int GetCameraY (int playerY, int viewHeight) => playerY - viewHeight * 382 / 1000;
 
 
 		#endregion

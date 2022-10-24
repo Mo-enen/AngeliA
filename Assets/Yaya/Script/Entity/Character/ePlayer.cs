@@ -12,28 +12,16 @@ namespace Yaya {
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.ForceSpawn]
 	[EntityAttribute.ForceUpdate]
-	public abstract class ePlayer : eCharacter, ICameraTarget {
+	public abstract class ePlayer : eCharacter {
 
-
-		// Api
-		public bool AvailableForCamera => !InAir || Movement.IsFlying || Y < LastStableY;
 
 		// Data
 		private static readonly HitInfo[] Collects = new HitInfo[8];
-		private int LastStableY = 0;
 
 
 		// MSG
-		public override void OnActived () {
-			base.OnActived();
-			LastStableY = Y;
-		}
-
-
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
-			// Cache
-			if (!InAir || Movement.IsFlying) LastStableY = Y;
 			// Collect
 			int count = CellPhysics.OverlapAll(
 				Collects, YayaConst.MASK_ENTITY, Rect, this, OperationMode.TriggerOnly

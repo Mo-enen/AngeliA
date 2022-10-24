@@ -118,7 +118,7 @@ namespace Yaya {
 			x - game.ViewRect.width / 2,
 			y - game.ViewRect.height / 2,
 			1000,
-			Const.VIEW_PRIORITY_ANIMATION
+			YayaConst.VIEW_PRIORITY_CUTSCENE
 		);
 
 
