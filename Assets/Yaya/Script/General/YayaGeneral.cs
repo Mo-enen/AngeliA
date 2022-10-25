@@ -57,12 +57,11 @@ namespace Yaya {
 		public const int STEP_CUTSCENE = 1;
 		public static readonly int OPENING_ID = typeof(sOpening).AngeHash();
 		public static readonly int FADEOUT_ID = typeof(sFadeOut).AngeHash();
-		public static readonly int SQUAD_STEP_ID = typeof(sSquadTransitionStep).AngeHash();
+		public static readonly int SQUAD_STEP_ID = typeof(sSetViewZStep).AngeHash();
 
 		// View PRIORITY
-		public const int VIEW_PRIORITY_PLAYER = int.MinValue + 0;
-		public const int VIEW_PRIORITY_SYSTEM = int.MinValue + 128;
-		public const int VIEW_PRIORITY_CUTSCENE = int.MinValue + 256;
+		public const int VIEW_PRIORITY_PLAYER = int.MinValue;
+		public const int VIEW_PRIORITY_CUTSCENE = 128;
 
 		// Misc
 		public static readonly int UI_PIXEL = "UI Pixel".AngeHash();

@@ -306,26 +306,18 @@ namespace Yaya {
 		protected override WorldSquad CreateWorldSquad () => new YayaWorldSquad();
 
 
+		public void SetViewZDelay (int newZ) {
+			if (FrameStep.HasStep(YayaConst.STEP_ROUTE)) return;
+			// Add Step
+			if (FrameStep.TryAddToLast<sSetViewZStep>(YayaConst.SQUAD_STEP_ID, YayaConst.STEP_ROUTE, out var step)) {
+				step.Duration = Universe.Meta.SquadTransitionDuration;
+				step.NewZ = newZ;
+			}
+		}
+
+
 		protected override void BeforeViewZChange (int newZ) {
 			base.BeforeViewZChange(newZ);
-
-			// Add Step
-			if (FrameStep.TryAddToLast<sSquadTransitionStep>(YayaConst.SQUAD_STEP_ID, YayaConst.STEP_ROUTE, out var step)) {
-				step.Duration = Universe.Meta.SquadTransitionDuration;
-				step.ToFront = newZ < ViewZ;
-			}
-
-			// Add Effect
-			var effect = fSquadTransition.Instance;
-			effect.Duration = Universe.Meta.SquadTransitionDuration;
-			effect.Scale = newZ > ViewZ ?
-				1000f / Universe.Meta.SquadBehindParallax :
-				Universe.Meta.SquadBehindParallax / 1000f;
-			effect.Alpha = Universe.Meta.SquadBehindAlpha / 255f;
-			effect.Curve = m_YayaAsset.SquadTransitionCurve;
-			CellRenderer.RemoveEffect<fSquadTransition>();
-			CellRenderer.AddEffect(effect);
-
 			// Player
 			if (CurrentPlayer != null && CurrentPlayer.Active) {
 				CurrentPlayer.Renderer.Bounce();

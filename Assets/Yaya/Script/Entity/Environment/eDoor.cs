@@ -53,15 +53,17 @@ namespace Yaya {
 		public int HighlightStartFrame { get; set; } = int.MinValue;
 		protected virtual int ArtworkCode => TypeID;
 		protected virtual int ArtworkCode_Open => TypeID;
+		protected virtual bool IsFrontDoor => false;
 
 		// Data
-		protected abstract bool IsFrontDoor { get; }
+		private bool Open = false;
 
 
 		// MSG
 		public override void OnActived () {
 			base.OnActived();
 			Height = Const.CEL * 2;
+			Open = false;
 		}
 
 
@@ -75,8 +77,7 @@ namespace Yaya {
 			base.FrameUpdate();
 			// Draw
 			var player = Yaya.Current.CurrentPlayer;
-			bool open = player != null && player.Action.CurrentTarget == this;
-			int artCode = open ? ArtworkCode_Open : ArtworkCode;
+			int artCode = Open ? ArtworkCode_Open : ArtworkCode;
 			if (CellRenderer.TryGetSprite(artCode, out var sprite)) {
 				var cell = CellRenderer.Draw(
 					sprite.GlobalID, X + Width / 2, Y, 500, 0, 0,
@@ -84,7 +85,7 @@ namespace Yaya {
 				);
 				// Highlight
 				var iAct = this as IActionEntity;
-				if (open && iAct.IsHighlighted) {
+				if (!Open && player != null && player.Action.CurrentTarget == this && iAct.IsHighlighted) {
 					IActionEntity.HighlightBlink(cell, iAct);
 				}
 			}
@@ -94,9 +95,11 @@ namespace Yaya {
 		// API
 		public bool Invoke (Entity target) {
 			if (target is not eCharacter ch) return false;
+			if (FrameStep.HasStep(YayaConst.STEP_ROUTE)) return false;
 			ch.X = X + (Width - ch.Width) / 2 - ch.OffsetX;
 			ch.Y = Y;
-			Game.Current.SetViewZ(IsFrontDoor ? Game.Current.ViewZ - 1 : Game.Current.ViewZ + 1);
+			Yaya.Current.SetViewZDelay(IsFrontDoor ? Game.Current.ViewZ - 1 : Game.Current.ViewZ + 1);
+			Open = true;
 			return true;
 		}
 
@@ -104,7 +107,7 @@ namespace Yaya {
 		public void CancelInvoke (Entity target) { }
 
 
-		public bool AllowInvoke (Entity target) => target is eCharacter ch && ch.IsGrounded && ch.Rect.y >= Y && !ch.Movement.IsSquating && !ch.Movement.IsClimbing;
+		public bool AllowInvoke (Entity target) => !FrameStep.HasStep(YayaConst.STEP_ROUTE) && target is eCharacter ch && ch.IsGrounded && ch.Rect.y >= Y && !ch.Movement.IsSquating && !ch.Movement.IsClimbing;
 
 
 	}

@@ -20,6 +20,12 @@ namespace Yaya {
 
 
 		// MSG
+		public override void FillPhysics () {
+			if (FrameStep.HasStep(YayaConst.STEP_ROUTE)) return;
+			base.FillPhysics();
+		}
+
+
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
 			// Collect

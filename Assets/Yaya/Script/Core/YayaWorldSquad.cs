@@ -7,6 +7,41 @@ using AngeliaFramework;
 namespace Yaya {
 
 
+	public class sSetViewZStep : StepItem {
+
+		public int Duration = 0;
+		public int NewZ = 0;
+
+		public override bool FrameUpdate () {
+			if (LocalFrame == 0) {
+				// Player
+				var yaya = Yaya.Current;
+				var player = yaya.CurrentPlayer;
+				if (player != null) {
+					player.Renderer.EnterDoor(Duration, NewZ < yaya.ViewZ);
+				}
+			}
+			if (LocalFrame == Duration / 2) {
+				var yaya = Yaya.Current;
+				int para = yaya.Universe.Meta.SquadBehindParallax;
+				byte alpha = yaya.Universe.Meta.SquadBehindAlpha;
+				var curve = yaya.YayaAsset.SquadTransitionCurve;
+				yaya.SetViewZ(NewZ);
+				// Add Effect
+				var effect = fSquadTransition.Instance;
+				effect.Duration = Duration / 2;
+				effect.Scale = NewZ > yaya.ViewZ ? 1000f / para : para / 1000f;
+				effect.Alpha = alpha / 255f;
+				effect.Curve = curve;
+				CellRenderer.RemoveEffect<fSquadTransition>();
+				CellRenderer.AddEffect(effect);
+			}
+			return LocalFrame < Duration;
+		}
+
+	}
+
+
 
 	public class fSquadTransition : CellEffect {
 
@@ -55,23 +90,6 @@ namespace Yaya {
 
 
 	}
-
-
-
-	public class sSquadTransitionStep : StepItem {
-
-		public int Duration { get; set; } = 0;
-		public bool ToFront { get; set; } = true;
-
-		public override bool FrameUpdate () {
-
-
-
-			return LocalFrame < Duration;
-		}
-
-	}
-
 
 
 	public class YayaWorldSquad : WorldSquad {

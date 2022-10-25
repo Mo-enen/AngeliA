@@ -142,6 +142,8 @@ namespace Yaya {
 		private AniCode Climb = null;
 		private AniCode Roll = null;
 		private AniCode Fly = null;
+		private AniCode DoorFront = null;
+		private AniCode DoorBack = null;
 		private AniCode[] Attacks = null;
 		private AniCode[] Attacks_Move = null;
 		private AniCode[] Attacks_Air = null;
@@ -158,6 +160,7 @@ namespace Yaya {
 		private int BlinkingTime = int.MinValue;
 		private int DamagingTime = int.MinValue;
 		private int PrevSleepAmount = 0;
+		private int EnterDoorEndFrame = 0;
 
 
 		#endregion
@@ -200,6 +203,9 @@ namespace Yaya {
 			Face = new($"{name}.Face");
 			FaceBlink = new($"{name}.Face.Blink");
 
+			DoorFront = new($"{name}.DoorFront", Idle);
+			DoorBack = new($"{name}.DoorBack", Idle);
+
 			Attacks = AniCode.GetAnimationArray($"{name}.Attack", -1);
 			Attacks_Move = AniCode.GetAnimationArray($"{name}.AttackMove", -1, Attacks);
 			Attacks_Air = AniCode.GetAnimationArray($"{name}.AttackAir", -1, Attacks);
@@ -221,6 +227,20 @@ namespace Yaya {
 			if (frame < DamagingTime) {
 				CellRenderer.Draw_Animation(
 					Damaging.Code,
+					Character.X, Character.Y,
+					500, 0, 0,
+					Character.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+					Const.ORIGINAL_SIZE,
+					Game.GlobalFrame,
+					Damaging.LoopStart
+				);
+				return;
+			}
+
+			// Door
+			if (frame < EnterDoorEndFrame.Abs()) {
+				CellRenderer.Draw_Animation(
+					EnterDoorEndFrame > 0 ? DoorFront.Code : DoorBack.Code,
 					Character.X, Character.Y,
 					500, 0, 0,
 					Character.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
@@ -484,6 +504,9 @@ namespace Yaya {
 
 
 		public void Damage (int duration) => DamagingTime = Game.GlobalFrame + duration;
+
+
+		public void EnterDoor (int duration, bool front) => EnterDoorEndFrame = (Game.GlobalFrame + duration) * (front ? 1 : -1);
 
 
 		#endregion
