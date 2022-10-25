@@ -4,33 +4,6 @@ using UnityEngine;
 using AngeliaFramework;
 
 
-/*
-LalynnA
-Mage
-Elf
-Dragon
-Torch
-Slime
-Insect
-Orc
-Tako
-Shark
-Bone
-Footman
-Knight
-Jesus
-Shield
-Gamble
-Science
-Spider
-Stalactite
-Sword
-Aerospace
-MachineGun
-Knowledge
-Cat
-*/
-
 namespace Yaya {
 
 	public class AltarLalynnA : eCheckAltar { }
@@ -90,6 +63,7 @@ namespace Yaya {
 	public abstract class eCheckAltar : Entity, IInitialize {
 
 
+		// SUB
 		[System.Serializable]
 		public class CheckPointMeta {
 			[System.Serializable]
@@ -103,9 +77,12 @@ namespace Yaya {
 		}
 
 
+		// VAR
 		public static Dictionary<int, Vector3Int> AltarPositionPool { get; } = new();
+		private Int4 Border = default;
 
 
+		// MSG
 		public static void Initialize () {
 			AltarPositionPool.Clear();
 			var cpMeta = Game.Current.LoadMeta<CheckPointMeta>();
@@ -131,12 +108,17 @@ namespace Yaya {
 		public override void OnActived () {
 			base.OnActived();
 			Height = Const.CEL * 2;
+			Border = default;
+			if (CellRenderer.TryGetSprite(TypeID, out var sprite)) {
+				Border = sprite.GlobalBorder;
+			}
 		}
 
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
+			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
+			CellPhysics.FillBlock(YayaConst.LAYER_ENVIRONMENT, TypeID, Rect.Shrink(Border), true, Const.ONEWAY_UP_TAG);
 		}
 
 
@@ -154,9 +136,23 @@ namespace Yaya {
 	public abstract class eCheckPoint : Entity {
 
 
+
+		private Int4 Border = default;
+
+
+		public override void OnActived () {
+			base.OnActived();
+			Border = default;
+			if (CellRenderer.TryGetSprite(TypeID, out var sprite)) {
+				Border = sprite.GlobalBorder;
+			}
+		}
+
+
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
+			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
+			CellPhysics.FillBlock(YayaConst.LAYER_ENVIRONMENT, TypeID, Rect.Shrink(Border), true, Const.ONEWAY_UP_TAG);
 		}
 
 

@@ -23,6 +23,8 @@ namespace Yaya {
 
 		// Api
 		public ePlayer CurrentPlayer { get; private set; } = null;
+		public int AimViewX { get; private set; } = 0;
+		public int AimViewY { get; private set; } = 0;
 
 		// Data
 		private int PlayerTypeID = 0;
@@ -31,9 +33,7 @@ namespace Yaya {
 		private int DownDownFrame = int.MinValue;
 		private int UpDownFrame = int.MinValue;
 		private int AttackRequiringFrame = int.MinValue;
-		private int LastGroundedY = 0;
-		private int AimX = 0;
-		private int AimY = 0;
+		private int PlayerLastGroundedY = 0;
 
 
 		#endregion
@@ -263,31 +263,30 @@ namespace Yaya {
 		private void UpdatePlayer_View () {
 
 			const int LINGER_RATE = 32;
-			const int LERP_RATE = 96;
 			var viewRect = ViewRect;
 			bool flying = CurrentPlayer.Movement.IsFlying;
 			int playerX = CurrentPlayer.X;
 			int playerY = CurrentPlayer.Y;
 			bool inAir = CurrentPlayer.InAir;
 
-			if (!inAir || flying) LastGroundedY = playerY;
+			if (!inAir || flying) PlayerLastGroundedY = playerY;
 			int linger = viewRect.width * LINGER_RATE / 1000;
 			int centerX = viewRect.x + viewRect.width / 2;
 			if (playerX < centerX - linger) {
-				AimX = playerX + linger - viewRect.width / 2;
+				AimViewX = playerX + linger - viewRect.width / 2;
 			} else if (playerX > centerX + linger) {
-				AimX = playerX - linger - viewRect.width / 2;
+				AimViewX = playerX - linger - viewRect.width / 2;
 			}
-			AimY = !inAir || flying || playerY < LastGroundedY ? GetCameraY(playerY, viewRect.height) : AimY;
-			SetViewPositionDely(AimX, AimY, LERP_RATE, YayaConst.VIEW_PRIORITY_PLAYER);
+			AimViewY = !inAir || flying || playerY < PlayerLastGroundedY ? GetCameraY(playerY, viewRect.height) : AimViewY;
+			SetViewPositionDely(AimViewX, AimViewY, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_PLAYER);
 
 			// Clamp
 			if (!viewRect.Contains(playerX, playerY)) {
-				if (playerX >= viewRect.xMax) AimX = playerX - viewRect.width + 1;
-				if (playerX <= viewRect.xMin) AimX = playerX - 1;
-				if (playerY >= viewRect.yMax) AimY = playerY - viewRect.height + 1;
-				if (playerY <= viewRect.yMin) AimY = playerY - 1;
-				SetViewPositionDely(AimX, AimY, 1000, YayaConst.VIEW_PRIORITY_PLAYER + 1);
+				if (playerX >= viewRect.xMax) AimViewX = playerX - viewRect.width + 1;
+				if (playerX <= viewRect.xMin) AimViewX = playerX - 1;
+				if (playerY >= viewRect.yMax) AimViewY = playerY - viewRect.height + 1;
+				if (playerY <= viewRect.yMin) AimViewY = playerY - 1;
+				SetViewPositionDely(AimViewX, AimViewY, 1000, YayaConst.VIEW_PRIORITY_PLAYER + 1);
 			}
 
 		}
@@ -336,9 +335,9 @@ namespace Yaya {
 			if (CurrentPlayer == null) return CurrentPlayer;
 
 			// Init Player
-			LastGroundedY = CurrentPlayer.Y;
-			AimX = CurrentPlayer.X - ViewRect.width / 2;
-			AimY = GetCameraY(CurrentPlayer.Y, ViewRect.height);
+			PlayerLastGroundedY = CurrentPlayer.Y;
+			AimViewX = CurrentPlayer.X - ViewRect.width / 2;
+			AimViewY = GetCameraY(CurrentPlayer.Y, ViewRect.height);
 			return CurrentPlayer;
 		}
 

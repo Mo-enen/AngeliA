@@ -59,8 +59,10 @@ namespace Yaya {
 		public static readonly int FADEOUT_ID = typeof(sFadeOut).AngeHash();
 		public static readonly int SQUAD_STEP_ID = typeof(sSetViewZStep).AngeHash();
 
-		// View PRIORITY
+		// View
+		public const int PLAYER_VIEW_LERP_RATE = 96;
 		public const int VIEW_PRIORITY_PLAYER = int.MinValue;
+		public const int VIEW_PRIORITY_SYSTEM = 0;
 		public const int VIEW_PRIORITY_CUTSCENE = 128;
 
 		// Misc

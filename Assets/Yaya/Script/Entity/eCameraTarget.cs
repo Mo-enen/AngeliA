@@ -22,10 +22,6 @@ namespace Yaya {
 		private Vector2Int? TargetRight = null;
 		private Vector2Int? TargetDown = null;
 		private Vector2Int? TargetUp = null;
-		private eCameraTarget LeftEntity = null;
-		private eCameraTarget RightEntity = null;
-		private eCameraTarget DownEntity = null;
-		private eCameraTarget UpEntity = null;
 
 
 		#endregion
@@ -65,98 +61,48 @@ namespace Yaya {
 				out unitX, out unitY
 			)) TargetUp = new Vector2Int(unitX * Const.CEL + Const.CEL / 2, unitY * Const.CEL + Const.CEL / 2);
 
-			LeftEntity = null;
-			RightEntity = null;
-			DownEntity = null;
-			UpEntity = null;
-
-		}
-
-
-		public override void FillPhysics () {
-			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
-		}
-
-
-		public override void PhysicsUpdate () {
-			base.PhysicsUpdate();
-			if (TargetLeft.HasValue) {
-				LeftEntity = CellPhysics.GetEntity<eCameraTarget>(new RectInt(TargetLeft.Value.x, TargetLeft.Value.y, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly);
-				if (LeftEntity != null) LeftEntity.RightEntity = this;
-				TargetLeft = null;
-			}
-			if (TargetRight.HasValue) {
-				RightEntity = CellPhysics.GetEntity<eCameraTarget>(new RectInt(TargetRight.Value.x, TargetRight.Value.y, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly);
-				if (RightEntity != null) RightEntity.LeftEntity = this;
-				TargetRight = null;
-			}
-			if (TargetDown.HasValue) {
-				DownEntity = CellPhysics.GetEntity<eCameraTarget>(new RectInt(TargetDown.Value.x, TargetDown.Value.y, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly);
-				if (DownEntity != null) DownEntity.UpEntity = this;
-				TargetDown = null;
-			}
-			if (TargetUp.HasValue) {
-				UpEntity = CellPhysics.GetEntity<eCameraTarget>(new RectInt(TargetUp.Value.x, TargetUp.Value.y, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly);
-				if (UpEntity != null) UpEntity.DownEntity = this;
-				TargetUp = null;
-			}
-
 		}
 
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			if (Game.GlobalFrame <= CameraUpdateFrame) return;
-			if (LeftEntity == null && RightEntity == null && DownEntity == null && UpEntity == null) return;
+			if (!TargetLeft.HasValue && !TargetRight.HasValue && !TargetDown.HasValue && !TargetUp.HasValue) return;
 			var player = Yaya.Current.CurrentPlayer;
 			if (player == null || !player.Active) return;
 			const int HALF = Const.CEL / 2;
 			// Check if Entity Surround Player
 			bool playerLeft = player.X < X + HALF;
 			bool playerDown = player.Y < Y + HALF;
-			var entityH = playerLeft ? LeftEntity : RightEntity;
-			var entityV = playerDown ? DownEntity : UpEntity;
-			if (entityH == null || entityV == null) return;
-			if (playerLeft ? player.X < entityH.X + HALF : player.X > entityH.X + HALF) return;
-			if (playerDown ? player.Y < entityV.Y + HALF : player.Y > entityV.Y + HALF) return;
-			var entityCorner = playerLeft ? entityV.LeftEntity : entityV.RightEntity;
-			var entityCornerAlt = playerDown ? entityH.DownEntity : entityH.UpEntity;
-			if (entityCorner != entityCornerAlt || entityCorner == null) return;
+			var entityH = playerLeft ? TargetLeft : TargetRight;
+			var entityV = playerDown ? TargetDown : TargetUp;
+			if (!entityH.HasValue || !entityV.HasValue) return;
+			if (playerLeft ? player.X < entityH.Value.x + HALF : player.X > entityH.Value.x + HALF) return;
+			if (playerDown ? player.Y < entityV.Value.y + HALF : player.Y > entityV.Value.y + HALF) return;
 			// Get Rect
-			int targetL = Mathf.Min(X + HALF, entityH.X + HALF);
-			int targetR = Mathf.Max(X + HALF, entityH.X + HALF);
-			int targetD = Mathf.Min(Y + HALF, entityV.Y + HALF);
-			int targetU = Mathf.Max(Y + HALF, entityV.Y + HALF);
-			var targetRect = new RectInt(targetL, targetD, targetR - targetL, targetU - targetD);
+			var targetRect = new RectInt();
+			targetRect.SetMinMax(
+				Mathf.Min(X + HALF, entityH.Value.x + HALF),
+				Mathf.Max(X + HALF, entityH.Value.x + HALF),
+				Mathf.Min(Y + HALF, entityV.Value.y + HALF),
+				Mathf.Max(Y + HALF, entityV.Value.y + HALF)
+			);
 			// Clamp Camera
-
-
-
-			
-
-
+			var yayaGame = Yaya.Current;
+			var cameraRect = CellRenderer.CameraRect;
+			int viewOffsetX = yayaGame.ViewRect.x - CellRenderer.CameraRect.x;
+			cameraRect.x = yayaGame.AimViewX - viewOffsetX;
+			cameraRect.y = yayaGame.AimViewY;
+			cameraRect.x = cameraRect.x.Clamp(targetRect.xMax - cameraRect.width, targetRect.xMin);
+			cameraRect.y = cameraRect.y.Clamp(targetRect.yMax - cameraRect.height, targetRect.yMin);
+			Game.Current.SetViewPositionDely(
+				cameraRect.x + viewOffsetX,
+				cameraRect.y,
+				YayaConst.PLAYER_VIEW_LERP_RATE,
+				YayaConst.VIEW_PRIORITY_SYSTEM
+			);
 			CameraUpdateFrame = Game.GlobalFrame;
 		}
-
-
-
-		#endregion
-
-
-
-
-		#region --- API ---
-
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
 
 
 		#endregion
