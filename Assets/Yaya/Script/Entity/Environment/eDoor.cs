@@ -98,6 +98,7 @@ namespace Yaya {
 			if (FrameStep.HasStep(YayaConst.STEP_ROUTE)) return false;
 			ch.X = X + (Width - ch.Width) / 2 - ch.OffsetX;
 			ch.Y = Y;
+			ch.Movement.Stop();
 			Yaya.Current.SetViewZDelay(IsFrontDoor ? Game.Current.ViewZ - 1 : Game.Current.ViewZ + 1);
 			Open = true;
 			return true;

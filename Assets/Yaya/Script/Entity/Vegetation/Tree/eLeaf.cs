@@ -6,16 +6,19 @@ using AngeliaFramework;
 
 namespace Yaya {
 
-
+	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
 	public class eTreeMaple : eTreeLeaf {
 		protected override string LeafCode => "Leaf Maple";
 	}
+	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
 	public class eTreePine : eTreeLeaf {
 		protected override string LeafCode => "Leaf Pine";
 	}
+	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
 	public class eTreePoplar : eTreeLeaf {
 		protected override string LeafCode => "Leaf Poplar";
 	}
+	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
 	public class eTreePalm : eTreeLeaf {
 
 
@@ -61,7 +64,6 @@ namespace Yaya {
 
 	[EntityAttribute.MapEditorGroup("Vegetation")]
 	[EntityAttribute.Capacity(256)]
-	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
 	[EntityAttribute.DrawBehind]
 	public abstract class eTreeLeaf : Entity {
 

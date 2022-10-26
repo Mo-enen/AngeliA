@@ -392,20 +392,12 @@ namespace Yaya {
 
 
 		// Movement
-		public void Move (Direction3 x, Direction3 y) => Move((int)x, (int)y);
+		public void Move (Direction3 x, Direction3 y) => MoveLogic((int)x, (int)y);
 
 
-		public void Move (int x, int y) {
-			if (IntendedX != 0 && x == 0) LastEndMoveFrame = CurrentFrame;
-			if (IntendedX == 0 && x != 0) LastStartMoveFrame = CurrentFrame;
-			if (x != 0) RunningAccumulateFrame++;
-			if (x == 0 && CurrentFrame > LastEndMoveFrame + RUN_BREAK_GAP) RunningAccumulateFrame = 0;
-			IntendedX = x;
-			IntendedY = y;
-			if (x != 0) LastIntendedX = IntendedX;
-			if (x != 0 || y != 0) {
-				LastMoveDirection = new(IntendedX, IntendedY);
-			}
+		public void Stop () {
+			MoveLogic(0, 0);
+			Source.VelocityX = 0;
 		}
 
 
@@ -439,6 +431,20 @@ namespace Yaya {
 
 
 		#region --- LGC ---
+
+
+		private void MoveLogic (int x, int y) {
+			if (IntendedX != 0 && x == 0) LastEndMoveFrame = CurrentFrame;
+			if (IntendedX == 0 && x != 0) LastStartMoveFrame = CurrentFrame;
+			if (x != 0) RunningAccumulateFrame++;
+			if (x == 0 && CurrentFrame > LastEndMoveFrame + RUN_BREAK_GAP) RunningAccumulateFrame = 0;
+			IntendedX = x;
+			IntendedY = y;
+			if (x != 0) LastIntendedX = IntendedX;
+			if (x != 0 || y != 0) {
+				LastMoveDirection = new(IntendedX, IntendedY);
+			}
+		}
 
 
 		private bool ForceSquatCheck () {

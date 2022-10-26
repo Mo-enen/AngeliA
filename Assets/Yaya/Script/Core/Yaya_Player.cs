@@ -60,7 +60,7 @@ namespace Yaya {
 		public void Update_Player () {
 			if (State != GameState.Play) {
 				if (CurrentPlayer != null) {
-					CurrentPlayer.Movement.Move(Direction3.None, Direction3.None);
+					CurrentPlayer.Movement.Stop();
 				}
 				return;
 			}
@@ -74,7 +74,7 @@ namespace Yaya {
 						UpdatePlayer_JumpDashPound();
 						UpdatePlayer_Action_Attack();
 					} else {
-						CurrentPlayer.Movement.Move(Direction3.None, Direction3.None);
+						CurrentPlayer.Movement.Stop();
 					}
 					break;
 				case CharacterState.Sleep:

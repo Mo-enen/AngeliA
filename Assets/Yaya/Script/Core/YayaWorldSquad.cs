@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
+using System.Security.Cryptography;
 
 
 namespace Yaya {
@@ -11,6 +12,7 @@ namespace Yaya {
 
 		public int Duration = 0;
 		public int NewZ = 0;
+		private bool Front = true;
 
 		public override bool FrameUpdate () {
 			if (LocalFrame == 0) {
@@ -20,17 +22,21 @@ namespace Yaya {
 				if (player != null) {
 					player.Renderer.EnterDoor(Duration, NewZ < yaya.ViewZ);
 				}
+				Front = NewZ > yaya.ViewZ;
 			}
 			if (LocalFrame == Duration / 2) {
+				// Set View Z
+				Game.Current.SetViewZ(NewZ);
+			}
+			if (LocalFrame == Duration / 2 + 1) {
+				// Add Effect
 				var yaya = Yaya.Current;
 				int para = yaya.Universe.Meta.SquadBehindParallax;
 				byte alpha = yaya.Universe.Meta.SquadBehindAlpha;
 				var curve = yaya.YayaAsset.SquadTransitionCurve;
-				yaya.SetViewZ(NewZ);
-				// Add Effect
 				var effect = fSquadTransition.Instance;
 				effect.Duration = Duration / 2;
-				effect.Scale = NewZ > yaya.ViewZ ? 1000f / para : para / 1000f;
+				effect.Scale = Front ? 1000f / para : para / 1000f;
 				effect.Alpha = alpha / 255f;
 				effect.Curve = curve;
 				CellRenderer.RemoveEffect<fSquadTransition>();
@@ -93,6 +99,10 @@ namespace Yaya {
 
 
 	public class YayaWorldSquad : WorldSquad {
+
+
+		// VAR
+		public override bool Culling => !FrameStep.HasStep(YayaConst.STEP_ROUTE) || !FrameStep.IsSteping<sSetViewZStep>();
 
 
 		// API

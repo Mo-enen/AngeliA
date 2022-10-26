@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Yaya/Scene.unity
+    guid: 4b50d67feb3f4bd4dabb6e4efc7cebe5
   m_configObjects: {}

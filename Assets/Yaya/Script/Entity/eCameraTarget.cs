@@ -65,36 +65,50 @@ namespace Yaya {
 
 
 		public override void FrameUpdate () {
+
 			base.FrameUpdate();
 			if (Game.GlobalFrame <= CameraUpdateFrame) return;
 			if (!TargetLeft.HasValue && !TargetRight.HasValue && !TargetDown.HasValue && !TargetUp.HasValue) return;
 			var player = Yaya.Current.CurrentPlayer;
 			if (player == null || !player.Active) return;
 			const int HALF = Const.CEL / 2;
+
 			// Check if Entity Surround Player
 			bool playerLeft = player.X < X + HALF;
 			bool playerDown = player.Y < Y + HALF;
-			var entityH = playerLeft ? TargetLeft : TargetRight;
-			var entityV = playerDown ? TargetDown : TargetUp;
-			if (!entityH.HasValue || !entityV.HasValue) return;
-			if (playerLeft ? player.X < entityH.Value.x + HALF : player.X > entityH.Value.x + HALF) return;
-			if (playerDown ? player.Y < entityV.Value.y + HALF : player.Y > entityV.Value.y + HALF) return;
+			var positionH = playerLeft ? TargetLeft : TargetRight;
+			var positionV = playerDown ? TargetDown : TargetUp;
+			if (!positionH.HasValue || !positionV.HasValue) return;
+			if (playerLeft ? player.X < positionH.Value.x + HALF : player.X > positionH.Value.x + HALF) return;
+			if (playerDown ? player.Y < positionV.Value.y + HALF : player.Y > positionV.Value.y + HALF) return;
+
 			// Get Rect
 			var targetRect = new RectInt();
 			targetRect.SetMinMax(
-				Mathf.Min(X + HALF, entityH.Value.x + HALF),
-				Mathf.Max(X + HALF, entityH.Value.x + HALF),
-				Mathf.Min(Y + HALF, entityV.Value.y + HALF),
-				Mathf.Max(Y + HALF, entityV.Value.y + HALF)
+				Mathf.Min(X + HALF, positionH.Value.x + HALF),
+				Mathf.Max(X + HALF, positionH.Value.x + HALF),
+				Mathf.Min(Y + HALF, positionV.Value.y + HALF),
+				Mathf.Max(Y + HALF, positionV.Value.y + HALF)
 			);
+
 			// Clamp Camera
 			var yayaGame = Yaya.Current;
 			var cameraRect = CellRenderer.CameraRect;
 			int viewOffsetX = yayaGame.ViewRect.x - CellRenderer.CameraRect.x;
 			cameraRect.x = yayaGame.AimViewX - viewOffsetX;
 			cameraRect.y = yayaGame.AimViewY;
-			cameraRect.x = cameraRect.x.Clamp(targetRect.xMax - cameraRect.width, targetRect.xMin);
-			cameraRect.y = cameraRect.y.Clamp(targetRect.yMax - cameraRect.height, targetRect.yMin);
+			if (targetRect.width > cameraRect.width) {
+				cameraRect.x = cameraRect.x.Clamp(targetRect.xMax - cameraRect.width, targetRect.xMin);
+			} else {
+				cameraRect.x = targetRect.x + targetRect.width / 2 - cameraRect.width / 2;
+			}
+			if (targetRect.height > cameraRect.height) {
+				cameraRect.y = cameraRect.y.Clamp(targetRect.yMax - cameraRect.height, targetRect.yMin);
+			} else {
+				cameraRect.y = targetRect.y + targetRect.height / 2 - cameraRect.height / 2;
+			}
+
+			// Final
 			Game.Current.SetViewPositionDely(
 				cameraRect.x + viewOffsetX,
 				cameraRect.y,
