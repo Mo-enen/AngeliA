@@ -7,9 +7,8 @@ namespace Yaya {
 
 
 		public override int CollisionMask => YayaConst.MASK_SOLID;
-		public override bool InAir => !IsGrounded && !InWater;
+		protected override int LevelMask => YayaConst.MASK_LEVEL;
 		protected override int SpeedScale => InWater ? WaterSpeedScale : base.SpeedScale;
-
 		public bool InWater { get; set; } = false;
 		public bool InSand { get; set; } = false;
 
@@ -43,8 +42,8 @@ namespace Yaya {
 
 			// Water & Sand
 			bool prevInSand = InSand;
-			InWater = CellPhysics.Overlap(Mask_Level, Rect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
-			InSand = CellPhysics.Overlap(Mask_Level, Rect, null, OperationMode.TriggerOnly, YayaConst.QUICKSAND_TAG);
+			InWater = CellPhysics.Overlap(LevelMask, Rect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
+			InSand = CellPhysics.Overlap(LevelMask, Rect, null, OperationMode.TriggerOnly, YayaConst.QUICKSAND_TAG);
 
 			// Quicksand
 			if (InSand) {

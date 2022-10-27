@@ -31,9 +31,9 @@ namespace Yaya {
 		protected override bool IgnoreRiseGravityShift => true;
 		public override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
 		public override int CollisionMask => YayaConst.MASK_MAP;
-		public override bool InAir => base.InAir && !Movement.IsClimbing;
 		public override int CarrierSpeed => 0;
 		public bool TakingDamage => Game.GlobalFrame < Health.LastDamageFrame + Health.DamageStunDuration;
+		public bool InAir => !IsGrounded && !InWater && !InSand && !Movement.IsClimbing;
 		public int SleepAmount {
 			get => Util.Remap(0, 90, 0, 1000, SleepFrame);
 			set => SleepFrame = Util.Remap(0, 1000, 0, 90, value);
@@ -170,7 +170,7 @@ namespace Yaya {
 
 		// Behavior
 		public bool IsAttackAllowedByMovement () =>
-			(Attackness.AttackInAir || !InAir) &&
+			(Attackness.AttackInAir || (IsGrounded || InWater || InSand || Movement.IsClimbing)) &&
 			(Attackness.AttackInWater || !InWater) &&
 			(Attackness.AttackWhenClimbing || !Movement.IsClimbing) &&
 			(Attackness.AttackWhenFlying || !Movement.IsFlying) &&

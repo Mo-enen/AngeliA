@@ -29,7 +29,7 @@ namespace Yaya {
 		private const int RUN_BREAK_GAP = 6;
 
 		// Api
-		public eYayaRigidbody Source { get; private set; } = null;
+		public eCharacter Source { get; private set; } = null;
 		public Vector2Int LastMoveDirection { get; private set; } = default;
 		public int IntendedX { get; private set; } = 0;
 		public int IntendedY { get; private set; } = 0;
@@ -57,16 +57,16 @@ namespace Yaya {
 		public bool IsRolling => !InWater && !IsPounding && !IsFlying && ((JumpRoll && CurrentJumpCount > 0) || (JumpSecondRoll && CurrentJumpCount > 1));
 		public bool UseFreeStyleSwim => SwimInFreeStyle;
 		public MovementState State => IsFlying ? MovementState.Fly :
-							IsClimbing ? MovementState.Climb :
-							IsPounding ? MovementState.Pound :
-							IsRolling ? MovementState.Roll :
-							IsDashing ? (!IsGrounded && InWater ? MovementState.SwimDash : MovementState.Dash) :
-							IsSquating ? (IsMoving ? MovementState.SquatMove : MovementState.SquatIdle) :
-							InWater && !IsGrounded ? (IsMoving ? MovementState.SwimMove : MovementState.SwimIdle) :
-							Source.InAir ? (Source.FinalVelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown) :
-							IsRunning ? MovementState.Run :
-							IsMoving ? MovementState.Walk :
-							MovementState.Idle;
+			IsClimbing ? MovementState.Climb :
+			IsPounding ? MovementState.Pound :
+			IsRolling ? MovementState.Roll :
+			IsDashing ? (!IsGrounded && InWater ? MovementState.SwimDash : MovementState.Dash) :
+			IsSquating ? (IsMoving ? MovementState.SquatMove : MovementState.SquatIdle) :
+			InWater && !IsGrounded ? (IsMoving ? MovementState.SwimMove : MovementState.SwimIdle) :
+			Source.InAir ? (Source.VelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown) :
+			IsRunning ? MovementState.Run :
+			IsMoving ? MovementState.Walk :
+			MovementState.Idle;
 
 		// Short
 		private int CurrentDashDuration => InWater && SwimInFreeStyle ? FreeSwimDashDuration : DashDuration;
@@ -99,9 +99,7 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public void OnInitialize (eYayaRigidbody source) {
-			Source = source;
-		}
+		public void OnInitialize (eCharacter source) => Source = source;
 
 
 		public void OnActived () {
