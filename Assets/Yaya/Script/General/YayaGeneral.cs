@@ -55,6 +55,7 @@ namespace Yaya {
 		// Step
 		public const int STEP_ROUTE = 0;
 		public const int STEP_CUTSCENE = 1;
+		public const int STEP_BG_RENDERING = 2;
 		public static readonly int OPENING_ID = typeof(sOpening).AngeHash();
 		public static readonly int FADEOUT_ID = typeof(sFadeOut).AngeHash();
 		public static readonly int SQUAD_STEP_ID = typeof(sSetViewZStep).AngeHash();

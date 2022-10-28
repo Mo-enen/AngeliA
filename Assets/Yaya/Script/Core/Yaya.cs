@@ -19,7 +19,7 @@ namespace Yaya {
 		public new YayaWorldSquad WorldSquad_Behind => base.WorldSquad_Behind as YayaWorldSquad;
 		public new YayaWorldSquad WorldSquad => base.WorldSquad as YayaWorldSquad;
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
-		public override int StepLayerCount => 2;
+		public override int StepLayerCount => 3;
 		public override int CutsceneStepLayer => YayaConst.STEP_CUTSCENE;
 		public override RectInt CameraRect => YayaCameraRect;
 		public YayaMeta YayaMeta => m_YayaMeta;

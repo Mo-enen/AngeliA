@@ -15,11 +15,12 @@ namespace Yaya {
 		// MSG
 		public override bool FrameUpdate () {
 			int localFrame = LocalFrame;
-			CellRenderer.SetLayer(YayaConst.SHADER_UI);
+			byte t = (byte)Util.Remap(0f, FADE_OUT, byte.MaxValue, byte.MinValue, localFrame);
+			CellRenderer.SetLayer(YayaConst.SHADER_MULT);
 			CellRenderer.Draw(
 				Const.PIXEL,
 				CellRenderer.CameraRect.Expand(Const.CEL),
-				new Color32(0, 0, 0, (byte)Util.Remap(0f, FADE_OUT, byte.MinValue, byte.MaxValue, localFrame))
+				new Color32(t, t, t, 255)
 			);
 			CellRenderer.SetLayerToDefault();
 			return localFrame < FADE_OUT;

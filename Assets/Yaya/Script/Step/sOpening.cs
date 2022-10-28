@@ -75,11 +75,12 @@ namespace Yaya {
 		private bool Update_Opening (Game game, int localFrame) {
 			// Black FadeIn
 			if (localFrame <= BLACK_DURATION) {
-				CellRenderer.SetLayer(YayaConst.SHADER_UI);
+				byte t = (byte)Util.Remap(0f, BLACK_DURATION, byte.MinValue, byte.MaxValue, localFrame);
+				CellRenderer.SetLayer(YayaConst.SHADER_MULT);
 				CellRenderer.Draw(
 					Const.PIXEL,
 					CellRenderer.CameraRect.Expand(Const.CEL),
-					new Color32(0, 0, 0, (byte)Util.Remap(0f, BLACK_DURATION, byte.MaxValue, byte.MinValue, localFrame))
+					new Color32(t, t, t, 255)
 				);
 				CellRenderer.SetLayerToDefault();
 			}
