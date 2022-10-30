@@ -21,7 +21,9 @@ namespace Yaya {
 
 
 		public static new void Initialize () {
-			var meta = (Game.Current as Yaya).YayaMeta;
+			var yaya = Game.Current as Yaya;
+			if (yaya == null) return;
+			var meta = yaya.YayaMeta;
 			WaterSpeedScale = meta.WaterSpeedLose;
 			QuickSandJumpoutSpeed = meta.QuickSandJumpoutSpeed;
 			QuickSandMaxRunSpeed = meta.QuickSandMaxRunSpeed;

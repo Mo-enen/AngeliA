@@ -1,5 +1,4 @@
-﻿CtrlHint.Skip:跳过
-ActionHint.Bed:睡觉
+﻿ActionHint.Bed:睡觉
 ActionHint.Door:进门
 ActionHint.OpenableFurniture:打开
 ActionHint.Photo:切换
@@ -7,6 +6,7 @@ CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Jump:跳跃
 CtrlHint.Move:移动
+CtrlHint.Skip:跳过
 CtrlHint.Use:使用
 CtrlHint.WakeUp:起床
 Menu.KeySetter.Gamepad:手柄
