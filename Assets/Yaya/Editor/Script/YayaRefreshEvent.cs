@@ -22,9 +22,6 @@ namespace Yaya.Editor {
 
 		private void CreateCheckPointMetaFile () {
 
-			var game = Object.FindObjectOfType<Game>();
-			if (game == null) return;
-
 			// Altar Entity ID
 			var world = new World();
 			var targetHash = new HashSet<int>();
@@ -34,7 +31,7 @@ namespace Yaya.Editor {
 
 			// Get All Cp Positions
 			var cpList = new List<eCheckAltar.CheckPointMeta.Data>();
-			foreach (var file in Util.GetFilesIn(game.Universe.MapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
+			foreach (var file in Util.GetFilesIn(Const.MapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
 				try {
 					World.EditorOnly_ForAllBlocks(file.FullName, entity: (id, pos) => {
 						if (!targetHash.Contains(id)) return;
@@ -49,7 +46,7 @@ namespace Yaya.Editor {
 			}
 
 			// Write Position File
-			game.SaveMeta(new eCheckAltar.CheckPointMeta() { CPs = cpList.ToArray(), });
+			Game.SaveMeta(new eCheckAltar.CheckPointMeta() { CPs = cpList.ToArray(), });
 		}
 
 
@@ -57,7 +54,7 @@ namespace Yaya.Editor {
 			try {
 				var yaya = Object.FindObjectOfType<Yaya>();
 				if (yaya == null) return;
-				yaya.SaveMeta(Util.GetFieldValue(yaya, "m_YayaMeta") as YayaMeta);
+				Game.SaveMeta(Util.GetFieldValue(yaya, "m_YayaMeta") as YayaMeta);
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 

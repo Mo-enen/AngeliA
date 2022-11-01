@@ -31,8 +31,8 @@ namespace Yaya {
 			if (LocalFrame == Duration / 2 + 1) {
 				// Add Effect
 				var yaya = Yaya.Current;
-				int para = yaya.Universe.Meta.SquadBehindParallax;
-				byte alpha = yaya.Universe.Meta.SquadBehindAlpha;
+				int para = yaya.Meta.SquadBehindParallax;
+				byte alpha = yaya.Meta.SquadBehindAlpha;
 				var curve = yaya.YayaAsset.SquadTransitionCurve;
 				var effect = fSquadTransition.Instance;
 				effect.Duration = Duration / 2;
@@ -102,7 +102,7 @@ namespace Yaya {
 
 
 		// VAR
-		public override bool Culling => !FrameStep.HasStep(YayaConst.STEP_ROUTE) || !FrameStep.IsSteping<sSetViewZStep>();
+		public override bool Culling => base.Culling && !FrameStep.HasStep(YayaConst.STEP_ROUTE);
 
 
 		// API

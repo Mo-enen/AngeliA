@@ -9,7 +9,6 @@ namespace Yaya {
 	[System.Serializable]
 	public class YayaAsset {
 		public AnimationCurve SquadTransitionCurve = null;
-		public AnimationCurve UiPopCurve = null;
 	}
 
 

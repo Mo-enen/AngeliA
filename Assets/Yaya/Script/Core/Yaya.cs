@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
 using UnityEngine.InputSystem;
+using UnityEngine.Audio;
 
 
 namespace Yaya {
@@ -48,6 +49,17 @@ namespace Yaya {
 
 
 		#region --- MSG ---
+
+
+#if UNITY_EDITOR
+		protected override void Reset () {
+			base.Reset();
+			m_YayaMeta = new YayaMeta();
+			m_YayaAsset = new YayaAsset() {
+				SquadTransitionCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f),
+			};
+		}
+#endif
 
 
 		// Init
@@ -130,13 +142,18 @@ namespace Yaya {
 			if (FrameInput.CustomKeyUp(Key.Digit6)) {
 				Cutscene.Play("Test Video 1".AngeHash());
 			}
+			if (FrameInput.CustomKeyDown(Key.Digit7)) {
+				CellRenderer.StartCameraShake(30);
+			}
+
+
 		}
 
 
 		private void Update_CameraRect () {
 			if (CellRenderer.HasEffect<fSquadTransition>()) {
 				var exp = (
-					(Vector2)CellRenderer.CameraRect.size * (Universe.Meta.SquadBehindParallax / 1000f - 1f)
+					(Vector2)CellRenderer.CameraRect.size * (Meta.SquadBehindParallax / 1000f - 1f)
 				).CeilToInt();
 				YayaCameraRect = base.CameraRect.Expand(exp.x, exp.x, exp.y, exp.y);
 			} else {
@@ -310,7 +327,7 @@ namespace Yaya {
 			if (FrameStep.HasStep(YayaConst.STEP_ROUTE)) return;
 			// Add Step
 			if (FrameStep.TryAddToLast<sSetViewZStep>(YayaConst.SQUAD_STEP_ID, YayaConst.STEP_ROUTE, out var step)) {
-				step.Duration = Universe.Meta.SquadTransitionDuration;
+				step.Duration = Meta.SquadTransitionDuration;
 				step.NewZ = newZ;
 			}
 		}

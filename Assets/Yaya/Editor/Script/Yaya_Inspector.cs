@@ -39,7 +39,7 @@ namespace Yaya.Editor {
 					string newMetaJson = JsonUtility.ToJson(newMeta, false);
 					if (newMetaJson != OldYayaMetaJson) {
 						// Changed
-						(target as Game).SaveMeta(newMeta);
+						Game.SaveMeta(newMeta);
 					}
 				}
 			}
