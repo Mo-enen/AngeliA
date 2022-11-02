@@ -46,7 +46,10 @@ namespace Yaya.Editor {
 			}
 
 			// Write Position File
-			Game.SaveMeta(new eCheckAltar.CheckPointMeta() { CPs = cpList.ToArray(), });
+			Game.SaveMeta(
+				new eCheckAltar.CheckPointMeta() { CPs = cpList.ToArray(), },
+				"", "", false
+			);
 		}
 
 

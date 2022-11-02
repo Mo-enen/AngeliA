@@ -61,7 +61,7 @@ namespace Yaya {
 
 			base.OnInitialize();
 			string typeName = GetType().Name;
-			if (typeName.StartsWith("e")) typeName = typeName[1..];
+			if (typeName[0] == 'e') typeName = typeName[1..];
 
 			Movement = Game.LoadOrCreateMeta<Movement>(typeName, "Movement");
 			Renderer = Game.LoadOrCreateMeta<CharacterRenderer>(typeName, "Renderer");

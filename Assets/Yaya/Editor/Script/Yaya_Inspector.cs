@@ -14,7 +14,6 @@ namespace Yaya.Editor {
 	public class Yaya_Inspector : Game_Inspector {
 
 
-		private string OldYayaMetaJson = "";
 		private SerializedProperty p_YayaMeta = null;
 		private SerializedProperty p_YayaAsset = null;
 
@@ -23,27 +22,6 @@ namespace Yaya.Editor {
 			base.OnEnable();
 			p_YayaMeta = serializedObject.FindProperty("m_YayaMeta");
 			p_YayaAsset = serializedObject.FindProperty("m_YayaAsset");
-			// Get Meta for Changing Check
-			OldYayaMetaJson = "";
-			if (Util.GetFieldValue(target, "m_YayaMeta") is YayaMeta oldMeta) {
-				OldYayaMetaJson = JsonUtility.ToJson(oldMeta, false);
-			}
-		}
-
-
-		protected override void OnDestroy () {
-			base.OnDestroy();
-			// Check Meta Changed
-			if (!string.IsNullOrEmpty(OldYayaMetaJson)) {
-				if (Util.GetFieldValue(target, "m_YayaMeta") is YayaMeta newMeta) {
-					string newMetaJson = JsonUtility.ToJson(newMeta, false);
-					if (newMetaJson != OldYayaMetaJson) {
-						// Changed
-						Game.SaveMeta(newMeta);
-					}
-				}
-			}
-
 		}
 
 

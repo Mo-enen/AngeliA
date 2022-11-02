@@ -1,16 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using AngeliaFramework;
 using UnityEngine;
 
 
 namespace Yaya {
-
-
-	[System.Serializable]
-	public class YayaAsset {
-		public AnimationCurve SquadTransitionCurve = null;
-	}
-
 
 
 	[System.Serializable]
@@ -23,5 +17,13 @@ namespace Yaya {
 		public int QuickSandJumpSpeed = 12;
 
 	}
+
+
+
+	[System.Serializable]
+	public class YayaAsset {
+		public AnimationCurve SquadTransitionCurve = null;
+	}
+
 
 }

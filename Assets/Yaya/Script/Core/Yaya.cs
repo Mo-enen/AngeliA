@@ -54,7 +54,6 @@ namespace Yaya {
 #if UNITY_EDITOR
 		protected override void Reset () {
 			base.Reset();
-			m_YayaMeta = new YayaMeta();
 			m_YayaAsset = new YayaAsset() {
 				SquadTransitionCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f),
 			};
