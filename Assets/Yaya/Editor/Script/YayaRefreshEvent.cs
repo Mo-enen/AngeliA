@@ -16,7 +16,6 @@ namespace Yaya.Editor {
 
 		public void Refresh () {
 			CreateCheckPointMetaFile();
-			CreateYayaMetaFile();
 		}
 
 
@@ -50,15 +49,6 @@ namespace Yaya.Editor {
 				new eCheckAltar.CheckPointMeta() { CPs = cpList.ToArray(), },
 				"", "", false
 			);
-		}
-
-
-		private void CreateYayaMetaFile () {
-			try {
-				var yaya = Object.FindObjectOfType<Yaya>();
-				if (yaya == null) return;
-				Game.SaveMeta(Util.GetFieldValue(yaya, "m_YayaMeta") as YayaMeta);
-			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
 
