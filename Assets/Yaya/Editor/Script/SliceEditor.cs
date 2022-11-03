@@ -57,8 +57,8 @@ namespace AngeliaFramework.Editor {
 			window.minSize = new Vector2(256, 256);
 			window.maxSize = new Vector2(1024, 1024);
 			window.AllAses.Clear();
-			foreach (var file in AngeEditorUtil.ForAllAsepriteFiles()) {
-				window.AllAses.Add(file.FullName);
+			foreach (var filePath in AngeEditorUtil.ForAllAsepriteFiles()) {
+				window.AllAses.Add(filePath);
 			}
 			window.CopyFlashTime = double.MinValue;
 			window.PasteFlashTime = double.MinValue;
