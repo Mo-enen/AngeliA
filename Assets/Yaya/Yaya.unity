@@ -261,7 +261,7 @@ MonoBehaviour:
     UiLayer:
       Shader: {fileID: 4800000, guid: 26346688205a2664c93f3512528a7c2b, type: 3}
       Capacity: 1024
-    Font: {fileID: 12800000, guid: 2f6d47bc6fad1e146ac0668cc7a68284, type: 3}
+    Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     TextCapacity: 2048
   m_YayaMeta:
     WaterSpeedLose: 400
