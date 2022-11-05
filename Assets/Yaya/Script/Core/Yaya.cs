@@ -22,7 +22,6 @@ namespace Yaya {
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
 		public override int StepLayerCount => 3;
 		public override int CutsceneStepLayer => YayaConst.STEP_CUTSCENE;
-		public override RectInt CameraRect => YayaCameraRect;
 		public YayaMeta YayaMeta => m_YayaMeta;
 		public YayaAsset YayaAsset => m_YayaAsset;
 
@@ -32,7 +31,6 @@ namespace Yaya {
 
 		// Data
 		private static readonly HitInfo[] c_DamageCheck = new HitInfo[16];
-		private RectInt YayaCameraRect = default;
 		private eGamePadUI GamePadUI = null;
 		private eControlHintUI ControlHintUI = null;
 		private ePauseMenu PauseMenu = null;
@@ -115,7 +113,6 @@ namespace Yaya {
 		// Update
 		protected override void FrameUpdate () {
 
-			Update_CameraRect();
 			base.FrameUpdate();
 			Update_Damage();
 			Update_Player();
@@ -146,18 +143,6 @@ namespace Yaya {
 			}
 
 
-		}
-
-
-		private void Update_CameraRect () {
-			if (CellRenderer.HasEffect<fSquadTransition>()) {
-				var exp = (
-					(Vector2)CellRenderer.CameraRect.size * (Meta.SquadBehindParallax / 1000f - 1f)
-				).CeilToInt();
-				YayaCameraRect = base.CameraRect.Expand(exp.x, exp.x, exp.y, exp.y);
-			} else {
-				YayaCameraRect = base.CameraRect;
-			}
 		}
 
 
