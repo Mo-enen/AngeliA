@@ -21,7 +21,7 @@ namespace Yaya {
 				Const.PIXEL,
 				CellRenderer.CameraRect.Expand(Const.CEL),
 				new Color32(t, t, t, 255)
-			);
+			).Z = int.MaxValue;
 			CellRenderer.SetLayerToDefault();
 			return localFrame < FADE_OUT;
 		}
