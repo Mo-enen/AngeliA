@@ -61,12 +61,21 @@ namespace Yaya {
 
 		// Init
 		protected override void Initialize () {
+
 			base.Initialize();
 
+			// UI Entity
 			GamePadUI = PeekOrGetEntity<eGamePadUI>();
 			PauseMenu = PeekOrGetEntity<ePauseMenu>();
 			ControlHintUI = PeekOrGetEntity<eControlHintUI>();
 
+			// Screen Effects
+			CellRenderer.ClearScreenEffects();
+			foreach (var shader in m_YayaAsset.ScreenEffectShaders) {
+				CellRenderer.AddScreenEffect(shader);
+			}
+
+			// Pipeline
 			Initialize_Quit();
 			Initialize_Player();
 
@@ -79,6 +88,7 @@ namespace Yaya {
 				step.RemovePlayerAtStart = true;
 			}
 
+			// Custom Keys
 			FrameInput.AddCustomKey(Key.Digit1);
 			FrameInput.AddCustomKey(Key.Digit2);
 			FrameInput.AddCustomKey(Key.Digit3);
@@ -141,7 +151,10 @@ namespace Yaya {
 			if (FrameInput.CustomKeyDown(Key.Digit7)) {
 				CellRenderer.StartCameraShake(30);
 			}
-
+			if (FrameInput.CustomKeyDown(Key.Digit8)) {
+				bool enable = CellRenderer.GetScreenEffectEnable(YayaConst.SCREEN_EFFECT_GREYSCALE);
+				CellRenderer.SetScreenEffectEnable(YayaConst.SCREEN_EFFECT_GREYSCALE, !enable);
+			}
 
 		}
 

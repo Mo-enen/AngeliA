@@ -17,8 +17,44 @@ namespace Yaya {
 		public const int PASSOUT_WAIT = 48;
 
 		// Render
-		public const int SHADER_MULT = 2;
-		public const int SHADER_ADD = 3;
+		public static int SHADER_MULT {
+			get {
+				if (_SHADER_MULT == -2 && Game.Current != null) {
+					_SHADER_MULT = -1;
+					for (int i = 0; i < Game.Current.Asset.RendererLayers.Length; i++) {
+						var layer = Game.Current.Asset.RendererLayers[i];
+						if (
+							layer.Shader != null &&
+							layer.Shader.name.EndsWith("/Mult", System.StringComparison.OrdinalIgnoreCase)
+						) {
+							_SHADER_MULT = i;
+							break;
+						}
+					}
+				}
+				return _SHADER_MULT;
+			}
+		}
+		private static int _SHADER_MULT = -2;
+		public static int SHADER_ADD {
+			get {
+				if (_SHADER_ADD == -2 && Game.Current != null) {
+					_SHADER_ADD = -1;
+					for (int i = 0; i < Game.Current.Asset.RendererLayers.Length; i++) {
+						var layer = Game.Current.Asset.RendererLayers[i];
+						if (
+							layer.Shader != null &&
+							layer.Shader.name.EndsWith("/Add", System.StringComparison.OrdinalIgnoreCase)
+						) {
+							_SHADER_ADD = i;
+							break;
+						}
+					}
+				}
+				return _SHADER_ADD;
+			}
+		}
+		private static int _SHADER_ADD = -2;
 
 		// Physics
 		public const int PHYSICS_LAYER_COUNT = 5;
@@ -62,6 +98,27 @@ namespace Yaya {
 		public const int VIEW_PRIORITY_PLAYER = int.MinValue;
 		public const int VIEW_PRIORITY_SYSTEM = 0;
 		public const int VIEW_PRIORITY_CUTSCENE = 128;
+
+		// Screen Effect
+		public static int SCREEN_EFFECT_GREYSCALE {
+			get {
+				if (_SCREEN_EFFECT_GREYSCALE == -2 && Yaya.Current != null) {
+					_SCREEN_EFFECT_GREYSCALE = -1;
+					for (int i = 0; i < Yaya.Current.YayaAsset.ScreenEffectShaders.Length; i++) {
+						var shader = Yaya.Current.YayaAsset.ScreenEffectShaders[i];
+						if (
+							shader != null &&
+							shader.name.EndsWith("/GreyScale", System.StringComparison.OrdinalIgnoreCase)
+						) {
+							_SCREEN_EFFECT_GREYSCALE = i;
+							break;
+						}
+					}
+				}
+				return _SCREEN_EFFECT_GREYSCALE;
+			}
+		}
+		private static int _SCREEN_EFFECT_GREYSCALE = -2;
 
 		// Misc
 		public static readonly int UI_PIXEL = "UI Pixel".AngeHash();

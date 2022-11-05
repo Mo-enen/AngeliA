@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using AngeliaFramework;
 using AngeliaFramework.Editor;
+using Moenen.Standard;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -16,6 +18,7 @@ namespace Yaya.Editor {
 
 		public void Refresh () {
 			CreateCheckPointMetaFile();
+			AddAlwaysIncludeShader();
 		}
 
 
@@ -49,6 +52,21 @@ namespace Yaya.Editor {
 				new eCheckAltar.CheckPointMeta() { CPs = cpList.ToArray(), },
 				"", "", false
 			);
+		}
+
+
+		private void AddAlwaysIncludeShader () {
+			foreach (var guid in AssetDatabase.FindAssets("t:shader")) {
+				try {
+					string path = AssetDatabase.GUIDToAssetPath(guid);
+					var shader = AssetDatabase.LoadAssetAtPath<Shader>(path);
+					if (shader == null) continue;
+					if (shader.name.StartsWith("Yaya/", System.StringComparison.OrdinalIgnoreCase)) {
+						EditorUtil.AddAlwaysIncludedShader(shader.name);
+					}
+				} catch (System.Exception ex) { Debug.LogException(ex); }
+			}
+			AssetDatabase.SaveAssets();
 		}
 
 

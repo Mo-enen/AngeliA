@@ -294,3 +294,5 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+    ScreenEffectShaders:
+    - {fileID: 4800000, guid: f1009a876ede72b4785658aef0b8449f, type: 3}
