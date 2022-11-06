@@ -170,7 +170,7 @@ namespace Yaya {
 			if (DrawArrowItem(
 				Language.Get(WORD.MENU_MUSIC_VOLUME),
 				new((AudioPlayer.MusicVolume / 100).ToString()),
-				out int delta
+				AudioPlayer.MusicVolume > 0, AudioPlayer.MusicVolume < 1000, out int delta
 			)) {
 				AudioPlayer.SetMusicVolume(AudioPlayer.MusicVolume + delta * 100);
 			}
@@ -179,38 +179,38 @@ namespace Yaya {
 			if (DrawArrowItem(
 				Language.Get(WORD.MENU_SOUND_VOLUME),
 				new((AudioPlayer.SoundVolume / 100).ToString()),
-				out delta
+				AudioPlayer.SoundVolume > 0, AudioPlayer.SoundVolume < 1000, out delta
 			)) {
 				AudioPlayer.SetSoundVolume(AudioPlayer.SoundVolume + delta * 100);
 			}
 
 			// Framerate
+			int currentFramerate = Game.Current.GraphicFramerate;
 			if (DrawArrowItem(
 				Language.Get(WORD.MENU_FRAMERATE),
-				new(Game.Current.GraphicFramerate.ToString()),
-				out delta
+				new(currentFramerate.ToString()),
+				currentFramerate > 30, currentFramerate < 120, out delta
 			)) {
 				Game.Current.GraphicFramerate += delta * 30;
 			}
 
 			// Language
+			int currentLanguageIndex = 0;
+			for (int i = 0; i < Language.LanguageCount; i++) {
+				var lan = Language.GetLanguageAt(i);
+				if (lan == Game.Current.CurrentLanguage) {
+					currentLanguageIndex = i;
+					break;
+				}
+			}
 			if (DrawArrowItem(
 				Language.Get(WORD.MENU_LANGUAGE),
 				new(Util.GetLanguageDisplayName(Game.Current.CurrentLanguage)),
-				out delta)
+				currentLanguageIndex > 0, currentLanguageIndex < Language.LanguageCount - 1, out delta)
 			) {
-				// Get Current Index
-				int index = 0;
-				for (int i = 0; i < Language.LanguageCount; i++) {
-					var lan = Language.GetLanguageAt(i);
-					if (lan == Game.Current.CurrentLanguage) {
-						index = i;
-						break;
-					}
-				}
-				int newIndex = index + delta;
+				int newIndex = currentLanguageIndex + delta;
 				newIndex = newIndex.Clamp(0, Language.LanguageCount - 1);
-				if (newIndex != index) {
+				if (newIndex != currentLanguageIndex) {
 					Game.Current.SetLanguage(Language.GetLanguageAt(newIndex));
 				}
 			}
