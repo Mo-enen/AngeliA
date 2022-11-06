@@ -417,11 +417,10 @@ namespace Yaya {
 			if (
 				Face.Count <= 0 ||
 				!CellRenderer.TryGetSprite(CurrentCode, out var sprite) ||
-				sprite.GlobalBorder.IsZero ||
-				!CellRenderer.TryGetMeta(CurrentCode, out var meta)
+				sprite.GlobalBorder.IsZero
 			) return;
 			int bounce = Mathf.Abs(CurrentBounce);
-			int offsetY = meta.SpriteHeight - sprite.GlobalBorder.Up;
+			int offsetY = sprite.GlobalHeight - sprite.GlobalBorder.Up;
 			if (CurrentBounce > 0) {
 				offsetY = offsetY * bounce / 1000;
 			} else {
@@ -430,7 +429,7 @@ namespace Yaya {
 			var faceID = Face[FaceIndex.UMod(Face.Count)];
 			CellRenderer.Draw_9Slice(
 				Game.GlobalFrame % EyeBlinkRate > 8 ? faceID : FaceBlink.Code,
-				Character.X - meta.SpriteWidth / 2 + (Character.Movement.FacingRight ? sprite.GlobalBorder.Left : sprite.GlobalBorder.Right),
+				Character.X - sprite.GlobalWidth / 2 + (Character.Movement.FacingRight ? sprite.GlobalBorder.Left : sprite.GlobalBorder.Right),
 				Character.Y + offsetY,
 				0, 1000, 0,
 				sprite.GlobalWidth - sprite.GlobalBorder.Left - sprite.GlobalBorder.Right,
