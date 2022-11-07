@@ -1,4 +1,6 @@
-﻿ActionHint.Bed:睡觉
+﻿Menu.Setting.Fullscreen:全屏
+Menu.Setting.Fullscreen.Label:显示
+ActionHint.Bed:睡觉
 ActionHint.Door:进门
 ActionHint.OpenableFurniture:打开
 ActionHint.Photo:切换
@@ -18,6 +20,7 @@ Menu.KeySetter.SaveAndBack:保存并返回
 Menu.Pause.KeySetter:按键分配
 Menu.Pause.QuitMessage:是否要退出游戏？
 Menu.Setting.Framerate:帧频率
+Menu.Setting.Windowed:窗口
 Menu.Setting.Language:语言
 Menu.Setting.MusicVolume:音乐音量
 Menu.Setting.SoundVolume:音效音量

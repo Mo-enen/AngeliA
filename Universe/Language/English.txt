@@ -1,4 +1,6 @@
-﻿ActionHint.Bed:Sleep
+﻿Menu.Setting.Fullscreen:Fullscreen
+Menu.Setting.Fullscreen.Label:Display
+ActionHint.Bed:Sleep
 ActionHint.Door:Enter
 ActionHint.OpenableFurniture:Open
 ActionHint.Photo:Switch
@@ -18,6 +20,7 @@ Menu.KeySetter.SaveAndBack:Save and Back
 Menu.Pause.KeySetter:Key Assignment
 Menu.Pause.QuitMessage:Quit game now？
 Menu.Setting.Framerate:Framerate
+Menu.Setting.Windowed:Windowed
 Menu.Setting.Language:Language
 Menu.Setting.MusicVolume:Music Volume
 Menu.Setting.SoundVolume:Sound Volume

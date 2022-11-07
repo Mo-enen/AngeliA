@@ -39,6 +39,9 @@ namespace Yaya {
 		public static readonly int MENU_FRAMERATE = "Menu.Setting.Framerate".AngeHash();
 		public static readonly int MENU_LANGUAGE = "Menu.Setting.Language".AngeHash();
 		public static readonly int MENU_KEYSETTER_SAVE_BACK = "Menu.KeySetter.SaveAndBack".AngeHash();
+		public static readonly int MENU_FULLSCREEN = "Menu.Setting.Fullscreen".AngeHash();
+		public static readonly int MENU_WINDOWED = "Menu.Setting.Windowed".AngeHash();
+		public static readonly int MENU_FULLSCREEN_LABEL = "Menu.Setting.Fullscreen.Label".AngeHash();
 
 		// Hint
 		public static readonly int HINT_MOVE_CODE = "CtrlHint.Move".AngeHash();

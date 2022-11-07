@@ -5,6 +5,7 @@ using AngeliaFramework;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 
+
 namespace Yaya {
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]
@@ -64,7 +65,7 @@ namespace Yaya {
 		public override void FrameUpdate () {
 			var cameraRect = CellRenderer.CameraRect;
 			X = cameraRect.x + cameraRect.width / 2 - 250 * UNIT;
-			Width = 450 * UNIT;
+			Width = 650 * UNIT;
 			Mode = RequireMode;
 			base.FrameUpdate();
 			Y = cameraRect.y + cameraRect.height / 2 - Height / 2;
@@ -194,6 +195,16 @@ namespace Yaya {
 				Game.Current.GraphicFramerate += delta * 30;
 			}
 
+			// Fullscreen
+			if (DrawItem(
+				Language.Get(WORD.MENU_FULLSCREEN_LABEL),
+				new CellLabel(
+					Language.Get(Game.Current.FullScreen ? WORD.MENU_FULLSCREEN : WORD.MENU_WINDOWED)
+				)
+			)) {
+				Game.Current.SetFullscreen(!Game.Current.FullScreen);
+			}
+
 			// Language
 			int currentLanguageIndex = 0;
 			for (int i = 0; i < Language.LanguageCount; i++) {
@@ -301,7 +312,7 @@ namespace Yaya {
 						}
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
-					} else if (FrameInput.AnyKeyboardKeyPressed(out _)) {
+					} else if (FrameInput.AnyKeyboardKeyPressed(out _) || FrameInput.MouseLeftDown) {
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
 					}
@@ -318,7 +329,7 @@ namespace Yaya {
 						}
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
-					} else if (FrameInput.AnyGamepadButtonPressed(out _)) {
+					} else if (FrameInput.AnyGamepadButtonPressed(out _) || FrameInput.MouseLeftDown) {
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
 					}
@@ -329,7 +340,8 @@ namespace Yaya {
 			if (
 				RecordLock &&
 				!FrameInput.AnyGamepadButtonPressed(out _) &&
-				!FrameInput.AnyKeyboardKeyPressed(out _)
+				!FrameInput.AnyKeyboardKeyPressed(out _) &&
+				!FrameInput.MouseLeft
 			) {
 				RecordLock = false;
 			}
