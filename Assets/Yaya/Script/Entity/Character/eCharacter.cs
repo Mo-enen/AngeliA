@@ -63,11 +63,11 @@ namespace Yaya {
 			string typeName = GetType().Name;
 			if (typeName[0] == 'e') typeName = typeName[1..];
 
-			Movement = Game.LoadOrCreateMeta<Movement>(typeName, "Movement");
-			Renderer = Game.LoadOrCreateMeta<CharacterRenderer>(typeName, "Renderer");
-			Action = Game.LoadOrCreateMeta<Action>(typeName, "Action");
-			Health = Game.LoadOrCreateMeta<Health>(typeName, "Health");
-			Attackness = Game.LoadOrCreateMeta<Attackness>(typeName, "Attackness");
+			Movement = AngeUtil.LoadOrCreateMeta<Movement>(typeName, "Movement");
+			Renderer = AngeUtil.LoadOrCreateMeta<CharacterRenderer>(typeName, "Renderer");
+			Action = AngeUtil.LoadOrCreateMeta<Action>(typeName, "Action");
+			Health = AngeUtil.LoadOrCreateMeta<Health>(typeName, "Health");
+			Attackness = AngeUtil.LoadOrCreateMeta<Attackness>(typeName, "Attackness");
 
 			Movement.OnInitialize(this);
 			Renderer.OnInitialize(this);

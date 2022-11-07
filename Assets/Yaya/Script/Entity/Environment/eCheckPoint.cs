@@ -85,7 +85,7 @@ namespace Yaya {
 		// MSG
 		public static void Initialize () {
 			AltarPositionPool.Clear();
-			var cpMeta = Game.LoadMeta<CheckPointMeta>();
+			var cpMeta = AngeUtil.LoadMeta<CheckPointMeta>();
 			if (cpMeta != null) {
 				foreach (var cpData in cpMeta.CPs) {
 					AltarPositionPool.TryAdd(cpData.EntityID, new Vector3Int(cpData.X, cpData.Y, cpData.Z));

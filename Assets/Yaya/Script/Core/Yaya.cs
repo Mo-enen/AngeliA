@@ -252,21 +252,14 @@ namespace Yaya {
 
 			// Pausing
 			if (State == GameState.Pause) {
-
 				// Update Entity
-				if (ControlHintUI.Active) {
-					ControlHintUI.FrameUpdate();
-				}
-				if (GamePadUI.Active) {
-					GamePadUI.FrameUpdate();
-				}
-				if (PauseMenu.Active) {
-					PauseMenu.FrameUpdate();
-				} else {
+				if (ControlHintUI.Active) ControlHintUI.FrameUpdate();
+				if (GamePadUI.Active) GamePadUI.FrameUpdate();
+				if (PauseMenu.Active) PauseMenu.FrameUpdate();
+				if (!PauseMenu.Active) {
 					TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
 					PauseMenu.SetAsPauseMode();
 				}
-
 			} else {
 				if (PauseMenu.Active) PauseMenu.Active = false;
 			}
@@ -285,6 +278,9 @@ namespace Yaya {
 					CutsceneLock = false;
 					FrameInput.UseGameKey(GameKey.Start);
 				}
+
+				if (GamePadUI.Active) GamePadUI.FrameUpdate();
+
 			} else if (!CutsceneLock) {
 				CutsceneLock = true;
 			}

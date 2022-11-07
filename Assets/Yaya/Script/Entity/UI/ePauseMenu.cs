@@ -202,7 +202,7 @@ namespace Yaya {
 					Language.Get(Game.Current.FullScreen ? WORD.MENU_FULLSCREEN : WORD.MENU_WINDOWED)
 				)
 			)) {
-				Game.Current.SetFullscreen(!Game.Current.FullScreen);
+				Game.Current.FullScreen = !Game.Current.FullScreen;
 			}
 
 			// Language
