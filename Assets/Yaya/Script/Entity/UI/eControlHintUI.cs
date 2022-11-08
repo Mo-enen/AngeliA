@@ -110,7 +110,7 @@ namespace Yaya {
 						if (menu.SelectionAdjustable) {
 							DrawKey(GameKey.Left, GameKey.Right, WORD.HINT_VALUE_CODE);
 						} else {
-							DrawKey(GameKey.Action, WORD.UI_OK);
+							DrawKey(GameKey.Action, WORD.HINT_USE_CODE);
 						}
 						break;
 				}

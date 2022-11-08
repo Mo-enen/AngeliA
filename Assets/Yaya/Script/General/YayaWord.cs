@@ -15,6 +15,8 @@ namespace Yaya {
 		public static readonly int UI_CONTINUE = "UI.Continue".AngeHash();
 		public static readonly int UI_BACK = "UI.Back".AngeHash();
 		public static readonly int UI_SAVE = "UI.Save".AngeHash();
+		public static readonly int UI_ON = "UI.ON".AngeHash();
+		public static readonly int UI_OFF = "UI.OFF".AngeHash();
 		public static readonly int[] GAMEKEY_UI_CODES = new int[] {
 			$"UI.GameKey.{GameKey.Left}".AngeHash(),
 			$"UI.GameKey.{GameKey.Right}".AngeHash(),
@@ -42,6 +44,7 @@ namespace Yaya {
 		public static readonly int MENU_FULLSCREEN = "Menu.Setting.Fullscreen".AngeHash();
 		public static readonly int MENU_WINDOWED = "Menu.Setting.Windowed".AngeHash();
 		public static readonly int MENU_FULLSCREEN_LABEL = "Menu.Setting.Fullscreen.Label".AngeHash();
+		public static readonly int MENU_VSYNC = "Menu.Setting.VSync".AngeHash();
 
 		// Hint
 		public static readonly int HINT_MOVE_CODE = "CtrlHint.Move".AngeHash();

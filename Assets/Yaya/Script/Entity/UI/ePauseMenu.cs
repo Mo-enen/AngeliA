@@ -195,6 +195,14 @@ namespace Yaya {
 				Game.Current.GraphicFramerate += delta * 30;
 			}
 
+			// VSync
+			if (DrawItem(
+				Language.Get(WORD.MENU_VSYNC),
+				new CellLabel(Language.Get(Game.Current.VSync ? WORD.UI_ON : WORD.UI_OFF))
+			)) {
+				Game.Current.VSync = !Game.Current.VSync;
+			}
+
 			// Fullscreen
 			if (DrawItem(
 				Language.Get(WORD.MENU_FULLSCREEN_LABEL),

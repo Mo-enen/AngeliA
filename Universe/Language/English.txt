@@ -1,6 +1,4 @@
-﻿Menu.Setting.Fullscreen:Fullscreen
-Menu.Setting.Fullscreen.Label:Display
-ActionHint.Bed:Sleep
+﻿ActionHint.Bed:Sleep
 ActionHint.Door:Enter
 ActionHint.OpenableFurniture:Open
 ActionHint.Photo:Switch
@@ -20,10 +18,13 @@ Menu.KeySetter.SaveAndBack:Save and Back
 Menu.Pause.KeySetter:Key Assignment
 Menu.Pause.QuitMessage:Quit game now？
 Menu.Setting.Framerate:Framerate
-Menu.Setting.Windowed:Windowed
+Menu.Setting.Fullscreen:Fullscreen
+Menu.Setting.Fullscreen.Label:Display
 Menu.Setting.Language:Language
 Menu.Setting.MusicVolume:Music Volume
 Menu.Setting.SoundVolume:Sound Volume
+Menu.Setting.VSync:V-Sync
+Menu.Setting.Windowed:Windowed
 UI.Back:Back
 UI.Cancel:Cancel
 UI.Continue:Continue
@@ -35,7 +36,9 @@ UI.GameKey.Right:Right
 UI.GameKey.Select:Select
 UI.GameKey.Start:Start
 UI.GameKey.Up:Up
+UI.OFF:Off
 UI.OK:OK
+UI.ON:On
 UI.Quit:Quit
 UI.Save:Save
 UI.Setting:Setting
