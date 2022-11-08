@@ -54,6 +54,9 @@ namespace Yaya {
 			base.Reset();
 			m_YayaAsset = new YayaAsset() {
 				SquadTransitionCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f),
+				ScreenEffectShaders = new Shader[] {
+					Shader.Find("Yaya/GreyScale"),
+				},
 			};
 		}
 #endif

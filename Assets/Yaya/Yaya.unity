@@ -245,24 +245,9 @@ MonoBehaviour:
     GravityRise: 3
     MaxGravitySpeed: 96
   m_GameAsset:
-    DefaultLayer: 1
-    Skybox: {fileID: 4800000, guid: ce2324baeaef2844ba1c8c3df2091636, type: 3}
     AudioMixerGroup: {fileID: -5649732288638014774, guid: 2d8922283b392334ca57b3d736565004,
       type: 2}
-    RendererLayers:
-    - Shader: {fileID: 4800000, guid: 5ecea7c8f214b374c9f5de383c65b73c, type: 3}
-      Capacity: 2048
-    - Shader: {fileID: 4800000, guid: 26346688205a2664c93f3512528a7c2b, type: 3}
-      Capacity: 4096
-    - Shader: {fileID: 4800000, guid: 224adbf6b4903284c8203f851a24833c, type: 3}
-      Capacity: 64
-    - Shader: {fileID: 4800000, guid: b9fc8182fb006f74fa0719aaa99ba1f0, type: 3}
-      Capacity: 64
-    UiLayer:
-      Shader: {fileID: 4800000, guid: 26346688205a2664c93f3512528a7c2b, type: 3}
-      Capacity: 1024
     Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    TextCapacity: 2048
   m_YayaMeta:
     WaterSpeedLose: 400
     QuickSandJumpoutSpeed: 48

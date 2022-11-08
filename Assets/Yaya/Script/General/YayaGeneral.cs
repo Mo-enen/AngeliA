@@ -16,46 +16,6 @@ namespace Yaya {
 		public const int MAP_VERSION = 0;
 		public const int PASSOUT_WAIT = 48;
 
-		// Render
-		public static int SHADER_MULT {
-			get {
-				if (_SHADER_MULT == -2 && Game.Current != null) {
-					_SHADER_MULT = -1;
-					for (int i = 0; i < Game.Current.Asset.RendererLayers.Length; i++) {
-						var layer = Game.Current.Asset.RendererLayers[i];
-						if (
-							layer.Shader != null &&
-							layer.Shader.name.EndsWith("/Mult", System.StringComparison.OrdinalIgnoreCase)
-						) {
-							_SHADER_MULT = i;
-							break;
-						}
-					}
-				}
-				return _SHADER_MULT;
-			}
-		}
-		private static int _SHADER_MULT = -2;
-		public static int SHADER_ADD {
-			get {
-				if (_SHADER_ADD == -2 && Game.Current != null) {
-					_SHADER_ADD = -1;
-					for (int i = 0; i < Game.Current.Asset.RendererLayers.Length; i++) {
-						var layer = Game.Current.Asset.RendererLayers[i];
-						if (
-							layer.Shader != null &&
-							layer.Shader.name.EndsWith("/Add", System.StringComparison.OrdinalIgnoreCase)
-						) {
-							_SHADER_ADD = i;
-							break;
-						}
-					}
-				}
-				return _SHADER_ADD;
-			}
-		}
-		private static int _SHADER_ADD = -2;
-
 		// Physics
 		public const int PHYSICS_LAYER_COUNT = 5;
 

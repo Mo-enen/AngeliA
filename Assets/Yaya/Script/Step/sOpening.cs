@@ -76,7 +76,7 @@ namespace Yaya {
 			// Black FadeIn
 			if (localFrame <= BLACK_DURATION) {
 				byte t = (byte)Util.Remap(0f, BLACK_DURATION, byte.MinValue, byte.MaxValue, localFrame);
-				CellRenderer.SetLayer(YayaConst.SHADER_MULT);
+				CellRenderer.SetLayer(Const.SHADER_MULT);
 				CellRenderer.Draw(
 					Const.PIXEL,
 					CellRenderer.CameraRect.Expand(Const.CEL),

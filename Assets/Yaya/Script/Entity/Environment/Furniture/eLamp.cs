@@ -34,7 +34,7 @@ namespace Yaya {
 			base.FrameUpdate();
 			if (OpenLight && !FrameStep.IsSteping(YayaConst.STEP_ROUTE)) {
 				byte brightness = (byte)(64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8);
-				CellRenderer.SetLayer(YayaConst.SHADER_ADD);
+				CellRenderer.SetLayer(Const.SHADER_ADD);
 				CellRenderer.Draw(
 					LIGHT,
 					base.Rect.Expand(Const.CEL),

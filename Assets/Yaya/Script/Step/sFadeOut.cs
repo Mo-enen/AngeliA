@@ -16,7 +16,7 @@ namespace Yaya {
 		public override bool FrameUpdate () {
 			int localFrame = LocalFrame;
 			byte t = (byte)Util.Remap(0f, FADE_OUT, byte.MaxValue, byte.MinValue, localFrame);
-			CellRenderer.SetLayer(YayaConst.SHADER_MULT);
+			CellRenderer.SetLayer(Const.SHADER_MULT);
 			CellRenderer.Draw(
 				Const.PIXEL,
 				CellRenderer.CameraRect.Expand(Const.CEL),
