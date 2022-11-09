@@ -1,0 +1,26 @@
+
+#name = 玩家名字
+#testingRandomHashtag = 1asdf123fwsdf
+#icon = sadfonof
+#speed = 3
+
+嗨，这是中文第一行。
+这是内容1的第二行。
+
+#speed = 20
+这是内容
+#speed = 3
+
+-1的第3行。
+这是内容1的第4行。
+这是内容1的第5行。
+这是内容1的第6行。
+这是内容1的第7行。
+
+
+#name = Test NPC Name
+#icon = disdoisjojsdf
+
+嗨，这是另一段内容1行，
+这是另一段内容2行，
+这是另一段内容3行。
