@@ -1,15 +1,17 @@
-
-#name = Test Player Name
-#testingRandomHashtag = 1asdf123fwsdf
+﻿
+#name = TestPlayerName
 #icon = sadfonof
 
+#testingRandomHashtag = 1asdf123fwsdf
 Hello, this is the first line of the content.
 This is the second line of the content.
 
 
-#name = Test NPC Name
+#name = TestNPCName
 #icon = disdoisjojsdf
 
 Hello, this is the content for the NPC.
 and the second line is here.
 and the third line is here.
+
+

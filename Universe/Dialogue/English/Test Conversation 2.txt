@@ -1,0 +1,17 @@
+﻿
+#name = TestPlayerName
+#icon = sadfonof
+
+#testingRandomHashtag = 1asdf123fwsdf
+Hello, this is the first line of the content 2.
+This is the second line of the content 2.
+
+
+#name = TestNPCName
+#icon = disdoisjojsdf
+
+Hello, this is the content for the NPC 2.
+and the second line is here 2.
+and the third line is here 2.
+
+
