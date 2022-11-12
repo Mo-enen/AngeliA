@@ -35,14 +35,6 @@ namespace Yaya {
 
 		// Api
 		public bool QuitMode => Mode == MenuMode.Quit;
-		protected override int BackgroundCode => YayaConst.UI_PIXEL;
-		protected override int SelectionMarkCode => MENU_SELECTION_CODE;
-		protected override int MoreItemMarkCode => MENU_MORE_CODE;
-		protected override int ArrowMarkCode => MENU_ARROW_MARK;
-		protected override Int4 ContentPadding => new(32, 32, 46, string.IsNullOrEmpty(Message) ? 46 : 23);
-		protected override Color32 ScreenTint => new(0, 0, 0, 128);
-		protected override Color32 BackgroundTint => new(0, 0, 0, 255);
-		protected override bool Interactable => (Mode != MenuMode.Setter_Gamepad && Mode != MenuMode.Setter_Keyboard) || RecordingKey < 0;
 
 		// Data
 		private readonly Key[] KeyboardKeys = new Key[8];
@@ -62,12 +54,29 @@ namespace Yaya {
 		#region --- MSG ---
 
 
+		public override void OnActived () {
+			base.OnActived();
+			BackgroundCode = YayaConst.UI_PIXEL;
+			SelectionMarkCode = MENU_SELECTION_CODE;
+			MoreItemMarkCode = MENU_MORE_CODE;
+			ArrowMarkCode = MENU_ARROW_MARK;
+			ScreenTint = new(0, 0, 0, 128);
+			BackgroundTint = new(0, 0, 0, 255);
+		}
+
+
 		public override void FrameUpdate () {
+
 			var cameraRect = CellRenderer.CameraRect;
 			X = cameraRect.x + cameraRect.width / 2 - 250 * UNIT;
 			Width = 650 * UNIT;
+
 			Mode = RequireMode;
+			Interactable = (Mode != MenuMode.Setter_Gamepad && Mode != MenuMode.Setter_Keyboard) || RecordingKey < 0;
+			ContentPadding = new(32, 32, 46, string.IsNullOrEmpty(Message) ? 46 : 23);
+
 			base.FrameUpdate();
+
 			Y = cameraRect.y + cameraRect.height / 2 - Height / 2;
 			PauselessFrame++;
 		}
