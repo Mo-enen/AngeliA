@@ -1,12 +1,12 @@
 ﻿
-#id = enen
+@enen
 
 #testingRandomHashtag = 1asdf123fwsdf
 Hello, this is the first line of the content 2.
 This is the second line of the content 2.
 
 
-#id = enen
+@yaya
 
 Hello, this is the content for the NPC 2.
 and the second line is here 2.

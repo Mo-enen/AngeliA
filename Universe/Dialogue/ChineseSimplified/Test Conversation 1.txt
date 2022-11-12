@@ -1,11 +1,11 @@
 ﻿
-#id = enen
+@enen
 
 #testingRandomHashtag = 1asdf123fwsdf
 嗨，这是中文第一行2。
 这是内容的第二行2。
 
-#id = enen
+@enen
 
 嗨，这是另一段内容1行2，
 这是另一段内容2行2，

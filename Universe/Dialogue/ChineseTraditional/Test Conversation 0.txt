@@ -1,1 +1,15 @@
 ﻿
+@enen
+
+#testingRandomHashtag = 1asdf123fwsdf
+Hello, this is the first line of the content.
+This is the second line of the content.
+
+
+@yaya
+
+Hello, this is the content for the NPC.
+and the second line is here.
+and the third line is here.
+
+
