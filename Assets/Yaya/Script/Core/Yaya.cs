@@ -132,7 +132,6 @@ namespace Yaya {
 			Update_HintUI();
 
 
-
 			if (FrameInput.CustomKeyDown(Key.Digit1)) {
 				SetViewZ(ViewZ + 1);
 			}

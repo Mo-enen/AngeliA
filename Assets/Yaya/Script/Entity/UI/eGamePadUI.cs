@@ -34,7 +34,7 @@ namespace Yaya {
 
 
 
-		protected override void UpdateForUI () {
+		protected override void FrameUpdateUI () {
 
 			var screenRect = CellRenderer.CameraRect;
 

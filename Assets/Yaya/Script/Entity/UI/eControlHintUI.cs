@@ -88,7 +88,7 @@ namespace Yaya {
 		}
 
 
-		protected override void UpdateForUI () {
+		protected override void FrameUpdateUI () {
 
 
 			PositionY = Y + CellRenderer.CameraRect.y;

@@ -62,7 +62,7 @@ namespace Yaya {
 
 		public override void Perform (Cell[] cells, int cellCount, int layerIndex) {
 
-			if (layerIndex == cellCount - 1) return;
+			if (layerIndex == CellRenderer.LayerCount - 1) return;
 
 			float z01 = Mathf.InverseLerp(0, Duration, LocalFrame);
 			Vector2 center = CellRenderer.CameraRect.center;
