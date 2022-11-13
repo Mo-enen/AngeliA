@@ -237,7 +237,7 @@ namespace Yaya {
 					Tint = LabelTint,
 					CharSize = TextSize,
 					Alignment = Alignment.MidLeft,
-				}, rect, out var bounds
+				}, rect, out var bounds, out _
 			);
 			if (bgCell != null) {
 				bgCell.Y = Mathf.Min(bgCell.Y, bounds.y - BG_PADDING_Y);

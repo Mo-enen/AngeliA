@@ -154,8 +154,11 @@ namespace Yaya {
 				CellRenderer.StartCameraShake(30);
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit8)) {
-				bool enable = CellRenderer.GetScreenEffectEnable(YayaConst.SCREEN_EFFECT_GREYSCALE);
-				CellRenderer.SetScreenEffectEnable(YayaConst.SCREEN_EFFECT_GREYSCALE, !enable);
+				if (TryAddEntity(typeof(ScreenDialogUI).AngeHash(), 0, 0, out var e)) {
+					var dialog = e as ScreenDialogUI;
+					dialog.LoadConversation("Test Conversation 0");
+
+				}
 			}
 
 		}

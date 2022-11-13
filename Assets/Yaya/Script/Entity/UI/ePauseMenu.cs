@@ -44,6 +44,9 @@ namespace Yaya {
 		private int RecordingKey = -1;
 		private int PauselessFrame = 0;
 		private bool RecordLock = true;
+		private readonly IntToString MusicVolumeCache = new();
+		private readonly IntToString SoundVolumeCache = new();
+		private readonly IntToString FramerateCache = new();
 
 
 		#endregion
@@ -177,9 +180,10 @@ namespace Yaya {
 		private void MenuSetting () {
 
 			// Music Volume
+
 			if (DrawArrowItem(
 				Language.Get(WORD.MENU_MUSIC_VOLUME),
-				new((AudioPlayer.MusicVolume / 100).ToString()),
+				new CellLabel(MusicVolumeCache.GetString(AudioPlayer.MusicVolume / 100)),
 				AudioPlayer.MusicVolume > 0, AudioPlayer.MusicVolume < 1000, out int delta
 			)) {
 				AudioPlayer.SetMusicVolume(AudioPlayer.MusicVolume + delta * 100);
@@ -188,7 +192,7 @@ namespace Yaya {
 			// Sound Volume
 			if (DrawArrowItem(
 				Language.Get(WORD.MENU_SOUND_VOLUME),
-				new((AudioPlayer.SoundVolume / 100).ToString()),
+				new CellLabel(SoundVolumeCache.GetString(AudioPlayer.SoundVolume / 100)),
 				AudioPlayer.SoundVolume > 0, AudioPlayer.SoundVolume < 1000, out delta
 			)) {
 				AudioPlayer.SetSoundVolume(AudioPlayer.SoundVolume + delta * 100);
@@ -198,7 +202,7 @@ namespace Yaya {
 			int currentFramerate = Game.Current.GraphicFramerate;
 			if (DrawArrowItem(
 				Language.Get(WORD.MENU_FRAMERATE),
-				new(currentFramerate.ToString()),
+				new CellLabel(FramerateCache.GetString(currentFramerate)),
 				currentFramerate > 30, currentFramerate < 120, out delta
 			)) {
 				Game.Current.GraphicFramerate += delta * 30;
