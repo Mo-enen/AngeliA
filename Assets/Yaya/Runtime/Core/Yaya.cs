@@ -23,7 +23,7 @@ namespace Yaya {
 		public override int StepLayerCount => 3;
 		public override int CutsceneStepLayer => YayaConst.STEP_CUTSCENE;
 		public YayaMeta YayaMeta => m_YayaMeta;
-
+		
 		// Ser
 		[SerializeField] YayaMeta m_YayaMeta = null;
 
