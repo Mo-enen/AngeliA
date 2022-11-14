@@ -33,7 +33,7 @@ namespace Yaya {
 				var yaya = Yaya.Current;
 				int para = yaya.Meta.SquadBehindParallax;
 				byte alpha = yaya.Meta.SquadBehindAlpha;
-				var curve = yaya.YayaAsset.SquadTransitionCurve;
+				var curve = yaya.YayaMeta.SquadTransitionCurve;
 				var effect = fSquadTransition.Instance;
 				effect.Duration = Duration / 2;
 				effect.Scale = Front ? 1000f / para : para / 1000f;

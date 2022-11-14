@@ -23,11 +23,9 @@ namespace Yaya {
 		public override int StepLayerCount => 3;
 		public override int CutsceneStepLayer => YayaConst.STEP_CUTSCENE;
 		public YayaMeta YayaMeta => m_YayaMeta;
-		public YayaAsset YayaAsset => m_YayaAsset;
 
 		// Ser
 		[SerializeField] YayaMeta m_YayaMeta = null;
-		[SerializeField] YayaAsset m_YayaAsset = null;
 
 		// Data
 		private static readonly HitInfo[] c_DamageCheck = new HitInfo[16];
@@ -52,11 +50,8 @@ namespace Yaya {
 #if UNITY_EDITOR
 		protected override void Reset () {
 			base.Reset();
-			m_YayaAsset = new YayaAsset() {
+			m_YayaMeta = new YayaMeta() {
 				SquadTransitionCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f),
-				ScreenEffectShaders = new Shader[] {
-					Shader.Find("Yaya/GreyScale"),
-				},
 			};
 		}
 #endif
@@ -71,12 +66,6 @@ namespace Yaya {
 			GamePadUI = PeekOrGetEntity<eGamePadUI>();
 			PauseMenu = PeekOrGetEntity<ePauseMenu>();
 			ControlHintUI = PeekOrGetEntity<eControlHintUI>();
-
-			// Screen Effects
-			CellRenderer.ClearScreenEffects();
-			foreach (var shader in m_YayaAsset.ScreenEffectShaders) {
-				CellRenderer.AddScreenEffect(shader);
-			}
 
 			// Pipeline
 			Initialize_Quit();
@@ -152,13 +141,6 @@ namespace Yaya {
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit7)) {
 				CellRenderer.StartCameraShake(30);
-			}
-			if (FrameInput.CustomKeyDown(Key.Digit8)) {
-				if (TryAddEntity(typeof(ScreenDialogUI).AngeHash(), 0, 0, out var e)) {
-					var dialog = e as ScreenDialogUI;
-					dialog.LoadConversation("Test Conversation 0");
-
-				}
 			}
 
 		}
@@ -325,7 +307,7 @@ namespace Yaya {
 			if (FrameStep.HasStep(YayaConst.STEP_ROUTE)) return;
 			// Add Step
 			if (FrameStep.TryAddToLast<sSetViewZStep>(YayaConst.SQUAD_STEP_ID, YayaConst.STEP_ROUTE, out var step)) {
-				step.Duration = Meta.SquadTransitionDuration;
+				step.Duration = m_YayaMeta.SquadTransitionDuration;
 				step.NewZ = newZ;
 			}
 		}

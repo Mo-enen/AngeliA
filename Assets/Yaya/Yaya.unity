@@ -236,7 +236,6 @@ MonoBehaviour:
     SquadBehindLayer: 0
     SquadBehindAlpha: 64
     SquadBehindParallax: 1300
-    SquadTransitionDuration: 32
     DefaultHeight: 5120
     MinHeight: 2048
     MaxHeight: 14336
@@ -244,40 +243,39 @@ MonoBehaviour:
     Gravity: 5
     GravityRise: 3
     MaxGravitySpeed: 96
-  m_GameAsset:
     AudioMixerGroup: {fileID: -5649732288638014774, guid: 2d8922283b392334ca57b3d736565004,
       type: 2}
     Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    ScreenEffectShaders:
+    - {fileID: 4800000, guid: f1009a876ede72b4785658aef0b8449f, type: 3}
   m_YayaMeta:
     WaterSpeedLose: 400
     QuickSandJumpoutSpeed: 48
     QuickSandMaxRunSpeed: 4
     QuickSandSinkSpeed: 1
     QuickSandJumpSpeed: 12
-  m_YayaAsset:
+    SquadTransitionDuration: 32
     SquadTransitionCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 1.8609328
-        outSlope: 1.8609328
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.09465374
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
+        inSlope: 2.3015873
+        outSlope: 2.3015873
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
+        outWeight: 0.15517241
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: -0.004357572
+        outSlope: -0.004357572
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    ScreenEffectShaders:
-    - {fileID: 4800000, guid: f1009a876ede72b4785658aef0b8449f, type: 3}

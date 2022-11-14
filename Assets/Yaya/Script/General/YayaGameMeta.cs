@@ -1,12 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using AngeliaFramework;
 using UnityEngine;
 
 
 namespace Yaya {
-
-
 	[System.Serializable]
 	public class YayaMeta {
 
@@ -15,16 +12,8 @@ namespace Yaya {
 		public int QuickSandMaxRunSpeed = 4;
 		public int QuickSandSinkSpeed = 1;
 		public int QuickSandJumpSpeed = 12;
-
-	}
-
-
-
-	[System.Serializable]
-	public class YayaAsset {
+		public int SquadTransitionDuration = 32;
 		public AnimationCurve SquadTransitionCurve = null;
-		public Shader[] ScreenEffectShaders = null;
+
 	}
-
-
 }

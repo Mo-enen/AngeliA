@@ -59,27 +59,6 @@ namespace Yaya {
 		public const int VIEW_PRIORITY_SYSTEM = 0;
 		public const int VIEW_PRIORITY_CUTSCENE = 128;
 
-		// Screen Effect
-		public static int SCREEN_EFFECT_GREYSCALE {
-			get {
-				if (_SCREEN_EFFECT_GREYSCALE == -2 && Yaya.Current != null) {
-					_SCREEN_EFFECT_GREYSCALE = -1;
-					for (int i = 0; i < Yaya.Current.YayaAsset.ScreenEffectShaders.Length; i++) {
-						var shader = Yaya.Current.YayaAsset.ScreenEffectShaders[i];
-						if (
-							shader != null &&
-							shader.name.EndsWith("/GreyScale", System.StringComparison.OrdinalIgnoreCase)
-						) {
-							_SCREEN_EFFECT_GREYSCALE = i;
-							break;
-						}
-					}
-				}
-				return _SCREEN_EFFECT_GREYSCALE;
-			}
-		}
-		private static int _SCREEN_EFFECT_GREYSCALE = -2;
-
 		// Misc
 		public static readonly int UI_PIXEL = "UI Pixel".AngeHash();
 		public static readonly Dictionary<GamepadButton, int> GAMEPAD_CODE = new() {

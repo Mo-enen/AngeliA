@@ -57,13 +57,19 @@ namespace Yaya {
 
 
 		public void Update_Player () {
+
+			// Stop when Not Playing
 			if (State != GameState.Play) {
 				if (CurrentPlayer != null) {
 					CurrentPlayer.Movement.Stop();
 				}
 				return;
 			}
+
+			// Respawn
 			UpdatePlayer_Respawn();
+
+			// Update Player
 			if (CurrentPlayer == null) return;
 			bool hasRoute = FrameStep.HasStep(YayaConst.STEP_ROUTE);
 			switch (CurrentPlayer.CharacterState) {

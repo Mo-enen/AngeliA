@@ -1,4 +1,6 @@
-﻿ActionHint.Bed:Sleep
+﻿@enen:Enen
+@yaya:Yaya
+ActionHint.Bed:Sleep
 ActionHint.Door:Enter
 ActionHint.OpenableFurniture:Open
 ActionHint.Photo:Switch
