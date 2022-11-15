@@ -1,5 +1,6 @@
 using AngeliaFramework;
 using UnityEngine;
+using Rigidbody = AngeliaFramework.Rigidbody;
 
 namespace Yaya {
 	public abstract class eYayaRigidbody : Rigidbody, IInitialize {

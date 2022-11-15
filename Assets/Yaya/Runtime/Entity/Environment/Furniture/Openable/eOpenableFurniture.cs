@@ -8,7 +8,6 @@ namespace Yaya {
 	public abstract class eOpenableFurniture : eFurniture, IActionEntity {
 
 
-
 		public bool Open { get; private set; } = false;
 		protected override bool UseHighlightAnimation => !Open;
 		public bool LockInput => Open;

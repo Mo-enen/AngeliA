@@ -245,7 +245,7 @@ MonoBehaviour:
     MaxGravitySpeed: 96
     AudioMixerGroup: {fileID: -5649732288638014774, guid: 2d8922283b392334ca57b3d736565004,
       type: 2}
-    Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 3}
     ScreenEffectShaders:
     - {fileID: 4800000, guid: f1009a876ede72b4785658aef0b8449f, type: 3}
   m_YayaMeta:

@@ -4,7 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
-	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 2, Const.CEL * 2)]
+	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
 	public class eLamp : eFurniture {
 
 

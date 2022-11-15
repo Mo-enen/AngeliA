@@ -2,8 +2,8 @@
     "name": "Yaya",
     "rootNamespace": "Yaya",
     "references": [
-        "AngeliaFrameworkRuntime",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "AngeliaFrameworkRuntime"
     ],
     "includePlatforms": [
         "Editor",
