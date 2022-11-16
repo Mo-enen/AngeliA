@@ -95,7 +95,7 @@ namespace Yaya {
 
 			// Cutscene
 			if (Game.Current.State == GameState.Cutscene) {
-				if (Cutscene.IsPlayingStep || Game.GlobalFrame > Cutscene.StartFrame + Const.CUTSCENE_FADEOUT_DURATION) {
+				if (Cutscene.IsPlayingTask || Game.GlobalFrame > Cutscene.StartFrame + Const.CUTSCENE_FADEOUT_DURATION) {
 					DrawKey(GameKey.Start, WORD.HINT_SKIP_CODE);
 				}
 				return;
@@ -118,7 +118,7 @@ namespace Yaya {
 
 			if (Player == null || !Player.Active) return;
 			if (Game.Current.State != GameState.Play) return;
-			if (FrameStep.IsSteping(YayaConst.STEP_ROUTE)) return;
+			if (FrameTask.IsTasking(YayaConst.TASK_ROUTE)) return;
 
 			// Game Playing
 			switch (Player.CharacterState) {

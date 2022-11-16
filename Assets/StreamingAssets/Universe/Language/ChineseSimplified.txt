@@ -1,4 +1,4 @@
-﻿@enen:伊楠
+﻿@enen:Enen
 @yaya:笨笨丫
 ActionHint.Bed:睡觉
 ActionHint.Door:进门

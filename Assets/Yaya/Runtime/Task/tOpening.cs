@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class sOpening : StepItem {
+	public class tOpening : TaskItem {
 
 
 
@@ -40,14 +40,14 @@ namespace Yaya {
 				new Color32(0, 0, 0, 255)
 			).Z = int.MaxValue;
 			// Remove Player
-			if (RemovePlayerAtStart && game.TryGetEntityInStage<ePlayer>(out var player)) {
+			if (RemovePlayerAtStart && game.TryGetEntity<ePlayer>(out var player)) {
 				player.Active = false;
 				player.SetCharacterState(CharacterState.GamePlay);
 			}
 		}
 
 
-		public override bool FrameUpdate () {
+		public override TaskResult FrameUpdate () {
 			int localFrame = LocalFrame;
 			var game = Game.Current;
 			// Spawn Player
@@ -72,7 +72,7 @@ namespace Yaya {
 		}
 
 
-		private bool Update_Opening (Game game, int localFrame) {
+		private TaskResult Update_Opening (Game game, int localFrame) {
 			// Black FadeIn
 			if (localFrame <= BLACK_DURATION) {
 				byte t = (byte)Util.Remap(0f, BLACK_DURATION, byte.MinValue, byte.MaxValue, localFrame);
@@ -91,25 +91,25 @@ namespace Yaya {
 					ViewX,
 					(int)Util.Remap(0f, DURATION, ViewYStart, ViewYEnd, localFrame)
 				);
-				return true;
+				return TaskResult.Continue;
 			} else {
 				// End
-				return false;
+				return TaskResult.End;
 			}
 		}
 
 
-		private bool Update_QuickSkip (Game game, int localFrame) {
+		private TaskResult Update_QuickSkip (Game game, int localFrame) {
 			if (localFrame < SKIP_DURATION + SkipFrame) {
 				SetViewPosition(
 					game,
 					ViewX,
 					(int)Util.Remap((float)SkipFrame, SKIP_DURATION + SkipFrame, SkipY, ViewYEnd, localFrame)
 				);
-				return true;
+				return TaskResult.Continue;
 			} else {
 				// End
-				return false;
+				return TaskResult.End;
 			}
 		}
 

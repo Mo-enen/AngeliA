@@ -2,19 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-using System.Security.Cryptography;
 
 
 namespace Yaya {
 
 
-	public class sSetViewZStep : StepItem {
+	public class tSetViewZTask : TaskItem {
 
 		public int Duration = 0;
 		public int NewZ = 0;
 		private bool Front = true;
 
-		public override bool FrameUpdate () {
+		public override TaskResult FrameUpdate () {
 			if (LocalFrame == 0) {
 				// Player
 				var yaya = Yaya.Current;
@@ -42,7 +41,7 @@ namespace Yaya {
 				CellRenderer.RemoveEffect<fSquadTransition>();
 				CellRenderer.AddEffect(effect);
 			}
-			return LocalFrame < Duration;
+			return LocalFrame < Duration ? TaskResult.Continue : TaskResult.End;
 		}
 
 	}
@@ -102,7 +101,7 @@ namespace Yaya {
 
 
 		// VAR
-		public override bool Culling => base.Culling && !FrameStep.HasStep(YayaConst.STEP_ROUTE);
+		public override bool Culling => base.Culling && !FrameTask.HasTask(YayaConst.TASK_ROUTE);
 
 
 		// API

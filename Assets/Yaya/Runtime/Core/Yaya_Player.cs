@@ -71,7 +71,7 @@ namespace Yaya {
 
 			// Update Player
 			if (CurrentPlayer == null) return;
-			bool hasRoute = FrameStep.HasStep(YayaConst.STEP_ROUTE);
+			bool hasRoute = FrameTask.HasTask(YayaConst.TASK_ROUTE);
 			switch (CurrentPlayer.CharacterState) {
 				case CharacterState.GamePlay:
 					if (!hasRoute) {
@@ -98,7 +98,7 @@ namespace Yaya {
 
 			// Spawn Player when No Player Entity
 			if (CurrentPlayer != null && !CurrentPlayer.Active) CurrentPlayer = null;
-			if (CurrentPlayer == null && !FrameStep.HasStep(YayaConst.STEP_ROUTE)) {
+			if (CurrentPlayer == null && !FrameTask.HasTask(YayaConst.TASK_ROUTE)) {
 				var center = CellRenderer.CameraRect.CenterInt();
 				SpawnPlayer(center.x, center.y);
 			}
@@ -109,10 +109,10 @@ namespace Yaya {
 				CurrentPlayer.CharacterState == CharacterState.Passout &&
 				GlobalFrame > CurrentPlayer.PassoutFrame + YayaConst.PASSOUT_WAIT &&
 				FrameInput.GetKeyDown(GameKey.Action) &&
-				!FrameStep.HasStep(YayaConst.STEP_ROUTE)
+				!FrameTask.HasTask(YayaConst.TASK_ROUTE)
 			) {
-				FrameStep.AddToLast(YayaConst.FADEOUT_ID, YayaConst.STEP_ROUTE);
-				if (FrameStep.TryAddToLast<sOpening>(YayaConst.OPENING_ID, YayaConst.STEP_ROUTE, out var step)) {
+				FrameTask.AddToLast(YayaConst.FADEOUT_ID, YayaConst.TASK_ROUTE);
+				if (FrameTask.TryAddToLast<tOpening>(YayaConst.OPENING_ID, YayaConst.TASK_ROUTE, out var step)) {
 					step.ViewX = VIEW_X;
 					step.ViewYStart = VIEW_Y_START;
 					step.ViewYEnd = VIEW_Y_END;
@@ -328,7 +328,7 @@ namespace Yaya {
 			}
 
 			// Try Get Existing Entity as Player
-			if (CurrentPlayer == null && TryGetEntityInStage(PlayerTypeID, out var result)) {
+			if (CurrentPlayer == null && TryGetEntity(PlayerTypeID, out var result)) {
 				CurrentPlayer = result as ePlayer;
 			}
 

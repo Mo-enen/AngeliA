@@ -172,12 +172,12 @@ MonoBehaviour:
       serializedVersion: 2
       key0: {r: 0.078431375, g: 0.08235294, b: 0.12156863, a: 1}
       key1: {r: 0.1254902, g: 0.22352941, b: 0.29803923, a: 1}
-      key2: {r: 0.2784314, g: 0.6666667, b: 0.85882354, a: 0.98039216}
-      key3: {r: 0.1254902, g: 0.22352941, b: 0.29803923, a: 0.98039216}
-      key4: {r: 0.078431375, g: 0.08235294, b: 0.12156863, a: 0.98039216}
-      key5: {r: 0.15686275, g: 0.34117648, b: 0.5372549, a: 0.98039216}
-      key6: {r: 0.15686275, g: 0.34117648, b: 0.5372549, a: 0.98039216}
-      key7: {r: 0.15686275, g: 0.34117648, b: 0.5372549, a: 0.98039216}
+      key2: {r: 0.2784314, g: 0.6666667, b: 0.85882354, a: 0}
+      key3: {r: 0.1254902, g: 0.22352941, b: 0.29803923, a: 0}
+      key4: {r: 0.078431375, g: 0.08235294, b: 0.12156863, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
       ctime1: 16384
       ctime2: 32768
@@ -186,7 +186,7 @@ MonoBehaviour:
       ctime5: 0
       ctime6: 0
       ctime7: 0
-      atime0: 386
+      atime0: 0
       atime1: 65535
       atime2: 0
       atime3: 0
@@ -201,12 +201,12 @@ MonoBehaviour:
       serializedVersion: 2
       key0: {r: 0.12156863, g: 0.12156863, b: 0.13725491, a: 1}
       key1: {r: 0.19607843, g: 0.25882354, b: 0.32156864, a: 1}
-      key2: {r: 0.5019608, g: 0.78431374, b: 0.9254902, a: 0.98039216}
-      key3: {r: 0.19607843, g: 0.25882354, b: 0.32156864, a: 0.98039216}
-      key4: {r: 0.12156863, g: 0.12156863, b: 0.13725491, a: 0.98039216}
-      key5: {r: 0.15686275, g: 0.34117648, b: 0.5372549, a: 0.98039216}
-      key6: {r: 0.15686275, g: 0.34117648, b: 0.5372549, a: 0.98039216}
-      key7: {r: 0.15686275, g: 0.34117648, b: 0.5372549, a: 0.98039216}
+      key2: {r: 0.5019608, g: 0.78431374, b: 0.9254902, a: 0}
+      key3: {r: 0.19607843, g: 0.25882354, b: 0.32156864, a: 0}
+      key4: {r: 0.12156863, g: 0.12156863, b: 0.13725491, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
       ctime1: 16384
       ctime2: 32768
@@ -215,7 +215,7 @@ MonoBehaviour:
       ctime5: 0
       ctime6: 0
       ctime7: 0
-      atime0: 386
+      atime0: 0
       atime1: 65535
       atime2: 0
       atime3: 0
@@ -245,7 +245,7 @@ MonoBehaviour:
     MaxGravitySpeed: 96
     AudioMixerGroup: {fileID: -5649732288638014774, guid: 2d8922283b392334ca57b3d736565004,
       type: 2}
-    Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 3}
+    Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     ScreenEffectShaders:
     - {fileID: 4800000, guid: f1009a876ede72b4785658aef0b8449f, type: 3}
   m_YayaMeta:
@@ -261,20 +261,20 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 2.3015873
-        outSlope: 2.3015873
+        inSlope: 3.73
+        outSlope: 3.73
         tangentMode: 0
-        weightedMode: 0
+        weightedMode: 3
         inWeight: 0
-        outWeight: 0.15517241
+        outWeight: 0.3
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: -0.004357572
-        outSlope: -0.004357572
+        inSlope: 0
+        outSlope: 0
         tangentMode: 0
-        weightedMode: 0
-        inWeight: 1
+        weightedMode: 3
+        inWeight: 0
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2

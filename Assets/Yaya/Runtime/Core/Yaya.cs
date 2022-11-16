@@ -20,8 +20,8 @@ namespace Yaya {
 		public new YayaWorldSquad WorldSquad_Behind => base.WorldSquad_Behind as YayaWorldSquad;
 		public new YayaWorldSquad WorldSquad => base.WorldSquad as YayaWorldSquad;
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
-		public override int StepLayerCount => 3;
-		public override int CutsceneStepLayer => YayaConst.STEP_CUTSCENE;
+		public override int TaskLayerCount => 3;
+		public override int CutsceneTaskLayer => YayaConst.TASK_CUTSCENE;
 		public YayaMeta YayaMeta => m_YayaMeta;
 
 		// Ser
@@ -51,7 +51,10 @@ namespace Yaya {
 		protected override void Reset () {
 			base.Reset();
 			m_YayaMeta = new YayaMeta() {
-				SquadTransitionCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f),
+				SquadTransitionCurve = new AnimationCurve(new Keyframe[2] {
+					new(0f, 0f, 3.73f, 3.73f, 0f, 0.3f),
+					new(1f, 1f, 0f, 0f, 0f, 0f),
+				}),
 			};
 		}
 #endif
@@ -72,12 +75,12 @@ namespace Yaya {
 			Initialize_Player();
 
 			// Start the Game !!
-			if (FrameStep.TryAddToLast<sOpening>(YayaConst.OPENING_ID, YayaConst.STEP_ROUTE, out var step)) {
-				step.ViewX = VIEW_X;
-				step.ViewYStart = VIEW_Y_START;
-				step.ViewYEnd = VIEW_Y_END;
-				step.SpawnPlayerAtStart = true;
-				step.RemovePlayerAtStart = true;
+			if (FrameTask.TryAddToLast<tOpening>(YayaConst.OPENING_ID, YayaConst.TASK_ROUTE, out var task)) {
+				task.ViewX = VIEW_X;
+				task.ViewYStart = VIEW_Y_START;
+				task.ViewYEnd = VIEW_Y_END;
+				task.SpawnPlayerAtStart = true;
+				task.RemovePlayerAtStart = true;
 			}
 
 			// Custom Keys
@@ -134,13 +137,13 @@ namespace Yaya {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
 			}
 			if (FrameInput.CustomKeyUp(Key.Digit5)) {
-				Cutscene.Play(typeof(TestCStep).AngeHash());
+				Cutscene.Play(typeof(tTestTask).AngeHash());
 			}
 			if (FrameInput.CustomKeyUp(Key.Digit6)) {
 				Cutscene.Play("Test Video 1".AngeHash());
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit7)) {
-				CellRenderer.StartCameraShake(30);
+				Cutscene.PlayTask(typeof(TestDialoguePerformer).AngeHash());
 			}
 
 		}
@@ -282,7 +285,7 @@ namespace Yaya {
 						State = GameState.Play;
 						break;
 					case GameState.Cutscene:
-						if (!CutsceneLock || Cutscene.IsPlayingStep) {
+						if (!CutsceneLock || Cutscene.IsPlayingTask) {
 							State = GameState.Play;
 						}
 						break;
@@ -304,11 +307,11 @@ namespace Yaya {
 
 
 		public void SetViewZDelay (int newZ) {
-			if (FrameStep.HasStep(YayaConst.STEP_ROUTE)) return;
-			// Add Step
-			if (FrameStep.TryAddToLast<sSetViewZStep>(YayaConst.SQUAD_STEP_ID, YayaConst.STEP_ROUTE, out var step)) {
-				step.Duration = m_YayaMeta.SquadTransitionDuration;
-				step.NewZ = newZ;
+			if (FrameTask.HasTask(YayaConst.TASK_ROUTE)) return;
+			// Add Task
+			if (FrameTask.TryAddToLast<tSetViewZTask>(YayaConst.SQUAD_TASK_ID, YayaConst.TASK_ROUTE, out var task)) {
+				task.Duration = m_YayaMeta.SquadTransitionDuration;
+				task.NewZ = newZ;
 			}
 		}
 

@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class sFadeOut : StepItem {
+	public class tFadeOut : TaskItem {
 
 
 		// Data
@@ -13,7 +13,7 @@ namespace Yaya {
 
 
 		// MSG
-		public override bool FrameUpdate () {
+		public override TaskResult FrameUpdate () {
 			int localFrame = LocalFrame;
 			byte t = (byte)Util.Remap(0f, FADE_OUT, byte.MaxValue, byte.MinValue, localFrame);
 			CellRenderer.SetLayer(Const.SHADER_MULT);
@@ -23,7 +23,7 @@ namespace Yaya {
 				new Color32(t, t, t, 255)
 			).Z = int.MaxValue;
 			CellRenderer.SetLayerToDefault();
-			return localFrame < FADE_OUT;
+			return localFrame < FADE_OUT ? TaskResult.Continue : TaskResult.End;
 		}
 
 

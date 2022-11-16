@@ -95,7 +95,7 @@ namespace Yaya {
 		// API
 		public bool Invoke (Entity target) {
 			if (target is not eCharacter ch) return false;
-			if (FrameStep.HasStep(YayaConst.STEP_ROUTE)) return false;
+			if (FrameTask.HasTask(YayaConst.TASK_ROUTE)) return false;
 			ch.X = X + (Width - ch.Width) / 2 - ch.OffsetX;
 			ch.Y = Y;
 			ch.Movement.Stop();
@@ -108,7 +108,7 @@ namespace Yaya {
 		public void CancelInvoke (Entity target) { }
 
 
-		public bool AllowInvoke (Entity target) => !FrameStep.HasStep(YayaConst.STEP_ROUTE) && target is eCharacter ch && ch.IsGrounded && ch.Rect.y >= Y && !ch.Movement.IsSquating && !ch.Movement.IsClimbing;
+		public bool AllowInvoke (Entity target) => !FrameTask.HasTask(YayaConst.TASK_ROUTE) && target is eCharacter ch && ch.IsGrounded && ch.Rect.y >= Y && !ch.Movement.IsSquating && !ch.Movement.IsClimbing;
 
 
 	}
