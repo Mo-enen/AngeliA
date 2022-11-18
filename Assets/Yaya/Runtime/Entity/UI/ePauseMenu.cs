@@ -123,7 +123,7 @@ namespace Yaya {
 		private void MenuPause () {
 
 			// 0-Continue
-			if (DrawItem(Language.Get(WORD.UI_CONTINUE)) || FrameInput.GetKeyDown(GameKey.Jump)) {
+			if (DrawItem(Language.Get(WORD.UI_CONTINUE)) || FrameInput.GetGameKeyDown(GameKey.Jump)) {
 				Game.Current.State = GameState.Play;
 				Active = false;
 			}
@@ -170,7 +170,7 @@ namespace Yaya {
 				}
 			}
 
-			if (DrawItem(Language.Get(WORD.UI_BACK)) || FrameInput.GetKeyDown(GameKey.Jump)) {
+			if (DrawItem(Language.Get(WORD.UI_BACK)) || FrameInput.GetGameKeyDown(GameKey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(1);
 			}
@@ -248,7 +248,7 @@ namespace Yaya {
 			}
 
 			// Back
-			if (DrawItem(Language.Get(WORD.UI_BACK)) || FrameInput.GetKeyDown(GameKey.Jump)) {
+			if (DrawItem(Language.Get(WORD.UI_BACK)) || FrameInput.GetGameKeyDown(GameKey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(2);
 			}
@@ -259,7 +259,7 @@ namespace Yaya {
 
 			Message = Language.Get(WORD.MENU_QUIT_MESSAGE);
 
-			if (DrawItem(Language.Get(WORD.UI_BACK)) || FrameInput.GetKeyDown(GameKey.Jump)) {
+			if (DrawItem(Language.Get(WORD.UI_BACK)) || FrameInput.GetGameKeyDown(GameKey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(3);
 			}

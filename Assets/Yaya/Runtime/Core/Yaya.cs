@@ -143,7 +143,7 @@ namespace Yaya {
 				Cutscene.Play("Test Video 1".AngeHash());
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit7)) {
-				Cutscene.PlayTask(typeof(TestDialoguePerformer).AngeHash());
+				Cutscene.PlayTask(typeof(TestDialogue).AngeHash());
 			}
 
 		}
@@ -276,7 +276,7 @@ namespace Yaya {
 			}
 
 			// Start Key to Switch State
-			if (FrameInput.GetKeyDown(GameKey.Start)) {
+			if (FrameInput.GetGameKeyDown(GameKey.Start)) {
 				switch (State) {
 					case GameState.Play:
 						State = GameState.Pause;
