@@ -69,7 +69,7 @@ namespace Yaya {
 				Game.Current.TryAddEntity(GUAGUA_CODE, X, Y, out _);
 			}
 			GuaGua.X = X;
-			GuaGua.Y = Y;
+			GuaGua.Y = Y + Height;
 		}
 
 

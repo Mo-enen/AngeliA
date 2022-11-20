@@ -18,7 +18,7 @@ namespace Yaya {
 		// Api
 		public override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
 		public override int CollisionMask => YayaConst.MASK_MAP;
-		public bool Fed { get; private set; } = false;
+		public bool Fed { get; private set; } = true;
 
 		// Data
 		private eYaya Yaya = null;
@@ -74,13 +74,52 @@ namespace Yaya {
 
 
 		private void Update_FollowYaya () {
+
 			if (!Yaya.Active) return;
 
-
-
+			int TARGET_OFFSET = Width / 2;
 
 			Movement.FacingRight = Yaya.X >= X;
 			MovementState = MovementState.Fly;
+			var yayaRect = Yaya.Rect;
+			int targetX = Yaya.Movement.FacingRight ? yayaRect.xMin - TARGET_OFFSET : yayaRect.xMax + TARGET_OFFSET;
+			int targetY = yayaRect.yMax + Const.CEL / 3;
+
+			// Move
+			const int SLOW_DOWN_RANGE_X = Const.CEL * 2;
+			const int SLOW_DOWN_RANGE_Y = Const.CEL * 1;
+			int disX = Mathf.Abs(targetX - X);
+			int disY = Mathf.Abs(targetY - Y);
+			if (disX > SLOW_DOWN_RANGE_X || disY > SLOW_DOWN_RANGE_Y) {
+				// Move to Target
+				const int FORCE = 3;
+				const int AIR = 1;
+				int maxSpeedX = Util.Remap(
+					SLOW_DOWN_RANGE_X,
+					SLOW_DOWN_RANGE_X * 2,
+					Yaya.Movement.RunSpeed,
+					Yaya.Movement.RunSpeed + 24,
+					disX
+				);
+				const int MAX_SPEED_Y = 42;
+				int forceX = targetX - X;
+				int forceY = targetY - Y;
+				int len = Util.DistanceInt(forceX, forceY, 0, 0);
+				forceX = forceX * FORCE / len;
+				forceY = forceY * FORCE / len;
+				forceX -= VelocityX.Clamp(-AIR, AIR);
+				forceY -= VelocityY.Clamp(-AIR, AIR);
+				VelocityX = (VelocityX + forceX).Clamp(-maxSpeedX, maxSpeedX);
+				VelocityY = (VelocityY + forceY).Clamp(-MAX_SPEED_Y, MAX_SPEED_Y);
+			} else {
+				// Slow Down
+				VelocityX = VelocityX.MoveTowards(0, 2);
+				VelocityY = VelocityY.MoveTowards((targetY - Y).Clamp(-7, 7), 2);
+			}
+
+			// Apply
+			X += VelocityX;
+			Y += VelocityY;
 		}
 
 
@@ -108,6 +147,16 @@ namespace Yaya {
 
 
 		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
 
 
 		#endregion

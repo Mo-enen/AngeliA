@@ -8,5 +8,6 @@
 	"_SwimInFreeStyle"  :  false,
 	"_JumpRoll"  :   false,
 	"_JumpCount"  :   1,
-	"_FlyAvailable" :  false
+	"_FlyAvailable" :  false,
+	"_FlySpeed" : 32
 }
