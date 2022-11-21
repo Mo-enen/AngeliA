@@ -236,7 +236,7 @@ namespace Yaya {
 		}
 
 
-		// Pauseless
+		// Override
 		protected override void PauselessUpdate () {
 			base.PauselessUpdate();
 
@@ -258,7 +258,7 @@ namespace Yaya {
 			if (
 				State == GameState.Cutscene &&
 				Cutscene.IsPlayingVideo &&
-				GlobalFrame > Cutscene.StartFrame + Const.CUTSCENE_FADEOUT_DURATION
+				GlobalFrame > Cutscene.StartFrame + GameMeta.CutsceneVideoFadeoutDuration
 			) {
 				if (!CutsceneLock) {
 					if (ControlHintUI.Active) {
@@ -291,6 +291,13 @@ namespace Yaya {
 						break;
 				}
 			}
+
+		}
+
+
+		protected override void BeforeRendering () {
+			base.BeforeRendering();
+
 
 		}
 

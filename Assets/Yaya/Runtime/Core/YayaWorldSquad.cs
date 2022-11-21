@@ -30,8 +30,8 @@ namespace Yaya {
 			if (LocalFrame == Duration / 2 + 1) {
 				// Add Effect
 				var yaya = Yaya.Current;
-				int para = yaya.Meta.SquadBehindParallax;
-				byte alpha = yaya.Meta.SquadBehindAlpha;
+				int para = yaya.GameMeta.SquadBehindParallax;
+				byte alpha = yaya.GameMeta.SquadBehindAlpha;
 				var curve = yaya.YayaMeta.SquadTransitionCurve;
 				var effect = fSquadTransition.Instance;
 				effect.Duration = Duration / 2;
@@ -69,12 +69,12 @@ namespace Yaya {
 
 			// Behind
 			PerformLogic(
-				cells, center, 0, ZSortBegin - 1, scl,
+				cells, center, 0, SortedIndex - 1, scl,
 				Scale > 1f ? Mathf.LerpUnclamped(1f, Alpha, z01) : z01 * Alpha
 			);
 
 			// Current
-			PerformLogic(cells, center, ZSortBegin, cellCount - 1, scl, 1f);
+			PerformLogic(cells, center, SortedIndex, cellCount - 1, scl, 1f);
 
 		}
 

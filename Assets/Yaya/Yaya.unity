@@ -228,6 +228,7 @@ MonoBehaviour:
       m_NumAlphaKeys: 2
     EntityCapacity: 2048
     SoundTrackCount: 6
+    CutsceneVideoFadeoutDuration: 90
     LogicFramerate: 60
     LogicFramerateLag: 30
     LagSimulation_EntityMin: 1600

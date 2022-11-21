@@ -45,10 +45,7 @@ namespace Yaya.Editor {
 			}
 
 			// Write Position File
-			AngeUtil.SaveMeta(
-				new eCheckAltar.CheckPointMeta() { CPs = cpList.ToArray(), },
-				"", "", false
-			);
+			AngeUtil.SaveMeta(new eCheckAltar.CheckPointMeta() { CPs = cpList.ToArray(), });
 		}
 
 

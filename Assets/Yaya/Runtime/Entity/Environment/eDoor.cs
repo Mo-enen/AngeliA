@@ -10,15 +10,17 @@ namespace Yaya {
 
 	public class eWoodStoneDoorFront : eDoor {
 		protected override bool IsFrontDoor => true;
-		private static readonly int ART_CODE = "WoodStoneDoor".AngeHash();
-		private static readonly int OPEN_CODE = "WoodStoneDoor Open".AngeHash();
+		private static readonly int ART_CODE = "WoodStoneDoorFront".AngeHash();
+		private static readonly int OPEN_CODE = "WoodStoneDoorFront Open".AngeHash();
 		protected override int ArtworkCode => ART_CODE;
 		protected override int ArtworkCode_Open => OPEN_CODE;
 	}
+
+
 	public class eWoodStoneDoorBack : eDoor {
 		protected override bool IsFrontDoor => false;
-		private static readonly int ART_CODE = "WoodStoneDoor".AngeHash();
-		private static readonly int OPEN_CODE = "WoodStoneDoor Open".AngeHash();
+		private static readonly int ART_CODE = "WoodStoneDoorBack".AngeHash();
+		private static readonly int OPEN_CODE = "WoodStoneDoorBack Open".AngeHash();
 		protected override int ArtworkCode => ART_CODE;
 		protected override int ArtworkCode_Open => OPEN_CODE;
 	}
@@ -27,15 +29,15 @@ namespace Yaya {
 
 	public class eWoodDoorFront : eDoor {
 		protected override bool IsFrontDoor => true;
-		private static readonly int ART_CODE = "WoodDoor".AngeHash();
-		private static readonly int OPEN_CODE = "WoodDoor Open".AngeHash();
+		private static readonly int ART_CODE = "WoodDoorFront".AngeHash();
+		private static readonly int OPEN_CODE = "WoodDoorFront Open".AngeHash();
 		protected override int ArtworkCode => ART_CODE;
 		protected override int ArtworkCode_Open => OPEN_CODE;
 	}
 	public class eWoodDoorBack : eDoor {
 		protected override bool IsFrontDoor => false;
-		private static readonly int ART_CODE = "WoodDoor".AngeHash();
-		private static readonly int OPEN_CODE = "WoodDoor Open".AngeHash();
+		private static readonly int ART_CODE = "WoodDoorBack".AngeHash();
+		private static readonly int OPEN_CODE = "WoodDoorBack Open".AngeHash();
 		protected override int ArtworkCode => ART_CODE;
 		protected override int ArtworkCode_Open => OPEN_CODE;
 	}
@@ -57,6 +59,7 @@ namespace Yaya {
 
 		// Data
 		private bool Open = false;
+		private Color32 TargetTint = Const.WHITE;
 
 
 		// MSG
@@ -64,6 +67,7 @@ namespace Yaya {
 			base.OnActived();
 			Height = Const.CEL * 2;
 			Open = false;
+			TargetTint = Const.WHITE;
 		}
 
 
@@ -74,20 +78,30 @@ namespace Yaya {
 
 
 		public override void FrameUpdate () {
+
 			base.FrameUpdate();
-			// Draw
-			var player = Yaya.Current.CurrentPlayer;
 			int artCode = Open ? ArtworkCode_Open : ArtworkCode;
-			if (CellRenderer.TryGetSprite(artCode, out var sprite)) {
-				var cell = CellRenderer.Draw(
-					sprite.GlobalID, X + Width / 2, Y, 500, 0, 0,
-					Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE
-				);
-				// Highlight
-				var iAct = this as IActionEntity;
-				if (!Open && player != null && player.Action.CurrentTarget == this && iAct.IsHighlighted) {
-					IActionEntity.HighlightBlink(cell, iAct);
-				}
+			if (!CellRenderer.TryGetSprite(artCode, out var sprite)) return;
+			var player = Yaya.Current.CurrentPlayer;
+
+			// Alpha
+			TargetTint.a = (byte)(
+				IsFrontDoor && !Open && player != null && player.Rect.Overlaps(Rect) ? 196 : 255
+			);
+
+			// Draw
+			var cell = CellRenderer.Draw(
+				sprite.GlobalID, X + Width / 2, Y, 500, 0, 0,
+				Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, TargetTint
+			);
+
+			// Back
+			if (IsFrontDoor) cell.Z = -cell.Z;
+
+			// Highlight
+			var iAct = this as IActionEntity;
+			if (!Open && player != null && player.Action.CurrentTarget == this && iAct.IsHighlighted) {
+				IActionEntity.HighlightBlink(cell, iAct);
 			}
 		}
 
