@@ -10,6 +10,7 @@ namespace Yaya {
 
 		// Data
 		private const int FADE_OUT = 32;
+		public static readonly int TYPE_ID = typeof(tFadeOut).AngeHash();
 
 
 		// MSG

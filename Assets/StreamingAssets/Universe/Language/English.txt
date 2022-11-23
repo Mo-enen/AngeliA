@@ -20,13 +20,14 @@ Menu.KeySetter.SaveAndBack:Save and Back
 Menu.Pause.KeySetter:Key Assignment
 Menu.Pause.QuitMessage:Quit game now？
 Menu.Setting.Framerate:Framerate
-Menu.Setting.Fullscreen:Fullscreen
+Menu.Setting.Fullscreen.0:Windowed
+Menu.Setting.Fullscreen.1:Fullscreen
+Menu.Setting.Fullscreen.2:Fullscreen (Low)
 Menu.Setting.Fullscreen.Label:Display
 Menu.Setting.Language:Language
 Menu.Setting.MusicVolume:Music Volume
 Menu.Setting.SoundVolume:Sound Volume
 Menu.Setting.VSync:V-Sync
-Menu.Setting.Windowed:Windowed
 UI.Back:Back
 UI.Cancel:Cancel
 UI.Continue:Continue

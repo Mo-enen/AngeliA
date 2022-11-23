@@ -20,8 +20,6 @@ namespace Yaya {
 		public new YayaWorldSquad WorldSquad_Behind => base.WorldSquad_Behind as YayaWorldSquad;
 		public new YayaWorldSquad WorldSquad => base.WorldSquad as YayaWorldSquad;
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
-		public override int TaskLayerCount => 3;
-		public override int CutsceneTaskLayer => YayaConst.TASK_CUTSCENE;
 		public YayaMeta YayaMeta => m_YayaMeta;
 
 		// Ser
@@ -75,12 +73,12 @@ namespace Yaya {
 			Initialize_Player();
 
 			// Start the Game !!
-			if (FrameTask.TryAddToLast<tOpening>(YayaConst.OPENING_ID, YayaConst.TASK_ROUTE, out var task)) {
-				task.ViewX = VIEW_X;
-				task.ViewYStart = VIEW_Y_START;
-				task.ViewYEnd = VIEW_Y_END;
-				task.SpawnPlayerAtStart = true;
-				task.RemovePlayerAtStart = true;
+			if (FrameTask.TryAddToLast(tOpening.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tOpening oTask) {
+				oTask.ViewX = VIEW_X;
+				oTask.ViewYStart = VIEW_Y_START;
+				oTask.ViewYEnd = VIEW_Y_END;
+				oTask.SpawnPlayerAtStart = true;
+				oTask.RemovePlayerAtStart = true;
 			}
 
 			// Custom Keys
@@ -137,7 +135,7 @@ namespace Yaya {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
 			}
 			if (FrameInput.CustomKeyUp(Key.Digit5)) {
-				Cutscene.Play(typeof(tTestTask).AngeHash());
+
 			}
 			if (FrameInput.CustomKeyUp(Key.Digit6)) {
 				Cutscene.Play("Test Video 1".AngeHash());
@@ -314,11 +312,11 @@ namespace Yaya {
 
 
 		public void SetViewZDelay (int newZ) {
-			if (FrameTask.HasTask(YayaConst.TASK_ROUTE)) return;
+			if (FrameTask.HasTask(Const.TASK_ROUTE)) return;
 			// Add Task
-			if (FrameTask.TryAddToLast<tSetViewZTask>(YayaConst.SQUAD_TASK_ID, YayaConst.TASK_ROUTE, out var task)) {
-				task.Duration = m_YayaMeta.SquadTransitionDuration;
-				task.NewZ = newZ;
+			if (FrameTask.TryAddToLast(tSetViewZTask.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tSetViewZTask svTask) {
+				svTask.Duration = m_YayaMeta.SquadTransitionDuration;
+				svTask.NewZ = newZ;
 			}
 		}
 

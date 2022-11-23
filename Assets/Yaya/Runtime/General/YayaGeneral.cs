@@ -45,14 +45,6 @@ namespace Yaya {
 		public static readonly int QUICKSAND_TAG = "Quicksand".AngeHash();
 		public static readonly int DAMAGE_TAG = "Damage".AngeHash();
 
-		// Task
-		public const int TASK_ROUTE = 0;
-		public const int TASK_CUTSCENE = 1;
-		public const int TASK_BG_RENDERING = 2;
-		public static readonly int OPENING_ID = typeof(tOpening).AngeHash();
-		public static readonly int FADEOUT_ID = typeof(tFadeOut).AngeHash();
-		public static readonly int SQUAD_TASK_ID = typeof(tSetViewZTask).AngeHash();
-
 		// View
 		public const int PLAYER_VIEW_LERP_RATE = 96;
 		public const int VIEW_PRIORITY_PLAYER = int.MinValue;

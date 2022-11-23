@@ -71,7 +71,7 @@ namespace Yaya {
 
 			// Update Player
 			if (CurrentPlayer == null) return;
-			bool hasRoute = FrameTask.HasTask(YayaConst.TASK_ROUTE);
+			bool hasRoute = FrameTask.HasTask(Const.TASK_ROUTE);
 			switch (CurrentPlayer.CharacterState) {
 				case CharacterState.GamePlay:
 					if (!hasRoute) {
@@ -98,7 +98,7 @@ namespace Yaya {
 
 			// Spawn Player when No Player Entity
 			if (CurrentPlayer != null && !CurrentPlayer.Active) CurrentPlayer = null;
-			if (CurrentPlayer == null && !FrameTask.HasTask(YayaConst.TASK_ROUTE)) {
+			if (CurrentPlayer == null && !FrameTask.HasTask(Const.TASK_ROUTE)) {
 				var center = CellRenderer.CameraRect.CenterInt();
 				SpawnPlayer(center.x, center.y);
 			}
@@ -109,15 +109,15 @@ namespace Yaya {
 				CurrentPlayer.CharacterState == CharacterState.Passout &&
 				GlobalFrame > CurrentPlayer.PassoutFrame + YayaConst.PASSOUT_WAIT &&
 				FrameInput.GetGameKeyDown(GameKey.Action) &&
-				!FrameTask.HasTask(YayaConst.TASK_ROUTE)
+				!FrameTask.HasTask(Const.TASK_ROUTE)
 			) {
-				FrameTask.AddToLast(YayaConst.FADEOUT_ID, YayaConst.TASK_ROUTE);
-				if (FrameTask.TryAddToLast<tOpening>(YayaConst.OPENING_ID, YayaConst.TASK_ROUTE, out var step)) {
-					step.ViewX = VIEW_X;
-					step.ViewYStart = VIEW_Y_START;
-					step.ViewYEnd = VIEW_Y_END;
-					step.RemovePlayerAtStart = true;
-					step.SpawnPlayerAtStart = true;
+				FrameTask.AddToLast(tFadeOut.TYPE_ID, Const.TASK_ROUTE);
+				if (FrameTask.TryAddToLast(tOpening.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tOpening oTask) {
+					oTask.ViewX = VIEW_X;
+					oTask.ViewYStart = VIEW_Y_START;
+					oTask.ViewYEnd = VIEW_Y_END;
+					oTask.RemovePlayerAtStart = true;
+					oTask.SpawnPlayerAtStart = true;
 				}
 			}
 		}

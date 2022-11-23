@@ -118,7 +118,7 @@ namespace Yaya {
 
 			if (Player == null || !Player.Active) return;
 			if (Game.Current.State != GameState.Play) return;
-			if (FrameTask.IsTasking(YayaConst.TASK_ROUTE)) return;
+			if (FrameTask.IsTasking(Const.TASK_ROUTE)) return;
 
 			// Game Playing
 			switch (Player.CharacterState) {

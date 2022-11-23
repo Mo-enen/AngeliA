@@ -21,7 +21,7 @@ namespace Yaya {
 
 		// MSG
 		public override void FillPhysics () {
-			if (FrameTask.HasTask(YayaConst.TASK_ROUTE)) return;
+			if (FrameTask.HasTask(Const.TASK_ROUTE)) return;
 			base.FillPhysics();
 		}
 

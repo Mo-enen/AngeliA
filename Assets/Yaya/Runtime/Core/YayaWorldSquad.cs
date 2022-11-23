@@ -9,6 +9,7 @@ namespace Yaya {
 
 	public class tSetViewZTask : TaskItem {
 
+		public static readonly int TYPE_ID = typeof(tSetViewZTask).AngeHash();
 		public int Duration = 0;
 		public int NewZ = 0;
 		private bool Front = true;
@@ -101,7 +102,7 @@ namespace Yaya {
 
 
 		// VAR
-		public override bool Culling => base.Culling && !FrameTask.HasTask(YayaConst.TASK_ROUTE);
+		public override bool Culling => base.Culling && !FrameTask.HasTask(Const.TASK_ROUTE);
 
 
 		// API

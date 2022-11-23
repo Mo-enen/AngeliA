@@ -74,7 +74,10 @@ namespace Yaya {
 			X = cameraRect.x + cameraRect.width / 2 - 250 * UNIT;
 			Width = 650 * UNIT;
 
-			Mode = RequireMode;
+			if (Mode != RequireMode) {
+				Mode = RequireMode;
+				RefreshAnimation();
+			}
 			Interactable = (Mode != MenuMode.Setter_Gamepad && Mode != MenuMode.Setter_Keyboard) || RecordingKey < 0;
 			ContentPadding = new(32, 32, 46, string.IsNullOrEmpty(Message) ? 46 : 23);
 
@@ -180,7 +183,6 @@ namespace Yaya {
 		private void MenuSetting () {
 
 			// Music Volume
-
 			if (DrawArrowItem(
 				Language.Get(WORD.MENU_MUSIC_VOLUME),
 				new CellLabel(MusicVolumeCache.GetString(AudioPlayer.MusicVolume / 100)),
@@ -217,13 +219,21 @@ namespace Yaya {
 			}
 
 			// Fullscreen
-			if (DrawItem(
+			if (DrawArrowItem(
 				Language.Get(WORD.MENU_FULLSCREEN_LABEL),
 				new CellLabel(
-					Language.Get(Game.Current.FullScreen ? WORD.MENU_FULLSCREEN : WORD.MENU_WINDOWED)
-				)
+					Language.Get(Game.Current.FullscreenMode switch {
+						FullscreenMode.Window => WORD.MENU_FULLSCREEN_0,
+						FullscreenMode.Fullscreen => WORD.MENU_FULLSCREEN_1,
+						FullscreenMode.FullscreenLow => WORD.MENU_FULLSCREEN_2,
+						_ => WORD.MENU_FULLSCREEN_0,
+					})
+				),
+				Game.Current.FullscreenMode != FullscreenMode.Window,
+				Game.Current.FullscreenMode != FullscreenMode.FullscreenLow,
+				out delta
 			)) {
-				Game.Current.FullScreen = !Game.Current.FullScreen;
+				Game.Current.FullscreenMode = (FullscreenMode)((int)Game.Current.FullscreenMode + delta).Clamp(0, 2);
 			}
 
 			// Language

@@ -22,6 +22,7 @@ namespace Yaya {
 
 		// Data
 		private eYaya Yaya = null;
+		private Vector2Int PrevPosition = default;
 
 
 		#endregion
@@ -46,6 +47,8 @@ namespace Yaya {
 
 
 		public override void PhysicsUpdate () {
+			PrevPosition.x = X;
+			PrevPosition.y = Y;
 			bool stateChanged = CharacterState != Yaya.CharacterState;
 			if (stateChanged) SetCharacterState(Yaya.CharacterState);
 			Health.SetHealth(Yaya.Health.EmptyHealth ? 0 : Health.MaxHP);
@@ -146,6 +149,12 @@ namespace Yaya {
 
 
 
+		}
+
+
+		public void ReturnToPrevPos () {
+			X = PrevPosition.x;
+			Y = PrevPosition.y;
 		}
 
 

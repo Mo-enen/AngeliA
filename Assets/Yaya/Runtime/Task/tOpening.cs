@@ -13,6 +13,7 @@ namespace Yaya {
 		private const int DURATION = 180;
 		private const int BLACK_DURATION = 120;
 		private const int SKIP_DURATION = 12;
+		public static readonly int TYPE_ID = typeof(tOpening).AngeHash();
 
 		// Api
 		public int ViewX = 0;

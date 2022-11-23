@@ -20,13 +20,14 @@ Menu.KeySetter.SaveAndBack:保存并返回
 Menu.Pause.KeySetter:按键分配
 Menu.Pause.QuitMessage:是否要退出游戏？
 Menu.Setting.Framerate:帧频率
-Menu.Setting.Fullscreen:全屏
+Menu.Setting.Fullscreen.0:窗口
+Menu.Setting.Fullscreen.1:全屏
+Menu.Setting.Fullscreen.2:全屏（低清）
 Menu.Setting.Fullscreen.Label:显示
 Menu.Setting.Language:语言
 Menu.Setting.MusicVolume:音乐音量
 Menu.Setting.SoundVolume:音效音量
 Menu.Setting.VSync:垂直同步
-Menu.Setting.Windowed:窗口
 UI.Back:返回
 UI.Cancel:取消
 UI.Continue:继续
