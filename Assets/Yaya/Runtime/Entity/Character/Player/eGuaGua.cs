@@ -23,6 +23,8 @@ namespace Yaya {
 		// Data
 		private eYaya Yaya = null;
 		private Vector2Int PrevPosition = default;
+		private readonly Vector2Int[] PosChain = new Vector2Int[6];
+		private int PosChainStartIndex = -1;
 
 
 		#endregion
@@ -39,6 +41,12 @@ namespace Yaya {
 		}
 
 
+		public override void OnActived () {
+			base.OnActived();
+			PosChainStartIndex = -1;
+		}
+
+
 		public override void FillPhysics () {
 			if (CharacterState == CharacterState.GamePlay) {
 				base.FillPhysics();
@@ -47,8 +55,6 @@ namespace Yaya {
 
 
 		public override void PhysicsUpdate () {
-			PrevPosition.x = X;
-			PrevPosition.y = Y;
 			bool stateChanged = CharacterState != Yaya.CharacterState;
 			if (stateChanged) SetCharacterState(Yaya.CharacterState);
 			Health.SetHealth(Yaya.Health.EmptyHealth ? 0 : Health.MaxHP);
@@ -73,6 +79,11 @@ namespace Yaya {
 					VelocityX = 0;
 					break;
 			}
+			if (!Fed || CharacterState != CharacterState.GamePlay) {
+				PosChainStartIndex = -1;
+			}
+			PrevPosition.x = X;
+			PrevPosition.y = Y;
 		}
 
 
@@ -80,49 +91,31 @@ namespace Yaya {
 
 			if (!Yaya.Active) return;
 
-			int TARGET_OFFSET = Width / 2;
-
 			Movement.FacingRight = Yaya.X >= X;
 			MovementState = MovementState.Fly;
-			var yayaRect = Yaya.Rect;
-			int targetX = Yaya.Movement.FacingRight ? yayaRect.xMin - TARGET_OFFSET : yayaRect.xMax + TARGET_OFFSET;
-			int targetY = yayaRect.yMax + Const.CEL / 3;
 
-			// Move
-			const int SLOW_DOWN_RANGE_X = Const.CEL * 2;
-			const int SLOW_DOWN_RANGE_Y = Const.CEL * 1;
-			int disX = Mathf.Abs(targetX - X);
-			int disY = Mathf.Abs(targetY - Y);
-			if (disX > SLOW_DOWN_RANGE_X || disY > SLOW_DOWN_RANGE_Y) {
-				// Move to Target
-				const int FORCE = 3;
-				const int AIR = 1;
-				int maxSpeedX = Util.Remap(
-					SLOW_DOWN_RANGE_X,
-					SLOW_DOWN_RANGE_X * 2,
-					Yaya.Movement.RunSpeed,
-					Yaya.Movement.RunSpeed + 24,
-					disX
-				);
-				const int MAX_SPEED_Y = 42;
-				int forceX = targetX - X;
-				int forceY = targetY - Y;
-				int len = Util.DistanceInt(forceX, forceY, 0, 0);
-				forceX = forceX * FORCE / len;
-				forceY = forceY * FORCE / len;
-				forceX -= VelocityX.Clamp(-AIR, AIR);
-				forceY -= VelocityY.Clamp(-AIR, AIR);
-				VelocityX = (VelocityX + forceX).Clamp(-maxSpeedX, maxSpeedX);
-				VelocityY = (VelocityY + forceY).Clamp(-MAX_SPEED_Y, MAX_SPEED_Y);
-			} else {
-				// Slow Down
-				VelocityX = VelocityX.MoveTowards(0, 2);
-				VelocityY = VelocityY.MoveTowards((targetY - Y).Clamp(-7, 7), 2);
+			int targetX = Yaya.X;
+			int targetY = Yaya.Y + Yaya.Height + Const.CEL / 3;
+
+			// Chain
+			const int SEG_DIS = Const.CEL / 4;
+			if (PosChainStartIndex < 0) {
+				for (int i = 0; i < PosChain.Length; i++) {
+					PosChain[i] = new(targetX, targetY);
+				}
+				PosChainStartIndex = 0;
+			}
+			var currentPos = PosChain[PosChainStartIndex];
+			if (Util.SqrtDistance(targetX, targetY, currentPos.x, currentPos.y) > SEG_DIS * SEG_DIS) {
+				PosChainStartIndex = (PosChainStartIndex + 1) % PosChain.Length;
+				PosChain[PosChainStartIndex] = new(targetX, targetY);
 			}
 
-			// Apply
-			X += VelocityX;
-			Y += VelocityY;
+			// Move
+			var pos = PosChain[(PosChainStartIndex + 1).UMod(PosChain.Length)];
+			X = X.LerpTo(pos.x, 200);
+			Y = Y.LerpTo(pos.y, 200);
+
 		}
 
 

@@ -17,19 +17,19 @@
 这是内容1的第7行。
 
 #color=ff0000
-红
+红红
 #color=ff8800
--橙
+-橙橙橙橙橙
 #color=ffff00
--黄
+-黄黄
 #color=00ff00
--绿
+-绿绿绿绿绿绿绿绿绿
 #color=00ffff
--青
+-青青
 #color=0000ff
 -蓝
 #color=ff00ff
--紫
+-紫紫紫
 
 @yaya
 
