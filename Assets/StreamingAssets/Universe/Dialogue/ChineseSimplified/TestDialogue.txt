@@ -6,17 +6,34 @@
 
 嗨，这是中文第一行。
 这是内容1的第二行。
-#speed = 30
+#speed = 300
 这是内
 #speed = 1000
 -容1的第3行。
+#color=aa33ff
 这是内容1的第4行。
 这是内容1的第5行。
 这是内容1的第6行。
 这是内容1的第7行。
 
+#color=ff0000
+红
+#color=ff8800
+-橙
+#color=ffff00
+-黄
+#color=00ff00
+-绿
+#color=00ffff
+-青
+#color=0000ff
+-蓝
+#color=ff00ff
+-紫
+
 @yaya
 
+#color=ffffff
 嗨，这是另一段内容1行，
 这是另一段内容2行，
 这是另一段内容3行。
