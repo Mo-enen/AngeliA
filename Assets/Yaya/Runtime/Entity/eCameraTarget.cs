@@ -69,7 +69,7 @@ namespace Yaya {
 			base.FrameUpdate();
 			if (Game.GlobalFrame <= CameraUpdateFrame) return;
 			if (!TargetLeft.HasValue && !TargetRight.HasValue && !TargetDown.HasValue && !TargetUp.HasValue) return;
-			var player = Yaya.Current.CurrentPlayer;
+			var player = ePlayer.Current;
 			if (player == null || !player.Active) return;
 			const int HALF = Const.CEL / 2;
 
@@ -95,8 +95,8 @@ namespace Yaya {
 			var yayaGame = Yaya.Current;
 			var cameraRect = CellRenderer.CameraRect;
 			int viewOffsetX = yayaGame.ViewRect.x - CellRenderer.CameraRect.x;
-			cameraRect.x = yayaGame.AimViewX - viewOffsetX;
-			cameraRect.y = yayaGame.AimViewY;
+			cameraRect.x = player.AimViewX - viewOffsetX;
+			cameraRect.y = player.AimViewY;
 			if (targetRect.width > cameraRect.width) {
 				cameraRect.x = cameraRect.x.Clamp(targetRect.xMax - cameraRect.width, targetRect.xMin);
 			} else {

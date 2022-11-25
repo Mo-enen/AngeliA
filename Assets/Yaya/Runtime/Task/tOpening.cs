@@ -53,7 +53,7 @@ namespace Yaya {
 			var game = Game.Current;
 			// Spawn Player
 			if (localFrame == 2 && SpawnPlayerAtStart) {
-				var player = (game as Yaya).SpawnPlayer(ViewX, ViewYEnd);
+				var player = ePlayer.TrySpawnPlayer(ViewX, ViewYEnd);
 				if (player != null) {
 					if (game.TryGetEntityNearby<eBed>(new(ViewX, ViewYEnd), out var bed)) {
 						bed.Invoke(player);

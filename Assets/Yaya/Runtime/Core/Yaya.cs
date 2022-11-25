@@ -4,7 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 using UnityEngine.InputSystem;
 using UnityEngine.Audio;
-
+using System.Reflection;
 
 namespace Yaya {
 	public partial class Yaya : Game {
@@ -70,13 +70,12 @@ namespace Yaya {
 
 			// Pipeline
 			Initialize_Quit();
-			Initialize_Player();
 
 			// Start the Game !!
 			if (FrameTask.TryAddToLast(tOpening.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tOpening oTask) {
-				oTask.ViewX = VIEW_X;
-				oTask.ViewYStart = VIEW_Y_START;
-				oTask.ViewYEnd = VIEW_Y_END;
+				oTask.ViewX = YayaConst.OPENING_X;
+				oTask.ViewYStart = YayaConst.OPENING_Y;
+				oTask.ViewYEnd = YayaConst.OPENING_END_Y;
 				oTask.SpawnPlayerAtStart = true;
 				oTask.RemovePlayerAtStart = true;
 			}
@@ -118,7 +117,6 @@ namespace Yaya {
 
 			base.FrameUpdate();
 			Update_Damage();
-			Update_Player();
 			Update_HintUI();
 
 
@@ -217,7 +215,7 @@ namespace Yaya {
 					ControlHintUI.X = 32;
 					ControlHintUI.Y = 32;
 				}
-				ControlHintUI.Player = CurrentPlayer;
+				ControlHintUI.Player = ePlayer.Current;
 
 				// Y
 				int y = 32;
@@ -324,9 +322,10 @@ namespace Yaya {
 		protected override void BeforeViewZChange (int newZ) {
 			base.BeforeViewZChange(newZ);
 			// Player
-			if (CurrentPlayer != null && CurrentPlayer.Active) {
-				CurrentPlayer.Renderer.Bounce();
-				if (CurrentPlayer is eYaya yaya) yaya.SummonGuaGua(true);
+			var current = ePlayer.Current;
+			if (current != null && current.Active) {
+				current.Renderer.Bounce();
+				if (current is eYaya yaya) yaya.SummonGuaGua(true);
 			}
 		}
 

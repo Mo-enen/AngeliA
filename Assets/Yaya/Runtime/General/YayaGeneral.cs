@@ -50,6 +50,9 @@ namespace Yaya {
 		public const int VIEW_PRIORITY_PLAYER = int.MinValue;
 		public const int VIEW_PRIORITY_SYSTEM = 0;
 		public const int VIEW_PRIORITY_CUTSCENE = 128;
+		public const int OPENING_X = 10 * Const.CEL;
+		public const int OPENING_Y = 19 * Const.CEL;
+		public const int OPENING_END_Y = 8 * Const.CEL;
 
 		// Misc
 		public static readonly int UI_PIXEL = "UI Pixel".AngeHash();

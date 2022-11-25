@@ -18,7 +18,7 @@ namespace Yaya {
 			if (LocalFrame == 0) {
 				// Player
 				var yaya = Yaya.Current;
-				var player = yaya.CurrentPlayer;
+				var player = ePlayer.Current;
 				if (player != null) {
 					player.Renderer.EnterDoor(Duration, NewZ < yaya.ViewZ);
 				}

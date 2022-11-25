@@ -82,7 +82,7 @@ namespace Yaya {
 			base.FrameUpdate();
 			int artCode = Open ? ArtworkCode_Open : ArtworkCode;
 			if (!CellRenderer.TryGetSprite(artCode, out var sprite)) return;
-			var player = Yaya.Current.CurrentPlayer;
+			var player = ePlayer.Current;
 
 			// Alpha
 			TargetTint.a = (byte)(
