@@ -95,10 +95,10 @@ namespace Yaya {
 			MovementState = MovementState.Fly;
 
 			int targetX = Yaya.X;
-			int targetY = Yaya.Y + Yaya.Height + Const.CEL / 3;
+			int targetY = Yaya.Y + Const.CEL * 2;
 
 			// Chain
-			const int SEG_DIS = Const.CEL / 4;
+			const int SEG_DIS = Const.CEL / 8;
 			if (PosChainStartIndex < 0) {
 				for (int i = 0; i < PosChain.Length; i++) {
 					PosChain[i] = new(targetX, targetY);
