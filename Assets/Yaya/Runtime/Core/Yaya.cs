@@ -21,6 +21,8 @@ namespace Yaya {
 		public new YayaWorldSquad WorldSquad => base.WorldSquad as YayaWorldSquad;
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
 		public YayaMeta YayaMeta => m_YayaMeta;
+		public int AimViewX { get; private set; } = 0;
+		public int AimViewY { get; private set; } = 0;
 
 		// Ser
 		[SerializeField] YayaMeta m_YayaMeta = null;
@@ -31,6 +33,7 @@ namespace Yaya {
 		private eControlHintUI ControlHintUI = null;
 		private ePauseMenu PauseMenu = null;
 		private bool CutsceneLock = true;
+		private int PlayerLastGroundedY = 0;
 
 		// Saving
 		private readonly SavingBool ShowGamePadUI = new("Yaya.ShowGamePadUI", false);
@@ -116,6 +119,7 @@ namespace Yaya {
 		protected override void FrameUpdate () {
 
 			base.FrameUpdate();
+			Update_View();
 			Update_Damage();
 			Update_HintUI();
 
@@ -127,7 +131,7 @@ namespace Yaya {
 				SetViewZ(ViewZ - 1);
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit3)) {
-				PeekOrGetEntity<eGuaGua>().Feed();
+				PeekOrGetEntity<eGuaGua>().FollowOwner = true;
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit4)) {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
@@ -140,6 +144,41 @@ namespace Yaya {
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit7)) {
 				Cutscene.PlayTask(typeof(TestDialogue).AngeHash());
+			}
+
+		}
+
+
+		private void Update_View () {
+
+			var player = ePlayer.Current;
+			if (FrameTask.HasTask(Const.TASK_ROUTE)) return;
+			if (player == null) return;
+
+			const int LINGER_RATE = 32;
+			bool flying = player.Movement.IsFlying;
+			int playerX = player.X;
+			int playerY = player.Y;
+			bool inAir = player.InAir;
+
+			if (!inAir || flying) PlayerLastGroundedY = playerY;
+			int linger = ViewRect.width * LINGER_RATE / 1000;
+			int centerX = ViewRect.x + ViewRect.width / 2;
+			if (playerX < centerX - linger) {
+				AimViewX = playerX + linger - ViewRect.width / 2;
+			} else if (playerX > centerX + linger) {
+				AimViewX = playerX - linger - ViewRect.width / 2;
+			}
+			AimViewY = !inAir || flying || playerY < PlayerLastGroundedY ? playerY - ViewRect.height * 382 / 1000 : AimViewY;
+			SetViewPositionDely(AimViewX, AimViewY, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_PLAYER);
+
+			// Clamp
+			if (!ViewRect.Contains(playerX, playerY)) {
+				if (playerX >= ViewRect.xMax) AimViewX = playerX - ViewRect.width + 1;
+				if (playerX <= ViewRect.xMin) AimViewX = playerX - 1;
+				if (playerY >= ViewRect.yMax) AimViewY = playerY - ViewRect.height + 1;
+				if (playerY <= ViewRect.yMin) AimViewY = playerY - 1;
+				SetViewPositionDely(AimViewX, AimViewY, 1000, YayaConst.VIEW_PRIORITY_PLAYER + 1);
 			}
 
 		}
@@ -325,7 +364,6 @@ namespace Yaya {
 			var current = ePlayer.Current;
 			if (current != null && current.Active) {
 				current.Renderer.Bounce();
-				if (current is eYaya yaya) yaya.SummonGuaGua(true);
 			}
 		}
 

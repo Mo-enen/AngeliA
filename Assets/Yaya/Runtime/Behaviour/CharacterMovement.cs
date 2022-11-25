@@ -14,7 +14,7 @@ namespace Yaya {
 	}
 
 	[System.Serializable]
-	public partial class Movement {
+	public partial class CharacterMovement {
 
 
 
@@ -291,7 +291,12 @@ namespace Yaya {
 
 		private void Update_VelocityX () {
 			int speed, acc, dcc;
-			if (IsClimbing) {
+			if (IsFlying && FlyGlideSpeed > 0) {
+				// Glide
+				speed = FacingRight ? FlyGlideSpeed : -FlyGlideSpeed;
+				acc = FlyGlideAcceleration;
+				dcc = FlyGlideDecceleration;
+			} else if (IsClimbing) {
 				// Climb
 				speed = ClimbPositionCorrect.HasValue ? 0 : IntendedX * ClimbSpeedX;
 				acc = int.MaxValue;

@@ -70,12 +70,12 @@ namespace Yaya {
 
 			// Behind
 			PerformLogic(
-				cells, center, 0, SortedIndex - 1, scl,
+				cells, center, 0, SortedIndex, scl,
 				Scale > 1f ? Mathf.LerpUnclamped(1f, Alpha, z01) : z01 * Alpha
 			);
 
 			// Current
-			PerformLogic(cells, center, SortedIndex, cellCount - 1, scl, 1f);
+			PerformLogic(cells, center, SortedIndex + 1, cellCount - 1, scl, 1f);
 
 		}
 

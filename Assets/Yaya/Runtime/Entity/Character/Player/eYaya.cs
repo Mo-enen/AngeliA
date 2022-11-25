@@ -11,34 +11,19 @@ namespace Yaya {
 
 		// Const
 		private static readonly int FOOTSTEP_CODE = "YayaFootstep".AngeHash();
-		private static readonly int GUAGUA_CODE = typeof(eGuaGua).AngeHash();
 
 		// Data
 		private int LastStartRunFrame = int.MinValue;
-		private eGuaGua GuaGua = null;
 
 
 		// MSG
-		public override void OnInitialize () {
-			base.OnInitialize();
-			GuaGua = Game.Current.PeekOrGetEntity<eGuaGua>();
-		}
-
-
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			Update_Gua();
 			Update_Run();
 		}
 
 
-		private void Update_Gua () {
-			if (GuaGua == null) return;
-			// Respawn GuaGua when: Grounded & Fed & GuaGua Inactive
-			if (IsGrounded && !GuaGua.Active && GuaGua.Fed) {
-				SummonGuaGua();
-			}
-		}
+		public override eMascot GetMascot () => Game.Current.PeekOrGetEntity<eGuaGua>();
 
 
 		private void Update_Run () {
@@ -59,16 +44,6 @@ namespace Yaya {
 					}
 				}
 			}
-		}
-
-
-		// API
-		public void SummonGuaGua (bool fedOnly = false) {
-			if (fedOnly && !GuaGua.Fed) return;
-			if (!GuaGua.Active) {
-				Game.Current.TryAddEntity(GUAGUA_CODE, X, Y, out _);
-			}
-			GuaGua.ReturnToPrevPos();
 		}
 
 

@@ -5,7 +5,7 @@ using Moenen.Standard;
 
 
 namespace Yaya {
-	public partial class Movement : ISerializationCallbackReceiver {
+	public partial class CharacterMovement : ISerializationCallbackReceiver {
 
 
 
@@ -76,6 +76,9 @@ namespace Yaya {
 		public BuffInt FlyGravityRiseRate { get; private set; } = new();
 		public BuffInt FlyGravityFallRate { get; private set; } = new();
 		public BuffInt FlyFallSpeed { get; private set; } = new();
+		public BuffInt FlyGlideSpeed { get; private set; } = new();
+		public BuffInt FlyGlideAcceleration { get; private set; } = new();
+		public BuffInt FlyGlideDecceleration { get; private set; } = new();
 
 		// Ser
 #pragma warning disable
@@ -145,6 +148,10 @@ namespace Yaya {
 		[SerializeField] int _FlyGravityRiseRate = 800;
 		[SerializeField] int _FlyGravityFallRate = 200;
 		[SerializeField] int _FlyFallSpeed = 12;
+		[SerializeField] int _FlyGlideSpeed = 36;
+		[SerializeField] int _FlyGlideAcceleration = 2;
+		[SerializeField] int _FlyGlideDecceleration = 1;
+
 #pragma warning restore
 
 

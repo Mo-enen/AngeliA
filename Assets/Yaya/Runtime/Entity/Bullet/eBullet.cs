@@ -48,7 +48,7 @@ namespace Yaya {
 			// Collide Check
 			if (DestroyOnCollide) {
 
-
+				
 			}
 
 			// Hit Receiver Check

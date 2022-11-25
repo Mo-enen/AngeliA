@@ -42,7 +42,7 @@ namespace Yaya {
 		public int SleepFrame { get; private set; } = 0;
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
 		public MovementState MovementState { get; protected set; } = MovementState.Idle;
-		public Movement Movement { get; private set; } = null;
+		public CharacterMovement Movement { get; private set; } = null;
 		public Health Health { get; private set; } = null;
 		public Action Action { get; private set; } = null;
 		public Attackness Attackness { get; private set; } = null;
@@ -63,7 +63,7 @@ namespace Yaya {
 			string typeName = GetType().Name;
 			if (typeName[0] == 'e') typeName = typeName[1..];
 
-			Movement = AngeUtil.LoadOrCreateMeta<Movement>(typeName, "Movement");
+			Movement = AngeUtil.LoadOrCreateMeta<CharacterMovement>(typeName, "Movement");
 			Renderer = AngeUtil.LoadOrCreateMeta<CharacterRenderer>(typeName, "Renderer");
 			Action = AngeUtil.LoadOrCreateMeta<Action>(typeName, "Action");
 			Health = AngeUtil.LoadOrCreateMeta<Health>(typeName, "Health");

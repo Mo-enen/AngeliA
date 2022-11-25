@@ -19,10 +19,10 @@ namespace Yaya {
 
 		#region --- VAR ---
 
+
 		// Api
 		public static ePlayer Current { get; private set; } = null;
-		public int AimViewX { get; private set; } = 0;
-		public int AimViewY { get; private set; } = 0;
+		public eMascot Mascot { get; private set; } = null;
 
 		// Data
 		private static readonly HitInfo[] Collects = new HitInfo[8];
@@ -31,7 +31,6 @@ namespace Yaya {
 		private int DownDownFrame = int.MinValue;
 		private int UpDownFrame = int.MinValue;
 		private int AttackRequiringFrame = int.MinValue;
-		private int PlayerLastGroundedY = 0;
 
 
 		#endregion
@@ -40,6 +39,12 @@ namespace Yaya {
 
 
 		#region --- MSG ---
+
+
+		public override void OnInitialize () {
+			base.OnInitialize();
+			Mascot = GetMascot();
+		}
 
 
 		public override void OnActived () {
@@ -76,9 +81,7 @@ namespace Yaya {
 
 			// Stop when Not Playing
 			if (Game.Current.State != GameState.Play) {
-				if (Current != null) {
-					Current.Movement.Stop();
-				}
+				if (Current != null) Current.Movement.Stop();
 				return;
 			}
 
@@ -87,10 +90,9 @@ namespace Yaya {
 
 			// Update Player
 			if (Current == null) return;
-			bool hasRoute = FrameTask.HasTask(Const.TASK_ROUTE);
 			switch (Current.CharacterState) {
 				case CharacterState.GamePlay:
-					if (!hasRoute) {
+					if (!FrameTask.HasTask(Const.TASK_ROUTE)) {
 						FrameUpdate_Move();
 						FrameUpdate_JumpDashPound();
 						FrameUpdate_Action_Attack();
@@ -99,14 +101,17 @@ namespace Yaya {
 					}
 					break;
 				case CharacterState.Sleep:
-					if (!hasRoute) {
+					if (!FrameTask.HasTask(Const.TASK_ROUTE)) {
 						FrameUpdate_Sleep();
 					}
 					break;
 			}
-			if (!hasRoute) {
-				FrameUpdate_View();
+
+			// Mascot
+			if (Mascot != null && IsGrounded && !Mascot.Active && Mascot.FollowOwner) {
+				Mascot.Summon();
 			}
+
 		}
 
 
@@ -282,38 +287,6 @@ namespace Yaya {
 		}
 
 
-		private void FrameUpdate_View () {
-
-			const int LINGER_RATE = 32;
-			var viewRect = Game.Current.ViewRect;
-			bool flying = Current.Movement.IsFlying;
-			int playerX = Current.X;
-			int playerY = Current.Y;
-			bool inAir = Current.InAir;
-
-			if (!inAir || flying) PlayerLastGroundedY = playerY;
-			int linger = viewRect.width * LINGER_RATE / 1000;
-			int centerX = viewRect.x + viewRect.width / 2;
-			if (playerX < centerX - linger) {
-				AimViewX = playerX + linger - viewRect.width / 2;
-			} else if (playerX > centerX + linger) {
-				AimViewX = playerX - linger - viewRect.width / 2;
-			}
-			AimViewY = !inAir || flying || playerY < PlayerLastGroundedY ? GetCameraY(playerY, viewRect.height) : AimViewY;
-			Game.Current.SetViewPositionDely(AimViewX, AimViewY, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_PLAYER);
-
-			// Clamp
-			if (!viewRect.Contains(playerX, playerY)) {
-				if (playerX >= viewRect.xMax) AimViewX = playerX - viewRect.width + 1;
-				if (playerX <= viewRect.xMin) AimViewX = playerX - 1;
-				if (playerY >= viewRect.yMax) AimViewY = playerY - viewRect.height + 1;
-				if (playerY <= viewRect.yMin) AimViewY = playerY - 1;
-				Game.Current.SetViewPositionDely(AimViewX, AimViewY, 1000, YayaConst.VIEW_PRIORITY_PLAYER + 1);
-			}
-
-		}
-
-
 		#endregion
 
 
@@ -336,19 +309,10 @@ namespace Yaya {
 		}
 
 
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
-		private int GetCameraY (int playerY, int viewHeight) => playerY - viewHeight * 382 / 1000;
+		public abstract eMascot GetMascot ();
 
 
 		#endregion
-
 
 
 

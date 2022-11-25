@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 namespace Yaya {
-	[EntityAttribute.Capacity(32)]
+	[EntityAttribute.Capacity(12)]
 	public class eYayaPaw : eBullet {
 
 		
