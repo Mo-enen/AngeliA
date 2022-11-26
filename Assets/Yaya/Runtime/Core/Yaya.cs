@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 
 namespace Yaya {
-	public class Yaya : Game {
+	public class Yaya : IInitialize {
 
 
 
@@ -15,18 +15,17 @@ namespace Yaya {
 
 
 		// Api
-		public static new Yaya Current => Game.Current as Yaya;
-		public new YayaWorldSquad WorldSquad_Behind => base.WorldSquad_Behind as YayaWorldSquad;
-		public new YayaWorldSquad WorldSquad => base.WorldSquad as YayaWorldSquad;
-		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
+		public static Yaya Current { get; private set; } = null;
+		public YayaWorldSquad WorldSquad { get; private set; } = null;
+		public YayaWorldSquad WorldSquad_Behind { get; private set; } = null;
 		public int AimViewX { get; private set; } = 0;
 		public int AimViewY { get; private set; } = 0;
 
 		// Data
 		private static readonly HitInfo[] c_DamageCheck = new HitInfo[16];
-		private eGamePadUI GamePadUI = null;
-		private eControlHintUI ControlHintUI = null;
-		private ePauseMenu PauseMenu = null;
+		private readonly eGamePadUI GamePadUI = null;
+		private readonly eControlHintUI ControlHintUI = null;
+		private readonly ePauseMenu PauseMenu = null;
 		private bool CutsceneLock = true;
 		private int PlayerLastGroundedY = 0;
 
@@ -44,38 +43,34 @@ namespace Yaya {
 
 
 		// Init
-		protected override void Initialize () {
+		private Yaya () {
 
-			base.Initialize();
+			var game = Game.Current;
+			if (game == null) return;
+
+			game.OnFrameUpdate -= FrameUpdate;
+			game.OnFrameUpdate += FrameUpdate;
+
+			game.OnPauselessUpdate -= PauselessUpdate;
+			game.OnPauselessUpdate += PauselessUpdate;
+
+			// World
+			game.WorldSquad = WorldSquad = new YayaWorldSquad();
+			game.WorldSquad_Behind = WorldSquad_Behind = new YayaWorldSquad(true);
+			game.BeforeViewZChange -= YayaBeforeViewZChange;
+			game.BeforeViewZChange += YayaBeforeViewZChange;
 
 			// UI Entity
-			GamePadUI = PeekOrGetEntity<eGamePadUI>();
-			PauseMenu = PeekOrGetEntity<ePauseMenu>();
-			ControlHintUI = PeekOrGetEntity<eControlHintUI>();
+			GamePadUI = game.PeekOrGetEntity<eGamePadUI>();
+			PauseMenu = game.PeekOrGetEntity<ePauseMenu>();
+			ControlHintUI = game.PeekOrGetEntity<eControlHintUI>();
 
 			// Quit
-			Application.wantsToQuit += () => {
-#if UNITY_EDITOR
-				if (UnityEditor.EditorApplication.isPlaying) return true;
-#endif
-				if (State == GameState.Pause && PauseMenu.QuitMode) {
-					return true;
-				} else {
-					State = GameState.Pause;
-					TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
-					PauseMenu.SetAsQuitMode();
-					return false;
-				}
-			};
-
-			// Start the Game !!
-			if (FrameTask.TryAddToLast(tOpening.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tOpening oTask) {
-				oTask.ViewX = YayaConst.OPENING_X;
-				oTask.ViewYStart = YayaConst.OPENING_Y;
-				oTask.ViewYEnd = YayaConst.OPENING_END_Y;
-			}
+			Application.wantsToQuit -= OnQuit;
+			Application.wantsToQuit += OnQuit;
 
 			// Custom Keys
+			FrameInput.AddCustomKey(Key.Digit0);
 			FrameInput.AddCustomKey(Key.Digit1);
 			FrameInput.AddCustomKey(Key.Digit2);
 			FrameInput.AddCustomKey(Key.Digit3);
@@ -85,28 +80,38 @@ namespace Yaya {
 			FrameInput.AddCustomKey(Key.Digit7);
 			FrameInput.AddCustomKey(Key.Digit8);
 			FrameInput.AddCustomKey(Key.Digit9);
-			FrameInput.AddCustomKey(Key.Digit0);
+
+			// Start the Game !!
+			if (FrameTask.TryAddToLast(tOpening.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tOpening oTask) {
+				oTask.ViewX = YayaConst.OPENING_X;
+				oTask.ViewYStart = YayaConst.OPENING_Y;
+				oTask.ViewYEnd = YayaConst.OPENING_END_Y;
+			}
 
 		}
 
 
+		public static void Initialize () => Current = new Yaya();
+
+
 		// Update
-		protected override void FrameUpdate () {
+		private void FrameUpdate () {
 
-			base.FrameUpdate();
-			Update_View();
-			Update_Damage();
-			Update_HintUI();
+			var game = Game.Current;
+			if (game == null) return;
 
+			Update_View(game);
+			Update_Damage(game);
+			Update_HintUI(game);
 
 			if (FrameInput.CustomKeyDown(Key.Digit1)) {
-				SetViewZ(ViewZ + 1);
+				game.SetViewZ(game.ViewZ + 1);
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit2)) {
-				SetViewZ(ViewZ - 1);
+				game.SetViewZ(game.ViewZ - 1);
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit3)) {
-				PeekOrGetEntity<eGuaGua>().FollowOwner = true;
+				game.PeekOrGetEntity<eGuaGua>().FollowOwner = true;
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit4)) {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
@@ -124,7 +129,7 @@ namespace Yaya {
 		}
 
 
-		private void Update_View () {
+		private void Update_View (Game game) {
 
 			var player = ePlayer.Current;
 			if (FrameTask.HasTask(Const.TASK_ROUTE)) return;
@@ -137,33 +142,33 @@ namespace Yaya {
 			bool inAir = player.InAir;
 
 			if (!inAir || flying) PlayerLastGroundedY = playerY;
-			int linger = ViewRect.width * LINGER_RATE / 1000;
-			int centerX = ViewRect.x + ViewRect.width / 2;
+			int linger = game.ViewRect.width * LINGER_RATE / 1000;
+			int centerX = game.ViewRect.x + game.ViewRect.width / 2;
 			if (playerX < centerX - linger) {
-				AimViewX = playerX + linger - ViewRect.width / 2;
+				AimViewX = playerX + linger - game.ViewRect.width / 2;
 			} else if (playerX > centerX + linger) {
-				AimViewX = playerX - linger - ViewRect.width / 2;
+				AimViewX = playerX - linger - game.ViewRect.width / 2;
 			}
-			AimViewY = !inAir || flying || playerY < PlayerLastGroundedY ? playerY - ViewRect.height * 382 / 1000 : AimViewY;
-			SetViewPositionDely(AimViewX, AimViewY, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_PLAYER);
+			AimViewY = !inAir || flying || playerY < PlayerLastGroundedY ? playerY - game.ViewRect.height * 382 / 1000 : AimViewY;
+			game.SetViewPositionDely(AimViewX, AimViewY, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_PLAYER);
 
 			// Clamp
-			if (!ViewRect.Contains(playerX, playerY)) {
-				if (playerX >= ViewRect.xMax) AimViewX = playerX - ViewRect.width + 1;
-				if (playerX <= ViewRect.xMin) AimViewX = playerX - 1;
-				if (playerY >= ViewRect.yMax) AimViewY = playerY - ViewRect.height + 1;
-				if (playerY <= ViewRect.yMin) AimViewY = playerY - 1;
-				SetViewPositionDely(AimViewX, AimViewY, 1000, YayaConst.VIEW_PRIORITY_PLAYER + 1);
+			if (!game.ViewRect.Contains(playerX, playerY)) {
+				if (playerX >= game.ViewRect.xMax) AimViewX = playerX - game.ViewRect.width + 1;
+				if (playerX <= game.ViewRect.xMin) AimViewX = playerX - 1;
+				if (playerY >= game.ViewRect.yMax) AimViewY = playerY - game.ViewRect.height + 1;
+				if (playerY <= game.ViewRect.yMin) AimViewY = playerY - 1;
+				game.SetViewPositionDely(AimViewX, AimViewY, 1000, YayaConst.VIEW_PRIORITY_PLAYER + 1);
 			}
 
 		}
 
 
-		private void Update_Damage () {
-			if (State != GameState.Play) return;
-			int len = EntityLen;
+		private void Update_Damage (Game game) {
+			if (game.State != GameState.Play) return;
+			int len = game.EntityLen;
 			for (int i = 0; i < len; i++) {
-				var entity = StagedEntities[i];
+				var entity = game.StagedEntities[i];
 				if (entity is not IDamageReceiver receiver) continue;
 				int count = YayaCellPhysics.OverlapAll_Damage(
 					c_DamageCheck, entity.Rect, entity, entity is ePlayer
@@ -175,7 +180,7 @@ namespace Yaya {
 		}
 
 
-		private void Update_HintUI () {
+		private void Update_HintUI (Game game) {
 
 			if (FrameInput.CustomKeyDown(Key.F2)) {
 				if (ShowGamePadUI.Value != ShowControlHint.Value) {
@@ -197,7 +202,7 @@ namespace Yaya {
 			if (ShowGamePadUI.Value) {
 				// Active
 				if (!GamePadUI.Active) {
-					TryAddEntity(GamePadUI.TypeID, 0, 0, out _);
+					game.TryAddEntity(GamePadUI.TypeID, 0, 0, out _);
 					GamePadUI.X = 12;
 					GamePadUI.Y = 12;
 					GamePadUI.Width = 660;
@@ -225,7 +230,7 @@ namespace Yaya {
 
 				// Spawn
 				if (!ControlHintUI.Active) {
-					TryAddEntity(ControlHintUI.TypeID, 0, 0, out _);
+					game.TryAddEntity(ControlHintUI.TypeID, 0, 0, out _);
 					ControlHintUI.X = 32;
 					ControlHintUI.Y = 32;
 				}
@@ -247,17 +252,19 @@ namespace Yaya {
 
 
 		// Override
-		protected override void PauselessUpdate () {
-			base.PauselessUpdate();
+		private void PauselessUpdate () {
+
+			var game = Game.Current;
+			if (game == null) return;
 
 			// Pausing
-			if (State == GameState.Pause) {
+			if (game.State == GameState.Pause) {
 				// Update Entity
 				if (ControlHintUI.Active) ControlHintUI.FrameUpdate();
 				if (GamePadUI.Active) GamePadUI.FrameUpdate();
 				if (PauseMenu.Active) PauseMenu.FrameUpdate();
 				if (!PauseMenu.Active) {
-					TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
+					game.TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
 					PauseMenu.SetAsPauseMode();
 				}
 			} else {
@@ -266,9 +273,9 @@ namespace Yaya {
 
 			// Cutscene Hint
 			if (
-				State == GameState.Cutscene &&
+				game.State == GameState.Cutscene &&
 				Cutscene.IsPlayingVideo &&
-				GlobalFrame > Cutscene.StartFrame + GameMeta.CutsceneVideoFadeoutDuration
+				Game.GlobalFrame > Cutscene.StartFrame + game.GameMeta.CutsceneVideoFadeoutDuration
 			) {
 				if (!CutsceneLock) {
 					if (ControlHintUI.Active) {
@@ -287,21 +294,38 @@ namespace Yaya {
 
 			// Start Key to Switch State
 			if (FrameInput.GetGameKeyDown(GameKey.Start)) {
-				switch (State) {
+				switch (game.State) {
 					case GameState.Play:
-						State = GameState.Pause;
+						game.State = GameState.Pause;
 						break;
 					case GameState.Pause:
-						State = GameState.Play;
+						game.State = GameState.Play;
 						break;
 					case GameState.Cutscene:
 						if (!CutsceneLock || Cutscene.IsPlayingTask) {
-							State = GameState.Play;
+							game.State = GameState.Play;
 						}
 						break;
 				}
 			}
 
+		}
+
+
+		private bool OnQuit () {
+#if UNITY_EDITOR
+			if (UnityEditor.EditorApplication.isPlaying) return true;
+#endif
+			var game = Game.Current;
+			if (game == null) return true;
+			if (game.State == GameState.Pause && PauseMenu.QuitMode) {
+				return true;
+			} else {
+				game.State = GameState.Pause;
+				game.TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
+				PauseMenu.SetAsQuitMode();
+				return false;
+			}
 		}
 
 
@@ -311,9 +335,6 @@ namespace Yaya {
 
 
 		#region --- PRO ---
-
-
-		protected override WorldSquad CreateWorldSquad () => new YayaWorldSquad();
 
 
 		public void SetViewZDelay (int newZ) {
@@ -326,8 +347,7 @@ namespace Yaya {
 		}
 
 
-		protected override void BeforeViewZChange (int newZ) {
-			base.BeforeViewZChange(newZ);
+		private void YayaBeforeViewZChange (int newZ) {
 			// Player
 			var current = ePlayer.Current;
 			if (current != null && current.Active) {

@@ -17,12 +17,12 @@ namespace Yaya {
 		public override TaskResult FrameUpdate () {
 			if (LocalFrame == 0) {
 				// Player
-				var yaya = Yaya.Current;
+				var game = Game.Current;
 				var player = ePlayer.Current;
 				if (player != null) {
-					player.Renderer.EnterDoor(Duration, NewZ < yaya.ViewZ);
+					player.Renderer.EnterDoor(Duration, NewZ < game.ViewZ);
 				}
-				Front = NewZ > yaya.ViewZ;
+				Front = NewZ > game.ViewZ;
 			}
 			if (LocalFrame == Duration / 2) {
 				// Set View Z
@@ -30,9 +30,9 @@ namespace Yaya {
 			}
 			if (LocalFrame == Duration / 2 + 1) {
 				// Add Effect
-				var yaya = Yaya.Current;
-				int para = yaya.GameMeta.SquadBehindParallax;
-				byte alpha = yaya.GameMeta.SquadBehindAlpha;
+				var game = Game.Current;
+				int para = game.GameMeta.SquadBehindParallax;
+				byte alpha = game.GameMeta.SquadBehindAlpha;
 				var effect = fSquadTransition.Instance;
 				effect.Duration = Duration / 2;
 				effect.Scale = Front ? 1000f / para : para / 1000f;
@@ -104,6 +104,9 @@ namespace Yaya {
 
 
 		// API
+		public YayaWorldSquad (bool behind = false) : base(behind) { }
+
+
 		protected override void DrawBackgroundBlock (int id, int unitX, int unitY) {
 			base.DrawBackgroundBlock(id, unitX, unitY);
 			if (!Behind) {
@@ -132,23 +135,10 @@ namespace Yaya {
 
 		protected override void DrawLevelBlock (int id, int unitX, int unitY) {
 			base.DrawLevelBlock(id, unitX, unitY);
-			if (!Behind) {
-				// Collider
-				if (!CellRenderer.TryGetSprite(id, out var sp)) return;
-				bool isTrigger = false;
-				int tag = 0;
-				if (CellRenderer.TryGetMeta(id, out var meta)) {
-					isTrigger = meta.IsTrigger;
-					tag = meta.Tag;
-				}
-				var rect = new RectInt(
-					unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL
-				).Shrink(
-					sp.GlobalBorder.Left, sp.GlobalBorder.Right, sp.GlobalBorder.Down, sp.GlobalBorder.Up
-				);
-				CellPhysics.FillBlock(YayaConst.LAYER_LEVEL, id, rect, isTrigger, tag);
-				// Damage
-				if (tag == YayaConst.DAMAGE_TAG) {
+			// Damage
+			if (CellRenderer.TryGetMeta(id, out var meta)) {
+				if (meta.Tag == YayaConst.DAMAGE_TAG) {
+					var rect = new RectInt(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 					YayaCellPhysics.FillBlock_Damage(id, rect.Expand(1), true, 1);
 				}
 			}

@@ -18,8 +18,6 @@ namespace Yaya {
 		public const int PASSOUT_WAIT = 48;
 
 		// Physics
-		public const int PHYSICS_LAYER_COUNT = 5;
-
 		public const int LAYER_LEVEL = 0;
 		public const int LAYER_ENVIRONMENT = 1;
 		public const int LAYER_ITEM = 2;

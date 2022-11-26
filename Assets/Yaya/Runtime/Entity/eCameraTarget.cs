@@ -92,11 +92,12 @@ namespace Yaya {
 			);
 
 			// Clamp Camera
-			var yayaGame = Yaya.Current;
+			var game = Game.Current;
+			var yaya = Yaya.Current;
 			var cameraRect = CellRenderer.CameraRect;
-			int viewOffsetX = yayaGame.ViewRect.x - CellRenderer.CameraRect.x;
-			cameraRect.x = yayaGame.AimViewX - viewOffsetX;
-			cameraRect.y = yayaGame.AimViewY;
+			int viewOffsetX = game.ViewRect.x - CellRenderer.CameraRect.x;
+			cameraRect.x = yaya.AimViewX - viewOffsetX;
+			cameraRect.y = yaya.AimViewY;
 			if (targetRect.width > cameraRect.width) {
 				cameraRect.x = cameraRect.x.Clamp(targetRect.xMax - cameraRect.width, targetRect.xMin);
 			} else {
