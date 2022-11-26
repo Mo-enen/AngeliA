@@ -118,7 +118,6 @@ namespace Yaya {
 		private void FrameUpdate_Respawn () {
 
 			// Spawn Player when No Player Entity
-			if (Current != null && !Current.Active) Current = null;
 			if (Current == null && !FrameTask.HasTask(Const.TASK_ROUTE)) {
 				var center = CellRenderer.CameraRect.CenterInt();
 				Current = TrySpawnPlayer(center.x, center.y);
@@ -137,8 +136,6 @@ namespace Yaya {
 					oTask.ViewX = YayaConst.OPENING_X;
 					oTask.ViewYStart = YayaConst.OPENING_Y;
 					oTask.ViewYEnd = YayaConst.OPENING_END_Y;
-					oTask.RemovePlayerAtStart = true;
-					oTask.SpawnPlayerAtStart = true;
 				}
 			}
 		}

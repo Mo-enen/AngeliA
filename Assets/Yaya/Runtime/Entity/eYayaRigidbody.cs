@@ -10,28 +10,9 @@ namespace Yaya {
 
 		public override int CollisionMask => YayaConst.MASK_SOLID;
 		protected override int LevelMask => YayaConst.MASK_LEVEL;
-		protected override int SpeedScale => InWater ? WaterSpeedScale : base.SpeedScale;
+		protected override int SpeedScale => InWater ? YayaConst.WATER_SPEED_LOSE : base.SpeedScale;
 		public bool InWater { get; set; } = false;
 		public bool InSand { get; set; } = false;
-
-		private static int WaterSpeedScale = 400;
-		private static int QuickSandJumpoutSpeed = 48;
-		private static int QuickSandMaxRunSpeed = 4;
-		private static int QuickSandSinkSpeed = 1;
-		private static int QuickSandJumpSpeed = 12;
-
-
-
-		public static new void Initialize () {
-			var yaya = Game.Current as Yaya;
-			if (yaya == null) return;
-			var meta = yaya.YayaMeta;
-			WaterSpeedScale = meta.WaterSpeedLose;
-			QuickSandJumpoutSpeed = meta.QuickSandJumpoutSpeed;
-			QuickSandMaxRunSpeed = meta.QuickSandMaxRunSpeed;
-			QuickSandSinkSpeed = meta.QuickSandSinkSpeed;
-			QuickSandJumpSpeed = meta.QuickSandJumpSpeed;
-		}
 
 
 		public override void OnActived () {
@@ -51,17 +32,17 @@ namespace Yaya {
 
 			// Quicksand
 			if (InSand) {
-				VelocityX = VelocityX.Clamp(-QuickSandMaxRunSpeed, QuickSandMaxRunSpeed);
+				VelocityX = VelocityX.Clamp(-YayaConst.QUICK_SAND_MAX_RUN_SPEED, YayaConst.QUICK_SAND_MAX_RUN_SPEED);
 			}
 
 			// Out Sand
 			if (prevInSand && !InSand && VelocityY > 0) {
-				VelocityY = Mathf.Max(VelocityY, QuickSandJumpoutSpeed);
+				VelocityY = Mathf.Max(VelocityY, YayaConst.QUICK_SAND_JUMPOUT_SPEED);
 			}
 
 			// Quicksand
 			if (InSand) {
-				VelocityY = VelocityY.Clamp(-QuickSandSinkSpeed, QuickSandJumpSpeed);
+				VelocityY = VelocityY.Clamp(-YayaConst.QUICK_SAND_SINK_SPEED, YayaConst.QUICK_SAND_JUMP_SPEED);
 			}
 
 		}

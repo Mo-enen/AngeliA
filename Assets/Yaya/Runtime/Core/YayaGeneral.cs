@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
 using UnityEngine.InputSystem.LowLevel;
+using System.Data;
 
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
@@ -36,6 +37,12 @@ namespace Yaya {
 		public const int MASK_SOLID = MASK_LEVEL | MASK_ENVIRONMENT | MASK_CHARACTER;
 		public const int MASK_MAP = MASK_LEVEL | MASK_ENVIRONMENT;
 		public const int MASK_ENTITY = MASK_ENVIRONMENT | MASK_ITEM | MASK_CHARACTER;
+
+		public const int WATER_SPEED_LOSE = 400;
+		public const int QUICK_SAND_JUMPOUT_SPEED = 48;
+		public const int QUICK_SAND_MAX_RUN_SPEED = 4;
+		public const int QUICK_SAND_SINK_SPEED = 1;
+		public const int QUICK_SAND_JUMP_SPEED = 12;
 
 		// Tag
 		public static readonly int CLIMB_TAG = "Climb".AngeHash();
@@ -72,20 +79,10 @@ namespace Yaya {
 			{ GamepadButton.LeftShoulder, "k_Gamepad LeftShoulder".AngeHash()},
 			{ GamepadButton.RightShoulder, "k_Gamepad RightShoulder".AngeHash()},
 		};
+		public const int SQUAD_TRANSITION_DURATION = 32;
+
 	}
 
-
-
-	[System.Serializable]
-	public class YayaMeta {
-		public int WaterSpeedLose = 400;
-		public int QuickSandJumpoutSpeed = 48;
-		public int QuickSandMaxRunSpeed = 4;
-		public int QuickSandSinkSpeed = 1;
-		public int QuickSandJumpSpeed = 12;
-		public int SquadTransitionDuration = 32;
-		public AnimationCurve SquadTransitionCurve = null;
-	}
 
 
 	[System.AttributeUsage(System.AttributeTargets.Class)]

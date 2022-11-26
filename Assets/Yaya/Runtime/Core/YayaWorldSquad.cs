@@ -33,12 +33,10 @@ namespace Yaya {
 				var yaya = Yaya.Current;
 				int para = yaya.GameMeta.SquadBehindParallax;
 				byte alpha = yaya.GameMeta.SquadBehindAlpha;
-				var curve = yaya.YayaMeta.SquadTransitionCurve;
 				var effect = fSquadTransition.Instance;
 				effect.Duration = Duration / 2;
 				effect.Scale = Front ? 1000f / para : para / 1000f;
 				effect.Alpha = alpha / 255f;
-				effect.Curve = curve;
 				CellRenderer.RemoveEffect<fSquadTransition>();
 				CellRenderer.AddEffect(effect);
 			}
@@ -57,7 +55,6 @@ namespace Yaya {
 
 		public float Scale { get; set; } = 1f;
 		public float Alpha { get; set; } = 1f;
-		public AnimationCurve Curve { get; set; } = null;
 
 
 		public override void Perform (Cell[] cells, int cellCount, int layerIndex) {
@@ -65,8 +62,9 @@ namespace Yaya {
 			if (layerIndex == CellRenderer.LayerCount - 1) return;
 
 			float z01 = Mathf.InverseLerp(0, Duration, LocalFrame);
+			float z10 = 1f - z01;
 			Vector2 center = CellRenderer.CameraRect.center;
-			var scl = Mathf.LerpUnclamped(Scale, 1f, Curve.Evaluate(z01));
+			var scl = Mathf.LerpUnclamped(Scale, 1f, 1f - z10 * z10);
 
 			// Behind
 			PerformLogic(

@@ -19,8 +19,6 @@ namespace Yaya {
 		public int ViewX = 0;
 		public int ViewYStart = 0;
 		public int ViewYEnd = 0;
-		public bool SpawnPlayerAtStart = false;
-		public bool RemovePlayerAtStart = false;
 
 		// Data
 		private int SkipFrame = int.MaxValue;
@@ -41,7 +39,8 @@ namespace Yaya {
 				new Color32(0, 0, 0, 255)
 			).Z = int.MaxValue;
 			// Remove Player
-			if (RemovePlayerAtStart && game.TryGetEntity<ePlayer>(out var player)) {
+			var player = ePlayer.Current;
+			if (player != null) {
 				player.Active = false;
 				player.SetCharacterState(CharacterState.GamePlay);
 			}
@@ -52,7 +51,7 @@ namespace Yaya {
 			int localFrame = LocalFrame;
 			var game = Game.Current;
 			// Spawn Player
-			if (localFrame == 2 && SpawnPlayerAtStart) {
+			if (localFrame == 2) {
 				var player = ePlayer.TrySpawnPlayer(ViewX, ViewYEnd);
 				if (player != null) {
 					if (game.TryGetEntityNearby<eBed>(new(ViewX, ViewYEnd), out var bed)) {

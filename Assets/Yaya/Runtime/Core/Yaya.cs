@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
 using UnityEngine.InputSystem;
-using UnityEngine.Audio;
-using System.Reflection;
+
 
 namespace Yaya {
-	public partial class Yaya : Game {
+	public class Yaya : Game {
 
 
 
@@ -20,12 +19,8 @@ namespace Yaya {
 		public new YayaWorldSquad WorldSquad_Behind => base.WorldSquad_Behind as YayaWorldSquad;
 		public new YayaWorldSquad WorldSquad => base.WorldSquad as YayaWorldSquad;
 		public override int PhysicsLayerCount => YayaConst.PHYSICS_LAYER_COUNT;
-		public YayaMeta YayaMeta => m_YayaMeta;
 		public int AimViewX { get; private set; } = 0;
 		public int AimViewY { get; private set; } = 0;
-
-		// Ser
-		[SerializeField] YayaMeta m_YayaMeta = null;
 
 		// Data
 		private static readonly HitInfo[] c_DamageCheck = new HitInfo[16];
@@ -48,19 +43,6 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-#if UNITY_EDITOR
-		protected override void Reset () {
-			base.Reset();
-			m_YayaMeta = new YayaMeta() {
-				SquadTransitionCurve = new AnimationCurve(new Keyframe[2] {
-					new(0f, 0f, 3.73f, 3.73f, 0f, 0.3f),
-					new(1f, 1f, 0f, 0f, 0f, 0f),
-				}),
-			};
-		}
-#endif
-
-
 		// Init
 		protected override void Initialize () {
 
@@ -71,16 +53,26 @@ namespace Yaya {
 			PauseMenu = PeekOrGetEntity<ePauseMenu>();
 			ControlHintUI = PeekOrGetEntity<eControlHintUI>();
 
-			// Pipeline
-			Initialize_Quit();
+			// Quit
+			Application.wantsToQuit += () => {
+#if UNITY_EDITOR
+				if (UnityEditor.EditorApplication.isPlaying) return true;
+#endif
+				if (State == GameState.Pause && PauseMenu.QuitMode) {
+					return true;
+				} else {
+					State = GameState.Pause;
+					TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
+					PauseMenu.SetAsQuitMode();
+					return false;
+				}
+			};
 
 			// Start the Game !!
 			if (FrameTask.TryAddToLast(tOpening.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tOpening oTask) {
 				oTask.ViewX = YayaConst.OPENING_X;
 				oTask.ViewYStart = YayaConst.OPENING_Y;
 				oTask.ViewYEnd = YayaConst.OPENING_END_Y;
-				oTask.SpawnPlayerAtStart = true;
-				oTask.RemovePlayerAtStart = true;
 			}
 
 			// Custom Keys
@@ -95,23 +87,6 @@ namespace Yaya {
 			FrameInput.AddCustomKey(Key.Digit9);
 			FrameInput.AddCustomKey(Key.Digit0);
 
-		}
-
-
-		private void Initialize_Quit () {
-			Application.wantsToQuit += () => {
-#if UNITY_EDITOR
-				if (UnityEditor.EditorApplication.isPlaying) return true;
-#endif
-				if (State == GameState.Pause && PauseMenu.QuitMode) {
-					return true;
-				} else {
-					State = GameState.Pause;
-					TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
-					PauseMenu.SetAsQuitMode();
-					return false;
-				}
-			};
 		}
 
 
@@ -330,13 +305,6 @@ namespace Yaya {
 		}
 
 
-		protected override void BeforeRendering () {
-			base.BeforeRendering();
-
-
-		}
-
-
 		#endregion
 
 
@@ -352,7 +320,7 @@ namespace Yaya {
 			if (FrameTask.HasTask(Const.TASK_ROUTE)) return;
 			// Add Task
 			if (FrameTask.TryAddToLast(tSetViewZTask.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tSetViewZTask svTask) {
-				svTask.Duration = m_YayaMeta.SquadTransitionDuration;
+				svTask.Duration = YayaConst.SQUAD_TRANSITION_DURATION;
 				svTask.NewZ = newZ;
 			}
 		}
