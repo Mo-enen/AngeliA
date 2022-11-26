@@ -22,5 +22,11 @@ namespace Yaya {
 		}
 
 
+		protected override void DrawHpBar () {
+			base.DrawHpBar();
+
+		}
+
+
 	}
 }

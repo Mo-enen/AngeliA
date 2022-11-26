@@ -364,6 +364,9 @@ namespace Yaya {
 			var current = ePlayer.Current;
 			if (current != null && current.Active) {
 				current.Renderer.Bounce();
+				if (current.Mascot != null && current.Mascot.FollowOwner) {
+					current.Mascot.Summon();
+				}
 			}
 		}
 

@@ -84,6 +84,17 @@ namespace Yaya {
 		}
 
 
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			if (
+				Owner != null && Owner.Active && FollowOwner &&
+				Owner.CharacterState == CharacterState.GamePlay
+			) {
+				DrawHpBar();
+			}
+		}
+
+
 		private void Update_FollowOwner () {
 
 			if (!Owner.Active) return;
@@ -101,8 +112,6 @@ namespace Yaya {
 					PosChain[i] = new(targetX, targetY);
 				}
 				PosChainStartIndex = 0;
-				X = targetX;
-				Y = targetY;
 			}
 			var currentPos = PosChain[PosChainStartIndex];
 			if (Util.SqrtDistance(targetX, targetY, currentPos.x, currentPos.y) > SEG_DIS * SEG_DIS) {
@@ -118,7 +127,9 @@ namespace Yaya {
 		}
 
 
+		// Override
 		protected virtual void Update_FreeMove () { }
+		protected virtual void DrawHpBar () { }
 
 
 		#endregion

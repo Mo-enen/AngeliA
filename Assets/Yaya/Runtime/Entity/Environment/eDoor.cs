@@ -85,9 +85,8 @@ namespace Yaya {
 			var player = ePlayer.Current;
 
 			// Alpha
-			TargetTint.a = (byte)(
-				IsFrontDoor && !Open && player != null && player.Rect.Overlaps(Rect) ? 196 : 255
-			);
+			bool needTint = IsFrontDoor && !Open && player != null && player.Rect.Overlaps(Rect);
+			TargetTint.a = (byte)(needTint ? 196 : 255);
 
 			// Draw
 			var cell = CellRenderer.Draw(
