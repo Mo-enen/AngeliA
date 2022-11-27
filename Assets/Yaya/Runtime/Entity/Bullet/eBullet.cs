@@ -17,12 +17,12 @@ namespace Yaya {
 		protected virtual bool DestroyOnCollide => true;
 		protected virtual bool DestroyOnHitReveiver => true;
 		protected virtual int Duration => 60;
-		public int LocalFrame => Game.GlobalFrame - SpawnFrame;
 		public int Combo { get; set; } = 0;
 		public Attackness Attackness { get; set; } = null;
 
 		// Data
 		private int ArtworkCode = 0;
+		private int StartFrame = 0;
 
 
 		// MSG
@@ -36,11 +36,17 @@ namespace Yaya {
 		}
 
 
+		public override void OnActived () {
+			base.OnActived();
+			StartFrame = Game.GlobalFrame;
+		}
+
+
 		public override void BeforePhysicsUpdate () {
 			base.BeforePhysicsUpdate();
 
 			// Life Check
-			if (LocalFrame > Duration) {
+			if (Game.GlobalFrame > StartFrame + Duration) {
 				Active = false;
 				return;
 			}
@@ -48,7 +54,7 @@ namespace Yaya {
 			// Collide Check
 			if (DestroyOnCollide) {
 
-				
+
 			}
 
 			// Hit Receiver Check
@@ -59,7 +65,7 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.Draw_Animation(ArtworkCode, base.Rect, LocalFrame);
+			CellRenderer.Draw_Animation(ArtworkCode, base.Rect, Game.GlobalFrame - StartFrame);
 		}
 
 

@@ -168,7 +168,7 @@ namespace Yaya {
 			if (game.State != GameState.Play) return;
 			int len = game.EntityLen;
 			for (int i = 0; i < len; i++) {
-				var entity = game.StagedEntities[i];
+				var entity = game.Entities[i];
 				if (entity is not IDamageReceiver receiver) continue;
 				int count = YayaCellPhysics.OverlapAll_Damage(
 					c_DamageCheck, entity.Rect, entity, entity is ePlayer

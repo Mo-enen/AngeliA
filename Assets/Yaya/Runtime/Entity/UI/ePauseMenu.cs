@@ -343,7 +343,7 @@ namespace Yaya {
 						}
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
-					} else if (FrameInput.AnyKeyboardKeyPressed(out _) || FrameInput.MouseLeftDown) {
+					} else if (FrameInput.AnyKeyboardKeyPressed(out _) || FrameInput.MouseLeftButtonDown) {
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
 					}
@@ -360,7 +360,7 @@ namespace Yaya {
 						}
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
-					} else if (FrameInput.AnyGamepadButtonPressed(out _) || FrameInput.MouseLeftDown) {
+					} else if (FrameInput.AnyGamepadButtonPressed(out _) || FrameInput.MouseLeftButtonDown) {
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
 					}
@@ -372,7 +372,7 @@ namespace Yaya {
 				RecordLock &&
 				!FrameInput.AnyGamepadButtonPressed(out _) &&
 				!FrameInput.AnyKeyboardKeyPressed(out _) &&
-				!FrameInput.MouseLeft
+				!FrameInput.MouseLeftButton
 			) {
 				RecordLock = false;
 			}

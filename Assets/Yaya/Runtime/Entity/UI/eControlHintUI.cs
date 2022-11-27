@@ -148,8 +148,8 @@ namespace Yaya {
 				}
 
 				case CharacterState.Sleep: {
-					int x = Player.GlobalBounds.xMin;
-					int y = Player.GlobalBounds.yMax;
+					int x = Player.X - Const.CEL / 2;
+					int y = Player.Y + Const.CEL;
 					DrawKey(x, y, GameKey.Action, WORD.HINT_WAKE_CODE, true, true);
 					DrawKey(GameKey.Action, WORD.HINT_WAKE_CODE);
 					break;
@@ -157,8 +157,8 @@ namespace Yaya {
 
 				case CharacterState.Passout: {
 					if (Game.GlobalFrame < Player.PassoutFrame + YayaConst.PASSOUT_WAIT) break;
-					int x = Player.GlobalBounds.xMin;
-					int y = Player.GlobalBounds.yMax;
+					int x = Player.X - Const.CEL / 2;
+					int y = Player.Y + Const.CEL;
 					DrawKey(x, y, GameKey.Action, WORD.UI_CONTINUE, true, true);
 					DrawKey(GameKey.Action, WORD.UI_CONTINUE);
 					break;

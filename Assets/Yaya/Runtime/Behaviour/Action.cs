@@ -76,7 +76,7 @@ namespace Yaya {
 				int count = CellPhysics.OverlapAll(
 					c_ScanHits,
 					YayaConst.MASK_ENTITY,
-					Source.GlobalBounds.Expand(ScanRange, ScanRange, 0, ScanRange),
+					Source.Rect.Expand(ScanRange, ScanRange, 0, ScanRange),
 					Source,
 					OperationMode.ColliderAndTrigger
 				);
