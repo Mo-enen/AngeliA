@@ -275,7 +275,7 @@ namespace Yaya {
 			if (
 				game.State == GameState.Cutscene &&
 				Cutscene.IsPlayingVideo &&
-				Game.GlobalFrame > Cutscene.StartFrame + game.GameMeta.CutsceneVideoFadeoutDuration
+				Game.GlobalFrame > Cutscene.StartFrame + game.CutsceneVideoFadeoutDuration
 			) {
 				if (!CutsceneLock) {
 					if (ControlHintUI.Active) {

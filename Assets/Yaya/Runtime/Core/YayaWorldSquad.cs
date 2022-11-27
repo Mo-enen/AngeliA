@@ -31,8 +31,8 @@ namespace Yaya {
 			if (LocalFrame == Duration / 2 + 1) {
 				// Add Effect
 				var game = Game.Current;
-				int para = game.GameMeta.SquadBehindParallax;
-				byte alpha = game.GameMeta.SquadBehindAlpha;
+				int para = game.WorldConfig.SquadBehindParallax;
+				byte alpha = game.WorldConfig.SquadBehindAlpha;
 				var effect = fSquadTransition.Instance;
 				effect.Duration = Duration / 2;
 				effect.Scale = Front ? 1000f / para : para / 1000f;

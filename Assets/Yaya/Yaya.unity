@@ -123,3 +123,134 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &870915422
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 870915424}
+  - component: {fileID: 870915423}
+  m_Layer: 0
+  m_Name: Game
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &870915423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870915422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da05428af58f0fa4d921db1f278225fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_GameConfig:
+    EntityCapacity: 2048
+    SoundTrackCount: 6
+    CutsceneVideoFadeoutDuration: 90
+    AudioMixerGroup: {fileID: -5649732288638014774, guid: 2d8922283b392334ca57b3d736565004,
+      type: 2}
+    Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    ScreenEffectShaders:
+    - {fileID: 4800000, guid: f1009a876ede72b4785658aef0b8449f, type: 3}
+  m_TimeConfig:
+    LogicFramerate: 60
+    LogicFramerateLag: 30
+    LagSimulation_EntityMin: 1600
+    LagSimulation_EntityMax: 2000
+    UseLagSimulationOnAudio: 1
+  m_ViewConfig:
+    DefaultHeight: 5120
+    MinHeight: 2048
+    MaxHeight: 14336
+    ViewRatio: 2000
+  m_WorldConfig:
+    SkyTintTop:
+      serializedVersion: 2
+      key0: {r: 0.078431375, g: 0.08235294, b: 0.12156863, a: 1}
+      key1: {r: 0.1254902, g: 0.22352941, b: 0.29803923, a: 1}
+      key2: {r: 0.2784314, g: 0.6666667, b: 0.85882354, a: 0}
+      key3: {r: 0.1254902, g: 0.22352941, b: 0.29803923, a: 0}
+      key4: {r: 0.078431375, g: 0.08235294, b: 0.12156863, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 16384
+      ctime2: 32768
+      ctime3: 49151
+      ctime4: 65535
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 5
+      m_NumAlphaKeys: 2
+    SkyTintBottom:
+      serializedVersion: 2
+      key0: {r: 0.12156863, g: 0.12156863, b: 0.13725491, a: 1}
+      key1: {r: 0.19607843, g: 0.25882354, b: 0.32156864, a: 1}
+      key2: {r: 0.5019608, g: 0.78431374, b: 0.9254902, a: 0}
+      key3: {r: 0.19607843, g: 0.25882354, b: 0.32156864, a: 0}
+      key4: {r: 0.12156863, g: 0.12156863, b: 0.13725491, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 16384
+      ctime2: 32768
+      ctime3: 49151
+      ctime4: 65535
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 5
+      m_NumAlphaKeys: 2
+    LevelBlockLayer: 0
+    SquadBehindAlpha: 64
+    SquadBehindParallax: 1300
+  m_PhysicsConfig:
+    PhysicsLayerCount: 5
+    Gravity: 5
+    GravityRise: 3
+    MaxGravitySpeed: 96
+--- !u!4 &870915424
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870915422}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -95,7 +95,7 @@ namespace Yaya {
 
 			// Cutscene
 			if (Game.Current.State == GameState.Cutscene) {
-				if (Cutscene.IsPlayingTask || Game.GlobalFrame > Cutscene.StartFrame + Game.Current.GameMeta.CutsceneVideoFadeoutDuration) {
+				if (Cutscene.IsPlayingTask || Game.GlobalFrame > Cutscene.StartFrame + Game.Current.CutsceneVideoFadeoutDuration) {
 					DrawKey(GameKey.Start, WORD.HINT_SKIP_CODE);
 				}
 				return;
