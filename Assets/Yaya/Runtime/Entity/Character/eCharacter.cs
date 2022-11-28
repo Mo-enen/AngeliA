@@ -116,7 +116,7 @@ namespace Yaya {
 					} else {
 						// Move as Normal
 						Action.Update();
-						Attackness.Update();
+						Attackness.FrameUpdate();
 						Movement.Update();
 						MovementState = Movement.State;
 					}

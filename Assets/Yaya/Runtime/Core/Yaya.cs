@@ -174,7 +174,9 @@ namespace Yaya {
 					c_DamageCheck, entity.Rect, entity, entity is ePlayer
 				);
 				for (int j = 0; j < count; j++) {
-					receiver.TakeDamage(c_DamageCheck[j].Tag);
+					var hit = c_DamageCheck[j];
+					receiver.TakeDamage(hit.Tag);
+					if (hit.Entity != null) hit.Entity.Active = false;
 				}
 			}
 		}

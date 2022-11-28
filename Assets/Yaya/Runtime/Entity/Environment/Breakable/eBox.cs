@@ -5,10 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class eBox : eYayaRigidbody {
-
-		public override int PhysicsLayer => YayaConst.LAYER_ENVIRONMENT;
-		protected override bool DestroyWhenInsideGround => true;
+	public class eBox : eBreakableRigidbody {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();

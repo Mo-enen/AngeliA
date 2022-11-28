@@ -106,7 +106,7 @@ namespace Yaya {
 
 
 		// Const
-		private static readonly int SLEEP_PARTICLE_CODE = typeof(eDefaultParticle).AngeHash();
+		private static readonly int SLEEP_PARTICLE_CODE = eDefaultParticle.TYPE_ID;
 
 		// Api
 		public eCharacter Character { get; private set; } = null;

@@ -5,6 +5,22 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+
+
+	[EntityAttribute.Capacity(4)]
+	public class eDefaultBullet : eBullet { }
+
+
+	public abstract class ePlayerBullet : eBullet {
+		protected override bool FromPlayer => true;
+	}
+
+
+	public abstract class eEnemyBullet : eBullet {
+		protected override bool FromPlayer => false;
+	}
+
+
 	[EntityAttribute.Capacity(128)]
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.ForceUpdate]
@@ -15,30 +31,30 @@ namespace Yaya {
 		// Api
 		protected virtual int CollisionMask => YayaConst.MASK_SOLID;
 		protected virtual bool DestroyOnCollide => true;
-		protected virtual bool DestroyOnHitReveiver => true;
+		protected virtual bool FromPlayer => false;
 		protected virtual int Duration => 60;
+		protected virtual int Damage => 1;
+		protected virtual int Speed => 12;
 		public int Combo { get; set; } = 0;
 		public Attackness Attackness { get; set; } = null;
+		public Vector2Int Direction { get; set; } = default;
 
 		// Data
-		private int ArtworkCode = 0;
 		private int StartFrame = 0;
 
 
 		// MSG
-		public override void OnInitialize () {
-			base.OnInitialize();
-			string typeName = GetType().Name;
-			if (!string.IsNullOrEmpty(typeName)) {
-				if (typeName[0] == 'e') typeName = typeName[1..];
-				ArtworkCode = $"{typeName}".AngeHash();
-			}
+		public void Initialize () {
+			StartFrame = Game.GlobalFrame;
+			var sourceRect = Attackness.Source.Rect;
+			X = sourceRect.x + sourceRect.width / 2 - Width / 2;
+			Y = sourceRect.y + sourceRect.height / 2 - Height / 2;
 		}
 
 
-		public override void OnActived () {
-			base.OnActived();
-			StartFrame = Game.GlobalFrame;
+		public override void FillPhysics () {
+			base.FillPhysics();
+			YayaCellPhysics.FillEntity_Damage(this, !FromPlayer, Damage);
 		}
 
 
@@ -57,15 +73,18 @@ namespace Yaya {
 
 			}
 
-			// Hit Receiver Check
-
+			// Move
+			if (Speed > 0) {
+				X += Direction.x.Sign3() * Speed;
+				Y += Direction.y.Sign3() * Speed;
+			}
 
 		}
 
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.Draw_Animation(ArtworkCode, base.Rect, Game.GlobalFrame - StartFrame);
+			CellRenderer.Draw_Animation(TypeID, Rect, Game.GlobalFrame - StartFrame);
 		}
 
 

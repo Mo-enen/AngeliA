@@ -258,7 +258,7 @@ namespace Yaya {
 				if (attDown || attHolding) {
 					if (Current.IsAttackAllowedByMovement()) {
 						if (attack.CheckReady(!attDown)) {
-							attack.Attack();
+							attack.Attack(Movement.FacingRight ? Vector2Int.right : Vector2Int.left);
 						} else if (attDown) {
 							AttackRequiringFrame = Game.GlobalFrame;
 						}
@@ -271,7 +271,7 @@ namespace Yaya {
 			const int ATTACK_REQUIRE_GAP = 12;
 			if (attack.CheckReady(false) && Game.GlobalFrame < AttackRequiringFrame + ATTACK_REQUIRE_GAP) {
 				AttackRequiringFrame = int.MinValue;
-				attack.Attack();
+				attack.Attack(Movement.FacingRight ? Vector2Int.right : Vector2Int.left);
 			}
 		}
 

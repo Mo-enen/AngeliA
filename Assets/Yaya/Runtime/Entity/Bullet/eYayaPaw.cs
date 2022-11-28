@@ -6,14 +6,11 @@ using UnityEngine;
 
 namespace Yaya {
 	[EntityAttribute.Capacity(12)]
-	public class eYayaPaw : eBullet {
+	public class eYayaPaw : ePlayerBullet {
 
-		
-		protected override int CollisionMask => YayaConst.MASK_RIGIDBODY;
+
 		protected override bool DestroyOnCollide => false;
-		protected override bool DestroyOnHitReveiver => false;
 
-		
 
 
 	}

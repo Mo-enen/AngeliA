@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
 
-namespace Yaya {
-	public class eWoodBoard : eYayaRigidbody {
 
-		public override int PhysicsLayer => YayaConst.LAYER_ENVIRONMENT;
-		protected override bool DestroyWhenInsideGround => true;
+namespace Yaya {
+	[EntityAttribute.Capacity(32)]
+	public class eBarrel : eBreakableRigidbody {
+
+
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			CellRenderer.Draw(TypeID, base.Rect);
 		}
+
 
 	}
 }

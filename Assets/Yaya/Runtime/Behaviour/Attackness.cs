@@ -61,6 +61,7 @@ namespace Yaya {
 
 		// Data
 		private readonly static System.Random Random = new(19940516);
+		private int AntiAttackFrame = int.MinValue;
 		private int _BulletID = 0;
 
 
@@ -79,10 +80,11 @@ namespace Yaya {
 
 		public void OnActived () {
 			LastAttackFrame = int.MinValue;
+			AntiAttackFrame = int.MinValue;
 		}
 
 
-		public void Update () {
+		public void FrameUpdate () {
 			// Combo Break
 			if (Combo > -1 && Game.GlobalFrame > LastAttackFrame + Duration + Colldown + ComboGap) {
 				Combo = -1;
@@ -102,8 +104,9 @@ namespace Yaya {
 		#region --- API ---
 
 
-		public bool Attack () {
+		public bool Attack (Vector2Int direction) {
 			int frame = Game.GlobalFrame;
+			if (frame <= AntiAttackFrame) return false;
 			// Attack
 			if (BulletID == 0) return false;
 			if (frame < LastAttackFrame + Duration + Colldown) return false;
@@ -112,6 +115,8 @@ namespace Yaya {
 			if (Game.Current.TryAddEntity(BulletID, Source.X, Source.Y, out var entity) && entity is eBullet bullet) {
 				bullet.Attackness = this;
 				bullet.Combo = Combo;
+				bullet.Direction = direction;
+				bullet.Initialize();
 			}
 			Combo = RandomCombo ? Random.Next() : Combo + 1;
 			return true;
@@ -126,17 +131,11 @@ namespace Yaya {
 			Game.GlobalFrame >= LastAttackFrame + Duration + Colldown;
 
 
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
+		public void NoAttackThisFrame () => AntiAttackFrame = Game.GlobalFrame;
 
 
 		#endregion
+
 
 
 

@@ -5,19 +5,18 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class eSkeletonPile : Entity {
+	public class eRock : eBreakable {
 
 
-		private static readonly int CODE = "Skeleton Pile".AngeHash();
+		private static readonly int CODE = "Rock".AngeHash();
 		private int ArtworkCode = 0;
 		private RectInt FullRect = default;
 
 
 		public override void OnActived () {
 			base.OnActived();
-			Width = Const.CEL;
-			Height = Const.CEL;
-			FullRect = Rect;
+			FullRect = new(X, Y, Const.CEL, Const.CEL);
+			Width = Height = Const.CEL;
 			int artworkIndex = X.UDivide(Const.CEL) + Y.UDivide(Const.CEL);
 			if (CellRenderer.TryGetSpriteFromGroup(CODE, artworkIndex, out var sprite)) {
 				var rect = base.Rect.Shrink(sprite.GlobalBorder.Left, sprite.GlobalBorder.Right, sprite.GlobalBorder.Down, sprite.GlobalBorder.Up);
