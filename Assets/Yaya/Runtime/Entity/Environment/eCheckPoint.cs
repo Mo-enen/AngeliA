@@ -26,7 +26,7 @@ namespace Yaya {
 	public class AltarSpider : eCheckAltar { }
 	public class AltarStalactite : eCheckAltar { }
 	public class AltarSword : eCheckAltar { }
-	public class AltarAerospace : eCheckAltar { }
+	public class AltarSpace : eCheckAltar { }
 	public class AltarMachineGun : eCheckAltar { }
 	public class AltarKnowledge : eCheckAltar { }
 	public class AltarCat : eCheckAltar { }
@@ -51,7 +51,7 @@ namespace Yaya {
 	public class CheckSpider : eCheckPoint { }
 	public class CheckStalactite : eCheckPoint { }
 	public class CheckSword : eCheckPoint { }
-	public class CheckAerospace : eCheckPoint { }
+	public class CheckSpace : eCheckPoint { }
 	public class CheckMachineGun : eCheckPoint { }
 	public class CheckKnowledge : eCheckPoint { }
 	public class CheckCat : eCheckPoint { }

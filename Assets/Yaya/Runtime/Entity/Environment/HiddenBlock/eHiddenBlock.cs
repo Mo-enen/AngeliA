@@ -5,16 +5,9 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class TestBlock : eHiddenBlock {
 
 
-		public override void FrameUpdate () {
-			base.FrameUpdate();
-			if (!IsHidden) CellRenderer.Draw(Const.PIXEL, Rect);
-		}
 
-
-	}
 	public abstract class eHiddenBlock : Entity {
 
 
