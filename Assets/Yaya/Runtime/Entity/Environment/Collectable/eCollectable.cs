@@ -37,20 +37,4 @@ namespace Yaya {
 
 
 	}
-
-
-	[EntityAttribute.Capacity(128)]
-	public class eCoin : eCollectable {
-
-
-		public override bool OnCollect (Entity source) {
-			if (source is not ePlayer) return false;
-
-
-
-			return true;
-		}
-
-
-	}
 }

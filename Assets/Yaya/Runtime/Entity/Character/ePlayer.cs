@@ -23,6 +23,7 @@ namespace Yaya {
 		// Api
 		public static ePlayer Current { get; private set; } = null;
 		public eMascot Mascot { get; private set; } = null;
+		public override CharacterIdentity Identity => CharacterIdentity.Player;
 
 		// Data
 		private static readonly HitInfo[] Collects = new HitInfo[8];

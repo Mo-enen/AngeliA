@@ -12,6 +12,7 @@ namespace Yaya {
 
 		// Api
 		public override int OwnerTypeID => typeof(eYaya).AngeHash();
+		public override CharacterIdentity Identity => CharacterIdentity.Player;
 
 
 		// MSG

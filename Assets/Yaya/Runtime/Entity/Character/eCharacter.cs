@@ -14,10 +14,26 @@ namespace Yaya {
 	}
 
 
+	[System.Flags]
+	public enum CharacterIdentity {
+		None = 0,
+		Player = 1 << 0,
+		Enemy = 1 << 1,
+		NPC = 1 << 2,
+
+		All = Player | Enemy | NPC,
+	}
+
+
+	public interface IPermissionCharacter {
+		CharacterIdentity Identity { get; }
+	}
+
+
 	[EntityAttribute.MapEditorGroup("Character")]
 	[EntityAttribute.Capacity(1)]
 	[EntityAttribute.Bounds(-Const.CEL / 2, 0, Const.CEL, Const.CEL)]
-	public abstract class eCharacter : eYayaRigidbody, IDamageReceiver {
+	public abstract class eCharacter : eYayaRigidbody, IDamageReceiver, IPermissionCharacter {
 
 
 
@@ -32,6 +48,7 @@ namespace Yaya {
 		public override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
 		public override int CollisionMask => YayaConst.MASK_MAP;
 		public override int CarrierSpeed => 0;
+		public virtual CharacterIdentity Identity => CharacterIdentity.None;
 		public bool TakingDamage => Game.GlobalFrame < Health.LastDamageFrame + Health.DamageStunDuration;
 		public bool InAir => !IsGrounded && !InWater && !InSand && !Movement.IsClimbing;
 		public int SleepAmount {

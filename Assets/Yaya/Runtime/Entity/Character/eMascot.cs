@@ -45,7 +45,7 @@ namespace Yaya {
 
 
 		public override void FillPhysics () {
-			if (CharacterState == CharacterState.GamePlay) {
+			if (CharacterState == CharacterState.GamePlay && !FollowOwner) {
 				base.FillPhysics();
 			}
 		}
