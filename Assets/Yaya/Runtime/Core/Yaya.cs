@@ -176,7 +176,11 @@ namespace Yaya {
 				for (int j = 0; j < count; j++) {
 					var hit = c_DamageCheck[j];
 					receiver.TakeDamage(hit.Tag);
-					if (hit.Entity != null) hit.Entity.Active = false;
+					if (hit.Entity is eBullet bullet) {
+						bullet.OnHit(receiver);
+					} else if (hit.Entity != null) {
+						hit.Entity.Active = false;
+					}
 				}
 			}
 		}

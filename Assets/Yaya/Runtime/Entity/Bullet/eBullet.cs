@@ -25,7 +25,7 @@ namespace Yaya {
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.ForceUpdate]
 	[EntityAttribute.DontDestroyOutOfRange]
-	public abstract class eBullet : Entity, IInitialize {
+	public abstract class eBullet : Entity {
 
 
 		// Api
@@ -35,20 +35,21 @@ namespace Yaya {
 		protected virtual int Duration => 60;
 		protected virtual int Damage => 1;
 		protected virtual int Speed => 12;
-		public int Combo { get; set; } = 0;
-		public Attackness Attackness { get; set; } = null;
-		public Vector2Int Direction { get; set; } = default;
 
 		// Data
 		private int StartFrame = 0;
+		private Vector2Int Direction = default;
+		private int Combo = 0;
 
 
 		// MSG
-		public void Initialize () {
+		public virtual void Release (Attackness attackness, Vector2Int direction, int combo = 0) {
 			StartFrame = Game.GlobalFrame;
-			var sourceRect = Attackness.Source.Rect;
+			var sourceRect = attackness.Source.Rect;
 			X = sourceRect.x + sourceRect.width / 2 - Width / 2;
 			Y = sourceRect.y + sourceRect.height / 2 - Height / 2;
+			Direction = direction;
+			Combo = combo;
 		}
 
 
@@ -68,9 +69,8 @@ namespace Yaya {
 			}
 
 			// Collide Check
-			if (DestroyOnCollide) {
-
-
+			if (DestroyOnCollide && CellPhysics.Overlap(CollisionMask, Rect, this)) {
+				OnHit(null);
 			}
 
 			// Move
@@ -84,8 +84,15 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.Draw_Animation(TypeID, Rect, Game.GlobalFrame - StartFrame);
+			CellRenderer.Draw_Animation(GetArtworkCode(Combo), Rect, Game.GlobalFrame - StartFrame);
 		}
+
+
+		// Api
+		public virtual void OnHit (IDamageReceiver receiver) => Active = false;
+
+
+		protected virtual int GetArtworkCode (int combo) => TypeID;
 
 
 	}

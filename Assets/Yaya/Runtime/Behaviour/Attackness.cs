@@ -15,7 +15,7 @@ namespace Yaya {
 
 
 		// Api
-		public Entity Source { get; private set; } = null;
+		public eCharacter Source { get; private set; } = null;
 		public bool IsAttacking => Game.GlobalFrame < LastAttackFrame + Duration;
 		public int LastAttackFrame { get; private set; } = int.MinValue;
 		public int BulletID => _BulletID != 0 ? _BulletID : (_BulletID = BulletName.Value.AngeHash());
@@ -73,7 +73,7 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public void OnInitialize (Entity source) {
+		public void OnInitialize (eCharacter source) {
 			Source = source;
 		}
 
@@ -113,10 +113,7 @@ namespace Yaya {
 			LastAttackFrame = frame;
 			// Spawn Bullet
 			if (Game.Current.TryAddEntity(BulletID, Source.X, Source.Y, out var entity) && entity is eBullet bullet) {
-				bullet.Attackness = this;
-				bullet.Combo = Combo;
-				bullet.Direction = direction;
-				bullet.Initialize();
+				bullet.Release(this, direction, Combo);
 			}
 			Combo = RandomCombo ? Random.Next() : Combo + 1;
 			return true;
