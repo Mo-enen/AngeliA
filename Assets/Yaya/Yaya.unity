@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &870915422
+--- !u!1 &74031779
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,8 +131,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 870915424}
-  - component: {fileID: 870915423}
+  - component: {fileID: 74031781}
+  - component: {fileID: 74031780}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -140,13 +140,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &870915423
+--- !u!114 &74031780
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 870915422}
+  m_GameObject: {fileID: 74031779}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da05428af58f0fa4d921db1f278225fc, type: 3}
@@ -155,7 +155,6 @@ MonoBehaviour:
   m_GameConfig:
     EntityCapacity: 2048
     SoundTrackCount: 6
-    CutsceneVideoFadeoutDuration: 90
     AudioMixerGroup: {fileID: -5649732288638014774, guid: 2d8922283b392334ca57b3d736565004,
       type: 2}
     Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
@@ -239,13 +238,13 @@ MonoBehaviour:
     Gravity: 5
     GravityRise: 3
     MaxGravitySpeed: 96
---- !u!4 &870915424
+--- !u!4 &74031781
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 870915422}
+  m_GameObject: {fileID: 74031779}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
