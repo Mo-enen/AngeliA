@@ -125,6 +125,17 @@ namespace Yaya {
 			if (FrameInput.CustomKeyDown(Key.Digit7)) {
 				Cutscene.PlayTask(typeof(TestDialogue).AngeHash());
 			}
+			if (FrameInput.CustomKeyUp(Key.Digit8)) {
+				WorldSquad.SwitchMapSource(MapFileSource.BuiltIn);
+				WorldSquad_Behind.SwitchMapSource(MapFileSource.BuiltIn);
+				Game.Current.ReloadAllEntitiesFromWorld();
+			}
+			if (FrameInput.CustomKeyDown(Key.Digit9)) {
+				WorldSquad.SwitchMapSource(MapFileSource.Player);
+				WorldSquad_Behind.SwitchMapSource(MapFileSource.Player);
+				Game.Current.ReloadAllEntitiesFromWorld();
+			}
+
 
 		}
 

@@ -30,7 +30,7 @@ namespace Yaya.Editor {
 
 			// Get All Cp Positions
 			var cpList = new List<eCheckAltar.CheckPointMeta.Data>();
-			foreach (var filePath in Util.EnumerateFiles(Const.MapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
+			foreach (var filePath in Util.EnumerateFiles(AngePath.MapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
 				try {
 					World.EditorOnly_ForAllBlocks(filePath, entity: (id, pos) => {
 						if (!targetHash.Contains(id)) return;
