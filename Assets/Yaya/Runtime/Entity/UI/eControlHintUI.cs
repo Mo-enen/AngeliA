@@ -141,7 +141,9 @@ namespace Yaya {
 						}
 					} else {
 						// General
-						DrawKey(GameKey.Action, WORD.HINT_ATTACK_CODE);
+						if (!Player.Attackness.AntiAttack) {
+							DrawKey(GameKey.Action, WORD.HINT_ATTACK_CODE);
+						}
 						DrawKey(GameKey.Jump, WORD.HINT_JUMP_CODE);
 					}
 					break;

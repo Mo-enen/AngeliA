@@ -20,6 +20,7 @@ namespace Yaya {
 		public int LastAttackFrame { get; private set; } = int.MinValue;
 		public int BulletID => _BulletID != 0 ? _BulletID : (_BulletID = BulletName.Value.AngeHash());
 		public int Combo { get; private set; } = -1;
+		public bool AntiAttack => Game.GlobalFrame <= AntiAttackFrame;
 
 		// Buff
 		public BuffString BulletName { get; private set; } = new();

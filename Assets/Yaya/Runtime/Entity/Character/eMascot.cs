@@ -16,9 +16,9 @@ namespace Yaya {
 		// Api
 		public bool FollowOwner { get; set; } = false;
 		public abstract int OwnerTypeID { get; }
+		public ePlayer Owner { get; private set; } = null;
 
 		// Data
-		private ePlayer Owner = null;
 		private Vector2Int PrevPosition = default;
 		private readonly Vector2Int[] PosChain = new Vector2Int[6];
 		private int PosChainStartIndex = -1;
@@ -71,11 +71,12 @@ namespace Yaya {
 						X = basket.X + basket.Width / 2;
 						Y = basket.Y + basket.Height - OffsetY;
 					}
+					SleepFrame = Owner.SleepFrame;
 					if (SleepAmount >= 1000) FollowOwner = false;
-					base.PhysicsUpdate();
 					break;
 				case CharacterState.Passout:
 					VelocityX = 0;
+					base.PhysicsUpdate();
 					break;
 			}
 			if (!FollowOwner || CharacterState != CharacterState.GamePlay) {

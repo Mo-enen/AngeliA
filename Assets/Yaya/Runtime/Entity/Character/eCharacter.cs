@@ -56,7 +56,7 @@ namespace Yaya {
 			set => SleepFrame = Util.Remap(0, 1000, 0, 90, value);
 		}
 		public int PassoutFrame { get; private set; } = int.MinValue;
-		public int SleepFrame { get; private set; } = 0;
+		public int SleepFrame { get; protected set; } = 0;
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
 		public MovementState MovementState { get; protected set; } = MovementState.Idle;
 		public CharacterMovement Movement { get; private set; } = null;
@@ -147,7 +147,7 @@ namespace Yaya {
 					OffsetX = -Const.CEL / 2;
 					OffsetY = 0;
 					SleepFrame++;
-					if (!Health.FullHealth && SleepFrame >= 1000) Health.Heal(Health.MaxHP);
+					if (!Health.FullHealth && SleepAmount >= 1000) Health.SetHealth(Health.MaxHP);
 					break;
 				case CharacterState.Passout:
 					VelocityX = 0;
