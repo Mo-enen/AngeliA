@@ -117,18 +117,17 @@ namespace Yaya {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
 			}
 			if (FrameInput.CustomKeyUp(Key.Digit5)) {
-				int id = typeof(GreyscaleEffect).AngeHash();
-				ScreenEffect.SetEffectEnable(id, !ScreenEffect.GetEffectEnable(id));
+
 			}
 			if (FrameInput.CustomKeyUp(Key.Digit6)) {
-				int id = typeof(VignetteEffect).AngeHash();
+				int id = typeof(ChromaticAberrationEffect).AngeHash();
 				ScreenEffect.SetEffectEnable(id, !ScreenEffect.GetEffectEnable(id));
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit7)) {
-				
+
 			}
 			if (FrameInput.CustomKeyUp(Key.Digit8)) {
-				
+
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit9)) {
 
