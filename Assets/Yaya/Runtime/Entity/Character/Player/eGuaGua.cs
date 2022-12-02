@@ -15,11 +15,18 @@ namespace Yaya {
 		private static readonly int HEART_EMPTY_CODE = "HpHeart Empty".AngeHash();
 
 		// Api
+		public static eGuaGua Current { get; private set; } = null;
 		public override int OwnerTypeID => typeof(eYaya).AngeHash();
 		public override CharacterIdentity Identity => CharacterIdentity.Player;
 
 
 		// MSG
+		public override void OnInitialize () {
+			base.OnInitialize();
+			Current = this;
+		}
+
+
 		protected override void Update_FreeMove () {
 			base.Update_FreeMove();
 

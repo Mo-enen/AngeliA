@@ -12,18 +12,25 @@ namespace Yaya {
 		// Const
 		private static readonly int FOOTSTEP_CODE = "YayaFootstep".AngeHash();
 
+		// Api
+		public static eYaya CurrentYaya { get; private set; } = null;
+		public override eMascot Mascot => eGuaGua.Current;
+
 		// Data
 		private int LastStartRunFrame = int.MinValue;
 
 
 		// MSG
+		public override void OnInitialize () {
+			base.OnInitialize();
+			CurrentYaya = this;
+		}
+
+
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			Update_Run();
 		}
-
-
-		public override eMascot GetMascot () => Game.Current.PeekOrGetEntity<eGuaGua>();
 
 
 		private void Update_Run () {

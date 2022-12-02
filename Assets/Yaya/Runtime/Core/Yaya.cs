@@ -117,23 +117,21 @@ namespace Yaya {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
 			}
 			if (FrameInput.CustomKeyUp(Key.Digit5)) {
-
+				int id = typeof(GreyscaleEffect).AngeHash();
+				ScreenEffect.SetEffectEnable(id, !ScreenEffect.GetEffectEnable(id));
 			}
 			if (FrameInput.CustomKeyUp(Key.Digit6)) {
-				Cutscene.Play("Test Video 1".AngeHash());
+				int id = typeof(VignetteEffect).AngeHash();
+				ScreenEffect.SetEffectEnable(id, !ScreenEffect.GetEffectEnable(id));
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit7)) {
-				Cutscene.PlayTask(typeof(TestDialogue).AngeHash());
+				
 			}
 			if (FrameInput.CustomKeyUp(Key.Digit8)) {
-				WorldSquad.SwitchMapSource(MapFileSource.BuiltIn);
-				WorldSquad_Behind.SwitchMapSource(MapFileSource.BuiltIn);
-				Game.Current.ReloadAllEntitiesFromWorld();
+				
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit9)) {
-				WorldSquad.SwitchMapSource(MapFileSource.Player);
-				WorldSquad_Behind.SwitchMapSource(MapFileSource.Player);
-				Game.Current.ReloadAllEntitiesFromWorld();
+
 			}
 
 

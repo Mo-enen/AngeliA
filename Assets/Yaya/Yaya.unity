@@ -160,6 +160,7 @@ MonoBehaviour:
     Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     ScreenEffectShaders:
     - {fileID: 4800000, guid: f1009a876ede72b4785658aef0b8449f, type: 3}
+    - {fileID: 4800000, guid: 4e898b923a79d284c9776aca2d1a06f2, type: 3}
   m_TimeConfig:
     LogicFramerate: 60
     LogicFramerateLag: 30

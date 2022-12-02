@@ -22,7 +22,7 @@ namespace Yaya {
 
 		// Api
 		public static ePlayer Current { get; private set; } = null;
-		public eMascot Mascot { get; private set; } = null;
+		public virtual eMascot Mascot => null;
 		public override CharacterIdentity Identity => CharacterIdentity.Player;
 
 		// Data
@@ -40,12 +40,6 @@ namespace Yaya {
 
 
 		#region --- MSG ---
-
-
-		public override void OnInitialize () {
-			base.OnInitialize();
-			Mascot = GetMascot();
-		}
 
 
 		public override void OnActived () {
@@ -305,9 +299,6 @@ namespace Yaya {
 				return Game.Current.AddEntity(firstPlayerID, x, y) as ePlayer;
 			}
 		}
-
-
-		public abstract eMascot GetMascot ();
 
 
 		#endregion
