@@ -16,7 +16,7 @@ namespace Yaya {
 
 		// Api
 		public static eGuaGua Current { get; private set; } = null;
-		public override int OwnerTypeID => typeof(eYaya).AngeHash();
+		public override ePlayer Owner => eYaya.CurrentYaya;
 		public override CharacterIdentity Identity => CharacterIdentity.Player;
 
 
@@ -64,6 +64,8 @@ namespace Yaya {
 
 			}
 		}
+
+
 
 
 	}

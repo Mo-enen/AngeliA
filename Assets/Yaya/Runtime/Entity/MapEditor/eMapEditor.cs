@@ -42,15 +42,37 @@ namespace Yaya {
 		}
 
 
-		public override void PhysicsUpdate () {
-			base.PhysicsUpdate();
+		public override void OnInactived () {
+			base.OnInactived();
 
 		}
 
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
+			Update_View();
+		}
 
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+		public static void StartEdit () {
+			if (Current.Active) return;
+			Game.Current.AddEntity<eMapEditor>(0, 0);
+			Game.Current.ReloadAllEntitiesFromWorld();
+		}
+
+
+		public static void StopEdit () {
+			if (!Current.Active) return;
+			Current.Active = false;
+			Game.Current.ReloadAllEntitiesFromWorld();
 		}
 
 

@@ -15,8 +15,7 @@ namespace Yaya {
 
 		// Api
 		public bool FollowOwner { get; set; } = false;
-		public abstract int OwnerTypeID { get; }
-		public ePlayer Owner { get; private set; } = null;
+		public abstract ePlayer Owner { get; }
 
 		// Data
 		private Vector2Int PrevPosition = default;
@@ -30,12 +29,6 @@ namespace Yaya {
 
 
 		#region --- MSG ---
-
-
-		public override void OnInitialize () {
-			base.OnInitialize();
-			Owner = Game.Current.PeekOrGetEntity(OwnerTypeID) as ePlayer;
-		}
 
 
 		public override void OnActived () {

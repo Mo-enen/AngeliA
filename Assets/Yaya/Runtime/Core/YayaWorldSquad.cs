@@ -145,6 +145,18 @@ namespace Yaya {
 		}
 
 
+		protected override void DrawEntity (Game game, int id, int unitX, int unitY) {
+			if (!eMapEditor.Current.Active) {
+				base.DrawEntity(game, id, unitX, unitY);
+			} else {
+				var rect = new RectInt(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
+				if (!Culling || CellRenderer.CameraRect.Overlaps(rect)) {
+					CellRenderer.Draw(id, rect);
+				}
+			}
+		}
+
+
 		public FittingPose GetEntityPose (Entity entity, bool horizontal) => GetEntityPose(entity.TypeID, entity.X, entity.Y, horizontal);
 		public FittingPose GetEntityPose (int typeID, int globalX, int globalY, bool horizontal) {
 			int unitX = globalX.UDivide(Const.CEL);

@@ -9,22 +9,26 @@ namespace Yaya {
 
 
 		// Data
-		private const int FADE_OUT = 32;
+		private const int FADE_OUT = 60;
 		public static readonly int TYPE_ID = typeof(tFadeOut).AngeHash();
 
 
 		// MSG
 		public override TaskResult FrameUpdate () {
 			int localFrame = LocalFrame;
-			byte t = (byte)Util.Remap(0f, FADE_OUT, byte.MaxValue, byte.MinValue, localFrame);
-			CellRenderer.SetLayer(Const.SHADER_MULT);
-			CellRenderer.Draw(
-				Const.PIXEL,
-				CellRenderer.CameraRect.Expand(Const.CEL),
-				new Color32(t, t, t, 255)
-			).Z = int.MaxValue;
-			CellRenderer.SetLayerToDefault();
-			return localFrame < FADE_OUT ? TaskResult.Continue : TaskResult.End;
+			if (localFrame < FADE_OUT) {
+				if (localFrame == 0) {
+					ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, true);
+				}
+				RetroDarkenEffect.SetAmount(Util.Remap(
+					0f, FADE_OUT, 0f, 1f,
+					localFrame
+				));
+				return TaskResult.Continue;
+			} else {
+				//ScreenEffect.SetEffectEnable(DarkenEffect.TYPE_ID, false);
+				return TaskResult.End;
+			}
 		}
 
 

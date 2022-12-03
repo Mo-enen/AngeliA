@@ -120,14 +120,13 @@ namespace Yaya {
 
 			}
 			if (FrameInput.CustomKeyUp(Key.Digit6)) {
-				int id = typeof(ChromaticAberrationEffect).AngeHash();
-				ScreenEffect.SetEffectEnable(id, !ScreenEffect.GetEffectEnable(id));
+				
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit7)) {
-
+				eMapEditor.StartEdit();
 			}
 			if (FrameInput.CustomKeyUp(Key.Digit8)) {
-
+				eMapEditor.StopEdit();
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit9)) {
 

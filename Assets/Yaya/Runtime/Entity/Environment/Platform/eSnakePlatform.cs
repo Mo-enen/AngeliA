@@ -8,8 +8,8 @@ namespace Yaya {
 
 
 
-	[EntityAttribute.Capacity(1)]
 	[EntityAttribute.AntiSpawn]
+	[EntityAttribute.MapEditorGroup("Platform")]
 	public class eSnakePath : Entity { }
 
 
@@ -231,6 +231,13 @@ namespace Yaya {
 				// Single Snake
 				Head = null;
 				CurrentDirection = Direction4.Right;
+				if (GetDirectionIgnoreOpposite(Direction4.Right, out var _resultR, false)) {
+					CurrentDirection = _resultR;
+					Head = this;
+				} else if (GetDirectionIgnoreOpposite(Direction4.Left, out var _resultL, false)) {
+					CurrentDirection = _resultL;
+					Head = this;
+				}
 			}
 		}
 

@@ -50,6 +50,9 @@ namespace Yaya {
 		public override TaskResult FrameUpdate () {
 			int localFrame = LocalFrame;
 			var game = Game.Current;
+			if (localFrame == 0) {
+				ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, true);
+			}
 			// Spawn Player
 			if (localFrame == 2) {
 				var player = ePlayer.TrySpawnPlayer(ViewX, ViewYEnd);
@@ -75,14 +78,11 @@ namespace Yaya {
 		private TaskResult Update_Opening (Game game, int localFrame) {
 			// Black FadeIn
 			if (localFrame <= BLACK_DURATION) {
-				byte t = (byte)Util.Remap(0f, BLACK_DURATION, byte.MinValue, byte.MaxValue, localFrame);
-				CellRenderer.SetLayer(Const.SHADER_MULT);
-				CellRenderer.Draw(
-					Const.PIXEL,
-					CellRenderer.CameraRect.Expand(Const.CEL),
-					new Color32(t, t, t, 255)
-				).Z = int.MaxValue;
-				CellRenderer.SetLayerToDefault();
+				RetroDarkenEffect.SetAmount(Util.Remap(
+					0f, BLACK_DURATION,
+					1f, 0f,
+					localFrame
+				));
 			}
 			if (localFrame < DURATION) {
 				// Camera Down
@@ -94,12 +94,14 @@ namespace Yaya {
 				return TaskResult.Continue;
 			} else {
 				// End
+				ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, false);
 				return TaskResult.End;
 			}
 		}
 
 
 		private TaskResult Update_QuickSkip (Game game, int localFrame) {
+			ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, false);
 			if (localFrame < SKIP_DURATION + SkipFrame) {
 				SetViewPosition(
 					game,
