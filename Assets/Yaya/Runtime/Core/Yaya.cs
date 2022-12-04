@@ -100,6 +100,7 @@ namespace Yaya {
 			var game = Game.Current;
 			if (game == null) return;
 
+			FrameUpdate_Player();
 			Update_View(game);
 			Update_Damage(game);
 			Update_HintUI(game);
@@ -120,19 +121,48 @@ namespace Yaya {
 
 			}
 			if (FrameInput.CustomKeyUp(Key.Digit6)) {
-				
+
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit7)) {
-				eMapEditor.StartEdit();
+				eMapEditor.OpenEditor();
 			}
 			if (FrameInput.CustomKeyUp(Key.Digit8)) {
-				eMapEditor.StopEdit();
+				eMapEditor.CloseEditor();
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit9)) {
 
 			}
 
 
+		}
+
+
+		private void FrameUpdate_Player () {
+
+			// Don't Respawn when Editing Map
+			if (eMapEditor.Current.Active) return;
+
+			// Spawn Player when No Player Entity
+			if (ePlayer.Current == null && !FrameTask.HasTask(Const.TASK_ROUTE)) {
+				var center = CellRenderer.CameraRect.CenterInt();
+				ePlayer.TrySpawnPlayer(center.x, center.y);
+			}
+
+			// Reload Game and Player After Passout
+			if (
+				ePlayer.Current != null && ePlayer.Current.Active &&
+				ePlayer.Current.CharacterState == CharacterState.Passout &&
+				Game.GlobalFrame > ePlayer.Current.PassoutFrame + YayaConst.PASSOUT_WAIT &&
+				FrameInput.GetGameKeyDown(GameKey.Action) &&
+				!FrameTask.HasTask(Const.TASK_ROUTE)
+			) {
+				FrameTask.AddToLast(tFadeOut.TYPE_ID, Const.TASK_ROUTE);
+				if (FrameTask.TryAddToLast(tOpening.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tOpening oTask) {
+					oTask.ViewX = YayaConst.OPENING_X;
+					oTask.ViewYStart = YayaConst.OPENING_Y;
+					oTask.ViewYEnd = YayaConst.OPENING_END_Y;
+				}
+			}
 		}
 
 

@@ -129,7 +129,7 @@ namespace Yaya {
 			Game.GlobalFrame >= LastAttackFrame + Duration + Colldown;
 
 
-		public void NoAttackThisFrame () => AntiAttackFrame = Game.GlobalFrame;
+		public void IgnoreAttack (int duration = 0) => AntiAttackFrame = Game.GlobalFrame + duration;
 
 
 		#endregion

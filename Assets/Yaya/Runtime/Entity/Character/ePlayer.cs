@@ -44,7 +44,7 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
-			if (Current == null || !Current.Active) Current = this;
+			Current = this;
 		}
 
 
@@ -56,6 +56,7 @@ namespace Yaya {
 
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
+			if (Current != this) return;
 			// Collect
 			int count = CellPhysics.OverlapAll(
 				Collects, YayaConst.MASK_ENTITY, Rect, this, OperationMode.TriggerOnly
@@ -80,8 +81,7 @@ namespace Yaya {
 				return;
 			}
 
-			// Respawn
-			FrameUpdate_Respawn();
+			if (Current != this) return;
 
 			// Update Player
 			if (Current == null) return;
@@ -107,32 +107,6 @@ namespace Yaya {
 				Mascot.Summon();
 			}
 
-		}
-
-
-		private void FrameUpdate_Respawn () {
-
-			// Spawn Player when No Player Entity
-			if (Current == null && !FrameTask.HasTask(Const.TASK_ROUTE)) {
-				var center = CellRenderer.CameraRect.CenterInt();
-				Current = TrySpawnPlayer(center.x, center.y);
-			}
-
-			// Reload Game and Player After Passout
-			if (
-				Current != null && Current.Active &&
-				Current.CharacterState == CharacterState.Passout &&
-				Game.GlobalFrame > Current.PassoutFrame + YayaConst.PASSOUT_WAIT &&
-				FrameInput.GetGameKeyDown(GameKey.Action) &&
-				!FrameTask.HasTask(Const.TASK_ROUTE)
-			) {
-				FrameTask.AddToLast(tFadeOut.TYPE_ID, Const.TASK_ROUTE);
-				if (FrameTask.TryAddToLast(tOpening.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tOpening oTask) {
-					oTask.ViewX = YayaConst.OPENING_X;
-					oTask.ViewYStart = YayaConst.OPENING_Y;
-					oTask.ViewYEnd = YayaConst.OPENING_END_Y;
-				}
-			}
 		}
 
 

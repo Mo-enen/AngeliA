@@ -109,26 +109,24 @@ namespace Yaya {
 
 		protected override void DrawBackgroundBlock (int id, int unitX, int unitY) {
 			base.DrawBackgroundBlock(id, unitX, unitY);
-			if (!Behind) {
-				// Collider for Oneway
-				if (
-					CellRenderer.TryGetSprite(id, out var sp) &&
-					CellRenderer.TryGetMeta(id, out var meta) &&
-					AngeUtil.IsOnewayTag(meta.Tag)
-				) {
-					CellPhysics.FillBlock(
-						YayaConst.LAYER_LEVEL, id,
-						new RectInt(
-							unitX * Const.CEL,
-							unitY * Const.CEL,
-							Const.CEL,
-							Const.CEL
-						).Shrink(
-							sp.GlobalBorder.Left, sp.GlobalBorder.Right, sp.GlobalBorder.Down, sp.GlobalBorder.Up
-						),
-						true, meta.Tag
-					);
-				}
+			// Collider for Oneway
+			if (
+				CellRenderer.TryGetSprite(id, out var sp) &&
+				CellRenderer.TryGetMeta(id, out var meta) &&
+				AngeUtil.IsOnewayTag(meta.Tag)
+			) {
+				CellPhysics.FillBlock(
+					YayaConst.LAYER_LEVEL, id,
+					new RectInt(
+						unitX * Const.CEL,
+						unitY * Const.CEL,
+						Const.CEL,
+						Const.CEL
+					).Shrink(
+						sp.GlobalBorder.Left, sp.GlobalBorder.Right, sp.GlobalBorder.Down, sp.GlobalBorder.Up
+					),
+					true, meta.Tag
+				);
 			}
 		}
 
@@ -146,14 +144,31 @@ namespace Yaya {
 
 
 		protected override void DrawEntity (Game game, int id, int unitX, int unitY) {
-			if (!eMapEditor.Current.Active) {
+			if (!eMapEditor.Current.Active || eMapEditor.Current.IsPlaying) {
 				base.DrawEntity(game, id, unitX, unitY);
 			} else {
 				var rect = new RectInt(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 				if (!Culling || CellRenderer.CameraRect.Overlaps(rect)) {
+					if (
+						CellRenderer.TryGetSprite(id, out var sprite) &&
+						CellRenderer.TryGetMeta(id, out var meta) &&
+						(sprite.GlobalWidth != Const.CEL || sprite.GlobalHeight != Const.CEL) &&
+						sprite.GlobalWidth * sprite.GlobalHeight != 0
+					) {
+						rect = rect.Fit(
+							sprite.GlobalWidth, sprite.GlobalHeight,
+							meta.PivotX, meta.PivotY
+						);
+					}
 					CellRenderer.Draw(id, rect);
 				}
 			}
+		}
+
+
+		protected override void Draw_Behind (int id, int unitX, int unitY, bool fixRatio) {
+			if (eMapEditor.Current.Active && !eMapEditor.Current.IsPlaying) return;
+			base.Draw_Behind(id, unitX, unitY, fixRatio);
 		}
 
 

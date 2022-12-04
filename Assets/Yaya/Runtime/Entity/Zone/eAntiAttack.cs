@@ -17,7 +17,7 @@ namespace Yaya {
 			if (player == null || !player.Active) return;
 			var targetRect = TargetRect.Value;
 			if (!targetRect.Contains(player.X, player.Y)) return;
-			player.Attackness.NoAttackThisFrame();
+			player.Attackness.IgnoreAttack();
 			UpdateFrame = Game.GlobalFrame;
 		}
 
