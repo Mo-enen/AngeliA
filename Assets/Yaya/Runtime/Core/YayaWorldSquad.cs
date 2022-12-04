@@ -166,12 +166,6 @@ namespace Yaya {
 		}
 
 
-		protected override void Draw_Behind (int id, int unitX, int unitY, bool fixRatio) {
-			if (eMapEditor.Current.Active && !eMapEditor.Current.IsPlaying) return;
-			base.Draw_Behind(id, unitX, unitY, fixRatio);
-		}
-
-
 		public FittingPose GetEntityPose (Entity entity, bool horizontal) => GetEntityPose(entity.TypeID, entity.X, entity.Y, horizontal);
 		public FittingPose GetEntityPose (int typeID, int globalX, int globalY, bool horizontal) {
 			int unitX = globalX.UDivide(Const.CEL);

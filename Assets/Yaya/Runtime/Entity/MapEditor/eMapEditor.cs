@@ -40,6 +40,9 @@ namespace Yaya {
 			base.OnInitialize();
 			Current = this;
 			FrameInput.AddCustomKey(Key.Space);
+			FrameInput.AddCustomKey(Key.LeftCtrl);
+			FrameInput.AddCustomKey(Key.LeftAlt);
+			FrameInput.AddCustomKey(Key.LeftShift);
 		}
 
 
@@ -149,6 +152,8 @@ namespace Yaya {
 		public static void OpenEditor () {
 			if (Current.Active) return;
 			Game.Current.AddEntity<eMapEditor>(0, 0);
+			Game.Current.WorldSquad.SwitchMapChannel(Const.MAP_CHANNEL_PLAYER);
+			Game.Current.WorldSquad_Behind.SwitchMapChannel(Const.MAP_CHANNEL_PLAYER);
 			Current.StartEdit();
 		}
 
@@ -157,10 +162,12 @@ namespace Yaya {
 			if (!Current.Active) return;
 			Current.Active = false;
 			Game.Current.ReloadAllEntitiesFromWorld();
+			Game.Current.WorldSquad.SwitchMapChannel(Const.MAP_CHANNEL_BUILTIN);
+			Game.Current.WorldSquad_Behind.SwitchMapChannel(Const.MAP_CHANNEL_BUILTIN);
 			// Spawn Player
 			if (ePlayer.Current == null || !ePlayer.Current.Active) {
 				var cRect = CellRenderer.CameraRect;
-				var player = ePlayer.TrySpawnPlayer(
+				ePlayer.TrySpawnPlayer(
 					cRect.x + cRect.width / 2,
 					cRect.y + cRect.height / 2
 				);
@@ -187,8 +194,18 @@ namespace Yaya {
 			SpawningPlayerX = FrameInput.MouseGlobalPosition.x;
 			SpawningPlayerY = FrameInput.MouseGlobalPosition.y;
 			// View Height
-			Game.Current.SetViewSizeDely(Game.Current.ViewConfig.DefaultHeight, 200);
+			var config = Game.Current.ViewConfig;
+			int defaultHeight = config.DefaultHeight;
+			int defaultWidth = config.ViewRatio * defaultHeight / 1000;
+			var view = Game.Current.ViewRect;
+			Game.Current.SetViewSizeDely(defaultHeight, 200);
+			Game.Current.SetViewPositionDely(
+				view.x + (view.width - defaultWidth) / 2,
+				view.y + (view.height - defaultHeight) / 2,
+				200
+			);
 			Game.Current.ReloadAllEntitiesFromWorld();
+			Yaya.Current.ResetAimViewPosition();
 		}
 
 

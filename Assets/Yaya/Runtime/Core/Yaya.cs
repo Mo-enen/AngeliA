@@ -139,11 +139,12 @@ namespace Yaya {
 
 		private void FrameUpdate_Player () {
 
-			// Don't Respawn when Editing Map
-			if (eMapEditor.Current.Active) return;
-
 			// Spawn Player when No Player Entity
-			if (ePlayer.Current == null && !FrameTask.HasTask(Const.TASK_ROUTE)) {
+			if (
+				ePlayer.Current == null &&
+				!FrameTask.HasTask(Const.TASK_ROUTE) &&
+				!eMapEditor.Current.Active
+			) {
 				var center = CellRenderer.CameraRect.CenterInt();
 				ePlayer.TrySpawnPlayer(center.x, center.y);
 			}
@@ -151,16 +152,25 @@ namespace Yaya {
 			// Reload Game and Player After Passout
 			if (
 				ePlayer.Current != null && ePlayer.Current.Active &&
-				ePlayer.Current.CharacterState == CharacterState.Passout &&
-				Game.GlobalFrame > ePlayer.Current.PassoutFrame + YayaConst.PASSOUT_WAIT &&
-				FrameInput.GetGameKeyDown(GameKey.Action) &&
-				!FrameTask.HasTask(Const.TASK_ROUTE)
+				ePlayer.Current.CharacterState == CharacterState.Passout
 			) {
-				FrameTask.AddToLast(tFadeOut.TYPE_ID, Const.TASK_ROUTE);
-				if (FrameTask.TryAddToLast(tOpening.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tOpening oTask) {
-					oTask.ViewX = YayaConst.OPENING_X;
-					oTask.ViewYStart = YayaConst.OPENING_Y;
-					oTask.ViewYEnd = YayaConst.OPENING_END_Y;
+				if (
+					Game.GlobalFrame > ePlayer.Current.PassoutFrame + YayaConst.PASSOUT_WAIT &&
+					FrameInput.GetGameKeyDown(GameKey.Action) &&
+					!FrameTask.HasTask(Const.TASK_ROUTE)
+				) {
+					if (!eMapEditor.Current.Active) {
+						// Game Play
+						FrameTask.AddToLast(tFadeOut.TYPE_ID, Const.TASK_ROUTE);
+						if (FrameTask.TryAddToLast(tOpening.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tOpening oTask) {
+							oTask.ViewX = YayaConst.OPENING_X;
+							oTask.ViewYStart = YayaConst.OPENING_Y;
+							oTask.ViewYEnd = YayaConst.OPENING_END_Y;
+						}
+					} else {
+						// Map Editor
+						eMapEditor.Current.StartEdit();
+					}
 				}
 			}
 		}
@@ -170,7 +180,7 @@ namespace Yaya {
 
 			var player = ePlayer.Current;
 			if (FrameTask.HasTask(Const.TASK_ROUTE)) return;
-			if (player == null) return;
+			if (player == null || !player.Active) return;
 
 			const int LINGER_RATE = 32;
 			bool flying = player.Movement.IsFlying;
@@ -294,7 +304,7 @@ namespace Yaya {
 		}
 
 
-		// Override
+		// Misc
 		private void PauselessUpdate () {
 
 			var game = Game.Current;
@@ -377,7 +387,7 @@ namespace Yaya {
 
 
 
-		#region --- PRO ---
+		#region --- API ---
 
 
 		public void SetViewZDelay (int newZ) {
@@ -388,6 +398,20 @@ namespace Yaya {
 				svTask.NewZ = newZ;
 			}
 		}
+
+
+		public void ResetAimViewPosition () {
+			AimViewX = Game.Current.ViewRect.x;
+			AimViewY = Game.Current.ViewRect.y;
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
 
 
 		private void YayaBeforeViewZChange (int newZ) {
