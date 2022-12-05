@@ -25,6 +25,8 @@ namespace Yaya {
 
 		private void Update_View () {
 
+			var view = Game.Current.ViewRect;
+
 			// Move View
 			if (
 				FrameInput.MouseMidButton ||
@@ -35,19 +37,29 @@ namespace Yaya {
 				var screenDelta = FrameInput.MouseScreenPositionDelta;
 				screenDelta.x = (int)(screenDelta.x * cameraRect.width / uCameraRect.width / Screen.width);
 				screenDelta.y = (int)(screenDelta.y * cameraRect.height / uCameraRect.height / Screen.height);
-				var view = Game.Current.ViewRect;
 				Game.Current.SetViewPositionImmediately(view.x - screenDelta.x, view.y - screenDelta.y);
+			}
+
+			// Pan View
+			if (FrameInput.DirectionX != Direction3.None) {
+				Game.Current.SetViewPositionDely(
+					view.x + (int)FrameInput.DirectionX * Const.CEL, view.y, 500
+				);
+			}
+			if (FrameInput.DirectionY != Direction3.None) {
+				Game.Current.SetViewPositionDely(
+					view.x, view.y + (int)FrameInput.DirectionY * Const.CEL, 500
+				);
 			}
 
 			// Zoom View
 			int wheel = FrameInput.MouseWheelDelta;
 			if (wheel != 0 || (FrameInput.CustomKeyPressing(Key.LeftCtrl) && FrameInput.MouseRightButton)) {
-				var view = Game.Current.ViewRect;
 				int delta = wheel != 0 ?
 					wheel * -view.height / 16 :
 					FrameInput.MouseScreenPositionDelta.y * -view.height / 512;
 				var config = Game.Current.ViewConfig;
-				int newHeight = (view.height + delta).Clamp(config.MinHeight, config.MaxHeight);
+				int newHeight = (view.height + delta).Clamp(config.DefaultHeight, config.MaxHeight);
 				int newWidth = config.ViewRatio * newHeight / 1000;
 				int newX, newY;
 				if (wheel != 0) {
