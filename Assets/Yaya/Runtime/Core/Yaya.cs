@@ -124,10 +124,10 @@ namespace Yaya {
 
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit7)) {
-				eMapEditor.OpenEditor();
+
 			}
 			if (FrameInput.CustomKeyUp(Key.Digit8)) {
-				eMapEditor.CloseEditor();
+
 			}
 			if (FrameInput.CustomKeyDown(Key.Digit9)) {
 

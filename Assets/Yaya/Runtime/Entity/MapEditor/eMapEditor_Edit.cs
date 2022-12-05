@@ -89,15 +89,6 @@ namespace Yaya {
 
 
 
-		#region --- API ---
-
-
-
-		#endregion
-
-
-
-
 		#region --- LGC ---
 
 

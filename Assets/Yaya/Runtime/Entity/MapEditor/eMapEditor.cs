@@ -45,8 +45,6 @@ namespace Yaya {
 		private readonly (World world, int step)[] UndoWorlds = new (World, int)[64];
 		private UndoRedoEcho<MapUndoItem> Undo = null;
 		private int CurrentUndoWorldIndex = 0;
-		private int SpawningPlayerX = 0;
-		private int SpawningPlayerY = 0;
 
 
 		#endregion
@@ -93,16 +91,17 @@ namespace Yaya {
 
 		private void Update_Player () {
 			// Try Spawn Player
-			if (ePlayer.Current != null && !ePlayer.Current.Active) {
+			var currentPlayer = ePlayer.Current;
+			if (currentPlayer != null && !currentPlayer.Active) {
 
 				// Draw Player
-				SpawningPlayerX = SpawningPlayerX.LerpTo(FrameInput.MouseGlobalPosition.x, 200);
-				SpawningPlayerY = SpawningPlayerY.LerpTo(FrameInput.MouseGlobalPosition.y, 200);
+				currentPlayer.X = currentPlayer.X.LerpTo(FrameInput.MouseGlobalPosition.x, 200);
+				currentPlayer.Y = currentPlayer.Y.LerpTo(FrameInput.MouseGlobalPosition.y, 200);
 				CellRenderer.Draw(
-					ePlayer.Current.TypeID,
-					SpawningPlayerX, SpawningPlayerY,
+					currentPlayer.TypeID,
+					currentPlayer.X, currentPlayer.Y,
 					500, 1000,
-					(FrameInput.MouseGlobalPosition.x - SpawningPlayerX) / 30,
+					(FrameInput.MouseGlobalPosition.x - currentPlayer.X) / 30,
 					Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE
 				).Z = int.MaxValue;
 
@@ -224,8 +223,10 @@ namespace Yaya {
 
 		public void StartPlay () {
 			IsPlaying = true;
-			SpawningPlayerX = FrameInput.MouseGlobalPosition.x;
-			SpawningPlayerY = FrameInput.MouseGlobalPosition.y;
+			if (ePlayer.Current != null) {
+				ePlayer.Current.X = FrameInput.MouseGlobalPosition.x;
+				ePlayer.Current.Y = FrameInput.MouseGlobalPosition.y;
+			}
 			// View Height
 			var config = Game.Current.ViewConfig;
 			int defaultHeight = config.DefaultHeight;
@@ -259,6 +260,7 @@ namespace Yaya {
 			// Squad >> World Cache
 			int startIndex = CurrentUndoWorldIndex;
 			int count = 0;
+			int stepForClear = -2;
 			for (int i = 0; i < 9; i++) {
 				var world = Squad[i];
 				if (unitRange.Overlaps(new RectInt(
@@ -267,9 +269,20 @@ namespace Yaya {
 					Const.MAP + 1, Const.MAP + 1
 				))) {
 					UndoWorlds[CurrentUndoWorldIndex].world.CopyFrom(world);
+					stepForClear = UndoWorlds[CurrentUndoWorldIndex].step;
 					UndoWorlds[CurrentUndoWorldIndex].step = Undo.CurrentUndoStep;
 					CurrentUndoWorldIndex = (CurrentUndoWorldIndex + 1) % UndoWorlds.Length;
 					count++;
+				}
+			}
+
+			// Clear Used Step
+			if (stepForClear >= 0) {
+				for (int i = 0; i < UndoWorlds.Length; i++) {
+					int index = (i + CurrentUndoWorldIndex) % UndoWorlds.Length;
+					if (UndoWorlds[index].step == stepForClear) {
+						UndoWorlds[index].step = -1;
+					} else break;
 				}
 			}
 
@@ -291,6 +304,11 @@ namespace Yaya {
 
 		private void OnUndoRedoPerformed (MapUndoItem item) {
 
+			// Clean Worlds
+			for (int i = 0; i < 9; i++) {
+				Squad[i].IsDirty = false;
+			}
+
 			// Step Check
 			for (int i = item.WorldIndex; i < item.WorldCount; i++) {
 				if (UndoWorlds[i % UndoWorlds.Length].step != item.Step) return;
@@ -302,7 +320,9 @@ namespace Yaya {
 			}
 
 			// Reload
-			Game.Current.SetViewZ(item.Z);
+			if (Game.Current.ViewZ != item.Z) {
+				Game.Current.SetViewZ(item.Z);
+			}
 			Game.Current.SetViewRectImmetiately(item.ViewRect.x, item.ViewRect.y, item.ViewRect.height);
 			Squad.ReloadDelay();
 		}
