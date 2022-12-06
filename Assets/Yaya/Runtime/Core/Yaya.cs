@@ -69,18 +69,6 @@ namespace Yaya {
 			Application.wantsToQuit -= OnQuit;
 			Application.wantsToQuit += OnQuit;
 
-			// Custom Keys
-			FrameInput.AddCustomKey(Key.Digit0);
-			FrameInput.AddCustomKey(Key.Digit1);
-			FrameInput.AddCustomKey(Key.Digit2);
-			FrameInput.AddCustomKey(Key.Digit3);
-			FrameInput.AddCustomKey(Key.Digit4);
-			FrameInput.AddCustomKey(Key.Digit5);
-			FrameInput.AddCustomKey(Key.Digit6);
-			FrameInput.AddCustomKey(Key.Digit7);
-			FrameInput.AddCustomKey(Key.Digit8);
-			FrameInput.AddCustomKey(Key.Digit9);
-
 			// Start the Game !!
 			if (FrameTask.TryAddToLast(tOpening.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tOpening oTask) {
 				oTask.ViewX = YayaConst.OPENING_X;
