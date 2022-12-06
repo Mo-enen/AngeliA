@@ -142,8 +142,7 @@ namespace Yaya {
 			// Spawn Player when No Player Entity
 			if (
 				ePlayer.Current == null &&
-				!FrameTask.HasTask(Const.TASK_ROUTE) &&
-				!eMapEditor.Current.Active
+				!FrameTask.HasTask(Const.TASK_ROUTE)
 			) {
 				var center = CellRenderer.CameraRect.CenterInt();
 				ePlayer.TrySpawnPlayer(center.x, center.y);
@@ -159,17 +158,12 @@ namespace Yaya {
 					FrameInput.GetGameKeyDown(GameKey.Action) &&
 					!FrameTask.HasTask(Const.TASK_ROUTE)
 				) {
-					if (!eMapEditor.Current.Active) {
-						// Game Play
-						FrameTask.AddToLast(tFadeOut.TYPE_ID, Const.TASK_ROUTE);
-						if (FrameTask.TryAddToLast(tOpening.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tOpening oTask) {
-							oTask.ViewX = YayaConst.OPENING_X;
-							oTask.ViewYStart = YayaConst.OPENING_Y;
-							oTask.ViewYEnd = YayaConst.OPENING_END_Y;
-						}
-					} else {
-						// Map Editor
-						eMapEditor.Current.StartEdit();
+					// Game Play
+					FrameTask.AddToLast(tFadeOut.TYPE_ID, Const.TASK_ROUTE);
+					if (FrameTask.TryAddToLast(tOpening.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tOpening oTask) {
+						oTask.ViewX = YayaConst.OPENING_X;
+						oTask.ViewYStart = YayaConst.OPENING_Y;
+						oTask.ViewYEnd = YayaConst.OPENING_END_Y;
 					}
 				}
 			}
