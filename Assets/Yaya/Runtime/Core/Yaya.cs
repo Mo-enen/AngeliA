@@ -93,33 +93,34 @@ namespace Yaya {
 			Update_Damage(game);
 			Update_HintUI(game);
 
-			if (FrameInput.CustomKeyDown(Key.Digit1)) {
+			if (FrameInput.KeyDown(Key.Digit1)) {
 				game.SetViewZ(game.ViewZ + 1);
 			}
-			if (FrameInput.CustomKeyDown(Key.Digit2)) {
+			if (FrameInput.KeyDown(Key.Digit2)) {
 				game.SetViewZ(game.ViewZ - 1);
 			}
-			if (FrameInput.CustomKeyDown(Key.Digit3)) {
+			if (FrameInput.KeyDown(Key.Digit3)) {
 				game.PeekOrGetEntity<eGuaGua>().FollowOwner = true;
 			}
-			if (FrameInput.CustomKeyDown(Key.Digit4)) {
+			if (FrameInput.KeyDown(Key.Digit4)) {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
 			}
-			if (FrameInput.CustomKeyUp(Key.Digit5)) {
+			if (FrameInput.KeyDown(Key.Digit5)) {
 
 			}
-			if (FrameInput.CustomKeyUp(Key.Digit6)) {
+			if (FrameInput.KeyDown(Key.Digit6)) {
 
 			}
-			if (FrameInput.CustomKeyDown(Key.Digit7)) {
+			if (FrameInput.KeyDown(Key.Digit7)) {
+				FrameTask.AddToLast(typeof(TestDialogue).AngeHash(), Const.TASK_ROUTE);
+			}
+			if (FrameInput.KeyDown(Key.Digit8)) {
 
 			}
-			if (FrameInput.CustomKeyUp(Key.Digit8)) {
+			if (FrameInput.KeyDown(Key.Digit9)) {
 
 			}
-			if (FrameInput.CustomKeyDown(Key.Digit9)) {
 
-			}
 
 
 		}
@@ -143,7 +144,7 @@ namespace Yaya {
 			) {
 				if (
 					Game.GlobalFrame > ePlayer.Current.PassoutFrame + YayaConst.PASSOUT_WAIT &&
-					FrameInput.GetGameKeyDown(GameKey.Action) &&
+					FrameInput.GameKeyDown(GameKey.Action) &&
 					!FrameTask.HasTask(Const.TASK_ROUTE)
 				) {
 					// Game Play
@@ -217,20 +218,9 @@ namespace Yaya {
 
 		private void Update_HintUI (Game game) {
 
-			if (FrameInput.CustomKeyDown(Key.F2)) {
-				if (ShowGamePadUI.Value != ShowControlHint.Value) {
-					// 1 >> 2
-					ShowGamePadUI.Value = true;
-					ShowControlHint.Value = true;
-				} else if (ShowGamePadUI.Value) {
-					// 2 >> 0
-					ShowGamePadUI.Value = false;
-					ShowControlHint.Value = false;
-				} else {
-					// 0 >> 1
-					ShowGamePadUI.Value = false;
-					ShowControlHint.Value = true;
-				}
+			if (FrameInput.KeyDown(Key.F2)) {
+				ShowGamePadUI.Value = !ShowGamePadUI.Value;
+				ShowControlHint.Value = ShowGamePadUI.Value ? ShowControlHint.Value : !ShowControlHint.Value;
 			}
 
 			// Gamepad
@@ -316,7 +306,7 @@ namespace Yaya {
 					if (ControlHintUI.Active) {
 						ControlHintUI.FrameUpdate();
 					}
-				} else if (FrameInput.AnyKeyboardKeyPressed(out _) || FrameInput.AnyGamepadButtonPressed(out _)) {
+				} else if (FrameInput.AnyKeyboardKeyPress(out _) || FrameInput.AnyGamepadButtonPress(out _)) {
 					CutsceneLock = false;
 					FrameInput.UseGameKey(GameKey.Start);
 				}
@@ -328,7 +318,7 @@ namespace Yaya {
 			}
 
 			// Start Key to Switch State
-			if (FrameInput.GetGameKeyDown(GameKey.Start)) {
+			if (FrameInput.GameKeyDown(GameKey.Start)) {
 				switch (game.State) {
 					case GameState.Play:
 						game.State = GameState.Pause;
