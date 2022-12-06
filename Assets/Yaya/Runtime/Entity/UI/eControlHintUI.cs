@@ -20,9 +20,9 @@ namespace Yaya {
 
 		// Api
 		public ePlayer Player { get; set; } = null;
-		public int KeySize { get; set; } = 142;
-		public int Gap { get; set; } = 32;
-		public int TextSize { get; set; } = 100;
+		public int KeySize { get; set; } = 28;
+		public int Gap { get; set; } = 6;
+		public int TextSize { get; set; } = 26;
 		public Color32 LabelTint { get; set; } = Const.WHITE;
 		public Color32 KeyLabelTint { get; set; } = new Color32(44, 49, 54, 255);
 
@@ -90,8 +90,7 @@ namespace Yaya {
 
 		protected override void FrameUpdateUI () {
 
-
-			PositionY = Y + CellRenderer.CameraRect.y;
+			PositionY = Y + CellRenderer.CameraRect.y + 6 * UNIT;
 
 			// Cutscene
 			if (Game.Current.State == GameState.Cutscene) {
@@ -127,16 +126,16 @@ namespace Yaya {
 					// Move
 					DrawKey(GameKey.Left, GameKey.Right, WORD.HINT_MOVE_CODE);
 					// Action & Jump
-					if (Player.Action.CurrentTarget is Entity target && target is IActionEntity iAct) {
+					if (Player.Action.CurrentTarget is Entity target && target is IActionEntity) {
 						// Action Target
 						if (target is eOpenableFurniture open && open.Open) {
-							DrawKey(iAct.InvokeKey, WORD.UI_OK);
+							DrawKey(GameKey.Action, WORD.UI_OK);
 							DrawKey(GameKey.Jump, WORD.UI_CANCEL);
 						} else {
 							if (TypeHintMap.TryGetValue(target.TypeID, out int code)) {
-								DrawKey(iAct.InvokeKey, code);
+								DrawKey(GameKey.Action, code);
 							} else {
-								DrawKey(iAct.InvokeKey, WORD.HINT_USE_CODE);
+								DrawKey(GameKey.Action, WORD.HINT_USE_CODE);
 							}
 						}
 					} else {
@@ -168,15 +167,17 @@ namespace Yaya {
 
 			}
 
+
+
 		}
 
 
 		private void DrawKey (GameKey key, int labelID) => DrawKey(key, key, labelID);
 		private void DrawKey (GameKey keyA, GameKey keyB, int labelID) {
-			int x = X + CellRenderer.CameraRect.x;
+			int x = X + CellRenderer.CameraRect.x + 6 * UNIT;
 			int y = PositionY;
 			DrawKey(x, y, keyA, keyB, labelID);
-			PositionY += KeySize + Gap;
+			PositionY += (KeySize + Gap) * UNIT;
 		}
 		private void DrawKey (int x, int y, GameKey key, int labelID, bool background = false, bool animated = false) => DrawKey(x, y, key, key, labelID, background, animated);
 		private void DrawKey (int x, int y, GameKey keyA, GameKey keyB, int labelID, bool background = false, bool animated = false) {
@@ -193,19 +194,25 @@ namespace Yaya {
 				FrameInput.UsingGamepad ? GAMEPAD_BUTTON_ANI_CODE : KEYBOARD_BUTTON_ANI_CODE :
 				FrameInput.UsingGamepad ? GAMEPAD_BUTTON_CODE : KEYBOARD_BUTTON_CODE;
 			var border = FrameInput.UsingGamepad ? Border_Gamepad : Border_Keyboard;
-			var rect = new RectInt(x, y, KeySize, KeySize);
+			border.Left *= UNIT;
+			border.Right *= UNIT;
+			border.Down *= UNIT;
+			border.Up *= UNIT;
+			int gap = Gap * UNIT;
+			int keySize = KeySize * UNIT;
+			var rect = new RectInt(x, y, keySize, keySize);
 			int keyIdA = FrameInput.UsingGamepad ? (YayaConst.GAMEPAD_CODE.TryGetValue(gamepadA, out var _value0) ? _value0 : 0) : KeyNameIdMap[keyboardA];
 			int keyIdB = FrameInput.UsingGamepad ? (YayaConst.GAMEPAD_CODE.TryGetValue(gamepadB, out var _value1) ? _value1 : 0) : KeyNameIdMap[keyboardB];
-			int widthA = KeySize;
-			int widthB = KeySize;
+			int widthA = keySize;
+			int widthB = keySize;
 
 			// Fix Width for A
 			if (CellRenderer.TryGetSprite(keyIdA, out var spriteA) && spriteA.GlobalWidth > spriteA.GlobalHeight) {
-				widthA = ((KeySize - border.Vertical) * ((float)spriteA.GlobalWidth / spriteA.GlobalHeight)).RoundToInt();
+				widthA = ((keySize - border.Vertical) * ((float)spriteA.GlobalWidth / spriteA.GlobalHeight)).RoundToInt();
 				widthA += border.Horizontal;
 			}
 			if (CellRenderer.TryGetSprite(keyIdB, out var spriteB) && spriteB.GlobalWidth > spriteB.GlobalHeight) {
-				widthB = ((KeySize - border.Vertical) * ((float)spriteB.GlobalWidth / spriteB.GlobalHeight)).RoundToInt();
+				widthB = ((keySize - border.Vertical) * ((float)spriteB.GlobalWidth / spriteB.GlobalHeight)).RoundToInt();
 				widthB += border.Horizontal;
 			}
 
@@ -219,7 +226,7 @@ namespace Yaya {
 
 			// Button Label A
 			CellRenderer.Draw(keyIdA, rect.Shrink(border), KeyLabelTint);
-			rect.x += rect.width + Gap;
+			rect.x += rect.width + gap;
 
 			// Button B
 			if (keyA != keyB) {
@@ -228,7 +235,7 @@ namespace Yaya {
 				CellRenderer.Draw_9Slice(buttonCode, rect, border.Left, border.Right, border.Down, border.Up);
 				// Button Label B
 				CellRenderer.Draw(keyIdB, rect.Shrink(border), KeyLabelTint);
-				rect.x += rect.width + Gap;
+				rect.x += rect.width + gap;
 			}
 
 			// Label
@@ -237,7 +244,7 @@ namespace Yaya {
 				new CellLabel() {
 					Text = Language.Get(labelID),
 					Tint = LabelTint,
-					CharSize = TextSize,
+					CharSize = TextSize * UNIT,
 					Alignment = Alignment.MidLeft,
 				}, rect, out var bounds
 			);

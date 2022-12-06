@@ -10,37 +10,40 @@ namespace Yaya {
 	public class tSetViewZTask : TaskItem {
 
 		public static readonly int TYPE_ID = typeof(tSetViewZTask).AngeHash();
-		public int Duration = 0;
 		public int NewZ = 0;
 		private bool Front = true;
 
 		public override TaskResult FrameUpdate () {
+
+			const int DURATION = YayaConst.SQUAD_TRANSITION_DURATION;
+			const int FIRST_DURATION = DURATION / 3;
+
 			if (LocalFrame == 0) {
 				// Player
 				var game = Game.Current;
 				var player = ePlayer.Current;
 				if (player != null) {
-					player.Renderer.EnterDoor(Duration, NewZ < game.ViewZ);
+					player.Renderer.EnterDoor(DURATION, NewZ < game.ViewZ);
 				}
 				Front = NewZ > game.ViewZ;
 			}
-			if (LocalFrame == Duration / 2) {
+			if (LocalFrame == FIRST_DURATION) {
 				// Set View Z
 				Game.Current.SetViewZ(NewZ);
 			}
-			if (LocalFrame == Duration / 2 + 1) {
+			if (LocalFrame == FIRST_DURATION + 1) {
 				// Add Effect
 				var game = Game.Current;
 				int para = game.WorldConfig.SquadBehindParallax;
 				byte alpha = game.WorldConfig.SquadBehindAlpha;
 				var effect = fSquadTransition.Instance;
-				effect.Duration = Duration / 2;
+				effect.Duration = DURATION - FIRST_DURATION;
 				effect.Scale = Front ? 1000f / para : para / 1000f;
 				effect.Alpha = alpha / 255f;
 				CellRenderer.RemoveEffect<fSquadTransition>();
 				CellRenderer.AddEffect(effect);
 			}
-			return LocalFrame < Duration ? TaskResult.Continue : TaskResult.End;
+			return LocalFrame < DURATION ? TaskResult.Continue : TaskResult.End;
 		}
 
 	}

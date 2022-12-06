@@ -14,7 +14,6 @@ namespace Yaya {
 
 		public bool LockInput => false;
 		public bool IsHighlighted => Game.GlobalFrame <= HighlightFrame + 1;
-		public GameKey InvokeKey => GameKey.Action;
 		public void Highlight () => HighlightFrame = Game.GlobalFrame;
 		public static void HighlightBlink (Cell cell, IActionEntity iAct) {
 			if (!iAct.IsHighlighted || Game.GlobalFrame % 30 > 15) return;
@@ -127,7 +126,7 @@ namespace Yaya {
 
 		public bool Invoke () {
 			if (CurrentTarget == null) return false;
-			if (Source is ePlayer && !FrameInput.GameKeyDown(CurrentTarget.InvokeKey)) return false;
+			if (Source is ePlayer && !FrameInput.GameKeyDown(GameKey.Action)) return false;
 			return CurrentTarget.Invoke(Source);
 		}
 

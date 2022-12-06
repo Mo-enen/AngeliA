@@ -77,7 +77,7 @@ namespace Yaya {
 			{ GamepadButton.LeftShoulder, "k_Gamepad LeftShoulder".AngeHash()},
 			{ GamepadButton.RightShoulder, "k_Gamepad RightShoulder".AngeHash()},
 		};
-		public const int SQUAD_TRANSITION_DURATION = 32;
+		public const int SQUAD_TRANSITION_DURATION = 56;
 
 	}
 

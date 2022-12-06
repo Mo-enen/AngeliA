@@ -106,10 +106,10 @@ namespace Yaya {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
 			}
 			if (FrameInput.KeyDown(Key.Digit5)) {
-
+				game.SetViewSizeDely(game.ViewRect.height - Const.CEL);
 			}
 			if (FrameInput.KeyDown(Key.Digit6)) {
-
+				game.SetViewSizeDely(game.ViewRect.height + Const.CEL);
 			}
 			if (FrameInput.KeyDown(Key.Digit7)) {
 				FrameTask.AddToLast(typeof(TestDialogue).AngeHash(), Const.TASK_ROUTE);
@@ -228,22 +228,6 @@ namespace Yaya {
 				// Active
 				if (!GamePadUI.Active) {
 					game.TryAddEntity(GamePadUI.TypeID, 0, 0, out _);
-					GamePadUI.X = 12;
-					GamePadUI.Y = 12;
-					GamePadUI.Width = 660;
-					GamePadUI.Height = 300;
-					GamePadUI.DPadLeftPosition = new(50, 110, 60, 40);
-					GamePadUI.DPadRightPosition = new(110, 110, 60, 40);
-					GamePadUI.DPadDownPosition = new(90, 70, 40, 60);
-					GamePadUI.DPadUpPosition = new(90, 130, 40, 60);
-					GamePadUI.SelectPosition = new(220, 100, 60, 20);
-					GamePadUI.StartPosition = new(300, 100, 60, 20);
-					GamePadUI.ButtonAPosition = new(530, 90, 60, 60);
-					GamePadUI.ButtonBPosition = new(430, 90, 60, 60);
-					GamePadUI.ColorfulButtonTint = new(240, 86, 86, 255);
-					GamePadUI.DarkButtonTint = new(0, 0, 0, 255);
-					GamePadUI.PressingTint = new(0, 255, 0, 255);
-
 				}
 			} else if (GamePadUI.Active) {
 				// Inactive
@@ -256,15 +240,13 @@ namespace Yaya {
 				// Spawn
 				if (!ControlHintUI.Active) {
 					game.TryAddEntity(ControlHintUI.TypeID, 0, 0, out _);
-					ControlHintUI.X = 32;
-					ControlHintUI.Y = 32;
 				}
 				ControlHintUI.Player = ePlayer.Current;
 
 				// Y
-				int y = 32;
+				int y = 0;
 				if (GamePadUI.Active) {
-					y = Mathf.Max(GamePadUI.Y + GamePadUI.Height + 32, y);
+					y = Mathf.Max(GamePadUI.Y + GamePadUI.Height, y);
 				}
 				ControlHintUI.Y = y;
 
@@ -366,7 +348,6 @@ namespace Yaya {
 			if (FrameTask.HasTask(Const.TASK_ROUTE)) return;
 			// Add Task
 			if (FrameTask.TryAddToLast(tSetViewZTask.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tSetViewZTask svTask) {
-				svTask.Duration = YayaConst.SQUAD_TRANSITION_DURATION;
 				svTask.NewZ = newZ;
 			}
 		}

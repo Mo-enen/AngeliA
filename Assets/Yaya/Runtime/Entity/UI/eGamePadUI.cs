@@ -34,7 +34,30 @@ namespace Yaya {
 
 
 
+		public override void OnActived () {
+			base.OnActived();
+			ColorfulButtonTint = new(240, 86, 86, 255);
+			DarkButtonTint = new(0, 0, 0, 255);
+			PressingTint = new(0, 255, 0, 255);
+		}
+
+
 		protected override void FrameUpdateUI () {
+
+			if (FrameTask.IsTasking<DialoguePerformer>(Const.TASK_ROUTE)) return;
+			
+			X = 6 * UNIT;
+			Y = 6 * UNIT;
+			Width = 132 * UNIT;
+			Height = 60 * UNIT;
+			DPadLeftPosition = new(10 * UNIT, 22 * UNIT, 12 * UNIT, 8 * UNIT);
+			DPadRightPosition = new(22 * UNIT, 22 * UNIT, 12 * UNIT, 8 * UNIT);
+			DPadDownPosition = new(18 * UNIT, 14 * UNIT, 8 * UNIT, 12 * UNIT);
+			DPadUpPosition = new(18 * UNIT, 26 * UNIT, 8 * UNIT, 12 * UNIT);
+			SelectPosition = new(44 * UNIT, 20 * UNIT, 12 * UNIT, 4 * UNIT);
+			StartPosition = new(60 * UNIT, 20 * UNIT, 12 * UNIT, 4 * UNIT);
+			ButtonAPosition = new(106 * UNIT, 18 * UNIT, 12 * UNIT, 12 * UNIT);
+			ButtonBPosition = new(86 * UNIT, 18 * UNIT, 12 * UNIT, 12 * UNIT);
 
 			var screenRect = CellRenderer.CameraRect;
 

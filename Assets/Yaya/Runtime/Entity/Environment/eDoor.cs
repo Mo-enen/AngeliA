@@ -46,13 +46,10 @@ namespace Yaya {
 
 	[EntityAttribute.DrawBehind]
 	[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
-	public abstract class eDoor : Entity, IActionEntity {
+	public abstract class eDoor : Entity {
 
 
 		// Api
-		public GameKey InvokeKey => GameKey.Up;
-		public int HighlightFrame { get; set; } = int.MinValue;
-		public int HighlightStartFrame { get; set; } = int.MinValue;
 		protected virtual int ArtworkCode => TypeID;
 		protected virtual int ArtworkCode_Open => TypeID;
 		protected virtual bool IsFrontDoor => false;
@@ -60,6 +57,7 @@ namespace Yaya {
 		// Data
 		private bool Open = false;
 		private Color32 TargetTint = Const.WHITE;
+		private static bool InputLock = false;
 
 
 		// MSG
@@ -82,10 +80,16 @@ namespace Yaya {
 			base.FrameUpdate();
 			int artCode = Open ? ArtworkCode_Open : ArtworkCode;
 			if (!CellRenderer.TryGetSprite(artCode, out var sprite)) return;
+
+			const int OVERLAP_SHRINK = Const.CEL / 8;
 			var player = ePlayer.Current;
+			bool playerOverlaps =
+				player != null &&
+				player.IsGrounded &&
+				player.Rect.Overlaps(Rect.Shrink(OVERLAP_SHRINK, OVERLAP_SHRINK, 0, 0));
 
 			// Alpha
-			bool needTint = IsFrontDoor && !Open && player != null && player.Rect.Overlaps(Rect);
+			bool needTint = IsFrontDoor && !Open && playerOverlaps;
 			TargetTint.a = (byte)(needTint ? 196 : 255);
 
 			// Draw
@@ -94,31 +98,30 @@ namespace Yaya {
 				Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, TargetTint
 			);
 
-			// Back
+			// Z Fix
 			if (IsFrontDoor) cell.Z = -cell.Z;
 
-			// Highlight
-			var iAct = this as IActionEntity;
-			if (!Open && player != null && player.Action.CurrentTarget == this && iAct.IsHighlighted) {
-				IActionEntity.HighlightBlink(cell, iAct);
+			// Invoke
+			if (!InputLock && playerOverlaps && FrameInput.GameKeyPress(GameKey.Up)) {
+				Invoke(player);
+			}
+			if (InputLock && !FrameInput.GameKeyPress(GameKey.Up)) {
+				InputLock = false;
 			}
 		}
 
 
 		// API
-		public bool Invoke (Entity target) {
-			if (target is not eCharacter ch) return false;
-			if (FrameTask.HasTask(Const.TASK_ROUTE)) return false;
-			ch.X = X + (Width - ch.Width) / 2 - ch.OffsetX;
-			ch.Y = Y;
-			ch.Movement.Stop();
+		public bool Invoke (ePlayer player) {
+			if (player == null || FrameTask.HasTask(Const.TASK_ROUTE)) return false;
+			player.X = X + (Width - player.Width) / 2 - player.OffsetX;
+			player.Y = Y;
+			player.Movement.Stop();
 			Yaya.Current.SetViewZDelay(IsFrontDoor ? Game.Current.ViewZ - 1 : Game.Current.ViewZ + 1);
 			Open = true;
+			InputLock = true;
 			return true;
 		}
-
-
-		public void CancelInvoke (Entity target) { }
 
 
 		public bool AllowInvoke (Entity target) => !FrameTask.HasTask(Const.TASK_ROUTE) && target is eCharacter ch && ch.IsGrounded && ch.Rect.y >= Y && !ch.Movement.IsSquating && !ch.Movement.IsClimbing;
