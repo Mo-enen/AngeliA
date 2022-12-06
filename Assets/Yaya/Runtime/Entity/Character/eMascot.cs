@@ -21,6 +21,7 @@ namespace Yaya {
 		private Vector2Int PrevPosition = default;
 		private readonly Vector2Int[] PosChain = new Vector2Int[6];
 		private int PosChainStartIndex = -1;
+		private int PrevFollowSwapeFrame = 0;
 
 
 		#endregion
@@ -34,6 +35,7 @@ namespace Yaya {
 		public override void OnActived () {
 			base.OnActived();
 			PosChainStartIndex = -1;
+			PrevFollowSwapeFrame = Game.GlobalFrame;
 		}
 
 
@@ -96,27 +98,29 @@ namespace Yaya {
 			Movement.FacingRight = Owner.X >= X;
 			MovementState = MovementState.Fly;
 
-			int targetX = Owner.X;
+			int targetX = Owner.X + (Owner.Movement.FacingRight ? -Const.CEL : Const.CEL);
 			int targetY = Owner.Y + Const.CEL * 3 / 2;
 
 			// Chain
-			const int SEG_DIS = Const.CEL / 8;
 			if (PosChainStartIndex < 0) {
 				for (int i = 0; i < PosChain.Length; i++) {
 					PosChain[i] = new(targetX, targetY);
 				}
 				PosChainStartIndex = 0;
 			}
-			var currentPos = PosChain[PosChainStartIndex];
-			if (Util.SqrtDistance(targetX, targetY, currentPos.x, currentPos.y) > SEG_DIS * SEG_DIS) {
+			//const int SEG_DIS = Const.CEL / 8;
+			//var currentPos = PosChain[PosChainStartIndex];
+			//if (Util.SqrtDistance(targetX, targetY, currentPos.x, currentPos.y) > SEG_DIS * SEG_DIS) {
+			if (Game.GlobalFrame > PrevFollowSwapeFrame + 1) {
+				PrevFollowSwapeFrame = Game.GlobalFrame;
 				PosChainStartIndex = (PosChainStartIndex + 1) % PosChain.Length;
 				PosChain[PosChainStartIndex] = new(targetX, targetY);
 			}
 
 			// Move
 			var pos = PosChain[(PosChainStartIndex + 1).UMod(PosChain.Length)];
-			X = X.LerpTo(pos.x, 200);
-			Y = Y.LerpTo(pos.y, 200);
+			X = X.LerpTo(pos.x, 100);
+			Y = Y.LerpTo(pos.y, 100);
 
 		}
 

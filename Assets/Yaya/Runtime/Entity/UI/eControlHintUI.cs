@@ -233,7 +233,7 @@ namespace Yaya {
 
 			// Label
 			rect.width = 1;
-			CellRenderer.DrawLabel(
+			CellGUI.Label(
 				new CellLabel() {
 					Text = Language.Get(labelID),
 					Tint = LabelTint,
