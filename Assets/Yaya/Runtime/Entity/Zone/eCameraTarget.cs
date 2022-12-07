@@ -42,7 +42,7 @@ namespace Yaya {
 			}
 
 			// Final
-			Game.Current.SetViewPositionDely(
+			Game.Current.SetViewPositionDelay(
 				cameraRect.x + viewOffsetX,
 				cameraRect.y,
 				YayaConst.PLAYER_VIEW_LERP_RATE,

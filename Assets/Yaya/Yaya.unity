@@ -232,6 +232,8 @@ MonoBehaviour:
     LevelBlockLayer: 0
     SquadBehindAlpha: 64
     SquadBehindParallax: 1300
+    UseVignetteOnSquadTransition: 1
+    UseParallaxOnSquadTransition: 1
   m_PhysicsConfig:
     PhysicsLayerCount: 5
     Gravity: 5

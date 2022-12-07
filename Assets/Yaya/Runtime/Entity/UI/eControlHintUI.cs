@@ -19,10 +19,9 @@ namespace Yaya {
 		private static readonly int GAMEPAD_BUTTON_CODE = "Gamepad Button".AngeHash();
 
 		// Api
-		public ePlayer Player { get; set; } = null;
 		public int KeySize { get; set; } = 28;
 		public int Gap { get; set; } = 6;
-		public int TextSize { get; set; } = 26;
+		public int TextSize { get; set; } = 23;
 		public Color32 LabelTint { get; set; } = Const.WHITE;
 		public Color32 KeyLabelTint { get; set; } = new Color32(44, 49, 54, 255);
 
@@ -115,18 +114,19 @@ namespace Yaya {
 				}
 			}
 
-			if (Player == null || !Player.Active) return;
-			if (Game.Current.State != GameState.Play) return;
+			var player = ePlayer.Current;
 			if (FrameTask.IsTasking(Const.TASK_ROUTE)) return;
+			if (player == null || !player.Active) return;
+			if (Game.Current.State != GameState.Play) return;
 
 			// Game Playing
-			switch (Player.CharacterState) {
+			switch (player.CharacterState) {
 
 				case CharacterState.GamePlay: {
 					// Move
 					DrawKey(GameKey.Left, GameKey.Right, WORD.HINT_MOVE_CODE);
 					// Action & Jump
-					if (Player.CurrentActionTarget is Entity target && target is IActionEntity) {
+					if (player.CurrentActionTarget is Entity target && target is IActionEntity) {
 						// Action Target
 						if (target is eOpenableFurniture open && open.Open) {
 							DrawKey(GameKey.Action, WORD.UI_OK);
@@ -140,7 +140,7 @@ namespace Yaya {
 						}
 					} else {
 						// General
-						if (!Player.AntiAttack) {
+						if (!player.AntiAttack) {
 							DrawKey(GameKey.Action, WORD.HINT_ATTACK_CODE);
 						}
 						DrawKey(GameKey.Jump, WORD.HINT_JUMP_CODE);
@@ -149,17 +149,17 @@ namespace Yaya {
 				}
 
 				case CharacterState.Sleep: {
-					int x = Player.X - Const.CEL / 2;
-					int y = Player.Y + Const.CEL;
+					int x = player.X - Const.CEL / 2;
+					int y = player.Y + Const.CEL;
 					DrawKey(x, y, GameKey.Action, WORD.HINT_WAKE_CODE, true, true);
 					DrawKey(GameKey.Action, WORD.HINT_WAKE_CODE);
 					break;
 				}
 
 				case CharacterState.Passout: {
-					if (Game.GlobalFrame < Player.PassoutFrame + YayaConst.PASSOUT_WAIT) break;
-					int x = Player.X - Const.CEL / 2;
-					int y = Player.Y + Const.CEL;
+					if (Game.GlobalFrame < player.PassoutFrame + YayaConst.PASSOUT_WAIT) break;
+					int x = player.X - Const.CEL / 2;
+					int y = player.Y + Const.CEL;
 					DrawKey(x, y, GameKey.Action, WORD.UI_CONTINUE, true, true);
 					DrawKey(GameKey.Action, WORD.UI_CONTINUE);
 					break;

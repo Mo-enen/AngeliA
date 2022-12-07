@@ -218,6 +218,14 @@ namespace Yaya {
 				Game.Current.VSync = !Game.Current.VSync;
 			}
 
+			// Screen Effect
+			if (DrawItem(
+				Language.Get(WORD.MENU_SCREEN_EFFECT),
+				new CellLabel(Language.Get(Game.Current.UseScreenEffects ? WORD.UI_ON : WORD.UI_OFF))
+			)) {
+				Game.Current.UseScreenEffects = !Game.Current.UseScreenEffects;
+			}
+
 			// Fullscreen
 			if (DrawArrowItem(
 				Language.Get(WORD.MENU_FULLSCREEN_LABEL),

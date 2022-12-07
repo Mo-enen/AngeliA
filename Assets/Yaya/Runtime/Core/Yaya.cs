@@ -70,7 +70,7 @@ namespace Yaya {
 			Application.wantsToQuit += OnQuit;
 
 			// Start the Game !!
-			if (FrameTask.TryAddToLast(tOpening.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tOpening oTask) {
+			if (FrameTask.TryAddToLast(OpeningTask.TYPE_ID, Const.TASK_ROUTE, out var task) && task is OpeningTask oTask) {
 				oTask.ViewX = YayaConst.OPENING_X;
 				oTask.ViewYStart = YayaConst.OPENING_Y;
 				oTask.ViewYEnd = YayaConst.OPENING_END_Y;
@@ -106,10 +106,10 @@ namespace Yaya {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
 			}
 			if (FrameInput.KeyDown(Key.Digit5)) {
-				game.SetViewSizeDely(game.ViewRect.height - Const.CEL);
+				game.SetViewSizeDelay(game.ViewRect.height - Const.CEL);
 			}
 			if (FrameInput.KeyDown(Key.Digit6)) {
-				game.SetViewSizeDely(game.ViewRect.height + Const.CEL);
+				game.SetViewSizeDelay(game.ViewRect.height + Const.CEL);
 			}
 			if (FrameInput.KeyDown(Key.Digit7)) {
 				FrameTask.AddToLast(typeof(TestDialogue).AngeHash(), Const.TASK_ROUTE);
@@ -148,8 +148,8 @@ namespace Yaya {
 					!FrameTask.HasTask(Const.TASK_ROUTE)
 				) {
 					// Game Play
-					FrameTask.AddToLast(tFadeOut.TYPE_ID, Const.TASK_ROUTE);
-					if (FrameTask.TryAddToLast(tOpening.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tOpening oTask) {
+					FrameTask.AddToLast(FadeOutTask.TYPE_ID, Const.TASK_ROUTE);
+					if (FrameTask.TryAddToLast(OpeningTask.TYPE_ID, Const.TASK_ROUTE, out var task) && task is OpeningTask oTask) {
 						oTask.ViewX = YayaConst.OPENING_X;
 						oTask.ViewYStart = YayaConst.OPENING_Y;
 						oTask.ViewYEnd = YayaConst.OPENING_END_Y;
@@ -161,8 +161,8 @@ namespace Yaya {
 
 		private void Update_View (Game game) {
 
+			if (FrameTask.IsTasking<OpeningTask>(Const.TASK_ROUTE)) return;
 			var player = ePlayer.Current;
-			if (FrameTask.HasTask(Const.TASK_ROUTE)) return;
 			if (player == null || !player.Active) return;
 
 			const int LINGER_RATE = 32;
@@ -180,7 +180,7 @@ namespace Yaya {
 				AimViewX = playerX - linger - game.ViewRect.width / 2;
 			}
 			AimViewY = !inAir || flying || playerY < PlayerLastGroundedY ? playerY - game.ViewRect.height * 382 / 1000 : AimViewY;
-			game.SetViewPositionDely(AimViewX, AimViewY, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_PLAYER);
+			game.SetViewPositionDelay(AimViewX, AimViewY, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_PLAYER);
 
 			// Clamp
 			if (!game.ViewRect.Contains(playerX, playerY)) {
@@ -188,7 +188,7 @@ namespace Yaya {
 				if (playerX <= game.ViewRect.xMin) AimViewX = playerX - 1;
 				if (playerY >= game.ViewRect.yMax) AimViewY = playerY - game.ViewRect.height + 1;
 				if (playerY <= game.ViewRect.yMin) AimViewY = playerY - 1;
-				game.SetViewPositionDely(AimViewX, AimViewY, 1000, YayaConst.VIEW_PRIORITY_PLAYER + 1);
+				game.SetViewPositionDelay(AimViewX, AimViewY, 1000, YayaConst.VIEW_PRIORITY_PLAYER + 1);
 			}
 
 		}
@@ -241,7 +241,6 @@ namespace Yaya {
 				if (!ControlHintUI.Active) {
 					game.TryAddEntity(ControlHintUI.TypeID, 0, 0, out _);
 				}
-				ControlHintUI.Player = ePlayer.Current;
 
 				// Y
 				int y = 0;
@@ -347,7 +346,7 @@ namespace Yaya {
 		public void SetViewZDelay (int newZ) {
 			if (FrameTask.HasTask(Const.TASK_ROUTE)) return;
 			// Add Task
-			if (FrameTask.TryAddToLast(tSetViewZTask.TYPE_ID, Const.TASK_ROUTE, out var task) && task is tSetViewZTask svTask) {
+			if (FrameTask.TryAddToLast(SquadTransitionTask.TYPE_ID, Const.TASK_ROUTE, out var task) && task is SquadTransitionTask svTask) {
 				svTask.NewZ = newZ;
 			}
 		}

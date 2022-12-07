@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class tOpening : TaskItem {
+	public class OpeningTask : TaskItem {
 
 
 
@@ -13,7 +13,7 @@ namespace Yaya {
 		private const int DURATION = 180;
 		private const int BLACK_DURATION = 120;
 		private const int SKIP_DURATION = 12;
-		public static readonly int TYPE_ID = typeof(tOpening).AngeHash();
+		public static readonly int TYPE_ID = typeof(OpeningTask).AngeHash();
 
 		// Api
 		public int ViewX = 0;
@@ -117,7 +117,7 @@ namespace Yaya {
 
 
 		// LGC
-		private void SetViewPosition (Game game, int x, int y) => game.SetViewPositionDely(
+		private void SetViewPosition (Game game, int x, int y) => game.SetViewPositionDelay(
 			x - game.ViewRect.width / 2,
 			y - game.ViewRect.height / 2,
 			1000,

@@ -56,7 +56,6 @@ namespace Yaya {
 
 		// Data
 		private bool Open = false;
-		private Color32 TargetTint = Const.WHITE;
 		private static bool InputLock = false;
 
 
@@ -65,7 +64,6 @@ namespace Yaya {
 			base.OnActived();
 			Height = Const.CEL * 2;
 			Open = false;
-			TargetTint = Const.WHITE;
 		}
 
 
@@ -78,8 +76,6 @@ namespace Yaya {
 		public override void FrameUpdate () {
 
 			base.FrameUpdate();
-			int artCode = Open ? ArtworkCode_Open : ArtworkCode;
-			if (!CellRenderer.TryGetSprite(artCode, out var sprite)) return;
 
 			const int OVERLAP_SHRINK = Const.CEL / 8;
 			var player = ePlayer.Current;
@@ -88,14 +84,13 @@ namespace Yaya {
 				player.IsGrounded &&
 				player.Rect.Overlaps(Rect.Shrink(OVERLAP_SHRINK, OVERLAP_SHRINK, 0, 0));
 
-			// Alpha
-			bool needTint = IsFrontDoor && !Open && playerOverlaps;
-			TargetTint.a = (byte)(needTint ? 196 : 255);
+			int artCode = Open || playerOverlaps ? ArtworkCode_Open : ArtworkCode;
+			if (!CellRenderer.TryGetSprite(artCode, out var sprite)) return;
 
 			// Draw
 			var cell = CellRenderer.Draw(
 				sprite.GlobalID, X + Width / 2, Y, 500, 0, 0,
-				Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, TargetTint
+				Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE
 			);
 
 			// Z Fix
@@ -124,8 +119,8 @@ namespace Yaya {
 		}
 
 
-		public bool AllowInvoke (Entity target) => 
-			!FrameTask.HasTask(Const.TASK_ROUTE) && target is eCharacter ch && 
+		public bool AllowInvoke (Entity target) =>
+			!FrameTask.HasTask(Const.TASK_ROUTE) && target is eCharacter ch &&
 			ch.IsGrounded && ch.Rect.y >= Y && !ch.IsSquating && !ch.IsClimbing;
 
 

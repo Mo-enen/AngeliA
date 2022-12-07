@@ -32,7 +32,7 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (OpenLight && !FrameTask.IsTasking(Const.TASK_ROUTE)) {
+			if (OpenLight) {
 				byte brightness = (byte)(64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8);
 				CellRenderer.SetLayer(Const.SHADER_ADD);
 				CellRenderer.Draw(

@@ -44,8 +44,8 @@ namespace Yaya {
 
 		protected override void FrameUpdateUI () {
 
-			if (FrameTask.IsTasking<DialoguePerformer>(Const.TASK_ROUTE)) return;
-			
+			if (FrameTask.IsTasking(Const.TASK_ROUTE)) return;
+
 			X = 6 * UNIT;
 			Y = 6 * UNIT;
 			Width = 132 * UNIT;
@@ -62,7 +62,7 @@ namespace Yaya {
 			var screenRect = CellRenderer.CameraRect;
 
 			// Body
-			CellRenderer.Draw(BodyCode, base.Rect.Shift(screenRect.x, screenRect.y));
+			CellRenderer.Draw(BodyCode, Rect.Shift(screenRect.x, screenRect.y));
 
 			// DPad
 			CellRenderer.Draw(DPadLeftCode, DPadLeftPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Left) ? PressingTint : DarkButtonTint);

@@ -73,7 +73,6 @@ namespace Yaya {
 		private static readonly HitInfo[] c_HitboxCollisionFix = new HitInfo[8];
 		private static readonly HitInfo[] c_SlideCheck = new HitInfo[8];
 		private RectInt Hitbox = default;
-		private int CurrentFrame = 0;
 		private int LastIntendedX = 1;
 		private bool HoldingJump = false;
 		private bool AllowHoldingJumpForFly = false;
@@ -103,38 +102,26 @@ namespace Yaya {
 
 
 		public void Update_Movement () {
-			CurrentFrame = Game.GlobalFrame;
 			MovementUpdate_Cache();
 			MovementUpdate_Jump();
 			MovementUpdate_Dash();
-			if (InSand) StopDash();
 			MovementUpdate_VelocityX();
 			MovementUpdate_VelocityY();
 			IntendedJump = false;
 			IntendedDash = false;
 			IntendedPound = false;
 			PrevHoldingJump = HoldingJump;
-			MoveState =
-				IsFlying ? MovementState.Fly :
-				IsClimbing ? MovementState.Climb :
-				IsPounding ? MovementState.Pound :
-				IsSliding ? MovementState.Slide :
-				IsRolling ? MovementState.Roll :
-				IsDashing ? (!IsGrounded && InWater ? MovementState.SwimDash : MovementState.Dash) :
-				IsSquating ? (IsMoving ? MovementState.SquatMove : MovementState.SquatIdle) :
-				InWater && !IsGrounded ? (IsMoving ? MovementState.SwimMove : MovementState.SwimIdle) :
-				InAir ? (VelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown) :
-				IsRunning ? MovementState.Run :
-				IsMoving ? MovementState.Walk :
-				MovementState.Idle;
+			MoveState = GetCurrentMovementState();
 		}
 
 
 		private void MovementUpdate_Cache () {
 
+			int frame = Game.GlobalFrame;
+
 			// Ground
-			if (IsGrounded) LastGroundingFrame = CurrentFrame;
-			if (!PrevGrounded && IsGrounded) LastGroundFrame = CurrentFrame;
+			if (IsGrounded) LastGroundingFrame = frame;
+			if (!PrevGrounded && IsGrounded) LastGroundFrame = frame;
 			PrevGrounded = IsGrounded;
 
 			// Climb
@@ -156,9 +143,9 @@ namespace Yaya {
 
 			// Dash
 			if (InWater && SwimInFreeStyle) {
-				IsDashing = DashAvailable && FreeSwimDashSpeed > 0 && !IsClimbing && CurrentFrame < LastDashFrame + FreeSwimDashDuration;
+				IsDashing = DashAvailable && FreeSwimDashSpeed > 0 && !IsClimbing && frame < LastDashFrame + FreeSwimDashDuration;
 			} else {
-				IsDashing = DashAvailable && DashSpeed > 0 && !IsClimbing && CurrentFrame < LastDashFrame + CurrentDashDuration && !InsideGround;
+				IsDashing = DashAvailable && DashSpeed > 0 && !IsClimbing && frame < LastDashFrame + CurrentDashDuration && !InsideGround;
 				if (IsDashing && IntendedY != -1) {
 					// Stop when Dashing Without Holding Down
 					LastDashFrame = int.MinValue;
@@ -185,18 +172,18 @@ namespace Yaya {
 			bool squating =
 				SquatAvailable && IsGrounded && !IsClimbing && !InSand && !InsideGround &&
 				((!IsDashing && IntendedY < 0) || ForceSquatCheck());
-			if (!IsSquating && squating) LastSquatFrame = CurrentFrame;
-			if (squating) LastSquatingFrame = CurrentFrame;
+			if (!IsSquating && squating) LastSquatFrame = frame;
+			if (squating) LastSquatingFrame = frame;
 			IsSquating = squating;
 
 			// Pound
 			IsPounding =
 				PoundAvailable && !IsGrounded && !IsClimbing && !InWater && !IsDashing && !InsideGround &&
 				(IsPounding ? IntendedY < 0 : IntendedPound);
-			if (IsPounding) LastPoundingFrame = CurrentFrame;
+			if (IsPounding) LastPoundingFrame = frame;
 
 			// Fly
-			if ((!HoldingJump && CurrentFrame > LastFlyFrame + FlyCooldown) || IsGrounded || InWater || IsClimbing || IsDashing || InsideGround || IsPounding) {
+			if ((!HoldingJump && frame > LastFlyFrame + FlyCooldown) || IsGrounded || InWater || IsClimbing || IsDashing || InsideGround || IsPounding) {
 				IsFlying = false;
 			}
 
@@ -221,8 +208,10 @@ namespace Yaya {
 
 		private void MovementUpdate_Jump () {
 
+			int frame = Game.GlobalFrame;
+
 			// Reset Count on Grounded
-			if (CurrentFrame > LastJumpFrame + JUMP_GAP && (IsGrounded || InWater || IsClimbing) && !IntendedJump) {
+			if (frame > LastJumpFrame + JUMP_GAP && (IsGrounded || InWater || IsClimbing) && !IntendedJump) {
 				CurrentJumpCount = 0;
 			}
 
@@ -239,7 +228,7 @@ namespace Yaya {
 					if (IntendedJump) {
 						if (InWater && SwimInFreeStyle) {
 							// Free Dash in Water
-							LastDashFrame = CurrentFrame;
+							LastDashFrame = frame;
 							IsDashing = true;
 							VelocityX = 0;
 							VelocityY = 0;
@@ -250,13 +239,13 @@ namespace Yaya {
 							LastDashFrame = int.MinValue;
 							IsDashing = false;
 							IsSliding = false;
-							LastJumpFrame = CurrentFrame;
+							LastJumpFrame = frame;
 						}
 						IsClimbing = false;
 					}
 				} else if (FlyAvailable && CurrentJumpCount < JumpCount + FlyCount) {
 					// Fly
-					if (CurrentFrame > LastFlyFrame + FlyCooldown) {
+					if (frame > LastFlyFrame + FlyCooldown) {
 						// Cooldown Ready
 						if (IntendedJump || (HoldingJump && AllowHoldingJumpForFly)) {
 							LastDashFrame = int.MinValue;
@@ -265,7 +254,7 @@ namespace Yaya {
 							IsDashing = false;
 							CurrentJumpCount++;
 							VelocityY = Mathf.Max(FlySpeed, VelocityY);
-							LastFlyFrame = CurrentFrame;
+							LastFlyFrame = frame;
 							AllowHoldingJumpForFly = false;
 						}
 					} else {
@@ -277,7 +266,7 @@ namespace Yaya {
 			}
 
 			// Fall off Edge
-			if (CurrentJumpCount == 0 && !IsGrounded && !InWater && !IsClimbing && CurrentFrame > LastGroundingFrame + JUMP_TOLERANCE) {
+			if (CurrentJumpCount == 0 && !IsGrounded && !InWater && !IsClimbing && frame > LastGroundingFrame + JUMP_TOLERANCE) {
 				CurrentJumpCount++;
 			}
 
@@ -294,12 +283,16 @@ namespace Yaya {
 		private void MovementUpdate_Dash () {
 			if (
 				DashAvailable && IntendedDash && IsGrounded &&
-				CurrentFrame > LastDashFrame + CurrentDashDuration + CurrentDashCooldown
+				Game.GlobalFrame > LastDashFrame + CurrentDashDuration + CurrentDashCooldown
 			) {
 				// Perform Dash
-				LastDashFrame = CurrentFrame;
+				LastDashFrame = Game.GlobalFrame;
 				IsDashing = true;
 				VelocityY = 0;
+			}
+			if (InSand) {
+				LastDashFrame = int.MinValue;
+				IsDashing = false;
 			}
 		}
 
@@ -455,10 +448,10 @@ namespace Yaya {
 
 
 		private void MoveLogic (int x, int y) {
-			if (IntendedX != 0 && x == 0) LastEndMoveFrame = CurrentFrame;
-			if (IntendedX == 0 && x != 0) LastStartMoveFrame = CurrentFrame;
+			if (IntendedX != 0 && x == 0) LastEndMoveFrame = Game.GlobalFrame;
+			if (IntendedX == 0 && x != 0) LastStartMoveFrame = Game.GlobalFrame;
 			if (x != 0) RunningAccumulateFrame++;
-			if (x == 0 && CurrentFrame > LastEndMoveFrame + RUN_BREAK_GAP) RunningAccumulateFrame = 0;
+			if (x == 0 && Game.GlobalFrame > LastEndMoveFrame + RUN_BREAK_GAP) RunningAccumulateFrame = 0;
 			IntendedX = x;
 			IntendedY = y;
 			if (x != 0) LastIntendedX = IntendedX;
@@ -512,6 +505,21 @@ namespace Yaya {
 				}
 			}
 		}
+
+
+		private MovementState GetCurrentMovementState () =>
+			IsFlying ? MovementState.Fly :
+			IsClimbing ? MovementState.Climb :
+			IsPounding ? MovementState.Pound :
+			IsSliding ? MovementState.Slide :
+			IsRolling ? MovementState.Roll :
+			IsDashing ? (!IsGrounded && InWater ? MovementState.SwimDash : MovementState.Dash) :
+			IsSquating ? (IsMoving ? MovementState.SquatMove : MovementState.SquatIdle) :
+			InWater && !IsGrounded ? (IsMoving ? MovementState.SwimMove : MovementState.SwimIdle) :
+			InAir ? (VelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown) :
+			IsRunning ? MovementState.Run :
+			IsMoving ? MovementState.Walk :
+			MovementState.Idle;
 
 
 		// Check

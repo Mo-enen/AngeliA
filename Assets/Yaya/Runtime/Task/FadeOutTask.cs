@@ -5,12 +5,12 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class tFadeOut : TaskItem {
+	public class FadeOutTask : TaskItem {
 
 
 		// Data
 		private const int FADE_OUT = 60;
-		public static readonly int TYPE_ID = typeof(tFadeOut).AngeHash();
+		public static readonly int TYPE_ID = typeof(FadeOutTask).AngeHash();
 
 
 		// MSG
@@ -26,7 +26,6 @@ namespace Yaya {
 				));
 				return TaskResult.Continue;
 			} else {
-				//ScreenEffect.SetEffectEnable(DarkenEffect.TYPE_ID, false);
 				return TaskResult.End;
 			}
 		}

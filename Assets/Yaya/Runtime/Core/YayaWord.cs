@@ -46,6 +46,7 @@ namespace Yaya {
 		public static readonly int MENU_FULLSCREEN_2 = "Menu.Setting.Fullscreen.2".AngeHash();
 		public static readonly int MENU_FULLSCREEN_LABEL = "Menu.Setting.Fullscreen.Label".AngeHash();
 		public static readonly int MENU_VSYNC = "Menu.Setting.VSync".AngeHash();
+		public static readonly int MENU_SCREEN_EFFECT = "Menu.Setting.ScreenEffect".AngeHash();
 
 		// Hint
 		public static readonly int HINT_MOVE_CODE = "CtrlHint.Move".AngeHash();

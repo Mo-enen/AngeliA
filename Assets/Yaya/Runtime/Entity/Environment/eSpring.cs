@@ -37,7 +37,7 @@ namespace Yaya {
 		// Const
 		private static readonly int[] BOUNCE_ANI = new int[] { 0, 1, 2, 3, 3, 3, 3, 2, 2, 1, 1, 0, };
 		private static readonly Color RED = new(1f, 0.25f, 0.1f);
-		private const int BOUNCE_DELY = 0;
+		private const int BOUNCE_DELAY = 0;
 		private const int BOUNCE_COOLDOWN = 1;
 		private const int RED_LINE_MIN = 196;
 		private const int RED_LINE_MAX = 512;
@@ -100,7 +100,7 @@ namespace Yaya {
 						StartBounce(frame, Direction4.Up);
 					}
 				}
-			} else if (frame > LastBounceFrame + BOUNCE_DELY && RequireBouncePerform) {
+			} else if (frame > LastBounceFrame + BOUNCE_DELAY && RequireBouncePerform) {
 				// Try Perform Bounce
 				var hit = CellPhysics.TouchTransfer<eYayaRigidbody>(
 					YayaConst.MASK_RIGIDBODY,
