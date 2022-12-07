@@ -23,7 +23,7 @@ namespace Yaya {
 				var game = Game.Current;
 				var player = ePlayer.Current;
 				if (player != null) {
-					player.Renderer.EnterDoor(DURATION, NewZ < game.ViewZ);
+					player.RenderEnterDoor(DURATION, NewZ < game.ViewZ);
 				}
 				Front = NewZ > game.ViewZ;
 			}

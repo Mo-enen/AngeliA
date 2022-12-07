@@ -2,17 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-using UnityEngine.TextCore.Text;
 
 
 namespace Yaya {
-	[System.Serializable]
-	public class CharacterRenderer {
+	public abstract partial class eCharacter {
 
 
 
 
 		#region --- SUB ---
+
+
+		private class AniSheet {
+			public GroupCode Face = null;
+			public AniCode Sleep = null;
+			public AniCode Damaging = null;
+			public AniCode Passout = null;
+			public AniCode FaceBlink = null;
+			public AniCode Idle = null;
+			public AniCode Walk = null;
+			public AniCode Run = null;
+			public AniCode JumpU = null;
+			public AniCode JumpD = null;
+			public AniCode Dash = null;
+			public AniCode SquatIdle = null;
+			public AniCode SquatMove = null;
+			public AniCode SwimIdle = null;
+			public AniCode SwimMove = null;
+			public AniCode SwimDash = null;
+			public AniCode Pound = null;
+			public AniCode Climb = null;
+			public AniCode Roll = null;
+			public AniCode Slide = null;
+			public AniCode Fly = null;
+			public AniCode DoorFront = null;
+			public AniCode DoorBack = null;
+			public AniCode[] Attacks = null;
+			public AniCode[] Attacks_Move = null;
+			public AniCode[] Attacks_Air = null;
+			public AniCode[] Attacks_Water = null;
+
+		}
 
 
 		private class AniCode {
@@ -73,7 +103,7 @@ namespace Yaya {
 		}
 
 
-		public class GroupCode {
+		private class GroupCode {
 
 			public int this[int i] => Codes.Length > 0 ? Codes[i.Clamp(0, Codes.Length - 1)] : 0;
 			public int Count => Codes.Length;
@@ -109,7 +139,6 @@ namespace Yaya {
 		private static readonly int SLEEP_PARTICLE_CODE = eDefaultParticle.TYPE_ID;
 
 		// Api
-		public eCharacter Character { get; private set; } = null;
 		public int FaceIndex { get; set; } = 0;
 
 		// Ser
@@ -121,34 +150,8 @@ namespace Yaya {
 		[SerializeField] int DamageBlinkRate = 8;
 		[SerializeField] int EyeBlinkRate = 360;
 
-		// Config
-		private AniCode Sleep = null;
-		private AniCode Damaging = null;
-		private AniCode Passout = null;
-		private GroupCode Face = null;
-		private AniCode FaceBlink = null;
-		private AniCode Idle = null;
-		private AniCode Walk = null;
-		private AniCode Run = null;
-		private AniCode JumpU = null;
-		private AniCode JumpD = null;
-		private AniCode Dash = null;
-		private AniCode SquatIdle = null;
-		private AniCode SquatMove = null;
-		private AniCode SwimIdle = null;
-		private AniCode SwimMove = null;
-		private AniCode SwimDash = null;
-		private AniCode Pound = null;
-		private AniCode Climb = null;
-		private AniCode Roll = null;
-		private AniCode Slide = null;
-		private AniCode Fly = null;
-		private AniCode DoorFront = null;
-		private AniCode DoorBack = null;
-		private AniCode[] Attacks = null;
-		private AniCode[] Attacks_Move = null;
-		private AniCode[] Attacks_Air = null;
-		private AniCode[] Attacks_Water = null;
+		// Ani
+		private readonly AniSheet AnimationSheet = new();
 
 		// Data
 		private AniCode CurrentAni = null;
@@ -172,53 +175,49 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public void OnInitialize (eCharacter source) {
-			Character = source;
+		public void OnInitialize_Render () {
 
-			string name = Character.GetType().Name;
+			string name = GetType().Name;
 			if (name.StartsWith('e')) name = name[1..];
 
-			Idle = new($"{name}.Idle");
-			if (Idle.Code == 0) Idle = new($"{name}");
-			Walk = new($"{name}.Walk", Idle);
-			Run = new($"{name}.Run", Walk);
-			var jump = new AniCode($"{name}.Jump", Idle);
-			JumpU = new($"{name}.JumpU", jump);
-			JumpD = new($"{name}.JumpD", jump);
-			Roll = new($"{name}.Roll", Run, Idle);
-			Dash = new($"{name}.Dash", Roll);
-			var squat = new AniCode($"{name}.Squat", Idle);
-			SquatIdle = new($"{name}.SquatIdle", squat);
-			SquatMove = new($"{name}.SquatMove", squat);
-			var swim = new AniCode($"{name}.Swim", Run);
-			SwimIdle = new($"{name}.SwimIdle", swim);
-			SwimMove = new($"{name}.SwimMove", swim);
-			SwimDash = new($"{name}.SwimDash", swim);
-			Pound = new($"{name}.Pound", Idle);
-			Climb = new($"{name}.Climb", Idle);
-			Fly = new($"{name}.Fly", Run);
-			Slide = new($"{name}.Slide", JumpD);
+			AnimationSheet.Idle = new($"{name}.Idle");
+			if (AnimationSheet.Idle.Code == 0) AnimationSheet.Idle = new($"{name}");
+			AnimationSheet.Walk = new($"{name}.Walk", AnimationSheet.Idle);
+			AnimationSheet.Run = new($"{name}.Run", AnimationSheet.Walk);
+			var jump = new AniCode($"{name}.Jump", AnimationSheet.Idle);
+			AnimationSheet.JumpU = new($"{name}.JumpU", jump);
+			AnimationSheet.JumpD = new($"{name}.JumpD", jump);
+			AnimationSheet.Roll = new($"{name}.Roll", AnimationSheet.Run, AnimationSheet.Idle);
+			AnimationSheet.Dash = new($"{name}.Dash", AnimationSheet.Roll);
+			var squat = new AniCode($"{name}.Squat", AnimationSheet.Idle);
+			AnimationSheet.SquatIdle = new($"{name}.SquatIdle", squat);
+			AnimationSheet.SquatMove = new($"{name}.SquatMove", squat);
+			var swim = new AniCode($"{name}.Swim", AnimationSheet.Run);
+			AnimationSheet.SwimIdle = new($"{name}.SwimIdle", swim);
+			AnimationSheet.SwimMove = new($"{name}.SwimMove", swim);
+			AnimationSheet.SwimDash = new($"{name}.SwimDash", swim);
+			AnimationSheet.Pound = new($"{name}.Pound", AnimationSheet.Idle);
+			AnimationSheet.Climb = new($"{name}.Climb", AnimationSheet.Idle);
+			AnimationSheet.Fly = new($"{name}.Fly", AnimationSheet.Run);
+			AnimationSheet.Slide = new($"{name}.Slide", AnimationSheet.JumpD);
 
-			Sleep = new($"{name}.Sleep", Idle);
-			Damaging = new($"{name}.Damage", Idle);
-			Passout = new($"{name}.Passout");
-			Face = new($"{name}.Face");
-			FaceBlink = new($"{name}.Face.Blink");
+			AnimationSheet.Sleep = new($"{name}.Sleep", AnimationSheet.Idle);
+			AnimationSheet.Damaging = new($"{name}.Damage", AnimationSheet.Idle);
+			AnimationSheet.Passout = new($"{name}.Passout");
+			AnimationSheet.Face = new($"{name}.Face");
+			AnimationSheet.FaceBlink = new($"{name}.Face.Blink");
 
-			DoorFront = new($"{name}.DoorFront", Idle);
-			DoorBack = new($"{name}.DoorBack", Idle);
+			AnimationSheet.DoorFront = new($"{name}.DoorFront", AnimationSheet.Idle);
+			AnimationSheet.DoorBack = new($"{name}.DoorBack", AnimationSheet.Idle);
 
-			Attacks = AniCode.GetAnimationArray($"{name}.Attack", -1);
-			Attacks_Move = AniCode.GetAnimationArray($"{name}.AttackMove", -1, Attacks);
-			Attacks_Air = AniCode.GetAnimationArray($"{name}.AttackAir", -1, Attacks);
-			Attacks_Water = AniCode.GetAnimationArray($"{name}.AttackWater", -1, Attacks);
+			AnimationSheet.Attacks = AniCode.GetAnimationArray($"{name}.Attack", -1);
+			AnimationSheet.Attacks_Move = AniCode.GetAnimationArray($"{name}.AttackMove", -1, AnimationSheet.Attacks);
+			AnimationSheet.Attacks_Air = AniCode.GetAnimationArray($"{name}.AttackAir", -1, AnimationSheet.Attacks);
+			AnimationSheet.Attacks_Water = AniCode.GetAnimationArray($"{name}.AttackWater", -1, AnimationSheet.Attacks);
 		}
 
 
-		public void OnActived () { }
-
-
-		public void FrameUpdate () {
+		public void FrameUpdate_Render () {
 
 			int frame = Game.GlobalFrame;
 
@@ -228,13 +227,13 @@ namespace Yaya {
 			// Damage
 			if (frame < DamagingTime) {
 				CellRenderer.Draw_Animation(
-					Damaging.Code,
-					Character.X, Character.Y,
+					AnimationSheet.Damaging.Code,
+					X, Y,
 					500, 0, 0,
-					Character.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+					FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 					Const.ORIGINAL_SIZE,
 					Game.GlobalFrame,
-					Damaging.LoopStart
+					AnimationSheet.Damaging.LoopStart
 				);
 				return;
 			}
@@ -242,19 +241,19 @@ namespace Yaya {
 			// Door
 			if (frame < EnterDoorEndFrame.Abs()) {
 				CellRenderer.Draw_Animation(
-					EnterDoorEndFrame > 0 ? DoorFront.Code : DoorBack.Code,
-					Character.X, Character.Y,
+					EnterDoorEndFrame > 0 ? AnimationSheet.DoorFront.Code : AnimationSheet.DoorBack.Code,
+					X, Y,
 					500, 0, 0,
-					Character.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+					FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 					Const.ORIGINAL_SIZE,
 					Game.GlobalFrame,
-					Damaging.LoopStart
+					AnimationSheet.Damaging.LoopStart
 				);
 				return;
 			}
 
 			// Draw
-			switch (Character.CharacterState) {
+			switch (CharacterState) {
 				case CharacterState.GamePlay:
 					DrawBody();
 					DrawFace();
@@ -264,13 +263,13 @@ namespace Yaya {
 					break;
 				case CharacterState.Passout:
 					CellRenderer.Draw_Animation(
-						Passout.Code,
-						Character.X, Character.Y,
+						AnimationSheet.Passout.Code,
+						X, Y,
 						500, 0, 0,
-						Character.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+						FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 						Const.ORIGINAL_SIZE,
 						Game.GlobalFrame,
-						Passout.LoopStart
+						AnimationSheet.Passout.LoopStart
 					);
 					break;
 			}
@@ -279,64 +278,62 @@ namespace Yaya {
 
 		private void DrawBody () {
 
-			var movement = Character.Movement;
-			var movementState = Character.MovementState;
-			var ani = Idle;
+			var ani = AnimationSheet.Idle;
 			int frame = Game.GlobalFrame;
 
 			// Get Ani
-			if (Character.Attackness.IsAttacking) {
+			if (IsAttacking) {
 				// Attack
-				var attacks = Attacks;
-				switch (movementState) {
+				var attacks = AnimationSheet.Attacks;
+				switch (MoveState) {
 					case MovementState.SwimDash:
 					case MovementState.SwimIdle:
 					case MovementState.SwimMove:
-						attacks = Attacks_Water;
+						attacks = AnimationSheet.Attacks_Water;
 						break;
 					case MovementState.JumpDown:
 					case MovementState.JumpUp:
 					case MovementState.Roll:
-						if (Character.InAir) attacks = Attacks_Air;
+						if (InAir) attacks = AnimationSheet.Attacks_Air;
 						break;
 					case MovementState.Walk:
 					case MovementState.Run:
-						attacks = Attacks_Move;
+						attacks = AnimationSheet.Attacks_Move;
 						break;
 				}
 				if (attacks.Length > 0) {
-					ani = attacks[Character.Attackness.Combo.Clamp(0, attacks.Length - 1)];
+					ani = attacks[AttackCombo.Clamp(0, attacks.Length - 1)];
 				}
 			} else {
 				// Movement
-				ani = movementState switch {
-					MovementState.Walk => Walk,
-					MovementState.Run => Run,
-					MovementState.JumpUp => JumpU,
-					MovementState.JumpDown => JumpD,
-					MovementState.SwimIdle => SwimIdle,
-					MovementState.SwimMove => SwimMove,
-					MovementState.SwimDash => SwimDash,
-					MovementState.SquatIdle => SquatIdle,
-					MovementState.SquatMove => SquatMove,
-					MovementState.Dash => Dash,
-					MovementState.Roll => Roll,
-					MovementState.Pound => Pound,
-					MovementState.Climb => Climb,
-					MovementState.Fly => Fly,
-					MovementState.Slide => Slide,
-					_ => Idle,
+				ani = MoveState switch {
+					MovementState.Walk => AnimationSheet.Walk,
+					MovementState.Run => AnimationSheet.Run,
+					MovementState.JumpUp => AnimationSheet.JumpU,
+					MovementState.JumpDown => AnimationSheet.JumpD,
+					MovementState.SwimIdle => AnimationSheet.SwimIdle,
+					MovementState.SwimMove => AnimationSheet.SwimMove,
+					MovementState.SwimDash => AnimationSheet.SwimDash,
+					MovementState.SquatIdle => AnimationSheet.SquatIdle,
+					MovementState.SquatMove => AnimationSheet.SquatMove,
+					MovementState.Dash => AnimationSheet.Dash,
+					MovementState.Roll => AnimationSheet.Roll,
+					MovementState.Pound => AnimationSheet.Pound,
+					MovementState.Climb => AnimationSheet.Climb,
+					MovementState.Fly => AnimationSheet.Fly,
+					MovementState.Slide => AnimationSheet.Slide,
+					_ => AnimationSheet.Idle,
 				};
 			}
 
 			// Rotation
 			int pivotY = 0;
 			int offsetY = 0;
-			if (movement.UseFreeStyleSwim && Character.InWater && !Character.IsGrounded) {
+			if (UseFreeStyleSwim && InWater && !IsGrounded) {
 				TargetRotation = Quaternion.LerpUnclamped(
 					Quaternion.Euler(0, 0, TargetRotation),
 					Quaternion.FromToRotation(
-						Vector3.up, new(-movement.LastMoveDirection.x, movement.LastMoveDirection.y)
+						Vector3.up, new(-LastMoveDirection.x, LastMoveDirection.y)
 					),
 					SwimRotationLerp / 1000f
 				).eulerAngles.z;
@@ -353,13 +350,13 @@ namespace Yaya {
 			}
 
 			// Draw
-			bool isPounding = movementState == MovementState.Pound;
-			bool isClimbing = movementState == MovementState.Climb;
-			bool isSquating = movementState == MovementState.SquatIdle || movementState == MovementState.SquatMove;
+			bool isPounding = MoveState == MovementState.Pound;
+			bool isClimbing = MoveState == MovementState.Climb;
+			bool isSquating = MoveState == MovementState.SquatIdle || MoveState == MovementState.SquatMove;
 			var cell = CellRenderer.Draw_Animation(
 				CurrentAni.Code,
-				Character.X, Character.Y + offsetY, 500, pivotY, (int)TargetRotation,
-				movement.FacingRight || isPounding || isClimbing ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+				X, Y + offsetY, 500, pivotY, (int)TargetRotation,
+				FacingRight || isPounding || isClimbing ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 				Const.ORIGINAL_SIZE,
 				CurrentAniFrame,
 				ani.LoopStart
@@ -376,14 +373,14 @@ namespace Yaya {
 					bounce = BounceAmounts[frame - LastRequireBounceFrame];
 				} else if (isPounding) {
 					bounce = PoundingBounce;
-				} else if (!isPounding && Character.IsGrounded && frame.InRangeExculde(movement.LastPoundingFrame, movement.LastPoundingFrame + duration)) {
-					bounce = BounceAmountsBig[frame - movement.LastPoundingFrame];
-				} else if (isSquating && frame.InRangeExculde(movement.LastSquatFrame, movement.LastSquatFrame + duration)) {
-					bounce = BounceAmounts[frame - movement.LastSquatFrame];
-				} else if (Character.IsGrounded && frame.InRangeExculde(movement.LastGroundFrame, movement.LastGroundFrame + duration)) {
-					bounce = BounceAmounts[frame - movement.LastGroundFrame];
-				} else if (!isSquating && frame.InRangeExculde(movement.LastSquatingFrame, movement.LastSquatingFrame + duration)) {
-					bounce = BounceAmounts[frame - movement.LastSquatingFrame];
+				} else if (!isPounding && IsGrounded && frame.InRangeExculde(LastPoundingFrame, LastPoundingFrame + duration)) {
+					bounce = BounceAmountsBig[frame - LastPoundingFrame];
+				} else if (isSquating && frame.InRangeExculde(LastSquatFrame, LastSquatFrame + duration)) {
+					bounce = BounceAmounts[frame - LastSquatFrame];
+				} else if (IsGrounded && frame.InRangeExculde(LastGroundFrame, LastGroundFrame + duration)) {
+					bounce = BounceAmounts[frame - LastGroundFrame];
+				} else if (!isSquating && frame.InRangeExculde(LastSquatingFrame, LastSquatingFrame + duration)) {
+					bounce = BounceAmounts[frame - LastSquatingFrame];
 					reverse = true;
 				}
 				if (bounce != 1000) {
@@ -400,12 +397,12 @@ namespace Yaya {
 			}
 
 			// Grow Ani Frame
-			if (ani != Climb) {
+			if (ani != AnimationSheet.Climb) {
 				// Normal
 				CurrentAniFrame++;
 			} else {
 				// Climb
-				int climbVelocity = movement.IntendedY != 0 ? movement.IntendedY : movement.IntendedX;
+				int climbVelocity = IntendedY != 0 ? IntendedY : IntendedX;
 				if (climbVelocity > 0) {
 					CurrentAniFrame++;
 				} else if (climbVelocity < 0) {
@@ -418,7 +415,7 @@ namespace Yaya {
 
 		private void DrawFace () {
 			if (
-				Face.Count <= 0 ||
+				AnimationSheet.Face.Count <= 0 ||
 				!CellRenderer.TryGetSprite(CurrentCode, out var sprite) ||
 				sprite.GlobalBorder.IsZero
 			) return;
@@ -429,11 +426,11 @@ namespace Yaya {
 			} else {
 				offsetY += offsetY * (1000 - bounce) / 1000;
 			}
-			var faceID = Face[FaceIndex.UMod(Face.Count)];
+			var faceID = AnimationSheet.Face[FaceIndex.UMod(AnimationSheet.Face.Count)];
 			CellRenderer.Draw_9Slice(
-				Game.GlobalFrame % EyeBlinkRate > 8 ? faceID : FaceBlink.Code,
-				Character.X - sprite.GlobalWidth / 2 + (Character.Movement.FacingRight ? sprite.GlobalBorder.Left : sprite.GlobalBorder.Right),
-				Character.Y + offsetY,
+				Game.GlobalFrame % EyeBlinkRate > 8 ? faceID : AnimationSheet.FaceBlink.Code,
+				X - sprite.GlobalWidth / 2 + (FacingRight ? sprite.GlobalBorder.Left : sprite.GlobalBorder.Right),
+				Y + offsetY,
 				0, 1000, 0,
 				sprite.GlobalWidth - sprite.GlobalBorder.Left - sprite.GlobalBorder.Right,
 				Const.ORIGINAL_SIZE
@@ -443,24 +440,24 @@ namespace Yaya {
 
 		private void DrawSleep () {
 			var backCell = CellRenderer.Draw_Animation(
-				Sleep.Code,
-				Character.X, Character.Y,
+				AnimationSheet.Sleep.Code,
+				X, Y,
 				500, 0, 0,
 				Const.ORIGINAL_SIZE,
 				Const.ORIGINAL_SIZE,
 				Game.GlobalFrame,
-				Sleep.LoopStart
+				AnimationSheet.Sleep.LoopStart
 			);
 			var cell = CellRenderer.Draw_Animation(
-				Sleep.Code,
-				Character.X, Character.Y,
+				AnimationSheet.Sleep.Code,
+				X, Y,
 				500, 0, 0,
 				Const.ORIGINAL_SIZE,
 				Const.ORIGINAL_SIZE,
 				Game.GlobalFrame,
-				Sleep.LoopStart
+				AnimationSheet.Sleep.LoopStart
 			);
-			if (CellRenderer.TryGetSprite(Sleep.Code, out var sprite) && sprite.GlobalBorder.Down != 0) {
+			if (CellRenderer.TryGetSprite(AnimationSheet.Sleep.Code, out var sprite) && sprite.GlobalBorder.Down != 0) {
 				cell.Y -= sprite.GlobalBorder.Down;
 				backCell.Y -= sprite.GlobalBorder.Down;
 			}
@@ -469,9 +466,9 @@ namespace Yaya {
 			backCell.Color.b = 128;
 			backCell.Color.a = 255;
 			// Fill
-			if (Character.SleepAmount < 1000) {
-				cell.Shift.Up = Util.Remap(90, 0, 0, 1000, Character.SleepFrame);
-			} else if (Character.SleepAmount >= 1000 && PrevSleepAmount < 1000) {
+			if (SleepAmount < 1000) {
+				cell.Shift.Up = Util.Remap(90, 0, 0, 1000, SleepFrame);
+			} else if (SleepAmount >= 1000 && PrevSleepAmount < 1000) {
 				// Spawn Particle
 				if (Game.Current.TryAddEntity(
 					SLEEP_PARTICLE_CODE,
@@ -483,10 +480,10 @@ namespace Yaya {
 					particle.Height = Const.CEL * 2;
 				}
 			}
-			PrevSleepAmount = Character.SleepAmount;
+			PrevSleepAmount = SleepAmount;
 			// ZZZ
 			if (Game.GlobalFrame % 42 == 0) {
-				Game.Current.TryAddEntity(eSleepParticle.TYPE_ID, Character.X, Character.Y + Character.Height / 2, out _);
+				Game.Current.TryAddEntity(eSleepParticle.TYPE_ID, X, Y + Height / 2, out _);
 			}
 		}
 
@@ -499,16 +496,16 @@ namespace Yaya {
 		#region --- API ---
 
 
-		public void Bounce () => LastRequireBounceFrame = Game.GlobalFrame;
+		public void RenderBounce () => LastRequireBounceFrame = Game.GlobalFrame;
 
 
-		public void Blink (int duration) => BlinkingTime = Game.GlobalFrame + duration;
+		public void RenderBlink (int duration) => BlinkingTime = Game.GlobalFrame + duration;
 
 
-		public void Damage (int duration) => DamagingTime = Game.GlobalFrame + duration;
+		public void RenderDamage (int duration) => DamagingTime = Game.GlobalFrame + duration;
 
 
-		public void EnterDoor (int duration, bool front) => EnterDoorEndFrame = (Game.GlobalFrame + duration) * (front ? 1 : -1);
+		public void RenderEnterDoor (int duration, bool front) => EnterDoorEndFrame = (Game.GlobalFrame + duration) * (front ? 1 : -1);
 
 
 		#endregion

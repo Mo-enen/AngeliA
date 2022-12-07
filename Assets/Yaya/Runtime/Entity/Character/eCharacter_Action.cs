@@ -24,69 +24,51 @@ namespace Yaya {
 	}
 
 
-	[System.Serializable]
-	public class Action {
-
-
-
-
-		#region --- VAR ---
+	public abstract partial class eCharacter {
 
 
 		// Api
-		public IActionEntity CurrentTarget { get; private set; } = null;
-		public Entity Source { get; private set; } = null;
-		public bool LockingInput => CurrentTarget != null && CurrentTarget.LockInput;
+		public IActionEntity CurrentActionTarget { get; private set; } = null;
+		public bool LockingInput => CurrentActionTarget != null && CurrentActionTarget.LockInput;
 
 		// Ser
-		[SerializeField] int ScanRange = Const.CEL / 2;
-		[SerializeField] int ScanFrequency = 6;
+		[SerializeField] int ActionScanRange = Const.CEL / 2;
+		[SerializeField] int ActionScanFrequency = 6;
 
 		// Data
 		private readonly HitInfo[] c_ScanHits = new HitInfo[16];
 		private bool RequireRefresh = false;
 
 
-		#endregion
 
-
-
-
-		#region --- MSG ---
-
-
-		public void OnInitialize (Entity source) {
-			Source = source;
-		}
-
-
-		public void OnActived () {
-			CurrentTarget = null;
-			ScanFrequency = ScanFrequency.Clamp(1, int.MaxValue);
+		// MSG
+		public void OnActived_Action () {
+			CurrentActionTarget = null;
+			ActionScanFrequency = ActionScanFrequency.Clamp(1, int.MaxValue);
 			RequireRefresh = true;
 		}
 
 
-		public void Update () {
+		public void Update_Action () {
 			// Search for Active Trigger
-			if (Game.GlobalFrame % ScanFrequency == 0 || RequireRefresh) {
+			if (Game.GlobalFrame % ActionScanFrequency == 0 || RequireRefresh) {
 				RequireRefresh = false;
-				CurrentTarget = null;
+				CurrentActionTarget = null;
 				int count = CellPhysics.OverlapAll(
 					c_ScanHits,
 					YayaConst.MASK_ENTITY,
-					Source.Rect.Expand(ScanRange, ScanRange, 0, ScanRange),
-					Source,
+					Rect.Expand(ActionScanRange, ActionScanRange, 0, ActionScanRange),
+					this,
 					OperationMode.ColliderAndTrigger
 				);
 				int dis = int.MaxValue;
-				var sourceRect = Source.Rect;
+				var sourceRect = Rect;
 				int sourceX = sourceRect.x + sourceRect.width / 2;
 				Entity result = null;
 				for (int i = 0; i < count; i++) {
 					var hit = c_ScanHits[i];
 					if (hit.Entity is not IActionEntity act) continue;
-					if (!act.AllowInvoke(Source)) continue;
+					if (!act.AllowInvoke(this)) continue;
 					// Comparer X Distance
 					int _dis =
 						sourceX >= hit.Rect.xMin && sourceX <= hit.Rect.xMax ? 0 :
@@ -109,43 +91,22 @@ namespace Yaya {
 						}
 					}
 				}
-				CurrentTarget = result as IActionEntity;
+				CurrentActionTarget = result as IActionEntity;
 			}
 			// Highlight
-			if (CurrentTarget != null && Source is ePlayer) CurrentTarget.Highlight();
+			if (CurrentActionTarget != null && this is ePlayer) CurrentActionTarget.Highlight();
 		}
 
 
-		#endregion
-
-
-
-
-		#region --- API ---
-
-
-		public bool Invoke () {
-			if (CurrentTarget == null) return false;
-			if (Source is ePlayer && !FrameInput.GameKeyDown(GameKey.Action)) return false;
-			return CurrentTarget.Invoke(Source);
+		// API
+		public bool InvokeAction () {
+			if (CurrentActionTarget == null) return false;
+			if (this is ePlayer && !FrameInput.GameKeyDown(GameKey.Action)) return false;
+			return CurrentActionTarget.Invoke(this);
 		}
 
 
-		public void CancelInvoke () => CurrentTarget?.CancelInvoke(Source);
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
-
-
-		#endregion
-
+		public void CancelInvokeAction () => CurrentActionTarget?.CancelInvoke(this);
 
 
 

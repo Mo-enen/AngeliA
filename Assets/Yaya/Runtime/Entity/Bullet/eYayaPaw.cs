@@ -19,13 +19,12 @@ namespace Yaya {
 
 
 		// MSG
-		public override void Release (Attackness attackness, Vector2Int direction, int combo = 0) {
-			base.Release(attackness, direction, combo);
+		public override void Release (eCharacter character, Vector2Int direction, int combo = 0) {
+			base.Release(character, direction, combo);
 			Hitted = false;
 			Width = Const.CEL;
 			Height = Const.CEL * 2;
-			var character = attackness.Source;
-			X = character.X + (character.Movement.FacingRight ? Width / 2 : -Width - Width / 2);
+			X = character.X + (character.FacingRight ? Width / 2 : -Width - Width / 2);
 			Y = character.Y;
 		}
 

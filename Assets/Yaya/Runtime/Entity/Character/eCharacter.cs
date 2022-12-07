@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
+using Moenen.Standard;
 
 
 namespace Yaya {
@@ -33,7 +34,7 @@ namespace Yaya {
 	[EntityAttribute.MapEditorGroup("Character")]
 	[EntityAttribute.Capacity(1)]
 	[EntityAttribute.Bounds(-Const.CEL / 2, 0, Const.CEL, Const.CEL)]
-	public abstract class eCharacter : eYayaRigidbody, IDamageReceiver, IPermissionCharacter {
+	public abstract partial class eCharacter : eYayaRigidbody, ISerializationCallbackReceiver, IDamageReceiver, IPermissionCharacter {
 
 
 
@@ -49,8 +50,8 @@ namespace Yaya {
 		public override int CollisionMask => YayaConst.MASK_MAP;
 		public override int CarrierSpeed => 0;
 		public virtual CharacterIdentity Identity => CharacterIdentity.None;
-		public bool TakingDamage => Game.GlobalFrame < Health.LastDamageFrame + Health.DamageStunDuration;
-		public bool InAir => !IsGrounded && !InWater && !InSand && !Movement.IsClimbing;
+		public bool TakingDamage => Game.GlobalFrame < LastDamageFrame + DamageStunDuration;
+		public bool InAir => !IsGrounded && !InWater && !InSand && !IsClimbing;
 		public int SleepAmount {
 			get => Util.Remap(0, 90, 0, 1000, SleepFrame);
 			set => SleepFrame = Util.Remap(0, 1000, 0, 90, value);
@@ -58,12 +59,6 @@ namespace Yaya {
 		public int PassoutFrame { get; private set; } = int.MinValue;
 		public int SleepFrame { get; protected set; } = 0;
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
-		public MovementState MovementState { get; protected set; } = MovementState.Idle;
-		public CharacterMovement Movement { get; private set; } = null;
-		public Health Health { get; private set; } = null;
-		public Action Action { get; private set; } = null;
-		public Attackness Attackness { get; private set; } = null;
-		public CharacterRenderer Renderer { get; private set; } = null;
 
 
 		#endregion
@@ -75,33 +70,20 @@ namespace Yaya {
 
 
 		public override void OnInitialize () {
-
 			base.OnInitialize();
 			string typeName = GetType().Name;
 			if (typeName[0] == 'e') typeName = typeName[1..];
-
-			Movement = AngeUtil.LoadOrCreateMeta<CharacterMovement>(typeName, "Movement");
-			Renderer = AngeUtil.LoadOrCreateMeta<CharacterRenderer>(typeName, "Renderer");
-			Action = AngeUtil.LoadOrCreateMeta<Action>(typeName, "Action");
-			Health = AngeUtil.LoadOrCreateMeta<Health>(typeName, "Health");
-			Attackness = AngeUtil.LoadOrCreateMeta<Attackness>(typeName, "Attackness");
-
-			Movement.OnInitialize(this);
-			Renderer.OnInitialize(this);
-			Action.OnInitialize(this);
-			Health.OnInitialize(this);
-			Attackness.OnInitialize(this);
-
+			AngeUtil.LoadMeta(this, "", typeName);
+			OnInitialize_Render();
 		}
 
 
 		public override void OnActived () {
 			base.OnActived();
-			Movement.OnActived();
-			Renderer.OnActived();
-			Action.OnActived();
-			Health.OnActived();
-			Attackness.OnActived();
+			OnActived_Movement();
+			OnActived_Action();
+			OnActived_Health();
+			OnActived_Attack();
 			CharacterState = CharacterState.GamePlay;
 			PassoutFrame = int.MinValue;
 		}
@@ -117,25 +99,24 @@ namespace Yaya {
 		public override void PhysicsUpdate () {
 
 			// Passout Check
-			if (Health.EmptyHealth) SetCharacterState(CharacterState.Passout);
+			if (IsEmptyHealth) SetCharacterState(CharacterState.Passout);
 
 			// Behaviour
-			MovementState = MovementState.Idle;
+			MoveState = MovementState.Idle;
 			switch (CharacterState) {
 				default:
 				case CharacterState.GamePlay:
 					if (TakingDamage) {
 						// Tacking Damage
-						Movement.AntiKnockback();
-					} else if (Attackness.StopMoveOnAttack && Attackness.IsAttacking) {
+						AntiKnockback();
+					} else if (StopMoveOnAttack && IsAttacking) {
 						// Stop when Attacking
 						if (IsGrounded) VelocityX = 0;
 					} else {
 						// Move as Normal
-						Action.Update();
-						Attackness.FrameUpdate();
-						Movement.Update();
-						MovementState = Movement.State;
+						Update_Action();
+						Update_Attack();
+						Update_Movement();
 					}
 					base.PhysicsUpdate();
 					break;
@@ -147,7 +128,7 @@ namespace Yaya {
 					OffsetX = -Const.CEL / 2;
 					OffsetY = 0;
 					SleepFrame++;
-					if (!Health.FullHealth && SleepAmount >= 1000) Health.SetHealth(Health.MaxHP);
+					if (!IsFullHealth && SleepAmount >= 1000) SetHealth(MaxHP);
 					break;
 				case CharacterState.Passout:
 					VelocityX = 0;
@@ -159,9 +140,13 @@ namespace Yaya {
 
 
 		public override void FrameUpdate () {
-			Renderer.FrameUpdate();
+			FrameUpdate_Render();
 			base.FrameUpdate();
 		}
+
+
+		public void OnAfterDeserialize () => BuffValue.DeserializeBuffValues(this);
+		public void OnBeforeSerialize () => BuffValue.SerializeBuffValues(this);
 
 
 		#endregion
@@ -174,25 +159,35 @@ namespace Yaya {
 
 		// Virtual
 		public virtual void TakeDamage (int damage) {
-			if (CharacterState != CharacterState.GamePlay) return;
-			if (!Health.Damage(damage)) return;
-			VelocityX = Movement.FacingRight ? -Health.KnockBackSpeed : Health.KnockBackSpeed;
-			Renderer.Damage(Health.DamageStunDuration);
-			if (!Health.EmptyHealth) {
-				Renderer.Blink(Health.InvincibleFrame);
+
+			if (
+				CharacterState != CharacterState.GamePlay || damage <= 0 ||
+				Invincible || HealthPoint <= 0
+			) return;
+
+			// Health Down
+			HealthPoint = (HealthPoint - damage).Clamp(0, MaxHP);
+			InvincibleStartFrame = Game.GlobalFrame;
+			LastDamageFrame = Game.GlobalFrame;
+
+			// Render
+			VelocityX = FacingRight ? -KnockBackSpeed : KnockBackSpeed;
+			RenderDamage(DamageStunDuration);
+			if (!IsEmptyHealth) {
+				RenderBlink(InvincibleFrame);
 			}
 		}
 
 
 		// Behavior
 		public bool IsAttackAllowedByMovement () =>
-			(Attackness.AttackInAir || (IsGrounded || InWater || InSand || Movement.IsClimbing)) &&
-			(Attackness.AttackInWater || !InWater) &&
-			(Attackness.AttackWhenClimbing || !Movement.IsClimbing) &&
-			(Attackness.AttackWhenFlying || !Movement.IsFlying) &&
-			(Attackness.AttackWhenRolling || !Movement.IsRolling) &&
-			(Attackness.AttackWhenSquating || !Movement.IsSquating) &&
-			(Attackness.AttackWhenDashing || !Movement.IsDashing);
+			(AttackInAir || (IsGrounded || InWater || InSand || IsClimbing)) &&
+			(AttackInWater || !InWater) &&
+			(AttackWhenClimbing || !IsClimbing) &&
+			(AttackWhenFlying || !IsFlying) &&
+			(AttackWhenRolling || !IsRolling) &&
+			(AttackWhenSquating || !IsSquating) &&
+			(AttackWhenDashing || !IsDashing);
 
 
 		public void SetCharacterState (CharacterState state) {
@@ -201,10 +196,10 @@ namespace Yaya {
 			switch (state) {
 				case CharacterState.GamePlay:
 					if (CharacterState == CharacterState.Sleep) {
-						Renderer.Bounce();
+						RenderBounce();
 					}
 					CharacterState = CharacterState.GamePlay;
-					Action.Update();
+					Update_Action();
 					break;
 				case CharacterState.Sleep:
 					CharacterState = CharacterState.Sleep;

@@ -159,8 +159,6 @@ MonoBehaviour:
       type: 2}
     Fonts:
     - {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    - {fileID: 12800000, guid: bae27c0d8a77f4140a7514709a76ccaf, type: 3}
-    - {fileID: 12800000, guid: c76648bbc43340c4f9d77acaa93739c3, type: 3}
   m_TimeConfig:
     LogicFramerate: 60
     LogicFramerateLag: 30

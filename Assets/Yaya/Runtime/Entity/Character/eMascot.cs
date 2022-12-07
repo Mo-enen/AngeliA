@@ -49,7 +49,7 @@ namespace Yaya {
 		public override void PhysicsUpdate () {
 			bool stateChanged = CharacterState != Owner.CharacterState;
 			if (stateChanged) SetCharacterState(Owner.CharacterState);
-			Health.SetHealth(Owner.Health.EmptyHealth ? 0 : Health.MaxHP);
+			SetHealth(Owner.IsEmptyHealth ? 0 : MaxHP);
 			switch (CharacterState) {
 				case CharacterState.GamePlay:
 					if (FollowOwner) {
@@ -95,10 +95,10 @@ namespace Yaya {
 
 			if (!Owner.Active) return;
 
-			Movement.FacingRight = Owner.X >= X;
-			MovementState = MovementState.Fly;
+			FacingRight = Owner.X >= X;
+			MoveState = MovementState.Fly;
 
-			int targetX = Owner.X + (Owner.Movement.FacingRight ? -Const.CEL : Const.CEL);
+			int targetX = Owner.X + (Owner.FacingRight ? -Const.CEL : Const.CEL);
 			int targetY = Owner.Y + Const.CEL * 3 / 2;
 
 			// Chain

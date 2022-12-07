@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Moenen.Standard;
+using UnityEngine;
 
 
 namespace Yaya {
-	public partial class CharacterMovement : ISerializationCallbackReceiver {
+	public abstract partial class eCharacter {
 
 
 
 		// Buff
-		public BuffInt Width { get; private set; } = new();
-		public BuffInt Height { get; private set; } = new();
+		public BuffInt MovementWidth { get; private set; } = new();
+		public BuffInt MovementHeight { get; private set; } = new();
 		public BuffInt AntiKnockbackSpeed { get; private set; } = new();
 
 		public BuffInt WalkSpeed { get; private set; } = new();
@@ -89,8 +89,8 @@ namespace Yaya {
 #pragma warning disable
 
 		// General
-		[SerializeField] int _Width = 150;
-		[SerializeField] int _Height = 384;
+		[SerializeField] int _MovementWidth = 150;
+		[SerializeField] int _MovementHeight = 384;
 		[SerializeField] int _AntiKnockbackSpeed = 16;
 
 		// Walk
@@ -172,15 +172,14 @@ namespace Yaya {
 		// Slide
 		[SerializeField] bool _SlideAvailable = false;
 		[SerializeField] bool _SlideOnAllBlocks = true;
-		[SerializeField] int _SlideDropSpeed = 6;
+		[SerializeField] int _SlideDropSpeed = 4;
 		[SerializeField] int _SlideJumpCountRecover = 1;
 
 
 #pragma warning restore
 
 
-		public void OnAfterDeserialize () => BuffValue.DeserializeBuffValues(this);
-		public void OnBeforeSerialize () => BuffValue.SerializeBuffValues(this);
+
 
 
 	}

@@ -116,7 +116,7 @@ namespace Yaya {
 			if (player == null || FrameTask.HasTask(Const.TASK_ROUTE)) return false;
 			player.X = X + (Width - player.Width) / 2 - player.OffsetX;
 			player.Y = Y;
-			player.Movement.Stop();
+			player.Stop();
 			Yaya.Current.SetViewZDelay(IsFrontDoor ? Game.Current.ViewZ - 1 : Game.Current.ViewZ + 1);
 			Open = true;
 			InputLock = true;
@@ -124,7 +124,9 @@ namespace Yaya {
 		}
 
 
-		public bool AllowInvoke (Entity target) => !FrameTask.HasTask(Const.TASK_ROUTE) && target is eCharacter ch && ch.IsGrounded && ch.Rect.y >= Y && !ch.Movement.IsSquating && !ch.Movement.IsClimbing;
+		public bool AllowInvoke (Entity target) => 
+			!FrameTask.HasTask(Const.TASK_ROUTE) && target is eCharacter ch && 
+			ch.IsGrounded && ch.Rect.y >= Y && !ch.IsSquating && !ch.IsClimbing;
 
 
 	}

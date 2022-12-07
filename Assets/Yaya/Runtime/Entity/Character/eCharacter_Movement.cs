@@ -5,6 +5,8 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+
+
 	public enum MovementState {
 		Idle = 0,
 		Walk, Run, JumpUp, JumpDown,
@@ -13,8 +15,8 @@ namespace Yaya {
 		Dash, Roll, Pound, Climb, Fly, Slide,
 	}
 
-	[System.Serializable]
-	public partial class CharacterMovement {
+
+	public abstract partial class eCharacter {
 
 
 
@@ -30,7 +32,6 @@ namespace Yaya {
 		private const int SLIDE_JUMP_CANCEL = 2;
 
 		// Api
-		public eCharacter Source { get; private set; } = null;
 		public Vector2Int LastMoveDirection { get; private set; } = default;
 		public int IntendedX { get; private set; } = 0;
 		public int IntendedY { get; private set; } = 0;
@@ -51,18 +52,7 @@ namespace Yaya {
 		public int LastFlyFrame { get; private set; } = int.MinValue;
 
 		// Movement State
-		public MovementState State => IsFlying ? MovementState.Fly :
-			IsClimbing ? MovementState.Climb :
-			IsPounding ? MovementState.Pound :
-			IsSliding ? MovementState.Slide :
-			IsRolling ? MovementState.Roll :
-			IsDashing ? (!IsGrounded && InWater ? MovementState.SwimDash : MovementState.Dash) :
-			IsSquating ? (IsMoving ? MovementState.SquatMove : MovementState.SquatIdle) :
-			InWater && !IsGrounded ? (IsMoving ? MovementState.SwimMove : MovementState.SwimIdle) :
-			Source.InAir ? (Source.VelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown) :
-			IsRunning ? MovementState.Run :
-			IsMoving ? MovementState.Walk :
-			MovementState.Idle;
+		public MovementState MoveState { get; set; } = MovementState.Idle;
 		public bool FacingRight { get; set; } = true;
 		public bool FacingFront { get; set; } = true;
 		public bool IsDashing { get; private set; } = false;
@@ -78,9 +68,6 @@ namespace Yaya {
 		// Short
 		private int CurrentDashDuration => InWater && SwimInFreeStyle ? FreeSwimDashDuration : DashDuration;
 		private int CurrentDashCooldown => InWater && SwimInFreeStyle ? FreeSwimDashCooldown : DashCooldown;
-		private bool IsGrounded => Source.IsGrounded;
-		private bool IsInsideGround => Source.InsideGround;
-		private bool InWater => Source.InWater;
 
 		// Data
 		private static readonly HitInfo[] c_HitboxCollisionFix = new HitInfo[8];
@@ -107,33 +94,43 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public void OnInitialize (eCharacter source) => Source = source;
-
-
-		public void OnActived () {
-			Source.Width = Width;
-			Source.Height = Height;
-			Source.OffsetX = -Width / 2;
-			Source.OffsetY = 0;
+		public void OnActived_Movement () {
+			Width = MovementWidth;
+			Height = MovementHeight;
+			OffsetX = -MovementWidth / 2;
+			OffsetY = 0;
 		}
 
 
-		public void Update () {
+		public void Update_Movement () {
 			CurrentFrame = Game.GlobalFrame;
-			Update_Cache();
-			Update_Jump();
-			Update_Dash();
-			if (Source.InSand) StopDash();
-			Update_VelocityX();
-			Update_VelocityY();
+			MovementUpdate_Cache();
+			MovementUpdate_Jump();
+			MovementUpdate_Dash();
+			if (InSand) StopDash();
+			MovementUpdate_VelocityX();
+			MovementUpdate_VelocityY();
 			IntendedJump = false;
 			IntendedDash = false;
 			IntendedPound = false;
 			PrevHoldingJump = HoldingJump;
+			MoveState =
+				IsFlying ? MovementState.Fly :
+				IsClimbing ? MovementState.Climb :
+				IsPounding ? MovementState.Pound :
+				IsSliding ? MovementState.Slide :
+				IsRolling ? MovementState.Roll :
+				IsDashing ? (!IsGrounded && InWater ? MovementState.SwimDash : MovementState.Dash) :
+				IsSquating ? (IsMoving ? MovementState.SquatMove : MovementState.SquatIdle) :
+				InWater && !IsGrounded ? (IsMoving ? MovementState.SwimMove : MovementState.SwimIdle) :
+				InAir ? (VelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown) :
+				IsRunning ? MovementState.Run :
+				IsMoving ? MovementState.Walk :
+				MovementState.Idle;
 		}
 
 
-		private void Update_Cache () {
+		private void MovementUpdate_Cache () {
 
 			// Ground
 			if (IsGrounded) LastGroundingFrame = CurrentFrame;
@@ -143,7 +140,7 @@ namespace Yaya {
 			// Climb
 			ClimbPositionCorrect = null;
 			if (ClimbAvailable) {
-				if (HoldingJump && CurrentJumpCount > 0 && Source.VelocityY > 0) {
+				if (HoldingJump && CurrentJumpCount > 0 && VelocityY > 0) {
 					IsClimbing = false;
 				} else {
 					bool overlapClimb = ClimbCheck();
@@ -161,12 +158,12 @@ namespace Yaya {
 			if (InWater && SwimInFreeStyle) {
 				IsDashing = DashAvailable && FreeSwimDashSpeed > 0 && !IsClimbing && CurrentFrame < LastDashFrame + FreeSwimDashDuration;
 			} else {
-				IsDashing = DashAvailable && DashSpeed > 0 && !IsClimbing && CurrentFrame < LastDashFrame + CurrentDashDuration && !IsInsideGround;
+				IsDashing = DashAvailable && DashSpeed > 0 && !IsClimbing && CurrentFrame < LastDashFrame + CurrentDashDuration && !InsideGround;
 				if (IsDashing && IntendedY != -1) {
 					// Stop when Dashing Without Holding Down
 					LastDashFrame = int.MinValue;
 					IsDashing = false;
-					Source.VelocityX = Source.VelocityX * DashCancelLoseRate / 1000;
+					VelocityX = VelocityX * DashCancelLoseRate / 1000;
 				}
 			}
 
@@ -176,17 +173,17 @@ namespace Yaya {
 				IsDashing = false;
 				if (InWater) {
 					// In Water
-					Source.VelocityY = Source.VelocityY * InWaterSpeedLoseRate / 1000;
+					VelocityY = VelocityY * InWaterSpeedLoseRate / 1000;
 				} else {
 					// Out Water
-					if (Source.VelocityY > 0) Source.VelocityY = JumpSpeed;
+					if (VelocityY > 0) VelocityY = JumpSpeed;
 				}
 			}
 			PrevInWater = InWater;
 
 			// Squat
 			bool squating =
-				SquatAvailable && IsGrounded && !IsClimbing && !Source.InSand && !IsInsideGround &&
+				SquatAvailable && IsGrounded && !IsClimbing && !InSand && !InsideGround &&
 				((!IsDashing && IntendedY < 0) || ForceSquatCheck());
 			if (!IsSquating && squating) LastSquatFrame = CurrentFrame;
 			if (squating) LastSquatingFrame = CurrentFrame;
@@ -194,35 +191,35 @@ namespace Yaya {
 
 			// Pound
 			IsPounding =
-				PoundAvailable && !IsGrounded && !IsClimbing && !InWater && !IsDashing && !IsInsideGround &&
+				PoundAvailable && !IsGrounded && !IsClimbing && !InWater && !IsDashing && !InsideGround &&
 				(IsPounding ? IntendedY < 0 : IntendedPound);
 			if (IsPounding) LastPoundingFrame = CurrentFrame;
 
 			// Fly
-			if ((!HoldingJump && CurrentFrame > LastFlyFrame + FlyCooldown) || IsGrounded || InWater || IsClimbing || IsDashing || IsInsideGround || IsPounding) {
+			if ((!HoldingJump && CurrentFrame > LastFlyFrame + FlyCooldown) || IsGrounded || InWater || IsClimbing || IsDashing || InsideGround || IsPounding) {
 				IsFlying = false;
 			}
 
 			// Slide
 			IsSliding = SlideCheck();
-			
+
 			// Facing
 			FacingRight = LastIntendedX > 0;
 			FacingFront = !IsClimbing;
 
 			// Physics
 			int prevHitboxHeight = Hitbox.height;
-			int width = InWater ? SwimWidth : Width;
-			Hitbox = new(Source.X - width / 2, Source.Y, width, GetCurrentHeight());
-			Source.Width = Hitbox.width;
-			Source.Height = Hitbox.height;
-			Source.OffsetX = -width / 2;
-			Source.OffsetY = 0;
+			int width = InWater ? SwimWidth : MovementWidth;
+			Hitbox = new(X - width / 2, Y, width, GetCurrentHeight());
+			Width = Hitbox.width;
+			Height = Hitbox.height;
+			OffsetX = -width / 2;
+			OffsetY = 0;
 			if (Hitbox.height > prevHitboxHeight) CollisionFixOnHitboxChanged(prevHitboxHeight);
 		}
 
 
-		private void Update_Jump () {
+		private void MovementUpdate_Jump () {
 
 			// Reset Count on Grounded
 			if (CurrentFrame > LastJumpFrame + JUMP_GAP && (IsGrounded || InWater || IsClimbing) && !IntendedJump) {
@@ -244,12 +241,12 @@ namespace Yaya {
 							// Free Dash in Water
 							LastDashFrame = CurrentFrame;
 							IsDashing = true;
-							Source.VelocityX = 0;
-							Source.VelocityY = 0;
+							VelocityX = 0;
+							VelocityY = 0;
 						} else {
 							// Perform Jump
 							CurrentJumpCount++;
-							Source.VelocityY = Mathf.Max(JumpSpeed, Source.VelocityY);
+							VelocityY = Mathf.Max(JumpSpeed, VelocityY);
 							LastDashFrame = int.MinValue;
 							IsDashing = false;
 							IsSliding = false;
@@ -267,7 +264,7 @@ namespace Yaya {
 							IsClimbing = false;
 							IsDashing = false;
 							CurrentJumpCount++;
-							Source.VelocityY = Mathf.Max(FlySpeed, Source.VelocityY);
+							VelocityY = Mathf.Max(FlySpeed, VelocityY);
 							LastFlyFrame = CurrentFrame;
 							AllowHoldingJumpForFly = false;
 						}
@@ -287,14 +284,14 @@ namespace Yaya {
 			// Jump Release
 			if (PrevHoldingJump && !HoldingJump) {
 				// Lose Speed if Raising
-				if (!IsGrounded && CurrentJumpCount <= JumpCount && Source.VelocityY > 0) {
-					Source.VelocityY = Source.VelocityY * JumpReleaseLoseRate / 1000;
+				if (!IsGrounded && CurrentJumpCount <= JumpCount && VelocityY > 0) {
+					VelocityY = VelocityY * JumpReleaseLoseRate / 1000;
 				}
 			}
 		}
 
 
-		private void Update_Dash () {
+		private void MovementUpdate_Dash () {
 			if (
 				DashAvailable && IntendedDash && IsGrounded &&
 				CurrentFrame > LastDashFrame + CurrentDashDuration + CurrentDashCooldown
@@ -302,12 +299,12 @@ namespace Yaya {
 				// Perform Dash
 				LastDashFrame = CurrentFrame;
 				IsDashing = true;
-				Source.VelocityY = 0;
+				VelocityY = 0;
 			}
 		}
 
 
-		private void Update_VelocityX () {
+		private void MovementUpdate_VelocityX () {
 			int speed, acc, dcc;
 			if (IsFlying && FlyGlideSpeed > 0) {
 				// Glide
@@ -319,7 +316,7 @@ namespace Yaya {
 				speed = ClimbPositionCorrect.HasValue ? 0 : IntendedX * ClimbSpeedX;
 				acc = int.MaxValue;
 				dcc = int.MaxValue;
-				if (ClimbPositionCorrect.HasValue) Source.X = Source.X.MoveTowards(ClimbPositionCorrect.Value, CLIMB_CORRECT_DELTA);
+				if (ClimbPositionCorrect.HasValue) X = X.MoveTowards(ClimbPositionCorrect.Value, CLIMB_CORRECT_DELTA);
 			} else if (IsDashing) {
 				if (InWater && SwimInFreeStyle && !IsGrounded) {
 					// Free Water Dash
@@ -350,56 +347,56 @@ namespace Yaya {
 				acc = running ? RunAcceleration : WalkAcceleration;
 				dcc = running ? RunDecceleration : WalkDecceleration;
 			}
-			if ((speed > 0 && Source.VelocityX < 0) || (speed < 0 && Source.VelocityX > 0)) {
+			if ((speed > 0 && VelocityX < 0) || (speed < 0 && VelocityX > 0)) {
 				acc *= OppositeXAccelerationRate / 1000;
 				dcc *= OppositeXAccelerationRate / 1000;
 			}
-			Source.VelocityX = Source.VelocityX.MoveTowards(speed, acc, dcc);
+			VelocityX = VelocityX.MoveTowards(speed, acc, dcc);
 		}
 
 
-		private void Update_VelocityY () {
+		private void MovementUpdate_VelocityY () {
 			if (IsFlying) {
 				// Fly
-				Source.GravityScale = Source.VelocityY > 0 ? FlyGravityRiseRate : FlyGravityFallRate;
-				Source.VelocityY = Mathf.Max(Source.VelocityY, -FlyFallSpeed);
+				GravityScale = VelocityY > 0 ? FlyGravityRiseRate : FlyGravityFallRate;
+				VelocityY = Mathf.Max(VelocityY, -FlyFallSpeed);
 			} else if (IsClimbing) {
 				// Climb
-				Source.VelocityY = (IntendedY <= 0 || ClimbCheck(true) ? IntendedY : 0) * ClimbSpeedY;
-				Source.GravityScale = 0;
+				VelocityY = (IntendedY <= 0 || ClimbCheck(true) ? IntendedY : 0) * ClimbSpeedY;
+				GravityScale = 0;
 			} else if (InWater && SwimInFreeStyle) {
 				if (IsDashing) {
 					// Free Water Dash
-					Source.VelocityY = Source.VelocityY.MoveTowards(
+					VelocityY = VelocityY.MoveTowards(
 						LastMoveDirection.y * FreeSwimDashSpeed, FreeSwimDashAcceleration, int.MaxValue
 					);
 				} else {
 					// Free Swim In Water
-					Source.VelocityY = Source.VelocityY.MoveTowards(
+					VelocityY = VelocityY.MoveTowards(
 						IntendedY * FreeSwimSpeed, FreeSwimAcceleration, FreeSwimDecceleration
 					);
 				}
-				Source.GravityScale = 0;
+				GravityScale = 0;
 			} else if (IsSliding) {
 				// Slide
-				Source.VelocityY = -SlideDropSpeed;
-				Source.GravityScale = 0;
+				VelocityY = -SlideDropSpeed;
+				GravityScale = 0;
 			} else {
 				// Gravity
 				if (IsPounding) {
 					// Pound
-					Source.GravityScale = 0;
-					Source.VelocityY = -PoundSpeed;
-				} else if (HoldingJump && Source.VelocityY > 0) {
+					GravityScale = 0;
+					VelocityY = -PoundSpeed;
+				} else if (HoldingJump && VelocityY > 0) {
 					// Jumping Raise
-					Source.GravityScale = JumpRiseGravityRate;
+					GravityScale = JumpRiseGravityRate;
 				} else {
 					// Else
-					Source.GravityScale = 1000;
+					GravityScale = 1000;
 					if (InWater && IntendedY != 0) {
 						// Normal Swim
-						Source.GravityScale = 0;
-						Source.VelocityY = Source.VelocityY.MoveTowards(
+						GravityScale = 0;
+						VelocityY = VelocityY.MoveTowards(
 							IntendedY * SwimSpeed, SwimAcceleration, SwimDecceleration
 						);
 					}
@@ -416,13 +413,12 @@ namespace Yaya {
 		#region --- API ---
 
 
-		// Movement
 		public void Move (Direction3 x, Direction3 y) => MoveLogic((int)x, (int)y);
 
 
 		public void Stop () {
 			MoveLogic(0, 0);
-			Source.VelocityX = 0;
+			VelocityX = 0;
 		}
 
 
@@ -447,7 +443,7 @@ namespace Yaya {
 		public void Pound () => IntendedPound = true;
 
 
-		public void AntiKnockback () => Source.VelocityX = Source.VelocityX.MoveTowards(0, AntiKnockbackSpeed);
+		public void AntiKnockback () => VelocityX = VelocityX.MoveTowards(0, AntiKnockbackSpeed);
 
 
 		#endregion
@@ -490,7 +486,7 @@ namespace Yaya {
 			if (IsFlying) return FlyHeight;
 
 			// Normal
-			return Height;
+			return MovementHeight;
 		}
 
 
@@ -498,18 +494,18 @@ namespace Yaya {
 			var rect = Hitbox.Shrink(0, 0, Const.CEL / 4, 0);
 			// Fix for Oneway
 			int count = CellPhysics.OverlapAll(
-				c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, Source,
+				c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, this,
 				OperationMode.TriggerOnly, Const.ONEWAY_DOWN_TAG
 			);
 			FixNow();
-			count = CellPhysics.OverlapAll(c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, Source);
+			count = CellPhysics.OverlapAll(c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, this);
 			FixNow();
 			// Func
 			void FixNow () {
 				for (int i = 0; i < count; i++) {
 					var hit = c_HitboxCollisionFix[i];
 					if (hit.Rect.yMin > rect.y) {
-						Source.PerformMove(0, prevHitboxHeight - Hitbox.height, true);
+						PerformMove(0, prevHitboxHeight - Hitbox.height, true);
 						if (IsGrounded) IsSquating = true;
 						break;
 					}
@@ -521,18 +517,18 @@ namespace Yaya {
 		// Check
 		private bool ForceSquatCheck () {
 
-			if (IsInsideGround) return false;
+			if (InsideGround) return false;
 
 			var rect = new RectInt(
-				Source.X + Source.OffsetX,
-				Source.Y + Source.OffsetY + Height / 2,
-				Source.Width,
-				Height / 2
+				X + OffsetX,
+				Y + OffsetY + MovementHeight / 2,
+				Width,
+				MovementHeight / 2
 			);
 
 			// Oneway Check
 			if ((IsSquating || IsDashing) && !CellPhysics.RoomCheckOneway(
-				YayaConst.MASK_MAP, rect, Source, Direction4.Up, false
+				YayaConst.MASK_MAP, rect, this, Direction4.Up, false
 			)) return true;
 
 			// Overlap Check
@@ -541,11 +537,11 @@ namespace Yaya {
 
 
 		private bool ClimbCheck (bool up = false) {
-			if (IsInsideGround) return false;
+			if (InsideGround) return false;
 			if (CellPhysics.Overlap(
 				YayaConst.MASK_ENVIRONMENT,
-				up ? Source.Rect.Shift(0, ClimbSpeedY) : Source.Rect,
-				Source,
+				up ? Rect.Shift(0, ClimbSpeedY) : Rect,
+				this,
 				OperationMode.TriggerOnly,
 				YayaConst.CLIMB_TAG
 			)) {
@@ -553,9 +549,9 @@ namespace Yaya {
 			}
 			if (CellPhysics.Overlap(
 				YayaConst.MASK_ENVIRONMENT,
-				up ? Source.Rect.Shift(0, ClimbSpeedY) : Source.Rect,
+				up ? Rect.Shift(0, ClimbSpeedY) : Rect,
 				out var info,
-				Source,
+				this,
 				OperationMode.TriggerOnly,
 				YayaConst.CLIMB_STABLE_TAG
 			)) {
@@ -571,13 +567,14 @@ namespace Yaya {
 				!SlideAvailable || IsGrounded || IsClimbing || IsDashing ||
 				InWater || IsSquating || IsPounding || IsFlying ||
 				Game.GlobalFrame < LastJumpFrame + SLIDE_JUMP_CANCEL ||
-				IntendedX == 0 || Source.VelocityY > -SlideDropSpeed
+				IntendedX == 0 || VelocityY > -SlideDropSpeed
 			) return false;
 			var rect = new RectInt(
-				IntendedX > 0 ? Hitbox.xMax : Hitbox.xMin - 1, Source.Y, 1, Hitbox.height
+				IntendedX > 0 ? Hitbox.xMax : Hitbox.xMin - 1, Hitbox.y + Hitbox.height / 2,
+				1, Hitbox.height / 2
 			);
 			if (SlideOnAllBlocks) {
-				int count = CellPhysics.OverlapAll(c_SlideCheck, YayaConst.MASK_MAP, rect, Source, OperationMode.ColliderOnly);
+				int count = CellPhysics.OverlapAll(c_SlideCheck, YayaConst.MASK_MAP, rect, this, OperationMode.ColliderOnly);
 				for (int i = 0; i < count; i++) {
 					var hit = c_SlideCheck[i];
 					if (hit.Tag == YayaConst.NO_SLIDE_TAG) continue;
@@ -586,7 +583,7 @@ namespace Yaya {
 				return false;
 			} else {
 				return CellPhysics.Overlap(
-					YayaConst.MASK_MAP, rect, Source, OperationMode.ColliderOnly, YayaConst.SLIDE_TAG
+					YayaConst.MASK_MAP, rect, this, OperationMode.ColliderOnly, YayaConst.SLIDE_TAG
 				);
 			}
 		}

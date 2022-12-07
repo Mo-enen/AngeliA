@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using AngeliaFramework;
 using Moenen.Standard;
+using UnityEngine;
 
 
 namespace Yaya {
-	public class Attackness : IInitialize, ISerializationCallbackReceiver {
+	public abstract partial class eCharacter {
 
 
 
@@ -15,23 +15,22 @@ namespace Yaya {
 
 
 		// Api
-		public eCharacter Source { get; private set; } = null;
-		public bool IsAttacking => Game.GlobalFrame < LastAttackFrame + Duration;
+		public bool IsAttacking => Game.GlobalFrame < LastAttackFrame + AttackDuration;
 		public int LastAttackFrame { get; private set; } = int.MinValue;
 		public int BulletID => _BulletID != 0 ? _BulletID : (_BulletID = BulletName.Value.AngeHash());
-		public int Combo { get; private set; } = -1;
+		public int AttackCombo { get; private set; } = -1;
 		public bool AntiAttack => Game.GlobalFrame <= AntiAttackFrame;
 
 		// Buff
 		public BuffString BulletName { get; private set; } = new();
-		public BuffInt Duration { get; private set; } = new();
-		public BuffInt Colldown { get; private set; } = new();
-		public BuffInt ComboGap { get; private set; } = new();
+		public BuffInt AttackDuration { get; private set; } = new();
+		public BuffInt AttackColldown { get; private set; } = new();
+		public BuffInt AttackComboGap { get; private set; } = new();
 		public BuffBool StopMoveOnAttack { get; private set; } = new();
 		public BuffBool CancelAttackOnJump { get; private set; } = new();
-		public BuffBool RandomCombo { get; private set; } = new();
-		public BuffBool KeepTriggerWhenHold { get; private set; } = new();
-		public BuffInt HoldTriggerPunish { get; private set; } = new();
+		public BuffBool UseRandomAttackCombo { get; private set; } = new();
+		public BuffBool KeepAttackWhenHold { get; private set; } = new();
+		public BuffInt HoldAttackPunish { get; private set; } = new();
 		public BuffBool AttackInAir { get; private set; } = new();
 		public BuffBool AttackInWater { get; private set; } = new();
 		public BuffBool AttackWhenFlying { get; private set; } = new();
@@ -43,14 +42,14 @@ namespace Yaya {
 		// Ser
 #pragma warning disable
 		[SerializeField] string _BulletName = "DefaultBullet";
-		[SerializeField] int _Duration = 12;
-		[SerializeField] int _Colldown = 2;
-		[SerializeField] int _ComboGap = 12;
+		[SerializeField] int _AttackDuration = 12;
+		[SerializeField] int _AttackColldown = 2;
+		[SerializeField] int _AttackComboGap = 12;
 		[SerializeField] bool _StopMoveOnAttack = true;
 		[SerializeField] bool _CancelAttackOnJump = false;
-		[SerializeField] bool _RandomCombo = false;
-		[SerializeField] bool _KeepTriggerWhenHold = true;
-		[SerializeField] int _HoldTriggerPunish = 4;
+		[SerializeField] bool _UseRandomAttackCombo = false;
+		[SerializeField] bool _KeepAttackWhenHold = true;
+		[SerializeField] int _HoldAttackPunish = 4;
 		[SerializeField] bool _AttackInAir = true;
 		[SerializeField] bool _AttackInWater = true;
 		[SerializeField] bool _AttackWhenClimbing = false;
@@ -59,7 +58,7 @@ namespace Yaya {
 		[SerializeField] bool _AttackWhenSquating = false;
 		[SerializeField] bool _AttackWhenDashing = false;
 #pragma warning restore
-
+		
 		// Data
 		private readonly static System.Random Random = new(19940516);
 		private int AntiAttackFrame = int.MinValue;
@@ -74,27 +73,18 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public void OnInitialize (eCharacter source) {
-			Source = source;
-		}
-
-
-		public void OnActived () {
+		public void OnActived_Attack () {
 			LastAttackFrame = int.MinValue;
 			AntiAttackFrame = int.MinValue;
 		}
 
 
-		public void FrameUpdate () {
+		public void Update_Attack () {
 			// Combo Break
-			if (Combo > -1 && Game.GlobalFrame > LastAttackFrame + Duration + Colldown + ComboGap) {
-				Combo = -1;
+			if (AttackCombo > -1 && Game.GlobalFrame > LastAttackFrame + AttackDuration + AttackColldown + AttackComboGap) {
+				AttackCombo = -1;
 			}
 		}
-
-
-		public void OnBeforeSerialize () => BuffValue.SerializeBuffValues(this);
-		public void OnAfterDeserialize () => BuffValue.DeserializeBuffValues(this);
 
 
 		#endregion
@@ -110,13 +100,13 @@ namespace Yaya {
 			if (frame <= AntiAttackFrame) return false;
 			// Attack
 			if (BulletID == 0) return false;
-			if (frame < LastAttackFrame + Duration + Colldown) return false;
+			if (frame < LastAttackFrame + AttackDuration + AttackColldown) return false;
 			LastAttackFrame = frame;
 			// Spawn Bullet
-			if (Game.Current.TryAddEntity(BulletID, Source.X, Source.Y, out var entity) && entity is eBullet bullet) {
-				bullet.Release(this, direction, Combo);
+			if (Game.Current.TryAddEntity(BulletID, X, Y, out var entity) && entity is eBullet bullet) {
+				bullet.Release(this, direction, AttackCombo);
 			}
-			Combo = RandomCombo ? Random.Next() : Combo + 1;
+			AttackCombo = UseRandomAttackCombo ? Random.Next() : AttackCombo + 1;
 			return true;
 		}
 
@@ -124,9 +114,9 @@ namespace Yaya {
 		public void CancelAttack () => LastAttackFrame = int.MinValue;
 
 
-		public bool CheckReady (bool isHoldingAttack) => isHoldingAttack ?
-			Game.GlobalFrame >= LastAttackFrame + Duration + Colldown + HoldTriggerPunish :
-			Game.GlobalFrame >= LastAttackFrame + Duration + Colldown;
+		public bool CheckAttackReady (bool isHoldingAttack) => isHoldingAttack ?
+			Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackColldown + HoldAttackPunish :
+			Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackColldown;
 
 
 		public void IgnoreAttack (int duration = 0) => AntiAttackFrame = Game.GlobalFrame + duration;

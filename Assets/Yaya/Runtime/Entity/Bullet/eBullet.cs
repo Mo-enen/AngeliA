@@ -43,9 +43,9 @@ namespace Yaya {
 
 
 		// MSG
-		public virtual void Release (Attackness attackness, Vector2Int direction, int combo = 0) {
+		public virtual void Release (eCharacter character, Vector2Int direction, int combo = 0) {
 			StartFrame = Game.GlobalFrame;
-			var sourceRect = attackness.Source.Rect;
+			var sourceRect = character.Rect;
 			X = sourceRect.x + sourceRect.width / 2 - Width / 2;
 			Y = sourceRect.y + sourceRect.height / 2 - Height / 2;
 			Direction = direction;

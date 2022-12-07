@@ -43,8 +43,8 @@ namespace Yaya {
 			const int COLUMN = 4;
 			const int MAX = 9;
 
-			int hp = Owner.Health.HealthPoint;
-			int maxHp = Mathf.Min(Owner.Health.MaxHP, MAX);
+			int hp = Owner.HealthPoint;
+			int maxHp = Mathf.Min(Owner.MaxHP, MAX);
 			int left = X - SIZE * COLUMN / 4;
 
 			// Draw Hearts
@@ -63,7 +63,7 @@ namespace Yaya {
 				isLeft = !isLeft;
 			}
 			// Overflow
-			if (Owner.Health.MaxHP > MAX) {
+			if (Owner.MaxHP > MAX) {
 
 			}
 		}

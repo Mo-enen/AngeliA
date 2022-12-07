@@ -126,7 +126,7 @@ namespace Yaya {
 					// Move
 					DrawKey(GameKey.Left, GameKey.Right, WORD.HINT_MOVE_CODE);
 					// Action & Jump
-					if (Player.Action.CurrentTarget is Entity target && target is IActionEntity) {
+					if (Player.CurrentActionTarget is Entity target && target is IActionEntity) {
 						// Action Target
 						if (target is eOpenableFurniture open && open.Open) {
 							DrawKey(GameKey.Action, WORD.UI_OK);
@@ -140,7 +140,7 @@ namespace Yaya {
 						}
 					} else {
 						// General
-						if (!Player.Attackness.AntiAttack) {
+						if (!Player.AntiAttack) {
 							DrawKey(GameKey.Action, WORD.HINT_ATTACK_CODE);
 						}
 						DrawKey(GameKey.Jump, WORD.HINT_JUMP_CODE);

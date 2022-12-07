@@ -166,7 +166,7 @@ namespace Yaya {
 			if (player == null || !player.Active) return;
 
 			const int LINGER_RATE = 32;
-			bool flying = player.Movement.IsFlying;
+			bool flying = player.IsFlying;
 			int playerX = player.X;
 			int playerY = player.Y;
 			bool inAir = player.InAir;
@@ -371,7 +371,7 @@ namespace Yaya {
 			// Player
 			var current = ePlayer.Current;
 			if (current != null && current.Active) {
-				current.Renderer.Bounce();
+				current.RenderBounce();
 				if (current.Mascot != null && current.Mascot.FollowOwner) {
 					current.Mascot.Summon();
 				}

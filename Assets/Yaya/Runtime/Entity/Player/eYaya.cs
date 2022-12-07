@@ -35,7 +35,7 @@ namespace Yaya {
 
 		private void Update_Run () {
 			// Last Start Run Frame
-			if (MovementState == MovementState.Run) {
+			if (MoveState == MovementState.Run) {
 				if (LastStartRunFrame < 0) LastStartRunFrame = Game.GlobalFrame;
 			} else if (LastStartRunFrame >= 0) {
 				LastStartRunFrame = int.MinValue;
