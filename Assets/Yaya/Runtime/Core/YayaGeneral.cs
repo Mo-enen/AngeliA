@@ -45,10 +45,11 @@ namespace Yaya {
 		// Tag
 		public static readonly int CLIMB_TAG = "Climb".AngeHash();
 		public static readonly int CLIMB_STABLE_TAG = "Climb Stable".AngeHash();
-		public static readonly int ITEM_TAG = "Item".AngeHash();
-		public static readonly int WATER_TAG = "Water".AngeHash();
 		public static readonly int QUICKSAND_TAG = "Quicksand".AngeHash();
+		public static readonly int WATER_TAG = "Water".AngeHash();
 		public static readonly int DAMAGE_TAG = "Damage".AngeHash();
+		public static readonly int SLIDE_TAG = "Slide".AngeHash();
+		public static readonly int NO_SLIDE_TAG = "NoSlide".AngeHash();
 
 		// View
 		public const int PLAYER_VIEW_LERP_RATE = 96;

@@ -141,6 +141,7 @@ namespace Yaya {
 		private AniCode Pound = null;
 		private AniCode Climb = null;
 		private AniCode Roll = null;
+		private AniCode Slide = null;
 		private AniCode Fly = null;
 		private AniCode DoorFront = null;
 		private AniCode DoorBack = null;
@@ -196,6 +197,7 @@ namespace Yaya {
 			Pound = new($"{name}.Pound", Idle);
 			Climb = new($"{name}.Climb", Idle);
 			Fly = new($"{name}.Fly", Run);
+			Slide = new($"{name}.Slide", JumpD);
 
 			Sleep = new($"{name}.Sleep", Idle);
 			Damaging = new($"{name}.Damage", Idle);
@@ -322,6 +324,7 @@ namespace Yaya {
 					MovementState.Pound => Pound,
 					MovementState.Climb => Climb,
 					MovementState.Fly => Fly,
+					MovementState.Slide => Slide,
 					_ => Idle,
 				};
 			}
