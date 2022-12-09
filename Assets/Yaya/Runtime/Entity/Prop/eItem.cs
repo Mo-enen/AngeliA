@@ -43,7 +43,7 @@ namespace Yaya {
 		}
 
 		// Data
-		private static readonly HitInfo[] c_MakeRoom = new HitInfo[5];
+		private static readonly PhysicsCell[] c_MakeRoom = new PhysicsCell[5];
 		private bool MakingRoom = false;
 		private int _ItemCode = 0;
 		private int _ArtworkIndex = 0;

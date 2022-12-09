@@ -9,7 +9,7 @@ namespace Yaya {
 
 
 		// VAR
-		private static readonly HitInfo[] c_BlockUnder = new HitInfo[32];
+		private static readonly PhysicsCell[] c_BlockUnder = new PhysicsCell[32];
 
 
 		// Damage
@@ -23,7 +23,7 @@ namespace Yaya {
 		);
 
 
-		public static int OverlapAll_Damage (HitInfo[] hits, RectInt globalRect, Entity ignore = null, bool forPlayer = false) => CellPhysics.OverlapAll(
+		public static int OverlapAll_Damage (PhysicsCell[] hits, RectInt globalRect, Entity ignore = null, bool forPlayer = false) => CellPhysics.OverlapAll(
 			hits, YayaConst.MASK_DAMAGE, globalRect, ignore,
 			forPlayer ? OperationMode.TriggerOnly : OperationMode.ColliderOnly
 		);

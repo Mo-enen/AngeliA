@@ -27,7 +27,7 @@ namespace Yaya {
 		public override bool IsChargingAttack => MinimalChargeAttackDuration != int.MaxValue && !AntiAttack && AttackCooldownReady(false) && FrameInput.GameKeyPress(GameKey.Action);
 
 		// Data
-		private static readonly HitInfo[] Collects = new HitInfo[8];
+		private static readonly PhysicsCell[] Collects = new PhysicsCell[8];
 		private int LeftDownFrame = int.MinValue;
 		private int RightDownFrame = int.MinValue;
 		private int DownDownFrame = int.MinValue;
@@ -242,8 +242,10 @@ namespace Yaya {
 
 		private void FrameUpdate_Sleep () {
 			if (FrameInput.GameKeyDown(GameKey.Action) || FrameInput.GameKeyDown(GameKey.Jump)) {
+				// Wake up
 				SetCharacterState(CharacterState.GamePlay);
 				Y -= 2;
+				IgnoreAttack(6);
 			}
 		}
 

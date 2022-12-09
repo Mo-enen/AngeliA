@@ -19,7 +19,7 @@ namespace Yaya {
 		public virtual int CollisionMask => YayaConst.MASK_RIGIDBODY;
 
 		// Data
-		private readonly HitInfo[] c_Overlap = new HitInfo[16];
+		private readonly PhysicsCell[] c_Overlap = new PhysicsCell[16];
 		private bool? UnfillBottomBlock = null;
 
 
@@ -56,7 +56,7 @@ namespace Yaya {
 				}
 			}
 			if (UnfillBottomBlock.HasValue && UnfillBottomBlock.Value) {
-				CellPhysics.Unfill(
+				CellPhysics.SetOverlapCellsToTrigger(
 					YayaConst.MASK_LEVEL,
 					new(X + Const.CEL / 2, Y - Const.CEL / 2, 1, 1),
 					false, true

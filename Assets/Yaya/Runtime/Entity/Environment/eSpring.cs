@@ -107,7 +107,7 @@ namespace Yaya {
 					FullRect.Expand(Horizontal ? 1 : 0, Horizontal ? 1 : 0, Horizontal ? 0 : 1, Horizontal ? 0 : 1),
 					this, BounceSide, 16
 				);
-				if (hit != null) PerformBounce(hit.Entity as eYayaRigidbody);
+				PerformBounce(hit.Entity as eYayaRigidbody);
 			}
 		}
 

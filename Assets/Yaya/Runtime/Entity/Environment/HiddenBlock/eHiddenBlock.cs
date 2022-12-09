@@ -20,7 +20,7 @@ namespace Yaya {
 		protected virtual CharacterIdentity TriggerPermission => CharacterIdentity.Player;
 
 		// Data
-		private static readonly HitInfo[] c_Checks = new HitInfo[8];
+		private static readonly PhysicsCell[] c_Checks = new PhysicsCell[8];
 
 
 		// MSG

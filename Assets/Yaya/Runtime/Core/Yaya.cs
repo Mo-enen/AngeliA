@@ -22,7 +22,7 @@ namespace Yaya {
 		public int AimViewY { get; private set; } = 0;
 
 		// Data
-		private static readonly HitInfo[] c_DamageCheck = new HitInfo[16];
+		private static readonly PhysicsCell[] c_DamageCheck = new PhysicsCell[16];
 		private readonly eGamePadUI GamePadUI = null;
 		private readonly eControlHintUI ControlHintUI = null;
 		private readonly ePauseMenu PauseMenu = null;

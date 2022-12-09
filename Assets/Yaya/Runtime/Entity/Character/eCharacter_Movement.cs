@@ -70,8 +70,8 @@ namespace Yaya {
 		private int CurrentDashCooldown => InWater && SwimInFreeStyle ? FreeSwimDashCooldown : DashCooldown;
 
 		// Data
-		private static readonly HitInfo[] c_HitboxCollisionFix = new HitInfo[8];
-		private static readonly HitInfo[] c_SlideCheck = new HitInfo[8];
+		private static readonly PhysicsCell[] c_HitboxCollisionFix = new PhysicsCell[8];
+		private static readonly PhysicsCell[] c_SlideCheck = new PhysicsCell[8];
 		private RectInt Hitbox = default;
 		private int LastIntendedX = 1;
 		private bool HoldingJump = false;

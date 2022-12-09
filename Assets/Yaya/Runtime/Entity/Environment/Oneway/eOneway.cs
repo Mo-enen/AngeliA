@@ -16,7 +16,7 @@ namespace Yaya {
 		protected int ReboundFrame { get; private set; } = int.MinValue;
 
 		// Data
-		private static readonly HitInfo[] c_Rebound = new HitInfo[4];
+		private static readonly PhysicsCell[] c_Rebound = new PhysicsCell[4];
 		private int LastContactFrame = int.MinValue;
 
 

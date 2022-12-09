@@ -36,7 +36,7 @@ namespace Yaya {
 		[SerializeField] int ActionScanFrequency = 6;
 
 		// Data
-		private readonly HitInfo[] c_ScanHits = new HitInfo[16];
+		private readonly PhysicsCell[] c_ScanHits = new PhysicsCell[16];
 		private bool RequireRefresh = false;
 
 

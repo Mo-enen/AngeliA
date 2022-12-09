@@ -32,7 +32,7 @@ namespace Yaya {
 		protected Int4 Border { get; private set; } = Int4.Zero;
 
 		// Data
-		private static readonly HitInfo[] c_Overlaps = new HitInfo[32];
+		private static readonly PhysicsCell[] c_Overlaps = new PhysicsCell[32];
 
 
 		// MSG

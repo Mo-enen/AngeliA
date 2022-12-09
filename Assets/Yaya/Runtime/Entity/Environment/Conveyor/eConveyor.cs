@@ -12,7 +12,7 @@ namespace Yaya {
 		protected abstract int MoveSpeed { get; }
 
 		// Data
-		private static readonly HitInfo[] c_Update = new HitInfo[8];
+		private static readonly PhysicsCell[] c_Update = new PhysicsCell[8];
 
 
 		// MSG
