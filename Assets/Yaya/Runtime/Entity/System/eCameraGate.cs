@@ -30,11 +30,26 @@ namespace Yaya {
 		// Api
 		protected abstract Direction4 Direction { get; }
 
+		// Data
+		private static int LastClampFrame = -1;
+		private static int? TargetMinX = null;
+		private static int? TargetMinY = null;
+		private static int? TargetMaxX = null;
+		private static int? TargetMaxY = null;
+
 
 		// MSG
-		public override void FrameUpdate () {
+		public override void BeforePhysicsUpdate () {
+			base.BeforePhysicsUpdate();
+			TargetMinX = null;
+			TargetMinY = null;
+			TargetMaxX = null;
+			TargetMaxY = null;
+		}
 
-			base.FrameUpdate();
+
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
 
 			var player = ePlayer.Current;
 			if (player == null || !player.Active) return;
@@ -56,7 +71,7 @@ namespace Yaya {
 				_ => true,
 			}) return;
 
-			// Clamp Camera
+			// Set Min Max Values
 			const int GAP = Const.CEL;
 			var game = Game.Current;
 			var yaya = Yaya.Current;
@@ -65,23 +80,70 @@ namespace Yaya {
 			cameraRect.y = yaya.AimViewY;
 			switch (Direction) {
 				case Direction4.Down:
-					cameraRect.y = Mathf.Min(Y + Const.CEL / 2 + GAP - cameraRect.height, cameraRect.y);
-					game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_SYSTEM);
+					TargetMaxY = Mathf.Min(TargetMaxY ?? int.MaxValue, Y + Const.CEL / 2 + GAP);
 					break;
 				case Direction4.Up:
-					cameraRect.y = Mathf.Max(Y + Const.CEL / 2 - GAP, cameraRect.y);
-					game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_SYSTEM);
+					TargetMinY = Mathf.Max(TargetMinY ?? int.MinValue, Y + Const.CEL / 2 - GAP);
 					break;
 				case Direction4.Left:
-					cameraRect.x = Mathf.Min(X + Const.CEL / 2 + GAP - cameraRect.width, cameraRect.x);
-					game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_SYSTEM);
+					TargetMaxX = Mathf.Min(TargetMaxX ?? int.MaxValue, X + Const.CEL / 2 + GAP);
 					break;
 				case Direction4.Right:
-					cameraRect.x = Mathf.Max(X + Const.CEL / 2 - GAP, cameraRect.x);
-					game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_SYSTEM);
+					TargetMinX = Mathf.Max(TargetMinX ?? int.MinValue, X + Const.CEL / 2 - GAP);
 					break;
 			}
 
+		}
+
+
+		public override void FrameUpdate () {
+
+			base.FrameUpdate();
+			if (Game.GlobalFrame <= LastClampFrame) return;
+
+			// Clamp Camera
+			var game = Game.Current;
+			var yaya = Yaya.Current;
+			var cameraRect = CellRenderer.CameraRect;
+			int viewOffsetX = game.ViewRect.x - CellRenderer.CameraRect.x;
+			cameraRect.x = yaya.AimViewX - viewOffsetX;
+			cameraRect.y = yaya.AimViewY;
+
+			// H
+			if (TargetMinX.HasValue && TargetMaxX.HasValue) {
+				int targetWidth = TargetMaxX.Value - TargetMinX.Value;
+				if (targetWidth > cameraRect.width) {
+					cameraRect.x = cameraRect.x.Clamp(TargetMinX.Value, TargetMaxX.Value - cameraRect.width);
+				} else {
+					cameraRect.x = TargetMinX.Value + targetWidth / 2 - cameraRect.width / 2;
+				}
+				game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_SYSTEM);
+			} else if (TargetMinX.HasValue) {
+				cameraRect.x = Mathf.Max(cameraRect.x, TargetMinX.Value);
+				game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_SYSTEM);
+			} else if (TargetMaxX.HasValue) {
+				cameraRect.x = Mathf.Min(cameraRect.x, TargetMaxX.Value - cameraRect.width);
+				game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_SYSTEM);
+			}
+
+			// V
+			if (TargetMinY.HasValue && TargetMaxY.HasValue) {
+				int targetHeight = TargetMaxY.Value - TargetMinY.Value;
+				if (targetHeight > cameraRect.height) {
+					cameraRect.y = cameraRect.y.Clamp(TargetMinY.Value, TargetMaxY.Value - cameraRect.height);
+				} else {
+					cameraRect.y = TargetMinY.Value + targetHeight / 2 - cameraRect.height / 2;
+				}
+				game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_SYSTEM);
+			} else if (TargetMinY.HasValue) {
+				cameraRect.y = Mathf.Max(cameraRect.y, TargetMinY.Value);
+				game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_SYSTEM);
+			} else if (TargetMaxY.HasValue) {
+				cameraRect.y = Mathf.Min(cameraRect.y, TargetMaxY.Value - cameraRect.height);
+				game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_SYSTEM);
+			}
+
+			LastClampFrame = Game.GlobalFrame;
 		}
 
 

@@ -35,21 +35,23 @@ namespace Yaya {
 		protected virtual int Duration => 60;
 		protected virtual int Damage => 1;
 		protected virtual int Speed => 12;
+		protected int Combo { get; private set; } = 0;
+		protected int ChargeDuration { get; private set; } = 0;
 
 		// Data
-		private int StartFrame = 0;
 		private Vector2Int Direction = default;
-		private int Combo = 0;
+		private int StartFrame = 0;
 
 
 		// MSG
-		public virtual void Release (eCharacter character, Vector2Int direction, int combo = 0) {
+		public virtual void Release (eCharacter character, Vector2Int direction, int combo, int chargeDuration) {
 			StartFrame = Game.GlobalFrame;
 			var sourceRect = character.Rect;
 			X = sourceRect.x + sourceRect.width / 2 - Width / 2;
 			Y = sourceRect.y + sourceRect.height / 2 - Height / 2;
 			Direction = direction;
 			Combo = combo;
+			ChargeDuration = chargeDuration;
 		}
 
 
@@ -84,7 +86,7 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.Draw_Animation(GetArtworkCode(Combo), Rect, Game.GlobalFrame - StartFrame);
+			CellRenderer.Draw_Animation(GetArtworkCode(Combo, ChargeDuration), Rect, Game.GlobalFrame - StartFrame);
 		}
 
 
@@ -92,7 +94,7 @@ namespace Yaya {
 		public virtual void OnHit (IDamageReceiver receiver) => Active = false;
 
 
-		protected virtual int GetArtworkCode (int combo) => TypeID;
+		protected virtual int GetArtworkCode (int combo, int chargeDuration) => TypeID;
 
 
 	}

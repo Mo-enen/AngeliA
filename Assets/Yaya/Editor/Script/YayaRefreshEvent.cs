@@ -6,50 +6,46 @@ using UnityEngine;
 
 
 namespace Yaya.Editor {
-
-
-	public class CheckPointArtworkExtension : IRefreshEvent {
+	public class YayaArtworkExtension : IRefreshEvent {
 
 
 		public string Message => "Yaya Refresh Events";
 
 
 		public void Refresh () {
-			CreateCheckPointMetaFile();
+
+			CreateTeleporterMetaFile();
 		}
 
 
-		private void CreateCheckPointMetaFile () {
+		private void CreateTeleporterMetaFile () {
 
-			// Altar Entity ID
-			var world = new World();
+			// Entity ID
 			var targetHash = new HashSet<int>();
-			foreach (var type in typeof(eCheckAltar).AllChildClass()) {
+			foreach (var type in typeof(eGlobalAnchor).AllChildClass()) {
 				targetHash.TryAdd(type.AngeHash());
 			}
 
-			// Get All Cp Positions
-			var cpList = new List<eCheckAltar.CheckPointMeta.Data>();
+			// Get All tele Positions
+			var list = new List<eGlobalAnchor.AnchorMeta.Position>();
 			foreach (var filePath in Util.EnumerateFiles(Const.MapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
 				try {
-					World.EditorOnly_ForAllBlocks(filePath, entity: (id, pos) => {
-						if (!targetHash.Contains(id)) return;
-						cpList.Add(new eCheckAltar.CheckPointMeta.Data() {
+					if (!World.GetWorldPositionFromName(Util.GetNameWithoutExtension(filePath), out var worldPos)) continue;
+					foreach (var (id, x, y) in World.EditorOnly_ForAllEntities(filePath)) {
+						if (!targetHash.Contains(id)) continue;
+						list.Add(new eGlobalAnchor.AnchorMeta.Position() {
 							EntityID = id,
-							X = world.WorldPosition.x * Const.MAP + pos.x,
-							Y = world.WorldPosition.y * Const.MAP + pos.y,
-							Z = world.WorldPosition.z,
+							X = worldPos.x * Const.MAP + x,
+							Y = worldPos.y * Const.MAP + y,
+							Z = worldPos.z,
 						});
-					});
+					}
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
-
 			// Write Position File
-			AngeUtil.SaveMeta(new eCheckAltar.CheckPointMeta() { CPs = cpList.ToArray(), });
+			AngeUtil.SaveMeta(new eGlobalAnchor.AnchorMeta() { Positions = list.ToArray(), });
 		}
 
 
 	}
-
-
 }

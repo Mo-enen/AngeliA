@@ -11,7 +11,7 @@ namespace Yaya {
 
 		// Api
 		protected override bool DestroyOnCollide => false;
-		protected override int Duration => 20;
+		protected override int Duration => 4;
 		protected override int Speed => 0;
 
 		// Data
@@ -19,8 +19,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void Release (eCharacter character, Vector2Int direction, int combo = 0) {
-			base.Release(character, direction, combo);
+		public override void Release (eCharacter character, Vector2Int direction, int combo, int chargeDuration) {
+			base.Release(character, direction, combo, chargeDuration);
 			Hitted = false;
 			Width = Const.CEL;
 			Height = Const.CEL * 2;

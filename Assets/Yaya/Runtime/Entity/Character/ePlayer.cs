@@ -24,6 +24,7 @@ namespace Yaya {
 		public static ePlayer Current { get; private set; } = null;
 		public virtual eMascot Mascot => null;
 		public override CharacterIdentity Identity => CharacterIdentity.Player;
+		public override bool IsChargingAttack => MinimalChargeAttackDuration != int.MaxValue && !AntiAttack && AttackCooldownReady(false) && FrameInput.GameKeyPress(GameKey.Action);
 
 		// Data
 		private static readonly HitInfo[] Collects = new HitInfo[8];
@@ -77,22 +78,21 @@ namespace Yaya {
 
 			// Stop when Not Playing
 			if (Game.Current.State != GameState.Play) {
-				if (Current != null) Current.Stop();
+				Stop();
 				return;
 			}
 
 			if (Current != this) return;
 
 			// Update Player
-			if (Current == null) return;
-			switch (Current.CharacterState) {
+			switch (CharacterState) {
 				case CharacterState.GamePlay:
 					if (!FrameTask.HasTask(Const.TASK_ROUTE)) {
 						FrameUpdate_Move();
 						FrameUpdate_JumpDashPound();
 						FrameUpdate_Action_Attack();
 					} else {
-						Current.Stop();
+						Stop();
 					}
 					break;
 				case CharacterState.Sleep:
@@ -142,7 +142,7 @@ namespace Yaya {
 				RightDownFrame = int.MinValue;
 			}
 
-			if (!Current.LockingInput) {
+			if (!LockingInput) {
 				// Down
 				if (FrameInput.GameKeyPress(GameKey.Down)) {
 					if (DownDownFrame < 0) {
@@ -172,13 +172,13 @@ namespace Yaya {
 			}
 
 			// Final
-			Current.Move(x, y);
+			Move(x, y);
 		}
 
 
 		private void FrameUpdate_JumpDashPound () {
 
-			if (Current.LockingInput) return;
+			if (LockingInput) return;
 
 			HoldJump(FrameInput.GameKeyPress(GameKey.Jump));
 			if (FrameInput.GameKeyDown(GameKey.Jump)) {
@@ -188,8 +188,8 @@ namespace Yaya {
 					Dash();
 				}
 				AttackRequiringFrame = int.MinValue;
-				if (Current.CancelAttackOnJump) {
-					Current.CancelAttack();
+				if (CancelAttackOnJump) {
+					CancelAttack();
 				}
 			}
 			if (FrameInput.GameKeyDown(GameKey.Down)) {
@@ -201,28 +201,28 @@ namespace Yaya {
 		private void FrameUpdate_Action_Attack () {
 
 			// Try Perform Action
-			if (Current.CurrentActionTarget != null && FrameInput.AnyGameKeyDown()) {
-				bool performed = Current.InvokeAction();
+			if (CurrentActionTarget != null && FrameInput.AnyGameKeyDown()) {
+				bool performed = InvokeAction();
 				if (performed) return;
 			}
 
 			// Try Cancel Action
-			if (Current.CurrentActionTarget != null && FrameInput.GameKeyDown(GameKey.Jump)) {
-				Current.CancelInvokeAction();
+			if (CurrentActionTarget != null && FrameInput.GameKeyDown(GameKey.Jump)) {
+				CancelInvokeAction();
 				return;
 			}
 
 			// Lock Input Check
-			if (Current.LockingInput) return;
+			if (LockingInput) return;
 
 			// Try Perform Attack
-			if (Current.CharacterState == CharacterState.GamePlay) {
+			if (CharacterState == CharacterState.GamePlay) {
 				bool attDown = FrameInput.GameKeyDown(GameKey.Action);
-				bool attHolding = FrameInput.GameKeyPress(GameKey.Action) && Current.KeepAttackWhenHold;
+				bool attHolding = FrameInput.GameKeyPress(GameKey.Action) && KeepAttackWhenHold;
 				if (attDown || attHolding) {
-					if (Current.IsAttackAllowedByMovement()) {
-						if (Current.CheckAttackReady(!attDown)) {
-							Current.Attack(FacingRight ? Vector2Int.right : Vector2Int.left);
+					if (IsAttackAllowedByMovement()) {
+						if (AttackCooldownReady(!attDown)) {
+							Attack();
 						} else if (attDown) {
 							AttackRequiringFrame = Game.GlobalFrame;
 						}
@@ -233,17 +233,17 @@ namespace Yaya {
 
 			// Perform Required Attack
 			const int ATTACK_REQUIRE_GAP = 12;
-			if (Current.CheckAttackReady(false) && Game.GlobalFrame < AttackRequiringFrame + ATTACK_REQUIRE_GAP) {
+			if (AttackCooldownReady(false) && Game.GlobalFrame < AttackRequiringFrame + ATTACK_REQUIRE_GAP) {
 				AttackRequiringFrame = int.MinValue;
-				Current.Attack(FacingRight ? Vector2Int.right : Vector2Int.left);
+				Attack();
 			}
 		}
 
 
 		private void FrameUpdate_Sleep () {
 			if (FrameInput.GameKeyDown(GameKey.Action) || FrameInput.GameKeyDown(GameKey.Jump)) {
-				Current.SetCharacterState(CharacterState.GamePlay);
-				Current.Y -= 2;
+				SetCharacterState(CharacterState.GamePlay);
+				Y -= 2;
 			}
 		}
 

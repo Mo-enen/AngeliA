@@ -281,19 +281,21 @@ namespace Yaya {
 
 
 		private void MovementUpdate_Dash () {
-			if (
-				DashAvailable && IntendedDash && IsGrounded &&
-				Game.GlobalFrame > LastDashFrame + CurrentDashDuration + CurrentDashCooldown
-			) {
-				// Perform Dash
-				LastDashFrame = Game.GlobalFrame;
-				IsDashing = true;
+
+			if (!IntendedDash || !IsGrounded || InSand) return;
+
+			// Jump Though Oneway
+			if (JumpThoughOneway && JumpThoughOnewayCheck()) {
+				PerformMove(0, -Const.CEL / 2, true, true, false);
 				VelocityY = 0;
+				return;
 			}
-			if (InSand) {
-				LastDashFrame = int.MinValue;
-				IsDashing = false;
-			}
+
+			// Dash
+			if (!DashAvailable || Game.GlobalFrame <= LastDashFrame + CurrentDashDuration + CurrentDashCooldown) return;
+			LastDashFrame = Game.GlobalFrame;
+			IsDashing = true;
+			VelocityY = 0;
 		}
 
 
@@ -421,10 +423,7 @@ namespace Yaya {
 		public void Jump () => IntendedJump = InWater || IntendedY >= 0 || IsClimbing;
 
 
-		public void Dash () {
-			if (!DashAvailable) return;
-			IntendedDash = DashSpeed > 0;
-		}
+		public void Dash () => IntendedDash = DashSpeed > 0;
 
 
 		public void StopDash () {
@@ -595,6 +594,12 @@ namespace Yaya {
 				);
 			}
 		}
+
+
+		private bool JumpThoughOnewayCheck () => CellPhysics.Overlap(
+			YayaConst.MASK_MAP, Hitbox.Edge(Direction4.Down, Const.CEL / 4), this,
+			OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG
+		);
 
 
 		#endregion

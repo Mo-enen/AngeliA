@@ -14,11 +14,16 @@ namespace Yaya {
 
 
 		private class AniSheet {
+
 			public GroupCode Face = null;
+			public AniCode FaceBlink = null;
 			public AniCode Sleep = null;
 			public AniCode Damaging = null;
 			public AniCode Passout = null;
-			public AniCode FaceBlink = null;
+			public AniCode DoorFront = null;
+			public AniCode DoorBack = null;
+
+			// Movement
 			public AniCode Idle = null;
 			public AniCode Walk = null;
 			public AniCode Run = null;
@@ -35,12 +40,13 @@ namespace Yaya {
 			public AniCode Roll = null;
 			public AniCode Slide = null;
 			public AniCode Fly = null;
-			public AniCode DoorFront = null;
-			public AniCode DoorBack = null;
+
+			// Attack
 			public AniCode[] Attacks = null;
 			public AniCode[] Attacks_Move = null;
 			public AniCode[] Attacks_Air = null;
 			public AniCode[] Attacks_Water = null;
+			public AniCode[] Attacks_Charge = null;
 
 		}
 
@@ -80,7 +86,7 @@ namespace Yaya {
 			}
 
 
-			public static AniCode[] GetAnimationArray (string keyName, int defaultLoopStart, AniCode[] failbacks = null) {
+			public static AniCode[] GetAnimationArray (string keyName, int defaultLoopStart) {
 				var result = new List<AniCode>();
 				int code = keyName.AngeHash();
 				if (CellRenderer.TryGetSprite(code, out _, 0)) {
@@ -91,10 +97,6 @@ namespace Yaya {
 					if (CellRenderer.TryGetSprite(code, out _, 0)) {
 						result.Add(new AniCode(code) { LoopStart = defaultLoopStart, });
 					} else break;
-				}
-				// Failback
-				if (failbacks != null && failbacks.Length > 0 && result.Count == 0) {
-					result.AddRange(failbacks);
 				}
 				return result.ToArray();
 			}
@@ -211,9 +213,11 @@ namespace Yaya {
 			AnimationSheet.DoorBack = new($"{name}.DoorBack", AnimationSheet.Idle);
 
 			AnimationSheet.Attacks = AniCode.GetAnimationArray($"{name}.Attack", -1);
-			AnimationSheet.Attacks_Move = AniCode.GetAnimationArray($"{name}.AttackMove", -1, AnimationSheet.Attacks);
-			AnimationSheet.Attacks_Air = AniCode.GetAnimationArray($"{name}.AttackAir", -1, AnimationSheet.Attacks);
-			AnimationSheet.Attacks_Water = AniCode.GetAnimationArray($"{name}.AttackWater", -1, AnimationSheet.Attacks);
+			AnimationSheet.Attacks_Move = AniCode.GetAnimationArray($"{name}.AttackMove", -1);
+			AnimationSheet.Attacks_Air = AniCode.GetAnimationArray($"{name}.AttackAir", -1);
+			AnimationSheet.Attacks_Water = AniCode.GetAnimationArray($"{name}.AttackWater", -1);
+			AnimationSheet.Attacks_Charge = AniCode.GetAnimationArray($"{name}.Charge", -1);
+
 		}
 
 
@@ -228,8 +232,7 @@ namespace Yaya {
 			if (frame < DamagingTime) {
 				CellRenderer.Draw_Animation(
 					AnimationSheet.Damaging.Code,
-					X, Y,
-					500, 0, 0,
+					X, Y, 500, 0, 0,
 					FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 					Const.ORIGINAL_SIZE,
 					Game.GlobalFrame,
@@ -242,8 +245,7 @@ namespace Yaya {
 			if (frame < EnterDoorEndFrame.Abs()) {
 				CellRenderer.Draw_Animation(
 					EnterDoorEndFrame > 0 ? AnimationSheet.DoorFront.Code : AnimationSheet.DoorBack.Code,
-					X, Y,
-					500, 0, 0,
+					X, Y, 500, 0, 0,
 					FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 					Const.ORIGINAL_SIZE,
 					Game.GlobalFrame,
@@ -289,20 +291,21 @@ namespace Yaya {
 					case MovementState.SwimDash:
 					case MovementState.SwimIdle:
 					case MovementState.SwimMove:
-						attacks = AnimationSheet.Attacks_Water;
+						attacks = AnimationSheet.Attacks_Water ?? attacks;
 						break;
 					case MovementState.JumpDown:
 					case MovementState.JumpUp:
 					case MovementState.Roll:
-						if (InAir) attacks = AnimationSheet.Attacks_Air;
+						if (InAir) attacks = AnimationSheet.Attacks_Air ?? attacks;
 						break;
 					case MovementState.Walk:
 					case MovementState.Run:
-						attacks = AnimationSheet.Attacks_Move;
+						attacks = AnimationSheet.Attacks_Move ?? attacks;
 						break;
 				}
 				if (attacks.Length > 0) {
 					ani = attacks[AttackCombo.Clamp(0, attacks.Length - 1)];
+					if (frame <= LastAttackFrame) CurrentAniFrame = 0;
 				}
 			} else {
 				// Movement

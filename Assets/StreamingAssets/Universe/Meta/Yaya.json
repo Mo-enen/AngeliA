@@ -9,6 +9,7 @@
   "_JumpWithRoll": false,
   "_JumpSecondWithRoll": true,
   "_JumpCount": 2,
+  "_JumpThoughOneway": true,
   "_FlyAvailable": true,
   "_FlyCount": 99999,
   "_SlideAvailable": true,
@@ -17,6 +18,7 @@
   "_BulletName": "YayaPaw",
   "_AttackDuration": 12,
   "_KeepAttackWhenHold": false,
+  "_MinimalChargeAttackDuration": 42,
 
   "_MaxHP": 4,
 

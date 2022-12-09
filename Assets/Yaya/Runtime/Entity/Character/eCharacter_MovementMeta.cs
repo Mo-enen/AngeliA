@@ -30,6 +30,7 @@ namespace Yaya {
 		public BuffInt JumpRiseGravityRate { get; private set; } = new();
 		public BuffBool JumpWithRoll { get; private set; } = new();
 		public BuffBool JumpSecondWithRoll { get; private set; } = new();
+		public BuffBool JumpThoughOneway { get; private set; } = new();
 
 		public BuffBool DashAvailable { get; private set; } = new();
 		public BuffInt DashSpeed { get; private set; } = new();
@@ -112,6 +113,7 @@ namespace Yaya {
 		[SerializeField] int _JumpRiseGravityRate = 600;
 		[SerializeField] bool _JumpWithRoll = false;
 		[SerializeField] bool _JumpSecondWithRoll = true;
+		[SerializeField] bool _JumpThoughOneway = false;
 
 		// Dash
 		[SerializeField] bool _DashAvailable = true;
