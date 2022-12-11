@@ -94,7 +94,9 @@ namespace Yaya {
 			);
 
 			// Z Fix
-			if (IsFrontDoor) cell.Z = -cell.Z;
+			if (IsFrontDoor != FrameTask.IsTasking<SquadTransitionTask>()) {
+				cell.Z = -cell.Z;
+			}
 
 			// Invoke
 			if (!InputLock && playerOverlaps && FrameInput.GameKeyPress(GameKey.Up)) {
@@ -112,7 +114,12 @@ namespace Yaya {
 			player.X = X + (Width - player.Width) / 2 - player.OffsetX;
 			player.Y = Y;
 			player.Stop();
-			Yaya.Current.SetViewZDelay(IsFrontDoor ? Game.Current.ViewZ - 1 : Game.Current.ViewZ + 1);
+			var game = Game.Current;
+			game.SetViewZDelay(
+				IsFrontDoor ? game.ViewZ - 1 : game.ViewZ + 1,
+				player.X, player.Y + player.Height / 2
+			);
+			player.RenderEnterDoor(game.WorldConfig.SquadTransitionDuration, IsFrontDoor);
 			Open = true;
 			InputLock = true;
 			return true;

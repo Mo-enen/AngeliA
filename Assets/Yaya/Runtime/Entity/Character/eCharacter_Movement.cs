@@ -71,6 +71,7 @@ namespace Yaya {
 
 		// Data
 		private static readonly PhysicsCell[] c_SlideCheck = new PhysicsCell[8];
+		private static readonly PhysicsCell[] c_JumpThoughOnewayCheck = new PhysicsCell[8];
 		private RectInt Hitbox = default;
 		private int LastIntendedX = 1;
 		private bool HoldingJump = false;
@@ -557,10 +558,18 @@ namespace Yaya {
 		}
 
 
-		private bool JumpThoughOnewayCheck () => CellPhysics.Overlap(
-			YayaConst.MASK_MAP, Hitbox.Edge(Direction4.Down, Const.CEL / 4), this,
-			OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG
-		);
+		private bool JumpThoughOnewayCheck () {
+			int count = CellPhysics.OverlapAll(
+				c_JumpThoughOnewayCheck,
+				YayaConst.MASK_MAP, Hitbox.Edge(Direction4.Down, Const.CEL / 4), this,
+				OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG
+			);
+			for (int i = 0; i < count; i++) {
+				var hit = c_JumpThoughOnewayCheck[i];
+				if (hit.Rect.yMax <= Hitbox.y) return true;
+			}
+			return false;
+		}
 
 
 		#endregion

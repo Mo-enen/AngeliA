@@ -14,6 +14,7 @@ namespace Yaya {
 
 		// API
 		public YayaWorldSquad (bool behind = false) : base(behind) { }
+		public override int LevelLayer => YayaConst.LAYER_LEVEL;
 
 
 		protected override void DrawBackgroundBlock (int id, int unitX, int unitY) {

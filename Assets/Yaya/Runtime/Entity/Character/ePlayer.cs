@@ -102,8 +102,11 @@ namespace Yaya {
 			}
 
 			// Mascot
-			if (Mascot != null && IsGrounded && !Mascot.Active && Mascot.FollowOwner) {
+			if (Mascot != null && !Mascot.Active && IsGrounded && Mascot.FollowOwner) {
 				Mascot.Summon();
+				var spawnRect = Game.Current.SpawnRect;
+				Mascot.X = Mascot.X.Clamp(spawnRect.xMin + Const.CEL, spawnRect.xMax - Const.CEL);
+				Mascot.Y = Mascot.Y.Clamp(spawnRect.yMin + Const.CEL, spawnRect.yMax - Const.CEL);
 			}
 
 		}

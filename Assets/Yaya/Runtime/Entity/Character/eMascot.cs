@@ -5,6 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
+	[EntityAttribute.ForceUpdate]
 	public abstract class eMascot : eCharacter {
 
 
@@ -108,9 +109,6 @@ namespace Yaya {
 				}
 				PosChainStartIndex = 0;
 			}
-			//const int SEG_DIS = Const.CEL / 8;
-			//var currentPos = PosChain[PosChainStartIndex];
-			//if (Util.SqrtDistance(targetX, targetY, currentPos.x, currentPos.y) > SEG_DIS * SEG_DIS) {
 			if (Game.GlobalFrame > PrevFollowSwapeFrame + 1) {
 				PrevFollowSwapeFrame = Game.GlobalFrame;
 				PosChainStartIndex = (PosChainStartIndex + 1) % PosChain.Length;

@@ -54,6 +54,8 @@ namespace Yaya {
 			game.OnPauselessUpdate -= PauselessUpdate;
 			game.OnPauselessUpdate += PauselessUpdate;
 
+			game.PhysicsLayerCount = YayaConst.LAYER_COUNT;
+
 			// World
 			game.WorldSquad = WorldSquad = new YayaWorldSquad();
 			game.WorldSquad_Behind = WorldSquad_Behind = new YayaWorldSquad(true);
@@ -100,7 +102,9 @@ namespace Yaya {
 				game.SetViewZ(game.ViewZ - 1);
 			}
 			if (FrameInput.KeyDown(Key.Digit3)) {
-				game.PeekOrGetEntity<eGuaGua>().FollowOwner = true;
+				if (ePlayer.Current != null) {
+					ePlayer.Current.Mascot.FollowOwner = true;
+				}
 			}
 			if (FrameInput.KeyDown(Key.Digit4)) {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
@@ -342,15 +346,6 @@ namespace Yaya {
 
 
 		#region --- API ---
-
-
-		public void SetViewZDelay (int newZ) {
-			if (FrameTask.HasTask(Const.TASK_ROUTE)) return;
-			// Add Task
-			if (FrameTask.TryAddToLast(SquadTransitionTask.TYPE_ID, Const.TASK_ROUTE, out var task) && task is SquadTransitionTask svTask) {
-				svTask.NewZ = newZ;
-			}
-		}
 
 
 		public void ResetAimViewPosition () {

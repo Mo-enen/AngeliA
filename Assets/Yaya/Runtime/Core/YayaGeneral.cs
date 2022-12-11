@@ -23,6 +23,7 @@ namespace Yaya {
 		public const int LAYER_ITEM = 2;
 		public const int LAYER_CHARACTER = 3;
 		public const int LAYER_DAMAGE = 4;
+		public const int LAYER_COUNT = 5;
 
 		public const int MASK_NONE = 0;
 		public const int MASK_LEVEL = 1 << LAYER_LEVEL;
@@ -50,7 +51,6 @@ namespace Yaya {
 		public static readonly int DAMAGE_TAG = "Damage".AngeHash();
 		public static readonly int SLIDE_TAG = "Slide".AngeHash();
 		public static readonly int NO_SLIDE_TAG = "NoSlide".AngeHash();
-		public static readonly int PIPE_TAG = "Pipe".AngeHash();
 
 		// View
 		public const int PLAYER_VIEW_LERP_RATE = 96;

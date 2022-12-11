@@ -48,7 +48,7 @@ namespace Yaya {
 			MinimalChargeAttackDuration.Value = 42;
 
 			MaxHP.Value = 4;
-			
+
 		}
 
 
