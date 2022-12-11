@@ -19,13 +19,27 @@ namespace Yaya {
 		// Api
 		public static eGuaGua Current { get; private set; } = null;
 		public override ePlayer Owner => eYaya.CurrentYaya;
-		public override CharacterIdentity Identity => CharacterIdentity.Player;
 
 
 		// MSG
 		public override void OnInitialize () {
 			base.OnInitialize();
 			Current = this;
+
+			// Config
+			MovementWidth.Value = 150;
+			MovementHeight.Value = 150;
+			SquatHeight.Value = 150;
+			DashDuration.Value = 20;
+			RunAccumulation.Value = 48;
+			JumpSpeed.Value = 69;
+			SwimInFreeStyle.Value = false;
+			JumpWithRoll.Value = false;
+			JumpCount.Value = 1;
+			FlyAvailable.Value = false;
+			FlySpeed.Value = 32;
+			MaxHP.Value = 1;
+
 		}
 
 

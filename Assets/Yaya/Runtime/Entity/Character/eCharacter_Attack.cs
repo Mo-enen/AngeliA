@@ -22,44 +22,23 @@ namespace Yaya {
 		public virtual bool IsChargingAttack => false;
 
 		// Buff
-		public BuffString BulletName { get; private set; } = new();
-		public BuffInt AttackDuration { get; private set; } = new();
-		public BuffInt AttackColldown { get; private set; } = new();
-		public BuffInt AttackComboGap { get; private set; } = new();
-		public BuffInt HoldAttackPunish { get; private set; } = new();
-		public BuffInt MinimalChargeAttackDuration { get; private set; } = new();
-		public BuffBool StopMoveOnAttack { get; private set; } = new();
-		public BuffBool CancelAttackOnJump { get; private set; } = new();
-		public BuffBool UseRandomAttackCombo { get; private set; } = new();
-		public BuffBool KeepAttackWhenHold { get; private set; } = new();
-		public BuffBool AttackInAir { get; private set; } = new();
-		public BuffBool AttackInWater { get; private set; } = new();
-		public BuffBool AttackWhenFlying { get; private set; } = new();
-		public BuffBool AttackWhenClimbing { get; private set; } = new();
-		public BuffBool AttackWhenRolling { get; private set; } = new();
-		public BuffBool AttackWhenSquating { get; private set; } = new();
-		public BuffBool AttackWhenDashing { get; private set; } = new();
-
-		// Ser
-#pragma warning disable
-		[SerializeField] string _BulletName = "DefaultBullet";
-		[SerializeField] int _AttackDuration = 12;
-		[SerializeField] int _AttackColldown = 2;
-		[SerializeField] int _AttackComboGap = 12;
-		[SerializeField] int _HoldAttackPunish = 4;
-		[SerializeField] int _MinimalChargeAttackDuration = int.MaxValue;
-		[SerializeField] bool _StopMoveOnAttack = true;
-		[SerializeField] bool _CancelAttackOnJump = false;
-		[SerializeField] bool _UseRandomAttackCombo = false;
-		[SerializeField] bool _KeepAttackWhenHold = true;
-		[SerializeField] bool _AttackInAir = true;
-		[SerializeField] bool _AttackInWater = true;
-		[SerializeField] bool _AttackWhenClimbing = false;
-		[SerializeField] bool _AttackWhenFlying = false;
-		[SerializeField] bool _AttackWhenRolling = false;
-		[SerializeField] bool _AttackWhenSquating = false;
-		[SerializeField] bool _AttackWhenDashing = false;
-#pragma warning restore
+		public BuffString BulletName { get; private set; } = new("DefaultBullet");
+		public BuffInt AttackDuration { get; private set; } = new(12);
+		public BuffInt AttackColldown { get; private set; } = new(2);
+		public BuffInt AttackComboGap { get; private set; } = new(12);
+		public BuffInt HoldAttackPunish { get; private set; } = new(4);
+		public BuffInt MinimalChargeAttackDuration { get; private set; } = new(int.MaxValue);
+		public BuffBool StopMoveOnAttack { get; private set; } = new(true);
+		public BuffBool CancelAttackOnJump { get; private set; } = new(false);
+		public BuffBool UseRandomAttackCombo { get; private set; } = new(false);
+		public BuffBool KeepAttackWhenHold { get; private set; } = new(true);
+		public BuffBool AttackInAir { get; private set; } = new(true);
+		public BuffBool AttackInWater { get; private set; } = new(true);
+		public BuffBool AttackWhenClimbing { get; private set; } = new(false);
+		public BuffBool AttackWhenFlying { get; private set; } = new(false);
+		public BuffBool AttackWhenRolling { get; private set; } = new(false);
+		public BuffBool AttackWhenSquating { get; private set; } = new(false);
+		public BuffBool AttackWhenDashing { get; private set; } = new(false);
 
 		// Data
 		private readonly static System.Random Random = new(19940516);

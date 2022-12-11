@@ -50,6 +50,7 @@ namespace Yaya {
 		public static readonly int DAMAGE_TAG = "Damage".AngeHash();
 		public static readonly int SLIDE_TAG = "Slide".AngeHash();
 		public static readonly int NO_SLIDE_TAG = "NoSlide".AngeHash();
+		public static readonly int PIPE_TAG = "Pipe".AngeHash();
 
 		// View
 		public const int PLAYER_VIEW_LERP_RATE = 96;

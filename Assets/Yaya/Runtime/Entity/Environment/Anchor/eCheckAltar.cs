@@ -38,14 +38,58 @@ namespace Yaya {
 
 	[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
 	[EntityAttribute.MapEditorGroup("Altar")]
-	public abstract class eCheckAltar : eGlobalAnchor {
+	public abstract class eCheckAltar : Entity, IInitialize {
 
 
 
 		private Int4 Border = default;
 
 
+
+		// SUB
+		[System.Serializable]
+		public class AltarMeta {
+			[System.Serializable]
+			public struct Position {
+				public int X; // Global Unit Pos
+				public int Y; // Global Unit Pos
+				public int Z; // Global Unit Pos
+				public int EntityID;
+			}
+			public Position[] Positions = null;
+		}
+
+
+		// VAR
+		public static readonly Dictionary<int, Vector3Int> PositionPool = new();
+
+
+		// API
+		public static bool TryGetGlobalPosition (int id, out Vector3Int globalPos) {
+			if (PositionPool.TryGetValue(id, out var unitPos)) {
+				globalPos = new(unitPos.x * Const.CEL, unitPos.y * Const.CEL, unitPos.z);
+				return true;
+			} else {
+				globalPos = default;
+				return false;
+			}
+		}
+
+
 		// MSG
+		public static void Initialize () {
+			PositionPool.Clear();
+			var meta = AngeUtil.LoadMeta<AltarMeta>();
+			if (meta == null) return;
+			foreach (var cpData in meta.Positions) {
+				PositionPool.TryAdd(
+					cpData.EntityID,
+					new Vector3Int(cpData.X, cpData.Y, cpData.Z)
+				);
+			}
+		}
+
+
 		public override void OnActived () {
 			base.OnActived();
 			Height = Const.CEL * 2;

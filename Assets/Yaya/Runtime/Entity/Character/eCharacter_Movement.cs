@@ -70,7 +70,6 @@ namespace Yaya {
 		private int CurrentDashCooldown => InWater && SwimInFreeStyle ? FreeSwimDashCooldown : DashCooldown;
 
 		// Data
-		private static readonly PhysicsCell[] c_HitboxCollisionFix = new PhysicsCell[8];
 		private static readonly PhysicsCell[] c_SlideCheck = new PhysicsCell[8];
 		private RectInt Hitbox = default;
 		private int LastIntendedX = 1;
@@ -98,6 +97,8 @@ namespace Yaya {
 			Height = MovementHeight;
 			OffsetX = -MovementWidth / 2;
 			OffsetY = 0;
+			IsFlying = false;
+			Hitbox = new RectInt(X, Y, MovementWidth, MovementHeight);
 		}
 
 
@@ -195,14 +196,12 @@ namespace Yaya {
 			FacingFront = !IsClimbing;
 
 			// Physics
-			int prevHitboxHeight = Hitbox.height;
 			int width = InWater ? SwimWidth : MovementWidth;
-			Hitbox = new(X - width / 2, Y, width, GetCurrentHeight());
+			Hitbox = new(X - width / 2, Y, width, Hitbox.height.MoveTowards(GetCurrentHeight(), Const.CEL / 8, Const.CEL));
 			Width = Hitbox.width;
 			Height = Hitbox.height;
 			OffsetX = -width / 2;
 			OffsetY = 0;
-			if (Hitbox.height > prevHitboxHeight) CollisionFixOnHitboxChanged(prevHitboxHeight);
 		}
 
 
@@ -300,7 +299,9 @@ namespace Yaya {
 
 
 		private void MovementUpdate_VelocityX () {
-			int speed, acc, dcc;
+			int speed;
+			int acc = int.MaxValue;
+			int dcc = int.MaxValue;
 			if (IsFlying && FlyGlideSpeed > 0) {
 				// Glide
 				speed = FacingRight ? FlyGlideSpeed : -FlyGlideSpeed;
@@ -309,20 +310,16 @@ namespace Yaya {
 			} else if (IsClimbing) {
 				// Climb
 				speed = ClimbPositionCorrect.HasValue ? 0 : IntendedX * ClimbSpeedX;
-				acc = int.MaxValue;
-				dcc = int.MaxValue;
 				if (ClimbPositionCorrect.HasValue) X = X.MoveTowards(ClimbPositionCorrect.Value, CLIMB_CORRECT_DELTA);
 			} else if (IsDashing) {
 				if (InWater && SwimInFreeStyle && !IsGrounded) {
 					// Free Water Dash
 					speed = LastMoveDirection.x * FreeSwimDashSpeed;
 					acc = FreeSwimDashAcceleration;
-					dcc = int.MaxValue;
 				} else {
 					// Normal Dash
 					speed = FacingRight ? DashSpeed : -DashSpeed;
 					acc = DashAcceleration;
-					dcc = int.MaxValue;
 				}
 			} else if (IsSquating) {
 				speed = IntendedX * SquatSpeed;
@@ -426,12 +423,6 @@ namespace Yaya {
 		public void Dash () => IntendedDash = DashSpeed > 0;
 
 
-		public void StopDash () {
-			LastDashFrame = int.MinValue;
-			IsDashing = false;
-		}
-
-
 		public void Pound () => IntendedPound = true;
 
 
@@ -462,47 +453,17 @@ namespace Yaya {
 
 		private int GetCurrentHeight () {
 
-			// Squating
 			if (IsSquating) return SquatHeight;
 
-			// Dashing
 			if (IsDashing && (!InWater || IsGrounded)) return SquatHeight;
 
-			// Swimming
 			if (InWater) return SwimHeight;
 
-			// Rolling
 			if (IsRolling) return SquatHeight;
 
-			// Fly
 			if (IsFlying) return FlyHeight;
 
-			// Normal
 			return MovementHeight;
-		}
-
-
-		private void CollisionFixOnHitboxChanged (int prevHitboxHeight) {
-			var rect = Hitbox.Shrink(0, 0, Const.CEL / 4, 0);
-			// Fix for Oneway
-			int count = CellPhysics.OverlapAll(
-				c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, this,
-				OperationMode.TriggerOnly, Const.ONEWAY_DOWN_TAG
-			);
-			FixNow();
-			count = CellPhysics.OverlapAll(c_HitboxCollisionFix, YayaConst.MASK_MAP, rect, this);
-			FixNow();
-			// Func
-			void FixNow () {
-				for (int i = 0; i < count; i++) {
-					var hit = c_HitboxCollisionFix[i];
-					if (hit.Rect.yMin > rect.y) {
-						PerformMove(0, prevHitboxHeight - Hitbox.height, true);
-						if (IsGrounded) IsSquating = true;
-						break;
-					}
-				}
-			}
 		}
 
 
@@ -515,7 +476,7 @@ namespace Yaya {
 			IsDashing ? (!IsGrounded && InWater ? MovementState.SwimDash : MovementState.Dash) :
 			IsSquating ? (IsMoving ? MovementState.SquatMove : MovementState.SquatIdle) :
 			InWater && !IsGrounded ? (IsMoving ? MovementState.SwimMove : MovementState.SwimIdle) :
-			InAir ? (VelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown) :
+			!IsGrounded && !InWater && !InSand && !IsClimbing ? (VelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown) :
 			IsRunning ? MovementState.Run :
 			IsMoving ? MovementState.Walk :
 			MovementState.Idle;

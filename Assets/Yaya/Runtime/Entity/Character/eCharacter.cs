@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-using Moenen.Standard;
 
 
 namespace Yaya {
@@ -15,26 +14,10 @@ namespace Yaya {
 	}
 
 
-	[System.Flags]
-	public enum CharacterIdentity {
-		None = 0,
-		Player = 1 << 0,
-		Enemy = 1 << 1,
-		NPC = 1 << 2,
-
-		All = Player | Enemy | NPC,
-	}
-
-
-	public interface IPermissionCharacter {
-		CharacterIdentity Identity { get; }
-	}
-
-
 	[EntityAttribute.MapEditorGroup("Character")]
 	[EntityAttribute.Capacity(1)]
 	[EntityAttribute.Bounds(-Const.CEL / 2, 0, Const.CEL, Const.CEL)]
-	public abstract partial class eCharacter : eYayaRigidbody, ISerializationCallbackReceiver, IDamageReceiver, IPermissionCharacter {
+	public abstract partial class eCharacter : eYayaRigidbody, IDamageReceiver {
 
 
 
@@ -49,9 +32,7 @@ namespace Yaya {
 		public override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
 		public override int CollisionMask => YayaConst.MASK_MAP;
 		public override int CarrierSpeed => 0;
-		public virtual CharacterIdentity Identity => CharacterIdentity.None;
 		public bool TakingDamage => Game.GlobalFrame < LastDamageFrame + DamageStunDuration;
-		public bool InAir => !IsGrounded && !InWater && !InSand && !IsClimbing;
 		public int SleepAmount {
 			get => Util.Remap(0, 90, 0, 1000, SleepFrame);
 			set => SleepFrame = Util.Remap(0, 1000, 0, 90, value);
@@ -71,9 +52,6 @@ namespace Yaya {
 
 		public override void OnInitialize () {
 			base.OnInitialize();
-			string typeName = GetType().Name;
-			if (typeName[0] == 'e') typeName = typeName[1..];
-			AngeUtil.LoadMeta(this, "", typeName);
 			OnInitialize_Render();
 		}
 
@@ -143,10 +121,6 @@ namespace Yaya {
 			FrameUpdate_Render();
 			base.FrameUpdate();
 		}
-
-
-		public void OnAfterDeserialize () => BuffValue.DeserializeBuffValues(this);
-		public void OnBeforeSerialize () => BuffValue.SerializeBuffValues(this);
 
 
 		#endregion

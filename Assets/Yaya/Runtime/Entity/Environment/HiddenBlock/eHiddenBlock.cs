@@ -17,7 +17,6 @@ namespace Yaya {
 		protected virtual bool TriggerFromTop => false;
 		protected virtual bool TriggerFromLeft => false;
 		protected virtual bool TriggerFromRight => false;
-		protected virtual CharacterIdentity TriggerPermission => CharacterIdentity.Player;
 
 		// Data
 		private static readonly PhysicsCell[] c_Checks = new PhysicsCell[8];
@@ -46,8 +45,7 @@ namespace Yaya {
 				var blockRect = Rect;
 				for (int i = 0; i < count; i++) {
 					var hit = c_Checks[i];
-					if (hit.Entity is not eCharacter ch) continue;
-					if (((int)TriggerPermission & (int)ch.Identity) == 0) continue;
+					if (hit.Entity is not ePlayer ch) continue;
 					var hitPrevRect = ch.PrevRect;
 					if (
 						(TriggerFromBottom && hitPrevRect.yMax <= blockRect.yMin) ||

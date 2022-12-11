@@ -21,18 +21,10 @@ namespace Yaya {
 		public bool Invincible => Game.GlobalFrame < InvincibleStartFrame + InvincibleFrame;
 
 		// Buff
-		public BuffInt MaxHP { get; private set; } = new();
-		public BuffInt InvincibleFrame { get; private set; } = new();
-		public BuffInt KnockBackSpeed { get; private set; } = new();
-		public BuffInt DamageStunDuration { get; private set; } = new();
-
-		// Ser
-#pragma warning disable
-		[SerializeField] int _MaxHP = 1;
-		[SerializeField] int _InvincibleFrame = 120;
-		[SerializeField] int _KnockBackSpeed = 64;
-		[SerializeField] int _DamageStunDuration = 24;
-#pragma warning restore
+		public BuffInt MaxHP { get; private set; } = new(1);
+		public BuffInt InvincibleFrame { get; private set; } = new(120);
+		public BuffInt KnockBackSpeed { get; private set; } = new(64);
+		public BuffInt DamageStunDuration { get; private set; } = new(24);
 
 		// Data
 		private int InvincibleStartFrame = int.MinValue;

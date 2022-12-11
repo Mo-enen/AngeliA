@@ -1,5 +1,4 @@
-﻿Menu.Setting.ScreenEffect:Use Screen Effect
-@enen:Enen
+﻿@enen:sdf:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
@@ -30,6 +29,7 @@ Menu.Setting.Fullscreen.2:Fullscreen (Low)
 Menu.Setting.Fullscreen.Label:Display
 Menu.Setting.Language:Language
 Menu.Setting.MusicVolume:Music Volume
+Menu.Setting.ScreenEffect:Use Screen Effect
 Menu.Setting.SoundVolume:Sound Volume
 Menu.Setting.VSync:V-Sync
 UI.Back:Back

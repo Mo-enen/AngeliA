@@ -38,8 +38,8 @@ namespace Yaya {
 			public AniCode Pound = null;
 			public AniCode Climb = null;
 			public AniCode Roll = null;
-			public AniCode Slide = null;
 			public AniCode Fly = null;
+			public AniCode Slide = null;
 
 			// Attack
 			public AniCode[] Attacks = null;
@@ -139,23 +139,19 @@ namespace Yaya {
 
 		// Const
 		private static readonly int SLEEP_PARTICLE_CODE = eDefaultParticle.TYPE_ID;
+		private static readonly int[] BOUNCE_AMOUNTS = new int[] { 500, 200, 100, 50, 25, 50, 100, 200, 500, };
+		private static readonly int[] BOUNCE_AMOUNTS_BIG = new int[] { 0, -600, -900, -1200, -1400, -1200, -900, -600, 0, };
+		private const int BOUNCY = 150;
+		private const int POUNDING_BOUNCE = 1500;
+		private const int SWIM_ROTATION_LERP = 100;
+		private const int DAMAGE_BLINK_RATE = 8;
+		private const int EYE_BLINK_RATE = 360;
 
 		// Api
 		public int FaceIndex { get; set; } = 0;
 
-		// Ser
-		[SerializeField] int[] BounceAmounts = new int[] { 500, 200, 100, 50, 25, 50, 100, 200, 500, };
-		[SerializeField] int[] BounceAmountsBig = new int[] { 0, -600, -900, -1200, -1400, -1200, -900, -600, 0, };
-		[SerializeField] int Bouncy = 150;
-		[SerializeField] int PoundingBounce = 1500;
-		[SerializeField] int SwimRotationLerp = 100;
-		[SerializeField] int DamageBlinkRate = 8;
-		[SerializeField] int EyeBlinkRate = 360;
-
-		// Ani
-		private readonly AniSheet AnimationSheet = new();
-
 		// Data
+		private readonly AniSheet AnimationSheet = new();
 		private AniCode CurrentAni = null;
 		private float TargetRotation = 0f;
 		private int CurrentAniFrame = 0;
@@ -226,7 +222,7 @@ namespace Yaya {
 			int frame = Game.GlobalFrame;
 
 			// Blink
-			if (frame < BlinkingTime && (BlinkingTime - frame) % DamageBlinkRate < DamageBlinkRate / 2) return;
+			if (frame < BlinkingTime && (BlinkingTime - frame) % DAMAGE_BLINK_RATE < DAMAGE_BLINK_RATE / 2) return;
 
 			// Damage
 			if (frame < DamagingTime) {
@@ -296,7 +292,9 @@ namespace Yaya {
 					case MovementState.JumpDown:
 					case MovementState.JumpUp:
 					case MovementState.Roll:
-						if (InAir) attacks = AnimationSheet.Attacks_Air ?? attacks;
+						if (!IsGrounded && !InWater) {
+							attacks = AnimationSheet.Attacks_Air ?? attacks;
+						}
 						break;
 					case MovementState.Walk:
 					case MovementState.Run:
@@ -338,7 +336,7 @@ namespace Yaya {
 					Quaternion.FromToRotation(
 						Vector3.up, new(-LastMoveDirection.x, LastMoveDirection.y)
 					),
-					SwimRotationLerp / 1000f
+					SWIM_ROTATION_LERP / 1000f
 				).eulerAngles.z;
 				pivotY = 500;
 				offsetY = LastCellHeight / 2;
@@ -368,26 +366,26 @@ namespace Yaya {
 			LastCellHeight = cell.Height;
 
 			// Bouncy
-			if (Bouncy > 0) {
+			if (BOUNCY > 0) {
 				int bounce = 1000;
-				int duration = BounceAmounts.Length;
+				int duration = BOUNCE_AMOUNTS.Length;
 				bool reverse = false;
 				if (frame < LastRequireBounceFrame + duration) {
-					bounce = BounceAmounts[frame - LastRequireBounceFrame];
+					bounce = BOUNCE_AMOUNTS[frame - LastRequireBounceFrame];
 				} else if (isPounding) {
-					bounce = PoundingBounce;
+					bounce = POUNDING_BOUNCE;
 				} else if (!isPounding && IsGrounded && frame.InRangeExculde(LastPoundingFrame, LastPoundingFrame + duration)) {
-					bounce = BounceAmountsBig[frame - LastPoundingFrame];
+					bounce = BOUNCE_AMOUNTS_BIG[frame - LastPoundingFrame];
 				} else if (isSquating && frame.InRangeExculde(LastSquatFrame, LastSquatFrame + duration)) {
-					bounce = BounceAmounts[frame - LastSquatFrame];
+					bounce = BOUNCE_AMOUNTS[frame - LastSquatFrame];
 				} else if (IsGrounded && frame.InRangeExculde(LastGroundFrame, LastGroundFrame + duration)) {
-					bounce = BounceAmounts[frame - LastGroundFrame];
+					bounce = BOUNCE_AMOUNTS[frame - LastGroundFrame];
 				} else if (!isSquating && frame.InRangeExculde(LastSquatingFrame, LastSquatingFrame + duration)) {
-					bounce = BounceAmounts[frame - LastSquatingFrame];
+					bounce = BOUNCE_AMOUNTS[frame - LastSquatingFrame];
 					reverse = true;
 				}
 				if (bounce != 1000) {
-					bounce = (int)Util.RemapUnclamped(0, 1000, 1000 - Bouncy, 1000, bounce);
+					bounce = (int)Util.RemapUnclamped(0, 1000, 1000 - BOUNCY, 1000, bounce);
 					if (reverse) {
 						cell.Width = cell.Width * bounce / 1000;
 						cell.Height += cell.Height * (1000 - bounce) / 1000;
@@ -431,7 +429,7 @@ namespace Yaya {
 			}
 			var faceID = AnimationSheet.Face[FaceIndex.UMod(AnimationSheet.Face.Count)];
 			CellRenderer.Draw_9Slice(
-				Game.GlobalFrame % EyeBlinkRate > 8 ? faceID : AnimationSheet.FaceBlink.Code,
+				Game.GlobalFrame % EYE_BLINK_RATE > 8 ? faceID : AnimationSheet.FaceBlink.Code,
 				X - sprite.GlobalWidth / 2 + (FacingRight ? sprite.GlobalBorder.Left : sprite.GlobalBorder.Right),
 				Y + offsetY,
 				0, 1000, 0,

@@ -23,7 +23,6 @@ namespace Yaya {
 		// Api
 		public static ePlayer Current { get; private set; } = null;
 		public virtual eMascot Mascot => null;
-		public override CharacterIdentity Identity => CharacterIdentity.Player;
 		public override bool IsChargingAttack => MinimalChargeAttackDuration != int.MaxValue && !AntiAttack && AttackCooldownReady(false) && FrameInput.GameKeyPress(GameKey.Action);
 
 		// Data

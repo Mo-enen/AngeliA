@@ -24,6 +24,31 @@ namespace Yaya {
 		public override void OnInitialize () {
 			base.OnInitialize();
 			CurrentYaya = this;
+
+			// Config
+			MovementWidth.Value = 150;
+			MovementHeight.Value = 384;
+			SquatHeight.Value = 200;
+			DashDuration.Value = 20;
+			RunAccumulation.Value = 0;
+			JumpSpeed.Value = 73;
+			SwimInFreeStyle.Value = false;
+			JumpWithRoll.Value = false;
+			JumpSecondWithRoll.Value = true;
+			JumpCount.Value = 2;
+			JumpThoughOneway.Value = true;
+			FlyAvailable.Value = true;
+			FlyCount.Value = 99999;
+			SlideAvailable.Value = true;
+			SlideOnAllBlocks.Value = true;
+
+			BulletName.Value = "YayaPaw";
+			AttackDuration.Value = 12;
+			KeepAttackWhenHold.Value = false;
+			MinimalChargeAttackDuration.Value = 42;
+
+			MaxHP.Value = 4;
+			
 		}
 
 

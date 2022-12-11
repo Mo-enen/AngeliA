@@ -169,9 +169,9 @@ namespace Yaya {
 			bool flying = player.IsFlying;
 			int playerX = player.X;
 			int playerY = player.Y;
-			bool inAir = player.InAir;
+			bool notInAir = player.IsGrounded || player.InWater || player.InSand || player.IsClimbing;
 
-			if (!inAir || flying) PlayerLastGroundedY = playerY;
+			if (notInAir || flying) PlayerLastGroundedY = playerY;
 			int linger = game.ViewRect.width * LINGER_RATE / 1000;
 			int centerX = game.ViewRect.x + game.ViewRect.width / 2;
 			if (playerX < centerX - linger) {
@@ -179,7 +179,8 @@ namespace Yaya {
 			} else if (playerX > centerX + linger) {
 				AimViewX = playerX - linger - game.ViewRect.width / 2;
 			}
-			AimViewY = !inAir || flying || playerY < PlayerLastGroundedY ? playerY - game.ViewRect.height * 382 / 1000 : AimViewY;
+			AimViewY = notInAir || flying || player.IsSliding || playerY < PlayerLastGroundedY ?
+				playerY - game.ViewRect.height * 382 / 1000 : AimViewY;
 			game.SetViewPositionDelay(AimViewX, AimViewY, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_PLAYER);
 
 			// Clamp

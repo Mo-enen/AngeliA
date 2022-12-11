@@ -22,18 +22,18 @@ namespace Yaya.Editor {
 
 			// Entity ID
 			var targetHash = new HashSet<int>();
-			foreach (var type in typeof(eGlobalAnchor).AllChildClass()) {
+			foreach (var type in typeof(eCheckAltar).AllChildClass()) {
 				targetHash.TryAdd(type.AngeHash());
 			}
 
 			// Get All tele Positions
-			var list = new List<eGlobalAnchor.AnchorMeta.Position>();
+			var list = new List<eCheckAltar.AltarMeta.Position>();
 			foreach (var filePath in Util.EnumerateFiles(Const.MapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
 				try {
 					if (!World.GetWorldPositionFromName(Util.GetNameWithoutExtension(filePath), out var worldPos)) continue;
 					foreach (var (id, x, y) in World.EditorOnly_ForAllEntities(filePath)) {
 						if (!targetHash.Contains(id)) continue;
-						list.Add(new eGlobalAnchor.AnchorMeta.Position() {
+						list.Add(new eCheckAltar.AltarMeta.Position() {
 							EntityID = id,
 							X = worldPos.x * Const.MAP + x,
 							Y = worldPos.y * Const.MAP + y,
@@ -43,7 +43,7 @@ namespace Yaya.Editor {
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
 			// Write Position File
-			AngeUtil.SaveMeta(new eGlobalAnchor.AnchorMeta() { Positions = list.ToArray(), });
+			AngeUtil.SaveMeta(new eCheckAltar.AltarMeta() { Positions = list.ToArray(), });
 		}
 
 

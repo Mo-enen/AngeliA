@@ -7,9 +7,7 @@ using AngeliaFramework;
 namespace Yaya {
 	public abstract class eEnemy : eCharacter {
 
-		public override CharacterIdentity Identity => CharacterIdentity.Enemy;
-
-
+		
 
 
 

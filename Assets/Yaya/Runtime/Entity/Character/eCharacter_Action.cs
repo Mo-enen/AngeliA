@@ -26,14 +26,13 @@ namespace Yaya {
 
 	public abstract partial class eCharacter {
 
+		// Const
+		const int ACTION_SCAN_RANGE = Const.CEL / 2;
+		const int ACTION_SCAN_FREQUENCY = 6;
 
 		// Api
 		public IActionEntity CurrentActionTarget { get; private set; } = null;
 		public bool LockingInput => CurrentActionTarget != null && CurrentActionTarget.LockInput;
-
-		// Ser
-		[SerializeField] int ActionScanRange = Const.CEL / 2;
-		[SerializeField] int ActionScanFrequency = 6;
 
 		// Data
 		private readonly PhysicsCell[] c_ScanHits = new PhysicsCell[16];
@@ -44,20 +43,19 @@ namespace Yaya {
 		// MSG
 		public void OnActived_Action () {
 			CurrentActionTarget = null;
-			ActionScanFrequency = ActionScanFrequency.Clamp(1, int.MaxValue);
 			RequireRefresh = true;
 		}
 
 
 		public void Update_Action () {
 			// Search for Active Trigger
-			if (Game.GlobalFrame % ActionScanFrequency == 0 || RequireRefresh) {
+			if (Game.GlobalFrame % ACTION_SCAN_FREQUENCY == 0 || RequireRefresh) {
 				RequireRefresh = false;
 				CurrentActionTarget = null;
 				int count = CellPhysics.OverlapAll(
 					c_ScanHits,
 					YayaConst.MASK_ENTITY,
-					Rect.Expand(ActionScanRange, ActionScanRange, 0, ActionScanRange),
+					Rect.Expand(ACTION_SCAN_RANGE, ACTION_SCAN_RANGE, 0, ACTION_SCAN_RANGE),
 					this,
 					OperationMode.ColliderAndTrigger
 				);
