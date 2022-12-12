@@ -94,7 +94,7 @@ namespace Yaya {
 			);
 
 			// Z Fix
-			if (IsFrontDoor != FrameTask.IsTasking<SquadTransitionTask>()) {
+			if (IsFrontDoor != FrameTask.IsTasking<TeleportTask>()) {
 				cell.Z = -cell.Z;
 			}
 

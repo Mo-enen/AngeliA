@@ -30,7 +30,7 @@ namespace Yaya {
 			base.OnStart();
 			var game = Game.Current;
 			SetViewPosition(game, ViewX, ViewYStart);
-			game.SetViewZ(0);
+			game.SetViewZImmediately(0);
 			SkipFrame = int.MaxValue;
 			// Draw Black Fade Out
 			CellRenderer.Draw(

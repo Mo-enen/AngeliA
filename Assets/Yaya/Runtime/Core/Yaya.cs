@@ -96,10 +96,10 @@ namespace Yaya {
 			Update_HintUI(game);
 
 			if (FrameInput.KeyDown(Key.Digit1)) {
-				game.SetViewZ(game.ViewZ + 1);
+				game.SetViewZImmediately(game.ViewZ + 1);
 			}
 			if (FrameInput.KeyDown(Key.Digit2)) {
-				game.SetViewZ(game.ViewZ - 1);
+				game.SetViewZImmediately(game.ViewZ - 1);
 			}
 			if (FrameInput.KeyDown(Key.Digit3)) {
 				if (ePlayer.Current != null) {
