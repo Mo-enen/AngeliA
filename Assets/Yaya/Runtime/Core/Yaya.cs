@@ -109,20 +109,20 @@ namespace Yaya {
 			if (FrameInput.KeyDown(Key.Digit4)) {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
 			}
-			if (FrameInput.KeyDown(Key.Digit5)) {
+			if (FrameInput.KeyPress(Key.Digit5)) {
 				game.SetViewSizeDelay(game.ViewRect.height - Const.CEL);
 			}
-			if (FrameInput.KeyDown(Key.Digit6)) {
+			if (FrameInput.KeyPress(Key.Digit6)) {
 				game.SetViewSizeDelay(game.ViewRect.height + Const.CEL);
 			}
 			if (FrameInput.KeyDown(Key.Digit7)) {
 				FrameTask.AddToLast(typeof(TestDialogue).AngeHash(), Const.TASK_ROUTE);
 			}
 			if (FrameInput.KeyDown(Key.Digit8)) {
-
+				Cutscene.PlayVideo("Test Video 0".AngeHash());
 			}
 			if (FrameInput.KeyDown(Key.Digit9)) {
-
+				Cutscene.PlayVideo("Test Video 1".AngeHash());
 			}
 
 
@@ -282,7 +282,7 @@ namespace Yaya {
 				if (PauseMenu.Active) PauseMenu.Active = false;
 			}
 
-			// Cutscene Hint
+			// Video Cutscene
 			if (
 				game.State == GameState.Cutscene &&
 				Cutscene.IsPlayingVideo &&
@@ -291,13 +291,19 @@ namespace Yaya {
 				if (!CutsceneLock) {
 					if (ControlHintUI.Active) {
 						ControlHintUI.FrameUpdate();
+					} else {
+						game.TryAddEntity(ControlHintUI.TypeID, 0, 0, out _);
 					}
-				} else if (FrameInput.AnyKeyboardKeyPress(out _) || FrameInput.AnyGamepadButtonPress(out _)) {
+				} else if (
+					FrameInput.AnyKeyboardKeyPress(out _) ||
+					FrameInput.AnyGamepadButtonPress(out _) ||
+					FrameInput.MouseLeftButton || FrameInput.MouseRightButton
+				) {
 					CutsceneLock = false;
 					FrameInput.UseGameKey(GameKey.Start);
 				}
 
-				if (GamePadUI.Active) GamePadUI.FrameUpdate();
+				if (GamePadUI.Active) GamePadUI.Active = false;
 
 			} else if (!CutsceneLock) {
 				CutsceneLock = true;
