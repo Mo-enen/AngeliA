@@ -20,6 +20,14 @@ namespace Yaya {
 		public YayaWorldSquad WorldSquad_Behind { get; private set; } = null;
 		public int AimViewX { get; private set; } = 0;
 		public int AimViewY { get; private set; } = 0;
+		public bool UseGamePadHint {
+			get => ShowGamePadUI.Value;
+			set => ShowGamePadUI.Value = value;
+		}
+		public bool UseControlHint {
+			get => ShowControlHint.Value;
+			set => ShowControlHint.Value = value;
+		}
 
 		// Data
 		private static readonly PhysicsCell[] c_DamageCheck = new PhysicsCell[16];

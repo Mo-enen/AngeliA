@@ -265,6 +265,22 @@ namespace Yaya {
 				}
 			}
 
+			// Control Hint
+			if (DrawItem(
+				Language.Get(WORD.MENU_CONTROL_HINT),
+				new CellLabel(Language.Get(Yaya.Current.UseControlHint ? WORD.UI_ON : WORD.UI_OFF))
+			)) {
+				Yaya.Current.UseControlHint = !Yaya.Current.UseControlHint;
+			}
+
+			// Gamepad Hint
+			if (DrawItem(
+				Language.Get(WORD.MENU_GAMEPAD_HINT),
+				new CellLabel(Language.Get(Yaya.Current.UseGamePadHint ? WORD.UI_ON : WORD.UI_OFF))
+			)) {
+				Yaya.Current.UseGamePadHint = !Yaya.Current.UseGamePadHint;
+			}
+
 			// Back
 			if (DrawItem(Language.Get(WORD.UI_BACK)) || FrameInput.GameKeyDown(GameKey.Jump)) {
 				RequireMode = MenuMode.Pause;

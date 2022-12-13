@@ -20,6 +20,9 @@ namespace Yaya {
 		public static eGuaGua Current { get; private set; } = null;
 		public override ePlayer Owner => eYaya.CurrentYaya;
 
+		// Data
+		private int PrevHp = 0;
+
 
 		// MSG
 		public override void OnInitialize () {
@@ -77,6 +80,19 @@ namespace Yaya {
 				} else {
 					// Empty Heart
 					CellRenderer.Draw(isLeft ? HEART_EMPTY_L_CODE : HEART_EMPTY_R_CODE, rect).Z = 0;
+					// Spawn Drop Particle
+					if (i < PrevHp) {
+						eYayaDroppingHeart heart;
+						if (isLeft) {
+							heart = Game.Current.AddEntity<eYayaDroppingHeartLeft>(rect.x, rect.y);
+						} else {
+							heart = Game.Current.AddEntity<eYayaDroppingHeartRight>(rect.x, rect.y);
+						}
+						if (heart != null) {
+							heart.Width = rect.width + 8;
+							heart.Height = rect.height + 16;
+						}
+					}
 				}
 				isLeft = !isLeft;
 			}
@@ -84,6 +100,8 @@ namespace Yaya {
 			if (Owner.MaxHP > MAX) {
 
 			}
+
+			PrevHp = hp;
 		}
 
 

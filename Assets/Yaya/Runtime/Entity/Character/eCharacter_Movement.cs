@@ -539,8 +539,9 @@ namespace Yaya {
 				IntendedX == 0 || VelocityY > -SlideDropSpeed
 			) return false;
 			var rect = new RectInt(
-				IntendedX > 0 ? Hitbox.xMax : Hitbox.xMin - 1, Hitbox.y + Hitbox.height / 2,
-				1, Hitbox.height / 2
+				IntendedX > 0 ? Hitbox.xMax : Hitbox.xMin - 1,
+				Hitbox.y + Hitbox.height / 2,
+				1, 1
 			);
 			if (SlideOnAllBlocks) {
 				int count = CellPhysics.OverlapAll(c_SlideCheck, YayaConst.MASK_MAP, rect, this, OperationMode.ColliderOnly);

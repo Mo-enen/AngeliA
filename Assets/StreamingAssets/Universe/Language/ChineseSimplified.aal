@@ -31,6 +31,8 @@ Menu.Setting.Language:语言
 Menu.Setting.MusicVolume:音乐音量
 Menu.Setting.ScreenEffect:使用屏幕特效
 Menu.Setting.SoundVolume:音效音量
+Menu.Setting.UseControlHint:显示操作提示
+Menu.Setting.UseGamepadHint:显示按下的按键
 Menu.Setting.VSync:垂直同步
 UI.Back:返回
 UI.Cancel:取消

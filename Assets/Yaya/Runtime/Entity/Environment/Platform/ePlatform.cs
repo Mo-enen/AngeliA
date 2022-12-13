@@ -176,8 +176,8 @@ namespace Yaya {
 					if (rig.X < left || rig.X >= right) continue;
 					int rY = rig.Rect.y;
 					if (rY < rect.yMax - Const.CEL / 3) continue;
-					if (rig.VelocityY > 0) continue;
-					rig.PerformMove(0, rect.yMax - 2 - rY);
+					rig.Y = rect.yMax - rig.OffsetY;
+					rig.VelocityY = 0;
 					rig.MakeGrounded(1, TypeID);
 				}
 			}

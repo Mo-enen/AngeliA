@@ -138,7 +138,8 @@ namespace Yaya {
 
 
 		// Const
-		private static readonly int SLEEP_PARTICLE_CODE = eDefaultParticle.TYPE_ID;
+		private static readonly int SLEEP_PARTICLE_CODE = typeof(eDefaultParticle).AngeHash();
+		private static readonly int SLIDE_PARTICLE_CODE = typeof(eSlideDust).AngeHash();
 		private static readonly int[] BOUNCE_AMOUNTS = new int[] { 500, 200, 100, 50, 25, 50, 100, 200, 500, };
 		private static readonly int[] BOUNCE_AMOUNTS_BIG = new int[] { 0, -600, -900, -1200, -1400, -1200, -900, -600, 0, };
 		private const int BOUNCY = 150;
@@ -255,6 +256,12 @@ namespace Yaya {
 				case CharacterState.GamePlay:
 					DrawBody();
 					DrawFace();
+					if (IsSliding && Game.GlobalFrame % 24 == 0) {
+						var rect = Rect;
+						Game.Current.AddEntity(
+							SLIDE_PARTICLE_CODE, FacingRight ? rect.xMax : rect.xMin, rect.yMin + rect.height * 3 / 4
+						);
+					}
 					break;
 				case CharacterState.Sleep:
 					DrawSleep();

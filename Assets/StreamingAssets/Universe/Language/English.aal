@@ -31,6 +31,8 @@ Menu.Setting.Language:Language
 Menu.Setting.MusicVolume:Music Volume
 Menu.Setting.ScreenEffect:Use Screen Effect
 Menu.Setting.SoundVolume:Sound Volume
+Menu.Setting.UseControlHint:Show Control Hint
+Menu.Setting.UseGamepadHint:Show Pressing Key
 Menu.Setting.VSync:V-Sync
 UI.Back:Back
 UI.Cancel:Cancel
@@ -43,9 +45,9 @@ UI.GameKey.Right:Right
 UI.GameKey.Select:Select
 UI.GameKey.Start:Start
 UI.GameKey.Up:Up
-UI.OFF:Off
+UI.OFF:OFF
 UI.OK:OK
-UI.ON:On
+UI.ON:ON
 UI.Quit:Quit
 UI.Save:Save
 UI.Setting:Setting

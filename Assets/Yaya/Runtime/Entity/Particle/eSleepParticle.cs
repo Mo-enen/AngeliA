@@ -12,7 +12,7 @@ namespace Yaya {
 		public override int Duration => 120;
 		public override int FramePerSprite => 1;
 		public override bool Loop => false;
-		public override bool IgnoreEntitySize => false;
+		public override bool UseSpriteSize => false;
 
 		// Data
 		private static int GlobalShift = 0;
