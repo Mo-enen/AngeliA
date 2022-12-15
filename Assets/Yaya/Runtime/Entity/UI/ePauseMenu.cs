@@ -28,11 +28,6 @@ namespace Yaya {
 		#region --- VAR ---
 
 
-		// Const
-		private static readonly int MENU_SELECTION_CODE = "Menu Selection Mark".AngeHash();
-		private static readonly int MENU_MORE_CODE = "Menu More Mark".AngeHash();
-		private static readonly int MENU_ARROW_MARK = "Menu Arrow Mark".AngeHash();
-
 		// Api
 		public bool QuitMode => Mode == MenuMode.Quit;
 
@@ -59,10 +54,6 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
-			BackgroundCode = YayaConst.UI_PIXEL;
-			SelectionMarkCode = MENU_SELECTION_CODE;
-			MoreItemMarkCode = MENU_MORE_CODE;
-			ArrowMarkCode = MENU_ARROW_MARK;
 			ScreenTint = new(0, 0, 0, 128);
 			BackgroundTint = new(0, 0, 0, 255);
 		}
@@ -268,17 +259,17 @@ namespace Yaya {
 			// Control Hint
 			if (DrawItem(
 				Language.Get(WORD.MENU_CONTROL_HINT),
-				new CellLabel(Language.Get(Yaya.Current.UseControlHint ? WORD.UI_ON : WORD.UI_OFF))
+				new CellLabel(Language.Get(YayaGame.Current.UseControlHint ? WORD.UI_ON : WORD.UI_OFF))
 			)) {
-				Yaya.Current.UseControlHint = !Yaya.Current.UseControlHint;
+				YayaGame.Current.UseControlHint = !YayaGame.Current.UseControlHint;
 			}
 
 			// Gamepad Hint
 			if (DrawItem(
 				Language.Get(WORD.MENU_GAMEPAD_HINT),
-				new CellLabel(Language.Get(Yaya.Current.UseGamePadHint ? WORD.UI_ON : WORD.UI_OFF))
+				new CellLabel(Language.Get(YayaGame.Current.UseGamePadHint ? WORD.UI_ON : WORD.UI_OFF))
 			)) {
-				Yaya.Current.UseGamePadHint = !Yaya.Current.UseGamePadHint;
+				YayaGame.Current.UseGamePadHint = !YayaGame.Current.UseGamePadHint;
 			}
 
 			// Back

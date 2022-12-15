@@ -62,7 +62,6 @@ namespace Yaya {
 		public const int OPENING_END_Y = 8 * Const.CEL;
 
 		// Misc
-		public static readonly int UI_PIXEL = "UI Pixel".AngeHash();
 		public static readonly Dictionary<GamepadButton, int> GAMEPAD_CODE = new() {
 			{ GamepadButton.DpadLeft, "k_Gamepad Left".AngeHash()},
 			{ GamepadButton.DpadRight, "k_Gamepad Right".AngeHash()},

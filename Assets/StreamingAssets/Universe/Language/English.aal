@@ -36,6 +36,7 @@ Menu.Setting.UseGamepadHint:Show Pressing Key
 Menu.Setting.VSync:V-Sync
 UI.Back:Back
 UI.Cancel:Cancel
+UI.ChoiceHint:(Choose an Option)
 UI.Continue:Continue
 UI.GameKey.Action:Action/Attack
 UI.GameKey.Down:Down

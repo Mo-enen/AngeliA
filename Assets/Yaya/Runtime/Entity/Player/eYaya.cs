@@ -21,8 +21,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnInitialize () {
-			base.OnInitialize();
+		public eYaya () {
+
 			CurrentYaya = this;
 
 			// Config

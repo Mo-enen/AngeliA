@@ -50,10 +50,7 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnInitialize () {
-			base.OnInitialize();
-			OnInitialize_Render();
-		}
+		protected eCharacter () => OnInitialize_Render();
 
 
 		public override void OnActived () {

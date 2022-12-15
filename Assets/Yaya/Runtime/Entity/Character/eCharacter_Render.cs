@@ -173,7 +173,7 @@ namespace Yaya {
 
 		#region --- MSG ---
 
-
+		
 		public void OnInitialize_Render () {
 
 			string name = GetType().Name;

@@ -4,7 +4,7 @@ using Rigidbody = AngeliaFramework.Rigidbody;
 
 
 namespace Yaya {
-	public abstract class eYayaRigidbody : Rigidbody, IInitialize {
+	public abstract class eYayaRigidbody : Rigidbody {
 
 
 

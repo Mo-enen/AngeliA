@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 
 namespace Yaya {
-	public class Yaya : IInitialize {
+	public class YayaGame {
 
 
 
@@ -15,18 +15,38 @@ namespace Yaya {
 
 
 		// Api
-		public static Yaya Current { get; private set; } = null;
+		public static YayaGame Current { get; private set; } = null;
 		public YayaWorldSquad WorldSquad { get; private set; } = null;
 		public YayaWorldSquad WorldSquad_Behind { get; private set; } = null;
 		public int AimViewX { get; private set; } = 0;
 		public int AimViewY { get; private set; } = 0;
 		public bool UseGamePadHint {
 			get => ShowGamePadUI.Value;
-			set => ShowGamePadUI.Value = value;
+			set {
+				if (ShowGamePadUI.Value != value) {
+					ShowGamePadUI.Value = value;
+					if (value) {
+						Game.Current.AddEntity(GamePadUI.TypeID, 0, 0);
+						GamePadUI.Active = true;
+					} else {
+						GamePadUI.Active = false;
+					}
+				}
+			}
 		}
 		public bool UseControlHint {
 			get => ShowControlHint.Value;
-			set => ShowControlHint.Value = value;
+			set {
+				if (ShowControlHint.Value != value) {
+					ShowControlHint.Value = value;
+					if (value) {
+						Game.Current.AddEntity(ControlHintUI.TypeID, 0, 0);
+						ControlHintUI.Active = true;
+					} else {
+						ControlHintUI.Active = false;
+					}
+				}
+			}
 		}
 
 		// Data
@@ -51,7 +71,11 @@ namespace Yaya {
 
 
 		// Init
-		private Yaya () {
+		[AngeInitialize]
+		public static void Initialize () => Current = new YayaGame();
+
+
+		private YayaGame () {
 
 			var game = Game.Current;
 			if (game == null) return;
@@ -89,9 +113,6 @@ namespace Yaya {
 		}
 
 
-		public static void Initialize () => Current = new Yaya();
-
-
 		// Update
 		private void FrameUpdate () {
 
@@ -124,7 +145,7 @@ namespace Yaya {
 				game.SetViewSizeDelay(game.ViewRect.height + Const.CEL);
 			}
 			if (FrameInput.KeyDown(Key.Digit7)) {
-				FrameTask.AddToLast(typeof(TestDialogue).AngeHash(), Const.TASK_ROUTE);
+				DialoguePerformer.Perform<YayaDialoguePerformer>("TestConversation");
 			}
 			if (FrameInput.KeyDown(Key.Digit8)) {
 				Cutscene.PlayVideo("Test Video 0".AngeHash());
@@ -238,32 +259,19 @@ namespace Yaya {
 
 			// Gamepad
 			if (ShowGamePadUI.Value) {
-				// Active
 				if (!GamePadUI.Active) {
 					game.TryAddEntity(GamePadUI.TypeID, 0, 0, out _);
 				}
 			} else if (GamePadUI.Active) {
-				// Inactive
 				GamePadUI.Active = false;
 			}
 
 			// Ctrl Hint
 			if (ShowControlHint.Value) {
-
-				// Spawn
 				if (!ControlHintUI.Active) {
 					game.TryAddEntity(ControlHintUI.TypeID, 0, 0, out _);
 				}
-
-				// Y
-				int y = 0;
-				if (GamePadUI.Active) {
-					y = Mathf.Max(GamePadUI.Y + GamePadUI.Height, y);
-				}
-				ControlHintUI.Y = y;
-
 			} else if (ControlHintUI.Active) {
-				// Inactive
 				ControlHintUI.Active = false;
 			}
 

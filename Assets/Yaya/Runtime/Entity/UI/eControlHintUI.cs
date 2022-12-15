@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.LowLevel;
 namespace Yaya {
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]
-	public class eControlHintUI : UI, IInitialize {
+	public class eControlHintUI : UI {
 
 
 		// Const
@@ -29,13 +29,16 @@ namespace Yaya {
 		private static readonly Dictionary<int, int> TypeHintMap = new();
 		private static readonly List<Entity> Listening = new();
 		private static readonly Dictionary<Key, int> KeyNameIdMap = new();
+		private eGamePadUI GamePad = null;
 		private int PositionY = 0;
 		private Int4 Border_Keyboard = default;
 		private Int4 Border_Gamepad = default;
 
 
 		// MSG
+		[AngeInitialize]
 		public static void Initialize () {
+
 			TypeHintMap.Clear();
 			var objType = typeof(object);
 			var entityType = typeof(Entity);
@@ -72,6 +75,7 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
+			GamePad = Game.Current.PeekOrGetEntity<eGamePadUI>();
 			if (CellRenderer.TryGetSprite(KEYBOARD_BUTTON_CODE, out var sprite)) {
 				Border_Keyboard.Left = (int)(sprite.GlobalBorder.Left * ((float)KeySize / sprite.GlobalWidth));
 				Border_Keyboard.Right = (int)(sprite.GlobalBorder.Right * ((float)KeySize / sprite.GlobalWidth));
@@ -89,7 +93,9 @@ namespace Yaya {
 
 		protected override void FrameUpdateUI () {
 
-			PositionY = Y + CellRenderer.CameraRect.y + 6 * UNIT;
+			var cameraRect = CellRenderer.CameraRect;
+			Y = GamePad.Active && !FrameTask.IsTasking(Const.TASK_ROUTE) ? cameraRect.y + GamePad.Height + 12 * UNIT : cameraRect.y + 6 * UNIT;
+			PositionY = Y + 6 * UNIT;
 
 			// Cutscene
 			if (Game.Current.State == GameState.Cutscene) {
@@ -99,11 +105,16 @@ namespace Yaya {
 				return;
 			}
 
+			if (FrameTask.IsTasking(Const.TASK_ROUTE)) return;
+
 			// Listening Hint
+			bool hasMenu = false;
 			foreach (var e in Listening) {
 				if (!e.Active) continue;
 				switch (e) {
 					case MenuUI menu:
+						if (hasMenu) break;
+						hasMenu = true;
 						DrawKey(GameKey.Down, GameKey.Up, WORD.HINT_MOVE_CODE);
 						if (menu.SelectionAdjustable) {
 							DrawKey(GameKey.Left, GameKey.Right, WORD.HINT_VALUE_CODE);
@@ -115,7 +126,6 @@ namespace Yaya {
 			}
 
 			var player = ePlayer.Current;
-			if (FrameTask.IsTasking(Const.TASK_ROUTE)) return;
 			if (player == null || !player.Active) return;
 			if (Game.Current.State != GameState.Play) return;
 

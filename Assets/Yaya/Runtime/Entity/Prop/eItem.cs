@@ -34,7 +34,7 @@ namespace Yaya {
 		private int ItemCode {
 			get {
 				if (_ItemCode == 0) {
-					if (CellRenderer.TryGetSpriteFromGroup(GroupCode, _ArtworkIndex, out var sprite, false, true)) {
+					if (CellRenderer.TryGetSpriteFromGroup(TypeID, _ArtworkIndex, out var sprite, false, true)) {
 						_ItemCode = sprite.GlobalID;
 					} else _ItemCode = -1;
 				}
@@ -47,7 +47,6 @@ namespace Yaya {
 		private bool MakingRoom = false;
 		private int _ItemCode = 0;
 		private int _ArtworkIndex = 0;
-		private int GroupCode = 0;
 
 
 		#endregion
@@ -56,12 +55,6 @@ namespace Yaya {
 
 
 		#region --- MSG ---
-
-
-		public override void OnInitialize () {
-			base.OnInitialize();
-			GroupCode = TypeID;
-		}
 
 
 		public override void OnActived () {

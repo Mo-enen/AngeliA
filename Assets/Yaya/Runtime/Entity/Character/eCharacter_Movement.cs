@@ -562,12 +562,12 @@ namespace Yaya {
 		private bool JumpThoughOnewayCheck () {
 			int count = CellPhysics.OverlapAll(
 				c_JumpThoughOnewayCheck,
-				YayaConst.MASK_MAP, Hitbox.Edge(Direction4.Down, Const.CEL / 4), this,
+				YayaConst.MASK_MAP, new RectInt(Hitbox.xMin, Hitbox.yMin + 4 - Const.CEL / 4, Hitbox.width, Const.CEL / 4), this,
 				OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG
 			);
 			for (int i = 0; i < count; i++) {
 				var hit = c_JumpThoughOnewayCheck[i];
-				if (hit.Rect.yMax <= Hitbox.y) return true;
+				if (hit.Rect.yMax <= Hitbox.y + 16) return true;
 			}
 			return false;
 		}

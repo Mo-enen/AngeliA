@@ -25,10 +25,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnInitialize () {
-			base.OnInitialize();
+		public eGuaGua () {
 			Current = this;
-
 			// Config
 			MovementWidth.Value = 150;
 			MovementHeight.Value = 150;
@@ -42,7 +40,6 @@ namespace Yaya {
 			FlyAvailable.Value = false;
 			FlySpeed.Value = 32;
 			MaxHP.Value = 1;
-
 		}
 
 

@@ -84,7 +84,6 @@ namespace Yaya {
 		protected int LeafArtworkCode { get; private set; } = 0;
 
 		// Data
-		private Vector2Int[] LeafOffsets = null;
 		private Color32 LeafTint = new(255, 255, 255, 255);
 		private bool CharacterNearby = false;
 
@@ -97,33 +96,14 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnInitialize () {
-			base.OnInitialize();
-			LeafOffsets = new Vector2Int[LeafCount];
-		}
-
-
 		public override void OnActived () {
-
 			base.OnActived();
 			Width = Const.CEL;
 			Height = Const.CEL;
-
 			// Leaf
 			LeafArtworkCode = CellRenderer.TryGetSpriteFromGroup(
 				LeafCode.AngeHash(), (X * 5 + Y * 7) / Const.CEL, out var lSprite
 			) ? lSprite.GlobalID : 0;
-
-			// Offset
-			int sLen = LEAF_OFFSET_SEEDS.Length;
-			for (int i = 0; i < LeafOffsets.Length; i++) {
-				int seedX = LEAF_OFFSET_SEEDS[(i + X / Const.CEL).UMod(sLen)];
-				int seedY = LEAF_OFFSET_SEEDS[(i + Y / Const.CEL).UMod(sLen)];
-				LeafOffsets[i] = new(
-					((X * 137 * seedX + Y * 327 * seedY) / Const.CEL).UMod(Const.CEL) - Const.CEL / 2,
-					((X * 149 * seedX + Y * 177 * seedY) / Const.CEL).UMod(Const.CEL) - Const.CEL / 2
-				);
-			}
 		}
 
 
@@ -137,8 +117,14 @@ namespace Yaya {
 			base.FrameUpdate();
 			// Leaf
 			LeafTint.a = (byte)Mathf.Lerp(LeafTint.a, CharacterNearby ? LEAF_HIDE_ALPHA : 255, 0.1f);
-			for (int i = 0; i < LeafOffsets.Length; i++) {
-				var offset = LeafOffsets[i];
+			int sLen = LEAF_OFFSET_SEEDS.Length;
+			for (int i = 0; i < LeafCount; i++) {
+				int seedX = LEAF_OFFSET_SEEDS[(i + X / Const.CEL).UMod(sLen)];
+				int seedY = LEAF_OFFSET_SEEDS[(i + Y / Const.CEL).UMod(sLen)];
+				var offset = new Vector2Int(
+					((X * 137 * seedX + Y * 327 * seedY) / Const.CEL).UMod(Const.CEL) - Const.CEL / 2,
+					((X * 149 * seedX + Y * 177 * seedY) / Const.CEL).UMod(Const.CEL) - Const.CEL / 2
+				);
 				DrawLeaf(offset, 12 * i, LeafExpand, offset.x % 2 == 0);
 			}
 			// Func

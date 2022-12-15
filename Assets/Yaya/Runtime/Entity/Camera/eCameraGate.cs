@@ -23,7 +23,7 @@ namespace Yaya {
 
 	[EntityAttribute.ForceUpdate]
 	[EntityAttribute.Capacity(16)]
-	[EntityAttribute.MapEditorGroup("System")]
+	[EntityAttribute.MapEditorGroup("Camera")]
 	public abstract class eCameraGate : Entity {
 
 
@@ -74,7 +74,7 @@ namespace Yaya {
 			// Set Min Max Values
 			const int GAP = Const.CEL;
 			var game = Game.Current;
-			var yaya = Yaya.Current;
+			var yaya = YayaGame.Current;
 			int viewOffsetX = game.ViewRect.x - CellRenderer.CameraRect.x;
 			cameraRect.x = yaya.AimViewX - viewOffsetX;
 			cameraRect.y = yaya.AimViewY;
@@ -103,7 +103,7 @@ namespace Yaya {
 
 			// Clamp Camera
 			var game = Game.Current;
-			var yaya = Yaya.Current;
+			var yaya = YayaGame.Current;
 			var cameraRect = CellRenderer.CameraRect;
 			int viewOffsetX = game.ViewRect.x - CellRenderer.CameraRect.x;
 			cameraRect.x = yaya.AimViewX - viewOffsetX;

@@ -38,7 +38,7 @@ namespace Yaya {
 
 	[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
 	[EntityAttribute.MapEditorGroup("Altar")]
-	public abstract class eCheckAltar : Entity, IInitialize {
+	public abstract class eCheckAltar : Entity {
 
 
 
@@ -77,6 +77,7 @@ namespace Yaya {
 
 
 		// MSG
+		[AngeInitialize]
 		public static void Initialize () {
 			PositionPool.Clear();
 			var meta = AngeUtil.LoadMeta<AltarMeta>();

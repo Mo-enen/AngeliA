@@ -43,7 +43,7 @@ namespace Yaya {
 			TouchedByRigidbody = false;
 			PrevX = X;
 			PrevY = Y;
-			Pose = Yaya.Current.WorldSquad.GetEntityPose(TypeID, X, Y, true);
+			Pose = YayaGame.Current.WorldSquad.GetEntityPose(TypeID, X, Y, true);
 			ArtworkCode = Pose switch {
 				FittingPose.Left => ArtworkCode_Left,
 				FittingPose.Mid => ArtworkCode_Mid,
@@ -174,7 +174,7 @@ namespace Yaya {
 					var hit = c_Overlaps[i];
 					if (hit.Entity is not Rigidbody rig) continue;
 					if (rig.X < left || rig.X >= right) continue;
-					int rY = rig.Rect.y;
+					int rY = rig.Rect.yMin;
 					if (rY < rect.yMax - Const.CEL / 3) continue;
 					rig.Y = rect.yMax - rig.OffsetY;
 					rig.VelocityY = 0;

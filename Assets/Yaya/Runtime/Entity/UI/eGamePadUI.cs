@@ -9,6 +9,7 @@ namespace Yaya {
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	public class eGamePadUI : UI {
 
+
 		private static readonly int BodyCode = "GamePad Body".AngeHash();
 		private static readonly int DPadDownCode = "GamePad Down".AngeHash();
 		private static readonly int DPadUpCode = "GamePad Up".AngeHash();
@@ -46,10 +47,10 @@ namespace Yaya {
 
 			if (FrameTask.IsTasking(Const.TASK_ROUTE)) return;
 
-			X = 6 * UNIT;
-			Y = 6 * UNIT;
 			Width = 132 * UNIT;
 			Height = 60 * UNIT;
+			X = 6 * UNIT;
+			Y = 6 * UNIT;
 			DPadLeftPosition = new(10 * UNIT, 22 * UNIT, 12 * UNIT, 8 * UNIT);
 			DPadRightPosition = new(22 * UNIT, 22 * UNIT, 12 * UNIT, 8 * UNIT);
 			DPadDownPosition = new(18 * UNIT, 14 * UNIT, 8 * UNIT, 12 * UNIT);

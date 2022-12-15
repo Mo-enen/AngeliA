@@ -162,7 +162,7 @@ namespace Yaya {
 			var normal = direction.Normal();
 			int unitX = (X + Width / 2).UDivide(Const.CEL) + normal.x;
 			int unitY = (Y + Height / 2).UDivide(Const.CEL) + normal.y;
-			var squad = Yaya.Current.WorldSquad;
+			var squad = YayaGame.Current.WorldSquad;
 			int id = squad.GetBlockAt(unitX, unitY, BlockType.Entity);
 			return id == PATH_ID || (!ignoreTypeID && id == TypeID);
 		}
