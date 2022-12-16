@@ -27,6 +27,9 @@ namespace Yaya {
 	public abstract class eCameraGate : Entity {
 
 
+		// Const
+		private const int PRIORITY = YayaConst.VIEW_PRIORITY_SYSTEM + 1;
+
 		// Api
 		protected abstract Direction4 Direction { get; }
 
@@ -117,13 +120,13 @@ namespace Yaya {
 				} else {
 					cameraRect.x = TargetMinX.Value + targetWidth / 2 - cameraRect.width / 2;
 				}
-				game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_SYSTEM);
+				game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
 			} else if (TargetMinX.HasValue) {
 				cameraRect.x = Mathf.Max(cameraRect.x, TargetMinX.Value);
-				game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_SYSTEM);
+				game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
 			} else if (TargetMaxX.HasValue) {
 				cameraRect.x = Mathf.Min(cameraRect.x, TargetMaxX.Value - cameraRect.width);
-				game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_SYSTEM);
+				game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
 			}
 
 			// V
@@ -134,13 +137,13 @@ namespace Yaya {
 				} else {
 					cameraRect.y = TargetMinY.Value + targetHeight / 2 - cameraRect.height / 2;
 				}
-				game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_SYSTEM);
+				game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
 			} else if (TargetMinY.HasValue) {
 				cameraRect.y = Mathf.Max(cameraRect.y, TargetMinY.Value);
-				game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_SYSTEM);
+				game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
 			} else if (TargetMaxY.HasValue) {
 				cameraRect.y = Mathf.Min(cameraRect.y, TargetMaxY.Value - cameraRect.height);
-				game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_SYSTEM);
+				game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
 			}
 
 			LastClampFrame = Game.GlobalFrame;
