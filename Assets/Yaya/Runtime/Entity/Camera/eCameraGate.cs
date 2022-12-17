@@ -28,7 +28,7 @@ namespace Yaya {
 
 
 		// Const
-		private const int PRIORITY = YayaConst.VIEW_PRIORITY_SYSTEM + 1;
+		private const int PRIORITY = YayaConst.VIEW_PRIORITY_SYSTEM;
 
 		// Api
 		protected abstract Direction4 Direction { get; }

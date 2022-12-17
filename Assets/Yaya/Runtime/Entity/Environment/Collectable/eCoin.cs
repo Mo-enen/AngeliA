@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[EntityAttribute.Capacity(128)]
+	[EntityAttribute.Capacity(256)]
 	public class eCoin : eCollectable {
 
 
