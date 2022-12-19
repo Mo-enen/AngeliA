@@ -38,12 +38,12 @@ namespace Yaya {
 			}
 			// Get Offset Y
 			int offsetY = 0;
-			if (TryGetSprite(Pose, out var sprite)) {
+			if (CellRenderer.TryGetSprite(TypeID, out var sprite)) {
 				offsetY += sprite.GlobalHeight - sprite.GlobalBorder.Up;
 			}
 			// Set Character Pos
 			ch.X = (bedL.Rect.xMin + bedR.Rect.xMax) / 2;
-			ch.Y = Y + offsetY;
+			ch.Y = Y + offsetY + 2;
 			return true;
 		}
 

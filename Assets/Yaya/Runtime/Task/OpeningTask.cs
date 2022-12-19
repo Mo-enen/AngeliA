@@ -62,6 +62,7 @@ namespace Yaya {
 					}
 					player.SleepAmount = 1000;
 				}
+				game.ReloadAllEntitiesFromWorld();
 			}
 			if (localFrame < SkipFrame) {
 				if (FrameInput.AnyKeyPressed) {
@@ -117,11 +118,9 @@ namespace Yaya {
 
 
 		// LGC
-		private void SetViewPosition (Game game, int x, int y) => game.SetViewPositionDelay(
+		private void SetViewPosition (Game game, int x, int y) => game.SetViewPositionImmediately(
 			x - game.ViewRect.width / 2,
-			y - game.ViewRect.height / 2,
-			1000,
-			YayaConst.VIEW_PRIORITY_CUTSCENE
+			y - game.ViewRect.height / 2
 		);
 
 

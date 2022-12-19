@@ -246,7 +246,7 @@ namespace Yaya {
 			if (FrameInput.GameKeyDown(GameKey.Action) || FrameInput.GameKeyDown(GameKey.Jump)) {
 				// Wake up
 				SetCharacterState(CharacterState.GamePlay);
-				Y -= 2;
+				Y -= 4;
 				IgnoreAttack(6);
 			}
 		}

@@ -63,9 +63,13 @@ namespace Yaya {
 					PrevPosition.y = Y;
 					break;
 				case CharacterState.Sleep:
-					if (stateChanged && Game.Current.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
+					if (Game.Current.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
+						int offsetY = 0;
+						if (CellRenderer.TryGetSprite(eBasket.TYPE_ID, out var basketSprite)) {
+							offsetY = basketSprite.GlobalBorder.Down;
+						}
 						X = basket.X + basket.Width / 2;
-						Y = basket.Y + basket.Height - OffsetY;
+						Y = basket.Y + basket.Height - offsetY;
 					}
 					SleepFrame = Owner.SleepFrame;
 					if (SleepAmount >= 1000) FollowOwner = false;

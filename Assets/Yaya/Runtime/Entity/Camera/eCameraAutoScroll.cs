@@ -9,58 +9,71 @@ namespace Yaya {
 
 	// ←
 	public class eCameraAutoScrollLeft : eCameraAutoScroll {
-		protected override Direction3 DirectionX => Direction3.Left;
-		protected override Direction3 DirectionY => Direction3.None;
+		public override Direction3 DirectionX => Direction3.Left;
+		public override Direction3 DirectionY => Direction3.None;
 	}
 
 	// →
 	public class eCameraAutoScrollRight : eCameraAutoScroll {
-		protected override Direction3 DirectionX => Direction3.Right;
-		protected override Direction3 DirectionY => Direction3.None;
+		public override Direction3 DirectionX => Direction3.Right;
+		public override Direction3 DirectionY => Direction3.None;
 	}
 
 	// ↓
 	public class eCameraAutoScrollBottom : eCameraAutoScroll {
-		protected override Direction3 DirectionX => Direction3.None;
-		protected override Direction3 DirectionY => Direction3.Down;
+		public override Direction3 DirectionX => Direction3.None;
+		public override Direction3 DirectionY => Direction3.Down;
 	}
 
 	// ↑
 	public class eCameraAutoScrollTop : eCameraAutoScroll {
-		protected override Direction3 DirectionX => Direction3.None;
-		protected override Direction3 DirectionY => Direction3.Up;
+		public override Direction3 DirectionX => Direction3.None;
+		public override Direction3 DirectionY => Direction3.Up;
 	}
 
 	// ↙
 	public class eCameraAutoScrollBottomLeft : eCameraAutoScroll {
-		protected override Direction3 DirectionX => Direction3.Left;
-		protected override Direction3 DirectionY => Direction3.Down;
+		public override Direction3 DirectionX => Direction3.Left;
+		public override Direction3 DirectionY => Direction3.Down;
 	}
 
 	// ↘
 	public class eCameraAutoScrollBottomRight : eCameraAutoScroll {
-		protected override Direction3 DirectionX => Direction3.Right;
-		protected override Direction3 DirectionY => Direction3.Down;
+		public override Direction3 DirectionX => Direction3.Right;
+		public override Direction3 DirectionY => Direction3.Down;
 	}
 
 	// ↖
 	public class eCameraAutoScrollTopLeft : eCameraAutoScroll {
-		protected override Direction3 DirectionX => Direction3.Left;
-		protected override Direction3 DirectionY => Direction3.Up;
+		public override Direction3 DirectionX => Direction3.Left;
+		public override Direction3 DirectionY => Direction3.Up;
 	}
 
 	// ↗
 	public class eCameraAutoScrollTopRight : eCameraAutoScroll {
-		protected override Direction3 DirectionX => Direction3.Right;
-		protected override Direction3 DirectionY => Direction3.Up;
+		public override Direction3 DirectionX => Direction3.Right;
+		public override Direction3 DirectionY => Direction3.Up;
 	}
 
 
 	[EntityAttribute.Capacity(16)]
 	[EntityAttribute.MapEditorGroup("Camera")]
 	[EntityAttribute.ForceUpdate]
-	[EntityAttribute.DontDestroyOutOfRange]
 	public abstract class eCameraAutoScroll : Entity {
+
+
+
+
+		#region --- SUB ---
+
+
+		[System.Serializable]
+		public class CameraScrollMeta {
+			public Vector3Int[] EntrancePositions = new Vector3Int[0];
+		}
+
+
+		#endregion
 
 
 
@@ -69,17 +82,19 @@ namespace Yaya {
 
 
 		// Const
+		public const int MAX_LEN = 64;
 		private const int PRIORITY = YayaConst.VIEW_PRIORITY_SYSTEM + 1;
 
 		// Api
-		protected abstract Direction3 DirectionX { get; }
-		protected abstract Direction3 DirectionY { get; }
-		protected virtual int Speed => 24;
+		public abstract Direction3 DirectionX { get; }
+		public abstract Direction3 DirectionY { get; }
+		public virtual int Speed => 24;
 
 		// Data
 		private static eCameraAutoScroll Current = null;
+		private static readonly HashSet<Vector3Int> EntrancePool = new();
 		private Vector2Int MaxPosition = default;
-		private bool CameraReady = false;
+		private bool IsEntrance = true;
 
 
 		#endregion
@@ -90,11 +105,29 @@ namespace Yaya {
 		#region --- MSG ---
 
 
+		[AngeInitialize]
+		public static void Init () {
+			EntrancePool.Clear();
+			// Get Meta
+			var meta = AngeUtil.LoadMeta<CameraScrollMeta>();
+			// Meta >> Pool
+			if (meta != null) {
+				foreach (var pos in meta.EntrancePositions) {
+					EntrancePool.TryAdd(pos);
+				}
+			}
+		}
+
+
 		public override void OnActived () {
 			base.OnActived();
-			MaxPosition.x = X + (int)DirectionX * Const.MAP * Const.CEL;
-			MaxPosition.y = Y + (int)DirectionY * Const.MAP * Const.CEL;
-			CameraReady = false;
+			MaxPosition.x = X + (int)DirectionX * MAX_LEN * Const.CEL;
+			MaxPosition.y = Y + (int)DirectionY * MAX_LEN * Const.CEL;
+			IsEntrance = EntrancePool.Contains(new Vector3Int(
+				X.UDivide(Const.CEL),
+				Y.UDivide(Const.CEL),
+				Game.Current.ViewZ)
+			);
 		}
 
 
@@ -106,9 +139,17 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
+			if (ePlayer.Current == null || !ePlayer.Current.Active) {
+				Current = null;
+				return;
+			}
+			if (ePlayer.Current.CharacterState != CharacterState.GamePlay) {
+				Current = null;
+				return;
+			}
 			if (Current != null) {
 				FrameUpdate_Scroll();
-			} else {
+			} else if (IsEntrance) {
 				FrameUpdate_Idle();
 			}
 		}
@@ -128,14 +169,12 @@ namespace Yaya {
 
 			// Left to Right
 			if (DirectionX != Direction3.Left && playerPrevX < thisX && player.X >= thisX) {
-				CameraReady = false;
-				StartScroll();
+				Current = this;
 			}
 
 			// Right to Left
 			if (DirectionX != Direction3.Right && playerPrevX > thisX && player.X <= thisX) {
-				CameraReady = false;
-				StartScroll();
+				Current = this;
 			}
 
 		}
@@ -152,7 +191,8 @@ namespace Yaya {
 				(DirectionY == Direction3.Down && Y < MaxPosition.y) ||
 				(DirectionY == Direction3.Up && Y > MaxPosition.y)
 			) {
-				EndScroll();
+				Current = null;
+				Active = false;
 				return;
 			}
 
@@ -168,7 +208,8 @@ namespace Yaya {
 					(int)DirectionX == -(int)nextScroll.DirectionX &&
 					(int)DirectionY == -(int)nextScroll.DirectionY
 				) {
-					EndScroll();
+					Current = null;
+					Active = false;
 					return;
 				}
 
@@ -183,8 +224,7 @@ namespace Yaya {
 					(DirectionY == Direction3.Up && Y > nextScroll.Y);
 				if (xTriggered && yTriggered) {
 					Active = false;
-					nextScroll.StartScroll();
-					nextScroll.CameraReady = true;
+					Current = nextScroll;
 					nextScroll.Move();
 					return;
 				}
@@ -193,28 +233,28 @@ namespace Yaya {
 			// Movement
 			Move();
 
+			// Clamp or Passout Player
+			const int PASS_OUT_GAP = Const.CEL * 3;
+			var player = ePlayer.Current;
+			var pRect = player.Rect;
+			var cameraRect = CellRenderer.CameraRect;
+			if (pRect.yMin < cameraRect.yMin - PASS_OUT_GAP) {
+				player.SetHealth(0);
+			}
+			if (pRect.yMax > cameraRect.yMax) {
+				player.Y = cameraRect.yMax - pRect.height;
+			}
+			if (pRect.xMin < cameraRect.xMin) {
+				player.X = cameraRect.xMin + player.Width / 2;
+			}
+			if (pRect.xMax > cameraRect.xMax) {
+				player.X = cameraRect.xMax - player.Width / 2;
+			}
+
 		}
 
 
 		#endregion
-
-
-
-
-		#region --- API ---
-
-
-		protected void StartScroll () => Current = this;
-
-
-		protected void EndScroll () {
-			Current = null;
-			Active = false;
-		}
-
-
-		#endregion
-
 
 
 
@@ -223,19 +263,16 @@ namespace Yaya {
 
 		private void Move () {
 			var view = Game.Current.ViewRect;
-			if (CameraReady) {
-				X += (int)DirectionX * Speed;
-				Y += (int)DirectionY * Speed;
-			}
-			int targetX = X + Const.CEL / 2 - view.width / 2;
-			int targetY = Y + Const.CEL / 2 - view.height / 2;
-			if (CameraReady) {
-				//Game.Current.SetViewPositionImmediately(targetX, targetY);
-				Game.Current.SetViewPositionDelay(targetX, targetY, 1000, PRIORITY);
-			} else {
-				Game.Current.SetViewPositionDelay(targetX, targetY, 100, PRIORITY);
-			}
-			CameraReady = CameraReady || Mathf.Abs(view.x - targetX) < Speed && Mathf.Abs(view.y - targetY) < Speed;
+			int deltaX = (int)DirectionX * Speed;
+			int deltaY = (int)DirectionY * Speed;
+			X += deltaX;
+			Y += deltaY;
+			Game.Current.SetViewPositionImmediately(view.x + deltaX, view.y + deltaY);
+			Game.Current.SetViewPositionDelay(
+				X + Const.CEL / 2 - view.width / 2,
+				Y + Const.CEL / 2 - view.height / 2
+				, 50, PRIORITY
+			);
 		}
 
 
