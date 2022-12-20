@@ -207,7 +207,7 @@ namespace Yaya {
 				FurnitureLeftOrDown = ld as eFurniture;
 				FurnitureRightOrUp = ru as eFurniture;
 			}
-
+			
 			// Shrink Rect
 			if (TryGetSprite(Pose, out var sp)) {
 				ColliderBorder.left = sp.GlobalBorder.Left;

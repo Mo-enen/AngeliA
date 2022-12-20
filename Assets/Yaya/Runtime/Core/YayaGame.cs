@@ -153,7 +153,9 @@ namespace Yaya {
 			if (FrameInput.KeyDown(Key.Digit9)) {
 				Cutscene.PlayVideo("Test Video 1".AngeHash());
 			}
-
+			if (FrameInput.KeyDown(Key.Digit0)) {
+				ePlayer.Current.SetHealth(0);
+			}
 
 
 		}

@@ -24,25 +24,28 @@ namespace Yaya {
 			if (target is not eCharacter ch) return false;
 			ch.SetCharacterState(CharacterState.Sleep);
 			// Get Bed Left and Right
-			var bedL = this;
-			var bedR = this;
-			for (int safe = 0; safe < 1024; safe++) {
-				if (bedL.FurnitureLeftOrDown is eBed leftBed) {
-					bedL = leftBed;
-				} else break;
+			int xMin = X;
+			int xMax = X + Const.CEL;
+			if (Game.Current.WorldSquad.FindBlock(
+				TypeID, (X - Const.CEL / 2).UDivide(Const.CEL), (Y + Const.CEL / 2).UDivide(Const.CEL),
+				Direction4.Left, BlockType.Entity, out int leftX, out _
+			)) {
+				xMin = leftX * Const.CEL;
 			}
-			for (int safe = 0; safe < 1024; safe++) {
-				if (bedR.FurnitureRightOrUp is eBed rightBed) {
-					bedR = rightBed;
-				} else break;
+			if (Game.Current.WorldSquad.FindBlock(
+				TypeID, (X + Const.CEL + Const.CEL / 2).UDivide(Const.CEL), (Y + Const.CEL / 2).UDivide(Const.CEL),
+				Direction4.Right, BlockType.Entity, out int rightX, out _
+			)) {
+				xMax = rightX * Const.CEL + Const.CEL;
 			}
+
 			// Get Offset Y
 			int offsetY = 0;
 			if (CellRenderer.TryGetSprite(TypeID, out var sprite)) {
 				offsetY += sprite.GlobalHeight - sprite.GlobalBorder.Up;
 			}
 			// Set Character Pos
-			ch.X = (bedL.Rect.xMin + bedR.Rect.xMax) / 2;
+			ch.X = (xMin + xMax) / 2;
 			ch.Y = Y + offsetY + 2;
 			return true;
 		}

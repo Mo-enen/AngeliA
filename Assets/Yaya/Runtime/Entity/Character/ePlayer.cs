@@ -274,6 +274,18 @@ namespace Yaya {
 		}
 
 
+		public static ePlayer TrySpawnPlayerToBed (int x, int y) {
+			var player = TrySpawnPlayer(x, y);
+			if (player == null) return null;
+			// Go to Bed
+			if (Game.Current.TryGetEntityNearby<eBed>(new(x, y), out var bed)) {
+				bed.Invoke(player);
+			}
+			player.SleepAmount = 1000;
+			return player;
+		}
+
+
 		#endregion
 
 
