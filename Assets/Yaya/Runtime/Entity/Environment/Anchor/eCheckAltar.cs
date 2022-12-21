@@ -77,10 +77,10 @@ namespace Yaya {
 
 
 		// MSG
-		[AngeInitialize]
+		[AfterGameInitialize]
 		public static void Initialize () {
 			PositionPool.Clear();
-			var meta = AngeUtil.LoadMeta<AltarMeta>();
+			var meta = AngeUtil.LoadJson<AltarMeta>(Const.MetaRoot);
 			if (meta == null) return;
 			foreach (var cpData in meta.Positions) {
 				PositionPool.TryAdd(

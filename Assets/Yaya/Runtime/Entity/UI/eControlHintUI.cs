@@ -36,7 +36,7 @@ namespace Yaya {
 
 
 		// MSG
-		[AngeInitialize]
+		[AfterGameInitialize]
 		public static void Initialize () {
 
 			TypeHintMap.Clear();

@@ -71,8 +71,12 @@ namespace Yaya {
 
 
 		// Init
-		[AngeInitialize]
-		public static void Initialize () => Current = new YayaGame();
+		[BeforeGameInitialize]
+		public static void BeforeInitialize () => Game.Current.PhysicsLayerCount = YayaConst.LAYER_COUNT;
+
+
+		[AfterGameInitialize]
+		public static void AfterInitialize () => Current = new YayaGame();
 
 
 		private YayaGame () {
@@ -148,7 +152,7 @@ namespace Yaya {
 				DialoguePerformer.Perform<YayaDialoguePerformer>("TestConversation");
 			}
 			if (FrameInput.KeyDown(Key.Digit8)) {
-				Cutscene.PlayVideo("Test Video 0".AngeHash());
+				
 			}
 			if (FrameInput.KeyDown(Key.Digit9)) {
 				Cutscene.PlayVideo("Test Video 1".AngeHash());

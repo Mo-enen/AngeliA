@@ -105,11 +105,11 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		[AngeInitialize]
+		[AfterGameInitialize]
 		public static void Init () {
 			EntrancePool.Clear();
 			// Get Meta
-			var meta = AngeUtil.LoadMeta<CameraScrollMeta>();
+			var meta = AngeUtil.LoadJson<CameraScrollMeta>(Const.MetaRoot);
 			// Meta >> Pool
 			if (meta != null) {
 				foreach (var pos in meta.EntrancePositions) {

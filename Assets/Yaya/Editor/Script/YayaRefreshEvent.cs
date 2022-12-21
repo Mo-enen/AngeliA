@@ -43,7 +43,7 @@ namespace Yaya.Editor {
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
 			// Write Position File
-			AngeUtil.SaveMeta(new eCheckAltar.AltarMeta() { Positions = list.ToArray(), });
+			AngeUtil.SaveJson(new eCheckAltar.AltarMeta() { Positions = list.ToArray(), }, Const.MetaRoot);
 		}
 
 
@@ -105,9 +105,9 @@ namespace Yaya.Editor {
 			}
 
 			// to File
-			AngeUtil.SaveMeta(new eCameraAutoScroll.CameraScrollMeta() {
+			AngeUtil.SaveJson(new eCameraAutoScroll.CameraScrollMeta() {
 				EntrancePositions = allEntrance.ToArray(),
-			});
+			}, Const.MetaRoot);
 
 		}
 
