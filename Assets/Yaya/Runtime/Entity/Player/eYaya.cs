@@ -40,7 +40,10 @@ namespace Yaya {
 			FlyAvailable.Value = true;
 			FlyCount.Value = 99999;
 			SlideAvailable.Value = true;
-			SlideOnAllBlocks.Value = true;
+			SlideOnAnyBlock.Value = true;
+			GrabTopAvailable.Value = true;
+			GrabSideAvailable.Value = true;
+			GrabFlipThroughDuration.Value = 18;
 
 			BulletName.Value = "YayaPaw";
 			AttackDuration.Value = 12;

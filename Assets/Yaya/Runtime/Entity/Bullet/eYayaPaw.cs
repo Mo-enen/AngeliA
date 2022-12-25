@@ -11,7 +11,8 @@ namespace Yaya {
 
 		// Api
 		protected override bool DestroyOnCollide => false;
-		protected override int Duration => 4;
+		protected override bool DestroyOnHit => false;
+		protected override int Duration => 12;
 		protected override int Speed => 0;
 
 		// Data

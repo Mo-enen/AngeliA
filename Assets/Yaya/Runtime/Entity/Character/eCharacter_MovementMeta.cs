@@ -90,13 +90,17 @@ namespace Yaya {
 
 		// Slide
 		public BuffBool SlideAvailable { get; private set; } = new(false);
-		public BuffBool SlideOnAllBlocks { get; private set; } = new(true);
+		public BuffBool SlideOnAnyBlock { get; private set; } = new(true);
 		public BuffInt SlideDropSpeed { get; private set; } = new(4);
-		public BuffInt SlideJumpCountRecover { get; private set; } = new(1);
+		public BuffInt SlideJumpCountRefill { get; private set; } = new(0);
 
-		// Pipe
-		public BuffBool PipeAvailable { get; private set; } = new(true);
-		public BuffInt PipeMoveSpeed { get; private set; } = new(42);
+		// Grab
+		public BuffBool GrabTopAvailable { get; private set; } = new(false);
+		public BuffBool GrabSideAvailable { get; private set; } = new(false);
+		public BuffInt GrabFlipThroughDuration { get; private set; } = new(0);
+		public BuffInt GrabMoveSpeedX { get; private set; } = new(24);
+		public BuffInt GrabMoveSpeedY { get; private set; } = new(24);
+		public BuffInt GrabJumpCountRefill { get; private set; } = new(0);
 
 
 

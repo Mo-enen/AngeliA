@@ -31,6 +31,7 @@ namespace Yaya {
 		// Api
 		protected virtual int CollisionMask => YayaConst.MASK_SOLID;
 		protected virtual bool DestroyOnCollide => true;
+		protected virtual bool DestroyOnHit => true;
 		protected virtual bool FromPlayer => false;
 		protected virtual int Duration => 60;
 		protected virtual int Damage => 1;
@@ -41,6 +42,7 @@ namespace Yaya {
 		// Data
 		private Vector2Int Direction = default;
 		private int StartFrame = 0;
+		private bool Hitted = false;
 
 
 		// MSG
@@ -52,12 +54,15 @@ namespace Yaya {
 			Direction = direction;
 			Combo = combo;
 			ChargeDuration = chargeDuration;
+			Hitted = false;
 		}
 
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			YayaCellPhysics.FillEntity_Damage(this, !FromPlayer, Damage);
+			if (!Hitted) {
+				YayaCellPhysics.FillEntity_Damage(this, !FromPlayer, Damage);
+			}
 		}
 
 
@@ -73,6 +78,7 @@ namespace Yaya {
 			// Collide Check
 			if (DestroyOnCollide && CellPhysics.Overlap(CollisionMask, Rect, this)) {
 				OnHit(null);
+				Active = false;
 			}
 
 			// Move
@@ -91,7 +97,12 @@ namespace Yaya {
 
 
 		// Api
-		public virtual void OnHit (IDamageReceiver receiver) => Active = false;
+		public virtual void OnHit (IDamageReceiver receiver) {
+			Hitted = true;
+			if (DestroyOnHit) {
+				Active = false;
+			}
+		}
 
 
 		protected virtual int GetArtworkCode (int combo, int chargeDuration) => TypeID;

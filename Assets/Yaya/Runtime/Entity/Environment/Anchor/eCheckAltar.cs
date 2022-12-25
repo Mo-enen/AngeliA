@@ -37,7 +37,7 @@ namespace Yaya {
 
 
 	[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
-	[EntityAttribute.MapEditorGroup("Altar")]
+	[EntityAttribute.MapEditorGroup("Check Point - Altar")]
 	public abstract class eCheckAltar : Entity {
 
 

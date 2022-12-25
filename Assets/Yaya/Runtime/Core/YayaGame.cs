@@ -152,7 +152,7 @@ namespace Yaya {
 				DialoguePerformer.Perform<YayaDialoguePerformer>("TestConversation");
 			}
 			if (FrameInput.KeyDown(Key.Digit8)) {
-				
+
 			}
 			if (FrameInput.KeyDown(Key.Digit9)) {
 				Cutscene.PlayVideo("Test Video 1".AngeHash());
@@ -208,7 +208,7 @@ namespace Yaya {
 			bool flying = player.IsFlying;
 			int playerX = player.X;
 			int playerY = player.Y;
-			bool notInAir = player.IsGrounded || player.InWater || player.InSand || player.IsClimbing;
+			bool notInAir = player.IsGrounded || player.InWater || player.InSand || player.IsClimbing || player.IsGrabingSide || player.IsGrabingTop;
 
 			if (notInAir || flying) PlayerLastGroundedY = playerY;
 			int linger = game.ViewRect.width * LINGER_RATE / 1000;

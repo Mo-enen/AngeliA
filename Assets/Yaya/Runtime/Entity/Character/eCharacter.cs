@@ -30,7 +30,7 @@ namespace Yaya {
 		protected override int AirDragY => 0;
 		protected override bool IgnoreRiseGravityShift => true;
 		public override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
-		public override int CollisionMask => YayaConst.MASK_MAP;
+		public override int CollisionMask => IsGrabFliping ? 0 : YayaConst.MASK_MAP;
 		public override int CarrierSpeed => 0;
 		public bool TakingDamage => Game.GlobalFrame < LastDamageFrame + DamageStunDuration;
 		public int SleepAmount {
