@@ -637,9 +637,9 @@ namespace Yaya {
 			) return false;
 			var rect = new RectInt(
 				LastIntendedX > 0 ? Hitbox.xMax : Hitbox.xMin - 1,
-				Hitbox.y + Hitbox.height / 4,
+				Hitbox.yMax - Hitbox.height / 4,
 				1,
-				Hitbox.height / 2
+				Hitbox.height / 4
 			);
 			return CellPhysics.Overlap(
 				YayaConst.MASK_MAP, rect, this, OperationMode.ColliderOnly, YayaConst.GRAB_SIDE_TAG

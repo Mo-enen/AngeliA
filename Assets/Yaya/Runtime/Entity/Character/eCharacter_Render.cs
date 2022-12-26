@@ -41,7 +41,9 @@ namespace Yaya {
 			public int Fly = 0;
 			public int Slide = 0;
 			public int GrabTop = 0;
+			public int GrabTopMove = 0;
 			public int GrabSide = 0;
+			public int GrabSideMove = 0;
 			public int GrabFlip = 0;
 
 			// Attack
@@ -170,8 +172,10 @@ namespace Yaya {
 			AnimationSheet.Fly = AniSheet.LoadAniCode($"{name}.Fly", AnimationSheet.Run);
 			AnimationSheet.Slide = AniSheet.LoadAniCode($"{name}.Slide", AnimationSheet.JumpD);
 			AnimationSheet.GrabTop = AniSheet.LoadAniCode($"{name}.GrabTop", AnimationSheet.JumpD);
+			AnimationSheet.GrabTopMove = AniSheet.LoadAniCode($"{name}.GrabTopMove", AnimationSheet.GrabTop);
 			AnimationSheet.GrabSide = AniSheet.LoadAniCode($"{name}.GrabSide", AnimationSheet.Slide);
-			AnimationSheet.GrabFlip = AniSheet.LoadAniCode($"{name}.GrabSide", AnimationSheet.Roll);
+			AnimationSheet.GrabSideMove = AniSheet.LoadAniCode($"{name}.GrabSideMove", AnimationSheet.GrabSide);
+			AnimationSheet.GrabFlip = AniSheet.LoadAniCode($"{name}.GrabFlip", AnimationSheet.Roll);
 
 			AnimationSheet.Sleep = AniSheet.LoadAniCode($"{name}.Sleep", AnimationSheet.Idle);
 			AnimationSheet.Damaging = AniSheet.LoadAniCode($"{name}.Damage", AnimationSheet.Idle);
@@ -300,8 +304,8 @@ namespace Yaya {
 					MovementState.Climb => AnimationSheet.Climb,
 					MovementState.Fly => AnimationSheet.Fly,
 					MovementState.Slide => AnimationSheet.Slide,
-					MovementState.GrabTop => AnimationSheet.GrabTop,
-					MovementState.GrabSide => AnimationSheet.GrabSide,
+					MovementState.GrabTop => IntendedX != 0 ? AnimationSheet.GrabTopMove : AnimationSheet.GrabTop,
+					MovementState.GrabSide => IntendedY != 0 ? AnimationSheet.GrabSideMove : AnimationSheet.GrabSide,
 					MovementState.GrabFlip => AnimationSheet.GrabFlip,
 					_ => AnimationSheet.Idle,
 				};
