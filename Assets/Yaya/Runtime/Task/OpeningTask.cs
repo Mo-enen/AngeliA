@@ -10,34 +10,38 @@ namespace Yaya {
 
 
 		// Const
+		public static readonly int TYPE_ID = typeof(OpeningTask).AngeHash();
 		private const int DURATION = 180;
 		private const int BLACK_DURATION = 120;
 		private const int SKIP_DURATION = 12;
-		public static readonly int TYPE_ID = typeof(OpeningTask).AngeHash();
+		private const int DOLLY_HEIGHT = Const.CEL * 11;
 
 		// Api
-		public int ViewX = 0;
-		public int ViewYStart = 0;
-		public int ViewYEnd = 0;
+		public int TargetViewX { get; set; } = 0;
+		public int TargetViewY { get; set; } = 0;
+		public int TargetViewZ { get; set; } = 0;
 
 		// Data
 		private int SkipFrame = int.MaxValue;
 		private int SkipY = 0;
+		private bool GotoBed = true;
 
 
 		// MSG
 		public override void OnStart () {
 			base.OnStart();
-			var game = Game.Current;
-			SetViewPosition(game, ViewX, ViewYStart);
-			game.SetViewZImmediately(0);
+			GotoBed = true;
+			// Set Pos to Check Point
+			if (eCheckPoint.SavedPosition.HasValue) {
+				var pos = eCheckPoint.SavedPosition.Value;
+				TargetViewX = pos.x;
+				TargetViewY = pos.y;
+				TargetViewZ = pos.z;
+				GotoBed = false;
+			}
+			SetViewPosition(TargetViewX, TargetViewY + DOLLY_HEIGHT);
+			Game.Current.SetViewZImmediately(TargetViewZ);
 			SkipFrame = int.MaxValue;
-			// Draw Black Fade Out
-			CellRenderer.Draw(
-				Const.PIXEL,
-				CellRenderer.CameraRect.Expand(Const.CEL),
-				new Color32(0, 0, 0, 255)
-			).Z = int.MaxValue;
 			// Remove Player
 			var player = ePlayer.Current;
 			if (player != null) {
@@ -49,72 +53,64 @@ namespace Yaya {
 
 		public override TaskResult FrameUpdate () {
 			int localFrame = LocalFrame;
-			var game = Game.Current;
 			if (localFrame == 0) {
 				ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, true);
 			}
 			// Spawn Player
 			if (localFrame == 2) {
-				ePlayer.TrySpawnPlayerToBed(ViewX, ViewYEnd);
-				game.ReloadAllEntitiesFromWorld();
+				if (GotoBed) {
+					ePlayer.TrySpawnPlayerToBed(TargetViewX, TargetViewY);
+				} else {
+					ePlayer.TrySpawnPlayer(TargetViewX, TargetViewY);
+				}
 			}
 			if (localFrame < SkipFrame) {
+				// Slow 
 				if (FrameInput.AnyKeyPressed) {
 					SkipFrame = localFrame;
-					SkipY = (int)Util.Remap(0f, DURATION, ViewYStart, ViewYEnd, localFrame);
+					SkipY = (int)Util.Remap(0f, DURATION, TargetViewY + DOLLY_HEIGHT, TargetViewY, localFrame);
 				}
-				return Update_Opening(game, localFrame);
+				// Black FadeIn
+				if (localFrame <= BLACK_DURATION) {
+					RetroDarkenEffect.SetAmount(Util.Remap(
+						0f, BLACK_DURATION,
+						1f, 0f,
+						localFrame
+					));
+				}
+				if (localFrame < DURATION) {
+					// Camera Down
+					SetViewPosition(
+						TargetViewX,
+						(int)Util.Remap(0f, DURATION, TargetViewY + DOLLY_HEIGHT, TargetViewY, localFrame)
+					);
+					return TaskResult.Continue;
+				} else {
+					// End
+					ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, false);
+					return TaskResult.End;
+				}
 			} else {
-				return Update_QuickSkip(game, localFrame);
-			}
-		}
-
-
-		private TaskResult Update_Opening (Game game, int localFrame) {
-			// Black FadeIn
-			if (localFrame <= BLACK_DURATION) {
-				RetroDarkenEffect.SetAmount(Util.Remap(
-					0f, BLACK_DURATION,
-					1f, 0f,
-					localFrame
-				));
-			}
-			if (localFrame < DURATION) {
-				// Camera Down
-				SetViewPosition(
-					game,
-					ViewX,
-					(int)Util.Remap(0f, DURATION, ViewYStart, ViewYEnd, localFrame)
-				);
-				return TaskResult.Continue;
-			} else {
-				// End
+				// Quick
 				ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, false);
-				return TaskResult.End;
-			}
-		}
-
-
-		private TaskResult Update_QuickSkip (Game game, int localFrame) {
-			ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, false);
-			if (localFrame < SKIP_DURATION + SkipFrame) {
-				SetViewPosition(
-					game,
-					ViewX,
-					(int)Util.Remap((float)SkipFrame, SKIP_DURATION + SkipFrame, SkipY, ViewYEnd, localFrame)
-				);
-				return TaskResult.Continue;
-			} else {
-				// End
-				return TaskResult.End;
+				if (localFrame < SKIP_DURATION + SkipFrame) {
+					SetViewPosition(
+						TargetViewX,
+						(int)Util.Remap((float)SkipFrame, SKIP_DURATION + SkipFrame, SkipY, TargetViewY, localFrame)
+					);
+					return TaskResult.Continue;
+				} else {
+					// End
+					return TaskResult.End;
+				}
 			}
 		}
 
 
 		// LGC
-		private void SetViewPosition (Game game, int x, int y) => game.SetViewPositionImmediately(
-			x - game.ViewRect.width / 2,
-			y - game.ViewRect.height / 2
+		private void SetViewPosition (int x, int y) => Game.Current.SetViewPositionDelay(
+			x - Game.Current.ViewRect.width / 2,
+			y - Game.Current.ViewRect.height / 2
 		);
 
 

@@ -267,7 +267,7 @@ namespace Yaya {
 			int deltaY = (int)DirectionY * Speed;
 			X += deltaX;
 			Y += deltaY;
-			Game.Current.SetViewPositionImmediately(view.x + deltaX, view.y + deltaY);
+			Game.Current.SetViewPositionDelay(view.x + deltaX, view.y + deltaY, 1000, YayaConst.VIEW_PRIORITY_SYSTEM);
 			Game.Current.SetViewPositionDelay(
 				X + Const.CEL / 2 - view.width / 2,
 				Y + Const.CEL / 2 - view.height / 2

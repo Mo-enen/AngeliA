@@ -109,9 +109,9 @@ namespace Yaya {
 
 			// Start the Game !!
 			if (FrameTask.TryAddToLast(OpeningTask.TYPE_ID, Const.TASK_ROUTE, out var task) && task is OpeningTask oTask) {
-				oTask.ViewX = YayaConst.OPENING_X;
-				oTask.ViewYStart = YayaConst.OPENING_Y;
-				oTask.ViewYEnd = YayaConst.OPENING_END_Y;
+				oTask.TargetViewX = YayaConst.OPENING_X;
+				oTask.TargetViewY = YayaConst.OPENING_Y;
+				oTask.TargetViewZ = 0;
 			}
 
 		}
@@ -189,9 +189,9 @@ namespace Yaya {
 					// Game Play
 					FrameTask.AddToLast(FadeOutTask.TYPE_ID, Const.TASK_ROUTE);
 					if (FrameTask.TryAddToLast(OpeningTask.TYPE_ID, Const.TASK_ROUTE, out var task) && task is OpeningTask oTask) {
-						oTask.ViewX = YayaConst.OPENING_X;
-						oTask.ViewYStart = YayaConst.OPENING_Y;
-						oTask.ViewYEnd = YayaConst.OPENING_END_Y;
+						oTask.TargetViewX = YayaConst.OPENING_X;
+						oTask.TargetViewY = YayaConst.OPENING_Y;
+						oTask.TargetViewZ = 0;
 					}
 				}
 			}
@@ -365,20 +365,6 @@ namespace Yaya {
 				PauseMenu.SetAsQuitMode();
 				return false;
 			}
-		}
-
-
-		#endregion
-
-
-
-
-		#region --- API ---
-
-
-		public void ResetAimViewPosition () {
-			AimViewX = Game.Current.ViewRect.x;
-			AimViewY = Game.Current.ViewRect.y;
 		}
 
 

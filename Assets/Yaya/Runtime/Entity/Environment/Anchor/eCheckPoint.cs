@@ -38,9 +38,14 @@ namespace Yaya {
 
 
 
+		// Api
+		public static Vector3Int? SavedPosition { get; private set; } = null;
+
+		// Data
 		private Int4 Border = default;
 
 
+		// MSG
 		public override void OnActived () {
 			base.OnActived();
 			Border = default;
@@ -57,9 +62,39 @@ namespace Yaya {
 		}
 
 
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
+			if (Game.GlobalFrame % 6 == 0) {
+				Update_PlayerTouch();
+			}
+		}
+
+
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			CellRenderer.Draw(TypeID, Rect);
+		}
+
+
+		private void Update_PlayerTouch () {
+			var player = ePlayer.Current;
+			if (player == null || !player.Active) return;
+			if (player.Rect.Overlaps(Rect)) {
+				var targetPos = new Vector3Int(X, Y, Game.Current.ViewZ);
+				if (SavedPosition != targetPos) {
+					// Touch
+					SavedPosition = targetPos;
+					// Particle
+					var particle = Game.Current.AddEntity(
+						eDefaultParticle.TYPE_ID,
+						X + Const.CEL / 2, Y + Const.CEL / 2
+					);
+					if (particle != null) {
+						particle.Width = Const.CEL * 2;
+						particle.Height = Const.CEL * 2;
+					}
+				}
+			}
 		}
 
 

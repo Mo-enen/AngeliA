@@ -38,10 +38,10 @@ namespace Yaya {
 		protected virtual int Speed => 12;
 		protected int Combo { get; private set; } = 0;
 		protected int ChargeDuration { get; private set; } = 0;
+		protected int StartFrame { get; private set; } = 0;
 
 		// Data
 		private Vector2Int Direction = default;
-		private int StartFrame = 0;
 		private bool Hitted = false;
 
 
@@ -92,7 +92,9 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			CellRenderer.Draw_Animation(GetArtworkCode(Combo, ChargeDuration), Rect, Game.GlobalFrame - StartFrame);
+			CellRenderer.Draw_Animation(
+				GetArtworkCode(Combo, ChargeDuration), Rect, Game.GlobalFrame - StartFrame
+			);
 		}
 
 

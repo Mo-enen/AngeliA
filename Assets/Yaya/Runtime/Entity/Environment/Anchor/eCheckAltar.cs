@@ -38,11 +38,7 @@ namespace Yaya {
 
 	[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
 	[EntityAttribute.MapEditorGroup("Check Point - Altar")]
-	public abstract class eCheckAltar : Entity {
-
-
-
-		private Int4 Border = default;
+	public abstract class eCheckAltar : eCheckPoint {
 
 
 
@@ -94,23 +90,6 @@ namespace Yaya {
 		public override void OnActived () {
 			base.OnActived();
 			Height = Const.CEL * 2;
-			Border = default;
-			if (CellRenderer.TryGetSprite(TypeID, out var sprite)) {
-				Border = sprite.GlobalBorder;
-			}
-		}
-
-
-		public override void FillPhysics () {
-			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
-			CellPhysics.FillBlock(YayaConst.LAYER_ENVIRONMENT, TypeID, Rect.Shrink(Border), true, Const.ONEWAY_UP_TAG);
-		}
-
-
-		public override void FrameUpdate () {
-			base.FrameUpdate();
-			CellRenderer.Draw(TypeID, Rect);
 		}
 
 
