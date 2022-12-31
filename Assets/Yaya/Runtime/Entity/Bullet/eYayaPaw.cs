@@ -18,25 +18,26 @@ namespace Yaya {
 		// Api
 		protected override bool DestroyOnCollide => false;
 		protected override bool DestroyOnHit => false;
-		protected override int Duration => 15;
+		protected override int Duration => 10;
 		protected override int Speed => 0;
 
 		// Data
 		private bool Hitted = false;
 		private bool FacingRight = false;
 		private bool Grounded = true;
-
+		private eCharacter Character = null;
 
 		// MSG
 		public override void Release (eCharacter character, Vector2Int direction, int combo, int chargeDuration) {
 			base.Release(character, direction, combo, chargeDuration);
-			var characterRect = character.Rect;
 			Hitted = false;
 			Width = Const.CEL;
 			Height = Const.CEL * 2;
+			Character = character;
+			FacingRight = character.FacingRight;
+			var characterRect = character.Rect;
 			X = character.FacingRight ? characterRect.xMax : characterRect.xMin - Width;
 			Y = character.Y - 1;
-			FacingRight = character.FacingRight;
 			Grounded =
 				CellPhysics.Overlap(YayaConst.MASK_MAP, Rect.Edge(Direction4.Down, 4), this) ||
 				CellPhysics.Overlap(YayaConst.MASK_MAP, Rect.Edge(Direction4.Down, 4), this, OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG);
@@ -44,14 +45,20 @@ namespace Yaya {
 
 
 		public override void FillPhysics () {
-			if (!Hitted && Game.GlobalFrame - StartFrame >= 6) {
+			if (!Hitted && Game.GlobalFrame - StartFrame >= 4) {
 				YayaCellPhysics.FillEntity_Damage(this, false, Damage);
 			}
 		}
 
 
 		public override void FrameUpdate () {
-			int localFrame = (Game.GlobalFrame - StartFrame) / 3;
+
+			var characterRect = Character.Rect;
+			X = Character.FacingRight ? characterRect.xMax : characterRect.xMin - Width;
+			Y = Character.Y - 1;
+
+
+			int localFrame = (Game.GlobalFrame - StartFrame) / 2;
 			localFrame = localFrame.Clamp(0, PAW_Y.Length - 1);
 			int spriteFrame = localFrame;
 			int rot = PAW_ROT[localFrame];

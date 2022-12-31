@@ -48,10 +48,13 @@ namespace Yaya {
 
 
 		public override void PhysicsUpdate () {
-			bool stateChanged = CharacterState != Owner.CharacterState;
-			if (stateChanged) SetCharacterState(Owner.CharacterState);
+
+			SetCharacterState(Owner.CharacterState);
 			SetHealth(Owner.IsEmptyHealth ? 0 : MaxHP);
+
 			switch (CharacterState) {
+
+
 				case CharacterState.GamePlay:
 					if (FollowOwner) {
 						Update_FollowOwner();
@@ -62,6 +65,8 @@ namespace Yaya {
 					PrevPosition.x = X;
 					PrevPosition.y = Y;
 					break;
+
+
 				case CharacterState.Sleep:
 					if (Game.Current.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
 						int offsetY = 0;
@@ -74,10 +79,13 @@ namespace Yaya {
 					SleepFrame = Owner.SleepFrame;
 					if (SleepAmount >= 1000) FollowOwner = false;
 					break;
+
+
 				case CharacterState.Passout:
 					VelocityX = 0;
 					base.PhysicsUpdate();
 					break;
+
 			}
 			if (!FollowOwner || CharacterState != CharacterState.GamePlay) {
 				PosChainStartIndex = -1;

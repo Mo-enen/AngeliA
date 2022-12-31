@@ -289,6 +289,7 @@ namespace Yaya {
 			} else {
 				// Movement
 				ani = MoveState switch {
+					MovementState.Idle => AnimationSheet.Idle,
 					MovementState.Walk => AnimationSheet.Walk,
 					MovementState.Run => AnimationSheet.Run,
 					MovementState.JumpUp => AnimationSheet.JumpU,
@@ -381,10 +382,7 @@ namespace Yaya {
 			}
 
 			// Grow Ani Frame
-			if (ani != AnimationSheet.Climb) {
-				// Normal
-				CurrentAniFrame++;
-			} else {
+			if (MoveState == MovementState.Climb) {
 				// Climb
 				int climbVelocity = IntendedY != 0 ? IntendedY : IntendedX;
 				if (climbVelocity > 0) {
@@ -392,8 +390,10 @@ namespace Yaya {
 				} else if (climbVelocity < 0) {
 					CurrentAniFrame--;
 				}
+			} else {
+				// Normal
+				CurrentAniFrame++;
 			}
-
 		}
 
 
