@@ -120,14 +120,17 @@ namespace Yaya {
 		// Update
 		private void FrameUpdate () {
 
-			var game = Game.Current;
-			if (game == null) return;
+			if (Game.Current == null) return;
 
 			FrameUpdate_Player();
-			Update_View(game);
-			Update_Damage(game);
-			Update_HintUI(game);
+			Update_View();
+			Update_Damage();
+			Update_HintUI();
 
+
+			// ============ Test ============
+
+			var game = Game.Current;
 			if (FrameInput.KeyDown(Key.Digit1)) {
 				game.SetViewZImmediately(game.ViewZ + 1);
 			}
@@ -160,6 +163,9 @@ namespace Yaya {
 			if (FrameInput.KeyDown(Key.Digit0)) {
 				ePlayer.Current.SetHealth(0);
 			}
+
+			// ============ Test ============
+
 
 
 		}
@@ -198,7 +204,7 @@ namespace Yaya {
 		}
 
 
-		private void Update_View (Game game) {
+		private void Update_View () {
 
 			if (FrameTask.IsTasking<OpeningTask>(Const.TASK_ROUTE)) return;
 			var player = ePlayer.Current;
@@ -211,6 +217,8 @@ namespace Yaya {
 			bool notInAir = player.IsGrounded || player.InWater || player.InSand || player.IsClimbing || player.IsGrabingSide || player.IsGrabingTop;
 
 			if (notInAir || flying) PlayerLastGroundedY = playerY;
+
+			var game = Game.Current;
 			int linger = game.ViewRect.width * LINGER_RATE / 1000;
 			int centerX = game.ViewRect.x + game.ViewRect.width / 2;
 			if (playerX < centerX - linger) {
@@ -234,7 +242,8 @@ namespace Yaya {
 		}
 
 
-		private void Update_Damage (Game game) {
+		private void Update_Damage () {
+			var game = Game.Current;
 			if (game.State != GameState.Play) return;
 			int len = game.EntityLen;
 			for (int i = 0; i < len; i++) {
@@ -256,7 +265,7 @@ namespace Yaya {
 		}
 
 
-		private void Update_HintUI (Game game) {
+		private void Update_HintUI () {
 
 			if (FrameInput.KeyDown(Key.F2)) {
 				ShowGamePadUI.Value = !ShowGamePadUI.Value;
@@ -266,7 +275,7 @@ namespace Yaya {
 			// Gamepad
 			if (ShowGamePadUI.Value) {
 				if (!GamePadUI.Active) {
-					game.TryAddEntity(GamePadUI.TypeID, 0, 0, out _);
+					Game.Current.TryAddEntity(GamePadUI.TypeID, 0, 0, out _);
 				}
 			} else if (GamePadUI.Active) {
 				GamePadUI.Active = false;
@@ -275,7 +284,7 @@ namespace Yaya {
 			// Ctrl Hint
 			if (ShowControlHint.Value) {
 				if (!ControlHintUI.Active) {
-					game.TryAddEntity(ControlHintUI.TypeID, 0, 0, out _);
+					Game.Current.TryAddEntity(ControlHintUI.TypeID, 0, 0, out _);
 				}
 			} else if (ControlHintUI.Active) {
 				ControlHintUI.Active = false;

@@ -9,6 +9,7 @@ namespace Yaya {
 
 		public BuffInt MovementWidth { get; private set; } = new(150);
 		public BuffInt MovementHeight { get; private set; } = new(384);
+		public BuffInt RollingHeight { get; private set; } = new(200);
 		public BuffInt AntiKnockbackSpeed { get; private set; } = new(16);
 
 		// Walk
@@ -34,6 +35,7 @@ namespace Yaya {
 
 		// Dash
 		public BuffBool DashAvailable { get; private set; } = new(true);
+		public BuffInt DashHeight { get; private set; } = new(200);
 		public BuffInt DashSpeed { get; private set; } = new(42);
 		public BuffInt DashDuration { get; private set; } = new(12);
 		public BuffInt DashCooldown { get; private set; } = new(4);
@@ -97,6 +99,8 @@ namespace Yaya {
 		// Grab
 		public BuffBool GrabTopAvailable { get; private set; } = new(false);
 		public BuffBool GrabSideAvailable { get; private set; } = new(false);
+		public BuffInt GrabTopHeight { get; private set; } = new(364);
+		public BuffInt GrabSideHeight { get; private set; } = new(364);
 		public BuffInt GrabFlipThroughDuration { get; private set; } = new(0);
 		public BuffInt GrabMoveSpeedX { get; private set; } = new(24);
 		public BuffInt GrabMoveSpeedY { get; private set; } = new(24);

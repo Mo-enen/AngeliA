@@ -44,7 +44,7 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
-			Current = this;
+			Current ??= this;
 		}
 
 
@@ -56,19 +56,7 @@ namespace Yaya {
 
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
-			if (Current != this) return;
-			// Collect
-			int count = CellPhysics.OverlapAll(
-				Collects, YayaConst.MASK_ENTITY, Rect, this, OperationMode.TriggerOnly
-			);
-			for (int i = 0; i < count; i++) {
-				var hit = Collects[i];
-				if (hit.Entity is not eCollectable col) continue;
-				bool success = col.OnCollect(this);
-				if (success) {
-					hit.Entity.Active = false;
-				}
-			}
+			PhysicsUpdate_Collect();
 		}
 
 
@@ -76,12 +64,10 @@ namespace Yaya {
 			base.FrameUpdate();
 
 			// Stop when Not Playing
-			if (Game.Current.State != GameState.Play) {
+			if (Current != this || Game.Current.State != GameState.Play) {
 				Stop();
 				return;
 			}
-
-			if (Current != this) return;
 
 			// Update Player
 			switch (CharacterState) {
@@ -109,6 +95,22 @@ namespace Yaya {
 				Mascot.Y = Mascot.Y.Clamp(spawnRect.yMin + Const.CEL, spawnRect.yMax - Const.CEL);
 			}
 
+		}
+
+
+		private void PhysicsUpdate_Collect () {
+			if (Current != this) return;
+			int count = CellPhysics.OverlapAll(
+				Collects, YayaConst.MASK_ENTITY, Rect, this, OperationMode.TriggerOnly
+			);
+			for (int i = 0; i < count; i++) {
+				var hit = Collects[i];
+				if (hit.Entity is not eCollectable col) continue;
+				bool success = col.OnCollect(this);
+				if (success) {
+					hit.Entity.Active = false;
+				}
+			}
 		}
 
 

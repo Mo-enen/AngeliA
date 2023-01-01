@@ -9,8 +9,9 @@ namespace Yaya {
 
 	public enum CharacterState {
 		GamePlay = 0,
-		Sleep = 1,
-		Passout = 2,
+		InVehicle,
+		Sleep,
+		Passout,
 	}
 
 
@@ -84,16 +85,22 @@ namespace Yaya {
 					if (TakingDamage) {
 						// Tacking Damage
 						AntiKnockback();
-					} else if (StopMoveOnAttack && IsAttacking) {
-						// Stop when Attacking
-						if (IsGrounded) VelocityX = 0;
 					} else {
-						// Move as Normal
+						// General
 						Update_Action();
 						Update_Attack();
 						Update_Movement();
+						// Stop when Attacking
+						if (StopMoveOnAttack && IsAttacking && IsGrounded) {
+							VelocityX = 0;
+						}
 					}
 					base.PhysicsUpdate();
+					break;
+				case CharacterState.InVehicle:
+
+
+
 					break;
 				case CharacterState.Sleep:
 					VelocityX = 0;
@@ -115,7 +122,7 @@ namespace Yaya {
 
 
 		public override void FrameUpdate () {
-			FrameUpdate_Render();
+			FrameUpdate_Renderer();
 			base.FrameUpdate();
 		}
 
@@ -158,7 +165,9 @@ namespace Yaya {
 			(AttackWhenFlying || !IsFlying) &&
 			(AttackWhenRolling || !IsRolling) &&
 			(AttackWhenSquating || !IsSquating) &&
-			(AttackWhenDashing || !IsDashing);
+			(AttackWhenDashing || !IsDashing) &&
+			(AttackWhenSliding || !IsSliding) &&
+			(AttackWhenGrabing || (!IsGrabingTop && !IsGrabingSide));
 
 
 		public void SetCharacterState (CharacterState state) {

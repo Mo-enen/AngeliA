@@ -45,7 +45,7 @@ namespace Yaya {
 
 		// Tag
 		public static readonly int CLIMB_TAG = "Climb".AngeHash();
-		public static readonly int CLIMB_STABLE_TAG = "Climb Stable".AngeHash();
+		public static readonly int CLIMB_STABLE_TAG = "ClimbStable".AngeHash();
 		public static readonly int QUICKSAND_TAG = "Quicksand".AngeHash();
 		public static readonly int WATER_TAG = "Water".AngeHash();
 		public static readonly int DAMAGE_TAG = "Damage".AngeHash();

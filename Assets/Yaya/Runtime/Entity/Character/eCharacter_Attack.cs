@@ -39,6 +39,8 @@ namespace Yaya {
 		public BuffBool AttackWhenRolling { get; private set; } = new(false);
 		public BuffBool AttackWhenSquating { get; private set; } = new(false);
 		public BuffBool AttackWhenDashing { get; private set; } = new(false);
+		public BuffBool AttackWhenSliding { get; private set; } = new(false);
+		public BuffBool AttackWhenGrabing { get; private set; } = new(false);
 
 		// Data
 		private readonly static System.Random Random = new(19940516);

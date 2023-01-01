@@ -55,7 +55,7 @@ namespace Yaya {
 
 
 		public override void FrameUpdate () {
-			CellRenderer.Draw(LeafArtworkCode, base.Rect.Shift(GetLeafShiftY(0), 0));
+			CellRenderer.Draw(LeafArtworkCode, base.Rect.Shift(GetLeafShiftY(Y, 120, 12), 0));
 		}
 
 

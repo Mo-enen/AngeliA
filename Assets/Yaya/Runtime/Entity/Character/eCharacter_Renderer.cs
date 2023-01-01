@@ -78,7 +78,7 @@ namespace Yaya {
 						result.Add(code);
 					} else break;
 				}
-				return result.ToArray();
+				return result.Count > 0 ? result.ToArray() : null;
 			}
 
 
@@ -195,12 +195,17 @@ namespace Yaya {
 		}
 
 
-		public void FrameUpdate_Render () {
+		public void FrameUpdate_Renderer () {
 
 			int frame = Game.GlobalFrame;
 
 			// Blink
-			if (frame < BlinkingTime && (BlinkingTime - frame) % DAMAGE_BLINK_RATE < DAMAGE_BLINK_RATE / 2) return;
+			if (
+				frame < BlinkingTime &&
+				(BlinkingTime - frame) % DAMAGE_BLINK_RATE < DAMAGE_BLINK_RATE / 2
+			) {
+				return;
+			}
 
 			// Damage
 			if (frame < DamagingTime) {
@@ -229,6 +234,7 @@ namespace Yaya {
 			// Draw
 			switch (CharacterState) {
 				case CharacterState.GamePlay:
+				case CharacterState.InVehicle:
 					DrawBody();
 					DrawFace();
 					if (IsSliding && Game.GlobalFrame % 24 == 0) {
@@ -273,9 +279,7 @@ namespace Yaya {
 					case MovementState.JumpDown:
 					case MovementState.JumpUp:
 					case MovementState.Roll:
-						if (!IsGrounded && !InWater) {
-							attacks = AnimationSheet.Attacks_Air ?? attacks;
-						}
+						attacks = AnimationSheet.Attacks_Air ?? attacks;
 						break;
 					case MovementState.Walk:
 					case MovementState.Run:
@@ -382,17 +386,30 @@ namespace Yaya {
 			}
 
 			// Grow Ani Frame
-			if (MoveState == MovementState.Climb) {
-				// Climb
-				int climbVelocity = IntendedY != 0 ? IntendedY : IntendedX;
-				if (climbVelocity > 0) {
+			switch (MoveState) {
+
+				case MovementState.Climb:
+					int climbVelocity = IntendedY != 0 ? IntendedY : IntendedX;
+					if (climbVelocity > 0) {
+						CurrentAniFrame++;
+					} else if (climbVelocity < 0) {
+						CurrentAniFrame--;
+					}
+					break;
+
+				case MovementState.GrabTop:
+					if (IntendedX > 0) {
+						CurrentAniFrame++;
+					}else if (IntendedX < 0) {
+						CurrentAniFrame--;
+					}
+					break;
+
+				default:
+					// Normal
 					CurrentAniFrame++;
-				} else if (climbVelocity < 0) {
-					CurrentAniFrame--;
-				}
-			} else {
-				// Normal
-				CurrentAniFrame++;
+					break;
+
 			}
 		}
 
