@@ -6,7 +6,6 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.ForceUpdate]
-	[EntityAttribute.Capacity(1)]
 	public class eGuaGua : eMascot {
 
 

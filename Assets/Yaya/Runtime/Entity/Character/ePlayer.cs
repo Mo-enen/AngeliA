@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Yaya {
 	[EntityAttribute.ExcludeInMapEditor]
-	[EntityAttribute.Capacity(1)]
+	[EntityAttribute.Capacity(1, 1)]
 	[EntityAttribute.Bounds(-Const.CEL / 2, 0, Const.CEL, Const.CEL * 2)]
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.DontDestroyOutOfRange]
@@ -24,6 +24,8 @@ namespace Yaya {
 		public static ePlayer Current { get; private set; } = null;
 		public virtual eMascot Mascot => null;
 		public override bool IsChargingAttack => MinimalChargeAttackDuration != int.MaxValue && !AntiAttack && AttackCooldownReady(false) && FrameInput.GameKeyPress(GameKey.Action);
+		public int AimViewX { get; private set; } = 0;
+		public int AimViewY { get; private set; } = 0;
 
 		// Data
 		private static readonly PhysicsCell[] Collects = new PhysicsCell[8];
@@ -32,6 +34,7 @@ namespace Yaya {
 		private int DownDownFrame = int.MinValue;
 		private int UpDownFrame = int.MinValue;
 		private int AttackRequiringFrame = int.MinValue;
+		private int LastGroundedY = 0;
 
 
 		#endregion
@@ -86,6 +89,9 @@ namespace Yaya {
 					}
 					break;
 			}
+
+			// View
+			FrameUpdate_View();
 
 			// Mascot
 			if (Mascot != null && !Mascot.Active && IsGrounded && Mascot.FollowOwner) {
@@ -251,6 +257,47 @@ namespace Yaya {
 				Y -= 4;
 				IgnoreAttack(6);
 			}
+		}
+
+
+		private void FrameUpdate_View () {
+
+			const int LINGER_RATE = 32;
+			bool notInGameplay = FrameTask.IsTasking<OpeningTask>(Const.TASK_ROUTE) || CharacterState != CharacterState.GamePlay;
+			bool notInAir =
+				notInGameplay ||
+				IsGrounded || InWater || InSand || IsSliding ||
+				IsClimbing || IsGrabingSide || IsGrabingTop;
+
+			if (notInAir || IsFlying) LastGroundedY = Y;
+			var game = Game.Current;
+
+			// Aim X
+			int linger = game.ViewRect.width * LINGER_RATE / 1000;
+			int centerX = game.ViewRect.x + game.ViewRect.width / 2;
+			if (notInGameplay) {
+				AimViewX = X - game.ViewRect.width / 2;
+			} else if (X < centerX - linger) {
+				AimViewX = X + linger - game.ViewRect.width / 2;
+			} else if (X > centerX + linger) {
+				AimViewX = X - linger - game.ViewRect.width / 2;
+			}
+
+			// Aim Y
+			AimViewY = Y <= LastGroundedY ?
+				Y - game.ViewRect.height * 382 / 1000 : AimViewY;
+
+			game.SetViewPositionDelay(AimViewX, AimViewY, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_PLAYER);
+
+			// Clamp
+			if (!game.ViewRect.Contains(X, Y)) {
+				if (X >= game.ViewRect.xMax) AimViewX = X - game.ViewRect.width + 1;
+				if (X <= game.ViewRect.xMin) AimViewX = X - 1;
+				if (Y >= game.ViewRect.yMax) AimViewY = Y - game.ViewRect.height + 1;
+				if (Y <= game.ViewRect.yMin) AimViewY = Y - 1;
+				game.SetViewPositionDelay(AimViewX, AimViewY, 1000, YayaConst.VIEW_PRIORITY_PLAYER + 1);
+			}
+
 		}
 
 

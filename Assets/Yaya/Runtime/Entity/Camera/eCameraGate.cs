@@ -76,11 +76,6 @@ namespace Yaya {
 
 			// Set Min Max Values
 			const int GAP = Const.CEL;
-			var game = Game.Current;
-			var yaya = YayaGame.Current;
-			int viewOffsetX = game.ViewRect.x - CellRenderer.CameraRect.x;
-			cameraRect.x = yaya.AimViewX - viewOffsetX;
-			cameraRect.y = yaya.AimViewY;
 			switch (Direction) {
 				case Direction4.Down:
 					TargetMaxY = Mathf.Min(TargetMaxY ?? int.MaxValue, Y + Const.CEL / 2 + GAP);
@@ -106,11 +101,15 @@ namespace Yaya {
 
 			// Clamp Camera
 			var game = Game.Current;
-			var yaya = YayaGame.Current;
+			var player = ePlayer.Current;
 			var cameraRect = CellRenderer.CameraRect;
 			int viewOffsetX = game.ViewRect.x - CellRenderer.CameraRect.x;
-			cameraRect.x = yaya.AimViewX - viewOffsetX;
-			cameraRect.y = yaya.AimViewY;
+			if (player != null && player.Active) {
+				cameraRect.x = player.AimViewX - viewOffsetX;
+				cameraRect.y = player.AimViewY;
+			}
+			int oldX = cameraRect.x;
+			int oldY = cameraRect.y;
 
 			// H
 			if (TargetMinX.HasValue && TargetMaxX.HasValue) {
@@ -120,13 +119,19 @@ namespace Yaya {
 				} else {
 					cameraRect.x = TargetMinX.Value + targetWidth / 2 - cameraRect.width / 2;
 				}
-				game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+				if (cameraRect.x != oldX) {
+					game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+				}
 			} else if (TargetMinX.HasValue) {
 				cameraRect.x = Mathf.Max(cameraRect.x, TargetMinX.Value);
-				game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+				if (cameraRect.x != oldX) {
+					game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+				}
 			} else if (TargetMaxX.HasValue) {
 				cameraRect.x = Mathf.Min(cameraRect.x, TargetMaxX.Value - cameraRect.width);
-				game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+				if (cameraRect.x != oldX) {
+					game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+				}
 			}
 
 			// V
@@ -137,13 +142,19 @@ namespace Yaya {
 				} else {
 					cameraRect.y = TargetMinY.Value + targetHeight / 2 - cameraRect.height / 2;
 				}
-				game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+				if (cameraRect.y != oldY) {
+					game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+				}
 			} else if (TargetMinY.HasValue) {
 				cameraRect.y = Mathf.Max(cameraRect.y, TargetMinY.Value);
-				game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+				if (cameraRect.y != oldY) {
+					game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+				}
 			} else if (TargetMaxY.HasValue) {
 				cameraRect.y = Mathf.Min(cameraRect.y, TargetMaxY.Value - cameraRect.height);
-				game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+				if (cameraRect.y != oldY) {
+					game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+				}
 			}
 
 			LastClampFrame = Game.GlobalFrame;

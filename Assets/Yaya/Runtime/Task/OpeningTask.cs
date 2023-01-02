@@ -110,7 +110,9 @@ namespace Yaya {
 		// LGC
 		private void SetViewPosition (int x, int y) => Game.Current.SetViewPositionDelay(
 			x - Game.Current.ViewRect.width / 2,
-			y - Game.Current.ViewRect.height / 2
+			y - Game.Current.ViewRect.height / 2,
+			1000,
+			YayaConst.VIEW_PRIORITY_SYSTEM
 		);
 
 

@@ -31,8 +31,8 @@ namespace Yaya {
 		public override void Release (eCharacter character, Vector2Int direction, int combo, int chargeDuration) {
 			base.Release(character, direction, combo, chargeDuration);
 			Hitted = false;
-			Width = Const.CEL;
-			Height = Const.CEL * 2;
+			Width = 384;
+			Height = 512;
 			Character = character;
 			FacingRight = character.FacingRight;
 			var characterRect = character.Rect;

@@ -18,8 +18,6 @@ namespace Yaya {
 		public static YayaGame Current { get; private set; } = null;
 		public YayaWorldSquad WorldSquad { get; private set; } = null;
 		public YayaWorldSquad WorldSquad_Behind { get; private set; } = null;
-		public int AimViewX { get; private set; } = 0;
-		public int AimViewY { get; private set; } = 0;
 		public bool UseGamePadHint {
 			get => ShowGamePadUI.Value;
 			set {
@@ -55,7 +53,6 @@ namespace Yaya {
 		private readonly eControlHintUI ControlHintUI = null;
 		private readonly ePauseMenu PauseMenu = null;
 		private bool CutsceneLock = true;
-		private int PlayerLastGroundedY = 0;
 
 		// Saving
 		private readonly SavingBool ShowGamePadUI = new("Yaya.ShowGamePadUI", false);
@@ -123,7 +120,6 @@ namespace Yaya {
 			if (Game.Current == null) return;
 
 			FrameUpdate_Player();
-			Update_View();
 			Update_Damage();
 			Update_HintUI();
 
@@ -201,44 +197,6 @@ namespace Yaya {
 					}
 				}
 			}
-		}
-
-
-		private void Update_View () {
-
-			if (FrameTask.IsTasking<OpeningTask>(Const.TASK_ROUTE)) return;
-			var player = ePlayer.Current;
-			if (player == null || !player.Active) return;
-
-			const int LINGER_RATE = 32;
-			bool flying = player.IsFlying;
-			int playerX = player.X;
-			int playerY = player.Y;
-			bool notInAir = player.IsGrounded || player.InWater || player.InSand || player.IsClimbing || player.IsGrabingSide || player.IsGrabingTop;
-
-			if (notInAir || flying) PlayerLastGroundedY = playerY;
-
-			var game = Game.Current;
-			int linger = game.ViewRect.width * LINGER_RATE / 1000;
-			int centerX = game.ViewRect.x + game.ViewRect.width / 2;
-			if (playerX < centerX - linger) {
-				AimViewX = playerX + linger - game.ViewRect.width / 2;
-			} else if (playerX > centerX + linger) {
-				AimViewX = playerX - linger - game.ViewRect.width / 2;
-			}
-			AimViewY = notInAir || flying || player.IsSliding || playerY < PlayerLastGroundedY ?
-				playerY - game.ViewRect.height * 382 / 1000 : AimViewY;
-			game.SetViewPositionDelay(AimViewX, AimViewY, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_PLAYER);
-
-			// Clamp
-			if (!game.ViewRect.Contains(playerX, playerY)) {
-				if (playerX >= game.ViewRect.xMax) AimViewX = playerX - game.ViewRect.width + 1;
-				if (playerX <= game.ViewRect.xMin) AimViewX = playerX - 1;
-				if (playerY >= game.ViewRect.yMax) AimViewY = playerY - game.ViewRect.height + 1;
-				if (playerY <= game.ViewRect.yMin) AimViewY = playerY - 1;
-				game.SetViewPositionDelay(AimViewX, AimViewY, 1000, YayaConst.VIEW_PRIORITY_PLAYER + 1);
-			}
-
 		}
 
 
