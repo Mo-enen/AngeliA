@@ -20,29 +20,13 @@ namespace Yaya {
 		private static readonly int ButtonSelectCode = "GamePad Select".AngeHash();
 		private static readonly int ButtonStartCode = "GamePad Start".AngeHash();
 
-		public Color32 PressingTint = new();
-		public Color32 DarkButtonTint = new();
-		public Color32 ColorfulButtonTint = new();
-
-		public RectInt DPadLeftPosition = default;
-		public RectInt DPadRightPosition = default;
-		public RectInt DPadDownPosition = default;
-		public RectInt DPadUpPosition = default;
-		public RectInt SelectPosition = default;
-		public RectInt StartPosition = default;
-		public RectInt ButtonAPosition = default;
-		public RectInt ButtonBPosition = default;
+		public static readonly Color32 DirectionTint = new(255, 255, 0, 255);
+		public static readonly Color32 PressingTint = new(0, 255, 0, 255);
+		public static readonly Color32 DarkButtonTint = new(0, 0, 0, 255);
+		public static readonly Color32 ColorfulButtonTint = new(240, 86, 86, 255);
 
 
-
-		public override void OnActived () {
-			base.OnActived();
-			ColorfulButtonTint = new(240, 86, 86, 255);
-			DarkButtonTint = new(0, 0, 0, 255);
-			PressingTint = new(0, 255, 0, 255);
-		}
-
-
+		// MSG
 		protected override void FrameUpdateUI () {
 
 			if (FrameTask.IsTasking(Const.TASK_ROUTE)) return;
@@ -51,14 +35,15 @@ namespace Yaya {
 			Height = 60 * UNIT;
 			X = 6 * UNIT;
 			Y = 6 * UNIT;
-			DPadLeftPosition = new(10 * UNIT, 22 * UNIT, 12 * UNIT, 8 * UNIT);
-			DPadRightPosition = new(22 * UNIT, 22 * UNIT, 12 * UNIT, 8 * UNIT);
-			DPadDownPosition = new(18 * UNIT, 14 * UNIT, 8 * UNIT, 12 * UNIT);
-			DPadUpPosition = new(18 * UNIT, 26 * UNIT, 8 * UNIT, 12 * UNIT);
-			SelectPosition = new(44 * UNIT, 20 * UNIT, 12 * UNIT, 4 * UNIT);
-			StartPosition = new(60 * UNIT, 20 * UNIT, 12 * UNIT, 4 * UNIT);
-			ButtonAPosition = new(106 * UNIT, 18 * UNIT, 12 * UNIT, 12 * UNIT);
-			ButtonBPosition = new(86 * UNIT, 18 * UNIT, 12 * UNIT, 12 * UNIT);
+			var DPadLeftPosition = new RectInt(10 * UNIT, 22 * UNIT, 12 * UNIT, 8 * UNIT);
+			var DPadRightPosition = new RectInt(22 * UNIT, 22 * UNIT, 12 * UNIT, 8 * UNIT);
+			var DPadDownPosition = new RectInt(18 * UNIT, 14 * UNIT, 8 * UNIT, 12 * UNIT);
+			var DPadUpPosition = new RectInt(18 * UNIT, 26 * UNIT, 8 * UNIT, 12 * UNIT);
+			var DPadCenterPos = new Vector2Int(22 * UNIT, 26 * UNIT);
+			var SelectPosition = new RectInt(44 * UNIT, 20 * UNIT, 12 * UNIT, 4 * UNIT);
+			var StartPosition = new RectInt(60 * UNIT, 20 * UNIT, 12 * UNIT, 4 * UNIT);
+			var ButtonAPosition = new RectInt(106 * UNIT, 18 * UNIT, 12 * UNIT, 12 * UNIT);
+			var ButtonBPosition = new RectInt(86 * UNIT, 18 * UNIT, 12 * UNIT, 12 * UNIT);
 
 			var screenRect = CellRenderer.CameraRect;
 
@@ -71,13 +56,23 @@ namespace Yaya {
 			CellRenderer.Draw(DPadDownCode, DPadDownPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Down) ? PressingTint : DarkButtonTint);
 			CellRenderer.Draw(DPadUpCode, DPadUpPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Up) ? PressingTint : DarkButtonTint);
 
+			// Direction
+			if (FrameInput.UsingLeftStick) {
+				var nDir = FrameInput.Direction;
+				CellRenderer.Draw(
+					Const.PIXEL, DPadCenterPos.x + X + screenRect.x, DPadCenterPos.y + Y + screenRect.y,
+					500, 0, (int)Vector3.SignedAngle(Vector3.up, (Vector2)nDir, Vector3.back),
+					3 * UNIT, (int)nDir.magnitude * UNIT / 50, DirectionTint
+				);
+			}
+
 			// Func
 			CellRenderer.Draw(ButtonSelectCode, SelectPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Select) ? PressingTint : DarkButtonTint);
 			CellRenderer.Draw(ButtonStartCode, StartPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Start) ? PressingTint : DarkButtonTint);
 
 			// Buttons
-			CellRenderer.Draw(ButtonACode, ButtonAPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Jump) ? PressingTint : ColorfulButtonTint);
-			CellRenderer.Draw(ButtonBCode, ButtonBPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Action) ? PressingTint : ColorfulButtonTint);
+			CellRenderer.Draw(ButtonACode, ButtonAPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Action) ? PressingTint : ColorfulButtonTint);
+			CellRenderer.Draw(ButtonBCode, ButtonBPosition.Shift(X, Y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Jump) ? PressingTint : ColorfulButtonTint);
 
 		}
 

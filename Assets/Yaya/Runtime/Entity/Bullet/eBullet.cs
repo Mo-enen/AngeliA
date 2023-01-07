@@ -23,7 +23,7 @@ namespace Yaya {
 
 	[EntityAttribute.Capacity(128)]
 	[EntityAttribute.ExcludeInMapEditor]
-	[EntityAttribute.ForceUpdate]
+	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.DontDestroyOutOfRange]
 	public abstract class eBullet : Entity {
 

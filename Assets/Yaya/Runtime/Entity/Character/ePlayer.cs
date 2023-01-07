@@ -11,7 +11,7 @@ namespace Yaya {
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.ForceSpawn]
-	[EntityAttribute.ForceUpdate]
+	[EntityAttribute.UpdateOutOfRange]
 	public abstract class ePlayer : eCharacter {
 
 
@@ -29,10 +29,6 @@ namespace Yaya {
 
 		// Data
 		private static readonly PhysicsCell[] Collects = new PhysicsCell[8];
-		private int LeftDownFrame = int.MinValue;
-		private int RightDownFrame = int.MinValue;
-		private int DownDownFrame = int.MinValue;
-		private int UpDownFrame = int.MinValue;
 		private int AttackRequiringFrame = int.MinValue;
 		private int LastGroundedY = 0;
 
@@ -76,7 +72,7 @@ namespace Yaya {
 			switch (CharacterState) {
 				case CharacterState.GamePlay:
 					if (!FrameTask.HasTask(Const.TASK_ROUTE)) {
-						FrameUpdate_Move();
+						Move(FrameInput.DirectionX, FrameInput.DirectionY);
 						FrameUpdate_JumpDashPound();
 						FrameUpdate_Action_Attack();
 					} else {
@@ -117,72 +113,6 @@ namespace Yaya {
 					hit.Entity.Active = false;
 				}
 			}
-		}
-
-
-		private void FrameUpdate_Move () {
-
-			int frame = Game.GlobalFrame;
-			var x = Direction3.None;
-			var y = Direction3.None;
-
-			// Left
-			if (FrameInput.GameKeyPress(GameKey.Left)) {
-				if (LeftDownFrame < 0) {
-					LeftDownFrame = frame;
-					AttackRequiringFrame = int.MinValue;
-				}
-				if (LeftDownFrame > RightDownFrame) {
-					x = Direction3.Negative;
-				}
-			} else if (LeftDownFrame > 0) {
-				LeftDownFrame = int.MinValue;
-			}
-
-			// Right
-			if (FrameInput.GameKeyPress(GameKey.Right)) {
-				if (RightDownFrame < 0) {
-					RightDownFrame = frame;
-					AttackRequiringFrame = int.MinValue;
-				}
-				if (RightDownFrame > LeftDownFrame) {
-					x = Direction3.Positive;
-				}
-			} else if (RightDownFrame > 0) {
-				RightDownFrame = int.MinValue;
-			}
-
-			if (!LockingInput) {
-				// Down
-				if (FrameInput.GameKeyPress(GameKey.Down)) {
-					if (DownDownFrame < 0) {
-						DownDownFrame = frame;
-						AttackRequiringFrame = int.MinValue;
-					}
-					if (DownDownFrame > UpDownFrame) {
-						y = Direction3.Negative;
-					}
-				} else if (DownDownFrame > 0) {
-					DownDownFrame = int.MinValue;
-				}
-
-				// Up
-				if (FrameInput.GameKeyPress(GameKey.Up)) {
-					if (UpDownFrame < 0) {
-						UpDownFrame = frame;
-						AttackRequiringFrame = int.MinValue;
-					}
-					if (UpDownFrame > DownDownFrame) {
-						y = Direction3.Positive;
-					}
-				} else if (UpDownFrame > 0) {
-					UpDownFrame = int.MinValue;
-				}
-
-			}
-
-			// Final
-			Move(x, y);
 		}
 
 
@@ -239,6 +169,12 @@ namespace Yaya {
 					}
 					return;
 				}
+			}
+			if (
+				FrameInput.GameKeyDown(GameKey.Left) || FrameInput.GameKeyDown(GameKey.Right) ||
+				FrameInput.GameKeyDown(GameKey.Down) || FrameInput.GameKeyDown(GameKey.Up)
+			) {
+				AttackRequiringFrame = int.MinValue;
 			}
 
 			// Perform Required Attack

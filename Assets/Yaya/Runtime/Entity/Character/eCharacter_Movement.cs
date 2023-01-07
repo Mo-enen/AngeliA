@@ -60,6 +60,8 @@ namespace Yaya {
 		public MovementState MoveState { get; set; } = MovementState.Idle;
 		public bool FacingRight { get; set; } = true;
 		public bool FacingFront { get; set; } = true;
+		public bool IsMoving => IntendedX != 0;
+		public bool IsWalking => IntendedX != 0 && RunningAccumulateFrame < RunAccumulation;
 		public bool IsRunning => IntendedX != 0 && RunningAccumulateFrame >= RunAccumulation;
 		public bool IsRolling => !InWater && !IsPounding && !IsFlying && ((JumpWithRoll && CurrentJumpCount > 0) || (JumpSecondWithRoll && CurrentJumpCount > 1));
 		public bool IsGrabFliping => Game.GlobalFrame < LastGrabFlipFrame + GrabFlipThroughDuration;

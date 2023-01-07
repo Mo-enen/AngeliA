@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[EntityAttribute.ForceUpdate]
+	[EntityAttribute.UpdateOutOfRange]
 	public class eGuaGua : eMascot {
 
 
