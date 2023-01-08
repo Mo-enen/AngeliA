@@ -400,7 +400,15 @@ namespace Yaya {
 				case MovementState.GrabTop:
 					if (IntendedX > 0) {
 						CurrentAniFrame++;
-					}else if (IntendedX < 0) {
+					} else if (IntendedX < 0) {
+						CurrentAniFrame--;
+					}
+					break;
+
+				case MovementState.GrabSide:
+					if (IntendedY > 0) {
+						CurrentAniFrame++;
+					} else if (IntendedY < 0) {
 						CurrentAniFrame--;
 					}
 					break;

@@ -195,21 +195,20 @@ namespace Yaya {
 			if (IsPounding) LastPoundingFrame = frame;
 
 			// Grab
-			if (!IsGrabingSide || IntendedX != 0) {
-				IsGrabingTop = GrabTopCheck();
-			} else {
-				IsGrabingTop = false;
+			bool prevGrabingTop = IsGrabingTop;
+			bool prevGrabingSide = !IsGrabingTop && IsGrabingSide;
+			IsGrabingTop = GrabTopCheck(out int grabingY);
+			IsGrabingSide = GrabSideCheck();
+			if (IsGrabingTop && IsGrabingSide) {
+				IsGrabingTop = prevGrabingTop;
+				IsGrabingSide = prevGrabingSide;
+			}
+			if (IsGrabingTop) {
+				Y = grabingY;
+				Height = GrabTopHeight;
 			}
 
-			if (!IsGrabingTop || IntendedX != 0) {
-				IsGrabingSide = GrabSideCheck();
-				if (IsGrabingSide) {
-					IsGrabingTop = false;
-				}
-			} else {
-				IsGrabingSide = false;
-			}
-
+			// Grab Flip Lock
 			if (!IsGrabingTop && IntendedY == 1) GrabFlipLock = true;
 			if (IsGrabingTop && IntendedY != 1) GrabFlipLock = false;
 
@@ -416,8 +415,10 @@ namespace Yaya {
 				}
 				// Drop
 				if (IntendedY < 0) {
-					Y -= GRAB_TOP_CHECK_GAP;
-					Hitbox.y = Y;
+					if (!GrabSideCheck()) {
+						Y -= GRAB_TOP_CHECK_GAP;
+						Hitbox.y = Y;
+					}
 					IsGrabingTop = false;
 					LastGrabTopDropFrame = Game.GlobalFrame;
 				}
@@ -639,10 +640,11 @@ namespace Yaya {
 		}
 
 
-		private bool GrabTopCheck () {
+		private bool GrabTopCheck (out int grabingY) {
+			grabingY = 0;
 			if (
 				!GrabTopAvailable || InsideGround || IsGrounded || IsClimbing || IsDashing ||
-				InWater || IsSquating || IsPounding || IsGrabFliping
+				InWater || IsSquating || IsGrabFliping
 			) return false;
 			if (Game.GlobalFrame < LastGrabTopDropFrame + GRAB_DROP_CANCEL) return false;
 			var rect = new RectInt(
@@ -652,8 +654,7 @@ namespace Yaya {
 			if (CellPhysics.Overlap(
 				YayaConst.MASK_MAP, rect, out var hit, this, OperationMode.ColliderOnly, YayaConst.GRAB_TOP_TAG
 			)) {
-				Y = hit.Rect.yMin - GrabTopHeight;
-				Hitbox.height = GrabTopHeight;
+				grabingY = hit.Rect.yMin - GrabTopHeight;
 				return true;
 			}
 			return false;
@@ -663,7 +664,7 @@ namespace Yaya {
 		private bool GrabSideCheck () {
 			if (
 				!GrabSideAvailable || InsideGround || IsGrounded || IsClimbing || IsDashing ||
-				InWater || IsSquating || IsPounding || IsGrabFliping ||
+				InWater || IsSquating || IsGrabFliping ||
 				Game.GlobalFrame < LastJumpFrame + GRAB_JUMP_CANCEL ||
 				VelocityY > GrabMoveSpeedY
 			) return false;
