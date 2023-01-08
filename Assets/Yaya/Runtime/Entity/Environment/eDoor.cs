@@ -111,13 +111,14 @@ namespace Yaya {
 		// API
 		public bool Invoke (ePlayer player) {
 			if (player == null || FrameTask.HasTask(Const.TASK_ROUTE)) return false;
+			var game = Game.Current;
 			player.X = X + (Width - player.Width) / 2 - player.OffsetX;
 			player.Y = Y;
 			player.Stop();
-			var game = Game.Current;
-			game.SetViewZDelay(
-				IsFrontDoor ? game.ViewZ - 1 : game.ViewZ + 1,
-				player.X, player.Y + player.Height / 2
+			game.Teleport(
+				player.X, player.Y + player.Height / 2,
+				player.X, player.Y + player.Height / 2,
+				IsFrontDoor ? game.ViewZ - 1 : game.ViewZ + 1
 			);
 			player.RenderEnterDoor(game.WorldConfig.SquadTransitionDuration, IsFrontDoor);
 			Open = true;

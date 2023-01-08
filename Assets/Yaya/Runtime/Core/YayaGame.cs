@@ -128,10 +128,10 @@ namespace Yaya {
 
 			var game = Game.Current;
 			if (FrameInput.KeyDown(Key.Digit1)) {
-				game.SetViewZImmediately(game.ViewZ + 1);
+				game.SetViewZ(game.ViewZ + 1);
 			}
 			if (FrameInput.KeyDown(Key.Digit2)) {
-				game.SetViewZImmediately(game.ViewZ - 1);
+				game.SetViewZ(game.ViewZ - 1);
 			}
 			if (FrameInput.KeyDown(Key.Digit3)) {
 				if (ePlayer.Current != null) {
@@ -151,10 +151,15 @@ namespace Yaya {
 				DialoguePerformer.Perform<YayaDialoguePerformer>("TestConversation");
 			}
 			if (FrameInput.KeyDown(Key.Digit8)) {
-
+				game.WorldSquad.SetDataChannel(World.DataChannel.BuiltIn);
+				game.WorldSquad_Behind.SetDataChannel(World.DataChannel.BuiltIn);
+				game.SetViewZ(game.ViewZ);
 			}
 			if (FrameInput.KeyDown(Key.Digit9)) {
-				Cutscene.PlayVideo("Test Video 1".AngeHash());
+				game.WorldSquad.SetDataChannel(World.DataChannel.User);
+				game.WorldSquad_Behind.SetDataChannel(World.DataChannel.User);
+				game.SetViewZ(game.ViewZ);
+				//Cutscene.PlayVideo("Test Video 1".AngeHash());
 			}
 			if (FrameInput.KeyDown(Key.Digit0)) {
 				ePlayer.Current.SetHealth(0);

@@ -28,7 +28,7 @@ namespace Yaya.Editor {
 
 			// Get All tele Positions
 			var list = new List<eCheckAltar.AltarMeta.Position>();
-			foreach (var filePath in Util.EnumerateFiles(Const.MapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
+			foreach (var filePath in Util.EnumerateFiles(Const.BuiltInMapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
 				try {
 					if (!World.GetWorldPositionFromName(Util.GetNameWithoutExtension(filePath), out var worldPos)) continue;
 					foreach (var (id, x, y) in World.EditorOnly_ForAllEntities(filePath)) {
@@ -65,7 +65,7 @@ namespace Yaya.Editor {
 
 			// Get All Pos
 			var allPos = new Dictionary<Vector3Int, Vector2Int>();
-			foreach (var filePath in Util.EnumerateFiles(Const.MapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
+			foreach (var filePath in Util.EnumerateFiles(Const.BuiltInMapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
 				try {
 					if (!World.GetWorldPositionFromName(Util.GetNameWithoutExtension(filePath), out var worldPos)) continue;
 					foreach (var (id, x, y) in World.EditorOnly_ForAllEntities(filePath)) {

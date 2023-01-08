@@ -40,7 +40,7 @@ namespace Yaya {
 				GotoBed = false;
 			}
 			SetViewPosition(TargetViewX, TargetViewY + DOLLY_HEIGHT);
-			Game.Current.SetViewZImmediately(TargetViewZ);
+			Game.Current.SetViewZ(TargetViewZ);
 			SkipFrame = int.MaxValue;
 			// Remove Player
 			var player = ePlayer.Current;
