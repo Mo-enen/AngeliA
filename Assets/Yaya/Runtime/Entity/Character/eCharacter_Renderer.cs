@@ -228,6 +228,10 @@ namespace Yaya {
 					Const.ORIGINAL_SIZE,
 					Game.GlobalFrame
 				);
+				if (EnterDoorEndFrame > 0) {
+					CurrentCode = AnimationSheet.DoorFront;
+					DrawFace();
+				}
 				return;
 			}
 
@@ -278,7 +282,6 @@ namespace Yaya {
 						break;
 					case MovementState.JumpDown:
 					case MovementState.JumpUp:
-					case MovementState.Roll:
 						attacks = AnimationSheet.Attacks_Air ?? attacks;
 						break;
 					case MovementState.Walk:
@@ -290,6 +293,8 @@ namespace Yaya {
 					ani = attacks[AttackCombo.Clamp(0, attacks.Length - 1)];
 					if (frame <= LastAttackFrame) CurrentAniFrame = 0;
 				}
+			} else if (IsRolling) {
+				ani = AnimationSheet.Roll;
 			} else {
 				// Movement
 				ani = MoveState switch {
@@ -304,7 +309,6 @@ namespace Yaya {
 					MovementState.SquatIdle => AnimationSheet.SquatIdle,
 					MovementState.SquatMove => AnimationSheet.SquatMove,
 					MovementState.Dash => AnimationSheet.Dash,
-					MovementState.Roll => AnimationSheet.Roll,
 					MovementState.Pound => AnimationSheet.Pound,
 					MovementState.Climb => AnimationSheet.Climb,
 					MovementState.Fly => AnimationSheet.Fly,

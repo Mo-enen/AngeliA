@@ -12,7 +12,7 @@ namespace Yaya {
 		Walk, Run, JumpUp, JumpDown,
 		SwimIdle, SwimMove, SwimDash,
 		SquatIdle, SquatMove,
-		Dash, Roll, Pound, Climb, Fly, Slide, GrabTop, GrabSide, GrabFlip,
+		Dash, Pound, Climb, Fly, Slide, GrabTop, GrabSide, GrabFlip,
 	}
 
 
@@ -93,6 +93,7 @@ namespace Yaya {
 		private bool PrevInWater = false;
 		private bool PrevGrounded = false;
 		private bool GrabFlipLock = true;
+		private bool AllowGrabSideMoveUp = false;
 		private int? ClimbPositionCorrect = null;
 
 
@@ -118,6 +119,7 @@ namespace Yaya {
 			MovementUpdate_Cache();
 			MovementUpdate_Jump();
 			MovementUpdate_Dash();
+			MoveState = GetCurrentMovementState();
 			MovementUpdate_VelocityX();
 			MovementUpdate_VelocityY();
 			IntendedJump = false;
@@ -198,7 +200,7 @@ namespace Yaya {
 			bool prevGrabingTop = IsGrabingTop;
 			bool prevGrabingSide = !IsGrabingTop && IsGrabingSide;
 			IsGrabingTop = GrabTopCheck(out int grabingY);
-			IsGrabingSide = GrabSideCheck();
+			IsGrabingSide = GrabSideCheck(out AllowGrabSideMoveUp);
 			if (IsGrabingTop && IsGrabingSide) {
 				IsGrabingTop = prevGrabingTop;
 				IsGrabingSide = prevGrabingSide;
@@ -228,12 +230,10 @@ namespace Yaya {
 			FacingRight = LastIntendedX > 0;
 			FacingFront = !IsClimbing;
 
-			// State
-			MoveState = GetCurrentMovementState();
-
 			// Physics
 			int width = InWater ? SwimWidth : MovementWidth;
-			Hitbox = new(X - width / 2, Y, width, Hitbox.height.MoveTowards(GetCurrentHeight(), Const.CEL / 8, Const.CEL));
+			int height = GetCurrentHeight();
+			Hitbox = new(X - width / 2, Y, width, Hitbox.height.MoveTowards(height, Const.CEL / 8, Const.CEL));
 			Width = Hitbox.width;
 			Height = Hitbox.height;
 			OffsetX = -width / 2;
@@ -283,9 +283,9 @@ namespace Yaya {
 							LastDashFrame = int.MinValue;
 							IsDashing = false;
 							IsSliding = false;
-							LastJumpFrame = frame;
 							IsGrabingSide = false;
 							IsGrabingTop = false;
+							LastJumpFrame = frame;
 						}
 						IsClimbing = false;
 					}
@@ -346,52 +346,86 @@ namespace Yaya {
 
 
 		private void MovementUpdate_VelocityX () {
-			int speed;
+
+			int speed = 0;
 			int acc = int.MaxValue;
 			int dcc = int.MaxValue;
-			if (IsGrabingTop) {
-				// Grab Top
-				speed = IntendedX * GrabMoveSpeedX;
-			} else if (IsGrabingSide) {
-				// Grab Side
-				speed = 0;
-			} else if (IsFlying && FlyGlideSpeed > 0) {
-				// Glide
-				speed = FacingRight ? FlyGlideSpeed : -FlyGlideSpeed;
-				acc = FlyGlideAcceleration;
-				dcc = FlyGlideDecceleration;
-			} else if (IsClimbing) {
+
+			switch (MoveState) {
+
+				default:
+					bool running = IsRunning;
+					speed = IntendedX * (running ? RunSpeed : WalkSpeed);
+					acc = running ? RunAcceleration : WalkAcceleration;
+					dcc = running ? RunDecceleration : WalkDecceleration;
+					break;
+
+				// Squat
+				case MovementState.SquatIdle:
+				case MovementState.SquatMove:
+					speed = IntendedX * SquatSpeed;
+					acc = SquatAcceleration;
+					dcc = SquatDecceleration;
+					break;
+
+				// Swim
+				case MovementState.SwimMove:
+					if (SwimInFreeStyle) {
+						// Free Swim
+						speed = IntendedX * FreeSwimSpeed;
+						acc = FreeSwimAcceleration;
+						dcc = FreeSwimDecceleration;
+					} else {
+						// Normal Swim
+						speed = IntendedX * SwimSpeed;
+						acc = SwimAcceleration;
+						dcc = SwimDecceleration;
+					}
+					break;
+
+				// Stop
+				case MovementState.Slide:
+				case MovementState.GrabSide:
+				case MovementState.GrabFlip:
+					speed = 0;
+					break;
+
+				// Dash
+				case MovementState.Dash:
+				case MovementState.SwimDash:
+					if (InWater && SwimInFreeStyle && !IsGrounded) {
+						// Free Water Dash
+						speed = LastMoveDirection.x * FreeSwimDashSpeed;
+						acc = FreeSwimDashAcceleration;
+					} else {
+						// Normal Dash
+						speed = FacingRight ? DashSpeed : -DashSpeed;
+						acc = DashAcceleration;
+					}
+					break;
+
 				// Climb
-				speed = ClimbPositionCorrect.HasValue ? 0 : IntendedX * ClimbSpeedX;
-				if (ClimbPositionCorrect.HasValue) X = X.MoveTowards(ClimbPositionCorrect.Value, CLIMB_CORRECT_DELTA);
-			} else if (IsDashing) {
-				if (InWater && SwimInFreeStyle && !IsGrounded) {
-					// Free Water Dash
-					speed = LastMoveDirection.x * FreeSwimDashSpeed;
-					acc = FreeSwimDashAcceleration;
-				} else {
-					// Normal Dash
-					speed = FacingRight ? DashSpeed : -DashSpeed;
-					acc = DashAcceleration;
-				}
-			} else if (IsSquating) {
-				speed = IntendedX * SquatSpeed;
-				acc = SquatAcceleration;
-				dcc = SquatDecceleration;
-			} else if (InWater && SwimInFreeStyle) {
-				speed = IntendedX * FreeSwimSpeed;
-				acc = FreeSwimAcceleration;
-				dcc = FreeSwimDecceleration;
-			} else if (InWater) {
-				speed = IntendedX * SwimSpeed;
-				acc = SwimAcceleration;
-				dcc = SwimDecceleration;
-			} else {
-				bool running = IsRunning;
-				speed = IntendedX * (running ? RunSpeed : WalkSpeed);
-				acc = running ? RunAcceleration : WalkAcceleration;
-				dcc = running ? RunDecceleration : WalkDecceleration;
+				case MovementState.Climb:
+					speed = ClimbPositionCorrect.HasValue ? 0 : IntendedX * ClimbSpeedX;
+					if (ClimbPositionCorrect.HasValue) X = X.MoveTowards(ClimbPositionCorrect.Value, CLIMB_CORRECT_DELTA);
+					break;
+
+				// Fly
+				case MovementState.Fly: // Glide
+					if (FlyGlideSpeed > 0) {
+						speed = FacingRight ? FlyGlideSpeed : -FlyGlideSpeed;
+						acc = FlyGlideAcceleration;
+						dcc = FlyGlideDecceleration;
+					}
+					break;
+
+				// Grab Top
+				case MovementState.GrabTop:
+					speed = IntendedX * GrabMoveSpeedX;
+					break;
+
 			}
+
 			if ((speed > 0 && VelocityX < 0) || (speed < 0 && VelocityX > 0)) {
 				acc *= OppositeXAccelerationRate / 1000;
 				dcc *= OppositeXAccelerationRate / 1000;
@@ -401,76 +435,96 @@ namespace Yaya {
 
 
 		private void MovementUpdate_VelocityY () {
-			if (IsGrabFliping) {
-				// Grab Fliping
-				GravityScale = 0;
-				VelocityY = (MovementHeight + Const.CEL + 12) / GrabFlipThroughDuration;
-			} else if (IsGrabingTop) {
-				// Grab Top
-				GravityScale = 0;
-				VelocityY = 0;
-				// Flip Through
-				if (IntendedY > 0 && GrabFlipThroughDuration > 0 && !GrabFlipLock) {
-					LastGrabFlipFrame = Game.GlobalFrame;
-				}
-				// Drop
-				if (IntendedY < 0) {
-					if (!GrabSideCheck()) {
-						Y -= GRAB_TOP_CHECK_GAP;
-						Hitbox.y = Y;
+			switch (MoveState) {
+
+				default:
+					GravityScale = VelocityY <= 0 ? 1000 : (int)JumpRiseGravityRate;
+					break;
+
+				// Swim
+				case MovementState.SwimIdle:
+				case MovementState.SwimMove:
+					if (SwimInFreeStyle) {
+						VelocityY = VelocityY.MoveTowards(
+							IntendedY * FreeSwimSpeed, FreeSwimAcceleration, FreeSwimDecceleration
+						);
+						GravityScale = 0;
+					} else {
+						if (IntendedY != 0) {
+							VelocityY = VelocityY.MoveTowards(
+								IntendedY * SwimSpeed, SwimAcceleration, SwimDecceleration
+							);
+							GravityScale = 0;
+						} else {
+							GravityScale = 1000;
+						}
 					}
-					IsGrabingTop = false;
-					LastGrabTopDropFrame = Game.GlobalFrame;
-				}
-			} else if (IsGrabingSide) {
-				// Grab Side
-				GravityScale = 0;
-				VelocityY = IntendedY * GrabMoveSpeedY;
-			} else if (IsFlying) {
-				// Fly
-				GravityScale = VelocityY > 0 ? FlyGravityRiseRate : FlyGravityFallRate;
-				VelocityY = Mathf.Max(VelocityY, -FlyFallSpeed);
-			} else if (IsClimbing) {
-				// Climb
-				VelocityY = (IntendedY <= 0 || ClimbCheck(true) ? IntendedY : 0) * ClimbSpeedY;
-				GravityScale = 0;
-			} else if (InWater && SwimInFreeStyle) {
-				if (IsDashing) {
-					// Free Water Dash
+					break;
+
+				case MovementState.SwimDash:
 					VelocityY = VelocityY.MoveTowards(
 						LastMoveDirection.y * FreeSwimDashSpeed, FreeSwimDashAcceleration, int.MaxValue
 					);
-				} else {
-					// Free Swim In Water
-					VelocityY = VelocityY.MoveTowards(
-						IntendedY * FreeSwimSpeed, FreeSwimAcceleration, FreeSwimDecceleration
-					);
-				}
-				GravityScale = 0;
-			} else if (IsSliding) {
-				// Slide
-				VelocityY = -SlideDropSpeed;
-				GravityScale = 0;
-			} else {
-				// Gravity
-				if (IsPounding) {
-					// Pound
+					GravityScale = 0;
+					break;
+
+				// Climb
+				case MovementState.Climb:
+					VelocityY = (IntendedY <= 0 || ClimbCheck(true) ? IntendedY : 0) * ClimbSpeedY;
+					GravityScale = 0;
+					break;
+
+				// Pound
+				case MovementState.Pound:
 					GravityScale = 0;
 					VelocityY = -PoundSpeed;
-				} else if (HoldingJump && VelocityY > 0) {
-					// Jumping Raise
-					GravityScale = JumpRiseGravityRate;
-				} else {
-					// Else
-					GravityScale = 1000;
-					if (InWater && IntendedY != 0) {
-						// Normal Swim
+					break;
+
+				// Fly
+				case MovementState.Fly:
+					GravityScale = VelocityY > 0 ? FlyGravityRiseRate : FlyGravityFallRate;
+					VelocityY = Mathf.Max(VelocityY, -FlyFallSpeed);
+					break;
+
+				// Slide
+				case MovementState.Slide:
+					if (VelocityY < -SlideDropSpeed) {
+						VelocityY = -SlideDropSpeed;
 						GravityScale = 0;
-						VelocityY = VelocityY.MoveTowards(
-							IntendedY * SwimSpeed, SwimAcceleration, SwimDecceleration
-						);
 					}
-				}
+					break;
+
+				// Grab Top
+				case MovementState.GrabTop:
+					GravityScale = 0;
+					VelocityY = 0;
+					// Flip Through
+					if (IntendedY > 0 && GrabFlipThroughDuration > 0 && !GrabFlipLock) {
+						LastGrabFlipFrame = Game.GlobalFrame;
+					}
+					// Drop
+					if (IntendedY < 0) {
+						if (!GrabSideCheck(out _)) {
+							Y -= GRAB_TOP_CHECK_GAP;
+							Hitbox.y = Y;
+						}
+						IsGrabingTop = false;
+						LastGrabTopDropFrame = Game.GlobalFrame;
+					}
+					break;
+
+				// Grab Side
+				case MovementState.GrabSide:
+					GravityScale = 0;
+					VelocityY = IntendedY <= 0 || AllowGrabSideMoveUp ? IntendedY * GrabMoveSpeedY : 0;
+					break;
+
+				// Grab Flip
+				case MovementState.GrabFlip:
+					GravityScale = 0;
+					VelocityY = (MovementHeight + Const.CEL + 12) / GrabFlipThroughDuration;
+					break;
+
 			}
 		}
 
@@ -529,19 +583,16 @@ namespace Yaya {
 		}
 
 
-		private int GetCurrentHeight () => MoveState switch {
-			MovementState.SquatIdle => SquatHeight,
-			MovementState.SquatMove => SquatHeight,
-			MovementState.Dash => DashHeight,
-			MovementState.SwimIdle => SwimHeight,
-			MovementState.SwimDash => SwimHeight,
-			MovementState.SwimMove => SwimHeight,
-			MovementState.Fly => FlyHeight,
-			MovementState.Roll => RollingHeight,
-			MovementState.GrabTop => GrabTopHeight,
-			MovementState.GrabSide => GrabSideHeight,
-			_ => MovementHeight,
-		};
+		private int GetCurrentHeight () {
+			if (IsSquating) return SquatHeight;
+			if (IsRolling) return RollingHeight;
+			if (IsDashing) return DashHeight;
+			if (InWater) return SwimHeight;
+			if (IsFlying) return FlyHeight;
+			if (IsGrabingTop) return GrabTopHeight;
+			if (IsGrabingSide) return GrabSideHeight;
+			return MovementHeight;
+		}
 
 
 		private MovementState GetCurrentMovementState () =>
@@ -552,10 +603,9 @@ namespace Yaya {
 			IsGrabFliping ? MovementState.GrabFlip :
 			IsGrabingTop ? MovementState.GrabTop :
 			IsGrabingSide ? MovementState.GrabSide :
-			IsRolling ? MovementState.Roll :
 			IsDashing ? (!IsGrounded && InWater ? MovementState.SwimDash : MovementState.Dash) :
 			IsSquating ? (IntendedX != 0 ? MovementState.SquatMove : MovementState.SquatIdle) :
-			InWater && !IsGrounded ? (IntendedX != 0 ? MovementState.SwimMove : MovementState.SwimIdle) :
+			InWater && (SwimInFreeStyle || !IsGrounded) ? (IntendedX != 0 ? MovementState.SwimMove : MovementState.SwimIdle) :
 			!IsGrounded && !InWater && !InSand && !IsClimbing ? (VelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown) :
 			IsRunning ? MovementState.Run :
 			IntendedX != 0 ? MovementState.Walk :
@@ -661,22 +711,37 @@ namespace Yaya {
 		}
 
 
-		private bool GrabSideCheck () {
+		private bool GrabSideCheck (out bool allowMoveUp) {
+			allowMoveUp = false;
 			if (
 				!GrabSideAvailable || InsideGround || IsGrounded || IsClimbing || IsDashing ||
 				InWater || IsSquating || IsGrabFliping ||
-				Game.GlobalFrame < LastJumpFrame + GRAB_JUMP_CANCEL ||
-				VelocityY > GrabMoveSpeedY
+				Game.GlobalFrame < LastJumpFrame + GRAB_JUMP_CANCEL
 			) return false;
-			var rect = new RectInt(
+			if (!IsGrabingSide && VelocityY > GrabMoveSpeedY / 2) return false;
+			var rectD = new RectInt(
+				LastIntendedX > 0 ? Hitbox.xMax : Hitbox.xMin - 1,
+				Hitbox.yMin + Hitbox.height / 4,
+				1,
+				Hitbox.height / 4
+			);
+			var rectU = new RectInt(
 				LastIntendedX > 0 ? Hitbox.xMax : Hitbox.xMin - 1,
 				Hitbox.yMax - Hitbox.height / 4,
 				1,
 				Hitbox.height / 4
 			);
-			return CellPhysics.Overlap(
-				YayaConst.MASK_MAP, rect, this, OperationMode.ColliderOnly, YayaConst.GRAB_SIDE_TAG
+			bool allowGrab = CellPhysics.Overlap(
+				YayaConst.MASK_MAP, rectD, this, OperationMode.ColliderOnly, YayaConst.GRAB_SIDE_TAG
+			) && CellPhysics.Overlap(
+				YayaConst.MASK_MAP, rectU, this, OperationMode.ColliderOnly, YayaConst.GRAB_SIDE_TAG
 			);
+			if (allowGrab) {
+				allowMoveUp = CellPhysics.Overlap(
+					YayaConst.MASK_MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, YayaConst.GRAB_SIDE_TAG
+				);
+			}
+			return allowGrab;
 		}
 
 
