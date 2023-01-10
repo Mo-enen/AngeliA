@@ -43,7 +43,8 @@ namespace Yaya {
 			SlideOnAnyBlock.Value = true;
 			GrabTopAvailable.Value = true;
 			GrabSideAvailable.Value = true;
-			GrabFlipThroughDuration.Value = 18;
+			GrabFlipThroughDown.Value = true;
+			GrabFlipThroughUp.Value = true;
 
 			BulletName.Value = "YayaPaw";
 			AttackDuration.Value = 12;

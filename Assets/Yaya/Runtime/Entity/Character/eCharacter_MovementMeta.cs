@@ -99,9 +99,11 @@ namespace Yaya {
 		// Grab
 		public BuffBool GrabTopAvailable { get; private set; } = new(false);
 		public BuffBool GrabSideAvailable { get; private set; } = new(false);
+		public BuffBool GrabFlipThroughDown { get; private set; } = new(false);
+		public BuffBool GrabFlipThroughUp { get; private set; } = new(false);
+		public BuffInt GrabFlipThroughDuration { get; private set; } = new(18);
 		public BuffInt GrabTopHeight { get; private set; } = new(364);
 		public BuffInt GrabSideHeight { get; private set; } = new(364);
-		public BuffInt GrabFlipThroughDuration { get; private set; } = new(0);
 		public BuffInt GrabMoveSpeedX { get; private set; } = new(24);
 		public BuffInt GrabMoveSpeedY { get; private set; } = new(24);
 		public BuffInt GrabJumpCountRefill { get; private set; } = new(0);

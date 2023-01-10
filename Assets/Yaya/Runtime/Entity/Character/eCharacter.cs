@@ -161,7 +161,7 @@ namespace Yaya {
 		public bool IsAttackAllowedByMovement () =>
 			(AttackInAir || (IsGrounded || InWater || InSand || IsClimbing)) &&
 			(AttackInWater || !InWater) &&
-			(AttackWhenMoving || !IsMoving) &&
+			(AttackWhenMoving || IntendedX == 0) &&
 			(AttackWhenClimbing || !IsClimbing) &&
 			(AttackWhenFlying || !IsFlying) &&
 			(AttackWhenRolling || !IsRolling) &&

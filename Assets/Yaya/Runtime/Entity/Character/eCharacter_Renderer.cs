@@ -417,6 +417,10 @@ namespace Yaya {
 					}
 					break;
 
+				case MovementState.GrabFlip:
+					CurrentAniFrame += VelocityY > 0 ? 1 : -1;
+					break;
+
 				default:
 					// Normal
 					CurrentAniFrame++;
