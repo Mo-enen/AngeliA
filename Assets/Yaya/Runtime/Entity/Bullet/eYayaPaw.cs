@@ -14,6 +14,7 @@ namespace Yaya {
 		private static readonly int[] PAW_Y = new int[] { 512, 480, 0, -64, -48, };
 		private static readonly int[] PAW_SIZE = new int[] { 1200, 1600, 1800, 1400, 1000, };
 		private static readonly int[] PAW_ROT = new int[] { -30, -15, 0, 15, 30, };
+		private static readonly int SMOKE_CODE = "YayaPaw Smoke".AngeHash();
 
 		// Api
 		protected override bool DestroyOnCollide => false;
@@ -67,6 +68,8 @@ namespace Yaya {
 			} else {
 				rot = PAW_ROT[localFrame.Clamp(0, 2)];
 			}
+
+			// Paw
 			if (CellRenderer.TryGetSpriteFromGroup(TypeID, spriteFrame, out var sprite, false, true)) {
 				CellRenderer.Draw(
 					sprite.GlobalID,
@@ -77,6 +80,30 @@ namespace Yaya {
 					sprite.GlobalHeight * PAW_SIZE[localFrame] / 1000
 				).Z = int.MaxValue;
 			}
+
+			// Smoke 
+			if (Grounded && localFrame >= 2) {
+				int smokeDuration = Duration - 4;
+				int smokeFrame = (Game.GlobalFrame - StartFrame - 4).LargerThanZero();
+				int _smokeFrame = smokeDuration * smokeDuration - (smokeDuration - smokeFrame) * (smokeDuration - smokeFrame);
+				var tint = new Color32(255, 255, 255, 255);
+				if (CellRenderer.TryGetSprite(Character.GroundedID, out var groundSprite)) {
+					tint = groundSprite.SummaryTint;
+				}
+				tint.a = (byte)Util.Remap(0, smokeDuration, 512, 0, smokeFrame);
+				var cell = CellRenderer.Draw(
+					SMOKE_CODE, X + Width / 2, Y,
+					500, 500, (smokeFrame + Game.GlobalFrame) * 12,
+					Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, tint
+				);
+				cell.X += (FacingRight ? _smokeFrame : -_smokeFrame) * 6;
+				cell.Y += cell.Height / 2;
+				cell.Z = int.MaxValue - 1;
+				if (!FacingRight) cell.Width *= -1;
+				cell.Width = Util.Remap(0, smokeDuration, cell.Width, cell.Width * 2, smokeFrame);
+				cell.Height = Util.Remap(0, smokeDuration, cell.Height, cell.Height * 2, smokeFrame);
+			}
+
 		}
 
 

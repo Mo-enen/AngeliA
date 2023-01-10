@@ -29,8 +29,9 @@ namespace Yaya {
 		public BuffInt JumpCount { get; private set; } = new(2);
 		public BuffInt JumpReleaseLoseRate { get; private set; } = new(700);
 		public BuffInt JumpRiseGravityRate { get; private set; } = new(600);
+		public BuffBool GrowJumpCountWhenFallOffEdge { get; private set; } = new(true);
 		public BuffBool JumpWithRoll { get; private set; } = new(false);
-		public BuffBool JumpSecondWithRoll { get; private set; } = new(true);
+		public BuffBool SecondJumpWithRoll { get; private set; } = new(true);
 		public BuffBool JumpThoughOneway { get; private set; } = new(false);
 
 		// Dash
@@ -58,6 +59,7 @@ namespace Yaya {
 		public BuffInt SwimHeight { get; private set; } = new(384);
 		public BuffInt InWaterSpeedLoseRate { get; private set; } = new(500);
 		public BuffInt SwimSpeed { get; private set; } = new(42);
+		public BuffInt SwimJumpSpeed { get; private set; } = new(128);
 		public BuffInt SwimAcceleration { get; private set; } = new(4);
 		public BuffInt SwimDecceleration { get; private set; } = new(4);
 		public BuffBool SwimInFreeStyle { get; private set; } = new(false);
@@ -93,12 +95,13 @@ namespace Yaya {
 		// Slide
 		public BuffBool SlideAvailable { get; private set; } = new(false);
 		public BuffBool SlideOnAnyBlock { get; private set; } = new(true);
+		public BuffBool ResetJumpCountWhenSlide { get; private set; } = new(true);
 		public BuffInt SlideDropSpeed { get; private set; } = new(4);
-		public BuffInt SlideJumpCountRefill { get; private set; } = new(0);
 
 		// Grab
 		public BuffBool GrabTopAvailable { get; private set; } = new(false);
 		public BuffBool GrabSideAvailable { get; private set; } = new(false);
+		public BuffBool ResetJumpCountWhenGrab { get; private set; } = new(true);
 		public BuffBool GrabFlipThroughDown { get; private set; } = new(false);
 		public BuffBool GrabFlipThroughUp { get; private set; } = new(false);
 		public BuffInt GrabFlipThroughDuration { get; private set; } = new(18);
@@ -106,7 +109,6 @@ namespace Yaya {
 		public BuffInt GrabSideHeight { get; private set; } = new(364);
 		public BuffInt GrabMoveSpeedX { get; private set; } = new(24);
 		public BuffInt GrabMoveSpeedY { get; private set; } = new(24);
-		public BuffInt GrabJumpCountRefill { get; private set; } = new(0);
 
 
 

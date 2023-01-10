@@ -32,6 +32,7 @@ namespace Yaya {
 		private const int SLIDE_JUMP_CANCEL = 2;
 		private const int SLIDE_GROUND_TOLERANCE = 12;
 		private const int GRAB_GROUND_TOLERANCE = 12;
+		private const int CLIMB_GROUND_TOLERANCE = 12;
 		private const int GRAB_JUMP_CANCEL = 2;
 		private const int GRAB_DROP_CANCEL = 6;
 		private const int GRAB_TOP_CHECK_GAP = 128;
@@ -50,6 +51,7 @@ namespace Yaya {
 		public int LastStartMoveFrame { get; private set; } = int.MinValue;
 		public int LastEndMoveFrame { get; private set; } = int.MinValue;
 		public int LastJumpFrame { get; private set; } = int.MinValue;
+		public int LastClimbFrame { get; private set; } = int.MinValue;
 		public int LastDashFrame { get; private set; } = int.MinValue;
 		public int LastSquatFrame { get; private set; } = int.MinValue;
 		public int LastSquatingFrame { get; private set; } = int.MinValue;
@@ -64,9 +66,9 @@ namespace Yaya {
 		public MovementState MoveState { get; set; } = MovementState.Idle;
 		public bool FacingRight { get; set; } = true;
 		public bool ReadyForRun => RunningAccumulateFrame >= RunAccumulation;
-		public bool IsRolling => !InWater && !IsPounding && !IsFlying && ((JumpWithRoll && CurrentJumpCount > 0) || (JumpSecondWithRoll && CurrentJumpCount > 1));
+		public bool IsRolling => !InWater && !IsPounding && !IsFlying && ((JumpWithRoll && CurrentJumpCount > 0) || (SecondJumpWithRoll && CurrentJumpCount > 1));
 		public bool IsGrabFliping => Game.GlobalFrame < LastGrabFlipFrame + Mathf.Max(GrabFlipThroughDuration, 1);
-		
+
 		public bool IsDashing { get; private set; } = false;
 		public bool IsSquating { get; private set; } = false;
 		public bool IsPounding { get; private set; } = false;
@@ -169,6 +171,7 @@ namespace Yaya {
 			} else {
 				IsClimbing = false;
 			}
+			if (IsClimbing) LastClimbFrame = frame;
 
 			// Dash
 			if (InWater && SwimInFreeStyle) {
@@ -248,19 +251,39 @@ namespace Yaya {
 
 			int frame = Game.GlobalFrame;
 
-			// Reset Count on Grounded
-			if (frame > LastJumpFrame + JUMP_GAP && (IsGrounded || InWater || IsClimbing) && !IntendedJump) {
-				CurrentJumpCount = 0;
-			}
+			if (CurrentJumpCount != 0) {
 
-			// Reset Count when Slide
-			if (frame <= LastSlidingFrame + SLIDE_GROUND_TOLERANCE) {
-				CurrentJumpCount = SlideJumpCountRefill.Value.Clamp(0, JumpCount);
-			}
+				// Reset Count on Grounded
+				if (frame > LastJumpFrame + JUMP_GAP && (IsGrounded || InWater) && !IntendedJump) {
+					CurrentJumpCount = 0;
+				}
 
-			// Reset Count when Grab
-			if (frame <= LastGrabingFrame + GRAB_GROUND_TOLERANCE) {
-				CurrentJumpCount = GrabJumpCountRefill.Value.Clamp(0, JumpCount);
+				// Reset Count when Climb
+				if (
+					frame > LastJumpFrame + CLIMB_GROUND_TOLERANCE &&
+					frame <= LastClimbFrame + CLIMB_GROUND_TOLERANCE
+				) {
+					CurrentJumpCount = 0;
+				}
+
+				// Reset Count when Slide
+				if (
+					ResetJumpCountWhenSlide &&
+					frame > LastJumpFrame + SLIDE_GROUND_TOLERANCE &&
+					frame <= LastSlidingFrame + SLIDE_GROUND_TOLERANCE
+				) {
+					CurrentJumpCount = 0;
+				}
+
+				// Reset Count when Grab
+				if (
+					ResetJumpCountWhenGrab &&
+					frame > LastJumpFrame + GRAB_GROUND_TOLERANCE &&
+					frame <= LastGrabingFrame + GRAB_GROUND_TOLERANCE
+				) {
+					CurrentJumpCount = 0;
+				}
+
 			}
 
 			// Perform Jump/Fly
@@ -278,7 +301,7 @@ namespace Yaya {
 						} else {
 							// Perform Jump
 							CurrentJumpCount++;
-							VelocityY = Mathf.Max(JumpSpeed, VelocityY);
+							VelocityY = Mathf.Max(InWater ? SwimJumpSpeed : JumpSpeed, VelocityY);
 							if (IsGrabingSide) {
 								X += FacingRight ? -6 : 6;
 							} else if (IsGrabingTop) {
@@ -317,7 +340,12 @@ namespace Yaya {
 			}
 
 			// Fall off Edge
-			if (CurrentJumpCount == 0 && !IsGrounded && !InWater && !IsClimbing && frame > LastGroundingFrame + JUMP_TOLERANCE) {
+			if (
+				GrowJumpCountWhenFallOffEdge &&
+				CurrentJumpCount == 0 &&
+				!IsGrounded && !InWater && !IsClimbing &&
+				frame > LastGroundingFrame + JUMP_TOLERANCE
+			) {
 				CurrentJumpCount++;
 			}
 

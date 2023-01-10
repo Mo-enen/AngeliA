@@ -34,7 +34,7 @@ namespace Yaya {
 			JumpSpeed.Value = 73;
 			SwimInFreeStyle.Value = false;
 			JumpWithRoll.Value = false;
-			JumpSecondWithRoll.Value = true;
+			SecondJumpWithRoll.Value = true;
 			JumpCount.Value = 2;
 			JumpThoughOneway.Value = true;
 			FlyAvailable.Value = true;
@@ -74,7 +74,7 @@ namespace Yaya {
 			if (LastStartRunFrame >= 0 && (Game.GlobalFrame - LastStartRunFrame) % 20 == 19) {
 				if (Game.Current.TryAddEntity(FOOTSTEP_CODE, X, Y, out var entity) && entity is eYayaFootstep step) {
 					if (CellRenderer.TryGetSprite(GroundedID, out var sprite)) {
-						step.Tint = sprite.Summary;
+						step.Tint = sprite.SummaryTint;
 					} else {
 						step.Tint = Const.WHITE;
 					}
