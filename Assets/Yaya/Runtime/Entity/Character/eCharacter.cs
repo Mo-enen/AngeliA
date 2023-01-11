@@ -42,6 +42,9 @@ namespace Yaya {
 		public int SleepFrame { get; protected set; } = 0;
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
 
+		// Data
+		private int PrevSleepAmount = 0;
+
 
 		#endregion
 
@@ -123,6 +126,7 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			FrameUpdate_Renderer();
+			PrevSleepAmount = SleepAmount;
 			base.FrameUpdate();
 		}
 

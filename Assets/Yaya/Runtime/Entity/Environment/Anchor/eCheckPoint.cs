@@ -85,7 +85,7 @@ namespace Yaya {
 					// Touch
 					SavedPosition = targetPos;
 					// Particle
-					var particle = Game.Current.AddEntity(
+					var particle = Game.Current.SpawnEntity(
 						eDefaultParticle.TYPE_ID,
 						X + Const.CEL / 2, Y + Const.CEL / 2
 					);

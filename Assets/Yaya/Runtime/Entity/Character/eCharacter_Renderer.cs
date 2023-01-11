@@ -134,7 +134,6 @@ namespace Yaya {
 		private int LastRequireBounceFrame = int.MinValue;
 		private int BlinkingTime = int.MinValue;
 		private int DamagingTime = int.MinValue;
-		private int PrevSleepAmount = 0;
 		private int EnterDoorEndFrame = 0;
 
 
@@ -221,6 +220,7 @@ namespace Yaya {
 
 			// Door
 			if (frame < EnterDoorEndFrame.Abs()) {
+				CurrentBounce = 1000;
 				CellRenderer.Draw_Animation(
 					EnterDoorEndFrame > 0 ? AnimationSheet.DoorFront : AnimationSheet.DoorBack,
 					X, Y, 500, 0, 0,
@@ -243,7 +243,7 @@ namespace Yaya {
 					DrawFace();
 					if (IsSliding && Game.GlobalFrame % 24 == 0) {
 						var rect = Rect;
-						Game.Current.AddEntity(
+						Game.Current.SpawnEntity(
 							SLIDE_PARTICLE_CODE, FacingRight ? rect.xMax : rect.xMin, rect.yMin + rect.height * 3 / 4
 						);
 					}
@@ -320,8 +320,15 @@ namespace Yaya {
 				};
 			}
 
-			// Rotation
+			// Pivot
+			int pivotX = 500;
 			int pivotY = 0;
+			if (CellRenderer.TryGetSprite(ani, out var sprite)) {
+				pivotX = sprite.PivotX;
+				pivotY = sprite.PivotY;
+			}
+
+			// Rotation
 			int offsetY = 0;
 			if (UseFreeStyleSwim && InWater && !IsGrounded) {
 				TargetRotation = Quaternion.LerpUnclamped(
@@ -349,7 +356,7 @@ namespace Yaya {
 			bool isSquating = MoveState == MovementState.SquatIdle || MoveState == MovementState.SquatMove;
 			var cell = CellRenderer.Draw_Animation(
 				CurrentAni,
-				X, Y + offsetY, 500, pivotY, (int)TargetRotation,
+				X, Y + offsetY, pivotX, pivotY, (int)TargetRotation,
 				FacingRight || isPounding || isClimbing ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 				Const.ORIGINAL_SIZE,
 				CurrentAniFrame
@@ -437,7 +444,9 @@ namespace Yaya {
 				sprite.GlobalBorder.IsZero
 			) return;
 			int bounce = Mathf.Abs(CurrentBounce);
+			int offsetX = sprite.GlobalWidth * (FacingRight ? -sprite.PivotX : sprite.PivotX - 1000) / 1000;
 			int offsetY = sprite.GlobalHeight - sprite.GlobalBorder.Up;
+			offsetY += sprite.GlobalHeight * -sprite.PivotY / 1000;
 			if (CurrentBounce > 0) {
 				offsetY = offsetY * bounce / 1000;
 			} else {
@@ -446,7 +455,7 @@ namespace Yaya {
 			var faceID = AnimationSheet.Faces[FaceIndex.UMod(AnimationSheet.Faces.Length)];
 			CellRenderer.Draw_9Slice(
 				Game.GlobalFrame % EYE_BLINK_RATE > 8 ? faceID : AnimationSheet.FaceBlink,
-				X - sprite.GlobalWidth / 2 + (FacingRight ? sprite.GlobalBorder.Left : sprite.GlobalBorder.Right),
+				X + offsetX + (FacingRight ? sprite.GlobalBorder.Left : sprite.GlobalBorder.Right),
 				Y + offsetY,
 				0, 1000, 0,
 				sprite.GlobalWidth - sprite.GlobalBorder.Left - sprite.GlobalBorder.Right,
@@ -485,7 +494,7 @@ namespace Yaya {
 				cell.Shift.Up = Util.Remap(90, 0, 0, 1000, SleepFrame);
 			} else if (SleepAmount >= 1000 && PrevSleepAmount < 1000) {
 				// Spawn Particle
-				if (Game.Current.TryAddEntity(
+				if (Game.Current.TrySpawnEntity(
 					SLEEP_PARTICLE_CODE,
 					cell.X - (int)(cell.PivotX * cell.Width) + cell.Width / 2,
 					cell.Y - (int)(cell.PivotY * cell.Height) + cell.Height / 2,
@@ -495,10 +504,9 @@ namespace Yaya {
 					particle.Height = Const.CEL * 2;
 				}
 			}
-			PrevSleepAmount = SleepAmount;
 			// ZZZ
 			if (Game.GlobalFrame % 42 == 0) {
-				Game.Current.TryAddEntity(eSleepParticle.TYPE_ID, X, Y + Height / 2, out _);
+				Game.Current.TrySpawnEntity(eSleepParticle.TYPE_ID, X, Y + Height / 2, out _);
 			}
 		}
 

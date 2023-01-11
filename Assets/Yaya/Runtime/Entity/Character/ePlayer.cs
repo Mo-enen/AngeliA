@@ -187,8 +187,9 @@ namespace Yaya {
 
 
 		private void FrameUpdate_Sleep () {
+			if (SleepAmount >= 1000) Game.Current.ClearAntiSpawn(true);
+			// Wake up on Press Action
 			if (FrameInput.GameKeyDown(GameKey.Action) || FrameInput.GameKeyDown(GameKey.Jump)) {
-				// Wake up
 				SetCharacterState(CharacterState.GamePlay);
 				Y -= 4;
 				IgnoreAttack(6);
@@ -254,7 +255,7 @@ namespace Yaya {
 					firstPlayerID = type.AngeHash();
 					if (type.GetCustomAttribute<FirstSelectedPlayerAttribute>(true) != null) break;
 				}
-				return Game.Current.AddEntity(firstPlayerID, x, y) as ePlayer;
+				return Game.Current.SpawnEntity(firstPlayerID, x, y) as ePlayer;
 			}
 		}
 

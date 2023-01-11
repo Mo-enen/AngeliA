@@ -10,7 +10,8 @@ namespace Yaya {
 		public void TakeDamage (int damage) {
 			if (damage > 0) {
 				Active = false;
-				Game.Current.AddEntity(BrokeParticleCode, X + Width / 2, Y + Height / 2);
+				Game.Current.SpawnEntity(BrokeParticleCode, X + Width / 2, Y + Height / 2);
+				Game.Current.MarkAsAntiSpawn(this);
 			}
 		}
 	}
@@ -21,7 +22,8 @@ namespace Yaya {
 		public void TakeDamage (int damage) {
 			if (damage > 0) {
 				Active = false;
-				Game.Current.AddEntity(BrokeParticleCode, X + Width / 2, Y + Height / 2);
+				Game.Current.SpawnEntity(BrokeParticleCode, X + Width / 2, Y + Height / 2);
+				Game.Current.MarkAsAntiSpawn(this);
 			}
 		}
 	}

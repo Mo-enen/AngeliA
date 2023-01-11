@@ -80,9 +80,9 @@ namespace Yaya {
 					if (i < PrevHp) {
 						eYayaDroppingHeart heart;
 						if (isLeft) {
-							heart = Game.Current.AddEntity<eYayaDroppingHeartLeft>(rect.x, rect.y);
+							heart = Game.Current.SpawnEntity<eYayaDroppingHeartLeft>(rect.x, rect.y);
 						} else {
-							heart = Game.Current.AddEntity<eYayaDroppingHeartRight>(rect.x, rect.y);
+							heart = Game.Current.SpawnEntity<eYayaDroppingHeartRight>(rect.x, rect.y);
 						}
 						if (heart != null) {
 							heart.Width = rect.width + 8;

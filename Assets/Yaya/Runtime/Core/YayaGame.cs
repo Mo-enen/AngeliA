@@ -24,7 +24,7 @@ namespace Yaya {
 				if (ShowGamePadUI.Value != value) {
 					ShowGamePadUI.Value = value;
 					if (value) {
-						Game.Current.AddEntity(GamePadUI.TypeID, 0, 0);
+						Game.Current.SpawnEntity(GamePadUI.TypeID, 0, 0);
 						GamePadUI.Active = true;
 					} else {
 						GamePadUI.Active = false;
@@ -38,7 +38,7 @@ namespace Yaya {
 				if (ShowControlHint.Value != value) {
 					ShowControlHint.Value = value;
 					if (value) {
-						Game.Current.AddEntity(ControlHintUI.TypeID, 0, 0);
+						Game.Current.SpawnEntity(ControlHintUI.TypeID, 0, 0);
 						ControlHintUI.Active = true;
 					} else {
 						ControlHintUI.Active = false;
@@ -193,7 +193,7 @@ namespace Yaya {
 					FrameInput.GameKeyDown(GameKey.Action) &&
 					!FrameTask.HasTask(Const.TASK_ROUTE)
 				) {
-					// Game Play
+					// Reopen Game
 					FrameTask.AddToLast(FadeOutTask.TYPE_ID, Const.TASK_ROUTE);
 					if (FrameTask.TryAddToLast(OpeningTask.TYPE_ID, Const.TASK_ROUTE, out var task) && task is OpeningTask oTask) {
 						oTask.TargetViewX = YayaConst.OPENING_X;
@@ -238,7 +238,7 @@ namespace Yaya {
 			// Gamepad
 			if (ShowGamePadUI.Value) {
 				if (!GamePadUI.Active) {
-					Game.Current.TryAddEntity(GamePadUI.TypeID, 0, 0, out _);
+					Game.Current.TrySpawnEntity(GamePadUI.TypeID, 0, 0, out _);
 				}
 			} else if (GamePadUI.Active) {
 				GamePadUI.Active = false;
@@ -247,7 +247,7 @@ namespace Yaya {
 			// Ctrl Hint
 			if (ShowControlHint.Value) {
 				if (!ControlHintUI.Active) {
-					Game.Current.TryAddEntity(ControlHintUI.TypeID, 0, 0, out _);
+					Game.Current.TrySpawnEntity(ControlHintUI.TypeID, 0, 0, out _);
 				}
 			} else if (ControlHintUI.Active) {
 				ControlHintUI.Active = false;
@@ -269,7 +269,7 @@ namespace Yaya {
 				if (GamePadUI.Active) GamePadUI.FrameUpdate();
 				if (PauseMenu.Active) PauseMenu.FrameUpdate();
 				if (!PauseMenu.Active) {
-					game.TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
+					game.TrySpawnEntity(PauseMenu.TypeID, 0, 0, out _);
 					PauseMenu.SetAsPauseMode();
 				}
 			} else {
@@ -286,7 +286,7 @@ namespace Yaya {
 					if (ControlHintUI.Active) {
 						ControlHintUI.FrameUpdate();
 					} else {
-						game.TryAddEntity(ControlHintUI.TypeID, 0, 0, out _);
+						game.TrySpawnEntity(ControlHintUI.TypeID, 0, 0, out _);
 					}
 				} else if (
 					FrameInput.AnyKeyboardKeyPress(out _) ||
@@ -333,7 +333,7 @@ namespace Yaya {
 				return true;
 			} else {
 				game.State = GameState.Pause;
-				game.TryAddEntity(PauseMenu.TypeID, 0, 0, out _);
+				game.TrySpawnEntity(PauseMenu.TypeID, 0, 0, out _);
 				PauseMenu.SetAsQuitMode();
 				return false;
 			}

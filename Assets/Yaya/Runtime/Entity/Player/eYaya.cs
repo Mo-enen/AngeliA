@@ -72,7 +72,7 @@ namespace Yaya {
 
 			// Run Particle
 			if (LastStartRunFrame >= 0 && (Game.GlobalFrame - LastStartRunFrame) % 20 == 19) {
-				if (Game.Current.TryAddEntity(FOOTSTEP_CODE, X, Y, out var entity) && entity is eYayaFootstep step) {
+				if (Game.Current.TrySpawnEntity(FOOTSTEP_CODE, X, Y, out var entity) && entity is eYayaFootstep step) {
 					if (CellRenderer.TryGetSprite(GroundedID, out var sprite)) {
 						step.Tint = sprite.SummaryTint;
 					} else {

@@ -105,7 +105,7 @@ namespace Yaya {
 			LastAttackFrame = frame;
 
 			// Spawn Bullet
-			if (Game.Current.TryAddEntity(BulletID, X, Y, out var entity) && entity is eBullet bullet) {
+			if (Game.Current.TrySpawnEntity(BulletID, X, Y, out var entity) && entity is eBullet bullet) {
 				bullet.Release(
 					this, FacingRight ? Vector2Int.right : Vector2Int.left, AttackCombo,
 					frame > ChargeStartFrame ? frame - ChargeStartFrame : 0

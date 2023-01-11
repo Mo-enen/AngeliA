@@ -15,7 +15,7 @@ namespace Yaya {
 		private const int BLACK_DURATION = 120;
 		private const int SKIP_DURATION = 12;
 		private const int DOLLY_HEIGHT = Const.CEL * 11;
-
+		
 		// Api
 		public int TargetViewX { get; set; } = 0;
 		public int TargetViewY { get; set; } = 0;

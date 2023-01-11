@@ -150,7 +150,7 @@ namespace Yaya {
 
 
 		public void Summon () {
-			if (!Active) Game.Current.TryAddEntity(TypeID, X, Y, out _);
+			if (!Active) Game.Current.TrySpawnEntity(TypeID, X, Y, out _);
 			X = PrevPosition.x;
 			Y = PrevPosition.y;
 		}

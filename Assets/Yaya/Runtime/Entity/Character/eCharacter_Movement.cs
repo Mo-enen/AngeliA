@@ -801,8 +801,9 @@ namespace Yaya {
 		private bool GrabFlipThoughDownCheck () {
 			int count = CellPhysics.OverlapAll(
 				c_GroundThoughCheck,
-				YayaConst.MASK_MAP, new RectInt(Hitbox.xMin, Hitbox.yMin + 4 - Const.CEL / 4, Hitbox.width, Const.CEL / 4), this,
-				OperationMode.ColliderOnly, YayaConst.GRAB_TOP_TAG
+				YayaConst.MASK_MAP,
+				new RectInt(Hitbox.xMin + Hitbox.width / 2, Hitbox.yMin + 4 - Const.CEL / 4, 1, Const.CEL / 4),
+				this, OperationMode.ColliderOnly, YayaConst.GRAB_TOP_TAG
 			);
 			for (int i = 0; i < count; i++) {
 				var hit = c_GroundThoughCheck[i];
