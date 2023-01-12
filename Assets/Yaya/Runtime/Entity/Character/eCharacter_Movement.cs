@@ -87,7 +87,7 @@ namespace Yaya {
 		private static readonly PhysicsCell[] c_GroundThoughCheck = new PhysicsCell[8];
 		private RectInt Hitbox = default;
 		private bool HoldingJump = false;
-		private bool AllowHoldingJumpForFly = false;
+		private bool HoldingJumpForFly = false;
 		private bool PrevHoldingJump = false;
 		private bool IntendedJump = false;
 		private bool IntendedDash = false;
@@ -321,20 +321,22 @@ namespace Yaya {
 					// Fly
 					if (frame > LastFlyFrame + FlyCooldown) {
 						// Cooldown Ready
-						if (IntendedJump || (HoldingJump && AllowHoldingJumpForFly)) {
+						if (IntendedJump || (HoldingJump && HoldingJumpForFly)) {
 							LastDashFrame = int.MinValue;
 							IsFlying = true;
 							IsClimbing = false;
 							IsDashing = false;
-							CurrentJumpCount++;
-							VelocityY = Mathf.Max(FlySpeed, VelocityY);
 							LastFlyFrame = frame;
-							AllowHoldingJumpForFly = false;
+							HoldingJumpForFly = false;
+							if (CurrentJumpCount <= JumpCount) {
+								VelocityY = Mathf.Max(FlySpeed, VelocityY);
+							}
+							CurrentJumpCount++;
 						}
 					} else {
 						// Not Cooldown
-						if (IntendedJump) AllowHoldingJumpForFly = true;
-						if (!HoldingJump) AllowHoldingJumpForFly = false;
+						if (IntendedJump) HoldingJumpForFly = true;
+						if (!HoldingJump) HoldingJumpForFly = false;
 					}
 				}
 			}
