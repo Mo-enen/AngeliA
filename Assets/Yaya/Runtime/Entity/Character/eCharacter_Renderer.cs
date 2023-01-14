@@ -114,14 +114,32 @@ namespace Yaya {
 		private static readonly int SLIDE_PARTICLE_CODE = typeof(eSlideDust).AngeHash();
 		private static readonly int[] BOUNCE_AMOUNTS = new int[] { 500, 200, 100, 50, 25, 50, 100, 200, 500, };
 		private static readonly int[] BOUNCE_AMOUNTS_BIG = new int[] { 0, -600, -900, -1200, -1400, -1200, -900, -600, 0, };
+		private static readonly Color32[] HIGHLIGHT_FLASHING_TINT = new Color32[] {
+			new(128, 128, 128, 255),
+			new(156, 42, 128, 255),
+			new(128, 156, 42, 255),
+			new(42, 128, 156, 255),
+			new(128, 128, 128, 255),
+			new(22, 156, 156, 255),
+			new(128, 42, 156, 255),
+			new(128, 128, 128, 255),
+			new(128, 128, 156, 255),
+			new(156, 42, 128, 255),
+			new(128, 128, 128, 255),
+			new(128, 42, 156, 255),
+			new(128, 156, 42, 255),
+		};
 		private const int BOUNCY = 150;
 		private const int POUNDING_BOUNCE = 1500;
 		private const int SWIM_ROTATION_LERP = 100;
 		private const int DAMAGE_BLINK_RATE = 8;
+		private const int HIGHLIGHT_FLASH_RATE = 8;
 		private const int EYE_BLINK_RATE = 360;
 
 		// Api
 		public int FaceIndex { get; set; } = 0;
+		protected virtual byte HighlightAlpha => IsChargingAttack ? (byte)Util.Remap(0, MinimalChargeAttackDuration, -32, 255, Game.GlobalFrame - ChargeStartFrame).Clamp(0, 255) : (byte)0;
+		protected virtual bool IsHighlightFlashing => IsAttackCharged;
 
 		// Data
 		private readonly AniSheet AnimationSheet = new();
@@ -189,7 +207,7 @@ namespace Yaya {
 			AnimationSheet.Attacks_Move = AniSheet.GetAniArray($"{name}.AttackMove");
 			AnimationSheet.Attacks_Air = AniSheet.GetAniArray($"{name}.AttackAir");
 			AnimationSheet.Attacks_Water = AniSheet.GetAniArray($"{name}.AttackWater");
-			AnimationSheet.Attacks_Charge = AniSheet.GetAniArray($"{name}.Charge");
+			AnimationSheet.Attacks_Charge = AniSheet.GetAniArray($"{name}.AttackCharge");
 
 		}
 
@@ -274,20 +292,26 @@ namespace Yaya {
 			if (IsAttacking) {
 				// Attack
 				var attacks = AnimationSheet.Attacks;
-				switch (MoveState) {
-					case MovementState.SwimDash:
-					case MovementState.SwimIdle:
-					case MovementState.SwimMove:
-						attacks = AnimationSheet.Attacks_Water ?? attacks;
-						break;
-					case MovementState.JumpDown:
-					case MovementState.JumpUp:
-						attacks = AnimationSheet.Attacks_Air ?? attacks;
-						break;
-					case MovementState.Walk:
-					case MovementState.Run:
-						attacks = AnimationSheet.Attacks_Move ?? attacks;
-						break;
+				if (!LastAttackCharged) {
+					// Attack with Movement
+					switch (MoveState) {
+						case MovementState.SwimDash:
+						case MovementState.SwimIdle:
+						case MovementState.SwimMove:
+							attacks = AnimationSheet.Attacks_Water ?? attacks;
+							break;
+						case MovementState.JumpDown:
+						case MovementState.JumpUp:
+							attacks = AnimationSheet.Attacks_Air ?? attacks;
+							break;
+						case MovementState.Walk:
+						case MovementState.Run:
+							attacks = AnimationSheet.Attacks_Move ?? attacks;
+							break;
+					}
+				} else {
+					// Charge Attack
+					attacks = AnimationSheet.Attacks_Charge ?? attacks;
 				}
 				if (attacks.Length > 0) {
 					ani = attacks[AttackCombo.Clamp(0, attacks.Length - 1)];
@@ -394,6 +418,23 @@ namespace Yaya {
 					}
 				}
 				CurrentBounce = reverse ? -bounce : bounce;
+			}
+
+			// Highlight
+			byte highlightAlpha = !IsHighlightFlashing || frame % HIGHLIGHT_FLASH_RATE < HIGHLIGHT_FLASH_RATE / 2 ? HighlightAlpha : (byte)0;
+			if (highlightAlpha > 0) {
+				var highlightTint = new Color32(96, 96, 96, 255);
+				if (IsHighlightFlashing) {
+					highlightTint = HIGHLIGHT_FLASHING_TINT[(frame / 4).UMod(HIGHLIGHT_FLASHING_TINT.Length)];
+				}
+				highlightTint.a = highlightAlpha;
+				CellRenderer.SetLayer(Const.SHADER_ADD);
+				CellRenderer.Draw(
+					CellRenderer.LastDrawnID, cell.X, cell.Y, pivotX, pivotY,
+					cell.Rotation, cell.Width, cell.Height,
+					highlightTint
+				);
+				CellRenderer.SetLayerToDefault();
 			}
 
 			// Grow Ani Frame

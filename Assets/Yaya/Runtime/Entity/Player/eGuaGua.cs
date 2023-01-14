@@ -20,7 +20,6 @@ namespace Yaya {
 		public override ePlayer Owner => eYaya.CurrentYaya;
 
 		// Data
-		private int PrevHp = 0;
 
 
 		// MSG
@@ -46,58 +45,16 @@ namespace Yaya {
 			base.Update_FreeMove();
 
 
-			
+
 
 
 
 		}
 
 
-		protected override void DrawHpBar () {
-			base.DrawHpBar();
-
-			const int SIZE = Const.CEL / 2;
-			const int COLUMN = 4;
-			const int MAX = 9;
-
-			int hp = Owner.HealthPoint;
-			int maxHp = Mathf.Min(Owner.MaxHP, MAX);
-			int left = X - SIZE * COLUMN / 4;
-
-			// Draw Hearts
-			var rect = new RectInt(0, 0, SIZE / 2, SIZE);
-			bool isLeft = true;
-			for (int i = 0; i < maxHp; i++) {
-				rect.x = left + (i % COLUMN) * SIZE / 2;
-				rect.y = Y - (i / COLUMN + 1) * SIZE;
-				if (i < hp) {
-					// Heart
-					CellRenderer.Draw(isLeft ? HEART_L_CODE : HEART_R_CODE, rect).Z = 0;
-				} else {
-					// Empty Heart
-					CellRenderer.Draw(isLeft ? HEART_EMPTY_L_CODE : HEART_EMPTY_R_CODE, rect).Z = 0;
-					// Spawn Drop Particle
-					if (i < PrevHp) {
-						eYayaDroppingHeart heart;
-						if (isLeft) {
-							heart = Game.Current.SpawnEntity<eYayaDroppingHeartLeft>(rect.x, rect.y);
-						} else {
-							heart = Game.Current.SpawnEntity<eYayaDroppingHeartRight>(rect.x, rect.y);
-						}
-						if (heart != null) {
-							heart.Width = rect.width + 8;
-							heart.Height = rect.height + 16;
-						}
-					}
-				}
-				isLeft = !isLeft;
-			}
-			// Overflow
-			if (Owner.MaxHP > MAX) {
-
-			}
-
-			PrevHp = hp;
+		protected override void DrawHealthBar () {
+			base.DrawHealthBar();
+			DrawHealthBar_Segment(HEART_L_CODE, HEART_R_CODE, HEART_EMPTY_L_CODE, HEART_EMPTY_R_CODE);
 		}
 
 

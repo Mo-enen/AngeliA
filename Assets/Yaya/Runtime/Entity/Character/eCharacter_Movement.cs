@@ -43,6 +43,11 @@ namespace Yaya {
 		public int IntendedY { get; private set; } = 0;
 		public int CurrentJumpCount { get; private set; } = 0;
 		public bool UseFreeStyleSwim => SwimInFreeStyle;
+		public bool FacingRight =>
+			Game.GlobalFrame <= LockedFacingFrame &&
+			MoveState != MovementState.Slide &&
+			MoveState != MovementState.GrabSide ?
+				LockedFacingRight : LastIntendedX > 0;
 
 		// Frame Cache
 		public int RunningAccumulateFrame { get; private set; } = 0;
@@ -63,12 +68,11 @@ namespace Yaya {
 		public int LastGrabTopDropFrame { get; private set; } = int.MinValue;
 
 		// Movement State
-		public MovementState MoveState { get; set; } = MovementState.Idle;
-		public bool FacingRight { get; set; } = true;
 		public bool ReadyForRun => RunningAccumulateFrame >= RunAccumulation;
 		public bool IsRolling => !InWater && !IsPounding && !IsFlying && ((JumpWithRoll && CurrentJumpCount > 0) || (SecondJumpWithRoll && CurrentJumpCount > 1));
 		public bool IsGrabFliping => Game.GlobalFrame < LastGrabFlipFrame + Mathf.Max(GrabFlipThroughDuration, 1);
 
+		public MovementState MoveState { get; set; } = MovementState.Idle;
 		public bool IsDashing { get; private set; } = false;
 		public bool IsSquating { get; private set; } = false;
 		public bool IsPounding { get; private set; } = false;
@@ -98,6 +102,9 @@ namespace Yaya {
 		private bool GrabFlipUpLock = true;
 		private bool AllowGrabSideMoveUp = false;
 		private int? ClimbPositionCorrect = null;
+		private int LastIntendedX = 1;
+		private bool LockedFacingRight = true;
+		private int LockedFacingFrame = int.MinValue;
 
 
 		#endregion
@@ -603,6 +610,12 @@ namespace Yaya {
 		public void AntiKnockback () => VelocityX = VelocityX.MoveTowards(0, AntiKnockbackSpeed);
 
 
+		public void LockFacingRight (bool facingRight, int duration = 0) {
+			LockedFacingFrame = Game.GlobalFrame + duration;
+			LockedFacingRight = facingRight;
+		}
+
+
 		#endregion
 
 
@@ -618,7 +631,7 @@ namespace Yaya {
 			if (x == 0 && Game.GlobalFrame > LastEndMoveFrame + RUN_BREAK_GAP) RunningAccumulateFrame = 0;
 			IntendedX = x;
 			IntendedY = y;
-			if (x != 0) FacingRight = x > 0;
+			if (x != 0) LastIntendedX = x;
 			if (x != 0 || y != 0) {
 				LastMoveDirection = new(IntendedX, IntendedY);
 			}

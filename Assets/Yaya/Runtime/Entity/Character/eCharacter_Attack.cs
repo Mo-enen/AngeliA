@@ -20,6 +20,7 @@ namespace Yaya {
 		public int BulletID => _BulletID != 0 ? _BulletID : (_BulletID = BulletName.Value.AngeHash());
 		public int AttackCombo { get; private set; } = -1;
 		public virtual bool IsChargingAttack => false;
+		public bool IsAttackCharged => Game.GlobalFrame - ChargeStartFrame >= MinimalChargeAttackDuration;
 
 		// Buff
 		public BuffString BulletName { get; protected set; } = new("DefaultBullet");
@@ -48,6 +49,7 @@ namespace Yaya {
 		private int AntiAttackFrame = int.MinValue;
 		private int LastAttackFrame = int.MinValue;
 		private int ChargeStartFrame = int.MaxValue;
+		private bool LastAttackCharged = false;
 		private int _BulletID = 0;
 
 
@@ -78,7 +80,7 @@ namespace Yaya {
 				if (ChargeStartFrame == int.MaxValue) ChargeStartFrame = Game.GlobalFrame;
 			} else if (ChargeStartFrame != int.MaxValue) {
 				// Charge Release
-				if (Game.GlobalFrame - ChargeStartFrame >= MinimalChargeAttackDuration) {
+				if (IsAttackCharged) {
 					if (IsAttackAllowedByMovement()) {
 						Attack();
 					}
@@ -101,14 +103,16 @@ namespace Yaya {
 		public void Attack () {
 
 			int frame = Game.GlobalFrame;
+			LastAttackCharged = false;
 			if (BulletID == 0 || frame <= AntiAttackFrame) return;
 			LastAttackFrame = frame;
 
 			// Spawn Bullet
 			if (Game.Current.TrySpawnEntity(BulletID, X, Y, out var entity) && entity is eBullet bullet) {
+				bool charged = LastAttackCharged = frame > ChargeStartFrame;
 				bullet.Release(
 					this, FacingRight ? Vector2Int.right : Vector2Int.left, AttackCombo,
-					frame > ChargeStartFrame ? frame - ChargeStartFrame : 0
+					charged ? frame - ChargeStartFrame : 0
 				);
 				AttackCombo = UseRandomAttackCombo ? Random.Next() : AttackCombo + 1;
 			}
