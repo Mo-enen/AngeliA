@@ -17,6 +17,7 @@ namespace Yaya {
 	public class eCrabRaw : eItem { }
 	public class eSnailRaw : eItem { }
 	public class eMeatBone : eItem { }
+	public class eFishBone : eItem { }
 	public class eBeefCooked : eItem { }
 	public class eChickenLegCooked : eItem { }
 	public class eChickenWingCooked : eItem { }

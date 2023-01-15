@@ -200,10 +200,6 @@ namespace Yaya {
 		}
 
 
-		// Misc
-		protected override bool InsideGroundCheck () => CellPhysics.Overlap(YayaConst.MASK_LEVEL, new(X, Y + Height / 4, 1, 1), this);
-
-
 		#endregion
 
 

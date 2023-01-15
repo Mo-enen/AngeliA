@@ -8,7 +8,7 @@ namespace Yaya {
 
 
 
-	[EntityAttribute.AntiSpawn]
+	[EntityAttribute.Virtual]
 	[EntityAttribute.MapEditorGroup("Platform")]
 	public class eSnakePath : Entity { }
 

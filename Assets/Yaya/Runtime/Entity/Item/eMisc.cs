@@ -14,7 +14,10 @@ namespace Yaya {
 	public class eBrokenBone : eItem { }
 	public class eCatPaw : eItem { }
 	public class eBearPaw : eItem { }
-	public class eTimber : eItem { }
+	public class eTreeBranch : eItem { }
+	public class eTreeTrunk : eItem { }
+	public class eTreeStump : eItem { }
+	public class eTreeBoard : eItem { }
 	public class eBomb : eItem { }
 	public class eFirecracker : eItem { }
 	public class eGemRed : eItem { }

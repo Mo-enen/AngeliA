@@ -130,8 +130,17 @@ namespace Yaya {
 			MovementUpdate_Jump();
 			MovementUpdate_Dash();
 			MoveState = GetCurrentMovementState();
-			MovementUpdate_VelocityX();
-			MovementUpdate_VelocityY();
+			if (!IsInsideGround) {
+				MovementUpdate_VelocityX();
+				MovementUpdate_VelocityY();
+			} else {
+				VelocityX = IntendedX * WalkSpeed;
+				VelocityY = VelocityY.MoveTowards(0, 2);
+				if (IntendedJump) {
+					VelocityY = WalkSpeed;
+					RenderBounce();
+				}
+			}
 			IntendedJump = false;
 			IntendedDash = false;
 			IntendedPound = false;
@@ -184,7 +193,7 @@ namespace Yaya {
 			if (InWater && SwimInFreeStyle) {
 				IsDashing = DashAvailable && FreeSwimDashSpeed > 0 && !IsClimbing && frame < LastDashFrame + FreeSwimDashDuration;
 			} else {
-				IsDashing = DashAvailable && DashSpeed > 0 && !IsClimbing && frame < LastDashFrame + CurrentDashDuration && !InsideGround;
+				IsDashing = DashAvailable && DashSpeed > 0 && !IsClimbing && frame < LastDashFrame + CurrentDashDuration && !IsInsideGround;
 				if (IsDashing && IntendedY != -1) {
 					// Stop when Dashing Without Holding Down
 					LastDashFrame = int.MinValue;
@@ -195,7 +204,7 @@ namespace Yaya {
 
 			// Squat
 			bool squating =
-				SquatAvailable && IsGrounded && !IsClimbing && !InSand && !InsideGround &&
+				SquatAvailable && IsGrounded && !IsClimbing && !InSand && !IsInsideGround &&
 				((!IsDashing && IntendedY < 0) || ForceSquatCheck());
 			if (!IsSquating && squating) LastSquatFrame = frame;
 			if (squating) LastSquatingFrame = frame;
@@ -203,7 +212,7 @@ namespace Yaya {
 
 			// Pound
 			IsPounding =
-				PoundAvailable && !IsGrounded && !IsGrabingSide && !IsGrabingTop && !IsClimbing && !InWater && !IsDashing && !InsideGround &&
+				PoundAvailable && !IsGrounded && !IsGrabingSide && !IsGrabingTop && !IsClimbing && !InWater && !IsDashing && !IsInsideGround &&
 				(IsPounding ? IntendedY < 0 : IntendedPound);
 			if (IsPounding) LastPoundingFrame = frame;
 
@@ -233,7 +242,7 @@ namespace Yaya {
 			if (
 				(!HoldingJump && frame > LastFlyFrame + FlyCooldown) ||
 				IsGrounded || InWater || IsClimbing || IsDashing ||
-				InsideGround || IsPounding || IsGrabingSide || IsGrabingTop
+				IsInsideGround || IsPounding || IsGrabingSide || IsGrabingTop
 			) {
 				IsFlying = false;
 			}
@@ -294,7 +303,7 @@ namespace Yaya {
 			}
 
 			// Perform Jump/Fly
-			if (!IsSquating && !IsGrabingTop && (!IsClimbing || JumpWhenClimbAvailable)) {
+			if (!IsSquating && !IsGrabingTop && !IsInsideGround && (!IsClimbing || JumpWhenClimbAvailable)) {
 				// Jump
 				if (CurrentJumpCount < JumpCount) {
 					// Jump
@@ -662,14 +671,14 @@ namespace Yaya {
 			IsSquating ? (IntendedX != 0 ? MovementState.SquatMove : MovementState.SquatIdle) :
 			InWater && (SwimInFreeStyle || !IsGrounded) ? (IntendedX != 0 ? MovementState.SwimMove : MovementState.SwimIdle) :
 			!IsGrounded && !InWater && !InSand && !IsClimbing ? (VelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown) :
-			IntendedX != 0 ? ReadyForRun ? MovementState.Run : MovementState.Walk :
+			IntendedX != 0 ? ReadyForRun && !IsInsideGround ? MovementState.Run : MovementState.Walk :
 			MovementState.Idle;
 
 
 		// Check
 		private bool ForceSquatCheck () {
 
-			if (InsideGround) return false;
+			if (IsInsideGround) return false;
 
 			var rect = new RectInt(
 				X + OffsetX,
@@ -689,7 +698,7 @@ namespace Yaya {
 
 
 		private bool ClimbCheck (bool up = false) {
-			if (InsideGround) return false;
+			if (IsInsideGround) return false;
 			if (CellPhysics.Overlap(
 				YayaConst.MASK_MAP,
 				up ? Rect.Shift(0, ClimbSpeedY) : Rect,
@@ -747,7 +756,7 @@ namespace Yaya {
 		private bool GrabTopCheck (out int grabingY) {
 			grabingY = 0;
 			if (
-				!GrabTopAvailable || InsideGround || IsGrounded || IsClimbing || IsDashing ||
+				!GrabTopAvailable || IsInsideGround || IsGrounded || IsClimbing || IsDashing ||
 				InWater || IsSquating || IsGrabFliping
 			) return false;
 			if (Game.GlobalFrame < LastGrabTopDropFrame + GRAB_DROP_CANCEL) return false;
@@ -768,7 +777,7 @@ namespace Yaya {
 		private bool GrabSideCheck (out bool allowMoveUp) {
 			allowMoveUp = false;
 			if (
-				!GrabSideAvailable || InsideGround || IsGrounded || IsClimbing || IsDashing ||
+				!GrabSideAvailable || IsInsideGround || IsGrounded || IsClimbing || IsDashing ||
 				InWater || IsSquating || IsGrabFliping ||
 				Game.GlobalFrame < LastJumpFrame + GRAB_JUMP_CANCEL
 			) return false;
