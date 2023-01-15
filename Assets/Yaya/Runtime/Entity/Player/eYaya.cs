@@ -38,7 +38,6 @@ namespace Yaya {
 			JumpCount.Value = 2;
 			JumpThoughOneway.Value = true;
 			FlyAvailable.Value = true;
-			FlyCount.Value = 99999;
 			SlideAvailable.Value = true;
 			SlideOnAnyBlock.Value = true;
 			GrabTopAvailable.Value = true;

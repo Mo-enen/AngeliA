@@ -324,7 +324,7 @@ namespace Yaya {
 						}
 						IsClimbing = false;
 					}
-				} else if (FlyAvailable && CurrentJumpCount < JumpCount + FlyCount) {
+				} else if (FlyAvailable) {
 					// Fly
 					if (frame > LastFlyFrame + FlyCooldown) {
 						// Cooldown Ready

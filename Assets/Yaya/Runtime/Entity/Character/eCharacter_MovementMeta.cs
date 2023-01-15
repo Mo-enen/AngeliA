@@ -82,7 +82,6 @@ namespace Yaya {
 		// Fly
 		public BuffBool FlyAvailable { get; private set; } = new(false);
 		public BuffInt FlyHeight { get; private set; } = new(200);
-		public BuffInt FlyCount { get; private set; } = new(1);
 		public BuffInt FlyCooldown { get; private set; } = new(24);
 		public BuffInt FlySpeed { get; private set; } = new(96);
 		public BuffInt FlyGravityRiseRate { get; private set; } = new(800);
