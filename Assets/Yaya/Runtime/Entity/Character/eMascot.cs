@@ -111,7 +111,7 @@ namespace Yaya {
 			LockFacingRight(Owner.X >= X);
 			MoveState = MovementState.Fly;
 
-			int targetX = Owner.X + (Owner.FacingRight ? -Const.CEL : Const.CEL);
+			int targetX = Owner.X + (Owner.FacingRight ? -Const.CEL * 3 / 2 : Const.CEL * 3 / 2);
 			int targetY = Owner.Y + Const.CEL * 3 / 2;
 
 			// Chain
@@ -129,8 +129,8 @@ namespace Yaya {
 
 			// Move
 			var pos = PosChain[(PosChainStartIndex + 1).UMod(PosChain.Length)];
-			X = X.LerpTo(pos.x, 100);
-			Y = Y.LerpTo(pos.y, 100);
+			X = X.LerpTo(pos.x, 50);
+			Y = Y.LerpTo(pos.y, 50);
 
 		}
 
