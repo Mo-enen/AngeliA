@@ -158,9 +158,11 @@ namespace Yaya {
 			}
 			if (FrameInput.KeyPress(Key.Digit5)) {
 				game.SetViewSizeDelay(game.ViewRect.height - Const.CEL);
+				//AudioPlayer.SetLowpass(1000);
 			}
 			if (FrameInput.KeyPress(Key.Digit6)) {
 				game.SetViewSizeDelay(game.ViewRect.height + Const.CEL);
+				//AudioPlayer.SetLowpass(100);
 			}
 			if (FrameInput.KeyDown(Key.Digit7)) {
 				DialoguePerformer.Perform<YayaDialoguePerformer>("TestConversation");

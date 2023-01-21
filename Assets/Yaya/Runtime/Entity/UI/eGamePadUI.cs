@@ -7,7 +7,7 @@ using AngeliaFramework;
 namespace Yaya {
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]
-	public class eGamePadUI : UI {
+	public class eGamePadUI : UIEntity {
 
 
 		private static readonly int BodyCode = "GamePad Body".AngeHash();
