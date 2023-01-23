@@ -36,4 +36,5 @@
 -紫
 
 
+//#spawn Coin
 #open TestConversationMore

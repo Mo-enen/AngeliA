@@ -165,7 +165,7 @@ namespace Yaya {
 				//AudioPlayer.SetLowpass(100);
 			}
 			if (FrameInput.KeyDown(Key.Digit7)) {
-				DialoguePerformer.Perform<YayaDialoguePerformer>("TestConversation");
+				DialoguePerformer.PerformTask<YayaDialoguePerformer>("TestConversation");
 			}
 			if (FrameInput.KeyDown(Key.Digit8)) {
 				game.WorldSquad.SetDataChannel(World.DataChannel.BuiltIn);
