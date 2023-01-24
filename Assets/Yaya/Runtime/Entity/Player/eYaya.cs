@@ -44,6 +44,8 @@ namespace Yaya {
 			GrabSideAvailable.Value = true;
 			GrabFlipThroughDown.Value = true;
 			GrabFlipThroughUp.Value = true;
+			FlyMoveSpeed.Value = 32;
+			FlyGlideAvailable.Value = false;
 
 			BulletName.Value = "YayaPaw";
 			AttackDuration.Value = 12;

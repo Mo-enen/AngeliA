@@ -38,12 +38,6 @@ namespace Yaya {
 			set {
 				if (ShowGamePadUI.Value != value) {
 					ShowGamePadUI.Value = value;
-					if (value) {
-						Game.Current.SpawnEntity(GamePadUI.TypeID, 0, 0);
-						GamePadUI.Active = true;
-					} else {
-						GamePadUI.Active = false;
-					}
 				}
 			}
 		}
@@ -52,19 +46,12 @@ namespace Yaya {
 			set {
 				if (ShowControlHint.Value != value) {
 					ShowControlHint.Value = value;
-					if (value) {
-						Game.Current.SpawnEntity(ControlHintUI.TypeID, 0, 0);
-						ControlHintUI.Active = true;
-					} else {
-						ControlHintUI.Active = false;
-					}
 				}
 			}
 		}
 
 		// Data
 		private static readonly PhysicsCell[] c_DamageCheck = new PhysicsCell[16];
-		private readonly eGamePadUI GamePadUI = null;
 		private readonly eControlHintUI ControlHintUI = null;
 		private readonly ePauseMenu PauseMenu = null;
 		private bool CutsceneLock = true;
@@ -111,7 +98,6 @@ namespace Yaya {
 			game.BeforeViewZChange += YayaBeforeViewZChange;
 
 			// UI Entity
-			GamePadUI = game.PeekOrGetEntity<eGamePadUI>();
 			PauseMenu = game.PeekOrGetEntity<ePauseMenu>();
 			ControlHintUI = game.PeekOrGetEntity<eControlHintUI>();
 
@@ -252,22 +238,9 @@ namespace Yaya {
 				ShowControlHint.Value = ShowGamePadUI.Value ? ShowControlHint.Value : !ShowControlHint.Value;
 			}
 
-			// Gamepad
-			if (ShowGamePadUI.Value) {
-				if (!GamePadUI.Active) {
-					Game.Current.TrySpawnEntity(GamePadUI.TypeID, 0, 0, out _);
-				}
-			} else if (GamePadUI.Active) {
-				GamePadUI.Active = false;
-			}
-
 			// Ctrl Hint
-			if (ShowControlHint.Value) {
-				if (!ControlHintUI.Active) {
-					Game.Current.TrySpawnEntity(ControlHintUI.TypeID, 0, 0, out _);
-				}
-			} else if (ControlHintUI.Active) {
-				ControlHintUI.Active = false;
+			if (!ControlHintUI.Active) {
+				Game.Current.TrySpawnEntity(ControlHintUI.TypeID, 0, 0, out _);
 			}
 
 		}
@@ -282,8 +255,8 @@ namespace Yaya {
 			// Pausing
 			if (game.State == GameState.Pause) {
 				// Update Entity
-				if (ControlHintUI.Active) ControlHintUI.FrameUpdate();
-				if (GamePadUI.Active) GamePadUI.FrameUpdate();
+				Update_HintUI();
+				ControlHintUI.FrameUpdate();
 				if (PauseMenu.Active) PauseMenu.FrameUpdate();
 				if (!PauseMenu.Active) {
 					game.TrySpawnEntity(PauseMenu.TypeID, 0, 0, out _);
@@ -300,11 +273,7 @@ namespace Yaya {
 				Game.GlobalFrame > Cutscene.StartFrame + game.CutsceneVideoFadeoutDuration
 			) {
 				if (!CutsceneLock) {
-					if (ControlHintUI.Active) {
-						ControlHintUI.FrameUpdate();
-					} else {
-						game.TrySpawnEntity(ControlHintUI.TypeID, 0, 0, out _);
-					}
+					ControlHintUI.FrameUpdate();
 				} else if (
 					FrameInput.AnyKeyboardKeyPress(out _) ||
 					FrameInput.AnyGamepadButtonPress(out _) ||
@@ -313,9 +282,6 @@ namespace Yaya {
 					CutsceneLock = false;
 					FrameInput.UseGameKey(GameKey.Start);
 				}
-
-				if (GamePadUI.Active) GamePadUI.Active = false;
-
 			} else if (!CutsceneLock) {
 				CutsceneLock = true;
 			}

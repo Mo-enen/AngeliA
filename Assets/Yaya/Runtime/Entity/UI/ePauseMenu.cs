@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.LowLevel;
 namespace Yaya {
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]
-	public class ePauseMenu : MenuUI {
+	public class ePauseMenu : eYayaMenuUI {
 
 
 
@@ -88,6 +88,7 @@ namespace Yaya {
 
 
 		protected override void DrawMenu () {
+			base.DrawMenu();
 			Message = string.Empty;
 			switch (Mode) {
 				case MenuMode.Pause:

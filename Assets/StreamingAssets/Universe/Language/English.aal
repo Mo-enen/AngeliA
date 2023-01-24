@@ -32,7 +32,7 @@ Menu.Setting.MusicVolume:Music Volume
 Menu.Setting.ScreenEffect:Use Screen Effect
 Menu.Setting.SoundVolume:Sound Volume
 Menu.Setting.UseControlHint:Show Control Hint
-Menu.Setting.UseGamepadHint:Show Pressing Key
+Menu.Setting.UseGamepadHint:Show Bottom Left Gamepad
 Menu.Setting.VSync:V-Sync
 UI.Back:Back
 UI.Cancel:Cancel

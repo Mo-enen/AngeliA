@@ -36,7 +36,7 @@ namespace Yaya {
 			JumpWithRoll.Value = false;
 			JumpCount.Value = 1;
 			FlyAvailable.Value = false;
-			FlySpeed.Value = 32;
+			FlyRiseSpeed.Value = 32;
 			MaxHP.Value = 1;
 		}
 

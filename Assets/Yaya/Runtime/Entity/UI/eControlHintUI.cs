@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using AngeliaFramework;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 
 
 namespace Yaya {
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]
+	[EntityAttribute.Order(Const.ENTITY_ORDER_UI + 1)]
 	public class eControlHintUI : UIEntity {
 
 
@@ -17,6 +17,19 @@ namespace Yaya {
 		private static readonly int GAMEPAD_BUTTON_ANI_CODE = "Gamepad Button".AngeHash();
 		private static readonly int KEYBOARD_BUTTON_CODE = "Keyboard Button".AngeHash();
 		private static readonly int GAMEPAD_BUTTON_CODE = "Gamepad Button".AngeHash();
+		private static readonly int BodyCode = "GamePad Body".AngeHash();
+		private static readonly int DPadDownCode = "GamePad Down".AngeHash();
+		private static readonly int DPadUpCode = "GamePad Up".AngeHash();
+		private static readonly int DPadLeftCode = "GamePad Left".AngeHash();
+		private static readonly int DPadRightCode = "GamePad Right".AngeHash();
+		private static readonly int ButtonACode = "GamePad A".AngeHash();
+		private static readonly int ButtonBCode = "GamePad B".AngeHash();
+		private static readonly int ButtonSelectCode = "GamePad Select".AngeHash();
+		private static readonly int ButtonStartCode = "GamePad Start".AngeHash();
+		private static readonly Color32 DirectionTint = new(255, 255, 0, 255);
+		private static readonly Color32 PressingTint = new(0, 255, 0, 255);
+		private static readonly Color32 DarkButtonTint = new(0, 0, 0, 255);
+		private static readonly Color32 ColorfulButtonTint = new(240, 86, 86, 255);
 
 		// Api
 		public int KeySize { get; set; } = 28;
@@ -25,23 +38,40 @@ namespace Yaya {
 		public Color32 LabelTint { get; set; } = Const.WHITE;
 		public Color32 KeyLabelTint { get; set; } = new Color32(44, 49, 54, 255);
 
+		// Short
+		private bool GamepadVisible => YayaGame.Current.UseGamePadHint && !FrameTask.IsTasking(Const.TASK_ROUTE);
+
 		// Data
-		private static readonly Dictionary<int, int> TypeHintMap = new();
-		private static readonly List<Entity> Listening = new();
 		private static readonly Dictionary<Key, int> KeyNameIdMap = new();
-		private eGamePadUI GamePad = null;
-		private int PositionY = 0;
+		private static readonly Dictionary<int, int> EntityHintMap = new();
+		private static readonly (int labelID, int priority, int frame)[] Hints = new (int, int, int)[8] {
+			(0,int.MinValue,-1), (0,int.MinValue,-1), (0,int.MinValue,-1), (0,int.MinValue,-1),
+			(0,int.MinValue,-1), (0,int.MinValue,-1), (0,int.MinValue,-1), (0,int.MinValue,-1),
+		};
+		private static eControlHintUI Current = null;
 		private Int4 Border_Keyboard = default;
 		private Int4 Border_Gamepad = default;
+		private int CurrentHintFrame = -1;
 
 
 		// MSG
 		[AfterGameInitialize]
 		public static void Initialize () {
 
-			TypeHintMap.Clear();
+			Current = Game.Current.PeekOrGetEntity<eControlHintUI>();
+
+			// Key Name Map
+			KeyNameIdMap.Clear();
+			foreach (var key in System.Enum.GetValues(typeof(Key))) {
+				KeyNameIdMap.TryAdd((Key)key, $"k_{key}".AngeHash());
+			}
+
+			// Entity Hint Map
+			EntityHintMap.Clear();
 			var objType = typeof(object);
 			var entityType = typeof(Entity);
+
+			// Action Entity
 			foreach (var type in typeof(IActionEntity).AllClassImplemented()) {
 				var _type = type;
 				string name = _type.Name;
@@ -54,28 +84,14 @@ namespace Yaya {
 					id = $"ActionHint.{name}".AngeHash();
 				}
 				if (Language.Has(id)) {
-					TypeHintMap.TryAdd(type.AngeHash(), id);
+					EntityHintMap.TryAdd(type.AngeHash(), id);
 				}
-			}
-			// Listening
-			Listening.Clear();
-			foreach (var type in typeof(MenuUI).AllChildClass()) {
-				int id = type.AngeHash();
-				var e = Game.Current.PeekOrGetEntity(id);
-				if (e == null) continue;
-				Listening.Add(e);
-			}
-			// Key Name Map
-			KeyNameIdMap.Clear();
-			foreach (var key in System.Enum.GetValues(typeof(Key))) {
-				KeyNameIdMap.TryAdd((Key)key, $"k_{key}".AngeHash());
 			}
 		}
 
 
 		public override void OnActived () {
 			base.OnActived();
-			GamePad = Game.Current.PeekOrGetEntity<eGamePadUI>();
 			if (CellRenderer.TryGetSprite(KEYBOARD_BUTTON_CODE, out var sprite)) {
 				Border_Keyboard.Left = (int)(sprite.GlobalBorder.Left * ((float)KeySize / sprite.GlobalWidth));
 				Border_Keyboard.Right = (int)(sprite.GlobalBorder.Right * ((float)KeySize / sprite.GlobalWidth));
@@ -92,106 +108,139 @@ namespace Yaya {
 
 
 		protected override void FrameUpdateUI () {
+			if (GamepadVisible) DrawGamePad();
+			if (YayaGame.Current.UseControlHint) DrawHints();
+			CurrentHintFrame++;
+		}
 
-			var cameraRect = CellRenderer.CameraRect;
-			Y = GamePad.Active && !FrameTask.IsTasking(Const.TASK_ROUTE) ? cameraRect.y + GamePad.Height + 12 * UNIT : cameraRect.y + 6 * UNIT;
-			PositionY = Y + 6 * UNIT;
 
-			// Cutscene
-			if (Game.Current.State == GameState.Cutscene) {
-				if (Cutscene.IsPlayingTask || Game.GlobalFrame > Cutscene.StartFrame + Game.Current.CutsceneVideoFadeoutDuration) {
-					DrawKey(GameKey.Start, WORD.HINT_SKIP_CODE);
-				}
-				return;
+		private void DrawGamePad () {
+
+			int x = 6 * UNIT;
+			int y = 6 * UNIT;
+			var rect = new RectInt(x, y, 132 * UNIT, 60 * UNIT);
+
+			var DPadLeftPosition = new RectInt(10 * UNIT, 22 * UNIT, 12 * UNIT, 8 * UNIT);
+			var DPadRightPosition = new RectInt(22 * UNIT, 22 * UNIT, 12 * UNIT, 8 * UNIT);
+			var DPadDownPosition = new RectInt(18 * UNIT, 14 * UNIT, 8 * UNIT, 12 * UNIT);
+			var DPadUpPosition = new RectInt(18 * UNIT, 26 * UNIT, 8 * UNIT, 12 * UNIT);
+			var DPadCenterPos = new Vector2Int(22 * UNIT, 26 * UNIT);
+			var SelectPosition = new RectInt(44 * UNIT, 20 * UNIT, 12 * UNIT, 4 * UNIT);
+			var StartPosition = new RectInt(60 * UNIT, 20 * UNIT, 12 * UNIT, 4 * UNIT);
+			var ButtonAPosition = new RectInt(106 * UNIT, 18 * UNIT, 12 * UNIT, 12 * UNIT);
+			var ButtonBPosition = new RectInt(86 * UNIT, 18 * UNIT, 12 * UNIT, 12 * UNIT);
+
+			var screenRect = CellRenderer.CameraRect;
+
+			// Body
+			CellRenderer.Draw(BodyCode, rect.Shift(screenRect.x, screenRect.y));
+
+			// DPad
+			CellRenderer.Draw(DPadLeftCode, DPadLeftPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Left) ? PressingTint : DarkButtonTint);
+			CellRenderer.Draw(DPadRightCode, DPadRightPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Right) ? PressingTint : DarkButtonTint);
+			CellRenderer.Draw(DPadDownCode, DPadDownPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Down) ? PressingTint : DarkButtonTint);
+			CellRenderer.Draw(DPadUpCode, DPadUpPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Up) ? PressingTint : DarkButtonTint);
+
+			// Direction
+			if (FrameInput.UsingLeftStick) {
+				var nDir = FrameInput.Direction;
+				CellRenderer.Draw(
+					Const.PIXEL, DPadCenterPos.x + x + screenRect.x, DPadCenterPos.y + y + screenRect.y,
+					500, 0, (int)Vector3.SignedAngle(Vector3.up, (Vector2)nDir, Vector3.back),
+					3 * UNIT, (int)nDir.magnitude * UNIT / 50, DirectionTint
+				);
 			}
 
-			if (FrameTask.IsTasking(Const.TASK_ROUTE)) return;
+			// Func
+			CellRenderer.Draw(ButtonSelectCode, SelectPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Select) ? PressingTint : DarkButtonTint);
+			CellRenderer.Draw(ButtonStartCode, StartPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Start) ? PressingTint : DarkButtonTint);
 
-			// Listening Hint
-			bool hasMenu = false;
-			foreach (var e in Listening) {
-				if (!e.Active) continue;
-				switch (e) {
-					case MenuUI menu:
-						if (hasMenu) break;
-						hasMenu = true;
-						DrawKey(GameKey.Down, GameKey.Up, WORD.HINT_MOVE_CODE);
-						if (menu.SelectionAdjustable) {
-							DrawKey(GameKey.Left, GameKey.Right, WORD.HINT_VALUE_CODE);
-						} else {
-							DrawKey(GameKey.Action, WORD.HINT_USE_CODE);
-						}
-						break;
-				}
-			}
-
-			var player = ePlayer.Current;
-			if (player == null || !player.Active) return;
-			if (Game.Current.State != GameState.Play) return;
-
-			// Game Playing
-			switch (player.CharacterState) {
-
-				case CharacterState.GamePlay: {
-					// Move
-					DrawKey(GameKey.Left, GameKey.Right, WORD.HINT_MOVE_CODE);
-					// Action & Jump
-					if (player.CurrentActionTarget is Entity target && target is IActionEntity) {
-						// Action Target
-						if (target is eOpenableFurniture open && open.Open) {
-							DrawKey(GameKey.Action, WORD.UI_OK);
-							DrawKey(GameKey.Jump, WORD.UI_CANCEL);
-						} else {
-							if (TypeHintMap.TryGetValue(target.TypeID, out int code)) {
-								DrawKey(GameKey.Action, code);
-							} else {
-								DrawKey(GameKey.Action, WORD.HINT_USE_CODE);
-							}
-						}
-					} else {
-						// General
-						if (!player.AntiAttack) {
-							DrawKey(GameKey.Action, WORD.HINT_ATTACK_CODE);
-						}
-						DrawKey(GameKey.Jump, WORD.HINT_JUMP_CODE);
-					}
-					break;
-				}
-
-				case CharacterState.Sleep: {
-					int x = player.X - Const.CEL / 2;
-					int y = player.Y + Const.CEL;
-					DrawKey(x, y, GameKey.Action, WORD.HINT_WAKE_CODE, true, true);
-					DrawKey(GameKey.Action, WORD.HINT_WAKE_CODE);
-					break;
-				}
-
-				case CharacterState.Passout: {
-					if (Game.GlobalFrame < player.PassoutFrame + YayaConst.PASSOUT_WAIT) break;
-					int x = player.X - Const.CEL / 2;
-					int y = player.Y + Const.CEL;
-					DrawKey(x, y, GameKey.Action, WORD.UI_CONTINUE, true, true);
-					DrawKey(GameKey.Action, WORD.UI_CONTINUE);
-					break;
-				}
-
-			}
-
-
+			// Buttons
+			CellRenderer.Draw(ButtonACode, ButtonAPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Action) ? PressingTint : ColorfulButtonTint);
+			CellRenderer.Draw(ButtonBCode, ButtonBPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Jump) ? PressingTint : ColorfulButtonTint);
 
 		}
 
 
-		private void DrawKey (GameKey key, int labelID) => DrawKey(key, key, labelID);
-		private void DrawKey (GameKey keyA, GameKey keyB, int labelID) {
-			int x = X + CellRenderer.CameraRect.x + 6 * UNIT;
-			int y = PositionY;
-			DrawKey(x, y, keyA, keyB, labelID);
-			PositionY += (KeySize + Gap) * UNIT;
+		private void DrawHints () {
+
+			int hintPositionY = CellRenderer.CameraRect.y + (GamepadVisible ? 78 : 12) * UNIT;
+
+			// Draw
+			int x = 6 * UNIT + CellRenderer.CameraRect.x + 6 * UNIT;
+			Draw(GameKey.Down);
+			Draw(GameKey.Up);
+			Draw(GameKey.Left);
+			Draw(GameKey.Right);
+			Draw(GameKey.Action);
+			Draw(GameKey.Jump);
+			Draw(GameKey.Select);
+			Draw(GameKey.Start);
+
+			// Func
+			void Draw (GameKey keyA) {
+				int index = (int)keyA;
+				var (labelID, _, frame) = Hints[index];
+				if (frame != CurrentHintFrame) return;
+				int y = hintPositionY;
+				var keyB = keyA switch {
+					GameKey.Left => GameKey.Right,
+					GameKey.Right => GameKey.Left,
+					GameKey.Down => GameKey.Up,
+					GameKey.Up => GameKey.Down,
+					GameKey.Jump => GameKey.Action,
+					GameKey.Action => GameKey.Jump,
+					GameKey.Start => GameKey.Select,
+					GameKey.Select => GameKey.Start,
+					_ => keyA,
+				};
+				if (
+					keyA != keyB &&
+					Hints[(int)keyB].frame == CurrentHintFrame &&
+					Hints[(int)keyB].labelID == labelID
+				) {
+					Hints[(int)keyB].frame = -1;
+				} else {
+					keyB = keyA;
+				}
+				DrawKey(x, y, keyA, keyB, labelID);
+				hintPositionY += (KeySize + Gap) * UNIT;
+			}
 		}
-		private void DrawKey (int x, int y, GameKey key, int labelID, bool background = false, bool animated = false) => DrawKey(x, y, key, key, labelID, background, animated);
+
+
+		// API
+		public static void DrawEntityHint (Entity target, GameKey key, int defaultHintID = 0, int priority = int.MinValue) => DrawEntityHint(target, key, key, defaultHintID, priority);
+		public static void DrawEntityHint (Entity target, GameKey keyA, GameKey keyB, int defaultHintID = 0, int priority = int.MinValue) {
+			if (target != null && EntityHintMap.TryGetValue(target.TypeID, out int hintID)) {
+				DrawHint(keyA, keyB, hintID, priority);
+			} else if (defaultHintID != 0) {
+				DrawHint(keyA, keyB, defaultHintID, priority);
+			}
+		}
+
+
+		public static void DrawHint (GameKey key, int labelID, int priority = int.MinValue) => DrawHint(key, key, labelID, priority);
+		public static void DrawHint (GameKey keyA, GameKey keyB, int labelID, int priority = int.MinValue) => Current?.SetHint(keyA, keyB, labelID, priority);
+
+
+		public static void DrawGlobalHint (int globalX, int globalY, GameKey key, int labelID, bool background = false, bool animated = false) => Current?.DrawKey(globalX, globalY, key, key, labelID, background, animated);
+		public static void DrawGlobalHint (int globalX, int globalY, GameKey keyA, GameKey keyB, int labelID, bool background = false, bool animated = false) => Current?.DrawKey(globalX, globalY, keyA, keyB, labelID, background, animated);
+
+
+		// LGC
+		private void SetHint (GameKey keyA, GameKey keyB, int labelID, int priority = int.MinValue) {
+			if (!YayaGame.Current.UseControlHint) return;
+			if (Hints[(int)keyA].frame != CurrentHintFrame || priority >= Hints[(int)keyA].priority) {
+				Hints[(int)keyA] = (labelID, priority, CurrentHintFrame);
+			}
+			if (Hints[(int)keyB].frame != CurrentHintFrame || priority >= Hints[(int)keyB].priority) {
+				Hints[(int)keyB] = (labelID, priority, CurrentHintFrame);
+			}
+		}
 		private void DrawKey (int x, int y, GameKey keyA, GameKey keyB, int labelID, bool background = false, bool animated = false) {
 
+			// Draw
 			var keyboardA = FrameInput.GetKeyboardMap(keyA);
 			var keyboardB = FrameInput.GetKeyboardMap(keyB);
 			var gamepadA = FrameInput.GetGamepadMap(keyA);

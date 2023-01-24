@@ -75,6 +75,7 @@ namespace Yaya {
 						Move(FrameInput.DirectionX, FrameInput.DirectionY);
 						FrameUpdate_JumpDashPound();
 						FrameUpdate_Action_Attack();
+						eControlHintUI.DrawHint(GameKey.Left, GameKey.Right, WORD.HINT_MOVE);
 					} else {
 						Stop();
 					}
@@ -82,6 +83,14 @@ namespace Yaya {
 				case CharacterState.Sleep:
 					if (!FrameTask.HasTask(Const.TASK_ROUTE)) {
 						FrameUpdate_Sleep();
+					}
+					break;
+				case CharacterState.Passout:
+					// Passout Hint
+					if (Game.GlobalFrame >= PassoutFrame + YayaConst.PASSOUT_WAIT) {
+						int x = X - Const.CEL / 2;
+						int y = Y + Const.CEL * 3 / 2;
+						eControlHintUI.DrawGlobalHint(x, y, GameKey.Action, WORD.UI_CONTINUE, true, true);
 					}
 					break;
 			}
@@ -117,6 +126,8 @@ namespace Yaya {
 
 			if (LockingInput) return;
 
+			eControlHintUI.DrawHint(GameKey.Jump, WORD.HINT_JUMP);
+
 			HoldJump(FrameInput.GameKeyPress(GameKey.Jump));
 			if (FrameInput.GameKeyDown(GameKey.Jump)) {
 				// Movement Jump
@@ -132,15 +143,21 @@ namespace Yaya {
 			if (FrameInput.GameKeyDown(GameKey.Down)) {
 				Pound();
 			}
+
 		}
 
 
 		private void FrameUpdate_Action_Attack () {
 
 			// Try Perform Action
-			if (CurrentActionTarget != null && FrameInput.AnyGameKeyDown()) {
-				bool performed = InvokeAction();
-				if (performed) return;
+			if (CurrentActionTarget != null) {
+				eControlHintUI.DrawEntityHint(CurrentActionTarget as Entity, GameKey.Action, WORD.HINT_USE);
+				if (FrameInput.AnyGameKeyDown()) {
+					bool performed = InvokeAction();
+					if (performed) return;
+				}
+			} else if (!AntiAttack) {
+				eControlHintUI.DrawHint(GameKey.Action, WORD.HINT_ATTACK);
 			}
 
 			// Try Cancel Action
@@ -180,6 +197,7 @@ namespace Yaya {
 				AttackRequiringFrame = int.MinValue;
 				Attack();
 			}
+
 		}
 
 
@@ -191,6 +209,10 @@ namespace Yaya {
 				Y -= 4;
 				IgnoreAttack(6);
 			}
+			// Ctrl Hint
+			int x = X - Const.CEL / 2;
+			int y = Y + Const.CEL * 3 / 2;
+			eControlHintUI.DrawGlobalHint(x, y, GameKey.Action, WORD.HINT_WAKE, true, true);
 		}
 
 

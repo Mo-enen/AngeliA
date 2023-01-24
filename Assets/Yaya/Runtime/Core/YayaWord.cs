@@ -51,13 +51,13 @@ namespace Yaya {
 		public static readonly int MENU_GAMEPAD_HINT = "Menu.Setting.UseGamepadHint".AngeHash();
 
 		// Hint
-		public static readonly int HINT_MOVE_CODE = "CtrlHint.Move".AngeHash();
-		public static readonly int HINT_VALUE_CODE = "CtrlHint.Adjust".AngeHash();
-		public static readonly int HINT_JUMP_CODE = "CtrlHint.Jump".AngeHash();
-		public static readonly int HINT_ATTACK_CODE = "CtrlHint.Attack".AngeHash();
-		public static readonly int HINT_USE_CODE = "CtrlHint.Use".AngeHash();
-		public static readonly int HINT_WAKE_CODE = "CtrlHint.WakeUp".AngeHash();
-		public static readonly int HINT_SKIP_CODE = "CtrlHint.Skip".AngeHash();
+		public static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
+		public static readonly int HINT_ADJUST = "CtrlHint.Adjust".AngeHash();
+		public static readonly int HINT_JUMP = "CtrlHint.Jump".AngeHash();
+		public static readonly int HINT_ATTACK = "CtrlHint.Attack".AngeHash();
+		public static readonly int HINT_USE = "CtrlHint.Use".AngeHash();
+		public static readonly int HINT_WAKE = "CtrlHint.WakeUp".AngeHash();
+		public static readonly int HINT_SKIP = "CtrlHint.Skip".AngeHash();
 
 
 

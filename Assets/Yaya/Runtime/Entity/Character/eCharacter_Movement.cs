@@ -345,7 +345,7 @@ namespace Yaya {
 							LastFlyFrame = frame;
 							HoldingJumpForFly = false;
 							if (CurrentJumpCount <= JumpCount) {
-								VelocityY = Mathf.Max(FlySpeed, VelocityY);
+								VelocityY = Mathf.Max(FlyRiseSpeed, VelocityY);
 							}
 							CurrentJumpCount++;
 						}
@@ -470,8 +470,12 @@ namespace Yaya {
 
 				// Fly
 				case MovementState.Fly: // Glide
-					if (FlyGlideSpeed > 0) {
-						speed = FacingRight ? FlyGlideSpeed : -FlyGlideSpeed;
+					if (FlyGlideAvailable.Value) {
+						speed = FacingRight ? FlyMoveSpeed : -FlyMoveSpeed;
+						acc = FlyGlideAcceleration;
+						dcc = FlyGlideDecceleration;
+					} else {
+						speed = IntendedX * FlyMoveSpeed;
 						acc = FlyGlideAcceleration;
 						dcc = FlyGlideDecceleration;
 					}
