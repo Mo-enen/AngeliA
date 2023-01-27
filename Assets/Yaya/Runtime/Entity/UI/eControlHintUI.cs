@@ -39,7 +39,8 @@ namespace Yaya {
 		public Color32 KeyLabelTint { get; set; } = new Color32(44, 49, 54, 255);
 
 		// Short
-		private bool GamepadVisible => YayaGame.Current.UseGamePadHint && !FrameTask.IsTasking(Const.TASK_ROUTE);
+		private bool GamepadVisible => YayaGame.Current.UseGamePadHint && Game.Current.State != GameState.Cutscene;
+		private bool HintVisible => YayaGame.Current.UseControlHint || Game.Current.State == GameState.Cutscene;
 
 		// Data
 		private static readonly Dictionary<Key, int> KeyNameIdMap = new();
@@ -109,7 +110,7 @@ namespace Yaya {
 
 		protected override void FrameUpdateUI () {
 			if (GamepadVisible) DrawGamePad();
-			if (YayaGame.Current.UseControlHint) DrawHints();
+			if (HintVisible) DrawHints();
 			CurrentHintFrame++;
 		}
 

@@ -9,7 +9,7 @@ namespace Yaya {
 
 
 		// VAR
-		public override bool Culling => base.Culling && !FrameTask.HasTask(Const.TASK_ROUTE);
+		public override bool Culling => base.Culling && !FrameTask.HasTask(YayaConst.TASK_ROUTE);
 
 
 		// API

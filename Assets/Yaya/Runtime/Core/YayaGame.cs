@@ -71,7 +71,10 @@ namespace Yaya {
 
 		// Init
 		[BeforeGameInitialize]
-		public static void BeforeInitialize () => Game.Current.PhysicsLayerCount = YayaConst.LAYER_COUNT;
+		public static void BeforeInitialize () {
+			Game.Current.PhysicsLayerCount = YayaConst.LAYER_COUNT;
+			Game.Current.TaskLayerCount = YayaConst.TASK_LAYER_COUNT;
+		}
 
 
 		[AfterGameInitialize]
@@ -89,8 +92,6 @@ namespace Yaya {
 			game.OnPauselessUpdate -= PauselessUpdate;
 			game.OnPauselessUpdate += PauselessUpdate;
 
-			game.PhysicsLayerCount = YayaConst.LAYER_COUNT;
-
 			// World
 			game.WorldSquad = WorldSquad = new YayaWorldSquad();
 			game.WorldSquad_Behind = WorldSquad_Behind = new YayaWorldSquad(true);
@@ -106,7 +107,10 @@ namespace Yaya {
 			Application.wantsToQuit += OnQuit;
 
 			// Start the Game !!
-			if (FrameTask.TryAddToLast(OpeningTask.TYPE_ID, Const.TASK_ROUTE, out var task) && task is OpeningTask oTask) {
+			if (
+				FrameTask.TryAddToLast(OpeningTask.TYPE_ID, YayaConst.TASK_ROUTE, out var task) &&
+				task is OpeningTask oTask
+			) {
 				oTask.TargetViewX = YayaConst.OPENING_X;
 				oTask.TargetViewY = YayaConst.OPENING_Y;
 				oTask.TargetViewZ = 0;
@@ -151,18 +155,14 @@ namespace Yaya {
 				//AudioPlayer.SetLowpass(100);
 			}
 			if (FrameInput.KeyDown(Key.Digit7)) {
-				DialoguePerformer.PerformTask<YayaDialoguePerformer>("TestConversation");
+				DialoguePerformer.PerformDialogue("TestConversation", YayaConst.TASK_ROUTE);
 			}
 			if (FrameInput.KeyDown(Key.Digit8)) {
-				game.WorldSquad.SetDataChannel(World.DataChannel.BuiltIn);
-				game.WorldSquad_Behind.SetDataChannel(World.DataChannel.BuiltIn);
-				game.SetViewZ(game.ViewZ);
+
 			}
 			if (FrameInput.KeyDown(Key.Digit9)) {
-				game.WorldSquad.SetDataChannel(World.DataChannel.User);
-				game.WorldSquad_Behind.SetDataChannel(World.DataChannel.User);
-				game.SetViewZ(game.ViewZ);
-				//Cutscene.PlayVideo("Test Video 1".AngeHash());
+
+				Cutscene.Play("Test Video 1".AngeHash());
 			}
 			if (FrameInput.KeyDown(Key.Digit0)) {
 				ePlayer.Current.SetHealth(0);
@@ -180,7 +180,7 @@ namespace Yaya {
 			// Spawn Player when No Player Entity
 			if (
 				ePlayer.Current == null &&
-				!FrameTask.HasTask(Const.TASK_ROUTE)
+				!FrameTask.HasTask(YayaConst.TASK_ROUTE)
 			) {
 				var center = CellRenderer.CameraRect.CenterInt();
 				ePlayer.TrySpawnPlayer(center.x, center.y);
@@ -194,11 +194,11 @@ namespace Yaya {
 				if (
 					Game.GlobalFrame > ePlayer.Current.PassoutFrame + YayaConst.PASSOUT_WAIT &&
 					FrameInput.GameKeyDown(GameKey.Action) &&
-					!FrameTask.HasTask(Const.TASK_ROUTE)
+					!FrameTask.HasTask(YayaConst.TASK_ROUTE)
 				) {
 					// Reopen Game
-					FrameTask.AddToLast(FadeOutTask.TYPE_ID, Const.TASK_ROUTE);
-					if (FrameTask.TryAddToLast(OpeningTask.TYPE_ID, Const.TASK_ROUTE, out var task) && task is OpeningTask oTask) {
+					FrameTask.AddToLast(FadeOutTask.TYPE_ID, YayaConst.TASK_ROUTE);
+					if (FrameTask.TryAddToLast(OpeningTask.TYPE_ID, YayaConst.TASK_ROUTE, out var task) && task is OpeningTask oTask) {
 						oTask.TargetViewX = YayaConst.OPENING_X;
 						oTask.TargetViewY = YayaConst.OPENING_Y;
 						oTask.TargetViewZ = 0;
@@ -269,10 +269,11 @@ namespace Yaya {
 			// Video Cutscene
 			if (
 				game.State == GameState.Cutscene &&
-				Cutscene.IsPlayingVideo &&
+				Cutscene.IsPlaying &&
 				Game.GlobalFrame > Cutscene.StartFrame + game.CutsceneVideoFadeoutDuration
 			) {
 				if (!CutsceneLock) {
+					eControlHintUI.DrawHint(GameKey.Start, WORD.HINT_SKIP);
 					ControlHintUI.FrameUpdate();
 				} else if (
 					FrameInput.AnyKeyboardKeyPress(out _) ||
@@ -296,7 +297,7 @@ namespace Yaya {
 						game.State = GameState.Play;
 						break;
 					case GameState.Cutscene:
-						if (!CutsceneLock || Cutscene.IsPlayingTask) {
+						if (!CutsceneLock) {
 							game.State = GameState.Play;
 						}
 						break;

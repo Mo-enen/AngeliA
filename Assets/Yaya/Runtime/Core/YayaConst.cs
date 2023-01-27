@@ -54,6 +54,11 @@ namespace Yaya {
 		public static readonly int GRAB_TOP_TAG = "GrabTop".AngeHash();
 		public static readonly int GRAB_SIDE_TAG = "GrabSide".AngeHash();
 
+		// Task
+		public const int TASK_ROUTE = 0;
+		public const int TASK_MISC = 1;
+		public const int TASK_LAYER_COUNT = 2;
+
 		// View
 		public const int PLAYER_VIEW_LERP_RATE = 96;
 		public const int VIEW_PRIORITY_PLAYER = int.MinValue;

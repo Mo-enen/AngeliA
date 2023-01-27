@@ -110,7 +110,7 @@ namespace Yaya {
 
 		// API
 		public bool Invoke (ePlayer player) {
-			if (player == null || FrameTask.HasTask(Const.TASK_ROUTE)) return false;
+			if (player == null || FrameTask.HasTask(YayaConst.TASK_ROUTE)) return false;
 			var game = Game.Current;
 			player.X = X + (Width - player.Width) / 2 - player.OffsetX;
 			player.Y = Y;
@@ -118,7 +118,8 @@ namespace Yaya {
 			game.Teleport(
 				player.X, player.Y + player.Height / 2,
 				player.X, player.Y + player.Height / 2,
-				IsFrontDoor ? game.ViewZ - 1 : game.ViewZ + 1
+				IsFrontDoor ? game.ViewZ - 1 : game.ViewZ + 1,
+				YayaConst.TASK_ROUTE
 			);
 			player.RenderEnterDoor(game.WorldConfig.SquadTransitionDuration, IsFrontDoor);
 			Open = true;
@@ -128,7 +129,7 @@ namespace Yaya {
 
 
 		public bool AllowInvoke (Entity target) =>
-			!FrameTask.HasTask(Const.TASK_ROUTE) && target is eCharacter ch &&
+			!FrameTask.HasTask(YayaConst.TASK_ROUTE) && target is eCharacter ch &&
 			ch.IsGrounded && ch.Rect.y >= Y && !ch.IsSquating && !ch.IsClimbing;
 
 

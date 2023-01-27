@@ -48,7 +48,7 @@ namespace Yaya {
 
 
 		public override void FillPhysics () {
-			if (FrameTask.HasTask(Const.TASK_ROUTE)) return;
+			if (FrameTask.HasTask(YayaConst.TASK_ROUTE)) return;
 			base.FillPhysics();
 		}
 
@@ -71,7 +71,7 @@ namespace Yaya {
 			// Update Player
 			switch (CharacterState) {
 				case CharacterState.GamePlay:
-					if (!FrameTask.HasTask(Const.TASK_ROUTE)) {
+					if (!FrameTask.HasTask(YayaConst.TASK_ROUTE)) {
 						Move(FrameInput.DirectionX, FrameInput.DirectionY);
 						FrameUpdate_JumpDashPound();
 						FrameUpdate_Action_Attack();
@@ -81,7 +81,7 @@ namespace Yaya {
 					}
 					break;
 				case CharacterState.Sleep:
-					if (!FrameTask.HasTask(Const.TASK_ROUTE)) {
+					if (!FrameTask.HasTask(YayaConst.TASK_ROUTE)) {
 						FrameUpdate_Sleep();
 					}
 					break;
@@ -219,7 +219,7 @@ namespace Yaya {
 		private void FrameUpdate_View () {
 
 			const int LINGER_RATE = 32;
-			bool notInGameplay = FrameTask.IsTasking<OpeningTask>(Const.TASK_ROUTE) || CharacterState != CharacterState.GamePlay;
+			bool notInGameplay = FrameTask.IsTasking<OpeningTask>(YayaConst.TASK_ROUTE) || CharacterState != CharacterState.GamePlay;
 			bool notInAir =
 				notInGameplay ||
 				IsGrounded || InWater || InSand || IsSliding ||

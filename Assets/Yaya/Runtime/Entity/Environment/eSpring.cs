@@ -141,6 +141,7 @@ namespace Yaya {
 
 
 		private void PerformBounce (eYayaRigidbody target) {
+			if (target == null) return;
 			RequireBouncePerform = false;
 			if (Horizontal) {
 				// Horizontal
