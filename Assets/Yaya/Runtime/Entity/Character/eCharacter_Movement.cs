@@ -405,7 +405,7 @@ namespace Yaya {
 
 		private void MovementUpdate_VelocityX () {
 
-			int speed = 0;
+			int speed;
 			int acc = int.MaxValue;
 			int dcc = int.MaxValue;
 
@@ -488,10 +488,6 @@ namespace Yaya {
 
 			}
 
-			if ((speed > 0 && VelocityX < 0) || (speed < 0 && VelocityX > 0)) {
-				acc *= OppositeXAccelerationRate / 1000;
-				dcc *= OppositeXAccelerationRate / 1000;
-			}
 			VelocityX = VelocityX.MoveTowards(speed, acc, dcc);
 		}
 
@@ -500,7 +496,7 @@ namespace Yaya {
 			switch (MoveState) {
 
 				default:
-					GravityScale = VelocityY <= 0 ? 1000 : (int)JumpRiseGravityRate;
+					GravityScale = IsGrounded || VelocityY <= 0 ? 1000 : (int)JumpRiseGravityRate;
 					break;
 
 				// Swim

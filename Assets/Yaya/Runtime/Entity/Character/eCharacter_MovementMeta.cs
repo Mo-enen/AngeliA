@@ -22,7 +22,6 @@ namespace Yaya {
 		public BuffInt RunSpeed { get; private set; } = new(32);
 		public BuffInt RunAcceleration { get; private set; } = new(3);
 		public BuffInt RunDecceleration { get; private set; } = new(4);
-		public BuffInt OppositeXAccelerationRate { get; private set; } = new(3000);
 
 		// Jump
 		public BuffInt JumpSpeed { get; private set; } = new(62);

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-
+using System;
 
 namespace Yaya {
 	[FirstSelectedPlayer]
@@ -13,8 +13,7 @@ namespace Yaya {
 		private static readonly int FOOTSTEP_CODE = "YayaFootstep".AngeHash();
 
 		// Api
-		public static eYaya CurrentYaya { get; private set; } = null;
-		public override eMascot Mascot => eGuaGua.Current;
+		protected override Type MascotType => typeof(eGuaGua);
 
 		// Data
 		private int LastStartRunFrame = int.MinValue;
@@ -22,8 +21,6 @@ namespace Yaya {
 
 		// MSG
 		public eYaya () {
-
-			CurrentYaya = this;
 
 			// Config
 			MovementWidth.Value = 150;

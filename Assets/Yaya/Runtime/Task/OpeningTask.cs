@@ -15,35 +15,29 @@ namespace Yaya {
 		private const int BLACK_DURATION = 120;
 		private const int SKIP_DURATION = 12;
 		private const int DOLLY_HEIGHT = Const.CEL * 11;
-		
+
 		// Api
 		public int TargetViewX { get; set; } = 0;
 		public int TargetViewY { get; set; } = 0;
 		public int TargetViewZ { get; set; } = 0;
+		public bool GotoBed { get; set; } = true;
 
 		// Data
 		private int SkipFrame = int.MaxValue;
 		private int SkipY = 0;
-		private bool GotoBed = true;
 
 
 		// MSG
 		public override void OnStart () {
 			base.OnStart();
-			GotoBed = true;
-			// Set Pos to Check Point
-			if (eCheckPoint.SavedPosition.HasValue) {
-				var pos = eCheckPoint.SavedPosition.Value;
-				TargetViewX = pos.x;
-				TargetViewY = pos.y;
-				TargetViewZ = pos.z;
-				GotoBed = false;
-			}
+			// Shift for Player Camera
+			TargetViewY += CellRenderer.CameraRect.height / 2 - ePlayer.GetCameraShiftOffset(CellRenderer.CameraRect.height);
+			// Start
 			SetViewPosition(TargetViewX, TargetViewY + DOLLY_HEIGHT);
 			Game.Current.SetViewZ(TargetViewZ);
 			SkipFrame = int.MaxValue;
 			// Remove Player
-			var player = ePlayer.Current;
+			var player = ePlayer.Selecting;
 			if (player != null) {
 				player.Active = false;
 				player.SetCharacterState(CharacterState.GamePlay);
@@ -58,11 +52,8 @@ namespace Yaya {
 			}
 			// Spawn Player
 			if (localFrame == 2) {
-				if (GotoBed) {
-					ePlayer.TrySpawnPlayerToBed(TargetViewX, TargetViewY);
-				} else {
-					ePlayer.TrySpawnPlayer(TargetViewX, TargetViewY);
-				}
+				var player = ePlayer.TrySpawnSelectingPlayer(TargetViewX, TargetViewY);
+				if (GotoBed) player?.GotoNearestBed();
 			}
 			if (localFrame < SkipFrame) {
 				// Slow 

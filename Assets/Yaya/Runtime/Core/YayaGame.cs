@@ -35,19 +35,11 @@ namespace Yaya {
 		public YayaWorldSquad WorldSquad_Behind { get; private set; } = null;
 		public bool UseGamePadHint {
 			get => ShowGamePadUI.Value;
-			set {
-				if (ShowGamePadUI.Value != value) {
-					ShowGamePadUI.Value = value;
-				}
-			}
+			set => ShowGamePadUI.Value = value;
 		}
 		public bool UseControlHint {
 			get => ShowControlHint.Value;
-			set {
-				if (ShowControlHint.Value != value) {
-					ShowControlHint.Value = value;
-				}
-			}
+			set => ShowControlHint.Value = value;
 		}
 
 		// Data
@@ -111,9 +103,11 @@ namespace Yaya {
 				FrameTask.TryAddToLast(OpeningTask.TYPE_ID, YayaConst.TASK_ROUTE, out var task) &&
 				task is OpeningTask oTask
 			) {
-				oTask.TargetViewX = YayaConst.OPENING_X;
-				oTask.TargetViewY = YayaConst.OPENING_Y;
-				oTask.TargetViewZ = 0;
+				var homePos = ePlayer.Selecting != null ? ePlayer.Selecting.GetHomePosition() : default;
+				oTask.TargetViewX = homePos.x;
+				oTask.TargetViewY = homePos.y;
+				oTask.TargetViewZ = homePos.z;
+				oTask.GotoBed = true;
 			}
 
 		}
@@ -139,8 +133,8 @@ namespace Yaya {
 				game.SetViewZ(game.ViewZ - 1);
 			}
 			if (FrameInput.KeyDown(Key.Digit3)) {
-				if (ePlayer.Current != null) {
-					ePlayer.Current.Mascot.FollowOwner = true;
+				if (ePlayer.Selecting != null) {
+					ePlayer.Selecting.Mascot.FollowOwner = true;
 				}
 			}
 			if (FrameInput.KeyDown(Key.Digit4)) {
@@ -158,14 +152,19 @@ namespace Yaya {
 				DialoguePerformer.PerformDialogue("TestConversation", YayaConst.TASK_ROUTE);
 			}
 			if (FrameInput.KeyDown(Key.Digit8)) {
-
+				var miniGame = game.PeekOrGetEntity<eGomokuUI>();
+				if (miniGame == null || !miniGame.Active) {
+					game.SpawnEntity<eGomokuUI>(0, 0);
+				} else {
+					miniGame.Active = false;
+				}
 			}
 			if (FrameInput.KeyDown(Key.Digit9)) {
 
 				Cutscene.Play("Test Video 1".AngeHash());
 			}
 			if (FrameInput.KeyDown(Key.Digit0)) {
-				ePlayer.Current.SetHealth(0);
+				ePlayer.Selecting.SetHealth(0);
 			}
 
 			// ============ Test ============
@@ -179,29 +178,43 @@ namespace Yaya {
 
 			// Spawn Player when No Player Entity
 			if (
-				ePlayer.Current == null &&
+				ePlayer.Selecting == null &&
 				!FrameTask.HasTask(YayaConst.TASK_ROUTE)
 			) {
 				var center = CellRenderer.CameraRect.CenterInt();
-				ePlayer.TrySpawnPlayer(center.x, center.y);
+				ePlayer.TrySpawnSelectingPlayer(center.x, center.y);
 			}
 
-			// Reload Game and Player After Passout
+			// Reload Game After Player Passout
 			if (
-				ePlayer.Current != null && ePlayer.Current.Active &&
-				ePlayer.Current.CharacterState == CharacterState.Passout
+				ePlayer.Selecting != null && 
+				ePlayer.Selecting.Active &&
+				ePlayer.Selecting.CharacterState == CharacterState.Passout
 			) {
 				if (
-					Game.GlobalFrame > ePlayer.Current.PassoutFrame + YayaConst.PASSOUT_WAIT &&
+					Game.GlobalFrame > ePlayer.Selecting.PassoutFrame + YayaConst.PASSOUT_WAIT &&
 					FrameInput.GameKeyDown(GameKey.Action) &&
 					!FrameTask.HasTask(YayaConst.TASK_ROUTE)
 				) {
-					// Reopen Game
+					Vector3Int targetPos;
+					bool gotoBed;
+					if (eCheckPoint.SavedPosition.HasValue) {
+						// Set Pos to Check Point Saved Pos
+						targetPos = eCheckPoint.SavedPosition.Value;
+						gotoBed = false;
+					} else {
+						// Set Pos to First Player Map Pos
+						var homePos = ePlayer.Selecting != null ? ePlayer.Selecting.GetHomePosition() : default;
+						targetPos = homePos;
+						gotoBed = true;
+					}
+					// Reload Game
 					FrameTask.AddToLast(FadeOutTask.TYPE_ID, YayaConst.TASK_ROUTE);
 					if (FrameTask.TryAddToLast(OpeningTask.TYPE_ID, YayaConst.TASK_ROUTE, out var task) && task is OpeningTask oTask) {
-						oTask.TargetViewX = YayaConst.OPENING_X;
-						oTask.TargetViewY = YayaConst.OPENING_Y;
-						oTask.TargetViewZ = 0;
+						oTask.TargetViewX = targetPos.x;
+						oTask.TargetViewY = targetPos.y;
+						oTask.TargetViewZ = targetPos.z;
+						oTask.GotoBed = gotoBed;
 					}
 				}
 			}
@@ -334,7 +347,7 @@ namespace Yaya {
 
 		private void YayaBeforeViewZChange (int newZ) {
 			// Player
-			var current = ePlayer.Current;
+			var current = ePlayer.Selecting;
 			if (current != null && current.Active) {
 				current.RenderBounce();
 				if (current.Mascot != null && current.Mascot.FollowOwner) {

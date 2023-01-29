@@ -36,7 +36,6 @@ Menu.Setting.UseGamepadHint:显示左下角手柄
 Menu.Setting.VSync:垂直同步
 UI.Back:返回
 UI.Cancel:取消
-UI.ChoiceHint:（请选择）
 UI.Continue:继续
 UI.GameKey.Action:确定/攻击
 UI.GameKey.Down:下

@@ -77,7 +77,7 @@ namespace Yaya {
 
 
 		private void Update_PlayerTouch () {
-			var player = ePlayer.Current;
+			var player = ePlayer.Selecting;
 			if (player == null || !player.Active) return;
 			if (player.Rect.Overlaps(Rect)) {
 				var targetPos = new Vector3Int(X, Y, Game.Current.ViewZ);

@@ -78,7 +78,7 @@ namespace Yaya {
 			base.FrameUpdate();
 
 			const int OVERLAP_SHRINK = Const.CEL / 8;
-			var player = ePlayer.Current;
+			var player = ePlayer.Selecting;
 			bool playerOverlaps =
 				player != null &&
 				player.IsGrounded &&

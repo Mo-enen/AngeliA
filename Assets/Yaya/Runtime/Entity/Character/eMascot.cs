@@ -7,6 +7,7 @@ using AngeliaFramework;
 namespace Yaya {
 	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.Capacity(1, 1)]
+	[EntityAttribute.MapEditorGroup("Player")]
 	public abstract class eMascot : eCharacter {
 
 
@@ -16,11 +17,13 @@ namespace Yaya {
 
 
 		// Api
+		protected abstract System.Type OwnerType { get; }
 		public bool FollowOwner { get; set; } = false;
-		public abstract ePlayer Owner { get; }
+		public ePlayer Owner => _Owner ??= Game.Current.PeekOrGetEntity(OwnerType.AngeHash()) as ePlayer;
 
 		// Data
 		private readonly Vector2Int[] PosChain = new Vector2Int[6];
+		private ePlayer _Owner = null;
 		private int PosChainStartIndex = -1;
 		private int PrevFollowSwapeFrame = 0;
 		private int PrevHp = 0;
@@ -94,6 +97,7 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
+
 			if (
 				Owner != null && Owner.Active && FollowOwner &&
 				Owner.CharacterState == CharacterState.GamePlay

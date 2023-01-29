@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-
+using System;
 
 namespace Yaya {
 	[EntityAttribute.UpdateOutOfRange]
@@ -16,15 +16,11 @@ namespace Yaya {
 		private static readonly int HEART_EMPTY_R_CODE = "Heart Empty Right".AngeHash();
 
 		// Api
-		public static eGuaGua Current { get; private set; } = null;
-		public override ePlayer Owner => eYaya.CurrentYaya;
-
-		// Data
+		protected override Type OwnerType => typeof(eYaya);
 
 
 		// MSG
 		public eGuaGua () {
-			Current = this;
 			// Config
 			MovementWidth.Value = 150;
 			MovementHeight.Value = 150;

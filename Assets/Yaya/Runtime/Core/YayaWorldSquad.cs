@@ -53,6 +53,14 @@ namespace Yaya {
 		}
 
 
+		protected override void DrawEntity (Game game, int id, int unitX, int unitY, int unitZ) {
+			var entity = game.SpawnEntityFromWorld(id, unitX, unitY, unitZ);
+			if (entity is eCharacter ch) {
+				ch.X += ch.Width / 2;
+			}
+		}
+
+
 		public FittingPose GetEntityPose (Entity entity, bool horizontal) => GetEntityPose(entity.TypeID, entity.X, entity.Y, horizontal);
 		public FittingPose GetEntityPose (int typeID, int globalX, int globalY, bool horizontal) {
 			int unitX = globalX.UDivide(Const.CEL);

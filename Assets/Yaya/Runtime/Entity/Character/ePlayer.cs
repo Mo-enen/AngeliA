@@ -5,14 +5,14 @@ using AngeliaFramework;
 using System.Reflection;
 
 namespace Yaya {
-	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.Capacity(1, 1)]
 	[EntityAttribute.Bounds(-Const.CEL / 2, 0, Const.CEL, Const.CEL * 2)]
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.ForceSpawn]
 	[EntityAttribute.UpdateOutOfRange]
-	public abstract class ePlayer : eCharacter {
+	[EntityAttribute.MapEditorGroup("Player")]
+	public abstract class ePlayer : eCharacter, IGlobalPosition {
 
 
 
@@ -21,14 +21,16 @@ namespace Yaya {
 
 
 		// Api
-		public static ePlayer Current { get; private set; } = null;
-		public virtual eMascot Mascot => null;
+		public static ePlayer Selecting { get; private set; } = null;
 		public override bool IsChargingAttack => MinimalChargeAttackDuration != int.MaxValue && !AntiAttack && AttackCooldownReady(false) && FrameInput.GameKeyPress(GameKey.Action);
+		protected abstract System.Type MascotType { get; }
+		public eMascot Mascot => _Mascot ??= Game.Current.PeekOrGetEntity(MascotType.AngeHash()) as eMascot;
 		public int AimViewX { get; private set; } = 0;
 		public int AimViewY { get; private set; } = 0;
 
 		// Data
 		private static readonly PhysicsCell[] Collects = new PhysicsCell[8];
+		private eMascot _Mascot = null;
 		private int AttackRequiringFrame = int.MinValue;
 		private int LastGroundedY = 0;
 
@@ -41,9 +43,19 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnActived () {
-			base.OnActived();
-			Current ??= this;
+		public ePlayer () {
+			// Select First Player
+			if (Selecting == null) {
+				// First Player
+				int firstSelectID = 0;
+				foreach (var type in typeof(ePlayer).AllChildClass()) {
+					firstSelectID = type.AngeHash();
+					if (type.GetCustomAttribute<FirstSelectedPlayerAttribute>(true) != null) break;
+				}
+				if (firstSelectID == GetType().AngeHash()) {
+					Selecting = this;
+				}
+			}
 		}
 
 
@@ -63,7 +75,7 @@ namespace Yaya {
 			base.FrameUpdate();
 
 			// Stop when Not Playing
-			if (Current != this || Game.Current.State != GameState.Play) {
+			if (Selecting != this || Game.Current.State != GameState.Play) {
 				Stop();
 				return;
 			}
@@ -107,7 +119,7 @@ namespace Yaya {
 
 
 		private void PhysicsUpdate_Collect () {
-			if (Current != this) return;
+			if (Selecting != this) return;
 			int count = CellPhysics.OverlapAll(
 				Collects, YayaConst.MASK_ENTITY, Rect, this, OperationMode.TriggerOnly
 			);
@@ -240,8 +252,7 @@ namespace Yaya {
 			}
 
 			// Aim Y
-			AimViewY = Y <= LastGroundedY ?
-				Y - game.ViewRect.height * 382 / 1000 : AimViewY;
+			AimViewY = Y <= LastGroundedY ? Y - GetCameraShiftOffset(game.ViewRect.height) : AimViewY;
 
 			game.SetViewPositionDelay(AimViewX, AimViewY, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_PLAYER);
 
@@ -265,29 +276,34 @@ namespace Yaya {
 		#region --- API ---
 
 
-		public static ePlayer TrySpawnPlayer (int x, int y) {
-			if (Game.Current.TryGetEntity<ePlayer>(out var player)) {
-				return player;
-			} else {
-				int firstPlayerID = 0;
-				foreach (var type in typeof(ePlayer).AllChildClass()) {
-					firstPlayerID = type.AngeHash();
-					if (type.GetCustomAttribute<FirstSelectedPlayerAttribute>(true) != null) break;
-				}
-				return Game.Current.SpawnEntity(firstPlayerID, x, y) as ePlayer;
+		public static ePlayer TrySpawnSelectingPlayer (int x, int y) {
+			if (Selecting == null) return null;
+			if (!Selecting.Active) {
+				return Game.Current.SpawnEntity(Selecting.TypeID, x, y) as ePlayer;
 			}
+			Selecting.X = x;
+			Selecting.Y = y;
+			return Selecting;
 		}
 
 
-		public static ePlayer TrySpawnPlayerToBed (int x, int y) {
-			var player = TrySpawnPlayer(x, y);
-			if (player == null) return null;
-			// Go to Bed
-			if (Game.Current.TryGetEntityNearby<eBed>(new(x, y), out var bed)) {
-				bed.Invoke(player);
+		public static void SelectPlayer (ePlayer newPlayer) {
+			if (newPlayer == null || !newPlayer.Active || newPlayer == Selecting) return;
+			Selecting = newPlayer;
+		}
+
+
+		public static int GetCameraShiftOffset (int cameraHeight) => cameraHeight * 382 / 1000;
+
+
+		public Vector3Int GetHomePosition () => GlobalPosition.TryGetGlobalPosition(TypeID, out var pos) ? pos : new Vector3Int(X, Y, Game.Current.ViewZ);
+
+
+		public void GotoNearestBed () {
+			if (Game.Current.TryGetEntityNearby<eBed>(new(X, Y), out var bed)) {
+				bed.Invoke(this);
+				SleepAmount = 1000;
 			}
-			player.SleepAmount = 1000;
-			return player;
 		}
 
 

@@ -54,7 +54,7 @@ namespace Yaya {
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
 
-			var player = ePlayer.Current;
+			var player = ePlayer.Selecting;
 			if (player == null || !player.Active) return;
 
 			// Player Pos Check
@@ -101,7 +101,7 @@ namespace Yaya {
 
 			// Clamp Camera
 			var game = Game.Current;
-			var player = ePlayer.Current;
+			var player = ePlayer.Selecting;
 			var cameraRect = CellRenderer.CameraRect;
 			int viewOffsetX = game.ViewRect.x - CellRenderer.CameraRect.x;
 			if (player != null && player.Active) {

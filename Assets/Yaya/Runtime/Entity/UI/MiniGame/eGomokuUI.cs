@@ -5,8 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[EntityAttribute.Capacity(1, 0)]
-	public class eGomokuUI : UIEntity {
+	public class eGomokuUI : eMiniGame {
 
 
 
@@ -34,9 +33,26 @@ namespace Yaya {
 
 
 		protected override void FrameUpdateUI () {
+			base.FrameUpdateUI();
+			if (Game.Current.State != GameState.Play) return;
+			Update_HotKey();
+			Update_Hint();
+		}
 
 
+		private void Update_HotKey () {
+			// Quit
+			if (FrameInput.GameKeyDown(GameKey.Start)) {
+				FrameInput.UseGameKey(GameKey.Start);
 
+
+			}
+		}
+
+
+		private void Update_Hint () {
+			eControlHintUI.DrawHint(GameKey.Left, GameKey.Right, WORD.HINT_MOVE);
+			eControlHintUI.DrawHint(GameKey.Down, GameKey.Up, WORD.HINT_MOVE);
 
 		}
 
