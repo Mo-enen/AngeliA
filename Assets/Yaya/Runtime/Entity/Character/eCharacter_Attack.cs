@@ -16,7 +16,6 @@ namespace Yaya {
 
 		// Api
 		public bool IsAttacking => Game.GlobalFrame < LastAttackFrame + AttackDuration;
-		public bool AntiAttack => Game.GlobalFrame <= AntiAttackFrame;
 		public int BulletID => _BulletID != 0 ? _BulletID : (_BulletID = BulletName.Value.AngeHash());
 		public int AttackCombo { get; private set; } = -1;
 		public virtual bool IsChargingAttack => false;
@@ -46,7 +45,6 @@ namespace Yaya {
 
 		// Data
 		private readonly static System.Random Random = new(19940516);
-		private int AntiAttackFrame = int.MinValue;
 		private int LastAttackFrame = int.MinValue;
 		private int ChargeStartFrame = int.MaxValue;
 		private bool LastAttackCharged = false;
@@ -63,7 +61,6 @@ namespace Yaya {
 
 		public void OnActived_Attack () {
 			LastAttackFrame = int.MinValue;
-			AntiAttackFrame = int.MinValue;
 			ChargeStartFrame = int.MaxValue;
 		}
 
@@ -104,7 +101,7 @@ namespace Yaya {
 
 			int frame = Game.GlobalFrame;
 			LastAttackCharged = false;
-			if (BulletID == 0 || frame <= AntiAttackFrame) return;
+			if (BulletID == 0 || IsSafe) return;
 			LastAttackFrame = frame;
 
 			// Spawn Bullet
@@ -126,9 +123,6 @@ namespace Yaya {
 		public bool AttackCooldownReady (bool isHolding) => isHolding ?
 			Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackColldown + HoldAttackPunish :
 			Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackColldown;
-
-
-		public void IgnoreAttack (int duration = 0) => AntiAttackFrame = Game.GlobalFrame + duration;
 
 
 		#endregion

@@ -18,7 +18,8 @@ namespace Yaya {
 		public int LastDamageFrame { get; private set; } = int.MinValue;
 		public bool IsFullHealth => HealthPoint >= MaxHP;
 		public bool IsEmptyHealth => HealthPoint <= 0;
-		public bool Invincible => Game.GlobalFrame < InvincibleStartFrame + InvincibleFrame;
+		public bool Invincible => Game.GlobalFrame < InvincibleEndFrame;
+		public bool IsSafe => Game.GlobalFrame <= SafeFrame;
 
 		// Buff
 		public BuffInt MaxHP { get; private set; } = new(1);
@@ -27,7 +28,8 @@ namespace Yaya {
 		public BuffInt DamageStunDuration { get; private set; } = new(24);
 
 		// Data
-		private int InvincibleStartFrame = int.MinValue;
+		private int InvincibleEndFrame = int.MinValue;
+		private int SafeFrame = int.MinValue;
 
 
 		#endregion
@@ -40,7 +42,8 @@ namespace Yaya {
 
 		public void OnActived_Health () {
 			HealthPoint = MaxHP.FinalValue;
-			InvincibleStartFrame = int.MinValue;
+			InvincibleEndFrame = int.MinValue;
+			SafeFrame = int.MinValue;
 		}
 
 
@@ -52,7 +55,27 @@ namespace Yaya {
 		#region --- API ---
 
 
-		// Health
+		public void TakeDamage (int damage) {
+
+			if (
+				CharacterState != CharacterState.GamePlay || damage <= 0 ||
+				Invincible || HealthPoint <= 0 || Game.GlobalFrame <= SafeFrame
+			) return;
+
+			// Health Down
+			HealthPoint = (HealthPoint - damage).Clamp(0, MaxHP);
+			InvincibleEndFrame = Game.GlobalFrame + InvincibleFrame;
+			LastDamageFrame = Game.GlobalFrame;
+
+			// Render
+			VelocityX = FacingRight ? -KnockBackSpeed : KnockBackSpeed;
+			RenderDamage(DamageStunDuration);
+			if (!IsEmptyHealth) {
+				RenderBlink(InvincibleFrame);
+			}
+		}
+
+
 		public bool Heal (int heal) {
 			int oldPoint = HealthPoint;
 			HealthPoint = (HealthPoint + heal).Clamp(0, MaxHP);
@@ -61,6 +84,9 @@ namespace Yaya {
 
 
 		public void SetHealth (int health) => HealthPoint = health.Clamp(0, MaxHP);
+
+
+		public void MakeSafe (int duration = 0) => SafeFrame = Game.GlobalFrame + duration;
 
 
 		#endregion

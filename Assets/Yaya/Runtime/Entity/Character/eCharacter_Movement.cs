@@ -411,10 +411,14 @@ namespace Yaya {
 
 			switch (MoveState) {
 
+				// Walk and Run
 				default:
 					bool running = ReadyForRun;
 					speed = IntendedX * (running ? RunSpeed : WalkSpeed);
-					acc = running ? RunAcceleration : WalkAcceleration;
+					bool braking = (speed > 0 && VelocityX < 0) || (speed < 0 && VelocityX > 0);
+					acc = running ?
+						(braking ? RunBrakeAcceleration : RunAcceleration) :
+						(braking ? WalkBrakeAcceleration : WalkAcceleration);
 					dcc = running ? RunDecceleration : WalkDecceleration;
 					break;
 

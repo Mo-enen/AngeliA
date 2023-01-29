@@ -22,7 +22,7 @@ namespace Yaya {
 
 		// Api
 		public static ePlayer Selecting { get; private set; } = null;
-		public override bool IsChargingAttack => MinimalChargeAttackDuration != int.MaxValue && !AntiAttack && AttackCooldownReady(false) && FrameInput.GameKeyPress(GameKey.Action);
+		public override bool IsChargingAttack => MinimalChargeAttackDuration != int.MaxValue && !IsSafe && AttackCooldownReady(false) && FrameInput.GameKeyPress(GameKey.Action);
 		protected abstract System.Type MascotType { get; }
 		public eMascot Mascot => _Mascot ??= Game.Current.PeekOrGetEntity(MascotType.AngeHash()) as eMascot;
 		public int AimViewX { get; private set; } = 0;
@@ -168,7 +168,7 @@ namespace Yaya {
 					bool performed = InvokeAction();
 					if (performed) return;
 				}
-			} else if (!AntiAttack) {
+			} else if (!IsSafe) {
 				eControlHintUI.DrawHint(GameKey.Action, WORD.HINT_ATTACK);
 			}
 
@@ -219,7 +219,7 @@ namespace Yaya {
 			if (FrameInput.GameKeyDown(GameKey.Action) || FrameInput.GameKeyDown(GameKey.Jump)) {
 				SetCharacterState(CharacterState.GamePlay);
 				Y -= 4;
-				IgnoreAttack(6);
+				MakeSafe(6);
 			}
 			// Ctrl Hint
 			int x = X - Const.CEL / 2;

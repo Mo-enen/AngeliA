@@ -15,12 +15,14 @@ namespace Yaya {
 		// Walk
 		public BuffInt WalkSpeed { get; private set; } = new(20);
 		public BuffInt WalkAcceleration { get; private set; } = new(3);
+		public BuffInt WalkBrakeAcceleration { get; private set; } = new(30);
 		public BuffInt WalkDecceleration { get; private set; } = new(4);
 
 		// Run
 		public BuffInt RunAccumulation { get; private set; } = new(48);
 		public BuffInt RunSpeed { get; private set; } = new(32);
 		public BuffInt RunAcceleration { get; private set; } = new(3);
+		public BuffInt RunBrakeAcceleration { get; private set; } = new(30);
 		public BuffInt RunDecceleration { get; private set; } = new(4);
 
 		// Jump

@@ -139,29 +139,6 @@ namespace Yaya {
 		#region --- API ---
 
 
-		// Virtual
-		public virtual void TakeDamage (int damage) {
-
-			if (
-				CharacterState != CharacterState.GamePlay || damage <= 0 ||
-				Invincible || HealthPoint <= 0
-			) return;
-
-			// Health Down
-			HealthPoint = (HealthPoint - damage).Clamp(0, MaxHP);
-			InvincibleStartFrame = Game.GlobalFrame;
-			LastDamageFrame = Game.GlobalFrame;
-
-			// Render
-			VelocityX = FacingRight ? -KnockBackSpeed : KnockBackSpeed;
-			RenderDamage(DamageStunDuration);
-			if (!IsEmptyHealth) {
-				RenderBlink(InvincibleFrame);
-			}
-		}
-
-
-		// Behavior
 		public bool IsAttackAllowedByMovement () =>
 			(AttackInAir || (IsGrounded || InWater || InSand || IsClimbing)) &&
 			(AttackInWater || !InWater) &&

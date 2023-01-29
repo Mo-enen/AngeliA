@@ -80,7 +80,7 @@ namespace Yaya {
 			var player = ePlayer.Selecting;
 			if (player == null || !player.Active) return;
 			if (player.Rect.Overlaps(Rect)) {
-				var targetPos = new Vector3Int(X, Y, Game.Current.ViewZ);
+				var targetPos = new Vector3Int(X + Const.CEL / 2, Y, Game.Current.ViewZ);
 				if (SavedPosition != targetPos) {
 					// Touch
 					SavedPosition = targetPos;

@@ -11,50 +11,72 @@ namespace Yaya {
 
 		// Const
 		public static readonly int TYPE_ID = typeof(OpeningTask).AngeHash();
+		private const int FADE_OUT_DURATION = 60;
 		private const int DURATION = 180;
 		private const int BLACK_DURATION = 120;
 		private const int SKIP_DURATION = 12;
-		private const int DOLLY_HEIGHT = Const.CEL * 11;
+		private const int DOLLY_HEIGHT = Const.CEL * 10;
 
 		// Api
 		public int TargetViewX { get; set; } = 0;
 		public int TargetViewY { get; set; } = 0;
 		public int TargetViewZ { get; set; } = 0;
+		public bool FadeOut { get; set; } = true;
 		public bool GotoBed { get; set; } = true;
 
 		// Data
 		private int SkipFrame = int.MaxValue;
 		private int SkipY = 0;
+		private int PlayerSpawnY = 0;
 
 
 		// MSG
 		public override void OnStart () {
 			base.OnStart();
-			// Shift for Player Camera
-			TargetViewY += CellRenderer.CameraRect.height / 2 - ePlayer.GetCameraShiftOffset(CellRenderer.CameraRect.height);
-			// Start
-			SetViewPosition(TargetViewX, TargetViewY + DOLLY_HEIGHT);
-			Game.Current.SetViewZ(TargetViewZ);
 			SkipFrame = int.MaxValue;
-			// Remove Player
-			var player = ePlayer.Selecting;
-			if (player != null) {
-				player.Active = false;
-				player.SetCharacterState(CharacterState.GamePlay);
-			}
+			ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, true);
+			PlayerSpawnY = TargetViewY;
+			TargetViewY += Game.Current.ViewRect.height / 2 - ePlayer.GetCameraShiftOffset(Game.Current.ViewRect.height);
 		}
 
 
 		public override TaskResult FrameUpdate () {
+
 			int localFrame = LocalFrame;
-			if (localFrame == 0) {
-				ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, true);
+
+			// Fade Out
+			if (FadeOut) {
+				if (localFrame < FADE_OUT_DURATION) {
+					var view = Game.Current.ViewRect;
+					Game.Current.SetViewPositionDelay(view.x, view.y, 1000, YayaConst.VIEW_PRIORITY_SYSTEM);
+					RetroDarkenEffect.SetAmount(Util.Remap(
+						0f, FADE_OUT_DURATION,
+						0f, 1f,
+						localFrame
+					));
+					return TaskResult.Continue;
+				} else {
+					localFrame -= FADE_OUT_DURATION;
+				}
 			}
+
+			// Remove Player
+			if (localFrame == 1) {
+				var player = ePlayer.Selecting;
+				if (player != null) {
+					player.Active = false;
+					player.SetCharacterState(CharacterState.GamePlay);
+				}
+				SetViewPosition(TargetViewX, TargetViewY + DOLLY_HEIGHT);
+				Game.Current.SetViewZ(TargetViewZ);
+			}
+
 			// Spawn Player
 			if (localFrame == 2) {
-				var player = ePlayer.TrySpawnSelectingPlayer(TargetViewX, TargetViewY);
+				var player = ePlayer.TrySpawnSelectingPlayer(TargetViewX, PlayerSpawnY);
 				if (GotoBed) player?.GotoNearestBed();
 			}
+
 			if (localFrame < SkipFrame) {
 				// Slow 
 				if (FrameInput.AnyKeyPressed) {

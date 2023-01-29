@@ -108,6 +108,7 @@ namespace Yaya {
 				oTask.TargetViewY = homePos.y;
 				oTask.TargetViewZ = homePos.z;
 				oTask.GotoBed = true;
+				oTask.FadeOut = false;
 			}
 
 		}
@@ -187,7 +188,7 @@ namespace Yaya {
 
 			// Reload Game After Player Passout
 			if (
-				ePlayer.Selecting != null && 
+				ePlayer.Selecting != null &&
 				ePlayer.Selecting.Active &&
 				ePlayer.Selecting.CharacterState == CharacterState.Passout
 			) {
@@ -209,12 +210,13 @@ namespace Yaya {
 						gotoBed = true;
 					}
 					// Reload Game
-					FrameTask.AddToLast(FadeOutTask.TYPE_ID, YayaConst.TASK_ROUTE);
+					FrameInput.UseAllHoldingKeys();
 					if (FrameTask.TryAddToLast(OpeningTask.TYPE_ID, YayaConst.TASK_ROUTE, out var task) && task is OpeningTask oTask) {
 						oTask.TargetViewX = targetPos.x;
 						oTask.TargetViewY = targetPos.y;
 						oTask.TargetViewZ = targetPos.z;
 						oTask.GotoBed = gotoBed;
+						oTask.FadeOut = true;
 					}
 				}
 			}
