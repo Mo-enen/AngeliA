@@ -40,7 +40,7 @@ namespace Yaya {
 
 		// Short
 		private bool GamepadVisible => YayaGame.Current.UseGamePadHint && Game.Current.State != GameState.Cutscene;
-		private bool HintVisible => YayaGame.Current.UseControlHint || Game.Current.State == GameState.Cutscene;
+		private bool HintVisible => YayaGame.Current.UseControlHint || Game.Current.State == GameState.Cutscene || Current.CurrentHintFrame <= ForceHintFrame;
 
 		// Data
 		private static readonly Dictionary<Key, int> KeyNameIdMap = new();
@@ -53,6 +53,7 @@ namespace Yaya {
 		private Int4 Border_Keyboard = default;
 		private Int4 Border_Gamepad = default;
 		private int CurrentHintFrame = -1;
+		private int ForceHintFrame = int.MinValue;
 
 
 		// MSG
@@ -229,9 +230,15 @@ namespace Yaya {
 		public static void DrawGlobalHint (int globalX, int globalY, GameKey keyA, GameKey keyB, int labelID, bool background = false, bool animated = false) => Current?.DrawKey(globalX, globalY, keyA, keyB, labelID, background, animated);
 
 
+		public static void ForceShowHint (int duration = 0) {
+			if (Current == null) return;
+			Current.ForceHintFrame = Current.CurrentHintFrame + duration;
+		}
+
+
 		// LGC
 		private void SetHint (GameKey keyA, GameKey keyB, int labelID, int priority = int.MinValue) {
-			if (!YayaGame.Current.UseControlHint) return;
+			if (!HintVisible) return;
 			if (Hints[(int)keyA].frame != CurrentHintFrame || priority >= Hints[(int)keyA].priority) {
 				Hints[(int)keyA] = (labelID, priority, CurrentHintFrame);
 			}

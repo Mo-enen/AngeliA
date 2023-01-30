@@ -49,6 +49,11 @@ namespace Yaya {
 		public static readonly int MENU_SCREEN_EFFECT = "Menu.Setting.ScreenEffect".AngeHash();
 		public static readonly int MENU_CONTROL_HINT = "Menu.Setting.UseControlHint".AngeHash();
 		public static readonly int MENU_GAMEPAD_HINT = "Menu.Setting.UseGamepadHint".AngeHash();
+		public static readonly int MENU_QUIT_MINI_GAME = "Menu.MiniGame.QuitMsg".AngeHash();
+		public static readonly int MENU_GOMOKU_RESTART = "Menu.Gomoku.Restart".AngeHash();
+		public static readonly int MENU_GOMOKU_WIN = "Menu.Gomoku.Win".AngeHash();
+		public static readonly int MENU_GOMOKU_LOSE = "Menu.Gomoku.Lose".AngeHash();
+		public static readonly int MENU_GOMOKU_DRAW = "Menu.Gomoku.Draw".AngeHash();
 
 		// Hint
 		public static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
@@ -58,6 +63,7 @@ namespace Yaya {
 		public static readonly int HINT_USE = "CtrlHint.Use".AngeHash();
 		public static readonly int HINT_WAKE = "CtrlHint.WakeUp".AngeHash();
 		public static readonly int HINT_SKIP = "CtrlHint.Skip".AngeHash();
+		public static readonly int HINT_RESTART = "CtrlHint.Restart".AngeHash();
 
 
 

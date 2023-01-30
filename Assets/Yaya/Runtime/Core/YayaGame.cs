@@ -103,7 +103,7 @@ namespace Yaya {
 				FrameTask.TryAddToLast(OpeningTask.TYPE_ID, YayaConst.TASK_ROUTE, out var task) &&
 				task is OpeningTask oTask
 			) {
-				var homePos = ePlayer.Selecting != null ? ePlayer.Selecting.GetHomePosition() : default;
+				var homePos = ePlayer.Selecting != null ? ePlayer.Selecting.GetHomePosition() * Const.CEL : default;
 				oTask.TargetViewX = homePos.x;
 				oTask.TargetViewY = homePos.y;
 				oTask.TargetViewZ = homePos.z;
@@ -197,7 +197,7 @@ namespace Yaya {
 					FrameInput.GameKeyDown(GameKey.Action) &&
 					!FrameTask.HasTask(YayaConst.TASK_ROUTE)
 				) {
-					Vector3Int targetPos;
+					Vector3Int targetPos = default;
 					bool gotoBed;
 					if (eCheckPoint.SavedPosition.HasValue) {
 						// Set Pos to Check Point Saved Pos
@@ -205,8 +205,10 @@ namespace Yaya {
 						gotoBed = false;
 					} else {
 						// Set Pos to First Player Map Pos
-						var homePos = ePlayer.Selecting != null ? ePlayer.Selecting.GetHomePosition() : default;
-						targetPos = homePos;
+						var homePos = ePlayer.Selecting != null ? ePlayer.Selecting.GetHomePosition() * Const.CEL : default;
+						targetPos.x = homePos.x;
+						targetPos.y = homePos.y;
+						targetPos.z = homePos.z;
 						gotoBed = true;
 					}
 					// Reload Game

@@ -1,1 +1,1 @@
-﻿{"Positions":[{"X":-27,"Y":4,"Z":0,"EntityID":-772344724},{"X":-21,"Y":4,"Z":0,"EntityID":-16541701},{"X":35,"Y":4,"Z":0,"EntityID":570399364},{"X":9,"Y":5,"Z":0,"EntityID":53840}]}
+﻿{"Data":[{"EntityID":-772344724,"Positions":[{"A":-27,"B":4,"C":0}]},{"EntityID":-16541701,"Positions":[{"A":-21,"B":4,"C":0}]},{"EntityID":570399364,"Positions":[{"A":35,"B":4,"C":0}]},{"EntityID":53840,"Positions":[{"A":9,"B":5,"C":0}]}]}

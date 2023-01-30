@@ -61,10 +61,6 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 
-			var cameraRect = CellRenderer.CameraRect;
-			X = cameraRect.x + cameraRect.width / 2 - 250 * UNIT;
-			Width = 650 * UNIT;
-
 			if (Mode != RequireMode) {
 				Mode = RequireMode;
 				RefreshAnimation();
@@ -74,7 +70,6 @@ namespace Yaya {
 
 			base.FrameUpdate();
 
-			Y = cameraRect.y + cameraRect.height / 2 - Height / 2;
 			PauselessFrame++;
 		}
 
@@ -88,7 +83,6 @@ namespace Yaya {
 
 
 		protected override void DrawMenu () {
-			base.DrawMenu();
 			Message = string.Empty;
 			switch (Mode) {
 				case MenuMode.Pause:

@@ -296,15 +296,7 @@ namespace Yaya {
 		public static int GetCameraShiftOffset (int cameraHeight) => cameraHeight * 382 / 1000;
 
 
-		public Vector3Int GetHomePosition () => GlobalPosition.TryGetGlobalPosition(TypeID, out var pos) ? pos : new Vector3Int(X, Y, Game.Current.ViewZ);
-
-
-		public void GotoNearestBed () {
-			if (Game.Current.TryGetEntityNearby<eBed>(new(X, Y), out var bed)) {
-				bed.Invoke(this);
-				SleepAmount = 1000;
-			}
-		}
+		public Vector3Int GetHomePosition () => GlobalPosition.TryGetFirstGlobalUnitPosition(TypeID, out var pos) ? pos : new Vector3Int(X, Y, Game.Current.ViewZ);
 
 
 		#endregion

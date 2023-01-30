@@ -12,7 +12,7 @@ namespace Gomoku {
 	}
 
 
-	public enum GomokuNote {
+	public enum GomokuStone {
 		None = 0,
 		Black = 1,
 		White = 2,
@@ -22,7 +22,6 @@ namespace Gomoku {
 	public enum GomokuResult {
 		Done = 0,
 		NoLegalMove = 1,
-
 		CodeError = -1,
 	}
 
@@ -53,36 +52,63 @@ namespace Gomoku {
 			public int Combo4 = 0;
 			public int Combo5 = 0;
 			public bool Combo5Plus = false;
-
 			public int Live2 = 0;
 			public int Live3 = 0;
 			public int Live4 = 0;
 			public int Live5 = 0;
 			public bool Live5Plus = false;
-
 			public int Dash2 = 0;
 			public int Dash3 = 0;
 			public int Dash4 = 0;
 			public int Dash5 = 0;
 			public bool Dash5Plus = false;
-
 			public int LiveJump2 = 0;
 			public int LiveJump3 = 0;
 			public int LiveJump4 = 0;
 			public int LiveJump5 = 0;
 			public bool LiveJump5Plus = false;
-
 			public int DashJump2 = 0;
 			public int DashJump3 = 0;
 			public int DashJump4 = 0;
 			public int DashJump5 = 0;
 			public bool DashJump5Plus = false;
-
 			public int Live3_Live3 = 0;
 			public int Dash4_Live3 = 0;
 			public int Dash4_Dash4 = 0;
 
-			public int NoteNum = 0;
+			public int StoneCount = 0;
+
+			public void Clear () {
+				StoneCount = 0;
+				Combo2 = 0;
+				Combo3 = 0;
+				Combo4 = 0;
+				Combo5 = 0;
+				Combo5Plus = false;
+				Live2 = 0;
+				Live3 = 0;
+				Live4 = 0;
+				Live5 = 0;
+				Live5Plus = false;
+				Dash2 = 0;
+				Dash3 = 0;
+				Dash4 = 0;
+				Dash5 = 0;
+				Dash5Plus = false;
+				LiveJump2 = 0;
+				LiveJump3 = 0;
+				LiveJump4 = 0;
+				LiveJump5 = 0;
+				LiveJump5Plus = false;
+				DashJump2 = 0;
+				DashJump3 = 0;
+				DashJump4 = 0;
+				DashJump5 = 0;
+				DashJump5Plus = false;
+				Live3_Live3 = 0;
+				Dash4_Live3 = 0;
+				Dash4_Dash4 = 0;
+			}
 
 		}
 
@@ -133,24 +159,30 @@ namespace Gomoku {
 
 
 		public static GomokuResult Play (
-			GomokuNote[,] notes, bool blackTurn, out int resultX, out int resultY
-		) => AnalyseScore(notes, blackTurn, out resultX, out resultY);
+			GomokuStone[,] stones, bool blackTurn, out int resultX, out int resultY
+		) => AnalyseScore(stones, blackTurn, out resultX, out resultY);
 
 
-		public static GomokuNote CheckWin (GomokuNote[,] stageNotes) {
-			int sizeX = stageNotes.GetLength(0);
-			int sizeY = stageNotes.GetLength(1);
+		public static GomokuStone CheckWin (GomokuStone[,] stageStones) => CheckWin(stageStones, out _, out _, out _, out _);
+		public static GomokuStone CheckWin (GomokuStone[,] stageStones, out int headX, out int headY, out int deltaX, out int deltaY) {
+			int sizeX = stageStones.GetLength(0);
+			int sizeY = stageStones.GetLength(1);
+			headX = -1;
+			headY = -1;
+			deltaX = -1;
+			deltaY = -1;
 			for (int x = 0; x < sizeX; x++) {
 				for (int y = 0; y < sizeY; y++) {
-					if (GetMaxComboNum(stageNotes, true, x, y) >= 5) {
-						return GomokuNote.Black;
+					var stone = stageStones[x, y];
+					if (stone == GomokuStone.Black && GetMaxComboNum(stageStones, true, x, y, out headX, out headY, out deltaX, out deltaY) >= 5) {
+						return GomokuStone.Black;
 					}
-					if (GetMaxComboNum(stageNotes, false, x, y) >= 5) {
-						return GomokuNote.White;
+					if (stone == GomokuStone.White && GetMaxComboNum(stageStones, false, x, y, out headX, out headY, out deltaX, out deltaY) >= 5) {
+						return GomokuStone.White;
 					}
 				}
 			}
-			return GomokuNote.None;
+			return GomokuStone.None;
 		}
 
 
@@ -161,13 +193,13 @@ namespace Gomoku {
 		#region --- UTL ---
 
 
-		private static bool HasNoteAround (GomokuNote[,] stageNotes, int x, int y, int radius) {
-			int size = stageNotes.GetLength(0);
+		private static bool HasStoneAround (GomokuStone[,] stageStones, int x, int y, int radius) {
+			int size = stageStones.GetLength(0);
 			int r = System.Math.Min(x + radius, size);
 			int u = System.Math.Min(y + radius, size);
 			for (int i = System.Math.Max(x - radius, 0); i < r; i++) {
 				for (int j = System.Math.Max(y - radius, 0); j < u; j++) {
-					if (stageNotes[i, j] != GomokuNote.None) {
+					if (stageStones[i, j] != GomokuStone.None) {
 						return true;
 					}
 				}
@@ -176,13 +208,13 @@ namespace Gomoku {
 		}
 
 
-		private static void FillInfoToCache (GomokuNote[,] stageNotes, bool forBlack, int x, int y) {
+		private static void FillInfoToCache (GomokuStone[,] stageStones, bool forBlack, int x, int y) {
 
 			var info = ComboInfoCache;
-			info.NoteNum = 0;
+			info.Clear();
 
 			for (int i = 0; i < 4; i++) {
-				int size = stageNotes.GetLength(0);
+				int size = stageStones.GetLength(0);
 				int num;
 				int blockNum = 0;
 				int edgeAX;
@@ -194,18 +226,18 @@ namespace Gomoku {
 				bool hasEdgeA;
 				bool hasEdgeB;
 				{
-					int numA = GetComboNum(stageNotes, forBlack, x, y, deltaX, deltaY);
-					int numB = GetComboNum(stageNotes, forBlack, x, y, -deltaX, -deltaY);
+					int numA = GetComboNum(stageStones, forBlack, x, y, deltaX, deltaY);
+					int numB = GetComboNum(stageStones, forBlack, x, y, -deltaX, -deltaY);
 					edgeAX = x + deltaX * numA;
 					edgeAY = y + deltaY * numA;
 					edgeBX = x - deltaX * numB;
 					edgeBY = y - deltaY * numB;
 					hasEdgeA = edgeAX >= 0 && edgeAX < size && edgeAY >= 0 && edgeAY < size;
 					hasEdgeB = edgeBX >= 0 && edgeBX < size && edgeBY >= 0 && edgeBY < size;
-					if (!hasEdgeA || stageNotes[edgeAX, edgeAY] != GomokuNote.None) {
+					if (!hasEdgeA || stageStones[edgeAX, edgeAY] != GomokuStone.None) {
 						blockNum++;
 					}
-					if (!hasEdgeB || stageNotes[edgeBX, edgeBY] != GomokuNote.None) {
+					if (!hasEdgeB || stageStones[edgeBX, edgeBY] != GomokuStone.None) {
 						blockNum++;
 					}
 					num = numA + numB - 1;
@@ -251,23 +283,23 @@ namespace Gomoku {
 				int jumpNumB = 0;
 				bool isLiveA = false;
 				bool isLiveB = false;
-				if (hasEdgeA && stageNotes[edgeAX, edgeAY] == GomokuNote.None) {
-					int jumpNum = GetComboNum(stageNotes, forBlack, edgeAX, edgeAY, deltaX, deltaY) - 1;
+				if (hasEdgeA && stageStones[edgeAX, edgeAY] == GomokuStone.None) {
+					int jumpNum = GetComboNum(stageStones, forBlack, edgeAX, edgeAY, deltaX, deltaY) - 1;
 					int nextEdgeX = edgeAX + deltaX * (jumpNum + 1);
 					int nextEdgeY = edgeAY + deltaY * (jumpNum + 1);
 					bool hasNextEdge = nextEdgeX >= 0 && nextEdgeX < size && nextEdgeY >= 0 && nextEdgeY < size;
-					isLiveA = hasNextEdge && stageNotes[nextEdgeX, nextEdgeY] == GomokuNote.None;
-					isLiveA = isLiveA && hasEdgeB && stageNotes[edgeBX, edgeBY] == GomokuNote.None;
+					isLiveA = hasNextEdge && stageStones[nextEdgeX, nextEdgeY] == GomokuStone.None;
+					isLiveA = isLiveA && hasEdgeB && stageStones[edgeBX, edgeBY] == GomokuStone.None;
 					jumpNumA = jumpNum > 0 ? num + jumpNum : 0;
 				}
 
-				if (hasEdgeB && stageNotes[edgeBX, edgeBY] == GomokuNote.None) {
-					int jumpNum = GetComboNum(stageNotes, forBlack, edgeBX, edgeBY, -deltaX, -deltaY) - 1;
+				if (hasEdgeB && stageStones[edgeBX, edgeBY] == GomokuStone.None) {
+					int jumpNum = GetComboNum(stageStones, forBlack, edgeBX, edgeBY, -deltaX, -deltaY) - 1;
 					int nextEdgeX = edgeBX - deltaX * (jumpNum + 1);
 					int nextEdgeY = edgeBY - deltaY * (jumpNum + 1);
 					bool hasNextEdge = nextEdgeX >= 0 && nextEdgeX < size && nextEdgeY >= 0 && nextEdgeY < size;
-					isLiveB = hasNextEdge && stageNotes[nextEdgeX, nextEdgeY] == GomokuNote.None;
-					isLiveB = isLiveB && hasEdgeA && stageNotes[edgeAX, edgeAY] == GomokuNote.None;
+					isLiveB = hasNextEdge && stageStones[nextEdgeX, nextEdgeY] == GomokuStone.None;
+					isLiveB = isLiveB && hasEdgeA && stageStones[edgeAX, edgeAY] == GomokuStone.None;
 					jumpNumB = jumpNum > 0 ? num + jumpNum : 0;
 				}
 
@@ -501,9 +533,9 @@ namespace Gomoku {
 
 
 		// Analyse
-		private static GomokuResult AnalyseScore (GomokuNote[,] notes, bool blackTurn, out int maxScoreX, out int maxScoreY) {
-			int sizeX = notes.GetLength(0);
-			int sizeY = notes.GetLength(1);
+		private static GomokuResult AnalyseScore (GomokuStone[,] stones, bool blackTurn, out int maxScoreX, out int maxScoreY) {
+			int sizeX = stones.GetLength(0);
+			int sizeY = stones.GetLength(1);
 			if (sizeX != sizeY || sizeX == 0) {
 				maxScoreX = 0;
 				maxScoreY = 0;
@@ -514,15 +546,16 @@ namespace Gomoku {
 			maxScoreY = 0;
 			int maxScore = 0;
 			int count = RandomPosList.Count;
+			int placedStoneCount = 0;
 			for (int i = 0; i < count; i++) {
 				int x = RandomPosList[i].x;
 				int y = RandomPosList[i].y;
-				GomokuNote note = notes[x, y];
-				if (note == GomokuNote.None) {
-					if (HasNoteAround(notes, x, y, 4)) {
-						FillInfoToCache(notes, blackTurn, x, y);
+				GomokuStone stone = stones[x, y];
+				if (stone == GomokuStone.None) {
+					if (HasStoneAround(stones, x, y, 4)) {
+						FillInfoToCache(stones, blackTurn, x, y);
 						int scoreA = GetScore(ComboInfoCache, true, blackTurn);
-						FillInfoToCache(notes, !blackTurn, x, y);
+						FillInfoToCache(stones, !blackTurn, x, y);
 						int scoreD = GetScore(ComboInfoCache, false, blackTurn);
 						int score = System.Math.Max(scoreA, scoreD);
 						if (score > maxScore) {
@@ -531,19 +564,22 @@ namespace Gomoku {
 							maxScoreY = y;
 						}
 					}
-
+				} else {
+					placedStoneCount++;
 				}
+			}
+			if (placedStoneCount == 0) {
+				maxScoreX = sizeX / 2;
+				maxScoreY = sizeY / 2;
+				return GomokuResult.Done;
 			}
 			return maxScore > 0 ? GomokuResult.Done : GomokuResult.NoLegalMove;
 		}
 
 
 		// Combo
-		private static int GetMaxComboNum (GomokuNote[,] notes, bool forBlack, int x, int y) => GetMaxComboNum(notes, forBlack, x, y, out _, out _, out _, out _);
-
-
-		private static int GetMaxComboNum (GomokuNote[,] notes, bool forBlack, int x, int y, out int headX, out int headY, out int deltaX, out int deltaY) {
-			int num = 1;
+		private static int GetMaxComboNum (GomokuStone[,] stones, bool forBlack, int x, int y, out int headX, out int headY, out int deltaX, out int deltaY) {
+			int num = 0;
 			int tempNumA;
 			int tempNumB;
 			headX = x;
@@ -552,32 +588,32 @@ namespace Gomoku {
 			deltaY = 0;
 
 			// U
-			tempNumA = GetComboNum(notes, forBlack, x, y, 0, 1);
-			tempNumB = GetComboNum(notes, forBlack, x, y, 0, -1);
+			tempNumA = GetComboNum(stones, forBlack, x, y, 0, 1);
+			tempNumB = GetComboNum(stones, forBlack, x, y, 0, -1);
 			if (tempNumA + tempNumB - 1 > num) {
 				deltaX = 0;
-				deltaY = 1;
+				deltaY = -1;
 				headX = x - (tempNumA - 1) * 0;
 				headY = y - (tempNumA - 1) * -1;
 				num = tempNumA + tempNumB - 1;
 			}
 
 			// UR
-			tempNumA = GetComboNum(notes, forBlack, x, y, 1, 1);
-			tempNumB = GetComboNum(notes, forBlack, x, y, -1, -1);
+			tempNumA = GetComboNum(stones, forBlack, x, y, 1, 1);
+			tempNumB = GetComboNum(stones, forBlack, x, y, -1, -1);
 			if (tempNumA + tempNumB - 1 > num) {
-				deltaX = 1;
-				deltaY = 1;
+				deltaX = -1;
+				deltaY = -1;
 				headX = x - (tempNumA - 1) * -1;
 				headY = y - (tempNumA - 1) * -1;
 				num = tempNumA + tempNumB - 1;
 			}
 
 			// R
-			tempNumA = GetComboNum(notes, forBlack, x, y, 1, 0);
-			tempNumB = GetComboNum(notes, forBlack, x, y, -1, 0);
+			tempNumA = GetComboNum(stones, forBlack, x, y, 1, 0);
+			tempNumB = GetComboNum(stones, forBlack, x, y, -1, 0);
 			if (tempNumA + tempNumB - 1 > num) {
-				deltaX = 1;
+				deltaX = -1;
 				deltaY = 0;
 				headX = x - (tempNumA - 1) * -1;
 				headY = y - (tempNumA - 1) * 0;
@@ -585,11 +621,11 @@ namespace Gomoku {
 			}
 
 			// DR
-			tempNumA = GetComboNum(notes, forBlack, x, y, 1, -1);
-			tempNumB = GetComboNum(notes, forBlack, x, y, -1, 1);
+			tempNumA = GetComboNum(stones, forBlack, x, y, 1, -1);
+			tempNumB = GetComboNum(stones, forBlack, x, y, -1, 1);
 			if (tempNumA + tempNumB - 1 > num) {
-				deltaX = 1;
-				deltaY = -1;
+				deltaX = -1;
+				deltaY = 1;
 				headX = x - (tempNumA - 1) * -1;
 				headY = y - (tempNumA - 1) * 1;
 				num = tempNumA + tempNumB - 1;
@@ -599,15 +635,15 @@ namespace Gomoku {
 		}
 
 
-		private static int GetComboNum (GomokuNote[,] notes, bool forBlack, int x, int y, int deltaX, int deltaY) {
+		private static int GetComboNum (GomokuStone[,] stones, bool forBlack, int x, int y, int deltaX, int deltaY) {
 			int num = 0;
-			GomokuNote noteType = forBlack ? GomokuNote.Black : GomokuNote.White;
-			int size = notes.GetLength(0);
+			GomokuStone stoneType = forBlack ? GomokuStone.Black : GomokuStone.White;
+			int size = stones.GetLength(0);
 			do {
 				num++;
 				x += deltaX;
 				y += deltaY;
-			} while (x >= 0 && x < size && y >= 0 && y < size && notes[x, y] == noteType);
+			} while (x >= 0 && x < size && y >= 0 && y < size && stones[x, y] == stoneType);
 			return num;
 		}
 

@@ -74,7 +74,12 @@ namespace Yaya {
 			// Spawn Player
 			if (localFrame == 2) {
 				var player = ePlayer.TrySpawnSelectingPlayer(TargetViewX, PlayerSpawnY);
-				if (GotoBed) player?.GotoNearestBed();
+				if (GotoBed) {
+					if (Game.Current.TryGetEntityNearby<eBed>(new(player.X, player.Y), out var bed)) {
+						bed.Invoke(player);
+						player.SleepAmount = 1000;
+					}
+				}
 			}
 
 			if (localFrame < SkipFrame) {
