@@ -23,31 +23,11 @@ namespace Yaya {
 
 		// Api
 		public int VelocityY { get; private set; } = 0;
-		public int ArtworkIndex {
-			get => _ArtworkIndex;
-			set {
-				_ArtworkIndex = value;
-				_ItemCode = 0;
-			}
-		}
-
-		// Short
-		private int ItemCode {
-			get {
-				if (_ItemCode == 0) {
-					if (CellRenderer.TryGetSpriteFromGroup(TypeID, _ArtworkIndex, out var sprite, false, true)) {
-						_ItemCode = sprite.GlobalID;
-					} else _ItemCode = -1;
-				}
-				return _ItemCode;
-			}
-		}
 
 		// Data
 		private static readonly PhysicsCell[] c_MakeRoom = new PhysicsCell[5];
+		private bool MakeRoomToRight = true;
 		private bool MakingRoom = false;
-		private int _ItemCode = 0;
-		private int _ArtworkIndex = 0;
 
 
 		#endregion
@@ -97,16 +77,22 @@ namespace Yaya {
 			)) {
 				int count = CellPhysics.OverlapAll(c_MakeRoom, YayaConst.MASK_ITEM, Rect, this, OperationMode.TriggerOnly);
 				int deltaX = 0;
+				int speed = 4;
 				for (int i = 0; i < count; i++) {
-					deltaX += c_MakeRoom[i].Rect.x - X;
+					var hit = c_MakeRoom[i];
+					deltaX += hit.Rect.x - X;
+					speed = Mathf.Max(speed, Mathf.Abs(hit.Rect.x - X) / 4);
+					if (hit.Entity is eItem hitItem) {
+						MakeRoomToRight = !hitItem.MakeRoomToRight;
+					}
 				}
 				if (count > 0 && deltaX == 0) {
-					deltaX = count % 2 == 0 ? 1 : -1;
+					deltaX = MakeRoomToRight ? speed : -speed;
 				}
 				var rect = Rect;
 				rect.position = CellPhysics.MoveIgnoreOneway(
 					YayaConst.MASK_MAP, rect.position,
-					Mathf.Clamp(-deltaX, -6, 6), 0,
+					Mathf.Clamp(-deltaX, -speed, speed), 0,
 					rect.size, this
 				);
 				X = rect.x;
@@ -117,17 +103,15 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (ItemCode != 0 && ItemCode != -1) {
-				CellRenderer.Draw(
-					ItemCode,
-					new(
-						X + (ITEM_PHYSICS_SIZE - ITEM_RENDER_SIZE) / 2,
-						Y,
-						ITEM_RENDER_SIZE,
-						ITEM_RENDER_SIZE
-					)
-				);
-			}
+			CellRenderer.Draw(
+				TypeID,
+				new RectInt(
+					X + (ITEM_PHYSICS_SIZE - ITEM_RENDER_SIZE) / 2,
+					Y,
+					ITEM_RENDER_SIZE,
+					ITEM_RENDER_SIZE
+				)
+			);
 		}
 
 

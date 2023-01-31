@@ -1,4 +1,4 @@
-﻿Menu.Gomoku.Draw:平局
+﻿UI.Gomoku.YouAre:您是：
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -16,6 +16,7 @@ CtrlHint.Restart:重新开始
 CtrlHint.Skip:跳过
 CtrlHint.Use:使用
 CtrlHint.WakeUp:起床
+Menu.Gomoku.Draw:平局
 Menu.Gomoku.Lose:你输喽，笨蛋
 Menu.Gomoku.Restart:重新开始游戏吗？
 Menu.Gomoku.Win:你赢啦，耶~~

@@ -179,6 +179,23 @@ namespace Yaya {
 			// Background
 			CellRenderer.Draw(Const.PIXEL, boardRect, BACKGROUND_TINT);
 
+			// Player Color Hint
+			int labelHeight = 24 * UNIT;
+			CellGUI.Label(
+				new CellLabel(Language.Get(WORD.UI_GOMOKU_PLAYER_HINT)) {
+					Alignment = Alignment.MidLeft,
+					Tint = PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT,
+					CharSize = labelHeight,
+				},
+				new RectInt(boardRect.x, boardRect.yMax - labelHeight, boardRect.width, labelHeight),
+				out var bounds
+			);
+			CellRenderer.Draw(
+				STONE_CODE,
+				new RectInt(bounds.xMax + 8 * UNIT, boardRect.yMax - labelHeight, labelHeight, labelHeight),
+				PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT
+			);
+
 			// Grid
 			var gridRect = new RectInt(0, StageRect.y, GRID_THICKNESS * UNIT, StageRect.height);
 			for (int x = 0; x < STAGE_SIZE; x++) {

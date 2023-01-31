@@ -1,4 +1,4 @@
-﻿Menu.Gomoku.Draw:Draw
+﻿UI.Gomoku.YouAre:You are:
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -16,6 +16,7 @@ CtrlHint.Restart:Restart
 CtrlHint.Skip:Skip
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
+Menu.Gomoku.Draw:Draw
 Menu.Gomoku.Lose:You Lose
 Menu.Gomoku.Restart:Retart Game?
 Menu.Gomoku.Win:You Win !!
