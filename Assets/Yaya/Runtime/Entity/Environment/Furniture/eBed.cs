@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class eBed : eFurniture, IActionEntity {
+	public class eBed : eFurniture {
 
 
 		private static readonly int CODE_LEFT = "Bed Left".AngeHash();
@@ -20,7 +20,7 @@ namespace Yaya {
 		protected override int ArtworkCode_Single => CODE_SINGLE;
 
 
-		public bool Invoke (Entity target) {
+		public override bool Invoke (Entity target) {
 			if (target is not eCharacter ch) return false;
 			ch.SetCharacterState(CharacterState.Sleep);
 			// Get Bed Left and Right
@@ -51,7 +51,7 @@ namespace Yaya {
 		}
 
 
-		public void CancelInvoke (Entity target) { }
+		public override bool AllowInvoke (Entity target) => true;
 
 
 	}

@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.LowLevel;
 namespace Yaya {
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]
-	public class ePauseMenu : eYayaMenuUI {
+	public class ePauseMenu : MenuUI {
 
 
 
@@ -115,6 +115,7 @@ namespace Yaya {
 			if (DrawItem(Language.Get(WORD.UI_CONTINUE)) || FrameInput.GameKeyDown(GameKey.Jump)) {
 				Game.Current.State = GameState.Play;
 				Active = false;
+				FrameInput.UseAllHoldingKeys();
 			}
 
 			// 1-Key Setter
@@ -254,17 +255,17 @@ namespace Yaya {
 			// Control Hint
 			if (DrawItem(
 				Language.Get(WORD.MENU_CONTROL_HINT),
-				new CellLabel(Language.Get(YayaGame.Current.UseControlHint ? WORD.UI_ON : WORD.UI_OFF))
+				new CellLabel(Language.Get(eControlHintUI.UseControlHint ? WORD.UI_ON : WORD.UI_OFF))
 			)) {
-				YayaGame.Current.UseControlHint = !YayaGame.Current.UseControlHint;
+				eControlHintUI.UseControlHint = !eControlHintUI.UseControlHint;
 			}
 
 			// Gamepad Hint
 			if (DrawItem(
 				Language.Get(WORD.MENU_GAMEPAD_HINT),
-				new CellLabel(Language.Get(YayaGame.Current.UseGamePadHint ? WORD.UI_ON : WORD.UI_OFF))
+				new CellLabel(Language.Get(eControlHintUI.UseGamePadHint ? WORD.UI_ON : WORD.UI_OFF))
 			)) {
-				YayaGame.Current.UseGamePadHint = !YayaGame.Current.UseGamePadHint;
+				eControlHintUI.UseGamePadHint = !eControlHintUI.UseGamePadHint;
 			}
 
 			// Back

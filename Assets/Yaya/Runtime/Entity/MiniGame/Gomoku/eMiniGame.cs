@@ -11,7 +11,7 @@ namespace Yaya {
 	}
 	[EntityAttribute.Capacity(1, 0)]
 	[EntityAttribute.DontDestroyOutOfRange]
-	public abstract class eMiniGame : UIEntity {
+	public abstract class eMiniGame : EntityUI {
 		public override void OnActived () {
 			base.OnActived();
 			if (FrameTask.AddToLast(

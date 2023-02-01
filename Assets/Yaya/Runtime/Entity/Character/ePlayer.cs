@@ -163,7 +163,11 @@ namespace Yaya {
 
 			// Try Perform Action
 			if (CurrentActionTarget != null) {
-				eControlHintUI.DrawEntityHint(CurrentActionTarget as Entity, GameKey.Action, WORD.HINT_USE);
+				CurrentActionTarget.Highlight();
+				eControlHintUI.DrawHint(
+					GameKey.Action,
+					eActionEntity.GetHintLanguageCode(CurrentActionTarget.TypeID)
+				);
 				if (FrameInput.AnyGameKeyDown()) {
 					bool performed = InvokeAction();
 					if (performed) return;

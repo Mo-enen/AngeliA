@@ -1,27 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using AngeliaFramework;
-using UnityEngine;
 
 
 namespace Yaya {
-	public abstract class eOpenableFurniture : eFurniture, IActionEntity {
+	public abstract class eOpenableFurniture : eFurniture {
 
 
 		public bool Open { get; private set; } = false;
-		protected override bool UseHighlightAnimation => !Open;
-		public bool LockInput => Open;
+		public override bool AnimateOnHighlight => !Open;
+		public override bool LockInput => Open;
 
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (Open && !(this as IActionEntity).IsHighlighted) {
+			if (Open && !IsHighlighted) {
 				Open = false;
 			}
 		}
 
 
-		public bool Invoke (Entity target) {
+		public override bool Invoke (Entity target) {
 			if (!Open) {
 				SetOpen(true);
 			}
@@ -29,9 +28,12 @@ namespace Yaya {
 		}
 
 
-		public void CancelInvoke (Entity target) {
+		public override void CancelInvoke (Entity target) {
 			if (Open) SetOpen(false);
 		}
+
+
+		public override bool AllowInvoke (Entity target) => true;
 
 
 		// LGC

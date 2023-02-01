@@ -33,24 +33,12 @@ namespace Yaya {
 		public static YayaGame Current { get; private set; } = null;
 		public YayaWorldSquad WorldSquad { get; private set; } = null;
 		public YayaWorldSquad WorldSquad_Behind { get; private set; } = null;
-		public bool UseGamePadHint {
-			get => ShowGamePadUI.Value;
-			set => ShowGamePadUI.Value = value;
-		}
-		public bool UseControlHint {
-			get => ShowControlHint.Value;
-			set => ShowControlHint.Value = value;
-		}
 
 		// Data
 		private static readonly PhysicsCell[] c_DamageCheck = new PhysicsCell[16];
 		private readonly eControlHintUI ControlHintUI = null;
 		private readonly ePauseMenu PauseMenu = null;
 		private bool CutsceneLock = true;
-
-		// Saving
-		private readonly SavingBool ShowGamePadUI = new("Yaya.ShowGamePadUI", false);
-		private readonly SavingBool ShowControlHint = new("Yaya.ShowControlHint", true);
 
 
 		#endregion
@@ -92,7 +80,7 @@ namespace Yaya {
 
 			// UI Entity
 			PauseMenu = game.PeekOrGetEntity<ePauseMenu>();
-			ControlHintUI = game.PeekOrGetEntity<eControlHintUI>();
+			ControlHintUI = Game.Current.SpawnEntity<eControlHintUI>(0, 0);
 
 			// Quit
 			Application.wantsToQuit -= OnQuit;
@@ -121,7 +109,6 @@ namespace Yaya {
 
 			FrameUpdate_Player();
 			Update_Damage();
-			Update_HintUI();
 
 
 			// ============ Test ============
@@ -248,21 +235,6 @@ namespace Yaya {
 		}
 
 
-		private void Update_HintUI () {
-
-			if (FrameInput.KeyDown(Key.F2)) {
-				ShowGamePadUI.Value = !ShowGamePadUI.Value;
-				ShowControlHint.Value = ShowGamePadUI.Value ? ShowControlHint.Value : !ShowControlHint.Value;
-			}
-
-			// Ctrl Hint
-			if (!ControlHintUI.Active) {
-				Game.Current.TrySpawnEntity(ControlHintUI.TypeID, 0, 0, out _);
-			}
-
-		}
-
-
 		// Misc
 		private void PauselessUpdate () {
 
@@ -272,7 +244,6 @@ namespace Yaya {
 			// Pausing
 			if (game.State == GameState.Pause) {
 				// Update Entity
-				Update_HintUI();
 				ControlHintUI.FrameUpdate();
 				if (PauseMenu.Active) PauseMenu.FrameUpdate();
 				if (!PauseMenu.Active) {

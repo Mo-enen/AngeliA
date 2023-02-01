@@ -9,7 +9,7 @@ namespace Yaya {
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.Order(Const.ENTITY_ORDER_UI + 1)]
-	public class eControlHintUI : UIEntity {
+	public class eControlHintUI : EntityUI {
 
 
 		// Const
@@ -37,14 +37,21 @@ namespace Yaya {
 		public int TextSize { get; set; } = 23;
 		public Color32 LabelTint { get; set; } = Const.WHITE;
 		public Color32 KeyLabelTint { get; set; } = new Color32(44, 49, 54, 255);
+		public static bool UseGamePadHint {
+			get => ShowGamePadUI.Value;
+			set => ShowGamePadUI.Value = value;
+		}
+		public static bool UseControlHint {
+			get => ShowControlHint.Value;
+			set => ShowControlHint.Value = value;
+		}
 
 		// Short
-		private bool GamepadVisible => YayaGame.Current.UseGamePadHint && Game.Current.State != GameState.Cutscene;
-		private bool HintVisible => YayaGame.Current.UseControlHint || Game.Current.State == GameState.Cutscene || Current.CurrentHintFrame <= ForceHintFrame;
+		private bool GamepadVisible => ShowGamePadUI.Value && Game.Current.State != GameState.Cutscene;
+		private bool HintVisible => ShowControlHint.Value || Game.Current.State == GameState.Cutscene || Game.PauselessFrame <= ForceHintFrame;
 
 		// Data
 		private static readonly Dictionary<Key, int> KeyNameIdMap = new();
-		private static readonly Dictionary<int, int> EntityHintMap = new();
 		private static readonly (int labelID, int priority, int frame)[] Hints = new (int, int, int)[8] {
 			(0,int.MinValue,-1), (0,int.MinValue,-1), (0,int.MinValue,-1), (0,int.MinValue,-1),
 			(0,int.MinValue,-1), (0,int.MinValue,-1), (0,int.MinValue,-1), (0,int.MinValue,-1),
@@ -52,8 +59,11 @@ namespace Yaya {
 		private static eControlHintUI Current = null;
 		private Int4 Border_Keyboard = default;
 		private Int4 Border_Gamepad = default;
-		private int CurrentHintFrame = -1;
 		private int ForceHintFrame = int.MinValue;
+
+		// Saving
+		private static readonly SavingBool ShowGamePadUI = new("Yaya.ShowGamePadUI", false);
+		private static readonly SavingBool ShowControlHint = new("Yaya.ShowControlHint", true);
 
 
 		// MSG
@@ -68,27 +78,6 @@ namespace Yaya {
 				KeyNameIdMap.TryAdd((Key)key, $"k_{key}".AngeHash());
 			}
 
-			// Entity Hint Map
-			EntityHintMap.Clear();
-			var objType = typeof(object);
-			var entityType = typeof(Entity);
-
-			// Action Entity
-			foreach (var type in typeof(IActionEntity).AllClassImplemented()) {
-				var _type = type;
-				string name = _type.Name;
-				if (name[0] == 'e') name = name[1..];
-				int id = $"ActionHint.{name}".AngeHash();
-				while (!Language.Has(id) && _type != entityType && _type != objType) {
-					_type = _type.BaseType;
-					name = _type.Name;
-					if (name[0] == 'e') name = name[1..];
-					id = $"ActionHint.{name}".AngeHash();
-				}
-				if (Language.Has(id)) {
-					EntityHintMap.TryAdd(type.AngeHash(), id);
-				}
-			}
 		}
 
 
@@ -112,7 +101,11 @@ namespace Yaya {
 		protected override void FrameUpdateUI () {
 			if (GamepadVisible) DrawGamePad();
 			if (HintVisible) DrawHints();
-			CurrentHintFrame++;
+			// Switch Visible
+			if (FrameInput.KeyDown(Key.F2)) {
+				ShowGamePadUI.Value = !ShowGamePadUI.Value;
+				ShowControlHint.Value = ShowGamePadUI.Value ? ShowControlHint.Value : !ShowControlHint.Value;
+			}
 		}
 
 
@@ -168,6 +161,16 @@ namespace Yaya {
 
 			int hintPositionY = CellRenderer.CameraRect.y + (GamepadVisible ? 78 : 12) * UNIT;
 
+			// Menu Hint
+			if (MenuUI.CurrentMenu != null) {
+				if (MenuUI.CurrentMenu.SelectionAdjustable) {
+					DrawHint(GameKey.Left, GameKey.Right, WORD.HINT_ADJUST);
+				} else {
+					DrawHint(GameKey.Action, WORD.HINT_USE);
+				}
+				DrawHint(GameKey.Down, GameKey.Up, WORD.HINT_MOVE);
+			}
+
 			// Draw
 			int x = 6 * UNIT + CellRenderer.CameraRect.x + 6 * UNIT;
 			Draw(GameKey.Down);
@@ -183,7 +186,7 @@ namespace Yaya {
 			void Draw (GameKey keyA) {
 				int index = (int)keyA;
 				var (labelID, _, frame) = Hints[index];
-				if (frame != CurrentHintFrame) return;
+				if (frame != Game.PauselessFrame) return;
 				int y = hintPositionY;
 				var keyB = keyA switch {
 					GameKey.Left => GameKey.Right,
@@ -198,7 +201,7 @@ namespace Yaya {
 				};
 				if (
 					keyA != keyB &&
-					Hints[(int)keyB].frame == CurrentHintFrame &&
+					Hints[(int)keyB].frame == Game.PauselessFrame &&
 					Hints[(int)keyB].labelID == labelID
 				) {
 					Hints[(int)keyB].frame = -1;
@@ -212,16 +215,6 @@ namespace Yaya {
 
 
 		// API
-		public static void DrawEntityHint (Entity target, GameKey key, int defaultHintID = 0, int priority = int.MinValue) => DrawEntityHint(target, key, key, defaultHintID, priority);
-		public static void DrawEntityHint (Entity target, GameKey keyA, GameKey keyB, int defaultHintID = 0, int priority = int.MinValue) {
-			if (target != null && EntityHintMap.TryGetValue(target.TypeID, out int hintID)) {
-				DrawHint(keyA, keyB, hintID, priority);
-			} else if (defaultHintID != 0) {
-				DrawHint(keyA, keyB, defaultHintID, priority);
-			}
-		}
-
-
 		public static void DrawHint (GameKey key, int labelID, int priority = int.MinValue) => DrawHint(key, key, labelID, priority);
 		public static void DrawHint (GameKey keyA, GameKey keyB, int labelID, int priority = int.MinValue) => Current?.SetHint(keyA, keyB, labelID, priority);
 
@@ -232,18 +225,18 @@ namespace Yaya {
 
 		public static void ForceShowHint (int duration = 0) {
 			if (Current == null) return;
-			Current.ForceHintFrame = Current.CurrentHintFrame + duration;
+			Current.ForceHintFrame = Game.PauselessFrame + duration;
 		}
 
 
 		// LGC
 		private void SetHint (GameKey keyA, GameKey keyB, int labelID, int priority = int.MinValue) {
 			if (!HintVisible) return;
-			if (Hints[(int)keyA].frame != CurrentHintFrame || priority >= Hints[(int)keyA].priority) {
-				Hints[(int)keyA] = (labelID, priority, CurrentHintFrame);
+			if (Hints[(int)keyA].frame != Game.PauselessFrame || priority >= Hints[(int)keyA].priority) {
+				Hints[(int)keyA] = (labelID, priority, Game.PauselessFrame);
 			}
-			if (Hints[(int)keyB].frame != CurrentHintFrame || priority >= Hints[(int)keyB].priority) {
-				Hints[(int)keyB] = (labelID, priority, CurrentHintFrame);
+			if (Hints[(int)keyB].frame != Game.PauselessFrame || priority >= Hints[(int)keyB].priority) {
+				Hints[(int)keyB] = (labelID, priority, Game.PauselessFrame);
 			}
 		}
 		private void DrawKey (int x, int y, GameKey keyA, GameKey keyB, int labelID, bool background = false, bool animated = false) {

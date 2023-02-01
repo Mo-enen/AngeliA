@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class ePhoto : eFurniture, IActionEntity {
+	public class ePhoto : eFurniture {
 
 
 		protected override bool LoopArtworkIndex => true;
@@ -20,12 +20,12 @@ namespace Yaya {
 			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
 		}
 
-		public bool Invoke (Entity target) {
+		public override bool Invoke (Entity target) {
 			ArtworkIndex++;
 			return true;
 		}
 
-		public void CancelInvoke (Entity target) { }
+		public override bool AllowInvoke (Entity target) => true;
 
 
 	}

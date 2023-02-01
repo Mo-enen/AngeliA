@@ -47,7 +47,7 @@ namespace Yaya {
 		private int WinningDeltaY = -1;
 		private int LastPlacePositionX = -1;
 		private int LastPlacePositionY = -1;
-		private eYayaGenericMenuUI MenuEntity = null;
+		private GenericMenuUI MenuEntity = null;
 
 
 		#endregion
@@ -60,7 +60,7 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
-			MenuEntity = Game.Current.PeekOrGetEntity<eYayaGenericMenuUI>();
+			MenuEntity = Game.Current.PeekOrGetEntity<GenericMenuUI>();
 			RestartGame();
 		}
 
@@ -343,40 +343,24 @@ namespace Yaya {
 
 
 		// Menu
-		private void OpenQuitMenu () {
-			var menu = Game.Current.SpawnEntity<eYayaGenericMenuUI>(0, 0);
-			if (menu == null) return;
-			menu.SetOptions(
-				Language.Get(WORD.MENU_QUIT_MINI_GAME),
-				Language.Get(WORD.UI_QUIT), QuitGame,
-				Language.Get(WORD.UI_CANCEL), Cancel
-			);
-		}
-		private void OpenRestartMenu () {
-			var menu = Game.Current.SpawnEntity<eYayaGenericMenuUI>(0, 0);
-			if (menu == null) return;
-			menu.SetOptions(
-				Language.Get(WORD.MENU_GOMOKU_RESTART),
-				Language.Get(WORD.UI_OK), RestartGame,
-				Language.Get(WORD.UI_CANCEL), Cancel
-			);
-		}
-		private void OpenGameOverMenu (bool blackWin) {
-			var menu = Game.Current.SpawnEntity<eYayaGenericMenuUI>(0, 0);
-			if (menu == null) return;
-			menu.SetOptions(
-				Language.Get(blackWin == PlayerIsBlack ? WORD.MENU_GOMOKU_WIN : WORD.MENU_GOMOKU_LOSE),
-				Language.Get(WORD.UI_OK), Cancel
-			);
-		}
-		private void OpenDrawMenu () {
-			var menu = Game.Current.SpawnEntity<eYayaGenericMenuUI>(0, 0);
-			if (menu == null) return;
-			menu.SetOptions(
-				Language.Get(WORD.MENU_GOMOKU_DRAW),
-				Language.Get(WORD.UI_OK), Cancel
-			);
-		}
+		private void OpenQuitMenu () => GenericMenuUI.SpawnMenu(
+			Language.Get(WORD.MENU_QUIT_MINI_GAME),
+			Language.Get(WORD.UI_QUIT), QuitGame,
+			Language.Get(WORD.UI_CANCEL), Cancel
+		);
+		private void OpenRestartMenu () => GenericMenuUI.SpawnMenu(
+			Language.Get(WORD.MENU_GOMOKU_RESTART),
+			Language.Get(WORD.UI_OK), RestartGame,
+			Language.Get(WORD.UI_CANCEL), Cancel
+		);
+		private void OpenGameOverMenu (bool blackWin) => GenericMenuUI.SpawnMenu(
+			Language.Get(blackWin == PlayerIsBlack ? WORD.MENU_GOMOKU_WIN : WORD.MENU_GOMOKU_LOSE),
+			Language.Get(WORD.UI_OK), Cancel
+		);
+		private void OpenDrawMenu () => GenericMenuUI.SpawnMenu(
+			Language.Get(WORD.MENU_GOMOKU_DRAW),
+			Language.Get(WORD.UI_OK), Cancel
+		);
 
 
 		private void Cancel () { }
