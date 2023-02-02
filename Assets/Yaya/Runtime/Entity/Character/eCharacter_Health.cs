@@ -20,6 +20,7 @@ namespace Yaya {
 		public bool IsEmptyHealth => HealthPoint <= 0;
 		public bool Invincible => Game.GlobalFrame < InvincibleEndFrame;
 		public bool IsSafe => Game.GlobalFrame <= SafeFrame;
+		public bool TakingDamage => Game.GlobalFrame < LastDamageFrame + DamageStunDuration;
 
 		// Buff
 		public BuffInt MaxHP { get; private set; } = new(1);

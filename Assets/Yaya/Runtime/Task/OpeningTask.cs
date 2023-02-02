@@ -77,7 +77,7 @@ namespace Yaya {
 				if (GotoBed) {
 					if (Game.Current.TryGetEntityNearby<eBed>(new(player.X, player.Y), out var bed)) {
 						bed.Invoke(player);
-						player.SleepAmount = 1000;
+						player.FullSleep();
 					}
 				}
 			}

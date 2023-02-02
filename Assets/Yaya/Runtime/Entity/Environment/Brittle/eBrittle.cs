@@ -16,7 +16,7 @@ namespace Yaya {
 		}
 
 		// Api
-		public override int PhysicsLayer => YayaConst.LAYER_ENVIRONMENT;
+		protected override int PhysicsLayer => YayaConst.LAYER_ENVIRONMENT;
 		protected virtual BreakMode BreakCondition { get; } = BreakMode.BreakOnCollideGround;
 		protected virtual int HoldDuration { get; } = 60;
 		protected virtual int FallingVelocity { get; } = 24;

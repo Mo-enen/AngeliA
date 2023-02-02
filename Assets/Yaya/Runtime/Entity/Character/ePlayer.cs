@@ -96,7 +96,7 @@ namespace Yaya {
 					break;
 				case CharacterState.Passout:
 					// Passout Hint
-					if (Game.GlobalFrame >= PassoutFrame + YayaConst.PASSOUT_WAIT) {
+					if (IsFullPassout) {
 						int x = X - Const.CEL / 2;
 						int y = Y + Const.CEL * 3 / 2;
 						eControlHintUI.DrawGlobalHint(x, y, GameKey.Action, WORD.UI_CONTINUE, true, true);
@@ -210,7 +210,7 @@ namespace Yaya {
 
 
 		private void FrameUpdate_Sleep () {
-			if (SleepAmount >= 1000) Game.Current.ClearAntiSpawn(true);
+			if (IsFullSleeped) Game.Current.ClearAntiSpawn(true);
 			// Wake up on Press Action
 			if (FrameInput.GameKeyDown(GameKey.Action) || FrameInput.GameKeyDown(GameKey.Jump)) {
 				SetCharacterState(CharacterState.GamePlay);
@@ -221,6 +221,7 @@ namespace Yaya {
 			int x = X - Const.CEL / 2;
 			int y = Y + Const.CEL * 3 / 2;
 			eControlHintUI.DrawGlobalHint(x, y, GameKey.Action, WORD.HINT_WAKE, true, true);
+			eControlHintUI.DrawHint(GameKey.Action, WORD.HINT_WAKE);
 		}
 
 

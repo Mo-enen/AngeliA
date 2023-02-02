@@ -24,24 +24,25 @@ namespace Yaya {
 		#region --- VAR ---
 
 
+		// Const
+		private const int FULL_SLEEP_DURATION = 90;
+		private const int MAX_SUMMON_COUNT = 64;
+
 		// Api
+		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
+		public bool IsFullPassout => Game.GlobalFrame > PassoutFrame + 48;
+		public bool IsFullSleeped => SleepFrame >= FULL_SLEEP_DURATION;
+		public override int CarrierSpeed => 0;
 		protected override int AirDragX => 0;
 		protected override int AirDragY => 0;
 		protected override bool IgnoreRiseGravityShift => true;
-		public override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
-		public override int CollisionMask => IsGrabFliping ? 0 : YayaConst.MASK_MAP;
-		public override int CarrierSpeed => 0;
-		public bool TakingDamage => Game.GlobalFrame < LastDamageFrame + DamageStunDuration;
-		public int SleepAmount {
-			get => Util.Remap(0, 90, 0, 1000, SleepFrame);
-			set => SleepFrame = Util.Remap(0, 1000, 0, 90, value);
-		}
-		public int PassoutFrame { get; private set; } = int.MinValue;
-		public int SleepFrame { get; protected set; } = 0;
-		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
+		protected override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
+		protected override int CollisionMask => IsGrabFliping ? 0 : YayaConst.MASK_MAP;
 
 		// Data
-		private int PrevSleepAmount = 0;
+		private readonly List<eSummon> Summons = new(MAX_SUMMON_COUNT);
+		private int SleepFrame = 0;
+		private int PassoutFrame = int.MinValue;
 
 
 		#endregion
@@ -52,11 +53,14 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		protected eCharacter () => OnInitialize_Render();
+		protected eCharacter () {
+			OnInitialize_Render();
+		}
 
 
 		public override void OnActived () {
 			base.OnActived();
+			Summons.Clear();
 			OnActived_Movement();
 			OnActived_Action();
 			OnActived_Health();
@@ -75,8 +79,8 @@ namespace Yaya {
 
 		public override void PhysicsUpdate () {
 
-			// Passout Check
 			if (IsEmptyHealth) SetCharacterState(CharacterState.Passout);
+			Update_Summon();
 
 			// Behaviour
 			MoveState = MovementState.Idle;
@@ -106,8 +110,7 @@ namespace Yaya {
 					Height = Const.CEL;
 					OffsetX = -Const.CEL / 2;
 					OffsetY = 0;
-					SleepFrame++;
-					if (!IsFullHealth && SleepAmount >= 1000) SetHealth(MaxHP);
+					if (!IsFullHealth && IsFullSleeped) SetHealth(MaxHP);
 					break;
 
 				case CharacterState.Passout:
@@ -119,10 +122,24 @@ namespace Yaya {
 		}
 
 
+		private void Update_Summon () {
+
+			// Remove Null
+			for (int i = 0; i < Summons.Count; i++) {
+				var sum = Summons[i];
+				if (sum == null || sum.Active == false) {
+					Summons.RemoveAt(i);
+					i--;
+				}
+			}
+
+		}
+
+
 		public override void FrameUpdate () {
 			FrameUpdate_Renderer();
-			PrevSleepAmount = SleepAmount;
 			base.FrameUpdate();
+			if (CharacterState == CharacterState.Sleep) SleepFrame++;
 		}
 
 
@@ -172,7 +189,70 @@ namespace Yaya {
 		}
 
 
+		public void FullSleep () {
+			SetCharacterState(CharacterState.Sleep);
+			SleepFrame = FULL_SLEEP_DURATION;
+		}
+
+
+		public void CreateSummon<T> (int x, int y) where T : eSummon => CreateSummon(typeof(T).AngeHash(), x, y);
+		public void CreateSummon (int typeID, int x, int y) {
+			MakeRoomForNewSummon();
+			if (Game.Current.SpawnEntity(typeID, x, y) is eSummon summon) {
+				// Spawned
+				summon.Owner = this;
+				summon.OnSummoned(true);
+				Summons.Add(summon);
+			} else {
+				// Swape Old
+				int count = Summons.Count;
+				for (int i = 0; i < count; i++) {
+					var sum = Summons[i];
+					if (sum.TypeID == typeID) {
+						sum.OnInactived();
+						sum.X = x;
+						sum.Y = y;
+						sum.OnActived();
+						sum.Owner = this;
+						sum.OnSummoned(true);
+						Summons[i] = null;
+						Summons.Add(sum);
+						break;
+					}
+				}
+			}
+		}
+
+
+		public void MakeSummon (eSummon target) {
+			if (target == null || Summons.Contains(target)) return;
+			MakeRoomForNewSummon();
+			target.Owner = this;
+			Summons.Add(target);
+			target.OnSummoned(false);
+		}
+
+
 		#endregion
+
+
+
+		#region --- LGC ---
+
+
+		private void MakeRoomForNewSummon () {
+			while (Summons.Count >= MAX_SUMMON_COUNT) {
+				var sum = Summons[0];
+				if (sum != null) {
+					sum.Active = false;
+				}
+				Summons.RemoveAt(0);
+			}
+		}
+
+
+		#endregion
+
 
 
 

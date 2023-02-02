@@ -15,7 +15,6 @@ namespace Yaya {
 
 		public static readonly int DEFAULT_PARTICLE_CODE = typeof(eDefaultParticle).AngeHash();
 		public const int MAP_VERSION = 0;
-		public const int PASSOUT_WAIT = 48;
 
 		// Physics
 		public const int LAYER_LEVEL = 0;

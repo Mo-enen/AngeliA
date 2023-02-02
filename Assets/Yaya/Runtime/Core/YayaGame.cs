@@ -122,8 +122,9 @@ namespace Yaya {
 			}
 			if (FrameInput.KeyDown(Key.Digit3)) {
 				if (ePlayer.Selecting != null) {
-					//ePlayer.Selecting.Summon.FollowOwner = true;
-
+					//ePlayer.Selecting.CreateSummon<eGuaGua>(ePlayer.Selecting.X, ePlayer.Selecting.Y);
+					var gua = game.GetEntity<eGuaGua>();
+					ePlayer.Selecting.MakeSummon(gua);
 				}
 			}
 			if (FrameInput.KeyDown(Key.Digit4)) {
@@ -181,7 +182,7 @@ namespace Yaya {
 				ePlayer.Selecting.CharacterState == CharacterState.Passout
 			) {
 				if (
-					Game.GlobalFrame > ePlayer.Selecting.PassoutFrame + YayaConst.PASSOUT_WAIT &&
+					ePlayer.Selecting.IsFullPassout &&
 					FrameInput.GameKeyDown(GameKey.Action) &&
 					!FrameTask.HasTask(YayaConst.TASK_ROUTE)
 				) {

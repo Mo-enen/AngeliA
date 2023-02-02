@@ -7,7 +7,7 @@ using AngeliaFramework;
 namespace Yaya {
 	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.MapEditorGroup("Summon")]
-	[EntityAttribute.DontDestroyOutOfRange]
+	[EntityAttribute.Capacity(1)]
 	public abstract class eSummon : eCharacter {
 
 
@@ -16,8 +16,8 @@ namespace Yaya {
 		#region --- VAR ---
 
 
-		// Data
-		private eCharacter Owner = null;
+		// Api
+		public eCharacter Owner { get; set; } = null;
 
 
 		#endregion
@@ -54,25 +54,11 @@ namespace Yaya {
 		}
 
 
-		#endregion
+		public void OnSummoned (bool create) {
 
 
 
-
-		#region --- API ---
-
-
-		public static void Summon<T> (eCharacter owner, int x, int y) where T : eSummon {
-			var summon = Game.Current.SpawnEntity<T>(x, y);
-			if (summon == null) return;
-			summon.Owner = owner;
-		}
-
-
-		public static void Summon (eCharacter owner, int typeID, int x, int y) {
-			if (Game.Current.SpawnEntity(typeID, x, y) is eSummon summon) {
-				summon.Owner = owner;
-			}
+			RenderBounce();
 		}
 
 

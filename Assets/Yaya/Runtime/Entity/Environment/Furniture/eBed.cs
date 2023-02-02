@@ -21,8 +21,11 @@ namespace Yaya {
 
 
 		public override bool Invoke (Entity target) {
+
 			if (target is not eCharacter ch) return false;
+
 			ch.SetCharacterState(CharacterState.Sleep);
+
 			// Get Bed Left and Right
 			int xMin = X;
 			int xMax = X + Const.CEL;
@@ -44,6 +47,7 @@ namespace Yaya {
 			if (CellRenderer.TryGetSprite(TypeID, out var sprite)) {
 				offsetY += sprite.GlobalHeight - sprite.GlobalBorder.Up;
 			}
+
 			// Set Character Pos
 			ch.X = (xMin + xMax) / 2;
 			ch.Y = Y + offsetY + 2;

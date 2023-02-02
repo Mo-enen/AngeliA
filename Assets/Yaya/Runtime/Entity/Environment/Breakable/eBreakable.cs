@@ -16,7 +16,7 @@ namespace Yaya {
 		}
 	}
 	public abstract class eBreakableRigidbody : eYayaRigidbody, IDamageReceiver {
-		public override int PhysicsLayer => YayaConst.LAYER_ENVIRONMENT;
+		protected override int PhysicsLayer => YayaConst.LAYER_ENVIRONMENT;
 		protected override bool DestroyWhenInsideGround => true;
 		protected virtual int BrokeParticleCode => eDefaultParticle.TYPE_ID;
 		public void TakeDamage (int damage) {

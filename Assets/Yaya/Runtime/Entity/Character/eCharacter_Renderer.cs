@@ -471,7 +471,7 @@ namespace Yaya {
 				case MovementState.Run:
 				case MovementState.Walk:
 					CurrentAniFrame += IntendedX > 0 == FacingRight ? 1 : -1;
-					
+
 					break;
 				default:
 					CurrentAniFrame++;
@@ -534,9 +534,9 @@ namespace Yaya {
 			backCell.Color.b = 128;
 			backCell.Color.a = 255;
 			// Fill
-			if (SleepAmount < 1000) {
+			if (!IsFullSleeped) {
 				cell.Shift.Up = Util.Remap(90, 0, 0, 1000, SleepFrame);
-			} else if (SleepAmount >= 1000 && PrevSleepAmount < 1000) {
+			} else if (SleepFrame == FULL_SLEEP_DURATION) {
 				// Spawn Particle
 				if (Game.Current.TrySpawnEntity(
 					SLEEP_PARTICLE_CODE,

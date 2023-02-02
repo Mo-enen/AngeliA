@@ -8,11 +8,11 @@ namespace Yaya {
 
 
 
-		public override int CollisionMask => YayaConst.MASK_SOLID;
+		protected override int CollisionMask => YayaConst.MASK_SOLID;
 		protected override int LevelMask => YayaConst.MASK_LEVEL;
 		protected override int SpeedScale => InWater ? YayaConst.WATER_SPEED_LOSE : base.SpeedScale;
-		public bool InWater { get; set; } = false;
-		public bool InSand { get; set; } = false;
+		protected bool InWater { get; set; } = false;
+		protected bool InSand { get; set; } = false;
 
 
 		public override void OnActived () {
