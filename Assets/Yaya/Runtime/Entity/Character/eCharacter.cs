@@ -9,14 +9,12 @@ namespace Yaya {
 
 	public enum CharacterState {
 		GamePlay = 0,
-		InVehicle,
 		Sleep,
 		Passout,
 	}
 
 
 	[EntityAttribute.MapEditorGroup("Character")]
-	[EntityAttribute.Capacity(1)]
 	[EntityAttribute.Bounds(-Const.CEL / 2, 0, Const.CEL, Const.CEL)]
 	public abstract partial class eCharacter : eYayaRigidbody, IDamageReceiver {
 
@@ -100,11 +98,7 @@ namespace Yaya {
 					}
 					base.PhysicsUpdate();
 					break;
-				case CharacterState.InVehicle:
 
-
-
-					break;
 				case CharacterState.Sleep:
 					VelocityX = 0;
 					VelocityY = 0;
@@ -115,6 +109,7 @@ namespace Yaya {
 					SleepFrame++;
 					if (!IsFullHealth && SleepAmount >= 1000) SetHealth(MaxHP);
 					break;
+
 				case CharacterState.Passout:
 					VelocityX = 0;
 					base.PhysicsUpdate();

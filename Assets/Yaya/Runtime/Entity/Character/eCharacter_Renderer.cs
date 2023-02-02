@@ -256,7 +256,6 @@ namespace Yaya {
 			// Draw
 			switch (CharacterState) {
 				case CharacterState.GamePlay:
-				case CharacterState.InVehicle:
 					DrawBody();
 					DrawFace();
 					if (IsSliding && Game.GlobalFrame % 24 == 0) {

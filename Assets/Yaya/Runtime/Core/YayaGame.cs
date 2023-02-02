@@ -122,7 +122,8 @@ namespace Yaya {
 			}
 			if (FrameInput.KeyDown(Key.Digit3)) {
 				if (ePlayer.Selecting != null) {
-					ePlayer.Selecting.Mascot.FollowOwner = true;
+					//ePlayer.Selecting.Summon.FollowOwner = true;
+
 				}
 			}
 			if (FrameInput.KeyDown(Key.Digit4)) {
@@ -325,9 +326,6 @@ namespace Yaya {
 			var current = ePlayer.Selecting;
 			if (current != null && current.Active) {
 				current.RenderBounce();
-				if (current.Mascot != null && current.Mascot.FollowOwner) {
-					current.Mascot.Summon();
-				}
 			}
 		}
 

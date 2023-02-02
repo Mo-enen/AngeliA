@@ -6,22 +6,18 @@ using System;
 
 namespace Yaya {
 	[EntityAttribute.UpdateOutOfRange]
-	public class eGuaGua : eMascot {
+	public class eGuaGua : eSummon {
 
 
 		// Const
-		private static readonly int HEART_L_CODE = "Heart Left".AngeHash();
-		private static readonly int HEART_R_CODE = "Heart Right".AngeHash();
-		private static readonly int HEART_EMPTY_L_CODE = "Heart Empty Left".AngeHash();
-		private static readonly int HEART_EMPTY_R_CODE = "Heart Empty Right".AngeHash();
-
-		// Api
-		protected override Type OwnerType => typeof(eYaya);
+		//private static readonly int HEART_L_CODE = "Heart Left".AngeHash();
+		//private static readonly int HEART_R_CODE = "Heart Right".AngeHash();
+		//private static readonly int HEART_EMPTY_L_CODE = "Heart Empty Left".AngeHash();
+		//private static readonly int HEART_EMPTY_R_CODE = "Heart Empty Right".AngeHash();
 
 
 		// MSG
 		public eGuaGua () {
-			// Config
 			MovementWidth.Value = 150;
 			MovementHeight.Value = 150;
 			SquatHeight.Value = 150;
@@ -37,20 +33,19 @@ namespace Yaya {
 		}
 
 
-		protected override void Update_FreeMove () {
-			base.Update_FreeMove();
-
-
-
-
-
-
-		}
-
-
-		protected override void DrawHealthBar () {
-			base.DrawHealthBar();
-			DrawHealthBar_Segment(HEART_L_CODE, HEART_R_CODE, HEART_EMPTY_L_CODE, HEART_EMPTY_R_CODE);
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
+			// Sleep in Basket
+			if (CharacterState == CharacterState.Sleep) {
+				if (Game.Current.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
+					int offsetY = 0;
+					if (CellRenderer.TryGetSprite(eBasket.TYPE_ID, out var basketSprite)) {
+						offsetY = basketSprite.GlobalBorder.Down;
+					}
+					X = basket.X + basket.Width / 2;
+					Y = basket.Y + basket.Height - offsetY;
+				}
+			}
 		}
 
 

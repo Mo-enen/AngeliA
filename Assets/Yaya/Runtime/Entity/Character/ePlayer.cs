@@ -23,14 +23,11 @@ namespace Yaya {
 		// Api
 		public static ePlayer Selecting { get; private set; } = null;
 		public override bool IsChargingAttack => MinimalChargeAttackDuration != int.MaxValue && !IsSafe && AttackCooldownReady(false) && FrameInput.GameKeyPress(GameKey.Action);
-		protected abstract System.Type MascotType { get; }
-		public eMascot Mascot => _Mascot ??= Game.Current.PeekOrGetEntity(MascotType.AngeHash()) as eMascot;
 		public int AimViewX { get; private set; } = 0;
 		public int AimViewY { get; private set; } = 0;
 
 		// Data
 		private static readonly PhysicsCell[] Collects = new PhysicsCell[8];
-		private eMascot _Mascot = null;
 		private int AttackRequiringFrame = int.MinValue;
 		private int LastGroundedY = 0;
 
@@ -109,11 +106,6 @@ namespace Yaya {
 
 			// View
 			FrameUpdate_View();
-
-			// Mascot
-			if (Mascot != null && !Mascot.Active && IsGrounded && Mascot.FollowOwner) {
-				Mascot.Summon();
-			}
 
 		}
 

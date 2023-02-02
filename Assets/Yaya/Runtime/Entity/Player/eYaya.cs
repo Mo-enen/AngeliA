@@ -12,9 +12,6 @@ namespace Yaya {
 		// Const
 		private static readonly int FOOTSTEP_CODE = "YayaFootstep".AngeHash();
 
-		// Api
-		protected override Type MascotType => typeof(eGuaGua);
-
 		// Data
 		private int LastStartRunFrame = int.MinValue;
 
