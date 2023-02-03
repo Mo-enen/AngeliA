@@ -36,18 +36,30 @@ namespace Yaya {
 
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
-			if (Owner != null) {
+			bool hasOwner = Owner != null && Owner.Active;
+			if (hasOwner) {
 				SetCharacterState(Owner.CharacterState);
 			}
 			if (CharacterState == CharacterState.GamePlay) {
-				Update_GamePlay();
+				if (hasOwner) {
+					Update_FollowOwner();
+				} else {
+					Update_FreeMove();
+				}
 			}
 		}
 
 
-		private void Update_GamePlay () {
+		private void Update_FollowOwner () {
 
 
+
+
+
+		}
+
+
+		private void Update_FreeMove () {
 
 
 

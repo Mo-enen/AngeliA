@@ -6,7 +6,7 @@ using System;
 
 namespace Yaya {
 	[EntityAttribute.UpdateOutOfRange]
-	[EntityAttribute.Capacity(1)]
+	[EntityAttribute.Capacity(4)]
 	public class eGuaGua : eSummon {
 
 

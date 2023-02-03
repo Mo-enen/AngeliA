@@ -122,9 +122,9 @@ namespace Yaya {
 			}
 			if (FrameInput.KeyDown(Key.Digit3)) {
 				if (ePlayer.Selecting != null) {
-					//ePlayer.Selecting.CreateSummon<eGuaGua>(ePlayer.Selecting.X, ePlayer.Selecting.Y);
 					var gua = game.GetEntity<eGuaGua>();
 					ePlayer.Selecting.MakeSummon(gua);
+					ePlayer.Selecting.CreateSummon<eGuaGua>(ePlayer.Selecting.X, ePlayer.Selecting.Y);
 				}
 			}
 			if (FrameInput.KeyDown(Key.Digit4)) {

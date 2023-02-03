@@ -40,9 +40,10 @@ namespace Yaya {
 		protected override int CollisionMask => IsGrabFliping ? 0 : YayaConst.MASK_MAP;
 
 		// Data
-		private readonly List<eSummon> Summons = new(MAX_SUMMON_COUNT);
+		private readonly ListLoop<eSummon> Summons = new(MAX_SUMMON_COUNT);
 		private int SleepFrame = 0;
 		private int PassoutFrame = int.MinValue;
+		private int PrevZ = int.MinValue;
 
 
 		#endregion
@@ -67,6 +68,7 @@ namespace Yaya {
 			OnActived_Attack();
 			CharacterState = CharacterState.GamePlay;
 			PassoutFrame = int.MinValue;
+			PrevZ = Game.Current.ViewZ;
 		}
 
 
@@ -119,6 +121,7 @@ namespace Yaya {
 					break;
 			}
 
+			PrevZ = Game.Current.ViewZ;
 		}
 
 
@@ -130,6 +133,14 @@ namespace Yaya {
 				if (sum == null || sum.Active == false) {
 					Summons.RemoveAt(i);
 					i--;
+				}
+			}
+
+			// Gether when Z Changed
+			if (Game.Current.ViewZ != PrevZ) {
+				foreach (var summon in Summons) {
+					summon.X = X;
+					summon.Y = Y;
 				}
 			}
 
@@ -197,7 +208,6 @@ namespace Yaya {
 
 		public void CreateSummon<T> (int x, int y) where T : eSummon => CreateSummon(typeof(T).AngeHash(), x, y);
 		public void CreateSummon (int typeID, int x, int y) {
-			MakeRoomForNewSummon();
 			if (Game.Current.SpawnEntity(typeID, x, y) is eSummon summon) {
 				// Spawned
 				summon.Owner = this;
@@ -215,7 +225,7 @@ namespace Yaya {
 						sum.OnActived();
 						sum.Owner = this;
 						sum.OnSummoned(true);
-						Summons[i] = null;
+						Summons.RemoveAt(i);
 						Summons.Add(sum);
 						break;
 					}
@@ -226,7 +236,6 @@ namespace Yaya {
 
 		public void MakeSummon (eSummon target) {
 			if (target == null || Summons.Contains(target)) return;
-			MakeRoomForNewSummon();
 			target.Owner = this;
 			Summons.Add(target);
 			target.OnSummoned(false);
@@ -239,16 +248,6 @@ namespace Yaya {
 
 		#region --- LGC ---
 
-
-		private void MakeRoomForNewSummon () {
-			while (Summons.Count >= MAX_SUMMON_COUNT) {
-				var sum = Summons[0];
-				if (sum != null) {
-					sum.Active = false;
-				}
-				Summons.RemoveAt(0);
-			}
-		}
 
 
 		#endregion
