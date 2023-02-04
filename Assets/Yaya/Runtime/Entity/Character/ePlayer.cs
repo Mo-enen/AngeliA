@@ -210,7 +210,7 @@ namespace Yaya {
 
 
 		private void FrameUpdate_Sleep () {
-			if (IsFullSleeped) Game.Current.ClearAntiSpawn(true);
+			if (IsExactlyFullSleeped) Game.Current.ClearAntiSpawn(true);
 			// Wake up on Press Action
 			if (FrameInput.GameKeyDown(GameKey.Action) || FrameInput.GameKeyDown(GameKey.Jump)) {
 				SetCharacterState(CharacterState.GamePlay);

@@ -7,109 +7,109 @@ namespace Yaya {
 	public abstract partial class eCharacter {
 
 
-		public BuffInt MovementWidth { get; private set; } = new(150);
-		public BuffInt MovementHeight { get; private set; } = new(384);
-		public BuffInt RollingHeight { get; private set; } = new(200);
-		public BuffInt AntiKnockbackSpeed { get; private set; } = new(16);
+		public readonly BuffInt MovementWidth = new(150);
+		public readonly BuffInt MovementHeight = new(384);
+		public readonly BuffInt RollingHeight = new(200);
+		public readonly BuffInt AntiKnockbackSpeed = new(16);
 
 		// Walk
-		public BuffInt WalkSpeed { get; private set; } = new(20);
-		public BuffInt WalkAcceleration { get; private set; } = new(3);
-		public BuffInt WalkBrakeAcceleration { get; private set; } = new(30);
-		public BuffInt WalkDecceleration { get; private set; } = new(4);
+		public readonly BuffInt WalkSpeed = new(20);
+		public readonly BuffInt WalkAcceleration = new(3);
+		public readonly BuffInt WalkBrakeAcceleration = new(30);
+		public readonly BuffInt WalkDecceleration = new(4);
 
 		// Run
-		public BuffInt RunAccumulation { get; private set; } = new(48);
-		public BuffInt RunSpeed { get; private set; } = new(32);
-		public BuffInt RunAcceleration { get; private set; } = new(3);
-		public BuffInt RunBrakeAcceleration { get; private set; } = new(30);
-		public BuffInt RunDecceleration { get; private set; } = new(4);
+		public readonly BuffInt RunAccumulation = new(48);
+		public readonly BuffInt RunSpeed = new(32);
+		public readonly BuffInt RunAcceleration = new(3);
+		public readonly BuffInt RunBrakeAcceleration = new(30);
+		public readonly BuffInt RunDecceleration = new(4);
 
 		// Jump
-		public BuffInt JumpSpeed { get; private set; } = new(62);
-		public BuffInt JumpCount { get; private set; } = new(2);
-		public BuffInt JumpReleaseLoseRate { get; private set; } = new(700);
-		public BuffInt JumpRiseGravityRate { get; private set; } = new(600);
-		public BuffBool GrowJumpCountWhenFallOffEdge { get; private set; } = new(true);
-		public BuffBool JumpWithRoll { get; private set; } = new(false);
-		public BuffBool SecondJumpWithRoll { get; private set; } = new(true);
-		public BuffBool JumpThoughOneway { get; private set; } = new(false);
+		public readonly BuffInt JumpSpeed = new(62);
+		public readonly BuffInt JumpCount = new(2);
+		public readonly BuffInt JumpReleaseLoseRate = new(700);
+		public readonly BuffInt JumpRiseGravityRate = new(600);
+		public readonly BuffBool GrowJumpCountWhenFallOffEdge = new(true);
+		public readonly BuffBool JumpWithRoll = new(false);
+		public readonly BuffBool SecondJumpWithRoll = new(true);
+		public readonly BuffBool JumpThoughOneway = new(false);
 
 		// Dash
-		public BuffBool DashAvailable { get; private set; } = new(true);
-		public BuffInt DashHeight { get; private set; } = new(200);
-		public BuffInt DashSpeed { get; private set; } = new(42);
-		public BuffInt DashDuration { get; private set; } = new(12);
-		public BuffInt DashCooldown { get; private set; } = new(4);
-		public BuffInt DashAcceleration { get; private set; } = new(24);
-		public BuffInt DashCancelLoseRate { get; private set; } = new(300);
+		public readonly BuffBool DashAvailable = new(true);
+		public readonly BuffInt DashHeight = new(200);
+		public readonly BuffInt DashSpeed = new(42);
+		public readonly BuffInt DashDuration = new(12);
+		public readonly BuffInt DashCooldown = new(4);
+		public readonly BuffInt DashAcceleration = new(24);
+		public readonly BuffInt DashCancelLoseRate = new(300);
 
 		// Squat
-		public BuffBool SquatAvailable { get; private set; } = new(true);
-		public BuffInt SquatHeight { get; private set; } = new(200);
-		public BuffInt SquatSpeed { get; private set; } = new(14);
-		public BuffInt SquatAcceleration { get; private set; } = new(48);
-		public BuffInt SquatDecceleration { get; private set; } = new(48);
+		public readonly BuffBool SquatAvailable = new(true);
+		public readonly BuffInt SquatHeight = new(200);
+		public readonly BuffInt SquatSpeed = new(14);
+		public readonly BuffInt SquatAcceleration = new(48);
+		public readonly BuffInt SquatDecceleration = new(48);
 
 		// Pound
-		public BuffBool PoundAvailable { get; private set; } = new(true);
-		public BuffInt PoundSpeed { get; private set; } = new(96);
+		public readonly BuffBool PoundAvailable = new(true);
+		public readonly BuffInt PoundSpeed = new(96);
 
 		// Swim
-		public BuffInt SwimWidth { get; private set; } = new(256);
-		public BuffInt SwimHeight { get; private set; } = new(384);
-		public BuffInt InWaterSpeedLoseRate { get; private set; } = new(500);
-		public BuffInt SwimSpeed { get; private set; } = new(42);
-		public BuffInt SwimJumpSpeed { get; private set; } = new(128);
-		public BuffInt SwimAcceleration { get; private set; } = new(4);
-		public BuffInt SwimDecceleration { get; private set; } = new(4);
-		public BuffBool SwimInFreeStyle { get; private set; } = new(false);
+		public readonly BuffInt SwimWidth = new(256);
+		public readonly BuffInt SwimHeight = new(384);
+		public readonly BuffInt InWaterSpeedLoseRate = new(500);
+		public readonly BuffInt SwimSpeed = new(42);
+		public readonly BuffInt SwimJumpSpeed = new(128);
+		public readonly BuffInt SwimAcceleration = new(4);
+		public readonly BuffInt SwimDecceleration = new(4);
+		public readonly BuffBool SwimInFreeStyle = new(false);
 
 		// Free Swim
-		public BuffInt FreeSwimSpeed { get; private set; } = new(40);
-		public BuffInt FreeSwimAcceleration { get; private set; } = new(4);
-		public BuffInt FreeSwimDecceleration { get; private set; } = new(4);
-		public BuffInt FreeSwimDashSpeed { get; private set; } = new(84);
-		public BuffInt FreeSwimDashDuration { get; private set; } = new(12);
-		public BuffInt FreeSwimDashCooldown { get; private set; } = new(4);
-		public BuffInt FreeSwimDashAcceleration { get; private set; } = new(128);
+		public readonly BuffInt FreeSwimSpeed = new(40);
+		public readonly BuffInt FreeSwimAcceleration = new(4);
+		public readonly BuffInt FreeSwimDecceleration = new(4);
+		public readonly BuffInt FreeSwimDashSpeed = new(84);
+		public readonly BuffInt FreeSwimDashDuration = new(12);
+		public readonly BuffInt FreeSwimDashCooldown = new(4);
+		public readonly BuffInt FreeSwimDashAcceleration = new(128);
 
 		// Climb
-		public BuffBool ClimbAvailable { get; private set; } = new(true);
-		public BuffBool JumpWhenClimbAvailable { get; private set; } = new(true);
-		public BuffInt ClimbSpeedX { get; private set; } = new(12);
-		public BuffInt ClimbSpeedY { get; private set; } = new(18);
+		public readonly BuffBool ClimbAvailable = new(true);
+		public readonly BuffBool JumpWhenClimbAvailable = new(true);
+		public readonly BuffInt ClimbSpeedX = new(12);
+		public readonly BuffInt ClimbSpeedY = new(18);
 
 		// Fly
-		public BuffBool FlyAvailable { get; private set; } = new(false);
-		public BuffBool FlyGlideAvailable { get; private set; } = new(false);
-		public BuffInt FlyHeight { get; private set; } = new(200);
-		public BuffInt FlyCooldown { get; private set; } = new(24);
-		public BuffInt FlyRiseSpeed { get; private set; } = new(96);
-		public BuffInt FlyGravityRiseRate { get; private set; } = new(800);
-		public BuffInt FlyGravityFallRate { get; private set; } = new(200);
-		public BuffInt FlyFallSpeed { get; private set; } = new(12);
-		public BuffInt FlyMoveSpeed { get; private set; } = new(36);
-		public BuffInt FlyGlideAcceleration { get; private set; } = new(2);
-		public BuffInt FlyGlideDecceleration { get; private set; } = new(1);
+		public readonly BuffBool FlyAvailable = new(false);
+		public readonly BuffBool FlyGlideAvailable = new(false);
+		public readonly BuffInt FlyHeight = new(200);
+		public readonly BuffInt FlyCooldown = new(24);
+		public readonly BuffInt FlyRiseSpeed = new(96);
+		public readonly BuffInt FlyGravityRiseRate = new(800);
+		public readonly BuffInt FlyGravityFallRate = new(200);
+		public readonly BuffInt FlyFallSpeed = new(12);
+		public readonly BuffInt FlyMoveSpeed = new(36);
+		public readonly BuffInt FlyGlideAcceleration = new(2);
+		public readonly BuffInt FlyGlideDecceleration = new(1);
 
 		// Slide
-		public BuffBool SlideAvailable { get; private set; } = new(false);
-		public BuffBool SlideOnAnyBlock { get; private set; } = new(true);
-		public BuffBool ResetJumpCountWhenSlide { get; private set; } = new(true);
-		public BuffInt SlideDropSpeed { get; private set; } = new(4);
+		public readonly BuffBool SlideAvailable = new(false);
+		public readonly BuffBool SlideOnAnyBlock = new(true);
+		public readonly BuffBool ResetJumpCountWhenSlide = new(true);
+		public readonly BuffInt SlideDropSpeed = new(4);
 
 		// Grab
-		public BuffBool GrabTopAvailable { get; private set; } = new(false);
-		public BuffBool GrabSideAvailable { get; private set; } = new(false);
-		public BuffBool ResetJumpCountWhenGrab { get; private set; } = new(true);
-		public BuffBool GrabFlipThroughDown { get; private set; } = new(false);
-		public BuffBool GrabFlipThroughUp { get; private set; } = new(false);
-		public BuffInt GrabFlipThroughDuration { get; private set; } = new(18);
-		public BuffInt GrabTopHeight { get; private set; } = new(364);
-		public BuffInt GrabSideHeight { get; private set; } = new(364);
-		public BuffInt GrabMoveSpeedX { get; private set; } = new(24);
-		public BuffInt GrabMoveSpeedY { get; private set; } = new(24);
+		public readonly BuffBool GrabTopAvailable = new(false);
+		public readonly BuffBool GrabSideAvailable = new(false);
+		public readonly BuffBool ResetJumpCountWhenGrab = new(true);
+		public readonly BuffBool GrabFlipThroughDown = new(false);
+		public readonly BuffBool GrabFlipThroughUp = new(false);
+		public readonly BuffInt GrabFlipThroughDuration = new(18);
+		public readonly BuffInt GrabTopHeight = new(364);
+		public readonly BuffInt GrabSideHeight = new(364);
+		public readonly BuffInt GrabMoveSpeedX = new(24);
+		public readonly BuffInt GrabMoveSpeedY = new(24);
 
 
 

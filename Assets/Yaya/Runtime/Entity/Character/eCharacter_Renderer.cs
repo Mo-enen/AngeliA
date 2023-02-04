@@ -536,7 +536,7 @@ namespace Yaya {
 			// Fill
 			if (!IsFullSleeped) {
 				cell.Shift.Up = Util.Remap(90, 0, 0, 1000, SleepFrame);
-			} else if (SleepFrame == FULL_SLEEP_DURATION) {
+			} else if (IsExactlyFullSleeped) {
 				// Spawn Particle
 				if (Game.Current.TrySpawnEntity(
 					SLEEP_PARTICLE_CODE,

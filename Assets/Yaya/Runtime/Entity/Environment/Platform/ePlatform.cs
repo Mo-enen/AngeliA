@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-using Rigidbody = AngeliaFramework.Rigidbody;
+
 
 
 namespace Yaya {

@@ -8,24 +8,21 @@ namespace Yaya {
 	public static class YayaCellPhysics {
 
 
-		// VAR
-		private static readonly PhysicsCell[] c_BlockUnder = new PhysicsCell[32];
-
-
 		// Damage
-		public static void FillEntity_Damage (Entity source, bool damagePlayer, int damage) => CellPhysics.FillEntity(
-			YayaConst.LAYER_DAMAGE, source, damagePlayer, damage
+		public static void FillEntity_Damage (Entity bullet, Entity attacker, int damage) => CellPhysics.FillEntity(
+			YayaConst.LAYER_DAMAGE, bullet, attacker is not ePlayer, damage
 		);
 
 
-		public static void FillBlock_Damage (int blockID, RectInt rect, bool damagePlayer, int damage) => CellPhysics.FillBlock(
-			YayaConst.LAYER_DAMAGE, blockID, rect, damagePlayer, damage
-		);
+		public static void FillBlock_Damage (int blockID, RectInt rect, int damage) {
+			CellPhysics.FillBlock(YayaConst.LAYER_DAMAGE, blockID, rect, true, damage);
+			CellPhysics.FillBlock(YayaConst.LAYER_DAMAGE, blockID, rect, false, damage);
+		}
 
 
-		public static int OverlapAll_Damage (PhysicsCell[] hits, RectInt globalRect, Entity ignore = null, bool forPlayer = false) => CellPhysics.OverlapAll(
-			hits, YayaConst.MASK_DAMAGE, globalRect, ignore,
-			forPlayer ? OperationMode.TriggerOnly : OperationMode.ColliderOnly
+		public static int OverlapAll_Damage (PhysicsCell[] hits, RectInt globalRect, IDamageReceiver receiver) => CellPhysics.OverlapAll(
+			hits, YayaConst.MASK_DAMAGE, globalRect, receiver as Entity,
+			receiver is ePlayer ? OperationMode.TriggerOnly : OperationMode.ColliderOnly
 		);
 
 

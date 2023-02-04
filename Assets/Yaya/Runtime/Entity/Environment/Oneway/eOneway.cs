@@ -54,7 +54,7 @@ namespace Yaya {
 			for (int i = 0; i < rCount; i++) {
 				var hit = c_Rebound[i];
 				if (
-					hit.Entity is eYayaRigidbody rig &&
+					hit.Entity is Rigidbody rig &&
 					!rig.Rect.Overlaps(rect.Shrink(2))
 				) {
 					contact = true;

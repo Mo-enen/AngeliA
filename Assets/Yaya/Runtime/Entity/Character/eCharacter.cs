@@ -16,7 +16,7 @@ namespace Yaya {
 
 	[EntityAttribute.MapEditorGroup("Character")]
 	[EntityAttribute.Bounds(-Const.CEL / 2, 0, Const.CEL, Const.CEL)]
-	public abstract partial class eCharacter : eYayaRigidbody, IDamageReceiver {
+	public abstract partial class eCharacter : Rigidbody {
 
 
 
@@ -32,12 +32,13 @@ namespace Yaya {
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
 		public bool IsFullPassout => Game.GlobalFrame > PassoutFrame + 48;
 		public bool IsFullSleeped => SleepFrame >= FULL_SLEEP_DURATION;
+		public bool IsExactlyFullSleeped => SleepFrame == FULL_SLEEP_DURATION;
+		public override int CollisionMask => IsGrabFliping ? 0 : YayaConst.MASK_MAP;
 		public override int CarrierSpeed => 0;
 		protected override int AirDragX => 0;
 		protected override int AirDragY => 0;
 		protected override bool IgnoreRiseGravityShift => true;
 		protected override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
-		protected override int CollisionMask => IsGrabFliping ? 0 : YayaConst.MASK_MAP;
 
 		// Data
 		private readonly ListLoop<eSummon> Summons = new(MAX_SUMMON_COUNT);

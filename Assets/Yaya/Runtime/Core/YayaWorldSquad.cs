@@ -47,7 +47,7 @@ namespace Yaya {
 			if (CellRenderer.TryGetMeta(id, out var meta)) {
 				if (meta.Tag == YayaConst.DAMAGE_TAG) {
 					var rect = new RectInt(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
-					YayaCellPhysics.FillBlock_Damage(id, rect.Expand(1), true, 1);
+					YayaCellPhysics.FillBlock_Damage(id, rect.Expand(1), 1);
 				}
 			}
 		}

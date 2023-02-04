@@ -11,16 +11,6 @@ namespace Yaya {
 	public class eDefaultBullet : eBullet { }
 
 
-	public abstract class ePlayerBullet : eBullet {
-		protected override bool FromPlayer => true;
-	}
-
-
-	public abstract class eEnemyBullet : eBullet {
-		protected override bool FromPlayer => false;
-	}
-
-
 	[EntityAttribute.Capacity(128)]
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.UpdateOutOfRange]
@@ -32,7 +22,6 @@ namespace Yaya {
 		protected virtual int CollisionMask => YayaConst.MASK_SOLID;
 		protected virtual bool DestroyOnCollide => true;
 		protected virtual bool DestroyOnHit => true;
-		protected virtual bool FromPlayer => false;
 		protected virtual int Duration => 60;
 		protected virtual int Damage => 1;
 		protected virtual int Speed => 12;
@@ -43,12 +32,14 @@ namespace Yaya {
 		// Data
 		private Vector2Int Direction = default;
 		private bool Hitted = false;
+		private Entity Source = null;
 
 
 		// MSG
-		public virtual void Release (eCharacter character, Vector2Int direction, int combo, int chargeDuration) {
+		public virtual void Release (Entity source, Vector2Int direction, int combo, int chargeDuration) {
 			StartFrame = Game.GlobalFrame;
-			var sourceRect = character.Rect;
+			Source = source;
+			var sourceRect = source.Rect;
 			X = sourceRect.x + sourceRect.width / 2 - Width / 2;
 			Y = sourceRect.y + sourceRect.height / 2 - Height / 2;
 			Direction = direction;
@@ -61,7 +52,7 @@ namespace Yaya {
 		public override void FillPhysics () {
 			base.FillPhysics();
 			if (!Hitted) {
-				YayaCellPhysics.FillEntity_Damage(this, !FromPlayer, Damage);
+				YayaCellPhysics.FillEntity_Damage(this, Source, Damage);
 			}
 		}
 

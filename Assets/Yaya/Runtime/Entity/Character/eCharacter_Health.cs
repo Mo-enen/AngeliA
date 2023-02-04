@@ -5,7 +5,7 @@ using AngeliaFramework;
 using Moenen.Standard;
 
 namespace Yaya {
-	public abstract partial class eCharacter {
+	public abstract partial class eCharacter : IDamageReceiver {
 
 
 
@@ -21,12 +21,16 @@ namespace Yaya {
 		public bool Invincible => Game.GlobalFrame < InvincibleEndFrame;
 		public bool IsSafe => Game.GlobalFrame <= SafeFrame;
 		public bool TakingDamage => Game.GlobalFrame < LastDamageFrame + DamageStunDuration;
+		public bool AllowDamageFromLevel => TakeDamageFromLevel.Value;
+		public bool AllowDamageFromBullet => TakeDamageFromBullet.Value;
 
 		// Buff
-		public BuffInt MaxHP { get; private set; } = new(1);
-		public BuffInt InvincibleFrame { get; private set; } = new(120);
-		public BuffInt KnockBackSpeed { get; private set; } = new(64);
-		public BuffInt DamageStunDuration { get; private set; } = new(24);
+		public readonly BuffInt MaxHP = new(1);
+		public readonly BuffInt InvincibleDuration = new(120);
+		public readonly BuffInt DamageStunDuration = new(24);
+		public readonly BuffInt KnockBackSpeed = new(64);
+		public readonly BuffBool TakeDamageFromLevel = new(true);
+		public readonly BuffBool TakeDamageFromBullet = new(true);
 
 		// Data
 		private int InvincibleEndFrame = int.MinValue;
@@ -65,14 +69,14 @@ namespace Yaya {
 
 			// Health Down
 			HealthPoint = (HealthPoint - damage).Clamp(0, MaxHP);
-			InvincibleEndFrame = Game.GlobalFrame + InvincibleFrame;
+			InvincibleEndFrame = Game.GlobalFrame + InvincibleDuration;
 			LastDamageFrame = Game.GlobalFrame;
 
 			// Render
 			VelocityX = FacingRight ? -KnockBackSpeed : KnockBackSpeed;
 			RenderDamage(DamageStunDuration);
 			if (!IsEmptyHealth) {
-				RenderBlink(InvincibleFrame);
+				RenderBlink(InvincibleDuration);
 			}
 		}
 

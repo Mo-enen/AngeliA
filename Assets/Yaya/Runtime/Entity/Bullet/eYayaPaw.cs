@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Yaya {
 	[EntityAttribute.Capacity(12)]
-	public class eYayaPaw : ePlayerBullet {
+	public class eYayaPaw : eBullet {
 
 
 		// Const
@@ -23,22 +23,22 @@ namespace Yaya {
 		protected override int Speed => 0;
 
 		// Data
-		private bool Hitted = false;
 		private bool FacingRight = false;
 		private bool Grounded = true;
 		private eCharacter Character = null;
 
+
 		// MSG
-		public override void Release (eCharacter character, Vector2Int direction, int combo, int chargeDuration) {
-			base.Release(character, direction, combo, chargeDuration);
-			Hitted = false;
+		public override void Release (Entity entity, Vector2Int direction, int combo, int chargeDuration) {
+			base.Release(entity, direction, combo, chargeDuration);
+			if (entity == null || entity is not eCharacter) return;
 			Width = 384;
 			Height = 512;
-			Character = character;
-			FacingRight = character.FacingRight;
-			var characterRect = character.Rect;
-			X = character.FacingRight ? characterRect.xMax : characterRect.xMin - Width;
-			Y = character.Y - 1;
+			Character = entity as eCharacter;
+			FacingRight = Character.FacingRight;
+			var rect = entity.Rect;
+			X = FacingRight ? rect.xMax : rect.xMin - Width;
+			Y = entity.Y - 1;
 			Grounded =
 				CellPhysics.Overlap(YayaConst.MASK_MAP, Rect.Edge(Direction4.Down, 4), this) ||
 				CellPhysics.Overlap(YayaConst.MASK_MAP, Rect.Edge(Direction4.Down, 4), this, OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG);
@@ -46,8 +46,8 @@ namespace Yaya {
 
 
 		public override void FillPhysics () {
-			if (!Hitted && Game.GlobalFrame - StartFrame >= 4) {
-				YayaCellPhysics.FillEntity_Damage(this, false, Damage);
+			if (Game.GlobalFrame - StartFrame >= 4) {
+				base.FillPhysics();
 			}
 		}
 
@@ -105,9 +105,6 @@ namespace Yaya {
 			}
 
 		}
-
-
-		public override void OnHit (IDamageReceiver receiver) => Hitted = true;
 
 
 	}

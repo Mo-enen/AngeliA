@@ -6,6 +6,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	public abstract class eBreakable : Entity, IDamageReceiver {
+		public bool AllowDamageFromLevel => false;
 		protected virtual int BrokeParticleCode => eDefaultParticle.TYPE_ID;
 		public void TakeDamage (int damage) {
 			if (damage > 0) {
@@ -15,7 +16,8 @@ namespace Yaya {
 			}
 		}
 	}
-	public abstract class eBreakableRigidbody : eYayaRigidbody, IDamageReceiver {
+	public abstract class eBreakableRigidbody : Rigidbody, IDamageReceiver {
+		public bool AllowDamageFromLevel => false;
 		protected override int PhysicsLayer => YayaConst.LAYER_ENVIRONMENT;
 		protected override bool DestroyWhenInsideGround => true;
 		protected virtual int BrokeParticleCode => eDefaultParticle.TYPE_ID;

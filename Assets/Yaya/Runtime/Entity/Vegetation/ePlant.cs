@@ -53,7 +53,7 @@ namespace Yaya {
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
 			if (Interactable) {
-				Interacting = Interacting || CellPhysics.HasEntity<eYayaRigidbody>(Rect.Shrink(Width / 4, Width / 4, 0, 0), YayaConst.MASK_RIGIDBODY, this);
+				Interacting = Interacting || CellPhysics.HasEntity<Rigidbody>(Rect.Shrink(Width / 4, Width / 4, 0, 0), YayaConst.MASK_RIGIDBODY, this);
 			}
 		}
 

@@ -7,6 +7,7 @@ using UnityEngine;
 namespace Yaya {
 	public abstract partial class eCharacter {
 
+
 		// Const
 		const int ACTION_SCAN_RANGE = Const.CEL / 2;
 		const int ACTION_SCAN_FREQUENCY = 6;

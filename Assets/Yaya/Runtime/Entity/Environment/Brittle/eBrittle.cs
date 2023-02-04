@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public abstract class eBrittle : eYayaRigidbody {
+	public abstract class eBrittle : Rigidbody {
 
 
 		// SUB

@@ -22,26 +22,26 @@ namespace Yaya {
 		public bool IsAttackCharged => Game.GlobalFrame - ChargeStartFrame >= MinimalChargeAttackDuration;
 
 		// Buff
-		public BuffString BulletName { get; protected set; } = new("DefaultBullet");
-		public BuffInt AttackDuration { get; protected set; } = new(12);
-		public BuffInt AttackColldown { get; protected set; } = new(2);
-		public BuffInt AttackComboGap { get; protected set; } = new(12);
-		public BuffInt HoldAttackPunish { get; protected set; } = new(4);
-		public BuffInt MinimalChargeAttackDuration { get; protected set; } = new(int.MaxValue);
-		public BuffBool StopMoveOnAttack { get; protected set; } = new(true);
-		public BuffBool CancelAttackOnJump { get; protected set; } = new(false);
-		public BuffBool UseRandomAttackCombo { get; protected set; } = new(false);
-		public BuffBool KeepAttackWhenHold { get; protected set; } = new(true);
-		public BuffBool AttackInAir { get; protected set; } = new(true);
-		public BuffBool AttackInWater { get; protected set; } = new(true);
-		public BuffBool AttackWhenMoving { get; protected set; } = new(true);
-		public BuffBool AttackWhenClimbing { get; protected set; } = new(false);
-		public BuffBool AttackWhenFlying { get; protected set; } = new(false);
-		public BuffBool AttackWhenRolling { get; protected set; } = new(false);
-		public BuffBool AttackWhenSquating { get; protected set; } = new(false);
-		public BuffBool AttackWhenDashing { get; protected set; } = new(false);
-		public BuffBool AttackWhenSliding { get; protected set; } = new(false);
-		public BuffBool AttackWhenGrabing { get; protected set; } = new(false);
+		public readonly BuffString BulletName = new("DefaultBullet");
+		public readonly BuffInt AttackDuration = new(12);
+		public readonly BuffInt AttackColldown = new(2);
+		public readonly BuffInt AttackComboGap = new(12);
+		public readonly BuffInt HoldAttackPunish = new(4);
+		public readonly BuffInt MinimalChargeAttackDuration = new(int.MaxValue);
+		public readonly BuffBool StopMoveOnAttack = new(true);
+		public readonly BuffBool CancelAttackOnJump = new(false);
+		public readonly BuffBool UseRandomAttackCombo = new(false);
+		public readonly BuffBool KeepAttackWhenHold = new(true);
+		public readonly BuffBool AttackInAir = new(true);
+		public readonly BuffBool AttackInWater = new(true);
+		public readonly BuffBool AttackWhenMoving = new(true);
+		public readonly BuffBool AttackWhenClimbing = new(false);
+		public readonly BuffBool AttackWhenFlying = new(false);
+		public readonly BuffBool AttackWhenRolling = new(false);
+		public readonly BuffBool AttackWhenSquating = new(false);
+		public readonly BuffBool AttackWhenDashing = new(false);
+		public readonly BuffBool AttackWhenSliding = new(false);
+		public readonly BuffBool AttackWhenGrabing = new(false);
 
 		// Data
 		private readonly static System.Random Random = new(19940516);

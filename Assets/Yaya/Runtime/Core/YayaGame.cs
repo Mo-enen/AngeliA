@@ -8,6 +8,8 @@ using UnityEngine.InputSystem;
 namespace Yaya {
 
 	public interface IDamageReceiver {
+		public bool AllowDamageFromLevel => true;
+		public bool AllowDamageFromBullet => true;
 		void TakeDamage (int damage);
 	}
 
@@ -221,16 +223,24 @@ namespace Yaya {
 			for (int i = 0; i < len; i++) {
 				var entity = game.Entities[i];
 				if (entity is not IDamageReceiver receiver) continue;
-				int count = YayaCellPhysics.OverlapAll_Damage(
-					c_DamageCheck, entity.Rect, entity, entity is ePlayer
-				);
+				int count = YayaCellPhysics.OverlapAll_Damage(c_DamageCheck, entity.Rect, receiver);
 				for (int j = 0; j < count; j++) {
 					var hit = c_DamageCheck[j];
-					receiver.TakeDamage(hit.Tag);
 					if (hit.Entity is eBullet bullet) {
+						// From Bullet
 						bullet.OnHit(receiver);
+						if (receiver.AllowDamageFromBullet) {
+							receiver.TakeDamage(hit.Tag);
+						}
 					} else if (hit.Entity != null) {
+						// From Entity
 						hit.Entity.Active = false;
+						receiver.TakeDamage(hit.Tag);
+					} else {
+						// From Null (Level)
+						if (receiver.AllowDamageFromLevel) {
+							receiver.TakeDamage(hit.Tag);
+						}
 					}
 				}
 			}

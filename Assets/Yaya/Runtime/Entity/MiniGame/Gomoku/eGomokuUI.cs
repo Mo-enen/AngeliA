@@ -181,7 +181,7 @@ namespace Yaya {
 
 			// Player Color Hint
 			int labelHeight = 24 * UNIT;
-			CellGUI.Label(
+			CellRendererGUI.Label(
 				new CellLabel(Language.Get(WORD.UI_GOMOKU_PLAYER_HINT)) {
 					Alignment = Alignment.MidLeft,
 					Tint = PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT,

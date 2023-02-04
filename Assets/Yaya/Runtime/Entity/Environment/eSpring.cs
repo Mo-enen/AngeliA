@@ -31,7 +31,7 @@ namespace Yaya {
 	}
 
 
-	public abstract class eSpring : eYayaRigidbody {
+	public abstract class eSpring : Rigidbody {
 
 
 		// Const
@@ -102,12 +102,12 @@ namespace Yaya {
 				}
 			} else if (frame > LastBounceFrame + BOUNCE_DELAY && RequireBouncePerform) {
 				// Try Perform Bounce
-				var hit = CellPhysics.TouchTransfer<eYayaRigidbody>(
+				var hit = CellPhysics.TouchTransfer<Rigidbody>(
 					YayaConst.MASK_RIGIDBODY,
 					FullRect.Expand(Horizontal ? 1 : 0, Horizontal ? 1 : 0, Horizontal ? 0 : 1, Horizontal ? 0 : 1),
 					this, BounceSide, 16
 				);
-				PerformBounce(hit.Entity as eYayaRigidbody);
+				PerformBounce(hit.Entity as Rigidbody);
 			}
 		}
 
@@ -140,7 +140,7 @@ namespace Yaya {
 		}
 
 
-		private void PerformBounce (eYayaRigidbody target) {
+		private void PerformBounce (Rigidbody target) {
 			if (target == null) return;
 			RequireBouncePerform = false;
 			if (Horizontal) {
