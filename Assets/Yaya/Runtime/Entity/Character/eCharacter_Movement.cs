@@ -43,11 +43,7 @@ namespace Yaya {
 		public int IntendedY { get; private set; } = 0;
 		public int CurrentJumpCount { get; private set; } = 0;
 		public bool UseFreeStyleSwim => SwimInFreeStyle;
-		public bool FacingRight =>
-			Game.GlobalFrame <= LockedFacingFrame &&
-			MoveState != MovementState.Slide &&
-			MoveState != MovementState.GrabSide ?
-				LockedFacingRight : LastIntendedX > 0;
+		public bool FacingRight { get; private set; } = true;
 
 		// Frame Cache
 		public int RunningAccumulateFrame { get; private set; } = 0;
@@ -101,9 +97,8 @@ namespace Yaya {
 		private bool GrabDropLock = true;
 		private bool GrabFlipUpLock = true;
 		private bool AllowGrabSideMoveUp = false;
-		private int? ClimbPositionCorrect = null;
-		private int LastIntendedX = 1;
 		private bool LockedFacingRight = true;
+		private int? ClimbPositionCorrect = null;
 		private int LockedFacingFrame = int.MinValue;
 
 
@@ -234,7 +229,6 @@ namespace Yaya {
 			// Grab Lock
 			if (!IsGrabingTop && IntendedY == 1) GrabFlipUpLock = true;
 			if (IsGrabingTop && IntendedY != 1) GrabFlipUpLock = false;
-
 			if (!IsGrabingTop && IntendedY == -1) GrabDropLock = true;
 			if (IsGrabingTop && IntendedY != -1) GrabDropLock = false;
 
@@ -250,6 +244,13 @@ namespace Yaya {
 			// Slide
 			IsSliding = SlideCheck();
 			if (IsSliding) LastSlidingFrame = frame;
+
+			// Facing Right
+			if (Game.GlobalFrame <= LockedFacingFrame && !IsSliding && !IsGrabingSide) {
+				FacingRight = LockedFacingRight;
+			} else if (IntendedX != 0) {
+				FacingRight = IntendedX > 0;
+			}
 
 			// Physics
 			int width = InWater ? SwimWidth : MovementWidth;
@@ -611,10 +612,15 @@ namespace Yaya {
 		public void HoldJump (bool holding) => HoldingJump = holding;
 
 
-		public void Jump () => IntendedJump = InWater || IntendedY >= 0 || IsClimbing;
+		public void Jump () {
+			IntendedJump = true;
+			if (CancelAttackOnJump) {
+				CancelAttack();
+			}
+		}
 
 
-		public void Dash () => IntendedDash = DashSpeed > 0;
+		public void Dash () => IntendedDash = true;
 
 
 		public void Pound () => IntendedPound = true;
@@ -644,7 +650,6 @@ namespace Yaya {
 			if (x == 0 && Game.GlobalFrame > LastEndMoveFrame + RUN_BREAK_GAP) RunningAccumulateFrame = 0;
 			IntendedX = x;
 			IntendedY = y;
-			if (x != 0) LastIntendedX = x;
 			if (x != 0 || y != 0) {
 				LastMoveDirection = new(IntendedX, IntendedY);
 			}

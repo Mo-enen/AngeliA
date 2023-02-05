@@ -163,11 +163,11 @@ namespace Yaya {
 		private void Update_Hint () {
 			if (MenuEntity != null && MenuEntity.Active) return;
 			if (!Winner.HasValue) {
-				eControlHintUI.DrawHint(GameKey.Left, GameKey.Right, WORD.HINT_MOVE);
-				eControlHintUI.DrawHint(GameKey.Down, GameKey.Up, WORD.HINT_MOVE);
+				eControlHintUI.AddHint(GameKey.Left, GameKey.Right, WORD.HINT_MOVE);
+				eControlHintUI.AddHint(GameKey.Down, GameKey.Up, WORD.HINT_MOVE);
 			}
-			eControlHintUI.DrawHint(GameKey.Start, WORD.UI_QUIT);
-			eControlHintUI.DrawHint(GameKey.Select, WORD.HINT_RESTART);
+			eControlHintUI.AddHint(GameKey.Start, WORD.UI_QUIT);
+			eControlHintUI.AddHint(GameKey.Select, WORD.HINT_RESTART);
 		}
 
 

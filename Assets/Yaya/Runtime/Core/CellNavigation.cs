@@ -21,10 +21,35 @@ namespace Yaya {
 
 
 
+		#region --- SUB ---
+
+
+		private struct Cell {
+
+			public static readonly Cell EMPTY = new();
+
+			public uint Stamp;
+
+		}
+
+
+		#endregion
+
+
+
+
 		#region --- VAR ---
 
 
+		// Api
+		internal static int PositionX { get; private set; } = 0;
+		internal static int PositionY { get; private set; } = 0;
+		internal static int CellWidth { get; private set; } = 1;
+		internal static int CellHeight { get; private set; } = 1;
 
+		// Data
+		private static Cell[,] Cells = null;
+		private static uint OperationStamp = 0;
 
 
 		#endregion
@@ -35,6 +60,13 @@ namespace Yaya {
 		#region --- API ---
 
 
+		internal static void Initialize (int cellWidth, int cellHeight) {
+			CellWidth = cellWidth;
+			CellHeight = cellHeight;
+			Cells = new Cell[CellWidth, CellHeight];
+		}
+
+
 		public static NavigationResult Navigate (
 			eCharacter character, int toX, int toY, int jumpRange,
 			out int resultX, out int resultY
@@ -42,6 +74,8 @@ namespace Yaya {
 			var result = NavigationResult.None;
 			resultX = character.X;
 			resultY = character.Y;
+			BeginOperation();
+
 
 
 
@@ -95,6 +129,18 @@ namespace Yaya {
 
 			return true;
 		}
+
+
+		private static void BeginOperation () {
+			PositionX = Game.Current.SpawnRect.x;
+			PositionY = Game.Current.SpawnRect.y;
+			OperationStamp++;
+		}
+
+
+		// Util
+		private static int GlobalX_to_CellX (int globalX) => (globalX - PositionX) / Const.CEL + Const.LEVEL_SPAWN_PADDING_UNIT;
+		private static int GlobalY_to_CellY (int globalY) => (globalY - PositionY) / Const.CEL + Const.LEVEL_SPAWN_PADDING_UNIT;
 
 
 		#endregion

@@ -40,7 +40,6 @@ namespace Yaya {
 		private static readonly PhysicsCell[] c_DamageCheck = new PhysicsCell[16];
 		private readonly eControlHintUI ControlHintUI = null;
 		private readonly ePauseMenu PauseMenu = null;
-		private bool CutsceneLock = true;
 
 
 		#endregion
@@ -87,6 +86,12 @@ namespace Yaya {
 			// Quit
 			Application.wantsToQuit -= OnQuit;
 			Application.wantsToQuit += OnQuit;
+
+			// Nav
+			CellNavigation.Initialize(
+				(game.ViewConfig.ViewRatio * game.ViewConfig.MaxHeight / 1000 + Const.SPAWN_PADDING * 2) / Const.CEL + Const.LEVEL_SPAWN_PADDING_UNIT * 2,
+				(game.ViewConfig.MaxHeight + Const.SPAWN_PADDING * 2) / Const.CEL + Const.LEVEL_SPAWN_PADDING_UNIT * 2
+			);
 
 			// Start the Game !!
 			if (
@@ -152,7 +157,6 @@ namespace Yaya {
 				}
 			}
 			if (FrameInput.KeyDown(Key.Digit9)) {
-
 				Cutscene.Play("Test Video 1".AngeHash());
 			}
 			if (FrameInput.KeyDown(Key.Digit0)) {
@@ -251,12 +255,9 @@ namespace Yaya {
 		private void PauselessUpdate () {
 
 			var game = Game.Current;
-			if (game == null) return;
 
-			// Pausing
+			// Pause Menu
 			if (game.State == GameState.Pause) {
-				// Update Entity
-				ControlHintUI.FrameUpdate();
 				if (PauseMenu.Active) PauseMenu.FrameUpdate();
 				if (!PauseMenu.Active) {
 					game.TrySpawnEntity(PauseMenu.TypeID, 0, 0, out _);
@@ -266,26 +267,11 @@ namespace Yaya {
 				if (PauseMenu.Active) PauseMenu.Active = false;
 			}
 
-			// Video Cutscene
-			if (
-				game.State == GameState.Cutscene &&
-				Cutscene.IsPlaying &&
-				Game.GlobalFrame > Cutscene.StartFrame + game.CutsceneVideoFadeoutDuration
-			) {
-				if (!CutsceneLock) {
-					eControlHintUI.DrawHint(GameKey.Start, WORD.HINT_SKIP);
-					ControlHintUI.FrameUpdate();
-				} else if (
-					FrameInput.AnyKeyboardKeyPress(out _) ||
-					FrameInput.AnyGamepadButtonPress(out _) ||
-					FrameInput.MouseLeftButton || FrameInput.MouseRightButton
-				) {
-					CutsceneLock = false;
-					FrameInput.UseGameKey(GameKey.Start);
-				}
-			} else if (!CutsceneLock) {
-				CutsceneLock = true;
+			// Hint
+			if (game.State == GameState.Cutscene) {
+				eControlHintUI.AddHint(GameKey.Start, WORD.HINT_SKIP);
 			}
+			if (game.State != GameState.Play) ControlHintUI.FrameUpdate();
 
 			// Start Key to Switch State
 			if (FrameInput.GameKeyDown(GameKey.Start)) {
@@ -297,9 +283,7 @@ namespace Yaya {
 						game.State = GameState.Play;
 						break;
 					case GameState.Cutscene:
-						if (!CutsceneLock) {
-							game.State = GameState.Play;
-						}
+						game.State = GameState.Play;
 						break;
 				}
 			}

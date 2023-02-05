@@ -161,14 +161,14 @@ namespace Yaya {
 
 			int hintPositionY = CellRenderer.CameraRect.y + (GamepadVisible ? 78 : 12) * UNIT;
 
-			// Menu Hint
+			// Menu
 			if (MenuUI.CurrentMenu != null) {
 				if (MenuUI.CurrentMenu.SelectionAdjustable) {
-					DrawHint(GameKey.Left, GameKey.Right, WORD.HINT_ADJUST);
+					AddHint(GameKey.Left, GameKey.Right, WORD.HINT_ADJUST);
 				} else {
-					DrawHint(GameKey.Action, WORD.HINT_USE);
+					AddHint(GameKey.Action, WORD.HINT_USE);
 				}
-				DrawHint(GameKey.Down, GameKey.Up, WORD.HINT_MOVE);
+				AddHint(GameKey.Down, GameKey.Up, WORD.HINT_MOVE);
 			}
 
 			// Draw
@@ -215,8 +215,8 @@ namespace Yaya {
 
 
 		// API
-		public static void DrawHint (GameKey key, int labelID, int priority = int.MinValue) => DrawHint(key, key, labelID, priority);
-		public static void DrawHint (GameKey keyA, GameKey keyB, int labelID, int priority = int.MinValue) => Current?.SetHint(keyA, keyB, labelID, priority);
+		public static void AddHint (GameKey key, int labelID, int priority = int.MinValue) => AddHint(key, key, labelID, priority);
+		public static void AddHint (GameKey keyA, GameKey keyB, int labelID, int priority = int.MinValue) => Current?.SetHintLogic(keyA, keyB, labelID, priority);
 
 
 		public static void DrawGlobalHint (int globalX, int globalY, GameKey key, int labelID, bool background = false, bool animated = false) => Current?.DrawKey(globalX, globalY, key, key, labelID, background, animated);
@@ -230,7 +230,7 @@ namespace Yaya {
 
 
 		// LGC
-		private void SetHint (GameKey keyA, GameKey keyB, int labelID, int priority = int.MinValue) {
+		private void SetHintLogic (GameKey keyA, GameKey keyB, int labelID, int priority = int.MinValue) {
 			if (!HintVisible) return;
 			if (Hints[(int)keyA].frame != Game.PauselessFrame || priority >= Hints[(int)keyA].priority) {
 				Hints[(int)keyA] = (labelID, priority, Game.PauselessFrame);

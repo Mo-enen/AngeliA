@@ -62,14 +62,8 @@ namespace Yaya {
 		}
 
 
-		public override void PhysicsUpdate () {
-			base.PhysicsUpdate();
-			PhysicsUpdate_Collect();
-		}
-
-
-		public override void FrameUpdate () {
-			base.FrameUpdate();
+		public override void BeforePhysicsUpdate () {
+			base.BeforePhysicsUpdate();
 
 			// Stop when Not Playing
 			if (Selecting != this || Game.Current.State != GameState.Play) {
@@ -84,7 +78,7 @@ namespace Yaya {
 						Move(FrameInput.DirectionX, FrameInput.DirectionY);
 						FrameUpdate_JumpDashPound();
 						FrameUpdate_Action_Attack();
-						eControlHintUI.DrawHint(GameKey.Left, GameKey.Right, WORD.HINT_MOVE);
+						eControlHintUI.AddHint(GameKey.Left, GameKey.Right, WORD.HINT_MOVE);
 					} else {
 						Stop();
 					}
@@ -110,6 +104,12 @@ namespace Yaya {
 		}
 
 
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
+			PhysicsUpdate_Collect();
+		}
+
+
 		private void PhysicsUpdate_Collect () {
 			if (Selecting != this) return;
 			int count = CellPhysics.OverlapAll(
@@ -130,18 +130,16 @@ namespace Yaya {
 
 			if (LockingInput) return;
 
-			eControlHintUI.DrawHint(GameKey.Jump, WORD.HINT_JUMP);
+			eControlHintUI.AddHint(GameKey.Jump, WORD.HINT_JUMP);
 
 			HoldJump(FrameInput.GameKeyPress(GameKey.Jump));
 			if (FrameInput.GameKeyDown(GameKey.Jump)) {
 				// Movement Jump
-				Jump();
 				if (FrameInput.GameKeyPress(GameKey.Down)) {
 					Dash();
-				}
-				AttackRequiringFrame = int.MinValue;
-				if (CancelAttackOnJump) {
-					CancelAttack();
+				} else {
+					Jump();
+					AttackRequiringFrame = int.MinValue;
 				}
 			}
 			if (FrameInput.GameKeyDown(GameKey.Down)) {
@@ -156,7 +154,7 @@ namespace Yaya {
 			// Try Perform Action
 			if (CurrentActionTarget != null) {
 				CurrentActionTarget.Highlight();
-				eControlHintUI.DrawHint(
+				eControlHintUI.AddHint(
 					GameKey.Action,
 					eActionEntity.GetHintLanguageCode(CurrentActionTarget.TypeID)
 				);
@@ -165,7 +163,7 @@ namespace Yaya {
 					if (performed) return;
 				}
 			} else if (!IsSafe) {
-				eControlHintUI.DrawHint(GameKey.Action, WORD.HINT_ATTACK);
+				eControlHintUI.AddHint(GameKey.Action, WORD.HINT_ATTACK);
 			}
 
 			// Try Cancel Action
@@ -221,7 +219,7 @@ namespace Yaya {
 			int x = X - Const.CEL / 2;
 			int y = Y + Const.CEL * 3 / 2;
 			eControlHintUI.DrawGlobalHint(x, y, GameKey.Action, WORD.HINT_WAKE, true, true);
-			eControlHintUI.DrawHint(GameKey.Action, WORD.HINT_WAKE);
+			eControlHintUI.AddHint(GameKey.Action, WORD.HINT_WAKE);
 		}
 
 
