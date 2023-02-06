@@ -112,7 +112,7 @@ namespace Yaya {
 		private void MenuPause () {
 
 			// 0-Continue
-			if (DrawItem(Language.Get(WORD.UI_CONTINUE)) || FrameInput.GameKeyDown(GameKey.Jump)) {
+			if (DrawItem(Language.Get(WORD.UI_CONTINUE)) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				Game.Current.State = GameState.Play;
 				Active = false;
 				FrameInput.UseAllHoldingKeys();
@@ -146,7 +146,7 @@ namespace Yaya {
 				RecordingKey = -1;
 				RecordLock = true;
 				for (int i = 0; i < KeyboardKeys.Length; i++) {
-					KeyboardKeys[i] = FrameInput.GetKeyboardMap((GameKey)i);
+					KeyboardKeys[i] = FrameInput.GetKeyboardMap((Gamekey)i);
 				}
 			}
 
@@ -156,11 +156,11 @@ namespace Yaya {
 				RecordingKey = -1;
 				RecordLock = true;
 				for (int i = 0; i < GamepadKeys.Length; i++) {
-					GamepadKeys[i] = FrameInput.GetGamepadMap((GameKey)i);
+					GamepadKeys[i] = FrameInput.GetGamepadMap((Gamekey)i);
 				}
 			}
 
-			if (DrawItem(Language.Get(WORD.UI_BACK)) || FrameInput.GameKeyDown(GameKey.Jump)) {
+			if (DrawItem(Language.Get(WORD.UI_BACK)) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(1);
 			}
@@ -269,7 +269,7 @@ namespace Yaya {
 			}
 
 			// Back
-			if (DrawItem(Language.Get(WORD.UI_BACK)) || FrameInput.GameKeyDown(GameKey.Jump)) {
+			if (DrawItem(Language.Get(WORD.UI_BACK)) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(2);
 			}
@@ -280,7 +280,7 @@ namespace Yaya {
 
 			Message = Language.Get(WORD.MENU_QUIT_MESSAGE);
 
-			if (DrawItem(Language.Get(WORD.UI_BACK)) || FrameInput.GameKeyDown(GameKey.Jump)) {
+			if (DrawItem(Language.Get(WORD.UI_BACK)) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(3);
 			}
@@ -324,11 +324,11 @@ namespace Yaya {
 				SetSelection(forGamepad ? 1 : 0);
 				if (forGamepad) {
 					for (int i = 0; i < GamepadKeys.Length; i++) {
-						FrameInput.SetGamepadMap((GameKey)i, GamepadKeys[i]);
+						FrameInput.SetGamepadMap((Gamekey)i, GamepadKeys[i]);
 					}
 				} else {
 					for (int i = 0; i < KeyboardKeys.Length; i++) {
-						FrameInput.SetKeyboardMap((GameKey)i, KeyboardKeys[i]);
+						FrameInput.SetKeyboardMap((Gamekey)i, KeyboardKeys[i]);
 					}
 				}
 			}
@@ -343,7 +343,7 @@ namespace Yaya {
 			if (RecordingKey >= 0 && !RecordLock) {
 				if (forGamepad) {
 					// Gamepad
-					if (FrameInput.AnyGamepadButtonPress(out var button)) {
+					if (FrameInput.TryGetHoldingGamepadButton(out var button)) {
 						if (GamepadKeys[RecordingKey] != button) {
 							for (int i = 0; i < GamepadKeys.Length; i++) {
 								if (GamepadKeys[i] == button && GamepadKeys[RecordingKey] != button) {
@@ -354,13 +354,13 @@ namespace Yaya {
 						}
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
-					} else if (FrameInput.AnyKeyboardKeyPress(out _) || FrameInput.MouseLeftButtonDown) {
+					} else if (FrameInput.AnyKeyboardKeyHolding || FrameInput.MouseLeftButtonDown) {
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
 					}
 				} else {
 					// Keyboard
-					if (FrameInput.AnyKeyboardKeyPress(out var button)) {
+					if (FrameInput.TryGetHoldingKeyboardKey(out var button)) {
 						if (KeyboardKeys[RecordingKey] != button) {
 							for (int i = 0; i < KeyboardKeys.Length; i++) {
 								if (KeyboardKeys[i] == button && KeyboardKeys[RecordingKey] != button) {
@@ -371,7 +371,7 @@ namespace Yaya {
 						}
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
-					} else if (FrameInput.AnyGamepadButtonPress(out _) || FrameInput.MouseLeftButtonDown) {
+					} else if (FrameInput.AnyGamepadButtonHolding || FrameInput.MouseLeftButtonDown) {
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
 					}
@@ -381,22 +381,22 @@ namespace Yaya {
 			// Unlock Record
 			if (
 				RecordLock &&
-				!FrameInput.AnyGamepadButtonPress(out _) &&
-				!FrameInput.AnyKeyboardKeyPress(out _) &&
+				!FrameInput.AnyGamepadButtonHolding &&
+				!FrameInput.AnyKeyboardKeyHolding &&
 				!FrameInput.MouseLeftButton
 			) {
 				RecordLock = false;
 			}
 
 			// Reset
-			if (FrameInput.KeyDown(Key.F1)) {
+			if (FrameInput.KeyboardDown(Key.F1)) {
 				if (forGamepad) {
 					for (int i = 0; i < GamepadKeys.Length; i++) {
-						GamepadKeys[i] = FrameInput.GetDefaultGamepadMap((GameKey)i);
+						GamepadKeys[i] = FrameInput.GetDefaultGamepadMap((Gamekey)i);
 					}
 				} else {
 					for (int i = 0; i < KeyboardKeys.Length; i++) {
-						KeyboardKeys[i] = FrameInput.GetDefaultKeyboardMap((GameKey)i);
+						KeyboardKeys[i] = FrameInput.GetDefaultKeyboardMap((Gamekey)i);
 					}
 				}
 			}

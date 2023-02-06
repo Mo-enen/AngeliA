@@ -78,7 +78,6 @@ namespace Yaya {
 		// API
 		public bool InvokeAction () {
 			if (CurrentActionTarget == null) return false;
-			if (this is ePlayer && !FrameInput.GameKeyDown(GameKey.Action)) return false;
 			return CurrentActionTarget.Invoke(this);
 		}
 

@@ -102,7 +102,7 @@ namespace Yaya {
 			if (GamepadVisible) DrawGamePad();
 			if (HintVisible) DrawHints();
 			// Switch Visible
-			if (FrameInput.KeyDown(Key.F2)) {
+			if (FrameInput.KeyboardDown(Key.F2)) {
 				ShowGamePadUI.Value = !ShowGamePadUI.Value;
 				ShowControlHint.Value = ShowGamePadUI.Value ? ShowControlHint.Value : !ShowControlHint.Value;
 			}
@@ -131,10 +131,10 @@ namespace Yaya {
 			CellRenderer.Draw(BodyCode, rect.Shift(screenRect.x, screenRect.y));
 
 			// DPad
-			CellRenderer.Draw(DPadLeftCode, DPadLeftPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Left) ? PressingTint : DarkButtonTint);
-			CellRenderer.Draw(DPadRightCode, DPadRightPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Right) ? PressingTint : DarkButtonTint);
-			CellRenderer.Draw(DPadDownCode, DPadDownPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Down) ? PressingTint : DarkButtonTint);
-			CellRenderer.Draw(DPadUpCode, DPadUpPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Up) ? PressingTint : DarkButtonTint);
+			CellRenderer.Draw(DPadLeftCode, DPadLeftPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Left) ? PressingTint : DarkButtonTint);
+			CellRenderer.Draw(DPadRightCode, DPadRightPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Right) ? PressingTint : DarkButtonTint);
+			CellRenderer.Draw(DPadDownCode, DPadDownPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Down) ? PressingTint : DarkButtonTint);
+			CellRenderer.Draw(DPadUpCode, DPadUpPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Up) ? PressingTint : DarkButtonTint);
 
 			// Direction
 			if (FrameInput.UsingLeftStick) {
@@ -147,12 +147,12 @@ namespace Yaya {
 			}
 
 			// Func
-			CellRenderer.Draw(ButtonSelectCode, SelectPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Select) ? PressingTint : DarkButtonTint);
-			CellRenderer.Draw(ButtonStartCode, StartPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Start) ? PressingTint : DarkButtonTint);
+			CellRenderer.Draw(ButtonSelectCode, SelectPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Select) ? PressingTint : DarkButtonTint);
+			CellRenderer.Draw(ButtonStartCode, StartPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Start) ? PressingTint : DarkButtonTint);
 
 			// Buttons
-			CellRenderer.Draw(ButtonACode, ButtonAPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Action) ? PressingTint : ColorfulButtonTint);
-			CellRenderer.Draw(ButtonBCode, ButtonBPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyPress(GameKey.Jump) ? PressingTint : ColorfulButtonTint);
+			CellRenderer.Draw(ButtonACode, ButtonAPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Action) ? PressingTint : ColorfulButtonTint);
+			CellRenderer.Draw(ButtonBCode, ButtonBPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Jump) ? PressingTint : ColorfulButtonTint);
 
 		}
 
@@ -164,39 +164,39 @@ namespace Yaya {
 			// Menu
 			if (MenuUI.CurrentMenu != null) {
 				if (MenuUI.CurrentMenu.SelectionAdjustable) {
-					AddHint(GameKey.Left, GameKey.Right, WORD.HINT_ADJUST);
+					AddHint(Gamekey.Left, Gamekey.Right, WORD.HINT_ADJUST);
 				} else {
-					AddHint(GameKey.Action, WORD.HINT_USE);
+					AddHint(Gamekey.Action, WORD.HINT_USE);
 				}
-				AddHint(GameKey.Down, GameKey.Up, WORD.HINT_MOVE);
+				AddHint(Gamekey.Down, Gamekey.Up, WORD.HINT_MOVE);
 			}
 
 			// Draw
 			int x = 6 * UNIT + CellRenderer.CameraRect.x + 6 * UNIT;
-			Draw(GameKey.Down);
-			Draw(GameKey.Up);
-			Draw(GameKey.Left);
-			Draw(GameKey.Right);
-			Draw(GameKey.Action);
-			Draw(GameKey.Jump);
-			Draw(GameKey.Select);
-			Draw(GameKey.Start);
+			Draw(Gamekey.Down);
+			Draw(Gamekey.Up);
+			Draw(Gamekey.Left);
+			Draw(Gamekey.Right);
+			Draw(Gamekey.Action);
+			Draw(Gamekey.Jump);
+			Draw(Gamekey.Select);
+			Draw(Gamekey.Start);
 
 			// Func
-			void Draw (GameKey keyA) {
+			void Draw (Gamekey keyA) {
 				int index = (int)keyA;
 				var (labelID, _, frame) = Hints[index];
 				if (frame != Game.PauselessFrame) return;
 				int y = hintPositionY;
 				var keyB = keyA switch {
-					GameKey.Left => GameKey.Right,
-					GameKey.Right => GameKey.Left,
-					GameKey.Down => GameKey.Up,
-					GameKey.Up => GameKey.Down,
-					GameKey.Jump => GameKey.Action,
-					GameKey.Action => GameKey.Jump,
-					GameKey.Start => GameKey.Select,
-					GameKey.Select => GameKey.Start,
+					Gamekey.Left => Gamekey.Right,
+					Gamekey.Right => Gamekey.Left,
+					Gamekey.Down => Gamekey.Up,
+					Gamekey.Up => Gamekey.Down,
+					Gamekey.Jump => Gamekey.Action,
+					Gamekey.Action => Gamekey.Jump,
+					Gamekey.Start => Gamekey.Select,
+					Gamekey.Select => Gamekey.Start,
 					_ => keyA,
 				};
 				if (
@@ -215,12 +215,12 @@ namespace Yaya {
 
 
 		// API
-		public static void AddHint (GameKey key, int labelID, int priority = int.MinValue) => AddHint(key, key, labelID, priority);
-		public static void AddHint (GameKey keyA, GameKey keyB, int labelID, int priority = int.MinValue) => Current?.SetHintLogic(keyA, keyB, labelID, priority);
+		public static void AddHint (Gamekey key, int labelID, int priority = int.MinValue) => AddHint(key, key, labelID, priority);
+		public static void AddHint (Gamekey keyA, Gamekey keyB, int labelID, int priority = int.MinValue) => Current?.SetHintLogic(keyA, keyB, labelID, priority);
 
 
-		public static void DrawGlobalHint (int globalX, int globalY, GameKey key, int labelID, bool background = false, bool animated = false) => Current?.DrawKey(globalX, globalY, key, key, labelID, background, animated);
-		public static void DrawGlobalHint (int globalX, int globalY, GameKey keyA, GameKey keyB, int labelID, bool background = false, bool animated = false) => Current?.DrawKey(globalX, globalY, keyA, keyB, labelID, background, animated);
+		public static void DrawGlobalHint (int globalX, int globalY, Gamekey key, int labelID, bool background = false, bool animated = false) => Current?.DrawKey(globalX, globalY, key, key, labelID, background, animated);
+		public static void DrawGlobalHint (int globalX, int globalY, Gamekey keyA, Gamekey keyB, int labelID, bool background = false, bool animated = false) => Current?.DrawKey(globalX, globalY, keyA, keyB, labelID, background, animated);
 
 
 		public static void ForceShowHint (int duration = 0) {
@@ -230,7 +230,7 @@ namespace Yaya {
 
 
 		// LGC
-		private void SetHintLogic (GameKey keyA, GameKey keyB, int labelID, int priority = int.MinValue) {
+		private void SetHintLogic (Gamekey keyA, Gamekey keyB, int labelID, int priority = int.MinValue) {
 			if (!HintVisible) return;
 			if (Hints[(int)keyA].frame != Game.PauselessFrame || priority >= Hints[(int)keyA].priority) {
 				Hints[(int)keyA] = (labelID, priority, Game.PauselessFrame);
@@ -239,7 +239,7 @@ namespace Yaya {
 				Hints[(int)keyB] = (labelID, priority, Game.PauselessFrame);
 			}
 		}
-		private void DrawKey (int x, int y, GameKey keyA, GameKey keyB, int labelID, bool background = false, bool animated = false) {
+		private void DrawKey (int x, int y, Gamekey keyA, Gamekey keyB, int labelID, bool background = false, bool animated = false) {
 
 			// Draw
 			var keyboardA = FrameInput.GetKeyboardMap(keyA);

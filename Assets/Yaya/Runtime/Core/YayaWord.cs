@@ -18,14 +18,14 @@ namespace Yaya {
 		public static readonly int UI_ON = "UI.ON".AngeHash();
 		public static readonly int UI_OFF = "UI.OFF".AngeHash();
 		public static readonly int[] GAMEKEY_UI_CODES = new int[] {
-			$"UI.GameKey.{GameKey.Left}".AngeHash(),
-			$"UI.GameKey.{GameKey.Right}".AngeHash(),
-			$"UI.GameKey.{GameKey.Down}".AngeHash(),
-			$"UI.GameKey.{GameKey.Up}".AngeHash(),
-			$"UI.GameKey.{GameKey.Action}".AngeHash(),
-			$"UI.GameKey.{GameKey.Jump}".AngeHash(),
-			$"UI.GameKey.{GameKey.Start}".AngeHash(),
-			$"UI.GameKey.{GameKey.Select}".AngeHash(),
+			$"UI.GameKey.{Gamekey.Left}".AngeHash(),
+			$"UI.GameKey.{Gamekey.Right}".AngeHash(),
+			$"UI.GameKey.{Gamekey.Down}".AngeHash(),
+			$"UI.GameKey.{Gamekey.Up}".AngeHash(),
+			$"UI.GameKey.{Gamekey.Action}".AngeHash(),
+			$"UI.GameKey.{Gamekey.Jump}".AngeHash(),
+			$"UI.GameKey.{Gamekey.Start}".AngeHash(),
+			$"UI.GameKey.{Gamekey.Select}".AngeHash(),
 		};
 
 		// Menu

@@ -166,7 +166,7 @@ MonoBehaviour:
     LagSimulation_EntityMax: 2000
     UseLagSimulationOnAudio: 1
   m_ViewConfig:
-    DefaultHeight: 5120
+    DefaultHeight: 5376
     MinHeight: 2048
     MaxHeight: 14336
     ViewRatio: 2000

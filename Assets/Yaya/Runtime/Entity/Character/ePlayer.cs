@@ -22,7 +22,7 @@ namespace Yaya {
 
 		// Api
 		public static ePlayer Selecting { get; private set; } = null;
-		public override bool IsChargingAttack => MinimalChargeAttackDuration != int.MaxValue && !IsSafe && AttackCooldownReady(false) && FrameInput.GameKeyPress(GameKey.Action);
+		public override bool IsChargingAttack => MinimalChargeAttackDuration != int.MaxValue && !IsSafe && AttackCooldownReady(false) && FrameInput.GameKeyHolding(Gamekey.Action);
 		public int AimViewX { get; private set; } = 0;
 		public int AimViewY { get; private set; } = 0;
 
@@ -78,7 +78,7 @@ namespace Yaya {
 						Move(FrameInput.DirectionX, FrameInput.DirectionY);
 						FrameUpdate_JumpDashPound();
 						FrameUpdate_Action_Attack();
-						eControlHintUI.AddHint(GameKey.Left, GameKey.Right, WORD.HINT_MOVE);
+						eControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, WORD.HINT_MOVE);
 					} else {
 						Stop();
 					}
@@ -93,7 +93,7 @@ namespace Yaya {
 					if (IsFullPassout) {
 						int x = X - Const.CEL / 2;
 						int y = Y + Const.CEL * 3 / 2;
-						eControlHintUI.DrawGlobalHint(x, y, GameKey.Action, WORD.UI_CONTINUE, true, true);
+						eControlHintUI.DrawGlobalHint(x, y, Gamekey.Action, WORD.UI_CONTINUE, true, true);
 					}
 					break;
 			}
@@ -130,19 +130,19 @@ namespace Yaya {
 
 			if (LockingInput) return;
 
-			eControlHintUI.AddHint(GameKey.Jump, WORD.HINT_JUMP);
+			eControlHintUI.AddHint(Gamekey.Jump, WORD.HINT_JUMP);
 
-			HoldJump(FrameInput.GameKeyPress(GameKey.Jump));
-			if (FrameInput.GameKeyDown(GameKey.Jump)) {
+			HoldJump(FrameInput.GameKeyHolding(Gamekey.Jump));
+			if (FrameInput.GameKeyDown(Gamekey.Jump)) {
 				// Movement Jump
-				if (FrameInput.GameKeyPress(GameKey.Down)) {
+				if (FrameInput.GameKeyHolding(Gamekey.Down)) {
 					Dash();
 				} else {
 					Jump();
 					AttackRequiringFrame = int.MinValue;
 				}
 			}
-			if (FrameInput.GameKeyDown(GameKey.Down)) {
+			if (FrameInput.GameKeyDown(Gamekey.Down)) {
 				Pound();
 			}
 
@@ -155,19 +155,19 @@ namespace Yaya {
 			if (CurrentActionTarget != null) {
 				CurrentActionTarget.Highlight();
 				eControlHintUI.AddHint(
-					GameKey.Action,
+					Gamekey.Action,
 					eActionEntity.GetHintLanguageCode(CurrentActionTarget.TypeID)
 				);
-				if (FrameInput.AnyGameKeyDown()) {
+				if (FrameInput.GameKeyDown(Gamekey.Action)) {
 					bool performed = InvokeAction();
 					if (performed) return;
 				}
 			} else if (!IsSafe) {
-				eControlHintUI.AddHint(GameKey.Action, WORD.HINT_ATTACK);
+				eControlHintUI.AddHint(Gamekey.Action, WORD.HINT_ATTACK);
 			}
 
 			// Try Cancel Action
-			if (CurrentActionTarget != null && FrameInput.GameKeyDown(GameKey.Jump)) {
+			if (CurrentActionTarget != null && FrameInput.GameKeyDown(Gamekey.Jump)) {
 				CancelInvokeAction();
 				return;
 			}
@@ -177,8 +177,8 @@ namespace Yaya {
 
 			// Try Perform Attack
 			if (CharacterState == CharacterState.GamePlay) {
-				bool attDown = FrameInput.GameKeyDown(GameKey.Action);
-				bool attHolding = FrameInput.GameKeyPress(GameKey.Action) && KeepAttackWhenHold;
+				bool attDown = FrameInput.GameKeyDown(Gamekey.Action);
+				bool attHolding = FrameInput.GameKeyHolding(Gamekey.Action) && KeepAttackWhenHold;
 				if (attDown || attHolding) {
 					if (IsAttackAllowedByMovement()) {
 						if (AttackCooldownReady(!attDown)) {
@@ -191,8 +191,8 @@ namespace Yaya {
 				}
 			}
 			if (
-				FrameInput.GameKeyDown(GameKey.Left) || FrameInput.GameKeyDown(GameKey.Right) ||
-				FrameInput.GameKeyDown(GameKey.Down) || FrameInput.GameKeyDown(GameKey.Up)
+				FrameInput.GameKeyDown(Gamekey.Left) || FrameInput.GameKeyDown(Gamekey.Right) ||
+				FrameInput.GameKeyDown(Gamekey.Down) || FrameInput.GameKeyDown(Gamekey.Up)
 			) {
 				AttackRequiringFrame = int.MinValue;
 			}
@@ -210,7 +210,7 @@ namespace Yaya {
 		private void FrameUpdate_Sleep () {
 			if (IsExactlyFullSleeped) Game.Current.ClearAntiSpawn(true);
 			// Wake up on Press Action
-			if (FrameInput.GameKeyDown(GameKey.Action) || FrameInput.GameKeyDown(GameKey.Jump)) {
+			if (FrameInput.GameKeyDown(Gamekey.Action) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				SetCharacterState(CharacterState.GamePlay);
 				Y -= 4;
 				MakeSafe(6);
@@ -218,8 +218,8 @@ namespace Yaya {
 			// Ctrl Hint
 			int x = X - Const.CEL / 2;
 			int y = Y + Const.CEL * 3 / 2;
-			eControlHintUI.DrawGlobalHint(x, y, GameKey.Action, WORD.HINT_WAKE, true, true);
-			eControlHintUI.AddHint(GameKey.Action, WORD.HINT_WAKE);
+			eControlHintUI.DrawGlobalHint(x, y, Gamekey.Action, WORD.HINT_WAKE, true, true);
+			eControlHintUI.AddHint(Gamekey.Action, WORD.HINT_WAKE);
 		}
 
 

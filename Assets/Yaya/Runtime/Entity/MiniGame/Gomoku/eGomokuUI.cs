@@ -104,16 +104,16 @@ namespace Yaya {
 				}
 			} else {
 				// Game Button
-				if (FrameInput.GameKeyDownGUI(GameKey.Left)) {
+				if (FrameInput.GameKeyDownGUI(Gamekey.Left)) {
 					StageCursorX = (StageCursorX - 1).Clamp(0, STAGE_SIZE - 1);
 				}
-				if (FrameInput.GameKeyDownGUI(GameKey.Right)) {
+				if (FrameInput.GameKeyDownGUI(Gamekey.Right)) {
 					StageCursorX = (StageCursorX + 1).Clamp(0, STAGE_SIZE - 1);
 				}
-				if (FrameInput.GameKeyDownGUI(GameKey.Down)) {
+				if (FrameInput.GameKeyDownGUI(Gamekey.Down)) {
 					StageCursorY = (StageCursorY - 1).Clamp(0, STAGE_SIZE - 1);
 				}
-				if (FrameInput.GameKeyDownGUI(GameKey.Up)) {
+				if (FrameInput.GameKeyDownGUI(Gamekey.Up)) {
 					StageCursorY = (StageCursorY + 1).Clamp(0, STAGE_SIZE - 1);
 				}
 			}
@@ -121,7 +121,7 @@ namespace Yaya {
 			// Player Place Stone
 			if (
 				Interactable &&
-				(FrameInput.MouseLeftButtonDown || FrameInput.GameKeyDown(GameKey.Action)) &&
+				(FrameInput.MouseLeftButtonDown || FrameInput.GameKeyDown(Gamekey.Action)) &&
 				StageCursorX >= 0 && StageCursorX < STAGE_SIZE &&
 				StageCursorY >= 0 && StageCursorY < STAGE_SIZE &&
 				Stones[StageCursorX, StageCursorY] == GomokuStone.None
@@ -148,13 +148,13 @@ namespace Yaya {
 		private void Update_HotKey () {
 			if (MenuEntity != null && MenuEntity.Active) return;
 			// Quit
-			if (FrameInput.GameKeyDown(GameKey.Start)) {
-				FrameInput.UseGameKey(GameKey.Start);
+			if (FrameInput.GameKeyDown(Gamekey.Start)) {
+				FrameInput.UseGameKey(Gamekey.Start);
 				OpenQuitMenu();
 			}
 			// Restart
-			if (FrameInput.GameKeyDown(GameKey.Select)) {
-				FrameInput.UseGameKey(GameKey.Select);
+			if (FrameInput.GameKeyDown(Gamekey.Select)) {
+				FrameInput.UseGameKey(Gamekey.Select);
 				OpenRestartMenu();
 			}
 		}
@@ -163,11 +163,11 @@ namespace Yaya {
 		private void Update_Hint () {
 			if (MenuEntity != null && MenuEntity.Active) return;
 			if (!Winner.HasValue) {
-				eControlHintUI.AddHint(GameKey.Left, GameKey.Right, WORD.HINT_MOVE);
-				eControlHintUI.AddHint(GameKey.Down, GameKey.Up, WORD.HINT_MOVE);
+				eControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, WORD.HINT_MOVE);
+				eControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, WORD.HINT_MOVE);
 			}
-			eControlHintUI.AddHint(GameKey.Start, WORD.UI_QUIT);
-			eControlHintUI.AddHint(GameKey.Select, WORD.HINT_RESTART);
+			eControlHintUI.AddHint(Gamekey.Start, WORD.UI_QUIT);
+			eControlHintUI.AddHint(Gamekey.Select, WORD.HINT_RESTART);
 		}
 
 

@@ -87,12 +87,6 @@ namespace Yaya {
 			Application.wantsToQuit -= OnQuit;
 			Application.wantsToQuit += OnQuit;
 
-			// Nav
-			CellNavigation.Initialize(
-				(game.ViewConfig.ViewRatio * game.ViewConfig.MaxHeight / 1000 + Const.SPAWN_PADDING * 2) / Const.CEL + Const.LEVEL_SPAWN_PADDING_UNIT * 2,
-				(game.ViewConfig.MaxHeight + Const.SPAWN_PADDING * 2) / Const.CEL + Const.LEVEL_SPAWN_PADDING_UNIT * 2
-			);
-
 			// Start the Game !!
 			if (
 				FrameTask.TryAddToLast(OpeningTask.TYPE_ID, YayaConst.TASK_ROUTE, out var task) &&
@@ -121,34 +115,34 @@ namespace Yaya {
 			// ============ Test ============
 
 			var game = Game.Current;
-			if (FrameInput.KeyDown(Key.Digit1)) {
+			if (FrameInput.KeyboardDown(Key.Digit1)) {
 				game.SetViewZ(game.ViewZ + 1);
 			}
-			if (FrameInput.KeyDown(Key.Digit2)) {
+			if (FrameInput.KeyboardDown(Key.Digit2)) {
 				game.SetViewZ(game.ViewZ - 1);
 			}
-			if (FrameInput.KeyDown(Key.Digit3)) {
+			if (FrameInput.KeyboardDown(Key.Digit3)) {
 				if (ePlayer.Selecting != null) {
 					var gua = game.GetEntity<eGuaGua>();
 					ePlayer.Selecting.MakeSummon(gua);
 					ePlayer.Selecting.CreateSummon<eGuaGua>(ePlayer.Selecting.X, ePlayer.Selecting.Y);
 				}
 			}
-			if (FrameInput.KeyDown(Key.Digit4)) {
+			if (FrameInput.KeyboardDown(Key.Digit4)) {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
 			}
-			if (FrameInput.KeyPress(Key.Digit5)) {
+			if (FrameInput.KeyboardHolding(Key.Digit5)) {
 				game.SetViewSizeDelay(game.ViewRect.height - Const.CEL);
 				//AudioPlayer.SetLowpass(1000);
 			}
-			if (FrameInput.KeyPress(Key.Digit6)) {
+			if (FrameInput.KeyboardHolding(Key.Digit6)) {
 				game.SetViewSizeDelay(game.ViewRect.height + Const.CEL);
 				//AudioPlayer.SetLowpass(100);
 			}
-			if (FrameInput.KeyDown(Key.Digit7)) {
+			if (FrameInput.KeyboardDown(Key.Digit7)) {
 				DialoguePerformer.PerformDialogue("TestConversation", YayaConst.TASK_ROUTE);
 			}
-			if (FrameInput.KeyDown(Key.Digit8)) {
+			if (FrameInput.KeyboardDown(Key.Digit8)) {
 				var miniGame = game.PeekOrGetEntity<eGomokuUI>();
 				if (miniGame == null || !miniGame.Active) {
 					game.SpawnEntity<eGomokuUI>(0, 0);
@@ -156,10 +150,10 @@ namespace Yaya {
 					miniGame.Active = false;
 				}
 			}
-			if (FrameInput.KeyDown(Key.Digit9)) {
+			if (FrameInput.KeyboardDown(Key.Digit9)) {
 				Cutscene.Play("Test Video 1".AngeHash());
 			}
-			if (FrameInput.KeyDown(Key.Digit0)) {
+			if (FrameInput.KeyboardDown(Key.Digit0)) {
 				ePlayer.Selecting.SetHealth(0);
 			}
 
@@ -189,7 +183,7 @@ namespace Yaya {
 			) {
 				if (
 					ePlayer.Selecting.IsFullPassout &&
-					FrameInput.GameKeyDown(GameKey.Action) &&
+					FrameInput.GameKeyDown(Gamekey.Action) &&
 					!FrameTask.HasTask(YayaConst.TASK_ROUTE)
 				) {
 					Vector3Int targetPos = default;
@@ -269,12 +263,12 @@ namespace Yaya {
 
 			// Hint
 			if (game.State == GameState.Cutscene) {
-				eControlHintUI.AddHint(GameKey.Start, WORD.HINT_SKIP);
+				eControlHintUI.AddHint(Gamekey.Start, WORD.HINT_SKIP);
 			}
 			if (game.State != GameState.Play) ControlHintUI.FrameUpdate();
 
 			// Start Key to Switch State
-			if (FrameInput.GameKeyDown(GameKey.Start)) {
+			if (FrameInput.GameKeyDown(Gamekey.Start)) {
 				switch (game.State) {
 					case GameState.Play:
 						game.State = GameState.Pause;

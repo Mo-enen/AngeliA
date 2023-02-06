@@ -99,10 +99,10 @@ namespace Yaya {
 			}
 
 			// Invoke
-			if (!InputLock && playerOverlaps && FrameInput.GameKeyPress(GameKey.Up)) {
+			if (!InputLock && playerOverlaps && FrameInput.GameKeyHolding(Gamekey.Up)) {
 				Invoke(player);
 			}
-			if (InputLock && !FrameInput.GameKeyPress(GameKey.Up)) {
+			if (InputLock && !FrameInput.GameKeyHolding(Gamekey.Up)) {
 				InputLock = false;
 			}
 		}
