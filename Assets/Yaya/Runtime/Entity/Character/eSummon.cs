@@ -35,12 +35,14 @@ namespace Yaya {
 		protected override bool PhysicsEnable => base.PhysicsEnable && CharacterState != CharacterState.GamePlay;
 
 		// Data
+		private static readonly CellNavigation.Operation[] NavOperation = new CellNavigation.Operation[8];
+
 		private SummonNavigationState NavigationState = SummonNavigationState.Idle;
 		private bool HasGroundedTarget = true;
 		private int NavigationTargetX = 0;
 		private int NavigationTargetY = 0;
 		private int FlyStartFrame = int.MinValue;
-		private static readonly CellNavigation.Operation[] NavOperation = new CellNavigation.Operation[8];
+		private int LastNavTargetRefreshFrame = int.MaxValue;
 
 
 		#endregion
@@ -58,6 +60,7 @@ namespace Yaya {
 			NavigationTargetY = Y;
 			HasGroundedTarget = true;
 			FlyStartFrame = int.MinValue;
+			LastNavTargetRefreshFrame = int.MaxValue;
 		}
 
 
@@ -70,7 +73,7 @@ namespace Yaya {
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
 			if (CharacterState == CharacterState.GamePlay) {
-				if (Game.GlobalFrame % 30 == 0) {
+				if (Game.GlobalFrame > LastNavTargetRefreshFrame + 30) {
 					if (Owner != null && Owner.Active) {
 						// Follow Owner
 						Update_NavigationTarget(
@@ -89,11 +92,13 @@ namespace Yaya {
 
 		private void Update_NavigationTarget (int aimX, int aimY) {
 
+			LastNavTargetRefreshFrame = Game.GlobalFrame;
+
 			// Refresh Target Nav Pos
 			const int MAX_RANGE_X = Const.CEL * 10;
 			const int MAX_RANGE_Y = Const.CEL * 8;
 			HasGroundedTarget = CellNavigation.TryGetGroundNearby(
-				aimX, aimY, 
+				aimX, aimY,
 				new RectInt(aimX - MAX_RANGE_X, aimY - MAX_RANGE_Y, MAX_RANGE_X * 2, MAX_RANGE_Y * 2),
 				out NavigationTargetX, out NavigationTargetY
 			);

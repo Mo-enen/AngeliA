@@ -146,6 +146,15 @@ namespace Yaya {
 		}
 
 
+		public static bool TryGetGroundPosition (int x, int y, out int groundY) {
+			int cellX = UnitX_to_CellX(x.UDivide(Const.CEL));
+			int cellY = UnitY_to_CellY(y.UDivide(Const.CEL));
+			groundY = y;
+			if (!cellX.InRange(0, CellWidth - 1) || !(cellY - 1).InRange(0, CellHeight - 1)) return false;
+			return IsGround(cellX, cellY - 1, out groundY);
+		}
+
+
 		#endregion
 
 
@@ -237,9 +246,10 @@ namespace Yaya {
 		}
 
 
-		private static bool IsGround (int cellX, int cellY) {
+		private static bool IsGround (int cellX, int cellY, out int groundY) {
 			// Check Standable
 			var cell = GetBlockedData(cellX, cellY);
+			groundY = cell.PlatformY;
 			if (!cell.IsBlockedUp) return false;
 			// Check Space on Top
 			if (cellY + 1 < CellHeight) {
