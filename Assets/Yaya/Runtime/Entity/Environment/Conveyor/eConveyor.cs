@@ -38,7 +38,7 @@ namespace Yaya {
 			for (int i = 0; i < count; i++) {
 				var hit = c_Update[i];
 				if (hit.Entity is Rigidbody rig) {
-					rig.PerformMove(MoveSpeed, 0, true, false);
+					rig.PerformMove(MoveSpeed, 0);
 					rig.Y = rect.yMax;
 					rig.VelocityY = 0;
 				}

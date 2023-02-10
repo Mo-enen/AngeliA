@@ -10,7 +10,9 @@ namespace Yaya {
 	public interface IDamageReceiver {
 		public bool AllowDamageFromLevel => true;
 		public bool AllowDamageFromBullet => true;
+		public int Team => YayaConst.TEAM_NEUTRAL;
 		void TakeDamage (int damage);
+		public bool TeamCheck (int otherTeam) => Team == YayaConst.TEAM_NEUTRAL || Team != otherTeam;
 	}
 
 	public enum FittingPose {
@@ -113,6 +115,7 @@ namespace Yaya {
 
 
 			// ============ Test ============
+
 
 			var game = Game.Current;
 			if (FrameInput.KeyboardDown(Key.Digit1)) {
@@ -227,7 +230,7 @@ namespace Yaya {
 					if (hit.Entity is eBullet bullet) {
 						// From Bullet
 						bullet.OnHit(receiver);
-						if (receiver.AllowDamageFromBullet) {
+						if (receiver.AllowDamageFromBullet && receiver.TeamCheck(bullet.Team)) {
 							receiver.TakeDamage(hit.Tag);
 						}
 					} else if (hit.Entity != null) {

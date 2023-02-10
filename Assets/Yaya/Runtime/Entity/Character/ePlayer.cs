@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Yaya {
 	[EntityAttribute.Capacity(1, 1)]
-	[EntityAttribute.Bounds(-Const.CEL / 2, 0, Const.CEL, Const.CEL * 2)]
+	[EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.ForceSpawn]
@@ -23,9 +23,10 @@ namespace Yaya {
 		// Api
 		public static ePlayer Selecting { get; private set; } = null;
 		public override bool IsChargingAttack => MinimalChargeAttackDuration != int.MaxValue && !IsSafe && AttackCooldownReady(false) && FrameInput.GameKeyHolding(Gamekey.Action);
+		public override int Team => YayaConst.TEAM_PLAYER;
 		public int AimViewX { get; private set; } = 0;
 		public int AimViewY { get; private set; } = 0;
-
+		
 		// Data
 		private static readonly PhysicsCell[] Collects = new PhysicsCell[8];
 		private int AttackRequiringFrame = int.MinValue;
@@ -91,7 +92,7 @@ namespace Yaya {
 				case CharacterState.Passout:
 					// Passout Hint
 					if (IsFullPassout) {
-						int x = X - Const.CEL / 2;
+						int x = X - Const.HALF;
 						int y = Y + Const.CEL * 3 / 2;
 						eControlHintUI.DrawGlobalHint(x, y, Gamekey.Action, WORD.UI_CONTINUE, true, true);
 					}
@@ -216,7 +217,7 @@ namespace Yaya {
 				MakeSafe(6);
 			}
 			// Ctrl Hint
-			int x = X - Const.CEL / 2;
+			int x = X - Const.HALF;
 			int y = Y + Const.CEL * 3 / 2;
 			eControlHintUI.DrawGlobalHint(x, y, Gamekey.Action, WORD.HINT_WAKE, true, true);
 			eControlHintUI.AddHint(Gamekey.Action, WORD.HINT_WAKE);

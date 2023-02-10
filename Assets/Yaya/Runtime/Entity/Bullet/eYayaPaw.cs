@@ -29,8 +29,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void Release (Entity entity, Vector2Int direction, int combo, int chargeDuration) {
-			base.Release(entity, direction, combo, chargeDuration);
+		public override void Release (Entity entity, int team, Vector2Int direction, int combo, int chargeDuration) {
+			base.Release(entity, team, direction, combo, chargeDuration);
 			if (entity == null || entity is not eCharacter) return;
 			Width = 384;
 			Height = 512;

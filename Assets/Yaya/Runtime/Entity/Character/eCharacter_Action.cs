@@ -9,7 +9,7 @@ namespace Yaya {
 
 
 		// Const
-		const int ACTION_SCAN_RANGE = Const.CEL / 2;
+		const int ACTION_SCAN_RANGE = Const.HALF;
 		const int ACTION_SCAN_FREQUENCY = 6;
 
 		// Api

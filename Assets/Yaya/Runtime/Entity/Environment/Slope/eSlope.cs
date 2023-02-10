@@ -49,7 +49,7 @@ namespace Yaya {
 			if (!UnfillBottomBlock.HasValue) {
 				if (DirectionVertical == Direction3.Up) {
 					UnfillBottomBlock = CellPhysics.HasEntity<eSlope>(
-						new(DirectionHorizontal == Direction3.Left ? X - Const.CEL / 2 : X + Const.CEL + Const.CEL / 2, Y - Const.CEL / 2, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
+						new(DirectionHorizontal == Direction3.Left ? X - Const.HALF : X + Const.CEL + Const.HALF, Y - Const.HALF, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 					);
 				} else {
 					UnfillBottomBlock = false;
@@ -58,7 +58,7 @@ namespace Yaya {
 			if (UnfillBottomBlock.HasValue && UnfillBottomBlock.Value) {
 				CellPhysics.SetOverlapCellsToTrigger(
 					YayaConst.MASK_LEVEL,
-					new(X + Const.CEL / 2, Y - Const.CEL / 2, 1, 1),
+					new(X + Const.HALF, Y - Const.HALF, 1, 1),
 					false, true
 				);
 			}
@@ -110,8 +110,7 @@ namespace Yaya {
 				target.MakeGrounded(4);
 				target.PerformMove(
 					DirectionHorizontal == Direction3.Left ? -distance / 2 : distance / 2,
-					DirectionVertical == Direction3.Down ? -distance / 2 : distance / 2,
-					true, false
+					DirectionVertical == Direction3.Down ? -distance / 2 : distance / 2
 				);
 				// Fix Velocity
 				if (target.VelocityX == 0) {
@@ -133,7 +132,7 @@ namespace Yaya {
 			} else {
 				// Down
 				// Fix Pos
-				target.PerformMove(DirectionHorizontal == Direction3.Left ? -distance : distance, 0, true, false);
+				target.PerformMove(DirectionHorizontal == Direction3.Left ? -distance : distance, 0);
 			}
 		}
 

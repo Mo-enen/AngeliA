@@ -14,7 +14,7 @@ namespace Yaya {
 			int hp, int maxHP, int prevHP = int.MinValue
 		) {
 
-			const int SIZE = Const.CEL / 2;
+			const int SIZE = Const.HALF;
 			const int COLUMN = 4;
 			const int MAX = 8;
 

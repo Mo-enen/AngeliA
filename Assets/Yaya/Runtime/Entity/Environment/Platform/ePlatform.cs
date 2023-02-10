@@ -8,7 +8,7 @@ using AngeliaFramework;
 namespace Yaya {
 	[EntityAttribute.MapEditorGroup("Platform")]
 	[EntityAttribute.Capacity(128)]
-	public abstract class ePlatform : Entity, IRigidbodyCarrier {
+	public abstract class ePlatform : Entity {
 
 
 		// Api
@@ -19,7 +19,6 @@ namespace Yaya {
 		protected virtual int ArtworkCode_Joint => 0;
 		protected virtual int JointSize => 64;
 		public abstract bool OneWay { get; }
-		public int CarrierSpeed => X - PrevX;
 
 		// Short
 		protected bool TouchedByPlayer { get; private set; } = false;
@@ -69,6 +68,7 @@ namespace Yaya {
 			PrevX = X;
 			PrevY = Y;
 			Move();
+			Update_CarryX();
 			Update_CarryY();
 			Update_PushX();
 			Update_Touch();
@@ -133,6 +133,32 @@ namespace Yaya {
 					if (rig.VelocityX > X - PrevX || rRect.xMax < X + Width) continue;
 					rig.PerformMove(X + Width - rRect.xMin, 0);
 				}
+			}
+		}
+
+
+		private void Update_CarryX () {
+			if (X == PrevX) return;
+			var rect = Rect;
+			var prevRect = rect;
+			prevRect.x = PrevX;
+			int left = X;
+			int right = X + Width;
+			if (Pose == FittingPose.Single || Pose == FittingPose.Left) {
+				left = int.MinValue;
+			}
+			if (Pose == FittingPose.Single || Pose == FittingPose.Right) {
+				right = int.MaxValue;
+			}
+			int count = CellPhysics.OverlapAll(
+				c_Overlaps, YayaConst.MASK_RIGIDBODY, rect.Edge(Direction4.Up), this
+			);
+			for (int i = 0; i < count; i++) {
+				var hit = c_Overlaps[i];
+				if (hit.Entity is not Rigidbody rig) continue;
+				if (rig.X < left || rig.X >= right) continue;
+				rig.PerformMove(X - PrevX, 0);
+				rig.MakeGrounded(1, TypeID);
 			}
 		}
 

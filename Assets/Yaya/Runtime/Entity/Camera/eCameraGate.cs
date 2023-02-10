@@ -59,18 +59,18 @@ namespace Yaya {
 
 			// Player Pos Check
 			if (Direction switch {
-				Direction4.Down => player.Y > Y + Const.CEL / 2,
-				Direction4.Up => player.Y < Y + Const.CEL / 2,
-				Direction4.Left => player.X > X + Const.CEL / 2,
-				Direction4.Right => player.X < X + Const.CEL / 2,
+				Direction4.Down => player.Y > Y + Const.HALF,
+				Direction4.Up => player.Y < Y + Const.HALF,
+				Direction4.Left => player.X > X + Const.HALF,
+				Direction4.Right => player.X < X + Const.HALF,
 				_ => true,
 			}) return;
 
 			// Camera Range Check
 			var cameraRect = CellRenderer.CameraRect;
 			if (Direction switch {
-				Direction4.Down or Direction4.Up => !(X + Const.CEL / 2).InRange(cameraRect.xMin, cameraRect.xMax),
-				Direction4.Left or Direction4.Right => !(Y + Const.CEL / 2).InRange(cameraRect.yMin, cameraRect.yMax),
+				Direction4.Down or Direction4.Up => !(X + Const.HALF).InRange(cameraRect.xMin, cameraRect.xMax),
+				Direction4.Left or Direction4.Right => !(Y + Const.HALF).InRange(cameraRect.yMin, cameraRect.yMax),
 				_ => true,
 			}) return;
 
@@ -78,16 +78,16 @@ namespace Yaya {
 			const int GAP = Const.CEL;
 			switch (Direction) {
 				case Direction4.Down:
-					TargetMaxY = Mathf.Min(TargetMaxY ?? int.MaxValue, Y + Const.CEL / 2 + GAP);
+					TargetMaxY = Mathf.Min(TargetMaxY ?? int.MaxValue, Y + Const.HALF + GAP);
 					break;
 				case Direction4.Up:
-					TargetMinY = Mathf.Max(TargetMinY ?? int.MinValue, Y + Const.CEL / 2 - GAP);
+					TargetMinY = Mathf.Max(TargetMinY ?? int.MinValue, Y + Const.HALF - GAP);
 					break;
 				case Direction4.Left:
-					TargetMaxX = Mathf.Min(TargetMaxX ?? int.MaxValue, X + Const.CEL / 2 + GAP);
+					TargetMaxX = Mathf.Min(TargetMaxX ?? int.MaxValue, X + Const.HALF + GAP);
 					break;
 				case Direction4.Right:
-					TargetMinX = Mathf.Max(TargetMinX ?? int.MinValue, X + Const.CEL / 2 - GAP);
+					TargetMinX = Mathf.Max(TargetMinX ?? int.MinValue, X + Const.HALF - GAP);
 					break;
 			}
 

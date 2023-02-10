@@ -30,13 +30,13 @@ namespace Yaya {
 			int xMin = X;
 			int xMax = X + Const.CEL;
 			if (Game.Current.WorldSquad.FindBlock(
-				TypeID, (X - Const.CEL / 2).UDivide(Const.CEL), (Y + Const.CEL / 2).UDivide(Const.CEL),
+				TypeID, (X - Const.HALF).UDivide(Const.CEL), (Y + Const.HALF).UDivide(Const.CEL),
 				Direction4.Left, BlockType.Entity, out int leftX, out _
 			)) {
 				xMin = leftX * Const.CEL;
 			}
 			if (Game.Current.WorldSquad.FindBlock(
-				TypeID, (X + Const.CEL + Const.CEL / 2).UDivide(Const.CEL), (Y + Const.CEL / 2).UDivide(Const.CEL),
+				TypeID, (X + Const.CEL + Const.HALF).UDivide(Const.CEL), (Y + Const.HALF).UDivide(Const.CEL),
 				Direction4.Right, BlockType.Entity, out int rightX, out _
 			)) {
 				xMax = rightX * Const.CEL + Const.CEL;

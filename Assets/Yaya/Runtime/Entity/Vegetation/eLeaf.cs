@@ -122,8 +122,8 @@ namespace Yaya {
 				int seedX = LEAF_OFFSET_SEEDS[(i + X / Const.CEL).UMod(sLen)];
 				int seedY = LEAF_OFFSET_SEEDS[(i + Y / Const.CEL).UMod(sLen)];
 				var offset = new Vector2Int(
-					((X * 137 * seedX + Y * 327 * seedY) / Const.CEL).UMod(Const.CEL) - Const.CEL / 2,
-					((X * 149 * seedX + Y * 177 * seedY) / Const.CEL).UMod(Const.CEL) - Const.CEL / 2
+					((X * 137 * seedX + Y * 327 * seedY) / Const.CEL).UMod(Const.CEL) - Const.HALF,
+					((X * 149 * seedX + Y * 177 * seedY) / Const.CEL).UMod(Const.CEL) - Const.HALF
 				);
 				DrawLeaf(offset, 12 * i, LeafExpand, offset.x % 2 == 0);
 			}

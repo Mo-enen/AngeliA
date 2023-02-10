@@ -108,7 +108,7 @@ namespace Yaya {
 			if (Game.Current.TrySpawnEntity(BulletID, X, Y, out var entity) && entity is eBullet bullet) {
 				bool charged = LastAttackCharged = frame > ChargeStartFrame;
 				bullet.Release(
-					this, FacingRight ? Vector2Int.right : Vector2Int.left, AttackCombo,
+					this, Team, FacingRight ? Vector2Int.right : Vector2Int.left, AttackCombo,
 					charged ? frame - ChargeStartFrame : 0
 				);
 				AttackCombo = UseRandomAttackCombo ? Random.Next() : AttackCombo + 1;

@@ -88,7 +88,7 @@ namespace Yaya {
 				_ => false,
 			}) {
 				// Fix Position Back
-				const int HALF = Const.CEL / 2;
+				const int HALF = Const.HALF;
 				X -= (X + HALF).UMod(Const.CEL) - HALF;
 				Y -= (Y + HALF).UMod(Const.CEL) - HALF;
 
@@ -130,7 +130,7 @@ namespace Yaya {
 				if (ArtworkScale != 1000) {
 					cell.Width = cell.Width * ArtworkScale / 1000;
 					cell.Height = cell.Height * ArtworkScale / 1000;
-					int offset = Util.RemapUnclamped(0, 1000, Const.CEL / 2, 0, ArtworkScale);
+					int offset = Util.RemapUnclamped(0, 1000, Const.HALF, 0, ArtworkScale);
 					cell.X += offset;
 					cell.Y += offset;
 				}
@@ -176,7 +176,7 @@ namespace Yaya {
 			int y = Y + Height / 2;
 
 			// L
-			for (int x = -Const.CEL / 2; ; x -= Const.CEL) {
+			for (int x = -Const.HALF; ; x -= Const.CEL) {
 				var snake = CellPhysics.GetEntity<eSnakePlatform>(
 					new RectInt(X + x, y, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 				);
@@ -187,7 +187,7 @@ namespace Yaya {
 			}
 
 			// R
-			for (int x = Const.CEL + Const.CEL / 2; ; x += Const.CEL) {
+			for (int x = Const.CEL + Const.HALF; ; x += Const.CEL) {
 				var snake = CellPhysics.GetEntity<eSnakePlatform>(
 					new RectInt(X + x, y, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 				);

@@ -22,7 +22,6 @@ namespace Yaya {
 		protected virtual int FallingVelocity { get; } = 24;
 		protected bool IsFalling { get; private set; } = false;
 		protected bool IsHolding { get; private set; } = false;
-		public override int CarrierSpeed => 0;
 
 		// Data
 		private int HoldStartFrame = int.MaxValue;

@@ -28,6 +28,7 @@ namespace Yaya {
 		protected int Combo { get; private set; } = 0;
 		protected int ChargeDuration { get; private set; } = 0;
 		protected int StartFrame { get; private set; } = 0;
+		public int Team { get; private set; } = YayaConst.TEAM_NEUTRAL;
 
 		// Data
 		private Vector2Int Direction = default;
@@ -36,7 +37,7 @@ namespace Yaya {
 
 
 		// MSG
-		public virtual void Release (Entity source, Vector2Int direction, int combo, int chargeDuration) {
+		public virtual void Release (Entity source, int team, Vector2Int direction, int combo, int chargeDuration) {
 			StartFrame = Game.GlobalFrame;
 			Source = source;
 			var sourceRect = source.Rect;
@@ -45,6 +46,7 @@ namespace Yaya {
 			Direction = direction;
 			Combo = combo;
 			ChargeDuration = chargeDuration;
+			Team = team;
 			Hitted = false;
 		}
 

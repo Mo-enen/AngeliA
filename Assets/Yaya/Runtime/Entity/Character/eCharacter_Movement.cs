@@ -384,7 +384,7 @@ namespace Yaya {
 
 			// Jump Though Oneway
 			if (JumpThoughOneway && JumpThoughOnewayCheck()) {
-				PerformMove(0, -Const.CEL / 2, true, true, false);
+				PerformMove(0, -Const.HALF, ignoreOneway: true);
 				VelocityY = 0;
 				return;
 			}

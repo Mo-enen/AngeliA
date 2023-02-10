@@ -9,7 +9,7 @@ namespace Yaya {
 
 
 		// VAR
-		public override bool Culling => base.Culling && !FrameTask.HasTask(YayaConst.TASK_ROUTE);
+		public override Int4 CullingPadding => CellRenderer.CameraShaking || FrameTask.IsTasking<TeleportTask>(YayaConst.TASK_ROUTE) ? new Int4(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Int4.Zero;
 
 
 		// API

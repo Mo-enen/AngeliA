@@ -14,7 +14,7 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
-			Height = Const.CEL / 2;
+			Height = Const.HALF;
 		}
 
 

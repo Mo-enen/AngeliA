@@ -21,8 +21,9 @@ namespace Yaya {
 		public bool Invincible => Game.GlobalFrame < InvincibleEndFrame;
 		public bool IsSafe => Game.GlobalFrame <= SafeFrame;
 		public bool TakingDamage => Game.GlobalFrame < LastDamageFrame + DamageStunDuration;
-		public bool AllowDamageFromLevel => TakeDamageFromLevel.Value;
-		public bool AllowDamageFromBullet => TakeDamageFromBullet.Value;
+		public virtual bool AllowDamageFromLevel => TakeDamageFromLevel.Value;
+		public virtual bool AllowDamageFromBullet => TakeDamageFromBullet.Value;
+		public virtual int Team => YayaConst.TEAM_NEUTRAL;
 
 		// Buff
 		public readonly BuffInt MaxHP = new(1);

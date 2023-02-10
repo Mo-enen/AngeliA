@@ -15,7 +15,7 @@ namespace Yaya {
 
 
 	[EntityAttribute.MapEditorGroup("Character")]
-	[EntityAttribute.Bounds(-Const.CEL / 2, 0, Const.CEL, Const.CEL)]
+	[EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL)]
 	public abstract partial class eCharacter : Rigidbody {
 
 
@@ -33,12 +33,12 @@ namespace Yaya {
 		public bool IsFullPassout => Game.GlobalFrame > PassoutFrame + 48;
 		public bool IsFullSleeped => SleepFrame >= FULL_SLEEP_DURATION;
 		public bool IsExactlyFullSleeped => SleepFrame == FULL_SLEEP_DURATION;
-		public override int CollisionMask => IsGrabFliping ? 0 : YayaConst.MASK_MAP;
-		public override int CarrierSpeed => 0;
+		protected override int CollisionMask => IsGrabFliping ? 0 : YayaConst.MASK_MAP;
 		protected override int AirDragX => 0;
 		protected override int AirDragY => 0;
 		protected override bool IgnoreRiseGravityShift => true;
 		protected override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
+		protected override bool PhysicsEnable => CharacterState != CharacterState.Sleep;
 
 		// Data
 		private readonly ListLoop<eSummon> Summons = new(MAX_SUMMON_COUNT);
@@ -103,7 +103,6 @@ namespace Yaya {
 							VelocityX = 0;
 						}
 					}
-					base.PhysicsUpdate();
 					break;
 
 				case CharacterState.Sleep:
@@ -111,17 +110,17 @@ namespace Yaya {
 					VelocityY = 0;
 					Width = Const.CEL;
 					Height = Const.CEL;
-					OffsetX = -Const.CEL / 2;
+					OffsetX = -Const.HALF;
 					OffsetY = 0;
 					if (!IsFullHealth && IsFullSleeped) SetHealth(MaxHP);
 					break;
 
 				case CharacterState.Passout:
 					VelocityX = 0;
-					base.PhysicsUpdate();
 					break;
 			}
 
+			base.PhysicsUpdate();
 			PrevZ = Game.Current.ViewZ;
 		}
 

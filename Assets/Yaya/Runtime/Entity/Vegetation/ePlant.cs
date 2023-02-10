@@ -35,7 +35,7 @@ namespace Yaya {
                 ArtworkID = sp.GlobalID;
                 Width = sp.GlobalWidth;
                 Height = sp.GlobalHeight;
-                X = X + Const.CEL / 2 - sp.GlobalWidth / 2;
+                X = X + Const.HALF - sp.GlobalWidth / 2;
 			} else {
                 Width = Const.CEL;
                 Height = Const.CEL;

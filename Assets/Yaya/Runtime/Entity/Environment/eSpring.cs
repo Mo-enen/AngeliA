@@ -79,13 +79,13 @@ namespace Yaya {
 					// Hori
 					if (CellPhysics.Overlap(
 						YayaConst.MASK_RIGIDBODY,
-						new(X - 1, Y, Const.CEL / 2, Const.CEL),
+						new(X - 1, Y, Const.HALF, Const.CEL),
 						this
 					)) {
 						StartBounce(frame, Direction4.Left);
 					} else if (CellPhysics.Overlap(
 						YayaConst.MASK_RIGIDBODY,
-						new(X + Const.CEL / 2, Y, Const.CEL / 2 + 1, Const.CEL),
+						new(X + Const.HALF, Y, Const.HALF + 1, Const.CEL),
 						this
 					)) {
 						StartBounce(frame, Direction4.Right);
@@ -94,7 +94,7 @@ namespace Yaya {
 					// Vert
 					if (CellPhysics.Overlap(
 						YayaConst.MASK_RIGIDBODY,
-						new(X, Y + Const.CEL / 2, Const.CEL, Const.CEL / 2 + 1),
+						new(X, Y + Const.HALF, Const.CEL, Const.HALF + 1),
 						this
 					)) {
 						StartBounce(frame, Direction4.Up);
@@ -124,7 +124,7 @@ namespace Yaya {
 			if (CellRenderer.TryGetSpriteFromGroup(TypeID, BOUNCE_ANI[frame], out var sprite, false, true)) {
 				CellRenderer.Draw(
 					sprite.GlobalID,
-					X + Const.CEL / 2, Y,
+					X + Const.HALF, Y,
 					500, 0, 0,
 					Const.CEL, Const.CEL, tint
 				);

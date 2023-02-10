@@ -159,8 +159,8 @@ namespace Yaya {
 
 			var player = ePlayer.Selecting;
 			if (player == null || !player.Active) return;
-			int thisX = X + Const.CEL / 2;
-			int thisY = Y + Const.CEL / 2;
+			int thisX = X + Const.HALF;
+			int thisY = Y + Const.HALF;
 			var cameraRect = CellRenderer.CameraRect;
 			int playerPrevX = player.PrevRect.x + player.PrevRect.width / 2;
 
@@ -198,7 +198,7 @@ namespace Yaya {
 
 			// End by Hit Other Scroll Entity
 			var nextScroll = CellPhysics.GetEntity<eCameraAutoScroll>(
-				new RectInt(X + Const.CEL / 2, Y + Const.CEL / 2, 1, 1),
+				new RectInt(X + Const.HALF, Y + Const.HALF, 1, 1),
 				YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 			);
 			if (nextScroll != null && nextScroll.Active) {
@@ -269,8 +269,8 @@ namespace Yaya {
 			Y += deltaY;
 			Game.Current.SetViewPositionDelay(view.x + deltaX, view.y + deltaY, 1000, YayaConst.VIEW_PRIORITY_SYSTEM);
 			Game.Current.SetViewPositionDelay(
-				X + Const.CEL / 2 - view.width / 2,
-				Y + Const.CEL / 2 - view.height / 2
+				X + Const.HALF - view.width / 2,
+				Y + Const.HALF - view.height / 2
 				, 50, PRIORITY
 			);
 		}

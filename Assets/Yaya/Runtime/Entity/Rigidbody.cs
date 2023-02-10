@@ -5,10 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public interface IRigidbodyCarrier {
-		public int CarrierSpeed { get; }
-	}
-	public abstract class Rigidbody : Entity, IRigidbodyCarrier {
+	public abstract class Rigidbody : Entity {
 
 
 
@@ -31,8 +28,8 @@ namespace Yaya {
 		protected bool InSand { get; set; } = false;
 
 		// Override
-		public virtual int CollisionMask => YayaConst.MASK_SOLID;
-		public virtual int CarrierSpeed { get; private set; } = 0;
+		protected virtual bool PhysicsEnable => true;
+		protected virtual int CollisionMask => YayaConst.MASK_SOLID;
 		protected abstract int PhysicsLayer { get; }
 		protected virtual int AirDragX => 3;
 		protected virtual int AirDragY => 0;
@@ -40,7 +37,6 @@ namespace Yaya {
 		protected virtual bool IgnoreRiseGravityShift => false;
 
 		// Data
-		private static readonly PhysicsCell[] c_PerformMove = new PhysicsCell[16];
 		private int IgnoreGroundCheckFrame = int.MinValue;
 		private int IgnoreGravityFrame = int.MinValue;
 
@@ -70,11 +66,18 @@ namespace Yaya {
 
 		public override void PhysicsUpdate () {
 
-			int frame = Game.GlobalFrame;
-			var pConfig = Game.Current.PhysicsConfig;
 			base.PhysicsUpdate();
 
-			int prevX = X;
+			if (!PhysicsEnable) {
+				IsInsideGround = InsideGroundCheck();
+				IsGrounded = GroundedCheck();
+				InWater = CellPhysics.Overlap(YayaConst.MASK_LEVEL, Rect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
+				InSand = CellPhysics.Overlap(YayaConst.MASK_LEVEL, Rect, null, OperationMode.TriggerOnly, YayaConst.QUICKSAND_TAG);
+				VelocityX = 0;
+				VelocityY = 0;
+				return;
+			}
+
 			var rect = Rect;
 
 			// Grounded
@@ -83,14 +86,16 @@ namespace Yaya {
 				if (DestroyWhenInsideGround) {
 					Active = false;
 				} else {
-					PerformMove(VelocityX, VelocityY, false, false, true);
+					PerformMove(VelocityX, VelocityY, ignoreLevel: true);
 					IsGrounded = GroundedCheck();
 				}
 				return;
 			}
 
+
 			// Gravity
-			if (GravityScale != 0 && frame > IgnoreGravityFrame) {
+			if (GravityScale != 0 && Game.GlobalFrame > IgnoreGravityFrame) {
+				var pConfig = Game.Current.PhysicsConfig;
 				int speedScale = InWater ? YayaConst.WATER_SPEED_LOSE : 1000;
 				int gravity = (VelocityY < 0 || IgnoreRiseGravityShift ? pConfig.Gravity : pConfig.GravityRise) * GravityScale / 1000;
 				VelocityY = Mathf.Clamp(
@@ -122,9 +127,6 @@ namespace Yaya {
 			// Ari Drag
 			if (AirDragX != 0) VelocityX = VelocityX.MoveTowards(0, AirDragX);
 			if (AirDragY != 0) VelocityY = VelocityY.MoveTowards(0, AirDragY);
-
-			// Carry Speed
-			CarrierSpeed = X - prevX;
 
 			// Water & Sand
 			bool prevInSand = InSand;
@@ -184,7 +186,7 @@ namespace Yaya {
 		}
 
 
-		public void PerformMove (int speedX, int speedY, bool ignoreCarry = false, bool ignoreOneway = false, bool ignoreLevel = false) {
+		public void PerformMove (int speedX, int speedY, bool ignoreOneway = false, bool ignoreLevel = false) {
 
 			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);
 
@@ -205,39 +207,6 @@ namespace Yaya {
 
 			X = pos.x - OffsetX;
 			Y = pos.y - OffsetY;
-
-			// Being Carry
-			if (!ignoreCarry && speedY <= 0) {
-				int finalL = 0;
-				int finalR = 0;
-				int count = CellPhysics.OverlapAll(
-					c_PerformMove, mask, Rect.Edge(Direction4.Down),
-					this, OperationMode.ColliderAndTrigger
-				);
-				for (int i = 0; i < count; i++) {
-					var hit = c_PerformMove[i];
-					if (
-						hit.Entity is IRigidbodyCarrier carrier &&
-						carrier.CarrierSpeed != 0 &&
-						hit.Entity.Rect.yMax == Rect.y
-					) {
-						if (carrier.CarrierSpeed < 0) {
-							// L
-							if (Mathf.Abs(carrier.CarrierSpeed) > Mathf.Abs(finalL)) {
-								finalL = carrier.CarrierSpeed;
-							}
-						} else {
-							// R
-							if (Mathf.Abs(carrier.CarrierSpeed) > Mathf.Abs(finalR)) {
-								finalR = carrier.CarrierSpeed;
-							}
-						}
-					}
-				}
-				if (finalL + finalR != 0) {
-					PerformMove(finalL + finalR, 0, true, false);
-				}
-			}
 
 		}
 

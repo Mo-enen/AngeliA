@@ -64,6 +64,11 @@ namespace Yaya {
 		public const int VIEW_PRIORITY_SYSTEM = 0;
 		public const int VIEW_PRIORITY_CUTSCENE = 128;
 
+		// Team
+		public const int TEAM_NEUTRAL = -1;
+		public const int TEAM_PLAYER = 0;
+		public const int TEAM_ENEMY = 1;
+
 		// Misc
 		public static readonly Dictionary<GamepadButton, int> GAMEPAD_CODE = new() {
 			{ GamepadButton.DpadLeft, "k_Gamepad Left".AngeHash()},
