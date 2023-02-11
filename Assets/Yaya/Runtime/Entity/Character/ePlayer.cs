@@ -77,8 +77,8 @@ namespace Yaya {
 				case CharacterState.GamePlay:
 					if (!FrameTask.HasTask(YayaConst.TASK_ROUTE)) {
 						Move(FrameInput.DirectionX, FrameInput.DirectionY);
-						FrameUpdate_JumpDashPound();
-						FrameUpdate_Action_Attack();
+						Update_JumpDashPound();
+						Update_Action_Attack();
 						eControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, WORD.HINT_MOVE);
 					} else {
 						Stop();
@@ -86,7 +86,7 @@ namespace Yaya {
 					break;
 				case CharacterState.Sleep:
 					if (!FrameTask.HasTask(YayaConst.TASK_ROUTE)) {
-						FrameUpdate_Sleep();
+						Update_Sleep();
 					}
 					break;
 				case CharacterState.Passout:
@@ -100,7 +100,7 @@ namespace Yaya {
 			}
 
 			// View
-			FrameUpdate_View();
+			Update_View();
 
 		}
 
@@ -127,7 +127,7 @@ namespace Yaya {
 		}
 
 
-		private void FrameUpdate_JumpDashPound () {
+		private void Update_JumpDashPound () {
 
 			if (LockingInput) return;
 
@@ -150,7 +150,7 @@ namespace Yaya {
 		}
 
 
-		private void FrameUpdate_Action_Attack () {
+		private void Update_Action_Attack () {
 
 			// Try Perform Action
 			if (CurrentActionTarget != null) {
@@ -208,7 +208,7 @@ namespace Yaya {
 		}
 
 
-		private void FrameUpdate_Sleep () {
+		private void Update_Sleep () {
 			if (IsExactlyFullSleeped) Game.Current.ClearAntiSpawn(true);
 			// Wake up on Press Action
 			if (FrameInput.GameKeyDown(Gamekey.Action) || FrameInput.GameKeyDown(Gamekey.Jump)) {
@@ -224,7 +224,7 @@ namespace Yaya {
 		}
 
 
-		private void FrameUpdate_View () {
+		private void Update_View () {
 
 			const int LINGER_RATE = 32;
 			bool notInGameplay = FrameTask.IsTasking<OpeningTask>(YayaConst.TASK_ROUTE) || CharacterState != CharacterState.GamePlay;

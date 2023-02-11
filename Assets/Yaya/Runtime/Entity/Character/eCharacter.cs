@@ -95,9 +95,9 @@ namespace Yaya {
 						AntiKnockback();
 					} else {
 						// General
-						Update_Action();
-						Update_Attack();
-						Update_Movement();
+						PhysicsUpdate_Action();
+						PhysicsUpdate_Attack();
+						PhysicsUpdate_GamePlay_Movement();
 						// Stop when Attacking
 						if (StopMoveOnAttack && IsAttacking && IsGrounded) {
 							VelocityX = 0;
@@ -119,7 +119,7 @@ namespace Yaya {
 					VelocityX = 0;
 					break;
 			}
-
+			PhysicsUpdate_Movement();
 			base.PhysicsUpdate();
 			PrevZ = Game.Current.ViewZ;
 		}
@@ -179,21 +179,24 @@ namespace Yaya {
 			if (CharacterState == state) return;
 			PassoutFrame = int.MinValue;
 			switch (state) {
+
 				case CharacterState.GamePlay:
 					if (CharacterState == CharacterState.Sleep) {
 						RenderBounce();
 					}
 					CharacterState = CharacterState.GamePlay;
-					Update_Action();
 					break;
+
 				case CharacterState.Sleep:
 					CharacterState = CharacterState.Sleep;
 					SleepFrame = 0;
 					break;
+
 				case CharacterState.Passout:
 					CharacterState = CharacterState.Passout;
 					PassoutFrame = Game.GlobalFrame;
 					break;
+
 				default:
 					throw new System.NotImplementedException();
 			}

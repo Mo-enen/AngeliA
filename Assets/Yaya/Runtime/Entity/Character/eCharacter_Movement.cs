@@ -26,9 +26,9 @@ namespace Yaya {
 
 		// Const
 		private const int JUMP_TOLERANCE = 4;
-		private const int JUMP_GAP = 1;
+		private const int JUMP_REQUIRE_TOLERANCE = 6;
 		private const int CLIMB_CORRECT_DELTA = 36;
-		private const int RUN_BREAK_GAP = 6;
+		private const int RUN_BREAK_FRAME = 6;
 		private const int SLIDE_JUMP_CANCEL = 2;
 		private const int SLIDE_GROUND_TOLERANCE = 12;
 		private const int GRAB_GROUND_TOLERANCE = 12;
@@ -36,6 +36,7 @@ namespace Yaya {
 		private const int GRAB_JUMP_CANCEL = 2;
 		private const int GRAB_DROP_CANCEL = 6;
 		private const int GRAB_TOP_CHECK_GAP = 128;
+		private const int CLIP_CORRECT_TOLERANCE = Const.CEL / 4;
 
 		// Api
 		public Vector2Int LastMoveDirection { get; private set; } = default;
@@ -100,6 +101,7 @@ namespace Yaya {
 		private bool LockedFacingRight = true;
 		private int? ClimbPositionCorrect = null;
 		private int LockedFacingFrame = int.MinValue;
+		private int RequireJumpFrame = int.MinValue;
 
 
 		#endregion
@@ -110,19 +112,21 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public void OnActived_Movement () {
+		private void OnActived_Movement () {
 			Width = MovementWidth;
 			Height = MovementHeight;
 			OffsetX = -MovementWidth / 2;
 			OffsetY = 0;
 			IsFlying = false;
 			Hitbox = new RectInt(X, Y, MovementWidth, MovementHeight);
+			RequireJumpFrame = int.MinValue;
 		}
 
 
-		public void Update_Movement () {
+		private void PhysicsUpdate_GamePlay_Movement () {
 			MovementUpdate_Cache();
 			MovementUpdate_Jump();
+			MovementUpdate_ResetJumpCount();
 			MovementUpdate_Dash();
 			MoveState = GetCurrentMovementState();
 			if (!IsInsideGround) {
@@ -136,6 +140,11 @@ namespace Yaya {
 					RenderBounce();
 				}
 			}
+			MovementUpdate_ClipCorrect();
+		}
+
+
+		private void PhysicsUpdate_Movement () {
 			IntendedJump = false;
 			IntendedDash = false;
 			IntendedPound = false;
@@ -264,51 +273,59 @@ namespace Yaya {
 		}
 
 
-		private void MovementUpdate_Jump () {
+		private void MovementUpdate_ResetJumpCount () {
+
+			if (CurrentJumpCount == 0) return;
 
 			int frame = Game.GlobalFrame;
 
-			if (CurrentJumpCount != 0) {
-
-				// Reset Count on Grounded
-				if (frame > LastJumpFrame + JUMP_GAP && (IsGrounded || InWater) && !IntendedJump) {
-					CurrentJumpCount = 0;
-				}
-
-				// Reset Count when Climb
-				if (
-					frame > LastJumpFrame + CLIMB_GROUND_TOLERANCE &&
-					frame <= LastClimbFrame + CLIMB_GROUND_TOLERANCE
-				) {
-					CurrentJumpCount = 0;
-				}
-
-				// Reset Count when Slide
-				if (
-					ResetJumpCountWhenSlide &&
-					frame > LastJumpFrame + SLIDE_GROUND_TOLERANCE &&
-					frame <= LastSlidingFrame + SLIDE_GROUND_TOLERANCE
-				) {
-					CurrentJumpCount = 0;
-				}
-
-				// Reset Count when Grab
-				if (
-					ResetJumpCountWhenGrab &&
-					frame > LastJumpFrame + GRAB_GROUND_TOLERANCE &&
-					frame <= LastGrabingFrame + GRAB_GROUND_TOLERANCE
-				) {
-					CurrentJumpCount = 0;
-				}
-
+			// Reset Count on Grounded
+			if (frame > LastJumpFrame + 1 && (IsGrounded || InWater) && !IntendedJump) {
+				CurrentJumpCount = 0;
+				return;
 			}
+
+			// Reset Count when Climb
+			if (
+				frame > LastJumpFrame + CLIMB_GROUND_TOLERANCE &&
+				frame <= LastClimbFrame + CLIMB_GROUND_TOLERANCE
+			) {
+				CurrentJumpCount = 0;
+				return;
+			}
+
+			// Reset Count when Slide
+			if (
+				ResetJumpCountWhenSlide &&
+				frame > LastJumpFrame + SLIDE_GROUND_TOLERANCE &&
+				frame <= LastSlidingFrame + SLIDE_GROUND_TOLERANCE
+			) {
+				CurrentJumpCount = 0;
+				return;
+			}
+
+			// Reset Count when Grab
+			if (
+				ResetJumpCountWhenGrab &&
+				frame > LastJumpFrame + GRAB_GROUND_TOLERANCE &&
+				frame <= LastGrabingFrame + GRAB_GROUND_TOLERANCE
+			) {
+				CurrentJumpCount = 0;
+				return;
+			}
+		}
+
+
+		private void MovementUpdate_Jump () {
+
+			int frame = Game.GlobalFrame;
 
 			// Perform Jump/Fly
 			if (!IsSquating && !IsGrabingTop && !IsInsideGround && (!IsClimbing || JumpWhenClimbAvailable)) {
 				// Jump
 				if (CurrentJumpCount < JumpCount) {
 					// Jump
-					if (IntendedJump) {
+					if (IntendedJump || frame < RequireJumpFrame + JUMP_REQUIRE_TOLERANCE) {
 						if (InWater && SwimInFreeStyle) {
 							// Free Dash in Water
 							LastDashFrame = frame;
@@ -332,7 +349,9 @@ namespace Yaya {
 							IsGrabingTop = false;
 							LastJumpFrame = frame;
 						}
+						IntendedJump = false;
 						IsClimbing = false;
+						RequireJumpFrame = int.MinValue;
 					}
 				} else if (FlyAvailable) {
 					// Fly
@@ -344,11 +363,13 @@ namespace Yaya {
 							IsClimbing = false;
 							IsDashing = false;
 							LastFlyFrame = frame;
-							HoldingJumpForFly = false;
 							if (CurrentJumpCount <= JumpCount) {
 								VelocityY = Mathf.Max(FlyRiseSpeed, VelocityY);
 							}
 							CurrentJumpCount++;
+							IntendedJump = false;
+							HoldingJumpForFly = false;
+							RequireJumpFrame = int.MinValue;
 						}
 					} else {
 						// Not Cooldown
@@ -592,6 +613,47 @@ namespace Yaya {
 		}
 
 
+		private void MovementUpdate_ClipCorrect () {
+
+			if (IsGrounded || VelocityY <= 0) return;
+
+			var rect = Rect;
+			int size = VelocityY + 1;
+
+			// Clip Left
+			if (CheckCorrect(
+				new RectInt(rect.xMin, rect.yMax, 1, size),
+				new RectInt(rect.xMin + CLIP_CORRECT_TOLERANCE, rect.yMax, rect.width - CLIP_CORRECT_TOLERANCE, size),
+				out var hitRect
+			)) {
+				PerformMove(hitRect.xMax - rect.xMin, 0);
+			}
+
+			// Clip Right
+			if (CheckCorrect(
+				new RectInt(rect.xMin + Width, rect.yMax, 1, size),
+				new RectInt(rect.xMin, rect.yMax, rect.width - CLIP_CORRECT_TOLERANCE, size),
+				out hitRect
+			)) {
+				PerformMove(hitRect.xMin - rect.xMax, 0);
+			}
+
+			// Func
+			bool CheckCorrect (RectInt trueRect, RectInt falseRect, out RectInt hitRect) {
+				if (
+					CellPhysics.Overlap(CollisionMask, trueRect, out var hit, this) &&
+					!CellPhysics.Overlap(CollisionMask, falseRect, this)
+				) {
+					hitRect = hit.Rect;
+					return true;
+				} else {
+					hitRect = default;
+					return false;
+				}
+			}
+		}
+
+
 		#endregion
 
 
@@ -614,6 +676,7 @@ namespace Yaya {
 
 		public void Jump () {
 			IntendedJump = true;
+			RequireJumpFrame = Game.GlobalFrame;
 			if (CancelAttackOnJump) {
 				CancelAttack();
 			}
@@ -647,7 +710,7 @@ namespace Yaya {
 			if (IntendedX != 0 && x == 0) LastEndMoveFrame = Game.GlobalFrame;
 			if (IntendedX == 0 && x != 0) LastStartMoveFrame = Game.GlobalFrame;
 			if (x != 0) RunningAccumulateFrame++;
-			if (x == 0 && Game.GlobalFrame > LastEndMoveFrame + RUN_BREAK_GAP) RunningAccumulateFrame = 0;
+			if (x == 0 && Game.GlobalFrame > LastEndMoveFrame + RUN_BREAK_FRAME) RunningAccumulateFrame = 0;
 			IntendedX = x;
 			IntendedY = y;
 			if (x != 0 || y != 0) {

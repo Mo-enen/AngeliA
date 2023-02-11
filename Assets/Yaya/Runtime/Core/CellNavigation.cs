@@ -147,11 +147,23 @@ namespace Yaya {
 
 
 		public static bool TryGetGroundPosition (int x, int y, out int groundY) {
-			int cellX = UnitX_to_CellX(x.UDivide(Const.CEL));
-			int cellY = UnitY_to_CellY(y.UDivide(Const.CEL));
 			groundY = y;
-			if (!cellX.InRange(0, CellWidth - 1) || !(cellY - 1).InRange(0, CellHeight - 1)) return false;
-			return IsGround(cellX, cellY - 1, out groundY);
+			int cellX = UnitX_to_CellX(x.UDivide(Const.CEL));
+			if (!cellX.InRange(0, CellWidth - 1)) return false;
+			int cellY = UnitY_to_CellY(y.UDivide(Const.CEL));
+			if (
+				cellY.InRange(0, CellWidth - 1) &&
+				IsGround(cellX, cellY, out groundY)
+			) {
+				return true;
+			}
+			if (
+				(cellY - 1).InRange(0, CellHeight - 1) &&
+				IsGround(cellX, cellY - 1, out groundY)
+			) {
+				return true;
+			}
+			return false;
 		}
 
 

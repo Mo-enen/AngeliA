@@ -29,7 +29,7 @@ namespace Yaya {
 		}
 
 
-		public void Update_Action () {
+		public void PhysicsUpdate_Action () {
 			// Search for Active Trigger
 			if (Game.GlobalFrame % ACTION_SCAN_FREQUENCY != 0 && !RequireRefresh) return;
 			RequireRefresh = false;

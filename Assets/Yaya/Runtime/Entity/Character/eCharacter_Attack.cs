@@ -65,7 +65,7 @@ namespace Yaya {
 		}
 
 
-		public void Update_Attack () {
+		public void PhysicsUpdate_Attack () {
 
 			// Combo Break
 			if (AttackCombo > -1 && Game.GlobalFrame > LastAttackFrame + AttackDuration + AttackColldown + AttackComboGap) {

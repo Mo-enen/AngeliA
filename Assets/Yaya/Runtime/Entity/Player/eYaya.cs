@@ -48,7 +48,6 @@ namespace Yaya {
 
 			MaxHP.Value = 4;
 
-
 		}
 
 
