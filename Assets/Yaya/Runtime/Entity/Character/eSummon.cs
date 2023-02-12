@@ -6,8 +6,8 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.UpdateOutOfRange]
-	[EntityAttribute.MapEditorGroup("Summon")]
 	[EntityAttribute.Capacity(1)]
+	[EntityAttribute.ExcludeInMapEditor]
 	public abstract class eSummon : eCharacter {
 
 
@@ -32,17 +32,20 @@ namespace Yaya {
 		// Api
 		public eCharacter Owner { get; set; } = null;
 		public override int Team => Owner != null ? Owner.Team : YayaConst.TEAM_NEUTRAL;
+		public override bool AllowDamageFromLevel => false;
 		protected override bool PhysicsEnable => base.PhysicsEnable && CharacterState != CharacterState.GamePlay;
 
 		// Data
-		private static readonly CellNavigation.Operation[] NavOperation = new CellNavigation.Operation[8];
-
+		private readonly CellNavigation.Operation[] NavOperation = new CellNavigation.Operation[8];
+		private int CurrentNavOperationIndex = 0;
 		private SummonNavigationState NavigationState = SummonNavigationState.Idle;
 		private bool HasGroundedTarget = true;
 		private int NavigationTargetX = 0;
 		private int NavigationTargetY = 0;
 		private int FlyStartFrame = int.MinValue;
 		private int LastNavTargetRefreshFrame = int.MaxValue;
+		private int PrevZ = int.MinValue;
+		private int SummonFrame = int.MinValue;
 
 
 		#endregion
@@ -55,12 +58,7 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
-			NavigationState = SummonNavigationState.Idle;
-			NavigationTargetX = X;
-			NavigationTargetY = Y;
-			HasGroundedTarget = true;
-			FlyStartFrame = int.MinValue;
-			LastNavTargetRefreshFrame = int.MaxValue;
+			ResetNavigation();
 		}
 
 
@@ -71,25 +69,53 @@ namespace Yaya {
 
 
 		public override void PhysicsUpdate () {
+
+			if (Owner == null || !Owner.Active) {
+				Active = false;
+				return;
+			}
+
 			base.PhysicsUpdate();
+
 			if (CharacterState == CharacterState.GamePlay) {
+
+				// Find Target
 				if (Game.GlobalFrame > LastNavTargetRefreshFrame + 30) {
-					if (Owner != null && Owner.Active) {
-						// Follow Owner
-						Update_NavigationTarget(
-							Owner.X + (InstanceIndex / 2) * Const.CEL * ((InstanceIndex % 2) == 0 ? 1 : -1),
-							Owner.Y
-						);
-					} else {
-						// Free Move
-						//Update_NavigationTarget(,,, );
-					}
+					// Follow Owner
+					Update_NavigationTarget(
+						Owner.X + (InstanceIndex / 2) * Const.CEL * ((InstanceIndex % 2) == 0 ? 1 : -1),
+						Owner.Y
+					);
 				}
-				Update_NavigationMovement();
+
+				// Move to Target
+				int toX = X;
+				int toY = Y;
+				switch (NavigationState) {
+					case SummonNavigationState.Idle:
+						Update_MovementIdle(ref toY);
+						break;
+					case SummonNavigationState.Move:
+						Update_MovementMove(ref toX, ref toY);
+						break;
+					case SummonNavigationState.Fly:
+						Update_MovementFly(ref toX, ref toY);
+						break;
+				}
+				X = X.MoveTowards(toX, RunSpeed);
+				Y = Y.MoveTowards(toY, MaxGravitySpeed);
+			}
+
+			// Gether when Z Changed
+			if (PrevZ != Game.Current.ViewZ) {
+				PrevZ = Game.Current.ViewZ;
+				X = Owner.X;
+				Y = Owner.Y;
 			}
 		}
 
 
+		// Navigation
 		private void Update_NavigationTarget (int aimX, int aimY) {
 
 			LastNavTargetRefreshFrame = Game.GlobalFrame;
@@ -130,37 +156,81 @@ namespace Yaya {
 		}
 
 
-		private void Update_NavigationMovement () {
-			int toX = X;
-			int toY = Y;
-			switch (NavigationState) {
-
-				// Idle
-				case SummonNavigationState.Idle:
-
-
-
-					break;
-
-				// Moving
-				case SummonNavigationState.Move:
-
-
-					break;
-
-				// Flying
-				case SummonNavigationState.Fly:
-
-
-					break;
-
+		private void Update_MovementIdle (ref int toY) {
+			if (CellNavigation.TryGetGroundPosition(X, Y, out int groundY)) {
+				toY = groundY;
+				VelocityY = 0;
+			} else {
+				VelocityY -= IsInsideGround ? 0 : Gravity;
+				toY = Y + VelocityY;
 			}
-			X = toX;
-			Y = Y.MoveTowards(toY, Const.CEL / 8);
 		}
 
 
-		public virtual void OnSummoned (bool create) => RenderBounce();
+		private void Update_MovementMove (ref int toX, ref int toY) {
+
+
+
+
+
+		}
+
+
+		private void Update_MovementFly (ref int toX, ref int toY) {
+
+
+
+
+		}
+
+
+		// Misc
+		public virtual void OnSummoned (bool create) {
+			RenderBounce();
+			ResetNavigation();
+			SummonFrame = Game.GlobalFrame;
+		}
+
+
+		// Summon
+		public static eSummon CreateSummon<T> (eCharacter owner, int x, int y) where T : eSummon => CreateSummon(owner, typeof(T).AngeHash(), x, y);
+		public static eSummon CreateSummon (eCharacter owner, int typeID, int x, int y) {
+			if (owner == null) return null;
+			var game = Game.Current;
+			if (game.SpawnEntity(typeID, x, y) is eSummon summon) {
+				// Create New
+				summon.Owner = owner;
+				summon.OnSummoned(true);
+				return summon;
+			} else {
+				// Find Old
+				var entities = game.Entities;
+				int eLen = game.EntityLen;
+				int minSpawnFrame = int.MaxValue;
+				eSummon old = null;
+				for (int i = 0; i < eLen; i++) {
+					var e = entities[i];
+					if (
+						e.TypeID == typeID &&
+						e is eSummon sum &&
+						sum.Owner == owner &&
+						sum.SummonFrame < minSpawnFrame
+					) {
+						minSpawnFrame = sum.SummonFrame;
+						old = sum;
+					}
+				}
+				// Swape Old
+				if (old != null) {
+					old.X = x;
+					old.Y = y;
+					old.Owner = owner;
+					old.OnSummoned(false);
+					return old;
+				}
+			}
+			return null;
+		}
 
 
 		#endregion
@@ -171,6 +241,15 @@ namespace Yaya {
 		#region --- LGC ---
 
 
+		private void ResetNavigation () {
+			NavigationState = SummonNavigationState.Idle;
+			NavigationTargetX = X;
+			NavigationTargetY = Y;
+			HasGroundedTarget = true;
+			FlyStartFrame = int.MinValue;
+			LastNavTargetRefreshFrame = int.MaxValue;
+			CurrentNavOperationIndex = 0;
+		}
 
 
 		#endregion

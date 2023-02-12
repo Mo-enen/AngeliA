@@ -51,6 +51,12 @@ namespace Yaya {
 		}
 
 
+		public override void OnActived () {
+			base.OnActived();
+			eSummon.CreateSummon<eGuaGua>(this, X, Y);
+		}
+
+
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			Update_Run();

@@ -80,8 +80,6 @@ namespace Yaya {
 
 
 		// Api
-		internal static int CellUnitOffsetX { get; private set; } = 0;
-		internal static int CellUnitOffsetY { get; private set; } = 0;
 		internal static int CellWidth { get; private set; } = 1;
 		internal static int CellHeight { get; private set; } = 1;
 
@@ -89,6 +87,9 @@ namespace Yaya {
 		private static Cell[,] Cells = null;
 		private static uint OperationStamp = 0;
 		private static readonly PhysicsCell[] OnewayCheckHits = new PhysicsCell[8];
+		private static int CachedFrame = int.MinValue;
+		private static int CellUnitOffsetX = 0;
+		private static int CellUnitOffsetY = 0;
 
 
 		#endregion
@@ -117,7 +118,8 @@ namespace Yaya {
 			Operation[] Operations, eCharacter character, int toX, int toY,
 			int jumpUnitRange, int minDistance
 		) {
-			BeginOperation();
+			RefreshFrameCache();
+			OperationStamp++;
 			var unitRangeRect = new RectInt(CellUnitOffsetX, CellUnitOffsetY, CellWidth, CellHeight);
 			int fromUnitX = character.X.UDivide(Const.CEL).Clamp(unitRangeRect.xMin, unitRangeRect.xMax - 1);
 			int fromUnitY = character.Y.UDivide(Const.CEL).Clamp(unitRangeRect.yMin, unitRangeRect.yMax - 1);
@@ -136,6 +138,7 @@ namespace Yaya {
 			int x, int y, RectInt range,
 			out int resultX, out int resultY
 		) {
+			RefreshFrameCache();
 			resultX = x;
 			resultY = y;
 
@@ -147,20 +150,27 @@ namespace Yaya {
 
 
 		public static bool TryGetGroundPosition (int x, int y, out int groundY) {
+			RefreshFrameCache();
 			groundY = y;
-			int cellX = UnitX_to_CellX(x.UDivide(Const.CEL));
+			int cellX = x.UDivide(Const.CEL) - CellUnitOffsetX;
 			if (!cellX.InRange(0, CellWidth - 1)) return false;
-			int cellY = UnitY_to_CellY(y.UDivide(Const.CEL));
-			if (
-				cellY.InRange(0, CellWidth - 1) &&
-				IsGround(cellX, cellY, out groundY)
-			) {
-				return true;
-			}
-			if (
+			int cellY = y.UDivide(Const.CEL) - CellUnitOffsetY;
+			int groundY_This = groundY;
+			int groundY_Down = groundY;
+			bool thisIsStandable =
+				cellY.InRange(0, CellHeight - 1) &&
+				IsStandable(cellX, cellY, out groundY_This);
+			bool downIsStandable =
 				(cellY - 1).InRange(0, CellHeight - 1) &&
-				IsGround(cellX, cellY - 1, out groundY)
-			) {
+				IsStandable(cellX, cellY - 1, out groundY_Down);
+			if (thisIsStandable && downIsStandable) {
+				groundY = groundY_This <= y ? groundY_This : groundY_Down;
+				return true;
+			} else if (thisIsStandable && !downIsStandable) {
+				groundY = groundY_This;
+				return groundY_This <= y;
+			} else if (!thisIsStandable && downIsStandable) {
+				groundY = groundY_Down;
 				return true;
 			}
 			return false;
@@ -175,16 +185,12 @@ namespace Yaya {
 		#region --- LGC ---
 
 
-		private static void BeginOperation () {
-			CellUnitOffsetX = (Game.Current.ViewRect.x - Const.LEVEL_SPAWN_PADDING_UNIT).UDivide(Const.CEL);
-			CellUnitOffsetY = (Game.Current.ViewRect.y - Const.LEVEL_SPAWN_PADDING_UNIT).UDivide(Const.CEL);
-			OperationStamp++;
+		private static void RefreshFrameCache () {
+			if (CachedFrame == Game.GlobalFrame) return;
+			CachedFrame = Game.GlobalFrame;
+			CellUnitOffsetX = (Game.Current.ViewRect.x - Const.LEVEL_SPAWN_PADDING_UNIT * Const.CEL).UDivide(Const.CEL);
+			CellUnitOffsetY = (Game.Current.ViewRect.y - Const.LEVEL_SPAWN_PADDING_UNIT * Const.CEL).UDivide(Const.CEL);
 		}
-
-
-		// Util
-		private static int UnitX_to_CellX (int unitX) => unitX - CellUnitOffsetX;
-		private static int UnitY_to_CellY (int unitY) => unitY - CellUnitOffsetY;
 
 
 		private static Cell GetBlockedData (int cellX, int cellY) {
@@ -199,7 +205,6 @@ namespace Yaya {
 			);
 			cell.BlockDataValid = true;
 			cell.IsSolidBlocked = solid;
-			cell.PlatformY = y + Const.CEL;
 
 			if (solid) {
 				// Solid Block
@@ -211,7 +216,7 @@ namespace Yaya {
 				cell.PlatformY = info.Rect.yMax;
 			} else {
 				// Oneway
-				int platformY = cell.PlatformY;
+				int platformY = y + Const.CEL;
 				var onewayRect = blockRect.Shrink(Const.CEL / 64);
 				cell.IsBlockedLeft = OnewaySolid(Direction4.Left);
 				cell.IsBlockedRight = OnewaySolid(Direction4.Right);
@@ -219,6 +224,7 @@ namespace Yaya {
 				cell.IsBlockedUp = OnewaySolid(Direction4.Up);
 				cell.IsAllBlocked = cell.IsBlockedLeft && cell.IsBlockedRight && cell.IsBlockedDown && cell.IsBlockedUp;
 				cell.PlatformY = platformY;
+				// Func
 				bool OnewaySolid (Direction4 gateDirection) {
 					int count = CellPhysics.OverlapAll(
 						OnewayCheckHits, YayaConst.MASK_MAP, onewayRect,
@@ -258,7 +264,7 @@ namespace Yaya {
 		}
 
 
-		private static bool IsGround (int cellX, int cellY, out int groundY) {
+		private static bool IsStandable (int cellX, int cellY, out int groundY) {
 			// Check Standable
 			var cell = GetBlockedData(cellX, cellY);
 			groundY = cell.PlatformY;

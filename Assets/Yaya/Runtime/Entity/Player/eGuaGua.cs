@@ -34,18 +34,29 @@ namespace Yaya {
 		}
 
 
-		public override void PhysicsUpdate () {
-			base.PhysicsUpdate();
-			// Sleep in Basket
-			if (CharacterState == CharacterState.Sleep) {
-				if (Game.Current.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
-					int offsetY = 0;
-					if (CellRenderer.TryGetSprite(eBasket.TYPE_ID, out var basketSprite)) {
-						offsetY = basketSprite.GlobalBorder.Down;
-					}
-					X = basket.X + basket.Width / 2;
-					Y = basket.Y + basket.Height - offsetY;
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			if (
+				Owner != null &&
+				Owner.CharacterState != CharacterState
+			) {
+				SetCharacterState(Owner.CharacterState);
+				switch (CharacterState) {
+
+					case CharacterState.Sleep:
+						// Sleep in Basket
+						if (Game.Current.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
+							int offsetY = 0;
+							if (CellRenderer.TryGetSprite(eBasket.TYPE_ID, out var basketSprite)) {
+								offsetY = basketSprite.GlobalHeight - basketSprite.GlobalBorder.Up;
+							}
+							X = basket.X + basket.Width / 2;
+							Y = basket.Y + offsetY;
+						}
+						break;
+
 				}
+
 			}
 		}
 

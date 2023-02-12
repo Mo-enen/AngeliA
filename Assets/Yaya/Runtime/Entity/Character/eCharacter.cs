@@ -39,13 +39,11 @@ namespace Yaya {
 		protected override bool IgnoreRiseGravityShift => true;
 		protected override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
 		protected override bool PhysicsEnable => CharacterState != CharacterState.Sleep;
-
+		
 		// Data
-		private readonly ListLoop<eSummon> Summons = new(MAX_SUMMON_COUNT);
 		private int SleepFrame = 0;
 		private int PassoutFrame = int.MinValue;
-		private int PrevZ = int.MinValue;
-
+		
 
 		#endregion
 
@@ -55,21 +53,19 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		protected eCharacter () {
-			OnInitialize_Render();
-		}
+		protected eCharacter () => OnInitialize_Render();
 
 
 		public override void OnActived () {
 			base.OnActived();
-			Summons.Clear();
 			OnActived_Movement();
 			OnActived_Action();
 			OnActived_Health();
 			OnActived_Attack();
 			CharacterState = CharacterState.GamePlay;
 			PassoutFrame = int.MinValue;
-			PrevZ = Game.Current.ViewZ;
+			VelocityX = 0;
+			VelocityY = 0;
 		}
 
 
@@ -83,8 +79,7 @@ namespace Yaya {
 		public override void PhysicsUpdate () {
 
 			if (IsEmptyHealth) SetCharacterState(CharacterState.Passout);
-			Update_Summon();
-
+			
 			// Behaviour
 			MoveState = MovementState.Idle;
 			switch (CharacterState) {
@@ -121,29 +116,6 @@ namespace Yaya {
 			}
 			PhysicsUpdate_Movement();
 			base.PhysicsUpdate();
-			PrevZ = Game.Current.ViewZ;
-		}
-
-
-		private void Update_Summon () {
-
-			// Remove Null
-			for (int i = 0; i < Summons.Count; i++) {
-				var sum = Summons[i];
-				if (sum == null || sum.Active == false) {
-					Summons.RemoveAt(i);
-					i--;
-				}
-			}
-
-			// Gether when Z Changed
-			if (Game.Current.ViewZ != PrevZ) {
-				foreach (var summon in Summons) {
-					summon.X = X;
-					summon.Y = Y;
-				}
-			}
-
 		}
 
 
@@ -185,11 +157,15 @@ namespace Yaya {
 						RenderBounce();
 					}
 					CharacterState = CharacterState.GamePlay;
+					VelocityX = 0;
+					VelocityY = 0;
 					break;
 
 				case CharacterState.Sleep:
 					CharacterState = CharacterState.Sleep;
 					SleepFrame = 0;
+					VelocityX = 0;
+					VelocityY = 0;
 					break;
 
 				case CharacterState.Passout:
@@ -206,42 +182,6 @@ namespace Yaya {
 		public void FullSleep () {
 			SetCharacterState(CharacterState.Sleep);
 			SleepFrame = FULL_SLEEP_DURATION;
-		}
-
-
-		public void CreateSummon<T> (int x, int y) where T : eSummon => CreateSummon(typeof(T).AngeHash(), x, y);
-		public void CreateSummon (int typeID, int x, int y) {
-			if (Game.Current.SpawnEntity(typeID, x, y) is eSummon summon) {
-				// Spawned
-				summon.Owner = this;
-				summon.OnSummoned(true);
-				Summons.Add(summon);
-			} else {
-				// Swape Old
-				int count = Summons.Count;
-				for (int i = 0; i < count; i++) {
-					var sum = Summons[i];
-					if (sum.TypeID == typeID) {
-						sum.OnInactived();
-						sum.X = x;
-						sum.Y = y;
-						sum.OnActived();
-						sum.Owner = this;
-						sum.OnSummoned(true);
-						Summons.RemoveAt(i);
-						Summons.Add(sum);
-						break;
-					}
-				}
-			}
-		}
-
-
-		public void MakeSummon (eSummon target) {
-			if (target == null || Summons.Contains(target)) return;
-			target.Owner = this;
-			Summons.Add(target);
-			target.OnSummoned(false);
 		}
 
 

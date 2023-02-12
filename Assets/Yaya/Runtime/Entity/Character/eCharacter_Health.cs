@@ -21,8 +21,8 @@ namespace Yaya {
 		public bool Invincible => Game.GlobalFrame < InvincibleEndFrame;
 		public bool IsSafe => Game.GlobalFrame <= SafeFrame;
 		public bool TakingDamage => Game.GlobalFrame < LastDamageFrame + DamageStunDuration;
-		public virtual bool AllowDamageFromLevel => TakeDamageFromLevel.Value;
-		public virtual bool AllowDamageFromBullet => TakeDamageFromBullet.Value;
+		public virtual bool AllowDamageFromLevel => true;
+		public virtual bool AllowDamageFromBullet => true;
 		public virtual int Team => YayaConst.TEAM_NEUTRAL;
 
 		// Buff
@@ -30,8 +30,6 @@ namespace Yaya {
 		public readonly BuffInt InvincibleDuration = new(120);
 		public readonly BuffInt DamageStunDuration = new(24);
 		public readonly BuffInt KnockBackSpeed = new(64);
-		public readonly BuffBool TakeDamageFromLevel = new(true);
-		public readonly BuffBool TakeDamageFromBullet = new(true);
 
 		// Data
 		private int InvincibleEndFrame = int.MinValue;

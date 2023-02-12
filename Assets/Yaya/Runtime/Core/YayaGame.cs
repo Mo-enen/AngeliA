@@ -114,6 +114,25 @@ namespace Yaya {
 			Update_Damage();
 
 
+
+
+			var cameraRect = CellRenderer.CameraRect;
+			int w = cameraRect.width.UDivide(Const.CEL) + 1;
+			int h = cameraRect.height.UDivide(Const.CEL) + 1;
+			for (int i = 0; i < w; i++) {
+				int x = cameraRect.x.UDivide(Const.CEL) * Const.CEL + i * Const.CEL + Const.HALF;
+				for (int j = 0; j < h; j++) {
+					int y = cameraRect.y.UDivide(Const.CEL) * Const.CEL + j * Const.CEL + Const.HALF;
+					if (CellNavigation.TryGetGroundPosition(x, y, out int gY)) {
+						CellRenderer.Draw(Const.PIXEL, x, gY - 32, 500, 500, 0, 64, 64, Const.BLACK);
+					}
+				}
+			}
+
+
+
+
+
 			// ============ Test ============
 
 
@@ -126,9 +145,9 @@ namespace Yaya {
 			}
 			if (FrameInput.KeyboardDown(Key.Digit3)) {
 				if (ePlayer.Selecting != null) {
-					var gua = game.GetEntity<eGuaGua>();
-					ePlayer.Selecting.MakeSummon(gua);
-					ePlayer.Selecting.CreateSummon<eGuaGua>(ePlayer.Selecting.X, ePlayer.Selecting.Y);
+					eSummon.CreateSummon<eGuaGua>(
+						ePlayer.Selecting, ePlayer.Selecting.X, ePlayer.Selecting.Y
+					);
 				}
 			}
 			if (FrameInput.KeyboardDown(Key.Digit4)) {

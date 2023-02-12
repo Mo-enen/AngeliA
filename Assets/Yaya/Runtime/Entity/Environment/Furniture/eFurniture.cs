@@ -54,9 +54,33 @@ namespace Yaya {
 		}
 
 
-		public override void PhysicsUpdate () {
-			base.PhysicsUpdate();
-			Update_Pose();
+		public override void BeforePhysicsUpdate () {
+			base.BeforePhysicsUpdate();
+			// Update Pose
+			if (Pose == FittingPose.Unknown) {
+				Pose = FittingPose.Single;
+
+				if (ModuleType != Direction3.None) {
+					Pose = YayaGame.Current.WorldSquad.GetEntityPose(
+						this, ModuleType == Direction3.Horizontal, YayaConst.MASK_ENVIRONMENT,
+						out var ld, out var ru, OperationMode.ColliderAndTrigger
+					);
+					FurnitureLeftOrDown = ld as eFurniture;
+					FurnitureRightOrUp = ru as eFurniture;
+				}
+
+				// Shrink Rect
+				if (TryGetSprite(Pose, out var sp)) {
+					ColliderBorder.left = sp.GlobalBorder.Left;
+					ColliderBorder.right = sp.GlobalBorder.Right;
+					ColliderBorder.bottom = sp.GlobalBorder.Down;
+					ColliderBorder.top = sp.GlobalBorder.Up;
+					X += ColliderBorder.left;
+					Y += ColliderBorder.bottom;
+					Width -= ColliderBorder.horizontal;
+					Height -= ColliderBorder.vertical;
+				}
+			}
 		}
 
 
@@ -149,42 +173,6 @@ namespace Yaya {
 			for (eFurniture i = FurnitureRightOrUp; i != null; i = i.FurnitureRightOrUp) {
 				i.HighlightFrame = Game.GlobalFrame;
 				i.HighlightBlinkOffset = HighlightBlinkOffset;
-			}
-		}
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
-		private void Update_Pose () {
-
-			if (Pose != FittingPose.Unknown) return;
-			Pose = FittingPose.Single;
-
-			if (ModuleType != Direction3.None) {
-				Pose = YayaGame.Current.WorldSquad.GetEntityPose(
-					this, ModuleType == Direction3.Horizontal, YayaConst.MASK_ENVIRONMENT,
-					out var ld, out var ru, OperationMode.ColliderAndTrigger
-				);
-				FurnitureLeftOrDown = ld as eFurniture;
-				FurnitureRightOrUp = ru as eFurniture;
-			}
-
-			// Shrink Rect
-			if (TryGetSprite(Pose, out var sp)) {
-				ColliderBorder.left = sp.GlobalBorder.Left;
-				ColliderBorder.right = sp.GlobalBorder.Right;
-				ColliderBorder.bottom = sp.GlobalBorder.Down;
-				ColliderBorder.top = sp.GlobalBorder.Up;
-				X += ColliderBorder.left;
-				Y += ColliderBorder.bottom;
-				Width -= ColliderBorder.horizontal;
-				Height -= ColliderBorder.vertical;
 			}
 		}
 

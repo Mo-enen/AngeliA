@@ -26,6 +26,9 @@ namespace Yaya {
 		public int GroundedID { get; private set; } = 0;
 		protected bool InWater { get; set; } = false;
 		protected bool InSand { get; set; } = false;
+		protected static int Gravity { get; private set; } = 0;
+		protected static int GravityRise { get; private set; } = 0;
+		protected static int MaxGravitySpeed { get; private set; } = 0;
 
 		// Override
 		protected virtual bool PhysicsEnable => true;
@@ -47,6 +50,14 @@ namespace Yaya {
 
 
 		#region --- MSG ---
+
+
+		[AfterGameInitialize]
+		public static void Initialize () {
+			Gravity = Game.Current.PhysicsConfig.Gravity;
+			GravityRise = Game.Current.PhysicsConfig.GravityRise;
+			MaxGravitySpeed = Game.Current.PhysicsConfig.MaxGravitySpeed;
+		}
 
 
 		public override void OnActived () {
@@ -73,8 +84,6 @@ namespace Yaya {
 				IsGrounded = GroundedCheck();
 				InWater = CellPhysics.Overlap(YayaConst.MASK_LEVEL, Rect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
 				InSand = CellPhysics.Overlap(YayaConst.MASK_LEVEL, Rect, null, OperationMode.TriggerOnly, YayaConst.QUICKSAND_TAG);
-				VelocityX = 0;
-				VelocityY = 0;
 				return;
 			}
 
@@ -92,15 +101,13 @@ namespace Yaya {
 				return;
 			}
 
-
 			// Gravity
 			if (GravityScale != 0 && Game.GlobalFrame > IgnoreGravityFrame) {
-				var pConfig = Game.Current.PhysicsConfig;
 				int speedScale = InWater ? YayaConst.WATER_SPEED_LOSE : 1000;
-				int gravity = (VelocityY < 0 || IgnoreRiseGravityShift ? pConfig.Gravity : pConfig.GravityRise) * GravityScale / 1000;
+				int gravity = (VelocityY < 0 || IgnoreRiseGravityShift ? Gravity : GravityRise) * GravityScale / 1000;
 				VelocityY = Mathf.Clamp(
 					VelocityY - gravity,
-					-pConfig.MaxGravitySpeed * speedScale / 1000,
+					-MaxGravitySpeed * speedScale / 1000,
 					int.MaxValue
 				);
 			}
