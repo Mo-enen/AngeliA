@@ -117,12 +117,12 @@ namespace Yaya {
 
 
 			var cameraRect = CellRenderer.CameraRect;
-			int w = cameraRect.width.UDivide(Const.CEL) + 1;
-			int h = cameraRect.height.UDivide(Const.CEL) + 1;
+			int w = cameraRect.width.UDivide(Const.CEL) + 2;
+			int h = cameraRect.height.UDivide(Const.CEL) + 2;
 			for (int i = 0; i < w; i++) {
-				int x = cameraRect.x.UDivide(Const.CEL) * Const.CEL + i * Const.CEL + Const.HALF;
+				int x = (cameraRect.x - 1).UDivide(Const.CEL) * Const.CEL + i * Const.CEL + Const.HALF;
 				for (int j = 0; j < h; j++) {
-					int y = cameraRect.y.UDivide(Const.CEL) * Const.CEL + j * Const.CEL + Const.HALF;
+					int y = (cameraRect.y - 1).UDivide(Const.CEL) * Const.CEL + j * Const.CEL + Const.HALF;
 					if (CellNavigation.TryGetGroundPosition(x, y, out int gY)) {
 						CellRenderer.Draw(Const.PIXEL, x, gY - 32, 500, 500, 0, 64, 64, Const.BLACK);
 					}
@@ -130,6 +130,15 @@ namespace Yaya {
 			}
 
 
+			var groundNearRange = new RectInt(
+				FrameInput.MouseGlobalPosition.x - Const.CEL * 6,
+				FrameInput.MouseGlobalPosition.y - Const.CEL * 6,
+				Const.CEL * 12, Const.CEL * 12
+			);
+			CellRenderer.Draw_9Slice("Frame16".AngeHash(), groundNearRange, Const.GREEN);
+			if (CellNavigation.TryGetGroundNearby(groundNearRange, out int gnX, out int gnY)) {
+				CellRenderer.Draw("Circle16".AngeHash(), gnX, gnY, 500, 500, 0, 64, 64, Const.GREEN);
+			}
 
 
 

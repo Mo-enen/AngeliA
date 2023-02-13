@@ -13,39 +13,18 @@ namespace Yaya {
 
 
 
-		#region --- SUB ---
-
-
-		private enum SummonNavigationState {
-			Idle, Move, Fly,
-		}
-
-
-		#endregion
-
-
-
-
 		#region --- VAR ---
 
 
 		// Api
 		public eCharacter Owner { get; set; } = null;
-		public override int Team => Owner != null ? Owner.Team : YayaConst.TEAM_NEUTRAL;
+		public sealed override int Team => Owner != null ? Owner.Team : YayaConst.TEAM_NEUTRAL;
 		public override bool AllowDamageFromLevel => false;
 		protected override bool PhysicsEnable => base.PhysicsEnable && CharacterState != CharacterState.GamePlay;
-
+		
 		// Data
-		private readonly CellNavigation.Operation[] NavOperation = new CellNavigation.Operation[8];
-		private int CurrentNavOperationIndex = 0;
-		private SummonNavigationState NavigationState = SummonNavigationState.Idle;
-		private bool HasGroundedTarget = true;
-		private int NavigationTargetX = 0;
-		private int NavigationTargetY = 0;
-		private int FlyStartFrame = int.MinValue;
-		private int LastNavTargetRefreshFrame = int.MaxValue;
-		private int PrevZ = int.MinValue;
 		private int SummonFrame = int.MinValue;
+		private int PrevZ = int.MinValue;
 
 
 		#endregion
@@ -54,12 +33,6 @@ namespace Yaya {
 
 
 		#region --- MSG ---
-
-
-		public override void OnActived () {
-			base.OnActived();
-			ResetNavigation();
-		}
 
 
 		public override void OnInactived () {
@@ -75,111 +48,21 @@ namespace Yaya {
 				return;
 			}
 
-			base.PhysicsUpdate();
-
-			if (CharacterState == CharacterState.GamePlay) {
-
-				// Find Target
-				if (Game.GlobalFrame > LastNavTargetRefreshFrame + 30) {
-					// Follow Owner
-					Update_NavigationTarget(
-						Owner.X + (InstanceIndex / 2) * Const.CEL * ((InstanceIndex % 2) == 0 ? 1 : -1),
-						Owner.Y
-					);
-				}
-
-				// Move to Target
-				int toX = X;
-				int toY = Y;
-				switch (NavigationState) {
-					case SummonNavigationState.Idle:
-						Update_MovementIdle(ref toY);
-						break;
-					case SummonNavigationState.Move:
-						Update_MovementMove(ref toX, ref toY);
-						break;
-					case SummonNavigationState.Fly:
-						Update_MovementFly(ref toX, ref toY);
-						break;
-				}
-				X = X.MoveTowards(toX, RunSpeed);
-				Y = Y.MoveTowards(toY, MaxGravitySpeed);
-			}
-
 			// Gether when Z Changed
 			if (PrevZ != Game.Current.ViewZ) {
 				PrevZ = Game.Current.ViewZ;
 				X = Owner.X;
 				Y = Owner.Y;
+				ResetNavigation();
 			}
-		}
 
-
-		// Navigation
-		private void Update_NavigationTarget (int aimX, int aimY) {
-
-			LastNavTargetRefreshFrame = Game.GlobalFrame;
-
-			// Refresh Target Nav Pos
-			const int MAX_RANGE_X = Const.CEL * 10;
-			const int MAX_RANGE_Y = Const.CEL * 8;
-			HasGroundedTarget = CellNavigation.TryGetGroundNearby(
-				aimX, aimY,
-				new RectInt(aimX - MAX_RANGE_X, aimY - MAX_RANGE_Y, MAX_RANGE_X * 2, MAX_RANGE_Y * 2),
-				out NavigationTargetX, out NavigationTargetY
+			// Nav to Owner
+			Navigate(
+				Owner.X + (InstanceIndex / 2) * Const.CEL * ((InstanceIndex % 2) == 0 ? 1 : -1),
+				Owner.Y
 			);
 
-			// ?? >> Fly
-			if (!HasGroundedTarget) {
-				NavigationState = SummonNavigationState.Fly;
-				FlyStartFrame = Game.GlobalFrame;
-			}
-
-			// Fly >> ??
-			if (
-				NavigationState == SummonNavigationState.Fly &&
-				HasGroundedTarget &&
-				Game.GlobalFrame > FlyStartFrame + 120
-			) {
-				NavigationState = SummonNavigationState.Idle;
-			}
-
-			// Idle >> Move
-			if (NavigationState == SummonNavigationState.Idle) {
-				const int TRIGGER_DIS = Const.CEL * 6;
-				int disSqrt = Util.SqrtDistance(NavigationTargetX, NavigationTargetY, X, Y);
-				if (disSqrt > TRIGGER_DIS * TRIGGER_DIS) {
-					NavigationState = SummonNavigationState.Move;
-				}
-			}
-
-		}
-
-
-		private void Update_MovementIdle (ref int toY) {
-			if (CellNavigation.TryGetGroundPosition(X, Y, out int groundY)) {
-				toY = groundY;
-				VelocityY = 0;
-			} else {
-				VelocityY -= IsInsideGround ? 0 : Gravity;
-				toY = Y + VelocityY;
-			}
-		}
-
-
-		private void Update_MovementMove (ref int toX, ref int toY) {
-
-
-
-
-
-		}
-
-
-		private void Update_MovementFly (ref int toX, ref int toY) {
-
-
-
+			base.PhysicsUpdate();
 
 		}
 
@@ -241,15 +124,7 @@ namespace Yaya {
 		#region --- LGC ---
 
 
-		private void ResetNavigation () {
-			NavigationState = SummonNavigationState.Idle;
-			NavigationTargetX = X;
-			NavigationTargetY = Y;
-			HasGroundedTarget = true;
-			FlyStartFrame = int.MinValue;
-			LastNavTargetRefreshFrame = int.MaxValue;
-			CurrentNavOperationIndex = 0;
-		}
+
 
 
 		#endregion

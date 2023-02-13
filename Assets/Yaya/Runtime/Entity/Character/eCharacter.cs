@@ -26,7 +26,6 @@ namespace Yaya {
 
 		// Const
 		private const int FULL_SLEEP_DURATION = 90;
-		private const int MAX_SUMMON_COUNT = 64;
 
 		// Api
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
@@ -39,11 +38,11 @@ namespace Yaya {
 		protected override bool IgnoreRiseGravityShift => true;
 		protected override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
 		protected override bool PhysicsEnable => CharacterState != CharacterState.Sleep;
-		
+
 		// Data
 		private int SleepFrame = 0;
 		private int PassoutFrame = int.MinValue;
-		
+
 
 		#endregion
 
@@ -62,6 +61,7 @@ namespace Yaya {
 			OnActived_Action();
 			OnActived_Health();
 			OnActived_Attack();
+			OnActived_Navigation();
 			CharacterState = CharacterState.GamePlay;
 			PassoutFrame = int.MinValue;
 			VelocityX = 0;
@@ -79,7 +79,7 @@ namespace Yaya {
 		public override void PhysicsUpdate () {
 
 			if (IsEmptyHealth) SetCharacterState(CharacterState.Passout);
-			
+
 			// Behaviour
 			MoveState = MovementState.Idle;
 			switch (CharacterState) {
@@ -115,6 +115,7 @@ namespace Yaya {
 					break;
 			}
 			PhysicsUpdate_Movement();
+			PhysicsUpdate_Navigation();
 			base.PhysicsUpdate();
 		}
 
@@ -156,26 +157,24 @@ namespace Yaya {
 					if (CharacterState == CharacterState.Sleep) {
 						RenderBounce();
 					}
-					CharacterState = CharacterState.GamePlay;
 					VelocityX = 0;
 					VelocityY = 0;
 					break;
 
 				case CharacterState.Sleep:
-					CharacterState = CharacterState.Sleep;
 					SleepFrame = 0;
 					VelocityX = 0;
 					VelocityY = 0;
 					break;
 
 				case CharacterState.Passout:
-					CharacterState = CharacterState.Passout;
 					PassoutFrame = Game.GlobalFrame;
 					break;
 
 				default:
 					throw new System.NotImplementedException();
 			}
+			CharacterState = state;
 		}
 
 

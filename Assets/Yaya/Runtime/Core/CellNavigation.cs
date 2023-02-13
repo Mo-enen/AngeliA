@@ -8,11 +8,12 @@ using AngeliaFramework;
 namespace Yaya {
 
 
-	public enum NavigationResult {
+	public enum NavigationMotion {
 		None = 0,
-		Run = 1,
+		Move = 1,
 		Jump = 2,
-		Fly = 3,
+		Drop = 3,
+		Fly = 4,
 	}
 
 
@@ -25,7 +26,7 @@ namespace Yaya {
 
 
 		public struct Operation {
-			public NavigationResult Result;
+			public NavigationMotion Result;
 			public int TargetCellX;
 			public int TargetCellY;
 		}
@@ -37,7 +38,7 @@ namespace Yaya {
 				BlockStamp = -1,
 				OperationStamp = 0,
 				Operation = {
-					Result = NavigationResult.None,
+					Result = NavigationMotion.None,
 					TargetCellX = -1,
 					TargetCellY = -1,
 				},
@@ -86,7 +87,6 @@ namespace Yaya {
 		// Data
 		private static Cell[,] Cells = null;
 		private static uint OperationStamp = 0;
-		private static readonly PhysicsCell[] OnewayCheckHits = new PhysicsCell[8];
 		private static int CachedFrame = int.MinValue;
 		private static int CellUnitOffsetX = 0;
 		private static int CellUnitOffsetY = 0;
@@ -116,7 +116,7 @@ namespace Yaya {
 
 		public static int Navigate (
 			Operation[] Operations, eCharacter character, int toX, int toY,
-			int jumpUnitRange, int minDistance
+			int jumpUnitRangeX, int jumpUnitRangeY
 		) {
 			RefreshFrameCache();
 			OperationStamp++;
@@ -134,13 +134,12 @@ namespace Yaya {
 		}
 
 
-		public static bool TryGetGroundNearby (
-			int x, int y, RectInt range,
-			out int resultX, out int resultY
-		) {
+		public static bool TryGetGroundNearby (RectInt range, out int resultX, out int resultY) {
 			RefreshFrameCache();
-			resultX = x;
-			resultY = y;
+			resultX = range.x + range.width / 2;
+			resultY = range.y + range.height / 2;
+
+
 
 
 
@@ -199,9 +198,9 @@ namespace Yaya {
 			if (cell.BlockDataValid) return cell;
 			int x = (cellX + CellUnitOffsetX) * Const.CEL;
 			int y = (cellY + CellUnitOffsetY) * Const.CEL;
-			var blockRect = new RectInt(x, y, Const.CEL, Const.CEL);
+			var centerRect = new RectInt(x + Const.HALF, y + Const.HALF, 1, 1);
 			bool solid = CellPhysics.Overlap(
-				YayaConst.MASK_MAP, new RectInt(x + Const.HALF, y + Const.HALF, 1, 1), out var info
+				YayaConst.MASK_MAP, centerRect, out var info
 			);
 			cell.BlockDataValid = true;
 			cell.IsSolidBlocked = solid;
@@ -217,7 +216,6 @@ namespace Yaya {
 			} else {
 				// Oneway
 				int platformY = y + Const.CEL;
-				var onewayRect = blockRect.Shrink(Const.CEL / 64);
 				cell.IsBlockedLeft = OnewaySolid(Direction4.Left);
 				cell.IsBlockedRight = OnewaySolid(Direction4.Right);
 				cell.IsBlockedDown = OnewaySolid(Direction4.Down);
@@ -226,41 +224,19 @@ namespace Yaya {
 				cell.PlatformY = platformY;
 				// Func
 				bool OnewaySolid (Direction4 gateDirection) {
-					int count = CellPhysics.OverlapAll(
-						OnewayCheckHits, YayaConst.MASK_MAP, onewayRect,
+					bool hitted = CellPhysics.Overlap(
+						YayaConst.MASK_MAP,
+						centerRect, out var hit,
 						null, OperationMode.TriggerOnly,
 						AngeUtil.GetOnewayTag(gateDirection)
 					);
-					for (int i = 0; i < count; i++) {
-						var hit = OnewayCheckHits[i];
-						switch (gateDirection) {
-							case Direction4.Down:
-								if (hit.Rect.yMin >= blockRect.yMin) return true;
-								break;
-							case Direction4.Up:
-								if (hit.Rect.yMax <= blockRect.yMax) {
-									platformY = hit.Rect.yMax;
-									return true;
-								}
-								break;
-							case Direction4.Left:
-								if (hit.Rect.xMin >= blockRect.xMin) return true;
-								break;
-							case Direction4.Right:
-								if (hit.Rect.xMax >= blockRect.xMax) return true;
-								break;
-						}
+					if (hitted && gateDirection == Direction4.Up) {
+						platformY = hit.Rect.yMax;
 					}
-					return false;
+					return hitted;
 				}
 			}
 			return cell;
-		}
-
-
-		private static Cell GetOperationData (int cellX, int cellY) {
-			var cell = Cells[cellX, cellY];
-			return cell.OperationDataValid ? cell : Cell.EMPTY;
 		}
 
 
@@ -268,13 +244,8 @@ namespace Yaya {
 			// Check Standable
 			var cell = GetBlockedData(cellX, cellY);
 			groundY = cell.PlatformY;
-			if (!cell.IsBlockedUp) return false;
-			// Check Space on Top
-			if (cellY + 1 < CellHeight) {
-				var cellUp = GetBlockedData(cellX, cellY + 1);
-				if (cellUp.IsSolidBlocked) return false;
-			}
-			return true;
+			return cell.IsBlockedUp;
+
 		}
 
 
