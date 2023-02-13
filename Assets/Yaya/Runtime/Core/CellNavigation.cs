@@ -129,22 +129,40 @@ namespace Yaya {
 
 
 
-
 			return 0;
 		}
 
 
 		public static bool TryGetGroundNearby (RectInt range, out int resultX, out int resultY) {
+
 			RefreshFrameCache();
-			resultX = range.x + range.width / 2;
-			resultY = range.y + range.height / 2;
 
+			int centerX = resultX = range.x + range.width / 2;
+			int centerY = resultY = range.y + range.height / 2;
 
+			for (int j = 0; j <= range.height / 2; j += Const.CEL) {
+				if (CheckGroundHorizontal(centerY + j, out resultX, out resultY)) return true;
+				if (CheckGroundHorizontal(centerY - j, out resultX, out resultY)) return true;
+			}
 
+			return false;
 
-
-
-			return true;
+			// Func
+			bool CheckGroundHorizontal (int globalY, out int _resultX, out int _resultY) {
+				for (int i = 0; i <= range.width / 2; i += Const.CEL) {
+					if (TryGetGroundPosition(centerX + i, globalY, out _resultY)) {
+						_resultX = (centerX + i).UDivide(Const.CEL) * Const.CEL + Const.HALF;
+						return true;
+					}
+					if (TryGetGroundPosition(centerX - i, globalY, out _resultY)) {
+						_resultX = (centerX - i).UDivide(Const.CEL) * Const.CEL + Const.HALF;
+						return true;
+					}
+				}
+				_resultX = 0;
+				_resultY = 0;
+				return false;
+			}
 		}
 
 
