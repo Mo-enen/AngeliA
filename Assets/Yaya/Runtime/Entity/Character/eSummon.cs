@@ -21,7 +21,7 @@ namespace Yaya {
 		public sealed override int Team => Owner != null ? Owner.Team : YayaConst.TEAM_NEUTRAL;
 		public override bool AllowDamageFromLevel => false;
 		protected override bool PhysicsEnable => base.PhysicsEnable && CharacterState != CharacterState.GamePlay;
-		
+
 		// Data
 		private int SummonFrame = int.MinValue;
 		private int PrevZ = int.MinValue;
@@ -57,10 +57,14 @@ namespace Yaya {
 			}
 
 			// Nav to Owner
-			Navigate(
-				Owner.X + (InstanceIndex / 2) * Const.CEL * ((InstanceIndex % 2) == 0 ? 1 : -1),
-				Owner.Y
-			);
+			//Navigate(
+			//	Owner.X + (InstanceIndex / 2) * Const.CEL * ((InstanceIndex % 2) == 0 ? 1 : -1),
+			//	Owner.Y
+			//);
+
+
+
+
 
 			base.PhysicsUpdate();
 

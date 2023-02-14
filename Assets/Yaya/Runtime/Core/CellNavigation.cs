@@ -29,10 +29,15 @@ namespace Yaya {
 			public NavigationMotion Result;
 			public int TargetCellX;
 			public int TargetCellY;
+			public int Distance;
 		}
 
+		private enum BlockType {
+			Air, Liquid, Solid,
+		}
 
 		private struct Cell {
+
 
 			public static readonly Cell EMPTY = new() {
 				BlockStamp = -1,
@@ -41,8 +46,8 @@ namespace Yaya {
 					Result = NavigationMotion.None,
 					TargetCellX = -1,
 					TargetCellY = -1,
+					Distance = -1,
 				},
-				Distance = -1,
 			};
 
 
@@ -52,7 +57,6 @@ namespace Yaya {
 				set => OperationStamp = value ? CellNavigation.OperationStamp : 0;
 			}
 			public Operation Operation;
-			public int Distance;
 			private uint OperationStamp;
 
 			// Block
@@ -60,8 +64,11 @@ namespace Yaya {
 				get => BlockStamp == Game.GlobalFrame;
 				set => BlockStamp = value ? Game.GlobalFrame : -1;
 			}
-			public bool IsAllBlocked;
-			public bool IsSolidBlocked;
+			public bool IsSolid => BlockType == BlockType.Solid;
+			public bool IsAir => BlockType == BlockType.Air;
+			public bool IsLiquid => BlockType == BlockType.Liquid;
+
+			public BlockType BlockType;
 			public bool IsBlockedLeft;
 			public bool IsBlockedRight;
 			public bool IsBlockedDown;
@@ -133,14 +140,14 @@ namespace Yaya {
 		}
 
 
-		public static bool TryGetGroundNearby (RectInt range, out int resultX, out int resultY) {
+		public static bool FindGroundInRange (RectInt globalRange, out int resultX, out int resultY) {
 
 			RefreshFrameCache();
 
-			int centerX = resultX = range.x + range.width / 2;
-			int centerY = resultY = range.y + range.height / 2;
+			int centerX = resultX = globalRange.x + globalRange.width / 2;
+			int centerY = resultY = globalRange.y + globalRange.height / 2;
 
-			for (int j = 0; j <= range.height / 2; j += Const.CEL) {
+			for (int j = 0; j <= globalRange.height / 2; j += Const.CEL) {
 				if (CheckGroundHorizontal(centerY + j, out resultX, out resultY)) return true;
 				if (CheckGroundHorizontal(centerY - j, out resultX, out resultY)) return true;
 			}
@@ -149,7 +156,7 @@ namespace Yaya {
 
 			// Func
 			bool CheckGroundHorizontal (int globalY, out int _resultX, out int _resultY) {
-				for (int i = 0; i <= range.width / 2; i += Const.CEL) {
+				for (int i = 0; i <= globalRange.width / 2; i += Const.CEL) {
 					if (TryGetGroundPosition(centerX + i, globalY, out _resultY)) {
 						_resultX = (centerX + i).UDivide(Const.CEL) * Const.CEL + Const.HALF;
 						return true;
@@ -166,31 +173,58 @@ namespace Yaya {
 		}
 
 
-		public static bool TryGetGroundPosition (int x, int y, out int groundY) {
+		public static bool SnapToGroundNearby (int globalX, int globalY, int distance, out int resultX, out int resultY) {
+			resultX = globalX;
+			resultY = globalY;
+			
+
+
+
+
+
+
+			return false;
+		}
+
+
+		public static bool TryGetGroundPosition (int globalX, int globalY, out int groundY) {
 			RefreshFrameCache();
-			groundY = y;
-			int cellX = x.UDivide(Const.CEL) - CellUnitOffsetX;
+			groundY = globalY;
+			int cellX = globalX.UDivide(Const.CEL) - CellUnitOffsetX;
 			if (!cellX.InRange(0, CellWidth - 1)) return false;
-			int cellY = y.UDivide(Const.CEL) - CellUnitOffsetY;
+			int cellY = globalY.UDivide(Const.CEL) - CellUnitOffsetY;
 			int groundY_This = groundY;
 			int groundY_Down = groundY;
+
 			bool thisIsStandable =
 				cellY.InRange(0, CellHeight - 1) &&
-				IsStandable(cellX, cellY, out groundY_This);
+				IsStandableLogic(cellX, cellY, out groundY_This);
 			bool downIsStandable =
 				(cellY - 1).InRange(0, CellHeight - 1) &&
-				IsStandable(cellX, cellY - 1, out groundY_Down);
+				IsStandableLogic(cellX, cellY - 1, out groundY_Down);
+
 			if (thisIsStandable && downIsStandable) {
-				groundY = groundY_This <= y ? groundY_This : groundY_Down;
+				groundY = groundY_This <= globalY ? groundY_This : groundY_Down;
 				return true;
 			} else if (thisIsStandable && !downIsStandable) {
 				groundY = groundY_This;
-				return groundY_This <= y;
+				return groundY_This <= globalY || Cells[cellX, cellY].IsLiquid;
 			} else if (!thisIsStandable && downIsStandable) {
 				groundY = groundY_Down;
 				return true;
 			}
+
 			return false;
+		}
+
+
+		public static bool IsStandeable (int globalX, int globalY, out int groundY) {
+			groundY = globalY;
+			int cellX = globalX.UDivide(Const.CEL) - CellUnitOffsetX;
+			if (!cellX.InRange(0, CellWidth - 1)) return false;
+			int cellY = globalY.UDivide(Const.CEL) - CellUnitOffsetY;
+			if (!cellY.InRange(0, CellHeight - 1)) return false;
+			return IsStandableLogic(cellX, cellY, out groundY);
 		}
 
 
@@ -221,24 +255,27 @@ namespace Yaya {
 				YayaConst.MASK_MAP, centerRect, out var info
 			);
 			cell.BlockDataValid = true;
-			cell.IsSolidBlocked = solid;
+			cell.BlockType = solid ? BlockType.Solid : BlockType.Air;
 
 			if (solid) {
 				// Solid Block
-				cell.IsAllBlocked = true;
 				cell.IsBlockedLeft = true;
 				cell.IsBlockedRight = true;
 				cell.IsBlockedDown = true;
 				cell.IsBlockedUp = true;
 				cell.PlatformY = info.Rect.yMax;
 			} else {
-				// Oneway
 				int platformY = y + Const.CEL;
+				// Liquid Check
+				if (CellPhysics.Overlap(YayaConst.MASK_MAP, centerRect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG)) {
+					cell.BlockType = BlockType.Liquid;
+					platformY = y + Const.HALF;
+				}
+				// Oneway
 				cell.IsBlockedLeft = OnewaySolid(Direction4.Left);
 				cell.IsBlockedRight = OnewaySolid(Direction4.Right);
 				cell.IsBlockedDown = OnewaySolid(Direction4.Down);
 				cell.IsBlockedUp = OnewaySolid(Direction4.Up);
-				cell.IsAllBlocked = cell.IsBlockedLeft && cell.IsBlockedRight && cell.IsBlockedDown && cell.IsBlockedUp;
 				cell.PlatformY = platformY;
 				// Func
 				bool OnewaySolid (Direction4 gateDirection) {
@@ -258,12 +295,18 @@ namespace Yaya {
 		}
 
 
-		private static bool IsStandable (int cellX, int cellY, out int groundY) {
+		private static bool IsStandableLogic (int cellX, int cellY, out int groundY) {
 			// Check Standable
 			var cell = GetBlockedData(cellX, cellY);
 			groundY = cell.PlatformY;
-			return cell.IsBlockedUp;
-
+			if (cell.IsLiquid) return true;
+			if (!cell.IsBlockedUp) return false;
+			// Check Block Up Solid
+			if (cellY + 1 < CellHeight) {
+				var cellU = GetBlockedData(cellX, cellY + 1);
+				if (cellU.IsSolid) return false;
+			}
+			return true;
 		}
 
 

@@ -25,8 +25,7 @@ namespace Yaya {
 
 
 		// Api
-		protected virtual int NavigationGroundSearchRangeX => Const.CEL * 10;
-		protected virtual int NavigationGroundSearchRangeY => Const.CEL * 8;
+		protected virtual int NavigationGroundSnapDistance => Const.CEL * 6;
 		protected virtual int NavigationStartMoveRange => Const.CEL * 6;
 		protected virtual int NavigationMinimumFlyDuration => 120;
 		protected virtual int NavigationTargetScanFrequency => 30;
@@ -74,22 +73,20 @@ namespace Yaya {
 
 
 			// Move to Target
-			int toX = X;
-			int toY = Y;
 			switch (NavigationState) {
 				case CharacterNavigationState.Idle:
-					NavUpdate_MovementIdle(ref toY);
+					NavUpdate_MovementIdle();
 					break;
 				case CharacterNavigationState.Navigate:
-					NavUpdate_MovementMove(ref toX, ref toY);
+					NavUpdate_MovementNavigate();
 					break;
 				case CharacterNavigationState.Fly:
-					NavUpdate_MovementFly(ref toX, ref toY);
+					NavUpdate_MovementFly();
 					MoveState = MovementState.Fly;
 					break;
 			}
-			X = toX;
-			Y = toY;
+			X += VelocityX;
+			Y += VelocityY;
 
 		}
 
@@ -100,16 +97,15 @@ namespace Yaya {
 			if (Game.GlobalFrame < LastNavStateRefreshFrame + NavigationTargetScanFrequency) return;
 			LastNavStateRefreshFrame = Game.GlobalFrame;
 
-			int rangeX = NavigationGroundSearchRangeX;
-			int rangeY = NavigationGroundSearchRangeY;
+			int snapDistance = NavigationGroundSnapDistance;
 			int startMoveDistance = NavigationStartMoveRange;
 			int minimumFlyDuration = NavigationMinimumFlyDuration;
 			int aimX = NavigationAimX;
 			int aimY = NavigationAimY;
 
 			// Refresh Target Nav Pos
-			bool hasGroundedTarget = CellNavigation.TryGetGroundNearby(
-				new RectInt(aimX - rangeX, aimY - rangeY, rangeX * 2, rangeY * 2),
+			bool hasGroundedTarget = CellNavigation.SnapToGroundNearby(
+				aimX, aimY, snapDistance,
 				out NavigationTargetX, out NavigationTargetY
 			);
 
@@ -146,16 +142,17 @@ namespace Yaya {
 		}
 
 
-		private void NavUpdate_MovementIdle (ref int toY) {
-			VelocityY = CellNavigation.TryGetGroundPosition(X, Y, out int groundY) ?
-				groundY - Y : IsInsideGround ? 0 :
-				VelocityY - Gravity;
-			VelocityY = VelocityY.Clamp(-MaxGravitySpeed, int.MaxValue);
-			toY = Y + VelocityY;
+		private void NavUpdate_MovementIdle () {
+			VelocityX = 0;
+			VelocityY = (
+				InWater || InSand || IsInsideGround ? 0 :
+				CellNavigation.TryGetGroundPosition(X, Y, out int groundY) ? groundY - Y :
+				VelocityY - Gravity
+			).Clamp(-MaxGravitySpeed, int.MaxValue);
 		}
 
 
-		private void NavUpdate_MovementMove (ref int toX, ref int toY) {
+		private void NavUpdate_MovementNavigate () {
 
 
 
@@ -164,7 +161,7 @@ namespace Yaya {
 		}
 
 
-		private void NavUpdate_MovementFly (ref int toX, ref int toY) {
+		private void NavUpdate_MovementFly () {
 
 
 

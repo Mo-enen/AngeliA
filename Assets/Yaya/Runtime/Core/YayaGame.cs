@@ -115,7 +115,7 @@ namespace Yaya {
 
 
 
-
+			// Ground Pos Test
 			var cameraRect = CellRenderer.CameraRect;
 			int w = cameraRect.width.UDivide(Const.CEL) + 2;
 			int h = cameraRect.height.UDivide(Const.CEL) + 2;
@@ -130,16 +130,28 @@ namespace Yaya {
 			}
 
 
-			var groundNearRange = new RectInt(
-				FrameInput.MouseGlobalPosition.x - Const.CEL * 6,
-				FrameInput.MouseGlobalPosition.y - Const.CEL * 6,
-				Const.CEL * 12, Const.CEL * 12
-			);
-			CellRenderer.Draw_9Slice("Frame16".AngeHash(), groundNearRange, Const.GREEN);
-			if (CellNavigation.TryGetGroundNearby(groundNearRange, out int gnX, out int gnY)) {
-				CellRenderer.Draw("Circle16".AngeHash(), gnX, gnY, 500, 500, 0, 64, 64, Const.GREEN);
-			}
+			// In Range Test
+			//var groundRange = new RectInt(
+			//	FrameInput.MouseGlobalPosition.x - Const.CEL * 6,
+			//	FrameInput.MouseGlobalPosition.y - Const.CEL * 6,
+			//	Const.CEL * 12, Const.CEL * 12
+			//);
+			//CellRenderer.Draw_9Slice("Frame16".AngeHash(), groundRange, Const.GREEN);
+			//if (CellNavigation.FindGroundInRange(groundRange, out int gnX, out int gnY)) {
+			//	CellRenderer.Draw("Circle16".AngeHash(), gnX, gnY, 500, 500, 0, 64, 64, Const.GREEN);
+			//}
 
+			// Snap Test
+			var aimPos = new Vector2Int(
+				FrameInput.MouseGlobalPosition.x - Const.CEL * 6,
+				FrameInput.MouseGlobalPosition.y - Const.CEL * 6
+			);
+			if (CellNavigation.SnapToGroundNearby(
+				aimPos.x, aimPos.y, Const.CEL * 6,
+				out int gnX, out int gnY
+			)) {
+				CellRenderer.Draw("Circle16".AngeHash(), gnX, gnY, 500, 500, 0, 128, 128, Const.GREEN);
+			}
 
 
 			// ============ Test ============
