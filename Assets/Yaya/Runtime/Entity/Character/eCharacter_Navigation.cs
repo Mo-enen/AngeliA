@@ -104,7 +104,7 @@ namespace Yaya {
 			int aimY = NavigationAimY;
 
 			// Refresh Target Nav Pos
-			bool hasGroundedTarget = CellNavigation.SnapToGroundNearby(
+			bool hasGroundedTarget = CellNavigation.ExpandToGroundNearby(
 				aimX, aimY, snapDistance,
 				out NavigationTargetX, out NavigationTargetY
 			);
@@ -134,7 +134,8 @@ namespace Yaya {
 			// Navigate
 			if (NavigationState == CharacterNavigationState.Navigate) {
 				CurrentNavOperationCount = CellNavigation.Navigate(
-					NavOperation, this, NavigationTargetX, NavigationTargetY, 6, 6
+					NavOperation, this, NavigationTargetX, NavigationTargetY,
+					6 * Const.CEL, 6 * Const.CEL
 				);
 				CurrentNavOperationIndex = 0;
 			}
@@ -146,7 +147,7 @@ namespace Yaya {
 			VelocityX = 0;
 			VelocityY = (
 				InWater || InSand || IsInsideGround ? 0 :
-				CellNavigation.TryGetGroundPosition(X, Y, out int groundY) ? groundY - Y :
+				CellNavigation.IsGround(X, Y, out int groundY) ? groundY - Y :
 				VelocityY - Gravity
 			).Clamp(-MaxGravitySpeed, int.MaxValue);
 		}

@@ -123,8 +123,8 @@ namespace Yaya {
 				int x = (cameraRect.x - 1).UDivide(Const.CEL) * Const.CEL + i * Const.CEL + Const.HALF;
 				for (int j = 0; j < h; j++) {
 					int y = (cameraRect.y - 1).UDivide(Const.CEL) * Const.CEL + j * Const.CEL + Const.HALF;
-					if (CellNavigation.TryGetGroundPosition(x, y, out int gY)) {
-						CellRenderer.Draw(Const.PIXEL, x, gY - 32, 500, 500, 0, 64, 64, Const.BLACK);
+					if (CellNavigation.IsGround(x, y, out int gY)) {
+						CellRenderer.Draw(Const.PIXEL, x, gY - 32, 500, 500, 0, 64, 64, Const.BLACK).Z = int.MaxValue;
 					}
 				}
 			}
@@ -141,18 +141,27 @@ namespace Yaya {
 			//	CellRenderer.Draw("Circle16".AngeHash(), gnX, gnY, 500, 500, 0, 64, 64, Const.GREEN);
 			//}
 
-			// Snap Test
+			// Expand Test
 			var aimPos = new Vector2Int(
-				FrameInput.MouseGlobalPosition.x - Const.CEL * 6,
-				FrameInput.MouseGlobalPosition.y - Const.CEL * 6
+				FrameInput.MouseGlobalPosition.x,
+				FrameInput.MouseGlobalPosition.y
 			);
-			if (CellNavigation.SnapToGroundNearby(
+			if (CellNavigation.ExpandToGroundNearby(
 				aimPos.x, aimPos.y, Const.CEL * 6,
 				out int gnX, out int gnY
 			)) {
-				CellRenderer.Draw("Circle16".AngeHash(), gnX, gnY, 500, 500, 0, 128, 128, Const.GREEN);
+				CellRenderer.Draw("Circle16".AngeHash(), gnX, gnY, 500, 500, 0, 128, 128, Const.GREEN).Z = int.MaxValue;
+			} else {
+				CellRenderer.Draw("Circle16".AngeHash(), aimPos.x, aimPos.y, 500, 500, 0, 128, 128, Const.RED_BETTER).Z = int.MaxValue;
 			}
-
+			//if (CellNavigation.IsGround(
+			//	aimPos.x, aimPos.y,
+			//	out int gnY
+			//)) {
+			//	CellRenderer.Draw("Circle16".AngeHash(), aimPos.x, gnY, 500, 500, 0, 128, 128, Const.GREEN).Z = int.MaxValue;
+			//} else {
+			//	CellRenderer.Draw("Circle16".AngeHash(), aimPos.x, aimPos.y, 500, 500, 0, 128, 128, Const.RED_BETTER).Z = int.MaxValue;
+			//}
 
 			// ============ Test ============
 
