@@ -34,17 +34,15 @@ namespace Yaya {
 		protected virtual int NavigationJumpDistanceY => Const.CEL * 6;
 		protected virtual int NavigationMinimumFlyDuration => 120;
 		protected virtual int NavigationTargetRefreshFrequency => 30;
+		protected virtual bool NavigationEnable => false;
 
 		// Data
 		private CharacterNavigationState NavigationState = CharacterNavigationState.Idle;
 		private readonly CellNavigation.Operation[] NavOperation = new CellNavigation.Operation[8];
 		private int CurrentNavOperationIndex = 0;
 		private int CurrentNavOperationCount = 0;
-		private int NavigationAimX = 0;
-		private int NavigationAimY = 0;
 		private int NavigationFlyStartFrame = int.MinValue;
 		private int LastNavStateRefreshFrame = int.MaxValue;
-		private int LastNavigateFrame = int.MinValue;
 
 
 		#endregion
@@ -60,7 +58,7 @@ namespace Yaya {
 
 		private void PhysicsUpdate_Navigation () {
 
-			if (Game.GlobalFrame > LastNavigateFrame || CharacterState != CharacterState.GamePlay) return;
+			if (!NavigationEnable) return;
 
 			// Clamp In Range
 			var range = Game.Current.SpawnRect;
@@ -120,9 +118,8 @@ namespace Yaya {
 			int startFlySqrtDistance = NavigationStartFlyDistance * NavigationStartFlyDistance;
 			int endFlySqrtDistance = NavigationEndFlyDistance * NavigationEndFlyDistance;
 			int minimumFlyDuration = NavigationMinimumFlyDuration;
-			int aimX = NavigationAimX;
-			int aimY = NavigationAimY;
-			int aimSqrtDis = Util.SqrtDistance(aimX, aimY, X, Y);
+			var aim = GetNavigationAim();
+			int aimSqrtDis = Util.SqrtDistance(aim.x, aim.y, X, Y);
 
 			switch (NavigationState) {
 
@@ -169,7 +166,7 @@ namespace Yaya {
 			CurrentNavOperationIndex = 0;
 			if (NavigationState == CharacterNavigationState.Navigate) {
 				CurrentNavOperationCount = CellNavigation.Navigate(
-					NavOperation, X, Y, aimX, aimY,
+					NavOperation, X, Y, aim.x, aim.y,
 					NavigationJumpDistanceX, NavigationJumpDistanceY
 				);
 				if (CurrentNavOperationCount == 0) {
@@ -215,22 +212,16 @@ namespace Yaya {
 		#region --- API ---
 
 
-		public void Navigate (int x, int y) {
-			NavigationAimX = x;
-			NavigationAimY = y;
-			LastNavigateFrame = Game.GlobalFrame;
-		}
-
-
 		public void ResetNavigation () {
 			NavigationState = CharacterNavigationState.Idle;
-			NavigationAimX = X;
-			NavigationAimY = Y;
 			NavigationFlyStartFrame = int.MinValue;
 			LastNavStateRefreshFrame = int.MaxValue;
 			CurrentNavOperationIndex = 0;
 			CurrentNavOperationCount = 0;
 		}
+
+
+		protected virtual Vector2Int GetNavigationAim () => new(X, Y);
 
 
 		#endregion

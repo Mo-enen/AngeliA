@@ -21,6 +21,7 @@ namespace Yaya {
 		public sealed override int Team => Owner != null ? Owner.Team : YayaConst.TEAM_NEUTRAL;
 		public override bool AllowDamageFromLevel => false;
 		protected override bool PhysicsEnable => base.PhysicsEnable && CharacterState != CharacterState.GamePlay;
+		protected override bool NavigationEnable => CharacterState == CharacterState.GamePlay && Owner != null && Owner.Active;
 
 		// Data
 		private int SummonFrame = int.MinValue;
@@ -43,6 +44,7 @@ namespace Yaya {
 
 		public override void PhysicsUpdate () {
 
+			// Inactive when Owner not Ready
 			if (Owner == null || !Owner.Active) {
 				Active = false;
 				return;
@@ -56,19 +58,6 @@ namespace Yaya {
 				ResetNavigation();
 			}
 
-			// Find Nav Aim Pos
-			int aimX = Owner.X + (InstanceIndex / 2) * Const.CEL * ((InstanceIndex % 2) == 0 ? 1 : -1);
-			int aimY = Owner.Y;
-
-
-
-
-
-
-
-			// Nav to Aim
-			Navigate(aimX, aimY);
-
 			base.PhysicsUpdate();
 
 		}
@@ -79,6 +68,29 @@ namespace Yaya {
 			RenderBounce();
 			ResetNavigation();
 			SummonFrame = Game.GlobalFrame;
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+		protected override Vector2Int GetNavigationAim () {
+
+			if (Owner == null || !Owner.Active) return base.GetNavigationAim();
+
+			var result = new Vector2Int(Owner.X, Owner.Y);
+
+
+
+
+
+
+			return result;
 		}
 
 
@@ -121,16 +133,6 @@ namespace Yaya {
 			}
 			return null;
 		}
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
 
 
 
