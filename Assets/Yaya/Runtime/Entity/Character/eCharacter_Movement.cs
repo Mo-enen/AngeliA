@@ -130,8 +130,10 @@ namespace Yaya {
 			MovementUpdate_Dash();
 			MoveState = GetCurrentMovementState();
 			if (!IsInsideGround) {
-				MovementUpdate_VelocityX();
-				MovementUpdate_VelocityY();
+				if (PhysicsEnable) {
+					MovementUpdate_VelocityX();
+					MovementUpdate_VelocityY();
+				}
 			} else {
 				VelocityX = IntendedX * WalkSpeed;
 				VelocityY = VelocityY.MoveTowards(0, 2);

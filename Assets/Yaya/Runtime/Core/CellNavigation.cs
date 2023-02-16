@@ -93,7 +93,7 @@ namespace Yaya {
 
 		// Data
 		private static Cell[,] Cells = null;
-		private static Queue<Vector2Int> ExpandQueue = null;
+		private static Queue<Vector3Int> ExpandQueue = null;
 		private static uint OperationStamp = 0;
 		private static int CachedFrame = int.MinValue;
 		private static int CellUnitOffsetX = 0;
@@ -123,12 +123,12 @@ namespace Yaya {
 		}
 
 
-		public static int Navigate (Operation[] Operations, eCharacter character, int toX, int toY, int jumpUnitX, int jumpUnitY) {
+		public static int Navigate (Operation[] Operations, int fromX, int fromY, int toX, int toY, int jumpUnitX, int jumpUnitY) {
 			RefreshFrameCache();
 			OperationStamp++;
 			var unitRangeRect = new RectInt(CellUnitOffsetX, CellUnitOffsetY, CellWidth, CellHeight);
-			int fromUnitX = character.X.UDivide(Const.CEL).Clamp(unitRangeRect.xMin, unitRangeRect.xMax - 1);
-			int fromUnitY = character.Y.UDivide(Const.CEL).Clamp(unitRangeRect.yMin, unitRangeRect.yMax - 1);
+			int fromUnitX = fromX.UDivide(Const.CEL).Clamp(unitRangeRect.xMin, unitRangeRect.xMax - 1);
+			int fromUnitY = fromY.UDivide(Const.CEL).Clamp(unitRangeRect.yMin, unitRangeRect.yMax - 1);
 			int toUnitX = toX.UDivide(Const.CEL).Clamp(unitRangeRect.xMin, unitRangeRect.xMax - 1);
 			int toUnitY = toY.UDivide(Const.CEL).Clamp(unitRangeRect.yMin, unitRangeRect.yMax - 1);
 
@@ -172,7 +172,10 @@ namespace Yaya {
 		}
 
 
-		public static bool ExpandToGroundNearby (int globalX, int globalY, int distance, out int resultX, out int resultY) {
+		public static bool ExpandToGroundNearby (
+			int globalX, int globalY, int maxIteration,
+			out int resultX, out int resultY
+		) {
 
 			RefreshFrameCache();
 			resultX = globalX;
@@ -180,7 +183,7 @@ namespace Yaya {
 			if (!Global_to_Cell(globalX, globalY, out int cellX, out int cellY)) return false;
 			OperationStamp++;
 			ExpandQueue.Clear();
-			ExpandQueue.Enqueue(new Vector2Int(cellX, cellY));
+			ExpandQueue.Enqueue(new Vector3Int(cellX, cellY, 0));
 			Cells[cellX, cellY].OperationDataValid = true;
 			bool rightFirst = globalX.UMod(Const.CEL) > Const.HALF;
 			bool upFirst = globalY.UMod(Const.CEL) > Const.HALF;
@@ -196,20 +199,22 @@ namespace Yaya {
 				}
 
 				// Expand
-				if (rightFirst) {
-					ExpandR();
-					ExpandL();
-				} else {
-					ExpandL();
-					ExpandR();
-				}
+				if (pos.z < maxIteration) {
+					if (rightFirst) {
+						ExpandR();
+						ExpandL();
+					} else {
+						ExpandL();
+						ExpandR();
+					}
 
-				if (upFirst) {
-					ExpandU();
-					ExpandD();
-				} else {
-					ExpandD();
-					ExpandU();
+					if (upFirst) {
+						ExpandU();
+						ExpandD();
+					} else {
+						ExpandD();
+						ExpandU();
+					}
 				}
 
 				// Func
@@ -219,7 +224,7 @@ namespace Yaya {
 						!Cells[pos.x - 1, pos.y].OperationDataValid &&
 						!GetBlockedData(pos.x - 1, pos.y).IsBlockedRight
 					) {
-						ExpandQueue.Enqueue(new Vector2Int(pos.x - 1, pos.y));
+						ExpandQueue.Enqueue(new Vector3Int(pos.x - 1, pos.y, pos.z + 1));
 						Cells[pos.x - 1, pos.y].OperationDataValid = true;
 					}
 				}
@@ -229,7 +234,7 @@ namespace Yaya {
 						!Cells[pos.x + 1, pos.y].OperationDataValid &&
 						!GetBlockedData(pos.x + 1, pos.y).IsBlockedLeft
 					) {
-						ExpandQueue.Enqueue(new Vector2Int(pos.x + 1, pos.y));
+						ExpandQueue.Enqueue(new Vector3Int(pos.x + 1, pos.y, pos.z + 1));
 						Cells[pos.x + 1, pos.y].OperationDataValid = true;
 					}
 				}
@@ -239,7 +244,7 @@ namespace Yaya {
 						!Cells[pos.x, pos.y - 1].OperationDataValid &&
 						!GetBlockedData(pos.x, pos.y - 1).IsBlockedUp
 					) {
-						ExpandQueue.Enqueue(new Vector2Int(pos.x, pos.y - 1));
+						ExpandQueue.Enqueue(new Vector3Int(pos.x, pos.y - 1, pos.z + 1));
 						Cells[pos.x, pos.y - 1].OperationDataValid = true;
 					}
 				}
@@ -249,7 +254,7 @@ namespace Yaya {
 						!Cells[pos.x, pos.y + 1].OperationDataValid &&
 						!GetBlockedData(pos.x, pos.y + 1).IsBlockedDown
 					) {
-						ExpandQueue.Enqueue(new Vector2Int(pos.x, pos.y + 1));
+						ExpandQueue.Enqueue(new Vector3Int(pos.x, pos.y + 1, pos.z + 1));
 						Cells[pos.x, pos.y + 1].OperationDataValid = true;
 					}
 				}

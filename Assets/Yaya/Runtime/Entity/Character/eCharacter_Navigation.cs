@@ -25,10 +25,15 @@ namespace Yaya {
 
 
 		// Api
-		protected virtual int NavigationGroundSnapDistance => Const.CEL * 6;
-		protected virtual int NavigationStartMoveRange => Const.CEL * 6;
+		protected virtual int NavigationGroundNearbyIteration => 6;
+		protected virtual int NavigationStartMoveDistance => Const.CEL * 4;
+		protected virtual int NavigationEndMoveDistance => Const.CEL * 1;
+		protected virtual int NavigationStartFlyDistance => Const.CEL * 18;
+		protected virtual int NavigationEndFlyDistance => Const.CEL * 3;
+		protected virtual int NavigationJumpDistanceX => Const.CEL * 6;
+		protected virtual int NavigationJumpDistanceY => Const.CEL * 6;
 		protected virtual int NavigationMinimumFlyDuration => 120;
-		protected virtual int NavigationTargetScanFrequency => 30;
+		protected virtual int NavigationTargetRefreshFrequency => 30;
 
 		// Data
 		private CharacterNavigationState NavigationState = CharacterNavigationState.Idle;
@@ -37,8 +42,6 @@ namespace Yaya {
 		private int CurrentNavOperationCount = 0;
 		private int NavigationAimX = 0;
 		private int NavigationAimY = 0;
-		private int NavigationTargetX = 0;
-		private int NavigationTargetY = 0;
 		private int NavigationFlyStartFrame = int.MinValue;
 		private int LastNavStateRefreshFrame = int.MaxValue;
 		private int LastNavigateFrame = int.MinValue;
@@ -59,8 +62,13 @@ namespace Yaya {
 
 			if (Game.GlobalFrame > LastNavigateFrame || CharacterState != CharacterState.GamePlay) return;
 
-			// Find Target
-			NavUpdate_NavigationScan();
+			// Clamp In Range
+			var range = Game.Current.SpawnRect;
+			X = X.Clamp(range.xMin, range.xMax);
+			Y = Y.Clamp(range.yMin, range.yMax);
+
+			// Refresh
+			NavUpdate_NavigationRefresh();
 
 
 
@@ -92,52 +100,81 @@ namespace Yaya {
 
 
 		// Navigation
-		private void NavUpdate_NavigationScan () {
+		private void NavUpdate_NavigationRefresh () {
 
-			if (Game.GlobalFrame < LastNavStateRefreshFrame + NavigationTargetScanFrequency) return;
+			bool operationDone =
+				NavigationState == CharacterNavigationState.Navigate &&
+				CurrentNavOperationCount > 0 &&
+				CurrentNavOperationIndex >= CurrentNavOperationCount;
+
+			// Scan Frequency Gate
+			if (
+				!operationDone &&
+				Game.GlobalFrame < LastNavStateRefreshFrame + NavigationTargetRefreshFrequency
+			) return;
 			LastNavStateRefreshFrame = Game.GlobalFrame;
 
-			int snapDistance = NavigationGroundSnapDistance;
-			int startMoveDistance = NavigationStartMoveRange;
+			// Nav Logic Start
+			int startMoveSqrtDistance = NavigationStartMoveDistance * NavigationStartMoveDistance;
+			int endMoveSqrtDistance = NavigationEndMoveDistance * NavigationEndMoveDistance;
+			int startFlySqrtDistance = NavigationStartFlyDistance * NavigationStartFlyDistance;
+			int endFlySqrtDistance = NavigationEndFlyDistance * NavigationEndFlyDistance;
 			int minimumFlyDuration = NavigationMinimumFlyDuration;
 			int aimX = NavigationAimX;
 			int aimY = NavigationAimY;
+			int aimSqrtDis = Util.SqrtDistance(aimX, aimY, X, Y);
 
-			// Refresh Target Nav Pos
-			bool hasGroundedTarget = CellNavigation.ExpandToGroundNearby(
-				aimX, aimY, snapDistance,
-				out NavigationTargetX, out NavigationTargetY
-			);
+			switch (NavigationState) {
 
-			// ?? >> Fly
-			if (!hasGroundedTarget) {
-				NavigationState = CharacterNavigationState.Fly;
-				NavigationFlyStartFrame = Game.GlobalFrame;
+				case CharacterNavigationState.Idle:
+					if (aimSqrtDis > startFlySqrtDistance) {
+						// Idle >> Fly
+						NavigationState = CharacterNavigationState.Fly;
+						NavigationFlyStartFrame = Game.GlobalFrame;
+					} else if (aimSqrtDis > startMoveSqrtDistance) {
+						// Idle >> Nav
+						NavigationState = CharacterNavigationState.Navigate;
+					}
+					break;
+
+				case CharacterNavigationState.Navigate:
+					if (aimSqrtDis > startFlySqrtDistance) {
+						// Nav >> Fly
+						NavigationState = CharacterNavigationState.Fly;
+						NavigationFlyStartFrame = Game.GlobalFrame;
+					} else if (operationDone && aimSqrtDis < endMoveSqrtDistance) {
+						// Nav >> Idle
+						NavigationState = CharacterNavigationState.Idle;
+					}
+					break;
+
+				case CharacterNavigationState.Fly:
+					// Fly >> ??
+					if (
+						NavigationState == CharacterNavigationState.Fly &&
+						Game.GlobalFrame > NavigationFlyStartFrame + minimumFlyDuration &&
+						aimSqrtDis < endFlySqrtDistance
+					) {
+						NavigationState = aimSqrtDis > startMoveSqrtDistance ?
+							CharacterNavigationState.Navigate :
+							CharacterNavigationState.Idle;
+					}
+					break;
+
+				default: throw new System.NotImplementedException();
 			}
 
-			// Fly >> ??
-			if (
-				hasGroundedTarget &&
-				NavigationState == CharacterNavigationState.Fly &&
-				Game.GlobalFrame > NavigationFlyStartFrame + minimumFlyDuration
-			) {
-				NavigationState = CharacterNavigationState.Idle;
-			}
-
-			// Idle >> Nav
-			if (NavigationState == CharacterNavigationState.Idle) {
-				if (Util.SqrtDistance(NavigationTargetX, NavigationTargetY, X, Y) > startMoveDistance * startMoveDistance) {
-					NavigationState = CharacterNavigationState.Navigate;
-				}
-			}
-
-			// Navigate
+			// Perform Navigate
+			CurrentNavOperationCount = 0;
+			CurrentNavOperationIndex = 0;
 			if (NavigationState == CharacterNavigationState.Navigate) {
 				CurrentNavOperationCount = CellNavigation.Navigate(
-					NavOperation, this, NavigationTargetX, NavigationTargetY,
-					6 * Const.CEL, 6 * Const.CEL
+					NavOperation, X, Y, aimX, aimY,
+					NavigationJumpDistanceX, NavigationJumpDistanceY
 				);
-				CurrentNavOperationIndex = 0;
+				if (CurrentNavOperationCount == 0) {
+					NavigationState = CharacterNavigationState.Idle;
+				}
 			}
 
 		}
@@ -187,10 +224,8 @@ namespace Yaya {
 
 		public void ResetNavigation () {
 			NavigationState = CharacterNavigationState.Idle;
-			NavigationAimX = 0;
-			NavigationAimY = 0;
-			NavigationTargetX = X;
-			NavigationTargetY = Y;
+			NavigationAimX = X;
+			NavigationAimY = Y;
 			NavigationFlyStartFrame = int.MinValue;
 			LastNavStateRefreshFrame = int.MaxValue;
 			CurrentNavOperationIndex = 0;

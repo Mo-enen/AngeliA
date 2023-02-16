@@ -147,7 +147,7 @@ namespace Yaya {
 				FrameInput.MouseGlobalPosition.y
 			);
 			if (CellNavigation.ExpandToGroundNearby(
-				aimPos.x, aimPos.y, Const.CEL * 6,
+				aimPos.x, aimPos.y, 6,
 				out int gnX, out int gnY
 			)) {
 				CellRenderer.Draw("Circle16".AngeHash(), gnX, gnY, 500, 500, 0, 128, 128, Const.GREEN).Z = int.MaxValue;

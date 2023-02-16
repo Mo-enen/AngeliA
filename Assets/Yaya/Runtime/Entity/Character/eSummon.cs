@@ -56,15 +56,18 @@ namespace Yaya {
 				ResetNavigation();
 			}
 
-			// Nav to Owner
-			//Navigate(
-			//	Owner.X + (InstanceIndex / 2) * Const.CEL * ((InstanceIndex % 2) == 0 ? 1 : -1),
-			//	Owner.Y
-			//);
+			// Find Nav Aim Pos
+			int aimX = Owner.X + (InstanceIndex / 2) * Const.CEL * ((InstanceIndex % 2) == 0 ? 1 : -1);
+			int aimY = Owner.Y;
 
 
 
 
+
+
+
+			// Nav to Aim
+			Navigate(aimX, aimY);
 
 			base.PhysicsUpdate();
 
