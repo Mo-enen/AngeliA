@@ -12,8 +12,7 @@ namespace Yaya {
 		None = 0,
 		Move = 1,
 		Jump = 2,
-		Drop = 3,
-		Fly = 4,
+		Fly = 3,
 	}
 
 

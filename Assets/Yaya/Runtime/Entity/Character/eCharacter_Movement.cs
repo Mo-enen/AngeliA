@@ -500,12 +500,12 @@ namespace Yaya {
 				case MovementState.Fly: // Glide
 					if (FlyGlideAvailable.Value) {
 						speed = FacingRight ? FlyMoveSpeed : -FlyMoveSpeed;
-						acc = FlyGlideAcceleration;
-						dcc = FlyGlideDecceleration;
+						acc = FlyAcceleration;
+						dcc = FlyDecceleration;
 					} else {
 						speed = IntendedX * FlyMoveSpeed;
-						acc = FlyGlideAcceleration;
-						dcc = FlyGlideDecceleration;
+						acc = FlyAcceleration;
+						dcc = FlyDecceleration;
 					}
 					break;
 

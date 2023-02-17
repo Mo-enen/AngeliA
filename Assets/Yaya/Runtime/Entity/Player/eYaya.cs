@@ -53,7 +53,9 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
-			eSummon.CreateSummon<eGuaGua>(this, X, Y);
+			if (!Game.Current.TryGetEntity<eGuaGua>(out _)) {
+				eSummon.CreateSummon<eGuaGua>(this, X, Y);
+			}
 		}
 
 

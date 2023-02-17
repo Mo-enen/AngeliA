@@ -90,8 +90,8 @@ namespace Yaya {
 		public readonly BuffInt FlyGravityFallRate = new(200);
 		public readonly BuffInt FlyFallSpeed = new(12);
 		public readonly BuffInt FlyMoveSpeed = new(36);
-		public readonly BuffInt FlyGlideAcceleration = new(2);
-		public readonly BuffInt FlyGlideDecceleration = new(1);
+		public readonly BuffInt FlyAcceleration = new(2);
+		public readonly BuffInt FlyDecceleration = new(1);
 
 		// Slide
 		public readonly BuffBool SlideAvailable = new(false);

@@ -16,6 +16,9 @@ namespace Yaya {
 		#region --- VAR ---
 
 
+		// Const
+		//private const int NavigationGroundNearbyIteration = 6;
+
 		// Api
 		public eCharacter Owner { get; set; } = null;
 		public sealed override int Team => Owner != null ? Owner.Team : YayaConst.TEAM_NEUTRAL;
@@ -85,8 +88,12 @@ namespace Yaya {
 
 			var result = new Vector2Int(Owner.X, Owner.Y);
 
-
-
+			if (CellNavigation.ExpandToGroundNearby(
+				result.x, result.y, 6, out int groundX, out int groundY
+			)) {
+				result.x = groundX;
+				result.y = groundY;
+			}
 
 
 
