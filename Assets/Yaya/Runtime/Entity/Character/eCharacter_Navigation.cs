@@ -33,7 +33,7 @@ namespace Yaya {
 		private int CurrentNavOperationIndex = 0;
 		private int CurrentNavOperationCount = 0;
 		private int NavigationFlyStartFrame = int.MinValue;
-		private int LastNavStateRefreshFrame = int.MaxValue;
+		private int LastNavStateReloadFrame = int.MaxValue;
 		private Vector2Int NavigationAim = default;
 
 
@@ -82,8 +82,6 @@ namespace Yaya {
 					NavUpdate_MovementFly();
 					break;
 			}
-			X += VelocityX;
-			Y += VelocityY;
 
 		}
 
@@ -104,13 +102,10 @@ namespace Yaya {
 				NavigationState == CharacterNavigationState.Navigate &&
 				CurrentNavOperationCount > 0 &&
 				CurrentNavOperationIndex >= CurrentNavOperationCount;
-
-			// Scan Frequency Gate
-			if (
-				!operationDone &&
-				Game.GlobalFrame < LastNavStateRefreshFrame + TARGET_REFRESH_FREQUENCY
-			) return;
-			LastNavStateRefreshFrame = Game.GlobalFrame;
+			bool needReload = operationDone || Game.GlobalFrame > LastNavStateReloadFrame + TARGET_REFRESH_FREQUENCY;
+			if (needReload) {
+				LastNavStateReloadFrame = Game.GlobalFrame;
+			}
 
 			// Nav Logic Start
 			int startMoveSqrtDistance = START_MOVE_DISTANCE * START_MOVE_DISTANCE;
@@ -118,8 +113,11 @@ namespace Yaya {
 			int startFlySqrtDistance = START_FLY_DISTANCE * START_FLY_DISTANCE;
 			int endFlySqrtDistance = END_FLY_DISTANCE * END_FLY_DISTANCE;
 			int minimumFlyDuration = MINIMUM_FLY_DURATION;
-			NavigationAim = GetNavigationAim();
-			int aimSqrtDis = Util.SqrtDistance(NavigationAim.x, NavigationAim.y, X, Y);
+			NavigationAim =
+				NavigationState == CharacterNavigationState.Fly ? GetNavigationFlyAim() :
+				needReload ? GetNavigationMoveAim() :
+				NavigationAim;
+			int aimSqrtDis = Util.SquareDistance(NavigationAim.x, NavigationAim.y, X, Y);
 
 			switch (NavigationState) {
 
@@ -160,15 +158,17 @@ namespace Yaya {
 			}
 
 			// Perform Navigate
-			CurrentNavOperationCount = 0;
-			CurrentNavOperationIndex = 0;
-			if (NavigationState == CharacterNavigationState.Navigate) {
-				CurrentNavOperationCount = CellNavigation.Navigate(
-					NavOperation, X, Y, NavigationAim.x, NavigationAim.y,
-					JUMP_DISTANCE_X, JUMP_DISTANCE_Y
-				);
-				if (CurrentNavOperationCount == 0) {
-					NavigationState = CharacterNavigationState.Idle;
+			if (needReload) {
+				CurrentNavOperationCount = 0;
+				CurrentNavOperationIndex = 0;
+				if (NavigationState == CharacterNavigationState.Navigate) {
+					CurrentNavOperationCount = CellNavigation.Navigate(
+						NavOperation, X, Y, NavigationAim.x, NavigationAim.y,
+						JUMP_DISTANCE_X, JUMP_DISTANCE_Y
+					);
+					if (CurrentNavOperationCount == 0) {
+						NavigationState = CharacterNavigationState.Idle;
+					}
 				}
 			}
 
@@ -182,6 +182,8 @@ namespace Yaya {
 				CellNavigation.IsGround(X, Y, out int groundY) ? groundY - Y :
 				VelocityY - Gravity
 			).Clamp(-MaxGravitySpeed, int.MaxValue);
+			X += VelocityX;
+			Y += VelocityY;
 		}
 
 
@@ -196,26 +198,19 @@ namespace Yaya {
 
 		private void NavUpdate_MovementFly () {
 
+			// Navigation
+			var flyAim = NavigationAim;
+			flyAim.x = X.LerpTo(flyAim.x, 100);
+			flyAim.y = Y.LerpTo(flyAim.y, 100);
+			VelocityX = (flyAim.x - X).Clamp(-FlyMoveSpeed, FlyMoveSpeed);
+			VelocityY = (flyAim.y - Y).Clamp(-FlyMoveSpeed, FlyMoveSpeed);
+
+			// Character
 			MoveState = MovementState.Fly;
+			LockFacingRight(X < flyAim.x, 1);
 
-			//NavigationAim
-			//FlyMoveSpeed
-			//FlyAcceleration
-			//FlyDecceleration
-
-			CellRenderer.Draw(
-				"Circle16".AngeHash(), NavigationAim.x, NavigationAim.y,
-				500, 500, 0, 128, 128, Const.BLUE
-			).Z = int.MaxValue;
-
-			int targetX = NavigationAim.x;
-			int targetY = NavigationAim.y + Const.HALF;
-
-
-
-
-
-
+			X += VelocityX;
+			Y += VelocityY;
 
 		}
 
@@ -231,14 +226,15 @@ namespace Yaya {
 		public void ResetNavigation () {
 			NavigationState = CharacterNavigationState.Idle;
 			NavigationFlyStartFrame = int.MinValue;
-			LastNavStateRefreshFrame = int.MaxValue;
+			LastNavStateReloadFrame = int.MaxValue;
 			CurrentNavOperationIndex = 0;
 			CurrentNavOperationCount = 0;
 			NavigationAim = new Vector2Int(X, Y);
 		}
 
 
-		protected virtual Vector2Int GetNavigationAim () => new(X, Y);
+		protected virtual Vector2Int GetNavigationMoveAim () => new(X, Y);
+		protected virtual Vector2Int GetNavigationFlyAim () => new(X, Y);
 
 
 		#endregion

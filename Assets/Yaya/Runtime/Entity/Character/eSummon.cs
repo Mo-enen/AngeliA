@@ -27,6 +27,8 @@ namespace Yaya {
 		protected override bool NavigationEnable => CharacterState == CharacterState.GamePlay && Owner != null && Owner.Active;
 
 		// Data
+		private readonly Vector2Int[] OwnerPosTrail = new Vector2Int[24];
+		private int OwnerPosTrailIndex = -1;
 		private int SummonFrame = int.MinValue;
 		private int PrevZ = int.MinValue;
 
@@ -39,9 +41,21 @@ namespace Yaya {
 		#region --- MSG ---
 
 
+		public override void OnActived () {
+			base.OnActived();
+			OwnerPosTrailIndex = -1;
+		}
+
+
 		public override void OnInactived () {
 			base.OnInactived();
 			Owner = null;
+		}
+
+
+		public override void FillPhysics () {
+			if (NavigationEnable && MoveState == MovementState.Fly) return;
+			base.FillPhysics();
 		}
 
 
@@ -60,6 +74,22 @@ namespace Yaya {
 				Y = Owner.Y;
 				ResetNavigation();
 			}
+
+			// Update Trail
+			if (OwnerPosTrailIndex < 0) {
+				// Init Check
+				if (Owner != null && Owner.Active) {
+					for (int i = 0; i < OwnerPosTrail.Length; i++) {
+						OwnerPosTrail[i] = new Vector2Int(Owner.X, Owner.Y);
+					}
+				} else {
+					System.Array.Clear(OwnerPosTrail, 0, OwnerPosTrail.Length);
+				}
+				OwnerPosTrailIndex = 0;
+			}
+			// Update Pos
+			OwnerPosTrail[OwnerPosTrailIndex] = new(Owner.X, Owner.Y);
+			OwnerPosTrailIndex = (OwnerPosTrailIndex + 1).UMod(OwnerPosTrail.Length);
 
 			base.PhysicsUpdate();
 
@@ -82,9 +112,9 @@ namespace Yaya {
 		#region --- API ---
 
 
-		protected override Vector2Int GetNavigationAim () {
+		protected override Vector2Int GetNavigationMoveAim () {
 
-			if (Owner == null || !Owner.Active) return base.GetNavigationAim();
+			if (Owner == null || !Owner.Active) return base.GetNavigationMoveAim();
 
 			var result = new Vector2Int(Owner.X, Owner.Y);
 
@@ -98,6 +128,16 @@ namespace Yaya {
 
 
 			return result;
+		}
+
+
+		protected override Vector2Int GetNavigationFlyAim () {
+			if (Owner == null || !Owner.Active) return base.GetNavigationFlyAim();
+			var pos = OwnerPosTrail[(OwnerPosTrailIndex + 1).UMod(OwnerPosTrail.Length)];
+			return new Vector2Int(
+				pos.x + Const.CEL * (InstanceIndex % 2 == 0 ? -2 : 2),
+				pos.y + Const.CEL
+			);
 		}
 
 

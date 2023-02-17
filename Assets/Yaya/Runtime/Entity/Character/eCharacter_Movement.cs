@@ -406,7 +406,7 @@ namespace Yaya {
 			if (!IntendedDash || !IsGrounded || InSand) return;
 
 			// Jump Though Oneway
-			if (JumpThoughOneway && JumpThoughOnewayCheck()) {
+			if (JumpThoughOneway.Value && JumpThoughOnewayCheck()) {
 				PerformMove(0, -Const.HALF, ignoreOneway: true);
 				VelocityY = 0;
 				return;
@@ -883,9 +883,11 @@ namespace Yaya {
 
 
 		private bool JumpThoughOnewayCheck () {
+			var rect = new RectInt(Hitbox.xMin, Hitbox.yMin + 4 - Const.CEL / 4, Hitbox.width, Const.CEL / 4);
+			if (CellPhysics.Overlap(YayaConst.MASK_MAP, rect, this)) return false;
 			int count = CellPhysics.OverlapAll(
 				c_GroundThoughCheck,
-				YayaConst.MASK_MAP, new RectInt(Hitbox.xMin, Hitbox.yMin + 4 - Const.CEL / 4, Hitbox.width, Const.CEL / 4), this,
+				YayaConst.MASK_MAP, rect, this,
 				OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG
 			);
 			for (int i = 0; i < count; i++) {
