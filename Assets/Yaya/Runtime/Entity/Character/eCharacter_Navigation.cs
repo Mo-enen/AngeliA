@@ -13,7 +13,7 @@ namespace Yaya {
 		#region --- SUB ---
 
 
-		private enum CharacterNavigationState { Idle, Navigate, Fly, }
+		protected enum CharacterNavigationState { Idle, Navigate, Fly, }
 
 
 		#endregion
@@ -26,15 +26,16 @@ namespace Yaya {
 
 		// Api
 		protected virtual bool NavigationEnable => false;
+		protected bool NavOperationDone => CurrentNavOperationIndex >= CurrentNavOperationCount;
+		protected bool HasNavOperation => CurrentNavOperationCount > 0;
+		protected CharacterNavigationState NavigationState { get; private set; } = CharacterNavigationState.Idle;
+		protected Vector2Int NavigationAim { get; private set; } = default;
 
 		// Data
-		private CharacterNavigationState NavigationState = CharacterNavigationState.Idle;
 		private readonly CellNavigation.Operation[] NavOperation = new CellNavigation.Operation[8];
 		private int CurrentNavOperationIndex = 0;
 		private int CurrentNavOperationCount = 0;
 		private int NavigationFlyStartFrame = int.MinValue;
-		private int LastNavStateReloadFrame = int.MaxValue;
-		private Vector2Int NavigationAim = default;
 
 
 		#endregion
@@ -96,16 +97,6 @@ namespace Yaya {
 			const int JUMP_DISTANCE_X = Const.CEL * 6;
 			const int JUMP_DISTANCE_Y = Const.CEL * 6;
 			const int MINIMUM_FLY_DURATION = 120;
-			const int TARGET_REFRESH_FREQUENCY = 30;
-
-			bool operationDone =
-				NavigationState == CharacterNavigationState.Navigate &&
-				CurrentNavOperationCount > 0 &&
-				CurrentNavOperationIndex >= CurrentNavOperationCount;
-			bool needReload = operationDone || Game.GlobalFrame > LastNavStateReloadFrame + TARGET_REFRESH_FREQUENCY;
-			if (needReload) {
-				LastNavStateReloadFrame = Game.GlobalFrame;
-			}
 
 			// Nav Logic Start
 			int startMoveSqrtDistance = START_MOVE_DISTANCE * START_MOVE_DISTANCE;
@@ -113,11 +104,9 @@ namespace Yaya {
 			int startFlySqrtDistance = START_FLY_DISTANCE * START_FLY_DISTANCE;
 			int endFlySqrtDistance = END_FLY_DISTANCE * END_FLY_DISTANCE;
 			int minimumFlyDuration = MINIMUM_FLY_DURATION;
-			NavigationAim =
-				NavigationState == CharacterNavigationState.Fly ? GetNavigationFlyAim() :
-				needReload ? GetNavigationMoveAim() :
-				NavigationAim;
+			NavigationAim = GetNavigationAim();
 			int aimSqrtDis = Util.SquareDistance(NavigationAim.x, NavigationAim.y, X, Y);
+			bool operationDone = NavOperationDone;
 
 			switch (NavigationState) {
 
@@ -158,7 +147,7 @@ namespace Yaya {
 			}
 
 			// Perform Navigate
-			if (needReload) {
+			if (operationDone) {
 				CurrentNavOperationCount = 0;
 				CurrentNavOperationIndex = 0;
 				if (NavigationState == CharacterNavigationState.Navigate) {
@@ -197,21 +186,13 @@ namespace Yaya {
 
 
 		private void NavUpdate_MovementFly () {
-
-			// Navigation
 			var flyAim = NavigationAim;
 			flyAim.x = X.LerpTo(flyAim.x, 100);
 			flyAim.y = Y.LerpTo(flyAim.y, 100);
 			VelocityX = (flyAim.x - X).Clamp(-FlyMoveSpeed, FlyMoveSpeed);
 			VelocityY = (flyAim.y - Y).Clamp(-FlyMoveSpeed, FlyMoveSpeed);
-
-			// Character
-			MoveState = MovementState.Fly;
-			LockFacingRight(X < flyAim.x, 1);
-
 			X += VelocityX;
 			Y += VelocityY;
-
 		}
 
 
@@ -226,15 +207,19 @@ namespace Yaya {
 		public void ResetNavigation () {
 			NavigationState = CharacterNavigationState.Idle;
 			NavigationFlyStartFrame = int.MinValue;
-			LastNavStateReloadFrame = int.MaxValue;
 			CurrentNavOperationIndex = 0;
 			CurrentNavOperationCount = 0;
 			NavigationAim = new Vector2Int(X, Y);
 		}
 
 
-		protected virtual Vector2Int GetNavigationMoveAim () => new(X, Y);
-		protected virtual Vector2Int GetNavigationFlyAim () => new(X, Y);
+		public void ClearNavigation () {
+			CurrentNavOperationIndex = 0;
+			CurrentNavOperationCount = 0;
+		}
+
+
+		protected virtual Vector2Int GetNavigationAim () => NavigationAim;
 
 
 		#endregion

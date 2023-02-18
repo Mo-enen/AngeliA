@@ -17,7 +17,7 @@ namespace Yaya {
 
 
 		// Const
-		//private const int NavigationGroundNearbyIteration = 6;
+		private const int TARGET_REFRESH_FREQUENCY = 30;
 
 		// Api
 		public eCharacter Owner { get; set; } = null;
@@ -27,10 +27,12 @@ namespace Yaya {
 		protected override bool NavigationEnable => CharacterState == CharacterState.GamePlay && Owner != null && Owner.Active;
 
 		// Data
-		private readonly Vector2Int[] OwnerPosTrail = new Vector2Int[24];
+		private readonly Vector2Int[] OwnerPosTrail = new Vector2Int[30];
 		private int OwnerPosTrailIndex = -1;
 		private int SummonFrame = int.MinValue;
 		private int PrevZ = int.MinValue;
+		private int LastNavStateReloadFrame = int.MaxValue;
+		private int LastTrailUpdateFrame = int.MinValue;
 
 
 		#endregion
@@ -44,18 +46,16 @@ namespace Yaya {
 		public override void OnActived () {
 			base.OnActived();
 			OwnerPosTrailIndex = -1;
-		}
-
-
-		public override void OnInactived () {
-			base.OnInactived();
 			Owner = null;
+			LastNavStateReloadFrame = int.MaxValue;
 		}
 
 
-		public override void FillPhysics () {
-			if (NavigationEnable && MoveState == MovementState.Fly) return;
-			base.FillPhysics();
+		public virtual void OnSummoned (bool create) {
+			RenderBounce();
+			ResetNavigation();
+			LastNavStateReloadFrame = int.MaxValue;
+			SummonFrame = Game.GlobalFrame;
 		}
 
 
@@ -72,12 +72,31 @@ namespace Yaya {
 				PrevZ = Game.Current.ViewZ;
 				X = Owner.X;
 				Y = Owner.Y;
+				LastNavStateReloadFrame = int.MaxValue;
 				ResetNavigation();
 			}
 
-			// Update Trail
-			if (OwnerPosTrailIndex < 0) {
-				// Init Check
+			PhysicsUpdate_Trail();
+
+			base.PhysicsUpdate();
+
+			// Fly
+			if (NavigationState == CharacterNavigationState.Fly) {
+				MoveState = MovementState.Fly;
+				if ((X - NavigationAim.x).Abs() > 96) {
+					Move(X < NavigationAim.x ? Direction3.Right : Direction3.Left, 0);
+				}
+			}
+
+		}
+
+
+		private void PhysicsUpdate_Trail () {
+
+			if (NavigationState != CharacterNavigationState.Fly) return;
+
+			// Init Check
+			if (OwnerPosTrailIndex < 0 || LastTrailUpdateFrame != Game.GlobalFrame) {
 				if (Owner != null && Owner.Active) {
 					for (int i = 0; i < OwnerPosTrail.Length; i++) {
 						OwnerPosTrail[i] = new Vector2Int(Owner.X, Owner.Y);
@@ -87,20 +106,11 @@ namespace Yaya {
 				}
 				OwnerPosTrailIndex = 0;
 			}
-			// Update Pos
+
+			// Update
 			OwnerPosTrail[OwnerPosTrailIndex] = new(Owner.X, Owner.Y);
 			OwnerPosTrailIndex = (OwnerPosTrailIndex + 1).UMod(OwnerPosTrail.Length);
-
-			base.PhysicsUpdate();
-
-		}
-
-
-		// Misc
-		public virtual void OnSummoned (bool create) {
-			RenderBounce();
-			ResetNavigation();
-			SummonFrame = Game.GlobalFrame;
+			LastTrailUpdateFrame = Game.GlobalFrame;
 		}
 
 
@@ -112,32 +122,58 @@ namespace Yaya {
 		#region --- API ---
 
 
-		protected override Vector2Int GetNavigationMoveAim () {
+		protected override Vector2Int GetNavigationAim () {
 
-			if (Owner == null || !Owner.Active) return base.GetNavigationMoveAim();
-
+			if (Owner == null || !Owner.Active) return base.GetNavigationAim();
 			var result = new Vector2Int(Owner.X, Owner.Y);
 
-			if (CellNavigation.ExpandToGroundNearby(
-				result.x, result.y, 6, out int groundX, out int groundY
-			)) {
-				result.x = groundX;
-				result.y = groundY;
+			switch (NavigationState) {
+
+				case CharacterNavigationState.Navigate:
+
+					if (
+						Game.GlobalFrame < LastNavStateReloadFrame + TARGET_REFRESH_FREQUENCY &&
+						(!NavOperationDone || !HasNavOperation)
+					) break;
+
+					LastNavStateReloadFrame = Game.GlobalFrame;
+					ClearNavigation();
+
+
+
+					// Test
+					if (CellNavigation.ExpandToGroundNearby(
+						result.x, result.y, 6, out int groundX, out int groundY
+					)) {
+						result.x = groundX;
+						result.y = groundY;
+					}
+					// Test
+
+
+
+					break;
+
+				case CharacterNavigationState.Fly:
+
+					const int COLUMN_COUNT = 4;
+
+					int sign = InstanceIndex % 2 == 0 ? -1 : 1;
+					int row = InstanceIndex / 2 / COLUMN_COUNT;
+					int column = (InstanceIndex / 2 % COLUMN_COUNT + 1) * sign;
+					int rowSign = (row % 2 == 0) == (sign == 1) ? 1 : -1;
+
+					int instanceOffsetX = column * Const.CEL * 3 / 2 + rowSign * Const.HALF / 2;
+					int instanceOffsetY = row * Const.CEL + Const.CEL - column.Abs() * Const.HALF / 3;
+
+					// Result
+					var pos = OwnerPosTrail[(OwnerPosTrailIndex + 1).UMod(OwnerPosTrail.Length)];
+					result.x = pos.x + instanceOffsetX;
+					result.y = pos.y + instanceOffsetY;
+					break;
+
 			}
-
-
-
 			return result;
-		}
-
-
-		protected override Vector2Int GetNavigationFlyAim () {
-			if (Owner == null || !Owner.Active) return base.GetNavigationFlyAim();
-			var pos = OwnerPosTrail[(OwnerPosTrailIndex + 1).UMod(OwnerPosTrail.Length)];
-			return new Vector2Int(
-				pos.x + Const.CEL * (InstanceIndex % 2 == 0 ? -2 : 2),
-				pos.y + Const.CEL
-			);
 		}
 
 

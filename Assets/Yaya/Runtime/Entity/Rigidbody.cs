@@ -195,6 +195,7 @@ namespace Yaya {
 
 		public void PerformMove (int speedX, int speedY, bool ignoreOneway = false, bool ignoreLevel = false) {
 
+			if (!PhysicsEnable) return;
 			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);
 
 			int speedScale = InWater ? YayaConst.WATER_SPEED_LOSE : 1000;
