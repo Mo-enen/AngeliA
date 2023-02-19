@@ -121,12 +121,14 @@ namespace Yaya {
 					// Fix Y (Walk)
 					if ((DirectionHorizontal == Direction3.Left) == (target.VelocityX > 0)) {
 						// Walk Toward
-						target.VelocityY = DirectionVertical == Direction3.Down ?
+						target.Y += DirectionVertical == Direction3.Down ?
 							-Mathf.Abs(target.VelocityX) :
 							Mathf.Abs(target.VelocityX);
+						target.VelocityY = 0;
 					} else {
 						// Walk Away
-						target.VelocityY = -Mathf.Abs(target.VelocityX);
+						target.Y -= Mathf.Abs(target.VelocityX);
+						target.VelocityY = 0;
 					}
 				}
 			} else {

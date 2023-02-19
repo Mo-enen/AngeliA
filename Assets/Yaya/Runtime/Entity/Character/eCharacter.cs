@@ -87,7 +87,7 @@ namespace Yaya {
 				case CharacterState.GamePlay:
 					if (TakingDamage) {
 						// Tacking Damage
-						AntiKnockback();
+						VelocityX = VelocityX.MoveTowards(0, KnockbackDecceleration);
 					} else {
 						// General
 						PhysicsUpdate_Action();
@@ -136,6 +136,7 @@ namespace Yaya {
 
 
 		public bool IsAttackAllowedByMovement () =>
+			!IsRushing &&
 			(AttackInAir || (IsGrounded || InWater || InSand || IsClimbing)) &&
 			(AttackInWater || !InWater) &&
 			(AttackWhenMoving || IntendedX == 0) &&

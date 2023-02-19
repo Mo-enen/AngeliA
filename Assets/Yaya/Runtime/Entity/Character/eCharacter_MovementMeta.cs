@@ -10,7 +10,7 @@ namespace Yaya {
 		public readonly BuffInt MovementWidth = new(150);
 		public readonly BuffInt MovementHeight = new(384);
 		public readonly BuffInt RollingHeight = new(200);
-		public readonly BuffInt AntiKnockbackSpeed = new(16);
+		public readonly BuffInt KnockbackDecceleration = new(16);
 
 		// Walk
 		public readonly BuffInt WalkSpeed = new(20);
@@ -44,9 +44,19 @@ namespace Yaya {
 		public readonly BuffInt DashAcceleration = new(24);
 		public readonly BuffInt DashCancelLoseRate = new(300);
 
-		// Sprint
-		public readonly BuffBool SprintAvailable = new(true);
-
+		// Rush
+		public readonly BuffBool RushAvailable = new(true);
+		public readonly BuffBool RushInAir = new(true);
+		public readonly BuffBool RushInWater = new(true);
+		public readonly BuffBool RushWhenClimb = new(true);
+		public readonly BuffInt RushHeight = new(384);
+		public readonly BuffInt RushSpeed = new(72);
+		public readonly BuffInt RushStopSpeed = new(12);
+		public readonly BuffInt RushDuration = new(8);
+		public readonly BuffInt RushStiff = new(10);
+		public readonly BuffInt RushCooldown = new(2);
+		public readonly BuffInt RushAcceleration = new(12);
+		public readonly BuffInt RushDecceleration = new(4);
 
 		// Squat
 		public readonly BuffBool SquatAvailable = new(true);

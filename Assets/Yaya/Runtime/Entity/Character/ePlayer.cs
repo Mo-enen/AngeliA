@@ -20,16 +20,21 @@ namespace Yaya {
 		#region --- VAR ---
 
 
+		// Const
+		private const int RUSH_TAPPING_GAP = 16;
+
 		// Api
 		public static ePlayer Selecting { get; private set; } = null;
 		public override bool IsChargingAttack => MinimalChargeAttackDuration != int.MaxValue && !IsSafe && AttackCooldownReady(false) && FrameInput.GameKeyHolding(Gamekey.Action);
 		public override int Team => YayaConst.TEAM_PLAYER;
 		public int AimViewX { get; private set; } = 0;
 		public int AimViewY { get; private set; } = 0;
-		
+
 		// Data
 		private static readonly PhysicsCell[] Collects = new PhysicsCell[8];
 		private int AttackRequiringFrame = int.MinValue;
+		private int LastLeftKeyDown = int.MinValue;
+		private int LastRightKeyDown = int.MinValue;
 		private int LastGroundedY = 0;
 
 
@@ -77,7 +82,7 @@ namespace Yaya {
 				case CharacterState.GamePlay:
 					if (!FrameTask.HasTask(YayaConst.TASK_ROUTE)) {
 						Move(FrameInput.DirectionX, FrameInput.DirectionY);
-						Update_JumpDashPound();
+						Update_JumpDashPoundRush();
 						Update_Action_Attack();
 						eControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, WORD.HINT_MOVE);
 					} else {
@@ -127,12 +132,13 @@ namespace Yaya {
 		}
 
 
-		private void Update_JumpDashPound () {
+		private void Update_JumpDashPoundRush () {
 
 			if (LockingInput) return;
 
 			eControlHintUI.AddHint(Gamekey.Jump, WORD.HINT_JUMP);
 
+			// Jump/Dash
 			HoldJump(FrameInput.GameKeyHolding(Gamekey.Jump));
 			if (FrameInput.GameKeyDown(Gamekey.Jump)) {
 				// Movement Jump
@@ -143,8 +149,26 @@ namespace Yaya {
 					AttackRequiringFrame = int.MinValue;
 				}
 			}
+
+			// Pound
 			if (FrameInput.GameKeyDown(Gamekey.Down)) {
 				Pound();
+			}
+
+			// Rush
+			if (FrameInput.GameKeyDown(Gamekey.Left)) {
+				if (Game.GlobalFrame < LastLeftKeyDown + RUSH_TAPPING_GAP) {
+					Rush();
+				}
+				LastLeftKeyDown = Game.GlobalFrame;
+				LastRightKeyDown = int.MinValue;
+			}
+			if (FrameInput.GameKeyDown(Gamekey.Right)) {
+				if (Game.GlobalFrame < LastRightKeyDown + RUSH_TAPPING_GAP) {
+					Rush();
+				}
+				LastRightKeyDown = Game.GlobalFrame;
+				LastLeftKeyDown = int.MinValue;
 			}
 
 		}
@@ -200,7 +224,7 @@ namespace Yaya {
 
 			// Perform Required Attack
 			const int ATTACK_REQUIRE_GAP = 12;
-			if (AttackCooldownReady(false) && Game.GlobalFrame < AttackRequiringFrame + ATTACK_REQUIRE_GAP) {
+			if (IsAttackAllowedByMovement() && AttackCooldownReady(false) && Game.GlobalFrame < AttackRequiringFrame + ATTACK_REQUIRE_GAP) {
 				AttackRequiringFrame = int.MinValue;
 				Attack();
 			}

@@ -30,6 +30,7 @@ namespace Yaya {
 			public int JumpU = 0;
 			public int JumpD = 0;
 			public int Dash = 0;
+			public int Rush = 0;
 			public int SquatIdle = 0;
 			public int SquatMove = 0;
 			public int SwimIdle = 0;
@@ -177,6 +178,7 @@ namespace Yaya {
 			AnimationSheet.JumpD = AniSheet.LoadAniCode($"{name}.JumpD", jump);
 			AnimationSheet.Roll = AniSheet.LoadAniCode($"{name}.Roll", AnimationSheet.Run);
 			AnimationSheet.Dash = AniSheet.LoadAniCode($"{name}.Dash", AnimationSheet.Roll);
+			AnimationSheet.Rush = AniSheet.LoadAniCode($"{name}.Rush", AnimationSheet.Dash);
 			int squat = AniSheet.LoadAniCode($"{name}.Squat", AnimationSheet.Idle);
 			AnimationSheet.SquatIdle = AniSheet.LoadAniCode($"{name}.SquatIdle", squat);
 			AnimationSheet.SquatMove = AniSheet.LoadAniCode($"{name}.SquatMove", squat);
@@ -332,6 +334,7 @@ namespace Yaya {
 					MovementState.SquatIdle => AnimationSheet.SquatIdle,
 					MovementState.SquatMove => AnimationSheet.SquatMove,
 					MovementState.Dash => AnimationSheet.Dash,
+					MovementState.Rush => AnimationSheet.Rush,
 					MovementState.Pound => AnimationSheet.Pound,
 					MovementState.Climb => AnimationSheet.Climb,
 					MovementState.Fly => AnimationSheet.Fly,
