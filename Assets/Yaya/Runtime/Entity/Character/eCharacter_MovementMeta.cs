@@ -44,6 +44,10 @@ namespace Yaya {
 		public readonly BuffInt DashAcceleration = new(24);
 		public readonly BuffInt DashCancelLoseRate = new(300);
 
+		// Sprint
+		public readonly BuffBool SprintAvailable = new(true);
+
+
 		// Squat
 		public readonly BuffBool SquatAvailable = new(true);
 		public readonly BuffInt SquatHeight = new(200);

@@ -71,7 +71,7 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			if (CharacterState == CharacterState.GamePlay) {
-				base.FillPhysics();
+				CellPhysics.FillEntity(PhysicsLayer, this, NavigationState == CharacterNavigationState.Fly);
 			}
 		}
 

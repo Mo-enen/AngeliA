@@ -13,9 +13,11 @@ namespace Yaya {
 		#region --- VAR ---
 
 
+		// Const
+		private static readonly int WATER_PARTICLE_ID = typeof(eWaterSplashParticle).AngeHash();
+
 		// Api
 		public override RectInt Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
-		public RectInt PrevRect { get; private set; } = default;
 		public bool IsGrounded { get; private set; } = false;
 		public bool IsInsideGround { get; set; } = false;
 		public int VelocityX { get; set; } = 0;
@@ -62,7 +64,6 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
-			PrevRect = Rect;
 			InSand = false;
 			InWater = false;
 		}
@@ -71,23 +72,21 @@ namespace Yaya {
 		public override void FillPhysics () {
 			base.FillPhysics();
 			CellPhysics.FillEntity(PhysicsLayer, this);
-			PrevRect = Rect;
 		}
 
 
 		public override void PhysicsUpdate () {
 
 			base.PhysicsUpdate();
+			var rect = Rect;
 
 			if (!PhysicsEnable) {
 				IsInsideGround = InsideGroundCheck();
 				IsGrounded = GroundedCheck();
-				InWater = CellPhysics.Overlap(YayaConst.MASK_LEVEL, Rect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
-				InSand = CellPhysics.Overlap(YayaConst.MASK_LEVEL, Rect, null, OperationMode.TriggerOnly, YayaConst.QUICKSAND_TAG);
+				InWater = CellPhysics.Overlap(YayaConst.MASK_LEVEL, rect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
+				InSand = CellPhysics.Overlap(YayaConst.MASK_LEVEL, rect, null, OperationMode.TriggerOnly, YayaConst.QUICKSAND_TAG);
 				return;
 			}
-
-			var rect = Rect;
 
 			// Grounded
 			IsInsideGround = InsideGroundCheck();
@@ -135,23 +134,25 @@ namespace Yaya {
 			if (AirDragX != 0) VelocityX = VelocityX.MoveTowards(0, AirDragX);
 			if (AirDragY != 0) VelocityY = VelocityY.MoveTowards(0, AirDragY);
 
-			// Water & Sand
-			bool prevInSand = InSand;
-			InWater = CellPhysics.Overlap(YayaConst.MASK_LEVEL, Rect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
-			InSand = CellPhysics.Overlap(YayaConst.MASK_LEVEL, Rect, null, OperationMode.TriggerOnly, YayaConst.QUICKSAND_TAG);
-
-			// Quicksand
-			if (InSand) {
-				VelocityX = VelocityX.Clamp(-YayaConst.QUICK_SAND_MAX_RUN_SPEED, YayaConst.QUICK_SAND_MAX_RUN_SPEED);
+			// Water
+			bool prevInWater = InWater;
+			InWater = CellPhysics.Overlap(YayaConst.MASK_LEVEL, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
+			if (prevInWater != InWater) {
+				Game.Current.SpawnEntity(
+					WATER_PARTICLE_ID,
+					X + OffsetX + Width / 2,
+					Y + OffsetY + Height / 2 + (InWater ? 0 : -VelocityY)
+				);
 			}
 
-			// Out Sand
+			// Sand
+			bool prevInSand = InSand;
+			InSand = CellPhysics.Overlap(YayaConst.MASK_LEVEL, rect, null, OperationMode.TriggerOnly, YayaConst.QUICKSAND_TAG);
 			if (prevInSand && !InSand && VelocityY > 0) {
 				VelocityY = Mathf.Max(VelocityY, YayaConst.QUICK_SAND_JUMPOUT_SPEED);
 			}
-
-			// Quicksand
 			if (InSand) {
+				VelocityX = VelocityX.Clamp(-YayaConst.QUICK_SAND_MAX_RUN_SPEED, YayaConst.QUICK_SAND_MAX_RUN_SPEED);
 				VelocityY = VelocityY.Clamp(-YayaConst.QUICK_SAND_SINK_SPEED, YayaConst.QUICK_SAND_JUMP_SPEED);
 			}
 		}

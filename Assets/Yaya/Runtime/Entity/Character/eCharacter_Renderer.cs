@@ -115,19 +115,19 @@ namespace Yaya {
 		private static readonly int[] BOUNCE_AMOUNTS = new int[] { 500, 200, 100, 50, 25, 50, 100, 200, 500, };
 		private static readonly int[] BOUNCE_AMOUNTS_BIG = new int[] { 0, -600, -900, -1200, -1400, -1200, -900, -600, 0, };
 		private static readonly Color32[] HIGHLIGHT_FLASHING_TINT = new Color32[] {
-			new(128, 128, 128, 255),
-			new(156, 42, 128, 255),
-			new(128, 156, 42, 255),
-			new(42, 128, 156, 255),
-			new(128, 128, 128, 255),
-			new(22, 156, 156, 255),
-			new(128, 42, 156, 255),
-			new(128, 128, 128, 255),
-			new(128, 128, 156, 255),
-			new(156, 42, 128, 255),
-			new(128, 128, 128, 255),
-			new(128, 42, 156, 255),
-			new(128, 156, 42, 255),
+			new(200, 200, 200, 200),
+			new(255, 96, 200, 200),
+			new(200, 255, 96, 200),
+			new(96, 200, 255, 200),
+			new(200, 200, 200, 200),
+			new(48, 255, 255, 200),
+			new(200, 96, 255, 200),
+			new(200, 200, 200, 200),
+			new(200, 200, 255, 200),
+			new(255, 96, 200, 200),
+			new(200, 200, 200, 200),
+			new(200, 96, 255, 200),
+			new(200, 255, 96, 200),
 		};
 		private const int BOUNCY = 150;
 		private const int POUNDING_BOUNCE = 1500;
@@ -138,8 +138,8 @@ namespace Yaya {
 
 		// Api
 		public int FaceIndex { get; set; } = 0;
-		protected virtual byte HighlightAlpha => IsChargingAttack ? (byte)Util.Remap(0, MinimalChargeAttackDuration, -32, 255, Game.GlobalFrame - ChargeStartFrame).Clamp(0, 255) : (byte)0;
-		protected virtual bool IsHighlightFlashing => IsAttackCharged;
+		protected virtual byte ColorfulFlashingAlpha => IsChargingAttack ? (byte)Util.Remap(0, MinimalChargeAttackDuration, -32, 255, Game.GlobalFrame - ChargeStartFrame).Clamp(0, 255) : (byte)0;
+		protected virtual bool IsColorfulFlashing => IsAttackCharged;
 
 		// Data
 		private readonly AniSheet AnimationSheet = new();
@@ -419,11 +419,11 @@ namespace Yaya {
 				CurrentBounce = reverse ? -bounce : bounce;
 			}
 
-			// Highlight
-			byte highlightAlpha = !IsHighlightFlashing || frame % HIGHLIGHT_FLASH_RATE < HIGHLIGHT_FLASH_RATE / 2 ? HighlightAlpha : (byte)0;
+			// Colorful Flashing
+			byte highlightAlpha = !IsColorfulFlashing || frame % HIGHLIGHT_FLASH_RATE < HIGHLIGHT_FLASH_RATE / 2 ? ColorfulFlashingAlpha : (byte)0;
 			if (highlightAlpha > 0) {
 				var highlightTint = new Color32(96, 96, 96, 255);
-				if (IsHighlightFlashing) {
+				if (IsColorfulFlashing) {
 					highlightTint = HIGHLIGHT_FLASHING_TINT[(frame / 4).UMod(HIGHLIGHT_FLASHING_TINT.Length)];
 				}
 				highlightTint.a = highlightAlpha;
@@ -496,7 +496,7 @@ namespace Yaya {
 			} else {
 				offsetY += offsetY * (1000 - bounce) / 1000;
 			}
-			var faceID = AnimationSheet.Faces[FaceIndex.UMod(AnimationSheet.Faces.Length)];
+			var faceID = AnimationSheet.Faces[FaceIndex.Clamp(0, AnimationSheet.Faces.Length - 1)];
 			CellRenderer.Draw_9Slice(
 				Game.GlobalFrame % EYE_BLINK_RATE > 8 ? faceID : AnimationSheet.FaceBlink,
 				X + offsetX + (FacingRight ? sprite.GlobalBorder.Left : sprite.GlobalBorder.Right),

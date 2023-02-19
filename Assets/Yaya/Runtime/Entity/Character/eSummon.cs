@@ -139,7 +139,7 @@ namespace Yaya {
 					LastNavStateReloadFrame = Game.GlobalFrame;
 					ClearNavigation();
 
-
+					
 
 					// Test
 					if (CellNavigation.ExpandToGroundNearby(

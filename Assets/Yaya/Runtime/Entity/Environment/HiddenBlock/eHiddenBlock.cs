@@ -42,16 +42,14 @@ namespace Yaya {
 			// Check for Trigger
 			if (IsHidden) {
 				int count = CellPhysics.OverlapAll(c_Checks, YayaConst.MASK_RIGIDBODY, Rect, this);
-				var blockRect = Rect;
 				for (int i = 0; i < count; i++) {
 					var hit = c_Checks[i];
-					if (hit.Entity is not ePlayer ch) continue;
-					var hitPrevRect = ch.PrevRect;
+					if (hit.Entity is not ePlayer player) continue;
 					if (
-						(TriggerFromBottom && hitPrevRect.yMax <= blockRect.yMin) ||
-						(TriggerFromTop && hitPrevRect.yMin >= blockRect.yMax) ||
-						(TriggerFromLeft && hitPrevRect.xMax <= blockRect.xMin) ||
-						(TriggerFromRight && hitPrevRect.xMin >= blockRect.xMax)
+						(TriggerFromBottom && player.VelocityY > 0) ||
+						(TriggerFromTop && player.VelocityY < 0) ||
+						(TriggerFromLeft && player.VelocityX > 0) ||
+						(TriggerFromRight && player.VelocityX < 0)
 					) {
 						IsHidden = false;
 						OnExposed();

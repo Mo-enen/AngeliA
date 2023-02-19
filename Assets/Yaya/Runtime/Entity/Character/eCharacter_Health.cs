@@ -66,6 +66,8 @@ namespace Yaya {
 				Invincible || HealthPoint <= 0 || Game.GlobalFrame <= SafeFrame
 			) return;
 
+			ChargeStartFrame = int.MaxValue;
+
 			// Health Down
 			HealthPoint = (HealthPoint - damage).Clamp(0, MaxHP);
 			InvincibleEndFrame = Game.GlobalFrame + InvincibleDuration;

@@ -95,6 +95,8 @@ namespace Yaya {
 		private static readonly HashSet<Vector3Int> EntrancePool = new();
 		private Vector2Int MaxPosition = default;
 		private bool IsEntrance = true;
+		private int PlayerPrevX = 0;
+		private int PlayerPrevXUpdateFrame = int.MinValue;
 
 
 		#endregion
@@ -162,18 +164,24 @@ namespace Yaya {
 			int thisX = X + Const.HALF;
 			int thisY = Y + Const.HALF;
 			var cameraRect = CellRenderer.CameraRect;
-			int playerPrevX = player.PrevRect.x + player.PrevRect.width / 2;
+			int? prevX = null;
+
+			if (Game.GlobalFrame == PlayerPrevXUpdateFrame + 1) {
+				prevX = PlayerPrevX;
+			}
+			PlayerPrevX = player.Rect.x + player.Rect.width / 2;
+			PlayerPrevXUpdateFrame = Game.GlobalFrame;
 
 			// Check Camera in Range
 			if (!cameraRect.Contains(thisX, thisY)) return;
 
 			// Left to Right
-			if (DirectionX != Direction3.Left && playerPrevX < thisX && player.X >= thisX) {
+			if (DirectionX != Direction3.Left && prevX.HasValue && prevX < thisX && player.X >= thisX) {
 				Current = this;
 			}
 
 			// Right to Left
-			if (DirectionX != Direction3.Right && playerPrevX > thisX && player.X <= thisX) {
+			if (DirectionX != Direction3.Right && prevX.HasValue && prevX > thisX && player.X <= thisX) {
 				Current = this;
 			}
 
