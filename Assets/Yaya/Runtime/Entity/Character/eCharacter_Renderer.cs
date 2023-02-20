@@ -474,8 +474,16 @@ namespace Yaya {
 				case MovementState.Run:
 				case MovementState.Walk:
 					CurrentAniFrame += IntendedX > 0 == FacingRight ? 1 : -1;
-
 					break;
+
+				case MovementState.Rush:
+					if (VelocityX >= 0 == FacingRight) {
+						CurrentAniFrame++;
+					} else {
+						CurrentAniFrame = 0;
+					}
+					break;
+
 				default:
 					CurrentAniFrame++;
 					break;

@@ -151,7 +151,7 @@ namespace Yaya {
 				CurrentNavOperationCount = 0;
 				CurrentNavOperationIndex = 0;
 				if (NavigationState == CharacterNavigationState.Navigate) {
-					CurrentNavOperationCount = CellNavigation.Navigate(
+					CurrentNavOperationCount = CellNavigation.NavigateTo(
 						NavOperation, X, Y, NavigationAim.x, NavigationAim.y,
 						JUMP_DISTANCE_X, JUMP_DISTANCE_Y
 					);

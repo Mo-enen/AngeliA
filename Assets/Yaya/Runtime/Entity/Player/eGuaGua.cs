@@ -5,7 +5,6 @@ using AngeliaFramework;
 using System;
 
 namespace Yaya {
-	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.Capacity(32)]
 	public class eGuaGua : eSummon {
 

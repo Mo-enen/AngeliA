@@ -6,6 +6,8 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.UpdateOutOfRange]
+	[EntityAttribute.DontDestroyOutOfRange]
+	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.Capacity(1)]
 	[EntityAttribute.ExcludeInMapEditor]
 	public abstract class eSummon : eCharacter {
@@ -139,11 +141,11 @@ namespace Yaya {
 					LastNavStateReloadFrame = Game.GlobalFrame;
 					ClearNavigation();
 
-					
+
 
 					// Test
-					if (CellNavigation.ExpandToGroundNearby(
-						result.x, result.y, 6, out int groundX, out int groundY
+					if (CellNavigation.ExpandTo(
+						Owner.X, Owner.Y, Owner.X, Owner.Y, 12, out int groundX, out int groundY
 					)) {
 						result.x = groundX;
 						result.y = groundY;

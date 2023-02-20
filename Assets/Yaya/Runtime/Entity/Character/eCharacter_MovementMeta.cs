@@ -46,12 +46,13 @@ namespace Yaya {
 
 		// Rush
 		public readonly BuffBool RushAvailable = new(true);
-		public readonly BuffBool RushInAir = new(true);
+		public readonly BuffBool RushInAir = new(false);
 		public readonly BuffBool RushInWater = new(true);
-		public readonly BuffBool RushWhenClimb = new(true);
+		public readonly BuffBool RushWhenClimb = new(false);
+		public readonly BuffBool RushWhenSquat = new(false);
 		public readonly BuffInt RushHeight = new(384);
 		public readonly BuffInt RushSpeed = new(72);
-		public readonly BuffInt RushStopSpeed = new(12);
+		public readonly BuffInt RushStopSpeed = new(8);
 		public readonly BuffInt RushDuration = new(8);
 		public readonly BuffInt RushStiff = new(10);
 		public readonly BuffInt RushCooldown = new(2);

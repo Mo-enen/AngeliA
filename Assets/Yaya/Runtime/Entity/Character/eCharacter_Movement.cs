@@ -212,6 +212,7 @@ namespace Yaya {
 
 			if (
 				IsRushing &&
+				//(frame > LastRushFrame + RushDuration + RushStiff || IntendedX == 0 || FacingRight != IntendedX > 0)
 				frame > LastRushFrame + RushDuration + RushStiff
 			) {
 				IsRushing = false;
@@ -962,6 +963,7 @@ namespace Yaya {
 
 
 		private bool RushEnvironmentCheck () =>
+			(RushWhenSquat || !IsSquating) &&
 			(RushInWater || !InWater) &&
 			(RushInAir || IsGrounded) &&
 			(RushWhenClimb || !IsClimbing);

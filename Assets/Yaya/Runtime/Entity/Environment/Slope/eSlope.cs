@@ -20,7 +20,6 @@ namespace Yaya {
 
 		// Data
 		private readonly PhysicsCell[] c_Overlap = new PhysicsCell[16];
-		private bool? UnfillBottomBlock = null;
 
 
 		#endregion
@@ -31,12 +30,6 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnActived () {
-			base.OnActived();
-			UnfillBottomBlock = null;
-		}
-
-
 		public override void FillPhysics () {
 			base.FillPhysics();
 			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
@@ -45,23 +38,6 @@ namespace Yaya {
 
 		public override void BeforePhysicsUpdate () {
 			base.BeforePhysicsUpdate();
-			// Unfill
-			if (!UnfillBottomBlock.HasValue) {
-				if (DirectionVertical == Direction3.Up) {
-					UnfillBottomBlock = CellPhysics.HasEntity<eSlope>(
-						new(DirectionHorizontal == Direction3.Left ? X - Const.HALF : X + Const.CEL + Const.HALF, Y - Const.HALF, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
-					);
-				} else {
-					UnfillBottomBlock = false;
-				}
-			}
-			if (UnfillBottomBlock.HasValue && UnfillBottomBlock.Value) {
-				CellPhysics.SetOverlapCellsToTrigger(
-					YayaConst.MASK_LEVEL,
-					new(X + Const.HALF, Y - Const.HALF, 1, 1),
-					false, true
-				);
-			}
 			// Fix Rig
 			int count = CellPhysics.OverlapAll(c_Overlap, CollisionMask, Rect);
 			for (int i = 0; i < count; i++) {

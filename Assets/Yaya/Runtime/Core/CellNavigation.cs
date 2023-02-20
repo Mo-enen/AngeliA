@@ -28,7 +28,6 @@ namespace Yaya {
 			public NavigationMotion Result;
 			public int TargetCellX;
 			public int TargetCellY;
-			public int Distance;
 		}
 
 		private enum BlockType {
@@ -45,7 +44,6 @@ namespace Yaya {
 					Result = NavigationMotion.None,
 					TargetCellX = -1,
 					TargetCellY = -1,
-					Distance = -1,
 				},
 			};
 
@@ -57,6 +55,9 @@ namespace Yaya {
 			}
 			public Operation Operation;
 			private uint OperationStamp;
+			public int Distance;
+			public int FromCellX;
+			public int FromCellY;
 
 			// Block
 			public bool BlockDataValid {
@@ -122,7 +123,7 @@ namespace Yaya {
 		}
 
 
-		public static int Navigate (Operation[] Operations, int fromX, int fromY, int toX, int toY, int jumpUnitX, int jumpUnitY) {
+		public static int NavigateTo (Operation[] Operations, int fromX, int fromY, int toX, int toY, int jumpUnitX, int jumpUnitY) {
 			RefreshFrameCache();
 			OperationStamp++;
 			var unitRangeRect = new RectInt(CellUnitOffsetX, CellUnitOffsetY, CellWidth, CellHeight);
@@ -138,63 +139,44 @@ namespace Yaya {
 		}
 
 
-		public static bool FindGroundInRange (RectInt globalRange, out int resultX, out int resultY) {
-
-			RefreshFrameCache();
-
-			int centerX = resultX = globalRange.x + globalRange.width / 2;
-			int centerY = resultY = globalRange.y + globalRange.height / 2;
-
-			for (int j = 0; j <= globalRange.height / 2; j += Const.CEL) {
-				if (CheckGroundHorizontal(centerY + j, out resultX, out resultY)) return true;
-				if (CheckGroundHorizontal(centerY - j, out resultX, out resultY)) return true;
-			}
-
-			return false;
-
-			// Func
-			bool CheckGroundHorizontal (int globalY, out int _resultX, out int _resultY) {
-				for (int i = 0; i <= globalRange.width / 2; i += Const.CEL) {
-					if (IsGround(centerX + i, globalY, out _resultY)) {
-						_resultX = (centerX + i).UDivide(Const.CEL) * Const.CEL + Const.HALF;
-						return true;
-					}
-					if (IsGround(centerX - i, globalY, out _resultY)) {
-						_resultX = (centerX - i).UDivide(Const.CEL) * Const.CEL + Const.HALF;
-						return true;
-					}
-				}
-				_resultX = 0;
-				_resultY = 0;
-				return false;
-			}
-		}
-
-
-		public static bool ExpandToGroundNearby (
-			int globalX, int globalY, int maxIteration,
-			out int resultX, out int resultY
+		public static bool ExpandTo (
+			int fromX, int fromY, int toX, int toY, int maxIteration,
+			out int resultX, out int resultY, bool ignoreAir = true
 		) {
 
 			RefreshFrameCache();
-			resultX = globalX;
-			resultY = globalY;
-			if (!Global_to_Cell(globalX, globalY, out int cellX, out int cellY)) return false;
 			OperationStamp++;
+			resultX = fromX;
+			resultY = fromY;
+
+			int fromCellX = (fromX.UDivide(Const.CEL) - CellUnitOffsetX).Clamp(0, CellWidth - 1);
+			int fromCellY = (fromY.UDivide(Const.CEL) - CellUnitOffsetY).Clamp(0, CellHeight - 1);
+			int toCellX = (toX.UDivide(Const.CEL) - CellUnitOffsetX).Clamp(0, CellWidth - 1);
+			int toCellY = (toY.UDivide(Const.CEL) - CellUnitOffsetY).Clamp(0, CellHeight - 1);
+			int minSquareDis = int.MaxValue;
+
 			ExpandQueue.Clear();
-			ExpandQueue.Enqueue(new Vector3Int(cellX, cellY, 0));
-			Cells[cellX, cellY].OperationDataValid = true;
-			bool rightFirst = globalX.UMod(Const.CEL) > Const.HALF;
-			bool upFirst = globalY.UMod(Const.CEL) > Const.HALF;
+			ExpandQueue.Enqueue(new Vector3Int(fromCellX, fromCellY, 0));
+			Cells[fromCellX, fromCellY].OperationDataValid = true;
+			bool rightFirst = fromX.UMod(Const.CEL) > Const.HALF;
+			bool upFirst = fromY.UMod(Const.CEL) > Const.HALF;
 
 			while (ExpandQueue.Count > 0) {
 
 				var pos = ExpandQueue.Dequeue();
 
 				// Check
-				if (IsGroundCell(pos.x, pos.y, Cell_to_GlobalY(pos.y) + Const.HALF, out resultY)) {
-					resultX = Cell_to_GlobalX(pos.x) + Const.HALF;
-					return true;
+				if (
+					IsGroundCell(pos.x, pos.y, Cell_to_GlobalY(pos.y) + Const.HALF, out int _resultY) ||
+					!ignoreAir
+				) {
+					int sqDis = Util.SquareDistance(toCellX, toCellY, pos.x, pos.y);
+					if (sqDis < minSquareDis) {
+						minSquareDis = sqDis;
+						resultX = Cell_to_GlobalX(pos.x) + Const.HALF;
+						resultY = _resultY;
+						if (sqDis == 0) return true;
+					}
 				}
 
 				// Expand
@@ -258,7 +240,40 @@ namespace Yaya {
 					}
 				}
 			}
+			return minSquareDis != int.MaxValue;
+		}
+
+
+		public static bool FindGroundInRange (RectInt globalRange, out int resultX, out int resultY) {
+
+			RefreshFrameCache();
+
+			int centerX = resultX = globalRange.x + globalRange.width / 2;
+			int centerY = resultY = globalRange.y + globalRange.height / 2;
+
+			for (int j = 0; j <= globalRange.height / 2; j += Const.CEL) {
+				if (CheckGroundHorizontal(centerY + j, out resultX, out resultY)) return true;
+				if (CheckGroundHorizontal(centerY - j, out resultX, out resultY)) return true;
+			}
+
 			return false;
+
+			// Func
+			bool CheckGroundHorizontal (int globalY, out int _resultX, out int _resultY) {
+				for (int i = 0; i <= globalRange.width / 2; i += Const.CEL) {
+					if (IsGround(centerX + i, globalY, out _resultY)) {
+						_resultX = (centerX + i).UDivide(Const.CEL) * Const.CEL + Const.HALF;
+						return true;
+					}
+					if (IsGround(centerX - i, globalY, out _resultY)) {
+						_resultX = (centerX - i).UDivide(Const.CEL) * Const.CEL + Const.HALF;
+						return true;
+					}
+				}
+				_resultX = 0;
+				_resultY = 0;
+				return false;
+			}
 		}
 
 
