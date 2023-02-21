@@ -24,15 +24,15 @@ namespace Yaya {
 		#region --- SUB ---
 
 
+		private enum BlockType { Air, Liquid, Solid, }
+
+
 		public struct Operation {
-			public NavigationMotion Result;
-			public int TargetCellX;
-			public int TargetCellY;
+			public NavigationMotion Motion;
+			public int TargetGlobalX;
+			public int TargetGlobalY;
 		}
 
-		private enum BlockType {
-			Air, Liquid, Solid,
-		}
 
 		private struct Cell {
 
@@ -41,9 +41,7 @@ namespace Yaya {
 				BlockStamp = -1,
 				OperationStamp = 0,
 				Operation = {
-					Result = NavigationMotion.None,
-					TargetCellX = -1,
-					TargetCellY = -1,
+					Motion = NavigationMotion.None,
 				},
 			};
 
@@ -133,9 +131,13 @@ namespace Yaya {
 			int toUnitY = toY.UDivide(Const.CEL).Clamp(unitRangeRect.yMin, unitRangeRect.yMax - 1);
 
 
+			Operations[0] = new Operation() {
+				Motion = NavigationMotion.Jump,
+				TargetGlobalX = toX,
+				TargetGlobalY = toY,
+			};
 
-
-			return 0;
+			return 1;
 		}
 
 

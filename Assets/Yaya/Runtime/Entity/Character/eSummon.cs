@@ -82,12 +82,20 @@ namespace Yaya {
 
 			base.PhysicsUpdate();
 
-			// Fly
-			if (NavigationState == CharacterNavigationState.Fly) {
-				MoveState = MovementState.Fly;
-				if ((X - NavigationAim.x).Abs() > 96) {
-					Move(X < NavigationAim.x ? Direction3.Right : Direction3.Left, 0);
-				}
+			// Motion
+			switch (NavigationState) {
+				case CharacterNavigationState.Fly:
+					MoveState = MovementState.Fly;
+					if ((X - NavigationAim.x).Abs() > 96) {
+						Move(X < NavigationAim.x ? Direction3.Right : Direction3.Left, 0);
+					}
+					break;
+
+				case CharacterNavigationState.Navigate:
+					if (VelocityX != 0) {
+						Move(VelocityX > 0 ? Direction3.Right : Direction3.Left, 0);
+					}
+					break;
 			}
 
 		}
@@ -145,7 +153,7 @@ namespace Yaya {
 
 					// Test
 					if (CellNavigation.ExpandTo(
-						Owner.X, Owner.Y, Owner.X, Owner.Y, 12, out int groundX, out int groundY
+						Owner.X, Owner.Y + Const.HALF, Owner.X, Owner.Y + Const.HALF, 12, out int groundX, out int groundY
 					)) {
 						result.x = groundX;
 						result.y = groundY;

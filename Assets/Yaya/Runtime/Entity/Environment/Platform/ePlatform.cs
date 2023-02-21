@@ -157,6 +157,7 @@ namespace Yaya {
 				var hit = c_Overlaps[i];
 				if (hit.Entity is not Rigidbody rig) continue;
 				if (rig.X < left || rig.X >= right) continue;
+				if (rig.Rect.y < rect.yMax) continue;
 				rig.PerformMove(X - PrevX, 0);
 				rig.MakeGrounded(1, TypeID);
 			}
@@ -188,7 +189,7 @@ namespace Yaya {
 					if (rig.X < left || rig.X >= right) continue;
 					if (rig.VelocityY > Y - PrevY) continue;
 					if (!rig.Rect.Overlaps(prevRect)) {
-						rig.PerformMove(0, rect.yMax - rig.Y);
+						rig.PerformMove(0, rect.yMax - rig.Rect.y);
 						rig.MakeGrounded(1, TypeID);
 					}
 				}

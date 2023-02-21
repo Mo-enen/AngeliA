@@ -36,6 +36,9 @@ namespace Yaya {
 		private int CurrentNavOperationIndex = 0;
 		private int CurrentNavOperationCount = 0;
 		private int NavigationFlyStartFrame = int.MinValue;
+		private int NavJumpFrame = 0;
+		private int NavJumpDuration = 0;
+		private Vector2Int NavJumpFromPosition = default;
 
 
 		#endregion
@@ -66,7 +69,10 @@ namespace Yaya {
 
 
 			// =============== Test =====================
-			NavigationState = CharacterNavigationState.Fly;
+			NavigationState = CharacterNavigationState.Navigate;
+
+
+
 			// =============== Test =====================
 
 
@@ -158,6 +164,7 @@ namespace Yaya {
 					if (CurrentNavOperationCount == 0) {
 						NavigationState = CharacterNavigationState.Idle;
 					}
+					NavJumpDuration = 0;
 				}
 			}
 
@@ -178,9 +185,77 @@ namespace Yaya {
 
 		private void NavUpdate_MovementNavigate () {
 
+			if (CurrentNavOperationIndex >= CurrentNavOperationCount) return;
+
+			var operation = NavOperation[CurrentNavOperationIndex];
+
+			switch (operation.Motion) {
+
+				case NavigationMotion.Move:
 
 
 
+					break;
+
+				case NavigationMotion.Jump:
+
+					const int JUMP_SPEED = 64;
+					const int JUMP_ARCH = Const.CEL * 2;
+
+					if (NavJumpDuration == 0) {
+						// Jump Start
+						int dis = Util.DistanceInt(X, Y, operation.TargetGlobalX, operation.TargetGlobalY);
+						NavJumpFrame = 0;
+						NavJumpDuration = (dis / JUMP_SPEED).Clamp(24, 120);
+						NavJumpFromPosition.x = X;
+						NavJumpFromPosition.y = Y;
+					}
+
+					if (NavJumpDuration > 0 && NavJumpFrame <= NavJumpDuration) {
+						// Jumping
+						int newX = Util.Remap(
+							0, NavJumpDuration,
+							NavJumpFromPosition.x, operation.TargetGlobalX,
+							NavJumpFrame
+						);
+						int deltaY = Mathf.Abs(NavJumpFrame - NavJumpDuration / 2);
+						int newY = Util.Remap(
+							0, NavJumpDuration,
+							NavJumpFromPosition.y, operation.TargetGlobalY,
+							NavJumpFrame
+						) + Util.Remap(
+							NavJumpDuration * NavJumpDuration / 4, 0, 0, JUMP_ARCH,
+							deltaY * deltaY
+						);
+						VelocityX = newX - X;
+						VelocityY = newY - Y;
+						X = newX;
+						Y = newY;
+						NavJumpFrame++;
+					} else {
+						// Jump End
+						int newX = operation.TargetGlobalX;
+						int newY = operation.TargetGlobalY;
+						VelocityX = newX - X;
+						VelocityY = newY - Y;
+						X = newX;
+						Y = newY;
+						NavJumpFrame = 0;
+						NavJumpDuration = 0;
+						CurrentNavOperationIndex++;
+					}
+					break;
+
+				case NavigationMotion.Fly:
+					StartFly();
+					CurrentNavOperationIndex = 0;
+					CurrentNavOperationCount = 0;
+					break;
+
+				case NavigationMotion.None:
+					CurrentNavOperationIndex++;
+					break;
+			}
 
 		}
 
@@ -210,6 +285,8 @@ namespace Yaya {
 			CurrentNavOperationIndex = 0;
 			CurrentNavOperationCount = 0;
 			NavigationAim = new Vector2Int(X, Y);
+			NavJumpFrame = 0;
+			NavJumpDuration = 0;
 		}
 
 
