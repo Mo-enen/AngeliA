@@ -52,6 +52,7 @@ namespace Yaya {
 		public static readonly int NO_SLIDE_TAG = "NoSlide".AngeHash();
 		public static readonly int GRAB_TOP_TAG = "GrabTop".AngeHash();
 		public static readonly int GRAB_SIDE_TAG = "GrabSide".AngeHash();
+		public static readonly int GRAB_TAG = "Grab".AngeHash();
 
 		// Task
 		public const int TASK_ROUTE = 0;

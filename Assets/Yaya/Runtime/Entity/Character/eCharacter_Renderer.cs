@@ -477,7 +477,7 @@ namespace Yaya {
 					break;
 
 				case MovementState.Rush:
-					if (VelocityX >= 0 == FacingRight) {
+					if (VelocityX == 0 || VelocityX > 0 == FacingRight) {
 						CurrentAniFrame++;
 					} else {
 						CurrentAniFrame = 0;

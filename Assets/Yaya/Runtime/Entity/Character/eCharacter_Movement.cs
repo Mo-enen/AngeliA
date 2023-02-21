@@ -135,6 +135,7 @@ namespace Yaya {
 				if (PhysicsEnable) {
 					MovementUpdate_VelocityX();
 					MovementUpdate_VelocityY();
+					MovementUpdate_GrabFlip();
 				}
 			} else {
 				VelocityX = IntendedX * WalkSpeed;
@@ -208,11 +209,11 @@ namespace Yaya {
 				IsRushing = true;
 				IsClimbing = false;
 				LastRushFrame = frame;
+				VelocityY = 0;
 			}
 
 			if (
 				IsRushing &&
-				//(frame > LastRushFrame + RushDuration + RushStiff || IntendedX == 0 || FacingRight != IntendedX > 0)
 				frame > LastRushFrame + RushDuration + RushStiff
 			) {
 				IsRushing = false;
@@ -353,7 +354,8 @@ namespace Yaya {
 
 			// Perform Jump/Fly
 			if (
-				!IsSquating && !IsGrabingTop && !IsInsideGround && !IsRushing &&
+				!IsSquating && !IsGrabingTop && !IsInsideGround &&
+				!IsRushing && !IsGrabFliping &&
 				(!IsClimbing || JumpWhenClimbAvailable)
 			) {
 				// Jump
@@ -444,18 +446,52 @@ namespace Yaya {
 				return;
 			}
 
-			// Drop Though Grab Top
-			if (GrabFlipThroughDown && GrabFlipThoughDownCheck()) {
-				LastGrabFlipFrame = Game.GlobalFrame;
-				VelocityY = -(MovementHeight + Const.CEL + 12) / Mathf.Max(GrabFlipThroughDuration, 1);
-				return;
-			}
-
 			// Dash
 			if (!DashAvailable || Game.GlobalFrame <= LastDashFrame + CurrentDashDuration + CurrentDashCooldown) return;
 			LastDashFrame = Game.GlobalFrame;
 			IsDashing = true;
 			VelocityY = 0;
+		}
+
+
+		private void MovementUpdate_GrabFlip () {
+
+			if (MoveState == MovementState.GrabTop) {
+
+				// Grab Flip Up
+				if (
+					IntendedY > 0 &&
+					GrabFlipThroughUp &&
+					!GrabFlipUpLock &&
+					GrabFlipCheck(true)
+				) {
+					LastGrabFlipFrame = Game.GlobalFrame;
+					VelocityY = (MovementHeight + Const.CEL + 12) / Mathf.Max(GrabFlipThroughDuration, 1);
+				}
+
+				// Grab Drop
+				if (!GrabDropLock && IntendedY < 0) {
+					if (!GrabSideCheck(out _)) {
+						Y -= GRAB_TOP_CHECK_GAP;
+						Hitbox.y = Y;
+					}
+					IsGrabingTop = false;
+					LastGrabTopDropFrame = Game.GlobalFrame;
+				}
+			}
+
+			// Flip Down
+			if (
+				IntendedDash &&
+				IsGrounded &&
+				!InSand &&
+				GrabFlipThroughDown &&
+				GrabFlipCheck(false)
+			) {
+				LastGrabFlipFrame = Game.GlobalFrame;
+				VelocityY = -(MovementHeight + Const.CEL + 12) / Mathf.Max(GrabFlipThroughDuration, 1);
+			}
+
 		}
 
 
@@ -594,13 +630,6 @@ namespace Yaya {
 					GravityScale = 0;
 					break;
 
-				// Rush
-				case MovementState.Rush:
-					if (Game.GlobalFrame < LastRushFrame + RushDuration) {
-						VelocityY = 0;
-					}
-					break;
-
 				// Climb
 				case MovementState.Climb:
 					VelocityY = (IntendedY <= 0 || ClimbCheck(true) ? IntendedY : 0) * ClimbSpeedY;
@@ -631,20 +660,6 @@ namespace Yaya {
 				case MovementState.GrabTop:
 					GravityScale = 0;
 					VelocityY = 0;
-					// Flip Through Up
-					if (IntendedY > 0 && GrabFlipThroughUp && !GrabFlipUpLock) {
-						LastGrabFlipFrame = Game.GlobalFrame;
-						VelocityY = (MovementHeight + Const.CEL + 12) / Mathf.Max(GrabFlipThroughDuration, 1);
-					}
-					// Grab Drop
-					if (!GrabDropLock && IntendedY < 0) {
-						if (!GrabSideCheck(out _)) {
-							Y -= GRAB_TOP_CHECK_GAP;
-							Hitbox.y = Y;
-						}
-						IsGrabingTop = false;
-						LastGrabTopDropFrame = Game.GlobalFrame;
-					}
 					break;
 
 				// Grab Side
@@ -883,12 +898,19 @@ namespace Yaya {
 				InWater || IsSquating || IsGrabFliping
 			) return false;
 			if (Game.GlobalFrame < LastGrabTopDropFrame + GRAB_DROP_CANCEL) return false;
+			int height = MovementHeight;
 			var rect = new RectInt(
-				Hitbox.xMin, Hitbox.yMin + Hitbox.height / 2,
-				Hitbox.width, Hitbox.height / 2 + GRAB_TOP_CHECK_GAP
+				Hitbox.xMin,
+				Y + height / 2,
+				Hitbox.width,
+				height / 2 + GRAB_TOP_CHECK_GAP
 			);
 			if (CellPhysics.Overlap(
-				YayaConst.MASK_MAP, rect, out var hit, this, OperationMode.ColliderOnly, YayaConst.GRAB_TOP_TAG
+				YayaConst.MASK_MAP, rect, out var hit, this,
+				OperationMode.ColliderOnly, YayaConst.GRAB_TOP_TAG
+			) || CellPhysics.Overlap(
+				YayaConst.MASK_MAP, rect, out hit, this,
+				OperationMode.ColliderOnly, YayaConst.GRAB_TAG
 			)) {
 				grabingY = hit.Rect.yMin - GrabTopHeight;
 				return true;
@@ -917,17 +939,19 @@ namespace Yaya {
 				1,
 				Hitbox.height / 4
 			);
-			bool allowGrab = CellPhysics.Overlap(
-				YayaConst.MASK_MAP, rectD, this, OperationMode.ColliderOnly, YayaConst.GRAB_SIDE_TAG
-			) && CellPhysics.Overlap(
-				YayaConst.MASK_MAP, rectU, this, OperationMode.ColliderOnly, YayaConst.GRAB_SIDE_TAG
-			);
+			bool allowGrab =
+				(AllowCheck(rectD, YayaConst.GRAB_SIDE_TAG) || AllowCheck(rectD, YayaConst.GRAB_TAG)) &&
+				(AllowCheck(rectU, YayaConst.GRAB_SIDE_TAG) || AllowCheck(rectU, YayaConst.GRAB_TAG));
 			if (allowGrab) {
 				allowMoveUp = CellPhysics.Overlap(
 					YayaConst.MASK_MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, YayaConst.GRAB_SIDE_TAG
+				) || CellPhysics.Overlap(
+					YayaConst.MASK_MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, YayaConst.GRAB_TAG
 				);
 			}
 			return allowGrab;
+			// Func
+			bool AllowCheck (RectInt rect, int tag) => CellPhysics.Overlap(YayaConst.MASK_MAP, rect, this, OperationMode.ColliderOnly, tag);
 		}
 
 
@@ -947,16 +971,37 @@ namespace Yaya {
 		}
 
 
-		private bool GrabFlipThoughDownCheck () {
-			int count = CellPhysics.OverlapAll(
-				c_GroundThoughCheck,
-				YayaConst.MASK_MAP,
-				new RectInt(Hitbox.xMin + Hitbox.width / 2, Hitbox.yMin + 4 - Const.CEL / 4, 1, Const.CEL / 4),
-				this, OperationMode.ColliderOnly, YayaConst.GRAB_TOP_TAG
-			);
-			for (int i = 0; i < count; i++) {
-				var hit = c_GroundThoughCheck[i];
-				if (hit.Rect.yMax <= Hitbox.y + 16) return true;
+		private bool GrabFlipCheck (bool flipUp) {
+			int x = X - Width / 4;
+			int width = Width / 2;
+			if (flipUp) {
+				// Up
+				// No Block Above
+				if (CellPhysics.Overlap(
+					YayaConst.MASK_MAP,
+					new RectInt(x, Y + GrabTopHeight + Const.CEL + Const.HALF, width, 1),
+					this
+				)) return false;
+				return true;
+			} else {
+				// Down
+				// No Block Below
+				if (CellPhysics.Overlap(
+					YayaConst.MASK_MAP,
+					new RectInt(x, Y - Const.CEL - Const.HALF, width, 1),
+					this
+				)) return false;
+				// Standing on Grab-Top Block
+				int count = CellPhysics.OverlapAll(
+					c_GroundThoughCheck,
+					YayaConst.MASK_MAP,
+					new RectInt(x, Y + 4 - Const.CEL / 4, width, Const.CEL / 4),
+					this, OperationMode.ColliderOnly, YayaConst.GRAB_TOP_TAG
+				);
+				for (int i = 0; i < count; i++) {
+					var hit = c_GroundThoughCheck[i];
+					if (hit.Rect.yMax <= Hitbox.y + 16) return true;
+				}
 			}
 			return false;
 		}

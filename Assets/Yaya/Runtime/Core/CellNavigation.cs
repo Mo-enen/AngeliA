@@ -139,10 +139,7 @@ namespace Yaya {
 		}
 
 
-		public static bool ExpandTo (
-			int fromX, int fromY, int toX, int toY, int maxIteration,
-			out int resultX, out int resultY, bool ignoreAir = true
-		) {
+		public static bool ExpandTo (int fromX, int fromY, int toX, int toY, int maxIteration, out int resultX, out int resultY, bool ignoreAir = true) {
 
 			RefreshFrameCache();
 			OperationStamp++;
