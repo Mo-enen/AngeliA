@@ -276,43 +276,51 @@ namespace Yaya {
 				widthB += border.Horizontal;
 			}
 
-			rect.width = widthA;
-			if (background) {
-				bgCell = CellRenderer.Draw(Const.PIXEL, rect.Expand(BG_PADDING_X), new(12, 12, 12, 255));
-				bgCell.Z = 0;
-			}
-			// Button A
-			CellRenderer.Draw_9Slice(buttonCode, rect, border.Left, border.Right, border.Down, border.Up);
+			// Draw
+			CellRenderer.SetLayerToUI();
 
-			// Button Label A
-			CellRenderer.Draw(keyIdA, rect.Shrink(border), KeyLabelTint);
-			rect.x += rect.width + gap;
+			try {
 
-			// Button B
-			if (keyA != keyB) {
-				// Button B
-				rect.width = widthB;
+				rect.width = widthA;
+				if (background) {
+					bgCell = CellRenderer.Draw(Const.PIXEL, rect.Expand(BG_PADDING_X), new(12, 12, 12, 255));
+					bgCell.Z = 0;
+				}
+				// Button A
 				CellRenderer.Draw_9Slice(buttonCode, rect, border.Left, border.Right, border.Down, border.Up);
-				// Button Label B
-				CellRenderer.Draw(keyIdB, rect.Shrink(border), KeyLabelTint);
-				rect.x += rect.width + gap;
-			}
 
-			// Label
-			rect.width = 1;
-			CellRendererGUI.Label(
-				new CellLabel() {
-					Text = Language.Get(labelID),
-					Tint = LabelTint,
-					CharSize = TextSize * UNIT,
-					Alignment = Alignment.MidLeft,
-				}, rect, out var bounds
-			);
-			if (bgCell != null) {
-				bgCell.Y = Mathf.Min(bgCell.Y, bounds.y - BG_PADDING_Y);
-				bgCell.Width = Mathf.Max(bgCell.Width, bounds.xMax - bgCell.X + BG_PADDING_X);
-				bgCell.Height = Mathf.Max(bgCell.Height, bounds.yMax - bgCell.Y + BG_PADDING_Y);
-			}
+				// Button Label A
+				CellRenderer.Draw(keyIdA, rect.Shrink(border), KeyLabelTint);
+				rect.x += rect.width + gap;
+
+				// Button B
+				if (keyA != keyB) {
+					// Button B
+					rect.width = widthB;
+					CellRenderer.Draw_9Slice(buttonCode, rect, border.Left, border.Right, border.Down, border.Up);
+					// Button Label B
+					CellRenderer.Draw(keyIdB, rect.Shrink(border), KeyLabelTint);
+					rect.x += rect.width + gap;
+				}
+
+				// Label
+				rect.width = 1;
+				CellRendererGUI.Label(
+					new CellLabel() {
+						Text = Language.Get(labelID),
+						Tint = LabelTint,
+						CharSize = TextSize * UNIT,
+						Alignment = Alignment.MidLeft,
+					}, rect, out var bounds
+				);
+				if (bgCell != null) {
+					bgCell.Y = Mathf.Min(bgCell.Y, bounds.y - BG_PADDING_Y);
+					bgCell.Width = Mathf.Max(bgCell.Width, bounds.xMax - bgCell.X + BG_PADDING_X);
+					bgCell.Height = Mathf.Max(bgCell.Height, bounds.yMax - bgCell.Y + BG_PADDING_Y);
+				}
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+
+			CellRenderer.SetLayerToDefault();
 
 		}
 

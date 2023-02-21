@@ -139,26 +139,34 @@ namespace Yaya {
 
 			switch (NavigationState) {
 
+				case CharacterNavigationState.Idle:
 				case CharacterNavigationState.Navigate:
 
 					if (
 						Game.GlobalFrame < LastNavStateReloadFrame + TARGET_REFRESH_FREQUENCY &&
 						(!NavOperationDone || !HasNavOperation)
-					) break;
-
+					) {
+						result = NavigationAim;
+						break;
+					}
 					LastNavStateReloadFrame = Game.GlobalFrame;
 					ClearNavigation();
 
 
 
 					// Test
+					int offsetX = (InstanceIndex / 2 + 1) * Const.CEL * 3 / 2 * (InstanceIndex % 2 == 0 ? -1 : 1);
 					if (CellNavigation.ExpandTo(
-						Owner.X, Owner.Y + Const.HALF, Owner.X, Owner.Y + Const.HALF, 12, out int groundX, out int groundY
+						Owner.X, Owner.Y + Const.HALF,
+						Owner.X + offsetX,
+						Owner.Y + Const.HALF,
+						12, out int groundX, out int groundY
 					)) {
 						result.x = groundX;
 						result.y = groundY;
 					}
 					// Test
+
 
 
 

@@ -105,11 +105,10 @@ namespace Yaya {
 			const int MINIMUM_FLY_DURATION = 120;
 
 			// Nav Logic Start
-			int startMoveSqrtDistance = START_MOVE_DISTANCE * START_MOVE_DISTANCE;
-			int endMoveSqrtDistance = END_MOVE_DISTANCE * END_MOVE_DISTANCE;
-			int startFlySqrtDistance = START_FLY_DISTANCE * START_FLY_DISTANCE;
-			int endFlySqrtDistance = END_FLY_DISTANCE * END_FLY_DISTANCE;
-			int minimumFlyDuration = MINIMUM_FLY_DURATION;
+			const int START_MOVE_DISTANCE_SQ = START_MOVE_DISTANCE * START_MOVE_DISTANCE;
+			const int END_MOVE_DISTANCE_SQ = END_MOVE_DISTANCE * END_MOVE_DISTANCE;
+			const int START_FLY_DISTANCE_SQ = START_FLY_DISTANCE * START_FLY_DISTANCE;
+			const int END_FLY_DISTANCE_SQ = END_FLY_DISTANCE * END_FLY_DISTANCE;
 			NavigationAim = GetNavigationAim();
 			int aimSqrtDis = Util.SquareDistance(NavigationAim.x, NavigationAim.y, X, Y);
 			bool operationDone = NavOperationDone;
@@ -117,20 +116,20 @@ namespace Yaya {
 			switch (NavigationState) {
 
 				case CharacterNavigationState.Idle:
-					if (aimSqrtDis > startFlySqrtDistance) {
+					if (aimSqrtDis > START_FLY_DISTANCE_SQ) {
 						// Idle >> Fly
 						StartFly();
-					} else if (aimSqrtDis > startMoveSqrtDistance) {
+					} else if (aimSqrtDis > START_MOVE_DISTANCE_SQ) {
 						// Idle >> Nav
 						NavigationState = CharacterNavigationState.Navigate;
 					}
 					break;
 
 				case CharacterNavigationState.Navigate:
-					if (aimSqrtDis > startFlySqrtDistance) {
+					if (aimSqrtDis > START_FLY_DISTANCE_SQ) {
 						// Nav >> Fly
 						StartFly();
-					} else if (operationDone && aimSqrtDis < endMoveSqrtDistance) {
+					} else if (operationDone && aimSqrtDis < END_MOVE_DISTANCE_SQ) {
 						// Nav >> Idle
 						NavigationState = CharacterNavigationState.Idle;
 					}
@@ -140,10 +139,10 @@ namespace Yaya {
 					// Fly >> ??
 					if (
 						NavigationState == CharacterNavigationState.Fly &&
-						Game.GlobalFrame > NavigationFlyStartFrame + minimumFlyDuration &&
-						aimSqrtDis < endFlySqrtDistance
+						Game.GlobalFrame > NavigationFlyStartFrame + MINIMUM_FLY_DURATION &&
+						aimSqrtDis < END_FLY_DISTANCE_SQ
 					) {
-						NavigationState = aimSqrtDis > startMoveSqrtDistance ?
+						NavigationState = aimSqrtDis > START_MOVE_DISTANCE_SQ ?
 							CharacterNavigationState.Navigate :
 							CharacterNavigationState.Idle;
 					}
@@ -180,6 +179,7 @@ namespace Yaya {
 			).Clamp(-MaxGravitySpeed, int.MaxValue);
 			X += VelocityX;
 			Y += VelocityY;
+			if (VelocityY != 0) MakeGrounded(1);
 		}
 
 
@@ -199,7 +199,7 @@ namespace Yaya {
 
 				case NavigationMotion.Jump:
 
-					const int JUMP_SPEED = 64;
+					const int JUMP_SPEED = 52;
 					const int JUMP_ARCH = Const.CEL * 2;
 
 					if (NavJumpDuration == 0) {

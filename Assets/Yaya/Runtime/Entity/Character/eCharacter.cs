@@ -150,8 +150,10 @@ namespace Yaya {
 
 
 		public void SetCharacterState (CharacterState state) {
+
 			if (CharacterState == state) return;
 			PassoutFrame = int.MinValue;
+
 			switch (state) {
 
 				case CharacterState.GamePlay:
@@ -170,6 +172,10 @@ namespace Yaya {
 
 				case CharacterState.Passout:
 					PassoutFrame = Game.GlobalFrame;
+					var particle = Game.Current.SpawnEntity<ePassoutStarParticle>(X, Y);
+					if (particle != null) {
+						particle.Character = this;
+					}
 					break;
 
 				default:
@@ -183,14 +189,6 @@ namespace Yaya {
 			SetCharacterState(CharacterState.Sleep);
 			SleepFrame = FULL_SLEEP_DURATION;
 		}
-
-
-		#endregion
-
-
-
-		#region --- LGC ---
-
 
 
 		#endregion
