@@ -25,7 +25,7 @@ namespace Yaya {
 
 
 		// Api
-		protected virtual bool NavigationEnable => false;
+		public virtual bool NavigationEnable => false;
 		protected bool NavOperationDone => CurrentNavOperationIndex >= CurrentNavOperationCount;
 		protected bool HasNavOperation => CurrentNavOperationCount > 0;
 		protected CharacterNavigationState NavigationState { get; private set; } = CharacterNavigationState.Idle;
@@ -64,19 +64,6 @@ namespace Yaya {
 			// Refresh
 			NavUpdate_NavigationRefresh();
 
-
-
-
-
-			// =============== Test =====================
-			NavigationState = CharacterNavigationState.Navigate;
-
-
-
-			// =============== Test =====================
-
-
-
 			// Move to Target
 			switch (NavigationState) {
 				case CharacterNavigationState.Idle:
@@ -93,7 +80,6 @@ namespace Yaya {
 		}
 
 
-		// Navigation
 		private void NavUpdate_NavigationRefresh () {
 
 			const int START_MOVE_DISTANCE = Const.CEL * 4;
@@ -171,15 +157,20 @@ namespace Yaya {
 
 
 		private void NavUpdate_MovementIdle () {
+			// X
 			VelocityX = 0;
-			VelocityY = (
-				InWater || InSand || IsInsideGround ? 0 :
-				CellNavigation.IsGround(X, Y, out int groundY) ? groundY - Y :
-				VelocityY - Gravity
-			).Clamp(-MaxGravitySpeed, int.MaxValue);
-			X += VelocityX;
+			// Y
+			if (!InWater && !InSand) {
+				if (CellNavigation.IsGround(X, Y + Const.HALF, out int groundY)) {
+					VelocityY = groundY - Y;
+					MakeGrounded(1);
+				} else {
+					VelocityY = (VelocityY - Gravity).Clamp(-MaxGravitySpeed, int.MaxValue);
+				}
+			} else {
+				VelocityY = 0;
+			}
 			Y += VelocityY;
-			if (VelocityY != 0) MakeGrounded(1);
 		}
 
 
@@ -188,23 +179,43 @@ namespace Yaya {
 			if (CurrentNavOperationIndex >= CurrentNavOperationCount) return;
 
 			var operation = NavOperation[CurrentNavOperationIndex];
+			if (operation.Motion != NavigationMotion.Jump) {
+				NavJumpDuration = 0;
+			}
+
+			int targetX = operation.TargetGlobalX;
+			int targetY = operation.TargetGlobalY;
 
 			switch (operation.Motion) {
 
+				// Move
 				case NavigationMotion.Move:
 
+					bool rightSide = X > targetX;
+					int moveSpeed = RunSpeed.Value;
 
+					VelocityX = (targetX - X).Clamp(-moveSpeed, moveSpeed);
+					VelocityY = (targetY - Y).Clamp(-moveSpeed, moveSpeed);
+
+					X += VelocityX;
+					Y += VelocityY;
+
+					if (X > targetX != rightSide) {
+						CurrentNavOperationIndex++;
+					}
 
 					break;
 
+
+				// Jump
 				case NavigationMotion.Jump:
 
 					const int JUMP_SPEED = 52;
-					const int JUMP_ARCH = Const.CEL * 2;
+					const int JUMP_ARCH = Const.CEL * 3 / 2;
 
 					if (NavJumpDuration == 0) {
 						// Jump Start
-						int dis = Util.DistanceInt(X, Y, operation.TargetGlobalX, operation.TargetGlobalY);
+						int dis = Util.DistanceInt(X, Y, targetX, targetY);
 						NavJumpFrame = 0;
 						NavJumpDuration = (dis / JUMP_SPEED).Clamp(24, 120);
 						NavJumpFromPosition.x = X;
@@ -215,13 +226,13 @@ namespace Yaya {
 						// Jumping
 						int newX = Util.Remap(
 							0, NavJumpDuration,
-							NavJumpFromPosition.x, operation.TargetGlobalX,
+							NavJumpFromPosition.x, targetX,
 							NavJumpFrame
 						);
 						int deltaY = Mathf.Abs(NavJumpFrame - NavJumpDuration / 2);
 						int newY = Util.Remap(
 							0, NavJumpDuration,
-							NavJumpFromPosition.y, operation.TargetGlobalY,
+							NavJumpFromPosition.y, targetY,
 							NavJumpFrame
 						) + Util.Remap(
 							NavJumpDuration * NavJumpDuration / 4, 0, 0, JUMP_ARCH,
@@ -234,24 +245,26 @@ namespace Yaya {
 						NavJumpFrame++;
 					} else {
 						// Jump End
-						int newX = operation.TargetGlobalX;
-						int newY = operation.TargetGlobalY;
-						VelocityX = newX - X;
-						VelocityY = newY - Y;
-						X = newX;
-						Y = newY;
+						VelocityX = targetX - X;
+						VelocityY = targetY - Y;
+						X = targetX;
+						Y = targetY;
 						NavJumpFrame = 0;
 						NavJumpDuration = 0;
 						CurrentNavOperationIndex++;
 					}
 					break;
 
+
+				// Fly
 				case NavigationMotion.Fly:
 					StartFly();
 					CurrentNavOperationIndex = 0;
 					CurrentNavOperationCount = 0;
 					break;
 
+
+				// None
 				case NavigationMotion.None:
 					CurrentNavOperationIndex++;
 					break;

@@ -132,7 +132,7 @@ namespace Yaya {
 
 
 			Operations[0] = new Operation() {
-				Motion = NavigationMotion.Jump,
+				Motion = NavigationMotion.Move,
 				TargetGlobalX = toX,
 				TargetGlobalY = toY,
 			};

@@ -37,7 +37,7 @@ namespace Yaya {
 		protected override int AirDragY => 0;
 		protected override bool IgnoreRiseGravityShift => true;
 		protected override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
-		protected override bool PhysicsEnable => CharacterState != CharacterState.Sleep;
+		public override bool PhysicsEnable => CharacterState != CharacterState.Sleep;
 
 		// Data
 		private int SleepFrame = 0;
@@ -71,7 +71,10 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			if (CharacterState == CharacterState.GamePlay) {
-				CellPhysics.FillEntity(PhysicsLayer, this, NavigationState == CharacterNavigationState.Fly);
+				CellPhysics.FillEntity(
+					PhysicsLayer, this,
+					NavigationEnable
+				);
 			}
 		}
 

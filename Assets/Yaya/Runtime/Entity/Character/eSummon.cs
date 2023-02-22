@@ -20,13 +20,14 @@ namespace Yaya {
 
 		// Const
 		private const int TARGET_REFRESH_FREQUENCY = 30;
+		private const int NAV_INSTANCE_LOOP = 12;
 
 		// Api
 		public eCharacter Owner { get; set; } = null;
 		public sealed override int Team => Owner != null ? Owner.Team : YayaConst.TEAM_NEUTRAL;
 		public override bool AllowDamageFromLevel => false;
-		protected override bool PhysicsEnable => base.PhysicsEnable && CharacterState != CharacterState.GamePlay;
-		protected override bool NavigationEnable => CharacterState == CharacterState.GamePlay && Owner != null && Owner.Active;
+		public override bool PhysicsEnable => base.PhysicsEnable && CharacterState != CharacterState.GamePlay;
+		public override bool NavigationEnable => CharacterState == CharacterState.GamePlay && Owner != null && Owner.Active;
 
 		// Data
 		private readonly Vector2Int[] OwnerPosTrail = new Vector2Int[30];
@@ -84,6 +85,11 @@ namespace Yaya {
 
 			// Motion
 			switch (NavigationState) {
+
+				case CharacterNavigationState.Idle:
+					MoveState = MovementState.Idle;
+					break;
+
 				case CharacterNavigationState.Fly:
 					MoveState = MovementState.Fly;
 					if ((X - NavigationAim.x).Abs() > 96) {
@@ -94,6 +100,9 @@ namespace Yaya {
 				case CharacterNavigationState.Navigate:
 					if (VelocityX != 0) {
 						Move(VelocityX > 0 ? Direction3.Right : Direction3.Left, 0);
+						MoveState = MovementState.Run;
+					} else {
+						MoveState = MovementState.Idle;
 					}
 					break;
 			}
@@ -135,62 +144,39 @@ namespace Yaya {
 		protected override Vector2Int GetNavigationAim () {
 
 			if (Owner == null || !Owner.Active) return base.GetNavigationAim();
-			var result = new Vector2Int(Owner.X, Owner.Y);
 
-			switch (NavigationState) {
-
-				case CharacterNavigationState.Idle:
-				case CharacterNavigationState.Navigate:
-
-					if (
-						Game.GlobalFrame < LastNavStateReloadFrame + TARGET_REFRESH_FREQUENCY &&
-						(!NavOperationDone || !HasNavOperation)
-					) {
-						result = NavigationAim;
-						break;
-					}
-					LastNavStateReloadFrame = Game.GlobalFrame;
-					ClearNavigation();
-
-
-
-					// Test
-					int offsetX = (InstanceIndex / 2 + 1) * Const.CEL * 3 / 2 * (InstanceIndex % 2 == 0 ? -1 : 1);
-					if (CellNavigation.ExpandTo(
-						Owner.X, Owner.Y + Const.HALF,
-						Owner.X + offsetX,
-						Owner.Y + Const.HALF,
-						12, out int groundX, out int groundY
-					)) {
-						result.x = groundX;
-						result.y = groundY;
-					}
-					// Test
-
-
-
-
-					break;
-
-				case CharacterNavigationState.Fly:
-
-					const int COLUMN_COUNT = 4;
-
-					int sign = InstanceIndex % 2 == 0 ? -1 : 1;
-					int row = InstanceIndex / 2 / COLUMN_COUNT;
-					int column = (InstanceIndex / 2 % COLUMN_COUNT + 1) * sign;
-					int rowSign = (row % 2 == 0) == (sign == 1) ? 1 : -1;
-
-					int instanceOffsetX = column * Const.CEL * 3 / 2 + rowSign * Const.HALF / 2;
-					int instanceOffsetY = row * Const.CEL + Const.CEL - column.Abs() * Const.HALF / 3;
-
-					// Result
-					var pos = OwnerPosTrail[(OwnerPosTrailIndex + 1).UMod(OwnerPosTrail.Length)];
-					result.x = pos.x + instanceOffsetX;
-					result.y = pos.y + instanceOffsetY;
-					break;
-
+			// Scan Frequency Gate
+			if (
+				Game.GlobalFrame < LastNavStateReloadFrame + TARGET_REFRESH_FREQUENCY &&
+				(!NavOperationDone || !HasNavOperation)
+			) {
+				return NavigationAim;
 			}
+			LastNavStateReloadFrame = Game.GlobalFrame;
+
+			// Get Aim at Ground
+			ClearNavigation();
+			const int MAX_ITERATION = 12;
+			var result = new Vector2Int(Owner.X, Owner.Y);
+			int offsetX = Const.CEL * ((InstanceIndex % NAV_INSTANCE_LOOP) / 2 + 1) * (InstanceIndex % 2 == 0 ? -1 : 1);
+			if (CellNavigation.ExpandTo(
+				Owner.X,
+				Owner.Y + Const.HALF,
+				Owner.X + offsetX,
+				Owner.Y + Const.HALF,
+				MAX_ITERATION,
+				out int groundX, out int groundY
+			)) {
+				result.x = groundX;
+				result.y = groundY;
+			} else {
+				result.x += offsetX;
+			}
+
+			if (NavigationState == CharacterNavigationState.Fly) {
+				result.y += Const.HALF;
+			}
+
 			return result;
 		}
 

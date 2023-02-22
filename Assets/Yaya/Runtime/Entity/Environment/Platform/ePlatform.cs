@@ -150,16 +150,34 @@ namespace Yaya {
 			if (Pose == FittingPose.Single || Pose == FittingPose.Right) {
 				right = int.MaxValue;
 			}
+
+			// Normal
 			int count = CellPhysics.OverlapAll(
 				c_Overlaps, YayaConst.MASK_RIGIDBODY, rect.Edge(Direction4.Up), this
 			);
-			for (int i = 0; i < count; i++) {
-				var hit = c_Overlaps[i];
-				if (hit.Entity is not Rigidbody rig) continue;
-				if (rig.X < left || rig.X >= right) continue;
-				if (rig.Rect.y < rect.yMax) continue;
-				rig.PerformMove(X - PrevX, 0);
-				rig.MakeGrounded(1, TypeID);
+			PerformCarry(false);
+
+			// Nav
+			count = CellPhysics.OverlapAll(
+				c_Overlaps, YayaConst.MASK_RIGIDBODY, rect.Edge(Direction4.Up), this, OperationMode.TriggerOnly
+			);
+			PerformCarry(true);
+
+			// Func
+			void PerformCarry (bool forNav) {
+				for (int i = 0; i < count; i++) {
+					var hit = c_Overlaps[i];
+					if (hit.Entity is not Rigidbody rig) continue;
+					if (rig.X < left || rig.X >= right) continue;
+					if (rig.Rect.y < rect.yMax) continue;
+					if (!forNav) {
+						rig.PerformMove(X - PrevX, 0);
+					} else {
+						if (hit.Entity is not eCharacter ch || ch.IsFlying) continue;
+						rig.X += X - PrevX;
+					}
+					rig.MakeGrounded(1, TypeID);
+				}
 			}
 		}
 

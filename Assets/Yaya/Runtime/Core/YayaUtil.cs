@@ -52,5 +52,21 @@ namespace Yaya {
 		}
 
 
+		public static Vector2Int GetFlyingFormation (Vector2Int pos, int column, int instanceIndex) {
+
+			int sign = instanceIndex % 2 == 0 ? -1 : 1;
+			int _row = instanceIndex / 2 / column;
+			int _column = (instanceIndex / 2 % column + 1) * sign;
+			int rowSign = (_row % 2 == 0) == (sign == 1) ? 1 : -1;
+
+			int instanceOffsetX = _column * Const.CEL * 3 / 2 + rowSign * Const.HALF / 2;
+			int instanceOffsetY = _row * Const.CEL + Const.CEL - _column.Abs() * Const.HALF / 3;
+
+			// Result
+			//var pos = OwnerPosTrail[(OwnerPosTrailIndex + 1).UMod(OwnerPosTrail.Length)];
+			return new(pos.x + instanceOffsetX, pos.y + instanceOffsetY);
+		}
+
+
 	}
 }

@@ -33,7 +33,7 @@ namespace Yaya {
 		protected static int MaxGravitySpeed { get; private set; } = 0;
 
 		// Override
-		protected virtual bool PhysicsEnable => true;
+		public virtual bool PhysicsEnable => true;
 		protected virtual int CollisionMask => YayaConst.MASK_SOLID;
 		protected abstract int PhysicsLayer { get; }
 		protected virtual int AirDragX => 3;
