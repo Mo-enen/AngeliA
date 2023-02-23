@@ -36,7 +36,7 @@ namespace Yaya {
 			SlideOnAnyBlock.Value = true;
 			GrabTopAvailable.Value = true;
 			GrabSideAvailable.Value = true;
-			GrabFlipThroughDown.Value = true;
+			GrabFlipThroughDownAvailable.Value = true;
 			GrabFlipThroughUp.Value = true;
 			FlyMoveSpeed.Value = 32;
 			FlyGlideAvailable.Value = false;

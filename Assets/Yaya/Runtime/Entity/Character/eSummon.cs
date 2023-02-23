@@ -34,7 +34,7 @@ namespace Yaya {
 		private int OwnerPosTrailIndex = -1;
 		private int SummonFrame = int.MinValue;
 		private int PrevZ = int.MinValue;
-		private int LastNavStateReloadFrame = int.MaxValue;
+		private int LastNavStateReloadFrame = int.MinValue;
 		private int LastTrailUpdateFrame = int.MinValue;
 
 
@@ -50,15 +50,17 @@ namespace Yaya {
 			base.OnActived();
 			OwnerPosTrailIndex = -1;
 			Owner = null;
-			LastNavStateReloadFrame = int.MaxValue;
+			LastNavStateReloadFrame = int.MinValue;
+			NavigationState = CharacterNavigationState.Navigate;
 		}
 
 
 		public virtual void OnSummoned (bool create) {
 			RenderBounce();
 			ResetNavigation();
-			LastNavStateReloadFrame = int.MaxValue;
+			LastNavStateReloadFrame = int.MinValue;
 			SummonFrame = Game.GlobalFrame;
+			NavigationState = CharacterNavigationState.Navigate;
 		}
 
 
@@ -75,8 +77,9 @@ namespace Yaya {
 				PrevZ = Game.Current.ViewZ;
 				X = Owner.X;
 				Y = Owner.Y;
-				LastNavStateReloadFrame = int.MaxValue;
 				ResetNavigation();
+				LastNavStateReloadFrame = int.MinValue;
+				NavigationState = CharacterNavigationState.Navigate;
 			}
 
 			PhysicsUpdate_Trail();
@@ -141,22 +144,22 @@ namespace Yaya {
 		#region --- API ---
 
 
-		protected override Vector2Int GetNavigationAim () {
+		protected override Vector2Int? GetNavigationAim (out bool grounded) {
 
-			if (Owner == null || !Owner.Active) return base.GetNavigationAim();
+			if (Owner == null || !Owner.Active) return base.GetNavigationAim(out grounded);
+			grounded = false;
 
 			// Scan Frequency Gate
 			if (
 				Game.GlobalFrame < LastNavStateReloadFrame + TARGET_REFRESH_FREQUENCY &&
 				(!NavOperationDone || !HasNavOperation)
 			) {
-				return NavigationAim;
+				return null;
 			}
 			LastNavStateReloadFrame = Game.GlobalFrame;
 
 			// Get Aim at Ground
-			ClearNavigation();
-			const int MAX_ITERATION = 12;
+			ResetNavigationOperation();
 			var result = new Vector2Int(Owner.X, Owner.Y);
 			int offsetX = Const.CEL * ((InstanceIndex % NAV_INSTANCE_LOOP) / 2 + 1) * (InstanceIndex % 2 == 0 ? -1 : 1);
 			if (CellNavigation.ExpandTo(
@@ -164,16 +167,18 @@ namespace Yaya {
 				Owner.Y + Const.HALF,
 				Owner.X + offsetX,
 				Owner.Y + Const.HALF,
-				MAX_ITERATION,
+				maxIteration: 12,
 				out int groundX, out int groundY
 			)) {
 				result.x = groundX;
 				result.y = groundY;
+				grounded = true;
 			} else {
 				result.x += offsetX;
+				grounded = false;
 			}
 
-			if (NavigationState == CharacterNavigationState.Fly) {
+			if (!grounded || NavigationState == CharacterNavigationState.Fly) {
 				result.y += Const.HALF;
 			}
 

@@ -131,6 +131,12 @@ namespace Yaya {
 			int toUnitY = toY.UDivide(Const.CEL).Clamp(unitRangeRect.yMin, unitRangeRect.yMax - 1);
 
 
+
+
+
+
+
+
 			Operations[0] = new Operation() {
 				Motion = NavigationMotion.Move,
 				TargetGlobalX = toX,

@@ -28,8 +28,9 @@ namespace Yaya {
 		public virtual bool NavigationEnable => false;
 		protected bool NavOperationDone => CurrentNavOperationIndex >= CurrentNavOperationCount;
 		protected bool HasNavOperation => CurrentNavOperationCount > 0;
-		protected CharacterNavigationState NavigationState { get; private set; } = CharacterNavigationState.Idle;
+		protected CharacterNavigationState NavigationState { get; set; } = CharacterNavigationState.Idle;
 		protected Vector2Int NavigationAim { get; private set; } = default;
+		protected bool NavigationAimGrounded { get; private set; } = default;
 
 		// Data
 		private readonly CellNavigation.Operation[] NavOperation = new CellNavigation.Operation[8];
@@ -62,32 +63,48 @@ namespace Yaya {
 			Y = Y.Clamp(range.yMin, range.yMax);
 
 			// Refresh
-			NavUpdate_NavigationRefresh();
+			NavUpdate_State();
+
+			// Perform Navigate
+			if (NavOperationDone) {
+				const int JUMP_DISTANCE_X = Const.CEL * 6;
+				const int JUMP_DISTANCE_Y = Const.CEL * 6;
+				CurrentNavOperationCount = 0;
+				CurrentNavOperationIndex = 0;
+				if (NavigationState == CharacterNavigationState.Navigate) {
+					CurrentNavOperationCount = CellNavigation.NavigateTo(
+						NavOperation, X, Y, NavigationAim.x, NavigationAim.y,
+						JUMP_DISTANCE_X, JUMP_DISTANCE_Y
+					);
+					if (CurrentNavOperationCount == 0) {
+						NavigationState = CharacterNavigationState.Idle;
+					}
+					NavJumpDuration = 0;
+				}
+			}
 
 			// Move to Target
 			switch (NavigationState) {
 				case CharacterNavigationState.Idle:
-					NavUpdate_MovementIdle();
+					NavUpdate_Movement_Idle();
 					break;
 				case CharacterNavigationState.Navigate:
-					NavUpdate_MovementNavigate();
+					NavUpdate_Movement_Navigating();
 					break;
 				case CharacterNavigationState.Fly:
-					NavUpdate_MovementFly();
+					NavUpdate_Movement_Flying();
 					break;
 			}
 
 		}
 
 
-		private void NavUpdate_NavigationRefresh () {
+		private void NavUpdate_State () {
 
 			const int START_MOVE_DISTANCE = Const.CEL * 4;
 			const int END_MOVE_DISTANCE = Const.CEL * 1;
 			const int START_FLY_DISTANCE = Const.CEL * 18;
 			const int END_FLY_DISTANCE = Const.CEL * 3;
-			const int JUMP_DISTANCE_X = Const.CEL * 6;
-			const int JUMP_DISTANCE_Y = Const.CEL * 6;
 			const int MINIMUM_FLY_DURATION = 120;
 
 			// Nav Logic Start
@@ -95,16 +112,28 @@ namespace Yaya {
 			const int END_MOVE_DISTANCE_SQ = END_MOVE_DISTANCE * END_MOVE_DISTANCE;
 			const int START_FLY_DISTANCE_SQ = START_FLY_DISTANCE * START_FLY_DISTANCE;
 			const int END_FLY_DISTANCE_SQ = END_FLY_DISTANCE * END_FLY_DISTANCE;
-			NavigationAim = GetNavigationAim();
+			var navAim = GetNavigationAim(out bool _navAimGrounded);
+			if (navAim.HasValue) {
+				NavigationAim = navAim.Value;
+				NavigationAimGrounded = _navAimGrounded;
+			}
 			int aimSqrtDis = Util.SquareDistance(NavigationAim.x, NavigationAim.y, X, Y);
 			bool operationDone = NavOperationDone;
+
+			if (!NavigationAimGrounded) {
+				// Fly When No Grounded Aim Position
+				NavigationState = CharacterNavigationState.Fly;
+				NavigationFlyStartFrame = Game.GlobalFrame;
+				return;
+			}
 
 			switch (NavigationState) {
 
 				case CharacterNavigationState.Idle:
 					if (aimSqrtDis > START_FLY_DISTANCE_SQ) {
 						// Idle >> Fly
-						StartFly();
+						NavigationState = CharacterNavigationState.Fly;
+						NavigationFlyStartFrame = Game.GlobalFrame;
 					} else if (aimSqrtDis > START_MOVE_DISTANCE_SQ) {
 						// Idle >> Nav
 						NavigationState = CharacterNavigationState.Navigate;
@@ -114,7 +143,8 @@ namespace Yaya {
 				case CharacterNavigationState.Navigate:
 					if (aimSqrtDis > START_FLY_DISTANCE_SQ) {
 						// Nav >> Fly
-						StartFly();
+						NavigationState = CharacterNavigationState.Fly;
+						NavigationFlyStartFrame = Game.GlobalFrame;
 					} else if (operationDone && aimSqrtDis < END_MOVE_DISTANCE_SQ) {
 						// Nav >> Idle
 						NavigationState = CharacterNavigationState.Idle;
@@ -137,29 +167,11 @@ namespace Yaya {
 				default: throw new System.NotImplementedException();
 			}
 
-			// Perform Navigate
-			if (operationDone) {
-				CurrentNavOperationCount = 0;
-				CurrentNavOperationIndex = 0;
-				if (NavigationState == CharacterNavigationState.Navigate) {
-					CurrentNavOperationCount = CellNavigation.NavigateTo(
-						NavOperation, X, Y, NavigationAim.x, NavigationAim.y,
-						JUMP_DISTANCE_X, JUMP_DISTANCE_Y
-					);
-					if (CurrentNavOperationCount == 0) {
-						NavigationState = CharacterNavigationState.Idle;
-					}
-					NavJumpDuration = 0;
-				}
-			}
-
 		}
 
 
-		private void NavUpdate_MovementIdle () {
-			// X
+		private void NavUpdate_Movement_Idle () {
 			VelocityX = 0;
-			// Y
 			if (!InWater && !InSand) {
 				if (CellNavigation.IsGround(X, Y + Const.HALF, out int groundY)) {
 					VelocityY = groundY - Y;
@@ -174,7 +186,7 @@ namespace Yaya {
 		}
 
 
-		private void NavUpdate_MovementNavigate () {
+		private void NavUpdate_Movement_Navigating () {
 
 			if (CurrentNavOperationIndex >= CurrentNavOperationCount) return;
 
@@ -258,7 +270,8 @@ namespace Yaya {
 
 				// Fly
 				case NavigationMotion.Fly:
-					StartFly();
+					NavigationState = CharacterNavigationState.Fly;
+					NavigationFlyStartFrame = Game.GlobalFrame;
 					CurrentNavOperationIndex = 0;
 					CurrentNavOperationCount = 0;
 					break;
@@ -273,7 +286,7 @@ namespace Yaya {
 		}
 
 
-		private void NavUpdate_MovementFly () {
+		private void NavUpdate_Movement_Flying () {
 			var flyAim = NavigationAim;
 			flyAim.x = X.LerpTo(flyAim.x, 100);
 			flyAim.y = Y.LerpTo(flyAim.y, 100);
@@ -298,18 +311,22 @@ namespace Yaya {
 			CurrentNavOperationIndex = 0;
 			CurrentNavOperationCount = 0;
 			NavigationAim = new Vector2Int(X, Y);
+			NavigationAimGrounded = IsGrounded;
 			NavJumpFrame = 0;
 			NavJumpDuration = 0;
 		}
 
 
-		public void ClearNavigation () {
+		public void ResetNavigationOperation () {
 			CurrentNavOperationIndex = 0;
 			CurrentNavOperationCount = 0;
 		}
 
 
-		protected virtual Vector2Int GetNavigationAim () => NavigationAim;
+		protected virtual Vector2Int? GetNavigationAim (out bool grounded) {
+			grounded = true;
+			return null;
+		}
 
 
 		#endregion
@@ -320,12 +337,8 @@ namespace Yaya {
 		#region --- LGC ---
 
 
-		private void StartFly () {
-			NavigationState = CharacterNavigationState.Fly;
-			NavigationFlyStartFrame = Game.GlobalFrame;
-			VelocityX = 0;
-			VelocityY = 0;
-		}
+
+
 
 
 		#endregion

@@ -62,13 +62,16 @@ namespace Yaya {
 		public int LastSlidingFrame { get; private set; } = int.MinValue;
 		public int LastGrabingFrame { get; private set; } = int.MinValue;
 		public int LastFlyFrame { get; private set; } = int.MinValue;
-		public int LastGrabFlipFrame { get; private set; } = int.MinValue;
-		public int LastGrabTopDropFrame { get; private set; } = int.MinValue;
+		public int LastGrabFlipUpFrame { get; private set; } = int.MinValue;
+		public int LastGrabFlipDownFrame { get; private set; } = int.MinValue;
 
 		// Movement State
 		public bool ReadyForRun => RunningAccumulateFrame >= RunAccumulation;
 		public bool IsRolling => !InWater && !IsPounding && !IsFlying && !IsRushing && ((JumpWithRoll && CurrentJumpCount > 0) || (SecondJumpWithRoll && CurrentJumpCount > 1));
-		public bool IsGrabFliping => Game.GlobalFrame < LastGrabFlipFrame + Mathf.Max(GrabFlipThroughDuration, 1);
+		public bool IsGrabFliping => IsGrabFlipingUp || IsGrabFlipingDown;
+		public bool IsGrabFlipingUp => Game.GlobalFrame < LastGrabFlipUpFrame + Mathf.Max(GrabFlipThroughDuration, 1);
+		public bool IsGrabFlipingDown => Game.GlobalFrame < LastGrabFlipDownFrame + Mathf.Max(GrabFlipThroughDuration, 1);
+
 		public MovementState MoveState { get; set; } = MovementState.Idle;
 		public bool IsDashing { get; private set; } = false;
 		public bool IsRushing { get; private set; } = false;
@@ -127,6 +130,7 @@ namespace Yaya {
 
 		private void PhysicsUpdate_GamePlay_Movement () {
 			MovementUpdate_Cache();
+			MovementUpdate_GrabFlip();
 			MovementUpdate_Jump();
 			MovementUpdate_ResetJumpCount();
 			MovementUpdate_Dash();
@@ -135,7 +139,6 @@ namespace Yaya {
 				if (PhysicsEnable) {
 					MovementUpdate_VelocityX();
 					MovementUpdate_VelocityY();
-					MovementUpdate_GrabFlip();
 				}
 			} else {
 				VelocityX = IntendedX * WalkSpeed;
@@ -352,12 +355,10 @@ namespace Yaya {
 
 			int frame = Game.GlobalFrame;
 
+			bool movementAllowJump = !IsSquating && !IsGrabingTop && !IsInsideGround && !IsRushing && !IsGrabFliping;
+
 			// Perform Jump/Fly
-			if (
-				!IsSquating && !IsGrabingTop && !IsInsideGround &&
-				!IsRushing && !IsGrabFliping &&
-				(!IsClimbing || JumpWhenClimbAvailable)
-			) {
+			if (movementAllowJump && (!IsClimbing || JumpWhenClimbAvailable)) {
 				// Jump
 				if (CurrentJumpCount < JumpCount) {
 					// Jump
@@ -426,7 +427,7 @@ namespace Yaya {
 			}
 
 			// Jump Release
-			if (PrevHoldingJump && !HoldingJump) {
+			if (movementAllowJump && PrevHoldingJump && !HoldingJump) {
 				// Lose Speed if Raising
 				if (!IsGrounded && CurrentJumpCount <= JumpCount && VelocityY > 0) {
 					VelocityY = VelocityY * JumpReleaseLoseRate / 1000;
@@ -437,7 +438,7 @@ namespace Yaya {
 
 		private void MovementUpdate_Dash () {
 
-			if (!IntendedDash || !IsGrounded || InSand) return;
+			if (!IntendedDash || !IsGrounded || InSand || IsGrabFliping) return;
 
 			// Jump Though Oneway
 			if (JumpThoughOneway.Value && JumpThoughOnewayCheck()) {
@@ -456,7 +457,7 @@ namespace Yaya {
 
 		private void MovementUpdate_GrabFlip () {
 
-			if (MoveState == MovementState.GrabTop) {
+			if (IsGrabingTop) {
 
 				// Grab Flip Up
 				if (
@@ -465,8 +466,9 @@ namespace Yaya {
 					!GrabFlipUpLock &&
 					GrabFlipCheck(true)
 				) {
-					LastGrabFlipFrame = Game.GlobalFrame;
-					VelocityY = (MovementHeight + Const.CEL + 12) / Mathf.Max(GrabFlipThroughDuration, 1);
+					LastGrabFlipUpFrame = Game.GlobalFrame;
+					LastDashFrame = int.MinValue;
+					IsDashing = false;
 				}
 
 				// Grab Drop
@@ -476,20 +478,20 @@ namespace Yaya {
 						Hitbox.y = Y;
 					}
 					IsGrabingTop = false;
-					LastGrabTopDropFrame = Game.GlobalFrame;
+					LastGrabFlipDownFrame = Game.GlobalFrame;
+					LastDashFrame = int.MinValue;
+					IsDashing = false;
 				}
 			}
 
 			// Flip Down
 			if (
-				IntendedDash &&
-				IsGrounded &&
-				!InSand &&
-				GrabFlipThroughDown &&
+				IntendedDash && IsGrounded && !InSand && GrabFlipThroughDownAvailable &&
 				GrabFlipCheck(false)
 			) {
-				LastGrabFlipFrame = Game.GlobalFrame;
-				VelocityY = -(MovementHeight + Const.CEL + 12) / Mathf.Max(GrabFlipThroughDuration, 1);
+				LastGrabFlipDownFrame = Game.GlobalFrame;
+				LastDashFrame = int.MinValue;
+				IsDashing = false;
 			}
 
 		}
@@ -591,6 +593,7 @@ namespace Yaya {
 					speed = IntendedX * GrabMoveSpeedX;
 					break;
 
+
 			}
 
 			VelocityX = VelocityX.MoveTowards(speed, acc, dcc);
@@ -671,6 +674,8 @@ namespace Yaya {
 				// Grab Flip
 				case MovementState.GrabFlip:
 					GravityScale = 0;
+					VelocityY = (MovementHeight + Const.CEL + 12) / Mathf.Max(GrabFlipThroughDuration, 1) + 1;
+					if (!IsGrabFlipingUp) VelocityY *= -1;
 					break;
 
 			}
@@ -760,6 +765,10 @@ namespace Yaya {
 			LockedFacingFrame = Game.GlobalFrame + duration;
 			LockedFacingRight = facingRight;
 		}
+
+
+		// Override
+		protected override bool InsideGroundCheck () => !IsGrabFliping && base.InsideGroundCheck();
 
 
 		#endregion
@@ -897,7 +906,7 @@ namespace Yaya {
 				!GrabTopAvailable || IsInsideGround || IsGrounded || IsClimbing || IsDashing ||
 				InWater || IsSquating || IsGrabFliping
 			) return false;
-			if (Game.GlobalFrame < LastGrabTopDropFrame + GRAB_DROP_CANCEL) return false;
+			if (Game.GlobalFrame < LastGrabFlipDownFrame + GRAB_DROP_CANCEL) return false;
 			int height = MovementHeight;
 			var rect = new RectInt(
 				Hitbox.xMin,

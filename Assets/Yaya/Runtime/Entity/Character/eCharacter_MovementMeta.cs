@@ -118,7 +118,7 @@ namespace Yaya {
 		public readonly BuffBool GrabTopAvailable = new(false);
 		public readonly BuffBool GrabSideAvailable = new(false);
 		public readonly BuffBool ResetJumpCountWhenGrab = new(true);
-		public readonly BuffBool GrabFlipThroughDown = new(false);
+		public readonly BuffBool GrabFlipThroughDownAvailable = new(false);
 		public readonly BuffBool GrabFlipThroughUp = new(false);
 		public readonly BuffInt GrabFlipThroughDuration = new(18);
 		public readonly BuffInt GrabTopHeight = new(364);
