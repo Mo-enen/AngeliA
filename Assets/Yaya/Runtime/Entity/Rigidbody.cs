@@ -80,16 +80,19 @@ namespace Yaya {
 			base.PhysicsUpdate();
 			var rect = Rect;
 
+			bool prevInWater = InWater;
+			bool prevInSand = InSand;
+			InWater = CellPhysics.Overlap(YayaConst.MASK_LEVEL & CollisionMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
+			InSand = CellPhysics.Overlap(YayaConst.MASK_LEVEL & CollisionMask, rect, null, OperationMode.TriggerOnly, YayaConst.QUICKSAND_TAG);
+			IsInsideGround = InsideGroundCheck();
+
+
 			if (!PhysicsEnable) {
-				IsInsideGround = InsideGroundCheck();
 				IsGrounded = GroundedCheck();
-				InWater = CellPhysics.Overlap(YayaConst.MASK_LEVEL, rect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
-				InSand = CellPhysics.Overlap(YayaConst.MASK_LEVEL, rect, null, OperationMode.TriggerOnly, YayaConst.QUICKSAND_TAG);
 				return;
 			}
 
 			// Grounded
-			IsInsideGround = InsideGroundCheck();
 			if (IsInsideGround) {
 				if (DestroyWhenInsideGround) {
 					Active = false;
@@ -135,8 +138,6 @@ namespace Yaya {
 			if (AirDragY != 0) VelocityY = VelocityY.MoveTowards(0, AirDragY);
 
 			// Water
-			bool prevInWater = InWater;
-			InWater = CellPhysics.Overlap(YayaConst.MASK_LEVEL, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, YayaConst.WATER_TAG);
 			if (prevInWater != InWater) {
 				Game.Current.SpawnEntity(
 					WATER_PARTICLE_ID,
@@ -146,8 +147,6 @@ namespace Yaya {
 			}
 
 			// Sand
-			bool prevInSand = InSand;
-			InSand = CellPhysics.Overlap(YayaConst.MASK_LEVEL, rect, null, OperationMode.TriggerOnly, YayaConst.QUICKSAND_TAG);
 			if (prevInSand && !InSand && VelocityY > 0) {
 				VelocityY = Mathf.Max(VelocityY, YayaConst.QUICK_SAND_JUMPOUT_SPEED);
 			}
@@ -185,7 +184,8 @@ namespace Yaya {
 			int sizeX = Width / 8;
 			int sizeY = Height / 8;
 			return CellPhysics.Overlap(
-				YayaConst.MASK_LEVEL, new(
+				YayaConst.MASK_LEVEL & CollisionMask,
+				new RectInt(
 					X + OffsetX + Width / 2 - sizeX / 2,
 					Y + OffsetY + Height / 2 - sizeY / 2,
 					sizeX, sizeY

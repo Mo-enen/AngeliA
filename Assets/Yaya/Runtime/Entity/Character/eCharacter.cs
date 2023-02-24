@@ -92,7 +92,7 @@ namespace Yaya {
 						// General
 						PhysicsUpdate_Action();
 						PhysicsUpdate_Attack();
-						PhysicsUpdate_GamePlay_Movement();
+						PhysicsUpdate_Movement_GamePlay();
 						// Stop when Attacking
 						if (StopMoveOnAttack && IsAttacking && IsGrounded) {
 							VelocityX = 0;
@@ -114,7 +114,7 @@ namespace Yaya {
 					VelocityX = 0;
 					break;
 			}
-			PhysicsUpdate_Movement();
+			PhysicsUpdate_Movement_After();
 			PhysicsUpdate_Navigation();
 			base.PhysicsUpdate();
 		}

@@ -128,19 +128,21 @@ namespace Yaya {
 		}
 
 
-		private void PhysicsUpdate_GamePlay_Movement () {
+		private void PhysicsUpdate_Movement_GamePlay () {
 			MovementUpdate_Cache();
 			MovementUpdate_GrabFlip();
-			MovementUpdate_Jump();
 			MovementUpdate_ResetJumpCount();
+			MovementUpdate_Jump();
 			MovementUpdate_Dash();
 			MoveState = GetCurrentMovementState();
 			if (!IsInsideGround) {
+				// General
 				if (PhysicsEnable) {
 					MovementUpdate_VelocityX();
 					MovementUpdate_VelocityY();
 				}
 			} else {
+				// Inside Ground
 				VelocityX = IntendedX * WalkSpeed;
 				VelocityY = VelocityY.MoveTowards(0, 2);
 				if (IntendedJump) {
@@ -152,7 +154,7 @@ namespace Yaya {
 		}
 
 
-		private void PhysicsUpdate_Movement () {
+		private void PhysicsUpdate_Movement_After () {
 			IntendedJump = false;
 			IntendedDash = false;
 			IntendedPound = false;
@@ -308,6 +310,47 @@ namespace Yaya {
 		}
 
 
+		private void MovementUpdate_GrabFlip () {
+
+			if (IsGrabingTop) {
+
+				// Grab Flip Up
+				if (
+					IntendedY > 0 &&
+					GrabFlipThroughUp &&
+					!GrabFlipUpLock &&
+					GrabFlipCheck(true)
+				) {
+					LastGrabFlipUpFrame = Game.GlobalFrame;
+					LastDashFrame = int.MinValue;
+					IsDashing = false;
+				}
+
+				// Grab Drop
+				if (!GrabDropLock && IntendedY < 0) {
+					if (!GrabSideCheck(out _)) {
+						Y -= GRAB_TOP_CHECK_GAP;
+						Hitbox.y = Y;
+					}
+					IsGrabingTop = false;
+					LastDashFrame = int.MinValue;
+					IsDashing = false;
+				}
+			}
+
+			// Flip Down
+			if (
+				IntendedDash && IsGrounded && !InSand && GrabFlipThroughDownAvailable &&
+				GrabFlipCheck(false)
+			) {
+				LastGrabFlipDownFrame = Game.GlobalFrame;
+				LastDashFrame = int.MinValue;
+				IsDashing = false;
+			}
+
+		}
+
+
 		private void MovementUpdate_ResetJumpCount () {
 
 			if (CurrentJumpCount == 0) return;
@@ -452,48 +495,6 @@ namespace Yaya {
 			LastDashFrame = Game.GlobalFrame;
 			IsDashing = true;
 			VelocityY = 0;
-		}
-
-
-		private void MovementUpdate_GrabFlip () {
-
-			if (IsGrabingTop) {
-
-				// Grab Flip Up
-				if (
-					IntendedY > 0 &&
-					GrabFlipThroughUp &&
-					!GrabFlipUpLock &&
-					GrabFlipCheck(true)
-				) {
-					LastGrabFlipUpFrame = Game.GlobalFrame;
-					LastDashFrame = int.MinValue;
-					IsDashing = false;
-				}
-
-				// Grab Drop
-				if (!GrabDropLock && IntendedY < 0) {
-					if (!GrabSideCheck(out _)) {
-						Y -= GRAB_TOP_CHECK_GAP;
-						Hitbox.y = Y;
-					}
-					IsGrabingTop = false;
-					LastGrabFlipDownFrame = Game.GlobalFrame;
-					LastDashFrame = int.MinValue;
-					IsDashing = false;
-				}
-			}
-
-			// Flip Down
-			if (
-				IntendedDash && IsGrounded && !InSand && GrabFlipThroughDownAvailable &&
-				GrabFlipCheck(false)
-			) {
-				LastGrabFlipDownFrame = Game.GlobalFrame;
-				LastDashFrame = int.MinValue;
-				IsDashing = false;
-			}
-
 		}
 
 
@@ -765,10 +766,6 @@ namespace Yaya {
 			LockedFacingFrame = Game.GlobalFrame + duration;
 			LockedFacingRight = facingRight;
 		}
-
-
-		// Override
-		protected override bool InsideGroundCheck () => !IsGrabFliping && base.InsideGroundCheck();
 
 
 		#endregion

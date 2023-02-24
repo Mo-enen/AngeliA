@@ -111,6 +111,7 @@ namespace Yaya {
 
 
 		// Const
+		private static readonly int FOOTSTEP_PARTICLE_CODE = typeof(eCharacterFootstep).AngeHash();
 		private static readonly int SLEEP_PARTICLE_CODE = typeof(eDefaultParticle).AngeHash();
 		private static readonly int SLIDE_PARTICLE_CODE = typeof(eSlideDust).AngeHash();
 		private static readonly int[] BOUNCE_AMOUNTS = new int[] { 500, 200, 100, 50, 25, 50, 100, 200, 500, };
@@ -141,6 +142,7 @@ namespace Yaya {
 		public int FaceIndex { get; set; } = 0;
 		protected virtual byte ColorfulFlashingAlpha => IsChargingAttack ? (byte)Util.Remap(0, MinimalChargeAttackDuration, -32, 255, Game.GlobalFrame - ChargeStartFrame).Clamp(0, 255) : (byte)0;
 		protected virtual bool IsColorfulFlashing => IsAttackCharged;
+		protected virtual int FootStepParticleCode => FOOTSTEP_PARTICLE_CODE;
 
 		// Data
 		private readonly AniSheet AnimationSheet = new();
@@ -154,6 +156,7 @@ namespace Yaya {
 		private int BlinkingTime = int.MinValue;
 		private int DamagingTime = int.MinValue;
 		private int EnterDoorEndFrame = 0;
+		private int LastStartRunFrame = int.MinValue;
 
 
 		#endregion
@@ -256,6 +259,7 @@ namespace Yaya {
 			}
 
 			// Draw
+			Update_Run();
 			switch (CharacterState) {
 				case CharacterState.GamePlay:
 					DrawBody();
@@ -281,6 +285,33 @@ namespace Yaya {
 					);
 					break;
 			}
+		}
+
+
+		private void Update_Run () {
+
+			// Last Start Run Frame
+			if (MoveState == MovementState.Run) {
+				if (LastStartRunFrame < 0) LastStartRunFrame = Game.GlobalFrame;
+			} else if (LastStartRunFrame >= 0) {
+				LastStartRunFrame = int.MinValue;
+			}
+
+			// Run Particle
+			if (
+				IsGrounded &&
+				LastStartRunFrame >= 0 &&
+				(Game.GlobalFrame - LastStartRunFrame) % 20 == 19 &&
+				Game.Current.TrySpawnEntity(FootStepParticleCode, X, Y, out var entity) &&
+				entity is Particle particle
+			) {
+				if (CellRenderer.TryGetSprite(GroundedID, out var sprite)) {
+					particle.Tint = sprite.SummaryTint;
+				} else {
+					particle.Tint = Const.WHITE;
+				}
+			}
+
 		}
 
 

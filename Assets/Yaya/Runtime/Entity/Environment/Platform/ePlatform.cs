@@ -138,7 +138,9 @@ namespace Yaya {
 
 
 		private void Update_CarryX () {
+
 			if (X == PrevX) return;
+
 			var rect = Rect;
 			var prevRect = rect;
 			prevRect.x = PrevX;
@@ -151,39 +153,32 @@ namespace Yaya {
 				right = int.MaxValue;
 			}
 
-			// Normal
 			int count = CellPhysics.OverlapAll(
-				c_Overlaps, YayaConst.MASK_RIGIDBODY, rect.Edge(Direction4.Up), this
+				c_Overlaps, YayaConst.MASK_RIGIDBODY, rect.Edge(Direction4.Up),
+				this, OperationMode.ColliderAndTrigger
 			);
-			PerformCarry(false);
-
-			// Nav
-			count = CellPhysics.OverlapAll(
-				c_Overlaps, YayaConst.MASK_RIGIDBODY, rect.Edge(Direction4.Up), this, OperationMode.TriggerOnly
-			);
-			PerformCarry(true);
-
-			// Func
-			void PerformCarry (bool forNav) {
-				for (int i = 0; i < count; i++) {
-					var hit = c_Overlaps[i];
-					if (hit.Entity is not Rigidbody rig) continue;
-					if (rig.X < left || rig.X >= right) continue;
-					if (rig.Rect.y < rect.yMax) continue;
-					if (!forNav) {
-						rig.PerformMove(X - PrevX, 0);
-					} else {
-						if (hit.Entity is not eCharacter ch || ch.IsFlying) continue;
-						rig.X += X - PrevX;
-					}
-					rig.MakeGrounded(1, TypeID);
+			for (int i = 0; i < count; i++) {
+				var hit = c_Overlaps[i];
+				if (hit.Entity is not Rigidbody rig) continue;
+				if (rig.X < left || rig.X >= right) continue;
+				if (rig.Rect.y < rect.yMax) continue;
+				if (!hit.IsTrigger) {
+					// For General Rig
+					rig.PerformMove(X - PrevX, 0);
+				} else {
+					// For Nav Character
+					if (hit.Entity is not eCharacter ch || ch.IsFlying) continue;
+					rig.X += X - PrevX;
 				}
+				rig.MakeGrounded(1, TypeID);
 			}
 		}
 
 
 		private void Update_CarryY () {
+
 			if (Y == PrevY) return;
+
 			var rect = Rect;
 			var prevRect = rect;
 			prevRect.y = PrevY;
@@ -195,34 +190,49 @@ namespace Yaya {
 			if (Pose == FittingPose.Single || Pose == FittingPose.Right) {
 				right = int.MaxValue;
 			}
+
 			if (Y > PrevY) {
-				// Moving Up
 				prevRect.height -= rect.height / 3;
 				rect.y = PrevY + prevRect.height;
 				rect.height = Y + Height - rect.y;
-				int count = CellPhysics.OverlapAll(c_Overlaps, YayaConst.MASK_RIGIDBODY, rect, this);
+			} else {
+				prevRect.height += PrevY - Y + 1;
+			}
+
+			int count = CellPhysics.OverlapAll(
+				c_Overlaps, YayaConst.MASK_RIGIDBODY, Y > PrevY ? rect : prevRect,
+				this, OperationMode.ColliderAndTrigger
+			);
+
+			if (Y > PrevY) {
+				// Moving Up
 				for (int i = 0; i < count; i++) {
 					var hit = c_Overlaps[i];
 					if (hit.Entity is not Rigidbody rig) continue;
 					if (rig.X < left || rig.X >= right) continue;
 					if (rig.VelocityY > Y - PrevY) continue;
 					if (!rig.Rect.Overlaps(prevRect)) {
-						rig.PerformMove(0, rect.yMax - rig.Rect.y);
+						if (!hit.IsTrigger) {
+							// For General Rig
+							rig.PerformMove(0, rect.yMax - rig.Rect.y);
+						} else {
+							// For Nav Character
+							if (hit.Entity is not eCharacter ch || ch.IsFlying) continue;
+							rig.Y += rect.yMax - rig.Rect.y;
+						}
 						rig.MakeGrounded(1, TypeID);
 					}
 				}
 			} else {
 				// Moving Down
-				prevRect.height += PrevY - Y + 1;
-				int count = CellPhysics.OverlapAll(c_Overlaps, YayaConst.MASK_RIGIDBODY, prevRect, this);
 				for (int i = 0; i < count; i++) {
 					var hit = c_Overlaps[i];
 					if (hit.Entity is not Rigidbody rig) continue;
 					if (rig.X < left || rig.X >= right) continue;
-					int rY = rig.Rect.yMin;
-					if (rY < rect.yMax - Const.CEL / 3) continue;
+					if (rig.Rect.yMin < rect.yMax - Const.CEL / 3) continue;
+					if (hit.IsTrigger && (hit.Entity is not eCharacter ch || ch.IsFlying)) continue;
 					rig.Y = rect.yMax - rig.OffsetY;
-					rig.VelocityY = 0;
+					if (!hit.IsTrigger) rig.VelocityY = 0;
 					rig.MakeGrounded(1, TypeID);
 				}
 			}

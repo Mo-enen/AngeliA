@@ -74,7 +74,7 @@ namespace Yaya {
 				if (NavigationState == CharacterNavigationState.Navigate) {
 					CurrentNavOperationCount = CellNavigation.NavigateTo(
 						NavOperation, X, Y, NavigationAim.x, NavigationAim.y,
-						JUMP_DISTANCE_X, JUMP_DISTANCE_Y
+						JUMP_DISTANCE_X, JUMP_DISTANCE_Y, 32
 					);
 					if (CurrentNavOperationCount == 0) {
 						NavigationState = CharacterNavigationState.Idle;
@@ -152,12 +152,12 @@ namespace Yaya {
 					break;
 
 				case CharacterNavigationState.Fly:
-					// Fly >> ??
 					if (
 						NavigationState == CharacterNavigationState.Fly &&
 						Game.GlobalFrame > NavigationFlyStartFrame + MINIMUM_FLY_DURATION &&
 						aimSqrtDis < END_FLY_DISTANCE_SQ
 					) {
+						// Fly >> ??
 						NavigationState = aimSqrtDis > START_MOVE_DISTANCE_SQ ?
 							CharacterNavigationState.Navigate :
 							CharacterNavigationState.Idle;
@@ -174,9 +174,11 @@ namespace Yaya {
 			VelocityX = 0;
 			if (!InWater && !InSand) {
 				if (CellNavigation.IsGround(X, Y + Const.HALF, out int groundY)) {
+					// Move to Ground
 					VelocityY = groundY - Y;
 					MakeGrounded(1);
 				} else {
+					// Fall Down
 					VelocityY = (VelocityY - Gravity).Clamp(-MaxGravitySpeed, int.MaxValue);
 				}
 			} else {

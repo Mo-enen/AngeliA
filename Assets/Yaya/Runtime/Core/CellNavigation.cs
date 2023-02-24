@@ -36,7 +36,6 @@ namespace Yaya {
 
 		private struct Cell {
 
-
 			public static readonly Cell EMPTY = new() {
 				BlockStamp = -1,
 				OperationStamp = 0,
@@ -44,7 +43,6 @@ namespace Yaya {
 					Motion = NavigationMotion.None,
 				},
 			};
-
 
 			// Operation
 			public bool OperationDataValid {
@@ -92,6 +90,7 @@ namespace Yaya {
 		// Data
 		private static Cell[,] Cells = null;
 		private static Queue<Vector3Int> ExpandQueue = null;
+		private static Queue<Vector3Int> ExpandQueueJump = null;
 		private static uint OperationStamp = 0;
 		private static int CachedFrame = int.MinValue;
 		private static int CellUnitOffsetX = 0;
@@ -118,17 +117,41 @@ namespace Yaya {
 				}
 			}
 			ExpandQueue = new(CellWidth * CellHeight + 1);
+			ExpandQueueJump = new(CellWidth * CellHeight + 1);
 		}
 
 
-		public static int NavigateTo (Operation[] Operations, int fromX, int fromY, int toX, int toY, int jumpUnitX, int jumpUnitY) {
+		public static int NavigateTo (
+			in Operation[] Operations,
+			in int fromX, in int fromY, in int toX, in int toY, in int jumpRangeX, in int jumpRangeY,
+			in int maxIteration
+		) {
+
+			if (Operations == null || Operations.Length == 0) return 0;
+
 			RefreshFrameCache();
 			OperationStamp++;
-			var unitRangeRect = new RectInt(CellUnitOffsetX, CellUnitOffsetY, CellWidth, CellHeight);
-			int fromUnitX = fromX.UDivide(Const.CEL).Clamp(unitRangeRect.xMin, unitRangeRect.xMax - 1);
-			int fromUnitY = fromY.UDivide(Const.CEL).Clamp(unitRangeRect.yMin, unitRangeRect.yMax - 1);
-			int toUnitX = toX.UDivide(Const.CEL).Clamp(unitRangeRect.xMin, unitRangeRect.xMax - 1);
-			int toUnitY = toY.UDivide(Const.CEL).Clamp(unitRangeRect.yMin, unitRangeRect.yMax - 1);
+
+			int fromCellX = (fromX.UDivide(Const.CEL) - CellUnitOffsetX).Clamp(0, CellWidth - 1);
+			int fromCellY = (fromY.UDivide(Const.CEL) - CellUnitOffsetY).Clamp(0, CellHeight - 1);
+			int toCellX = (toX.UDivide(Const.CEL) - CellUnitOffsetX).Clamp(0, CellWidth - 1);
+			int toCellY = (toY.UDivide(Const.CEL) - CellUnitOffsetY).Clamp(0, CellHeight - 1);
+			bool rightFirst = fromX.UMod(Const.CEL) > Const.HALF;
+			bool upFirst = fromY.UMod(Const.CEL) > Const.HALF;
+			int operationCount = 0;
+			int maxOperationCount = Operations.Length;
+			int minDistanceSq = int.MaxValue;
+
+			ExpandQueue.Clear();
+			ExpandQueueJump.Clear();
+			ExpandQueue.Enqueue(new(fromCellX, fromCellY, 0));
+			Cells[fromCellX, fromCellY].OperationDataValid = true;
+
+			while (ExpandQueue.Count > 0) {
+
+				// Move
+				while (ExpandQueue.Count > 0) {
+					var pos = ExpandQueue.Dequeue();
 
 
 
@@ -136,14 +159,37 @@ namespace Yaya {
 
 
 
+				}
 
-			Operations[0] = new Operation() {
-				Motion = NavigationMotion.Move,
-				TargetGlobalX = toX,
-				TargetGlobalY = toY,
-			};
+				// Jump
+				while (ExpandQueueJump.Count > 0) {
+					var pos = ExpandQueueJump.Dequeue();
 
-			return 1;
+
+
+
+
+				}
+
+			}
+
+			// Fill Operation
+
+
+
+
+			// Fly At End Check
+			if (minDistanceSq != 0 && minDistanceSq != int.MaxValue) {
+				operationCount = (operationCount + 1).Clamp(0, maxOperationCount);
+				int index = operationCount - 1;
+				Operations[index] = new Operation() {
+					Motion = NavigationMotion.Fly,
+					TargetGlobalX = toX,
+					TargetGlobalY = toY,
+				};
+			}
+
+			return operationCount;
 		}
 
 
@@ -172,13 +218,13 @@ namespace Yaya {
 
 				// Check
 				if (
-					IsGroundCell(pos.x, pos.y, Cell_to_GlobalY(pos.y) + Const.HALF, out int _resultY) ||
+					IsGroundCell(pos.x, pos.y, (pos.y + CellUnitOffsetY) * Const.CEL + Const.HALF, out int _resultY) ||
 					!ignoreAir
 				) {
 					int sqDis = Util.SquareDistance(toCellX, toCellY, pos.x, pos.y);
 					if (sqDis < minSquareDis) {
 						minSquareDis = sqDis;
-						resultX = Cell_to_GlobalX(pos.x) + Const.HALF;
+						resultX = (pos.x + CellUnitOffsetX) * Const.CEL + Const.HALF;
 						resultY = _resultY;
 						if (sqDis == 0) return true;
 					}
@@ -285,9 +331,14 @@ namespace Yaya {
 		public static bool IsGround (int globalX, int globalY, out int groundY) {
 			RefreshFrameCache();
 			groundY = globalY;
-			return
-				Global_to_Cell(globalX, globalY, out int cellX, out int cellY) &&
-				IsGroundCell(cellX, cellY, globalY, out groundY);
+			int cellX = globalX.UDivide(Const.CEL) - CellUnitOffsetX;
+			if (cellX.InRange(0, CellWidth - 1)) {
+				int cellY = globalY.UDivide(Const.CEL) - CellUnitOffsetY;
+				if (cellY.InRange(0, CellHeight - 1)) {
+					return IsGroundCell(cellX, cellY, globalY, out groundY);
+				}
+			}
+			return false;
 		}
 
 
@@ -391,19 +442,6 @@ namespace Yaya {
 
 			return isGround;
 		}
-
-
-		private static bool Global_to_Cell (int globalX, int globalY, out int cellX, out int cellY) {
-			cellX = globalX.UDivide(Const.CEL) - CellUnitOffsetX;
-			cellY = 0;
-			if (!cellX.InRange(0, CellWidth - 1)) return false;
-			cellY = globalY.UDivide(Const.CEL) - CellUnitOffsetY;
-			return cellY.InRange(0, CellHeight - 1);
-		}
-
-
-		private static int Cell_to_GlobalX (int cellX) => (cellX + CellUnitOffsetX) * Const.CEL;
-		private static int Cell_to_GlobalY (int cellY) => (cellY + CellUnitOffsetY) * Const.CEL;
 
 
 		#endregion

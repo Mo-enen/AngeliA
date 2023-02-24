@@ -18,8 +18,8 @@ namespace Yaya {
 	}
 
 
-	[EntityAttribute.Capacity(4)]
-	public class eYayaFootstep : Particle {
+	[EntityAttribute.Capacity(36)]
+	public class eCharacterFootstep : Particle {
 		public override int Duration => 20;
 		public override bool Loop => false;
 		public override int FramePerSprite => 5;
