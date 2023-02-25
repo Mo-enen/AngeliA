@@ -199,32 +199,45 @@ namespace Yaya {
 				prevRect.height += PrevY - Y + 1;
 			}
 
-			int count = CellPhysics.OverlapAll(
-				c_Overlaps, YayaConst.MASK_RIGIDBODY, Y > PrevY ? rect : prevRect,
-				this, OperationMode.ColliderAndTrigger
-			);
-
 			if (Y > PrevY) {
 				// Moving Up
+				int count = CellPhysics.OverlapAll(
+					c_Overlaps, YayaConst.MASK_RIGIDBODY, rect,
+					this, OperationMode.ColliderOnly
+				);
 				for (int i = 0; i < count; i++) {
 					var hit = c_Overlaps[i];
 					if (hit.Entity is not Rigidbody rig) continue;
 					if (rig.X < left || rig.X >= right) continue;
 					if (rig.VelocityY > Y - PrevY) continue;
 					if (!rig.Rect.Overlaps(prevRect)) {
-						if (!hit.IsTrigger) {
-							// For General Rig
-							rig.PerformMove(0, rect.yMax - rig.Rect.y);
-						} else {
-							// For Nav Character
-							if (hit.Entity is not eCharacter ch || ch.IsFlying) continue;
-							rig.Y += rect.yMax - rig.Rect.y;
-						}
+						rig.PerformMove(0, rect.yMax - rig.Rect.y);
 						rig.MakeGrounded(1, TypeID);
 					}
 				}
+				// For Nav Character
+				count = CellPhysics.OverlapAll(
+					c_Overlaps, YayaConst.MASK_RIGIDBODY, rect,
+					this, OperationMode.TriggerOnly
+				);
+				for (int i = 0; i < count; i++) {
+					var hit = c_Overlaps[i];
+					if (hit.Entity is not Rigidbody rig) continue;
+					if (rig.X < left || rig.X >= right) continue;
+					if (rig.VelocityY > Y - PrevY) continue;
+					if (hit.Entity is not eCharacter ch || ch.IsFlying) continue;
+					if (!rig.Rect.Overlaps(prevRect)) {
+						rig.Y.MoveTowards(rect.yMax - rig.OffsetY, 64);
+						rig.MakeGrounded(1, TypeID);
+					}
+				}
+
 			} else {
 				// Moving Down
+				int count = CellPhysics.OverlapAll(
+					c_Overlaps, YayaConst.MASK_RIGIDBODY, prevRect,
+					this, OperationMode.ColliderAndTrigger
+				);
 				for (int i = 0; i < count; i++) {
 					var hit = c_Overlaps[i];
 					if (hit.Entity is not Rigidbody rig) continue;

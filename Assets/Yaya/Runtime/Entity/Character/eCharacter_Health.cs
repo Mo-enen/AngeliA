@@ -30,6 +30,8 @@ namespace Yaya {
 		public readonly BuffInt InvincibleDuration = new(120);
 		public readonly BuffInt DamageStunDuration = new(24);
 		public readonly BuffInt KnockBackSpeed = new(64);
+		public readonly BuffBool InvincibleOnDash = new(false);
+		public readonly BuffBool InvincibleOnRush = new(true);
 
 		// Data
 		private int InvincibleEndFrame = int.MinValue;
@@ -65,6 +67,9 @@ namespace Yaya {
 				CharacterState != CharacterState.GamePlay || damage <= 0 ||
 				Invincible || HealthPoint <= 0 || Game.GlobalFrame <= SafeFrame
 			) return;
+
+			if (InvincibleOnRush && IsRushing) return;
+			if (InvincibleOnDash && IsDashing) return;
 
 			ChargeStartFrame = int.MaxValue;
 
