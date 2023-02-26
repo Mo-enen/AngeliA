@@ -19,8 +19,7 @@ namespace Yaya {
 
 
 		// Const
-		private const int TARGET_REFRESH_FREQUENCY = 30;
-		private const int NAV_INSTANCE_LOOP = 12;
+		private const int AIM_REFRESH_FREQUENCY = 30;
 
 		// Api
 		public eCharacter Owner { get; set; } = null;
@@ -34,8 +33,8 @@ namespace Yaya {
 		private int OwnerPosTrailIndex = -1;
 		private int SummonFrame = int.MinValue;
 		private int PrevZ = int.MinValue;
-		private int LastNavStateReloadFrame = int.MinValue;
 		private int LastTrailUpdateFrame = int.MinValue;
+		private bool RequireAimRefresh = true;
 
 
 		#endregion
@@ -50,17 +49,17 @@ namespace Yaya {
 			base.OnActived();
 			OwnerPosTrailIndex = -1;
 			Owner = null;
-			LastNavStateReloadFrame = int.MinValue;
 			NavigationState = CharacterNavigationState.Navigate;
+			RequireAimRefresh = true;
 		}
 
 
 		public virtual void OnSummoned (bool create) {
 			RenderBounce();
 			ResetNavigation();
-			LastNavStateReloadFrame = int.MinValue;
 			SummonFrame = Game.GlobalFrame;
 			NavigationState = CharacterNavigationState.Navigate;
+			RequireAimRefresh = true;
 		}
 
 
@@ -78,8 +77,8 @@ namespace Yaya {
 				X = Owner.X;
 				Y = Owner.Y;
 				ResetNavigation();
-				LastNavStateReloadFrame = int.MinValue;
 				NavigationState = CharacterNavigationState.Navigate;
+				RequireAimRefresh = true;
 			}
 
 			PhysicsUpdate_Trail();
@@ -107,6 +106,24 @@ namespace Yaya {
 					} else {
 						MoveState = MovementState.Idle;
 					}
+
+
+
+
+					////////////////// Test //////////////////
+					int toX = NavigationAim.x;
+					int toY = NavigationAim.y;
+					CellRenderer.Draw(
+						Const.PIXEL, X, Y, 500, 0,
+						-Vector2.SignedAngle(Vector2.up, new Vector2(toX - X, toY - Y)).RoundToInt(),
+						8, Util.DistanceInt(X, Y, toX, toY),
+						Const.GREEN
+					);
+					////////////////// Test //////////////////
+
+
+
+
 					break;
 			}
 
@@ -151,17 +168,15 @@ namespace Yaya {
 
 			// Scan Frequency Gate
 			if (
-				Game.GlobalFrame < LastNavStateReloadFrame + TARGET_REFRESH_FREQUENCY &&
-				(!NavOperationDone || !HasNavOperation)
-			) {
-				return null;
-			}
-			LastNavStateReloadFrame = Game.GlobalFrame;
+				!RequireAimRefresh &&
+				(Game.GlobalFrame + InstanceIndex) % AIM_REFRESH_FREQUENCY != 0 &&
+				HasPerformableOperation
+			) return null;
+			RequireAimRefresh = false;
 
 			// Get Aim at Ground
-			ResetNavigationOperation();
 			var result = new Vector2Int(Owner.X, Owner.Y);
-			int offsetX = Const.CEL * ((InstanceIndex % NAV_INSTANCE_LOOP) / 2 + 1) * (InstanceIndex % 2 == 0 ? -1 : 1);
+			int offsetX = Const.CEL * ((InstanceIndex % 12) / 2 + 2) * (InstanceIndex % 2 == 0 ? -1 : 1);
 			if (CellNavigation.ExpandTo(
 				Owner.X,
 				Owner.Y + Const.HALF,

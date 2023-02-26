@@ -187,6 +187,14 @@ namespace Yaya {
 				}
 			}
 
+			Operations[operationCount] = new Operation() {
+				Motion = NavigationMotion.Jump,
+				TargetGlobalX = toX,
+				TargetGlobalY = toY,
+			};
+			operationCount++;
+			return operationCount;
+
 			// Nav Expand
 			int toCellX = (toX.UDivide(Const.CEL) - CellUnitOffsetX).Clamp(0, CellWidth - 1);
 			int toCellY = (toY.UDivide(Const.CEL) - CellUnitOffsetY).Clamp(0, CellHeight - 1);

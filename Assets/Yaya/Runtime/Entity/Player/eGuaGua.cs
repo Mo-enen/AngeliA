@@ -37,27 +37,22 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (
-				Owner != null &&
-				Owner.CharacterState != CharacterState
-			) {
-				SetCharacterState(Owner.CharacterState);
-				switch (CharacterState) {
+			FrameUpdate_Sleep();
+		}
 
-					case CharacterState.Sleep:
-						// Sleep in Basket
-						if (Game.Current.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
-							int offsetY = 0;
-							if (CellRenderer.TryGetSprite(eBasket.TYPE_ID, out var basketSprite)) {
-								offsetY = basketSprite.GlobalHeight - basketSprite.GlobalBorder.Up;
-							}
-							X = basket.X + basket.Width / 2;
-							Y = basket.Y + offsetY;
-						}
-						break;
 
+		private void FrameUpdate_Sleep () {
+			if (Owner == null || !Owner.Active) return;
+			if (Owner.CharacterState == CharacterState.Sleep && CharacterState != CharacterState.Sleep) {
+				// Sleep in Basket
+				if (Game.Current.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
+					int offsetY = 0;
+					if (CellRenderer.TryGetSprite(eBasket.TYPE_ID, out var basketSprite)) {
+						offsetY = basketSprite.GlobalHeight - basketSprite.GlobalBorder.Up;
+					}
+					X = basket.X + basket.Width / 2;
+					Y = basket.Y + offsetY;
 				}
-
 			}
 		}
 
