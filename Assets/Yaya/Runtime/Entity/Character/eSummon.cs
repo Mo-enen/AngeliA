@@ -163,9 +163,9 @@ namespace Yaya {
 			int offsetX = Const.CEL * ((InstanceIndex % 12) / 2 + 2) * (InstanceIndex % 2 == 0 ? -1 : 1);
 			if (CellNavigation.ExpandTo(
 				Owner.X,
-				Owner.Y + Const.HALF,
+				Owner.Y,
 				Owner.X + offsetX,
-				Owner.Y + Const.HALF,
+				Owner.Y,
 				maxIteration: 12,
 				out int groundX, out int groundY
 			)) {

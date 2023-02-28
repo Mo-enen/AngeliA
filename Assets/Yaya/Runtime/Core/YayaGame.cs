@@ -135,8 +135,7 @@ namespace Yaya {
 				int count = CellNavigation.NavigateTo(
 					testOperations,
 					ePlayer.Selecting.X, ePlayer.Selecting.Y,
-					FrameInput.MouseGlobalPosition.x, FrameInput.MouseGlobalPosition.y,
-					6, 6, 64
+					FrameInput.MouseGlobalPosition.x, FrameInput.MouseGlobalPosition.y
 				);
 				int prevX = ePlayer.Selecting.X;
 				int prevY = ePlayer.Selecting.Y;

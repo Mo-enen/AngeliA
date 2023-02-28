@@ -75,14 +75,11 @@ namespace Yaya {
 
 			// Perform Navigate
 			if (CurrentNavOperationIndex >= CurrentNavOperationCount) {
-				const int JUMP_DISTANCE_X = 6;
-				const int JUMP_DISTANCE_Y = 6;
 				CurrentNavOperationCount = 0;
 				CurrentNavOperationIndex = 0;
 				if (NavigationState == CharacterNavigationState.Operation) {
 					CurrentNavOperationCount = CellNavigation.NavigateTo(
-						NavOperations, X, Y, NavigationAim.x, NavigationAim.y,
-						JUMP_DISTANCE_X, JUMP_DISTANCE_Y, 64
+						NavOperations, X, Y, NavigationAim.x, NavigationAim.y
 					);
 					if (CurrentNavOperationCount == 0) {
 						NavigationState = CharacterNavigationState.Idle;
@@ -106,19 +103,22 @@ namespace Yaya {
 					int prevY = Y;
 					for (int index = CurrentNavOperationIndex; index < CurrentNavOperationCount; index++) {
 						var operation = NavOperations[index];
-						CellRenderer.Draw(Const.PIXEL, operation.TargetGlobalX, operation.TargetGlobalY, 500, 500, 0, 16, 16);
+						var tint = operation.Motion switch {
+							NavigationMotion.Move => Const.GREEN,
+							NavigationMotion.Jump => Const.BLUE,
+							NavigationMotion.Fly => Const.RED,
+							_ => Const.WHITE,
+						};
+						CellRenderer.Draw(
+							Const.PIXEL, operation.TargetGlobalX, operation.TargetGlobalY,
+							500, 500, 0, 16, 16, tint
+						);
 						CellRendererGUI.DrawLine(
 							prevX,
 							prevY,
 							operation.TargetGlobalX,
 							operation.TargetGlobalY,
-							8,
-							operation.Motion switch {
-								NavigationMotion.Move => Const.GREEN,
-								NavigationMotion.Jump => Const.BLUE,
-								NavigationMotion.Fly => Const.RED,
-								_ => Const.WHITE,
-							}
+							8, tint
 						);
 						prevX = operation.TargetGlobalX;
 						prevY = operation.TargetGlobalY;
