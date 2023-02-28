@@ -130,30 +130,37 @@ namespace Yaya {
 					}
 				}
 
-
-				// In Range Test
-				//var groundRange = new RectInt(
-				//	FrameInput.MouseGlobalPosition.x - Const.CEL * 6,
-				//	FrameInput.MouseGlobalPosition.y - Const.CEL * 6,
-				//	Const.CEL * 12, Const.CEL * 12
-				//);
-				//CellRenderer.Draw_9Slice("Frame16".AngeHash(), groundRange, Const.GREEN);
-				//if (CellNavigation.FindGroundInRange(groundRange, out int gnX, out int gnY)) {
-				//	CellRenderer.Draw("Circle16".AngeHash(), gnX, gnY, 500, 500, 0, 64, 64, Const.GREEN);
-				//}
-
-				// Expand Test
-				var aimPos = new Vector2Int(
-					FrameInput.MouseGlobalPosition.x,
-					FrameInput.MouseGlobalPosition.y
+				// Nav To Test
+				var testOperations = new CellNavigation.Operation[64];
+				int count = CellNavigation.NavigateTo(
+					testOperations,
+					ePlayer.Selecting.X, ePlayer.Selecting.Y,
+					FrameInput.MouseGlobalPosition.x, FrameInput.MouseGlobalPosition.y,
+					6, 6, 64
 				);
-				if (CellNavigation.ExpandTo(
-					ePlayer.Selecting.X, ePlayer.Selecting.Y, aimPos.x, aimPos.y, 12,
-					out int gnX, out int gnY
-				)) {
-					CellRenderer.Draw("Circle16".AngeHash(), gnX, gnY, 500, 500, 0, 128, 128, Const.GREEN).Z = int.MaxValue;
-				} else {
-					CellRenderer.Draw("Circle16".AngeHash(), aimPos.x, aimPos.y, 500, 500, 0, 128, 128, Const.RED_BETTER).Z = int.MaxValue;
+				int prevX = ePlayer.Selecting.X;
+				int prevY = ePlayer.Selecting.Y;
+				for (int index = 0; index < count; index++) {
+					var operation = testOperations[index];
+					var tint = operation.Motion switch {
+						NavigationMotion.Move => Const.GREEN,
+						NavigationMotion.Jump => Const.BLUE,
+						NavigationMotion.Fly => Const.RED,
+						_ => Const.WHITE,
+					};
+					CellRenderer.Draw(
+						Const.PIXEL, operation.TargetGlobalX, operation.TargetGlobalY,
+						500, 500, 0, 24, 24, tint
+					);
+					CellRendererGUI.DrawLine(
+						prevX,
+						prevY,
+						operation.TargetGlobalX,
+						operation.TargetGlobalY,
+						12, tint
+					);
+					prevX = operation.TargetGlobalX;
+					prevY = operation.TargetGlobalY;
 				}
 			}
 

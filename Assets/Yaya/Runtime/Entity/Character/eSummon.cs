@@ -49,7 +49,7 @@ namespace Yaya {
 			base.OnActived();
 			OwnerPosTrailIndex = -1;
 			Owner = null;
-			NavigationState = CharacterNavigationState.Navigate;
+			NavigationState = CharacterNavigationState.Operation;
 			RequireAimRefresh = true;
 		}
 
@@ -58,7 +58,7 @@ namespace Yaya {
 			RenderBounce();
 			ResetNavigation();
 			SummonFrame = Game.GlobalFrame;
-			NavigationState = CharacterNavigationState.Navigate;
+			NavigationState = CharacterNavigationState.Operation;
 			RequireAimRefresh = true;
 		}
 
@@ -77,7 +77,7 @@ namespace Yaya {
 				X = Owner.X;
 				Y = Owner.Y;
 				ResetNavigation();
-				NavigationState = CharacterNavigationState.Navigate;
+				NavigationState = CharacterNavigationState.Operation;
 				RequireAimRefresh = true;
 			}
 
@@ -99,31 +99,15 @@ namespace Yaya {
 					}
 					break;
 
-				case CharacterNavigationState.Navigate:
+				case CharacterNavigationState.Operation:
 					if (VelocityX != 0) {
 						Move(VelocityX > 0 ? Direction3.Right : Direction3.Left, 0);
+					}
+					if (IsGrounded) {
 						MoveState = MovementState.Run;
 					} else {
-						MoveState = MovementState.Idle;
+						MoveState = VelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown;
 					}
-
-
-
-
-					////////////////// Test //////////////////
-					int toX = NavigationAim.x;
-					int toY = NavigationAim.y;
-					CellRenderer.Draw(
-						Const.PIXEL, X, Y, 500, 0,
-						-Vector2.SignedAngle(Vector2.up, new Vector2(toX - X, toY - Y)).RoundToInt(),
-						8, Util.DistanceInt(X, Y, toX, toY),
-						Const.GREEN
-					);
-					////////////////// Test //////////////////
-
-
-
-
 					break;
 			}
 

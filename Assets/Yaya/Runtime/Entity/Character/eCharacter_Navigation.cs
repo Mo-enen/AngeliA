@@ -13,7 +13,7 @@ namespace Yaya {
 		#region --- SUB ---
 
 
-		protected enum CharacterNavigationState { Idle, Navigate, Fly, }
+		protected enum CharacterNavigationState { Idle, Operation, Fly, }
 
 
 		#endregion
@@ -39,13 +39,12 @@ namespace Yaya {
 		protected virtual int NavigationMinimumFlyDuration => 120;
 
 		// Data
-		private readonly CellNavigation.Operation[] NavOperations = new CellNavigation.Operation[8];
+		private readonly CellNavigation.Operation[] NavOperations = new CellNavigation.Operation[64];
 		private int CurrentNavOperationIndex = 0;
 		private int CurrentNavOperationCount = 0;
 		private int NavFlyStartFrame = int.MinValue;
 		private int NavJumpFrame = 0;
 		private int NavJumpDuration = 0;
-		private bool NavUseJumpArc = true;
 		private bool NavMoveDoneX = false;
 		private bool NavMoveDoneY = false;
 		private Vector2Int NavJumpFromPosition = default;
@@ -76,14 +75,14 @@ namespace Yaya {
 
 			// Perform Navigate
 			if (CurrentNavOperationIndex >= CurrentNavOperationCount) {
-				const int JUMP_DISTANCE_X = Const.CEL * 6;
-				const int JUMP_DISTANCE_Y = Const.CEL * 6;
+				const int JUMP_DISTANCE_X = 6;
+				const int JUMP_DISTANCE_Y = 6;
 				CurrentNavOperationCount = 0;
 				CurrentNavOperationIndex = 0;
-				if (NavigationState == CharacterNavigationState.Navigate) {
+				if (NavigationState == CharacterNavigationState.Operation) {
 					CurrentNavOperationCount = CellNavigation.NavigateTo(
 						NavOperations, X, Y, NavigationAim.x, NavigationAim.y,
-						JUMP_DISTANCE_X, JUMP_DISTANCE_Y
+						JUMP_DISTANCE_X, JUMP_DISTANCE_Y, 64
 					);
 					if (CurrentNavOperationCount == 0) {
 						NavigationState = CharacterNavigationState.Idle;
@@ -98,8 +97,37 @@ namespace Yaya {
 				case CharacterNavigationState.Idle:
 					NavUpdate_Movement_Idle();
 					break;
-				case CharacterNavigationState.Navigate:
-					NavUpdate_Movement_Navigating();
+				case CharacterNavigationState.Operation:
+					NavUpdate_Movement_Operating();
+
+
+					////////////////// Test //////////////////
+					int prevX = X;
+					int prevY = Y;
+					for (int index = CurrentNavOperationIndex; index < CurrentNavOperationCount; index++) {
+						var operation = NavOperations[index];
+						CellRenderer.Draw(Const.PIXEL, operation.TargetGlobalX, operation.TargetGlobalY, 500, 500, 0, 16, 16);
+						CellRendererGUI.DrawLine(
+							prevX,
+							prevY,
+							operation.TargetGlobalX,
+							operation.TargetGlobalY,
+							8,
+							operation.Motion switch {
+								NavigationMotion.Move => Const.GREEN,
+								NavigationMotion.Jump => Const.BLUE,
+								NavigationMotion.Fly => Const.RED,
+								_ => Const.WHITE,
+							}
+						);
+						prevX = operation.TargetGlobalX;
+						prevY = operation.TargetGlobalY;
+					}
+
+					////////////////// Test //////////////////
+
+
+
 					break;
 				case CharacterNavigationState.Fly:
 					NavUpdate_Movement_Flying();
@@ -113,7 +141,7 @@ namespace Yaya {
 
 			// Don't Refresh State when Jumping
 			if (
-				NavigationState == CharacterNavigationState.Navigate &&
+				NavigationState == CharacterNavigationState.Operation &&
 				CurrentNavOperationIndex >= 0 &&
 				CurrentNavOperationIndex < CurrentNavOperationCount &&
 				NavOperations[CurrentNavOperationIndex].Motion == NavigationMotion.Jump
@@ -151,11 +179,11 @@ namespace Yaya {
 						NavFlyStartFrame = Game.GlobalFrame;
 					} else if (aimSqrtDis > START_MOVE_DISTANCE_SQ) {
 						// Idle >> Nav
-						NavigationState = CharacterNavigationState.Navigate;
+						NavigationState = CharacterNavigationState.Operation;
 					}
 					break;
 
-				case CharacterNavigationState.Navigate:
+				case CharacterNavigationState.Operation:
 					if (aimSqrtDis > START_FLY_DISTANCE_SQ) {
 						// Nav >> Fly
 						NavigationState = CharacterNavigationState.Fly;
@@ -174,7 +202,7 @@ namespace Yaya {
 					) {
 						// Fly >> ??
 						NavigationState = aimSqrtDis > START_MOVE_DISTANCE_SQ ?
-							CharacterNavigationState.Navigate :
+							CharacterNavigationState.Operation :
 							CharacterNavigationState.Idle;
 					}
 					break;
@@ -203,7 +231,7 @@ namespace Yaya {
 		}
 
 
-		private void NavUpdate_Movement_Navigating () {
+		private void NavUpdate_Movement_Operating () {
 
 			if (CurrentNavOperationIndex >= CurrentNavOperationCount) return;
 
@@ -246,16 +274,14 @@ namespace Yaya {
 				case NavigationMotion.Jump:
 
 					const int JUMP_SPEED = 52;
-					const int JUMP_ARCH = Const.CEL * 3 / 2;
 
 					if (NavJumpDuration == 0) {
 						// Jump Start
 						int dis = Util.DistanceInt(X, Y, targetX, targetY);
 						NavJumpFrame = 0;
-						NavJumpDuration = (dis / JUMP_SPEED).Clamp(3, 120);
+						NavJumpDuration = (dis / JUMP_SPEED).Clamp(dis < Const.HALF ? 3 : 24, 120);
 						NavJumpFromPosition.x = X;
 						NavJumpFromPosition.y = Y;
-						NavUseJumpArc = IsGrounded || targetY > Y;
 					}
 
 					if (NavJumpDuration > 0 && NavJumpFrame <= NavJumpDuration) {
@@ -270,13 +296,17 @@ namespace Yaya {
 							NavJumpFromPosition.y, targetY,
 							NavJumpFrame
 						);
-						if (NavUseJumpArc) {
-							int deltaY = Mathf.Abs(NavJumpFrame - NavJumpDuration / 2);
-							newY += Util.Remap(
-								NavJumpDuration * NavJumpDuration / 4, 0, 0, JUMP_ARCH,
-								deltaY * deltaY
-							);
-						}
+						int deltaY = Mathf.Abs(NavJumpFrame - NavJumpDuration / 2);
+						int arc = (Util.DistanceInt(
+							NavJumpFromPosition.x,
+							NavJumpFromPosition.y,
+							targetX,
+							targetY
+						) / 2).Clamp(Const.HALF, Const.CEL * 3);
+						newY += Util.Remap(
+							NavJumpDuration * NavJumpDuration / 4, 0, 0, arc,
+							deltaY * deltaY
+						);
 						VelocityX = newX - X;
 						VelocityY = newY - Y;
 						X = newX;
