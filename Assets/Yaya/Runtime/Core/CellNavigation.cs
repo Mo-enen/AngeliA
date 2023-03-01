@@ -35,9 +35,8 @@ namespace Yaya {
 			public int CellRangeX;
 			public int CellRangeY;
 			public bool Verify (int cellX, int cellY) =>
-				cellY <= CellFromY &&
-				cellY >= CellFromY - CellRangeY &&
-				Mathf.Abs(cellX - CellFromX) * CellRangeY <= Mathf.Abs(cellY - CellFromY) * CellRangeX;
+				cellX.InRange(CellFromX - CellRangeX, CellFromX + CellRangeX) &&
+				cellY.InRange(CellFromY - CellRangeY, CellFromY + CellRangeY);
 		}
 
 
@@ -48,7 +47,6 @@ namespace Yaya {
 			public NavigationOperateMotion Motion;
 			public int TargetGlobalX;
 			public int TargetGlobalY;
-			public ePlatform TargetPlatform;
 		}
 
 
@@ -220,7 +218,7 @@ namespace Yaya {
 			// Expand
 			while (ExpandQueue.Count > 0) {
 				Navigate_ExpandGroundLogic(Operations.Length, toCellX, toCellY);
-				Navigate_ExpandJumpLogic(jumpIteration, toCellX, toCellY);
+				Navigate_ExpandJumpLogic(jumpIteration);
 			}
 			ExpandQueue.Clear();
 			ExpandQueueJump.Clear();
@@ -588,6 +586,9 @@ namespace Yaya {
 					// is Ground Check
 					if (!IsGroundCell(_x, _y, out _)) return;
 
+					// Water Check
+					if (_y != pos.y && blockData.BlockType != BlockType.Liquid) return;
+
 					// Enqueue for Move
 					ExpandQueue.Enqueue(new Vector3Int(_x, _y, pos.z + 1));
 					ExpandQueueJump.Enqueue(new Vector3Int(_x, _y, 0));
@@ -603,7 +604,7 @@ namespace Yaya {
 
 
 
-		private static void Navigate_ExpandJumpLogic (int jumpIteration, int toCellX, int toCellY) {
+		private static void Navigate_ExpandJumpLogic (int jumpIteration) {
 			while (ExpandQueueJump.Count > 0) {
 
 				var pos = ExpandQueueJump.Dequeue();

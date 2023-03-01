@@ -37,7 +37,7 @@ namespace Yaya {
 		protected virtual int NavigationEndMoveDistance => Const.CEL * 1;
 		protected virtual int NavigationStartFlyDistance => Const.CEL * 18;
 		protected virtual int NavigationEndFlyDistance => Const.CEL * 3;
-		protected virtual int NavigationMinimumFlyDuration => 120;
+		protected virtual int NavigationMinimumFlyDuration => 60;
 
 		// Data
 		private readonly CellNavigation.Operation[] NavOperations = new CellNavigation.Operation[64];
@@ -271,7 +271,14 @@ namespace Yaya {
 
 					// Goto Next Operation
 					if (NavMoveDoneX && NavMoveDoneY) {
-						GotoNextOperation();
+						if (!CellNavigation.IsGround(targetX, targetY, out _)) {
+							NavigationState = CharacterNavigationState.Fly;
+							NavFlyStartFrame = Game.GlobalFrame;
+							CurrentNavOperationIndex = 0;
+							CurrentNavOperationCount = 0;
+						} else {
+							GotoNextOperation();
+						}
 					}
 
 					break;
