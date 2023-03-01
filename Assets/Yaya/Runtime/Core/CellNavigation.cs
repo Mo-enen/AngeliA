@@ -48,6 +48,7 @@ namespace Yaya {
 			public NavigationOperateMotion Motion;
 			public int TargetGlobalX;
 			public int TargetGlobalY;
+			public ePlatform TargetPlatform;
 		}
 
 
