@@ -153,6 +153,8 @@ namespace Yaya {
 
 			if (CharacterState == state) return;
 			PassoutFrame = int.MinValue;
+			CharacterState = state;
+			ResetNavigation();
 
 			switch (state) {
 
@@ -181,7 +183,7 @@ namespace Yaya {
 				default:
 					throw new System.NotImplementedException();
 			}
-			CharacterState = state;
+
 		}
 
 

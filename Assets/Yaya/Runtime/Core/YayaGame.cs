@@ -142,9 +142,8 @@ namespace Yaya {
 				for (int index = 0; index < count; index++) {
 					var operation = testOperations[index];
 					var tint = operation.Motion switch {
-						NavigationMotion.Move => Const.GREEN,
-						NavigationMotion.Jump => Const.BLUE,
-						NavigationMotion.Fly => Const.RED,
+						NavigationOperateMotion.Move => Const.GREEN,
+						NavigationOperateMotion.Jump => Const.BLUE,
 						_ => Const.WHITE,
 					};
 					CellRenderer.Draw(

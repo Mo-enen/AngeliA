@@ -26,6 +26,7 @@ namespace Yaya {
 
 		// Api
 		protected CharacterNavigationState NavigationState { get; set; } = CharacterNavigationState.Idle;
+		protected NavigationOperateMotion NavigationOperateMotion { get; private set; } = NavigationOperateMotion.None;
 		protected Vector2Int NavigationAim { get; private set; } = default;
 		protected bool NavigationAimGrounded { get; private set; } = default;
 		protected bool HasPerformableOperation => CurrentNavOperationIndex < CurrentNavOperationCount || CurrentNavOperationCount == 0;
@@ -90,6 +91,7 @@ namespace Yaya {
 			}
 
 			// Move to Target
+			NavigationOperateMotion = NavigationOperateMotion.None;
 			switch (NavigationState) {
 				case CharacterNavigationState.Idle:
 					NavUpdate_Movement_Idle();
@@ -104,25 +106,29 @@ namespace Yaya {
 					for (int index = CurrentNavOperationIndex; index < CurrentNavOperationCount; index++) {
 						var operation = NavOperations[index];
 						var tint = operation.Motion switch {
-							NavigationMotion.Move => Const.GREEN,
-							NavigationMotion.Jump => Const.BLUE,
-							NavigationMotion.Fly => Const.RED,
+							NavigationOperateMotion.Move => Const.GREEN,
+							NavigationOperateMotion.Jump => Const.BLUE,
 							_ => Const.WHITE,
 						};
 						CellRenderer.Draw(
 							Const.PIXEL, operation.TargetGlobalX, operation.TargetGlobalY,
 							500, 500, 0, 16, 16, tint
-						);
+						).Z = int.MaxValue;
 						CellRendererGUI.DrawLine(
 							prevX,
 							prevY,
 							operation.TargetGlobalX,
 							operation.TargetGlobalY,
 							8, tint
-						);
+						).Z = int.MaxValue;
 						prevX = operation.TargetGlobalX;
 						prevY = operation.TargetGlobalY;
 					}
+
+					CellRenderer.Draw(
+						Const.PIXEL, NavigationAim.x, NavigationAim.y,
+						500, 500, 0, 64, 64, Const.BLACK
+					).Z = int.MaxValue;
 
 					////////////////// Test //////////////////
 
@@ -144,7 +150,7 @@ namespace Yaya {
 				NavigationState == CharacterNavigationState.Operation &&
 				CurrentNavOperationIndex >= 0 &&
 				CurrentNavOperationIndex < CurrentNavOperationCount &&
-				NavOperations[CurrentNavOperationIndex].Motion == NavigationMotion.Jump
+				NavOperations[CurrentNavOperationIndex].Motion == NavigationOperateMotion.Jump
 			) return;
 
 			int START_MOVE_DISTANCE_SQ = NavigationStartMoveDistance * NavigationStartMoveDistance;
@@ -238,13 +244,14 @@ namespace Yaya {
 			var operation = NavOperations[CurrentNavOperationIndex];
 			int targetX = operation.TargetGlobalX;
 			int targetY = operation.TargetGlobalY;
+			NavigationOperateMotion = operation.Motion;
 
 			switch (operation.Motion) {
 
 				// Move
-				case NavigationMotion.Move:
+				case NavigationOperateMotion.Move:
 
-					int speed = RunSpeed.Value;
+					int speed = InWater ? SwimSpeed.Value * InWaterSpeedLoseRate / 1000 : RunSpeed.Value;
 
 					if (targetX == X) NavMoveDoneX = true;
 					if (targetY == Y) NavMoveDoneY = true;
@@ -271,7 +278,7 @@ namespace Yaya {
 
 
 				// Jump
-				case NavigationMotion.Jump:
+				case NavigationOperateMotion.Jump:
 
 					const int JUMP_SPEED = 52;
 
@@ -322,18 +329,8 @@ namespace Yaya {
 					}
 					break;
 
-
-				// Fly
-				case NavigationMotion.Fly:
-					NavigationState = CharacterNavigationState.Fly;
-					NavFlyStartFrame = Game.GlobalFrame;
-					CurrentNavOperationIndex = 0;
-					CurrentNavOperationCount = 0;
-					break;
-
-
 				// None
-				case NavigationMotion.None:
+				case NavigationOperateMotion.None:
 					GotoNextOperation();
 					break;
 			}

@@ -8,11 +8,10 @@ using AngeliaFramework;
 namespace Yaya {
 
 
-	public enum NavigationMotion {
+	public enum NavigationOperateMotion {
 		None = 0,
 		Move = 1,
 		Jump = 2,
-		Fly = 3,
 	}
 
 
@@ -46,7 +45,7 @@ namespace Yaya {
 
 
 		public struct Operation {
-			public NavigationMotion Motion;
+			public NavigationOperateMotion Motion;
 			public int TargetGlobalX;
 			public int TargetGlobalY;
 		}
@@ -74,18 +73,23 @@ namespace Yaya {
 
 		private class OperationCell {
 
-			public bool OperationDataValid {
+			public bool OperationValid {
 				get => OperationStamp == CellNavigation.OperationStamp;
 				set => OperationStamp = value ? CellNavigation.OperationStamp : 0;
 			}
+			public bool OperationValidAlt {
+				get => OperationStampAlt == CellNavigation.OperationStamp;
+				set => OperationStampAlt = value ? CellNavigation.OperationStamp : 0;
+			}
 
-			public NavigationMotion FromMotion = NavigationMotion.None;
+			public NavigationOperateMotion FromMotion = NavigationOperateMotion.None;
 			public int FromCellX = 0;
 			public int FromCellY = 0;
 			public int ToCellX = 0;
 			public int ToCellY = 0;
 
 			private uint OperationStamp = 0;
+			private uint OperationStampAlt = 0;
 
 		}
 
@@ -111,6 +115,9 @@ namespace Yaya {
 		private static int CachedFrame = int.MinValue;
 		private static int CellUnitOffsetX = 0;
 		private static int CellUnitOffsetY = 0;
+		private static int FinalCellX;
+		private static int FinalCellY;
+		private static int FinalDistance;
 
 
 		#endregion
@@ -150,7 +157,7 @@ namespace Yaya {
 		public static int NavigateTo (
 			in Operation[] Operations,
 			int fromX, int fromY, int toX, int toY,
-			int jumpIteration = 12
+			int jumpIteration = 16
 		) {
 
 			if (Operations == null || Operations.Length == 0) return 0;
@@ -160,9 +167,9 @@ namespace Yaya {
 			int fromCellX = (fromX.UDivide(Const.CEL) - CellUnitOffsetX).Clamp(0, CellWidth - 1);
 			int fromCellY = (fromY.UDivide(Const.CEL) - CellUnitOffsetY).Clamp(0, CellHeight - 1);
 			int operationCount = 0;
-			int finalDistance = int.MaxValue;
-			int finalCellX = -1;
-			int finalCellY = -1;
+			FinalDistance = int.MaxValue;
+			FinalCellX = -1;
+			FinalCellY = -1;
 
 			// Start in Air
 			if (!IsGroundCell(fromCellX, fromCellY, out _)) {
@@ -179,7 +186,7 @@ namespace Yaya {
 				)) {
 					// Add Drop Operation
 					Operations[0] = new Operation() {
-						Motion = NavigationMotion.Jump,
+						Motion = NavigationOperateMotion.Jump,
 						TargetGlobalX = _groundX,
 						TargetGlobalY = _groundY,
 					};
@@ -202,47 +209,45 @@ namespace Yaya {
 
 			// First Enqueue
 			ExpandQueue.Enqueue(new Vector3Int(fromCellX, fromCellY, 0));
+			ExpandQueueJump.Enqueue(new Vector3Int(fromCellX, fromCellY, 0));
 			var firstCell = OperationCells[fromCellX, fromCellY];
-			firstCell.OperationDataValid = true;
+			firstCell.OperationValid = true;
 			firstCell.FromCellX = fromCellX;
 			firstCell.FromCellY = fromCellY;
-			firstCell.FromMotion = NavigationMotion.None;
+			firstCell.FromMotion = NavigationOperateMotion.Move;
 
 			// Expand
 			while (ExpandQueue.Count > 0) {
-				Navigate_ExpandGroundLogic(
-					Operations.Length, toCellX, toCellY,
-					ref finalCellX, ref finalCellY, ref finalDistance
-				);
-				if (finalDistance != 0) {
-					Navigate_ExpandJumpLogic(jumpIteration);
-				}
+				Navigate_ExpandGroundLogic(Operations.Length, toCellX, toCellY);
+				Navigate_ExpandJumpLogic(jumpIteration, toCellX, toCellY);
 			}
 			ExpandQueue.Clear();
 			ExpandQueueJump.Clear();
 
+			if (fromCellX == FinalCellX && fromCellY == FinalCellY) return 0;
+
 			// Backward Trace
 			bool traceSuccess = false;
 			if (
-				finalCellX.InRange(0, CellWidth - 1) &&
-				finalCellY.InRange(0, CellHeight - 1)
+				FinalCellX.InRange(0, CellWidth - 1) &&
+				FinalCellY.InRange(0, CellHeight - 1)
 			) {
 				int safeCount = CellWidth * CellHeight;
-				int currentCellX = finalCellX;
-				int currentCellY = finalCellY;
-				var cell = OperationCells[finalCellX, finalCellY];
+				int currentCellX = FinalCellX;
+				int currentCellY = FinalCellY;
+				var cell = OperationCells[FinalCellX, FinalCellY];
 				OperationCell prevCell;
-				cell.ToCellX = finalCellX;
-				cell.ToCellY = finalCellY;
-				if (cell.OperationDataValid) {
+				cell.ToCellX = FinalCellX;
+				cell.ToCellY = FinalCellY;
+				if (cell.OperationValid) {
 					for (int safe = 0; safe < safeCount; safe++) {
 						prevCell = OperationCells[cell.FromCellX, cell.FromCellY];
-						if (!prevCell.OperationDataValid) break;
+						if (!prevCell.OperationValid) break;
 						prevCell.ToCellX = currentCellX;
 						prevCell.ToCellY = currentCellY;
-						cell.OperationDataValid = false;
-						if (prevCell.FromCellX == cell.FromCellX && prevCell.FromCellY == cell.FromCellY) {
-							traceSuccess = cell.FromCellX == fromCellX && cell.FromCellY == fromCellY;
+						cell.OperationValid = false;
+						if (prevCell == firstCell) {
+							traceSuccess = true;
 							break;
 						}
 						// Current >> Prev
@@ -255,38 +260,49 @@ namespace Yaya {
 
 			// Fill Operation Result
 			if (traceSuccess) {
-				var cell = OperationCells[fromCellX, fromCellY];
+				var cell = firstCell;
 				int operatingGroundY = fromY;
 				for (int index = operationCount; index < Operations.Length; index++) {
+
+					var nextCell = OperationCells[cell.ToCellX, cell.ToCellY];
+
+					// Combine Jump
+					while (nextCell.FromMotion == NavigationOperateMotion.Jump) {
+						if (nextCell.ToCellX == cell.ToCellX && nextCell.ToCellY == cell.ToCellY) break;
+						var nextNextCell = OperationCells[nextCell.ToCellX, nextCell.ToCellY];
+						if (nextNextCell.FromMotion != NavigationOperateMotion.Jump) break;
+						cell.ToCellX = nextCell.ToCellX;
+						cell.ToCellY = nextCell.ToCellY;
+						nextCell = nextNextCell;
+					}
+
 					// Fix Global Ground Y
 					int targetGlobalY = (cell.ToCellY + CellUnitOffsetY) * Const.CEL;
 					var blockCell = GetBlockCell(cell.ToCellX, cell.ToCellY);
 					if (blockCell.IsBlockedUp && blockCell.PlatformY <= operatingGroundY) {
 						targetGlobalY = blockCell.PlatformY;
+					} else if (cell.ToCellY - 1 >= 0) {
+						var blockCellDown = GetBlockCell(cell.ToCellX, cell.ToCellY - 1);
+						if (!blockCellDown.IsBlockedUp) {
+							targetGlobalY = blockCell.PlatformY;
+						} else if (!blockCell.IsBlockedUp) {
+							targetGlobalY = blockCellDown.PlatformY;
+						}
 					}
 					operatingGroundY = targetGlobalY;
+
 					// Set Target Global Pos
-					var toCell = OperationCells[cell.ToCellX, cell.ToCellY];
 					Operations[index] = new Operation() {
-						Motion = toCell.FromMotion,
+						Motion = nextCell.FromMotion,
 						TargetGlobalX = (cell.ToCellX + CellUnitOffsetX) * Const.CEL + Const.HALF,
 						TargetGlobalY = targetGlobalY,
 					};
 					operationCount = index + 1;
-					if (cell.ToCellX == finalCellX && cell.ToCellY == finalCellY) break;
-					// to Next
-					cell = toCell;
-				}
-			}
 
-			// Fly At End Check
-			if (finalDistance != 0 && finalDistance != int.MaxValue && operationCount < Operations.Length) {
-				Operations[operationCount] = new Operation() {
-					Motion = NavigationMotion.Fly,
-					TargetGlobalX = toX,
-					TargetGlobalY = toY,
-				};
-				operationCount++;
+					// to Next
+					if (cell.ToCellX == FinalCellX && cell.ToCellY == FinalCellY) break;
+					cell = nextCell;
+				}
 			}
 
 			return operationCount;
@@ -314,7 +330,7 @@ namespace Yaya {
 
 			ExpandQueue.Clear();
 			ExpandQueue.Enqueue(new Vector3Int(fromCellX, fromCellY, 0));
-			OperationCells[fromCellX, fromCellY].OperationDataValid = true;
+			OperationCells[fromCellX, fromCellY].OperationValid = true;
 			bool rightFirst = fromX.UMod(Const.CEL) > Const.HALF;
 			bool upFirst = fromY.UMod(Const.CEL) > Const.HALF;
 
@@ -325,7 +341,7 @@ namespace Yaya {
 				// Check Success
 				int _globalY = (pos.y + CellUnitOffsetY) * Const.CEL + Const.HALF;
 				int _resultY = _globalY;
-				if (endInAir || IsGroundCell(pos.x, pos.y, out _resultY, true)) {
+				if (endInAir || IsGroundCell(pos.x, pos.y, out _resultY, Const.HALF)) {
 					int sqDis = Util.SquareDistance(toCellX, toCellY, pos.x, pos.y);
 					if (sqDis < minSquareDis) {
 						minSquareDis = sqDis;
@@ -359,48 +375,48 @@ namespace Yaya {
 					if (pos.x - 1 < 0) return;
 					var _cell = OperationCells[pos.x - 1, pos.y];
 					if (
-						!_cell.OperationDataValid &&
+						!_cell.OperationValid &&
 						!GetBlockCell(pos.x - 1, pos.y).IsBlockedRight &&
 						(rangeValidator == null || rangeValidator.Verify(pos.x - 1, pos.y))
 					) {
 						ExpandQueue.Enqueue(new Vector3Int(pos.x - 1, pos.y, pos.z + 1));
-						_cell.OperationDataValid = true;
+						_cell.OperationValid = true;
 					}
 				}
 				void ExpandR () {
 					if (pos.x + 1 >= CellWidth) return;
 					var _cell = OperationCells[pos.x + 1, pos.y];
 					if (
-						!_cell.OperationDataValid &&
+						!_cell.OperationValid &&
 						!GetBlockCell(pos.x + 1, pos.y).IsBlockedLeft &&
 						(rangeValidator == null || rangeValidator.Verify(pos.x + 1, pos.y))
 					) {
 						ExpandQueue.Enqueue(new Vector3Int(pos.x + 1, pos.y, pos.z + 1));
-						_cell.OperationDataValid = true;
+						_cell.OperationValid = true;
 					}
 				}
 				void ExpandD () {
 					if (pos.y - 1 < 0) return;
 					var _cell = OperationCells[pos.x, pos.y - 1];
 					if (
-						!_cell.OperationDataValid &&
+						!_cell.OperationValid &&
 						!GetBlockCell(pos.x, pos.y - 1).IsBlockedUp &&
 						(rangeValidator == null || rangeValidator.Verify(pos.x, pos.y - 1))
 					) {
 						ExpandQueue.Enqueue(new Vector3Int(pos.x, pos.y - 1, pos.z + 1));
-						_cell.OperationDataValid = true;
+						_cell.OperationValid = true;
 					}
 				}
 				void ExpandU () {
 					if (pos.y + 1 >= CellHeight) return;
 					var _cell = OperationCells[pos.x, pos.y + 1];
 					if (
-						!_cell.OperationDataValid &&
+						!_cell.OperationValid &&
 						!GetBlockCell(pos.x, pos.y + 1).IsBlockedDown &&
 						(rangeValidator == null || rangeValidator.Verify(pos.x, pos.y + 1))
 					) {
 						ExpandQueue.Enqueue(new Vector3Int(pos.x, pos.y + 1, pos.z + 1));
-						_cell.OperationDataValid = true;
+						_cell.OperationValid = true;
 					}
 				}
 			}
@@ -417,7 +433,7 @@ namespace Yaya {
 			if (cellX.InRange(0, CellWidth - 1)) {
 				int cellY = globalY.UDivide(Const.CEL) - CellUnitOffsetY;
 				if (cellY.InRange(0, CellHeight - 1)) {
-					return IsGroundCell(cellX, cellY, out groundY, true);
+					return IsGroundCell(cellX, cellY, out groundY, Const.HALF);
 				}
 			}
 			return false;
@@ -493,7 +509,7 @@ namespace Yaya {
 		}
 
 
-		private static bool IsGroundCell (int cellX, int cellY, out int groundY, bool dropDownForHalf = false) {
+		private static bool IsGroundCell (int cellX, int cellY, out int groundY, int dropDownY = 0) {
 
 			var cell = GetBlockCell(cellX, cellY);
 			groundY = cell.PlatformY;
@@ -518,8 +534,8 @@ namespace Yaya {
 				(cellY + 1 >= CellHeight || GetBlockCell(cellX, cellY + 1).BlockType != BlockType.Solid)
 			) {
 				if (
-					!isGround || !dropDownForHalf ||
-					cell.PlatformY < (cellY + CellUnitOffsetY) * Const.CEL + Const.HALF
+					!isGround || dropDownY <= 0 ||
+					cell.PlatformY < (cellY + CellUnitOffsetY) * Const.CEL + dropDownY
 				) {
 					groundY = cell.PlatformY;
 					isGround = true;
@@ -531,21 +547,19 @@ namespace Yaya {
 
 
 		// Navigate Logic
-		private static void Navigate_ExpandGroundLogic (
-			int maxIteration, int toCellX, int toCellY,
-			ref int finalCellX, ref int finalCellY, ref int finalDistance
-		) {
+		private static void Navigate_ExpandGroundLogic (int maxIteration, int toCellX, int toCellY) {
 			while (ExpandQueue.Count > 0) {
 
 				var pos = ExpandQueue.Dequeue();
 				int dis = Util.SquareDistance(pos.x, pos.y, toCellX, toCellY);
-				if (dis < finalDistance) {
-					finalDistance = dis;
-					finalCellX = pos.x;
-					finalCellY = pos.y;
+				if (dis < FinalDistance) {
+					FinalDistance = dis;
+					FinalCellX = pos.x;
+					FinalCellY = pos.y;
 					if (dis == 0) {
 						ExpandQueue.Clear();
-						break;
+						ExpandQueueJump.Clear();
+						return;
 					}
 				}
 
@@ -553,6 +567,8 @@ namespace Yaya {
 				if (pos.z < maxIteration) {
 					TryExpand(pos.x - 1, pos.y);
 					TryExpand(pos.x + 1, pos.y);
+					TryExpand(pos.x, pos.y - 1);
+					TryExpand(pos.x, pos.y + 1);
 				}
 				// Func
 				void TryExpand (int _x, int _y) {
@@ -562,7 +578,7 @@ namespace Yaya {
 					var _cell = OperationCells[_x, _y];
 
 					// Valid Check
-					if (_cell.OperationDataValid) return;
+					if (_cell.OperationValid) return;
 
 					// Blocked Check
 					var blockData = GetBlockCell(_x, _y);
@@ -573,13 +589,12 @@ namespace Yaya {
 
 					// Enqueue for Move
 					ExpandQueue.Enqueue(new Vector3Int(_x, _y, pos.z + 1));
-					_cell.OperationDataValid = true;
+					ExpandQueueJump.Enqueue(new Vector3Int(_x, _y, 0));
+					_cell.OperationValid = true;
+					_cell.OperationValidAlt = true;
 					_cell.FromCellX = pos.x;
 					_cell.FromCellY = pos.y;
-					_cell.FromMotion = NavigationMotion.Move;
-
-					// Push for Jump
-					ExpandQueueJump.Enqueue(new Vector3Int(_x, _y, 0));
+					_cell.FromMotion = NavigationOperateMotion.Move;
 
 				}
 			}
@@ -587,17 +602,22 @@ namespace Yaya {
 
 
 
-		private static void Navigate_ExpandJumpLogic (int jumpIteration) {
+		private static void Navigate_ExpandJumpLogic (int jumpIteration, int toCellX, int toCellY) {
 			while (ExpandQueueJump.Count > 0) {
 
 				var pos = ExpandQueueJump.Dequeue();
 
+				bool requireBreak = false;
 				// Expand
 				if (pos.z < jumpIteration) {
 					TryExpand(pos.x, pos.y + 1);
+					if (requireBreak) return;
 					TryExpand(pos.x - 1, pos.y);
+					if (requireBreak) return;
 					TryExpand(pos.x + 1, pos.y);
+					if (requireBreak) return;
 					TryExpand(pos.x, pos.y - 1);
+					if (requireBreak) return;
 				}
 				// Func
 				void TryExpand (int _x, int _y) {
@@ -607,23 +627,28 @@ namespace Yaya {
 					var _cell = OperationCells[_x, _y];
 
 					// Valid Check
-					if (_cell.OperationDataValid) return;
+					if (_cell.OperationValid || _cell.OperationValidAlt) return;
 
 					// Blocked Check
 					var blockData = GetBlockCell(_x, _y);
 					if (_x > pos.x ? blockData.IsBlockedLeft : blockData.IsBlockedRight) return;
-					if (_y > pos.y ? blockData.IsBlockedDown : blockData.IsBlockedUp) return;
+					if (_y > pos.y && blockData.IsBlockedDown) return;
 
 					// Ground Check
 					if (IsGroundCell(_x, _y, out _)) {
 						// Enqueue for Move
 						ExpandQueue.Enqueue(new Vector3Int(_x, _y, 0));
-						_cell.OperationDataValid = true;
+						ExpandQueueJump.Enqueue(new Vector3Int(_x, _y, 0));
+						_cell.OperationValid = true;
 						_cell.FromCellX = pos.x;
 						_cell.FromCellY = pos.y;
-						_cell.FromMotion = NavigationMotion.Jump;
+						_cell.FromMotion = NavigationOperateMotion.Jump;
+						requireBreak = true;
 						return;
 					}
+
+					// Blocked Up Check
+					if (_y < pos.y && blockData.IsBlockedUp) return;
 
 					// Solid Check
 					if (blockData.BlockType != BlockType.Air) return;
@@ -635,10 +660,10 @@ namespace Yaya {
 
 					// Push
 					ExpandQueueJump.Enqueue(new Vector3Int(_x, _y, newIteration));
-					_cell.OperationDataValid = true;
+					_cell.OperationValid = true;
 					_cell.FromCellX = pos.x;
 					_cell.FromCellY = pos.y;
-					_cell.FromMotion = NavigationMotion.Jump;
+					_cell.FromMotion = NavigationOperateMotion.Jump;
 
 				}
 			}

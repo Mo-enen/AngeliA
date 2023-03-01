@@ -19,7 +19,7 @@ namespace Yaya {
 
 
 		// Const
-		private const int AIM_REFRESH_FREQUENCY = 30;
+		private const int AIM_REFRESH_FREQUENCY = 120;
 
 		// Api
 		public eCharacter Owner { get; set; } = null;
@@ -103,7 +103,7 @@ namespace Yaya {
 					if (VelocityX != 0) {
 						Move(VelocityX > 0 ? Direction3.Right : Direction3.Left, 0);
 					}
-					if (IsGrounded) {
+					if (NavigationOperateMotion == NavigationOperateMotion.Move) {
 						MoveState = MovementState.Run;
 					} else {
 						MoveState = VelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown;
@@ -161,11 +161,12 @@ namespace Yaya {
 			// Get Aim at Ground
 			var result = new Vector2Int(Owner.X, Owner.Y);
 			int offsetX = Const.CEL * ((InstanceIndex % 12) / 2 + 2) * (InstanceIndex % 2 == 0 ? -1 : 1);
+			int offsetY = NavigationState == CharacterNavigationState.Fly ? Const.CEL : 0;
 			if (CellNavigation.ExpandTo(
 				Owner.X,
 				Owner.Y,
 				Owner.X + offsetX,
-				Owner.Y,
+				Owner.Y + offsetY,
 				maxIteration: 12,
 				out int groundX, out int groundY
 			)) {
@@ -178,7 +179,7 @@ namespace Yaya {
 			}
 
 			if (!grounded || NavigationState == CharacterNavigationState.Fly) {
-				result.y += Const.HALF;
+				result.y += Const.CEL;
 			}
 
 			return result;
