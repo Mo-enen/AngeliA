@@ -154,21 +154,25 @@ namespace Yaya {
 			}
 
 			int count = CellPhysics.OverlapAll(
-				c_Overlaps, YayaConst.MASK_RIGIDBODY, rect.Edge(Direction4.Up),
+				c_Overlaps, YayaConst.MASK_RIGIDBODY, rect.Edge(Direction4.Up, 32).Shift(0, -16),
 				this, OperationMode.ColliderAndTrigger
 			);
 			for (int i = 0; i < count; i++) {
 				var hit = c_Overlaps[i];
 				if (hit.Entity is not Rigidbody rig) continue;
 				if (rig.X < left || rig.X >= right) continue;
-				if (rig.Rect.y < rect.yMax) continue;
+				if (rig.Rect.y < rect.yMax - 32) continue;
 				if (!hit.IsTrigger) {
 					// For General Rig
 					rig.PerformMove(X - PrevX, 0);
+					if (rig.Y != rect.yMax) {
+						rig.Y = rect.yMax;
+					}
 				} else {
 					// For Nav Character
 					if (hit.Entity is not eCharacter ch || ch.IsFlying) continue;
 					rig.X += X - PrevX;
+					rig.Y = rect.yMax;
 				}
 				rig.MakeGrounded(1, TypeID);
 			}

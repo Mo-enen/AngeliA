@@ -7,6 +7,13 @@ using AngeliaFramework;
 namespace Yaya {
 
 
+	// x
+	public class eCameraAutoScrollStop : eCameraAutoScroll {
+		public override Direction3 DirectionX => Direction3.None;
+		public override Direction3 DirectionY => Direction3.None;
+	}
+
+
 	// ←
 	public class eCameraAutoScrollLeft : eCameraAutoScroll {
 		public override Direction3 DirectionX => Direction3.Left;
@@ -213,8 +220,8 @@ namespace Yaya {
 
 				// End Scroll Check
 				if (
-					(int)DirectionX == -(int)nextScroll.DirectionX &&
-					(int)DirectionY == -(int)nextScroll.DirectionY
+					(nextScroll.DirectionX == Direction3.None && nextScroll.DirectionY == Direction3.None) ||
+					(DirectionX == nextScroll.DirectionX.Opposite() && DirectionY == nextScroll.DirectionY.Opposite())
 				) {
 					Current = null;
 					Active = false;

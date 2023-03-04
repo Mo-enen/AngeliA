@@ -26,7 +26,6 @@ namespace Yaya {
 
 		// Api
 		protected CharacterNavigationState NavigationState { get; set; } = CharacterNavigationState.Idle;
-		protected NavigationOperateMotion NavigationOperateMotion { get; private set; } = NavigationOperateMotion.None;
 		protected Vector2Int NavigationAim { get; private set; } = default;
 		protected bool NavigationAimGrounded { get; private set; } = default;
 		protected bool HasPerformableOperation => CurrentNavOperationIndex < CurrentNavOperationCount || CurrentNavOperationCount == 0;
@@ -91,7 +90,6 @@ namespace Yaya {
 			}
 
 			// Move to Target
-			NavigationOperateMotion = NavigationOperateMotion.None;
 			switch (NavigationState) {
 				case CharacterNavigationState.Idle:
 					NavUpdate_Movement_Idle();
@@ -234,6 +232,7 @@ namespace Yaya {
 				VelocityY = 0;
 			}
 			Y += VelocityY;
+			MoveState = InWater ? MovementState.SwimIdle : MovementState.Idle;
 		}
 
 
@@ -244,9 +243,9 @@ namespace Yaya {
 			var operation = NavOperations[CurrentNavOperationIndex];
 			int targetX = operation.TargetGlobalX;
 			int targetY = operation.TargetGlobalY;
-			NavigationOperateMotion = operation.Motion;
+			var motion = operation.Motion;
 
-			switch (operation.Motion) {
+			switch (motion) {
 
 				// Move
 				case NavigationOperateMotion.Move:
@@ -342,6 +341,20 @@ namespace Yaya {
 					break;
 			}
 
+			// Move State
+			if (VelocityX != 0) {
+				Move(VelocityX > 0 ? Direction3.Right : Direction3.Left, 0);
+			}
+			if (!InWater) {
+				// Move
+				MoveState =
+					motion == NavigationOperateMotion.Move ? MovementState.Run :
+					VelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown;
+			} else {
+				// Swim
+				MoveState = VelocityX == 0 ? MovementState.SwimIdle : MovementState.SwimMove;
+			}
+
 			// Func
 			void GotoNextOperation () {
 				CurrentNavOperationIndex++;
@@ -354,13 +367,20 @@ namespace Yaya {
 
 
 		private void NavUpdate_Movement_Flying () {
+			int speed = FlyMoveSpeed;
+			if (InWater) speed = speed * InWaterSpeedLoseRate / 1000;
 			var flyAim = NavigationAim;
 			flyAim.x = X.LerpTo(flyAim.x, 100);
 			flyAim.y = Y.LerpTo(flyAim.y, 100);
-			VelocityX = (flyAim.x - X).Clamp(-FlyMoveSpeed, FlyMoveSpeed);
-			VelocityY = (flyAim.y - Y).Clamp(-FlyMoveSpeed, FlyMoveSpeed);
+			VelocityX = (flyAim.x - X).Clamp(-speed, speed);
+			VelocityY = (flyAim.y - Y).Clamp(-speed, speed);
 			X += VelocityX;
 			Y += VelocityY;
+			// Move State
+			MoveState = MovementState.Fly;
+			if ((X - NavigationAim.x).Abs() > 96) {
+				Move(X < NavigationAim.x ? Direction3.Right : Direction3.Left, 0);
+			}
 		}
 
 

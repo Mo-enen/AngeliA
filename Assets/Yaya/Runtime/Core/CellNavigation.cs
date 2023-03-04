@@ -266,10 +266,17 @@ namespace Yaya {
 					var nextCell = OperationCells[cell.ToCellX, cell.ToCellY];
 
 					// Combine Jump
+					const int MAX_COMBINE_COMBO = 6;
+					int combineCombo = 0;
 					while (nextCell.FromMotion == NavigationOperateMotion.Jump) {
 						if (nextCell.ToCellX == cell.ToCellX && nextCell.ToCellY == cell.ToCellY) break;
 						var nextNextCell = OperationCells[nextCell.ToCellX, nextCell.ToCellY];
 						if (nextNextCell.FromMotion != NavigationOperateMotion.Jump) break;
+						if (combineCombo >= MAX_COMBINE_COMBO) {
+							var nextBlock = GetBlockCell(cell.ToCellX, cell.ToCellY);
+							if (nextBlock.IsBlockedUp) break;
+						}
+						combineCombo++;
 						cell.ToCellX = nextCell.ToCellX;
 						cell.ToCellY = nextCell.ToCellY;
 						nextCell = nextNextCell;
@@ -278,7 +285,11 @@ namespace Yaya {
 					// Fix Global Ground Y
 					int targetGlobalY = (cell.ToCellY + CellUnitOffsetY) * Const.CEL;
 					var blockCell = GetBlockCell(cell.ToCellX, cell.ToCellY);
-					if (blockCell.IsBlockedUp && blockCell.PlatformY <= operatingGroundY) {
+					if (
+						blockCell.IsBlockedUp &&
+						blockCell.PlatformY < targetGlobalY + Const.CEL &&
+						blockCell.PlatformY <= operatingGroundY
+					) {
 						targetGlobalY = blockCell.PlatformY;
 					} else if (cell.ToCellY - 1 >= 0) {
 						var blockCellDown = GetBlockCell(cell.ToCellX, cell.ToCellY - 1);
@@ -550,7 +561,7 @@ namespace Yaya {
 			while (ExpandQueue.Count > 0) {
 
 				var pos = ExpandQueue.Dequeue();
-				int dis = Util.SquareDistance(pos.x, pos.y, toCellX, toCellY);
+				int dis = Util.SquareDistance(pos.x + Const.HALF, pos.y, toCellX + Const.HALF, toCellY);
 				if (dis < FinalDistance) {
 					FinalDistance = dis;
 					FinalCellX = pos.x;
@@ -605,36 +616,39 @@ namespace Yaya {
 
 
 		private static void Navigate_ExpandJumpLogic (int jumpIteration) {
+
 			while (ExpandQueueJump.Count > 0) {
 
 				var pos = ExpandQueueJump.Dequeue();
 
-				bool requireBreak = false;
 				// Expand
 				if (pos.z < jumpIteration) {
-					TryExpand(pos.x, pos.y + 1);
+					bool requireBreak = false;
+					requireBreak = !TryExpand(pos.x, pos.y + 1) || requireBreak;
+					requireBreak = !TryExpand(pos.x - 1, pos.y) || requireBreak;
+					requireBreak = !TryExpand(pos.x + 1, pos.y) || requireBreak;
+					requireBreak = !TryExpand(pos.x, pos.y - 1) || requireBreak;
 					if (requireBreak) return;
-					TryExpand(pos.x - 1, pos.y);
-					if (requireBreak) return;
-					TryExpand(pos.x + 1, pos.y);
-					if (requireBreak) return;
-					TryExpand(pos.x, pos.y - 1);
-					if (requireBreak) return;
+					//if (!TryExpand(pos.x, pos.y + 1)) return;
+					//if (!TryExpand(pos.x - 1, pos.y)) return;
+					//if (!TryExpand(pos.x + 1, pos.y)) return;
+					//if (!TryExpand(pos.x, pos.y - 1)) return;
 				}
 				// Func
-				void TryExpand (int _x, int _y) {
+				bool TryExpand (int _x, int _y) {
 
 					// Range Check
-					if (!_x.InRange(0, CellWidth - 1) || !_y.InRange(0, CellHeight - 1)) return;
+					if (!_x.InRange(0, CellWidth - 1) || !_y.InRange(0, CellHeight - 1)) return true;
 					var _cell = OperationCells[_x, _y];
 
 					// Valid Check
-					if (_cell.OperationValid || _cell.OperationValidAlt) return;
+					if (_cell.OperationValid || _cell.OperationValidAlt) return true;
 
 					// Blocked Check
 					var blockData = GetBlockCell(_x, _y);
-					if (_x > pos.x ? blockData.IsBlockedLeft : blockData.IsBlockedRight) return;
-					if (_y > pos.y && blockData.IsBlockedDown) return;
+					if (_x > pos.x && blockData.IsBlockedLeft) return true;
+					if (_x < pos.x && blockData.IsBlockedRight) return true;
+					if (_y > pos.y && blockData.IsBlockedDown) return true;
 
 					// Ground Check
 					if (IsGroundCell(_x, _y, out _)) {
@@ -645,15 +659,14 @@ namespace Yaya {
 						_cell.FromCellX = pos.x;
 						_cell.FromCellY = pos.y;
 						_cell.FromMotion = NavigationOperateMotion.Jump;
-						requireBreak = true;
-						return;
+						return false;
 					}
 
 					// Blocked Up Check
-					if (_y < pos.y && blockData.IsBlockedUp) return;
+					if (_y < pos.y && blockData.IsBlockedUp) return true;
 
 					// Solid Check
-					if (blockData.BlockType != BlockType.Air) return;
+					if (blockData.BlockType != BlockType.Air) return true;
 
 					// Grow Iteration
 					int newIteration = pos.z;
@@ -666,7 +679,7 @@ namespace Yaya {
 					_cell.FromCellX = pos.x;
 					_cell.FromCellY = pos.y;
 					_cell.FromMotion = NavigationOperateMotion.Jump;
-
+					return true;
 				}
 			}
 		}

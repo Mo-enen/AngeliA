@@ -114,56 +114,6 @@ namespace Yaya {
 			Update_Damage();
 
 
-			if (FrameInput.KeyboardHolding(Key.LeftAlt)) {
-
-				// Ground Pos Test
-				var cameraRect = CellRenderer.CameraRect;
-				int w = cameraRect.width.UDivide(Const.CEL) + 2;
-				int h = cameraRect.height.UDivide(Const.CEL) + 2;
-				for (int i = 0; i < w; i++) {
-					int x = (cameraRect.x - 1).UDivide(Const.CEL) * Const.CEL + i * Const.CEL + Const.HALF;
-					for (int j = 0; j < h; j++) {
-						int y = (cameraRect.y - 1).UDivide(Const.CEL) * Const.CEL + j * Const.CEL + Const.HALF;
-						if (CellNavigation.IsGround(x, y, out int gY)) {
-							CellRenderer.Draw(Const.PIXEL, x, gY - 32, 500, 500, 0, 64, 64, Const.BLACK).Z = int.MaxValue;
-						}
-					}
-				}
-
-				// Nav To Test
-				var testOperations = new CellNavigation.Operation[64];
-				int count = CellNavigation.NavigateTo(
-					testOperations,
-					ePlayer.Selecting.X, ePlayer.Selecting.Y,
-					FrameInput.MouseGlobalPosition.x, FrameInput.MouseGlobalPosition.y
-				);
-				int prevX = ePlayer.Selecting.X;
-				int prevY = ePlayer.Selecting.Y;
-				for (int index = 0; index < count; index++) {
-					var operation = testOperations[index];
-					var tint = operation.Motion switch {
-						NavigationOperateMotion.Move => Const.GREEN,
-						NavigationOperateMotion.Jump => Const.BLUE,
-						_ => Const.WHITE,
-					};
-					CellRenderer.Draw(
-						Const.PIXEL, operation.TargetGlobalX, operation.TargetGlobalY,
-						500, 500, 0, 24, 24, tint
-					);
-					CellRendererGUI.DrawLine(
-						prevX,
-						prevY,
-						operation.TargetGlobalX,
-						operation.TargetGlobalY,
-						12, tint
-					);
-					prevX = operation.TargetGlobalX;
-					prevY = operation.TargetGlobalY;
-				}
-			}
-
-
-
 			// ============ Test ============
 
 

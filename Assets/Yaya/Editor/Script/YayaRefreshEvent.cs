@@ -37,7 +37,11 @@ namespace Yaya.Editor {
 					if (!World.GetWorldPositionFromName(Util.GetNameWithoutExtension(filePath), out var worldPos)) continue;
 					foreach (var (id, x, y) in World.EditorOnly_ForAllEntities(filePath)) {
 						if (!targetPool.TryGetValue(id, out var direction)) continue;
-						allPos.Add(new(worldPos.x * Const.MAP + x, worldPos.y * Const.MAP + y, worldPos.z), direction);
+						if (direction == Vector2Int.zero) continue;
+						allPos.Add(
+							new(worldPos.x * Const.MAP + x, worldPos.y * Const.MAP + y, worldPos.z),
+							direction
+						);
 					}
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}

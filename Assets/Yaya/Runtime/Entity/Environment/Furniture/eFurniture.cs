@@ -7,7 +7,7 @@ using AngeliaFramework;
 namespace Yaya {
 	[EntityAttribute.MapEditorGroup("Furniture")]
 	[EntityAttribute.Capacity(32)]
-	public abstract class eFurniture : eActionEntity {
+	public abstract class eFurniture : ActionEntity {
 
 
 

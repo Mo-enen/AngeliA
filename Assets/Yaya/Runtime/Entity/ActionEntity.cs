@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public abstract class eActionEntity : Entity {
+	public abstract class ActionEntity : Entity {
 
 
 		// Api
@@ -23,8 +23,8 @@ namespace Yaya {
 		[AfterGameInitialize]
 		public static void Initialize () {
 			HintCodePool.Clear();
-			var BOTTOM_TYPE = typeof(eActionEntity);
-			foreach (var type in typeof(eActionEntity).AllChildClass()) {
+			var BOTTOM_TYPE = typeof(ActionEntity);
+			foreach (var type in typeof(ActionEntity).AllChildClass()) {
 				var _type = type;
 				while (_type != null && _type != BOTTOM_TYPE) {
 					string name = _type.Name;

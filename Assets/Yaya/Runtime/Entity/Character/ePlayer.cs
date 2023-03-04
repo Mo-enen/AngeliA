@@ -181,7 +181,7 @@ namespace Yaya {
 				CurrentActionTarget.Highlight();
 				eControlHintUI.AddHint(
 					Gamekey.Action,
-					eActionEntity.GetHintLanguageCode(CurrentActionTarget.TypeID)
+					ActionEntity.GetHintLanguageCode(CurrentActionTarget.TypeID)
 				);
 				if (FrameInput.GameKeyDown(Gamekey.Action)) {
 					bool performed = InvokeAction();

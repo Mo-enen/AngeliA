@@ -85,32 +85,6 @@ namespace Yaya {
 
 			base.PhysicsUpdate();
 
-			// Motion
-			switch (NavigationState) {
-
-				case CharacterNavigationState.Idle:
-					MoveState = MovementState.Idle;
-					break;
-
-				case CharacterNavigationState.Fly:
-					MoveState = MovementState.Fly;
-					if ((X - NavigationAim.x).Abs() > 96) {
-						Move(X < NavigationAim.x ? Direction3.Right : Direction3.Left, 0);
-					}
-					break;
-
-				case CharacterNavigationState.Operation:
-					if (VelocityX != 0) {
-						Move(VelocityX > 0 ? Direction3.Right : Direction3.Left, 0);
-					}
-					if (NavigationOperateMotion == NavigationOperateMotion.Move) {
-						MoveState = MovementState.Run;
-					} else {
-						MoveState = VelocityY > 0 ? MovementState.JumpUp : MovementState.JumpDown;
-					}
-					break;
-			}
-
 		}
 
 
@@ -161,7 +135,7 @@ namespace Yaya {
 			// Get Aim at Ground
 			var result = new Vector2Int(Owner.X, Owner.Y);
 			int offsetX = Const.CEL * ((InstanceIndex % 12) / 2 + 2) * (InstanceIndex % 2 == 0 ? -1 : 1);
-			int offsetY = NavigationState == CharacterNavigationState.Fly ? Const.CEL : 0;
+			int offsetY = NavigationState == CharacterNavigationState.Fly ? Const.CEL : Const.HALF;
 			if (CellNavigation.ExpandTo(
 				Owner.X,
 				Owner.Y,
@@ -176,10 +150,6 @@ namespace Yaya {
 			} else {
 				result.x += offsetX;
 				grounded = false;
-			}
-
-			if (!grounded || NavigationState == CharacterNavigationState.Fly) {
-				result.y += Const.CEL;
 			}
 
 			return result;

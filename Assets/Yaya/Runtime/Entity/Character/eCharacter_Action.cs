@@ -13,7 +13,7 @@ namespace Yaya {
 		const int ACTION_SCAN_FREQUENCY = 6;
 
 		// Api
-		public eActionEntity CurrentActionTarget { get; private set; } = null;
+		public ActionEntity CurrentActionTarget { get; private set; } = null;
 		public bool LockingInput => CurrentActionTarget != null && CurrentActionTarget.LockInput;
 
 		// Data
@@ -47,7 +47,7 @@ namespace Yaya {
 			Entity result = null;
 			for (int i = 0; i < count; i++) {
 				var hit = c_ScanHits[i];
-				if (hit.Entity is not eActionEntity act) continue;
+				if (hit.Entity is not ActionEntity act) continue;
 				if (!act.AllowInvoke(this)) continue;
 				// Comparer X Distance
 				int _dis =
@@ -71,7 +71,7 @@ namespace Yaya {
 					}
 				}
 			}
-			CurrentActionTarget = result as eActionEntity;
+			CurrentActionTarget = result as ActionEntity;
 		}
 
 
