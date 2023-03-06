@@ -9,7 +9,7 @@ namespace Yaya {
 
 
 		// VAR
-		public override Int4 CullingPadding => CellRenderer.CameraShaking || FrameTask.IsTasking<TeleportTask>(YayaConst.TASK_ROUTE) ? new Int4(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Int4.Zero;
+		protected override Int4 CullingPadding => CellRenderer.CameraShaking || FrameTask.IsTasking<TeleportTask>(YayaConst.TASK_ROUTE) ? new Int4(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Int4.Zero;
 
 
 		// API
@@ -54,9 +54,24 @@ namespace Yaya {
 
 
 		protected override void DrawEntity (Game game, int id, int unitX, int unitY, int unitZ) {
-			var entity = game.SpawnEntityFromWorld(id, unitX, unitY, unitZ);
-			if (entity is eCharacter ch) {
-				ch.X += ch.Width / 2;
+			if (!eMapEditor.IsEditing) {
+				// Spawn Entity
+				var entity = game.SpawnEntityFromWorld(id, unitX, unitY, unitZ);
+				if (entity is eCharacter ch) {
+					ch.X += ch.Width / 2;
+				}
+			} else {
+				// Draw Entity
+				var rect = new RectInt(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
+				if (CellRenderer.TryGetSprite(id, out var sprite)) {
+					rect = rect.Fit(
+						sprite.GlobalWidth, sprite.GlobalHeight,
+						sprite.PivotX, sprite.PivotY
+					);
+				}
+				if (CullingCameraRect.Overlaps(rect)) {
+					CellRenderer.Draw(id, rect);
+				}
 			}
 		}
 

@@ -169,7 +169,7 @@ namespace Yaya {
 			} else {
 				// Find Old
 				var entities = game.Entities;
-				int eLen = game.EntityLen;
+				int eLen = game.EntityCount;
 				int minSpawnFrame = int.MaxValue;
 				eSummon old = null;
 				for (int i = 0; i < eLen; i++) {

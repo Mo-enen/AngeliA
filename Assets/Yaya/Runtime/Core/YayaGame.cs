@@ -89,12 +89,23 @@ namespace Yaya {
 			Application.wantsToQuit -= OnQuit;
 			Application.wantsToQuit += OnQuit;
 
+			// Select Player
+			int firstPlayerID = ePlayer.GetFirstSelectedPlayerID();
+			var firstPlayer = game.SpawnEntity(firstPlayerID, 0, 0) as ePlayer;
+			ePlayer.SelectPlayer(firstPlayer);
+
 			// Start the Game !!
 			if (
 				FrameTask.TryAddToLast(OpeningTask.TYPE_ID, YayaConst.TASK_ROUTE, out var task) &&
 				task is OpeningTask oTask
 			) {
-				var homePos = ePlayer.Selecting != null ? ePlayer.Selecting.GetHomePosition() * Const.CEL : default;
+				Vector3Int homePos;
+				if (GlobalPosition.TryGetFirstGlobalUnitPosition(firstPlayerID, out var firstPlayerHomePos)) {
+					homePos = firstPlayerHomePos * Const.CEL;
+				} else {
+					homePos = (Vector3Int)game.ViewRect.CenterInt();
+					homePos.z = game.ViewZ;
+				}
 				oTask.TargetViewX = homePos.x;
 				oTask.TargetViewY = homePos.y;
 				oTask.TargetViewZ = homePos.z;
@@ -135,15 +146,22 @@ namespace Yaya {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
 			}
 			if (FrameInput.KeyboardHolding(Key.Digit5)) {
-				game.SetViewSizeDelay(game.ViewRect.height - Const.CEL);
+				//game.SetViewSizeDelay(game.ViewRect.height - Const.CEL);
 				//AudioPlayer.SetLowpass(1000);
+				game.SpawnEntity<eMapEditor>(0, 0);
 			}
 			if (FrameInput.KeyboardHolding(Key.Digit6)) {
-				game.SetViewSizeDelay(game.ViewRect.height + Const.CEL);
+				//game.SetViewSizeDelay(game.ViewRect.height + Const.CEL);
 				//AudioPlayer.SetLowpass(100);
+				var editor = game.GetEntity<eMapEditor>();
+				if (editor != null) {
+					editor.Active = false;
+				}
 			}
 			if (FrameInput.KeyboardDown(Key.Digit7)) {
-				DialoguePerformer.PerformDialogue("TestConversation", YayaConst.TASK_ROUTE);
+				//DialoguePerformer.PerformDialogue("TestConversation", YayaConst.TASK_ROUTE);
+				eMapEditor.QuickPlayerSettle = !eMapEditor.QuickPlayerSettle;
+				Debug.Log(eMapEditor.QuickPlayerSettle);
 			}
 			if (FrameInput.KeyboardDown(Key.Digit8)) {
 				var miniGame = game.PeekOrGetEntity<eGomokuUI>();
@@ -171,8 +189,10 @@ namespace Yaya {
 
 			// Spawn Player when No Player Entity
 			if (
-				ePlayer.Selecting == null &&
-				!FrameTask.HasTask(YayaConst.TASK_ROUTE)
+				ePlayer.Selecting != null &&
+				!ePlayer.Selecting.Active &&
+				!FrameTask.HasTask(YayaConst.TASK_ROUTE) &&
+				!eMapEditor.Current.Active
 			) {
 				var center = CellRenderer.CameraRect.CenterInt();
 				ePlayer.TrySpawnSelectingPlayer(center.x, center.y);
@@ -182,7 +202,8 @@ namespace Yaya {
 			if (
 				ePlayer.Selecting != null &&
 				ePlayer.Selecting.Active &&
-				ePlayer.Selecting.CharacterState == CharacterState.Passout
+				ePlayer.Selecting.CharacterState == CharacterState.Passout &&
+				!eMapEditor.IsEditing
 			) {
 				if (
 					ePlayer.Selecting.IsFullPassout &&
@@ -220,7 +241,7 @@ namespace Yaya {
 		private void Update_Damage () {
 			var game = Game.Current;
 			if (game.State != GameState.Play) return;
-			int len = game.EntityLen;
+			int len = game.EntityCount;
 			for (int i = 0; i < len; i++) {
 				var entity = game.Entities[i];
 				if (entity is not IDamageReceiver receiver) continue;

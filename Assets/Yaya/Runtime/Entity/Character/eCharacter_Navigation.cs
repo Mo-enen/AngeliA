@@ -99,34 +99,34 @@ namespace Yaya {
 
 
 					////////////////// Test //////////////////
-					int prevX = X;
-					int prevY = Y;
-					for (int index = CurrentNavOperationIndex; index < CurrentNavOperationCount; index++) {
-						var operation = NavOperations[index];
-						var tint = operation.Motion switch {
-							NavigationOperateMotion.Move => Const.GREEN,
-							NavigationOperateMotion.Jump => Const.BLUE,
-							_ => Const.WHITE,
-						};
-						CellRenderer.Draw(
-							Const.PIXEL, operation.TargetGlobalX, operation.TargetGlobalY,
-							500, 500, 0, 16, 16, tint
-						).Z = int.MaxValue;
-						CellRendererGUI.DrawLine(
-							prevX,
-							prevY,
-							operation.TargetGlobalX,
-							operation.TargetGlobalY,
-							8, tint
-						).Z = int.MaxValue;
-						prevX = operation.TargetGlobalX;
-						prevY = operation.TargetGlobalY;
-					}
-
-					CellRenderer.Draw(
-						Const.PIXEL, NavigationAim.x, NavigationAim.y,
-						500, 500, 0, 64, 64, Const.BLACK
-					).Z = int.MaxValue;
+					//int prevX = X;
+					//int prevY = Y;
+					//for (int index = CurrentNavOperationIndex; index < CurrentNavOperationCount; index++) {
+					//	var operation = NavOperations[index];
+					//	var tint = operation.Motion switch {
+					//		NavigationOperateMotion.Move => Const.GREEN,
+					//		NavigationOperateMotion.Jump => Const.BLUE,
+					//		_ => Const.WHITE,
+					//	};
+					//	CellRenderer.Draw(
+					//		Const.PIXEL, operation.TargetGlobalX, operation.TargetGlobalY,
+					//		500, 500, 0, 16, 16, tint
+					//	).Z = int.MaxValue;
+					//	CellRendererGUI.DrawLine(
+					//		prevX,
+					//		prevY,
+					//		operation.TargetGlobalX,
+					//		operation.TargetGlobalY,
+					//		8, tint
+					//	).Z = int.MaxValue;
+					//	prevX = operation.TargetGlobalX;
+					//	prevY = operation.TargetGlobalY;
+					//}
+					//
+					//CellRenderer.Draw(
+					//	Const.PIXEL, NavigationAim.x, NavigationAim.y,
+					//	500, 500, 0, 64, 64, Const.BLACK
+					//).Z = int.MaxValue;
 
 					////////////////// Test //////////////////
 

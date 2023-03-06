@@ -46,22 +46,6 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public ePlayer () {
-			// Select First Player
-			if (Selecting == null) {
-				// First Player
-				int firstSelectID = 0;
-				foreach (var type in typeof(ePlayer).AllChildClass()) {
-					firstSelectID = type.AngeHash();
-					if (type.GetCustomAttribute<FirstSelectedPlayerAttribute>(true) != null) break;
-				}
-				if (firstSelectID == GetType().AngeHash()) {
-					Selecting = this;
-				}
-			}
-		}
-
-
 		public override void FillPhysics () {
 			if (FrameTask.HasTask(YayaConst.TASK_ROUTE)) return;
 			base.FillPhysics();
@@ -307,8 +291,18 @@ namespace Yaya {
 		}
 
 
+		public static int GetFirstSelectedPlayerID () {
+			int firstSelectID = 0;
+			foreach (var type in typeof(ePlayer).AllChildClass()) {
+				firstSelectID = type.AngeHash();
+				if (type.GetCustomAttribute<FirstSelectedPlayerAttribute>(true) != null) break;
+			}
+			return firstSelectID;
+		}
+
+
 		public static void SelectPlayer (ePlayer newPlayer) {
-			if (newPlayer == null || !newPlayer.Active || newPlayer == Selecting) return;
+			if (newPlayer == null || newPlayer == Selecting) return;
 			Selecting = newPlayer;
 		}
 

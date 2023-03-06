@@ -8,7 +8,7 @@ namespace Yaya {
 
 
 
-	[EntityAttribute.Virtual]
+	[EntityAttribute.ExcludeInEntityPool]
 	[EntityAttribute.MapEditorGroup("Platform")]
 	public class eSnakePath : Entity { }
 
