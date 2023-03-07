@@ -42,6 +42,7 @@ namespace Yaya {
 		private static readonly PhysicsCell[] c_DamageCheck = new PhysicsCell[16];
 		private readonly eControlHintUI ControlHintUI = null;
 		private readonly ePauseMenu PauseMenu = null;
+		private readonly eMapEditor MapEditor = null;
 
 
 		#endregion
@@ -83,7 +84,8 @@ namespace Yaya {
 
 			// UI Entity
 			PauseMenu = game.PeekOrGetEntity<ePauseMenu>();
-			ControlHintUI = Game.Current.SpawnEntity<eControlHintUI>(0, 0);
+			ControlHintUI = game.SpawnEntity<eControlHintUI>(0, 0);
+			MapEditor = game.PeekOrGetEntity<eMapEditor>();
 
 			// Quit
 			Application.wantsToQuit -= OnQuit;
@@ -160,8 +162,8 @@ namespace Yaya {
 			}
 			if (FrameInput.KeyboardDown(Key.Digit7)) {
 				//DialoguePerformer.PerformDialogue("TestConversation", YayaConst.TASK_ROUTE);
-				eMapEditor.Current.QuickPlayerSettle = !eMapEditor.Current.QuickPlayerSettle;
-				Debug.Log(eMapEditor.Current.QuickPlayerSettle);
+				MapEditor.QuickPlayerSettle = !MapEditor.QuickPlayerSettle;
+				Debug.Log(MapEditor.QuickPlayerSettle);
 			}
 			if (FrameInput.KeyboardDown(Key.Digit8)) {
 				var miniGame = game.PeekOrGetEntity<eGomokuUI>();
@@ -192,7 +194,7 @@ namespace Yaya {
 				ePlayer.Selecting != null &&
 				!ePlayer.Selecting.Active &&
 				!FrameTask.HasTask(YayaConst.TASK_ROUTE) &&
-				!eMapEditor.Current.Active
+				!MapEditor.Active
 			) {
 				var center = CellRenderer.CameraRect.CenterInt();
 				ePlayer.TrySpawnSelectingPlayer(center.x, center.y);
@@ -203,7 +205,7 @@ namespace Yaya {
 				ePlayer.Selecting != null &&
 				ePlayer.Selecting.Active &&
 				ePlayer.Selecting.CharacterState == CharacterState.Passout &&
-				!eMapEditor.Current.IsEditing
+				!MapEditor.IsEditing
 			) {
 				if (
 					ePlayer.Selecting.IsFullPassout &&

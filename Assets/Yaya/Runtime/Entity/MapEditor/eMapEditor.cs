@@ -6,12 +6,9 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	[EntityAttribute.Capacity(1, 1)]
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.DontDestroyOutOfRange]
-	[EntityAttribute.ExcludeInMapEditor]
-	[EntityAttribute.UpdateOutOfRange]
-	public sealed class eMapEditor : Entity {
+	public sealed partial class eMapEditor : EntityUI {
 
 
 
@@ -34,26 +31,6 @@ namespace Yaya {
 		}
 
 
-		private class PaletteItem {
-			public int ID = 0;
-			public int ArtworkID = 0;
-			public string Label = "";
-			public GroupType Type = GroupType.General;
-			public BlockType BlockType = BlockType.Entity;
-			public AngeSpriteChain Chain = null;
-		}
-
-
-		private class PaletteGroup {
-			public string GroupName;
-			public string GroupPath;
-			public bool IsItem;
-			public bool IsOpening;
-			public BlockType Type;
-			public List<PaletteItem> Items;
-		}
-
-
 		#endregion
 
 
@@ -66,10 +43,7 @@ namespace Yaya {
 		private const Key KEY_PLAY_SWITCH = Key.Space;
 
 		// Api
-		public static eMapEditor Current {
-			get; private set;
-		} = null;
-		public bool IsEditing => Current.Active && Mode == EditorMode.Editing;
+		public bool IsEditing => Active && Mode == EditorMode.Editing;
 		public bool QuickPlayerSettle {
 			get => s_QuickPlayerSettle.Value;
 			set => s_QuickPlayerSettle.Value = value;
@@ -80,10 +54,16 @@ namespace Yaya {
 
 		// Data
 		private readonly Dictionary<int, SpriteData> SpritePool = new();
-		private readonly List<PaletteGroup> PaletteGroups = new();
+		private static readonly Dictionary<int, int[]> ChainPool = new();
+		private static readonly Dictionary<int, int> ReversedChainPool = new();
+		private static readonly Dictionary<int, string> ChainRulePool = new();
 		private readonly Dictionary<int, int> EntityArtworkRedirectPool = new();
 		private bool PlayerSettled = false;
 		private Vector3Int PlayerSettlePos = default;
+
+		// UI
+		private RectInt PanelLeftRect = default;
+		private int ToolbarHeight = 0;
 
 		// Saving
 		private static readonly SavingBool s_QuickPlayerSettle = new("eMapEditor.QuickPlayerSettle", false);
@@ -95,9 +75,6 @@ namespace Yaya {
 
 
 		#region --- MSG ---
-
-
-		public eMapEditor () => Current = this;
 
 
 		// Active
@@ -131,21 +108,78 @@ namespace Yaya {
 			Game.Current.WorldSquad_Behind.SetDataChannel(World.DataChannel.BuiltIn);
 
 			SpritePool.Clear();
+			PaletteGroups.Clear();
+			EntityArtworkRedirectPool.Clear();
 		}
 
 
 		private void Active_Pool () {
 
-			// Sprite Pool
 			SpritePool.Clear();
-			for (int i = 0; i < CellRenderer.SpriteCount; i++) {
+			ChainPool.Clear();
+			EntityArtworkRedirectPool.Clear();
+			ChainRulePool.Clear();
+			ReversedChainPool.Clear();
+
+			int spriteCount = CellRenderer.SpriteCount;
+			int chainCount = CellRenderer.ChainCount;
+
+			// Sprites
+			for (int i = 0; i < spriteCount; i++) {
 				var sprite = CellRenderer.GetSpriteAt(i);
 				SpritePool.TryAdd(sprite.GlobalID, new SpriteData() {
 					Sprite = sprite,
 				});
 			}
 
-			// Sprite Editing Meta
+			// Chains
+			for (int i = 0; i < chainCount; i++) {
+
+				var chain = CellRenderer.GetChainAt(i);
+				if (chain.Chain == null || chain.Chain.Count == 0) continue;
+				int index = chain.Chain[0];
+				if (index < 0 || index >= spriteCount) continue;
+
+				var firstSprite = CellRenderer.GetSpriteAt(index);
+				var pivot = Vector2Int.zero;
+				pivot.x = firstSprite.PivotX;
+				pivot.y = firstSprite.PivotY;
+				SpritePool.TryAdd(
+					chain.ID,
+					new SpriteData() {
+						GroupType = chain.Type,
+						Sprite = firstSprite,
+					}
+				);
+
+				// Chain
+				var cIdList = new List<int>();
+				foreach (var cIndex in chain.Chain) {
+					if (cIndex >= 0 && cIndex < spriteCount) {
+						cIdList.Add(CellRenderer.GetSpriteAt(cIndex).GlobalID);
+					} else {
+						cIdList.Add(0);
+					}
+				}
+				ChainPool.TryAdd(chain.ID, cIdList.ToArray());
+
+				// Reversed Chain
+				foreach (var _i in chain.Chain) {
+					if (_i < 0 || _i >= spriteCount) continue;
+					ReversedChainPool.TryAdd(
+						CellRenderer.GetSpriteAt(_i).GlobalID,
+						chain.ID
+					);
+				}
+
+				// RuleID to RuleGroup
+				if (chain.Type == GroupType.Rule) {
+					ChainRulePool.TryAdd(chain.ID, AngeUtil.GetTileRuleString(chain));
+				}
+
+			}
+
+			// Fill Sprite Editing Meta
 			var editingMeta = AngeUtil.LoadOrCreateJson<SpriteEditingMeta>(Const.MetaRoot);
 			if (editingMeta.SheetNames == null || editingMeta.SheetNames.Length == 0) {
 				editingMeta.SheetNames = new string[1] { "" };
@@ -163,7 +197,6 @@ namespace Yaya {
 
 			// Entity Artwork Redirect Pool
 			var OBJECT = typeof(object);
-			EntityArtworkRedirectPool.Clear();
 			foreach (var type in typeof(Entity).AllChildClass()) {
 				int id = type.AngeHash();
 				if (SpritePool.ContainsKey(id)) continue;
@@ -180,152 +213,16 @@ namespace Yaya {
 		}
 
 
-		private void Active_Palette () {
-
-			PaletteGroups.Clear();
-
-
-			// Fill Blocks
-			var groupPool = new Dictionary<string, PaletteGroup>();
-
-			// Chain
-			for (int index = 0; index < CellRenderer.ChainCount; index++) {
-
-				var chain = CellRenderer.GetChainAt(index);
-				var sp = CellRenderer.GetSpriteAt(chain.Chain[0]);
-
-				switch (chain.Type) {
-					default:
-						throw new System.NotImplementedException();
-					case GroupType.Rule:
-					case GroupType.Random:
-					case GroupType.Animated:
-						if (!SpritePool.TryGetValue(sp.GlobalID, out var sData)) break;
-						CellRenderer.TryGetMeta(sp.GlobalID, out var meta);
-						if (meta == null || (sData.SheetType != SheetType.Background && sData.SheetType != SheetType.Level)) break;
-						if (!groupPool.TryGetValue(sData.SheetName, out var group)) {
-							groupPool.Add(sData.SheetName, group = new PaletteGroup() {
-								Items = new List<PaletteItem>(),
-								GroupPath = $"Sheet/{sData.SheetName}",
-								GroupName = sData.SheetName,
-								IsItem = false,
-								Type = sData.SheetType == SheetType.Level ? BlockType.Level : BlockType.Background,
-							});
-						}
-						group.Items.Add(new PaletteItem() {
-							ID = chain.ID,
-							ArtworkID = chain.ID,
-							Label = chain.Name,
-							Type = chain.Type,
-							BlockType = group.Type,
-							Chain = chain,
-						});
-						break;
-				}
-			}
-
-			// General
-			for (int index = 0; index < CellRenderer.SpriteCount; index++) {
-				var sp = CellRenderer.GetSpriteAt(index);
-				int id = sp.GlobalID;
-				if (SpritePool.TryGetValue(id, out var sData) && sData.GroupType != GroupType.General) continue;
-				CellRenderer.TryGetMeta(sp.GlobalID, out var meta);
-				if (meta == null || (sData.SheetType != SheetType.Background && sData.SheetType != SheetType.Level)) continue;
-				if (!groupPool.TryGetValue(sData.SheetName, out var group)) {
-					groupPool.Add(sData.SheetName, group = new PaletteGroup() {
-						Items = new List<PaletteItem>(),
-						GroupPath = $"Sheet/{sData.SheetName}",
-						GroupName = sData.SheetName,
-						IsItem = false,
-						Type = sData.SheetType == SheetType.Level ? BlockType.Level : BlockType.Background,
-					});
-				}
-				group.Items.Add(new PaletteItem() {
-					ID = sp.GlobalID,
-					ArtworkID = sp.GlobalID,
-					Label = sData.RealName,
-					Type = GroupType.General,
-					BlockType = group.Type,
-					Chain = null,
-				});
-			}
-
-			foreach (var pair in groupPool) {
-				pair.Value.Items.Sort((a, b) => a.Label.CompareTo(b.Label));
-				PaletteGroups.Add(pair.Value);
-			}
-
-			// Fill IMapEditorItem
-			var entityGroupPool = new Dictionary<string, PaletteGroup> {
-				{
-					"Entity",
-					new PaletteGroup() {
-						Items = new List<PaletteItem>(),
-						GroupPath = "_Entity",
-						GroupName = "Entity",
-						IsItem = true,
-						Type = BlockType.Entity,
-					}
-				}
-			};
-			foreach (var type in typeof(IMapEditorItem).AllClassImplemented()) {
-
-				// Check Exclude Attr
-				var atts = type.GetCustomAttributes(typeof(EntityAttribute.ExcludeInMapEditorAttribute), true);
-				if (atts != null && atts.Length > 0) continue;
-
-				// Check Group Name
-				string groupName = "Default";
-				atts = type.GetCustomAttributes(typeof(EntityAttribute.MapEditorGroupAttribute), true);
-				if (atts != null && atts.Length > 0) {
-					groupName = (atts[0] as EntityAttribute.MapEditorGroupAttribute).GroupName;
-				}
-
-				// Add
-				if (!entityGroupPool.ContainsKey(groupName)) {
-					entityGroupPool.Add(groupName, new PaletteGroup() {
-						Items = new List<PaletteItem>(),
-						GroupPath = $"_{groupName}",
-						GroupName = groupName,
-						IsItem = true,
-						Type = BlockType.Entity,
-					});
-				}
-				var group = entityGroupPool[groupName];
-				int typeId = type.AngeHash();
-				int artworkTypeID = EntityArtworkRedirectPool.TryGetValue(typeId, out var _aID) ? _aID : typeId;
-
-				group.Items.Add(new PaletteItem() {
-					ID = typeId,
-					ArtworkID = artworkTypeID,
-					Type = GroupType.General,
-					BlockType = group.Type,
-					Label = Util.GetDisplayName(type.Name.StartsWith('e') ? type.Name[1..] : type.Name),
-					Chain = null,
-				});
-			}
-			foreach (var (_, group) in entityGroupPool) {
-				group.Items.Sort((a, b) => a.Label.CompareTo(b.Label));
-				PaletteGroups.Add(group);
-			}
-
-			// Sort Groups
-			PaletteGroups.Sort((a, b) =>
-				a.GroupName == b.GroupName ? 0 :
-				a.GroupName == "System" ? -1 :
-				b.GroupName == "System" ? 1 :
-				a.GroupPath.CompareTo(b.GroupPath)
-			);
-
-		}
-
-
 		// Update
-		public override void FrameUpdate () {
-			base.FrameUpdate();
+		protected override void FrameUpdateUI () {
+
+			base.FrameUpdateUI();
+
 
 			FrameUpdate_Hotkey();
 			FrameUpdate_SettlePlayer();
+			FrameUpdate_UICache();
+			FrameUpdate_PaletteUI();
 
 		}
 
@@ -364,6 +261,21 @@ namespace Yaya {
 		}
 
 
+		private void FrameUpdate_UICache () {
+
+			var cameraRect = CellRenderer.CameraRect;
+
+			PanelLeftRect.x = cameraRect.x;
+			PanelLeftRect.y = cameraRect.y;
+			PanelLeftRect.width = 480 * UNIT;
+			PanelLeftRect.height = cameraRect.height;
+
+			ToolbarHeight = 48 * UNIT;
+
+
+		}
+
+
 		#endregion
 
 
@@ -373,12 +285,20 @@ namespace Yaya {
 
 
 		public void SetEditorMode (EditorMode mode, bool despawnPlayer = true) {
+
+			var game = Game.Current;
 			Mode = mode;
+
+			// Squad Spawn Entity
+			YayaGame.Current.WorldSquad.SpawnEntity = mode == EditorMode.Playing;
+			YayaGame.Current.WorldSquad_Behind.SpawnEntity = mode == EditorMode.Playing;
+
 			switch (mode) {
+
 				case EditorMode.Editing:
 
-					for (int i = 0; i < Game.Current.EntityCount; i++) {
-						var e = Game.Current.Entities[i];
+					for (int i = 0; i < game.EntityCount; i++) {
+						var e = game.Entities[i];
 						if (e.Active && e.FromWorld) {
 							e.Active = false;
 						}
@@ -389,9 +309,10 @@ namespace Yaya {
 					}
 
 					break;
+
 				case EditorMode.Playing:
 
-					Game.Current.SetViewZ(Game.Current.ViewZ);
+					game.SetViewZ(game.ViewZ);
 
 					if (ePlayer.Selecting != null) {
 						if (despawnPlayer) {
@@ -405,6 +326,7 @@ namespace Yaya {
 					PlayerSettled = false;
 
 					break;
+
 			}
 
 		}
@@ -421,7 +343,12 @@ namespace Yaya {
 		private void SettlePlayer (int x, int y) {
 			if (ePlayer.Selecting == null) return;
 			PlayerSettled = true;
-			Game.Current.SpawnEntity(ePlayer.Selecting.TypeID, x, y);
+			if (!ePlayer.Selecting.Active) {
+				Game.Current.SpawnEntity(ePlayer.Selecting.TypeID, x, y);
+			} else {
+				ePlayer.Selecting.X = x;
+				ePlayer.Selecting.Y = y;
+			}
 		}
 
 

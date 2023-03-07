@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
 
+
 namespace Yaya {
 	[EntityAttribute.DontSpawnFromWorld]
-	[EntityAttribute.MapEditorGroup("Item")]
+	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.Capacity(64)]
-	public abstract class eItem : Entity {
+	public class eItemHolder : Entity {
 
 
 
@@ -23,6 +24,7 @@ namespace Yaya {
 
 		// Api
 		public int VelocityY { get; private set; } = 0;
+		public int ItemID { get; set; } = 0;
 
 		// Data
 		private static readonly PhysicsCell[] c_MakeRoom = new PhysicsCell[5];
@@ -82,7 +84,7 @@ namespace Yaya {
 					var hit = c_MakeRoom[i];
 					deltaX += hit.Rect.x - X;
 					speed = Mathf.Max(speed, Mathf.Abs(hit.Rect.x - X) / 4);
-					if (hit.Entity is eItem hitItem) {
+					if (hit.Entity is eItemHolder hitItem) {
 						MakeRoomToRight = !hitItem.MakeRoomToRight;
 					}
 				}
@@ -104,7 +106,7 @@ namespace Yaya {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			CellRenderer.Draw(
-				TypeID,
+				ItemID,
 				new RectInt(
 					X + (ITEM_PHYSICS_SIZE - ITEM_RENDER_SIZE) / 2,
 					Y,

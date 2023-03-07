@@ -10,6 +10,7 @@ namespace Yaya {
 
 		// VAR
 		protected override Int4 CullingPadding => CellRenderer.CameraShaking || FrameTask.IsTasking<TeleportTask>(YayaConst.TASK_ROUTE) ? new Int4(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Int4.Zero;
+		public bool SpawnEntity { get; set; } = true;
 
 
 		// API
@@ -54,7 +55,7 @@ namespace Yaya {
 
 
 		protected override void DrawEntity (Game game, int id, int unitX, int unitY, int unitZ) {
-			if (!eMapEditor.Current.IsEditing) {
+			if (SpawnEntity) {
 				// Spawn Entity
 				var entity = game.SpawnEntityFromWorld(id, unitX, unitY, unitZ);
 				if (entity is eCharacter ch) {
