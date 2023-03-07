@@ -54,7 +54,7 @@ namespace Yaya {
 
 
 		protected override void DrawEntity (Game game, int id, int unitX, int unitY, int unitZ) {
-			if (!eMapEditor.IsEditing) {
+			if (!eMapEditor.Current.IsEditing) {
 				// Spawn Entity
 				var entity = game.SpawnEntityFromWorld(id, unitX, unitY, unitZ);
 				if (entity is eCharacter ch) {

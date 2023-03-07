@@ -160,8 +160,8 @@ namespace Yaya {
 			}
 			if (FrameInput.KeyboardDown(Key.Digit7)) {
 				//DialoguePerformer.PerformDialogue("TestConversation", YayaConst.TASK_ROUTE);
-				eMapEditor.QuickPlayerSettle = !eMapEditor.QuickPlayerSettle;
-				Debug.Log(eMapEditor.QuickPlayerSettle);
+				eMapEditor.Current.QuickPlayerSettle = !eMapEditor.Current.QuickPlayerSettle;
+				Debug.Log(eMapEditor.Current.QuickPlayerSettle);
 			}
 			if (FrameInput.KeyboardDown(Key.Digit8)) {
 				var miniGame = game.PeekOrGetEntity<eGomokuUI>();
@@ -203,7 +203,7 @@ namespace Yaya {
 				ePlayer.Selecting != null &&
 				ePlayer.Selecting.Active &&
 				ePlayer.Selecting.CharacterState == CharacterState.Passout &&
-				!eMapEditor.IsEditing
+				!eMapEditor.Current.IsEditing
 			) {
 				if (
 					ePlayer.Selecting.IsFullPassout &&
