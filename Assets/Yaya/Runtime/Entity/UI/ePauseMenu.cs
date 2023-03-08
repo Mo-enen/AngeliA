@@ -42,6 +42,7 @@ namespace Yaya {
 		private readonly IntToString MusicVolumeCache = new();
 		private readonly IntToString SoundVolumeCache = new();
 		private readonly IntToString FramerateCache = new();
+		private readonly CellLabel KeySetterLabel = new();
 
 
 		#endregion
@@ -172,7 +173,7 @@ namespace Yaya {
 			// Music Volume
 			if (DrawArrowItem(
 				Language.Get(WORD.MENU_MUSIC_VOLUME),
-				new CellLabel(MusicVolumeCache.GetString(AudioPlayer.MusicVolume / 100)),
+				CellLabel.TempLabel(MusicVolumeCache.GetString(AudioPlayer.MusicVolume / 100), UNIT),
 				AudioPlayer.MusicVolume > 0, AudioPlayer.MusicVolume < 1000, out int delta
 			)) {
 				AudioPlayer.SetMusicVolume(AudioPlayer.MusicVolume + delta * 100);
@@ -181,7 +182,7 @@ namespace Yaya {
 			// Sound Volume
 			if (DrawArrowItem(
 				Language.Get(WORD.MENU_SOUND_VOLUME),
-				new CellLabel(SoundVolumeCache.GetString(AudioPlayer.SoundVolume / 100)),
+				CellLabel.TempLabel(SoundVolumeCache.GetString(AudioPlayer.SoundVolume / 100), UNIT),
 				AudioPlayer.SoundVolume > 0, AudioPlayer.SoundVolume < 1000, out delta
 			)) {
 				AudioPlayer.SetSoundVolume(AudioPlayer.SoundVolume + delta * 100);
@@ -191,7 +192,7 @@ namespace Yaya {
 			int currentFramerate = Game.Current.GraphicFramerate;
 			if (DrawArrowItem(
 				Language.Get(WORD.MENU_FRAMERATE),
-				new CellLabel(FramerateCache.GetString(currentFramerate)),
+				CellLabel.TempLabel(FramerateCache.GetString(currentFramerate), UNIT),
 				currentFramerate > 30, currentFramerate < 120, out delta
 			)) {
 				Game.Current.GraphicFramerate += delta * 30;
@@ -200,7 +201,7 @@ namespace Yaya {
 			// VSync
 			if (DrawItem(
 				Language.Get(WORD.MENU_VSYNC),
-				new CellLabel(Language.Get(Game.Current.VSync ? WORD.UI_ON : WORD.UI_OFF))
+				CellLabel.TempLabel(Language.Get(Game.Current.VSync ? WORD.UI_ON : WORD.UI_OFF), UNIT)
 			)) {
 				Game.Current.VSync = !Game.Current.VSync;
 			}
@@ -208,7 +209,7 @@ namespace Yaya {
 			// Screen Effect
 			if (DrawItem(
 				Language.Get(WORD.MENU_SCREEN_EFFECT),
-				new CellLabel(Language.Get(Game.Current.UseScreenEffects ? WORD.UI_ON : WORD.UI_OFF))
+				CellLabel.TempLabel(Language.Get(Game.Current.UseScreenEffects ? WORD.UI_ON : WORD.UI_OFF), UNIT)
 			)) {
 				Game.Current.UseScreenEffects = !Game.Current.UseScreenEffects;
 			}
@@ -216,13 +217,13 @@ namespace Yaya {
 			// Fullscreen
 			if (DrawArrowItem(
 				Language.Get(WORD.MENU_FULLSCREEN_LABEL),
-				new CellLabel(
+				CellLabel.TempLabel(
 					Language.Get(Game.Current.FullscreenMode switch {
 						FullscreenMode.Window => WORD.MENU_FULLSCREEN_0,
 						FullscreenMode.Fullscreen => WORD.MENU_FULLSCREEN_1,
 						FullscreenMode.FullscreenLow => WORD.MENU_FULLSCREEN_2,
 						_ => WORD.MENU_FULLSCREEN_0,
-					})
+					}), UNIT
 				),
 				Game.Current.FullscreenMode != FullscreenMode.Window,
 				Game.Current.FullscreenMode != FullscreenMode.FullscreenLow,
@@ -242,7 +243,7 @@ namespace Yaya {
 			}
 			if (DrawArrowItem(
 				Language.Get(WORD.MENU_LANGUAGE),
-				new(Util.GetLanguageDisplayName(Game.Current.CurrentLanguage)),
+				CellLabel.TempLabel(Util.GetLanguageDisplayName(Game.Current.CurrentLanguage), UNIT),
 				currentLanguageIndex > 0, currentLanguageIndex < Language.LanguageCount - 1, out delta)
 			) {
 				int newIndex = currentLanguageIndex + delta;
@@ -255,7 +256,7 @@ namespace Yaya {
 			// Control Hint
 			if (DrawItem(
 				Language.Get(WORD.MENU_CONTROL_HINT),
-				new CellLabel(Language.Get(eControlHintUI.UseControlHint ? WORD.UI_ON : WORD.UI_OFF))
+				CellLabel.TempLabel(Language.Get(eControlHintUI.UseControlHint ? WORD.UI_ON : WORD.UI_OFF), UNIT)
 			)) {
 				eControlHintUI.UseControlHint = !eControlHintUI.UseControlHint;
 			}
@@ -263,7 +264,7 @@ namespace Yaya {
 			// Gamepad Hint
 			if (DrawItem(
 				Language.Get(WORD.MENU_GAMEPAD_HINT),
-				new CellLabel(Language.Get(eControlHintUI.UseGamePadHint ? WORD.UI_ON : WORD.UI_OFF))
+				CellLabel.TempLabel(Language.Get(eControlHintUI.UseGamePadHint ? WORD.UI_ON : WORD.UI_OFF), UNIT)
 			)) {
 				eControlHintUI.UseGamePadHint = !eControlHintUI.UseGamePadHint;
 			}
@@ -302,15 +303,18 @@ namespace Yaya {
 				CellLabel valueLabel;
 				if (RecordingKey != i) {
 					// Normal
-					valueLabel = new(forGamepad ? string.Empty : Util.GetKeyDisplayName(KeyboardKeys[i])) {
-						Image = forGamepad && YayaConst.GAMEPAD_CODE.TryGetValue(GamepadKeys[i], out var _value0) ? _value0 : 0,
-					};
+					KeySetterLabel.Tint = Const.WHITE;
+					KeySetterLabel.BackgroundTint = Const.CLEAR;
+					KeySetterLabel.Text = forGamepad ? string.Empty : Util.GetKeyDisplayName(KeyboardKeys[i]);
+					KeySetterLabel.Image = forGamepad && YayaConst.GAMEPAD_CODE.TryGetValue(GamepadKeys[i], out var _value0) ? _value0 : 0;
+					valueLabel = KeySetterLabel;
 				} else {
 					// Recording
-					valueLabel = new(Language.Get(WORD.MENU_SETTER_RECORD)) {
-						Tint = PauselessFrame % 30 > 15 ? Const.BLACK : Const.WHITE,
-						BackgroundTint = PauselessFrame % 30 > 15 ? Const.GREEN : Const.CLEAR,
-					};
+					KeySetterLabel.Tint = PauselessFrame % 30 > 15 ? Const.BLACK : Const.WHITE;
+					KeySetterLabel.Text = Language.Get(WORD.MENU_SETTER_RECORD);
+					KeySetterLabel.BackgroundTint = PauselessFrame % 30 > 15 ? Const.GREEN : Const.CLEAR;
+					KeySetterLabel.Image = 0;
+					valueLabel = KeySetterLabel;
 				}
 				if (DrawItem(Language.Get(code), valueLabel)) {
 					RecordLock = true;

@@ -54,9 +54,8 @@ namespace Yaya {
 		public static readonly int MENU_GOMOKU_WIN = "Menu.Gomoku.Win".AngeHash();
 		public static readonly int MENU_GOMOKU_LOSE = "Menu.Gomoku.Lose".AngeHash();
 		public static readonly int MENU_GOMOKU_DRAW = "Menu.Gomoku.Draw".AngeHash();
-		public static readonly int UI_GOMOKU_PLAYER_HINT = "UI.Gomoku.YouAre".AngeHash();
-		
-		// Hint
+
+		// Control Hint
 		public static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
 		public static readonly int HINT_ADJUST = "CtrlHint.Adjust".AngeHash();
 		public static readonly int HINT_JUMP = "CtrlHint.Jump".AngeHash();
@@ -65,6 +64,14 @@ namespace Yaya {
 		public static readonly int HINT_WAKE = "CtrlHint.WakeUp".AngeHash();
 		public static readonly int HINT_SKIP = "CtrlHint.Skip".AngeHash();
 		public static readonly int HINT_RESTART = "CtrlHint.Restart".AngeHash();
+		public static readonly int HINT_MEDT_SWITCH_EDIT = "CtrlHint.MEDT.SwitchMode.Edit".AngeHash();
+		public static readonly int HINT_MEDT_SWITCH_PLAY = "CtrlHint.MEDT.SwitchMode.Play".AngeHash();
+		public static readonly int HINT_MEDT_PANEL = "CtrlHint.MEDT.Panel".AngeHash();
+
+		// Misc
+		public static readonly int GOMOKU_YOU_ARE = "UI.Gomoku.YouAre".AngeHash();
+		public static readonly int MEDT_SETTLE = "MEDT.Settle".AngeHash();
+
 
 
 

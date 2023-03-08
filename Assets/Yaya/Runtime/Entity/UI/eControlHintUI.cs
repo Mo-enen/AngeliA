@@ -60,6 +60,9 @@ namespace Yaya {
 		private Int4 Border_Keyboard = default;
 		private Int4 Border_Gamepad = default;
 		private int ForceHintFrame = int.MinValue;
+		private readonly CellLabel HintLabel = new() {
+			Alignment = Alignment.MidLeft,
+		};
 
 		// Saving
 		private static readonly SavingBool ShowGamePadUI = new("Yaya.ShowGamePadUI", false);
@@ -305,13 +308,13 @@ namespace Yaya {
 
 				// Label
 				rect.width = 1;
+
+				HintLabel.Text = Language.Get(labelID);
+				HintLabel.Tint = LabelTint;
+				HintLabel.CharSize = TextSize * UNIT;
+
 				CellRendererGUI.Label(
-					new CellLabel() {
-						Text = Language.Get(labelID),
-						Tint = LabelTint,
-						CharSize = TextSize * UNIT,
-						Alignment = Alignment.MidLeft,
-					}, rect, out var bounds
+					HintLabel, rect, out var bounds
 				);
 				if (bgCell != null) {
 					bgCell.Y = Mathf.Min(bgCell.Y, bounds.y - BG_PADDING_Y);

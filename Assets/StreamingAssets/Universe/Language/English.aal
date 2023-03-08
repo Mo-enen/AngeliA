@@ -10,11 +10,15 @@ ActionHint.Photo:Switch
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Jump:Jump
+CtrlHint.MEDT.Panel:Panel
+CtrlHint.MEDT.SwitchMode.Edit:Edit
+CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
 CtrlHint.Restart:Restart
 CtrlHint.Skip:Skip
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
+MEDT.Settle:Mouse Left Button to Drop
 Menu.Gomoku.Draw:Draw
 Menu.Gomoku.Lose:You Lose
 Menu.Gomoku.Restart:Retart Game?

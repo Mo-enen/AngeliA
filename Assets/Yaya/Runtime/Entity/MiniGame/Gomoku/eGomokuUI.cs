@@ -48,6 +48,9 @@ namespace Yaya {
 		private int LastPlacePositionX = -1;
 		private int LastPlacePositionY = -1;
 		private GenericMenuUI MenuEntity = null;
+		private readonly CellLabel HintLabel = new() {
+			Alignment = Alignment.MidLeft,
+		};
 
 
 		#endregion
@@ -181,12 +184,11 @@ namespace Yaya {
 
 			// Player Color Hint
 			int labelHeight = 24 * UNIT;
+			HintLabel.Tint = PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT;
+			HintLabel.CharSize = labelHeight;
+			HintLabel.Text = Language.Get(WORD.GOMOKU_YOU_ARE);
 			CellRendererGUI.Label(
-				new CellLabel(Language.Get(WORD.UI_GOMOKU_PLAYER_HINT)) {
-					Alignment = Alignment.MidLeft,
-					Tint = PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT,
-					CharSize = labelHeight,
-				},
+				HintLabel,
 				new RectInt(boardRect.x, boardRect.yMax - labelHeight, boardRect.width, labelHeight),
 				out var bounds
 			);
