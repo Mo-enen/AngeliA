@@ -162,8 +162,8 @@ namespace Yaya {
 			}
 			if (FrameInput.KeyboardDown(Key.Digit7)) {
 				//DialoguePerformer.PerformDialogue("TestConversation", YayaConst.TASK_ROUTE);
-				MapEditor.QuickPlayerSettle = !MapEditor.QuickPlayerSettle;
-				Debug.Log(MapEditor.QuickPlayerSettle);
+				MapEditor.QuickPlayerDrop = !MapEditor.QuickPlayerDrop;
+				Debug.Log("Quick Player Drop = " + MapEditor.QuickPlayerDrop);
 			}
 			if (FrameInput.KeyboardDown(Key.Digit8)) {
 				var miniGame = game.PeekOrGetEntity<eGomokuUI>();

@@ -83,7 +83,7 @@ namespace Yaya {
 					if (IsFullPassout) {
 						int x = X - Const.HALF;
 						int y = Y + Const.CEL * 3 / 2;
-						eControlHintUI.DrawGlobalHint(x, y, Gamekey.Action, WORD.UI_CONTINUE, true, true);
+						eControlHintUI.DrawGlobalHint(x, y, Gamekey.Action, WORD.UI_CONTINUE, true);
 					}
 					break;
 			}
@@ -227,7 +227,7 @@ namespace Yaya {
 			// Ctrl Hint
 			int x = X - Const.HALF;
 			int y = Y + Const.CEL * 3 / 2;
-			eControlHintUI.DrawGlobalHint(x, y, Gamekey.Action, WORD.HINT_WAKE, true, true);
+			eControlHintUI.DrawGlobalHint(x, y, Gamekey.Action, WORD.HINT_WAKE, true);
 			eControlHintUI.AddHint(Gamekey.Action, WORD.HINT_WAKE);
 		}
 

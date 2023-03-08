@@ -43,6 +43,8 @@ namespace Yaya {
 
 		// Data
 		private readonly List<PaletteGroup> PaletteGroups = new();
+		private bool ShowingPanel = false;
+		private int PanelChangedFrame = int.MinValue;
 
 
 		#endregion
@@ -193,13 +195,22 @@ namespace Yaya {
 		}
 
 
-		private void FrameUpdate_PaletteUI () {
+		private void FrameUpdate_PanelUI () {
+
+			const int DURATION = 24;
+			int localFrame = (Game.GlobalFrame - PanelChangedFrame).Clamp(0, DURATION);
+
+			if (localFrame < DURATION) {
+				// Animating
 
 
 
+			} else if (ShowingPanel) {
+				// Ready to Use
 
 
 
+			}
 
 		}
 
@@ -209,17 +220,19 @@ namespace Yaya {
 
 
 
-		#region --- API ---
-
-
-
-		#endregion
-
-
-
-
 		#region --- LGC ---
 
+
+		private void ShowPanel () {
+			PanelChangedFrame = Game.GlobalFrame;
+			ShowingPanel = true;
+		}
+
+
+		private void HidePanel () {
+			PanelChangedFrame = Game.GlobalFrame;
+			ShowingPanel = false;
+		}
 
 
 		#endregion

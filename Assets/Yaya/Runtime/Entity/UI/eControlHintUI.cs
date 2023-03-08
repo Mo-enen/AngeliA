@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AngeliaFramework;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
 
 namespace Yaya {
@@ -13,8 +14,6 @@ namespace Yaya {
 
 
 		// Const
-		private static readonly int KEYBOARD_BUTTON_ANI_CODE = "Keyboard Button".AngeHash();
-		private static readonly int GAMEPAD_BUTTON_ANI_CODE = "Gamepad Button".AngeHash();
 		private static readonly int KEYBOARD_BUTTON_CODE = "Keyboard Button".AngeHash();
 		private static readonly int GAMEPAD_BUTTON_CODE = "Gamepad Button".AngeHash();
 		private static readonly int BodyCode = "GamePad Body".AngeHash();
@@ -57,6 +56,7 @@ namespace Yaya {
 			(0,int.MinValue,-1), (0,int.MinValue,-1), (0,int.MinValue,-1), (0,int.MinValue,-1),
 		};
 		private static eControlHintUI Current = null;
+		private static int CurrentHintOffsetY = 0;
 		private Int4 Border_Keyboard = default;
 		private Int4 Border_Gamepad = default;
 		private int ForceHintFrame = int.MinValue;
@@ -104,6 +104,7 @@ namespace Yaya {
 		protected override void FrameUpdateUI () {
 			if (GamepadVisible) DrawGamePad();
 			if (HintVisible) DrawHints();
+			CurrentHintOffsetY = 0;
 			// Switch Visible
 			if (FrameInput.KeyboardDown(Key.F2)) {
 				ShowGamePadUI.Value = !ShowGamePadUI.Value;
@@ -162,7 +163,7 @@ namespace Yaya {
 
 		private void DrawHints () {
 
-			int hintPositionY = CellRenderer.CameraRect.y + (GamepadVisible ? 78 : 12) * UNIT;
+			int hintPositionY = CurrentHintOffsetY + CellRenderer.CameraRect.y + (GamepadVisible ? 78 : 12) * UNIT;
 
 			// Menu
 			if (MenuUI.CurrentMenu != null) {
@@ -219,11 +220,23 @@ namespace Yaya {
 
 		// API
 		public static void AddHint (Gamekey key, int labelID, int priority = int.MinValue) => AddHint(key, key, labelID, priority);
-		public static void AddHint (Gamekey keyA, Gamekey keyB, int labelID, int priority = int.MinValue) => Current?.SetHintLogic(keyA, keyB, labelID, priority);
+		public static void AddHint (Gamekey keyA, Gamekey keyB, int labelID, int priority = int.MinValue) => Current?.AddHintLogic(keyA, keyB, labelID, priority);
+		public static void AddHint (Key key, int labelID) => AddHint(key, key, labelID);
+		public static void AddHint (Key keyA, Key keyB, int labelID) {
+			if (Current == null || !Current.HintVisible) return;
+			int x = 6 * Current.UNIT + CellRenderer.CameraRect.x + 6 * Current.UNIT;
+			int y = CurrentHintOffsetY + CellRenderer.CameraRect.y + (Current.GamepadVisible ? 78 : 12) * Current.UNIT;
+			Current.DrawKey(x, y, keyA, keyB, labelID);
+			CurrentHintOffsetY += (Current.KeySize + Current.Gap) * Current.UNIT;
+		}
 
 
-		public static void DrawGlobalHint (int globalX, int globalY, Gamekey key, int labelID, bool background = false, bool animated = false) => Current?.DrawKey(globalX, globalY, key, key, labelID, background, animated);
-		public static void DrawGlobalHint (int globalX, int globalY, Gamekey keyA, Gamekey keyB, int labelID, bool background = false, bool animated = false) => Current?.DrawKey(globalX, globalY, keyA, keyB, labelID, background, animated);
+		public static void DrawGlobalHint (int globalX, int globalY, Gamekey key, int labelID, bool background = false) => Current?.DrawKey(globalX, globalY, key, key, labelID, background);
+		public static void DrawGlobalHint (int globalX, int globalY, Gamekey keyA, Gamekey keyB, int labelID, bool background = false) => Current?.DrawKey(globalX, globalY, keyA, keyB, labelID, background);
+		public static void DrawGlobalHint (int globalX, int globalY, Key key, int labelID, bool background = false) => Current?.DrawKey(globalX, globalY, key, key, labelID, background);
+		public static void DrawGlobalHint (int globalX, int globalY, Key keyA, Key keyB, int labelID, bool background = false) => Current?.DrawKey(globalX, globalY, keyA, keyB, labelID, background);
+		public static void DrawGlobalHint (int globalX, int globalY, GamepadButton key, int labelID, bool background = false) => Current?.DrawKey(globalX, globalY, key, key, labelID, background);
+		public static void DrawGlobalHint (int globalX, int globalY, GamepadButton keyA, GamepadButton keyB, int labelID, bool background = false) => Current?.DrawKey(globalX, globalY, keyA, keyB, labelID, background);
 
 
 		public static void ForceShowHint (int duration = 0) {
@@ -233,7 +246,7 @@ namespace Yaya {
 
 
 		// LGC
-		private void SetHintLogic (Gamekey keyA, Gamekey keyB, int labelID, int priority = int.MinValue) {
+		private void AddHintLogic (Gamekey keyA, Gamekey keyB, int labelID, int priority = int.MinValue) {
 			if (!HintVisible) return;
 			if (Hints[(int)keyA].frame != Game.PauselessFrame || priority >= Hints[(int)keyA].priority) {
 				Hints[(int)keyA] = (labelID, priority, Game.PauselessFrame);
@@ -242,20 +255,31 @@ namespace Yaya {
 				Hints[(int)keyB] = (labelID, priority, Game.PauselessFrame);
 			}
 		}
-		private void DrawKey (int x, int y, Gamekey keyA, Gamekey keyB, int labelID, bool background = false, bool animated = false) {
 
-			// Draw
-			var keyboardA = FrameInput.GetKeyboardMap(keyA);
-			var keyboardB = FrameInput.GetKeyboardMap(keyB);
-			var gamepadA = FrameInput.GetGamepadMap(keyA);
-			var gamepadB = FrameInput.GetGamepadMap(keyB);
+
+		private void DrawKey (int x, int y, Gamekey keyA, Gamekey keyB, int labelID, bool background = false) {
+			if (FrameInput.UsingGamepad) {
+				DrawKey(x, y, FrameInput.GetGamepadMap(keyA), FrameInput.GetGamepadMap(keyB), labelID, background);
+			} else {
+				DrawKey(x, y, FrameInput.GetKeyboardMap(keyA), FrameInput.GetKeyboardMap(keyB), labelID, background);
+			}
+		}
+		private void DrawKey (int x, int y, GamepadButton buttonA, GamepadButton buttonB, int labelID, bool background = false) {
+			int keyIdA = YayaConst.GAMEPAD_CODE.TryGetValue(buttonA, out int _value0) ? _value0 : 0;
+			int keyIdB = YayaConst.GAMEPAD_CODE.TryGetValue(buttonB, out int _value1) ? _value1 : 0;
+			DrawKeyLogic(x, y, keyIdA, keyIdB, labelID, background);
+		}
+		private void DrawKey (int x, int y, Key keyA, Key keyB, int labelID, bool background = false) {
+			int keyIdA = KeyNameIdMap[keyA];
+			int keyIdB = KeyNameIdMap[keyB];
+			DrawKeyLogic(x, y, keyIdA, keyIdB, labelID, background);
+		}
+		private void DrawKeyLogic (int x, int y, int keyIdA, int keyIdB, int labelID, bool background = false) {
 
 			const int BG_PADDING_X = 32;
 			const int BG_PADDING_Y = 32;
 			Cell bgCell = null;
-			int buttonCode = animated ?
-				FrameInput.UsingGamepad ? GAMEPAD_BUTTON_ANI_CODE : KEYBOARD_BUTTON_ANI_CODE :
-				FrameInput.UsingGamepad ? GAMEPAD_BUTTON_CODE : KEYBOARD_BUTTON_CODE;
+			int buttonCode = FrameInput.UsingGamepad ? GAMEPAD_BUTTON_CODE : KEYBOARD_BUTTON_CODE;
 			var border = FrameInput.UsingGamepad ? Border_Gamepad : Border_Keyboard;
 			border.Left *= UNIT;
 			border.Right *= UNIT;
@@ -264,8 +288,6 @@ namespace Yaya {
 			int gap = Gap * UNIT;
 			int keySize = KeySize * UNIT;
 			var rect = new RectInt(x, y, keySize, keySize);
-			int keyIdA = FrameInput.UsingGamepad ? (YayaConst.GAMEPAD_CODE.TryGetValue(gamepadA, out var _value0) ? _value0 : 0) : KeyNameIdMap[keyboardA];
-			int keyIdB = FrameInput.UsingGamepad ? (YayaConst.GAMEPAD_CODE.TryGetValue(gamepadB, out var _value1) ? _value1 : 0) : KeyNameIdMap[keyboardB];
 			int widthA = keySize;
 			int widthB = keySize;
 
@@ -297,7 +319,7 @@ namespace Yaya {
 				rect.x += rect.width + gap;
 
 				// Button B
-				if (keyA != keyB) {
+				if (keyIdA != keyIdB) {
 					// Button B
 					rect.width = widthB;
 					CellRenderer.Draw_9Slice(buttonCode, rect, border.Left, border.Right, border.Down, border.Up);

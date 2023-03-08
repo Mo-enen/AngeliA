@@ -40,14 +40,16 @@ namespace Yaya {
 
 
 		// Const
-		private const Gamekey KEY_SWITCH_MODE = Gamekey.Select;
-		private const Gamekey KEY_PANEL = Gamekey.Jump;
+		private const Key KEY_SWITCH_MODE = Key.Space;
+		private const Key KEY_PANEL = Key.Tab;
+		private const Key KEY_CANCEL_DROP = Key.Escape;
 
 		// Api
 		public bool IsEditing => Active && Mode == EditingMode.Editing;
-		public bool QuickPlayerSettle {
-			get => s_QuickPlayerSettle.Value;
-			set => s_QuickPlayerSettle.Value = value;
+		public bool IsPlaying => Active && Mode == EditingMode.Playing;
+		public bool QuickPlayerDrop {
+			get => s_QuickPlayerDrop.Value;
+			set => s_QuickPlayerDrop.Value = value;
 		}
 		public EditingMode Mode {
 			get; private set;
@@ -59,17 +61,20 @@ namespace Yaya {
 		private Dictionary<int, int> ReversedChainPool = null;
 		private Dictionary<int, string> ChainRulePool = null;
 		private Dictionary<int, int> EntityArtworkRedirectPool = null;
-		private bool PlayerSettled = false;
-		private Vector3Int PlayerSettlePos = default;
-		private readonly CellLabel SettleHintLabel = new() {
+		private Vector3Int PlayerDropPos = default;
+		private bool IsDirty = false;
+		private bool PlayerDropped = false;
+		private int DropHintWidth = Const.CEL;
+
+		// UI
+		private readonly CellLabel DropHintLabel = new() {
 			BackgroundTint = Const.BLACK,
 			Alignment = Alignment.BottomLeft,
 			Wrap = false,
 		};
-		private int SettleHintWidth = Const.CEL;
 
 		// Saving
-		private static readonly SavingBool s_QuickPlayerSettle = new("eMapEditor.QuickPlayerSettle", false);
+		private static readonly SavingBool s_QuickPlayerDrop = new("eMapEditor.QuickPlayerDrop", false);
 
 
 		#endregion
@@ -92,10 +97,13 @@ namespace Yaya {
 				Active_Palette();
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 
+			ShowingPanel = false;
+
 			// Play
-			SetEditingMode(EditingMode.Playing, false);
+			SetEditingMode(EditingMode.Playing);
+			PlayerDropped = true;
 			if (ePlayer.Selecting != null) {
-				SettlePlayer(ePlayer.Selecting.X, ePlayer.Selecting.Y);
+				DropPlayer(ePlayer.Selecting.X, ePlayer.Selecting.Y);
 			}
 		}
 
@@ -110,6 +118,9 @@ namespace Yaya {
 			Game.Current.WorldSquad.SetDataChannel(World.DataChannel.BuiltIn);
 			Game.Current.WorldSquad_Behind.SetDataChannel(World.DataChannel.BuiltIn);
 
+			GlobalPosition.ReloadMeta(Const.BuiltInMapRoot);
+			eCameraAutoScroll.ReloadMeta(Const.BuiltInMapRoot);
+
 			SpritePool = null;
 			ChainPool = null;
 			EntityArtworkRedirectPool = null;
@@ -118,6 +129,7 @@ namespace Yaya {
 
 			System.GC.Collect(0, System.GCCollectionMode.Forced);
 
+			IsDirty = false;
 		}
 
 
@@ -188,7 +200,7 @@ namespace Yaya {
 			}
 
 			// Fill Sprite Editing Meta
-			var editingMeta = AngeUtil.LoadOrCreateJson<SpriteEditingMeta>(Const.MetaRoot);
+			var editingMeta = AngeUtil.LoadOrCreateJson<SpriteEditingMeta>(Const.SheetRoot);
 			if (editingMeta.SheetNames == null || editingMeta.SheetNames.Length == 0) {
 				editingMeta.SheetNames = new string[1] { "" };
 			}
@@ -226,10 +238,9 @@ namespace Yaya {
 
 			base.FrameUpdateUI();
 
-
 			FrameUpdate_Hotkey();
-			FrameUpdate_SettlePlayer();
-			FrameUpdate_PaletteUI();
+			FrameUpdate_DropPlayer();
+			FrameUpdate_PanelUI();
 
 		}
 
@@ -237,57 +248,81 @@ namespace Yaya {
 		private void FrameUpdate_Hotkey () {
 
 			// Switch Mode
-			if (FrameInput.GameKeyDown(KEY_SWITCH_MODE)) {
-				SetEditingMode(IsEditing ? EditingMode.Playing : EditingMode.Editing);
+			if (IsPlaying || PlayerDropped) {
+				if (FrameInput.KeyboardDown(KEY_SWITCH_MODE)) {
+					if (IsEditing) {
+						PlayerDropped = false;
+					} else {
+						SetEditingMode(EditingMode.Editing);
+					}
+				}
+				eControlHintUI.AddHint(KEY_SWITCH_MODE, IsEditing ? WORD.HINT_MEDT_SWITCH_PLAY : WORD.HINT_MEDT_SWITCH_EDIT);
 			}
-			eControlHintUI.AddHint(KEY_SWITCH_MODE, IsEditing ? WORD.HINT_MEDT_SWITCH_PLAY : WORD.HINT_MEDT_SWITCH_EDIT);
 
-			// Panel
 			if (IsEditing) {
-				if (FrameInput.GameKeyDown(KEY_PANEL)) {
 
+				// Show Panel
+				if (FrameInput.KeyboardDown(KEY_PANEL)) {
+					ShowPanel();
 				}
 				eControlHintUI.AddHint(KEY_PANEL, WORD.HINT_MEDT_PANEL);
+
+				// Save
+				if (FrameInput.KeyboardDown(Key.S) && FrameInput.KeyboardHolding(Key.LeftCtrl)) {
+					Save();
+				}
+
+				// Cancel Drop
+				if (!PlayerDropped) {
+					if (FrameInput.KeyboardDown(KEY_CANCEL_DROP)) {
+						PlayerDropped = true;
+						FrameInput.UseAllHoldingKeys();
+					}
+					eControlHintUI.AddHint(KEY_CANCEL_DROP, WORD.MEDT_CANCEL_DROP);
+				}
+
 			}
 
 		}
 
 
-		private void FrameUpdate_SettlePlayer () {
+		private void FrameUpdate_DropPlayer () {
+
+			if (IsPlaying || PlayerDropped || ePlayer.Selecting == null) return;
 
 			var player = ePlayer.Selecting;
-			if (PlayerSettled || player == null) return;
 
 			if (!CellRenderer.TryGetSprite(player.TypeID, out var sprite)) return;
 
-			PlayerSettlePos.x = PlayerSettlePos.x.LerpTo(FrameInput.MouseGlobalPosition.x, 200);
-			PlayerSettlePos.y = PlayerSettlePos.y.LerpTo(FrameInput.MouseGlobalPosition.y, 200);
-			PlayerSettlePos.z = PlayerSettlePos.z.LerpTo(((FrameInput.MouseGlobalPosition.x - PlayerSettlePos.x) / 20).Clamp(-45, 45), 500);
+			PlayerDropPos.x = PlayerDropPos.x.LerpTo(FrameInput.MouseGlobalPosition.x, 200);
+			PlayerDropPos.y = PlayerDropPos.y.LerpTo(FrameInput.MouseGlobalPosition.y, 200);
+			PlayerDropPos.z = PlayerDropPos.z.LerpTo(((FrameInput.MouseGlobalPosition.x - PlayerDropPos.x) / 20).Clamp(-45, 45), 500);
 
 			CellRenderer.Draw(
-				sprite.GlobalID, PlayerSettlePos.x, PlayerSettlePos.y,
-				500, 1000, PlayerSettlePos.z,
+				sprite.GlobalID, PlayerDropPos.x, PlayerDropPos.y,
+				500, 1000, PlayerDropPos.z,
 				sprite.GlobalWidth, sprite.GlobalHeight
 			).Z = int.MaxValue;
 
-			if (!QuickPlayerSettle) {
-				SettleHintLabel.Text = Language.Get(WORD.MEDT_SETTLE);
-				SettleHintLabel.CharSize = 24 * UNIT;
-				CellRendererGUI.Label(SettleHintLabel, new RectInt(
-					FrameInput.MouseGlobalPosition.x - SettleHintWidth / 2,
+			if (!QuickPlayerDrop) {
+				DropHintLabel.Text = Language.Get(WORD.MEDT_DROP);
+				DropHintLabel.CharSize = 24 * UNIT;
+				CellRendererGUI.Label(DropHintLabel, new RectInt(
+					FrameInput.MouseGlobalPosition.x - DropHintWidth / 2,
 					FrameInput.MouseGlobalPosition.y + Const.HALF,
-					SettleHintWidth, Const.CEL
+					DropHintWidth, Const.CEL
 				), out var bounds);
-				SettleHintWidth = bounds.width;
+				DropHintWidth = bounds.width;
 			}
 
-			// Settle
-			bool settle = FrameInput.MouseLeftButtonDown;
-			if (!settle && QuickPlayerSettle && !FrameInput.GameKeyHolding(KEY_SWITCH_MODE)) {
-				settle = true;
+			// Drop
+			bool drop = FrameInput.MouseLeftButtonDown;
+			if (!drop && QuickPlayerDrop && !FrameInput.KeyboardHolding(KEY_SWITCH_MODE)) {
+				drop = true;
 			}
-			if (settle) {
-				SettlePlayer(PlayerSettlePos.x, PlayerSettlePos.y - sprite.GlobalHeight);
+			if (drop) {
+				DropPlayer(PlayerDropPos.x, PlayerDropPos.y - sprite.GlobalHeight);
+				SetEditingMode(EditingMode.Playing);
 			} else {
 				if (player.Active) player.Active = false;
 				Game.Current.SetViewPositionDelay(
@@ -304,10 +339,10 @@ namespace Yaya {
 
 
 
-		#region --- API ---
+		#region --- LGC ---
 
 
-		public void SetEditingMode (EditingMode mode, bool despawnPlayer = true) {
+		private void SetEditingMode (EditingMode mode) {
 
 			var game = Game.Current;
 			Mode = mode;
@@ -315,11 +350,6 @@ namespace Yaya {
 			// Squad Spawn Entity
 			YayaGame.Current.WorldSquad.SpawnEntity = mode == EditingMode.Playing;
 			YayaGame.Current.WorldSquad_Behind.SpawnEntity = mode == EditingMode.Playing;
-
-			// Despawn Player
-			if (ePlayer.Selecting != null && despawnPlayer) {
-				ePlayer.Selecting.Active = false;
-			}
 
 			switch (mode) {
 
@@ -332,19 +362,36 @@ namespace Yaya {
 							e.Active = false;
 						}
 					}
+					PlayerDropped = true;
+
+					// Despawn Player
+					if (ePlayer.Selecting != null) {
+						ePlayer.Selecting.Active = false;
+					}
 
 					break;
 
 				case EditingMode.Playing:
 
+					if (IsDirty) {
+						YayaUtil.CreateCameraScrollMetaFile(Const.UserMapRoot);
+						AngeUtil.CreateGlobalPositionMetaFile(Const.UserMapRoot);
+
+						GlobalPosition.ReloadMeta(Const.UserMapRoot);
+						eCameraAutoScroll.ReloadMeta(Const.UserMapRoot);
+					}
+
 					// Respawn Entities
 					game.SetViewZ(game.ViewZ);
 
-					// Reset Player Settle
-					PlayerSettlePos.x = FrameInput.MouseGlobalPosition.x;
-					PlayerSettlePos.y = FrameInput.MouseGlobalPosition.y;
-					PlayerSettlePos.z = 0;
-					PlayerSettled = false;
+					// Reset Player Drop
+					PlayerDropPos.x = FrameInput.MouseGlobalPosition.x;
+					PlayerDropPos.y = FrameInput.MouseGlobalPosition.y;
+					PlayerDropPos.z = 0;
+					PlayerDropped = false;
+
+					// Hide UI
+					if (ShowingPanel) HidePanel();
 
 					break;
 
@@ -353,23 +400,22 @@ namespace Yaya {
 		}
 
 
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
-		private void SettlePlayer (int x, int y) {
+		private void DropPlayer (int x, int y) {
 			if (ePlayer.Selecting == null) return;
-			PlayerSettled = true;
 			if (!ePlayer.Selecting.Active) {
 				Game.Current.SpawnEntity(ePlayer.Selecting.TypeID, x, y);
 			} else {
 				ePlayer.Selecting.X = x;
 				ePlayer.Selecting.Y = y;
 			}
+		}
+
+
+		private void Save () {
+			IsDirty = false;
+
+
+
 		}
 
 

@@ -115,10 +115,15 @@ namespace Yaya {
 
 
 		[AfterGameInitialize]
-		public static void Init () {
+		public static void Initialize () {
+			ReloadMeta(Const.BuiltInMapRoot);
+		}
+
+
+		public static void ReloadMeta (string root) {
 			EntrancePool.Clear();
 			// Get Meta
-			var meta = AngeUtil.LoadJson<CameraScrollMeta>(Const.MetaRoot);
+			var meta = AngeUtil.LoadJson<CameraScrollMeta>(root);
 			// Meta >> Pool
 			if (meta != null) {
 				foreach (var pos in meta.EntrancePositions) {

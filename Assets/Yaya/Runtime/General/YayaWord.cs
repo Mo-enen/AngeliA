@@ -70,7 +70,8 @@ namespace Yaya {
 
 		// Misc
 		public static readonly int GOMOKU_YOU_ARE = "UI.Gomoku.YouAre".AngeHash();
-		public static readonly int MEDT_SETTLE = "MEDT.Settle".AngeHash();
+		public static readonly int MEDT_DROP = "MEDT.Drop".AngeHash();
+		public static readonly int MEDT_CANCEL_DROP = "MEDT.CancelDrop".AngeHash();
 
 
 
