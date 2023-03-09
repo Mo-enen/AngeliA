@@ -62,13 +62,15 @@ namespace Yaya {
 
 
 		[AfterGameInitialize]
-		public static void AfterInitialize () => Current = new YayaGame();
+		public static void AfterInitialize () => new YayaGame();
 
 
 		private YayaGame () {
 
 			var game = Game.Current;
 			if (game == null) return;
+
+			Current = this;
 
 			game.OnFrameUpdate -= FrameUpdate;
 			game.OnFrameUpdate += FrameUpdate;
@@ -115,6 +117,8 @@ namespace Yaya {
 				oTask.FadeOut = false;
 			}
 
+			// Test
+			game.SpawnEntity<eMapEditor>(0, 0);
 		}
 
 

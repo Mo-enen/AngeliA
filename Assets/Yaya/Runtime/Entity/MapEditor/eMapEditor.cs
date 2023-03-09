@@ -43,6 +43,8 @@ namespace Yaya {
 		private const Key KEY_SWITCH_MODE = Key.Space;
 		private const Key KEY_PANEL = Key.Tab;
 		private const Key KEY_CANCEL_DROP = Key.Escape;
+		private static readonly int LINE_V = "Soft Line V".AngeHash();
+		private static readonly int LINE_H = "Soft Line H".AngeHash();
 
 		// Api
 		public bool IsEditing => Active && Mode == EditingMode.Editing;
@@ -62,6 +64,7 @@ namespace Yaya {
 		private Dictionary<int, string> ChainRulePool = null;
 		private Dictionary<int, int> EntityArtworkRedirectPool = null;
 		private Vector3Int PlayerDropPos = default;
+		private RectInt TargetViewRect = default;
 		private bool IsDirty = false;
 		private bool PlayerDropped = false;
 		private int DropHintWidth = Const.CEL;
@@ -238,6 +241,8 @@ namespace Yaya {
 
 			base.FrameUpdateUI();
 
+			FrameUpdate_Grid();
+			FrameUpdate_View();
 			FrameUpdate_Hotkey();
 			FrameUpdate_DropPlayer();
 			FrameUpdate_PanelUI();
@@ -252,6 +257,9 @@ namespace Yaya {
 				if (FrameInput.KeyboardDown(KEY_SWITCH_MODE)) {
 					if (IsEditing) {
 						PlayerDropped = false;
+						PlayerDropPos.x = FrameInput.MouseGlobalPosition.x;
+						PlayerDropPos.y = FrameInput.MouseGlobalPosition.y;
+						PlayerDropPos.z = 0;
 					} else {
 						SetEditingMode(EditingMode.Editing);
 					}
@@ -261,6 +269,8 @@ namespace Yaya {
 
 			if (IsEditing) {
 
+				bool ctrl = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
+
 				// Show Panel
 				if (FrameInput.KeyboardDown(KEY_PANEL)) {
 					ShowPanel();
@@ -268,7 +278,7 @@ namespace Yaya {
 				eControlHintUI.AddHint(KEY_PANEL, WORD.HINT_MEDT_PANEL);
 
 				// Save
-				if (FrameInput.KeyboardDown(Key.S) && FrameInput.KeyboardHolding(Key.LeftCtrl)) {
+				if (FrameInput.KeyboardDown(Key.S) && ctrl) {
 					Save();
 				}
 
@@ -328,8 +338,96 @@ namespace Yaya {
 				Game.Current.SetViewPositionDelay(
 					Game.Current.ViewRect.x,
 					Game.Current.ViewRect.y,
-					1000, int.MaxValue
+					1000, int.MaxValue - 1
 				);
+			}
+		}
+
+
+		private void FrameUpdate_Grid () {
+			if (IsPlaying) return;
+			var TINT = new Color32(255, 255, 255, 16);
+			var cRect = CellRenderer.CameraRect;
+			int l = Mathf.FloorToInt(cRect.xMin.UDivide(Const.CEL)) * Const.CEL;
+			int r = Mathf.CeilToInt(cRect.xMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
+			int d = Mathf.FloorToInt(cRect.yMin.UDivide(Const.CEL)) * Const.CEL;
+			int u = Mathf.CeilToInt(cRect.yMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
+			int size = cRect.height / 512;
+			for (int y = d; y <= u; y += Const.CEL) {
+				CellRenderer.Draw(LINE_H, l, y - size / 2, 0, 0, 0, r - l, size, TINT).Z = int.MinValue;
+			}
+			for (int x = l; x <= r; x += Const.CEL) {
+				CellRenderer.Draw(LINE_V, x - size / 2, d, 0, 0, 0, size, u - d, TINT).Z = int.MinValue;
+			}
+		}
+
+
+		private void FrameUpdate_View () {
+
+			var game = Game.Current;
+
+			if (IsPlaying) {
+				int viewHeight = game.ViewConfig.DefaultHeight;
+				game.SetViewSizeDelay(viewHeight, 50, int.MaxValue);
+				return;
+			}
+
+			bool ctrl = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
+
+			// Move
+			var delta = !ctrl ? FrameInput.Direction / -32 : default;
+			if (
+				FrameInput.MouseMidButton ||
+				(FrameInput.MouseLeftButton && ctrl)
+			) {
+				delta = FrameInput.MouseScreenPositionDelta;
+			}
+			if (delta.x != 0 || delta.y != 0) {
+				var cRect = CellRenderer.CameraRect;
+				var uCameraRect = game.Camera.rect;
+				delta.x = (delta.x * cRect.width / (uCameraRect.width * Screen.width)).RoundToInt();
+				delta.y = (delta.y * cRect.height / (uCameraRect.height * Screen.height)).RoundToInt();
+				TargetViewRect.x -= delta.x;
+				TargetViewRect.y -= delta.y;
+			}
+
+			// Zoom
+			int wheelDelta = FrameInput.MouseWheelDelta;
+			int zoomDelta = wheelDelta * Const.CEL * 2;
+			if (zoomDelta == 0 && FrameInput.MouseRightButton && ctrl) {
+				zoomDelta = FrameInput.MouseScreenPositionDelta.y * 6;
+			}
+			if (zoomDelta != 0) {
+
+				int newHeight = (TargetViewRect.height - zoomDelta * TargetViewRect.height / 6000).Clamp(
+					game.ViewConfig.MinHeight,
+					game.ViewConfig.MaxHeight
+				);
+				int newWidth = newHeight * TargetViewRect.width / TargetViewRect.height;
+
+				float cameraWidth = (int)(TargetViewRect.height * game.Camera.aspect);
+				float cameraHeight = TargetViewRect.height;
+				float cameraX = TargetViewRect.x + (TargetViewRect.width - cameraWidth) / 2f;
+				float cameraY = TargetViewRect.y;
+
+				float mousePosX01 = wheelDelta != 0 ? Mathf.InverseLerp(0f, Screen.width, FrameInput.MouseScreenPosition.x) : 0.5f;
+				float mousePosY01 = wheelDelta != 0 ? Mathf.InverseLerp(0f, Screen.height, FrameInput.MouseScreenPosition.y) : 0.5f;
+
+				float pivotX = Mathf.LerpUnclamped(cameraX, cameraX + cameraWidth, mousePosX01);
+				float pivotY = Mathf.LerpUnclamped(cameraY, cameraY + cameraHeight, mousePosY01);
+				float newCameraWidth = cameraWidth * newWidth / TargetViewRect.width;
+				float newCameraHeight = cameraHeight * newHeight / TargetViewRect.height;
+
+				TargetViewRect.x = (pivotX - newCameraWidth * mousePosX01 - (newWidth - newCameraWidth) / 2f).RoundToInt();
+				TargetViewRect.y = (pivotY - newCameraHeight * mousePosY01 - (newHeight - newCameraHeight) / 2f).RoundToInt();
+				TargetViewRect.width = newWidth;
+				TargetViewRect.height = newHeight;
+			}
+
+			// Lerp
+			if (game.ViewRect != TargetViewRect) {
+				game.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 300, int.MaxValue);
+				game.SetViewSizeDelay(TargetViewRect.height, 300, int.MaxValue);
 			}
 		}
 
@@ -346,6 +444,7 @@ namespace Yaya {
 
 			var game = Game.Current;
 			Mode = mode;
+			TargetViewRect = Game.Current.ViewRect;
 
 			// Squad Spawn Entity
 			YayaGame.Current.WorldSquad.SpawnEntity = mode == EditingMode.Playing;
@@ -385,9 +484,6 @@ namespace Yaya {
 					game.SetViewZ(game.ViewZ);
 
 					// Reset Player Drop
-					PlayerDropPos.x = FrameInput.MouseGlobalPosition.x;
-					PlayerDropPos.y = FrameInput.MouseGlobalPosition.y;
-					PlayerDropPos.z = 0;
 					PlayerDropped = false;
 
 					// Hide UI
@@ -401,13 +497,15 @@ namespace Yaya {
 
 
 		private void DropPlayer (int x, int y) {
-			if (ePlayer.Selecting == null) return;
-			if (!ePlayer.Selecting.Active) {
-				Game.Current.SpawnEntity(ePlayer.Selecting.TypeID, x, y);
+			var player = ePlayer.Selecting;
+			if (player == null) return;
+			if (!player.Active) {
+				Game.Current.SpawnEntity(player.TypeID, x, y);
 			} else {
-				ePlayer.Selecting.X = x;
-				ePlayer.Selecting.Y = y;
+				player.X = x;
+				player.Y = y;
 			}
+			player.SetCharacterState(CharacterState.GamePlay);
 		}
 
 
