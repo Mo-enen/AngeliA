@@ -316,7 +316,7 @@ namespace Yaya {
 
 			if (!QuickPlayerDrop) {
 				DropHintLabel.Text = Language.Get(WORD.MEDT_DROP);
-				DropHintLabel.CharSize = 24 * UNIT;
+				DropHintLabel.CharSize = Unify(24);
 				CellRendererGUI.Label(DropHintLabel, new RectInt(
 					FrameInput.MouseGlobalPosition.x - DropHintWidth / 2,
 					FrameInput.MouseGlobalPosition.y + Const.HALF,

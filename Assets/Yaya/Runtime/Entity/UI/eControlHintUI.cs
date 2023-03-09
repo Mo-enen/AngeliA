@@ -115,19 +115,19 @@ namespace Yaya {
 
 		private void DrawGamePad () {
 
-			int x = 6 * UNIT;
-			int y = 6 * UNIT;
-			var rect = new RectInt(x, y, 132 * UNIT, 60 * UNIT);
+			int x = Unify(6);
+			int y = Unify(6);
+			var rect = new RectInt(x, y, Unify(132), Unify(60));
 
-			var DPadLeftPosition = new RectInt(10 * UNIT, 22 * UNIT, 12 * UNIT, 8 * UNIT);
-			var DPadRightPosition = new RectInt(22 * UNIT, 22 * UNIT, 12 * UNIT, 8 * UNIT);
-			var DPadDownPosition = new RectInt(18 * UNIT, 14 * UNIT, 8 * UNIT, 12 * UNIT);
-			var DPadUpPosition = new RectInt(18 * UNIT, 26 * UNIT, 8 * UNIT, 12 * UNIT);
-			var DPadCenterPos = new Vector2Int(22 * UNIT, 26 * UNIT);
-			var SelectPosition = new RectInt(44 * UNIT, 20 * UNIT, 12 * UNIT, 4 * UNIT);
-			var StartPosition = new RectInt(60 * UNIT, 20 * UNIT, 12 * UNIT, 4 * UNIT);
-			var ButtonAPosition = new RectInt(106 * UNIT, 18 * UNIT, 12 * UNIT, 12 * UNIT);
-			var ButtonBPosition = new RectInt(86 * UNIT, 18 * UNIT, 12 * UNIT, 12 * UNIT);
+			var DPadLeftPosition = new RectInt(Unify(10), Unify(22), Unify(12), Unify(8));
+			var DPadRightPosition = new RectInt(Unify(22), Unify(22), Unify(12), Unify(8));
+			var DPadDownPosition = new RectInt(Unify(18), Unify(14), Unify(8), Unify(12));
+			var DPadUpPosition = new RectInt(Unify(18), Unify(26), Unify(8), Unify(12));
+			var DPadCenterPos = new Vector2Int(Unify(22), Unify(26));
+			var SelectPosition = new RectInt(Unify(44), Unify(20), Unify(12), Unify(4));
+			var StartPosition = new RectInt(Unify(60), Unify(20), Unify(12), Unify(4));
+			var ButtonAPosition = new RectInt(Unify(106), Unify(18), Unify(12), Unify(12));
+			var ButtonBPosition = new RectInt(Unify(86), Unify(18), Unify(12), Unify(12));
 
 			var screenRect = CellRenderer.CameraRect;
 
@@ -146,7 +146,9 @@ namespace Yaya {
 				CellRenderer.Draw(
 					Const.PIXEL, DPadCenterPos.x + x + screenRect.x, DPadCenterPos.y + y + screenRect.y,
 					500, 0, (int)Vector3.SignedAngle(Vector3.up, (Vector2)nDir, Vector3.back),
-					3 * UNIT, (int)nDir.magnitude * UNIT / 50, DirectionTint
+					Unify(3),
+					Unify(nDir.magnitude / 50f),
+					DirectionTint
 				);
 			}
 
@@ -163,7 +165,7 @@ namespace Yaya {
 
 		private void DrawHints () {
 
-			int hintPositionY = CurrentHintOffsetY + CellRenderer.CameraRect.y + (GamepadVisible ? 78 : 12) * UNIT;
+			int hintPositionY = (int)(CurrentHintOffsetY + CellRenderer.CameraRect.y + Unify(GamepadVisible ? 78 : 12));
 
 			// Menu
 			if (MenuUI.CurrentMenu != null) {
@@ -176,7 +178,7 @@ namespace Yaya {
 			}
 
 			// Draw
-			int x = 6 * UNIT + CellRenderer.CameraRect.x + 6 * UNIT;
+			int x = CellRenderer.CameraRect.x + Unify(12);
 			Draw(Gamekey.Down);
 			Draw(Gamekey.Up);
 			Draw(Gamekey.Left);
@@ -213,7 +215,7 @@ namespace Yaya {
 					keyB = keyA;
 				}
 				DrawKey(x, y, keyA, keyB, labelID);
-				hintPositionY += (KeySize + Gap) * UNIT;
+				hintPositionY += Unify(KeySize + Gap);
 			}
 		}
 
@@ -224,10 +226,10 @@ namespace Yaya {
 		public static void AddHint (Key key, int labelID) => AddHint(key, key, labelID);
 		public static void AddHint (Key keyA, Key keyB, int labelID) {
 			if (Current == null || !Current.HintVisible) return;
-			int x = 6 * Current.UNIT + CellRenderer.CameraRect.x + 6 * Current.UNIT;
-			int y = CurrentHintOffsetY + CellRenderer.CameraRect.y + (Current.GamepadVisible ? 78 : 12) * Current.UNIT;
+			int x = CellRenderer.CameraRect.x + Unify(12);
+			int y = (int)(CurrentHintOffsetY + CellRenderer.CameraRect.y + Unify(Current.GamepadVisible ? 78 : 12));
 			Current.DrawKey(x, y, keyA, keyB, labelID);
-			CurrentHintOffsetY += (Current.KeySize + Current.Gap) * Current.UNIT;
+			CurrentHintOffsetY += Unify(Current.KeySize + Current.Gap);
 		}
 
 
@@ -281,12 +283,12 @@ namespace Yaya {
 			Cell bgCell = null;
 			int buttonCode = FrameInput.UsingGamepad ? GAMEPAD_BUTTON_CODE : KEYBOARD_BUTTON_CODE;
 			var border = FrameInput.UsingGamepad ? Border_Gamepad : Border_Keyboard;
-			border.Left *= UNIT;
-			border.Right *= UNIT;
-			border.Down *= UNIT;
-			border.Up *= UNIT;
-			int gap = Gap * UNIT;
-			int keySize = KeySize * UNIT;
+			border.Left = Unify(border.Left);
+			border.Right = Unify(border.Right);
+			border.Down = Unify(border.Down);
+			border.Up = Unify(border.Up);
+			int gap = Unify(Gap);
+			int keySize = Unify(KeySize);
 			var rect = new RectInt(x, y, keySize, keySize);
 			int widthA = keySize;
 			int widthB = keySize;
@@ -333,7 +335,7 @@ namespace Yaya {
 
 				HintLabel.Text = Language.Get(labelID);
 				HintLabel.Tint = LabelTint;
-				HintLabel.CharSize = TextSize * UNIT;
+				HintLabel.CharSize = Unify(TextSize);
 
 				CellRendererGUI.Label(
 					HintLabel, rect, out var bounds

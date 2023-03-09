@@ -183,7 +183,7 @@ namespace Yaya {
 			CellRenderer.Draw(Const.PIXEL, boardRect, BACKGROUND_TINT);
 
 			// Player Color Hint
-			int labelHeight = 24 * UNIT;
+			int labelHeight = Unify(24);
 			HintLabel.Tint = PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT;
 			HintLabel.CharSize = labelHeight;
 			HintLabel.Text = Language.Get(WORD.GOMOKU_YOU_ARE);
@@ -194,21 +194,21 @@ namespace Yaya {
 			);
 			CellRenderer.Draw(
 				STONE_CODE,
-				new RectInt(bounds.xMax + 8 * UNIT, boardRect.yMax - labelHeight, labelHeight, labelHeight),
+				new RectInt(bounds.xMax + Unify(8), boardRect.yMax - labelHeight, labelHeight, labelHeight),
 				PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT
 			);
 
 			// Grid
-			var gridRect = new RectInt(0, StageRect.y, GRID_THICKNESS * UNIT, StageRect.height);
+			var gridRect = new RectInt(0, StageRect.y, Unify(GRID_THICKNESS), StageRect.height);
 			for (int x = 0; x < STAGE_SIZE; x++) {
-				gridRect.x = StageRect.x + x * StageCellSize - GRID_THICKNESS * UNIT / 2;
+				gridRect.x = StageRect.x + x * StageCellSize - Unify(GRID_THICKNESS) / 2;
 				CellRenderer.Draw(LINE_V_CODE, gridRect, GRID_TINT);
 			}
 			gridRect.x = StageRect.x;
 			gridRect.width = StageRect.width;
-			gridRect.height = GRID_THICKNESS * UNIT;
+			gridRect.height = Unify(GRID_THICKNESS);
 			for (int y = 0; y < STAGE_SIZE; y++) {
-				gridRect.y = StageRect.y + y * StageCellSize - GRID_THICKNESS * UNIT / 2; ;
+				gridRect.y = (int)(StageRect.y + y * StageCellSize - Unify(GRID_THICKNESS) / 2); ;
 				CellRenderer.Draw(LINE_H_CODE, gridRect, GRID_TINT);
 			}
 			CellRenderer.Draw(
@@ -216,8 +216,8 @@ namespace Yaya {
 				StageRect.x + STAGE_SIZE / 2 * StageCellSize,
 				StageRect.y + STAGE_SIZE / 2 * StageCellSize,
 				500, 500, 0,
-				GRID_THICKNESS * 4 * UNIT,
-				GRID_THICKNESS * 4 * UNIT,
+				Unify(GRID_THICKNESS * 4),
+				Unify(GRID_THICKNESS * 4),
 				GRID_TINT
 			);
 
