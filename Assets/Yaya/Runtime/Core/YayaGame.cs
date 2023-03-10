@@ -152,30 +152,24 @@ namespace Yaya {
 				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
 			}
 			if (FrameInput.KeyboardHolding(Key.Digit5)) {
-				//game.SetViewSizeDelay(game.ViewRect.height - Const.CEL);
-				//AudioPlayer.SetLowpass(1000);
-				game.SpawnEntity<eMapEditor>(0, 0);
-			}
-			if (FrameInput.KeyboardHolding(Key.Digit6)) {
-				//game.SetViewSizeDelay(game.ViewRect.height + Const.CEL);
-				//AudioPlayer.SetLowpass(100);
-				var editor = game.GetEntity<eMapEditor>();
-				if (editor != null) {
-					editor.Active = false;
-				}
-			}
-			if (FrameInput.KeyboardDown(Key.Digit7)) {
-				//DialoguePerformer.PerformDialogue("TestConversation", YayaConst.TASK_ROUTE);
-				MapEditor.QuickPlayerDrop = !MapEditor.QuickPlayerDrop;
-				Debug.Log("Quick Player Drop = " + MapEditor.QuickPlayerDrop);
-			}
-			if (FrameInput.KeyboardDown(Key.Digit8)) {
 				var miniGame = game.PeekOrGetEntity<eGomokuUI>();
 				if (miniGame == null || !miniGame.Active) {
 					game.SpawnEntity<eGomokuUI>(0, 0);
 				} else {
 					miniGame.Active = false;
 				}
+			}
+			if (FrameInput.KeyboardHolding(Key.Digit6)) {
+
+
+			}
+			if (FrameInput.KeyboardDown(Key.Digit7)) {
+				MapEditor.QuickPlayerDrop = !MapEditor.QuickPlayerDrop;
+				Debug.Log("Quick Player Drop = " + MapEditor.QuickPlayerDrop);
+			}
+			if (FrameInput.KeyboardDown(Key.Digit8)) {
+				DialoguePerformer.PerformDialogue("TestConversation", YayaConst.TASK_ROUTE);
+
 			}
 			if (FrameInput.KeyboardDown(Key.Digit9)) {
 				Cutscene.Play("Test Video 1".AngeHash());

@@ -304,6 +304,7 @@ namespace Yaya {
 			}
 
 			// Draw
+			int oldLayer = CellRenderer.CurrentLayerIndex;
 			CellRenderer.SetLayerToUI();
 
 			try {
@@ -347,7 +348,7 @@ namespace Yaya {
 				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 
-			CellRenderer.SetLayerToDefault();
+			CellRenderer.SetLayer(oldLayer);
 
 		}
 

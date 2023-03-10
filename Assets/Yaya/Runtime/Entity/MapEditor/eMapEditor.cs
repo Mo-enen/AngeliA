@@ -42,9 +42,13 @@ namespace Yaya {
 		// Const
 		private const Key KEY_SWITCH_MODE = Key.Space;
 		private const Key KEY_PANEL = Key.Tab;
-		private const Key KEY_CANCEL_DROP = Key.Escape;
 		private static readonly int LINE_V = "Soft Line V".AngeHash();
 		private static readonly int LINE_H = "Soft Line H".AngeHash();
+		private static readonly int FRAME = "Frame16".AngeHash();
+		private static readonly int FRAME_HOLLOW = "FrameHollow16".AngeHash();
+		private static readonly int DOTTED_LINE = "DottedLine16".AngeHash();
+		private static readonly Color32 CURSOR_TINT = new(240, 240, 240, 128);
+		private static readonly Color32 CURSOR_TINT_DARK = new(16, 16, 16, 128);
 
 		// Api
 		public bool IsEditing => Active && Mode == EditingMode.Editing;
@@ -63,11 +67,16 @@ namespace Yaya {
 		private Dictionary<int, int> ReversedChainPool = null;
 		private Dictionary<int, string> ChainRulePool = null;
 		private Dictionary<int, int> EntityArtworkRedirectPool = null;
+		private Dictionary<int, PaletteItem> PalettePool = null;
+		private List<PaletteGroup> PaletteGroups = null;
 		private Vector3Int PlayerDropPos = default;
 		private RectInt TargetViewRect = default;
 		private bool IsDirty = false;
-		private bool PlayerDropped = false;
+		private bool DroppingPlayer = false;
+		private bool TaskingRoute = false;
 		private int DropHintWidth = Const.CEL;
+		private PaletteItem SelectingPaletteItem = null;
+		private YayaWorldSquad Squad = null;
 
 		// UI
 		private readonly CellLabel DropHintLabel = new() {
@@ -94,6 +103,7 @@ namespace Yaya {
 
 			Game.Current.WorldSquad.SetDataChannel(World.DataChannel.User);
 			Game.Current.WorldSquad_Behind.SetDataChannel(World.DataChannel.User);
+			Squad = YayaGame.Current.WorldSquad;
 
 			try {
 				Active_Pool();
@@ -101,10 +111,14 @@ namespace Yaya {
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 
 			ShowingPanel = false;
+			SelectingPaletteItem = null;
+			MouseDownPosition = null;
+			SelectionUnitRect = null;
+			SelectionDraggingUnitRect = null;
 
 			// Play
 			SetEditingMode(EditingMode.Playing);
-			PlayerDropped = true;
+			DroppingPlayer = false;
 			if (ePlayer.Selecting != null) {
 				DropPlayer(ePlayer.Selecting.X, ePlayer.Selecting.Y);
 			}
@@ -129,6 +143,8 @@ namespace Yaya {
 			EntityArtworkRedirectPool = null;
 			ChainRulePool = null;
 			ReversedChainPool = null;
+			PaletteGroups = null;
+			PalettePool = null;
 
 			System.GC.Collect(0, System.GCCollectionMode.Forced);
 
@@ -241,128 +257,31 @@ namespace Yaya {
 
 			base.FrameUpdateUI();
 
-			FrameUpdate_Grid();
+			FrameUpdate_Misc();
+			FrameUpdate_Mouse();
 			FrameUpdate_View();
 			FrameUpdate_Hotkey();
 			FrameUpdate_DropPlayer();
 			FrameUpdate_PanelUI();
+			FrameUpdate_Grid();
+			FrameUpdate_SelectionGizmos();
+			FrameUpdate_Cursor();
 
 		}
 
 
-		private void FrameUpdate_Hotkey () {
-
-			// Switch Mode
-			if (IsPlaying || PlayerDropped) {
-				if (FrameInput.KeyboardDown(KEY_SWITCH_MODE)) {
-					if (IsEditing) {
-						PlayerDropped = false;
-						PlayerDropPos.x = FrameInput.MouseGlobalPosition.x;
-						PlayerDropPos.y = FrameInput.MouseGlobalPosition.y;
-						PlayerDropPos.z = 0;
-					} else {
-						SetEditingMode(EditingMode.Editing);
-					}
-				}
-				eControlHintUI.AddHint(KEY_SWITCH_MODE, IsEditing ? WORD.HINT_MEDT_SWITCH_PLAY : WORD.HINT_MEDT_SWITCH_EDIT);
-			}
-
-			if (IsEditing) {
-
-				bool ctrl = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
-
-				// Show Panel
-				if (FrameInput.KeyboardDown(KEY_PANEL)) {
-					ShowPanel();
-				}
-				eControlHintUI.AddHint(KEY_PANEL, WORD.HINT_MEDT_PANEL);
-
-				// Save
-				if (FrameInput.KeyboardDown(Key.S) && ctrl) {
-					Save();
-				}
-
-				// Cancel Drop
-				if (!PlayerDropped) {
-					if (FrameInput.KeyboardDown(KEY_CANCEL_DROP)) {
-						PlayerDropped = true;
-						FrameInput.UseAllHoldingKeys();
-					}
-					eControlHintUI.AddHint(KEY_CANCEL_DROP, WORD.MEDT_CANCEL_DROP);
-				}
-
-			}
-
-		}
-
-
-		private void FrameUpdate_DropPlayer () {
-
-			if (IsPlaying || PlayerDropped || ePlayer.Selecting == null) return;
-
-			var player = ePlayer.Selecting;
-
-			if (!CellRenderer.TryGetSprite(player.TypeID, out var sprite)) return;
-
-			PlayerDropPos.x = PlayerDropPos.x.LerpTo(FrameInput.MouseGlobalPosition.x, 200);
-			PlayerDropPos.y = PlayerDropPos.y.LerpTo(FrameInput.MouseGlobalPosition.y, 200);
-			PlayerDropPos.z = PlayerDropPos.z.LerpTo(((FrameInput.MouseGlobalPosition.x - PlayerDropPos.x) / 20).Clamp(-45, 45), 500);
-
-			CellRenderer.Draw(
-				sprite.GlobalID, PlayerDropPos.x, PlayerDropPos.y,
-				500, 1000, PlayerDropPos.z,
-				sprite.GlobalWidth, sprite.GlobalHeight
-			).Z = int.MaxValue;
-
-			if (!QuickPlayerDrop) {
-				DropHintLabel.Text = Language.Get(WORD.MEDT_DROP);
-				DropHintLabel.CharSize = Unify(24);
-				CellRendererGUI.Label(DropHintLabel, new RectInt(
-					FrameInput.MouseGlobalPosition.x - DropHintWidth / 2,
-					FrameInput.MouseGlobalPosition.y + Const.HALF,
-					DropHintWidth, Const.CEL
-				), out var bounds);
-				DropHintWidth = bounds.width;
-			}
-
-			// Drop
-			bool drop = FrameInput.MouseLeftButtonDown;
-			if (!drop && QuickPlayerDrop && !FrameInput.KeyboardHolding(KEY_SWITCH_MODE)) {
-				drop = true;
-			}
-			if (drop) {
-				DropPlayer(PlayerDropPos.x, PlayerDropPos.y - sprite.GlobalHeight);
-				SetEditingMode(EditingMode.Playing);
-			} else {
-				if (player.Active) player.Active = false;
-				Game.Current.SetViewPositionDelay(
-					Game.Current.ViewRect.x,
-					Game.Current.ViewRect.y,
-					1000, int.MaxValue - 1
-				);
-			}
-		}
-
-
-		private void FrameUpdate_Grid () {
-			if (IsPlaying) return;
-			var TINT = new Color32(255, 255, 255, 16);
-			var cRect = CellRenderer.CameraRect;
-			int l = Mathf.FloorToInt(cRect.xMin.UDivide(Const.CEL)) * Const.CEL;
-			int r = Mathf.CeilToInt(cRect.xMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
-			int d = Mathf.FloorToInt(cRect.yMin.UDivide(Const.CEL)) * Const.CEL;
-			int u = Mathf.CeilToInt(cRect.yMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
-			int size = cRect.height / 512;
-			for (int y = d; y <= u; y += Const.CEL) {
-				CellRenderer.Draw(LINE_H, l, y - size / 2, 0, 0, 0, r - l, size, TINT).Z = int.MinValue;
-			}
-			for (int x = l; x <= r; x += Const.CEL) {
-				CellRenderer.Draw(LINE_V, x - size / 2, d, 0, 0, 0, size, u - d, TINT).Z = int.MinValue;
-			}
+		private void FrameUpdate_Misc () {
+			var game = Game.Current;
+			TaskingRoute = FrameTask.IsTasking(YayaConst.TASK_ROUTE);
+			game.WorldConfig.SquadBehindAlpha = (byte)((int)game.WorldConfig.SquadBehindAlpha).MoveTowards(
+				Mode == EditingMode.Editing ? 12 : 64, 1
+			);
 		}
 
 
 		private void FrameUpdate_View () {
+
+			if (TaskingRoute || ShowingPanel) return;
 
 			var game = Game.Current;
 
@@ -432,6 +351,297 @@ namespace Yaya {
 		}
 
 
+		private void FrameUpdate_Hotkey () {
+
+			if (TaskingRoute) return;
+
+			// Switch Mode
+			if (IsPlaying || !DroppingPlayer) {
+				if (FrameInput.KeyboardDown(KEY_SWITCH_MODE)) {
+					if (IsEditing) {
+						DroppingPlayer = true;
+						PlayerDropPos.x = FrameInput.MouseGlobalPosition.x;
+						PlayerDropPos.y = FrameInput.MouseGlobalPosition.y;
+						PlayerDropPos.z = 0;
+						SelectionUnitRect = null;
+						SelectionDraggingUnitRect = null;
+					} else {
+						SetEditingMode(EditingMode.Editing);
+					}
+				}
+				eControlHintUI.AddHint(KEY_SWITCH_MODE, IsEditing ? WORD.HINT_MEDT_SWITCH_PLAY : WORD.HINT_MEDT_SWITCH_EDIT);
+			}
+
+			if (IsEditing) {
+
+				bool ctrl = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
+
+				// Panel
+				if (FrameInput.KeyboardDown(KEY_PANEL)) {
+					if (ShowingPanel) {
+						HidePanel();
+					} else {
+						ShowPanel();
+					}
+				}
+				if (ShowingPanel) {
+					if (
+						FrameInput.KeyboardDown(Key.Escape) ||
+						FrameInput.MouseRightButtonDown ||
+						FrameInput.MouseMidButtonDown
+					) {
+						HidePanel();
+						FrameInput.UseAllHoldingKeys();
+					}
+				}
+				eControlHintUI.AddHint(KEY_PANEL, WORD.HINT_MEDT_PANEL);
+
+				// Save
+				if (FrameInput.KeyboardDown(Key.S) && ctrl) {
+					Save();
+				}
+
+				// Cancel Drop
+				if (DroppingPlayer) {
+					if (FrameInput.KeyboardDown(Key.Escape)) {
+						DroppingPlayer = false;
+						FrameInput.UseAllHoldingKeys();
+					}
+					eControlHintUI.AddHint(Key.Escape, WORD.MEDT_CANCEL_DROP);
+				}
+
+			}
+
+		}
+
+
+		private void FrameUpdate_DropPlayer () {
+
+			if (IsPlaying || !DroppingPlayer || ePlayer.Selecting == null || TaskingRoute) return;
+
+			var player = ePlayer.Selecting;
+
+			if (!CellRenderer.TryGetSprite(player.TypeID, out var sprite)) return;
+
+			PlayerDropPos.x = PlayerDropPos.x.LerpTo(FrameInput.MouseGlobalPosition.x, 200);
+			PlayerDropPos.y = PlayerDropPos.y.LerpTo(FrameInput.MouseGlobalPosition.y, 200);
+			PlayerDropPos.z = PlayerDropPos.z.LerpTo(((FrameInput.MouseGlobalPosition.x - PlayerDropPos.x) / 20).Clamp(-45, 45), 500);
+
+			CellRenderer.Draw(
+				sprite.GlobalID, PlayerDropPos.x, PlayerDropPos.y,
+				500, 1000, PlayerDropPos.z,
+				sprite.GlobalWidth, sprite.GlobalHeight
+			).Z = int.MaxValue;
+
+			if (!QuickPlayerDrop) {
+				DropHintLabel.Text = Language.Get(WORD.MEDT_DROP);
+				DropHintLabel.CharSize = Unify(24);
+				CellRendererGUI.Label(DropHintLabel, new RectInt(
+					FrameInput.MouseGlobalPosition.x - DropHintWidth / 2,
+					FrameInput.MouseGlobalPosition.y + Const.HALF,
+					DropHintWidth, Const.CEL
+				), out var bounds);
+				DropHintWidth = bounds.width;
+			}
+
+			// Drop
+			bool drop = FrameInput.MouseLeftButtonDown;
+			if (!drop && QuickPlayerDrop && !FrameInput.KeyboardHolding(KEY_SWITCH_MODE)) {
+				drop = true;
+			}
+			if (drop) {
+				DropPlayer(PlayerDropPos.x, PlayerDropPos.y - sprite.GlobalHeight);
+				SetEditingMode(EditingMode.Playing);
+			} else {
+				if (player.Active) player.Active = false;
+				Game.Current.SetViewPositionDelay(
+					Game.Current.ViewRect.x,
+					Game.Current.ViewRect.y,
+					1000, int.MaxValue - 1
+				);
+			}
+		}
+
+
+		private void FrameUpdate_Grid () {
+
+			if (IsPlaying || DroppingPlayer) return;
+
+			var TINT = new Color32(255, 255, 255, 16);
+			var cRect = CellRenderer.CameraRect;
+			int l = Mathf.FloorToInt(cRect.xMin.UDivide(Const.CEL)) * Const.CEL;
+			int r = Mathf.CeilToInt(cRect.xMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
+			int d = Mathf.FloorToInt(cRect.yMin.UDivide(Const.CEL)) * Const.CEL;
+			int u = Mathf.CeilToInt(cRect.yMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
+			int size = cRect.height / 512;
+			for (int y = d; y <= u; y += Const.CEL) {
+				CellRenderer.Draw(LINE_H, l, y - size / 2, 0, 0, 0, r - l, size, TINT).Z = int.MinValue;
+			}
+			for (int x = l; x <= r; x += Const.CEL) {
+				CellRenderer.Draw(LINE_V, x - size / 2, d, 0, 0, 0, size, u - d, TINT).Z = int.MinValue;
+			}
+
+		}
+
+
+		private void FrameUpdate_SelectionGizmos () {
+
+			if (IsPlaying || DroppingPlayer || TaskingRoute) return;
+
+			// Dragging
+			if (SelectionDraggingUnitRect.HasValue) {
+
+				var draggingRect = new RectInt(
+					SelectionDraggingUnitRect.Value.x.ToGlobal(),
+					SelectionDraggingUnitRect.Value.y.ToGlobal(),
+					SelectionDraggingUnitRect.Value.width.ToGlobal(),
+					SelectionDraggingUnitRect.Value.height.ToGlobal()
+				);
+
+				int thickness = Unify(1);
+
+				// Frame
+				var cells = CellRenderer.Draw_9Slice(
+					FRAME, draggingRect.Shrink(thickness),
+					thickness, thickness, thickness, thickness,
+					Const.BLACK
+				);
+				foreach (var cell in cells) cell.Z = int.MaxValue;
+
+				cells = CellRenderer.Draw_9Slice(
+					FRAME, draggingRect,
+					thickness, thickness, thickness, thickness,
+					Const.WHITE
+				);
+				foreach (var cell in cells) cell.Z = int.MaxValue;
+
+
+			}
+
+			// Selection
+			if (SelectionUnitRect.HasValue) {
+
+				var selectionRect = new RectInt(
+					SelectionUnitRect.Value.x.ToGlobal(),
+					SelectionUnitRect.Value.y.ToGlobal(),
+					SelectionUnitRect.Value.width.ToGlobal(),
+					SelectionUnitRect.Value.height.ToGlobal()
+				);
+				int thickness = Unify(2);
+				int dotGap = Unify(10);
+
+				// Black Frame
+				var cells = CellRenderer.Draw_9Slice(
+					FRAME, selectionRect,
+					thickness, thickness, thickness, thickness,
+					Const.BLACK
+				);
+				foreach (var cell in cells) cell.Z = int.MaxValue;
+
+				// Dotted White
+				DrawDottedLine(
+					selectionRect.x,
+					selectionRect.yMin + thickness / 2,
+					selectionRect.width,
+					true, thickness, dotGap, Const.WHITE
+				);
+				DrawDottedLine(
+					selectionRect.x,
+					selectionRect.yMax - thickness / 2,
+					selectionRect.width,
+					true, thickness, dotGap, Const.WHITE
+				);
+				DrawDottedLine(
+					selectionRect.xMin + thickness / 2,
+					selectionRect.y + thickness,
+					selectionRect.height - thickness * 2,
+					false, thickness, dotGap, Const.WHITE
+				);
+				DrawDottedLine(
+					selectionRect.xMax - thickness / 2,
+					selectionRect.y + thickness,
+					selectionRect.height - thickness * 2,
+					false, thickness, dotGap, Const.WHITE
+				);
+			}
+
+		}
+
+
+		private void FrameUpdate_Cursor () {
+
+			if (IsPlaying || DroppingPlayer || ShowingPanel) return;
+
+			var cursorRect = new RectInt(
+				FrameInput.MouseGlobalPosition.x.ToUnifyGlobal(),
+				FrameInput.MouseGlobalPosition.y.ToUnifyGlobal(),
+				Const.CEL, Const.CEL
+			);
+			int thickness = Unify(1);
+
+			var cells = CellRenderer.Draw_9Slice(
+				FRAME_HOLLOW, cursorRect.Shrink(thickness),
+				thickness, thickness, thickness, thickness,
+				CURSOR_TINT_DARK
+			);
+			foreach (var cell in cells) cell.Z = int.MaxValue;
+
+			cells = CellRenderer.Draw_9Slice(
+				FRAME_HOLLOW, cursorRect,
+				thickness, thickness, thickness, thickness,
+				CURSOR_TINT
+			);
+			foreach (var cell in cells) cell.Z = int.MaxValue;
+
+			if (SelectingPaletteItem == null) {
+				// Erase Cross
+				int shiftY = thickness / 2;
+				int shrink = thickness * 2;
+				CellRendererGUI.DrawLine(
+					cursorRect.xMin + shrink,
+					cursorRect.yMin + shrink - shiftY,
+					cursorRect.xMax - shrink,
+					cursorRect.yMax - shrink - shiftY,
+					thickness, CURSOR_TINT_DARK
+				).Z = int.MaxValue - 1;
+				CellRendererGUI.DrawLine(
+					cursorRect.xMin + shrink,
+					cursorRect.yMax - shrink - shiftY,
+					cursorRect.xMax - shrink,
+					cursorRect.yMin + shrink - shiftY,
+					thickness, CURSOR_TINT_DARK
+				).Z = int.MaxValue - 1;
+				CellRendererGUI.DrawLine(
+					cursorRect.xMin + shrink,
+					cursorRect.yMin + shrink + shiftY,
+					cursorRect.xMax - shrink,
+					cursorRect.yMax - shrink + shiftY,
+					thickness, CURSOR_TINT
+				).Z = int.MaxValue - 1;
+				CellRendererGUI.DrawLine(
+					cursorRect.xMin + shrink,
+					cursorRect.yMax - shrink + shiftY,
+					cursorRect.xMax - shrink,
+					cursorRect.yMin + shrink + shiftY,
+					thickness, CURSOR_TINT
+				).Z = int.MaxValue - 1;
+			} else {
+				// Pal Thumbnail
+				if (CellRenderer.TryGetSprite(SelectingPaletteItem.ArtworkID, out var sprite)) {
+					CellRenderer.Draw(
+						SelectingPaletteItem.ArtworkID,
+						cursorRect.Shrink(cursorRect.width * 2 / 10).Fit(
+							sprite.GlobalWidth,
+							sprite.GlobalHeight,
+							sprite.PivotX,
+							sprite.PivotY
+						)
+					).Z = int.MaxValue - 2;
+				}
+			}
+		}
+
+
 		#endregion
 
 
@@ -445,6 +655,10 @@ namespace Yaya {
 			var game = Game.Current;
 			Mode = mode;
 			TargetViewRect = Game.Current.ViewRect;
+			SelectingPaletteItem = null;
+			DroppingPlayer = false;
+			SelectionUnitRect = null;
+			SelectionDraggingUnitRect = null;
 
 			// Squad Spawn Entity
 			YayaGame.Current.WorldSquad.SpawnEntity = mode == EditingMode.Playing;
@@ -461,7 +675,6 @@ namespace Yaya {
 							e.Active = false;
 						}
 					}
-					PlayerDropped = true;
 
 					// Despawn Player
 					if (ePlayer.Selecting != null) {
@@ -482,9 +695,6 @@ namespace Yaya {
 
 					// Respawn Entities
 					game.SetViewZ(game.ViewZ);
-
-					// Reset Player Drop
-					PlayerDropped = false;
 
 					// Hide UI
 					if (ShowingPanel) HidePanel();
@@ -512,6 +722,50 @@ namespace Yaya {
 		private void Save () {
 			IsDirty = false;
 
+
+
+		}
+
+
+		// Util
+		private void DrawDottedLine (int x, int y, int length, bool horizontal, int thickness, int gap, Color32 tint) {
+
+			if (gap == 0) return;
+
+			int stepLength = gap * 16;
+			int stepCount = length / stepLength;
+			int extraLength = length - stepCount * stepLength;
+
+			for (int i = 0; i <= stepCount; i++) {
+				if (i == stepCount && extraLength == 0) break;
+				if (horizontal) {
+					var cell = CellRenderer.Draw(
+						DOTTED_LINE,
+						x + i * stepLength, y,
+						0, 500, 0,
+						stepLength, thickness,
+						tint
+					);
+					cell.Z = int.MaxValue;
+					if (i == stepCount) {
+						ref var shift = ref cell.Shift;
+						shift.Right = 1000 - extraLength * 1000 / stepLength;
+					}
+				} else {
+					var cell = CellRenderer.Draw(
+						DOTTED_LINE,
+						x, y + i * stepLength,
+						0, 500, -90,
+						stepLength, thickness,
+						tint
+					);
+					cell.Z = int.MaxValue;
+					if (i == stepCount) {
+						ref var shift = ref cell.Shift;
+						shift.Right = 1000 - extraLength * 1000 / stepLength;
+					}
+				}
+			}
 
 
 		}
