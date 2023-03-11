@@ -31,6 +31,14 @@ namespace Yaya {
 		}
 
 
+		private struct PasteData {
+			public int ID;
+			public BlockType Type;
+			public int LocalUnitX;
+			public int LocalUnitY;
+		}
+
+
 		#endregion
 
 
@@ -49,6 +57,7 @@ namespace Yaya {
 		private static readonly int DOTTED_LINE = "DottedLine16".AngeHash();
 		private static readonly Color32 CURSOR_TINT = new(240, 240, 240, 128);
 		private static readonly Color32 CURSOR_TINT_DARK = new(16, 16, 16, 128);
+		private static readonly Color32 DRAGGING_CONTENT_TINT = new(32, 64, 255, 16);
 
 		// Api
 		public bool IsEditing => Active && Mode == EditingMode.Editing;
@@ -73,6 +82,7 @@ namespace Yaya {
 		private Dictionary<int, int> EntityArtworkRedirectPool = null;
 		private Dictionary<int, PaletteItem> PalettePool = null;
 		private List<PaletteGroup> PaletteGroups = null;
+		private List<PasteData> PastingList = null;
 		private PaletteItem SelectingPaletteItem = null;
 		private YayaWorldSquad Squad = null;
 		private Vector3Int PlayerDropPos = default;
@@ -81,8 +91,6 @@ namespace Yaya {
 		private bool DroppingPlayer = false;
 		private bool TaskingRoute = false;
 		private int DropHintWidth = Const.CEL;
-		private int PaintingThumbnailStartIndex = 0;
-		private RectInt PaintingThumbnailRect = default;
 
 		// UI
 		private readonly CellLabel DropHintLabel = new() {
@@ -127,11 +135,12 @@ namespace Yaya {
 			SelectingPaletteItem = null;
 			MouseDownPosition = null;
 			SelectionUnitRect = null;
-			SelectionDraggingUnitRect = null;
+			DraggingUnitRect = null;
 			PaintingThumbnailStartIndex = 0;
 			PaintingThumbnailRect = default;
 			MouseInSelection = false;
 			MouseDownInSelection = false;
+			Pasting = false;
 
 			// Start
 			SetEditingMode(EditingMode.Editing);
@@ -166,6 +175,7 @@ namespace Yaya {
 			base.OnInactived();
 
 			if (Mode == EditingMode.Editing) {
+				ApplyPaste();
 				SetEditingMode(EditingMode.Playing);
 			}
 
@@ -182,6 +192,7 @@ namespace Yaya {
 			ReversedChainPool = null;
 			PaletteGroups = null;
 			PalettePool = null;
+			PastingList = null;
 
 			System.GC.Collect(0, System.GCCollectionMode.Forced);
 
@@ -196,6 +207,7 @@ namespace Yaya {
 			EntityArtworkRedirectPool = new();
 			ChainRulePool = new();
 			ReversedChainPool = new();
+			PastingList = new();
 
 			int spriteCount = CellRenderer.SpriteCount;
 			int chainCount = CellRenderer.ChainCount;
@@ -300,9 +312,12 @@ namespace Yaya {
 			FrameUpdate_Hotkey();
 			FrameUpdate_DropPlayer();
 			FrameUpdate_PanelUI();
+
+			// Gizmos
 			FrameUpdate_Grid();
+			FrameUpdate_DraggingGizmos();
+			FrameUpdate_PastingGizmos();
 			FrameUpdate_SelectionGizmos();
-			FrameUpdate_PaintingGizmos();
 			FrameUpdate_Cursor();
 
 		}
@@ -422,12 +437,7 @@ namespace Yaya {
 			if (IsPlaying || !DroppingPlayer) {
 				if (FrameInput.KeyboardDown(KEY_SWITCH_MODE)) {
 					if (IsEditing) {
-						DroppingPlayer = true;
-						PlayerDropPos.x = FrameInput.MouseGlobalPosition.x;
-						PlayerDropPos.y = FrameInput.MouseGlobalPosition.y;
-						PlayerDropPos.z = 0;
-						SelectionUnitRect = null;
-						SelectionDraggingUnitRect = null;
+						StartDropPlayer();
 					} else {
 						SetEditingMode(EditingMode.Editing);
 					}
@@ -526,184 +536,6 @@ namespace Yaya {
 		}
 
 
-		private void FrameUpdate_Grid () {
-
-			if (IsPlaying || DroppingPlayer) return;
-
-			var TINT = new Color32(255, 255, 255, 16);
-			var cRect = CellRenderer.CameraRect;
-			int l = Mathf.FloorToInt(cRect.xMin.UDivide(Const.CEL)) * Const.CEL;
-			int r = Mathf.CeilToInt(cRect.xMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
-			int d = Mathf.FloorToInt(cRect.yMin.UDivide(Const.CEL)) * Const.CEL;
-			int u = Mathf.CeilToInt(cRect.yMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
-			int size = cRect.height / 512;
-			for (int y = d; y <= u; y += Const.CEL) {
-				CellRenderer.Draw(LINE_H, l, y - size / 2, 0, 0, 0, r - l, size, TINT).Z = int.MinValue;
-			}
-			for (int x = l; x <= r; x += Const.CEL) {
-				CellRenderer.Draw(LINE_V, x - size / 2, d, 0, 0, 0, size, u - d, TINT).Z = int.MinValue;
-			}
-
-		}
-
-
-		private void FrameUpdate_SelectionGizmos () {
-
-			if (IsPlaying || DroppingPlayer || TaskingRoute) return;
-
-			// Dragging Rect
-			if (
-				SelectionDraggingUnitRect.HasValue &&
-				!CtrlHolding &&
-				(!MouseDownInSelection || MouseDownButton != 0)
-			) {
-
-				var draggingRect = new RectInt(
-					SelectionDraggingUnitRect.Value.x.ToGlobal(),
-					SelectionDraggingUnitRect.Value.y.ToGlobal(),
-					SelectionDraggingUnitRect.Value.width.ToGlobal(),
-					SelectionDraggingUnitRect.Value.height.ToGlobal()
-				);
-
-				int thickness = Unify(1);
-
-				// Frame
-				var cells = CellRenderer.Draw_9Slice(
-					FRAME, draggingRect.Shrink(thickness),
-					thickness, thickness, thickness, thickness,
-					Const.BLACK
-				);
-				foreach (var cell in cells) cell.Z = int.MaxValue;
-
-				cells = CellRenderer.Draw_9Slice(
-					FRAME, draggingRect,
-					thickness, thickness, thickness, thickness,
-					Const.WHITE
-				);
-				foreach (var cell in cells) cell.Z = int.MaxValue;
-
-			}
-
-			// Selection
-			if (SelectionUnitRect.HasValue) {
-
-				var selectionRect = new RectInt(
-					SelectionUnitRect.Value.x.ToGlobal(),
-					SelectionUnitRect.Value.y.ToGlobal(),
-					SelectionUnitRect.Value.width.ToGlobal(),
-					SelectionUnitRect.Value.height.ToGlobal()
-				);
-				int thickness = Unify(2);
-				int dotGap = Unify(10);
-
-				// Black Frame
-				var cells = CellRenderer.Draw_9Slice(
-					FRAME, selectionRect,
-					thickness, thickness, thickness, thickness,
-					Const.BLACK
-				);
-				foreach (var cell in cells) cell.Z = int.MaxValue;
-
-				// Dotted White
-				DrawDottedLine(
-					selectionRect.x,
-					selectionRect.yMin + thickness / 2,
-					selectionRect.width,
-					true, thickness, dotGap, Const.WHITE
-				);
-				DrawDottedLine(
-					selectionRect.x,
-					selectionRect.yMax - thickness / 2,
-					selectionRect.width,
-					true, thickness, dotGap, Const.WHITE
-				);
-				DrawDottedLine(
-					selectionRect.xMin + thickness / 2,
-					selectionRect.y + thickness,
-					selectionRect.height - thickness * 2,
-					false, thickness, dotGap, Const.WHITE
-				);
-				DrawDottedLine(
-					selectionRect.xMax - thickness / 2,
-					selectionRect.y + thickness,
-					selectionRect.height - thickness * 2,
-					false, thickness, dotGap, Const.WHITE
-				);
-			}
-
-		}
-
-
-		private void FrameUpdate_PaintingGizmos () {
-			if (IsPlaying || DroppingPlayer || TaskingRoute || MouseDownButton != 0 || CtrlHolding) return;
-			if (!SelectionDraggingUnitRect.HasValue) return;
-			if (SelectingPaletteItem != null) {
-				// Draw Thumbnails
-				CellRenderer.TryGetSprite(SelectingPaletteItem.ArtworkID, out var sprite);
-				var unitRect = SelectionDraggingUnitRect.Value;
-				if (unitRect != PaintingThumbnailRect) {
-					PaintingThumbnailRect = unitRect;
-					PaintingThumbnailStartIndex = 0;
-				}
-				var rect = new RectInt(0, 0, Const.CEL, Const.CEL);
-				int endIndex = unitRect.width * unitRect.height;
-				int uiLayerIndex = CellRenderer.LayerCount - 1;
-				int cellRemain = CellRenderer.GetLayerCapacity(uiLayerIndex) - CellRenderer.GetUsedCellCount(uiLayerIndex);
-				cellRemain = cellRemain * 9 / 10;
-				int nextStartIndex = 0;
-				if (endIndex - PaintingThumbnailStartIndex > cellRemain) {
-					endIndex = PaintingThumbnailStartIndex + cellRemain;
-					nextStartIndex = endIndex;
-				}
-				for (int i = PaintingThumbnailStartIndex; i < endIndex; i++) {
-					rect.x = (unitRect.x + (i % unitRect.width)) * Const.CEL;
-					rect.y = (unitRect.y + (i / unitRect.width)) * Const.CEL;
-					DrawThumbnail(SelectingPaletteItem.ArtworkID, rect, false, sprite);
-				}
-				PaintingThumbnailStartIndex = nextStartIndex;
-			} else if (!MouseDownInSelection || MouseDownButton != 0) {
-				// Draw Cross
-				DrawCrossLine(SelectionDraggingUnitRect.Value.ToGlobal(), Unify(1), Const.WHITE, Const.BLACK);
-			}
-		}
-
-
-		private void FrameUpdate_Cursor () {
-
-			if (IsPlaying || DroppingPlayer || ShowingPanel) return;
-			if (MouseInSelection || SelectionDraggingUnitRect.HasValue) return;
-
-			var cursorRect = new RectInt(
-				FrameInput.MouseGlobalPosition.x.ToUnifyGlobal(),
-				FrameInput.MouseGlobalPosition.y.ToUnifyGlobal(),
-				Const.CEL, Const.CEL
-			);
-			int thickness = Unify(1);
-
-			var cells = CellRenderer.Draw_9Slice(
-				FRAME_HOLLOW, cursorRect.Shrink(thickness),
-				thickness, thickness, thickness, thickness,
-				CURSOR_TINT_DARK
-			);
-			foreach (var cell in cells) cell.Z = int.MaxValue;
-
-			cells = CellRenderer.Draw_9Slice(
-				FRAME_HOLLOW, cursorRect,
-				thickness, thickness, thickness, thickness,
-				CURSOR_TINT
-			);
-			foreach (var cell in cells) cell.Z = int.MaxValue;
-
-			if (SelectingPaletteItem == null) {
-				// Erase Cross
-				DrawCrossLine(cursorRect, thickness, CURSOR_TINT, CURSOR_TINT_DARK);
-			} else {
-				// Pal Thumbnail
-				DrawThumbnail(SelectingPaletteItem.ArtworkID, cursorRect, true);
-			}
-		}
-
-
 		#endregion
 
 
@@ -720,7 +552,7 @@ namespace Yaya {
 			SelectingPaletteItem = null;
 			DroppingPlayer = false;
 			SelectionUnitRect = null;
-			SelectionDraggingUnitRect = null;
+			DraggingUnitRect = null;
 
 			// Squad Spawn Entity
 			YayaGame.Current.WorldSquad.SpawnEntity = mode == EditingMode.Playing;
@@ -765,6 +597,17 @@ namespace Yaya {
 
 			}
 
+		}
+
+
+		private void StartDropPlayer () {
+			ApplyPaste();
+			DroppingPlayer = true;
+			PlayerDropPos.x = FrameInput.MouseGlobalPosition.x;
+			PlayerDropPos.y = FrameInput.MouseGlobalPosition.y;
+			PlayerDropPos.z = 0;
+			SelectionUnitRect = null;
+			DraggingUnitRect = null;
 		}
 
 
@@ -844,7 +687,7 @@ namespace Yaya {
 					);
 				}
 				CellRenderer.Draw(
-					SelectingPaletteItem.ArtworkID,
+					artworkID,
 					rect
 				).Z = int.MaxValue - 2;
 			}
