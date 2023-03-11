@@ -103,9 +103,11 @@ namespace Yaya {
 				FrameTask.TryAddToLast(OpeningTask.TYPE_ID, YayaConst.TASK_ROUTE, out var task) &&
 				task is OpeningTask oTask
 			) {
-				Vector3Int homePos;
+				Vector3Int homePos = default;
 				if (GlobalPosition.TryGetFirstGlobalUnitPosition(firstPlayerID, out var firstPlayerHomePos)) {
-					homePos = firstPlayerHomePos * Const.CEL;
+					homePos.x = firstPlayerHomePos.x * Const.CEL;
+					homePos.y = firstPlayerHomePos.y * Const.CEL;
+					homePos.z = firstPlayerHomePos.z;
 				} else {
 					homePos = (Vector3Int)game.ViewRect.CenterInt();
 					homePos.z = game.ViewZ;
@@ -160,12 +162,12 @@ namespace Yaya {
 				}
 			}
 			if (FrameInput.KeyboardHolding(Key.Digit6)) {
-
+				game.SpawnEntity<eMapEditor>(0, 0);
 
 			}
 			if (FrameInput.KeyboardDown(Key.Digit7)) {
-				MapEditor.QuickPlayerDrop = !MapEditor.QuickPlayerDrop;
-				Debug.Log("Quick Player Drop = " + MapEditor.QuickPlayerDrop);
+				MapEditor.AutoZoom = !MapEditor.AutoZoom;
+				Debug.Log("AutoZoom = " + MapEditor.AutoZoom);
 			}
 			if (FrameInput.KeyboardDown(Key.Digit8)) {
 				DialoguePerformer.PerformDialogue("TestConversation", YayaConst.TASK_ROUTE);

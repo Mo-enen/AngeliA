@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
+using UnityEngine.InputSystem;
 
 
 namespace Yaya {
@@ -19,7 +20,9 @@ namespace Yaya {
 		private Vector2Int? MouseDownPosition = null;
 		private int MouseDownButton = -1;
 		private bool MouseMoved = false;
+		private bool MouseInSelection = false;
 		private bool MouseDownInSelection = false;
+		private bool CtrlHolding = false;
 
 
 		#endregion
@@ -32,14 +35,17 @@ namespace Yaya {
 
 		private void FrameUpdate_Mouse () {
 
+			SelectionDraggingUnitRect = null;
+			CtrlHolding = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.RightCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
+
 			if (IsPlaying || DroppingPlayer || TaskingRoute || ShowingPanel) {
 				MouseDownPosition = null;
-				SelectionDraggingUnitRect = null;
 				return;
 			}
 
-			if (SelectionDraggingUnitRect.HasValue && !FrameInput.MouseRightButton) {
-				SelectionDraggingUnitRect = null;
+			MouseInSelection = SelectionUnitRect.HasValue && SelectionUnitRect.Value.Contains(FrameInput.MouseGlobalPosition.ToUnit());
+			if (MouseInSelection) {
+				Game.Current.SetCursor(1);
 			}
 
 			if (!MouseDownPosition.HasValue) {
@@ -49,31 +55,21 @@ namespace Yaya {
 					MouseDownButton = holdingMouseBtn;
 					MouseDownPosition = FrameInput.MouseGlobalPosition;
 					MouseMoved = false;
-					MouseDownInSelection = SelectionUnitRect.HasValue && SelectionUnitRect.Value.Contains(MouseDownPosition.Value.ToUnit());
+					MouseDownInSelection = MouseInSelection;
 				}
 			} else if (FrameInput.MouseButtonHolding(MouseDownButton)) {
 				// Mouse Holding
-				MouseMoved = MouseMoved || Util.SquareDistance(
-					FrameInput.MouseGlobalPosition, MouseDownPosition.Value
-				) > Unify(10);
-
-				switch (MouseDownButton) {
-					case 0:
-						MouseHolding_Left(
-							MouseDownPosition.Value.ToUnit(),
-							FrameInput.MouseGlobalPosition.ToUnit()
-						);
-						break;
-					case 1:
-						MouseHolding_Right(
-							MouseDownPosition.Value.ToUnit(),
-							FrameInput.MouseGlobalPosition.ToUnit()
-						);
-						break;
-					default:
-						break;
+				MouseMoved = MouseMoved || Util.SquareDistance(FrameInput.MouseGlobalPosition, MouseDownPosition.Value) > Unify(10) * Unify(10);
+				var mouseDownUnitPos = MouseDownPosition.Value.ToUnit();
+				var mouseUnitPos = FrameInput.MouseGlobalPosition.ToUnit();
+				if (MouseMoved && MouseDownButton != 2) {
+					SelectionDraggingUnitRect = new RectInt(
+						Mathf.Min(mouseDownUnitPos.x, mouseUnitPos.x),
+						Mathf.Min(mouseDownUnitPos.y, mouseUnitPos.y),
+						Mathf.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1,
+						Mathf.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1
+					);
 				}
-
 			} else {
 				// Mouse Up
 				switch (MouseDownButton) {
@@ -90,9 +86,7 @@ namespace Yaya {
 						);
 						break;
 					case 2:
-						if (!MouseMoved) ShowPanel();
-						break;
-					default:
+						MouseUp_Mid();
 						break;
 				}
 				MouseDownButton = -1;
@@ -110,31 +104,17 @@ namespace Yaya {
 		#region --- LGC ---
 
 
-		private void MouseHolding_Left (Vector2Int mouseDownUnitPos, Vector2Int mouseUnitPos) {
-
-			
-		}
-
-
-		private void MouseHolding_Right (Vector2Int mouseDownUnitPos, Vector2Int mouseUnitPos) {
-			if (MouseMoved) {
-				SelectionDraggingUnitRect = new RectInt(
-					Mathf.Min(mouseDownUnitPos.x, mouseUnitPos.x),
-					Mathf.Min(mouseDownUnitPos.y, mouseUnitPos.y),
-					Mathf.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1,
-					Mathf.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1
-				);
-			}
-		}
-
-
 		private void MouseUp_Left (Vector2Int mouseDownUnitPos, Vector2Int mouseUnitPos) {
-			if (MouseMoved) {
-				// Up
+			if (CtrlHolding) return;
+			if (MouseDownInSelection) {
+				// Move Selection
+
 
 
 			} else {
-				// Click
+				// Paint
+				SelectionUnitRect = null;
+
 
 
 			}
@@ -143,6 +123,7 @@ namespace Yaya {
 
 		private void MouseUp_Right (Vector2Int mouseDownUnitPos, Vector2Int mouseUnitPos) {
 			SelectionUnitRect = null;
+			if (CtrlHolding) return;
 			if (MouseMoved) {
 				// Select 
 				SelectionUnitRect = new RectInt(
@@ -160,6 +141,11 @@ namespace Yaya {
 					SelectingPaletteItem = null;
 				}
 			}
+		}
+
+
+		private void MouseUp_Mid () {
+			if (!MouseMoved) ShowPanel();
 		}
 
 

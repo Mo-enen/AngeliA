@@ -87,7 +87,7 @@ namespace Yaya {
 			foreach (var filePath in Util.EnumerateFiles(mapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
 				try {
 					if (!World.GetWorldPositionFromName(Util.GetNameWithoutExtension(filePath), out var worldPos)) continue;
-					foreach (var (id, x, y) in World.EditorOnly_ForAllEntities(filePath)) {
+					foreach (var (id, x, y) in World.ForAllEntities(filePath)) {
 						if (!targetPool.TryGetValue(id, out var direction)) continue;
 						if (direction == Vector2Int.zero) continue;
 						allPos.Add(

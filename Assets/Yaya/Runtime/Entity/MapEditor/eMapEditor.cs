@@ -57,6 +57,10 @@ namespace Yaya {
 			get => s_QuickPlayerDrop.Value;
 			set => s_QuickPlayerDrop.Value = value;
 		}
+		public bool AutoZoom {
+			get => s_AutoZoom.Value;
+			set => s_AutoZoom.Value = value;
+		}
 		public EditingMode Mode {
 			get; private set;
 		} = EditingMode.Editing;
@@ -69,14 +73,16 @@ namespace Yaya {
 		private Dictionary<int, int> EntityArtworkRedirectPool = null;
 		private Dictionary<int, PaletteItem> PalettePool = null;
 		private List<PaletteGroup> PaletteGroups = null;
+		private PaletteItem SelectingPaletteItem = null;
+		private YayaWorldSquad Squad = null;
 		private Vector3Int PlayerDropPos = default;
 		private RectInt TargetViewRect = default;
 		private bool IsDirty = false;
 		private bool DroppingPlayer = false;
 		private bool TaskingRoute = false;
 		private int DropHintWidth = Const.CEL;
-		private PaletteItem SelectingPaletteItem = null;
-		private YayaWorldSquad Squad = null;
+		private int PaintingThumbnailStartIndex = 0;
+		private RectInt PaintingThumbnailRect = default;
 
 		// UI
 		private readonly CellLabel DropHintLabel = new() {
@@ -87,6 +93,7 @@ namespace Yaya {
 
 		// Saving
 		private static readonly SavingBool s_QuickPlayerDrop = new("eMapEditor.QuickPlayerDrop", false);
+		private static readonly SavingBool s_AutoZoom = new("eMapEditor.AutoZoom", true);
 
 
 		#endregion
@@ -101,27 +108,57 @@ namespace Yaya {
 		public override void OnActived () {
 			base.OnActived();
 
-			Game.Current.WorldSquad.SetDataChannel(World.DataChannel.User);
-			Game.Current.WorldSquad_Behind.SetDataChannel(World.DataChannel.User);
+			var game = Game.Current;
+
+			// Squad
+			game.WorldSquad.SetDataChannel(World.DataChannel.User);
+			game.WorldSquad_Behind.SetDataChannel(World.DataChannel.User);
 			Squad = YayaGame.Current.WorldSquad;
 
+			// Pipeline
 			try {
 				Active_Pool();
 				Active_Palette();
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 
+			// Cache
+			DroppingPlayer = false;
 			ShowingPanel = false;
 			SelectingPaletteItem = null;
 			MouseDownPosition = null;
 			SelectionUnitRect = null;
 			SelectionDraggingUnitRect = null;
+			PaintingThumbnailStartIndex = 0;
+			PaintingThumbnailRect = default;
+			MouseInSelection = false;
+			MouseDownInSelection = false;
 
-			// Play
-			SetEditingMode(EditingMode.Playing);
-			DroppingPlayer = false;
+			// Start
+			SetEditingMode(EditingMode.Editing);
 			if (ePlayer.Selecting != null) {
-				DropPlayer(ePlayer.Selecting.X, ePlayer.Selecting.Y);
+				ePlayer.Selecting.Active = false;
 			}
+
+			// View
+			if (FrameTask.HasTask<OpeningTask>()) {
+				FrameTask.End(YayaConst.TASK_ROUTE);
+			}
+			if (ePlayer.Selecting != null && GlobalPosition.TryGetFirstGlobalUnitPosition(ePlayer.Selecting.TypeID, out var playerHomePos)) {
+				var homePos = new Vector3Int(
+					playerHomePos.x * Const.CEL,
+					playerHomePos.y * Const.CEL,
+					playerHomePos.z
+				);
+				int viewHeight = game.ViewConfig.DefaultHeight * 3 / 2;
+				int viewWidth = viewHeight * game.ViewConfig.ViewRatio / 1000;
+				TargetViewRect.x = homePos.x - viewWidth / 2;
+				TargetViewRect.y = homePos.y - ePlayer.GetCameraShiftOffset(game.ViewRect.height);
+				TargetViewRect.height = viewHeight;
+				game.SetViewZ(homePos.z);
+				game.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 1000, int.MaxValue);
+				game.SetViewSizeDelay(TargetViewRect.height, 1000, int.MaxValue);
+			}
+
 		}
 
 
@@ -265,6 +302,7 @@ namespace Yaya {
 			FrameUpdate_PanelUI();
 			FrameUpdate_Grid();
 			FrameUpdate_SelectionGizmos();
+			FrameUpdate_PaintingGizmos();
 			FrameUpdate_Cursor();
 
 		}
@@ -284,22 +322,34 @@ namespace Yaya {
 			if (TaskingRoute || ShowingPanel) return;
 
 			var game = Game.Current;
+			var viewConfig = game.ViewConfig;
 
+			// Playing
 			if (IsPlaying) {
-				int viewHeight = game.ViewConfig.DefaultHeight;
-				game.SetViewSizeDelay(viewHeight, 50, int.MaxValue);
+				int newHeight = viewConfig.DefaultHeight;
+				var viewRect = game.ViewRect;
+				if (viewRect.height != newHeight) {
+					if (game.DelayingViewX.HasValue) viewRect.x = game.DelayingViewX.Value;
+					if (game.DelayingViewY.HasValue) viewRect.y = game.DelayingViewY.Value;
+					int newWidth = newHeight * viewConfig.ViewRatio / 1000;
+					viewRect.x -= (newWidth - viewRect.width) / 2;
+					viewRect.y -= (newHeight - viewRect.height) / 2;
+					viewRect.height = newHeight;
+					game.SetViewPositionDelay(viewRect.x, viewRect.y, 100, YayaConst.VIEW_PRIORITY_PLAYER + 1);
+					game.SetViewSizeDelay(viewRect.height, 100, YayaConst.VIEW_PRIORITY_PLAYER + 1);
+				}
 				return;
 			}
 
-			bool ctrl = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
-
 			// Move
-			var delta = !ctrl ? FrameInput.Direction / -32 : default;
+			var delta = Vector2Int.zero;
 			if (
 				FrameInput.MouseMidButton ||
-				(FrameInput.MouseLeftButton && ctrl)
+				(FrameInput.MouseLeftButton && CtrlHolding)
 			) {
 				delta = FrameInput.MouseScreenPositionDelta;
+			} else if (!CtrlHolding && !FrameInput.AnyMouseButtonHolding) {
+				delta = FrameInput.Direction / -32;
 			}
 			if (delta.x != 0 || delta.y != 0) {
 				var cRect = CellRenderer.CameraRect;
@@ -311,42 +361,55 @@ namespace Yaya {
 			}
 
 			// Zoom
-			int wheelDelta = FrameInput.MouseWheelDelta;
-			int zoomDelta = wheelDelta * Const.CEL * 2;
-			if (zoomDelta == 0 && FrameInput.MouseRightButton && ctrl) {
-				zoomDelta = FrameInput.MouseScreenPositionDelta.y * 6;
-			}
-			if (zoomDelta != 0) {
+			if (AutoZoom) {
+				// Auto
+				int newHeight = viewConfig.DefaultHeight * 3 / 2;
+				if (TargetViewRect.height != newHeight) {
+					int newWidth = newHeight * viewConfig.ViewRatio / 1000;
+					TargetViewRect.x -= (newWidth - TargetViewRect.width) / 2;
+					TargetViewRect.y -= (newHeight - TargetViewRect.height) / 2;
+					TargetViewRect.height = newHeight;
+				}
+			} else {
+				// Manual Zoom
+				int wheelDelta = FrameInput.MouseWheelDelta;
+				int zoomDelta = wheelDelta * Const.CEL * 2;
+				if (zoomDelta == 0 && FrameInput.MouseRightButton && CtrlHolding) {
+					zoomDelta = FrameInput.MouseScreenPositionDelta.y * 6;
+				}
+				if (zoomDelta != 0) {
 
-				int newHeight = (TargetViewRect.height - zoomDelta * TargetViewRect.height / 6000).Clamp(
-					game.ViewConfig.MinHeight,
-					game.ViewConfig.MaxHeight
-				);
-				int newWidth = newHeight * TargetViewRect.width / TargetViewRect.height;
+					TargetViewRect.width = TargetViewRect.height * viewConfig.ViewRatio / 1000;
 
-				float cameraWidth = (int)(TargetViewRect.height * game.Camera.aspect);
-				float cameraHeight = TargetViewRect.height;
-				float cameraX = TargetViewRect.x + (TargetViewRect.width - cameraWidth) / 2f;
-				float cameraY = TargetViewRect.y;
+					int newHeight = (TargetViewRect.height - zoomDelta * TargetViewRect.height / 6000).Clamp(
+						viewConfig.MinHeight, viewConfig.MaxHeight
+					);
+					int newWidth = newHeight * viewConfig.ViewRatio / 1000;
 
-				float mousePosX01 = wheelDelta != 0 ? Mathf.InverseLerp(0f, Screen.width, FrameInput.MouseScreenPosition.x) : 0.5f;
-				float mousePosY01 = wheelDelta != 0 ? Mathf.InverseLerp(0f, Screen.height, FrameInput.MouseScreenPosition.y) : 0.5f;
+					float cameraWidth = (int)(TargetViewRect.height * game.Camera.aspect);
+					float cameraHeight = TargetViewRect.height;
+					float cameraX = TargetViewRect.x + (TargetViewRect.width - cameraWidth) / 2f;
+					float cameraY = TargetViewRect.y;
 
-				float pivotX = Mathf.LerpUnclamped(cameraX, cameraX + cameraWidth, mousePosX01);
-				float pivotY = Mathf.LerpUnclamped(cameraY, cameraY + cameraHeight, mousePosY01);
-				float newCameraWidth = cameraWidth * newWidth / TargetViewRect.width;
-				float newCameraHeight = cameraHeight * newHeight / TargetViewRect.height;
+					float mousePosX01 = wheelDelta != 0 ? Mathf.InverseLerp(0f, Screen.width, FrameInput.MouseScreenPosition.x) : 0.5f;
+					float mousePosY01 = wheelDelta != 0 ? Mathf.InverseLerp(0f, Screen.height, FrameInput.MouseScreenPosition.y) : 0.5f;
 
-				TargetViewRect.x = (pivotX - newCameraWidth * mousePosX01 - (newWidth - newCameraWidth) / 2f).RoundToInt();
-				TargetViewRect.y = (pivotY - newCameraHeight * mousePosY01 - (newHeight - newCameraHeight) / 2f).RoundToInt();
-				TargetViewRect.width = newWidth;
-				TargetViewRect.height = newHeight;
+					float pivotX = Mathf.LerpUnclamped(cameraX, cameraX + cameraWidth, mousePosX01);
+					float pivotY = Mathf.LerpUnclamped(cameraY, cameraY + cameraHeight, mousePosY01);
+					float newCameraWidth = cameraWidth * newWidth / TargetViewRect.width;
+					float newCameraHeight = cameraHeight * newHeight / TargetViewRect.height;
+
+					TargetViewRect.x = (pivotX - newCameraWidth * mousePosX01 - (newWidth - newCameraWidth) / 2f).RoundToInt();
+					TargetViewRect.y = (pivotY - newCameraHeight * mousePosY01 - (newHeight - newCameraHeight) / 2f).RoundToInt();
+					TargetViewRect.width = newWidth;
+					TargetViewRect.height = newHeight;
+				}
 			}
 
 			// Lerp
 			if (game.ViewRect != TargetViewRect) {
-				game.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 300, int.MaxValue);
-				game.SetViewSizeDelay(TargetViewRect.height, 300, int.MaxValue);
+				game.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 300, int.MaxValue - 1);
+				game.SetViewSizeDelay(TargetViewRect.height, 300, int.MaxValue - 1);
 			}
 		}
 
@@ -488,8 +551,12 @@ namespace Yaya {
 
 			if (IsPlaying || DroppingPlayer || TaskingRoute) return;
 
-			// Dragging
-			if (SelectionDraggingUnitRect.HasValue) {
+			// Dragging Rect
+			if (
+				SelectionDraggingUnitRect.HasValue &&
+				!CtrlHolding &&
+				(!MouseDownInSelection || MouseDownButton != 0)
+			) {
 
 				var draggingRect = new RectInt(
 					SelectionDraggingUnitRect.Value.x.ToGlobal(),
@@ -514,7 +581,6 @@ namespace Yaya {
 					Const.WHITE
 				);
 				foreach (var cell in cells) cell.Z = int.MaxValue;
-
 
 			}
 
@@ -568,9 +634,44 @@ namespace Yaya {
 		}
 
 
+		private void FrameUpdate_PaintingGizmos () {
+			if (IsPlaying || DroppingPlayer || TaskingRoute || MouseDownButton != 0 || CtrlHolding) return;
+			if (!SelectionDraggingUnitRect.HasValue) return;
+			if (SelectingPaletteItem != null) {
+				// Draw Thumbnails
+				CellRenderer.TryGetSprite(SelectingPaletteItem.ArtworkID, out var sprite);
+				var unitRect = SelectionDraggingUnitRect.Value;
+				if (unitRect != PaintingThumbnailRect) {
+					PaintingThumbnailRect = unitRect;
+					PaintingThumbnailStartIndex = 0;
+				}
+				var rect = new RectInt(0, 0, Const.CEL, Const.CEL);
+				int endIndex = unitRect.width * unitRect.height;
+				int uiLayerIndex = CellRenderer.LayerCount - 1;
+				int cellRemain = CellRenderer.GetLayerCapacity(uiLayerIndex) - CellRenderer.GetUsedCellCount(uiLayerIndex);
+				cellRemain = cellRemain * 9 / 10;
+				int nextStartIndex = 0;
+				if (endIndex - PaintingThumbnailStartIndex > cellRemain) {
+					endIndex = PaintingThumbnailStartIndex + cellRemain;
+					nextStartIndex = endIndex;
+				}
+				for (int i = PaintingThumbnailStartIndex; i < endIndex; i++) {
+					rect.x = (unitRect.x + (i % unitRect.width)) * Const.CEL;
+					rect.y = (unitRect.y + (i / unitRect.width)) * Const.CEL;
+					DrawThumbnail(SelectingPaletteItem.ArtworkID, rect, false, sprite);
+				}
+				PaintingThumbnailStartIndex = nextStartIndex;
+			} else if (!MouseDownInSelection || MouseDownButton != 0) {
+				// Draw Cross
+				DrawCrossLine(SelectionDraggingUnitRect.Value.ToGlobal(), Unify(1), Const.WHITE, Const.BLACK);
+			}
+		}
+
+
 		private void FrameUpdate_Cursor () {
 
 			if (IsPlaying || DroppingPlayer || ShowingPanel) return;
+			if (MouseInSelection || SelectionDraggingUnitRect.HasValue) return;
 
 			var cursorRect = new RectInt(
 				FrameInput.MouseGlobalPosition.x.ToUnifyGlobal(),
@@ -595,49 +696,10 @@ namespace Yaya {
 
 			if (SelectingPaletteItem == null) {
 				// Erase Cross
-				int shiftY = thickness / 2;
-				int shrink = thickness * 2;
-				CellRendererGUI.DrawLine(
-					cursorRect.xMin + shrink,
-					cursorRect.yMin + shrink - shiftY,
-					cursorRect.xMax - shrink,
-					cursorRect.yMax - shrink - shiftY,
-					thickness, CURSOR_TINT_DARK
-				).Z = int.MaxValue - 1;
-				CellRendererGUI.DrawLine(
-					cursorRect.xMin + shrink,
-					cursorRect.yMax - shrink - shiftY,
-					cursorRect.xMax - shrink,
-					cursorRect.yMin + shrink - shiftY,
-					thickness, CURSOR_TINT_DARK
-				).Z = int.MaxValue - 1;
-				CellRendererGUI.DrawLine(
-					cursorRect.xMin + shrink,
-					cursorRect.yMin + shrink + shiftY,
-					cursorRect.xMax - shrink,
-					cursorRect.yMax - shrink + shiftY,
-					thickness, CURSOR_TINT
-				).Z = int.MaxValue - 1;
-				CellRendererGUI.DrawLine(
-					cursorRect.xMin + shrink,
-					cursorRect.yMax - shrink + shiftY,
-					cursorRect.xMax - shrink,
-					cursorRect.yMin + shrink + shiftY,
-					thickness, CURSOR_TINT
-				).Z = int.MaxValue - 1;
+				DrawCrossLine(cursorRect, thickness, CURSOR_TINT, CURSOR_TINT_DARK);
 			} else {
 				// Pal Thumbnail
-				if (CellRenderer.TryGetSprite(SelectingPaletteItem.ArtworkID, out var sprite)) {
-					CellRenderer.Draw(
-						SelectingPaletteItem.ArtworkID,
-						cursorRect.Shrink(cursorRect.width * 2 / 10).Fit(
-							sprite.GlobalWidth,
-							sprite.GlobalHeight,
-							sprite.PivotX,
-							sprite.PivotY
-						)
-					).Z = int.MaxValue - 2;
-				}
+				DrawThumbnail(SelectingPaletteItem.ArtworkID, cursorRect, true);
 			}
 		}
 
@@ -768,6 +830,58 @@ namespace Yaya {
 			}
 
 
+		}
+
+
+		private void DrawThumbnail (int artworkID, RectInt rect, bool shrink = false, AngeSprite sprite = null) {
+			if (sprite != null || CellRenderer.TryGetSprite(artworkID, out sprite)) {
+				if (shrink) {
+					rect = rect.Shrink(rect.width * 2 / 10).Fit(
+						sprite.GlobalWidth,
+						sprite.GlobalHeight,
+						sprite.PivotX,
+						sprite.PivotY
+					);
+				}
+				CellRenderer.Draw(
+					SelectingPaletteItem.ArtworkID,
+					rect
+				).Z = int.MaxValue - 2;
+			}
+		}
+
+
+		private void DrawCrossLine (RectInt rect, int thickness, Color32 tint, Color32 shadowTint) {
+			int shiftY = thickness / 2;
+			int shrink = thickness * 2;
+			CellRendererGUI.DrawLine(
+				rect.xMin + shrink,
+				rect.yMin + shrink - shiftY,
+				rect.xMax - shrink,
+				rect.yMax - shrink - shiftY,
+				thickness, shadowTint
+			).Z = int.MaxValue - 1;
+			CellRendererGUI.DrawLine(
+				rect.xMin + shrink,
+				rect.yMax - shrink - shiftY,
+				rect.xMax - shrink,
+				rect.yMin + shrink - shiftY,
+				thickness, shadowTint
+			).Z = int.MaxValue - 1;
+			CellRendererGUI.DrawLine(
+				rect.xMin + shrink,
+				rect.yMin + shrink + shiftY,
+				rect.xMax - shrink,
+				rect.yMax - shrink + shiftY,
+				thickness, tint
+			).Z = int.MaxValue - 1;
+			CellRendererGUI.DrawLine(
+				rect.xMin + shrink,
+				rect.yMax - shrink + shiftY,
+				rect.xMax - shrink,
+				rect.yMin + shrink + shiftY,
+				thickness, tint
+			).Z = int.MaxValue - 1;
 		}
 
 

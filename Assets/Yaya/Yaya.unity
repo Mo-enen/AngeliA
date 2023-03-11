@@ -156,6 +156,12 @@ MonoBehaviour:
       type: 2}
     Fonts:
     - {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    Cursors:
+    - {fileID: 2800000, guid: 2d951d3f218d5714995d761f1ca80634, type: 3}
+    - {fileID: 2800000, guid: 251783bc0d1b9a642b21a27e979bcb8f, type: 3}
+    CursorPivots:
+    - {x: 0, y: 10}
+    - {x: 12, y: 12}
   m_TimeConfig:
     LogicFramerate: 60
     LogicFramerateLag: 30
