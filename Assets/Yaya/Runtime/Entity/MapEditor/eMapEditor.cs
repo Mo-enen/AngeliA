@@ -31,7 +31,7 @@ namespace Yaya {
 		}
 
 
-		private struct PasteData {
+		private struct BlockBuffer {
 			public int ID;
 			public BlockType Type;
 			public int LocalUnitX;
@@ -49,7 +49,6 @@ namespace Yaya {
 
 		// Const
 		private const Key KEY_SWITCH_MODE = Key.Space;
-		private const Key KEY_PANEL = Key.Tab;
 		private static readonly int LINE_V = "Soft Line V".AngeHash();
 		private static readonly int LINE_H = "Soft Line H".AngeHash();
 		private static readonly int FRAME = "Frame16".AngeHash();
@@ -57,7 +56,6 @@ namespace Yaya {
 		private static readonly int DOTTED_LINE = "DottedLine16".AngeHash();
 		private static readonly Color32 CURSOR_TINT = new(240, 240, 240, 128);
 		private static readonly Color32 CURSOR_TINT_DARK = new(16, 16, 16, 128);
-		private static readonly Color32 DRAGGING_CONTENT_TINT = new(32, 64, 255, 16);
 
 		// Api
 		public bool IsEditing => Active && Mode == EditingMode.Editing;
@@ -76,17 +74,19 @@ namespace Yaya {
 
 		// Data
 		private Dictionary<int, SpriteData> SpritePool = null;
-		private Dictionary<int, int[]> ChainPool = null;
+		private Dictionary<int, int[]> IdChainPool = null;
 		private Dictionary<int, int> ReversedChainPool = null;
 		private Dictionary<int, string> ChainRulePool = null;
 		private Dictionary<int, int> EntityArtworkRedirectPool = null;
 		private Dictionary<int, PaletteItem> PalettePool = null;
 		private List<PaletteGroup> PaletteGroups = null;
-		private List<PasteData> PastingList = null;
+		private List<BlockBuffer> PastingBuffer = null;
+		private List<BlockBuffer> CopyBuffer = null;
 		private PaletteItem SelectingPaletteItem = null;
 		private YayaWorldSquad Squad = null;
 		private Vector3Int PlayerDropPos = default;
 		private RectInt TargetViewRect = default;
+		private RectInt CopyBufferOriginalUnitRect = default;
 		private bool IsDirty = false;
 		private bool DroppingPlayer = false;
 		private bool TaskingRoute = false;
@@ -119,8 +119,8 @@ namespace Yaya {
 			var game = Game.Current;
 
 			// Squad
-			game.WorldSquad.SetDataChannel(World.DataChannel.User);
-			game.WorldSquad_Behind.SetDataChannel(World.DataChannel.User);
+			game.WorldSquad.SetDataChannel(MapChannel.User);
+			game.WorldSquad_Behind.SetDataChannel(MapChannel.User);
 			Squad = YayaGame.Current.WorldSquad;
 
 			// Pipeline
@@ -131,7 +131,6 @@ namespace Yaya {
 
 			// Cache
 			DroppingPlayer = false;
-			ShowingPanel = false;
 			SelectingPaletteItem = null;
 			MouseDownPosition = null;
 			SelectionUnitRect = null;
@@ -179,20 +178,21 @@ namespace Yaya {
 				SetEditingMode(EditingMode.Playing);
 			}
 
-			Game.Current.WorldSquad.SetDataChannel(World.DataChannel.BuiltIn);
-			Game.Current.WorldSquad_Behind.SetDataChannel(World.DataChannel.BuiltIn);
+			Game.Current.WorldSquad.SetDataChannel(MapChannel.BuiltIn);
+			Game.Current.WorldSquad_Behind.SetDataChannel(MapChannel.BuiltIn);
 
 			GlobalPosition.ReloadMeta(Const.BuiltInMapRoot);
 			eCameraAutoScroll.ReloadMeta(Const.BuiltInMapRoot);
 
 			SpritePool = null;
-			ChainPool = null;
+			IdChainPool = null;
 			EntityArtworkRedirectPool = null;
 			ChainRulePool = null;
 			ReversedChainPool = null;
 			PaletteGroups = null;
 			PalettePool = null;
-			PastingList = null;
+			PastingBuffer = null;
+			CopyBuffer = null;
 
 			System.GC.Collect(0, System.GCCollectionMode.Forced);
 
@@ -203,11 +203,12 @@ namespace Yaya {
 		private void Active_Pool () {
 
 			SpritePool = new();
-			ChainPool = new();
+			IdChainPool = new();
 			EntityArtworkRedirectPool = new();
 			ChainRulePool = new();
 			ReversedChainPool = new();
-			PastingList = new();
+			PastingBuffer = new();
+			CopyBuffer = new();
 
 			int spriteCount = CellRenderer.SpriteCount;
 			int chainCount = CellRenderer.ChainCount;
@@ -249,7 +250,7 @@ namespace Yaya {
 						cIdList.Add(0);
 					}
 				}
-				ChainPool.TryAdd(chain.ID, cIdList.ToArray());
+				IdChainPool.TryAdd(chain.ID, cIdList.ToArray());
 
 				// Reversed Chain
 				foreach (var _i in chain.Chain) {
@@ -311,7 +312,6 @@ namespace Yaya {
 			FrameUpdate_View();
 			FrameUpdate_Hotkey();
 			FrameUpdate_DropPlayer();
-			FrameUpdate_PanelUI();
 
 			// Gizmos
 			FrameUpdate_Grid();
@@ -334,7 +334,7 @@ namespace Yaya {
 
 		private void FrameUpdate_View () {
 
-			if (TaskingRoute || ShowingPanel) return;
+			if (TaskingRoute) return;
 
 			var game = Game.Current;
 			var viewConfig = game.ViewConfig;
@@ -445,42 +445,55 @@ namespace Yaya {
 				eControlHintUI.AddHint(KEY_SWITCH_MODE, IsEditing ? WORD.HINT_MEDT_SWITCH_PLAY : WORD.HINT_MEDT_SWITCH_EDIT);
 			}
 
-			if (IsEditing) {
+			// Cancel Drop
+			if (IsEditing && DroppingPlayer) {
+				if (FrameInput.KeyboardDown(Key.Escape)) {
+					DroppingPlayer = false;
+					FrameInput.UseAllHoldingKeys();
+				}
+				eControlHintUI.AddHint(Key.Escape, WORD.MEDT_CANCEL_DROP);
+			}
 
-				bool ctrl = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
+			// Editing Only
+			if (IsEditing && !DroppingPlayer) {
 
-				// Panel
-				if (FrameInput.KeyboardDown(KEY_PANEL)) {
-					if (ShowingPanel) {
-						HidePanel();
-					} else {
-						ShowPanel();
+				// Ctrl + ...
+				if (CtrlHolding) {
+					// Save
+					if (FrameInput.KeyboardDown(Key.S)) {
+						Save();
+					}
+					// Copy
+					if (FrameInput.KeyboardDown(Key.C)) {
+						AddSelectionToCopyBuffer(false);
+					}
+					// Cut
+					if (FrameInput.KeyboardDown(Key.X)) {
+						AddSelectionToCopyBuffer(true);
+					}
+					// Paste
+					if (FrameInput.KeyboardDown(Key.V)) {
+						StartPasteFromCopyBuffer();
 					}
 				}
-				if (ShowingPanel) {
-					if (
-						FrameInput.KeyboardDown(Key.Escape) ||
-						FrameInput.MouseRightButtonDown ||
-						FrameInput.MouseMidButtonDown
-					) {
-						HidePanel();
-						FrameInput.UseAllHoldingKeys();
+
+				// Delete
+				if (FrameInput.KeyboardDown(Key.Delete) || FrameInput.KeyboardDown(Key.Backspace)) {
+					if (Pasting) {
+						CancelPaste();
+					} else if (SelectionUnitRect.HasValue) {
+						DeleteSelection();
 					}
 				}
-				eControlHintUI.AddHint(KEY_PANEL, WORD.HINT_MEDT_PANEL);
 
-				// Save
-				if (FrameInput.KeyboardDown(Key.S) && ctrl) {
-					Save();
-				}
-
-				// Cancel Drop
-				if (DroppingPlayer) {
-					if (FrameInput.KeyboardDown(Key.Escape)) {
-						DroppingPlayer = false;
-						FrameInput.UseAllHoldingKeys();
+				// Cancel
+				if (FrameInput.KeyboardDown(Key.Escape)) {
+					if (Pasting) {
+						ApplyPaste();
+					} else if (SelectionUnitRect.HasValue) {
+						SelectionUnitRect = null;
 					}
-					eControlHintUI.AddHint(Key.Escape, WORD.MEDT_CANCEL_DROP);
+					FrameInput.UseAllHoldingKeys();
 				}
 
 			}
@@ -589,9 +602,6 @@ namespace Yaya {
 
 					// Respawn Entities
 					game.SetViewZ(game.ViewZ);
-
-					// Hide UI
-					if (ShowingPanel) HidePanel();
 
 					break;
 

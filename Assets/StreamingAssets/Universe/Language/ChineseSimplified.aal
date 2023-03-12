@@ -10,7 +10,6 @@ ActionHint.Photo:切换
 CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Jump:跳跃
-CtrlHint.MEDT.Panel:面板
 CtrlHint.MEDT.SwitchMode.Edit:编辑
 CtrlHint.MEDT.SwitchMode.Play:开始游戏
 CtrlHint.Move:移动

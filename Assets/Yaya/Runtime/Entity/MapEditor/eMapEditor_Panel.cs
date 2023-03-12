@@ -41,10 +41,6 @@ namespace Yaya {
 		#region --- VAR ---
 
 
-		// Data
-		private bool ShowingPanel = false;
-		private int PanelChangedFrame = int.MinValue;
-
 
 		#endregion
 
@@ -206,34 +202,6 @@ namespace Yaya {
 		}
 
 
-		private void FrameUpdate_PanelUI () {
-
-			if (TaskingRoute || IsPlaying || DroppingPlayer) {
-				if (ShowingPanel) {
-					ShowingPanel = false;
-					PanelChangedFrame = int.MinValue;
-				}
-				return;
-			}
-
-			const int DURATION = 24;
-			int localFrame = (Game.GlobalFrame - PanelChangedFrame).Clamp(0, DURATION);
-
-			if (localFrame < DURATION) {
-				// Animating
-
-
-
-			} else if (ShowingPanel) {
-				// Ready to Use
-
-
-
-			}
-
-		}
-
-
 		#endregion
 
 
@@ -241,17 +209,6 @@ namespace Yaya {
 
 		#region --- LGC ---
 
-
-		private void ShowPanel () {
-			PanelChangedFrame = Game.GlobalFrame;
-			ShowingPanel = true;
-		}
-
-
-		private void HidePanel () {
-			PanelChangedFrame = Game.GlobalFrame;
-			ShowingPanel = false;
-		}
 
 
 		#endregion

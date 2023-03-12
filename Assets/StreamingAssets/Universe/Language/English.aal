@@ -10,7 +10,6 @@ ActionHint.Photo:Switch
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Jump:Jump
-CtrlHint.MEDT.Panel:Panel
 CtrlHint.MEDT.SwitchMode.Edit:Edit
 CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move

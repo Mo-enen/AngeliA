@@ -15,6 +15,7 @@ namespace Yaya.Editor {
 		public void Refresh () {
 			YayaUtil.CreateCameraScrollMetaFile(Const.BuiltInMapRoot);
 			YayaUtil.CreateCameraScrollMetaFile(Const.UserMapRoot);
+			YayaUtil.CreateCameraScrollMetaFile(Const.DownloadMapRoot);
 		}
 
 

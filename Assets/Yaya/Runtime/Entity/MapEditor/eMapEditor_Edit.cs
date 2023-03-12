@@ -19,6 +19,7 @@ namespace Yaya {
 		private RectInt? DraggingUnitRect = null;
 		private Vector2Int? MouseDownPosition = null;
 		private RectInt DragBeginSelectionUnitRect = default;
+		private readonly System.Random PaintingRan = new(6492763);
 		private int MouseDownButton = -1;
 		private bool MouseMoved = false;
 		private bool MouseInSelection = false;
@@ -40,7 +41,7 @@ namespace Yaya {
 			DraggingUnitRect = null;
 			CtrlHolding = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.RightCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
 
-			if (IsPlaying || DroppingPlayer || TaskingRoute || ShowingPanel) {
+			if (IsPlaying || DroppingPlayer || TaskingRoute) {
 				MouseDownPosition = null;
 				return;
 			}
@@ -95,9 +96,6 @@ namespace Yaya {
 								FrameInput.MouseGlobalPosition.ToUnit()
 							);
 							break;
-						case 2:
-							MouseUp_Mid();
-							break;
 					}
 				}
 				MouseDownButton = -1;
@@ -135,12 +133,52 @@ namespace Yaya {
 
 		private void MouseUp_Left (Vector2Int mouseDownUnitPos, Vector2Int mouseUnitPos) {
 			if (!MouseDownInSelection) {
-				// Paint
+				// Paint / Erase
 				ApplyPaste();
 				SelectionUnitRect = null;
-
-
-
+				var unitRect = new RectInt(
+					Mathf.Min(mouseDownUnitPos.x, mouseUnitPos.x),
+					Mathf.Min(mouseDownUnitPos.y, mouseUnitPos.y),
+					Mathf.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1,
+					Mathf.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1
+				);
+				bool paint = SelectingPaletteItem != null;
+				int id = paint ? SelectingPaletteItem.ID : 0;
+				var type = paint ? SelectingPaletteItem.BlockType : default;
+				for (int i = unitRect.xMin; i < unitRect.xMax; i++) {
+					for (int j = unitRect.yMin; j < unitRect.yMax; j++) {
+						if (paint) {
+							// Paint
+							if (
+								SelectingPaletteItem.GroupType == GroupType.Random &&
+								SelectingPaletteItem.Chain != null &&
+								IdChainPool.TryGetValue(SelectingPaletteItem.Chain.ID, out var idChain) &&
+								idChain.Length > 0
+							) {
+								// Redirect for Random
+								id = idChain[PaintingRan.Next(0, idChain.Length)];
+							}
+							Squad.SetBlockAt(i, j, type, id);
+						} else if (mouseDownUnitPos == mouseUnitPos) {
+							// Single Erase
+							if (Squad.GetBlockAt(i, j, BlockType.Entity) != 0) {
+								Squad.SetBlockAt(i, j, BlockType.Entity, 0);
+							} else if (Squad.GetBlockAt(i, j, BlockType.Level) != 0) {
+								Squad.SetBlockAt(i, j, BlockType.Level, 0);
+							} else {
+								Squad.SetBlockAt(i, j, BlockType.Background, 0);
+							}
+						} else {
+							// Range Erase
+							Squad.SetBlockAt(i, j, BlockType.Background, 0);
+							Squad.SetBlockAt(i, j, BlockType.Level, 0);
+							Squad.SetBlockAt(i, j, BlockType.Entity, 0);
+						}
+					}
+				}
+				SpawnFrameParticle(unitRect.ToGlobal(), id);
+				RedirectForRule(unitRect);
+				IsDirty = true;
 			}
 		}
 
@@ -169,42 +207,23 @@ namespace Yaya {
 		}
 
 
-		private void MouseUp_Mid () {
-			if (!MouseMoved) ShowPanel();
-		}
-
-
-		// Paste
-		private void ApplyPaste () {
-			if (!Pasting) return;
-			if (SelectionUnitRect.HasValue) {
-				foreach (var pasteData in PastingList) {
-					int unitX = pasteData.LocalUnitX + SelectionUnitRect.Value.x;
-					int unitY = pasteData.LocalUnitY + SelectionUnitRect.Value.y;
-					Squad.SetBlockAt(unitX, unitY, pasteData.Type, pasteData.ID);
-				}
-			}
-			PastingList.Clear();
-			SelectionUnitRect = null;
-			Pasting = false;
-		}
-
-
-		private void StartPaste (bool removeOriginal) {
+		// Copy
+		private void AddSelectionToCopyBuffer (bool removeOriginal) {
 			if (!SelectionUnitRect.HasValue) return;
 			var unitRect = SelectionUnitRect.Value;
-			PastingList.Clear();
-			Pasting = true;
-			int l = unitRect.xMin;
-			int r = unitRect.xMax;
-			int d = unitRect.yMin;
-			int u = unitRect.yMax;
-			for (int i = l; i < r; i++) {
-				for (int j = d; j < u; j++) {
+			CopyBuffer.Clear();
+			CopyBufferOriginalUnitRect = unitRect;
+			for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
+				for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
 					AddToList(i, j, BlockType.Background);
 					AddToList(i, j, BlockType.Level);
 					AddToList(i, j, BlockType.Entity);
 				}
+			}
+			if (removeOriginal) {
+				SelectionUnitRect = null;
+				RedirectForRule(unitRect);
+				IsDirty = true;
 			}
 			// Func
 			void AddToList (int i, int j, BlockType type) {
@@ -213,13 +232,146 @@ namespace Yaya {
 				if (removeOriginal) {
 					Squad.SetBlockAt(i, j, type, 0);
 				}
-				PastingList.Add(new PasteData() {
+				CopyBuffer.Add(new BlockBuffer() {
 					ID = id,
-					LocalUnitX = i - l,
-					LocalUnitY = j - d,
+					LocalUnitX = i - unitRect.x,
+					LocalUnitY = j - unitRect.y,
 					Type = type,
 				});
 			}
+		}
+
+
+		private void StartPasteFromCopyBuffer () {
+			if (CopyBuffer.Count == 0) return;
+			// Apply Prev Paste
+			ApplyPaste();
+			// Get Target Rect
+			var copyBufferOriginalGlobalRect = CopyBufferOriginalUnitRect.ToGlobal();
+			var targetRect = CopyBufferOriginalUnitRect;
+			if (!CellRenderer.CameraRect.Shrink(Const.CEL * 2).Overlaps(copyBufferOriginalGlobalRect)) {
+				var cameraUnitRect = CellRenderer.CameraRect.ToUnit();
+				targetRect.x = cameraUnitRect.x + cameraUnitRect.width / 2 - targetRect.width / 2;
+				targetRect.y = cameraUnitRect.y + cameraUnitRect.height / 2 - targetRect.height / 2;
+			}
+			// Fill Paste Buffer
+			PastingBuffer.Clear();
+			Pasting = true;
+			foreach (var buffer in CopyBuffer) {
+				PastingBuffer.Add(buffer);
+			}
+			SelectionUnitRect = targetRect;
+		}
+
+
+		// Paste
+		private void ApplyPaste () {
+			if (!Pasting) return;
+			if (SelectionUnitRect.HasValue && PastingBuffer.Count > 0) {
+				foreach (var buffer in PastingBuffer) {
+					int unitX = buffer.LocalUnitX + SelectionUnitRect.Value.x;
+					int unitY = buffer.LocalUnitY + SelectionUnitRect.Value.y;
+					Squad.SetBlockAt(unitX, unitY, buffer.Type, buffer.ID);
+				}
+				RedirectForRule(SelectionUnitRect.Value);
+				IsDirty = true;
+			}
+			PastingBuffer.Clear();
+			SelectionUnitRect = null;
+			Pasting = false;
+		}
+
+
+		private void CancelPaste () {
+			if (!Pasting) return;
+			SelectionUnitRect = null;
+			Pasting = false;
+			PastingBuffer.Clear();
+		}
+
+
+		private void StartPaste (bool removeOriginal) {
+			if (!SelectionUnitRect.HasValue) return;
+			var unitRect = SelectionUnitRect.Value;
+			PastingBuffer.Clear();
+			Pasting = true;
+			for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
+				for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
+					AddToList(i, j, BlockType.Background);
+					AddToList(i, j, BlockType.Level);
+					AddToList(i, j, BlockType.Entity);
+				}
+			}
+			if (removeOriginal) {
+				RedirectForRule(unitRect);
+				IsDirty = true;
+			}
+			// Func
+			void AddToList (int i, int j, BlockType type) {
+				int id = Squad.GetBlockAt(i, j, type);
+				if (id == 0) return;
+				if (removeOriginal) {
+					Squad.SetBlockAt(i, j, type, 0);
+				}
+				PastingBuffer.Add(new BlockBuffer() {
+					ID = id,
+					LocalUnitX = i - unitRect.x,
+					LocalUnitY = j - unitRect.y,
+					Type = type,
+				});
+			}
+		}
+
+
+		// Rule
+		private void RedirectForRule (RectInt unitRange) {
+			unitRange = unitRange.Expand(1);
+			for (int i = unitRange.xMin; i < unitRange.xMax; i++) {
+				for (int j = unitRange.yMin; j < unitRange.yMax; j++) {
+					RedirectForRule(i, j, BlockType.Level);
+					RedirectForRule(i, j, BlockType.Background);
+				}
+			}
+		}
+		private void RedirectForRule (int i, int j, BlockType type) {
+			int id = Squad.GetBlockAt(i, j, type);
+			int oldID = id;
+			if (ReversedChainPool.TryGetValue(id, out int realRuleID)) id = realRuleID;
+			if (!IdChainPool.TryGetValue(id, out var idChain)) return;
+			if (!ChainRulePool.TryGetValue(id, out string fullRuleString)) return;
+			int ruleIndex = AngeUtil.GetRuleIndex(
+				fullRuleString, id,
+				Squad.GetBlockAt(i - 1, j + 1, type),
+				Squad.GetBlockAt(i + 0, j + 1, type),
+				Squad.GetBlockAt(i + 1, j + 1, type),
+				Squad.GetBlockAt(i - 1, j + 0, type),
+				Squad.GetBlockAt(i + 1, j + 0, type),
+				Squad.GetBlockAt(i - 1, j - 1, type),
+				Squad.GetBlockAt(i + 0, j - 1, type),
+				Squad.GetBlockAt(i + 1, j - 1, type),
+				ReversedChainPool
+			);
+			if (ruleIndex < 0 || ruleIndex >= idChain.Length) return;
+			int newID = idChain[ruleIndex];
+			if (newID == oldID) return;
+			Squad.SetBlockAt(i, j, type, newID);
+		}
+
+
+		// Misc
+		private void DeleteSelection () {
+			if (!SelectionUnitRect.HasValue) return;
+			var unitRect = SelectionUnitRect.Value;
+			for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
+				for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
+					Squad.SetBlockAt(i, j, BlockType.Background, 0);
+					Squad.SetBlockAt(i, j, BlockType.Level, 0);
+					Squad.SetBlockAt(i, j, BlockType.Entity, 0);
+				}
+			}
+			RedirectForRule(unitRect);
+			SelectionUnitRect = null;
+			IsDirty = true;
 		}
 
 

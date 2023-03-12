@@ -13,6 +13,9 @@ namespace Yaya {
 		#region --- VAR ---
 
 
+		// Const
+		private static readonly Color32 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
+
 		// Data
 		private RectInt PaintingThumbnailRect = default;
 		private int PaintingThumbnailStartIndex = 0;
@@ -127,15 +130,12 @@ namespace Yaya {
 			);
 			foreach (var cell in cells) cell.Z = int.MaxValue;
 
-			// Rect Blue Tint
-			CellRenderer.Draw(Const.PIXEL, frameRect.Shrink(thickness), DRAGGING_CONTENT_TINT).Z = int.MaxValue - 1;
-
 			// Content Thumbnail
 			var rect = new RectInt(0, 0, Const.CEL, Const.CEL);
-			foreach (var pasteData in PastingList) {
-				rect.x = (pastingUnitRect.x + pasteData.LocalUnitX).ToGlobal();
-				rect.y = (pastingUnitRect.y + pasteData.LocalUnitY).ToGlobal();
-				DrawThumbnail(pasteData.ID, rect);
+			foreach (var buffer in PastingBuffer) {
+				rect.x = (pastingUnitRect.x + buffer.LocalUnitX).ToGlobal();
+				rect.y = (pastingUnitRect.y + buffer.LocalUnitY).ToGlobal();
+				DrawThumbnail(buffer.ID, rect);
 			}
 		}
 
@@ -193,7 +193,7 @@ namespace Yaya {
 
 		private void FrameUpdate_Cursor () {
 
-			if (IsPlaying || DroppingPlayer || ShowingPanel) return;
+			if (IsPlaying || DroppingPlayer) return;
 			if (MouseInSelection || DraggingUnitRect.HasValue) return;
 			if (FrameInput.AnyMouseButtonHolding && MouseDownInSelection) return;
 
@@ -235,6 +235,21 @@ namespace Yaya {
 
 		#region --- LGC ---
 
+
+		private void SpawnFrameParticle (RectInt rect, int blockTintId) {
+
+			var particle = Game.Current.SpawnEntity(eMapEditorBlinkParticle.TYPE_ID, 0, 0) as Particle;
+			particle.X = rect.x;
+			particle.Y = rect.y;
+			particle.Width = rect.width;
+			particle.Height = rect.height;
+			particle.Tint = PARTICLE_CLEAR_TINT;
+
+			if (SpritePool.TryGetValue(blockTintId, out var sprite)) {
+				particle.Tint = sprite.Sprite.SummaryTint;
+			}
+
+		}
 
 
 		#endregion
