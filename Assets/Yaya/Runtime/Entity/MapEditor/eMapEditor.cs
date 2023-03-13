@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using AngeliaFramework;
-
+using Moenen.Standard;
 
 namespace Yaya {
 	[EntityAttribute.DontDestroyOnSquadTransition]
@@ -36,6 +36,24 @@ namespace Yaya {
 			public BlockType Type;
 			public int LocalUnitX;
 			public int LocalUnitY;
+		}
+
+
+		// Undo
+		private class MapUndoItem : UndoItem {
+			public RectInt ViewRect;
+			public int DataIndex;
+			public int DataLength;
+		}
+
+
+		private struct MapUndoData {
+			public int Step;
+			public int BackgroundID;
+			public int LevelID;
+			public int EntityID;
+			public int UnitX;
+			public int UnitY;
 		}
 
 
@@ -82,8 +100,10 @@ namespace Yaya {
 		private List<PaletteGroup> PaletteGroups = null;
 		private List<BlockBuffer> PastingBuffer = null;
 		private List<BlockBuffer> CopyBuffer = null;
+		private MapUndoData[] UndoData = null;
 		private PaletteItem SelectingPaletteItem = null;
 		private YayaWorldSquad Squad = null;
+		private UndoRedoEcho<MapUndoItem> UndoRedo = null;
 		private Vector3Int PlayerDropPos = default;
 		private RectInt TargetViewRect = default;
 		private RectInt CopyBufferOriginalUnitRect = default;
@@ -91,6 +111,7 @@ namespace Yaya {
 		private bool DroppingPlayer = false;
 		private bool TaskingRoute = false;
 		private int DropHintWidth = Const.CEL;
+		private int UndoDataIndex = 0;
 
 		// UI
 		private readonly CellLabel DropHintLabel = new() {
@@ -130,6 +151,10 @@ namespace Yaya {
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 
 			// Cache
+			PastingBuffer = new List<BlockBuffer>();
+			CopyBuffer = new List<BlockBuffer>();
+			UndoRedo = new UndoRedoEcho<MapUndoItem>(128, OnUndoRedoPerformed, OnUndoRedoPerformed);
+			UndoData = new MapUndoData[65536];
 			DroppingPlayer = false;
 			SelectingPaletteItem = null;
 			MouseDownPosition = null;
@@ -140,6 +165,7 @@ namespace Yaya {
 			MouseInSelection = false;
 			MouseDownInSelection = false;
 			Pasting = false;
+			UndoDataIndex = 0;
 
 			// Start
 			SetEditingMode(EditingMode.Editing);
@@ -193,6 +219,8 @@ namespace Yaya {
 			PalettePool = null;
 			PastingBuffer = null;
 			CopyBuffer = null;
+			UndoRedo = null;
+			UndoData = null;
 
 			System.GC.Collect(0, System.GCCollectionMode.Forced);
 
@@ -202,13 +230,11 @@ namespace Yaya {
 
 		private void Active_Pool () {
 
-			SpritePool = new();
-			IdChainPool = new();
-			EntityArtworkRedirectPool = new();
-			ChainRulePool = new();
-			ReversedChainPool = new();
-			PastingBuffer = new();
-			CopyBuffer = new();
+			SpritePool = new Dictionary<int, SpriteData>();
+			IdChainPool = new Dictionary<int, int[]>();
+			EntityArtworkRedirectPool = new Dictionary<int, int>();
+			ChainRulePool = new Dictionary<int, string>();
+			ReversedChainPool = new Dictionary<int, int>();
 
 			int spriteCount = CellRenderer.SpriteCount;
 			int chainCount = CellRenderer.ChainCount;
@@ -475,6 +501,14 @@ namespace Yaya {
 					if (FrameInput.KeyboardDown(Key.V)) {
 						StartPasteFromCopyBuffer();
 					}
+					// Undo
+					if (FrameInput.KeyboardDown(Key.Z)) {
+						UndoRedo.Undo();
+					}
+					// Redo
+					if (FrameInput.KeyboardDown(Key.Y)) {
+						UndoRedo.Redo();
+					}
 				}
 
 				// Delete
@@ -639,6 +673,81 @@ namespace Yaya {
 
 
 
+		}
+
+
+		// Undo
+		private void RegisterUndo_Begain (RectInt unitRange) => RegisterUndoLogic(unitRange, true, false);
+		private void RegisterUndo_End (RectInt unitRange, bool growStep = true) => RegisterUndoLogic(unitRange, false, growStep);
+		private void RegisterUndoLogic (RectInt unitRange, bool begain, bool growStep) {
+
+			int DATA_LEN = UndoData.Length;
+			int CURRENT_STEP = UndoRedo.CurrentStep;
+
+			if (unitRange.width * unitRange.height > DATA_LEN) return;
+
+			// Fill Data
+			int startIndex = UndoDataIndex;
+			int dataLength = 0;
+			for (int i = unitRange.x; i < unitRange.x + unitRange.width; i++) {
+				for (int j = unitRange.y; j < unitRange.y + unitRange.height; j++) {
+					int index = (startIndex + dataLength) % DATA_LEN;
+					ref var data = ref UndoData[index];
+					data.Step = CURRENT_STEP;
+					var triID = Squad.GetTriBlockAt(i, j);
+					data.EntityID = triID.A;
+					data.LevelID = triID.B;
+					data.BackgroundID = triID.C;
+					data.UnitX = i;
+					data.UnitY = j;
+					dataLength++;
+				}
+			}
+			UndoDataIndex = (startIndex + dataLength) % DATA_LEN;
+
+			// Register Item
+			var undoItem = new MapUndoItem() {
+				DataIndex = startIndex,
+				DataLength = dataLength,
+				ViewRect = Game.Current.ViewRect,
+			};
+			if (begain) {
+				UndoRedo.RegisterBegin(undoItem);
+			} else {
+				UndoRedo.RegisterEnd(undoItem, growStep);
+			}
+		}
+
+
+		private void OnUndoRedoPerformed (MapUndoItem item) {
+			int DATA_LEN = UndoData.Length;
+			if (item == null || item.DataIndex < 0 || item.DataIndex >= DATA_LEN || item.Step == 0) return;
+			int minX = int.MaxValue;
+			int minY = int.MaxValue;
+			int maxX = int.MinValue;
+			int maxY = int.MinValue;
+			for (int i = 0; i < item.DataLength; i++) {
+				int index = (item.DataIndex + i) % DATA_LEN;
+				var data = UndoData[index];
+				if (data.Step != item.Step) break;
+				var changed = Squad.SetBlockAt(
+					data.UnitX, data.UnitY,
+					data.EntityID, data.LevelID, data.BackgroundID
+				);
+				minX = Mathf.Min(minX, data.UnitX);
+				minY = Mathf.Min(minY, data.UnitY);
+				maxX = Mathf.Max(maxX, data.UnitX);
+				maxY = Mathf.Max(maxY, data.UnitY);
+				if (!changed.HasValue) {
+					// Set to File
+
+
+
+				}
+			}
+			if (minX != int.MaxValue) {
+				RedirectForRule(new RectInt(minX, minY, maxX - minX + 1, maxY - minY + 1));
+			}
 		}
 
 

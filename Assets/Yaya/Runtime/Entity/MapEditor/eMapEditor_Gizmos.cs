@@ -16,6 +16,9 @@ namespace Yaya {
 		// Const
 		private static readonly Color32 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
 
+
+
+
 		// Data
 		private RectInt PaintingThumbnailRect = default;
 		private int PaintingThumbnailStartIndex = 0;

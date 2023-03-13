@@ -113,6 +113,29 @@ namespace Yaya {
 		#region --- LGC ---
 
 
+		private void DeleteSelection () {
+			if (!SelectionUnitRect.HasValue) return;
+			var unitRect = SelectionUnitRect.Value;
+			bool undoRegisted = false;
+			for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
+				for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
+					if (!undoRegisted && Squad.GetBlockAt(i, j) != 0) {
+						RegisterUndo_Begain(unitRect);
+						undoRegisted = true;
+					}
+					Squad.SetBlockAt(i, j, BlockType.Background, 0);
+					Squad.SetBlockAt(i, j, BlockType.Level, 0);
+					Squad.SetBlockAt(i, j, BlockType.Entity, 0);
+				}
+			}
+			RedirectForRule(unitRect);
+			SelectionUnitRect = null;
+			IsDirty = true;
+			if (undoRegisted) RegisterUndo_End(unitRect, true);
+		}
+
+
+		// Mouse Event
 		private void MouseDragBegin () {
 			if (MouseDownInSelection && MouseDownButton == 0 && !Pasting) {
 				StartPaste(true);
@@ -132,54 +155,67 @@ namespace Yaya {
 
 
 		private void MouseUp_Left (Vector2Int mouseDownUnitPos, Vector2Int mouseUnitPos) {
-			if (!MouseDownInSelection) {
-				// Paint / Erase
-				ApplyPaste();
-				SelectionUnitRect = null;
-				var unitRect = new RectInt(
-					Mathf.Min(mouseDownUnitPos.x, mouseUnitPos.x),
-					Mathf.Min(mouseDownUnitPos.y, mouseUnitPos.y),
-					Mathf.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1,
-					Mathf.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1
-				);
-				bool paint = SelectingPaletteItem != null;
-				int id = paint ? SelectingPaletteItem.ID : 0;
-				var type = paint ? SelectingPaletteItem.BlockType : default;
-				for (int i = unitRect.xMin; i < unitRect.xMax; i++) {
-					for (int j = unitRect.yMin; j < unitRect.yMax; j++) {
-						if (paint) {
-							// Paint
-							if (
-								SelectingPaletteItem.GroupType == GroupType.Random &&
-								SelectingPaletteItem.Chain != null &&
-								IdChainPool.TryGetValue(SelectingPaletteItem.Chain.ID, out var idChain) &&
-								idChain.Length > 0
-							) {
-								// Redirect for Random
-								id = idChain[PaintingRan.Next(0, idChain.Length)];
-							}
-							Squad.SetBlockAt(i, j, type, id);
-						} else if (mouseDownUnitPos == mouseUnitPos) {
-							// Single Erase
-							if (Squad.GetBlockAt(i, j, BlockType.Entity) != 0) {
-								Squad.SetBlockAt(i, j, BlockType.Entity, 0);
-							} else if (Squad.GetBlockAt(i, j, BlockType.Level) != 0) {
-								Squad.SetBlockAt(i, j, BlockType.Level, 0);
-							} else {
-								Squad.SetBlockAt(i, j, BlockType.Background, 0);
-							}
-						} else {
-							// Range Erase
-							Squad.SetBlockAt(i, j, BlockType.Background, 0);
-							Squad.SetBlockAt(i, j, BlockType.Level, 0);
-							Squad.SetBlockAt(i, j, BlockType.Entity, 0);
+			if (MouseDownInSelection) return;
+			// Paint / Erase
+			ApplyPaste();
+			SelectionUnitRect = null;
+			var unitRect = new RectInt(
+				Mathf.Min(mouseDownUnitPos.x, mouseUnitPos.x),
+				Mathf.Min(mouseDownUnitPos.y, mouseUnitPos.y),
+				(Mathf.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1).Clamp(0, Const.MAP),
+				(Mathf.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1).Clamp(0, Const.MAP)
+			);
+			bool paint = SelectingPaletteItem != null;
+			bool undoRegisted = false;
+			int id = paint ? SelectingPaletteItem.ID : 0;
+			var type = paint ? SelectingPaletteItem.BlockType : default;
+			for (int i = unitRect.xMin; i < unitRect.xMax; i++) {
+				for (int j = unitRect.yMin; j < unitRect.yMax; j++) {
+					if (paint) {
+						// Paint
+						if (
+							SelectingPaletteItem.GroupType == GroupType.Random &&
+							SelectingPaletteItem.Chain != null &&
+							IdChainPool.TryGetValue(SelectingPaletteItem.Chain.ID, out var idChain) &&
+							idChain.Length > 0
+						) {
+							// Redirect for Random
+							id = idChain[PaintingRan.Next(0, idChain.Length)];
 						}
+						if (!undoRegisted && Squad.GetBlockAt(i, j, type) != id) {
+							RegisterUndo_Begain(unitRect);
+							undoRegisted = true;
+						}
+						Squad.SetBlockAt(i, j, type, id);
+					} else if (mouseDownUnitPos == mouseUnitPos) {
+						// Single Erase
+						if (!undoRegisted && Squad.GetBlockAt(i, j) != 0) {
+							RegisterUndo_Begain(unitRect);
+							undoRegisted = true;
+						}
+						if (Squad.GetBlockAt(i, j, BlockType.Entity) != 0) {
+							Squad.SetBlockAt(i, j, BlockType.Entity, 0);
+						} else if (Squad.GetBlockAt(i, j, BlockType.Level) != 0) {
+							Squad.SetBlockAt(i, j, BlockType.Level, 0);
+						} else {
+							Squad.SetBlockAt(i, j, BlockType.Background, 0);
+						}
+					} else {
+						// Range Erase
+						if (!undoRegisted && Squad.GetBlockAt(i, j) != 0) {
+							RegisterUndo_Begain(unitRect);
+							undoRegisted = true;
+						}
+						Squad.SetBlockAt(i, j, BlockType.Background, 0);
+						Squad.SetBlockAt(i, j, BlockType.Level, 0);
+						Squad.SetBlockAt(i, j, BlockType.Entity, 0);
 					}
 				}
-				SpawnFrameParticle(unitRect.ToGlobal(), id);
-				RedirectForRule(unitRect);
-				IsDirty = true;
 			}
+			SpawnFrameParticle(unitRect.ToGlobal(), id);
+			RedirectForRule(unitRect);
+			IsDirty = true;
+			if (undoRegisted) RegisterUndo_End(unitRect, true);
 		}
 
 
@@ -190,8 +226,8 @@ namespace Yaya {
 				SelectionUnitRect = new RectInt(
 					Mathf.Min(mouseDownUnitPos.x, mouseUnitPos.x),
 					Mathf.Min(mouseDownUnitPos.y, mouseUnitPos.y),
-					Mathf.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1,
-					Mathf.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1
+					(Mathf.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1).Clamp(0, Const.MAP),
+					(Mathf.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1).Clamp(0, Const.MAP)
 				);
 				SelectingPaletteItem = null;
 			} else {
@@ -213,6 +249,7 @@ namespace Yaya {
 			var unitRect = SelectionUnitRect.Value;
 			CopyBuffer.Clear();
 			CopyBufferOriginalUnitRect = unitRect;
+			bool undoRegisted = false;
 			for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
 				for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
 					AddToList(i, j, BlockType.Background);
@@ -225,11 +262,16 @@ namespace Yaya {
 				RedirectForRule(unitRect);
 				IsDirty = true;
 			}
+			if (undoRegisted) RegisterUndo_End(unitRect, true);
 			// Func
 			void AddToList (int i, int j, BlockType type) {
 				int id = Squad.GetBlockAt(i, j, type);
 				if (id == 0) return;
 				if (removeOriginal) {
+					if (!undoRegisted && Squad.GetBlockAt(i, j) != 0) {
+						RegisterUndo_Begain(unitRect);
+						undoRegisted = true;
+					}
 					Squad.SetBlockAt(i, j, type, 0);
 				}
 				CopyBuffer.Add(new BlockBuffer() {
@@ -267,18 +309,24 @@ namespace Yaya {
 		// Paste
 		private void ApplyPaste () {
 			if (!Pasting) return;
-			if (SelectionUnitRect.HasValue && PastingBuffer.Count > 0) {
-				foreach (var buffer in PastingBuffer) {
-					int unitX = buffer.LocalUnitX + SelectionUnitRect.Value.x;
-					int unitY = buffer.LocalUnitY + SelectionUnitRect.Value.y;
-					Squad.SetBlockAt(unitX, unitY, buffer.Type, buffer.ID);
-				}
-				RedirectForRule(SelectionUnitRect.Value);
-				IsDirty = true;
-			}
-			PastingBuffer.Clear();
-			SelectionUnitRect = null;
 			Pasting = false;
+			if (!SelectionUnitRect.HasValue || PastingBuffer.Count <= 0) return;
+			var unitRect = SelectionUnitRect.Value;
+			bool undoRegisted = false;
+			foreach (var buffer in PastingBuffer) {
+				int unitX = buffer.LocalUnitX + unitRect.x;
+				int unitY = buffer.LocalUnitY + unitRect.y;
+				if (!undoRegisted && Squad.GetBlockAt(unitX, unitY) != buffer.ID) {
+					RegisterUndo_Begain(unitRect);
+					undoRegisted = true;
+				}
+				Squad.SetBlockAt(unitX, unitY, buffer.Type, buffer.ID);
+			}
+			RedirectForRule(unitRect);
+			IsDirty = true;
+			SelectionUnitRect = null;
+			PastingBuffer.Clear();
+			if (undoRegisted) RegisterUndo_End(unitRect, true);
 		}
 
 
@@ -295,6 +343,7 @@ namespace Yaya {
 			var unitRect = SelectionUnitRect.Value;
 			PastingBuffer.Clear();
 			Pasting = true;
+			bool undoRegisted = false;
 			for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
 				for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
 					AddToList(i, j, BlockType.Background);
@@ -306,11 +355,16 @@ namespace Yaya {
 				RedirectForRule(unitRect);
 				IsDirty = true;
 			}
+			if (undoRegisted) RegisterUndo_End(unitRect, false);
 			// Func
 			void AddToList (int i, int j, BlockType type) {
 				int id = Squad.GetBlockAt(i, j, type);
 				if (id == 0) return;
 				if (removeOriginal) {
+					if (!undoRegisted && Squad.GetBlockAt(i, j) != 0) {
+						RegisterUndo_Begain(unitRect);
+						undoRegisted = true;
+					}
 					Squad.SetBlockAt(i, j, type, 0);
 				}
 				PastingBuffer.Add(new BlockBuffer() {
@@ -335,6 +389,7 @@ namespace Yaya {
 		}
 		private void RedirectForRule (int i, int j, BlockType type) {
 			int id = Squad.GetBlockAt(i, j, type);
+			if (id == 0) return;
 			int oldID = id;
 			if (ReversedChainPool.TryGetValue(id, out int realRuleID)) id = realRuleID;
 			if (!IdChainPool.TryGetValue(id, out var idChain)) return;
@@ -355,23 +410,6 @@ namespace Yaya {
 			int newID = idChain[ruleIndex];
 			if (newID == oldID) return;
 			Squad.SetBlockAt(i, j, type, newID);
-		}
-
-
-		// Misc
-		private void DeleteSelection () {
-			if (!SelectionUnitRect.HasValue) return;
-			var unitRect = SelectionUnitRect.Value;
-			for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
-				for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
-					Squad.SetBlockAt(i, j, BlockType.Background, 0);
-					Squad.SetBlockAt(i, j, BlockType.Level, 0);
-					Squad.SetBlockAt(i, j, BlockType.Entity, 0);
-				}
-			}
-			RedirectForRule(unitRect);
-			SelectionUnitRect = null;
-			IsDirty = true;
 		}
 
 

@@ -180,6 +180,13 @@ namespace Yaya {
 				ePlayer.Selecting.SetHealth(0);
 			}
 
+
+#if UNITY_EDITOR
+			if (Game.GlobalFrame > 10 && FrameInput.KeyboardDown(Key.P) && FrameInput.KeyboardHolding(Key.LeftCtrl)) {
+				UnityEditor.EditorApplication.isPlaying = false;
+			}
+#endif
+
 			// ============ Test ============
 
 
