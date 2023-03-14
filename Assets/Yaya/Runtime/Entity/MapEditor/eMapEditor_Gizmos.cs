@@ -196,7 +196,7 @@ namespace Yaya {
 
 		private void FrameUpdate_Cursor () {
 
-			if (IsPlaying || DroppingPlayer) return;
+			if (IsPlaying || DroppingPlayer || CtrlHolding) return;
 			if (MouseInSelection || DraggingUnitRect.HasValue) return;
 			if (FrameInput.AnyMouseButtonHolding && MouseDownInSelection) return;
 
@@ -239,13 +239,13 @@ namespace Yaya {
 		#region --- LGC ---
 
 
-		private void SpawnFrameParticle (RectInt rect, int blockTintId) {
+		private void SpawnBlinkParticle (RectInt globalRect, int blockTintId) {
 
 			var particle = Game.Current.SpawnEntity(eMapEditorBlinkParticle.TYPE_ID, 0, 0) as Particle;
-			particle.X = rect.x;
-			particle.Y = rect.y;
-			particle.Width = rect.width;
-			particle.Height = rect.height;
+			particle.X = globalRect.x;
+			particle.Y = globalRect.y;
+			particle.Width = globalRect.width;
+			particle.Height = globalRect.height;
 			particle.Tint = PARTICLE_CLEAR_TINT;
 
 			if (SpritePool.TryGetValue(blockTintId, out var sprite)) {

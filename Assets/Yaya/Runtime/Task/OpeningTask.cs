@@ -84,7 +84,7 @@ namespace Yaya {
 
 			if (localFrame < SkipFrame) {
 				// Slow 
-				if (FrameInput.AnyKeyDown) {
+				if (localFrame > 2 && FrameInput.AnyKeyDown) {
 					SkipFrame = localFrame;
 					SkipY = (int)Util.Remap(0f, DURATION, TargetViewY + DOLLY_HEIGHT, TargetViewY, localFrame);
 				}

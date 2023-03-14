@@ -202,6 +202,17 @@ namespace Yaya {
 		}
 
 
+		private void FrameUpdate_PaletteUI () {
+
+			if (IsPlaying || DroppingPlayer || TaskingRoute) return;
+
+			// PerformingUndoItem != null
+
+
+
+		}
+
+
 		#endregion
 
 

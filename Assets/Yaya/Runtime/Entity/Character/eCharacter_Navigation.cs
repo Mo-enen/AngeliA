@@ -99,34 +99,43 @@ namespace Yaya {
 
 
 					////////////////// Test //////////////////
-					//int prevX = X;
-					//int prevY = Y;
-					//for (int index = CurrentNavOperationIndex; index < CurrentNavOperationCount; index++) {
-					//	var operation = NavOperations[index];
-					//	var tint = operation.Motion switch {
-					//		NavigationOperateMotion.Move => Const.GREEN,
-					//		NavigationOperateMotion.Jump => Const.BLUE,
-					//		_ => Const.WHITE,
-					//	};
-					//	CellRenderer.Draw(
-					//		Const.PIXEL, operation.TargetGlobalX, operation.TargetGlobalY,
-					//		500, 500, 0, 16, 16, tint
-					//	).Z = int.MaxValue;
-					//	CellRendererGUI.DrawLine(
-					//		prevX,
-					//		prevY,
-					//		operation.TargetGlobalX,
-					//		operation.TargetGlobalY,
-					//		8, tint
-					//	).Z = int.MaxValue;
-					//	prevX = operation.TargetGlobalX;
-					//	prevY = operation.TargetGlobalY;
-					//}
-					//
-					//CellRenderer.Draw(
-					//	Const.PIXEL, NavigationAim.x, NavigationAim.y,
-					//	500, 500, 0, 64, 64, Const.BLACK
-					//).Z = int.MaxValue;
+					if (FrameInput.KeyboardHolding(UnityEngine.InputSystem.Key.LeftAlt)) {
+
+						int prevX = X;
+						int prevY = Y;
+						for (int index = CurrentNavOperationIndex; index < CurrentNavOperationCount; index++) {
+							var operation = NavOperations[index];
+							var tint = operation.Motion switch {
+								NavigationOperateMotion.Move => Const.GREEN,
+								NavigationOperateMotion.Jump => Const.BLUE,
+								_ => Const.WHITE,
+							};
+							CellRenderer.Draw(
+								Const.PIXEL, operation.TargetGlobalX, operation.TargetGlobalY,
+								500, 500, 0, 16, 16, tint
+							).Z = int.MaxValue;
+							CellRendererGUI.DrawLine(
+								prevX,
+								prevY,
+								operation.TargetGlobalX,
+								operation.TargetGlobalY,
+								8, tint
+							).Z = int.MaxValue;
+							prevX = operation.TargetGlobalX;
+							prevY = operation.TargetGlobalY;
+
+							CellRendererGUI.Label(
+								CellLabel.TempLabel(index.ToString()),
+								new RectInt(operation.TargetGlobalX, operation.TargetGlobalY + Const.CEL, Const.CEL, Const.HALF)
+							);
+
+						}
+
+						CellRenderer.Draw(
+							Const.PIXEL, NavigationAim.x, NavigationAim.y,
+							500, 500, 0, 64, 64, Const.BLACK
+						).Z = int.MaxValue;
+					}
 
 					////////////////// Test //////////////////
 
@@ -200,9 +209,9 @@ namespace Yaya {
 
 				case CharacterNavigationState.Fly:
 					if (
-						NavigationState == CharacterNavigationState.Fly &&
 						Game.GlobalFrame > NavFlyStartFrame + NavigationMinimumFlyDuration &&
-						aimSqrtDis < END_FLY_DISTANCE_SQ
+						aimSqrtDis < END_FLY_DISTANCE_SQ &&
+						Y > NavigationAim.y - Const.HALF
 					) {
 						// Fly >> ??
 						NavigationState = aimSqrtDis > START_MOVE_DISTANCE_SQ ?
@@ -220,7 +229,7 @@ namespace Yaya {
 		private void NavUpdate_Movement_Idle () {
 			VelocityX = 0;
 			if (!InWater && !InSand) {
-				if (CellNavigation.IsGround(X, Y + Const.HALF, out int groundY)) {
+				if (CellNavigation.IsGround(X, Y + Const.HALF / 2, out int groundY)) {
 					// Move to Ground
 					VelocityY = groundY - Y;
 					MakeGrounded(1);
@@ -309,17 +318,19 @@ namespace Yaya {
 							NavJumpFromPosition.y, targetY,
 							NavJumpFrame
 						);
-						int deltaY = Mathf.Abs(NavJumpFrame - NavJumpDuration / 2);
-						int arc = (Util.DistanceInt(
-							NavJumpFromPosition.x,
-							NavJumpFromPosition.y,
-							targetX,
-							targetY
-						) / 2).Clamp(Const.HALF, Const.CEL * 3);
-						newY += Util.Remap(
-							NavJumpDuration * NavJumpDuration / 4, 0, 0, arc,
-							deltaY * deltaY
-						);
+						if (NavJumpDuration > 3) {
+							int deltaY = Mathf.Abs(NavJumpFrame - NavJumpDuration / 2);
+							int arc = (Util.DistanceInt(
+								NavJumpFromPosition.x,
+								NavJumpFromPosition.y,
+								targetX,
+								targetY
+							) / 2).Clamp(Const.HALF, Const.CEL * 3);
+							newY += Util.Remap(
+								NavJumpDuration * NavJumpDuration / 4, 0, 0, arc,
+								deltaY * deltaY
+							);
+						}
 						VelocityX = newX - X;
 						VelocityY = newY - Y;
 						X = newX;
@@ -362,6 +373,18 @@ namespace Yaya {
 				NavJumpDuration = 0;
 				NavMoveDoneX = false;
 				NavMoveDoneY = false;
+				// Skip Too Tiny Jump
+				while (
+					CurrentNavOperationIndex < CurrentNavOperationCount
+				) {
+					var motion = NavOperations[CurrentNavOperationIndex];
+					if (
+						motion.Motion == NavigationOperateMotion.Jump &&
+						Util.SquareDistance(X, Y, motion.TargetGlobalX, motion.TargetGlobalY) <= Const.HALF * Const.HALF
+					) {
+						CurrentNavOperationIndex++;
+					} else break;
+				}
 			}
 		}
 

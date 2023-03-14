@@ -24,7 +24,6 @@ namespace Yaya {
 		private bool MouseMoved = false;
 		private bool MouseInSelection = false;
 		private bool MouseDownInSelection = false;
-		private bool CtrlHolding = false;
 		private bool Pasting = false;
 
 
@@ -39,9 +38,8 @@ namespace Yaya {
 		private void FrameUpdate_Mouse () {
 
 			DraggingUnitRect = null;
-			CtrlHolding = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.RightCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
-
-			if (IsPlaying || DroppingPlayer || TaskingRoute) {
+			
+			if (IsPlaying || DroppingPlayer || TaskingRoute || PerformingUndoItem != null) {
 				MouseDownPosition = null;
 				return;
 			}
@@ -212,10 +210,10 @@ namespace Yaya {
 					}
 				}
 			}
-			SpawnFrameParticle(unitRect.ToGlobal(), id);
+			SpawnBlinkParticle(unitRect.ToGlobal(), id);
 			RedirectForRule(unitRect);
-			IsDirty = true;
 			if (undoRegisted) RegisterUndo_End(unitRect, true);
+			IsDirty = true;
 		}
 
 

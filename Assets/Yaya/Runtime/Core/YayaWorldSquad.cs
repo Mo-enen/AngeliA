@@ -9,13 +9,25 @@ namespace Yaya {
 
 
 		// VAR
-		protected override Int4 CullingPadding => CellRenderer.CameraShaking || FrameTask.IsTasking<TeleportTask>(YayaConst.TASK_ROUTE) ? new Int4(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Int4.Zero;
+		protected override Int4 CullingPadding =>
+			CellRenderer.CameraShaking || FrameTask.IsTasking<TeleportTask>(YayaConst.TASK_ROUTE) ?
+			new Int4(Const.CEL * 8, Const.CEL * 8, Const.CEL * 8, Const.CEL * 8) :
+			Int4.Zero;
 		public bool SpawnEntity { get; set; } = true;
+		public bool SaveBeforeReload { get; set; } = false;
 
 
 		// API
 		public YayaWorldSquad (bool behind = false) : base(behind) { }
 		public override int LevelLayer => YayaConst.LAYER_LEVEL;
+
+
+		protected override void BeforeWorldReload (World[,] worlds) {
+			base.BeforeWorldReload(worlds);
+			if (SaveBeforeReload) {
+				SaveToFile(Const.UserMapRoot);
+			}
+		}
 
 
 		protected override void DrawBackgroundBlock (int id, int unitX, int unitY) {

@@ -66,6 +66,7 @@ namespace Yaya {
 		public static readonly int HINT_RESTART = "CtrlHint.Restart".AngeHash();
 		public static readonly int HINT_MEDT_SWITCH_EDIT = "CtrlHint.MEDT.SwitchMode.Edit".AngeHash();
 		public static readonly int HINT_MEDT_SWITCH_PLAY = "CtrlHint.MEDT.SwitchMode.Play".AngeHash();
+		public static readonly int HINT_MEDT_PLAY_FROM_GEBAIN = "CtrlHint.MEDT.PlayFromBegain".AngeHash();
 
 		// Misc
 		public static readonly int GOMOKU_YOU_ARE = "UI.Gomoku.YouAre".AngeHash();

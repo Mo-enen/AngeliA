@@ -313,6 +313,7 @@ namespace Yaya {
 					if (cell.ToCellX == FinalCellX && cell.ToCellY == FinalCellY) break;
 					cell = nextCell;
 				}
+
 			}
 
 			return operationCount;
@@ -474,7 +475,7 @@ namespace Yaya {
 			int x = (cellX + CellUnitOffsetX) * Const.CEL;
 			int y = (cellY + CellUnitOffsetY) * Const.CEL;
 			var blockRect = new RectInt(x, y, Const.CEL, Const.CEL);
-			var centerRect = new RectInt(x + Const.HALF, y + Const.HALF, 1, 1);
+			var centerRect = blockRect.Shrink(16);
 			bool solid = CellPhysics.Overlap(
 				YayaConst.MASK_MAP, centerRect, out var info
 			);
@@ -614,7 +615,6 @@ namespace Yaya {
 		}
 
 
-
 		private static void Navigate_ExpandJumpLogic (int jumpIteration) {
 
 			while (ExpandQueueJump.Count > 0) {
@@ -683,7 +683,6 @@ namespace Yaya {
 				}
 			}
 		}
-
 
 
 		#endregion

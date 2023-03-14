@@ -99,25 +99,7 @@ namespace Yaya {
 			ePlayer.SelectPlayer(firstPlayer);
 
 			// Start the Game !!
-			if (
-				FrameTask.TryAddToLast(OpeningTask.TYPE_ID, YayaConst.TASK_ROUTE, out var task) &&
-				task is OpeningTask oTask
-			) {
-				Vector3Int homePos = default;
-				if (GlobalPosition.TryGetFirstGlobalUnitPosition(firstPlayerID, out var firstPlayerHomePos)) {
-					homePos.x = firstPlayerHomePos.x * Const.CEL;
-					homePos.y = firstPlayerHomePos.y * Const.CEL;
-					homePos.z = firstPlayerHomePos.z;
-				} else {
-					homePos = (Vector3Int)game.ViewRect.CenterInt();
-					homePos.z = game.ViewZ;
-				}
-				oTask.TargetViewX = homePos.x;
-				oTask.TargetViewY = homePos.y;
-				oTask.TargetViewZ = homePos.z;
-				oTask.GotoBed = true;
-				oTask.FadeOut = false;
-			}
+			StartGame(firstPlayerID);
 
 			// Test
 			game.SpawnEntity<eMapEditor>(0, 0);
@@ -320,17 +302,60 @@ namespace Yaya {
 
 		private bool OnQuit () {
 #if UNITY_EDITOR
-			if (UnityEditor.EditorApplication.isPlaying) return true;
+			if (UnityEditor.EditorApplication.isPlaying) {
+				if (MapEditor.Active && MapEditor.IsEditing) {
+					MapEditor.Save(true);
+				}
+				return true;
+			}
 #endif
 			var game = Game.Current;
 			if (game == null) return true;
 			if (game.State == GameState.Pause && PauseMenu.QuitMode) {
+				if (MapEditor.Active && MapEditor.IsEditing) {
+					MapEditor.Save(true);
+				}
 				return true;
 			} else {
 				game.State = GameState.Pause;
 				game.TrySpawnEntity(PauseMenu.TypeID, 0, 0, out _);
 				PauseMenu.SetAsQuitMode();
 				return false;
+			}
+		}
+
+
+		#endregion
+
+
+
+		
+		#region --- API ---
+
+
+		public void StartGame (int playerID = 0) {
+			if (
+				FrameTask.TryAddToLast(OpeningTask.TYPE_ID, YayaConst.TASK_ROUTE, out var task) &&
+				task is OpeningTask oTask
+			) {
+				Game.Current.SetViewSizeDelay(Game.Current.ViewConfig.DefaultHeight, 1000, int.MaxValue);
+				if (playerID == 0) {
+					playerID = ePlayer.GetFirstSelectedPlayerID();
+				}
+				Vector3Int homePos = default;
+				if (GlobalPosition.TryGetFirstGlobalUnitPosition(playerID, out var firstPlayerHomePos)) {
+					homePos.x = firstPlayerHomePos.x * Const.CEL;
+					homePos.y = firstPlayerHomePos.y * Const.CEL;
+					homePos.z = firstPlayerHomePos.z;
+				} else {
+					homePos = (Vector3Int)Game.Current.ViewRect.CenterInt();
+					homePos.z = Game.Current.ViewZ;
+				}
+				oTask.TargetViewX = homePos.x;
+				oTask.TargetViewY = homePos.y;
+				oTask.TargetViewZ = homePos.z;
+				oTask.GotoBed = true;
+				oTask.FadeOut = false;
 			}
 		}
 

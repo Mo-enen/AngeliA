@@ -88,6 +88,12 @@ namespace Yaya {
 		}
 
 
+		public override void FrameUpdate () {
+			if (!Active) return;
+			base.FrameUpdate();
+		}
+
+
 		private void PhysicsUpdate_Trail () {
 
 			if (NavigationState != CharacterNavigationState.Fly) return;
