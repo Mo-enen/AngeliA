@@ -118,53 +118,11 @@ namespace Yaya {
 			// ============ Test ============
 
 
-			var game = Game.Current;
-			if (FrameInput.KeyboardDown(Key.Digit1)) {
-				game.SetViewZ(game.ViewZ + 1);
-			}
-			if (FrameInput.KeyboardDown(Key.Digit2)) {
-				game.SetViewZ(game.ViewZ - 1);
-			}
-			if (FrameInput.KeyboardHolding(Key.Digit3)) {
-				if (ePlayer.Selecting != null) {
-					eSummon.CreateSummon<eGuaGua>(
-						ePlayer.Selecting, ePlayer.Selecting.X, ePlayer.Selecting.Y
-					);
-				}
-			}
-			if (FrameInput.KeyboardDown(Key.Digit4)) {
-				AudioPlayer.PlayMusic("A Creature in the Wild!".AngeHash());
-			}
-			if (FrameInput.KeyboardHolding(Key.Digit5)) {
-				var miniGame = game.PeekOrGetEntity<eGomokuUI>();
-				if (miniGame == null || !miniGame.Active) {
-					game.SpawnEntity<eGomokuUI>(0, 0);
-				} else {
-					miniGame.Active = false;
-				}
-			}
-			if (FrameInput.KeyboardHolding(Key.Digit6)) {
-				game.SpawnEntity<eMapEditor>(0, 0);
-
-			}
-			if (FrameInput.KeyboardDown(Key.Digit7)) {
-				MapEditor.AutoZoom = !MapEditor.AutoZoom;
-				Debug.Log("AutoZoom = " + MapEditor.AutoZoom);
-			}
-			if (FrameInput.KeyboardDown(Key.Digit8)) {
-				DialoguePerformer.PerformDialogue("TestConversation", YayaConst.TASK_ROUTE);
-
-			}
-			if (FrameInput.KeyboardDown(Key.Digit9)) {
-				Cutscene.Play("Test Video 1".AngeHash());
-			}
-			if (FrameInput.KeyboardDown(Key.Digit0)) {
-				ePlayer.Selecting.SetHealth(0);
-			}
-
-
 #if UNITY_EDITOR
 			if (Game.GlobalFrame > 10 && FrameInput.KeyboardDown(Key.P) && FrameInput.KeyboardHolding(Key.LeftCtrl)) {
+				if (MapEditor.Active) {
+					MapEditor.OnInactived();
+				}
 				UnityEditor.EditorApplication.isPlaying = false;
 			}
 #endif
@@ -303,8 +261,8 @@ namespace Yaya {
 		private bool OnQuit () {
 #if UNITY_EDITOR
 			if (UnityEditor.EditorApplication.isPlaying) {
-				if (MapEditor.Active && MapEditor.IsEditing) {
-					MapEditor.Save(true);
+				if (MapEditor.Active) {
+					MapEditor.OnInactived();
 				}
 				return true;
 			}
@@ -312,8 +270,8 @@ namespace Yaya {
 			var game = Game.Current;
 			if (game == null) return true;
 			if (game.State == GameState.Pause && PauseMenu.QuitMode) {
-				if (MapEditor.Active && MapEditor.IsEditing) {
-					MapEditor.Save(true);
+				if (MapEditor.Active) {
+					MapEditor.OnInactived();
 				}
 				return true;
 			} else {
@@ -329,7 +287,7 @@ namespace Yaya {
 
 
 
-		
+
 		#region --- API ---
 
 

@@ -13,12 +13,6 @@ namespace Yaya {
 		#region --- VAR ---
 
 
-		// Const
-		private static readonly Color32 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
-
-
-
-
 		// Data
 		private RectInt PaintingThumbnailRect = default;
 		private int PaintingThumbnailStartIndex = 0;
@@ -32,7 +26,7 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		private void FrameUpdate_Grid () {
+		private void Update_Grid () {
 
 			if (IsPlaying || DroppingPlayer) return;
 
@@ -53,9 +47,9 @@ namespace Yaya {
 		}
 
 
-		private void FrameUpdate_DraggingGizmos () {
+		private void Update_DraggingGizmos () {
 
-			if (!DraggingUnitRect.HasValue) return;
+			if (!DraggingUnitRect.HasValue || MouseDownOutsideBoundary) return;
 			if (IsPlaying || DroppingPlayer || TaskingRoute || CtrlHolding) return;
 
 			// Rect Frame
@@ -72,20 +66,20 @@ namespace Yaya {
 				thickness, thickness, thickness, thickness,
 				Const.BLACK
 			);
-			foreach (var cell in cells) cell.Z = int.MaxValue;
+			foreach (var cell in cells) cell.Z = GIZMOS_Z;
 
 			cells = CellRenderer.Draw_9Slice(
 				FRAME, draggingRect,
 				thickness, thickness, thickness, thickness,
 				Const.WHITE
 			);
-			foreach (var cell in cells) cell.Z = int.MaxValue;
+			foreach (var cell in cells) cell.Z = GIZMOS_Z;
 
 			// Painting Content
 			if (MouseDownButton == 0) {
 				if (SelectingPaletteItem == null) {
 					// Draw Erase Cross
-					DrawCrossLine(DraggingUnitRect.Value.ToGlobal(), Unify(1), Const.WHITE, Const.BLACK);
+					DrawCrossLineGizmos(DraggingUnitRect.Value.ToGlobal(), Unify(1), Const.WHITE, Const.BLACK);
 				} else {
 					// Draw Painting Thumbnails
 					CellRenderer.TryGetSprite(SelectingPaletteItem.ArtworkID, out var sprite);
@@ -107,7 +101,7 @@ namespace Yaya {
 					for (int i = PaintingThumbnailStartIndex; i < endIndex; i++) {
 						rect.x = (unitRect.x + (i % unitRect.width)) * Const.CEL;
 						rect.y = (unitRect.y + (i / unitRect.width)) * Const.CEL;
-						DrawThumbnail(SelectingPaletteItem.ArtworkID, rect, false, sprite);
+						DrawSpriteGizmos(SelectingPaletteItem.ArtworkID, rect, false, sprite);
 					}
 					PaintingThumbnailStartIndex = nextStartIndex;
 				}
@@ -116,7 +110,7 @@ namespace Yaya {
 		}
 
 
-		private void FrameUpdate_PastingGizmos () {
+		private void Update_PastingGizmos () {
 
 			if (IsPlaying || DroppingPlayer || TaskingRoute) return;
 			if (!SelectionUnitRect.HasValue || !Pasting) return;
@@ -131,19 +125,19 @@ namespace Yaya {
 				thickness, thickness, thickness, thickness,
 				Const.WHITE
 			);
-			foreach (var cell in cells) cell.Z = int.MaxValue;
+			foreach (var cell in cells) cell.Z = GIZMOS_Z;
 
 			// Content Thumbnail
 			var rect = new RectInt(0, 0, Const.CEL, Const.CEL);
 			foreach (var buffer in PastingBuffer) {
 				rect.x = (pastingUnitRect.x + buffer.LocalUnitX).ToGlobal();
 				rect.y = (pastingUnitRect.y + buffer.LocalUnitY).ToGlobal();
-				DrawThumbnail(buffer.ID, rect);
+				DrawSpriteGizmos(buffer.ID, rect);
 			}
 		}
 
 
-		private void FrameUpdate_SelectionGizmos () {
+		private void Update_SelectionGizmos () {
 
 			if (!SelectionUnitRect.HasValue) return;
 			if (IsPlaying || DroppingPlayer || TaskingRoute) return;
@@ -163,28 +157,28 @@ namespace Yaya {
 				thickness, thickness, thickness, thickness,
 				Const.BLACK
 			);
-			foreach (var cell in cells) cell.Z = int.MaxValue;
+			foreach (var cell in cells) cell.Z = GIZMOS_Z;
 
 			// Dotted White
-			DrawDottedLine(
+			DrawDottedLineGizmos(
 				selectionRect.x,
 				selectionRect.yMin + thickness / 2,
 				selectionRect.width,
 				true, thickness, dotGap, Const.WHITE
 			);
-			DrawDottedLine(
+			DrawDottedLineGizmos(
 				selectionRect.x,
 				selectionRect.yMax - thickness / 2,
 				selectionRect.width,
 				true, thickness, dotGap, Const.WHITE
 			);
-			DrawDottedLine(
+			DrawDottedLineGizmos(
 				selectionRect.xMin + thickness / 2,
 				selectionRect.y + thickness,
 				selectionRect.height - thickness * 2,
 				false, thickness, dotGap, Const.WHITE
 			);
-			DrawDottedLine(
+			DrawDottedLineGizmos(
 				selectionRect.xMax - thickness / 2,
 				selectionRect.y + thickness,
 				selectionRect.height - thickness * 2,
@@ -194,10 +188,10 @@ namespace Yaya {
 		}
 
 
-		private void FrameUpdate_Cursor () {
+		private void Update_Cursor () {
 
 			if (IsPlaying || DroppingPlayer || CtrlHolding) return;
-			if (MouseInSelection || DraggingUnitRect.HasValue) return;
+			if (MouseInSelection || MouseOutsideBoundary || MouseDownOutsideBoundary || DraggingUnitRect.HasValue) return;
 			if (FrameInput.AnyMouseButtonHolding && MouseDownInSelection) return;
 
 			var cursorRect = new RectInt(
@@ -212,21 +206,21 @@ namespace Yaya {
 				thickness, thickness, thickness, thickness,
 				CURSOR_TINT_DARK
 			);
-			foreach (var cell in cells) cell.Z = int.MaxValue;
+			foreach (var cell in cells) cell.Z = GIZMOS_Z;
 
 			cells = CellRenderer.Draw_9Slice(
 				FRAME_HOLLOW, cursorRect,
 				thickness, thickness, thickness, thickness,
 				CURSOR_TINT
 			);
-			foreach (var cell in cells) cell.Z = int.MaxValue;
+			foreach (var cell in cells) cell.Z = GIZMOS_Z;
 
 			if (SelectingPaletteItem == null) {
 				// Erase Cross
-				DrawCrossLine(cursorRect, thickness, CURSOR_TINT, CURSOR_TINT_DARK);
+				DrawCrossLineGizmos(cursorRect, thickness, CURSOR_TINT, CURSOR_TINT_DARK);
 			} else {
 				// Pal Thumbnail
-				DrawThumbnail(SelectingPaletteItem.ArtworkID, cursorRect, true);
+				DrawSpriteGizmos(SelectingPaletteItem.ArtworkID, cursorRect, true);
 			}
 		}
 
@@ -252,6 +246,101 @@ namespace Yaya {
 				particle.Tint = sprite.Sprite.SummaryTint;
 			}
 
+		}
+
+
+		private void DrawSpriteGizmos (int artworkID, RectInt rect, bool shrink = false, AngeSprite sprite = null) {
+			if (sprite != null || CellRenderer.TryGetSprite(artworkID, out sprite)) {
+				if (shrink) {
+					rect = rect.Shrink(rect.width * 2 / 10).Fit(
+						sprite.GlobalWidth,
+						sprite.GlobalHeight,
+						sprite.PivotX,
+						sprite.PivotY
+					);
+				}
+				CellRenderer.Draw(
+					artworkID,
+					rect
+				).Z = GIZMOS_Z - 2;
+			}
+		}
+
+
+		private void DrawDottedLineGizmos (int x, int y, int length, bool horizontal, int thickness, int gap, Color32 tint) {
+
+			if (gap == 0) return;
+
+			int stepLength = gap * 16;
+			int stepCount = length / stepLength;
+			int extraLength = length - stepCount * stepLength;
+
+			for (int i = 0; i <= stepCount; i++) {
+				if (i == stepCount && extraLength == 0) break;
+				if (horizontal) {
+					var cell = CellRenderer.Draw(
+						DOTTED_LINE,
+						x + i * stepLength, y,
+						0, 500, 0,
+						stepLength, thickness,
+						tint
+					);
+					cell.Z = GIZMOS_Z;
+					if (i == stepCount) {
+						ref var shift = ref cell.Shift;
+						shift.Right = 1000 - extraLength * 1000 / stepLength;
+					}
+				} else {
+					var cell = CellRenderer.Draw(
+						DOTTED_LINE,
+						x, y + i * stepLength,
+						0, 500, -90,
+						stepLength, thickness,
+						tint
+					);
+					cell.Z = GIZMOS_Z;
+					if (i == stepCount) {
+						ref var shift = ref cell.Shift;
+						shift.Right = 1000 - extraLength * 1000 / stepLength;
+					}
+				}
+			}
+
+
+		}
+
+
+		private void DrawCrossLineGizmos (RectInt rect, int thickness, Color32 tint, Color32 shadowTint) {
+			int shiftY = thickness / 2;
+			int shrink = thickness * 2;
+			CellRendererGUI.DrawLine(
+				rect.xMin + shrink,
+				rect.yMin + shrink - shiftY,
+				rect.xMax - shrink,
+				rect.yMax - shrink - shiftY,
+				thickness, shadowTint
+			).Z = GIZMOS_Z - 1;
+			CellRendererGUI.DrawLine(
+				rect.xMin + shrink,
+				rect.yMax - shrink - shiftY,
+				rect.xMax - shrink,
+				rect.yMin + shrink - shiftY,
+				thickness, shadowTint
+			).Z = GIZMOS_Z - 1;
+			CellRendererGUI.DrawLine(
+				rect.xMin + shrink,
+				rect.yMin + shrink + shiftY,
+				rect.xMax - shrink,
+				rect.yMax - shrink + shiftY,
+				thickness, tint
+			).Z = GIZMOS_Z - 1;
+			CellRendererGUI.DrawLine(
+				rect.xMin + shrink,
+				rect.yMax - shrink + shiftY,
+				rect.xMax - shrink,
+				rect.yMin + shrink + shiftY,
+				thickness, tint
+			).Z = GIZMOS_Z - 1;
 		}
 
 

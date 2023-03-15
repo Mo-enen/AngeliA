@@ -34,6 +34,8 @@ namespace Yaya {
 		public int KeySize { get; set; } = 28;
 		public int Gap { get; set; } = 6;
 		public int TextSize { get; set; } = 23;
+		public int OffsetX { get; set; } = 0;
+		public int OffsetY { get; set; } = 0;
 		public Color32 LabelTint { get; set; } = Const.WHITE;
 		public Color32 KeyLabelTint { get; set; } = new Color32(44, 49, 54, 255);
 		public static bool UseGamePadHint {
@@ -46,7 +48,7 @@ namespace Yaya {
 		}
 
 		// Short
-		private bool GamepadVisible => ShowGamePadUI.Value && Game.Current.State != GameState.Cutscene;
+		private bool GamepadVisible => ShowGamePadUI.Value && Game.Current.State != GameState.Cutscene && Game.PauselessFrame > ForceHideGamepadFrame;
 		private bool HintVisible => ShowControlHint.Value || Game.Current.State == GameState.Cutscene || Game.PauselessFrame <= ForceHintFrame;
 
 		// Data
@@ -60,6 +62,8 @@ namespace Yaya {
 		private Int4 Border_Keyboard = default;
 		private Int4 Border_Gamepad = default;
 		private int ForceHintFrame = int.MinValue;
+		private int ForceHideGamepadFrame = int.MinValue;
+		private int OffsetResetFrame = int.MinValue;
 		private readonly CellLabel HintLabel = new() {
 			Alignment = Alignment.MidLeft,
 		};
@@ -105,6 +109,11 @@ namespace Yaya {
 			if (GamepadVisible) DrawGamePad();
 			if (HintVisible) DrawHints();
 			CurrentHintOffsetY = 0;
+			if (OffsetResetFrame != int.MinValue && Game.PauselessFrame >= OffsetResetFrame) {
+				OffsetResetFrame = int.MinValue;
+				OffsetX = 0;
+				OffsetY = 0;
+			}
 			// Switch Visible
 			if (FrameInput.KeyboardDown(Key.F2)) {
 				ShowGamePadUI.Value = !ShowGamePadUI.Value;
@@ -165,7 +174,8 @@ namespace Yaya {
 
 		private void DrawHints () {
 
-			int hintPositionY = (int)(CurrentHintOffsetY + CellRenderer.CameraRect.y + Unify(GamepadVisible ? 78 : 12));
+			int hintPositionY =
+				CurrentHintOffsetY + OffsetY + CellRenderer.CameraRect.y + Unify(GamepadVisible ? 78 : 12);
 
 			// Menu
 			if (MenuUI.CurrentMenu != null) {
@@ -178,7 +188,7 @@ namespace Yaya {
 			}
 
 			// Draw
-			int x = CellRenderer.CameraRect.x + Unify(12);
+			int x = CellRenderer.CameraRect.x + OffsetX + Unify(12);
 			Draw(Gamekey.Down);
 			Draw(Gamekey.Up);
 			Draw(Gamekey.Left);
@@ -226,8 +236,15 @@ namespace Yaya {
 		public static void AddHint (Key key, int labelID) => AddHint(key, key, labelID);
 		public static void AddHint (Key keyA, Key keyB, int labelID) {
 			if (Current == null || !Current.HintVisible) return;
-			int x = CellRenderer.CameraRect.x + Unify(12);
-			int y = (int)(CurrentHintOffsetY + CellRenderer.CameraRect.y + Unify(Current.GamepadVisible ? 78 : 12));
+			int x =
+				CellRenderer.CameraRect.x +
+				Current.OffsetX +
+				Unify(12);
+			int y =
+				CurrentHintOffsetY +
+				Current.OffsetY +
+				CellRenderer.CameraRect.y +
+				Unify(Current.GamepadVisible ? 78 : 12);
 			Current.DrawKey(x, y, keyA, keyB, labelID);
 			CurrentHintOffsetY += Unify(Current.KeySize + Current.Gap);
 		}
@@ -241,9 +258,23 @@ namespace Yaya {
 		public static void DrawGlobalHint (int globalX, int globalY, GamepadButton keyA, GamepadButton keyB, int labelID, bool background = false) => Current?.DrawKey(globalX, globalY, keyA, keyB, labelID, background);
 
 
-		public static void ForceShowHint (int duration = 0) {
+		public static void ForceShowHint (int duration = 1) {
 			if (Current == null) return;
 			Current.ForceHintFrame = Game.PauselessFrame + duration;
+		}
+
+
+		public static void ForceHideGamepad (int duration = 1) {
+			if (Current == null) return;
+			Current.ForceHideGamepadFrame = Game.PauselessFrame + duration;
+		}
+
+
+		public static void ForceOffset (int x, int y, int duration = 1) {
+			if (Current == null) return;
+			Current.OffsetResetFrame = Game.PauselessFrame + duration;
+			Current.OffsetX = x;
+			Current.OffsetY = y;
 		}
 
 

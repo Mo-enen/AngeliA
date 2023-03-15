@@ -24,6 +24,8 @@ namespace Yaya {
 		private bool MouseMoved = false;
 		private bool MouseInSelection = false;
 		private bool MouseDownInSelection = false;
+		private bool MouseOutsideBoundary = false;
+		private bool MouseDownOutsideBoundary = false;
 		private bool Pasting = false;
 
 
@@ -35,39 +37,49 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		private void FrameUpdate_Mouse () {
+		private void Update_Mouse () {
 
 			DraggingUnitRect = null;
-			
+
 			if (IsPlaying || DroppingPlayer || TaskingRoute || PerformingUndoItem != null) {
 				MouseDownPosition = null;
+				MouseDownOutsideBoundary = false;
+				MouseOutsideBoundary = false;
 				return;
 			}
 
-			MouseInSelection = SelectionUnitRect.HasValue && SelectionUnitRect.Value.Contains(FrameInput.MouseGlobalPosition.ToUnit());
-			if (MouseInSelection) {
-				Game.Current.SetCursor(1);
-			}
+			var mousePos = FrameInput.MouseGlobalPosition;
+			MouseInSelection = SelectionUnitRect.HasValue && SelectionUnitRect.Value.Contains(mousePos.ToUnit());
+			var panelRect = GetPanelRect();
+			var cameraRect = CellRenderer.CameraRect.Shrink(1);
+			MouseOutsideBoundary =
+				mousePos.x < cameraRect.x ||
+				mousePos.x > cameraRect.xMax ||
+				mousePos.y < cameraRect.y ||
+				mousePos.y > cameraRect.yMax ||
+				panelRect.Contains(mousePos);
+			if (MouseInSelection) Game.Current.SetCursor(1);
 
 			if (!MouseDownPosition.HasValue) {
 				// Mouse Down
 				int holdingMouseBtn = FrameInput.GetHoldingMouseButton();
 				if (holdingMouseBtn != -1) {
 					MouseDownButton = holdingMouseBtn;
-					MouseDownPosition = FrameInput.MouseGlobalPosition;
+					MouseDownPosition = mousePos;
+					MouseDownOutsideBoundary = MouseOutsideBoundary;
 					MouseMoved = false;
 					MouseDownInSelection = MouseInSelection;
 				}
 			} else if (FrameInput.MouseButtonHolding(MouseDownButton)) {
 				// Mouse Holding
-				bool newMouseMoved = MouseMoved || Util.SquareDistance(FrameInput.MouseGlobalPosition, MouseDownPosition.Value) > Mathf.Clamp(Unify(15) * Unify(15), 0, 220 * 220);
+				bool newMouseMoved = MouseMoved || Util.SquareDistance(mousePos, MouseDownPosition.Value) > Mathf.Clamp(Unify(15) * Unify(15), 0, 220 * 220);
 				if (MouseMoved != newMouseMoved) {
 					MouseMoved = newMouseMoved;
 					MouseDragBegin();
 				}
 				if (MouseMoved) {
 					var mouseDownUnitPos = MouseDownPosition.Value.ToUnit();
-					var mouseUnitPos = FrameInput.MouseGlobalPosition.ToUnit();
+					var mouseUnitPos = mousePos.ToUnit();
 					MouseDragging(mouseDownUnitPos, mouseUnitPos);
 					if (MouseDownButton != 2 && (!MouseDownInSelection || MouseDownButton == 1)) {
 						DraggingUnitRect = new RectInt(
@@ -83,21 +95,16 @@ namespace Yaya {
 				if (!CtrlHolding) {
 					switch (MouseDownButton) {
 						case 0:
-							MouseUp_Left(
-								MouseDownPosition.Value.ToUnit(),
-								FrameInput.MouseGlobalPosition.ToUnit()
-							);
+							MouseUp_Left(MouseDownPosition.Value.ToUnit(), mousePos.ToUnit());
 							break;
 						case 1:
-							MouseUp_Right(
-								MouseDownPosition.Value.ToUnit(),
-								FrameInput.MouseGlobalPosition.ToUnit()
-							);
+							MouseUp_Right(MouseDownPosition.Value.ToUnit(), mousePos.ToUnit());
 							break;
 					}
 				}
 				MouseDownButton = -1;
 				MouseDownPosition = null;
+				MouseDownOutsideBoundary = false;
 			}
 
 		}
@@ -153,7 +160,7 @@ namespace Yaya {
 
 
 		private void MouseUp_Left (Vector2Int mouseDownUnitPos, Vector2Int mouseUnitPos) {
-			if (MouseDownInSelection) return;
+			if (MouseDownInSelection || MouseDownOutsideBoundary) return;
 			// Paint / Erase
 			ApplyPaste();
 			SelectionUnitRect = null;
@@ -218,6 +225,7 @@ namespace Yaya {
 
 
 		private void MouseUp_Right (Vector2Int mouseDownUnitPos, Vector2Int mouseUnitPos) {
+			if (MouseDownOutsideBoundary) return;
 			ApplyPaste();
 			if (MouseMoved) {
 				// Select 

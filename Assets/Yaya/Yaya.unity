@@ -170,7 +170,7 @@ MonoBehaviour:
     UseLagSimulationOnAudio: 1
   m_ViewConfig:
     DefaultHeight: 5376
-    MinHeight: 2048
+    MinHeight: 4096
     MaxHeight: 14336
     ViewRatio: 2000
   m_WorldConfig:

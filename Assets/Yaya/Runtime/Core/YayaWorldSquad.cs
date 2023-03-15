@@ -24,7 +24,7 @@ namespace Yaya {
 
 		protected override void BeforeWorldReload (World[,] worlds) {
 			base.BeforeWorldReload(worlds);
-			if (SaveBeforeReload) {
+			if (SaveBeforeReload && Channel == MapChannel.User) {
 				SaveToFile(Const.UserMapRoot);
 			}
 		}

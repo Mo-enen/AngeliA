@@ -26,8 +26,7 @@ namespace Yaya {
 		private class PaletteGroup {
 			public string GroupName;
 			public string GroupPath;
-			public bool IsEntity;
-			public bool IsOpening;
+			public int CoverID;
 			public BlockType BlockType;
 			public List<PaletteItem> Items;
 		}
@@ -40,6 +39,13 @@ namespace Yaya {
 
 		#region --- VAR ---
 
+
+		// Const
+		private static readonly int PAL_ITEM_FRAME = "MapEditorPaletteItemFrame".AngeHash();
+
+		// Data
+		private int PaletteGroupUIHeight = 0;
+		private int SelectingPaletteGroupIndex = 0;
 
 
 		#endregion
@@ -80,8 +86,8 @@ namespace Yaya {
 								Items = new List<PaletteItem>(),
 								GroupPath = $"Sheet/{sData.SheetName}",
 								GroupName = sData.SheetName,
-								IsEntity = false,
 								BlockType = sData.SheetType == SheetType.Level ? BlockType.Level : BlockType.Background,
+								CoverID = $"PaletteCover.{sData.SheetName}".AngeHash(),
 							});
 						}
 						group.Items.Add(new PaletteItem() {
@@ -111,8 +117,8 @@ namespace Yaya {
 						Items = new List<PaletteItem>(),
 						GroupPath = $"Sheet/{sData.SheetName}",
 						GroupName = sData.SheetName,
-						IsEntity = false,
 						BlockType = sData.SheetType == SheetType.Level ? BlockType.Level : BlockType.Background,
+						CoverID = $"PaletteCover.{sData.SheetName}".AngeHash(),
 					});
 				}
 				group.Items.Add(new PaletteItem() {
@@ -138,8 +144,8 @@ namespace Yaya {
 						Items = new List<PaletteItem>(),
 						GroupPath = "_Entity",
 						GroupName = "Entity",
-						IsEntity = true,
 						BlockType = BlockType.Entity,
+						CoverID = "PaletteCover.Entity".AngeHash(),
 					}
 				}
 			};
@@ -162,8 +168,8 @@ namespace Yaya {
 						Items = new List<PaletteItem>(),
 						GroupPath = $"_{groupName}",
 						GroupName = groupName,
-						IsEntity = true,
 						BlockType = BlockType.Entity,
+						CoverID = $"PaletteCover.{groupName}".AngeHash(),
 					});
 				}
 				var group = entityGroupPool[groupName];
@@ -202,11 +208,75 @@ namespace Yaya {
 		}
 
 
-		private void FrameUpdate_PaletteUI () {
+		private void Update_PaletteGroupUI () {
 
-			if (IsPlaying || DroppingPlayer || TaskingRoute) return;
+			if (PaletteGroups.Count > 0) {
+				SelectingPaletteGroupIndex = SelectingPaletteGroupIndex.Clamp(0, PaletteGroups.Count - 1);
+			}
 
-			// PerformingUndoItem != null
+			var panelRect = GetPanelRect();
+			if (panelRect.xMax <= CellRenderer.CameraRect.x) return;
+
+			// Groups
+			int GROUP_ITEM_SIZE = Unify(64);
+			int GROUP_ITEM_GAP = Unify(6);
+			int GROUP_PADDING = Unify(6);
+			int groupColumnCount = (panelRect.width - GROUP_PADDING * 2) / (GROUP_ITEM_SIZE + GROUP_ITEM_GAP);
+			int groupRowCount = PaletteGroups.Count / groupColumnCount + (PaletteGroups.Count % groupColumnCount != 0 ? 1 : 0);
+			var groupRect = panelRect.Shrink(
+				GROUP_PADDING,
+				GROUP_PADDING,
+				panelRect.height - groupRowCount * (GROUP_ITEM_SIZE + GROUP_ITEM_GAP) - Unify(6) - GROUP_PADDING,
+				GROUP_PADDING
+			);
+			PaletteGroupUIHeight = groupRect.height + GROUP_PADDING * 2;
+			CellRenderer.Draw(Const.PIXEL, groupRect.Expand(GROUP_PADDING), Const.BLACK).Z = PALETTE_Z - 6;
+			var rect = new RectInt(0, 0, GROUP_ITEM_SIZE, GROUP_ITEM_SIZE);
+			int coverShrink = Unify(6);
+			int border = Unify(6);
+			int borderAlt = Unify(2);
+			int offsetX = groupRect.x + (groupRect.width - groupColumnCount * GROUP_ITEM_SIZE - (groupColumnCount - 1) * GROUP_ITEM_GAP) / 2;
+			for (int i = 0; i < PaletteGroups.Count; i++) {
+				rect.x = offsetX + (i % groupColumnCount) * (GROUP_ITEM_SIZE + GROUP_ITEM_GAP);
+				rect.y = groupRect.yMax - GROUP_ITEM_SIZE - (i / groupColumnCount) * (GROUP_ITEM_SIZE + GROUP_ITEM_GAP);
+				// Frame
+				var cells = CellRenderer.Draw_9Slice(
+					PAL_ITEM_FRAME, rect,
+					border, border, border, border
+				);
+				foreach (var cell in cells) cell.Z = PALETTE_Z - 5;
+				// Cover
+				CellRenderer.Draw(PaletteGroups[i].CoverID, rect.Shrink(coverShrink)).Z = PALETTE_Z - 3;
+				// Selection Highlight
+				if (i == SelectingPaletteGroupIndex) {
+					CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN).Z = PALETTE_Z - 4;
+				}
+				// Hover Highlight
+				bool mouseHovering = rect.Contains(FrameInput.MouseGlobalPosition);
+				if (mouseHovering) {
+					cells = CellRenderer.Draw_9Slice(FRAME, rect, borderAlt, borderAlt, borderAlt, borderAlt, Const.GREEN);
+					foreach (var cell in cells) cell.Z = PALETTE_Z - 2;
+				}
+				// Click
+				if (mouseHovering && FrameInput.MouseLeftButtonDown) {
+					SelectingPaletteGroupIndex = i;
+				}
+			}
+
+		}
+
+
+		private void Update_PaletteContentUI () {
+
+			var panelRect = GetPanelRect();
+
+			// Content
+			var contentRect = panelRect.Shrink(0, 0, 0, PaletteGroupUIHeight + Unify(4));
+			CellRenderer.Draw(Const.PIXEL, panelRect, Const.BLACK).Z = PALETTE_Z - 12;
+
+
+
+
 
 
 

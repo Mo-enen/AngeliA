@@ -68,6 +68,9 @@ namespace Yaya {
 
 		// Const
 		private const Key KEY_SWITCH_MODE = Key.Space;
+		private const int GIZMOS_Z = int.MaxValue - 64;
+		private const int PALETTE_Z = int.MaxValue - 16;
+		private const int PANEL_WIDTH = 300;
 		private static readonly int LINE_V = "Soft Line V".AngeHash();
 		private static readonly int LINE_H = "Soft Line H".AngeHash();
 		private static readonly int FRAME = "Frame16".AngeHash();
@@ -75,6 +78,7 @@ namespace Yaya {
 		private static readonly int DOTTED_LINE = "DottedLine16".AngeHash();
 		private static readonly Color32 CURSOR_TINT = new(240, 240, 240, 128);
 		private static readonly Color32 CURSOR_TINT_DARK = new(16, 16, 16, 128);
+		private static readonly Color32 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
 
 		// Api
 		public bool IsEditing => Active && Mode == EditingMode.Editing;
@@ -119,6 +123,8 @@ namespace Yaya {
 		private bool ShiftHolding = false;
 		private int DropHintWidth = Const.CEL;
 		private int UndoDataIndex = 0;
+		private int DroppingPlayerStartFrame = int.MinValue;
+		private int LastEditingFrame = int.MinValue;
 
 		// UI
 		private readonly CellLabel DropHintLabel = new() {
@@ -174,6 +180,10 @@ namespace Yaya {
 			Pasting = false;
 			UndoDataIndex = 0;
 			PerformingUndoItem = null;
+			MouseDownOutsideBoundary = false;
+			MouseOutsideBoundary = false;
+			DroppingPlayerStartFrame = int.MinValue;
+			LastEditingFrame = int.MinValue;
 
 			// Start
 			SetEditingMode(EditingMode.Editing);
@@ -209,13 +219,17 @@ namespace Yaya {
 
 			if (Mode == EditingMode.Editing) {
 				ApplyPaste();
+				Save();
 			}
 
 			Game.Current.WorldSquad.SetDataChannel(MapChannel.BuiltIn);
 			Game.Current.WorldSquad_Behind.SetDataChannel(MapChannel.BuiltIn);
+			YayaGame.Current.WorldSquad.SaveBeforeReload = false;
 
-			GlobalPosition.ReloadMeta(Const.BuiltInMapRoot);
-			eCameraAutoScroll.ReloadMeta(Const.BuiltInMapRoot);
+			YayaUtil.CreateCameraScrollMetaFile(Const.UserMapRoot);
+			AngeUtil.CreateGlobalPositionMetaFile(Const.UserMapRoot);
+			GlobalPosition.ReloadMeta(Const.UserMapRoot);
+			eCameraAutoScroll.ReloadMeta(Const.UserMapRoot);
 
 			SpritePool = null;
 			IdChainPool = null;
@@ -229,10 +243,11 @@ namespace Yaya {
 			UndoRedo = null;
 			UndoData = null;
 			PerformingUndoItem = null;
+			IsDirty = false;
+			MouseDownOutsideBoundary = false;
 
 			System.GC.Collect(0, System.GCCollectionMode.Forced);
 
-			IsDirty = false;
 		}
 
 
@@ -339,40 +354,61 @@ namespace Yaya {
 		// Update
 		protected override void FrameUpdateUI () {
 
+			if (Active == false || Squad == null || Squad.Channel != MapChannel.User) return;
+
 			base.FrameUpdateUI();
 
-			FrameUpdate_Misc();
-			FrameUpdate_Mouse();
-			FrameUpdate_View();
-			FrameUpdate_Hotkey();
-			FrameUpdate_DropPlayer();
-			FrameUpdate_PaletteUI();
-			TryAutoSave();
-			OnUndoRedoPerformed(PerformingUndoItem);
+			Update_Misc();
 
-			FrameUpdate_Grid();
-			FrameUpdate_DraggingGizmos();
-			FrameUpdate_PastingGizmos();
-			FrameUpdate_SelectionGizmos();
-			FrameUpdate_Cursor();
+			Update_Mouse();
+			Update_View();
+			Update_Hotkey();
+			Update_DropPlayer();
+			Update_PaletteGroupUI();
+			Update_PaletteContentUI();
+
+			Update_Grid();
+			Update_DraggingGizmos();
+			Update_PastingGizmos();
+			Update_SelectionGizmos();
+			Update_Cursor();
 
 		}
 
 
-		private void FrameUpdate_Misc () {
+		private void Update_Misc () {
+
 			var game = Game.Current;
+
 			TaskingRoute = FrameTask.IsTasking(YayaConst.TASK_ROUTE);
 			CtrlHolding = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.RightCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
 			ShiftHolding = FrameInput.KeyboardHolding(Key.LeftShift) || FrameInput.KeyboardHolding(Key.RightShift);
+			if (IsEditing) {
+				eControlHintUI.ForceHideGamepad();
+				eControlHintUI.ForceOffset(GetPanelRect().xMax - CellRenderer.CameraRect.x, 0);
+			}
+
+			// Squad Behind Tint
 			game.WorldConfig.SquadBehindAlpha = (byte)((int)game.WorldConfig.SquadBehindAlpha).MoveTowards(
 				Mode == EditingMode.Editing ? 12 : 64, 1
 			);
+
+			// Auto Save
+			if (IsDirty && Game.GlobalFrame % 120 == 0 && IsEditing && PerformingUndoItem == null) {
+				Save();
+			}
+
+			// Performing Undo
+			if (PerformingUndoItem != null) {
+				OnUndoRedoPerformed(PerformingUndoItem);
+			}
+
 		}
 
 
-		private void FrameUpdate_View () {
+		private void Update_View () {
 
-			if (TaskingRoute || DroppingPlayer || PerformingUndoItem != null) return;
+			if (TaskingRoute || DroppingPlayer || PerformingUndoItem != null || MouseDownOutsideBoundary) return;
 
 			var game = Game.Current;
 			var viewConfig = game.ViewConfig;
@@ -423,7 +459,7 @@ namespace Yaya {
 					TargetViewRect.y -= (newHeight - TargetViewRect.height) / 2;
 					TargetViewRect.height = newHeight;
 				}
-			} else {
+			} else if (!MouseOutsideBoundary) {
 				// Manual Zoom
 				int wheelDelta = FrameInput.MouseWheelDelta;
 				int zoomDelta = wheelDelta * Const.CEL * 2;
@@ -467,7 +503,7 @@ namespace Yaya {
 		}
 
 
-		private void FrameUpdate_Hotkey () {
+		private void Update_Hotkey () {
 
 			if (TaskingRoute || PerformingUndoItem != null) return;
 
@@ -495,11 +531,34 @@ namespace Yaya {
 			// Editing Only
 			if (IsEditing && !DroppingPlayer) {
 
+				// No Ctrl or Shift
+				if (!ShiftHolding && !CtrlHolding) {
+
+					// Delete
+					if (FrameInput.KeyboardDown(Key.Delete) || FrameInput.KeyboardDown(Key.Backspace)) {
+						if (Pasting) {
+							CancelPaste();
+						} else if (SelectionUnitRect.HasValue) {
+							DeleteSelection();
+						}
+					}
+
+					// Cancel
+					if (FrameInput.KeyboardDown(Key.Escape)) {
+						if (Pasting) {
+							ApplyPaste();
+						} else if (SelectionUnitRect.HasValue) {
+							SelectionUnitRect = null;
+						}
+						FrameInput.UseAllHoldingKeys();
+					}
+				}
+
 				// Ctrl + ...
-				if (CtrlHolding) {
+				if (CtrlHolding && !ShiftHolding) {
 					// Save
 					if (FrameInput.KeyboardDown(Key.S)) {
-						Save(true);
+						Save();
 					}
 					// Copy
 					if (FrameInput.KeyboardDown(Key.C)) {
@@ -523,20 +582,14 @@ namespace Yaya {
 					}
 					// Play from Start
 					if (FrameInput.KeyboardDown(Key.Space)) {
-						SetEditingMode(EditingMode.Playing);
-						int playerID = 0;
-						var player = ePlayer.Selecting;
-						if (player != null) {
-							player.Active = false;
-							player.SetCharacterState(CharacterState.GamePlay);
-							playerID = player.TypeID;
-						}
-						YayaGame.Current.StartGame(playerID);
+						PlayFromStart();
 						FrameInput.UseAllHoldingKeys();
 					}
 					eControlHintUI.AddHint(Key.Space, WORD.HINT_MEDT_PLAY_FROM_GEBAIN);
-				} else if (ShiftHolding) {
-					// Shift
+				}
+
+				// Shift + ...
+				if (ShiftHolding && !CtrlHolding) {
 					// Up/Down
 					if (FrameInput.GameKeyDown(Gamekey.Up) || FrameInput.GameKeyDown(Gamekey.Down)) {
 						var cameraRect = CellRenderer.CameraRect;
@@ -552,27 +605,7 @@ namespace Yaya {
 							svTask.ForceUseVignette = false;
 							svTask.ForceDuration = 10;
 						}
-						Save(true);
-					}
-				} else {
-					// No Ctrl/Shift
-					// Delete
-					if (FrameInput.KeyboardDown(Key.Delete) || FrameInput.KeyboardDown(Key.Backspace)) {
-						if (Pasting) {
-							CancelPaste();
-						} else if (SelectionUnitRect.HasValue) {
-							DeleteSelection();
-						}
-					}
-
-					// Cancel
-					if (FrameInput.KeyboardDown(Key.Escape)) {
-						if (Pasting) {
-							ApplyPaste();
-						} else if (SelectionUnitRect.HasValue) {
-							SelectionUnitRect = null;
-						}
-						FrameInput.UseAllHoldingKeys();
+						Save();
 					}
 				}
 
@@ -581,7 +614,7 @@ namespace Yaya {
 		}
 
 
-		private void FrameUpdate_DropPlayer () {
+		private void Update_DropPlayer () {
 
 			if (IsPlaying || !DroppingPlayer || ePlayer.Selecting == null || TaskingRoute || PerformingUndoItem != null) return;
 
@@ -640,28 +673,6 @@ namespace Yaya {
 
 
 
-		#region --- API ---
-
-
-		public void TryAutoSave () {
-			if (Game.GlobalFrame % 120 == 0 && IsEditing && PerformingUndoItem == null) {
-				Save();
-			}
-		}
-
-
-		public void Save (bool forceSave = false) {
-			if (!IsDirty && !forceSave) return;
-			IsDirty = false;
-			Squad.SaveToFile(Const.UserMapRoot);
-		}
-
-
-		#endregion
-
-
-
-
 		#region --- LGC ---
 
 
@@ -703,11 +714,13 @@ namespace Yaya {
 						TargetViewRect = game.ViewRect;
 					}
 
+					LastEditingFrame = Game.GlobalFrame;
+
 					break;
 
 				case EditingMode.Playing:
 
-					Save(true);
+					Save();
 
 					YayaUtil.CreateCameraScrollMetaFile(Const.UserMapRoot);
 					AngeUtil.CreateGlobalPositionMetaFile(Const.UserMapRoot);
@@ -732,6 +745,58 @@ namespace Yaya {
 			PlayerDropPos.z = 0;
 			SelectionUnitRect = null;
 			DraggingUnitRect = null;
+			DroppingPlayerStartFrame = Game.GlobalFrame;
+		}
+
+
+		private void PlayFromStart () {
+			SetEditingMode(EditingMode.Playing);
+			int playerID = 0;
+			var player = ePlayer.Selecting;
+			if (player != null) {
+				player.Active = false;
+				player.SetCharacterState(CharacterState.GamePlay);
+				playerID = player.TypeID;
+			}
+			YayaGame.Current.StartGame(playerID);
+		}
+
+
+		private void Save () {
+			if (!IsEditing || Squad == null || Squad.Channel != MapChannel.User) return;
+			IsDirty = false;
+			Squad.SaveToFile(Const.UserMapRoot);
+		}
+
+
+		private RectInt GetPanelRect () {
+			int offsetX = 0;
+			const int DURATION = 16;
+			int width = Unify(PANEL_WIDTH);
+			if (IsEditing && !DroppingPlayer) {
+				// Editing
+				if (Game.GlobalFrame < LastEditingFrame + DURATION) {
+					offsetX = Util.RemapUnclamped(
+						LastEditingFrame, LastEditingFrame + DURATION,
+						-width, 0,
+						Game.GlobalFrame
+					);
+				}
+			} else {
+				// Playing or Dropping Player
+				if (Game.GlobalFrame < DroppingPlayerStartFrame + DURATION) {
+					offsetX = Util.RemapUnclamped(
+						DroppingPlayerStartFrame,
+						DroppingPlayerStartFrame + DURATION,
+						0,
+						-width,
+						Game.GlobalFrame
+					);
+				} else {
+					offsetX = -width;
+				}
+			}
+			return new RectInt(CellRenderer.CameraRect.x + offsetX, CellRenderer.CameraRect.y, width, CellRenderer.CameraRect.height);
 		}
 
 
@@ -781,6 +846,9 @@ namespace Yaya {
 
 		private void OnUndoRedoPerformed (MapUndoItem item) {
 
+			ApplyPaste();
+			SelectionUnitRect = null;
+
 			int DATA_LEN = UndoData.Length;
 			if (item == null || item.DataIndex < 0 || item.DataIndex >= DATA_LEN || item.Step == 0) return;
 			TargetViewRect = item.ViewRect;
@@ -816,104 +884,8 @@ namespace Yaya {
 				var unitRect = new RectInt(minX, minY, maxX - minX + 1, maxY - minY + 1);
 				RedirectForRule(unitRect);
 				SpawnBlinkParticle(unitRect.ToGlobal(), 0);
-				Save(true);
+				Save();
 			}
-		}
-
-
-		// Util
-		private void DrawDottedLine (int x, int y, int length, bool horizontal, int thickness, int gap, Color32 tint) {
-
-			if (gap == 0) return;
-
-			int stepLength = gap * 16;
-			int stepCount = length / stepLength;
-			int extraLength = length - stepCount * stepLength;
-
-			for (int i = 0; i <= stepCount; i++) {
-				if (i == stepCount && extraLength == 0) break;
-				if (horizontal) {
-					var cell = CellRenderer.Draw(
-						DOTTED_LINE,
-						x + i * stepLength, y,
-						0, 500, 0,
-						stepLength, thickness,
-						tint
-					);
-					cell.Z = int.MaxValue;
-					if (i == stepCount) {
-						ref var shift = ref cell.Shift;
-						shift.Right = 1000 - extraLength * 1000 / stepLength;
-					}
-				} else {
-					var cell = CellRenderer.Draw(
-						DOTTED_LINE,
-						x, y + i * stepLength,
-						0, 500, -90,
-						stepLength, thickness,
-						tint
-					);
-					cell.Z = int.MaxValue;
-					if (i == stepCount) {
-						ref var shift = ref cell.Shift;
-						shift.Right = 1000 - extraLength * 1000 / stepLength;
-					}
-				}
-			}
-
-
-		}
-
-
-		private void DrawThumbnail (int artworkID, RectInt rect, bool shrink = false, AngeSprite sprite = null) {
-			if (sprite != null || CellRenderer.TryGetSprite(artworkID, out sprite)) {
-				if (shrink) {
-					rect = rect.Shrink(rect.width * 2 / 10).Fit(
-						sprite.GlobalWidth,
-						sprite.GlobalHeight,
-						sprite.PivotX,
-						sprite.PivotY
-					);
-				}
-				CellRenderer.Draw(
-					artworkID,
-					rect
-				).Z = int.MaxValue - 2;
-			}
-		}
-
-
-		private void DrawCrossLine (RectInt rect, int thickness, Color32 tint, Color32 shadowTint) {
-			int shiftY = thickness / 2;
-			int shrink = thickness * 2;
-			CellRendererGUI.DrawLine(
-				rect.xMin + shrink,
-				rect.yMin + shrink - shiftY,
-				rect.xMax - shrink,
-				rect.yMax - shrink - shiftY,
-				thickness, shadowTint
-			).Z = int.MaxValue - 1;
-			CellRendererGUI.DrawLine(
-				rect.xMin + shrink,
-				rect.yMax - shrink - shiftY,
-				rect.xMax - shrink,
-				rect.yMin + shrink - shiftY,
-				thickness, shadowTint
-			).Z = int.MaxValue - 1;
-			CellRendererGUI.DrawLine(
-				rect.xMin + shrink,
-				rect.yMin + shrink + shiftY,
-				rect.xMax - shrink,
-				rect.yMax - shrink + shiftY,
-				thickness, tint
-			).Z = int.MaxValue - 1;
-			CellRendererGUI.DrawLine(
-				rect.xMin + shrink,
-				rect.yMax - shrink + shiftY,
-				rect.xMax - shrink,
-				rect.yMin + shrink + shiftY,
-				thickness, tint
-			).Z = int.MaxValue - 1;
 		}
 
 
