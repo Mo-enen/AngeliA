@@ -245,6 +245,10 @@ namespace Yaya {
 				if (!PalettePool.TryGetValue(id, out SelectingPaletteItem)) {
 					SelectingPaletteItem = null;
 				}
+				if (SelectingPaletteItem != null && SelectingPaletteItem.GroupIndex != SelectingPaletteGroupIndex) {
+					SelectingPaletteGroupIndex = SelectingPaletteItem.GroupIndex;
+					PaletteItemScrollY = 0;
+				}
 			}
 		}
 

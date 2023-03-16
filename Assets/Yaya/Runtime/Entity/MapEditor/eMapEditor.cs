@@ -16,9 +16,16 @@ namespace Yaya {
 		#region --- SUB ---
 
 
-		public enum EditingMode {
+		private enum EditingMode {
 			Editing = 0,
 			Playing = 1,
+		}
+
+
+		private enum PanelMode {
+			Palette = 0,
+			CameraSpot = 1,
+
 		}
 
 
@@ -69,7 +76,7 @@ namespace Yaya {
 		// Const
 		private const Key KEY_SWITCH_MODE = Key.Space;
 		private const int GIZMOS_Z = int.MaxValue - 64;
-		private const int PALETTE_Z = int.MaxValue - 16;
+		private const int PANEL_Z = int.MaxValue - 16;
 		private const int PANEL_WIDTH = 300;
 		private static readonly int LINE_V = "Soft Line V".AngeHash();
 		private static readonly int LINE_H = "Soft Line H".AngeHash();
@@ -94,9 +101,6 @@ namespace Yaya {
 				s_AutoZoom.Value = value;
 			}
 		}
-		public EditingMode Mode {
-			get; private set;
-		} = EditingMode.Editing;
 
 		// Data
 		private Dictionary<int, SpriteData> SpritePool = null;
@@ -116,6 +120,8 @@ namespace Yaya {
 		private Vector3Int PlayerDropPos = default;
 		private RectInt TargetViewRect = default;
 		private RectInt CopyBufferOriginalUnitRect = default;
+		private EditingMode Mode = EditingMode.Editing;
+		private PanelMode CurrentPanel = PanelMode.Palette;
 		private bool IsDirty = false;
 		private bool DroppingPlayer = false;
 		private bool TaskingRoute = false;
@@ -184,6 +190,8 @@ namespace Yaya {
 			MouseOutsideBoundary = false;
 			DroppingPlayerStartFrame = int.MinValue;
 			LastEditingFrame = int.MinValue;
+			PaletteItemScrollY = 0;
+			PalContent_ScrollBarMouseDownPos = null;
 
 			// Start
 			SetEditingMode(EditingMode.Editing);
@@ -226,10 +234,8 @@ namespace Yaya {
 			Game.Current.WorldSquad_Behind.SetDataChannel(MapChannel.BuiltIn);
 			YayaGame.Current.WorldSquad.SaveBeforeReload = false;
 
-			YayaUtil.CreateCameraScrollMetaFile(Const.UserMapRoot);
 			AngeUtil.CreateGlobalPositionMetaFile(Const.UserMapRoot);
 			GlobalPosition.ReloadMeta(Const.UserMapRoot);
-			eCameraAutoScroll.ReloadMeta(Const.UserMapRoot);
 
 			SpritePool = null;
 			IdChainPool = null;
@@ -364,8 +370,17 @@ namespace Yaya {
 			Update_View();
 			Update_Hotkey();
 			Update_DropPlayer();
-			Update_PaletteGroupUI();
-			Update_PaletteContentUI();
+
+			Update_ToolbarUI();
+			switch (CurrentPanel) {
+				case PanelMode.Palette:
+					Update_PaletteGroupUI();
+					Update_PaletteContentUI();
+					break;
+				case PanelMode.CameraSpot:
+					Update_CameraSpotUI();
+					break;
+			}
 
 			Update_Grid();
 			Update_DraggingGizmos();
@@ -586,6 +601,7 @@ namespace Yaya {
 						FrameInput.UseAllHoldingKeys();
 					}
 					eControlHintUI.AddHint(Key.Space, WORD.HINT_MEDT_PLAY_FROM_GEBAIN);
+
 				}
 
 				// Shift + ...
@@ -679,6 +695,7 @@ namespace Yaya {
 		private void SetEditingMode (EditingMode mode) {
 
 			var game = Game.Current;
+			if (mode == EditingMode.Playing) Save();
 			Mode = mode;
 			SelectingPaletteItem = null;
 			DroppingPlayer = false;
@@ -720,12 +737,8 @@ namespace Yaya {
 
 				case EditingMode.Playing:
 
-					Save();
-
-					YayaUtil.CreateCameraScrollMetaFile(Const.UserMapRoot);
 					AngeUtil.CreateGlobalPositionMetaFile(Const.UserMapRoot);
 					GlobalPosition.ReloadMeta(Const.UserMapRoot);
-					eCameraAutoScroll.ReloadMeta(Const.UserMapRoot);
 
 					// Respawn Entities
 					game.SetViewZ(game.ViewZ);

@@ -71,20 +71,6 @@ namespace Yaya {
 
 
 
-		#region --- SUB ---
-
-
-		[System.Serializable]
-		public class CameraScrollMeta {
-			public Vector3Int[] EntrancePositions = new Vector3Int[0];
-		}
-
-
-		#endregion
-
-
-
-
 		#region --- VAR ---
 
 
@@ -99,7 +85,7 @@ namespace Yaya {
 
 		// Data
 		private static eCameraAutoScroll Current = null;
-		private static readonly HashSet<Vector3Int> EntrancePool = new();
+		private static readonly HashSet<int> AllCameraScrollID = new();
 		private Vector2Int MaxPosition = default;
 		private bool IsEntrance = true;
 		private int PlayerPrevX = 0;
@@ -116,19 +102,9 @@ namespace Yaya {
 
 		[AfterGameInitialize]
 		public static void Initialize () {
-			ReloadMeta(Const.BuiltInMapRoot);
-		}
-
-
-		public static void ReloadMeta (string root) {
-			EntrancePool.Clear();
-			// Get Meta
-			var meta = AngeUtil.LoadJson<CameraScrollMeta>(root);
-			// Meta >> Pool
-			if (meta != null) {
-				foreach (var pos in meta.EntrancePositions) {
-					EntrancePool.TryAdd(pos);
-				}
+			AllCameraScrollID.Clear();
+			foreach (var type in typeof(eCameraAutoScroll).AllChildClass()) {
+				AllCameraScrollID.TryAdd(type.AngeHash());
 			}
 		}
 
@@ -137,11 +113,7 @@ namespace Yaya {
 			base.OnActived();
 			MaxPosition.x = X + (int)DirectionX * MAX_LEN * Const.CEL;
 			MaxPosition.y = Y + (int)DirectionY * MAX_LEN * Const.CEL;
-			IsEntrance = EntrancePool.Contains(new Vector3Int(
-				X.UDivide(Const.CEL),
-				Y.UDivide(Const.CEL),
-				Game.Current.ViewZ)
-			);
+			IsEntrance = CheckEntrance();
 		}
 
 
@@ -293,6 +265,36 @@ namespace Yaya {
 				Y + Const.HALF - view.height / 2
 				, 50, PRIORITY
 			);
+		}
+
+
+		private bool CheckEntrance () {
+
+			var dir = new Vector2Int((int)DirectionX, (int)DirectionY);
+			if (DirectionX == Direction3.None && DirectionY == Direction3.None) return false;
+			var unitPos = new Vector2Int(X, Y).ToUnit();
+			var squad = Game.Current.WorldSquad;
+
+			if (HasPrevTarget(new(-1, -1))) return false;
+			if (HasPrevTarget(new(-1, 0))) return false;
+			if (HasPrevTarget(new(-1, 1))) return false;
+			if (HasPrevTarget(new(0, -1))) return false;
+			if (HasPrevTarget(new(0, 1))) return false;
+			if (HasPrevTarget(new(1, -1))) return false;
+			if (HasPrevTarget(new(1, 0))) return false;
+			if (HasPrevTarget(new(1, 1))) return false;
+			return true;
+
+			bool HasPrevTarget (Vector2Int direction) {
+				if (direction == dir) return false;
+				for (int i = 1; i < MAX_LEN; i++) {
+					int x = unitPos.x + direction.x * i;
+					int y = unitPos.y + direction.y * i;
+					int id = squad.GetBlockAt(x, y, BlockType.Entity);
+					if (id != 0 && AllCameraScrollID.Contains(id)) return true;
+				}
+				return false;
+			}
 		}
 
 

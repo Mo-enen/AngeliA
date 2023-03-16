@@ -1,4 +1,5 @@
-﻿CtrlHint.MEDT.PlayFromBegain:从头开始游戏
+﻿UI.MEDT.Toolbar.Palette:绘制
+UI.MEDT.Toolbar.Camera:相机
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -11,6 +12,7 @@ ActionHint.Photo:切换
 CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Jump:跳跃
+CtrlHint.MEDT.PlayFromBegain:从头开始游戏
 CtrlHint.MEDT.SwitchMode.Edit:编辑
 CtrlHint.MEDT.SwitchMode.Play:开始游戏
 CtrlHint.Move:移动

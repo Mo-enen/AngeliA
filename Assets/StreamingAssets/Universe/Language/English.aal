@@ -1,4 +1,5 @@
-﻿CtrlHint.MEDT.PlayFromBegain:Play from Start
+﻿UI.MEDT.Toolbar.Palette:Palette
+UI.MEDT.Toolbar.Camera:Spot
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -11,6 +12,7 @@ ActionHint.Photo:Switch
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Jump:Jump
+CtrlHint.MEDT.PlayFromBegain:Play from Start
 CtrlHint.MEDT.SwitchMode.Edit:Edit
 CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
