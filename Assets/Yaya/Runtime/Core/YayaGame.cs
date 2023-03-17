@@ -114,23 +114,6 @@ namespace Yaya {
 			FrameUpdate_Player();
 			Update_Damage();
 
-
-			// ============ Test ============
-
-
-#if UNITY_EDITOR
-			if (Game.GlobalFrame > 10 && FrameInput.KeyboardDown(Key.P) && FrameInput.KeyboardHolding(Key.LeftCtrl)) {
-				if (MapEditor.Active) {
-					MapEditor.OnInactived();
-				}
-				UnityEditor.EditorApplication.isPlaying = false;
-			}
-#endif
-
-			// ============ Test ============
-
-
-
 		}
 
 

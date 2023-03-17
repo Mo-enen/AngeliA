@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using AngeliaFramework;
 using Moenen.Standard;
+using Gma.DataStructures.StringSearch;
 
 namespace Yaya {
 	[EntityAttribute.DontDestroyOnSquadTransition]
@@ -19,13 +20,6 @@ namespace Yaya {
 		private enum EditingMode {
 			Editing = 0,
 			Playing = 1,
-		}
-
-
-		private enum PanelMode {
-			Palette = 0,
-			CameraSpot = 1,
-
 		}
 
 
@@ -102,35 +96,43 @@ namespace Yaya {
 			}
 		}
 
-		// Data
+		// Pools
 		private Dictionary<int, SpriteData> SpritePool = null;
 		private Dictionary<int, int[]> IdChainPool = null;
 		private Dictionary<int, int> ReversedChainPool = null;
 		private Dictionary<int, string> ChainRulePool = null;
 		private Dictionary<int, int> EntityArtworkRedirectPool = null;
 		private Dictionary<int, PaletteItem> PalettePool = null;
+
+		// Cache List
 		private List<PaletteGroup> PaletteGroups = null;
 		private List<BlockBuffer> PastingBuffer = null;
 		private List<BlockBuffer> CopyBuffer = null;
+		private List<PaletteItem> SearchResult = null;
+		private Trie<PaletteItem> PaletteTrie = null;
+		private UndoRedoEcho<MapUndoItem> UndoRedo = null;
 		private MapUndoData[] UndoData = null;
+
+		// Data
 		private PaletteItem SelectingPaletteItem = null;
 		private YayaWorldSquad Squad = null;
-		private UndoRedoEcho<MapUndoItem> UndoRedo = null;
 		private MapUndoItem PerformingUndoItem = null;
+		private EditingMode Mode = EditingMode.Editing;
 		private Vector3Int PlayerDropPos = default;
 		private RectInt TargetViewRect = default;
 		private RectInt CopyBufferOriginalUnitRect = default;
-		private EditingMode Mode = EditingMode.Editing;
-		private PanelMode CurrentPanel = PanelMode.Palette;
+		private RectInt TooltipRect = default;
+		private RectInt PanelRect = default;
 		private bool IsDirty = false;
 		private bool DroppingPlayer = false;
 		private bool TaskingRoute = false;
 		private bool CtrlHolding = false;
 		private bool ShiftHolding = false;
+		private bool TypingInSearchBar = false;
 		private int DropHintWidth = Const.CEL;
 		private int UndoDataIndex = 0;
-		private int DroppingPlayerStartFrame = int.MinValue;
-		private int LastEditingFrame = int.MinValue;
+		private int TooltipDuration = 0;
+		private int PanelOffsetX = 0;
 
 		// UI
 		private readonly CellLabel DropHintLabel = new() {
@@ -167,11 +169,12 @@ namespace Yaya {
 			try {
 				Active_Pool();
 				Active_Palette();
+				Active_PaletteSearch();
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 
 			// Cache
-			PastingBuffer = new List<BlockBuffer>();
-			CopyBuffer = new List<BlockBuffer>();
+			PastingBuffer = new();
+			CopyBuffer = new();
 			UndoRedo = new UndoRedoEcho<MapUndoItem>(128, OnUndoRedoPerformed, OnUndoRedoPerformed);
 			UndoData = new MapUndoData[65536];
 			DroppingPlayer = false;
@@ -188,10 +191,11 @@ namespace Yaya {
 			PerformingUndoItem = null;
 			MouseDownOutsideBoundary = false;
 			MouseOutsideBoundary = false;
-			DroppingPlayerStartFrame = int.MinValue;
-			LastEditingFrame = int.MinValue;
 			PaletteItemScrollY = 0;
-			PalContent_ScrollBarMouseDownPos = null;
+			PalContentScrollBarMouseDownPos = null;
+			SearchResult = new();
+			PanelOffsetX = 0;
+			TypingInSearchBar = false;
 
 			// Start
 			SetEditingMode(EditingMode.Editing);
@@ -218,6 +222,8 @@ namespace Yaya {
 				game.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 1000, int.MaxValue);
 				game.SetViewSizeDelay(TargetViewRect.height, 1000, int.MaxValue);
 			}
+
+			System.GC.Collect(0, System.GCCollectionMode.Forced);
 
 		}
 
@@ -251,6 +257,8 @@ namespace Yaya {
 			PerformingUndoItem = null;
 			IsDirty = false;
 			MouseDownOutsideBoundary = false;
+			PaletteTrie = null;
+			SearchResult = null;
 
 			System.GC.Collect(0, System.GCCollectionMode.Forced);
 
@@ -370,18 +378,13 @@ namespace Yaya {
 			Update_View();
 			Update_Hotkey();
 			Update_DropPlayer();
-
-			Update_ToolbarUI();
-			switch (CurrentPanel) {
-				case PanelMode.Palette:
-					Update_PaletteGroupUI();
-					Update_PaletteContentUI();
-					break;
-				case PanelMode.CameraSpot:
-					Update_CameraSpotUI();
-					break;
+			if (SearchResult.Count == 0) {
+				Update_PaletteGroupUI();
+				Update_PaletteContentUI();
+			} else {
+				Update_PaletteSearchResultUI();
 			}
-
+			Update_PaletteSearchBarUI();
 			Update_Grid();
 			Update_DraggingGizmos();
 			Update_PastingGizmos();
@@ -398,9 +401,19 @@ namespace Yaya {
 			TaskingRoute = FrameTask.IsTasking(YayaConst.TASK_ROUTE);
 			CtrlHolding = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.RightCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
 			ShiftHolding = FrameInput.KeyboardHolding(Key.LeftShift) || FrameInput.KeyboardHolding(Key.RightShift);
+
+			// Panel Rect
+			PanelRect.width = Unify(PANEL_WIDTH);
+			PanelRect.height = CellRenderer.CameraRect.height;
+			int aimOffsetX = IsEditing && !DroppingPlayer ? 0 : -PanelRect.width;
+			PanelOffsetX = PanelOffsetX.LerpTo(aimOffsetX, 200);
+			PanelRect.x = CellRenderer.CameraRect.x + PanelOffsetX;
+			PanelRect.y = CellRenderer.CameraRect.y;
+
+			// Hint
 			if (IsEditing) {
 				eControlHintUI.ForceHideGamepad();
-				eControlHintUI.ForceOffset(GetPanelRect().xMax - CellRenderer.CameraRect.x, 0);
+				eControlHintUI.ForceOffset(PanelRect.xMax - CellRenderer.CameraRect.x, 0);
 			}
 
 			// Squad Behind Tint
@@ -423,7 +436,7 @@ namespace Yaya {
 
 		private void Update_View () {
 
-			if (TaskingRoute || DroppingPlayer || PerformingUndoItem != null || MouseDownOutsideBoundary) return;
+			if (TaskingRoute || DroppingPlayer || PerformingUndoItem != null || TypingInSearchBar || MouseDownOutsideBoundary) return;
 
 			var game = Game.Current;
 			var viewConfig = game.ViewConfig;
@@ -520,7 +533,7 @@ namespace Yaya {
 
 		private void Update_Hotkey () {
 
-			if (TaskingRoute || PerformingUndoItem != null) return;
+			if (TaskingRoute || PerformingUndoItem != null || TypingInSearchBar) return;
 
 			// Switch Mode
 			if (!CtrlHolding && (IsPlaying || !DroppingPlayer)) {
@@ -589,10 +602,14 @@ namespace Yaya {
 					}
 					// Undo
 					if (FrameInput.KeyboardDown(Key.Z)) {
+						ApplyPaste();
+						SelectionUnitRect = null;
 						UndoRedo.Undo();
 					}
 					// Redo
 					if (FrameInput.KeyboardDown(Key.Y)) {
+						ApplyPaste();
+						SelectionUnitRect = null;
 						UndoRedo.Redo();
 					}
 					// Play from Start
@@ -731,8 +748,6 @@ namespace Yaya {
 						TargetViewRect = game.ViewRect;
 					}
 
-					LastEditingFrame = Game.GlobalFrame;
-
 					break;
 
 				case EditingMode.Playing:
@@ -758,7 +773,6 @@ namespace Yaya {
 			PlayerDropPos.z = 0;
 			SelectionUnitRect = null;
 			DraggingUnitRect = null;
-			DroppingPlayerStartFrame = Game.GlobalFrame;
 		}
 
 
@@ -782,34 +796,21 @@ namespace Yaya {
 		}
 
 
-		private RectInt GetPanelRect () {
-			int offsetX = 0;
-			const int DURATION = 16;
-			int width = Unify(PANEL_WIDTH);
-			if (IsEditing && !DroppingPlayer) {
-				// Editing
-				if (Game.GlobalFrame < LastEditingFrame + DURATION) {
-					offsetX = Util.RemapUnclamped(
-						LastEditingFrame, LastEditingFrame + DURATION,
-						-width, 0,
-						Game.GlobalFrame
-					);
-				}
-			} else {
-				// Playing or Dropping Player
-				if (Game.GlobalFrame < DroppingPlayerStartFrame + DURATION) {
-					offsetX = Util.RemapUnclamped(
-						DroppingPlayerStartFrame,
-						DroppingPlayerStartFrame + DURATION,
-						0,
-						-width,
-						Game.GlobalFrame
-					);
-				} else {
-					offsetX = -width;
-				}
-			}
-			return new RectInt(CellRenderer.CameraRect.x + offsetX, CellRenderer.CameraRect.y, width, CellRenderer.CameraRect.height);
+		private void DrawTooltip (RectInt rect, string tip) {
+			TooltipDuration = rect == TooltipRect ? TooltipDuration + 1 : 0;
+			TooltipRect = rect;
+			if (TooltipDuration <= 60) return;
+			int height = Unify(24);
+			int gap = Unify(6);
+			var tipRect = new RectInt(
+				rect.x,
+				Mathf.Max(rect.y - height - Unify(12), CellRenderer.CameraRect.y),
+				rect.width, height
+			);
+			TooltipLabel.Text = tip;
+			TooltipLabel.CharSize = Unify(24);
+			CellRendererGUI.Label(TooltipLabel, tipRect, out var bounds);
+			CellRenderer.Draw(Const.PIXEL, bounds.Expand(gap), Const.BLACK).Z = int.MaxValue;
 		}
 
 
@@ -858,9 +859,6 @@ namespace Yaya {
 
 
 		private void OnUndoRedoPerformed (MapUndoItem item) {
-
-			ApplyPaste();
-			SelectionUnitRect = null;
 
 			int DATA_LEN = UndoData.Length;
 			if (item == null || item.DataIndex < 0 || item.DataIndex >= DATA_LEN || item.Step == 0) return;

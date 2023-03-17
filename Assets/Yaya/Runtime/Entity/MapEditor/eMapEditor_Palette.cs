@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-
+using Gma.DataStructures.StringSearch;
+using System.Text;
 
 namespace Yaya {
 	public sealed partial class eMapEditor {
@@ -17,7 +18,7 @@ namespace Yaya {
 			public int ID = 0;
 			public int ArtworkID = 0;
 			public int GroupIndex = -1;
-			public string Label = "";
+			public string Name = "";
 			public GroupType GroupType = GroupType.General;
 			public BlockType BlockType = BlockType.Entity;
 			public AngeSpriteChain Chain = null;
@@ -43,34 +44,20 @@ namespace Yaya {
 
 		// Const
 		private static readonly int PAL_ITEM_FRAME = "MapEditorPaletteItemFrame".AngeHash();
-		private static readonly int[] TOOLBAR_ICON = new int[] {
-			"MapEditor.Toolbar.Palette".AngeHash(),
-			"MapEditor.Toolbar.Camera".AngeHash(),
-		};
-		private static readonly int[] TOOLBAR_NAME_ID = new int[] {
-			"UI.MEDT.Toolbar.Palette".AngeHash(),
-			"UI.MEDT.Toolbar.Camera".AngeHash(),
-		};
-		private const int TOOLBAR_HEIGHT = 42;
-
+		private static readonly int SEARCH_ICON = "MapEditor.SearchIcon".AngeHash();
+		private const int SEARCH_BAR_HEIGHT = 54;
 
 		// UI
 		private readonly CellLabel TooltipLabel = new() {
 			Tint = Const.WHITE,
 			Alignment = Alignment.TopLeft,
 		};
-		private readonly CellLabel ToolbarLabel = new() {
-			Tint = Const.WHITE,
-			Alignment = Alignment.MidMid,
-		};
 
 		// Data
-		private int PaletteGroupUIHeight = 0;
+		private Int2? PalContentScrollBarMouseDownPos = null;
+		private RectInt PaletteGroupPanelRect = default;
 		private int SelectingPaletteGroupIndex = 0;
 		private int PaletteItemScrollY = 0;
-		private Int2? PalContent_ScrollBarMouseDownPos = null;
-		private RectInt TooltipRect = default;
-		private int TooltipDuration = 0;
 
 
 		#endregion
@@ -121,7 +108,7 @@ namespace Yaya {
 								chain.Type == GroupType.Animated ? chain.ID :
 								chain.Count > 0 && chain[0] < spriteCount && chain[0] >= 0 ? CellRenderer.GetSpriteAt(chain[0]).GlobalID :
 								0,
-							Label = chain.Name,
+							Name = Util.GetDisplayName(chain.Name),
 							GroupType = chain.Type,
 							BlockType = group.BlockType,
 							Chain = chain,
@@ -149,7 +136,7 @@ namespace Yaya {
 				group.Items.Add(new PaletteItem() {
 					ID = sp.GlobalID,
 					ArtworkID = sp.GlobalID,
-					Label = sData.RealName,
+					Name = Util.GetDisplayName(sData.RealName),
 					GroupType = GroupType.General,
 					BlockType = group.BlockType,
 					Chain = null,
@@ -157,7 +144,7 @@ namespace Yaya {
 			}
 
 			foreach (var pair in groupPool) {
-				pair.Value.Items.Sort((a, b) => a.Label.CompareTo(b.Label));
+				pair.Value.Items.Sort((a, b) => a.Name.CompareTo(b.Name));
 				PaletteGroups.Add(pair.Value);
 			}
 
@@ -206,12 +193,12 @@ namespace Yaya {
 					ArtworkID = artworkTypeID,
 					GroupType = GroupType.General,
 					BlockType = group.BlockType,
-					Label = Util.GetDisplayName(type.Name.StartsWith('e') ? type.Name[1..] : type.Name),
+					Name = Util.GetDisplayName(type.Name.StartsWith('e') || type.Name.StartsWith('i') ? type.Name[1..] : type.Name),
 					Chain = null,
 				});
 			}
 			foreach (var (_, group) in entityGroupPool) {
-				group.Items.Sort((a, b) => a.Label.CompareTo(b.Label));
+				group.Items.Sort((a, b) => a.Name.CompareTo(b.Name));
 				PaletteGroups.Add(group);
 			}
 
@@ -235,51 +222,27 @@ namespace Yaya {
 		}
 
 
-		private void Update_ToolbarUI () {
-
-			var panelRect = GetPanelRect();
-			if (panelRect.xMax <= CellRenderer.CameraRect.x) return;
-			CellRenderer.Draw(Const.PIXEL, panelRect, Const.BLACK).Z = PANEL_Z - 13;
-
-			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute;
-			int height = Unify(TOOLBAR_HEIGHT);
-			int BORDER_ALT = Unify(2);
-			var toolbarRect = new RectInt(panelRect.x, panelRect.yMax - height, panelRect.width, height);
-			var rect = new RectInt(toolbarRect.x, toolbarRect.y, toolbarRect.width / TOOLBAR_ICON.Length, toolbarRect.height);
-			ToolbarLabel.CharSize = Unify(16);
-			for (int i = 0; i < TOOLBAR_ICON.Length; i++) {
-
-				// Label
-				ToolbarLabel.Text = Language.Get(TOOLBAR_NAME_ID[i]);
-				CellRendererGUI.Label(ToolbarLabel, rect.Shrink(rect.height / 2, 0, 0, 0), out var bound);
-
-				// Icon
-				CellRenderer.Draw(
-					TOOLBAR_ICON[i], bound.x - rect.height, rect.y, 0, 0, 0, rect.height, rect.height
-				).Z = PANEL_Z - 1;
-
-				// Highlight
-				if ((int)CurrentPanel == i) {
-					CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_42).Z = PANEL_Z - 2;
+		private void Active_PaletteSearch () {
+			PaletteTrie = new Trie<PaletteItem>();
+			var builder = new StringBuilder();
+			foreach (var group in PaletteGroups) {
+				foreach (var item in group.Items) {
+					if (item == null || string.IsNullOrEmpty(item.Name)) continue;
+					for (int i = 0; i < item.Name.Length; i++) {
+						char c = item.Name[i];
+						if (c != ' ') {
+							builder.Append(c);
+						} else if (builder.Length > 0) {
+							PaletteTrie.Add(builder.ToString(), item);
+							builder.Clear();
+						}
+					}
+					if (builder.Length > 0) {
+						PaletteTrie.Add(builder.ToString(), item);
+						builder.Clear();
+					}
 				}
-
-				// Hover
-				bool hover = rect.Contains(FrameInput.MouseGlobalPosition);
-				if (hover) {
-					var cells = CellRenderer.Draw_9Slice(
-						FRAME, rect, BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT, Const.GREY
-					);
-					foreach (var cell in cells) cell.Z = PANEL_Z - 2;
-				}
-
-				// Click
-				if (hover && interactable && FrameInput.MouseLeftButtonDown) {
-					CurrentPanel = (PanelMode)i;
-				}
-
-				rect.x += rect.width;
 			}
-
 		}
 
 
@@ -289,26 +252,26 @@ namespace Yaya {
 				SelectingPaletteGroupIndex = SelectingPaletteGroupIndex.Clamp(0, PaletteGroups.Count - 1);
 			}
 
-			var panelRect = GetPanelRect();
-			if (panelRect.xMax <= CellRenderer.CameraRect.x) return;
+			if (PanelRect.xMax <= CellRenderer.CameraRect.x) return;
 
 			// Groups
 			int GROUP_ITEM_SIZE = Unify(64);
 			int GROUP_ITEM_GAP = Unify(6);
 			int GROUP_PADDING = Unify(6);
 			int BORDER_ALT = Unify(2);
-			int groupColumnCount = (panelRect.width - GROUP_PADDING * 2) / (GROUP_ITEM_SIZE + GROUP_ITEM_GAP);
+			int groupColumnCount = (PanelRect.width - GROUP_PADDING * 2) / (GROUP_ITEM_SIZE + GROUP_ITEM_GAP);
 			int groupRowCount = PaletteGroups.Count / groupColumnCount + (PaletteGroups.Count % groupColumnCount != 0 ? 1 : 0);
 			int groupPanelHeight = groupRowCount * (GROUP_ITEM_SIZE + GROUP_ITEM_GAP);
 			var groupRect = new RectInt(
-				panelRect.x,
-				panelRect.y,
-				panelRect.width,
+				PanelRect.x,
+				PanelRect.y,
+				PanelRect.width,
 				groupPanelHeight
-			).Shrink(GROUP_PADDING);
-
+			);
+			bool mouseInPanel = groupRect.Contains(FrameInput.MouseGlobalPosition);
+			PaletteGroupPanelRect = groupRect;
+			groupRect = groupRect.Shrink(GROUP_PADDING);
 			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute;
-			PaletteGroupUIHeight = groupRect.height + GROUP_PADDING * 2;
 
 			CellRenderer.Draw(Const.PIXEL, groupRect.Expand(GROUP_PADDING), Const.GREY_32).Z = PANEL_Z - 6;
 
@@ -329,7 +292,7 @@ namespace Yaya {
 				}
 
 				// Hover Highlight
-				bool mouseHovering = rect.Contains(FrameInput.MouseGlobalPosition);
+				bool mouseHovering = mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
 				if (mouseHovering) {
 					var cells = CellRenderer.Draw_9Slice(
 						FRAME, rect, BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT, Const.CYAN
@@ -340,6 +303,9 @@ namespace Yaya {
 
 				// Click
 				if (interactable && mouseHovering && FrameInput.MouseLeftButtonDown) {
+					if (SelectingPaletteGroupIndex == i && group.Items.Count > 0) {
+						SelectingPaletteItem = group.Items[0];
+					}
 					SelectingPaletteGroupIndex = i;
 					PaletteItemScrollY = 0;
 				}
@@ -352,8 +318,7 @@ namespace Yaya {
 
 			if (SelectingPaletteGroupIndex < 0 || SelectingPaletteGroupIndex >= PaletteGroups.Count) return;
 			var items = PaletteGroups[SelectingPaletteGroupIndex].Items;
-
-			var panelRect = GetPanelRect();
+			CellRenderer.Draw(Const.PIXEL, PanelRect, Const.BLACK).Z = PANEL_Z - 13;
 
 			int ITEM_SIZE = Unify(46);
 			int ITEM_GAP = Unify(3);
@@ -362,15 +327,17 @@ namespace Yaya {
 			int BORDER = Unify(6);
 			int BORDER_ALT = Unify(2);
 			int SCROLL_BAR_WIDTH = Unify(12);
+			int SEARCH_HEIGHT = Unify(SEARCH_BAR_HEIGHT);
 			const int EXTRA_ROW = 6;
 			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute;
-			int toolbarHeight = Unify(TOOLBAR_HEIGHT);
 			var contentRect = new RectInt(
-				panelRect.x,
-				panelRect.y + PaletteGroupUIHeight,
-				panelRect.width,
-				panelRect.height - PaletteGroupUIHeight - toolbarHeight
-			).Shrink(PADDING);
+				PanelRect.x,
+				PaletteGroupPanelRect.yMax + SEARCH_HEIGHT,
+				PanelRect.width,
+				PanelRect.yMax - PaletteGroupPanelRect.yMax - SEARCH_HEIGHT
+			);
+			bool mouseInPanel = contentRect.Contains(FrameInput.MouseGlobalPosition);
+			contentRect = contentRect.Shrink(PADDING);
 			int columnCount = contentRect.width / (ITEM_SIZE + ITEM_GAP);
 			int rowCount = items.Count / columnCount + (items.Count % columnCount != 0 ? 1 : 0);
 			int pageRowCount = contentRect.height / (ITEM_SIZE + ITEM_GAP) + (items.Count % columnCount != 0 ? 1 : 0);
@@ -414,11 +381,11 @@ namespace Yaya {
 				}
 
 				// Hover
-				bool mouseHovering = rect.Contains(FrameInput.MouseGlobalPosition);
+				bool mouseHovering = mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
 				if (mouseHovering) {
 					cells = CellRenderer.Draw_9Slice(FRAME, rect, BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT, Const.GREEN);
 					foreach (var cell in cells) cell.Z = PANEL_Z - 11;
-					DrawTooltip(rect, pal.Label);
+					DrawTooltip(rect, pal.Name);
 				}
 
 				// Click
@@ -439,7 +406,7 @@ namespace Yaya {
 			}
 
 			// Scroll Bar
-			if (!FrameInput.MouseLeftButton) PalContent_ScrollBarMouseDownPos = null;
+			if (!FrameInput.MouseLeftButton) PalContentScrollBarMouseDownPos = null;
 			if (pageRowCount < rowCount + EXTRA_ROW) {
 				int barHeight = contentRect.height * pageRowCount / (rowCount + EXTRA_ROW);
 				var barRect = new RectInt(
@@ -456,36 +423,94 @@ namespace Yaya {
 				CellRenderer.Draw(
 					Const.PIXEL,
 					barRect,
-					hoveringBar || PalContent_ScrollBarMouseDownPos.HasValue ? Const.GREY : Const.GREY_64
+					hoveringBar || PalContentScrollBarMouseDownPos.HasValue ? Const.GREY : Const.GREY_64
 				).Z = PANEL_Z - 9;
-				if (PalContent_ScrollBarMouseDownPos.HasValue) {
+				if (PalContentScrollBarMouseDownPos.HasValue) {
 					int mouseY = FrameInput.MouseGlobalPosition.y;
-					int mouseDownY = PalContent_ScrollBarMouseDownPos.Value.A;
-					int scrollDownY = PalContent_ScrollBarMouseDownPos.Value.B;
+					int mouseDownY = PalContentScrollBarMouseDownPos.Value.A;
+					int scrollDownY = PalContentScrollBarMouseDownPos.Value.B;
 					PaletteItemScrollY = scrollDownY + (mouseDownY - mouseY) * (rowCount + EXTRA_ROW) / contentRect.height;
 				}
 				if (hoveringBar && FrameInput.MouseLeftButtonDown) {
-					PalContent_ScrollBarMouseDownPos = new Int2(
+					PalContentScrollBarMouseDownPos = new Int2(
 						FrameInput.MouseGlobalPosition.y, PaletteItemScrollY
 					);
 				}
 			} else {
-				PalContent_ScrollBarMouseDownPos = null;
+				PalContentScrollBarMouseDownPos = null;
 			}
 
 		}
 
 
-		private void Update_CameraSpotUI () {
+		private void Update_PaletteSearchResultUI () {
 
-			var panelRect = GetPanelRect();
+			if (IsPlaying || DroppingPlayer || TaskingRoute) {
+				SearchResult.Clear();
+				return;
+			}
 
-			CellRenderer.Draw(Const.PIXEL, panelRect, Const.BLACK).Z = PANEL_Z - 13;
+			CellRenderer.Draw(Const.PIXEL, PanelRect, Const.BLACK).Z = PANEL_Z - 13;
 
 
 
 
 
+
+
+
+		}
+
+
+		private void Update_PaletteSearchBarUI () {
+
+			if (IsPlaying || DroppingPlayer || TaskingRoute) TypingInSearchBar = false;
+
+			int PADDING = Unify(6);
+			var searchPanel = new RectInt(
+				PanelRect.x, PaletteGroupPanelRect.yMax, PanelRect.width, Unify(SEARCH_BAR_HEIGHT)
+			);
+			CellRenderer.Draw(Const.PIXEL, searchPanel, Const.GREY_32).Z = PANEL_Z - 6;
+			searchPanel = searchPanel.Shrink(PADDING);
+
+			// Bar
+			var barRect = searchPanel.Shrink(searchPanel.height, 0, 0, 0);
+			int BORDER = Unify(2);
+			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute; ;
+			bool mouseInBar = interactable && barRect.Contains(FrameInput.MouseGlobalPosition);
+			if (mouseInBar) Game.Current.SetCursor(2);
+			var cells = CellRenderer.Draw_9Slice(FRAME, barRect, BORDER, BORDER, BORDER, BORDER, Const.GREY_96);
+			foreach (var cell in cells) cell.Z = PANEL_Z - 5;
+
+			// Icon
+			CellRenderer.Draw(
+				SEARCH_ICON,
+				barRect.Shrink(-barRect.height, barRect.width, 0, 0)
+			).Z = PANEL_Z - 4;
+
+			// Text
+			if (TypingInSearchBar) {
+
+
+
+			}
+
+			// Click
+			if (FrameInput.MouseLeftButtonDown) {
+				if (mouseInBar) {
+					if (!TypingInSearchBar) {
+						TypingInSearchBar = true;
+					} else {
+						// Move Cursor
+
+
+
+					}
+				} else if (TypingInSearchBar) {
+					TypingInSearchBar = false;
+					FrameInput.UseAllHoldingKeys();
+				}
+			}
 
 		}
 
@@ -498,19 +523,9 @@ namespace Yaya {
 		#region --- LGC ---
 
 
-		private void DrawTooltip (RectInt rect, string tip) {
-			TooltipDuration = rect == TooltipRect ? TooltipDuration + 1 : 0;
-			TooltipRect = rect;
-			if (TooltipDuration <= 60) return;
-			int height = Unify(96);
-			int gap = Unify(6);
-			var tipRect = new RectInt(
-				rect.x, rect.y - height - Unify(12), rect.width, height
-			);
-			TooltipLabel.Text = tip;
-			TooltipLabel.CharSize = Unify(24);
-			CellRendererGUI.Label(TooltipLabel, tipRect, out var bounds);
-			CellRenderer.Draw(Const.PIXEL, bounds.Expand(gap), Const.BLACK).Z = int.MaxValue;
+		private void SearchForPalette (string query) {
+			SearchResult.Clear();
+			SearchResult.AddRange(PaletteTrie.Retrieve(query));
 		}
 
 

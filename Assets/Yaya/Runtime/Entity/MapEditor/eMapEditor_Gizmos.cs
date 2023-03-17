@@ -190,7 +190,7 @@ namespace Yaya {
 
 		private void Update_Cursor () {
 
-			if (IsPlaying || DroppingPlayer || CtrlHolding) return;
+			if (IsPlaying || DroppingPlayer || CtrlHolding || TypingInSearchBar) return;
 			if (MouseInSelection || MouseOutsideBoundary || MouseDownOutsideBoundary || DraggingUnitRect.HasValue) return;
 			if (FrameInput.AnyMouseButtonHolding && MouseDownInSelection) return;
 

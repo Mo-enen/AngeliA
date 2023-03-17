@@ -138,7 +138,7 @@ namespace Yaya {
 			if (AirDragY != 0) VelocityY = VelocityY.MoveTowards(0, AirDragY);
 
 			// Water
-			if (prevInWater != InWater) {
+			if (prevInWater != InWater && InWater == VelocityY < 0) {
 				Game.Current.SpawnEntity(
 					WATER_PARTICLE_ID,
 					X + OffsetX + Width / 2,

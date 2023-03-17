@@ -11,7 +11,7 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 
 namespace Yaya {
 	public static class YayaConst {
-
+		
 
 		public static readonly int DEFAULT_PARTICLE_CODE = typeof(eDefaultParticle).AngeHash();
 		public const int MAP_VERSION = 0;

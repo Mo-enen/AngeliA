@@ -41,7 +41,7 @@ namespace Yaya {
 
 			DraggingUnitRect = null;
 
-			if (IsPlaying || DroppingPlayer || TaskingRoute || PerformingUndoItem != null) {
+			if (IsPlaying || DroppingPlayer || TaskingRoute || PerformingUndoItem != null || TypingInSearchBar) {
 				MouseDownPosition = null;
 				MouseDownOutsideBoundary = false;
 				MouseOutsideBoundary = false;
@@ -50,14 +50,13 @@ namespace Yaya {
 
 			var mousePos = FrameInput.MouseGlobalPosition;
 			MouseInSelection = SelectionUnitRect.HasValue && SelectionUnitRect.Value.Contains(mousePos.ToUnit());
-			var panelRect = GetPanelRect();
 			var cameraRect = CellRenderer.CameraRect.Shrink(1);
 			MouseOutsideBoundary =
 				mousePos.x < cameraRect.x ||
 				mousePos.x > cameraRect.xMax ||
 				mousePos.y < cameraRect.y ||
 				mousePos.y > cameraRect.yMax ||
-				panelRect.Contains(mousePos);
+				PanelRect.Contains(mousePos);
 			if (MouseInSelection) Game.Current.SetCursor(1);
 
 			if (!MouseDownPosition.HasValue) {
