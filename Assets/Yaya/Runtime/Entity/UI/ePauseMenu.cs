@@ -288,6 +288,9 @@ namespace Yaya {
 
 			if (DrawItem(Language.Get(WORD.UI_QUIT), Const.RED_BETTER)) {
 				Application.Quit();
+#if UNITY_EDITOR
+				UnityEditor.EditorApplication.isPlaying = false;
+#endif
 			}
 
 		}

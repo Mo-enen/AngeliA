@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-using Gma.DataStructures.StringSearch;
+using ThirdParty;
 using System.Text;
+
 
 namespace Yaya {
 	public sealed partial class eMapEditor {
@@ -58,6 +59,8 @@ namespace Yaya {
 		private RectInt PaletteGroupPanelRect = default;
 		private int SelectingPaletteGroupIndex = 0;
 		private int PaletteItemScrollY = 0;
+		private int PaletteSearchScrollY = 0;
+		private string SearchingText = "";
 
 
 		#endregion
@@ -219,10 +222,7 @@ namespace Yaya {
 				}
 			}
 
-		}
-
-
-		private void Active_PaletteSearch () {
+			// Search
 			PaletteTrie = new Trie<PaletteItem>();
 			var builder = new StringBuilder();
 			foreach (var group in PaletteGroups) {
@@ -230,15 +230,15 @@ namespace Yaya {
 					if (item == null || string.IsNullOrEmpty(item.Name)) continue;
 					for (int i = 0; i < item.Name.Length; i++) {
 						char c = item.Name[i];
-						if (c != ' ') {
+						if (c != ' ' && c != '_') {
 							builder.Append(c);
 						} else if (builder.Length > 0) {
-							PaletteTrie.Add(builder.ToString(), item);
+							PaletteTrie.Add(builder.ToString().ToLower(), item);
 							builder.Clear();
 						}
 					}
 					if (builder.Length > 0) {
-						PaletteTrie.Add(builder.ToString(), item);
+						PaletteTrie.Add(builder.ToString().ToLower(), item);
 						builder.Clear();
 					}
 				}
@@ -328,11 +328,11 @@ namespace Yaya {
 			int BORDER_ALT = Unify(2);
 			int SCROLL_BAR_WIDTH = Unify(12);
 			int SEARCH_HEIGHT = Unify(SEARCH_BAR_HEIGHT);
-			const int EXTRA_ROW = 6;
+			const int EXTRA_ROW = 3;
 			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute;
 			var contentRect = new RectInt(
 				PanelRect.x,
-				PaletteGroupPanelRect.yMax + SEARCH_HEIGHT,
+				PaletteGroupPanelRect.yMax,
 				PanelRect.width,
 				PanelRect.yMax - PaletteGroupPanelRect.yMax - SEARCH_HEIGHT
 			);
@@ -445,31 +445,74 @@ namespace Yaya {
 
 		private void Update_PaletteSearchResultUI () {
 
-			if (IsPlaying || DroppingPlayer || TaskingRoute) {
-				SearchResult.Clear();
-				return;
-			}
-
+			if (IsPlaying || DroppingPlayer || TaskingRoute) return;
 			CellRenderer.Draw(Const.PIXEL, PanelRect, Const.BLACK).Z = PANEL_Z - 13;
+			if (SearchResult.Count == 0) return;
 
+			var searchRect = PanelRect.Shrink(0, 0, 0, Unify(SEARCH_BAR_HEIGHT)).Shrink(Unify(6));
+			int itemHeight = Unify(42);
+			int itemGap = Unify(6);
+			bool mouseInPanel = searchRect.Contains(FrameInput.MouseGlobalPosition);
+			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute;
+			int clampStartIndex = CellRenderer.GetTextUsedCellCount();
+			int wheel = FrameInput.MouseWheelDelta;
+			if (wheel != 0) PaletteSearchScrollY -= wheel;
+			PaletteSearchScrollY = PaletteSearchScrollY.Clamp(
+				0, SearchResult.Count - searchRect.height / (itemHeight + itemGap) + 6
+			);
+			int pageStartIndex = PaletteSearchScrollY;
+			var rect = new RectInt(
+				searchRect.x,
+				searchRect.yMax - itemHeight,
+				searchRect.width,
+				itemHeight
+			);
+			for (int i = pageStartIndex; i < SearchResult.Count; i++) {
+				var pal = SearchResult[i];
 
+				// Icon
+				if (CellRenderer.TryGetSprite(pal.ArtworkID, out var sprite)) {
+					CellRenderer.Draw(
+						pal.ArtworkID,
+						new RectInt(rect.x, rect.y, itemHeight, itemHeight).Fit(
+							sprite.GlobalWidth, sprite.GlobalHeight,
+							sprite.PivotX, sprite.PivotY
+						)
+					).Z = PANEL_Z - 11;
+				}
 
+				// Label
+				CellRendererGUI.Label(CellLabel.TempLabel(pal.Name, 24, Alignment.MidLeft), rect.Shrink(itemHeight + itemGap, 0, 0, 0));
 
+				// Hover
+				bool hover = interactable && mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
+				if (hover) {
+					CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32).Z = PANEL_Z - 12;
+				}
 
+				// Click
+				if (hover && FrameInput.MouseLeftButtonDown) {
+					SelectingPaletteItem = pal;
+				}
 
+				// Next
+				rect.y -= itemHeight + itemGap;
+				if (rect.y + rect.height < searchRect.y) break;
 
+			}
+			int clampEndIndex = CellRenderer.GetTextUsedCellCount();
+			CellRenderer.ClampTextCells(searchRect, clampStartIndex, clampEndIndex);
 
 		}
 
 
 		private void Update_PaletteSearchBarUI () {
 
-			if (IsPlaying || DroppingPlayer || TaskingRoute) TypingInSearchBar = false;
+			if (IsPlaying || DroppingPlayer || TaskingRoute) return;
 
 			int PADDING = Unify(6);
-			var searchPanel = new RectInt(
-				PanelRect.x, PaletteGroupPanelRect.yMax, PanelRect.width, Unify(SEARCH_BAR_HEIGHT)
-			);
+			int HEIGHT = Unify(SEARCH_BAR_HEIGHT);
+			var searchPanel = new RectInt(PanelRect.x, PanelRect.yMax - HEIGHT, PanelRect.width, HEIGHT);
 			CellRenderer.Draw(Const.PIXEL, searchPanel, Const.GREY_32).Z = PANEL_Z - 6;
 			searchPanel = searchPanel.Shrink(PADDING);
 
@@ -489,29 +532,14 @@ namespace Yaya {
 			).Z = PANEL_Z - 4;
 
 			// Text
-			if (TypingInSearchBar) {
-
-
-
-			}
-
-			// Click
-			if (FrameInput.MouseLeftButtonDown) {
-				if (mouseInBar) {
-					if (!TypingInSearchBar) {
-						TypingInSearchBar = true;
-					} else {
-						// Move Cursor
-
-
-
-					}
-				} else if (TypingInSearchBar) {
-					TypingInSearchBar = false;
-					FrameInput.UseAllHoldingKeys();
+			SearchingText = CellRendererGUI.TextField(3983472, barRect, SearchingText, out bool changed);
+			if (changed) {
+				PaletteSearchScrollY = 0;
+				SearchResult.Clear();
+				if (!string.IsNullOrWhiteSpace(SearchingText)) {
+					SearchResult.AddRange(PaletteTrie.Retrieve(SearchingText.ToLower()));
 				}
 			}
-
 		}
 
 
@@ -523,10 +551,6 @@ namespace Yaya {
 		#region --- LGC ---
 
 
-		private void SearchForPalette (string query) {
-			SearchResult.Clear();
-			SearchResult.AddRange(PaletteTrie.Retrieve(query));
-		}
 
 
 		#endregion

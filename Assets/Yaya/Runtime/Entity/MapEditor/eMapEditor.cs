@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using AngeliaFramework;
 using Moenen.Standard;
-using Gma.DataStructures.StringSearch;
+using ThirdParty;
+
 
 namespace Yaya {
 	[EntityAttribute.DontDestroyOnSquadTransition]
@@ -128,7 +129,6 @@ namespace Yaya {
 		private bool TaskingRoute = false;
 		private bool CtrlHolding = false;
 		private bool ShiftHolding = false;
-		private bool TypingInSearchBar = false;
 		private int DropHintWidth = Const.CEL;
 		private int UndoDataIndex = 0;
 		private int TooltipDuration = 0;
@@ -169,7 +169,6 @@ namespace Yaya {
 			try {
 				Active_Pool();
 				Active_Palette();
-				Active_PaletteSearch();
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 
 			// Cache
@@ -195,7 +194,8 @@ namespace Yaya {
 			PalContentScrollBarMouseDownPos = null;
 			SearchResult = new();
 			PanelOffsetX = 0;
-			TypingInSearchBar = false;
+			SearchingText = "";
+			PaletteSearchScrollY = 0;
 
 			// Start
 			SetEditingMode(EditingMode.Editing);
@@ -378,7 +378,7 @@ namespace Yaya {
 			Update_View();
 			Update_Hotkey();
 			Update_DropPlayer();
-			if (SearchResult.Count == 0) {
+			if (string.IsNullOrEmpty(SearchingText)) {
 				Update_PaletteGroupUI();
 				Update_PaletteContentUI();
 			} else {
@@ -398,6 +398,11 @@ namespace Yaya {
 
 			var game = Game.Current;
 
+			if (IsPlaying || DroppingPlayer || TaskingRoute) {
+				CellRendererGUI.CancelTyping();
+				SearchingText = "";
+				SearchResult.Clear();
+			}
 			TaskingRoute = FrameTask.IsTasking(YayaConst.TASK_ROUTE);
 			CtrlHolding = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.RightCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
 			ShiftHolding = FrameInput.KeyboardHolding(Key.LeftShift) || FrameInput.KeyboardHolding(Key.RightShift);
@@ -436,7 +441,10 @@ namespace Yaya {
 
 		private void Update_View () {
 
-			if (TaskingRoute || DroppingPlayer || PerformingUndoItem != null || TypingInSearchBar || MouseDownOutsideBoundary) return;
+			if (
+				TaskingRoute || DroppingPlayer || PerformingUndoItem != null ||
+				CellRendererGUI.IsTyping || MouseDownOutsideBoundary
+			) return;
 
 			var game = Game.Current;
 			var viewConfig = game.ViewConfig;
@@ -533,7 +541,7 @@ namespace Yaya {
 
 		private void Update_Hotkey () {
 
-			if (TaskingRoute || PerformingUndoItem != null || TypingInSearchBar) return;
+			if (TaskingRoute || PerformingUndoItem != null || CellRendererGUI.IsTyping) return;
 
 			// Switch Mode
 			if (!CtrlHolding && (IsPlaying || !DroppingPlayer)) {

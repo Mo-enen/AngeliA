@@ -30,7 +30,7 @@ namespace Yaya {
 
 			if (IsPlaying || DroppingPlayer) return;
 
-			var TINT = new Color32(255, 255, 255, 16);
+			var TINT = new Color32(128, 128, 128, 24);
 			var cRect = CellRenderer.CameraRect;
 			int l = Mathf.FloorToInt(cRect.xMin.UDivide(Const.CEL)) * Const.CEL;
 			int r = Mathf.CeilToInt(cRect.xMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
@@ -190,7 +190,7 @@ namespace Yaya {
 
 		private void Update_Cursor () {
 
-			if (IsPlaying || DroppingPlayer || CtrlHolding || TypingInSearchBar) return;
+			if (IsPlaying || DroppingPlayer || CtrlHolding || CellRendererGUI.IsTyping) return;
 			if (MouseInSelection || MouseOutsideBoundary || MouseDownOutsideBoundary || DraggingUnitRect.HasValue) return;
 			if (FrameInput.AnyMouseButtonHolding && MouseDownInSelection) return;
 

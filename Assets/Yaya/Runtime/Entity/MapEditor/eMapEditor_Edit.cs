@@ -41,7 +41,7 @@ namespace Yaya {
 
 			DraggingUnitRect = null;
 
-			if (IsPlaying || DroppingPlayer || TaskingRoute || PerformingUndoItem != null || TypingInSearchBar) {
+			if (IsPlaying || DroppingPlayer || TaskingRoute || PerformingUndoItem != null || CellRendererGUI.IsTyping) {
 				MouseDownPosition = null;
 				MouseDownOutsideBoundary = false;
 				MouseOutsideBoundary = false;

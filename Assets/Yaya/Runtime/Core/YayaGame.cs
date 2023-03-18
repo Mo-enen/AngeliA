@@ -244,18 +244,14 @@ namespace Yaya {
 		private bool OnQuit () {
 #if UNITY_EDITOR
 			if (UnityEditor.EditorApplication.isPlaying) {
-				if (MapEditor.Active) {
-					MapEditor.OnInactived();
-				}
+				if (MapEditor.Active) MapEditor.OnInactived();
 				return true;
 			}
 #endif
 			var game = Game.Current;
 			if (game == null) return true;
 			if (game.State == GameState.Pause && PauseMenu.QuitMode) {
-				if (MapEditor.Active) {
-					MapEditor.OnInactived();
-				}
+				if (MapEditor.Active) MapEditor.OnInactived();
 				return true;
 			} else {
 				game.State = GameState.Pause;
