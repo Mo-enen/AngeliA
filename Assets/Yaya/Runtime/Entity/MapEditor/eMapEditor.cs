@@ -606,14 +606,16 @@ namespace Yaya {
 					if (FrameInput.KeyboardDown(Key.Escape)) {
 						if (Pasting) {
 							ApplyPaste();
+							FrameInput.UseAllHoldingKeys();
 						} else if (SelectionUnitRect.HasValue) {
 							SelectionUnitRect = null;
+							FrameInput.UseAllHoldingKeys();
 						}
 						if (!string.IsNullOrEmpty(SearchingText)) {
 							SearchingText = "";
 							SearchResult.Clear();
+							FrameInput.UseAllHoldingKeys();
 						}
-						FrameInput.UseAllHoldingKeys();
 					}
 				}
 
