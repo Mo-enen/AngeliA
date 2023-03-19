@@ -246,7 +246,7 @@ namespace Yaya {
 				}
 				if (SelectingPaletteItem != null && SelectingPaletteItem.GroupIndex != SelectingPaletteGroupIndex) {
 					SelectingPaletteGroupIndex = SelectingPaletteItem.GroupIndex;
-					PaletteItemScrollY = 0;
+					PaletteScrollY = 0;
 				}
 			}
 		}

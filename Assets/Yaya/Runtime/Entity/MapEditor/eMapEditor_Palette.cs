@@ -4,7 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 using ThirdParty;
 using System.Text;
-
+using System.Linq;
 
 namespace Yaya {
 	public sealed partial class eMapEditor {
@@ -20,6 +20,7 @@ namespace Yaya {
 			public int ArtworkID = 0;
 			public int GroupIndex = -1;
 			public string Name = "";
+			public bool Pinned = false;
 			public GroupType GroupType = GroupType.General;
 			public BlockType BlockType = BlockType.Entity;
 			public AngeSpriteChain Chain = null;
@@ -46,6 +47,8 @@ namespace Yaya {
 		// Const
 		private static readonly int PAL_ITEM_FRAME = "MapEditorPaletteItemFrame".AngeHash();
 		private static readonly int SEARCH_ICON = "MapEditor.SearchIcon".AngeHash();
+		private static readonly int PIN_ICON = "MapEditor.Pin".AngeHash();
+		private static readonly int PIN_GROUP_COVER_ICON = "MapEditor.PinCover".AngeHash();
 		private const int SEARCH_BAR_HEIGHT = 54;
 
 		// UI
@@ -55,10 +58,9 @@ namespace Yaya {
 		};
 
 		// Data
-		private Int2? PalContentScrollBarMouseDownPos = null;
 		private RectInt PaletteGroupPanelRect = default;
 		private int SelectingPaletteGroupIndex = 0;
-		private int PaletteItemScrollY = 0;
+		private int PaletteScrollY = 0;
 		private int PaletteSearchScrollY = 0;
 		private string SearchingText = "";
 
@@ -222,6 +224,13 @@ namespace Yaya {
 				}
 			}
 
+			// Pinned Pal Items
+			//s_PinnedItems
+
+
+
+
+
 			// Search
 			PaletteTrie = new Trie<PaletteItem>();
 			var builder = new StringBuilder();
@@ -248,19 +257,18 @@ namespace Yaya {
 
 		private void Update_PaletteGroupUI () {
 
-			if (PaletteGroups.Count > 0) {
-				SelectingPaletteGroupIndex = SelectingPaletteGroupIndex.Clamp(0, PaletteGroups.Count - 1);
-			}
+			SelectingPaletteGroupIndex = SelectingPaletteGroupIndex.Clamp(-1, PaletteGroups.Count - 1);
 
 			if (PanelRect.xMax <= CellRenderer.CameraRect.x) return;
 
 			// Groups
+			int groupCount = PaletteGroups.Count + 1;
 			int GROUP_ITEM_SIZE = Unify(64);
 			int GROUP_ITEM_GAP = Unify(6);
 			int GROUP_PADDING = Unify(6);
 			int BORDER_ALT = Unify(2);
 			int groupColumnCount = (PanelRect.width - GROUP_PADDING * 2) / (GROUP_ITEM_SIZE + GROUP_ITEM_GAP);
-			int groupRowCount = PaletteGroups.Count / groupColumnCount + (PaletteGroups.Count % groupColumnCount != 0 ? 1 : 0);
+			int groupRowCount = groupCount / groupColumnCount + (groupCount % groupColumnCount != 0 ? 1 : 0);
 			int groupPanelHeight = groupRowCount * (GROUP_ITEM_SIZE + GROUP_ITEM_GAP);
 			var groupRect = new RectInt(
 				PanelRect.x,
@@ -277,17 +285,20 @@ namespace Yaya {
 
 			var rect = new RectInt(0, 0, GROUP_ITEM_SIZE, GROUP_ITEM_SIZE);
 			int offsetX = groupRect.x + (groupRect.width - groupColumnCount * GROUP_ITEM_SIZE - (groupColumnCount - 1) * GROUP_ITEM_GAP) / 2;
-			for (int i = 0; i < PaletteGroups.Count; i++) {
+			for (int i = 0; i < groupCount; i++) {
 
-				var group = PaletteGroups[i];
+				var group = i == 0 ? null : PaletteGroups[i - 1];
+				int coverID = i == 0 ? PIN_GROUP_COVER_ICON : group.CoverID;
+				string groupName = i == 0 ? "Pinned" : group.GroupName;
+
 				rect.x = offsetX + (i % groupColumnCount) * (GROUP_ITEM_SIZE + GROUP_ITEM_GAP);
 				rect.y = groupRect.yMax - GROUP_ITEM_SIZE - (i / groupColumnCount) * (GROUP_ITEM_SIZE + GROUP_ITEM_GAP);
 
 				// Cover
-				CellRenderer.Draw(group.CoverID, rect.Shrink(GROUP_PADDING)).Z = PANEL_Z - 3;
+				CellRenderer.Draw(coverID, rect.Shrink(GROUP_PADDING)).Z = PANEL_Z - 3;
 
 				// Selection Highlight
-				if (i == SelectingPaletteGroupIndex) {
+				if (i - 1 == SelectingPaletteGroupIndex) {
 					CellRenderer.Draw(Const.PIXEL, rect, Const.CYAN).Z = PANEL_Z - 4;
 				}
 
@@ -298,16 +309,21 @@ namespace Yaya {
 						FRAME, rect, BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT, Const.CYAN
 					);
 					foreach (var cell in cells) cell.Z = PANEL_Z - 2;
-					DrawTooltip(rect, group.GroupName);
+					DrawTooltip(rect, groupName);
 				}
 
 				// Click
 				if (interactable && mouseHovering && FrameInput.MouseLeftButtonDown) {
-					if (SelectingPaletteGroupIndex == i && group.Items.Count > 0) {
-						SelectingPaletteItem = group.Items[0];
+					if (SelectingPaletteGroupIndex == i - 1) {
+						if (group != null && group.Items.Count > 0) {
+							SelectingPaletteItem = group.Items[0];
+						}
+						if (i == 0 && PinnedPaletteItems.Count > 0) {
+							SelectingPaletteItem = PinnedPaletteItems[0];
+						}
 					}
-					SelectingPaletteGroupIndex = i;
-					PaletteItemScrollY = 0;
+					SelectingPaletteGroupIndex = i - 1;
+					PaletteScrollY = 0;
 				}
 			}
 
@@ -316,8 +332,8 @@ namespace Yaya {
 
 		private void Update_PaletteContentUI () {
 
-			if (SelectingPaletteGroupIndex < 0 || SelectingPaletteGroupIndex >= PaletteGroups.Count) return;
-			var items = PaletteGroups[SelectingPaletteGroupIndex].Items;
+			if (SelectingPaletteGroupIndex < -1 || SelectingPaletteGroupIndex >= PaletteGroups.Count) return;
+			var items = SelectingPaletteGroupIndex == -1 ? PinnedPaletteItems : PaletteGroups[SelectingPaletteGroupIndex].Items;
 			CellRenderer.Draw(Const.PIXEL, PanelRect, Const.BLACK).Z = PANEL_Z - 13;
 
 			int ITEM_SIZE = Unify(46);
@@ -342,11 +358,11 @@ namespace Yaya {
 			int rowCount = items.Count / columnCount + (items.Count % columnCount != 0 ? 1 : 0);
 			int pageRowCount = contentRect.height / (ITEM_SIZE + ITEM_GAP) + (items.Count % columnCount != 0 ? 1 : 0);
 			if (pageRowCount > rowCount + EXTRA_ROW) {
-				PaletteItemScrollY = 0;
+				PaletteScrollY = 0;
 			} else {
-				PaletteItemScrollY = PaletteItemScrollY.Clamp(0, rowCount + EXTRA_ROW - pageRowCount);
+				PaletteScrollY = PaletteScrollY.Clamp(0, rowCount + EXTRA_ROW - pageRowCount);
 			}
-			int startIndex = (PaletteItemScrollY * columnCount);
+			int startIndex = (PaletteScrollY * columnCount);
 			int offsetX = contentRect.x + (contentRect.width - columnCount * ITEM_SIZE - (columnCount - 1) * ITEM_GAP) / 2;
 			if (pageRowCount < rowCount + EXTRA_ROW) offsetX -= SCROLL_BAR_WIDTH / 2;
 			var rect = new RectInt(0, 0, ITEM_SIZE, ITEM_SIZE);
@@ -356,7 +372,7 @@ namespace Yaya {
 				if (pal == null) continue;
 
 				rect.x = offsetX + (index % columnCount) * (ITEM_SIZE + ITEM_GAP);
-				rect.y = contentRect.yMax - ITEM_SIZE - (index / columnCount - PaletteItemScrollY) * (ITEM_SIZE + ITEM_GAP);
+				rect.y = contentRect.yMax - ITEM_SIZE - (index / columnCount - PaletteScrollY) * (ITEM_SIZE + ITEM_GAP);
 				if (rect.y + rect.height < contentRect.y) break;
 				if (rect.y > contentRect.yMax) continue;
 
@@ -380,6 +396,16 @@ namespace Yaya {
 					CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN).Z = PANEL_Z - 11;
 				}
 
+				// Pin
+				if (SelectingPaletteGroupIndex >= 0 && pal.Pinned) {
+					CellRenderer.Draw(PIN_ICON, new RectInt(
+						rect.xMax - ITEM_SIZE / 3,
+						rect.yMax - ITEM_SIZE / 3,
+						ITEM_SIZE / 2,
+						ITEM_SIZE / 2
+					)).Z = PANEL_Z - 9;
+				}
+
 				// Hover
 				bool mouseHovering = mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
 				if (mouseHovering) {
@@ -389,8 +415,18 @@ namespace Yaya {
 				}
 
 				// Click
-				if (interactable && mouseHovering && FrameInput.MouseLeftButtonDown) {
-					SelectingPaletteItem = pal;
+				if (interactable && mouseHovering) {
+					if (FrameInput.MouseLeftButtonDown) {
+						SelectingPaletteItem = pal;
+					} else if (FrameInput.MouseRightButtonDown) {
+						if (pal.Pinned) {
+							PinnedPaletteItems.Remove(pal);
+						} else {
+							PinnedPaletteItems.Add(pal);
+							PinnedPaletteItems.Sort(PinnedItemComparer.Instance);
+						}
+						pal.Pinned = !pal.Pinned;
+					}
 				}
 
 			}
@@ -399,74 +435,59 @@ namespace Yaya {
 			if (pageRowCount <= rowCount + EXTRA_ROW) {
 				int wheel = FrameInput.MouseWheelDelta;
 				if (wheel != 0 && contentRect.Contains(FrameInput.MouseGlobalPosition)) {
-					PaletteItemScrollY = (PaletteItemScrollY - wheel).Clamp(
+					PaletteScrollY = (PaletteScrollY - wheel * 2).Clamp(
 						0, rowCount + EXTRA_ROW - pageRowCount
 					);
 				}
 			}
 
 			// Scroll Bar
-			if (!FrameInput.MouseLeftButton) PalContentScrollBarMouseDownPos = null;
-			if (pageRowCount < rowCount + EXTRA_ROW) {
-				int barHeight = contentRect.height * pageRowCount / (rowCount + EXTRA_ROW);
-				var barRect = new RectInt(
+			PaletteScrollY = CellRendererGUI.ScrollBar(
+				new RectInt(
 					contentRect.xMax - SCROLL_BAR_WIDTH,
-					Util.RemapUnclamped(
-						0, rowCount + EXTRA_ROW - pageRowCount,
-						contentRect.yMax - barHeight, contentRect.y,
-						PaletteItemScrollY
-					),
+					contentRect.y,
 					SCROLL_BAR_WIDTH,
-					barHeight
-				);
-				bool hoveringBar = barRect.Contains(FrameInput.MouseGlobalPosition);
-				CellRenderer.Draw(
-					Const.PIXEL,
-					barRect,
-					hoveringBar || PalContentScrollBarMouseDownPos.HasValue ? Const.GREY : Const.GREY_64
-				).Z = PANEL_Z - 9;
-				if (PalContentScrollBarMouseDownPos.HasValue) {
-					int mouseY = FrameInput.MouseGlobalPosition.y;
-					int mouseDownY = PalContentScrollBarMouseDownPos.Value.A;
-					int scrollDownY = PalContentScrollBarMouseDownPos.Value.B;
-					PaletteItemScrollY = scrollDownY + (mouseDownY - mouseY) * (rowCount + EXTRA_ROW) / contentRect.height;
-				}
-				if (hoveringBar && FrameInput.MouseLeftButtonDown) {
-					PalContentScrollBarMouseDownPos = new Int2(
-						FrameInput.MouseGlobalPosition.y, PaletteItemScrollY
-					);
-				}
-			} else {
-				PalContentScrollBarMouseDownPos = null;
-			}
+					contentRect.height
+				), PANEL_Z - 9, PaletteScrollY, rowCount + EXTRA_ROW, pageRowCount
+			);
 
 		}
 
 
 		private void Update_PaletteSearchResultUI () {
 
-			if (IsPlaying || DroppingPlayer || TaskingRoute) return;
-			CellRenderer.Draw(Const.PIXEL, PanelRect, Const.BLACK).Z = PANEL_Z - 13;
+			if (IsPlaying || DroppingPlayer) return;
+			CellRenderer.Draw(Const.PIXEL, PanelRect, Const.BLACK).Z = PANEL_Z - 14;
 			if (SearchResult.Count == 0) return;
 
-			var searchRect = PanelRect.Shrink(0, 0, 0, Unify(SEARCH_BAR_HEIGHT)).Shrink(Unify(6));
-			int itemHeight = Unify(42);
+			int SCROLL_BAR_WIDTH = Unify(12);
+			int itemSize = Unify(42);
 			int itemGap = Unify(6);
+			var searchRect = PanelRect.Shrink(0, SCROLL_BAR_WIDTH + itemGap, 0, Unify(SEARCH_BAR_HEIGHT)).Shrink(Unify(6));
 			bool mouseInPanel = searchRect.Contains(FrameInput.MouseGlobalPosition);
 			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute;
 			int clampStartIndex = CellRenderer.GetTextUsedCellCount();
-			int wheel = FrameInput.MouseWheelDelta;
-			if (wheel != 0) PaletteSearchScrollY -= wheel;
-			PaletteSearchScrollY = PaletteSearchScrollY.Clamp(
-				0, SearchResult.Count - searchRect.height / (itemHeight + itemGap) + 6
-			);
+			if (mouseInPanel) {
+				int wheel = FrameInput.MouseWheelDelta;
+				if (wheel != 0) PaletteSearchScrollY -= wheel * 2;
+			}
+			int pageRowCount = searchRect.height / (itemSize + itemGap);
+			const int PAGE_EXTRA = 3;
+			if (SearchResult.Count > pageRowCount + PAGE_EXTRA) {
+				PaletteSearchScrollY = PaletteSearchScrollY.Clamp(
+					0, SearchResult.Count - pageRowCount + PAGE_EXTRA
+				);
+			} else {
+				PaletteSearchScrollY = 0;
+			}
 			int pageStartIndex = PaletteSearchScrollY;
 			var rect = new RectInt(
 				searchRect.x,
-				searchRect.yMax - itemHeight,
+				searchRect.yMax - itemSize,
 				searchRect.width,
-				itemHeight
+				itemSize
 			);
+
 			for (int i = pageStartIndex; i < SearchResult.Count; i++) {
 				var pal = SearchResult[i];
 
@@ -474,41 +495,75 @@ namespace Yaya {
 				if (CellRenderer.TryGetSprite(pal.ArtworkID, out var sprite)) {
 					CellRenderer.Draw(
 						pal.ArtworkID,
-						new RectInt(rect.x, rect.y, itemHeight, itemHeight).Fit(
+						new RectInt(rect.x, rect.y, itemSize, itemSize).Fit(
 							sprite.GlobalWidth, sprite.GlobalHeight,
 							sprite.PivotX, sprite.PivotY
 						)
 					).Z = PANEL_Z - 11;
 				}
 
+				// Pin
+				if (pal.Pinned) {
+					CellRenderer.Draw(PIN_ICON, new RectInt(
+						rect.x + itemSize - itemSize / 3,
+						rect.yMax - itemSize / 3,
+						itemSize / 2,
+						itemSize / 2
+					)).Z = PANEL_Z - 9;
+				}
+
 				// Label
-				CellRendererGUI.Label(CellLabel.TempLabel(pal.Name, 24, Alignment.MidLeft), rect.Shrink(itemHeight + itemGap, 0, 0, 0));
+				CellRendererGUI.Label(
+					CellLabel.TempLabel(pal.Name, Const.WHITE, 24, Alignment.MidLeft),
+					rect.Shrink(itemSize + itemGap, 0, 0, 0)
+				);
 
 				// Hover
 				bool hover = interactable && mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
 				if (hover) {
-					CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32).Z = PANEL_Z - 12;
+					CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32).Z = PANEL_Z - 13;
 				}
 
 				// Click
-				if (hover && FrameInput.MouseLeftButtonDown) {
-					SelectingPaletteItem = pal;
+				if (hover) {
+					if (FrameInput.MouseLeftButtonDown) {
+						SelectingPaletteItem = pal;
+						SearchResult.Clear();
+						SearchingText = "";
+					} else if (FrameInput.MouseRightButtonDown) {
+						if (pal.Pinned) {
+							PinnedPaletteItems.Remove(pal);
+						} else {
+							PinnedPaletteItems.Add(pal);
+							PinnedPaletteItems.Sort(PinnedItemComparer.Instance);
+						}
+						pal.Pinned = !pal.Pinned;
+					}
 				}
 
 				// Next
-				rect.y -= itemHeight + itemGap;
+				rect.y -= itemSize + itemGap;
 				if (rect.y + rect.height < searchRect.y) break;
 
 			}
 			int clampEndIndex = CellRenderer.GetTextUsedCellCount();
 			CellRenderer.ClampTextCells(searchRect, clampStartIndex, clampEndIndex);
 
+			PaletteSearchScrollY = CellRendererGUI.ScrollBar(
+				new RectInt(
+					searchRect.xMax + itemGap,
+					searchRect.y,
+					SCROLL_BAR_WIDTH,
+					searchRect.height
+				), PANEL_Z - 9, PaletteSearchScrollY, SearchResult.Count + PAGE_EXTRA, pageRowCount
+			);
+
 		}
 
 
 		private void Update_PaletteSearchBarUI () {
 
-			if (IsPlaying || DroppingPlayer || TaskingRoute) return;
+			if (IsPlaying || DroppingPlayer) return;
 
 			int PADDING = Unify(6);
 			int HEIGHT = Unify(SEARCH_BAR_HEIGHT);
@@ -537,7 +592,7 @@ namespace Yaya {
 				PaletteSearchScrollY = 0;
 				SearchResult.Clear();
 				if (!string.IsNullOrWhiteSpace(SearchingText)) {
-					SearchResult.AddRange(PaletteTrie.Retrieve(SearchingText.ToLower()));
+					SearchResult.AddRange(PaletteTrie.Retrieve(SearchingText.ToLower()).Distinct());
 				}
 			}
 		}

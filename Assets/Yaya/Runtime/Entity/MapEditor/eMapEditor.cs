@@ -60,6 +60,23 @@ namespace Yaya {
 		}
 
 
+		private class PinnedItemComparer : IComparer<PaletteItem> {
+			public static PinnedItemComparer Instance = new();
+			public List<PaletteGroup> Groups = null;
+			public int Compare (PaletteItem a, PaletteItem b) {
+				int result = Groups[a.GroupIndex].GroupName.CompareTo(Groups[b.GroupIndex].GroupName);
+				if (result == 0) result = a.Name.CompareTo(b.Name);
+				return result;
+			}
+		}
+
+
+		[System.Serializable]
+		public class MapEditorMeta {
+			public int[] PinnedPaletteItemID = null;
+		}
+
+
 		#endregion
 
 
@@ -112,6 +129,7 @@ namespace Yaya {
 		private List<PaletteItem> SearchResult = null;
 		private Trie<PaletteItem> PaletteTrie = null;
 		private UndoRedoEcho<MapUndoItem> UndoRedo = null;
+		private List<PaletteItem> PinnedPaletteItems = null;
 		private MapUndoData[] UndoData = null;
 
 		// Data
@@ -164,11 +182,13 @@ namespace Yaya {
 			game.WorldSquad.SetDataChannel(MapChannel.User);
 			game.WorldSquad_Behind.SetDataChannel(MapChannel.User);
 			Squad = YayaGame.Current.WorldSquad;
+			PinnedPaletteItems = new();
 
 			// Pipeline
 			try {
 				Active_Pool();
 				Active_Palette();
+				LoadMeta();
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 
 			// Cache
@@ -190,12 +210,12 @@ namespace Yaya {
 			PerformingUndoItem = null;
 			MouseDownOutsideBoundary = false;
 			MouseOutsideBoundary = false;
-			PaletteItemScrollY = 0;
-			PalContentScrollBarMouseDownPos = null;
+			PaletteScrollY = 0;
 			SearchResult = new();
 			PanelOffsetX = 0;
 			SearchingText = "";
 			PaletteSearchScrollY = 0;
+			PinnedItemComparer.Instance.Groups = PaletteGroups;
 
 			// Start
 			SetEditingMode(EditingMode.Editing);
@@ -235,6 +255,7 @@ namespace Yaya {
 				ApplyPaste();
 				Save();
 			}
+			SaveMeta();
 
 			Game.Current.WorldSquad.SetDataChannel(MapChannel.BuiltIn);
 			Game.Current.WorldSquad_Behind.SetDataChannel(MapChannel.BuiltIn);
@@ -259,6 +280,8 @@ namespace Yaya {
 			MouseDownOutsideBoundary = false;
 			PaletteTrie = null;
 			SearchResult = null;
+			PinnedPaletteItems = null;
+			PinnedItemComparer.Instance.Groups = null;
 
 			System.GC.Collect(0, System.GCCollectionMode.Forced);
 
@@ -398,7 +421,7 @@ namespace Yaya {
 
 			var game = Game.Current;
 
-			if (IsPlaying || DroppingPlayer || TaskingRoute) {
+			if (IsPlaying || DroppingPlayer) {
 				CellRendererGUI.CancelTyping();
 				SearchingText = "";
 				SearchResult.Clear();
@@ -585,6 +608,10 @@ namespace Yaya {
 							ApplyPaste();
 						} else if (SelectionUnitRect.HasValue) {
 							SelectionUnitRect = null;
+						}
+						if (!string.IsNullOrEmpty(SearchingText)) {
+							SearchingText = "";
+							SearchResult.Clear();
 						}
 						FrameInput.UseAllHoldingKeys();
 					}
@@ -819,6 +846,33 @@ namespace Yaya {
 			TooltipLabel.CharSize = Unify(24);
 			CellRendererGUI.Label(TooltipLabel, tipRect, out var bounds);
 			CellRenderer.Draw(Const.PIXEL, bounds.Expand(gap), Const.BLACK).Z = int.MaxValue;
+		}
+
+
+		// Meta
+		private void LoadMeta () {
+			var meta = AngeUtil.LoadOrCreateJson<MapEditorMeta>(Const.UserMapRoot);
+			if (meta.PinnedPaletteItemID != null) {
+				foreach (var id in meta.PinnedPaletteItemID) {
+					if (PalettePool.TryGetValue(id, out var pal)) {
+						pal.Pinned = true;
+						PinnedPaletteItems.Add(pal);
+					}
+				}
+			}
+		}
+
+
+		private void SaveMeta () {
+			var PinnedIDs = new List<int>();
+			foreach (var pal in PinnedPaletteItems) {
+				if (pal.Pinned) {
+					PinnedIDs.Add(pal.ID);
+				}
+			}
+			AngeUtil.SaveJson(new MapEditorMeta() {
+				PinnedPaletteItemID = PinnedIDs.ToArray(),
+			}, Const.UserMapRoot);
 		}
 
 
