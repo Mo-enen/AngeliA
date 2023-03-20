@@ -161,7 +161,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 251783bc0d1b9a642b21a27e979bcb8f, type: 3}
     - {fileID: 2800000, guid: b7c6abdfc00122544b6f1edec7dc2293, type: 3}
     CursorPivots:
-    - {x: 0, y: 10}
+    - {x: 10, y: 0}
     - {x: 12, y: 12}
     - {x: 23, y: 23}
   m_TimeConfig:
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_ViewConfig:
     DefaultHeight: 5376
     MinHeight: 4096
-    MaxHeight: 14336
+    MaxHeight: 15360
     ViewRatio: 2000
   m_WorldConfig:
     SkyTintTop:

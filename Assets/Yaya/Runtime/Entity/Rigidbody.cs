@@ -66,6 +66,8 @@ namespace Yaya {
 			base.OnActived();
 			InSand = false;
 			InWater = false;
+			VelocityX = 0;
+			VelocityY = 0;
 		}
 
 

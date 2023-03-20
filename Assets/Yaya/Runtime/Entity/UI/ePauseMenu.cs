@@ -17,7 +17,7 @@ namespace Yaya {
 		#region --- SUB ---
 
 
-		private enum MenuMode { Pause, Setting, KeySetter, Quit, Setter_Keyboard, Setter_Gamepad }
+		private enum MenuMode { Pause, Setting, EditorSetting, KeySetter, Quit, Setter_Keyboard, Setter_Gamepad }
 
 
 		#endregion
@@ -43,6 +43,7 @@ namespace Yaya {
 		private readonly IntToString SoundVolumeCache = new();
 		private readonly IntToString FramerateCache = new();
 		private readonly CellLabel KeySetterLabel = new();
+		private eMapEditor MapEditor = null;
 
 
 		#endregion
@@ -57,6 +58,7 @@ namespace Yaya {
 			base.OnActived();
 			ScreenTint = new(0, 0, 0, 128);
 			BackgroundTint = new(0, 0, 0, 255);
+			MapEditor = Game.Current.PeekOrGetEntity<eMapEditor>();
 		}
 
 
@@ -95,6 +97,9 @@ namespace Yaya {
 				case MenuMode.Setting:
 					MenuSetting();
 					break;
+				case MenuMode.EditorSetting:
+					MenuMapEditorSetting();
+					break;
 				case MenuMode.Quit:
 					MenuQuit();
 					break;
@@ -131,7 +136,15 @@ namespace Yaya {
 				SetSelection(0);
 			}
 
-			// 3-Quit
+			// 3-Map Editor Setting
+			if (MapEditor != null && MapEditor.Active) {
+				if (DrawItem(Language.Get(WORD.MENU_MEDT_SETTING))) {
+					RequireMode = MenuMode.EditorSetting;
+					SetSelection(0);
+				}
+			}
+
+			// 4-Quit
 			if (DrawItem(Language.Get(WORD.UI_QUIT), Const.RED_BETTER)) {
 				RequireMode = MenuMode.Quit;
 				SetSelection(0);
@@ -277,13 +290,39 @@ namespace Yaya {
 		}
 
 
+		private void MenuMapEditorSetting () {
+
+			// Auto Zoom
+			if (DrawItem(
+				Language.Get(WORD.MENU_MEDT_AUTO_ZOOM),
+				CellLabel.TempLabel(Language.Get(MapEditor.AutoZoom ? WORD.UI_ON : WORD.UI_OFF))
+			)) {
+				MapEditor.AutoZoom = !MapEditor.AutoZoom;
+			}
+
+			// Drop Player
+			if (DrawItem(
+				Language.Get(WORD.MENU_MEDT_PLAYER_DROP),
+				CellLabel.TempLabel(Language.Get(MapEditor.QuickPlayerDrop ? WORD.UI_ON : WORD.UI_OFF))
+			)) {
+				MapEditor.QuickPlayerDrop = !MapEditor.QuickPlayerDrop;
+			}
+
+			// Back
+			if (DrawItem(Language.Get(WORD.UI_BACK)) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+				RequireMode = MenuMode.Pause;
+				SetSelection(3);
+			}
+		}
+
+
 		private void MenuQuit () {
 
 			Message = Language.Get(WORD.MENU_QUIT_MESSAGE);
 
 			if (DrawItem(Language.Get(WORD.UI_BACK)) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				RequireMode = MenuMode.Pause;
-				SetSelection(3);
+				SetSelection(MapEditor != null && MapEditor.Active ? 4 : 3);
 			}
 
 			if (DrawItem(Language.Get(WORD.UI_QUIT), Const.RED_BETTER)) {

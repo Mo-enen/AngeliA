@@ -18,12 +18,6 @@ namespace Yaya {
 		#region --- SUB ---
 
 
-		private enum EditingMode {
-			Editing = 0,
-			Playing = 1,
-		}
-
-
 		private class SpriteData {
 			public AngeSprite Sprite = null;
 			public string RealName = "";
@@ -100,8 +94,8 @@ namespace Yaya {
 		private static readonly Color32 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
 
 		// Api
-		public bool IsEditing => Active && Mode == EditingMode.Editing;
-		public bool IsPlaying => Active && Mode == EditingMode.Playing;
+		public bool IsEditing => Active && !PlayingGame;
+		public bool IsPlaying => Active && PlayingGame;
 		public bool QuickPlayerDrop {
 			get => s_QuickPlayerDrop.Value;
 			set => s_QuickPlayerDrop.Value = value;
@@ -135,13 +129,15 @@ namespace Yaya {
 		// Data
 		private PaletteItem SelectingPaletteItem = null;
 		private YayaWorldSquad Squad = null;
+		private YayaWorldSquad SquadBehind = null;
 		private MapUndoItem PerformingUndoItem = null;
-		private EditingMode Mode = EditingMode.Editing;
 		private Vector3Int PlayerDropPos = default;
 		private RectInt TargetViewRect = default;
 		private RectInt CopyBufferOriginalUnitRect = default;
 		private RectInt TooltipRect = default;
 		private RectInt PanelRect = default;
+		private bool PlayingGame = false;
+		private bool IsNavigating = false;
 		private bool IsDirty = false;
 		private bool DroppingPlayer = false;
 		private bool TaskingRoute = false;
@@ -182,6 +178,7 @@ namespace Yaya {
 			game.WorldSquad.SetDataChannel(MapChannel.User);
 			game.WorldSquad_Behind.SetDataChannel(MapChannel.User);
 			Squad = YayaGame.Current.WorldSquad;
+			SquadBehind = YayaGame.Current.WorldSquad_Behind;
 			PinnedPaletteItems = new();
 
 			// Pipeline
@@ -215,10 +212,11 @@ namespace Yaya {
 			PanelOffsetX = 0;
 			SearchingText = "";
 			PaletteSearchScrollY = 0;
+			SetNavigating(false);
 			PinnedItemComparer.Instance.Groups = PaletteGroups;
 
 			// Start
-			SetEditingMode(EditingMode.Editing);
+			SetEditingMode(false);
 			if (ePlayer.Selecting != null) {
 				ePlayer.Selecting.Active = false;
 			}
@@ -251,7 +249,7 @@ namespace Yaya {
 		public override void OnInactived () {
 			base.OnInactived();
 
-			if (Mode == EditingMode.Editing) {
+			if (!PlayingGame) {
 				ApplyPaste();
 				Save();
 			}
@@ -390,12 +388,18 @@ namespace Yaya {
 
 		// Update
 		protected override void FrameUpdateUI () {
-
 			if (Active == false || Squad == null || Squad.Channel != MapChannel.User) return;
-
 			base.FrameUpdateUI();
-
 			Update_Misc();
+			if (!IsNavigating) {
+				FrameUpdate_MapEditor();
+			} else {
+				FrameUpdate_Navigator();
+			}
+		}
+
+
+		private void FrameUpdate_MapEditor () {
 
 			Update_Mouse();
 			Update_View();
@@ -413,7 +417,6 @@ namespace Yaya {
 			Update_PastingGizmos();
 			Update_SelectionGizmos();
 			Update_Cursor();
-
 		}
 
 
@@ -433,7 +436,7 @@ namespace Yaya {
 			// Panel Rect
 			PanelRect.width = Unify(PANEL_WIDTH);
 			PanelRect.height = CellRenderer.CameraRect.height;
-			int aimOffsetX = IsEditing && !DroppingPlayer ? 0 : -PanelRect.width;
+			int aimOffsetX = IsEditing && !DroppingPlayer && !IsNavigating ? 0 : -PanelRect.width;
 			PanelOffsetX = PanelOffsetX.LerpTo(aimOffsetX, 200);
 			PanelRect.x = CellRenderer.CameraRect.x + PanelOffsetX;
 			PanelRect.y = CellRenderer.CameraRect.y;
@@ -446,8 +449,10 @@ namespace Yaya {
 
 			// Squad Behind Tint
 			game.WorldConfig.SquadBehindAlpha = (byte)((int)game.WorldConfig.SquadBehindAlpha).MoveTowards(
-				Mode == EditingMode.Editing ? 12 : 64, 1
+				PlayingGame ? 64 : 12, 1
 			);
+			Squad.Enable = !IsNavigating;
+			SquadBehind.Enable = !IsNavigating;
 
 			// Auto Save
 			if (IsDirty && Game.GlobalFrame % 120 == 0 && IsEditing && PerformingUndoItem == null) {
@@ -457,6 +462,11 @@ namespace Yaya {
 			// Performing Undo
 			if (PerformingUndoItem != null) {
 				OnUndoRedoPerformed(PerformingUndoItem);
+			}
+
+			// Nav
+			if (IsNavigating && (IsPlaying || TaskingRoute || DroppingPlayer)) {
+				SetNavigating(false);
 			}
 
 		}
@@ -572,7 +582,7 @@ namespace Yaya {
 					if (IsEditing) {
 						StartDropPlayer();
 					} else {
-						SetEditingMode(EditingMode.Editing);
+						SetEditingMode(!PlayingGame);
 					}
 				}
 				eControlHintUI.AddHint(KEY_SWITCH_MODE, IsEditing ? WORD.HINT_MEDT_SWITCH_PLAY : WORD.HINT_MEDT_SWITCH_EDIT);
@@ -617,6 +627,13 @@ namespace Yaya {
 							FrameInput.UseAllHoldingKeys();
 						}
 					}
+
+					// Nav
+					if (FrameInput.KeyboardDown(Key.Tab)) {
+						SetNavigating(!IsNavigating);
+						FrameInput.UseAllHoldingKeys();
+					}
+
 				}
 
 				// Ctrl + ...
@@ -726,7 +743,7 @@ namespace Yaya {
 					player.Y = PlayerDropPos.y - sprite.GlobalHeight;
 				}
 				player.SetCharacterState(CharacterState.GamePlay);
-				SetEditingMode(EditingMode.Playing);
+				SetEditingMode(true);
 			} else {
 				if (player.Active) player.Active = false;
 				Game.Current.SetViewPositionDelay(
@@ -746,59 +763,54 @@ namespace Yaya {
 		#region --- LGC ---
 
 
-		private void SetEditingMode (EditingMode mode) {
+		private void SetEditingMode (bool playingGame) {
 
 			var game = Game.Current;
-			if (mode == EditingMode.Playing) Save();
-			Mode = mode;
+			if (playingGame) Save();
+			PlayingGame = playingGame;
 			SelectingPaletteItem = null;
 			DroppingPlayer = false;
 			SelectionUnitRect = null;
 			DraggingUnitRect = null;
+			game.ClearAntiSpawn();
 
 			// Squad Spawn Entity
-			Squad.SpawnEntity = mode == EditingMode.Playing;
-			Squad.SaveBeforeReload = mode == EditingMode.Editing;
+			Squad.SpawnEntity = PlayingGame;
+			Squad.SaveBeforeReload = !PlayingGame;
 
-			switch (mode) {
+			if (PlayingGame) {
+				// Edit >> Play
 
-				case EditingMode.Editing:
+				AngeUtil.CreateGlobalPositionMetaFile(Const.UserMapRoot);
+				GlobalPosition.ReloadMeta(Const.UserMapRoot);
 
-					// Despawn Entities from World
-					for (int i = 0; i < game.EntityCount; i++) {
-						var e = game.Entities[i];
-						if (e.Active && e.FromWorld) {
-							e.Active = false;
-						}
+				// Respawn Entities
+				game.SetViewZ(game.ViewZ);
+			} else {
+				// Play >> Edit
+
+				// Despawn Entities from World
+				for (int i = 0; i < game.EntityCount; i++) {
+					var e = game.Entities[i];
+					if (e.Active && e.FromWorld) {
+						e.Active = false;
 					}
+				}
 
-					// Despawn Player
-					if (ePlayer.Selecting != null) {
-						ePlayer.Selecting.Active = false;
-					}
+				// Despawn Player
+				if (ePlayer.Selecting != null) {
+					ePlayer.Selecting.Active = false;
+				}
 
-					// Fix View Pos
-					if (!AutoZoom) {
-						TargetViewRect.x = game.ViewRect.x + game.ViewRect.width / 2 - (TargetViewRect.height * game.ViewConfig.ViewRatio / 1000) / 2;
-						TargetViewRect.y = game.ViewRect.y + game.ViewRect.height / 2 - TargetViewRect.height / 2;
-					} else {
-						TargetViewRect = game.ViewRect;
-					}
-
-					break;
-
-				case EditingMode.Playing:
-
-					AngeUtil.CreateGlobalPositionMetaFile(Const.UserMapRoot);
-					GlobalPosition.ReloadMeta(Const.UserMapRoot);
-
-					// Respawn Entities
-					game.SetViewZ(game.ViewZ);
-
-					break;
+				// Fix View Pos
+				if (!AutoZoom) {
+					TargetViewRect.x = game.ViewRect.x + game.ViewRect.width / 2 - (TargetViewRect.height * game.ViewConfig.ViewRatio / 1000) / 2;
+					TargetViewRect.y = game.ViewRect.y + game.ViewRect.height / 2 - TargetViewRect.height / 2;
+				} else {
+					TargetViewRect = game.ViewRect;
+				}
 
 			}
-
 		}
 
 
@@ -814,7 +826,7 @@ namespace Yaya {
 
 
 		private void PlayFromStart () {
-			SetEditingMode(EditingMode.Playing);
+			SetEditingMode(true);
 			int playerID = 0;
 			var player = ePlayer.Selecting;
 			if (player != null) {

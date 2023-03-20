@@ -1,4 +1,6 @@
-﻿@enen:Enen
+﻿Menu.MEDTSetting.AutoZoom:Auto Zoom
+Menu.MEDTSetting.PlayerDrop:Quick Player Drop
+@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
@@ -32,6 +34,7 @@ Menu.KeySetter.Record:Press key u want
 Menu.KeySetter.SaveAndBack:Save and Back
 Menu.MiniGame.QuitMsg:Quit mini game?
 Menu.Pause.KeySetter:Key Assignment
+Menu.Pause.MEDTSetting:Editor Setting
 Menu.Pause.QuitMessage:Quit game now？
 Menu.Setting.Framerate:Framerate
 Menu.Setting.Fullscreen.0:Windowed

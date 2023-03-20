@@ -67,8 +67,12 @@ namespace Yaya {
 
 			// Clamp In Range
 			var range = Game.Current.SpawnRect;
-			X = X.Clamp(range.xMin, range.xMax);
-			Y = Y.Clamp(range.yMin, range.yMax);
+			if (!range.Overlaps(Rect)) {
+				X = X.Clamp(range.xMin, range.xMax);
+				Y = Y.Clamp(range.yMin, range.yMax);
+				NavigationState = CharacterNavigationState.Fly;
+				NavFlyStartFrame = Game.GlobalFrame;
+			}
 
 			// Refresh
 			NavUpdate_State();

@@ -64,7 +64,7 @@ namespace Yaya {
 
 
 	[EntityAttribute.Capacity(16)]
-	[EntityAttribute.MapEditorGroup("Camera")]
+	[EntityAttribute.MapEditorGroup("System")]
 	[EntityAttribute.UpdateOutOfRange]
 	public abstract class eCameraAutoScroll : Entity {
 

@@ -23,7 +23,7 @@ namespace Yaya {
 
 	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.Capacity(16)]
-	[EntityAttribute.MapEditorGroup("Camera")]
+	[EntityAttribute.MapEditorGroup("System")]
 	public abstract class eCameraGate : Entity {
 
 

@@ -45,10 +45,11 @@ namespace Yaya {
 
 
 		// Const
+		private static readonly int PAL_GROUP_BUTTON = "MapEditorPaletteGroupButton".AngeHash();
+		private static readonly int PAL_GROUP_BUTTON_DOWN = "MapEditorPaletteGroupButtonDown".AngeHash();
 		private static readonly int PAL_ITEM_FRAME = "MapEditorPaletteItemFrame".AngeHash();
 		private static readonly int SEARCH_ICON = "MapEditor.SearchIcon".AngeHash();
-		private static readonly int PIN_ICON = "MapEditor.Pin".AngeHash();
-		private static readonly int PIN_GROUP_COVER_ICON = "MapEditor.PinCover".AngeHash();
+		private static readonly int PIN_ICON = "MapEditor.PinCover".AngeHash();
 		private const int SEARCH_BAR_HEIGHT = 54;
 
 		// UI
@@ -210,8 +211,8 @@ namespace Yaya {
 			// Sort Groups
 			PaletteGroups.Sort((a, b) =>
 				a.GroupName == b.GroupName ? 0 :
-				a.GroupName == "System" ? -1 :
-				b.GroupName == "System" ? 1 :
+				a.GroupName == "Entity" ? -1 :
+				b.GroupName == "Entity" ? 1 :
 				a.GroupPath.CompareTo(b.GroupPath)
 			);
 
@@ -223,13 +224,6 @@ namespace Yaya {
 					item.GroupIndex = i;
 				}
 			}
-
-			// Pinned Pal Items
-			//s_PinnedItems
-
-
-
-
 
 			// Search
 			PaletteTrie = new Trie<PaletteItem>();
@@ -252,6 +246,7 @@ namespace Yaya {
 					}
 				}
 			}
+
 		}
 
 
@@ -261,67 +256,72 @@ namespace Yaya {
 
 			if (PanelRect.xMax <= CellRenderer.CameraRect.x) return;
 
+			int ITEM_GAP = Unify(4);
+			int PANEL_PADDING = Unify(12);
+			int BUTTON_BORDER = Unify(12);
+			int ITEM_SIZE = Unify(64);
+
 			// Groups
 			int groupCount = PaletteGroups.Count + 1;
-			int GROUP_ITEM_SIZE = Unify(64);
-			int GROUP_ITEM_GAP = Unify(6);
-			int GROUP_PADDING = Unify(6);
-			int BORDER_ALT = Unify(2);
-			int groupColumnCount = (PanelRect.width - GROUP_PADDING * 2) / (GROUP_ITEM_SIZE + GROUP_ITEM_GAP);
+			int groupColumnCount = (PanelRect.width - ITEM_GAP * 2) / (ITEM_SIZE + ITEM_GAP);
 			int groupRowCount = groupCount / groupColumnCount + (groupCount % groupColumnCount != 0 ? 1 : 0);
-			int groupPanelHeight = groupRowCount * (GROUP_ITEM_SIZE + GROUP_ITEM_GAP);
-			var groupRect = new RectInt(
-				PanelRect.x,
-				PanelRect.y,
-				PanelRect.width,
-				groupPanelHeight
+			int groupPanelHeight = groupRowCount * (ITEM_SIZE + ITEM_GAP);
+			int buttonDownShiftY = 0;
+			if (CellRenderer.TryGetSprite(PAL_GROUP_BUTTON, out var sprite) && CellRenderer.TryGetSprite(PAL_GROUP_BUTTON_DOWN, out var spriteDown)) {
+				buttonDownShiftY = ITEM_SIZE - ITEM_SIZE * sprite.GlobalHeight / spriteDown.GlobalHeight;
+			}
+			var groupRect = PaletteGroupPanelRect = new RectInt(
+				PanelRect.x, PanelRect.y, PanelRect.width, groupPanelHeight + PANEL_PADDING * 2
 			);
 			bool mouseInPanel = groupRect.Contains(FrameInput.MouseGlobalPosition);
-			PaletteGroupPanelRect = groupRect;
-			groupRect = groupRect.Shrink(GROUP_PADDING);
+			groupRect = groupRect.Shrink(PANEL_PADDING);
+			CellRenderer.Draw(Const.PIXEL, groupRect.Expand(PANEL_PADDING), Const.GREY_32).Z = PANEL_Z - 6;
 			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute;
+			var rect = new RectInt(0, 0, ITEM_SIZE, ITEM_SIZE);
+			int offsetX = groupRect.x + (groupRect.width - groupColumnCount * ITEM_SIZE - (groupColumnCount - 1) * ITEM_GAP) / 2;
 
-			CellRenderer.Draw(Const.PIXEL, groupRect.Expand(GROUP_PADDING), Const.GREY_32).Z = PANEL_Z - 6;
-
-			var rect = new RectInt(0, 0, GROUP_ITEM_SIZE, GROUP_ITEM_SIZE);
-			int offsetX = groupRect.x + (groupRect.width - groupColumnCount * GROUP_ITEM_SIZE - (groupColumnCount - 1) * GROUP_ITEM_GAP) / 2;
 			for (int i = 0; i < groupCount; i++) {
 
 				var group = i == 0 ? null : PaletteGroups[i - 1];
-				int coverID = i == 0 ? PIN_GROUP_COVER_ICON : group.CoverID;
+				int coverID = i == 0 ? PIN_ICON : group.CoverID;
 				string groupName = i == 0 ? "Pinned" : group.GroupName;
+				bool selecting = i - 1 == SelectingPaletteGroupIndex;
 
-				rect.x = offsetX + (i % groupColumnCount) * (GROUP_ITEM_SIZE + GROUP_ITEM_GAP);
-				rect.y = groupRect.yMax - GROUP_ITEM_SIZE - (i / groupColumnCount) * (GROUP_ITEM_SIZE + GROUP_ITEM_GAP);
+				rect.x = offsetX + (i % groupColumnCount) * (ITEM_SIZE + ITEM_GAP);
+				rect.y = groupRect.yMax - ITEM_SIZE - (i / groupColumnCount) * (ITEM_SIZE + ITEM_GAP);
+
+				// Button
+				Cell[] cells;
+				if (selecting) {
+					cells = CellRenderer.Draw_9Slice(
+						PAL_GROUP_BUTTON_DOWN,
+						rect.x, rect.y, 0, 0, 0, rect.width, rect.height + buttonDownShiftY,
+						BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER
+					);
+				} else {
+					cells = CellRenderer.Draw_9Slice(
+						PAL_GROUP_BUTTON, rect,
+						BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER
+					);
+				}
+				foreach (var cell in cells) cell.Z = PANEL_Z - 5;
 
 				// Cover
-				CellRenderer.Draw(coverID, rect.Shrink(GROUP_PADDING)).Z = PANEL_Z - 3;
-
-				// Selection Highlight
-				if (i - 1 == SelectingPaletteGroupIndex) {
-					CellRenderer.Draw(Const.PIXEL, rect, Const.CYAN).Z = PANEL_Z - 4;
-				}
+				CellRenderer.Draw(
+					coverID,
+					rect.Shrink(BUTTON_BORDER).Shift(0, selecting ? buttonDownShiftY : 0),
+					selecting ? Const.GREY_196 : Const.WHITE
+				).Z = PANEL_Z - 3;
 
 				// Hover Highlight
 				bool mouseHovering = mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
 				if (mouseHovering) {
-					var cells = CellRenderer.Draw_9Slice(
-						FRAME, rect, BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT, Const.CYAN
-					);
-					foreach (var cell in cells) cell.Z = PANEL_Z - 2;
+					Game.Current.SetCursor(0);
 					DrawTooltip(rect, groupName);
 				}
 
 				// Click
 				if (interactable && mouseHovering && FrameInput.MouseLeftButtonDown) {
-					if (SelectingPaletteGroupIndex == i - 1) {
-						if (group != null && group.Items.Count > 0) {
-							SelectingPaletteItem = group.Items[0];
-						}
-						if (i == 0 && PinnedPaletteItems.Count > 0) {
-							SelectingPaletteItem = PinnedPaletteItems[0];
-						}
-					}
 					SelectingPaletteGroupIndex = i - 1;
 					PaletteScrollY = 0;
 				}
@@ -528,6 +528,10 @@ namespace Yaya {
 				if (hover) {
 					if (FrameInput.MouseLeftButtonDown) {
 						SelectingPaletteItem = pal;
+						if (SelectingPaletteItem != null && SelectingPaletteItem.GroupIndex != SelectingPaletteGroupIndex) {
+							SelectingPaletteGroupIndex = SelectingPaletteItem.GroupIndex;
+							PaletteScrollY = 0;
+						}
 						SearchResult.Clear();
 						SearchingText = "";
 					} else if (FrameInput.MouseRightButtonDown) {

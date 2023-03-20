@@ -54,6 +54,9 @@ namespace Yaya {
 		public static readonly int MENU_GOMOKU_WIN = "Menu.Gomoku.Win".AngeHash();
 		public static readonly int MENU_GOMOKU_LOSE = "Menu.Gomoku.Lose".AngeHash();
 		public static readonly int MENU_GOMOKU_DRAW = "Menu.Gomoku.Draw".AngeHash();
+		public static readonly int MENU_MEDT_SETTING = "Menu.Pause.MEDTSetting".AngeHash();
+		public static readonly int MENU_MEDT_AUTO_ZOOM = "Menu.MEDTSetting.AutoZoom".AngeHash();
+		public static readonly int MENU_MEDT_PLAYER_DROP = "Menu.MEDTSetting.PlayerDrop".AngeHash();
 
 		// Control Hint
 		public static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();

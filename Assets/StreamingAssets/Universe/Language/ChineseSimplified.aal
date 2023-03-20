@@ -1,4 +1,6 @@
-﻿@enen:伊楠
+﻿Menu.MEDTSetting.AutoZoom:自动缩放
+Menu.MEDTSetting.PlayerDrop:快速放下玩家
+@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子
@@ -32,6 +34,7 @@ Menu.KeySetter.Record:按想要的按键
 Menu.KeySetter.SaveAndBack:保存并返回
 Menu.MiniGame.QuitMsg:是否要退出迷你游戏？
 Menu.Pause.KeySetter:按键分配
+Menu.Pause.MEDTSetting:编辑器设置
 Menu.Pause.QuitMessage:是否要退出游戏？
 Menu.Setting.Framerate:帧频率
 Menu.Setting.Fullscreen.0:窗口

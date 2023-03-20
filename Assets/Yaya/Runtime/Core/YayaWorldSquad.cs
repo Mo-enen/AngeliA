@@ -15,6 +15,7 @@ namespace Yaya {
 			Int4.Zero;
 		public bool SpawnEntity { get; set; } = true;
 		public bool SaveBeforeReload { get; set; } = false;
+		public bool Enable { get; set; } = true;
 
 
 		// API
@@ -31,6 +32,7 @@ namespace Yaya {
 
 
 		protected override void DrawBackgroundBlock (int id, int unitX, int unitY) {
+			if (!Enable) return;
 			base.DrawBackgroundBlock(id, unitX, unitY);
 			// Collider for Oneway
 			if (
@@ -55,6 +57,7 @@ namespace Yaya {
 
 
 		protected override void DrawLevelBlock (int id, int unitX, int unitY) {
+			if (!Enable) return;
 			base.DrawLevelBlock(id, unitX, unitY);
 			// Damage
 			if (CellRenderer.TryGetMeta(id, out var meta)) {
@@ -67,6 +70,7 @@ namespace Yaya {
 
 
 		protected override void DrawEntity (Game game, int id, int unitX, int unitY, int unitZ) {
+			if (!Enable) return;
 			if (SpawnEntity) {
 				// Spawn Entity
 				var entity = game.SpawnEntityFromWorld(id, unitX, unitY, unitZ);
@@ -86,6 +90,12 @@ namespace Yaya {
 					CellRenderer.Draw(id, rect);
 				}
 			}
+		}
+
+
+		protected override void Draw_Behind (int id, int unitX, int unitY, bool fixRatio) {
+			if (!Enable) return;
+			base.Draw_Behind(id, unitX, unitY, fixRatio);
 		}
 
 

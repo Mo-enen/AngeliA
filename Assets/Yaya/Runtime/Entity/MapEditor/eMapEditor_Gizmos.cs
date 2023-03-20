@@ -252,17 +252,14 @@ namespace Yaya {
 		private void DrawSpriteGizmos (int artworkID, RectInt rect, bool shrink = false, AngeSprite sprite = null) {
 			if (sprite != null || CellRenderer.TryGetSprite(artworkID, out sprite)) {
 				if (shrink) {
-					rect = rect.Shrink(rect.width * 2 / 10).Fit(
-						sprite.GlobalWidth,
-						sprite.GlobalHeight,
-						sprite.PivotX,
-						sprite.PivotY
-					);
+					rect = rect.Shrink(rect.width * 2 / 10);
 				}
-				CellRenderer.Draw(
-					artworkID,
-					rect
-				).Z = GIZMOS_Z - 2;
+				CellRenderer.Draw(artworkID, rect.Fit(
+					sprite.GlobalWidth,
+					sprite.GlobalHeight,
+					sprite.PivotX,
+					sprite.PivotY
+				)).Z = GIZMOS_Z - 2;
 			}
 		}
 
