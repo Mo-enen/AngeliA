@@ -276,7 +276,7 @@ namespace Yaya {
 			bool mouseInPanel = groupRect.Contains(FrameInput.MouseGlobalPosition);
 			groupRect = groupRect.Shrink(PANEL_PADDING);
 			CellRenderer.Draw(Const.PIXEL, groupRect.Expand(PANEL_PADDING), Const.GREY_32).Z = PANEL_Z - 6;
-			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute;
+			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute && !IsNavigating;
 			var rect = new RectInt(0, 0, ITEM_SIZE, ITEM_SIZE);
 			int offsetX = groupRect.x + (groupRect.width - groupColumnCount * ITEM_SIZE - (groupColumnCount - 1) * ITEM_GAP) / 2;
 
@@ -314,14 +314,14 @@ namespace Yaya {
 				).Z = PANEL_Z - 3;
 
 				// Hover Highlight
-				bool mouseHovering = mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
+				bool mouseHovering = interactable && mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
 				if (mouseHovering) {
 					Game.Current.SetCursor(0);
 					DrawTooltip(rect, groupName);
 				}
 
 				// Click
-				if (interactable && mouseHovering && FrameInput.MouseLeftButtonDown) {
+				if (mouseHovering && FrameInput.MouseLeftButtonDown) {
 					SelectingPaletteGroupIndex = i - 1;
 					PaletteScrollY = 0;
 				}
@@ -345,7 +345,7 @@ namespace Yaya {
 			int SCROLL_BAR_WIDTH = Unify(12);
 			int SEARCH_HEIGHT = Unify(SEARCH_BAR_HEIGHT);
 			const int EXTRA_ROW = 3;
-			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute;
+			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute && !IsNavigating;
 			var contentRect = new RectInt(
 				PanelRect.x,
 				PaletteGroupPanelRect.yMax,
@@ -407,7 +407,7 @@ namespace Yaya {
 				}
 
 				// Hover
-				bool mouseHovering = mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
+				bool mouseHovering = interactable && mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
 				if (mouseHovering) {
 					cells = CellRenderer.Draw_9Slice(FRAME, rect, BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT, Const.GREEN);
 					foreach (var cell in cells) cell.Z = PANEL_Z - 11;
@@ -415,7 +415,7 @@ namespace Yaya {
 				}
 
 				// Click
-				if (interactable && mouseHovering) {
+				if (mouseHovering) {
 					if (FrameInput.MouseLeftButtonDown) {
 						SelectingPaletteItem = pal;
 					} else if (FrameInput.MouseRightButtonDown) {

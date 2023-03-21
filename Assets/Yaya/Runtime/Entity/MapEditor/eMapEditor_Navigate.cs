@@ -13,6 +13,10 @@ namespace Yaya {
 		#region --- VAR ---
 
 
+		// Data
+		private TextureSquad NavSquad = null;
+		private Vector3Int NavPosition = default;
+
 
 		#endregion
 
@@ -29,17 +33,17 @@ namespace Yaya {
 				return;
 			}
 
-			// Hotkey
+			Update_PaletteGroupUI();
+			Update_PaletteContentUI();
+
 			if (FrameInput.KeyboardDown(Key.Tab)) {
 				SetNavigating(!IsNavigating);
 				FrameInput.UseAllHoldingKeys();
 			}
+			eControlHintUI.ForceShowHint();
+			eControlHintUI.AddHint(Key.Tab, WORD.UI_CANCEL);
 
-
-
-
-
-
+			NavSquad.FrameUpdate(NavPosition);
 
 		}
 
@@ -54,11 +58,33 @@ namespace Yaya {
 
 		private void SetNavigating (bool navigating) {
 			ApplyPaste();
-			IsNavigating = navigating;
+			if (IsNavigating != navigating) {
+				IsNavigating = navigating;
+				var game = Game.Current;
+				if (navigating) {
+					Save();
+					NavPosition.x = game.ViewRect.x + game.ViewRect.width / 2;
+					NavPosition.y = game.ViewRect.y + game.ViewRect.height / 2;
+					NavPosition.z = game.ViewZ;
+				} else {
+					game.SetViewZ(NavPosition.z);
+					game.SetViewPositionDelay(
+						NavPosition.x - game.ViewRect.width / 2,
+						NavPosition.y - game.ViewRect.height / 2,
+						1000, int.MaxValue
+					);
+				}
+			}
+			if (navigating) {
+				NavSquad.Enable();
+			} else {
+				NavSquad.Disable();
+			}
 			MouseDownPosition = null;
 			SelectionUnitRect = null;
 			DraggingUnitRect = null;
-
+			SearchingText = "";
+			SearchResult.Clear();
 		}
 
 

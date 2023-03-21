@@ -212,8 +212,9 @@ namespace Yaya {
 			PanelOffsetX = 0;
 			SearchingText = "";
 			PaletteSearchScrollY = 0;
-			SetNavigating(false);
 			PinnedItemComparer.Instance.Groups = PaletteGroups;
+			NavSquad = new TextureSquad(MapChannel.User);
+			SetNavigating(false);
 
 			// Start
 			SetEditingMode(false);
@@ -280,6 +281,8 @@ namespace Yaya {
 			SearchResult = null;
 			PinnedPaletteItems = null;
 			PinnedItemComparer.Instance.Groups = null;
+			NavSquad.Dispose();
+			NavSquad = null;
 
 			System.GC.Collect(0, System.GCCollectionMode.Forced);
 
