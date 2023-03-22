@@ -334,7 +334,7 @@ namespace Yaya {
 
 			if (SelectingPaletteGroupIndex < -1 || SelectingPaletteGroupIndex >= PaletteGroups.Count) return;
 			var items = SelectingPaletteGroupIndex == -1 ? PinnedPaletteItems : PaletteGroups[SelectingPaletteGroupIndex].Items;
-			CellRenderer.Draw(Const.PIXEL, PanelRect, Const.BLACK).Z = PANEL_Z - 13;
+			CellRenderer.Draw(Const.PIXEL, PanelRect, Const.BLACK).Z = PANEL_Z - 14;
 
 			int ITEM_SIZE = Unify(46);
 			int ITEM_GAP = Unify(3);
@@ -391,9 +391,10 @@ namespace Yaya {
 					).Z = PANEL_Z - 10;
 				}
 
-				// Highlight
+				// Selecting
 				if (SelectingPaletteItem == pal) {
-					CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN).Z = PANEL_Z - 11;
+					cells = CellRenderer.Draw_9Slice(FRAME, rect, BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT, Const.GREEN);
+					foreach (var cell in cells) cell.Z = PANEL_Z - 11;
 				}
 
 				// Pin
@@ -409,8 +410,8 @@ namespace Yaya {
 				// Hover
 				bool mouseHovering = interactable && mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
 				if (mouseHovering) {
-					cells = CellRenderer.Draw_9Slice(FRAME, rect, BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT, Const.GREEN);
-					foreach (var cell in cells) cell.Z = PANEL_Z - 11;
+					CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32).Z = PANEL_Z - 13;
+					Game.Current.SetCursor(0);
 					DrawTooltip(rect, pal.Name);
 				}
 
@@ -465,7 +466,7 @@ namespace Yaya {
 			int itemGap = Unify(6);
 			var searchRect = PanelRect.Shrink(0, SCROLL_BAR_WIDTH + itemGap, 0, Unify(SEARCH_BAR_HEIGHT)).Shrink(Unify(6));
 			bool mouseInPanel = searchRect.Contains(FrameInput.MouseGlobalPosition);
-			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute;
+			bool interactable = !TaskingRoute;
 			int clampStartIndex = CellRenderer.GetTextUsedCellCount();
 			if (mouseInPanel) {
 				int wheel = FrameInput.MouseWheelDelta;
@@ -565,7 +566,7 @@ namespace Yaya {
 		}
 
 
-		private void Update_PaletteSearchBarUI () {
+		private void Update_PaletteToolBarUI () {
 
 			if (IsPlaying || DroppingPlayer) return;
 
@@ -576,22 +577,25 @@ namespace Yaya {
 			searchPanel = searchPanel.Shrink(PADDING);
 
 			// Bar
-			var barRect = searchPanel.Shrink(searchPanel.height, 0, 0, 0);
+			int ITEM_SIZE = searchPanel.height;
+			var barRect = searchPanel.Shrink(searchPanel.height + ITEM_SIZE * 2, 0, 0, 0);
 			int BORDER = Unify(2);
-			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute; ;
+			bool interactable = !TaskingRoute;
 			bool mouseInBar = interactable && barRect.Contains(FrameInput.MouseGlobalPosition);
 			if (mouseInBar) Game.Current.SetCursor(2);
 			var cells = CellRenderer.Draw_9Slice(FRAME, barRect, BORDER, BORDER, BORDER, BORDER, Const.GREY_96);
 			foreach (var cell in cells) cell.Z = PANEL_Z - 5;
 
-			// Icon
+			// Search Icon
 			CellRenderer.Draw(
 				SEARCH_ICON,
-				barRect.Shrink(-barRect.height, barRect.width, 0, 0)
+				barRect.Shrink(-ITEM_SIZE, barRect.width, 0, 0)
 			).Z = PANEL_Z - 4;
 
-			// Text
-			SearchingText = CellRendererGUI.TextField(3983472, barRect, SearchingText, out bool changed);
+			// Search Text
+			SearchingText = CellRendererGUI.TextField(
+				3983472, barRect, SearchingText, out bool changed
+			);
 			if (changed) {
 				PaletteSearchScrollY = 0;
 				SearchResult.Clear();
@@ -599,6 +603,56 @@ namespace Yaya {
 					SearchResult.AddRange(PaletteTrie.Retrieve(SearchingText.ToLower()).Distinct());
 				}
 			}
+
+		}
+
+
+		private void Update_ViewZUI () {
+
+			if (IsPlaying || DroppingPlayer) return;
+
+			int PADDING = Unify(6);
+			int HEIGHT = Unify(SEARCH_BAR_HEIGHT);
+			var cameraRect = CellRenderer.CameraRect;
+			var searchPanel = IsNavigating ?
+				new RectInt(cameraRect.x, cameraRect.yMax - HEIGHT, cameraRect.width, HEIGHT) :
+				new RectInt(PanelRect.x, PanelRect.yMax - HEIGHT, PanelRect.width, HEIGHT);
+			searchPanel = searchPanel.Shrink(PADDING);
+			bool interactable = !TaskingRoute;
+			int ITEM_SIZE = searchPanel.height;
+
+			// ViewZ
+			int ICON_PADDING = Unify(6);
+			int BUTTON_PADDING = Unify(6);
+
+			// Button Down
+			var rectD = new RectInt(searchPanel.x, searchPanel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
+			if (
+				CellRendererGUI.Button(rectD, BUTTON, BUTTON, BUTTON_DOWN, ICON_PADDING, int.MaxValue - 1, 0) &&
+				interactable
+			) {
+				SetViewZ(IsNavigating ? NavPosition.z - 1 : Game.Current.ViewZ - 1);
+			}
+			CellRenderer.Draw(
+				TRIANGLE,
+				rectD.x + rectD.width / 2,
+				rectD.y + rectD.height / 2,
+				500, 500, 180,
+				rectD.width - BUTTON_PADDING * 2, rectD.height - BUTTON_PADDING * 2,
+				Const.GREY_56
+			).Z = int.MaxValue;
+
+			// Button Up
+			var rectU = new RectInt(searchPanel.x + ITEM_SIZE, searchPanel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
+			if (
+				CellRendererGUI.Button(rectU, BUTTON, BUTTON, BUTTON_DOWN, ICON_PADDING, int.MaxValue - 1, 0) &&
+				interactable
+			) {
+				SetViewZ(IsNavigating ? NavPosition.z + 1 : Game.Current.ViewZ + 1);
+			}
+			CellRenderer.Draw(TRIANGLE, rectU.Shrink(BUTTON_PADDING), Const.GREY_56).Z = int.MaxValue;
+
+
 		}
 
 

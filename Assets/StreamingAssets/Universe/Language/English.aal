@@ -1,5 +1,4 @@
-﻿Menu.MEDTSetting.AutoZoom:Auto Zoom
-Menu.MEDTSetting.PlayerDrop:Quick Player Drop
+﻿CtrlHint.MEDT.Nav:Overlook
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -13,6 +12,7 @@ CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Jump:Jump
 CtrlHint.MEDT.PlayFromBegain:Play from Start
+CtrlHint.MEDT.ResetCamera:Reset Camera
 CtrlHint.MEDT.SwitchMode.Edit:Edit
 CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
@@ -32,6 +32,8 @@ Menu.KeySetter.Keyboard:Keyboard
 Menu.KeySetter.KeyboardMessage:Press F1 key to reset
 Menu.KeySetter.Record:Press key u want
 Menu.KeySetter.SaveAndBack:Save and Back
+Menu.MEDTSetting.AutoZoom:Auto Zoom
+Menu.MEDTSetting.PlayerDrop:Quick Player Drop
 Menu.MiniGame.QuitMsg:Quit mini game?
 Menu.Pause.KeySetter:Key Assignment
 Menu.Pause.MEDTSetting:Editor Setting

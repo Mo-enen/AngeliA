@@ -89,6 +89,9 @@ namespace Yaya {
 		private static readonly int FRAME = "Frame16".AngeHash();
 		private static readonly int FRAME_HOLLOW = "FrameHollow16".AngeHash();
 		private static readonly int DOTTED_LINE = "DottedLine16".AngeHash();
+		private static readonly int BUTTON = "MapEditorButton".AngeHash();
+		private static readonly int BUTTON_DOWN = "MapEditorButtonDown".AngeHash();
+		private static readonly int TRIANGLE = "Triangle13".AngeHash();
 		private static readonly Color32 CURSOR_TINT = new(240, 240, 240, 128);
 		private static readonly Color32 CURSOR_TINT_DARK = new(16, 16, 16, 128);
 		private static readonly Color32 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
@@ -136,6 +139,7 @@ namespace Yaya {
 		private RectInt CopyBufferOriginalUnitRect = default;
 		private RectInt TooltipRect = default;
 		private RectInt PanelRect = default;
+		private Vector3Int HomePosition = default;
 		private bool PlayingGame = false;
 		private bool IsNavigating = false;
 		private bool IsDirty = false;
@@ -215,6 +219,7 @@ namespace Yaya {
 			PinnedItemComparer.Instance.Groups = PaletteGroups;
 			NavSquad = new TextureSquad(MapChannel.User);
 			SetNavigating(false);
+			HomePosition = default;
 
 			// Start
 			SetEditingMode(false);
@@ -237,6 +242,9 @@ namespace Yaya {
 				TargetViewRect.x = homePos.x - viewWidth / 2;
 				TargetViewRect.y = homePos.y - ePlayer.GetCameraShiftOffset(game.ViewRect.height);
 				TargetViewRect.height = viewHeight;
+				HomePosition.x = TargetViewRect.x;
+				HomePosition.y = TargetViewRect.y;
+				HomePosition.z = homePos.z;
 				game.SetViewZ(homePos.z);
 				game.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 1000, int.MaxValue);
 				game.SetViewSizeDelay(TargetViewRect.height, 1000, int.MaxValue);
@@ -414,7 +422,8 @@ namespace Yaya {
 			} else {
 				Update_PaletteSearchResultUI();
 			}
-			Update_PaletteSearchBarUI();
+			Update_PaletteToolBarUI();
+			Update_ViewZUI();
 			Update_Grid();
 			Update_DraggingGizmos();
 			Update_PastingGizmos();
@@ -435,6 +444,7 @@ namespace Yaya {
 			TaskingRoute = FrameTask.IsTasking(YayaConst.TASK_ROUTE);
 			CtrlHolding = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.RightCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
 			ShiftHolding = FrameInput.KeyboardHolding(Key.LeftShift) || FrameInput.KeyboardHolding(Key.RightShift);
+			eControlHintUI.ForceShowHint();
 
 			// Panel Rect
 			PanelRect.width = Unify(PANEL_WIDTH);
@@ -636,6 +646,7 @@ namespace Yaya {
 						SetNavigating(!IsNavigating);
 						FrameInput.UseAllHoldingKeys();
 					}
+					eControlHintUI.AddHint(Key.Tab, WORD.HINT_MEDT_NAV);
 
 				}
 
@@ -675,27 +686,22 @@ namespace Yaya {
 						FrameInput.UseAllHoldingKeys();
 					}
 					eControlHintUI.AddHint(Key.Space, WORD.HINT_MEDT_PLAY_FROM_GEBAIN);
-
+					// Reset Camera
+					if (FrameInput.KeyboardDown(Key.R)) {
+						TargetViewRect.x = HomePosition.x;
+						TargetViewRect.y = HomePosition.y;
+						if (Game.Current.ViewZ != HomePosition.z) {
+							SetViewZ(HomePosition.z);
+						}
+						FrameInput.UseAllHoldingKeys();
+					}
 				}
 
 				// Shift + ...
 				if (ShiftHolding && !CtrlHolding) {
 					// Up/Down
 					if (FrameInput.GameKeyDown(Gamekey.Up) || FrameInput.GameKeyDown(Gamekey.Down)) {
-						var cameraRect = CellRenderer.CameraRect;
-						var svTask = Game.Current.Teleport(
-							cameraRect.x + cameraRect.width / 2,
-							cameraRect.y + cameraRect.height / 2,
-							cameraRect.x + cameraRect.width / 2,
-							cameraRect.y + cameraRect.height / 2,
-							Game.Current.ViewZ + (FrameInput.GameKeyDown(Gamekey.Up) ? 1 : -1),
-							YayaConst.TASK_ROUTE
-						);
-						if (svTask != null) {
-							svTask.ForceUseVignette = false;
-							svTask.ForceDuration = 10;
-						}
-						Save();
+						SetViewZ(Game.Current.ViewZ + (FrameInput.GameKeyDown(Gamekey.Up) ? 1 : -1));
 					}
 				}
 
@@ -863,6 +869,28 @@ namespace Yaya {
 			TooltipLabel.CharSize = Unify(24);
 			CellRendererGUI.Label(TooltipLabel, tipRect, out var bounds);
 			CellRenderer.Draw(Const.PIXEL, bounds.Expand(gap), Const.BLACK).Z = int.MaxValue;
+		}
+
+
+		private void SetViewZ (int newZ) {
+			if (!IsNavigating) {
+				var cameraRect = CellRenderer.CameraRect;
+				var svTask = Game.Current.Teleport(
+					cameraRect.x + cameraRect.width / 2,
+					cameraRect.y + cameraRect.height / 2,
+					cameraRect.x + cameraRect.width / 2,
+					cameraRect.y + cameraRect.height / 2,
+					newZ,
+					YayaConst.TASK_ROUTE
+				);
+				if (svTask != null) {
+					svTask.ForceUseVignette = false;
+					svTask.ForceDuration = 10;
+				}
+				Save();
+			} else {
+				NavPosition.z = newZ;
+			}
 		}
 
 

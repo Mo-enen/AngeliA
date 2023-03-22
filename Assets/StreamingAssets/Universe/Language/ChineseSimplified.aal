@@ -1,5 +1,4 @@
-﻿Menu.MEDTSetting.AutoZoom:自动缩放
-Menu.MEDTSetting.PlayerDrop:快速放下玩家
+﻿CtrlHint.MEDT.Nav:俯瞰
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -13,6 +12,7 @@ CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Jump:跳跃
 CtrlHint.MEDT.PlayFromBegain:从头开始游戏
+CtrlHint.MEDT.ResetCamera:重置
 CtrlHint.MEDT.SwitchMode.Edit:编辑
 CtrlHint.MEDT.SwitchMode.Play:开始游戏
 CtrlHint.Move:移动
@@ -32,6 +32,8 @@ Menu.KeySetter.Keyboard:键盘
 Menu.KeySetter.KeyboardMessage:按下F1键重置键盘设置
 Menu.KeySetter.Record:按想要的按键
 Menu.KeySetter.SaveAndBack:保存并返回
+Menu.MEDTSetting.AutoZoom:自动缩放
+Menu.MEDTSetting.PlayerDrop:快速放下玩家
 Menu.MiniGame.QuitMsg:是否要退出迷你游戏？
 Menu.Pause.KeySetter:按键分配
 Menu.Pause.MEDTSetting:编辑器设置

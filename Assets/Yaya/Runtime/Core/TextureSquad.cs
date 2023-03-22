@@ -27,6 +27,10 @@ namespace Yaya {
 		#region --- VAR ---
 
 
+		// Api
+		public readonly int WorldSize = 7;
+		public int GlobalScale = 1000;
+
 		// Data
 		private readonly TextureUnit[,] Textures = null;
 		private readonly Texture2D[,] TextureBuffer = null;
@@ -34,8 +38,8 @@ namespace Yaya {
 		private readonly Material[] Materials = null;
 		private readonly World FillingWorld = null;
 		private readonly Transform SquadRoot = null;
+		private readonly Transform SquadContainer = null;
 		private readonly MapChannel Channel = MapChannel.BuiltIn;
-		private readonly int WorldSize = 7;
 		private Vector3Int LoadedWorldPos = default;
 
 
@@ -82,6 +86,13 @@ namespace Yaya {
 #if UNITY_EDITOR
 			SquadRoot.gameObject.hideFlags = HideFlags.HideInHierarchy | HideFlags.NotEditable;
 #endif
+
+			SquadContainer = new GameObject("Container").transform;
+			SquadContainer.SetParent(SquadRoot);
+			SquadContainer.localPosition = Vector3.zero;
+			SquadContainer.localRotation = Quaternion.identity;
+			SquadContainer.localScale = Vector3.one;
+
 			var mesh = new Mesh();
 			var vertices = new Vector3[4] { new(0, 0), new(0, 1), new(1, 1), new(1, 0), };
 			var uvs = new Vector2[4] { new(0, 0), new(0, 1), new(1, 1), new(1, 0), };
@@ -97,7 +108,7 @@ namespace Yaya {
 			for (int j = 0; j < worldSize; j++) {
 				for (int i = 0; i < worldSize; i++) {
 					var renderer = new GameObject("", typeof(MeshFilter), typeof(MeshRenderer)).transform;
-					renderer.SetParent(SquadRoot);
+					renderer.SetParent(SquadContainer);
 					renderer.localPosition = new Vector3(i - worldSize / 2f - 0.5f, j - worldSize / 2f - 0.5f, 1f);
 					renderer.localRotation = Quaternion.identity;
 					renderer.localScale = Vector3.one;
@@ -131,10 +142,13 @@ namespace Yaya {
 			}
 			LoadedWorldPos.x = int.MinValue;
 			SquadRoot.gameObject.SetActive(true);
+			SquadRoot.localPosition = new Vector3(0f, 0f, 1f);
 			SquadRoot.localScale = Vector3.one;
-			int len = SquadRoot.childCount;
+			SquadContainer.localPosition = Vector3.zero;
+			SquadContainer.localScale = Vector3.one;
+			int len = SquadContainer.childCount;
 			for (int i = 0; i < len; i++) {
-				SquadRoot.GetChild(i).gameObject.SetActive(false);
+				SquadContainer.GetChild(i).gameObject.SetActive(false);
 			}
 		}
 
@@ -151,9 +165,12 @@ namespace Yaya {
 
 		public void FrameUpdate (Vector3Int centerPos) {
 
+			int GLOBAL_MAP = Const.MAP * Const.CEL;
+			int HALF_GLOBAL_MAP = Const.MAP * Const.HALF;
+
 			var worldPos = new Vector3Int(
-				(centerPos.x - WorldSize * Const.MAP * Const.CEL / 2).UDivide(Const.MAP * Const.CEL),
-				(centerPos.y - WorldSize * Const.MAP * Const.CEL / 2).UDivide(Const.MAP * Const.CEL),
+				(centerPos.x - WorldSize * GLOBAL_MAP / 2).UDivide(GLOBAL_MAP),
+				(centerPos.y - WorldSize * GLOBAL_MAP / 2).UDivide(GLOBAL_MAP),
 				centerPos.z
 			);
 
@@ -163,11 +180,12 @@ namespace Yaya {
 			}
 
 			// Update Renderer
-			//SquadRoot.position = ;
-			//SquadRoot.localScale =;
-
-
-
+			float scale = Game.Current.Camera.orthographicSize * 2f / (WorldSize - 1);
+			float posShiftX = -((centerPos.x + HALF_GLOBAL_MAP).UMod(GLOBAL_MAP) - GLOBAL_MAP) / (float)GLOBAL_MAP * scale;
+			float posShiftY = -((centerPos.y + HALF_GLOBAL_MAP).UMod(GLOBAL_MAP) - GLOBAL_MAP) / (float)GLOBAL_MAP * scale;
+			SquadContainer.localScale = Vector3.one * scale;
+			SquadContainer.localPosition = new Vector3(posShiftX, posShiftY, 1f);
+			SquadRoot.localScale = Vector3.one * (GlobalScale / 1000f);
 		}
 
 
@@ -245,7 +263,7 @@ namespace Yaya {
 					var unit = Textures[i, j];
 					pos.x = newWorldPos.x + i;
 					pos.y = newWorldPos.y + j;
-					var renderer = SquadRoot.GetChild(j * WorldSize + i);
+					var renderer = SquadContainer.GetChild(j * WorldSize + i);
 					renderer.gameObject.SetActive(true);
 					if (unit.WorldPos == pos) continue;
 					if (FillingWorld.LoadFromDisk(mapRoot, pos.x, pos.y, pos.z)) {
