@@ -16,6 +16,8 @@ namespace Yaya {
 		// Data
 		private TextureSquad NavSquad = null;
 		private Vector3Int NavPosition = default;
+		private int LastNavigatorStateChangeFrame = int.MinValue;
+		private int NavigationBlockBarLerp = 0;
 
 
 		#endregion
@@ -33,7 +35,7 @@ namespace Yaya {
 			}
 			Update_PaletteGroupUI();
 			Update_PaletteContentUI();
-			Update_ViewZUI();
+			Update_ToolbarUI();
 			Update_NavHotkey();
 			NavSquad.FrameUpdate(NavPosition);
 			Update_NavGizmos();
@@ -69,11 +71,8 @@ namespace Yaya {
 
 			// Reset Camera
 			if (CtrlHolding && FrameInput.KeyboardDown(Key.R)) {
-				NavPosition.x = HomePosition.x + TargetViewRect.width / 2;
-				NavPosition.y = HomePosition.y + TargetViewRect.height / 2;
-				NavPosition.z = HomePosition.z;
+				ResetCamera();
 			}
-			eControlHintUI.AddHint(Key.LeftCtrl, Key.R, WORD.HINT_MEDT_RESET_CAMERA);
 
 			// Tab
 			if (
@@ -82,7 +81,7 @@ namespace Yaya {
 				FrameInput.KeyboardDown(Key.Space) ||
 				FrameInput.KeyboardDown(Key.Enter)
 			) {
-				SetNavigating(!IsNavigating);
+				SetNavigating(!IsNavigating, true);
 				FrameInput.UseAllHoldingKeys();
 			}
 			eControlHintUI.AddHint(Key.Escape, WORD.UI_CANCEL);
@@ -95,12 +94,12 @@ namespace Yaya {
 			if (!IsNavigating) return;
 
 			var cameraRect = CellRenderer.CameraRect;
-			Game.Current.SetBackgroundTint(Const.BLACK, Const.BLACK, 0);
 
 			// Black Bar
-			int barWidth = (cameraRect.width - cameraRect.height) / 2;
+			int barWidth = NavigationBlockBarLerp * (cameraRect.width - cameraRect.height) / 2000;
 			CellRenderer.Draw(Const.PIXEL, new RectInt(cameraRect.x, cameraRect.y, barWidth, cameraRect.height), Const.BLACK).Z = -1;
 			CellRenderer.Draw(Const.PIXEL, new RectInt(cameraRect.x + cameraRect.width - barWidth, cameraRect.y, barWidth, cameraRect.height), Const.BLACK).Z = -1;
+			NavigationBlockBarLerp = NavigationBlockBarLerp.LerpTo(1000, 200);
 
 			// Camera Rect
 			int height = cameraRect.height * TargetViewRect.height / (NavSquad.WorldSize - 1) / (Const.MAP * Const.CEL);
@@ -111,8 +110,24 @@ namespace Yaya {
 				cameraRect.y + cameraRect.height / 2 - height / 2,
 				width, height
 			).Shrink(width * PanelRect.width / cameraRect.width, 0, 0, 0);
+			if (NavSquad.GlobalScale != 1000) {
+				int newWidth = rect.width * NavSquad.GlobalScale / 1000;
+				int newHeight = rect.height * NavSquad.GlobalScale / 1000;
+				rect.x -= (newWidth - rect.width) / 2;
+				rect.y -= (newHeight - rect.height) / 2;
+				rect.width = newWidth;
+				rect.height = newHeight;
+			}
 			CellRenderer.Draw_9Slice(FRAME, rect, BORDER, BORDER, BORDER, BORDER, Const.WHITE);
 			CellRenderer.Draw_9Slice(FRAME, rect.Expand(BORDER), BORDER, BORDER, BORDER, BORDER, Const.BLACK);
+
+			// Click Camera Rect
+			bool hoverRect = rect.Contains(FrameInput.MouseGlobalPosition);
+			if (hoverRect) Game.Current.SetCursor(0);
+			if (hoverRect && FrameInput.MouseLeftButtonDown) {
+				FrameInput.UseAllHoldingKeys();
+				SetNavigating(false, true);
+			}
 
 		}
 
@@ -125,12 +140,14 @@ namespace Yaya {
 		#region --- LGC ---
 
 
-		private void SetNavigating (bool navigating) {
+		private void SetNavigating (bool navigating, bool useFrameLimit = false) {
+			if (useFrameLimit && Game.GlobalFrame < LastNavigatorStateChangeFrame + 30) return;
+			LastNavigatorStateChangeFrame = Game.GlobalFrame;
 			ApplyPaste();
 			if (IsNavigating != navigating) {
 				IsNavigating = navigating;
 				var game = Game.Current;
-				TargetViewRect.width = TargetViewRect.height * Game.Current.ViewConfig.ViewRatio / 1000;
+				TargetViewRect.width = TargetViewRect.height * game.ViewConfig.ViewRatio / 1000;
 				if (navigating) {
 					Save();
 					NavPosition.x = TargetViewRect.x + TargetViewRect.width / 2 + Const.MAP * Const.HALF;
@@ -152,10 +169,10 @@ namespace Yaya {
 			}
 			if (navigating) {
 				NavSquad.Enable();
-				NavSquad.GlobalScale = 4000;
+				NavSquad.GlobalScale = (NavSquad.WorldSize - 1) * 1000;
+				NavigationBlockBarLerp = 0;
 			} else {
 				NavSquad.Disable();
-				Game.Current.RefreshBackgroundTint();
 			}
 			MouseDownPosition = null;
 			SelectionUnitRect = null;

@@ -89,9 +89,9 @@ namespace Yaya {
 		private static readonly int FRAME = "Frame16".AngeHash();
 		private static readonly int FRAME_HOLLOW = "FrameHollow16".AngeHash();
 		private static readonly int DOTTED_LINE = "DottedLine16".AngeHash();
-		private static readonly int BUTTON = "MapEditorButton".AngeHash();
-		private static readonly int BUTTON_DOWN = "MapEditorButtonDown".AngeHash();
-		private static readonly int TRIANGLE = "Triangle13".AngeHash();
+		private static readonly int TRIANGLE_UP = "Icon TriangleUp".AngeHash();
+		private static readonly int TRIANGLE_DOWN = "Icon TriangleDown".AngeHash();
+		private static readonly int REFRESH_ICON = "Icon Refresh".AngeHash();
 		private static readonly Color32 CURSOR_TINT = new(240, 240, 240, 128);
 		private static readonly Color32 CURSOR_TINT_DARK = new(16, 16, 16, 128);
 		private static readonly Color32 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
@@ -105,10 +105,11 @@ namespace Yaya {
 		}
 		public bool AutoZoom {
 			get => s_AutoZoom.Value;
-			set {
-				if (s_AutoZoom.Value != value) UndoRedo.Reset();
-				s_AutoZoom.Value = value;
-			}
+			set => s_AutoZoom.Value = value;
+		}
+		public bool ShowState {
+			get => s_ShowState.Value;
+			set => s_ShowState.Value = value;
 		}
 
 		// Pools
@@ -139,6 +140,7 @@ namespace Yaya {
 		private RectInt CopyBufferOriginalUnitRect = default;
 		private RectInt TooltipRect = default;
 		private RectInt PanelRect = default;
+		private RectInt ToolbarRect = default;
 		private Vector3Int HomePosition = default;
 		private bool PlayingGame = false;
 		private bool IsNavigating = false;
@@ -151,6 +153,7 @@ namespace Yaya {
 		private int UndoDataIndex = 0;
 		private int TooltipDuration = 0;
 		private int PanelOffsetX = 0;
+		private int ToolbarOffsetX = 0;
 
 		// UI
 		private readonly CellLabel DropHintLabel = new() {
@@ -158,10 +161,14 @@ namespace Yaya {
 			Alignment = Alignment.BottomLeft,
 			Wrap = false,
 		};
+		private readonly IntToString StateXLabelToString = new("x:");
+		private readonly IntToString StateYLabelToString = new("y:");
+		private readonly IntToString StateZLabelToString = new("z:");
 
 		// Saving
 		private static readonly SavingBool s_QuickPlayerDrop = new("eMapEditor.QuickPlayerDrop", false);
 		private static readonly SavingBool s_AutoZoom = new("eMapEditor.AutoZoom", true);
+		private static readonly SavingBool s_ShowState = new("eMapEditor.ShowState", true);
 
 
 		#endregion
@@ -220,6 +227,7 @@ namespace Yaya {
 			NavSquad = new TextureSquad(MapChannel.User);
 			SetNavigating(false);
 			HomePosition = default;
+			ToolbarOffsetX = 0;
 
 			// Start
 			SetEditingMode(false);
@@ -402,6 +410,7 @@ namespace Yaya {
 			if (Active == false || Squad == null || Squad.Channel != MapChannel.User) return;
 			base.FrameUpdateUI();
 			Update_Misc();
+			Update_ScreenUI();
 			if (!IsNavigating) {
 				FrameUpdate_MapEditor();
 			} else {
@@ -422,8 +431,8 @@ namespace Yaya {
 			} else {
 				Update_PaletteSearchResultUI();
 			}
-			Update_PaletteToolBarUI();
-			Update_ViewZUI();
+			Update_PaletteSearchBarUI();
+			Update_ToolbarUI();
 			Update_Grid();
 			Update_DraggingGizmos();
 			Update_PastingGizmos();
@@ -449,10 +458,17 @@ namespace Yaya {
 			// Panel Rect
 			PanelRect.width = Unify(PANEL_WIDTH);
 			PanelRect.height = CellRenderer.CameraRect.height;
-			int aimOffsetX = IsEditing && !DroppingPlayer && !IsNavigating ? 0 : -PanelRect.width;
-			PanelOffsetX = PanelOffsetX.LerpTo(aimOffsetX, 200);
+			PanelOffsetX = PanelOffsetX.LerpTo(IsEditing && !DroppingPlayer && !IsNavigating ? 0 : -PanelRect.width, 200);
 			PanelRect.x = CellRenderer.CameraRect.x + PanelOffsetX;
 			PanelRect.y = CellRenderer.CameraRect.y;
+
+			// Toolbar Rect
+			int HEIGHT = Unify(TOOL_BAR_HEIGHT);
+			ToolbarRect.width = PanelRect.width;
+			ToolbarRect.height = HEIGHT;
+			ToolbarRect.y = CellRenderer.CameraRect.yMax - HEIGHT;
+			ToolbarOffsetX = ToolbarOffsetX.LerpTo(IsPlaying || DroppingPlayer ? -ToolbarRect.width : 0, 200);
+			ToolbarRect.x = CellRenderer.CameraRect.x + ToolbarOffsetX;
 
 			// Hint
 			if (IsEditing) {
@@ -487,10 +503,8 @@ namespace Yaya {
 
 		private void Update_View () {
 
-			if (
-				TaskingRoute || DroppingPlayer || PerformingUndoItem != null ||
-				CellRendererGUI.IsTyping || MouseDownOutsideBoundary
-			) return;
+			if (TaskingRoute || DroppingPlayer || PerformingUndoItem != null || CellRendererGUI.IsTyping) return;
+			if (MouseDownOutsideBoundary) goto END;
 
 			var game = Game.Current;
 			var viewConfig = game.ViewConfig;
@@ -577,10 +591,11 @@ namespace Yaya {
 				}
 			}
 
+			END:;
 			// Lerp
-			if (game.ViewRect != TargetViewRect) {
-				game.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 300, int.MaxValue - 1);
-				game.SetViewSizeDelay(TargetViewRect.height, 300, int.MaxValue - 1);
+			if (Game.Current.ViewRect != TargetViewRect) {
+				Game.Current.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 300, int.MaxValue - 1);
+				Game.Current.SetViewSizeDelay(TargetViewRect.height, 300, int.MaxValue - 1);
 			}
 		}
 
@@ -643,7 +658,7 @@ namespace Yaya {
 
 					// Nav
 					if (FrameInput.KeyboardDown(Key.Tab)) {
-						SetNavigating(!IsNavigating);
+						SetNavigating(!IsNavigating, true);
 						FrameInput.UseAllHoldingKeys();
 					}
 					eControlHintUI.AddHint(Key.Tab, WORD.HINT_MEDT_NAV);
@@ -688,11 +703,7 @@ namespace Yaya {
 					eControlHintUI.AddHint(Key.Space, WORD.HINT_MEDT_PLAY_FROM_GEBAIN);
 					// Reset Camera
 					if (FrameInput.KeyboardDown(Key.R)) {
-						TargetViewRect.x = HomePosition.x;
-						TargetViewRect.y = HomePosition.y;
-						if (Game.Current.ViewZ != HomePosition.z) {
-							SetViewZ(HomePosition.z);
-						}
+						ResetCamera();
 						FrameInput.UseAllHoldingKeys();
 					}
 				}
@@ -764,15 +775,47 @@ namespace Yaya {
 		}
 
 
+		private void Update_ScreenUI () {
+
+			if (IsPlaying || TaskingRoute) return;
+
+			var cameraRect = CellRenderer.CameraRect;
+			int LABEL_HEIGHT = Unify(28);
+			int PADDING = Unify(12);
+
+			// State
+			if (ShowState) {
+				if (!IsNavigating) {
+					int x = FrameInput.MouseGlobalPosition.x.ToUnit();
+					int y = FrameInput.MouseGlobalPosition.y.ToUnit();
+					CellRendererGUI.Label(
+						CellLabel.TempLabel(StateXLabelToString.GetString(x), Const.GREY_196, 22, Alignment.MidRight),
+						new RectInt(cameraRect.x, cameraRect.y + LABEL_HEIGHT * 2, cameraRect.width - PADDING, LABEL_HEIGHT)
+					);
+					CellRendererGUI.Label(
+						CellLabel.TempLabel(StateYLabelToString.GetString(y), Const.GREY_196, 22, Alignment.MidRight),
+						new RectInt(cameraRect.x, cameraRect.y + LABEL_HEIGHT * 1, cameraRect.width - PADDING, LABEL_HEIGHT)
+					);
+				}
+				int z = IsNavigating ? NavPosition.z : Game.Current.ViewZ;
+				CellRendererGUI.Label(
+					CellLabel.TempLabel(StateZLabelToString.GetString(z), Const.GREY_196, 22, Alignment.MidRight),
+					new RectInt(cameraRect.x, cameraRect.y, cameraRect.width - PADDING, LABEL_HEIGHT)
+				);
+			}
+
+		}
+
+
 		#endregion
 
 
 
 
-		#region --- LGC ---
+		#region --- API ---
 
 
-		private void SetEditingMode (bool playingGame) {
+		public void SetEditingMode (bool playingGame) {
 
 			var game = Game.Current;
 			if (playingGame) Save();
@@ -785,6 +828,7 @@ namespace Yaya {
 
 			// Squad Spawn Entity
 			Squad.SpawnEntity = PlayingGame;
+			SquadBehind.SpawnEntity = PlayingGame;
 			Squad.SaveBeforeReload = !PlayingGame;
 
 			if (PlayingGame) {
@@ -821,6 +865,14 @@ namespace Yaya {
 
 			}
 		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
 
 
 		private void StartDropPlayer () {
@@ -890,6 +942,22 @@ namespace Yaya {
 				Save();
 			} else {
 				NavPosition.z = newZ;
+			}
+		}
+
+
+		private void ResetCamera () {
+			if (!IsNavigating) {
+				TargetViewRect.x = HomePosition.x;
+				TargetViewRect.y = HomePosition.y;
+				TargetViewRect.height = Game.Current.ViewConfig.DefaultHeight * 3 / 2;
+				if (Game.Current.ViewZ != HomePosition.z) {
+					SetViewZ(HomePosition.z);
+				}
+			} else {
+				NavPosition.x = HomePosition.x + TargetViewRect.width / 2 + Const.MAP * Const.HALF;
+				NavPosition.y = HomePosition.y + TargetViewRect.height / 2 + Const.MAP * Const.HALF;
+				NavPosition.z = HomePosition.z;
 			}
 		}
 

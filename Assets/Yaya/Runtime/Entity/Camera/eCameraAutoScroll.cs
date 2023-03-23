@@ -104,7 +104,10 @@ namespace Yaya {
 		public static void Initialize () {
 			AllCameraScrollID.Clear();
 			foreach (var type in typeof(eCameraAutoScroll).AllChildClass()) {
-				AllCameraScrollID.TryAdd(type.AngeHash());
+				var ins = System.Activator.CreateInstance(type) as eCameraAutoScroll;
+				if (ins.DirectionX != Direction3.None || ins.DirectionY != Direction3.None) {
+					AllCameraScrollID.TryAdd(type.AngeHash());
+				}
 			}
 		}
 
@@ -270,11 +273,11 @@ namespace Yaya {
 
 		private bool CheckEntrance () {
 
-			var dir = new Vector2Int((int)DirectionX, (int)DirectionY);
 			if (DirectionX == Direction3.None && DirectionY == Direction3.None) return false;
 			var unitPos = new Vector2Int(X, Y).ToUnit();
 			var squad = Game.Current.WorldSquad;
 
+			var dir = new Vector2Int((int)DirectionX, (int)DirectionY);
 			if (HasPrevTarget(new(-1, -1))) return false;
 			if (HasPrevTarget(new(-1, 0))) return false;
 			if (HasPrevTarget(new(-1, 1))) return false;

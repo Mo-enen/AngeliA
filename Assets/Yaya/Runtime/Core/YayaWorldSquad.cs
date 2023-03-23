@@ -95,7 +95,7 @@ namespace Yaya {
 
 		protected override void Draw_Behind (int id, int unitX, int unitY, bool fixRatio) {
 			if (!Enable) return;
-			base.Draw_Behind(id, unitX, unitY, fixRatio);
+			base.Draw_Behind(id, unitX, unitY, SpawnEntity && fixRatio);
 		}
 
 

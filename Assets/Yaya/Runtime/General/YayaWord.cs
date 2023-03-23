@@ -57,6 +57,8 @@ namespace Yaya {
 		public static readonly int MENU_MEDT_SETTING = "Menu.Pause.MEDTSetting".AngeHash();
 		public static readonly int MENU_MEDT_AUTO_ZOOM = "Menu.MEDTSetting.AutoZoom".AngeHash();
 		public static readonly int MENU_MEDT_PLAYER_DROP = "Menu.MEDTSetting.PlayerDrop".AngeHash();
+		public static readonly int MENU_MEDT_STATE = "Menu.MEDTSetting.ShowState".AngeHash();
+		public static readonly int MENU_BACK_TO_EDIT = "Menu.BackToEdit".AngeHash();
 
 		// Control Hint
 		public static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();

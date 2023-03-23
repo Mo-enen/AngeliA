@@ -145,10 +145,20 @@ namespace Yaya {
 			}
 
 			// 4-Quit
-			if (DrawItem(Language.Get(WORD.UI_QUIT), Const.RED_BETTER)) {
-				RequireMode = MenuMode.Quit;
-				SetSelection(0);
+			if (MapEditor != null && MapEditor.Active && MapEditor.IsPlaying) {
+				if (DrawItem(Language.Get(WORD.MENU_BACK_TO_EDIT))) {
+					MapEditor.SetEditingMode(false);
+					Game.Current.State = GameState.Play;
+					Active = false;
+					FrameInput.UseAllHoldingKeys();
+				}
+			} else {
+				if (DrawItem(Language.Get(WORD.UI_QUIT), Const.RED_BETTER)) {
+					RequireMode = MenuMode.Quit;
+					SetSelection(0);
+				}
 			}
+
 		}
 
 
@@ -306,6 +316,14 @@ namespace Yaya {
 				CellLabel.TempLabel(Language.Get(MapEditor.QuickPlayerDrop ? WORD.UI_ON : WORD.UI_OFF))
 			)) {
 				MapEditor.QuickPlayerDrop = !MapEditor.QuickPlayerDrop;
+			}
+
+			// Show State
+			if (DrawItem(
+				Language.Get(WORD.MENU_MEDT_STATE),
+				CellLabel.TempLabel(Language.Get(MapEditor.ShowState ? WORD.UI_ON : WORD.UI_OFF))
+			)) {
+				MapEditor.ShowState = !MapEditor.ShowState;
 			}
 
 			// Back

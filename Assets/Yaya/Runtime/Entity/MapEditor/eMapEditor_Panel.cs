@@ -45,12 +45,15 @@ namespace Yaya {
 
 
 		// Const
-		private static readonly int PAL_GROUP_BUTTON = "MapEditorPaletteGroupButton".AngeHash();
-		private static readonly int PAL_GROUP_BUTTON_DOWN = "MapEditorPaletteGroupButtonDown".AngeHash();
+		private static readonly int BUTTON_DARK = "MapEditorDarkButton".AngeHash();
+		private static readonly int BUTTON_DARK_DOWN = "MapEditorDarkButtonDown".AngeHash();
 		private static readonly int PAL_ITEM_FRAME = "MapEditorPaletteItemFrame".AngeHash();
 		private static readonly int SEARCH_ICON = "MapEditor.SearchIcon".AngeHash();
 		private static readonly int PIN_ICON = "MapEditor.PinCover".AngeHash();
-		private const int SEARCH_BAR_HEIGHT = 54;
+		private static readonly int GAMEPAD_ICON = "Icon Gamepad".AngeHash();
+		private static readonly int MAP_ICON = "Icon Map".AngeHash();
+		private static readonly int BRUSH_ICON = "Icon Brush".AngeHash();
+		private const int TOOL_BAR_HEIGHT = 54;
 
 		// UI
 		private readonly CellLabel TooltipLabel = new() {
@@ -267,7 +270,7 @@ namespace Yaya {
 			int groupRowCount = groupCount / groupColumnCount + (groupCount % groupColumnCount != 0 ? 1 : 0);
 			int groupPanelHeight = groupRowCount * (ITEM_SIZE + ITEM_GAP);
 			int buttonDownShiftY = 0;
-			if (CellRenderer.TryGetSprite(PAL_GROUP_BUTTON, out var sprite) && CellRenderer.TryGetSprite(PAL_GROUP_BUTTON_DOWN, out var spriteDown)) {
+			if (CellRenderer.TryGetSprite(BUTTON_DARK, out var sprite) && CellRenderer.TryGetSprite(BUTTON_DARK_DOWN, out var spriteDown)) {
 				buttonDownShiftY = ITEM_SIZE - ITEM_SIZE * sprite.GlobalHeight / spriteDown.GlobalHeight;
 			}
 			var groupRect = PaletteGroupPanelRect = new RectInt(
@@ -294,13 +297,13 @@ namespace Yaya {
 				Cell[] cells;
 				if (selecting) {
 					cells = CellRenderer.Draw_9Slice(
-						PAL_GROUP_BUTTON_DOWN,
+						BUTTON_DARK_DOWN,
 						rect.x, rect.y, 0, 0, 0, rect.width, rect.height + buttonDownShiftY,
 						BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER
 					);
 				} else {
 					cells = CellRenderer.Draw_9Slice(
-						PAL_GROUP_BUTTON, rect,
+						BUTTON_DARK, rect,
 						BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER
 					);
 				}
@@ -343,14 +346,14 @@ namespace Yaya {
 			int BORDER = Unify(6);
 			int BORDER_ALT = Unify(2);
 			int SCROLL_BAR_WIDTH = Unify(12);
-			int SEARCH_HEIGHT = Unify(SEARCH_BAR_HEIGHT);
+			int TOOLBAR_HEIGHT = Unify(TOOL_BAR_HEIGHT * 2);
 			const int EXTRA_ROW = 3;
 			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute && !IsNavigating;
 			var contentRect = new RectInt(
 				PanelRect.x,
 				PaletteGroupPanelRect.yMax,
 				PanelRect.width,
-				PanelRect.yMax - PaletteGroupPanelRect.yMax - SEARCH_HEIGHT
+				PanelRect.yMax - PaletteGroupPanelRect.yMax - TOOLBAR_HEIGHT
 			);
 			bool mouseInPanel = contentRect.Contains(FrameInput.MouseGlobalPosition);
 			contentRect = contentRect.Shrink(PADDING);
@@ -464,7 +467,7 @@ namespace Yaya {
 			int SCROLL_BAR_WIDTH = Unify(12);
 			int itemSize = Unify(42);
 			int itemGap = Unify(6);
-			var searchRect = PanelRect.Shrink(0, SCROLL_BAR_WIDTH + itemGap, 0, Unify(SEARCH_BAR_HEIGHT)).Shrink(Unify(6));
+			var searchRect = PanelRect.Shrink(0, SCROLL_BAR_WIDTH + itemGap, 0, Unify(TOOL_BAR_HEIGHT * 2)).Shrink(Unify(6));
 			bool mouseInPanel = searchRect.Contains(FrameInput.MouseGlobalPosition);
 			bool interactable = !TaskingRoute;
 			int clampStartIndex = CellRenderer.GetTextUsedCellCount();
@@ -566,36 +569,113 @@ namespace Yaya {
 		}
 
 
-		private void Update_PaletteToolBarUI () {
+		private void Update_ToolbarUI () {
+
+			if (IsPlaying) return;
+
+			int PADDING = Unify(6);
+			int BUTTON_BORDER = Unify(6);
+			int BUTTON_PADDING = Unify(3);
+			bool interactable = !TaskingRoute;
+			var panel = ToolbarRect;
+			CellRenderer.Draw(
+				Const.PIXEL,
+				new RectInt(panel.x, panel.y, PanelRect.xMax - panel.x, panel.height),
+				Const.GREY_32
+			).Z = PANEL_Z - 6;
+			panel = panel.Shrink(PADDING);
+			int ITEM_SIZE = panel.height;
+
+			// Reset Camera
+			if (
+				CellRendererGUI.Button(
+					new RectInt(panel.x, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING),
+					BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, REFRESH_ICON,
+					BUTTON_BORDER, int.MaxValue - 1, 0
+				) && interactable
+			) {
+				ResetCamera();
+			}
+
+			// Button Down
+			if (
+				CellRendererGUI.Button(
+					new RectInt(panel.x + ITEM_SIZE, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING),
+					BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, TRIANGLE_DOWN,
+					BUTTON_BORDER, int.MaxValue - 1, 0
+				) && interactable
+			) {
+				SetViewZ(IsNavigating ? NavPosition.z - 1 : Game.Current.ViewZ - 1);
+			}
+
+			// Button Up
+			if (
+				CellRendererGUI.Button(
+					new RectInt(panel.x + ITEM_SIZE * 2, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING),
+					BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, TRIANGLE_UP,
+					BUTTON_BORDER, int.MaxValue - 1, 0
+				) && interactable
+			) {
+				SetViewZ(IsNavigating ? NavPosition.z + 1 : Game.Current.ViewZ + 1);
+			}
+
+			// Nav
+			if (
+				CellRendererGUI.Button(
+					new RectInt(panel.xMax - ITEM_SIZE * 2, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING),
+					BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, IsNavigating ? BRUSH_ICON : MAP_ICON,
+					BUTTON_BORDER, int.MaxValue - 1, 0
+				) && interactable
+			) {
+				SetNavigating(!IsNavigating, true);
+			}
+
+			// Play
+			if (
+				!IsNavigating && !DroppingPlayer &&
+				CellRendererGUI.Button(
+					new RectInt(panel.xMax - ITEM_SIZE, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING),
+					BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, GAMEPAD_ICON,
+					BUTTON_BORDER, int.MaxValue - 1, 0
+				) && interactable
+			) {
+				SetEditingMode(!PlayingGame);
+			}
+
+		}
+
+
+		private void Update_PaletteSearchBarUI () {
 
 			if (IsPlaying || DroppingPlayer) return;
 
 			int PADDING = Unify(6);
-			int HEIGHT = Unify(SEARCH_BAR_HEIGHT);
-			var searchPanel = new RectInt(PanelRect.x, PanelRect.yMax - HEIGHT, PanelRect.width, HEIGHT);
+			int HEIGHT = Unify(TOOL_BAR_HEIGHT);
+			var searchPanel = new RectInt(PanelRect.x, PanelRect.yMax - HEIGHT * 2, PanelRect.width, HEIGHT);
 			CellRenderer.Draw(Const.PIXEL, searchPanel, Const.GREY_32).Z = PANEL_Z - 6;
 			searchPanel = searchPanel.Shrink(PADDING);
 
 			// Bar
 			int ITEM_SIZE = searchPanel.height;
-			var barRect = searchPanel.Shrink(searchPanel.height + ITEM_SIZE * 2, 0, 0, 0);
 			int BORDER = Unify(2);
-			bool interactable = !TaskingRoute;
-			bool mouseInBar = interactable && barRect.Contains(FrameInput.MouseGlobalPosition);
+			const int SEARCH_ID = 3983472;
+			bool interactable = !TaskingRoute && !IsNavigating;
+			bool mouseInBar = interactable && searchPanel.Contains(FrameInput.MouseGlobalPosition);
 			if (mouseInBar) Game.Current.SetCursor(2);
-			var cells = CellRenderer.Draw_9Slice(FRAME, barRect, BORDER, BORDER, BORDER, BORDER, Const.GREY_96);
+			var cells = CellRenderer.Draw_9Slice(FRAME, searchPanel, BORDER, BORDER, BORDER, BORDER, Const.GREY_96);
 			foreach (var cell in cells) cell.Z = PANEL_Z - 5;
 
 			// Search Icon
-			CellRenderer.Draw(
-				SEARCH_ICON,
-				barRect.Shrink(-ITEM_SIZE, barRect.width, 0, 0)
-			).Z = PANEL_Z - 4;
+			if (CellRendererGUI.TypingTextFieldID != SEARCH_ID && string.IsNullOrEmpty(SearchingText)) {
+				CellRenderer.Draw(
+					SEARCH_ICON,
+					searchPanel.Shrink(PADDING, searchPanel.width - ITEM_SIZE - PADDING, 0, 0),
+					Const.GREY_196
+				).Z = PANEL_Z - 4;
+			}
 
 			// Search Text
-			SearchingText = CellRendererGUI.TextField(
-				3983472, barRect, SearchingText, out bool changed
-			);
+			SearchingText = CellRendererGUI.TextField(SEARCH_ID, searchPanel, SearchingText, out bool changed);
 			if (changed) {
 				PaletteSearchScrollY = 0;
 				SearchResult.Clear();
@@ -605,65 +685,6 @@ namespace Yaya {
 			}
 
 		}
-
-
-		private void Update_ViewZUI () {
-
-			if (IsPlaying || DroppingPlayer) return;
-
-			int PADDING = Unify(6);
-			int HEIGHT = Unify(SEARCH_BAR_HEIGHT);
-			var cameraRect = CellRenderer.CameraRect;
-			var searchPanel = IsNavigating ?
-				new RectInt(cameraRect.x, cameraRect.yMax - HEIGHT, cameraRect.width, HEIGHT) :
-				new RectInt(PanelRect.x, PanelRect.yMax - HEIGHT, PanelRect.width, HEIGHT);
-			searchPanel = searchPanel.Shrink(PADDING);
-			bool interactable = !TaskingRoute;
-			int ITEM_SIZE = searchPanel.height;
-
-			// ViewZ
-			int ICON_PADDING = Unify(6);
-			int BUTTON_PADDING = Unify(6);
-
-			// Button Down
-			var rectD = new RectInt(searchPanel.x, searchPanel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
-			if (
-				CellRendererGUI.Button(rectD, BUTTON, BUTTON, BUTTON_DOWN, ICON_PADDING, int.MaxValue - 1, 0) &&
-				interactable
-			) {
-				SetViewZ(IsNavigating ? NavPosition.z - 1 : Game.Current.ViewZ - 1);
-			}
-			CellRenderer.Draw(
-				TRIANGLE,
-				rectD.x + rectD.width / 2,
-				rectD.y + rectD.height / 2,
-				500, 500, 180,
-				rectD.width - BUTTON_PADDING * 2, rectD.height - BUTTON_PADDING * 2,
-				Const.GREY_56
-			).Z = int.MaxValue;
-
-			// Button Up
-			var rectU = new RectInt(searchPanel.x + ITEM_SIZE, searchPanel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
-			if (
-				CellRendererGUI.Button(rectU, BUTTON, BUTTON, BUTTON_DOWN, ICON_PADDING, int.MaxValue - 1, 0) &&
-				interactable
-			) {
-				SetViewZ(IsNavigating ? NavPosition.z + 1 : Game.Current.ViewZ + 1);
-			}
-			CellRenderer.Draw(TRIANGLE, rectU.Shrink(BUTTON_PADDING), Const.GREY_56).Z = int.MaxValue;
-
-
-		}
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
 
 
 		#endregion

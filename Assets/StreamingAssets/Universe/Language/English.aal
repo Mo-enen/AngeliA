@@ -1,4 +1,4 @@
-﻿CtrlHint.MEDT.Nav:Overlook
+﻿Menu.MEDTSetting.ShowState:Show State Info
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -11,6 +11,7 @@ ActionHint.Photo:Switch
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Jump:Jump
+CtrlHint.MEDT.Nav:Overlook
 CtrlHint.MEDT.PlayFromBegain:Play from Start
 CtrlHint.MEDT.ResetCamera:Reset Camera
 CtrlHint.MEDT.SwitchMode.Edit:Edit
@@ -22,6 +23,7 @@ CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
 MEDT.CancelDrop:Cancel Drop
 MEDT.Drop:Mouse Left Button to Drop
+Menu.BackToEdit:Back to Editor
 Menu.Gomoku.Draw:Draw
 Menu.Gomoku.Lose:You Lose
 Menu.Gomoku.Restart:Retart Game?

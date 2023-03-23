@@ -51,12 +51,19 @@ namespace Yaya {
 			var mousePos = FrameInput.MouseGlobalPosition;
 			MouseInSelection = SelectionUnitRect.HasValue && SelectionUnitRect.Value.Contains(mousePos.ToUnit());
 			var cameraRect = CellRenderer.CameraRect.Shrink(1);
+			int panelWidth = Unify(PANEL_WIDTH);
+			var targetPanelRect = new RectInt(
+				CellRenderer.CameraRect.x + (IsEditing && !DroppingPlayer && !IsNavigating ? 0 : -panelWidth),
+				CellRenderer.CameraRect.y,
+				panelWidth,
+				CellRenderer.CameraRect.height
+			);
 			MouseOutsideBoundary =
 				mousePos.x < cameraRect.x ||
 				mousePos.x > cameraRect.xMax ||
 				mousePos.y < cameraRect.y ||
 				mousePos.y > cameraRect.yMax ||
-				PanelRect.Contains(mousePos);
+				targetPanelRect.Contains(mousePos);
 			if (MouseInSelection) Game.Current.SetCursor(1);
 
 			if (!MouseDownPosition.HasValue) {

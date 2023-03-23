@@ -1,4 +1,4 @@
-﻿CtrlHint.MEDT.Nav:俯瞰
+﻿Menu.MEDTSetting.ShowState:显示状态信息
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -11,6 +11,7 @@ ActionHint.Photo:切换
 CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Jump:跳跃
+CtrlHint.MEDT.Nav:俯瞰
 CtrlHint.MEDT.PlayFromBegain:从头开始游戏
 CtrlHint.MEDT.ResetCamera:重置
 CtrlHint.MEDT.SwitchMode.Edit:编辑
@@ -22,6 +23,7 @@ CtrlHint.Use:使用
 CtrlHint.WakeUp:起床
 MEDT.CancelDrop:取消放下
 MEDT.Drop:鼠标左键放下
+Menu.BackToEdit:返回编辑
 Menu.Gomoku.Draw:平局
 Menu.Gomoku.Lose:你输喽，笨蛋
 Menu.Gomoku.Restart:重新开始游戏吗？
