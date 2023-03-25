@@ -26,7 +26,7 @@ namespace Yaya {
 		// Api
 		public static ePlayer Selecting { get; private set; } = null;
 		public override bool IsChargingAttack => MinimalChargeAttackDuration != int.MaxValue && !IsSafe && AttackCooldownReady(false) && FrameInput.GameKeyHolding(Gamekey.Action);
-		public override int Team => YayaConst.TEAM_PLAYER;
+		public override int Team => Const.TEAM_PLAYER;
 		public int AimViewX { get; private set; } = 0;
 		public int AimViewY { get; private set; } = 0;
 
@@ -68,7 +68,7 @@ namespace Yaya {
 						Move(FrameInput.DirectionX, FrameInput.DirectionY);
 						Update_JumpDashPoundRush();
 						Update_Action_Attack();
-						eControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, WORD.HINT_MOVE);
+						ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, WORD.HINT_MOVE);
 					} else {
 						Stop();
 					}
@@ -83,7 +83,7 @@ namespace Yaya {
 					if (IsFullPassout) {
 						int x = X - Const.HALF;
 						int y = Y + Const.CEL * 3 / 2;
-						eControlHintUI.DrawGlobalHint(x, y, Gamekey.Action, WORD.UI_CONTINUE, true);
+						ControlHintUI.DrawGlobalHint(x, y, Gamekey.Action, WORD.UI_CONTINUE, true);
 					}
 					break;
 			}
@@ -103,7 +103,7 @@ namespace Yaya {
 		private void PhysicsUpdate_Collect () {
 			if (Selecting != this) return;
 			int count = CellPhysics.OverlapAll(
-				Collects, YayaConst.MASK_ENTITY, Rect, this, OperationMode.TriggerOnly
+				Collects, Const.MASK_ENTITY, Rect, this, OperationMode.TriggerOnly
 			);
 			for (int i = 0; i < count; i++) {
 				var hit = Collects[i];
@@ -120,7 +120,7 @@ namespace Yaya {
 
 			if (LockingInput) return;
 
-			eControlHintUI.AddHint(Gamekey.Jump, WORD.HINT_JUMP);
+			ControlHintUI.AddHint(Gamekey.Jump, WORD.HINT_JUMP);
 
 			// Jump/Dash
 			HoldJump(FrameInput.GameKeyHolding(Gamekey.Jump));
@@ -163,7 +163,7 @@ namespace Yaya {
 			// Try Perform Action
 			if (CurrentActionTarget != null) {
 				CurrentActionTarget.Highlight();
-				eControlHintUI.AddHint(
+				ControlHintUI.AddHint(
 					Gamekey.Action,
 					ActionEntity.GetHintLanguageCode(CurrentActionTarget.TypeID)
 				);
@@ -172,7 +172,7 @@ namespace Yaya {
 					if (performed) return;
 				}
 			} else if (!IsSafe) {
-				eControlHintUI.AddHint(Gamekey.Action, WORD.HINT_ATTACK);
+				ControlHintUI.AddHint(Gamekey.Action, WORD.HINT_ATTACK);
 			}
 
 			// Try Cancel Action
@@ -227,8 +227,8 @@ namespace Yaya {
 			// Ctrl Hint
 			int x = X - Const.HALF;
 			int y = Y + Const.CEL * 3 / 2;
-			eControlHintUI.DrawGlobalHint(x, y, Gamekey.Action, WORD.HINT_WAKE, true);
-			eControlHintUI.AddHint(Gamekey.Action, WORD.HINT_WAKE);
+			ControlHintUI.DrawGlobalHint(x, y, Gamekey.Action, WORD.HINT_WAKE, true);
+			ControlHintUI.AddHint(Gamekey.Action, WORD.HINT_WAKE);
 		}
 
 
@@ -258,7 +258,7 @@ namespace Yaya {
 			// Aim Y
 			AimViewY = Y <= LastGroundedY ? Y - GetCameraShiftOffset(game.ViewRect.height) : AimViewY;
 
-			game.SetViewPositionDelay(AimViewX, AimViewY, YayaConst.PLAYER_VIEW_LERP_RATE, YayaConst.VIEW_PRIORITY_PLAYER);
+			game.SetViewPositionDelay(AimViewX, AimViewY, 96, int.MinValue);
 
 			// Clamp
 			if (!game.ViewRect.Contains(X, Y)) {
@@ -266,7 +266,7 @@ namespace Yaya {
 				if (X <= game.ViewRect.xMin) AimViewX = X - 1;
 				if (Y >= game.ViewRect.yMax) AimViewY = Y - game.ViewRect.height + 1;
 				if (Y <= game.ViewRect.yMin) AimViewY = Y - 1;
-				game.SetViewPositionDelay(AimViewX, AimViewY, 1000, YayaConst.VIEW_PRIORITY_PLAYER + 1);
+				game.SetViewPositionDelay(AimViewX, AimViewY, 1000, int.MinValue + 1);
 			}
 
 		}

@@ -76,7 +76,6 @@ namespace Yaya {
 
 		// Const
 		public const int MAX_LEN = 64;
-		private const int PRIORITY = YayaConst.VIEW_PRIORITY_SYSTEM + 1;
 
 		// Api
 		public abstract Direction3 DirectionX { get; }
@@ -122,7 +121,7 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
+			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
 		}
 
 
@@ -194,7 +193,7 @@ namespace Yaya {
 			// End by Hit Other Scroll Entity
 			var nextScroll = CellPhysics.GetEntity<eCameraAutoScroll>(
 				new RectInt(X + Const.HALF, Y + Const.HALF, 1, 1),
-				YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
+				Const.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 			);
 			if (nextScroll != null && nextScroll.Active) {
 
@@ -262,11 +261,11 @@ namespace Yaya {
 			int deltaY = (int)DirectionY * Speed;
 			X += deltaX;
 			Y += deltaY;
-			Game.Current.SetViewPositionDelay(view.x + deltaX, view.y + deltaY, 1000, YayaConst.VIEW_PRIORITY_SYSTEM);
+			//Game.Current.SetViewPositionDelay(view.x + deltaX, view.y + deltaY, 1000, 0);
 			Game.Current.SetViewPositionDelay(
 				X + Const.HALF - view.width / 2,
 				Y + Const.HALF - view.height / 2
-				, 50, PRIORITY
+				, 50, 1
 			);
 		}
 

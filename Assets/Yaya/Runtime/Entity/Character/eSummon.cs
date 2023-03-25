@@ -23,7 +23,7 @@ namespace Yaya {
 
 		// Api
 		public eCharacter Owner { get; set; } = null;
-		public sealed override int Team => Owner != null ? Owner.Team : YayaConst.TEAM_NEUTRAL;
+		public sealed override int Team => Owner != null ? Owner.Team : Const.TEAM_NEUTRAL;
 		public override bool AllowDamageFromLevel => false;
 		public override bool PhysicsEnable => base.PhysicsEnable && CharacterState != CharacterState.GamePlay;
 		public override bool NavigationEnable => CharacterState == CharacterState.GamePlay && Owner != null && Owner.Active;

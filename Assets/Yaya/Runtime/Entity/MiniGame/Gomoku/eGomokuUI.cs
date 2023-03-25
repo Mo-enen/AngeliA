@@ -84,7 +84,7 @@ namespace Yaya {
 				stageSize,
 				stageSize
 			);
-			eControlHintUI.ForceShowHint(1);
+			ControlHintUI.ForceShowHint(1);
 
 			Update_GamePlay();
 			Update_HotKey();
@@ -167,11 +167,11 @@ namespace Yaya {
 		private void Update_Hint () {
 			if (MenuEntity != null && MenuEntity.Active) return;
 			if (!Winner.HasValue) {
-				eControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, WORD.HINT_MOVE);
-				eControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, WORD.HINT_MOVE);
+				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, WORD.HINT_MOVE);
+				ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, WORD.HINT_MOVE);
 			}
-			eControlHintUI.AddHint(Gamekey.Start, WORD.UI_QUIT);
-			eControlHintUI.AddHint(Gamekey.Select, WORD.HINT_RESTART);
+			ControlHintUI.AddHint(Gamekey.Start, WORD.UI_QUIT);
+			ControlHintUI.AddHint(Gamekey.Select, WORD.HINT_RESTART);
 		}
 
 

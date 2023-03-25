@@ -50,7 +50,7 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.LAYER_ITEM, this, true);
+			CellPhysics.FillEntity(Const.LAYER_ITEM, this, true);
 		}
 
 
@@ -58,12 +58,12 @@ namespace Yaya {
 			int frame = Game.GlobalFrame;
 			base.PhysicsUpdate();
 			// Fall
-			bool grounded = !CellPhysics.RoomCheck(YayaConst.MASK_MAP, Rect, this, Direction4.Down);
+			bool grounded = !CellPhysics.RoomCheck(Const.MASK_MAP, Rect, this, Direction4.Down);
 			if (!grounded) {
 				if (VelocityY != 0) {
 					var rect = Rect;
 					rect.position = CellPhysics.Move(
-						YayaConst.MASK_MAP, rect.position, 0, VelocityY, rect.size, this, out _, out bool stopY
+						Const.MASK_MAP, rect.position, 0, VelocityY, rect.size, this, out _, out bool stopY
 					);
 					Y = Mathf.Min(rect.y, Y);
 					if (stopY) VelocityY = 0;
@@ -75,9 +75,9 @@ namespace Yaya {
 			// Make Room
 			if (MakingRoom = MakingRoom || (
 				frame % 30 == 0 &&
-				CellPhysics.Overlap(YayaConst.MASK_ITEM, Rect, this, OperationMode.TriggerOnly)
+				CellPhysics.Overlap(Const.MASK_ITEM, Rect, this, OperationMode.TriggerOnly)
 			)) {
-				int count = CellPhysics.OverlapAll(c_MakeRoom, YayaConst.MASK_ITEM, Rect, this, OperationMode.TriggerOnly);
+				int count = CellPhysics.OverlapAll(c_MakeRoom, Const.MASK_ITEM, Rect, this, OperationMode.TriggerOnly);
 				int deltaX = 0;
 				int speed = 4;
 				for (int i = 0; i < count; i++) {
@@ -93,7 +93,7 @@ namespace Yaya {
 				}
 				var rect = Rect;
 				rect.position = CellPhysics.MoveIgnoreOneway(
-					YayaConst.MASK_MAP, rect.position,
+					Const.MASK_MAP, rect.position,
 					Mathf.Clamp(-deltaX, -speed, speed), 0,
 					rect.size, this
 				);

@@ -6,6 +6,7 @@ using ThirdParty;
 using System.Text;
 using System.Linq;
 
+
 namespace Yaya {
 	public sealed partial class eMapEditor {
 

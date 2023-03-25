@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
+using Rigidbody = AngeliaFramework.Rigidbody;
 
 
 namespace Yaya {
@@ -18,7 +19,7 @@ namespace Yaya {
 	}
 	public abstract class eBreakableRigidbody : Rigidbody, IDamageReceiver {
 		public bool AllowDamageFromLevel => false;
-		protected override int PhysicsLayer => YayaConst.LAYER_ENVIRONMENT;
+		protected override int PhysicsLayer => Const.LAYER_ENVIRONMENT;
 		protected override bool DestroyWhenInsideGround => true;
 		protected virtual int BrokeParticleCode => eDefaultParticle.TYPE_ID;
 		public void TakeDamage (int damage) {

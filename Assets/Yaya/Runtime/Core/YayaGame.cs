@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-
+using Rigidbody = AngeliaFramework.Rigidbody;
 
 namespace Yaya {
 
@@ -10,9 +10,9 @@ namespace Yaya {
 	public interface IDamageReceiver {
 		public bool AllowDamageFromLevel => true;
 		public bool AllowDamageFromBullet => true;
-		public int Team => YayaConst.TEAM_NEUTRAL;
+		public int Team => Const.TEAM_NEUTRAL;
 		void TakeDamage (int damage);
-		public bool TeamCheck (int otherTeam) => Team == YayaConst.TEAM_NEUTRAL || Team != otherTeam;
+		public bool TeamCheck (int otherTeam) => Team == Const.TEAM_NEUTRAL || Team != otherTeam;
 	}
 
 
@@ -42,7 +42,6 @@ namespace Yaya {
 
 		// Data
 		private static readonly PhysicsCell[] c_DamageCheck = new PhysicsCell[16];
-		private readonly eControlHintUI ControlHintUI = null;
 		private readonly ePauseMenu PauseMenu = null;
 		private readonly eMapEditor MapEditor = null;
 
@@ -56,12 +55,6 @@ namespace Yaya {
 
 
 		// Init
-		[BeforeGameInitialize]
-		public static void BeforeInitialize () {
-			Game.Current.PhysicsLayerCount = YayaConst.LAYER_COUNT;
-		}
-
-
 		[AfterGameInitialize]
 		public static void AfterInitialize () => new YayaGame();
 
@@ -89,7 +82,6 @@ namespace Yaya {
 
 			// UI Entity
 			PauseMenu = game.PeekOrGetEntity<ePauseMenu>();
-			ControlHintUI = game.SpawnEntity<eControlHintUI>(0, 0);
 			MapEditor = game.PeekOrGetEntity<eMapEditor>();
 
 			// Quit
@@ -100,6 +92,9 @@ namespace Yaya {
 			int firstPlayerID = ePlayer.GetFirstSelectedPlayerID();
 			var firstPlayer = game.SpawnEntity(firstPlayerID, 0, 0) as ePlayer;
 			ePlayer.SelectPlayer(firstPlayer);
+
+			// Misc
+			Rigidbody.WaterSplashParticleID = typeof(eWaterSplashParticle).AngeHash();
 
 			// Start the Game !!
 			StartGame();
@@ -226,9 +221,8 @@ namespace Yaya {
 
 			// Hint
 			if (game.State == GameState.Cutscene) {
-				eControlHintUI.AddHint(Gamekey.Start, WORD.HINT_SKIP);
+				ControlHintUI.AddHint(Gamekey.Start, WORD.HINT_SKIP);
 			}
-			if (game.State != GameState.Play) ControlHintUI.FrameUpdate();
 
 			// Start Key to Switch State
 			if (FrameInput.GameKeyDown(Gamekey.Start)) {

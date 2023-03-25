@@ -50,7 +50,7 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
+			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
 		}
 
 
@@ -62,7 +62,7 @@ namespace Yaya {
 
 				if (ModuleType != Direction3.None) {
 					Pose = YayaGame.Current.WorldSquad.GetEntityPose(
-						this, ModuleType == Direction3.Horizontal, YayaConst.MASK_ENVIRONMENT,
+						this, ModuleType == Direction3.Horizontal, Const.MASK_ENVIRONMENT,
 						out var ld, out var ru, OperationMode.ColliderAndTrigger
 					);
 					FurnitureLeftOrDown = ld as eFurniture;

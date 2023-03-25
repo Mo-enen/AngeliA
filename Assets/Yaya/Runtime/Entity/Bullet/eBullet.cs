@@ -19,7 +19,7 @@ namespace Yaya {
 
 
 		// Api
-		protected virtual int CollisionMask => YayaConst.MASK_SOLID;
+		protected virtual int CollisionMask => Const.MASK_SOLID;
 		protected virtual bool DestroyOnCollide => true;
 		protected virtual bool DestroyOnHit => true;
 		protected virtual int Duration => 60;
@@ -28,7 +28,7 @@ namespace Yaya {
 		protected int Combo { get; private set; } = 0;
 		protected int ChargeDuration { get; private set; } = 0;
 		protected int StartFrame { get; private set; } = 0;
-		public int Team { get; private set; } = YayaConst.TEAM_NEUTRAL;
+		public int Team { get; private set; } = Const.TEAM_NEUTRAL;
 
 		// Data
 		private Vector2Int Direction = default;

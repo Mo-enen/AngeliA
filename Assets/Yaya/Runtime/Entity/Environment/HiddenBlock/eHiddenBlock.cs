@@ -32,7 +32,7 @@ namespace Yaya {
 		public override void FillPhysics () {
 			base.FillPhysics();
 			if (!IsHidden) {
-				CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, false);
+				CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, false);
 			}
 		}
 
@@ -41,7 +41,7 @@ namespace Yaya {
 			base.FrameUpdate();
 			// Check for Trigger
 			if (IsHidden) {
-				int count = CellPhysics.OverlapAll(c_Checks, YayaConst.MASK_RIGIDBODY, Rect, this);
+				int count = CellPhysics.OverlapAll(c_Checks, Const.MASK_RIGIDBODY, Rect, this);
 				for (int i = 0; i < count; i++) {
 					var hit = c_Checks[i];
 					if (hit.Entity is not ePlayer player) continue;

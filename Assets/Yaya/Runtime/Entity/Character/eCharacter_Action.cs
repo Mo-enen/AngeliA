@@ -36,7 +36,7 @@ namespace Yaya {
 			CurrentActionTarget = null;
 			int count = CellPhysics.OverlapAll(
 				c_ScanHits,
-				YayaConst.MASK_ENTITY,
+				Const.MASK_ENTITY,
 				Rect.Expand(ACTION_SCAN_RANGE, ACTION_SCAN_RANGE, 0, ACTION_SCAN_RANGE),
 				this,
 				OperationMode.ColliderAndTrigger

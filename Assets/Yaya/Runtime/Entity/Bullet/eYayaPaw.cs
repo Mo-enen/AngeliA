@@ -40,8 +40,8 @@ namespace Yaya {
 			X = FacingRight ? rect.xMax : rect.xMin - Width;
 			Y = entity.Y - 1;
 			Grounded =
-				CellPhysics.Overlap(YayaConst.MASK_MAP, Rect.Edge(Direction4.Down, 4), this) ||
-				CellPhysics.Overlap(YayaConst.MASK_MAP, Rect.Edge(Direction4.Down, 4), this, OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG);
+				CellPhysics.Overlap(Const.MASK_MAP, Rect.Edge(Direction4.Down, 4), this) ||
+				CellPhysics.Overlap(Const.MASK_MAP, Rect.Edge(Direction4.Down, 4), this, OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG);
 		}
 
 

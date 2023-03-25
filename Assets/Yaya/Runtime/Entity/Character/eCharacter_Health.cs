@@ -23,7 +23,7 @@ namespace Yaya {
 		public bool TakingDamage => Game.GlobalFrame < LastDamageFrame + DamageStunDuration;
 		public virtual bool AllowDamageFromLevel => true;
 		public virtual bool AllowDamageFromBullet => true;
-		public virtual int Team => YayaConst.TEAM_NEUTRAL;
+		public virtual int Team => Const.TEAM_NEUTRAL;
 
 		// Buff
 		public readonly BuffInt MaxHP = new(1);

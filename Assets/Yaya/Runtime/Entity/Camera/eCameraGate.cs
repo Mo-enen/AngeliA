@@ -27,9 +27,6 @@ namespace Yaya {
 	public abstract class eCameraGate : Entity {
 
 
-		// Const
-		private const int PRIORITY = YayaConst.VIEW_PRIORITY_SYSTEM;
-
 		// Api
 		protected abstract Direction4 Direction { get; }
 
@@ -120,17 +117,17 @@ namespace Yaya {
 					cameraRect.x = TargetMinX.Value + targetWidth / 2 - cameraRect.width / 2;
 				}
 				if (cameraRect.x != oldX) {
-					game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+					game.SetViewXDelay(cameraRect.x + viewOffsetX, 96, 0);
 				}
 			} else if (TargetMinX.HasValue) {
 				cameraRect.x = Mathf.Max(cameraRect.x, TargetMinX.Value);
 				if (cameraRect.x != oldX) {
-					game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+					game.SetViewXDelay(cameraRect.x + viewOffsetX, 96, 0);
 				}
 			} else if (TargetMaxX.HasValue) {
 				cameraRect.x = Mathf.Min(cameraRect.x, TargetMaxX.Value - cameraRect.width);
 				if (cameraRect.x != oldX) {
-					game.SetViewXDelay(cameraRect.x + viewOffsetX, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+					game.SetViewXDelay(cameraRect.x + viewOffsetX, 96, 0);
 				}
 			}
 
@@ -143,17 +140,17 @@ namespace Yaya {
 					cameraRect.y = TargetMinY.Value + targetHeight / 2 - cameraRect.height / 2;
 				}
 				if (cameraRect.y != oldY) {
-					game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+					game.SetViewYDelay(cameraRect.y, 96, 0);
 				}
 			} else if (TargetMinY.HasValue) {
 				cameraRect.y = Mathf.Max(cameraRect.y, TargetMinY.Value);
 				if (cameraRect.y != oldY) {
-					game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+					game.SetViewYDelay(cameraRect.y, 96, 0);
 				}
 			} else if (TargetMaxY.HasValue) {
 				cameraRect.y = Mathf.Min(cameraRect.y, TargetMaxY.Value - cameraRect.height);
 				if (cameraRect.y != oldY) {
-					game.SetViewYDelay(cameraRect.y, YayaConst.PLAYER_VIEW_LERP_RATE, PRIORITY);
+					game.SetViewYDelay(cameraRect.y, 96, 0);
 				}
 			}
 

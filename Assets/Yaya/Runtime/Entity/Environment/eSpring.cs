@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-
+using Rigidbody = AngeliaFramework.Rigidbody;
 
 namespace Yaya {
 
@@ -43,7 +43,7 @@ namespace Yaya {
 		private const int RED_LINE_MAX = 512;
 
 		// Api
-		protected override int PhysicsLayer => YayaConst.LAYER_ENVIRONMENT;
+		protected override int PhysicsLayer => Const.LAYER_ENVIRONMENT;
 		protected abstract bool Horizontal { get; }
 		protected abstract int Power { get; }
 
@@ -78,13 +78,13 @@ namespace Yaya {
 				if (Horizontal) {
 					// Hori
 					if (CellPhysics.Overlap(
-						YayaConst.MASK_RIGIDBODY,
+						Const.MASK_RIGIDBODY,
 						new(X - 1, Y, Const.HALF, Const.CEL),
 						this
 					)) {
 						StartBounce(frame, Direction4.Left);
 					} else if (CellPhysics.Overlap(
-						YayaConst.MASK_RIGIDBODY,
+						Const.MASK_RIGIDBODY,
 						new(X + Const.HALF, Y, Const.HALF + 1, Const.CEL),
 						this
 					)) {
@@ -93,7 +93,7 @@ namespace Yaya {
 				} else {
 					// Vert
 					if (CellPhysics.Overlap(
-						YayaConst.MASK_RIGIDBODY,
+						Const.MASK_RIGIDBODY,
 						new(X, Y + Const.HALF, Const.CEL, Const.HALF + 1),
 						this
 					)) {
@@ -103,7 +103,7 @@ namespace Yaya {
 			} else if (frame > LastBounceFrame + BOUNCE_DELAY && RequireBouncePerform) {
 				// Try Perform Bounce
 				var hit = CellPhysics.TouchTransfer<Rigidbody>(
-					YayaConst.MASK_RIGIDBODY,
+					Const.MASK_RIGIDBODY,
 					FullRect.Expand(Horizontal ? 1 : 0, Horizontal ? 1 : 0, Horizontal ? 0 : 1, Horizontal ? 0 : 1),
 					this, BounceSide, 16
 				);

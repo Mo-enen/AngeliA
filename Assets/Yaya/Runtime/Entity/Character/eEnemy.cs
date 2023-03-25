@@ -7,7 +7,7 @@ using AngeliaFramework;
 namespace Yaya {
 	public abstract class eEnemy : eCharacter {
 
-		public override int Team => YayaConst.TEAM_ENEMY;
+		public override int Team => Const.TEAM_ENEMY;
 
 
 

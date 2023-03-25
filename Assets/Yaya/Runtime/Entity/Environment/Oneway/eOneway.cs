@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
+using Rigidbody = AngeliaFramework.Rigidbody;
 
 
 namespace Yaya {
@@ -9,7 +10,7 @@ namespace Yaya {
 
 
 		// Const
-		private const int MASK = (int)(YayaConst.MASK_CHARACTER | YayaConst.MASK_ENVIRONMENT | YayaConst.MASK_ITEM);
+		private const int MASK = (int)(Const.MASK_CHARACTER | Const.MASK_ENVIRONMENT | Const.MASK_ITEM);
 
 		// Api
 		public abstract Direction4 GateDirection { get; }

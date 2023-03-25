@@ -28,7 +28,7 @@ namespace Yaya {
 
 		// MSG
 		public override void FillPhysics () {
-			CellPhysics.FillBlock(YayaConst.LAYER_ENVIRONMENT, TypeID, Rect, true, Const.ONEWAY_UP_TAG);
+			CellPhysics.FillBlock(Const.LAYER_ENVIRONMENT, TypeID, Rect, true, Const.ONEWAY_UP_TAG);
 		}
 
 
@@ -47,9 +47,9 @@ namespace Yaya {
 		// Data
 		public override void FillPhysics () {
 			CellPhysics.FillBlock(
-				YayaConst.LAYER_ENVIRONMENT, TypeID,
+				Const.LAYER_ENVIRONMENT, TypeID,
 				Rect.Shrink(0, 0, 0, Height / 2),
-				true, YayaConst.CLIMB_TAG
+				true, Const.CLIMB_TAG
 			);
 		}
 
@@ -109,7 +109,7 @@ namespace Yaya {
 
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
-			CharacterNearby = CellPhysics.HasEntity<eCharacter>(Rect.Expand(Const.CEL), YayaConst.MASK_CHARACTER, null);
+			CharacterNearby = CellPhysics.HasEntity<eCharacter>(Rect.Expand(Const.CEL), Const.MASK_CHARACTER, null);
 		}
 
 

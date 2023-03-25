@@ -54,7 +54,7 @@ namespace Yaya {
 			if (FadeOut) {
 				if (localFrame < FADE_OUT_DURATION) {
 					var view = Game.Current.ViewRect;
-					Game.Current.SetViewPositionDelay(view.x, view.y, 1000, YayaConst.VIEW_PRIORITY_SYSTEM);
+					Game.Current.SetViewPositionDelay(view.x, view.y, 1000, 0);
 					RetroDarkenEffect.SetAmount(Util.Remap(
 						0f, FADE_OUT_DURATION,
 						0f, 1f,
@@ -136,7 +136,7 @@ namespace Yaya {
 			x - Game.Current.ViewRect.width / 2,
 			y - Game.Current.ViewRect.height / 2,
 			1000,
-			YayaConst.VIEW_PRIORITY_SYSTEM
+			0
 		);
 
 

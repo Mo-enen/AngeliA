@@ -102,7 +102,7 @@ namespace Yaya {
 
 				// Stop Check
 				if (Head == null && CellPhysics.Overlap(
-					YayaConst.MASK_LEVEL, new(TargetPosition.x + HALF, TargetPosition.y + HALF, 1, 1), null
+					Const.MASK_LEVEL, new(TargetPosition.x + HALF, TargetPosition.y + HALF, 1, 1), null
 				)) {
 					EndReachingFrame = Game.GlobalFrame;
 				}
@@ -178,7 +178,7 @@ namespace Yaya {
 			// L
 			for (int x = -Const.HALF; ; x -= Const.CEL) {
 				var snake = CellPhysics.GetEntity<eSnakePlatform>(
-					new RectInt(X + x, y, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
+					new RectInt(X + x, y, 1, 1), Const.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 				);
 				if (snake == null) break;
 				snake.PrevTouched = true;
@@ -189,7 +189,7 @@ namespace Yaya {
 			// R
 			for (int x = Const.CEL + Const.HALF; ; x += Const.CEL) {
 				var snake = CellPhysics.GetEntity<eSnakePlatform>(
-					new RectInt(X + x, y, 1, 1), YayaConst.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
+					new RectInt(X + x, y, 1, 1), Const.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 				);
 				if (snake == null) break;
 				snake.PrevTouched = true;
@@ -216,7 +216,7 @@ namespace Yaya {
 				int rightX = right.X + right.Width;
 				for (int x = leftX; x < rightX; x += Const.CEL) {
 					var snake = CellPhysics.GetEntity<eSnakePlatform>(
-						new RectInt(x, y, 1, 1), YayaConst.MASK_ENVIRONMENT,
+						new RectInt(x, y, 1, 1), Const.MASK_ENVIRONMENT,
 						null, OperationMode.ColliderAndTrigger
 					);
 					if (snake == null) continue;

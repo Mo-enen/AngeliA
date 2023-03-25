@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using AngeliaFramework;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 
@@ -70,6 +70,13 @@ namespace Yaya {
 			}
 			Interactable = (Mode != MenuMode.Setter_Gamepad && Mode != MenuMode.Setter_Keyboard) || RecordingKey < 0;
 			ContentPadding = new(32, 32, 46, string.IsNullOrEmpty(Message) ? 46 : 23);
+
+			if (SelectionAdjustable) {
+				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, WORD.HINT_ADJUST);
+			} else {
+				ControlHintUI.AddHint(Gamekey.Action, WORD.HINT_USE);
+			}
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, WORD.HINT_MOVE);
 
 			base.FrameUpdate();
 
@@ -279,17 +286,17 @@ namespace Yaya {
 			// Control Hint
 			if (DrawItem(
 				Language.Get(WORD.MENU_CONTROL_HINT),
-				CellLabel.TempLabel(Language.Get(eControlHintUI.UseControlHint ? WORD.UI_ON : WORD.UI_OFF))
+				CellLabel.TempLabel(Language.Get(ControlHintUI.UseControlHint ? WORD.UI_ON : WORD.UI_OFF))
 			)) {
-				eControlHintUI.UseControlHint = !eControlHintUI.UseControlHint;
+				ControlHintUI.UseControlHint = !ControlHintUI.UseControlHint;
 			}
 
 			// Gamepad Hint
 			if (DrawItem(
 				Language.Get(WORD.MENU_GAMEPAD_HINT),
-				CellLabel.TempLabel(Language.Get(eControlHintUI.UseGamePadHint ? WORD.UI_ON : WORD.UI_OFF))
+				CellLabel.TempLabel(Language.Get(ControlHintUI.UseGamePadHint ? WORD.UI_ON : WORD.UI_OFF))
 			)) {
-				eControlHintUI.UseGamePadHint = !eControlHintUI.UseGamePadHint;
+				ControlHintUI.UseGamePadHint = !ControlHintUI.UseGamePadHint;
 			}
 
 			// Back
@@ -366,7 +373,7 @@ namespace Yaya {
 					KeySetterLabel.Tint = Const.WHITE;
 					KeySetterLabel.BackgroundTint = Const.CLEAR;
 					KeySetterLabel.Text = forGamepad ? string.Empty : Util.GetKeyDisplayName(KeyboardKeys[i]);
-					KeySetterLabel.Image = forGamepad && YayaConst.GAMEPAD_CODE.TryGetValue(GamepadKeys[i], out var _value0) ? _value0 : 0;
+					KeySetterLabel.Image = forGamepad && Const.GAMEPAD_CODE.TryGetValue(GamepadKeys[i], out var _value0) ? _value0 : 0;
 					valueLabel = KeySetterLabel;
 				} else {
 					// Recording

@@ -833,32 +833,32 @@ namespace Yaya {
 
 			// Oneway Check
 			if ((IsSquating || IsDashing) && !CellPhysics.RoomCheckOneway(
-				YayaConst.MASK_MAP, rect, this, Direction4.Up, false
+				Const.MASK_MAP, rect, this, Direction4.Up, false
 			)) return true;
 
 			// Overlap Check
-			return CellPhysics.Overlap(YayaConst.MASK_MAP, rect, null);
+			return CellPhysics.Overlap(Const.MASK_MAP, rect, null);
 		}
 
 
 		private bool ClimbCheck (bool up = false) {
 			if (IsInsideGround) return false;
 			if (CellPhysics.Overlap(
-				YayaConst.MASK_MAP,
+				Const.MASK_MAP,
 				up ? Rect.Shift(0, ClimbSpeedY) : Rect,
 				this,
 				OperationMode.TriggerOnly,
-				YayaConst.CLIMB_TAG
+				Const.CLIMB_TAG
 			)) {
 				return true;
 			}
 			if (CellPhysics.Overlap(
-				YayaConst.MASK_MAP,
+				Const.MASK_MAP,
 				up ? Rect.Shift(0, ClimbSpeedY) : Rect,
 				out var info,
 				this,
 				OperationMode.TriggerOnly,
-				YayaConst.CLIMB_STABLE_TAG
+				Const.CLIMB_STABLE_TAG
 			)) {
 				ClimbPositionCorrect = info.Rect.CenterInt().x;
 				return true;
@@ -880,18 +880,18 @@ namespace Yaya {
 				1, 1
 			);
 			if (SlideOnAnyBlock) {
-				int count = CellPhysics.OverlapAll(c_SlideCheck, YayaConst.MASK_MAP, rect, this, OperationMode.ColliderOnly);
+				int count = CellPhysics.OverlapAll(c_SlideCheck, Const.MASK_MAP, rect, this, OperationMode.ColliderOnly);
 				for (int i = 0; i < count; i++) {
 					var hit = c_SlideCheck[i];
-					if (hit.Tag == YayaConst.NO_SLIDE_TAG) continue;
-					if (hit.Tag == YayaConst.GRAB_TOP_TAG) continue;
-					if (hit.Tag == YayaConst.GRAB_SIDE_TAG) continue;
+					if (hit.Tag == Const.NO_SLIDE_TAG) continue;
+					if (hit.Tag == Const.GRAB_TOP_TAG) continue;
+					if (hit.Tag == Const.GRAB_SIDE_TAG) continue;
 					return true;
 				}
 				return false;
 			} else {
 				return CellPhysics.Overlap(
-					YayaConst.MASK_MAP, rect, this, OperationMode.ColliderOnly, YayaConst.SLIDE_TAG
+					Const.MASK_MAP, rect, this, OperationMode.ColliderOnly, Const.SLIDE_TAG
 				);
 			}
 		}
@@ -912,11 +912,11 @@ namespace Yaya {
 				height / 2 + GRAB_TOP_CHECK_GAP
 			);
 			if (CellPhysics.Overlap(
-				YayaConst.MASK_MAP, rect, out var hit, this,
-				OperationMode.ColliderOnly, YayaConst.GRAB_TOP_TAG
+				Const.MASK_MAP, rect, out var hit, this,
+				OperationMode.ColliderOnly, Const.GRAB_TOP_TAG
 			) || CellPhysics.Overlap(
-				YayaConst.MASK_MAP, rect, out hit, this,
-				OperationMode.ColliderOnly, YayaConst.GRAB_TAG
+				Const.MASK_MAP, rect, out hit, this,
+				OperationMode.ColliderOnly, Const.GRAB_TAG
 			)) {
 				grabingY = hit.Rect.yMin - GrabTopHeight;
 				return true;
@@ -946,27 +946,27 @@ namespace Yaya {
 				Hitbox.height / 4
 			);
 			bool allowGrab =
-				(AllowCheck(rectD, YayaConst.GRAB_SIDE_TAG) || AllowCheck(rectD, YayaConst.GRAB_TAG)) &&
-				(AllowCheck(rectU, YayaConst.GRAB_SIDE_TAG) || AllowCheck(rectU, YayaConst.GRAB_TAG));
+				(AllowCheck(rectD, Const.GRAB_SIDE_TAG) || AllowCheck(rectD, Const.GRAB_TAG)) &&
+				(AllowCheck(rectU, Const.GRAB_SIDE_TAG) || AllowCheck(rectU, Const.GRAB_TAG));
 			if (allowGrab) {
 				allowMoveUp = CellPhysics.Overlap(
-					YayaConst.MASK_MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, YayaConst.GRAB_SIDE_TAG
+					Const.MASK_MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, Const.GRAB_SIDE_TAG
 				) || CellPhysics.Overlap(
-					YayaConst.MASK_MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, YayaConst.GRAB_TAG
+					Const.MASK_MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, Const.GRAB_TAG
 				);
 			}
 			return allowGrab;
 			// Func
-			bool AllowCheck (RectInt rect, int tag) => CellPhysics.Overlap(YayaConst.MASK_MAP, rect, this, OperationMode.ColliderOnly, tag);
+			bool AllowCheck (RectInt rect, int tag) => CellPhysics.Overlap(Const.MASK_MAP, rect, this, OperationMode.ColliderOnly, tag);
 		}
 
 
 		private bool JumpThoughOnewayCheck () {
 			var rect = new RectInt(Hitbox.xMin, Hitbox.yMin + 4 - Const.CEL / 4, Hitbox.width, Const.CEL / 4);
-			if (CellPhysics.Overlap(YayaConst.MASK_MAP, rect, this)) return false;
+			if (CellPhysics.Overlap(Const.MASK_MAP, rect, this)) return false;
 			int count = CellPhysics.OverlapAll(
 				c_GroundThoughCheck,
-				YayaConst.MASK_MAP, rect, this,
+				Const.MASK_MAP, rect, this,
 				OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG
 			);
 			for (int i = 0; i < count; i++) {
@@ -984,7 +984,7 @@ namespace Yaya {
 				// Up
 				// No Block Above
 				if (CellPhysics.Overlap(
-					YayaConst.MASK_MAP,
+					Const.MASK_MAP,
 					new RectInt(x, Y + GrabTopHeight + Const.CEL + Const.HALF, width, 1),
 					this
 				)) return false;
@@ -993,16 +993,16 @@ namespace Yaya {
 				// Down
 				// No Block Below
 				if (CellPhysics.Overlap(
-					YayaConst.MASK_MAP,
+					Const.MASK_MAP,
 					new RectInt(x, Y - Const.CEL - Const.HALF, width, 1),
 					this
 				)) return false;
 				// Standing on Grab-Top Block
 				int count = CellPhysics.OverlapAll(
 					c_GroundThoughCheck,
-					YayaConst.MASK_MAP,
+					Const.MASK_MAP,
 					new RectInt(x, Y + 4 - Const.CEL / 4, width, Const.CEL / 4),
-					this, OperationMode.ColliderOnly, YayaConst.GRAB_TOP_TAG
+					this, OperationMode.ColliderOnly, Const.GRAB_TOP_TAG
 				);
 				for (int i = 0; i < count; i++) {
 					var hit = c_GroundThoughCheck[i];

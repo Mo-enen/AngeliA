@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-
+using Rigidbody = AngeliaFramework.Rigidbody;
 
 namespace Yaya {
 	public abstract class eConveyor : Entity {
@@ -24,7 +24,7 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this);
+			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this);
 		}
 
 
@@ -34,7 +34,7 @@ namespace Yaya {
 			var rect = Rect;
 			rect.y += rect.height;
 			rect.height = 1;
-			int count = CellPhysics.OverlapAll(c_Update, YayaConst.MASK_SOLID, rect, this);
+			int count = CellPhysics.OverlapAll(c_Update, Const.MASK_SOLID, rect, this);
 			for (int i = 0; i < count; i++) {
 				var hit = c_Update[i];
 				if (hit.Entity is Rigidbody rig) {
@@ -52,9 +52,9 @@ namespace Yaya {
 			int width = rect.width;
 			rect.width = 1;
 			rect.x -= 1;
-			bool hasLeft = CellPhysics.HasEntity<eConveyor>(rect, YayaConst.MASK_ENVIRONMENT, this);
+			bool hasLeft = CellPhysics.HasEntity<eConveyor>(rect, Const.MASK_ENVIRONMENT, this);
 			rect.x += width + 1;
-			bool hasRight = CellPhysics.HasEntity<eConveyor>(rect, YayaConst.MASK_ENVIRONMENT, this);
+			bool hasRight = CellPhysics.HasEntity<eConveyor>(rect, Const.MASK_ENVIRONMENT, this);
 			Pose =
 				hasLeft && hasRight ? FittingPose.Mid :
 				hasLeft && !hasRight ? FittingPose.Right :

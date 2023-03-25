@@ -4,6 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 using UnityEngine.InputSystem;
 
+
 namespace Yaya {
 	public partial class eMapEditor {
 
@@ -84,7 +85,7 @@ namespace Yaya {
 				SetNavigating(!IsNavigating, true);
 				FrameInput.UseAllHoldingKeys();
 			}
-			eControlHintUI.AddHint(Key.Escape, WORD.UI_CANCEL);
+			ControlHintUI.AddHint(Key.Escape, WORD.UI_CANCEL);
 
 		}
 

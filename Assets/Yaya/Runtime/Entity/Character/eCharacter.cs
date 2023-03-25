@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
+using Rigidbody = AngeliaFramework.Rigidbody;
 
 
 namespace Yaya {
@@ -32,11 +33,11 @@ namespace Yaya {
 		public bool IsFullPassout => Game.GlobalFrame > PassoutFrame + 48;
 		public bool IsFullSleeped => SleepFrame >= FULL_SLEEP_DURATION;
 		public bool IsExactlyFullSleeped => SleepFrame == FULL_SLEEP_DURATION;
-		protected override int CollisionMask => IsGrabFliping ? 0 : YayaConst.MASK_MAP;
+		protected override int CollisionMask => IsGrabFliping ? 0 : Const.MASK_MAP;
 		protected override int AirDragX => 0;
 		protected override int AirDragY => 0;
 		protected override bool IgnoreRiseGravityShift => true;
-		protected override int PhysicsLayer => YayaConst.LAYER_CHARACTER;
+		protected override int PhysicsLayer => Const.LAYER_CHARACTER;
 		public override bool PhysicsEnable => CharacterState != CharacterState.Sleep;
 
 		// Data

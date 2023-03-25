@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-
+using Rigidbody = AngeliaFramework.Rigidbody;
 
 
 namespace Yaya {
@@ -56,9 +56,9 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			if (OneWay) {
-				CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
+				CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
 			} else {
-				CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this);
+				CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this);
 			}
 		}
 
@@ -80,7 +80,7 @@ namespace Yaya {
 
 		private void Update_Touch () {
 			if (!TouchedByRigidbody || !TouchedByCharacter || !TouchedByPlayer) {
-				int count = CellPhysics.OverlapAll(c_Overlaps, YayaConst.MASK_ENTITY, Rect.Expand(1), this);
+				int count = CellPhysics.OverlapAll(c_Overlaps, Const.MASK_ENTITY, Rect.Expand(1), this);
 				for (int i = 0; i < count; i++) {
 					var hit = c_Overlaps[i];
 					if (hit.Rect.y < Y + Height) continue;
@@ -119,7 +119,7 @@ namespace Yaya {
 			var rect = Rect;
 			var prevRect = rect;
 			prevRect.x = PrevX;
-			int count = CellPhysics.OverlapAll(c_Overlaps, YayaConst.MASK_RIGIDBODY, rect, this);
+			int count = CellPhysics.OverlapAll(c_Overlaps, Const.MASK_RIGIDBODY, rect, this);
 			for (int i = 0; i < count; i++) {
 				var hit = c_Overlaps[i];
 				if (hit.Entity is not Rigidbody rig) continue;
@@ -154,7 +154,7 @@ namespace Yaya {
 			}
 
 			int count = CellPhysics.OverlapAll(
-				c_Overlaps, YayaConst.MASK_RIGIDBODY, rect.Edge(Direction4.Up, 32).Shift(0, -16),
+				c_Overlaps, Const.MASK_RIGIDBODY, rect.Edge(Direction4.Up, 32).Shift(0, -16),
 				this, OperationMode.ColliderAndTrigger
 			);
 			for (int i = 0; i < count; i++) {
@@ -206,7 +206,7 @@ namespace Yaya {
 			if (Y > PrevY) {
 				// Moving Up
 				int count = CellPhysics.OverlapAll(
-					c_Overlaps, YayaConst.MASK_RIGIDBODY, rect,
+					c_Overlaps, Const.MASK_RIGIDBODY, rect,
 					this, OperationMode.ColliderOnly
 				);
 				for (int i = 0; i < count; i++) {
@@ -221,7 +221,7 @@ namespace Yaya {
 				}
 				// For Nav Character
 				count = CellPhysics.OverlapAll(
-					c_Overlaps, YayaConst.MASK_RIGIDBODY, rect,
+					c_Overlaps, Const.MASK_RIGIDBODY, rect,
 					this, OperationMode.TriggerOnly
 				);
 				for (int i = 0; i < count; i++) {
@@ -239,7 +239,7 @@ namespace Yaya {
 			} else {
 				// Moving Down
 				int count = CellPhysics.OverlapAll(
-					c_Overlaps, YayaConst.MASK_RIGIDBODY, prevRect,
+					c_Overlaps, Const.MASK_RIGIDBODY, prevRect,
 					this, OperationMode.ColliderAndTrigger
 				);
 				for (int i = 0; i < count; i++) {

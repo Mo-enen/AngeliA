@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
 
+namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
+
 
 namespace Yaya {
+
+
 	public static class YayaUtil {
 
 

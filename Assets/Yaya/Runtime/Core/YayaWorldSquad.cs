@@ -20,7 +20,7 @@ namespace Yaya {
 
 		// API
 		public YayaWorldSquad (bool behind = false) : base(behind) { }
-		public override int LevelLayer => YayaConst.LAYER_LEVEL;
+		public override int LevelLayer => Const.LAYER_LEVEL;
 
 
 		protected override void BeforeWorldReload (World[,] worlds) {
@@ -41,7 +41,7 @@ namespace Yaya {
 				AngeUtil.IsOnewayTag(meta.Tag)
 			) {
 				CellPhysics.FillBlock(
-					YayaConst.LAYER_LEVEL, id,
+					Const.LAYER_LEVEL, id,
 					new RectInt(
 						unitX * Const.CEL,
 						unitY * Const.CEL,
@@ -61,7 +61,7 @@ namespace Yaya {
 			base.DrawLevelBlock(id, unitX, unitY);
 			// Damage
 			if (CellRenderer.TryGetMeta(id, out var meta)) {
-				if (meta.Tag == YayaConst.DAMAGE_TAG) {
+				if (meta.Tag == Const.DAMAGE_TAG) {
 					var rect = new RectInt(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 					YayaCellPhysics.FillBlock_Damage(id, rect.Expand(1), 1);
 				}

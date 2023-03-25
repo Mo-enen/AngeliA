@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using AngeliaFramework;
 using UnityEngine;
+using Rigidbody = AngeliaFramework.Rigidbody;
 
 
 namespace Yaya {
@@ -16,7 +17,7 @@ namespace Yaya {
 		// Api
 		public abstract Direction3 DirectionVertical { get; }
 		public abstract Direction3 DirectionHorizontal { get; }
-		public virtual int CollisionMask => YayaConst.MASK_RIGIDBODY;
+		public virtual int CollisionMask => Const.MASK_RIGIDBODY;
 
 		// Data
 		private readonly PhysicsCell[] c_Overlap = new PhysicsCell[16];
@@ -32,7 +33,7 @@ namespace Yaya {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
+			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
 		}
 
 

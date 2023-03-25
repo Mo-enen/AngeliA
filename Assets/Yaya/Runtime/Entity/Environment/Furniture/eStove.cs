@@ -20,7 +20,7 @@ namespace Yaya {
 
 
 		public override void FillPhysics () {
-			CellPhysics.FillEntity(YayaConst.LAYER_ENVIRONMENT, this, true);
+			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
 		}
 
 
@@ -35,7 +35,7 @@ namespace Yaya {
 						1, 1
 					);
 					if (CellPhysics.HasEntity<eStove>(
-						rect, YayaConst.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
+						rect, Const.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
 					)) {
 						LeftStoveCount++;
 					} else break;

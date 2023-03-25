@@ -235,7 +235,7 @@ namespace Yaya {
 			}
 
 			// View
-			if (FrameTask.HasTask<OpeningTask>()) FrameTask.End(Const.TASK_ROUTE);
+			FrameTask.End(Const.TASK_ROUTE);
 			ResetCamera(true);
 
 			System.GC.Collect(0, System.GCCollectionMode.Forced);
@@ -438,7 +438,6 @@ namespace Yaya {
 			CtrlHolding = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.RightCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
 			ShiftHolding = FrameInput.KeyboardHolding(Key.LeftShift) || FrameInput.KeyboardHolding(Key.RightShift);
 			AltHolding = FrameInput.KeyboardHolding(Key.LeftAlt) || FrameInput.KeyboardHolding(Key.RightAlt);
-			eControlHintUI.ForceShowHint();
 
 			// Panel Rect
 			PanelRect.width = Unify(PANEL_WIDTH);
@@ -457,8 +456,9 @@ namespace Yaya {
 
 			// Hint
 			if (IsEditing) {
-				eControlHintUI.ForceHideGamepad();
-				eControlHintUI.ForceOffset(PanelRect.xMax - CellRenderer.CameraRect.x, 0);
+				ControlHintUI.ForceShowHint();
+				ControlHintUI.ForceHideGamepad();
+				ControlHintUI.ForceOffset(PanelRect.xMax - CellRenderer.CameraRect.x, 0);
 			}
 
 			// Squad Behind Tint
@@ -500,8 +500,8 @@ namespace Yaya {
 					viewRect.x -= (newWidth - viewRect.width) / 2;
 					viewRect.y -= (newHeight - viewRect.height) / 2;
 					viewRect.height = newHeight;
-					game.SetViewPositionDelay(viewRect.x, viewRect.y, 100, YayaConst.VIEW_PRIORITY_PLAYER + 1);
-					game.SetViewSizeDelay(viewRect.height, 100, YayaConst.VIEW_PRIORITY_PLAYER + 1);
+					game.SetViewPositionDelay(viewRect.x, viewRect.y, 100, int.MinValue + 1);
+					game.SetViewSizeDelay(viewRect.height, 100, int.MinValue + 1);
 				}
 				return;
 			}
@@ -593,7 +593,7 @@ namespace Yaya {
 						SetEditingMode(!PlayingGame);
 					}
 				}
-				eControlHintUI.AddHint(KEY_SWITCH_MODE, IsEditing ? WORD.HINT_MEDT_SWITCH_PLAY : WORD.HINT_MEDT_SWITCH_EDIT);
+				ControlHintUI.AddHint(KEY_SWITCH_MODE, IsEditing ? WORD.HINT_MEDT_SWITCH_PLAY : WORD.HINT_MEDT_SWITCH_EDIT);
 			}
 
 			// Cancel Drop
@@ -602,7 +602,7 @@ namespace Yaya {
 					DroppingPlayer = false;
 					FrameInput.UseAllHoldingKeys();
 				}
-				eControlHintUI.AddHint(Key.Escape, WORD.MEDT_CANCEL_DROP);
+				ControlHintUI.AddHint(Key.Escape, WORD.MEDT_CANCEL_DROP);
 			}
 
 			// Editing Only
@@ -641,7 +641,7 @@ namespace Yaya {
 						SetNavigating(!IsNavigating, true);
 						FrameInput.UseAllHoldingKeys();
 					}
-					eControlHintUI.AddHint(Key.Tab, WORD.HINT_MEDT_NAV);
+					ControlHintUI.AddHint(Key.Tab, WORD.HINT_MEDT_NAV);
 
 					// Move Selecting Blocks
 					if (SelectionUnitRect.HasValue) {
@@ -696,7 +696,7 @@ namespace Yaya {
 						PlayFromStart();
 						FrameInput.UseAllHoldingKeys();
 					}
-					eControlHintUI.AddHint(Key.Space, WORD.HINT_MEDT_PLAY_FROM_GEBAIN);
+					ControlHintUI.AddHint(Key.Space, WORD.HINT_MEDT_PLAY_FROM_GEBAIN);
 					// Reset Camera
 					if (FrameInput.KeyboardDown(Key.R)) {
 						ResetCamera();

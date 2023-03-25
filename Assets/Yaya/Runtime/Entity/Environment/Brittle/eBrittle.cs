@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
+using Rigidbody = AngeliaFramework.Rigidbody;
 
 
 namespace Yaya {
@@ -16,7 +17,7 @@ namespace Yaya {
 		}
 
 		// Api
-		protected override int PhysicsLayer => YayaConst.LAYER_ENVIRONMENT;
+		protected override int PhysicsLayer => Const.LAYER_ENVIRONMENT;
 		protected virtual BreakMode BreakCondition { get; } = BreakMode.BreakOnCollideGround;
 		protected virtual int HoldDuration { get; } = 60;
 		protected virtual int FallingVelocity { get; } = 24;
@@ -48,7 +49,7 @@ namespace Yaya {
 
 			// Fall Check
 			if (!IsFalling) {
-				IsHolding = !CellPhysics.RoomCheck(YayaConst.MASK_CHARACTER, rect, this, Direction4.Up);
+				IsHolding = !CellPhysics.RoomCheck(Const.MASK_CHARACTER, rect, this, Direction4.Up);
 				if (IsHolding) {
 					if (!LastHolding) HoldStartFrame = frame;
 					if (frame - HoldStartFrame > HoldDuration) {
@@ -66,8 +67,8 @@ namespace Yaya {
 				switch (BreakCondition) {
 					case BreakMode.BreakOnCollideGround: {
 						if (
-							!CellPhysics.RoomCheck(YayaConst.MASK_SOLID, rect, this, Direction4.Down) ||
-							!CellPhysics.RoomCheckOneway(YayaConst.MASK_MAP, rect, this, Direction4.Down, true)
+							!CellPhysics.RoomCheck(Const.MASK_SOLID, rect, this, Direction4.Down) ||
+							!CellPhysics.RoomCheckOneway(Const.MASK_MAP, rect, this, Direction4.Down, true)
 						) {
 							Break();
 						}

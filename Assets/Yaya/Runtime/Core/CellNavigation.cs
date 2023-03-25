@@ -477,7 +477,7 @@ namespace Yaya {
 			var blockRect = new RectInt(x, y, Const.CEL, Const.CEL);
 			var centerRect = blockRect.Shrink(16);
 			bool solid = CellPhysics.Overlap(
-				YayaConst.MASK_MAP, centerRect, out var info
+				Const.MASK_MAP, centerRect, out var info
 			);
 			cell.BlockDataValid = true;
 			cell.BlockType = solid ? BlockType.Solid : BlockType.Air;
@@ -492,7 +492,7 @@ namespace Yaya {
 			} else {
 				int platformY = y + Const.CEL;
 				// Liquid Check
-				if (CellPhysics.Overlap(YayaConst.MASK_MAP, centerRect, null, OperationMode.TriggerOnly, YayaConst.WATER_TAG)) {
+				if (CellPhysics.Overlap(Const.MASK_MAP, centerRect, null, OperationMode.TriggerOnly, Const.WATER_TAG)) {
 					cell.BlockType = BlockType.Liquid;
 					platformY = y + Const.HALF;
 				}
@@ -505,7 +505,7 @@ namespace Yaya {
 				// Func
 				bool OnewaySolid (Direction4 gateDirection) {
 					bool hitted = CellPhysics.Overlap(
-						YayaConst.MASK_MAP,
+						Const.MASK_MAP,
 						blockRect, out var hit,
 						null, OperationMode.TriggerOnly,
 						AngeUtil.GetOnewayTag(gateDirection)
