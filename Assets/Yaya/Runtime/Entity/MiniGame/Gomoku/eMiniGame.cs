@@ -16,7 +16,7 @@ namespace Yaya {
 			base.OnActived();
 			if (FrameTask.AddToLast(
 				typeof(MiniGameTask).AngeHash(),
-				YayaConst.TASK_ROUTE
+				Const.TASK_ROUTE
 			) is MiniGameTask task) {
 				task.MiniGame = this;
 			}

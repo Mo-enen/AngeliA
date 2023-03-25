@@ -134,14 +134,13 @@ namespace Yaya {
 		private PaletteItem SelectingPaletteItem = null;
 		private YayaWorldSquad Squad = null;
 		private YayaWorldSquad SquadBehind = null;
-		private MapUndoItem PerformingUndoItem = null;
+		private Queue<MapUndoItem> PerformingUndoQueue = null;
 		private Vector3Int PlayerDropPos = default;
 		private RectInt TargetViewRect = default;
 		private RectInt CopyBufferOriginalUnitRect = default;
 		private RectInt TooltipRect = default;
 		private RectInt PanelRect = default;
 		private RectInt ToolbarRect = default;
-		private Vector3Int HomePosition = default;
 		private bool PlayingGame = false;
 		private bool IsNavigating = false;
 		private bool IsDirty = false;
@@ -149,18 +148,17 @@ namespace Yaya {
 		private bool TaskingRoute = false;
 		private bool CtrlHolding = false;
 		private bool ShiftHolding = false;
+		private bool AltHolding = false;
 		private int DropHintWidth = Const.CEL;
 		private int UndoDataIndex = 0;
 		private int TooltipDuration = 0;
 		private int PanelOffsetX = 0;
 		private int ToolbarOffsetX = 0;
+		private bool MetaLoaded = false;
+		private int InitializedFrame = int.MinValue;
 
 		// UI
-		private readonly CellLabel DropHintLabel = new() {
-			BackgroundTint = Const.BLACK,
-			Alignment = Alignment.BottomLeft,
-			Wrap = false,
-		};
+		private readonly CellLabel DropHintLabel = new() { BackgroundTint = Const.BLACK, Alignment = Alignment.BottomLeft, Wrap = false, CharSize = 24, };
 		private readonly IntToString StateXLabelToString = new("x:");
 		private readonly IntToString StateYLabelToString = new("y:");
 		private readonly IntToString StateZLabelToString = new("z:");
@@ -184,26 +182,28 @@ namespace Yaya {
 			base.OnActived();
 
 			var game = Game.Current;
+			AngeUtil.DeleteAllEmptyMaps(Const.UserMapRoot);
 
 			// Squad
 			game.WorldSquad.SetDataChannel(MapChannel.User);
-			game.WorldSquad_Behind.SetDataChannel(MapChannel.User);
+			game.WorldSquadBehind.SetDataChannel(MapChannel.User);
 			Squad = YayaGame.Current.WorldSquad;
-			SquadBehind = YayaGame.Current.WorldSquad_Behind;
+			SquadBehind = YayaGame.Current.WorldSquadBehind;
 			PinnedPaletteItems = new();
+			eCheckAltar.ReloadMetaPool(MapChannel.User);
+			MetaLoaded = false;
+			InitializedFrame = Game.GlobalFrame;
 
 			// Pipeline
-			try {
-				Active_Pool();
-				Active_Palette();
-				LoadMeta();
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+			Active_Pool();
+			Active_Palette();
+			LoadMeta();
 
 			// Cache
 			PastingBuffer = new();
 			CopyBuffer = new();
 			UndoRedo = new UndoRedoEcho<MapUndoItem>(128, OnUndoRedoPerformed, OnUndoRedoPerformed);
-			UndoData = new MapUndoData[65536];
+			UndoData = new MapUndoData[131072];
 			DroppingPlayer = false;
 			SelectingPaletteItem = null;
 			MouseDownPosition = null;
@@ -215,7 +215,6 @@ namespace Yaya {
 			MouseDownInSelection = false;
 			Pasting = false;
 			UndoDataIndex = 0;
-			PerformingUndoItem = null;
 			MouseDownOutsideBoundary = false;
 			MouseOutsideBoundary = false;
 			PaletteScrollY = 0;
@@ -224,10 +223,10 @@ namespace Yaya {
 			SearchingText = "";
 			PaletteSearchScrollY = 0;
 			PinnedItemComparer.Instance.Groups = PaletteGroups;
-			NavSquad = new TextureSquad(MapChannel.User);
+			NavSquad = new TextureSquad(MapChannel.User, 13);
 			SetNavigating(false);
-			HomePosition = default;
 			ToolbarOffsetX = 0;
+			PerformingUndoQueue = new();
 
 			// Start
 			SetEditingMode(false);
@@ -236,27 +235,8 @@ namespace Yaya {
 			}
 
 			// View
-			if (FrameTask.HasTask<OpeningTask>()) {
-				FrameTask.End(YayaConst.TASK_ROUTE);
-			}
-			if (ePlayer.Selecting != null && GlobalPosition.TryGetFirstGlobalUnitPosition(ePlayer.Selecting.TypeID, out var playerHomePos)) {
-				var homePos = new Vector3Int(
-					playerHomePos.x * Const.CEL,
-					playerHomePos.y * Const.CEL,
-					playerHomePos.z
-				);
-				int viewHeight = game.ViewConfig.DefaultHeight * 3 / 2;
-				int viewWidth = viewHeight * game.ViewConfig.ViewRatio / 1000;
-				TargetViewRect.x = homePos.x - viewWidth / 2;
-				TargetViewRect.y = homePos.y - ePlayer.GetCameraShiftOffset(game.ViewRect.height);
-				TargetViewRect.height = viewHeight;
-				HomePosition.x = TargetViewRect.x;
-				HomePosition.y = TargetViewRect.y;
-				HomePosition.z = homePos.z;
-				game.SetViewZ(homePos.z);
-				game.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 1000, int.MaxValue);
-				game.SetViewSizeDelay(TargetViewRect.height, 1000, int.MaxValue);
-			}
+			if (FrameTask.HasTask<OpeningTask>()) FrameTask.End(Const.TASK_ROUTE);
+			ResetCamera(true);
 
 			System.GC.Collect(0, System.GCCollectionMode.Forced);
 
@@ -273,11 +253,9 @@ namespace Yaya {
 			SaveMeta();
 
 			Game.Current.WorldSquad.SetDataChannel(MapChannel.BuiltIn);
-			Game.Current.WorldSquad_Behind.SetDataChannel(MapChannel.BuiltIn);
+			Game.Current.WorldSquadBehind.SetDataChannel(MapChannel.BuiltIn);
 			YayaGame.Current.WorldSquad.SaveBeforeReload = false;
-
-			AngeUtil.CreateGlobalPositionMetaFile(Const.UserMapRoot);
-			GlobalPosition.ReloadMeta(Const.UserMapRoot);
+			eCheckAltar.ReloadMetaPool(MapChannel.BuiltIn);
 
 			SpritePool = null;
 			IdChainPool = null;
@@ -290,7 +268,7 @@ namespace Yaya {
 			CopyBuffer = null;
 			UndoRedo = null;
 			UndoData = null;
-			PerformingUndoItem = null;
+			PerformingUndoQueue = null;
 			IsDirty = false;
 			MouseDownOutsideBoundary = false;
 			PaletteTrie = null;
@@ -407,7 +385,7 @@ namespace Yaya {
 
 		// Update
 		protected override void FrameUpdateUI () {
-			if (Active == false || Squad == null || Squad.Channel != MapChannel.User) return;
+			if (Active == false || Squad == null || Squad.Channel != MapChannel.User || Game.GlobalFrame < InitializedFrame + 2) return;
 			base.FrameUpdateUI();
 			Update_Misc();
 			Update_ScreenUI();
@@ -443,6 +421,12 @@ namespace Yaya {
 
 		private void Update_Misc () {
 
+			if (PerformingUndoQueue.Count > 0) {
+				if (PerformWaitingUndoRedo(PerformingUndoQueue.Peek())) {
+					PerformingUndoQueue.Dequeue();
+				}
+			}
+
 			var game = Game.Current;
 
 			if (IsPlaying || DroppingPlayer) {
@@ -450,9 +434,10 @@ namespace Yaya {
 				SearchingText = "";
 				SearchResult.Clear();
 			}
-			TaskingRoute = FrameTask.IsTasking(YayaConst.TASK_ROUTE);
+			TaskingRoute = FrameTask.IsTasking(Const.TASK_ROUTE);
 			CtrlHolding = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.RightCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
 			ShiftHolding = FrameInput.KeyboardHolding(Key.LeftShift) || FrameInput.KeyboardHolding(Key.RightShift);
+			AltHolding = FrameInput.KeyboardHolding(Key.LeftAlt) || FrameInput.KeyboardHolding(Key.RightAlt);
 			eControlHintUI.ForceShowHint();
 
 			// Panel Rect
@@ -484,13 +469,8 @@ namespace Yaya {
 			SquadBehind.Enable = !IsNavigating;
 
 			// Auto Save
-			if (IsDirty && Game.GlobalFrame % 120 == 0 && IsEditing && PerformingUndoItem == null) {
+			if (IsDirty && Game.GlobalFrame % 120 == 0 && IsEditing) {
 				Save();
-			}
-
-			// Performing Undo
-			if (PerformingUndoItem != null) {
-				OnUndoRedoPerformed(PerformingUndoItem);
 			}
 
 			// Nav
@@ -503,7 +483,7 @@ namespace Yaya {
 
 		private void Update_View () {
 
-			if (TaskingRoute || DroppingPlayer || PerformingUndoItem != null || CellRendererGUI.IsTyping) return;
+			if (TaskingRoute || DroppingPlayer || PerformingUndoQueue.Count != 0 || CellRendererGUI.IsTyping) return;
 			if (MouseDownOutsideBoundary) goto END;
 
 			var game = Game.Current;
@@ -557,7 +537,7 @@ namespace Yaya {
 				}
 			} else if (!MouseOutsideBoundary) {
 				// Manual Zoom
-				int wheelDelta = FrameInput.MouseWheelDelta;
+				int wheelDelta = CtrlHolding ? 0 : FrameInput.MouseWheelDelta;
 				int zoomDelta = wheelDelta * Const.CEL * 2;
 				if (zoomDelta == 0 && FrameInput.MouseRightButton && CtrlHolding) {
 					zoomDelta = FrameInput.MouseScreenPositionDelta.y * 6;
@@ -602,7 +582,7 @@ namespace Yaya {
 
 		private void Update_Hotkey () {
 
-			if (TaskingRoute || PerformingUndoItem != null || CellRendererGUI.IsTyping) return;
+			if (TaskingRoute || PerformingUndoQueue.Count != 0 || CellRendererGUI.IsTyping) return;
 
 			// Switch Mode
 			if (!CtrlHolding && (IsPlaying || !DroppingPlayer)) {
@@ -663,6 +643,22 @@ namespace Yaya {
 					}
 					eControlHintUI.AddHint(Key.Tab, WORD.HINT_MEDT_NAV);
 
+					// Move Selecting Blocks
+					if (SelectionUnitRect.HasValue) {
+						if (FrameInput.KeyboardDownGUI(Key.LeftArrow)) {
+							MoveSelection(Vector2Int.left);
+						}
+						if (FrameInput.KeyboardDownGUI(Key.RightArrow)) {
+							MoveSelection(Vector2Int.right);
+						}
+						if (FrameInput.KeyboardDownGUI(Key.DownArrow)) {
+							MoveSelection(Vector2Int.down);
+						}
+						if (FrameInput.KeyboardDownGUI(Key.UpArrow)) {
+							MoveSelection(Vector2Int.up);
+						}
+					}
+
 				}
 
 				// Ctrl + ...
@@ -706,13 +702,13 @@ namespace Yaya {
 						ResetCamera();
 						FrameInput.UseAllHoldingKeys();
 					}
-				}
-
-				// Shift + ...
-				if (ShiftHolding && !CtrlHolding) {
-					// Up/Down
-					if (FrameInput.GameKeyDown(Gamekey.Up) || FrameInput.GameKeyDown(Gamekey.Down)) {
-						SetViewZ(Game.Current.ViewZ + (FrameInput.GameKeyDown(Gamekey.Up) ? 1 : -1));
+					// Up
+					if (FrameInput.MouseWheelDelta > 0) {
+						SetViewZ(Game.Current.ViewZ + 1);
+					}
+					// Down
+					if (FrameInput.MouseWheelDelta < 0) {
+						SetViewZ(Game.Current.ViewZ - 1);
 					}
 				}
 
@@ -723,7 +719,7 @@ namespace Yaya {
 
 		private void Update_DropPlayer () {
 
-			if (IsPlaying || !DroppingPlayer || ePlayer.Selecting == null || TaskingRoute || PerformingUndoItem != null) return;
+			if (IsPlaying || !DroppingPlayer || ePlayer.Selecting == null || TaskingRoute || PerformingUndoQueue.Count != 0) return;
 
 			var player = ePlayer.Selecting;
 
@@ -741,7 +737,6 @@ namespace Yaya {
 
 			if (!QuickPlayerDrop) {
 				DropHintLabel.Text = Language.Get(WORD.MEDT_DROP);
-				DropHintLabel.CharSize = Unify(24);
 				CellRendererGUI.Label(DropHintLabel, new RectInt(
 					FrameInput.MouseGlobalPosition.x - DropHintWidth / 2,
 					FrameInput.MouseGlobalPosition.y + Const.HALF,
@@ -779,29 +774,36 @@ namespace Yaya {
 
 			if (IsPlaying || TaskingRoute) return;
 
-			var cameraRect = CellRenderer.CameraRect;
-			int LABEL_HEIGHT = Unify(28);
-			int PADDING = Unify(12);
-
 			// State
 			if (ShowState) {
-				if (!IsNavigating) {
-					int x = FrameInput.MouseGlobalPosition.x.ToUnit();
-					int y = FrameInput.MouseGlobalPosition.y.ToUnit();
-					CellRendererGUI.Label(
-						CellLabel.TempLabel(StateXLabelToString.GetString(x), Const.GREY_196, 22, Alignment.MidRight),
-						new RectInt(cameraRect.x, cameraRect.y + LABEL_HEIGHT * 2, cameraRect.width - PADDING, LABEL_HEIGHT)
-					);
-					CellRendererGUI.Label(
-						CellLabel.TempLabel(StateYLabelToString.GetString(y), Const.GREY_196, 22, Alignment.MidRight),
-						new RectInt(cameraRect.x, cameraRect.y + LABEL_HEIGHT * 1, cameraRect.width - PADDING, LABEL_HEIGHT)
-					);
-				}
+				var cameraRect = CellRenderer.CameraRect;
+				int LABEL_HEIGHT = Unify(22);
+				int LABEL_WIDTH = Unify(52);
+				int PADDING = Unify(6);
+
 				int z = IsNavigating ? NavPosition.z : Game.Current.ViewZ;
 				CellRendererGUI.Label(
-					CellLabel.TempLabel(StateZLabelToString.GetString(z), Const.GREY_196, 22, Alignment.MidRight),
-					new RectInt(cameraRect.x, cameraRect.y, cameraRect.width - PADDING, LABEL_HEIGHT)
+					CellLabel.TempLabel(StateZLabelToString.GetString(z), Const.GREY_196, 22, Alignment.TopRight),
+					new RectInt(cameraRect.xMax - LABEL_WIDTH - PADDING, cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
+					out var boundsZ
 				);
+
+				if (!IsNavigating) {
+
+					int y = FrameInput.MouseGlobalPosition.y.ToUnit();
+					CellRendererGUI.Label(
+						CellLabel.TempLabel(StateYLabelToString.GetString(y), Const.GREY_196, 22, Alignment.TopRight),
+						new RectInt(Mathf.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
+						out var boundsY
+					);
+
+					int x = FrameInput.MouseGlobalPosition.x.ToUnit();
+					CellRendererGUI.Label(
+						CellLabel.TempLabel(StateXLabelToString.GetString(x), Const.GREY_196, 22, Alignment.TopRight),
+						new RectInt(Mathf.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT)
+					);
+
+				}
 			}
 
 		}
@@ -815,11 +817,11 @@ namespace Yaya {
 		#region --- API ---
 
 
-		public void SetEditingMode (bool playingGame) {
+		public void SetEditingMode (bool newPlayingGame) {
 
 			var game = Game.Current;
-			if (playingGame) Save();
-			PlayingGame = playingGame;
+			if (newPlayingGame) Save();
+			PlayingGame = newPlayingGame;
 			SelectingPaletteItem = null;
 			DroppingPlayer = false;
 			SelectionUnitRect = null;
@@ -827,15 +829,12 @@ namespace Yaya {
 			game.ClearAntiSpawn();
 
 			// Squad Spawn Entity
-			Squad.SpawnEntity = PlayingGame;
-			SquadBehind.SpawnEntity = PlayingGame;
-			Squad.SaveBeforeReload = !PlayingGame;
+			Squad.SpawnEntity = newPlayingGame;
+			SquadBehind.SpawnEntity = newPlayingGame;
+			Squad.SaveBeforeReload = !newPlayingGame;
 
-			if (PlayingGame) {
+			if (newPlayingGame) {
 				// Edit >> Play
-
-				AngeUtil.CreateGlobalPositionMetaFile(Const.UserMapRoot);
-				GlobalPosition.ReloadMeta(Const.UserMapRoot);
 
 				// Respawn Entities
 				game.SetViewZ(game.ViewZ);
@@ -888,19 +887,17 @@ namespace Yaya {
 
 		private void PlayFromStart () {
 			SetEditingMode(true);
-			int playerID = 0;
 			var player = ePlayer.Selecting;
 			if (player != null) {
 				player.Active = false;
 				player.SetCharacterState(CharacterState.GamePlay);
-				playerID = player.TypeID;
 			}
-			YayaGame.Current.StartGame(playerID);
+			YayaGame.Current.StartGame();
 		}
 
 
 		private void Save () {
-			if (!IsEditing || Squad == null || Squad.Channel != MapChannel.User) return;
+			if (PlayingGame || Squad == null || Squad.Channel != MapChannel.User) return;
 			IsDirty = false;
 			Squad.SaveToFile(Const.UserMapRoot);
 		}
@@ -918,7 +915,6 @@ namespace Yaya {
 				rect.width, height
 			);
 			TooltipLabel.Text = tip;
-			TooltipLabel.CharSize = Unify(24);
 			CellRendererGUI.Label(TooltipLabel, tipRect, out var bounds);
 			CellRenderer.Draw(Const.PIXEL, bounds.Expand(gap), Const.BLACK).Z = int.MaxValue;
 		}
@@ -933,7 +929,7 @@ namespace Yaya {
 					cameraRect.x + cameraRect.width / 2,
 					cameraRect.y + cameraRect.height / 2,
 					newZ,
-					YayaConst.TASK_ROUTE
+					Const.TASK_ROUTE
 				);
 				if (svTask != null) {
 					svTask.ForceUseVignette = false;
@@ -946,18 +942,30 @@ namespace Yaya {
 		}
 
 
-		private void ResetCamera () {
+		private void ResetCamera (bool immediately = false) {
+			var game = Game.Current;
 			if (!IsNavigating) {
-				TargetViewRect.x = HomePosition.x;
-				TargetViewRect.y = HomePosition.y;
-				TargetViewRect.height = Game.Current.ViewConfig.DefaultHeight * 3 / 2;
-				if (Game.Current.ViewZ != HomePosition.z) {
-					SetViewZ(HomePosition.z);
+				int viewHeight = game.ViewConfig.DefaultHeight * 3 / 2;
+				int viewWidth = viewHeight * game.ViewConfig.ViewRatio / 1000;
+				TargetViewRect.x = -viewWidth / 2;
+				TargetViewRect.y = -ePlayer.GetCameraShiftOffset(viewHeight);
+				TargetViewRect.height = viewHeight;
+				TargetViewRect.width = viewWidth;
+				if (game.ViewZ != 0) SetViewZ(0);
+				if (immediately) {
+					game.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 1000, int.MaxValue);
+					game.SetViewSizeDelay(TargetViewRect.height, 1000, int.MaxValue);
 				}
 			} else {
-				NavPosition.x = HomePosition.x + TargetViewRect.width / 2 + Const.MAP * Const.HALF;
-				NavPosition.y = HomePosition.y + TargetViewRect.height / 2 + Const.MAP * Const.HALF;
-				NavPosition.z = HomePosition.z;
+				int viewHeight = game.ViewConfig.DefaultHeight * 3 / 2;
+				int viewWidth = viewHeight * game.ViewConfig.ViewRatio / 1000;
+				TargetViewRect.x = -viewWidth / 2;
+				TargetViewRect.y = -ePlayer.GetCameraShiftOffset(viewHeight);
+				TargetViewRect.height = viewHeight;
+				TargetViewRect.width = viewWidth;
+				NavPosition.x = TargetViewRect.x + TargetViewRect.width / 2 + Const.MAP * Const.HALF;
+				NavPosition.y = TargetViewRect.y + TargetViewRect.height / 2 + Const.MAP * Const.HALF;
+				NavPosition.z = 0;
 			}
 		}
 
@@ -973,10 +981,12 @@ namespace Yaya {
 					}
 				}
 			}
+			MetaLoaded = true;
 		}
 
 
 		private void SaveMeta () {
+			if (!MetaLoaded) return;
 			var PinnedIDs = new List<int>();
 			foreach (var pal in PinnedPaletteItems) {
 				if (pal.Pinned) {
@@ -1033,27 +1043,39 @@ namespace Yaya {
 		}
 
 
-		private void OnUndoRedoPerformed (MapUndoItem item) {
-
-			int DATA_LEN = UndoData.Length;
-			if (item == null || item.DataIndex < 0 || item.DataIndex >= DATA_LEN || item.Step == 0) return;
+		private bool PerformWaitingUndoRedo (MapUndoItem item) {
+			if (item == null || item.DataIndex < 0 || item.DataIndex >= UndoData.Length || item.Step == 0) return true;
 			TargetViewRect = item.ViewRect;
-			if (item.ViewZ != Game.Current.ViewZ) Game.Current.SetViewZ(item.ViewZ);
-
 			if (Game.Current.ViewRect != item.ViewRect || Game.Current.ViewZ != item.ViewZ) {
-				PerformingUndoItem = item;
 				Game.Current.SetViewPositionDelay(item.ViewRect.x, item.ViewRect.y, 1000, int.MaxValue);
 				Game.Current.SetViewSizeDelay(item.ViewRect.height, 1000, int.MaxValue);
+				if (Game.Current.ViewZ != item.ViewZ) Game.Current.SetViewZ(item.ViewZ);
+				return false;
+			}
+			OnUndoRedoPerformed(item);
+			return true;
+		}
+
+
+		private void OnUndoRedoPerformed (MapUndoItem item) {
+
+			if (item == null || item.DataIndex < 0 || item.DataIndex >= UndoData.Length || item.Step == 0) return;
+			TargetViewRect = item.ViewRect;
+
+			if (Game.Current.ViewRect != item.ViewRect || Game.Current.ViewZ != item.ViewZ) {
+				Game.Current.SetViewPositionDelay(item.ViewRect.x, item.ViewRect.y, 1000, int.MaxValue);
+				Game.Current.SetViewSizeDelay(item.ViewRect.height, 1000, int.MaxValue);
+				if (Game.Current.ViewZ != item.ViewZ) Game.Current.SetViewZ(item.ViewZ);
+				PerformingUndoQueue.Enqueue(item);
 				return;
 			}
-			PerformingUndoItem = null;
 
 			int minX = int.MaxValue;
 			int minY = int.MaxValue;
 			int maxX = int.MinValue;
 			int maxY = int.MinValue;
 			for (int i = 0; i < item.DataLength; i++) {
-				int index = (item.DataIndex + i) % DATA_LEN;
+				int index = (item.DataIndex + i) % UndoData.Length;
 				var data = UndoData[index];
 				if (data.Step != item.Step) break;
 				Squad.SetBlockAt(
@@ -1069,7 +1091,7 @@ namespace Yaya {
 				IsDirty = true;
 				var unitRect = new RectInt(minX, minY, maxX - minX + 1, maxY - minY + 1);
 				RedirectForRule(unitRect);
-				SpawnBlinkParticle(unitRect.ToGlobal(), 0);
+				SpawnBlinkParticle(unitRect.ToGlobal(), 0, FRAME);
 				Save();
 			}
 		}

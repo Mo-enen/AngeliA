@@ -79,9 +79,9 @@ namespace Yaya {
 		public static readonly int GOMOKU_YOU_ARE = "UI.Gomoku.YouAre".AngeHash();
 		public static readonly int MEDT_DROP = "MEDT.Drop".AngeHash();
 		public static readonly int MEDT_CANCEL_DROP = "MEDT.CancelDrop".AngeHash();
-
-
-
+		public static readonly int MEDT_ENTITY_ONLY = "MEDT.EntityOnly".AngeHash();
+		public static readonly int MEDT_LEVEL_ONLY = "MEDT.LevelOnly".AngeHash();
+		public static readonly int MEDT_BG_ONLY = "MEDT.BackgroundOnly".AngeHash();
 
 	}
 }

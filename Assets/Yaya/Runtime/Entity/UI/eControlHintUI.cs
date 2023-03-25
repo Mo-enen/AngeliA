@@ -367,7 +367,7 @@ namespace Yaya {
 
 				HintLabel.Text = Language.Get(labelID);
 				HintLabel.Tint = LabelTint;
-				HintLabel.CharSize = Unify(TextSize);
+				HintLabel.CharSize = TextSize;
 
 				CellRendererGUI.Label(
 					HintLabel, rect, out var bounds

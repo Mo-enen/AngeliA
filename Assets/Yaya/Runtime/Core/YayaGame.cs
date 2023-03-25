@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-using UnityEngine.InputSystem;
 
 
 namespace Yaya {
+
 
 	public interface IDamageReceiver {
 		public bool AllowDamageFromLevel => true;
@@ -14,6 +14,7 @@ namespace Yaya {
 		void TakeDamage (int damage);
 		public bool TeamCheck (int otherTeam) => Team == YayaConst.TEAM_NEUTRAL || Team != otherTeam;
 	}
+
 
 	public enum FittingPose {
 		Unknown = 0,
@@ -24,6 +25,7 @@ namespace Yaya {
 		Up = 3,
 		Single = 4,
 	}
+
 
 	public class YayaGame {
 
@@ -36,7 +38,7 @@ namespace Yaya {
 		// Api
 		public static YayaGame Current { get; private set; } = null;
 		public YayaWorldSquad WorldSquad { get; private set; } = null;
-		public YayaWorldSquad WorldSquad_Behind { get; private set; } = null;
+		public YayaWorldSquad WorldSquadBehind { get; private set; } = null;
 
 		// Data
 		private static readonly PhysicsCell[] c_DamageCheck = new PhysicsCell[16];
@@ -57,7 +59,6 @@ namespace Yaya {
 		[BeforeGameInitialize]
 		public static void BeforeInitialize () {
 			Game.Current.PhysicsLayerCount = YayaConst.LAYER_COUNT;
-			Game.Current.TaskLayerCount = YayaConst.TASK_LAYER_COUNT;
 		}
 
 
@@ -80,7 +81,9 @@ namespace Yaya {
 
 			// World
 			game.WorldSquad = WorldSquad = new YayaWorldSquad();
-			game.WorldSquad_Behind = WorldSquad_Behind = new YayaWorldSquad(true);
+			game.WorldSquadBehind = WorldSquadBehind = new YayaWorldSquad(true);
+			game.WorldSquad.SetDataChannel(MapChannel.BuiltIn);
+			game.WorldSquadBehind.SetDataChannel(MapChannel.BuiltIn);
 			game.BeforeViewZChange -= YayaBeforeViewZChange;
 			game.BeforeViewZChange += YayaBeforeViewZChange;
 
@@ -99,10 +102,8 @@ namespace Yaya {
 			ePlayer.SelectPlayer(firstPlayer);
 
 			// Start the Game !!
-			StartGame(firstPlayerID);
+			StartGame();
 
-			// Test
-			game.SpawnEntity<eMapEditor>(0, 0);
 		}
 
 
@@ -114,6 +115,14 @@ namespace Yaya {
 			FrameUpdate_Player();
 			Update_Damage();
 
+
+
+			// Test
+			if (!MapEditor.Active) {
+				Game.Current.SpawnEntity<eMapEditor>(0, 0);
+			}
+
+
 		}
 
 
@@ -123,7 +132,7 @@ namespace Yaya {
 			if (
 				ePlayer.Selecting != null &&
 				!ePlayer.Selecting.Active &&
-				!FrameTask.HasTask(YayaConst.TASK_ROUTE) &&
+				!FrameTask.HasTask(Const.TASK_ROUTE) &&
 				!MapEditor.Active
 			) {
 				var center = CellRenderer.CameraRect.CenterInt();
@@ -140,25 +149,23 @@ namespace Yaya {
 				if (
 					ePlayer.Selecting.IsFullPassout &&
 					FrameInput.GameKeyDown(Gamekey.Action) &&
-					!FrameTask.HasTask(YayaConst.TASK_ROUTE)
+					!FrameTask.HasTask(Const.TASK_ROUTE)
 				) {
-					Vector3Int targetPos = default;
+					var targetPos = Vector3Int.zero;
 					bool gotoBed;
-					if (eCheckPoint.SavedPosition.HasValue) {
+					if (eCheckPoint.SavedUnitPosition.HasValue) {
 						// Set Pos to Check Point Saved Pos
-						targetPos = eCheckPoint.SavedPosition.Value;
+						targetPos = eCheckPoint.SavedUnitPosition.Value;
+						targetPos.x = targetPos.x.ToGlobal();
+						targetPos.y = targetPos.y.ToGlobal();
 						gotoBed = false;
 					} else {
-						// Set Pos to First Player Map Pos
-						var homePos = ePlayer.Selecting != null ? ePlayer.Selecting.GetHomePosition() * Const.CEL : default;
-						targetPos.x = homePos.x;
-						targetPos.y = homePos.y;
-						targetPos.z = homePos.z;
+						// No Check Point
 						gotoBed = true;
 					}
 					// Reload Game
 					FrameInput.UseAllHoldingKeys();
-					if (FrameTask.TryAddToLast(OpeningTask.TYPE_ID, YayaConst.TASK_ROUTE, out var task) && task is OpeningTask oTask) {
+					if (FrameTask.TryAddToLast(OpeningTask.TYPE_ID, Const.TASK_ROUTE, out var task) && task is OpeningTask oTask) {
 						oTask.TargetViewX = targetPos.x;
 						oTask.TargetViewY = targetPos.y;
 						oTask.TargetViewZ = targetPos.z;
@@ -270,27 +277,15 @@ namespace Yaya {
 		#region --- API ---
 
 
-		public void StartGame (int playerID = 0) {
+		public void StartGame () {
 			if (
-				FrameTask.TryAddToLast(OpeningTask.TYPE_ID, YayaConst.TASK_ROUTE, out var task) &&
+				FrameTask.TryAddToLast(OpeningTask.TYPE_ID, Const.TASK_ROUTE, out var task) &&
 				task is OpeningTask oTask
 			) {
 				Game.Current.SetViewSizeDelay(Game.Current.ViewConfig.DefaultHeight, 1000, int.MaxValue);
-				if (playerID == 0) {
-					playerID = ePlayer.GetFirstSelectedPlayerID();
-				}
-				Vector3Int homePos = default;
-				if (GlobalPosition.TryGetFirstGlobalUnitPosition(playerID, out var firstPlayerHomePos)) {
-					homePos.x = firstPlayerHomePos.x * Const.CEL;
-					homePos.y = firstPlayerHomePos.y * Const.CEL;
-					homePos.z = firstPlayerHomePos.z;
-				} else {
-					homePos = (Vector3Int)Game.Current.ViewRect.CenterInt();
-					homePos.z = Game.Current.ViewZ;
-				}
-				oTask.TargetViewX = homePos.x;
-				oTask.TargetViewY = homePos.y;
-				oTask.TargetViewZ = homePos.z;
+				oTask.TargetViewX = 0;
+				oTask.TargetViewY = 0;
+				oTask.TargetViewZ = 0;
 				oTask.GotoBed = true;
 				oTask.FadeOut = false;
 			}

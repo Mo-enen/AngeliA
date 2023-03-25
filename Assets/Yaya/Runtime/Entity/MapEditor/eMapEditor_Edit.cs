@@ -14,6 +14,11 @@ namespace Yaya {
 		#region --- VAR ---
 
 
+		// Short
+		private bool Modify_EntityOnly => ShiftHolding && !AltHolding;
+		private bool Modify_LevelOnly => !ShiftHolding && AltHolding;
+		private bool Modify_BackgroundOnly => ShiftHolding && AltHolding;
+
 		// Data
 		private RectInt? SelectionUnitRect = null;
 		private RectInt? DraggingUnitRect = null;
@@ -41,7 +46,7 @@ namespace Yaya {
 
 			DraggingUnitRect = null;
 
-			if (IsPlaying || DroppingPlayer || TaskingRoute || PerformingUndoItem != null || CellRendererGUI.IsTyping) {
+			if (IsPlaying || DroppingPlayer || TaskingRoute || PerformingUndoQueue.Count != 0 || CellRendererGUI.IsTyping) {
 				MouseDownPosition = null;
 				MouseDownOutsideBoundary = false;
 				MouseOutsideBoundary = false;
@@ -64,7 +69,13 @@ namespace Yaya {
 				mousePos.y < cameraRect.y ||
 				mousePos.y > cameraRect.yMax ||
 				targetPanelRect.Contains(mousePos);
-			if (MouseInSelection) Game.Current.SetCursor(1);
+
+			if (MouseInSelection) {
+				Game.Current.SetCursor(1);
+				if (!Pasting) {
+					DrawModifyFilterLabel(new RectInt(FrameInput.MouseGlobalPosition.x, FrameInput.MouseGlobalPosition.y, 1, 1));
+				}
+			}
 
 			if (!MouseDownPosition.HasValue) {
 				// Mouse Down
@@ -180,6 +191,7 @@ namespace Yaya {
 			bool undoRegisted = false;
 			int id = paint ? SelectingPaletteItem.ID : 0;
 			var type = paint ? SelectingPaletteItem.BlockType : default;
+
 			for (int i = unitRect.xMin; i < unitRect.xMax; i++) {
 				for (int j = unitRect.yMin; j < unitRect.yMax; j++) {
 					if (paint) {
@@ -205,11 +217,11 @@ namespace Yaya {
 							undoRegisted = true;
 						}
 						if (Squad.GetBlockAt(i, j, BlockType.Entity) != 0) {
-							Squad.SetBlockAt(i, j, BlockType.Entity, 0);
+							if (!Modify_LevelOnly && !Modify_BackgroundOnly) Squad.SetBlockAt(i, j, BlockType.Entity, 0);
 						} else if (Squad.GetBlockAt(i, j, BlockType.Level) != 0) {
-							Squad.SetBlockAt(i, j, BlockType.Level, 0);
+							if (!Modify_BackgroundOnly && !Modify_EntityOnly) Squad.SetBlockAt(i, j, BlockType.Level, 0);
 						} else {
-							Squad.SetBlockAt(i, j, BlockType.Background, 0);
+							if (!Modify_LevelOnly && !Modify_EntityOnly) Squad.SetBlockAt(i, j, BlockType.Background, 0);
 						}
 					} else {
 						// Range Erase
@@ -217,9 +229,9 @@ namespace Yaya {
 							RegisterUndo_Begain(unitRect);
 							undoRegisted = true;
 						}
-						Squad.SetBlockAt(i, j, BlockType.Background, 0);
-						Squad.SetBlockAt(i, j, BlockType.Level, 0);
-						Squad.SetBlockAt(i, j, BlockType.Entity, 0);
+						if (!Modify_LevelOnly && !Modify_EntityOnly) Squad.SetBlockAt(i, j, BlockType.Background, 0);
+						if (!Modify_BackgroundOnly && !Modify_EntityOnly) Squad.SetBlockAt(i, j, BlockType.Level, 0);
+						if (!Modify_LevelOnly && !Modify_BackgroundOnly) Squad.SetBlockAt(i, j, BlockType.Entity, 0);
 					}
 				}
 			}
@@ -256,6 +268,14 @@ namespace Yaya {
 					PaletteScrollY = 0;
 				}
 			}
+		}
+
+
+		// Move
+		private void MoveSelection (Vector2Int delta) {
+			if (delta == Vector2Int.zero || IsPlaying || DroppingPlayer || IsNavigating || !SelectionUnitRect.HasValue) return;
+			if (!Pasting) StartPaste(true);
+			SelectionUnitRect = SelectionUnitRect.Value.Shift(delta.x, delta.y);
 		}
 
 
@@ -362,9 +382,9 @@ namespace Yaya {
 			bool undoRegisted = false;
 			for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
 				for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
-					AddToList(i, j, BlockType.Background);
-					AddToList(i, j, BlockType.Level);
-					AddToList(i, j, BlockType.Entity);
+					if (!Modify_EntityOnly && !Modify_LevelOnly) AddToList(i, j, BlockType.Background);
+					if (!Modify_EntityOnly && !Modify_BackgroundOnly) AddToList(i, j, BlockType.Level);
+					if (!Modify_BackgroundOnly && !Modify_LevelOnly) AddToList(i, j, BlockType.Entity);
 				}
 			}
 			if (removeOriginal) {

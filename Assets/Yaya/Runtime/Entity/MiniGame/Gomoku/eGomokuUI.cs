@@ -50,6 +50,7 @@ namespace Yaya {
 		private GenericMenuUI MenuEntity = null;
 		private readonly CellLabel HintLabel = new() {
 			Alignment = Alignment.MidLeft,
+			CharSize = 24,
 		};
 
 
@@ -183,9 +184,8 @@ namespace Yaya {
 			CellRenderer.Draw(Const.PIXEL, boardRect, BACKGROUND_TINT);
 
 			// Player Color Hint
-			int labelHeight = Unify(24);
+			int labelHeight = Unify(HintLabel.CharSize);
 			HintLabel.Tint = PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT;
-			HintLabel.CharSize = labelHeight;
 			HintLabel.Text = Language.Get(WORD.GOMOKU_YOU_ARE);
 			CellRendererGUI.Label(
 				HintLabel,

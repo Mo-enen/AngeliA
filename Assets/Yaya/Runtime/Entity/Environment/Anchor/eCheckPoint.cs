@@ -39,7 +39,7 @@ namespace Yaya {
 
 
 		// Api
-		public static Vector3Int? SavedPosition { get; private set; } = null;
+		public static Vector3Int? SavedUnitPosition { get; private set; } = null;
 
 		// Data
 		private Int4 Border = default;
@@ -76,23 +76,27 @@ namespace Yaya {
 		}
 
 
+		protected virtual void OnPlayerTouched (Vector3Int unitPos) {
+			// Particle
+			var particle = Game.Current.SpawnEntity(
+				eDefaultParticle.TYPE_ID,
+				X + Const.HALF, Y + Const.HALF
+			);
+			if (particle != null) {
+				particle.Width = Const.CEL * 2;
+				particle.Height = Const.CEL * 2;
+			}
+		}
+
+
 		private void Update_PlayerTouch () {
 			var player = ePlayer.Selecting;
 			if (player == null || !player.Active) return;
 			if (player.Rect.Overlaps(Rect)) {
-				var targetPos = new Vector3Int(X + Const.HALF, Y, Game.Current.ViewZ);
-				if (SavedPosition != targetPos) {
-					// Touch
-					SavedPosition = targetPos;
-					// Particle
-					var particle = Game.Current.SpawnEntity(
-						eDefaultParticle.TYPE_ID,
-						X + Const.HALF, Y + Const.HALF
-					);
-					if (particle != null) {
-						particle.Width = Const.CEL * 2;
-						particle.Height = Const.CEL * 2;
-					}
+				var unitPos = new Vector3Int(X.ToUnit(), Y.ToUnit(), Game.Current.ViewZ);
+				if (SavedUnitPosition != unitPos) {
+					SavedUnitPosition = unitPos;
+					OnPlayerTouched(unitPos);
 				}
 			}
 		}

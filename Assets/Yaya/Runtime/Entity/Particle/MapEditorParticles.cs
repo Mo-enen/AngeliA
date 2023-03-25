@@ -17,6 +17,7 @@ namespace Yaya {
 		public override int FramePerSprite => 4;
 		public override bool Loop => false;
 		public override bool UseSpriteSize => false;
+		public int SpriteID { get; set; } = Const.PIXEL;
 
 
 		// MSG
@@ -28,7 +29,7 @@ namespace Yaya {
 
 			var tint = Tint;
 			tint.a = (byte)((Duration - localFrame) * Tint.a / 2 / Duration);
-			var cells = CellRenderer.Draw_9Slice(Const.PIXEL, Rect, tint);
+			var cells = CellRenderer.Draw_9Slice(SpriteID, Rect, tint);
 			foreach (var cell in cells) cell.Z = int.MaxValue;
 
 			CellRenderer.SetLayerToDefault();

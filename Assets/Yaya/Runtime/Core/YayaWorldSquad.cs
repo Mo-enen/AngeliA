@@ -10,7 +10,7 @@ namespace Yaya {
 
 		// VAR
 		protected override Int4 CullingPadding =>
-			CellRenderer.CameraShaking || FrameTask.IsTasking<TeleportTask>(YayaConst.TASK_ROUTE) ?
+			CellRenderer.CameraShaking || FrameTask.IsTasking<TeleportTask>(Const.TASK_ROUTE) ?
 			new Int4(Const.CEL * 8, Const.CEL * 8, Const.CEL * 8, Const.CEL * 8) :
 			Int4.Zero;
 		public bool SpawnEntity { get; set; } = true;
@@ -25,7 +25,7 @@ namespace Yaya {
 
 		protected override void BeforeWorldReload (World[,] worlds) {
 			base.BeforeWorldReload(worlds);
-			if (SaveBeforeReload && Channel == MapChannel.User) {
+			if (SaveBeforeReload && !Behind && LoadedChannel.HasValue && LoadedChannel.Value == MapChannel.User) {
 				SaveToFile(Const.UserMapRoot);
 			}
 		}

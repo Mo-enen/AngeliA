@@ -40,6 +40,12 @@ namespace Yaya {
 		}
 
 
+		public override void OnEnd () {
+			base.OnEnd();
+			ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, false);
+		}
+
+
 		public override TaskResult FrameUpdate () {
 
 			int localFrame = LocalFrame;

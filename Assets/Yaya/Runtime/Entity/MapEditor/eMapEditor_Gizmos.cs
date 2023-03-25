@@ -13,6 +13,9 @@ namespace Yaya {
 		#region --- VAR ---
 
 
+		// UI
+		private readonly CellLabel CursorEraseLabel = new() { CharSize = 24, Alignment = Alignment.MidMid, BackgroundTint = Const.BLACK, };
+
 		// Data
 		private RectInt PaintingThumbnailRect = default;
 		private int PaintingThumbnailStartIndex = 0;
@@ -80,6 +83,7 @@ namespace Yaya {
 				if (SelectingPaletteItem == null) {
 					// Draw Erase Cross
 					DrawCrossLineGizmos(DraggingUnitRect.Value.ToGlobal(), Unify(1), Const.WHITE, Const.BLACK);
+					DrawModifyFilterLabel(DraggingUnitRect.Value.ToGlobal());
 				} else {
 					// Draw Painting Thumbnails
 					CellRenderer.TryGetSprite(SelectingPaletteItem.ArtworkID, out var sprite);
@@ -151,6 +155,11 @@ namespace Yaya {
 			int thickness = Unify(2);
 			int dotGap = Unify(10);
 
+			// Paste Tint
+			if (Pasting) {
+				CellRenderer.Draw(Const.PIXEL, selectionRect, new Color32(0, 128, 255, 32)).Z = GIZMOS_Z - 1;
+			}
+
 			// Black Frame
 			var cells = CellRenderer.Draw_9Slice(
 				FRAME, selectionRect,
@@ -218,6 +227,7 @@ namespace Yaya {
 			if (SelectingPaletteItem == null) {
 				// Erase Cross
 				DrawCrossLineGizmos(cursorRect, thickness, CURSOR_TINT, CURSOR_TINT_DARK);
+				DrawModifyFilterLabel(cursorRect);
 			} else {
 				// Pal Thumbnail
 				DrawSpriteGizmos(SelectingPaletteItem.ArtworkID, cursorRect, true);
@@ -233,15 +243,16 @@ namespace Yaya {
 		#region --- LGC ---
 
 
-		private void SpawnBlinkParticle (RectInt globalRect, int blockTintId) {
+		private void SpawnBlinkParticle (RectInt globalRect, int blockTintId) => SpawnBlinkParticle(globalRect, blockTintId, Const.PIXEL);
+		private void SpawnBlinkParticle (RectInt globalRect, int blockTintId, int spriteID) {
 
-			var particle = Game.Current.SpawnEntity(eMapEditorBlinkParticle.TYPE_ID, 0, 0) as Particle;
+			var particle = Game.Current.SpawnEntity(eMapEditorBlinkParticle.TYPE_ID, 0, 0) as eMapEditorBlinkParticle;
 			particle.X = globalRect.x;
 			particle.Y = globalRect.y;
 			particle.Width = globalRect.width;
 			particle.Height = globalRect.height;
 			particle.Tint = PARTICLE_CLEAR_TINT;
-
+			particle.SpriteID = spriteID;
 			if (SpritePool.TryGetValue(blockTintId, out var sprite)) {
 				particle.Tint = sprite.Sprite.SummaryTint;
 			}
@@ -338,6 +349,29 @@ namespace Yaya {
 				rect.yMin + shrink + shiftY,
 				thickness, tint
 			).Z = GIZMOS_Z - 1;
+		}
+
+
+		private void DrawModifyFilterLabel (RectInt rect) {
+			if (Modify_EntityOnly) {
+				int height = Unify(CursorEraseLabel.CharSize);
+				CellRendererGUI.Label(
+					CursorEraseLabel.SetText(Language.Get(WORD.MEDT_ENTITY_ONLY)),
+					new RectInt(rect.x + rect.width / 2, rect.y - height, 1, height)
+				);
+			} else if (Modify_LevelOnly) {
+				int height = Unify(CursorEraseLabel.CharSize);
+				CellRendererGUI.Label(
+					CursorEraseLabel.SetText(Language.Get(WORD.MEDT_LEVEL_ONLY)),
+					new RectInt(rect.x + rect.width / 2, rect.y - height, 1, height)
+				);
+			} else if (Modify_BackgroundOnly) {
+				int height = Unify(CursorEraseLabel.CharSize);
+				CellRendererGUI.Label(
+					CursorEraseLabel.SetText(Language.Get(WORD.MEDT_BG_ONLY)),
+					new RectInt(rect.x + rect.width / 2, rect.y - height, 1, height)
+				);
+			}
 		}
 
 

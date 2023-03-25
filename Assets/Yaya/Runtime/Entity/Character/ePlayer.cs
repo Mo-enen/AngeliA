@@ -12,7 +12,7 @@ namespace Yaya {
 	[EntityAttribute.ForceSpawn]
 	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.MapEditorGroup("Player")]
-	public abstract class ePlayer : eCharacter, IGlobalPosition {
+	public abstract class ePlayer : eCharacter {
 
 
 
@@ -47,7 +47,7 @@ namespace Yaya {
 
 
 		public override void FillPhysics () {
-			if (FrameTask.HasTask(YayaConst.TASK_ROUTE)) return;
+			if (FrameTask.HasTask(Const.TASK_ROUTE)) return;
 			base.FillPhysics();
 		}
 
@@ -64,7 +64,7 @@ namespace Yaya {
 			// Update Player
 			switch (CharacterState) {
 				case CharacterState.GamePlay:
-					if (!FrameTask.HasTask(YayaConst.TASK_ROUTE)) {
+					if (!FrameTask.HasTask(Const.TASK_ROUTE)) {
 						Move(FrameInput.DirectionX, FrameInput.DirectionY);
 						Update_JumpDashPoundRush();
 						Update_Action_Attack();
@@ -74,7 +74,7 @@ namespace Yaya {
 					}
 					break;
 				case CharacterState.Sleep:
-					if (!FrameTask.HasTask(YayaConst.TASK_ROUTE)) {
+					if (!FrameTask.HasTask(Const.TASK_ROUTE)) {
 						Update_Sleep();
 					}
 					break;
@@ -235,7 +235,7 @@ namespace Yaya {
 		private void Update_View () {
 
 			const int LINGER_RATE = 32;
-			bool notInGameplay = FrameTask.IsTasking<OpeningTask>(YayaConst.TASK_ROUTE) || CharacterState != CharacterState.GamePlay;
+			bool notInGameplay = FrameTask.IsTasking<OpeningTask>(Const.TASK_ROUTE) || CharacterState != CharacterState.GamePlay;
 			bool notInAir =
 				notInGameplay ||
 				IsGrounded || InWater || InSand || IsSliding ||
@@ -308,9 +308,6 @@ namespace Yaya {
 
 
 		public static int GetCameraShiftOffset (int cameraHeight) => cameraHeight * 382 / 1000;
-
-
-		public Vector3Int GetHomePosition () => GlobalPosition.TryGetFirstGlobalUnitPosition(TypeID, out var pos) ? pos : new Vector3Int(X, Y, Game.Current.ViewZ);
 
 
 		#endregion

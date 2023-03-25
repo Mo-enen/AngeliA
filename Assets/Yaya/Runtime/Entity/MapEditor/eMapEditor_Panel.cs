@@ -56,10 +56,7 @@ namespace Yaya {
 		private const int TOOL_BAR_HEIGHT = 54;
 
 		// UI
-		private readonly CellLabel TooltipLabel = new() {
-			Tint = Const.WHITE,
-			Alignment = Alignment.TopLeft,
-		};
+		private readonly CellLabel TooltipLabel = new() { Tint = Const.WHITE, Alignment = Alignment.TopLeft, CharSize = 24, };
 
 		// Data
 		private RectInt PaletteGroupPanelRect = default;
