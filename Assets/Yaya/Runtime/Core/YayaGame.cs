@@ -4,29 +4,8 @@ using UnityEngine;
 using AngeliaFramework;
 using Rigidbody = AngeliaFramework.Rigidbody;
 
+
 namespace Yaya {
-
-
-	public interface IDamageReceiver {
-		public bool AllowDamageFromLevel => true;
-		public bool AllowDamageFromBullet => true;
-		public int Team => Const.TEAM_NEUTRAL;
-		void TakeDamage (int damage);
-		public bool TeamCheck (int otherTeam) => Team == Const.TEAM_NEUTRAL || Team != otherTeam;
-	}
-
-
-	public enum FittingPose {
-		Unknown = 0,
-		Left = 1,
-		Down = 1,
-		Mid = 2,
-		Right = 3,
-		Up = 3,
-		Single = 4,
-	}
-
-
 	public class YayaGame {
 
 
@@ -37,11 +16,8 @@ namespace Yaya {
 
 		// Api
 		public static YayaGame Current { get; private set; } = null;
-		public YayaWorldSquad WorldSquad { get; private set; } = null;
-		public YayaWorldSquad WorldSquadBehind { get; private set; } = null;
 
 		// Data
-		private static readonly PhysicsCell[] c_DamageCheck = new PhysicsCell[16];
 		private readonly ePauseMenu PauseMenu = null;
 		private readonly eMapEditor MapEditor = null;
 
@@ -62,8 +38,6 @@ namespace Yaya {
 		private YayaGame () {
 
 			var game = Game.Current;
-			if (game == null) return;
-
 			Current = this;
 
 			game.OnFrameUpdate -= FrameUpdate;
@@ -72,32 +46,34 @@ namespace Yaya {
 			game.OnPauselessUpdate -= PauselessUpdate;
 			game.OnPauselessUpdate += PauselessUpdate;
 
-			// World
-			game.WorldSquad = WorldSquad = new YayaWorldSquad();
-			game.WorldSquadBehind = WorldSquadBehind = new YayaWorldSquad(true);
-			game.WorldSquad.SetDataChannel(MapChannel.BuiltIn);
-			game.WorldSquadBehind.SetDataChannel(MapChannel.BuiltIn);
 			game.BeforeViewZChange -= YayaBeforeViewZChange;
 			game.BeforeViewZChange += YayaBeforeViewZChange;
 
-			// UI Entity
-			PauseMenu = game.PeekOrGetEntity<ePauseMenu>();
-			MapEditor = game.PeekOrGetEntity<eMapEditor>();
-
-			// Quit
 			Application.wantsToQuit -= OnQuit;
 			Application.wantsToQuit += OnQuit;
 
-			// Select Player
-			int firstPlayerID = ePlayer.GetFirstSelectedPlayerID();
-			var firstPlayer = game.SpawnEntity(firstPlayerID, 0, 0) as ePlayer;
-			ePlayer.SelectPlayer(firstPlayer);
+			PauseMenu = game.PeekOrGetEntity<ePauseMenu>();
+			MapEditor = game.PeekOrGetEntity<eMapEditor>();
 
-			// Misc
 			Rigidbody.WaterSplashParticleID = typeof(eWaterSplashParticle).AngeHash();
+			Character.FootstepParticleCode = eCharacterFootstep.TYPE_ID;
+			Character.PassoutParticleCode = ePassoutStarParticle.TYPE_ID;
+			Character.SleepParticleCode = eSleepParticle.TYPE_ID;
+			Character.SlideParticleCode = eSlideDust.TYPE_ID;
+			Character.SleepDoneParticleCode = eDefaultParticle.TYPE_ID;
 
-			// Start the Game !!
-			StartGame();
+			// Start Game
+			if (
+				FrameTask.TryAddToLast(OpeningTask.TYPE_ID, Const.TASK_ROUTE, out var task) &&
+				task is OpeningTask oTask
+			) {
+				Game.Current.SetViewSizeDelay(Game.Current.ViewConfig.DefaultHeight, 1000, int.MaxValue);
+				oTask.TargetViewX = 0;
+				oTask.TargetViewY = 0;
+				oTask.TargetViewZ = 0;
+				oTask.GotoBed = true;
+				oTask.FadeOut = false;
+			}
 
 		}
 
@@ -108,15 +84,6 @@ namespace Yaya {
 			if (Game.Current == null) return;
 
 			FrameUpdate_Player();
-			Update_Damage();
-
-
-
-			// Test
-			if (!MapEditor.Active) {
-				Game.Current.SpawnEntity<eMapEditor>(0, 0);
-			}
-
 
 		}
 
@@ -125,24 +92,24 @@ namespace Yaya {
 
 			// Spawn Player when No Player Entity
 			if (
-				ePlayer.Selecting != null &&
-				!ePlayer.Selecting.Active &&
+				Player.Selecting != null &&
+				!Player.Selecting.Active &&
 				!FrameTask.HasTask(Const.TASK_ROUTE) &&
 				!MapEditor.Active
 			) {
 				var center = CellRenderer.CameraRect.CenterInt();
-				ePlayer.TrySpawnSelectingPlayer(center.x, center.y);
+				Player.TrySpawnSelectingPlayer(center.x, center.y);
 			}
 
 			// Reload Game After Player Passout
 			if (
-				ePlayer.Selecting != null &&
-				ePlayer.Selecting.Active &&
-				ePlayer.Selecting.CharacterState == CharacterState.Passout &&
+				Player.Selecting != null &&
+				Player.Selecting.Active &&
+				Player.Selecting.CharacterState == CharacterState.Passout &&
 				!MapEditor.IsEditing
 			) {
 				if (
-					ePlayer.Selecting.IsFullPassout &&
+					Player.Selecting.IsFullPassout &&
 					FrameInput.GameKeyDown(Gamekey.Action) &&
 					!FrameTask.HasTask(Const.TASK_ROUTE)
 				) {
@@ -172,37 +139,6 @@ namespace Yaya {
 		}
 
 
-		private void Update_Damage () {
-			var game = Game.Current;
-			if (game.State != GameState.Play) return;
-			int len = game.EntityCount;
-			for (int i = 0; i < len; i++) {
-				var entity = game.Entities[i];
-				if (entity is not IDamageReceiver receiver) continue;
-				int count = YayaCellPhysics.OverlapAll_Damage(c_DamageCheck, entity.Rect, receiver);
-				for (int j = 0; j < count; j++) {
-					var hit = c_DamageCheck[j];
-					if (hit.Entity is eBullet bullet) {
-						// From Bullet
-						bullet.OnHit(receiver);
-						if (receiver.AllowDamageFromBullet && receiver.TeamCheck(bullet.Team)) {
-							receiver.TakeDamage(hit.Tag);
-						}
-					} else if (hit.Entity != null) {
-						// From Entity
-						hit.Entity.Active = false;
-						receiver.TakeDamage(hit.Tag);
-					} else {
-						// From Null (Level)
-						if (receiver.AllowDamageFromLevel) {
-							receiver.TakeDamage(hit.Tag);
-						}
-					}
-				}
-			}
-		}
-
-
 		// Misc
 		private void PauselessUpdate () {
 
@@ -221,7 +157,7 @@ namespace Yaya {
 
 			// Hint
 			if (game.State == GameState.Cutscene) {
-				ControlHintUI.AddHint(Gamekey.Start, WORD.HINT_SKIP);
+				ControlHintUI.AddHint(Gamekey.Start, Language.Get(WORD.HINT_SKIP));
 			}
 
 			// Start Key to Switch State
@@ -268,35 +204,12 @@ namespace Yaya {
 
 
 
-		#region --- API ---
-
-
-		public void StartGame () {
-			if (
-				FrameTask.TryAddToLast(OpeningTask.TYPE_ID, Const.TASK_ROUTE, out var task) &&
-				task is OpeningTask oTask
-			) {
-				Game.Current.SetViewSizeDelay(Game.Current.ViewConfig.DefaultHeight, 1000, int.MaxValue);
-				oTask.TargetViewX = 0;
-				oTask.TargetViewY = 0;
-				oTask.TargetViewZ = 0;
-				oTask.GotoBed = true;
-				oTask.FadeOut = false;
-			}
-		}
-
-
-		#endregion
-
-
-
-
 		#region --- LGC ---
 
 
 		private void YayaBeforeViewZChange (int newZ) {
 			// Player
-			var current = ePlayer.Selecting;
+			var current = Player.Selecting;
 			if (current != null && current.Active) {
 				current.RenderBounce();
 			}

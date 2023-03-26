@@ -4,6 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 using Rigidbody = AngeliaFramework.Rigidbody;
 
+
 namespace Yaya {
 	[EntityAttribute.MapEditorGroup("Vegetation")]
 	[EntityAttribute.Capacity(128)]

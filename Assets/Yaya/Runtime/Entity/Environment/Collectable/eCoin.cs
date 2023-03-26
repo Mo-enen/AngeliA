@@ -6,11 +6,11 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.Capacity(256)]
-	public class eCoin : eCollectable {
+	public class eCoin : Collectable {
 
 
 		public override bool OnCollect (Entity source) {
-			if (source is not ePlayer) return false;
+			if (source is not Player) return false;
 
 
 

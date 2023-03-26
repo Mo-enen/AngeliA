@@ -44,7 +44,7 @@ namespace Yaya {
 				int count = CellPhysics.OverlapAll(c_Checks, Const.MASK_RIGIDBODY, Rect, this);
 				for (int i = 0; i < count; i++) {
 					var hit = c_Checks[i];
-					if (hit.Entity is not ePlayer player) continue;
+					if (hit.Entity is not Player player) continue;
 					if (
 						(TriggerFromBottom && player.VelocityY > 0) ||
 						(TriggerFromTop && player.VelocityY < 0) ||

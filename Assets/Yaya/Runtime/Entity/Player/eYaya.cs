@@ -6,7 +6,7 @@ using System;
 
 namespace Yaya {
 	[FirstSelectedPlayer]
-	public class eYaya : ePlayer {
+	public class eYaya : eYayaPlayer {
 
 
 		public eYaya () {
@@ -46,7 +46,7 @@ namespace Yaya {
 		public override void OnActived () {
 			base.OnActived();
 			if (!Game.Current.TryGetEntity<eGuaGua>(out _)) {
-				eSummon.CreateSummon<eGuaGua>(this, X, Y);
+				Summon.CreateSummon<eGuaGua>(this, X, Y);
 			}
 		}
 

@@ -78,7 +78,7 @@ namespace Yaya {
 			base.FrameUpdate();
 
 			const int OVERLAP_SHRINK = Const.CEL / 8;
-			var player = ePlayer.Selecting;
+			var player = Player.Selecting;
 			bool playerOverlaps =
 				player != null &&
 				player.IsGrounded &&
@@ -109,7 +109,7 @@ namespace Yaya {
 
 
 		// API
-		public bool Invoke (ePlayer player) {
+		public bool Invoke (Player player) {
 			if (player == null || FrameTask.HasTask(Const.TASK_ROUTE)) return false;
 			var game = Game.Current;
 			player.X = X + (Width - player.Width) / 2 - player.OffsetX;
@@ -129,7 +129,7 @@ namespace Yaya {
 
 
 		public bool AllowInvoke (Entity target) =>
-			!FrameTask.HasTask(Const.TASK_ROUTE) && target is eCharacter ch &&
+			!FrameTask.HasTask(Const.TASK_ROUTE) && target is Character ch &&
 			ch.IsGrounded && ch.Rect.y >= Y && !ch.IsSquating && !ch.IsClimbing;
 
 

@@ -109,7 +109,7 @@ namespace Yaya {
 
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
-			CharacterNearby = CellPhysics.HasEntity<eCharacter>(Rect.Expand(Const.CEL), Const.MASK_CHARACTER, null);
+			CharacterNearby = CellPhysics.HasEntity<Character>(Rect.Expand(Const.CEL), Const.MASK_CHARACTER, null);
 		}
 
 

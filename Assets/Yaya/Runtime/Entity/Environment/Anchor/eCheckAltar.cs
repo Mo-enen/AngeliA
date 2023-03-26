@@ -88,6 +88,9 @@ namespace Yaya {
 
 		protected override void OnPlayerTouched (Vector3Int unitPos) {
 			base.OnPlayerTouched(unitPos);
+			if (Game.Current.WorldSquad.Channel != LoadedChannel) {
+				ReloadMetaPool(Game.Current.WorldSquad.Channel);
+			}
 			// Save Meta
 			if (!UnlockedPositionPool.TryGetValue(TypeID, out var savedPos) || savedPos != unitPos) {
 				UnlockedPositionPool[TypeID] = unitPos;
@@ -126,7 +129,23 @@ namespace Yaya {
 		#region --- API ---
 
 
-		public static void ReloadMetaPool (MapChannel channel) {
+		public static bool TryGetUnlockedPosition (int id, out Vector3Int unitPosition) {
+			if (Game.Current.WorldSquad.Channel != LoadedChannel) {
+				ReloadMetaPool(Game.Current.WorldSquad.Channel);
+			}
+			return UnlockedPositionPool.TryGetValue(id, out unitPosition);
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+		private static void ReloadMetaPool (MapChannel channel) {
 			LoadedChannel = channel;
 			UnlockedPositionPool.Clear();
 			CheckPointMeta meta = null;

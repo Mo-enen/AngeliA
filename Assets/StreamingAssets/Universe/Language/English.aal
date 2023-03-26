@@ -3,6 +3,7 @@
 @lalynna:LalynnA
 @nesu:Nesu
 @yaya:Yaya
+CtrlHint.MEDT.Nav:Overlook
 ActionHint.Bed:Sleep
 ActionHint.Door:Enter
 ActionHint.OpenableFurniture:Open
@@ -10,9 +11,7 @@ ActionHint.Photo:Switch
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Jump:Jump
-CtrlHint.MEDT.Nav:Overlook
 CtrlHint.MEDT.PlayFromBegain:Play from Start
-CtrlHint.MEDT.ResetCamera:Reset Camera
 CtrlHint.MEDT.SwitchMode.Edit:Edit
 CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move

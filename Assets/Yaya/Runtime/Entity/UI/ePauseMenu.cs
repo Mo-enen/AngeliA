@@ -72,11 +72,11 @@ namespace Yaya {
 			ContentPadding = new(32, 32, 46, string.IsNullOrEmpty(Message) ? 46 : 23);
 
 			if (SelectionAdjustable) {
-				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, WORD.HINT_ADJUST);
+				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, Language.Get(WORD.HINT_ADJUST));
 			} else {
-				ControlHintUI.AddHint(Gamekey.Action, WORD.HINT_USE);
+				ControlHintUI.AddHint(Gamekey.Action, Language.Get(WORD.HINT_USE));
 			}
-			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, WORD.HINT_MOVE);
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, Language.Get(WORD.HINT_MOVE));
 
 			base.FrameUpdate();
 

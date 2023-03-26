@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Yaya {
 	[EntityAttribute.Capacity(12)]
-	public class eYayaPaw : eBullet {
+	public class eYayaPaw : Bullet {
 
 
 		// Const
@@ -25,16 +25,16 @@ namespace Yaya {
 		// Data
 		private bool FacingRight = false;
 		private bool Grounded = true;
-		private eCharacter Character = null;
+		private Character Character = null;
 
 
 		// MSG
 		public override void Release (Entity entity, int team, Vector2Int direction, int combo, int chargeDuration) {
 			base.Release(entity, team, direction, combo, chargeDuration);
-			if (entity == null || entity is not eCharacter) return;
+			if (entity == null || entity is not AngeliaFramework.Character) return;
 			Width = 384;
 			Height = 512;
-			Character = entity as eCharacter;
+			Character = entity as Character;
 			FacingRight = Character.FacingRight;
 			var rect = entity.Rect;
 			X = FacingRight ? rect.xMax : rect.xMin - Width;

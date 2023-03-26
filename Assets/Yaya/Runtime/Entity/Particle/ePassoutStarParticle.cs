@@ -9,6 +9,8 @@ namespace Yaya {
 
 
 		// Const
+		public static readonly int TYPE_ID = typeof(ePassoutStarParticle).AngeHash();
+
 		private static readonly int STAR_CODE = "Passout Star".AngeHash();
 
 		// Api
@@ -16,21 +18,14 @@ namespace Yaya {
 		public override int FramePerSprite => 1;
 		public override bool Loop => true;
 		public override bool UseSpriteSize => false;
-
-		// Api
-		public eCharacter Character { get; set; } = null;
+		public Character Character => UserData as Character;
 
 
 		// MSG
-		public override void OnActived () {
-			base.OnActived();
-			Character = null;
-		}
-
-
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (Character == null || !Character.Active || Character.CharacterState != CharacterState.Passout) {
+			var character = Character;
+			if (character == null || !character.Active || character.CharacterState != CharacterState.Passout) {
 				Active = false;
 				return;
 			}

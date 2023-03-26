@@ -90,7 +90,7 @@ namespace Yaya {
 
 
 		private void Update_PlayerTouch () {
-			var player = ePlayer.Selecting;
+			var player = Player.Selecting;
 			if (player == null || !player.Active) return;
 			if (player.Rect.Overlaps(Rect)) {
 				var unitPos = new Vector3Int(X.ToUnit(), Y.ToUnit(), Game.Current.ViewZ);

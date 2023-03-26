@@ -6,7 +6,7 @@ using System;
 
 namespace Yaya {
 	[EntityAttribute.Capacity(32)]
-	public class eGuaGua : eSummon {
+	public class eGuaGua : Summon {
 
 
 		// Const

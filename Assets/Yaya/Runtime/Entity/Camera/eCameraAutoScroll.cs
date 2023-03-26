@@ -127,11 +127,11 @@ namespace Yaya {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (ePlayer.Selecting == null || !ePlayer.Selecting.Active) {
+			if (Player.Selecting == null || !Player.Selecting.Active) {
 				Current = null;
 				return;
 			}
-			if (ePlayer.Selecting.CharacterState != CharacterState.GamePlay) {
+			if (Player.Selecting.CharacterState != CharacterState.GamePlay) {
 				Current = null;
 				return;
 			}
@@ -145,7 +145,7 @@ namespace Yaya {
 
 		private void FrameUpdate_Idle () {
 
-			var player = ePlayer.Selecting;
+			var player = Player.Selecting;
 			if (player == null || !player.Active) return;
 			int thisX = X + Const.HALF;
 			int thisY = Y + Const.HALF;
@@ -229,7 +229,7 @@ namespace Yaya {
 
 			// Clamp or Passout Player
 			const int PASS_OUT_GAP = Const.CEL * 3;
-			var player = ePlayer.Selecting;
+			var player = Player.Selecting;
 			var pRect = player.Rect;
 			var cameraRect = CellRenderer.CameraRect;
 			if (pRect.yMin < cameraRect.yMin - PASS_OUT_GAP) {

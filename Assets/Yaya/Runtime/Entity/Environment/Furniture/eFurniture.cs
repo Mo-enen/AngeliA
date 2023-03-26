@@ -61,7 +61,7 @@ namespace Yaya {
 				Pose = FittingPose.Single;
 
 				if (ModuleType != Direction3.None) {
-					Pose = YayaGame.Current.WorldSquad.GetEntityPose(
+					Pose = Game.Current.WorldSquad.GetEntityPose(
 						this, ModuleType == Direction3.Horizontal, Const.MASK_ENVIRONMENT,
 						out var ld, out var ru, OperationMode.ColliderAndTrigger
 					);

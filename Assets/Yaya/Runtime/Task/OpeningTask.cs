@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using AngeliaFramework;
 
 
@@ -36,7 +35,7 @@ namespace Yaya {
 			SkipFrame = int.MaxValue;
 			ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, true);
 			PlayerSpawnY = TargetViewY;
-			TargetViewY += Game.Current.ViewRect.height / 2 - ePlayer.GetCameraShiftOffset(Game.Current.ViewRect.height);
+			TargetViewY += Game.Current.ViewRect.height / 2 - Player.GetCameraShiftOffset(Game.Current.ViewRect.height);
 		}
 
 
@@ -68,7 +67,7 @@ namespace Yaya {
 
 			// Remove Player
 			if (localFrame == 1) {
-				var player = ePlayer.Selecting;
+				var player = Player.Selecting;
 				if (player != null) {
 					player.Active = false;
 					player.SetCharacterState(CharacterState.GamePlay);
@@ -79,7 +78,7 @@ namespace Yaya {
 
 			// Spawn Player
 			if (localFrame == 2) {
-				var player = ePlayer.TrySpawnSelectingPlayer(TargetViewX, PlayerSpawnY);
+				var player = Player.TrySpawnSelectingPlayer(TargetViewX, PlayerSpawnY);
 				if (GotoBed) {
 					if (Game.Current.TryGetEntityNearby<eBed>(new(player.X, player.Y), out var bed)) {
 						bed.Invoke(player);

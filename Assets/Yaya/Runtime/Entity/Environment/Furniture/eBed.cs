@@ -22,7 +22,7 @@ namespace Yaya {
 
 		public override bool Invoke (Entity target) {
 
-			if (target is not eCharacter ch) return false;
+			if (target is not Character ch) return false;
 
 			ch.SetCharacterState(CharacterState.Sleep);
 

@@ -42,7 +42,7 @@ namespace Yaya {
 			TouchedByRigidbody = false;
 			PrevX = X;
 			PrevY = Y;
-			Pose = YayaGame.Current.WorldSquad.GetEntityPose(TypeID, X, Y, true);
+			Pose = Game.Current.WorldSquad.GetEntityPose(TypeID, X, Y, true);
 			ArtworkCode = Pose switch {
 				FittingPose.Left => ArtworkCode_Left,
 				FittingPose.Mid => ArtworkCode_Mid,
@@ -86,9 +86,9 @@ namespace Yaya {
 					if (hit.Rect.y < Y + Height) continue;
 					if (hit.Entity is not Rigidbody) continue;
 					TouchedByRigidbody = true;
-					if (hit.Entity is not eCharacter) continue;
+					if (hit.Entity is not Character) continue;
 					TouchedByCharacter = true;
-					if (hit.Entity is not ePlayer) continue;
+					if (hit.Entity is not Player) continue;
 					TouchedByPlayer = true;
 					break;
 				}
@@ -170,7 +170,7 @@ namespace Yaya {
 					}
 				} else {
 					// For Nav Character
-					if (hit.Entity is not eCharacter ch || ch.IsFlying) continue;
+					if (hit.Entity is not Character ch || ch.IsFlying) continue;
 					rig.X += X - PrevX;
 					rig.Y = rect.yMax;
 				}
@@ -229,7 +229,7 @@ namespace Yaya {
 					if (hit.Entity is not Rigidbody rig) continue;
 					if (rig.X < left || rig.X >= right) continue;
 					if (rig.VelocityY > Y - PrevY) continue;
-					if (hit.Entity is not eCharacter ch || ch.IsFlying) continue;
+					if (hit.Entity is not Character ch || ch.IsFlying) continue;
 					if (!rig.Rect.Overlaps(prevRect)) {
 						rig.Y.MoveTowards(rect.yMax - rig.OffsetY, 64);
 						rig.MakeGrounded(1, TypeID);
@@ -247,7 +247,7 @@ namespace Yaya {
 					if (hit.Entity is not Rigidbody rig) continue;
 					if (rig.X < left || rig.X >= right) continue;
 					if (rig.Rect.yMin < rect.yMax - Const.CEL / 3) continue;
-					if (hit.IsTrigger && (hit.Entity is not eCharacter ch || ch.IsFlying)) continue;
+					if (hit.IsTrigger && (hit.Entity is not Character ch || ch.IsFlying)) continue;
 					rig.Y = rect.yMax - rig.OffsetY;
 					if (!hit.IsTrigger) rig.VelocityY = 0;
 					rig.MakeGrounded(1, TypeID);
