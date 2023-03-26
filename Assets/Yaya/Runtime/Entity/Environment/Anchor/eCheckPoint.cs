@@ -38,9 +38,6 @@ namespace Yaya {
 
 
 
-		// Api
-		public static Vector3Int? SavedUnitPosition { get; private set; } = null;
-
 		// Data
 		private Int4 Border = default;
 
@@ -94,8 +91,8 @@ namespace Yaya {
 			if (player == null || !player.Active) return;
 			if (player.Rect.Overlaps(Rect)) {
 				var unitPos = new Vector3Int(X.ToUnit(), Y.ToUnit(), Game.Current.ViewZ);
-				if (SavedUnitPosition != unitPos) {
-					SavedUnitPosition = unitPos;
+				if (Game.Current.SavedPlayerUnitPosition != unitPos) {
+					Game.Current.SavedPlayerUnitPosition = unitPos;
 					OnPlayerTouched(unitPos);
 				}
 			}

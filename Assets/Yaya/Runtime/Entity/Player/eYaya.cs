@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-using System;
+
 
 namespace Yaya {
 	[FirstSelectedPlayer]
-	public class eYaya : eYayaPlayer {
+	public class eYaya : Player {
 
 
 		public eYaya () {
@@ -45,8 +45,16 @@ namespace Yaya {
 
 		public override void OnActived () {
 			base.OnActived();
+			// Summon GuaGua
 			if (!Game.Current.TryGetEntity<eGuaGua>(out _)) {
 				Summon.CreateSummon<eGuaGua>(this, X, Y);
+			}
+			// Goto Bed on Start
+			if (!Game.Current.SavedPlayerUnitPosition.HasValue) {
+				if (Game.Current.TryGetEntityNearby<eBed>(new Vector2Int(X, Y), out var bed)) {
+					bed.Invoke(this);
+					FullSleep();
+				}
 			}
 		}
 

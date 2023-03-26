@@ -8,7 +8,6 @@ namespace Yaya {
 	public class eSleepParticle : Particle {
 
 
-		public readonly static int TYPE_ID = typeof(eSleepParticle).AngeHash();
 		public override int Duration => 120;
 		public override int FramePerSprite => 1;
 		public override bool Loop => false;
@@ -16,6 +15,12 @@ namespace Yaya {
 
 		// Data
 		private static int GlobalShift = 0;
+
+
+		[AfterGameInitialize]
+		public static void Init () {
+			Character.SleepParticleCode = typeof(eSleepParticle).AngeHash();
+		}
 
 
 		public override void OnActived () {

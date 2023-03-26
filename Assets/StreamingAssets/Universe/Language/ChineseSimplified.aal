@@ -3,14 +3,10 @@
 @lalynna:蕾蕾娜
 @nesu:茄子
 @yaya:丫丫
-CtrlHint.MEDT.Nav:俯瞰
-ActionHint.Bed:睡觉
-ActionHint.Door:进门
-ActionHint.OpenableFurniture:打开
-ActionHint.Photo:切换
 CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Jump:跳跃
+CtrlHint.MEDT.Nav:俯瞰
 CtrlHint.MEDT.PlayFromBegain:从头开始游戏
 CtrlHint.MEDT.SwitchMode.Edit:编辑
 CtrlHint.MEDT.SwitchMode.Play:开始游戏

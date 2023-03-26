@@ -12,32 +12,6 @@ namespace Yaya {
 	public static class YayaUtil {
 
 
-		private static readonly Dictionary<int, int> HintCodePool = new();
-
-
-		[AfterGameInitialize]
-		public static void Initialize () {
-			HintCodePool.Clear();
-			var BOTTOM_TYPE = typeof(ActionEntity);
-			foreach (var type in typeof(ActionEntity).AllChildClass()) {
-				var _type = type;
-				while (_type != null && _type != BOTTOM_TYPE) {
-					string name = _type.Name;
-					if (name[0] == 'e') name = name[1..];
-					int code = $"ActionHint.{name}".AngeHash();
-					if (Language.Has(code)) {
-						HintCodePool.TryAdd(type.AngeHash(), code);
-						break;
-					}
-					_type = _type.BaseType;
-				}
-			}
-		}
-
-
-		public static int GetHintLanguageCode (int typeID) => HintCodePool.TryGetValue(typeID, out int result) ? result : WORD.HINT_USE;
-
-
 		public static void DrawSegmentHealthBar (
 			int x, int y,
 			int heartLeftCode, int heartRightCode, int emptyHeartLeftCode, int emptyHeartRightCode,

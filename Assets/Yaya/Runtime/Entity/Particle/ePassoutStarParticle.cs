@@ -9,8 +9,6 @@ namespace Yaya {
 
 
 		// Const
-		public static readonly int TYPE_ID = typeof(ePassoutStarParticle).AngeHash();
-
 		private static readonly int STAR_CODE = "Passout Star".AngeHash();
 
 		// Api
@@ -22,6 +20,12 @@ namespace Yaya {
 
 
 		// MSG
+		[AfterGameInitialize]
+		public static void Init () {
+			Character.PassoutParticleCode = typeof(ePassoutStarParticle).AngeHash();
+		}
+
+
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			var character = Character;

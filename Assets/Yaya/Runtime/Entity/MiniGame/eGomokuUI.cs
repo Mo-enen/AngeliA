@@ -6,7 +6,7 @@ using Gomoku;
 
 
 namespace Yaya {
-	public class eGomokuUI : eMiniGame {
+	public class eGomokuUI : MiniGame {
 
 
 
@@ -26,6 +26,12 @@ namespace Yaya {
 		private static readonly Color32 BLACK_STONE_TINT = new(16, 16, 16, 255);
 		private static readonly Color32 WHITE_STONE_TINT = new(230, 230, 230, 255);
 		private static readonly Color32 LAST_PLACED = new(255, 255, 0, 255);
+		private static readonly int GOMOKU_YOU_ARE = "UI.Gomoku.YouAre".AngeHash();
+		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
+		private static readonly int UI_QUIT = "UI.Quit".AngeHash();
+		private static readonly int UI_OK = "UI.OK".AngeHash();
+		private static readonly int UI_CANCEL = "UI.Cancel".AngeHash();
+		private static readonly int HINT_RESTART = "CtrlHint.Restart".AngeHash();
 
 		// Short
 		private bool Interactable => PlayerTurn && Winner == null && Game.GlobalFrame > LastPlaceFrame + 12;
@@ -167,11 +173,11 @@ namespace Yaya {
 		private void Update_Hint () {
 			if (MenuEntity != null && MenuEntity.Active) return;
 			if (!Winner.HasValue) {
-				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, Language.Get(WORD.HINT_MOVE));
-				ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, Language.Get(WORD.HINT_MOVE));
+				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, Language.Get(HINT_MOVE, "Move"));
+				ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, Language.Get(HINT_MOVE, "Move"));
 			}
-			ControlHintUI.AddHint(Gamekey.Start, Language.Get(WORD.UI_QUIT));
-			ControlHintUI.AddHint(Gamekey.Select, Language.Get(WORD.HINT_RESTART));
+			ControlHintUI.AddHint(Gamekey.Start, Language.Get(UI_QUIT, "Quit"));
+			ControlHintUI.AddHint(Gamekey.Select, Language.Get(HINT_RESTART, "Restart"));
 		}
 
 
@@ -186,7 +192,7 @@ namespace Yaya {
 			// Player Color Hint
 			int labelHeight = Unify(HintLabel.CharSize);
 			HintLabel.Tint = PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT;
-			HintLabel.Text = Language.Get(WORD.GOMOKU_YOU_ARE);
+			HintLabel.Text = Language.Get(GOMOKU_YOU_ARE, "You Are:");
 			CellRendererGUI.Label(
 				HintLabel,
 				new RectInt(boardRect.x, boardRect.yMax - labelHeight, boardRect.width, labelHeight),
@@ -346,22 +352,22 @@ namespace Yaya {
 
 		// Menu
 		private void OpenQuitMenu () => GenericMenuUI.SpawnMenu(
-			Language.Get(WORD.MENU_QUIT_MINI_GAME),
-			Language.Get(WORD.UI_QUIT), QuitGame,
-			Language.Get(WORD.UI_CANCEL), Cancel
+			Language.Get(MENU_QUIT_MINI_GAME, "Quit Mini Game?"),
+			Language.Get(UI_QUIT, "Quit"), QuitGame,
+			Language.Get(UI_CANCEL, "Cancel"), Cancel
 		);
 		private void OpenRestartMenu () => GenericMenuUI.SpawnMenu(
-			Language.Get(WORD.MENU_GOMOKU_RESTART),
-			Language.Get(WORD.UI_OK), RestartGame,
-			Language.Get(WORD.UI_CANCEL), Cancel
+			Language.Get(MENU_GOMOKU_RESTART, "Restart"),
+			Language.Get(UI_OK, "OK"), RestartGame,
+			Language.Get(UI_CANCEL, "Cancel"), Cancel
 		);
 		private void OpenGameOverMenu (bool blackWin) => GenericMenuUI.SpawnMenu(
-			Language.Get(blackWin == PlayerIsBlack ? WORD.MENU_GOMOKU_WIN : WORD.MENU_GOMOKU_LOSE),
-			Language.Get(WORD.UI_OK), Cancel
+			blackWin == PlayerIsBlack ? Language.Get(MENU_GOMOKU_WIN, "You Win") : Language.Get(MENU_GOMOKU_LOSE, "You Lose"),
+			Language.Get(UI_OK, "OK"), Cancel
 		);
 		private void OpenDrawMenu () => GenericMenuUI.SpawnMenu(
-			Language.Get(WORD.MENU_GOMOKU_DRAW),
-			Language.Get(WORD.UI_OK), Cancel
+			Language.Get(MENU_GOMOKU_DRAW, "Tie"),
+			Language.Get(UI_OK, "OK"), Cancel
 		);
 
 
