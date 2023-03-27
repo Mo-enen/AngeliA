@@ -2,18 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
-using System;
+
 
 namespace Yaya {
-	[EntityAttribute.Capacity(32)]
 	public class eGuaGua : Summon {
 
-
-		// Const
-		//private static readonly int HEART_L_CODE = "Heart Left".AngeHash();
-		//private static readonly int HEART_R_CODE = "Heart Right".AngeHash();
-		//private static readonly int HEART_EMPTY_L_CODE = "Heart Empty Left".AngeHash();
-		//private static readonly int HEART_EMPTY_R_CODE = "Heart Empty Right".AngeHash();
 
 
 		// MSG

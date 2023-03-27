@@ -27,11 +27,17 @@ namespace Yaya {
 		private static readonly Color32 WHITE_STONE_TINT = new(230, 230, 230, 255);
 		private static readonly Color32 LAST_PLACED = new(255, 255, 0, 255);
 		private static readonly int GOMOKU_YOU_ARE = "UI.Gomoku.YouAre".AngeHash();
+		private static readonly int GOMOKU_PLACE = "UI.Gomoku.Place".AngeHash();
 		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
 		private static readonly int UI_QUIT = "UI.Quit".AngeHash();
 		private static readonly int UI_OK = "UI.OK".AngeHash();
 		private static readonly int UI_CANCEL = "UI.Cancel".AngeHash();
 		private static readonly int HINT_RESTART = "CtrlHint.Restart".AngeHash();
+		private static readonly int MENU_QUIT_MINI_GAME = "Menu.MiniGame.QuitMsg".AngeHash();
+		private static readonly int MENU_GOMOKU_RESTART = "Menu.Gomoku.Restart".AngeHash();
+		private static readonly int MENU_GOMOKU_WIN = "Menu.Gomoku.Win".AngeHash();
+		private static readonly int MENU_GOMOKU_LOSE = "Menu.Gomoku.Lose".AngeHash();
+		private static readonly int MENU_GOMOKU_DRAW = "Menu.Gomoku.Draw".AngeHash();
 
 		// Short
 		private bool Interactable => PlayerTurn && Winner == null && Game.GlobalFrame > LastPlaceFrame + 12;
@@ -175,6 +181,7 @@ namespace Yaya {
 			if (!Winner.HasValue) {
 				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, Language.Get(HINT_MOVE, "Move"));
 				ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, Language.Get(HINT_MOVE, "Move"));
+				ControlHintUI.AddHint(Gamekey.Action, Language.Get(GOMOKU_PLACE, "Place"));
 			}
 			ControlHintUI.AddHint(Gamekey.Start, Language.Get(UI_QUIT, "Quit"));
 			ControlHintUI.AddHint(Gamekey.Select, Language.Get(HINT_RESTART, "Restart"));
