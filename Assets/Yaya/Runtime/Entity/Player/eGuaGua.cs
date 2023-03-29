@@ -7,6 +7,7 @@ using AngeliaFramework;
 namespace Yaya {
 	public class eGuaGua : Summon {
 
+		protected override CharacterRenderingSolution RenderingSolution => CharacterRenderingSolution.Sheet;
 
 
 		// MSG

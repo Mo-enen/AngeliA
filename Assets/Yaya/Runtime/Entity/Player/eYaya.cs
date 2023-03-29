@@ -10,6 +10,8 @@ namespace Yaya {
 	public class eYaya : Player {
 
 
+		protected override CharacterRenderingSolution RenderingSolution => CharacterRenderingSolution.Pose;
+
 		public eYaya () {
 
 			// Config

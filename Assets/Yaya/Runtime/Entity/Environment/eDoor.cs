@@ -121,7 +121,7 @@ namespace Yaya {
 				IsFrontDoor ? game.ViewZ - 1 : game.ViewZ + 1,
 				Const.TASK_ROUTE
 			);
-			player.RenderEnterDoor(game.WorldConfig.SquadTransitionDuration, IsFrontDoor);
+			player.EnterDoor(game.WorldConfig.SquadTransitionDuration, IsFrontDoor);
 			Open = true;
 			InputLock = true;
 			return true;
