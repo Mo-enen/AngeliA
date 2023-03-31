@@ -74,8 +74,8 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			MenuEntity = Game.Current.PeekOrGetEntity<GenericMenuUI>();
 			RestartGame();
 		}

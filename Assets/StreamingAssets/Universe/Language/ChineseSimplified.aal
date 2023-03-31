@@ -1,5 +1,4 @@
-﻿UI.Gomoku.Place:落子
-@enen:伊楠
+﻿@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子
@@ -8,7 +7,7 @@ CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Jump:跳跃
 CtrlHint.MEDT.Nav:俯瞰
-CtrlHint.MEDT.PlayFromBegain:从头开始游戏
+CtrlHint.MEDT.PlayFromBegin:从头开始游戏
 CtrlHint.MEDT.SwitchMode.Edit:编辑
 CtrlHint.MEDT.SwitchMode.Play:开始游戏
 CtrlHint.Move:移动
@@ -62,6 +61,7 @@ UI.GameKey.Right:右
 UI.GameKey.Select:选择
 UI.GameKey.Start:开始
 UI.GameKey.Up:上
+UI.Gomoku.Place:落子
 UI.Gomoku.YouAre:您是：
 UI.OFF:关闭
 UI.OK:确定

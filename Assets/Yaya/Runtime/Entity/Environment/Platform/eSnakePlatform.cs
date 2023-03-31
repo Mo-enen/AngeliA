@@ -47,8 +47,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			PrevTouched = false;
 			EndReachingFrame = int.MinValue;
 			CurrentDirection = Direction4.Right;
@@ -74,7 +74,7 @@ namespace Yaya {
 				if (Game.GlobalFrame > EndReachingFrame + EndBreakDuration) {
 					X = StartPosition.x;
 					Y = StartPosition.y;
-					OnActived();
+					OnActivated();
 				}
 				return;
 			}

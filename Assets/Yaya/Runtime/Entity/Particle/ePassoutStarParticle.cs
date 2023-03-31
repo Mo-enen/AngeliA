@@ -5,11 +5,11 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class ePassoutStarParticle : Particle {
+	public class ePassOutStarParticle : Particle {
 
 
 		// Const
-		private static readonly int STAR_CODE = "Passout Star".AngeHash();
+		private static readonly int STAR_CODE = "PassOut Star".AngeHash();
 
 		// Api
 		public override int Duration => 66;
@@ -22,14 +22,14 @@ namespace Yaya {
 		// MSG
 		[AfterGameInitialize]
 		public static void Init () {
-			Character.PassoutParticleCode = typeof(ePassoutStarParticle).AngeHash();
+			Character.PassOutParticleCode = typeof(ePassOutStarParticle).AngeHash();
 		}
 
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			var character = Character;
-			if (character == null || !character.Active || character.CharacterState != CharacterState.Passout) {
+			if (character == null || !character.Active || character.CharacterState != CharacterState.PassOut) {
 				Active = false;
 				return;
 			}

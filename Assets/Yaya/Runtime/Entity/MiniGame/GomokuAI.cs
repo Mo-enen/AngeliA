@@ -160,7 +160,7 @@ namespace Gomoku {
 
 		public static GomokuResult Play (
 			GomokuStone[,] stones, bool blackTurn, out int resultX, out int resultY
-		) => AnalyseScore(stones, blackTurn, out resultX, out resultY);
+		) => AnalyzeScore(stones, blackTurn, out resultX, out resultY);
 
 
 		public static GomokuStone CheckWin (GomokuStone[,] stageStones) => CheckWin(stageStones, out _, out _, out _, out _);
@@ -532,8 +532,8 @@ namespace Gomoku {
 		}
 
 
-		// Analyse
-		private static GomokuResult AnalyseScore (GomokuStone[,] stones, bool blackTurn, out int maxScoreX, out int maxScoreY) {
+		// Analyze
+		private static GomokuResult AnalyzeScore (GomokuStone[,] stones, bool blackTurn, out int maxScoreX, out int maxScoreY) {
 			int sizeX = stones.GetLength(0);
 			int sizeY = stones.GetLength(1);
 			if (sizeX != sizeY || sizeX == 0) {

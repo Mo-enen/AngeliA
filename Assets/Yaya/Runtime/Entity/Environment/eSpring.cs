@@ -58,8 +58,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			Width = Horizontal ? Const.CEL - 64 : Const.CEL;
 			Height = !Horizontal ? Const.CEL - 32 : Const.CEL;
 			if (Horizontal) OffsetX = (Const.CEL - Width) / 2;

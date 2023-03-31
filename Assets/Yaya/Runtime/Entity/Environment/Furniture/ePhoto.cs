@@ -11,8 +11,8 @@ namespace Yaya {
 		protected override bool LoopArtworkIndex => true;
 
 		// MSG
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			ArtworkIndex = Random.Range(int.MinValue, int.MaxValue);
 		}
 

@@ -1,5 +1,4 @@
-﻿UI.Gomoku.Place:Place
-@enen:Enen
+﻿@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
@@ -8,7 +7,7 @@ CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Jump:Jump
 CtrlHint.MEDT.Nav:Overlook
-CtrlHint.MEDT.PlayFromBegain:Play from Start
+CtrlHint.MEDT.PlayFromBegin:Play from Start
 CtrlHint.MEDT.SwitchMode.Edit:Edit
 CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
@@ -62,6 +61,7 @@ UI.GameKey.Right:Right
 UI.GameKey.Select:Select
 UI.GameKey.Start:Start
 UI.GameKey.Up:Up
+UI.Gomoku.Place:Place
 UI.Gomoku.YouAre:You are:
 UI.OFF:OFF
 UI.OK:OK

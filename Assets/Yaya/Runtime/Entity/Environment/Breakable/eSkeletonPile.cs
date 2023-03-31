@@ -13,8 +13,8 @@ namespace Yaya {
 		private RectInt FullRect = default;
 
 
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			Width = Const.CEL;
 			Height = Const.CEL;
 			FullRect = Rect;

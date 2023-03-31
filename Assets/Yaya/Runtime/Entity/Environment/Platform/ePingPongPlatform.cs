@@ -51,8 +51,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			From.x = X - Distance.x / 2;
 			From.y = Y - Distance.y / 2;
 			To.x = X + Distance.x / 2;

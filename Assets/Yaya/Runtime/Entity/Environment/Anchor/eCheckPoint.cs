@@ -43,8 +43,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			Border = default;
 			if (CellRenderer.TryGetSprite(TypeID, out var sprite)) {
 				Border = sprite.GlobalBorder;

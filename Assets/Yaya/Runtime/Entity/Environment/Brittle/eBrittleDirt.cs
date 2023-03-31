@@ -16,7 +16,7 @@ namespace Yaya {
 			base.FrameUpdate();
 			int frame = Game.GlobalFrame;
 			var tint = IsHolding || IsFalling ? new Color32(255, 196, 164, 255) : new Color32(255, 255, 255, 255);
-			int rot = IsHolding ? GetHoldedFrame(frame * 4).PingPong(12) - 6 : 0;
+			int rot = IsHolding ? GetHeldFrame(frame * 4).PingPong(12) - 6 : 0;
 			CellRenderer.Draw(
 				TypeID,
 				X + OffsetX + Width / 2,

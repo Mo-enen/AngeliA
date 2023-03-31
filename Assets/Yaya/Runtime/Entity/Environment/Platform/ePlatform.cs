@@ -35,8 +35,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			TouchedByPlayer = false;
 			TouchedByCharacter = false;
 			TouchedByRigidbody = false;

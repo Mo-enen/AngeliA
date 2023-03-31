@@ -14,8 +14,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			BrightnessShift = (X * 17 + Y * 9) / Const.CEL;
 			int hour = System.DateTime.Now.Hour;
 			OpenLight = hour <= 6 || hour >= 18;

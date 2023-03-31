@@ -22,8 +22,8 @@ namespace Yaya {
 		private static readonly System.Random Ran = new(1837458);
 
 		// MSG
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			CurrentSpeedX = Ran.Next(-24, 36);
 			CurrentSpeedY = Ran.Next(46, 96);
 			RotateSpeed = Ran.Next(-2, 3);

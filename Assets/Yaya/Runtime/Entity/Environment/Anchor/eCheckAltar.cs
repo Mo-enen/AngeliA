@@ -80,8 +80,8 @@ namespace Yaya {
 		public static void Initialize () => ReloadMetaPool(MapChannel.BuiltIn);
 
 
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			Height = Const.CEL * 2;
 		}
 

@@ -10,8 +10,8 @@ namespace Yaya {
 		protected override bool LoopArtworkIndex => true;
 
 
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			ArtworkIndex = (X + Y * 17) / Const.CEL;
 		}
 

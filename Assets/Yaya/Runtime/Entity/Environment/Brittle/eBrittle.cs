@@ -30,8 +30,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			HoldStartFrame = int.MaxValue;
 			LastHolding = false;
 			IsFalling = false;
@@ -88,7 +88,7 @@ namespace Yaya {
 		protected virtual void Break () => Active = false;
 
 
-		protected int GetHoldedFrame (int frame) => IsHolding ? frame - HoldStartFrame : 0;
+		protected int GetHeldFrame (int frame) => IsHolding ? frame - HoldStartFrame : 0;
 
 
 	}

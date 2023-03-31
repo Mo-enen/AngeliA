@@ -24,8 +24,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			Interacting = false;
 			// Rect from Sprite
 			if (CellRenderer.TryGetSpriteFromGroup(

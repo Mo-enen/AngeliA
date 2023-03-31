@@ -25,7 +25,7 @@ namespace Yaya {
 			FlyRiseSpeed.Value = 32;
 			MaxHP.Value = 1;
 			FlyAcceleration.Value = 1;
-			FlyDecceleration.Value = 1;
+			FlyDeceleration.Value = 1;
 		}
 
 

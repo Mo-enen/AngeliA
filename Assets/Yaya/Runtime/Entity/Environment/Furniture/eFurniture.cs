@@ -40,8 +40,8 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			Pose = FittingPose.Unknown;
 			FurnitureLeftOrDown = null;
 			FurnitureRightOrUp = null;

@@ -13,8 +13,8 @@ namespace Yaya {
 		private RectInt FullRect = default;
 
 
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			FullRect = new(X, Y, Const.CEL, Const.CEL);
 			Width = Height = Const.CEL;
 			int artworkIndex = X.UDivide(Const.CEL) + Y.UDivide(Const.CEL);

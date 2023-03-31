@@ -40,8 +40,8 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			Width = ITEM_PHYSICS_SIZE;
 			Height = ITEM_PHYSICS_SIZE;
 			MakingRoom = false;

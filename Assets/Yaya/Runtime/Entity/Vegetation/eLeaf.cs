@@ -96,8 +96,8 @@ namespace Yaya {
 		#region --- MSG ---
 
 
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			Width = Const.CEL;
 			Height = Const.CEL;
 			// Leaf

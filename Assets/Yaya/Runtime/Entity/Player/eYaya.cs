@@ -46,8 +46,8 @@ namespace Yaya {
 		}
 
 
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			// Summon GuaGua
 			if (!Game.Current.TryGetEntity<eGuaGua>(out _)) {
 				Summon.CreateSummon<eGuaGua>(this, X, Y);

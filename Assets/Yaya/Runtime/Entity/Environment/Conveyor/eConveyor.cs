@@ -16,9 +16,9 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived () {
+		public override void OnActivated () {
 			Pose = FittingPose.Unknown;
-			base.OnActived();
+			base.OnActivated();
 		}
 
 

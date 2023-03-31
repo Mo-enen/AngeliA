@@ -22,7 +22,7 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived () {
+		public override void OnActivated () {
 			Width = Const.CEL;
 			Height = Const.CEL;
 		}

@@ -13,8 +13,8 @@ namespace Yaya {
 		private int LeftStoveCount = -1;
 
 
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			LeftStoveCount = -1;
 		}
 

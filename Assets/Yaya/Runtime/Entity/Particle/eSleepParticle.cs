@@ -23,8 +23,8 @@ namespace Yaya {
 		}
 
 
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			Width = 0;
 			Height = 0;
 			X += GlobalShift * 12;

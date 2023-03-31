@@ -19,8 +19,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			DockPose = FittingPose.Unknown;
 		}
 

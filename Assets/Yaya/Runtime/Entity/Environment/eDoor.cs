@@ -60,8 +60,8 @@ namespace Yaya {
 
 
 		// MSG
-		public override void OnActived () {
-			base.OnActived();
+		public override void OnActivated () {
+			base.OnActivated();
 			Height = Const.CEL * 2;
 			Open = false;
 		}
@@ -130,7 +130,7 @@ namespace Yaya {
 
 		public bool AllowInvoke (Entity target) =>
 			!FrameTask.HasTask(Const.TASK_ROUTE) && target is Character ch &&
-			ch.IsGrounded && ch.Rect.y >= Y && !ch.IsSquating && !ch.IsClimbing;
+			ch.IsGrounded && ch.Rect.y >= Y && !ch.IsSquatting && !ch.IsClimbing;
 
 
 	}
