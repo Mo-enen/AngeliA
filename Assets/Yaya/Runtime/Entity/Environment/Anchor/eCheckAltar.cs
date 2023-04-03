@@ -46,11 +46,8 @@ namespace Yaya {
 		#region --- SUB ---
 
 
-		[System.Serializable] public class BuiltInCheckPointMeta : CheckPointMeta { }
-		[System.Serializable] public class UserCheckPointMeta : CheckPointMeta { }
-		[System.Serializable] public class DownloadCheckPointMeta : CheckPointMeta { }
 		[System.Serializable]
-		public abstract class CheckPointMeta {
+		public class CheckPointMeta {
 			public Int4[] UnlockedPositions;
 		}
 
@@ -77,7 +74,10 @@ namespace Yaya {
 
 
 		[BeforeGameInitialize]
-		public static void Initialize () => ReloadMetaPool(MapChannel.BuiltIn);
+		public static void Initialize () {
+			ReloadMetaPool(MapChannel.BuiltIn);
+			MapEditor.OnPlayModeChanged += OnMapEditorPlayModeChanged;
+		}
 
 
 		public override void OnActivated () {
@@ -94,13 +94,9 @@ namespace Yaya {
 			// Save Meta
 			if (!UnlockedPositionPool.TryGetValue(TypeID, out var savedPos) || savedPos != unitPos) {
 				UnlockedPositionPool[TypeID] = unitPos;
-				CheckPointMeta meta = LoadedChannel switch {
-					MapChannel.BuiltIn => new BuiltInCheckPointMeta(),
-					MapChannel.User => new UserCheckPointMeta(),
-					MapChannel.Download => new DownloadCheckPointMeta(),
-					_ => throw new System.NotImplementedException(),
+				var meta = new CheckPointMeta {
+					UnlockedPositions = new Int4[UnlockedPositionPool.Count],
 				};
-				meta.UnlockedPositions = new Int4[UnlockedPositionPool.Count];
 				int index = 0;
 				foreach (var (id, pos) in UnlockedPositionPool) {
 					ref var pos4 = ref meta.UnlockedPositions[index];
@@ -148,23 +144,24 @@ namespace Yaya {
 		private static void ReloadMetaPool (MapChannel channel) {
 			LoadedChannel = channel;
 			UnlockedPositionPool.Clear();
-			CheckPointMeta meta = null;
-			switch (channel) {
-				case MapChannel.BuiltIn:
-					meta = AngeUtil.LoadOrCreateJson<BuiltInCheckPointMeta>(Const.PlayerDataRoot);
-					break;
-				case MapChannel.User:
-					meta = AngeUtil.LoadOrCreateJson<UserCheckPointMeta>(Const.PlayerDataRoot);
-					break;
-				case MapChannel.Download:
-					meta = AngeUtil.LoadOrCreateJson<DownloadCheckPointMeta>(Const.PlayerDataRoot);
-					break;
-			}
+			var meta = AngeUtil.LoadOrCreateJson<CheckPointMeta>(channel.MapFolder());
 			if (meta == null || meta.UnlockedPositions == null) return;
 			foreach (var pos4 in meta.UnlockedPositions) {
 				var pos3 = new Vector3Int(pos4.A, pos4.B, pos4.C);
 				UnlockedPositionPool.TryAdd(pos4.D, pos3);
 			}
+		}
+
+
+		private static void OnMapEditorPlayModeChanged (bool isPlaying) {
+#if UNITY_EDITOR
+			const MapChannel TARGET_CHANNEL = MapChannel.BuiltIn;
+#else
+			const MapChannel TARGET_CHANNEL = MapChannel.User;
+#endif
+			string path = AngeUtil.GetJsonMetaPath<CheckPointMeta>(TARGET_CHANNEL.MapFolder());
+			UnlockedPositionPool.Clear();
+			Util.DeleteFile(path);
 		}
 
 
