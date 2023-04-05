@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class eCabinetIdol : eFurniture {
+	public class eCabinetIdol : Furniture {
 
 	}
 }

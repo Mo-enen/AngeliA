@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-	public class eLamp : eFurniture {
+	public class eLamp : Furniture {
 
 
 		// Const

@@ -13,7 +13,7 @@ namespace Yaya {
 		private static readonly int CODE = "Clock 1".AngeHash();
 		protected override int ArtworkCode => CODE;
 	}
-	public abstract class eClock : eFurniture {
+	public abstract class eClock : Furniture {
 
 		private static readonly int HAND_CODE = "Clock Hand".AngeHash();
 		protected abstract int ArtworkCode { get; }

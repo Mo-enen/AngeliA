@@ -6,7 +6,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
-	public class eCoral : ePlant {
+	public class eCoral : Plant {
 
 
 		protected override int ArtworkCode => "Coral".AngeHash();

@@ -4,7 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
-	public class eBasket : eFurniture {
+	public class eBasket : Furniture {
 
 
 		public static readonly int TYPE_ID = typeof(eBasket).AngeHash();

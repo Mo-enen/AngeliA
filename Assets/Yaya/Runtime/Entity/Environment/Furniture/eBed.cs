@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class eBed : eFurniture {
+	public class eBed : Furniture {
 
 
 		private static readonly int CODE_LEFT = "Bed Left".AngeHash();

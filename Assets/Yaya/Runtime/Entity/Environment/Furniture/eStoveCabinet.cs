@@ -4,7 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
-	public class eStoveCabinet : eFurniture {
+	public class eStoveCabinet : Furniture {
 
 
 		protected override bool LoopArtworkIndex => true;

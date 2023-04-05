@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class ePhoto : eFurniture {
+	public class ePhoto : Furniture {
 
 
 		protected override bool LoopArtworkIndex => true;

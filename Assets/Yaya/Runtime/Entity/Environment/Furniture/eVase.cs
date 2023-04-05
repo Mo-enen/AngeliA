@@ -4,7 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
-	public class eVase : eFurniture {
+	public class eVase : Furniture {
 
 		private static readonly int CODES_DOWN = "Vase Down".AngeHash();
 		private static readonly int CODES_MID = "Vase Mid".AngeHash();

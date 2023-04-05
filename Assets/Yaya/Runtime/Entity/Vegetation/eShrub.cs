@@ -4,7 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
-	public class eShrub : ePlant {
+	public class eShrub : Plant {
 
 
 		// Api

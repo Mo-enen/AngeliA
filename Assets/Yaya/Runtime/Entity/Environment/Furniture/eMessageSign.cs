@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class eMessageSign : eFurniture {
+	public class eMessageSign : Furniture {
 
 		// Single
 		private static readonly int CODE_DOWN = "Message Sign Down".AngeHash();

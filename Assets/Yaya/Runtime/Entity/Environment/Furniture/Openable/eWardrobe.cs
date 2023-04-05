@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class eWardrobe : eOpenableFurniture {
+	public class eWardrobe : OpenableFurniture {
 
 
 		private static readonly int CODE_OPEN = "Wardrobe Open".AngeHash();

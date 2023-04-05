@@ -4,7 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
-	public class eGrandfatherClock : eFurniture {
+	public class eGrandfatherClock : Furniture {
 
 		private static readonly int CODE_DOWN = "Grandfather Clock Down".AngeHash();
 		private static readonly int CODE_MID = "Grandfather Clock Mid".AngeHash();

@@ -4,7 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
-	public class eLight : eFurniture {
+	public class eLight : Furniture {
 
 		private static readonly int LIGHT = "Lamp Light 0".AngeHash();
 

@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL)]
-	public class eFiddleLeaf : ePlant {
+	public class eFiddleLeaf : Plant {
 
 
 		// Api

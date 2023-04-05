@@ -4,7 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
-	public class eWoodBoard : eBreakableRigidbody {
+	public class eWoodBoard : BreakableRigidbody {
 
 		protected override int PhysicsLayer => Const.LAYER_ENVIRONMENT;
 		protected override bool DestroyWhenInsideGround => true;

@@ -4,7 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
-	public class eFridge : eOpenableFurniture {
+	public class eFridge : OpenableFurniture {
 
 
 		private static readonly int CODE_OPEN = "Fridge Open".AngeHash();

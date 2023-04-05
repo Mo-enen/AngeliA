@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class eFlower : ePlant {
+	public class eFlower : Plant {
 
 
 		// Api

@@ -6,7 +6,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.Capacity(32)]
-	public class eBarrel : eBreakableRigidbody {
+	public class eBarrel : BreakableRigidbody {
 
 
 		public override void FrameUpdate () {

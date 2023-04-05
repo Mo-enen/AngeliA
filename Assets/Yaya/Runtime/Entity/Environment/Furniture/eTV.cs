@@ -4,7 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace Yaya {
-	public class eTV : eFurniture {
+	public class eTV : Furniture {
 
 	}
 }

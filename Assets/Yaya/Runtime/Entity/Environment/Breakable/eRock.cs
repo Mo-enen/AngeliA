@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace Yaya {
-	public class eRock : eBreakable {
+	public class eRock : Breakable {
 
 
 		private static readonly int CODE = "Rock".AngeHash();

@@ -6,7 +6,7 @@ using AngeliaFramework;
 
 namespace Yaya {
 	[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
-	public class ePaspalum : ePlant {
+	public class ePaspalum : Plant {
 
 
 		// Api
