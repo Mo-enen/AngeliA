@@ -14,9 +14,6 @@ namespace Yaya {
 	public abstract class eYayaDroppingHeart : FreeFallParticle {
 
 		public override int FramePerSprite => 1;
-		public override bool UseSpriteSize => false;
-		public override int PivotX => 500;
-		public override int PivotY => 500;
 
 		// Data
 		private static readonly System.Random Ran = new(1837458);

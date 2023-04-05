@@ -15,7 +15,6 @@ namespace Yaya {
 		public override int Duration => 66;
 		public override int FramePerSprite => 1;
 		public override bool Loop => true;
-		public override bool UseSpriteSize => false;
 		public Character Character => UserData as Character;
 
 
@@ -26,8 +25,7 @@ namespace Yaya {
 		}
 
 
-		public override void FrameUpdate () {
-			base.FrameUpdate();
+		public override void DrawParticle () {
 			var character = Character;
 			if (character == null || !character.Active || character.CharacterState != CharacterState.PassOut) {
 				Active = false;
