@@ -12,7 +12,16 @@ namespace Yaya {
 
 		// Api
 		protected override int ArtworkCode_Single => DockPose == FittingPose.Single ? TypeID : CODE_DOCKED;
-		protected override RectInt RenderingRect => DockPose == FittingPose.Left ? base.RenderingRect.FlipHorizontal() : base.RenderingRect;
+		protected override RectInt RenderingRect {
+			get {
+				if (DockPose == FittingPose.Left) {
+					var rect = base.RenderingRect;
+					rect.FlipHorizontal();
+					return rect;
+				}
+				return base.RenderingRect;
+			}
+		}
 
 		// Data
 		private FittingPose DockPose = FittingPose.Unknown;

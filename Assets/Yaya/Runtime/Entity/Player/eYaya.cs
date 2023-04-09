@@ -10,7 +10,26 @@ namespace Yaya {
 	public class eYaya : Player {
 
 
+		private static readonly int HAIR_FFL_ID = "Yaya.FrontHair.FL 0".AngeHash();
+		private static readonly int HAIR_FFR_ID = "Yaya.FrontHair.FR 0".AngeHash();
+		private static readonly int HAIR_BFL_ID = "Yaya.BackHair.FL 0".AngeHash();
+		private static readonly int HAIR_BFR_ID = "Yaya.BackHair.FR 0".AngeHash();
+		private static readonly int HAIR_FBL_ID = "Yaya.FrontHair.BL 0".AngeHash();
+		private static readonly int HAIR_FBR_ID = "Yaya.FrontHair.BR 0".AngeHash();
+		private static readonly int HAIR_BBL_ID = "Yaya.BackHair.BL 0".AngeHash();
+		private static readonly int HAIR_BBR_ID = "Yaya.BackHair.BR 0".AngeHash();
+		private static readonly int FACE_GROUP_ID = "Yaya.Face".AngeHash();
+		private static readonly int FACE_BLINK_ID = "Yaya.Face.Blink".AngeHash();
 		protected override CharacterRenderingSolution RenderingSolution => CharacterRenderingSolution.Pose;
+		protected override int FrontHairGroupID => FacingFront ?
+			FacingRight ? HAIR_FFR_ID : HAIR_FFL_ID :
+			FacingRight ? HAIR_FBR_ID : HAIR_FBL_ID;
+		protected override int BackHairGroupID => FacingFront ?
+			FacingRight ? HAIR_BFR_ID : HAIR_BFL_ID :
+			FacingRight ? HAIR_BBR_ID : HAIR_BBL_ID;
+		protected override int FaceGroupID => FACE_GROUP_ID;
+		protected override int FaceBlinkID => FACE_BLINK_ID;
+
 
 		public eYaya () {
 
@@ -60,6 +79,9 @@ namespace Yaya {
 				}
 			}
 		}
+
+
+
 
 
 	}
