@@ -42,7 +42,7 @@ namespace Yaya {
 			MovementHeight.Value = 384;
 			SquatHeight.Value = 200;
 			DashDuration.Value = 20;
-			RunAccumulation.Value = 256;
+			RunAccumulation.Value = 0;
 			JumpSpeed.Value = 73;
 			SwimInFreeStyle.Value = false;
 			JumpWithRoll.Value = false;
@@ -85,17 +85,16 @@ namespace Yaya {
 		}
 
 
-		private readonly YayaSuit TestSuit = new();
 		protected override int CalculatePose () {
 			int result = base.CalculatePose();
 
-			DrawAnimalEars(CATEAR_L_ID, CATEAR_R_ID, HeadTransform.GetGlobalRect(this), HeadTransform.Z + 33);
-			DrawTail(CAT_TAIL_ID, BodyTransform.GetGlobalRect(this), BodyTransform.Z - 1);
+			DrawAnimalEars(CATEAR_L_ID, CATEAR_R_ID, HeadTransform.GetGlobalRect(), HeadTransform.Z + 33);
+			DrawTail(CAT_TAIL_ID, BodyTransform.GetGlobalRect(), BodyTransform.Z - 1);
 
 
 
 			///////////////////// Test ////////////////////
-			TestSuit.Draw(this);
+			YayaSuit.TestSuit.Draw(this);
 			///////////////////// Test ////////////////////
 
 
@@ -108,10 +107,17 @@ namespace Yaya {
 
 	public class YayaSuit : AngeliaFramework.Cloth {
 
+
+		///////////////////// Test ////////////////////
+		public static readonly YayaSuit TestSuit = new();
+		///////////////////// Test ////////////////////
+		
+
 		private static readonly int BODY_CODE = "YayaSuit.Body".AngeHash();
 		private static readonly int BODY_BACK_CODE = "YayaSuit.BodyBack".AngeHash();
 		private static readonly int SOCK_CODE = "YayaSuit.Sock".AngeHash();
 		private static readonly int SHOE_CODE = "YayaSuit.Shoe".AngeHash();
+		private static readonly int SKIRT_CODE = "YayaSuit.Skirt".AngeHash();
 		private static readonly Color32 TINT = new(39, 38, 60, 255);
 
 		public override void Draw (Character character) {
@@ -123,26 +129,23 @@ namespace Yaya {
 			character.LowerArmRTransform.Tint = TINT;
 			character.LowerLegLTransform.Tint = Const.CLEAR;
 			character.LowerLegRTransform.Tint = Const.CLEAR;
+			// Skirt
+			DrawSpriteAsSkirt(character.BodyTransform, character.UpperLegLTransform, character.UpperLegRTransform, SKIRT_CODE);
 			// Body
 			DrawSpriteAsBody(
-				character,
 				character.BodyTransform,
 				character.FacingFront ? BODY_CODE : BODY_BACK_CODE
 			);
 			// Socks
-			DrawSprite(character, character.LowerLegLTransform, SOCK_CODE);
-			DrawSprite(character, character.LowerLegRTransform, SOCK_CODE);
+			DrawSprite(character.LowerLegLTransform, SOCK_CODE);
+			DrawSprite(character.LowerLegRTransform, SOCK_CODE);
 			// Shoes
-			DrawSpriteAsShoe(character, character.FootLTransform, SHOE_CODE);
-			DrawSpriteAsShoe(character, character.FootRTransform, SHOE_CODE);
-			// Skirt
-
+			DrawSpriteAsShoe(character.FootLTransform, SHOE_CODE);
+			DrawSpriteAsShoe(character.FootRTransform, SHOE_CODE);
 
 
 
 		}
-
-
 
 	}
 }
