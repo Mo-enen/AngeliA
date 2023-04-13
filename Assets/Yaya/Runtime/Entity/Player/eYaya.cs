@@ -89,7 +89,7 @@ namespace Yaya {
 			int result = base.CalculatePose();
 
 			DrawAnimalEars(CATEAR_L_ID, CATEAR_R_ID, HeadTransform.GetGlobalRect(), HeadTransform.Z + 33);
-			DrawTail(CAT_TAIL_ID, BodyTransform.GetGlobalRect(), BodyTransform.Z - 1);
+			DrawTail(CAT_TAIL_ID, BodyTransform.GetGlobalRect(), BodyTransform.Z - 33);
 
 
 
@@ -111,9 +111,11 @@ namespace Yaya {
 		///////////////////// Test ////////////////////
 		public static readonly YayaSuit TestSuit = new();
 		///////////////////// Test ////////////////////
-		
+
 
 		private static readonly int BODY_CODE = "YayaSuit.Body".AngeHash();
+		private static readonly int BODY_CODE_LEFT = "YayaSuit.Body.Left".AngeHash();
+		private static readonly int BODY_CODE_RIGHT = "YayaSuit.Body.Right".AngeHash();
 		private static readonly int BODY_BACK_CODE = "YayaSuit.BodyBack".AngeHash();
 		private static readonly int SOCK_CODE = "YayaSuit.Sock".AngeHash();
 		private static readonly int SHOE_CODE = "YayaSuit.Shoe".AngeHash();
@@ -127,25 +129,32 @@ namespace Yaya {
 			character.UpperArmRTransform.Tint = TINT;
 			character.LowerArmLTransform.Tint = TINT;
 			character.LowerArmRTransform.Tint = TINT;
-			character.LowerLegLTransform.Tint = Const.CLEAR;
-			character.LowerLegRTransform.Tint = Const.CLEAR;
 			// Skirt
-			DrawSpriteAsSkirt(character.BodyTransform, character.UpperLegLTransform, character.UpperLegRTransform, SKIRT_CODE);
-			// Body
-			DrawSpriteAsBody(
+			DrawSpriteAsSkirt(
 				character.BodyTransform,
-				character.FacingFront ? BODY_CODE : BODY_BACK_CODE
+				character.UpperLegLTransform,
+				character.UpperLegRTransform,
+				SKIRT_CODE, character.PoseRootTwist, GetSkirtOffsetY(character)
 			);
+			// Body
+			if (character.FacingFront) {
+				DrawSpriteAsBody(character.BodyTransform, BODY_CODE_LEFT, BODY_CODE, BODY_CODE_RIGHT, character.PoseRootTwist);
+			} else {
+				DrawSpriteAsBody(character.BodyTransform, BODY_BACK_CODE);
+			}
 			// Socks
 			DrawSprite(character.LowerLegLTransform, SOCK_CODE);
 			DrawSprite(character.LowerLegRTransform, SOCK_CODE);
 			// Shoes
 			DrawSpriteAsShoe(character.FootLTransform, SHOE_CODE);
 			DrawSpriteAsShoe(character.FootRTransform, SHOE_CODE);
-
-
-
 		}
+
+
+		private static int GetSkirtOffsetY (Character character) {
+			return character.MoveState == MovementState.Run ? Const.CEL / Const.ART_CEL / 2 : 0;
+		}
+
 
 	}
 }
