@@ -85,8 +85,8 @@ namespace Yaya {
 		}
 
 
-		protected override int CalculatePose () {
-			int result = base.CalculatePose();
+		protected override void CalculatePose () {
+			base.CalculatePose();
 
 			DrawAnimalEars(CATEAR_L_ID, CATEAR_R_ID, HeadTransform.GetGlobalRect(), HeadTransform.Z + 33);
 			DrawTail(CAT_TAIL_ID, BodyTransform.GetGlobalRect(), BodyTransform.Z - 33);
@@ -98,7 +98,6 @@ namespace Yaya {
 			///////////////////// Test ////////////////////
 
 
-			return result;
 		}
 
 
