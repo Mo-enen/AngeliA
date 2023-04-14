@@ -23,6 +23,7 @@ namespace Yaya {
 		private static readonly int CATEAR_L_ID = "Yaya.CatEarL".AngeHash();
 		private static readonly int CATEAR_R_ID = "Yaya.CatEarR".AngeHash();
 		private static readonly int CAT_TAIL_ID = "Yaya.CatTail".AngeHash();
+		private static readonly int DAMAGING_FACE_ID = "Yaya.Face.Damage".AngeHash();
 
 		protected override CharacterRenderingSolution RenderingSolution => CharacterRenderingSolution.Pose;
 		protected override int FrontHairID => FacingFront ?
@@ -98,6 +99,15 @@ namespace Yaya {
 			///////////////////// Test ////////////////////
 
 
+		}
+
+
+		protected override void CalculatePoseFace (RectInt headRect) {
+			if (TakingDamage) {
+				DrawFace(DAMAGING_FACE_ID, headRect, HeadTransform.Z + 1, true);
+				return;
+			}
+			base.CalculatePoseFace(headRect);
 		}
 
 
