@@ -91,9 +91,14 @@ namespace Yaya {
 			base.OnPoseCalculated();
 
 
-			DrawAnimalEars(CATEAR_L_ID, CATEAR_R_ID, HeadTransform.GetGlobalRect(), HeadTransform.Z + (FacingFront ? 33 : -33));
+			var headRect = Head.GetGlobalRect();
+			DrawAnimalEars(
+				CATEAR_L_ID, CATEAR_R_ID, IsPassOut ? headRect.Shift(0, -Const.CEL / 16) : headRect, Head.Z + (FacingFront ? 33 : -33)
+			);
 
-			DrawTail(CAT_TAIL_ID, BodyTransform.GetGlobalRect(), BodyTransform.Z + (FacingFront ? -33 : 33));
+			if (!IsPassOut) {
+				DrawTail(CAT_TAIL_ID, Body.GetGlobalRect(), Body.Z + (FacingFront ? -33 : 33));
+			}
 
 
 
@@ -107,11 +112,11 @@ namespace Yaya {
 
 		protected override void CalculatePoseFace (RectInt headRect) {
 			if (TakingDamage) {
-				DrawFace(DAMAGING_FACE_ID, headRect, HeadTransform.Z + 1, true);
+				DrawFace(DAMAGING_FACE_ID, headRect, Head.Z + 1, true);
 				return;
 			}
 			if (IsPassOut) {
-				DrawFace(PASSOUT_FACE_ID, headRect, HeadTransform.Z + 1, true);
+				DrawFace(PASSOUT_FACE_ID, headRect, Head.Z + 1, true);
 				return;
 			}
 			base.CalculatePoseFace(headRect);
@@ -141,30 +146,25 @@ namespace Yaya {
 
 		public override void Draw (Character character) {
 			if (character is null) return;
-			character.BodyTransform.Tint = TINT;
-			character.UpperArmLTransform.Tint = TINT;
-			character.UpperArmRTransform.Tint = TINT;
-			character.LowerArmLTransform.Tint = TINT;
-			character.LowerArmRTransform.Tint = TINT;
+			character.Body.Tint = TINT;
+			character.UpperArmL.Tint = TINT;
+			character.UpperArmR.Tint = TINT;
+			character.LowerArmL.Tint = TINT;
+			character.LowerArmR.Tint = TINT;
 			// Skirt
-			DrawSpriteAsSkirt(
-				character.BodyTransform,
-				character.UpperLegLTransform,
-				character.UpperLegRTransform,
-				SKIRT_CODE, character.PoseRootTwist, GetSkirtOffsetY(character)
-			);
+			DrawSpriteAsSkirt(character, SKIRT_CODE, character.PoseRootTwist, GetSkirtOffsetY(character));
 			// Body
 			if (character.FacingFront) {
-				DrawSpriteAsBody(character.BodyTransform, BODY_CODE_LEFT, BODY_CODE, BODY_CODE_RIGHT, character.PoseRootTwist);
+				DrawSpriteAsBody(character.Body, BODY_CODE_LEFT, BODY_CODE, BODY_CODE_RIGHT, character.PoseRootTwist);
 			} else {
-				DrawSpriteAsBody(character.BodyTransform, BODY_CODE_BACK);
+				DrawSpriteAsBody(character.Body, BODY_CODE_BACK);
 			}
 			// Socks
-			DrawSprite(character.LowerLegLTransform, SOCK_CODE);
-			DrawSprite(character.LowerLegRTransform, SOCK_CODE);
+			DrawSprite(character.LowerLegL, SOCK_CODE);
+			DrawSprite(character.LowerLegR, SOCK_CODE);
 			// Shoes
-			DrawSpriteAsShoe(character.FootLTransform, SHOE_CODE);
-			DrawSpriteAsShoe(character.FootRTransform, SHOE_CODE);
+			DrawSpriteAsShoe(character.FootL, SHOE_CODE);
+			DrawSpriteAsShoe(character.FootR, SHOE_CODE);
 		}
 
 
