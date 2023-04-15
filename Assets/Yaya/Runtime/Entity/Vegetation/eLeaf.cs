@@ -6,45 +6,35 @@ using AngeliaFramework;
 
 namespace Yaya {
 
+
 	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-	public class eTreeMaple : eTreeLeaf {
-		protected override string LeafCode => "Leaf Maple";
-	}
-	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-	public class eTreePine : eTreeLeaf {
-		protected override string LeafCode => "Leaf Pine";
-	}
-	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-	public class eTreePoplar : eTreeLeaf {
-		protected override string LeafCode => "Leaf Poplar";
-	}
-	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-	public class eTreePalm : eTreeLeaf {
+	public class eLeafMaple : TreeLeaf { }
 
 
-		// Api
-		protected override string LeafCode => "Leaf Palm";
+	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
+	public class eLeafPine : TreeLeaf { }
 
 
-		// MSG
+	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
+	public class eLeafPoplar : TreeLeaf { }
+
+
+	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
+	public class eLeafPalm : TreeLeaf {
+
 		public override void FillPhysics () {
 			CellPhysics.FillBlock(Const.LAYER_ENVIRONMENT, TypeID, Rect, true, Const.ONEWAY_UP_TAG);
 		}
-
 
 		public override void FrameUpdate () {
 			CellRenderer.Draw(LeafArtworkCode, base.Rect.Shift(0, GetLeafShiftY(-24)));
 		}
 
-
 	}
-	public class eTreeWillow : eTreeLeaf {
 
 
-		// Api
-		protected override string LeafCode => "Leaf Willow";
+	public class eLeafWillow : TreeLeaf {
 
-		// Data
 		public override void FillPhysics () {
 			CellPhysics.FillBlock(
 				Const.LAYER_ENVIRONMENT, TypeID,
@@ -53,109 +43,7 @@ namespace Yaya {
 			);
 		}
 
-
-		public override void FrameUpdate () {
-			CellRenderer.Draw(LeafArtworkCode, base.Rect.Shift(GetLeafShiftY(Y, 120, 12), 0));
-		}
-
-
-	}
-
-
-	[EntityAttribute.MapEditorGroup("Vegetation")]
-	[EntityAttribute.Capacity(256)]
-	[EntityAttribute.DrawBehind]
-	public abstract class eTreeLeaf : Entity {
-
-
-
-
-		#region --- VAR ---
-
-
-		// Const
-		private static readonly int[] LEAF_OFFSET_SEEDS = new int[] { 0, 6, 2, 8, 3, 7, 2, 3, 5, 2, 2, 6, 9, 3, 6, 1, 9, 0, 1, 7, 4, 2, 8, 4, 6, 5, 2, 4, 8, 7, };
-		private const byte LEAF_HIDE_ALPHA = 42;
-
-		// Virtual
-		protected virtual string LeafCode => "Leaf";
-		protected virtual int LeafCount => 3;
-		protected virtual int LeafExpand => Const.CEL / 3;
-		protected int LeafArtworkCode { get; private set; } = 0;
-
-		// Data
-		private Color32 LeafTint = new(255, 255, 255, 255);
-		private bool CharacterNearby = false;
-
-
-		#endregion
-
-
-
-
-		#region --- MSG ---
-
-
-		public override void OnActivated () {
-			base.OnActivated();
-			Width = Const.CEL;
-			Height = Const.CEL;
-			// Leaf
-			LeafArtworkCode = CellRenderer.TryGetSpriteFromGroup(
-				LeafCode.AngeHash(), (X * 5 + Y * 7) / Const.CEL, out var lSprite
-			) ? lSprite.GlobalID : 0;
-		}
-
-
-		public override void PhysicsUpdate () {
-			base.PhysicsUpdate();
-			CharacterNearby = CellPhysics.HasEntity<Character>(Rect.Expand(Const.CEL), Const.MASK_CHARACTER, null);
-		}
-
-
-		public override void FrameUpdate () {
-			base.FrameUpdate();
-			// Leaf
-			LeafTint.a = (byte)Mathf.Lerp(LeafTint.a, CharacterNearby ? LEAF_HIDE_ALPHA : 255, 0.1f);
-			int sLen = LEAF_OFFSET_SEEDS.Length;
-			for (int i = 0; i < LeafCount; i++) {
-				int seedX = LEAF_OFFSET_SEEDS[(i + X / Const.CEL).UMod(sLen)];
-				int seedY = LEAF_OFFSET_SEEDS[(i + Y / Const.CEL).UMod(sLen)];
-				var offset = new Vector2Int(
-					((X * 137 * seedX + Y * 327 * seedY) / Const.CEL).UMod(Const.CEL) - Const.HALF,
-					((X * 149 * seedX + Y * 177 * seedY) / Const.CEL).UMod(Const.CEL) - Const.HALF
-				);
-				DrawLeaf(offset, 12 * i, LeafExpand, offset.x % 2 == 0);
-			}
-			// Func
-			void DrawLeaf (Vector2Int offset, int frameOffset, int expand, bool flipX = false) {
-				var rect = Rect.Shift(offset.x, GetLeafShiftY(frameOffset) + offset.y).Expand(expand);
-				if (flipX) {
-					rect.x += rect.width;
-					rect.width = -rect.width;
-				}
-				CellRenderer.Draw(LeafArtworkCode, rect, LeafTint);
-			}
-		}
-
-
-		#endregion
-
-
-
-
-		#region --- API ---
-
-
-		protected int GetLeafShiftY (int frameOffset = 0, int duration = 60, int amount = 12) {
-			return ((Game.GlobalFrame + (X / Const.CEL) + frameOffset).PingPong(duration) * amount / duration) - (amount / 2);
-		}
-
-
-		#endregion
-
-
-
+		public override void FrameUpdate () => CellRenderer.Draw(LeafArtworkCode, base.Rect.Shift(GetLeafShiftY(Y, 120, 12), 0));
 
 	}
 }

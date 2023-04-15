@@ -24,6 +24,7 @@ namespace Yaya {
 		private static readonly int CATEAR_R_ID = "Yaya.CatEarR".AngeHash();
 		private static readonly int CAT_TAIL_ID = "Yaya.CatTail".AngeHash();
 		private static readonly int DAMAGING_FACE_ID = "Yaya.Face.Damage".AngeHash();
+		private static readonly int PASSOUT_FACE_ID = "Yaya.Face.PassOut".AngeHash();
 
 		protected override CharacterRenderingSolution RenderingSolution => CharacterRenderingSolution.Pose;
 		protected override int FrontHairID => FacingFront ?
@@ -86,11 +87,13 @@ namespace Yaya {
 		}
 
 
-		protected override void CalculatePose () {
-			base.CalculatePose();
+		protected override void OnPoseCalculated () {
+			base.OnPoseCalculated();
 
-			DrawAnimalEars(CATEAR_L_ID, CATEAR_R_ID, HeadTransform.GetGlobalRect(), HeadTransform.Z + 33);
-			DrawTail(CAT_TAIL_ID, BodyTransform.GetGlobalRect(), BodyTransform.Z - 33);
+
+			DrawAnimalEars(CATEAR_L_ID, CATEAR_R_ID, HeadTransform.GetGlobalRect(), HeadTransform.Z + (FacingFront ? 33 : -33));
+
+			DrawTail(CAT_TAIL_ID, BodyTransform.GetGlobalRect(), BodyTransform.Z + (FacingFront ? -33 : 33));
 
 
 
@@ -105,6 +108,10 @@ namespace Yaya {
 		protected override void CalculatePoseFace (RectInt headRect) {
 			if (TakingDamage) {
 				DrawFace(DAMAGING_FACE_ID, headRect, HeadTransform.Z + 1, true);
+				return;
+			}
+			if (IsPassOut) {
+				DrawFace(PASSOUT_FACE_ID, headRect, HeadTransform.Z + 1, true);
 				return;
 			}
 			base.CalculatePoseFace(headRect);
@@ -125,11 +132,12 @@ namespace Yaya {
 		private static readonly int BODY_CODE = "YayaSuit.Body".AngeHash();
 		private static readonly int BODY_CODE_LEFT = "YayaSuit.Body.Left".AngeHash();
 		private static readonly int BODY_CODE_RIGHT = "YayaSuit.Body.Right".AngeHash();
-		private static readonly int BODY_BACK_CODE = "YayaSuit.BodyBack".AngeHash();
+		private static readonly int BODY_CODE_BACK = "YayaSuit.BodyBack".AngeHash();
 		private static readonly int SOCK_CODE = "YayaSuit.Sock".AngeHash();
 		private static readonly int SHOE_CODE = "YayaSuit.Shoe".AngeHash();
 		private static readonly int SKIRT_CODE = "YayaSuit.Skirt".AngeHash();
 		private static readonly Color32 TINT = new(39, 38, 60, 255);
+
 
 		public override void Draw (Character character) {
 			if (character is null) return;
@@ -149,7 +157,7 @@ namespace Yaya {
 			if (character.FacingFront) {
 				DrawSpriteAsBody(character.BodyTransform, BODY_CODE_LEFT, BODY_CODE, BODY_CODE_RIGHT, character.PoseRootTwist);
 			} else {
-				DrawSpriteAsBody(character.BodyTransform, BODY_BACK_CODE);
+				DrawSpriteAsBody(character.BodyTransform, BODY_CODE_BACK);
 			}
 			// Socks
 			DrawSprite(character.LowerLegLTransform, SOCK_CODE);
