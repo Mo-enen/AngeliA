@@ -25,14 +25,18 @@ namespace Yaya {
 		private static readonly int CAT_TAIL_ID = "Yaya.CatTail".AngeHash();
 		private static readonly int DAMAGING_FACE_ID = "Yaya.Face.Damage".AngeHash();
 		private static readonly int PASSOUT_FACE_ID = "Yaya.Face.PassOut".AngeHash();
+		private static readonly int SLEEP_FACE_ID = "Yaya.Face.Sleep".AngeHash();
 
 		protected override CharacterRenderingSolution RenderingSolution => CharacterRenderingSolution.Pose;
-		protected override int FrontHairID => FacingFront ?
-			FacingRight ? HAIR_FFR_ID : HAIR_FFL_ID :
-			FacingRight ? HAIR_FBR_ID : HAIR_FBL_ID;
-		protected override int BackHairID => FacingFront ?
-			FacingRight ? HAIR_BFR_ID : HAIR_BFL_ID :
-			FacingRight ? HAIR_BBR_ID : HAIR_BBL_ID;
+
+		protected override int FrontHair_FL => HAIR_FFL_ID;
+		protected override int FrontHair_FR => HAIR_FFR_ID;
+		protected override int FrontHair_BL => HAIR_FBL_ID;
+		protected override int FrontHair_BR => HAIR_FBR_ID;
+		protected override int BackHair_FL => HAIR_BFL_ID;
+		protected override int BackHair_FR => HAIR_BFR_ID;
+		protected override int BackHair_BL => HAIR_BBL_ID;
+		protected override int BackHair_BR => HAIR_BBR_ID;
 		protected override int FaceGroupID => FACE_GROUP_ID;
 		protected override int FaceBlinkID => FACE_BLINK_ID;
 
@@ -91,14 +95,14 @@ namespace Yaya {
 			base.OnPoseCalculated();
 
 
-			var headRect = Head.GetGlobalRect();
-			DrawAnimalEars(
-				CATEAR_L_ID, CATEAR_R_ID, IsPassOut ? headRect.Shift(0, -Const.CEL / 16) : headRect, Head.Z + (FacingFront ? 33 : -33)
-			);
-
-			if (!IsPassOut) {
-				DrawTail(CAT_TAIL_ID, Body.GetGlobalRect(), Body.Z + (FacingFront ? -33 : 33));
+			if (Head.Tint.a > 0) {
+				DrawAnimalEars(CATEAR_L_ID, CATEAR_R_ID, Head.GetGlobalRect(), Head.Z + (FacingFront != Head.Flip ? 33 : -33));
 			}
+
+			if (!IsPassOut && CharacterState != CharacterState.Sleep) {
+				DrawTail(CAT_TAIL_ID, Body, Body.Z + (FacingFront != Body.Flip ? -33 : 33));
+			}
+
 
 
 
@@ -117,6 +121,10 @@ namespace Yaya {
 			}
 			if (IsPassOut) {
 				DrawFace(PASSOUT_FACE_ID, headRect, Head.Z + 1, true);
+				return;
+			}
+			if (CharacterState == CharacterState.Sleep) {
+				DrawFace(SLEEP_FACE_ID, headRect, Head.Z + 1, true);
 				return;
 			}
 			base.CalculatePoseFace(headRect);
@@ -145,32 +153,59 @@ namespace Yaya {
 
 
 		public override void Draw (Character character) {
+
 			if (character is null) return;
-			character.Body.Tint = TINT;
-			character.UpperArmL.Tint = TINT;
-			character.UpperArmR.Tint = TINT;
-			character.LowerArmL.Tint = TINT;
-			character.LowerArmR.Tint = TINT;
-			// Skirt
-			DrawSpriteAsSkirt(character, SKIRT_CODE, character.PoseRootTwist, GetSkirtOffsetY(character));
+
 			// Body
-			if (character.FacingFront) {
-				DrawSpriteAsBody(character.Body, BODY_CODE_LEFT, BODY_CODE, BODY_CODE_RIGHT, character.PoseRootTwist);
-			} else {
-				DrawSpriteAsBody(character.Body, BODY_CODE_BACK);
+			if (character.Body.Tint.a != 0) {
+				character.Body.Tint = TINT;
+				// Skirt
+				DrawSpriteAsSkirt(
+					character, SKIRT_CODE,
+					GetSkirtOffsetY(character),
+					GetSkirtShiftWidth(character)
+				);
+				// Body Cloth
+				if (character.FacingFront != character.Body.Flip) {
+					DrawSpriteAsBody(character.Body, BODY_CODE_LEFT, BODY_CODE, BODY_CODE_RIGHT, character.PoseRootTwist);
+				} else {
+					DrawSpriteAsBody(character.Body, BODY_CODE_BACK);
+				}
 			}
-			// Socks
-			DrawSprite(character.LowerLegL, SOCK_CODE);
-			DrawSprite(character.LowerLegR, SOCK_CODE);
+
+			// Leg
+			if (character.UpperArmL.Tint.a != 0) {
+				character.UpperArmL.Tint = TINT;
+				DrawSprite(character.LowerLegL, SOCK_CODE);
+			}
+			if (character.UpperArmR.Tint.a != 0) {
+				character.UpperArmR.Tint = TINT;
+				DrawSprite(character.LowerLegR, SOCK_CODE);
+			}
+
 			// Shoes
-			DrawSpriteAsShoe(character.FootL, SHOE_CODE);
-			DrawSpriteAsShoe(character.FootR, SHOE_CODE);
+			if (character.LowerArmL.Tint.a != 0) {
+				character.LowerArmL.Tint = TINT;
+				DrawSpriteAsShoe(character.FootL, SHOE_CODE);
+			}
+			if (character.LowerArmR.Tint.a != 0) {
+				character.LowerArmR.Tint = TINT;
+				DrawSpriteAsShoe(character.FootR, SHOE_CODE);
+			}
+
 		}
 
 
 		private static int GetSkirtOffsetY (Character character) {
 			return character.MoveState == MovementState.Run ? Const.CEL / Const.ART_CEL / 2 : 0;
 		}
+
+
+		private static int GetSkirtShiftWidth (Character character) => character.MoveState switch {
+			MovementState.JumpUp or MovementState.JumpDown => 2 * Const.CEL / Const.ART_CEL,
+			MovementState.Run => Const.CEL / Const.ART_CEL,
+			_ => 0,
+		};
 
 
 	}

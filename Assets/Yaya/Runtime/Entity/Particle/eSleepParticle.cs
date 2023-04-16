@@ -11,6 +11,8 @@ namespace Yaya {
 		public override int Duration => 120;
 		public override int FramePerSprite => 1;
 		public override bool Loop => false;
+		public override int Scale => 800;
+
 
 		// Data
 		private static int GlobalShift = 0;
@@ -26,7 +28,8 @@ namespace Yaya {
 			base.OnActivated();
 			Width = 0;
 			Height = 0;
-			X += GlobalShift * 12;
+			X += GlobalShift * 12 + Const.HALF;
+			Y += Const.HALF;
 			GlobalShift = (GlobalShift + 1) % 3;
 		}
 
@@ -36,10 +39,7 @@ namespace Yaya {
 			int frame = LocalFrame;
 			X += (frame + X).PingPong(40) / (frame / 12 + 3);
 			Y += (frame + Y + 16).PingPong(40) / (frame / 12 + 3);
-			Width += (80 - frame).LargerThanZero() / 12;
-			Height += (80 - frame).LargerThanZero() / 12;
 			Tint = new(255, 255, 255, (byte)Util.Remap(0, Duration, 600, 0, frame).Clamp(0, 255));
-
 		}
 
 
