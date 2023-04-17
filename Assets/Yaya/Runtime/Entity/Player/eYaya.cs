@@ -96,11 +96,11 @@ namespace Yaya {
 
 
 			if (Head.Tint.a > 0) {
-				DrawAnimalEars(CATEAR_L_ID, CATEAR_R_ID, Head.GetGlobalRect(), Head.Z + (FacingFront != Head.Flip ? 33 : -33));
+				//DrawAnimalEars(CATEAR_L_ID, CATEAR_R_ID, Head.GetGlobalRect(), Head.Z + (FacingFront != Head.Flip ? 33 : -33));
 			}
 
 			if (!IsPassOut && CharacterState != CharacterState.Sleep) {
-				DrawTail(CAT_TAIL_ID, Body, Body.Z + (FacingFront != Body.Flip ? -33 : 33));
+				//DrawTail(CAT_TAIL_ID, Body, Body.Z + (FacingFront != Body.Flip ? -33 : 33));
 			}
 
 
@@ -166,7 +166,7 @@ namespace Yaya {
 					GetSkirtShiftWidth(character)
 				);
 				// Body Cloth
-				if (character.FacingFront != character.Body.Flip) {
+				if (character.Body.FrontSide) {
 					DrawSpriteAsBody(character.Body, BODY_CODE_LEFT, BODY_CODE, BODY_CODE_RIGHT, character.PoseRootTwist);
 				} else {
 					DrawSpriteAsBody(character.Body, BODY_CODE_BACK);
