@@ -96,11 +96,11 @@ namespace Yaya {
 
 
 			if (Head.Tint.a > 0) {
-				//DrawAnimalEars(CATEAR_L_ID, CATEAR_R_ID, Head.GetGlobalRect(), Head.Z + (FacingFront != Head.Flip ? 33 : -33));
+				DrawAnimalEars(CATEAR_L_ID, CATEAR_R_ID, Head.GetGlobalRect(), Head.Z + (Head.FrontSide ? 33 : -33));
 			}
 
 			if (!IsPassOut && CharacterState != CharacterState.Sleep) {
-				//DrawTail(CAT_TAIL_ID, Body, Body.Z + (FacingFront != Body.Flip ? -33 : 33));
+				DrawTail(CAT_TAIL_ID, Body, Body.Z + (Body.FrontSide ? -33 : 33));
 			}
 
 
@@ -159,6 +159,10 @@ namespace Yaya {
 			// Body
 			if (character.Body.Tint.a != 0) {
 				character.Body.Tint = TINT;
+				character.UpperArmL.Tint = TINT;
+				character.UpperArmR.Tint = TINT;
+				character.LowerArmL.Tint = TINT;
+				character.LowerArmR.Tint = TINT;
 				// Skirt
 				DrawSpriteAsSkirt(
 					character, SKIRT_CODE,
@@ -174,22 +178,18 @@ namespace Yaya {
 			}
 
 			// Leg
-			if (character.UpperArmL.Tint.a != 0) {
-				character.UpperArmL.Tint = TINT;
+			if (character.LowerLegL.Tint.a != 0) {
 				DrawSprite(character.LowerLegL, SOCK_CODE);
 			}
-			if (character.UpperArmR.Tint.a != 0) {
-				character.UpperArmR.Tint = TINT;
+			if (character.LowerLegR.Tint.a != 0) {
 				DrawSprite(character.LowerLegR, SOCK_CODE);
 			}
 
 			// Shoes
-			if (character.LowerArmL.Tint.a != 0) {
-				character.LowerArmL.Tint = TINT;
+			if (character.FootL.Tint.a != 0) {
 				DrawSpriteAsShoe(character.FootL, SHOE_CODE);
 			}
-			if (character.LowerArmR.Tint.a != 0) {
-				character.LowerArmR.Tint = TINT;
+			if (character.FootR.Tint.a != 0) {
 				DrawSpriteAsShoe(character.FootR, SHOE_CODE);
 			}
 
