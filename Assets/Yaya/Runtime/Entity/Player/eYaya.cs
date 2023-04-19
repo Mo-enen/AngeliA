@@ -48,7 +48,7 @@ namespace Yaya {
 			MovementHeight.Value = 384;
 			SquatHeight.Value = 200;
 			DashDuration.Value = 20;
-			RunAccumulation.Value = 0;
+			RunAccumulation.Value = 40;
 			JumpSpeed.Value = 73;
 			SwimInFreeStyle.Value = false;
 			JumpWithRoll.Value = false;
