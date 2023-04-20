@@ -26,6 +26,8 @@ namespace Yaya {
 		private static readonly int DAMAGING_FACE_ID = "Yaya.Face.Damage".AngeHash();
 		private static readonly int PASSOUT_FACE_ID = "Yaya.Face.PassOut".AngeHash();
 		private static readonly int SLEEP_FACE_ID = "Yaya.Face.Sleep".AngeHash();
+		private static readonly int PROPELLER_ID = "Propeller".AngeHash();
+		private static readonly Color32 YAYA_TINT = new(78, 76, 120, 255);
 
 		protected override CharacterRenderingSolution RenderingSolution => CharacterRenderingSolution.Pose;
 
@@ -100,7 +102,12 @@ namespace Yaya {
 			}
 
 			if (!IsPassOut && CharacterState != CharacterState.Sleep) {
-				DrawTail(CAT_TAIL_ID, Body, Body.Z + (Body.FrontSide ? -33 : 33));
+				if (MoveState == MovementState.Fly) {
+					// Propeller
+					DrawPropeller(PROPELLER_ID, YAYA_TINT);
+				} else {
+					DrawTail(CAT_TAIL_ID, Body.Z + (Body.FrontSide ? -33 : 33));
+				}
 			}
 
 
@@ -116,15 +123,15 @@ namespace Yaya {
 
 		protected override void CalculatePoseFace (RectInt headRect) {
 			if (TakingDamage) {
-				DrawFace(DAMAGING_FACE_ID, headRect, Head.Z + 1, true);
+				DrawFace(DAMAGING_FACE_ID, headRect, Head.Width > 0, Head.Z + 1, true);
 				return;
 			}
 			if (IsPassOut) {
-				DrawFace(PASSOUT_FACE_ID, headRect, Head.Z + 1, true);
+				DrawFace(PASSOUT_FACE_ID, headRect, Head.Width > 0, Head.Z + 1, true);
 				return;
 			}
 			if (CharacterState == CharacterState.Sleep) {
-				DrawFace(SLEEP_FACE_ID, headRect, Head.Z + 1, true);
+				DrawFace(SLEEP_FACE_ID, headRect, Head.Width > 0, Head.Z + 1, true);
 				return;
 			}
 			base.CalculatePoseFace(headRect);
