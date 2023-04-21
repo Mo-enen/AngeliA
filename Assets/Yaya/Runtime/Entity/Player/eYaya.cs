@@ -138,6 +138,24 @@ namespace Yaya {
 		}
 
 
+		protected override void PoseAnimation_Pound () {
+			base.PoseAnimation_Pound();
+
+
+
+
+
+
+
+
+
+
+
+
+
+		}
+
+
 	}
 
 
