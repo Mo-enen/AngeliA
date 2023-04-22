@@ -26,11 +26,10 @@ namespace Yaya {
 		private static readonly int DAMAGING_FACE_ID = "Yaya.Face.Damage".AngeHash();
 		private static readonly int PASSOUT_FACE_ID = "Yaya.Face.PassOut".AngeHash();
 		private static readonly int SLEEP_FACE_ID = "Yaya.Face.Sleep".AngeHash();
+		private static readonly int ATTACK_FACE_ID = "Yaya.Face.Attack".AngeHash();
 		private static readonly int PROPELLER_ID = "Propeller".AngeHash();
-		private static readonly Color32 YAYA_TINT = new(78, 76, 120, 255);
 
 		protected override CharacterRenderingSolution RenderingSolution => CharacterRenderingSolution.Pose;
-
 		protected override int FrontHair_FL => HAIR_FFL_ID;
 		protected override int FrontHair_FR => HAIR_FFR_ID;
 		protected override int FrontHair_BL => HAIR_FBL_ID;
@@ -41,6 +40,7 @@ namespace Yaya {
 		protected override int BackHair_BR => HAIR_BBR_ID;
 		protected override int FaceGroupID => FACE_GROUP_ID;
 		protected override int FaceBlinkID => FACE_BLINK_ID;
+		protected override bool SpinOnGroundPound => true;
 
 
 		public eYaya () {
@@ -50,7 +50,7 @@ namespace Yaya {
 			MovementHeight.Value = 384;
 			SquatHeight.Value = 200;
 			DashDuration.Value = 20;
-			RunAccumulation.Value = 40;
+			RunAccumulation.Value = 0;
 			JumpSpeed.Value = 73;
 			SwimInFreeStyle.Value = false;
 			JumpWithRoll.Value = false;
@@ -104,7 +104,7 @@ namespace Yaya {
 			if (!IsPassOut && CharacterState != CharacterState.Sleep) {
 				if (MoveState == MovementState.Fly) {
 					// Propeller
-					DrawPropeller(PROPELLER_ID, YAYA_TINT);
+					DrawPropeller(PROPELLER_ID, new(78, 76, 120, 255));
 				} else {
 					DrawTail(CAT_TAIL_ID, Body.Z + (Body.FrontSide ? -33 : 33));
 				}
@@ -121,7 +121,7 @@ namespace Yaya {
 		}
 
 
-		protected override void CalculatePoseFace (RectInt headRect) {
+		protected override void CalculatePoseFace (RectInt headRect, int bounce) {
 			if (TakingDamage) {
 				DrawFace(DAMAGING_FACE_ID, headRect, Head.Width > 0, Head.Z + 1, true);
 				return;
@@ -134,25 +134,11 @@ namespace Yaya {
 				DrawFace(SLEEP_FACE_ID, headRect, Head.Width > 0, Head.Z + 1, true);
 				return;
 			}
-			base.CalculatePoseFace(headRect);
-		}
-
-
-		protected override void PoseAnimation_Pound () {
-			base.PoseAnimation_Pound();
-
-
-
-
-
-
-
-
-
-
-
-
-
+			if (IsAttacking) {
+				DrawFace(ATTACK_FACE_ID, headRect, Head.Width > 0, Head.Z + 1);
+				return;
+			}
+			base.CalculatePoseFace(headRect, bounce);
 		}
 
 

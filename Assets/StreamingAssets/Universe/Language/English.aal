@@ -1,4 +1,6 @@
-﻿@enen:Enen
+﻿UI.Yes:Yes
+UI.No:No
+@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
@@ -38,6 +40,7 @@ Menu.MiniGame.QuitMsg:Quit mini game?
 Menu.Pause.KeySetter:Key Assignment
 Menu.Pause.MEDTSetting:Editor Setting
 Menu.Pause.QuitMessage:Quit game now？
+Menu.Setting.AllowGamepad:Allow Gamepad
 Menu.Setting.Framerate:Framerate
 Menu.Setting.Fullscreen.0:Windowed
 Menu.Setting.Fullscreen.1:Fullscreen

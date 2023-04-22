@@ -1,4 +1,6 @@
-﻿@enen:伊楠
+﻿UI.Yes:是
+UI.No:否
+@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子
@@ -38,6 +40,7 @@ Menu.MiniGame.QuitMsg:是否要退出迷你游戏？
 Menu.Pause.KeySetter:按键分配
 Menu.Pause.MEDTSetting:编辑器设置
 Menu.Pause.QuitMessage:是否要退出游戏？
+Menu.Setting.AllowGamepad:允许连接手柄
 Menu.Setting.Framerate:帧频率
 Menu.Setting.Fullscreen.0:窗口
 Menu.Setting.Fullscreen.1:全屏
