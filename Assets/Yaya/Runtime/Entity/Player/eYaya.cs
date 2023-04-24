@@ -102,7 +102,7 @@ namespace Yaya {
 			}
 
 			if (!IsPassOut && CharacterState != CharacterState.Sleep) {
-				if (MoveState == MovementState.Fly) {
+				if (MovementState == CharacterMovementState.Fly) {
 					// Propeller
 					DrawPropeller(PROPELLER_ID, new(78, 76, 120, 255));
 				} else {
@@ -116,6 +116,7 @@ namespace Yaya {
 			///////////////////// Test ////////////////////
 			YayaSuit.TestSuit.Draw(this);
 			///////////////////// Test ////////////////////
+
 
 
 		}
@@ -208,13 +209,13 @@ namespace Yaya {
 
 
 		private static int GetSkirtOffsetY (Character character) {
-			return character.MoveState == MovementState.Run ? Const.CEL / Const.ART_CEL / 2 : 0;
+			return character.MovementState == CharacterMovementState.Run ? Const.CEL / Const.ART_CEL / 2 : 0;
 		}
 
 
-		private static int GetSkirtShiftWidth (Character character) => character.MoveState switch {
-			MovementState.JumpUp or MovementState.JumpDown => 2 * Const.CEL / Const.ART_CEL,
-			MovementState.Run => Const.CEL / Const.ART_CEL,
+		private static int GetSkirtShiftWidth (Character character) => character.MovementState switch {
+			CharacterMovementState.JumpUp or CharacterMovementState.JumpDown => 2 * Const.CEL / Const.ART_CEL,
+			CharacterMovementState.Run => Const.CEL / Const.ART_CEL,
 			_ => 0,
 		};
 
