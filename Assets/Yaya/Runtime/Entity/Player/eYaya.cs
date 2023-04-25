@@ -29,7 +29,7 @@ namespace Yaya {
 		private static readonly int ATTACK_FACE_ID = "Yaya.Face.Attack".AngeHash();
 		private static readonly int PROPELLER_ID = "Propeller".AngeHash();
 
-		protected override CharacterRenderingSolution RenderingSolution => CharacterRenderingSolution.Pose;
+		public override CharacterRenderingSolution RenderingSolution => CharacterRenderingSolution.Pose;
 		protected override int FrontHair_FL => HAIR_FFL_ID;
 		protected override int FrontHair_FR => HAIR_FFR_ID;
 		protected override int FrontHair_BL => HAIR_FBL_ID;
@@ -42,7 +42,12 @@ namespace Yaya {
 		protected override int FaceBlinkID => FACE_BLINK_ID;
 		protected override bool SpinOnGroundPound => true;
 
+		// Data
+		private readonly YayaSuit DefalutSuit = new();
+		private eGuaGua GuaGua = null;
 
+
+		// MSG
 		public eYaya () {
 
 			// Config
@@ -79,23 +84,28 @@ namespace Yaya {
 
 		public override void OnActivated () {
 			base.OnActivated();
-			// Summon GuaGua
-			if (!Game.Current.TryGetEntity<eGuaGua>(out _)) {
-				//Summon.CreateSummon<eGuaGua>(this, X, Y);
-			}
+
 			// Goto Bed on Start
 			if (!Game.Current.SavedPlayerUnitPosition.HasValue) {
 				if (Game.Current.TryGetEntityNearby<eBed>(new Vector2Int(X, Y), out var bed)) {
-					//bed.Invoke(this);
-					//SetAsFullSleep();
+					bed.Invoke(this);
+					SetAsFullSleep();
 				}
+			}
+		}
+
+
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			// Summon GuaGua
+			if (GuaGua == null || !GuaGua.Active) {
+				GuaGua = Summon.CreateSummon<eGuaGua>(this, X, Y);
 			}
 		}
 
 
 		protected override void OnPoseCalculated () {
 			base.OnPoseCalculated();
-
 
 			if (Head.Tint.a > 0) {
 				DrawAnimalEars(CATEAR_L_ID, CATEAR_R_ID, Head.GetGlobalRect(), Head.Z + (Head.FrontSide ? 33 : -33));
@@ -110,19 +120,13 @@ namespace Yaya {
 				}
 			}
 
-
-
-
-			///////////////////// Test ////////////////////
-			YayaSuit.TestSuit.Draw(this);
-			///////////////////// Test ////////////////////
-
-
+			DefalutSuit.Draw(this);
 
 		}
 
 
-		protected override void CalculatePoseFace (RectInt headRect, int bounce) {
+		protected override void CalculatePoseFace (int bounce) {
+			var headRect = Head.GetGlobalRect();
 			if (TakingDamage) {
 				DrawFace(DAMAGING_FACE_ID, headRect, Head.Width > 0, Head.Z + 1, true);
 				return;
@@ -139,7 +143,7 @@ namespace Yaya {
 				DrawFace(ATTACK_FACE_ID, headRect, Head.Width > 0, Head.Z + 1);
 				return;
 			}
-			base.CalculatePoseFace(headRect, bounce);
+			base.CalculatePoseFace(bounce);
 		}
 
 
@@ -147,11 +151,6 @@ namespace Yaya {
 
 
 	public class YayaSuit : AngeliaFramework.Cloth {
-
-
-		///////////////////// Test ////////////////////
-		public static readonly YayaSuit TestSuit = new();
-		///////////////////// Test ////////////////////
 
 
 		private static readonly int BODY_CODE = "YayaSuit.Body".AngeHash();
