@@ -111,10 +111,10 @@ namespace Yaya {
 				DrawAnimalEars(CATEAR_L_ID, CATEAR_R_ID, Head.GetGlobalRect(), Head.Z + (Head.FrontSide ? 33 : -33));
 			}
 
-			if (!IsPassOut && CharacterState != CharacterState.Sleep) {
-				if (MovementState == CharacterMovementState.Fly) {
+			if (!IsPassOut && AnimatedPoseType != CharacterPoseAnimationType.Sleep) {
+				if (AnimatedPoseType == CharacterPoseAnimationType.Fly) {
 					// Propeller
-					DrawPropeller(PROPELLER_ID, new(78, 76, 120, 255));
+					DrawPropeller(PROPELLER_ID, new(78, 76, 120, 255), offsetY: 2 * Const.CEL / Const.ART_CEL);
 				} else {
 					DrawTail(CAT_TAIL_ID, Body.Z + (Body.FrontSide ? -33 : 33));
 				}
@@ -126,20 +126,26 @@ namespace Yaya {
 
 
 		protected override void CalculatePoseFace (int bounce) {
+			if (!FacingFront) return;
 			var headRect = Head.GetGlobalRect();
-			if (TakingDamage) {
+			if (AnimatedPoseType == CharacterPoseAnimationType.TakingDamage) {
 				DrawFace(DAMAGING_FACE_ID, headRect, Head.Width > 0, Head.Z + 1, true);
 				return;
 			}
-			if (IsPassOut) {
+			if (AnimatedPoseType == CharacterPoseAnimationType.PassOut) {
 				DrawFace(PASSOUT_FACE_ID, headRect, Head.Width > 0, Head.Z + 1, true);
 				return;
 			}
-			if (CharacterState == CharacterState.Sleep) {
+			if (AnimatedPoseType == CharacterPoseAnimationType.Sleep) {
 				DrawFace(SLEEP_FACE_ID, headRect, Head.Width > 0, Head.Z + 1, true);
 				return;
 			}
-			if (IsAttacking) {
+			if (
+				AnimatedPoseType == CharacterPoseAnimationType.Attack ||
+				AnimatedPoseType == CharacterPoseAnimationType.AttackAir ||
+				AnimatedPoseType == CharacterPoseAnimationType.AttackMove ||
+				AnimatedPoseType == CharacterPoseAnimationType.AttackSwim
+			) {
 				DrawFace(ATTACK_FACE_ID, headRect, Head.Width > 0, Head.Z + 1);
 				return;
 			}
