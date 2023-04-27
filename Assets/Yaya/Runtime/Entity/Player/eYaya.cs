@@ -22,6 +22,8 @@ namespace Yaya {
 		private static readonly int FACE_BLINK_ID = "Yaya.Face.Blink".AngeHash();
 		private static readonly int CATEAR_L_ID = "Yaya.CatEarL".AngeHash();
 		private static readonly int CATEAR_R_ID = "Yaya.CatEarR".AngeHash();
+		private static readonly int DAMAGE_EAR_L_ID = "Yaya.CatEarL.Damage".AngeHash();
+		private static readonly int DAMAGE_EAR_R_ID = "Yaya.CatEarR.Damage".AngeHash();
 		private static readonly int CAT_TAIL_ID = "Yaya.CatTail".AngeHash();
 		private static readonly int DAMAGING_FACE_ID = "Yaya.Face.Damage".AngeHash();
 		private static readonly int PASSOUT_FACE_ID = "Yaya.Face.PassOut".AngeHash();
@@ -108,7 +110,12 @@ namespace Yaya {
 			base.OnPoseCalculated();
 
 			if (Head.Tint.a > 0) {
-				DrawAnimalEars(CATEAR_L_ID, CATEAR_R_ID, Head.GetGlobalRect(), Head.Z + (Head.FrontSide ? 33 : -33));
+				bool damaging = AnimatedPoseType == CharacterPoseAnimationType.TakingDamage;
+				DrawAnimalEars(
+					damaging ? DAMAGE_EAR_L_ID : CATEAR_L_ID,
+					damaging ? DAMAGE_EAR_R_ID : CATEAR_R_ID,
+					Head.GetGlobalRect(), Head.Z + (Head.FrontSide ? 33 : -33)
+				);
 			}
 
 			if (!IsPassOut && AnimatedPoseType != CharacterPoseAnimationType.Sleep) {
