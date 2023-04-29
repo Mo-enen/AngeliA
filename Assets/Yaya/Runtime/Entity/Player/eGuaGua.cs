@@ -19,7 +19,7 @@ namespace Yaya {
 			RunAccumulation.Value = 48;
 			JumpSpeed.Value = 69;
 			SwimInFreeStyle.Value = false;
-			JumpWithRoll.Value = false;
+			FirstJumpWithRoll.Value = false;
 			JumpCount.Value = 1;
 			FlyAvailable.Value = false;
 			FlyRiseSpeed.Value = 32;

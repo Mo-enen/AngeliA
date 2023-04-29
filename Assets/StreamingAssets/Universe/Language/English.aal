@@ -1,6 +1,4 @@
-﻿UI.Yes:Yes
-UI.No:No
-@enen:Enen
+﻿@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
@@ -25,7 +23,7 @@ MEDT.LevelOnly:Level Only
 Menu.BackToEdit:Back to Editor
 Menu.Gomoku.Draw:Draw
 Menu.Gomoku.Lose:You Lose
-Menu.Gomoku.Restart:Retart Game?
+Menu.MiniGame.Restart:Retart Game?
 Menu.Gomoku.Win:You Win !!
 Menu.KeySetter.Gamepad:Gamepad
 Menu.KeySetter.GamepadMessage:Press F1 key to reset
@@ -66,9 +64,11 @@ UI.GameKey.Start:Start
 UI.GameKey.Up:Up
 UI.Gomoku.Place:Place
 UI.Gomoku.YouAre:You are:
+UI.No:No
 UI.OFF:OFF
 UI.OK:OK
 UI.ON:ON
 UI.Quit:Quit
 UI.Save:Save
 UI.Setting:Setting
+UI.Yes:Yes

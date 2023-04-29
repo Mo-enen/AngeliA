@@ -60,10 +60,10 @@ namespace Yaya {
 			RunAccumulation.Value = 0;
 			JumpSpeed.Value = 73;
 			SwimInFreeStyle.Value = false;
-			JumpWithRoll.Value = false;
-			SecondJumpWithRoll.Value = true;
+			FirstJumpWithRoll.Value = false;
+			SubsequentJumpWithRoll.Value = true;
 			JumpCount.Value = 2;
-			JumpThoughOneway.Value = true;
+			JumpDownThoughOneway.Value = true;
 			FlyAvailable.Value = true;
 			SlideAvailable.Value = true;
 			SlideOnAnyBlock.Value = true;
@@ -118,7 +118,11 @@ namespace Yaya {
 				);
 			}
 
-			if (!IsPassOut && AnimatedPoseType != CharacterPoseAnimationType.Sleep) {
+			if (
+				!IsPassOut &&
+				AnimatedPoseType != CharacterPoseAnimationType.Sleep &&
+				AnimatedPoseType != CharacterPoseAnimationType.Dash
+			) {
 				if (AnimatedPoseType == CharacterPoseAnimationType.Fly) {
 					// Propeller
 					DrawPropeller(PROPELLER_ID, new(78, 76, 120, 255), offsetY: 2 * Const.CEL / Const.ART_CEL);

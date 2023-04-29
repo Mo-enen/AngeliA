@@ -1,6 +1,4 @@
-﻿UI.Yes:是
-UI.No:否
-@enen:伊楠
+﻿@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子
@@ -25,7 +23,7 @@ MEDT.LevelOnly:仅关卡
 Menu.BackToEdit:返回编辑
 Menu.Gomoku.Draw:平局
 Menu.Gomoku.Lose:你输喽，笨蛋
-Menu.Gomoku.Restart:重新开始游戏吗？
+Menu.MiniGame.Restart:重新开始游戏吗？
 Menu.Gomoku.Win:你赢啦，耶~~
 Menu.KeySetter.Gamepad:手柄
 Menu.KeySetter.GamepadMessage:按下F1键重置手柄设置
@@ -66,9 +64,11 @@ UI.GameKey.Start:开始
 UI.GameKey.Up:上
 UI.Gomoku.Place:落子
 UI.Gomoku.YouAre:您是：
+UI.No:否
 UI.OFF:关闭
 UI.OK:确定
 UI.ON:开启
 UI.Quit:退出
 UI.Save:保存
 UI.Setting:设置
+UI.Yes:是
