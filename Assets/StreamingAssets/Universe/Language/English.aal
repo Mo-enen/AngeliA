@@ -1,4 +1,5 @@
-﻿@enen:Enen
+﻿UI.GameOver:Game Over
+@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
@@ -23,7 +24,6 @@ MEDT.LevelOnly:Level Only
 Menu.BackToEdit:Back to Editor
 Menu.Gomoku.Draw:Draw
 Menu.Gomoku.Lose:You Lose
-Menu.MiniGame.Restart:Retart Game?
 Menu.Gomoku.Win:You Win !!
 Menu.KeySetter.Gamepad:Gamepad
 Menu.KeySetter.GamepadMessage:Press F1 key to reset
@@ -35,6 +35,7 @@ Menu.MEDTSetting.AutoZoom:Auto Zoom
 Menu.MEDTSetting.PlayerDrop:Quick Player Drop
 Menu.MEDTSetting.ShowState:Show State Info
 Menu.MiniGame.QuitMsg:Quit mini game?
+Menu.MiniGame.Restart:Retart Game?
 Menu.Pause.KeySetter:Key Assignment
 Menu.Pause.MEDTSetting:Editor Setting
 Menu.Pause.QuitMessage:Quit game now？
@@ -69,6 +70,7 @@ UI.OFF:OFF
 UI.OK:OK
 UI.ON:ON
 UI.Quit:Quit
+UI.Restart:Restart
 UI.Save:Save
 UI.Setting:Setting
 UI.Yes:Yes

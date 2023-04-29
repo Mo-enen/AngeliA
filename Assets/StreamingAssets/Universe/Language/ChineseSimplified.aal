@@ -1,4 +1,5 @@
-﻿@enen:伊楠
+﻿UI.GameOver:游戏结束
+@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子
@@ -23,7 +24,6 @@ MEDT.LevelOnly:仅关卡
 Menu.BackToEdit:返回编辑
 Menu.Gomoku.Draw:平局
 Menu.Gomoku.Lose:你输喽，笨蛋
-Menu.MiniGame.Restart:重新开始游戏吗？
 Menu.Gomoku.Win:你赢啦，耶~~
 Menu.KeySetter.Gamepad:手柄
 Menu.KeySetter.GamepadMessage:按下F1键重置手柄设置
@@ -35,6 +35,7 @@ Menu.MEDTSetting.AutoZoom:自动缩放
 Menu.MEDTSetting.PlayerDrop:快速放下玩家
 Menu.MEDTSetting.ShowState:显示状态信息
 Menu.MiniGame.QuitMsg:是否要退出迷你游戏？
+Menu.MiniGame.Restart:重新开始游戏吗？
 Menu.Pause.KeySetter:按键分配
 Menu.Pause.MEDTSetting:编辑器设置
 Menu.Pause.QuitMessage:是否要退出游戏？
@@ -69,6 +70,7 @@ UI.OFF:关闭
 UI.OK:确定
 UI.ON:开启
 UI.Quit:退出
+UI.Restart:重新开始
 UI.Save:保存
 UI.Setting:设置
 UI.Yes:是
