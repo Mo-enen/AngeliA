@@ -1,5 +1,4 @@
-﻿UI.GameOver:Game Over
-@enen:Enen
+﻿@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
@@ -63,6 +62,7 @@ UI.GameKey.Right:Right
 UI.GameKey.Select:Select
 UI.GameKey.Start:Start
 UI.GameKey.Up:Up
+UI.GameOver:Game Over
 UI.Gomoku.Place:Place
 UI.Gomoku.YouAre:You are:
 UI.No:No

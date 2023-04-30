@@ -1,5 +1,4 @@
-﻿UI.GameOver:游戏结束
-@enen:伊楠
+﻿@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子
@@ -34,7 +33,7 @@ Menu.KeySetter.SaveAndBack:保存并返回
 Menu.MEDTSetting.AutoZoom:自动缩放
 Menu.MEDTSetting.PlayerDrop:快速放下玩家
 Menu.MEDTSetting.ShowState:显示状态信息
-Menu.MiniGame.QuitMsg:是否要退出迷你游戏？
+Menu.MiniGame.QuitMsg:退出迷你游戏？
 Menu.MiniGame.Restart:重新开始游戏吗？
 Menu.Pause.KeySetter:按键分配
 Menu.Pause.MEDTSetting:编辑器设置
@@ -63,6 +62,7 @@ UI.GameKey.Right:右
 UI.GameKey.Select:选择
 UI.GameKey.Start:开始
 UI.GameKey.Up:上
+UI.GameOver:游戏结束
 UI.Gomoku.Place:落子
 UI.Gomoku.YouAre:您是：
 UI.No:否
