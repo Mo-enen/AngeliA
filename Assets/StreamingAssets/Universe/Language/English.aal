@@ -15,6 +15,10 @@ CtrlHint.Restart:Restart
 CtrlHint.Skip:Skip
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
+Hint.Tetris.Drop:Drop
+Hint.Tetris.Hold:Hold
+Hint.Tetris.Move:Move
+Hint.Tetris.Rotate:Rotate
 MEDT.BackgroundOnly:Background Only
 MEDT.CancelDrop:Cancel Drop
 MEDT.Drop:Mouse Left Button to Drop

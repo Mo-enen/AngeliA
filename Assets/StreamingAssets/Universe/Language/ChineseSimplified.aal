@@ -15,6 +15,10 @@ CtrlHint.Restart:重新开始
 CtrlHint.Skip:跳过
 CtrlHint.Use:使用
 CtrlHint.WakeUp:起床
+Hint.Tetris.Drop:掉落
+Hint.Tetris.Hold:保留
+Hint.Tetris.Move:移动
+Hint.Tetris.Rotate:旋转
 MEDT.BackgroundOnly:仅背景
 MEDT.CancelDrop:取消放下
 MEDT.Drop:鼠标左键放下
@@ -74,5 +78,5 @@ UI.Restart:重新开始
 UI.Save:保存
 UI.Setting:设置
 UI.Tetris.ClearedLine:行数:
-UI.Tetris.Holding:持有
+UI.Tetris.Holding:保留
 UI.Yes:是
