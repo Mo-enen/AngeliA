@@ -56,6 +56,7 @@ namespace Yaya {
 		[AfterGameInitialize]
 		public static void Init () {
 			Character.FootstepParticleCode = typeof(eCharacterFootstep).AngeHash();
+			Character.DashParticleCode = typeof(eCharacterFootstep).AngeHash();
 		}
 	}
 
