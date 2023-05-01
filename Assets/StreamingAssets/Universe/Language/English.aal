@@ -73,4 +73,6 @@ UI.Quit:Quit
 UI.Restart:Restart
 UI.Save:Save
 UI.Setting:Setting
+UI.Tetris.ClearedLine:Lines:
+UI.Tetris.Holding:Holding
 UI.Yes:Yes
