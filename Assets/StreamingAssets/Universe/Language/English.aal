@@ -1,11 +1,11 @@
-﻿CtrlHint.EnterDoor:Enter
-@enen:Enen
+﻿@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
 @yaya:Yaya
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
+CtrlHint.EnterDoor:Enter
 CtrlHint.Jump:Jump
 CtrlHint.MEDT.Nav:Overlook
 CtrlHint.MEDT.PlayFromBegin:Play from Start

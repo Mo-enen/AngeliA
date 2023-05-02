@@ -6,6 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Yaya/Yaya.unity
+    path: Assets/AngeliA Game/AngeliA.unity
     guid: 4b50d67feb3f4bd4dabb6e4efc7cebe5
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
