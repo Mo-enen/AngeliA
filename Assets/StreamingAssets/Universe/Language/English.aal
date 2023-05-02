@@ -1,4 +1,4 @@
-﻿UI.Tetris.HighScore:Best:
+﻿CtrlHint.EnterDoor:Enter
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -59,6 +59,7 @@ Menu.Setting.VSync:V-Sync
 UI.Back:Back
 UI.Cancel:Cancel
 UI.Continue:Continue
+UI.Down:Down
 UI.GameKey.Action:Action/Attack
 UI.GameKey.Down:Down
 UI.GameKey.Jump:Cancel/Jump
@@ -70,14 +71,18 @@ UI.GameKey.Up:Up
 UI.GameOver:Game Over
 UI.Gomoku.Place:Place
 UI.Gomoku.YouAre:You are:
+UI.Left:Left
 UI.No:No
 UI.OFF:OFF
 UI.OK:OK
 UI.ON:ON
 UI.Quit:Quit
 UI.Restart:Restart
+UI.Right:Right
 UI.Save:Save
 UI.Setting:Setting
 UI.Tetris.ClearedLine:Lines:
+UI.Tetris.HighScore:Best:
 UI.Tetris.Holding:Holding
+UI.Up:Up
 UI.Yes:Yes

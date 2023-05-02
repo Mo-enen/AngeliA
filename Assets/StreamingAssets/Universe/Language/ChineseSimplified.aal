@@ -1,4 +1,4 @@
-﻿UI.Tetris.HighScore:高分:
+﻿CtrlHint.EnterDoor:进门
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -59,6 +59,7 @@ Menu.Setting.VSync:垂直同步
 UI.Back:返回
 UI.Cancel:取消
 UI.Continue:继续
+UI.Down:下
 UI.GameKey.Action:确定/攻击
 UI.GameKey.Down:下
 UI.GameKey.Jump:取消/跳跃
@@ -70,14 +71,18 @@ UI.GameKey.Up:上
 UI.GameOver:游戏结束
 UI.Gomoku.Place:落子
 UI.Gomoku.YouAre:您是：
+UI.Left:左
 UI.No:否
 UI.OFF:关闭
 UI.OK:确定
 UI.ON:开启
 UI.Quit:退出
 UI.Restart:重新开始
+UI.Right:右
 UI.Save:保存
 UI.Setting:设置
 UI.Tetris.ClearedLine:行数:
+UI.Tetris.HighScore:高分:
 UI.Tetris.Holding:保留
+UI.Up:上
 UI.Yes:是
