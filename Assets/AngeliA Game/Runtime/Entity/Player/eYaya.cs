@@ -69,7 +69,7 @@ namespace AngeliaGame {
 			base.OnActivated();
 
 			// Goto Bed on Start
-			if (!Game.Current.SavedPlayerUnitPosition.HasValue) {
+			if (!Game.Current.PlayerRespawnUnitPosition.HasValue) {
 				if (Game.Current.TryGetEntityNearby<eBed>(new Vector2Int(X, Y), out var bed)) {
 					bed.Invoke(this);
 					SetAsFullSleep();
