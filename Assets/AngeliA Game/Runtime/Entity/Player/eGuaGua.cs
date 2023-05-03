@@ -16,7 +16,7 @@ namespace AngeliaGame {
 			MovementHeight.Value = 150;
 			SquatHeight.Value = 150;
 			DashDuration.Value = 20;
-			RunAccumulation.Value = 48;
+			WalkToRunAccumulation.Value = 48;
 			JumpSpeed.Value = 69;
 			SwimInFreeStyle.Value = false;
 			FirstJumpWithRoll.Value = false;

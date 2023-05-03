@@ -51,7 +51,7 @@ namespace AngeliaGame {
 		// MSG
 		public eYaya () {
 
-			RunAccumulation.Value = 0;
+			WalkToRunAccumulation.Value = 0;
 			JumpDownThoughOneway.Value = true;
 			FlyAvailable.Value = true;
 			SlideOnAnyBlock.Value = true;
