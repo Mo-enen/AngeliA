@@ -63,13 +63,15 @@ namespace AngeliaGame {
 
 	[EntityAttribute.Capacity(1)]
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
+	[EntityAttribute.ExcludeInMapEditor]
+	[EntityAttribute.DontSpawnFromWorld]
 	public class eCheckPointPortal : ePortal {
 
 		private static readonly int CIRCLE_CODE = "CheckPointPortalCircle".AngeHash();
 		private static readonly int FLAME_CODE = "CheckPointPortalFlame".AngeHash();
 		protected override int CircleCode => CIRCLE_CODE;
 		protected override int FlameCode => FLAME_CODE;
-		protected override Vector3Int TargetGlobalPosition => CheckPoint.LastInvokedCheckPointUnitPosition.ToGlobal();
+		protected override Vector3Int TargetGlobalPosition => CheckPoint.LastInvokedCheckPointUnitPosition.ToGlobal() + new Vector3Int(Const.HALF, 0, 0);
 
 		[AfterGameInitialize]
 		public static void Initialize () {
