@@ -37,12 +37,19 @@ namespace AngeliaGame {
 
 		private void FrameUpdate_Sleep () {
 			if (Owner == null || !Owner.Active) return;
-			if (
-				Owner.CharacterState == CharacterState.Sleep &&
-				CharacterState != CharacterState.Sleep
-			) {
-				// Sleep in Basket
+
+			// Sleep when Owner Sleep
+			if (Owner.CharacterState == CharacterState.Sleep && CharacterState != CharacterState.Sleep) {
 				SetCharacterState(CharacterState.Sleep);
+			}
+
+			// Wake when Owner Awake
+			if (CharacterState == CharacterState.Sleep && Owner.CharacterState != CharacterState.Sleep) {
+				SetCharacterState(CharacterState.GamePlay);
+			}
+
+			// Sleep in Basket
+			if (CharacterState == CharacterState.Sleep) {
 				if (Game.Current.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
 					int offsetY = 0;
 					if (CellRenderer.TryGetSprite(eBasket.TYPE_ID, out var basketSprite)) {
@@ -51,10 +58,6 @@ namespace AngeliaGame {
 					X = basket.X + basket.Width / 2;
 					Y = basket.Y + offsetY;
 				}
-			}
-			// Awake when Owner Awake
-			if (CharacterState == CharacterState.Sleep && Owner.CharacterState != CharacterState.Sleep) {
-				SetCharacterState(CharacterState.GamePlay);
 			}
 		}
 
