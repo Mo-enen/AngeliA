@@ -37,20 +37,51 @@ namespace AngeliaGame {
 
 
 
+
 	public class ePortalFront : ePortal {
+		private static readonly int CIRCLE_CODE = "PortalCircle".AngeHash();
+		private static readonly int FLAME_CODE = "PortalFlame".AngeHash();
+		protected override int CircleCode => CIRCLE_CODE;
+		protected override int FlameCode => FLAME_CODE;
 		protected override bool IsFrontDoor => true;
 	}
+
+
 	public class ePortalBack : ePortal {
+		private static readonly int CIRCLE_CODE = "PortalCircle".AngeHash();
+		private static readonly int FLAME_CODE = "PortalFlame".AngeHash();
+		protected override int CircleCode => CIRCLE_CODE;
+		protected override int FlameCode => FLAME_CODE;
 		protected override bool IsFrontDoor => false;
 	}
+
+
+	[EntityAttribute.Capacity(1)]
+	public class eCheckPointPortal : ePortal {
+		private static readonly int CIRCLE_CODE = "CheckPointPortalCircle".AngeHash();
+		private static readonly int FLAME_CODE = "CheckPointPortalFlame".AngeHash();
+		protected override int CircleCode => CIRCLE_CODE;
+		protected override int FlameCode => FLAME_CODE;
+		protected override Vector3Int TargetGlobalPosition => CheckPoint.LastInvokedCheckPointUnitPosition.ToGlobal();
+		[AfterGameInitialize]
+		public static void Initialize () {
+			CheckPoint.BackPortalEntityID = typeof(eCheckPointPortal).AngeHash();
+		}
+		public override bool Invoke (Player player) {
+			bool result = base.Invoke(player);
+			if (result) Active = false;
+			return result;
+		}
+	}
+
+
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
 	public abstract class ePortal : Door {
 
 
 		// VAR
-		private static readonly int CIRCLE_CODE = "Portal Circle".AngeHash();
-		private static readonly int FLAME_CODE = "Portal Flame".AngeHash();
-
+		protected abstract int CircleCode { get; }
+		protected abstract int FlameCode { get; }
 		protected override bool TouchToEnter => true;
 		protected override int ArtworkCode => 0;
 		protected override int ArtworkCode_Open => 0;
@@ -70,9 +101,10 @@ namespace AngeliaGame {
 
 			int centerX = X + Width / 2;
 			int centerY = Y + Height / 2;
+			int scale = ((Game.GlobalFrame - SpawnFrame) * 30).Clamp(0, 1000);
 
 			// Circle
-			if (CellRenderer.TryGetSprite(CIRCLE_CODE, out var circle)) {
+			if (CellRenderer.TryGetSprite(CircleCode, out var circle)) {
 				const int CIRCLE_DURATION = 24;
 				const int CIRCLE_SIZE = Const.CEL * 2;
 				const int CIRCLE_COUNT = 4;
@@ -85,6 +117,7 @@ namespace AngeliaGame {
 						CIRCLE_SIZE - CIRCLE_SIZE * (i + 1) / CIRCLE_COUNT,
 						circleFrame
 					);
+					size = size * scale / 1000;
 					int rgbA = Util.RemapUnclamped(0, 3, 255, 128, IsFrontDoor ? i : CIRCLE_COUNT - i);
 					int rgbB = Util.RemapUnclamped(0, 3, 255, 128, IsFrontDoor ? i + 1 : CIRCLE_COUNT - i - 1);
 					byte rgb = (byte)Mathf.Lerp(rgbA, rgbB, (float)circleFrame / CIRCLE_DURATION);
@@ -102,7 +135,7 @@ namespace AngeliaGame {
 			}
 
 			// Flame
-			if (CellRenderer.TryGetSprite(FLAME_CODE, out var flame)) {
+			if (CellRenderer.TryGetSprite(FlameCode, out var flame)) {
 				const int FLAME_COUNT = 3;
 				const int FLAME_DURATION = 51;
 				int flameFrame = Game.GlobalFrame % FLAME_DURATION;
@@ -116,6 +149,7 @@ namespace AngeliaGame {
 						Const.CEL, Const.CEL * 5 / 4,
 						flameFrame.PingPong(FLAME_DURATION / 2)
 					);
+					size = size * scale / 1000;
 					var tint = IsFrontDoor ? Const.WHITE : Const.GREY_128;
 					tint.a = (byte)Util.RemapUnclamped(
 						0, FLAME_DURATION / 2,
@@ -134,7 +168,6 @@ namespace AngeliaGame {
 
 
 	}
-
 
 
 }
