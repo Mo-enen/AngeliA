@@ -58,5 +58,20 @@ namespace AngeliaGame {
 		public override bool AllowInvoke (Entity target) => true;
 
 
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			// Make Player Sleep at Opening
+			if (
+				FrameTask.IsTasking<OpeningTask>() &&
+				Player.Selecting != null &&
+				Player.Selecting.Active &&
+				Player.Selecting.CharacterState != CharacterState.Sleep
+			) {
+				Invoke(Player.Selecting);
+				Player.Selecting.SetAsFullSleep();
+			}
+		}
+
+
 	}
 }

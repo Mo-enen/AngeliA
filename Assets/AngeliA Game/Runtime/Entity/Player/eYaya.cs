@@ -66,19 +66,6 @@ namespace AngeliaGame {
 		}
 
 
-		public override void OnActivated () {
-			base.OnActivated();
-
-			// Goto Bed on Start
-			if (!Game.Current.PlayerRespawnUnitPosition.HasValue) {
-				if (Game.Current.TryGetEntityNearby<eBed>(new Vector2Int(X, Y), out var bed)) {
-					bed.Invoke(this);
-					SetAsFullSleep();
-				}
-			}
-		}
-
-
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			// Summon GuaGua
