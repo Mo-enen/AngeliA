@@ -52,7 +52,7 @@ namespace AngeliaGame {
 			if (CharacterState == CharacterState.Sleep) {
 				if (Game.Current.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
 					int offsetY = 0;
-					if (CellRenderer.TryGetSprite(eBasket.TYPE_ID, out var basketSprite)) {
+					if (CellRenderer.TryGetSprite(basket.TypeID, out var basketSprite)) {
 						offsetY = basketSprite.GlobalHeight - basketSprite.GlobalBorder.Up;
 					}
 					X = basket.X + basket.Width / 2;

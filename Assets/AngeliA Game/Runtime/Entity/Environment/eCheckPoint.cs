@@ -31,76 +31,76 @@ namespace AngeliaGame {
 
 
 	public class eAltarLalynnA : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckLalynnA).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckLalynnA).AngeHash();
 	}
 	public class eAltarMage : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckMage).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckMage).AngeHash();
 	}
 	public class eAltarElf : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckElf).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckElf).AngeHash();
 	}
 	public class eAltarDragon : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckDragon).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckDragon).AngeHash();
 	}
 	public class eAltarTorch : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckTorch).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckTorch).AngeHash();
 	}
 	public class eAltarSlime : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckSlime).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckSlime).AngeHash();
 	}
 	public class eAltarInsect : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckInsect).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckInsect).AngeHash();
 	}
 	public class eAltarOrc : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckOrc).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckOrc).AngeHash();
 	}
 	public class eAltarTako : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckTako).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckTako).AngeHash();
 	}
 	public class eAltarShark : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckShark).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckShark).AngeHash();
 	}
 	public class eAltarBone : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckBone).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckBone).AngeHash();
 	}
 	public class eAltarFootman : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckFootman).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckFootman).AngeHash();
 	}
 	public class eAltarKnight : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckKnight).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckKnight).AngeHash();
 	}
 	public class eAltarJesus : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckJesus).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckJesus).AngeHash();
 	}
 	public class eAltarShield : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckShield).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckShield).AngeHash();
 	}
 	public class eAltarGamble : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckGamble).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckGamble).AngeHash();
 	}
 	public class eAltarScience : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckScience).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckScience).AngeHash();
 	}
 	public class eAltarSpider : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckSpider).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckSpider).AngeHash();
 	}
 	public class eAltarStalactite : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckStalactite).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckStalactite).AngeHash();
 	}
 	public class eAltarSword : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckSword).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckSword).AngeHash();
 	}
 	public class eAltarSpace : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckSpace).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckSpace).AngeHash();
 	}
 	public class eAltarMachineGun : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckMachineGun).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckMachineGun).AngeHash();
 	}
 	public class eAltarKnowledge : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckKnowledge).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckKnowledge).AngeHash();
 	}
 	public class eAltarCat : CheckAltar {
-		protected override int TargetCheckPointID => typeof(eCheckCat).AngeHash();
+		protected override int LinkedCheckPointID => typeof(eCheckCat).AngeHash();
 	}
 
 

@@ -72,15 +72,35 @@ namespace AngeliaGame {
 		protected override int CircleCode => CIRCLE_CODE;
 		protected override int FlameCode => FLAME_CODE;
 		protected override Vector3Int TargetGlobalPosition => CheckPoint.LastInvokedCheckPointUnitPosition.ToGlobal() + new Vector3Int(Const.HALF, 0, 0);
+		private int InvokeFrame = -1;
+
 
 		[AfterGameInitialize]
 		public static void Initialize () {
 			CheckPoint.BackPortalEntityID = typeof(eCheckPointPortal).AngeHash();
 		}
 
+
+		public override void OnActivated () {
+			base.OnActivated();
+			InvokeFrame = -1;
+		}
+
+
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
+			if (InvokeFrame >= 0 && Game.GlobalFrame > InvokeFrame + 30) {
+				Active = false;
+				InvokeFrame = -1;
+			}
+		}
+
+
 		public override bool Invoke (Player player) {
 			bool result = base.Invoke(player);
-			if (result) Active = false;
+			if (result) {
+				InvokeFrame = Game.GlobalFrame;
+			}
 			return result;
 		}
 

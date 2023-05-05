@@ -7,8 +7,7 @@ namespace AngeliaGame {
 	public class eBasket : Furniture {
 
 
-		public static readonly int TYPE_ID = typeof(eBasket).AngeHash();
-		protected override RectInt RenderingRect => base.RenderingRect.Expand(32, 32, 0, 0);
+		//protected override RectInt RenderingRect => base.RenderingRect.Expand(32, 32, 0, 0);
 
 
 
