@@ -67,6 +67,7 @@ namespace AngeliaGame {
 	[EntityAttribute.DontSpawnFromWorld]
 	public class eCheckPointPortal : ePortal {
 
+		public static readonly int TYPE_ID = typeof(eCheckPointPortal).AngeHash();
 		private static readonly int CIRCLE_CODE = "CheckPointPortalCircle".AngeHash();
 		private static readonly int FLAME_CODE = "CheckPointPortalFlame".AngeHash();
 		protected override int CircleCode => CIRCLE_CODE;
@@ -77,7 +78,7 @@ namespace AngeliaGame {
 
 		[AfterGameInitialize]
 		public static void Initialize () {
-			CheckPoint.BackPortalEntityID = typeof(eCheckPointPortal).AngeHash();
+			CheckAltar.BackPortalEntityID = typeof(eCheckPointPortal).AngeHash();
 		}
 
 
@@ -100,6 +101,7 @@ namespace AngeliaGame {
 			bool result = base.Invoke(player);
 			if (result) {
 				InvokeFrame = Game.GlobalFrame;
+				CheckPoint.ClearLastInvoke();
 			}
 			return result;
 		}
