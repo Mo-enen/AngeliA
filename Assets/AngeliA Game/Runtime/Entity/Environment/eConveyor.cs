@@ -4,8 +4,8 @@ using UnityEngine;
 using AngeliaFramework;
 
 
-
 namespace AngeliaGame {
+
 
 	// Wood
 	public class eConveyorWoodLeft : eConveyorWood { protected override int MoveSpeed => -12; }
@@ -41,5 +41,6 @@ namespace AngeliaGame {
 			_ => 0,
 		};
 	}
+
 
 }
