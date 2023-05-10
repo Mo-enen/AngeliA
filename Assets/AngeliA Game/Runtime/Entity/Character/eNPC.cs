@@ -32,20 +32,23 @@ namespace AngeliaGame {
 		protected override bool StaggerLegWhenIdle => false;
 	}
 
-	public class eSchoolTeacher : NPC { 
-		
+	public class eSchoolTeacher : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
 	}
 
 	public class eBusinessElderly : NPC {
 		protected override Color32 HairColor => new(212, 212, 212, 255);
+		protected override int PoseBodyAbove => 10 * A2G;
 	}
 
 	public class eBlondWoman : NPC {
 		protected override Color32 HairColor => new(252, 213, 74, 255);
+		protected override int PoseBodyAbove => 10 * A2G;
 	}
 
 	public class eBlondMan : NPC {
 		protected override Color32 HairColor => new(252, 213, 74, 255);
+		protected override int PoseBodyAbove => 9 * A2G;
 	}
 
 
