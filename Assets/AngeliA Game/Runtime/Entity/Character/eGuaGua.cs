@@ -5,9 +5,8 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
+	[RenderWithSheet]
 	public class eGuaGua : Summon {
-
-		public override CharacterRenderingSolution RenderingSolution => CharacterRenderingSolution.Sheet;
 
 
 		// MSG

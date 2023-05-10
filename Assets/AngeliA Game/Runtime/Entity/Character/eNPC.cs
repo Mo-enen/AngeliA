@@ -28,9 +28,13 @@ namespace AngeliaGame {
 
 	public class eHousewife : NPC {
 		protected override Color32 HairColor => new(176, 94, 196, 255);
+		protected override int PoseBodyAbove => 9 * A2G;
+		protected override bool StaggerLegWhenIdle => false;
 	}
 
-	public class eSchoolTeacher : NPC { }
+	public class eSchoolTeacher : NPC { 
+		
+	}
 
 	public class eBusinessElderly : NPC {
 		protected override Color32 HairColor => new(212, 212, 212, 255);

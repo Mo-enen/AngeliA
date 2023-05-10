@@ -21,7 +21,6 @@ namespace AngeliaGame {
 		private static readonly int PROPELLER_ID = "Propeller".AngeHash();
 
 		// Api
-		public override CharacterRenderingSolution RenderingSolution => CharacterRenderingSolution.Pose;
 		protected override bool SpinOnGroundPound => true;
 
 		// Data
