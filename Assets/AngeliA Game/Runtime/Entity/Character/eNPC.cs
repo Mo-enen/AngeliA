@@ -7,24 +7,32 @@ using AngeliaFramework;
 namespace AngeliaGame {
 
 
+	// Citizen A
 	public class eNormalBoy : NPC {
 		protected override int PoseBodyAbove => 7 * A2G;
 	}
 
-	public class eNormalGirl : NPC { }
+
+	public class eNormalGirl : NPC {
+		protected override int PoseBodyAbove => 7 * A2G;
+	}
+
 
 	public class eStreetGangster : NPC {
 		protected override int PoseBodyAbove => 9 * A2G;
 	}
 
+
 	public class eSchoolBoy : NPC {
 		protected override int PoseBodyAbove => 7 * A2G;
 	}
+
 
 	public class eNormalLady : NPC {
 		protected override Color32 HairColor => new(207, 123, 60, 255);
 		protected override int PoseBodyAbove => 9 * A2G;
 	}
+
 
 	public class eHousewife : NPC {
 		protected override Color32 HairColor => new(176, 94, 196, 255);
@@ -32,19 +40,23 @@ namespace AngeliaGame {
 		protected override bool StaggerLegWhenIdle => false;
 	}
 
+
 	public class eSchoolTeacher : NPC {
 		protected override int PoseBodyAbove => 9 * A2G;
 	}
+
 
 	public class eBusinessElderly : NPC {
 		protected override Color32 HairColor => new(212, 212, 212, 255);
 		protected override int PoseBodyAbove => 10 * A2G;
 	}
 
+
 	public class eBlondWoman : NPC {
 		protected override Color32 HairColor => new(252, 213, 74, 255);
 		protected override int PoseBodyAbove => 10 * A2G;
 	}
+
 
 	public class eBlondMan : NPC {
 		protected override Color32 HairColor => new(252, 213, 74, 255);
@@ -52,6 +64,55 @@ namespace AngeliaGame {
 	}
 
 
+	// Citizen B
+	public class eRichLady : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eRichMan : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eFisherMan : NPC {
+		protected override int PoseBodyAbove => 11 * A2G;
+	}
+
+
+	public class eShopkeeper : NPC {
+		protected override int PoseBodyAbove => 8 * A2G;
+	}
+
+
+	public class ePoet : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eCowboy : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eYoungWoman : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eSailorKid : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eBigBoy : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eLittleGirl : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
 
 
 }
