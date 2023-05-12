@@ -107,12 +107,64 @@ namespace AngeliaGame {
 
 
 	public class eBigBoy : NPC {
-		protected override int PoseBodyAbove => 10 * A2G;
+		protected override int PoseBodyAbove => 9 * A2G;
 	}
 
 
 	public class eLittleGirl : NPC {
-		protected override int PoseBodyAbove => 10 * A2G;
+		protected override Color32 HairColor => new(252, 213, 74, 255);
+		protected override int PoseBodyAbove => 6 * A2G;
+	}
+
+
+	// Businessman
+	public class eBusinessmanA : NPC {
+		protected override int PoseBodyAbove => 8 * A2G;
+	}
+
+
+	public class eBusinessmanB : NPC {
+		protected override int PoseBodyAbove => 8 * A2G;
+	}
+
+
+	public class eBusinessmanC : NPC {
+		protected override int PoseBodyAbove => 8 * A2G;
+	}
+
+
+	public class eBusinessmanD : NPC {
+		protected override int PoseBodyAbove => 8 * A2G;
+	}
+
+
+	public class eBusinessmanE : NPC {
+		protected override int PoseBodyAbove => 8 * A2G;
+	}
+
+
+	public class eBusinessmanF : NPC {
+		protected override int PoseBodyAbove => 8 * A2G;
+	}
+
+
+	public class eBusinessmanG : NPC {
+		protected override int PoseBodyAbove => 8 * A2G;
+	}
+
+
+	public class eBusinessmanH : NPC {
+		protected override int PoseBodyAbove => 8 * A2G;
+	}
+
+
+	public class eBusinessmanI : NPC {
+		protected override int PoseBodyAbove => 8 * A2G;
+	}
+
+
+	public class eBusinessmanJ : NPC {
+		protected override int PoseBodyAbove => 8 * A2G;
 	}
 
 

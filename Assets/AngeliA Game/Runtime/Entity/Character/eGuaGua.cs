@@ -17,7 +17,6 @@ namespace AngeliaGame {
 			DashDuration.Value = 20;
 			WalkToRunAccumulation.Value = 48;
 			JumpSpeed.Value = 69;
-			SwimInFreeStyle.Value = false;
 			FirstJumpWithRoll.Value = false;
 			JumpCount.Value = 1;
 			FlyAvailable.Value = false;

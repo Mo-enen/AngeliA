@@ -99,12 +99,7 @@ namespace AngeliaGame {
 				DrawFace(SLEEP_FACE_ID, headRect, Head.Width > 0, Head.Z + 1, true);
 				return;
 			}
-			if (
-				AnimatedPoseType == CharacterPoseAnimationType.Attack ||
-				AnimatedPoseType == CharacterPoseAnimationType.AttackAir ||
-				AnimatedPoseType == CharacterPoseAnimationType.AttackMove ||
-				AnimatedPoseType == CharacterPoseAnimationType.AttackSwim
-			) {
+			if (AnimatedPoseType == CharacterPoseAnimationType.Attack) {
 				DrawFace(ATTACK_FACE_ID, headRect, Head.Width > 0, Head.Z + 1);
 				return;
 			}
