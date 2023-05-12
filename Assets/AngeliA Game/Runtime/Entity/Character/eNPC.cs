@@ -96,12 +96,13 @@ namespace AngeliaGame {
 
 
 	public class eYoungWoman : NPC {
-		protected override int PoseBodyAbove => 10 * A2G;
+		protected override Color32 HairColor => new(240, 86, 86, 255);
+		protected override int PoseBodyAbove => 9 * A2G;
 	}
 
 
 	public class eSailorKid : NPC {
-		protected override int PoseBodyAbove => 10 * A2G;
+		protected override int PoseBodyAbove => 8 * A2G;
 	}
 
 
