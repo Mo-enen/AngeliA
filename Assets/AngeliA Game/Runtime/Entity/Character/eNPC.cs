@@ -124,48 +124,100 @@ namespace AngeliaGame {
 
 
 	public class eBusinessmanB : NPC {
-		protected override int PoseBodyAbove => 8 * A2G;
+		protected override int PoseBodyAbove => 5 * A2G;
 	}
 
 
 	public class eBusinessmanC : NPC {
-		protected override int PoseBodyAbove => 8 * A2G;
+		protected override int PoseBodyAbove => 9 * A2G;
 	}
 
 
 	public class eBusinessmanD : NPC {
-		protected override int PoseBodyAbove => 8 * A2G;
+		protected override int PoseBodyAbove => 9 * A2G;
 	}
 
 
 	public class eBusinessmanE : NPC {
-		protected override int PoseBodyAbove => 8 * A2G;
+		protected override int PoseBodyAbove => 10 * A2G;
 	}
 
 
 	public class eBusinessmanF : NPC {
-		protected override int PoseBodyAbove => 8 * A2G;
+		protected override int PoseBodyAbove => 10 * A2G;
 	}
 
 
 	public class eBusinessmanG : NPC {
-		protected override int PoseBodyAbove => 8 * A2G;
+		protected override int PoseBodyAbove => 9 * A2G;
 	}
 
 
 	public class eBusinessmanH : NPC {
-		protected override int PoseBodyAbove => 8 * A2G;
+		protected override int PoseBodyAbove => 7 * A2G;
 	}
 
 
 	public class eBusinessmanI : NPC {
-		protected override int PoseBodyAbove => 8 * A2G;
+		protected override int PoseBodyAbove => 6 * A2G;
 	}
 
 
 	public class eBusinessmanJ : NPC {
 		protected override int PoseBodyAbove => 8 * A2G;
 	}
+
+
+	// Doctor
+	public class eDoctorA : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eDoctorB : NPC {
+		protected override int PoseBodyAbove => 8 * A2G;
+	}
+
+
+	public class eDoctorC : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eDoctorD : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eDoctorE : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eDoctorF : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eDoctorG : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eDoctorH : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eDoctorI : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eDoctorJ : NPC {
+		protected override int PoseBodyAbove => 8 * A2G;
+	}
+
 
 
 }
