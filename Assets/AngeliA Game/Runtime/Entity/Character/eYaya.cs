@@ -16,12 +16,12 @@ namespace AngeliaGame {
 		private static readonly int CAT_TAIL_ID = "Yaya.CatTail".AngeHash();
 		private static readonly int DAMAGING_FACE_ID = "Yaya.Face.Damage".AngeHash();
 		private static readonly int PASSOUT_FACE_ID = "Yaya.Face.PassOut".AngeHash();
-		private static readonly int SLEEP_FACE_ID = "Yaya.Face.Sleep".AngeHash();
 		private static readonly int ATTACK_FACE_ID = "Yaya.Face.Attack".AngeHash();
 		private static readonly int PROPELLER_ID = "Propeller".AngeHash();
 
 		// Api
 		protected override bool SpinOnGroundPound => true;
+		protected override int PoseBodyAbove => 7 * A2G;
 
 		// Data
 		private eGuaGua GuaGua = null;
@@ -88,19 +88,15 @@ namespace AngeliaGame {
 			if (!FacingFront) return;
 			var headRect = Head.GetGlobalRect();
 			if (AnimatedPoseType == CharacterPoseAnimationType.TakingDamage) {
-				DrawFace(DAMAGING_FACE_ID, headRect, Head.Width > 0, Head.Z + 1, true);
+				DrawFace(DAMAGING_FACE_ID, headRect, Head.Width > 0, 33, true);
 				return;
 			}
 			if (AnimatedPoseType == CharacterPoseAnimationType.PassOut) {
-				DrawFace(PASSOUT_FACE_ID, headRect, Head.Width > 0, Head.Z + 1, true);
-				return;
-			}
-			if (AnimatedPoseType == CharacterPoseAnimationType.Sleep) {
-				DrawFace(SLEEP_FACE_ID, headRect, Head.Width > 0, Head.Z + 1, true);
+				DrawFace(PASSOUT_FACE_ID, headRect, Head.Width > 0, 33, true);
 				return;
 			}
 			if (AnimatedPoseType == CharacterPoseAnimationType.Attack) {
-				DrawFace(ATTACK_FACE_ID, headRect, Head.Width > 0, Head.Z + 1);
+				DrawFace(ATTACK_FACE_ID, headRect, Head.Width > 0, 33);
 				return;
 			}
 			base.DrawPoseFace(bounce);

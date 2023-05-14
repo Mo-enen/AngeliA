@@ -219,5 +219,215 @@ namespace AngeliaGame {
 	}
 
 
+	// Athlete
+	public class eAthleteA : NPC {
+		protected override int PoseBodyAbove => 11 * A2G;
+	}
+
+
+	public class eAthleteB : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eAthleteC : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eAthleteD : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eAthleteE : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eAthleteF : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eAthleteG : NPC {
+		protected override int PoseBodyAbove => 11 * A2G;
+	}
+
+
+	public class eAthleteH : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eAthleteI : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eAthleteJ : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	// Student
+	public class eStudentA : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eStudentB : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eStudentC : NPC {
+		protected override int PoseBodyAbove => 11 * A2G;
+	}
+
+
+	public class eStudentD : NPC {
+		protected override int PoseBodyAbove => 8 * A2G;
+	}
+
+
+	public class eStudentE : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eStudentF : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eStudentG : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eStudentH : NPC {
+		protected override int PoseBodyAbove => 11 * A2G;
+	}
+
+
+	public class eStudentI : NPC {
+		protected override int PoseBodyAbove => 11 * A2G;
+	}
+
+
+	public class eStudentJ : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+
+	// Footman
+	public class eFootmanA : NPC {
+		protected override int PoseBodyAbove => 12 * A2G;
+	}
+
+
+	public class eFootmanB : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eFootmanC : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eFootmanD : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eFootmanE : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eFootmanF : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eFootmanG : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eFootmanH : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eFootmanI : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eFootmanJ : NPC {
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	// Viking
+	public class eVikingA : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eVikingB : NPC {
+		protected override int PoseBodyAbove => 11 * A2G;
+	}
+
+
+	public class eVikingC : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eVikingD : NPC {
+		protected override int PoseBodyAbove => 11 * A2G;
+	}
+
+
+	public class eVikingE : NPC {
+		protected override int PoseBodyAbove => 9 * A2G;
+	}
+
+
+	public class eVikingF : NPC {
+		protected override int PoseBodyAbove => 13 * A2G;
+		protected override Color32 HairColor => new(252, 213, 74, 255);
+	}
+
+
+	public class eVikingG : NPC {
+		protected override Color32 HairColor => new(252, 213, 74, 255);
+		protected override int PoseBodyAbove => 11 * A2G;
+	}
+
+
+	public class eVikingH : NPC {
+		protected override Color32 HairColor => new(252, 213, 74, 255);
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eVikingI : NPC {
+		protected override Color32 HairColor => new(85, 85, 85, 255);
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
+	public class eVikingJ : NPC {
+		protected override Color32 HairColor => new(199, 58, 74, 255);
+		protected override int PoseBodyAbove => 10 * A2G;
+	}
+
+
 
 }
