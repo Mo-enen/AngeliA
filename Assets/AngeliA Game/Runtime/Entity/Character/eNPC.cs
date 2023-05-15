@@ -324,52 +324,102 @@ namespace AngeliaGame {
 
 	// Footman
 	public class eFootmanA : NPC {
-		protected override int PoseBodyAbove => 12 * A2G;
+		protected override int PoseBodyAbove => 10 * A2G;
+		private static readonly int SHOULDER_CODE = "FootmanA.Suit.Shoulder".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			DrawClothOnShoulder(SHOULDER_CODE);
+		}
 	}
 
 
 	public class eFootmanB : NPC {
 		protected override int PoseBodyAbove => 10 * A2G;
+		private static readonly int SHOULDER_CODE = "FootmanB.Suit.Shoulder".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			DrawClothOnShoulder(SHOULDER_CODE);
+		}
 	}
 
 
 	public class eFootmanC : NPC {
 		protected override int PoseBodyAbove => 10 * A2G;
+		private static readonly int SHOULDER_CODE = "FootmanC.Suit.Shoulder".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			DrawClothOnShoulder(SHOULDER_CODE);
+		}
 	}
 
 
 	public class eFootmanD : NPC {
 		protected override int PoseBodyAbove => 10 * A2G;
+		private static readonly int SHOULDER_CODE = "FootmanD.Suit.Shoulder".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			DrawClothOnShoulder(SHOULDER_CODE);
+		}
 	}
 
 
 	public class eFootmanE : NPC {
 		protected override int PoseBodyAbove => 10 * A2G;
+		private static readonly int SHOULDER_CODE = "FootmanE.Suit.Shoulder".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			DrawClothOnShoulder(SHOULDER_CODE);
+		}
 	}
 
 
 	public class eFootmanF : NPC {
 		protected override int PoseBodyAbove => 10 * A2G;
+		private static readonly int SHOULDER_CODE = "FootmanF.Suit.Shoulder".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			DrawClothOnShoulder(SHOULDER_CODE);
+		}
 	}
 
 
 	public class eFootmanG : NPC {
 		protected override int PoseBodyAbove => 10 * A2G;
+		private static readonly int SHOULDER_CODE = "FootmanG.Suit.Shoulder".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			DrawClothOnShoulder(SHOULDER_CODE);
+		}
 	}
 
 
 	public class eFootmanH : NPC {
 		protected override int PoseBodyAbove => 10 * A2G;
+		private static readonly int SHOULDER_CODE = "FootmanH.Suit.Shoulder".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			DrawClothOnShoulder(SHOULDER_CODE);
+		}
 	}
 
 
 	public class eFootmanI : NPC {
 		protected override int PoseBodyAbove => 10 * A2G;
+		private static readonly int SHOULDER_CODE = "FootmanI.Suit.Shoulder".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			DrawClothOnShoulder(SHOULDER_CODE);
+		}
 	}
 
 
 	public class eFootmanJ : NPC {
 		protected override int PoseBodyAbove => 10 * A2G;
+		private static readonly int SHOULDER_CODE = "FootmanJ.Suit.Shoulder".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			DrawClothOnShoulder(SHOULDER_CODE);
+		}
 	}
 
 
