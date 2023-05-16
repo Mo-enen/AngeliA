@@ -328,7 +328,8 @@ namespace AngeliaGame {
 		private static readonly int SHOULDER_CODE = "FootmanA.Suit.Shoulder".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawClothOnShoulder(SHOULDER_CODE);
+			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
+			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
 		}
 	}
 
@@ -338,7 +339,8 @@ namespace AngeliaGame {
 		private static readonly int SHOULDER_CODE = "FootmanB.Suit.Shoulder".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawClothOnShoulder(SHOULDER_CODE);
+			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
+			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
 		}
 	}
 
@@ -348,7 +350,8 @@ namespace AngeliaGame {
 		private static readonly int SHOULDER_CODE = "FootmanC.Suit.Shoulder".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawClothOnShoulder(SHOULDER_CODE);
+			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
+			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
 		}
 	}
 
@@ -358,7 +361,8 @@ namespace AngeliaGame {
 		private static readonly int SHOULDER_CODE = "FootmanD.Suit.Shoulder".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawClothOnShoulder(SHOULDER_CODE);
+			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
+			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
 		}
 	}
 
@@ -368,7 +372,8 @@ namespace AngeliaGame {
 		private static readonly int SHOULDER_CODE = "FootmanE.Suit.Shoulder".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawClothOnShoulder(SHOULDER_CODE);
+			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
+			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
 		}
 	}
 
@@ -378,7 +383,8 @@ namespace AngeliaGame {
 		private static readonly int SHOULDER_CODE = "FootmanF.Suit.Shoulder".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawClothOnShoulder(SHOULDER_CODE);
+			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
+			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
 		}
 	}
 
@@ -388,7 +394,8 @@ namespace AngeliaGame {
 		private static readonly int SHOULDER_CODE = "FootmanG.Suit.Shoulder".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawClothOnShoulder(SHOULDER_CODE);
+			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
+			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
 		}
 	}
 
@@ -398,7 +405,8 @@ namespace AngeliaGame {
 		private static readonly int SHOULDER_CODE = "FootmanH.Suit.Shoulder".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawClothOnShoulder(SHOULDER_CODE);
+			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
+			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
 		}
 	}
 
@@ -408,7 +416,8 @@ namespace AngeliaGame {
 		private static readonly int SHOULDER_CODE = "FootmanI.Suit.Shoulder".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawClothOnShoulder(SHOULDER_CODE);
+			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
+			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
 		}
 	}
 
@@ -418,7 +427,8 @@ namespace AngeliaGame {
 		private static readonly int SHOULDER_CODE = "FootmanJ.Suit.Shoulder".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawClothOnShoulder(SHOULDER_CODE);
+			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
+			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
 		}
 	}
 

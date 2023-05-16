@@ -51,11 +51,6 @@ namespace AngeliaGame {
 			if (GuaGua == null || !GuaGua.Active) {
 				GuaGua = Summon.CreateSummon<eGuaGua>(this, X, Y);
 			}
-
-
-
-
-
 		}
 
 
