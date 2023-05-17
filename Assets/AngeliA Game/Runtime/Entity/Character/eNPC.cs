@@ -323,112 +323,139 @@ namespace AngeliaGame {
 
 
 	// Footman
-	public class eFootmanA : NPC {
+	public abstract class eFootman : NPC {
+
+
+		protected void DrawShoulderArmor (int code) {
+			AttachClothOn(
+				UpperArmL, code, 36, true,
+				(-UpperArmL.Rotation * 7 / 10).Clamp(-UpperArmL.Rotation - 30, -UpperArmL.Rotation + 30)
+			);
+			AttachClothOn(
+				UpperArmR, code, 36, false,
+				(-UpperArmR.Rotation * 7 / 10).Clamp(-UpperArmR.Rotation - 30, -UpperArmR.Rotation + 30)
+			);
+		}
+
+
+		protected void DrawLimbArmor (int armCode, int legCode) {
+			AttachClothOn(LowerArmL, armCode, LowerArmL.Z + 16, true);
+			AttachClothOn(LowerArmR, armCode, LowerArmR.Z + 16, false);
+			AttachClothOn(LowerLegL, legCode, LowerLegL.Z + 16, !FacingRight);
+			AttachClothOn(LowerLegR, legCode, LowerLegR.Z + 16, !FacingRight);
+		}
+
+
+	}
+	public class eFootmanA : eFootman {
 		protected override int PoseBodyAbove => 10 * A2G;
 		private static readonly int SHOULDER_CODE = "FootmanA.Suit.Shoulder".AngeHash();
+		private static readonly int HIP_CODE = "FootmanA.Armor.Hip".AngeHash();
+		private static readonly int ARM_CODE = "FootmanA.Armor.LowerArm".AngeHash();
+		private static readonly int LEG_CODE = "FootmanA.Armor.LowerLeg".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
-			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
+			DrawShoulderArmor(SHOULDER_CODE);
+			DrawLimbArmor(ARM_CODE, LEG_CODE);
+			if (Body.FrontSide) {
+				AttachClothOn(Body, HIP_CODE, 20, !FacingRight, 0);
+			}
 		}
 	}
 
 
-	public class eFootmanB : NPC {
+	public class eFootmanB : eFootman {
 		protected override int PoseBodyAbove => 10 * A2G;
 		private static readonly int SHOULDER_CODE = "FootmanB.Suit.Shoulder".AngeHash();
+		private static readonly int HIP_CODE = "FootmanB.Armor.Hip".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
-			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
+			DrawShoulderArmor(SHOULDER_CODE);
+			if (Body.FrontSide) AttachClothOn(Body, HIP_CODE, 10, !FacingRight);
 		}
 	}
 
 
-	public class eFootmanC : NPC {
+	public class eFootmanC : eFootman {
 		protected override int PoseBodyAbove => 10 * A2G;
 		private static readonly int SHOULDER_CODE = "FootmanC.Suit.Shoulder".AngeHash();
+		private static readonly int HIP_CODE = "FootmanC.Armor.Hip".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
-			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
+			DrawShoulderArmor(SHOULDER_CODE);
+			if (Body.FrontSide) AttachClothOn(Body, HIP_CODE, 10, !FacingRight, 0);
 		}
 	}
 
 
-	public class eFootmanD : NPC {
+	public class eFootmanD : eFootman {
 		protected override int PoseBodyAbove => 10 * A2G;
-		private static readonly int SHOULDER_CODE = "FootmanD.Suit.Shoulder".AngeHash();
+		private static readonly int HIP_CODE = "FootmanD.Armor.Hip".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
-			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
+			if (Body.FrontSide) AttachClothOn(Body, HIP_CODE, 10, !FacingRight, 0);
 		}
 	}
 
 
-	public class eFootmanE : NPC {
+	public class eFootmanE : eFootman {
 		protected override int PoseBodyAbove => 10 * A2G;
 		private static readonly int SHOULDER_CODE = "FootmanE.Suit.Shoulder".AngeHash();
+		private static readonly int HIP_CODE = "FootmanE.Armor.Hip".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
-			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
+			DrawShoulderArmor(SHOULDER_CODE);
+			if (Body.FrontSide) AttachClothOn(Body, HIP_CODE, 10, !FacingRight, 0);
 		}
 	}
 
 
-	public class eFootmanF : NPC {
+	public class eFootmanF : eFootman {
 		protected override int PoseBodyAbove => 10 * A2G;
 		private static readonly int SHOULDER_CODE = "FootmanF.Suit.Shoulder".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
-			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
+			DrawShoulderArmor(SHOULDER_CODE);
 		}
 	}
 
 
-	public class eFootmanG : NPC {
+	public class eFootmanG : eFootman {
 		protected override int PoseBodyAbove => 10 * A2G;
 		private static readonly int SHOULDER_CODE = "FootmanG.Suit.Shoulder".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
-			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
+			DrawShoulderArmor(SHOULDER_CODE);
 		}
 	}
 
 
-	public class eFootmanH : NPC {
+	public class eFootmanH : eFootman {
 		protected override int PoseBodyAbove => 10 * A2G;
 		private static readonly int SHOULDER_CODE = "FootmanH.Suit.Shoulder".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
-			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
+			DrawShoulderArmor(SHOULDER_CODE);
 		}
 	}
 
 
-	public class eFootmanI : NPC {
+	public class eFootmanI : eFootman {
 		protected override int PoseBodyAbove => 10 * A2G;
-		private static readonly int SHOULDER_CODE = "FootmanI.Suit.Shoulder".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
-			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
+
+
 		}
 	}
 
 
-	public class eFootmanJ : NPC {
+	public class eFootmanJ : eFootman {
 		protected override int PoseBodyAbove => 10 * A2G;
-		private static readonly int SHOULDER_CODE = "FootmanJ.Suit.Shoulder".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			AttachClothOn(UpperArmL, SHOULDER_CODE, true);
-			AttachClothOn(UpperArmR, SHOULDER_CODE, false);
+
+
 		}
 	}
 
