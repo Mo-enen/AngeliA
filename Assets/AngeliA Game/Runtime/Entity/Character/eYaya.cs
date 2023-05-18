@@ -71,6 +71,7 @@ namespace AngeliaGame {
 			if (
 				!IsPassOut &&
 				AnimatedPoseType != CharacterPoseAnimationType.Sleep &&
+				AnimatedPoseType != CharacterPoseAnimationType.PassOut &&
 				AnimatedPoseType != CharacterPoseAnimationType.Dash
 			) {
 				if (AnimatedPoseType == CharacterPoseAnimationType.Fly) {
