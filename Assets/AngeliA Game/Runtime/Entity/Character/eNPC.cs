@@ -29,13 +29,13 @@ namespace AngeliaGame {
 
 
 	public class eNormalLady : NPC {
-		protected override Color32 HairColor => new(207, 123, 60, 255);
+		public override Color32 HairColor => new(207, 123, 60, 255);
 		protected override int PoseBodyAbove => 9 * A2G;
 	}
 
 
 	public class eHousewife : NPC {
-		protected override Color32 HairColor => new(176, 94, 196, 255);
+		public override Color32 HairColor => new(176, 94, 196, 255);
 		protected override int PoseBodyAbove => 9 * A2G;
 		protected override bool StaggerLegWhenIdle => false;
 	}
@@ -47,19 +47,19 @@ namespace AngeliaGame {
 
 
 	public class eBusinessElderly : NPC {
-		protected override Color32 HairColor => new(212, 212, 212, 255);
+		public override Color32 HairColor => new(212, 212, 212, 255);
 		protected override int PoseBodyAbove => 10 * A2G;
 	}
 
 
 	public class eBlondWoman : NPC {
-		protected override Color32 HairColor => new(252, 213, 74, 255);
+		public override Color32 HairColor => new(252, 213, 74, 255);
 		protected override int PoseBodyAbove => 10 * A2G;
 	}
 
 
 	public class eBlondMan : NPC {
-		protected override Color32 HairColor => new(252, 213, 74, 255);
+		public override Color32 HairColor => new(252, 213, 74, 255);
 		protected override int PoseBodyAbove => 9 * A2G;
 	}
 
@@ -96,7 +96,7 @@ namespace AngeliaGame {
 
 
 	public class eYoungWoman : NPC {
-		protected override Color32 HairColor => new(240, 86, 86, 255);
+		public override Color32 HairColor => new(240, 86, 86, 255);
 		protected override int PoseBodyAbove => 9 * A2G;
 	}
 
@@ -112,7 +112,7 @@ namespace AngeliaGame {
 
 
 	public class eLittleGirl : NPC {
-		protected override Color32 HairColor => new(252, 213, 74, 255);
+		public override Color32 HairColor => new(252, 213, 74, 255);
 		protected override int PoseBodyAbove => 6 * A2G;
 	}
 
@@ -323,31 +323,7 @@ namespace AngeliaGame {
 
 
 	// Footman
-	public abstract class eFootman : NPC {
-
-
-		protected void DrawShoulderArmor (int code) {
-			AttachClothOn(
-				UpperArmL, code, 36, true,
-				(-UpperArmL.Rotation * 7 / 10).Clamp(-UpperArmL.Rotation - 30, -UpperArmL.Rotation + 30)
-			);
-			AttachClothOn(
-				UpperArmR, code, 36, false,
-				(-UpperArmR.Rotation * 7 / 10).Clamp(-UpperArmR.Rotation - 30, -UpperArmR.Rotation + 30)
-			);
-		}
-
-
-		protected void DrawLimbArmor (int armCode, int legCode) {
-			AttachClothOn(LowerArmL, armCode, LowerArmL.Z + 16, true);
-			AttachClothOn(LowerArmR, armCode, LowerArmR.Z + 16, false);
-			AttachClothOn(LowerLegL, legCode, LowerLegL.Z + 16, !FacingRight);
-			AttachClothOn(LowerLegR, legCode, LowerLegR.Z + 16, !FacingRight);
-		}
-
-
-	}
-	public class eFootmanA : eFootman {
+	public class eFootmanA : NPC {
 		protected override int PoseBodyAbove => 10 * A2G;
 		private static readonly int SHOULDER_CODE = "FootmanA.Suit.Shoulder".AngeHash();
 		private static readonly int HIP_CODE = "FootmanA.Armor.Hip".AngeHash();
@@ -355,166 +331,233 @@ namespace AngeliaGame {
 		private static readonly int LEG_CODE = "FootmanA.Armor.LowerLeg".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawShoulderArmor(SHOULDER_CODE);
-			DrawLimbArmor(ARM_CODE, LEG_CODE);
+			DrawArmorForShoulder(SHOULDER_CODE);
+			DrawArmorForLimb(ARM_CODE, LEG_CODE);
 			if (Body.FrontSide) {
-				AttachClothOn(Body, HIP_CODE, 20, !FacingRight, 0);
+				AttachClothOn(Body, Direction3.Down, HIP_CODE, 20, !FacingRight, 0);
 			}
 		}
 	}
 
 
-	public class eFootmanB : eFootman {
+	public class eFootmanB : NPC {
 		protected override int PoseBodyAbove => 10 * A2G;
 		private static readonly int SHOULDER_CODE = "FootmanB.Suit.Shoulder".AngeHash();
 		private static readonly int HIP_CODE = "FootmanB.Armor.Hip".AngeHash();
+		private static readonly int ARM_CODE = "FootmanB.Armor.LowerArm".AngeHash();
+		private static readonly int LEG_CODE = "FootmanB.Armor.LowerLeg".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawShoulderArmor(SHOULDER_CODE);
-			if (Body.FrontSide) AttachClothOn(Body, HIP_CODE, 10, !FacingRight);
+			DrawArmorForShoulder(SHOULDER_CODE);
+			DrawArmorForLimb(ARM_CODE, LEG_CODE);
+			if (Body.FrontSide) AttachClothOn(Body, Direction3.Down, HIP_CODE, 10, !FacingRight);
 		}
 	}
 
 
-	public class eFootmanC : eFootman {
+	public class eFootmanC : NPC {
 		protected override int PoseBodyAbove => 10 * A2G;
 		private static readonly int SHOULDER_CODE = "FootmanC.Suit.Shoulder".AngeHash();
 		private static readonly int HIP_CODE = "FootmanC.Armor.Hip".AngeHash();
+		private static readonly int LEG_CODE = "FootmanC.Armor.LowerLeg".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawShoulderArmor(SHOULDER_CODE);
-			if (Body.FrontSide) AttachClothOn(Body, HIP_CODE, 10, !FacingRight, 0);
+			DrawArmorForShoulder(SHOULDER_CODE);
+			DrawArmorForLimb(0, LEG_CODE);
+			if (Body.FrontSide) AttachClothOn(Body, Direction3.Down, HIP_CODE, 10, !FacingRight, 0);
 		}
 	}
 
 
-	public class eFootmanD : eFootman {
+	public class eFootmanD : NPC {
 		protected override int PoseBodyAbove => 10 * A2G;
 		private static readonly int HIP_CODE = "FootmanD.Armor.Hip".AngeHash();
+		private static readonly int SHOULDER_CODE = "FootmanD.Suit.Shoulder".AngeHash();
+		private static readonly int ARM_CODE = "FootmanD.Armor.LowerArm".AngeHash();
+		private static readonly int LEG_CODE = "FootmanD.Armor.LowerLeg".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (Body.FrontSide) AttachClothOn(Body, HIP_CODE, 10, !FacingRight, 0);
+			DrawArmorForShoulder(SHOULDER_CODE, 0);
+			DrawArmorForLimb(ARM_CODE, LEG_CODE);
+			if (Body.FrontSide) AttachClothOn(Body, Direction3.Down, HIP_CODE, 10, !FacingRight, 0);
 		}
 	}
 
 
-	public class eFootmanE : eFootman {
+	public class eFootmanE : NPC {
 		protected override int PoseBodyAbove => 10 * A2G;
 		private static readonly int SHOULDER_CODE = "FootmanE.Suit.Shoulder".AngeHash();
 		private static readonly int HIP_CODE = "FootmanE.Armor.Hip".AngeHash();
+		private static readonly int ARM_CODE = "FootmanE.Armor.LowerArm".AngeHash();
+		private static readonly int LEG_CODE = "FootmanE.Armor.LowerLeg".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawShoulderArmor(SHOULDER_CODE);
-			if (Body.FrontSide) AttachClothOn(Body, HIP_CODE, 10, !FacingRight, 0);
+			DrawArmorForShoulder(SHOULDER_CODE);
+			DrawArmorForLimb(ARM_CODE, 0);
+			AttachClothOn(UpperLegL, Direction3.Up, LEG_CODE, LowerLegL.Z + 16, true);
+			if (Body.FrontSide) AttachClothOn(Body, Direction3.Down, HIP_CODE, 10, !FacingRight, 0);
 		}
 	}
 
 
-	public class eFootmanF : eFootman {
-		protected override int PoseBodyAbove => 10 * A2G;
+	public class eFootmanF : NPC {
+		protected override int PoseBodyAbove => 7 * A2G;
 		private static readonly int SHOULDER_CODE = "FootmanF.Suit.Shoulder".AngeHash();
+		private static readonly int ARM_CODE = "FootmanF.Armor.LowerArm".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawShoulderArmor(SHOULDER_CODE);
+			DrawArmorForShoulder(SHOULDER_CODE);
+			DrawArmorForLimb(ARM_CODE, 0);
 		}
 	}
 
 
-	public class eFootmanG : eFootman {
-		protected override int PoseBodyAbove => 10 * A2G;
+	public class eFootmanG : NPC {
+		protected override int PoseBodyAbove => 7 * A2G;
 		private static readonly int SHOULDER_CODE = "FootmanG.Suit.Shoulder".AngeHash();
+		private static readonly int ARM_CODE = "FootmanG.Armor.LowerArm".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawShoulderArmor(SHOULDER_CODE);
+			DrawArmorForShoulder(SHOULDER_CODE);
+			DrawArmorForLimb(ARM_CODE, 0);
 		}
 	}
 
 
-	public class eFootmanH : eFootman {
-		protected override int PoseBodyAbove => 10 * A2G;
+	public class eFootmanH : NPC {
+		protected override int PoseBodyAbove => 7 * A2G;
 		private static readonly int SHOULDER_CODE = "FootmanH.Suit.Shoulder".AngeHash();
+		private static readonly int LEG_CODE = "FootmanH.Armor.LowerLeg".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			DrawShoulderArmor(SHOULDER_CODE);
+			DrawArmorForShoulder(SHOULDER_CODE);
+			DrawArmorForLimb(0, LEG_CODE);
 		}
 	}
 
 
-	public class eFootmanI : eFootman {
-		protected override int PoseBodyAbove => 10 * A2G;
+	public class eFootmanI : NPC {
+		protected override int PoseBodyAbove => 7 * A2G;
+		private static readonly int ARM_CODE = "FootmanI.Armor.LowerArm".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-
-
+			DrawArmorForLimb(ARM_CODE, 0);
 		}
 	}
 
 
-	public class eFootmanJ : eFootman {
-		protected override int PoseBodyAbove => 10 * A2G;
+	public class eFootmanJ : NPC {
+		protected override int PoseBodyAbove => 7 * A2G;
+		private static readonly int ARM_CODE = "FootmanJ.Armor.LowerArm".AngeHash();
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-
-
+			DrawArmorForLimb(ARM_CODE, 0);
 		}
 	}
 
 
 	// Viking
 	public class eVikingA : NPC {
-		protected override int PoseBodyAbove => 9 * A2G;
+		protected override int PoseBodyAbove => 11 * A2G;
+		private static readonly int SHOULDER_CODE = "VikingA.Armor.Shoulder".AngeHash();
+		private static readonly int LEG_CODE = "VikingA.Armor.LowerLeg".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			if (Body.FrontSide) DrawArmorForShoulder(SHOULDER_CODE);
+			DrawArmorForLimb(0, LEG_CODE);
+		}
 	}
 
 
 	public class eVikingB : NPC {
 		protected override int PoseBodyAbove => 11 * A2G;
+		private static readonly int SHOULDER_CODE = "VikingB.Armor.Shoulder".AngeHash();
+		private static readonly int LEG_CODE = "VikingB.Armor.LowerLeg".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			if (Body.FrontSide) DrawArmorForShoulder(SHOULDER_CODE);
+			DrawArmorForLimb(0, LEG_CODE);
+		}
 	}
 
 
 	public class eVikingC : NPC {
 		protected override int PoseBodyAbove => 9 * A2G;
+		private static readonly int LEG_CODE = "VikingC.Armor.LowerLeg".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			DrawArmorForLimb(0, LEG_CODE);
+		}
 	}
 
 
 	public class eVikingD : NPC {
 		protected override int PoseBodyAbove => 11 * A2G;
+		private static readonly int SHOULDER_CODE = "VikingD.Armor.Shoulder".AngeHash();
+		private static readonly int LEG_CODE = "VikingD.Armor.LowerLeg".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			if (Body.FrontSide) DrawArmorForShoulder(SHOULDER_CODE);
+			DrawArmorForLimb(0, LEG_CODE);
+		}
 	}
 
 
 	public class eVikingE : NPC {
 		protected override int PoseBodyAbove => 9 * A2G;
+		private static readonly int LEG_CODE = "VikingE.Armor.LowerLeg".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			DrawArmorForLimb(0, LEG_CODE);
+		}
 	}
 
 
 	public class eVikingF : NPC {
 		protected override int PoseBodyAbove => 13 * A2G;
-		protected override Color32 HairColor => new(252, 213, 74, 255);
+		public override Color32 HairColor => new(252, 213, 74, 255);
+		private static readonly int LEG_CODE = "VikingF.Armor.LowerLeg".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			DrawArmorForLimb(0, LEG_CODE);
+		}
 	}
 
 
 	public class eVikingG : NPC {
-		protected override Color32 HairColor => new(252, 213, 74, 255);
+		public override Color32 HairColor => new(252, 213, 74, 255);
 		protected override int PoseBodyAbove => 11 * A2G;
+		private static readonly int LEG_CODE = "VikingG.Armor.LowerLeg".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			DrawArmorForLimb(0, LEG_CODE);
+		}
 	}
 
 
 	public class eVikingH : NPC {
-		protected override Color32 HairColor => new(252, 213, 74, 255);
-		protected override int PoseBodyAbove => 10 * A2G;
+		public override Color32 HairColor => new(252, 213, 74, 255);
+		protected override int PoseBodyAbove => 11 * A2G;
 	}
 
 
 	public class eVikingI : NPC {
-		protected override Color32 HairColor => new(85, 85, 85, 255);
+		public override Color32 HairColor => new(85, 85, 85, 255);
 		protected override int PoseBodyAbove => 10 * A2G;
 	}
 
 
 	public class eVikingJ : NPC {
-		protected override Color32 HairColor => new(199, 58, 74, 255);
+		public override Color32 HairColor => new(199, 58, 74, 255);
 		protected override int PoseBodyAbove => 10 * A2G;
+		private static readonly int SHOULDER_CODE = "VikingJ.Armor.Shoulder".AngeHash();
+		private static readonly int LEG_CODE = "VikingG.Armor.LowerLeg".AngeHash();
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			if (Body.FrontSide) DrawArmorForShoulder(SHOULDER_CODE);
+			DrawArmorForLimb(0, LEG_CODE);
+		}
 	}
-
 
 
 }

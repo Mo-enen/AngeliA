@@ -9,7 +9,6 @@ namespace AngeliaGame {
 	public class eGuaGua : Summon {
 
 
-		// MSG
 		public eGuaGua () {
 			MovementWidth.Value = 150;
 			MovementHeight.Value = 150;
@@ -19,7 +18,7 @@ namespace AngeliaGame {
 			JumpSpeed.Value = 69;
 			FirstJumpWithRoll.Value = false;
 			JumpCount.Value = 1;
-			FlyAvailable.Value = false;
+			FlyAvailable.Value = true;
 			FlyRiseSpeed.Value = 32;
 			MaxHP.Value = 1;
 			FlyAcceleration.Value = 1;
