@@ -470,7 +470,7 @@ namespace AngeliaGame {
 
 
 	public class eVikingB : NPC {
-		protected override int PoseBodyAbove => 11 * A2G;
+		protected override int PoseBodyAbove => 10 * A2G;
 		private static readonly int SHOULDER_CODE = "VikingB.Armor.Shoulder".AngeHash();
 		private static readonly int LEG_CODE = "VikingB.Armor.LowerLeg".AngeHash();
 		public override void FrameUpdate () {
