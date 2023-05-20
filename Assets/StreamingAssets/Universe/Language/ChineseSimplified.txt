@@ -51,7 +51,6 @@ Menu.Setting.Fullscreen.2:全屏（低清）
 Menu.Setting.Fullscreen.Label:显示
 Menu.Setting.Language:语言
 Menu.Setting.MusicVolume:音乐音量
-Menu.Setting.ScreenEffect:使用屏幕特效
 Menu.Setting.SoundVolume:音效音量
 Menu.Setting.UseControlHint:显示操作提示
 Menu.Setting.UseGamepadHint:显示左下角手柄

@@ -149,94 +149,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da05428af58f0fa4d921db1f278225fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_GameConfig:
-    EntityCapacity: 2048
-    SoundTrackCount: 6
-    AudioMixerGroup: {fileID: -5649732288638014774, guid: 2d8922283b392334ca57b3d736565004,
-      type: 2}
-    Fonts:
-    - {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    Cursors:
-    - {fileID: 2800000, guid: 2d951d3f218d5714995d761f1ca80634, type: 3}
-    - {fileID: 2800000, guid: 251783bc0d1b9a642b21a27e979bcb8f, type: 3}
-    - {fileID: 2800000, guid: b7c6abdfc00122544b6f1edec7dc2293, type: 3}
-  m_TimeConfig:
-    LogicFramerate: 60
-    LogicFramerateLag: 30
-    LagSimulation_EntityMin: 1600
-    LagSimulation_EntityMax: 2000
-    UseLagSimulationOnAudio: 1
-  m_ViewConfig:
-    DefaultHeight: 5376
-    MinHeight: 4096
-    MaxHeight: 15360
-    ViewRatio: 2000
-  m_WorldConfig:
-    SkyTintTop:
-      serializedVersion: 2
-      key0: {r: 0.078431375, g: 0.08235294, b: 0.12156863, a: 1}
-      key1: {r: 0.1254902, g: 0.22352941, b: 0.29803923, a: 1}
-      key2: {r: 0.2784314, g: 0.6666667, b: 0.85882354, a: 0}
-      key3: {r: 0.1254902, g: 0.22352941, b: 0.29803923, a: 0}
-      key4: {r: 0.078431375, g: 0.08235294, b: 0.12156863, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 16384
-      ctime2: 32768
-      ctime3: 49151
-      ctime4: 65535
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_ColorSpace: -1
-      m_NumColorKeys: 5
-      m_NumAlphaKeys: 2
-    SkyTintBottom:
-      serializedVersion: 2
-      key0: {r: 0.12156863, g: 0.12156863, b: 0.13725491, a: 1}
-      key1: {r: 0.19607843, g: 0.25882354, b: 0.32156864, a: 1}
-      key2: {r: 0.5019608, g: 0.78431374, b: 0.9254902, a: 0}
-      key3: {r: 0.19607843, g: 0.25882354, b: 0.32156864, a: 0}
-      key4: {r: 0.12156863, g: 0.12156863, b: 0.13725491, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 16384
-      ctime2: 32768
-      ctime3: 49151
-      ctime4: 65535
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_ColorSpace: -1
-      m_NumColorKeys: 5
-      m_NumAlphaKeys: 2
-    SquadBehindAlpha: 64
-    SquadBehindParallax: 1300
-    UseVignetteOnSquadTransition: 1
-    UseParallaxOnSquadTransition: 1
-    SquadTransitionDuration: 60
+  m_SkyTintTop:
+    serializedVersion: 2
+    key0: {r: 0.078431375, g: 0.08235294, b: 0.12156863, a: 1}
+    key1: {r: 0.1254902, g: 0.22352941, b: 0.29803923, a: 1}
+    key2: {r: 0.2784314, g: 0.6666667, b: 0.85882354, a: 0}
+    key3: {r: 0.1254902, g: 0.22352941, b: 0.29803923, a: 0}
+    key4: {r: 0.078431375, g: 0.08235294, b: 0.12156863, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 16384
+    ctime2: 32768
+    ctime3: 49151
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 5
+    m_NumAlphaKeys: 2
+  m_SkyTintBottom:
+    serializedVersion: 2
+    key0: {r: 0.12156863, g: 0.12156863, b: 0.13725491, a: 1}
+    key1: {r: 0.19607843, g: 0.25882354, b: 0.32156864, a: 1}
+    key2: {r: 0.5019608, g: 0.78431374, b: 0.9254902, a: 0}
+    key3: {r: 0.19607843, g: 0.25882354, b: 0.32156864, a: 0}
+    key4: {r: 0.12156863, g: 0.12156863, b: 0.13725491, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 16384
+    ctime2: 32768
+    ctime3: 49151
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 5
+    m_NumAlphaKeys: 2
+  m_Fonts:
+  - {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Cursors:
+  - {fileID: 2800000, guid: 2d951d3f218d5714995d761f1ca80634, type: 3}
+  - {fileID: 2800000, guid: 251783bc0d1b9a642b21a27e979bcb8f, type: 3}
+  - {fileID: 2800000, guid: b7c6abdfc00122544b6f1edec7dc2293, type: 3}
+  m_AudioClips:
+  - {fileID: 8300000, guid: 2770feff93786ea41b075403d4c396ac, type: 3}
+  - {fileID: 8300000, guid: 24e33b33cd190f145abf4a389db01611, type: 3}
+  - {fileID: 8300000, guid: fffd48c2cccf0f54ab0054010c3c8221, type: 3}
+  - {fileID: 8300000, guid: c9891f86d15ca8f4cbf7fecb644642c5, type: 3}
+  m_VideoClips:
+  - {fileID: 32900000, guid: e02a0dc0a5488ea4097f00e38ca80f93, type: 3}
+  - {fileID: 32900000, guid: 06411fec280e71241b96761a601ec358, type: 3}
 --- !u!4 &1185585766
 Transform:
   m_ObjectHideFlags: 0

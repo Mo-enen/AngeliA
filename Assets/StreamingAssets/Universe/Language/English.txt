@@ -51,7 +51,6 @@ Menu.Setting.Fullscreen.2:Fullscreen (Low)
 Menu.Setting.Fullscreen.Label:Display
 Menu.Setting.Language:Language
 Menu.Setting.MusicVolume:Music Volume
-Menu.Setting.ScreenEffect:Use Screen Effect
 Menu.Setting.SoundVolume:Sound Volume
 Menu.Setting.UseControlHint:Show Control Hint
 Menu.Setting.UseGamepadHint:Show Bottom Left Gamepad
