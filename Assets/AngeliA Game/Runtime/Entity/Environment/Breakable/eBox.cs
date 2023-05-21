@@ -5,8 +5,8 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class eBox : BreakableRigidbody {
-
+	public class eBox : BreakableRigidbody, ICombustible {
+		public int BurnedFrame { get; set; }
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			CellRenderer.Draw(TypeID, base.Rect);

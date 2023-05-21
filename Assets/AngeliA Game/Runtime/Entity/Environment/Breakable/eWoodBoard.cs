@@ -4,8 +4,8 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace AngeliaGame {
-	public class eWoodBoard : BreakableRigidbody {
-
+	public class eWoodBoard : BreakableRigidbody, ICombustible {
+		public int BurnedFrame { get; set; }
 		protected override int PhysicsLayer => Const.LAYER_ENVIRONMENT;
 		protected override bool DestroyWhenInsideGround => true;
 		public override void FrameUpdate () {

@@ -107,7 +107,7 @@ namespace AngeliaGame {
 			if (UserData is not CheckPoint targetCP) return;
 			// Flash
 			if (CellRenderer.TryGetSprite(targetCP.TypeID, out var cpSprite)) {
-				CellRenderer.SetLayer(Const.SHADER_ADD);
+				CellRenderer.SetLayerToAdditive();
 				CellRenderer.Draw(cpSprite.GlobalID, targetCP.Rect.Expand(LocalFrame), new Color32(0, 255, 0,
 					(byte)Util.RemapUnclamped(0, Duration, 128, 0, LocalFrame).Clamp(0, 255)
 				));

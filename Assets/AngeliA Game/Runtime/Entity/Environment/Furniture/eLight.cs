@@ -31,7 +31,7 @@ namespace AngeliaGame {
 			base.FrameUpdate();
 			if (OpenLight) {
 				byte brightness = (byte)(64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8);
-				CellRenderer.SetLayer(Const.SHADER_ADD);
+				CellRenderer.SetLayerToAdditive();
 				CellRenderer.Draw(
 					LIGHT,
 					base.Rect.Expand(Const.CEL),
