@@ -62,12 +62,14 @@ namespace AngeliaGame {
 			base.FrameUpdate();
 			// Make Player Sleep at Opening
 			if (
-				FrameTask.IsTasking<OpeningTask>() &&
+				FrameTask.GetCurrentTask() is OpeningTask oTask &&
+				(!oTask.IsFadingOut || Player.Selecting.CharacterState == CharacterState.GamePlay) &&
 				Player.Selecting != null &&
 				Player.Selecting.Active &&
 				Player.Selecting.CharacterState != CharacterState.Sleep
 			) {
 				Invoke(Player.Selecting);
+				Player.Selecting.Heal(Player.Selecting.MaxHP);
 				Player.Selecting.SetAsFullSleep();
 			}
 		}

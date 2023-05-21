@@ -21,7 +21,7 @@ namespace AngeliaGame {
 	}
 
 
-	public abstract class eWoodPlatform : PingPongPlatform {
+	public abstract class eWoodPlatform : PingPongPlatform, ICombustible {
 
 		private static readonly int ARTCODE_LEFT = "WoodPlatform Left".AngeHash();
 		private static readonly int ARTCODE_MID = "WoodPlatform Mid".AngeHash();
@@ -34,18 +34,21 @@ namespace AngeliaGame {
 		protected override int ArtworkCode_Single => ARTCODE_SINGLE;
 
 		public override bool OneWay => true;
+		public int BurnStartFrame { get; set; }
 
 	}
 
 
-	public class eSnakePlatformSlow : SnakePlatform {
+	public class eSnakePlatformWood : SnakePlatform, ICombustible {
 		public override int EndBreakDuration => 120;
 		public override int Speed => 12;
 		public override bool OneWay => true;
+		public int BurnStartFrame { get; set; }
+		public int BurnedDuration => 320;
 	}
 
 
-	public class eSnakePlatformQuick : SnakePlatform {
+	public class eSnakePlatformIron : SnakePlatform {
 		public override int EndBreakDuration => 120;
 		public override int Speed => 24;
 		public override bool OneWay => true;

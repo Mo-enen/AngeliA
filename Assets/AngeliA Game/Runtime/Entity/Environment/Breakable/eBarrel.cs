@@ -7,9 +7,7 @@ using AngeliaFramework;
 namespace AngeliaGame {
 	[EntityAttribute.Capacity(32)]
 	public class eBarrel : BreakableRigidbody, ICombustible {
-
-		public int BurnedFrame { get; set; }
-
+		public int BurnStartFrame { get; set; }
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			CellRenderer.Draw(TypeID, base.Rect);

@@ -40,7 +40,7 @@ namespace AngeliaGame {
 			BulletName.Value = "YayaPaw";
 			MinimalChargeAttackDuration.Value = 42;
 
-			MaxHP.Value = 4;
+			MaxHP.Value = 1;
 
 		}
 
