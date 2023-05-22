@@ -3,15 +3,17 @@ using AngeliaFramework;
 namespace AngeliaGame {
 
 
-	public class eWoodLogSlopeA : Slope {
+	public class eWoodLogSlopeA : Slope, ICombustible {
 		public override Direction2 DirectionVertical => Direction2.Up;
 		public override Direction2 DirectionHorizontal => Direction2.Right;
+		int ICombustible.BurnStartFrame { get; set; }
 	}
 
 
-	public class eWoodLogSlopeB : Slope {
+	public class eWoodLogSlopeB : Slope, ICombustible {
 		public override Direction2 DirectionVertical => Direction2.Up;
 		public override Direction2 DirectionHorizontal => Direction2.Left;
+		int ICombustible.BurnStartFrame { get; set; }
 	}
 
 

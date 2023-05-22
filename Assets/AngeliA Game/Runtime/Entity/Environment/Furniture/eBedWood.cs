@@ -5,19 +5,20 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class eBed : Furniture {
+	public class eBedWood : Furniture, ICombustible {
 
 
-		private static readonly int CODE_LEFT = "Bed Left".AngeHash();
-		private static readonly int CODE_MID = "Bed Mid".AngeHash();
-		private static readonly int CODE_RIGHT = "Bed Right".AngeHash();
-		private static readonly int CODE_SINGLE = "Bed Single".AngeHash();
+		private static readonly int CODE_LEFT = "BedWood Left".AngeHash();
+		private static readonly int CODE_MID = "BedWood Mid".AngeHash();
+		private static readonly int CODE_RIGHT = "BedWood Right".AngeHash();
+		private static readonly int CODE_SINGLE = "BedWood Single".AngeHash();
 
 		protected override Direction3 ModuleType => Direction3.Horizontal;
 		protected override int ArtworkCode_LeftDown => CODE_LEFT;
 		protected override int ArtworkCode_Mid => CODE_MID;
 		protected override int ArtworkCode_RightUp => CODE_RIGHT;
 		protected override int ArtworkCode_Single => CODE_SINGLE;
+		int ICombustible.BurnStartFrame { get; set; }
 
 
 		public override bool Invoke (Entity target) {

@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class eCabinetIdol : Furniture {
-
+	public class eCabinetIdol : Furniture, ICombustible {
+		int ICombustible.BurnStartFrame { get; set; }
 	}
 }

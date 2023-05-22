@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class eWardrobe : OpenableFurniture {
+	public class eWardrobe : OpenableFurniture, ICombustible {
 
 
 		private static readonly int CODE_OPEN = "Wardrobe Open".AngeHash();
@@ -15,7 +15,7 @@ namespace AngeliaGame {
 		protected override int ArtworkCode_Mid => Open ? CODE_OPEN : TypeID;
 		protected override int ArtworkCode_RightUp => Open ? CODE_OPEN : TypeID;
 		protected override int ArtworkCode_Single => Open ? CODE_OPEN : TypeID;
-
+		int ICombustible.BurnStartFrame { get; set; }
 
 	}
 }

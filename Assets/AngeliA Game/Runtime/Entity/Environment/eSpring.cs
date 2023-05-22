@@ -6,15 +6,17 @@ using AngeliaFramework;
 namespace AngeliaGame {
 
 
-	public class eSpringWoodHorizontal : Spring {
+	public class eSpringWoodHorizontal : Spring, ICombustible {
 		protected override bool Horizontal => true;
 		protected override int Power => 64;
+		int ICombustible.BurnStartFrame { get; set; }
 	}
 
 
-	public class eSpringWoodVertical : Spring {
+	public class eSpringWoodVertical : Spring, ICombustible {
 		protected override bool Horizontal => false;
 		protected override int Power => 64;
+		int ICombustible.BurnStartFrame { get; set; }
 	}
 
 

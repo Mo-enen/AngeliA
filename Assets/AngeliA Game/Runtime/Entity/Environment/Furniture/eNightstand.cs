@@ -5,9 +5,9 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class eNightstand : Furniture {
+	public class eNightstand : Furniture, ICombustible {
+		int ICombustible.BurnStartFrame { get; set; }
 
-		
 
 	}
 }

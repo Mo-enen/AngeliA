@@ -4,11 +4,10 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace AngeliaGame {
-	public class eBasket : Furniture {
+	public class eBasket : Furniture, ICombustible {
 
 
-		//protected override RectInt RenderingRect => base.RenderingRect.Expand(32, 32, 0, 0);
-
+		int ICombustible.BurnStartFrame { get; set; }
 
 
 	}

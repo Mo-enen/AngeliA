@@ -4,11 +4,11 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace AngeliaGame {
-	public class eChair : Furniture {
+	public class eChairWood : Furniture, ICombustible {
 
 
 		// Const
-		private static readonly int CODE_DOCKED = "Chair Docked".AngeHash();
+		private static readonly int CODE_DOCKED = "ChairWood Docked".AngeHash();
 
 		// Api
 		protected override int ArtworkCode_Single => DockPose == FittingPose.Single ? TypeID : CODE_DOCKED;
@@ -22,6 +22,7 @@ namespace AngeliaGame {
 				return base.RenderingRect;
 			}
 		}
+		int ICombustible.BurnStartFrame { get; set; }
 
 		// Data
 		private FittingPose DockPose = FittingPose.Unknown;

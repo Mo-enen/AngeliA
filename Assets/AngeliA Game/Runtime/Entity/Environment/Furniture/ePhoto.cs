@@ -5,10 +5,10 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class ePhoto : Furniture {
-
+	public class ePhoto : Furniture, ICombustible {
 
 		protected override bool LoopArtworkIndex => true;
+		int ICombustible.BurnStartFrame { get; set; }
 
 		// MSG
 		public override void OnActivated () {

@@ -7,9 +7,7 @@ namespace AngeliaGame {
 
 
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
-	public class eCactus : Plant {
-		protected override bool Breath => false;
-	}
+	public class eCactus : Plant { }
 
 
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]

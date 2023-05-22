@@ -4,9 +4,10 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace AngeliaGame {
-	public class eChestWood : eChest {
+	public class eChestWood : eChest, ICombustible {
 		private static readonly int CODE_OPEN = "ChestWood Open".AngeHash();
 		protected override int OpenCode => CODE_OPEN;
+		int ICombustible.BurnStartFrame { get; set; }
 	}
 	public class eChestIron : eChest {
 		private static readonly int CODE_OPEN = "ChestIron Open".AngeHash();

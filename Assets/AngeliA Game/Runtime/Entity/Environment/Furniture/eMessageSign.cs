@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class eMessageSign : Furniture {
+	public class eMessageSign : Furniture, ICombustible {
 
 		// Single
 		private static readonly int CODE_DOWN = "Message Sign Down".AngeHash();
@@ -18,6 +18,7 @@ namespace AngeliaGame {
 		protected override int ArtworkCode_Mid => CODE_MID;
 		protected override int ArtworkCode_RightUp => CODE_UP;
 		protected override int ArtworkCode_Single => CODE_SINGLE;
+		int ICombustible.BurnStartFrame { get; set; }
 
 
 		public override void FillPhysics () {

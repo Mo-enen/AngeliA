@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class eDiningTable : Furniture {
+	public class eDiningTable : Furniture, ICombustible {
 
 		private static readonly int CODE_LEFT = "Dining Table Left".AngeHash();
 		private static readonly int CODE_MID = "Dining Table Mid".AngeHash();
@@ -17,6 +17,7 @@ namespace AngeliaGame {
 		protected override int ArtworkCode_Mid => CODE_MID;
 		protected override int ArtworkCode_RightUp => CODE_RIGHT;
 		protected override int ArtworkCode_Single => CODE_SINGLE;
+		int ICombustible.BurnStartFrame { get; set; }
 
 	}
 }

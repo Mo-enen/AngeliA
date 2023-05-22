@@ -5,11 +5,14 @@ using AngeliaFramework;
 
 namespace AngeliaGame {
 	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-	public class eLamp : Furniture {
+	public class eLamp : Furniture, ICombustible {
 
 
 		// Const
 		private static readonly int LIGHT = "Lamp Light 0".AngeHash();
+
+		// Api
+		int ICombustible.BurnStartFrame { get; set; }
 
 		// Data
 		private int BrightnessShift = 0;
