@@ -8,15 +8,27 @@ namespace AngeliaGame {
 
 
 	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-	public class eLeafMaple : TreeLeaf { }
+	public class eLeafMaple : TreeLeaf {
+		public override void FillPhysics () {
+			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
+		}
+	}
 
 
 	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-	public class eLeafPine : TreeLeaf { }
+	public class eLeafPine : TreeLeaf {
+		public override void FillPhysics () {
+			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
+		}
+	}
 
 
 	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-	public class eLeafPoplar : TreeLeaf { }
+	public class eLeafPoplar : TreeLeaf {
+		public override void FillPhysics () {
+			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
+		}
+	}
 
 
 	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
@@ -24,6 +36,7 @@ namespace AngeliaGame {
 
 		public override void FillPhysics () {
 			CellPhysics.FillBlock(Const.LAYER_ENVIRONMENT, TypeID, Rect, true, Const.ONEWAY_UP_TAG);
+			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
 		}
 
 		public override void FrameUpdate () {
@@ -41,6 +54,7 @@ namespace AngeliaGame {
 				Rect.Shrink(0, 0, 0, Height / 2),
 				true, Const.CLIMB_TAG
 			);
+			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
 		}
 
 		public override void FrameUpdate () => CellRenderer.Draw(LeafArtworkCode, base.Rect.Shift(GetLeafShiftY(Y, 120, 12), 0));

@@ -7,7 +7,7 @@ using AngeliaFramework;
 namespace AngeliaGame {
 	public class eBox : BreakableRigidbody, ICombustible {
 		public int BurnedDuration => 320;
-		public int BurnStartFrame { get; set; }
+		int ICombustible.BurnStartFrame { get; set; }
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			CellRenderer.Draw(TypeID, base.Rect);

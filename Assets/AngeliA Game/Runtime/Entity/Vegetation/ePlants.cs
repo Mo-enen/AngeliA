@@ -30,10 +30,7 @@ namespace AngeliaGame {
 	public class ePaspalum : Plant { }
 
 
-	public class eShrub : Plant {
-		protected override int MinSize => 12;
-		protected override int MaxSize => 24;
-	}
+	public class eShrub : Plant { }
 
 
 }

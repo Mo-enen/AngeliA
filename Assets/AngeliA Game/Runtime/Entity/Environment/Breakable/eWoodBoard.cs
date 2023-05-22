@@ -6,7 +6,7 @@ using AngeliaFramework;
 namespace AngeliaGame {
 	public class eWoodBoard : BreakableRigidbody, ICombustible {
 		public int BurnedDuration => 30;
-		public int BurnStartFrame { get; set; }
+		int ICombustible.BurnStartFrame { get; set; }
 		protected override int PhysicsLayer => Const.LAYER_ENVIRONMENT;
 		protected override bool DestroyWhenInsideGround => true;
 		public override void FrameUpdate () {

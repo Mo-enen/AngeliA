@@ -5,10 +5,21 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class eCommonBurner : Burner<eCommonFire> {
-		protected override int FireFrameOffset => 0;
+
+	public class eCommonBurnerLeft : Burner<eCommonFire> {
+		protected override Direction4 Direction => Direction4.Left;
 	}
-	public class eCommonBurnerAlt : Burner<eCommonFire> {
-		protected override int FireFrameOffset => FireFrequency / 2;
+
+	public class eCommonBurnerRight : Burner<eCommonFire> {
+		protected override Direction4 Direction => Direction4.Right;
 	}
+
+	public class eCommonBurnerDown : Burner<eCommonFire> {
+		protected override Direction4 Direction => Direction4.Down;
+	}
+
+	public class eCommonBurnerUp : Burner<eCommonFire> {
+		protected override Direction4 Direction => Direction4.Up;
+	}
+
 }

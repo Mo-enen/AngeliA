@@ -34,7 +34,7 @@ namespace AngeliaGame {
 		protected override int ArtworkCode_Single => ARTCODE_SINGLE;
 
 		public override bool OneWay => true;
-		public int BurnStartFrame { get; set; }
+		int ICombustible.BurnStartFrame { get; set; }
 
 	}
 
@@ -43,7 +43,7 @@ namespace AngeliaGame {
 		public override int EndBreakDuration => 120;
 		public override int Speed => 12;
 		public override bool OneWay => true;
-		public int BurnStartFrame { get; set; }
+		int ICombustible.BurnStartFrame { get; set; }
 		public int BurnedDuration => 320;
 	}
 
