@@ -55,6 +55,20 @@ Menu.Setting.SoundVolume:Sound Volume
 Menu.Setting.UseControlHint:Show Control Hint
 Menu.Setting.UseGamepadHint:Show Bottom Left Gamepad
 Menu.Setting.VSync:V-Sync
+Palette.BG:Background
+Palette.Character:Character
+Palette.CheckPoint:CheckPoint
+Palette.Collectable:Collectable
+Palette.Entity:Entity
+Palette.Furniture:Furniture
+Palette.Item:Item
+Palette.LevelBack:LevelBack
+Palette.LevelFront:LevelFront
+Palette.Nearby:Nearby
+Palette.Pinned:Pinned
+Palette.Platform:Platform
+Palette.System:System
+Palette.Vegetation:Vegetation
 UI.Back:Back
 UI.Cancel:Cancel
 UI.Continue:Continue

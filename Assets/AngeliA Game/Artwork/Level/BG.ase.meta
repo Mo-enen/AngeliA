@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 649c6a9573614c148b586e8fcb282898
+guid: 4f6228762d65d6b41ba2814f3743e9b9
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -119,7 +119,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: BG
+  - name: BG Building
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 9
@@ -128,9 +128,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 256
-      height: 256
-    spriteID: b69bc74648997d14ca3a96706b9e11fa
+      width: 512
+      height: 512
+    spriteID: f999e817665945a498d725e219f796c6
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -142,23 +142,23 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -1793757091
-    name: BG
+    guid: -629372653
+    name: BG Building
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: BG
+    - name: BG Building
       frameIndex: 0
       cellRect:
         x: 0
         y: 0
-        width: 256
-        height: 256
-      spriteId: b69bc74648997d14ca3a96706b9e11fa
+        width: 512
+        height: 512
+      spriteId: f999e817665945a498d725e219f796c6
     linkedCells: []
     parentIndex: -1
   platformSettings: []
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 256, y: 256}
+  canvasSize: {x: 512, y: 512}
