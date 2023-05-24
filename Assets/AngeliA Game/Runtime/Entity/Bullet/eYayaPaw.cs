@@ -12,7 +12,7 @@ namespace AngeliaGame {
 		// Const
 		private static readonly int[] PAW_X = new int[] { -128, -96, 0, -16, -32, };
 		private static readonly int[] PAW_Y = new int[] { 512, 480, 0, -64, -48, };
-		private static readonly int[] PAW_SIZE = new int[] { 1200, 1600, 1800, 1400, 1000, };
+		private static readonly int[] PAW_SIZE = new int[] { 1200, 1600, 1800, 1400, 1000 };
 		private static readonly int[] PAW_ROT = new int[] { -30, -15, 0, 15, 30, };
 		private static readonly int SMOKE_CODE = "YayaPaw Smoke".AngeHash();
 
