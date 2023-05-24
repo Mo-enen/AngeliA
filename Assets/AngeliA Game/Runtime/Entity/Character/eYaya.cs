@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
 
+
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
+
+
 
 namespace AngeliaGame {
 	public class eYaya : Player {
@@ -25,6 +28,32 @@ namespace AngeliaGame {
 
 		// Data
 		private eGuaGua GuaGua = null;
+
+
+		//private delegate void TestDelegate (string str);
+		//private static TestDelegate TestDel;
+		//[UnityEditor.InitializeOnLoadMethod]
+		//public static void Test () {
+		//	string scriptCode = @"    
+		//		function main ()
+		//			
+		//		end
+		//	";
+		//
+		//	TestDel += (str) => {
+		//		Debug.Log(str);
+		//	};
+		//
+		//	var script = new Script();
+		//	script.DoString(scriptCode);
+		//
+		//	var callback = CallbackFunction.FromDelegate(script, TestDel);
+		//	var callbackValue = DynValue.NewCallback(callback);
+		//	script.Globals["test"] = callbackValue;
+		//
+		//	script.Call(script.Globals["main"]);
+		//
+		//}
 
 
 		// MSG
