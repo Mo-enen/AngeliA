@@ -30,33 +30,6 @@ namespace AngeliaGame {
 		private eGuaGua GuaGua = null;
 
 
-		//private delegate void TestDelegate (string str);
-		//private static TestDelegate TestDel;
-		//[UnityEditor.InitializeOnLoadMethod]
-		//public static void Test () {
-		//	string scriptCode = @"    
-		//		function main ()
-		//			
-		//		end
-		//	";
-		//
-		//	TestDel += (str) => {
-		//		Debug.Log(str);
-		//	};
-		//
-		//	var script = new Script();
-		//	script.DoString(scriptCode);
-		//
-		//	var callback = CallbackFunction.FromDelegate(script, TestDel);
-		//	var callbackValue = DynValue.NewCallback(callback);
-		//	script.Globals["test"] = callbackValue;
-		//
-		//	script.Call(script.Globals["main"]);
-		//
-		//}
-
-
-		// MSG
 		public eYaya () {
 
 			WalkToRunAccumulation.Value = 0;
@@ -66,7 +39,7 @@ namespace AngeliaGame {
 			SlideOnAnyBlock.Value = true;
 			FlyGlideAvailable.Value = false;
 
-			BulletName.Value = "YayaPaw";
+			BulletID.Value = typeof(eYayaPaw).AngeHash();
 			MinimalChargeAttackDuration.Value = 42;
 
 			MaxHP.Value = 1;

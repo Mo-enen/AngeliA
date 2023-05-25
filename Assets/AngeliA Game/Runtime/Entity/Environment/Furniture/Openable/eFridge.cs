@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
 
+
 namespace AngeliaGame {
 	public class eFridge : OpenableFurniture {
 
@@ -14,7 +15,6 @@ namespace AngeliaGame {
 		protected override int ArtworkCode_Mid => Open ? CODE_OPEN : TypeID;
 		protected override int ArtworkCode_RightUp => Open ? CODE_OPEN : TypeID;
 		protected override int ArtworkCode_Single => Open ? CODE_OPEN : TypeID;
-
 
 
 	}

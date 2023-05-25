@@ -1,4 +1,4 @@
-﻿UI.Pong.HighScore:Highscore
+﻿CtrlHint.ShowMenu:Show Menu
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -91,6 +91,7 @@ UI.No:No
 UI.OFF:OFF
 UI.OK:OK
 UI.ON:ON
+UI.Pong.HighScore:Highscore
 UI.Quit:Quit
 UI.Restart:Restart
 UI.Right:Right

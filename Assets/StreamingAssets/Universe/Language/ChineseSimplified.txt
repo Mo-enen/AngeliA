@@ -1,4 +1,4 @@
-﻿UI.Pong.HighScore:高分
+﻿CtrlHint.ShowMenu:显示菜单
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -91,6 +91,7 @@ UI.No:否
 UI.OFF:关闭
 UI.OK:确定
 UI.ON:开启
+UI.Pong.HighScore:高分
 UI.Quit:退出
 UI.Restart:重新开始
 UI.Right:右
