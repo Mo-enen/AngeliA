@@ -20,10 +20,7 @@ namespace AngeliaGame {
 			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
 		}
 
-		public override bool Invoke (Entity target) {
-			ArtworkIndex++;
-			return true;
-		}
+		public override void Invoke (Entity target) => ArtworkIndex++;
 
 		public override bool AllowInvoke (Entity target) => true;
 

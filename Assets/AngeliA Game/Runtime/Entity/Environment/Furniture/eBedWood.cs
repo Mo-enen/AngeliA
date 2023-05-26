@@ -21,9 +21,9 @@ namespace AngeliaGame {
 		int ICombustible.BurnStartFrame { get; set; }
 
 
-		public override bool Invoke (Entity target) {
+		public override void Invoke (Entity target) {
 
-			if (target is not Character ch) return false;
+			if (target is not Character ch) return;
 
 			ch.SetCharacterState(CharacterState.Sleep);
 
@@ -52,7 +52,6 @@ namespace AngeliaGame {
 			// Set Character Pos
 			ch.X = (xMin + xMax) / 2;
 			ch.Y = Y + offsetY + 2;
-			return true;
 		}
 
 

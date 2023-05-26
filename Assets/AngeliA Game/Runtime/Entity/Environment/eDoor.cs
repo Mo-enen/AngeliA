@@ -73,6 +73,7 @@ namespace AngeliaGame {
 		protected override int CircleCode => CIRCLE_CODE;
 		protected override int FlameCode => FLAME_CODE;
 		protected override Vector3Int TargetGlobalPosition => CheckPoint.LastInvokedCheckPointUnitPosition.ToGlobal() + new Vector3Int(Const.HALF, 0, 0);
+		protected override bool IsFrontDoor => TargetGlobalPosition.z <= Game.Current.ViewZ;
 		private int InvokeFrame = -1;
 
 
