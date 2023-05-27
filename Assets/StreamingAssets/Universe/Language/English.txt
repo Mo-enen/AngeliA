@@ -1,4 +1,5 @@
-﻿CtrlHint.HideMenu:Hide Menu
+﻿CtrlHint.Drop:Drop
+CtrlHint.Take:Take
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -7,6 +8,7 @@
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.EnterDoor:Enter
+CtrlHint.HideMenu:Hide Menu
 CtrlHint.Jump:Jump
 CtrlHint.MEDT.Nav:Overlook
 CtrlHint.MEDT.PlayFromBegin:Play from Start

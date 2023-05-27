@@ -1,4 +1,5 @@
-﻿CtrlHint.HideMenu:隐藏菜单
+﻿CtrlHint.Drop:放下
+CtrlHint.Take:拾取
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -7,6 +8,7 @@
 CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.EnterDoor:进门
+CtrlHint.HideMenu:隐藏菜单
 CtrlHint.Jump:跳跃
 CtrlHint.MEDT.Nav:俯瞰
 CtrlHint.MEDT.PlayFromBegin:从头开始游戏

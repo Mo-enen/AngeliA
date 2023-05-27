@@ -25,6 +25,8 @@ namespace AngeliaGame {
 	public class ePlayerItemChest : InventoryChest {
 		private static readonly int CODE_OPEN = "PlayerItemChest Open".AngeHash();
 		protected override int OpenArtworkCode => CODE_OPEN;
+		protected override int InventoryColumn => 10;
+		protected override int InventoryRow => 8;
 	}
 
 
