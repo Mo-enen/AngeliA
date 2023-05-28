@@ -11,9 +11,7 @@ namespace AngeliaGame {
 
 		public override bool OnCollect (Entity source) {
 			if (source is not Player) return false;
-
-
-
+			Inventory.AddCoin(source.TypeID, 1);
 			return true;
 		}
 
