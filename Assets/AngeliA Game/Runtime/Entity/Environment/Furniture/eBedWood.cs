@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class eBedWood : Furniture, ICombustible {
+	public class eBedWood : Furniture, ICombustible, IActionEntity {
 
 
 		private static readonly int CODE_LEFT = "BedWood Left".AngeHash();
@@ -21,7 +21,7 @@ namespace AngeliaGame {
 		int ICombustible.BurnStartFrame { get; set; }
 
 
-		public override void Invoke (Entity target) {
+		void IActionEntity.Invoke (Entity target) {
 
 			if (target is not Character ch) return;
 
@@ -55,7 +55,7 @@ namespace AngeliaGame {
 		}
 
 
-		public override bool AllowInvoke (Entity target) => true;
+		bool IActionEntity.AllowInvoke (Entity target) => true;
 
 
 		public override void FrameUpdate () {
@@ -68,7 +68,7 @@ namespace AngeliaGame {
 				Player.Selecting.Active &&
 				Player.Selecting.CharacterState != CharacterState.Sleep
 			) {
-				Invoke(Player.Selecting);
+				(this as IActionEntity).Invoke(Player.Selecting);
 				Player.Selecting.Heal(Player.Selecting.MaxHP);
 				Player.Selecting.SetAsFullSleep();
 			}

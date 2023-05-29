@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class ePhoto : Furniture, ICombustible {
+	public class ePhoto : Furniture, ICombustible, IActionEntity {
 
 		protected override bool LoopArtworkIndex => true;
 		int ICombustible.BurnStartFrame { get; set; }
@@ -20,9 +20,9 @@ namespace AngeliaGame {
 			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
 		}
 
-		public override void Invoke (Entity target) => ArtworkIndex++;
+		void IActionEntity.Invoke (Entity target) => ArtworkIndex++;
 
-		public override bool AllowInvoke (Entity target) => true;
+		bool IActionEntity.AllowInvoke (Entity target) => true;
 
 
 	}

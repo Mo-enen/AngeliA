@@ -1,4 +1,4 @@
-﻿CtrlHint.QuickDrop:Shift
+﻿CtrlHint.QuickDrop:Transfer
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
