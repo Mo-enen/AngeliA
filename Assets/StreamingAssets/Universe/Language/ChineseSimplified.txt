@@ -1,5 +1,4 @@
-﻿CtrlHint.Drop:放下
-CtrlHint.Take:拾取
+﻿CtrlHint.QuickDrop:转移
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -7,6 +6,7 @@ CtrlHint.Take:拾取
 @yaya:丫丫
 CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
+CtrlHint.Drop:放下
 CtrlHint.EnterDoor:进门
 CtrlHint.HideMenu:隐藏菜单
 CtrlHint.Jump:跳跃
@@ -18,6 +18,7 @@ CtrlHint.Move:移动
 CtrlHint.Restart:重新开始
 CtrlHint.ShowMenu:显示菜单
 CtrlHint.Skip:跳过
+CtrlHint.Take:拾取
 CtrlHint.Use:使用
 CtrlHint.WakeUp:起床
 Hint.Pong.Move:移动

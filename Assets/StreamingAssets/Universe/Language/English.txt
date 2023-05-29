@@ -1,5 +1,4 @@
-﻿CtrlHint.Drop:Drop
-CtrlHint.Take:Take
+﻿CtrlHint.QuickDrop:Shift
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -7,6 +6,7 @@ CtrlHint.Take:Take
 @yaya:Yaya
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
+CtrlHint.Drop:Drop
 CtrlHint.EnterDoor:Enter
 CtrlHint.HideMenu:Hide Menu
 CtrlHint.Jump:Jump
@@ -18,6 +18,7 @@ CtrlHint.Move:Move
 CtrlHint.Restart:Restart
 CtrlHint.ShowMenu:Show Menu
 CtrlHint.Skip:Skip
+CtrlHint.Take:Take
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
 Hint.Pong.Move:Move
