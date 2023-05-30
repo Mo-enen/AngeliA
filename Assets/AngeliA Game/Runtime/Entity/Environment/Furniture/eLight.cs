@@ -4,7 +4,13 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace AngeliaGame {
-	public class eLight : Furniture, ICombustible {
+
+	public class eLightA : eLight { }
+	public class eLightB : eLight { }
+	public class eLightC : eLight { }
+	public class eLightD : eLight { }
+
+	public abstract class eLight : Furniture, ICombustible {
 
 
 		private static readonly int LIGHT = "Lamp Light 0".AngeHash();

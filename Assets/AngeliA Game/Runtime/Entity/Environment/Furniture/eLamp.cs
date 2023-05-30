@@ -4,8 +4,14 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace AngeliaGame {
+
+	public class eLampA : eLamp { }
+	public class eLampB : eLamp { }
+	public class eLampC : eLamp { }
+	public class eLampD : eLamp { }
+
 	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-	public class eLamp : Furniture, ICombustible {
+	public abstract class eLamp : Furniture, ICombustible {
 
 
 		// Const

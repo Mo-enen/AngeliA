@@ -7,20 +7,28 @@ using AngeliaFramework;
 namespace AngeliaGame {
 	public class ePhoto : Furniture, ICombustible, IActionEntity {
 
-		protected override bool LoopArtworkIndex => true;
+		private int PhotoIndex = 0;
 		int ICombustible.BurnStartFrame { get; set; }
 
-		// MSG
 		public override void OnActivated () {
 			base.OnActivated();
-			ArtworkIndex = Random.Range(int.MinValue, int.MaxValue);
+			PhotoIndex = Random.Range(0, int.MaxValue);
 		}
 
 		public override void FillPhysics () {
 			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
 		}
 
-		void IActionEntity.Invoke (Entity target) => ArtworkIndex++;
+		public override void FrameUpdate () {
+			if (CellRenderer.TryGetSpriteFromGroup(TypeID, PhotoIndex, out var sprite, true, false)) {
+				var cell = CellRenderer.Draw(sprite.GlobalID, RenderingRect);
+				if ((this as IActionEntity).IsHighlighted) {
+					IActionEntity.HighlightBlink(cell, ModuleType, Pose);
+				}
+			}
+		}
+
+		void IActionEntity.Invoke (Entity target) => PhotoIndex++;
 
 		bool IActionEntity.AllowInvoke (Entity target) => true;
 

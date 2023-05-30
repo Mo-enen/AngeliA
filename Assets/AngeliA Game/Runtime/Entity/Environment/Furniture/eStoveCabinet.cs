@@ -5,7 +5,8 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class eStoveCabinet : Furniture {
-
-	}
+	public class eStoveCabinetA : Furniture { }
+	public class eStoveCabinetB : Furniture { }
+	public class eStoveCabinetC : Furniture { }
+	public class eStoveCabinetD : Furniture { }
 }
