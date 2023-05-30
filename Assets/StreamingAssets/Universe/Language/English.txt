@@ -1,4 +1,4 @@
-﻿CtrlHint.QuickDrop:Transfer
+﻿CtrlHint.Throw:Throw
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -15,6 +15,7 @@ CtrlHint.MEDT.PlayFromBegin:Play from Start
 CtrlHint.MEDT.SwitchMode.Edit:Edit
 CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
+CtrlHint.QuickDrop:Transfer
 CtrlHint.Restart:Restart
 CtrlHint.ShowMenu:Show Menu
 CtrlHint.Skip:Skip

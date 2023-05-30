@@ -1,4 +1,4 @@
-﻿CtrlHint.QuickDrop:转移
+﻿CtrlHint.Throw:丢弃
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -15,6 +15,7 @@ CtrlHint.MEDT.PlayFromBegin:从头开始游戏
 CtrlHint.MEDT.SwitchMode.Edit:编辑
 CtrlHint.MEDT.SwitchMode.Play:开始游戏
 CtrlHint.Move:移动
+CtrlHint.QuickDrop:转移
 CtrlHint.Restart:重新开始
 CtrlHint.ShowMenu:显示菜单
 CtrlHint.Skip:跳过
