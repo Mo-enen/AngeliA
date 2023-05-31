@@ -19,9 +19,9 @@ namespace AngeliaGame {
 		public override void FillPhysics () { }
 	}
 
-	public class eStoveCabinetA : Furniture { }
-	public class eStoveCabinetB : Furniture { }
-	public class eStoveCabinetC : Furniture { }
-	public class eStoveCabinetD : Furniture { }
+	public class eStoveCabinetA : StoveCabinet { }
+	public class eStoveCabinetB : StoveCabinet { }
+	public class eStoveCabinetC : StoveCabinet { }
+	public class eStoveCabinetD : StoveCabinet { }
 
 }

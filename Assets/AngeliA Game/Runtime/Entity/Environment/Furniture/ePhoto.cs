@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class ePhoto : Furniture, ICombustible, IActionEntity {
+	public class ePhoto : Furniture, ICombustible, IActionTarget {
 
 		private int PhotoIndex = 0;
 		int ICombustible.BurnStartFrame { get; set; }
@@ -22,15 +22,15 @@ namespace AngeliaGame {
 		public override void FrameUpdate () {
 			if (CellRenderer.TryGetSpriteFromGroup(TypeID, PhotoIndex, out var sprite, true, false)) {
 				var cell = CellRenderer.Draw(sprite.GlobalID, RenderingRect);
-				if ((this as IActionEntity).IsHighlighted) {
-					IActionEntity.HighlightBlink(cell, ModuleType, Pose);
+				if ((this as IActionTarget).IsHighlighted) {
+					IActionTarget.HighlightBlink(cell, ModuleType, Pose);
 				}
 			}
 		}
 
-		void IActionEntity.Invoke () => PhotoIndex++;
+		void IActionTarget.Invoke () => PhotoIndex++;
 
-		bool IActionEntity.AllowInvoke () => true;
+		bool IActionTarget.AllowInvoke () => true;
 
 
 	}
