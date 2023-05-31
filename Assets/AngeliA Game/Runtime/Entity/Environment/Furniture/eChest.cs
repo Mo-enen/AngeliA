@@ -6,13 +6,10 @@ using AngeliaFramework;
 
 namespace AngeliaGame {
 
-
 	// Map Chest
 	public class eMapChestWood : MapChest, ICombustible {
 		int ICombustible.BurnStartFrame { get; set; }
 	}
-
-
 	public class eMapChestIron : MapChest { }
 
 

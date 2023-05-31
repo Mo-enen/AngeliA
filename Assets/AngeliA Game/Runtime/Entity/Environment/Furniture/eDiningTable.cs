@@ -5,12 +5,21 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class eDiningTableA : eDiningTable { }
-	public class eDiningTableB : eDiningTable { }
-	public class eDiningTableC : eDiningTable { }
-	public class eDiningTableD : eDiningTable { }
-	public abstract class eDiningTable : Furniture, ICombustible {
-		protected override Direction3 ModuleType => Direction3.Horizontal;
+
+	public class eDiningTableA : Table, ICombustible {
 		int ICombustible.BurnStartFrame { get; set; }
 	}
+
+	public class eDiningTableB : Table, ICombustible {
+		int ICombustible.BurnStartFrame { get; set; }
+	}
+
+	public class eDiningTableC : Table, ICombustible {
+		int ICombustible.BurnStartFrame { get; set; }
+	}
+
+	public class eDiningTableD : Table, ICombustible {
+		int ICombustible.BurnStartFrame { get; set; }
+	}
+
 }

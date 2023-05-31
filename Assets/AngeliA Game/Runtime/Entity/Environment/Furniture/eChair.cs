@@ -5,16 +5,16 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class eChairWoodA : Furniture, ICombustible {
+	public class eChairWoodA : Chair, ICombustible {
 		int ICombustible.BurnStartFrame { get; set; }
 	}
-	public class eChairWoodB : Furniture, ICombustible {
+	public class eChairWoodB : Chair, ICombustible {
 		int ICombustible.BurnStartFrame { get; set; }
 	}
-	public class eChairWoodC : Furniture, ICombustible {
+	public class eChairWoodC : Chair, ICombustible {
 		int ICombustible.BurnStartFrame { get; set; }
 	}
-	public class eChairWoodD : Furniture, ICombustible {
+	public class eChairWoodD : Chair, ICombustible {
 		int ICombustible.BurnStartFrame { get; set; }
 	}
 }

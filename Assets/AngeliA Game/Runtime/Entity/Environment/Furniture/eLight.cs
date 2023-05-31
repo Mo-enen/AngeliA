@@ -5,42 +5,43 @@ using AngeliaFramework;
 
 namespace AngeliaGame {
 
+
 	public class eLightA : eLight { }
 	public class eLightB : eLight { }
 	public class eLightC : eLight { }
 	public class eLightD : eLight { }
 
+
+	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
+	public class eLampA : eLight { }
+	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
+	public class eLampB : eLight { }
+	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
+	public class eLampC : eLight { }
+	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
+	public class eLampD : eLight { }
+
+
 	public abstract class eLight : Furniture, ICombustible {
 
-
 		private static readonly int LIGHT = "Lamp Light 0".AngeHash();
-
-		// Api
 		int ICombustible.BurnStartFrame { get; set; }
-
-		// Data
-		private int BrightnessShift = 0;
 		private bool OpenLight = false;
 
-
-		// MSG
 		public override void OnActivated () {
 			base.OnActivated();
-			BrightnessShift = (X * 17 + Y * 9) / Const.CEL;
 			int hour = System.DateTime.Now.Hour;
 			OpenLight = hour <= 6 || hour >= 18;
 		}
-
 
 		public override void FillPhysics () {
 			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
 		}
 
-
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			if (OpenLight) {
-				byte brightness = (byte)(64 + (Game.GlobalFrame + BrightnessShift).PingPong(240) / 8);
+				byte brightness = (byte)(64 + (Game.GlobalFrame + ((X * 17 + Y * 9) / Const.CEL)).PingPong(240) / 8);
 				CellRenderer.SetLayerToAdditive();
 				CellRenderer.Draw(
 					LIGHT,
@@ -50,7 +51,6 @@ namespace AngeliaGame {
 				CellRenderer.SetLayerToDefault();
 			}
 		}
-
 
 	}
 }
