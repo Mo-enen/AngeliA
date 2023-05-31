@@ -1,4 +1,4 @@
-﻿CtrlHint.Throw:Throw
+﻿CtrlHint.SwitchPlayer:Switch Character
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -20,6 +20,7 @@ CtrlHint.Restart:Restart
 CtrlHint.ShowMenu:Show Menu
 CtrlHint.Skip:Skip
 CtrlHint.Take:Take
+CtrlHint.Throw:Throw
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
 Hint.Pong.Move:Move

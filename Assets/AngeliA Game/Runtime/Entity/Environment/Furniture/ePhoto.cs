@@ -28,9 +28,9 @@ namespace AngeliaGame {
 			}
 		}
 
-		void IActionEntity.Invoke (Entity target) => PhotoIndex++;
+		void IActionEntity.Invoke () => PhotoIndex++;
 
-		bool IActionEntity.AllowInvoke (Entity target) => true;
+		bool IActionEntity.AllowInvoke () => true;
 
 
 	}
