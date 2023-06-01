@@ -14,9 +14,10 @@ namespace AngeliaGame {
 
 
 	// Player Chest
-	public class ePlayerItemChest : InventoryChest {
+	public class ePlayerItemChest : InventoryChest, ICombustible {
 		protected override int InventoryColumn => 10;
 		protected override int InventoryRow => 8;
+		int ICombustible.BurnStartFrame { get; set; }
 	}
 
 
