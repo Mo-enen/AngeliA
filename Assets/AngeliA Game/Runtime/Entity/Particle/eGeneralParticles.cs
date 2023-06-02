@@ -64,6 +64,7 @@ namespace AngeliaGame {
 		[AfterGameInitialize]
 		public static void Init () {
 			Rigidbody.WaterSplashParticleID = typeof(eWaterSplashParticle).AngeHash();
+			Water.WaterSplashParticleID = typeof(eWaterSplashParticle).AngeHash();
 		}
 	}
 

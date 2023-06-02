@@ -22,17 +22,6 @@ namespace AngeliaGame {
 
 
 	public abstract class eWoodPlatform : PingPongPlatform, ICombustible {
-
-		private static readonly int ARTCODE_LEFT = "WoodPlatform Left".AngeHash();
-		private static readonly int ARTCODE_MID = "WoodPlatform Mid".AngeHash();
-		private static readonly int ARTCODE_RIGHT = "WoodPlatform Right".AngeHash();
-		private static readonly int ARTCODE_SINGLE = "WoodPlatform Single".AngeHash();
-
-		protected override int ArtworkCode_Left => ARTCODE_LEFT;
-		protected override int ArtworkCode_Mid => ARTCODE_MID;
-		protected override int ArtworkCode_Right => ARTCODE_RIGHT;
-		protected override int ArtworkCode_Single => ARTCODE_SINGLE;
-
 		public override bool OneWay => true;
 		int ICombustible.BurnStartFrame { get; set; }
 
