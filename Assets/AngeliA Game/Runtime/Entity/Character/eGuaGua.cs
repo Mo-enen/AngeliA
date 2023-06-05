@@ -47,7 +47,7 @@ namespace AngeliaGame {
 
 			// Sleep in Basket
 			if (CharacterState == CharacterState.Sleep) {
-				if (Game.Current.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
+				if (Stage.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
 					int offsetY = 0;
 					if (CellRenderer.TryGetSprite(basket.TypeID, out var basketSprite)) {
 						offsetY = basketSprite.GlobalHeight - basketSprite.GlobalBorder.Up;
