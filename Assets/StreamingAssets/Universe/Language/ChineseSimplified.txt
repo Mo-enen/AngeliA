@@ -1,4 +1,11 @@
-﻿CtrlHint.SwitchPlayer:切换角色
+﻿UI.BodyPart.Head:头
+UI.BodyPart.Body:身体
+UI.BodyPart.UpperArm:上臂
+UI.BodyPart.LowerArm:下臂
+UI.BodyPart.Hand:手
+UI.BodyPart.UpperLeg:大腿
+UI.BodyPart.LowerLeg:小腿
+UI.BodyPart.Foot:脚
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -19,6 +26,7 @@ CtrlHint.QuickDrop:转移
 CtrlHint.Restart:重新开始
 CtrlHint.ShowMenu:显示菜单
 CtrlHint.Skip:跳过
+CtrlHint.SwitchPlayer:切换角色
 CtrlHint.Take:拾取
 CtrlHint.Throw:丢弃
 CtrlHint.Use:使用

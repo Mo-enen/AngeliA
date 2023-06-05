@@ -1,4 +1,11 @@
-﻿CtrlHint.SwitchPlayer:Switch Character
+﻿UI.BodyPart.Head:Head
+UI.BodyPart.Body:Body
+UI.BodyPart.UpperArm:Upper Arm
+UI.BodyPart.LowerArm:Lower Arm
+UI.BodyPart.Hand:Hand
+UI.BodyPart.UpperLeg:Upper Leg
+UI.BodyPart.LowerLeg:Lower Leg
+UI.BodyPart.Foot:Foot
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -19,6 +26,7 @@ CtrlHint.QuickDrop:Transfer
 CtrlHint.Restart:Restart
 CtrlHint.ShowMenu:Show Menu
 CtrlHint.Skip:Skip
+CtrlHint.SwitchPlayer:Switch Character
 CtrlHint.Take:Take
 CtrlHint.Throw:Throw
 CtrlHint.Use:Use
