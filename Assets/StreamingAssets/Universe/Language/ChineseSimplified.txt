@@ -1,11 +1,8 @@
-﻿UI.BodyPart.Head:头
-UI.BodyPart.Body:身体
-UI.BodyPart.UpperArm:上臂
-UI.BodyPart.LowerArm:下臂
-UI.BodyPart.Hand:手
-UI.BodyPart.UpperLeg:大腿
-UI.BodyPart.LowerLeg:小腿
-UI.BodyPart.Foot:脚
+﻿UI.Suit.Hat:帽子
+UI.Suit.Bodysuit:上衣
+UI.Suit.Glove:手套
+UI.Suit.Shoes:鞋
+UI.Suit.Pants:裤子
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -22,6 +19,7 @@ CtrlHint.MEDT.PlayFromBegin:从头开始游戏
 CtrlHint.MEDT.SwitchMode.Edit:编辑
 CtrlHint.MEDT.SwitchMode.Play:开始游戏
 CtrlHint.Move:移动
+CtrlHint.PlayerCustomizer.SwitchPreview:切换预览
 CtrlHint.QuickDrop:转移
 CtrlHint.Restart:重新开始
 CtrlHint.ShowMenu:显示菜单
@@ -86,6 +84,12 @@ Palette.Platform:平台
 Palette.System:系统
 Palette.Vegetation:植被
 UI.Back:返回
+UI.BodyPart.ArmHand:手臂
+UI.BodyPart.Body:身体
+UI.BodyPart.Face:面部
+UI.BodyPart.Hair:头发
+UI.BodyPart.Head:头部
+UI.BodyPart.LegFoot:腿部
 UI.Cancel:取消
 UI.Continue:继续
 UI.Down:下

@@ -1,11 +1,8 @@
-﻿UI.BodyPart.Head:Head
-UI.BodyPart.Body:Body
-UI.BodyPart.UpperArm:Upper Arm
-UI.BodyPart.LowerArm:Lower Arm
-UI.BodyPart.Hand:Hand
-UI.BodyPart.UpperLeg:Upper Leg
-UI.BodyPart.LowerLeg:Lower Leg
-UI.BodyPart.Foot:Foot
+﻿UI.Suit.Hat:Hat
+UI.Suit.Bodysuit:Bodysuit
+UI.Suit.Glove:Glove
+UI.Suit.Shoes:Shoes
+UI.Suit.Pants:Pants
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -22,6 +19,7 @@ CtrlHint.MEDT.PlayFromBegin:Play from Start
 CtrlHint.MEDT.SwitchMode.Edit:Edit
 CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
+CtrlHint.PlayerCustomizer.SwitchPreview:Switch Preview
 CtrlHint.QuickDrop:Transfer
 CtrlHint.Restart:Restart
 CtrlHint.ShowMenu:Show Menu
@@ -86,6 +84,12 @@ Palette.Platform:Platform
 Palette.System:System
 Palette.Vegetation:Vegetation
 UI.Back:Back
+UI.BodyPart.ArmHand:Arm
+UI.BodyPart.Body:Body
+UI.BodyPart.Face:Face
+UI.BodyPart.Hair:Hair
+UI.BodyPart.Head:Head
+UI.BodyPart.LegFoot:Leg
 UI.Cancel:Cancel
 UI.Continue:Continue
 UI.Down:Down
