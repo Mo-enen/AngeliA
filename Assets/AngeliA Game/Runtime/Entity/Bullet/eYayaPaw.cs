@@ -29,8 +29,8 @@ namespace AngeliaGame {
 
 
 		// MSG
-		public override void Release (Entity entity, int team, Vector2Int direction, int combo, int chargeDuration) {
-			base.Release(entity, team, direction, combo, chargeDuration);
+		public override void Release (Entity entity, int targetTeam, Vector2Int direction, int combo, int chargeDuration) {
+			base.Release(entity, targetTeam, direction, combo, chargeDuration);
 			if (entity == null || entity is not AngeliaFramework.Character) return;
 			Width = 384;
 			Height = 512;

@@ -421,52 +421,52 @@ namespace AngeliaGame {
 					case SubMenuType.Suit_Head:
 						if (PatternMenuUI(
 							panelRect, Patterns_Suit_Head, Const.WHITE,
-							player.DefaultSuit_Head, out invokingPattern
+							player.Suit_Head, out invokingPattern
 						)) {
-							player.DefaultSuit_Head = invokingPattern.A;
+							player.Suit_Head = invokingPattern.A;
 						}
 						break;
 
 					case SubMenuType.Suit_BodyArmArm:
 						if (PatternMenuUI(
 							panelRect, Patterns_Suit_BodyArmArm, Const.WHITE,
-							new Int4(player.DefaultSuit_Body, player.DefaultSuit_UpperArm, player.DefaultSuit_LowerArm, 0),
+							new Int4(player.Suit_Body, player.Suit_UpperArm, player.Suit_LowerArm, 0),
 							out invokingPattern
 						)) {
-							player.DefaultSuit_Body = invokingPattern.A;
-							player.DefaultSuit_UpperArm = invokingPattern.B;
-							player.DefaultSuit_LowerArm = invokingPattern.C;
+							player.Suit_Body = invokingPattern.A;
+							player.Suit_UpperArm = invokingPattern.B;
+							player.Suit_LowerArm = invokingPattern.C;
 						}
 						break;
 
 					case SubMenuType.Suit_Hand:
 						if (PatternMenuUI(
 							panelRect, Patterns_Suit_Hand, Const.WHITE,
-							player.DefaultSuit_Hand, out invokingPattern
+							player.Suit_Hand, out invokingPattern
 						)) {
-							player.DefaultSuit_Hand = invokingPattern.A;
+							player.Suit_Hand = invokingPattern.A;
 						}
 						break;
 
 					case SubMenuType.Suit_HipSkirtLegLeg:
 						if (PatternMenuUI(
 							panelRect, Patterns_Suit_HipSkirtLegLeg, Const.WHITE,
-							new Int4(player.DefaultSuit_Hip, player.DefaultSuit_Skirt, player.DefaultSuit_UpperLeg, player.DefaultSuit_LowerLeg),
+							new Int4(player.Suit_Hip, player.Suit_Skirt, player.Suit_UpperLeg, player.Suit_LowerLeg),
 							out invokingPattern
 						)) {
-							player.DefaultSuit_Hip = invokingPattern.A;
-							player.DefaultSuit_Skirt = invokingPattern.B;
-							player.DefaultSuit_UpperLeg = invokingPattern.C;
-							player.DefaultSuit_LowerLeg = invokingPattern.D;
+							player.Suit_Hip = invokingPattern.A;
+							player.Suit_Skirt = invokingPattern.B;
+							player.Suit_UpperLeg = invokingPattern.C;
+							player.Suit_LowerLeg = invokingPattern.D;
 						}
 						break;
 
 					case SubMenuType.Suit_Foot:
 						if (PatternMenuUI(
 							panelRect, Patterns_Suit_Foot, Const.WHITE,
-							player.DefaultSuit_Foot, out invokingPattern
+							player.Suit_Foot, out invokingPattern
 						)) {
-							player.DefaultSuit_Foot = invokingPattern.A;
+							player.Suit_Foot = invokingPattern.A;
 						}
 						break;
 				}

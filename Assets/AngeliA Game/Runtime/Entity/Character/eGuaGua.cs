@@ -9,6 +9,7 @@ namespace AngeliaGame {
 	public class eGuaGua : Summon {
 
 
+
 		public eGuaGua () {
 			MovementWidth.Value = 150;
 			MovementHeight.Value = 150;
