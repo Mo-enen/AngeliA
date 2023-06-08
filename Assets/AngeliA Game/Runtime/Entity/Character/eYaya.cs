@@ -24,7 +24,6 @@ namespace AngeliaGame {
 
 		// Api
 		protected override bool SpinOnGroundPound => true;
-		protected override int PoseBodyAbove => 7 * A2G;
 
 		// Data
 		private eGuaGua GuaGua = null;

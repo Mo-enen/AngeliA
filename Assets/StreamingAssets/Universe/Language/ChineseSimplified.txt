@@ -1,8 +1,4 @@
-﻿UI.Suit.Hat:帽子
-UI.Suit.Bodysuit:上衣
-UI.Suit.Glove:手套
-UI.Suit.Shoes:鞋
-UI.Suit.Pants:裤子
+﻿UI.None:无
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -115,6 +111,11 @@ UI.Restart:重新开始
 UI.Right:右
 UI.Save:保存
 UI.Setting:设置
+UI.Suit.Bodysuit:上衣
+UI.Suit.Glove:手套
+UI.Suit.Hat:帽子
+UI.Suit.Pants:裤子
+UI.Suit.Shoes:鞋
 UI.Tetris.ClearedLine:行数:
 UI.Tetris.HighScore:高分:
 UI.Tetris.Holding:保留

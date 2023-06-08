@@ -1,8 +1,4 @@
-﻿UI.Suit.Hat:Hat
-UI.Suit.Bodysuit:Bodysuit
-UI.Suit.Glove:Glove
-UI.Suit.Shoes:Shoes
-UI.Suit.Pants:Pants
+﻿UI.None:None
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -115,6 +111,11 @@ UI.Restart:Restart
 UI.Right:Right
 UI.Save:Save
 UI.Setting:Setting
+UI.Suit.Bodysuit:Bodysuit
+UI.Suit.Glove:Glove
+UI.Suit.Hat:Hat
+UI.Suit.Pants:Pants
+UI.Suit.Shoes:Shoes
 UI.Tetris.ClearedLine:Lines:
 UI.Tetris.HighScore:Best:
 UI.Tetris.Holding:Holding
