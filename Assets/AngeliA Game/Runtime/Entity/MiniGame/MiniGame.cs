@@ -22,6 +22,7 @@ namespace AngeliaGame {
 		private static readonly int MENU_QUIT_MINI_GAME = "Menu.MiniGame.QuitMsg".AngeHash();
 		protected virtual Vector2Int WindowSize => new(1000, 800);
 		protected abstract bool RequireMouseCursor { get; }
+		protected virtual bool RequireQuitConfirm => true;
 		protected virtual bool ShowRestartOption => true;
 		protected RectInt WindowRect => new(
 			CellRenderer.CameraRect.CenterX() - CellRendererGUI.Unify(WindowSize.x) / 2,
@@ -61,7 +62,11 @@ namespace AngeliaGame {
 					// Quit
 					if (FrameInput.GameKeyDown(Gamekey.Start)) {
 						FrameInput.UseGameKey(Gamekey.Start);
-						OpenQuitMenu();
+						if (RequireQuitConfirm) {
+							OpenQuitMenu();
+						} else {
+							CloseGame();
+						}
 					}
 					ControlHintUI.AddHint(Gamekey.Start, Language.Get(Const.UI_QUIT, "Quit"));
 				}

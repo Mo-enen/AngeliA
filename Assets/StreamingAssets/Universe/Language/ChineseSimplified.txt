@@ -1,5 +1,4 @@
-﻿UI.None:无
-@enen:伊楠
+﻿@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子
@@ -15,7 +14,6 @@ CtrlHint.MEDT.PlayFromBegin:从头开始游戏
 CtrlHint.MEDT.SwitchMode.Edit:编辑
 CtrlHint.MEDT.SwitchMode.Play:开始游戏
 CtrlHint.Move:移动
-CtrlHint.PlayerCustomizer.SwitchPreview:切换预览
 CtrlHint.QuickDrop:转移
 CtrlHint.Restart:重新开始
 CtrlHint.ShowMenu:显示菜单
@@ -102,6 +100,7 @@ UI.Gomoku.Place:落子
 UI.Gomoku.YouAre:您是：
 UI.Left:左
 UI.No:否
+UI.None:无
 UI.OFF:关闭
 UI.OK:确定
 UI.ON:开启

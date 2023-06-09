@@ -1,5 +1,4 @@
-﻿UI.None:None
-@enen:Enen
+﻿@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
@@ -15,7 +14,6 @@ CtrlHint.MEDT.PlayFromBegin:Play from Start
 CtrlHint.MEDT.SwitchMode.Edit:Edit
 CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
-CtrlHint.PlayerCustomizer.SwitchPreview:Switch Preview
 CtrlHint.QuickDrop:Transfer
 CtrlHint.Restart:Restart
 CtrlHint.ShowMenu:Show Menu
@@ -102,6 +100,7 @@ UI.Gomoku.Place:Place
 UI.Gomoku.YouAre:You are:
 UI.Left:Left
 UI.No:No
+UI.None:None
 UI.OFF:OFF
 UI.OK:OK
 UI.ON:ON
