@@ -14,17 +14,21 @@ namespace AngeliaGame {
 
 
 		private enum SubMenuType {
+
 			Head = 0,
 			Body = 1,
 			ArmArmHand = 2,
 			LegLegFoot = 3,
 			Face = 4,
 			Hair = 5,
-			Suit_Head = 6,
-			Suit_BodyArmArm = 7,
-			Suit_Hand = 8,
-			Suit_HipSkirtLegLeg = 9,
-			Suit_Foot = 10,
+			Ear = 6,
+			Tail = 7,
+
+			Suit_Head = 8,
+			Suit_BodyArmArm = 9,
+			Suit_Hand = 10,
+			Suit_HipSkirtLegLeg = 11,
+			Suit_Foot = 12,
 		}
 
 
@@ -38,6 +42,8 @@ namespace AngeliaGame {
 
 			public string[] BodyPart_Faces;
 			public string[] BodyPart_Hairs;
+			public string[] BodyPart_Ears;
+			public string[] BodyPart_Tails;
 
 			public string[] Suit_Heads;
 			public string[] Suit_BodyArmArms;
@@ -71,6 +77,8 @@ namespace AngeliaGame {
 			"UI.BodyPart.LegFoot".AngeHash(),
 			"UI.BodyPart.Face".AngeHash(),
 			"UI.BodyPart.Hair".AngeHash(),
+			"UI.BodyPart.Ear".AngeHash(),
+			"UI.BodyPart.Tail".AngeHash(),
 			"UI.Suit.Hat".AngeHash(),
 			"UI.Suit.Bodysuit".AngeHash(),
 			"UI.Suit.Glove".AngeHash(),
@@ -84,6 +92,8 @@ namespace AngeliaGame {
 			"Icon.BodyPart.LegFoot".AngeHash(),
 			"Icon.BodyPart.Face".AngeHash(),
 			"Icon.BodyPart.Hair".AngeHash(),
+			"Icon.BodyPart.Ear".AngeHash(),
+			"Icon.BodyPart.Tail".AngeHash(),
 			"Icon.Suit.Hat".AngeHash(),
 			"Icon.Suit.Bodysuit".AngeHash(),
 			"Icon.Suit.Glove".AngeHash(),
@@ -101,6 +111,8 @@ namespace AngeliaGame {
 		private readonly List<Int4> Patterns_Body = new();
 		private readonly List<Int4> Patterns_Face = new();
 		private readonly List<Int4> Patterns_Hair = new();
+		private readonly List<Int4> Patterns_Ear = new();
+		private readonly List<Int4> Patterns_Tail = new();
 		private readonly List<Int4> Patterns_ArmArmHand = new();
 		private readonly List<Int4> Patterns_LegLegFoot = new();
 		private readonly List<Int4> Patterns_Suit_Head = new();
@@ -119,9 +131,9 @@ namespace AngeliaGame {
 		private int HighlightingPatternColumn = 0;
 		private int HighlightingPatternRow = 0;
 		private int PatternPickerScrollRow = 0;
-		private bool HighlightingPatternPicker = false;
 		private int HighlightingSizeEditorIndex = 0;
 		private int SizeSliderAdjustingIndex = -1;
+		private bool HighlightingPatternPicker = false;
 
 
 		#endregion
@@ -196,7 +208,7 @@ namespace AngeliaGame {
 			if (FrameInput.GameKeyDown(Gamekey.Select)) {
 				player.ForceAnimatedPoseType =
 					player.ForceAnimatedPoseType == CharacterPoseAnimationType.Idle ? CharacterPoseAnimationType.Walk :
-					player.ForceAnimatedPoseType == CharacterPoseAnimationType.Walk ? CharacterPoseAnimationType.Run :
+					player.ForceAnimatedPoseType == CharacterPoseAnimationType.Walk ? CharacterPoseAnimationType.Fly :
 					CharacterPoseAnimationType.Idle;
 			}
 
@@ -507,6 +519,30 @@ namespace AngeliaGame {
 						}
 						break;
 
+					case SubMenuType.Ear:
+						panelRect.height -= Unify(16);
+						if (PatternMenuUI(
+							panelRect, Patterns_Ear, player.HairColor,
+							new Int4(player.EarLeft, player.EarRight, 0, 0),
+							out invokingPattern
+						)) {
+							player.EarLeft = invokingPattern.A;
+							player.EarRight = invokingPattern.B;
+						}
+						break;
+
+					case SubMenuType.Tail:
+						panelRect.height -= Unify(16);
+						if (PatternMenuUI(
+							panelRect, Patterns_Ear, player.HairColor,
+							new Int4(player.Tail, player.Propeller, 0, 0),
+							out invokingPattern
+						)) {
+							player.Tail = invokingPattern.A;
+							player.Propeller = invokingPattern.B;
+						}
+						break;
+
 					case SubMenuType.Hair:
 						panelRect.height -= Unify(16);
 						if (PatternMenuUI(
@@ -603,7 +639,7 @@ namespace AngeliaGame {
 					(i % 2) * (fieldRect.width + fieldPadding);
 				fieldRect.y = panelRect.yMax - panelPadding - fieldHeight -
 					(i / 2) * (fieldHeight + fieldPadding);
-				if (i >= 6) fieldRect.y -= fieldPadding * 2;
+				if (i >= 8) fieldRect.y -= fieldPadding * 2;
 				string label = Language.Get(MAIN_MENU_LABELS[i], ((SubMenuType)i).ToString());
 				bool mouseInField = fieldRect.Contains(FrameInput.MouseGlobalPosition);
 
@@ -892,6 +928,8 @@ namespace AngeliaGame {
 			Patterns_Body.Clear();
 			Patterns_Face.Clear();
 			Patterns_Hair.Clear();
+			Patterns_Ear.Clear();
+			Patterns_Tail.Clear();
 			Patterns_ArmArmHand.Clear();
 			Patterns_LegLegFoot.Clear();
 			Patterns_Suit_Head.Clear();
@@ -907,6 +945,8 @@ namespace AngeliaGame {
 			FillPatterns(meta.BodyPart_Bodys, Patterns_Body, ".Body");
 			FillPatterns(meta.BodyPart_Faces, Patterns_Face, ".Face", ".Face.Blink", ".Face.Sleep");
 			FillPatterns(meta.BodyPart_Hairs, Patterns_Hair, ".FrontHair.F", ".FrontHair.B", ".BackHair.F", ".BackHair.B");
+			FillPatterns(meta.BodyPart_Ears, Patterns_Ear, ".EarL", ".EarR");
+			FillPatterns(meta.BodyPart_Tails, Patterns_Tail, ".Tail", ".Propeller");
 			FillPatterns(meta.BodyPart_ArmArmHands, Patterns_ArmArmHand, ".UpperArm", ".LowerArm", ".Hand");
 			FillPatterns(meta.BodyPart_LegLegFoots, Patterns_LegLegFoot, ".UpperLeg", ".LowerLeg", ".Foot");
 

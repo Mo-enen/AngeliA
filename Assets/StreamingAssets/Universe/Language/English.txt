@@ -1,4 +1,6 @@
-﻿@enen:Enen
+﻿UI.BodyPart.Ear:Ear
+UI.BodyPart.Tail:Tail
+@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu

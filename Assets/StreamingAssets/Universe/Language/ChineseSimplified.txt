@@ -1,4 +1,6 @@
-﻿@enen:伊楠
+﻿UI.BodyPart.Ear:兽耳
+UI.BodyPart.Tail:尾巴
+@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子

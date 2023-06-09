@@ -64,7 +64,8 @@ namespace AngeliaGame {
 				DrawAnimalEars(
 					damaging ? DAMAGE_EAR_L_ID : CATEAR_L_ID,
 					damaging ? DAMAGE_EAR_R_ID : CATEAR_R_ID,
-					Head.GetGlobalRect(), Head.Z + (Head.FrontSide ? 33 : -33)
+					Head.GetGlobalRect(),
+					Head.FrontSide ? 33 : -33
 				);
 			}
 
@@ -79,7 +80,7 @@ namespace AngeliaGame {
 					// Propeller
 					DrawPropeller(PROPELLER_ID, new(78, 76, 120, 255), offsetY: 2 * Const.CEL / Const.ART_CEL);
 				} else {
-					DrawTail(CAT_TAIL_ID, Body.Z + (Body.FrontSide ? -33 : 33));
+					DrawTail(CAT_TAIL_ID, Body.FrontSide ? -33 : 33);
 				}
 			}
 
