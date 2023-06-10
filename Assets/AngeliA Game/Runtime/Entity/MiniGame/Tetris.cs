@@ -160,7 +160,13 @@ namespace AngeliaGame {
 		}
 
 
-		protected override void GamePlayUpdate () {
+		protected override void GameUpdate () {
+			GamePlayUpdate();
+			RenderingUpdate();
+		}
+
+
+		private void GamePlayUpdate () {
 
 			if (GameOver) {
 				if (FrameInput.AnyKeyDown) OpenGameOverMenu();
@@ -256,7 +262,7 @@ namespace AngeliaGame {
 		}
 
 
-		protected override void RenderingUpdate () {
+		private void RenderingUpdate () {
 
 			var stageRect = WindowRect;
 			CellRenderer.Draw(Const.PIXEL, stageRect, Const.BLACK, int.MinValue + 1);

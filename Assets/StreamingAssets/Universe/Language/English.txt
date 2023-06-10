@@ -1,5 +1,5 @@
-﻿UI.BodyPart.Ear:Ear
-UI.BodyPart.Tail:Tail
+﻿UI.BodyPart.SkinColor:Skin Color
+UI.BodyPart.HairColor:Hair Color
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -82,10 +82,12 @@ Palette.Vegetation:Vegetation
 UI.Back:Back
 UI.BodyPart.ArmHand:Arm
 UI.BodyPart.Body:Body
+UI.BodyPart.Ear:Ear
 UI.BodyPart.Face:Face
 UI.BodyPart.Hair:Hair
 UI.BodyPart.Head:Head
 UI.BodyPart.LegFoot:Leg
+UI.BodyPart.Tail:Tail
 UI.Cancel:Cancel
 UI.Continue:Continue
 UI.Down:Down

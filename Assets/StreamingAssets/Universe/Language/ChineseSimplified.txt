@@ -1,5 +1,5 @@
-﻿UI.BodyPart.Ear:兽耳
-UI.BodyPart.Tail:尾巴
+﻿UI.BodyPart.SkinColor:肤色
+UI.BodyPart.HairColor:发色
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -82,10 +82,12 @@ Palette.Vegetation:植被
 UI.Back:返回
 UI.BodyPart.ArmHand:手臂
 UI.BodyPart.Body:身体
+UI.BodyPart.Ear:兽耳
 UI.BodyPart.Face:面部
 UI.BodyPart.Hair:头发
 UI.BodyPart.Head:头部
 UI.BodyPart.LegFoot:腿部
+UI.BodyPart.Tail:尾巴
 UI.Cancel:取消
 UI.Continue:继续
 UI.Down:下

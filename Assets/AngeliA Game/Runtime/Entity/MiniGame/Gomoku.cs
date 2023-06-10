@@ -85,7 +85,13 @@ namespace AngeliaGame {
 		}
 
 
-		protected override void GamePlayUpdate () {
+		protected override void GameUpdate () {
+			GamePlayUpdate();
+			RenderingUpdate();
+		}
+
+
+		private void GamePlayUpdate () {
 
 			StageRect = WindowRect;
 			StageCellSize = StageRect.width / (STAGE_SIZE - 1);
@@ -151,7 +157,7 @@ namespace AngeliaGame {
 		}
 
 
-		protected override void RenderingUpdate () {
+		private void RenderingUpdate () {
 
 
 			var boardRect = StageRect.Expand(StageCellSize);
