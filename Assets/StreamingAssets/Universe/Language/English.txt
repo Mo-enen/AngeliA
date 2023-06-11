@@ -1,5 +1,4 @@
-﻿UI.BodyPart.SkinColor:Skin Color
-UI.BodyPart.HairColor:Hair Color
+﻿UI.BodyPart.Wing:Wing
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -85,8 +84,10 @@ UI.BodyPart.Body:Body
 UI.BodyPart.Ear:Ear
 UI.BodyPart.Face:Face
 UI.BodyPart.Hair:Hair
+UI.BodyPart.HairColor:Hair Color
 UI.BodyPart.Head:Head
 UI.BodyPart.LegFoot:Leg
+UI.BodyPart.SkinColor:Skin Color
 UI.BodyPart.Tail:Tail
 UI.Cancel:Cancel
 UI.Continue:Continue
