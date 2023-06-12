@@ -111,6 +111,7 @@ namespace AngeliaGame {
 			"Icon.Suit.Pants".AngeHash(),
 			"Icon.Suit.Shoes".AngeHash(),
 		};
+		private const int EDITOR_BASIC_Z = 60;
 
 		// Api
 		protected override Vector2Int WindowSize => new(1000, 800);
@@ -190,14 +191,6 @@ namespace AngeliaGame {
 			// Game Play
 			player.LockFacingRight(true, 1);
 			if (!FrameInput.MouseLeftButton) SizeSliderAdjustingIndex = -1;
-
-			// Preview
-			if (FrameInput.GameKeyDown(Gamekey.Select)) {
-				player.ForceAnimatedPoseType =
-					player.ForceAnimatedPoseType == CharacterPoseAnimationType.Idle ? CharacterPoseAnimationType.Walk :
-					player.ForceAnimatedPoseType == CharacterPoseAnimationType.Walk ? CharacterPoseAnimationType.Run :
-					CharacterPoseAnimationType.Idle;
-			}
 
 			// Back Button
 			if (CurrentSubMenu.HasValue) {
@@ -325,9 +318,12 @@ namespace AngeliaGame {
 			if (Player.Selecting is not MainPlayer player) return;
 			panelRect = panelRect.Shrink(Unify(32));
 
+
 			// Draw Player
+			bool flying = CurrentSubMenu.HasValue && CurrentSubMenu.Value == SubMenuType.Wing && player.WingGroupID != 0;
 			int layerIndex = CellRenderer.CurrentLayerIndex;
 			int cellIndexStart = CellRenderer.GetUsedCellCount(layerIndex);
+			player.ForceAnimatedPoseType = flying ? CharacterPoseAnimationType.Fly : CharacterPoseAnimationType.Idle;
 			player.CurrentAnimationFrame = TargetAnimationFrame;
 			player.FrameUpdate();
 			int cellIndexEnd = CellRenderer.GetUsedCellCount(layerIndex);
@@ -336,7 +332,7 @@ namespace AngeliaGame {
 
 			// Get Min Max
 			int originalMinX = player.X - Const.HALF - 16;
-			int originalMinY = player.Y - 16;
+			int originalMinY = player.Y - 16 + (flying ? player.PoseRootY / 2 : 0);
 			int originalMaxX = player.X + Const.HALF + 16;
 			int originalMaxY = player.Y + Const.CEL * 2 + 16;
 
@@ -370,6 +366,9 @@ namespace AngeliaGame {
 
 		private void EditorUI (RectInt panelRect, MainPlayer player) {
 
+			// Background
+			CellRenderer.Draw(Const.PIXEL, panelRect, Const.BLACK, EDITOR_BASIC_Z);
+
 			// Bottom Bar
 			if (CurrentSubMenu.HasValue) {
 				int backButtonWidth = Unify(200);
@@ -377,7 +376,7 @@ namespace AngeliaGame {
 				// Back Button
 				var buttonRect = new RectInt(panelRect.xMax - backButtonWidth, panelRect.y, backButtonWidth, bottomBarHeight);
 				if (buttonRect.Contains(FrameInput.MouseGlobalPosition)) {
-					CellRenderer.Draw(Const.PIXEL, buttonRect, Const.GREY_32, int.MinValue + 2);
+					CellRenderer.Draw(Const.PIXEL, buttonRect, Const.GREY_32, EDITOR_BASIC_Z + 2);
 					if (FrameInput.LastActionFromMouse && FrameInput.MouseLeftButtonDown) {
 						HighlightingMainIndex = (int)CurrentSubMenu.Value;
 						CurrentSubMenu = null;
@@ -711,7 +710,7 @@ namespace AngeliaGame {
 					fieldRect.Shrink(0, fieldRect.width - fieldRect.height, 0, 0).Shrink(iconPadding),
 					((SubMenuType)i) == SubMenuType.SkinColor ? player.SkinColor :
 					((SubMenuType)i) == SubMenuType.HairColor ? player.HairColor : Const.WHITE,
-					int.MinValue + 3
+					EDITOR_BASIC_Z + 3
 				);
 
 				// Label
@@ -727,7 +726,7 @@ namespace AngeliaGame {
 						fieldRect.x,
 						fieldRect.y - fieldPadding / 2 - lineSize / 2,
 						fieldRect.width, lineSize
-					), Const.GREY_32, int.MinValue + 2
+					), Const.GREY_32, EDITOR_BASIC_Z + 2
 				);
 
 				// Highlight
@@ -735,13 +734,13 @@ namespace AngeliaGame {
 					// Using Mouse
 					if (mouseInField) {
 						HighlightingMainIndex = i;
-						CellRenderer.Draw(Const.PIXEL, fieldRect, Const.GREY_32, int.MinValue + 1);
+						CellRenderer.Draw(Const.PIXEL, fieldRect, Const.GREY_32, EDITOR_BASIC_Z + 1);
 						Game.Current.SetCursor(Const.CURSOR_HAND, int.MinValue + 1);
 					}
 				} else {
 					// Using Key
 					if (i == HighlightingMainIndex) {
-						CellRendererGUI.HighlightCursor(FRAME_CODE, fieldRect, int.MinValue + 4);
+						CellRendererGUI.HighlightCursor(FRAME_CODE, fieldRect, EDITOR_BASIC_Z + 4);
 					}
 				}
 
@@ -774,7 +773,7 @@ namespace AngeliaGame {
 			CellRenderer.Draw(
 				icon,
 				new RectInt(panelRect.x, panelRect.y, iconSize, iconSize),
-				int.MinValue + 3
+				EDITOR_BASIC_Z + 3
 			);
 
 			// Number
@@ -793,7 +792,7 @@ namespace AngeliaGame {
 			CellRenderer.Draw(
 				Const.PIXEL,
 				new RectInt(lineRect.x, lineRect.CenterY() - lineHeight / 2, lineRect.width, lineHeight),
-				Const.GREY_42, int.MinValue + 3
+				Const.GREY_42, EDITOR_BASIC_Z + 3
 			);
 
 			// Circle
@@ -806,7 +805,7 @@ namespace AngeliaGame {
 				panelRect.CenterY() - circleSize / 2,
 				circleSize * 8 / 10, circleSize * 8 / 10
 			);
-			CellRenderer.Draw(CIRCLE_CODE, circleRect.Shrink(Unify(6)), int.MinValue + 4);
+			CellRenderer.Draw(CIRCLE_CODE, circleRect.Shrink(Unify(6)), EDITOR_BASIC_Z + 4);
 
 			// Dragging Slider
 			if (SizeSliderAdjustingIndex == fieldIndex) {
@@ -824,7 +823,7 @@ namespace AngeliaGame {
 					if (circleRect.Contains(FrameInput.MouseGlobalPosition)) {
 						Game.Current.SetCursor(Const.CURSOR_HAND, int.MinValue + 1);
 						// Draw Mouse Highlight
-						CellRenderer.Draw(Const.PIXEL, circleRect, Const.GREY_32, int.MinValue + 3);
+						CellRenderer.Draw(Const.PIXEL, circleRect, Const.GREY_32, EDITOR_BASIC_Z + 3);
 						HighlightingSizeEditorIndex = fieldIndex;
 						HighlightingPatternPicker = false;
 						// Adjust by Mouse Down
@@ -896,14 +895,14 @@ namespace AngeliaGame {
 
 					// Selecting Highlight
 					if (IsSamePattern(pat, selectingPattern, forColor)) {
-						CellRenderer.Draw(Const.PIXEL, rect, Const.BLUE, int.MinValue + 2);
+						CellRenderer.Draw(Const.PIXEL, rect, Const.BLUE, EDITOR_BASIC_Z + 2);
 					}
 
 					// Frame
 					CellRenderer.Draw_9Slice(
 						FRAME_CODE, rect,
 						itemFrameThickness, itemFrameThickness, itemFrameThickness, itemFrameThickness,
-						Const.GREY_32, int.MinValue + 2
+						Const.GREY_32, EDITOR_BASIC_Z + 2
 					);
 
 					if (!forColor) {
@@ -916,7 +915,7 @@ namespace AngeliaGame {
 							CellRenderer.Draw(
 								sprite.GlobalID,
 								rect.Shrink(iconPadding).Fit(sprite.GlobalWidth, sprite.GlobalHeight),
-								iconTint, int.MinValue + 3
+								iconTint, EDITOR_BASIC_Z + 3
 							);
 						}
 						// Empty
@@ -936,14 +935,14 @@ namespace AngeliaGame {
 								(byte)pat.C.Clamp(0, 255),
 								255
 							),
-							int.MinValue + 3
+							EDITOR_BASIC_Z + 3
 						);
 					}
 
 					// Hovering Highlight
 					if (FrameInput.LastActionFromMouse) {
 						if (rect.Contains(FrameInput.MouseGlobalPosition)) {
-							CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32, int.MinValue + 2);
+							CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32, EDITOR_BASIC_Z + 2);
 							HighlightingPatternPicker = true;
 							HighlightingPatternColumn = j;
 							HighlightingPatternRow = i;
