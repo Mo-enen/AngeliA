@@ -1,5 +1,4 @@
-﻿UI.BodyPart.Wing:Wing
-@enen:Enen
+﻿@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
@@ -12,7 +11,7 @@ CtrlHint.HideMenu:Hide Menu
 CtrlHint.Jump:Jump
 CtrlHint.MEDT.Nav:Overlook
 CtrlHint.MEDT.PlayFromBegin:Play from Start
-CtrlHint.MEDT.SwitchMode.Edit:Edit
+CtrlHint.MEDT.SwitchMode.Edit:Back to Edit
 CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
 CtrlHint.QuickDrop:Transfer
@@ -89,6 +88,7 @@ UI.BodyPart.Head:Head
 UI.BodyPart.LegFoot:Leg
 UI.BodyPart.SkinColor:Skin Color
 UI.BodyPart.Tail:Tail
+UI.BodyPart.Wing:Wing
 UI.Cancel:Cancel
 UI.Continue:Continue
 UI.Down:Down

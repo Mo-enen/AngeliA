@@ -1,5 +1,4 @@
-﻿UI.BodyPart.Wing:翅膀
-@enen:伊楠
+﻿@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子
@@ -12,7 +11,7 @@ CtrlHint.HideMenu:隐藏菜单
 CtrlHint.Jump:跳跃
 CtrlHint.MEDT.Nav:俯瞰
 CtrlHint.MEDT.PlayFromBegin:从头开始游戏
-CtrlHint.MEDT.SwitchMode.Edit:编辑
+CtrlHint.MEDT.SwitchMode.Edit:返回编辑
 CtrlHint.MEDT.SwitchMode.Play:开始游戏
 CtrlHint.Move:移动
 CtrlHint.QuickDrop:转移
@@ -89,6 +88,7 @@ UI.BodyPart.Head:头部
 UI.BodyPart.LegFoot:腿部
 UI.BodyPart.SkinColor:肤色
 UI.BodyPart.Tail:尾巴
+UI.BodyPart.Wing:翅膀
 UI.Cancel:取消
 UI.Continue:继续
 UI.Down:下

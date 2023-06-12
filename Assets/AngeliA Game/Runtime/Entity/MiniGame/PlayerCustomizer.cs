@@ -141,7 +141,6 @@ namespace AngeliaGame {
 		private readonly IntToString SizeX_ToString = new();
 		private readonly IntToString SizeY_ToString = new();
 		private readonly int SubMenuTypeCount = 0;
-		private int TargetAnimationFrame = 0;
 		private int HighlightingMainIndex = 0;
 		private int HighlightingPatternColumn = 0;
 		private int HighlightingPatternRow = 0;
@@ -171,15 +170,6 @@ namespace AngeliaGame {
 			base.OnActivated();
 			if (Player.Selecting is not MainPlayer) {
 				Active = false;
-			}
-		}
-
-
-		public override void BeforePhysicsUpdate () {
-			base.BeforePhysicsUpdate();
-			if (!IsPlaying) return;
-			if (!ShowingMenu && Player.Selecting != null) {
-				TargetAnimationFrame = Player.Selecting.CurrentAnimationFrame;
 			}
 		}
 
@@ -273,13 +263,18 @@ namespace AngeliaGame {
 			// Background
 			CellRenderer.Draw(Const.PIXEL, windowRect.Expand(Unify(16)), Const.BLACK, int.MinValue + 1);
 
-			// Panel
+			// Preview
 			int leftPanelWidth = Unify(400);
-			int padding = Unify(16);
 			var leftPanelRect = windowRect.Shrink(0, windowRect.width - leftPanelWidth, 0, 0);
-			var rightPanelRect = windowRect.Shrink(leftPanelWidth + padding, 0, 0, 0);
+			bool flying = CurrentSubMenu.HasValue && CurrentSubMenu.Value == SubMenuType.Wing && player.WingGroupID != 0;
+			player.ForcePoseAnimation(
+				flying ? CharacterPoseAnimationType.Fly : CharacterPoseAnimationType.Idle
+			);
+			AngeUtil.DrawPoseCharacterAsUI(leftPanelRect.Shrink(Unify(32)), player, Game.GlobalFrame);
 
-			PreviewUI(leftPanelRect);
+			// Editor
+			int padding = Unify(16);
+			var rightPanelRect = windowRect.Shrink(leftPanelWidth + padding, 0, 0, 0);
 			EditorUI(rightPanelRect, player);
 
 		}
@@ -292,7 +287,6 @@ namespace AngeliaGame {
 				return;
 			}
 			player.LoadConfigFromFile();
-			player.ForceAnimatedPoseType = CharacterPoseAnimationType.Idle;
 			HighlightingMainIndex = 0;
 			HighlightingPatternColumn = 0;
 			HighlightingPatternRow = 0;
@@ -307,63 +301,11 @@ namespace AngeliaGame {
 			base.CloseGame();
 			if (Player.Selecting is MainPlayer player) {
 				player.SaveConfigToFile();
-				player.ForceAnimatedPoseType = null;
 			}
 		}
 
 
 		// Rendering
-		private void PreviewUI (RectInt panelRect) {
-
-			if (Player.Selecting is not MainPlayer player) return;
-			panelRect = panelRect.Shrink(Unify(32));
-
-
-			// Draw Player
-			bool flying = CurrentSubMenu.HasValue && CurrentSubMenu.Value == SubMenuType.Wing && player.WingGroupID != 0;
-			int layerIndex = CellRenderer.CurrentLayerIndex;
-			int cellIndexStart = CellRenderer.GetUsedCellCount(layerIndex);
-			player.ForceAnimatedPoseType = flying ? CharacterPoseAnimationType.Fly : CharacterPoseAnimationType.Idle;
-			player.CurrentAnimationFrame = TargetAnimationFrame;
-			player.FrameUpdate();
-			int cellIndexEnd = CellRenderer.GetUsedCellCount(layerIndex);
-			if (cellIndexStart == cellIndexEnd) return;
-			if (!CellRenderer.GetCells(layerIndex, out var cells, out int count)) return;
-
-			// Get Min Max
-			int originalMinX = player.X - Const.HALF - 16;
-			int originalMinY = player.Y - 16 + (flying ? player.PoseRootY / 2 : 0);
-			int originalMaxX = player.X + Const.HALF + 16;
-			int originalMaxY = player.Y + Const.CEL * 2 + 16;
-
-			if (player.ForceAnimatedPoseType == CharacterPoseAnimationType.Fly) {
-				originalMinY -= Const.HALF;
-				originalMaxY -= Const.HALF;
-			}
-
-			// Move Cells
-			int originalWidth = originalMaxX - originalMinX;
-			int originalHeight = originalMaxY - originalMinY;
-			var targetRect = panelRect.Fit(originalWidth, originalHeight, 500, 0);
-			for (int i = cellIndexStart; i < count && i < cellIndexEnd; i++) {
-				var cell = cells[i];
-				cell.X = targetRect.x + (cell.X - originalMinX) * targetRect.width / originalWidth;
-				cell.Y = targetRect.y + (cell.Y - originalMinY) * targetRect.height / originalHeight;
-				cell.Width = cell.Width * targetRect.width / originalWidth;
-				cell.Height = cell.Height * targetRect.height / originalHeight;
-				if (!cell.Shift.IsZero) {
-					cell.Shift = new Int4(
-						cell.Shift.Left * targetRect.width / originalWidth,
-						cell.Shift.Right * targetRect.width / originalWidth,
-						cell.Shift.Down * targetRect.height / originalHeight,
-						cell.Shift.Up * targetRect.height / originalHeight
-					);
-				}
-			}
-
-		}
-
-
 		private void EditorUI (RectInt panelRect, MainPlayer player) {
 
 			// Background
