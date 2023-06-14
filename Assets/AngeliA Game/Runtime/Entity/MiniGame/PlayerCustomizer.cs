@@ -68,6 +68,7 @@ namespace AngeliaGame {
 
 
 		// Const
+		private const int EDITOR_BASIC_Z = 60;
 		private static readonly int ICON_WIDTH_CODE = "UI.WidthArrow".AngeHash();
 		private static readonly int ICON_HEIGHT_CODE = "UI.HeightArrow".AngeHash();
 		private static readonly int FRAME_CODE = "Frame16".AngeHash();
@@ -111,7 +112,6 @@ namespace AngeliaGame {
 			"Icon.Suit.Pants".AngeHash(),
 			"Icon.Suit.Shoes".AngeHash(),
 		};
-		private const int EDITOR_BASIC_Z = 60;
 
 		// Api
 		protected override Vector2Int WindowSize => new(1000, 800);
@@ -148,6 +148,8 @@ namespace AngeliaGame {
 		private int HighlightingSizeEditorIndex = 0;
 		private int SizeSliderAdjustingIndex = -1;
 		private bool HighlightingPatternPicker = false;
+		private string BackButtonHotkeyLabel = "";
+		private int BackButtonHotkeyPadCode = 0;
 
 
 		#endregion
@@ -294,6 +296,8 @@ namespace AngeliaGame {
 			CurrentSubMenu = null;
 			SizeSliderAdjustingIndex = -1;
 			LoadPatternsFromFile();
+			BackButtonHotkeyLabel = $"({Util.GetKeyDisplayName(FrameInput.GetKeyboardMap(Gamekey.Jump))})";
+			BackButtonHotkeyPadCode = Const.GAMEPAD_CODE.TryGetValue(FrameInput.GetGamepadMap(Gamekey.Jump), out int _value0) ? _value0 : 0;
 		}
 
 
@@ -326,8 +330,24 @@ namespace AngeliaGame {
 				}
 				CellRendererGUI.Label(
 					CellLabel.TempLabel(Language.Get(Const.UI_BACK, "Back"), 28, Alignment.MidMid),
-					buttonRect
+					buttonRect, out var bounds
 				);
+				// Hotkey
+				var hotkeyRect = new RectInt(bounds.xMax + Unify(16), bounds.y, 1, bounds.height);
+				if (FrameInput.UsingGamepad) {
+					if (CellRenderer.TryGetSprite(BackButtonHotkeyPadCode, out var padSprite)) {
+						hotkeyRect.width = padSprite.GlobalWidth;
+						CellRenderer.Draw(
+							padSprite.GlobalID,
+							hotkeyRect.Fit(padSprite.GlobalWidth, padSprite.GlobalHeight),
+							EDITOR_BASIC_Z + 5
+						);
+					}
+				} else {
+					CellRendererGUI.Label(
+						CellLabel.TempLabel(BackButtonHotkeyLabel, 24, Alignment.MidLeft), hotkeyRect
+					);
+				}
 				// End
 				panelRect = panelRect.Shrink(0, 0, bottomBarHeight, 0);
 			}
@@ -350,7 +370,9 @@ namespace AngeliaGame {
 				) {
 					HighlightingPatternPicker = true;
 				}
+
 				HighlightingSizeEditorIndex = HighlightingPatternPicker ? -1 : HighlightingSizeEditorIndex.Clamp(0, 1);
+
 				switch (CurrentSubMenu) {
 
 					case SubMenuType.Head:
@@ -616,6 +638,7 @@ namespace AngeliaGame {
 							player.Suit_Foot = invokingPattern.A;
 						}
 						break;
+
 				}
 			}
 
@@ -642,7 +665,7 @@ namespace AngeliaGame {
 					(i % 2) * (fieldRect.width + fieldPadding);
 				fieldRect.y = panelRect.yMax - panelPadding - fieldHeight -
 					(i / 2) * (fieldHeight + fieldPadding);
-				//if (i >= 8) fieldRect.y -= fieldPadding * 2;
+				if (i >= 16) fieldRect.y -= fieldPadding * 4;
 				string label = Language.Get(MAIN_MENU_LABELS[i], ((SubMenuType)i).ToString());
 				bool mouseInField = fieldRect.Contains(FrameInput.MouseGlobalPosition);
 
@@ -777,7 +800,7 @@ namespace AngeliaGame {
 					// Draw Highlight Cursor
 					if (fieldIndex == HighlightingSizeEditorIndex) {
 						// Draw Cursor Frame
-						CellRendererGUI.HighlightCursor(FRAME_CODE, circleRect, int.MinValue + 5);
+						CellRendererGUI.HighlightCursor(FRAME_CODE, circleRect, EDITOR_BASIC_Z + 5);
 						// Adjust by Key
 						if (step > 0 && FrameInput.GameKeyDownGUI(Gamekey.Left)) {
 							size -= stepSize;
@@ -906,7 +929,7 @@ namespace AngeliaGame {
 
 			// Cursor
 			if (cursorRect.width > 0) {
-				CellRendererGUI.HighlightCursor(FRAME_CODE, cursorRect, int.MinValue + 4);
+				CellRendererGUI.HighlightCursor(FRAME_CODE, cursorRect, EDITOR_BASIC_Z + 4);
 			}
 
 			// Scroll Bar

@@ -1,0 +1,2704 @@
+fileFormatVersion: 2
+guid: bcb910a6de5d64d4a9ebab0b3b7b9ad1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6692493777316872068
+    second: eBusinessmanH Sheet_0
+  - first:
+      213: -571655140402011653
+    second: eBusinessmanH Sheet_1
+  - first:
+      213: -4730904722588272682
+    second: eBusinessmanH Sheet_2
+  - first:
+      213: 4009414734674647420
+    second: eBusinessmanH Sheet_3
+  - first:
+      213: -3059902192500847763
+    second: eBusinessmanH Sheet_4
+  - first:
+      213: 910398768403205264
+    second: eBusinessmanH Sheet_5
+  - first:
+      213: 5380946553548978031
+    second: eBusinessmanH Sheet_6
+  - first:
+      213: 6562404492740368367
+    second: eBusinessmanH Sheet_7
+  - first:
+      213: 2371801957923739897
+    second: eBusinessmanH Sheet_8
+  - first:
+      213: 3659499821841402986
+    second: eBusinessmanH Sheet_9
+  - first:
+      213: 556153013400451300
+    second: eBusinessmanH Sheet_10
+  - first:
+      213: 7184884873167956388
+    second: eBusinessmanH Sheet_11
+  - first:
+      213: -109637053893156598
+    second: eBusinessmanH Sheet_12
+  - first:
+      213: -6427234502046577571
+    second: eBusinessmanH Sheet_13
+  - first:
+      213: -8928391475885521514
+    second: eBusinessmanH Sheet_14
+  - first:
+      213: -3544139945207407114
+    second: eBusinessmanH Sheet_15
+  - first:
+      213: -4114639069246385849
+    second: eBusinessmanH Sheet_16
+  - first:
+      213: -5402614773492215821
+    second: eBusinessmanH Sheet_17
+  - first:
+      213: -1124063920983965792
+    second: eBusinessmanH Sheet_18
+  - first:
+      213: 4816164386721540001
+    second: eBusinessmanH Sheet_19
+  - first:
+      213: 5086582180721051759
+    second: eBusinessmanH Sheet_20
+  - first:
+      213: -507106565508017412
+    second: eBusinessmanH Sheet_21
+  - first:
+      213: 5995004655668676865
+    second: eBusinessmanH Sheet_22
+  - first:
+      213: -6193721648772028308
+    second: eBusinessmanH Sheet_23
+  - first:
+      213: -8449374512695607730
+    second: eBusinessmanH Sheet_24
+  - first:
+      213: -8367591214686464252
+    second: eBusinessmanH Sheet_25
+  - first:
+      213: 8623830741966536190
+    second: eBusinessmanH Sheet_26
+  - first:
+      213: -5946379063868206803
+    second: eBusinessmanH Sheet_27
+  - first:
+      213: -7931203222848469731
+    second: eBusinessmanH Sheet_28
+  - first:
+      213: -7964020634814203451
+    second: eBusinessmanH Sheet_29
+  - first:
+      213: 8801290237797694460
+    second: eBusinessmanH Sheet_30
+  - first:
+      213: -7705199673387220983
+    second: eBusinessmanH Sheet_31
+  - first:
+      213: 7599605189678784613
+    second: eBusinessmanH Sheet_32
+  - first:
+      213: 1172732336737380271
+    second: eBusinessmanH Sheet_33
+  - first:
+      213: -850846442133338801
+    second: eBusinessmanH Sheet_34
+  - first:
+      213: 5659253761933767036
+    second: eBusinessmanH Sheet_35
+  - first:
+      213: -8488321327440168013
+    second: eBusinessmanH Sheet_36
+  - first:
+      213: 1871723230188881550
+    second: eBusinessmanH Sheet_37
+  - first:
+      213: -8354155203108958911
+    second: eBusinessmanH Sheet_38
+  - first:
+      213: -2323390926802904709
+    second: eBusinessmanH Sheet_39
+  - first:
+      213: -629189647313632291
+    second: eBusinessmanH Sheet_40
+  - first:
+      213: -2726211609902209989
+    second: eBusinessmanH Sheet_41
+  - first:
+      213: 1157177877177664386
+    second: eBusinessmanH Sheet_42
+  - first:
+      213: 8489494673049502505
+    second: eBusinessmanH Sheet_43
+  - first:
+      213: 4410978634833418797
+    second: eBusinessmanH Sheet_44
+  - first:
+      213: 2422560859023066716
+    second: eBusinessmanH Sheet_45
+  - first:
+      213: 6591593889955878320
+    second: eBusinessmanH Sheet_46
+  - first:
+      213: -3868380779052490007
+    second: eBusinessmanH Sheet_47
+  - first:
+      213: 2891270793213695801
+    second: eBusinessmanH Sheet_48
+  - first:
+      213: 786911260751953931
+    second: eBusinessmanH Sheet_49
+  - first:
+      213: 8938765485323088557
+    second: eBusinessmanH Sheet_50
+  - first:
+      213: 6483614725514310300
+    second: eBusinessmanH Sheet_51
+  - first:
+      213: 563714250131226862
+    second: eBusinessmanH Sheet_52
+  - first:
+      213: 7141880425531240485
+    second: eBusinessmanH Sheet_53
+  - first:
+      213: 3730997978172198355
+    second: eBusinessmanH Sheet_54
+  - first:
+      213: 3006751188109072387
+    second: eBusinessmanH Sheet_55
+  - first:
+      213: 7941819218318886332
+    second: eBusinessmanH Sheet_56
+  - first:
+      213: -4097411000879714909
+    second: eBusinessmanH Sheet_57
+  - first:
+      213: -7475279372416018440
+    second: eBusinessmanH Sheet_58
+  - first:
+      213: 6183978467778745215
+    second: eBusinessmanH Sheet_59
+  - first:
+      213: 6191111225663939317
+    second: eBusinessmanH Sheet_60
+  - first:
+      213: 1442689261943823186
+    second: eBusinessmanH Sheet_61
+  - first:
+      213: -3924716423028628758
+    second: eBusinessmanH Sheet_62
+  - first:
+      213: -8937734466371469273
+    second: eBusinessmanH Sheet_63
+  - first:
+      213: 1628547998099502825
+    second: eBusinessmanH Sheet_64
+  - first:
+      213: 1144377072149449705
+    second: eBusinessmanH Sheet_65
+  - first:
+      213: 695503775045075859
+    second: eBusinessmanH Sheet_66
+  - first:
+      213: -1713205659274680620
+    second: eBusinessmanH Sheet_67
+  - first:
+      213: -6631717275864547360
+    second: eBusinessmanH Sheet_68
+  - first:
+      213: -3251019163959149925
+    second: eBusinessmanH Sheet_69
+  - first:
+      213: 3762542495617172805
+    second: eBusinessmanH Sheet_70
+  - first:
+      213: 2788334542324788904
+    second: eBusinessmanH Sheet_71
+  - first:
+      213: -2679855877210016152
+    second: eBusinessmanH Sheet_72
+  - first:
+      213: -4763339833462122317
+    second: eBusinessmanH Sheet_73
+  - first:
+      213: 2943405347767378216
+    second: eBusinessmanH Sheet_74
+  - first:
+      213: 2614126338642733319
+    second: eBusinessmanH Sheet_75
+  - first:
+      213: 3071697948746244380
+    second: eBusinessmanH Sheet_76
+  - first:
+      213: 8633343905782974917
+    second: eBusinessmanH Sheet_77
+  - first:
+      213: -3319656774462477047
+    second: eBusinessmanH Sheet_78
+  - first:
+      213: 6201340656926900653
+    second: eBusinessmanH Sheet_79
+  - first:
+      213: -8924848077624586876
+    second: eBusinessmanH Sheet_80
+  - first:
+      213: 3692581970857850252
+    second: eBusinessmanH Sheet_81
+  - first:
+      213: -1248238672184545611
+    second: eBusinessmanH Sheet_82
+  - first:
+      213: -1549901242942078575
+    second: eBusinessmanH Sheet_83
+  - first:
+      213: -4519717714503036942
+    second: eBusinessmanH Sheet_84
+  - first:
+      213: -3763525045121800731
+    second: eBusinessmanH Sheet_85
+  - first:
+      213: -4946163240567394669
+    second: eBusinessmanH Sheet_86
+  - first:
+      213: -165777244408369737
+    second: eBusinessmanH Sheet_87
+  - first:
+      213: 7053594109775400747
+    second: eBusinessmanH Sheet_88
+  - first:
+      213: 3327349838351698514
+    second: eBusinessmanH Sheet_89
+  - first:
+      213: -190199752718578827
+    second: eBusinessmanH Sheet_90
+  - first:
+      213: 2905523724610998409
+    second: eBusinessmanH Sheet_91
+  - first:
+      213: -7543876604492623753
+    second: eBusinessmanH Sheet_92
+  - first:
+      213: 300316550668838688
+    second: eBusinessmanH Sheet_93
+  - first:
+      213: -6724465174157304970
+    second: eBusinessmanH Sheet_94
+  - first:
+      213: 1228092598920503087
+    second: eBusinessmanH Sheet_95
+  - first:
+      213: -693268762844467650
+    second: eBusinessmanH Sheet_96
+  - first:
+      213: 5024980908807517759
+    second: eBusinessmanH Sheet_97
+  - first:
+      213: 3702962265826892708
+    second: eBusinessmanH Sheet_98
+  - first:
+      213: -17204797953954135
+    second: eBusinessmanH Sheet_99
+  - first:
+      213: 4356604508533136794
+    second: eBusinessmanH Sheet_100
+  - first:
+      213: 8400757758076716877
+    second: eBusinessmanH Sheet_101
+  - first:
+      213: -8816902453023451709
+    second: eBusinessmanH Sheet_102
+  - first:
+      213: -8621803744448111154
+    second: eBusinessmanH Sheet_103
+  - first:
+      213: -7803050512153575788
+    second: eBusinessmanH Sheet_104
+  - first:
+      213: -3448812132980560195
+    second: eBusinessmanH Sheet_105
+  - first:
+      213: -1036647350948645400
+    second: eBusinessmanH Sheet_106
+  - first:
+      213: -3566842394408743365
+    second: eBusinessmanH Sheet_107
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 718
+        width: 25
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48ffb72d1a380ec50800000000000000
+      internalID: 6692493777316872068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 717
+        width: 24
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf1ef46bda21118f0800000000000000
+      internalID: -571655140402011653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 718
+        width: 21
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d778ef5833785eb0800000000000000
+      internalID: -4730904722588272682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 718
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c79df79557d44a730800000000000000
+      internalID: 4009414734674647420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 692
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6b4c800b2b0985d0800000000000000
+      internalID: -3059902192500847763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 692
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09c40aa3bd262ac00800000000000000
+      internalID: 910398768403205264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 700
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6736a78166fcaa40800000000000000
+      internalID: 5380946553548978031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 697
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe79736fd18521b50800000000000000
+      internalID: 6562404492740368367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 699
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f8de9b70555ae020800000000000000
+      internalID: 2371801957923739897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_9
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 700
+        width: 17
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6c4678f2b729c230800000000000000
+      internalID: 3659499821841402986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_10
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 691
+        width: 20
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e83f74183ad7b700800000000000000
+      internalID: 556153013400451300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_11
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 688
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a9e04999b6d5b360800000000000000
+      internalID: 7184884873167956388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 673
+        width: 30
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a016a7c2ead7a7ef0800000000000000
+      internalID: -109637053893156598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_13
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 673
+        width: 30
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5c0169f540edc6a0800000000000000
+      internalID: -6427234502046577571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_14
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 673
+        width: 30
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 695c730e14bf71480800000000000000
+      internalID: -8928391475885521514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_15
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 673
+        width: 30
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fdd3ab5f7fa0dec0800000000000000
+      internalID: -3544139945207407114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_16
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 673
+        width: 30
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74110aa119dd5e6c0800000000000000
+      internalID: -4114639069246385849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_17
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 673
+        width: 30
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ff08bfdc7e0605b0800000000000000
+      internalID: -5402614773492215821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_18
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 673
+        width: 30
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0affae4c1d58660f0800000000000000
+      internalID: -1124063920983965792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_19
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 673
+        width: 30
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a7ac6a1ef376d240800000000000000
+      internalID: 4816164386721540001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 649
+        width: 22
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f68c5b22b8b279640800000000000000
+      internalID: 5086582180721051759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_21
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 648
+        width: 22
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf250a3f34566f8f0800000000000000
+      internalID: -507106565508017412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_22
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 615
+        width: 26
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 109c1ffa8f8823350800000000000000
+      internalID: 5995004655668676865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_23
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 615
+        width: 26
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c68eb47e9fa7b0aa0800000000000000
+      internalID: -6193721648772028308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_24
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 575
+        width: 17
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4ef98cb5aacdba80800000000000000
+      internalID: -8449374512695607730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_25
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 575
+        width: 15
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4071fe6af1850eb80800000000000000
+      internalID: -8367591214686464252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_26
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 575
+        width: 14
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efd320a6e500ea770800000000000000
+      internalID: 8623830741966536190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_27
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 575
+        width: 16
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d21d0562fb73a7da0800000000000000
+      internalID: -5946379063868206803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_28
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 575
+        width: 27
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d150faca0b4bee190800000000000000
+      internalID: -7931203222848469731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_29
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 575
+        width: 21
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c9b4068d6d1a7190800000000000000
+      internalID: -7964020634814203451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_30
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 575
+        width: 19
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfb7b0d07d6742a70800000000000000
+      internalID: 8801290237797694460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_31
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 575
+        width: 15
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9008c4098b1a11590800000000000000
+      internalID: -7705199673387220983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 540
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 560e404d7a8377960800000000000000
+      internalID: 7599605189678784613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_33
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 541
+        width: 21
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa768dbc8d1664010800000000000000
+      internalID: 1172732336737380271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_34
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 539
+        width: 20
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f45cc3a3baf2134f0800000000000000
+      internalID: -850846442133338801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_35
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 541
+        width: 21
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c71faddff45b98e40800000000000000
+      internalID: 5659253761933767036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_36
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 497
+        width: 21
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bb7e8ac9bc633a80800000000000000
+      internalID: -8488321327440168013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_37
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 498
+        width: 25
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e86414d6c52b9f910800000000000000
+      internalID: 1871723230188881550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_38
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 497
+        width: 28
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14d8530ea14101c80800000000000000
+      internalID: -8354155203108958911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_39
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 496
+        width: 25
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b791c8d0348a1cfd0800000000000000
+      internalID: -2323390926802904709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 456
+        width: 23
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd3848f695ba447f0800000000000000
+      internalID: -629189647313632291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_41
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 457
+        width: 22
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b34ab312cfc8a2ad0800000000000000
+      internalID: -2726211609902209989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_42
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 431
+        width: 22
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2838d17f52f1f0010800000000000000
+      internalID: 1157177877177664386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_43
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 431
+        width: 23
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 923cfa50d6eb0d570800000000000000
+      internalID: 8489494673049502505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_44
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 430
+        width: 24
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2a5511b2b1f63d30800000000000000
+      internalID: 4410978634833418797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_45
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 431
+        width: 24
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c56c5d8144aae9120800000000000000
+      internalID: 2422560859023066716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_46
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 430
+        width: 24
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b5947a18bb0a7b50800000000000000
+      internalID: 6591593889955878320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_47
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 430
+        width: 24
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e2a0a05d20c05ac0800000000000000
+      internalID: -3868380779052490007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_48
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 429
+        width: 24
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 937d6f2c77bdf1820800000000000000
+      internalID: 2891270793213695801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_49
+      rect:
+        serializedVersion: 2
+        x: 190
+        y: 430
+        width: 23
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0000e65f9babea00800000000000000
+      internalID: 786911260751953931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_50
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 393
+        width: 24
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da2743b69dfdc0c70800000000000000
+      internalID: 8938765485323088557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_51
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 394
+        width: 23
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c92b5cebd3d6af950800000000000000
+      internalID: 6483614725514310300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_52
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 395
+        width: 22
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee0c5e1bf17b2d700800000000000000
+      internalID: 563714250131226862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_53
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 394
+        width: 22
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 520fa10686e0d1360800000000000000
+      internalID: 7141880425531240485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_54
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 393
+        width: 22
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3dd87aab4ea27c330800000000000000
+      internalID: 3730997978172198355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_55
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 394
+        width: 23
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 308993f66402ab920800000000000000
+      internalID: 3006751188109072387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_56
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 395
+        width: 24
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb584426082073e60800000000000000
+      internalID: 7941819218318886332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_57
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 394
+        width: 22
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ad69c957621327c0800000000000000
+      internalID: -4097411000879714909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_58
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 364
+        width: 31
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f7965a3409724890800000000000000
+      internalID: -7475279372416018440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_59
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 364
+        width: 31
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f73dd9ef6a7e1d550800000000000000
+      internalID: 6183978467778745215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_60
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 329
+        width: 23
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f2e1aa9bde3be550800000000000000
+      internalID: 6191111225663939317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_61
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 329
+        width: 26
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25b9e637d36750410800000000000000
+      internalID: 1442689261943823186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_62
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 329
+        width: 27
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae2ac31153b9889c0800000000000000
+      internalID: -3924716423028628758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_63
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 329
+        width: 27
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 720c9236bd9c6f380800000000000000
+      internalID: -8937734466371469273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_64
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 301
+        width: 29
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e6f46e96c3c99610800000000000000
+      internalID: 1628547998099502825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_65
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 301
+        width: 30
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ebc19a42e4a1ef00800000000000000
+      internalID: 1144377072149449705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_66
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 275
+        width: 19
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 393418b9ffce6a900800000000000000
+      internalID: 695503775045075859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_67
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 275
+        width: 21
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d66eb3a7887938e0800000000000000
+      internalID: -1713205659274680620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_68
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 275
+        width: 21
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0efb541264867f3a0800000000000000
+      internalID: -6631717275864547360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_69
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 275
+        width: 21
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9a3a368b4f02e2d0800000000000000
+      internalID: -3251019163959149925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_70
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 252
+        width: 19
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 545c297077c373430800000000000000
+      internalID: 3762542495617172805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_71
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 252
+        width: 19
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ae68363e7722b620800000000000000
+      internalID: 2788334542324788904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_72
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 220
+        width: 18
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86677a5374d3fcad0800000000000000
+      internalID: -2679855877210016152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_73
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 220
+        width: 18
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b89502a8a735edb0800000000000000
+      internalID: -4763339833462122317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_74
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 219
+        width: 19
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 821e8a7a19319d820800000000000000
+      internalID: 2943405347767378216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_75
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 220
+        width: 18
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 709eac40e0e374420800000000000000
+      internalID: 2614126338642733319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_76
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 183
+        width: 23
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c11e054820dd0aa20800000000000000
+      internalID: 3071697948746244380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_77
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 183
+        width: 23
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c94af77a8ccfc770800000000000000
+      internalID: 8633343905782974917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_78
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 183
+        width: 23
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90de1fd70c53ee1d0800000000000000
+      internalID: -3319656774462477047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_79
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 183
+        width: 23
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da1c05ba8769f0650800000000000000
+      internalID: 6201340656926900653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_80
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 149
+        width: 26
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48dcbd295f1942480800000000000000
+      internalID: -8924848077624586876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_81
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 149
+        width: 26
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c857ef40dbfae3330800000000000000
+      internalID: 3692581970857850252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_82
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 112
+        width: 23
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bee8858a8d5daee0800000000000000
+      internalID: -1248238672184545611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_83
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 112
+        width: 24
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19140810805ad7ae0800000000000000
+      internalID: -1549901242942078575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_84
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 76
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ff81066facb641c0800000000000000
+      internalID: -4519717714503036942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_85
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 75
+        width: 18
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e5aa3659e545cbc0800000000000000
+      internalID: -3763525045121800731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_86
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 73
+        width: 20
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39ea2e41db2bb5bb0800000000000000
+      internalID: -4946163240567394669
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_87
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 73
+        width: 24
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bd223b797a03bdf0800000000000000
+      internalID: -165777244408369737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_88
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 76
+        width: 25
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2f43f6a87663e160800000000000000
+      internalID: 7053594109775400747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_89
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 75
+        width: 24
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25a08668c0f1d2e20800000000000000
+      internalID: 3327349838351698514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_90
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 73
+        width: 20
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57b87d625564c5df0800000000000000
+      internalID: -190199752718578827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_91
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 73
+        width: 16
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98098e3fe6e725820800000000000000
+      internalID: 2905523724610998409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_92
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 36
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77056d78234ce4790800000000000000
+      internalID: -7543876604492623753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_93
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 36
+        width: 16
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02769cacf40fa2400800000000000000
+      internalID: 300316550668838688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_94
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 36
+        width: 16
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67b5ed54d86eda2a0800000000000000
+      internalID: -6724465174157304970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_95
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 37
+        width: 22
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2f51f546bf0b0110800000000000000
+      internalID: 1228092598920503087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_96
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 36
+        width: 23
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3ee7c8bbb30166f0800000000000000
+      internalID: -693268762844467650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_97
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 36
+        width: 22
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f36779853815cb540800000000000000
+      internalID: 5024980908807517759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_98
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 36
+        width: 16
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ab9947cf80936330800000000000000
+      internalID: 3702962265826892708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_99
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 37
+        width: 16
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9aea581d350e2cff0800000000000000
+      internalID: -17204797953954135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_100
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 0
+        width: 16
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9d9bfdd7b4c57c30800000000000000
+      internalID: 4356604508533136794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_101
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 0
+        width: 16
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d47054efbac759470800000000000000
+      internalID: 8400757758076716877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_102
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 0
+        width: 16
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c55444dee114a580800000000000000
+      internalID: -8816902453023451709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_103
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 0
+        width: 16
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecd9909bc23395880800000000000000
+      internalID: -8621803744448111154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_104
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 0
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49ef7aac6eef5b390800000000000000
+      internalID: -7803050512153575788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_105
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 16
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbee2ac33ab5320d0800000000000000
+      internalID: -3448812132980560195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_106
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 0
+        width: 16
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e53b590ab61d91f0800000000000000
+      internalID: -1036647350948645400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eBusinessmanH Sheet_107
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 0
+        width: 16
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3e867f7db7008ec0800000000000000
+      internalID: -3566842394408743365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable: {}
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

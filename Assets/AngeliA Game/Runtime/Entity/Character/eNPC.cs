@@ -7,6 +7,13 @@ using AngeliaFramework;
 namespace AngeliaGame {
 
 
+	[EntityAttribute.ExcludeInMapEditor]
+	[EntityAttribute.DontSpawnFromWorld]
+	public class eTemplateDummy : NPC {
+		public override Color32 SkinColor => Const.WHITE;
+	}
+
+
 	// Citizen A
 	public class eNormalBoy : NPC {
 

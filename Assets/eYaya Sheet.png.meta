@@ -1,0 +1,2704 @@
+fileFormatVersion: 2
+guid: ac4a7bc12e64f4b468a9c9e99955a4e2
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5749346725143750672
+    second: eYaya Sheet_0
+  - first:
+      213: 6148240310620035404
+    second: eYaya Sheet_1
+  - first:
+      213: -2445773030081971324
+    second: eYaya Sheet_2
+  - first:
+      213: -5113461794425545157
+    second: eYaya Sheet_3
+  - first:
+      213: 4548210620332128312
+    second: eYaya Sheet_4
+  - first:
+      213: -9085788830567464736
+    second: eYaya Sheet_5
+  - first:
+      213: 7898918360018039409
+    second: eYaya Sheet_6
+  - first:
+      213: 4235785145016548604
+    second: eYaya Sheet_7
+  - first:
+      213: -5046937397420750482
+    second: eYaya Sheet_8
+  - first:
+      213: 8651436778730363716
+    second: eYaya Sheet_9
+  - first:
+      213: 3954557877905300969
+    second: eYaya Sheet_10
+  - first:
+      213: -4618399975201629640
+    second: eYaya Sheet_11
+  - first:
+      213: 2193227174057210500
+    second: eYaya Sheet_12
+  - first:
+      213: -4611890254461186427
+    second: eYaya Sheet_13
+  - first:
+      213: -3613319477341506356
+    second: eYaya Sheet_14
+  - first:
+      213: 398747412781128069
+    second: eYaya Sheet_15
+  - first:
+      213: -3853403243650756844
+    second: eYaya Sheet_16
+  - first:
+      213: 7456416184970769259
+    second: eYaya Sheet_17
+  - first:
+      213: 7810511154909793772
+    second: eYaya Sheet_18
+  - first:
+      213: -2624866694720544007
+    second: eYaya Sheet_19
+  - first:
+      213: 3398611157558349482
+    second: eYaya Sheet_20
+  - first:
+      213: 6674949190119078835
+    second: eYaya Sheet_21
+  - first:
+      213: -2060775366511011533
+    second: eYaya Sheet_22
+  - first:
+      213: -6734907582747160114
+    second: eYaya Sheet_23
+  - first:
+      213: 4384601375226940156
+    second: eYaya Sheet_24
+  - first:
+      213: 4097454922985369801
+    second: eYaya Sheet_25
+  - first:
+      213: 4252506455795400054
+    second: eYaya Sheet_26
+  - first:
+      213: -3907274950719164325
+    second: eYaya Sheet_27
+  - first:
+      213: 2087710643309429672
+    second: eYaya Sheet_28
+  - first:
+      213: -8366223276387766555
+    second: eYaya Sheet_29
+  - first:
+      213: -3583115444523337080
+    second: eYaya Sheet_30
+  - first:
+      213: 36650112131246707
+    second: eYaya Sheet_31
+  - first:
+      213: -7508064808269765035
+    second: eYaya Sheet_32
+  - first:
+      213: 1673260612616781535
+    second: eYaya Sheet_33
+  - first:
+      213: -8637314925009962601
+    second: eYaya Sheet_34
+  - first:
+      213: 4156417973657341379
+    second: eYaya Sheet_35
+  - first:
+      213: 1967585109615309989
+    second: eYaya Sheet_36
+  - first:
+      213: 8667017558099352647
+    second: eYaya Sheet_37
+  - first:
+      213: 9122575873398451861
+    second: eYaya Sheet_38
+  - first:
+      213: -3022218265354150857
+    second: eYaya Sheet_39
+  - first:
+      213: 1815381063351709809
+    second: eYaya Sheet_40
+  - first:
+      213: 883693628838112740
+    second: eYaya Sheet_41
+  - first:
+      213: 3766790149227114862
+    second: eYaya Sheet_42
+  - first:
+      213: -7412070636197499167
+    second: eYaya Sheet_43
+  - first:
+      213: -482929848888920982
+    second: eYaya Sheet_44
+  - first:
+      213: 2438649104501620180
+    second: eYaya Sheet_45
+  - first:
+      213: -1088048246772974202
+    second: eYaya Sheet_46
+  - first:
+      213: 4618153739525512185
+    second: eYaya Sheet_47
+  - first:
+      213: -2543454954643887646
+    second: eYaya Sheet_48
+  - first:
+      213: 9139025703501568771
+    second: eYaya Sheet_49
+  - first:
+      213: -3006064258886554161
+    second: eYaya Sheet_50
+  - first:
+      213: -6060038386681571812
+    second: eYaya Sheet_51
+  - first:
+      213: 4234638107195326089
+    second: eYaya Sheet_52
+  - first:
+      213: 112302055095416850
+    second: eYaya Sheet_53
+  - first:
+      213: -8316129991980331250
+    second: eYaya Sheet_54
+  - first:
+      213: -3050531430858264885
+    second: eYaya Sheet_55
+  - first:
+      213: -6654486432956121585
+    second: eYaya Sheet_56
+  - first:
+      213: -1450793023130742914
+    second: eYaya Sheet_57
+  - first:
+      213: -7542343695771562626
+    second: eYaya Sheet_58
+  - first:
+      213: -2407753576041345579
+    second: eYaya Sheet_59
+  - first:
+      213: -8490829493331069806
+    second: eYaya Sheet_60
+  - first:
+      213: -5431972699250066750
+    second: eYaya Sheet_61
+  - first:
+      213: -1223799416344128366
+    second: eYaya Sheet_62
+  - first:
+      213: 6604135700725726469
+    second: eYaya Sheet_63
+  - first:
+      213: -5721810084283480504
+    second: eYaya Sheet_64
+  - first:
+      213: 8483537406410385982
+    second: eYaya Sheet_65
+  - first:
+      213: -383599745972087835
+    second: eYaya Sheet_66
+  - first:
+      213: 3211404994948291442
+    second: eYaya Sheet_67
+  - first:
+      213: -1055316292908137954
+    second: eYaya Sheet_68
+  - first:
+      213: -8650022085280628881
+    second: eYaya Sheet_69
+  - first:
+      213: -5581094570321811017
+    second: eYaya Sheet_70
+  - first:
+      213: 3437756598483287544
+    second: eYaya Sheet_71
+  - first:
+      213: -8676855611825331086
+    second: eYaya Sheet_72
+  - first:
+      213: 3778407832290479847
+    second: eYaya Sheet_73
+  - first:
+      213: 8250856291474656254
+    second: eYaya Sheet_74
+  - first:
+      213: 7015625218235629230
+    second: eYaya Sheet_75
+  - first:
+      213: 2953256967549786432
+    second: eYaya Sheet_76
+  - first:
+      213: -3153079868282980609
+    second: eYaya Sheet_77
+  - first:
+      213: -9029247500435956722
+    second: eYaya Sheet_78
+  - first:
+      213: 734131651799796689
+    second: eYaya Sheet_79
+  - first:
+      213: 4413333914820561238
+    second: eYaya Sheet_80
+  - first:
+      213: 3691308575344514820
+    second: eYaya Sheet_81
+  - first:
+      213: 5488562013450741808
+    second: eYaya Sheet_82
+  - first:
+      213: 6301181360938237257
+    second: eYaya Sheet_83
+  - first:
+      213: 8329789564981029404
+    second: eYaya Sheet_84
+  - first:
+      213: 8266201706327208741
+    second: eYaya Sheet_85
+  - first:
+      213: 3229184073688533502
+    second: eYaya Sheet_86
+  - first:
+      213: -646247321339043617
+    second: eYaya Sheet_87
+  - first:
+      213: -9057934772064101949
+    second: eYaya Sheet_88
+  - first:
+      213: -4098294471912079835
+    second: eYaya Sheet_89
+  - first:
+      213: 1633889284132717580
+    second: eYaya Sheet_90
+  - first:
+      213: 572365653613495946
+    second: eYaya Sheet_91
+  - first:
+      213: -783625727790607279
+    second: eYaya Sheet_92
+  - first:
+      213: 1214985944131162772
+    second: eYaya Sheet_93
+  - first:
+      213: -8717682018656661626
+    second: eYaya Sheet_94
+  - first:
+      213: 2290712660042212455
+    second: eYaya Sheet_95
+  - first:
+      213: 1809007015472539158
+    second: eYaya Sheet_96
+  - first:
+      213: 6333123843881122414
+    second: eYaya Sheet_97
+  - first:
+      213: 1282057134428241702
+    second: eYaya Sheet_98
+  - first:
+      213: -543166983032894439
+    second: eYaya Sheet_99
+  - first:
+      213: -753828757810344019
+    second: eYaya Sheet_100
+  - first:
+      213: 1613085179898450168
+    second: eYaya Sheet_101
+  - first:
+      213: -8002373199458360573
+    second: eYaya Sheet_102
+  - first:
+      213: -3649840533725195751
+    second: eYaya Sheet_103
+  - first:
+      213: 1316902877049046271
+    second: eYaya Sheet_104
+  - first:
+      213: 1022795565293514340
+    second: eYaya Sheet_105
+  - first:
+      213: -1871003020844464214
+    second: eYaya Sheet_106
+  - first:
+      213: -4971863761045244051
+    second: eYaya Sheet_107
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: eYaya Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 741
+        width: 18
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 018afba9268c9cf40800000000000000
+      internalID: 5749346725143750672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 740
+        width: 17
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c499e3cdcffe25550800000000000000
+      internalID: 6148240310620035404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 741
+        width: 16
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48bbbbc236ede0ed0800000000000000
+      internalID: -2445773030081971324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 741
+        width: 16
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3edbba17955909b0800000000000000
+      internalID: -5113461794425545157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 714
+        width: 16
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8383e84367d7e1f30800000000000000
+      internalID: 4548210620332128312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 714
+        width: 16
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e080d9723bc8e180800000000000000
+      internalID: -9085788830567464736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 716
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 172bfaee5689e9d60800000000000000
+      internalID: 7898918360018039409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 713
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfc7691b52888ca30800000000000000
+      internalID: 4235785145016548604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 715
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e690a174d2da5f9b0800000000000000
+      internalID: -5046937397420750482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_9
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 716
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44b19f8b9e3101870800000000000000
+      internalID: 8651436778730363716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_10
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 712
+        width: 18
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ed9444107961e630800000000000000
+      internalID: 3954557877905300969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_11
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 711
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83a1f6f11b528efb0800000000000000
+      internalID: -4618399975201629640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 692
+        width: 26
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 482f96d9e78ef6e10800000000000000
+      internalID: 2193227174057210500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_13
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 692
+        width: 26
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58e41c79f364fffb0800000000000000
+      internalID: -4611890254461186427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_14
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 692
+        width: 26
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc43f0d5419eaddc0800000000000000
+      internalID: -3613319477341506356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_15
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 692
+        width: 26
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 589dce5c8a2a88500800000000000000
+      internalID: 398747412781128069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_16
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 692
+        width: 26
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41fcbd58a26f58ac0800000000000000
+      internalID: -3853403243650756844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_17
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 692
+        width: 26
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b63f7a2b3038a7760800000000000000
+      internalID: 7456416184970769259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_18
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 692
+        width: 26
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cedcf967382846c60800000000000000
+      internalID: 7810511154909793772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_19
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 692
+        width: 26
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f2ad66f5a9929bd0800000000000000
+      internalID: -2624866694720544007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 668
+        width: 24
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aaec1f757da4a2f20800000000000000
+      internalID: 3398611157558349482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_21
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 667
+        width: 24
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bb34da4cee22ac50800000000000000
+      internalID: 6674949190119078835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_22
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 633
+        width: 18
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3395c3df8b7a663e0800000000000000
+      internalID: -2060775366511011533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_23
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 633
+        width: 18
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec1554f8c3dc882a0800000000000000
+      internalID: -6734907582747160114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_24
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 590
+        width: 16
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfa471c58bb39dc30800000000000000
+      internalID: 4384601375226940156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_25
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 590
+        width: 15
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c0f7bf0b851dd830800000000000000
+      internalID: 4097454922985369801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_26
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 591
+        width: 14
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67d7dbe3710f30b30800000000000000
+      internalID: 4252506455795400054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_27
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 590
+        width: 15
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b503a9a422296c9c0800000000000000
+      internalID: -3907274950719164325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_28
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 590
+        width: 21
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a3c248d4c909fc10800000000000000
+      internalID: 2087710643309429672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_29
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 590
+        width: 16
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ee6d4b914435eb80800000000000000
+      internalID: -8366223276387766555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_30
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 591
+        width: 14
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88a78f3cc77364ec0800000000000000
+      internalID: -3583115444523337080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_31
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 590
+        width: 15
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37aaf823515328000800000000000000
+      internalID: 36650112131246707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 556
+        width: 18
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 556287816defdc790800000000000000
+      internalID: -7508064808269765035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_33
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 556
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fdefcaf69ad983710800000000000000
+      internalID: 1673260612616781535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_34
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 554
+        width: 18
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 799f99196d7122880800000000000000
+      internalID: -8637314925009962601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_35
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 556
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3cd05e910209ea930800000000000000
+      internalID: 4156417973657341379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_36
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 516
+        width: 16
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a4f7f38b344e4b10800000000000000
+      internalID: 1967585109615309989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_37
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 517
+        width: 18
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74cd59c9c8e674870800000000000000
+      internalID: 8667017558099352647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_38
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 516
+        width: 20
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59ea6726c66e99e70800000000000000
+      internalID: 9122575873398451861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_39
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 515
+        width: 18
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73c5ed3008cee06d0800000000000000
+      internalID: -3022218265354150857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 480
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 170bc057577813910800000000000000
+      internalID: 1815381063351709809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_41
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 480
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4edeb256ca2834c00800000000000000
+      internalID: 883693628838112740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_42
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 449
+        width: 28
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e617f14fea3564430800000000000000
+      internalID: 3766790149227114862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_43
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 449
+        width: 28
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ee2857f609032990800000000000000
+      internalID: -7412070636197499167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_44
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 448
+        width: 21
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a64fa817cd94c49f0800000000000000
+      internalID: -482929848888920982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_45
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 449
+        width: 28
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ddb4a5a072d7d120800000000000000
+      internalID: 2438649104501620180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_46
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 448
+        width: 28
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68d3c9062e976e0f0800000000000000
+      internalID: -1088048246772974202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_47
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 448
+        width: 28
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fb5f8aab5af61040800000000000000
+      internalID: 4618153739525512185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_48
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 447
+        width: 22
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e96e3ec135d3bcd0800000000000000
+      internalID: -2543454954643887646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_49
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 448
+        width: 28
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30b106ae47754de70800000000000000
+      internalID: 9139025703501568771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_50
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 410
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcda11dbb705846d0800000000000000
+      internalID: -3006064258886554161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_51
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 411
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c161d9cd13b66eba0800000000000000
+      internalID: -6060038386681571812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_52
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 412
+        width: 16
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98eb5b32ce474ca30800000000000000
+      internalID: 4234638107195326089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_53
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 411
+        width: 16
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2183285cf1afe8100800000000000000
+      internalID: 112302055095416850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_54
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 410
+        width: 16
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0f4a0245db279c80800000000000000
+      internalID: -8316129991980331250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_55
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 411
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bce678773d55aa5d0800000000000000
+      internalID: -3050531430858264885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_56
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 412
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0e7ef0a8d386a3a0800000000000000
+      internalID: -6654486432956121585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_57
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 411
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7f4dad9e6fbddbe0800000000000000
+      internalID: -1450793023130742914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_58
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 378
+        width: 19
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7d01a7ae56345790800000000000000
+      internalID: -7542343695771562626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_59
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 378
+        width: 19
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5dd016121e0f59ed0800000000000000
+      internalID: -2407753576041345579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_60
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 342
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2947799ef838a2a80800000000000000
+      internalID: -8490829493331069806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_61
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 342
+        width: 20
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ca749f1c91cd94b0800000000000000
+      internalID: -5431972699250066750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_62
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 342
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2945a703ae0340fe0800000000000000
+      internalID: -1223799416344128366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_63
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 342
+        width: 21
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50d7b3afd6a96ab50800000000000000
+      internalID: 6604135700725726469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_64
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 312
+        width: 23
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84609063b0c0890b0800000000000000
+      internalID: -5721810084283480504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_65
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 312
+        width: 23
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3a64dbc2549bb570800000000000000
+      internalID: 8483537406410385982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_66
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 283
+        width: 17
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e3576d301e2daaf0800000000000000
+      internalID: -383599745972087835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_67
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 283
+        width: 17
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27bdec104d3319c20800000000000000
+      internalID: 3211404994948291442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_68
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 283
+        width: 17
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1247834c63ca51f0800000000000000
+      internalID: -1055316292908137954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_69
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 283
+        width: 17
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6f70934eb2f4f780800000000000000
+      internalID: -8650022085280628881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_70
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 257
+        width: 17
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b96b16ee08fb82b0800000000000000
+      internalID: -5581094570321811017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_71
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 257
+        width: 17
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fdf9dc896d55bf20800000000000000
+      internalID: 3437756598483287544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_72
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 224
+        width: 16
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 274ebc10bcd959780800000000000000
+      internalID: -8676855611825331086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_73
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 224
+        width: 17
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ee4a3497e99f6430800000000000000
+      internalID: 3778407832290479847
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_74
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 223
+        width: 16
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efbc42a051ee08270800000000000000
+      internalID: 8250856291474656254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_75
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 224
+        width: 17
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eaef43237f18c5160800000000000000
+      internalID: 7015625218235629230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_76
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 186
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0499041a0931cf820800000000000000
+      internalID: 2953256967549786432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_77
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 186
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff6be86c0920e34d0800000000000000
+      internalID: -3153079868282980609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_78
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 186
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0c5e63cc3ba1b280800000000000000
+      internalID: -9029247500435956722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_79
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 186
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1dbc5e309d8203a00800000000000000
+      internalID: 734131651799796689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_80
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 150
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 659401c00df4f3d30800000000000000
+      internalID: 4413333914820561238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_81
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 150
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40753c587992a3330800000000000000
+      internalID: 3691308575344514820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_82
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 114
+        width: 16
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0382f63521a4b2c40800000000000000
+      internalID: 5488562013450741808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_83
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 114
+        width: 16
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94d390c001b427750800000000000000
+      internalID: 6301181360938237257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_84
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 78
+        width: 18
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1a237ae97b599370800000000000000
+      internalID: 8329789564981029404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_85
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 77
+        width: 17
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5237c5bd7a277b270800000000000000
+      internalID: 8266201706327208741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_86
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 75
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef9cd8a5ecd50dc20800000000000000
+      internalID: 3229184073688533502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_87
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 75
+        width: 16
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd0e9863c711807f0800000000000000
+      internalID: -646247321339043617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_88
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 78
+        width: 18
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c9d578d050cb4280800000000000000
+      internalID: -9057934772064101949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_89
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 77
+        width: 17
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52ebbb834eeef17c0800000000000000
+      internalID: -4098294471912079835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_90
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 75
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c044c0fa5adbca610800000000000000
+      internalID: 1633889284132717580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_91
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 75
+        width: 16
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a864449878371f700800000000000000
+      internalID: 572365653613495946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_92
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 37
+        width: 16
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1541f2a6d800025f0800000000000000
+      internalID: -783625727790607279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_93
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 37
+        width: 16
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 492d707674f7cd010800000000000000
+      internalID: 1214985944131162772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_94
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 38
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68fc82d6462940780800000000000000
+      internalID: -8717682018656661626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_95
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 38
+        width: 16
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7646e40170f3acf10800000000000000
+      internalID: 2290712660042212455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_96
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 37
+        width: 16
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6162e69cb42ea1910800000000000000
+      internalID: 1809007015472539158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_97
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 37
+        width: 16
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6a3719e496c3e750800000000000000
+      internalID: 6333123843881122414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_98
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 38
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62fb95fcb28cac110800000000000000
+      internalID: 1282057134428241702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_99
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 38
+        width: 16
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91c8a9ab1884678f0800000000000000
+      internalID: -543166983032894439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_100
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 17
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: daf8d3d1dbcd985f0800000000000000
+      internalID: -753828757810344019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_101
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 0
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f05b44bc64d26610800000000000000
+      internalID: 1613085179898450168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_102
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 0
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 303ad2639fbd1f090800000000000000
+      internalID: -8002373199458360573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_103
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 0
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 912dc7c4f59295dc0800000000000000
+      internalID: -3649840533725195751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_104
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 0
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff4c23e7034964210800000000000000
+      internalID: 1316902877049046271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_105
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 0
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46e2a2bc523b13e00800000000000000
+      internalID: 1022795565293514340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_106
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 0
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa702e06aacd806e0800000000000000
+      internalID: -1871003020844464214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eYaya Sheet_107
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 0
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d67b24b5044600bb0800000000000000
+      internalID: -4971863761045244051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable: {}
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

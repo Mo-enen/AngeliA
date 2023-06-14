@@ -1,0 +1,2728 @@
+fileFormatVersion: 2
+guid: 0f1f74436b0d8274f923e6cc9996b735
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1560521885618724600
+    second: eFootmanI Sheet_0
+  - first:
+      213: 77813516460144335
+    second: eFootmanI Sheet_1
+  - first:
+      213: 8542451202698032435
+    second: eFootmanI Sheet_2
+  - first:
+      213: 1101440868000327557
+    second: eFootmanI Sheet_3
+  - first:
+      213: -3157171267377458589
+    second: eFootmanI Sheet_4
+  - first:
+      213: -2212810650480505885
+    second: eFootmanI Sheet_5
+  - first:
+      213: -2046179867842456191
+    second: eFootmanI Sheet_6
+  - first:
+      213: 2764015989899137248
+    second: eFootmanI Sheet_7
+  - first:
+      213: 491502165463768948
+    second: eFootmanI Sheet_8
+  - first:
+      213: 4786938251219236611
+    second: eFootmanI Sheet_9
+  - first:
+      213: -8590677486674387874
+    second: eFootmanI Sheet_10
+  - first:
+      213: -3220799513751394592
+    second: eFootmanI Sheet_11
+  - first:
+      213: 8599644299346008295
+    second: eFootmanI Sheet_12
+  - first:
+      213: 3725092250353939235
+    second: eFootmanI Sheet_13
+  - first:
+      213: -2261902228752917252
+    second: eFootmanI Sheet_14
+  - first:
+      213: 4390030250807036814
+    second: eFootmanI Sheet_15
+  - first:
+      213: -4806241210361122182
+    second: eFootmanI Sheet_16
+  - first:
+      213: 5657186993422890131
+    second: eFootmanI Sheet_17
+  - first:
+      213: 5873850662446067070
+    second: eFootmanI Sheet_18
+  - first:
+      213: -6489628200296324366
+    second: eFootmanI Sheet_19
+  - first:
+      213: -4525478724503168684
+    second: eFootmanI Sheet_20
+  - first:
+      213: 5609583416396336583
+    second: eFootmanI Sheet_21
+  - first:
+      213: -1898576448818206039
+    second: eFootmanI Sheet_22
+  - first:
+      213: -2383406656953079992
+    second: eFootmanI Sheet_23
+  - first:
+      213: -4008849785734651368
+    second: eFootmanI Sheet_24
+  - first:
+      213: 6499149532164095065
+    second: eFootmanI Sheet_25
+  - first:
+      213: 5367739417002065687
+    second: eFootmanI Sheet_26
+  - first:
+      213: -372115709080065516
+    second: eFootmanI Sheet_27
+  - first:
+      213: 1297322205124618614
+    second: eFootmanI Sheet_28
+  - first:
+      213: 541853819409464385
+    second: eFootmanI Sheet_29
+  - first:
+      213: 6326958532361945457
+    second: eFootmanI Sheet_30
+  - first:
+      213: -229920788483600025
+    second: eFootmanI Sheet_31
+  - first:
+      213: 4063405847115013221
+    second: eFootmanI Sheet_32
+  - first:
+      213: -2044866363065855245
+    second: eFootmanI Sheet_33
+  - first:
+      213: 4589528916193397493
+    second: eFootmanI Sheet_34
+  - first:
+      213: -2572329624913509485
+    second: eFootmanI Sheet_35
+  - first:
+      213: -1469943950793715538
+    second: eFootmanI Sheet_36
+  - first:
+      213: -2394715203563899728
+    second: eFootmanI Sheet_37
+  - first:
+      213: 6920288826842954819
+    second: eFootmanI Sheet_38
+  - first:
+      213: 4357799920953328517
+    second: eFootmanI Sheet_39
+  - first:
+      213: -8751076201790231359
+    second: eFootmanI Sheet_40
+  - first:
+      213: 2686732865471496576
+    second: eFootmanI Sheet_41
+  - first:
+      213: -5848994046561707451
+    second: eFootmanI Sheet_42
+  - first:
+      213: 6012588375427164634
+    second: eFootmanI Sheet_43
+  - first:
+      213: 6812586230082212166
+    second: eFootmanI Sheet_44
+  - first:
+      213: 8357930630728525153
+    second: eFootmanI Sheet_45
+  - first:
+      213: 2799637615586455616
+    second: eFootmanI Sheet_46
+  - first:
+      213: 2191942488380096366
+    second: eFootmanI Sheet_47
+  - first:
+      213: 5394950631490683424
+    second: eFootmanI Sheet_48
+  - first:
+      213: 8560514273181909514
+    second: eFootmanI Sheet_49
+  - first:
+      213: -9152639370273221836
+    second: eFootmanI Sheet_50
+  - first:
+      213: 6067838909836045898
+    second: eFootmanI Sheet_51
+  - first:
+      213: -3386092801821849276
+    second: eFootmanI Sheet_52
+  - first:
+      213: 2129860833134988508
+    second: eFootmanI Sheet_53
+  - first:
+      213: 8582488984201629465
+    second: eFootmanI Sheet_54
+  - first:
+      213: -6154709750926798739
+    second: eFootmanI Sheet_55
+  - first:
+      213: -3855623651673115481
+    second: eFootmanI Sheet_56
+  - first:
+      213: -4052678919992305716
+    second: eFootmanI Sheet_57
+  - first:
+      213: 5382018394063025691
+    second: eFootmanI Sheet_58
+  - first:
+      213: 3873592018321434955
+    second: eFootmanI Sheet_59
+  - first:
+      213: 4020755927962036130
+    second: eFootmanI Sheet_60
+  - first:
+      213: -1381641954676565163
+    second: eFootmanI Sheet_61
+  - first:
+      213: -2036842975514779239
+    second: eFootmanI Sheet_62
+  - first:
+      213: 4494727855829046259
+    second: eFootmanI Sheet_63
+  - first:
+      213: 1852005898435414604
+    second: eFootmanI Sheet_64
+  - first:
+      213: 1457832990017172241
+    second: eFootmanI Sheet_65
+  - first:
+      213: -7293860209185864999
+    second: eFootmanI Sheet_66
+  - first:
+      213: -5743101538815386375
+    second: eFootmanI Sheet_67
+  - first:
+      213: 2494952716404076599
+    second: eFootmanI Sheet_68
+  - first:
+      213: -2569337102544203667
+    second: eFootmanI Sheet_69
+  - first:
+      213: -7695391190862706399
+    second: eFootmanI Sheet_70
+  - first:
+      213: -1615557565296304251
+    second: eFootmanI Sheet_71
+  - first:
+      213: -8118987286519637009
+    second: eFootmanI Sheet_72
+  - first:
+      213: 2023716610582840371
+    second: eFootmanI Sheet_73
+  - first:
+      213: -2109337973551122157
+    second: eFootmanI Sheet_74
+  - first:
+      213: -6355028291364815203
+    second: eFootmanI Sheet_75
+  - first:
+      213: -4132440452529987125
+    second: eFootmanI Sheet_76
+  - first:
+      213: -8629541153307131256
+    second: eFootmanI Sheet_77
+  - first:
+      213: -7604762595613007593
+    second: eFootmanI Sheet_78
+  - first:
+      213: 6628668388095721569
+    second: eFootmanI Sheet_79
+  - first:
+      213: 2819641066205937652
+    second: eFootmanI Sheet_80
+  - first:
+      213: -73510851668093953
+    second: eFootmanI Sheet_81
+  - first:
+      213: -5539296531917289779
+    second: eFootmanI Sheet_82
+  - first:
+      213: -8851815947994595017
+    second: eFootmanI Sheet_83
+  - first:
+      213: -3723894474958111
+    second: eFootmanI Sheet_84
+  - first:
+      213: 8961255516117636546
+    second: eFootmanI Sheet_85
+  - first:
+      213: -945862269268095650
+    second: eFootmanI Sheet_86
+  - first:
+      213: -1830394219010516832
+    second: eFootmanI Sheet_87
+  - first:
+      213: 1939635419556373107
+    second: eFootmanI Sheet_88
+  - first:
+      213: -2392662144687561086
+    second: eFootmanI Sheet_89
+  - first:
+      213: -2674679171088311220
+    second: eFootmanI Sheet_90
+  - first:
+      213: 1721893827487708262
+    second: eFootmanI Sheet_91
+  - first:
+      213: 3599152870174160720
+    second: eFootmanI Sheet_92
+  - first:
+      213: 6212732502518496563
+    second: eFootmanI Sheet_93
+  - first:
+      213: -5926460822802619714
+    second: eFootmanI Sheet_94
+  - first:
+      213: -3013542202135469771
+    second: eFootmanI Sheet_95
+  - first:
+      213: 3571533929720356017
+    second: eFootmanI Sheet_96
+  - first:
+      213: -2151318702833442870
+    second: eFootmanI Sheet_97
+  - first:
+      213: 5977999176725927920
+    second: eFootmanI Sheet_98
+  - first:
+      213: 8400915179219498966
+    second: eFootmanI Sheet_99
+  - first:
+      213: -6657099571073480133
+    second: eFootmanI Sheet_100
+  - first:
+      213: -5203373791000452381
+    second: eFootmanI Sheet_101
+  - first:
+      213: -4409206250590218936
+    second: eFootmanI Sheet_102
+  - first:
+      213: 4861051150836366871
+    second: eFootmanI Sheet_103
+  - first:
+      213: -23806618551941733
+    second: eFootmanI Sheet_104
+  - first:
+      213: -4190861019601941051
+    second: eFootmanI Sheet_105
+  - first:
+      213: 764956546882990820
+    second: eFootmanI Sheet_106
+  - first:
+      213: 3046700561359761125
+    second: eFootmanI Sheet_107
+  - first:
+      213: -577485682017016995
+    second: eFootmanI Sheet_108
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: eFootmanI Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 699
+        width: 22
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 801297fec99e75ae0800000000000000
+      internalID: -1560521885618724600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 699
+        width: 20
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc6b45f1bf2741100800000000000000
+      internalID: 77813516460144335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 699
+        width: 16
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 335bce7eb12ec8670800000000000000
+      internalID: 8542451202698032435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 699
+        width: 13
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 587e14e32aa194f00800000000000000
+      internalID: 1101440868000327557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 677
+        width: 12
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36295e0b5797f24d0800000000000000
+      internalID: -3157171267377458589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 678
+        width: 12
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3eb88e6ff648a41e0800000000000000
+      internalID: -2212810650480505885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 686
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 185d1b650428a93e0800000000000000
+      internalID: -2046179867842456191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 682
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e0107ff5e1cb5620800000000000000
+      internalID: 2764015989899137248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 685
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47f9dca8d9a22d600800000000000000
+      internalID: 491502165463768948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_9
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 686
+        width: 13
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 307f6a92afe9e6240800000000000000
+      internalID: 4786938251219236611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_10
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 676
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5cd3da5758c7c880800000000000000
+      internalID: -8590677486674387874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_11
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 673
+        width: 14
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e6e81228eb6d43d0800000000000000
+      internalID: -3220799513751394592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 661
+        width: 31
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e85b396de2185770800000000000000
+      internalID: 8599644299346008295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_13
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 661
+        width: 31
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32338e15aaf22b330800000000000000
+      internalID: 3725092250353939235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_14
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 661
+        width: 31
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfc948238eb1c90e0800000000000000
+      internalID: -2261902228752917252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_15
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 661
+        width: 31
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8b8294f0458cec30800000000000000
+      internalID: 4390030250807036814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_16
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 661
+        width: 31
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a72f49f651dcc4db0800000000000000
+      internalID: -4806241210361122182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_17
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 661
+        width: 31
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3947ee2f89d528e40800000000000000
+      internalID: 5657186993422890131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_18
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 661
+        width: 31
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7d6ac67e0c148150800000000000000
+      internalID: 5873850662446067070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_19
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 661
+        width: 31
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f2eafc098530f5a0800000000000000
+      internalID: -6489628200296324366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 639
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 459966bb3154231c0800000000000000
+      internalID: -4525478724503168684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_21
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 638
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7cdc938756e39dd40800000000000000
+      internalID: 5609583416396336583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_22
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 607
+        width: 21
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9aaa44567c6e6a5e0800000000000000
+      internalID: -1898576448818206039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_23
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 606
+        width: 21
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 847a209f5407ceed0800000000000000
+      internalID: -2383406656953079992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_24
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 565
+        width: 13
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 812a2631c54bd58c0800000000000000
+      internalID: -4008849785734651368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_25
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 565
+        width: 10
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95c79c6c01e913a50800000000000000
+      internalID: 6499149532164095065
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_26
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 565
+        width: 10
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71f354d6f8a0e7a40800000000000000
+      internalID: 5367739417002065687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_27
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 565
+        width: 12
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41aa0f0fbbaf5daf0800000000000000
+      internalID: -372115709080065516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_28
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 565
+        width: 21
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 679edab0ca3010210800000000000000
+      internalID: 1297322205124618614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_29
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 565
+        width: 17
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14cf61a8d2d058700800000000000000
+      internalID: 541853819409464385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_30
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 565
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1718f06734fddc750800000000000000
+      internalID: 6326958532361945457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_31
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 565
+        width: 13
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76115f3d2482fccf0800000000000000
+      internalID: -229920788483600025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 532
+        width: 19
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56c198fc61e146830800000000000000
+      internalID: 4063405847115013221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_33
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 532
+        width: 21
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f2905080ec2f93e0800000000000000
+      internalID: -2044866363065855245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_34
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 530
+        width: 20
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fa4710ab3841bf30800000000000000
+      internalID: 4589528916193397493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_35
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 532
+        width: 21
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39301ddb5df3d4cd0800000000000000
+      internalID: -2572329624913509485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_36
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 486
+        width: 15
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea0d43dc3c5b99be0800000000000000
+      internalID: -1469943950793715538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_37
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 487
+        width: 19
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b4b859c53344ced0800000000000000
+      internalID: -2394715203563899728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_38
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 486
+        width: 22
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34c3413d50ec90060800000000000000
+      internalID: 6920288826842954819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_39
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 485
+        width: 19
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58306a280f30a7c30800000000000000
+      internalID: 4357799920953328517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 444
+        width: 19
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1cc2be54f8eed8680800000000000000
+      internalID: -8751076201790231359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_41
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 444
+        width: 19
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 081cbc46e41394520800000000000000
+      internalID: 2686732865471496576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_42
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 420
+        width: 17
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54a905967e234dea0800000000000000
+      internalID: -5848994046561707451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_43
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 420
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad9aaf97541017350800000000000000
+      internalID: 6012588375427164634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_44
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 419
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64194c5e41b2b8e50800000000000000
+      internalID: 6812586230082212166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_45
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 420
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1652eed50a55df370800000000000000
+      internalID: 8357930630728525153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_46
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 419
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0403ad8049f4ad620800000000000000
+      internalID: 2799637615586455616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_47
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 419
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6f3bfb64185b6e10800000000000000
+      internalID: 2191942488380096366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_48
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 418
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02285c20407beda40800000000000000
+      internalID: 5394950631490683424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_49
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 419
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a024bab306e0dc670800000000000000
+      internalID: 8560514273181909514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_50
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 380
+        width: 19
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4331c994cfa4bf080800000000000000
+      internalID: -9152639370273221836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_51
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 382
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4e2217f65b453450800000000000000
+      internalID: 6067838909836045898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_52
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 383
+        width: 17
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 449c6ea798e2201d0800000000000000
+      internalID: -3386092801821849276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_53
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 381
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cdc470ca429ce8d10800000000000000
+      internalID: 2129860833134988508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_54
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 380
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91f8a0852402b1770800000000000000
+      internalID: 8582488984201629465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_55
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 381
+        width: 19
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6010603714169aa0800000000000000
+      internalID: -6154709750926798739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_56
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 383
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a4fd6e77b21e7ac0800000000000000
+      internalID: -3855623651673115481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_57
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 382
+        width: 17
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc715298efdf1c7c0800000000000000
+      internalID: -4052678919992305716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_58
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 353
+        width: 29
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b16beb8d635c0ba40800000000000000
+      internalID: 5382018394063025691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_59
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 353
+        width: 30
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4966d0ea63c1c530800000000000000
+      internalID: 3873592018321434955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_60
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 319
+        width: 18
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a729bea6389cc730800000000000000
+      internalID: 4020755927962036130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_61
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 319
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55b1ab466fb63dce0800000000000000
+      internalID: -1381641954676565163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_62
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 320
+        width: 23
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 991213dfa1eabb3e0800000000000000
+      internalID: -2036842975514779239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_63
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 319
+        width: 24
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f35eb8bb2b706e30800000000000000
+      internalID: 4494727855829046259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_64
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 293
+        width: 26
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4acb226d85a3b910800000000000000
+      internalID: 1852005898435414604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_65
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 292
+        width: 26
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 113b1d761634b3410800000000000000
+      internalID: 1457832990017172241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_66
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 269
+        width: 14
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d2ce16c8c007ca90800000000000000
+      internalID: -7293860209185864999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_67
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 269
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fcd8e524976c40b0800000000000000
+      internalID: -5743101538815386375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_68
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 269
+        width: 16
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73039a8d64adf9220800000000000000
+      internalID: 2494952716404076599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_69
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 269
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d601f96a481e75cd0800000000000000
+      internalID: -2569337102544203667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_70
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 248
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12945fcdb7a743590800000000000000
+      internalID: -7695391190862706399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_71
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 248
+        width: 14
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58f915634f26499e0800000000000000
+      internalID: -1615557565296304251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_72
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 218
+        width: 21
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: feb95134410935f80800000000000000
+      internalID: -8118987286519637009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_73
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 217
+        width: 20
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33409d3098fa51c10800000000000000
+      internalID: 2023716610582840371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_74
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 217
+        width: 19
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3193e3fe9402ab2e0800000000000000
+      internalID: -2109337973551122157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_75
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 217
+        width: 18
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9e74ab70776ec7a0800000000000000
+      internalID: -6355028291364815203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_76
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 181
+        width: 19
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc1ee739d4f96a6c0800000000000000
+      internalID: -4132440452529987125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_77
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 181
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8828386da06bd3880800000000000000
+      internalID: -8629541153307131256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_78
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 181
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7112f4706b4767690800000000000000
+      internalID: -7604762595613007593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_79
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 181
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1608e4e57c2cdfb50800000000000000
+      internalID: 6628668388095721569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_80
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 145
+        width: 21
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4fffe415c90612720800000000000000
+      internalID: 2819641066205937652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_81
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 145
+        width: 21
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff3df271546dafef0800000000000000
+      internalID: -73510851668093953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_82
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 110
+        width: 17
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc6448517277023b0800000000000000
+      internalID: -5539296531917289779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_83
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 134
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73105a25b48082580800000000000000
+      internalID: -8851815947994595017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_84
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 110
+        width: 19
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ea93a04325c2fff0800000000000000
+      internalID: -3723894474958111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_85
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 75
+        width: 21
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c593b3c966cc5c70800000000000000
+      internalID: 8961255516117636546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_86
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 73
+        width: 21
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5d84d9074f9fd2f0800000000000000
+      internalID: -945862269268095650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_87
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 71
+        width: 15
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a813f8d7222996e0800000000000000
+      internalID: -1830394219010516832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_88
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 71
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3726c603328faea10800000000000000
+      internalID: 1939635419556373107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_89
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 75
+        width: 23
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 286af5ec47e8bced0800000000000000
+      internalID: -2392662144687561086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_90
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 73
+        width: 21
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4c15270771a1ead0800000000000000
+      internalID: -2674679171088311220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_91
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 71
+        width: 15
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 664b758205565e710800000000000000
+      internalID: 1721893827487708262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_92
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 71
+        width: 15
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 057fe0f5772c2f130800000000000000
+      internalID: 3599152870174160720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_93
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 35
+        width: 18
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33d73296b4f083650800000000000000
+      internalID: 6212732502518496563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_94
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 35
+        width: 16
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb2a499084bf0cda0800000000000000
+      internalID: -5926460822802619714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_95
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 35
+        width: 12
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5312116655fbd26d0800000000000000
+      internalID: -3013542202135469771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_96
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 36
+        width: 17
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bc9c30bf23a09130800000000000000
+      internalID: 3571533929720356017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_97
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 35
+        width: 18
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acf55f6b90bf422e0800000000000000
+      internalID: -2151318702833442870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_98
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 35
+        width: 17
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f79354149e16f250800000000000000
+      internalID: 5977999176725927920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_99
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 35
+        width: 12
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d7b09578db069470800000000000000
+      internalID: 8400915179219498966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_100
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 35
+        width: 12
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3a82cff53b3d93a0800000000000000
+      internalID: -6657099571073480133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_101
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 0
+        width: 11
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e227d11b17e9c7b0800000000000000
+      internalID: -5203373791000452381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_102
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 0
+        width: 11
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 845532ca64a5fc2c0800000000000000
+      internalID: -4409206250590218936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_103
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 0
+        width: 11
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71efa98444ce57340800000000000000
+      internalID: 4861051150836366871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_104
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 0
+        width: 11
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9588eda10c6baff0800000000000000
+      internalID: -23806618551941733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_105
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 0
+        width: 13
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5cd48975b1217d5c0800000000000000
+      internalID: -4190861019601941051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_106
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 0
+        width: 11
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e2f19d2debad9a00800000000000000
+      internalID: 764956546882990820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_107
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 0
+        width: 11
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5eee4d8b40e084a20800000000000000
+      internalID: 3046700561359761125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: eFootmanI Sheet_108
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 0
+        width: 11
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d536084f4db5cf7f0800000000000000
+      internalID: -577485682017016995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable: {}
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
