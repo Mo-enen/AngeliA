@@ -27,7 +27,6 @@ namespace AngeliaGame {
 			SlideOnAnyBlock.Value = true;
 			FlyGlideAvailable.Value = false;
 
-			BulletID.Value = typeof(eYayaPaw).AngeHash();
 			MinimalChargeAttackDuration.Value = 42;
 
 			MaxHP.Value = 1;

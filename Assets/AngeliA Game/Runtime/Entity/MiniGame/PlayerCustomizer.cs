@@ -69,6 +69,7 @@ namespace AngeliaGame {
 
 		// Const
 		private const int EDITOR_BASIC_Z = 60;
+		private static readonly int DEFAULT_FACE_ID = "DefaultCharacter.Face.Normal".AngeHash();
 		private static readonly int ICON_WIDTH_CODE = "UI.WidthArrow".AngeHash();
 		private static readonly int ICON_HEIGHT_CODE = "UI.HeightArrow".AngeHash();
 		private static readonly int FRAME_CODE = "Frame16".AngeHash();
@@ -122,6 +123,7 @@ namespace AngeliaGame {
 		private readonly List<Int4> Patterns_Head = new();
 		private readonly List<Int4> Patterns_Body = new();
 		private readonly List<Int4> Patterns_Face = new();
+		private readonly List<string> Patterns_FaceNames = new();
 		private readonly List<Int4> Patterns_Hair = new();
 		private readonly List<Int4> Patterns_Ear = new();
 		private readonly List<Int4> Patterns_Tail = new();
@@ -141,6 +143,7 @@ namespace AngeliaGame {
 		private readonly IntToString SizeX_ToString = new();
 		private readonly IntToString SizeY_ToString = new();
 		private readonly int SubMenuTypeCount = 0;
+		private readonly int FaceTypeCount = 0;
 		private int HighlightingMainIndex = 0;
 		private int HighlightingPatternColumn = 0;
 		private int HighlightingPatternRow = 0;
@@ -165,6 +168,7 @@ namespace AngeliaGame {
 
 		public MiniGame_PlayerCustomizer () {
 			SubMenuTypeCount = System.Enum.GetValues(typeof(SubMenuType)).Length;
+			FaceTypeCount = System.Enum.GetValues(typeof(CharacterFaceType)).Length;
 		}
 
 
@@ -361,7 +365,7 @@ namespace AngeliaGame {
 				int newSizeX, newSizeY;
 				int sizePanelHeight = Unify(48);
 				var fieldRect = panelRect.Shrink(0, 0, panelRect.height - sizePanelHeight, 0);
-				Int4 invokingPattern;
+				int invokingIndex;
 				if (
 					CurrentSubMenu != SubMenuType.Head &&
 					CurrentSubMenu != SubMenuType.Body &&
@@ -392,9 +396,10 @@ namespace AngeliaGame {
 
 						if (PatternMenuUI(
 							panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_Head, player.SkinColor,
-							new Int4(player.Head.ID, 0, 0, 0), out invokingPattern
+							new Int4(player.Head.ID, 0, 0, 0), out invokingIndex
 						)) {
-							player.Head.SetSpriteID(invokingPattern.A, true);
+							var pat = Patterns_Head[invokingIndex];
+							player.Head.SetSpriteID(pat.A, true);
 						}
 						break;
 
@@ -415,9 +420,10 @@ namespace AngeliaGame {
 
 						if (PatternMenuUI(
 							panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_Body, player.SkinColor,
-							new Int4(player.Body.ID, 0, 0, 0), out invokingPattern
+							new Int4(player.Body.ID, 0, 0, 0), out invokingIndex
 						)) {
-							player.Body.SetSpriteID(invokingPattern.A, true);
+							var pat = Patterns_Body[invokingIndex];
+							player.Body.SetSpriteID(pat.A, true);
 						}
 						break;
 
@@ -445,14 +451,15 @@ namespace AngeliaGame {
 						if (PatternMenuUI(
 							panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_ArmArmHand, player.SkinColor,
 							new Int4(player.UpperArmL.ID, player.LowerArmL.ID, player.HandL.ID, 0),
-							out invokingPattern
+							out invokingIndex
 						)) {
-							player.UpperArmL.SetSpriteID(invokingPattern.A, true);
-							player.LowerArmL.SetSpriteID(invokingPattern.B, true);
-							player.HandL.SetSpriteID(invokingPattern.C, true);
-							player.UpperArmR.SetSpriteID(invokingPattern.A, true);
-							player.LowerArmR.SetSpriteID(invokingPattern.B, true);
-							player.HandR.SetSpriteID(invokingPattern.C, true);
+							var pat = Patterns_ArmArmHand[invokingIndex];
+							player.UpperArmL.SetSpriteID(pat.A, true);
+							player.LowerArmL.SetSpriteID(pat.B, true);
+							player.HandL.SetSpriteID(pat.C, true);
+							player.UpperArmR.SetSpriteID(pat.A, true);
+							player.LowerArmR.SetSpriteID(pat.B, true);
+							player.HandR.SetSpriteID(pat.C, true);
 						}
 						break;
 
@@ -480,14 +487,15 @@ namespace AngeliaGame {
 						if (PatternMenuUI(
 							panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_LegLegFoot, player.SkinColor,
 							new Int4(player.UpperLegL.ID, player.LowerLegL.ID, player.FootL.ID, 0),
-							out invokingPattern
+							out invokingIndex
 						)) {
-							player.UpperLegL.SetSpriteID(invokingPattern.A, true);
-							player.LowerLegL.SetSpriteID(invokingPattern.B, true);
-							player.FootL.SetSpriteID(invokingPattern.C, true);
-							player.UpperLegR.SetSpriteID(invokingPattern.A, true);
-							player.LowerLegR.SetSpriteID(invokingPattern.B, true);
-							player.FootR.SetSpriteID(invokingPattern.C, true);
+							var pat = Patterns_LegLegFoot[invokingIndex];
+							player.UpperLegL.SetSpriteID(pat.A, true);
+							player.LowerLegL.SetSpriteID(pat.B, true);
+							player.FootL.SetSpriteID(pat.C, true);
+							player.UpperLegR.SetSpriteID(pat.A, true);
+							player.LowerLegR.SetSpriteID(pat.B, true);
+							player.FootR.SetSpriteID(pat.C, true);
 						}
 						break;
 
@@ -495,10 +503,10 @@ namespace AngeliaGame {
 						panelRect.height -= Unify(16);
 						if (PatternMenuUI(
 							panelRect, Patterns_Face, Const.WHITE,
-							new Int4(player.FaceGroupID, 0, 0, 0),
-							out invokingPattern
+							new Int4(player.FaceIDs != null && player.FaceIDs.Length > 0 ? player.FaceIDs[0] : 0, 0, 0, 0),
+							out invokingIndex
 						)) {
-							player.FaceGroupID = invokingPattern.A;
+							SetPlayerFaces(player, Patterns_FaceNames[invokingIndex]);
 						}
 						break;
 
@@ -507,10 +515,11 @@ namespace AngeliaGame {
 						if (PatternMenuUI(
 							panelRect, Patterns_Ear, Const.WHITE,
 							new Int4(player.AnimalEarGroupIdLeft, player.AnimalEarGroupIdRight, 0, 0),
-							out invokingPattern
+							out invokingIndex
 						)) {
-							player.AnimalEarGroupIdLeft = invokingPattern.A;
-							player.AnimalEarGroupIdRight = invokingPattern.B;
+							var pat = Patterns_Ear[invokingIndex];
+							player.AnimalEarGroupIdLeft = pat.A;
+							player.AnimalEarGroupIdRight = pat.B;
 						}
 						break;
 
@@ -519,9 +528,10 @@ namespace AngeliaGame {
 						if (PatternMenuUI(
 							panelRect, Patterns_Tail, Const.WHITE,
 							new Int4(player.TailGroupID, 0, 0, 0),
-							out invokingPattern
+							out invokingIndex
 						)) {
-							player.TailGroupID = invokingPattern.A;
+							var pat = Patterns_Tail[invokingIndex];
+							player.TailGroupID = pat.A;
 						}
 						break;
 
@@ -530,9 +540,10 @@ namespace AngeliaGame {
 						if (PatternMenuUI(
 							panelRect, Patterns_Wing, Const.WHITE,
 							new Int4(player.WingGroupID, 0, 0, 0),
-							out invokingPattern
+							out invokingIndex
 						)) {
-							player.WingGroupID = invokingPattern.A;
+							var pat = Patterns_Wing[invokingIndex];
+							player.WingGroupID = pat.A;
 						}
 						break;
 
@@ -541,12 +552,13 @@ namespace AngeliaGame {
 						if (PatternMenuUI(
 							panelRect, Patterns_Hair, player.HairColor,
 							new Int4(player.FrontHair_F, player.FrontHair_B, player.BackHair_F, player.BackHair_B),
-							out invokingPattern
+							out invokingIndex
 						)) {
-							player.FrontHair_F = invokingPattern.A;
-							player.FrontHair_B = invokingPattern.B;
-							player.BackHair_F = invokingPattern.C;
-							player.BackHair_B = invokingPattern.D;
+							var pat = Patterns_Hair[invokingIndex];
+							player.FrontHair_F = pat.A;
+							player.FrontHair_B = pat.B;
+							player.BackHair_F = pat.C;
+							player.BackHair_B = pat.D;
 						}
 						break;
 
@@ -555,12 +567,13 @@ namespace AngeliaGame {
 						if (PatternMenuUI(
 							panelRect, Patterns_SkinColors, Const.WHITE,
 							new Int4(player.SkinColor.r, player.SkinColor.g, player.SkinColor.b, int.MinValue + 1),
-							out invokingPattern
+							out invokingIndex
 						)) {
+							var pat = Patterns_SkinColors[invokingIndex];
 							player.SetSkinColor(new Color32(
-								(byte)invokingPattern.A.Clamp(0, 255),
-								(byte)invokingPattern.B.Clamp(0, 255),
-								(byte)invokingPattern.C.Clamp(0, 255),
+								(byte)pat.A.Clamp(0, 255),
+								(byte)pat.B.Clamp(0, 255),
+								(byte)pat.C.Clamp(0, 255),
 								255
 							));
 						}
@@ -571,12 +584,13 @@ namespace AngeliaGame {
 						if (PatternMenuUI(
 							panelRect, Patterns_HairColors, Const.WHITE,
 							new Int4(player.HairColor.r, player.HairColor.g, player.HairColor.b, int.MinValue + 1),
-							out invokingPattern
+							out invokingIndex
 						)) {
+							var pat = Patterns_HairColors[invokingIndex];
 							player.SetHairColor(new Color32(
-								(byte)invokingPattern.A.Clamp(0, 255),
-								(byte)invokingPattern.B.Clamp(0, 255),
-								(byte)invokingPattern.C.Clamp(0, 255),
+								(byte)pat.A.Clamp(0, 255),
+								(byte)pat.B.Clamp(0, 255),
+								(byte)pat.C.Clamp(0, 255),
 								255
 							));
 						}
@@ -586,9 +600,10 @@ namespace AngeliaGame {
 						panelRect.height -= Unify(16);
 						if (PatternMenuUI(
 							panelRect, Patterns_Suit_Head, Const.WHITE,
-							new Int4(player.Suit_Head, 0, 0, 0), out invokingPattern
+							new Int4(player.Suit_Head, 0, 0, 0), out invokingIndex
 						)) {
-							player.Suit_Head = invokingPattern.A;
+							var pat = Patterns_Suit_Head[invokingIndex];
+							player.Suit_Head = pat.A;
 						}
 						break;
 
@@ -597,11 +612,12 @@ namespace AngeliaGame {
 						if (PatternMenuUI(
 							panelRect, Patterns_Suit_BodyArmArm, Const.WHITE,
 							new Int4(player.Suit_Body, player.Suit_UpperArm, player.Suit_LowerArm, 0),
-							out invokingPattern
+							out invokingIndex
 						)) {
-							player.Suit_Body = invokingPattern.A;
-							player.Suit_UpperArm = invokingPattern.B;
-							player.Suit_LowerArm = invokingPattern.C;
+							var pat = Patterns_Suit_BodyArmArm[invokingIndex];
+							player.Suit_Body = pat.A;
+							player.Suit_UpperArm = pat.B;
+							player.Suit_LowerArm = pat.C;
 						}
 						break;
 
@@ -609,9 +625,10 @@ namespace AngeliaGame {
 						panelRect.height -= Unify(16);
 						if (PatternMenuUI(
 							panelRect, Patterns_Suit_Hand, Const.WHITE,
-							new Int4(player.Suit_Hand, 0, 0, 0), out invokingPattern
+							new Int4(player.Suit_Hand, 0, 0, 0), out invokingIndex
 						)) {
-							player.Suit_Hand = invokingPattern.A;
+							var pat = Patterns_Suit_Hand[invokingIndex];
+							player.Suit_Hand = pat.A;
 						}
 						break;
 
@@ -620,12 +637,13 @@ namespace AngeliaGame {
 						if (PatternMenuUI(
 							panelRect, Patterns_Suit_HipSkirtLegLeg, Const.WHITE,
 							new Int4(player.Suit_Hip, player.Suit_Skirt, player.Suit_UpperLeg, player.Suit_LowerLeg),
-							out invokingPattern
+							out invokingIndex
 						)) {
-							player.Suit_Hip = invokingPattern.A;
-							player.Suit_Skirt = invokingPattern.B;
-							player.Suit_UpperLeg = invokingPattern.C;
-							player.Suit_LowerLeg = invokingPattern.D;
+							var pat = Patterns_Suit_HipSkirtLegLeg[invokingIndex];
+							player.Suit_Hip = pat.A;
+							player.Suit_Skirt = pat.B;
+							player.Suit_UpperLeg = pat.C;
+							player.Suit_LowerLeg = pat.D;
 						}
 						break;
 
@@ -633,9 +651,10 @@ namespace AngeliaGame {
 						panelRect.height -= Unify(16);
 						if (PatternMenuUI(
 							panelRect, Patterns_Suit_Foot, Const.WHITE,
-							new Int4(player.Suit_Foot, 0, 0, 0), out invokingPattern
+							new Int4(player.Suit_Foot, 0, 0, 0), out invokingIndex
 						)) {
-							player.Suit_Foot = invokingPattern.A;
+							var pat = Patterns_Suit_Foot[invokingIndex];
+							player.Suit_Foot = pat.A;
 						}
 						break;
 
@@ -700,7 +719,7 @@ namespace AngeliaGame {
 					if (mouseInField) {
 						HighlightingMainIndex = i;
 						CellRenderer.Draw(Const.PIXEL, fieldRect, Const.GREY_32, EDITOR_BASIC_Z + 1);
-						Game.Current.SetCursor(Const.CURSOR_HAND, int.MinValue + 1);
+						Game.Current.SetCursor(Const.CURSOR_HAND, 1);
 					}
 				} else {
 					// Using Key
@@ -775,7 +794,7 @@ namespace AngeliaGame {
 			// Dragging Slider
 			if (SizeSliderAdjustingIndex == fieldIndex) {
 				// Dragging Slider
-				Game.Current.SetCursor(Const.CURSOR_HAND, int.MinValue + 1);
+				Game.Current.SetCursor(Const.CURSOR_HAND, 1);
 				int draggingStep = Util.RemapUnclamped(
 					lineRect.xMin, lineRect.xMax,
 					0, stepCount,
@@ -786,7 +805,7 @@ namespace AngeliaGame {
 				// Highlight & Adjust
 				if (FrameInput.LastActionFromMouse) {
 					if (circleRect.Contains(FrameInput.MouseGlobalPosition)) {
-						Game.Current.SetCursor(Const.CURSOR_HAND, int.MinValue + 1);
+						Game.Current.SetCursor(Const.CURSOR_HAND, 1);
 						// Draw Mouse Highlight
 						CellRenderer.Draw(Const.PIXEL, circleRect, Const.GREY_32, EDITOR_BASIC_Z + 3);
 						HighlightingSizeEditorIndex = fieldIndex;
@@ -816,10 +835,10 @@ namespace AngeliaGame {
 		}
 
 
-		private bool PatternMenuUI (RectInt panelRect, List<Int4> patterns, Color32 iconTint, Int4 selectingPattern, out Int4 invokingPattern) {
+		private bool PatternMenuUI (RectInt panelRect, List<Int4> patterns, Color32 iconTint, Int4 selectingPattern, out int invokingIndex) {
 
 			int panelPadding = Unify(32);
-			invokingPattern = default;
+			invokingIndex = 0;
 			panelRect = panelRect.Shrink(panelPadding, panelPadding, panelPadding, 0);
 			int itemFrameThickness = Unify(2);
 			int scrollBarWidth = Unify(24);
@@ -911,7 +930,7 @@ namespace AngeliaGame {
 							HighlightingPatternPicker = true;
 							HighlightingPatternColumn = j;
 							HighlightingPatternRow = i;
-							Game.Current.SetCursor(Const.CURSOR_HAND, int.MinValue + 1);
+							Game.Current.SetCursor(Const.CURSOR_HAND, 1);
 							tryInvoke = FrameInput.MouseLeftButtonDown;
 						}
 					} else {
@@ -920,7 +939,7 @@ namespace AngeliaGame {
 						}
 					}
 					if (HighlightingPatternPicker && HighlightingPatternColumn == j && HighlightingPatternRow == i) {
-						invokingPattern = pat;
+						invokingIndex = index;
 					}
 				}
 			}
@@ -977,6 +996,7 @@ namespace AngeliaGame {
 			Patterns_Head.Clear();
 			Patterns_Body.Clear();
 			Patterns_Face.Clear();
+			Patterns_FaceNames.Clear();
 			Patterns_Hair.Clear();
 			Patterns_Ear.Clear();
 			Patterns_Tail.Clear();
@@ -997,6 +1017,7 @@ namespace AngeliaGame {
 			FillPatterns(meta.BodyPart_Heads, Patterns_Head, ".Head");
 			FillPatterns(meta.BodyPart_Bodys, Patterns_Body, ".Body");
 			FillPatterns(meta.BodyPart_Faces, Patterns_Face, ".Face");
+			Patterns_FaceNames.AddRange(meta.BodyPart_Faces);
 			FillPatterns(meta.BodyPart_Hairs, Patterns_Hair, ".FrontHair.F", ".FrontHair.B", ".BackHair.F", ".BackHair.B");
 			FillPatterns(meta.BodyPart_Ears, Patterns_Ear, ".EarL", ".EarR");
 			FillPatterns(meta.BodyPart_Tails, Patterns_Tail, ".Tail");
@@ -1054,6 +1075,15 @@ namespace AngeliaGame {
 						));
 					}
 				}
+			}
+		}
+
+
+		private void SetPlayerFaces (Player player, string faceBasicName) {
+			player.FaceIDs = new int[FaceTypeCount];
+			for (int i = 0; i < FaceTypeCount; i++) {
+				int id = $"{faceBasicName}.Face.{(CharacterFaceType)i}".AngeHash();
+				player.FaceIDs[i] = CellRenderer.HasSpriteGroup(id) || CellRenderer.HasSprite(id) ? id : DEFAULT_FACE_ID;
 			}
 		}
 

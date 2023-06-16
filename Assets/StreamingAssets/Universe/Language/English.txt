@@ -1,4 +1,5 @@
-﻿@enen:Enen
+﻿CtrlHint.PlayerMenu.Take:Take (Hold to Use)
+@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu

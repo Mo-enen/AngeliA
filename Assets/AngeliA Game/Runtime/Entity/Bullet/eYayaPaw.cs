@@ -17,49 +17,45 @@ namespace AngeliaGame {
 		private static readonly int SMOKE_CODE = "YayaPaw Smoke".AngeHash();
 
 		// Api
-		protected override bool DestroyOnCollide => false;
-		protected override bool DestroyOnHit => false;
 		protected override int Duration => 10;
 		protected override int Speed => 0;
+		protected override int Damage => 1;
 
 		// Data
+		private Entity Sender = null;
+		private Color32 Tint = Const.WHITE;
 		private bool FacingRight = false;
 		private bool Grounded = true;
-		private Character Character = null;
 
 
 		// MSG
 		public override void Release (Entity entity, int targetTeam, Vector2Int direction, int combo, int chargeDuration) {
 			base.Release(entity, targetTeam, direction, combo, chargeDuration);
-			if (entity == null || entity is not AngeliaFramework.Character) return;
+			Sender = entity;
+			if (entity == null) return;
 			Width = 384;
 			Height = 512;
-			Character = entity as Character;
-			FacingRight = Character.FacingRight;
+			FacingRight = direction.x > 0;
 			var rect = entity.Rect;
 			X = FacingRight ? rect.xMax : rect.xMin - Width;
 			Y = entity.Y - 1;
+			Tint = Const.WHITE;
 			Grounded =
-				CellPhysics.Overlap(Const.MASK_MAP, Rect.Edge(Direction4.Down, 4), this) ||
-				CellPhysics.Overlap(Const.MASK_MAP, Rect.Edge(Direction4.Down, 4), this, OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG);
-		}
-
-
-		public override void FillPhysics () {
-			if (Game.GlobalFrame - StartFrame >= 4) {
-				base.FillPhysics();
+				CellPhysics.Overlap(Const.MASK_MAP, Rect.Edge(Direction4.Down, 4), out var hit, this) ||
+				CellPhysics.Overlap(Const.MASK_MAP, Rect.Edge(Direction4.Down, 4), out hit, this, OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG);
+			if (Grounded && CellRenderer.TryGetSprite(hit.SourceID, out var groundSprite)) {
+				Tint = groundSprite.SummaryTint;
 			}
 		}
 
 
 		public override void FrameUpdate () {
 
-			var characterRect = Character.Rect;
-			X = Character.FacingRight ? characterRect.xMax : characterRect.xMin - Width;
-			Y = Character.Y - 1;
+			var characterRect = Sender.Rect;
+			X = FacingRight ? characterRect.xMax : characterRect.xMin - Width;
+			Y = Sender.Y - 1;
 
-
-			int localFrame = (Game.GlobalFrame - StartFrame) / 2;
+			int localFrame = (Game.GlobalFrame - SpawnFrame) / 2;
 			localFrame = localFrame.Clamp(0, PAW_Y.Length - 1);
 			int spriteFrame = localFrame;
 			int rot = PAW_ROT[localFrame];
@@ -84,12 +80,9 @@ namespace AngeliaGame {
 			// Smoke 
 			if (Grounded && localFrame >= 2) {
 				int smokeDuration = Duration - 4;
-				int smokeFrame = (Game.GlobalFrame - StartFrame - 4).LargerThanZero();
+				int smokeFrame = (Game.GlobalFrame - SpawnFrame - 4).LargerThanZero();
 				int _smokeFrame = smokeDuration * smokeDuration - (smokeDuration - smokeFrame) * (smokeDuration - smokeFrame);
-				var tint = new Color32(255, 255, 255, 255);
-				if (CellRenderer.TryGetSprite(Character.GroundedID, out var groundSprite)) {
-					tint = groundSprite.SummaryTint;
-				}
+				var tint = Tint;
 				tint.a = (byte)Util.Remap(0, smokeDuration, 512, 0, smokeFrame);
 				var cell = CellRenderer.Draw(
 					SMOKE_CODE, X + Width / 2, Y,
@@ -103,6 +96,11 @@ namespace AngeliaGame {
 				cell.Width = Util.Remap(0, smokeDuration, cell.Width, cell.Width * 2, smokeFrame);
 				cell.Height = Util.Remap(0, smokeDuration, cell.Height, cell.Height * 2, smokeFrame);
 			}
+
+		}
+
+
+		public override void OnHit (IDamageReceiver receiver) {
 
 		}
 

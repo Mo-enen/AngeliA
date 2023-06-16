@@ -1,4 +1,5 @@
-﻿@enen:伊楠
+﻿CtrlHint.PlayerMenu.Take:拾取（长按使用）
+@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子
