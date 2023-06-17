@@ -1,4 +1,5 @@
-﻿CtrlHint.PlayerMenu.Take:拾取（长按使用）
+﻿UI.SubTitle.0:副标题零
+UI.SubTitle.1:副标题一
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -15,6 +16,7 @@ CtrlHint.MEDT.PlayFromBegin:从头开始游戏
 CtrlHint.MEDT.SwitchMode.Edit:返回编辑
 CtrlHint.MEDT.SwitchMode.Play:开始游戏
 CtrlHint.Move:移动
+CtrlHint.PlayerMenu.Take:拾取（长按使用）
 CtrlHint.QuickDrop:转移
 CtrlHint.Restart:重新开始
 CtrlHint.ShowMenu:显示菜单
@@ -124,5 +126,7 @@ UI.Suit.Shoes:鞋
 UI.Tetris.ClearedLine:行数:
 UI.Tetris.HighScore:高分:
 UI.Tetris.Holding:保留
+UI.Title.0:标题零
+UI.Title.1:标题一标题一标题一标题一标题一
 UI.Up:上
 UI.Yes:是

@@ -1,4 +1,5 @@
-﻿CtrlHint.PlayerMenu.Take:Take (Hold to Use)
+﻿UI.SubTitle.0:Sub Title 0
+UI.SubTitle.1:Sub Title 1
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -15,6 +16,7 @@ CtrlHint.MEDT.PlayFromBegin:Play from Start
 CtrlHint.MEDT.SwitchMode.Edit:Back to Edit
 CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
+CtrlHint.PlayerMenu.Take:Take (Hold to Use)
 CtrlHint.QuickDrop:Transfer
 CtrlHint.Restart:Restart
 CtrlHint.ShowMenu:Show Menu
@@ -124,5 +126,7 @@ UI.Suit.Shoes:Shoes
 UI.Tetris.ClearedLine:Lines:
 UI.Tetris.HighScore:Best:
 UI.Tetris.Holding:Holding
+UI.Title.0:Title 0
+UI.Title.1:Title 1Title 1Title 1Title 1Title 1Title 1
 UI.Up:Up
 UI.Yes:Yes

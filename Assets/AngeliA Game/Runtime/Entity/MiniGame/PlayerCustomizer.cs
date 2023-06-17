@@ -1016,7 +1016,7 @@ namespace AngeliaGame {
 
 			FillPatterns(meta.BodyPart_Heads, Patterns_Head, ".Head");
 			FillPatterns(meta.BodyPart_Bodys, Patterns_Body, ".Body");
-			FillPatterns(meta.BodyPart_Faces, Patterns_Face, ".Face");
+			FillPatterns(meta.BodyPart_Faces, Patterns_Face, ".Face.Normal");
 			Patterns_FaceNames.AddRange(meta.BodyPart_Faces);
 			FillPatterns(meta.BodyPart_Hairs, Patterns_Hair, ".FrontHair.F", ".FrontHair.B", ".BackHair.F", ".BackHair.B");
 			FillPatterns(meta.BodyPart_Ears, Patterns_Ear, ".EarL", ".EarR");

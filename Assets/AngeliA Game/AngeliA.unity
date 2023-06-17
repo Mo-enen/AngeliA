@@ -211,6 +211,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   m_Fonts:
   - {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 12800000, guid: 515c7687ef035c341931f16100ebfa5b, type: 3}
   m_Cursors:
   - {fileID: 2800000, guid: 2d951d3f218d5714995d761f1ca80634, type: 3}
   - {fileID: 2800000, guid: 251783bc0d1b9a642b21a27e979bcb8f, type: 3}
