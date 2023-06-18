@@ -1,5 +1,9 @@
-﻿UI.SubTitle.0:Sub Title 0
-UI.SubTitle.1:Sub Title 1
+﻿UI.Equipment.Helmet:Helmet
+UI.Equipment.Bodysuit:Armor
+UI.Equipment.Gloves:Gloves
+UI.Equipment.Shoes:Boots
+UI.Equipment.Jewelry:Jewelry
+UI.Equipment.Weapon:Weapon
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -118,6 +122,8 @@ UI.Restart:Restart
 UI.Right:Right
 UI.Save:Save
 UI.Setting:Setting
+UI.SubTitle.0:Sub Title 0
+UI.SubTitle.1:Sub Title 1
 UI.Suit.Bodysuit:Bodysuit
 UI.Suit.Glove:Glove
 UI.Suit.Hat:Hat
