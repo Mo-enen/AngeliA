@@ -1,9 +1,4 @@
-﻿UI.Equipment.Helmet:Helmet
-UI.Equipment.Bodysuit:Armor
-UI.Equipment.Gloves:Gloves
-UI.Equipment.Shoes:Boots
-UI.Equipment.Jewelry:Jewelry
-UI.Equipment.Weapon:Weapon
+﻿CtrlHint.PlayerMenu.Take:Take
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -13,6 +8,7 @@ CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Drop:Drop
 CtrlHint.EnterDoor:Enter
+CtrlHint.Equip:Equip
 CtrlHint.HideMenu:Hide Menu
 CtrlHint.Jump:Jump
 CtrlHint.MEDT.Nav:Overlook
@@ -20,13 +16,12 @@ CtrlHint.MEDT.PlayFromBegin:Play from Start
 CtrlHint.MEDT.SwitchMode.Edit:Back to Edit
 CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
-CtrlHint.PlayerMenu.Take:Take (Hold to Use)
+CtrlHint.PlayerMenu.TakeUse:Take (Hold to Use)
 CtrlHint.QuickDrop:Transfer
 CtrlHint.Restart:Restart
 CtrlHint.ShowMenu:Show Menu
 CtrlHint.Skip:Skip
 CtrlHint.SwitchPlayer:Switch Character
-CtrlHint.Take:Take
 CtrlHint.Throw:Throw
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
@@ -99,6 +94,12 @@ UI.BodyPart.Wing:Wing
 UI.Cancel:Cancel
 UI.Continue:Continue
 UI.Down:Down
+UI.Equipment.Bodysuit:Armor
+UI.Equipment.Gloves:Gloves
+UI.Equipment.Helmet:Helmet
+UI.Equipment.Jewelry:Jewelry
+UI.Equipment.Shoes:Boots
+UI.Equipment.Weapon:Weapon
 UI.GameKey.Action:Action/Attack
 UI.GameKey.Down:Down
 UI.GameKey.Jump:Cancel/Jump
