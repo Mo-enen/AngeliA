@@ -22,6 +22,7 @@ namespace AngeliaGame {
 		public override void FrameUpdate () {
 			if (CellRenderer.TryGetSpriteFromGroup(TypeID, PhotoIndex, out var sprite, true, false)) {
 				var cell = CellRenderer.Draw(sprite.GlobalID, RenderingRect);
+				AngeUtil.DrawShadow(sprite.GlobalID, RenderingRect);
 				if ((this as IActionTarget).IsHighlighted) {
 					IActionTarget.HighlightBlink(cell, ModuleType, Pose);
 				}

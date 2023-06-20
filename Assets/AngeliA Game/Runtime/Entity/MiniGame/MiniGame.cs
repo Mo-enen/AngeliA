@@ -77,6 +77,7 @@ namespace AngeliaGame {
 				500, 0, 0,
 				Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE
 			);
+			AngeUtil.DrawShadow(TypeID, cell);
 			var act = this as IActionTarget;
 			if (act.IsHighlighted) IActionTarget.HighlightBlink(cell);
 		}

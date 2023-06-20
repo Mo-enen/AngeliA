@@ -9,10 +9,5 @@ namespace AngeliaGame {
 		int ICombustible.BurnStartFrame { get; set; }
 		protected override int PhysicsLayer => Const.LAYER_ENVIRONMENT;
 		protected override bool DestroyWhenInsideGround => true;
-		public override void FrameUpdate () {
-			base.FrameUpdate();
-			CellRenderer.Draw(TypeID, base.Rect);
-		}
-
 	}
 }

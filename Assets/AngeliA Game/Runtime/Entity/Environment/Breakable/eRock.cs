@@ -37,9 +37,7 @@ namespace AngeliaGame {
 
 		public override void FrameUpdate () {
 			CellRenderer.Draw(ArtworkCode, FullRect);
-			base.FrameUpdate();
+			AngeUtil.DrawShadow(ArtworkCode, FullRect);
 		}
-
-
 	}
 }
