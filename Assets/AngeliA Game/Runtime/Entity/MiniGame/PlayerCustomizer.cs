@@ -69,7 +69,6 @@ namespace AngeliaGame {
 
 		// Const
 		private const int EDITOR_BASIC_Z = 60;
-		private static readonly int DEFAULT_FACE_ID = "DefaultCharacter.Face.Normal".AngeHash();
 		private static readonly int ICON_WIDTH_CODE = "UI.WidthArrow".AngeHash();
 		private static readonly int ICON_HEIGHT_CODE = "UI.HeightArrow".AngeHash();
 		private static readonly int FRAME_CODE = "Frame16".AngeHash();
@@ -1083,7 +1082,9 @@ namespace AngeliaGame {
 			player.FaceIDs = new int[FaceTypeCount];
 			for (int i = 0; i < FaceTypeCount; i++) {
 				int id = $"{faceBasicName}.Face.{(CharacterFaceType)i}".AngeHash();
-				player.FaceIDs[i] = CellRenderer.HasSpriteGroup(id) || CellRenderer.HasSprite(id) ? id : DEFAULT_FACE_ID;
+				player.FaceIDs[i] =
+					CellRenderer.HasSpriteGroup(id) || CellRenderer.HasSprite(id) ?
+					id : $"DefaultCharacter.Face.{(CharacterFaceType)i}".AngeHash();
 			}
 		}
 
