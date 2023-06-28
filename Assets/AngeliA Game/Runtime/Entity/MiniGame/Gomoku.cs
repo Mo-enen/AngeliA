@@ -36,6 +36,7 @@ namespace AngeliaGame {
 		// Api
 		protected override Vector2Int WindowSize => new(618, 618);
 		protected override bool RequireMouseCursor => true;
+		protected override string DisplayName => Language.Get(TypeID, "Gomoku");
 
 		// Short
 		private bool Interactable => PlayerTurn && Winner == null && Game.GlobalFrame > LastPlaceFrame + 12;

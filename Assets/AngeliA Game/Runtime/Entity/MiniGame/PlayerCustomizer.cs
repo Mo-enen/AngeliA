@@ -117,6 +117,7 @@ namespace AngeliaGame {
 		protected override Vector2Int WindowSize => new(1000, 800);
 		protected override bool RequireMouseCursor => true;
 		protected override bool RequireQuitConfirm => false;
+		protected override string DisplayName => Language.Get(TypeID, "Player Maker");
 
 		// Pattern
 		private readonly List<Int4> Patterns_Head = new();

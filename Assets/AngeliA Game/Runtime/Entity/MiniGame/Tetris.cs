@@ -95,6 +95,7 @@ namespace AngeliaGame {
 		// Api
 		protected override Vector2Int WindowSize => new(400, 800);
 		protected override bool RequireMouseCursor => false;
+		protected override string DisplayName => Language.Get(TypeID, "Tetris");
 
 		// Data
 		private readonly Queue<int> TetrominoQueue = new();

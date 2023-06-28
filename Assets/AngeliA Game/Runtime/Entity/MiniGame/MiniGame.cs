@@ -22,6 +22,7 @@ namespace AngeliaGame {
 		private static readonly int MENU_QUIT_MINI_GAME = "Menu.MiniGame.QuitMsg".AngeHash();
 		protected virtual Vector2Int WindowSize => new(1000, 800);
 		protected abstract bool RequireMouseCursor { get; }
+		protected abstract string DisplayName { get; }
 		protected virtual bool RequireQuitConfirm => true;
 		protected virtual bool ShowRestartOption => true;
 		protected RectInt WindowRect => new(
@@ -79,7 +80,11 @@ namespace AngeliaGame {
 			);
 			AngeUtil.DrawShadow(TypeID, cell);
 			var act = this as IActionTarget;
-			if (act.IsHighlighted) IActionTarget.HighlightBlink(cell);
+			if (act.IsHighlighted && !IsPlaying) {
+				IActionTarget.HighlightBlink(cell);
+				// Display Name
+				ControlHintUI.DrawGlobalHint(X, Y + Const.CEL * 2 + Const.HALF, Gamekey.Action, DisplayName, true);
+			}
 		}
 
 

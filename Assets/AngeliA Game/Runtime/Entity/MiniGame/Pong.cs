@@ -31,6 +31,7 @@ namespace AngeliaGame {
 		// Api
 		protected override Vector2Int WindowSize => new(800, 800);
 		protected override bool RequireMouseCursor => false;
+		protected override string DisplayName => Language.Get(TypeID, "Pong");
 
 		// Short
 		private bool ServingBall => Game.GlobalFrame < ServeBallFrame + SERVE_BALL_DURATION;
