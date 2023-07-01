@@ -7,7 +7,7 @@
 	"StudentE",
 	"StudentH"
 ],
-"BodyPart_Bodys":[
+"BodyPart_BodyShoulders":[
 	"DefaultCharacter",
 	"StudentA",
 	"StudentC",
@@ -69,7 +69,7 @@
 	"LittleGirl",
 	"DoctorD"
 ],
-"Suit_BodyArmArms":[
+"Suit_BodyShoulderArmArms":[
 	"",
 	"StudentH",
 	"StudentI",

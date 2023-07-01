@@ -15,15 +15,22 @@ namespace AngeliaGame {
 
 		private enum AirshipType {
 			HotAirBalloon = 0,
-			Kirov = 1,
-			Mirage = 2,
+			Whale = 1,
+			Kirov = 2,
+			Mirage = 3,
+		}
 
+
+		private enum BlockState {
+			Hidden = 0,
+			Revealed = 1,
+			Hit = 2,
 		}
 
 
 		private class Block {
 			public int CloudSpriteID = 0;
-			public bool HasCloud = true;
+			public BlockState State = BlockState.Hidden;
 		}
 
 
@@ -32,6 +39,10 @@ namespace AngeliaGame {
 			// Api
 			public Block this[int x, int y] => Blocks[x, y];
 			public string CloudRuleString { get; set; } = "";
+			public Vector2Int HotAirBalloonPos = default;
+			public Vector2Int WhalePos = default;
+			public Vector2Int KirovPos = default;
+			public Vector2Int MiragePos = default;
 
 			// Data
 			private readonly Block[,] Blocks = new Block[FIELD_SIZE, FIELD_SIZE] {
@@ -50,10 +61,17 @@ namespace AngeliaGame {
 				for (int i = 0; i < FIELD_SIZE; i++) {
 					for (int j = 0; j < FIELD_SIZE; j++) {
 						var block = Blocks[i, j];
-						block.HasCloud = true;
-
+						block.State = BlockState.Hidden;
 					}
 				}
+				HotAirBalloonPos = new(int.MinValue, 0);
+				WhalePos = new(int.MinValue, 0);
+				KirovPos = new(int.MinValue, 0);
+				MiragePos = new(int.MinValue, 0);
+				HotAirBalloonPos = GetRandomValidShipPos(AirshipType.HotAirBalloon);
+				WhalePos = GetRandomValidShipPos(AirshipType.HotAirBalloon);
+				KirovPos = GetRandomValidShipPos(AirshipType.Kirov);
+				MiragePos = GetRandomValidShipPos(AirshipType.Mirage);
 			}
 
 			public void RefreshCloudSprites () {
@@ -79,7 +97,66 @@ namespace AngeliaGame {
 						}
 					}
 				}
-				static int GetCloudID (Block[,] blocks, int x, int y) => x < 0 || y < 0 || x >= FIELD_SIZE || y >= FIELD_SIZE || !blocks[x, y].HasCloud ? 0 : CLOUD_CODE;
+				static int GetCloudID (Block[,] blocks, int x, int y) => x < 0 || y < 0 || x >= FIELD_SIZE || y >= FIELD_SIZE || blocks[x, y].State != BlockState.Hidden ? 0 : CLOUD_CODE;
+			}
+
+			public Vector2Int GetRandomValidShipPos (AirshipType type) {
+				int offsetX = Random.Range(0, FIELD_SIZE);
+				int offsetY = Random.Range(0, FIELD_SIZE);
+				for (int j = 0; j < FIELD_SIZE; j++) {
+					for (int i = 0; i < FIELD_SIZE; i++) {
+						int resultX = (offsetX + i) % FIELD_SIZE;
+						int resultY = (offsetY + j) % FIELD_SIZE;
+						if (CheckShipPositionValid(type, resultX, resultY)) {
+							return new Vector2Int(resultX, resultY);
+						}
+					}
+				}
+				return default;
+			}
+
+			public bool CheckShipPositionValid (AirshipType type, int x, int y) {
+				var shipSize = SHIP_SIZES[(int)type];
+				if (x < 0 || y < 0 || x + shipSize.x > FIELD_SIZE || y + shipSize.y > FIELD_SIZE) return false;
+				for (int i = 0; i < shipSize.x; i++) {
+					for (int j = 0; j < shipSize.y; j++) {
+						if (HasShipAtBlock(x + i, y + j, out _)) return false;
+					}
+				}
+				return true;
+			}
+
+			public bool HasShipAtBlock (int x, int y, out int shipIndex) {
+				if (CheckOverlap(HotAirBalloonPos, SHIP_SIZES[0], x, y)) {
+					shipIndex = 0;
+					return true;
+				}
+				if (CheckOverlap(WhalePos, SHIP_SIZES[1], x, y)) {
+					shipIndex = 1;
+					return true;
+				}
+				if (CheckOverlap(KirovPos, SHIP_SIZES[2], x, y)) {
+					shipIndex = 2;
+					return true;
+				}
+				if (CheckOverlap(MiragePos, SHIP_SIZES[3], x, y)) {
+					shipIndex = 3;
+					return true;
+				}
+				shipIndex = -1;
+				return false;
+				// Func
+				static bool CheckOverlap (Vector2Int shipPos, Vector2Int size, int x, int y) {
+					if (shipPos.x >= 0) {
+						if (
+							x >= shipPos.x && x < shipPos.x + size.x &&
+							y >= shipPos.y && y < shipPos.y + size.y
+						) {
+							return true;
+						}
+					}
+					return false;
+				}
 			}
 
 		}
@@ -98,36 +175,26 @@ namespace AngeliaGame {
 		private static readonly int CLOUD_CODE = "UI.Cloud".AngeHash();
 		private static readonly int CIRCLE_CODE = "HardCircle50".AngeHash();
 		private static readonly int FRAME_CODE = "Frame16".AngeHash();
-		private static readonly byte[,,] ShipShapes = { // ShipIndex, x, y
-			{ // Hot Air Balloon
-				{ 0,0,0,0 },
-				{ 0,0,0,0 },
-				{ 1,0,0,0 },
-				{ 1,0,0,0 },
-			},{ // Kirov
-				{ 0,0,0,0 },
-				{ 0,0,0,0 },
-				{ 0,0,0,0 },
-				{ 1,1,1,0 },
-			},{ // Mirage
-				{ 0,0,0,0 },
-				{ 0,0,0,0 },
-				{ 1,1,1,0 },
-				{ 1,1,1,0 },
-			},
+		private static readonly int FIRE_CODE = "CommonFire".AngeHash();
+		private static readonly Vector2Int[] SHIP_SIZES = { new(1, 2), new(2, 2), new(3, 1), new(3, 2), };
+		private static readonly int[] SHIP_CODES = {
+			"BattleAirship.HotAirBalloon".AngeHash(),
+			"BattleAirship.Whale".AngeHash(),
+			"BattleAirship.Kirov".AngeHash(),
+			"BattleAirship.Mirage".AngeHash(),
 		};
 
 		// Api
 		protected override bool RequireMouseCursor => true;
-		protected override Vector2Int WindowSize => new(1100, 900);
 		protected override string DisplayName => Language.Get(TypeID, "Battle Airship");
+		protected override Vector2Int WindowSize => new(1100, 900);
 
 		// Data
 		private readonly Field FieldA = new();
 		private readonly Field FieldB = new();
 		private readonly Int3[] BackgroundCloudTransforms = new Int3[24];
-		private Int2? CursorPosition = null;
 		private bool GameOver = false;
+		private Int2? CursorPosition = null;
 		private RectInt FieldRectA = default;
 		private RectInt FieldRectB = default;
 
@@ -285,22 +352,37 @@ namespace AngeliaGame {
 
 
 		private void DrawField (bool forA) {
+
 			var field = forA ? FieldA : FieldB;
 			var panelRect = forA ? FieldRectA : FieldRectB;
+
+			// Blocks
 			var rect = new RectInt(0, 0, panelRect.width / FIELD_SIZE, panelRect.width / FIELD_SIZE);
 			for (int i = 0; i < FIELD_SIZE; i++) {
 				for (int j = 0; j < FIELD_SIZE; j++) {
 					var block = field[i, j];
 					rect.x = panelRect.x + i * rect.width;
 					rect.y = panelRect.y + j * rect.height;
-					// Draw Cloud
-					if (block.HasCloud) {
-						CellRenderer.Draw(block.CloudSpriteID, rect, int.MinValue + 6);
+					if (block.State == BlockState.Hidden) {
+						// Draw Cloud
+						CellRenderer.Draw(block.CloudSpriteID, rect, int.MinValue + 128);
+					} else if (block.State == BlockState.Hit) {
+						// Draw Fire
+						//FIRE_CODE z = 128
+
 					}
-
-
 				}
 			}
+
+			// Draw Ships
+			int z = int.MinValue + (forA ? 196 : 64);
+			int startIndex = CellRenderer.GetUsedCellCount();
+			DrawShip(AirshipType.HotAirBalloon, field.HotAirBalloonPos, z, panelRect, !forA);
+			DrawShip(AirshipType.Whale, field.WhalePos, z, panelRect, !forA);
+			DrawShip(AirshipType.Kirov, field.KirovPos, z, panelRect, !forA);
+			DrawShip(AirshipType.Mirage, field.MiragePos, z, panelRect, !forA);
+			if (!forA) CellRenderer.ClampCells(panelRect, startIndex, CellRenderer.GetUsedCellCount());
+
 		}
 
 
@@ -332,6 +414,32 @@ namespace AngeliaGame {
 
 		#region --- LGC ---
 
+
+		private static void DrawShip (AirshipType type, Vector2Int shipPos, int z, RectInt fieldRect, bool flip) {
+			var shipSize = SHIP_SIZES[(int)type];
+			int cellSize = fieldRect.width / FIELD_SIZE;
+			int shiftY = (Game.GlobalFrame + (int)type * 47).PingPong(120) * cellSize / 960;
+			int shadowShiftX = 0;
+			int shadowShiftY = cellSize / 7;
+			var rect = new RectInt(
+				fieldRect.x + shipPos.x * cellSize,
+				fieldRect.y + shipPos.y * cellSize,
+				shipSize.x * cellSize,
+				shipSize.y * cellSize
+			);
+			if (flip) rect.FlipHorizontal();
+			CellRenderer.Draw(
+				SHIP_CODES[(int)type],
+				rect.Shift(0, shiftY),
+				z
+			);
+			CellRenderer.Draw(
+				SHIP_CODES[(int)type],
+				rect.Shift(-shadowShiftX, -shadowShiftY),
+				new Color32(0, 0, 0, 96),
+				z - 1
+			);
+		}
 
 
 		#endregion

@@ -80,7 +80,7 @@ namespace AngeliaGame {
 			// Smoke 
 			if (Grounded && localFrame >= 2) {
 				int smokeDuration = Duration - 4;
-				int smokeFrame = (Game.GlobalFrame - SpawnFrame - 4).LargerThanZero();
+				int smokeFrame = (Game.GlobalFrame - SpawnFrame - 4).GreaterOrEquelThanZero();
 				int _smokeFrame = smokeDuration * smokeDuration - (smokeDuration - smokeFrame) * (smokeDuration - smokeFrame);
 				var tint = Tint;
 				tint.a = (byte)Util.Remap(0, smokeDuration, 512, 0, smokeFrame);
