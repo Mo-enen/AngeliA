@@ -1,5 +1,4 @@
-﻿MiniGame_Tetris:Tetris
-@enen:Enen
+﻿@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
@@ -66,10 +65,10 @@ Menu.Setting.SoundVolume:Sound Volume
 Menu.Setting.UseControlHint:Show Control Hint
 Menu.Setting.UseGamepadHint:Show Bottom Left Gamepad
 Menu.Setting.VSync:V-Sync
-MiniGame_BattleAirship:Battle Airship
 MiniGame_Gomoku:Gomoku
 MiniGame_PlayerCustomizer:Player Maker
 MiniGame_Pong:Pong
+MiniGame_Tetris:Tetris
 Palette.BG:Background
 Palette.Character:Character
 Palette.CheckPoint:CheckPoint
