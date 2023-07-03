@@ -6,15 +6,15 @@ using AngeliaFramework;
 namespace AngeliaGame {
 
 
-	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
+	[EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL * 2, Const.CEL * 2)]
 	public class eCactus : Plant { }
 
 
-	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
+	[EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL * 2, Const.CEL * 2)]
 	public class eCoral : Plant { }
 
 
-	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL)]
+	[EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL * 2, Const.CEL)]
 	public class eFiddleLeaf : Plant { }
 
 
