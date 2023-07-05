@@ -100,9 +100,7 @@ namespace AngeliaGame {
 		}
 
 
-		public override void OnHit (IDamageReceiver receiver) {
-			receiver?.TakeDamage(Damage);
-		}
+		public override void OnHit (IDamageReceiver receiver) => receiver?.TakeDamage(Damage, Direction);
 
 
 	}
