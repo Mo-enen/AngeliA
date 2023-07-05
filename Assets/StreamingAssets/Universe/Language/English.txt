@@ -1,4 +1,5 @@
-﻿@enen:Enen
+﻿Palette.Wallpaper:Wallpaper
+@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
@@ -69,7 +70,7 @@ MiniGame_Gomoku:Gomoku
 MiniGame_PlayerCustomizer:Player Maker
 MiniGame_Pong:Pong
 MiniGame_Tetris:Tetris
-Palette.BG:Background
+Palette.Background:Background
 Palette.Character:Character
 Palette.CheckPoint:CheckPoint
 Palette.Collectable:Collectable
