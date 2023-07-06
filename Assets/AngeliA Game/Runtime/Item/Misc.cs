@@ -40,4 +40,15 @@ namespace AngeliaGame {
 	public class iRubyGrey : Item { }
 	public class iFlint : Item { }
 
+
+	public class iLetter : Item { }
+	public class iGiftBox : Item { }
+	public class iTrophy : Item { }
+	public class iMedalGold : Item { }
+	public class iMedalSilver : Item { }
+	public class iMedalCopper : Item { }
+	public class iBell : Item { }
+	public class iFloppyDisk : Item { }
+
+
 }

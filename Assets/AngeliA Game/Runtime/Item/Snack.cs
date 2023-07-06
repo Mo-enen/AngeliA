@@ -4,6 +4,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
+
 	public class iCake : Item { }
 	public class iCakeRoll : Item { }
 	public class iHamburger : Item { }
@@ -14,4 +15,10 @@ namespace AngeliaGame {
 	public class iDumpling : Item { }
 	public class iSushi : Item { }
 	public class iChocolate : Item { }
+
+	// Drink
+	public class iCoffee : Item { }
+	public class iBeer : Item { }
+
+
 }

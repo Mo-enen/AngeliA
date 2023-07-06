@@ -7,7 +7,7 @@
 	"StudentE",
 	"StudentH"
 ],
-"BodyPart_BodyShoulders":[
+"BodyPart_Bodys":[
 	"DefaultCharacter",
 	"StudentA",
 	"StudentC",
@@ -15,7 +15,7 @@
 	"StudentH",
 	"AthleteE"
 ],
-"BodyPart_ArmArmHands":[
+"BodyPart_ShoulderArmArmHands":[
 	"DefaultCharacter",
 	"StudentA",
 	"StudentC",

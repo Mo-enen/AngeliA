@@ -15,8 +15,8 @@ namespace AngeliaGame {
 
 		private enum SubMenuType {
 			Head,
-			BodyShoulder,
-			ArmArmHand,
+			Body,
+			ShoulderArmArmHand,
 			LegLegFoot,
 			Face,
 			Hair,
@@ -37,8 +37,8 @@ namespace AngeliaGame {
 		private class PatternMeta {
 
 			public string[] BodyPart_Heads;
-			public string[] BodyPart_BodyShoulders;
-			public string[] BodyPart_ArmArmHands;
+			public string[] BodyPart_Bodys;
+			public string[] BodyPart_ShoulderArmArmHands;
 			public string[] BodyPart_LegLegFoots;
 
 			public string[] BodyPart_Faces;
@@ -121,14 +121,14 @@ namespace AngeliaGame {
 
 		// Pattern
 		private readonly List<Int4> Patterns_Head = new();
-		private readonly List<Int4> Patterns_BodyShoulder = new();
+		private readonly List<Int4> Patterns_Body = new();
 		private readonly List<Int4> Patterns_Face = new();
 		private readonly List<string> Patterns_FaceNames = new();
 		private readonly List<Int4> Patterns_Hair = new();
 		private readonly List<Int4> Patterns_Ear = new();
 		private readonly List<Int4> Patterns_Tail = new();
 		private readonly List<Int4> Patterns_Wing = new();
-		private readonly List<Int4> Patterns_ArmArmHand = new();
+		private readonly List<Int4> Patterns_ShoulderArmArmHand = new();
 		private readonly List<Int4> Patterns_LegLegFoot = new();
 		private readonly List<Int4> Patterns_Suit_Head = new();
 		private readonly List<Int4> Patterns_Suit_BodyShoulderArmArm = new();
@@ -368,8 +368,8 @@ namespace AngeliaGame {
 				int invokingIndex;
 				if (
 					CurrentSubMenu != SubMenuType.Head &&
-					CurrentSubMenu != SubMenuType.BodyShoulder &&
-					CurrentSubMenu != SubMenuType.ArmArmHand &&
+					CurrentSubMenu != SubMenuType.Body &&
+					CurrentSubMenu != SubMenuType.ShoulderArmArmHand &&
 					CurrentSubMenu != SubMenuType.LegLegFoot
 				) {
 					HighlightingPatternPicker = true;
@@ -403,7 +403,7 @@ namespace AngeliaGame {
 						}
 						break;
 
-					case SubMenuType.BodyShoulder:
+					case SubMenuType.Body:
 
 						newSizeX = SizeMenuUI(0, fieldRect, ICON_WIDTH_CODE, player.BodyConfigDeltaSizeX, 16, 7);
 						if (newSizeX != player.BodyConfigDeltaSizeX) {
@@ -419,17 +419,15 @@ namespace AngeliaGame {
 						}
 
 						if (PatternMenuUI(
-							panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_BodyShoulder, player.SkinColor,
+							panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_Body, player.SkinColor,
 							new Int4(player.Body.ID, 0, 0, 0), out invokingIndex
 						)) {
-							var pat = Patterns_BodyShoulder[invokingIndex];
+							var pat = Patterns_Body[invokingIndex];
 							player.Body.SetSpriteID(pat.A, true);
-							player.ShoulderL.SetSpriteID(pat.B);
-							player.ShoulderR.SetSpriteID(pat.B);
 						}
 						break;
 
-					case SubMenuType.ArmArmHand:
+					case SubMenuType.ShoulderArmArmHand:
 
 						newSizeX = SizeMenuUI(0, fieldRect, ICON_WIDTH_CODE, player.ArmConfigDeltaSizeX, 8, 6);
 						if (newSizeX != player.ArmConfigDeltaSizeX) {
@@ -451,17 +449,19 @@ namespace AngeliaGame {
 						}
 
 						if (PatternMenuUI(
-							panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_ArmArmHand, player.SkinColor,
+							panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_ShoulderArmArmHand, player.SkinColor,
 							new Int4(player.UpperArmL.ID, player.LowerArmL.ID, player.HandL.ID, 0),
 							out invokingIndex
 						)) {
-							var pat = Patterns_ArmArmHand[invokingIndex];
-							player.UpperArmL.SetSpriteID(pat.A, true);
-							player.LowerArmL.SetSpriteID(pat.B, true);
-							player.HandL.SetSpriteID(pat.C, true);
-							player.UpperArmR.SetSpriteID(pat.A, true);
-							player.LowerArmR.SetSpriteID(pat.B, true);
-							player.HandR.SetSpriteID(pat.C, true);
+							var pat = Patterns_ShoulderArmArmHand[invokingIndex];
+							player.ShoulderL.SetSpriteID(pat.A);
+							player.ShoulderR.SetSpriteID(pat.A);
+							player.UpperArmL.SetSpriteID(pat.B, true);
+							player.LowerArmL.SetSpriteID(pat.C, true);
+							player.HandL.SetSpriteID(pat.D, true);
+							player.UpperArmR.SetSpriteID(pat.B, true);
+							player.LowerArmR.SetSpriteID(pat.C, true);
+							player.HandR.SetSpriteID(pat.D, true);
 						}
 						break;
 
@@ -997,14 +997,14 @@ namespace AngeliaGame {
 		private void LoadPatternsFromFile () {
 
 			Patterns_Head.Clear();
-			Patterns_BodyShoulder.Clear();
+			Patterns_Body.Clear();
 			Patterns_Face.Clear();
 			Patterns_FaceNames.Clear();
 			Patterns_Hair.Clear();
 			Patterns_Ear.Clear();
 			Patterns_Tail.Clear();
 			Patterns_Wing.Clear();
-			Patterns_ArmArmHand.Clear();
+			Patterns_ShoulderArmArmHand.Clear();
 			Patterns_LegLegFoot.Clear();
 			Patterns_Suit_Head.Clear();
 			Patterns_Suit_BodyShoulderArmArm.Clear();
@@ -1018,14 +1018,14 @@ namespace AngeliaGame {
 			if (meta == null) return;
 
 			FillPatterns(meta.BodyPart_Heads, Patterns_Head, ".Head");
-			FillPatterns(meta.BodyPart_BodyShoulders, Patterns_BodyShoulder, ".Body", ".Shoulder");
+			FillPatterns(meta.BodyPart_Bodys, Patterns_Body, ".Body");
 			FillPatterns(meta.BodyPart_Faces, Patterns_Face, ".Face.Normal");
 			Patterns_FaceNames.AddRange(meta.BodyPart_Faces);
 			FillPatterns(meta.BodyPart_Hairs, Patterns_Hair, ".FrontHair.F", ".FrontHair.B", ".BackHair.F", ".BackHair.B");
 			FillPatterns(meta.BodyPart_Ears, Patterns_Ear, ".EarL", ".EarR");
 			FillPatterns(meta.BodyPart_Tails, Patterns_Tail, ".Tail");
 			FillPatterns(meta.BodyPart_Wings, Patterns_Wing, ".Wing");
-			FillPatterns(meta.BodyPart_ArmArmHands, Patterns_ArmArmHand, ".UpperArm", ".LowerArm", ".Hand");
+			FillPatterns(meta.BodyPart_ShoulderArmArmHands, Patterns_ShoulderArmArmHand, ".Shoulder", ".UpperArm", ".LowerArm", ".Hand");
 			FillPatterns(meta.BodyPart_LegLegFoots, Patterns_LegLegFoot, ".UpperLeg", ".LowerLeg", ".Foot");
 
 			FillPatterns(meta.Suit_Heads, Patterns_Suit_Head, ".Suit.Head");

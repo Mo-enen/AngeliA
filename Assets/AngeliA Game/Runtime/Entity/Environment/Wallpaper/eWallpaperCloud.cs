@@ -32,7 +32,6 @@ namespace AngeliaGame {
 
 		protected override void DrawBackground (RectInt backgroundRect) {
 
-
 			int windSpeedMin = (Game.GlobalFrame / 1000).PingPong(1, 2);
 			int windSpeedMax = (Game.GlobalFrame / 1000).PingPong(2, 4);
 			int minSize = backgroundRect.height * 41 / 100;
@@ -52,7 +51,8 @@ namespace AngeliaGame {
 				if (x >= left && x <= right) {
 					int size = Util.RemapUnclamped(0, 100000, minSize, maxSize, pos.z);
 					size = (int)Mathf.LerpUnclamped(size / 9f, size, pos.y / 100000f);
-					tint.a = (byte)(pos.y > 30000 ? 24 : 12);
+					int targetAlpha = pos.y > 30000 ? 24 : 12;
+					tint.a = (byte)Util.RemapUnclamped(0, 1000, 0, targetAlpha, Amount);
 					CellRenderer.Draw(
 						CLOUD,
 						x, y, 500, 500, 0, size, size,
