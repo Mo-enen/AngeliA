@@ -33,6 +33,10 @@ namespace AngeliaGame {
 			Rolling = false;
 			RollingSpeed = 0;
 			RollingRotation = 0;
+			const int SIZE_DELTA = 16;
+			Width -= SIZE_DELTA;
+			Height -= SIZE_DELTA;
+			X += SIZE_DELTA / 2;
 		}
 
 
