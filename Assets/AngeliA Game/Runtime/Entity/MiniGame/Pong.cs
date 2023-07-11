@@ -15,7 +15,6 @@ namespace AngeliaGame {
 
 		// Const
 		private static readonly int HINT_MOVE = "Hint.Pong.Move".AngeHash();
-		private static readonly int UI_HIGH_SCORE = "UI.Pong.HighScore".AngeHash();
 		private const int PADDLE_SPEED = 32;
 		private const int PADDLE_LEN = 200;
 		private const int PADDLE_X = 50;
@@ -39,7 +38,6 @@ namespace AngeliaGame {
 		// Data
 		private readonly IntToString PlayerScoreString = new();
 		private readonly IntToString BotScoreString = new();
-		private readonly IntToString HighscoreString = new("+");
 		private int ScorePlayer = 0;
 		private int ScoreBot = 0;
 		private int PlayerPaddleY = 500;
@@ -50,9 +48,6 @@ namespace AngeliaGame {
 		private int BallVelocityX = 0;
 		private int BallVelocityY = 0;
 		private int ServeBallFrame = int.MinValue;
-
-		// Saving
-		private readonly SavingInt Highscore = new("Pong.Highscore", 0);
 
 
 		#endregion
@@ -153,7 +148,6 @@ namespace AngeliaGame {
 				ServeBall(true);
 			} else if (BallX > 1000 - BALL_SIZE / 2) {
 				ScorePlayer++;
-				if (ScorePlayer - ScoreBot > Highscore.Value) Highscore.Value = ScorePlayer - ScoreBot;
 				ServeBall(false);
 			}
 
@@ -194,17 +188,6 @@ namespace AngeliaGame {
 			CellRendererGUI.Label(
 				CellLabel.TempLabel(BotScoreString.GetString(ScoreBot), 42, Alignment.MidLeft),
 				new RectInt(midX + scoreGap, scoreY, scoreWidth, charRectSize)
-			);
-
-			// Highscore
-			CellRendererGUI.Label(
-				CellLabel.TempLabel(HighscoreString.GetString(Highscore.Value), 24, Alignment.MidRight),
-				new RectInt(windowRect.x, scoreY - charRectSize, scoreWidth, charRectSize),
-				out var highscoreBounds
-			);
-			CellRendererGUI.Label(
-				CellLabel.TempLabel(Language.Get(UI_HIGH_SCORE, "Highscore"), 24, Alignment.MidRight),
-				new RectInt(windowRect.x, scoreY - charRectSize, highscoreBounds.x - windowRect.x - scoreGap, charRectSize)
 			);
 
 			// Paddle

@@ -77,7 +77,6 @@ namespace AngeliaGame {
 		private static readonly int BLOCK_EMPTY_CODE = "Tetris Block Empty".AngeHash();
 		private static readonly int UI_HOLDING = "UI.Tetris.Holding".AngeHash();
 		private static readonly int UI_CLR_LINE = "UI.Tetris.ClearedLine".AngeHash();
-		private static readonly int UI_HIGH_SCORE = "UI.Tetris.HighScore".AngeHash();
 		private static readonly int HINT_MOVE = "Hint.Tetris.Move".AngeHash();
 		private static readonly int HINT_ROTATE = "Hint.Tetris.Rotate".AngeHash();
 		private static readonly int HINT_HOLD = "Hint.Tetris.Hold".AngeHash();
@@ -102,7 +101,6 @@ namespace AngeliaGame {
 		private readonly int[,] StagedBlocks = new int[WIDTH, HEIGHT];
 		private readonly int[] SevenBag = { 0, 1, 2, 3, 4, 5, 6 };
 		private readonly IntToString LinesString = new();
-		private readonly IntToString HighScoreString = new();
 		private System.Random BagRandom = new();
 		private bool GameOver = false;
 		private bool HoldAvailable = true;
@@ -120,9 +118,6 @@ namespace AngeliaGame {
 		private int AutoDropDuration = 64;
 		private int ClearedLines = 0;
 		private int AutoDropResetCount = 0;
-
-		// Saving
-		private readonly SavingInt HighScore = new("Tetris.HighScore", 0);
 
 
 		#endregion
@@ -403,39 +398,29 @@ namespace AngeliaGame {
 			}
 
 			// State
-			const int STATE_PADDING = 64;
 			const int CHAR_SIZE = 20;
-			var stateRect = new RectInt(stageRect.x - Const.CEL * 2 - STATE_PADDING, stageRect.y, Const.CEL * 2, Unify(CHAR_SIZE));
+			var stateRect = new RectInt(
+				stageRect.xMax + QUEUE_PADDING,
+				stageRect.y,
+				Const.CEL * 2,
+				Unify(CHAR_SIZE)
+			);
+
 			// Lines
 			CellRendererGUI.Label(CellLabel.TempLabel(
 				Language.Get(UI_CLR_LINE, "Lines:"),
 				CHAR_SIZE, Alignment.MidLeft
-			), stateRect);
+			), stateRect, out var lineBounds);
 			CellRendererGUI.Label(CellLabel.TempLabel(
 				LinesString.GetString(ClearedLines),
 				CHAR_SIZE, Alignment.MidRight
-			), stateRect);
-
-			// Best
-			stateRect.y += stateRect.height;
-			CellRendererGUI.Label(CellLabel.TempLabel(
-				Language.Get(UI_HIGH_SCORE, "Best:"),
-				CHAR_SIZE, Alignment.MidLeft
-			), stateRect);
-			CellRendererGUI.Label(CellLabel.TempLabel(
-				HighScoreString.GetString(HighScore.Value),
-				CHAR_SIZE, Alignment.MidRight
-			), stateRect);
-
+			), stateRect, out var lineNumberBounds);
 
 			CellRenderer.Draw(
-				Const.PIXEL,
-				new RectInt(
-					stageRect.x - Const.CEL * 2 - STATE_PADDING,
-					stageRect.y,
-					Const.CEL * 2,
-					Unify(CHAR_SIZE) * 2
-				), Const.BLACK, 0
+				Const.PIXEL, new RectInt(
+					lineBounds.x, lineBounds.y,
+					lineNumberBounds.xMax - lineBounds.x, lineBounds.height
+				).Expand(Unify(6)), Const.BLACK, 0
 			);
 
 		}
@@ -543,7 +528,6 @@ namespace AngeliaGame {
 			bool newGameOver = !CheckTetrominoValid(CurrentTetrominoIndex, CurrentTetrominoX, CurrentTetrominoY, CurrentTetrominoRotation);
 			if (GameOver != newGameOver) {
 				GameOver = newGameOver;
-				HighScore.Value = Mathf.Max(HighScore.Value, ClearedLines);
 			}
 		}
 

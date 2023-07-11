@@ -1,5 +1,4 @@
-﻿Palette.Wallpaper:壁纸
-@enen:伊楠
+﻿@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子
@@ -84,6 +83,7 @@ Palette.Pinned:收藏
 Palette.Platform:平台
 Palette.System:系统
 Palette.Vegetation:植被
+Palette.Wallpaper:壁纸
 UI.Back:返回
 UI.BodyPart.ArmHand:手臂
 UI.BodyPart.Body:身体
@@ -122,7 +122,6 @@ UI.None:无
 UI.OFF:关闭
 UI.OK:确定
 UI.ON:开启
-UI.Pong.HighScore:高分
 UI.Quit:退出
 UI.Restart:重新开始
 UI.Right:右
@@ -136,7 +135,6 @@ UI.Suit.Hat:帽子
 UI.Suit.Pants:裤子
 UI.Suit.Shoes:鞋
 UI.Tetris.ClearedLine:行数:
-UI.Tetris.HighScore:高分:
 UI.Tetris.Holding:保留
 UI.Up:上
 UI.Yes:是

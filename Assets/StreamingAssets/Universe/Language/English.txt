@@ -1,5 +1,4 @@
-﻿Palette.Wallpaper:Wallpaper
-@enen:Enen
+﻿@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
@@ -84,6 +83,7 @@ Palette.Pinned:Pinned
 Palette.Platform:Platform
 Palette.System:System
 Palette.Vegetation:Vegetation
+Palette.Wallpaper:Wallpaper
 UI.Back:Back
 UI.BodyPart.ArmHand:Arm
 UI.BodyPart.Body:Body
@@ -122,7 +122,6 @@ UI.None:None
 UI.OFF:OFF
 UI.OK:OK
 UI.ON:ON
-UI.Pong.HighScore:Highscore
 UI.Quit:Quit
 UI.Restart:Restart
 UI.Right:Right
@@ -136,7 +135,6 @@ UI.Suit.Hat:Hat
 UI.Suit.Pants:Pants
 UI.Suit.Shoes:Shoes
 UI.Tetris.ClearedLine:Lines:
-UI.Tetris.HighScore:Best:
 UI.Tetris.Holding:Holding
 UI.Up:Up
 UI.Yes:Yes
