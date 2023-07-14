@@ -2,54 +2,32 @@
 
 "BodyPart_Heads":[
 	"DefaultCharacter",
-	"StudentA",
-	"StudentC",
-	"StudentE",
-	"StudentH"
+	"Small"
 ],
 "BodyPart_Bodys":[
 	"DefaultCharacter",
-	"StudentA",
-	"StudentC",
-	"StudentE",
-	"StudentH",
-	"AthleteE"
+	"Small"
 ],
 "BodyPart_ShoulderArmArmHands":[
 	"DefaultCharacter",
-	"StudentA",
-	"StudentC",
-	"StudentE",
-	"StudentH",
-	"AthleteE"
+	"Small"
 ],
 "BodyPart_LegLegFoots":[
 	"DefaultCharacter",
-	"StudentA",
-	"StudentC",
-	"StudentE",
-	"StudentH",
-	"AthleteE"
+	"Small"
 ],
 "BodyPart_Faces":[
 	"DefaultCharacter",
-	"StudentA",
-	"StudentC",
-	"StudentE",
-	"StudentH",
-	"AthleteE"
+	"Small"
 ],
 "BodyPart_Hairs":[
 	"",
-	"StudentA",
-	"StudentB",
-	"StudentH",
-	"BlondWoman"
+	"DefaultCharacter",
+	"Small"
 ],
 "BodyPart_Ears":[
 	"",
 	"Yaya"
-
 ],
 "BodyPart_Tails":[
 	"",
@@ -63,38 +41,19 @@
 
 ],
 "Suit_Heads":[
-	"",
-	"SailorKid",
-	"Cowboy",
-	"LittleGirl",
-	"DoctorD"
+	""
 ],
 "Suit_BodyShoulderArmArms":[
-	"",
-	"StudentH",
-	"StudentI",
-	"StudentJ"
+	""
 ],
 "Suit_HipSkirtLegLegs":[
-	"",
-	"StreetGangster",
-	"RichLady",
-	"StudentH"
+	""
 ],
 "Suit_Foots":[
-	"",
-	"NormalGirl",
-	"Cowboy",
-	"LittleGirl",
-	"DoctorD"
+	""
 ],
 "Suit_Hands":[
-	"",
-	"TestGlove0",
-	"TestGlove1",
-	"TestGlove2",
-	"TestGlove3",
-	"TestGlove4"
+	""
 ],
 "SkinColors":[
 	"#efc2a0",
