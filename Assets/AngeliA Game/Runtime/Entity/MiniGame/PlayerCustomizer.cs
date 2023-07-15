@@ -59,6 +59,16 @@ namespace AngeliaGame {
 		}
 
 
+		private class PatternUnit {
+			public int A => Data.A;
+			public int B => Data.B;
+			public int C => Data.C;
+			public int D => Data.D;
+			public string DisplayName;
+			public Int4 Data;
+		}
+
+
 		#endregion
 
 
@@ -120,23 +130,23 @@ namespace AngeliaGame {
 		protected override string DisplayName => Language.Get(TypeID, "Player Maker");
 
 		// Pattern
-		private readonly List<Int4> Patterns_Head = new();
-		private readonly List<Int4> Patterns_Body = new();
-		private readonly List<Int4> Patterns_Face = new();
+		private readonly List<PatternUnit> Patterns_Head = new();
+		private readonly List<PatternUnit> Patterns_Body = new();
+		private readonly List<PatternUnit> Patterns_Face = new();
 		private readonly List<string> Patterns_FaceNames = new();
-		private readonly List<Int4> Patterns_Hair = new();
-		private readonly List<Int4> Patterns_Ear = new();
-		private readonly List<Int4> Patterns_Tail = new();
-		private readonly List<Int4> Patterns_Wing = new();
-		private readonly List<Int4> Patterns_ShoulderArmArmHand = new();
-		private readonly List<Int4> Patterns_LegLegFoot = new();
-		private readonly List<Int4> Patterns_Suit_Head = new();
-		private readonly List<Int4> Patterns_Suit_BodyShoulderArmArm = new();
-		private readonly List<Int4> Patterns_Suit_HipSkirtLegLeg = new();
-		private readonly List<Int4> Patterns_Suit_Hand = new();
-		private readonly List<Int4> Patterns_Suit_Foot = new();
-		private readonly List<Int4> Patterns_SkinColors = new();
-		private readonly List<Int4> Patterns_HairColors = new();
+		private readonly List<PatternUnit> Patterns_Hair = new();
+		private readonly List<PatternUnit> Patterns_Ear = new();
+		private readonly List<PatternUnit> Patterns_Tail = new();
+		private readonly List<PatternUnit> Patterns_Wing = new();
+		private readonly List<PatternUnit> Patterns_ShoulderArmArmHand = new();
+		private readonly List<PatternUnit> Patterns_LegLegFoot = new();
+		private readonly List<PatternUnit> Patterns_Suit_Head = new();
+		private readonly List<PatternUnit> Patterns_Suit_BodyShoulderArmArm = new();
+		private readonly List<PatternUnit> Patterns_Suit_HipSkirtLegLeg = new();
+		private readonly List<PatternUnit> Patterns_Suit_Hand = new();
+		private readonly List<PatternUnit> Patterns_Suit_Foot = new();
+		private readonly List<PatternUnit> Patterns_SkinColors = new();
+		private readonly List<PatternUnit> Patterns_HairColors = new();
 
 		// Data
 		private SubMenuType? CurrentSubMenu = null;
@@ -145,7 +155,6 @@ namespace AngeliaGame {
 		private readonly int SubMenuTypeCount = 0;
 		private readonly int FaceTypeCount = 0;
 		private int HighlightingMainIndex = 0;
-		private int HighlightingPatternColumn = 0;
 		private int HighlightingPatternRow = 0;
 		private int PatternPickerScrollRow = 0;
 		private int HighlightingSizeEditorIndex = 0;
@@ -226,12 +235,6 @@ namespace AngeliaGame {
 				// Sub Menu
 				if (HighlightingPatternPicker) {
 					// Pattern Picker
-					if (FrameInput.GameKeyDownGUI(Gamekey.Left)) {
-						HighlightingPatternColumn--;
-					}
-					if (FrameInput.GameKeyDownGUI(Gamekey.Right)) {
-						HighlightingPatternColumn++;
-					}
 					if (FrameInput.GameKeyDownGUI(Gamekey.Down)) {
 						HighlightingPatternRow++;
 					}
@@ -294,7 +297,6 @@ namespace AngeliaGame {
 			}
 			player.LoadConfigFromFile();
 			HighlightingMainIndex = 0;
-			HighlightingPatternColumn = 0;
 			HighlightingPatternRow = 0;
 			PatternPickerScrollRow = 0;
 			CurrentSubMenu = null;
@@ -323,6 +325,7 @@ namespace AngeliaGame {
 			if (CurrentSubMenu.HasValue) {
 				int backButtonWidth = Unify(200);
 				int bottomBarHeight = Unify(62);
+
 				// Back Button
 				var buttonRect = new RectInt(panelRect.xMax - backButtonWidth, panelRect.y, backButtonWidth, bottomBarHeight);
 				if (buttonRect.Contains(FrameInput.MouseGlobalPosition)) {
@@ -336,7 +339,9 @@ namespace AngeliaGame {
 					CellLabel.TempLabel(Language.Get(Const.UI_BACK, "Back"), 28, Alignment.MidMid),
 					buttonRect, out var bounds
 				);
-				// Hotkey
+				Game.Current.SetCursor(Const.CURSOR_HAND, buttonRect, 1);
+
+				// Hotkey Label
 				var hotkeyRect = new RectInt(bounds.xMax + Unify(16), bounds.y, 1, bounds.height);
 				if (FrameInput.UsingGamepad) {
 					if (CellRenderer.TryGetSprite(BackButtonHotkeyPadCode, out var padSprite)) {
@@ -352,6 +357,7 @@ namespace AngeliaGame {
 						CellLabel.TempLabel(BackButtonHotkeyLabel, 24, Alignment.MidLeft), hotkeyRect
 					);
 				}
+
 				// End
 				panelRect = panelRect.Shrink(0, 0, bottomBarHeight, 0);
 			}
@@ -744,7 +750,6 @@ namespace AngeliaGame {
 					CurrentSubMenu = (SubMenuType)i;
 					HighlightingPatternPicker = false;
 					HighlightingSizeEditorIndex = 0;
-					HighlightingPatternColumn = 0;
 					HighlightingPatternRow = 0;
 					PatternPickerScrollRow = 0;
 				}
@@ -838,7 +843,7 @@ namespace AngeliaGame {
 		}
 
 
-		private bool PatternMenuUI (RectInt panelRect, List<Int4> patterns, Color32 iconTint, Int4 selectingPattern, out int invokingIndex) {
+		private bool PatternMenuUI (RectInt panelRect, List<PatternUnit> patterns, Color32 iconTint, Int4 selectingPattern, out int invokingIndex) {
 
 			int panelPadding = Unify(32);
 			invokingIndex = 0;
@@ -847,104 +852,97 @@ namespace AngeliaGame {
 			int scrollBarWidth = Unify(24);
 			bool tryInvoke = !FrameInput.MouseLeftButtonDown && FrameInput.GameKeyDown(Gamekey.Action);
 			var patternRect = panelRect.Shrink(0, scrollBarWidth, 0, 0);
-			int itemSize = Unify(88);
+			int itemHeight = Unify(52);
 			int padding = Unify(8);
-			int iconPadding = Unify(12);
-			int column = patternRect.width / (itemSize + padding);
-			int row = patterns.Count.UCeil(column) / column;
-			int pageRow = patternRect.height / (itemSize + padding);
+			int iconPadding = Unify(2);
+			int row = patterns.Count;
+			int pageRow = patternRect.height / (itemHeight + padding);
 			var cursorRect = new RectInt(0, 0, 0, 0);
-			var rect = new RectInt(0, 0, itemSize, itemSize);
+			var rect = new RectInt(patternRect.x, 0, patternRect.width, itemHeight);
 			int layerIndex = CellRenderer.CurrentLayerIndex;
 			int cellStart = CellRenderer.GetUsedCellCount(layerIndex);
 			if (!FrameInput.LastActionFromMouse) {
 				PatternPickerScrollRow = PatternPickerScrollRow.Clamp(HighlightingPatternRow - pageRow + 1, HighlightingPatternRow);
 			}
 			PatternPickerScrollRow = row <= pageRow ? 0 : PatternPickerScrollRow.Clamp(0, row - pageRow);
-			HighlightingPatternColumn = HighlightingPatternColumn.Clamp(0, column - 1);
 			HighlightingPatternRow = HighlightingPatternRow.Clamp(0, row - 1);
-			if (HighlightingPatternRow * column + HighlightingPatternColumn >= patterns.Count) {
-				HighlightingPatternColumn = patterns.Count % column - 1;
-			}
-			for (int i = PatternPickerScrollRow; i < row; i++) {
-				for (int j = 0; j < column; j++) {
+			for (int index = PatternPickerScrollRow; index < row; index++) {
 
-					// Item
-					int index = i * column + j;
-					if (index < 0 || index >= patterns.Count) {
-						i = row;
-						break;
-					}
-					rect.x = patternRect.x + j * (itemSize + padding);
-					rect.y = patternRect.yMax - (i - PatternPickerScrollRow + 1) * (itemSize + padding);
-					var pat = patterns[index];
-					bool forColor = pat.D == int.MinValue;
+				rect.y = patternRect.yMax - (index - PatternPickerScrollRow + 1) * (itemHeight + padding);
+				var pat = patterns[index].Data;
+				string displayName = patterns[index].DisplayName;
+				bool forColor = pat.D == int.MinValue;
 
-					// Selecting Highlight
-					if (IsSamePattern(pat, selectingPattern, forColor)) {
-						CellRenderer.Draw(Const.PIXEL, rect, Const.BLUE, EDITOR_BASIC_Z + 2);
-					}
+				// Selecting Highlight
+				if (IsSamePattern(pat, selectingPattern, forColor)) {
+					CellRenderer.Draw(Const.PIXEL, rect, Const.BLUE, EDITOR_BASIC_Z + 2);
+				}
 
-					// Frame
-					CellRenderer.Draw_9Slice(
-						FRAME_CODE, rect,
-						itemFrameThickness, itemFrameThickness, itemFrameThickness, itemFrameThickness,
-						Const.GREY_32, EDITOR_BASIC_Z + 2
-					);
+				// Frame
+				CellRenderer.Draw_9Slice(
+					FRAME_CODE, rect,
+					itemFrameThickness, itemFrameThickness, itemFrameThickness, itemFrameThickness,
+					Const.GREY_32, EDITOR_BASIC_Z + 2
+				);
 
-					if (!forColor) {
-						// Icon
-						int iconID = pat.A;
-						if (iconID == 0) iconID = pat.B;
-						if (iconID == 0) iconID = pat.C;
-						if (iconID == 0) iconID = pat.D;
-						if (iconID != 0 && CellRenderer.TryGetSpriteFromGroup(iconID, 0, out var sprite, false, true)) {
-							CellRenderer.Draw(
-								sprite.GlobalID,
-								rect.Shrink(iconPadding).Fit(sprite.GlobalWidth, sprite.GlobalHeight),
-								iconTint, EDITOR_BASIC_Z + 3
-							);
-						}
-						// Empty
-						if (iconID == 0 && index == 0) {
-							CellRendererGUI.Label(
-								CellLabel.TempLabel(Language.Get(Const.UI_NONE, "None"), Const.WHITE),
-								rect
-							);
-						}
-					} else {
-						// Color
+				if (!forColor) {
+					// Icon
+					int iconID = pat.A;
+					if (iconID == 0) iconID = pat.B;
+					if (iconID == 0) iconID = pat.C;
+					if (iconID == 0) iconID = pat.D;
+					if (iconID != 0 && CellRenderer.TryGetSpriteFromGroup(iconID, 0, out var sprite, false, true)) {
 						CellRenderer.Draw(
-							Const.PIXEL, rect.Shrink(iconPadding),
-							new Color32(
-								(byte)pat.A.Clamp(0, 255),
-								(byte)pat.B.Clamp(0, 255),
-								(byte)pat.C.Clamp(0, 255),
-								255
-							),
-							EDITOR_BASIC_Z + 3
+							sprite.GlobalID,
+							rect.Shrink(iconPadding, rect.width + iconPadding * 2 - rect.height, iconPadding, iconPadding).Fit(sprite.GlobalWidth, sprite.GlobalHeight),
+							iconTint, EDITOR_BASIC_Z + 3
 						);
 					}
-
-					// Hovering Highlight
-					if (FrameInput.LastActionFromMouse) {
-						if (rect.Contains(FrameInput.MouseGlobalPosition)) {
-							CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32, EDITOR_BASIC_Z + 2);
-							HighlightingPatternPicker = true;
-							HighlightingPatternColumn = j;
-							HighlightingPatternRow = i;
-							Game.Current.SetCursor(Const.CURSOR_HAND, 1);
-							tryInvoke = FrameInput.MouseLeftButtonDown;
-						}
+					if (iconID != 0 || index != 0) {
+						// Label
+						CellRendererGUI.Label(
+							CellLabel.TempLabel(displayName, 24, Alignment.MidLeft),
+							rect.Shrink(rect.height + iconPadding, 0, 0, 0)
+						);
 					} else {
-						if (HighlightingPatternPicker && HighlightingPatternColumn == j && HighlightingPatternRow == i) {
-							cursorRect = rect;
-						}
+						// Empty
+						CellRendererGUI.Label(
+							CellLabel.TempLabel(Language.Get(Const.UI_NONE, "None"), Const.WHITE),
+							rect
+						);
 					}
-					if (HighlightingPatternPicker && HighlightingPatternColumn == j && HighlightingPatternRow == i) {
-						invokingIndex = index;
+				} else {
+					// Color
+					CellRenderer.Draw(
+						Const.PIXEL, rect.Shrink(iconPadding),
+						new Color32(
+							(byte)pat.A.Clamp(0, 255),
+							(byte)pat.B.Clamp(0, 255),
+							(byte)pat.C.Clamp(0, 255),
+							255
+						),
+						EDITOR_BASIC_Z + 3
+					);
+				}
+
+				// Hovering Highlight
+				if (FrameInput.LastActionFromMouse) {
+					if (rect.Contains(FrameInput.MouseGlobalPosition)) {
+						CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32, EDITOR_BASIC_Z + 2);
+						HighlightingPatternPicker = true;
+						HighlightingPatternRow = index;
+						Game.Current.SetCursor(Const.CURSOR_HAND, 1);
+						tryInvoke = FrameInput.MouseLeftButtonDown;
+					}
+				} else {
+					if (HighlightingPatternPicker && HighlightingPatternRow == index) {
+						cursorRect = rect;
 					}
 				}
+				if (HighlightingPatternPicker && HighlightingPatternRow == index) {
+					invokingIndex = index;
+				}
+
 			}
 			int cellEnd = CellRenderer.GetUsedCellCount(layerIndex);
 			CellRenderer.ClampCells(layerIndex, patternRect, cellStart, cellEnd);
@@ -1039,7 +1037,9 @@ namespace AngeliaGame {
 				foreach (var colorStr in meta.SkinColors) {
 					if (ColorUtility.TryParseHtmlString(colorStr, out var color)) {
 						Color32 color32 = color;
-						Patterns_SkinColors.Add(new(color32.r, color32.g, color32.b, int.MinValue));
+						Patterns_SkinColors.Add(new PatternUnit() {
+							Data = new Int4(color32.r, color32.g, color32.b, int.MinValue),
+						});
 					}
 				}
 			}
@@ -1047,7 +1047,9 @@ namespace AngeliaGame {
 				foreach (var colorStr in meta.HairColors) {
 					if (ColorUtility.TryParseHtmlString(colorStr, out var color)) {
 						Color32 color32 = color;
-						Patterns_HairColors.Add(new(color32.r, color32.g, color32.b, int.MinValue));
+						Patterns_HairColors.Add(new PatternUnit() {
+							Data = new Int4(color32.r, color32.g, color32.b, int.MinValue),
+						});
 					}
 				}
 			}
@@ -1055,27 +1057,33 @@ namespace AngeliaGame {
 			// Fix Hip Skirt
 			for (int i = 0; i < Patterns_Suit_HipSkirtLegLeg.Count; i++) {
 				var pat = Patterns_Suit_HipSkirtLegLeg[i];
-				if (CellRenderer.TryGetSpriteFromGroup(pat.A, 0, out _, false, true)) {
-					pat.B = 0;
+				if (CellRenderer.TryGetSpriteFromGroup(pat.Data.A, 0, out _, false, true)) {
+					pat.Data.B = 0;
 				} else {
-					pat.A = 0;
+					pat.Data.A = 0;
 				}
 				Patterns_Suit_HipSkirtLegLeg[i] = pat;
 			}
 
 			// Func
-			static void FillPatterns (string[] patterns, List<Int4> target, string suffix0, string suffix1 = "", string suffix2 = "", string suffix3 = "") {
+			static void FillPatterns (string[] patterns, List<PatternUnit> target, string suffix0, string suffix1 = "", string suffix2 = "", string suffix3 = "") {
 				if (patterns == null || patterns.Length == 0) return;
 				foreach (string pat in patterns) {
 					if (string.IsNullOrEmpty(pat)) {
-						target.Add(Int4.Zero);
+						target.Add(new PatternUnit() {
+							Data = default,
+							DisplayName = "",
+						});
 					} else {
-						target.Add(new Int4(
-							string.IsNullOrEmpty(suffix0) ? 0 : $"{pat}{suffix0}".AngeHash(),
-							string.IsNullOrEmpty(suffix1) ? 0 : $"{pat}{suffix1}".AngeHash(),
-							string.IsNullOrEmpty(suffix2) ? 0 : $"{pat}{suffix2}".AngeHash(),
-							string.IsNullOrEmpty(suffix3) ? 0 : $"{pat}{suffix3}".AngeHash()
-						));
+						target.Add(new PatternUnit() {
+							Data = new Int4(
+								string.IsNullOrEmpty(suffix0) ? 0 : $"{pat}{suffix0}".AngeHash(),
+								string.IsNullOrEmpty(suffix1) ? 0 : $"{pat}{suffix1}".AngeHash(),
+								string.IsNullOrEmpty(suffix2) ? 0 : $"{pat}{suffix2}".AngeHash(),
+								string.IsNullOrEmpty(suffix3) ? 0 : $"{pat}{suffix3}".AngeHash()
+							),
+							DisplayName = Language.Get($"Pat.{pat}".AngeHash(), pat),
+						});
 					}
 				}
 			}

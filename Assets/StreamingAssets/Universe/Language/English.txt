@@ -1,4 +1,5 @@
-﻿@enen:Enen
+﻿Pat.DefaultCharacter:Default
+@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
