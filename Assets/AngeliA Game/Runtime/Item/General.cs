@@ -6,25 +6,8 @@ using AngeliaFramework;
 namespace AngeliaGame {
 
 
-	public class iItemCoin : Item {
-		public override bool TouchToCollect => true;
-		public override bool ConsumeOnCollect => true;
-		public override void OnCollect (Entity target) {
-			base.OnCollect(target);
-			if (target == null || !Inventory.HasInventory(target.TypeID)) return;
-			Inventory.AddCoin(target.TypeID, 1);
-		}
-	}
-
-	public class iGoldBag : Item {
-		public override bool TouchToCollect => true;
-		public override bool ConsumeOnCollect => true;
-		public override void OnCollect (Entity target) {
-			base.OnCollect(target);
-			if (target == null || !Inventory.HasInventory(target.TypeID)) return;
-			Inventory.AddCoin(target.TypeID, 10);
-		}
-	}
+	public class iItemCoin : Item { }
+	public class iGoldBag : Item { }
 
 
 	public class iGunpowder : Item { }
