@@ -1,0 +1,37 @@
+0
+MANIFEST
+Language/ChineseSimplified.txt
+Language/English.txt
+Map/-1_-1_-1.ibb
+Map/-1_-1_0.ibb
+Map/-1_-1_1.ibb
+Map/-1_-1_2.ibb
+Map/-1_0_-1.ibb
+Map/-1_0_0.ibb
+Map/-1_0_1.ibb
+Map/-1_0_2.ibb
+Map/0_-1_-1.ibb
+Map/0_-1_0.ibb
+Map/0_-1_1.ibb
+Map/0_-1_2.ibb
+Map/0_0_-1.ibb
+Map/0_0_0.ibb
+Map/0_0_1.ibb
+Map/0_0_2.ibb
+Map/GlobalPositionMeta.json
+Map/MapEditorMeta.json
+Sheet/EmojiMeta.json
+Sheet/PatternMeta.json
+Sheet/Sheet.json
+Sheet/Sheet.png
+Sheet/SpriteEditingMeta.json
+Dialogue/ChineseSimplified/Test Choice 0.txt
+Dialogue/ChineseSimplified/Test Choice 1.txt
+Dialogue/ChineseSimplified/Test Choice 2.txt
+Dialogue/ChineseSimplified/TestConversation.txt
+Dialogue/ChineseSimplified/TestConversationMore.txt
+Dialogue/English/Test Choice 0.txt
+Dialogue/English/Test Choice 1.txt
+Dialogue/English/Test Choice 2.txt
+Dialogue/English/TestConversation.txt
+Dialogue/English/TestConversationMore.txt
