@@ -51,7 +51,7 @@ namespace AngeliaGame {
 
 		public sealed override void FrameUpdate () {
 			base.FrameUpdate();
-			if (Game.Current.State != GameState.Play) return;
+			if (Game.Current.IsPausing) return;
 			if (IsPlaying) {
 				ControlHintUI.ForceShowHint(1);
 				if (MenuEntity == null || !MenuEntity.Active) {
