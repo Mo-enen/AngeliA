@@ -211,6 +211,7 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 5
     m_NumAlphaKeys: 2
+  m_SheetTexture: {fileID: 2800000, guid: 0233f8fd0557c564ea13196d397cbacd, type: 3}
   m_Fonts:
   - {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   m_Cursors:

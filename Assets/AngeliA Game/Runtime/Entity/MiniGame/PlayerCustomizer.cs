@@ -33,32 +33,6 @@ namespace AngeliaGame {
 		}
 
 
-		[System.Serializable]
-		private class PatternMeta {
-
-			public string[] BodyPart_Heads;
-			public string[] BodyPart_Bodys;
-			public string[] BodyPart_ShoulderArmArmHands;
-			public string[] BodyPart_LegLegFoots;
-
-			public string[] BodyPart_Faces;
-			public string[] BodyPart_Hairs;
-			public string[] BodyPart_Ears;
-			public string[] BodyPart_Tails;
-			public string[] BodyPart_Wings;
-
-			public string[] Suit_Heads;
-			public string[] Suit_BodyShoulderArmArms;
-			public string[] Suit_HipSkirtLegLegs;
-			public string[] Suit_Foots;
-			public string[] Suit_Hands;
-
-			public string[] SkinColors;
-			public string[] HairColors;
-
-		}
-
-
 		private class PatternUnit {
 			public int A => Data.A;
 			public int B => Data.B;
@@ -76,6 +50,37 @@ namespace AngeliaGame {
 
 		#region --- VAR ---
 
+
+		// Pattern
+		public static readonly string[] BodyPart_Heads = {
+			"DefaultCharacter",
+			"Small"
+		};
+		public static readonly string[] BodyPart_Bodys = { "DefaultCharacter", "Small" };
+		public static readonly string[] BodyPart_ShoulderArmArmHands = { "DefaultCharacter", "Small" };
+		public static readonly string[] BodyPart_LegLegFoots = { "DefaultCharacter", "Small" };
+
+		public static readonly string[] BodyPart_Faces = { "DefaultCharacter", "Small" };
+		public static readonly string[] BodyPart_Hairs = { "", "DefaultCharacter", "Small" };
+		public static readonly string[] BodyPart_Ears = { "", "Yaya" };
+		public static readonly string[] BodyPart_Tails = { "", "Yaya" };
+		public static readonly string[] BodyPart_Wings = { "", "Angel", "Propeller" };
+
+		public static readonly string[] Suit_Heads = { "" };
+		public static readonly string[] Suit_BodyShoulderArmArms = { "" };
+		public static readonly string[] Suit_HipSkirtLegLegs = { "" };
+		public static readonly string[] Suit_Foots = { "" };
+		public static readonly string[] Suit_Hands = { "" };
+
+		public static readonly string[] SkinColors = {
+			"#efc2a0","#d09e83","#b17a66","#925549","#f0e6da","#b8aca7",
+			"#8a817f","#5e5858",
+		};
+		public static readonly string[] HairColors = {
+			"#ffffff","#cccccc","#999999","#666666","#333333","#fcd54a",
+			"#e1ab30","#ac813b","#725933","#ff7d66","#f05656","#c73a4a",
+			"#a82342",
+		};
 
 		// Const
 		private const int EDITOR_BASIC_Z = 60;
@@ -1012,45 +1017,39 @@ namespace AngeliaGame {
 			Patterns_SkinColors.Clear();
 			Patterns_HairColors.Clear();
 
-			var meta = AngeUtil.LoadOrCreateJson<PatternMeta>(Const.SheetRoot);
-			if (meta == null) return;
+			FillPatterns(BodyPart_Heads, Patterns_Head, ".Head");
+			FillPatterns(BodyPart_Bodys, Patterns_Body, ".Body");
+			FillPatterns(BodyPart_Faces, Patterns_Face, ".Face.Normal");
+			Patterns_FaceNames.AddRange(BodyPart_Faces);
+			FillPatterns(BodyPart_Hairs, Patterns_Hair, ".FrontHair.F", ".FrontHair.B", ".BackHair.F", ".BackHair.B");
+			FillPatterns(BodyPart_Ears, Patterns_Ear, ".EarL", ".EarR");
+			FillPatterns(BodyPart_Tails, Patterns_Tail, ".Tail");
+			FillPatterns(BodyPart_Wings, Patterns_Wing, ".Wing");
+			FillPatterns(BodyPart_ShoulderArmArmHands, Patterns_ShoulderArmArmHand, ".Shoulder", ".UpperArm", ".LowerArm", ".Hand");
+			FillPatterns(BodyPart_LegLegFoots, Patterns_LegLegFoot, ".UpperLeg", ".LowerLeg", ".Foot");
 
-			FillPatterns(meta.BodyPart_Heads, Patterns_Head, ".Head");
-			FillPatterns(meta.BodyPart_Bodys, Patterns_Body, ".Body");
-			FillPatterns(meta.BodyPart_Faces, Patterns_Face, ".Face.Normal");
-			Patterns_FaceNames.AddRange(meta.BodyPart_Faces);
-			FillPatterns(meta.BodyPart_Hairs, Patterns_Hair, ".FrontHair.F", ".FrontHair.B", ".BackHair.F", ".BackHair.B");
-			FillPatterns(meta.BodyPart_Ears, Patterns_Ear, ".EarL", ".EarR");
-			FillPatterns(meta.BodyPart_Tails, Patterns_Tail, ".Tail");
-			FillPatterns(meta.BodyPart_Wings, Patterns_Wing, ".Wing");
-			FillPatterns(meta.BodyPart_ShoulderArmArmHands, Patterns_ShoulderArmArmHand, ".Shoulder", ".UpperArm", ".LowerArm", ".Hand");
-			FillPatterns(meta.BodyPart_LegLegFoots, Patterns_LegLegFoot, ".UpperLeg", ".LowerLeg", ".Foot");
-
-			FillPatterns(meta.Suit_Heads, Patterns_Suit_Head, ".Suit.Head");
-			FillPatterns(meta.Suit_BodyShoulderArmArms, Patterns_Suit_BodyShoulderArmArm, ".Suit.Body", ".Suit.Shoulder", ".Suit.UpperArm", ".Suit.LowerArm");
-			FillPatterns(meta.Suit_HipSkirtLegLegs, Patterns_Suit_HipSkirtLegLeg, ".Suit.Hip", ".Suit.Skirt", ".Suit.UpperLeg", ".Suit.LowerLeg");
-			FillPatterns(meta.Suit_Hands, Patterns_Suit_Hand, ".Suit.Hand");
-			FillPatterns(meta.Suit_Foots, Patterns_Suit_Foot, ".Suit.Foot");
+			FillPatterns(Suit_Heads, Patterns_Suit_Head, ".Suit.Head");
+			FillPatterns(Suit_BodyShoulderArmArms, Patterns_Suit_BodyShoulderArmArm, ".Suit.Body", ".Suit.Shoulder", ".Suit.UpperArm", ".Suit.LowerArm");
+			FillPatterns(Suit_HipSkirtLegLegs, Patterns_Suit_HipSkirtLegLeg, ".Suit.Hip", ".Suit.Skirt", ".Suit.UpperLeg", ".Suit.LowerLeg");
+			FillPatterns(Suit_Hands, Patterns_Suit_Hand, ".Suit.Hand");
+			FillPatterns(Suit_Foots, Patterns_Suit_Foot, ".Suit.Foot");
 
 			// Colors
-			if (meta.SkinColors != null) {
-				foreach (var colorStr in meta.SkinColors) {
-					if (ColorUtility.TryParseHtmlString(colorStr, out var color)) {
-						Color32 color32 = color;
-						Patterns_SkinColors.Add(new PatternUnit() {
-							Data = new Int4(color32.r, color32.g, color32.b, int.MinValue),
-						});
-					}
+			foreach (var colorStr in SkinColors) {
+				if (ColorUtility.TryParseHtmlString(colorStr, out var color)) {
+					Color32 color32 = color;
+					Patterns_SkinColors.Add(new PatternUnit() {
+						Data = new Int4(color32.r, color32.g, color32.b, int.MinValue),
+					});
 				}
 			}
-			if (meta.HairColors != null) {
-				foreach (var colorStr in meta.HairColors) {
-					if (ColorUtility.TryParseHtmlString(colorStr, out var color)) {
-						Color32 color32 = color;
-						Patterns_HairColors.Add(new PatternUnit() {
-							Data = new Int4(color32.r, color32.g, color32.b, int.MinValue),
-						});
-					}
+
+			foreach (var colorStr in HairColors) {
+				if (ColorUtility.TryParseHtmlString(colorStr, out var color)) {
+					Color32 color32 = color;
+					Patterns_HairColors.Add(new PatternUnit() {
+						Data = new Int4(color32.r, color32.g, color32.b, int.MinValue),
+					});
 				}
 			}
 
