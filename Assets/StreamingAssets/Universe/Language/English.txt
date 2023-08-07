@@ -1,4 +1,4 @@
-﻿Pat.DefaultCharacter:Default
+﻿CtrlHint.Transfer:Transfer
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -18,7 +18,7 @@ CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
 CtrlHint.PlayerMenu.Take:Take
 CtrlHint.PlayerMenu.TakeUse:Take (Hold to Use)
-CtrlHint.QuickDrop:Transfer
+CtrlHint.HoldToUse:Hold to Use
 CtrlHint.Restart:Restart
 CtrlHint.ShowMenu:Show Menu
 CtrlHint.Skip:Skip
@@ -85,6 +85,7 @@ Palette.Platform:Platform
 Palette.System:System
 Palette.Vegetation:Vegetation
 Palette.Wallpaper:Wallpaper
+Pat.DefaultCharacter:Default
 UI.Back:Back
 UI.BodyPart.ArmHand:Arm
 UI.BodyPart.Body:Body
