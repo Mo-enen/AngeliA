@@ -11,6 +11,10 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 namespace AngeliaGame {
 	public class eYaya : Player {
 
+		// Const
+		private static readonly int YAYA_PAW = typeof(eYayaPaw).AngeHash();
+
+
 		// Api
 		protected override bool SpinOnGroundPound => true;
 
@@ -39,6 +43,11 @@ namespace AngeliaGame {
 			// Summon GuaGua
 			if (GuaGua == null || !GuaGua.Active) {
 				GuaGua = Summon.CreateSummon<eGuaGua>(this, X, Y);
+			}
+			// Default Attack
+			if (AttackStartAtCurrentFrame && Inventory.GetEquipment(TypeID, EquipmentType.Weapon) == 0) {
+				var paw = Stage.SpawnEntity(YAYA_PAW, X, Y) as Bullet;
+				paw?.Release(this, AttackTargetTeam, new(FacingRight ? 1 : -1, 0), 0, 0);
 			}
 		}
 

@@ -1,5 +1,4 @@
-﻿CtrlHint.Transfer:Transfer
-@enen:Enen
+﻿@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
@@ -10,6 +9,7 @@ CtrlHint.Drop:Drop
 CtrlHint.EnterDoor:Enter
 CtrlHint.Equip:Equip
 CtrlHint.HideMenu:Hide Menu
+CtrlHint.HoldToUse:Hold to Use
 CtrlHint.Jump:Jump
 CtrlHint.MEDT.Nav:Overlook
 CtrlHint.MEDT.PlayFromBegin:Play from Start
@@ -18,12 +18,12 @@ CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
 CtrlHint.PlayerMenu.Take:Take
 CtrlHint.PlayerMenu.TakeUse:Take (Hold to Use)
-CtrlHint.HoldToUse:Hold to Use
 CtrlHint.Restart:Restart
 CtrlHint.ShowMenu:Show Menu
 CtrlHint.Skip:Skip
 CtrlHint.SwitchPlayer:Switch Character
 CtrlHint.Throw:Throw
+CtrlHint.Transfer:Transfer
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
 Hint.Pong.Move:Move
@@ -131,11 +131,6 @@ UI.Save:Save
 UI.Setting:Setting
 UI.SubTitle.0:Sub Title 0
 UI.SubTitle.1:Sub Title 1
-UI.Suit.Bodysuit:Bodysuit
-UI.Suit.Glove:Glove
-UI.Suit.Hat:Hat
-UI.Suit.Pants:Pants
-UI.Suit.Shoes:Shoes
 UI.Tetris.ClearedLine:Lines:
 UI.Tetris.Holding:Holding
 UI.Up:Up

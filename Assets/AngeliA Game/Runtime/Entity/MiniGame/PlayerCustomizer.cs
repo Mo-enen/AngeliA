@@ -25,11 +25,6 @@ namespace AngeliaGame {
 			SkinColor,
 			HairColor,
 			Wing,
-			Suit_Head,
-			Suit_BodyShoulderArmArm,
-			Suit_Hand,
-			Suit_HipSkirtLegLeg,
-			Suit_Foot,
 		}
 
 
@@ -66,12 +61,6 @@ namespace AngeliaGame {
 		public static readonly string[] BodyPart_Tails = { "", "Yaya" };
 		public static readonly string[] BodyPart_Wings = { "", "Angel", "Propeller" };
 
-		public static readonly string[] Suit_Heads = { "" };
-		public static readonly string[] Suit_BodyShoulderArmArms = { "" };
-		public static readonly string[] Suit_HipSkirtLegLegs = { "" };
-		public static readonly string[] Suit_Foots = { "" };
-		public static readonly string[] Suit_Hands = { "" };
-
 		public static readonly string[] SkinColors = {
 			"#efc2a0","#d09e83","#b17a66","#925549","#f0e6da","#b8aca7",
 			"#8a817f","#5e5858",
@@ -103,11 +92,6 @@ namespace AngeliaGame {
 			"UI.BodyPart.SkinColor".AngeHash(),
 			"UI.BodyPart.HairColor".AngeHash(),
 			"UI.BodyPart.Wing".AngeHash(),
-			"UI.Suit.Hat".AngeHash(),
-			"UI.Suit.Bodysuit".AngeHash(),
-			"UI.Suit.Glove".AngeHash(),
-			"UI.Suit.Pants".AngeHash(),
-			"UI.Suit.Shoes".AngeHash(),
 		};
 		private static readonly int[] MAIN_MENU_ICONS = {
 			"Icon.BodyPart.Head".AngeHash(),
@@ -121,11 +105,6 @@ namespace AngeliaGame {
 			"Icon.BodyPart.SkinColor".AngeHash(),
 			"Icon.BodyPart.HairColor".AngeHash(),
 			"Icon.BodyPart.Wing".AngeHash(),
-			"Icon.Suit.Hat".AngeHash(),
-			"Icon.Suit.Bodysuit".AngeHash(),
-			"Icon.Suit.Glove".AngeHash(),
-			"Icon.Suit.Pants".AngeHash(),
-			"Icon.Suit.Shoes".AngeHash(),
 		};
 
 		// Api
@@ -145,11 +124,6 @@ namespace AngeliaGame {
 		private readonly List<PatternUnit> Patterns_Wing = new();
 		private readonly List<PatternUnit> Patterns_ShoulderArmArmHand = new();
 		private readonly List<PatternUnit> Patterns_LegLegFoot = new();
-		private readonly List<PatternUnit> Patterns_Suit_Head = new();
-		private readonly List<PatternUnit> Patterns_Suit_BodyShoulderArmArm = new();
-		private readonly List<PatternUnit> Patterns_Suit_HipSkirtLegLeg = new();
-		private readonly List<PatternUnit> Patterns_Suit_Hand = new();
-		private readonly List<PatternUnit> Patterns_Suit_Foot = new();
 		private readonly List<PatternUnit> Patterns_SkinColors = new();
 		private readonly List<PatternUnit> Patterns_HairColors = new();
 
@@ -609,69 +583,6 @@ namespace AngeliaGame {
 						}
 						break;
 
-					case SubMenuType.Suit_Head:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_Suit_Head, Const.WHITE,
-							new Int4(player.Suit_Head, 0, 0, 0), out invokingIndex
-						)) {
-							var pat = Patterns_Suit_Head[invokingIndex];
-							player.Suit_Head = pat.A;
-						}
-						break;
-
-					case SubMenuType.Suit_BodyShoulderArmArm:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_Suit_BodyShoulderArmArm, Const.WHITE,
-							new Int4(player.Suit_Body, player.Suit_UpperArm, player.Suit_LowerArm, 0),
-							out invokingIndex
-						)) {
-							var pat = Patterns_Suit_BodyShoulderArmArm[invokingIndex];
-							player.Suit_Body = pat.A;
-							player.Suit_Shoulder = pat.B;
-							player.Suit_UpperArm = pat.C;
-							player.Suit_LowerArm = pat.D;
-						}
-						break;
-
-					case SubMenuType.Suit_Hand:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_Suit_Hand, Const.WHITE,
-							new Int4(player.Suit_Hand, 0, 0, 0), out invokingIndex
-						)) {
-							var pat = Patterns_Suit_Hand[invokingIndex];
-							player.Suit_Hand = pat.A;
-						}
-						break;
-
-					case SubMenuType.Suit_HipSkirtLegLeg:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_Suit_HipSkirtLegLeg, Const.WHITE,
-							new Int4(player.Suit_Hip, player.Suit_Skirt, player.Suit_UpperLeg, player.Suit_LowerLeg),
-							out invokingIndex
-						)) {
-							var pat = Patterns_Suit_HipSkirtLegLeg[invokingIndex];
-							player.Suit_Hip = pat.A;
-							player.Suit_Skirt = pat.B;
-							player.Suit_UpperLeg = pat.C;
-							player.Suit_LowerLeg = pat.D;
-						}
-						break;
-
-					case SubMenuType.Suit_Foot:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_Suit_Foot, Const.WHITE,
-							new Int4(player.Suit_Foot, 0, 0, 0), out invokingIndex
-						)) {
-							var pat = Patterns_Suit_Foot[invokingIndex];
-							player.Suit_Foot = pat.A;
-						}
-						break;
-
 				}
 			}
 
@@ -1009,11 +920,6 @@ namespace AngeliaGame {
 			Patterns_Wing.Clear();
 			Patterns_ShoulderArmArmHand.Clear();
 			Patterns_LegLegFoot.Clear();
-			Patterns_Suit_Head.Clear();
-			Patterns_Suit_BodyShoulderArmArm.Clear();
-			Patterns_Suit_HipSkirtLegLeg.Clear();
-			Patterns_Suit_Hand.Clear();
-			Patterns_Suit_Foot.Clear();
 			Patterns_SkinColors.Clear();
 			Patterns_HairColors.Clear();
 
@@ -1027,12 +933,6 @@ namespace AngeliaGame {
 			FillPatterns(BodyPart_Wings, Patterns_Wing, ".Wing");
 			FillPatterns(BodyPart_ShoulderArmArmHands, Patterns_ShoulderArmArmHand, ".Shoulder", ".UpperArm", ".LowerArm", ".Hand");
 			FillPatterns(BodyPart_LegLegFoots, Patterns_LegLegFoot, ".UpperLeg", ".LowerLeg", ".Foot");
-
-			FillPatterns(Suit_Heads, Patterns_Suit_Head, ".Suit.Head");
-			FillPatterns(Suit_BodyShoulderArmArms, Patterns_Suit_BodyShoulderArmArm, ".Suit.Body", ".Suit.Shoulder", ".Suit.UpperArm", ".Suit.LowerArm");
-			FillPatterns(Suit_HipSkirtLegLegs, Patterns_Suit_HipSkirtLegLeg, ".Suit.Hip", ".Suit.Skirt", ".Suit.UpperLeg", ".Suit.LowerLeg");
-			FillPatterns(Suit_Hands, Patterns_Suit_Hand, ".Suit.Hand");
-			FillPatterns(Suit_Foots, Patterns_Suit_Foot, ".Suit.Foot");
 
 			// Colors
 			foreach (var colorStr in SkinColors) {
@@ -1051,17 +951,6 @@ namespace AngeliaGame {
 						Data = new Int4(color32.r, color32.g, color32.b, int.MinValue),
 					});
 				}
-			}
-
-			// Fix Hip Skirt
-			for (int i = 0; i < Patterns_Suit_HipSkirtLegLeg.Count; i++) {
-				var pat = Patterns_Suit_HipSkirtLegLeg[i];
-				if (CellRenderer.TryGetSpriteFromGroup(pat.Data.A, 0, out _, false, true)) {
-					pat.Data.B = 0;
-				} else {
-					pat.Data.A = 0;
-				}
-				Patterns_Suit_HipSkirtLegLeg[i] = pat;
 			}
 
 			// Func
