@@ -255,9 +255,7 @@ namespace AngeliaGame {
 			int leftPanelWidth = Unify(400);
 			var leftPanelRect = windowRect.Shrink(0, windowRect.width - leftPanelWidth, 0, 0);
 			bool flying = CurrentSubMenu.HasValue && CurrentSubMenu.Value == SubMenuType.Wing && player.WingGroupID != 0;
-			player.ForcePoseAnimation(
-				flying ? CharacterPoseAnimationType.Fly : CharacterPoseAnimationType.Idle
-			);
+			player.AnimatedPoseType = flying ? CharacterPoseAnimationType.Fly : CharacterPoseAnimationType.Idle;
 			AngeUtil.DrawPoseCharacterAsUI(leftPanelRect.Shrink(Unify(32)), player, Game.GlobalFrame);
 
 			// Editor
