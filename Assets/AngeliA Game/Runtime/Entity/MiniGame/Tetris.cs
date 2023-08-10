@@ -268,7 +268,7 @@ namespace AngeliaGame {
 				labelRect.x = stageRect.CenterX() - labelRect.width / 2;
 				labelRect.y = stageRect.CenterY() - labelRect.height / 2;
 				CellRenderer.Draw(Const.PIXEL, labelRect, Const.BLACK, int.MaxValue);
-				CellRendererGUI.Label(CellLabel.TempLabel(Language.Get(Const.UI_GAMEOVER, "Game Over")), labelRect);
+				CellRendererGUI.Label(CellContent.Get(Language.Get(Const.UI_GAMEOVER, "Game Over")), labelRect);
 			}
 
 			int blockSize = stageRect.width / WIDTH;
@@ -387,7 +387,7 @@ namespace AngeliaGame {
 				);
 				// Label
 				CellRendererGUI.Label(
-					CellLabel.TempLabel(Language.Get(UI_HOLDING, "Holding"), ReverseUnify(holdingBlockSize)),
+					CellContent.Get(Language.Get(UI_HOLDING, "Holding"), ReverseUnify(holdingBlockSize)),
 					new RectInt(
 						stageRect.xMin - 4 * holdingBlockSize - HOLDING_PADDING,
 						stageRect.yMax - 4 * holdingBlockSize,
@@ -407,11 +407,11 @@ namespace AngeliaGame {
 			);
 
 			// Lines
-			CellRendererGUI.Label(CellLabel.TempLabel(
+			CellRendererGUI.Label(CellContent.Get(
 				Language.Get(UI_CLR_LINE, "Lines:"),
 				CHAR_SIZE, Alignment.MidLeft
 			), stateRect, out var lineBounds);
-			CellRendererGUI.Label(CellLabel.TempLabel(
+			CellRendererGUI.Label(CellContent.Get(
 				LinesString.GetString(ClearedLines),
 				CHAR_SIZE, Alignment.MidRight
 			), stateRect, out var lineNumberBounds);

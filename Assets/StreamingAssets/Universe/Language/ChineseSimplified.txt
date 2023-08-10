@@ -31,6 +31,8 @@ Hint.Tetris.Drop:掉落
 Hint.Tetris.Hold:保留
 Hint.Tetris.Move:移动
 Hint.Tetris.Rotate:旋转
+iDes.WizardHat:巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子
+iName.WizardHat:巫师帽
 MEDT.BackgroundOnly:仅背景
 MEDT.CancelDrop:取消放下
 MEDT.Drop:鼠标左键放下
@@ -129,8 +131,6 @@ UI.Restart:重新开始
 UI.Right:右
 UI.Save:保存
 UI.Setting:设置
-UI.SubTitle.0:副标题零
-UI.SubTitle.1:副标题一
 UI.Tetris.ClearedLine:行数:
 UI.Tetris.Holding:保留
 UI.Up:上

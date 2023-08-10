@@ -182,11 +182,11 @@ namespace AngeliaGame {
 			int scoreWidth = windowRect.width / 2 - scoreGap;
 			int scoreY = windowRect.y + windowRect.height - charRectSize;
 			CellRendererGUI.Label(
-				CellLabel.TempLabel(PlayerScoreString.GetString(ScorePlayer), 42, Alignment.MidRight),
+				CellContent.Get(PlayerScoreString.GetString(ScorePlayer), 42, Alignment.MidRight),
 				new RectInt(windowRect.x, scoreY, scoreWidth, charRectSize)
 			);
 			CellRendererGUI.Label(
-				CellLabel.TempLabel(BotScoreString.GetString(ScoreBot), 42, Alignment.MidLeft),
+				CellContent.Get(BotScoreString.GetString(ScoreBot), 42, Alignment.MidLeft),
 				new RectInt(midX + scoreGap, scoreY, scoreWidth, charRectSize)
 			);
 

@@ -313,7 +313,7 @@ namespace AngeliaGame {
 					}
 				}
 				CellRendererGUI.Label(
-					CellLabel.TempLabel(Language.Get(Const.UI_BACK, "Back"), 28, Alignment.MidMid),
+					CellContent.Get(Language.Get(Const.UI_BACK, "Back"), 28, Alignment.MidMid),
 					buttonRect, out var bounds
 				);
 				Game.Current.SetCursor(Const.CURSOR_HAND, buttonRect, 1);
@@ -331,7 +331,7 @@ namespace AngeliaGame {
 					}
 				} else {
 					CellRendererGUI.Label(
-						CellLabel.TempLabel(BackButtonHotkeyLabel, 24, Alignment.MidLeft), hotkeyRect
+						CellContent.Get(BackButtonHotkeyLabel, 24, Alignment.MidLeft), hotkeyRect
 					);
 				}
 
@@ -622,7 +622,7 @@ namespace AngeliaGame {
 
 				// Label
 				CellRendererGUI.Label(
-					CellLabel.TempLabel(label, 32, Alignment.MidLeft),
+					CellContent.Get(label, 32, Alignment.MidLeft),
 					fieldRect.Shrink(fieldRect.height + fieldPadding, 0, 0, 0)
 				);
 
@@ -687,7 +687,7 @@ namespace AngeliaGame {
 			var i2s = fieldIndex == 0 ? SizeX_ToString : SizeY_ToString;
 			string numberStr = i2s.GetString(size);
 			CellRendererGUI.Label(
-				CellLabel.TempLabel(numberStr, 24, Alignment.MidMid),
+				CellContent.Get(numberStr, 24, Alignment.MidMid),
 				new RectInt(panelRect.x + iconSize, panelRect.y, numberSize, numberSize)
 			);
 
@@ -815,13 +815,13 @@ namespace AngeliaGame {
 					if (iconID != 0 || index != 0) {
 						// Label
 						CellRendererGUI.Label(
-							CellLabel.TempLabel(displayName, 24, Alignment.MidLeft),
+							CellContent.Get(displayName, 24, Alignment.MidLeft),
 							rect.Shrink(rect.height + iconPadding, 0, 0, 0)
 						);
 					} else {
 						// Empty
 						CellRendererGUI.Label(
-							CellLabel.TempLabel(Language.Get(Const.UI_NONE, "None"), Const.WHITE),
+							CellContent.Get(Language.Get(Const.UI_NONE, "None"), Const.WHITE),
 							rect
 						);
 					}

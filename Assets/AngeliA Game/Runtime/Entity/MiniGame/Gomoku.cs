@@ -58,7 +58,7 @@ namespace AngeliaGame {
 		private int WinningDeltaY = -1;
 		private int LastPlacePositionX = -1;
 		private int LastPlacePositionY = -1;
-		private readonly CellLabel HintLabel = new() { Alignment = Alignment.MidLeft, CharSize = 24, };
+		private readonly CellContent HintLabel = new() { Alignment = Alignment.MidLeft, CharSize = 24, };
 
 
 		#endregion

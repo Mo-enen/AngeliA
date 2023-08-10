@@ -31,6 +31,8 @@ Hint.Tetris.Drop:Drop
 Hint.Tetris.Hold:Hold
 Hint.Tetris.Move:Move
 Hint.Tetris.Rotate:Rotate
+iDes.WizardHat:Wizard's Hat
+iName.WizardHat:Wizard Hat
 MEDT.BackgroundOnly:Background Only
 MEDT.CancelDrop:Cancel Drop
 MEDT.Drop:Mouse Left Button to Drop
@@ -129,8 +131,6 @@ UI.Restart:Restart
 UI.Right:Right
 UI.Save:Save
 UI.Setting:Setting
-UI.SubTitle.0:Sub Title 0
-UI.SubTitle.1:Sub Title 1
 UI.Tetris.ClearedLine:Lines:
 UI.Tetris.Holding:Holding
 UI.Up:Up
