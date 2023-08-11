@@ -5,7 +5,9 @@ using AngeliaFramework;
 
 namespace AngeliaGame {
 
-	public abstract class iFood : Item { }
+	public abstract class iFood : Item {
+		public sealed override int MaxStackCount => 16;
+	}
 	public abstract class iMeat : iFood { }
 	public abstract class iSnack : iFood { }
 	public abstract class iFruit : iFood { }
