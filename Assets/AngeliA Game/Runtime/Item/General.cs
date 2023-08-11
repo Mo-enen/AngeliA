@@ -181,7 +181,9 @@ namespace AngeliaGame {
 	public class iPaper : Item { }
 	public class iIngotIron : Item { }
 	public class iIngotGold : Item { }
-	public class iItemCoin : Item { }
+	public class iItemCoin : Item {
+		public override int MaxStackCount => 100;
+	}
 	public class iHerb : Item { }
 	public class iProcessor : Item { }
 	public class iScales : Item { }

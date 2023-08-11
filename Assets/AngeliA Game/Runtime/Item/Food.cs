@@ -19,7 +19,7 @@ namespace AngeliaGame {
 	public class iBeefRaw : iMeat { }
 	public class iChickenLegRaw : iMeat { }
 	public class iChickenWingRaw : iMeat { }
-	public class iSteakRaw : iMeat { }
+	public class iPorkRaw : iMeat { }
 	public class iMeatballRaw : iMeat { }
 	public class iMeatSkewersRaw : iMeat { }
 	public class iSausageRaw : iMeat { }
@@ -34,7 +34,7 @@ namespace AngeliaGame {
 	public class iBeefCooked : iMeat { }
 	public class iChickenLegCooked : iMeat { }
 	public class iChickenWingCooked : iMeat { }
-	public class iSteakCooked : iMeat { }
+	public class iPorkCooked : iMeat { }
 	public class iMeatballCooked : iMeat { }
 	public class iMeatSkewersCooked : iMeat { }
 	public class iSausageCooked : iMeat { }
@@ -56,7 +56,7 @@ namespace AngeliaGame {
 	public class iCakeCream : iSnack { }
 	public class iCakeRoll : iSnack { }
 	public class iHamburger : iSnack { }
-	public class iBreadPork : iSnack { }
+	public class iBread : iSnack { }
 	public class iDonut : iSnack { }
 	public class iFries : iSnack { }
 	public class iBaoZi : iSnack { }
@@ -73,7 +73,7 @@ namespace AngeliaGame {
 	public class iPotatoChips : iSnack { }
 	public class iEggTart : iSnack { }
 	public class iSoup : iSnack { }
-	public class iLollipop : iSnack { }
+	public class iPancake : iSnack { }
 	public class iPudding : iSnack { }
 	public class iIceCream : iSnack { }
 	public class iToast : iSnack { }
@@ -90,7 +90,7 @@ namespace AngeliaGame {
 	public class iInstantNoodle : iSnack { }
 	public class iSalt : iSnack { }
 	public class iBlackPepper : iSnack { }
-	public class iSugarCube : iSnack { }
+	public class iTofu : iSnack { }
 	public class iDriedBeef : iSnack { }
 	public class iButter : iSnack { }
 	public class iTakoyaki : iSnack { }
@@ -122,7 +122,7 @@ namespace AngeliaGame {
 	public class iStrawberryJuice : iSnack { }
 	public class iLemonWater : iSnack { }
 	public class iCoconutJuice : iSnack { }
-	public class iEnergyDrink : iSnack { }
+	public class iNori : iSnack { }
 
 
 
