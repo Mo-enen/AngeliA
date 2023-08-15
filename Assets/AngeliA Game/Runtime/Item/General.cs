@@ -139,7 +139,7 @@ namespace AngeliaGame {
 	public class iScroll : Item { }
 	public class iGourd : Item { }
 	public class iGiftBox : Item { }
-	public class iCandle : Item { }
+	public class iStar : Item { }
 	public class iGemRed : Item { }
 	public class iGemBlue : Item { }
 	public class iGemOrange : Item { }
@@ -153,8 +153,8 @@ namespace AngeliaGame {
 	public class iFlowerYellow : Item { }
 	public class iFlowerCyan : Item { }
 	public class iFlowerWhite : Item { }
-	public class iFlowerpot : Item { }
-	public class iPottedPlant : Item { }
+	public class iChain : Item { }
+	public class iChopsticks : Item { }
 	public class iRubyRed : Item { }
 	public class iRubyBlue : Item { }
 	public class iRubyOrange : Item { }
@@ -176,7 +176,7 @@ namespace AngeliaGame {
 	public class iTotemPoison : Item { }
 	public class iSkull : Item { }
 	public class iABC : Item { }
-	public class i123 : Item { }
+	public class iGoblinHead : Item { }
 	public class iDialogBox : Item { }
 	public class iPaper : Item { }
 	public class iIngotIron : Item { }

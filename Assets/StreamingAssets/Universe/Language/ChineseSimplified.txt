@@ -1,4 +1,6 @@
-﻿@enen:伊楠
+﻿CtrlHint.CombineItem:合成物品
+CtrlHint.CombineAllItem:合成所有物品
+@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子

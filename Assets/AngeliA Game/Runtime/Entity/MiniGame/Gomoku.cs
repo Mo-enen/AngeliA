@@ -99,7 +99,11 @@ namespace AngeliaGame {
 
 			if (Winner.HasValue) {
 				if (FrameInput.AnyKeyDown) {
-					OpenGameOverMenu(Winner.Value == GomokuAI.GomokuStone.Black);
+					if (Winner.Value != GomokuAI.GomokuStone.None) {
+						OpenGameOverMenu(Winner.Value == GomokuAI.GomokuStone.Black);
+					} else {
+						OpenDrawMenu();
+					}
 				}
 				return;
 			}
@@ -277,7 +281,6 @@ namespace AngeliaGame {
 			);
 			if (win != GomokuAI.GomokuStone.None) {
 				Winner = win;
-				OpenGameOverMenu(win == GomokuAI.GomokuStone.Black);
 			}
 			BlackTurn = !BlackTurn;
 			LastPlacePositionX = x;

@@ -1,4 +1,6 @@
-﻿@enen:Enen
+﻿CtrlHint.CombineItem:Combine
+CtrlHint.CombineAllItem:Combine All
+@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu

@@ -171,7 +171,7 @@ namespace AngeliaGame {
 	public class iMushroomRed : iVegetable { }
 	public class iMushroomGreen : iVegetable { }
 	public class iMushroomBlue : iVegetable { }
-	public class iMushroomOrange : iVegetable { }
+	public class iOnion : iVegetable { }
 	public class iCucumberCut : iVegetable { }
 	public class iChineseCabbageCut : iVegetable { }
 	public class iEggplantCut : iVegetable { }
@@ -186,7 +186,7 @@ namespace AngeliaGame {
 	public class iMushroomRedCut : iVegetable { }
 	public class iMushroomGreenCut : iVegetable { }
 	public class iMushroomBlueCut : iVegetable { }
-	public class iMushroomOrangeCut : iVegetable { }
+	public class iOnionCut : iVegetable { }
 
 
 

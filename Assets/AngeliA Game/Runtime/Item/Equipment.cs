@@ -219,7 +219,7 @@ namespace AngeliaGame {
 		public override EquipmentType EquipmentType => EquipmentType.BodySuit;
 
 	}
-	public class iJediCloak : Equipment {
+	public class iCloak : Equipment {
 		public override EquipmentType EquipmentType => EquipmentType.BodySuit;
 
 	}
@@ -671,11 +671,11 @@ namespace AngeliaGame {
 		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 
 	}
-	public class iGlovesSand : Equipment {
+	public class iGlovesOven : Equipment {
 		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 
 	}
-	public class iGlovesGuard : Equipment {
+	public class iGlovesPaladin : Equipment {
 		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 
 	}
@@ -707,7 +707,7 @@ namespace AngeliaGame {
 		public override EquipmentType EquipmentType => EquipmentType.Shoes;
 
 	}
-	public class iShoesGuard : Equipment {
+	public class iShoesPaladin : Equipment {
 		public override EquipmentType EquipmentType => EquipmentType.Shoes;
 
 	}
