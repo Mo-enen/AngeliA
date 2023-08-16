@@ -9,9 +9,36 @@ namespace AngeliaGame {
 
 
 		// SUB
-		private enum ActionType { None, CombineOne, CombineAll, OpenDoc, }
+		private enum ActionType { None, CombineOne, CombineAll, }
+
+		private class DocComparer : IComparer<Int4> {
+			public static readonly DocComparer Instance = new();
+			public int Item0;
+			public int Item1;
+			public int Item2;
+			public int Item3;
+			public int Compare (Int4 a, Int4 b) {
+				int countA = 0;
+				int countB = 0;
+				if (ContainItem(a.A)) countA++;
+				if (ContainItem(a.B)) countA++;
+				if (ContainItem(a.C)) countA++;
+				if (ContainItem(a.D)) countA++;
+				if (ContainItem(b.A)) countB++;
+				if (ContainItem(b.B)) countB++;
+				if (ContainItem(b.C)) countB++;
+				if (ContainItem(b.D)) countB++;
+				return countB.CompareTo(countA);
+			}
+			public bool ContainItem (int item) => item != 0 && (item == Item0 || item == Item1 || item == Item2 || item == Item3);
+		}
 
 		// Const
+		private const int DOC_ITEM_HEIGHT = 32;
+		private const int DOC_ITEM_PADDING = 6;
+		private static readonly int QUESTION_MARK_CODE = "QuestionMark16".AngeHash();
+		private static readonly int PLUS_CODE = "Plus16".AngeHash();
+		private static readonly int EQUAL_CODE = "Equal16".AngeHash();
 		private static readonly int CRAFTING_FRAME_CODE = "CraftingTableFrame".AngeHash();
 		private static readonly int ARROW_CODE = "TriangleRight13".AngeHash();
 		private static readonly int FRAME_CODE = "Frame16".AngeHash();
@@ -23,16 +50,27 @@ namespace AngeliaGame {
 		public static readonly CraftingTableUI Instance = new();
 
 		// Data
+		private readonly List<Int4> DocumentContent = new();
+		private Int4 CurrentCraftingItems = default;
 		private bool CursorInDoc = false;
 		private bool CursorInResult = false;
 		private int CombineRepeat = 0;
 		private int CombineResultID = 0;
 		private int CombineResultCount = 0;
+		private int DocumentScrollY = 0;
+		private int DocumentPageSize = 1;
 
 
 		// MSG
+		public override void EnablePanel (int inventoryID, int column, int row, int itemSize = 64, bool centerPanel = false) {
+			base.EnablePanel(inventoryID, column, row, itemSize, centerPanel);
+			DocumentContent.Clear();
+			CurrentCraftingItems.A = int.MinValue;
+		}
+
+
 		public override void DrawPanel (RectInt panelRect) {
-			int sidePanelGap = CellRendererGUI.Unify(64);
+			int sidePanelGap = Unify(64);
 			int docPanelSize = panelRect.height;
 			int resultPanelSize = panelRect.height;
 			var resultRect = new RectInt(panelRect.xMax, panelRect.y, resultPanelSize + sidePanelGap, panelRect.height);
@@ -40,6 +78,7 @@ namespace AngeliaGame {
 			var docRect = new RectInt(panelRect.x - docPanelSize - sidePanelGap, panelRect.y, docPanelSize + sidePanelGap, docPanelSize);
 			var docItemRect = new RectInt(panelRect.x - docPanelSize - sidePanelGap, panelRect.y, docPanelSize, docPanelSize);
 			Update_Cache();
+			DocumentPageSize = panelRect.height / Unify(DOC_ITEM_HEIGHT + DOC_ITEM_PADDING);
 			var action = Update_Action(docItemRect, resultItemRect);
 			MouseInPanel = MouseInPanel || new RectInt(docRect.x, panelRect.y, resultRect.xMax - docRect.x, panelRect.height).Contains(FrameInput.MouseGlobalPosition);
 			Update_Inventory(panelRect);
@@ -52,18 +91,26 @@ namespace AngeliaGame {
 				case ActionType.CombineAll:
 					TakeAllResults();
 					break;
-				case ActionType.OpenDoc:
-					OpenDocumentation();
-					break;
 			}
 		}
 
 
 		private void Update_Cache () {
+
+			// Inventory
+			int invItem0 = Inventory.GetItemAt(InventoryID, 0);
+			int invItem1 = Inventory.GetItemAt(InventoryID, 1);
+			int invItem2 = Inventory.GetItemAt(InventoryID, 2);
+			int invItem3 = Inventory.GetItemAt(InventoryID, 3);
+			var inv = ItemSystem.GetSortedCombination(invItem0, invItem1, invItem2, invItem3);
+			if (inv != CurrentCraftingItems) {
+				CurrentCraftingItems = inv;
+				InventoryChanged(inv);
+			}
+
+			// Result
 			bool haveCombineResult = ItemSystem.TryGetCombination(
-				Inventory.GetItemAt(InventoryID, 0), Inventory.GetItemAt(InventoryID, 1),
-				Inventory.GetItemAt(InventoryID, 2), Inventory.GetItemAt(InventoryID, 3),
-				out CombineResultID, out CombineResultCount
+				invItem0, invItem1, invItem2, invItem3, out CombineResultID, out CombineResultCount
 			);
 			if (haveCombineResult) {
 				CombineRepeat = 0;
@@ -77,6 +124,7 @@ namespace AngeliaGame {
 				CombineResultCount = 0;
 				CombineRepeat = 0;
 			}
+
 		}
 
 
@@ -95,8 +143,11 @@ namespace AngeliaGame {
 				}
 				// Doc
 				CursorInDoc = docItemRect.Contains(FrameInput.MouseGlobalPosition);
-				if (CursorInDoc && FrameInput.MouseLeftButtonDown) {
-					action = ActionType.OpenDoc;
+				if (CursorInDoc && FrameInput.MouseWheelDelta != 0 && DocumentContent.Count > DocumentPageSize) {
+					// Scroll Doc
+					DocumentScrollY = (DocumentScrollY - FrameInput.MouseWheelDelta).Clamp(
+						0, DocumentContent.Count - DocumentPageSize
+					);
 				}
 			} else if (!menu.CursorInBottomPanel) {
 				// Result
@@ -137,10 +188,6 @@ namespace AngeliaGame {
 				}
 				// Doc
 				if (CursorInDoc) {
-					if (FrameInput.GameKeyDown(Gamekey.Action)) {
-						FrameInput.UseGameKey(Gamekey.Action);
-						action = ActionType.OpenDoc;
-					}
 					if (FrameInput.GameKeyDown(Gamekey.Right)) {
 						FrameInput.UseGameKey(Gamekey.Right);
 						CursorInDoc = false;
@@ -148,8 +195,15 @@ namespace AngeliaGame {
 					}
 					if (FrameInput.GameKeyDown(Gamekey.Down)) {
 						FrameInput.UseGameKey(Gamekey.Down);
-						menu.CursorIndex = 0;
-						menu.CursorInBottomPanel = true;
+						DocumentScrollY = (DocumentScrollY + 4).Clamp(
+							0, DocumentContent.Count - DocumentPageSize
+						);
+					}
+					if (FrameInput.GameKeyDown(Gamekey.Up)) {
+						FrameInput.UseGameKey(Gamekey.Up);
+						DocumentScrollY = (DocumentScrollY - 4).Clamp(
+							0, DocumentContent.Count - DocumentPageSize
+						);
 					}
 				} else if (menu.CursorIndex % 2 == 0) {
 					if (FrameInput.GameKeyDown(Gamekey.Left)) {
@@ -168,9 +222,9 @@ namespace AngeliaGame {
 
 
 		private void Update_Inventory (RectInt panelRect) {
-			int itemSize = CellRendererGUI.Unify(ItemSize);
+			int itemSize = Unify(ItemSize);
 			var itemRect = new RectInt(0, 0, itemSize, itemSize);
-			int padding = CellRendererGUI.Unify(12);
+			int padding = Unify(12);
 			int itemBorder = itemSize / 16;
 			bool cursorInInventory = !CursorInResult && !CursorInDoc;
 			for (int i = 0; i < 4; i++) {
@@ -196,7 +250,7 @@ namespace AngeliaGame {
 			var menu = PlayerMenuUI.Instance;
 
 			// BG
-			int bgPadding = CellRendererGUI.Unify(12);
+			int bgPadding = Unify(12);
 			CellRenderer.Draw(
 				Const.PIXEL,
 				docRect.Expand(bgPadding, 0, bgPadding, bgPadding),
@@ -204,29 +258,86 @@ namespace AngeliaGame {
 			);
 
 			// Highlight Frame
-			if (CursorInDoc && menu.TakingID == 0) {
-				if (FrameInput.LastActionFromMouse) {
-					CellRenderer.Draw(Const.PIXEL, docItemRect, Const.GREY_32, int.MinValue + 2);
-				} else if (!menu.CursorInBottomPanel) {
-					CellRendererGUI.HighlightCursor(FRAME_CODE, docItemRect, int.MinValue + 6);
-				}
+			if (CursorInDoc && !menu.CursorInBottomPanel && menu.TakingID == 0 && !FrameInput.LastActionFromMouse) {
+				CellRendererGUI.HighlightCursor(FRAME_CODE, docItemRect, int.MinValue + 6);
 			}
 
+			// Content
+			int startIndex = CellRenderer.GetUsedCellCount();
+			var lineRect = new RectInt(docItemRect.x, 0, docItemRect.width, Unify(DOC_ITEM_HEIGHT));
+			DocumentScrollY = DocumentScrollY.Clamp(0, DocumentContent.Count);
+			int iconPadding = Unify(4);
+			int linePadding = Unify(DOC_ITEM_PADDING);
+			int iconSize = lineRect.height;
+			int tipID = 0;
+			RectInt tipRect = default;
+			for (int i = DocumentScrollY; i < DocumentContent.Count; i++) {
+				var com = DocumentContent[i];
+				lineRect.y = docItemRect.yMax - (i + 1 - DocumentScrollY) * (lineRect.height + linePadding);
+				if (lineRect.yMax < docRect.y) break;
+				bool haveResult = ItemSystem.TryGetCombination(com.A, com.B, com.C, com.D, out int result, out _);
+				if (!haveResult) continue;
+				var iRect = new RectInt(lineRect.xMax, lineRect.y, iconSize, iconSize);
 
+				// Draw Result
+				iRect.x -= iconSize;
+				bool resultUnlocked = ItemSystem.IsItemUnlocked(result);
+				CellRenderer.Draw(resultUnlocked ? result : QUESTION_MARK_CODE, iRect, int.MinValue + 4);
+				if (resultUnlocked && FrameInput.LastActionFromMouse && iRect.Contains(FrameInput.MouseGlobalPosition)) {
+					tipID = result;
+					tipRect = iRect;
+				}
 
+				// Draw Equal Sign
+				iRect.x -= iconSize / 2 + iconPadding;
+				CellRenderer.Draw(EQUAL_CODE, new RectInt(iRect.x, iRect.y + iconSize / 4, iconSize / 2, iconSize / 2), Const.GREY_128, int.MinValue + 4);
 
+				// Draw Combination 
+				for (int j = 3; j >= 0; j--) {
+					int id = com[j];
+					if (id == 0) continue;
+					bool unlocked = ItemSystem.IsItemUnlocked(id);
+					// Icon
+					iRect.x -= iconSize + iconPadding;
+					CellRenderer.Draw(unlocked ? id : QUESTION_MARK_CODE, iRect, int.MinValue + 4);
+					// Tip
+					if (unlocked && FrameInput.LastActionFromMouse && iRect.Contains(FrameInput.MouseGlobalPosition)) {
+						tipID = id;
+						tipRect = iRect;
+					}
+					// Plus Sign
+					if (j > 0) {
+						iRect.x -= iconSize / 2 + iconPadding;
+						CellRenderer.Draw(PLUS_CODE, new RectInt(iRect.x, iRect.y + iconSize / 4, iconSize / 2, iconSize / 2), Const.GREY_128, int.MinValue + 4);
+					}
+				}
 
+			}
+
+			// Clamp
+			int endIndex = CellRenderer.GetUsedCellCount();
+			CellRenderer.ClampCells(docRect, startIndex, endIndex);
+
+			// Tip
+			if (tipID != 0) {
+				CellRendererGUI.Label(
+					CellContent.Get(ItemSystem.GetItemName(tipID), alignment: Alignment.BottomMid),
+					new RectInt(tipRect.x - tipRect.width * 2, tipRect.yMax + tipRect.height / 2, tipRect.width * 5, tipRect.height),
+					out var tipBounds
+				);
+				CellRenderer.Draw(Const.PIXEL, tipBounds, Const.BLACK, int.MaxValue);
+			}
 
 		}
 
 
 		private void Update_Result (RectInt resultPanelRect, RectInt resultItemRect) {
 
-			int ARROW_SIZE = CellRendererGUI.Unify(64);
+			int ARROW_SIZE = Unify(64);
 			var menu = PlayerMenuUI.Instance;
 
 			// BG
-			int bgPadding = CellRendererGUI.Unify(12);
+			int bgPadding = Unify(12);
 			CellRenderer.Draw(
 				Const.PIXEL,
 				resultPanelRect.Expand(0, bgPadding, bgPadding, bgPadding),
@@ -254,7 +365,7 @@ namespace AngeliaGame {
 
 			// Item
 			if (CombineResultID != 0) {
-				CellRenderer.Draw(CombineResultID, resultItemRect.Shrink(CellRendererGUI.Unify(12)), int.MinValue + 4);
+				CellRenderer.Draw(CombineResultID, resultItemRect.Shrink(Unify(12)), int.MinValue + 4);
 				int repeatedCount = CombineResultCount * CombineRepeat;
 				if (repeatedCount > 1) {
 					int countSize = resultItemRect.width / 4;
@@ -312,10 +423,68 @@ namespace AngeliaGame {
 		}
 
 
-		private void OpenDocumentation () {
+		// LGC
+		private void InventoryChanged (Int4 invCombination) {
 
+			int invItem0 = invCombination.A;
+			int invItem1 = invCombination.B;
+			int invItem2 = invCombination.C;
+			int invItem3 = invCombination.D;
+			bool checkForResult = invCombination.Count(0) == 3;
 
+			// Refresh Doc Content
+			DocumentContent.Clear();
+			if (invItem0 != 0 || invItem1 != 0 || invItem2 != 0 || invItem3 != 0) {
 
+				// Fill
+				{
+					FillRelatedCombinations(DocumentContent, invItem0, invCombination, checkForResult);
+				}
+				if (invItem1 != invItem0) {
+					FillRelatedCombinations(DocumentContent, invItem1, invCombination, checkForResult);
+				}
+				if (invItem2 != invItem1 && invItem2 != invItem0) {
+					FillRelatedCombinations(DocumentContent, invItem2, invCombination, checkForResult);
+				}
+				if (invItem3 != invItem2 && invItem3 != invItem1 && invItem3 != invItem0) {
+					FillRelatedCombinations(DocumentContent, invItem3, invCombination, checkForResult);
+				}
+
+				// Sort
+				DocComparer.Instance.Item0 = invItem0;
+				DocComparer.Instance.Item1 = invItem1;
+				DocComparer.Instance.Item2 = invItem2;
+				DocComparer.Instance.Item3 = invItem3;
+				DocumentContent.Sort(DocComparer.Instance);
+				for (int i = 0; i < DocumentContent.Count - 1; i++) {
+					if (DocumentContent[i] == DocumentContent[i + 1]) {
+						DocumentContent.RemoveAt(i);
+						i--;
+					}
+				}
+
+				// Func
+				static void FillRelatedCombinations (List<Int4> list, int itemID, Int4 comparing, bool checkForResult) {
+					if (itemID == 0) return;
+					var relateds = ItemSystem.GetAllRelatedCombinations(itemID);
+					foreach (var com in relateds) {
+						var _com = com;
+						if (
+							checkForResult &&
+							ItemSystem.TryGetCombination(com.A, com.B, com.C, com.D, out int result, out _) &&
+							comparing.Contains(result)
+						) {
+							list.Add(com);
+							continue;
+						}
+						if (comparing.A != 0 && !_com.Swap(comparing.A, 0)) continue;
+						if (comparing.B != 0 && !_com.Swap(comparing.B, 0)) continue;
+						if (comparing.C != 0 && !_com.Swap(comparing.C, 0)) continue;
+						if (comparing.D != 0 && !_com.Swap(comparing.D, 0)) continue;
+						list.Add(com);
+					}
+				}
+			}
 		}
 
 
@@ -357,11 +526,7 @@ namespace AngeliaGame {
 			var playerMenu = PlayerMenuUI.OpenMenu();
 			if (playerMenu == null) return;
 			playerMenu.Partner = CraftingTableUI.Instance;
-			playerMenu.Partner.InventoryID = TypeID;
-			playerMenu.Partner.Column = 2;
-			playerMenu.Partner.Row = 2;
-			playerMenu.Partner.ItemSize = 128;
-			playerMenu.Partner.CenterPanel = true;
+			playerMenu.Partner.EnablePanel(TypeID, 2, 2, 128, true);
 		}
 
 

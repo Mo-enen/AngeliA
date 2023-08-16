@@ -199,7 +199,7 @@ namespace AngeliaGame {
 	public class iTreeBranchBundle : Item { }
 	public class iTreeTrunk : Item { }
 	public class iTreeStump : Item { }
-	public class iWoodBoard : Item { }
+	public class iItemWoodBoard : Item { }
 	public class iTrophy : Item { }
 	public class iLantern : Item { }
 	public class iPotionRed : Item { }

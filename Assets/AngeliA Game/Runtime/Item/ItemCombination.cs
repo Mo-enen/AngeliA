@@ -54,6 +54,8 @@ namespace AngeliaGame {
 			Equipment13();
 			Equipment14();
 
+			ItemSystem.ConfirmAllCombinations();
+
 		}
 
 
@@ -222,9 +224,9 @@ namespace AngeliaGame {
 				typeof(iBasketball).AngeHash()
 			);
 			ItemSystem.AddCombination(
-				typeof(iWoodBoard).AngeHash(),
-				typeof(iWoodBoard).AngeHash(),
-				typeof(iWoodBoard).AngeHash(),
+				typeof(iItemWoodBoard).AngeHash(),
+				typeof(iItemWoodBoard).AngeHash(),
+				typeof(iItemWoodBoard).AngeHash(),
 				0,
 				typeof(iCuttingBoard).AngeHash()
 			);
@@ -493,7 +495,7 @@ namespace AngeliaGame {
 			ItemSystem.AddCombination(
 				typeof(iMusicNote).AngeHash(),
 				typeof(iHorn).AngeHash(),
-				typeof(iWoodBoard).AngeHash(),
+				typeof(iItemWoodBoard).AngeHash(),
 				typeof(iVinyl).AngeHash(),
 				typeof(iPhonograph).AngeHash()
 			);
@@ -688,8 +690,8 @@ namespace AngeliaGame {
 			ItemSystem.AddCombination(
 				typeof(iPaper).AngeHash(),
 				typeof(iPaper).AngeHash(),
-				typeof(iWoodBoard).AngeHash(),
-				typeof(iWoodBoard).AngeHash(),
+				typeof(iItemWoodBoard).AngeHash(),
+				typeof(iItemWoodBoard).AngeHash(),
 				typeof(iCorrugatedBox).AngeHash()
 			);
 			ItemSystem.AddCombination(
@@ -827,22 +829,22 @@ namespace AngeliaGame {
 			ItemSystem.AddCombination(
 				typeof(iWatch).AngeHash(),
 				typeof(iIngotGold).AngeHash(),
-				0,
-				0,
+				typeof(iIngotGold).AngeHash(),
+				typeof(iIngotGold).AngeHash(),
 				typeof(iWatchLegend).AngeHash()
 			);
 			ItemSystem.AddCombination(
 				typeof(iTelescope).AngeHash(),
 				typeof(iIngotGold).AngeHash(),
-				0,
-				0,
+				typeof(iIngotGold).AngeHash(),
+				typeof(iIngotGold).AngeHash(),
 				typeof(iTelescopeLegend).AngeHash()
 			);
 			ItemSystem.AddCombination(
 				typeof(iHourglass).AngeHash(),
 				typeof(iIngotGold).AngeHash(),
-				0,
-				0,
+				typeof(iIngotGold).AngeHash(),
+				typeof(iIngotGold).AngeHash(),
 				typeof(iHourglassLegend).AngeHash()
 			);
 			ItemSystem.AddCombination(
@@ -855,50 +857,50 @@ namespace AngeliaGame {
 			ItemSystem.AddCombination(
 				typeof(iSpringIron).AngeHash(),
 				typeof(iIngotGold).AngeHash(),
-				0,
-				0,
+				typeof(iIngotGold).AngeHash(),
+				typeof(iIngotGold).AngeHash(),
 				typeof(iSpringLegend).AngeHash()
 			);
 			ItemSystem.AddCombination(
 				typeof(iGameConsole).AngeHash(),
 				typeof(iIngotGold).AngeHash(),
-				0,
-				0,
+				typeof(iIngotGold).AngeHash(),
+				typeof(iIngotGold).AngeHash(),
 				typeof(iGameboyLegend).AngeHash()
 			);
 			ItemSystem.AddCombination(
 				typeof(iGamepad).AngeHash(),
 				typeof(iIngotGold).AngeHash(),
-				0,
-				0,
+				typeof(iIngotGold).AngeHash(),
+				typeof(iIngotGold).AngeHash(),
 				typeof(iGamepadLegend).AngeHash()
 			);
 			ItemSystem.AddCombination(
 				typeof(iPencil).AngeHash(),
 				typeof(iIngotGold).AngeHash(),
-				0,
-				0,
+				typeof(iIngotGold).AngeHash(),
+				typeof(iIngotGold).AngeHash(),
 				typeof(iPenLegend).AngeHash()
 			);
 			ItemSystem.AddCombination(
 				typeof(iBook).AngeHash(),
 				typeof(iIngotGold).AngeHash(),
-				0,
-				0,
+				typeof(iIngotGold).AngeHash(),
+				typeof(iIngotGold).AngeHash(),
 				typeof(iNotepadLegend).AngeHash()
 			);
 			ItemSystem.AddCombination(
 				typeof(iIronHook).AngeHash(),
 				typeof(iIngotGold).AngeHash(),
-				0,
-				0,
+				typeof(iIngotGold).AngeHash(),
+				typeof(iIngotGold).AngeHash(),
 				typeof(iHookLegend).AngeHash()
 			);
 			ItemSystem.AddCombination(
 				typeof(iHandFan).AngeHash(),
 				typeof(iIngotGold).AngeHash(),
-				0,
-				0,
+				typeof(iIngotGold).AngeHash(),
+				typeof(iIngotGold).AngeHash(),
 				typeof(iHandFanLegend).AngeHash()
 			);
 			ItemSystem.AddCombination(
@@ -911,22 +913,22 @@ namespace AngeliaGame {
 			ItemSystem.AddCombination(
 				typeof(iPipeClay).AngeHash(),
 				typeof(iIngotGold).AngeHash(),
-				0,
-				0,
+				typeof(iIngotGold).AngeHash(),
+				typeof(iIngotGold).AngeHash(),
 				typeof(iPipeLegend).AngeHash()
 			);
 			ItemSystem.AddCombination(
 				typeof(iCross).AngeHash(),
 				typeof(iIngotGold).AngeHash(),
-				0,
-				0,
+				typeof(iIngotGold).AngeHash(),
+				typeof(iIngotGold).AngeHash(),
 				typeof(iCrossLegend).AngeHash()
 			);
 			ItemSystem.AddCombination(
 				typeof(iLeaf).AngeHash(),
 				typeof(iIngotGold).AngeHash(),
-				0,
-				0,
+				typeof(iIngotGold).AngeHash(),
+				typeof(iIngotGold).AngeHash(),
 				typeof(iLeafLegend).AngeHash()
 			);
 
@@ -985,8 +987,8 @@ namespace AngeliaGame {
 				typeof(iMedalIron).AngeHash()
 			);
 			ItemSystem.AddCombination(
-				typeof(iWoodBoard).AngeHash(),
-				typeof(iWoodBoard).AngeHash(),
+				typeof(iItemWoodBoard).AngeHash(),
+				typeof(iItemWoodBoard).AngeHash(),
 				0,
 				0,
 				typeof(iCross).AngeHash()
@@ -1349,14 +1351,14 @@ namespace AngeliaGame {
 				typeof(iTreeTrunk).AngeHash(),
 				typeof(iTreeTrunk).AngeHash(),
 				0,
-				typeof(iWoodBoard).AngeHash()
+				typeof(iItemWoodBoard).AngeHash()
 			);
 			ItemSystem.AddCombination(
 				typeof(iTreeStump).AngeHash(),
 				typeof(iTreeStump).AngeHash(),
 				0,
 				0,
-				typeof(iWoodBoard).AngeHash()
+				typeof(iItemWoodBoard).AngeHash()
 			);
 			ItemSystem.AddCombination(
 				typeof(iMedalGold).AngeHash(),
@@ -1488,7 +1490,7 @@ namespace AngeliaGame {
 				typeof(iCharcoal).AngeHash(), 9
 			);
 			ItemSystem.AddCombination(
-				typeof(iWoodBoard).AngeHash(),
+				typeof(iItemWoodBoard).AngeHash(),
 				typeof(iRuneFire).AngeHash(),
 				0,
 				0,
@@ -2538,7 +2540,7 @@ namespace AngeliaGame {
 			ItemSystem.AddCombination(
 				typeof(iPaw).AngeHash(),
 				typeof(iRope).AngeHash(),
-				typeof(iWoodBoard).AngeHash(),
+				typeof(iItemWoodBoard).AngeHash(),
 				0,
 				typeof(iFoxMask).AngeHash()
 			);
@@ -2599,7 +2601,7 @@ namespace AngeliaGame {
 
 			ItemSystem.AddCombination(
 				typeof(iTreeStump).AngeHash(),
-				typeof(iWoodBoard).AngeHash(),
+				typeof(iItemWoodBoard).AngeHash(),
 				0,
 				0,
 				typeof(iArmorWood).AngeHash()
@@ -3085,7 +3087,7 @@ namespace AngeliaGame {
 		private static void Equipment5 () {
 
 			ItemSystem.AddCombination(
-				typeof(iWoodBoard).AngeHash(),
+				typeof(iItemWoodBoard).AngeHash(),
 				typeof(iTreeBranch).AngeHash(),
 				typeof(iTreeBranch).AngeHash(),
 				typeof(iTreeBranch).AngeHash(),
@@ -4015,7 +4017,7 @@ namespace AngeliaGame {
 			ItemSystem.AddCombination(
 				typeof(iScroll).AngeHash(),
 				typeof(iBook).AngeHash(),
-				typeof(iWoodBoard).AngeHash(),
+				typeof(iItemWoodBoard).AngeHash(),
 				0,
 				typeof(iBambooSlips).AngeHash()
 			);
