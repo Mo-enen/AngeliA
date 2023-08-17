@@ -355,7 +355,7 @@ namespace AngeliaGame {
 				typeof(iLegoBlockWhite).AngeHash()
 			);
 			ItemSystem.AddCombination(
-				typeof(iFlowerWhite).AngeHash(),
+				typeof(iLegoBlockWhite).AngeHash(),
 				typeof(iFlowerRed).AngeHash(),
 				0,
 				0,

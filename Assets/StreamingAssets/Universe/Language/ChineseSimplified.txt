@@ -1,12 +1,11 @@
-﻿CtrlHint.CombineItem:合成物品
-CtrlHint.CombineAllItem:合成所有物品
-@enen:伊楠
+﻿@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子
 @yaya:丫丫
 CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
+CtrlHint.Craft:合成
 CtrlHint.Drop:放下
 CtrlHint.EnterDoor:进门
 CtrlHint.Equip:装备

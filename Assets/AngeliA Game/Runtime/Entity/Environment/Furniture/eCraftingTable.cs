@@ -9,7 +9,7 @@ namespace AngeliaGame {
 
 
 		// SUB
-		private enum ActionType { None, CombineOne, CombineAll, }
+		private enum CraftActionType { None, Take, QuickDrop, }
 
 		// Const
 		private const int DOC_ITEM_HEIGHT = 32;
@@ -21,8 +21,7 @@ namespace AngeliaGame {
 		private static readonly int ARROW_CODE = "TriangleRight13".AngeHash();
 		private static readonly int FRAME_CODE = "Frame16".AngeHash();
 		private static readonly int ITEM_FRAME_CODE = "UI.ItemFrame".AngeHash();
-		private static readonly int HINT_COMBINE = "CtrlHint.CombineItem".AngeHash();
-		private static readonly int HINT_COMBINE_ALL = "CtrlHint.CombineAllItem".AngeHash();
+		private static readonly int HINT_CRAFT = "CtrlHint.Craft".AngeHash();
 
 		// Api
 		public static readonly CraftingTableUI Instance = new();
@@ -32,7 +31,6 @@ namespace AngeliaGame {
 		private Int4 CurrentCraftingItems = default;
 		private bool CursorInDoc = false;
 		private bool CursorInResult = false;
-		private int CombineRepeat = 0;
 		private int CombineResultID = 0;
 		private int CombineResultCount = 0;
 		private int DocumentScrollY = 0;
@@ -62,14 +60,7 @@ namespace AngeliaGame {
 			Update_Inventory(panelRect);
 			Update_Documentation(docRect, docItemRect);
 			Update_Result(resultRect, resultItemRect);
-			switch (action) {
-				case ActionType.CombineOne:
-					QuickDropOneResult();
-					break;
-				case ActionType.CombineAll:
-					TakeAllResults();
-					break;
-			}
+			Craft(action);
 		}
 
 
@@ -87,37 +78,28 @@ namespace AngeliaGame {
 				ItemSystem.FillAllRelatedCombinations(crafting, DocumentContent);
 			}
 
-			// Result
-			bool haveCombineResult = ItemSystem.TryGetCombination(
+			// Craft Result
+			if (!ItemSystem.TryGetCombination(
 				invItem0, invItem1, invItem2, invItem3, out CombineResultID, out CombineResultCount
-			);
-			if (haveCombineResult) {
-				CombineRepeat = 0;
-				for (int i = 0; i < 4; i++) {
-					int itemCount = Inventory.GetItemCount(InventoryID, i);
-					if (itemCount == 0) continue;
-					CombineRepeat = CombineRepeat == 0 ? itemCount : Mathf.Min(CombineRepeat, itemCount);
-				}
-			} else {
+			)) {
 				CombineResultID = 0;
 				CombineResultCount = 0;
-				CombineRepeat = 0;
 			}
 
 		}
 
 
-		private ActionType Update_Action (RectInt docItemRect, RectInt resultItemRect) {
-			var action = ActionType.None;
+		private CraftActionType Update_Action (RectInt docItemRect, RectInt resultItemRect) {
+			var action = CraftActionType.None;
 			var menu = PlayerMenuUI.Instance;
 			if (FrameInput.LastActionFromMouse) {
 				// Result
 				CursorInResult = resultItemRect.Contains(FrameInput.MouseGlobalPosition);
 				if (CursorInResult && CombineResultID != 0) {
 					if (FrameInput.MouseLeftButtonDown) {
-						action = ActionType.CombineAll;
+						action = CraftActionType.Take;
 					} else if (FrameInput.MouseRightButtonDown) {
-						action = ActionType.CombineOne;
+						action = CraftActionType.QuickDrop;
 					}
 				}
 				// Doc
@@ -138,13 +120,13 @@ namespace AngeliaGame {
 					if (FrameInput.GameKeyDown(Gamekey.Action)) {
 						FrameInput.UseGameKey(Gamekey.Action);
 						if (CombineResultID != 0) {
-							action = ActionType.CombineAll;
+							action = CraftActionType.Take;
 						}
 					}
 					if (FrameInput.GameKeyDown(Gamekey.Jump)) {
 						FrameInput.UseGameKey(Gamekey.Jump);
 						if (CombineResultID != 0) {
-							action = ActionType.CombineOne;
+							action = CraftActionType.QuickDrop;
 						}
 					}
 					if (FrameInput.GameKeyDown(Gamekey.Down)) {
@@ -193,8 +175,8 @@ namespace AngeliaGame {
 			}
 			// Hint
 			if (CombineResultID != 0 && CursorInResult) {
-				ControlHintUI.AddHint(Gamekey.Action, CombineRepeat > 1 ? Language.Get(HINT_COMBINE_ALL, "Combine All") : Language.Get(HINT_COMBINE, "Combine"), 0);
-				ControlHintUI.AddHint(Gamekey.Jump, Language.Get(HINT_COMBINE, "Combine"), 0);
+				ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_CRAFT, "Craft"), 0);
+				ControlHintUI.AddHint(Gamekey.Jump, Language.Get(HINT_CRAFT, "Craft"), 0);
 			}
 			return action;
 		}
@@ -345,8 +327,7 @@ namespace AngeliaGame {
 			// Item
 			if (CombineResultID != 0) {
 				CellRenderer.Draw(CombineResultID, resultItemRect.Shrink(Unify(12)), int.MinValue + 4);
-				int repeatedCount = CombineResultCount * CombineRepeat;
-				if (repeatedCount > 1) {
+				if (CombineResultCount > 1) {
 					int countSize = resultItemRect.width / 4;
 					var countRect = new RectInt(
 						resultItemRect.xMax - countSize,
@@ -354,8 +335,8 @@ namespace AngeliaGame {
 						countSize, countSize
 					);
 					CellRenderer.Draw(Const.PIXEL, countRect, Const.BLACK, int.MinValue + 8);
-					string label = repeatedCount >= 0 && repeatedCount < CellRendererGUI.NUMBER_CACHE.Length ?
-						CellRendererGUI.NUMBER_CACHE[repeatedCount] : "99+";
+					string label = CombineResultCount >= 0 && CombineResultCount < CellRendererGUI.NUMBER_CACHE.Length ?
+						CellRendererGUI.NUMBER_CACHE[CombineResultCount] : "99+";
 					CellRendererGUI.Label(CellContent.Get(label), countRect);
 				}
 			}
@@ -364,33 +345,27 @@ namespace AngeliaGame {
 
 
 		// Action
-		private void TakeAllResults () {
+		private void Craft (CraftActionType action) {
+
+			if (action == CraftActionType.None) return;
+
 			var menu = PlayerMenuUI.Instance;
 			if (CombineResultID == 0 || CombineResultCount == 0 || menu.TakingID != 0) return;
 
-			menu.SetTaking(CombineResultID, CombineResultCount * CombineRepeat);
-
-			for (int i = 0; i < 4; i++) {
-				int itemID = Inventory.GetItemAt(InventoryID, i, out int count);
-				if (itemID == 0 || count == 0) continue;
-				count = (count - CombineRepeat).GreaterOrEquelThanZero();
-				if (count == 0) itemID = 0;
-				Inventory.SetItemAt(InventoryID, i, itemID, count);
+			if (action == CraftActionType.Take) {
+				// Take Crafted
+				menu.SetTaking(CombineResultID, CombineResultCount);
+			} else {
+				// Quick Drop Crafted
+				int playerID = Player.Selecting != null ? Player.Selecting.TypeID : 0;
+				if (playerID == 0) return;
+				int collectedCount = Inventory.TryCollectItem(playerID, CombineResultID, CombineResultCount);
+				if (collectedCount < CombineResultCount) {
+					AngeUtil.ThrowItemToGround(CombineResultID, CombineResultCount - collectedCount);
+				}
 			}
 
-		}
-
-
-		private void QuickDropOneResult () {
-			var menu = PlayerMenuUI.Instance;
-			int playerID = Player.Selecting != null ? Player.Selecting.TypeID : 0;
-			if (CombineResultID == 0 || CombineResultCount == 0 || menu.TakingID != 0 || playerID == 0) return;
-
-			int collectedCount = Inventory.TryCollectItem(playerID, CombineResultID, CombineResultCount);
-			if (collectedCount < CombineResultCount) {
-				AngeUtil.ThrowItemToGround(CombineResultID, CombineResultCount - collectedCount);
-			}
-
+			// Reduce Source Material by One
 			for (int i = 0; i < 4; i++) {
 				int itemID = Inventory.GetItemAt(InventoryID, i, out int count);
 				if (itemID == 0 || count == 0) continue;
