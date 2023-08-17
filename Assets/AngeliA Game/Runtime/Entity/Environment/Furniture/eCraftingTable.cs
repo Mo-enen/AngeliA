@@ -11,28 +11,6 @@ namespace AngeliaGame {
 		// SUB
 		private enum ActionType { None, CombineOne, CombineAll, }
 
-		private class DocComparer : IComparer<Int4> {
-			public static readonly DocComparer Instance = new();
-			public int Item0;
-			public int Item1;
-			public int Item2;
-			public int Item3;
-			public int Compare (Int4 a, Int4 b) {
-				int countA = 0;
-				int countB = 0;
-				if (ContainItem(a.A)) countA++;
-				if (ContainItem(a.B)) countA++;
-				if (ContainItem(a.C)) countA++;
-				if (ContainItem(a.D)) countA++;
-				if (ContainItem(b.A)) countB++;
-				if (ContainItem(b.B)) countB++;
-				if (ContainItem(b.C)) countB++;
-				if (ContainItem(b.D)) countB++;
-				return countB.CompareTo(countA);
-			}
-			public bool ContainItem (int item) => item != 0 && (item == Item0 || item == Item1 || item == Item2 || item == Item3);
-		}
-
 		// Const
 		private const int DOC_ITEM_HEIGHT = 32;
 		private const int DOC_ITEM_PADDING = 6;
@@ -102,10 +80,11 @@ namespace AngeliaGame {
 			int invItem1 = Inventory.GetItemAt(InventoryID, 1);
 			int invItem2 = Inventory.GetItemAt(InventoryID, 2);
 			int invItem3 = Inventory.GetItemAt(InventoryID, 3);
-			var inv = ItemSystem.GetSortedCombination(invItem0, invItem1, invItem2, invItem3);
-			if (inv != CurrentCraftingItems) {
-				CurrentCraftingItems = inv;
-				InventoryChanged(inv);
+			var crafting = ItemSystem.GetSortedCombination(invItem0, invItem1, invItem2, invItem3);
+			if (crafting != CurrentCraftingItems) {
+				CurrentCraftingItems = crafting;
+				DocumentContent.Clear();
+				ItemSystem.FillAllRelatedCombinations(crafting, DocumentContent);
 			}
 
 			// Result
@@ -420,71 +399,6 @@ namespace AngeliaGame {
 				Inventory.SetItemAt(InventoryID, i, itemID, count);
 			}
 
-		}
-
-
-		// LGC
-		private void InventoryChanged (Int4 invCombination) {
-
-			int invItem0 = invCombination.A;
-			int invItem1 = invCombination.B;
-			int invItem2 = invCombination.C;
-			int invItem3 = invCombination.D;
-			bool checkForResult = invCombination.Count(0) == 3;
-
-			// Refresh Doc Content
-			DocumentContent.Clear();
-			if (invItem0 != 0 || invItem1 != 0 || invItem2 != 0 || invItem3 != 0) {
-
-				// Fill
-				{
-					FillRelatedCombinations(DocumentContent, invItem0, invCombination, checkForResult);
-				}
-				if (invItem1 != invItem0) {
-					FillRelatedCombinations(DocumentContent, invItem1, invCombination, checkForResult);
-				}
-				if (invItem2 != invItem1 && invItem2 != invItem0) {
-					FillRelatedCombinations(DocumentContent, invItem2, invCombination, checkForResult);
-				}
-				if (invItem3 != invItem2 && invItem3 != invItem1 && invItem3 != invItem0) {
-					FillRelatedCombinations(DocumentContent, invItem3, invCombination, checkForResult);
-				}
-
-				// Sort
-				DocComparer.Instance.Item0 = invItem0;
-				DocComparer.Instance.Item1 = invItem1;
-				DocComparer.Instance.Item2 = invItem2;
-				DocComparer.Instance.Item3 = invItem3;
-				DocumentContent.Sort(DocComparer.Instance);
-				for (int i = 0; i < DocumentContent.Count - 1; i++) {
-					if (DocumentContent[i] == DocumentContent[i + 1]) {
-						DocumentContent.RemoveAt(i);
-						i--;
-					}
-				}
-
-				// Func
-				static void FillRelatedCombinations (List<Int4> list, int itemID, Int4 comparing, bool checkForResult) {
-					if (itemID == 0) return;
-					var relateds = ItemSystem.GetAllRelatedCombinations(itemID);
-					foreach (var com in relateds) {
-						var _com = com;
-						if (
-							checkForResult &&
-							ItemSystem.TryGetCombination(com.A, com.B, com.C, com.D, out int result, out _) &&
-							comparing.Contains(result)
-						) {
-							list.Add(com);
-							continue;
-						}
-						if (comparing.A != 0 && !_com.Swap(comparing.A, 0)) continue;
-						if (comparing.B != 0 && !_com.Swap(comparing.B, 0)) continue;
-						if (comparing.C != 0 && !_com.Swap(comparing.C, 0)) continue;
-						if (comparing.D != 0 && !_com.Swap(comparing.D, 0)) continue;
-						list.Add(com);
-					}
-				}
-			}
 		}
 
 

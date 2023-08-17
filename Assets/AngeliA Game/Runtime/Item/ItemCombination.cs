@@ -54,8 +54,6 @@ namespace AngeliaGame {
 			Equipment13();
 			Equipment14();
 
-			ItemSystem.ConfirmAllCombinations();
-
 		}
 
 
@@ -4026,7 +4024,6 @@ namespace AngeliaGame {
 				typeof(iRuneFire).AngeHash(),
 				typeof(iRuneLightning).AngeHash(),
 				typeof(iRunePoison).AngeHash(),
-				0,
 				typeof(iRitualRuneCube).AngeHash()
 			);
 			ItemSystem.AddCombination(
