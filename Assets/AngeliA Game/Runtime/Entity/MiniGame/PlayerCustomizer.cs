@@ -279,8 +279,8 @@ namespace AngeliaGame {
 			CurrentSubMenu = null;
 			SizeSliderAdjustingIndex = -1;
 			LoadPatternsFromFile();
-			BackButtonHotkeyLabel = $"({Util.GetKeyDisplayName(FrameInput.GetKeyboardMap(Gamekey.Jump))})";
-			BackButtonHotkeyPadCode = Const.GAMEPAD_CODE.TryGetValue(FrameInput.GetGamepadMap(Gamekey.Jump), out int _value0) ? _value0 : 0;
+			BackButtonHotkeyLabel = $"({AngeUtil.GetGameKeyDisplayName(Gamekey.Jump)})";
+			BackButtonHotkeyPadCode = Const.GAMEPAD_JUMP_HINT_CODE;
 		}
 
 
