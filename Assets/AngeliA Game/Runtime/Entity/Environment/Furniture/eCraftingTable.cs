@@ -380,7 +380,10 @@ namespace AngeliaGame {
 	}
 
 
-	public class eCraftingTable : OpenableFurniture, IActionTarget {
+	public class eCraftingTable : OpenableFurniture, IActionTarget, ICombustible {
+
+
+		int ICombustible.BurnStartFrame { get; set; }
 
 
 		[AfterGameInitialize]

@@ -70,7 +70,7 @@ namespace AngeliaGame {
 					}
 					ControlHintUI.AddHint(Gamekey.Start, Language.Get(Const.UI_QUIT, "Quit"));
 				}
-				if (RequireMouseCursor) Game.Current.SetCursor(-1, -1);
+				if (RequireMouseCursor) GameCursor.SetCursor(-1, -1);
 			}
 			// Draw Arcade
 			var cell = CellRenderer.Draw(
