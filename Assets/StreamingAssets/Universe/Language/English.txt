@@ -1,4 +1,5 @@
-﻿@enen:Enen
+﻿CtrlHint.TeleportCP:Teleport to Altar
+@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu

@@ -8,7 +8,7 @@ namespace AngeliaGame {
 
 
 	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-	public class eLeafMaple : TreeLeaf {
+	public class eLeafMaple : Leaf {
 		public override void FillPhysics () {
 			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
 		}
@@ -16,7 +16,7 @@ namespace AngeliaGame {
 
 
 	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-	public class eLeafPine : TreeLeaf {
+	public class eLeafPine : Leaf {
 		public override void FillPhysics () {
 			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
 		}
@@ -24,7 +24,7 @@ namespace AngeliaGame {
 
 
 	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-	public class eLeafPoplar : TreeLeaf {
+	public class eLeafPoplar : Leaf {
 		public override void FillPhysics () {
 			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
 		}
@@ -32,7 +32,7 @@ namespace AngeliaGame {
 
 
 	[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-	public class eLeafPalm : TreeLeaf {
+	public class eLeafPalm : Leaf {
 
 		public override void FillPhysics () {
 			CellPhysics.FillBlock(Const.LAYER_ENVIRONMENT, TypeID, Rect, true, Const.ONEWAY_UP_TAG);
@@ -46,7 +46,7 @@ namespace AngeliaGame {
 	}
 
 
-	public class eLeafWillow : TreeLeaf {
+	public class eLeafWillow : Leaf {
 
 		public override void FillPhysics () {
 			CellPhysics.FillBlock(
