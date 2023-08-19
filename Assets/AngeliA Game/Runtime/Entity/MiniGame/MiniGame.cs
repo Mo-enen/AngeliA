@@ -94,7 +94,7 @@ namespace AngeliaGame {
 		// API
 		void IActionTarget.Invoke () {
 			if (IsPlaying) return;
-			FrameTask.End();
+			FrameTask.EndAllTask();
 			if (FrameTask.AddToLast(typeof(MiniGameTask).AngeHash()) is MiniGameTask task) {
 				task.MiniGame = this;
 			}

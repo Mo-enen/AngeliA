@@ -361,7 +361,7 @@ namespace AngeliaGame {
 				if (playerID == 0) return;
 				int collectedCount = Inventory.TryCollectItem(playerID, CombineResultID, CombineResultCount);
 				if (collectedCount < CombineResultCount) {
-					AngeUtil.ThrowItemToGround(CombineResultID, CombineResultCount - collectedCount);
+					ItemSystem.SpawnItem(CombineResultID, CombineResultCount - collectedCount);
 				}
 			}
 

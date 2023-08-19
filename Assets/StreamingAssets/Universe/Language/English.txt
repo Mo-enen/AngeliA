@@ -1,5 +1,4 @@
-﻿CtrlHint.TeleportCP:Teleport to Altar
-@enen:Enen
+﻿@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
@@ -8,6 +7,7 @@ CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
 CtrlHint.Drop:Drop
+CtrlHint.EditMap:Edit Map
 CtrlHint.EnterDoor:Enter
 CtrlHint.Equip:Equip
 CtrlHint.HideMenu:Hide Menu
@@ -20,10 +20,12 @@ CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
 CtrlHint.PlayerMenu.Take:Take
 CtrlHint.PlayerMenu.TakeUse:Take (Hold to Use)
+CtrlHint.QuitEditing:Quit Editing Map
 CtrlHint.Restart:Restart
 CtrlHint.ShowMenu:Show Menu
 CtrlHint.Skip:Skip
 CtrlHint.SwitchPlayer:Switch Character
+CtrlHint.TeleportCP:Teleport to Altar
 CtrlHint.Throw:Throw
 CtrlHint.Transfer:Transfer
 CtrlHint.Use:Use
