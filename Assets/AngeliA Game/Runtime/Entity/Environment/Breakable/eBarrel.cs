@@ -83,11 +83,14 @@ namespace AngeliaGame {
 		}
 
 
-		void IDamageReceiver.TakeDamage (int damage, Vector2Int direction) {
-			if (damage > 0) {
-				Rolling = true;
-				RollingRotation = 0;
-				RollingSpeed = direction.x.Sign3() * ROLL_SPEED;
+		void IDamageReceiver.TakeDamage (int damage, Entity sender) {
+			if (damage <= 0) return;
+			Rolling = true;
+			RollingRotation = 0;
+			if (sender is Character character) {
+				RollingSpeed = (character.FacingRight ? 1 : -1) * ROLL_SPEED;
+			} else {
+				RollingSpeed = (Rect.CenterX() - sender.Rect.CenterX()).Sign3() * ROLL_SPEED;
 			}
 		}
 

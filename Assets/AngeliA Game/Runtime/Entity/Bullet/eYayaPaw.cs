@@ -18,24 +18,23 @@ namespace AngeliaGame {
 
 		// Api
 		protected override int Duration => 10;
-		protected override int Speed => 0;
 		protected override int Damage => 1;
 
 		// Data
-		private Entity Sender = null;
 		private Color32 Tint = Const.WHITE;
 		private bool FacingRight = false;
 		private bool Grounded = true;
 
 
 		// MSG
-		public override void Release (Entity sender, int targetTeam, Vector2Int direction, int combo, int chargeDuration) {
-			base.Release(sender, targetTeam, direction, combo, chargeDuration);
-			Sender = sender;
+		public override void Release (Entity sender, int targetTeam, int speedX, int speedY, int combo, int chargeDuration) {
+			base.Release(sender, targetTeam, speedX, speedY, combo, chargeDuration);
 			if (sender == null) return;
+			SpeedX = 0;
+			SpeedY = 0;
 			Width = 384;
 			Height = 512;
-			FacingRight = direction.x > 0;
+			FacingRight = speedX > 0;
 			var rect = sender.Rect;
 			X = FacingRight ? rect.xMax : rect.xMin - Width;
 			Y = sender.Y - 1;
@@ -100,7 +99,10 @@ namespace AngeliaGame {
 		}
 
 
-		public override void OnHit (IDamageReceiver receiver) => receiver?.TakeDamage(Damage, Direction);
+		protected override void OnHit (IDamageReceiver receiver) {
+			if (receiver is Entity e && !e.Active) return;
+			receiver?.TakeDamage(Damage, Sender);
+		}
 
 
 	}

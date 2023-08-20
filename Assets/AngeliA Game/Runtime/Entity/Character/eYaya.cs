@@ -17,6 +17,8 @@ namespace AngeliaGame {
 
 		// Api
 		protected override bool SpinOnGroundPound => true;
+		public override bool BodySuitAvailable => false;
+		public override bool HelmetAvailable => false;
 
 		// Data
 		private eGuaGua GuaGua = null;
@@ -47,7 +49,7 @@ namespace AngeliaGame {
 			// Default Attack
 			if (AttackStartAtCurrentFrame && Inventory.GetEquipment(TypeID, EquipmentType.Weapon) == 0) {
 				var paw = Stage.SpawnEntity(YAYA_PAW, X, Y) as Bullet;
-				paw?.Release(this, AttackTargetTeam, new(FacingRight ? 1 : -1, 0), 0, 0);
+				paw?.Release(this, AttackTargetTeam, FacingRight ? 1 : -1, 0, 0, 0);
 			}
 		}
 
