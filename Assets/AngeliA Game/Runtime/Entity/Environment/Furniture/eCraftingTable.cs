@@ -421,7 +421,8 @@ namespace AngeliaGame {
 							itemRect.y + (i / 2) * itemRect.height / 2,
 							itemRect.width / 2,
 							itemRect.height / 2
-						).Shrink(itemRect.width / 16), sprite.SortingZ + 1
+						).Shrink(itemRect.width / 16), 
+						sprite.SortingZ + 1
 					);
 				}
 			}

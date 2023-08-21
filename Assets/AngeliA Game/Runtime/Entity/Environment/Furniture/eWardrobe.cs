@@ -5,13 +5,27 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class eWardrobeA : eWardrobe { }
-	public class eWardrobeB : eWardrobe { }
-	public class eWardrobeC : eWardrobe { }
-	public class eWardrobeD : eWardrobe { }
-
-	public abstract class eWardrobe : OpenableFurniture, ICombustible {
+	public class eWardrobeA : Wardrobe, ICombustible {
 		int ICombustible.BurnStartFrame { get; set; }
-		protected override Direction3 ModuleType => Direction3.Vertical;
+	}
+	public class eWardrobeB : Wardrobe, ICombustible {
+		int ICombustible.BurnStartFrame { get; set; }
+	}
+	public class eWardrobeC : Wardrobe, ICombustible {
+		int ICombustible.BurnStartFrame { get; set; }
+	}
+	public class eWardrobeD : Wardrobe, ICombustible {
+		int ICombustible.BurnStartFrame { get; set; }
+	}
+
+
+	public abstract class Wardrobe : MiniGame_PlayerCustomizer {
+
+
+		private static readonly int NAME_CODE = "Hint.Wardrobe".AngeHash();
+		protected override string DisplayName => Language.Get(NAME_CODE, "Change Cloth");
+		protected override bool BodypartAvailable => false;
+		protected override bool SuitAvailable => true;
+
 	}
 }

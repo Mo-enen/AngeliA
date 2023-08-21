@@ -1,4 +1,5 @@
-﻿@enen:伊楠
+﻿Hint.Wardrobe:换装
+@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子
@@ -135,6 +136,11 @@ UI.Restart:重新开始
 UI.Right:右
 UI.Save:保存
 UI.Setting:设置
+UI.Suit.Bodysuit:衣服
+UI.Suit.Glove:手套
+UI.Suit.Hat:帽子
+UI.Suit.Pants:裤子
+UI.Suit.Shoes:鞋
 UI.Tetris.ClearedLine:行数:
 UI.Tetris.Holding:保留
 UI.Up:上
