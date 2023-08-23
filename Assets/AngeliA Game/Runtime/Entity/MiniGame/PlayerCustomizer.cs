@@ -116,7 +116,7 @@ namespace AngeliaGame {
 		};
 
 		// Api
-		protected override Vector2Int WindowSize => new(1000, 800);
+		protected override Vector2Int WindowSize => new(1000, 600);
 		protected override bool RequireMouseCursor => true;
 		protected override bool RequireQuitConfirm => false;
 		protected override string DisplayName => Language.Get(TypeID, "Player Maker");
@@ -174,14 +174,6 @@ namespace AngeliaGame {
 		public MiniGame_PlayerCustomizer () {
 			SubMenuTypeCount = System.Enum.GetValues(typeof(SubMenuType)).Length;
 			FaceTypeCount = System.Enum.GetValues(typeof(CharacterFaceType)).Length;
-		}
-
-
-		public override void OnActivated () {
-			base.OnActivated();
-			if (Player.Selecting is not MainPlayer) {
-				Active = false;
-			}
 		}
 
 
@@ -457,311 +449,402 @@ namespace AngeliaGame {
 				MainMenuUI(panelRect, player);
 			} else {
 				// Sub Content
-				int newSizeX, newSizeY;
-				int sizePanelHeight = Unify(48);
-				var fieldRect = panelRect.Shrink(0, 0, panelRect.height - sizePanelHeight, 0);
-				int invokingIndex;
-				if (
-					CurrentSubMenu != SubMenuType.Head &&
-					CurrentSubMenu != SubMenuType.Body &&
-					CurrentSubMenu != SubMenuType.ShoulderArmArmHand &&
-					CurrentSubMenu != SubMenuType.LegLegFoot
-				) {
-					HighlightingPatternPicker = true;
-				}
-
 				HighlightingSizeEditorIndex = HighlightingPatternPicker ? -1 : HighlightingSizeEditorIndex.Clamp(0, 1);
-
 				switch (CurrentSubMenu) {
-
 					case SubMenuType.Head:
-
-						newSizeX = SizeMenuUI(0, fieldRect, ICON_WIDTH_CODE, player.HeadConfigDeltaSizeX, 16, 7);
-						if (newSizeX != player.HeadConfigDeltaSizeX) {
-							player.Head.SizeX += newSizeX - player.HeadConfigDeltaSizeX;
-							player.HeadConfigDeltaSizeX = newSizeX;
-						}
-
-						fieldRect.y -= fieldRect.height;
-						newSizeY = SizeMenuUI(1, fieldRect, ICON_HEIGHT_CODE, player.HeadConfigDeltaSizeY, 8, 6);
-						if (newSizeY != player.HeadConfigDeltaSizeY) {
-							player.Head.SizeY += newSizeY - player.HeadConfigDeltaSizeY;
-							player.HeadConfigDeltaSizeY = newSizeY;
-						}
-
-						if (PatternMenuUI(
-							panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_Head, player.SkinColor,
-							new Int4(player.Head.ID, 0, 0, 0), out invokingIndex
-						)) {
-							var pat = Patterns_Head[invokingIndex];
-							player.Head.SetSpriteID(pat.A, true);
-						}
+						SubEditor_Head(panelRect);
 						break;
-
 					case SubMenuType.Body:
-
-						newSizeX = SizeMenuUI(0, fieldRect, ICON_WIDTH_CODE, player.BodyConfigDeltaSizeX, 16, 7);
-						if (newSizeX != player.BodyConfigDeltaSizeX) {
-							player.Body.SizeX += newSizeX - player.BodyConfigDeltaSizeX;
-							player.BodyConfigDeltaSizeX = newSizeX;
-						}
-
-						fieldRect.y -= fieldRect.height;
-						newSizeY = SizeMenuUI(1, fieldRect, ICON_HEIGHT_CODE, player.BodyConfigDeltaSizeY, 8, 6);
-						if (newSizeY != player.BodyConfigDeltaSizeY) {
-							player.Body.SizeY += newSizeY - player.BodyConfigDeltaSizeY;
-							player.BodyConfigDeltaSizeY = newSizeY;
-						}
-
-						if (PatternMenuUI(
-							panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_Body, player.SkinColor,
-							new Int4(player.Body.ID, 0, 0, 0), out invokingIndex
-						)) {
-							var pat = Patterns_Body[invokingIndex];
-							player.Body.SetSpriteID(pat.A, true);
-						}
+						SubEditor_Body(panelRect);
 						break;
-
 					case SubMenuType.ShoulderArmArmHand:
-
-						newSizeX = SizeMenuUI(0, fieldRect, ICON_WIDTH_CODE, player.ArmConfigDeltaSizeX, 8, 6);
-						if (newSizeX != player.ArmConfigDeltaSizeX) {
-							player.UpperArmL.SizeX += newSizeX - player.ArmConfigDeltaSizeX;
-							player.UpperArmR.SizeX += newSizeX - player.ArmConfigDeltaSizeX;
-							player.LowerArmL.SizeX += newSizeX - player.ArmConfigDeltaSizeX;
-							player.LowerArmR.SizeX += newSizeX - player.ArmConfigDeltaSizeX;
-							player.ArmConfigDeltaSizeX = newSizeX;
-						}
-
-						fieldRect.y -= fieldRect.height;
-						newSizeY = SizeMenuUI(1, fieldRect, ICON_HEIGHT_CODE, player.ArmConfigDeltaSizeY, 16, 5);
-						if (newSizeY != player.ArmConfigDeltaSizeY) {
-							player.UpperArmL.SizeY += newSizeY - player.ArmConfigDeltaSizeY;
-							player.UpperArmR.SizeY += newSizeY - player.ArmConfigDeltaSizeY;
-							player.LowerArmL.SizeY += newSizeY - player.ArmConfigDeltaSizeY;
-							player.LowerArmR.SizeY += newSizeY - player.ArmConfigDeltaSizeY;
-							player.ArmConfigDeltaSizeY = newSizeY;
-						}
-
-						if (PatternMenuUI(
-							panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_ShoulderArmArmHand, player.SkinColor,
-							new Int4(player.ShoulderL.ID, player.UpperArmL.ID, player.LowerArmL.ID, player.HandL.ID),
-							out invokingIndex
-						)) {
-							var pat = Patterns_ShoulderArmArmHand[invokingIndex];
-							player.ShoulderL.SetSpriteID(pat.A);
-							player.ShoulderR.SetSpriteID(pat.A);
-							player.UpperArmL.SetSpriteID(pat.B, true);
-							player.LowerArmL.SetSpriteID(pat.C, true);
-							player.HandL.SetSpriteID(pat.D, true);
-							player.UpperArmR.SetSpriteID(pat.B, true);
-							player.LowerArmR.SetSpriteID(pat.C, true);
-							player.HandR.SetSpriteID(pat.D, true);
-						}
+						SubEditor_ArmLimb(panelRect);
 						break;
-
 					case SubMenuType.LegLegFoot:
-
-						newSizeX = SizeMenuUI(0, fieldRect, ICON_WIDTH_CODE, player.LegConfigDeltaSizeX, 8, 6);
-						if (newSizeX != player.LegConfigDeltaSizeX) {
-							player.UpperLegL.SizeX += newSizeX - player.LegConfigDeltaSizeX;
-							player.UpperLegR.SizeX += newSizeX - player.LegConfigDeltaSizeX;
-							player.LowerLegL.SizeX += newSizeX - player.LegConfigDeltaSizeX;
-							player.LowerLegR.SizeX += newSizeX - player.LegConfigDeltaSizeX;
-							player.LegConfigDeltaSizeX = newSizeX;
-						}
-
-						fieldRect.y -= fieldRect.height;
-						newSizeY = SizeMenuUI(1, fieldRect, ICON_HEIGHT_CODE, player.LegConfigDeltaSizeY, 8, 6);
-						if (newSizeY != player.LegConfigDeltaSizeY) {
-							player.UpperLegL.SizeY += newSizeY - player.LegConfigDeltaSizeY;
-							player.UpperLegR.SizeY += newSizeY - player.LegConfigDeltaSizeY;
-							player.LowerLegL.SizeY += newSizeY - player.LegConfigDeltaSizeY;
-							player.LowerLegR.SizeY += newSizeY - player.LegConfigDeltaSizeY;
-							player.LegConfigDeltaSizeY = newSizeY;
-						}
-
-						if (PatternMenuUI(
-							panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_LegLegFoot, player.SkinColor,
-							new Int4(player.UpperLegL.ID, player.LowerLegL.ID, player.FootL.ID, 0),
-							out invokingIndex
-						)) {
-							var pat = Patterns_LegLegFoot[invokingIndex];
-							player.UpperLegL.SetSpriteID(pat.A, true);
-							player.LowerLegL.SetSpriteID(pat.B, true);
-							player.FootL.SetSpriteID(pat.C, true);
-							player.UpperLegR.SetSpriteID(pat.A, true);
-							player.LowerLegR.SetSpriteID(pat.B, true);
-							player.FootR.SetSpriteID(pat.C, true);
-						}
+						SubEditor_LegLimb(panelRect);
 						break;
-
 					case SubMenuType.Face:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_Face, Const.WHITE,
-							new Int4(player.FaceIDs != null && player.FaceIDs.Length > 0 ? player.FaceIDs[0] : 0, 0, 0, 0),
-							out invokingIndex
-						)) {
-							SetPlayerFaces(player, Patterns_FaceNames[invokingIndex]);
-						}
+						SubEditor_Face(panelRect);
 						break;
-
 					case SubMenuType.Ear:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_Ear, Const.WHITE,
-							new Int4(player.AnimalEarGroupIdLeft, player.AnimalEarGroupIdRight, 0, 0),
-							out invokingIndex
-						)) {
-							var pat = Patterns_Ear[invokingIndex];
-							player.AnimalEarGroupIdLeft = pat.A;
-							player.AnimalEarGroupIdRight = pat.B;
-						}
+						SubEditor_Ear(panelRect);
 						break;
-
 					case SubMenuType.Tail:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_Tail, Const.WHITE,
-							new Int4(player.TailGroupID, 0, 0, 0),
-							out invokingIndex
-						)) {
-							var pat = Patterns_Tail[invokingIndex];
-							player.TailGroupID = pat.A;
-						}
+						SubEditor_Tail(panelRect);
 						break;
-
 					case SubMenuType.Wing:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_Wing, Const.WHITE,
-							new Int4(player.WingGroupID, 0, 0, 0),
-							out invokingIndex
-						)) {
-							var pat = Patterns_Wing[invokingIndex];
-							player.WingGroupID = pat.A;
-						}
+						SubEditor_Wing(panelRect);
 						break;
-
 					case SubMenuType.Suit_Head:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_Suit_Head, Const.WHITE,
-							new Int4(player.Suit_Head, 0, 0, 0), out invokingIndex
-						)) {
-							var pat = Patterns_Suit_Head[invokingIndex];
-							player.Suit_Head = pat.A;
-						}
+						SubEditor_SuitHead(panelRect);
 						break;
-
 					case SubMenuType.Suit_BodyShoulderArmArm:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_Suit_BodyShoulderArmArm, Const.WHITE,
-							new Int4(player.Suit_Body, player.Suit_UpperArm, player.Suit_LowerArm, 0),
-							out invokingIndex
-						)) {
-							var pat = Patterns_Suit_BodyShoulderArmArm[invokingIndex];
-							player.Suit_Body = pat.A;
-							player.Suit_Shoulder = pat.B;
-							player.Suit_UpperArm = pat.C;
-							player.Suit_LowerArm = pat.D;
-						}
+						SubEditor_SuitBody(panelRect);
 						break;
-
 					case SubMenuType.Suit_Hand:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_Suit_Hand, Const.WHITE,
-							new Int4(player.Suit_Hand, 0, 0, 0), out invokingIndex
-						)) {
-							var pat = Patterns_Suit_Hand[invokingIndex];
-							player.Suit_Hand = pat.A;
-						}
+						SubEditor_SuitHand(panelRect);
 						break;
-
 					case SubMenuType.Suit_HipSkirtLegLeg:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_Suit_HipSkirtLegLeg, Const.WHITE,
-							new Int4(player.Suit_Hip, player.Suit_Skirt, player.Suit_UpperLeg, player.Suit_LowerLeg),
-							out invokingIndex
-						)) {
-							var pat = Patterns_Suit_HipSkirtLegLeg[invokingIndex];
-							player.Suit_Hip = pat.A;
-							player.Suit_Skirt = pat.B;
-							player.Suit_UpperLeg = pat.C;
-							player.Suit_LowerLeg = pat.D;
-						}
+						SubEditor_SuitLeg(panelRect);
 						break;
-
 					case SubMenuType.Suit_Foot:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_Suit_Foot, Const.WHITE,
-							new Int4(player.Suit_Foot, 0, 0, 0), out invokingIndex
-						)) {
-							var pat = Patterns_Suit_Foot[invokingIndex];
-							player.Suit_Foot = pat.A;
-						}
+						SubEditor_SuitFoot(panelRect);
 						break;
-
 					case SubMenuType.Hair:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_Hair, player.HairColor,
-							new Int4(player.FrontHair_F, player.FrontHair_B, player.BackHair_F, player.BackHair_B),
-							out invokingIndex
-						)) {
-							var pat = Patterns_Hair[invokingIndex];
-							player.FrontHair_F = pat.A;
-							player.FrontHair_B = pat.B;
-							player.BackHair_F = pat.C;
-							player.BackHair_B = pat.D;
-						}
+						SubEditor_Hair(panelRect);
 						break;
-
 					case SubMenuType.SkinColor:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_SkinColors, Const.WHITE,
-							new Int4(player.SkinColor.r, player.SkinColor.g, player.SkinColor.b, int.MinValue + 1),
-							out invokingIndex
-						)) {
-							var pat = Patterns_SkinColors[invokingIndex];
-							player.SetSkinColor(new Color32(
-								(byte)pat.A.Clamp(0, 255),
-								(byte)pat.B.Clamp(0, 255),
-								(byte)pat.C.Clamp(0, 255),
-								255
-							));
-						}
+						SubEditor_SkinColor(panelRect);
 						break;
-
 					case SubMenuType.HairColor:
-						panelRect.height -= Unify(16);
-						if (PatternMenuUI(
-							panelRect, Patterns_HairColors, Const.WHITE,
-							new Int4(player.HairColor.r, player.HairColor.g, player.HairColor.b, int.MinValue + 1),
-							out invokingIndex
-						)) {
-							var pat = Patterns_HairColors[invokingIndex];
-							player.SetHairColor(new Color32(
-								(byte)pat.A.Clamp(0, 255),
-								(byte)pat.B.Clamp(0, 255),
-								(byte)pat.C.Clamp(0, 255),
-								255
-							));
-						}
+						SubEditor_HairColor(panelRect);
 						break;
-
 				}
 			}
 
 		}
 
 
+		// Sub Editor
+		private void SubEditor_Head (RectInt panelRect) {
+
+			var player = Player.Selecting as MainPlayer;
+			int sizePanelHeight = Unify(48);
+			var fieldRect = panelRect.Shrink(0, 0, panelRect.height - sizePanelHeight, 0);
+
+			int newSizeX = SizeMenuUI(0, fieldRect, ICON_WIDTH_CODE, player.HeadConfigDeltaSizeX, 16, 7);
+			if (newSizeX != player.HeadConfigDeltaSizeX) {
+				player.Head.SizeX += newSizeX - player.HeadConfigDeltaSizeX;
+				player.HeadConfigDeltaSizeX = newSizeX;
+			}
+
+			fieldRect.y -= fieldRect.height;
+			int newSizeY = SizeMenuUI(1, fieldRect, ICON_HEIGHT_CODE, player.HeadConfigDeltaSizeY, 8, 6);
+			if (newSizeY != player.HeadConfigDeltaSizeY) {
+				player.Head.SizeY += newSizeY - player.HeadConfigDeltaSizeY;
+				player.HeadConfigDeltaSizeY = newSizeY;
+			}
+
+			if (PatternMenuUI(
+				panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_Head, player.SkinColor,
+				new Int4(player.Head.ID, 0, 0, 0), out int invokingIndex
+			)) {
+				var pat = Patterns_Head[invokingIndex];
+				player.Head.SetSpriteID(pat.A, true);
+			}
+		}
+
+
+		private void SubEditor_Body (RectInt panelRect) {
+
+			var player = Player.Selecting as MainPlayer;
+			int sizePanelHeight = Unify(48);
+			var fieldRect = panelRect.Shrink(0, 0, panelRect.height - sizePanelHeight, 0);
+
+			int newSizeX = SizeMenuUI(0, fieldRect, ICON_WIDTH_CODE, player.BodyConfigDeltaSizeX, 16, 7);
+			if (newSizeX != player.BodyConfigDeltaSizeX) {
+				player.Body.SizeX += newSizeX - player.BodyConfigDeltaSizeX;
+				player.BodyConfigDeltaSizeX = newSizeX;
+			}
+
+			fieldRect.y -= fieldRect.height;
+			int newSizeY = SizeMenuUI(1, fieldRect, ICON_HEIGHT_CODE, player.BodyConfigDeltaSizeY, 8, 6);
+			if (newSizeY != player.BodyConfigDeltaSizeY) {
+				player.Body.SizeY += newSizeY - player.BodyConfigDeltaSizeY;
+				player.BodyConfigDeltaSizeY = newSizeY;
+			}
+
+			if (PatternMenuUI(
+				panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_Body, player.SkinColor,
+				new Int4(player.Body.ID, 0, 0, 0), out int invokingIndex
+			)) {
+				var pat = Patterns_Body[invokingIndex];
+				player.Body.SetSpriteID(pat.A, true);
+			}
+		}
+
+
+		private void SubEditor_ArmLimb (RectInt panelRect) {
+
+			var player = Player.Selecting as MainPlayer;
+			int sizePanelHeight = Unify(48);
+			var fieldRect = panelRect.Shrink(0, 0, panelRect.height - sizePanelHeight, 0);
+
+			int newSizeX = SizeMenuUI(0, fieldRect, ICON_WIDTH_CODE, player.ArmConfigDeltaSizeX, 8, 6);
+			if (newSizeX != player.ArmConfigDeltaSizeX) {
+				player.UpperArmL.SizeX += newSizeX - player.ArmConfigDeltaSizeX;
+				player.UpperArmR.SizeX += newSizeX - player.ArmConfigDeltaSizeX;
+				player.LowerArmL.SizeX += newSizeX - player.ArmConfigDeltaSizeX;
+				player.LowerArmR.SizeX += newSizeX - player.ArmConfigDeltaSizeX;
+				player.ArmConfigDeltaSizeX = newSizeX;
+			}
+
+			fieldRect.y -= fieldRect.height;
+			int newSizeY = SizeMenuUI(1, fieldRect, ICON_HEIGHT_CODE, player.ArmConfigDeltaSizeY, 16, 5);
+			if (newSizeY != player.ArmConfigDeltaSizeY) {
+				player.UpperArmL.SizeY += newSizeY - player.ArmConfigDeltaSizeY;
+				player.UpperArmR.SizeY += newSizeY - player.ArmConfigDeltaSizeY;
+				player.LowerArmL.SizeY += newSizeY - player.ArmConfigDeltaSizeY;
+				player.LowerArmR.SizeY += newSizeY - player.ArmConfigDeltaSizeY;
+				player.ArmConfigDeltaSizeY = newSizeY;
+			}
+
+			if (PatternMenuUI(
+				panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_ShoulderArmArmHand, player.SkinColor,
+				new Int4(player.ShoulderL.ID, player.UpperArmL.ID, player.LowerArmL.ID, player.HandL.ID),
+				out int invokingIndex
+			)) {
+				var pat = Patterns_ShoulderArmArmHand[invokingIndex];
+				player.ShoulderL.SetSpriteID(pat.A);
+				player.ShoulderR.SetSpriteID(pat.A);
+				player.UpperArmL.SetSpriteID(pat.B, true);
+				player.LowerArmL.SetSpriteID(pat.C, true);
+				player.HandL.SetSpriteID(pat.D, true);
+				player.UpperArmR.SetSpriteID(pat.B, true);
+				player.LowerArmR.SetSpriteID(pat.C, true);
+				player.HandR.SetSpriteID(pat.D, true);
+			}
+		}
+
+
+		private void SubEditor_LegLimb (RectInt panelRect) {
+
+			var player = Player.Selecting as MainPlayer;
+			int sizePanelHeight = Unify(48);
+			var fieldRect = panelRect.Shrink(0, 0, panelRect.height - sizePanelHeight, 0);
+
+			int newSizeX = SizeMenuUI(0, fieldRect, ICON_WIDTH_CODE, player.LegConfigDeltaSizeX, 8, 6);
+			if (newSizeX != player.LegConfigDeltaSizeX) {
+				player.UpperLegL.SizeX += newSizeX - player.LegConfigDeltaSizeX;
+				player.UpperLegR.SizeX += newSizeX - player.LegConfigDeltaSizeX;
+				player.LowerLegL.SizeX += newSizeX - player.LegConfigDeltaSizeX;
+				player.LowerLegR.SizeX += newSizeX - player.LegConfigDeltaSizeX;
+				player.LegConfigDeltaSizeX = newSizeX;
+			}
+
+			fieldRect.y -= fieldRect.height;
+			int newSizeY = SizeMenuUI(1, fieldRect, ICON_HEIGHT_CODE, player.LegConfigDeltaSizeY, 8, 6);
+			if (newSizeY != player.LegConfigDeltaSizeY) {
+				player.UpperLegL.SizeY += newSizeY - player.LegConfigDeltaSizeY;
+				player.UpperLegR.SizeY += newSizeY - player.LegConfigDeltaSizeY;
+				player.LowerLegL.SizeY += newSizeY - player.LegConfigDeltaSizeY;
+				player.LowerLegR.SizeY += newSizeY - player.LegConfigDeltaSizeY;
+				player.LegConfigDeltaSizeY = newSizeY;
+			}
+
+			if (PatternMenuUI(
+				panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_LegLegFoot, player.SkinColor,
+				new Int4(player.UpperLegL.ID, player.LowerLegL.ID, player.FootL.ID, 0),
+				out int invokingIndex
+			)) {
+				var pat = Patterns_LegLegFoot[invokingIndex];
+				player.UpperLegL.SetSpriteID(pat.A, true);
+				player.LowerLegL.SetSpriteID(pat.B, true);
+				player.FootL.SetSpriteID(pat.C, true);
+				player.UpperLegR.SetSpriteID(pat.A, true);
+				player.LowerLegR.SetSpriteID(pat.B, true);
+				player.FootR.SetSpriteID(pat.C, true);
+			}
+		}
+
+
+		private void SubEditor_Face (RectInt panelRect) {
+			HighlightingPatternPicker = true;
+			var player = Player.Selecting as MainPlayer;
+			panelRect.height -= Unify(16);
+			if (PatternMenuUI(
+				panelRect, Patterns_Face, Const.WHITE,
+				new Int4(player.FaceIDs != null && player.FaceIDs.Length > 0 ? player.FaceIDs[0] : 0, 0, 0, 0),
+				out int invokingIndex
+			)) {
+				SetPlayerFaces(player, Patterns_FaceNames[invokingIndex]);
+			}
+		}
+
+
+		private void SubEditor_Ear (RectInt panelRect) {
+			HighlightingPatternPicker = true;
+			var player = Player.Selecting as MainPlayer;
+			panelRect.height -= Unify(16);
+			if (PatternMenuUI(
+				panelRect, Patterns_Ear, Const.WHITE,
+				new Int4(player.AnimalEarGroupIdLeft, player.AnimalEarGroupIdRight, 0, 0),
+				out int invokingIndex
+			)) {
+				var pat = Patterns_Ear[invokingIndex];
+				player.AnimalEarGroupIdLeft = pat.A;
+				player.AnimalEarGroupIdRight = pat.B;
+			}
+		}
+
+
+		private void SubEditor_Tail (RectInt panelRect) {
+			HighlightingPatternPicker = true;
+			var player = Player.Selecting as MainPlayer;
+			panelRect.height -= Unify(16);
+			if (PatternMenuUI(
+				panelRect, Patterns_Tail, Const.WHITE,
+				new Int4(player.TailGroupID, 0, 0, 0),
+				out int invokingIndex
+			)) {
+				var pat = Patterns_Tail[invokingIndex];
+				player.TailGroupID = pat.A;
+			}
+		}
+
+
+		private void SubEditor_Wing (RectInt panelRect) {
+			HighlightingPatternPicker = true;
+			var player = Player.Selecting as MainPlayer;
+			panelRect.height -= Unify(16);
+			if (PatternMenuUI(
+				panelRect, Patterns_Wing, Const.WHITE,
+				new Int4(player.WingGroupID, 0, 0, 0),
+				out int invokingIndex
+			)) {
+				var pat = Patterns_Wing[invokingIndex];
+				player.WingGroupID = pat.A;
+			}
+		}
+
+
+		private void SubEditor_SuitHead (RectInt panelRect) {
+			HighlightingPatternPicker = true;
+			var player = Player.Selecting as MainPlayer;
+			panelRect.height -= Unify(16);
+			if (PatternMenuUI(
+				panelRect, Patterns_Suit_Head, Const.WHITE,
+				new Int4(player.Suit_Head, 0, 0, 0), out int invokingIndex
+			)) {
+				var pat = Patterns_Suit_Head[invokingIndex];
+				player.Suit_Head = pat.A;
+			}
+		}
+
+
+		private void SubEditor_SuitBody (RectInt panelRect) {
+			HighlightingPatternPicker = true;
+			var player = Player.Selecting as MainPlayer;
+			panelRect.height -= Unify(16);
+			if (PatternMenuUI(
+				panelRect, Patterns_Suit_BodyShoulderArmArm, Const.WHITE,
+				new Int4(player.Suit_Body, player.Suit_UpperArm, player.Suit_LowerArm, 0),
+				out int invokingIndex
+			)) {
+				var pat = Patterns_Suit_BodyShoulderArmArm[invokingIndex];
+				player.Suit_Body = pat.A;
+				player.Suit_Shoulder = pat.B;
+				player.Suit_UpperArm = pat.C;
+				player.Suit_LowerArm = pat.D;
+			}
+		}
+
+
+		private void SubEditor_SuitHand (RectInt panelRect) {
+			HighlightingPatternPicker = true;
+			var player = Player.Selecting as MainPlayer;
+			panelRect.height -= Unify(16);
+			if (PatternMenuUI(
+				panelRect, Patterns_Suit_Hand, Const.WHITE,
+				new Int4(player.Suit_Hand, 0, 0, 0), out int invokingIndex
+			)) {
+				var pat = Patterns_Suit_Hand[invokingIndex];
+				player.Suit_Hand = pat.A;
+			}
+		}
+
+
+		private void SubEditor_SuitLeg (RectInt panelRect) {
+			HighlightingPatternPicker = true;
+			var player = Player.Selecting as MainPlayer;
+			panelRect.height -= Unify(16);
+			if (PatternMenuUI(
+				panelRect, Patterns_Suit_HipSkirtLegLeg, Const.WHITE,
+				new Int4(player.Suit_Hip, player.Suit_Skirt, player.Suit_UpperLeg, player.Suit_LowerLeg),
+				out int invokingIndex
+			)) {
+				var pat = Patterns_Suit_HipSkirtLegLeg[invokingIndex];
+				player.Suit_Hip = pat.A;
+				player.Suit_Skirt = pat.B;
+				player.Suit_UpperLeg = pat.C;
+				player.Suit_LowerLeg = pat.D;
+			}
+		}
+
+
+		private void SubEditor_SuitFoot (RectInt panelRect) {
+			HighlightingPatternPicker = true;
+			var player = Player.Selecting as MainPlayer;
+			panelRect.height -= Unify(16);
+			if (PatternMenuUI(
+				panelRect, Patterns_Suit_Foot, Const.WHITE,
+				new Int4(player.Suit_Foot, 0, 0, 0), out int invokingIndex
+			)) {
+				var pat = Patterns_Suit_Foot[invokingIndex];
+				player.Suit_Foot = pat.A;
+			}
+		}
+
+
+		private void SubEditor_Hair (RectInt panelRect) {
+			HighlightingPatternPicker = true;
+			var player = Player.Selecting as MainPlayer;
+			panelRect.height -= Unify(16);
+			if (PatternMenuUI(
+				panelRect, Patterns_Hair, player.HairColor,
+				new Int4(player.FrontHair_F, player.FrontHair_B, player.BackHair_F, player.BackHair_B),
+				out int invokingIndex
+			)) {
+				var pat = Patterns_Hair[invokingIndex];
+				player.FrontHair_F = pat.A;
+				player.FrontHair_B = pat.B;
+				player.BackHair_F = pat.C;
+				player.BackHair_B = pat.D;
+			}
+		}
+
+
+		private void SubEditor_SkinColor (RectInt panelRect) {
+			HighlightingPatternPicker = true;
+			var player = Player.Selecting as MainPlayer;
+			panelRect.height -= Unify(16);
+			if (PatternMenuUI(
+				panelRect, Patterns_SkinColors, Const.WHITE,
+				new Int4(player.SkinColor.r, player.SkinColor.g, player.SkinColor.b, int.MinValue + 1),
+				out int invokingIndex
+			)) {
+				var pat = Patterns_SkinColors[invokingIndex];
+				player.SetSkinColor(new Color32(
+					(byte)pat.A.Clamp(0, 255),
+					(byte)pat.B.Clamp(0, 255),
+					(byte)pat.C.Clamp(0, 255),
+					255
+				));
+			}
+		}
+
+
+		private void SubEditor_HairColor (RectInt panelRect) {
+			HighlightingPatternPicker = true;
+			var player = Player.Selecting as MainPlayer;
+			panelRect.height -= Unify(16);
+			if (PatternMenuUI(
+				panelRect, Patterns_HairColors, Const.WHITE,
+				new Int4(player.HairColor.r, player.HairColor.g, player.HairColor.b, int.MinValue + 1),
+				out int invokingIndex
+			)) {
+				var pat = Patterns_HairColors[invokingIndex];
+				player.SetHairColor(new Color32(
+					(byte)pat.A.Clamp(0, 255),
+					(byte)pat.B.Clamp(0, 255),
+					(byte)pat.C.Clamp(0, 255),
+					255
+				));
+			}
+		}
+
+
+		// Misc
 		private int SizeMenuUI (int fieldIndex, RectInt panelRect, int icon, int size, int stepSize, int stepCount) {
 
 			// Icon

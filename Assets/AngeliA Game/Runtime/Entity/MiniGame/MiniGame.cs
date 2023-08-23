@@ -73,10 +73,13 @@ namespace AngeliaGame {
 				if (RequireMouseCursor) GameCursor.SetCursor(-1, -1);
 			}
 			// Draw Arcade
+			bool allowInvoke = (this as IActionTarget).AllowInvoke();
+			byte rgb = (byte)(allowInvoke ? 255 : 196);
 			var cell = CellRenderer.Draw(
 				TypeID, X + Width / 2, Y,
 				500, 0, 0,
-				Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE
+				Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE,
+				new Color32(rgb, rgb, rgb, 255)
 			);
 			AngeUtil.DrawShadow(TypeID, cell);
 			var act = this as IActionTarget;

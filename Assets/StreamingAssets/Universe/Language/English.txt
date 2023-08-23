@@ -1,5 +1,4 @@
-﻿Hint.Wardrobe:Change Cloth
-@enen:Enen
+﻿@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
@@ -36,6 +35,7 @@ Hint.Tetris.Drop:Drop
 Hint.Tetris.Hold:Hold
 Hint.Tetris.Move:Move
 Hint.Tetris.Rotate:Rotate
+Hint.Wardrobe:Change Cloth
 iDes.WizardHat:Wizard's Hat
 iName.WizardHat:Wizard Hat
 MEDT.BackgroundOnly:Background Only
@@ -74,7 +74,7 @@ Menu.Setting.UseControlHint:Show Control Hint
 Menu.Setting.UseGamepadHint:Show Bottom Left Gamepad
 Menu.Setting.VSync:V-Sync
 MiniGame_Gomoku:Gomoku
-MiniGame_PlayerCustomizer:Player Maker
+MiniGame_PlayerCustomizer:Customization
 MiniGame_Pong:Pong
 MiniGame_Tetris:Tetris
 Palette.Background:Background

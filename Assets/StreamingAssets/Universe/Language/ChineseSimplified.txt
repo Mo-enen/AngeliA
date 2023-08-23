@@ -1,5 +1,4 @@
-﻿Hint.Wardrobe:换装
-@enen:伊楠
+﻿@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子
@@ -36,6 +35,7 @@ Hint.Tetris.Drop:掉落
 Hint.Tetris.Hold:保留
 Hint.Tetris.Move:移动
 Hint.Tetris.Rotate:旋转
+Hint.Wardrobe:换装
 iDes.WizardHat:巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子
 iName.WizardHat:巫师帽
 MEDT.BackgroundOnly:仅背景
@@ -74,7 +74,7 @@ Menu.Setting.UseControlHint:显示操作提示
 Menu.Setting.UseGamepadHint:显示左下角手柄
 Menu.Setting.VSync:垂直同步
 MiniGame_Gomoku:五子棋
-MiniGame_PlayerCustomizer:捏脸
+MiniGame_PlayerCustomizer:自定义样貌
 MiniGame_Pong:乓
 MiniGame_Tetris:俄罗斯方块
 Palette.Background:背景
