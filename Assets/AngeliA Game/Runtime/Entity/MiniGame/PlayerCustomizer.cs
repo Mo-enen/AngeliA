@@ -242,7 +242,7 @@ namespace AngeliaGame {
 			// Preview
 			int leftPanelWidth = Unify(400);
 			var leftPanelRect = windowRect.Shrink(0, windowRect.width - leftPanelWidth, 0, 0);
-			bool flying = CurrentSubMenu.HasValue && CurrentSubMenu.Value == SubMenuType.Wing && player.WingGroupID != 0;
+			bool flying = CurrentSubMenu.HasValue && CurrentSubMenu.Value == SubMenuType.Wing && player.WingSpriteID != 0;
 			player.AnimatedPoseType = flying ? CharacterPoseAnimationType.Fly : CharacterPoseAnimationType.Idle;
 			AngeUtil.DrawPoseCharacterAsUI(leftPanelRect.Shrink(Unify(32)), player, Game.GlobalFrame);
 
@@ -539,7 +539,7 @@ namespace AngeliaGame {
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Face, Const.WHITE,
-				new Int4(player.FaceIDs != null && player.FaceIDs.Length > 0 ? player.FaceIDs[0] : 0, 0, 0, 0),
+				new Int4(player.FaceSpriteIDs != null && player.FaceSpriteIDs.Length > 0 ? player.FaceSpriteIDs[0] : 0, 0, 0, 0),
 				out int invokingIndex
 			)) {
 				SetPlayerFaces(player, Patterns_FaceNames[invokingIndex]);
@@ -552,12 +552,12 @@ namespace AngeliaGame {
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Ear, Const.WHITE,
-				new Int4(player.AnimalEarGroupIdLeft, player.AnimalEarGroupIdRight, 0, 0),
+				new Int4(player.EarGroupIdLeft, player.EarGroupIdRight, 0, 0),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_Ear[invokingIndex];
-				player.AnimalEarGroupIdLeft = pat.A;
-				player.AnimalEarGroupIdRight = pat.B;
+				player.EarGroupIdLeft = pat.A;
+				player.EarGroupIdRight = pat.B;
 			}
 		}
 
@@ -567,11 +567,11 @@ namespace AngeliaGame {
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Tail, Const.WHITE,
-				new Int4(player.TailGroupID, 0, 0, 0),
+				new Int4(player.TailSpriteID, 0, 0, 0),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_Tail[invokingIndex];
-				player.TailGroupID = pat.A;
+				player.TailSpriteID = pat.A;
 			}
 		}
 
@@ -581,11 +581,11 @@ namespace AngeliaGame {
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Wing, Const.WHITE,
-				new Int4(player.WingGroupID, 0, 0, 0),
+				new Int4(player.WingSpriteID, 0, 0, 0),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_Wing[invokingIndex];
-				player.WingGroupID = pat.A;
+				player.WingSpriteID = pat.A;
 			}
 		}
 
@@ -668,14 +668,14 @@ namespace AngeliaGame {
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Hair, player.HairColor,
-				new Int4(player.FrontHair_F, player.FrontHair_B, player.BackHair_F, player.BackHair_B),
+				new Int4(player.SpriteHairFrontF, player.SpriteHairFrontB, player.SpriteHairBackF, player.SpriteHairBackB),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_Hair[invokingIndex];
-				player.FrontHair_F = pat.A;
-				player.FrontHair_B = pat.B;
-				player.BackHair_F = pat.C;
-				player.BackHair_B = pat.D;
+				player.SpriteHairFrontF = pat.A;
+				player.SpriteHairFrontB = pat.B;
+				player.SpriteHairBackF = pat.C;
+				player.SpriteHairBackB = pat.D;
 			}
 		}
 
@@ -960,10 +960,10 @@ namespace AngeliaGame {
 
 
 		private void SetPlayerFaces (Player player, string faceBasicName) {
-			player.FaceIDs = new int[FaceTypeCount];
+			player.FaceSpriteIDs = new int[FaceTypeCount];
 			for (int i = 0; i < FaceTypeCount; i++) {
 				int id = $"{faceBasicName}.Face.{(CharacterFaceType)i}".AngeHash();
-				player.FaceIDs[i] =
+				player.FaceSpriteIDs[i] =
 					CellRenderer.HasSpriteGroup(id) || CellRenderer.HasSprite(id) ?
 					id : $"DefaultCharacter.Face.{(CharacterFaceType)i}".AngeHash();
 			}
