@@ -71,11 +71,7 @@ namespace AngeliaGame {
 
 		// Const
 		private const int EDITOR_BASIC_Z = 60;
-		private static readonly int ICON_WIDTH_CODE = "UI.WidthArrow".AngeHash();
-		private static readonly int ICON_HEIGHT_CODE = "UI.HeightArrow".AngeHash();
 		private static readonly int FRAME_CODE = "Frame16".AngeHash();
-		private static readonly int CIRCLE_CODE = "Circle16".AngeHash();
-		private static readonly int HINT_ADJUST = "CtrlHint.Adjust".AngeHash();
 		private static readonly int HINT_USE = "CtrlHint.Use".AngeHash();
 		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
 		private static readonly int[] MAIN_MENU_LABELS = {
@@ -146,16 +142,11 @@ namespace AngeliaGame {
 
 		// Data
 		private SubMenuType? CurrentSubMenu = null;
-		private readonly IntToString SizeX_ToString = new();
-		private readonly IntToString SizeY_ToString = new();
 		private readonly int SubMenuTypeCount = 0;
 		private readonly int FaceTypeCount = 0;
 		private int HighlightingMainIndex = 0;
 		private int HighlightingPatternRow = 0;
 		private int PatternPickerScrollRow = 0;
-		private int HighlightingSizeEditorIndex = 0;
-		private int SizeSliderAdjustingIndex = -1;
-		private bool HighlightingPatternPicker = false;
 		private string BackButtonHotkeyLabel = "";
 		private int BackButtonHotkeyPadCode = 0;
 
@@ -189,7 +180,6 @@ namespace AngeliaGame {
 
 			// Game Play
 			player.LockFacingRight(true, 1);
-			if (!FrameInput.MouseLeftButton) SizeSliderAdjustingIndex = -1;
 
 			// Back Button
 			if (CurrentSubMenu.HasValue) {
@@ -230,37 +220,17 @@ namespace AngeliaGame {
 				ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_USE, "Use"));
 			} else {
 				// Sub Menu
-				if (HighlightingPatternPicker) {
-					// Pattern Picker
-					if (FrameInput.GameKeyDownGUI(Gamekey.Down)) {
-						HighlightingPatternRow++;
-					}
-					if (FrameInput.GameKeyDownGUI(Gamekey.Up)) {
-						if (HighlightingPatternRow > 0) {
-							HighlightingPatternRow--;
-						} else {
-							HighlightingPatternPicker = false;
-							HighlightingSizeEditorIndex = 1;
-						}
-					}
-					ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, Language.Get(HINT_MOVE, "Move"));
-					ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, Language.Get(HINT_MOVE, "Move"));
-					ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_USE, "Use"));
-				} else {
-					// Size Editor
-					if (FrameInput.GameKeyDownGUI(Gamekey.Down)) {
-						if (HighlightingSizeEditorIndex < 1) {
-							HighlightingSizeEditorIndex++;
-						} else {
-							HighlightingPatternPicker = true;
-						}
-					}
-					if (FrameInput.GameKeyDownGUI(Gamekey.Up)) {
-						HighlightingSizeEditorIndex--;
-					}
-					ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, Language.Get(HINT_ADJUST, "Adjust"));
-					ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, Language.Get(HINT_MOVE, "Move"));
+				if (FrameInput.GameKeyDownGUI(Gamekey.Down)) {
+					HighlightingPatternRow++;
 				}
+				if (FrameInput.GameKeyDownGUI(Gamekey.Up)) {
+					if (HighlightingPatternRow > 0) {
+						HighlightingPatternRow--;
+					}
+				}
+				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, Language.Get(HINT_MOVE, "Move"));
+				ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, Language.Get(HINT_MOVE, "Move"));
+				ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_USE, "Use"));
 			}
 
 			// Rendering
@@ -295,7 +265,6 @@ namespace AngeliaGame {
 			HighlightingPatternRow = 0;
 			PatternPickerScrollRow = 0;
 			CurrentSubMenu = null;
-			SizeSliderAdjustingIndex = -1;
 			LoadPatternsFromFile();
 			BackButtonHotkeyLabel = $"({AngeUtil.GetGameKeyDisplayName(Gamekey.Jump)})";
 			BackButtonHotkeyPadCode = Const.GAMEPAD_JUMP_HINT_CODE;
@@ -387,8 +356,6 @@ namespace AngeliaGame {
 				}
 				if (invokeSubMenu) {
 					CurrentSubMenu = (SubMenuType)i;
-					HighlightingPatternPicker = false;
-					HighlightingSizeEditorIndex = 0;
 					HighlightingPatternRow = 0;
 					PatternPickerScrollRow = 0;
 				}
@@ -449,7 +416,6 @@ namespace AngeliaGame {
 				MainMenuUI(panelRect, player);
 			} else {
 				// Sub Content
-				HighlightingSizeEditorIndex = HighlightingPatternPicker ? -1 : HighlightingSizeEditorIndex.Clamp(0, 1);
 				switch (CurrentSubMenu) {
 					case SubMenuType.Head:
 						SubEditor_Head(panelRect);
@@ -507,149 +473,68 @@ namespace AngeliaGame {
 
 		// Sub Editor
 		private void SubEditor_Head (RectInt panelRect) {
-
 			var player = Player.Selecting as MainPlayer;
-			int sizePanelHeight = Unify(48);
-			var fieldRect = panelRect.Shrink(0, 0, panelRect.height - sizePanelHeight, 0);
-
-			int newSizeX = SizeMenuUI(0, fieldRect, ICON_WIDTH_CODE, player.HeadConfigDeltaSizeX, 16, 7);
-			if (newSizeX != player.HeadConfigDeltaSizeX) {
-				player.Head.SizeX += newSizeX - player.HeadConfigDeltaSizeX;
-				player.HeadConfigDeltaSizeX = newSizeX;
-			}
-
-			fieldRect.y -= fieldRect.height;
-			int newSizeY = SizeMenuUI(1, fieldRect, ICON_HEIGHT_CODE, player.HeadConfigDeltaSizeY, 8, 6);
-			if (newSizeY != player.HeadConfigDeltaSizeY) {
-				player.Head.SizeY += newSizeY - player.HeadConfigDeltaSizeY;
-				player.HeadConfigDeltaSizeY = newSizeY;
-			}
-
 			if (PatternMenuUI(
-				panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_Head, player.SkinColor,
+				panelRect, Patterns_Head, player.SkinColor,
 				new Int4(player.Head.ID, 0, 0, 0), out int invokingIndex
 			)) {
 				var pat = Patterns_Head[invokingIndex];
-				player.Head.SetSpriteID(pat.A, true);
+				player.Head.SetSpriteID(pat.A);
 			}
 		}
 
 
 		private void SubEditor_Body (RectInt panelRect) {
-
 			var player = Player.Selecting as MainPlayer;
-			int sizePanelHeight = Unify(48);
-			var fieldRect = panelRect.Shrink(0, 0, panelRect.height - sizePanelHeight, 0);
-
-			int newSizeX = SizeMenuUI(0, fieldRect, ICON_WIDTH_CODE, player.BodyConfigDeltaSizeX, 16, 7);
-			if (newSizeX != player.BodyConfigDeltaSizeX) {
-				player.Body.SizeX += newSizeX - player.BodyConfigDeltaSizeX;
-				player.BodyConfigDeltaSizeX = newSizeX;
-			}
-
-			fieldRect.y -= fieldRect.height;
-			int newSizeY = SizeMenuUI(1, fieldRect, ICON_HEIGHT_CODE, player.BodyConfigDeltaSizeY, 8, 6);
-			if (newSizeY != player.BodyConfigDeltaSizeY) {
-				player.Body.SizeY += newSizeY - player.BodyConfigDeltaSizeY;
-				player.BodyConfigDeltaSizeY = newSizeY;
-			}
-
 			if (PatternMenuUI(
-				panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_Body, player.SkinColor,
+				panelRect, Patterns_Body, player.SkinColor,
 				new Int4(player.Body.ID, 0, 0, 0), out int invokingIndex
 			)) {
 				var pat = Patterns_Body[invokingIndex];
-				player.Body.SetSpriteID(pat.A, true);
+				player.Body.SetSpriteID(pat.A);
 			}
 		}
 
 
 		private void SubEditor_ArmLimb (RectInt panelRect) {
-
 			var player = Player.Selecting as MainPlayer;
-			int sizePanelHeight = Unify(48);
-			var fieldRect = panelRect.Shrink(0, 0, panelRect.height - sizePanelHeight, 0);
-
-			int newSizeX = SizeMenuUI(0, fieldRect, ICON_WIDTH_CODE, player.ArmConfigDeltaSizeX, 8, 6);
-			if (newSizeX != player.ArmConfigDeltaSizeX) {
-				player.UpperArmL.SizeX += newSizeX - player.ArmConfigDeltaSizeX;
-				player.UpperArmR.SizeX += newSizeX - player.ArmConfigDeltaSizeX;
-				player.LowerArmL.SizeX += newSizeX - player.ArmConfigDeltaSizeX;
-				player.LowerArmR.SizeX += newSizeX - player.ArmConfigDeltaSizeX;
-				player.ArmConfigDeltaSizeX = newSizeX;
-			}
-
-			fieldRect.y -= fieldRect.height;
-			int newSizeY = SizeMenuUI(1, fieldRect, ICON_HEIGHT_CODE, player.ArmConfigDeltaSizeY, 16, 5);
-			if (newSizeY != player.ArmConfigDeltaSizeY) {
-				player.UpperArmL.SizeY += newSizeY - player.ArmConfigDeltaSizeY;
-				player.UpperArmR.SizeY += newSizeY - player.ArmConfigDeltaSizeY;
-				player.LowerArmL.SizeY += newSizeY - player.ArmConfigDeltaSizeY;
-				player.LowerArmR.SizeY += newSizeY - player.ArmConfigDeltaSizeY;
-				player.ArmConfigDeltaSizeY = newSizeY;
-			}
-
 			if (PatternMenuUI(
-				panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_ShoulderArmArmHand, player.SkinColor,
+				panelRect, Patterns_ShoulderArmArmHand, player.SkinColor,
 				new Int4(player.ShoulderL.ID, player.UpperArmL.ID, player.LowerArmL.ID, player.HandL.ID),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_ShoulderArmArmHand[invokingIndex];
 				player.ShoulderL.SetSpriteID(pat.A);
 				player.ShoulderR.SetSpriteID(pat.A);
-				player.UpperArmL.SetSpriteID(pat.B, true);
-				player.LowerArmL.SetSpriteID(pat.C, true);
-				player.HandL.SetSpriteID(pat.D, true);
-				player.UpperArmR.SetSpriteID(pat.B, true);
-				player.LowerArmR.SetSpriteID(pat.C, true);
-				player.HandR.SetSpriteID(pat.D, true);
+				player.UpperArmL.SetSpriteID(pat.B);
+				player.LowerArmL.SetSpriteID(pat.C);
+				player.HandL.SetSpriteID(pat.D);
+				player.UpperArmR.SetSpriteID(pat.B);
+				player.LowerArmR.SetSpriteID(pat.C);
+				player.HandR.SetSpriteID(pat.D);
 			}
 		}
 
 
 		private void SubEditor_LegLimb (RectInt panelRect) {
-
 			var player = Player.Selecting as MainPlayer;
-			int sizePanelHeight = Unify(48);
-			var fieldRect = panelRect.Shrink(0, 0, panelRect.height - sizePanelHeight, 0);
-
-			int newSizeX = SizeMenuUI(0, fieldRect, ICON_WIDTH_CODE, player.LegConfigDeltaSizeX, 8, 6);
-			if (newSizeX != player.LegConfigDeltaSizeX) {
-				player.UpperLegL.SizeX += newSizeX - player.LegConfigDeltaSizeX;
-				player.UpperLegR.SizeX += newSizeX - player.LegConfigDeltaSizeX;
-				player.LowerLegL.SizeX += newSizeX - player.LegConfigDeltaSizeX;
-				player.LowerLegR.SizeX += newSizeX - player.LegConfigDeltaSizeX;
-				player.LegConfigDeltaSizeX = newSizeX;
-			}
-
-			fieldRect.y -= fieldRect.height;
-			int newSizeY = SizeMenuUI(1, fieldRect, ICON_HEIGHT_CODE, player.LegConfigDeltaSizeY, 8, 6);
-			if (newSizeY != player.LegConfigDeltaSizeY) {
-				player.UpperLegL.SizeY += newSizeY - player.LegConfigDeltaSizeY;
-				player.UpperLegR.SizeY += newSizeY - player.LegConfigDeltaSizeY;
-				player.LowerLegL.SizeY += newSizeY - player.LegConfigDeltaSizeY;
-				player.LowerLegR.SizeY += newSizeY - player.LegConfigDeltaSizeY;
-				player.LegConfigDeltaSizeY = newSizeY;
-			}
-
 			if (PatternMenuUI(
-				panelRect.Shrink(0, 0, 0, sizePanelHeight * 2), Patterns_LegLegFoot, player.SkinColor,
+				panelRect, Patterns_LegLegFoot, player.SkinColor,
 				new Int4(player.UpperLegL.ID, player.LowerLegL.ID, player.FootL.ID, 0),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_LegLegFoot[invokingIndex];
-				player.UpperLegL.SetSpriteID(pat.A, true);
-				player.LowerLegL.SetSpriteID(pat.B, true);
-				player.FootL.SetSpriteID(pat.C, true);
-				player.UpperLegR.SetSpriteID(pat.A, true);
-				player.LowerLegR.SetSpriteID(pat.B, true);
-				player.FootR.SetSpriteID(pat.C, true);
+				player.UpperLegL.SetSpriteID(pat.A);
+				player.LowerLegL.SetSpriteID(pat.B);
+				player.FootL.SetSpriteID(pat.C);
+				player.UpperLegR.SetSpriteID(pat.A);
+				player.LowerLegR.SetSpriteID(pat.B);
+				player.FootR.SetSpriteID(pat.C);
 			}
 		}
 
 
 		private void SubEditor_Face (RectInt panelRect) {
-			HighlightingPatternPicker = true;
 			var player = Player.Selecting as MainPlayer;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
@@ -663,7 +548,6 @@ namespace AngeliaGame {
 
 
 		private void SubEditor_Ear (RectInt panelRect) {
-			HighlightingPatternPicker = true;
 			var player = Player.Selecting as MainPlayer;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
@@ -679,7 +563,6 @@ namespace AngeliaGame {
 
 
 		private void SubEditor_Tail (RectInt panelRect) {
-			HighlightingPatternPicker = true;
 			var player = Player.Selecting as MainPlayer;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
@@ -694,7 +577,6 @@ namespace AngeliaGame {
 
 
 		private void SubEditor_Wing (RectInt panelRect) {
-			HighlightingPatternPicker = true;
 			var player = Player.Selecting as MainPlayer;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
@@ -709,7 +591,6 @@ namespace AngeliaGame {
 
 
 		private void SubEditor_SuitHead (RectInt panelRect) {
-			HighlightingPatternPicker = true;
 			var player = Player.Selecting as MainPlayer;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
@@ -723,7 +604,6 @@ namespace AngeliaGame {
 
 
 		private void SubEditor_SuitBody (RectInt panelRect) {
-			HighlightingPatternPicker = true;
 			var player = Player.Selecting as MainPlayer;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
@@ -741,7 +621,6 @@ namespace AngeliaGame {
 
 
 		private void SubEditor_SuitHand (RectInt panelRect) {
-			HighlightingPatternPicker = true;
 			var player = Player.Selecting as MainPlayer;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
@@ -755,7 +634,6 @@ namespace AngeliaGame {
 
 
 		private void SubEditor_SuitLeg (RectInt panelRect) {
-			HighlightingPatternPicker = true;
 			var player = Player.Selecting as MainPlayer;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
@@ -773,7 +651,6 @@ namespace AngeliaGame {
 
 
 		private void SubEditor_SuitFoot (RectInt panelRect) {
-			HighlightingPatternPicker = true;
 			var player = Player.Selecting as MainPlayer;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
@@ -787,7 +664,6 @@ namespace AngeliaGame {
 
 
 		private void SubEditor_Hair (RectInt panelRect) {
-			HighlightingPatternPicker = true;
 			var player = Player.Selecting as MainPlayer;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
@@ -805,7 +681,6 @@ namespace AngeliaGame {
 
 
 		private void SubEditor_SkinColor (RectInt panelRect) {
-			HighlightingPatternPicker = true;
 			var player = Player.Selecting as MainPlayer;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
@@ -825,7 +700,6 @@ namespace AngeliaGame {
 
 
 		private void SubEditor_HairColor (RectInt panelRect) {
-			HighlightingPatternPicker = true;
 			var player = Player.Selecting as MainPlayer;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
@@ -845,91 +719,6 @@ namespace AngeliaGame {
 
 
 		// Misc
-		private int SizeMenuUI (int fieldIndex, RectInt panelRect, int icon, int size, int stepSize, int stepCount) {
-
-			// Icon
-			int iconSize = panelRect.height;
-			CellRenderer.Draw(
-				icon,
-				new RectInt(panelRect.x, panelRect.y, iconSize, iconSize),
-				EDITOR_BASIC_Z + 3
-			);
-
-			// Number
-			int numberSize = panelRect.height;
-			var i2s = fieldIndex == 0 ? SizeX_ToString : SizeY_ToString;
-			string numberStr = i2s.GetString(size);
-			CellRendererGUI.Label(
-				CellContent.Get(numberStr, 24, Alignment.MidMid),
-				new RectInt(panelRect.x + iconSize, panelRect.y, numberSize, numberSize)
-			);
-
-			// Line
-			int lineHeight = Unify(4);
-			int linePadding = Unify(64);
-			var lineRect = panelRect.Shrink(iconSize + numberSize + linePadding, linePadding, 0, 0);
-			CellRenderer.Draw(
-				Const.PIXEL,
-				new RectInt(lineRect.x, lineRect.CenterY() - lineHeight / 2, lineRect.width, lineHeight),
-				Const.GREY_42, EDITOR_BASIC_Z + 3
-			);
-
-			// Circle
-			int step = Util.RemapUnclamped(
-				0f, stepSize * stepCount, 0f, stepCount, size
-			).RoundToInt().Clamp(0, stepCount);
-			var circleSize = Unify(42);
-			var circleRect = new RectInt(
-				Util.RemapUnclamped(0, stepCount, lineRect.x, lineRect.xMax, step) - circleSize / 2,
-				panelRect.CenterY() - circleSize / 2,
-				circleSize * 8 / 10, circleSize * 8 / 10
-			);
-			CellRenderer.Draw(CIRCLE_CODE, circleRect.Shrink(Unify(6)), EDITOR_BASIC_Z + 4);
-
-			// Dragging Slider
-			if (SizeSliderAdjustingIndex == fieldIndex) {
-				// Dragging Slider
-				GameCursor.SetCursorAsHand(1);
-				int draggingStep = Util.RemapUnclamped(
-					lineRect.xMin, lineRect.xMax,
-					0, stepCount,
-					(float)FrameInput.MouseGlobalPosition.x
-				).RoundToInt().Clamp(0, stepCount);
-				size = draggingStep * stepSize;
-			} else {
-				// Highlight & Adjust
-				if (FrameInput.LastActionFromMouse) {
-					if (circleRect.Contains(FrameInput.MouseGlobalPosition)) {
-						GameCursor.SetCursorAsHand(1);
-						// Draw Mouse Highlight
-						CellRenderer.Draw(Const.PIXEL, circleRect, Const.GREY_32, EDITOR_BASIC_Z + 3);
-						HighlightingSizeEditorIndex = fieldIndex;
-						HighlightingPatternPicker = false;
-						// Adjust by Mouse Down
-						if (FrameInput.MouseLeftButtonDown) {
-							SizeSliderAdjustingIndex = fieldIndex;
-						}
-					}
-				} else {
-					// Draw Highlight Cursor
-					if (fieldIndex == HighlightingSizeEditorIndex) {
-						// Draw Cursor Frame
-						CellRendererGUI.HighlightCursor(FRAME_CODE, circleRect, EDITOR_BASIC_Z + 5);
-						// Adjust by Key
-						if (step > 0 && FrameInput.GameKeyDownGUI(Gamekey.Left)) {
-							size -= stepSize;
-						}
-						if (step < stepCount && FrameInput.GameKeyDownGUI(Gamekey.Right)) {
-							size += stepSize;
-						}
-					}
-				}
-			}
-
-			return size;
-		}
-
-
 		private bool PatternMenuUI (RectInt panelRect, List<PatternUnit> patterns, Color32 iconTint, Int4 selectingPattern, out int invokingIndex) {
 
 			int panelPadding = Unify(32);
@@ -1016,17 +805,16 @@ namespace AngeliaGame {
 				if (FrameInput.LastActionFromMouse) {
 					if (rect.Contains(FrameInput.MouseGlobalPosition)) {
 						CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32, EDITOR_BASIC_Z + 2);
-						HighlightingPatternPicker = true;
 						HighlightingPatternRow = index;
 						GameCursor.SetCursorAsHand(1);
 						tryInvoke = FrameInput.MouseLeftButtonDown;
 					}
 				} else {
-					if (HighlightingPatternPicker && HighlightingPatternRow == index) {
+					if (HighlightingPatternRow == index) {
 						cursorRect = rect;
 					}
 				}
-				if (HighlightingPatternPicker && HighlightingPatternRow == index) {
+				if (HighlightingPatternRow == index) {
 					invokingIndex = index;
 				}
 
@@ -1052,7 +840,7 @@ namespace AngeliaGame {
 			}
 
 			// Final
-			return HighlightingPatternPicker && tryInvoke;
+			return tryInvoke;
 			// Func
 			static bool IsSamePattern (Int4 x, Int4 y, bool forColor) {
 				if (forColor) {
