@@ -421,7 +421,7 @@ namespace AngeliaGame {
 							itemRect.y + (i / 2) * itemRect.height / 2,
 							itemRect.width / 2,
 							itemRect.height / 2
-						).Shrink(itemRect.width / 16), 
+						).Shrink(itemRect.width / 16),
 						sprite.SortingZ + 1
 					);
 				}
@@ -440,9 +440,7 @@ namespace AngeliaGame {
 
 
 		protected override void SetOpen (bool open) {
-			if (Open && !open) {
-				PlayerMenuUI.CloseMenu();
-			}
+			if (Open && !open) PlayerMenuUI.CloseMenu();
 			base.SetOpen(open);
 		}
 

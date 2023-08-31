@@ -19,13 +19,134 @@ namespace AngeliaGame {
 	}
 
 
-	public abstract class Wardrobe : MiniGame_PlayerCustomizer {
+	public abstract class Wardrobe : OpenableUiFurniture {
 
 
-		private static readonly int NAME_CODE = "Hint.Wardrobe".AngeHash();
-		protected override string DisplayName => Language.Get(NAME_CODE, "Change Cloth");
-		protected override bool BodypartAvailable => false;
-		protected override bool SuitAvailable => true;
+
+
+		#region --- SUB ---
+
+		private enum SuitType { Head, BodyShoulderArmArm, Hand, HipSkirtLegLeg, Foot, }
+
+		#endregion
+
+
+
+
+		#region --- VAR ---
+
+
+		// Const
+		public static readonly string[] Suit_Heads = { "", "StudentF", "BlondMan", };
+		public static readonly string[] Suit_BodyShoulderArmArms = { "", "StudentF", "BlondMan", };
+		public static readonly string[] Suit_HipSkirtLegLegs = { "", "StudentF", "BlondMan", };
+		public static readonly string[] Suit_Foots = { "", "StudentF", "BlondMan", };
+		public static readonly string[] Suit_Hands = { "", "StudentF", "BlondMan", };
+
+		// API
+		protected override Vector2Int WindowSize => new(100, 100);
+		protected override Direction3 ModuleType => Direction3.Vertical;
+
+		// Data
+		private SuitType CurrentSuit = SuitType.Head;
+		private int CurrentIndex = 0;
+
+
+		#endregion
+
+
+
+
+		#region --- MSG ---
+
+
+		protected override void OnUiOpen () {
+			base.OnUiOpen();
+			CurrentSuit = SuitType.Head;
+			CurrentIndex = 0;
+			if (Player.Selecting is MainPlayer player) {
+				player.LoadConfigFromFile();
+			}
+		}
+
+
+		protected override void OnUiClose () {
+			base.OnUiClose();
+			if (Player.Selecting is MainPlayer player) {
+				player.SaveConfigToFile();
+			}
+		}
+
+
+		protected override void DrawUI (RectInt windowRect) {
+
+
+			// Logic
+			if (FrameInput.GameKeyDownGUI(Gamekey.Down)) {
+				var newSuit = CurrentSuit.Next();
+				if (newSuit != CurrentSuit) {
+					CurrentSuit = newSuit;
+					CurrentIndex = GetPlayerSuitIndex(newSuit);
+				}
+			}
+			if (FrameInput.GameKeyDownGUI(Gamekey.Up)) {
+				var newSuit = CurrentSuit.Prev();
+				if (newSuit != CurrentSuit) {
+					CurrentSuit = newSuit;
+					CurrentIndex = GetPlayerSuitIndex(newSuit);
+				}
+			}
+			if (FrameInput.GameKeyDownGUI(Gamekey.Left)) {
+
+			}
+			if (FrameInput.GameKeyDownGUI(Gamekey.Right)) {
+
+			}
+
+			// Hint
+
+
+
+			// UI
+			var player = Player.Selecting;
+
+			windowRect.x = player.Rect.CenterX() - windowRect.width / 2;
+			windowRect.y = player.Y + Const.CEL * 2 + Unify(16);
+
+			// BG
+			CellRenderer.Draw(Const.PIXEL, windowRect, Const.BLACK, 0);
+
+			// Content
+
+
+
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+		private int GetPlayerSuitIndex (SuitType type) {
+
+
+
+
+
+			return 0;
+		}
+
+
+		#endregion
+
+
+
+
+
 
 	}
 }

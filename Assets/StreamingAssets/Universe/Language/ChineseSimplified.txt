@@ -35,7 +35,6 @@ Hint.Tetris.Drop:掉落
 Hint.Tetris.Hold:保留
 Hint.Tetris.Move:移动
 Hint.Tetris.Rotate:旋转
-Hint.Wardrobe:换装
 iDes.WizardHat:巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子
 iName.WizardHat:巫师帽
 MEDT.BackgroundOnly:仅背景

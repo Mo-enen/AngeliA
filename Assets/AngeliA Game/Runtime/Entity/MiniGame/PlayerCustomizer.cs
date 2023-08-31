@@ -40,30 +40,30 @@ namespace AngeliaGame {
 
 
 		// Pattern
-		public static readonly string[] BodyPart_Heads = {
+		private static readonly string[] BodyPart_Heads = {
 			"DefaultCharacter", "Small"
 		};
-		public static readonly string[] BodyPart_Bodys = { "DefaultCharacter", "Small" };
-		public static readonly string[] BodyPart_ShoulderArmArmHands = { "DefaultCharacter", "Small" };
-		public static readonly string[] BodyPart_LegLegFoots = { "DefaultCharacter", "Small" };
+		private static readonly string[] BodyPart_Bodys = { "DefaultCharacter", "Small" };
+		private static readonly string[] BodyPart_ShoulderArmArmHands = { "DefaultCharacter", "Small" };
+		private static readonly string[] BodyPart_LegLegFoots = { "DefaultCharacter", "Small" };
 
-		public static readonly string[] BodyPart_Faces = { "DefaultCharacter", "Small" };
-		public static readonly string[] BodyPart_Hairs = { "", "DefaultCharacter", "Small" };
-		public static readonly string[] BodyPart_Ears = { "", "Yaya" };
-		public static readonly string[] BodyPart_Tails = { "", "Yaya" };
-		public static readonly string[] BodyPart_Wings = { "", "Angel", "Propeller" };
+		private static readonly string[] BodyPart_Faces = { "DefaultCharacter", "Small" };
+		private static readonly string[] BodyPart_Hairs = { "", "DefaultCharacter", "Small" };
+		private static readonly string[] BodyPart_Ears = { "", "Yaya" };
+		private static readonly string[] BodyPart_Tails = { "", "Yaya" };
+		private static readonly string[] BodyPart_Wings = { "", "Angel", "Propeller" };
 
-		public static readonly string[] Suit_Heads = { "", "StudentF", "BlondMan", };
-		public static readonly string[] Suit_BodyShoulderArmArms = { "", "StudentF", "BlondMan", };
-		public static readonly string[] Suit_HipSkirtLegLegs = { "", "StudentF", "BlondMan", };
-		public static readonly string[] Suit_Foots = { "", "StudentF", "BlondMan", };
-		public static readonly string[] Suit_Hands = { "", "StudentF", "BlondMan", };
+		private static readonly string[] Suit_Heads = { "", "StudentF", "BlondMan", };
+		private static readonly string[] Suit_BodyShoulderArmArms = { "", "StudentF", "BlondMan", };
+		private static readonly string[] Suit_HipSkirtLegLegs = { "", "StudentF", "BlondMan", };
+		private static readonly string[] Suit_Foots = { "", "StudentF", "BlondMan", };
+		private static readonly string[] Suit_Hands = { "", "StudentF", "BlondMan", };
 
-		public static readonly string[] SkinColors = {
+		private static readonly string[] SkinColors = {
 			"#efc2a0","#d09e83","#b17a66","#925549","#f0e6da","#b8aca7",
 			"#8a817f","#5e5858",
 		};
-		public static readonly string[] HairColors = {
+		private static readonly string[] HairColors = {
 			"#ffffff","#cccccc","#999999","#666666","#333333","#fcd54a",
 			"#e1ab30","#ac813b","#725933","#ff7d66","#f05656","#c73a4a",
 			"#a82342",
@@ -112,12 +112,12 @@ namespace AngeliaGame {
 		};
 
 		// Api
-		protected override Vector2Int WindowSize => new(1000, 600);
+		protected override Vector2Int WindowSize => new(1000, 800);
 		protected override bool RequireMouseCursor => true;
 		protected override bool RequireQuitConfirm => false;
 		protected override string DisplayName => Language.Get(TypeID, "Player Maker");
 		protected virtual bool BodypartAvailable => true;
-		protected virtual bool SuitAvailable => false;
+		protected virtual bool SuitAvailable => true;
 		private int MenuStartIndex => BodypartAvailable ? 0 : 11;
 		private int MenuEndIndex => SuitAvailable ? SubMenuTypeCount : 11;
 
@@ -539,7 +539,7 @@ namespace AngeliaGame {
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Face, Const.WHITE,
-				new Int4(player.FaceSpriteIDs != null && player.FaceSpriteIDs.Length > 0 ? player.FaceSpriteIDs[0] : 0, 0, 0, 0),
+				new Int4(player.FaceSpriteID[0], 0, 0, 0),
 				out int invokingIndex
 			)) {
 				SetPlayerFaces(player, Patterns_FaceNames[invokingIndex]);
@@ -887,22 +887,35 @@ namespace AngeliaGame {
 			Patterns_SkinColors.Clear();
 			Patterns_HairColors.Clear();
 
-			FillPatterns(BodyPart_Heads, Patterns_Head, ".Head");
-			FillPatterns(BodyPart_Bodys, Patterns_Body, ".Body");
-			FillPatterns(BodyPart_Faces, Patterns_Face, ".Face.Normal");
+			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Heads, ".Head"))
+				Patterns_Head.Add(new PatternUnit() { Data = pat, DisplayName = name, });
+			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Bodys, ".Body"))
+				Patterns_Body.Add(new PatternUnit() { Data = pat, DisplayName = name, });
+			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Faces, ".Face.Normal"))
+				Patterns_Face.Add(new PatternUnit() { Data = pat, DisplayName = name, });
 			Patterns_FaceNames.AddRange(BodyPart_Faces);
-			FillPatterns(BodyPart_Hairs, Patterns_Hair, ".FrontHair.F", ".FrontHair.B", ".BackHair.F", ".BackHair.B");
-			FillPatterns(BodyPart_Ears, Patterns_Ear, ".EarL", ".EarR");
-			FillPatterns(BodyPart_Tails, Patterns_Tail, ".Tail");
-			FillPatterns(BodyPart_Wings, Patterns_Wing, ".Wing");
-			FillPatterns(BodyPart_ShoulderArmArmHands, Patterns_ShoulderArmArmHand, ".Shoulder", ".UpperArm", ".LowerArm", ".Hand");
-			FillPatterns(BodyPart_LegLegFoots, Patterns_LegLegFoot, ".UpperLeg", ".LowerLeg", ".Foot");
-
-			FillPatterns(Suit_Heads, Patterns_Suit_Head, ".Suit.Head");
-			FillPatterns(Suit_BodyShoulderArmArms, Patterns_Suit_BodyShoulderArmArm, ".Suit.Body", ".Suit.Shoulder", ".Suit.UpperArm", ".Suit.LowerArm");
-			FillPatterns(Suit_HipSkirtLegLegs, Patterns_Suit_HipSkirtLegLeg, ".Suit.Hip", ".Suit.Skirt", ".Suit.UpperLeg", ".Suit.LowerLeg");
-			FillPatterns(Suit_Hands, Patterns_Suit_Hand, ".Suit.Hand");
-			FillPatterns(Suit_Foots, Patterns_Suit_Foot, ".Suit.Foot");
+			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Hairs, ".FrontHair.F", ".FrontHair.B", ".BackHair.F", ".BackHair.B"))
+				Patterns_Hair.Add(new PatternUnit() { Data = pat, DisplayName = name, });
+			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Ears, ".EarL", ".EarR"))
+				Patterns_Ear.Add(new PatternUnit() { Data = pat, DisplayName = name, });
+			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Tails, ".Tail"))
+				Patterns_Tail.Add(new PatternUnit() { Data = pat, DisplayName = name, });
+			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Wings, ".Wing"))
+				Patterns_Wing.Add(new PatternUnit() { Data = pat, DisplayName = name, });
+			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_ShoulderArmArmHands, ".Shoulder", ".UpperArm", ".LowerArm", ".Hand"))
+				Patterns_ShoulderArmArmHand.Add(new PatternUnit() { Data = pat, DisplayName = name, });
+			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_LegLegFoots, ".UpperLeg", ".LowerLeg", ".Foot"))
+				Patterns_LegLegFoot.Add(new PatternUnit() { Data = pat, DisplayName = name, });
+			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_Heads, ".Suit.Head"))
+				Patterns_Suit_Head.Add(new PatternUnit() { Data = pat, DisplayName = name, });
+			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_BodyShoulderArmArms, ".Suit.Body", ".Suit.Shoulder", ".Suit.UpperArm", ".Suit.LowerArm"))
+				Patterns_Suit_BodyShoulderArmArm.Add(new PatternUnit() { Data = pat, DisplayName = name, });
+			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_HipSkirtLegLegs, ".Suit.Hip", ".Suit.Skirt", ".Suit.UpperLeg", ".Suit.LowerLeg"))
+				Patterns_Suit_HipSkirtLegLeg.Add(new PatternUnit() { Data = pat, DisplayName = name, });
+			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_Hands, ".Suit.Hand"))
+				Patterns_Suit_Hand.Add(new PatternUnit() { Data = pat, DisplayName = name, });
+			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_Foots, ".Suit.Foot"))
+				Patterns_Suit_Foot.Add(new PatternUnit() { Data = pat, DisplayName = name, });
 
 			// Colors
 			foreach (var colorStr in SkinColors) {
@@ -934,38 +947,17 @@ namespace AngeliaGame {
 				Patterns_Suit_HipSkirtLegLeg[i] = pat;
 			}
 
-			// Func
-			static void FillPatterns (string[] patterns, List<PatternUnit> target, string suffix0, string suffix1 = "", string suffix2 = "", string suffix3 = "") {
-				if (patterns == null || patterns.Length == 0) return;
-				foreach (string pat in patterns) {
-					if (string.IsNullOrEmpty(pat)) {
-						target.Add(new PatternUnit() {
-							Data = default,
-							DisplayName = "",
-						});
-					} else {
-						target.Add(new PatternUnit() {
-							Data = new Int4(
-								string.IsNullOrEmpty(suffix0) ? 0 : $"{pat}{suffix0}".AngeHash(),
-								string.IsNullOrEmpty(suffix1) ? 0 : $"{pat}{suffix1}".AngeHash(),
-								string.IsNullOrEmpty(suffix2) ? 0 : $"{pat}{suffix2}".AngeHash(),
-								string.IsNullOrEmpty(suffix3) ? 0 : $"{pat}{suffix3}".AngeHash()
-							),
-							DisplayName = Language.Get($"Pat.{pat}".AngeHash(), pat),
-						});
-					}
-				}
-			}
 		}
 
 
 		private void SetPlayerFaces (Player player, string faceBasicName) {
-			player.FaceSpriteIDs = new int[FaceTypeCount];
 			for (int i = 0; i < FaceTypeCount; i++) {
-				int id = $"{faceBasicName}.Face.{(CharacterFaceType)i}".AngeHash();
-				player.FaceSpriteIDs[i] =
-					CellRenderer.HasSpriteGroup(id) || CellRenderer.HasSprite(id) ?
-					id : $"DefaultCharacter.Face.{(CharacterFaceType)i}".AngeHash();
+				var fType = (CharacterFaceType)i;
+				int id = $"{faceBasicName}.Face.{fType}".AngeHash();
+				player.FaceSpriteID.SetValue(
+					fType,
+					CellRenderer.HasSpriteGroup(id) || CellRenderer.HasSprite(id) ? id : $"DefaultCharacter.Face.{fType}".AngeHash()
+				);
 			}
 		}
 

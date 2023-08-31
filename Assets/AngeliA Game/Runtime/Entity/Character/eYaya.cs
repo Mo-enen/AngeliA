@@ -11,14 +11,15 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 namespace AngeliaGame {
 	public class eYaya : Player {
 
+
 		// Const
 		private static readonly int YAYA_PAW = typeof(eYayaPaw).AngeHash();
 
-
 		// Api
-		protected override bool SpinOnGroundPound => true;
+		public override bool SpinOnGroundPound => true;
 		public override bool BodySuitAvailable => false;
 		public override bool HelmetAvailable => false;
+		public override int CharacterHeight => 158;
 
 		// Data
 		private eGuaGua GuaGua = null;

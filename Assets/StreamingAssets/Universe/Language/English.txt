@@ -35,7 +35,6 @@ Hint.Tetris.Drop:Drop
 Hint.Tetris.Hold:Hold
 Hint.Tetris.Move:Move
 Hint.Tetris.Rotate:Rotate
-Hint.Wardrobe:Change Cloth
 iDes.WizardHat:Wizard's Hat
 iName.WizardHat:Wizard Hat
 MEDT.BackgroundOnly:Background Only
