@@ -335,9 +335,7 @@ namespace AngeliaGame {
 						countSize, countSize
 					);
 					CellRenderer.Draw(Const.PIXEL, countRect, Const.BLACK, int.MinValue + 8);
-					string label = CombineResultCount >= 0 && CombineResultCount < CellRendererGUI.NUMBER_CACHE.Length ?
-						CellRendererGUI.NUMBER_CACHE[CombineResultCount] : "99+";
-					CellRendererGUI.Label(CellContent.Get(label), countRect);
+					CellRendererGUI.Label(CellContent.Get(CellRendererGUI.GetNumberCache(CombineResultCount)), countRect);
 				}
 			}
 

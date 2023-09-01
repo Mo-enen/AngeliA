@@ -15,7 +15,7 @@ namespace AngeliaGame {
 
 
 		// Const
-		public static readonly string[] SUIT_HEADS = { "", "StudentD", "StudentE", "StudentF", "StudentG", "StudentH", "BlondMan", };
+		public static readonly string[] SUIT_HEADS = { "", "SailorKid", "Cowboy", };
 		public static readonly string[] SUIT_BODYSHOULDERARMARMS = { "", "StudentD", "StudentE", "StudentF", "StudentG", "StudentH", "BlondMan", };
 		public static readonly string[] SUIT_HIPSKIRTLEGLEGS = { "", "StudentD", "StudentE", "StudentF", "StudentG", "StudentH", "BlondMan", };
 		public static readonly string[] SUIT_FOOTS = { "", "StudentD", "StudentE", "StudentF", "StudentG", "StudentH", "BlondMan", };
