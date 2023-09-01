@@ -30,6 +30,7 @@ CtrlHint.Throw:丢弃
 CtrlHint.Transfer:转移
 CtrlHint.Use:使用
 CtrlHint.WakeUp:起床
+CtrlHint.Wardrobe.Type:服饰类型
 Hint.Pong.Move:移动
 Hint.Tetris.Drop:掉落
 Hint.Tetris.Hold:保留

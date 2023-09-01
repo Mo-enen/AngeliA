@@ -30,6 +30,7 @@ CtrlHint.Throw:Throw
 CtrlHint.Transfer:Transfer
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
+CtrlHint.Wardrobe.Type:Suit Type
 Hint.Pong.Move:Move
 Hint.Tetris.Drop:Drop
 Hint.Tetris.Hold:Hold
