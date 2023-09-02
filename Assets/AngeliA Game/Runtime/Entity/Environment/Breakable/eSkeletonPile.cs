@@ -8,11 +8,9 @@ namespace AngeliaGame {
 	public class eSkeletonPile : Breakable {
 
 
-		private const int SPAWN_ITEM_POSSIBILITY = 32;
-		private static readonly int SKULL_CODE = typeof(iSkull).AngeHash();
+		private static readonly int ITEM_CODE = typeof(iSkull).AngeHash();
 		private int ArtworkCode = 0;
 		private RectInt FullRect = default;
-		private static readonly System.Random Ran = new(2334768);
 
 
 		public override void OnActivated () {
@@ -45,10 +43,9 @@ namespace AngeliaGame {
 
 
 		protected override void OnBreak () {
-			Stage.MarkAsAntiSpawn(this);
-			BreakingParticle.SpawnParticles(ArtworkCode, Rect);
-			if (Ran.Next(0, SPAWN_ITEM_POSSIBILITY) == 0) {
-				ItemSystem.SpawnItem(SKULL_CODE);
+			base.OnBreak();
+			if (AngeUtil.RandomInt(0, 32) == 0) {
+				ItemSystem.SpawnItem(ITEM_CODE);
 			}
 		}
 

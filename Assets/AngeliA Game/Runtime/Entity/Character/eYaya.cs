@@ -17,7 +17,7 @@ namespace AngeliaGame {
 
 		// Api
 		public override bool SpinOnGroundPound => true;
-		public override bool BodySuitAvailable => false;
+		public override bool BodySuitAvailable => true;
 		public override bool HelmetAvailable => false;
 		public override int CharacterHeight => 158;
 

@@ -357,7 +357,7 @@ namespace AngeliaGame {
 				// Quick Drop Crafted
 				int playerID = Player.Selecting != null ? Player.Selecting.TypeID : 0;
 				if (playerID == 0) return;
-				int collectedCount = Inventory.TryCollectItem(playerID, CombineResultID, CombineResultCount);
+				int collectedCount = Inventory.CollectItem(playerID, CombineResultID, CombineResultCount);
 				if (collectedCount < CombineResultCount) {
 					ItemSystem.SpawnItem(CombineResultID, CombineResultCount - collectedCount);
 				}

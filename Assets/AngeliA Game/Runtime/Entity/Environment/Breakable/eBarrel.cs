@@ -6,7 +6,14 @@ using AngeliaFramework;
 
 namespace AngeliaGame {
 	public class eBarrel : BreakableRigidbody, ICombustible {
+		private static readonly int ITEM_CODE = typeof(iTreeStump).AngeHash();
 		int ICombustible.BurnStartFrame { get; set; }
+		protected override void OnBreak () {
+			base.OnBreak();
+			if (AngeUtil.RandomInt(0, 32) == 0) {
+				ItemSystem.SpawnItem(ITEM_CODE);
+			}
+		}
 	}
 
 

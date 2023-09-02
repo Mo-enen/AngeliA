@@ -55,7 +55,37 @@ namespace AngeliaGame {
 
 	// Armor
 	public class iArmorWood : Equipment {
+		private static readonly int BROKEN_CODE = typeof(iArmorWoodBroken).AngeHash();
 		public override EquipmentType EquipmentType => EquipmentType.BodySuit;
+		public override void OnTakeDamage (Entity holder, ItemLocation location, ref int damage, Entity sender) {
+			base.OnTakeDamage(holder, location, ref damage, sender);
+			Inventory.SetEquipment(holder.TypeID, EquipmentType, BROKEN_CODE);
+			SpawnLostParticle(TypeID, holder.X, holder.Y);
+			damage--;
+		}
+	}
+	public class iArmorWoodBroken : Equipment {
+		private static readonly int FIX_CODE = typeof(iArmorWood).AngeHash();
+		private static readonly int MAT_CODE_0 = typeof(iTreeStump).AngeHash();
+		private static readonly int MAT_CODE_1 = typeof(iItemWoodBoard).AngeHash();
+		public override EquipmentType EquipmentType => EquipmentType.BodySuit;
+		public override void OnSquat (Entity holder, ItemLocation location) {
+			base.OnSquat(holder, location);
+			// Try 0
+			int tookCount = Inventory.FindAndTakeItem(holder.TypeID, MAT_CODE_0, 1);
+			if (tookCount > 0) {
+				Inventory.SetEquipment(holder.TypeID, EquipmentType, FIX_CODE);
+				SpawnLostParticle(MAT_CODE_0, holder.X, holder.Y);
+				return;
+			}
+			// Try 1
+			tookCount = Inventory.FindAndTakeItem(holder.TypeID, MAT_CODE_1, 1);
+			if (tookCount > 0) {
+				Inventory.SetEquipment(holder.TypeID, EquipmentType, FIX_CODE);
+				SpawnLostParticle(MAT_CODE_1, holder.X, holder.Y);
+				return;
+			}
+		}
 	}
 	public class iArmorIron : Equipment {
 		public override EquipmentType EquipmentType => EquipmentType.BodySuit;

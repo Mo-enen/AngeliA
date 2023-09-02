@@ -7,7 +7,7 @@ using AngeliaFramework;
 namespace AngeliaGame {
 	public class eRock : Breakable {
 
-
+		private static readonly int ITEM_CODE = typeof(iStone).AngeHash();
 		private static readonly int CODE = "Rock".AngeHash();
 		private int ArtworkCode = 0;
 		private RectInt FullRect = default;
@@ -39,5 +39,15 @@ namespace AngeliaGame {
 			CellRenderer.Draw(ArtworkCode, FullRect);
 			AngeUtil.DrawShadow(ArtworkCode, FullRect);
 		}
+
+
+		protected override void OnBreak () {
+			base.OnBreak();
+			if (AngeUtil.RandomInt(0, 32) == 0) {
+				ItemSystem.SpawnItem(ITEM_CODE);
+			}
+		}
+
+
 	}
 }
