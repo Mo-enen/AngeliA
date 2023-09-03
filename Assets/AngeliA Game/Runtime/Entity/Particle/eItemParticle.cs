@@ -87,8 +87,9 @@ namespace AngeliaGame {
 			int deltaX = (int)Mathf.Lerp(0, Const.CEL, ease01).Clamp(0, Const.HALF);
 			int deltaY = (int)Mathf.Lerp(-Const.HALF, Const.CEL * 2, ease01).Clamp(0, Const.CEL);
 			int deltaRot = (int)Mathf.Lerp(0, 45, ease01);
+			byte rgb = (byte)Mathf.Lerp(512, 196, ease01).Clamp(0, 255);
 			var tint = new Color32(
-				255, 255, 255,
+				rgb, rgb, rgb,
 				(byte)Mathf.Lerp(512, 0, ease01).Clamp(0, 255)
 			);
 
