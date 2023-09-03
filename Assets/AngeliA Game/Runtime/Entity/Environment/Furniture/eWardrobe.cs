@@ -30,7 +30,6 @@ namespace AngeliaGame {
 		int ICombustible.BurnStartFrame { get; set; }
 
 
-
 	}
 
 

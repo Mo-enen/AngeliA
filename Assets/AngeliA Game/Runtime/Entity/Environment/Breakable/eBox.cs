@@ -12,7 +12,7 @@ namespace AngeliaGame {
 		protected override void OnBreak () {
 			base.OnBreak();
 			if (AngeUtil.RandomInt(0, 32) == 0) {
-				ItemSystem.SpawnItem(ITEM_CODE);
+				ItemSystem.ItemSpawnItemAtPlayer(ITEM_CODE);
 			}
 		}
 	}
