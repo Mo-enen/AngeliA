@@ -37,12 +37,12 @@ namespace AngeliaGame {
 
 	[EntityAttribute.Capacity(16, 0)]
 	[EntityAttribute.ForceSpawn]
-	public class EquipmentLostParticle : FreeFallParticle {
+	public class ItemLostParticle : FreeFallParticle {
 		public override int Duration => 120;
 		public override bool Loop => false;
 		[AfterGameInitialize]
 		public static void AfterGameInitialize () {
-			Equipment.EquipmentLostParticleID = typeof(EquipmentLostParticle).AngeHash();
+			Equipment.ItemLostParticleID = typeof(ItemLostParticle).AngeHash();
 		}
 		public override void OnActivated () {
 			base.OnActivated();
@@ -59,6 +59,43 @@ namespace AngeliaGame {
 			base.FrameUpdate();
 			CellRenderer.SetLayerToUI();
 			CellRenderer.Draw((int)UserData, X, Y, 500, 500, Rotation, Width, Height, 0);
+			CellRenderer.SetLayerToDefault();
+		}
+	}
+
+
+	[EntityAttribute.Capacity(16, 0)]
+	[EntityAttribute.ForceSpawn]
+	public class EquipmentBrokeParticle : Particle {
+		public override int Duration => 60;
+		public override bool Loop => false;
+		[AfterGameInitialize]
+		public static void AfterGameInitialize () {
+			Equipment.EquipmentBrokeParticleID = typeof(EquipmentBrokeParticle).AngeHash();
+		}
+		public override void OnActivated () {
+			base.OnActivated();
+			Width = Const.CEL * 2 / 3;
+			Height = Const.CEL * 2 / 3;
+			Y += Const.CEL * 4;
+		}
+		public override void DrawParticle () {
+			base.DrawParticle();
+			CellRenderer.SetLayerToUI();
+
+			float ease01 = Ease.OutCirc((float)LocalFrame / Duration);
+			int deltaX = (int)Mathf.Lerp(0, Const.CEL, ease01).Clamp(0, Const.HALF);
+			int deltaY = (int)Mathf.Lerp(-Const.HALF, Const.CEL * 2, ease01).Clamp(0, Const.CEL);
+			int deltaRot = (int)Mathf.Lerp(0, 45, ease01);
+			var tint = new Color32(
+				255, 255, 255,
+				(byte)Mathf.Lerp(512, 0, ease01).Clamp(0, 255)
+			);
+
+			var cellL = CellRenderer.Draw((int)UserData, X - deltaX, Y - deltaY, 500, 500, -deltaRot, Width, Height, tint, 0);
+			var cellR = CellRenderer.Draw((int)UserData, X + deltaX, Y - deltaY, 500, 500, deltaRot, Width, Height, tint, 0);
+			cellL.Shift = new Int4(0, Width / 2, 0, 0);
+			cellR.Shift = new Int4(Width / 2, 0, 0, 0);
 			CellRenderer.SetLayerToDefault();
 		}
 	}

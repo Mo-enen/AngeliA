@@ -60,7 +60,7 @@ namespace AngeliaGame {
 		public override void OnTakeDamage (Entity holder, ItemLocation location, ref int damage, Entity sender) {
 			base.OnTakeDamage(holder, location, ref damage, sender);
 			Inventory.SetEquipment(holder.TypeID, EquipmentType, BROKEN_CODE);
-			SpawnLostParticle(TypeID, holder.X, holder.Y);
+			SpawnEquipmentBrokeParticle(TypeID, holder.X, holder.Y);
 			damage--;
 		}
 	}
@@ -75,14 +75,14 @@ namespace AngeliaGame {
 			int tookCount = Inventory.FindAndTakeItem(holder.TypeID, MAT_CODE_0, 1);
 			if (tookCount > 0) {
 				Inventory.SetEquipment(holder.TypeID, EquipmentType, FIX_CODE);
-				SpawnLostParticle(MAT_CODE_0, holder.X, holder.Y);
+				SpawnItemLostParticle(MAT_CODE_0, holder.X, holder.Y);
 				return;
 			}
 			// Try 1
 			tookCount = Inventory.FindAndTakeItem(holder.TypeID, MAT_CODE_1, 1);
 			if (tookCount > 0) {
 				Inventory.SetEquipment(holder.TypeID, EquipmentType, FIX_CODE);
-				SpawnLostParticle(MAT_CODE_1, holder.X, holder.Y);
+				SpawnItemLostParticle(MAT_CODE_1, holder.X, holder.Y);
 				return;
 			}
 		}
