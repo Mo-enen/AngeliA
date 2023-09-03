@@ -46,8 +46,13 @@ namespace AngeliaGame {
 				SetCharacterState(CharacterState.GamePlay);
 			}
 
+		}
+
+
+		public override void SetCharacterState (CharacterState state) {
+			base.SetCharacterState(state);
 			// Sleep in Basket
-			if (CharacterState == CharacterState.Sleep) {
+			if (state == CharacterState.Sleep) {
 				if (Stage.TryGetEntityNearby<eBasket>(new(X, Y), out var basket)) {
 					int offsetY = 0;
 					if (CellRenderer.TryGetSprite(basket.TypeID, out var basketSprite)) {

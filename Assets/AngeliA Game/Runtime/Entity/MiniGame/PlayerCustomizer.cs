@@ -48,7 +48,7 @@ namespace AngeliaGame {
 		private static readonly string[] BodyPart_LegLegFoots = { "DefaultCharacter", "Small" };
 
 		private static readonly string[] BodyPart_Faces = { "DefaultCharacter", "Small" };
-		private static readonly string[] BodyPart_Hairs = { "", "DefaultCharacter", "Small" };
+		private static readonly string[] BodyPart_Hairs = { "", "DefaultCharacter", "Small", "StudentF" };
 		private static readonly string[] BodyPart_Ears = { "", "Yaya" };
 		private static readonly string[] BodyPart_Tails = { "", "Yaya" };
 		private static readonly string[] BodyPart_Wings = { "", "Angel", "Propeller" };
