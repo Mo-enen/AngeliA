@@ -336,7 +336,7 @@ namespace AngeliaGame {
 					if (mouseInField) {
 						HighlightingMainIndex = i;
 						CellRenderer.Draw(Const.PIXEL, fieldRect, Const.GREY_32, EDITOR_BASIC_Z + 1);
-						GameCursor.SetCursorAsHand(1);
+						CursorSystem.SetCursorAsHand(1);
 					}
 				} else {
 					// Using Key
@@ -387,7 +387,7 @@ namespace AngeliaGame {
 					CellContent.Get(Language.Get(Const.UI_BACK, "Back"), 28, Alignment.MidMid),
 					buttonRect, out var bounds
 				);
-				GameCursor.SetCursorAsHand(buttonRect, 1);
+				CursorSystem.SetCursorAsHand(buttonRect, 1);
 
 				// Hotkey Label
 				var hotkeyRect = new RectInt(bounds.xMax + Unify(16), bounds.y, 1, bounds.height);
@@ -806,7 +806,7 @@ namespace AngeliaGame {
 					if (rect.Contains(FrameInput.MouseGlobalPosition)) {
 						CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32, EDITOR_BASIC_Z + 2);
 						HighlightingPatternRow = index;
-						GameCursor.SetCursorAsHand(1);
+						CursorSystem.SetCursorAsHand(1);
 						tryInvoke = FrameInput.MouseLeftButtonDown;
 					}
 				} else {

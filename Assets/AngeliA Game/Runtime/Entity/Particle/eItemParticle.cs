@@ -124,7 +124,8 @@ namespace AngeliaGame {
 
 			float ease01 = Ease.OutCirc((float)LocalFrame / Duration);
 			float ease010 = Mathf.PingPong(ease01, 0.5f) * 2f;
-			int deltaSize = (int)Mathf.Lerp(Const.CEL, -Const.CEL, ease010).Clamp(-Const.HALF / 3, 0);
+			int deltaSize = (int)Mathf.Lerp(Const.CEL, -Const.CEL, ease010).Clamp(-Const.HALF / 4, 0);
+			int rotation = ease01 < 0.5f ? (int)(ease01 * 30f * (LocalFrame % 2 == 0 ? 1f : -1f)) : 0;
 
 			byte rgb = (byte)Mathf.Lerp(512, 196, ease01).Clamp(0, 255);
 			var tint = new Color32(
@@ -135,7 +136,7 @@ namespace AngeliaGame {
 			// Draw
 			CellRenderer.Draw(
 				ease01 < 0.5f ? ((Int2)UserData).A : ((Int2)UserData).B,
-				X, Y, 500, 500, 0,
+				X, Y, 500, 500, rotation,
 				Width + deltaSize, Height + deltaSize,
 				tint, 0
 			);
