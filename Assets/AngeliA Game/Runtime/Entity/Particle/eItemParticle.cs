@@ -100,4 +100,46 @@ namespace AngeliaGame {
 			CellRenderer.SetLayerToDefault();
 		}
 	}
+
+
+	[EntityAttribute.Capacity(16, 0)]
+	[EntityAttribute.ForceSpawn]
+	public class EquipmentDamageParticle : Particle {
+		public override int Duration => 60;
+		public override bool Loop => false;
+		[AfterGameInitialize]
+		public static void AfterGameInitialize () {
+			Equipment.EquipmentDamageParticleID = typeof(EquipmentDamageParticle).AngeHash();
+		}
+		public override void OnActivated () {
+			base.OnActivated();
+			Width = Const.CEL;
+			Height = Const.CEL;
+			Y += Const.CEL * 3;
+			X += Width / 2;
+		}
+		public override void DrawParticle () {
+			base.DrawParticle();
+			CellRenderer.SetLayerToUI();
+
+			float ease01 = Ease.OutCirc((float)LocalFrame / Duration);
+			float ease010 = Mathf.PingPong(ease01, 0.5f) * 2f;
+			int deltaSize = (int)Mathf.Lerp(Const.CEL, -Const.CEL, ease010).Clamp(-Const.HALF / 3, 0);
+
+			byte rgb = (byte)Mathf.Lerp(512, 196, ease01).Clamp(0, 255);
+			var tint = new Color32(
+				rgb, rgb, rgb,
+				(byte)Mathf.Lerp(512, 0, ease01).Clamp(0, 255)
+			);
+
+			// Draw
+			CellRenderer.Draw(
+				ease01 < 0.5f ? ((Int2)UserData).A : ((Int2)UserData).B,
+				X, Y, 500, 500, 0,
+				Width + deltaSize, Height + deltaSize,
+				tint, 0
+			);
+			CellRenderer.SetLayerToDefault();
+		}
+	}
 }

@@ -60,7 +60,8 @@ namespace AngeliaGame {
 		public override void OnTakeDamage (Entity holder, ItemLocation location, ref int damage, Entity sender) {
 			base.OnTakeDamage(holder, location, ref damage, sender);
 			Inventory.SetEquipment(holder.TypeID, EquipmentType, BROKEN_CODE);
-			SpawnEquipmentBrokeParticle(TypeID, holder.X, holder.Y);
+			//SpawnEquipmentBrokeParticle(TypeID, holder.X, holder.Y);
+			SpawnEquipmentDamageParticle(TypeID, BROKEN_CODE, holder.X, holder.Y);
 			damage--;
 		}
 	}
