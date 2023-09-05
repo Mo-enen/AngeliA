@@ -20,7 +20,7 @@ CtrlHint.MEDT.SwitchMode.Play:开始游戏
 CtrlHint.Move:移动
 CtrlHint.PlayerMenu.Take:拾取
 CtrlHint.PlayerMenu.TakeUse:拾取（长按使用）
-CtrlHint.QuitEditing:退出地图编辑
+CtrlHint.QuitEditing:停止地图编辑
 CtrlHint.Restart:重新开始
 CtrlHint.ShowMenu:显示菜单
 CtrlHint.Skip:跳过
@@ -60,6 +60,7 @@ Menu.MiniGame.QuitMsg:退出迷你游戏？
 Menu.MiniGame.Restart:重新开始游戏吗？
 Menu.Pause.KeySetter:按键分配
 Menu.Pause.MEDTSetting:编辑器设置
+Menu.Pause.QuitEditMessage:停止地图编辑？
 Menu.Pause.QuitMessage:是否要退出游戏？
 Menu.Setting.AllowGamepad:允许连接手柄
 Menu.Setting.Framerate:帧频率

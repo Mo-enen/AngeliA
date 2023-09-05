@@ -20,7 +20,7 @@ CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
 CtrlHint.PlayerMenu.Take:Take
 CtrlHint.PlayerMenu.TakeUse:Take (Hold to Use)
-CtrlHint.QuitEditing:Quit Editing Map
+CtrlHint.QuitEditing:Stop Editing Map
 CtrlHint.Restart:Restart
 CtrlHint.ShowMenu:Show Menu
 CtrlHint.Skip:Skip
@@ -60,6 +60,7 @@ Menu.MiniGame.QuitMsg:Quit mini game?
 Menu.MiniGame.Restart:Retart Game?
 Menu.Pause.KeySetter:Key Assignment
 Menu.Pause.MEDTSetting:Editor Setting
+Menu.Pause.QuitEditMessage:Stop Editing Map?
 Menu.Pause.QuitMessage:Quit game now？
 Menu.Setting.AllowGamepad:Allow Gamepad
 Menu.Setting.Framerate:Framerate
