@@ -6,7 +6,7 @@ using AngeliaFramework;
 
 namespace AngeliaGame {
 	public class HololiaPlayerCustomizer : MiniGame_PlayerCustomizer {
-		
+
 
 		private static readonly string[] _BodyPart_Heads = {
 			"DefaultCharacter", "Small"
@@ -20,6 +20,7 @@ namespace AngeliaGame {
 		private static readonly string[] _BodyPart_Ears = { "", "Yaya" };
 		private static readonly string[] _BodyPart_Tails = { "", "Yaya" };
 		private static readonly string[] _BodyPart_Wings = { "", "Angel", "Propeller" };
+		private static readonly string[] _BodyPart_Horns = { "", "Angel", "Propeller" };
 
 		private static readonly string[] _Suit_Heads = { "", "StudentF", "BlondMan", };
 		private static readonly string[] _Suit_BodyShoulderArmArms = { "", "StudentF", "BlondMan", };
@@ -48,6 +49,7 @@ namespace AngeliaGame {
 		protected override string[] BodyPart_Ears => _BodyPart_Ears;
 		protected override string[] BodyPart_Tails => _BodyPart_Tails;
 		protected override string[] BodyPart_Wings => _BodyPart_Wings;
+		protected override string[] BodyPart_Horns => _BodyPart_Horns;
 		protected override string[] Suit_Heads => _Suit_Heads;
 		protected override string[] Suit_BodyShoulderArmArms => _Suit_BodyShoulderArmArms;
 		protected override string[] Suit_HipSkirtLegLegs => _Suit_HipSkirtLegLegs;

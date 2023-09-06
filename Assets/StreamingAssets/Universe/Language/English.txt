@@ -1,9 +1,10 @@
-﻿HololiaPlayerCustomizer:Customization (HololiA)
+﻿UI.BodyPart.Horn:Horn
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
 @yaya:Yaya
+AngeliaPlayerCustomizer:Customization
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
@@ -32,11 +33,13 @@ CtrlHint.Transfer:Transfer
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
 CtrlHint.Wardrobe.Type:Suit Type
+GomokuMiniGame:Gomoku
 Hint.Pong.Move:Move
 Hint.Tetris.Drop:Drop
 Hint.Tetris.Hold:Hold
 Hint.Tetris.Move:Move
 Hint.Tetris.Rotate:Rotate
+HololiaPlayerCustomizer:Customization (HololiA)
 iDes.WizardHat:Wizard's Hat
 iName.WizardHat:Wizard Hat
 MEDT.BackgroundOnly:Background Only
@@ -75,10 +78,6 @@ Menu.Setting.SoundVolume:Sound Volume
 Menu.Setting.UseControlHint:Show Control Hint
 Menu.Setting.UseGamepadHint:Show Bottom Left Gamepad
 Menu.Setting.VSync:V-Sync
-GomokuMiniGame:Gomoku
-AngeliaPlayerCustomizer:Customization
-PongMiniGame:Pong
-TetrisMiniGame:Tetris
 Palette.Background:Background
 Palette.Character:Character
 Palette.CheckPoint:CheckPoint
@@ -95,6 +94,8 @@ Palette.System:System
 Palette.Vegetation:Vegetation
 Palette.Wallpaper:Wallpaper
 Pat.DefaultCharacter:Default
+PongMiniGame:Pong
+TetrisMiniGame:Tetris
 UI.Back:Back
 UI.BodyPart.ArmHand:Arm
 UI.BodyPart.Body:Body

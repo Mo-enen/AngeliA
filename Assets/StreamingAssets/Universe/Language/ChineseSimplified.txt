@@ -1,9 +1,10 @@
-﻿HololiaPlayerCustomizer:自定义样貌（HololiA）
+﻿UI.BodyPart.Horn:犄角
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子
 @yaya:丫丫
+AngeliaPlayerCustomizer:自定义样貌
 CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
@@ -32,11 +33,13 @@ CtrlHint.Transfer:转移
 CtrlHint.Use:使用
 CtrlHint.WakeUp:起床
 CtrlHint.Wardrobe.Type:服饰类型
+GomokuMiniGame:五子棋
 Hint.Pong.Move:移动
 Hint.Tetris.Drop:掉落
 Hint.Tetris.Hold:保留
 Hint.Tetris.Move:移动
 Hint.Tetris.Rotate:旋转
+HololiaPlayerCustomizer:自定义样貌（HololiA）
 iDes.WizardHat:巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子
 iName.WizardHat:巫师帽
 MEDT.BackgroundOnly:仅背景
@@ -75,10 +78,6 @@ Menu.Setting.SoundVolume:音效音量
 Menu.Setting.UseControlHint:显示操作提示
 Menu.Setting.UseGamepadHint:显示左下角手柄
 Menu.Setting.VSync:垂直同步
-GomokuMiniGame:五子棋
-AngeliaPlayerCustomizer:自定义样貌
-PongMiniGame:乓
-TetrisMiniGame:俄罗斯方块
 Palette.Background:背景
 Palette.Character:角色
 Palette.CheckPoint:存档点
@@ -95,6 +94,8 @@ Palette.System:系统
 Palette.Vegetation:植被
 Palette.Wallpaper:壁纸
 Pat.DefaultCharacter:默认
+PongMiniGame:乓
+TetrisMiniGame:俄罗斯方块
 UI.Back:返回
 UI.BodyPart.ArmHand:手臂
 UI.BodyPart.Body:身体
