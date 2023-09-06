@@ -1,4 +1,5 @@
-﻿@enen:伊楠
+﻿HololiaPlayerCustomizer:自定义样貌（HololiA）
+@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子
@@ -74,10 +75,10 @@ Menu.Setting.SoundVolume:音效音量
 Menu.Setting.UseControlHint:显示操作提示
 Menu.Setting.UseGamepadHint:显示左下角手柄
 Menu.Setting.VSync:垂直同步
-MiniGame_Gomoku:五子棋
-MiniGame_PlayerCustomizer:自定义样貌
-MiniGame_Pong:乓
-MiniGame_Tetris:俄罗斯方块
+GomokuMiniGame:五子棋
+AngeliaPlayerCustomizer:自定义样貌
+PongMiniGame:乓
+TetrisMiniGame:俄罗斯方块
 Palette.Background:背景
 Palette.Character:角色
 Palette.CheckPoint:存档点

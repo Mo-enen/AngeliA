@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class MiniGame_Tetris : MiniGame {
+	public class TetrisMiniGame : MiniGame {
 
 
 

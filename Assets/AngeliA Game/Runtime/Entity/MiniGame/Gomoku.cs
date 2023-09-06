@@ -6,7 +6,7 @@ using AngeliaFramework;
 
 namespace AngeliaGame {
 	////////////////////// UI //////////////////////
-	public class MiniGame_Gomoku : MiniGame {
+	public class GomokuMiniGame : MiniGame {
 
 
 

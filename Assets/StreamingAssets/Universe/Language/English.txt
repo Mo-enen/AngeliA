@@ -1,4 +1,5 @@
-﻿@enen:Enen
+﻿HololiaPlayerCustomizer:Customization (HololiA)
+@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
@@ -74,10 +75,10 @@ Menu.Setting.SoundVolume:Sound Volume
 Menu.Setting.UseControlHint:Show Control Hint
 Menu.Setting.UseGamepadHint:Show Bottom Left Gamepad
 Menu.Setting.VSync:V-Sync
-MiniGame_Gomoku:Gomoku
-MiniGame_PlayerCustomizer:Customization
-MiniGame_Pong:Pong
-MiniGame_Tetris:Tetris
+GomokuMiniGame:Gomoku
+AngeliaPlayerCustomizer:Customization
+PongMiniGame:Pong
+TetrisMiniGame:Tetris
 Palette.Background:Background
 Palette.Character:Character
 Palette.CheckPoint:CheckPoint
