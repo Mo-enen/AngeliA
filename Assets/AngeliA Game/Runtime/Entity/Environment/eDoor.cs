@@ -34,7 +34,7 @@ namespace AngeliaGame {
 
 
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
-	public class ePortalFront : ePortal {
+	public class ePortalFront : Portal {
 		private static readonly int CIRCLE_CODE = "PortalCircle".AngeHash();
 		private static readonly int FLAME_CODE = "PortalFlame".AngeHash();
 		protected override int CircleCode => CIRCLE_CODE;
@@ -44,7 +44,7 @@ namespace AngeliaGame {
 
 
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
-	public class ePortalBack : ePortal {
+	public class ePortalBack : Portal {
 		private static readonly int CIRCLE_CODE = "PortalCircle".AngeHash();
 		private static readonly int FLAME_CODE = "PortalFlame".AngeHash();
 		protected override int CircleCode => CIRCLE_CODE;
@@ -57,7 +57,7 @@ namespace AngeliaGame {
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.DontSpawnFromWorld]
-	public class eCheckPointPortal : ePortal {
+	public class eCheckPointPortal : Portal {
 
 		public static readonly int TYPE_ID = typeof(eCheckPointPortal).AngeHash();
 		private static readonly int CIRCLE_CODE = "CheckPointPortalCircle".AngeHash();
