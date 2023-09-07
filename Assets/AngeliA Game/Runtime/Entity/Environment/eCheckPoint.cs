@@ -1,7 +1,29 @@
 using AngeliaFramework;
+using UnityEngine;
 
 
 namespace AngeliaGame {
+
+
+	public class eCheckPointTouchParticle : Particle {
+		public override int Duration => 32;
+		public override bool Loop => false;
+		[AfterGameInitialize]
+		public static void Init () {
+			CheckPoint.OnTouchedParticleID = typeof(eCheckPointTouchParticle).AngeHash();
+		}
+		public override void DrawParticle () {
+			if (UserData is not CheckPoint targetCP) return;
+			// Flash
+			if (CellRenderer.TryGetSprite(targetCP.TypeID, out var cpSprite)) {
+				CellRenderer.SetLayerToAdditive();
+				CellRenderer.Draw(cpSprite.GlobalID, targetCP.Rect.Expand(LocalFrame), new Color32(0, 255, 0,
+					(byte)Util.RemapUnclamped(0, Duration, 128, 0, LocalFrame).Clamp(0, 255)
+				));
+				CellRenderer.SetLayerToDefault();
+			}
+		}
+	}
 
 
 	public class eCheckLalynnA : CheckPoint { }

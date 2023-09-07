@@ -9,6 +9,19 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 
 
 namespace AngeliaGame {
+
+
+	[DefaultGadget(typeof(eYaya))]
+	public class YayaFace : AutoSpriteFace<eYaya> { }
+
+
+	[DefaultGadget(typeof(eYaya))]
+	public class YayaHair : AutoSpriteHair<eYaya> { }
+
+
+
+
+
 	public class eYaya : Player {
 
 

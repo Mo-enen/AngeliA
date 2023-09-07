@@ -1,4 +1,4 @@
-﻿UI.BodyPart.Horn:Horn
+﻿UI.BodyPart.Boob:Boob
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -104,6 +104,7 @@ UI.BodyPart.Face:Face
 UI.BodyPart.Hair:Hair
 UI.BodyPart.HairColor:Hair Color
 UI.BodyPart.Head:Head
+UI.BodyPart.Horn:Horn
 UI.BodyPart.LegFoot:Leg
 UI.BodyPart.SkinColor:Skin Color
 UI.BodyPart.Tail:Tail

@@ -1,4 +1,4 @@
-﻿UI.BodyPart.Horn:犄角
+﻿UI.BodyPart.Boob:胸部
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -104,6 +104,7 @@ UI.BodyPart.Face:面部
 UI.BodyPart.Hair:头发
 UI.BodyPart.HairColor:发色
 UI.BodyPart.Head:头部
+UI.BodyPart.Horn:犄角
 UI.BodyPart.LegFoot:腿部
 UI.BodyPart.SkinColor:肤色
 UI.BodyPart.Tail:尾巴
