@@ -23,7 +23,7 @@ namespace AngeliaGame {
 		public override int Duration => 20;
 		public override bool Loop => false;
 		public override int FramePerSprite => 3;
-		[AfterGameInitialize]
+		[OnGameInitialize(64)]
 		public static void Init () {
 			Rigidbody.WaterSplashParticleID = typeof(eWaterSplashParticle).AngeHash();
 			Water.WaterSplashParticleID = typeof(eWaterSplashParticle).AngeHash();

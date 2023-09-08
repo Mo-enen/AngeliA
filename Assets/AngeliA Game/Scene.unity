@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da05428af58f0fa4d921db1f278225fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UniverseVersion: 1
+  m_UniverseVersion: 0
   m_SkyTintTop:
     serializedVersion: 2
     key0: {r: 0.078431375, g: 0.08235294, b: 0.12156863, a: 1}

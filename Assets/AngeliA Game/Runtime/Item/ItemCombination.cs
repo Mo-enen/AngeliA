@@ -7,7 +7,7 @@ namespace AngeliaGame {
 	public static class ItemCombination {
 
 
-		[AfterGameInitialize]
+		[OnGameInitialize(64)]
 		public static void AfterGameInitialize () {
 
 			General0();

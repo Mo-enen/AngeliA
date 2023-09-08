@@ -18,7 +18,7 @@ namespace AngeliaGame {
 		protected override int InventoryColumn => 10;
 		protected override int InventoryRow => 8;
 		int ICombustible.BurnStartFrame { get; set; }
-		[AfterGameInitialize]
+		[OnGameInitialize(64)]
 		public static void AfterGameInitialize () {
 			Inventory.SetUnlockInside(typeof(ePlayerItemChest).AngeHash(), true);
 		}

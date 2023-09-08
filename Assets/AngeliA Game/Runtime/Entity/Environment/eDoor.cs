@@ -69,7 +69,7 @@ namespace AngeliaGame {
 		private int InvokeFrame = -1;
 
 
-		[AfterGameInitialize]
+		[OnGameInitialize(64)]
 		public static void Initialize () {
 			CheckAltar.BackPortalEntityID = typeof(eCheckPointPortal).AngeHash();
 		}

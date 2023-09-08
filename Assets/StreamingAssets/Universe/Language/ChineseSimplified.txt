@@ -1,4 +1,4 @@
-﻿UI.BodyPart.Boob:胸部
+﻿Palette.MiniGame:迷你游戏
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -87,7 +87,7 @@ Palette.Furniture:家具
 Palette.Item:物品
 Palette.LevelBack:关卡
 Palette.LevelFront:关卡-前景
-Palette.Nearby:附近的
+Palette.ItemFood:食物
 Palette.Pinned:收藏
 Palette.Platform:平台
 Palette.System:系统
@@ -99,6 +99,7 @@ TetrisMiniGame:俄罗斯方块
 UI.Back:返回
 UI.BodyPart.ArmHand:手臂
 UI.BodyPart.Body:身体
+UI.BodyPart.Boob:胸部
 UI.BodyPart.Ear:兽耳
 UI.BodyPart.Face:面部
 UI.BodyPart.Hair:头发

@@ -1,4 +1,4 @@
-﻿UI.BodyPart.Boob:Boob
+﻿Palette.MiniGame:Mini Game
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -87,7 +87,7 @@ Palette.Furniture:Furniture
 Palette.Item:Item
 Palette.LevelBack:LevelBack
 Palette.LevelFront:LevelFront
-Palette.Nearby:Nearby
+Palette.ItemFood:Food
 Palette.Pinned:Pinned
 Palette.Platform:Platform
 Palette.System:System
@@ -99,6 +99,7 @@ TetrisMiniGame:Tetris
 UI.Back:Back
 UI.BodyPart.ArmHand:Arm
 UI.BodyPart.Body:Body
+UI.BodyPart.Boob:Boob
 UI.BodyPart.Ear:Ear
 UI.BodyPart.Face:Face
 UI.BodyPart.Hair:Hair

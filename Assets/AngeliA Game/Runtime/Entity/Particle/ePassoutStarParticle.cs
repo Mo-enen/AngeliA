@@ -19,7 +19,7 @@ namespace AngeliaGame {
 
 
 		// MSG
-		[AfterGameInitialize]
+		[OnGameInitialize(64)]
 		public static void Init () {
 			Character.PassOutParticleCode = typeof(ePassOutStarParticle).AngeHash();
 		}

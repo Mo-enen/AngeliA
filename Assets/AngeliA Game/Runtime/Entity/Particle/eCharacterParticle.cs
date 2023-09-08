@@ -18,7 +18,7 @@ namespace AngeliaGame {
 		private static int GlobalShift = 0;
 
 
-		[AfterGameInitialize]
+		[OnGameInitialize(64)]
 		public static void Init () {
 			Character.SleepParticleCode = typeof(eSleepParticle).AngeHash();
 		}
@@ -52,7 +52,7 @@ namespace AngeliaGame {
 		public override int Duration => 20;
 		public override bool Loop => false;
 		public override int FramePerSprite => 4;
-		[AfterGameInitialize]
+		[OnGameInitialize(64)]
 		public static void Init () {
 			Character.SlideParticleCode = typeof(eSlideDust).AngeHash();
 		}
@@ -65,7 +65,7 @@ namespace AngeliaGame {
 		public override int Duration => 20;
 		public override bool Loop => false;
 		public override int FramePerSprite => 5;
-		[AfterGameInitialize]
+		[OnGameInitialize(64)]
 		public static void Init () {
 			Character.FootstepParticleCode = typeof(eCharacterFootstep).AngeHash();
 			Character.DashParticleCode = typeof(eCharacterFootstep).AngeHash();

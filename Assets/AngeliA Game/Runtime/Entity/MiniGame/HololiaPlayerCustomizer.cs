@@ -15,13 +15,13 @@ namespace AngeliaGame {
 		private static readonly string[] _BodyPart_ShoulderArmArmHands = { "DefaultCharacter", "Small" };
 		private static readonly string[] _BodyPart_LegLegFoots = { "DefaultCharacter", "Small" };
 
-		private static readonly string[] _BodyPart_Faces = { "DefaultCharacter", "Small" };
-		private static readonly string[] _BodyPart_Hairs = { "", "DefaultCharacter", "Small", "StudentF" };
-		private static readonly string[] _BodyPart_Ears = { "", "Yaya" };
-		private static readonly string[] _BodyPart_Tails = { "", "Yaya" };
-		private static readonly string[] _BodyPart_Wings = { "", "Angel", "Propeller" };
-		private static readonly string[] _BodyPart_Horns = { "", "Angel", "Propeller" };
-		private static readonly string[] _BodyPart_Boobs = { "", "Angel", "Propeller" };
+		private static readonly string[] _BodyPart_Faces = { "DefaultCharacter", };
+		private static readonly string[] _BodyPart_Hairs = { "", };
+		private static readonly string[] _BodyPart_Ears = { "", };
+		private static readonly string[] _BodyPart_Tails = { "", };
+		private static readonly string[] _BodyPart_Wings = { "", };
+		private static readonly string[] _BodyPart_Horns = { "", "LaplusHorn", };
+		private static readonly string[] _BodyPart_Boobs = { "", };
 
 		private static readonly string[] _Suit_Heads = { "", "StudentF", "BlondMan", };
 		private static readonly string[] _Suit_BodyShoulderArmArms = { "", "StudentF", "BlondMan", };

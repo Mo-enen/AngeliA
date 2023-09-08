@@ -10,7 +10,7 @@ namespace AngeliaGame {
 	public class ItemCollectParticle : Particle {
 		public override int Duration => 30;
 		public override bool Loop => false;
-		[AfterGameInitialize]
+		[OnGameInitialize(64)]
 		public static void AfterGameInitialize () {
 			ItemHolder.CollectParticleID = typeof(ItemCollectParticle).AngeHash();
 		}
@@ -40,7 +40,7 @@ namespace AngeliaGame {
 	public class ItemLostParticle : FreeFallParticle {
 		public override int Duration => 120;
 		public override bool Loop => false;
-		[AfterGameInitialize]
+		[OnGameInitialize(64)]
 		public static void AfterGameInitialize () {
 			Equipment.ItemLostParticleID = typeof(ItemLostParticle).AngeHash();
 		}
@@ -69,7 +69,7 @@ namespace AngeliaGame {
 	public class EquipmentBrokeParticle : Particle {
 		public override int Duration => 60;
 		public override bool Loop => false;
-		[AfterGameInitialize]
+		[OnGameInitialize(64)]
 		public static void AfterGameInitialize () {
 			Equipment.EquipmentBrokeParticleID = typeof(EquipmentBrokeParticle).AngeHash();
 		}
@@ -107,7 +107,7 @@ namespace AngeliaGame {
 	public class EquipmentDamageParticle : Particle {
 		public override int Duration => 60;
 		public override bool Loop => false;
-		[AfterGameInitialize]
+		[OnGameInitialize(64)]
 		public static void AfterGameInitialize () {
 			Equipment.EquipmentDamageParticleID = typeof(EquipmentDamageParticle).AngeHash();
 		}

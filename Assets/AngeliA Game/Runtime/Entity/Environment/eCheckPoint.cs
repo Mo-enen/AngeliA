@@ -8,7 +8,7 @@ namespace AngeliaGame {
 	public class eCheckPointTouchParticle : Particle {
 		public override int Duration => 32;
 		public override bool Loop => false;
-		[AfterGameInitialize]
+		[OnGameInitialize(64)]
 		public static void Init () {
 			CheckPoint.OnTouchedParticleID = typeof(eCheckPointTouchParticle).AngeHash();
 		}
