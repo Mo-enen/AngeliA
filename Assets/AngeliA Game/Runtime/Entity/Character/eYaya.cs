@@ -4,25 +4,19 @@ using UnityEngine;
 using AngeliaFramework;
 
 
-namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
-
-
-
 namespace AngeliaGame {
-
-
-	[DefaultGadget(typeof(eYaya))]
-	public class YayaFace : AutoSpriteFace<eYaya> { }
-
-
-	[DefaultGadget(typeof(eYaya))]
-	public class YayaHair : AutoSpriteHair<eYaya> { }
-
-
-
-
-
 	public class eYaya : Player {
+
+
+		// SUB
+		public class Face : AutoSpriteFace { }
+		public class Hair : AutoSpriteHair { }
+		public class Tail : AutoSpriteTail { }
+		public class Ear : AutoSpriteEar { }
+		public class Wing : AutoSpriteWing { }
+		public class BodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
+		public class HipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
+		public class FootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
 
 		// Const
