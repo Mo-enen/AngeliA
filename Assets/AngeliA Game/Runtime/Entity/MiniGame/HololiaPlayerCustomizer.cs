@@ -9,25 +9,31 @@ namespace AngeliaGame {
 
 
 		private static readonly string[] _BodyPart_Heads = {
-			"DefaultCharacter", "Small"
+			"DefaultCharacter", "Holo",
 		};
-		private static readonly string[] _BodyPart_Bodys = { "DefaultCharacter", "Small" };
-		private static readonly string[] _BodyPart_ShoulderArmArmHands = { "DefaultCharacter", "Small" };
-		private static readonly string[] _BodyPart_LegLegFoots = { "DefaultCharacter", "Small" };
-
-		private static readonly string[] _BodyPart_Faces = { "DefaultCharacter", };
+		private static readonly string[] _BodyPart_BodyHips = {
+			"DefaultCharacter", "HoloA",
+		};
+		private static readonly string[] _BodyPart_ShoulderArmArmHands = {
+			"DefaultCharacter",
+		};
+		private static readonly string[] _BodyPart_LegLegFoots = {
+			"DefaultCharacter",
+		};
+		
+		private static readonly string[] _BodyPart_Faces = { "DefaultCharacter", nameof(GuraFace), };
 		private static readonly string[] _BodyPart_Hairs = { "", };
 		private static readonly string[] _BodyPart_Ears = { "", };
 		private static readonly string[] _BodyPart_Tails = { "", };
 		private static readonly string[] _BodyPart_Wings = { "", };
-		private static readonly string[] _BodyPart_Horns = { "", "LaplusHorn", };
-		private static readonly string[] _BodyPart_Boobs = { "", };
+		private static readonly string[] _BodyPart_Horns = { "", nameof(LaplusHorn), };
+		private static readonly string[] _BodyPart_Boobs = { "", nameof(PetanBoob), nameof(NormalBoob), nameof(MoleBoob), };
 
-		private static readonly string[] _Suit_Heads = { "", "StudentF", "BlondMan", };
-		private static readonly string[] _Suit_BodyShoulderArmArms = { "", "StudentF", "BlondMan", };
-		private static readonly string[] _Suit_HipSkirtLegLegs = { "", "StudentF", "BlondMan", };
-		private static readonly string[] _Suit_Foots = { "", "StudentF", "BlondMan", };
-		private static readonly string[] _Suit_Hands = { "", "StudentF", "BlondMan", };
+		private static readonly string[] _Suit_Heads = { "", };
+		private static readonly string[] _Suit_BodyShoulderArmArms = { "", };
+		private static readonly string[] _Suit_HipSkirtLegLegs = { "", };
+		private static readonly string[] _Suit_Foots = { "", };
+		private static readonly string[] _Suit_Hands = { "", };
 
 		private static readonly string[] _Colors_Skin = {
 			"#efc2a0","#d09e83","#b17a66","#925549","#f0e6da","#b8aca7",
@@ -40,9 +46,9 @@ namespace AngeliaGame {
 		};
 
 
-
+		
 		protected override string[] BodyPart_Heads => _BodyPart_Heads;
-		protected override string[] BodyPart_Bodys => _BodyPart_Bodys;
+		protected override string[] BodyPart_BodyHips => _BodyPart_BodyHips;
 		protected override string[] BodyPart_ShoulderArmArmHands => _BodyPart_ShoulderArmArmHands;
 		protected override string[] BodyPart_LegLegFoots => _BodyPart_LegLegFoots;
 		protected override string[] BodyPart_Faces => _BodyPart_Faces;

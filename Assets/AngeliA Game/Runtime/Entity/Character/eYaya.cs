@@ -14,6 +14,7 @@ namespace AngeliaGame {
 		public class Tail : AutoSpriteTail { }
 		public class Ear : AutoSpriteEar { }
 		public class Wing : AutoSpriteWing { }
+		public class Boob : AutoSpriteBoob { }
 		public class BodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
 		public class HipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 		public class FootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
@@ -27,6 +28,7 @@ namespace AngeliaGame {
 		public override bool BodySuitAvailable => true;
 		public override bool HelmetAvailable => false;
 		public override int CharacterHeight => 158;
+		public override int CharacterBoobSize => 400;
 
 		// Data
 		private eGuaGua GuaGua = null;

@@ -1,4 +1,7 @@
-﻿Palette.MiniGame:迷你游戏
+﻿Pat.LaplusHorn:拉普巨角
+Pat.PetanBoob:平板胸
+Pat.MoleBoob:痦子胸
+Pat.NormalBoob:普通胸
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -85,9 +88,10 @@ Palette.Collectable:可收集
 Palette.Entity:实体
 Palette.Furniture:家具
 Palette.Item:物品
+Palette.ItemFood:食物
 Palette.LevelBack:关卡
 Palette.LevelFront:关卡-前景
-Palette.ItemFood:食物
+Palette.MiniGame:迷你游戏
 Palette.Pinned:收藏
 Palette.Platform:平台
 Palette.System:系统

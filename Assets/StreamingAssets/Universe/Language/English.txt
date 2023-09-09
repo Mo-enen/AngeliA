@@ -1,4 +1,7 @@
-﻿Palette.MiniGame:Mini Game
+﻿Pat.LaplusHorn:La+ Huge Horn
+Pat.PetanBoob:Petan
+Pat.MoleBoob:Mole Boob
+Pat.NormalBoob:Normal Boob
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -85,9 +88,10 @@ Palette.Collectable:Collectable
 Palette.Entity:Entity
 Palette.Furniture:Furniture
 Palette.Item:Item
+Palette.ItemFood:Food
 Palette.LevelBack:LevelBack
 Palette.LevelFront:LevelFront
-Palette.ItemFood:Food
+Palette.MiniGame:Mini Game
 Palette.Pinned:Pinned
 Palette.Platform:Platform
 Palette.System:System
