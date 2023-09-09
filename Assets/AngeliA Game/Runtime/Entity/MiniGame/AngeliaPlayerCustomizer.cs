@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class AngeliaPlayerCustomizer : MiniGame_PlayerCustomizer {
+	public class AngeliaPlayerCustomizer : PlayerCustomizer {
 
 
 		private static readonly string[] _BodyPart_Heads = {

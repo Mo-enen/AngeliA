@@ -1,7 +1,4 @@
-﻿Pat.LaplusHorn:La+ Huge Horn
-Pat.PetanBoob:Petan
-Pat.MoleBoob:Mole Boob
-Pat.NormalBoob:Normal Boob
+﻿UI.Default:Default
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -98,6 +95,10 @@ Palette.System:System
 Palette.Vegetation:Vegetation
 Palette.Wallpaper:Wallpaper
 Pat.DefaultCharacter:Default
+Pat.LaplusHorn:La+ Huge Horn
+Pat.MoleBoob:Mole Boob
+Pat.NormalBoob:Normal Boob
+Pat.PetanBoob:Petan
 PongMiniGame:Pong
 TetrisMiniGame:Tetris
 UI.Back:Back

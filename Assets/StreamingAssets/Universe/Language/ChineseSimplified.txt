@@ -1,7 +1,4 @@
-﻿Pat.LaplusHorn:拉普巨角
-Pat.PetanBoob:平板胸
-Pat.MoleBoob:痦子胸
-Pat.NormalBoob:普通胸
+﻿UI.Default:默认
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -98,6 +95,10 @@ Palette.System:系统
 Palette.Vegetation:植被
 Palette.Wallpaper:壁纸
 Pat.DefaultCharacter:默认
+Pat.LaplusHorn:拉普巨角
+Pat.MoleBoob:痦子胸
+Pat.NormalBoob:普通胸
+Pat.PetanBoob:平板胸
 PongMiniGame:乓
 TetrisMiniGame:俄罗斯方块
 UI.Back:返回

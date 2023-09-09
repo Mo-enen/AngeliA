@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class HololiaPlayerCustomizer : MiniGame_PlayerCustomizer {
+	public class HololiaPlayerCustomizer : PlayerCustomizer {
 
 
 		private static readonly string[] _BodyPart_Heads = {
@@ -21,7 +21,69 @@ namespace AngeliaGame {
 			"DefaultCharacter",
 		};
 		
-		private static readonly string[] _BodyPart_Faces = { "DefaultCharacter", nameof(GuraFace), };
+		private static readonly string[] _BodyPart_Faces = {
+			nameof(SoraFace),
+			nameof(RobocoFace),
+			nameof(MikoFace),
+			nameof(SuiseiFace),
+			nameof(AZKiFace),
+			nameof(MelFace),
+			nameof(FubukiFace),
+			nameof(MatsuriFace),
+			nameof(AkiFace),
+			nameof(AkaiFace),
+			nameof(AquaFace),
+			nameof(ShionFace),
+			nameof(AyameFace),
+			nameof(ChocoFace),
+			nameof(SubaruFace),
+			nameof(MioFace),
+			nameof(OkayuFace),
+			nameof(KoroneFace),
+			nameof(PekoraFace),
+			nameof(FlareFace),
+			nameof(NoelFace),
+			nameof(MarineFace),
+			nameof(KanataFace),
+			nameof(WatameFace),
+			nameof(TowaFace),
+			nameof(LunaFace),
+			nameof(CocoFace),
+			nameof(LamyFace),
+			nameof(NeneFace),
+			nameof(BotanFace),
+			nameof(PolkaFace),
+			nameof(RisuFace),
+			nameof(MoonaFace),
+			nameof(IofifteenFace),
+			nameof(OllieFace),
+			nameof(MelfissaFace),
+			nameof(ReineFace),
+			nameof(CalliopeFace),
+			nameof(KiaraFace),
+			nameof(InaFace),
+			nameof(GuraFace),
+			nameof(AmeFace),
+			nameof(IRySFace),
+			nameof(FaunaFace),
+			nameof(KroniiFace),
+			nameof(MumeiFace),
+			nameof(BaeFace),
+			nameof(SanaFace),
+			nameof(LaplusFace),
+			nameof(LuiFace),
+			nameof(KoyoriFace),
+			nameof(SakamataFace),
+			nameof(IrohaFace),
+			nameof(ZetaFace),
+			nameof(KaelaFace),
+			nameof(KoboFace),
+			nameof(ShioriFace),
+			nameof(BijouFace),
+			nameof(NerissaFace),
+			nameof(FuwaFace),
+			nameof(MocoFace),
+		};
 		private static readonly string[] _BodyPart_Hairs = { "", };
 		private static readonly string[] _BodyPart_Ears = { "", };
 		private static readonly string[] _BodyPart_Tails = { "", };
@@ -46,7 +108,7 @@ namespace AngeliaGame {
 		};
 
 
-		
+
 		protected override string[] BodyPart_Heads => _BodyPart_Heads;
 		protected override string[] BodyPart_BodyHips => _BodyPart_BodyHips;
 		protected override string[] BodyPart_ShoulderArmArmHands => _BodyPart_ShoulderArmArmHands;
