@@ -77,6 +77,69 @@ namespace AngeliaGame {
 				"Fuwa",
 				"Moco",
 			};
+			string[] CN_NAMES = {
+				"时乃空",
+				"萝卜子",
+				"樱巫女",
+				"彗星",
+				"AZKi",
+				"梅露",
+				"吹雪",
+				"夏色祭",
+				"亚绮",
+				"赤井心",
+				"阿库娅",
+				"诗音",
+				"百鬼绫目",
+				"巧可",
+				"大空昴",
+				"大神澪",
+				"小粥",
+				"沁音",
+				"佩克拉",
+				"芙蕾雅",
+				"诺艾尔",
+				"玛琳",
+				"彼方",
+				"绵芽",
+				"常暗",
+				"璐娜",
+				"可可",
+				"菈米",
+				"桃铃音音",
+				"狮白",
+				"尾丸",
+				"Risu",
+				"穆娜",
+				"Iofifteen",
+				"Ollie",
+				"Melfissa",
+				"Reine",
+				"森美声",
+				"琪亚拉",
+				"一伊那尓栖",
+				"古拉",
+				"艾米莉亚",
+				"IRyS",
+				"Fauna",
+				"Kronii",
+				"Mumei",
+				"Bae",
+				"Sana",
+				"拉普",
+				"琉衣",
+				"小夜璃",
+				"沙花叉",
+				"风真",
+				"Zeta",
+				"Kaela",
+				"Kobo",
+				"Shiori",
+				"Bijou",
+				"Nerissa",
+				"Fuwa",
+				"Moco",
+			};
 			string[] FACE = {
 				"{0}Face.Face.Normal, 1, {1}, 7, 5, 3, 3, 0, 4",
 				"{0}Face.Face.Blink, 9, {1}, 7, 5, 3, 3, 0, 4",
@@ -95,15 +158,15 @@ namespace AngeliaGame {
 
 			string result = "";
 			int currentY = 47;
-			foreach (string name in ALL_NAMES) {
-				foreach (var face in FACE) {
-					result += string.Format(face, name, currentY) + "\n";
-				}
+			for (int i = 0; i < ALL_NAMES.Length; i++) {
+				string name = ALL_NAMES[i];
+				result += $"Pat.{name}Face:{CN_NAMES[i]}";
+
 				currentY += 9;
 				result += "\n";
 			}
 
-			Util.TextToFile(result, "Assets/Test.txt");
+			Util.TextToFile(result, "Assets/Test.txt", System.Text.Encoding.Unicode);
 		}
 
 
