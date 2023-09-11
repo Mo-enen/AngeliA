@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public partial class HololiaPlayerCustomizer : PlayerCustomizer {
+	public partial class PlayerCustomizerHololia : PlayerCustomizer {
 
 		protected override string[] BodyPart_Heads => _BodyPart_Heads;
 		protected override string[] BodyPart_BodyHips => _BodyPart_BodyHips;
@@ -26,6 +26,7 @@ namespace AngeliaGame {
 		protected override string[] Colors_Skin => _Colors_Skin;
 		protected override string[] Colors_Hair => _Colors_Hair;
 
+		protected override bool SuitAvailable => false;
 
 	}
 }
