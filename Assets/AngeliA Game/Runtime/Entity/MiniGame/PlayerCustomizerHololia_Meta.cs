@@ -26,7 +26,7 @@ namespace AngeliaGame {
 			nameof(SoraFace), nameof(RobocoFace), nameof(MikoFace), nameof(SuiseiFace), nameof(AZKiFace), nameof(MelFace), nameof(FubukiFace), nameof(MatsuriFace), nameof(AkiFace), nameof(AkaiFace), nameof(AquaFace), nameof(ShionFace), nameof(AyameFace), nameof(ChocoFace), nameof(SubaruFace), nameof(MioFace), nameof(OkayuFace), nameof(KoroneFace), nameof(PekoraFace), nameof(FlareFace), nameof(NoelFace), nameof(MarineFace), nameof(KanataFace), nameof(WatameFace), nameof(TowaFace), nameof(LunaFace), nameof(CocoFace), nameof(LamyFace), nameof(NeneFace), nameof(BotanFace), nameof(PolkaFace), nameof(RisuFace), nameof(MoonaFace), nameof(IofifteenFace), nameof(OllieFace), nameof(MelfissaFace), nameof(ReineFace), nameof(CalliopeFace), nameof(KiaraFace), nameof(InaFace), nameof(GuraFace), nameof(AmeFace), nameof(IRySFace), nameof(FaunaFace), nameof(KroniiFace), nameof(MumeiFace), nameof(BaeFace), nameof(SanaFace), nameof(LaplusFace), nameof(LuiFace), nameof(KoyoriFace), nameof(SakamataFace), nameof(IrohaFace), nameof(ZetaFace), nameof(KaelaFace), nameof(KoboFace), nameof(ShioriFace), nameof(BijouFace), nameof(NerissaFace), nameof(FuwaFace), nameof(MocoFace),
 		};
 		private static readonly string[] _BodyPart_Hairs = {
-			"",
+			"", nameof(SoraHair), nameof(RobocoHair), nameof(MikoHair), nameof(SuiseiHair), nameof(AZKiHair), nameof(MelHair), nameof(FubukiHair), nameof(MatsuriHair), nameof(AkiHair), nameof(AkaiHair), nameof(AquaHair), nameof(ShionHair), nameof(AyameHair), nameof(ChocoHair), nameof(SubaruHair), nameof(MioHair), nameof(OkayuHair), nameof(KoroneHair), nameof(PekoraHair), nameof(FlareHair), nameof(NoelHair), nameof(MarineHair), nameof(KanataHair), nameof(WatameHair), nameof(TowaHair), nameof(LunaHair), nameof(CocoHair), nameof(LamyHair), nameof(NeneHair), nameof(BotanHair), nameof(PolkaHair), nameof(RisuHair), nameof(MoonaHair), nameof(IofifteenHair), nameof(OllieHair), nameof(MelfissaHair), nameof(ReineHair), nameof(CalliopeHair), nameof(KiaraHair), nameof(InaHair), nameof(GuraHair), nameof(AmeHair), nameof(IRySHair), nameof(FaunaHair), nameof(KroniiHair), nameof(MumeiHair), nameof(BaeHair), nameof(SanaHair), nameof(LaplusHair), nameof(LuiHair), nameof(KoyoriHair), nameof(SakamataHair), nameof(IrohaHair), nameof(ZetaHair), nameof(KaelaHair), nameof(KoboHair), nameof(ShioriHair), nameof(BijouHair), nameof(NerissaHair), nameof(FuwaHair), nameof(MocoHair),
 		};
 		private static readonly string[] _BodyPart_Ears = {
 			"", nameof(FubukiEar), nameof(MioEar), nameof(OkayuEar), nameof(KoroneEar), nameof(PekoraEar), nameof(BotanEar), nameof(PolkaEar), nameof(RisuEar), nameof(InaEar), nameof(BaeEar), nameof(KoyoriEar), nameof(MocoEar), nameof(FuwaEar),
@@ -38,7 +38,7 @@ namespace AngeliaGame {
 			"", nameof(AngelWing), nameof(DevilWing), nameof(FubukiWing), nameof(MioWing), nameof(KoroneWing), nameof(CocoWing), nameof(PolkaWing), nameof(RisuWing), nameof(KoyoriWing), nameof(FuwaMocoWing),
 		};
 		private static readonly string[] _BodyPart_Horns = {
-			"", nameof(LaplusHorn), nameof(ChocoHorn), nameof(CocoHorn), nameof(IRySHorn), nameof(FaunaHorn), nameof(NerissaHorn), nameof(WatameHorn),
+			"", nameof(LaplusHorn), nameof(ChocoHorn), nameof(CocoHorn), nameof(IRySHorn), nameof(FaunaHorn), nameof(NerissaHorn), nameof(WatameHorn), nameof(AyameHorn),
 		};
 		private static readonly string[] _BodyPart_Boobs = {
 			"", nameof(PetanBoob), nameof(NormalBoob), nameof(MoleBoob),

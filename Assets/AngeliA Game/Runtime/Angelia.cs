@@ -14,6 +14,7 @@ namespace AngeliaGame {
 
 		//[UnityEditor.InitializeOnLoadMethod]
 		public static void Test () {
+
 			string[] ALL_NAMES = {
 				"Sora",
 				"Roboco",
@@ -140,33 +141,31 @@ namespace AngeliaGame {
 				"Fuwa",
 				"Moco",
 			};
-			string[] FACE = {
-				"{0}Face.Face.Normal, 1, {1}, 7, 5, 3, 3, 0, 4",
-				"{0}Face.Face.Blink, 9, {1}, 7, 5, 3, 3, 0, 4",
-				"{0}Face.Face.Damage 0, 28, {1}, 10, 8, 3, 3, 3, 4",
-				"{0}Face.Face.Damage 1, 39, {1}, 10, 8, 3, 3, 3, 4",
-				"{0}Face.Face.PassOut 0, 50, {1}, 11, 7, 3, 3, 2, 4",
-				"{0}Face.Face.PassOut 1, 62, {1}, 11, 7, 3, 3, 2, 4",
-				"{0}Face.Face.PassOut 2, 74, {1}, 11, 7, 3, 3, 2, 4",
-				"{0}Face.Face.PassOut 3, 86, {1}, 11, 7, 3, 3, 2, 4",
-				"{0}Face.Face.PassOut 4, 98, {1}, 11, 7, 3, 3, 2, 4",
-				"{0}Face.Face.PassOut 5, 110, {1}, 11, 7, 3, 3, 2, 4",
-				"{0}Face.Face.PassOut 6, 122, {1}, 11, 7, 3, 3, 2, 4",
-				"{0}Face.Face.PassOut 7, 134, {1}, 11, 7, 3, 3, 2, 4",
-				"{0}Face.Face.Sleep, 17, {1}, 10, 8, 3, 3, 3, 4",
-			};
+
+			string[] ALL_NAMES1 = { "Chris", "Rushia", "Aloe", };
 
 			string result = "";
-			int currentY = 47;
-			for (int i = 0; i < ALL_NAMES.Length; i++) {
-				string name = ALL_NAMES[i];
-				result += $"Pat.{name}Face:{CN_NAMES[i]}";
+			int currentX = 1;
+			int currentY = 316 + 45;
+			for (int i = 0; i < ALL_NAMES1.Length; i++) {
+				string name = ALL_NAMES1[i];
 
-				currentY += 9;
+				result += $"{name}Hair, {currentX}, {currentY}, 15,20\n";
+				result += $"{name}Hair.HairFF 0, {currentX + 16}, {currentY}, 15,20,2,3,6,10,2,2\n";
+				result += $"{name}Hair.HairFF 1, {currentX + 32}, {currentY}, 15,20,2,3,6,10,2,2\n";
+				result += $"{name}Hair.HairFB, {currentX + 48}, {currentY}, 15,20,2,3,6,10,2,2\n";
+				result += $"{name}Hair.HairBF 0, {currentX + 48 + 16}, {currentY}, 15,20,2,3,6,10,2,2\n";
+				result += $"{name}Hair.HairBF 1, {currentX + 48 + 32}, {currentY}, 15,20,2,3,6,10,2,2\n";
+
+				currentX += 105;
+				if (currentX > 800) {
+					currentX = 1;
+					currentY += 45;
+				}
 				result += "\n";
 			}
-
-			Util.TextToFile(result, "Assets/Test.txt", System.Text.Encoding.Unicode);
+			GUIUtility.systemCopyBuffer = result;
+			Debug.Log(Random.value + " Copy.");
 		}
 
 

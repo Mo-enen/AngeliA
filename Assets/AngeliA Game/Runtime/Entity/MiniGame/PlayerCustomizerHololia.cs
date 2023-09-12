@@ -26,6 +26,10 @@ namespace AngeliaGame {
 		protected override string[] Colors_Skin => _Colors_Skin;
 		protected override string[] Colors_Hair => _Colors_Hair;
 
+		protected override bool BodypartAvailable => true;
+		protected override bool GadgetAvailable => true;
+		protected override bool SkinColorAvailable => true;
+		protected override bool HairColorAvailable => false;
 		protected override bool SuitAvailable => false;
 
 	}

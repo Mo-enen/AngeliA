@@ -15,6 +15,8 @@ namespace AngeliaGame {
 	public class FaunaHorn : AutoSpriteHorn { }
 	public class NerissaHorn : AutoSpriteHorn { }
 	public class WatameHorn : AutoSpriteHorn { }
+	public class AyameHorn : AutoSpriteHorn { protected override bool DrawOnFace => true; }
+	public class AloeHorn : AutoSpriteHorn { }
 
 
 	// Boob
@@ -29,7 +31,7 @@ namespace AngeliaGame {
 	public class NormalBoob : AutoSpriteBoob { }
 	public class MoleBoob : AutoSpriteBoob {
 		protected override void DrawBoob (Character character) {
-			DrawSprite(character, SpriteID);
+			base.DrawBoob(character);
 			// Mole
 			var boobRect = GetBoobRect(character);
 			const int MOLE_SIZE = 16;
@@ -130,7 +132,7 @@ namespace AngeliaGame {
 	}
 	public class KoyoriTail : AutoSpriteTail { }
 	public class FuwaMocoTail : AutoSpriteTail { }
-
+	public class AloeTail : AutoSpriteTail { }
 
 	// Wing
 	public class FubukiWing : AutoSpriteWing { protected override int Scale => 1500; }
@@ -141,6 +143,75 @@ namespace AngeliaGame {
 	public class RisuWing : AutoSpriteWing { protected override int Scale => 1200; }
 	public class KoyoriWing : AutoSpriteWing { protected override int Scale => 1200; }
 	public class FuwaMocoWing : AutoSpriteWing { protected override int Scale => 1200; }
+
+
+	// Hair
+	public class SoraHair : AutoSpriteHair { }
+	public class RobocoHair : AutoSpriteHair { }
+	public class MikoHair : AutoSpriteHair { }
+	public class SuiseiHair : AutoSpriteHair { }
+	public class AZKiHair : AutoSpriteHair { }
+	public class MelHair : AutoSpriteHair { }
+	public class FubukiHair : AutoSpriteHair { }
+	public class MatsuriHair : AutoSpriteHair { }
+	public class AkiHair : AutoSpriteHair { }
+	public class AkaiHair : AutoSpriteHair { }
+	public class AquaHair : AutoSpriteHair { }
+	public class ShionHair : AutoSpriteHair { }
+	public class AyameHair : AutoSpriteHair { }
+	public class ChocoHair : AutoSpriteHair { }
+	public class SubaruHair : AutoSpriteHair { }
+	public class MioHair : AutoSpriteHair { }
+	public class OkayuHair : AutoSpriteHair { }
+	public class KoroneHair : AutoSpriteHair { }
+	public class PekoraHair : AutoSpriteHair { }
+	public class FlareHair : AutoSpriteHair { }
+	public class NoelHair : AutoSpriteHair { }
+	public class MarineHair : AutoSpriteHair { }
+	public class KanataHair : AutoSpriteHair { }
+	public class WatameHair : AutoSpriteHair { }
+	public class TowaHair : AutoSpriteHair { }
+	public class LunaHair : AutoSpriteHair { }
+	public class CocoHair : AutoSpriteHair { }
+	public class LamyHair : AutoSpriteHair { }
+	public class NeneHair : AutoSpriteHair { }
+	public class BotanHair : AutoSpriteHair { }
+	public class PolkaHair : AutoSpriteHair { }
+	public class RisuHair : AutoSpriteHair { }
+	public class MoonaHair : AutoSpriteHair { }
+	public class IofifteenHair : AutoSpriteHair { }
+	public class OllieHair : AutoSpriteHair { }
+	public class MelfissaHair : AutoSpriteHair { }
+	public class ReineHair : AutoSpriteHair { }
+	public class CalliopeHair : AutoSpriteHair { }
+	public class KiaraHair : AutoSpriteHair { }
+	public class InaHair : AutoSpriteHair { }
+	public class GuraHair : AutoSpriteHair { }
+	public class AmeHair : AutoSpriteHair { }
+	public class IRySHair : AutoSpriteHair { }
+	public class FaunaHair : AutoSpriteHair { }
+	public class KroniiHair : AutoSpriteHair { }
+	public class MumeiHair : AutoSpriteHair { }
+	public class BaeHair : AutoSpriteHair { }
+	public class SanaHair : AutoSpriteHair { }
+	public class LaplusHair : AutoSpriteHair { }
+	public class LuiHair : AutoSpriteHair { }
+	public class KoyoriHair : AutoSpriteHair { }
+	public class SakamataHair : AutoSpriteHair { }
+	public class IrohaHair : AutoSpriteHair { }
+	public class ZetaHair : AutoSpriteHair { }
+	public class KaelaHair : AutoSpriteHair { }
+	public class KoboHair : AutoSpriteHair { }
+	public class ShioriHair : AutoSpriteHair { }
+	public class BijouHair : AutoSpriteHair { }
+	public class NerissaHair : AutoSpriteHair { }
+	public class FuwaHair : AutoSpriteHair { }
+	public class MocoHair : AutoSpriteHair { }
+	public class AloeHair : AutoSpriteHair { }
+	public class RushiaHair : AutoSpriteHair { }
+	public class ChrisHair : AutoSpriteHair { }
+
+
 
 
 	// Face
@@ -205,7 +276,9 @@ namespace AngeliaGame {
 	public class NerissaFace : AutoSpriteFace { }
 	public class FuwaFace : AutoSpriteFace { }
 	public class MocoFace : AutoSpriteFace { }
-
+	public class AloeFace : AutoSpriteFace { }
+	public class RushiaFace : AutoSpriteFace { }
+	public class ChrisFace : AutoSpriteFace { }
 
 
 }
