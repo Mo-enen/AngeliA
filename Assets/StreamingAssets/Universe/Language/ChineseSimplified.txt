@@ -1,10 +1,11 @@
-﻿Pat.#JP 1st:一期生
-Pat.#JP 2nd:二期生
-Pat.#JP 3rd:三期生
-Pat.#JP 4th:四期生
-Pat.#JP 5th:五期生
-Pat.#JP 6th:六期生
-Pat.#JP 0th:零期生
+﻿#ID 1st:印尼一期生
+#ID 2nd:印尼二期生
+#ID 3rd:印尼三期生
+Pat.#Gamer:玩家组
+Pat.#EN Myth:神话组
+Pat.#EN Hope:希望
+Pat.#EN Council:议会组
+Pat.#EN Advent:降临组
 @enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
@@ -100,6 +101,13 @@ Palette.Platform:平台
 Palette.System:系统
 Palette.Vegetation:植被
 Palette.Wallpaper:壁纸
+Pat.#JP 0th:零期生
+Pat.#JP 1st:一期生
+Pat.#JP 2nd:二期生
+Pat.#JP 3rd:三期生
+Pat.#JP 4th:四期生
+Pat.#JP 5th:五期生
+Pat.#JP 6th:六期生
 Pat.AkaiFace:赤井心
 Pat.AkiFace:亚绮
 Pat.AmeFace:华生

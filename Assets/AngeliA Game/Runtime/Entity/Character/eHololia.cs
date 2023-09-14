@@ -48,7 +48,11 @@ namespace AngeliaGame {
 
 
 	// Ear
-	public class FubukiEar : AutoSpriteEar { }
+	public class FubukiEar : AutoSpriteEar {
+		protected override bool FrontOfHeadL (Character character) => false;
+		protected override bool FrontOfHeadR (Character character) => false;
+
+	}
 	public class MioEar : AutoSpriteEar { }
 	public class OkayuEar : AutoSpriteEar {
 		protected override bool FrontOfHeadL (Character character) => character.FacingRight == character.FacingFront;

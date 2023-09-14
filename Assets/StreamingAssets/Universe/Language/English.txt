@@ -1,10 +1,11 @@
-﻿Pat.#JP 1st:JP 1st
-Pat.#JP 2nd:JP 2nd
-Pat.#JP 3rd:JP 3rd
-Pat.#JP 4th:JP 4th
-Pat.#JP 5th:JP 5th
-Pat.#JP 6th:JP 6th
-Pat.#JP 0th:JP 0th
+﻿#ID 1st:ID 1st
+#ID 2nd:ID 2nd
+#ID 3rd:ID 3rd
+Pat.#Gamer:Gamer
+Pat.#EN Myth:Myth
+Pat.#EN Hope:Hope
+Pat.#EN Council:Council
+Pat.#EN Advent:Advent
 @enen:Enen
 @enol:Enol
 @lalynna:LalynnA
@@ -100,6 +101,13 @@ Palette.Platform:Platform
 Palette.System:System
 Palette.Vegetation:Vegetation
 Palette.Wallpaper:Wallpaper
+Pat.#JP 0th:JP 0th
+Pat.#JP 1st:JP 1st
+Pat.#JP 2nd:JP 2nd
+Pat.#JP 3rd:JP 3rd
+Pat.#JP 4th:JP 4th
+Pat.#JP 5th:JP 5th
+Pat.#JP 6th:JP 6th
 Pat.AkaiFace:Akai
 Pat.AkiFace:Aki
 Pat.AmeFace:Ame
