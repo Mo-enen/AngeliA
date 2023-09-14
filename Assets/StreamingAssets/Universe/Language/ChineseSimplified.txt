@@ -1,4 +1,11 @@
-﻿@enen:伊楠
+﻿Pat.#JP 1st:一期生
+Pat.#JP 2nd:二期生
+Pat.#JP 3rd:三期生
+Pat.#JP 4th:四期生
+Pat.#JP 5th:五期生
+Pat.#JP 6th:六期生
+Pat.#JP 0th:零期生
+@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子

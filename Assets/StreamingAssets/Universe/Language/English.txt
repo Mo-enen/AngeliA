@@ -1,4 +1,11 @@
-﻿@enen:Enen
+﻿Pat.#JP 1st:JP 1st
+Pat.#JP 2nd:JP 2nd
+Pat.#JP 3rd:JP 3rd
+Pat.#JP 4th:JP 4th
+Pat.#JP 5th:JP 5th
+Pat.#JP 6th:JP 6th
+Pat.#JP 0th:JP 0th
+@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
