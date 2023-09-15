@@ -2,6 +2,7 @@
     "name": "AngeliaGame",
     "rootNamespace": "AngeliaGame",
     "references": [
+        "AngeliaFrameworkForUnityRuntime",
         "AngeliaFrameworkRuntime"
     ],
     "includePlatforms": [
