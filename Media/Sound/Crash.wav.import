@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://c17f3bkgr0kgm"
+path="res://.godot/imported/Crash.wav-340a8931854ccd0df1632096025c2a32.sample"
+
+[deps]
+
+source_file="res://AngeliA Game/Media/Sound/Crash.wav"
+dest_files=["res://.godot/imported/Crash.wav-340a8931854ccd0df1632096025c2a32.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

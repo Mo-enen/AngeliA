@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://d1chpr85lok6j"
+path="res://.godot/imported/BloopDownPitch.wav-a0cf92bfc534abcd08dd7e5aa253f4bf.sample"
+
+[deps]
+
+source_file="res://AngeliA Game/Media/Sound/BloopDownPitch.wav"
+dest_files=["res://.godot/imported/BloopDownPitch.wav-a0cf92bfc534abcd08dd7e5aa253f4bf.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
