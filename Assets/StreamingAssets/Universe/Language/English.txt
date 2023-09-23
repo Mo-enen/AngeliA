@@ -1,0 +1,246 @@
+﻿#ID 1st:ID 1st
+#ID 2nd:ID 2nd
+#ID 3rd:ID 3rd
+Pat.#Gamer:Gamer
+Pat.#EN Myth:Myth
+Pat.#EN Hope:Hope
+Pat.#EN Council:Council
+Pat.#EN Advent:Advent
+@enen:Enen
+@enol:Enol
+@lalynna:LalynnA
+@nesu:Nesu
+@yaya:Yaya
+CtrlHint.Adjust:Adjust
+CtrlHint.Attack:Attack
+CtrlHint.Craft:Craft
+CtrlHint.Drop:Drop
+CtrlHint.EditMap:Edit Map
+CtrlHint.EnterDoor:Enter
+CtrlHint.Equip:Equip
+CtrlHint.HideMenu:Hide Menu
+CtrlHint.HoldToUse:Hold to Use
+CtrlHint.Jump:Jump
+CtrlHint.MEDT.Nav:Overlook
+CtrlHint.MEDT.PlayFromBegin:Play from Start
+CtrlHint.MEDT.SwitchMode.Edit:Back to Edit
+CtrlHint.MEDT.SwitchMode.Play:Play
+CtrlHint.Move:Move
+CtrlHint.PlayerMenu.Take:Take
+CtrlHint.PlayerMenu.TakeUse:Take (Hold to Use)
+CtrlHint.QuitEditing:Stop Editing Map
+CtrlHint.Restart:Restart
+CtrlHint.ShowMenu:Show Menu
+CtrlHint.Skip:Skip
+CtrlHint.SwitchPlayer:Switch Character
+CtrlHint.TeleportCP:Teleport to Altar
+CtrlHint.Throw:Throw
+CtrlHint.Transfer:Transfer
+CtrlHint.Use:Use
+CtrlHint.WakeUp:Wake Up
+CtrlHint.Wardrobe.Type:Suit Type
+Hint.Pong.Move:Move
+Hint.Tetris.Drop:Drop
+Hint.Tetris.Hold:Hold
+Hint.Tetris.Move:Move
+Hint.Tetris.Rotate:Rotate
+iDes.WizardHat:Wizard's Hat
+iName.WizardHat:Wizard Hat
+MEDT.BackgroundOnly:Background Only
+MEDT.CancelDrop:Cancel Drop
+MEDT.Drop:Mouse Left Button to Drop
+MEDT.EntityOnly:Entity Only
+MEDT.LevelOnly:Level Only
+Menu.BackToEdit:Back to Editor
+Menu.Gomoku.Draw:Draw
+Menu.Gomoku.Lose:You Lose
+Menu.Gomoku.Win:You Win !!
+Menu.KeySetter.Gamepad:Gamepad
+Menu.KeySetter.GamepadMessage:Press F1 key to reset
+Menu.KeySetter.Keyboard:Keyboard
+Menu.KeySetter.KeyboardMessage:Press F1 key to reset
+Menu.KeySetter.Record:Press key u want
+Menu.KeySetter.SaveAndBack:Save and Back
+Menu.MEDTSetting.AutoZoom:Auto Zoom
+Menu.MEDTSetting.PlayerDrop:Quick Player Drop
+Menu.MEDTSetting.ShowState:Show State Info
+Menu.MiniGame.QuitMsg:Quit mini game?
+Menu.MiniGame.Restart:Retart Game?
+Menu.Pause.KeySetter:Key Assignment
+Menu.Pause.MEDTSetting:Editor Setting
+Menu.Pause.QuitEditMessage:Stop Editing Map?
+Menu.Pause.QuitMessage:Quit game now？
+Menu.Setting.AllowGamepad:Allow Gamepad
+Menu.Setting.Framerate:Framerate
+Menu.Setting.Fullscreen.0:Windowed
+Menu.Setting.Fullscreen.1:Fullscreen
+Menu.Setting.Fullscreen.2:Fullscreen (Low)
+Menu.Setting.Fullscreen.Label:Display
+Menu.Setting.Language:Language
+Menu.Setting.MusicVolume:Music Volume
+Menu.Setting.SoundVolume:Sound Volume
+Menu.Setting.UseControlHint:Show Control Hint
+Menu.Setting.UseGamepadHint:Show Bottom Left Gamepad
+Menu.Setting.VSync:V-Sync
+MiniGameGomoku:Gomoku
+MiniGamePong:Pong
+MiniGameTetris:Tetris
+Palette.Background:Background
+Palette.Character:Character
+Palette.CheckPoint:CheckPoint
+Palette.Collectable:Collectable
+Palette.Entity:Entity
+Palette.Furniture:Furniture
+Palette.Item:Item
+Palette.ItemFood:Food
+Palette.LevelBack:LevelBack
+Palette.LevelFront:LevelFront
+Palette.MiniGame:Mini Game
+Palette.Pinned:Pinned
+Palette.Platform:Platform
+Palette.System:System
+Palette.Vegetation:Vegetation
+Palette.Wallpaper:Wallpaper
+Pat.#JP 0th:JP 0th
+Pat.#JP 1st:JP 1st
+Pat.#JP 2nd:JP 2nd
+Pat.#JP 3rd:JP 3rd
+Pat.#JP 4th:JP 4th
+Pat.#JP 5th:JP 5th
+Pat.#JP 6th:JP 6th
+Pat.AkaiFace:Akai
+Pat.AkiFace:Aki
+Pat.AmeFace:Ame
+Pat.AquaFace:Aqua
+Pat.AyameFace:Ayame
+Pat.AZKiFace:AZKi
+Pat.BaeEar:Bae
+Pat.BaeFace:Bae
+Pat.BijouFace:Bijou
+Pat.BotanEar:Botan
+Pat.BotanFace:Botan
+Pat.CalliopeFace:Calliope
+Pat.ChocoFace:Choco
+Pat.CocoFace:Coco
+Pat.DefaultCharacter:Default
+Pat.FaunaFace:Fauna
+Pat.FlareFace:Flare
+Pat.FubukiEar:Fubuki
+Pat.FubukiFace:Fubuki
+Pat.FuwaEar:Fuwa
+Pat.FuwaFace:Fuwa
+Pat.GuraFace:Gura
+Pat.InaEar:Ina
+Pat.InaFace:Ina
+Pat.IofifteenFace:Iofifteen
+Pat.IrohaFace:Iroha
+Pat.IRySFace:IRyS
+Pat.KaelaFace:Kaela
+Pat.KanataFace:Kanata
+Pat.KiaraFace:Kiara
+Pat.KoboFace:Kobo
+Pat.KoroneEar:Korone
+Pat.KoroneFace:Korone
+Pat.KoyoriEar:Koyori
+Pat.KoyoriFace:Koyori
+Pat.KroniiFace:Kronii
+Pat.LamyFace:Lamy
+Pat.LaplusFace:La+
+Pat.LaplusHorn:La+ Huge Horn
+Pat.LuiFace:Lui
+Pat.LunaFace:Luna
+Pat.MarineFace:Marine
+Pat.MatsuriFace:Matsuri
+Pat.MelFace:Mel
+Pat.MelfissaFace:Melfissa
+Pat.MikoFace:Miko
+Pat.MioEar:Mio
+Pat.MioFace:Mio
+Pat.MocoEar:Moco
+Pat.MocoFace:Moco
+Pat.MoleBoob:Mole Boob
+Pat.MoonaFace:Moona
+Pat.MumeiFace:Mumei
+Pat.NeneFace:Nene
+Pat.NerissaFace:Nerissa
+Pat.NoelFace:Noel
+Pat.NormalBoob:Normal Boob
+Pat.OkayuEar:Okayu
+Pat.OkayuFace:Okayu
+Pat.OllieFace:Ollie
+Pat.PekoraEar:Pekora
+Pat.PekoraFace:Pekora
+Pat.PetanBoob:Petan
+Pat.PolkaEar:Polka
+Pat.PolkaFace:Polka
+Pat.ReineFace:Reine
+Pat.RisuEar:Risu
+Pat.RisuFace:Risu
+Pat.RobocoFace:Roboco
+Pat.SakamataFace:Sakamata
+Pat.SanaFace:Sana
+Pat.ShionFace:Shion
+Pat.ShioriFace:Shiori
+Pat.SoraFace:Sora
+Pat.SubaruFace:Subaru
+Pat.SuiseiFace:Suisei
+Pat.TowaFace:Towa
+Pat.WatameFace:Watame
+Pat.ZetaFace:Zeta
+PlayerCustomizerAngelia:Customization
+PlayerCustomizerHololia:Customization (HololiA)
+UI.Back:Back
+UI.BodyPart.ArmHand:Arm
+UI.BodyPart.Body:Body
+UI.BodyPart.Boob:Boob
+UI.BodyPart.Ear:Ear
+UI.BodyPart.Face:Face
+UI.BodyPart.Hair:Hair
+UI.BodyPart.HairColor:Hair Color
+UI.BodyPart.Head:Head
+UI.BodyPart.Horn:Horn
+UI.BodyPart.LegFoot:Leg
+UI.BodyPart.SkinColor:Skin Color
+UI.BodyPart.Tail:Tail
+UI.BodyPart.Wing:Wing
+UI.Cancel:Cancel
+UI.Continue:Continue
+UI.Default:Default
+UI.Down:Down
+UI.Equipment.Bodysuit:Armor
+UI.Equipment.Gloves:Gloves
+UI.Equipment.Helmet:Helmet
+UI.Equipment.Jewelry:Jewelry
+UI.Equipment.Shoes:Boots
+UI.Equipment.Weapon:Weapon
+UI.GameKey.Action:Action/Attack
+UI.GameKey.Down:Down
+UI.GameKey.Jump:Cancel/Jump
+UI.GameKey.Left:Left
+UI.GameKey.Right:Right
+UI.GameKey.Select:Select
+UI.GameKey.Start:Start
+UI.GameKey.Up:Up
+UI.GameOver:Game Over
+UI.Gomoku.Place:Place
+UI.Gomoku.YouAre:You are:
+UI.Left:Left
+UI.No:No
+UI.None:None
+UI.OFF:OFF
+UI.OK:OK
+UI.ON:ON
+UI.Quit:Quit
+UI.Restart:Restart
+UI.Right:Right
+UI.Save:Save
+UI.Setting:Setting
+UI.Suit.Bodysuit:Cloth
+UI.Suit.Glove:Gloves
+UI.Suit.Hat:Hat
+UI.Suit.Pants:Pants
+UI.Suit.Shoes:Shoes
+UI.Tetris.ClearedLine:Lines:
+UI.Tetris.Holding:Holding
+UI.Up:Up
+UI.Yes:Yes
