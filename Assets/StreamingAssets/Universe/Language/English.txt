@@ -1,6 +1,6 @@
-﻿#ID 1st:ID 1st
-#ID 2nd:ID 2nd
-#ID 3rd:ID 3rd
+﻿Pat.#ID 1st:ID 1st
+Pat.#ID 2nd:ID 2nd
+Pat.#ID 3rd:ID 3rd
 Pat.#Gamer:Gamer
 Pat.#EN Myth:Myth
 Pat.#EN Hope:Hope

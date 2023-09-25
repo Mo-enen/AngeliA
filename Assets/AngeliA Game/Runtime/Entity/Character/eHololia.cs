@@ -8,15 +8,42 @@ namespace AngeliaGame {
 
 
 	// Horn 
-	public class LaplusHorn : AutoSpriteHorn { }
-	public class ChocoHorn : AutoSpriteHorn { }
-	public class CocoHorn : AutoSpriteHorn { }
-	public class IRySHorn : AutoSpriteHorn { }
-	public class FaunaHorn : AutoSpriteHorn { }
-	public class NerissaHorn : AutoSpriteHorn { }
-	public class WatameHorn : AutoSpriteHorn { }
-	public class AyameHorn : AutoSpriteHorn { protected override bool DrawOnFace => true; }
-	public class AloeHorn : AutoSpriteHorn { }
+	public class LaplusHorn : AutoSpriteHorn {
+		protected override int FacingLeftOffsetX => 16;
+	}
+	public class ChocoHorn : AutoSpriteHorn {
+		protected override int FacingLeftOffsetX => 16;
+	}
+	public class CocoHorn : AutoSpriteHorn {
+		protected override int FacingLeftOffsetX => 16;
+	}
+	public class IRySHorn : AutoSpriteHorn {
+		protected override int FacingLeftOffsetX => 16;
+		protected override bool FrontOfHeadL (Character character) => character.FacingRight == character.FacingFront;
+		protected override bool FrontOfHeadR (Character character) => !character.FacingRight == character.FacingFront;
+	}
+	public class FaunaHorn : AutoSpriteHorn {
+		protected override int FacingLeftOffsetX => 16;
+		protected override bool FrontOfHeadL (Character character) => character.FacingRight == character.FacingFront;
+		protected override bool FrontOfHeadR (Character character) => !character.FacingRight == character.FacingFront;
+	}
+	public class NerissaHorn : AutoSpriteHorn {
+		protected override int FacingLeftOffsetX => 16;
+		protected override bool FrontOfHeadL (Character character) => character.FacingRight == character.FacingFront;
+		protected override bool FrontOfHeadR (Character character) => !character.FacingRight == character.FacingFront;
+	}
+	public class WatameHorn : AutoSpriteHorn {
+		protected override int FacingLeftOffsetX => 16;
+	}
+	public class AyameHorn : AutoSpriteHorn {
+		protected override bool AnchorOnFace => true;
+		protected override int FacingLeftOffsetX => -16;
+	}
+	public class AloeHorn : AutoSpriteHorn {
+		protected override int FacingLeftOffsetX => 16;
+		protected override bool FrontOfHeadL (Character character) => character.FacingRight == character.FacingFront;
+		protected override bool FrontOfHeadR (Character character) => !character.FacingRight == character.FacingFront;
+	}
 
 
 	// Boob
@@ -49,28 +76,55 @@ namespace AngeliaGame {
 
 	// Ear
 	public class FubukiEar : AutoSpriteEar {
+		protected override int FacingLeftOffsetX => 16;
 		protected override bool FrontOfHeadL (Character character) => false;
 		protected override bool FrontOfHeadR (Character character) => false;
 
 	}
-	public class MioEar : AutoSpriteEar { }
+	public class MioEar : AutoSpriteEar {
+		protected override int FacingLeftOffsetX => 16;
+	}
 	public class OkayuEar : AutoSpriteEar {
+		protected override int FacingLeftOffsetX => 16;
 		protected override bool FrontOfHeadL (Character character) => character.FacingRight == character.FacingFront;
 		protected override bool FrontOfHeadR (Character character) => !character.FacingRight == character.FacingFront;
 	}
 	public class KoroneEar : AutoSpriteEar {
+		protected override int FacingLeftOffsetX => 16;
 		protected override bool FrontOfHeadL (Character character) => character.FacingRight == character.FacingFront;
 		protected override bool FrontOfHeadR (Character character) => !character.FacingRight == character.FacingFront;
 	}
-	public class PekoraEar : AutoSpriteEar { }
-	public class BotanEar : AutoSpriteEar { }
-	public class PolkaEar : AutoSpriteEar { }
-	public class RisuEar : AutoSpriteEar { }
-	public class InaEar : AutoSpriteEar { }
-	public class BaeEar : AutoSpriteEar { }
-	public class KoyoriEar : AutoSpriteEar { }
-	public class MocoEar : AutoSpriteEar { }
-	public class FuwaEar : AutoSpriteEar { }
+	public class PekoraEar : AutoSpriteEar {
+		protected override int FacingLeftOffsetX => 16;
+	}
+	public class BotanEar : AutoSpriteEar {
+		protected override int FacingLeftOffsetX => 16;
+	}
+	public class PolkaEar : AutoSpriteEar {
+		protected override int FacingLeftOffsetX => 16;
+	}
+	public class RisuEar : AutoSpriteEar {
+		protected override int FacingLeftOffsetX => 16;
+	}
+	public class InaEar : AutoSpriteEar {
+		protected override int FacingLeftOffsetX => 16;
+		protected override bool FrontOfHeadL (Character character) => false;
+		protected override bool FrontOfHeadR (Character character) => false;
+	}
+	public class BaeEar : AutoSpriteEar {
+		protected override int FacingLeftOffsetX => 16;
+	}
+	public class KoyoriEar : AutoSpriteEar {
+		protected override int FacingLeftOffsetX => 16;
+	}
+	public class MocoEar : AutoSpriteEar {
+		protected override int FacingLeftOffsetX => 16;
+		protected override int MotionAmount => 300;
+	}
+	public class FuwaEar : AutoSpriteEar {
+		protected override int FacingLeftOffsetX => 16;
+		protected override int MotionAmount => 300;
+	}
 
 
 	// Tail
@@ -167,6 +221,7 @@ namespace AngeliaGame {
 		protected override bool AllowLimbRotate => true;
 	}
 	public class AquaHair : AutoSpriteBraidHair {
+		protected override int FacingLeftOffsetX => 16;
 		protected override int PositionAmountX => 75;
 		protected override int PositionAmountY => 700;
 	}
@@ -184,10 +239,12 @@ namespace AngeliaGame {
 	public class PekoraHair : AutoSpriteBraidHair {
 		protected override int PositionAmountX => 0;
 		protected override int PositionAmountY => 624;
+		protected override int FlowMotionAmount => 300;
 	}
 	public class FlareHair : AutoSpriteHair { }
 	public class NoelHair : AutoSpriteHair { }
 	public class MarineHair : AutoSpriteBraidHair {
+		protected override int FacingLeftOffsetX => 16;
 		protected override int PositionAmountX => 65;
 		protected override int PositionAmountY => 695;
 		protected override bool Front => false;
@@ -196,15 +253,19 @@ namespace AngeliaGame {
 	public class KanataHair : AutoSpriteHair { }
 	public class WatameHair : AutoSpriteHair { }
 	public class TowaHair : AutoSpriteBraidHair {
+		protected override int FacingLeftOffsetX => 16;
 		protected override int PositionAmountX => 128;
 		protected override int PositionAmountY => 930;
-
+		protected override int MotionAmount => 300;
+		protected override int FlowMotionAmount => 200;
+		protected override int DropMotionAmount => 200;
 	}
 	public class LunaHair : AutoSpriteHair { }
 	public class CocoHair : AutoSpriteHair { }
 	public class LamyHair : AutoSpriteHair { }
 	public class NeneHair : AutoSpriteHair { }
 	public class BotanHair : AutoSpriteBraidHair {
+		protected override int FacingLeftOffsetX => 16;
 		protected override int PositionAmountX => 65;
 		protected override int PositionAmountY => 600;
 	}
@@ -212,19 +273,24 @@ namespace AngeliaGame {
 	public class RisuHair : AutoSpriteHair { }
 	public class MoonaHair : AutoSpriteHair { }
 	public class IofifteenHair : AutoSpriteBraidHair {
-		//protected override int PositionAmountX => 0;
-		//protected override int PositionAmountY => 900;
+		protected override int PositionAmountX => 72;
+		protected override int PositionAmountY => 730;
+		protected override int FlowMotionAmount => 200;
+		protected override int FacingLeftOffsetX => 16;
 	}
 	public class OllieHair : AutoSpriteBraidHair {
-		//protected override int PositionAmountY => 500;
+		protected override int PositionAmountX => 207;
+		protected override int PositionAmountY => 605;
+		protected override int MotionAmount => 200;
 	}
 	public class MelfissaHair : AutoSpriteBraidHair {
-		//protected override int PositionAmountX => 0;
-		//protected override int PositionAmountY => 500;
+		protected override bool AllowLimbRotate => true;
 	}
 	public class ReineHair : AutoSpriteBraidHair {
-		//protected override int PositionAmountX => 0;
-		//protected override int PositionAmountY => 1000;
+		protected override bool Front => false;
+		protected override int PositionAmountX => 322;
+		protected override int PositionAmountY => 1000;
+		protected override int FacingLeftOffsetX => 16;
 	}
 	public class CalliopeHair : AutoSpriteHair { }
 	public class KiaraHair : AutoSpriteHair { }
@@ -232,6 +298,7 @@ namespace AngeliaGame {
 	public class GuraHair : AutoSpriteBraidHair {
 		protected override int PositionAmountX => 75;
 		protected override int PositionAmountY => 688;
+		protected override int MotionAmount => 200;
 		protected override int DropMotionAmount => 1000;
 	}
 	public class AmeHair : AutoSpriteHair { }
@@ -240,17 +307,24 @@ namespace AngeliaGame {
 	}
 	public class FaunaHair : AutoSpriteHair { }
 	public class KroniiHair : AutoSpriteBraidHair {
-		//protected override int PositionAmountX => 0;
-		//protected override int PositionAmountY => 1000;
+		protected override int PositionAmountX => 447;
+		protected override int PositionAmountY => 1135;
+		protected override int MotionAmount => 300;
+		protected override int DropMotionAmount => 200;
 	}
 	public class MumeiHair : AutoSpriteHair { }
 	public class BaeHair : AutoSpriteBraidHair {
-		//protected override int PositionAmountX => 0;
-		//protected override int PositionAmountY => 1000;
+		protected override int PositionAmountX => 191;
+		protected override int PositionAmountY => 939;
+		protected override int MotionAmount => 300;
+		protected override int DropMotionAmount => 600;
 	}
 	public class SanaHair : AutoSpriteBraidHair {
-		//protected override int PositionAmountX => 0;
-		//protected override int PositionAmountY => 500;
+		protected override int PositionAmountX => 64;
+		protected override int PositionAmountY => 669;
+		protected override int MotionAmount => 500;
+		protected override int DropMotionAmount => 200;
+		protected override int FlowMotionAmount => 300;
 	}
 	public class LaplusHair : AutoSpriteHair { }
 	public class LuiHair : AutoSpriteHair { }
@@ -264,8 +338,8 @@ namespace AngeliaGame {
 	public class BijouHair : AutoSpriteHair { }
 	public class NerissaHair : AutoSpriteHair { }
 	public class FuwaHair : AutoSpriteBraidHair {
-		//protected override int PositionAmountX => 0;
-		//protected override int PositionAmountY => 500;
+		protected override int PositionAmountX => 64;
+		protected override int PositionAmountY => 748;
 	}
 	public class MocoHair : AutoSpriteHair { }
 	public class AloeHair : AutoSpriteHair { }

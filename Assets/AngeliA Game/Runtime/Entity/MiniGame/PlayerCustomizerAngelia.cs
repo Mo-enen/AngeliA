@@ -60,6 +60,27 @@ namespace AngeliaGame {
 		protected override string[] Colors_Skin => _Colors_Skin;
 		protected override string[] Colors_Hair => _Colors_Hair;
 
+		protected override bool SubMenuAvailable (SubMenuType type) => type switch {
+			SubMenuType.Head => true,
+			SubMenuType.Body => true,
+			SubMenuType.ShoulderArmArmHand => true,
+			SubMenuType.LegLegFoot => true,
+			SubMenuType.Face => true,
+			SubMenuType.Hair => true,
+			SubMenuType.Ear => true,
+			SubMenuType.Tail => true,
+			SubMenuType.Wing => true,
+			SubMenuType.Horn => true,
+			SubMenuType.Boob => true,
+			SubMenuType.SkinColor => true,
+			SubMenuType.HairColor => true,
+			SubMenuType.Suit_Head => true,
+			SubMenuType.Suit_BodyShoulderArmArm => true,
+			SubMenuType.Suit_Hand => true,
+			SubMenuType.Suit_HipSkirtLegLeg => true,
+			SubMenuType.Suit_Foot => true,
+			_ => false,
+		};
 
 	}
 }

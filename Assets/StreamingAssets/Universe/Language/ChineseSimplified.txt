@@ -1,6 +1,6 @@
-﻿#ID 1st:印尼一期生
-#ID 2nd:印尼二期生
-#ID 3rd:印尼三期生
+﻿Pat.#ID 1st:印尼一期生
+Pat.#ID 2nd:印尼二期生
+Pat.#ID 3rd:印尼三期生
 Pat.#Gamer:玩家组
 Pat.#EN Myth:神话组
 Pat.#EN Hope:希望

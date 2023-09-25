@@ -26,11 +26,51 @@ namespace AngeliaGame {
 		protected override string[] Colors_Skin => _Colors_Skin;
 		protected override string[] Colors_Hair => _Colors_Hair;
 
-		protected override bool BodypartAvailable => true;
-		protected override bool GadgetAvailable => true;
-		protected override bool SkinColorAvailable => true;
-		protected override bool HairColorAvailable => false;
-		protected override bool SuitAvailable => false;
+		protected override bool SubMenuAvailable (SubMenuType type) => type switch {
+			SubMenuType.Head => false,
+			SubMenuType.Body => false,
+			SubMenuType.ShoulderArmArmHand => false,
+			SubMenuType.LegLegFoot => false,
+			SubMenuType.Face => true,
+			SubMenuType.Hair => true,
+			SubMenuType.Ear => true,
+			SubMenuType.Tail => true,
+			SubMenuType.Wing => true,
+			SubMenuType.Horn => true,
+			SubMenuType.Boob => true,
+			SubMenuType.SkinColor => true,
+			SubMenuType.HairColor => false,
+			SubMenuType.Suit_Head => true,
+			SubMenuType.Suit_BodyShoulderArmArm => true,
+			SubMenuType.Suit_Hand => false,
+			SubMenuType.Suit_HipSkirtLegLeg => true,
+			SubMenuType.Suit_Foot => true,
+			_ => false,
+		};
+
+		protected override void StartGame () {
+			base.StartGame();
+			// Force ID Changes
+			if (Player.Selecting is MainPlayer player) {
+				player.Head.SetSpriteID("Holo.Head".AngeHash());
+				player.Body.SetSpriteID("Holo.Body".AngeHash());
+				player.Hip.SetSpriteID("Holo.Hip".AngeHash());
+				player.ShoulderL.SetSpriteID("Holo.Shoulder".AngeHash());
+				player.ShoulderR.SetSpriteID("Holo.Shoulder".AngeHash());
+				player.UpperArmL.SetSpriteID("Holo.UpperArm".AngeHash());
+				player.UpperArmR.SetSpriteID("Holo.UpperArm".AngeHash());
+				player.LowerArmL.SetSpriteID("Holo.LowerArm".AngeHash());
+				player.LowerArmR.SetSpriteID("Holo.LowerArm".AngeHash());
+				player.HandL.SetSpriteID("Holo.Hand".AngeHash());
+				player.HandR.SetSpriteID("Holo.Hand".AngeHash());
+				player.UpperLegL.SetSpriteID("Holo.UpperLeg".AngeHash());
+				player.UpperLegR.SetSpriteID("Holo.UpperLeg".AngeHash());
+				player.LowerLegL.SetSpriteID("Holo.LowerLeg".AngeHash());
+				player.LowerLegR.SetSpriteID("Holo.LowerLeg".AngeHash());
+				player.FootL.SetSpriteID("Holo.Foot".AngeHash());
+				player.FootR.SetSpriteID("Holo.Foot".AngeHash());
+			}
+		}
 
 	}
 }
