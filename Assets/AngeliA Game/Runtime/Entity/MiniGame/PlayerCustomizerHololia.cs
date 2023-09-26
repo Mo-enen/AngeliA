@@ -42,7 +42,7 @@ namespace AngeliaGame {
 			SubMenuType.HairColor => false,
 			SubMenuType.Suit_Head => true,
 			SubMenuType.Suit_BodyShoulderArmArm => true,
-			SubMenuType.Suit_Hand => false,
+			SubMenuType.Suit_Hand => true,
 			SubMenuType.Suit_HipSkirtLegLeg => true,
 			SubMenuType.Suit_Foot => true,
 			_ => false,

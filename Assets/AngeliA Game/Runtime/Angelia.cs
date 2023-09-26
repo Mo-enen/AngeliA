@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using AngeliaFramework;
+
 
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
@@ -9,6 +11,8 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 
 namespace AngeliaGame {
 	public static class AngeliA {
+
+
 
 
 
@@ -141,28 +145,31 @@ namespace AngeliaGame {
 				"Fuwa",
 				"Moco",
 			};
-
 			string[] ALL_NAMES1 = { "Chris", "Rushia", "Aloe", };
 
+
+
 			string result = "";
-			int currentX = 1;
-			int currentY = 316 + 45;
-			for (int i = 0; i < ALL_NAMES1.Length; i++) {
-				string name = ALL_NAMES1[i];
+			int currentX = 20;
+			int currentY = 26;
+			//var names = ALL_NAMES.Concat(ALL_NAMES1).ToArray();
+			var names = ALL_NAMES;
+			for (int i = 0; i < names.Length; i++) {
+				string name = names[i];
 
-				result += $"{name}Hair, {currentX}, {currentY}, 15,20\n";
-				result += $"{name}Hair.HairFF 0, {currentX + 16}, {currentY}, 15,20,2,3,6,10,2,2\n";
-				result += $"{name}Hair.HairFF 1, {currentX + 32}, {currentY}, 15,20,2,3,6,10,2,2\n";
-				result += $"{name}Hair.HairFB, {currentX + 48}, {currentY}, 15,20,2,3,6,10,2,2\n";
-				result += $"{name}Hair.HairBF 0, {currentX + 48 + 16}, {currentY}, 15,20,2,3,6,10,2,2\n";
-				result += $"{name}Hair.HairBF 1, {currentX + 48 + 32}, {currentY}, 15,20,2,3,6,10,2,2\n";
+				result += $"nameof({name}BodySuit), ";
+				//result += $"public class {name}BodySuit : AutoSpriteCloth {{ protected override ClothType ClothType => ClothType.Body; }}\n";
+				//result += $"public class {name}HipSuit : AutoSpriteCloth {{ protected override ClothType ClothType => ClothType.Hip; }}\n";
+				//result += $"public class {name}HeadSuit : AutoSpriteCloth {{ protected override ClothType ClothType => ClothType.Head; }}\n";
+				//result += $"public class {name}HandSuit : AutoSpriteCloth {{ protected override ClothType ClothType => ClothType.Hand; }}\n";
+				//result += $"public class {name}FootSuit : AutoSpriteCloth {{ protected override ClothType ClothType => ClothType.Foot; }}\n";
 
-				currentX += 105;
-				if (currentX > 800) {
-					currentX = 1;
-					currentY += 45;
+				currentX += 28;
+				if (currentX > 450) {
+					currentX = 20;
+					currentY += 80;
 				}
-				result += "\n";
+				//result += "\n";
 			}
 			GUIUtility.systemCopyBuffer = result;
 			Debug.Log(Random.value + " Copy.");

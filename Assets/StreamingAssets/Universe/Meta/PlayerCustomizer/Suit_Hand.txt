@@ -1,0 +1,77 @@
+
+#JP 0th
+SoraHandSuit
+RobocoHandSuit
+MikoHandSuit
+SuiseiHandSuit
+AZKiHandSuit
+#JP 1st
+MelHandSuit
+FubukiHandSuit
+MatsuriHandSuit
+AkiHandSuit
+AkaiHandSuit
+#JP 2nd
+AquaHandSuit
+ShionHandSuit
+AyameHandSuit
+ChocoHandSuit
+SubaruHandSuit
+#JP 3rd
+PekoraHandSuit
+FlareHandSuit
+NoelHandSuit
+MarineHandSuit
+#JP 4th
+KanataHandSuit
+WatameHandSuit
+TowaHandSuit
+LunaHandSuit
+CocoHandSuit
+#JP 5th
+LamyHandSuit
+NeneHandSuit
+BotanHandSuit
+PolkaHandSuit
+#JP 6th
+LaplusHandSuit
+LuiHandSuit
+KoyoriHandSuit
+SakamataHandSuit
+IrohaHandSuit
+#Gamer
+MioHandSuit
+OkayuHandSuit
+KoroneHandSuit
+#EN Myth
+CalliopeHandSuit
+KiaraHandSuit
+InaHandSuit
+GuraHandSuit
+AmeHandSuit
+#EN Hope
+IRySHandSuit
+#EN Council
+FaunaHandSuit
+KroniiHandSuit
+MumeiHandSuit
+BaeHandSuit
+SanaHandSuit
+#EN Advent
+ShioriHandSuit
+BijouHandSuit
+NerissaHandSuit
+FuwaHandSuit
+MocoHandSuit
+#ID 1st
+RisuHandSuit
+MoonaHandSuit
+IofifteenHandSuit
+#ID 2nd
+OllieHandSuit
+MelfissaHandSuit
+ReineHandSuit
+#ID 3rd
+ZetaHandSuit
+KaelaHandSuit
+KoboHandSuit

@@ -7,11 +7,12 @@ using AngeliaFramework;
 namespace AngeliaGame {
 	public partial class PlayerCustomizerHololia {
 
-		// Body Part
+		// (Disabled)
 		private static readonly string[] _BodyPart_Heads = { "Holo" };
 		private static readonly string[] _BodyPart_BodyHips = { "Holo" };
 		private static readonly string[] _BodyPart_ShoulderArmArmHands = { "Holo" };
 		private static readonly string[] _BodyPart_LegLegFoots = { "Holo" };
+		private static readonly string[] _Colors_Hair = { "#ffffff" };
 
 		// Gadget
 		private static string[] _BodyPart_Faces = {
@@ -71,21 +72,88 @@ namespace AngeliaGame {
 		// Suit
 		private static string[] _Suit_Heads = {
 			"",
+			nameof(MikoHeadSuit), nameof(SuiseiHeadSuit), nameof(AquaHeadSuit), nameof(ShionHeadSuit),
+			nameof(SubaruHeadSuit), nameof(FlareHeadSuit), nameof(KanataHeadSuit), nameof(TowaHeadSuit),
+			nameof(LunaHeadSuit), nameof(PolkaHeadSuit), nameof(OllieHeadSuit), nameof(CalliopeHeadSuit), nameof(KiaraHeadSuit),
+			nameof(InaHeadSuit), nameof(AmeHeadSuit), nameof(IRySHeadSuit), nameof(MumeiHeadSuit), nameof(SanaHeadSuit), 
+			nameof(KaelaHeadSuit), nameof(BijouHeadSuit),
 		};
 		private static string[] _Suit_BodyShoulderArmArms = {
 			"",
+			"#JP 0th",      nameof(SoraBodySuit), nameof(RobocoBodySuit), nameof(MikoBodySuit), nameof(SuiseiBodySuit), nameof(AZKiBodySuit),
+			"#JP 1st",      nameof(MelBodySuit), nameof(FubukiBodySuit), nameof(MatsuriBodySuit), nameof(AkiBodySuit), nameof(AkaiBodySuit),
+			"#JP 2nd",      nameof(AquaBodySuit), nameof(ShionBodySuit), nameof(AyameBodySuit), nameof(ChocoBodySuit), nameof(SubaruBodySuit),
+			"#JP 3rd",      nameof(PekoraBodySuit), nameof(FlareBodySuit), nameof(NoelBodySuit), nameof(MarineBodySuit),
+			"#JP 4th",      nameof(KanataBodySuit), nameof(WatameBodySuit), nameof(TowaBodySuit), nameof(LunaBodySuit), nameof(CocoBodySuit),
+			"#JP 5th",      nameof(LamyBodySuit), nameof(NeneBodySuit), nameof(BotanBodySuit), nameof(PolkaBodySuit),
+			"#JP 6th",      nameof(LaplusBodySuit), nameof(LuiBodySuit), nameof(KoyoriBodySuit), nameof(SakamataBodySuit), nameof(IrohaBodySuit),
+			"#Gamer",       nameof(MioBodySuit), nameof(OkayuBodySuit), nameof(KoroneBodySuit),
+			"#EN Myth",     nameof(CalliopeBodySuit), nameof(KiaraBodySuit), nameof(InaBodySuit), nameof(GuraBodySuit), nameof(AmeBodySuit),
+			"#EN Hope",     nameof(IRySBodySuit),
+			"#EN Council",  nameof(FaunaBodySuit), nameof(KroniiBodySuit), nameof(MumeiBodySuit), nameof(BaeBodySuit), nameof(SanaBodySuit),
+			"#EN Advent",   nameof(ShioriBodySuit), nameof(BijouBodySuit), nameof(NerissaBodySuit), nameof(FuwaBodySuit), nameof(MocoBodySuit),
+			"#ID 1st",      nameof(RisuBodySuit), nameof(MoonaBodySuit), nameof(IofifteenBodySuit),
+			"#ID 2nd",      nameof(OllieBodySuit), nameof(MelfissaBodySuit), nameof(ReineBodySuit),
+			"#ID 3rd",      nameof(ZetaBodySuit), nameof(KaelaBodySuit), nameof(KoboBodySuit),
 		};
 		private static string[] _Suit_HipSkirtLegLegs = {
 			"",
+			"#JP 0th",      nameof(SoraHipSuit), nameof(RobocoHipSuit), nameof(MikoHipSuit), nameof(SuiseiHipSuit), nameof(AZKiHipSuit),
+			"#JP 1st",      nameof(MelHipSuit), nameof(FubukiHipSuit), nameof(MatsuriHipSuit), nameof(AkiHipSuit), nameof(AkaiHipSuit),
+			"#JP 2nd",      nameof(AquaHipSuit), nameof(ShionHipSuit), nameof(AyameHipSuit), nameof(ChocoHipSuit), nameof(SubaruHipSuit),
+			"#JP 3rd",      nameof(PekoraHipSuit), nameof(FlareHipSuit), nameof(NoelHipSuit), nameof(MarineHipSuit),
+			"#JP 4th",      nameof(KanataHipSuit), nameof(WatameHipSuit), nameof(TowaHipSuit), nameof(LunaHipSuit), nameof(CocoHipSuit),
+			"#JP 5th",      nameof(LamyHipSuit), nameof(NeneHipSuit), nameof(BotanHipSuit), nameof(PolkaHipSuit),
+			"#JP 6th",      nameof(LaplusHipSuit), nameof(LuiHipSuit), nameof(KoyoriHipSuit), nameof(SakamataHipSuit), nameof(IrohaHipSuit),
+			"#Gamer",       nameof(MioHipSuit), nameof(OkayuHipSuit), nameof(KoroneHipSuit),
+			"#EN Myth",     nameof(CalliopeHipSuit), nameof(KiaraHipSuit), nameof(InaHipSuit), nameof(GuraHipSuit), nameof(AmeHipSuit),
+			"#EN Hope",     nameof(IRySHipSuit),
+			"#EN Council",  nameof(FaunaHipSuit), nameof(KroniiHipSuit), nameof(MumeiHipSuit), nameof(BaeHipSuit), nameof(SanaHipSuit),
+			"#EN Advent",   nameof(ShioriHipSuit), nameof(BijouHipSuit), nameof(NerissaHipSuit), nameof(FuwaHipSuit), nameof(MocoHipSuit),
+			"#ID 1st",      nameof(RisuHipSuit), nameof(MoonaHipSuit), nameof(IofifteenHipSuit),
+			"#ID 2nd",      nameof(OllieHipSuit), nameof(MelfissaHipSuit), nameof(ReineHipSuit),
+			"#ID 3rd",      nameof(ZetaHipSuit), nameof(KaelaHipSuit), nameof(KoboHipSuit),
 		};
 		private static string[] _Suit_Foots = {
 			"",
+			"#JP 0th",      nameof(SoraFootSuit), nameof(RobocoFootSuit), nameof(MikoFootSuit), nameof(SuiseiFootSuit), nameof(AZKiFootSuit),
+			"#JP 1st",      nameof(MelFootSuit), nameof(FubukiFootSuit), nameof(MatsuriFootSuit), nameof(AkiFootSuit), nameof(AkaiFootSuit),
+			"#JP 2nd",      nameof(AquaFootSuit), nameof(ShionFootSuit), nameof(AyameFootSuit), nameof(ChocoFootSuit), nameof(SubaruFootSuit),
+			"#JP 3rd",      nameof(PekoraFootSuit), nameof(FlareFootSuit), nameof(NoelFootSuit), nameof(MarineFootSuit),
+			"#JP 4th",      nameof(KanataFootSuit), nameof(WatameFootSuit), nameof(TowaFootSuit), nameof(LunaFootSuit), nameof(CocoFootSuit),
+			"#JP 5th",      nameof(LamyFootSuit), nameof(NeneFootSuit), nameof(BotanFootSuit), nameof(PolkaFootSuit),
+			"#JP 6th",      nameof(LaplusFootSuit), nameof(LuiFootSuit), nameof(KoyoriFootSuit), nameof(SakamataFootSuit), nameof(IrohaFootSuit),
+			"#Gamer",       nameof(MioFootSuit), nameof(OkayuFootSuit), nameof(KoroneFootSuit),
+			"#EN Myth",     nameof(CalliopeFootSuit), nameof(KiaraFootSuit), nameof(InaFootSuit), nameof(GuraFootSuit), nameof(AmeFootSuit),
+			"#EN Hope",     nameof(IRySFootSuit),
+			"#EN Council",  nameof(FaunaFootSuit), nameof(KroniiFootSuit), nameof(MumeiFootSuit), nameof(BaeFootSuit), nameof(SanaFootSuit),
+			"#EN Advent",   nameof(ShioriFootSuit), nameof(BijouFootSuit), nameof(NerissaFootSuit), nameof(FuwaFootSuit), nameof(MocoFootSuit),
+			"#ID 1st",      nameof(RisuFootSuit), nameof(MoonaFootSuit), nameof(IofifteenFootSuit),
+			"#ID 2nd",      nameof(OllieFootSuit), nameof(MelfissaFootSuit), nameof(ReineFootSuit),
+			"#ID 3rd",      nameof(ZetaFootSuit), nameof(KaelaFootSuit), nameof(KoboFootSuit),
 		};
-		private static readonly string[] _Suit_Hands = { "" };
+		private static string[] _Suit_Hands = {
+			"",
+			"#JP 0th",      nameof(SoraHandSuit), nameof(RobocoHandSuit), nameof(MikoHandSuit), nameof(SuiseiHandSuit), nameof(AZKiHandSuit),
+			"#JP 1st",      nameof(MelHandSuit), nameof(FubukiHandSuit), nameof(MatsuriHandSuit), nameof(AkiHandSuit), nameof(AkaiHandSuit),
+			"#JP 2nd",      nameof(AquaHandSuit), nameof(ShionHandSuit), nameof(AyameHandSuit), nameof(ChocoHandSuit), nameof(SubaruHandSuit),
+			"#JP 3rd",      nameof(PekoraHandSuit), nameof(FlareHandSuit), nameof(NoelHandSuit), nameof(MarineHandSuit),
+			"#JP 4th",      nameof(KanataHandSuit), nameof(WatameHandSuit), nameof(TowaHandSuit), nameof(LunaHandSuit), nameof(CocoHandSuit),
+			"#JP 5th",      nameof(LamyHandSuit), nameof(NeneHandSuit), nameof(BotanHandSuit), nameof(PolkaHandSuit),
+			"#JP 6th",      nameof(LaplusHandSuit), nameof(LuiHandSuit), nameof(KoyoriHandSuit), nameof(SakamataHandSuit), nameof(IrohaHandSuit),
+			"#Gamer",       nameof(MioHandSuit), nameof(OkayuHandSuit), nameof(KoroneHandSuit),
+			"#EN Myth",     nameof(CalliopeHandSuit), nameof(KiaraHandSuit), nameof(InaHandSuit), nameof(GuraHandSuit), nameof(AmeHandSuit),
+			"#EN Hope",     nameof(IRySHandSuit),
+			"#EN Council",  nameof(FaunaHandSuit), nameof(KroniiHandSuit), nameof(MumeiHandSuit), nameof(BaeHandSuit), nameof(SanaHandSuit),
+			"#EN Advent",   nameof(ShioriHandSuit), nameof(BijouHandSuit), nameof(NerissaHandSuit), nameof(FuwaHandSuit), nameof(MocoHandSuit),
+			"#ID 1st",      nameof(RisuHandSuit), nameof(MoonaHandSuit), nameof(IofifteenHandSuit),
+			"#ID 2nd",      nameof(OllieHandSuit), nameof(MelfissaHandSuit), nameof(ReineHandSuit),
+			"#ID 3rd",      nameof(ZetaHandSuit), nameof(KaelaHandSuit), nameof(KoboHandSuit),
+		};
 
 		// Color
 		private static string[] _Colors_Skin = { "#f5d9c4", "#e7b19a", "#c9946b", "#e7e3e4", };
-		private static readonly string[] _Colors_Hair = { "#ffffff" };
+
 
 		public PlayerCustomizerHololia () : base() {
 			var folderPath = Util.CombinePaths(Const.MetaRoot, "PlayerCustomizer");
@@ -102,6 +170,7 @@ namespace AngeliaGame {
 			SaveToFile(folderPath, SubMenuType.Suit_BodyShoulderArmArm, _Suit_BodyShoulderArmArms);
 			SaveToFile(folderPath, SubMenuType.Suit_HipSkirtLegLeg, _Suit_HipSkirtLegLegs);
 			SaveToFile(folderPath, SubMenuType.Suit_Foot, _Suit_Foots);
+			SaveToFile(folderPath, SubMenuType.Suit_Hand, _Suit_Hands);
 			SaveToFile(folderPath, SubMenuType.SkinColor, _Colors_Skin);
 			static void SaveToFile (string folderPath, SubMenuType type, string[] patterns) {
 				string path = Util.CombinePaths(folderPath, $"{type}.txt");
@@ -129,6 +198,7 @@ namespace AngeliaGame {
 				LoadFromFile(folderPath, SubMenuType.Suit_BodyShoulderArmArm, ref _Suit_BodyShoulderArmArms);
 				LoadFromFile(folderPath, SubMenuType.Suit_HipSkirtLegLeg, ref _Suit_HipSkirtLegLegs);
 				LoadFromFile(folderPath, SubMenuType.Suit_Foot, ref _Suit_Foots);
+				LoadFromFile(folderPath, SubMenuType.Suit_Hand, ref _Suit_Hands);
 				LoadFromFile(folderPath, SubMenuType.SkinColor, ref _Colors_Skin);
 			}
 			// Func
@@ -142,6 +212,7 @@ namespace AngeliaGame {
 				patterns = list.ToArray();
 			}
 		}
+
 
 	}
 }
