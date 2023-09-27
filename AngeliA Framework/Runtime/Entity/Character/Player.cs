@@ -1,0 +1,617 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using AngeliaFramework;
+using System.Reflection;
+
+
+namespace AngeliaFramework {
+	[EntityAttribute.Capacity(1, 1)]
+	[EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
+	[EntityAttribute.DontDestroyOnSquadTransition]
+	[EntityAttribute.DontDestroyOutOfRange]
+	[EntityAttribute.ForceSpawn]
+	[EntityAttribute.UpdateOutOfRange]
+	[EntityAttribute.DontDrawBehind]
+	public abstract class Player : Character, IGlobalPosition, IDamageReceiver, IActionTarget {
+
+
+
+
+		#region --- VAR ---
+
+
+		// Const
+		public const int INVENTORY_COLUMN = 10;
+		public const int INVENTORY_ROW = 4;
+		private const int RUSH_TAPPING_GAP = 16;
+		private const int ACTION_SCAN_RANGE = Const.HALF;
+		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
+		private static readonly int HINT_JUMP = "CtrlHint.Jump".AngeHash();
+		private static readonly int HINT_SHOW_MENU = "CtrlHint.ShowMenu".AngeHash();
+		private static readonly int HINT_ATTACK = "CtrlHint.Attack".AngeHash();
+		private static readonly int HINT_SWITCH_PLAYER = "CtrlHint.SwitchPlayer".AngeHash();
+		private static readonly int HINT_WAKE = "CtrlHint.WakeUp".AngeHash();
+		private static readonly int HINT_USE = "CtrlHint.Use".AngeHash();
+		private static readonly int UI_CONTINUE = "UI.Continue".AngeHash();
+
+		// Api
+		public static Player Selecting {
+			get => _Selecting;
+			set {
+				if (value != null) {
+					SelectingPlayerID.Value = value.TypeID;
+				}
+				_Selecting = value;
+			}
+		}
+		public static Vector3Int? RespawnUnitPosition { get; set; } = null;
+		public override bool IsChargingAttack =>
+			Selecting == this &&
+			!FrameTask.HasTask() &&
+			!LockingInput &&
+			MinimalChargeAttackDuration != int.MaxValue &&
+			AttackCooldownReady(false) &&
+			FrameInput.GameKeyHolding(Gamekey.Action);
+		public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
+		public bool LockingInput { get; private set; } = false;
+		public bool RestartOnFullAsleep { get; set; } = false;
+		public int AimViewX { get; private set; } = 0;
+		public int AimViewY { get; private set; } = 0;
+		public IActionTarget TargetActionEntity { get; private set; } = null;
+		public virtual bool HelmetAvailable => true;
+		public virtual bool BodySuitAvailable => true;
+		public virtual bool GlovesAvailable => true;
+		public virtual bool ShoesAvailable => true;
+		public virtual bool JewelryAvailable => true;
+		public virtual bool WeaponAvailable => true;
+		int IDamageReceiver.Team => Const.TEAM_PLAYER;
+
+		// Short
+		private static int EquipmentCount => _EquipmentCount > 0 ? _EquipmentCount : (_EquipmentCount = System.Enum.GetValues(typeof(EquipmentType)).Length);
+		private static int _EquipmentCount = 0;
+
+		// Data
+		private static Player _Selecting = null;
+		private int AttackRequiringFrame = int.MinValue;
+		private int LastLeftKeyDown = int.MinValue;
+		private int LastRightKeyDown = int.MinValue;
+		private int LastGroundedY = 0;
+		private int PrevZ = int.MinValue;
+
+		// Saving
+		private static readonly SavingInt SelectingPlayerID = new("Player.SelectingPlayerID", 0);
+
+
+		#endregion
+
+
+
+
+		#region --- MSG ---
+
+
+		[OnGameInitialize(64)]
+		public static void AfterGameInitialize () {
+			Selecting = Stage.PeekOrGetEntity(SelectingPlayerID.Value) as Player;
+		}
+
+
+		public Player () {
+			// Inventory
+			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
+			if (Inventory.HasInventory(TypeID)) {
+				int invCount = Inventory.GetInventoryCapacity(TypeID);
+				if (invCount != COUNT) {
+					Inventory.ResizeItems(TypeID, COUNT);
+				}
+			} else {
+				// Create New
+				Inventory.AddNewPlayerInventoryData(TypeID, COUNT);
+			}
+			Inventory.SetUnlockInside(TypeID, true);
+		}
+
+
+		public override void OnActivated () {
+			base.OnActivated();
+			PrevZ = Stage.ViewZ;
+			LockingInput = false;
+			TargetActionEntity = null;
+		}
+
+
+		public override void OnInactivated () {
+			base.OnInactivated();
+			if (Selecting == this && PlayerMenuUI.ShowingUI) {
+				PlayerMenuUI.CloseMenu();
+			}
+		}
+
+
+		public override void FillPhysics () {
+			if (FrameTask.HasTask()) return;
+			base.FillPhysics();
+		}
+
+
+		// Before Physics Update
+		public override void BeforePhysicsUpdate () {
+			base.BeforePhysicsUpdate();
+
+			// Non-Selecting Players Despawn on Z Changed
+			if (PrevZ != Stage.ViewZ) {
+				PrevZ = Stage.ViewZ;
+				if (Selecting != this) {
+					Active = false;
+					return;
+				} else {
+					Bounce();
+				}
+			}
+
+			// Stop when Not Playing
+			if (Selecting != this || Game.IsPausing) {
+				Stop();
+				return;
+			}
+
+			// Update Player
+			switch (CharacterState) {
+				case CharacterState.GamePlay:
+					if (!FrameTask.HasTask() && !LockingInput) {
+						ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, Language.Get(HINT_MOVE, "Move"));
+						Move(FrameInput.DirectionX, FrameInput.DirectionY);
+						Update_JumpDashPoundRush();
+					} else {
+						Stop();
+					}
+					if (!FrameTask.HasTask()) {
+						Update_Action();
+						Update_Attack();
+						Update_Inventory();
+					}
+					break;
+				case CharacterState.Sleep:
+					Update_Sleep();
+					break;
+				case CharacterState.PassOut:
+					Update_PassOut();
+					break;
+			}
+
+			// View
+			Update_View();
+
+		}
+
+
+		private void Update_JumpDashPoundRush () {
+
+			if (LockingInput) return;
+
+			ControlHintUI.AddHint(Gamekey.Jump, Language.Get(HINT_JUMP, "Jump"));
+
+			// Jump/Dash
+			HoldJump(FrameInput.GameKeyHolding(Gamekey.Jump));
+			if (FrameInput.GameKeyDown(Gamekey.Jump)) {
+				// Movement Jump
+				if (FrameInput.GameKeyHolding(Gamekey.Down)) {
+					Dash();
+				} else {
+					Jump();
+					AttackRequiringFrame = int.MinValue;
+				}
+			}
+
+			// Pound
+			if (FrameInput.GameKeyDown(Gamekey.Down)) {
+				Pound();
+			}
+
+			// Rush
+			if (FrameInput.GameKeyDown(Gamekey.Left)) {
+				if (Game.GlobalFrame < LastLeftKeyDown + RUSH_TAPPING_GAP) {
+					Rush();
+				}
+				LastLeftKeyDown = Game.GlobalFrame;
+				LastRightKeyDown = int.MinValue;
+			}
+			if (FrameInput.GameKeyDown(Gamekey.Right)) {
+				if (Game.GlobalFrame < LastRightKeyDown + RUSH_TAPPING_GAP) {
+					Rush();
+				}
+				LastRightKeyDown = Game.GlobalFrame;
+				LastLeftKeyDown = int.MinValue;
+			}
+
+		}
+
+
+		private void Update_Action () {
+
+			LockingInput = PlayerMenuUI.ShowingUI;
+			if (CharacterState != CharacterState.GamePlay) return;
+			if (TakingDamage || FrameTask.HasTask()) return;
+
+			// Search for Active Trigger
+			if (TargetActionEntity == null || !TargetActionEntity.LockInput) {
+				TargetActionEntity = null;
+				Entity eActTarget = null;
+				var hits = CellPhysics.OverlapAll(
+					Const.MASK_ENTITY,
+					Rect.Expand(ACTION_SCAN_RANGE, ACTION_SCAN_RANGE, 0, ACTION_SCAN_RANGE),
+					out int count, this,
+					OperationMode.ColliderAndTrigger
+				);
+				int dis = int.MaxValue;
+				bool squatting = IsSquatting;
+				for (int i = 0; i < count; i++) {
+					var hit = hits[i];
+					if (hit.Entity is not IActionTarget act) continue;
+					if (!act.AllowInvoke()) continue;
+					if (squatting) {
+						if (!act.AllowInvokeOnSquat) continue;
+					} else {
+						if (!act.AllowInvokeOnStand) continue;
+					}
+					// Comparer X Distance
+					int _dis =
+						X >= hit.Rect.xMin && X <= hit.Rect.xMax ? 0 :
+						X > hit.Rect.xMax ? Mathf.Abs(X - hit.Rect.xMax) :
+						Mathf.Abs(X - hit.Rect.xMin);
+					if (_dis < dis) {
+						dis = _dis;
+						TargetActionEntity = act;
+						eActTarget = hit.Entity;
+					} else if (_dis == dis && TargetActionEntity != null) {
+						// Comparer Y Distance
+						if (hit.Entity.Y < eActTarget.Y) {
+							dis = _dis;
+							TargetActionEntity = act;
+							eActTarget = hit.Entity;
+						} else if (hit.Entity.Rect.y == eActTarget.Y) {
+							// Comparer Size
+							if (hit.Entity.Width * hit.Entity.Height < eActTarget.Width * eActTarget.Height) {
+								dis = _dis;
+								TargetActionEntity = act;
+								eActTarget = hit.Entity;
+							}
+						}
+					}
+				}
+			}
+
+			// Try Perform Action
+			if (TargetActionEntity != null && !TargetActionEntity.LockInput) {
+				ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_USE, "Use"), int.MinValue + 1);
+				if (FrameInput.GameKeyDown(Gamekey.Action) && !PlayerMenuUI.ShowingUI) {
+					TargetActionEntity?.Invoke();
+					FrameInput.UseGameKey(Gamekey.Action);
+				}
+			}
+
+			LockingInput = PlayerMenuUI.ShowingUI || (TargetActionEntity != null && TargetActionEntity.LockInput);
+
+		}
+
+
+		private void Update_Attack () {
+
+			if (LockingInput) return;
+
+			// Try Perform Attack
+			ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_ATTACK, "Attack"));
+			bool attDown = FrameInput.GameKeyDown(Gamekey.Action);
+			bool attHolding = FrameInput.GameKeyHolding(Gamekey.Action) && KeepAttackWhenHold;
+			if (attDown || attHolding) {
+				if (IsAttackAllowedByMovement()) {
+					if (AttackCooldownReady(!attDown)) {
+						Attack();
+					} else if (attDown) {
+						AttackRequiringFrame = Game.GlobalFrame;
+					}
+				}
+				return;
+			}
+
+			// Reset Require on Move
+			if (
+				FrameInput.GameKeyDown(Gamekey.Left) || FrameInput.GameKeyDown(Gamekey.Right) ||
+				FrameInput.GameKeyDown(Gamekey.Down) || FrameInput.GameKeyDown(Gamekey.Up)
+			) {
+				AttackRequiringFrame = int.MinValue;
+			}
+
+			// Perform Required Attack
+			const int ATTACK_REQUIRE_GAP = 12;
+			if (
+				Game.GlobalFrame < AttackRequiringFrame + ATTACK_REQUIRE_GAP &&
+				IsAttackAllowedByMovement() &&
+				AttackCooldownReady(false)
+			) {
+				AttackRequiringFrame = int.MinValue;
+				Attack();
+			}
+
+		}
+
+
+		private void Update_Inventory () {
+			// Inventory Menu
+			if (!PlayerMenuUI.ShowingUI && !LockingInput) {
+				if (FrameInput.GameKeyDown(Gamekey.Select)) {
+					FrameInput.UseGameKey(Gamekey.Select);
+					PlayerMenuUI.OpenMenu();
+				}
+				ControlHintUI.AddHint(Gamekey.Select, Language.Get(HINT_SHOW_MENU, "Show Menu"));
+			}
+		}
+
+
+		private void Update_Sleep () {
+
+			// Full Slept
+			if (SleepFrame == FULL_SLEEP_DURATION) {
+				Stage.SetViewZ(Stage.ViewZ);
+				RespawnUnitPosition = null;
+				if (RestartOnFullAsleep) {
+					RestartOnFullAsleep = false;
+					Game.Current.RestartGame(TypeID);
+				}
+			}
+
+			if (FrameTask.HasTask()) return;
+
+			// Dark
+			if (RestartOnFullAsleep && SleepFrame < FULL_SLEEP_DURATION) {
+				int oldLayer = CellRenderer.CurrentLayerIndex;
+				CellRenderer.SetLayerToTopUI();
+				CellRenderer.Draw(
+					Const.PIXEL,
+					CellRenderer.CameraRect.Expand(Const.HALF),
+					new Color32(0, 0, 0, (byte)Util.RemapUnclamped(0, FULL_SLEEP_DURATION, 0, 255, SleepFrame)),
+					int.MaxValue
+				);
+				CellRenderer.SetLayer(oldLayer);
+			}
+
+			// Wake up on Press Action
+			if (FrameInput.GameKeyDown(Gamekey.Action) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+				SetCharacterState(CharacterState.GamePlay);
+				Y -= 4;
+			}
+
+			// Hint
+			ControlHintUI.DrawGlobalHint(
+				X - Const.HALF,
+				Y + Const.CEL * 3 / 2,
+				Gamekey.Action,
+				Language.Get(HINT_WAKE, "Wake"),
+				true
+			);
+			ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_WAKE, "Wake"));
+		}
+
+
+		private void Update_View () {
+
+			const int LINGER_RATE = 32;
+			bool notInGameplay = FrameTask.HasTask() || CharacterState != CharacterState.GamePlay;
+			bool notInAir =
+				notInGameplay ||
+				IsGrounded || InWater || InSand || IsSliding ||
+				IsClimbing || IsGrabbingSide || IsGrabbingTop;
+
+			if (notInAir || IsFlying) LastGroundedY = Y;
+
+			// Aim X
+			int linger = Stage.ViewRect.width * LINGER_RATE / 1000;
+			int centerX = Stage.ViewRect.x + Stage.ViewRect.width / 2;
+			if (notInGameplay) {
+				AimViewX = X - Stage.ViewRect.width / 2;
+			} else if (X < centerX - linger) {
+				AimViewX = X + linger - Stage.ViewRect.width / 2;
+			} else if (X > centerX + linger) {
+				AimViewX = X - linger - Stage.ViewRect.width / 2;
+			}
+
+			// Aim Y
+			AimViewY = Y <= LastGroundedY ? Y - GetCameraShiftOffset(Stage.ViewRect.height) : AimViewY;
+			Stage.SetViewPositionDelay(AimViewX, AimViewY, 96, int.MinValue);
+
+			// Clamp
+			if (!Stage.ViewRect.Contains(X, Y)) {
+				if (X >= Stage.ViewRect.xMax) AimViewX = X - Stage.ViewRect.width + 1;
+				if (X <= Stage.ViewRect.xMin) AimViewX = X - 1;
+				if (Y >= Stage.ViewRect.yMax) AimViewY = Y - Stage.ViewRect.height + 1;
+				if (Y <= Stage.ViewRect.yMin) AimViewY = Y - 1;
+				Stage.SetViewPositionDelay(AimViewX, AimViewY, 1000, int.MinValue + 1);
+			}
+
+		}
+
+
+		private void Update_PassOut () {
+
+			if (FrameTask.HasTask()) return;
+
+			if (IsFullPassOut) {
+				ControlHintUI.DrawGlobalHint(X - Const.HALF, Y + Const.CEL * 3 / 2, Gamekey.Action, Language.Get(UI_CONTINUE, "Continue"), true);
+			}
+
+			// Reload Game After Player PassOut
+			if (IsFullPassOut && FrameInput.GameKeyDown(Gamekey.Action)) {
+				Game.Current.RestartGame(TypeID);
+				FrameInput.UseGameKey(Gamekey.Action);
+			}
+
+		}
+
+
+		// Physics Update
+		public override void PhysicsUpdate () {
+			if (Selecting != this && !Stage.ViewRect.Overlaps(GlobalBounds)) return;
+			base.PhysicsUpdate();
+			PhysicsUpdate_Collect();
+		}
+
+
+		private void PhysicsUpdate_Collect () {
+			if (Selecting != this) return;
+			var hits = CellPhysics.OverlapAll(
+				Const.MASK_ENTITY, Rect, out int count, this, OperationMode.TriggerOnly
+			);
+			for (int i = 0; i < count; i++) {
+				var hit = hits[i];
+				if (hit.Entity is not Collectable col) continue;
+				bool success = col.OnCollect(this);
+				if (success) {
+					hit.Entity.Active = false;
+					Stage.MarkAsGlobalAntiSpawn(hit.Entity);
+				}
+			}
+		}
+
+
+		// Frame Update
+		public override void FrameUpdate () {
+
+			int oldZ = PoseZOffset;
+			if (Selecting == this) PoseZOffset = 40;
+			base.FrameUpdate();
+			PoseZOffset = oldZ;
+
+			// Items
+			FrameUpdate_Item();
+
+			// Bounce when Highlight
+			if ((this as IActionTarget).IsHighlighted) {
+				// Bounce
+				if (Game.GlobalFrame % 20 == 0) Bounce();
+				// Hint
+				ControlHintUI.DrawGlobalHint(
+					X - Const.HALF, Y + Const.CEL * 2,
+					Gamekey.Action, Language.Get(HINT_SWITCH_PLAYER, "Switch Character"), true
+				);
+			}
+
+		}
+
+
+		private void FrameUpdate_Item () {
+
+			if (!Inventory.HasInventory(TypeID)) return;
+
+			bool eventAvailable = CharacterState == CharacterState.GamePlay && !FrameTask.HasTask() && !TakingDamage;
+			bool attackStart = eventAvailable && AttackStartAtCurrentFrame;
+			bool squatStart = eventAvailable && Game.GlobalFrame == LastSquatFrame;
+
+			// Inventory
+			int iCount = Inventory.GetInventoryCapacity(TypeID);
+			for (int i = 0; i < iCount; i++) {
+				int id = Inventory.GetItemAt(TypeID, i);
+				if (id == 0) continue;
+				var item = ItemSystem.GetItem(id);
+				if (item == null) continue;
+				item.Update(this, ItemLocation.Inventory);
+				if (attackStart) item.OnAttack(this, ItemLocation.Inventory);
+				if (squatStart) item.OnSquat(this, ItemLocation.Inventory);
+			}
+
+			// Equipment
+			for (int i = 0; i < EquipmentCount; i++) {
+				int id = Inventory.GetEquipment(TypeID, (EquipmentType)i);
+				if (id == 0) continue;
+				var item = ItemSystem.GetItem(id);
+				if (item == null) continue;
+				item.Update(this, ItemLocation.Equipment);
+				if (attackStart) item.OnAttack(this, ItemLocation.Equipment);
+				if (squatStart) item.OnSquat(this, ItemLocation.Equipment);
+			}
+
+			// Auto Pick Item
+			if (!FrameTask.HasTask() && !PlayerMenuUI.ShowingUI) {
+				var cells = CellPhysics.OverlapAll(Const.MASK_ITEM, Rect, out int count, null, OperationMode.ColliderAndTrigger);
+				for (int i = 0; i < count; i++) {
+					var cell = cells[i];
+					if (cell.Entity is not ItemHolder holder || !holder.Active) continue;
+					holder.Collect(this, true);
+				}
+			}
+		}
+
+
+		// Misc
+		protected override void OnTakeDamage (ref int damage, Entity sender) {
+
+			if (damage <= 0) return;
+
+			// Equipment
+			for (int i = 0; i < EquipmentCount && damage > 0; i++) {
+				int id = Inventory.GetEquipment(TypeID, (EquipmentType)i);
+				if (id == 0) continue;
+				ItemSystem.GetItem(id)?.OnTakeDamage(this, ItemLocation.Equipment, ref damage, sender);
+			}
+
+			// Inventory
+			int iCount = Inventory.GetInventoryCapacity(TypeID);
+			for (int i = 0; i < iCount && damage > 0; i++) {
+				int id = Inventory.GetItemAt(TypeID, i);
+				if (id == 0) continue;
+				ItemSystem.GetItem(id)?.OnTakeDamage(this, ItemLocation.Inventory, ref damage, sender);
+			}
+
+			base.OnTakeDamage(ref damage, sender);
+		}
+
+
+		protected override void OnPoseCalculated () {
+			base.OnPoseCalculated();
+			// Equipment
+			for (int i = 0; i < EquipmentCount; i++) {
+				int id = Inventory.GetEquipment(TypeID, (EquipmentType)i);
+				if (id == 0) continue;
+				ItemSystem.GetItem(id)?.PoseAnimationUpdate(this, ItemLocation.Equipment);
+			}
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+		public static int GetCameraShiftOffset (int cameraHeight) => cameraHeight * 382 / 1000;
+
+
+		void IActionTarget.Invoke () {
+			RespawnUnitPosition = null;
+			Game.Current.RestartGame(TypeID);
+		}
+
+
+		bool IActionTarget.AllowInvoke () => !IsInvincible;
+
+
+		public bool EquipmentAvailable (EquipmentType equipmentType) => equipmentType switch {
+			EquipmentType.Weapon => WeaponAvailable,
+			EquipmentType.BodySuit => BodySuitAvailable,
+			EquipmentType.Helmet => HelmetAvailable,
+			EquipmentType.Shoes => ShoesAvailable,
+			EquipmentType.Gloves => GlovesAvailable,
+			EquipmentType.Jewelry => JewelryAvailable,
+			_ => false,
+		};
+
+
+		#endregion
+
+
+
+
+	}
+}

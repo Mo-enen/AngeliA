@@ -1,0 +1,93 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:ScrollView horizontal-scroller-visibility="Hidden" style="padding-left: 12px; padding-right: 12px; padding-top: 12px; padding-bottom: 12px; width: 100%; height: 100%;">
+
+		<!-- Big Buttons -->
+
+		<ui:VisualElement name="ToolboxButtons" style="margin-bottom: 6px;">
+			<ui:VisualElement style="flex-direction: row; justify-content: space-around; align-items: center; height: 51px; padding-top: 3px;">
+            
+				<ui:Button name="Refresh" enable-rich-text="false" focusable="false" class="ToolboxButton" style=" width: 50%; height: 100%; padding-left: 12px; flex-direction: row;">
+					<ui:VisualElement name="Icon" style=" width: 24px; height: auto; background-image: url(./Image/Refresh.png); -unity-background-scale-mode: scale-to-fit;" />
+					<ui:Label text="Refresh AngeliA" enable-rich-text="false" style=" height: 100%; width: auto; margin-left: 12px; margin-right: 12px;" />
+				</ui:Button>
+
+				<ui:GroupBox style="height: 100%; width: 5px;"/>
+
+				<ui:Button enable-rich-text="false" name="Language" focusable="false" class="ToolboxButton" style=" width: 50%; height: 100%; padding-left: 12px; flex-direction: row;">
+					<ui:VisualElement name="Icon" style=" width: 24px; height: auto; background-image: url(./Image/Language.png); -unity-background-scale-mode: scale-to-fit;" />
+					<ui:Label text="Language" enable-rich-text="false" style=" height: 100%; width: auto; margin-left: 12px; margin-right: 12px;" />
+				</ui:Button>
+
+			</ui:VisualElement>
+       
+
+			<ui:VisualElement style="flex-direction: row; justify-content: space-around; align-items: center; height: 50px; padding-top: 2px;">
+            
+				<ui:Button enable-rich-text="false" name="Map" tooltip="play mode only" focusable="false" class="ToolboxButton" style="width: 50%; height: 100%; padding-left: 12px; flex-direction: row;">
+					<ui:VisualElement name="Icon" style="width: 24px; height: auto; background-image: url(./Image/Map.png); -unity-background-scale-mode: scale-to-fit;" />
+					<ui:Label text="Map Editor" enable-rich-text="false" style=" height: 100%; width: auto; margin-left: 12px; margin-right: 12px;" />
+				</ui:Button>
+
+				<ui:GroupBox style="height: 100%; width: 5px;" />
+
+				<ui:GroupBox style="width: 50%; height: 100%; padding-left: 12px; flex-direction: row;" />
+
+			</ui:VisualElement> 
+
+
+
+		</ui:VisualElement>
+		
+		
+		<!-- Small Buttons -->
+
+		<ui:VisualElement name="SmallButtons" style="flex-direction: row; height: 22px; padding-top: 3px; padding-bottom: 3px; align-items: center;">
+
+			<ui:VisualElement style="flex-direction: row; height: 22px; padding-top: 3px; padding-bottom: 3px; align-items: center;">
+             
+				<ui:Button enable-rich-text="false" tooltip="Build Setting" focusable="false" name="BuildSetting" class="SmallButton" style="height: 18px; width: 18px; cursor: url(./Image/HandCursor.png); background-image: url(./Image/BuildSetting.png); -unity-background-scale-mode: scale-to-fit; border-left-width: 0; border-right-width: 0;border-top-width: 0; border-bottom-width: 0; margin-left: 3px; margin-right: 3px; margin-top: 0; margin-bottom: 0; background-color: rgba(0, 0, 0, 0);"/>
+				<ui:Button enable-rich-text="false" tooltip="Player Setting" focusable="false" name="Setting" class="SmallButton" style="height: 18px; width: 18px; cursor: url(./Image/HandCursor.png); background-image: url(./Image/Settings.png); -unity-background-scale-mode: scale-to-fit; border-left-width: 0; border-right-width: 0;border-top-width: 0; border-bottom-width: 0; margin-left: 3px; margin-right: 3px; margin-top: 0; margin-bottom: 0; background-color: rgba(0, 0, 0, 0);"/>
+				<ui:Button enable-rich-text="false" tooltip="Preferences" focusable="false" name="Preferences" class="SmallButton" style="height: 18px; width: 18px; cursor: url(./Image/HandCursor.png); background-color: rgba(255, 255, 255, 0); background-image: url(./Image/Options.png); -unity-background-scale-mode: scale-to-fit; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 3px; margin-right: 3px; margin-top: 0; margin-bottom: 0; " />
+				<ui:Button enable-rich-text="false" tooltip="Profiler" focusable="false" name="Profiler" class="SmallButton" style="height: 18px; width: 18px; cursor: url(./Image/HandCursor.png); background-color: rgba(255, 255, 255, 0); background-image: url(./Image/Stopwatch.png); -unity-background-scale-mode: scale-to-fit; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 3px; margin-right: 3px; margin-top: 0; margin-bottom: 0; " />
+				<ui:Button enable-rich-text="false" tooltip="Package Manager" focusable="false" name="Package" class="SmallButton" style="height: 18px; width: 18px; cursor: url(./Image/HandCursor.png); background-color: rgba(255, 255, 255, 0); background-image: url(./Image/Box.png); -unity-background-scale-mode: scale-to-fit; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 3px; margin-right: 3px; margin-top: 0; margin-bottom: 0; " />
+				<ui:Button enable-rich-text="false" tooltip="Script Hub" focusable="false" name="ScriptHub" class="SmallButton" style="height: 18px; width: 18px; cursor: url(./Image/HandCursor.png); background-color: rgba(255, 255, 255, 0); background-image: url(./Image/Hub.png); -unity-background-scale-mode: scale-to-fit; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 3px; margin-right: 3px; margin-top: 0; margin-bottom: 0; " />
+				<ui:Button enable-rich-text="false" tooltip="Slice Editor" focusable="false" name="SliceEditor" class="SmallButton" style="height: 18px; width: 18px; cursor: url(./Image/HandCursor.png); background-color: rgba(255, 255, 255, 0); background-image: url(./Image/Slice.png); -unity-background-scale-mode: scale-to-fit; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 3px; margin-right: 3px; margin-top: 0; margin-bottom: 0; " />
+				<ui:Button enable-rich-text="false" tooltip="Ange Hash" focusable="false" name="AngeHash" class="SmallButton" style="height: 18px; width: 18px; cursor: url(./Image/HandCursor.png); background-color: rgba(255, 255, 255, 0); background-image: url(./Image/Hash.png); -unity-background-scale-mode: scale-to-fit; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 3px; margin-right: 3px; margin-top: 0; margin-bottom: 0; " />
+				
+				<ui:Button enable-rich-text="false" tooltip="Collider" focusable="false" name="Collider" class="SmallButton" style="height: 18px; width: 18px; cursor: url(./Image/HandCursor.png); background-color: rgba(255, 255, 255, 0); background-image: url(./Image/Collider.png); -unity-background-scale-mode: scale-to-fit; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 3px; margin-right: 3px; margin-top: 0; margin-bottom: 0; " />
+				<ui:Button enable-rich-text="false" tooltip="Bounds" focusable="false" name="Bound" class="SmallButton" style="height: 18px; width: 18px; cursor: url(./Image/HandCursor.png); background-color: rgba(255, 255, 255, 0); background-image: url(./Image/Bound.png); -unity-background-scale-mode: scale-to-fit; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 3px; margin-right: 3px; margin-top: 0; margin-bottom: 0; " />
+				
+			</ui:VisualElement>
+
+		</ui:VisualElement>
+
+
+		<!-- Links -->
+
+        <ui:VisualElement name="Links" style="margin-top: 6px; flex-direction: row; height: 22px; padding-top: 3px; padding-bottom: 3px; align-items: center;">
+
+			<ui:Button text="Universe" tooltip="Universe Data Folder" focusable="false" enable-rich-text="false" name="Universe" class="Link" style="cursor: url(./Image/HandCursor.png); background-color: rgba(88, 88, 88, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0);  color: rgb(65, 155, 243); margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+            <ui:Label text="|" style="color: rgb(65, 155, 243); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-text-align: middle-left; margin-left: 3px; margin-right: 3px;" />
+			<ui:Button text="Persis" tooltip="Persistent Data Folder" focusable="false" enable-rich-text="false" name="Persis" class="Link" style="cursor: url(./Image/HandCursor.png); background-color: rgba(88, 88, 88, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0);  color: rgb(65, 155, 243); margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+            <ui:Label text="|" style="color: rgb(65, 155, 243); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-text-align: middle-left; margin-left: 3px; margin-right: 3px;" />
+            <ui:Button text="Project" tooltip="Project Folder" focusable="false" enable-rich-text="false" name="Project" class="Link" style="cursor: url(./Image/HandCursor.png); background-color: rgba(88, 88, 88, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0);  color: rgb(65, 155, 243); margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+       
+        </ui:VisualElement>
+
+
+		<!-- Sheet Thumbnail -->
+
+		<ui:Image 
+			name="SheetThumbnail" 
+			style="margin-top: 6px; flex-direction: row; width: 100%; height: 196; padding-top: 3px; padding-bottom: 3px;"
+		/>
+		<ui:Label 
+			text=""
+			name="SheetThumbnailLabel"
+			style="color: rgb(243,243,243); width: 100%; padding-left: 3; padding-right: 3; padding-top: 5; padding-bottom: 5; -unity-text-align: middle-center;" 
+		/>
+
+
+    </ui:ScrollView>
+
+</ui:UXML>

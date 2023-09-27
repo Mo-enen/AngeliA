@@ -1,0 +1,417 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+namespace AngeliaFramework {
+
+
+	public enum CharacterState {
+		GamePlay = 0,
+		Sleep,
+		PassOut,
+	}
+
+
+	[EntityAttribute.MapEditorGroup("Character")]
+	[EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
+	public abstract partial class Character : Rigidbody {
+
+
+
+
+		#region --- SUB ---
+
+
+		[System.AttributeUsage(System.AttributeTargets.Class)]
+		public class RenderWithSheetAttribute : System.Attribute { }
+
+
+		#endregion
+
+
+
+
+		#region --- VAR ---
+
+
+		// Const
+		public const int FULL_SLEEP_DURATION = 90;
+		private static readonly int[] BOUNCE_AMOUNTS = new int[] { 500, 200, 100, 50, 25, 50, 100, 200, 500, };
+		private static readonly int[] BOUNCE_AMOUNTS_BIG = new int[] { 0, -600, -900, -1200, -1400, -1200, -900, -600, 0, };
+
+		// Particle
+		public static int SleepParticleCode { get; set; } = 0;
+		public static int SleepDoneParticleCode { get; set; } = 0;
+		public static int FootstepParticleCode { get; set; } = 0;
+		public static int SlideParticleCode { get; set; } = 0;
+		public static int DashParticleCode { get; set; } = 0;
+		public static int PassOutParticleCode { get; set; } = 0;
+		public static int TeleportParticleCode { get; set; } = 0;
+
+		// Api
+		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
+		public bool IsPassOut => HealthPoint == 0;
+		public bool IsFullPassOut => HealthPoint == 0 && Game.GlobalFrame > PassOutFrame + 48;
+		public int SleepFrame { get; private set; } = 0;
+		public bool EnteringDoor => Game.GlobalFrame < EnterDoorEndFrame.Abs();
+		public bool RenderWithSheet { get; private set; } = false;
+		public int CurrentAnimationFrame { get; set; } = 0;
+		public int CurrentRenderingBounce { get; private set; } = 1000;
+		protected override bool PhysicsEnable => CharacterState != CharacterState.Sleep;
+		protected override int AirDragX => 0;
+		protected override int AirDragY => 0;
+		protected override int GravityRise => Gravity;
+		protected sealed override int CollisionMask => IsGrabFlipping ? 0 : Const.MASK_MAP;
+		protected sealed override int PhysicsLayer => Const.LAYER_CHARACTER;
+		protected override bool CarryOtherRigidbodyOnTop => false;
+		protected override bool AllowBeingCarryByOtherRigidbody => true;
+		protected virtual int Bouncy => 150;
+
+		// Data
+		private static readonly HashSet<int> RenderWithSheetPool = new();
+		private int PassOutFrame = int.MinValue;
+		private int LastRequireBounceFrame = int.MinValue;
+		private int EnterDoorEndFrame = 0;
+
+
+		#endregion
+
+
+
+
+		#region --- MSG ---
+
+
+		public override void OnActivated () {
+			base.OnActivated();
+			OnActivated_Pose();
+			OnActivated_Movement();
+			OnActivated_Health();
+			OnActivated_Attack();
+			OnActivated_Navigation();
+			CharacterState = CharacterState.GamePlay;
+			PassOutFrame = int.MinValue;
+			VelocityX = 0;
+			VelocityY = 0;
+		}
+
+
+		public override void FillPhysics () {
+			if (CharacterState == CharacterState.GamePlay) {
+				CellPhysics.FillEntity(PhysicsLayer, this, NavigationEnable);
+			}
+		}
+
+
+		public override void BeforePhysicsUpdate () {
+			base.BeforePhysicsUpdate();
+			PoseZOffset = 0;
+		}
+
+
+		public override void PhysicsUpdate () {
+
+			if (IsEmptyHealth) SetCharacterState(CharacterState.PassOut);
+
+			if (EnteringDoor) return;
+
+			// Behaviour
+			MovementState = CharacterMovementState.Idle;
+			switch (CharacterState) {
+				default:
+				case CharacterState.GamePlay:
+					if (TakingDamage) {
+						// Tacking Damage
+						VelocityX = VelocityX.MoveTowards(0, KnockbackDeceleration);
+					} else {
+						// General
+						PhysicsUpdate_Attack();
+						PhysicsUpdate_Movement_GamePlay();
+						// Stop when Attacking
+						if (StopMoveOnAttack && IsAttacking && IsGrounded) {
+							VelocityX = 0;
+						}
+					}
+					break;
+
+				case CharacterState.Sleep:
+					VelocityX = 0;
+					VelocityY = 0;
+					Width = Const.CEL;
+					Height = Const.CEL;
+					OffsetX = -Const.HALF;
+					OffsetY = 0;
+					if (!IsFullHealth && SleepFrame >= FULL_SLEEP_DURATION) SetHealth(MaxHP);
+					break;
+
+				case CharacterState.PassOut:
+					VelocityX = 0;
+					break;
+			}
+			PhysicsUpdate_Movement_After();
+			PhysicsUpdate_Navigation();
+			RenderUpdate_AnimationType();
+			base.PhysicsUpdate();
+		}
+
+
+		public override void FrameUpdate () {
+
+			// Render Character
+			bool blinking = IsInvincible && (Game.GlobalFrame - InvincibleEndFrame).UMod(8) < 4;
+			if (!blinking) {
+				CurrentRenderingBounce = GetCurrentRenderingBounce();
+				if (RenderWithSheet) {
+					RenderUpdate_Sheet();
+				} else {
+					RenderUpdate_Pose();
+				}
+				CurrentAnimationFrame = GrowAnimationFrame(CurrentAnimationFrame);
+			}
+
+			if (CharacterState == CharacterState.GamePlay) {
+				// Run Particle
+				if (
+					FootstepParticleCode != 0 &&
+					IsGrounded &&
+					LastStartRunFrame >= 0 &&
+					(Game.GlobalFrame - LastStartRunFrame) % 20 == 19 &&
+					Stage.TrySpawnEntity(FootstepParticleCode, X, Y, out var entity) &&
+					entity is Particle particle
+				) {
+					if (CellRenderer.TryGetSprite(GroundedID, out var sprite)) {
+						particle.Tint = sprite.SummaryTint;
+					} else {
+						particle.Tint = Const.WHITE;
+					}
+				}
+				// Slide Particle
+				if (SlideParticleCode != 0 && IsSliding && Game.GlobalFrame % 24 == 0) {
+					var rect = Rect;
+					Stage.SpawnEntity(
+						SlideParticleCode, FacingRight ? rect.xMax : rect.xMin, rect.yMin + rect.height * 3 / 4
+					);
+				}
+				// Dash Particle
+				if (DashParticleCode != 0 && IsDashing && Game.GlobalFrame % 8 == 0) {
+					if (
+						Stage.TrySpawnEntity(DashParticleCode, X, Y, out var dashEntity) &&
+						dashEntity is Particle dashParticle
+					) {
+						if (CellRenderer.TryGetSprite(GroundedID, out var sprite)) {
+							dashParticle.Tint = sprite.SummaryTint;
+						} else {
+							dashParticle.Tint = Const.WHITE;
+						}
+					}
+				}
+				// Charging Bounce
+				if (Game.GlobalFrame % 10 == 0 && IsChargingAttack) {
+					Bounce();
+				}
+
+			}
+
+			// Sleep
+			if (CharacterState == CharacterState.Sleep) {
+				// ZZZ Particle
+				if (SleepParticleCode != 0 && Game.GlobalFrame % 42 == 0) {
+					Stage.TrySpawnEntity(SleepParticleCode, X, Y + Height / 2, out _);
+				}
+				// Full Sleep Particle
+				if (SleepFrame == FULL_SLEEP_DURATION) {
+					var rect = Rect;
+					if (SleepDoneParticleCode != 0 && Stage.TrySpawnEntity(
+						SleepDoneParticleCode,
+						rect.x + rect.width / 2,
+						rect.y + rect.height / 2,
+						out var sleepParticle
+					)) {
+						sleepParticle.Width = Const.CEL * 2;
+						sleepParticle.Height = Const.CEL * 2;
+					}
+				}
+				// ++
+				SleepFrame++;
+			}
+
+			base.FrameUpdate();
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+		public bool IsAttackAllowedByMovement () =>
+			!IsRushing &&
+			(AttackInAir || (IsGrounded || InWater || InSand || IsClimbing)) &&
+			(AttackInWater || !InWater) &&
+			(AttackWhenMoving || IntendedX == 0) &&
+			(AttackWhenClimbing || !IsClimbing) &&
+			(AttackWhenFlying || !IsFlying) &&
+			(AttackWhenRolling || !IsRolling) &&
+			(AttackWhenSquatting || !IsSquatting) &&
+			(AttackWhenDashing || !IsDashing) &&
+			(AttackWhenSliding || !IsSliding) &&
+			(AttackWhenGrabbing || (!IsGrabbingTop && !IsGrabbingSide));
+
+
+		public virtual void SetCharacterState (CharacterState state) {
+
+
+			if (CharacterState == state) return;
+
+			PassOutFrame = int.MinValue;
+			CharacterState = state;
+			ResetNavigation();
+
+			switch (state) {
+
+				case CharacterState.GamePlay:
+					if (CharacterState == CharacterState.Sleep) {
+						Bounce();
+					}
+					VelocityX = 0;
+					VelocityY = 0;
+					break;
+
+				case CharacterState.Sleep:
+					SleepFrame = 0;
+					VelocityX = 0;
+					VelocityY = 0;
+					break;
+
+				case CharacterState.PassOut:
+					PassOutFrame = Game.GlobalFrame;
+					if (PassOutParticleCode != 0 && Stage.SpawnEntity(PassOutParticleCode, X, Y) is Particle particle) {
+						particle.UserData = this;
+					}
+					break;
+
+			}
+
+		}
+
+
+		public void EnterDoor (int duration, bool front) {
+			EnterDoorEndFrame = (Game.GlobalFrame + duration) * (front ? 1 : -1);
+			VelocityX = 0;
+			VelocityY = 0;
+		}
+
+
+		public void SetAsFullAsleep () {
+			if (CharacterState == CharacterState.Sleep) {
+				SleepFrame = FULL_SLEEP_DURATION;
+			}
+		}
+
+
+		// Bounce
+		public void Bounce () => LastRequireBounceFrame = Game.GlobalFrame;
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+		private int GrowAnimationFrame (int frame) {
+			switch (MovementState) {
+
+				case CharacterMovementState.Climb:
+					int climbVelocity = IntendedY != 0 ? IntendedY : IntendedX;
+					if (climbVelocity > 0) {
+						frame++;
+					} else if (climbVelocity < 0) {
+						frame--;
+					}
+					break;
+
+				case CharacterMovementState.GrabTop:
+					if (IntendedX > 0) {
+						frame++;
+					} else if (IntendedX < 0) {
+						frame--;
+					}
+					break;
+
+				case CharacterMovementState.GrabSide:
+					if (IntendedY > 0) {
+						frame++;
+					} else if (IntendedY < 0) {
+						frame--;
+					}
+					break;
+
+				case CharacterMovementState.GrabFlip:
+					frame += VelocityY > 0 ? 1 : -1;
+					break;
+
+				case CharacterMovementState.Run:
+				case CharacterMovementState.Walk:
+					frame += IntendedX > 0 == FacingRight ? 1 : -1;
+					break;
+
+				case CharacterMovementState.Rush:
+					if (VelocityX == 0 || VelocityX > 0 == FacingRight) {
+						frame++;
+					} else {
+						frame = 0;
+					}
+					break;
+
+				default:
+					frame++;
+					break;
+
+			}
+			return frame;
+		}
+
+
+		private int GetCurrentRenderingBounce () {
+			int frame = Game.GlobalFrame;
+			int bounce = 1000;
+			int duration = BOUNCE_AMOUNTS.Length;
+			bool reverse = false;
+			bool isPounding = MovementState == CharacterMovementState.Pound;
+			bool isSquatting = MovementState == CharacterMovementState.SquatIdle || MovementState == CharacterMovementState.SquatMove;
+			if (frame < LastRequireBounceFrame + duration) {
+				bounce = BOUNCE_AMOUNTS[frame - LastRequireBounceFrame];
+				if (!IsAttackCharged && IsChargingAttack) {
+					bounce += (1000 - bounce) / 2;
+				}
+			} else if (isPounding) {
+				bounce = 1500;
+			} else if (!isPounding && IsGrounded && frame.InRangeExclude(LastPoundingFrame, LastPoundingFrame + duration)) {
+				bounce = BOUNCE_AMOUNTS_BIG[frame - LastPoundingFrame];
+			} else if (isSquatting && frame.InRangeExclude(LastSquatFrame, LastSquatFrame + duration)) {
+				bounce = BOUNCE_AMOUNTS[frame - LastSquatFrame];
+			} else if (IsGrounded && frame.InRangeExclude(LastGroundFrame, LastGroundFrame + duration)) {
+				bounce = BOUNCE_AMOUNTS[frame - LastGroundFrame];
+			} else if (!isSquatting && frame.InRangeExclude(LastSquattingFrame, LastSquattingFrame + duration)) {
+				bounce = BOUNCE_AMOUNTS[frame - LastSquattingFrame];
+				reverse = true;
+			}
+			if (bounce != 1000) bounce = Util.RemapUnclamped(0, 1000, (1000 - Bouncy).Clamp(0, 999), 1000, bounce);
+			return reverse ? -bounce : bounce;
+		}
+
+
+		#endregion
+
+
+
+
+	}
+}

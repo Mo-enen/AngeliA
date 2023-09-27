@@ -1,0 +1,24 @@
+{
+    "name": "AngeliaFrameworkRuntime",
+    "rootNamespace": "AngeliaFramework",
+    "references": [
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [
+        "Android",
+        "Editor",
+        "iOS",
+        "WindowsStandalone32",
+        "WindowsStandalone64"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "MoonSharp.Interpreter.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

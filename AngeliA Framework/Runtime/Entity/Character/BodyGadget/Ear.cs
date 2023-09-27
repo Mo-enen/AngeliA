@@ -1,0 +1,189 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+using UnityEngine;
+
+
+namespace AngeliaFramework {
+	public abstract class AutoSpriteEar : Ear {
+
+		private int SpriteIdL { get; init; }
+		private int SpriteIdR { get; init; }
+		private int SpriteIdLBack { get; init; }
+		private int SpriteIdRBack { get; init; }
+		protected virtual int FacingLeftOffsetX => 0;
+		protected virtual int MotionAmount => 618;
+
+		public AutoSpriteEar () {
+			string name = (GetType().DeclaringType ?? GetType()).AngeName();
+			SpriteIdL = $"{name}.EarL".AngeHash();
+			SpriteIdR = $"{name}.EarR".AngeHash();
+			SpriteIdLBack = $"{name}.EarLB".AngeHash();
+			SpriteIdRBack = $"{name}.EarRB".AngeHash();
+			if (!CellRenderer.HasSprite(SpriteIdL)) SpriteIdL = 0;
+			if (!CellRenderer.HasSprite(SpriteIdR)) SpriteIdR = 0;
+			if (!CellRenderer.HasSprite(SpriteIdLBack)) SpriteIdLBack = SpriteIdL;
+			if (!CellRenderer.HasSprite(SpriteIdRBack)) SpriteIdRBack = SpriteIdR;
+		}
+		protected override void DrawEar (Character character) => DrawAnimalEar(
+			character,
+			character.Head.FrontSide ? SpriteIdL : SpriteIdLBack,
+			character.Head.FrontSide ? SpriteIdR : SpriteIdRBack,
+			FrontOfHeadL(character), FrontOfHeadR(character),
+			character.Head.FrontSide == character.FacingRight ? 0 : FacingLeftOffsetX,
+			MotionAmount
+		);
+		protected virtual bool FrontOfHeadL (Character character) => true;
+		protected virtual bool FrontOfHeadR (Character character) => true;
+
+	}
+
+
+	public abstract class Ear {
+
+
+		// VAR
+		private const int A2G = Const.CEL / Const.ART_CEL;
+		private static readonly Dictionary<int, Ear> Pool = new();
+		private static readonly Dictionary<int, int> DefaultPool = new();
+
+
+		// MSG
+		[OnGameInitialize(-128)]
+		public static void BeforeGameInitialize () {
+			Pool.Clear();
+			var charType = typeof(Character);
+			foreach (var type in typeof(Ear).AllChildClass()) {
+				if (System.Activator.CreateInstance(type) is not Ear ear) continue;
+				int id = type.AngeHash();
+				Pool.TryAdd(id, ear);
+				// Default
+				var dType = type.DeclaringType;
+				if (dType != null && dType.IsSubclassOf(charType)) {
+					DefaultPool.TryAdd(dType.AngeHash(), id);
+				}
+			}
+		}
+
+
+		// API
+		public static void Draw (Character character) => Draw(character, out _);
+		public static void Draw (Character character, out Ear ear) {
+			ear = null;
+			if (
+				character.EarID != 0 &&
+				Pool.TryGetValue(character.EarID, out ear)
+			) {
+				ear.DrawEar(character);
+			}
+		}
+
+
+		public static bool TryGetDefaultEarID (int characterID, out int earID) => DefaultPool.TryGetValue(characterID, out earID);
+
+
+		protected abstract void DrawEar (Character character);
+
+
+		// UTL
+		protected static void DrawAnimalEar (
+			Character character, int spriteIdLeft, int spriteIdRight,
+			bool frontOfHeadL = true, bool frontOfHeadR = true, int offsetX = 0, int motionAmount = 1000
+		) {
+
+			if (spriteIdLeft == 0 && spriteIdRight == 0) return;
+
+			int leftEarID = spriteIdLeft;
+			int rightEarID = spriteIdRight;
+			if (leftEarID == 0 && rightEarID == 0) return;
+
+			var head = character.Head;
+			if (head.Tint.a == 0) return;
+
+			bool facingRight = character.FacingRight;
+			var headRect = head.GetGlobalRect();
+			bool flipY = head.Height < 0;
+			Vector2Int shiftL = default;
+			Vector2Int shiftR = default;
+			Vector2Int expandSizeL = default;
+			Vector2Int expandSizeR = default;
+			int z = head.FrontSide ? 33 : -33;
+
+			if (character.IsPassOut) headRect.y -= A2G;
+			int basicRootY = character.BasicRootY;
+
+			// Motion X
+			const int MAX_SHIFT = A2G * 2;
+			int motionAmountL = facingRight ? 2 * motionAmount / 1000 : motionAmount / 1000;
+			int motionAmountR = facingRight ? motionAmount / 1000 : 2 * motionAmount / 1000;
+			shiftL.x = (-character.DeltaPositionX * motionAmountL * A2G / 55).Clamp(-MAX_SHIFT, MAX_SHIFT);
+			shiftR.x = (-character.DeltaPositionX * motionAmountR * A2G / 55).Clamp(-MAX_SHIFT, MAX_SHIFT);
+			expandSizeL.x = (character.DeltaPositionX.Abs() * motionAmountL * A2G / 50).Clamp(-MAX_SHIFT, MAX_SHIFT);
+			expandSizeR.x = (character.DeltaPositionX.Abs() * motionAmountR * A2G / 50).Clamp(-MAX_SHIFT, MAX_SHIFT);
+
+			// Animation
+			switch (character.AnimatedPoseType) {
+
+				case CharacterPoseAnimationType.Pound:
+				case CharacterPoseAnimationType.JumpDown:
+				case CharacterPoseAnimationType.Spin:
+					expandSizeL.y += A2G;
+					expandSizeR.y += A2G;
+
+					break;
+				case CharacterPoseAnimationType.JumpUp:
+				case CharacterPoseAnimationType.Sleep:
+				case CharacterPoseAnimationType.PassOut:
+					expandSizeL.y -= A2G;
+					expandSizeR.y -= A2G;
+					break;
+
+				case CharacterPoseAnimationType.Run:
+					if (character.PoseRootY < basicRootY + A2G / 2) {
+						expandSizeL.y -= A2G / 4;
+						expandSizeR.y -= A2G / 4;
+					} else if (character.PoseRootY < basicRootY + A2G) {
+						expandSizeL.y -= A2G / 2;
+						expandSizeR.y -= A2G / 2;
+					} else {
+						expandSizeL.y -= A2G;
+						expandSizeR.y -= A2G;
+					}
+					break;
+			}
+
+			// Rot
+			int rot = 0;
+			if (motionAmount != 0) {
+				rot = ((character.DeltaPositionY * motionAmount) / 2000).Clamp(-20, 20);
+			}
+
+			// Draw
+			if (CellRenderer.TryGetSprite(leftEarID, out var earSpriteL)) {
+				CellRenderer.Draw(
+					earSpriteL.GlobalID,
+					headRect.x + shiftL.x + offsetX,
+					(flipY ? headRect.y : headRect.yMax) + shiftL.y,
+					earSpriteL.PivotX, earSpriteL.PivotY, -rot,
+					earSpriteL.GlobalWidth + expandSizeL.x,
+					(earSpriteL.GlobalHeight + expandSizeL.y) * (flipY ? -1 : 1),
+					frontOfHeadL ? z : -z
+				);
+			}
+			if (CellRenderer.TryGetSprite(rightEarID, out var earSpriteR)) {
+				CellRenderer.Draw(
+					earSpriteR.GlobalID,
+					headRect.xMax + shiftR.x + offsetX,
+					(flipY ? headRect.y : headRect.yMax) + shiftR.y,
+					earSpriteR.PivotX, earSpriteR.PivotY, rot,
+					earSpriteR.GlobalWidth + expandSizeR.x,
+					(earSpriteR.GlobalHeight + expandSizeR.y) * (flipY ? -1 : 1),
+					frontOfHeadR ? z : -z
+				);
+			}
+
+		}
+
+
+	}
+}

@@ -1,0 +1,181 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+namespace AngeliaFramework {
+	[EntityAttribute.MapEditorGroup("Furniture")]
+	[EntityAttribute.Capacity(32)]
+	public abstract class Furniture : Entity, IActionTarget {
+
+
+
+
+		#region --- VAR ---
+
+
+		// Api
+		protected virtual Direction3 ModuleType => Direction3.None;
+		protected virtual RectInt RenderingRect => Rect.Expand(ColliderBorder);
+		public Furniture FurnitureLeftOrDown { get; private set; } = null;
+		public Furniture FurnitureRightOrUp { get; private set; } = null;
+		protected RectOffset ColliderBorder { get; } = new();
+		protected FittingPose Pose { get; private set; } = FittingPose.Unknown;
+		bool IActionTarget.IsHighlighted => GetIsHighlighted();
+
+
+		#endregion
+
+
+
+
+		#region --- MSG ---
+
+
+		public override void OnActivated () {
+			base.OnActivated();
+			Pose = FittingPose.Unknown;
+			FurnitureLeftOrDown = null;
+			FurnitureRightOrUp = null;
+		}
+
+
+		public override void FillPhysics () {
+			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
+		}
+
+
+		public override void BeforePhysicsUpdate () {
+			base.BeforePhysicsUpdate();
+			// Update Pose
+			if (Pose == FittingPose.Unknown) {
+				Pose = FittingPose.Single;
+
+				if (ModuleType != Direction3.None) {
+					Pose = WorldSquad.Front.GetEntityPose(
+						this, ModuleType == Direction3.Horizontal, Const.MASK_ENVIRONMENT,
+						out var ld, out var ru, OperationMode.ColliderAndTrigger
+					);
+					FurnitureLeftOrDown = ld as Furniture;
+					FurnitureRightOrUp = ru as Furniture;
+				}
+
+				// Shrink Rect
+				var sp = GetSpriteFromPose();
+				if (sp != null) {
+					ColliderBorder.left = sp.GlobalBorder.Left;
+					ColliderBorder.right = sp.GlobalBorder.Right;
+					ColliderBorder.bottom = sp.GlobalBorder.Down;
+					ColliderBorder.top = sp.GlobalBorder.Up;
+					X += ColliderBorder.left;
+					Y += ColliderBorder.bottom;
+					Width -= ColliderBorder.horizontal;
+					Height -= ColliderBorder.vertical;
+				}
+			}
+		}
+
+
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+			if (Pose == FittingPose.Unknown) return;
+			var sprite = GetSpriteFromPose();
+			if (sprite != null) {
+				// Artwork
+				var cell = CellRenderer.Draw(sprite.GlobalID, RenderingRect);
+				if ((this as IActionTarget).IsHighlighted) {
+					IActionTarget.HighlightBlink(cell, ModuleType, Pose);
+				}
+				// Shadow
+				AngeUtil.DrawShadow(sprite.GlobalID, RenderingRect);
+			}
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+		void IActionTarget.Invoke () { }
+
+
+		bool IActionTarget.AllowInvoke () => false;
+
+
+		protected void DrawClockHands (RectInt rect, int handCode, int thickness, int thicknessSecond) {
+			var now = System.DateTime.Now;
+			// Sec
+			CellRenderer.Draw(
+				handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
+				500, 0, now.Second * 360 / 60,
+				thicknessSecond, rect.height * 900 / 2000
+			);
+			// Min
+			CellRenderer.Draw(
+				handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
+				500, 0, now.Minute * 360 / 60,
+				thickness, rect.height * 800 / 2000
+			);
+			// Hour
+			CellRenderer.Draw(
+				handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
+				500, 0, (now.Hour * 360 / 12) + (now.Minute * 360 / 12 / 60),
+				thickness, rect.height * 400 / 2000
+			);
+		}
+
+
+		protected void DrawClockPendulum (int artCodeLeg, int artCodeHead, int x, int y, int length, int thickness, int headSize, int maxRot, int deltaX = 0) {
+			float t11 = Mathf.Sin(Game.GlobalFrame * 6 * Mathf.Deg2Rad);
+			int rot = (t11 * maxRot).RoundToInt();
+			int dX = -(t11 * deltaX).RoundToInt();
+			// Leg
+			CellRenderer.Draw(artCodeLeg, x + dX, y, 500, 1000, rot, thickness, length);
+			// Head
+			CellRenderer.Draw(
+				artCodeHead, x + dX, y, 500,
+				500 * (headSize / 2 + length) / (headSize / 2),
+				rot, headSize, headSize
+			);
+		}
+
+
+		protected AngeSprite GetSpriteFromPose () {
+			if (CellRenderer.TryGetSpriteFromGroup(TypeID, Pose switch {
+				FittingPose.Left => 1,
+				FittingPose.Mid => 2,
+				FittingPose.Right => 3,
+				FittingPose.Single => 0,
+				_ => 0,
+			}, out var sprite, false, true) ||
+				CellRenderer.TryGetSprite(TypeID, out sprite)
+			) return sprite;
+			return null;
+		}
+
+
+		protected bool GetIsHighlighted () {
+			if (Player.Selecting == null || Player.Selecting.TargetActionEntity == null) return false;
+			var target = Player.Selecting.TargetActionEntity;
+			if (target == this) return true;
+			for (var f = FurnitureLeftOrDown; f != null; f = f.FurnitureLeftOrDown) {
+				if (f == target) return true;
+			}
+			for (var f = FurnitureRightOrUp; f != null; f = f.FurnitureRightOrUp) {
+				if (f == target) return true;
+			}
+			return false;
+		}
+
+
+		#endregion
+
+
+
+
+	}
+}

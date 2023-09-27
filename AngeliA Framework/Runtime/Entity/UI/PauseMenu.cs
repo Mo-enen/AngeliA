@@ -1,0 +1,577 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
+
+
+namespace AngeliaFramework {
+	[EntityAttribute.DontDestroyOutOfRange]
+	[EntityAttribute.DontDestroyOnSquadTransition]
+	[EntityAttribute.Capacity(1, 1)]
+	public class PauseMenu : MenuUI {
+
+
+
+
+		#region --- SUB ---
+
+
+		private enum MenuMode { Pause, Setting, EditorSetting, KeySetter, Quit, Setter_Keyboard, Setter_Gamepad }
+
+
+		#endregion
+
+
+
+
+		#region --- VAR ---
+
+
+		// Const
+		private static readonly int MENU_QUIT_MESSAGE = "Menu.Pause.QuitMessage".AngeHash();
+		private static readonly int MENU_QUIT_EDIT_MESSAGE = "Menu.Pause.QuitEditMessage".AngeHash();
+		private static readonly int MENU_KEYSETTER_GAMEPAD_MESSAGE = "Menu.KeySetter.GamepadMessage".AngeHash();
+		private static readonly int MENU_KEYSETTER_KEYBOARD_MESSAGE = "Menu.KeySetter.KeyboardMessage".AngeHash();
+		private static readonly int MENU_KEY_SETTER = "Menu.Pause.KeySetter".AngeHash();
+		private static readonly int MENU_SETTER_KEYBOARD = "Menu.KeySetter.Keyboard".AngeHash();
+		private static readonly int MENU_SETTER_GAMEPAD = "Menu.KeySetter.Gamepad".AngeHash();
+		private static readonly int MENU_SETTER_RECORD = "Menu.KeySetter.Record".AngeHash();
+		private static readonly int MENU_MUSIC_VOLUME = "Menu.Setting.MusicVolume".AngeHash();
+		private static readonly int MENU_SOUND_VOLUME = "Menu.Setting.SoundVolume".AngeHash();
+		private static readonly int MENU_FRAMERATE = "Menu.Setting.Framerate".AngeHash();
+		private static readonly int MENU_LANGUAGE = "Menu.Setting.Language".AngeHash();
+		private static readonly int MENU_KEYSETTER_SAVE_BACK = "Menu.KeySetter.SaveAndBack".AngeHash();
+		private static readonly int MENU_FULLSCREEN_0 = "Menu.Setting.Fullscreen.0".AngeHash();
+		private static readonly int MENU_FULLSCREEN_1 = "Menu.Setting.Fullscreen.1".AngeHash();
+		private static readonly int MENU_FULLSCREEN_2 = "Menu.Setting.Fullscreen.2".AngeHash();
+		private static readonly int MENU_FULLSCREEN_LABEL = "Menu.Setting.Fullscreen.Label".AngeHash();
+		private static readonly int MENU_VSYNC = "Menu.Setting.VSync".AngeHash();
+		private static readonly int MENU_CONTROL_HINT = "Menu.Setting.UseControlHint".AngeHash();
+		private static readonly int MENU_GAMEPAD_HINT = "Menu.Setting.UseGamepadHint".AngeHash();
+		private static readonly int MENU_ALLOW_GAMEPAD = "Menu.Setting.AllowGamepad".AngeHash();
+		private static readonly int MENU_MEDT_SETTING = "Menu.Pause.MEDTSetting".AngeHash();
+		private static readonly int MENU_MEDT_AUTO_ZOOM = "Menu.MEDTSetting.AutoZoom".AngeHash();
+		private static readonly int MENU_MEDT_PLAYER_DROP = "Menu.MEDTSetting.PlayerDrop".AngeHash();
+		private static readonly int MENU_MEDT_STATE = "Menu.MEDTSetting.ShowState".AngeHash();
+		private static readonly int MENU_BACK_TO_EDIT = "Menu.BackToEdit".AngeHash();
+		private static readonly int UI_CONTINUE = "UI.Continue".AngeHash();
+		private static readonly int UI_SETTING = "UI.Setting".AngeHash();
+		private static readonly int UI_QUIT = "UI.Quit".AngeHash();
+		private static readonly int UI_BACK = "UI.Back".AngeHash();
+		private static readonly int UI_ON = "UI.ON".AngeHash();
+		private static readonly int UI_OFF = "UI.OFF".AngeHash();
+		private static readonly int UI_YES = "UI.Yes".AngeHash();
+		private static readonly int UI_NO = "UI.No".AngeHash();
+		private static readonly int[] GAMEKEY_UI_CODES = new int[] {
+			$"UI.GameKey.{Gamekey.Left}".AngeHash(),
+			$"UI.GameKey.{Gamekey.Right}".AngeHash(),
+			$"UI.GameKey.{Gamekey.Down}".AngeHash(),
+			$"UI.GameKey.{Gamekey.Up}".AngeHash(),
+			$"UI.GameKey.{Gamekey.Action}".AngeHash(),
+			$"UI.GameKey.{Gamekey.Jump}".AngeHash(),
+			$"UI.GameKey.{Gamekey.Start}".AngeHash(),
+			$"UI.GameKey.{Gamekey.Select}".AngeHash(),
+		};
+
+		// Api
+		public static PauseMenu Instance { get; private set; } = null;
+		public bool QuitMode => Mode == MenuMode.Quit;
+
+		// Data
+		private readonly Key[] KeyboardKeys = new Key[8];
+		private readonly GamepadButton[] GamepadKeys = new GamepadButton[8];
+		private MenuMode Mode = MenuMode.Pause;
+		private MenuMode RequireMode = MenuMode.Pause;
+		private int RecordingKey = -1;
+		private int PauselessFrame = 0;
+		private bool RecordLock = true;
+		private readonly IntToString MusicVolumeCache = new();
+		private readonly IntToString SoundVolumeCache = new();
+		private readonly IntToString FramerateCache = new();
+		private readonly CellContent KeySetterLabel = new();
+
+
+		#endregion
+
+
+
+
+		#region --- MSG ---
+
+
+		public PauseMenu () => Instance = this;
+
+
+		[OnGameTryingToQuit]
+		public static void OnGameTryingToQuit () {
+			Stage.TrySpawnEntity(Instance.TypeID, 0, 0, out _);
+			Instance.SetAsQuitMode();
+		}
+
+
+		[OnGameUpdatePauseless]
+		public static void OnGameUpdatePauseless () {
+			if (Instance == null) return;
+			if (Game.IsPausing) {
+				if (!Instance.Active) {
+					Stage.TrySpawnEntity(Instance.TypeID, 0, 0, out _);
+					Instance.SetAsPauseMode();
+				}
+			} else {
+				if (Instance.Active) Instance.Active = false;
+			}
+		}
+
+
+		public override void OnActivated () {
+			base.OnActivated();
+			ScreenTint = new(0, 0, 0, 128);
+			BackgroundTint = new(0, 0, 0, 255);
+		}
+
+
+		public override void FrameUpdate () {
+
+			if (Mode != RequireMode) {
+				Mode = RequireMode;
+				RefreshAnimation();
+			}
+			Interactable = (Mode != MenuMode.Setter_Gamepad && Mode != MenuMode.Setter_Keyboard) || RecordingKey < 0;
+			ContentPadding = new(32, 32, 46, string.IsNullOrEmpty(Message) ? 46 : 23);
+
+			base.FrameUpdate();
+
+			PauselessFrame++;
+		}
+
+
+		public override void OnInactivated () {
+			base.OnInactivated();
+			if (Game.IsPausing) {
+				Game.IsPlaying = true;
+			}
+		}
+
+
+		protected override void DrawMenu () {
+			Message = string.Empty;
+			switch (Mode) {
+				case MenuMode.Pause:
+					MenuPause();
+					break;
+				case MenuMode.KeySetter:
+					MenuKeySetterHub();
+					break;
+				case MenuMode.Setting:
+					MenuSetting();
+					break;
+				case MenuMode.EditorSetting:
+					MenuMapEditorSetting();
+					break;
+				case MenuMode.Quit:
+					MenuQuit();
+					break;
+
+				case MenuMode.Setter_Keyboard:
+					MenuKeySetter(false);
+					break;
+				case MenuMode.Setter_Gamepad:
+					MenuKeySetter(true);
+					break;
+			}
+		}
+
+
+		// Menus
+		private void MenuPause () {
+
+			// 0-Continue
+			if (DrawItem(Language.Get(UI_CONTINUE, "Continue")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+				Game.IsPlaying = true;
+				Active = false;
+				FrameInput.UseAllHoldingKeys();
+			}
+
+			// 1-Key Setter
+			if (DrawItem(Language.Get(MENU_KEY_SETTER, "Key Assignment"))) {
+				RequireMode = MenuMode.KeySetter;
+				SetSelection(0);
+			}
+
+			// 2-Setting
+			if (DrawItem(Language.Get(UI_SETTING, "Setting"))) {
+				RequireMode = MenuMode.Setting;
+				SetSelection(0);
+			}
+
+			// 3-Map Editor Setting
+			var mapEditor = MapEditor.Instance;
+			if (mapEditor != null && mapEditor.Active) {
+				if (DrawItem(Language.Get(MENU_MEDT_SETTING, "Editor Setting"))) {
+					RequireMode = MenuMode.EditorSetting;
+					SetSelection(0);
+				}
+			}
+
+			// 4-Quit
+			if (mapEditor != null && mapEditor.Active && mapEditor.IsPlaying) {
+				if (DrawItem(Language.Get(MENU_BACK_TO_EDIT, "Back to Editor"))) {
+					mapEditor.SetEditingMode(false);
+					Game.IsPlaying = true;
+					Active = false;
+					FrameInput.UseAllHoldingKeys();
+				}
+			} else {
+				if (DrawItem(Language.Get(UI_QUIT, "Quit"), Const.RED_BETTER)) {
+					RequireMode = MenuMode.Quit;
+					SetSelection(0);
+				}
+			}
+
+		}
+
+
+		private void MenuKeySetterHub () {
+
+			if (DrawItem(Language.Get(MENU_SETTER_KEYBOARD, "Keyboard"))) {
+				RequireMode = MenuMode.Setter_Keyboard;
+				SetSelection(0);
+				RecordingKey = -1;
+				RecordLock = true;
+				for (int i = 0; i < KeyboardKeys.Length; i++) {
+					KeyboardKeys[i] = FrameInput.GetKeyboardMap((Gamekey)i);
+				}
+			}
+
+			if (DrawItem(Language.Get(MENU_SETTER_GAMEPAD, "Gamepad"))) {
+				RequireMode = MenuMode.Setter_Gamepad;
+				SetSelection(0);
+				RecordingKey = -1;
+				RecordLock = true;
+				for (int i = 0; i < GamepadKeys.Length; i++) {
+					GamepadKeys[i] = FrameInput.GetGamepadMap((Gamekey)i);
+				}
+			}
+
+			if (DrawItem(Language.Get(UI_BACK, "Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+				RequireMode = MenuMode.Pause;
+				SetSelection(1);
+			}
+		}
+
+
+		private void MenuSetting () {
+
+			// Music Volume
+			if (DrawArrowItem(
+				Language.Get(MENU_MUSIC_VOLUME, "Music Volume"),
+				CellContent.Get(MusicVolumeCache.GetString(AudioPlayer.MusicVolume / 100)),
+				AudioPlayer.MusicVolume > 0, AudioPlayer.MusicVolume < 1000, out int delta
+			)) {
+				AudioPlayer.SetMusicVolume(AudioPlayer.MusicVolume + delta * 100);
+			}
+
+			// Sound Volume
+			if (DrawArrowItem(
+				Language.Get(MENU_SOUND_VOLUME, "Sound Volume"),
+				CellContent.Get(SoundVolumeCache.GetString(AudioPlayer.SoundVolume / 100)),
+				AudioPlayer.SoundVolume > 0, AudioPlayer.SoundVolume < 1000, out delta
+			)) {
+				AudioPlayer.SetSoundVolume(AudioPlayer.SoundVolume + delta * 100);
+			}
+
+			// Framerate
+			int currentFramerate = Game.Current.GraphicFramerate;
+			if (DrawArrowItem(
+				Language.Get(MENU_FRAMERATE, "Framerate"),
+				CellContent.Get(FramerateCache.GetString(currentFramerate)),
+				currentFramerate > 30, currentFramerate < 120, out delta
+			)) {
+				Game.Current.GraphicFramerate += delta * 30;
+			}
+
+			// VSync
+			if (DrawItem(
+				Language.Get(MENU_VSYNC),
+				CellContent.Get(Game.Current.VSync ? Language.Get(UI_ON, "ON") : Language.Get(UI_OFF, "OFF"))
+			)) {
+				Game.Current.VSync = !Game.Current.VSync;
+			}
+
+			// Fullscreen
+			if (DrawArrowItem(
+				Language.Get(MENU_FULLSCREEN_LABEL, "Fullscreen"),
+				CellContent.Get(
+					Game.Current.FullscreenMode switch {
+						FullscreenMode.Window => Language.Get(MENU_FULLSCREEN_0, "Windowed"),
+						FullscreenMode.Fullscreen => Language.Get(MENU_FULLSCREEN_1, "Fullscreen"),
+						FullscreenMode.FullscreenLow => Language.Get(MENU_FULLSCREEN_2, "Fullscreen (Low)"),
+						_ => Language.Get(MENU_FULLSCREEN_0, "Windowed"),
+					}
+				),
+				Game.Current.FullscreenMode != FullscreenMode.Window,
+				Game.Current.FullscreenMode != FullscreenMode.FullscreenLow,
+				out delta
+			)) {
+				Game.Current.FullscreenMode = (FullscreenMode)((int)Game.Current.FullscreenMode + delta).Clamp(0, 2);
+			}
+
+			// Language
+			int currentLanguageIndex = 0;
+			for (int i = 0; i < Language.LanguageCount; i++) {
+				var lan = Language.GetLanguageAt(i);
+				if (lan == Language.CurrentLanguage) {
+					currentLanguageIndex = i;
+					break;
+				}
+			}
+			if (DrawArrowItem(
+				Language.Get(MENU_LANGUAGE, "Language"),
+				CellContent.Get(Util.GetLanguageDisplayName(Language.CurrentLanguage)),
+				currentLanguageIndex > 0, currentLanguageIndex < Language.LanguageCount - 1, out delta)
+			) {
+				int newIndex = currentLanguageIndex + delta;
+				newIndex = newIndex.Clamp(0, Language.LanguageCount - 1);
+				if (newIndex != currentLanguageIndex) {
+					Language.SetLanguage(Language.GetLanguageAt(newIndex));
+				}
+			}
+
+			// Allow Gamepad
+			if (DrawItem(
+				Language.Get(MENU_ALLOW_GAMEPAD, "Allow Gamepad"),
+				CellContent.Get(FrameInput.AllowGamepad ? Language.Get(UI_YES, "YES") : Language.Get(UI_NO, "NO"))
+			)) {
+				FrameInput.AllowGamepad = !FrameInput.AllowGamepad;
+			}
+
+			// Control Hint
+			if (DrawItem(
+				Language.Get(MENU_CONTROL_HINT, "Show Control Hint"),
+				CellContent.Get(ControlHintUI.UseControlHint ? Language.Get(UI_ON, "ON") : Language.Get(UI_OFF, "OFF"))
+			)) {
+				ControlHintUI.UseControlHint = !ControlHintUI.UseControlHint;
+			}
+
+			// Gamepad Hint
+			if (DrawItem(
+				Language.Get(MENU_GAMEPAD_HINT, "Show Gamepad Hint"),
+				CellContent.Get(ControlHintUI.UseGamePadHint ? Language.Get(UI_ON, "ON") : Language.Get(UI_OFF, "OFF"))
+			)) {
+				ControlHintUI.UseGamePadHint = !ControlHintUI.UseGamePadHint;
+			}
+
+			// Back
+			if (DrawItem(Language.Get(UI_BACK, "Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+				RequireMode = MenuMode.Pause;
+				SetSelection(2);
+			}
+		}
+
+
+		private void MenuMapEditorSetting () {
+
+			var mapEditor = MapEditor.Instance;
+			if (mapEditor != null) {
+
+				// Auto Zoom
+				if (DrawItem(
+					Language.Get(MENU_MEDT_AUTO_ZOOM, "Auto Zoom"),
+					CellContent.Get(mapEditor.AutoZoom ? Language.Get(UI_ON, "ON") : Language.Get(UI_OFF, "OFF"))
+				)) {
+					mapEditor.AutoZoom = !mapEditor.AutoZoom;
+				}
+
+				// Drop Player
+				if (DrawItem(
+					Language.Get(MENU_MEDT_PLAYER_DROP, "Quick Player Drop"),
+					CellContent.Get(mapEditor.QuickPlayerDrop ? Language.Get(UI_ON, "ON") : Language.Get(UI_OFF, "OFF"))
+				)) {
+					mapEditor.QuickPlayerDrop = !mapEditor.QuickPlayerDrop;
+				}
+
+				// Show State
+				if (DrawItem(
+					Language.Get(MENU_MEDT_STATE, "Show State Info"),
+					CellContent.Get(mapEditor.ShowState ? Language.Get(UI_ON, "ON") : Language.Get(UI_OFF, "OFF"))
+				)) {
+					mapEditor.ShowState = !mapEditor.ShowState;
+				}
+			}
+
+			// Back
+			if (DrawItem(Language.Get(UI_BACK, "Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+				RequireMode = MenuMode.Pause;
+				SetSelection(3);
+			}
+		}
+
+
+		private void MenuQuit () {
+
+			bool editingMap = MapEditor.Instance != null && MapEditor.Instance.Active;
+
+			Message = editingMap ?
+				Language.Get(MENU_QUIT_EDIT_MESSAGE, "Stop Editing Map?") :
+				Language.Get(MENU_QUIT_MESSAGE, "Quit Game Now?");
+
+			if (DrawItem(Language.Get(UI_BACK, "Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+				RequireMode = MenuMode.Pause;
+				var mapEditor = MapEditor.Instance;
+				SetSelection(mapEditor != null && mapEditor.Active ? 4 : 3);
+			}
+
+			if (DrawItem(Language.Get(UI_QUIT, "Quit"), Const.RED_BETTER)) {
+				if (editingMap) {
+					Game.IsPlaying = true;
+					Active = false;
+					FrameInput.UseAllHoldingKeys();
+					MapEditor.CloseMapEditorSmoothly();
+				} else {
+					Application.Quit();
+#if UNITY_EDITOR
+					UnityEditor.EditorApplication.isPlaying = false;
+#endif
+				}
+			}
+
+		}
+
+
+		private void MenuKeySetter (bool forGamepad) {
+
+			Message = forGamepad ?
+				Language.Get(MENU_KEYSETTER_GAMEPAD_MESSAGE, "Press F1 key to reset") :
+				Language.Get(MENU_KEYSETTER_KEYBOARD_MESSAGE, "Press F1 key to reset");
+
+			// All Game Keys
+			for (int i = 0; i < GAMEKEY_UI_CODES.Length; i++) {
+				int code = GAMEKEY_UI_CODES[i];
+				CellContent valueLabel;
+				int iconID = 0;
+				if (RecordingKey != i) {
+					// Normal
+					KeySetterLabel.Tint = Const.WHITE;
+					KeySetterLabel.BackgroundTint = Const.CLEAR;
+					KeySetterLabel.Text = forGamepad ? string.Empty : Util.GetKeyDisplayName(KeyboardKeys[i]);
+					valueLabel = KeySetterLabel;
+					iconID = forGamepad && Const.GAMEPAD_CODE.TryGetValue(GamepadKeys[i], out var _value0) ? _value0 : 0;
+				} else {
+					// Recording
+					KeySetterLabel.Tint = PauselessFrame % 30 > 15 ? Const.BLACK : Const.WHITE;
+					KeySetterLabel.Text = Language.Get(MENU_SETTER_RECORD, "Press key u want");
+					KeySetterLabel.BackgroundTint = PauselessFrame % 30 > 15 ? Const.GREEN : Const.CLEAR;
+					valueLabel = KeySetterLabel;
+				}
+				if (DrawItem(Language.Get(code), valueLabel, iconID)) {
+					RecordLock = true;
+					RecordingKey = i;
+				}
+			}
+
+			// Save Back
+			if (DrawItem(Language.Get(MENU_KEYSETTER_SAVE_BACK, "Save and Back"))) {
+				RequireMode = MenuMode.KeySetter;
+				SetSelection(forGamepad ? 1 : 0);
+				if (forGamepad) {
+					for (int i = 0; i < GamepadKeys.Length; i++) {
+						FrameInput.SetGamepadMap((Gamekey)i, GamepadKeys[i]);
+					}
+				} else {
+					for (int i = 0; i < KeyboardKeys.Length; i++) {
+						FrameInput.SetKeyboardMap((Gamekey)i, KeyboardKeys[i]);
+					}
+				}
+			}
+
+			// Back
+			if (DrawItem(Language.Get(UI_BACK, "Back")) || (RecordingKey < 0 && FrameInput.GameKeyDown(Gamekey.Jump))) {
+				RequireMode = MenuMode.KeySetter;
+				SetSelection(forGamepad ? 1 : 0);
+			}
+
+			// Record
+			if (RecordingKey >= 0 && !RecordLock) {
+				if (forGamepad) {
+					// Gamepad
+					if (FrameInput.TryGetHoldingGamepadButton(out var button)) {
+						if (GamepadKeys[RecordingKey] != button) {
+							for (int i = 0; i < GamepadKeys.Length; i++) {
+								if (GamepadKeys[i] == button && GamepadKeys[RecordingKey] != button) {
+									GamepadKeys[i] = GamepadKeys[RecordingKey];
+								}
+							}
+							GamepadKeys[RecordingKey] = button;
+						}
+						RecordingKey = -1;
+						FrameInput.UseAllHoldingKeys();
+					} else if (FrameInput.AnyKeyboardKeyHolding || FrameInput.MouseLeftButtonDown) {
+						RecordingKey = -1;
+						FrameInput.UseAllHoldingKeys();
+					}
+				} else {
+					// Keyboard
+					if (FrameInput.TryGetHoldingKeyboardKey(out var button)) {
+						if (KeyboardKeys[RecordingKey] != button) {
+							for (int i = 0; i < KeyboardKeys.Length; i++) {
+								if (KeyboardKeys[i] == button && KeyboardKeys[RecordingKey] != button) {
+									KeyboardKeys[i] = KeyboardKeys[RecordingKey];
+								}
+							}
+							KeyboardKeys[RecordingKey] = button;
+						}
+						RecordingKey = -1;
+						FrameInput.UseAllHoldingKeys();
+					} else if (FrameInput.AnyGamepadButtonHolding || FrameInput.MouseLeftButtonDown) {
+						RecordingKey = -1;
+						FrameInput.UseAllHoldingKeys();
+					}
+				}
+			}
+
+			// Unlock Record
+			if (
+				RecordLock &&
+				!FrameInput.AnyGamepadButtonHolding &&
+				!FrameInput.AnyKeyboardKeyHolding &&
+				!FrameInput.MouseLeftButton
+			) {
+				RecordLock = false;
+			}
+
+			// Reset
+			if (FrameInput.KeyboardDown(Key.F1)) {
+				if (forGamepad) {
+					for (int i = 0; i < GamepadKeys.Length; i++) {
+						GamepadKeys[i] = FrameInput.GetDefaultGamepadMap((Gamekey)i);
+					}
+				} else {
+					for (int i = 0; i < KeyboardKeys.Length; i++) {
+						KeyboardKeys[i] = FrameInput.GetDefaultKeyboardMap((Gamekey)i);
+					}
+				}
+			}
+
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+		public void SetAsPauseMode () => Mode = RequireMode = MenuMode.Pause;
+		public void SetAsQuitMode () => Mode = RequireMode = MenuMode.Quit;
+
+
+		#endregion
+
+
+
+
+	}
+}

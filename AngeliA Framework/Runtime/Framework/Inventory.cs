@@ -1,0 +1,434 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+namespace AngeliaFramework {
+	public static class Inventory {
+
+
+
+
+		#region --- SUB ---
+
+
+
+		[System.Serializable]
+		private class InventoryData : ISerializationCallbackReceiver {
+
+			public int[] Items;
+			public int[] Counts;
+			[System.NonSerialized] public bool UnlockItemInside;
+			[System.NonSerialized] public bool IsDirty;
+
+			public void OnAfterDeserialize () {
+				UnlockItemInside = false;
+				Items ??= new int[0];
+				Counts ??= new int[Items.Length];
+				if (Counts.Length != Items.Length) {
+					var newCounts = new int[Items.Length];
+					for (int i = 0; i < newCounts.Length; i++) {
+						newCounts[i] = i < Counts.Length ? Counts[i] : 0;
+					}
+					Counts = newCounts;
+				}
+			}
+
+			public void OnBeforeSerialize () { }
+
+		}
+
+
+
+		[System.Serializable]
+		private class PlayerInventoryData : InventoryData {
+			public int Helmet = 0;
+			public int BodySuit = 0;
+			public int Shoes = 0;
+			public int Weapon = 0;
+			public int Gloves = 0;
+			public int Jewelry = 0;
+		}
+
+
+
+		#endregion
+
+
+
+
+		#region --- VAR ---
+
+
+		// Const
+		private const string INV_EXT = "inv";
+		private const string PLAYER_INV_EXT = "player";
+
+		// Data
+		private static readonly Dictionary<int, InventoryData> Pool = new();
+		private static bool IsPoolDirty = false;
+
+
+		#endregion
+
+
+
+
+		#region --- MSG ---
+
+
+		[OnGameInitialize(-64)]
+		public static void Initialize () => LoadAllFromDisk();
+
+
+		[OnGameInitialize(64)]
+		public static void AfterGameInitialize () {
+			foreach (var (_, data) in Pool) {
+				UpdateItemUnlocked(data);
+			}
+		}
+
+
+		[OnGameUpdate]
+		public static void FrameUpdate () {
+			if (IsPoolDirty) SaveAllToDisk();
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+		public static void AddNewInventoryData (int inventoryID, int itemCount) {
+			if (itemCount <= 0) return;
+			if (Pool.ContainsKey(inventoryID)) return;
+			Pool.Add(inventoryID, new InventoryData() {
+				Items = new int[itemCount],
+				Counts = new int[itemCount],
+				IsDirty = true,
+			});
+			IsPoolDirty = true;
+		}
+
+
+		public static void AddNewPlayerInventoryData (int inventoryID, int itemCount) {
+			if (itemCount <= 0) return;
+			if (Pool.ContainsKey(inventoryID)) return;
+			Pool.Add(inventoryID, new PlayerInventoryData() {
+				Items = new int[itemCount],
+				Counts = new int[itemCount],
+				IsDirty = true,
+			});
+			IsPoolDirty = true;
+		}
+
+
+		public static void ResizeItems (int inventoryID, int newSize) {
+			if (!Pool.TryGetValue(inventoryID, out var data)) return;
+			var items = data.Items;
+			if (newSize <= 0 || items.Length == newSize) return;
+			var newItems = new int[newSize];
+			for (int i = 0; i < newSize; i++) {
+				newItems[i] = i < items.Length ? items[i] : 0;
+			}
+			data.Items = newItems;
+			data.IsDirty = true;
+			IsPoolDirty = true;
+		}
+
+
+		public static bool HasInventory (int inventoryID) => Pool.ContainsKey(inventoryID);
+
+
+		public static int GetInventoryCapacity (int inventoryID) => Pool.TryGetValue(inventoryID, out var data) ? data.Items.Length : 0;
+
+
+		public static void SetUnlockInside (int inventoryID, bool unlock) {
+			if (!Pool.TryGetValue(inventoryID, out var data)) return;
+			data.UnlockItemInside = unlock;
+		}
+
+
+		// Items
+		public static int GetItemAt (int inventoryID, int itemIndex) => GetItemAt(inventoryID, itemIndex, out _);
+		public static int GetItemAt (int inventoryID, int itemIndex, out int count) {
+			if (Pool.TryGetValue(inventoryID, out var data)) {
+				count = itemIndex >= 0 && itemIndex < data.Counts.Length ? data.Counts[itemIndex] : 0;
+				return itemIndex >= 0 && itemIndex < data.Items.Length ? data.Items[itemIndex] : 0;
+			} else {
+				count = 0;
+				return 0;
+			}
+		}
+
+
+		public static int GetItemCount (int inventoryID, int itemIndex) => Pool.TryGetValue(inventoryID, out var data) && itemIndex >= 0 && itemIndex < data.Counts.Length && data.Items[itemIndex] != 0 ? data.Counts[itemIndex] : 0;
+
+
+		public static void SetItemAt (int inventoryID, int itemIndex, int newItem, int newCount) {
+			if (!Pool.TryGetValue(inventoryID, out var data) || itemIndex < 0 || itemIndex >= data.Items.Length) return;
+			data.Items[itemIndex] = newCount > 0 ? newItem : 0;
+			data.Counts[itemIndex] = newCount;
+			data.IsDirty = true;
+			IsPoolDirty = true;
+		}
+
+
+		/// <returns>How many items has been added. Return 0 means no item added. Return "count" means all items added.</returns>
+		public static int AddItemAt (int inventoryID, int itemIndex, int count = 1) {
+			if (
+				count <= 0 ||
+				itemIndex < 0 ||
+				!Pool.TryGetValue(inventoryID, out var data) ||
+				itemIndex >= data.Items.Length
+			) return 0;
+			int itemID = data.Items[itemIndex];
+			if (itemID == 0) return 0;
+			int _count = data.Counts[itemIndex];
+			int delta = Mathf.Min(count, ItemSystem.GetItemMaxStackCount(itemID) - _count);
+			data.Counts[itemIndex] = _count + delta;
+			data.IsDirty = true;
+			IsPoolDirty = true;
+			return delta;
+		}
+
+
+		/// <returns>How many items has been added. Return 0 means no item added. Return "count" means all items added.</returns>
+		public static int FindAndAddItem (int inventoryID, int targetItemID, int count = 1) {
+			if (targetItemID == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return 0;
+			int oldCount = count;
+			int maxCount = ItemSystem.GetItemMaxStackCount(targetItemID);
+			for (int i = 0; i < data.Items.Length; i++) {
+				if (data.Items[i] != targetItemID) continue;
+				int _count = data.Counts[i];
+				int delta = Mathf.Min(count, maxCount - _count);
+				data.Counts[i] = _count + delta;
+				count -= delta;
+				if (count <= 0) break;
+			}
+			data.IsDirty = true;
+			IsPoolDirty = true;
+			return oldCount - count;
+		}
+
+
+		/// <returns>How many items has been taken. Return 0 means no item taken. Return "count" means all items taken.</returns>
+		public static int TakeItemAt (int inventoryID, int itemIndex, int count = 1) {
+			if (
+				count <= 0 ||
+				itemIndex < 0 ||
+				!Pool.TryGetValue(inventoryID, out var data) ||
+				itemIndex >= data.Items.Length ||
+				data.Items[itemIndex] == 0
+			) return 0;
+			int _count = data.Counts[itemIndex];
+			int delta = Mathf.Min(_count, count).GreaterOrEquelThanZero();
+			if (delta == 0) return delta;
+			int newCount = _count - delta;
+			data.Counts[itemIndex] = newCount;
+			if (newCount <= 0) {
+				data.Items[itemIndex] = 0;
+			}
+			data.IsDirty = true;
+			IsPoolDirty = true;
+			return delta;
+		}
+
+
+		/// <returns>How many items has been taken. Return 0 means no item taken. Return "count" means all items taken.</returns>
+		public static int FindAndTakeItem (int inventoryID, int targetItemID, int count = 1) {
+			if (targetItemID == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return 0;
+			int oldCount = count;
+			for (int i = 0; i < data.Items.Length; i++) {
+				if (data.Items[i] != targetItemID) continue;
+				int _count = data.Counts[i];
+				int delta = Mathf.Min(_count, count);
+				_count -= delta;
+				count -= delta;
+				data.Counts[i] = _count;
+				if (_count <= 0) data.Items[i] = 0;
+				if (count <= 0) break;
+			}
+			data.IsDirty = true;
+			IsPoolDirty = true;
+			return oldCount - count;
+		}
+
+
+		/// <returns>How many items has been collected. Return 0 means no item collected. Return "count" means all items collected.</returns>
+		public static int CollectItem (int inventoryID, int item, int count = 1) => CollectItem(inventoryID, item, out _, count);
+		public static int CollectItem (int inventoryID, int item, out int collectIndex, int count = 1) {
+			collectIndex = -1;
+			if (item == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return 0;
+			int oldCount = count;
+			int maxStackCount = ItemSystem.GetItemMaxStackCount(item);
+
+			// Try Append to Exists
+			for (int i = 0; i < data.Items.Length; i++) {
+				int _item = data.Items[i];
+				if (_item != item) continue;
+				int _count = data.Counts[i];
+				if (_count < maxStackCount) {
+					// Append Item
+					int delta = Mathf.Min(count, maxStackCount - _count);
+					count -= delta;
+					_count += delta;
+					data.Counts[i] = _count;
+					data.IsDirty = true;
+					IsPoolDirty = true;
+					collectIndex = i;
+				}
+				if (count <= 0) break;
+			}
+			if (count <= 0) return oldCount - count;
+
+			// Try Add to New Slot
+			for (int i = 0; i < data.Items.Length; i++) {
+				int _item = data.Items[i];
+				if (_item != 0) continue;
+				int delta = Mathf.Min(count, maxStackCount);
+				count -= delta;
+				data.Items[i] = item;
+				data.Counts[i] = delta;
+				data.IsDirty = true;
+				IsPoolDirty = true;
+				collectIndex = i;
+				if (count <= 0) break;
+			}
+			return oldCount - count;
+		}
+
+
+		// Equipment
+		public static int GetEquipment (int inventoryID, EquipmentType type) => Pool.TryGetValue(inventoryID, out var data) && data is PlayerInventoryData pData ? type switch {
+			EquipmentType.Weapon => pData.Weapon,
+			EquipmentType.BodySuit => pData.BodySuit,
+			EquipmentType.Helmet => pData.Helmet,
+			EquipmentType.Shoes => pData.Shoes,
+			EquipmentType.Gloves => pData.Gloves,
+			EquipmentType.Jewelry => pData.Jewelry,
+			_ => 0,
+		} : 0;
+
+
+		public static bool SetEquipment (int inventoryID, EquipmentType type, int equipmentID) {
+
+			if (
+				!Pool.TryGetValue(inventoryID, out var data) ||
+				data is not PlayerInventoryData pData
+			) return false;
+
+			if (
+				equipmentID != 0 &&
+				(!ItemSystem.IsEquipment(equipmentID, out var newEquipmentType) || newEquipmentType != type)
+			) return false;
+
+			switch (type) {
+				case EquipmentType.Weapon:
+					pData.Weapon = equipmentID;
+					break;
+				case EquipmentType.BodySuit:
+					pData.BodySuit = equipmentID;
+					break;
+				case EquipmentType.Helmet:
+					pData.Helmet = equipmentID;
+					break;
+				case EquipmentType.Shoes:
+					pData.Shoes = equipmentID;
+					break;
+				case EquipmentType.Gloves:
+					pData.Gloves = equipmentID;
+					break;
+				case EquipmentType.Jewelry:
+					pData.Jewelry = equipmentID;
+					break;
+			}
+			data.IsDirty = true;
+			IsPoolDirty = true;
+			return true;
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+		private static void LoadAllFromDisk () {
+			IsPoolDirty = false;
+			Pool.Clear();
+			string root = Util.CombinePaths(Const.PlayerDataRoot, "Inventory");
+			if (!Util.FolderExists(root)) return;
+			foreach (var path in Util.EnumerateFiles(root, true, $"*.{INV_EXT}", $"*.{PLAYER_INV_EXT}")) {
+				try {
+					string name = Util.GetNameWithoutExtension(path);
+					if (!int.TryParse(name, out int id)) continue;
+					if (Pool.ContainsKey(id)) continue;
+					string json = Util.FileToText(path);
+					if (string.IsNullOrEmpty(json)) continue;
+					InventoryData data;
+					if (path.EndsWith(INV_EXT)) {
+						data = JsonUtility.FromJson<InventoryData>(json);
+					} else {
+						data = JsonUtility.FromJson<PlayerInventoryData>(json);
+					}
+					if (data == null || data.Items == null) continue;
+					data.IsDirty = false;
+					Pool.TryAdd(id, data);
+					// Valid Item Count
+					for (int i = 0; i < data.Items.Length; i++) {
+						int iCount = data.Counts[i];
+						if (iCount <= 0) {
+							data.Counts[i] = 0;
+							data.Items[i] = 0;
+						}
+					}
+				} catch (System.Exception ex) { Debug.LogException(ex); }
+			}
+		}
+
+
+		private static void SaveAllToDisk () {
+			IsPoolDirty = false;
+			string root = Util.CombinePaths(Const.PlayerDataRoot, "Inventory");
+			foreach (var (id, data) in Pool) {
+				if (!data.IsDirty) continue;
+				data.IsDirty = false;
+				// Save Inventory
+				Util.TextToFile(
+					JsonUtility.ToJson(data, false),
+					Util.CombinePaths(
+						root, $"{id}.{(data is PlayerInventoryData ? PLAYER_INV_EXT : INV_EXT)}"
+					)
+				);
+				// Update Item Unlocked
+				UpdateItemUnlocked(data);
+			}
+		}
+
+
+		private static void UpdateItemUnlocked (InventoryData data) {
+			if (data == null) return;
+			for (int i = 0; i < data.Items.Length; i++) {
+				int itemID = data.Items[i];
+				int itemCount = data.Counts[i];
+				if (itemID == 0 || itemCount <= 0) continue;
+				ItemSystem.SetItemUnloced(itemID, true);
+			}
+		}
+
+
+		#endregion
+
+
+
+
+	}
+}

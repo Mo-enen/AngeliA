@@ -1,0 +1,20 @@
+{
+    "name": "AngeliaFrameworkEditor",
+    "rootNamespace": "AngeliaFramework.Editor",
+    "references": [
+        "AngeliaFrameworkRuntime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "zlib.net.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

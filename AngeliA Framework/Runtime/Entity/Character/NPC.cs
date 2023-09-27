@@ -1,0 +1,54 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+namespace AngeliaFramework {
+	[EntityAttribute.Capacity(8)]
+	public abstract class NPC : Character, IDamageReceiver {
+
+
+
+
+		#region --- VAR ---
+
+
+		// Api
+		int IDamageReceiver.Team => Const.TEAM_NEUTRAL;
+		public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
+
+
+		#endregion
+
+
+
+
+		#region --- MSG ---
+
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+
+		#endregion
+
+
+
+
+	}
+}

@@ -1,0 +1,83 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+namespace AngeliaFramework {
+	public class GenericMenuUI : MenuUI {
+
+
+		// SUB
+		public class Option {
+			public string Label = "";
+			public System.Action Action = null;
+		}
+
+
+		// Data
+		private readonly Option OptionA = new();
+		private readonly Option OptionB = new();
+		private readonly Option OptionC = new();
+
+
+		// MSG
+		public override void OnActivated () {
+			base.OnActivated();
+			ContentPadding = new(32, 32, 46, 12);
+		}
+
+
+		protected override void DrawMenu () {
+			DrawOption(OptionA);
+			DrawOption(OptionB);
+			DrawOption(OptionC);
+			void DrawOption (Option option) {
+				if (option.Action == null) return;
+				if (DrawItem(option.Label)) {
+					option.Action();
+					Active = false;
+					FrameInput.UseAllHoldingKeys();
+				}
+			}
+		}
+
+
+		public override void OnInactivated () {
+			base.OnInactivated();
+			OptionA.Action = null;
+			OptionB.Action = null;
+			OptionC.Action = null;
+		}
+
+
+		// API
+		public static void SpawnMenu (
+			string message,
+			string label, System.Action action
+		) => SpawnMenu(message, label, action, null, null, null, null);
+		public static void SpawnMenu (
+			string message,
+			string labelA, System.Action actionA,
+			string labelB, System.Action actionB
+		) => SpawnMenu(message, labelA, actionA, labelB, actionB, null, null);
+		public static void SpawnMenu (
+			string message,
+			string labelA, System.Action actionA,
+			string labelB, System.Action actionB,
+			string labelC, System.Action actionC
+		) {
+			var menu = Stage.SpawnEntity<GenericMenuUI>(0, 0);
+			if (menu == null) return;
+			menu.Message = message;
+			menu.OptionA.Label = labelA;
+			menu.OptionB.Label = labelB;
+			menu.OptionC.Label = labelC;
+			menu.OptionA.Action = actionA;
+			menu.OptionB.Action = actionB;
+			menu.OptionC.Action = actionC;
+		}
+
+
+
+	}
+}
