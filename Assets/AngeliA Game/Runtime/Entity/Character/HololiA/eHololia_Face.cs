@@ -26,7 +26,14 @@ namespace AngeliaGame {
 	public class OkayuFace : AutoSpriteFace { }
 	public class KoroneFace : AutoSpriteFace { }
 	public class PekoraFace : AutoSpriteFace { }
-	public class FlareFace : AutoSpriteFace { }
+	public class FlareFace : AutoSpriteFace {
+		private static readonly int ELF_EAR_L = "ElfEarL".AngeHash();
+		private static readonly int ELF_EAR_R = "ElfEarR".AngeHash();
+		protected override void DrawFace (Character character) {
+			base.DrawFace(character);
+			DrawHumanEar(character, ELF_EAR_L, ELF_EAR_R);
+		}
+	}
 	public class NoelFace : AutoSpriteFace { }
 	public class MarineFace : AutoSpriteFace { }
 	public class KanataFace : AutoSpriteFace { }
@@ -34,7 +41,14 @@ namespace AngeliaGame {
 	public class TowaFace : AutoSpriteFace { }
 	public class LunaFace : AutoSpriteFace { }
 	public class CocoFace : AutoSpriteFace { }
-	public class LamyFace : AutoSpriteFace { }
+	public class LamyFace : AutoSpriteFace {
+		private static readonly int ELF_EAR_L = "ElfEarL".AngeHash();
+		private static readonly int ELF_EAR_R = "ElfEarR".AngeHash();
+		protected override void DrawFace (Character character) {
+			base.DrawFace(character);
+			DrawHumanEar(character, ELF_EAR_L, ELF_EAR_R);
+		}
+	}
 	public class NeneFace : AutoSpriteFace { }
 	public class BotanFace : AutoSpriteFace { }
 	public class PolkaFace : AutoSpriteFace { }
@@ -46,16 +60,37 @@ namespace AngeliaGame {
 	public class ReineFace : AutoSpriteFace { }
 	public class CalliopeFace : AutoSpriteFace { }
 	public class KiaraFace : AutoSpriteFace { }
-	public class InaFace : AutoSpriteFace { }
+	public class InaFace : AutoSpriteFace {
+		private static readonly int ELF_EAR_L = "ElfEarL".AngeHash();
+		private static readonly int ELF_EAR_R = "ElfEarR".AngeHash();
+		protected override void DrawFace (Character character) {
+			base.DrawFace(character);
+			DrawHumanEar(character, ELF_EAR_L, ELF_EAR_R);
+		}
+	}
 	public class GuraFace : AutoSpriteFace { }
 	public class AmeFace : AutoSpriteFace { }
-	public class IRySFace : AutoSpriteFace { }
+	public class IRySFace : AutoSpriteFace {
+		private static readonly int ELF_EAR_L = "ElfEarL".AngeHash();
+		private static readonly int ELF_EAR_R = "ElfEarR".AngeHash();
+		protected override void DrawFace (Character character) {
+			base.DrawFace(character);
+			DrawHumanEar(character, ELF_EAR_L, ELF_EAR_R);
+		}
+	}
 	public class FaunaFace : AutoSpriteFace { }
 	public class KroniiFace : AutoSpriteFace { }
 	public class MumeiFace : AutoSpriteFace { }
 	public class BaeFace : AutoSpriteFace { }
 	public class SanaFace : AutoSpriteFace { }
-	public class LaplusFace : AutoSpriteFace { }
+	public class LaplusFace : AutoSpriteFace {
+		private static readonly int ELF_EAR_L = "ElfEarL".AngeHash();
+		private static readonly int ELF_EAR_R = "ElfEarR".AngeHash();
+		protected override void DrawFace (Character character) {
+			base.DrawFace(character);
+			DrawHumanEar(character, ELF_EAR_L, ELF_EAR_R);
+		}
+	}
 	public class LuiFace : AutoSpriteFace { }
 	public class KoyoriFace : AutoSpriteFace { }
 	public class SakamataFace : AutoSpriteFace { }
@@ -68,7 +103,14 @@ namespace AngeliaGame {
 	public class NerissaFace : AutoSpriteFace { }
 	public class FuwaFace : AutoSpriteFace { }
 	public class MocoFace : AutoSpriteFace { }
-	public class AloeFace : AutoSpriteFace { }
+	public class AloeFace : AutoSpriteFace {
+		private static readonly int ELF_EAR_L = "ElfEarL".AngeHash();
+		private static readonly int ELF_EAR_R = "ElfEarR".AngeHash();
+		protected override void DrawFace (Character character) {
+			base.DrawFace(character);
+			DrawHumanEar(character, ELF_EAR_L, ELF_EAR_R);
+		}
+	}
 	public class RushiaFace : AutoSpriteFace { }
 	public class ChrisFace : AutoSpriteFace { }
 

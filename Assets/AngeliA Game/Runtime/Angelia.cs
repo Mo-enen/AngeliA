@@ -152,24 +152,23 @@ namespace AngeliaGame {
 			string result = "";
 			int currentX = 20;
 			int currentY = 26;
-			//var names = ALL_NAMES.Concat(ALL_NAMES1).ToArray();
-			var names = ALL_NAMES;
+			var names = ALL_NAMES.Concat(ALL_NAMES1).ToArray();
+			//var names = ALL_NAMES;
 			for (int i = 0; i < names.Length; i++) {
 				string name = names[i];
 
-				result += $"nameof({name}BodySuit), ";
-				//result += $"public class {name}BodySuit : AutoSpriteCloth {{ protected override ClothType ClothType => ClothType.Body; }}\n";
-				//result += $"public class {name}HipSuit : AutoSpriteCloth {{ protected override ClothType ClothType => ClothType.Hip; }}\n";
-				//result += $"public class {name}HeadSuit : AutoSpriteCloth {{ protected override ClothType ClothType => ClothType.Head; }}\n";
-				//result += $"public class {name}HandSuit : AutoSpriteCloth {{ protected override ClothType ClothType => ClothType.Hand; }}\n";
-				//result += $"public class {name}FootSuit : AutoSpriteCloth {{ protected override ClothType ClothType => ClothType.Foot; }}\n";
+				result += $"{name}HeadSuit, {currentX + 3 - 20}, {currentY - 26 + 20}, 13, 7, 0, 0, 0, 0\n";
+				result += $"{name}BodySuit, {currentX + 5 - 20}, {currentY - 26 + 36}, 10, 10, 0, 0, 0, 0\n";
+				result += $"{name}HipSuit, {currentX + 5 - 20}, {currentY - 26 + 43}, 10, 10, 0, 0, 0, 0\n";
+				result += $"{name}HandSuit, {currentX + 3 - 20}, {currentY - 26 + 46}, 2, 2, 0, 0, 0, 0\n";
+				result += $"{name}FootSuit, {currentX + 5 - 20}, {currentY - 26 + 51}, 5, 5, 0, 0, 0, 0\n";
 
 				currentX += 28;
 				if (currentX > 450) {
 					currentX = 20;
 					currentY += 80;
 				}
-				//result += "\n";
+				result += "\n";
 			}
 			GUIUtility.systemCopyBuffer = result;
 			Debug.Log(Random.value + " Copy.");

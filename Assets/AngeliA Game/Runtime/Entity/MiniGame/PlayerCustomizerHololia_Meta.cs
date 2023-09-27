@@ -75,7 +75,7 @@ namespace AngeliaGame {
 			nameof(MikoHeadSuit), nameof(SuiseiHeadSuit), nameof(AquaHeadSuit), nameof(ShionHeadSuit),
 			nameof(SubaruHeadSuit), nameof(FlareHeadSuit), nameof(KanataHeadSuit), nameof(TowaHeadSuit),
 			nameof(LunaHeadSuit), nameof(PolkaHeadSuit), nameof(OllieHeadSuit), nameof(CalliopeHeadSuit), nameof(KiaraHeadSuit),
-			nameof(InaHeadSuit), nameof(AmeHeadSuit), nameof(IRySHeadSuit), nameof(MumeiHeadSuit), nameof(SanaHeadSuit), 
+			nameof(InaHeadSuit), nameof(AmeHeadSuit), nameof(IRySHeadSuit), nameof(MumeiHeadSuit), nameof(SanaHeadSuit),
 			nameof(KaelaHeadSuit), nameof(BijouHeadSuit),
 		};
 		private static string[] _Suit_BodyShoulderArmArms = {
@@ -134,21 +134,20 @@ namespace AngeliaGame {
 		};
 		private static string[] _Suit_Hands = {
 			"",
-			"#JP 0th",      nameof(SoraHandSuit), nameof(RobocoHandSuit), nameof(MikoHandSuit), nameof(SuiseiHandSuit), nameof(AZKiHandSuit),
-			"#JP 1st",      nameof(MelHandSuit), nameof(FubukiHandSuit), nameof(MatsuriHandSuit), nameof(AkiHandSuit), nameof(AkaiHandSuit),
-			"#JP 2nd",      nameof(AquaHandSuit), nameof(ShionHandSuit), nameof(AyameHandSuit), nameof(ChocoHandSuit), nameof(SubaruHandSuit),
-			"#JP 3rd",      nameof(PekoraHandSuit), nameof(FlareHandSuit), nameof(NoelHandSuit), nameof(MarineHandSuit),
-			"#JP 4th",      nameof(KanataHandSuit), nameof(WatameHandSuit), nameof(TowaHandSuit), nameof(LunaHandSuit), nameof(CocoHandSuit),
-			"#JP 5th",      nameof(LamyHandSuit), nameof(NeneHandSuit), nameof(BotanHandSuit), nameof(PolkaHandSuit),
-			"#JP 6th",      nameof(LaplusHandSuit), nameof(LuiHandSuit), nameof(KoyoriHandSuit), nameof(SakamataHandSuit), nameof(IrohaHandSuit),
-			"#Gamer",       nameof(MioHandSuit), nameof(OkayuHandSuit), nameof(KoroneHandSuit),
-			"#EN Myth",     nameof(CalliopeHandSuit), nameof(KiaraHandSuit), nameof(InaHandSuit), nameof(GuraHandSuit), nameof(AmeHandSuit),
-			"#EN Hope",     nameof(IRySHandSuit),
-			"#EN Council",  nameof(FaunaHandSuit), nameof(KroniiHandSuit), nameof(MumeiHandSuit), nameof(BaeHandSuit), nameof(SanaHandSuit),
-			"#EN Advent",   nameof(ShioriHandSuit), nameof(BijouHandSuit), nameof(NerissaHandSuit), nameof(FuwaHandSuit), nameof(MocoHandSuit),
-			"#ID 1st",      nameof(RisuHandSuit), nameof(MoonaHandSuit), nameof(IofifteenHandSuit),
-			"#ID 2nd",      nameof(OllieHandSuit), nameof(MelfissaHandSuit), nameof(ReineHandSuit),
-			"#ID 3rd",      nameof(ZetaHandSuit), nameof(KaelaHandSuit), nameof(KoboHandSuit),
+			nameof(RobocoHandSuit),
+			nameof(AkiHandSuit),
+			nameof(ShionHandSuit),
+			nameof(PekoraHandSuit),
+			nameof(FlareHandSuit),
+			nameof(MarineHandSuit),
+			nameof(BotanHandSuit),
+			nameof(OllieHandSuit),
+			nameof(InaHandSuit),
+			nameof(KroniiHandSuit),
+			nameof(BaeHandSuit),
+			nameof(SanaHandSuit),
+			nameof(KaelaHandSuit),
+			nameof(NerissaHandSuit),
 		};
 
 		// Color
