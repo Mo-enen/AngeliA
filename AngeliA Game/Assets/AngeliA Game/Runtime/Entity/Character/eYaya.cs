@@ -28,7 +28,6 @@ namespace AngeliaGame {
 		public override bool BodySuitAvailable => true;
 		public override bool HelmetAvailable => false;
 		public override int CharacterHeight => 158;
-		public override int CharacterBoobSize => 400;
 
 		// Data
 		private eGuaGua GuaGua = null;

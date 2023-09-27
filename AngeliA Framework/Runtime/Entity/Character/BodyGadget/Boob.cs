@@ -25,6 +25,7 @@ namespace AngeliaFramework {
 		// VAR
 		private static readonly Dictionary<int, Boob> Pool = new();
 		private static readonly Dictionary<int, int> DefaultPool = new();
+		public virtual bool SuitAvailable => true;
 
 
 		// MSG
@@ -46,55 +47,52 @@ namespace AngeliaFramework {
 
 
 		// API
-		public static void Draw (Character character) => Draw(character, out _);
-		public static void Draw (Character character, out Boob boob) {
-			boob = null;
+		public static bool TryGetBoob (int id, out Boob boob) => Pool.TryGetValue(id, out boob);
+
+
+		public static void Draw (Character character) {
 			if (
 				character.BoobID != 0 &&
 				character.Body.FrontSide &&
-				Pool.TryGetValue(character.BoobID, out boob)
+				Pool.TryGetValue(character.BoobID, out var boob)
 			) {
 				boob.DrawBoob(character);
 			}
 		}
 
 
-		public static RectInt GetBoobRect (Character character, bool motion = true) => GetBoobRect(character, character.CharacterBoobSize, motion);
-		public static RectInt GetBoobRect (Character character, int boobSize, bool motion = true) {
+		public static Vector3Int GetBoobPosition (Character character, bool motion = true) {
 			var bodyRect = character.Body.GetGlobalRect();
-			int bodySizeY = character.Body.SizeY;
-			int boobHeight = boobSize * bodySizeY / 1000;
-			int boobOffsetX = boobSize * bodyRect.width / 2000;
+			int boobOffsetX = bodyRect.width * 3 / 20;
 			int boobOffsetY = 0;
 			if (motion) {
-				boobOffsetX += (character.FacingRight ? 1 : -1) * character.PoseTwist * 20 / 1000;
+				boobOffsetX += (character.FacingRight ? 1 : -1) * character.PoseTwist * 10 / 1000;
 				int basicRootY = character.BasicRootY;
 				switch (character.AnimatedPoseType) {
 					case CharacterPoseAnimationType.Walk:
 						if (character.PoseRootY < basicRootY + A2G / 4) {
 							boobOffsetY = 0;
 						} else if (character.PoseRootY < basicRootY + A2G / 2) {
-							boobOffsetY = 10;
+							boobOffsetY = -15;
 						} else {
-							boobOffsetY = 20;
+							boobOffsetY = 15;
 						}
 						break;
 					case CharacterPoseAnimationType.Run:
 						if (character.PoseRootY < basicRootY + A2G / 2) {
 							boobOffsetY = 0;
 						} else if (character.PoseRootY < basicRootY + A2G) {
-							boobOffsetY = 10;
+							boobOffsetY = -15;
 						} else {
-							boobOffsetY = 20;
+							boobOffsetY = 15;
 						}
 						break;
 				}
 			}
-			return new RectInt(
+			return new Vector3Int(
 				character.FacingRight ? bodyRect.x : bodyRect.xMax,
-				bodyRect.y + bodyRect.height * 618 / 1000 - boobHeight + boobOffsetY,
-				character.FacingRight ? bodyRect.width + boobOffsetX : -bodyRect.width - boobOffsetX,
-				boobHeight
+				bodyRect.y + bodyRect.height * 570 / 1000 + boobOffsetY,
+				character.FacingRight ? bodyRect.width + boobOffsetX : -bodyRect.width - boobOffsetX
 			);
 		}
 
@@ -108,9 +106,22 @@ namespace AngeliaFramework {
 		// UTL
 		protected static void DrawSprite (Character character, int spriteID, Color32 skinColor) {
 			if (spriteID == 0 || !character.Body.FrontSide) return;
-			CellRenderer.Draw(
-				spriteID, GetBoobRect(character, true), skinColor, character.Body.Z + 1
-			);
+			if (CellRenderer.TryGetSprite(spriteID, out var sprite)) {
+				var pos = GetBoobPosition(character, true);
+				if (sprite.GlobalBorder.IsZero) {
+					CellRenderer.Draw(
+						spriteID,
+						new RectInt(pos.x, pos.y - sprite.GlobalHeight, pos.z, sprite.GlobalHeight),
+						skinColor, character.Body.Z + 1
+					);
+				} else {
+					CellRenderer.Draw_9Slice(
+						spriteID,
+						new RectInt(pos.x, pos.y - sprite.GlobalHeight, pos.z, sprite.GlobalHeight),
+						skinColor, character.Body.Z + 1
+					);
+				}
+			}
 		}
 
 

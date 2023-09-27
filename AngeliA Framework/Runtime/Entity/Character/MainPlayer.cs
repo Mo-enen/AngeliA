@@ -68,7 +68,6 @@ namespace AngeliaFramework {
 		public override Color32 SkinColor => _SkinColor;
 		public override Color32 HairColor => _HairColor;
 		public override int CharacterHeight => _CharacterHeight;
-		public override int CharacterBoobSize => _CharacterBoobSize;
 		public Int3? HomeUnitPosition { get; private set; } = null;
 
 		// Data
@@ -76,7 +75,6 @@ namespace AngeliaFramework {
 		private Color32 _SkinColor = new(239, 194, 160, 255);
 		private Color32 _HairColor = new(51, 51, 51, 255);
 		private int _CharacterHeight = 160;
-		private int _CharacterBoobSize = 300;
 
 
 		#endregion
@@ -152,8 +150,7 @@ namespace AngeliaFramework {
 
 			HomeUnitPosition = Config.HomeUnitPosition.x != int.MinValue ? Config.HomeUnitPosition : null;
 			_CharacterHeight = Config.CharacterHeight.Clamp(100, 200);
-			_CharacterBoobSize = Config.CharacterBoobSize.Clamp(0, 1000);
-
+			
 			// Bodyparts
 			if (BodyPartsReady) {
 				Head.SetSpriteID(Config.Head);
@@ -203,8 +200,7 @@ namespace AngeliaFramework {
 
 			Config.HomeUnitPosition = HomeUnitPosition ?? new Int3(int.MinValue, int.MinValue, int.MinValue);
 			Config.CharacterHeight = _CharacterHeight.Clamp(100, 200);
-			Config.CharacterBoobSize = _CharacterBoobSize.Clamp(0, 1000);
-
+			
 			if (BodyPartsReady) {
 				Config.Head = Head.ID;
 				Config.Body = Body.ID;

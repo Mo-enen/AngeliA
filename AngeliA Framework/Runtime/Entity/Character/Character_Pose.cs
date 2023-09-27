@@ -68,7 +68,6 @@ namespace AngeliaFramework {
 		public virtual Color32 HairColor => new(51, 51, 51, 255);
 		public virtual bool SpinOnGroundPound => false;
 		public virtual int CharacterHeight => 160; // in CM
-		public virtual int CharacterBoobSize => 300;
 
 		// BodyPart
 		public BodyPart Head { get; private set; } = null;
@@ -276,7 +275,7 @@ namespace AngeliaFramework {
 			if (!Cloth.HasCloth(Suit_Body)) Boob.Draw(this);
 
 			Cloth.DrawHeadSuit(this);
-			Cloth.DrawBodySuit(this, Boob.GetBoobRect(this));
+			Cloth.DrawBodySuit(this, Boob.TryGetBoob(BoobID, out var boob) && boob.SuitAvailable ? Boob.GetBoobPosition(this) : default);
 			Cloth.DrawHipSuit(this);
 			Cloth.DrawHandSuit(this);
 			Cloth.DrawFootSuit(this);
@@ -657,7 +656,12 @@ namespace AngeliaFramework {
 		public void DrawClothForBoob (int spriteID, RectInt boobRect) => DrawClothForBoob(spriteID, boobRect, Const.WHITE);
 		public void DrawClothForBoob (int spriteID, RectInt boobRect, Color32 tint) {
 			if (spriteID == 0 || boobRect.width == 0 || !Body.FrontSide) return;
-			CellRenderer.Draw(spriteID, boobRect, tint, Body.Z + 8);
+			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
+			if (sprite.GlobalBorder.IsZero) {
+				CellRenderer.Draw(spriteID, boobRect, tint, Body.Z + 8);
+			} else {
+				CellRenderer.Draw_9Slice(spriteID, boobRect, tint, Body.Z + 8);
+			}
 		}
 
 

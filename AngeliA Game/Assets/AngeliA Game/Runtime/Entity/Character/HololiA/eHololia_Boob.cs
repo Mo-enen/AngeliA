@@ -8,11 +8,15 @@ namespace AngeliaGame {
 
 	// Boob
 	public class PetanBoob : AutoSpriteBoob {
+		public override bool SuitAvailable => false;
 		protected override void DrawBoob (Character character) {
 			if (SpriteID == 0 || !character.Body.FrontSide) return;
-			CellRenderer.Draw(
-				SpriteID, GetBoobRect(character, 300, false), character.SkinColor, character.Body.Z + 1
-			);
+			var boobPos = GetBoobPosition(character, false);
+			if (CellRenderer.TryGetSprite(SpriteID, out var sprite)) {
+				CellRenderer.Draw(
+					SpriteID, new RectInt(boobPos.x, boobPos.y - sprite.GlobalHeight, boobPos.z, sprite.GlobalHeight), character.SkinColor, character.Body.Z + 1
+				);
+			}
 		}
 	}
 
@@ -22,12 +26,12 @@ namespace AngeliaGame {
 		protected override void DrawBoob (Character character) {
 			base.DrawBoob(character);
 			// Mole
-			var boobRect = GetBoobRect(character);
+			var boobPos = GetBoobPosition(character);
 			const int MOLE_SIZE = 16;
 			CellRenderer.Draw(
 				Const.PIXEL,
-				boobRect.x + boobRect.width * 618 / 1000,
-				boobRect.yMax - MOLE_SIZE,
+				boobPos.x + boobPos.z * 618 / 1000,
+				boobPos.y - MOLE_SIZE,
 				500, 500, 0,
 				MOLE_SIZE, MOLE_SIZE,
 				Const.BLACK, character.Body.Z + 2
