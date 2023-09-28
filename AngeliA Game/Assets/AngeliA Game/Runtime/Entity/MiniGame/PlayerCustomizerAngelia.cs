@@ -79,6 +79,7 @@ namespace AngeliaGame {
 			SubMenuType.Suit_Hand => true,
 			SubMenuType.Suit_HipSkirtLegLeg => true,
 			SubMenuType.Suit_Foot => true,
+			SubMenuType.Height => true,
 			_ => false,
 		};
 

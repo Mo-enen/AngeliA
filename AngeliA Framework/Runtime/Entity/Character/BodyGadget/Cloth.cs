@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 
@@ -46,10 +45,35 @@ namespace AngeliaFramework {
 		protected override void DrawHead (Character character) {
 			if (ClothType != ClothType.Head) return;
 			if (SpriteID != 0) {
-				character.AttachClothOn(character.Head, Direction3.Up, SpriteID, 34, Const.WHITE, character.Head.Width < 0);
+				if (CellRenderer.HasSpriteGroup(SpriteID, out int length) && length >= 2) {
+					// Front & Back
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID, 0, out var sprite, false, true)) {
+						character.AttachClothOn(
+							character.Head, Direction3.Up, sprite.GlobalID, 
+							Front == character.Head.FrontSide ? 34 : -34,
+							Const.WHITE, character.Head.Width < 0, 0,
+							OffsetX, OffsetY
+						);
+					}
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID, 1, out sprite, false, true)) {
+						character.AttachClothOn(
+							character.Head, Direction3.Up, sprite.GlobalID, 
+							Front == character.Head.FrontSide ? -34 : 34,
+							Const.WHITE, character.Head.Width < 0, 0,
+							OffsetX, OffsetY
+						);
+					}
+				} else {
+					// Single Sprite
+					character.AttachClothOn(
+						character.Head, Direction3.Up, SpriteID, Front == character.Head.FrontSide ? 34 : -34,
+						Const.WHITE, character.Head.Width < 0, 0,
+						OffsetX, OffsetY
+					);
+				}
 			}
 		}
-		protected override void DrawBodyShoulderArmArmBoob (Character character, Vector3Int boobPosition) {
+		protected override void DrawBodyShoulderArmArm (Character character) {
 			if (ClothType != ClothType.Body) return;
 			if (SpriteID != 0) {
 				character.DrawClothForBody(SpriteID);
@@ -66,12 +90,19 @@ namespace AngeliaFramework {
 				character.CoverClothOn(character.LowerArmL, SpriteID3, character.LowerArmL.Z + 1, Const.WHITE);
 				character.CoverClothOn(character.LowerArmR, SpriteID3, character.LowerArmR.Z + 1, Const.WHITE);
 			}
-			if (SpriteID4 != 0) {
-				if (CellRenderer.TryGetSprite(SpriteID4, out var sprite)) {
-					character.DrawClothForBoob(
-						SpriteID4, new RectInt(boobPosition.x, boobPosition.y - sprite.GlobalHeight, boobPosition.z, sprite.GlobalHeight)
-					);
-				}
+		}
+		protected override void DrawBoob (Character character, Vector2Int boobPosition, int boobSize) {
+			if (ClothType != ClothType.Body) return;
+			if (SpriteID4 == 0) return;
+			if (CellRenderer.TryGetSprite(SpriteID4, out var sprite)) {
+				int width = character.Body.Width.Sign() * sprite.GlobalWidth * boobSize / 1000;
+				character.DrawClothForBoob(
+					SpriteID4, new RectInt(
+						boobPosition.x - width / 2,
+						boobPosition.y - sprite.GlobalHeight,
+						width, sprite.GlobalHeight
+					)
+				);
 			}
 		}
 		protected override void DrawHand (Character character) {
@@ -116,6 +147,9 @@ namespace AngeliaFramework {
 		// Api
 		public int TypeID { get; init; }
 		protected abstract ClothType ClothType { get; }
+		protected virtual bool Front => true;
+		protected virtual int OffsetX => 0;
+		protected virtual int OffsetY => 0;
 
 		// Data
 		private static readonly Dictionary<int, Cloth> Pool = new();
@@ -152,7 +186,8 @@ namespace AngeliaFramework {
 
 		// API
 		public static void DrawHeadSuit (Character character) => DrawHeadSuit(character, out _);
-		public static void DrawBodySuit (Character character, Vector3Int boobPosition) => DrawBodySuit(character, boobPosition, out _);
+		public static void DrawBodySuit (Character character) => DrawBodySuit(character, out _);
+		public static void DrawBoobSuit (Character character, int boobSize) => DrawBoobSuit(character, boobSize, out _);
 		public static void DrawHipSuit (Character character) => DrawHipSuit(character, out _);
 		public static void DrawHandSuit (Character character) => DrawHandSuit(character, out _);
 		public static void DrawFootSuit (Character character) => DrawFootSuit(character, out _);
@@ -166,13 +201,23 @@ namespace AngeliaFramework {
 				cloth.DrawHead(character);
 			}
 		}
-		public static void DrawBodySuit (Character character, Vector3Int boobPosition, out Cloth cloth) {
+		public static void DrawBodySuit (Character character, out Cloth cloth) {
 			cloth = null;
 			if (
 				character.Suit_Body != 0 &&
 				Pool.TryGetValue(character.Suit_Body, out cloth)
 			) {
-				cloth.DrawBodyShoulderArmArmBoob(character, boobPosition);
+				cloth.DrawBodyShoulderArmArm(character);
+			}
+		}
+		public static void DrawBoobSuit (Character character, int boobSize, out Cloth cloth) {
+			cloth = null;
+			if (
+				boobSize == 0 ||
+				character.Suit_Body != 0 &&
+				Pool.TryGetValue(character.Suit_Body, out cloth)
+			) {
+				cloth.DrawBoob(character, Boob.GetBoobPosition(character), boobSize);
 			}
 		}
 		public static void DrawHipSuit (Character character, out Cloth cloth) {
@@ -219,7 +264,8 @@ namespace AngeliaFramework {
 
 
 		protected abstract void DrawHead (Character character);
-		protected abstract void DrawBodyShoulderArmArmBoob (Character character, Vector3Int boobPosition);
+		protected abstract void DrawBodyShoulderArmArm (Character character);
+		protected abstract void DrawBoob (Character character, Vector2Int boobPosition, int boobSize);
 		protected abstract void DrawHand (Character character);
 		protected abstract void DrawHipSkirtLegLeg (Character character);
 		protected abstract void DrawFoot (Character character);

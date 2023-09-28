@@ -275,7 +275,10 @@ namespace AngeliaFramework {
 			if (!Cloth.HasCloth(Suit_Body)) Boob.Draw(this);
 
 			Cloth.DrawHeadSuit(this);
-			Cloth.DrawBodySuit(this, Boob.TryGetBoob(BoobID, out var boob) && boob.SuitAvailable ? Boob.GetBoobPosition(this) : default);
+			Cloth.DrawBodySuit(this);
+			if (Boob.TryGetBoob(BoobID, out var boob) && boob.SuitAvailable) {
+				Cloth.DrawBoobSuit(this, boob.Size);
+			}
 			Cloth.DrawHipSuit(this);
 			Cloth.DrawHandSuit(this);
 			Cloth.DrawFootSuit(this);
@@ -790,7 +793,10 @@ namespace AngeliaFramework {
 		}
 
 
-		public void AttachClothOn (BodyPart bodyPart, Direction3 verticalLocation, int groupID, int z, Color32 tint, bool flipX = false, int localRotation = 0) {
+		public void AttachClothOn (
+			BodyPart bodyPart, Direction3 verticalLocation, int groupID, int z, 
+			Color32 tint, bool flipX = false, int localRotation = 0, int offsetX = 0, int offsetY = 0
+		) {
 			if (groupID == 0) return;
 			if (!CellRenderer.TryGetSpriteFromGroup(groupID, bodyPart.FrontSide ? 0 : 1, out var sprite, false, true)) return;
 			var location = verticalLocation switch {
@@ -802,7 +808,8 @@ namespace AngeliaFramework {
 			if (sprite.GlobalBorder.IsZero) {
 				CellRenderer.Draw(
 					sprite.GlobalID,
-					location.x, location.y,
+					location.x + bodyPart.Width.Abs() * offsetX / 1000,
+					location.y + bodyPart.Height.Abs() * offsetY / 1000,
 					sprite.PivotX, sprite.PivotY, bodyPart.Rotation + localRotation,
 					flipX ? -sprite.GlobalWidth : sprite.GlobalWidth,
 					bodyPart.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight,
@@ -811,7 +818,8 @@ namespace AngeliaFramework {
 			} else {
 				CellRenderer.Draw_9Slice(
 					sprite.GlobalID,
-					location.x, location.y,
+					location.x + bodyPart.Width.Abs() * offsetX / 1000,
+					location.y + bodyPart.Height.Abs() * offsetY / 1000,
 					sprite.PivotX, sprite.PivotY, bodyPart.Rotation + localRotation,
 					flipX ? -sprite.GlobalWidth : sprite.GlobalWidth,
 					bodyPart.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight,

@@ -19,7 +19,6 @@ namespace AngeliaFramework {
 
 			public Int3 HomeUnitPosition = new(int.MinValue, int.MinValue, int.MinValue);
 			public int CharacterHeight = 160;
-			public int CharacterBoobSize = 300;
 
 			// Body Part
 			public int Head = DEFAULT_BODY_PART_ID[0];
@@ -136,6 +135,7 @@ namespace AngeliaFramework {
 
 		public void SetSkinColor (Color32 newColor) => _SkinColor = newColor;
 		public void SetHairColor (Color32 newColor) => _HairColor = newColor;
+		public void SetCharacterHeight (int newHeight) => _CharacterHeight = newHeight;
 
 
 		#endregion
@@ -149,8 +149,8 @@ namespace AngeliaFramework {
 		private void LoadCharacterFromConfig () {
 
 			HomeUnitPosition = Config.HomeUnitPosition.x != int.MinValue ? Config.HomeUnitPosition : null;
-			_CharacterHeight = Config.CharacterHeight.Clamp(100, 200);
-			
+			_CharacterHeight = Config.CharacterHeight.Clamp(Const.MIN_CHARACTER_HEIGHT, Const.MAX_CHARACTER_HEIGHT);
+
 			// Bodyparts
 			if (BodyPartsReady) {
 				Head.SetSpriteID(Config.Head);
@@ -199,8 +199,8 @@ namespace AngeliaFramework {
 		private void SaveCharacterToConfig () {
 
 			Config.HomeUnitPosition = HomeUnitPosition ?? new Int3(int.MinValue, int.MinValue, int.MinValue);
-			Config.CharacterHeight = _CharacterHeight.Clamp(100, 200);
-			
+			Config.CharacterHeight = _CharacterHeight.Clamp(Const.MIN_CHARACTER_HEIGHT, Const.MAX_CHARACTER_HEIGHT);
+
 			if (BodyPartsReady) {
 				Config.Head = Head.ID;
 				Config.Body = Body.ID;

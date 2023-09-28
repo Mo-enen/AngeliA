@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 
@@ -26,6 +25,7 @@ namespace AngeliaFramework {
 		private static readonly Dictionary<int, Boob> Pool = new();
 		private static readonly Dictionary<int, int> DefaultPool = new();
 		public virtual bool SuitAvailable => true;
+		public virtual int Size => 1000;
 
 
 		// MSG
@@ -61,12 +61,12 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Vector3Int GetBoobPosition (Character character, bool motion = true) {
-			var bodyRect = character.Body.GetGlobalRect();
-			int boobOffsetX = bodyRect.width * 3 / 20;
+		public static Vector2Int GetBoobPosition (Character character, bool motion = true) {
+			var body = character.Body;
+			int boobOffsetX = 0;
 			int boobOffsetY = 0;
 			if (motion) {
-				boobOffsetX += (character.FacingRight ? 1 : -1) * character.PoseTwist * 10 / 1000;
+				boobOffsetX += character.PoseTwist * 10 / 1000;
 				int basicRootY = character.BasicRootY;
 				switch (character.AnimatedPoseType) {
 					case CharacterPoseAnimationType.Walk:
@@ -89,10 +89,9 @@ namespace AngeliaFramework {
 						break;
 				}
 			}
-			return new Vector3Int(
-				character.FacingRight ? bodyRect.x : bodyRect.xMax,
-				bodyRect.y + bodyRect.height * 570 / 1000 + boobOffsetY,
-				character.FacingRight ? bodyRect.width + boobOffsetX : -bodyRect.width - boobOffsetX
+			return new Vector2Int(
+				body.GlobalX + boobOffsetX,
+				body.GlobalY + body.Height.Abs() * 570 / 1000 + boobOffsetY
 			);
 		}
 
@@ -111,13 +110,15 @@ namespace AngeliaFramework {
 				if (sprite.GlobalBorder.IsZero) {
 					CellRenderer.Draw(
 						spriteID,
-						new RectInt(pos.x, pos.y - sprite.GlobalHeight, pos.z, sprite.GlobalHeight),
-						skinColor, character.Body.Z + 1
+						pos.x, pos.y, 500, 1000, 0,
+						sprite.GlobalWidth, sprite.GlobalHeight
+						, skinColor, character.Body.Z + 1
 					);
 				} else {
 					CellRenderer.Draw_9Slice(
 						spriteID,
-						new RectInt(pos.x, pos.y - sprite.GlobalHeight, pos.z, sprite.GlobalHeight),
+						pos.x, pos.y, 500, 1000, 0,
+						sprite.GlobalWidth, sprite.GlobalHeight,
 						skinColor, character.Body.Z + 1
 					);
 				}

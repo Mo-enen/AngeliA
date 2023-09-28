@@ -17,6 +17,7 @@ namespace AngeliaFramework {
 			Face, Hair, Ear, Tail, Wing, Horn, Boob,
 			SkinColor, HairColor,
 			Suit_Head, Suit_BodyShoulderArmArm, Suit_Hand, Suit_HipSkirtLegLeg, Suit_Foot,
+			Height,
 		}
 
 
@@ -47,6 +48,10 @@ namespace AngeliaFramework {
 
 		// Const
 		private const int EDITOR_BASIC_Z = 60;
+		private static readonly int ICON_UP_CODE = "Icon TriangleUp".AngeHash();
+		private static readonly int ICON_DOWN_CODE = "Icon TriangleDown".AngeHash();
+		private static readonly int BUTTON_CODE = "UI.DarkButton".AngeHash();
+		private static readonly int BUTTON_DOWN_CODE = "UI.DarkButtonDown".AngeHash();
 		private static readonly int FRAME_CODE = "Frame16".AngeHash();
 		private static readonly int HINT_USE = "CtrlHint.Use".AngeHash();
 		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
@@ -70,6 +75,7 @@ namespace AngeliaFramework {
 			"UI.Suit.Glove".AngeHash(),
 			"UI.Suit.Pants".AngeHash(),
 			"UI.Suit.Shoes".AngeHash(),
+			"UI.BodyPart.Height".AngeHash(),
 		};
 		private static readonly int[] MAIN_MENU_ICONS = {
 			"Icon.BodyPart.Head".AngeHash(),
@@ -90,6 +96,7 @@ namespace AngeliaFramework {
 			"Icon.Suit.Glove".AngeHash(),
 			"Icon.Suit.Pants".AngeHash(),
 			"Icon.Suit.Shoes".AngeHash(),
+			"Icon.BodyPart.Height".AngeHash(),
 		};
 
 		// Api
@@ -143,6 +150,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private readonly SubMenuType[] MainMenu = null;
+		private readonly IntToString BodyHeightToString = new("", " cm");
 		private SubMenuType? CurrentSubMenu = null;
 		private int HighlightingMainIndex = 0;
 		private int HighlightingPatternRow = 0;
@@ -231,8 +239,10 @@ namespace AngeliaFramework {
 				ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_USE, "Use"));
 			}
 
-			if (FrameInput.GameKeyDown(Gamekey.Left)) PlayerFacingRight = false;
-			if (FrameInput.GameKeyDown(Gamekey.Right)) PlayerFacingRight = true;
+			if (CurrentSubMenu.HasValue) {
+				if (FrameInput.GameKeyDown(Gamekey.Left)) PlayerFacingRight = false;
+				if (FrameInput.GameKeyDown(Gamekey.Right)) PlayerFacingRight = true;
+			}
 
 			// Rendering
 			var windowRect = WindowRect;
@@ -473,6 +483,9 @@ namespace AngeliaFramework {
 						break;
 					case SubMenuType.HairColor:
 						SubEditor_HairColor(panelRect);
+						break;
+					case SubMenuType.Height:
+						SubEditor_BodyHeight(panelRect);
 						break;
 				}
 			}
@@ -765,6 +778,17 @@ namespace AngeliaFramework {
 		}
 
 
+		private void SubEditor_BodyHeight (RectInt panelRect) {
+			var player = Player.Selecting as MainPlayer;
+			panelRect.height -= Unify(16);
+			int newHeight = BodyHeightMenuUI(panelRect, player.CharacterHeight);
+			if (newHeight != player.CharacterHeight) {
+				player.SetCharacterHeight(newHeight);
+				player.SaveConfigToFile();
+			}
+		}
+
+
 		// Misc
 		private bool PatternMenuUI (RectInt panelRect, List<PatternUnit> patterns, Color32 iconTint, Int4 selectingPattern, out int invokingIndex) {
 
@@ -940,6 +964,50 @@ namespace AngeliaFramework {
 
 			// Final
 			return tryInvoke;
+		}
+
+
+		private int BodyHeightMenuUI (RectInt panelRect, int playerHeight) {
+
+			// Hotkeys
+			if (FrameInput.GameKeyDownGUI(Gamekey.Down)) {
+				playerHeight--;
+			}
+			if (FrameInput.GameKeyDownGUI(Gamekey.Up)) {
+				playerHeight++;
+			}
+
+			int BUTTON_W = Unify(84);
+			int BUTTON_H = Unify(42);
+			int BUTTON_PADDING = Unify(24);
+			int BUTTON_BORDER = Unify(6);
+
+			// Label
+			CellRendererGUI.Label(
+				CellContent.Get(BodyHeightToString.GetString(playerHeight), 52), panelRect, out var labelBounds
+			);
+
+			// Button Up
+			var btnRectU = new RectInt(panelRect.CenterX() - BUTTON_W / 2, labelBounds.yMax + BUTTON_PADDING, BUTTON_W, BUTTON_H);
+			if (CellRendererGUI.Button(
+				btnRectU, BUTTON_CODE, BUTTON_CODE, BUTTON_DOWN_CODE,
+				ICON_UP_CODE, BUTTON_BORDER, 0, EDITOR_BASIC_Z + 5
+			)) {
+				playerHeight++;
+			}
+			CursorSystem.SetCursorAsHand(btnRectU);
+
+			// Button Down
+			var btnRectD = new RectInt(panelRect.CenterX() - BUTTON_W / 2, labelBounds.y - BUTTON_PADDING - BUTTON_H, BUTTON_W, BUTTON_H);
+			if (CellRendererGUI.Button(
+				btnRectD, BUTTON_CODE, BUTTON_CODE, BUTTON_DOWN_CODE,
+				ICON_DOWN_CODE, BUTTON_BORDER, 0, EDITOR_BASIC_Z + 5
+			)) {
+				playerHeight--;
+			}
+			CursorSystem.SetCursorAsHand(btnRectD);
+
+			return playerHeight.Clamp(Const.MIN_CHARACTER_HEIGHT, Const.MAX_CHARACTER_HEIGHT);
 		}
 
 
