@@ -405,7 +405,7 @@ namespace AngeliaFramework {
 			Pattern_Foots.Clear();
 			Pattern_Hands.Clear();
 			foreach (var pair in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_Heads, "_HeadSuit"))
-				Pattern_Heads.Add(new(pair.Key.A, pair.Value));
+				Pattern_Heads.Add(new(pair.Key.A,  pair.Value));
 			foreach (var pair in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_BodyShoulderArmArms, "_BodySuit"))
 				Pattern_BodyShoulderArmArms.Add(new(pair.Key.A, pair.Value));
 			foreach (var pair in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_HipSkirtLegLegs, "_HipSuit"))

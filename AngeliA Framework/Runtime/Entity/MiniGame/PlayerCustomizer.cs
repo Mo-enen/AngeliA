@@ -104,6 +104,7 @@ namespace AngeliaFramework {
 		protected override bool RequireMouseCursor => true;
 		protected override bool RequireQuitConfirm => false;
 		protected override string DisplayName => Language.Get(TypeID, "Player Maker");
+		protected abstract string PatternRootName { get; }
 
 		// Pattern
 		protected abstract string[] BodyPart_Heads { get; }
@@ -126,27 +127,24 @@ namespace AngeliaFramework {
 		protected abstract string[] Colors_Hair { get; }
 
 		// Pattern List
-		private readonly List<PatternUnit> Patterns_Head = new();
-		private readonly List<PatternUnit> Patterns_BodyHip = new();
-		private readonly List<PatternUnit> Patterns_ShoulderArmArmHand = new();
-		private readonly List<PatternUnit> Patterns_LegLegFoot = new();
-
-		private readonly List<PatternUnit> Patterns_Face = new();
-		private readonly List<PatternUnit> Patterns_Hair = new();
-		private readonly List<PatternUnit> Patterns_Ear = new();
-		private readonly List<PatternUnit> Patterns_Tail = new();
-		private readonly List<PatternUnit> Patterns_Wing = new();
-		private readonly List<PatternUnit> Patterns_Horn = new();
-		private readonly List<PatternUnit> Patterns_Boob = new();
-
-		private readonly List<PatternUnit> Patterns_Suit_Head = new();
-		private readonly List<PatternUnit> Patterns_Suit_BodyShoulderArmArm = new();
-		private readonly List<PatternUnit> Patterns_Suit_HipSkirtLegLeg = new();
-		private readonly List<PatternUnit> Patterns_Suit_Hand = new();
-		private readonly List<PatternUnit> Patterns_Suit_Foot = new();
-
-		private readonly List<PatternUnit> Patterns_ColorSkin = new();
-		private readonly List<PatternUnit> Patterns_ColorHair = new();
+		private static readonly List<PatternUnit> Patterns_Head = new();
+		private static readonly List<PatternUnit> Patterns_BodyHip = new();
+		private static readonly List<PatternUnit> Patterns_ShoulderArmArmHand = new();
+		private static readonly List<PatternUnit> Patterns_LegLegFoot = new();
+		private static readonly List<PatternUnit> Patterns_Face = new();
+		private static readonly List<PatternUnit> Patterns_Hair = new();
+		private static readonly List<PatternUnit> Patterns_Ear = new();
+		private static readonly List<PatternUnit> Patterns_Tail = new();
+		private static readonly List<PatternUnit> Patterns_Wing = new();
+		private static readonly List<PatternUnit> Patterns_Horn = new();
+		private static readonly List<PatternUnit> Patterns_Boob = new();
+		private static readonly List<PatternUnit> Patterns_Suit_Head = new();
+		private static readonly List<PatternUnit> Patterns_Suit_BodyShoulderArmArm = new();
+		private static readonly List<PatternUnit> Patterns_Suit_HipSkirtLegLeg = new();
+		private static readonly List<PatternUnit> Patterns_Suit_Hand = new();
+		private static readonly List<PatternUnit> Patterns_Suit_Foot = new();
+		private static readonly List<PatternUnit> Patterns_ColorSkin = new();
+		private static readonly List<PatternUnit> Patterns_ColorHair = new();
 
 		// Data
 		private readonly SubMenuType[] MainMenu = null;
@@ -172,6 +170,8 @@ namespace AngeliaFramework {
 
 
 		public PlayerCustomizer () {
+
+			LoadPatternsFromFile();
 
 			// Main Menu
 			int subMenuCount = 0;
@@ -278,7 +278,6 @@ namespace AngeliaFramework {
 			HighlightingPatternRow = 0;
 			PatternPickerScrollRow = 0;
 			CurrentSubMenu = null;
-			LoadPatternsFromFile();
 			BackButtonHotkeyLabel = $"({AngeUtil.GetGameKeyDisplayName(Gamekey.Jump)})";
 			BackButtonHotkeyPadCode = Const.GAMEPAD_JUMP_HINT_CODE;
 		}
@@ -1067,20 +1066,23 @@ namespace AngeliaFramework {
 			Patterns_ColorSkin.Clear();
 			Patterns_ColorHair.Clear();
 
+			string basicName = PatternRootName;
+
 			// Head
-			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Heads, ".Head"))
+			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Heads, ".Head")) {
 				Patterns_Head.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Language.Get(name.AngeHash(), name),
+					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Head.Count == 0,
 				});
+			}
 
 			// Body Hip
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_BodyHips, ".Body", ".Hip"))
 				Patterns_BodyHip.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Language.Get(name.AngeHash(), name),
+					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_BodyHip.Count == 0,
 				});
@@ -1089,7 +1091,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_ShoulderArmArmHands, ".Shoulder", ".UpperArm", ".LowerArm", ".Hand"))
 				Patterns_ShoulderArmArmHand.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Language.Get(name.AngeHash(), name),
+					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_ShoulderArmArmHand.Count == 0,
 				});
@@ -1098,7 +1100,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_LegLegFoots, ".UpperLeg", ".LowerLeg", ".Foot"))
 				Patterns_LegLegFoot.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Language.Get(name.AngeHash(), name),
+					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_LegLegFoot.Count == 0,
 				});
@@ -1109,7 +1111,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Faces, ""))
 				Patterns_Face.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Language.Get(name.AngeHash(), name),
+					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Face.Count == 0,
 				});
@@ -1118,7 +1120,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Hairs, ""))
 				Patterns_Hair.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Language.Get(name.AngeHash(), name),
+					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Hair.Count == 0,
 				});
@@ -1127,7 +1129,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Ears, ""))
 				Patterns_Ear.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Language.Get(name.AngeHash(), name),
+					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Ear.Count == 0,
 				});
@@ -1136,7 +1138,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Tails, ""))
 				Patterns_Tail.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Language.Get(name.AngeHash(), name),
+					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Tail.Count == 0,
 				});
@@ -1145,7 +1147,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Wings, ""))
 				Patterns_Wing.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Language.Get(name.AngeHash(), name),
+					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Wing.Count == 0,
 				});
@@ -1154,7 +1156,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Horns, ""))
 				Patterns_Horn.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Language.Get(name.AngeHash(), name),
+					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Horn.Count == 0,
 				});
@@ -1163,7 +1165,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Boobs, ""))
 				Patterns_Boob.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Language.Get(name.AngeHash(), name),
+					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Boob.Count == 0,
 				});
@@ -1174,7 +1176,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_Heads, ""))
 				Patterns_Suit_Head.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Language.Get(name.AngeHash(), name),
+					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Suit_Head.Count == 0,
 				});
@@ -1183,7 +1185,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_BodyShoulderArmArms, ""))
 				Patterns_Suit_BodyShoulderArmArm.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Language.Get(name.AngeHash(), name),
+					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Suit_BodyShoulderArmArm.Count == 0,
 				});
@@ -1192,7 +1194,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_HipSkirtLegLegs, ""))
 				Patterns_Suit_HipSkirtLegLeg.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Language.Get(name.AngeHash(), name),
+					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Suit_HipSkirtLegLeg.Count == 0,
 				});
@@ -1201,7 +1203,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_Hands, ""))
 				Patterns_Suit_Hand.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Language.Get(name.AngeHash(), name),
+					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Suit_Hand.Count == 0,
 				});
@@ -1210,7 +1212,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_Foots, ""))
 				Patterns_Suit_Foot.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Language.Get(name.AngeHash(), name),
+					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Suit_Foot.Count == 0,
 				});

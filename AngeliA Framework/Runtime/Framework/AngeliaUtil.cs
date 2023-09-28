@@ -248,14 +248,14 @@ namespace AngeliaFramework {
 				if (string.IsNullOrEmpty(pat)) {
 					yield return new(new Int4(0, 0, 0, 0), "");
 				} else if (pat[0] == '#') {
-					yield return new(new Int4(0, 0, 0, 0), Language.Get($"Pat.{pat}".AngeHash(), pat));
+					yield return new(new Int4(0, 0, 0, 0), pat);
 				} else {
 					yield return new(new Int4(
 						$"{pat}{suffix0}".AngeHash(),
 						string.IsNullOrEmpty(suffix1) ? 0 : $"{pat}{suffix1}".AngeHash(),
 						string.IsNullOrEmpty(suffix2) ? 0 : $"{pat}{suffix2}".AngeHash(),
 						string.IsNullOrEmpty(suffix3) ? 0 : $"{pat}{suffix3}".AngeHash()
-					), Language.Get($"Pat.{pat}".AngeHash(), pat));
+					), pat);
 				}
 			}
 		}

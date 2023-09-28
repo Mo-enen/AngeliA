@@ -7,6 +7,8 @@ using AngeliaFramework;
 namespace AngeliaGame {
 	public partial class PlayerCustomizerHololia : PlayerCustomizer {
 
+		protected override string PatternRootName => "Pat.Holo";
+
 		protected override string[] BodyPart_Heads => _BodyPart_Heads;
 		protected override string[] BodyPart_BodyHips => _BodyPart_BodyHips;
 		protected override string[] BodyPart_ShoulderArmArmHands => _BodyPart_ShoulderArmArmHands;
