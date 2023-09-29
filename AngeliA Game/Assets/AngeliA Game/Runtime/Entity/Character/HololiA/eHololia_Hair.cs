@@ -27,6 +27,8 @@ namespace AngeliaGame {
 		protected override int FacingLeftOffsetX => 16;
 		protected override int PositionAmountX => 75;
 		protected override int PositionAmountY => 700;
+		protected override bool GetFrontL (Character character) => character.Head.FrontSide == character.Head.Width > 0;
+		protected override bool GetFrontR (Character character) => character.Head.FrontSide == character.Head.Width < 0;
 	}
 	public class ShionHair : AutoSpriteHair { }
 	public class AyameHair : AutoSpriteHair { }
@@ -50,7 +52,8 @@ namespace AngeliaGame {
 		protected override int FacingLeftOffsetX => 16;
 		protected override int PositionAmountX => 65;
 		protected override int PositionAmountY => 695;
-		protected override bool Front => false;
+		protected override bool GetFrontL (Character character) => !character.Head.FrontSide;
+		protected override bool GetFrontR (Character character) => !character.Head.FrontSide;
 		protected override int DropMotionAmount => 1000;
 	}
 	public class KanataHair : AutoSpriteHair { }
@@ -90,10 +93,11 @@ namespace AngeliaGame {
 		protected override bool AllowLimbRotate => true;
 	}
 	public class ReineHair : AutoSpriteBraidHair {
-		protected override bool Front => false;
 		protected override int PositionAmountX => 322;
 		protected override int PositionAmountY => 1000;
 		protected override int FacingLeftOffsetX => 16;
+		protected override bool GetFrontL (Character character) => !character.Head.FrontSide;
+		protected override bool GetFrontR (Character character) => !character.Head.FrontSide;
 	}
 	public class CalliopeHair : AutoSpriteHair { }
 	public class KiaraHair : AutoSpriteHair { }

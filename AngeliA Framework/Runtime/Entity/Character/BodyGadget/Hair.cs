@@ -12,7 +12,8 @@ namespace AngeliaFramework {
 
 		private int BraidL { get; init; }
 		private int BraidR { get; init; }
-		protected virtual bool Front => true;
+		protected virtual bool GetFrontL (Character character) => character.Head.FrontSide;
+		protected virtual bool GetFrontR (Character character) => character.Head.FrontSide;
 		protected virtual int FacingLeftOffsetX => 0;
 		protected virtual bool AllowLimbRotate => false;
 		protected virtual int MotionAmount => 618;
@@ -83,7 +84,8 @@ namespace AngeliaFramework {
 				hairT = headRect.yMax;
 			}
 
-			int z = Front == head.FrontSide ? 33 : -33;
+			int zLeft = GetFrontL(character) ? 33 : -33;
+			int zRight = GetFrontR(character) ? 33 : -33;
 			int lerpL = flipX ? 1000 : 0;
 			int lerpR = flipX ? 0 : 1000;
 			int lerpLY = flipY ? 1000 : 0;
@@ -109,22 +111,22 @@ namespace AngeliaFramework {
 				int motionRotY = ((character.DeltaPositionY * DropMotionAmount) / 1000).Clamp(-70, 0);
 
 				var bcells = DrawBraid(
-					BraidL, l, y, z, 0,
+					BraidL, l, y, zLeft, 0,
 					(character.FacingRight ? rot : rot * 2 / 3) - motionRotY,
 					flipX, flipY, deltaHeight, rolling, AllowLimbRotate
 				);
 				Flow(bcells, character.FacingRight ? braidFlow : braidFlow / 2);
 
 				bcells = DrawBraid(
-					BraidR, r, y, z, 1000,
+					BraidR, r, y, zRight, 1000,
 					(character.FacingRight ? rot * 2 / 3 : rot) + motionRotY,
 					flipX, flipY, deltaHeight, rolling, AllowLimbRotate
 				);
 				Flow(bcells, character.FacingRight ? braidFlow / 2 : braidFlow);
 
 			} else {
-				DrawBraid(BraidL, l, y, z, 0, rot, flipX, flipY, deltaHeight, rolling, AllowLimbRotate);
-				DrawBraid(BraidR, r, y, z, 1000, rot, flipX, flipY, deltaHeight, rolling, AllowLimbRotate);
+				DrawBraid(BraidL, l, y, zLeft, 0, rot, flipX, flipY, deltaHeight, rolling, AllowLimbRotate);
+				DrawBraid(BraidR, r, y, zRight, 1000, rot, flipX, flipY, deltaHeight, rolling, AllowLimbRotate);
 			}
 
 			// Func
@@ -276,19 +278,20 @@ namespace AngeliaFramework {
 			if (spriteID == 0) return null;
 
 			var head = character.Head;
-			int groupSignFlag = -1;
+			//int groupSignFlag = -1;
 
 			if (
 				!CellRenderer.TryGetSprite(spriteID, out var hairSprite) &&
 				!CellRenderer.TryGetSpriteFromGroup(
-					spriteID, groupSignFlag = (head.Width > 0 ? 0 : 1), out hairSprite, false, true
+					//spriteID, groupSignFlag = (head.Width > 0 ? 0 : 1), out hairSprite, false, true
+					spriteID, head.Width > 0 ? 0 : 1, out hairSprite, false, true
 				)
 			) return null;
 
 			var headRect = head.GetGlobalRect();
 
 			// Expand Rect
-			bool flipX = groupSignFlag < 0 && head.Width < 0;
+			//bool flipX = groupSignFlag < 0 && head.Width < 0;
 			bool flipY = head.Height < 0;
 			int expandLR = hairSprite.PivotX * hairSprite.GlobalWidth / 1000;
 			int expandU = (1000 - hairSprite.PivotY) * hairSprite.GlobalHeight / 1000;
@@ -318,7 +321,7 @@ namespace AngeliaFramework {
 			}
 
 			// Flip X
-			if (flipX) hairRect.FlipHorizontal();
+			//if (flipX) hairRect.FlipHorizontal();
 
 			// Draw Single Hair
 			int z = isFrontHair ? 32 : -32;

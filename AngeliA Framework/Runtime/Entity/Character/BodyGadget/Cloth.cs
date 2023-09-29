@@ -43,34 +43,51 @@ namespace AngeliaFramework {
 
 
 		protected override void DrawHead (Character character) {
-			if (ClothType != ClothType.Head) return;
-			if (SpriteID != 0) {
-				if (CellRenderer.HasSpriteGroup(SpriteID, out int length) && length >= 2) {
-					// Front & Back
+			if (ClothType != ClothType.Head || SpriteID == 0) return;
+			if (CellRenderer.HasSpriteGroup(SpriteID)) {
+				if (character.Head.FrontSide) {
+					// Front
+					bool front = Front != FrontMode.Back;
 					if (CellRenderer.TryGetSpriteFromGroup(SpriteID, 0, out var sprite, false, true)) {
+						bool usePixelShift = character.Head.FrontSide && character.Head.Width < 0;
+						if (usePixelShift && CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
+							usePixelShift = false;
+						}
 						character.AttachClothOn(
-							character.Head, Direction3.Up, sprite.GlobalID, 
-							Front == character.Head.FrontSide ? 34 : -34,
-							Const.WHITE, character.Head.Width < 0, 0,
-							OffsetX, OffsetY
-						);
-					}
-					if (CellRenderer.TryGetSpriteFromGroup(SpriteID, 1, out sprite, false, true)) {
-						character.AttachClothOn(
-							character.Head, Direction3.Up, sprite.GlobalID, 
-							Front == character.Head.FrontSide ? -34 : 34,
-							Const.WHITE, character.Head.Width < 0, 0,
-							OffsetX, OffsetY
+							character.Head, Direction3.Up, sprite.GlobalID,
+							front ? 34 : -34,
+							false, 0,
+							usePixelShift ? (front ? -16 : 16) : 0, 0
 						);
 					}
 				} else {
-					// Single Sprite
-					character.AttachClothOn(
-						character.Head, Direction3.Up, SpriteID, Front == character.Head.FrontSide ? 34 : -34,
-						Const.WHITE, character.Head.Width < 0, 0,
-						OffsetX, OffsetY
-					);
+					// Back
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID, 1, out var sprite, false, true)) {
+						bool front = Front != FrontMode.Front;
+						bool usePixelShift = character.Head.FrontSide && character.Head.Width < 0;
+						if (usePixelShift && CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
+							usePixelShift = false;
+						}
+						character.AttachClothOn(
+							character.Head, Direction3.Up, sprite.GlobalID,
+							front ? 34 : -34,
+							false, 0,
+							usePixelShift ? (front ? -16 : 16) : 0, 0
+						);
+					}
 				}
+			} else {
+				// Single Sprite
+				bool front = Front == FrontMode.AlwaysFront || (Front == FrontMode.Front) == character.Head.FrontSide;
+				bool usePixelShift = character.Head.FrontSide && character.Head.Width < 0;
+				if (usePixelShift && CellRenderer.TryGetMeta(SpriteID, out var meta) && meta.IsTrigger) {
+					usePixelShift = false;
+				}
+				character.AttachClothOn(
+					character.Head, Direction3.Up, SpriteID, front ? 34 : -34,
+					!character.Head.FrontSide, 0,
+					usePixelShift ? (front ? -16 : 16) : 0, 0
+				);
 			}
 		}
 		protected override void DrawBodyShoulderArmArm (Character character) {
@@ -141,15 +158,18 @@ namespace AngeliaFramework {
 	}
 
 
+
 	public abstract class Cloth {
+
+
+		// SUB
+		protected enum FrontMode { Front, Back, AlwaysFront, }
 
 
 		// Api
 		public int TypeID { get; init; }
 		protected abstract ClothType ClothType { get; }
-		protected virtual bool Front => true;
-		protected virtual int OffsetX => 0;
-		protected virtual int OffsetY => 0;
+		protected virtual FrontMode Front => FrontMode.Front;
 
 		// Data
 		private static readonly Dictionary<int, Cloth> Pool = new();

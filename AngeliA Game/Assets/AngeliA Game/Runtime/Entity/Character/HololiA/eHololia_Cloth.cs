@@ -20,7 +20,7 @@ namespace AngeliaGame {
 	public class MikoHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class MikoHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => false;
+		protected override FrontMode Front => FrontMode.Back;
 	}
 	public class MikoFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
@@ -28,7 +28,7 @@ namespace AngeliaGame {
 	public class SuiseiHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class SuiseiHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => false;
+		protected override FrontMode Front => FrontMode.Back;
 	}
 	public class SuiseiFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
@@ -61,7 +61,7 @@ namespace AngeliaGame {
 	public class AquaHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class AquaHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => false;
+		protected override FrontMode Front => FrontMode.Back;
 	}
 	public class AquaFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
@@ -69,7 +69,7 @@ namespace AngeliaGame {
 	public class ShionHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class ShionHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => true;
+		protected override FrontMode Front => FrontMode.Front;
 	}
 	public class ShionHandSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hand; }
 	public class ShionFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
@@ -86,7 +86,7 @@ namespace AngeliaGame {
 	public class SubaruHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class SubaruHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => true;
+		protected override FrontMode Front => FrontMode.AlwaysFront;
 	}
 	public class SubaruFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
@@ -111,7 +111,7 @@ namespace AngeliaGame {
 	public class FlareHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class FlareHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => false;
+		protected override FrontMode Front => FrontMode.Back;
 	}
 	public class FlareHandSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hand; }
 	public class FlareFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
@@ -129,7 +129,7 @@ namespace AngeliaGame {
 	public class KanataHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class KanataHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => true;
+		protected override FrontMode Front => FrontMode.Front;
 	}
 	public class KanataFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
@@ -141,7 +141,7 @@ namespace AngeliaGame {
 	public class TowaHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class TowaHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => true;
+		protected override FrontMode Front => FrontMode.Front;
 	}
 	public class TowaFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
@@ -149,7 +149,7 @@ namespace AngeliaGame {
 	public class LunaHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class LunaHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => true;
+		protected override FrontMode Front => FrontMode.Front;
 	}
 	public class LunaFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
@@ -174,7 +174,7 @@ namespace AngeliaGame {
 	public class PolkaHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class PolkaHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => true;
+		protected override FrontMode Front => FrontMode.Front;
 	}
 	public class PolkaFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
@@ -194,7 +194,7 @@ namespace AngeliaGame {
 	public class OllieHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class OllieHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => false;
+		protected override FrontMode Front => FrontMode.Back;
 	}
 	public class OllieHandSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hand; }
 	public class OllieFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
@@ -211,7 +211,7 @@ namespace AngeliaGame {
 	public class CalliopeHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class CalliopeHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => true;
+		protected override FrontMode Front => FrontMode.Front;
 	}
 	public class CalliopeFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
@@ -219,7 +219,7 @@ namespace AngeliaGame {
 	public class KiaraHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class KiaraHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => true;
+		protected override FrontMode Front => FrontMode.Front;
 	}
 	public class KiaraFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
@@ -227,7 +227,7 @@ namespace AngeliaGame {
 	public class InaHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class InaHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => true;
+		protected override FrontMode Front => FrontMode.Front;
 	}
 	public class InaHandSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hand; }
 	public class InaFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
@@ -240,7 +240,7 @@ namespace AngeliaGame {
 	public class AmeHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class AmeHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => true;
+		protected override FrontMode Front => FrontMode.AlwaysFront;
 	}
 	public class AmeFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
@@ -248,7 +248,7 @@ namespace AngeliaGame {
 	public class IRySHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class IRySHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => true;
+		protected override FrontMode Front => FrontMode.Front;
 	}
 	public class IRySFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
@@ -265,7 +265,7 @@ namespace AngeliaGame {
 	public class MumeiHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class MumeiHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => false;
+		protected override FrontMode Front => FrontMode.Back;
 	}
 	public class MumeiFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
@@ -278,7 +278,7 @@ namespace AngeliaGame {
 	public class SanaHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class SanaHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => true;
+		protected override FrontMode Front => FrontMode.Front;
 	}
 	public class SanaHandSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hand; }
 	public class SanaFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
@@ -311,7 +311,7 @@ namespace AngeliaGame {
 	public class KaelaHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class KaelaHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => true;
+		protected override FrontMode Front => FrontMode.Front;
 	}
 	public class KaelaHandSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hand; }
 	public class KaelaFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
@@ -328,7 +328,7 @@ namespace AngeliaGame {
 	public class BijouHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class BijouHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override bool Front => true;
+		protected override FrontMode Front => FrontMode.Front;
 	}
 	public class BijouFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 

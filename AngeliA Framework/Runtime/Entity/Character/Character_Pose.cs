@@ -767,63 +767,63 @@ namespace AngeliaFramework {
 		}
 
 
-		public void DrawArmorForShoulder (int spriteID, int rotationAmount = 700) => DrawArmorForShoulder(spriteID, Const.WHITE, rotationAmount);
-		public void DrawArmorForShoulder (int spriteID, Color32 tint, int rotationAmount = 700) {
+		public void DrawArmorForShoulder (int spriteID, int rotationAmount = 700) {
 			if (
 				AnimatedPoseType == CharacterPoseAnimationType.Sleep ||
 				AnimatedPoseType == CharacterPoseAnimationType.PassOut
 			) return;
 			AttachClothOn(
-				UpperArmL, Direction3.Up, spriteID, 36, tint, true,
+				UpperArmL, Direction3.Up, spriteID, 36, true,
 				(-UpperArmL.Rotation * rotationAmount / 1000).Clamp(-UpperArmL.Rotation - 30, -UpperArmL.Rotation + 30)
 			);
 			AttachClothOn(
-				UpperArmR, Direction3.Up, spriteID, 36, tint, false,
+				UpperArmR, Direction3.Up, spriteID, 36, false,
 				(-UpperArmR.Rotation * rotationAmount / 1000).Clamp(-UpperArmR.Rotation - 30, -UpperArmR.Rotation + 30)
 			);
 		}
 
 
-		public void DrawArmorForLimb (int armSpriteID, int legSpriteID) => DrawArmorForLimb(armSpriteID, legSpriteID, Const.WHITE);
-		public void DrawArmorForLimb (int armSpriteID, int legSpriteID, Color32 tint) {
-			AttachClothOn(LowerArmL, Direction3.Up, armSpriteID, LowerArmL.Z + 16, tint, true);
-			AttachClothOn(LowerArmR, Direction3.Up, armSpriteID, LowerArmR.Z + 16, tint, false);
-			AttachClothOn(LowerLegL, Direction3.Up, legSpriteID, LowerLegL.Z + 16, tint, !FacingRight);
-			AttachClothOn(LowerLegR, Direction3.Up, legSpriteID, LowerLegR.Z + 16, tint, !FacingRight);
+		public void DrawArmorForLimb (int armSpriteID, int legSpriteID) {
+			AttachClothOn(LowerArmL, Direction3.Up, armSpriteID, LowerArmL.Z + 16, true);
+			AttachClothOn(LowerArmR, Direction3.Up, armSpriteID, LowerArmR.Z + 16, false);
+			AttachClothOn(LowerLegL, Direction3.Up, legSpriteID, LowerLegL.Z + 16, !FacingRight);
+			AttachClothOn(LowerLegR, Direction3.Up, legSpriteID, LowerLegR.Z + 16, !FacingRight);
 		}
 
 
 		public void AttachClothOn (
-			BodyPart bodyPart, Direction3 verticalLocation, int groupID, int z, 
-			Color32 tint, bool flipX = false, int localRotation = 0, int offsetX = 0, int offsetY = 0
+			BodyPart bodyPart, Direction3 verticalLocation, int spriteID, int z,
+			bool flipX = false, int localRotation = 0, int shiftPixelX = 0, int shiftPixelY = 0
 		) {
-			if (groupID == 0) return;
-			if (!CellRenderer.TryGetSpriteFromGroup(groupID, bodyPart.FrontSide ? 0 : 1, out var sprite, false, true)) return;
+			if (spriteID == 0) return;
+			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
 			var location = verticalLocation switch {
 				Direction3.Up => bodyPart.GlobalLerp(0.5f, 1f),
 				Direction3.None => bodyPart.GlobalLerp(0.5f, 0.5f),
 				Direction3.Down => bodyPart.GlobalLerp(0.5f, 0f),
 				_ => bodyPart.GlobalLerp(0.5f, 1f),
 			};
+			location.x += shiftPixelX;
+			location.y += shiftPixelY;
 			if (sprite.GlobalBorder.IsZero) {
 				CellRenderer.Draw(
 					sprite.GlobalID,
-					location.x + bodyPart.Width.Abs() * offsetX / 1000,
-					location.y + bodyPart.Height.Abs() * offsetY / 1000,
+					location.x,
+					location.y,
 					sprite.PivotX, sprite.PivotY, bodyPart.Rotation + localRotation,
 					flipX ? -sprite.GlobalWidth : sprite.GlobalWidth,
 					bodyPart.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight,
-					tint, z
+					z
 				);
 			} else {
 				CellRenderer.Draw_9Slice(
 					sprite.GlobalID,
-					location.x + bodyPart.Width.Abs() * offsetX / 1000,
-					location.y + bodyPart.Height.Abs() * offsetY / 1000,
+					location.x,
+					location.y,
 					sprite.PivotX, sprite.PivotY, bodyPart.Rotation + localRotation,
 					flipX ? -sprite.GlobalWidth : sprite.GlobalWidth,
 					bodyPart.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight,
-					tint, z
+					z
 				);
 			}
 			if (CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG) {
