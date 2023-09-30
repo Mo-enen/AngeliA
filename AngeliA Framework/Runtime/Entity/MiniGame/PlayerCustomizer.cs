@@ -257,6 +257,9 @@ namespace AngeliaFramework {
 			player.AnimatedPoseType = flying ? CharacterPoseAnimationType.Fly : CharacterPoseAnimationType.Idle;
 			player.LockFacingRight(PlayerFacingRight);
 			AngeUtil.DrawPoseCharacterAsUI(leftPanelRect.Shrink(Unify(32)), player, Game.GlobalFrame);
+			if (FrameInput.MouseLeftButtonDown && leftPanelRect.Contains(FrameInput.MouseGlobalPosition)) {
+				PlayerFacingRight = !PlayerFacingRight;
+			}
 
 			// Editor
 			int padding = Unify(16);

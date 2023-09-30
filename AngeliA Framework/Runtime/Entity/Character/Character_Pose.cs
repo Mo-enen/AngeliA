@@ -276,9 +276,6 @@ namespace AngeliaFramework {
 
 			Cloth.DrawHeadSuit(this);
 			Cloth.DrawBodySuit(this);
-			if (Boob.TryGetBoob(BoobID, out var boob) && boob.SuitAvailable) {
-				Cloth.DrawBoobSuit(this, boob.Size);
-			}
 			Cloth.DrawHipSuit(this);
 			Cloth.DrawHandSuit(this);
 			Cloth.DrawFootSuit(this);
@@ -365,7 +362,6 @@ namespace AngeliaFramework {
 			// Shoulder
 			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
 			ShoulderL.Y = Body.Y + Body.Height - Body.Border.Up;
-			ShoulderL.Z = POSE_Z_BODY;
 			ShoulderL.Width = ShoulderL.SizeX;
 			ShoulderL.Height = ShoulderL.SizeY;
 			ShoulderL.PivotX = 1000;
@@ -373,7 +369,6 @@ namespace AngeliaFramework {
 
 			ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
 			ShoulderR.Y = Body.Y + Body.Height - Body.Border.Up;
-			ShoulderR.Z = POSE_Z_BODY;
 			ShoulderR.Width = -ShoulderR.SizeX;
 			ShoulderR.Height = ShoulderR.SizeY;
 			ShoulderR.PivotX = 1000;
@@ -395,6 +390,9 @@ namespace AngeliaFramework {
 			UpperArmR.Height = upperArmHeight;
 			UpperArmR.PivotX = 0;
 			UpperArmR.PivotY = 1000;
+
+			ShoulderL.Z = UpperArmL.Z - 1;
+			ShoulderR.Z = UpperArmR.Z - 1;
 
 			LowerArmL.X = UpperArmL.X;
 			LowerArmL.Y = UpperArmL.Y - UpperArmL.Height;
@@ -625,45 +623,43 @@ namespace AngeliaFramework {
 
 
 		// Cloth
-		public void DrawClothForBody (int spriteGroupId) => DrawClothForBody(spriteGroupId, Const.WHITE);
-		public void DrawClothForBody (int spriteGroupId, Color32 tint) {
+		public void DrawClothForBody (int spriteGroupId, bool flipWithBody = true) => DrawClothForBody(spriteGroupId, Const.WHITE, flipWithBody);
+		public void DrawClothForBody (int spriteGroupId, Color32 tint, bool flipWithBody = true) {
+
 			if (spriteGroupId == 0) return;
+
 			int groupIndex = !Body.FrontSide ? 3 :
 				PoseTwist.Abs() < 333 ? 0 :
-				Body.Width > 0 == PoseTwist < 0 ? 1 :
+				(flipWithBody || Body.Width > 0) == (Body.Width > 0 == (PoseTwist < 0)) ? 1 :
 				2;
 			if (!CellRenderer.TryGetSpriteFromGroup(spriteGroupId, groupIndex, out var suitSprite, false, true)) return;
+
 			var rect = new RectInt(
 				Body.GlobalX - Body.Width / 2,
 				Hip.GlobalY,
 				Body.Width,
 				Body.Height + Hip.Height
 			);
+
+			// Flip
+			if (!flipWithBody && Body.Width < 0) rect.FlipHorizontal();
+
+			// Border
 			if (!suitSprite.GlobalBorder.IsZero) {
-				int midW = (suitSprite.GlobalWidth - suitSprite.GlobalBorder.Horizontal).GreaterOrEquel(1);
-				int midH = (suitSprite.GlobalHeight - suitSprite.GlobalBorder.Vertical).GreaterOrEquel(1);
 				rect = rect.Expand(
-					suitSprite.GlobalBorder.Left * rect.width / midW,
-					suitSprite.GlobalBorder.Right * rect.width / midW,
-					suitSprite.GlobalBorder.Down * rect.height / midH,
-					suitSprite.GlobalBorder.Up * rect.height / midH
+					suitSprite.GlobalBorder.Left,
+					suitSprite.GlobalBorder.Right,
+					suitSprite.GlobalBorder.Down,
+					suitSprite.GlobalBorder.Up
 				);
 			}
+
+			// Draw
 			CellRenderer.Draw(suitSprite.GlobalID, rect, tint, Body.Z + 7);
+
+			// Hide Limb
 			if (CellRenderer.TryGetMeta(suitSprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG) {
 				Body.Tint = Const.CLEAR;
-			}
-		}
-
-
-		public void DrawClothForBoob (int spriteID, RectInt boobRect) => DrawClothForBoob(spriteID, boobRect, Const.WHITE);
-		public void DrawClothForBoob (int spriteID, RectInt boobRect, Color32 tint) {
-			if (spriteID == 0 || boobRect.width == 0 || !Body.FrontSide) return;
-			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
-			if (sprite.GlobalBorder.IsZero) {
-				CellRenderer.Draw(spriteID, boobRect, tint, Body.Z + 8);
-			} else {
-				CellRenderer.Draw_9Slice(spriteID, boobRect, tint, Body.Z + 8);
 			}
 		}
 
@@ -833,8 +829,7 @@ namespace AngeliaFramework {
 
 
 		public void CoverClothOn (BodyPart bodyPart, int spriteID, int z, Color32 tint, bool defaultHideLimb = true) {
-			if (spriteID == 0) return;
-			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
+			if (spriteID == 0 || !CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
 			if (sprite.GlobalBorder.IsZero) {
 				CellRenderer.Draw(
 					spriteID, bodyPart.GlobalX, bodyPart.GlobalY,

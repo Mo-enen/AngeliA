@@ -15,22 +15,27 @@ namespace AngeliaFramework {
 		private int SpriteID1 { get; init; }
 		private int SpriteID2 { get; init; }
 		private int SpriteID3 { get; init; }
-		private int SpriteID4 { get; init; }
+		private int SpriteID5 { get; init; }
 
 
 		public AutoSpriteCloth () {
 			string name = (GetType().DeclaringType ?? GetType()).AngeName();
 			SpriteID = $"{name}.{ClothType}Suit".AngeHash();
+			SpriteID5 = 0;
 			if (!CellRenderer.HasSprite(SpriteID) && !CellRenderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
 			if (ClothType == ClothType.Body) {
+				if (SpriteID == 0) {
+					SpriteID = $"{name}.BodySuitL".AngeHash();
+					SpriteID5 = $"{name}.BodySuitR".AngeHash();
+					if (!CellRenderer.HasSprite(SpriteID) && !CellRenderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
+					if (!CellRenderer.HasSprite(SpriteID5) && !CellRenderer.HasSpriteGroup(SpriteID5)) SpriteID5 = 0;
+				}
 				SpriteID1 = $"{name}.ShoulderSuit".AngeHash();
 				SpriteID2 = $"{name}.UpperArmSuit".AngeHash();
 				SpriteID3 = $"{name}.LowerArmSuit".AngeHash();
-				SpriteID4 = $"{name}.BoobSuit".AngeHash();
 				if (!CellRenderer.HasSprite(SpriteID1) && !CellRenderer.HasSpriteGroup(SpriteID1)) SpriteID1 = 0;
 				if (!CellRenderer.HasSprite(SpriteID2) && !CellRenderer.HasSpriteGroup(SpriteID2)) SpriteID2 = 0;
 				if (!CellRenderer.HasSprite(SpriteID3) && !CellRenderer.HasSpriteGroup(SpriteID3)) SpriteID3 = 0;
-				if (!CellRenderer.HasSprite(SpriteID4) && !CellRenderer.HasSpriteGroup(SpriteID4)) SpriteID4 = 0;
 			} else if (ClothType == ClothType.Hip) {
 				SpriteID1 = $"{name}.SkirtSuit".AngeHash();
 				SpriteID2 = $"{name}.UpperLegSuit".AngeHash();
@@ -93,33 +98,45 @@ namespace AngeliaFramework {
 		protected override void DrawBodyShoulderArmArm (Character character) {
 			if (ClothType != ClothType.Body) return;
 			if (SpriteID != 0) {
-				character.DrawClothForBody(SpriteID);
+				// Body
+				if (SpriteID5 == 0 || character.Body.Width < 0) {
+					character.DrawClothForBody(SpriteID, SpriteID5 == 0);
+				} else {
+					character.DrawClothForBody(SpriteID5, false);
+				}
 			}
 			if (SpriteID1 != 0) {
+				// Shoulder
 				character.CoverClothOn(character.ShoulderL, SpriteID1, character.ShoulderL.Z + 1, Const.WHITE);
 				character.CoverClothOn(character.ShoulderR, SpriteID1, character.ShoulderR.Z + 1, Const.WHITE);
 			}
 			if (SpriteID2 != 0) {
-				character.CoverClothOn(character.UpperArmL, SpriteID2, character.UpperArmL.Z + 1, Const.WHITE);
-				character.CoverClothOn(character.UpperArmR, SpriteID2, character.UpperArmR.Z + 1, Const.WHITE);
+				// Upper Arm
+				if (CellRenderer.HasSpriteGroup(SpriteID2)) {
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID2, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+						character.CoverClothOn(character.UpperArmL, spriteL.GlobalID, character.UpperArmL.Z + 1, Const.WHITE);
+					}
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID2, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+						character.CoverClothOn(character.UpperArmR, spriteR.GlobalID, character.UpperArmR.Z + 1, Const.WHITE);
+					}
+				} else {
+					character.CoverClothOn(character.UpperArmL, SpriteID2, character.UpperArmL.Z + 1, Const.WHITE);
+					character.CoverClothOn(character.UpperArmR, SpriteID2, character.UpperArmR.Z + 1, Const.WHITE);
+				}
 			}
 			if (SpriteID3 != 0) {
-				character.CoverClothOn(character.LowerArmL, SpriteID3, character.LowerArmL.Z + 1, Const.WHITE);
-				character.CoverClothOn(character.LowerArmR, SpriteID3, character.LowerArmR.Z + 1, Const.WHITE);
-			}
-		}
-		protected override void DrawBoob (Character character, Vector2Int boobPosition, int boobSize) {
-			if (ClothType != ClothType.Body) return;
-			if (SpriteID4 == 0) return;
-			if (CellRenderer.TryGetSprite(SpriteID4, out var sprite)) {
-				int width = character.Body.Width.Sign() * sprite.GlobalWidth * boobSize / 1000;
-				character.DrawClothForBoob(
-					SpriteID4, new RectInt(
-						boobPosition.x - width / 2,
-						boobPosition.y - sprite.GlobalHeight,
-						width, sprite.GlobalHeight
-					)
-				);
+				// Lower Arm
+				if (CellRenderer.HasSpriteGroup(SpriteID3)) {
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID3, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+						character.CoverClothOn(character.LowerArmL, spriteL.GlobalID, character.LowerArmL.Z + 1, Const.WHITE);
+					}
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID3, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+						character.CoverClothOn(character.LowerArmR, spriteR.GlobalID, character.LowerArmR.Z + 1, Const.WHITE);
+					}
+				} else {
+					character.CoverClothOn(character.LowerArmL, SpriteID3, character.LowerArmL.Z + 1, Const.WHITE);
+					character.CoverClothOn(character.LowerArmR, SpriteID3, character.LowerArmR.Z + 1, Const.WHITE);
+				}
 			}
 		}
 		protected override void DrawHand (Character character) {
@@ -132,25 +149,56 @@ namespace AngeliaFramework {
 		protected override void DrawHipSkirtLegLeg (Character character) {
 			if (ClothType != ClothType.Hip) return;
 			if (SpriteID != 0) {
+				// Pants
 				character.DrawClothForHip(SpriteID, false);
 			}
 			if (SpriteID1 != 0) {
+				// Skirt
 				character.DrawClothForHip(SpriteID1, true);
 			}
 			if (SpriteID2 != 0) {
-				character.CoverClothOn(character.UpperLegL, SpriteID2, character.UpperLegL.Z + 1, Const.WHITE);
-				character.CoverClothOn(character.UpperLegR, SpriteID2, character.UpperLegR.Z + 1, Const.WHITE);
+				// Upper Leg
+				if (CellRenderer.HasSpriteGroup(SpriteID2)) {
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID2, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+						character.CoverClothOn(character.UpperLegL, spriteL.GlobalID, character.UpperLegL.Z + 1, Const.WHITE);
+					}
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID2, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+						character.CoverClothOn(character.UpperLegR, spriteR.GlobalID, character.UpperLegR.Z + 1, Const.WHITE);
+					}
+				} else {
+					character.CoverClothOn(character.UpperLegL, SpriteID2, character.UpperLegL.Z + 1, Const.WHITE);
+					character.CoverClothOn(character.UpperLegR, SpriteID2, character.UpperLegR.Z + 1, Const.WHITE);
+				}
 			}
 			if (SpriteID3 != 0) {
-				character.CoverClothOn(character.LowerLegL, SpriteID3, character.LowerLegL.Z + 1, Const.WHITE);
-				character.CoverClothOn(character.LowerLegR, SpriteID3, character.LowerLegR.Z + 1, Const.WHITE);
+				// Lower Leg
+				if (CellRenderer.HasSpriteGroup(SpriteID3)) {
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID3, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+						character.CoverClothOn(character.LowerLegL, spriteL.GlobalID, character.LowerLegL.Z + 1, Const.WHITE);
+					}
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID3, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+						character.CoverClothOn(character.LowerLegR, spriteR.GlobalID, character.LowerLegR.Z + 1, Const.WHITE);
+					}
+				} else {
+					character.CoverClothOn(character.LowerLegL, SpriteID3, character.LowerLegL.Z + 1, Const.WHITE);
+					character.CoverClothOn(character.LowerLegR, SpriteID3, character.LowerLegR.Z + 1, Const.WHITE);
+				}
 			}
 		}
 		protected override void DrawFoot (Character character) {
 			if (ClothType != ClothType.Foot) return;
 			if (SpriteID != 0) {
-				character.DrawClothForFoot(character.FootL, SpriteID);
-				character.DrawClothForFoot(character.FootR, SpriteID);
+				if (CellRenderer.HasSpriteGroup(SpriteID)) {
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+						character.DrawClothForFoot(character.FootL, spriteL.GlobalID);
+					}
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+						character.DrawClothForFoot(character.FootR, spriteR.GlobalID);
+					}
+				} else {
+					character.DrawClothForFoot(character.FootL, SpriteID);
+					character.DrawClothForFoot(character.FootR, SpriteID);
+				}
 			}
 		}
 
@@ -207,7 +255,6 @@ namespace AngeliaFramework {
 		// API
 		public static void DrawHeadSuit (Character character) => DrawHeadSuit(character, out _);
 		public static void DrawBodySuit (Character character) => DrawBodySuit(character, out _);
-		public static void DrawBoobSuit (Character character, int boobSize) => DrawBoobSuit(character, boobSize, out _);
 		public static void DrawHipSuit (Character character) => DrawHipSuit(character, out _);
 		public static void DrawHandSuit (Character character) => DrawHandSuit(character, out _);
 		public static void DrawFootSuit (Character character) => DrawFootSuit(character, out _);
@@ -228,16 +275,6 @@ namespace AngeliaFramework {
 				Pool.TryGetValue(character.Suit_Body, out cloth)
 			) {
 				cloth.DrawBodyShoulderArmArm(character);
-			}
-		}
-		public static void DrawBoobSuit (Character character, int boobSize, out Cloth cloth) {
-			cloth = null;
-			if (
-				boobSize == 0 ||
-				character.Suit_Body != 0 &&
-				Pool.TryGetValue(character.Suit_Body, out cloth)
-			) {
-				cloth.DrawBoob(character, Boob.GetBoobPosition(character), boobSize);
 			}
 		}
 		public static void DrawHipSuit (Character character, out Cloth cloth) {
@@ -285,7 +322,6 @@ namespace AngeliaFramework {
 
 		protected abstract void DrawHead (Character character);
 		protected abstract void DrawBodyShoulderArmArm (Character character);
-		protected abstract void DrawBoob (Character character, Vector2Int boobPosition, int boobSize);
 		protected abstract void DrawHand (Character character);
 		protected abstract void DrawHipSkirtLegLeg (Character character);
 		protected abstract void DrawFoot (Character character);

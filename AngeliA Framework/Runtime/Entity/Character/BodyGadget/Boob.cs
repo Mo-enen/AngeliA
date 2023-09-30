@@ -24,9 +24,7 @@ namespace AngeliaFramework {
 		// VAR
 		private static readonly Dictionary<int, Boob> Pool = new();
 		private static readonly Dictionary<int, int> DefaultPool = new();
-		public virtual bool SuitAvailable => true;
-		public virtual int Size => 1000;
-
+		
 
 		// MSG
 		[OnGameInitialize(-128)]
@@ -47,9 +45,6 @@ namespace AngeliaFramework {
 
 
 		// API
-		public static bool TryGetBoob (int id, out Boob boob) => Pool.TryGetValue(id, out boob);
-
-
 		public static void Draw (Character character) {
 			if (
 				character.BoobID != 0 &&
@@ -61,7 +56,14 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Vector2Int GetBoobPosition (Character character, bool motion = true) {
+		public static bool TryGetDefaultBoobID (int characterID, out int hornID) => DefaultPool.TryGetValue(characterID, out hornID);
+
+
+		protected abstract void DrawBoob (Character character);
+
+
+		// UTL
+		protected static Vector2Int GetBoobPosition (Character character, bool motion = true) {
 			var body = character.Body;
 			int boobOffsetX = 0;
 			int boobOffsetY = 0;
@@ -96,13 +98,6 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool TryGetDefaultBoobID (int characterID, out int hornID) => DefaultPool.TryGetValue(characterID, out hornID);
-
-
-		protected abstract void DrawBoob (Character character);
-
-
-		// UTL
 		protected static void DrawSprite (Character character, int spriteID, Color32 skinColor) {
 			if (spriteID == 0 || !character.Body.FrontSide) return;
 			if (CellRenderer.TryGetSprite(spriteID, out var sprite)) {

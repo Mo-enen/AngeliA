@@ -8,8 +8,6 @@ namespace AngeliaGame {
 
 	// Boob
 	public class PetanBoob : AutoSpriteBoob {
-		public override bool SuitAvailable => false;
-		public override int Size => 1000;
 		protected override void DrawBoob (Character character) {
 			if (SpriteID == 0 || !character.Body.FrontSide) return;
 			var boobPos = GetBoobPosition(character, false);
@@ -24,12 +22,9 @@ namespace AngeliaGame {
 		}
 	}
 
-	public class NormalBoob : AutoSpriteBoob {
-		public override int Size => 1200;
-	}
+	public class NormalBoob : AutoSpriteBoob { }
 
 	public class MoleBoob : AutoSpriteBoob {
-		public override int Size => 1200;
 		protected override void DrawBoob (Character character) {
 			base.DrawBoob(character);
 			// Mole

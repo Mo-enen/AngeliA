@@ -1,5 +1,4 @@
-﻿UI.BodyPart.Height:身高
-@enen:伊楠
+﻿@enen:伊楠
 @enol:伊诺
 @lalynna:蕾蕾娜
 @nesu:茄子
@@ -105,6 +104,7 @@ UI.BodyPart.Face:面部
 UI.BodyPart.Hair:头发
 UI.BodyPart.HairColor:发色
 UI.BodyPart.Head:头部
+UI.BodyPart.Height:身高
 UI.BodyPart.Horn:犄角
 UI.BodyPart.LegFoot:腿部
 UI.BodyPart.SkinColor:肤色
