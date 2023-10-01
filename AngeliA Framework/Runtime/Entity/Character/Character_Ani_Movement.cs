@@ -183,10 +183,10 @@ namespace AngeliaFramework {
 			UpperArmR.LimbRotate(alt ? -65 : -55);
 
 			LowerArmL.Z = LowerArmL.Z.Abs();
-			LowerArmL.LimbRotate(alt ? -65 : -55, 500);
+			LowerArmL.LimbRotate(alt ? -55 : -45, 500);
 
 			LowerArmR.Z = LowerArmR.Z.Abs();
-			LowerArmR.LimbRotate(alt ? 65 : 55, 500);
+			LowerArmR.LimbRotate(alt ? 55 : 45, 500);
 
 			HandL.Z = HandL.Z.Abs();
 			HandL.LimbRotate(0);

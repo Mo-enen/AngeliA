@@ -8,7 +8,27 @@ namespace AngeliaGame {
 
 
 	public class SoraBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
-	public class SoraHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
+	public class SoraHipSuit : AutoSpriteCloth {
+		private static readonly int DRESS_TAIL_L = "SoraSuit.TailL".AngeHash();
+		private static readonly int DRESS_TAIL_R = "SoraSuit.TailR".AngeHash();
+		protected override ClothType ClothType => ClothType.Hip;
+		protected override void DrawHipSkirtLegLeg (Character character) {
+			base.DrawHipSkirtLegLeg(character);
+			// Dress Tail
+			var hipRect = character.Hip.GetGlobalRect();
+			int z = character.Body.FrontSide ? -39 : 39;
+			bool facingRight = character.Body.Width > 0;
+			int rotL = facingRight ? 30 : 18;
+			int rotR = facingRight ? -18 : -30;
+			if (character.Body.Height < 0) {
+				rotL = 180 - rotL;
+				rotR = -180 + rotR;
+				z = -z;
+			}
+			DrawExtraTail(character, DRESS_TAIL_L, hipRect.x + 16, hipRect.y, z, rotL);
+			DrawExtraTail(character, DRESS_TAIL_R, hipRect.xMax - 16, hipRect.y, z, rotR);
+		}
+	}
 	public class SoraFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
 	public class RobocoBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }

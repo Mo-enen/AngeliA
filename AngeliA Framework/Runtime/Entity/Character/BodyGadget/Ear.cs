@@ -31,7 +31,7 @@ namespace AngeliaFramework {
 			character.Head.FrontSide ? SpriteIdR : SpriteIdRBack,
 			FrontOfHeadL(character), FrontOfHeadR(character),
 			character.Head.FrontSide == character.FacingRight ? 0 : FacingLeftOffsetX,
-			MotionAmount
+			MotionAmount, selfMotion: true
 		);
 		protected virtual bool FrontOfHeadL (Character character) => true;
 		protected virtual bool FrontOfHeadR (Character character) => true;
@@ -88,7 +88,8 @@ namespace AngeliaFramework {
 		// UTL
 		protected static void DrawAnimalEar (
 			Character character, int spriteIdLeft, int spriteIdRight,
-			bool frontOfHeadL = true, bool frontOfHeadR = true, int offsetX = 0, int motionAmount = 1000
+			bool frontOfHeadL = true, bool frontOfHeadR = true, int offsetX = 0,
+			int motionAmount = 1000, bool selfMotion = true
 		) {
 
 			if (spriteIdLeft == 0 && spriteIdRight == 0) return;
@@ -156,6 +157,17 @@ namespace AngeliaFramework {
 			int rot = 0;
 			if (motionAmount != 0) {
 				rot = ((character.DeltaPositionY * motionAmount) / 2000).Clamp(-20, 20);
+			}
+
+			// Self Motion
+			if (selfMotion) {
+				int animationFrame = (character.TypeID + Game.GlobalFrame).Abs(); // ※ Intended ※
+				float ease01 =
+					animationFrame.PingPong(319).Clamp(0, 12) / 36f +
+					(animationFrame + 172).PingPong(771).Clamp(0, 16) / 48f +
+					(animationFrame + 736).PingPong(1735).Clamp(0, 12) / 36f;
+				int selfRot = (int)(Ease.InBounce((1f - ease01).Clamp01()) * 200);
+				rot = (rot + selfRot).Clamp(-20, 20);
 			}
 
 			// Draw

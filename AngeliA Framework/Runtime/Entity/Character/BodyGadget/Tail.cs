@@ -118,7 +118,7 @@ namespace AngeliaFramework {
 			int r = 0;
 			int px = 0;
 			int py = 0;
-			int animationFrame = character.TypeID + Game.GlobalFrame; // ※ Intended ※
+			int animationFrame = (character.TypeID + Game.GlobalFrame).Abs(); // ※ Intended ※
 			for (int i = 0; i < count; i++) {
 
 				if (!CellRenderer.TryGetSpriteFromGroup(spriteGroupID, i, out var sprite, false, true)) break;

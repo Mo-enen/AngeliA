@@ -147,14 +147,16 @@ namespace AngeliaFramework {
 			}
 		}
 		protected override void DrawHipSkirtLegLeg (Character character) {
+
 			if (ClothType != ClothType.Hip) return;
+
 			if (SpriteID != 0) {
 				// Pants
-				character.DrawClothForHip(SpriteID, false);
+				character.DrawClothForHip(SpriteID);
 			}
 			if (SpriteID1 != 0) {
 				// Skirt
-				character.DrawClothForHip(SpriteID1, true);
+				character.DrawClothForSkirt(SpriteID1);
 			}
 			if (SpriteID2 != 0) {
 				// Upper Leg
@@ -317,6 +319,33 @@ namespace AngeliaFramework {
 			}
 			suitID = 0;
 			return false;
+		}
+
+
+		public static void DrawExtraTail (Character character, int spriteID, int globalX, int globalY, int z, int rotation, int motionAmount = 1000) {
+
+			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
+
+			int rot = 0;
+
+			// Motion
+			if (motionAmount != 0) {
+				// Idle Rot
+				int animationFrame = (character.TypeID + Game.GlobalFrame).Abs(); // ※ Intended ※
+				rot += rotation.Sign() * (animationFrame.PingPong(180) / 10 - 9);
+				// Delta Y >> Rot
+				int deltaY = character.DeltaPositionY;
+				rot -= rotation.Sign() * (deltaY * 2 / 3).Clamp(-20, 20);
+			}
+
+			// Draw
+			CellRenderer.Draw(
+				spriteID,
+				globalX, globalY,
+				sprite.PivotX, sprite.PivotY, rotation + rot,
+				sprite.GlobalWidth, sprite.GlobalHeight, z
+			);
+
 		}
 
 

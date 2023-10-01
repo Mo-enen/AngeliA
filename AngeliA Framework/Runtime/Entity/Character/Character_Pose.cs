@@ -641,18 +641,27 @@ namespace AngeliaFramework {
 				Body.Height + Hip.Height
 			);
 
-			// Flip
-			if (!flipWithBody && Body.Width < 0) rect.FlipHorizontal();
-
 			// Border
 			if (!suitSprite.GlobalBorder.IsZero) {
-				rect = rect.Expand(
-					suitSprite.GlobalBorder.Left,
-					suitSprite.GlobalBorder.Right,
-					suitSprite.GlobalBorder.Down,
-					suitSprite.GlobalBorder.Up
-				);
+				if (rect.width > 0) {
+					rect = rect.Expand(
+						suitSprite.GlobalBorder.Left,
+						suitSprite.GlobalBorder.Right,
+						suitSprite.GlobalBorder.Down,
+						suitSprite.GlobalBorder.Up
+					);
+				} else {
+					rect = rect.Expand(
+						-suitSprite.GlobalBorder.Left,
+						-suitSprite.GlobalBorder.Right,
+						suitSprite.GlobalBorder.Down,
+						suitSprite.GlobalBorder.Up
+					);
+				}
 			}
+
+			// Flip
+			if (!flipWithBody && Body.Width < 0) rect.FlipHorizontal();
 
 			// Draw
 			CellRenderer.Draw(suitSprite.GlobalID, rect, tint, Body.Z + 7);
@@ -664,58 +673,74 @@ namespace AngeliaFramework {
 		}
 
 
-		public void DrawClothForHip (int spriteID, bool motionStrech) => DrawClothForHip(spriteID, motionStrech, Const.WHITE);
-		public void DrawClothForHip (int spriteID, bool motionStrech, Color32 tint) {
+		public void DrawClothForHip (int spriteID) => DrawClothForHip(spriteID, Const.WHITE);
+		public void DrawClothForHip (int spriteID, Color32 tint) {
+
+			if (spriteID == 0 || !CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
+
+			var hip = Hip;
+			var rect = hip.GetGlobalRect();
+			if (!sprite.GlobalBorder.IsZero) {
+				if (hip.Width > 0) {
+					rect = rect.Expand(
+						sprite.GlobalBorder.Left,
+						sprite.GlobalBorder.Right,
+						sprite.GlobalBorder.Down,
+						sprite.GlobalBorder.Up
+					);
+				} else {
+					rect = rect.Expand(
+						sprite.GlobalBorder.Right,
+						sprite.GlobalBorder.Left,
+						sprite.GlobalBorder.Down,
+						sprite.GlobalBorder.Up
+					);
+				}
+			}
+			if (hip.Width < 0) rect.FlipHorizontal();
+			CellRenderer.Draw(spriteID, rect, tint, 3);
+
+			// Show/Hide Limb
+			if (!CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) || meta.Tag != Const.SHOW_LIMB_TAG) {
+				hip.Tint = Const.CLEAR;
+			}
+		}
+
+
+		public void DrawClothForSkirt (int spriteID) => DrawClothForSkirt(spriteID, Const.WHITE);
+		public void DrawClothForSkirt (int spriteID, Color32 tint) {
 			if (spriteID == 0) return;
 			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
+
+			// Skirt
 			int bodyWidthAbs = Body.Width.Abs();
 			int centerX;
 			int centerY;
 			int width;
-			int shiftY = 0;
 			var legTopL = UpperLegL.GlobalLerp(0.5f, 1f);
 			var legTopR = UpperLegR.GlobalLerp(0.5f, 1f);
-			if (motionStrech) {
-				// Skirt
-				int left = legTopL.x - UpperLegL.SizeX / 2;
-				int right = legTopR.x + UpperLegR.SizeX / 2;
-				centerX = (left + right) / 2;
-				centerY = (legTopL.y + legTopR.y) / 2;
-				bool stretch =
-					AnimatedPoseType != CharacterPoseAnimationType.GrabSide &&
-					AnimatedPoseType != CharacterPoseAnimationType.Dash &&
-					AnimatedPoseType != CharacterPoseAnimationType.Idle;
-				width = Mathf.Max(
-					(right - left).Abs(), bodyWidthAbs - Body.Border.Left - Body.Border.Right
-				);
-				width += sprite.GlobalBorder.Horizontal;
-				if (stretch) width += Stretch(UpperLegL.Rotation, UpperLegR.Rotation);
-				width += AnimatedPoseType switch {
-					CharacterPoseAnimationType.JumpUp or CharacterPoseAnimationType.JumpDown => 2 * A2G,
-					CharacterPoseAnimationType.Run => A2G / 2,
-					_ => 0,
-				};
-				shiftY = AnimatedPoseType switch {
-					CharacterPoseAnimationType.Dash => A2G,
-					_ => 0,
-				};
-			} else {
-				// Hip
-				width = bodyWidthAbs - Body.Border.Left - Body.Border.Right;
-				width += sprite.GlobalBorder.Horizontal;
-				if (
-					AnimatedPoseType == CharacterPoseAnimationType.Fly ||
-					AnimatedPoseType == CharacterPoseAnimationType.Dash
-				) {
-					int left = UpperLegL.GlobalLerp(0.5f, 0.5f).x - UpperLegL.SizeX / 2;
-					int right = UpperLegR.GlobalLerp(0.5f, 0.5f).x + UpperLegR.SizeX / 2;
-					centerX = (left + right) / 2;
-					centerY = (UpperLegL.GlobalY + UpperLegR.GlobalY) / 2;
-				} else {
-					centerX = Body.GlobalX - bodyWidthAbs / 2 + (FacingRight ? Body.Border.Left : Body.Border.Right) + width / 2;
-					centerY = Body.GlobalY;
-				}
-			}
+			int left = legTopL.x - UpperLegL.SizeX / 2;
+			int right = legTopR.x + UpperLegR.SizeX / 2;
+			centerX = (left + right) / 2;
+			centerY = (legTopL.y + legTopR.y) / 2;
+			bool stretch =
+				AnimatedPoseType != CharacterPoseAnimationType.GrabSide &&
+				AnimatedPoseType != CharacterPoseAnimationType.Dash &&
+				AnimatedPoseType != CharacterPoseAnimationType.Idle;
+			width = Mathf.Max(
+				(right - left).Abs(), bodyWidthAbs - Body.Border.Left - Body.Border.Right
+			);
+			width += sprite.GlobalBorder.Horizontal;
+			if (stretch) width += Stretch(UpperLegL.Rotation, UpperLegR.Rotation);
+			width += AnimatedPoseType switch {
+				CharacterPoseAnimationType.JumpUp or CharacterPoseAnimationType.JumpDown => 2 * A2G,
+				CharacterPoseAnimationType.Run => A2G / 2,
+				_ => 0,
+			};
+			int shiftY = AnimatedPoseType switch {
+				CharacterPoseAnimationType.Dash => A2G,
+				_ => 0,
+			};
 			int offsetY = sprite.GlobalHeight * (1000 - sprite.PivotY) / 1000 + shiftY;
 			CellRenderer.Draw(
 				spriteID,
@@ -726,6 +751,7 @@ namespace AngeliaFramework {
 				Body.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight,
 				tint, Body.Z + 6
 			);
+
 			// Func
 			static int Stretch (int rotL, int rotR) {
 				int result = 0;
