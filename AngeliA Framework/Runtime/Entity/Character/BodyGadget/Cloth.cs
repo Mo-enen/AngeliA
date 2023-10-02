@@ -8,6 +8,8 @@ namespace AngeliaFramework {
 
 	public enum ClothType { Head, Body, Hand, Hip, Foot, }
 
+	public enum FrontMode { Front, Back, AlwaysFront, }
+
 
 	public abstract class AutoSpriteCloth : Cloth {
 
@@ -48,52 +50,8 @@ namespace AngeliaFramework {
 
 
 		protected override void DrawHead (Character character) {
-			if (ClothType != ClothType.Head || SpriteID == 0) return;
-			if (CellRenderer.HasSpriteGroup(SpriteID)) {
-				if (character.Head.FrontSide) {
-					// Front
-					bool front = Front != FrontMode.Back;
-					if (CellRenderer.TryGetSpriteFromGroup(SpriteID, 0, out var sprite, false, true)) {
-						bool usePixelShift = character.Head.FrontSide && character.Head.Width < 0;
-						if (usePixelShift && CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
-							usePixelShift = false;
-						}
-						character.AttachClothOn(
-							character.Head, Direction3.Up, sprite.GlobalID,
-							front ? 34 : -34,
-							false, 0,
-							usePixelShift ? (front ? -16 : 16) : 0, 0
-						);
-					}
-				} else {
-					// Back
-					if (CellRenderer.TryGetSpriteFromGroup(SpriteID, 1, out var sprite, false, true)) {
-						bool front = Front != FrontMode.Front;
-						bool usePixelShift = character.Head.FrontSide && character.Head.Width < 0;
-						if (usePixelShift && CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
-							usePixelShift = false;
-						}
-						character.AttachClothOn(
-							character.Head, Direction3.Up, sprite.GlobalID,
-							front ? 34 : -34,
-							false, 0,
-							usePixelShift ? (front ? -16 : 16) : 0, 0
-						);
-					}
-				}
-			} else {
-				// Single Sprite
-				bool front = Front == FrontMode.AlwaysFront || (Front == FrontMode.Front) == character.Head.FrontSide;
-				bool usePixelShift = character.Head.FrontSide && character.Head.Width < 0;
-				if (usePixelShift && CellRenderer.TryGetMeta(SpriteID, out var meta) && meta.IsTrigger) {
-					usePixelShift = false;
-				}
-				character.AttachClothOn(
-					character.Head, Direction3.Up, SpriteID, front ? 34 : -34,
-					!character.Head.FrontSide, 0,
-					usePixelShift ? (front ? -16 : 16) : 0, 0
-				);
-			}
+			if (ClothType != ClothType.Head) return;
+			character.DrawClothForHead(SpriteID, Front);
 		}
 		protected override void DrawBodyShoulderArmArm (Character character) {
 			if (ClothType != ClothType.Body) return;
@@ -212,10 +170,6 @@ namespace AngeliaFramework {
 	public abstract class Cloth {
 
 
-		// SUB
-		protected enum FrontMode { Front, Back, AlwaysFront, }
-
-
 		// Api
 		public int TypeID { get; init; }
 		protected abstract ClothType ClothType { get; }
@@ -322,6 +276,20 @@ namespace AngeliaFramework {
 		}
 
 
+		public static void DrawExtraDoubleTailsOnHip (Character character, int spriteIdLeft, int spriteIdRight) {
+			var hipRect = character.Hip.GetGlobalRect();
+			int z = character.Body.FrontSide ? -39 : 39;
+			bool facingRight = character.Body.Width > 0;
+			int rotL = facingRight ? 30 : 18;
+			int rotR = facingRight ? -18 : -30;
+			if (character.Body.Height < 0) {
+				rotL = 180 - rotL;
+				rotR = -180 + rotR;
+				z = -z;
+			}
+			DrawExtraTail(character, spriteIdLeft, hipRect.x + 16, hipRect.y, z, rotL);
+			DrawExtraTail(character, spriteIdRight, hipRect.xMax - 16, hipRect.y, z, rotR);
+		}
 		public static void DrawExtraTail (Character character, int spriteID, int globalX, int globalY, int z, int rotation, int motionAmount = 1000) {
 
 			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;

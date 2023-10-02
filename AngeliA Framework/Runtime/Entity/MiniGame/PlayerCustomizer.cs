@@ -14,7 +14,7 @@ namespace AngeliaFramework {
 
 		protected enum SubMenuType {
 			Head, Body, ShoulderArmArmHand, LegLegFoot,
-			Face, Hair, Ear, Tail, Wing, Horn, Boob,
+			Face, Hair, Ear, Tail, Wing, Horn,
 			SkinColor, HairColor,
 			Suit_Head, Suit_BodyShoulderArmArm, Suit_Hand, Suit_HipSkirtLegLeg, Suit_Foot,
 			Height,
@@ -67,7 +67,6 @@ namespace AngeliaFramework {
 			"UI.BodyPart.Tail".AngeHash(),
 			"UI.BodyPart.Wing".AngeHash(),
 			"UI.BodyPart.Horn".AngeHash(),
-			"UI.BodyPart.Boob".AngeHash(),
 			"UI.BodyPart.SkinColor".AngeHash(),
 			"UI.BodyPart.HairColor".AngeHash(),
 			"UI.Suit.Hat".AngeHash(),
@@ -88,7 +87,6 @@ namespace AngeliaFramework {
 			"Icon.BodyPart.Tail".AngeHash(),
 			"Icon.BodyPart.Wing".AngeHash(),
 			"Icon.BodyPart.Horn".AngeHash(),
-			"Icon.BodyPart.Boob".AngeHash(),
 			"Icon.BodyPart.SkinColor".AngeHash(),
 			"Icon.BodyPart.HairColor".AngeHash(),
 			"Icon.Suit.Hat".AngeHash(),
@@ -117,7 +115,6 @@ namespace AngeliaFramework {
 		protected abstract string[] BodyPart_Tails { get; }
 		protected abstract string[] BodyPart_Wings { get; }
 		protected abstract string[] BodyPart_Horns { get; }
-		protected abstract string[] BodyPart_Boobs { get; }
 		protected abstract string[] Suit_Heads { get; }
 		protected abstract string[] Suit_BodyShoulderArmArms { get; }
 		protected abstract string[] Suit_HipSkirtLegLegs { get; }
@@ -137,7 +134,6 @@ namespace AngeliaFramework {
 		private static readonly List<PatternUnit> Patterns_Tail = new();
 		private static readonly List<PatternUnit> Patterns_Wing = new();
 		private static readonly List<PatternUnit> Patterns_Horn = new();
-		private static readonly List<PatternUnit> Patterns_Boob = new();
 		private static readonly List<PatternUnit> Patterns_Suit_Head = new();
 		private static readonly List<PatternUnit> Patterns_Suit_BodyShoulderArmArm = new();
 		private static readonly List<PatternUnit> Patterns_Suit_HipSkirtLegLeg = new();
@@ -459,9 +455,6 @@ namespace AngeliaFramework {
 					case SubMenuType.Horn:
 						SubEditor_Horn(panelRect);
 						break;
-					case SubMenuType.Boob:
-						SubEditor_Boob(panelRect);
-						break;
 					case SubMenuType.Suit_Head:
 						SubEditor_SuitHead(panelRect);
 						break;
@@ -637,23 +630,6 @@ namespace AngeliaFramework {
 			)) {
 				var pat = Patterns_Horn[invokingIndex];
 				player.HornID = pat.A;
-			}
-		}
-
-
-		private void SubEditor_Boob (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
-			bool skinColorAvailable = SubMenuAvailable(SubMenuType.SkinColor);
-			panelRect.height -= Unify(16);
-			if (PatternMenuUI(
-				panelRect, Patterns_Boob,
-				skinColorAvailable ? player.SkinColor : Const.WHITE,
-				new Int4(player.BoobID, 0, 0, 0),
-				out int invokingIndex
-			)) {
-				var pat = Patterns_Boob[invokingIndex];
-				player.BoobID = pat.A;
-				if (!skinColorAvailable) player.SetSkinColor(Const.WHITE);
 			}
 		}
 
@@ -1027,7 +1003,6 @@ namespace AngeliaFramework {
 			SubMenuType.Tail => Patterns_Tail,
 			SubMenuType.Wing => Patterns_Wing,
 			SubMenuType.Horn => Patterns_Horn,
-			SubMenuType.Boob => Patterns_Boob,
 			SubMenuType.SkinColor => Patterns_ColorSkin,
 			SubMenuType.HairColor => Patterns_ColorHair,
 			SubMenuType.Suit_Head => Patterns_Suit_Head,
@@ -1058,7 +1033,6 @@ namespace AngeliaFramework {
 			Patterns_Tail.Clear();
 			Patterns_Wing.Clear();
 			Patterns_Horn.Clear();
-			Patterns_Boob.Clear();
 			Patterns_ShoulderArmArmHand.Clear();
 			Patterns_LegLegFoot.Clear();
 			Patterns_Suit_Head.Clear();
@@ -1164,16 +1138,6 @@ namespace AngeliaFramework {
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Horn.Count == 0,
 				});
 
-			// Boob
-			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(BodyPart_Boobs, ""))
-				Patterns_Boob.Add(new PatternUnit() {
-					Data = pat,
-					DisplayName = Language.Get($"{basicName}.{name}".AngeHash(), name),
-					PatternName = name,
-					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Boob.Count == 0,
-				});
-
-
 
 			// Suit Head
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_Heads, ""))
@@ -1259,7 +1223,6 @@ namespace AngeliaFramework {
 				SubMenuType.Tail => new Int4(player.TailID, 0, 0, 0),
 				SubMenuType.Wing => new Int4(player.WingID, 0, 0, 0),
 				SubMenuType.Horn => new Int4(player.HornID, 0, 0, 0),
-				SubMenuType.Boob => new Int4(player.BoobID, 0, 0, 0),
 				SubMenuType.Suit_Head => new Int4(player.Suit_Head, 0, 0, 0),
 				SubMenuType.Suit_BodyShoulderArmArm => new Int4(player.Suit_Body, 0, 0, 0),
 				SubMenuType.Suit_Hand => new Int4(player.Suit_Hand, 0, 0, 0),

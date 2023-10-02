@@ -27,6 +27,9 @@ namespace AngeliaGame {
 		protected override int FacingLeftOffsetX => 16;
 		protected override int PositionAmountX => 75;
 		protected override int PositionAmountY => 700;
+		protected override int DropMotionAmount => 500;
+		protected override int FlowMotionAmount => 618;
+		protected override int MotionAmount => 400;
 		protected override bool GetFrontL (Character character) => character.Head.FrontSide == character.Head.Width > 0;
 		protected override bool GetFrontR (Character character) => character.Head.FrontSide == character.Head.Width < 0;
 	}

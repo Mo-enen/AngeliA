@@ -95,7 +95,6 @@ namespace AngeliaFramework {
 		public int TailID { get; set; } = 0;
 		public int WingID { get; set; } = 0;
 		public int HornID { get; set; } = 0;
-		public int BoobID { get; set; } = 0;
 
 		// Suit
 		public int Suit_Head { get; set; } = 0;
@@ -166,7 +165,6 @@ namespace AngeliaFramework {
 				config.TailID = Tail.TryGetDefaultTailID(typeID, out defaultID) ? defaultID : 0;
 				config.WingID = Wing.TryGetDefaultWingID(typeID, out defaultID) ? defaultID : 0;
 				config.HornID = Horn.TryGetDefaultHornID(typeID, out defaultID) ? defaultID : 0;
-				config.BoobID = Boob.TryGetDefaultBoobID(typeID, out defaultID) ? defaultID : 0;
 
 				// Suit
 				config.SuitHead = Cloth.TryGetDefaultSuitID(typeID, ClothType.Head, out int suitID) ? suitID : 0;
@@ -212,7 +210,6 @@ namespace AngeliaFramework {
 				TailID = config.TailID;
 				WingID = config.WingID;
 				HornID = config.HornID;
-				BoobID = config.BoobID;
 
 				// Suit
 				Suit_Head = config.SuitHead;
@@ -272,7 +269,6 @@ namespace AngeliaFramework {
 			Hair.Draw(this);
 			Ear.Draw(this);
 			Horn.Draw(this);
-			if (!Cloth.HasCloth(Suit_Body)) Boob.Draw(this);
 
 			Cloth.DrawHeadSuit(this);
 			Cloth.DrawBodySuit(this);
@@ -623,6 +619,57 @@ namespace AngeliaFramework {
 
 
 		// Cloth
+		public void DrawClothForHead (int spriteID, FrontMode frontMode) {
+
+			if (spriteID == 0) return;
+
+			if (CellRenderer.HasSpriteGroup(spriteID)) {
+				if (Head.FrontSide) {
+					// Front
+					bool front = frontMode != FrontMode.Back;
+					if (CellRenderer.TryGetSpriteFromGroup(spriteID, 0, out var sprite, false, true)) {
+						bool usePixelShift = Head.FrontSide && Head.Width < 0;
+						if (usePixelShift && CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
+							usePixelShift = false;
+						}
+						AttachClothOn(
+							Head, Direction3.Up, sprite.GlobalID,
+							front ? 34 : -34, flipX: Head.Height < 0, 0,
+							usePixelShift ? (front ? -16 : 16) : 0, 0
+						);
+					}
+				} else {
+					// Back
+					if (CellRenderer.TryGetSpriteFromGroup(spriteID, 1, out var sprite, false, true)) {
+						bool front = frontMode != FrontMode.Front;
+						bool usePixelShift = Head.FrontSide && Head.Width < 0;
+						if (usePixelShift && CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
+							usePixelShift = false;
+						}
+						AttachClothOn(
+							Head, Direction3.Up, sprite.GlobalID,
+							front ? 34 : -34, flipX: Head.Height < 0, 0,
+							usePixelShift ? (front ? -16 : 16) : 0, 0
+						);
+					}
+				}
+			} else {
+				// Single Sprite
+				bool front = frontMode == FrontMode.AlwaysFront || (frontMode == FrontMode.Front) == Head.FrontSide;
+				bool usePixelShift = Head.FrontSide && Head.Width < 0;
+				if (usePixelShift && CellRenderer.TryGetMeta(spriteID, out var meta) && meta.IsTrigger) {
+					usePixelShift = false;
+				}
+				AttachClothOn(
+					Head, Direction3.Up, spriteID,
+					front ? 34 : -34, flipX: Head.Height < 0, 0,
+					usePixelShift ? (front ? -16 : 16) : 0, 0
+				);
+			}
+
+		}
+
+
 		public void DrawClothForBody (int spriteGroupId, bool flipWithBody = true) => DrawClothForBody(spriteGroupId, Const.WHITE, flipWithBody);
 		public void DrawClothForBody (int spriteGroupId, Color32 tint, bool flipWithBody = true) {
 
@@ -747,7 +794,7 @@ namespace AngeliaFramework {
 				centerX,
 				Body.Height > 0 ? Mathf.Max(centerY + offsetY, Y + sprite.GlobalHeight) : centerY - offsetY,
 				500, 1000, 0,
-				Body.Width.Sign() * width,
+				width,
 				Body.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight,
 				tint, Body.Z + 6
 			);

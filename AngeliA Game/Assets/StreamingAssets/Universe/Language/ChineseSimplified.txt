@@ -98,7 +98,6 @@ PlayerCustomizerHololia:自定义样貌（HololiA）
 UI.Back:返回
 UI.BodyPart.ArmHand:手臂
 UI.BodyPart.Body:身体
-UI.BodyPart.Boob:胸部
 UI.BodyPart.Ear:兽耳
 UI.BodyPart.Face:面部
 UI.BodyPart.Hair:头发

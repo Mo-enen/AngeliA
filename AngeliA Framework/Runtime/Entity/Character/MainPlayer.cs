@@ -39,7 +39,6 @@ namespace AngeliaFramework {
 			public int Tail = 0;
 			public int Wing = 0;
 			public int Horn = 0;
-			public int Boob = 0;
 
 			// Suit
 			public int Suit_Head = 0;
@@ -184,7 +183,6 @@ namespace AngeliaFramework {
 			TailID = Config.Tail;
 			WingID = Config.Wing;
 			HornID = Config.Horn;
-			BoobID = Config.Boob;
 
 			_SkinColor = Util.IntToColor(Config.SkinColor);
 			_HairColor = Util.IntToColor(Config.HairColor);
@@ -220,7 +218,6 @@ namespace AngeliaFramework {
 			Config.Tail = TailID;
 			Config.Wing = WingID;
 			Config.Horn = HornID;
-			Config.Boob = BoobID;
 
 			Config.Suit_Head = Suit_Head;
 			Config.Suit_Body = Suit_Body;

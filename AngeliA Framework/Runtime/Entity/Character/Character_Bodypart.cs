@@ -23,7 +23,6 @@ namespace AngeliaFramework {
 		public int TailID;
 		public int WingID;
 		public int HornID;
-		public int BoobID;
 	}
 
 

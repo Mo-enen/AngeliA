@@ -65,9 +65,6 @@ namespace AngeliaGame {
 			"", //"AloeHorn",
 			nameof(LaplusHorn), nameof(ChocoHorn), nameof(CocoHorn), nameof(IRySHorn), nameof(FaunaHorn), nameof(NerissaHorn), nameof(WatameHorn), nameof(AyameHorn),
 		};
-		private static string[] _BodyPart_Boobs = {
-			"", nameof(PetanBoob), nameof(NormalBoob), nameof(MoleBoob),
-		};
 
 		// Suit
 		private static string[] _Suit_Heads = {
@@ -164,7 +161,6 @@ namespace AngeliaGame {
 			SaveToFile(folderPath, SubMenuType.Tail, _BodyPart_Tails);
 			SaveToFile(folderPath, SubMenuType.Wing, _BodyPart_Wings);
 			SaveToFile(folderPath, SubMenuType.Horn, _BodyPart_Horns);
-			SaveToFile(folderPath, SubMenuType.Boob, _BodyPart_Boobs);
 			SaveToFile(folderPath, SubMenuType.Suit_Head, _Suit_Heads);
 			SaveToFile(folderPath, SubMenuType.Suit_BodyShoulderArmArm, _Suit_BodyShoulderArmArms);
 			SaveToFile(folderPath, SubMenuType.Suit_HipSkirtLegLeg, _Suit_HipSkirtLegLegs);
@@ -192,7 +188,6 @@ namespace AngeliaGame {
 				LoadFromFile(folderPath, SubMenuType.Tail, ref _BodyPart_Tails);
 				LoadFromFile(folderPath, SubMenuType.Wing, ref _BodyPart_Wings);
 				LoadFromFile(folderPath, SubMenuType.Horn, ref _BodyPart_Horns);
-				LoadFromFile(folderPath, SubMenuType.Boob, ref _BodyPart_Boobs);
 				LoadFromFile(folderPath, SubMenuType.Suit_Head, ref _Suit_Heads);
 				LoadFromFile(folderPath, SubMenuType.Suit_BodyShoulderArmArm, ref _Suit_BodyShoulderArmArms);
 				LoadFromFile(folderPath, SubMenuType.Suit_HipSkirtLegLeg, ref _Suit_HipSkirtLegLegs);

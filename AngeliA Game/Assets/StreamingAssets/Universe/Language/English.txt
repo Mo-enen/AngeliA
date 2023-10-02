@@ -98,7 +98,6 @@ PlayerCustomizerHololia:Customize (HololiA)
 UI.Back:Back
 UI.BodyPart.ArmHand:Arm
 UI.BodyPart.Body:Body
-UI.BodyPart.Boob:Boob
 UI.BodyPart.Ear:Ear
 UI.BodyPart.Face:Face
 UI.BodyPart.Hair:Hair

@@ -14,19 +14,7 @@ namespace AngeliaGame {
 		protected override ClothType ClothType => ClothType.Hip;
 		protected override void DrawHipSkirtLegLeg (Character character) {
 			base.DrawHipSkirtLegLeg(character);
-			// Dress Tail
-			var hipRect = character.Hip.GetGlobalRect();
-			int z = character.Body.FrontSide ? -39 : 39;
-			bool facingRight = character.Body.Width > 0;
-			int rotL = facingRight ? 30 : 18;
-			int rotR = facingRight ? -18 : -30;
-			if (character.Body.Height < 0) {
-				rotL = 180 - rotL;
-				rotR = -180 + rotR;
-				z = -z;
-			}
-			DrawExtraTail(character, DRESS_TAIL_L, hipRect.x + 16, hipRect.y, z, rotL);
-			DrawExtraTail(character, DRESS_TAIL_R, hipRect.xMax - 16, hipRect.y, z, rotR);
+			DrawExtraDoubleTailsOnHip(character, DRESS_TAIL_L, DRESS_TAIL_R);
 		}
 	}
 	public class SoraFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
@@ -45,7 +33,15 @@ namespace AngeliaGame {
 	public class MikoFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
 	public class SuiseiBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
-	public class SuiseiHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
+	public class SuiseiHipSuit : AutoSpriteCloth {
+		private static readonly int DRESS_TAIL_L = "SuiseiSuit.TailL".AngeHash();
+		private static readonly int DRESS_TAIL_R = "SuiseiSuit.TailR".AngeHash();
+		protected override ClothType ClothType => ClothType.Hip;
+		protected override void DrawHipSkirtLegLeg (Character character) {
+			base.DrawHipSkirtLegLeg(character);
+			DrawExtraDoubleTailsOnHip(character, DRESS_TAIL_L, DRESS_TAIL_R);
+		}
+	}
 	public class SuiseiHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
 		protected override FrontMode Front => FrontMode.Back;
@@ -69,7 +65,15 @@ namespace AngeliaGame {
 	public class MatsuriFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
 	public class AkiBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
-	public class AkiHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
+	public class AkiHipSuit : AutoSpriteCloth {
+		private static readonly int DRESS_TAIL_L = "AkiSuit.TailL".AngeHash();
+		private static readonly int DRESS_TAIL_R = "AkiSuit.TailR".AngeHash();
+		protected override ClothType ClothType => ClothType.Hip;
+		protected override void DrawHipSkirtLegLeg (Character character) {
+			base.DrawHipSkirtLegLeg(character);
+			DrawExtraDoubleTailsOnHip(character, DRESS_TAIL_L, DRESS_TAIL_R);
+		}
+	}
 	public class AkiHandSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hand; }
 	public class AkiFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 

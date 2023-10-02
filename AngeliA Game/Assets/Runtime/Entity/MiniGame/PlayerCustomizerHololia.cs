@@ -19,7 +19,6 @@ namespace AngeliaGame {
 		protected override string[] BodyPart_Tails => _BodyPart_Tails;
 		protected override string[] BodyPart_Wings => _BodyPart_Wings;
 		protected override string[] BodyPart_Horns => _BodyPart_Horns;
-		protected override string[] BodyPart_Boobs => _BodyPart_Boobs;
 		protected override string[] Suit_Heads => _Suit_Heads;
 		protected override string[] Suit_BodyShoulderArmArms => _Suit_BodyShoulderArmArms;
 		protected override string[] Suit_HipSkirtLegLegs => _Suit_HipSkirtLegLegs;
@@ -39,7 +38,6 @@ namespace AngeliaGame {
 			SubMenuType.Tail => true,
 			SubMenuType.Wing => true,
 			SubMenuType.Horn => true,
-			SubMenuType.Boob => true,
 			SubMenuType.SkinColor => true,
 			SubMenuType.HairColor => false,
 			SubMenuType.Suit_Head => true,
