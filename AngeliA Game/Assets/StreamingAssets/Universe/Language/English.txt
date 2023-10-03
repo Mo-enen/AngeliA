@@ -1,4 +1,5 @@
-﻿@enen:Enen
+﻿Language.Creator:楠瓜Moenen
+@enen:Enen
 @enol:Enol
 @lalynna:LalynnA
 @nesu:Nesu
