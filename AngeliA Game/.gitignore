@@ -10,7 +10,6 @@
 *.config
 /Log
 /UserSettings
-/Packages
 .vsconfig
 .editorconfig
 *.suo
