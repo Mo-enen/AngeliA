@@ -26,7 +26,7 @@ namespace AngeliaFramework {
 		protected override void DrawHorn (Character character) {
 			int idL = character.FacingFront ? SpriteIdL : SpriteIdLBack;
 			int idR = character.FacingFront ? SpriteIdR : SpriteIdRBack;
-			DrawSprite(
+			DrawHornSprite(
 				character.Head, idL, idR,
 				FrontOfHeadL(character), FrontOfHeadR(character),
 				AnchorOnFace,
@@ -84,7 +84,7 @@ namespace AngeliaFramework {
 
 
 		// UTL
-		protected static void DrawSprite (
+		protected static void DrawHornSprite (
 			BodyPart head, int spriteIdLeft, int spriteIdRight,
 			bool frontOfHeadL = true, bool frontOfHeadR = true, bool onFace = false, int offsetX = 0
 		) {
@@ -94,24 +94,32 @@ namespace AngeliaFramework {
 
 			var headRect = head.GetGlobalRect();
 			if (onFace) headRect = headRect.Shrink(head.Border);
+
+			bool flipLR = !head.FrontSide && head.Height > 0;
+			if (flipLR) {
+				(spriteIdLeft, spriteIdRight) = (spriteIdRight, spriteIdLeft);
+				offsetX = -offsetX;
+			}
+
 			if (CellRenderer.TryGetSprite(spriteIdLeft, out var sprite)) {
 				CellRenderer.Draw(
 					spriteIdLeft,
 					headRect.xMin + offsetX,
 					head.Height > 0 ? headRect.yMax : headRect.yMin,
 					sprite.PivotX, sprite.PivotY, 0,
-					sprite.GlobalWidth,
+					sprite.GlobalWidth * (flipLR ? -1 : 1),
 					head.Height.Sign3() * sprite.GlobalHeight,
 					head.Z + (head.FrontSide == frontOfHeadL ? 34 : -34)
 				);
 			}
+
 			if (CellRenderer.TryGetSprite(spriteIdRight, out sprite)) {
 				CellRenderer.Draw(
 					spriteIdRight,
 					headRect.xMax + offsetX,
 					head.Height > 0 ? headRect.yMax : headRect.yMin,
 					sprite.PivotX, sprite.PivotY, 0,
-					sprite.GlobalWidth,
+					sprite.GlobalWidth * (flipLR ? -1 : 1),
 					head.Height.Sign3() * sprite.GlobalHeight,
 					head.Z + (head.FrontSide == frontOfHeadR ? 34 : -34)
 				);

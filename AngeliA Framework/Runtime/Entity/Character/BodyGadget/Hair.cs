@@ -278,20 +278,16 @@ namespace AngeliaFramework {
 			if (spriteID == 0) return null;
 
 			var head = character.Head;
-			//int groupSignFlag = -1;
 
 			if (
 				!CellRenderer.TryGetSprite(spriteID, out var hairSprite) &&
-				!CellRenderer.TryGetSpriteFromGroup(
-					//spriteID, groupSignFlag = (head.Width > 0 ? 0 : 1), out hairSprite, false, true
-					spriteID, head.Width > 0 ? 0 : 1, out hairSprite, false, true
-				)
+				!CellRenderer.TryGetSpriteFromGroup(spriteID, head.Width > 0 ? 0 : 1, out hairSprite, false, true)
 			) return null;
 
 			var headRect = head.GetGlobalRect();
 
 			// Expand Rect
-			//bool flipX = groupSignFlag < 0 && head.Width < 0;
+			bool flipX = !head.FrontSide && head.Height < 0;
 			bool flipY = head.Height < 0;
 			int expandLR = hairSprite.PivotX * hairSprite.GlobalWidth / 1000;
 			int expandU = (1000 - hairSprite.PivotY) * hairSprite.GlobalHeight / 1000;
@@ -321,7 +317,7 @@ namespace AngeliaFramework {
 			}
 
 			// Flip X
-			//if (flipX) hairRect.FlipHorizontal();
+			if (flipX) hairRect.FlipHorizontal();
 
 			// Draw Single Hair
 			int z = isFrontHair ? 32 : -32;

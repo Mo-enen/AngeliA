@@ -102,7 +102,15 @@ namespace AngeliaGame {
 	public class AyameHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class AyameFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
-	public class ChocoBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
+	public class ChocoBodySuit : AutoSpriteCloth {
+
+		private static readonly int CAPE_CODE = "ChocoSuit.Cape".AngeHash();
+		protected override ClothType ClothType => ClothType.Body;
+		protected override void DrawBodyShoulderArmArm (Character character) {
+			base.DrawBodyShoulderArmArm(character);
+			DrawExtraCape(character, CAPE_CODE);
+		}
+	}
 	public class ChocoHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class ChocoFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 

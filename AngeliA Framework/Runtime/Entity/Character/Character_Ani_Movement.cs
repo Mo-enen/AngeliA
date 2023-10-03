@@ -34,6 +34,7 @@ namespace AngeliaFramework {
 			Body.Height -= oneEase;
 			Head.Y -= oneEase;
 
+			// Arm
 			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
 			ShoulderL.Y -= oneEase;
 			ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
@@ -60,6 +61,12 @@ namespace AngeliaFramework {
 
 			HandR.X += halfEase / 2;
 			HandR.Y -= oneEase;
+
+			// Leg
+			LowerLegL.Y += 1;
+			LowerLegR.Y += 1;
+			LowerLegL.Height += 1;
+			LowerLegR.Height += 1;
 
 		}
 

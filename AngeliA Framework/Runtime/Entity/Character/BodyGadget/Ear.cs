@@ -154,20 +154,30 @@ namespace AngeliaFramework {
 			}
 
 			// Rot
-			int rot = 0;
+			int rotL = 0;
+			int rotR = 0;
 			if (motionAmount != 0) {
-				rot = ((character.DeltaPositionY * motionAmount) / 2000).Clamp(-20, 20);
+				rotL = rotR = ((character.DeltaPositionY * motionAmount) / 2000).Clamp(-20, 20);
 			}
 
 			// Self Motion
 			if (selfMotion) {
+				// L
 				int animationFrame = (character.TypeID + Game.GlobalFrame).Abs(); // ※ Intended ※
 				float ease01 =
 					animationFrame.PingPong(319).Clamp(0, 12) / 36f +
 					(animationFrame + 172).PingPong(771).Clamp(0, 16) / 48f +
 					(animationFrame + 736).PingPong(1735).Clamp(0, 12) / 36f;
 				int selfRot = (int)(Ease.InBounce((1f - ease01).Clamp01()) * 200);
-				rot = (rot + selfRot).Clamp(-20, 20);
+				rotL = (rotL + selfRot).Clamp(-20, 20);
+				// R
+				animationFrame = (character.TypeID * 2 + Game.GlobalFrame).Abs(); // ※ Intended ※
+				ease01 =
+					animationFrame.PingPong(372).Clamp(0, 12) / 36f +
+					(animationFrame + 141).PingPong(763).Clamp(0, 16) / 48f +
+					(animationFrame + 782).PingPong(1831).Clamp(0, 12) / 36f;
+				selfRot = (int)(Ease.InBounce((1f - ease01).Clamp01()) * 200);
+				rotR = (rotR + selfRot).Clamp(-20, 20);
 			}
 
 			// Draw
@@ -176,7 +186,7 @@ namespace AngeliaFramework {
 					earSpriteL.GlobalID,
 					headRect.x + shiftL.x + offsetX,
 					(flipY ? headRect.y : headRect.yMax) + shiftL.y,
-					earSpriteL.PivotX, earSpriteL.PivotY, -rot,
+					earSpriteL.PivotX, earSpriteL.PivotY, -rotL,
 					earSpriteL.GlobalWidth + expandSizeL.x,
 					(earSpriteL.GlobalHeight + expandSizeL.y) * (flipY ? -1 : 1),
 					frontOfHeadL ? z : -z
@@ -187,7 +197,7 @@ namespace AngeliaFramework {
 					earSpriteR.GlobalID,
 					headRect.xMax + shiftR.x + offsetX,
 					(flipY ? headRect.y : headRect.yMax) + shiftR.y,
-					earSpriteR.PivotX, earSpriteR.PivotY, rot,
+					earSpriteR.PivotX, earSpriteR.PivotY, rotR,
 					earSpriteR.GlobalWidth + expandSizeR.x,
 					(earSpriteR.GlobalHeight + expandSizeR.y) * (flipY ? -1 : 1),
 					frontOfHeadR ? z : -z

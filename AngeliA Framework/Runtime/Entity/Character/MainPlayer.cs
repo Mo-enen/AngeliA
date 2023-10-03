@@ -67,12 +67,14 @@ namespace AngeliaFramework {
 		public override Color32 HairColor => _HairColor;
 		public override int CharacterHeight => _CharacterHeight;
 		public Int3? HomeUnitPosition { get; private set; } = null;
+		public override bool SpinOnGroundPound => _SpinOnGroundPound;
 
 		// Data
 		private MainPlayerConfig Config = new();
 		private Color32 _SkinColor = new(239, 194, 160, 255);
 		private Color32 _HairColor = new(51, 51, 51, 255);
 		private int _CharacterHeight = 160;
+		private bool _SpinOnGroundPound = false;
 
 
 		#endregion
@@ -190,6 +192,7 @@ namespace AngeliaFramework {
 			// Movement
 			FlyAvailable.Value = WingID != 0;
 			FlyGlideAvailable.Value = WingID != 0 && !Wing.IsPropellerWing(WingID);
+			_SpinOnGroundPound = WingID != 0 && Wing.IsPropellerWing(WingID);
 
 		}
 
@@ -231,6 +234,8 @@ namespace AngeliaFramework {
 			// Movement
 			FlyAvailable.Value = WingID != 0;
 			FlyGlideAvailable.Value = WingID != 0 && !Wing.IsPropellerWing(WingID);
+			_SpinOnGroundPound = WingID != 0 && Wing.IsPropellerWing(WingID);
+
 		}
 
 
