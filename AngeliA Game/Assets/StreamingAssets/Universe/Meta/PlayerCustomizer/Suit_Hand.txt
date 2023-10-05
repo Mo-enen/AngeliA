@@ -6,7 +6,6 @@ PekoraHandSuit
 FlareHandSuit
 MarineHandSuit
 BotanHandSuit
-OllieHandSuit
 InaHandSuit
 KroniiHandSuit
 BaeHandSuit

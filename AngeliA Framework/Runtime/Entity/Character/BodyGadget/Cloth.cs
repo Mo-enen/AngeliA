@@ -8,7 +8,7 @@ namespace AngeliaFramework {
 
 	public enum ClothType { Head, Body, Hand, Hip, Foot, }
 
-	public enum FrontMode { Front, Back, AlwaysFront, }
+	public enum FrontMode { Front, Back, AlwaysFront, AlwaysBack, }
 
 
 	public abstract class AutoSpriteCloth : Cloth {
@@ -65,8 +65,17 @@ namespace AngeliaFramework {
 			}
 			if (SpriteID1 != 0) {
 				// Shoulder
-				character.CoverClothOn(character.ShoulderL, SpriteID1, character.ShoulderL.Z + 1, Const.WHITE);
-				character.CoverClothOn(character.ShoulderR, SpriteID1, character.ShoulderR.Z + 1, Const.WHITE);
+				if (CellRenderer.HasSpriteGroup(SpriteID1)) {
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID1, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+						character.CoverClothOn(character.ShoulderL, spriteL.GlobalID, character.ShoulderL.Z + 1, Const.WHITE);
+					}
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID1, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+						character.CoverClothOn(character.ShoulderR, spriteR.GlobalID, character.ShoulderR.Z + 1, Const.WHITE);
+					}
+				} else {
+					character.CoverClothOn(character.ShoulderL, SpriteID1, character.ShoulderL.Z + 1, Const.WHITE);
+					character.CoverClothOn(character.ShoulderR, SpriteID1, character.ShoulderR.Z + 1, Const.WHITE);
+				}
 			}
 			if (SpriteID2 != 0) {
 				// Upper Arm

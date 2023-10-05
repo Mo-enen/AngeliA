@@ -69,7 +69,6 @@ MoonaFootSuit
 IofifteenFootSuit
 #ID 2nd
 OllieFootSuit
-MelfissaFootSuit
 ReineFootSuit
 #ID 3rd
 ZetaFootSuit

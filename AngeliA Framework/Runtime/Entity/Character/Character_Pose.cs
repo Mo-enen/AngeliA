@@ -59,9 +59,9 @@ namespace AngeliaFramework {
 		// Api
 		protected static int PoseZOffset { get; set; } = 0;
 		public CharacterPoseAnimationType AnimatedPoseType { get; set; } = CharacterPoseAnimationType.Idle;
-		public int PoseTwist { get; private set; } = 0;
-		public int PoseRootX { get; private set; } = 0;
-		public int PoseRootY { get; private set; } = 0;
+		public int PoseTwist { get; set; } = 0;
+		public int PoseRootX { get; set; } = 0;
+		public int PoseRootY { get; set; } = 0;
 		public int BasicRootY { get; private set; } = 0;
 		public bool BodyPartsReady => BodyParts != null;
 		public Color32 SkinColor { get; set; } = new(239, 194, 160, 255);
@@ -245,10 +245,38 @@ namespace AngeliaFramework {
 
 
 		private void RenderUpdate_AnimationType () {
-			var poseType = GetCurrentPoseAnimationType();
+			var poseType = GetCurrentPoseAnimationType(this);
 			if (poseType != AnimatedPoseType) {
 				CurrentAnimationFrame = 0;
 				AnimatedPoseType = poseType;
+			}
+			// Func
+			static CharacterPoseAnimationType GetCurrentPoseAnimationType (Character character) {
+				if (character.EnteringDoor) return CharacterPoseAnimationType.Idle;
+				if (character.TakingDamage) return CharacterPoseAnimationType.TakingDamage;
+				if (character.CharacterState == CharacterState.Sleep) return CharacterPoseAnimationType.Sleep;
+				if (character.CharacterState == CharacterState.PassOut) return CharacterPoseAnimationType.PassOut;
+				if (character.IsRolling) return CharacterPoseAnimationType.Rolling;
+				return character.MovementState switch {
+					CharacterMovementState.Walk => CharacterPoseAnimationType.Walk,
+					CharacterMovementState.Run => CharacterPoseAnimationType.Run,
+					CharacterMovementState.JumpUp => CharacterPoseAnimationType.JumpUp,
+					CharacterMovementState.JumpDown => CharacterPoseAnimationType.JumpDown,
+					CharacterMovementState.SwimIdle => CharacterPoseAnimationType.SwimIdle,
+					CharacterMovementState.SwimMove => CharacterPoseAnimationType.SwimMove,
+					CharacterMovementState.SquatIdle => CharacterPoseAnimationType.SquatIdle,
+					CharacterMovementState.SquatMove => CharacterPoseAnimationType.SquatMove,
+					CharacterMovementState.Dash => CharacterPoseAnimationType.Dash,
+					CharacterMovementState.Rush => CharacterPoseAnimationType.Rush,
+					CharacterMovementState.Pound => character.SpinOnGroundPound ? CharacterPoseAnimationType.Spin : CharacterPoseAnimationType.Pound,
+					CharacterMovementState.Climb => CharacterPoseAnimationType.Climb,
+					CharacterMovementState.Fly => CharacterPoseAnimationType.Fly,
+					CharacterMovementState.Slide => CharacterPoseAnimationType.Slide,
+					CharacterMovementState.GrabTop => CharacterPoseAnimationType.GrabTop,
+					CharacterMovementState.GrabSide => CharacterPoseAnimationType.GrabSide,
+					CharacterMovementState.GrabFlip => CharacterPoseAnimationType.Rolling,
+					_ => CharacterPoseAnimationType.Idle,
+				};
 			}
 		}
 
@@ -479,70 +507,70 @@ namespace AngeliaFramework {
 		private void PoseUpdate_CalculateBodyPart () {
 			switch (AnimatedPoseType) {
 				case CharacterPoseAnimationType.TakingDamage:
-					PoseAnimation_Damage();
+					AnimationLibrary.PoseAnimation_Damage(this);
 					break;
 				case CharacterPoseAnimationType.Sleep:
-					PoseAnimation_Sleep();
+					AnimationLibrary.PoseAnimation_Sleep(this);
 					break;
 				case CharacterPoseAnimationType.PassOut:
-					PoseAnimation_PassOut();
+					AnimationLibrary.PoseAnimation_PassOut(this);
 					break;
 				case CharacterPoseAnimationType.Dash:
-					PoseAnimation_Dash();
+					AnimationLibrary.PoseAnimation_Dash(this);
 					break;
 				case CharacterPoseAnimationType.Rolling:
-					PoseAnimation_Rolling();
+					AnimationLibrary.PoseAnimation_Rolling(this);
 					break;
 				case CharacterPoseAnimationType.Idle:
-					PoseAnimation_Idle();
+					AnimationLibrary.PoseAnimation_Idle(this);
 					break;
 				case CharacterPoseAnimationType.Walk:
-					PoseAnimation_Walk();
+					AnimationLibrary.PoseAnimation_Walk(this);
 					break;
 				case CharacterPoseAnimationType.Run:
-					PoseAnimation_Run();
+					AnimationLibrary.PoseAnimation_Run(this);
 					break;
 				case CharacterPoseAnimationType.JumpUp:
-					PoseAnimation_JumpUp();
+					AnimationLibrary.PoseAnimation_JumpUp(this);
 					break;
 				case CharacterPoseAnimationType.JumpDown:
-					PoseAnimation_JumpDown();
+					AnimationLibrary.PoseAnimation_JumpDown(this);
 					break;
 				case CharacterPoseAnimationType.SwimIdle:
-					PoseAnimation_SwimIdle();
+					AnimationLibrary.PoseAnimation_SwimIdle(this);
 					break;
 				case CharacterPoseAnimationType.SwimMove:
-					PoseAnimation_SwimMove();
+					AnimationLibrary.PoseAnimation_SwimMove(this);
 					break;
 				case CharacterPoseAnimationType.SquatIdle:
-					PoseAnimation_SquatIdle();
+					AnimationLibrary.PoseAnimation_SquatIdle(this);
 					break;
 				case CharacterPoseAnimationType.SquatMove:
-					PoseAnimation_SquatMove();
+					AnimationLibrary.PoseAnimation_SquatMove(this);
 					break;
 				case CharacterPoseAnimationType.Rush:
-					PoseAnimation_Rush();
+					AnimationLibrary.PoseAnimation_Rush(this);
 					break;
 				case CharacterPoseAnimationType.Pound:
-					PoseAnimation_Pound();
+					AnimationLibrary.PoseAnimation_Pound(this);
 					break;
 				case CharacterPoseAnimationType.Spin:
-					PoseAnimation_Spin();
+					AnimationLibrary.PoseAnimation_Spin(this);
 					break;
 				case CharacterPoseAnimationType.Climb:
-					PoseAnimation_Climb();
+					AnimationLibrary.PoseAnimation_Climb(this);
 					break;
 				case CharacterPoseAnimationType.Fly:
-					PoseAnimation_Fly();
+					AnimationLibrary.PoseAnimation_Fly(this);
 					break;
 				case CharacterPoseAnimationType.Slide:
-					PoseAnimation_Slide();
+					AnimationLibrary.PoseAnimation_Slide(this);
 					break;
 				case CharacterPoseAnimationType.GrabTop:
-					PoseAnimation_GrabTop();
+					AnimationLibrary.PoseAnimation_GrabTop(this);
 					break;
 				case CharacterPoseAnimationType.GrabSide:
-					PoseAnimation_GrabSide();
+					AnimationLibrary.PoseAnimation_GrabSide(this);
 					break;
 			}
 		}
@@ -553,7 +581,7 @@ namespace AngeliaFramework {
 				if (StopMoveOnAttack) {
 					PoseUpdate_ResetToDefault();
 				}
-				PoseAnimationOverride_Attack_SmashDown();
+				AnimationLibrary.PoseAnimationOverride_Attack_SmashDown(this);
 			}
 		}
 
@@ -626,7 +654,7 @@ namespace AngeliaFramework {
 			if (CellRenderer.HasSpriteGroup(spriteID)) {
 				if (Head.FrontSide) {
 					// Front
-					bool front = frontMode != FrontMode.Back;
+					bool front = frontMode != FrontMode.AlwaysBack && frontMode != FrontMode.Back;
 					if (CellRenderer.TryGetSpriteFromGroup(spriteID, 0, out var sprite, false, true)) {
 						bool usePixelShift = Head.FrontSide && Head.Width < 0;
 						if (usePixelShift && CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
@@ -641,7 +669,7 @@ namespace AngeliaFramework {
 				} else {
 					// Back
 					if (CellRenderer.TryGetSpriteFromGroup(spriteID, 1, out var sprite, false, true)) {
-						bool front = frontMode != FrontMode.Front;
+						bool front = frontMode != FrontMode.AlwaysBack && frontMode != FrontMode.Front;
 						bool usePixelShift = Head.FrontSide && Head.Width < 0;
 						if (usePixelShift && CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
 							usePixelShift = false;
@@ -655,7 +683,10 @@ namespace AngeliaFramework {
 				}
 			} else {
 				// Single Sprite
-				bool front = frontMode == FrontMode.AlwaysFront || (frontMode == FrontMode.Front) == Head.FrontSide;
+				bool front = frontMode != FrontMode.AlwaysBack && (
+					frontMode == FrontMode.AlwaysFront ||
+					frontMode == FrontMode.Front == Head.FrontSide
+				);
 				bool usePixelShift = Head.FrontSide && Head.Width < 0;
 				if (usePixelShift && CellRenderer.TryGetMeta(spriteID, out var meta) && meta.IsTrigger) {
 					usePixelShift = false;
@@ -942,35 +973,6 @@ namespace AngeliaFramework {
 
 
 		#region --- LGC ---
-
-
-		private CharacterPoseAnimationType GetCurrentPoseAnimationType () {
-			if (EnteringDoor) return CharacterPoseAnimationType.Idle;
-			if (TakingDamage) return CharacterPoseAnimationType.TakingDamage;
-			if (CharacterState == CharacterState.Sleep) return CharacterPoseAnimationType.Sleep;
-			if (CharacterState == CharacterState.PassOut) return CharacterPoseAnimationType.PassOut;
-			if (IsRolling) return CharacterPoseAnimationType.Rolling;
-			return MovementState switch {
-				CharacterMovementState.Walk => CharacterPoseAnimationType.Walk,
-				CharacterMovementState.Run => CharacterPoseAnimationType.Run,
-				CharacterMovementState.JumpUp => CharacterPoseAnimationType.JumpUp,
-				CharacterMovementState.JumpDown => CharacterPoseAnimationType.JumpDown,
-				CharacterMovementState.SwimIdle => CharacterPoseAnimationType.SwimIdle,
-				CharacterMovementState.SwimMove => CharacterPoseAnimationType.SwimMove,
-				CharacterMovementState.SquatIdle => CharacterPoseAnimationType.SquatIdle,
-				CharacterMovementState.SquatMove => CharacterPoseAnimationType.SquatMove,
-				CharacterMovementState.Dash => CharacterPoseAnimationType.Dash,
-				CharacterMovementState.Rush => CharacterPoseAnimationType.Rush,
-				CharacterMovementState.Pound => SpinOnGroundPound ? CharacterPoseAnimationType.Spin : CharacterPoseAnimationType.Pound,
-				CharacterMovementState.Climb => CharacterPoseAnimationType.Climb,
-				CharacterMovementState.Fly => CharacterPoseAnimationType.Fly,
-				CharacterMovementState.Slide => CharacterPoseAnimationType.Slide,
-				CharacterMovementState.GrabTop => CharacterPoseAnimationType.GrabTop,
-				CharacterMovementState.GrabSide => CharacterPoseAnimationType.GrabSide,
-				CharacterMovementState.GrabFlip => CharacterPoseAnimationType.Rolling,
-				_ => CharacterPoseAnimationType.Idle,
-			};
-		}
 
 
 		private void CalculateBodypartGlobalPosition () {

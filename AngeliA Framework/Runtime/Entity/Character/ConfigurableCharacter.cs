@@ -56,7 +56,7 @@ namespace AngeliaFramework {
 		#endregion
 
 
-		private static string ConfigFilePath => !string.IsNullOrEmpty(_ConfigFilePath) ? _ConfigFilePath : (_ConfigFilePath = Util.CombinePaths(Const.PlayerDataRoot, "CharacterConfig"));
+		private static string ConfigFilePath => !string.IsNullOrEmpty(_ConfigFilePath) ? _ConfigFilePath : (_ConfigFilePath = Util.CombinePaths(Const.PlayerDataRoot, "Character Config"));
 		private static string _ConfigFilePath = "";
 
 

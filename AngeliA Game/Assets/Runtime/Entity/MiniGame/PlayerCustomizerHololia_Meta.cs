@@ -126,7 +126,7 @@ namespace AngeliaGame {
 			"#EN Council",  nameof(FaunaFootSuit), nameof(KroniiFootSuit), nameof(MumeiFootSuit), nameof(BaeFootSuit), nameof(SanaFootSuit),
 			"#EN Advent",   nameof(ShioriFootSuit), nameof(BijouFootSuit), nameof(NerissaFootSuit), nameof(FuwaFootSuit), nameof(MocoFootSuit),
 			"#ID 1st",      nameof(RisuFootSuit), nameof(MoonaFootSuit), nameof(IofifteenFootSuit),
-			"#ID 2nd",      nameof(OllieFootSuit), nameof(MelfissaFootSuit), nameof(ReineFootSuit),
+			"#ID 2nd",      nameof(OllieFootSuit), nameof(ReineFootSuit),
 			"#ID 3rd",      nameof(ZetaFootSuit), nameof(KaelaFootSuit), nameof(KoboFootSuit),
 		};
 		private static string[] _Suit_Hands = {
@@ -138,7 +138,6 @@ namespace AngeliaGame {
 			nameof(FlareHandSuit),
 			nameof(MarineHandSuit),
 			nameof(BotanHandSuit),
-			nameof(OllieHandSuit),
 			nameof(InaHandSuit),
 			nameof(KroniiHandSuit),
 			nameof(BaeHandSuit),

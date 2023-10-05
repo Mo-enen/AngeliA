@@ -18,12 +18,12 @@ namespace AngeliaFramework {
 		protected bool AttackStartAtCurrentFrame => Game.GlobalFrame == LastAttackFrame;
 		protected bool IsAttacking => Game.GlobalFrame < LastAttackFrame + AttackDuration;
 		protected bool IsAttackCharged => Game.GlobalFrame - ChargeStartFrame >= MinimalChargeAttackDuration;
+		public int LastAttackFrame { get; private set; } = int.MinValue;
+		public int AttackCombo { get; private set; } = -1;
 		public virtual bool IsChargingAttack => false;
 		public virtual int AttackTargetTeam => Const.TEAM_ALL;
 
 		// Data
-		private int AttackCombo = -1;
-		private int LastAttackFrame = int.MinValue;
 		private int ChargeStartFrame = int.MaxValue;
 
 

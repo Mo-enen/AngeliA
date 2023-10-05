@@ -263,16 +263,21 @@ namespace AngeliaGame {
 	public class OllieHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class OllieHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override FrontMode Front => FrontMode.Back;
+		protected override FrontMode Front => FrontMode.AlwaysBack;
 	}
-	public class OllieHandSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hand; }
 	public class OllieFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
 	public class MelfissaBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
 	public class MelfissaHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
-	public class MelfissaFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
-	public class ReineBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
+	public class ReineBodySuit : AutoSpriteCloth {
+		private static readonly int CAPE_CODE = "ReineSuit.Cape".AngeHash();
+		protected override ClothType ClothType => ClothType.Body;
+		protected override void DrawBodyShoulderArmArm (Character character) {
+			base.DrawBodyShoulderArmArm(character);
+			DrawExtraCape(character, CAPE_CODE);
+		}
+	}
 	public class ReineHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class ReineFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
