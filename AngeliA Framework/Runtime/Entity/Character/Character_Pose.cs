@@ -27,7 +27,7 @@ namespace AngeliaFramework {
 		// Const
 		private const int CM_PER_PX = 5;
 		protected const int A2G = Const.CEL / Const.ART_CEL;
-		protected static readonly int[] DEFAULT_BODY_PART_ID = {
+		public static readonly int[] DEFAULT_BODY_PART_ID = {
 			"DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(),
 			"DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(),
 			"DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(),
@@ -64,10 +64,10 @@ namespace AngeliaFramework {
 		public int PoseRootY { get; private set; } = 0;
 		public int BasicRootY { get; private set; } = 0;
 		public bool BodyPartsReady => BodyParts != null;
-		public virtual Color32 SkinColor => new(239, 194, 160, 255);
-		public virtual Color32 HairColor => new(51, 51, 51, 255);
-		public virtual bool SpinOnGroundPound => false;
-		public virtual int CharacterHeight => 160; // in CM
+		public Color32 SkinColor { get; set; } = new(239, 194, 160, 255);
+		public Color32 HairColor { get; set; } = new(51, 51, 51, 255);
+		public bool SpinOnGroundPound { get; set; } = false;
+		public int CharacterHeight { get; set; } = 160; // in CM
 
 		// BodyPart
 		public BodyPart Head { get; private set; } = null;

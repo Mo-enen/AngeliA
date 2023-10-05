@@ -271,7 +271,7 @@ namespace AngeliaFramework {
 				CloseGame();
 				return;
 			}
-			player.LoadConfigFromFile();
+			(player as IConfigurableCharacter).LoadConfigFromFile();
 			PlayerFacingRight = player.FacingRight;
 			HighlightingMainIndex = 0;
 			HighlightingPatternRow = 0;
@@ -285,7 +285,7 @@ namespace AngeliaFramework {
 		protected override void CloseGame () {
 			base.CloseGame();
 			if (Player.Selecting is MainPlayer player) {
-				player.SaveConfigToFile();
+				(player as IConfigurableCharacter).SaveConfigToFile();
 			}
 		}
 
@@ -499,7 +499,7 @@ namespace AngeliaFramework {
 			)) {
 				var pat = Patterns_Head[invokingIndex];
 				player.Head.SetSpriteID(pat.A);
-				if (!skinColorAvailable) player.SetSkinColor(Const.WHITE);
+				if (!skinColorAvailable) player.SkinColor = Const.WHITE;
 			}
 		}
 
@@ -515,7 +515,7 @@ namespace AngeliaFramework {
 				var pat = Patterns_BodyHip[invokingIndex];
 				player.Body.SetSpriteID(pat.A);
 				player.Hip.SetSpriteID(pat.B);
-				if (!skinColorAvailable) player.SetSkinColor(Const.WHITE);
+				if (!skinColorAvailable) player.SkinColor = Const.WHITE;
 			}
 		}
 
@@ -538,7 +538,7 @@ namespace AngeliaFramework {
 				player.UpperArmR.SetSpriteID(pat.B);
 				player.LowerArmR.SetSpriteID(pat.C);
 				player.HandR.SetSpriteID(pat.D);
-				if (!skinColorAvailable) player.SetSkinColor(Const.WHITE);
+				if (!skinColorAvailable) player.SkinColor = Const.WHITE;
 			}
 		}
 
@@ -559,7 +559,7 @@ namespace AngeliaFramework {
 				player.UpperLegR.SetSpriteID(pat.A);
 				player.LowerLegR.SetSpriteID(pat.B);
 				player.FootR.SetSpriteID(pat.C);
-				if (!skinColorAvailable) player.SetSkinColor(Const.WHITE);
+				if (!skinColorAvailable) player.SkinColor = Const.WHITE;
 			}
 		}
 
@@ -713,7 +713,7 @@ namespace AngeliaFramework {
 			)) {
 				var pat = Patterns_Hair[invokingIndex];
 				player.HairID = pat.A;
-				if (!hairColorAvailable) player.SetHairColor(Const.WHITE);
+				if (!hairColorAvailable) player.HairColor = Const.WHITE;
 			}
 		}
 
@@ -727,12 +727,12 @@ namespace AngeliaFramework {
 				out int invokingIndex
 			)) {
 				var pat = Patterns_ColorSkin[invokingIndex];
-				player.SetSkinColor(new Color32(
+				player.SkinColor = new Color32(
 					(byte)pat.A.Clamp(0, 255),
 					(byte)pat.B.Clamp(0, 255),
 					(byte)pat.C.Clamp(0, 255),
 					255
-				));
+				);
 			}
 		}
 
@@ -746,12 +746,12 @@ namespace AngeliaFramework {
 				out int invokingIndex
 			)) {
 				var pat = Patterns_ColorHair[invokingIndex];
-				player.SetHairColor(new Color32(
+				player.HairColor = new Color32(
 					(byte)pat.A.Clamp(0, 255),
 					(byte)pat.B.Clamp(0, 255),
 					(byte)pat.C.Clamp(0, 255),
 					255
-				));
+				);
 			}
 		}
 
@@ -761,8 +761,8 @@ namespace AngeliaFramework {
 			panelRect.height -= Unify(16);
 			int newHeight = BodyHeightMenuUI(panelRect, player.CharacterHeight);
 			if (newHeight != player.CharacterHeight) {
-				player.SetCharacterHeight(newHeight);
-				player.SaveConfigToFile();
+				player.CharacterHeight = newHeight;
+				(player as IConfigurableCharacter).SaveConfigToFile();
 			}
 		}
 

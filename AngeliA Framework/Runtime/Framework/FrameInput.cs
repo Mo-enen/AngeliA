@@ -733,7 +733,7 @@ namespace AngeliaFramework {
 				KeyMap[(Gamekey)6].B,
 				KeyMap[(Gamekey)7].B,
 			},
-		}, Const.PlayerDataRoot, true);
+		}, Const.PlayerDataRoot, "", true);
 
 
 		#endregion

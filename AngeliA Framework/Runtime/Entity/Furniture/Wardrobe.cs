@@ -78,7 +78,7 @@ namespace AngeliaFramework {
 			ArrowLeftPopFrame = 0;
 			ArrowRightPopFrame = 0;
 			if (Player.Selecting is MainPlayer player) {
-				player.LoadConfigFromFile();
+				(player as IConfigurableCharacter).LoadConfigFromFile();
 			}
 			CurrentPatternIndex = GetPlayerSuitIndex(CurrentSuitType);
 		}
@@ -87,7 +87,7 @@ namespace AngeliaFramework {
 		protected override void OnUiClose () {
 			base.OnUiClose();
 			if (Player.Selecting is MainPlayer player) {
-				player.SaveConfigToFile();
+				(player as IConfigurableCharacter).SaveConfigToFile();
 			}
 		}
 
@@ -243,7 +243,7 @@ namespace AngeliaFramework {
 			if (CurrentPattern != int.MinValue) {
 				// Icon
 				CellRenderer.Draw(
-					CurrentPattern, 
+					CurrentPattern,
 					windowRect.Shift((-localPopL + localPopR) * 2, 0).Shrink(Unify(8)),
 					9
 				);
@@ -405,7 +405,7 @@ namespace AngeliaFramework {
 			Pattern_Foots.Clear();
 			Pattern_Hands.Clear();
 			foreach (var pair in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_Heads, "_HeadSuit"))
-				Pattern_Heads.Add(new(pair.Key.A,  pair.Value));
+				Pattern_Heads.Add(new(pair.Key.A, pair.Value));
 			foreach (var pair in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_BodyShoulderArmArms, "_BodySuit"))
 				Pattern_BodyShoulderArmArms.Add(new(pair.Key.A, pair.Value));
 			foreach (var pair in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_HipSkirtLegLegs, "_HipSuit"))

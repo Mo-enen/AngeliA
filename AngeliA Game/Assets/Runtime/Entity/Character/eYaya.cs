@@ -23,10 +23,8 @@ namespace AngeliaGame {
 		private static readonly int YAYA_PAW = typeof(eYayaPaw).AngeHash();
 
 		// Api
-		public override bool SpinOnGroundPound => true;
 		public override bool BodySuitAvailable => true;
 		public override bool HelmetAvailable => false;
-		public override int CharacterHeight => 158;
 
 		// Data
 		private eGuaGua GuaGua = null;
@@ -40,6 +38,7 @@ namespace AngeliaGame {
 			SlideAvailable.Value = true;
 			SlideOnAnyBlock.Value = true;
 			FlyGlideAvailable.Value = false;
+			CharacterHeight = 158;
 
 			MinimalChargeAttackDuration.Value = 42;
 

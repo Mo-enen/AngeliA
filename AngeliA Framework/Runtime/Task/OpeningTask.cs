@@ -149,9 +149,9 @@ namespace AngeliaFramework {
 				// CP Respawn Pos
 				startUnitPosition = Player.RespawnUnitPosition.Value;
 				gotoBed = false;
-			} else if (Player.Selecting is MainPlayer mainPlayer && mainPlayer.HomeUnitPosition.HasValue) {
+			} else if (Player.Selecting is MainPlayer mainPlayer && (mainPlayer as IConfigurableCharacter).HomeUnitPosition.HasValue) {
 				// Sleeped Pos
-				startUnitPosition = mainPlayer.HomeUnitPosition.Value.ToVectorInt3();
+				startUnitPosition = (mainPlayer as IConfigurableCharacter).HomeUnitPosition.Value.ToVectorInt3();
 			} else if (IGlobalPosition.TryGetPosition(Player.Selecting.TypeID, out var mapUnitPosition)) {
 				// Global Map Pos
 				startUnitPosition = mapUnitPosition;

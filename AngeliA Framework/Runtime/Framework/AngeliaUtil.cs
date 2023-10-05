@@ -401,8 +401,8 @@ namespace AngeliaFramework {
 
 
 		// Json Meta
-		public static T LoadOrCreateJson<T> (string rootPath) where T : class, new() {
-			var result = LoadJson<T>(rootPath);
+		public static T LoadOrCreateJson<T> (string rootPath, string name = "") where T : class, new() {
+			var result = LoadJson<T>(rootPath, name);
 			if (result == null) {
 				result = new T();
 				if (result is ISerializationCallbackReceiver ser) {
@@ -413,10 +413,10 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool OverrideJson<T> (string rootPath, T target) where T : class {
+		public static bool OverrideJson<T> (string rootPath, T target, string name = "") where T : class {
 			if (target == null) return false;
 			try {
-				string jsonPath = GetJsonMetaPath<T>(rootPath);
+				string jsonPath = GetJsonMetaPath<T>(rootPath, name);
 				if (Util.FileExists(jsonPath)) {
 					var data = Util.FileToText(jsonPath, Encoding.UTF8);
 					JsonUtility.FromJsonOverwrite(data, target);
@@ -427,9 +427,9 @@ namespace AngeliaFramework {
 		}
 
 
-		public static T LoadJson<T> (string rootPath) where T : class {
+		public static T LoadJson<T> (string rootPath, string name = "") where T : class {
 			try {
-				string jsonPath = GetJsonMetaPath<T>(rootPath);
+				string jsonPath = GetJsonMetaPath<T>(rootPath, name);
 				if (Util.FileExists(jsonPath)) {
 					var data = Util.FileToText(jsonPath, Encoding.UTF8);
 					var target = JsonUtility.FromJson<T>(data);
@@ -440,14 +440,14 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void SaveJson<T> (T meta, string rootPath, bool prettyPrint = false) {
-			string jsonPath = GetJsonMetaPath<T>(rootPath);
+		public static void SaveJson<T> (T meta, string rootPath, string name = "", bool prettyPrint = false) {
+			string jsonPath = GetJsonMetaPath<T>(rootPath, name);
 			string data = JsonUtility.ToJson(meta, prettyPrint);
 			Util.TextToFile(data, jsonPath, Encoding.UTF8);
 		}
 
 
-		public static string GetJsonMetaPath<T> (string rootPath) => Util.CombinePaths(rootPath, $"{typeof(T).Name}.json");
+		public static string GetJsonMetaPath<T> (string rootPath, string name = "") => Util.CombinePaths(rootPath, $"{(string.IsNullOrEmpty(name) ? typeof(T).Name : name)}.json");
 
 
 		// Extension
