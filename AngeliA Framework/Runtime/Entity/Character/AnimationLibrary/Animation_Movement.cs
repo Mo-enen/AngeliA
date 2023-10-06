@@ -46,6 +46,9 @@ namespace AngeliaFramework {
 			Body.Height -= oneEase;
 			Head.Y -= oneEase;
 
+			int ARM_SHIFT_XL = FacingRight ? A2G * 2 / 3 : 0;
+			int ARM_SHIFT_XR = FacingRight ? 0 : A2G * 2 / 3;
+
 			// Arm
 			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
 			ShoulderL.Y -= oneEase;
@@ -54,24 +57,24 @@ namespace AngeliaFramework {
 
 			UpperArmL.X = ShoulderL.X;
 			UpperArmL.Y -= oneEase;
-			UpperArmL.Width += halfEase;
+			//UpperArmL.Width += halfEase;
 
 			UpperArmR.X = ShoulderR.X;
 			UpperArmR.Y -= oneEase;
-			UpperArmR.Width += halfEase;
+			//UpperArmR.Width += halfEase;
 
-			LowerArmL.X = UpperArmL.X;
+			LowerArmL.X = UpperArmL.X - ARM_SHIFT_XL;
 			LowerArmL.Y -= oneEase;
-			LowerArmL.Width += halfEase;
+			//LowerArmL.Width += halfEase;
 
-			LowerArmR.X = UpperArmR.X;
+			LowerArmR.X = UpperArmR.X + ARM_SHIFT_XR;
 			LowerArmR.Y -= oneEase;
-			LowerArmR.Width += halfEase;
+			//LowerArmR.Width += halfEase;
 
-			HandL.X -= halfEase / 2;
+			HandL.X -= halfEase / 2 + ARM_SHIFT_XL;
 			HandL.Y -= oneEase;
 
-			HandR.X += halfEase / 2;
+			HandR.X += halfEase / 2 + ARM_SHIFT_XR;
 			HandR.Y -= oneEase;
 
 			// Leg

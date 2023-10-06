@@ -16,6 +16,7 @@ namespace AngeliaFramework {
 		protected virtual bool GetFrontR (Character character) => character.Head.FrontSide;
 		protected virtual int FacingLeftOffsetX => 0;
 		protected virtual bool AllowLimbRotate => false;
+		protected virtual bool ForceBackOnFlow => true;
 		protected virtual int MotionAmount => 618;
 		protected virtual int FlowMotionAmount => 618;
 		protected virtual int DropMotionAmount => 200;
@@ -33,12 +34,12 @@ namespace AngeliaFramework {
 		protected override Cell[] DrawHair (Character character) {
 			var cells = base.DrawHair(character);
 			if (BraidL != 0 || BraidR != 0) {
-				DrawBraid(character, cells);
+				DrawBraid(character, cells, ForceBackOnFlow);
 			}
 			return cells;
 		}
 
-		private void DrawBraid (Character character, Cell[] cells) {
+		private void DrawBraid (Character character, Cell[] cells, bool forceBackOnFlow) {
 
 			const int A2G = Const.CEL / Const.ART_CEL;
 
@@ -115,14 +116,14 @@ namespace AngeliaFramework {
 					(character.FacingRight ? rot : rot * 2 / 3) - motionRotY,
 					flipX, flipY, deltaHeight, rolling, AllowLimbRotate
 				);
-				Flow(bcells, character.FacingRight ? braidFlow : braidFlow / 2);
+				Flow(bcells, character.FacingRight ? braidFlow : braidFlow / 2, forceBackOnFlow);
 
 				bcells = DrawBraid(
 					BraidR, r, y, zRight, 1000,
 					(character.FacingRight ? rot * 2 / 3 : rot) + motionRotY,
 					flipX, flipY, deltaHeight, rolling, AllowLimbRotate
 				);
-				Flow(bcells, character.FacingRight ? braidFlow / 2 : braidFlow);
+				Flow(bcells, character.FacingRight ? braidFlow / 2 : braidFlow, forceBackOnFlow);
 
 			} else {
 				DrawBraid(BraidL, l, y, zLeft, 0, rot, flipX, flipY, deltaHeight, rolling, AllowLimbRotate);
@@ -153,19 +154,19 @@ namespace AngeliaFramework {
 					return CellRenderer.Draw_9Slice(spriteID, x, y, px, py, rot, width, height, z);
 				}
 			}
-			static void Flow (Cell[] cells, int deltaRot) {
+			static void Flow (Cell[] cells, int deltaRot, bool forceBackOnFlow) {
 				if (cells == null || deltaRot == 0) return;
 				// M
 				for (int i = 3; i < 6; i++) {
 					var cell = cells[i];
 					cell.Rotation = (cell.Rotation + deltaRot / 2).Clamp(-85, 85);
-					cell.Z = -33;
+					if (forceBackOnFlow) cell.Z = -33;
 				}
 				// D
 				for (int i = 6; i < 9; i++) {
 					var cell = cells[i];
 					cell.Rotation = (cell.Rotation + deltaRot).Clamp(-85, 85);
-					cell.Z = -33;
+					if (forceBackOnFlow) cell.Z = -33;
 				}
 			}
 		}

@@ -14,7 +14,7 @@ namespace AngeliaGame {
 		protected override ClothType ClothType => ClothType.Hip;
 		protected override void DrawHipSkirtLegLeg (Character character) {
 			base.DrawHipSkirtLegLeg(character);
-			DrawExtraDoubleTailsOnHip(character, DRESS_TAIL_L, DRESS_TAIL_R);
+			character.DrawDoubleClothTailsOnHip(DRESS_TAIL_L, DRESS_TAIL_R);
 		}
 	}
 	public class SoraFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
@@ -39,7 +39,7 @@ namespace AngeliaGame {
 		protected override ClothType ClothType => ClothType.Hip;
 		protected override void DrawHipSkirtLegLeg (Character character) {
 			base.DrawHipSkirtLegLeg(character);
-			DrawExtraDoubleTailsOnHip(character, DRESS_TAIL_L, DRESS_TAIL_R);
+			character.DrawDoubleClothTailsOnHip(DRESS_TAIL_L, DRESS_TAIL_R);
 		}
 	}
 	public class SuiseiHeadSuit : AutoSpriteCloth {
@@ -71,7 +71,7 @@ namespace AngeliaGame {
 		protected override ClothType ClothType => ClothType.Hip;
 		protected override void DrawHipSkirtLegLeg (Character character) {
 			base.DrawHipSkirtLegLeg(character);
-			DrawExtraDoubleTailsOnHip(character, DRESS_TAIL_L, DRESS_TAIL_R);
+			character.DrawDoubleClothTailsOnHip(DRESS_TAIL_L, DRESS_TAIL_R);
 		}
 	}
 	public class AkiHandSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hand; }
@@ -108,7 +108,7 @@ namespace AngeliaGame {
 		protected override ClothType ClothType => ClothType.Body;
 		protected override void DrawBodyShoulderArmArm (Character character) {
 			base.DrawBodyShoulderArmArm(character);
-			DrawExtraCape(character, CAPE_CODE);
+			character.DrawCape(CAPE_CODE);
 		}
 	}
 	public class ChocoHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
@@ -153,7 +153,7 @@ namespace AngeliaGame {
 		protected override ClothType ClothType => ClothType.Body;
 		protected override void DrawBodyShoulderArmArm (Character character) {
 			base.DrawBodyShoulderArmArm(character);
-			DrawExtraCape(character, CAPE_CODE);
+			character.DrawCape(CAPE_CODE);
 		}
 	}
 	public class NoelHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
@@ -177,7 +177,7 @@ namespace AngeliaGame {
 		protected override ClothType ClothType => ClothType.Body;
 		protected override void DrawBodyShoulderArmArm (Character character) {
 			base.DrawBodyShoulderArmArm(character);
-			DrawExtraCape(character, CAPE_CODE);
+			character.DrawCape(CAPE_CODE);
 		}
 	}
 	public class WatameHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
@@ -198,7 +198,7 @@ namespace AngeliaGame {
 		protected override ClothType ClothType => ClothType.Hip;
 		protected override void DrawHipSkirtLegLeg (Character character) {
 			base.DrawHipSkirtLegLeg(character);
-			DrawExtraDoubleTailsOnHip(character, DRESS_TAIL_L, DRESS_TAIL_R);
+			character.DrawDoubleClothTailsOnHip(DRESS_TAIL_L, DRESS_TAIL_R);
 		}
 	}
 	public class LunaHeadSuit : AutoSpriteCloth {
@@ -216,7 +216,7 @@ namespace AngeliaGame {
 		protected override ClothType ClothType => ClothType.Body;
 		protected override void DrawBodyShoulderArmArm (Character character) {
 			base.DrawBodyShoulderArmArm(character);
-			DrawExtraCape(character, CAPE_CODE);
+			character.DrawCape(CAPE_CODE);
 		}
 	}
 	public class LamyHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
@@ -229,7 +229,7 @@ namespace AngeliaGame {
 		protected override ClothType ClothType => ClothType.Hip;
 		protected override void DrawHipSkirtLegLeg (Character character) {
 			base.DrawHipSkirtLegLeg(character);
-			DrawExtraDoubleTailsOnHip(character, DRESS_TAIL_L, DRESS_TAIL_R);
+			character.DrawDoubleClothTailsOnHip(DRESS_TAIL_L, DRESS_TAIL_R);
 		}
 	}
 	public class NeneFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
@@ -275,7 +275,7 @@ namespace AngeliaGame {
 		protected override ClothType ClothType => ClothType.Body;
 		protected override void DrawBodyShoulderArmArm (Character character) {
 			base.DrawBodyShoulderArmArm(character);
-			DrawExtraCape(character, CAPE_CODE);
+			character.DrawCape(CAPE_CODE);
 		}
 	}
 	public class ReineHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
@@ -310,7 +310,14 @@ namespace AngeliaGame {
 	public class GuraHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class GuraFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
-	public class AmeBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
+	public class AmeBodySuit : AutoSpriteCloth {
+		private static readonly int CAPE_CODE = "AmeSuit.Cape".AngeHash();
+		protected override ClothType ClothType => ClothType.Body;
+		protected override void DrawBodyShoulderArmArm (Character character) {
+			base.DrawBodyShoulderArmArm(character);
+			character.DrawCape(CAPE_CODE);
+		}
+	}
 	public class AmeHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class AmeHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
@@ -318,7 +325,14 @@ namespace AngeliaGame {
 	}
 	public class AmeFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
-	public class IRySBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
+	public class IRySBodySuit : AutoSpriteCloth {
+		private static readonly int CAPE_CODE = "IRySSuit.Cape".AngeHash();
+		protected override ClothType ClothType => ClothType.Body;
+		protected override void DrawBodyShoulderArmArm (Character character) {
+			base.DrawBodyShoulderArmArm(character);
+			character.DrawCape(CAPE_CODE);
+		}
+	}
 	public class IRySHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class IRySHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
@@ -326,7 +340,14 @@ namespace AngeliaGame {
 	}
 	public class IRySFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
-	public class FaunaBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
+	public class FaunaBodySuit : AutoSpriteCloth {
+		private static readonly int CAPE_CODE = "FaunaSuit.Cape".AngeHash();
+		protected override ClothType ClothType => ClothType.Body;
+		protected override void DrawBodyShoulderArmArm (Character character) {
+			base.DrawBodyShoulderArmArm(character);
+			character.DrawCape(CAPE_CODE, 1500);
+		}
+	}
 	public class FaunaHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class FaunaFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
@@ -335,11 +356,19 @@ namespace AngeliaGame {
 	public class KroniiHandSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hand; }
 	public class KroniiFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
-	public class MumeiBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
+	public class MumeiBodySuit : AutoSpriteCloth {
+		private static readonly int CAPE_CODE = "MumeiSuit.Cape".AngeHash();
+		protected override ClothType ClothType => ClothType.Body;
+		protected override void DrawBodyShoulderArmArm (Character character) {
+			base.DrawBodyShoulderArmArm(character);
+			character.DrawCape(CAPE_CODE, 1500);
+		}
+	}
 	public class MumeiHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class MumeiHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
 		protected override FrontMode Front => FrontMode.Back;
+
 	}
 	public class MumeiFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 

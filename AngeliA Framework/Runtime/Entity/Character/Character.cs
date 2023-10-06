@@ -151,13 +151,12 @@ namespace AngeliaFramework {
 			}
 			PhysicsUpdate_Movement_After();
 			PhysicsUpdate_Navigation();
+			RenderUpdate_AnimationType();
 			base.PhysicsUpdate();
 		}
 
 
 		public override void FrameUpdate () {
-
-			RenderUpdate_AnimationType();
 
 			// Render Character
 			bool blinking = IsInvincible && (Game.GlobalFrame - InvincibleEndFrame).UMod(8) < 4;

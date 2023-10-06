@@ -967,6 +967,103 @@ namespace AngeliaFramework {
 		}
 
 
+		public void DrawDoubleClothTailsOnHip (int spriteIdLeft, int spriteIdRight) {
+			var hipRect = Hip.GetGlobalRect();
+			int z = Body.FrontSide ? -39 : 39;
+			bool facingRight = Body.Width > 0;
+			int rotL = facingRight ? 30 : 18;
+			int rotR = facingRight ? -18 : -30;
+			if (Body.Height < 0) {
+				rotL = 180 - rotL;
+				rotR = -180 + rotR;
+				z = -z;
+			}
+			DrawClothTail(spriteIdLeft, hipRect.x + 16, hipRect.y, z, rotL);
+			DrawClothTail(spriteIdRight, hipRect.xMax - 16, hipRect.y, z, rotR);
+		}
+
+
+		public void DrawClothTail (int spriteID, int globalX, int globalY, int z, int rotation, int motionAmount = 1000) {
+
+			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
+
+			int rot = 0;
+
+			// Motion
+			if (motionAmount != 0) {
+				// Idle Rot
+				int animationFrame = (TypeID + Game.GlobalFrame).Abs(); // ※ Intended ※
+				rot += rotation.Sign() * (animationFrame.PingPong(180) / 10 - 9);
+				// Delta Y >> Rot
+				int deltaY = DeltaPositionY;
+				rot -= rotation.Sign() * (deltaY * 2 / 3).Clamp(-20, 20);
+			}
+
+			// Draw
+			CellRenderer.Draw(
+				spriteID,
+				globalX, globalY,
+				sprite.PivotX, sprite.PivotY, rotation + rot,
+				sprite.GlobalWidth, sprite.GlobalHeight, z
+			);
+
+		}
+
+
+		public void DrawCape (int groupID, int motionAmount = 1000) {
+
+			if (
+				AnimatedPoseType == CharacterPoseAnimationType.SquatIdle ||
+				AnimatedPoseType == CharacterPoseAnimationType.SquatMove ||
+				AnimatedPoseType == CharacterPoseAnimationType.Dash ||
+				AnimatedPoseType == CharacterPoseAnimationType.Rolling ||
+				AnimatedPoseType == CharacterPoseAnimationType.Fly ||
+				AnimatedPoseType == CharacterPoseAnimationType.Sleep ||
+				AnimatedPoseType == CharacterPoseAnimationType.PassOut ||
+				groupID == 0 ||
+				!CellRenderer.TryGetSpriteFromGroup(groupID, Body.FrontSide ? 0 : 1, out var sprite, false, true)
+			) return;
+
+			// Draw
+			int height = sprite.GlobalHeight + Body.Height.Abs() - Body.SizeY;
+			var cells = CellRenderer.Draw_9Slice(
+				sprite.GlobalID,
+				Body.GlobalX, Body.GlobalY + Body.Height,
+				500, 1000, 0,
+				sprite.GlobalWidth,
+				Body.Height.Sign() * height,
+                Const.WHITE, Body.FrontSide ? -31 : 31
+			);
+
+			// Flow Motion
+			if (motionAmount != 0) {
+				// X
+				int maxX = 30 * motionAmount / 1000;
+				int offsetX = (-DeltaPositionX * motionAmount / 1000).Clamp(-maxX, maxX);
+				cells[3].X += offsetX / 2;
+				cells[4].X += offsetX / 2;
+				cells[5].X += offsetX / 2;
+				cells[6].X += offsetX;
+				cells[7].X += offsetX;
+				cells[8].X += offsetX;
+				// Y
+				int maxY = 20 * motionAmount / 1000;
+				int offsetAmountY = 1000 + (DeltaPositionY * motionAmount / 10000).Clamp(-maxY, maxY) * 1000 / 20;
+				offsetAmountY = offsetAmountY.Clamp(800, 1200);
+				cells[0].Height = cells[0].Height * offsetAmountY / 1000;
+				cells[1].Height = cells[1].Height * offsetAmountY / 1000;
+				cells[2].Height = cells[2].Height * offsetAmountY / 1000;
+				cells[3].Height = cells[3].Height * offsetAmountY / 1000;
+				cells[4].Height = cells[4].Height * offsetAmountY / 1000;
+				cells[5].Height = cells[5].Height * offsetAmountY / 1000;
+				cells[6].Height = cells[6].Height * offsetAmountY / 1000;
+				cells[7].Height = cells[7].Height * offsetAmountY / 1000;
+				cells[8].Height = cells[8].Height * offsetAmountY / 1000;
+			}
+
+		}
+
+
 		#endregion
 
 

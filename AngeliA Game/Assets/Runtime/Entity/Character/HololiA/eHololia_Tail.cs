@@ -56,6 +56,8 @@ namespace AngeliaGame {
 		protected override int AngleAmountRoot => 200;
 		protected override int AngleAmountSubsequent => 100;
 		protected override int AngleOffset => 45;
+		protected override int OffsetY => -16;
+
 	}
 	public class BaeTail : AutoSpriteTail {
 		protected override int LimbGrow => 500;

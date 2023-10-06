@@ -15,6 +15,8 @@ namespace AngeliaFramework {
 		protected virtual int FrequencyAlt => 277;
 		protected virtual int FrameLen => 219;
 		protected virtual int FrameDelta => 37;
+		protected virtual int OffsetX => 0;
+		protected virtual int OffsetY => 0;
 		public AutoSpriteTail () {
 			string name = (GetType().DeclaringType ?? GetType()).AngeName();
 			SpriteGroupID = $"{name}.Tail".AngeHash();
@@ -28,7 +30,7 @@ namespace AngeliaFramework {
 			) return;
 			DrawSegmentTail(
 				character, SpriteGroupID, Frequency, FrequencyAlt, FrameLen, FrameDelta,
-				AngleAmountRoot, AngleAmountSubsequent, AngleOffset, LimbGrow
+				AngleAmountRoot, AngleAmountSubsequent, AngleOffset, LimbGrow, OffsetX, OffsetY
 			);
 		}
 	}
@@ -82,21 +84,9 @@ namespace AngeliaFramework {
 		// UTL
 		public static void DrawSegmentTail (
 			Character character, int spriteGroupID,
-			int angleAmountRoot = 1000, int angleAmountSubsequent = 1000, int angleOffset = 0, int limbGrow = 1000
-		) {
-			const int FREQ = 113;
-			const int FREQ_ALT = 277;
-			const int LEN = 219;
-			const int FRAME_DELTA = 37;
-			DrawSegmentTail(
-				character, spriteGroupID, FREQ, FREQ_ALT, LEN, FRAME_DELTA,
-				angleAmountRoot, angleAmountSubsequent, angleOffset, limbGrow
-			);
-		}
-		public static void DrawSegmentTail (
-			Character character, int spriteGroupID,
 			int frequency, int frequencyAlt, int frameLen, int frameDelta,
-			int angleAmountRoot = 1000, int angleAmountSubsequent = 1000, int angleOffset = 0, int limbGrow = 1000
+			int angleAmountRoot, int angleAmountSubsequent, int angleOffset, int limbGrow,
+			int offsetX, int offsetY
 		) {
 
 			if (spriteGroupID == 0 || !CellRenderer.HasSpriteGroup(spriteGroupID, out int count)) return;
@@ -201,9 +191,9 @@ namespace AngeliaFramework {
 
 				// Draw
 				if (sprite.GlobalBorder.IsZero) {
-					CellRenderer.Draw(sprite.GlobalID, x, y, px, py, r, w, h, z);
+					CellRenderer.Draw(sprite.GlobalID, x + offsetX, y + offsetY, px, py, r, w, h, z);
 				} else {
-					CellRenderer.Draw_9Slice(sprite.GlobalID, x, y, px, py, r, w, h, z);
+					CellRenderer.Draw_9Slice(sprite.GlobalID, x + offsetX, y + offsetY, px, py, r, w, h, z);
 				}
 
 				// to Next
