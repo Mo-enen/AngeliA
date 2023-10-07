@@ -16,7 +16,7 @@ namespace AngeliaFramework {
 			Head, Body, ShoulderArmArmHand, LegLegFoot,
 			Face, Hair, Ear, Tail, Wing, Horn,
 			SkinColor, HairColor,
-			Suit_Head, Suit_BodyShoulderArmArm, Suit_Hand, Suit_HipSkirtLegLeg, Suit_Foot,
+			Suit_Head, Suit_BodyShoulderArmArm, Suit_HipSkirtLegLeg, Suit_Hand, Suit_Foot,
 			Height,
 		}
 
@@ -71,8 +71,8 @@ namespace AngeliaFramework {
 			"UI.BodyPart.HairColor".AngeHash(),
 			"UI.Suit.Hat".AngeHash(),
 			"UI.Suit.Bodysuit".AngeHash(),
-			"UI.Suit.Glove".AngeHash(),
 			"UI.Suit.Pants".AngeHash(),
+			"UI.Suit.Glove".AngeHash(),
 			"UI.Suit.Shoes".AngeHash(),
 			"UI.BodyPart.Height".AngeHash(),
 		};
@@ -91,8 +91,8 @@ namespace AngeliaFramework {
 			"Icon.BodyPart.HairColor".AngeHash(),
 			"Icon.Suit.Hat".AngeHash(),
 			"Icon.Suit.Bodysuit".AngeHash(),
-			"Icon.Suit.Glove".AngeHash(),
 			"Icon.Suit.Pants".AngeHash(),
+			"Icon.Suit.Glove".AngeHash(),
 			"Icon.Suit.Shoes".AngeHash(),
 			"Icon.BodyPart.Height".AngeHash(),
 		};

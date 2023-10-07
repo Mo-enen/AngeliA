@@ -213,6 +213,7 @@ namespace AngeliaFramework.Editor {
 			AngeEditorUtil.HideMetaFiles(Const.UniverseRoot);
 			AngeEditorUtil.CreateUniverseManifest(Const.UniverseRoot);
 			AssetDatabase.Refresh();
+			EditorSceneManager.SaveOpenScenes();
 		}
 
 

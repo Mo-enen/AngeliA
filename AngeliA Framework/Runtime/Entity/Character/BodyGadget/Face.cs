@@ -128,7 +128,7 @@ namespace AngeliaFramework {
 
 
 		// UTL
-		protected static void DrawSprite (Character character, int spriteGroupID) {
+		protected static void DrawSprite (Character character, int spriteGroupID, Int4 borderOffset = default) {
 
 			var head = character.Head;
 			if (spriteGroupID == 0 || head.Tint.a == 0 || !head.FrontSide) return;
@@ -173,6 +173,10 @@ namespace AngeliaFramework {
 			} else {
 				faceRect.y += sprite.GlobalHeight;
 				faceRect.height = -sprite.GlobalHeight;
+			}
+
+			if (!borderOffset.IsZero) {
+				faceRect = faceRect.Expand(borderOffset);
 			}
 
 			CellRenderer.Draw_9Slice(sprite.GlobalID, faceRect, Const.WHITE, 33);

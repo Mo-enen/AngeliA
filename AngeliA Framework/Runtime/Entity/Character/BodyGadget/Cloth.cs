@@ -13,24 +13,24 @@ namespace AngeliaFramework {
 
 	public abstract class AutoSpriteCloth : Cloth {
 
-		private int SpriteID { get; init; }
+		private int SpriteID0 { get; init; }
 		private int SpriteID1 { get; init; }
 		private int SpriteID2 { get; init; }
 		private int SpriteID3 { get; init; }
-		private int SpriteID5 { get; init; }
+		private int SpriteID4 { get; init; }
 
 
 		public AutoSpriteCloth () {
 			string name = (GetType().DeclaringType ?? GetType()).AngeName();
-			SpriteID = $"{name}.{ClothType}Suit".AngeHash();
-			SpriteID5 = 0;
-			if (!CellRenderer.HasSprite(SpriteID) && !CellRenderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
+			SpriteID0 = $"{name}.{ClothType}Suit".AngeHash();
+			SpriteID4 = 0;
+			if (!CellRenderer.HasSprite(SpriteID0) && !CellRenderer.HasSpriteGroup(SpriteID0)) SpriteID0 = 0;
 			if (ClothType == ClothType.Body) {
-				if (SpriteID == 0) {
-					SpriteID = $"{name}.BodySuitL".AngeHash();
-					SpriteID5 = $"{name}.BodySuitR".AngeHash();
-					if (!CellRenderer.HasSprite(SpriteID) && !CellRenderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
-					if (!CellRenderer.HasSprite(SpriteID5) && !CellRenderer.HasSpriteGroup(SpriteID5)) SpriteID5 = 0;
+				if (SpriteID0 == 0) {
+					SpriteID0 = $"{name}.BodySuitL".AngeHash();
+					SpriteID4 = $"{name}.BodySuitR".AngeHash();
+					if (!CellRenderer.HasSprite(SpriteID0) && !CellRenderer.HasSpriteGroup(SpriteID0)) SpriteID0 = 0;
+					if (!CellRenderer.HasSprite(SpriteID4) && !CellRenderer.HasSpriteGroup(SpriteID4)) SpriteID4 = 0;
 				}
 				SpriteID1 = $"{name}.ShoulderSuit".AngeHash();
 				SpriteID2 = $"{name}.UpperArmSuit".AngeHash();
@@ -51,16 +51,16 @@ namespace AngeliaFramework {
 
 		protected override void DrawHead (Character character) {
 			if (ClothType != ClothType.Head) return;
-			character.DrawClothForHead(SpriteID, Front);
+			character.DrawClothForHead(SpriteID0, Front);
 		}
 		protected override void DrawBodyShoulderArmArm (Character character) {
 			if (ClothType != ClothType.Body) return;
-			if (SpriteID != 0) {
+			if (SpriteID0 != 0) {
 				// Body
-				if (SpriteID5 == 0 || character.Body.Width < 0) {
-					character.DrawClothForBody(SpriteID, SpriteID5 == 0);
+				if (SpriteID4 == 0 || character.Body.Width < 0) {
+					character.DrawClothForBody(SpriteID0, SpriteID4 == 0);
 				} else {
-					character.DrawClothForBody(SpriteID5, false);
+					character.DrawClothForBody(SpriteID4, false);
 				}
 			}
 			if (SpriteID1 != 0) {
@@ -108,18 +108,18 @@ namespace AngeliaFramework {
 		}
 		protected override void DrawHand (Character character) {
 			if (ClothType != ClothType.Hand) return;
-			if (SpriteID != 0) {
-				character.CoverClothOn(character.HandL, SpriteID, character.HandL.Z + 1, Const.WHITE);
-				character.CoverClothOn(character.HandR, SpriteID, character.HandR.Z + 1, Const.WHITE);
+			if (SpriteID0 != 0) {
+				character.CoverClothOn(character.HandL, SpriteID0, character.HandL.Z + 1, Const.WHITE);
+				character.CoverClothOn(character.HandR, SpriteID0, character.HandR.Z + 1, Const.WHITE);
 			}
 		}
 		protected override void DrawHipSkirtLegLeg (Character character) {
 
 			if (ClothType != ClothType.Hip) return;
 
-			if (SpriteID != 0) {
+			if (SpriteID0 != 0) {
 				// Pants
-				character.DrawClothForHip(SpriteID);
+				character.DrawClothForHip(SpriteID0);
 			}
 			if (SpriteID1 != 0) {
 				// Skirt
@@ -156,17 +156,17 @@ namespace AngeliaFramework {
 		}
 		protected override void DrawFoot (Character character) {
 			if (ClothType != ClothType.Foot) return;
-			if (SpriteID != 0) {
-				if (CellRenderer.HasSpriteGroup(SpriteID)) {
-					if (CellRenderer.TryGetSpriteFromGroup(SpriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+			if (SpriteID0 != 0) {
+				if (CellRenderer.HasSpriteGroup(SpriteID0)) {
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID0, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
 						character.DrawClothForFoot(character.FootL, spriteL.GlobalID);
 					}
-					if (CellRenderer.TryGetSpriteFromGroup(SpriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID0, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
 						character.DrawClothForFoot(character.FootR, spriteR.GlobalID);
 					}
 				} else {
-					character.DrawClothForFoot(character.FootL, SpriteID);
-					character.DrawClothForFoot(character.FootR, SpriteID);
+					character.DrawClothForFoot(character.FootL, SpriteID0);
+					character.DrawClothForFoot(character.FootR, SpriteID0);
 				}
 			}
 		}

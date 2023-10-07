@@ -6,9 +6,12 @@ PekoraHandSuit
 FlareHandSuit
 MarineHandSuit
 BotanHandSuit
+LaplusHandSuit
+SakamataHandSuit
 InaHandSuit
 KroniiHandSuit
 BaeHandSuit
 SanaHandSuit
 KaelaHandSuit
+KoboHandSuit
 NerissaHandSuit

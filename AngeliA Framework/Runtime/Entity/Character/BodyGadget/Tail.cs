@@ -149,7 +149,7 @@ namespace AngeliaFramework {
 							y = (character.UpperLegL.GlobalY + character.UpperLegR.GlobalY) / 2;
 						} else {
 							x = character.Body.GlobalX - w / 2;
-							y = character.Body.GlobalY;
+							y = character.Hip.GlobalY + character.Hip.Height / 2;
 						}
 						int MIN_ANGLE = character.Body.Height > 0 ? 123 : 63;
 						int MAX_ANGLE = character.Body.Height > 0 ? 142 : 82;

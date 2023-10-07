@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditor.PackageManager;
+using AngeliaFramework;
 
 
 namespace Moenen.Editor {
@@ -141,6 +142,86 @@ namespace Moenen.Editor {
 				}
 				return count;
 			}
+		}
+
+
+
+		[MenuItem("AngeliA/Other/Check for Empty Sprites")]
+		public static void EmptySpriteChecker () {
+
+			string sheetPath = Util.CombinePaths(Const.SheetRoot, $"{nameof(SpriteSheet)}.json");
+			if (!Util.FileExists(sheetPath)) {
+				Debug.LogWarning("Sprite sheet not found.");
+				return;
+			}
+			var sheet = AngeUtil.LoadJson<SpriteSheet>(Const.SheetRoot);
+			if (sheet == null) {
+				Debug.LogWarning("Failed to load sprite sheet.");
+				return;
+			}
+
+			var game = Object.FindFirstObjectByType<Game>(FindObjectsInactive.Include);
+			if (game == null) {
+				Debug.LogWarning("Game not found.");
+				return;
+			}
+
+			var texture = game.Editor_GetSheetTexture();
+			if (texture == null) {
+				Debug.LogWarning("Sheet texture not found.");
+				return;
+			}
+
+			string texturePath = AssetDatabase.GetAssetPath(texture);
+			texture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+			texture.LoadImage(Util.FileToByte(texturePath), false);
+			var pixels = texture.GetPixels32();
+
+			// Name Pool from Editing Meta
+			var editingMeta = AngeUtil.LoadJson<SpriteEditingMeta>(Const.SheetRoot);
+			if (editingMeta == null) {
+				Debug.LogWarning("Sprite editing meta not found.");
+				return;
+			}
+			var namePool = new Dictionary<int, (string name, string sheetName)>();
+			foreach (var meta in editingMeta.Metas) {
+				namePool.TryAdd(
+					meta.GlobalID,
+					(meta.RealName, editingMeta.SheetNames[meta.SheetNameIndex])
+				);
+			}
+
+			// Check all Sprites
+			var resultList = new List<string>();
+			int textureWidth = texture.width;
+			int textureHeight = texture.height;
+			foreach (var sprite in sheet.Sprites) {
+				var rect = sprite.GetTextureRect(textureWidth, textureHeight);
+				int xMax = rect.xMax.Clamp(0, textureWidth);
+				int yMax = rect.yMax.Clamp(0, textureHeight);
+				for (int x = rect.x; x < xMax; x++) {
+					for (int y = rect.y; y < yMax; y++) {
+						if (pixels[y * textureWidth + x].a > 0) {
+							goto _PASS;
+						}
+					}
+				}
+				if (namePool.TryGetValue(sprite.GlobalID, out var nameData)) {
+					resultList.Add($"Sheet: <color=#FFCC00>{nameData.sheetName}</color> Name: <color=#FFCC00>{nameData.name}</color>");
+				}
+				_PASS:;
+			}
+
+			// Log
+			if (resultList.Count == 0) {
+				Debug.Log("No empty sprite found.");
+			} else {
+				Debug.Log($"{resultList.Count} empty sprites found.");
+				foreach (var msg in resultList) {
+					Debug.Log(msg);
+				}
+			}
+
 		}
 
 

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using AngeliaFramework;
 
 
@@ -56,7 +55,8 @@ namespace AngeliaGame {
 			"", nameof(FubukiEar), nameof(MioEar), nameof(OkayuEar), nameof(KoroneEar), nameof(PekoraEar), nameof(BotanEar), nameof(PolkaEar), nameof(RisuEar), nameof(InaEar), nameof(BaeEar), nameof(KoyoriEar), nameof(MocoEar), nameof(FuwaEar),
 		};
 		private static string[] _BodyPart_Tails = {
-			"", nameof(FubukiTail), nameof(MioTail), nameof(ChocoTail), nameof(TowaTail), nameof(OkayuTail), nameof(KoroneTail), nameof(PekoraTail), nameof(CocoTail), nameof(BotanTail), nameof(PolkaTail), nameof(RisuTail), nameof(GuraTail), nameof(BaeTail), nameof(LaplusTail), nameof(KoyoriTail), nameof(FuwaMocoTail),
+			"", //"AloeTail",
+			nameof(FubukiTail), nameof(MioTail), nameof(ChocoTail), nameof(TowaTail), nameof(OkayuTail), nameof(KoroneTail), nameof(PekoraTail), nameof(CocoTail), nameof(BotanTail), nameof(PolkaTail), nameof(RisuTail), nameof(GuraTail), nameof(BaeTail), nameof(LaplusTail), nameof(KoyoriTail), nameof(FuwaMocoTail),
 		};
 		private static string[] _BodyPart_Wings = {
 			"", nameof(AngelWing), nameof(DevilWing), nameof(FubukiWing), nameof(MioWing), nameof(KoroneWing), nameof(CocoWing), nameof(PolkaWing), nameof(RisuWing), nameof(KoyoriWing), nameof(FuwaMocoWing),
@@ -77,6 +77,7 @@ namespace AngeliaGame {
 		};
 		private static string[] _Suit_BodyShoulderArmArms = {
 			"",
+			//"ChrisBodySuit", "RushiaBodySuit", "AloeBodySuit",
 			"#JP 0th",      nameof(SoraBodySuit), nameof(RobocoBodySuit), nameof(MikoBodySuit), nameof(SuiseiBodySuit), nameof(AZKiBodySuit),
 			"#JP 1st",      nameof(MelBodySuit), nameof(FubukiBodySuit), nameof(MatsuriBodySuit), nameof(AkiBodySuit), nameof(AkaiBodySuit),
 			"#JP 2nd",      nameof(AquaBodySuit), nameof(ShionBodySuit), nameof(AyameBodySuit), nameof(ChocoBodySuit), nameof(SubaruBodySuit),
@@ -95,6 +96,7 @@ namespace AngeliaGame {
 		};
 		private static string[] _Suit_HipSkirtLegLegs = {
 			"",
+			//"ChrisHipSuit", "RushiaHipSuit", "AloeHipSuit",
 			"#JP 0th",      nameof(SoraHipSuit), nameof(RobocoHipSuit), nameof(MikoHipSuit), nameof(SuiseiHipSuit), nameof(AZKiHipSuit),
 			"#JP 1st",      nameof(MelHipSuit), nameof(FubukiHipSuit), nameof(MatsuriHipSuit), nameof(AkiHipSuit), nameof(AkaiHipSuit),
 			"#JP 2nd",      nameof(AquaHipSuit), nameof(ShionHipSuit), nameof(AyameHipSuit), nameof(ChocoHipSuit), nameof(SubaruHipSuit),
@@ -113,6 +115,7 @@ namespace AngeliaGame {
 		};
 		private static string[] _Suit_Foots = {
 			"",
+			//"ChrisFootSuit", "RushiaFootSuit", "AloeFootSuit",
 			"#JP 0th",      nameof(SoraFootSuit), nameof(RobocoFootSuit), nameof(MikoFootSuit), nameof(SuiseiFootSuit), nameof(AZKiFootSuit),
 			"#JP 1st",      nameof(MelFootSuit), nameof(FubukiFootSuit), nameof(MatsuriFootSuit), nameof(AkiFootSuit), nameof(AkaiFootSuit),
 			"#JP 2nd",      nameof(AquaFootSuit), nameof(ShionFootSuit), nameof(AyameFootSuit), nameof(ChocoFootSuit), nameof(SubaruFootSuit),
@@ -138,11 +141,14 @@ namespace AngeliaGame {
 			nameof(FlareHandSuit),
 			nameof(MarineHandSuit),
 			nameof(BotanHandSuit),
+			nameof(LaplusHandSuit),
+			nameof(SakamataHandSuit),
 			nameof(InaHandSuit),
 			nameof(KroniiHandSuit),
 			nameof(BaeHandSuit),
 			nameof(SanaHandSuit),
 			nameof(KaelaHandSuit),
+			nameof(KoboHandSuit),
 			nameof(NerissaHandSuit),
 		};
 

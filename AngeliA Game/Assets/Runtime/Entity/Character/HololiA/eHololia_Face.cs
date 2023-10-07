@@ -112,7 +112,13 @@ namespace AngeliaGame {
 		}
 	}
 	public class RushiaFace : AutoSpriteFace { }
-	public class ChrisFace : AutoSpriteFace { }
+	public class ChrisFace : AutoSpriteFace {
+		private static readonly int GLASS_CODE = "ChrisSuit.Glass".AngeHash();
+		protected override void DrawFace (Character character) {
+			base.DrawFace(character);
+			DrawSprite(character, GLASS_CODE, new Int4(16, 16, 0, 0));
+		}
+	}
 
 
 }
