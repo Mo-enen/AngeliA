@@ -77,7 +77,7 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnGameInitialize(-64)]
+		[OnGameInitialize(-65)]
 		public static void Initialize () => LoadAllFromDisk();
 
 

@@ -22,8 +22,8 @@ namespace AngeliaFramework {
 
 
 		// Const
-		public const int INVENTORY_COLUMN = 10;
-		public const int INVENTORY_ROW = 4;
+		public const int INVENTORY_COLUMN = 6;
+		public const int INVENTORY_ROW = 3;
 		private const int RUSH_TAPPING_GAP = 16;
 		private const int ACTION_SCAN_RANGE = Const.HALF;
 		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
@@ -40,11 +40,12 @@ namespace AngeliaFramework {
 			get => _Selecting;
 			set {
 				if (value != null) {
-					SelectingPlayerID.Value = value.TypeID;
+					_LastSelectedPlayerID.Value = value.TypeID;
 				}
 				_Selecting = value;
 			}
 		}
+		public static int LastSelectedPlayerID => _LastSelectedPlayerID.Value;
 		public static Vector3Int? RespawnUnitPosition { get; set; } = null;
 		public override bool IsChargingAttack =>
 			Selecting == this &&
@@ -80,7 +81,7 @@ namespace AngeliaFramework {
 		private int PrevZ = int.MinValue;
 
 		// Saving
-		private static readonly SavingInt SelectingPlayerID = new("Player.SelectingPlayerID", 0);
+		private static readonly SavingInt _LastSelectedPlayerID = new("Player.SelectingPlayerID", 0);
 
 
 		#endregion
@@ -89,12 +90,6 @@ namespace AngeliaFramework {
 
 
 		#region --- MSG ---
-
-
-		[OnGameInitialize(64)]
-		public static void AfterGameInitialize () {
-			Selecting = Stage.PeekOrGetEntity(SelectingPlayerID.Value) as Player;
-		}
 
 
 		public Player () {
@@ -159,18 +154,24 @@ namespace AngeliaFramework {
 			// Update Player
 			switch (CharacterState) {
 				case CharacterState.GamePlay:
-					if (!FrameTask.HasTask() && !LockingInput) {
-						ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, Language.Get(HINT_MOVE, "Move"));
+
+					bool taskFree = !FrameTask.HasTask();
+
+					if (taskFree && !LockingInput) {
 						Move(FrameInput.DirectionX, FrameInput.DirectionY);
 						Update_JumpDashPoundRush();
+						ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, Language.Get(HINT_MOVE, "Move"));
 					} else {
 						Stop();
 					}
-					if (!FrameTask.HasTask()) {
+
+					if (taskFree) {
+						LockingInput = PlayerMenuUI.ShowingUI || PlayerQuickMenuUI.ShowingUI;
 						Update_Action();
 						Update_Attack();
 						Update_Inventory();
 					}
+
 					break;
 				case CharacterState.Sleep:
 					Update_Sleep();
@@ -230,7 +231,6 @@ namespace AngeliaFramework {
 
 		private void Update_Action () {
 
-			LockingInput = PlayerMenuUI.ShowingUI;
 			if (CharacterState != CharacterState.GamePlay) return;
 			if (TakingDamage || FrameTask.HasTask()) return;
 
@@ -291,7 +291,7 @@ namespace AngeliaFramework {
 				}
 			}
 
-			LockingInput = PlayerMenuUI.ShowingUI || (TargetActionEntity != null && TargetActionEntity.LockInput);
+			LockingInput = LockingInput || (TargetActionEntity != null && TargetActionEntity.LockInput);
 
 		}
 
@@ -338,9 +338,21 @@ namespace AngeliaFramework {
 
 
 		private void Update_Inventory () {
+
+			// Quick Menu
+			if (!PlayerMenuUI.ShowingUI && !PlayerQuickMenuUI.ShowingUI && !LockingInput) {
+				if (FrameInput.GameKeyDown(Gamekey.Select) || FrameInput.GameKeyDown(Gamekey.Start)) {
+					PlayerQuickMenuUI.OpenMenu();
+				}
+			}
+
 			// Inventory Menu
-			if (!PlayerMenuUI.ShowingUI && !LockingInput) {
-				if (FrameInput.GameKeyDown(Gamekey.Select)) {
+			if (
+				!PlayerMenuUI.ShowingUI &&
+				(PlayerQuickMenuUI.ShowingUI || !LockingInput) &&
+				(!PlayerQuickMenuUI.ShowingUI || !PlayerQuickMenuUI.Instance.IsDirty)
+			) {
+				if (FrameInput.GameKeyUp(Gamekey.Select)) {
 					FrameInput.UseGameKey(Gamekey.Select);
 					PlayerMenuUI.OpenMenu();
 				}

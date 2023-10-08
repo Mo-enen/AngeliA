@@ -89,6 +89,9 @@ namespace AngeliaFramework {
 					if (player != null && GotoBed && Stage.TryGetEntity<Bed>(out var bed)) {
 						bed.GetTargetOnBed(Player.Selecting);
 						player.SetAsFullAsleep();
+						TargetViewX = player.Rect.CenterX();
+						TargetViewY = player.Y;
+						SetViewPosition(TargetViewX, TargetViewY + DOLLY_HEIGHT);
 					}
 				}
 				Stage.ClearGlobalAntiSpawn();
@@ -149,9 +152,9 @@ namespace AngeliaFramework {
 				// CP Respawn Pos
 				startUnitPosition = Player.RespawnUnitPosition.Value;
 				gotoBed = false;
-			} else if (Player.Selecting is MainPlayer mainPlayer && (mainPlayer as IConfigurableCharacter).HomeUnitPosition.HasValue) {
+			} else if (Player.Selecting is IConfigurableCharacter selectingPlayer && selectingPlayer.HomeUnitPosition.HasValue) {
 				// Sleeped Pos
-				startUnitPosition = (mainPlayer as IConfigurableCharacter).HomeUnitPosition.Value.ToVectorInt3();
+				startUnitPosition = selectingPlayer.HomeUnitPosition.Value.ToVectorInt3();
 			} else if (IGlobalPosition.TryGetPosition(Player.Selecting.TypeID, out var mapUnitPosition)) {
 				// Global Map Pos
 				startUnitPosition = mapUnitPosition;

@@ -229,13 +229,14 @@ namespace AngeliaFramework {
 		}
 
 
+		public static int LengthInt (this Vector2Int v) => Util.DistanceInt(v.x, v.y, 0, 0);
+
+
 		// Coroutine
 		public static Coroutine StartBetterCoroutine (this MonoBehaviour beh, IEnumerator routine, System.Action onFinished = null) => beh.StartBetterCoroutine(routine, (ex) => onFinished?.Invoke());
 		public static Coroutine StartBetterCoroutine (this MonoBehaviour beh, IEnumerator routine, System.Action<System.Exception> onFinished = null) {
-			var cor = beh.StartCoroutine(Coroutine());
-			return cor;
-			// Func
-			IEnumerator Coroutine () {
+			return beh.StartCoroutine(Coroutine(routine, onFinished));
+			static IEnumerator Coroutine (IEnumerator routine, System.Action<System.Exception> onFinished) {
 				while (true) {
 					bool done;
 					try {
@@ -426,7 +427,12 @@ namespace AngeliaFramework {
 		public static Vector2Int BottomRight (this RectInt rect) => new(rect.xMax, rect.yMin);
 		public static Vector2Int TopLeft (this RectInt rect) => new(rect.xMin, rect.yMax);
 		public static Vector2Int TopRight (this RectInt rect) => new(rect.xMax, rect.yMax);
-		public static int LengthInt (this Vector2Int v) => Util.DistanceInt(v.x, v.y, 0, 0);
+
+		public static void ClampPositionInside (ref this RectInt rect, RectInt bounds) {
+			rect.x = rect.x.Clamp(bounds.x, bounds.xMax - rect.width);
+			rect.y = rect.y.Clamp(bounds.y, bounds.yMax - rect.height);
+		}
+
 
 		// Misc
 		public static bool IsSame (this Color32 a, Color32 b, bool ignoreAlpha = false) => a.r == b.r && a.g == b.g && a.b == b.b && (ignoreAlpha || a.a == b.a);

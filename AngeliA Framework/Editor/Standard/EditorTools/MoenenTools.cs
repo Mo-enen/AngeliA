@@ -55,6 +55,11 @@ namespace Moenen.Editor {
 			var method = type.GetMethod("Clear");
 			method.Invoke(new object(), null);
 
+			// Save
+			if (!EditorApplication.isPlaying) {
+				EditorSceneManager.SaveOpenScenes();
+			}
+
 			// Compile if need
 			AssetDatabase.Refresh();
 
@@ -62,10 +67,7 @@ namespace Moenen.Editor {
 			long time = System.DateTime.Now.Ticks;
 			if (time - PrevDoTheThingTime < 5000000) {
 				if (DoTheTingCombo == 0) {
-					// Save
-					if (!EditorApplication.isPlaying) {
-						EditorSceneManager.SaveOpenScenes();
-					}
+
 					// Deselect
 					Selection.activeObject = null;
 

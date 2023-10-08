@@ -75,13 +75,14 @@ namespace AngeliaFramework {
 
 		// Ser
 		[SerializeField, Disable] int m_UniverseVersion = 0;
-		[SerializeField] Gradient m_SkyTintTop = null;
-		[SerializeField] Gradient m_SkyTintBottom = null;
-		[SerializeField, NullAlert] Texture2D m_SheetTexture = null;
-		[SerializeField] Font[] m_Fonts = null;
-		[SerializeField] Texture2D[] m_Cursors = null;
-		[SerializeField] AudioClip[] m_AudioClips = null;
-		[SerializeField] string[] m_AssemblyNames = new string[0];
+		[SerializeField, DisableAtRuntime] bool m_AutoStartGame = true;
+		[SerializeField, DisableAtRuntime] Gradient m_SkyTintTop = null;
+		[SerializeField, DisableAtRuntime] Gradient m_SkyTintBottom = null;
+		[SerializeField, DisableAtRuntime, NullAlert] Texture2D m_SheetTexture = null;
+		[SerializeField, DisableAtRuntime] Font[] m_Fonts = null;
+		[SerializeField, DisableAtRuntime] Texture2D[] m_Cursors = null;
+		[SerializeField, DisableAtRuntime] AudioClip[] m_AudioClips = null;
+		[SerializeField, DisableAtRuntime] string[] m_AssemblyNames = new string[0];
 
 		// Data
 		private bool Initialized = false;
@@ -211,7 +212,7 @@ namespace AngeliaFramework {
 
 		private void FixedUpdate () {
 			if (!Initialized) Initialize();
-			if (!Initialized) return;
+			if (!Initialized || !enabled) return;
 			if (!Camera.enabled) Camera.enabled = true;
 			if (IsPlaying) {
 				Update_Gameplay();
@@ -259,30 +260,35 @@ namespace AngeliaFramework {
 				DontDestroyOnLoad(Camera.transform.gameObject);
 				DontDestroyOnLoad(gameObject);
 				System.GC.Collect(0, System.GCCollectionMode.Forced);
-				RestartGame();
+				if (m_AutoStartGame) {
+					RestartGame();
+				} else {
+					enabled = false;
+				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 
 		}
 
 
 		private bool Initialize_Universe () {
-			if (!UniverseReady) {
-				if (Application.platform != RuntimePlatform.Android) {
-					// Not Android
-					UniverseReady = true;
-				} else {
-					// Android
-#pragma warning disable IDE0074
-					if (SyncUniverseCor == null) {
-#pragma warning restore IDE0074
-						SyncUniverseCor = StartCoroutine(
-							AngeUtil.SyncUniverseFolder(m_UniverseVersion, () => UniverseReady = true)
-						);
-					}
-					return false;
-				}
+
+			if (UniverseReady) return true;
+
+			// Not Android
+			if (Application.platform != RuntimePlatform.Android) {
+				UniverseReady = true;
+				return true;
 			}
-			return true;
+
+			// Android
+#pragma warning disable IDE0074
+			if (SyncUniverseCor == null) {
+#pragma warning restore IDE0074
+				SyncUniverseCor = StartCoroutine(
+					AngeUtil.SyncUniverseFolder(m_UniverseVersion, () => UniverseReady = true)
+				);
+			}
+			return false;
 		}
 
 
@@ -412,7 +418,7 @@ namespace AngeliaFramework {
 
 		private void Update_PauseState () {
 			// Start Key to Switch State
-			if (FrameInput.GameKeyDown(Gamekey.Start)) {
+			if (FrameInput.GameKeyUp(Gamekey.Start)) {
 				if (IsPlaying) {
 					IsPlaying = false;
 					AudioPlayer.PauseAll();
@@ -431,11 +437,21 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public void RestartGame () => RestartGame(Player.Selecting != null ? Player.Selecting.TypeID : typeof(MainPlayer).AngeHash());
+		public void RestartGame () {
+			Player.Selecting = Stage.PeekOrGetEntity(Player.LastSelectedPlayerID) as Player;
+			RestartGame(Player.Selecting != null ? Player.Selecting.TypeID : typeof(MainPlayer).AngeHash());
+		}
 		public void RestartGame (int playerID) {
+
+			// Select Player
 			if (Stage.PeekOrGetEntity(playerID) is Player player) {
 				Player.Selecting = player;
 			}
+
+			// Enable Game
+			if (!enabled) enabled = true;
+
+			// Event
 			OnGameRestart?.Invoke();
 		}
 

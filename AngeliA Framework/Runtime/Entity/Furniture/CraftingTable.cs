@@ -37,8 +37,8 @@ namespace AngeliaFramework {
 
 
 		// MSG
-		public override void EnablePanel (int inventoryID, int column, int row, int itemSize = 64, bool centerPanel = false) {
-			base.EnablePanel(inventoryID, column, row, itemSize, centerPanel);
+		public override void EnablePanel (int inventoryID, int column, int row, int itemSize = 52) {
+			base.EnablePanel(inventoryID, column, row, itemSize);
 			DocumentContent.Clear();
 			CurrentCraftingItems.A = int.MinValue;
 		}
@@ -429,7 +429,7 @@ namespace AngeliaFramework {
 			var playerMenu = PlayerMenuUI.OpenMenu();
 			if (playerMenu == null) return;
 			playerMenu.Partner = CraftingTableUI.Instance;
-			playerMenu.Partner.EnablePanel(TypeID, 2, 2, 128, true);
+			playerMenu.Partner.EnablePanel(TypeID, 2, 2, 128);
 		}
 
 

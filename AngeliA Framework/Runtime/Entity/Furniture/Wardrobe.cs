@@ -313,9 +313,9 @@ namespace AngeliaFramework {
 
 			// BG
 			CellRenderer.Draw(Const.PIXEL, new RectInt(
-				windowRect.x - WindowPadding - LeftBarWidth,
+				windowRect.x - WindowPadding / 2 - LeftBarWidth,
 				windowRect.yMax,
-				windowRect.width + WindowPadding + WindowPadding + LeftBarWidth,
+				windowRect.width + WindowPadding + LeftBarWidth,
 				SIZE + WindowPadding
 			), Const.BLACK, 0);
 

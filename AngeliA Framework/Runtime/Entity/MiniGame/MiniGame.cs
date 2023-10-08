@@ -67,8 +67,8 @@ namespace AngeliaFramework {
 					GameUpdate();
 					CellRenderer.SetLayerToDefault();
 					// Quit
-					if (FrameInput.GameKeyDown(Gamekey.Start)) {
-						FrameInput.UseAllHoldingKeys();
+					if (FrameInput.GameKeyUp(Gamekey.Start)) {
+						FrameInput.UseGameKey(Gamekey.Start);
 						if (RequireQuitConfirm) {
 							OpenQuitMenu();
 						} else {

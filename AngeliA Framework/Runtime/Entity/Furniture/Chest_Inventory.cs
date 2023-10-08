@@ -49,6 +49,7 @@ namespace AngeliaFramework {
 				var playerMenu = PlayerMenuUI.OpenMenu();
 				if (playerMenu != null) {
 					playerMenu.Partner = InventoryPartnerUI.Instance;
+					InventoryPartnerUI.Instance.AvatarIcon = TypeID;
 					playerMenu.Partner.EnablePanel(TypeID, InventoryColumn, InventoryRow);
 				}
 			}

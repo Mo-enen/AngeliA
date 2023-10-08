@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UniverseVersion: 0
+  m_AutoStartGame: 1
   m_SkyTintTop:
     serializedVersion: 2
     key0: {r: 0.078431375, g: 0.08235294, b: 0.12156863, a: 1}

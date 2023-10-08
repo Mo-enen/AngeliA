@@ -76,8 +76,8 @@ namespace AngeliaFramework {
 			if (Open) {
 				// Cancel
 				if (
-					FrameInput.GameKeyDown(Gamekey.Select) ||
-					FrameInput.GameKeyDown(Gamekey.Start)
+					FrameInput.GameKeyUp(Gamekey.Select) ||
+					FrameInput.GameKeyUp(Gamekey.Start)
 				) {
 					SetOpen(false);
 					FrameInput.UseGameKey(Gamekey.Select);

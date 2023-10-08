@@ -1,10 +1,4 @@
-﻿Language.Creator:楠瓜Moenen
-@enen:Enen
-@enol:Enol
-@lalynna:LalynnA
-@nesu:Nesu
-@yaya:Yaya
-CtrlHint.Adjust:Adjust
+﻿CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
 CtrlHint.Drop:Drop
@@ -39,6 +33,7 @@ Hint.Tetris.Move:Move
 Hint.Tetris.Rotate:Rotate
 iDes.WizardHat:Wizard's Hat
 iName.WizardHat:Wizard Hat
+Language.Creator:楠瓜Moenen
 MEDT.BackgroundOnly:Background Only
 MEDT.CancelDrop:Cancel Drop
 MEDT.Drop:Mouse Left Button to Drop
