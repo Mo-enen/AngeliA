@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iSpearWood : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSpearWood : Weapon {
+		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iSpearIron : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSpearIron : Weapon {
+		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iSpearGold : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSpearGold : Weapon {
+		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iTrident : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iTrident : Weapon {
+		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iBoStaffWood : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBoStaffWood : Weapon {
+		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iBoStaffIron : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBoStaffIron : Weapon {
+		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iBoStaffGold : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBoStaffGold : Weapon {
+		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iNaginata : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iNaginata : Weapon {
+		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iHalberd : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHalberd : Weapon {
+		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iJi : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iJi : Weapon {
+		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iMonkSpade : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iMonkSpade : Weapon {
+		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iManCatcher : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iManCatcher : Weapon {
+		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iSwallow : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSwallow : Weapon {
+		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iFork : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iFork : Weapon {
+		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iBrandistock : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBrandistock : Weapon {
+		public override WeaponType WeaponType => WeaponType.Spear;
 	}
 }

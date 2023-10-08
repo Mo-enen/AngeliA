@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iClawWood : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iClawWood : Weapon {
+		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iClawIron : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iClawIron : Weapon {
+		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iClawGold : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iClawGold : Weapon {
+		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iMandarinDuckAxe : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iMandarinDuckAxe : Weapon {
+		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iClawCat : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iClawCat : Weapon {
+		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iClawFox : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iClawFox : Weapon {
+		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iKatars : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iKatars : Weapon {
+		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iKatarsTripple : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iKatarsTripple : Weapon {
+		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iEmeiPiercer : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iEmeiPiercer : Weapon {
+		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iBaton : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBaton : Weapon {
+		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iKnuckleDuster : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iKnuckleDuster : Weapon {
+		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iEmeiFork : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iEmeiFork : Weapon {
+		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iWuXingHook : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iWuXingHook : Weapon {
+		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iKatarsRuby : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iKatarsRuby : Weapon {
+		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iKatarsJagged : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iKatarsJagged : Weapon {
+		public override WeaponType WeaponType => WeaponType.Claw;
 	}
 }

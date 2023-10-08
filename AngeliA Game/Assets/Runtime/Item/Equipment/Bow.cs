@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iBowWood : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBowWood : Weapon {
+		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iBowIron : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBowIron : Weapon {
+		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iBowGold : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBowGold : Weapon {
+		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iCrossbowWood : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iCrossbowWood : Weapon {
+		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iCrossbowIron : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iCrossbowIron : Weapon {
+		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iCrossbowGold : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iCrossbowGold : Weapon {
+		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iBlowgun : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBlowgun : Weapon {
+		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iSlingshot : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSlingshot : Weapon {
+		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iCompoundBow : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iCompoundBow : Weapon {
+		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iRepeatingCrossbow : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iRepeatingCrossbow : Weapon {
+		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iBowNature : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBowNature : Weapon {
+		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iBowSkull : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBowSkull : Weapon {
+		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iBowMage : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBowMage : Weapon {
+		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iBowSky : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBowSky : Weapon {
+		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iBowHarp : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBowHarp : Weapon {
+		public override WeaponType WeaponType => WeaponType.Bow;
 	}
 }

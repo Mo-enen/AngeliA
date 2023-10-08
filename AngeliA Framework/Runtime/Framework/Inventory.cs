@@ -178,6 +178,15 @@ namespace AngeliaFramework {
 		}
 
 
+		public static int IndexOfItem (int inventoryID, int itemID) {
+			if (!Pool.TryGetValue(inventoryID, out var data)) return -1;
+			for (int i = 0; i < data.Items.Length; i++) {
+				if (data.Items[i] == itemID) return i;
+			}
+			return -1;
+		}
+
+
 		/// <returns>How many items has been added. Return 0 means no item added. Return "count" means all items added.</returns>
 		public static int AddItemAt (int inventoryID, int itemIndex, int count = 1) {
 			if (

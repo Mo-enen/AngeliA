@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iAxeWood : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iAxeWood : Weapon {
+		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeIron : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iAxeIron : Weapon {
+		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeGold : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iAxeGold : Weapon {
+		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iBattleAxe : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBattleAxe : Weapon {
+		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iErgonomicAxe : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iErgonomicAxe : Weapon {
+		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeJagged : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iAxeJagged : Weapon {
+		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeOrc : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iAxeOrc : Weapon {
+		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeCursed : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iAxeCursed : Weapon {
+		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iPickWood : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iPickWood : Weapon {
+		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iPickIron : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iPickIron : Weapon {
+		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iPickGold : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iPickGold : Weapon {
+		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeGreat : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iAxeGreat : Weapon {
+		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeButterfly : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iAxeButterfly : Weapon {
+		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeBone : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iAxeBone : Weapon {
+		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeStone : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iAxeStone : Weapon {
+		public override WeaponType WeaponType => WeaponType.Axe;
 	}
 }

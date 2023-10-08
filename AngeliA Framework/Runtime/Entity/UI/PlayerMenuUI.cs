@@ -59,6 +59,7 @@ namespace AngeliaFramework {
 
 		#region --- VAR ---
 
+
 		// Const
 		private static readonly int FRAME_CODE = "Frame16".AngeHash();
 		private static readonly int ITEM_FRAME_CODE = "UI.ItemFrame".AngeHash();
@@ -601,7 +602,7 @@ namespace AngeliaFramework {
 			);
 
 			// Icon
-			DrawIcon(itemRect, itemID, Const.WHITE, int.MinValue + 4);
+			DrawItemIcon(itemRect, itemID, Const.WHITE, int.MinValue + 4);
 
 			// Count
 			if (TakingID == 0 || cursorIndex != uiIndex) {
@@ -784,7 +785,7 @@ namespace AngeliaFramework {
 
 			// Icon
 			if (!equipAvailable) enableTint.a = 96;
-			DrawIcon(itemRect, itemID, enableTint, int.MinValue + 3);
+			DrawItemIcon(itemRect, itemID, enableTint, int.MinValue + 3);
 
 			// Label
 			CellRendererGUI.Label(
@@ -921,36 +922,39 @@ namespace AngeliaFramework {
 
 
 		private void EquipAtCursor () {
+
 			if (TakingID != 0 || !CursorInBottomPanel) return;
 			int playerInvID = Player.Selecting.TypeID;
 			int cursorItemCount = Inventory.GetInventoryCapacity(playerInvID);
 			if (CursorIndex < 0 || CursorIndex >= cursorItemCount) return;
-			int cursorID = Inventory.GetItemAt(playerInvID, CursorIndex, out int cursorCount);
+
+			int cursorID = Inventory.GetItemAt(playerInvID, CursorIndex);
 			if (cursorID == 0) return;
 			if (!ItemSystem.IsEquipment(cursorID, out var eqType)) return;
 			if (!Player.Selecting.EquipmentAvailable(eqType)) return;
-			int tookCount = Inventory.TakeItemAt(playerInvID, CursorIndex);
-			if (tookCount > 0) {
-				int oldEquipmentID = Inventory.GetEquipment(playerInvID, eqType);
-				if (Inventory.SetEquipment(playerInvID, eqType, cursorID)) {
-					if (oldEquipmentID != 0) {
-						if (Inventory.GetItemAt(playerInvID, CursorIndex) == 0) {
-							// Back to Cursor
-							Inventory.SetItemAt(playerInvID, CursorIndex, oldEquipmentID, 1);
-							FlashInventoryField(CursorIndex, true);
+
+			int tookCount = Inventory.TakeItemAt(playerInvID, CursorIndex, 1);
+			if (tookCount <= 0) return;
+
+			int oldEquipmentID = Inventory.GetEquipment(playerInvID, eqType);
+			if (Inventory.SetEquipment(playerInvID, eqType, cursorID)) {
+				if (oldEquipmentID != 0) {
+					if (Inventory.GetItemAt(playerInvID, CursorIndex) == 0) {
+						// Back to Cursor
+						Inventory.SetItemAt(playerInvID, CursorIndex, oldEquipmentID, 1);
+						FlashInventoryField(CursorIndex, true);
+					} else {
+						// Collect
+						int collectCount = Inventory.CollectItem(playerInvID, oldEquipmentID, out int collectIndex, 1);
+						if (collectCount == 0) {
+							ItemSystem.ItemSpawnItemAtPlayer(oldEquipmentID);
 						} else {
-							// Collect
-							int collectCount = Inventory.CollectItem(playerInvID, oldEquipmentID, out int collectIndex, 1);
-							if (collectCount == 0) {
-								ItemSystem.ItemSpawnItemAtPlayer(oldEquipmentID);
-							} else {
-								FlashInventoryField(collectIndex, true);
-							}
+							FlashInventoryField(collectIndex, true);
 						}
 					}
-					EquipFlashType = eqType;
-					EquipFlashStartFrame = Game.GlobalFrame;
 				}
+				EquipFlashType = eqType;
+				EquipFlashStartFrame = Game.GlobalFrame;
 			}
 		}
 
@@ -1111,7 +1115,7 @@ namespace AngeliaFramework {
 
 
 		// Util
-		private static void DrawIcon (RectInt rect, int id, Color32 tint, int z) {
+		private static void DrawItemIcon (RectInt rect, int id, Color32 tint, int z) {
 			if (id == 0) return;
 			if (!CellRenderer.TryGetSprite(id, out var sprite)) {
 				id = Const.PIXEL;

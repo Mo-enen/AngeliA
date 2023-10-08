@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iFlailWood : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iFlailWood : Weapon {
+		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFlailIron : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iFlailIron : Weapon {
+		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFlailGold : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iFlailGold : Weapon {
+		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFlailTriple : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iFlailTriple : Weapon {
+		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFlailEye : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iFlailEye : Weapon {
+		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFlailSkull : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iFlailSkull : Weapon {
+		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFishingPole : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iFishingPole : Weapon {
+		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFlailMace : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iFlailMace : Weapon {
+		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFlailHook : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iFlailHook : Weapon {
+		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iNunchaku : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iNunchaku : Weapon {
+		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFlailPick : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iFlailPick : Weapon {
+		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iChainMace : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iChainMace : Weapon {
+		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iChainSpikeBall : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iChainSpikeBall : Weapon {
+		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iChainBarbed : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iChainBarbed : Weapon {
+		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iChainFist : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iChainFist : Weapon {
+		public override WeaponType WeaponType => WeaponType.Flail;
 	}
 }

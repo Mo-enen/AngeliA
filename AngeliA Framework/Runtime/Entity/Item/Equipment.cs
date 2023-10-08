@@ -4,7 +4,12 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
+
+
 	public enum EquipmentType { Weapon, BodySuit, Helmet, Shoes, Gloves, Jewelry, }
+
+	public enum WeaponType { Axe, Bow, Claw, Flail, Hammer, Hook, Spear, Sword, Throwing, Wand, }
+
 
 	public abstract class ProgressiveEquipment<P, N> : Equipment where P : Equipment where N : Equipment {
 
@@ -35,8 +40,8 @@ namespace AngeliaFramework {
 			}
 		}
 
-		public override void OnSquat (Entity holder, ItemLocation location) {
-			base.OnSquat(holder, location);
+		public override void OnRepair (Entity holder, ItemLocation location) {
+			base.OnRepair(holder, location);
 			if (location != ItemLocation.Equipment) return;
 			if (NextEquipmentID == 0) return;
 			// Try 0
@@ -60,6 +65,13 @@ namespace AngeliaFramework {
 		}
 
 	}
+
+
+	public abstract class Weapon : Equipment {
+		public sealed override EquipmentType EquipmentType => EquipmentType.Weapon;
+		public abstract WeaponType WeaponType { get; }
+	}
+
 
 	public abstract class Equipment : Item {
 

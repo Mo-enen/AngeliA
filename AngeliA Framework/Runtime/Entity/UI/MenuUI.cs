@@ -229,7 +229,7 @@ namespace AngeliaFramework {
 					SelectionIndex = (SelectionIndex + 1).Clamp(0, ItemCount - 1);
 					OnSelectionChanged();
 				}
-				if (QuitOnPressStartOrEscKey && Game.GlobalFrame != ActiveFrame && (FrameInput.GameKeyDown(Gamekey.Start) || FrameInput.KeyboardDown(Key.Escape))) {
+				if (QuitOnPressStartOrEscKey && Game.GlobalFrame != ActiveFrame && (FrameInput.GameKeyUp(Gamekey.Start) || FrameInput.KeyboardUp(Key.Escape))) {
 					Active = false;
 					FrameInput.UseAllHoldingKeys();
 				}

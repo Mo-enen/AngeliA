@@ -63,7 +63,7 @@ namespace AngeliaFramework {
 		private static readonly int UI_OFF = "UI.OFF".AngeHash();
 		private static readonly int UI_YES = "UI.Yes".AngeHash();
 		private static readonly int UI_NO = "UI.No".AngeHash();
-		private static readonly int[] GAMEKEY_UI_CODES = new int[] {
+		private static readonly int[] GAMEKEY_UI_CODES = new int[8] {
 			$"UI.GameKey.{Gamekey.Left}".AngeHash(),
 			$"UI.GameKey.{Gamekey.Right}".AngeHash(),
 			$"UI.GameKey.{Gamekey.Down}".AngeHash(),
@@ -464,14 +464,21 @@ namespace AngeliaFramework {
 					KeySetterLabel.BackgroundTint = PauselessFrame % 30 > 15 ? Const.GREEN : Const.CLEAR;
 					valueLabel = KeySetterLabel;
 				}
-				if (DrawItem(Language.Get(code), valueLabel, iconID)) {
+				bool isStart = i == (int)Gamekey.Start;
+				valueLabel.Tint = isStart ? Const.GREY_128 : Const.WHITE;
+				if (DrawItem(
+					Language.Get(code), valueLabel, isStart ? Const.GREY_128 : Const.WHITE, iconID
+				) && !isStart) {
 					RecordLock = true;
 					RecordingKey = i;
 				}
 			}
 
 			// Save Back
-			if (DrawItem(Language.Get(MENU_KEYSETTER_SAVE_BACK, "Save and Back"))) {
+			if (
+				DrawItem(Language.Get(MENU_KEYSETTER_SAVE_BACK, "Save and Back")) ||
+				(RecordingKey < 0 && FrameInput.GameKeyDown(Gamekey.Jump))
+			) {
 				RequireMode = MenuMode.KeySetter;
 				SetSelection(forGamepad ? 1 : 0);
 				if (forGamepad) {
@@ -486,23 +493,28 @@ namespace AngeliaFramework {
 			}
 
 			// Back
-			if (DrawItem(Language.Get(UI_BACK, "Back")) || (RecordingKey < 0 && FrameInput.GameKeyDown(Gamekey.Jump))) {
+			if (DrawItem(Language.Get(UI_BACK, "Back")) || FrameInput.GameKeyUp(Gamekey.Start)) {
+				FrameInput.UseGameKey(Gamekey.Start);
 				RequireMode = MenuMode.KeySetter;
 				SetSelection(forGamepad ? 1 : 0);
 			}
 
 			// Record
+			if (RecordingKey == (int)Gamekey.Start) RecordingKey = -1;
+
 			if (RecordingKey >= 0 && !RecordLock) {
 				if (forGamepad) {
 					// Gamepad
 					if (FrameInput.TryGetHoldingGamepadButton(out var button)) {
-						if (GamepadKeys[RecordingKey] != button) {
-							for (int i = 0; i < GamepadKeys.Length; i++) {
-								if (GamepadKeys[i] == button && GamepadKeys[RecordingKey] != button) {
-									GamepadKeys[i] = GamepadKeys[RecordingKey];
+						if (button != GamepadButton.Start) {
+							if (GamepadKeys[RecordingKey] != button) {
+								for (int i = 0; i < GamepadKeys.Length; i++) {
+									if (GamepadKeys[i] == button && GamepadKeys[RecordingKey] != button) {
+										GamepadKeys[i] = GamepadKeys[RecordingKey];
+									}
 								}
+								GamepadKeys[RecordingKey] = button;
 							}
-							GamepadKeys[RecordingKey] = button;
 						}
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();
@@ -513,13 +525,15 @@ namespace AngeliaFramework {
 				} else {
 					// Keyboard
 					if (FrameInput.TryGetHoldingKeyboardKey(out var button)) {
-						if (KeyboardKeys[RecordingKey] != button) {
-							for (int i = 0; i < KeyboardKeys.Length; i++) {
-								if (KeyboardKeys[i] == button && KeyboardKeys[RecordingKey] != button) {
-									KeyboardKeys[i] = KeyboardKeys[RecordingKey];
+						if (button != Key.Escape) {
+							if (KeyboardKeys[RecordingKey] != button) {
+								for (int i = 0; i < KeyboardKeys.Length; i++) {
+									if (KeyboardKeys[i] == button && KeyboardKeys[RecordingKey] != button) {
+										KeyboardKeys[i] = KeyboardKeys[RecordingKey];
+									}
 								}
+								KeyboardKeys[RecordingKey] = button;
 							}
-							KeyboardKeys[RecordingKey] = button;
 						}
 						RecordingKey = -1;
 						FrameInput.UseAllHoldingKeys();

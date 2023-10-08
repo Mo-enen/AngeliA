@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iWand : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iWand : Weapon {
+		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iTheAncientOne : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iTheAncientOne : Weapon {
+		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iStaffFire : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iStaffFire : Weapon {
+		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iStaffWater : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iStaffWater : Weapon {
+		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iStaffLightning : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iStaffLightning : Weapon {
+		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iStaffPoision : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iStaffPoision : Weapon {
+		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iRitualSkull : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iRitualSkull : Weapon {
+		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iBambooSlips : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBambooSlips : Weapon {
+		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iRitualRuneCube : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iRitualRuneCube : Weapon {
+		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iGoblinTrophy : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iGoblinTrophy : Weapon {
+		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iMagicOrb : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iMagicOrb : Weapon {
+		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iMagicEyeball : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iMagicEyeball : Weapon {
+		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iMagicPotion : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iMagicPotion : Weapon {
+		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iWandStar : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iWandStar : Weapon {
+		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iWandFairy : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iWandFairy : Weapon {
+		public override WeaponType WeaponType => WeaponType.Wand;
 	}
 }

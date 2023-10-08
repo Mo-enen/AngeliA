@@ -4,49 +4,49 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace AngeliaGame {
-	public class iSwordWood : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSwordWood : Weapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordIron : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSwordIron : Weapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordGold : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSwordGold : Weapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iDagger : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iDagger : Weapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordCrimson : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSwordCrimson : Weapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordScarlet : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSwordScarlet : Weapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iScimitar : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iScimitar : Weapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordPirate : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSwordPirate : Weapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordAgile : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSwordAgile : Weapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iScimitarAgile : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iScimitarAgile : Weapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordJagged : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSwordJagged : Weapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordGreat : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSwordGreat : Weapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordDark : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSwordDark : Weapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordCrutch : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSwordCrutch : Weapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iKnifeGiant : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iKnifeGiant : Weapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
 	}
 }

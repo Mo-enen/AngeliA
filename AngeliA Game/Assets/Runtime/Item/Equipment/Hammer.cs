@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iHammerWood : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHammerWood : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iHammerIron : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHammerIron : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iHammerGold : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHammerGold : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iMaceRound : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iMaceRound : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iMaceSkull : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iMaceSkull : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iBaseballBatWood : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBaseballBatWood : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iMaceSpiked : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iMaceSpiked : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iBian : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBian : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iHammerRiceCake : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHammerRiceCake : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iHammerGoatHorn : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHammerGoatHorn : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iBaseballBatIron : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBaseballBatIron : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iHammerThunder : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHammerThunder : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iHammerMoai : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHammerMoai : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iHammerPaladin : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHammerPaladin : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iHammerRuby : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHammerRuby : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
 }

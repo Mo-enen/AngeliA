@@ -223,6 +223,7 @@ namespace AngeliaFramework {
 			for (int i = 0; i < 8; i++) {
 				KeyMap[(Gamekey)i] = new Int2(iConfig.KeyboardConfig[i], iConfig.GamepadConfig[i]);
 			}
+			KeyMap[Gamekey.Start] = new Int2((int)Key.Escape, (int)GamepadButton.Start);
 
 			// Add Keys for Keyboard
 			var values = System.Enum.GetValues(typeof(Key));
@@ -674,12 +675,14 @@ namespace AngeliaFramework {
 
 
 		public static void SetKeyboardMap (Gamekey gameKey, Key keyboardKey) {
+			if (gameKey == Gamekey.Start) return;
 			var oldValue = KeyMap[gameKey];
 			oldValue.A = (int)keyboardKey;
 			KeyMap[gameKey] = oldValue;
 			SaveInputToDisk();
 		}
 		public static void SetGamepadMap (Gamekey gameKey, GamepadButton gamepadKey) {
+			if (gameKey == Gamekey.Start) return;
 			var oldValue = KeyMap[gameKey];
 			oldValue.B = (int)gamepadKey;
 			KeyMap[gameKey] = oldValue;
@@ -720,7 +723,7 @@ namespace AngeliaFramework {
 				KeyMap[(Gamekey)3].A,
 				KeyMap[(Gamekey)4].A,
 				KeyMap[(Gamekey)5].A,
-				KeyMap[(Gamekey)6].A,
+				(int)Key.Escape,
 				KeyMap[(Gamekey)7].A,
 			},
 			GamepadConfig = new int[8] {
@@ -730,7 +733,7 @@ namespace AngeliaFramework {
 				KeyMap[(Gamekey)3].B,
 				KeyMap[(Gamekey)4].B,
 				KeyMap[(Gamekey)5].B,
-				KeyMap[(Gamekey)6].B,
+				(int)GamepadButton.Start,
 				KeyMap[(Gamekey)7].B,
 			},
 		}, Const.PlayerDataRoot, "", true);

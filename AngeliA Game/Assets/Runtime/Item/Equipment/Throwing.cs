@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iBoomerang : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBoomerang : Weapon {
+		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iNinjaStarHalf : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iNinjaStarHalf : Weapon {
+		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iNinjaStar : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iNinjaStar : Weapon {
+		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iKunai : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iKunai : Weapon {
+		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iChakram : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iChakram : Weapon {
+		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iThrowingKnife : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iThrowingKnife : Weapon {
+		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iThrowingAxe : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iThrowingAxe : Weapon {
+		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iNeedle : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iNeedle : Weapon {
+		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iChainMaceBall : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iChainMaceBall : Weapon {
+		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iBomb : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iBomb : Weapon {
+		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iAnchor : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iAnchor : Weapon {
+		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iCrossAxe : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iCrossAxe : Weapon {
+		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iGrapeBomb : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iGrapeBomb : Weapon {
+		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iTearGas : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iTearGas : Weapon {
+		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iGrenade : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iGrenade : Weapon {
+		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
 }

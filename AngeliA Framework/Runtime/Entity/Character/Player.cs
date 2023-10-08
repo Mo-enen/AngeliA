@@ -528,7 +528,7 @@ namespace AngeliaFramework {
 				if (item == null) continue;
 				item.Update(this, ItemLocation.Inventory);
 				if (attackStart) item.OnAttack(this, ItemLocation.Inventory);
-				if (squatStart) item.OnSquat(this, ItemLocation.Inventory);
+				if (squatStart) item.OnRepair(this, ItemLocation.Inventory);
 			}
 
 			// Equipment
@@ -539,7 +539,7 @@ namespace AngeliaFramework {
 				if (item == null) continue;
 				item.Update(this, ItemLocation.Equipment);
 				if (attackStart) item.OnAttack(this, ItemLocation.Equipment);
-				if (squatStart) item.OnSquat(this, ItemLocation.Equipment);
+				if (squatStart) item.OnRepair(this, ItemLocation.Equipment);
 			}
 
 			// Auto Pick Item

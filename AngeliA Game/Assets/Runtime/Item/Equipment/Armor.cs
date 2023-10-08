@@ -4,6 +4,7 @@ using UnityEngine;
 using AngeliaFramework;
 using System;
 
+
 namespace AngeliaGame {
 	public class iArmorWood : ProgressiveEquipment<iArmorWoodBroken, iArmorWood> {
 		public override EquipmentType EquipmentType => EquipmentType.BodySuit;

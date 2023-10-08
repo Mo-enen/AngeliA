@@ -26,7 +26,7 @@ namespace AngeliaFramework {
 		public virtual void PoseAnimationUpdate (Entity holder, ItemLocation location) { }
 		public virtual void OnAttack (Entity holder, ItemLocation location) { }
 		public virtual void OnTakeDamage (Entity holder, ItemLocation location, ref int damage, Entity sender) { }
-		public virtual void OnSquat (Entity holder, ItemLocation location) { }
+		public virtual void OnRepair (Entity holder, ItemLocation location) { }
 		public virtual void OnCollect (Entity holder) { }
 
 		public virtual bool CanUse (Entity holder) => false;

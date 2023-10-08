@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iScytheWood : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iScytheWood : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iScytheIron : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iScytheIron : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iScytheGold : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iScytheGold : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iSickle : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iSickle : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookIron : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHookIron : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookGold : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHookGold : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookHand : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHookHand : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookJungle : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHookJungle : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookBone : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHookBone : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookJagged : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHookJagged : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookTripple : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHookTripple : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookBig : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHookBig : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookPudge : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHookPudge : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookChicken : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHookChicken : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookRusty : Equipment {
-		public override EquipmentType EquipmentType => EquipmentType.Weapon;
+	public class iHookRusty : Weapon {
+		public override WeaponType WeaponType => WeaponType.Hook;
 	}
 }

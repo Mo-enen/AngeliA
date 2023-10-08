@@ -85,7 +85,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void QuickSort<T> (T[] cells, int min, int max, IComparer<T> comparer) where T : class {
+		public static void QuickSort<T> (T[] cells, int min, int max, IComparer<T> comparer) {
 			int lo = min;
 			int hi = max;
 			T pvt = cells[(min + max) / 2];
