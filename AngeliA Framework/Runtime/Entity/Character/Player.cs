@@ -69,8 +69,8 @@ namespace AngeliaFramework {
 		int IDamageReceiver.Team => Const.TEAM_PLAYER;
 
 		// Short
-		private static int EquipmentCount => _EquipmentCount > 0 ? _EquipmentCount : (_EquipmentCount = System.Enum.GetValues(typeof(EquipmentType)).Length);
-		private static int _EquipmentCount = 0;
+		private static int EquipmentTypeCount => _EquipmentTypeCount > 0 ? _EquipmentTypeCount : (_EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length);
+		private static int _EquipmentTypeCount = 0;
 
 		// Data
 		private static Player _Selecting = null;
@@ -491,6 +491,15 @@ namespace AngeliaFramework {
 
 			int oldZ = PoseZOffset;
 			if (Selecting == this) PoseZOffset = 40;
+
+			// Equipping
+			int equippingID = Inventory.GetEquipment(TypeID, EquipmentType.Weapon);
+			if (equippingID != 0 && ItemSystem.GetItem(equippingID) is Weapon weapon) {
+				EquippingWeaponType = weapon.WeaponType;
+			} else {
+				EquippingWeaponType = null;
+			}
+
 			base.FrameUpdate();
 			PoseZOffset = oldZ;
 
@@ -516,7 +525,7 @@ namespace AngeliaFramework {
 			if (!Inventory.HasInventory(TypeID)) return;
 
 			bool eventAvailable = CharacterState == CharacterState.GamePlay && !FrameTask.HasTask() && !TakingDamage;
-			bool attackStart = eventAvailable && AttackStartAtCurrentFrame;
+			bool attackStart = eventAvailable && Game.GlobalFrame == LastAttackFrame;
 			bool squatStart = eventAvailable && Game.GlobalFrame == LastSquatFrame;
 
 			// Inventory
@@ -532,7 +541,7 @@ namespace AngeliaFramework {
 			}
 
 			// Equipment
-			for (int i = 0; i < EquipmentCount; i++) {
+			for (int i = 0; i < EquipmentTypeCount; i++) {
 				int id = Inventory.GetEquipment(TypeID, (EquipmentType)i);
 				if (id == 0) continue;
 				var item = ItemSystem.GetItem(id);
@@ -560,7 +569,7 @@ namespace AngeliaFramework {
 			if (damage <= 0) return;
 
 			// Equipment
-			for (int i = 0; i < EquipmentCount && damage > 0; i++) {
+			for (int i = 0; i < EquipmentTypeCount && damage > 0; i++) {
 				int id = Inventory.GetEquipment(TypeID, (EquipmentType)i);
 				if (id == 0) continue;
 				ItemSystem.GetItem(id)?.OnTakeDamage(this, ItemLocation.Equipment, ref damage, sender);
@@ -579,13 +588,14 @@ namespace AngeliaFramework {
 
 
 		protected override void OnPoseCalculated () {
-			base.OnPoseCalculated();
+
 			// Equipment
-			for (int i = 0; i < EquipmentCount; i++) {
+			for (int i = 0; i < EquipmentTypeCount; i++) {
 				int id = Inventory.GetEquipment(TypeID, (EquipmentType)i);
 				if (id == 0) continue;
 				ItemSystem.GetItem(id)?.PoseAnimationUpdate(this, ItemLocation.Equipment);
 			}
+
 		}
 
 

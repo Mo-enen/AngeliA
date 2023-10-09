@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iScytheWood : Weapon {
+	public class iScytheWood : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iScytheIron : Weapon {
+	public class iScytheIron : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iScytheGold : Weapon {
+	public class iScytheGold : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iSickle : Weapon {
+	public class iSickle : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookIron : Weapon {
+	public class iHookIron : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookGold : Weapon {
+	public class iHookGold : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookHand : Weapon {
+	public class iHookHand : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookJungle : Weapon {
+	public class iHookJungle : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookBone : Weapon {
+	public class iHookBone : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookJagged : Weapon {
+	public class iHookJagged : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookTripple : Weapon {
+	public class iHookTripple : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookBig : Weapon {
+	public class iHookBig : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookPudge : Weapon {
+	public class iHookPudge : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookChicken : Weapon {
+	public class iHookChicken : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
 	}
-	public class iHookRusty : Weapon {
+	public class iHookRusty : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
 	}
 }

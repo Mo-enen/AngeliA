@@ -45,14 +45,6 @@ namespace AngeliaFramework {
 				configCharacter.HomeUnitPosition = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 				configCharacter.SaveConfigToFile();
 			}
-			// Attack
-
-			//////////////////// TEMP /////////////////////
-			if (AttackStartAtCurrentFrame) {
-				var paw = Stage.SpawnEntity("YayaPaw".AngeHash(), X, Y) as Bullet;
-				paw?.Release(this, AttackTargetTeam, FacingRight ? 1 : -1, 0, 0, 0);
-			}
-			//////////////////// TEMP /////////////////////
 
 		}
 

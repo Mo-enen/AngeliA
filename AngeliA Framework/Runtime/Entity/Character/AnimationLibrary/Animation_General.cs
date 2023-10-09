@@ -7,7 +7,7 @@ namespace AngeliaFramework {
 	public static partial class AnimationLibrary {
 
 
-		public static void PoseAnimation_Damage (Character character) {
+		public static void Damage (Character character) {
 
 			bool FacingRight = character.FacingRight;
 			var Head = character.Head;
@@ -74,7 +74,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void PoseAnimation_Sleep (Character character) {
+		public static void Sleep (Character character) {
 
 			bool FacingRight = character.FacingRight;
 			var Head = character.Head;
@@ -153,7 +153,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void PoseAnimation_PassOut (Character character) {
+		public static void PassOut (Character character) {
 
 			bool FacingRight = character.FacingRight;
 			var Head = character.Head;

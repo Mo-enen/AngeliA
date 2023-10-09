@@ -790,7 +790,7 @@ namespace AngeliaFramework {
 			// Label
 			CellRendererGUI.Label(
 				CellContent.Get(label, enableTint, 24, Alignment.MidLeft),
-				fieldRect.Shrink(itemRect.width + fieldPadding, 0, 0, 0)
+				fieldRect.Shrink(itemRect.width + fieldPadding * 2, 0, 0, 0)
 			);
 
 			// Bottom Line

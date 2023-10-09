@@ -68,6 +68,8 @@ namespace AngeliaFramework {
 		public Color32 HairColor { get; set; } = new(51, 51, 51, 255);
 		public bool SpinOnGroundPound { get; set; } = false;
 		public int CharacterHeight { get; set; } = 160; // in CM
+		public int HandGrabRotationL { get; set; } = 0;
+		public int HandGrabRotationR { get; set; } = 0;
 
 		// BodyPart
 		public BodyPart Head { get; private set; } = null;
@@ -281,15 +283,13 @@ namespace AngeliaFramework {
 		}
 
 
-		private void RenderUpdate_Pose () {
+		private void FrameUpdate_PoseRendering () {
 
 			int cellIndexStart = CellRenderer.GetUsedCellCount();
 
-			PoseUpdate_ResetToDefault();
-			PoseUpdate_CalculateBodyPart();
-			CalculateBodypartGlobalPosition();
+			ResetPoseToDefault();
+			PerformPoseAnimation();
 			OnPoseCalculated();
-			CalculateBodypartGlobalPosition();
 
 			Wing.Draw(this, out var wing);
 			if (ShowingTail(wing)) Tail.Draw(this);
@@ -304,12 +304,191 @@ namespace AngeliaFramework {
 			Cloth.DrawHandSuit(this);
 			Cloth.DrawFootSuit(this);
 
-			PoseUpdate_DrawBodyPart(cellIndexStart);
+			DrawBodyPart(cellIndexStart);
 		}
 
 
 		// Pipeline
-		private void PoseUpdate_ResetToDefault () {
+		private void PerformPoseAnimation () {
+
+			switch (AnimatedPoseType) {
+
+				case CharacterPoseAnimationType.TakingDamage:
+					AnimationLibrary.Damage(this);
+					break;
+
+				case CharacterPoseAnimationType.Sleep:
+					AnimationLibrary.Sleep(this);
+					break;
+
+				case CharacterPoseAnimationType.PassOut:
+					AnimationLibrary.PassOut(this);
+					break;
+
+				case CharacterPoseAnimationType.Dash:
+					AnimationLibrary.Dash(this);
+					break;
+
+				case CharacterPoseAnimationType.Rolling:
+					AnimationLibrary.Rolling(this);
+					break;
+
+				case CharacterPoseAnimationType.Idle:
+					// Distribute Idle Animations
+
+
+					AnimationLibrary.Idle(this);
+
+
+
+					break;
+
+				case CharacterPoseAnimationType.Walk:
+					AnimationLibrary.Walk(this);
+					break;
+
+				case CharacterPoseAnimationType.Run:
+					AnimationLibrary.Run(this);
+					break;
+
+				case CharacterPoseAnimationType.JumpUp:
+					AnimationLibrary.JumpUp(this);
+					break;
+
+				case CharacterPoseAnimationType.JumpDown:
+					AnimationLibrary.JumpDown(this);
+					break;
+
+				case CharacterPoseAnimationType.SwimIdle:
+					AnimationLibrary.SwimIdle(this);
+					break;
+
+				case CharacterPoseAnimationType.SwimMove:
+					AnimationLibrary.SwimMove(this);
+					break;
+
+				case CharacterPoseAnimationType.SquatIdle:
+					AnimationLibrary.SquatIdle(this);
+					break;
+
+				case CharacterPoseAnimationType.SquatMove:
+					AnimationLibrary.SquatMove(this);
+					break;
+
+				case CharacterPoseAnimationType.Rush:
+					AnimationLibrary.Rush(this);
+					break;
+
+				case CharacterPoseAnimationType.Pound:
+					AnimationLibrary.Pound(this);
+					break;
+
+				case CharacterPoseAnimationType.Spin:
+					AnimationLibrary.Spin(this);
+					break;
+
+				case CharacterPoseAnimationType.Climb:
+					AnimationLibrary.Climb(this);
+					break;
+
+				case CharacterPoseAnimationType.Fly:
+					AnimationLibrary.Fly(this);
+					break;
+
+				case CharacterPoseAnimationType.Slide:
+					AnimationLibrary.Slide(this);
+					break;
+
+				case CharacterPoseAnimationType.GrabTop:
+					AnimationLibrary.GrabTop(this);
+					break;
+
+				case CharacterPoseAnimationType.GrabSide:
+					AnimationLibrary.GrabSide(this);
+					break;
+			}
+
+			// Make Global Pos Ready
+			CalculateBodypartGlobalPosition();
+
+			// Distribute Attack Animation
+			if (IsAttacking) {
+
+				//EquippingWeaponType
+
+				/////////////////// TEMP /////////////////
+				AnimationLibrary.Attack_Punch(this);
+				/////////////////// TEMP /////////////////
+
+				CalculateBodypartGlobalPosition();
+			}
+		}
+
+
+		protected virtual void OnPoseCalculated () { }
+
+
+		private void DrawBodyPart (int cellIndexStart) {
+
+			// Fix Approximately Rotation
+			LowerArmL.FixApproximatelyRotation();
+			LowerArmR.FixApproximatelyRotation();
+			HandL.FixApproximatelyRotation();
+			HandR.FixApproximatelyRotation();
+			LowerLegL.FixApproximatelyRotation();
+			LowerLegR.FixApproximatelyRotation();
+			FootL.FixApproximatelyRotation();
+			FootR.FixApproximatelyRotation();
+
+			// Draw
+			foreach (var bodyPart in BodyParts) {
+				if (bodyPart.ID == 0 || bodyPart.Tint.a == 0) continue;
+				int id = bodyPart.ID;
+				if (bodyPart == Head && CellRenderer.TryGetSpriteFromGroup(id, Head.FrontSide ? 0 : 1, out var headSprite, false, true)) {
+					id = headSprite.GlobalID;
+				}
+				if (bodyPart.Border.IsZero) {
+					// General
+					CellRenderer.Draw(
+						id,
+						X + PoseRootX + bodyPart.X,
+						Y + PoseRootY + bodyPart.Y,
+						bodyPart.PivotX, bodyPart.PivotY, bodyPart.Rotation, bodyPart.Width, bodyPart.Height,
+						bodyPart.Tint, bodyPart.Z
+					);
+				} else {
+					// 9 Slice
+					CellRenderer.Draw_9Slice(
+						id,
+						X + PoseRootX + bodyPart.X,
+						Y + PoseRootY + bodyPart.Y,
+						bodyPart.PivotX, bodyPart.PivotY, bodyPart.Rotation, bodyPart.Width, bodyPart.Height,
+						bodyPart.Tint, bodyPart.Z
+					);
+				}
+			}
+
+			// Z Offset
+			PoseZOffset -= 40;
+			if (CellRenderer.GetCells(out var layerCells, out int count)) {
+				int endIndex = Mathf.Min(CellRenderer.GetUsedCellCount(), count);
+				for (int i = cellIndexStart; i < endIndex; i++) {
+					layerCells[i].Z += PoseZOffset;
+				}
+			}
+
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+		public void ResetPoseToDefault () {
 
 			int bounce = CurrentRenderingBounce;
 			int facingSign = FacingRight ? 1 : -1;
@@ -502,148 +681,6 @@ namespace AngeliaFramework {
 			FootR.PivotY = 1000;
 
 		}
-
-
-		private void PoseUpdate_CalculateBodyPart () {
-			switch (AnimatedPoseType) {
-				case CharacterPoseAnimationType.TakingDamage:
-					AnimationLibrary.PoseAnimation_Damage(this);
-					break;
-				case CharacterPoseAnimationType.Sleep:
-					AnimationLibrary.PoseAnimation_Sleep(this);
-					break;
-				case CharacterPoseAnimationType.PassOut:
-					AnimationLibrary.PoseAnimation_PassOut(this);
-					break;
-				case CharacterPoseAnimationType.Dash:
-					AnimationLibrary.PoseAnimation_Dash(this);
-					break;
-				case CharacterPoseAnimationType.Rolling:
-					AnimationLibrary.PoseAnimation_Rolling(this);
-					break;
-				case CharacterPoseAnimationType.Idle:
-					AnimationLibrary.PoseAnimation_Idle(this);
-					break;
-				case CharacterPoseAnimationType.Walk:
-					AnimationLibrary.PoseAnimation_Walk(this);
-					break;
-				case CharacterPoseAnimationType.Run:
-					AnimationLibrary.PoseAnimation_Run(this);
-					break;
-				case CharacterPoseAnimationType.JumpUp:
-					AnimationLibrary.PoseAnimation_JumpUp(this);
-					break;
-				case CharacterPoseAnimationType.JumpDown:
-					AnimationLibrary.PoseAnimation_JumpDown(this);
-					break;
-				case CharacterPoseAnimationType.SwimIdle:
-					AnimationLibrary.PoseAnimation_SwimIdle(this);
-					break;
-				case CharacterPoseAnimationType.SwimMove:
-					AnimationLibrary.PoseAnimation_SwimMove(this);
-					break;
-				case CharacterPoseAnimationType.SquatIdle:
-					AnimationLibrary.PoseAnimation_SquatIdle(this);
-					break;
-				case CharacterPoseAnimationType.SquatMove:
-					AnimationLibrary.PoseAnimation_SquatMove(this);
-					break;
-				case CharacterPoseAnimationType.Rush:
-					AnimationLibrary.PoseAnimation_Rush(this);
-					break;
-				case CharacterPoseAnimationType.Pound:
-					AnimationLibrary.PoseAnimation_Pound(this);
-					break;
-				case CharacterPoseAnimationType.Spin:
-					AnimationLibrary.PoseAnimation_Spin(this);
-					break;
-				case CharacterPoseAnimationType.Climb:
-					AnimationLibrary.PoseAnimation_Climb(this);
-					break;
-				case CharacterPoseAnimationType.Fly:
-					AnimationLibrary.PoseAnimation_Fly(this);
-					break;
-				case CharacterPoseAnimationType.Slide:
-					AnimationLibrary.PoseAnimation_Slide(this);
-					break;
-				case CharacterPoseAnimationType.GrabTop:
-					AnimationLibrary.PoseAnimation_GrabTop(this);
-					break;
-				case CharacterPoseAnimationType.GrabSide:
-					AnimationLibrary.PoseAnimation_GrabSide(this);
-					break;
-			}
-		}
-
-
-		protected virtual void OnPoseCalculated () {
-			if (IsAttacking) {
-				if (StopMoveOnAttack) {
-					PoseUpdate_ResetToDefault();
-				}
-				AnimationLibrary.PoseAnimationOverride_Attack_SmashDown(this);
-			}
-		}
-
-
-		private void PoseUpdate_DrawBodyPart (int cellIndexStart) {
-
-			// Fix Approximately Rotation
-			LowerArmL.FixApproximatelyRotation();
-			LowerArmR.FixApproximatelyRotation();
-			HandL.FixApproximatelyRotation();
-			HandR.FixApproximatelyRotation();
-			LowerLegL.FixApproximatelyRotation();
-			LowerLegR.FixApproximatelyRotation();
-			FootL.FixApproximatelyRotation();
-			FootR.FixApproximatelyRotation();
-
-			// Draw
-			foreach (var bodyPart in BodyParts) {
-				if (bodyPart.ID == 0 || bodyPart.Tint.a == 0) continue;
-				int id = bodyPart.ID;
-				if (bodyPart == Head && CellRenderer.TryGetSpriteFromGroup(id, Head.FrontSide ? 0 : 1, out var headSprite, false, true)) {
-					id = headSprite.GlobalID;
-				}
-				if (bodyPart.Border.IsZero) {
-					// General
-					CellRenderer.Draw(
-						id,
-						X + PoseRootX + bodyPart.X,
-						Y + PoseRootY + bodyPart.Y,
-						bodyPart.PivotX, bodyPart.PivotY, bodyPart.Rotation, bodyPart.Width, bodyPart.Height,
-						bodyPart.Tint, bodyPart.Z
-					);
-				} else {
-					// 9 Slice
-					CellRenderer.Draw_9Slice(
-						id,
-						X + PoseRootX + bodyPart.X,
-						Y + PoseRootY + bodyPart.Y,
-						bodyPart.PivotX, bodyPart.PivotY, bodyPart.Rotation, bodyPart.Width, bodyPart.Height,
-						bodyPart.Tint, bodyPart.Z
-					);
-				}
-			}
-
-			// Z Offset
-			PoseZOffset -= 40;
-			if (CellRenderer.GetCells(out var layerCells, out int count)) {
-				int endIndex = Mathf.Min(CellRenderer.GetUsedCellCount(), count);
-				for (int i = cellIndexStart; i < endIndex; i++) {
-					layerCells[i].Z += PoseZOffset;
-				}
-			}
-
-		}
-
-
-		#endregion
-
-
-
-
-		#region --- API ---
 
 
 		// Cloth
@@ -1032,7 +1069,7 @@ namespace AngeliaFramework {
 				500, 1000, 0,
 				sprite.GlobalWidth,
 				Body.Height.Sign() * height,
-                Const.WHITE, Body.FrontSide ? -31 : 31
+				Const.WHITE, Body.FrontSide ? -31 : 31
 			);
 
 			// Flow Motion

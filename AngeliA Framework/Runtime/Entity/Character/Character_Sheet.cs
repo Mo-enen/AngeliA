@@ -180,7 +180,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void RenderUpdate_Sheet () {
+		private void FrameUpdate_SheetRendering () {
 
 			if (!AnimationSheetPool.TryGetValue(TypeID, out var sheet)) return;
 

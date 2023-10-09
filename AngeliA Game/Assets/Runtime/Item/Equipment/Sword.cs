@@ -4,49 +4,50 @@ using UnityEngine;
 using AngeliaFramework;
 
 namespace AngeliaGame {
-	public class iSwordWood : Weapon {
+	public class iSwordWood : AutoSpriteWeapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
+		protected override bool DoubleHanded => true;
+	}
+	public class iSwordIron : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordIron : Weapon {
+	public class iSwordGold : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordGold : Weapon {
+	public class iDagger : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iDagger : Weapon {
+	public class iSwordCrimson : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordCrimson : Weapon {
+	public class iSwordScarlet : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordScarlet : Weapon {
+	public class iScimitar : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iScimitar : Weapon {
+	public class iSwordPirate : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordPirate : Weapon {
+	public class iSwordAgile : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordAgile : Weapon {
+	public class iScimitarAgile : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iScimitarAgile : Weapon {
+	public class iSwordJagged : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordJagged : Weapon {
+	public class iSwordGreat : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordGreat : Weapon {
+	public class iSwordDark : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordDark : Weapon {
+	public class iSwordCrutch : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Sword;
 	}
-	public class iSwordCrutch : Weapon {
-		public override WeaponType WeaponType => WeaponType.Sword;
-	}
-	public class iKnifeGiant : Weapon {
+	public class iKnifeGiant : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Sword;
 	}
 }

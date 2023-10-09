@@ -207,6 +207,7 @@ namespace AngeliaFramework.Editor {
 			AngeUtil.DeleteAllEmptyMaps(Const.UserMapRoot);
 			AngeUtil.DeleteAllEmptyMaps(Const.DownloadMapRoot);
 			// Game
+			game.Editor_LoadAssembly();
 			game.Editor_ReloadAllMedia();
 			game.Editor_LoadUniverseVersionFromManifest();
 			// Final

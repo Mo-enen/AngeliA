@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iClawWood : Weapon {
+	public class iClawWood : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iClawIron : Weapon {
+	public class iClawIron : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iClawGold : Weapon {
+	public class iClawGold : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iMandarinDuckAxe : Weapon {
+	public class iMandarinDuckAxe : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iClawCat : Weapon {
+	public class iClawCat : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iClawFox : Weapon {
+	public class iClawFox : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iKatars : Weapon {
+	public class iKatars : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iKatarsTripple : Weapon {
+	public class iKatarsTripple : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iEmeiPiercer : Weapon {
+	public class iEmeiPiercer : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iBaton : Weapon {
+	public class iBaton : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iKnuckleDuster : Weapon {
+	public class iKnuckleDuster : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iEmeiFork : Weapon {
+	public class iEmeiFork : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iWuXingHook : Weapon {
+	public class iWuXingHook : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iKatarsRuby : Weapon {
+	public class iKatarsRuby : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Claw;
 	}
-	public class iKatarsJagged : Weapon {
+	public class iKatarsJagged : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Claw;
 	}
 }

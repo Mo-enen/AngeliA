@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iFlailWood : Weapon {
+	public class iFlailWood : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFlailIron : Weapon {
+	public class iFlailIron : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFlailGold : Weapon {
+	public class iFlailGold : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFlailTriple : Weapon {
+	public class iFlailTriple : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFlailEye : Weapon {
+	public class iFlailEye : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFlailSkull : Weapon {
+	public class iFlailSkull : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFishingPole : Weapon {
+	public class iFishingPole : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFlailMace : Weapon {
+	public class iFlailMace : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFlailHook : Weapon {
+	public class iFlailHook : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iNunchaku : Weapon {
+	public class iNunchaku : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iFlailPick : Weapon {
+	public class iFlailPick : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iChainMace : Weapon {
+	public class iChainMace : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iChainSpikeBall : Weapon {
+	public class iChainSpikeBall : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iChainBarbed : Weapon {
+	public class iChainBarbed : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Flail;
 	}
-	public class iChainFist : Weapon {
+	public class iChainFist : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Flail;
 	}
 }

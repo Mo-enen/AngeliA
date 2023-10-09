@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iBowWood : Weapon {
+	public class iBowWood : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iBowIron : Weapon {
+	public class iBowIron : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iBowGold : Weapon {
+	public class iBowGold : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iCrossbowWood : Weapon {
+	public class iCrossbowWood : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iCrossbowIron : Weapon {
+	public class iCrossbowIron : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iCrossbowGold : Weapon {
+	public class iCrossbowGold : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iBlowgun : Weapon {
+	public class iBlowgun : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iSlingshot : Weapon {
+	public class iSlingshot : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iCompoundBow : Weapon {
+	public class iCompoundBow : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iRepeatingCrossbow : Weapon {
+	public class iRepeatingCrossbow : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iBowNature : Weapon {
+	public class iBowNature : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iBowSkull : Weapon {
+	public class iBowSkull : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iBowMage : Weapon {
+	public class iBowMage : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iBowSky : Weapon {
+	public class iBowSky : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
 	}
-	public class iBowHarp : Weapon {
+	public class iBowHarp : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
 	}
 }

@@ -14,9 +14,9 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
-		private class WeaponSorter : IComparer<Weapon> {
+		private class WeaponSorter : IComparer<AutoSpriteWeapon> {
 			public static readonly WeaponSorter Instance = new();
-			public int Compare (Weapon x, Weapon y) {
+			public int Compare (AutoSpriteWeapon x, AutoSpriteWeapon y) {
 				if (x is null) return y is null ? 0 : 1;
 				if (y is null) return x is null ? 0 : -1;
 				int result = ((int)x.WeaponType).CompareTo((int)y.WeaponType);
@@ -43,7 +43,7 @@ namespace AngeliaFramework {
 		public bool IsDirty { get; private set; } = false;
 
 		// Data
-		private static readonly Weapon[] WeaponList = new Weapon[Player.INVENTORY_ROW * Player.INVENTORY_COLUMN + 1];
+		private static readonly AutoSpriteWeapon[] WeaponList = new AutoSpriteWeapon[Player.INVENTORY_ROW * Player.INVENTORY_COLUMN + 1];
 		private int CurrentSlotIndex = 0;
 		private int WeaponCount = 0;
 
@@ -72,7 +72,7 @@ namespace AngeliaFramework {
 			int invID = Player.Selecting.TypeID;
 			int currentIndex = 0;
 			int equippingID = Inventory.GetEquipment(invID, EquipmentType.Weapon);
-			if (ItemSystem.GetItem(equippingID) is Weapon equippingItem) {
+			if (ItemSystem.GetItem(equippingID) is AutoSpriteWeapon equippingItem) {
 				WeaponList[0] = equippingItem;
 				currentIndex++;
 				WeaponCount++;
@@ -82,7 +82,7 @@ namespace AngeliaFramework {
 				int itemID = Inventory.GetItemAt(invID, i);
 				if (
 					itemID == 0 ||
-					ItemSystem.GetItem(itemID) is not Weapon weapon
+					ItemSystem.GetItem(itemID) is not AutoSpriteWeapon weapon
 				) continue;
 				WeaponList[currentIndex] = weapon;
 				currentIndex++;

@@ -130,22 +130,8 @@ namespace AngeliaFramework {
 				}
 			}
 
-			// Assembly
-			var assemblyList = new List<string> {
-				typeof(Game).Assembly.GetName().Name
-			};
-			var defs = UnityEditor.AssetDatabase.FindAssets("t:AssemblyDefinitionAsset", new string[] { "Assets" });
-			foreach (var guid in defs) {
-				string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
-				var def = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEditorInternal.AssemblyDefinitionAsset>(path);
-				if (def != null) {
-					var dJosn = JsonUtility.FromJson<AssemblyDefinitionAssetJson>(def.ToString());
-					if (dJosn != null) assemblyList.Add(dJosn.name);
-				}
-			}
-			m_AssemblyNames = assemblyList.ToArray();
-
 			// Final
+			Editor_LoadAssembly();
 			Editor_ReloadAllMedia();
 			Editor_LoadUniverseVersionFromManifest();
 
@@ -192,6 +178,21 @@ namespace AngeliaFramework {
 			}
 		}
 		public void Editor_SetSheetTexture (Texture2D newTexture) => m_SheetTexture = newTexture;
+		public void Editor_LoadAssembly () {
+			var assemblyList = new List<string> {
+				typeof(Game).Assembly.GetName().Name
+			};
+			var defs = UnityEditor.AssetDatabase.FindAssets("t:AssemblyDefinitionAsset", new string[] { "Assets" });
+			foreach (var guid in defs) {
+				string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+				var def = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEditorInternal.AssemblyDefinitionAsset>(path);
+				if (def != null) {
+					var dJosn = JsonUtility.FromJson<AssemblyDefinitionAssetJson>(def.ToString());
+					if (dJosn != null) assemblyList.Add(dJosn.name);
+				}
+			}
+			m_AssemblyNames = assemblyList.ToArray();
+		}
 		public Texture2D Editor_GetSheetTexture () => m_SheetTexture;
 #endif
 
@@ -265,7 +266,7 @@ namespace AngeliaFramework {
 				} else {
 					enabled = false;
 				}
-				
+
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 
 		}

@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iAxeWood : Weapon {
+	public class iAxeWood : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeIron : Weapon {
+	public class iAxeIron : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeGold : Weapon {
+	public class iAxeGold : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iBattleAxe : Weapon {
+	public class iBattleAxe : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iErgonomicAxe : Weapon {
+	public class iErgonomicAxe : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeJagged : Weapon {
+	public class iAxeJagged : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeOrc : Weapon {
+	public class iAxeOrc : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeCursed : Weapon {
+	public class iAxeCursed : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iPickWood : Weapon {
+	public class iPickWood : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iPickIron : Weapon {
+	public class iPickIron : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iPickGold : Weapon {
+	public class iPickGold : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeGreat : Weapon {
+	public class iAxeGreat : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeButterfly : Weapon {
+	public class iAxeButterfly : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeBone : Weapon {
+	public class iAxeBone : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 	}
-	public class iAxeStone : Weapon {
+	public class iAxeStone : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 	}
 }

@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iSpearWood : Weapon {
+	public class iSpearWood : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iSpearIron : Weapon {
+	public class iSpearIron : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iSpearGold : Weapon {
+	public class iSpearGold : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iTrident : Weapon {
+	public class iTrident : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iBoStaffWood : Weapon {
+	public class iBoStaffWood : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iBoStaffIron : Weapon {
+	public class iBoStaffIron : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iBoStaffGold : Weapon {
+	public class iBoStaffGold : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iNaginata : Weapon {
+	public class iNaginata : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iHalberd : Weapon {
+	public class iHalberd : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iJi : Weapon {
+	public class iJi : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iMonkSpade : Weapon {
+	public class iMonkSpade : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iManCatcher : Weapon {
+	public class iManCatcher : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iSwallow : Weapon {
+	public class iSwallow : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iFork : Weapon {
+	public class iFork : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Spear;
 	}
-	public class iBrandistock : Weapon {
+	public class iBrandistock : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Spear;
 	}
 }

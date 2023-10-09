@@ -7,7 +7,12 @@ namespace AngeliaFramework {
 	public static partial class AnimationLibrary {
 
 
-		public static void PoseAnimationOverride_Attack_Punch (Character character) {
+		public static void Attack_Punch (Character character) {
+
+			if (character.StopMoveOnAttack) character.ResetPoseToDefault();
+
+			character.HandGrabRotationL = 0;
+			character.HandGrabRotationR = 0;
 
 			bool FacingRight = character.FacingRight;
 			var Head = character.Head;
@@ -125,10 +130,19 @@ namespace AngeliaFramework {
 					FootR.X += A2G;
 				}
 			}
+
+			// Final
+			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 90;
+			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 90;
 		}
 
 
-		public static void PoseAnimationOverride_Attack_SmashDown (Character character) {
+		public static void Attack_SmashDown (Character character) {
+
+			if (character.StopMoveOnAttack) character.ResetPoseToDefault();
+
+			character.HandGrabRotationL = 0;
+			character.HandGrabRotationR = 0;
 
 			bool FacingRight = character.FacingRight;
 			bool FacingFront = character.FacingFront;
@@ -233,6 +247,9 @@ namespace AngeliaFramework {
 				}
 			}
 
+			// Final
+			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 90;
+			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 90;
 		}
 
 

@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iBoomerang : Weapon {
+	public class iBoomerang : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iNinjaStarHalf : Weapon {
+	public class iNinjaStarHalf : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iNinjaStar : Weapon {
+	public class iNinjaStar : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iKunai : Weapon {
+	public class iKunai : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iChakram : Weapon {
+	public class iChakram : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iThrowingKnife : Weapon {
+	public class iThrowingKnife : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iThrowingAxe : Weapon {
+	public class iThrowingAxe : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iNeedle : Weapon {
+	public class iNeedle : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iChainMaceBall : Weapon {
+	public class iChainMaceBall : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iBomb : Weapon {
+	public class iBomb : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iAnchor : Weapon {
+	public class iAnchor : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iCrossAxe : Weapon {
+	public class iCrossAxe : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iGrapeBomb : Weapon {
+	public class iGrapeBomb : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iTearGas : Weapon {
+	public class iTearGas : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
-	public class iGrenade : Weapon {
+	public class iGrenade : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Throwing;
 	}
 }

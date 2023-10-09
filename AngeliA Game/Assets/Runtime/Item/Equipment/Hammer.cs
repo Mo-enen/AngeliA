@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iHammerWood : Weapon {
+	public class iHammerWood : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iHammerIron : Weapon {
+	public class iHammerIron : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iHammerGold : Weapon {
+	public class iHammerGold : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iMaceRound : Weapon {
+	public class iMaceRound : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iMaceSkull : Weapon {
+	public class iMaceSkull : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iBaseballBatWood : Weapon {
+	public class iBaseballBatWood : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iMaceSpiked : Weapon {
+	public class iMaceSpiked : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iBian : Weapon {
+	public class iBian : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iHammerRiceCake : Weapon {
+	public class iHammerRiceCake : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iHammerGoatHorn : Weapon {
+	public class iHammerGoatHorn : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iBaseballBatIron : Weapon {
+	public class iBaseballBatIron : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iHammerThunder : Weapon {
+	public class iHammerThunder : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iHammerMoai : Weapon {
+	public class iHammerMoai : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iHammerPaladin : Weapon {
+	public class iHammerPaladin : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
-	public class iHammerRuby : Weapon {
+	public class iHammerRuby : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
 	}
 }

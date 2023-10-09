@@ -51,6 +51,7 @@ namespace AngeliaFramework {
 
 		// Api
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
+		public WeaponType? EquippingWeaponType { get; set; } = null;
 		public bool IsPassOut => HealthPoint == 0;
 		public bool IsFullPassOut => HealthPoint == 0 && Game.GlobalFrame > PassOutFrame + 48;
 		public int SleepFrame { get; private set; } = 0;
@@ -62,10 +63,10 @@ namespace AngeliaFramework {
 		protected override int AirDragX => 0;
 		protected override int AirDragY => 0;
 		protected override int GravityRise => Gravity;
-		protected sealed override int CollisionMask => IsGrabFlipping ? 0 : Const.MASK_MAP;
-		protected sealed override int PhysicsLayer => Const.LAYER_CHARACTER;
 		protected override bool CarryOtherRigidbodyOnTop => false;
 		protected override bool AllowBeingCarryByOtherRigidbody => true;
+		protected sealed override int CollisionMask => IsGrabFlipping ? 0 : Const.MASK_MAP;
+		protected sealed override int PhysicsLayer => Const.LAYER_CHARACTER;
 		protected virtual int Bouncy => 150;
 
 		// Data
@@ -163,9 +164,9 @@ namespace AngeliaFramework {
 			if (!blinking) {
 				CurrentRenderingBounce = GetCurrentRenderingBounce();
 				if (RenderWithSheet) {
-					RenderUpdate_Sheet();
+					FrameUpdate_SheetRendering();
 				} else {
-					RenderUpdate_Pose();
+					FrameUpdate_PoseRendering();
 				}
 				CurrentAnimationFrame = GrowAnimationFrame(CurrentAnimationFrame);
 			}

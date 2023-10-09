@@ -5,49 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iWand : Weapon {
+	public class iWand : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iTheAncientOne : Weapon {
+	public class iTheAncientOne : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iStaffFire : Weapon {
+	public class iStaffFire : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iStaffWater : Weapon {
+	public class iStaffWater : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iStaffLightning : Weapon {
+	public class iStaffLightning : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iStaffPoision : Weapon {
+	public class iStaffPoision : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iRitualSkull : Weapon {
+	public class iRitualSkull : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iBambooSlips : Weapon {
+	public class iBambooSlips : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iRitualRuneCube : Weapon {
+	public class iRitualRuneCube : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iGoblinTrophy : Weapon {
+	public class iGoblinTrophy : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iMagicOrb : Weapon {
+	public class iMagicOrb : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iMagicEyeball : Weapon {
+	public class iMagicEyeball : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iMagicPotion : Weapon {
+	public class iMagicPotion : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iWandStar : Weapon {
+	public class iWandStar : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
 	}
-	public class iWandFairy : Weapon {
+	public class iWandFairy : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
 	}
 }
