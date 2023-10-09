@@ -16,7 +16,7 @@ namespace AngeliaFramework {
 		public int Y { get; set; } = 0;
 		public int Width { get; set; } = Const.CEL;
 		public int Height { get; set; } = Const.CEL;
-		public int TypeID => _TypeID != 0 ? _TypeID : (_TypeID = GetType().AngeHash());
+		public int TypeID { get; init; }
 		public int SpawnFrame { get; internal set; } = int.MinValue;
 		public bool FromWorld => InstanceID.x != int.MinValue;
 		public virtual RectInt Rect => new(X, Y, Width, Height);
@@ -31,11 +31,9 @@ namespace AngeliaFramework {
 		internal bool UpdateOutOfRange { get; set; } = false;
 		internal int Order { get; set; } = 0;
 
-		// Data
-		private int _TypeID = 0;
 
 		// MSG
-		public Entity () { }
+		public Entity () => TypeID = GetType().AngeHash();
 		public virtual void OnActivated () { }
 		public virtual void OnInactivated () { }
 		public virtual void FillPhysics () { }

@@ -14,12 +14,14 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
-		private class ItemSorter : IComparer<int> {
-			public static readonly ItemSorter Instance = new();
-			public int Compare (int x, int y) {
-				if (x == 0) return y == 0 ? 0 : 1;
-				if (y == 0) return x == 0 ? 0 : -1;
-				return x.CompareTo(y);
+		private class WeaponSorter : IComparer<Weapon> {
+			public static readonly WeaponSorter Instance = new();
+			public int Compare (Weapon x, Weapon y) {
+				if (x is null) return y is null ? 0 : 1;
+				if (y is null) return x is null ? 0 : -1;
+				int result = ((int)x.WeaponType).CompareTo((int)y.WeaponType);
+				if (result == 0) result = x.TypeID.CompareTo(y.TypeID);
+				return result;
 			}
 		}
 
@@ -32,13 +34,16 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
+		// Const
+		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
+
 		// Api
 		public static PlayerQuickMenuUI Instance { get; private set; } = null;
 		public static bool ShowingUI => Instance != null && Instance.Active;
 		public bool IsDirty { get; private set; } = false;
 
 		// Data
-		private static readonly int[] ItemList = new int[Player.INVENTORY_ROW * Player.INVENTORY_COLUMN + 1];
+		private static readonly Weapon[] WeaponList = new Weapon[Player.INVENTORY_ROW * Player.INVENTORY_COLUMN + 1];
 		private int CurrentSlotIndex = 0;
 		private int WeaponCount = 0;
 
@@ -67,32 +72,32 @@ namespace AngeliaFramework {
 			int invID = Player.Selecting.TypeID;
 			int currentIndex = 0;
 			int equippingID = Inventory.GetEquipment(invID, EquipmentType.Weapon);
-			if (equippingID != 0) {
-				ItemList[0] = equippingID;
+			if (ItemSystem.GetItem(equippingID) is Weapon equippingItem) {
+				WeaponList[0] = equippingItem;
 				currentIndex++;
 				WeaponCount++;
 			}
 			int capacity = Inventory.GetInventoryCapacity(invID);
-			for (int i = 0; i < capacity && currentIndex < ItemList.Length; i++) {
+			for (int i = 0; i < capacity && currentIndex < WeaponList.Length; i++) {
 				int itemID = Inventory.GetItemAt(invID, i);
 				if (
 					itemID == 0 ||
-					!ItemSystem.IsEquipment(itemID, out var eqType) ||
-					eqType != EquipmentType.Weapon
+					ItemSystem.GetItem(itemID) is not Weapon weapon
 				) continue;
-				ItemList[currentIndex] = itemID;
+				WeaponList[currentIndex] = weapon;
 				currentIndex++;
 				WeaponCount++;
 			}
-			for (int i = currentIndex; i < ItemList.Length; i++) {
-				ItemList[i] = 0;
+			for (int i = currentIndex; i < WeaponList.Length; i++) {
+				WeaponList[i] = null;
 			}
-			Util.QuickSort(ItemList, 0, ItemList.Length - 1, ItemSorter.Instance);
+			Util.QuickSort(WeaponList, 0, WeaponList.Length - 1, WeaponSorter.Instance);
 
 			// Set Current Slot Index
 			if (equippingID != 0) {
 				for (int i = 0; i < WeaponCount; i++) {
-					if (ItemList[i] == equippingID) {
+					var weapon = WeaponList[i];
+					if (weapon != null && weapon.TypeID == equippingID) {
 						CurrentSlotIndex = i;
 						break;
 					}
@@ -126,7 +131,9 @@ namespace AngeliaFramework {
 					FrameInput.UseGameKey(Gamekey.Select);
 				}
 				if (IsDirty && CurrentSlotIndex >= 0 && CurrentSlotIndex < WeaponCount) {
-					int itemIndex = Inventory.IndexOfItem(Player.Selecting.TypeID, ItemList[CurrentSlotIndex]);
+					int itemIndex = Inventory.IndexOfItem(
+						Player.Selecting.TypeID, WeaponList[CurrentSlotIndex].TypeID
+					);
 					if (itemIndex >= 0) {
 						EquipFromInventory(itemIndex);
 					}
@@ -147,6 +154,10 @@ namespace AngeliaFramework {
 				CurrentSlotIndex = (CurrentSlotIndex + 1).Clamp(0, WeaponCount - 1);
 				IsDirty = true;
 			}
+
+			// Hint
+			ControlHintUI.AddHint(Gamekey.Left, Language.Get(HINT_MOVE, "Move"));
+			ControlHintUI.AddHint(Gamekey.Right, Language.Get(HINT_MOVE, "Move"));
 
 			// Draw
 			DrawMenu();
@@ -185,7 +196,7 @@ namespace AngeliaFramework {
 				}
 
 				// From Inventory
-				DrawItemIcon(rect, ItemList[i], Const.WHITE, int.MinValue + 10);
+				DrawItemIcon(rect, WeaponList[i].TypeID, Const.WHITE, int.MinValue + 10);
 
 			}
 

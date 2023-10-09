@@ -19,8 +19,10 @@ namespace AngeliaFramework {
 
 
 		public virtual int MaxStackCount => 64;
-		public int TypeID => _TypeID != 0 ? _TypeID : (_TypeID = GetType().AngeHash());
-		private int _TypeID = 0;
+		public int TypeID { get; init; }
+
+
+		public Item () => TypeID = GetType().AngeHash();
 
 		public virtual void Update (Entity holder, ItemLocation location) { }
 		public virtual void PoseAnimationUpdate (Entity holder, ItemLocation location) { }

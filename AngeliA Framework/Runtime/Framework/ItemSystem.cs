@@ -45,13 +45,11 @@ namespace AngeliaFramework {
 
 		// Data
 		private static readonly Dictionary<int, ItemData> ItemPool = new();
-		private static readonly Dictionary<Int4, Int2> CombinationPool = new();
+		public static readonly Dictionary<Int4, Int2> CombinationPool = new();
 		private static bool IsUnlockDirty = false;
 
 
 		#endregion
-
-
 
 
 		#region --- MSG ---
@@ -59,6 +57,7 @@ namespace AngeliaFramework {
 
 		[OnGameInitialize(-128)]
 		public static void BeforeGameInitialize () {
+
 			// Pool
 			ItemPool.Clear();
 			foreach (var type in typeof(Item).AllChildClass()) {
@@ -72,8 +71,28 @@ namespace AngeliaFramework {
 					item.MaxStackCount.Clamp(1, 256)
 				));
 			}
+
 			// Load Unlock Data
 			LoadUnlockDataFromFile();
+
+			// Init Combination
+			string comPath = Util.CombinePaths(Const.MetaRoot, "Item Combination.txt");
+			if (Util.FileExists(comPath)) {
+				foreach (string line in Util.ForAllLines(comPath)) {
+					if (string.IsNullOrEmpty(line)) continue;
+					var strings = line.Split(',');
+					if (strings == null || strings.Length < 6) continue;
+					if (!int.TryParse(strings[^1], out int count)) continue;
+					AddCombination(
+						!string.IsNullOrEmpty(strings[0]) ? strings[0].AngeHash() : 0,
+						!string.IsNullOrEmpty(strings[1]) ? strings[1].AngeHash() : 0,
+						!string.IsNullOrEmpty(strings[2]) ? strings[2].AngeHash() : 0,
+						!string.IsNullOrEmpty(strings[3]) ? strings[3].AngeHash() : 0,
+						strings[^2].AngeHash(), count
+					);
+				}
+			}
+
 		}
 
 
@@ -111,26 +130,6 @@ namespace AngeliaFramework {
 
 
 		// Combination
-		public static void AddCombination (int item0, int item1, int item2, int item3, int result, int resultCount = 1) {
-			if (result == 0 || resultCount <= 0) {
-#if UNITY_EDITOR
-				if (result == 0) Debug.LogWarning("Result of combination should not be zero.");
-				if (resultCount == 0) Debug.LogWarning("ResultCount of combination should not be zero.");
-#endif
-				return;
-			}
-			var from = GetSortedCombination(item0, item1, item2, item3);
-#if UNITY_EDITOR
-			if (CombinationPool.ContainsKey(from) && UnityEditor.EditorApplication.isPlaying) {
-				Debug.LogError(
-					$"Combination already exists. ({GetItem(CombinationPool[from].A).GetType().Name}) & ({GetItem(result).GetType().Name})"
-				);
-			}
-#endif
-			CombinationPool[from] = new Int2(result, resultCount);
-		}
-
-
 		public static bool TryGetCombination (int item0, int item1, int item2, int item3, out int result, out int resultCount) {
 			result = 0;
 			resultCount = 0;
@@ -233,6 +232,26 @@ namespace AngeliaFramework {
 
 
 		#region --- LGC ---
+
+
+		public static void AddCombination (int item0, int item1, int item2, int item3, int result, int resultCount = 1) {
+			if (result == 0 || resultCount <= 0) {
+#if UNITY_EDITOR
+				if (result == 0) Debug.LogWarning("Result of combination should not be zero.");
+				if (resultCount == 0) Debug.LogWarning("ResultCount of combination should not be zero.");
+#endif
+				return;
+			}
+			var from = GetSortedCombination(item0, item1, item2, item3);
+#if UNITY_EDITOR
+			if (CombinationPool.ContainsKey(from) && UnityEditor.EditorApplication.isPlaying) {
+				Debug.LogError(
+					$"Combination already exists. ({GetItem(CombinationPool[from].A).GetType().Name}) & ({GetItem(result).GetType().Name})"
+				);
+			}
+#endif
+			CombinationPool[from] = new Int2(result, resultCount);
+		}
 
 
 		// Unlock

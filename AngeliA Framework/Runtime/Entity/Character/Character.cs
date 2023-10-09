@@ -194,7 +194,7 @@ namespace AngeliaFramework {
 					);
 				}
 				// Dash Particle
-				if (DashParticleCode != 0 && IsDashing && Game.GlobalFrame % 8 == 0) {
+				if (IsGrounded && DashParticleCode != 0 && IsDashing && Game.GlobalFrame % 8 == 0) {
 					if (
 						Stage.TrySpawnEntity(DashParticleCode, X, Y, out var dashEntity) &&
 						dashEntity is Particle dashParticle

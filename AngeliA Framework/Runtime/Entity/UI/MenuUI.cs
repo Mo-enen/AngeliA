@@ -339,15 +339,8 @@ namespace AngeliaFramework {
 					ItemLabel.Tint = tint;
 					ItemLabel.CharSize = fontSize;
 					ItemLabel.Alignment = Alignment.MidMid;
-					CellRendererGUI.Label(ItemLabel, labelRect, out var labelBounds);
-					if (icon != 0 && CellRenderer.TryGetSprite(icon, out var iconSprite)) {
-						CellRenderer.Draw(
-							icon,
-							new RectInt(labelBounds.x - labelBounds.height, labelBounds.y, labelBounds.height, labelBounds.height).Fit(iconSprite.GlobalWidth, iconSprite.GlobalHeight),
-							1
-						);
-					}
-
+					CellRendererGUI.Label(ItemLabel, labelRect);
+					
 				} else {
 
 					var secLabelRect = labelRect.Shrink(labelRect.width / 2, 0, 0, 0);

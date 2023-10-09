@@ -8,7 +8,7 @@ namespace AngeliaFramework {
 
 	public enum EquipmentType { Weapon, BodySuit, Helmet, Shoes, Gloves, Jewelry, }
 
-	public enum WeaponType { Axe, Bow, Claw, Flail, Hammer, Hook, Spear, Sword, Throwing, Wand, }
+	public enum WeaponType { Sword, Axe, Hammer, Flail, Bow, Spear, Hook, Claw, Wand, Throwing, }
 
 
 	public abstract class ProgressiveEquipment<P, N> : Equipment where P : Equipment where N : Equipment {

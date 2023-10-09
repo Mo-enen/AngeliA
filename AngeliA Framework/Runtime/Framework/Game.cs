@@ -265,6 +265,7 @@ namespace AngeliaFramework {
 				} else {
 					enabled = false;
 				}
+				
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 
 		}
@@ -325,14 +326,6 @@ namespace AngeliaFramework {
 		private void Initialize_Event (bool before) {
 			if (before) {
 
-				// Init Assembly
-				Util.ClearAssemblyCache();
-				foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
-					if (m_AssemblyNames.Contains(assembly.GetName().Name)) {
-						Util.AddAssemblyToCache(assembly);
-					}
-				}
-
 				// Before Init
 				var methods = new List<KeyValuePair<MethodInfo, OnGameInitialize>>(
 					Util.AllStaticMethodWithAttribute<OnGameInitialize>().Where(m => m.Value.Order <= 0)
@@ -359,6 +352,16 @@ namespace AngeliaFramework {
 
 
 		private void Initialize_Callback () {
+
+			// Init Assembly
+			Util.ClearAssemblyCache();
+			foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
+				if (m_AssemblyNames.Contains(assembly.GetName().Name)) {
+					Util.AddAssemblyToCache(assembly);
+				}
+			}
+
+			// Add Events
 			AddEvent<OnGameUpdateAttribute>(nameof(OnGameUpdate));
 			AddEvent<OnGameUpdateLaterAttribute>(nameof(OnGameUpdateLater));
 			AddEvent<OnGameUpdatePauselessAttribute>(nameof(OnGameUpdatePauseless));
