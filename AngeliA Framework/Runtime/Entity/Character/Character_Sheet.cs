@@ -221,8 +221,8 @@ namespace AngeliaFramework {
 						Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, Game.GlobalFrame
 					);
 					if (CellRenderer.TryGetSprite(sheet.Sleep, out var sleepSprite)) {
-						if (sleepSprite.GlobalBorder.Down > 0) {
-							sleepCell.Y -= sleepSprite.GlobalBorder.Down;
+						if (sleepSprite.GlobalBorder.down > 0) {
+							sleepCell.Y -= sleepSprite.GlobalBorder.down;
 						}
 					}
 					break;

@@ -20,7 +20,7 @@ namespace AngeliaGame {
 			FullRect = Rect;
 			int artworkIndex = X.UDivide(Const.CEL) + Y.UDivide(Const.CEL);
 			if (CellRenderer.TryGetSpriteFromGroup(TypeID, artworkIndex, out var sprite)) {
-				var rect = base.Rect.Shrink(sprite.GlobalBorder.Left, sprite.GlobalBorder.Right, sprite.GlobalBorder.Down, sprite.GlobalBorder.Up);
+				var rect = base.Rect.Shrink(sprite.GlobalBorder.left, sprite.GlobalBorder.right, sprite.GlobalBorder.down, sprite.GlobalBorder.up);
 				X = rect.x;
 				Y = rect.y;
 				Width = rect.width;

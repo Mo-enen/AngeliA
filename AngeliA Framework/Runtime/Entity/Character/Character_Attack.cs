@@ -71,15 +71,6 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		// Spawn Bullet
-		//if (Stage.TrySpawnEntity(BulletID.Value, X, Y, out var entity) && entity is Bullet bullet) {
-		//	bullet.Release(
-		//		this, AttackTargetTeam,
-		//		FacingRight ? Vector2Int.right : Vector2Int.left,
-		//		GetAttackBulletIndex(),
-		//		Game.GlobalFrame > ChargeStartFrame ? Game.GlobalFrame - ChargeStartFrame : 0
-		//	);
-		//}
 		public void Attack () {
 			LastAttackFrame = Game.GlobalFrame;
 			AttackCombo++;
@@ -89,9 +80,23 @@ namespace AngeliaFramework {
 		public void CancelAttack () => LastAttackFrame = int.MinValue;
 
 
-		public bool AttackCooldownReady (bool isHolding) => isHolding ?
+		protected bool AttackCooldownReady (bool isHolding) => isHolding ?
 			Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown + HoldAttackPunish :
 			Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown;
+
+
+		protected bool IsAttackAllowedByMovement () =>
+			(AttackInAir || (IsGrounded || InWater || InSand || IsClimbing)) &&
+			(AttackInWater || !InWater) &&
+			(AttackWhenMoving || IntendedX == 0) &&
+			(AttackWhenClimbing || !IsClimbing) &&
+			(AttackWhenFlying || !IsFlying) &&
+			(AttackWhenRolling || !IsRolling) &&
+			(AttackWhenSquatting || !IsSquatting) &&
+			(AttackWhenDashing || !IsDashing) &&
+			(AttackWhenSliding || !IsSliding) &&
+			(AttackWhenGrabbing || (!IsGrabbingTop && !IsGrabbingSide)) &&
+			(AttackWhenRush || (!IsRushing));
 
 
 		protected virtual int GetAttackBulletIndex () => AttackCombo;

@@ -326,7 +326,7 @@ namespace AngeliaFramework {
 					);
 					if (i == stepCount) {
 						ref var shift = ref cell.Shift;
-						shift.Right = cell.Width - extraLength * cell.Width / stepLength;
+						shift.right = cell.Width - extraLength * cell.Width / stepLength;
 					}
 				} else {
 					var cell = CellRenderer.Draw(
@@ -338,7 +338,7 @@ namespace AngeliaFramework {
 					);
 					if (i == stepCount) {
 						ref var shift = ref cell.Shift;
-						shift.Right = cell.Width - extraLength * cell.Width / stepLength;
+						shift.right = cell.Width - extraLength * cell.Width / stepLength;
 					}
 				}
 			}

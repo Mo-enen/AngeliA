@@ -132,8 +132,8 @@ namespace AngeliaFramework {
 
 			// Leg
 			int legX = FacingRight ?
-				Body.X - Body.SizeX / 2 + Body.Border.Left - A2G * 2 :
-				Body.X + Body.SizeX / 2 - Body.Border.Right + A2G * 2;
+				Body.X - Body.SizeX / 2 + Body.Border.left - A2G * 2 :
+				Body.X + Body.SizeX / 2 - Body.Border.right + A2G * 2;
 			UpperLegL.X = legX - A2G;
 			UpperLegL.Y = 0;
 			UpperLegL.LimbRotate(FacingRight ? 90 : -90);
@@ -199,8 +199,8 @@ namespace AngeliaFramework {
 
 			// Leg
 			int legX = FacingRight ?
-				Body.X - Body.SizeX / 2 + Body.Border.Left - A2G * 2 :
-				Body.X + Body.SizeX / 2 - Body.Border.Right + A2G * 2;
+				Body.X - Body.SizeX / 2 + Body.Border.left - A2G * 2 :
+				Body.X + Body.SizeX / 2 - Body.Border.right + A2G * 2;
 			UpperLegL.X = legX - A2G;
 			UpperLegL.Y = 0;
 			UpperLegL.LimbRotate(FacingRight ? 90 : -90);
@@ -220,7 +220,21 @@ namespace AngeliaFramework {
 		}
 
 
+		// Override
+		public static void HandHeld_Double (Character character) {
 
+
+
+
+		}
+
+
+		public static void HandHeld_Polearm (Character character) {
+
+
+
+
+		}
 
 
 	}

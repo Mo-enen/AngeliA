@@ -242,15 +242,15 @@ namespace AngeliaFramework {
 		public static string GetGameKeyDisplayName (Gamekey key) => Util.GetKeyDisplayName(FrameInput.GetKeyboardMap(key));
 
 
-		public static IEnumerable<KeyValuePair<Int4, string>> ForEachPlayerCustomizeSpritePattern (string[] patterns, string suffix0, string suffix1 = "", string suffix2 = "", string suffix3 = "") {
+		public static IEnumerable<KeyValuePair<Vector4Int, string>> ForEachPlayerCustomizeSpritePattern (string[] patterns, string suffix0, string suffix1 = "", string suffix2 = "", string suffix3 = "") {
 			if (patterns == null || patterns.Length == 0) yield break;
 			foreach (string pat in patterns) {
 				if (string.IsNullOrEmpty(pat)) {
-					yield return new(new Int4(0, 0, 0, 0), "");
+					yield return new(new Vector4Int(0, 0, 0, 0), "");
 				} else if (pat[0] == '#') {
-					yield return new(new Int4(0, 0, 0, 0), pat);
+					yield return new(new Vector4Int(0, 0, 0, 0), pat);
 				} else {
-					yield return new(new Int4(
+					yield return new(new Vector4Int(
 						$"{pat}{suffix0}".AngeHash(),
 						string.IsNullOrEmpty(suffix1) ? 0 : $"{pat}{suffix1}".AngeHash(),
 						string.IsNullOrEmpty(suffix2) ? 0 : $"{pat}{suffix2}".AngeHash(),
@@ -388,11 +388,11 @@ namespace AngeliaFramework {
 				cell.Width = cell.Width * targetRect.width / originalWidth;
 				cell.Height = cell.Height * targetRect.height / originalHeight;
 				if (!cell.Shift.IsZero) {
-					cell.Shift = new Int4(
-						cell.Shift.Left * targetRect.width / originalWidth,
-						cell.Shift.Right * targetRect.width / originalWidth,
-						cell.Shift.Down * targetRect.height / originalHeight,
-						cell.Shift.Up * targetRect.height / originalHeight
+					cell.Shift = new Vector4Int(
+						cell.Shift.left * targetRect.width / originalWidth,
+						cell.Shift.right * targetRect.width / originalWidth,
+						cell.Shift.down * targetRect.height / originalHeight,
+						cell.Shift.up * targetRect.height / originalHeight
 					);
 				}
 			}

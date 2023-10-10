@@ -15,7 +15,9 @@ namespace AngeliaFramework {
 		[System.Serializable]
 		public class CharacterConfig {
 
-			public Int3 HomeUnitPosition = new(int.MinValue, int.MinValue, int.MinValue);
+			public int HomeUnitPositionX = int.MinValue;
+			public int HomeUnitPositionY = int.MinValue;
+			public int HomeUnitPositionZ = int.MinValue;
 			public int CharacterHeight = 160;
 
 			// Body Part
@@ -61,7 +63,7 @@ namespace AngeliaFramework {
 
 
 		public CharacterConfig Config { get; set; }
-		public Int3? HomeUnitPosition { get; set; }
+		public Vector3Int? HomeUnitPosition { get; set; }
 
 
 		// API
@@ -87,7 +89,9 @@ namespace AngeliaFramework {
 
 			var config = Config;
 
-			HomeUnitPosition = config.HomeUnitPosition.x != int.MinValue ? config.HomeUnitPosition : null;
+			HomeUnitPosition = config.HomeUnitPositionX != int.MinValue ? new Vector3Int(
+				config.HomeUnitPositionX, config.HomeUnitPositionY, config.HomeUnitPositionZ
+			) : null;
 			character.CharacterHeight = config.CharacterHeight.Clamp(Const.MIN_CHARACTER_HEIGHT, Const.MAX_CHARACTER_HEIGHT);
 
 			// Bodyparts
@@ -140,7 +144,15 @@ namespace AngeliaFramework {
 			if (this is not Character character) return;
 			var config = Config;
 
-			config.HomeUnitPosition = HomeUnitPosition ?? new Int3(int.MinValue, int.MinValue, int.MinValue);
+			if (HomeUnitPosition.HasValue) {
+				config.HomeUnitPositionX = HomeUnitPosition.Value.x;
+				config.HomeUnitPositionY = HomeUnitPosition.Value.y;
+				config.HomeUnitPositionZ = HomeUnitPosition.Value.z;
+			} else {
+				config.HomeUnitPositionX = int.MinValue;
+				config.HomeUnitPositionY = int.MinValue;
+				config.HomeUnitPositionZ = int.MinValue;
+			}
 			config.CharacterHeight = character.CharacterHeight.Clamp(Const.MIN_CHARACTER_HEIGHT, Const.MAX_CHARACTER_HEIGHT);
 
 			if (character.BodyPartsReady) {

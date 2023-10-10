@@ -128,7 +128,7 @@ namespace AngeliaFramework {
 
 
 		// UTL
-		protected static void DrawSprite (Character character, int spriteGroupID, Int4 borderOffset = default) {
+		protected static void DrawSprite (Character character, int spriteGroupID, Vector4Int borderOffset = default) {
 
 			var head = character.Head;
 			if (spriteGroupID == 0 || head.Tint.a == 0 || !head.FrontSide) return;
@@ -157,12 +157,12 @@ namespace AngeliaFramework {
 			var faceRect = headRect;
 			var border = head.Border;
 			if (!facingRight) {
-				border.Left = head.Border.Right;
-				border.Right = head.Border.Left;
+				border.left = head.Border.right;
+				border.right = head.Border.left;
 			}
 			if (!border.IsZero) {
 				if (head.Height < 0) {
-					(border.Down, border.Up) = (border.Up, border.Down);
+					(border.down, border.up) = (border.up, border.down);
 				}
 				faceRect = headRect.Shrink(border);
 			}
@@ -192,12 +192,12 @@ namespace AngeliaFramework {
 			var faceRect = headRect;
 			var border = head.Border;
 			if (!facingRight) {
-				border.Left = head.Border.Right;
-				border.Right = head.Border.Left;
+				border.left = head.Border.right;
+				border.right = head.Border.left;
 			}
 			if (!border.IsZero) {
 				if (head.Height < 0) {
-					(border.Down, border.Up) = (border.Up, border.Down);
+					(border.down, border.up) = (border.up, border.down);
 				}
 				faceRect = headRect.Shrink(border);
 			}

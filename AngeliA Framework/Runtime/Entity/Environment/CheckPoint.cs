@@ -26,7 +26,7 @@ namespace AngeliaFramework {
 		// Short
 		private static string UnlockFolderPath => !string.IsNullOrEmpty(_UnlockFolderPath) ? _UnlockFolderPath : (_UnlockFolderPath = Util.CombinePaths(Const.PlayerDataRoot, "Unlocked CP"));
 		private static string _UnlockFolderPath = "";
-		private Int4 Border => CellRenderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Int4.Zero;
+		private Vector4Int Border => CellRenderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Vector4Int.Zero;
 
 		// Data
 		private static readonly HashSet<int> UnlockedCheckPoint = new();

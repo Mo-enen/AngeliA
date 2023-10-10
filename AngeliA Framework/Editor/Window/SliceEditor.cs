@@ -413,7 +413,7 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private static bool GetInfoFromSliceLine (string line, out string name, out RectInt rect, out Int4 border, out Vector2Int? pivot) {
+		private static bool GetInfoFromSliceLine (string line, out string name, out RectInt rect, out Vector4Int border, out Vector2Int? pivot) {
 			name = "";
 			rect = default;
 			border = default;
@@ -439,18 +439,18 @@ namespace AngeliaFramework.Editor {
 				pivot = null;
 			}
 			rect = new(x, y, w, h);
-			border = new() { Left = l, Right = r, Down = d, Up = u, };
+			border = new() { left = l, right = r, down = d, up = u, };
 			return !string.IsNullOrEmpty(name) && !string.IsNullOrWhiteSpace(name);
 		}
 
 
-		private static void FillSliceInfoTo (AseData.SliceChunk slice, string name, RectInt rect, Int4 border, Vector2Int? pivot) {
+		private static void FillSliceInfoTo (AseData.SliceChunk slice, string name, RectInt rect, Vector4Int border, Vector2Int? pivot) {
 
 
-			border.Left = Mathf.Max(border.Left, 0);
-			border.Right = Mathf.Max(border.Right, 0);
-			border.Down = Mathf.Max(border.Down, 0);
-			border.Up = Mathf.Max(border.Up, 0);
+			border.left = Mathf.Max(border.left, 0);
+			border.right = Mathf.Max(border.right, 0);
+			border.down = Mathf.Max(border.down, 0);
+			border.up = Mathf.Max(border.up, 0);
 
 			slice.Name = name;
 			slice.SliceNum = 1;
@@ -467,10 +467,10 @@ namespace AngeliaFramework.Editor {
 				FrameIndex = 0,
 				PivotX = pivot.HasValue ? pivot.Value.x : 0,
 				PivotY = pivot.HasValue ? pivot.Value.y : 0,
-				CenterX = border.Left,
-				CenterY = border.Up,
-				CenterWidth = (uint)(rect.width - border.Left - border.Right),
-				CenterHeight= (uint)(rect.height - border.Down - border.Up),
+				CenterX = border.left,
+				CenterY = border.up,
+				CenterWidth = (uint)(rect.width - border.left - border.right),
+				CenterHeight= (uint)(rect.height - border.down - border.up),
 			}};
 		}
 

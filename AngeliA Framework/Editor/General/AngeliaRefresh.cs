@@ -483,15 +483,15 @@ namespace AngeliaFramework.Editor {
 				);
 				int globalWidth = unitySprite.rect.width.RoundToInt() * Const.CEL / Const.ART_CEL;
 				int globalHeight = unitySprite.rect.height.RoundToInt() * Const.CEL / Const.ART_CEL;
-				var globalBorder = new Int4() {
-					Left = Mathf.Clamp((int)(unitySprite.border.x * Const.CEL / Const.ART_CEL), 0, globalWidth),
-					Down = Mathf.Clamp((int)(unitySprite.border.y * Const.CEL / Const.ART_CEL), 0, globalHeight),
-					Right = Mathf.Clamp((int)(unitySprite.border.z * Const.CEL / Const.ART_CEL), 0, globalWidth),
-					Up = Mathf.Clamp((int)(unitySprite.border.w * Const.CEL / Const.ART_CEL), 0, globalHeight),
+				var globalBorder = new Vector4Int() {
+					left = Mathf.Clamp((int)(unitySprite.border.x * Const.CEL / Const.ART_CEL), 0, globalWidth),
+					down = Mathf.Clamp((int)(unitySprite.border.y * Const.CEL / Const.ART_CEL), 0, globalHeight),
+					right = Mathf.Clamp((int)(unitySprite.border.z * Const.CEL / Const.ART_CEL), 0, globalWidth),
+					up = Mathf.Clamp((int)(unitySprite.border.w * Const.CEL / Const.ART_CEL), 0, globalHeight),
 				};
 				if (noCollider) {
-					globalBorder.Left = globalWidth;
-					globalBorder.Right = globalWidth;
+					globalBorder.left = globalWidth;
+					globalBorder.right = globalWidth;
 				}
 				int globalID = realName.AngeHash();
 

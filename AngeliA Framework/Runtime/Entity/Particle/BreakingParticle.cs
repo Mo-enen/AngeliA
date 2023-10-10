@@ -16,7 +16,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private static readonly System.Random Ran = new(2382375);
-		private Int4 Shift = default;
+		private Vector4Int Shift = default;
 		private int _Duration = 180;
 		private int SpriteID = 0;
 		private int SpeedX = 0;
@@ -47,8 +47,8 @@ namespace AngeliaFramework {
 
 			int x = X + Width / 2;
 			int y = Y + Height / 2;
-			int originalX = X - Shift.Left;
-			int originalY = Y - Shift.Down;
+			int originalX = X - Shift.left;
+			int originalY = Y - Shift.down;
 			int px = (x - originalX) * 1000 / (Width * 2);
 			int py = (y - originalY) * 1000 / (Height * 2);
 			int r = Game.GlobalFrame * RotateSpeed;
@@ -104,10 +104,10 @@ namespace AngeliaFramework {
 				if (!isBottom) particle.Y += sizeY;
 
 				// Shift
-				particle.Shift.Left = isLeft ? 0 : sizeX;
-				particle.Shift.Right = !isLeft ? 0 : sizeX;
-				particle.Shift.Down = isBottom ? 0 : sizeY;
-				particle.Shift.Up = !isBottom ? 0 : sizeY;
+				particle.Shift.left = isLeft ? 0 : sizeX;
+				particle.Shift.right = !isLeft ? 0 : sizeX;
+				particle.Shift.down = isBottom ? 0 : sizeY;
+				particle.Shift.up = !isBottom ? 0 : sizeY;
 			}
 
 		}

@@ -95,8 +95,8 @@ namespace AngeliaGame {
 
 			var cellL = CellRenderer.Draw((int)UserData, X - deltaX, Y - deltaY, 500, 500, -deltaRot, Width, Height, tint, 0);
 			var cellR = CellRenderer.Draw((int)UserData, X + deltaX, Y - deltaY, 500, 500, deltaRot, Width, Height, tint, 0);
-			cellL.Shift = new Int4(0, Width / 2, 0, 0);
-			cellR.Shift = new Int4(Width / 2, 0, 0, 0);
+			cellL.Shift = new Vector4Int(0, Width / 2, 0, 0);
+			cellR.Shift = new Vector4Int(Width / 2, 0, 0, 0);
 			CellRenderer.SetLayerToDefault();
 		}
 	}
@@ -135,7 +135,7 @@ namespace AngeliaGame {
 
 			// Draw
 			CellRenderer.Draw(
-				ease01 < 0.5f ? ((Int2)UserData).A : ((Int2)UserData).B,
+				ease01 < 0.5f ? ((Vector2Int)UserData).x : ((Vector2Int)UserData).y,
 				X, Y, 500, 500, rotation,
 				Width + deltaSize, Height + deltaSize,
 				tint, 0

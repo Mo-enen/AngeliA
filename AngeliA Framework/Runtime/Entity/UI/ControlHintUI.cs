@@ -57,7 +57,7 @@ namespace AngeliaFramework {
 			("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1),
 		};
 		private static int CurrentHintOffsetY = 0;
-		private Int4 ButtonBorder = default;
+		private Vector4Int ButtonBorder = default;
 		private int ForceHintFrame = int.MinValue;
 		private int ForceHideGamepadFrame = int.MinValue;
 		private int OffsetResetFrame = int.MinValue;
@@ -80,10 +80,10 @@ namespace AngeliaFramework {
 		public override void OnActivated () {
 			base.OnActivated();
 			if (CellRenderer.TryGetSprite(HINT_BUTTON_CODE, out var sprite)) {
-				ButtonBorder.Left = (int)(sprite.GlobalBorder.Left * ((float)KEYSIZE / sprite.GlobalWidth));
-				ButtonBorder.Right = (int)(sprite.GlobalBorder.Right * ((float)KEYSIZE / sprite.GlobalWidth));
-				ButtonBorder.Down = (int)(sprite.GlobalBorder.Down * ((float)KEYSIZE / sprite.GlobalHeight));
-				ButtonBorder.Up = (int)(sprite.GlobalBorder.Up * ((float)KEYSIZE / sprite.GlobalHeight));
+				ButtonBorder.left = (int)(sprite.GlobalBorder.left * ((float)KEYSIZE / sprite.GlobalWidth));
+				ButtonBorder.right = (int)(sprite.GlobalBorder.right * ((float)KEYSIZE / sprite.GlobalWidth));
+				ButtonBorder.down = (int)(sprite.GlobalBorder.down * ((float)KEYSIZE / sprite.GlobalHeight));
+				ButtonBorder.up = (int)(sprite.GlobalBorder.up * ((float)KEYSIZE / sprite.GlobalHeight));
 			}
 		}
 
@@ -280,10 +280,10 @@ namespace AngeliaFramework {
 			const int BG_PADDING_Y = 32;
 			Cell bgCell = null;
 			var border = ButtonBorder;
-			border.Left = Unify(border.Left);
-			border.Right = Unify(border.Right);
-			border.Down = Unify(border.Down);
-			border.Up = Unify(border.Up);
+			border.left = Unify(border.left);
+			border.right = Unify(border.right);
+			border.down = Unify(border.down);
+			border.up = Unify(border.up);
 			int gap = Unify(GAP);
 			int keySize = Unify(KEYSIZE);
 			var rect = new RectInt(x, y, keySize, keySize);
@@ -293,14 +293,14 @@ namespace AngeliaFramework {
 			// Fix Width
 			if (keyIdA != 0) {
 				if (CellRenderer.TryGetSprite(keyIdA, out var spriteA) && spriteA.GlobalWidth > spriteA.GlobalHeight) {
-					widthA = ((keySize - border.Vertical) * ((float)spriteA.GlobalWidth / spriteA.GlobalHeight)).RoundToInt();
-					widthA += border.Horizontal;
+					widthA = ((keySize - border.vertical) * ((float)spriteA.GlobalWidth / spriteA.GlobalHeight)).RoundToInt();
+					widthA += border.horizontal;
 				}
 			}
 			if (keyIdB != 0) {
 				if (CellRenderer.TryGetSprite(keyIdB, out var spriteB) && spriteB.GlobalWidth > spriteB.GlobalHeight) {
-					widthB = ((keySize - border.Vertical) * ((float)spriteB.GlobalWidth / spriteB.GlobalHeight)).RoundToInt();
-					widthB += border.Horizontal;
+					widthB = ((keySize - border.vertical) * ((float)spriteB.GlobalWidth / spriteB.GlobalHeight)).RoundToInt();
+					widthB += border.horizontal;
 				}
 			}
 
@@ -316,16 +316,16 @@ namespace AngeliaFramework {
 			// Button A
 			if (keyIdA != 0) {
 				CellRenderer.Draw_9Slice(
-					HINT_BUTTON_CODE, rect, border.Left, border.Right, border.Down, border.Up
+					HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up
 				);
 				CellRenderer.Draw(keyIdA, rect.Shrink(border), KeyTint);
 			} else {
 				KeyLabel.Text = keyTextA;
 				CellRendererGUI.Label(KeyLabel, rect.Shrink(border), out var keyBounds);
-				int targetWidth = keyBounds.width + border.Horizontal;
+				int targetWidth = keyBounds.width + border.horizontal;
 				if (rect.width < targetWidth) rect.width = targetWidth;
 				CellRenderer.Draw_9Slice(
-					HINT_BUTTON_CODE, rect, border.Left, border.Right, border.Down, border.Up
+					HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up
 				);
 			}
 			rect.x += rect.width + gap;
@@ -336,16 +336,16 @@ namespace AngeliaFramework {
 				rect.width = widthB;
 				if (keyIdB != 0) {
 					CellRenderer.Draw_9Slice(
-						HINT_BUTTON_CODE, rect, border.Left, border.Right, border.Down, border.Up
+						HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up
 					);
 					CellRenderer.Draw(keyIdB, rect.Shrink(border), KeyTint);
 				} else {
 					KeyLabel.Text = keyTextB;
 					CellRendererGUI.Label(KeyLabel, rect.Shrink(border), out var keyBounds);
-					int targetWidth = keyBounds.width + border.Horizontal;
+					int targetWidth = keyBounds.width + border.horizontal;
 					if (rect.width < targetWidth) rect.width = targetWidth;
 					CellRenderer.Draw_9Slice(
-						HINT_BUTTON_CODE, rect, border.Left, border.Right, border.Down, border.Up
+						HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up
 					);
 				}
 				rect.x += rect.width + gap;

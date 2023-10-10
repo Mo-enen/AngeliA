@@ -63,10 +63,10 @@ namespace AngeliaFramework {
 				// Shrink Rect
 				var sp = GetSpriteFromPose();
 				if (sp != null) {
-					ColliderBorder.left = sp.GlobalBorder.Left;
-					ColliderBorder.right = sp.GlobalBorder.Right;
-					ColliderBorder.bottom = sp.GlobalBorder.Down;
-					ColliderBorder.top = sp.GlobalBorder.Up;
+					ColliderBorder.left = sp.GlobalBorder.left;
+					ColliderBorder.right = sp.GlobalBorder.right;
+					ColliderBorder.bottom = sp.GlobalBorder.down;
+					ColliderBorder.top = sp.GlobalBorder.up;
 					X += ColliderBorder.left;
 					Y += ColliderBorder.bottom;
 					Width -= ColliderBorder.horizontal;

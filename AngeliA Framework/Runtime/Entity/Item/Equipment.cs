@@ -8,9 +8,7 @@ namespace AngeliaFramework {
 
 	public enum EquipmentType { Weapon, BodySuit, Helmet, Shoes, Gloves, Jewelry, }
 
-	public enum WeaponType { Sword, Axe, Hammer, Flail, Bow, Spear, Hook, Claw, Wand, Throwing, }
-
-
+	
 	public abstract class ProgressiveEquipment<P, N> : Equipment where P : Equipment where N : Equipment {
 
 		protected virtual System.Type RepairMaterial => null;
@@ -67,66 +65,6 @@ namespace AngeliaFramework {
 	}
 
 
-	public abstract class AutoSpriteWeapon : Weapon {
-
-		private int SpriteID { get; init; }
-		protected virtual bool DoubleHanded => false;
-
-		public AutoSpriteWeapon () {
-			SpriteID = $"{GetType().AngeName()}.Main".AngeHash();
-			if (!CellRenderer.HasSprite(SpriteID)) SpriteID = 0;
-		}
-
-		public override void PoseAnimationUpdate (Entity holder, ItemLocation location) {
-
-			base.PoseAnimationUpdate(holder, location);
-
-			if (
-				location != ItemLocation.Equipment ||
-				holder is not Character character ||
-				character.AnimatedPoseType == CharacterPoseAnimationType.Sleep ||
-				character.AnimatedPoseType == CharacterPoseAnimationType.PassOut ||
-				!CellRenderer.TryGetSprite(SpriteID, out var sprite)
-			) return;
-
-			// Draw Weapon Sprite
-			if (DoubleHanded) {
-				// Left
-				DrawSprite(character.HandL, character.HandGrabRotationL, sprite, character.FacingFront ? 36 : -36);
-			}
-
-			// Right
-			DrawSprite(character.HandR, character.HandGrabRotationR, sprite, character.FacingFront ? 36 : -36);
-
-			// Func
-			static void DrawSprite (BodyPart hand, int grabRotation, AngeSprite sprite, int z) {
-				var handCenter = hand.GlobalLerp(0.5f, 0.5f);
-				if (sprite.GlobalBorder.IsZero) {
-					CellRenderer.Draw(
-						sprite.GlobalID,
-						handCenter.x, handCenter.y,
-						sprite.PivotX, sprite.PivotY, grabRotation,
-						sprite.GlobalWidth, sprite.GlobalHeight, z
-					);
-				} else {
-					CellRenderer.Draw_9Slice(
-						sprite.GlobalID,
-						handCenter.x, handCenter.y,
-						sprite.PivotX, sprite.PivotY, grabRotation,
-						sprite.GlobalWidth, sprite.GlobalHeight, z
-					);
-				}
-			}
-		}
-
-	}
-
-
-	public abstract class Weapon : Equipment {
-		public sealed override EquipmentType EquipmentType => EquipmentType.Weapon;
-		public abstract WeaponType WeaponType { get; }
-	}
-
 
 	public abstract class Equipment : Item {
 
@@ -151,7 +89,7 @@ namespace AngeliaFramework {
 		public static void SpawnEquipmentDamageParticle (int itemBeforeID, int itemAfterID, int x, int y) {
 			if (EquipmentDamageParticleID == 0) return;
 			if (Stage.SpawnEntity(EquipmentDamageParticleID, x, y) is not Particle particle) return;
-			particle.UserData = new Int2(itemBeforeID, itemAfterID);
+			particle.UserData = new Vector2Int(itemBeforeID, itemAfterID);
 		}
 
 	}

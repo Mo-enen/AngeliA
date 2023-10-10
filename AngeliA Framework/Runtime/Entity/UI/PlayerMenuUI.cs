@@ -111,7 +111,7 @@ namespace AngeliaFramework {
 		private EquipmentType EquipFlashType = EquipmentType.BodySuit;
 		private RectInt TopPanelRect = default;
 		private RectInt BottomPanelRect = default;
-		private Int3 FlashingField = new(-1, 0, 0);
+		private Vector3Int FlashingField = new(-1, 0, 0);
 
 
 		#endregion
@@ -647,13 +647,13 @@ namespace AngeliaFramework {
 
 			// Flashing
 			if (
-				Game.GlobalFrame < FlashingField.B &&
-				(FlashingField.C == 0) == RenderingBottomPanel &&
-				FlashingField.A >= 0 &&
-				FlashingField.A == uiIndex
+				Game.GlobalFrame < FlashingField.y &&
+				FlashingField.z == 0 == RenderingBottomPanel &&
+				FlashingField.x >= 0 &&
+				FlashingField.x == uiIndex
 			) {
 				var tint = Const.GREEN;
-				tint.a = (byte)Util.RemapUnclamped(FLASH_PANEL_DURATION, 0, 255, 0, FlashingField.B - Game.GlobalFrame);
+				tint.a = (byte)Util.RemapUnclamped(FLASH_PANEL_DURATION, 0, 255, 0, FlashingField.y - Game.GlobalFrame);
 				CellRenderer.Draw(Const.PIXEL, itemRect, tint, int.MinValue + 3);
 			}
 
@@ -666,7 +666,7 @@ namespace AngeliaFramework {
 					Game.GlobalFrame >= ActionKeyDownFrame + 6
 				) {
 					var cell = CellRenderer.Draw(Const.PIXEL, itemRect, Const.GREY_96, int.MinValue + 3);
-					cell.Shift = new Int4(
+					cell.Shift = new Vector4Int(
 						0, 0, 0,
 						Util.RemapUnclamped(
 							ActionKeyDownFrame + 6, ActionKeyDownFrame + HOLD_KEY_DURATION,
@@ -682,7 +682,7 @@ namespace AngeliaFramework {
 				) {
 					if (ItemSystem.CanUseItem(itemID, Player.Selecting)) {
 						var cell = CellRenderer.Draw(Const.PIXEL, itemRect, Const.GREEN, int.MinValue + 3);
-						cell.Shift = new Int4(
+						cell.Shift = new Vector4Int(
 							0, 0, 0,
 							Util.RemapUnclamped(
 								CancelKeyDownFrame + 6, CancelKeyDownFrame + HOLD_KEY_DURATION,
@@ -1173,9 +1173,9 @@ namespace AngeliaFramework {
 
 
 		private void FlashInventoryField (int index, bool forBottom) {
-			FlashingField.A = index;
-			FlashingField.B = Game.GlobalFrame + FLASH_PANEL_DURATION;
-			FlashingField.C = forBottom ? 0 : 1;
+			FlashingField.x = index;
+			FlashingField.y = Game.GlobalFrame + FLASH_PANEL_DURATION;
+			FlashingField.z = forBottom ? 0 : 1;
 		}
 
 

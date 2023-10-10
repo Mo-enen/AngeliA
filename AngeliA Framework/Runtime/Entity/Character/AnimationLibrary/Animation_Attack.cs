@@ -9,11 +9,6 @@ namespace AngeliaFramework {
 
 		public static void Attack_Punch (Character character) {
 
-			if (character.StopMoveOnAttack) character.ResetPoseToDefault();
-
-			character.HandGrabRotationL = 0;
-			character.HandGrabRotationR = 0;
-
 			bool FacingRight = character.FacingRight;
 			var Head = character.Head;
 			var Body = character.Body;
@@ -49,10 +44,10 @@ namespace AngeliaFramework {
 			UpperArmR.PivotX = 1000;
 
 
-			ShoulderL.X = Body.X - Body.SizeX / 2 + Body.Border.Left;
-			ShoulderL.Y = Body.Y + Body.Height - Body.Border.Up;
-			ShoulderR.X = Body.X + Body.SizeX / 2 - Body.Border.Right;
-			ShoulderR.Y = Body.Y + Body.Height - Body.Border.Up;
+			ShoulderL.X = Body.X - Body.SizeX / 2 + Body.Border.left;
+			ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
+			ShoulderR.X = Body.X + Body.SizeX / 2 - Body.Border.right;
+			ShoulderR.Y = Body.Y + Body.Height - Body.Border.up;
 			ShoulderL.Height = Mathf.Min(ShoulderL.Height, Body.Height);
 			ShoulderR.Height = Mathf.Min(ShoulderR.Height, Body.Height);
 			ShoulderL.PivotX = 1000;
@@ -62,9 +57,9 @@ namespace AngeliaFramework {
 			UpperArmR.PivotX = 1000;
 
 			UpperArmL.X = ShoulderL.X;
-			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.Down;
+			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
 			UpperArmR.X = ShoulderR.X;
-			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.Down;
+			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
 			UpperArmL.PivotX = 1000;
 			UpperArmR.PivotX = 0;
 
@@ -139,11 +134,6 @@ namespace AngeliaFramework {
 
 		public static void Attack_SmashDown (Character character) {
 
-			if (character.StopMoveOnAttack) character.ResetPoseToDefault();
-
-			character.HandGrabRotationL = 0;
-			character.HandGrabRotationR = 0;
-
 			bool FacingRight = character.FacingRight;
 			bool FacingFront = character.FacingFront;
 			var Head = character.Head;
@@ -184,10 +174,10 @@ namespace AngeliaFramework {
 			Body.Height = Head.Y - Body.Y;
 
 			// Arm
-			ShoulderL.X = Body.X - Body.SizeX / 2 + Body.Border.Left;
-			ShoulderL.Y = Body.Y + Body.Height - Body.Border.Up;
-			ShoulderR.X = Body.X + Body.SizeX / 2 - Body.Border.Right;
-			ShoulderR.Y = Body.Y + Body.Height - Body.Border.Up;
+			ShoulderL.X = Body.X - Body.SizeX / 2 + Body.Border.left;
+			ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
+			ShoulderR.X = Body.X + Body.SizeX / 2 - Body.Border.right;
+			ShoulderR.Y = Body.Y + Body.Height - Body.Border.up;
 			ShoulderL.Height = Mathf.Min(ShoulderL.Height, Body.Height);
 			ShoulderR.Height = Mathf.Min(ShoulderR.Height, Body.Height);
 			ShoulderL.PivotX = 1000;
@@ -197,9 +187,9 @@ namespace AngeliaFramework {
 			UpperArmR.PivotX = 1000;
 
 			UpperArmL.X = ShoulderL.X;
-			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.Down;
+			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
 			UpperArmR.X = ShoulderR.X;
-			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.Down;
+			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
 			UpperArmL.PivotX = 1000;
 			UpperArmR.PivotX = 0;
 
@@ -250,6 +240,509 @@ namespace AngeliaFramework {
 			// Final
 			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 90;
 			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 90;
+		}
+
+
+		// Wave
+		public static void Attack_Wave (Character character) {
+
+			int localFrame = Game.GlobalFrame - character.LastAttackFrame;
+
+			// Content
+			if (localFrame < character.AttackDuration) {
+				switch (character.EquippingWeaponHeld) {
+					case WeaponHandHeld.SingleHanded:
+						Attack_Wave_SingleHanded(character, localFrame);
+						break;
+					case WeaponHandHeld.DoubleHanded:
+						Attack_Wave_DoubleHanded(character, localFrame);
+						break;
+					case WeaponHandHeld.OneOnEachHand:
+						Attack_Wave_EachHand(character, localFrame);
+						break;
+					case WeaponHandHeld.Polearm:
+						Attack_Wave_Polearm(character, localFrame);
+						break;
+				}
+			}
+
+			// Leg
+			if (character.AnimatedPoseType == CharacterPoseAnimationType.Idle) {
+				if (localFrame < character.AttackDuration / 4) {
+					character.UpperLegL.X -= 2 * A2G;
+					character.UpperLegR.X += 2 * A2G;
+					character.LowerLegL.X -= 2 * A2G;
+					character.LowerLegR.X += 2 * A2G;
+					character.FootL.X -= 2 * A2G;
+					character.FootR.X += 2 * A2G;
+				} else if (character.FacingRight) {
+					character.LowerLegL.X -= 2 * A2G;
+					character.FootL.X -= 2 * A2G;
+				} else {
+					character.LowerLegR.X += 2 * A2G;
+					character.FootR.X += 2 * A2G;
+				}
+			}
+		}
+
+
+		private static void Attack_Wave_SingleHanded (Character character, int localFrame) {
+
+			float quad01 = Ease.OutBack((float)localFrame / character.AttackDuration);
+
+			bool FacingRight = character.FacingRight;
+			bool FacingFront = character.FacingFront;
+			var Head = character.Head;
+			var Body = character.Body;
+			var ShoulderL = character.ShoulderL;
+			var UpperArmL = character.UpperArmL;
+			var LowerArmL = character.LowerArmL;
+			var HandL = character.HandL;
+			var ShoulderR = character.ShoulderR;
+			var UpperArmR = character.UpperArmR;
+			var LowerArmR = character.LowerArmR;
+			var HandR = character.HandR;
+
+			int bodyBorderL = FacingRight ? Body.Border.left : Body.Border.right;
+			int bodyBorderR = FacingRight ? Body.Border.right : Body.Border.left;
+
+			bool idle = character.AnimatedPoseType == CharacterPoseAnimationType.Idle;
+			bool squat =
+				character.AnimatedPoseType == CharacterPoseAnimationType.SquatIdle ||
+				character.AnimatedPoseType == CharacterPoseAnimationType.SquatMove;
+			bool inAir =
+				character.AnimatedPoseType == CharacterPoseAnimationType.JumpDown ||
+				character.AnimatedPoseType == CharacterPoseAnimationType.JumpUp;
+
+			int facingSign = FacingRight ? 1 : -1;
+			int frontSign = FacingFront ? 1 : -1;
+
+			UpperArmR.Z = frontSign * UpperArmR.Z.Abs();
+			LowerArmR.Z = frontSign * LowerArmR.Z.Abs();
+			HandR.Z = (FacingFront ? 34 : -34);
+
+			// Head
+			int headOffsetX = facingSign * ((9 - localFrame) / 3 * 2 * A2G - A2G * 5 / 2);
+			int headOffsetY = A2G * 4 * ((9 - localFrame) / 3) - 5 * A2G;
+			if (squat) {
+				headOffsetX /= 2;
+				headOffsetY /= 2;
+			} else if (inAir) {
+				headOffsetX /= 4;
+				headOffsetY /= 4;
+			} else if (!idle) {
+				headOffsetX = headOffsetX * 2 / 3;
+				headOffsetY = headOffsetY * 2 / 3;
+			}
+			Head.X -= headOffsetX;
+			Head.Y += headOffsetY;
+
+			// Body
+			Body.Y -= localFrame * A2G / 18;
+			character.Hip.Y -= localFrame * A2G / 18;
+			Body.Height = Head.Y - Body.Y;
+
+			// Left Side
+			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
+			ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
+
+			UpperArmL.X = ShoulderL.X;
+			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
+
+			// Arm
+			ShoulderR.X = Body.X + Body.SizeX / 2 - bodyBorderR;
+			ShoulderR.Y = Body.Y + Body.Height - Body.Border.up;
+			ShoulderR.Height = Mathf.Min(ShoulderR.Height, Body.Height);
+			ShoulderR.PivotX = 1000;
+
+			UpperArmR.PivotX = 1000;
+
+			UpperArmR.X = ShoulderR.X;
+			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
+			UpperArmR.PivotX = 0;
+
+			if (idle) {
+				UpperArmL.LimbRotate(localFrame * 3, 500);
+				LowerArmL.LimbRotate(-localFrame * 2, 500);
+			}
+
+			// Upper Arm R
+			UpperArmR.LimbRotate(facingSign * Mathf.LerpUnclamped(-185, -9, quad01).RoundToInt());
+
+			UpperArmR.Height += A2G;
+
+			LowerArmR.LimbRotate(0);
+			LowerArmR.Height += A2G;
+
+			HandL.LimbRotate(facingSign);
+			HandR.LimbRotate(facingSign);
+			HandR.Width += HandR.Width.Sign() * A2G;
+			HandR.Height += HandR.Height.Sign() * A2G;
+
+			// Grab Rotation
+			character.HandGrabRotationR = facingSign * Mathf.LerpUnclamped(-80, 100, quad01).RoundToInt();
+			character.HandGrabScaleR = Mathf.LerpUnclamped(1100, 1600, quad01).RoundToInt();
+
+		}
+
+
+		private static void Attack_Wave_DoubleHanded (Character character, int localFrame) {
+
+			float quad01 = Ease.OutBack((float)localFrame / character.AttackDuration);
+
+			bool FacingRight = character.FacingRight;
+			bool FacingFront = character.FacingFront;
+			var Head = character.Head;
+			var Body = character.Body;
+			var ShoulderL = character.ShoulderL;
+			var UpperArmL = character.UpperArmL;
+			var LowerArmL = character.LowerArmL;
+			var HandL = character.HandL;
+			var ShoulderR = character.ShoulderR;
+			var UpperArmR = character.UpperArmR;
+			var LowerArmR = character.LowerArmR;
+			var HandR = character.HandR;
+
+			int bodyBorderL = FacingRight ? Body.Border.left : Body.Border.right;
+			int bodyBorderR = FacingRight ? Body.Border.right : Body.Border.left;
+
+			bool idle = character.AnimatedPoseType == CharacterPoseAnimationType.Idle;
+			bool squat =
+				character.AnimatedPoseType == CharacterPoseAnimationType.SquatIdle ||
+				character.AnimatedPoseType == CharacterPoseAnimationType.SquatMove;
+			bool inAir =
+				character.AnimatedPoseType == CharacterPoseAnimationType.JumpDown ||
+				character.AnimatedPoseType == CharacterPoseAnimationType.JumpUp;
+
+			int facingSign = FacingRight ? 1 : -1;
+			int frontSign = FacingFront ? 1 : -1;
+
+			UpperArmR.Z = frontSign * UpperArmR.Z.Abs();
+			LowerArmR.Z = frontSign * LowerArmR.Z.Abs();
+			HandR.Z = (FacingFront ? 34 : -34);
+
+			// Head
+			int headOffsetX = facingSign * ((9 - localFrame) / 3 * 2 * A2G - A2G * 5 / 2);
+			int headOffsetY = A2G * 4 * ((9 - localFrame) / 3) - 5 * A2G;
+			if (squat) {
+				headOffsetX /= 2;
+				headOffsetY /= 2;
+			} else if (inAir) {
+				headOffsetX /= 4;
+				headOffsetY /= 4;
+			} else if (!idle) {
+				headOffsetX = headOffsetX * 2 / 3;
+				headOffsetY = headOffsetY * 2 / 3;
+			}
+			Head.X -= headOffsetX;
+			Head.Y += headOffsetY;
+
+			// Body
+			Body.Y -= localFrame * A2G / 18;
+			character.Hip.Y -= localFrame * A2G / 18;
+			Body.Height = Head.Y - Body.Y;
+
+			// Arm L
+			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
+			ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
+			ShoulderL.Height = Mathf.Min(ShoulderL.Height, Body.Height);
+
+			// Arm R
+			ShoulderR.X = Body.X + Body.SizeX / 2 - bodyBorderR;
+			ShoulderR.Y = Body.Y + Body.Height - Body.Border.up;
+			ShoulderR.Height = Mathf.Min(ShoulderR.Height, Body.Height);
+			ShoulderR.PivotX = 1000;
+
+			// Upper Arm
+			UpperArmL.X = ShoulderL.X;
+			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
+			UpperArmR.X = ShoulderR.X;
+			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
+			UpperArmR.PivotX = 0;
+
+			UpperArmL.LimbRotate(facingSign * Mathf.LerpUnclamped(-175, 0, quad01).RoundToInt());
+			UpperArmR.LimbRotate(facingSign * Mathf.LerpUnclamped(-185, -9, quad01).RoundToInt());
+
+			LowerArmL.LimbRotate(0);
+			LowerArmR.LimbRotate(0);
+
+			// Grab Rotation
+			character.HandGrabRotationL = facingSign * Mathf.LerpUnclamped(-70, 110, quad01).RoundToInt();
+			character.HandGrabScaleL = Mathf.LerpUnclamped(1000, 1700, quad01).RoundToInt();
+			character.HandGrabRotationR = facingSign * Mathf.LerpUnclamped(-80, 100, quad01).RoundToInt();
+			character.HandGrabScaleR = Mathf.LerpUnclamped(1100, 1600, quad01).RoundToInt();
+
+			// Upper Arm
+			UpperArmL.Height += A2G;
+			UpperArmR.Height += A2G;
+			LowerArmL.Height += A2G;
+			LowerArmR.Height += A2G;
+
+			HandL.LimbRotate(facingSign);
+			HandL.Width += HandL.Width.Sign() * A2G;
+			HandL.Height += HandL.Height.Sign() * A2G;
+
+			HandR.LimbRotate(facingSign);
+			HandR.Width += HandR.Width.Sign() * A2G;
+			HandR.Height += HandR.Height.Sign() * A2G;
+
+		}
+
+
+		private static void Attack_Wave_EachHand (Character character, int localFrame) {
+
+			float quad01 = Ease.OutBack((float)localFrame / character.AttackDuration);
+
+			bool FacingRight = character.FacingRight;
+			bool FacingFront = character.FacingFront;
+			var Head = character.Head;
+			var Body = character.Body;
+			var ShoulderL = character.ShoulderL;
+			var UpperArmL = character.UpperArmL;
+			var LowerArmL = character.LowerArmL;
+			var HandL = character.HandL;
+			var ShoulderR = character.ShoulderR;
+			var UpperArmR = character.UpperArmR;
+			var LowerArmR = character.LowerArmR;
+			var HandR = character.HandR;
+
+			int bodyBorderL = FacingRight ? Body.Border.left : Body.Border.right;
+			int bodyBorderR = FacingRight ? Body.Border.right : Body.Border.left;
+
+			bool idle = character.AnimatedPoseType == CharacterPoseAnimationType.Idle;
+			bool squat =
+				character.AnimatedPoseType == CharacterPoseAnimationType.SquatIdle ||
+				character.AnimatedPoseType == CharacterPoseAnimationType.SquatMove;
+			bool inAir =
+				character.AnimatedPoseType == CharacterPoseAnimationType.JumpDown ||
+				character.AnimatedPoseType == CharacterPoseAnimationType.JumpUp;
+
+			int facingSign = FacingRight ? 1 : -1;
+			int frontSign = FacingFront ? 1 : -1;
+
+			UpperArmR.Z = frontSign * UpperArmR.Z.Abs();
+			LowerArmR.Z = frontSign * LowerArmR.Z.Abs();
+			HandR.Z = (FacingFront ? 34 : -34);
+
+			// Head
+			int headOffsetX = facingSign * ((9 - localFrame) / 3 * 2 * A2G - A2G * 5 / 2);
+			int headOffsetY = A2G * 4 * ((9 - localFrame) / 3) - 5 * A2G;
+			if (squat) {
+				headOffsetX /= 2;
+				headOffsetY /= 2;
+			} else if (inAir) {
+				headOffsetX /= 4;
+				headOffsetY /= 4;
+			} else if (!idle) {
+				headOffsetX = headOffsetX * 2 / 3;
+				headOffsetY = headOffsetY * 2 / 3;
+			}
+			Head.X -= headOffsetX;
+			Head.Y += headOffsetY;
+
+			// Body
+			Body.Y -= localFrame * A2G / 18;
+			character.Hip.Y -= localFrame * A2G / 18;
+			Body.Height = Head.Y - Body.Y;
+
+			// Arm L
+			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
+			ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
+			ShoulderL.Height = Mathf.Min(ShoulderL.Height, Body.Height);
+
+			// Arm R
+			ShoulderR.X = Body.X + Body.SizeX / 2 - bodyBorderR;
+			ShoulderR.Y = Body.Y + Body.Height - Body.Border.up;
+			ShoulderR.Height = Mathf.Min(ShoulderR.Height, Body.Height);
+			ShoulderR.PivotX = 1000;
+
+			// Upper Arm
+			UpperArmL.X = ShoulderL.X;
+			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
+			UpperArmR.X = ShoulderR.X;
+			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
+			UpperArmR.PivotX = 0;
+
+			UpperArmL.LimbRotate(facingSign * Mathf.LerpUnclamped(-175, 0, quad01).RoundToInt());
+			UpperArmR.LimbRotate(facingSign * Mathf.LerpUnclamped(-185, -9, quad01).RoundToInt());
+
+			LowerArmL.LimbRotate(0);
+			LowerArmR.LimbRotate(0);
+
+			// Grab Rotation
+			character.HandGrabRotationL = facingSign * Mathf.LerpUnclamped(-70, 110, quad01).RoundToInt();
+			character.HandGrabScaleL = Mathf.LerpUnclamped(1000, 1700, quad01).RoundToInt();
+			character.HandGrabRotationR = facingSign * Mathf.LerpUnclamped(-80, 100, quad01).RoundToInt();
+			character.HandGrabScaleR = Mathf.LerpUnclamped(1100, 1600, quad01).RoundToInt();
+
+			// Upper Arm
+			UpperArmL.Height += A2G;
+			UpperArmR.Height += A2G;
+			LowerArmL.Height += A2G;
+			LowerArmR.Height += A2G;
+
+			HandL.LimbRotate(facingSign);
+			HandL.Width += HandL.Width.Sign() * A2G;
+			HandL.Height += HandL.Height.Sign() * A2G;
+
+			HandR.LimbRotate(facingSign);
+			HandR.Width += HandR.Width.Sign() * A2G;
+			HandR.Height += HandR.Height.Sign() * A2G;
+
+		}
+
+
+		private static void Attack_Wave_Polearm (Character character, int localFrame) {
+
+			float quad01 = Ease.OutBack((float)localFrame / character.AttackDuration);
+
+			bool FacingRight = character.FacingRight;
+			bool FacingFront = character.FacingFront;
+			var Head = character.Head;
+			var Body = character.Body;
+			var ShoulderL = character.ShoulderL;
+			var UpperArmL = character.UpperArmL;
+			var LowerArmL = character.LowerArmL;
+			var HandL = character.HandL;
+			var ShoulderR = character.ShoulderR;
+			var UpperArmR = character.UpperArmR;
+			var LowerArmR = character.LowerArmR;
+			var HandR = character.HandR;
+
+			int bodyBorderL = FacingRight ? Body.Border.left : Body.Border.right;
+			int bodyBorderR = FacingRight ? Body.Border.right : Body.Border.left;
+
+			bool idle = character.AnimatedPoseType == CharacterPoseAnimationType.Idle;
+			bool squat =
+				character.AnimatedPoseType == CharacterPoseAnimationType.SquatIdle ||
+				character.AnimatedPoseType == CharacterPoseAnimationType.SquatMove;
+			bool inAir =
+				character.AnimatedPoseType == CharacterPoseAnimationType.JumpDown ||
+				character.AnimatedPoseType == CharacterPoseAnimationType.JumpUp;
+
+			int facingSign = FacingRight ? 1 : -1;
+			int frontSign = FacingFront ? 1 : -1;
+
+			UpperArmR.Z = frontSign * UpperArmR.Z.Abs();
+			LowerArmR.Z = frontSign * LowerArmR.Z.Abs();
+			HandR.Z = (FacingFront ? 34 : -34);
+
+			// Head
+			int headOffsetX = facingSign * ((9 - localFrame) / 3 * 2 * A2G - A2G * 5 / 2);
+			int headOffsetY = A2G * 4 * ((9 - localFrame) / 3) - 5 * A2G;
+			if (squat) {
+				headOffsetX /= 2;
+				headOffsetY /= 2;
+			} else if (inAir) {
+				headOffsetX /= 4;
+				headOffsetY /= 4;
+			} else if (!idle) {
+				headOffsetX = headOffsetX * 2 / 3;
+				headOffsetY = headOffsetY * 2 / 3;
+			}
+			Head.X -= headOffsetX;
+			Head.Y += headOffsetY;
+
+			// Body
+			Body.Y -= localFrame * A2G / 18;
+			character.Hip.Y -= localFrame * A2G / 18;
+			Body.Height = Head.Y - Body.Y;
+
+			// Arm L
+			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
+			ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
+			ShoulderL.Height = Mathf.Min(ShoulderL.Height, Body.Height);
+
+			// Arm R
+			ShoulderR.X = Body.X + Body.SizeX / 2 - bodyBorderR;
+			ShoulderR.Y = Body.Y + Body.Height - Body.Border.up;
+			ShoulderR.Height = Mathf.Min(ShoulderR.Height, Body.Height);
+			ShoulderR.PivotX = 1000;
+
+			// Upper Arm
+			UpperArmL.X = ShoulderL.X;
+			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
+			UpperArmR.X = ShoulderR.X;
+			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
+			UpperArmR.PivotX = 0;
+
+			UpperArmL.LimbRotate(facingSign * Mathf.LerpUnclamped(-175, 0, quad01).RoundToInt());
+			UpperArmR.LimbRotate(facingSign * Mathf.LerpUnclamped(-185, -9, quad01).RoundToInt());
+
+			LowerArmL.LimbRotate(0);
+			LowerArmR.LimbRotate(0);
+
+			// Grab Rotation
+			character.HandGrabRotationL = facingSign * Mathf.LerpUnclamped(-70, 110, quad01).RoundToInt();
+			character.HandGrabScaleL = Mathf.LerpUnclamped(1000, 1700, quad01).RoundToInt();
+			character.HandGrabRotationR = facingSign * Mathf.LerpUnclamped(-80, 100, quad01).RoundToInt();
+			character.HandGrabScaleR = Mathf.LerpUnclamped(1100, 1600, quad01).RoundToInt();
+
+			// Upper Arm
+			UpperArmL.Height += A2G;
+			UpperArmR.Height += A2G;
+			LowerArmL.Height += A2G;
+			LowerArmR.Height += A2G;
+
+			HandL.LimbRotate(facingSign);
+			HandL.Width += HandL.Width.Sign() * A2G;
+			HandL.Height += HandL.Height.Sign() * A2G;
+
+			HandR.LimbRotate(facingSign);
+			HandR.Width += HandR.Width.Sign() * A2G;
+			HandR.Height += HandR.Height.Sign() * A2G;
+
+		}
+
+
+		// Poke
+		public static void Attack_Poke (Character character) {
+			// Double Handed
+
+		}
+
+
+		// Throw
+		public static void Attack_Throw (Character character) {
+
+
+
+		}
+
+
+		// Magic
+		public static void Attack_Magic (Character character) {
+			switch (character.EquippingWeaponHeld) {
+				default:
+				case WeaponHandHeld.NoHandHeld:
+
+					break;
+				case WeaponHandHeld.SingleHanded:
+
+					break;
+				case WeaponHandHeld.DoubleHanded:
+
+					break;
+				case WeaponHandHeld.OneOnEachHand:
+
+					break;
+			}
+		}
+
+
+		// Bow
+		public static void Attack_Bow (Character character) {
+
+
+
+		}
+
+
+		// Scratch
+		public static void Attack_Scratch (Character character) {
+
+
+
 		}
 
 

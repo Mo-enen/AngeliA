@@ -51,7 +51,8 @@ namespace AngeliaFramework {
 
 		// Api
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
-		public WeaponType? EquippingWeaponType { get; set; } = null;
+		public WeaponType EquippingWeaponType { get; set; } = WeaponType.Hand;
+		public WeaponHandHeld EquippingWeaponHeld { get; set; } = WeaponHandHeld.NoHandHeld;
 		public bool IsPassOut => HealthPoint == 0;
 		public bool IsFullPassOut => HealthPoint == 0 && Game.GlobalFrame > PassOutFrame + 48;
 		public int SleepFrame { get; private set; } = 0;
@@ -247,20 +248,6 @@ namespace AngeliaFramework {
 
 
 		#region --- API ---
-
-
-		public bool IsAttackAllowedByMovement () =>
-			!IsRushing &&
-			(AttackInAir || (IsGrounded || InWater || InSand || IsClimbing)) &&
-			(AttackInWater || !InWater) &&
-			(AttackWhenMoving || IntendedX == 0) &&
-			(AttackWhenClimbing || !IsClimbing) &&
-			(AttackWhenFlying || !IsFlying) &&
-			(AttackWhenRolling || !IsRolling) &&
-			(AttackWhenSquatting || !IsSquatting) &&
-			(AttackWhenDashing || !IsDashing) &&
-			(AttackWhenSliding || !IsSliding) &&
-			(AttackWhenGrabbing || (!IsGrabbingTop && !IsGrabbingSide));
 
 
 		public virtual void SetCharacterState (CharacterState state) {

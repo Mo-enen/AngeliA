@@ -35,7 +35,7 @@ namespace AngeliaFramework {
 		protected int MessageHeight = 96;
 		protected int MessageFontSize = 22;
 		protected int MaxItemCount = 10;
-		protected Int4 ContentPadding = new(32, 32, 46, 46);
+		protected Vector4Int ContentPadding = new(32, 32, 46, 46);
 		protected Vector2Int SelectionMarkSize = new(32, 32);
 		protected Vector2Int SelectionArrowMarkSize = new(24, 24);
 		protected Vector2Int MoreMarkSize = new(16, 16);
@@ -110,20 +110,20 @@ namespace AngeliaFramework {
 			bool hasMsg = !string.IsNullOrWhiteSpace(msg);
 			int msgHeight = Unify(MessageHeight);
 			var windowBounds = windowRect.Expand(
-				Unify(ContentPadding.Left),
-				Unify(ContentPadding.Right),
-				Unify(ContentPadding.Down),
-				Unify(ContentPadding.Up)
+				Unify(ContentPadding.left),
+				Unify(ContentPadding.right),
+				Unify(ContentPadding.down),
+				Unify(ContentPadding.up)
 			);
 			var moreMarkSize = new Vector2Int(
 				Unify(MoreMarkSize.x),
 				Unify(MoreMarkSize.y)
 			);
-			var contentPadding = new Int4(
-				Unify(ContentPadding.A),
-				Unify(ContentPadding.B),
-				Unify(ContentPadding.C),
-				Unify(ContentPadding.D)
+			var contentPadding = new Vector4Int(
+				Unify(ContentPadding.x),
+				Unify(ContentPadding.y),
+				Unify(ContentPadding.z),
+				Unify(ContentPadding.w)
 			);
 			bool animating = AnimationDuration > 0 && AnimationFrame < AnimationDuration;
 
@@ -206,7 +206,7 @@ namespace AngeliaFramework {
 				// U
 				CellRenderer.Draw(MoreItemMarkCode, new(
 					windowRect.x + (windowRect.width - moreMarkSize.x) / 2,
-					windowRect.yMax + contentPadding.Up - moreMarkSize.y - offsetY,
+					windowRect.yMax + contentPadding.up - moreMarkSize.y - offsetY,
 					moreMarkSize.x, moreMarkSize.y
 				), MoreMarkTint);
 			}
@@ -214,7 +214,7 @@ namespace AngeliaFramework {
 				// D
 				CellRenderer.Draw(MoreItemMarkCode, new(
 					windowRect.x + (windowRect.width - moreMarkSize.x) / 2,
-					windowRect.yMin - contentPadding.Down + moreMarkSize.y + offsetY,
+					windowRect.yMin - contentPadding.down + moreMarkSize.y + offsetY,
 					moreMarkSize.x, -moreMarkSize.y
 				), MoreMarkTint);
 			}

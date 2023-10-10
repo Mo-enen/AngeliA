@@ -39,8 +39,8 @@ namespace AngeliaFramework {
 			int oneEase = (int)(ease * A2G);
 			int halfEase = (int)(ease * A2G / 2);
 			int facingSign = FacingRight ? 1 : -1;
-			int bodyBorderL = FacingRight ? Body.Border.Left : Body.Border.Right;
-			int bodyBorderR = FacingRight ? Body.Border.Right : Body.Border.Left;
+			int bodyBorderL = FacingRight ? Body.Border.left : Body.Border.right;
+			int bodyBorderR = FacingRight ? Body.Border.right : Body.Border.left;
 
 			Body.Width += facingSign * halfEase;
 			Body.Height -= oneEase;
@@ -115,7 +115,7 @@ namespace AngeliaFramework {
 			float ease = WALK_RUN_EASE[arrFrame];
 			float easeDouble = WALK_RUN_EASE[arrFrame + 8];
 			int legOffsetX = (int)Mathf.LerpUnclamped(
-				0f, (Body.SizeX - Body.Border.Horizontal - UpperLegL.SizeX) * 0.7f,
+				0f, (Body.SizeX - Body.Border.horizontal - UpperLegL.SizeX) * 0.7f,
 				FacingRight ? ease : 1f - ease
 			);
 			int facingSign = FacingRight ? 1 : -1;
@@ -176,7 +176,7 @@ namespace AngeliaFramework {
 			float ease = WALK_RUN_EASE[arrFrame];
 			float easeDouble = WALK_RUN_EASE[arrFrame + 8];
 			int legOffsetX = (int)Mathf.LerpUnclamped(
-				0f, (Body.SizeX - Body.Border.Horizontal - UpperLegL.SizeX) * 0.9f,
+				0f, (Body.SizeX - Body.Border.horizontal - UpperLegL.SizeX) * 0.9f,
 				FacingRight ? ease : 1f - ease
 			);
 			int facingSign = FacingRight ? 1 : -1;
@@ -559,8 +559,8 @@ namespace AngeliaFramework {
 			int oneEase = (int)(ease * A2G);
 			int halfEase = (int)(ease * A2G / 2);
 			int facingSign = FacingRight ? 1 : -1;
-			int bodyBorderL = FacingRight ? Body.Border.Left : Body.Border.Right;
-			int bodyBorderR = FacingRight ? Body.Border.Right : Body.Border.Left;
+			int bodyBorderL = FacingRight ? Body.Border.left : Body.Border.right;
+			int bodyBorderR = FacingRight ? Body.Border.right : Body.Border.left;
 
 			int above = character.PoseRootY /= 2;
 
@@ -583,11 +583,11 @@ namespace AngeliaFramework {
 			ShoulderL.Height /= 2;
 			ShoulderR.Height /= 2;
 
-			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.Down;
+			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
 			UpperArmL.Z = UpperArmL.Z.Abs();
 			UpperArmL.LimbRotate(25);
 
-			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.Down;
+			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
 			UpperArmR.Z = UpperArmR.Z.Abs();
 			UpperArmR.LimbRotate(-25);
 
@@ -632,8 +632,8 @@ namespace AngeliaFramework {
 			HandR.X += halfEase;
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation + 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation - 90;
+			character.HandGrabRotationL = 100;
+			character.HandGrabRotationR = -100;
 		}
 
 
@@ -641,7 +641,6 @@ namespace AngeliaFramework {
 
 			bool FacingRight = character.FacingRight;
 			bool FacingFront = character.FacingFront;
-			int facingSign = FacingRight ? 1 : -1;
 			var Head = character.Head;
 			var Body = character.Body;
 			var ShoulderL = character.ShoulderL;
@@ -679,11 +678,11 @@ namespace AngeliaFramework {
 			ShoulderL.Height /= 2;
 			ShoulderR.Height /= 2;
 
-			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.Down;
+			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
 			UpperArmL.Z = UpperArmL.Z.Abs();
 			UpperArmL.LimbRotate(arrFrame >= 3 && arrFrame <= 6 ? 45 : 25);
 
-			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.Down;
+			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
 			UpperArmR.Z = UpperArmR.Z.Abs();
 			UpperArmR.LimbRotate(arrFrame >= 3 && arrFrame <= 6 ? -45 : -25);
 
@@ -720,8 +719,8 @@ namespace AngeliaFramework {
 			FootR.Y = FootR.Height - above;
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation + 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation - 90;
+			character.HandGrabRotationL = 100;
+			character.HandGrabRotationR = -100;
 		}
 
 
@@ -784,8 +783,8 @@ namespace AngeliaFramework {
 			ShoulderL.Y = Body.Y + Body.Height;
 			ShoulderR.Y = Body.Y + Body.Height;
 
-			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.Down;
-			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.Down;
+			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
+			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
 
 			if (FacingRight) {
 				UpperArmR.Y += A2G;
@@ -876,22 +875,22 @@ namespace AngeliaFramework {
 			Body.Y = Hip.Y + Hip.Height;
 
 			// Arm
-			ShoulderL.X = Body.X - Body.Width / 2 + Body.Border.Left;
-			ShoulderL.Y = Body.Y + Body.Height - Body.Border.Up;
+			ShoulderL.X = Body.X - Body.Width / 2 + Body.Border.left;
+			ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
 			ShoulderL.Height /= 2;
 
-			ShoulderR.X = Body.X + Body.Width / 2 - Body.Border.Right;
-			ShoulderR.Y = Body.Y + Body.Height - Body.Border.Up;
+			ShoulderR.X = Body.X + Body.Width / 2 - Body.Border.right;
+			ShoulderR.Y = Body.Y + Body.Height - Body.Border.up;
 			ShoulderR.Height /= 2;
 
 			UpperArmL.X = ShoulderL.X;
-			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.Down;
+			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
 			UpperArmL.Z = upsideSign * UpperArmL.Z.Abs();
 			UpperArmL.LimbRotate(facingSign * ROLLING[arrFrame, 5]);
 			UpperArmL.Height /= 2;
 
 			UpperArmR.X = ShoulderR.X;
-			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.Down;
+			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
 			UpperArmR.Z = upsideSign * UpperArmR.Z.Abs();
 			UpperArmR.LimbRotate(facingSign * ROLLING[arrFrame, 6]);
 			UpperArmR.Height /= 2;
@@ -911,11 +910,11 @@ namespace AngeliaFramework {
 			HandR.Z = upsideSign * 33;
 
 			// Leg
-			UpperLegL.X = Body.X - Body.Width.Abs() / 2 + Body.Border.Left - facingSign * A2G * 2;
+			UpperLegL.X = Body.X - Body.Width.Abs() / 2 + Body.Border.left - facingSign * A2G * 2;
 			UpperLegL.Y = Body.Y;
 			UpperLegL.LimbRotate(facingSign * ROLLING[arrFrame, 7], 0);
 
-			UpperLegR.X = Body.X + Body.Width.Abs() / 2 - Body.Border.Right - facingSign * A2G * 2;
+			UpperLegR.X = Body.X + Body.Width.Abs() / 2 - Body.Border.right - facingSign * A2G * 2;
 			UpperLegR.Y = Body.Y;
 			UpperLegR.LimbRotate(facingSign * ROLLING[arrFrame, 8], 0);
 
@@ -1180,7 +1179,6 @@ namespace AngeliaFramework {
 		public static void Climb (Character character) {
 
 			bool FacingFront = character.FacingFront;
-			int facingSign = character.FacingRight ? 1 : -1;
 			var UpperArmL = character.UpperArmL;
 			var UpperArmR = character.UpperArmR;
 			var LowerArmL = character.LowerArmL;
@@ -1305,8 +1303,8 @@ namespace AngeliaFramework {
 			FootR.Z = -32;
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 90;
+			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 60;
+			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 60;
 		}
 
 

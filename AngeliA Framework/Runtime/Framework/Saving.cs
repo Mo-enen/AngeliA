@@ -75,25 +75,6 @@ namespace AngeliaFramework {
 
 
 
-	public class SavingInt2 : Saving<Int2> {
-		private readonly string KeyB;
-		public SavingInt2 (string key, Int2 defaultValue) : base(key + ".x", defaultValue) => KeyB = key + ".y";
-		protected override Int2 GetValueFromPref () => new(
-			PlayerPrefs.GetInt(Key, DefaultValue.A),
-			PlayerPrefs.GetInt(KeyB, DefaultValue.B)
-		);
-		protected override void SetValueToPref () {
-			PlayerPrefs.SetInt(Key, Value.A);
-			PlayerPrefs.SetInt(KeyB, Value.B);
-		}
-		protected override void DeleteKey () {
-			PlayerPrefs.DeleteKey(Key);
-			PlayerPrefs.DeleteKey(KeyB);
-		}
-	}
-
-
-
 	public class SavingBool : Saving<bool> {
 		public SavingBool (string key, bool defaultValue) : base(key, defaultValue) { }
 		protected override bool GetValueFromPref () => PlayerPrefs.GetInt(Key, DefaultValue ? 1 : 0) == 1;

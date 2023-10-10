@@ -149,6 +149,7 @@ namespace AngeliaFramework {
 		public readonly BuffBool AttackWhenDashing = new(false);
 		public readonly BuffBool AttackWhenSliding = new(false);
 		public readonly BuffBool AttackWhenGrabbing = new(false);
+		public readonly BuffBool AttackWhenRush = new(false);
 
 
 		#endregion

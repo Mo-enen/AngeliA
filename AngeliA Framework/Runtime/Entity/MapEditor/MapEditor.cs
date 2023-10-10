@@ -1198,9 +1198,9 @@ namespace AngeliaFramework {
 					ref var data = ref UndoData[index];
 					data.Step = CURRENT_STEP;
 					var triID = Squad.GetTriBlockAt(i, j);
-					data.EntityID = triID.A;
-					data.LevelID = triID.B;
-					data.BackgroundID = triID.C;
+					data.EntityID = triID.x;
+					data.LevelID = triID.y;
+					data.BackgroundID = triID.z;
 					data.UnitX = i;
 					data.UnitY = j;
 					dataLength++;

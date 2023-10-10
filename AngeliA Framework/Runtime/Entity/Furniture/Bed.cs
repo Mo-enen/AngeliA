@@ -32,7 +32,7 @@ namespace AngeliaFramework {
 			// Get Offset Y
 			int offsetY = 0;
 			if (CellRenderer.TryGetSpriteFromGroup(TypeID, 0, out var sprite, false, true)) {
-				offsetY += sprite.GlobalHeight - sprite.GlobalBorder.Up;
+				offsetY += sprite.GlobalHeight - sprite.GlobalBorder.up;
 			}
 
 			// Set Character Pos

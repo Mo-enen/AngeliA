@@ -32,7 +32,7 @@ namespace AngeliaFramework {
 
 		// Api
 		public int ID { get; private set; } = 0;
-		public Int4 Border { get; private set; } = default;
+		public Vector4Int Border { get; private set; } = default;
 		public int SpritePivotX { get; private set; } = 0;
 		public int SpritePivotY { get; private set; } = 0;
 		public int SizeX { get; private set; } = Const.CEL;

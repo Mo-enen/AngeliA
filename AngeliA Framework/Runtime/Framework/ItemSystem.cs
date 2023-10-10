@@ -45,7 +45,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private static readonly Dictionary<int, ItemData> ItemPool = new();
-		public static readonly Dictionary<Int4, Int2> CombinationPool = new();
+		public static readonly Dictionary<Vector4Int, Vector2Int> CombinationPool = new();
 		private static bool IsUnlockDirty = false;
 
 
@@ -135,33 +135,33 @@ namespace AngeliaFramework {
 			resultCount = 0;
 			var from = GetSortedCombination(item0, item1, item2, item3);
 			if (CombinationPool.TryGetValue(from, out var resultValue)) {
-				result = resultValue.A;
-				resultCount = resultValue.B;
+				result = resultValue.x;
+				resultCount = resultValue.y;
 				return true;
 			}
 			return false;
 		}
 
 
-		public static void FillAllRelatedCombinations (Int4 items, List<Int4> output) {
+		public static void FillAllRelatedCombinations (Vector4Int items, List<Vector4Int> output) {
 			if (items.IsZero) return;
 			bool includeResult = items.Count(0) == 3;
 			foreach (var (craft, result) in CombinationPool) {
-				if (includeResult && items.Contains(result.A)) {
+				if (includeResult && items.Contains(result.x)) {
 					output.Add(craft);
 					continue;
 				}
 				var _craft = craft;
-				if (items.A != 0 && !_craft.Swap(items.A, 0)) continue;
-				if (items.B != 0 && !_craft.Swap(items.B, 0)) continue;
-				if (items.C != 0 && !_craft.Swap(items.C, 0)) continue;
-				if (items.D != 0 && !_craft.Swap(items.D, 0)) continue;
+				if (items.x != 0 && !_craft.Swap(items.x, 0)) continue;
+				if (items.y != 0 && !_craft.Swap(items.y, 0)) continue;
+				if (items.z != 0 && !_craft.Swap(items.z, 0)) continue;
+				if (items.w != 0 && !_craft.Swap(items.w, 0)) continue;
 				output.Add(craft);
 			}
 		}
 
 
-		public static Int4 GetSortedCombination (int a, int b, int c, int d) {
+		public static Vector4Int GetSortedCombination (int a, int b, int c, int d) {
 
 			// Sort for Zero
 			if (a == 0 && b != 0) (a, b) = (b, a);
@@ -179,7 +179,7 @@ namespace AngeliaFramework {
 			if (b != 0 && c != 0 && b > c) (b, c) = (c, b);
 			if (a != 0 && b != 0 && a > b) (a, b) = (b, a);
 
-			return new Int4(a, b, c, d);
+			return new Vector4Int(a, b, c, d);
 		}
 
 
@@ -246,11 +246,11 @@ namespace AngeliaFramework {
 #if UNITY_EDITOR
 			if (CombinationPool.ContainsKey(from) && UnityEditor.EditorApplication.isPlaying) {
 				Debug.LogError(
-					$"Combination already exists. ({GetItem(CombinationPool[from].A).GetType().Name}) & ({GetItem(result).GetType().Name})"
+					$"Combination already exists. ({GetItem(CombinationPool[from].x).GetType().Name}) & ({GetItem(result).GetType().Name})"
 				);
 			}
 #endif
-			CombinationPool[from] = new Int2(result, resultCount);
+			CombinationPool[from] = new Vector2Int(result, resultCount);
 		}
 
 

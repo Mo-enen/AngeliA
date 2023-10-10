@@ -349,11 +349,11 @@ namespace AngeliaFramework {
 			rect.height += offset.vertical;
 			return rect;
 		}
-		public static RectInt Expand (this RectInt rect, Int4 offset) {
-			rect.x -= offset.Left;
-			rect.y -= offset.Down;
-			rect.width += offset.Left + offset.Right;
-			rect.height += offset.Down + offset.Up;
+		public static RectInt Expand (this RectInt rect, Vector4Int offset) {
+			rect.x -= offset.left;
+			rect.y -= offset.down;
+			rect.width += offset.left + offset.right;
+			rect.height += offset.down + offset.up;
 			return rect;
 		}
 		public static RectInt Shrink (this RectInt rect, int offset) => rect.Expand(-offset);
@@ -365,11 +365,11 @@ namespace AngeliaFramework {
 			rect.height -= offset.vertical;
 			return rect;
 		}
-		public static RectInt Shrink (this RectInt rect, Int4 offset) {
-			rect.x += offset.Left;
-			rect.y += offset.Down;
-			rect.width -= offset.Left + offset.Right;
-			rect.height -= offset.Down + offset.Up;
+		public static RectInt Shrink (this RectInt rect, Vector4Int offset) {
+			rect.x += offset.left;
+			rect.y += offset.down;
+			rect.width -= offset.left + offset.right;
+			rect.height -= offset.down + offset.up;
 			return rect;
 		}
 		public static void FlipHorizontal (this ref RectInt rect) {

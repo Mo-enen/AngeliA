@@ -26,8 +26,8 @@ namespace AngeliaFramework {
 		public static readonly CraftingTableUI Instance = new();
 
 		// Data
-		private readonly List<Int4> DocumentContent = new();
-		private Int4 CurrentCraftingItems = default;
+		private readonly List<Vector4Int> DocumentContent = new();
+		private Vector4Int CurrentCraftingItems = default;
 		private bool CursorInDoc = false;
 		private bool CursorInResult = false;
 		private int CombineResultID = 0;
@@ -40,7 +40,7 @@ namespace AngeliaFramework {
 		public override void EnablePanel (int inventoryID, int column, int row, int itemSize = 52) {
 			base.EnablePanel(inventoryID, column, row, itemSize);
 			DocumentContent.Clear();
-			CurrentCraftingItems.A = int.MinValue;
+			CurrentCraftingItems.x = int.MinValue;
 		}
 
 
@@ -235,7 +235,7 @@ namespace AngeliaFramework {
 				var com = DocumentContent[i];
 				lineRect.y = docItemRect.yMax - (i + 1 - DocumentScrollY) * (lineRect.height + linePadding);
 				if (lineRect.yMax < docRect.y) break;
-				bool haveResult = ItemSystem.TryGetCombination(com.A, com.B, com.C, com.D, out int result, out _);
+				bool haveResult = ItemSystem.TryGetCombination(com.x, com.y, com.z, com.w, out int result, out _);
 				if (!haveResult) continue;
 				var iRect = new RectInt(lineRect.xMax, lineRect.y, iconSize, iconSize);
 

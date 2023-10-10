@@ -116,7 +116,7 @@ namespace AngeliaGame {
 		private static readonly int GLASS_CODE = "ChrisSuit.Glass".AngeHash();
 		protected override void DrawFace (Character character) {
 			base.DrawFace(character);
-			DrawSprite(character, GLASS_CODE, new Int4(16, 16, 0, 0));
+			DrawSprite(character, GLASS_CODE, new Vector4Int(16, 16, 0, 0));
 		}
 	}
 

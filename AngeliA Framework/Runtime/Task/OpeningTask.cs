@@ -154,7 +154,11 @@ namespace AngeliaFramework {
 				gotoBed = false;
 			} else if (Player.Selecting is IConfigurableCharacter selectingPlayer && selectingPlayer.HomeUnitPosition.HasValue) {
 				// Sleeped Pos
-				startUnitPosition = selectingPlayer.HomeUnitPosition.Value.ToVectorInt3();
+				startUnitPosition = new Vector3Int(
+					selectingPlayer.HomeUnitPosition.Value.x,
+					selectingPlayer.HomeUnitPosition.Value.y,
+					selectingPlayer.HomeUnitPosition.Value.z
+				);
 			} else if (IGlobalPosition.TryGetPosition(Player.Selecting.TypeID, out var mapUnitPosition)) {
 				// Global Map Pos
 				startUnitPosition = mapUnitPosition;

@@ -360,18 +360,18 @@ namespace AngeliaFramework {
 
 				// Draw
 				if (showTopBorder) {
-					rect = rect.Expand(0, 0, 0, sprite.GlobalBorder.Up);
+					rect = rect.Expand(0, 0, 0, sprite.GlobalBorder.up);
 				}
 				if (showBottomBorder) {
-					rect = rect.Expand(0, 0, sprite.GlobalBorder.Down, 0);
+					rect = rect.Expand(0, 0, sprite.GlobalBorder.down, 0);
 				}
 				CellRenderer.Draw_9Slice(
 					sprite.GlobalID,
 					rect,
-					sprite.GlobalBorder.Left,
-					sprite.GlobalBorder.Right,
-					showBottomBorder ? sprite.GlobalBorder.Down : 0,
-					showTopBorder ? sprite.GlobalBorder.Up : 0,
+					sprite.GlobalBorder.left,
+					sprite.GlobalBorder.right,
+					showBottomBorder ? sprite.GlobalBorder.down : 0,
+					showTopBorder ? sprite.GlobalBorder.up : 0,
 					tint
 				);
 			}

@@ -35,7 +35,7 @@ namespace AngeliaFramework {
 		public float PivotY;
 		public Color32 Color;
 		public Alignment BorderSide;
-		public Int4 Shift;
+		public Vector4Int Shift;
 		public void CopyFrom (Cell other) {
 			Index = other.Index;
 			Order = other.Order;
@@ -609,10 +609,10 @@ namespace AngeliaFramework {
 
 				bool shifted = !cell.Shift.IsZero;
 				if (shifted) {
-					shiftL = ((float)cell.Shift.Left / cell.Width.Abs()).Clamp01();
-					shiftR = ((float)cell.Shift.Right / cell.Width.Abs()).Clamp01();
-					shiftD = ((float)cell.Shift.Down / cell.Height.Abs()).Clamp01();
-					shiftU = ((float)cell.Shift.Up / cell.Height.Abs()).Clamp01();
+					shiftL = ((float)cell.Shift.left / cell.Width.Abs()).Clamp01();
+					shiftR = ((float)cell.Shift.right / cell.Width.Abs()).Clamp01();
+					shiftD = ((float)cell.Shift.down / cell.Height.Abs()).Clamp01();
+					shiftU = ((float)cell.Shift.up / cell.Height.Abs()).Clamp01();
 				} else {
 					shiftL = 0;
 					shiftR = 0;
@@ -895,10 +895,10 @@ namespace AngeliaFramework {
 			cell.PivotY = pivotY / 1000f;
 			cell.Color = color;
 			cell.BorderSide = Alignment.Full;
-			cell.Shift.A = 0;
-			cell.Shift.B = 0;
-			cell.Shift.C = 0;
-			cell.Shift.D = 0;
+			cell.Shift.x = 0;
+			cell.Shift.y = 0;
+			cell.Shift.z = 0;
+			cell.Shift.w = 0;
 
 			// Final
 			layer.FocusedCell++;
@@ -919,8 +919,8 @@ namespace AngeliaFramework {
 			var border = TryGetSprite(globalID, out var sprite) ? sprite.GlobalBorder : default;
 			return Draw_9Slice(
 				globalID, x, y, pivotX, pivotY, rotation, width, height,
-				border.Left, border.Right,
-				border.Down, border.Up,
+				border.left, border.right,
+				border.down, border.up,
 				color, z
 			);
 		}
@@ -1107,7 +1107,7 @@ namespace AngeliaFramework {
 		public static Cell[] DrawAnimation_9Slice (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, Color32 color, int loopStart = -1) {
 			if (!SheetIDMap.TryGetValue(chainID, out var rCell)) return Last9SlicedCells;
 			var sprite = Sprites[rCell.GetIndex(GetAnimationFrame(frame, rCell.Length, loopStart))];
-			return Draw_9Slice(sprite.GlobalID, x, y, pivotX, pivotY, rotation, width, height, sprite.GlobalBorder.Left, sprite.GlobalBorder.Right, sprite.GlobalBorder.Down, sprite.GlobalBorder.Up, color);
+			return Draw_9Slice(sprite.GlobalID, x, y, pivotX, pivotY, rotation, width, height, sprite.GlobalBorder.left, sprite.GlobalBorder.right, sprite.GlobalBorder.down, sprite.GlobalBorder.up, color);
 		}
 		public static Cell[] DrawAnimation_9Slice (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int borderL, int borderR, int borderD, int borderU, int loopStart = -1) => DrawAnimation_9Slice(chainID, x, y, pivotX, pivotY, rotation, width, height, frame, borderL, borderR, borderD, borderU, WHITE, loopStart);
 		public static Cell[] DrawAnimation_9Slice (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int borderL, int borderR, int borderD, int borderU, Color32 color, int loopStart = -1) {
@@ -1246,30 +1246,30 @@ namespace AngeliaFramework {
 				int cellU = cellRect.y + cellRect.height;
 				if (cellL < rect.x) {
 					if (cell.Width > 0) {
-						cell.Shift.Left = rect.x - cellL;
+						cell.Shift.left = rect.x - cellL;
 					} else {
-						cell.Shift.Right = rect.x - cellL;
+						cell.Shift.right = rect.x - cellL;
 					}
 				}
 				if (cellR > rect.x + rect.width) {
 					if (cell.Width > 0) {
-						cell.Shift.Right = cellR - rect.x - rect.width;
+						cell.Shift.right = cellR - rect.x - rect.width;
 					} else {
-						cell.Shift.Left = cellR - rect.x - rect.width;
+						cell.Shift.left = cellR - rect.x - rect.width;
 					}
 				}
 				if (cellD < rect.y) {
 					if (cell.Height > 0) {
-						cell.Shift.Down = rect.y - cellD;
+						cell.Shift.down = rect.y - cellD;
 					} else {
-						cell.Shift.Up = rect.y - cellD;
+						cell.Shift.up = rect.y - cellD;
 					}
 				}
 				if (cellU > rect.y + rect.height) {
 					if (cell.Height > 0) {
-						cell.Shift.Up = cellU - rect.y - rect.height;
+						cell.Shift.up = cellU - rect.y - rect.height;
 					} else {
-						cell.Shift.Down = cellU - rect.y - rect.height;
+						cell.Shift.down = cellU - rect.y - rect.height;
 					}
 				}
 			}

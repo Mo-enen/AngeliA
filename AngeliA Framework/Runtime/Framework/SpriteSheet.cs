@@ -58,13 +58,13 @@ namespace AngeliaFramework {
 		public int GlobalWidth { get => c; set => c = value; }
 		public int GlobalHeight { get => d; set => d = value; }
 		public int SortingZ { get => e; set => e = value; }
-		public Int4 GlobalBorder {
+		public Vector4Int GlobalBorder {
 			get => new(i, j, k, l);
 			set {
-				i = value.Left;
-				j = value.Right;
-				k = value.Down;
-				l = value.Up;
+				i = value.left;
+				j = value.right;
+				k = value.down;
+				l = value.up;
 			}
 		}
 		public int PivotX { get => g; set => g = value; }

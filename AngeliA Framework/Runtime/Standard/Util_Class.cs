@@ -1,202 +1,88 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
 
 
-	[System.Serializable]
-	public struct Int2 {
-
-		public int x {
-			get => A;
-			set => A = value;
-		}
-		public int y {
-			get => B;
-			set => B = value;
-		}
-
-		public int A;
-		public int B;
-
-		public Int2 (int a, int b) {
-			A = a;
-			B = b;
-		}
-
-		public override bool Equals (object other) {
-			if (other is not Int2) {
-				return false;
-			}
-
-			return Equals((Int2)other);
-		}
-		public bool Equals (Int2 other) {
-			return A == other.A && B == other.B;
-		}
-		public override int GetHashCode () {
-			return A ^ (B << 2);
-		}
-
-		public static implicit operator Vector2Int (Int2 i) => new(i.A, i.B);
-		public static implicit operator Int2 (Vector2Int v) => new(v.x, v.y);
-
-	}
-
 
 	[System.Serializable]
-	public struct Int3 {
-
-		public int x {
-			get => A;
-			set => A = value;
-		}
-		public int y {
-			get => B;
-			set => B = value;
-		}
-		public int z {
-			get => C;
-			set => C = value;
-		}
-
-		public int A;
-		public int B;
-		public int C;
-
-		public Int3 (int a, int b, int c) {
-			A = a;
-			B = b;
-			C = c;
-		}
-
-		public Vector3Int ToVectorInt3 () => new(A, B, C);
-
-		public override bool Equals (object other) {
-			if (other is not Int3) {
-				return false;
-			}
-
-			return Equals((Int3)other);
-		}
-		public bool Equals (Int3 other) {
-			return A == other.A && B == other.B && C == other.C;
-		}
-		public override int GetHashCode () {
-			return A.GetHashCode() ^ (B << 4) ^ (B >> 28) ^ (C >> 4) ^ (C << 28);
-		}
-
-
-	}
-
-
-
-
-	[System.Serializable]
-	public struct Byte4 {
-
-		public static readonly Byte4 Zero = new(0, 0, 0, 0);
-		public bool IsZero => A == 0 && B == 0 && C == 0 && D == 0;
-		public byte Left { get => A; set => A = value; }
-		public byte Right { get => B; set => B = value; }
-		public byte Down { get => C; set => C = value; }
-		public byte Up { get => D; set => D = value; }
-
-		public byte A;
-		public byte B;
-		public byte C;
-		public byte D;
-
-		public Byte4 (byte a, byte b, byte c, byte d) {
-			A = a;
-			B = b;
-			C = c;
-			D = d;
-		}
-
-	}
-
-
-
-	[System.Serializable]
-	public struct Int4 {
-
-		public static readonly Int4 Zero = new(0, 0, 0, 0);
-		public int this[int index] => index switch {
-			0 => A,
-			1 => B,
-			2 => C,
-			3 => D,
+	public struct Vector4Int {
+		
+		public static readonly Vector4Int Zero = new(0, 0, 0, 0);
+		public readonly int this[int index] => index switch {
+			0 => x,
+			1 => y,
+			2 => z,
+			3 => w,
 			_ => throw new System.ArgumentOutOfRangeException(),
 		};
-		public bool IsZero => A == 0 && B == 0 && C == 0 && D == 0;
-		public int Left { get => A; set => A = value; }
-		public int Right { get => B; set => B = value; }
-		public int Down { get => C; set => C = value; }
-		public int Up { get => D; set => D = value; }
-		public int Horizontal => Left + Right;
-		public int Vertical => Down + Up;
+		public readonly bool IsZero => x == 0 && y == 0 && z == 0 && w == 0;
+		public int left { readonly get => x; set => x = value; }
+		public int right { readonly get => y; set => y = value; }
+		public int down { readonly get => z; set => z = value; }
+		public int up { readonly get => w; set => w = value; }
+		public readonly int horizontal => left + right;
+		public readonly int vertical => down + up;
 
-		public int A;
-		public int B;
-		public int C;
-		public int D;
+		public int x;
+		public int y;
+		public int z;
+		public int w;
 
-		public Int4 (int a, int b, int c, int d) {
-			A = a;
-			B = b;
-			C = c;
-			D = d;
+		public Vector4Int (int x, int y, int z, int w) {
+			this.x = x;
+			this.y = y;
+			this.z = z;
+			this.w = w;
 		}
 
-		public static Int4 operator * (int b, Int4 a) => a * b;
-		public static bool operator == (Int4 a, Int4 b) => a.Equals(b);
-		public static bool operator != (Int4 a, Int4 b) => !a.Equals(b);
-		public static Int4 operator * (Int4 a, int b) {
-			a.A *= b;
-			a.B *= b;
-			a.C *= b;
-			a.D *= b;
+		public static Vector4Int operator * (int b, Vector4Int a) => a * b;
+		public static bool operator == (Vector4Int a, Vector4Int b) => a.Equals(b);
+		public static bool operator != (Vector4Int a, Vector4Int b) => !a.Equals(b);
+		public static Vector4Int operator * (Vector4Int a, int b) {
+			a.x *= b;
+			a.y *= b;
+			a.z *= b;
+			a.w *= b;
 			return a;
 		}
 
 
-		public override bool Equals (object other) {
-			if (other is not Int4) return false;
-			return Equals((Int4)other);
+		public override readonly bool Equals (object other) {
+			if (other is not Vector4Int) return false;
+			return Equals((Vector4Int)other);
 		}
-		public bool Equals (Int4 other) => A == other.A && B == other.B && C == other.C && D == other.D;
-		public override int GetHashCode () => A ^ (B << 2) ^ (C >> 2) ^ (D >> 1);
+		public readonly bool Equals (Vector4Int other) => x == other.x && y == other.y && z == other.z && w == other.w;
+		public override readonly int GetHashCode () => x ^ (y << 2) ^ (z >> 2) ^ (w >> 1);
 
 
-		public bool Contains (int value) => A == value || B == value || C == value || D == value;
+		public readonly bool Contains (int value) => x == value || y == value || z == value || w == value;
 		public bool Swap (int value, int newValue) {
-			if (A == value) {
-				A = newValue;
+			if (x == value) {
+				x = newValue;
 				return true;
 			}
-			if (B == value) {
-				B = newValue;
+			if (y == value) {
+				y = newValue;
 				return true;
 			}
-			if (C == value) {
-				C = newValue;
+			if (z == value) {
+				z = newValue;
 				return true;
 			}
-			if (D == value) {
-				D = newValue;
+			if (w == value) {
+				w = newValue;
 				return true;
 			}
 			return false;
 		}
-		public int Count (int value) {
+		public readonly int Count (int value) {
 			int count = 0;
-			if (A == value) count++;
-			if (B == value) count++;
-			if (C == value) count++;
-			if (D == value) count++;
+			if (x == value) count++;
+			if (y == value) count++;
+			if (z == value) count++;
+			if (w == value) count++;
 			return count;
 		}
 
@@ -204,19 +90,21 @@ namespace AngeliaFramework {
 
 
 
-
 	public class IntToString {
+
 		private int IntValue = 0;
 		private string StringValue = "0";
 		private readonly string Prefix = "";
 		private readonly string Suffix = "";
 		private readonly bool RequireFix = false;
+
 		public IntToString (string prefix = "", string suffix = "") {
 			Prefix = prefix;
 			Suffix = suffix;
 			StringValue = $"{prefix}0{suffix}";
 			RequireFix = !string.IsNullOrEmpty(prefix) || !string.IsNullOrEmpty(suffix);
 		}
+
 		public string GetString (int value) {
 			if (value != IntValue) {
 				IntValue = value;
@@ -228,8 +116,8 @@ namespace AngeliaFramework {
 			}
 			return StringValue;
 		}
-	}
 
+	}
 
 
 
@@ -248,6 +136,7 @@ namespace AngeliaFramework {
 	}
 
 
+
 	public enum Direction3 {
 		None = 0,
 
@@ -262,6 +151,8 @@ namespace AngeliaFramework {
 		Vertical = 1,
 	}
 
+
+
 	public enum Direction4 {
 		Up = 0,
 		Top = 0,
@@ -273,6 +164,8 @@ namespace AngeliaFramework {
 
 		Right = 3,
 	}
+
+
 
 	public enum Alignment {
 		TopLeft = 0,
@@ -286,5 +179,7 @@ namespace AngeliaFramework {
 		BottomRight = 8,
 		Full = 9,
 	}
+
+
 
 }

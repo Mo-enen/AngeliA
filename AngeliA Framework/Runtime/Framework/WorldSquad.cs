@@ -96,7 +96,7 @@ namespace AngeliaFramework {
 			if (!Enable) return;
 
 			int z = isBehind ? Stage.ViewZ + 1 : Stage.ViewZ;
-			Int4 cullingPadding = CellRenderer.CameraShaking || FrameTask.IsTasking<TeleportTask>() ? new Int4(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Int4.Zero;
+			Vector4Int cullingPadding = CellRenderer.CameraShaking || FrameTask.IsTasking<TeleportTask>() ? new Vector4Int(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Vector4Int.Zero;
 			if (isBehind) CellRenderer.SetLayerToBehind();
 			var viewPos = Stage.SpawnRect.CenterInt();
 			RectInt unitRect_Entity;
@@ -257,7 +257,7 @@ namespace AngeliaFramework {
 
 
 		// Get Set Block
-		public Int3 GetTriBlockAt (int unitX, int unitY) {
+		public Vector3Int GetTriBlockAt (int unitX, int unitY) {
 			var position00 = Worlds[0, 0].WorldPosition;
 			int worldX = unitX.UDivide(Const.MAP) - position00.x;
 			int worldY = unitY.UDivide(Const.MAP) - position00.y;
@@ -265,7 +265,7 @@ namespace AngeliaFramework {
 			var world = Worlds[worldX, worldY];
 			int localX = unitX - world.WorldPosition.x * Const.MAP;
 			int localY = unitY - world.WorldPosition.y * Const.MAP;
-			return new Int3(
+			return new Vector3Int(
 				world.Entity[localY * Const.MAP + localX],
 				world.Level[localY * Const.MAP + localX],
 				world.Background[localY * Const.MAP + localX]
@@ -374,7 +374,7 @@ namespace AngeliaFramework {
 						Const.CEL,
 						Const.CEL
 					).Shrink(
-						sp.GlobalBorder.Left, sp.GlobalBorder.Right, sp.GlobalBorder.Down, sp.GlobalBorder.Up
+						sp.GlobalBorder.left, sp.GlobalBorder.right, sp.GlobalBorder.down, sp.GlobalBorder.up
 					),
 					true, meta.Tag
 				);
@@ -400,7 +400,7 @@ namespace AngeliaFramework {
 					}
 				}
 				rect = rect.Shrink(
-					sp.GlobalBorder.Left, sp.GlobalBorder.Right, sp.GlobalBorder.Down, sp.GlobalBorder.Up
+					sp.GlobalBorder.left, sp.GlobalBorder.right, sp.GlobalBorder.down, sp.GlobalBorder.up
 				);
 				CellPhysics.FillBlock(Const.LAYER_LEVEL, id, rect, isTrigger, tag);
 			}

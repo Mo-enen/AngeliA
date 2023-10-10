@@ -70,6 +70,8 @@ namespace AngeliaFramework {
 		public int CharacterHeight { get; set; } = 160; // in CM
 		public int HandGrabRotationL { get; set; } = 0;
 		public int HandGrabRotationR { get; set; } = 0;
+		public int HandGrabScaleL { get; set; } = 1000;
+		public int HandGrabScaleR { get; set; } = 1000;
 
 		// BodyPart
 		public BodyPart Head { get; private set; } = null;
@@ -288,7 +290,8 @@ namespace AngeliaFramework {
 			int cellIndexStart = CellRenderer.GetUsedCellCount();
 
 			ResetPoseToDefault();
-			PerformPoseAnimation();
+			PerformPoseAnimation_Movement();
+			PerformPoseAnimation_Attack();
 			OnPoseCalculated();
 
 			Wing.Draw(this, out var wing);
@@ -309,20 +312,25 @@ namespace AngeliaFramework {
 
 
 		// Pipeline
-		private void PerformPoseAnimation () {
+		private void PerformPoseAnimation_Movement () {
+
+			bool overrideHandHeld = true;
 
 			switch (AnimatedPoseType) {
 
 				case CharacterPoseAnimationType.TakingDamage:
 					AnimationLibrary.Damage(this);
+					overrideHandHeld = false;
 					break;
 
 				case CharacterPoseAnimationType.Sleep:
 					AnimationLibrary.Sleep(this);
+					overrideHandHeld = false;
 					break;
 
 				case CharacterPoseAnimationType.PassOut:
 					AnimationLibrary.PassOut(this);
+					overrideHandHeld = false;
 					break;
 
 				case CharacterPoseAnimationType.Dash:
@@ -331,16 +339,11 @@ namespace AngeliaFramework {
 
 				case CharacterPoseAnimationType.Rolling:
 					AnimationLibrary.Rolling(this);
+					overrideHandHeld = false;
 					break;
 
 				case CharacterPoseAnimationType.Idle:
-					// Distribute Idle Animations
-
-
 					AnimationLibrary.Idle(this);
-
-
-
 					break;
 
 				case CharacterPoseAnimationType.Walk:
@@ -389,6 +392,7 @@ namespace AngeliaFramework {
 
 				case CharacterPoseAnimationType.Climb:
 					AnimationLibrary.Climb(this);
+					overrideHandHeld = false;
 					break;
 
 				case CharacterPoseAnimationType.Fly:
@@ -397,31 +401,106 @@ namespace AngeliaFramework {
 
 				case CharacterPoseAnimationType.Slide:
 					AnimationLibrary.Slide(this);
+					overrideHandHeld = false;
 					break;
 
 				case CharacterPoseAnimationType.GrabTop:
 					AnimationLibrary.GrabTop(this);
+					overrideHandHeld = false;
 					break;
 
 				case CharacterPoseAnimationType.GrabSide:
 					AnimationLibrary.GrabSide(this);
+					overrideHandHeld = false;
 					break;
 			}
 
 			// Make Global Pos Ready
 			CalculateBodypartGlobalPosition();
 
-			// Distribute Attack Animation
-			if (IsAttacking) {
-
-				//EquippingWeaponType
-
-				/////////////////// TEMP /////////////////
-				AnimationLibrary.Attack_Punch(this);
-				/////////////////// TEMP /////////////////
-
+			// Weapon Handheld Override
+			if (!IsAttacking && overrideHandHeld) {
+				switch (EquippingWeaponHeld) {
+					case WeaponHandHeld.DoubleHanded:
+						AnimationLibrary.HandHeld_Double(this);
+						break;
+					case WeaponHandHeld.Polearm:
+						AnimationLibrary.HandHeld_Polearm(this);
+						break;
+				}
 				CalculateBodypartGlobalPosition();
 			}
+
+		}
+
+
+		private void PerformPoseAnimation_Attack () {
+
+			HandGrabScaleL = 1000;
+			HandGrabScaleR = 1000;
+
+			if (!IsAttacking) return;
+
+			if (
+				StopMoveOnAttack && (
+					AnimatedPoseType == CharacterPoseAnimationType.Walk ||
+					AnimatedPoseType == CharacterPoseAnimationType.Run
+				)
+			) {
+				// Reset
+				ResetPoseToDefault();
+			}
+
+			// Holding Weapon 
+			switch (EquippingWeaponType) {
+				default:
+				case WeaponType.Hand:
+					AnimationLibrary.Attack_Punch(this);
+					break;
+
+				case WeaponType.Sword:
+					AnimationLibrary.Attack_Wave(this);
+					break;
+
+				case WeaponType.Axe:
+					AnimationLibrary.Attack_Wave(this);
+					break;
+
+				case WeaponType.Hammer:
+					AnimationLibrary.Attack_Wave(this);
+					break;
+
+				case WeaponType.Flail:
+					AnimationLibrary.Attack_Wave(this);
+					break;
+
+				case WeaponType.Bow:
+					AnimationLibrary.Attack_Bow(this);
+					break;
+
+				case WeaponType.Polearm:
+					AnimationLibrary.Attack_Poke(this);
+					break;
+
+				case WeaponType.Hook:
+					AnimationLibrary.Attack_Wave(this);
+					break;
+
+				case WeaponType.Claw:
+					AnimationLibrary.Attack_Scratch(this);
+					break;
+
+				case WeaponType.Wand:
+					AnimationLibrary.Attack_Magic(this);
+					break;
+
+				case WeaponType.Throwing:
+					AnimationLibrary.Attack_Throw(this);
+					break;
+			}
+
+			// Final
+			CalculateBodypartGlobalPosition();
 		}
 
 
@@ -530,10 +609,10 @@ namespace AngeliaFramework {
 			int footHeight = FootL.SizeY * PoseRootY / legRootSize;
 			int upperArmHeight = UpperArmL.SizeY * targetUnitHeight / defaultCharHeight;
 			int lowerArmHeight = LowerArmL.SizeY * targetUnitHeight / defaultCharHeight;
-			int bodyBorderL = FacingRight ? Body.Border.Left : Body.Border.Right;
-			int bodyBorderR = FacingRight ? Body.Border.Right : Body.Border.Left;
-			int hipBorderL = FacingRight ? Hip.Border.Left : Hip.Border.Right;
-			int hipBorderR = FacingRight ? Hip.Border.Right : Hip.Border.Left;
+			int bodyBorderL = FacingRight ? Body.Border.left : Body.Border.right;
+			int bodyBorderR = FacingRight ? Body.Border.right : Body.Border.left;
+			int hipBorderL = FacingRight ? Hip.Border.left : Hip.Border.right;
+			int hipBorderR = FacingRight ? Hip.Border.right : Hip.Border.left;
 
 			// Head
 			Head.X = 0;
@@ -564,14 +643,14 @@ namespace AngeliaFramework {
 
 			// Shoulder
 			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
-			ShoulderL.Y = Body.Y + Body.Height - Body.Border.Up;
+			ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
 			ShoulderL.Width = ShoulderL.SizeX;
 			ShoulderL.Height = ShoulderL.SizeY;
 			ShoulderL.PivotX = 1000;
 			ShoulderL.PivotY = 1000;
 
 			ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
-			ShoulderR.Y = Body.Y + Body.Height - Body.Border.Up;
+			ShoulderR.Y = Body.Y + Body.Height - Body.Border.up;
 			ShoulderR.Width = -ShoulderR.SizeX;
 			ShoulderR.Height = ShoulderR.SizeY;
 			ShoulderR.PivotX = 1000;
@@ -579,7 +658,7 @@ namespace AngeliaFramework {
 
 			// Arm
 			UpperArmL.X = ShoulderL.X;
-			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.Down;
+			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
 			UpperArmL.Z = (FacingFront ? facingSign * POSE_Z_UPPERARM : -POSE_Z_UPPERARM);
 			UpperArmL.Width = UpperArmL.SizeX;
 			UpperArmL.Height = upperArmHeight;
@@ -587,7 +666,7 @@ namespace AngeliaFramework {
 			UpperArmL.PivotY = 1000;
 
 			UpperArmR.X = ShoulderR.X;
-			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.Down;
+			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
 			UpperArmR.Z = (FacingFront ? facingSign * -POSE_Z_UPPERARM : -POSE_Z_UPPERARM);
 			UpperArmR.Width = UpperArmR.SizeX;
 			UpperArmR.Height = upperArmHeight;
@@ -760,17 +839,17 @@ namespace AngeliaFramework {
 			if (!suitSprite.GlobalBorder.IsZero) {
 				if (rect.width > 0) {
 					rect = rect.Expand(
-						suitSprite.GlobalBorder.Left,
-						suitSprite.GlobalBorder.Right,
-						suitSprite.GlobalBorder.Down,
-						suitSprite.GlobalBorder.Up
+						suitSprite.GlobalBorder.left,
+						suitSprite.GlobalBorder.right,
+						suitSprite.GlobalBorder.down,
+						suitSprite.GlobalBorder.up
 					);
 				} else {
 					rect = rect.Expand(
-						-suitSprite.GlobalBorder.Left,
-						-suitSprite.GlobalBorder.Right,
-						suitSprite.GlobalBorder.Down,
-						suitSprite.GlobalBorder.Up
+						-suitSprite.GlobalBorder.left,
+						-suitSprite.GlobalBorder.right,
+						suitSprite.GlobalBorder.down,
+						suitSprite.GlobalBorder.up
 					);
 				}
 			}
@@ -802,17 +881,17 @@ namespace AngeliaFramework {
 			if (!sprite.GlobalBorder.IsZero) {
 				if (hip.Width > 0) {
 					rect = rect.Expand(
-						sprite.GlobalBorder.Left,
-						sprite.GlobalBorder.Right,
-						sprite.GlobalBorder.Down,
-						sprite.GlobalBorder.Up
+						sprite.GlobalBorder.left,
+						sprite.GlobalBorder.right,
+						sprite.GlobalBorder.down,
+						sprite.GlobalBorder.up
 					);
 				} else {
 					rect = rect.Expand(
-						sprite.GlobalBorder.Right,
-						sprite.GlobalBorder.Left,
-						sprite.GlobalBorder.Down,
-						sprite.GlobalBorder.Up
+						sprite.GlobalBorder.right,
+						sprite.GlobalBorder.left,
+						sprite.GlobalBorder.down,
+						sprite.GlobalBorder.up
 					);
 				}
 			}
@@ -851,9 +930,9 @@ namespace AngeliaFramework {
 				AnimatedPoseType != CharacterPoseAnimationType.Dash &&
 				AnimatedPoseType != CharacterPoseAnimationType.Idle;
 			width = Mathf.Max(
-				(right - left).Abs(), bodyWidthAbs - Body.Border.Left - Body.Border.Right
+				(right - left).Abs(), bodyWidthAbs - Body.Border.left - Body.Border.right
 			);
-			width += sprite.GlobalBorder.Horizontal;
+			width += sprite.GlobalBorder.horizontal;
 			if (stretch) width += Stretch(UpperLegL.Rotation, UpperLegR.Rotation);
 			width += AnimatedPoseType switch {
 				CharacterPoseAnimationType.JumpUp or CharacterPoseAnimationType.JumpDown => 2 * A2G,
