@@ -158,8 +158,19 @@ namespace AngeliaFramework {
 					bool taskFree = !FrameTask.HasTask();
 
 					if (taskFree && !LockingInput) {
+
+						// Move
 						Move(FrameInput.DirectionX, FrameInput.DirectionY);
+
+						// Walk when Holding Up
+						if (FrameInput.GameKeyHolding(Gamekey.Up)) {
+							RunningAccumulateFrame = -1;
+						}
+
+						// Movement Actions
 						Update_JumpDashPoundRush();
+
+						// Hint
 						ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, Language.Get(HINT_MOVE, "Move"));
 					} else {
 						Stop();

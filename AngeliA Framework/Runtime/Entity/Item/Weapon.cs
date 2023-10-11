@@ -9,7 +9,7 @@ namespace AngeliaFramework {
 
 	public enum WeaponType { Hand, Sword, Axe, Hammer, Flail, Bow, Polearm, Hook, Claw, Wand, Throwing, }
 
-	public enum WeaponHandHeld { NoHandHeld, SingleHanded, DoubleHanded, OneOnEachHand, Polearm, }
+	public enum WeaponHandHeld { NoHandHeld, SingleHanded, DoubleHanded, OneOnEachHand, Polearm, Bow, CrossBow, Throw, }
 
 
 
@@ -47,35 +47,85 @@ namespace AngeliaFramework {
 			) return;
 
 			// Draw
-			switch (HandHeld) {
+			switch (character.EquippingWeaponHeld) {
+
 				default:
-				case WeaponHandHeld.NoHandHeld:
+				case WeaponHandHeld.NoHandHeld: {
 					// Floating
 
 
 					break;
-				case WeaponHandHeld.SingleHanded:
-				case WeaponHandHeld.DoubleHanded:
+				}
+
+				case WeaponHandHeld.SingleHanded: {
 					// Single 
+					var center = character.HandR.GlobalLerp(0.5f, 0.5f);
 					DrawSprite(
-						character.HandR, character.HandGrabRotationR, character.HandGrabScaleR, sprite, character.FacingFront ? 36 : -36
+						center.x, center.y, character.HandGrabRotationR, character.HandGrabScaleR, sprite, character.FacingFront ? 36 : -36
 					);
 					break;
-				case WeaponHandHeld.OneOnEachHand:
-					// Each Hand
+				}
+
+				case WeaponHandHeld.DoubleHanded: {
+					var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
+					var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
 					DrawSprite(
-						character.HandL, character.HandGrabRotationL, character.HandGrabScaleL, sprite, character.FacingFront ? 36 : -36
-						);
-					DrawSprite(
-						character.HandR, character.HandGrabRotationR, character.HandGrabScaleR, sprite, character.FacingFront ? 36 : -36
-						);
+						(centerL.x + centerR.x) / 2,
+						(centerL.y + centerR.y) / 2,
+						character.HandGrabRotationL,
+						character.HandGrabScaleL, sprite,
+						character.FacingFront ? 36 : -36
+					);
 					break;
-				case WeaponHandHeld.Polearm:
+				}
+
+				case WeaponHandHeld.OneOnEachHand: {
+					// Each Hand
+					var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
+					var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
+					DrawSprite(
+						centerL.x, centerL.y,
+						character.HandGrabRotationL,
+						character.HandGrabScaleL, sprite,
+						character.FacingFront ? 36 : -36
+					);
+					DrawSprite(
+						centerR.x, centerR.y,
+						character.HandGrabRotationR,
+						character.HandGrabScaleR,
+						sprite, character.FacingFront ? 36 : -36
+					);
+					break;
+				}
+
+				case WeaponHandHeld.Polearm: {
 					// Polearm
 
 
 
 					break;
+				}
+
+				case WeaponHandHeld.Bow: {
+					// Bow
+
+
+					break;
+				}
+
+				case WeaponHandHeld.CrossBow: {
+					// CrossBow
+
+
+					break;
+				}
+
+				case WeaponHandHeld.Throw: {
+					// Throw
+
+
+					break;
+				}
 			}
 
 
@@ -83,19 +133,18 @@ namespace AngeliaFramework {
 
 		protected abstract AngeSprite GetWeaponSprite ();
 
-		private static void DrawSprite (BodyPart hand, int grabRotation, int grabScale, AngeSprite sprite, int z) {
-			var handCenter = hand.GlobalLerp(0.5f, 0.5f);
+		private static void DrawSprite (int x, int y, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 			if (sprite.GlobalBorder.IsZero) {
 				CellRenderer.Draw(
 					sprite.GlobalID,
-					handCenter.x, handCenter.y,
+					x, y,
 					sprite.PivotX, sprite.PivotY, grabRotation,
 					sprite.GlobalWidth * grabScale / 1000, sprite.GlobalHeight * grabScale / 1000, z
 				);
 			} else {
 				CellRenderer.Draw_9Slice(
 					sprite.GlobalID,
-					handCenter.x, handCenter.y,
+					x, y,
 					sprite.PivotX, sprite.PivotY, grabRotation,
 					sprite.GlobalWidth * grabScale / 1000, sprite.GlobalHeight * grabScale / 1000, z
 				);

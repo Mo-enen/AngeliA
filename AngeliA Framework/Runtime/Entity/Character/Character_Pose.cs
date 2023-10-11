@@ -379,6 +379,7 @@ namespace AngeliaFramework {
 					break;
 
 				case CharacterPoseAnimationType.Rush:
+					overrideHandHeld = EquippingWeaponHeld == WeaponHandHeld.Polearm;
 					AnimationLibrary.Rush(this);
 					break;
 
@@ -418,17 +419,39 @@ namespace AngeliaFramework {
 			// Make Global Pos Ready
 			CalculateBodypartGlobalPosition();
 
-			// Weapon Handheld Override
-			if (!IsAttacking && overrideHandHeld) {
-				switch (EquippingWeaponHeld) {
-					case WeaponHandHeld.DoubleHanded:
-						AnimationLibrary.HandHeld_Double(this);
-						break;
-					case WeaponHandHeld.Polearm:
-						AnimationLibrary.HandHeld_Polearm(this);
-						break;
+			if (!IsAttacking) {
+				if (overrideHandHeld) {
+					// Override Handheld
+					switch (EquippingWeaponHeld) {
+						case WeaponHandHeld.DoubleHanded:
+							AnimationLibrary.HandHeld_Double(this);
+							break;
+						case WeaponHandHeld.Polearm:
+							AnimationLibrary.HandHeld_Polearm(this);
+							break;
+						case WeaponHandHeld.Bow:
+							AnimationLibrary.HandHeld_Bow(this);
+							break;
+						case WeaponHandHeld.CrossBow:
+							AnimationLibrary.HandHeld_CrossBow(this);
+							break;
+						case WeaponHandHeld.Throw:
+							AnimationLibrary.HandHeld_Throw(this);
+							break;
+					}
+					CalculateBodypartGlobalPosition();
+				} else {
+					// Redirect Handheld
+					switch (EquippingWeaponHeld) {
+						case WeaponHandHeld.DoubleHanded:
+						case WeaponHandHeld.Polearm:
+						case WeaponHandHeld.Bow:
+						case WeaponHandHeld.CrossBow:
+						case WeaponHandHeld.Throw:
+							EquippingWeaponHeld = WeaponHandHeld.SingleHanded;
+							break;
+					}
 				}
-				CalculateBodypartGlobalPosition();
 			}
 
 		}

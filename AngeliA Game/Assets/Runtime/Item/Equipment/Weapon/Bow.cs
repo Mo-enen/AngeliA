@@ -7,62 +7,62 @@ using AngeliaFramework;
 namespace AngeliaGame {
 	public class iBowWood : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
 	}
 	public class iBowIron : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
 	}
 	public class iBowGold : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
 	}
 	public class iCrossbowWood : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
 	}
 	public class iCrossbowIron : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
 	}
 	public class iCrossbowGold : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
 	}
 	public class iBlowgun : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
 	}
 	public class iSlingshot : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
 	}
 	public class iCompoundBow : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
 	}
 	public class iRepeatingCrossbow : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
 	}
 	public class iBowNature : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
 	}
 	public class iBowSkull : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
 	}
 	public class iBowMage : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
 	}
 	public class iBowSky : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
 	}
 	public class iBowHarp : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Bow;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
 	}
 }

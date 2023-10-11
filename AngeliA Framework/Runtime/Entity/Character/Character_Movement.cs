@@ -46,7 +46,7 @@ namespace AngeliaFramework {
 		public bool FacingFront { get; private set; } = true;
 
 		// Frame Cache
-		public int RunningAccumulateFrame { get; private set; } = 0;
+		public int RunningAccumulateFrame { get; set; } = 0;
 		public int LastGroundFrame { get; private set; } = int.MinValue;
 		public int LastGroundingFrame { get; private set; } = int.MinValue;
 		public int LastStartMoveFrame { get; private set; } = int.MinValue;
@@ -67,12 +67,12 @@ namespace AngeliaFramework {
 		public int LastStartRunFrame { get; private set; } = int.MinValue;
 
 		// Movement State
+		public CharacterMovementState MovementState { get; private set; } = CharacterMovementState.Idle;
 		public bool ReadyForRun => RunningAccumulateFrame >= WalkToRunAccumulation;
 		public bool IsRolling => !InWater && !IsPounding && !IsFlying && !IsRushing && ((FirstJumpWithRoll && CurrentJumpCount > 0) || (SubsequentJumpWithRoll && CurrentJumpCount > 1) || (DashWithRoll && IsDashing));
 		public bool IsGrabFlipping => IsGrabFlippingUp || IsGrabFlippingDown;
 		public bool IsGrabFlippingUp => Game.GlobalFrame < LastGrabFlipUpFrame + Mathf.Max(GrabFlipThroughDuration, 1);
 		public bool IsGrabFlippingDown => Game.GlobalFrame < LastGrabFlipDownFrame + Mathf.Max(GrabFlipThroughDuration, 1);
-		public CharacterMovementState MovementState { get; private set; } = CharacterMovementState.Idle;
 		public bool IsDashing { get; private set; } = false;
 		public bool IsRushing { get; private set; } = false;
 		public bool IsSquatting { get; private set; } = false;

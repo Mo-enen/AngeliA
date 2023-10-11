@@ -223,8 +223,70 @@ namespace AngeliaFramework {
 		// Override
 		public static void HandHeld_Double (Character character) {
 
+			bool FacingRight = character.FacingRight;
+			var Body = character.Body;
+			var ShoulderL = character.ShoulderL;
+			var UpperArmL = character.UpperArmL;
+			var LowerArmL = character.LowerArmL;
+			var HandL = character.HandL;
+			var ShoulderR = character.ShoulderR;
+			var UpperArmR = character.UpperArmR;
+			var LowerArmR = character.LowerArmR;
+			var HandR = character.HandR;
 
+			int bodyBorderL = FacingRight ? Body.Border.left : Body.Border.right;
+			int bodyBorderR = FacingRight ? Body.Border.right : Body.Border.left;
+			int facingSign = FacingRight ? 1 : -1;
 
+			// Shoulder L
+			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
+			ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
+			ShoulderL.Height = Mathf.Min(ShoulderL.Height, Body.Height);
+			ShoulderL.PivotX = 1000;
+
+			// Shoulder R
+			ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
+			ShoulderR.Y = Body.Y + Body.Height - Body.Border.up;
+			ShoulderR.Height = Mathf.Min(ShoulderR.Height, Body.Height);
+			ShoulderR.PivotX = 1000;
+
+			// Upper Arm
+			UpperArmL.X = ShoulderL.X;
+			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
+			UpperArmL.PivotX = 1000;
+			UpperArmL.Height = UpperArmL.SizeY;
+
+			UpperArmR.X = ShoulderR.X;
+			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
+			UpperArmR.PivotX = 0;
+			UpperArmR.Height = UpperArmR.SizeY;
+
+			int twistShift = character.PoseTwist / 50;
+			UpperArmL.LimbRotate((FacingRight ? -42 : 29) - twistShift);
+			UpperArmR.LimbRotate((FacingRight ? -29 : 42) - twistShift);
+			UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1306 : 862) / 1000;
+			UpperArmR.Height = UpperArmR.Height * (FacingRight ? 862 : 1306) / 1000;
+
+			LowerArmL.LimbRotate((FacingRight ? -28 : -48) + twistShift / 2);
+			LowerArmR.LimbRotate((FacingRight ? 48 : 28) + twistShift / 2);
+			LowerArmL.Height = LowerArmL.Height * (FacingRight ? 1592 : 724) / 1000;
+			LowerArmR.Height = LowerArmR.Height * (FacingRight ? 724 : 1592) / 1000;
+
+			HandL.LimbRotate(facingSign);
+			HandR.LimbRotate(facingSign);
+
+			// Z
+			UpperArmL.Z = LowerArmL.Z = UpperArmL.Z.Abs();
+			UpperArmR.Z = LowerArmR.Z = UpperArmR.Z.Abs();
+			HandL.Z = HandL.Z.Abs();
+			HandR.Z = HandR.Z.Abs();
+
+			// Grab Rotation
+			character.HandGrabScaleL = character.HandGrabScaleR = 1000;
+			character.HandGrabRotationL = character.HandGrabRotationR = facingSign * (
+				30 - character.CurrentAnimationFrame.PingPong(120) / 30
+				+ character.DeltaPositionY.Clamp(-24, 24) / 5
+			) - character.DeltaPositionX.Clamp(-24, 24) / 4;
 
 		}
 
@@ -233,6 +295,21 @@ namespace AngeliaFramework {
 
 
 
+
+		}
+
+
+		public static void HandHeld_Bow (Character character) {
+
+		}
+
+
+		public static void HandHeld_CrossBow (Character character) {
+
+		}
+
+
+		public static void HandHeld_Throw (Character character) {
 
 		}
 

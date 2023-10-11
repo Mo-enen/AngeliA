@@ -36,8 +36,6 @@ namespace AngeliaFramework {
 
 			/////////////////// TEMP //////////////////
 
-			WalkToRunAccumulation.Value = 40;
-
 			StopMoveOnAttack.Value = false;
 			AttackInAir.Value = true;
 			AttackInWater.Value = true;

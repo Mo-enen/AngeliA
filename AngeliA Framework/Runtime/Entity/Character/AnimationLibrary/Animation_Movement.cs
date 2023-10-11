@@ -8,9 +8,50 @@ namespace AngeliaFramework {
 
 
 		private const int A2G = Const.CEL / Const.ART_CEL;
-		private static readonly float[] WALK_RUN_EASE = { 0f, 0.125f, 0.5f, 0.875f, 1f, 0.875f, 0.5f, 0.125f, 0f, 0.222f, 0.777f, 1f, 0f, 0.222f, 0.777f, 1f, };
-		private static readonly int[,] WALK_ROTS = { { -20, 20, 25, -25, 0, 0, }, { -15, 15, 17, -27, 30, 20, }, { 0, 0, -5, -5, 60, 0, }, { 15, -15, -27, 17, 90, 0, }, { 20, -20, -25, 25, 0, 0, }, { 15, -15, -27, 17, 20, 30, }, { 0, 0, -5, -5, 0, 60, }, { -15, 15, 17, -27, 0, 90, }, };
-		private static readonly int[,] RUN_ROTS = { { -10, 80, -65, -90, 45, -55, 80, 60, }, { 1, 68, -68, -86, 32, -42, 90, 29, }, { 35, 35, -77, -77, -5, -5, 90, 0, }, { 68, 1, -86, -68, -42, 32, 90, 0, }, { 80, -10, -90, -65, -55, 45, 60, 80, }, { 68, 1, -86, -68, -42, 32, 29, 90, }, { 35, 35, -77, -77, -5, -5, 0, 90, }, { 1, 68, -68, -86, 32, -42, 0, 90, }, };
+		private static readonly float[] WALK_RUN_EASE = {
+			0f, 0.03125f, 0.125f, 0.28125f, 0.5f, 0.71875f, 0.875f, 0.96875f,
+			1f, 0.96875f, 0.875f, 0.71875f, 0.5f, 0.28125f, 0.125f, 0.03125f,
+
+			0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f,
+			0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f,
+
+		};
+		private static readonly int[,] WALK_ROTS = {
+			{ -20,  20,  25, -25, 0,  0,  },
+			{ -17,  17,  21, -25, 0,  0,  },
+			{ -15,  15,  17, -27, 30, 20, },
+			{  -7,   7,  17, -15, 45, 10, },
+			{   0,   0,  -5,  -5, 60, 0,  },
+			{   7,  -7,  -5,   7, 75, 0,  },
+			{  15, -15, -27,  17, 90, 0,  },
+			{  17, -17, -26,  21, 45, 0,  },
+			{  20, -20, -25,  25, 0,  0,  },
+			{  17, -17, -26,  21, 10, 15,  },
+			{  15, -15, -27,  17, 20, 30, },
+			{   7,  -7, -15,   7, 10, 45, },
+			{   0,   0,  -5,  -5, 0,  60, },
+			{  -7,   7,   5, -10, 0,  75, },
+			{ -15,  15,  17, -27, 0,  90, },
+			{ -17,  17,  21, -26, 0,  45, },
+		};
+		private static readonly int[,] RUN_ROTS = {
+			{ -10, 80, -65, -90, 45, -55, 80, 60, },
+			{ -10, 80, -65, -90, 45, -55, 80, 60, },
+			{ 1, 68, -68, -86, 32, -42, 90, 29, },
+			{ 1, 68, -68, -86, 32, -42, 90, 29, },
+			{ 35, 35, -77, -77, -5, -5, 90, 0, },
+			{ 35, 35, -77, -77, -5, -5, 90, 0, },
+			{ 68, 1, -86, -68, -42, 32, 90, 0, },
+			{ 68, 1, -86, -68, -42, 32, 90, 0, },
+			{ 80, -10, -90, -65, -55, 45, 60, 80, },
+			{ 80, -10, -90, -65, -55, 45, 60, 80, },
+			{ 68, 1, -86, -68, -42, 32, 29, 90, },
+			{ 68, 1, -86, -68, -42, 32, 29, 90, },
+			{ 35, 35, -77, -77, -5, -5, 0, 90, },
+			{ 35, 35, -77, -77, -5, -5, 0, 90, },
+			{ 1, 68, -68, -86, 32, -42, 0, 90, },
+			{ 1, 68, -68, -86, 32, -42, 0, 90, },
+		};
 		private static readonly int[,] ROLLING = { { 1450, +100, -000, 0900, 0500, -020, -025, -015, -040, 70, 80, }, { 1200, +450, -000, 0800, 0250, +025, +030, -025, -030, 75, 85, }, { 0850, +800, -000, -800, -100, -160, -150, -145, -125, 80, 90, }, { 0300, +450, -000, -750, -200, -170, -160, -155, -115, 80, 90, }, { 0650, -100, +000, -750, -200, -170, -160, -155, -115, 80, 90, }, { 0850, -450, +000, -800, -100, -160, -150, -145, -125, 80, 90, }, { 0950, -800, +000, 0800, 0250, -065, -065, -025, -030, 75, 85, }, { 1200, -450, +000, 0900, 0750, -040, -045, -015, -040, 70, 80, }, };
 
 
@@ -107,13 +148,15 @@ namespace AngeliaFramework {
 			var FootL = character.FootL;
 			var FootR = character.FootR;
 
-			int loop = Mathf.Max(800 / character.WalkSpeed.Value.Clamp(1, 100) / 8 * 8, 1);
-			int frameRate = loop / 8;
+			const int FRAME_LENGTH = 16;
+
+			int loop = Mathf.Max(FRAME_LENGTH * 50 / character.WalkSpeed.Value.Clamp(1, 100) / FRAME_LENGTH * FRAME_LENGTH, 1);
+			int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
 			int currentFrame = (character.CurrentAnimationFrame + frameRate * 2).UMod(loop) / frameRate * frameRate;
-			int arrFrame = (currentFrame / frameRate) % 8;
+			int arrFrame = (currentFrame / frameRate) % FRAME_LENGTH;
 
 			float ease = WALK_RUN_EASE[arrFrame];
-			float easeDouble = WALK_RUN_EASE[arrFrame + 8];
+			float easeDouble = WALK_RUN_EASE[arrFrame + FRAME_LENGTH];
 			int legOffsetX = (int)Mathf.LerpUnclamped(
 				0f, (Body.SizeX - Body.Border.horizontal - UpperLegL.SizeX) * 0.7f,
 				FacingRight ? ease : 1f - ease
@@ -168,19 +211,21 @@ namespace AngeliaFramework {
 			var FootL = character.FootL;
 			var FootR = character.FootR;
 
-			int loop = Mathf.Max(1200 / character.RunSpeed.Value.Clamp(1, 1024) / 8 * 8, 1);
-			int frameRate = loop / 8;
+			const int FRAME_LENGTH = 16;
+
+			int loop = Mathf.Max(FRAME_LENGTH * 75 / character.RunSpeed.Value.Clamp(1, 1024) / FRAME_LENGTH * FRAME_LENGTH, 1);
+			int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
 			int currentFrame = (character.CurrentAnimationFrame + frameRate * 2).UMod(loop) / frameRate * frameRate;
-			int arrFrame = (currentFrame / frameRate) % 8;
+			int arrFrame = (currentFrame / frameRate) % FRAME_LENGTH;
 
 			float ease = WALK_RUN_EASE[arrFrame];
-			float easeDouble = WALK_RUN_EASE[arrFrame + 8];
+			float easeDouble = WALK_RUN_EASE[arrFrame + FRAME_LENGTH];
 			int legOffsetX = (int)Mathf.LerpUnclamped(
 				0f, (Body.SizeX - Body.Border.horizontal - UpperLegL.SizeX) * 0.9f,
 				FacingRight ? ease : 1f - ease
 			);
 			int facingSign = FacingRight ? 1 : -1;
-			float frame01 = arrFrame / 8f;
+			float frame01 = (float)arrFrame / FRAME_LENGTH;
 
 			character.PoseRootY += (int)((1f - easeDouble) * A2G * 2);
 			character.PoseTwist = (int)Mathf.LerpUnclamped(1000f, -1000f, frame01 < 0.5f ? frame01 * 2f : 2f - 2f * frame01);
@@ -658,11 +703,13 @@ namespace AngeliaFramework {
 			var FootL = character.FootL;
 			var FootR = character.FootR;
 
-			int loop = Mathf.Max((600 / character.SquatSpeed.Value.Clamp(1, 256)) / 8 * 8, 1);
-			int frameRate = loop / 8;
-			int arrFrame = (character.CurrentAnimationFrame.UMod(loop) / frameRate) % 8;
+			const int FRAME_LENGTH = 16;
 
-			arrFrame = (arrFrame + 2).UMod(8);
+			int loop = Mathf.Max(600 / character.SquatSpeed.Value.Clamp(1, 256) / FRAME_LENGTH * FRAME_LENGTH, 1);
+			int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
+			int arrFrame = (character.CurrentAnimationFrame.UMod(loop) / frameRate) % FRAME_LENGTH;
+			arrFrame = (arrFrame + 4).UMod(FRAME_LENGTH);
+
 			float ease = WALK_RUN_EASE[arrFrame];
 			int easeA2G = (int)(ease * A2G);
 			int easeA2G2 = (int)(ease * 2 * A2G);
@@ -680,11 +727,11 @@ namespace AngeliaFramework {
 
 			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
 			UpperArmL.Z = UpperArmL.Z.Abs();
-			UpperArmL.LimbRotate(arrFrame >= 3 && arrFrame <= 6 ? 45 : 25);
+			UpperArmL.LimbRotate(arrFrame >= 6 && arrFrame <= 12 ? 45 : 25);
 
 			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
 			UpperArmR.Z = UpperArmR.Z.Abs();
-			UpperArmR.LimbRotate(arrFrame >= 3 && arrFrame <= 6 ? -45 : -25);
+			UpperArmR.LimbRotate(arrFrame >= 6 && arrFrame <= 12 ? -45 : -25);
 
 			LowerArmL.Z = LowerArmL.Z.Abs();
 			LowerArmL.LimbRotate(-90);
@@ -721,6 +768,7 @@ namespace AngeliaFramework {
 			// Final
 			character.HandGrabRotationL = 100;
 			character.HandGrabRotationR = -100;
+
 		}
 
 

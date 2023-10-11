@@ -289,9 +289,9 @@ namespace AngeliaFramework {
 		private static void Attack_Wave_SingleHanded (Character character, int localFrame) {
 
 			float quad01 = Ease.OutBack((float)localFrame / character.AttackDuration);
+			float easedFrame = quad01 * character.AttackDuration;
 
 			bool FacingRight = character.FacingRight;
-			bool FacingFront = character.FacingFront;
 			var Head = character.Head;
 			var Body = character.Body;
 			var ShoulderL = character.ShoulderL;
@@ -315,15 +315,10 @@ namespace AngeliaFramework {
 				character.AnimatedPoseType == CharacterPoseAnimationType.JumpUp;
 
 			int facingSign = FacingRight ? 1 : -1;
-			int frontSign = FacingFront ? 1 : -1;
-
-			UpperArmR.Z = frontSign * UpperArmR.Z.Abs();
-			LowerArmR.Z = frontSign * LowerArmR.Z.Abs();
-			HandR.Z = (FacingFront ? 34 : -34);
 
 			// Head
-			int headOffsetX = facingSign * ((9 - localFrame) / 3 * 2 * A2G - A2G * 5 / 2);
-			int headOffsetY = A2G * 4 * ((9 - localFrame) / 3) - 5 * A2G;
+			int headOffsetX = facingSign * ((9 - easedFrame) * A2G / 2 - A2G / 3).RoundToInt();
+			int headOffsetY = ((9 - easedFrame) * A2G - 5 * A2G).RoundToInt();
 			if (squat) {
 				headOffsetX /= 2;
 				headOffsetY /= 2;
@@ -338,12 +333,13 @@ namespace AngeliaFramework {
 			Head.Y += headOffsetY;
 
 			// Body
-			Body.Y -= localFrame * A2G / 18;
-			character.Hip.Y -= localFrame * A2G / 18;
+			int bodyOffsetY = localFrame * A2G / 9 + A2G * 2;
+			Body.Y -= bodyOffsetY;
+			character.Hip.Y -= bodyOffsetY;
 			Body.Height = Head.Y - Body.Y;
 
 			// Left Side
-			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
+			ShoulderL.X = Body.X - Body.SizeX / 2 + bodyBorderL;
 			ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
 
 			UpperArmL.X = ShoulderL.X;
@@ -355,22 +351,18 @@ namespace AngeliaFramework {
 			ShoulderR.Height = Mathf.Min(ShoulderR.Height, Body.Height);
 			ShoulderR.PivotX = 1000;
 
-			UpperArmR.PivotX = 1000;
-
 			UpperArmR.X = ShoulderR.X;
 			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
 			UpperArmR.PivotX = 0;
 
-			if (idle) {
-				UpperArmL.LimbRotate(localFrame * 3, 500);
-				LowerArmL.LimbRotate(-localFrame * 2, 500);
+			if (idle || squat) {
+				UpperArmL.LimbRotate(-15 - facingSign * localFrame * 4, 500);
+				LowerArmL.LimbRotate(-100 + facingSign * localFrame * 4);
 			}
 
 			// Upper Arm R
 			UpperArmR.LimbRotate(facingSign * Mathf.LerpUnclamped(-185, -9, quad01).RoundToInt());
-
 			UpperArmR.Height += A2G;
-
 			LowerArmR.LimbRotate(0);
 			LowerArmR.Height += A2G;
 
@@ -378,6 +370,12 @@ namespace AngeliaFramework {
 			HandR.LimbRotate(facingSign);
 			HandR.Width += HandR.Width.Sign() * A2G;
 			HandR.Height += HandR.Height.Sign() * A2G;
+
+			// Z
+			UpperArmL.Z = LowerArmL.Z = UpperArmL.Z.Abs();
+			UpperArmR.Z = LowerArmR.Z = UpperArmR.Z.Abs();
+			HandL.Z = 34;
+			HandR.Z = 34;
 
 			// Grab Rotation
 			character.HandGrabRotationR = facingSign * Mathf.LerpUnclamped(-80, 100, quad01).RoundToInt();
@@ -442,12 +440,12 @@ namespace AngeliaFramework {
 			character.Hip.Y -= localFrame * A2G / 18;
 			Body.Height = Head.Y - Body.Y;
 
-			// Arm L
+			// Shoulder L
 			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
 			ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
 			ShoulderL.Height = Mathf.Min(ShoulderL.Height, Body.Height);
 
-			// Arm R
+			// Shoulder R
 			ShoulderR.X = Body.X + Body.SizeX / 2 - bodyBorderR;
 			ShoulderR.Y = Body.Y + Body.Height - Body.Border.up;
 			ShoulderR.Height = Mathf.Min(ShoulderR.Height, Body.Height);
