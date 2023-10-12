@@ -34,6 +34,7 @@ namespace AngeliaFramework {
 		public abstract WeaponType WeaponType { get; }
 		public abstract WeaponHandHeld HandHeld { get; }
 
+
 		public override void PoseAnimationUpdate (Entity holder, ItemLocation location) {
 
 			base.PoseAnimationUpdate(holder, location);
@@ -60,21 +61,23 @@ namespace AngeliaFramework {
 				case WeaponHandHeld.SingleHanded: {
 					// Single 
 					var center = character.HandR.GlobalLerp(0.5f, 0.5f);
-					DrawSprite(
-						center.x, center.y, character.HandGrabRotationR, character.HandGrabScaleR, sprite, character.FacingFront ? 36 : -36
+					DrawWeaponSprite(
+						center.x, center.y, character.HandGrabRotationR, character.HandGrabScaleR,
+						sprite, character.HandR.Z - 1
 					);
 					break;
 				}
 
 				case WeaponHandHeld.DoubleHanded: {
+					// Double
 					var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
 					var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
-					DrawSprite(
+					DrawWeaponSprite(
 						(centerL.x + centerR.x) / 2,
 						(centerL.y + centerR.y) / 2,
 						character.HandGrabRotationL,
 						character.HandGrabScaleL, sprite,
-						character.FacingFront ? 36 : -36
+						character.HandR.Z - 1
 					);
 					break;
 				}
@@ -83,26 +86,33 @@ namespace AngeliaFramework {
 					// Each Hand
 					var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
 					var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
-					DrawSprite(
+					DrawWeaponSprite(
 						centerL.x, centerL.y,
 						character.HandGrabRotationL,
 						character.HandGrabScaleL, sprite,
-						character.FacingFront ? 36 : -36
+						character.HandL.Z - 1
 					);
-					DrawSprite(
+					DrawWeaponSprite(
 						centerR.x, centerR.y,
 						character.HandGrabRotationR,
-						character.HandGrabScaleR,
-						sprite, character.FacingFront ? 36 : -36
+						character.HandGrabScaleR, sprite,
+						character.HandR.Z - 1
 					);
 					break;
 				}
 
 				case WeaponHandHeld.Polearm: {
 					// Polearm
-
-
-
+					var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
+					var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
+					DrawWeaponSprite(
+						(centerL.x + centerR.x) / 2,
+						(centerL.y + centerR.y) / 2,
+						character.HandGrabRotationR,
+						character.HandGrabScaleR,
+						sprite,
+						character.HandR.Z - 1
+					);
 					break;
 				}
 
@@ -128,28 +138,21 @@ namespace AngeliaFramework {
 				}
 			}
 
-
 		}
+
 
 		protected abstract AngeSprite GetWeaponSprite ();
 
-		private static void DrawSprite (int x, int y, int grabRotation, int grabScale, AngeSprite sprite, int z) {
-			if (sprite.GlobalBorder.IsZero) {
-				CellRenderer.Draw(
-					sprite.GlobalID,
-					x, y,
-					sprite.PivotX, sprite.PivotY, grabRotation,
-					sprite.GlobalWidth * grabScale / 1000, sprite.GlobalHeight * grabScale / 1000, z
-				);
-			} else {
-				CellRenderer.Draw_9Slice(
-					sprite.GlobalID,
-					x, y,
-					sprite.PivotX, sprite.PivotY, grabRotation,
-					sprite.GlobalWidth * grabScale / 1000, sprite.GlobalHeight * grabScale / 1000, z
-				);
-			}
-		}
+
+		protected virtual Cell DrawWeaponSprite (int x, int y, int grabRotation, int grabScale, AngeSprite sprite, int z) => CellRenderer.Draw(
+			sprite.GlobalID,
+			x, y,
+			sprite.PivotX, sprite.PivotY, grabRotation,
+			sprite.GlobalWidth * grabScale / 1000,
+			sprite.GlobalHeight * grabScale.Abs() / 1000,
+			z
+		);
+
 
 	}
 

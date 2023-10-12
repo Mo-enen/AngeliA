@@ -36,21 +36,6 @@ namespace AngeliaFramework {
 		public Color32 Color;
 		public Alignment BorderSide;
 		public Vector4Int Shift;
-		public void CopyFrom (Cell other) {
-			Index = other.Index;
-			Order = other.Order;
-			X = other.X;
-			Y = other.Y;
-			Z = other.Z;
-			Width = other.Width;
-			Height = other.Height;
-			Rotation = other.Rotation;
-			PivotX = other.PivotX;
-			PivotY = other.PivotY;
-			Color = other.Color;
-			BorderSide = other.BorderSide;
-			Shift = other.Shift;
-		}
 		public Vector2Int CellToGlobal (int cellX, int cellY) {
 			if (Rotation == 0) {
 				return new Vector2Int(

@@ -36,6 +36,11 @@ namespace AngeliaGame {
 	public class iAxeCursed : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		protected override Cell DrawWeaponSprite (int x, int y, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+			var cell = base.DrawWeaponSprite(x, y, grabRotation, grabScale, sprite, z);
+			AngeUtil.DrawGlitchEffect(cell, Game.GlobalFrame);
+			return cell;
+		}
 	}
 	public class iPickWood : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
@@ -51,7 +56,7 @@ namespace AngeliaGame {
 	}
 	public class iAxeGreat : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Polearm;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 	}
 	public class iAxeButterfly : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;

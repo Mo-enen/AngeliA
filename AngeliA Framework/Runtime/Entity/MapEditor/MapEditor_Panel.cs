@@ -545,6 +545,11 @@ namespace AngeliaFramework {
 					CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32, PANEL_Z - 13);
 				}
 
+				// Selecting Highlight
+				if (pal == SelectingPaletteItem) {
+					CellRenderer.Draw_9Slice(FRAME, rect, Const.GREEN, PANEL_Z - 12);
+				}
+
 				// Click
 				if (hover) {
 					if (FrameInput.MouseLeftButtonDown) {
@@ -553,8 +558,6 @@ namespace AngeliaFramework {
 							SelectingPaletteGroupIndex = SelectingPaletteItem.GroupIndex;
 							PaletteScrollY = 0;
 						}
-						SearchResult.Clear();
-						SearchingText = "";
 					} else if (FrameInput.MouseRightButtonDown) {
 						if (pal.Pinned) {
 							PinnedPaletteItems.Remove(pal);

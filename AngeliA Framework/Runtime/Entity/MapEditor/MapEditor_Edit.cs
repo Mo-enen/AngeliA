@@ -177,7 +177,9 @@ namespace AngeliaFramework {
 
 
 		private void MouseUp_Left (Vector2Int mouseDownUnitPos, Vector2Int mouseUnitPos) {
+
 			if (MouseDownInSelection || MouseDownOutsideBoundary) return;
+
 			// Paint / Erase
 			ApplyPaste();
 			SelectionUnitRect = null;
@@ -216,12 +218,24 @@ namespace AngeliaFramework {
 							RegisterUndo_Begin(unitRect);
 							undoRegistered = true;
 						}
-						if (Squad.GetBlockAt(i, j, BlockType.Entity) != 0) {
-							if (!Modify_LevelOnly && !Modify_BackgroundOnly) Squad.SetBlockAt(i, j, BlockType.Entity, 0);
-						} else if (Squad.GetBlockAt(i, j, BlockType.Level) != 0) {
-							if (!Modify_BackgroundOnly && !Modify_EntityOnly) Squad.SetBlockAt(i, j, BlockType.Level, 0);
+						if (!Modify_BackgroundOnly && !Modify_EntityOnly && !Modify_LevelOnly) {
+							// Normal
+							if (Squad.GetBlockAt(i, j, BlockType.Entity) != 0) {
+								Squad.SetBlockAt(i, j, BlockType.Entity, 0);
+							} else if (Squad.GetBlockAt(i, j, BlockType.Level) != 0) {
+								Squad.SetBlockAt(i, j, BlockType.Level, 0);
+							} else {
+								Squad.SetBlockAt(i, j, BlockType.Background, 0);
+							}
 						} else {
-							if (!Modify_LevelOnly && !Modify_EntityOnly) Squad.SetBlockAt(i, j, BlockType.Background, 0);
+							// Single Type
+							if (Modify_BackgroundOnly) {
+								Squad.SetBlockAt(i, j, BlockType.Background, 0);
+							} else if (Modify_EntityOnly) {
+								Squad.SetBlockAt(i, j, BlockType.Entity, 0);
+							} else if (Modify_LevelOnly) {
+								Squad.SetBlockAt(i, j, BlockType.Level, 0);
+							}
 						}
 					} else {
 						// Range Erase

@@ -14,9 +14,9 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
-		private class WeaponSorter : IComparer<AutoSpriteWeapon> {
+		private class WeaponSorter : IComparer<Weapon> {
 			public static readonly WeaponSorter Instance = new();
-			public int Compare (AutoSpriteWeapon x, AutoSpriteWeapon y) {
+			public int Compare (Weapon x, Weapon y) {
 				if (x is null) return y is null ? 0 : 1;
 				if (y is null) return x is null ? 0 : -1;
 				int result = ((int)x.WeaponType).CompareTo((int)y.WeaponType);
@@ -43,7 +43,13 @@ namespace AngeliaFramework {
 		public bool IsDirty { get; private set; } = false;
 
 		// Data
-		private static readonly AutoSpriteWeapon[] WeaponList = new AutoSpriteWeapon[Player.INVENTORY_ROW * Player.INVENTORY_COLUMN + 1];
+		private static readonly Weapon[] WeaponList = new Weapon[Player.INVENTORY_ROW * Player.INVENTORY_COLUMN + 1];
+		private static readonly CellContent NameLabel = new() {
+			Alignment = Alignment.MidMid,
+			BackgroundTint = Const.BLACK,
+			CharSize = 22,
+			TightBackground = true,
+		};
 		private int CurrentSlotIndex = 0;
 		private int WeaponCount = 0;
 
@@ -185,18 +191,34 @@ namespace AngeliaFramework {
 			var rect = new RectInt(0, basicY, ITEM_SIZE, ITEM_SIZE);
 			for (int i = 0; i < WeaponCount; i++) {
 
+				var weapon = WeaponList[i];
+				if (weapon is null) continue;
+
 				rect.x = basicX + i * ITEM_SIZE;
 
 				// BG
 				CellRenderer.Draw(Const.PIXEL, rect.Expand(PADDING), Const.BLACK, int.MinValue + 1);
 
-				// Highlight
+				// Cursoring
 				if (i == CurrentSlotIndex) {
+
+					// Highlight
 					CellRenderer.Draw(Const.PIXEL, rect.Shrink(BORDER), Const.GREEN, int.MinValue + 2);
+
+					// Name Label
+					NameLabel.Text = ItemSystem.GetItemName(weapon.TypeID);
+					int labelWidth = ITEM_SIZE * 3;
+					int labelHeight = Unify(NameLabel.CharSize + 4);
+					CellRendererGUI.Label(NameLabel, new RectInt(
+						rect.CenterX() - labelWidth / 2,
+						rect.y - labelHeight,
+						labelWidth, labelHeight
+					));
+
 				}
 
 				// From Inventory
-				DrawItemIcon(rect, WeaponList[i].TypeID, Const.WHITE, int.MinValue + 10);
+				DrawItemIcon(rect, weapon.TypeID, Const.WHITE, int.MinValue + 10);
 
 			}
 

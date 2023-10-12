@@ -700,9 +700,10 @@ namespace AngeliaFramework {
 
 			// Cancel Drop
 			if (!CtrlHolding && IsEditing && DroppingPlayer) {
-				if (FrameInput.KeyboardDown(Key.Escape)) {
+				if (FrameInput.KeyboardUp(Key.Escape)) {
 					DroppingPlayer = false;
-					FrameInput.UseAllHoldingKeys();
+					FrameInput.UseKeyboardKey(Key.Escape);
+					FrameInput.UseGameKey(Gamekey.Start);
 				}
 				ControlHintUI.AddHint(Gamekey.Start, Language.Get(MEDT_CANCEL_DROP, "Cancel Drop"));
 			}
@@ -735,18 +736,21 @@ namespace AngeliaFramework {
 					}
 
 					// Cancel
-					if (FrameInput.KeyboardDown(Key.Escape)) {
+					if (FrameInput.KeyboardUp(Key.Escape)) {
 						if (Pasting) {
 							ApplyPaste();
-							FrameInput.UseAllHoldingKeys();
+							FrameInput.UseKeyboardKey(Key.Escape);
+							FrameInput.UseGameKey(Gamekey.Start);
 						} else if (SelectionUnitRect.HasValue) {
 							SelectionUnitRect = null;
-							FrameInput.UseAllHoldingKeys();
+							FrameInput.UseKeyboardKey(Key.Escape);
+							FrameInput.UseGameKey(Gamekey.Start);
 						}
 						if (!string.IsNullOrEmpty(SearchingText)) {
 							SearchingText = "";
 							SearchResult.Clear();
-							FrameInput.UseAllHoldingKeys();
+							FrameInput.UseKeyboardKey(Key.Escape);
+							FrameInput.UseGameKey(Gamekey.Start);
 						}
 					}
 
@@ -849,11 +853,12 @@ namespace AngeliaFramework {
 
 				// Switch Mode
 				if (!CtrlHolding) {
-					if (FrameInput.GameKeyDown(Gamekey.Start)) {
+					if (FrameInput.KeyboardUp(Key.Escape)) {
 						IgnoreQuickPlayerDropThisTime = false;
 						SetEditingMode(false);
+						FrameInput.UseKeyboardKey(Key.Escape);
+						FrameInput.UseGameKey(Gamekey.Start);
 					}
-					FrameInput.UseGameKey(Gamekey.Start);
 					ControlHintUI.AddHint(
 						Gamekey.Start,
 						Language.Get(HINT_MEDT_SWITCH_EDIT, "Back to Edit")

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using AngeliaFramework;
 
+
 namespace AngeliaGame {
 	public class iSwordWood : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Sword;

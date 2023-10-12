@@ -51,7 +51,7 @@ namespace AngeliaFramework {
 		private const int POSE_Z_BODY = 0;
 		private const int POSE_Z_UPPERARM = 8;
 		private const int POSE_Z_LOWERARM = 16;
-		private const int POSE_Z_HAND = 24;
+		private const int POSE_Z_HAND = 36;
 		private const int POSE_Z_UPPERLEG = 2;
 		private const int POSE_Z_LOWERLEG = 1;
 		private const int POSE_Z_FOOT = 2;
@@ -291,6 +291,7 @@ namespace AngeliaFramework {
 
 			ResetPoseToDefault();
 			PerformPoseAnimation_Movement();
+			PerformPoseAnimation_Handheld();
 			PerformPoseAnimation_Attack();
 			OnPoseCalculated();
 
@@ -314,23 +315,18 @@ namespace AngeliaFramework {
 		// Pipeline
 		private void PerformPoseAnimation_Movement () {
 
-			bool overrideHandHeld = true;
-
 			switch (AnimatedPoseType) {
 
 				case CharacterPoseAnimationType.TakingDamage:
 					AnimationLibrary.Damage(this);
-					overrideHandHeld = false;
 					break;
 
 				case CharacterPoseAnimationType.Sleep:
 					AnimationLibrary.Sleep(this);
-					overrideHandHeld = false;
 					break;
 
 				case CharacterPoseAnimationType.PassOut:
 					AnimationLibrary.PassOut(this);
-					overrideHandHeld = false;
 					break;
 
 				case CharacterPoseAnimationType.Dash:
@@ -339,7 +335,6 @@ namespace AngeliaFramework {
 
 				case CharacterPoseAnimationType.Rolling:
 					AnimationLibrary.Rolling(this);
-					overrideHandHeld = false;
 					break;
 
 				case CharacterPoseAnimationType.Idle:
@@ -379,7 +374,6 @@ namespace AngeliaFramework {
 					break;
 
 				case CharacterPoseAnimationType.Rush:
-					overrideHandHeld = EquippingWeaponHeld == WeaponHandHeld.Polearm;
 					AnimationLibrary.Rush(this);
 					break;
 
@@ -393,7 +387,6 @@ namespace AngeliaFramework {
 
 				case CharacterPoseAnimationType.Climb:
 					AnimationLibrary.Climb(this);
-					overrideHandHeld = false;
 					break;
 
 				case CharacterPoseAnimationType.Fly:
@@ -402,65 +395,84 @@ namespace AngeliaFramework {
 
 				case CharacterPoseAnimationType.Slide:
 					AnimationLibrary.Slide(this);
-					overrideHandHeld = false;
 					break;
 
 				case CharacterPoseAnimationType.GrabTop:
 					AnimationLibrary.GrabTop(this);
-					overrideHandHeld = false;
 					break;
 
 				case CharacterPoseAnimationType.GrabSide:
 					AnimationLibrary.GrabSide(this);
-					overrideHandHeld = false;
 					break;
 			}
 
 			// Make Global Pos Ready
 			CalculateBodypartGlobalPosition();
 
-			if (!IsAttacking) {
-				if (overrideHandHeld) {
-					// Override Handheld
-					switch (EquippingWeaponHeld) {
-						case WeaponHandHeld.DoubleHanded:
-							AnimationLibrary.HandHeld_Double(this);
-							break;
-						case WeaponHandHeld.Polearm:
-							AnimationLibrary.HandHeld_Polearm(this);
-							break;
-						case WeaponHandHeld.Bow:
-							AnimationLibrary.HandHeld_Bow(this);
-							break;
-						case WeaponHandHeld.CrossBow:
-							AnimationLibrary.HandHeld_CrossBow(this);
-							break;
-						case WeaponHandHeld.Throw:
-							AnimationLibrary.HandHeld_Throw(this);
-							break;
-					}
-					CalculateBodypartGlobalPosition();
-				} else {
-					// Redirect Handheld
-					switch (EquippingWeaponHeld) {
-						case WeaponHandHeld.DoubleHanded:
-						case WeaponHandHeld.Polearm:
-						case WeaponHandHeld.Bow:
-						case WeaponHandHeld.CrossBow:
-						case WeaponHandHeld.Throw:
-							EquippingWeaponHeld = WeaponHandHeld.SingleHanded;
-							break;
-					}
+
+		}
+
+
+		private void PerformPoseAnimation_Handheld () {
+
+			if (IsAttacking) return;
+
+			bool overrideHandHeld = AnimatedPoseType switch {
+				CharacterPoseAnimationType.Idle => true,
+				CharacterPoseAnimationType.Walk => true,
+				CharacterPoseAnimationType.Run => true,
+				CharacterPoseAnimationType.JumpUp => true,
+				CharacterPoseAnimationType.JumpDown => true,
+				CharacterPoseAnimationType.SwimIdle => true,
+				CharacterPoseAnimationType.SwimMove => true,
+				CharacterPoseAnimationType.SquatIdle => true,
+				CharacterPoseAnimationType.SquatMove => true,
+				CharacterPoseAnimationType.Pound => true,
+				CharacterPoseAnimationType.Fly => true,
+				CharacterPoseAnimationType.Rush => EquippingWeaponHeld == WeaponHandHeld.Polearm,
+				CharacterPoseAnimationType.Dash => EquippingWeaponHeld == WeaponHandHeld.Polearm,
+				_ => false,
+			};
+
+			if (overrideHandHeld) {
+				// Override Handheld
+				switch (EquippingWeaponHeld) {
+					case WeaponHandHeld.DoubleHanded:
+						AnimationLibrary.HandHeld_Double(this);
+						break;
+					case WeaponHandHeld.Polearm:
+						AnimationLibrary.HandHeld_Polearm(this);
+						break;
+					case WeaponHandHeld.Bow:
+						AnimationLibrary.HandHeld_Bow(this);
+						break;
+					case WeaponHandHeld.CrossBow:
+						AnimationLibrary.HandHeld_CrossBow(this);
+						break;
+					case WeaponHandHeld.Throw:
+						AnimationLibrary.HandHeld_Throw(this);
+						break;
+				}
+				CalculateBodypartGlobalPosition();
+			} else {
+				// Redirect Handheld
+				switch (EquippingWeaponHeld) {
+					case WeaponHandHeld.DoubleHanded:
+					case WeaponHandHeld.Polearm:
+					case WeaponHandHeld.Bow:
+					case WeaponHandHeld.CrossBow:
+					case WeaponHandHeld.Throw:
+						EquippingWeaponHeld = WeaponHandHeld.SingleHanded;
+						break;
 				}
 			}
-
 		}
 
 
 		private void PerformPoseAnimation_Attack () {
 
-			HandGrabScaleL = 1000;
-			HandGrabScaleR = 1000;
+			HandGrabScaleL = FacingRight ? 1000 : -1000;
+			HandGrabScaleR = FacingRight ? 1000 : -1000;
 
 			if (!IsAttacking) return;
 
@@ -1106,23 +1118,40 @@ namespace AngeliaFramework {
 		}
 
 
-		public void DrawDoubleClothTailsOnHip (int spriteIdLeft, int spriteIdRight) {
+		public void DrawDoubleClothTailsOnHip (int spriteIdLeft, int spriteIdRight, bool drawOnAllPose = false) {
+
+			if (
+				!drawOnAllPose && (
+					AnimatedPoseType == CharacterPoseAnimationType.Rolling ||
+					AnimatedPoseType == CharacterPoseAnimationType.Sleep ||
+					AnimatedPoseType == CharacterPoseAnimationType.PassOut ||
+					AnimatedPoseType == CharacterPoseAnimationType.Fly
+				)
+			) return;
+
 			var hipRect = Hip.GetGlobalRect();
 			int z = Body.FrontSide ? -39 : 39;
 			bool facingRight = Body.Width > 0;
 			int rotL = facingRight ? 30 : 18;
 			int rotR = facingRight ? -18 : -30;
+			int scaleX = 1000;
+			int scaleY = 1000;
+
 			if (Body.Height < 0) {
 				rotL = 180 - rotL;
 				rotR = -180 + rotR;
 				z = -z;
 			}
-			DrawClothTail(spriteIdLeft, hipRect.x + 16, hipRect.y, z, rotL);
-			DrawClothTail(spriteIdRight, hipRect.xMax - 16, hipRect.y, z, rotR);
+
+			if (AnimatedPoseType == CharacterPoseAnimationType.Dash) scaleY = 500;
+
+			DrawClothTail(spriteIdLeft, hipRect.x + 16, hipRect.y, z, rotL, scaleX, scaleY);
+			DrawClothTail(spriteIdRight, hipRect.xMax - 16, hipRect.y, z, rotR, scaleX, scaleY);
+
 		}
 
 
-		public void DrawClothTail (int spriteID, int globalX, int globalY, int z, int rotation, int motionAmount = 1000) {
+		public void DrawClothTail (int spriteID, int globalX, int globalY, int z, int rotation, int scaleX = 1000, int scaleY = 1000, int motionAmount = 1000) {
 
 			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
 
@@ -1143,7 +1172,9 @@ namespace AngeliaFramework {
 				spriteID,
 				globalX, globalY,
 				sprite.PivotX, sprite.PivotY, rotation + rot,
-				sprite.GlobalWidth, sprite.GlobalHeight, z
+				sprite.GlobalWidth * scaleX / 1000,
+				sprite.GlobalHeight * scaleY / 1000,
+				z
 			);
 
 		}

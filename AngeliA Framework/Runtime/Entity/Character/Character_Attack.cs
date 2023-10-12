@@ -15,8 +15,8 @@ namespace AngeliaFramework {
 
 
 		// Api
-		protected bool IsAttacking => Game.GlobalFrame < LastAttackFrame + AttackDuration;
-		protected bool IsAttackCharged => Game.GlobalFrame - ChargeStartFrame >= MinimalChargeAttackDuration;
+		public bool IsAttacking => Game.GlobalFrame < LastAttackFrame + AttackDuration;
+		public bool IsAttackCharged => Game.GlobalFrame - ChargeStartFrame >= MinimalChargeAttackDuration;
 		public int LastAttackFrame { get; private set; } = int.MinValue;
 		public int AttackCombo { get; private set; } = -1;
 		public virtual bool IsChargingAttack => false;

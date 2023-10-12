@@ -125,8 +125,8 @@ namespace AngeliaFramework {
 			LowerLegR.Height += 1;
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 90;
+			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 
 		}
 
@@ -189,8 +189,8 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(FacingRight ? 0 : 1);
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 90;
+			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 		}
 
 
@@ -265,8 +265,8 @@ namespace AngeliaFramework {
 			FootR.Z = 3;
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 90;
+			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 		}
 
 
@@ -340,8 +340,8 @@ namespace AngeliaFramework {
 			FootR.Z += 2;
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 90;
+			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 		}
 
 
@@ -388,10 +388,10 @@ namespace AngeliaFramework {
 			LowerArmR.Z = LowerArmR.Z.Abs();
 			LowerArmR.LimbRotate(alt ? -45 : -35);
 
-			HandL.Z = (FacingFront ? 34 : -34);
+			HandL.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
 			HandL.LimbRotate(0);
 
-			HandR.Z = (FacingFront ? 34 : -34);
+			HandR.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
 			HandR.LimbRotate(1);
 
 			// Leg
@@ -416,8 +416,8 @@ namespace AngeliaFramework {
 			FootR.Z += 2;
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation - facingSign * 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation - facingSign * 90;
+			character.HandGrabRotationL = LowerArmL.Rotation - facingSign * 90;
+			character.HandGrabRotationR = LowerArmR.Rotation - facingSign * 90;
 		}
 
 
@@ -459,11 +459,11 @@ namespace AngeliaFramework {
 			LowerArmR.LimbRotate(0);
 
 			HandL.LimbRotate(-facingSign);
-			HandL.Z = (FacingFront ? 33 : -33);
+			HandL.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
 			HandL.Height = HandL.SizeY - frame0121 * A2G / 3;
 
 			HandR.LimbRotate(-facingSign);
-			HandR.Z = (FacingFront ? 33 : -33);
+			HandR.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
 			HandR.Height = HandR.SizeY - frame0121 * A2G / 3;
 
 			// Leg
@@ -476,8 +476,8 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(-facingSign);
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 90;
+			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 		}
 
 
@@ -571,8 +571,8 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(-facingSign);
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 90;
+			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 		}
 
 
@@ -797,8 +797,7 @@ namespace AngeliaFramework {
 			bool alt = aFrame == 1;
 			int facingSign = FacingRight ? 1 : -1;
 
-			HandL.Z = 34;
-			HandR.Z = 34;
+			HandL.Z = HandR.Z = POSE_Z_HAND;
 
 			character.PoseRootY = 0;
 			character.PoseTwist = -1000;
@@ -820,11 +819,11 @@ namespace AngeliaFramework {
 			Head.Height -= A2G;
 
 			if (FacingRight) {
-				LowerLegR.Z = 33;
-				FootR.Z = 34;
+				LowerLegR.Z = 31;
+				FootR.Z = 32;
 			} else {
-				LowerLegL.Z = 33;
-				FootL.Z = 34;
+				LowerLegL.Z = 31;
+				FootL.Z = 32;
 			}
 
 			// Arm
@@ -878,8 +877,8 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(-facingSign);
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 90;
+			character.HandGrabRotationL = FacingRight ? 90 : 0;
+			character.HandGrabRotationR = FacingRight ? 0 : -90;
 		}
 
 
@@ -952,10 +951,10 @@ namespace AngeliaFramework {
 			LowerArmR.Height /= 2;
 
 			HandL.LimbRotate(facingSign * upsideSign * 1);
-			HandL.Z = upsideSign * 33;
+			HandL.Z = upsideSign * POSE_Z_HAND;
 
 			HandR.LimbRotate(facingSign * upsideSign * 1);
-			HandR.Z = upsideSign * 33;
+			HandR.Z = upsideSign * POSE_Z_HAND;
 
 			// Leg
 			UpperLegL.X = Body.X - Body.Width.Abs() / 2 + Body.Border.left - facingSign * A2G * 2;
@@ -978,8 +977,8 @@ namespace AngeliaFramework {
 			}
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation + Body.Height.Sign() * facingSign * 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + Body.Height.Sign() * facingSign * 90;
+			character.HandGrabRotationL = LowerArmL.Rotation + Body.Height.Sign() * facingSign * 90;
+			character.HandGrabRotationR = LowerArmR.Rotation + Body.Height.Sign() * facingSign * 90;
 		}
 
 
@@ -1007,7 +1006,7 @@ namespace AngeliaFramework {
 			int facingSign = FacingRight ? 1 : -1;
 
 			character.PoseRootY -= aFrame.Clamp(0, 2) * A2G - A2G * 2;
-			character.PoseTwist = 1000;
+			character.PoseTwist = -facingSign * 1000;
 			Head.Height -= A2G;
 			Body.X -= facingSign * A2G / 2;
 
@@ -1075,8 +1074,8 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(-facingSign);
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 90;
+			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 		}
 
 
@@ -1101,8 +1100,8 @@ namespace AngeliaFramework {
 			bool alt = character.CurrentAnimationFrame % 8 < 4;
 			int facingSign = FacingRight ? 1 : -1;
 
-			HandL.Z = (FacingFront ? 34 : -34);
-			HandR.Z = (FacingFront ? 34 : -34);
+			HandL.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
+			HandR.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
 			UpperLegL.Z = -3;
 			UpperLegR.Z = -3;
 			LowerLegL.Z = FacingFront ? 4 : -4;
@@ -1136,8 +1135,8 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(-facingSign);
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation - 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + 90;
+			character.HandGrabRotationL = LowerArmL.Rotation - 90;
+			character.HandGrabRotationR = LowerArmR.Rotation + 90;
 		}
 
 
@@ -1219,8 +1218,8 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(facingFront ? -facingSign : facingSign);
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation - 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + 90;
+			character.HandGrabRotationL = LowerArmL.Rotation - 90;
+			character.HandGrabRotationR = LowerArmR.Rotation + 90;
 		}
 
 
@@ -1258,8 +1257,8 @@ namespace AngeliaFramework {
 
 			HandL.LimbRotate(1);
 			HandR.LimbRotate(0);
-			HandL.Z = (FacingFront ? 34 : -34);
-			HandR.Z = (FacingFront ? 34 : -34);
+			HandL.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
+			HandR.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
 
 			// Leg
 			UpperLegL.LimbRotate((aFrame * 35).Clamp(0, 60), 500);
@@ -1272,8 +1271,8 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(1);
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation - 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + 90;
+			character.HandGrabRotationL = LowerArmL.Rotation - 90;
+			character.HandGrabRotationR = LowerArmR.Rotation + 90;
 		}
 
 
@@ -1351,8 +1350,8 @@ namespace AngeliaFramework {
 			FootR.Z = -32;
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 60;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 60;
+			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 60;
+			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 60;
 		}
 
 
@@ -1396,8 +1395,8 @@ namespace AngeliaFramework {
 			UpperArmR.Z = UpperArmR.Z.Abs();
 			LowerArmL.Z = LowerArmL.Z.Abs();
 			LowerArmR.Z = LowerArmR.Z.Abs();
-			HandL.Z = (FacingFront ? 34 : -34);
-			HandR.Z = (FacingFront ? 34 : -34);
+			HandL.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
+			HandR.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
 
 			UpperArmL.LimbRotate(FacingRight ? 70 : 175);
 			UpperArmR.LimbRotate(FacingRight ? -175 : -70);
@@ -1431,8 +1430,8 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(-facingSign);
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 90;
+			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 
 		}
 
@@ -1461,7 +1460,7 @@ namespace AngeliaFramework {
 
 			UpperArmL.Z = UpperArmR.Z = (FacingFront ? 34 : -34);
 			LowerArmL.Z = LowerArmR.Z = (FacingFront ? 35 : -35);
-			HandL.Z = HandR.Z = (FacingFront ? 36 : -36);
+			HandL.Z = HandR.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
 
 
 			character.PoseRootY += pingpongAlt * A2G;
@@ -1493,8 +1492,8 @@ namespace AngeliaFramework {
 			FootR.X += pingpongAlt * A2G / 2;
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 90;
+			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 		}
 
 
@@ -1528,8 +1527,8 @@ namespace AngeliaFramework {
 
 			Body.X += bodyShift;
 
-			HandL.Z = (FacingFront ? 34 : -34);
-			HandR.Z = (FacingFront ? 34 : -34);
+			HandL.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
+			HandR.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
 
 			// Arm
 			ShoulderL.X += bodyShift;
@@ -1564,8 +1563,8 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(-facingSign);
 
 			// Final
-			character.HandGrabRotationL = character.LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = character.LowerArmR.Rotation + facingSign * 90;
+			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 		}
 
 

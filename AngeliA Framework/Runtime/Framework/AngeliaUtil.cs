@@ -213,19 +213,6 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Cell DrawShadow (int id, RectInt rect) => CellRenderer.Draw(
-			id, rect.Shift(-Const.HALF / 2, 0),
-			new Color32(0, 0, 0, 64), -64 * 1024 + 16
-		);
-		public static Cell DrawShadow (int id, Cell positionCell) => CellRenderer.Draw(
-			id, positionCell.X - Const.HALF / 2, positionCell.Y,
-			(int)(positionCell.PivotX * 1000),
-			(int)(positionCell.PivotY * 1000), 0,
-			positionCell.Width, positionCell.Height,
-			new Color32(0, 0, 0, 64), -64 * 1024 + 16
-		);
-
-
 		public static int GetItemTypeIcon (int itemID) {
 			int typeIcon = ITEM_TYPE_ICONS[^1];
 			if (ItemSystem.IsEquipment(itemID, out var equipmentType)) {
@@ -262,6 +249,17 @@ namespace AngeliaFramework {
 
 
 		public static int RandomInt (int min = int.MinValue, int max = int.MaxValue) => GlobalRandom.Next(min, max);
+
+
+		public static Color32 RandomColor (int minH = 0, int maxH = 360, int minS = 0, int maxS = 100, int minV = 0, int maxV = 100, int minA = 0, int maxA = 255) {
+			var result = Color.HSVToRGB(
+				RandomInt(minH, maxH) / 360f,
+				RandomInt(minS, maxS) / 100f,
+				RandomInt(minV, maxV) / 100f
+			);
+			result.a = RandomInt(minA, maxA) / 255f;
+			return result;
+		}
 
 
 		// Pose Animation
@@ -448,6 +446,57 @@ namespace AngeliaFramework {
 
 
 		public static string GetJsonMetaPath<T> (string rootPath, string name = "") => Util.CombinePaths(rootPath, $"{(string.IsNullOrEmpty(name) ? typeof(T).Name : name)}.json");
+
+
+		// Drawing
+		public static Cell DrawShadow (int id, RectInt rect) => CellRenderer.Draw(
+			id, rect.Shift(-Const.HALF / 2, 0),
+			new Color32(0, 0, 0, 64), -64 * 1024 + 16
+		);
+		public static Cell DrawShadow (int id, Cell positionCell) => CellRenderer.Draw(
+			id, positionCell.X - Const.HALF / 2, positionCell.Y,
+			(int)(positionCell.PivotX * 1000),
+			(int)(positionCell.PivotY * 1000), 0,
+			positionCell.Width, positionCell.Height,
+			new Color32(0, 0, 0, 64), -64 * 1024 + 16
+		);
+
+
+		public static void DrawGlitchEffect (Cell cell, int frame) {
+
+			if (frame.UMod(0096) == 0) DrawGlitch(cell, RandomInt(-012, 012), RandomInt(-007, 007), RandomInt(0900, 1100), RandomInt(0500, 1100), RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(0061) == 0) DrawGlitch(cell, RandomInt(-002, 041), RandomInt(-019, 072), RandomInt(0500, 1200), RandomInt(0500, 1200), RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(0121) == 0) DrawGlitch(cell, RandomInt(-016, 016), RandomInt(-007, 007), RandomInt(0400, 1100), RandomInt(0600, 1100), RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(0127) == 0) DrawGlitch(cell, RandomInt(-016, 016), RandomInt(-007, 007), RandomInt(0900, 1100), RandomInt(0500, 1300), RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(0185) == 0) DrawGlitch(cell, RandomInt(-011, 021), RandomInt(-018, 018), RandomInt(0900, 1300), RandomInt(0900, 1300), RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(0187) == 0) DrawGlitch(cell, RandomInt(-034, 042), RandomInt(-012, 008), RandomInt(0800, 1100), RandomInt(0900, 1400), RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(0193) == 0) DrawGlitch(cell, RandomInt(-052, 002), RandomInt(-091, 077), RandomInt(0700, 1400), RandomInt(0800, 1100), RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(0274) == 0) DrawGlitch(cell, RandomInt(-033, 072), RandomInt(-031, 079), RandomInt(0800, 1100), RandomInt(0900, 1800), RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(1846) == 0) DrawGlitch(cell, RandomInt(-094, 012), RandomInt(-077, 112), RandomInt(0900, 1500), RandomInt(0900, 1300), RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(3379) == 0) DrawGlitch(cell, RandomInt(-194, 112), RandomInt(-177, 212), RandomInt(0900, 1600), RandomInt(0700, 1900), RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(9379) == 0) DrawGlitch(cell, RandomInt(-293, 211), RandomInt(-079, 011), RandomInt(0900, 1700), RandomInt(0900, 1100), RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+
+			// Func
+			static void DrawGlitch (Cell cell, int offsetX, int offsetY, int scaleX, int scaleY, Color32 color) {
+
+				var cursedCell = CellRenderer.Draw(Const.PIXEL, default, 0);
+				cursedCell.Index = cell.Index;
+				cursedCell.X = cell.X;
+				cursedCell.Y = cell.Y;
+				cursedCell.Z = cell.Z + 1;
+				cursedCell.Rotation = cell.Rotation;
+				cursedCell.Width = cell.Width * scaleX / 1000;
+				cursedCell.Height = cell.Height * scaleY / 1000;
+				cursedCell.PivotX = cell.PivotX;
+				cursedCell.PivotY = cell.PivotY;
+				cursedCell.Shift = cell.Shift;
+
+				cursedCell.Color = color;
+				cursedCell.X += offsetX;
+				cursedCell.Y += offsetY;
+
+			}
+		}
 
 
 		// Extension

@@ -15,8 +15,6 @@ namespace AngeliaFramework {
 		private static readonly CellContent Temp = new();
 
 		public string Text;
-		public string ColorText;
-		//public int Image;
 		public Color32 Tint;
 		public Color32 BackgroundTint;
 		public Alignment Alignment;
@@ -30,7 +28,6 @@ namespace AngeliaFramework {
 
 		public CellContent (string text = "") {
 			Text = text;
-			ColorText = "";
 			Tint = Const.WHITE;
 			BackgroundTint = Const.CLEAR;
 			Alignment = Alignment.MidMid;
@@ -196,7 +193,6 @@ namespace AngeliaFramework {
 			CellRenderer.RequestStringForFont(content.Text);
 
 			string text = content.Text;
-			string colorContent = content.ColorText;
 			int charSize = Unify(content.CharSize);
 			int lineSpace = Unify(content.LineSpace);
 			var color = content.Tint;
@@ -266,10 +262,6 @@ namespace AngeliaFramework {
 					line++;
 					if (char.IsWhiteSpace(c)) continue;
 					if (clip && line >= maxLineCount) break;
-				}
-				if (colorContent != null && colorContent.Length > 1) {
-					int cIndex = (i * 2).Clamp(0, colorContent.Length - 2);
-					color = Util.IntToColor(Util.Char2ToInt(colorContent[cIndex], colorContent[cIndex + 1]));
 				}
 				var cell = DrawChar(c, x, y, charSize, charSize, color);
 
@@ -427,7 +419,7 @@ namespace AngeliaFramework {
 			if (typing) {
 
 				// Clear
-				if (FrameInput.KeyboardDown(Key.Escape)) {
+				if (FrameInput.KeyboardUp(Key.Escape)) {
 					if (!string.IsNullOrEmpty(text.Text)) {
 						text.Text = "";
 						changed = true;
@@ -435,6 +427,7 @@ namespace AngeliaFramework {
 						CancelTyping();
 					}
 					FrameInput.UseKeyboardKey(Key.Escape);
+					FrameInput.UseGameKey(Gamekey.Start);
 				}
 
 				// Move Beam
