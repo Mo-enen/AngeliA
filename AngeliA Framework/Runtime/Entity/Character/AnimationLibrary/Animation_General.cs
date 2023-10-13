@@ -7,28 +7,66 @@ namespace AngeliaFramework {
 	public static partial class AnimationLibrary {
 
 
+		// Data
 		private const int POSE_Z_HAND = 36;
+		private static Character Target = null;
+		private static BodyPart Head = null;
+		private static BodyPart Body = null;
+		private static BodyPart Hip = null;
+		private static BodyPart ShoulderL = null;
+		private static BodyPart ShoulderR = null;
+		private static BodyPart UpperArmL = null;
+		private static BodyPart UpperArmR = null;
+		private static BodyPart LowerArmL = null;
+		private static BodyPart LowerArmR = null;
+		private static BodyPart HandL = null;
+		private static BodyPart HandR = null;
+		private static BodyPart UpperLegL = null;
+		private static BodyPart UpperLegR = null;
+		private static BodyPart LowerLegL = null;
+		private static BodyPart LowerLegR = null;
+		private static BodyPart FootL = null;
+		private static BodyPart FootR = null;
+		private static bool FacingRight = true;
+		private static bool FacingFront = true;
+		private static int FacingSign = 0;
+		private static int FrontSign = 0;
+		private static int CurrentAnimationFrame = 0;
+		private static CharacterPoseAnimationType AnimatedPoseType;
 
 
-		public static void Damage (Character character) {
+		// API
+		public static void Begin (Character targetCharacter) {
+			Target = targetCharacter;
+			CurrentAnimationFrame = targetCharacter.CurrentAnimationFrame;
+			Head = targetCharacter.Head;
+			Body = targetCharacter.Body;
+			Hip = targetCharacter.Hip;
+			ShoulderL = targetCharacter.ShoulderL;
+			ShoulderR = targetCharacter.ShoulderR;
+			UpperArmL = targetCharacter.UpperArmL;
+			UpperArmR = targetCharacter.UpperArmR;
+			LowerArmL = targetCharacter.LowerArmL;
+			LowerArmR = targetCharacter.LowerArmR;
+			HandL = targetCharacter.HandL;
+			HandR = targetCharacter.HandR;
+			UpperLegL = targetCharacter.UpperLegL;
+			UpperLegR = targetCharacter.UpperLegR;
+			LowerLegL = targetCharacter.LowerLegL;
+			LowerLegR = targetCharacter.LowerLegR;
+			FootL = targetCharacter.FootL;
+			FootR = targetCharacter.FootR;
+			FacingRight = targetCharacter.FacingRight;
+			FacingFront = targetCharacter.FacingFront;
+			AnimatedPoseType = targetCharacter.AnimatedPoseType;
+			FacingSign = FacingRight ? 1 : -1;
+			FrontSign = FacingFront ? 1 : -1;
+		}
 
-			bool FacingRight = character.FacingRight;
-			var Head = character.Head;
-			var Body = character.Body;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
 
-			bool alt = character.CurrentAnimationFrame.UMod(8) >= 4;
+		public static void Damage () {
+
+			bool alt = CurrentAnimationFrame.UMod(8) >= 4;
 			int halfA2G = A2G / 2;
 
 			if (alt) {
@@ -77,29 +115,11 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void Sleep (Character character) {
+		public static void Sleep () {
 
-			bool FacingRight = character.FacingRight;
-			var Head = character.Head;
-			var Body = character.Body;
-			var ShoulderL = character.ShoulderL;
-			var ShoulderR = character.ShoulderR;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
+			bool alt = CurrentAnimationFrame.UMod(120) >= 60;
 
-			bool alt = character.CurrentAnimationFrame.UMod(120) >= 60;
-
-			character.PoseRootY = 0;
+			Target.PoseRootY = 0;
 
 			Body.Height = Body.SizeY / 4;
 
@@ -156,27 +176,9 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void PassOut (Character character) {
+		public static void PassOut () {
 
-			bool FacingRight = character.FacingRight;
-			var Head = character.Head;
-			var Body = character.Body;
-			var ShoulderL = character.ShoulderL;
-			var ShoulderR = character.ShoulderR;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
-
-			character.PoseRootY = 0;
+			Target.PoseRootY = 0;
 
 			Body.Height = Body.SizeY / 4;
 
@@ -224,21 +226,11 @@ namespace AngeliaFramework {
 
 
 		// Override
-		public static void HandHeld_Double (Character character) {
+		public static void HandHeld_Double () {
 
-			bool FacingRight = character.FacingRight;
-			var UpperArmL = character.UpperArmL;
-			var LowerArmL = character.LowerArmL;
-			var HandL = character.HandL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmR = character.LowerArmR;
-			var HandR = character.HandR;
+			ResetShoulderAndUpperArm();
 
-			int facingSign = FacingRight ? 1 : -1;
-
-			ResetShoulderAndUpperArm(character);
-
-			int twistShift = character.PoseTwist / 50;
+			int twistShift = Target.PoseTwist / 50;
 			UpperArmL.LimbRotate((FacingRight ? -42 : 29) - twistShift);
 			UpperArmR.LimbRotate((FacingRight ? -29 : 42) - twistShift);
 			UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1306 : 862) / 1000;
@@ -249,8 +241,8 @@ namespace AngeliaFramework {
 			LowerArmL.Height = LowerArmL.Height * (FacingRight ? 1592 : 724) / 1000;
 			LowerArmR.Height = LowerArmR.Height * (FacingRight ? 724 : 1592) / 1000;
 
-			HandL.LimbRotate(facingSign);
-			HandR.LimbRotate(facingSign);
+			HandL.LimbRotate(FacingSign);
+			HandR.LimbRotate(FacingSign);
 
 			// Z
 			UpperArmL.Z = LowerArmL.Z = UpperArmL.Z.Abs();
@@ -259,40 +251,30 @@ namespace AngeliaFramework {
 			HandR.Z = HandR.Z.Abs();
 
 			// Grab Rotation
-			character.HandGrabScaleL = character.HandGrabScaleR = facingSign * 1000;
-			character.HandGrabRotationL = character.HandGrabRotationR = facingSign * (
-				30 - character.CurrentAnimationFrame.PingPong(120) / 30
-				+ character.DeltaPositionY.Clamp(-24, 24) / 5
-			) - character.DeltaPositionX.Clamp(-24, 24) / 4;
+			Target.HandGrabScaleL = Target.HandGrabScaleR = FacingSign * 1000;
+			Target.HandGrabRotationL = Target.HandGrabRotationR = FacingSign * (
+				30 - CurrentAnimationFrame.PingPong(120) / 30
+				+ Target.DeltaPositionY.Clamp(-24, 24) / 5
+			) - Target.DeltaPositionX.Clamp(-24, 24) / 4;
 
 		}
 
 
-		public static void HandHeld_Polearm (Character character) {
+		public static void HandHeld_Polearm () {
 
-			bool FacingRight = character.FacingRight;
-			var UpperArmL = character.UpperArmL;
-			var LowerArmL = character.LowerArmL;
-			var HandL = character.HandL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmR = character.LowerArmR;
-			var HandR = character.HandR;
+			bool dashing = AnimatedPoseType == CharacterPoseAnimationType.Dash;
 
-			int facingSign = FacingRight ? 1 : -1;
-			int frontSign = character.FacingFront ? 1 : -1;
-			bool dashing = character.AnimatedPoseType == CharacterPoseAnimationType.Dash;
-
-			ResetShoulderAndUpperArm(character);
+			ResetShoulderAndUpperArm();
 
 			// Upper Arm
-			int twistDelta = character.PoseTwist / 20;
+			int twistDelta = Target.PoseTwist / 26;
 			UpperArmL.LimbRotate((FacingRight ? -2 : 14) - twistDelta);
 			UpperArmR.LimbRotate((FacingRight ? -14 : 2) - twistDelta);
 			if (dashing) {
 				UpperArmL.Height /= 3;
 				UpperArmR.Height /= 3;
 			} else {
-				int deltaY = (character.DeltaPositionY / 5).Clamp(-20, 20);
+				int deltaY = (Target.DeltaPositionY / 5).Clamp(-20, 20);
 				UpperArmL.Height += deltaY;
 				UpperArmR.Height += deltaY;
 			}
@@ -304,51 +286,46 @@ namespace AngeliaFramework {
 				LowerArmL.Height /= 3;
 				LowerArmR.Height /= 3;
 			} else {
-				int deltaY = (character.DeltaPositionY / 10).Clamp(-20, 20);
+				int deltaY = (Target.DeltaPositionY / 10).Clamp(-20, 20);
 				LowerArmL.Height += deltaY;
 				LowerArmR.Height += deltaY;
 			}
 
-			HandL.LimbRotate(facingSign);
-			HandR.LimbRotate(facingSign);
+			HandL.LimbRotate(FacingSign);
+			HandR.LimbRotate(FacingSign);
 
 			// Z
-			HandL.Z = frontSign * POSE_Z_HAND;
-			HandR.Z = frontSign * POSE_Z_HAND;
+			HandL.Z = FrontSign * POSE_Z_HAND;
+			HandR.Z = FrontSign * POSE_Z_HAND;
 
 			// Grab
-			int deltaRot = (character.DeltaPositionY / 10).Clamp(-10, 10);
-			character.HandGrabRotationL = character.HandGrabRotationR = facingSign * (80 + deltaRot);
-			character.HandGrabScaleL = character.HandGrabScaleR = 1000;
+			int deltaRot = (Target.DeltaPositionY / 10).Clamp(-10, 10);
+			Target.HandGrabRotationL = Target.HandGrabRotationR = FacingSign * (80 + deltaRot);
+			Target.HandGrabScaleL = Target.HandGrabScaleR = 1000;
 
 		}
 
 
-		public static void HandHeld_Bow (Character character) {
+		public static void HandHeld_Bow () {
 
 		}
 
 
-		public static void HandHeld_CrossBow (Character character) {
+		public static void HandHeld_CrossBow () {
 
 		}
 
 
-		public static void HandHeld_Throw (Character character) {
+		public static void HandHeld_Throw () {
 
 		}
 
 
 		// UTL
-		private static void ResetShoulderAndUpperArm (Character character) {
+		private static void ResetShoulderAndUpperArm () {
 
-			var Body = character.Body;
-			var ShoulderL = character.ShoulderL;
-			var UpperArmL = character.UpperArmL;
-			var ShoulderR = character.ShoulderR;
-			var UpperArmR = character.UpperArmR;
-			int bodyBorderL = character.FacingRight ? Body.Border.left : Body.Border.right;
-			int bodyBorderR = character.FacingRight ? Body.Border.right : Body.Border.left;
+			int bodyBorderL = Target.FacingRight ? Body.Border.left : Body.Border.right;
+			int bodyBorderR = Target.FacingRight ? Body.Border.right : Body.Border.left;
 
 			// Shoulder L
 			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;

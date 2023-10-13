@@ -5,64 +5,72 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iFlailWood : AutoSpriteWeapon {
+	public class iFlailWood : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iFlailIron : AutoSpriteWeapon {
+	public class iFlailIron : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iFlailGold : AutoSpriteWeapon {
+	public class iFlailGold : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iFlailTriple : AutoSpriteWeapon {
+	public class iFlailTriple : AutoSpriteFlail {
+		public override WeaponType WeaponType => WeaponType.Flail;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		protected override int HeadCount => 3;
+	}
+	public class iFlailEye : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iFlailEye : AutoSpriteWeapon {
+	public class iFlailSkull : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iFlailSkull : AutoSpriteWeapon {
+	public class iFishingPole : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iFishingPole : AutoSpriteWeapon {
+	public class iFlailMace : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iFlailMace : AutoSpriteWeapon {
+	public class iFlailHook : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iFlailHook : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Flail;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iNunchaku : AutoSpriteWeapon {
+	public class iNunchaku : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
+		protected override int ChainLength => Const.CEL * 2 / 9;
+		protected override int ChainLengthAttackGrow => 2000;
 	}
-	public class iFlailPick : AutoSpriteWeapon {
+	public class iFlailPick : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Polearm;
 	}
-	public class iChainMace : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Flail;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
-	}
-	public class iChainSpikeBall : AutoSpriteWeapon {
+	public class iChainMace : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		protected override int ChainLength => Const.CEL * 2 / 9;
+		protected override int ChainLengthAttackGrow => 2000;
 	}
-	public class iChainBarbed : AutoSpriteWeapon {
+	public class iChainSpikeBall : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		protected override int ChainLengthAttackGrow => 2000;
 	}
-	public class iChainFist : AutoSpriteWeapon {
+	public class iChainBarbed : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		protected override int ChainLengthAttackGrow => 2000;
+	}
+	public class iChainFist : AutoSpriteFlail {
+		public override WeaponType WeaponType => WeaponType.Flail;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		protected override int ChainLengthAttackGrow => 2000;
 	}
 }

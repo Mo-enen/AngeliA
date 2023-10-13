@@ -289,6 +289,8 @@ namespace AngeliaFramework {
 
 			int cellIndexStart = CellRenderer.GetUsedCellCount();
 
+			AnimationLibrary.Begin(this);
+
 			ResetPoseToDefault();
 			PerformPoseAnimation_Movement();
 			PerformPoseAnimation_Handheld();
@@ -318,91 +320,91 @@ namespace AngeliaFramework {
 			switch (AnimatedPoseType) {
 
 				case CharacterPoseAnimationType.TakingDamage:
-					AnimationLibrary.Damage(this);
+					AnimationLibrary.Damage();
 					break;
 
 				case CharacterPoseAnimationType.Sleep:
-					AnimationLibrary.Sleep(this);
+					AnimationLibrary.Sleep();
 					break;
 
 				case CharacterPoseAnimationType.PassOut:
-					AnimationLibrary.PassOut(this);
+					AnimationLibrary.PassOut();
 					break;
 
 				case CharacterPoseAnimationType.Dash:
-					AnimationLibrary.Dash(this);
+					AnimationLibrary.Dash();
 					break;
 
 				case CharacterPoseAnimationType.Rolling:
-					AnimationLibrary.Rolling(this);
+					AnimationLibrary.Rolling();
 					break;
 
 				case CharacterPoseAnimationType.Idle:
-					AnimationLibrary.Idle(this);
+					AnimationLibrary.Idle();
 					break;
 
 				case CharacterPoseAnimationType.Walk:
-					AnimationLibrary.Walk(this);
+					AnimationLibrary.Walk();
 					break;
 
 				case CharacterPoseAnimationType.Run:
-					AnimationLibrary.Run(this);
+					AnimationLibrary.Run();
 					break;
 
 				case CharacterPoseAnimationType.JumpUp:
-					AnimationLibrary.JumpUp(this);
+					AnimationLibrary.JumpUp();
 					break;
 
 				case CharacterPoseAnimationType.JumpDown:
-					AnimationLibrary.JumpDown(this);
+					AnimationLibrary.JumpDown();
 					break;
 
 				case CharacterPoseAnimationType.SwimIdle:
-					AnimationLibrary.SwimIdle(this);
+					AnimationLibrary.SwimIdle();
 					break;
 
 				case CharacterPoseAnimationType.SwimMove:
-					AnimationLibrary.SwimMove(this);
+					AnimationLibrary.SwimMove();
 					break;
 
 				case CharacterPoseAnimationType.SquatIdle:
-					AnimationLibrary.SquatIdle(this);
+					AnimationLibrary.SquatIdle();
 					break;
 
 				case CharacterPoseAnimationType.SquatMove:
-					AnimationLibrary.SquatMove(this);
+					AnimationLibrary.SquatMove();
 					break;
 
 				case CharacterPoseAnimationType.Rush:
-					AnimationLibrary.Rush(this);
+					AnimationLibrary.Rush();
 					break;
 
 				case CharacterPoseAnimationType.Pound:
-					AnimationLibrary.Pound(this);
+					AnimationLibrary.Pound();
 					break;
 
 				case CharacterPoseAnimationType.Spin:
-					AnimationLibrary.Spin(this);
+					AnimationLibrary.Spin();
 					break;
 
 				case CharacterPoseAnimationType.Climb:
-					AnimationLibrary.Climb(this);
+					AnimationLibrary.Climb();
 					break;
 
 				case CharacterPoseAnimationType.Fly:
-					AnimationLibrary.Fly(this);
+					AnimationLibrary.Fly();
 					break;
 
 				case CharacterPoseAnimationType.Slide:
-					AnimationLibrary.Slide(this);
+					AnimationLibrary.Slide();
 					break;
 
 				case CharacterPoseAnimationType.GrabTop:
-					AnimationLibrary.GrabTop(this);
+					AnimationLibrary.GrabTop();
 					break;
 
 				case CharacterPoseAnimationType.GrabSide:
-					AnimationLibrary.GrabSide(this);
+					AnimationLibrary.GrabSide();
 					break;
 			}
 
@@ -438,19 +440,19 @@ namespace AngeliaFramework {
 				// Override Handheld
 				switch (EquippingWeaponHeld) {
 					case WeaponHandHeld.DoubleHanded:
-						AnimationLibrary.HandHeld_Double(this);
+						AnimationLibrary.HandHeld_Double();
 						break;
 					case WeaponHandHeld.Polearm:
-						AnimationLibrary.HandHeld_Polearm(this);
+						AnimationLibrary.HandHeld_Polearm();
 						break;
 					case WeaponHandHeld.Bow:
-						AnimationLibrary.HandHeld_Bow(this);
+						AnimationLibrary.HandHeld_Bow();
 						break;
 					case WeaponHandHeld.CrossBow:
-						AnimationLibrary.HandHeld_CrossBow(this);
+						AnimationLibrary.HandHeld_CrossBow();
 						break;
 					case WeaponHandHeld.Throw:
-						AnimationLibrary.HandHeld_Throw(this);
+						AnimationLibrary.HandHeld_Throw();
 						break;
 				}
 				CalculateBodypartGlobalPosition();
@@ -466,6 +468,17 @@ namespace AngeliaFramework {
 						break;
 				}
 			}
+
+			// Fix Grab Rotation for Flail
+			if (EquippingWeaponType == WeaponType.Flail && EquippingWeaponHeld != WeaponHandHeld.Polearm) {
+				HandGrabRotationL += (
+					HandGrabRotationL.Sign() * -Mathf.Sin(HandGrabRotationL.Abs() * Mathf.Deg2Rad) * 30
+				).RoundToInt();
+				HandGrabRotationR += (
+					HandGrabRotationR.Sign() * -Mathf.Sin(HandGrabRotationR.Abs() * Mathf.Deg2Rad) * 30
+				).RoundToInt();
+			}
+
 		}
 
 
@@ -490,47 +503,47 @@ namespace AngeliaFramework {
 			switch (EquippingWeaponType) {
 				default:
 				case WeaponType.Hand:
-					AnimationLibrary.Attack_Punch(this);
+					AnimationLibrary.Attack_Punch();
 					break;
 
 				case WeaponType.Sword:
-					AnimationLibrary.Attack_Wave(this);
+					AnimationLibrary.Attack_Wave();
 					break;
 
 				case WeaponType.Axe:
-					AnimationLibrary.Attack_Wave(this);
+					AnimationLibrary.Attack_Wave();
 					break;
 
 				case WeaponType.Hammer:
-					AnimationLibrary.Attack_Wave(this);
+					AnimationLibrary.Attack_Wave();
 					break;
 
 				case WeaponType.Flail:
-					AnimationLibrary.Attack_Wave(this);
+					AnimationLibrary.Attack_Wave();
 					break;
 
 				case WeaponType.Bow:
-					AnimationLibrary.Attack_Bow(this);
+					AnimationLibrary.Attack_Bow();
 					break;
 
 				case WeaponType.Polearm:
-					AnimationLibrary.Attack_Poke(this);
+					AnimationLibrary.Attack_Poke();
 					break;
 
 				case WeaponType.Hook:
-					AnimationLibrary.Attack_Wave(this);
+					AnimationLibrary.Attack_Wave();
 					break;
 
 				case WeaponType.Claw:
-					AnimationLibrary.Attack_Scratch(this);
+					AnimationLibrary.Attack_Scratch();
 					break;
 
 				case WeaponType.Wand:
-					AnimationLibrary.Attack_Magic(this);
+					AnimationLibrary.Attack_Magic();
 					break;
 
 				case WeaponType.Throwing:
-					AnimationLibrary.Attack_Throw(this);
+					AnimationLibrary.Attack_Throw();
 					break;
 			}
 

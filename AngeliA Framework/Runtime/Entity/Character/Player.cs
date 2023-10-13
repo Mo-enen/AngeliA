@@ -223,14 +223,20 @@ namespace AngeliaFramework {
 
 			// Rush
 			if (FrameInput.GameKeyDown(Gamekey.Left)) {
-				if (Game.GlobalFrame < LastLeftKeyDown + RUSH_TAPPING_GAP) {
+				if (
+					Game.GlobalFrame < LastLeftKeyDown + RUSH_TAPPING_GAP &&
+					!FrameInput.GameKeyHolding(Gamekey.Up)
+				) {
 					Rush();
 				}
 				LastLeftKeyDown = Game.GlobalFrame;
 				LastRightKeyDown = int.MinValue;
 			}
 			if (FrameInput.GameKeyDown(Gamekey.Right)) {
-				if (Game.GlobalFrame < LastRightKeyDown + RUSH_TAPPING_GAP) {
+				if (
+					Game.GlobalFrame < LastRightKeyDown + RUSH_TAPPING_GAP &&
+					!FrameInput.GameKeyHolding(Gamekey.Up)
+				) {
 					Rush();
 				}
 				LastRightKeyDown = Game.GlobalFrame;

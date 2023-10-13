@@ -56,24 +56,10 @@ namespace AngeliaFramework {
 
 
 
-		public static void Idle (Character character) {
+		public static void Idle () {
 
 			const int LOOP = 128;
-			int currentFrame = (character.CurrentAnimationFrame.UMod(128) / 16) * (LOOP / 8);
-
-			bool FacingRight = character.FacingRight;
-			var Head = character.Head;
-			var Body = character.Body;
-			var ShoulderL = character.ShoulderL;
-			var ShoulderR = character.ShoulderR;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
+			int currentFrame = (CurrentAnimationFrame.UMod(128) / 16) * (LOOP / 8);
 
 			float ease = Ease.InOutCirc((currentFrame % (LOOP / 2f)) / (LOOP / 2f));
 			if (currentFrame >= LOOP / 2) ease = 1f - ease;
@@ -125,34 +111,19 @@ namespace AngeliaFramework {
 			LowerLegR.Height += 1;
 
 			// Final
-			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
+			Target.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			Target.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 
 		}
 
 
-		public static void Walk (Character character) {
-
-			bool FacingRight = character.FacingRight;
-			var Body = character.Body;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
+		public static void Walk () {
 
 			const int FRAME_LENGTH = 16;
 
-			int loop = Mathf.Max(FRAME_LENGTH * 50 / character.WalkSpeed.Value.Clamp(1, 100) / FRAME_LENGTH * FRAME_LENGTH, 1);
+			int loop = Mathf.Max(FRAME_LENGTH * 50 / Target.WalkSpeed.Value.Clamp(1, 100) / FRAME_LENGTH * FRAME_LENGTH, 1);
 			int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
-			int currentFrame = (character.CurrentAnimationFrame + frameRate * 2).UMod(loop) / frameRate * frameRate;
+			int currentFrame = (CurrentAnimationFrame + frameRate * 2).UMod(loop) / frameRate * frameRate;
 			int arrFrame = (currentFrame / frameRate) % FRAME_LENGTH;
 
 			float ease = WALK_RUN_EASE[arrFrame];
@@ -163,7 +134,7 @@ namespace AngeliaFramework {
 			);
 			int facingSign = FacingRight ? 1 : -1;
 
-			character.PoseRootY += (int)(easeDouble * A2G);
+			Target.PoseRootY += (int)(easeDouble * A2G);
 
 			// Arm
 			UpperArmL.LimbRotate(WALK_ROTS[arrFrame, 0] * facingSign);
@@ -189,33 +160,18 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(FacingRight ? 0 : 1);
 
 			// Final
-			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
+			Target.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			Target.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 		}
 
 
-		public static void Run (Character character) {
-
-			bool FacingRight = character.FacingRight;
-			var Body = character.Body;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
+		public static void Run () {
 
 			const int FRAME_LENGTH = 16;
 
-			int loop = Mathf.Max(FRAME_LENGTH * 75 / character.RunSpeed.Value.Clamp(1, 1024) / FRAME_LENGTH * FRAME_LENGTH, 1);
+			int loop = Mathf.Max(FRAME_LENGTH * 75 / Target.RunSpeed.Value.Clamp(1, 1024) / FRAME_LENGTH * FRAME_LENGTH, 1);
 			int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
-			int currentFrame = (character.CurrentAnimationFrame + frameRate * 2).UMod(loop) / frameRate * frameRate;
+			int currentFrame = (CurrentAnimationFrame + frameRate * 2).UMod(loop) / frameRate * frameRate;
 			int arrFrame = (currentFrame / frameRate) % FRAME_LENGTH;
 
 			float ease = WALK_RUN_EASE[arrFrame];
@@ -227,8 +183,8 @@ namespace AngeliaFramework {
 			int facingSign = FacingRight ? 1 : -1;
 			float frame01 = (float)arrFrame / FRAME_LENGTH;
 
-			character.PoseRootY += (int)((1f - easeDouble) * A2G * 2);
-			character.PoseTwist = (int)Mathf.LerpUnclamped(1000f, -1000f, frame01 < 0.5f ? frame01 * 2f : 2f - 2f * frame01);
+			Target.PoseRootY += (int)((1f - easeDouble) * A2G * 2);
+			Target.PoseTwist = (int)Mathf.LerpUnclamped(1000f, -1000f, frame01 < 0.5f ? frame01 * 2f : 2f - 2f * frame01);
 
 			// Arm
 			UpperArmL.LimbRotate(RUN_ROTS[arrFrame, 0] * facingSign);
@@ -265,34 +221,17 @@ namespace AngeliaFramework {
 			FootR.Z = 3;
 
 			// Final
-			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
+			Target.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			Target.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 		}
 
 
-		public static void JumpUp (Character character) {
+		public static void JumpUp () {
 
-			bool FacingRight = character.FacingRight;
-			int facingSign = FacingRight ? 1 : -1;
-			var Head = character.Head;
-			var Body = character.Body;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
+			bool alt = CurrentAnimationFrame.UMod(8) >= 4;
 
-			bool alt = character.CurrentAnimationFrame.UMod(8) >= 4;
-
-			character.PoseRootY += A2G;
-			character.PoseTwist = FacingRight ? -400 : 400;
+			Target.PoseRootY += A2G;
+			Target.PoseTwist = FacingRight ? -400 : 400;
 
 			if (alt) {
 				Body.Height += A2G / 4;
@@ -340,35 +279,17 @@ namespace AngeliaFramework {
 			FootR.Z += 2;
 
 			// Final
-			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
+			Target.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
+			Target.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
 		}
 
 
-		public static void JumpDown (Character character) {
+		public static void JumpDown () {
 
-			bool FacingRight = character.FacingRight;
-			bool FacingFront = character.FacingFront;
-			int facingSign = FacingRight ? 1 : -1;
-			var Head = character.Head;
-			var Body = character.Body;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
+			bool alt = CurrentAnimationFrame.UMod(8) >= 4;
 
-			bool alt = character.CurrentAnimationFrame.UMod(8) >= 4;
-
-			character.PoseRootY -= A2G;
-			character.PoseTwist = FacingRight ? -400 : 400;
+			Target.PoseRootY -= A2G;
+			Target.PoseTwist = FacingRight ? -400 : 400;
 
 			if (alt) {
 				Body.Height += A2G / 4;
@@ -416,29 +337,14 @@ namespace AngeliaFramework {
 			FootR.Z += 2;
 
 			// Final
-			character.HandGrabRotationL = LowerArmL.Rotation - facingSign * 90;
-			character.HandGrabRotationR = LowerArmR.Rotation - facingSign * 90;
+			Target.HandGrabRotationL = LowerArmL.Rotation - FacingSign * 90;
+			Target.HandGrabRotationR = LowerArmR.Rotation - FacingSign * 90;
 		}
 
 
-		public static void SwimIdle (Character character) {
+		public static void SwimIdle () {
 
-			bool FacingRight = character.FacingRight;
-			bool FacingFront = character.FacingFront;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
-
-			int frame0121 = character.CurrentAnimationFrame.UMod(64) / 16;
+			int frame0121 = CurrentAnimationFrame.UMod(64) / 16;
 			int facingSign = FacingRight ? 1 : -1;
 
 			// Arm
@@ -476,39 +382,21 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(-facingSign);
 
 			// Final
-			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
+			Target.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			Target.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 		}
 
 
-		public static void SwimMove (Character character) {
+		public static void SwimMove () {
 
-			bool FacingRight = character.FacingRight;
-			var Head = character.Head;
-			var Body = character.Body;
-			var ShoulderL = character.ShoulderL;
-			var ShoulderR = character.ShoulderR;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
-
-			int loop = Mathf.Max((1200 / character.SwimSpeed.Value).Clamp(1, 128) / 4 * 4, 1);
-			int frame = character.CurrentAnimationFrame.UMod(loop) / (loop / 4);
+			int loop = Mathf.Max((1200 / Target.SwimSpeed.Value).Clamp(1, 128) / 4 * 4, 1);
+			int frame = CurrentAnimationFrame.UMod(loop) / (loop / 4);
 
 			int frame0121 = frame == 3 ? 1 : frame;
 			int facingSign = FacingRight ? 1 : -1;
 			int easeArm = frame * A2G;
 
-			character.PoseTwist = FacingRight ? 0 : 1000;
+			Target.PoseTwist = FacingRight ? 0 : 1000;
 
 			Head.X = facingSign * A2G;
 
@@ -571,33 +459,14 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(-facingSign);
 
 			// Final
-			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
+			Target.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			Target.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 		}
 
 
-		public static void SquatIdle (Character character) {
+		public static void SquatIdle () {
 
-			bool FacingRight = character.FacingRight;
-			bool FacingFront = character.FacingFront;
-			var Head = character.Head;
-			var Body = character.Body;
-			var ShoulderL = character.ShoulderL;
-			var ShoulderR = character.ShoulderR;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
-
-			int arrFrame = character.CurrentAnimationFrame.UMod(64) / 16;
+			int arrFrame = CurrentAnimationFrame.UMod(64) / 16;
 
 			float ease = Ease.InOutCirc(arrFrame / 4f);
 			if (arrFrame >= 2) ease = 1f - ease;
@@ -607,7 +476,7 @@ namespace AngeliaFramework {
 			int bodyBorderL = FacingRight ? Body.Border.left : Body.Border.right;
 			int bodyBorderR = FacingRight ? Body.Border.right : Body.Border.left;
 
-			int above = character.PoseRootY /= 2;
+			int above = Target.PoseRootY /= 2;
 
 			Body.Width += facingSign * halfEase;
 			Body.Height = Body.SizeY / 2 - oneEase;
@@ -677,43 +546,28 @@ namespace AngeliaFramework {
 			HandR.X += halfEase;
 
 			// Final
-			character.HandGrabRotationL = 100;
-			character.HandGrabRotationR = -100;
+			Target.HandGrabRotationL =
+				Target.EquippingWeaponHeld == WeaponHandHeld.OneOnEachHand ? 100 :
+				FacingSign * 100;
+			Target.HandGrabRotationR =
+				Target.EquippingWeaponHeld == WeaponHandHeld.OneOnEachHand ? -100 :
+				FacingSign * 100;
 		}
 
 
-		public static void SquatMove (Character character) {
-
-			bool FacingRight = character.FacingRight;
-			bool FacingFront = character.FacingFront;
-			var Head = character.Head;
-			var Body = character.Body;
-			var ShoulderL = character.ShoulderL;
-			var ShoulderR = character.ShoulderR;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
+		public static void SquatMove () {
 
 			const int FRAME_LENGTH = 16;
 
-			int loop = Mathf.Max(600 / character.SquatSpeed.Value.Clamp(1, 256) / FRAME_LENGTH * FRAME_LENGTH, 1);
+			int loop = Mathf.Max(600 / Target.SquatSpeed.Value.Clamp(1, 256) / FRAME_LENGTH * FRAME_LENGTH, 1);
 			int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
-			int arrFrame = (character.CurrentAnimationFrame.UMod(loop) / frameRate) % FRAME_LENGTH;
+			int arrFrame = (CurrentAnimationFrame.UMod(loop) / frameRate) % FRAME_LENGTH;
 			arrFrame = (arrFrame + 4).UMod(FRAME_LENGTH);
 
 			float ease = WALK_RUN_EASE[arrFrame];
 			int easeA2G = (int)(ease * A2G);
 			int easeA2G2 = (int)(ease * 2 * A2G);
-			int above = character.PoseRootY = character.PoseRootY / 2 + easeA2G;
+			int above = Target.PoseRootY = Target.PoseRootY / 2 + easeA2G;
 
 			Body.Height = Body.SizeY / 2 + easeA2G;
 			Head.Y = Body.Y + Body.Height;
@@ -766,41 +620,26 @@ namespace AngeliaFramework {
 			FootR.Y = FootR.Height - above;
 
 			// Final
-			character.HandGrabRotationL = 100;
-			character.HandGrabRotationR = -100;
+			Target.HandGrabRotationL =
+				Target.EquippingWeaponHeld == WeaponHandHeld.OneOnEachHand ? 100 :
+				FacingSign * 100;
+			Target.HandGrabRotationR =
+				Target.EquippingWeaponHeld == WeaponHandHeld.OneOnEachHand ? -100 :
+				FacingSign * 100;
 
 		}
 
 
-		public static void Dash (Character character) {
+		public static void Dash () {
 
-			bool FacingRight = character.FacingRight;
-			var Head = character.Head;
-			var Body = character.Body;
-			var Hip = character.Hip;
-			var ShoulderL = character.ShoulderL;
-			var ShoulderR = character.ShoulderR;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
-
-			int aFrame = character.CurrentAnimationFrame.UMod(8) / 4;
+			int aFrame = CurrentAnimationFrame.UMod(8) / 4;
 			bool alt = aFrame == 1;
 			int facingSign = FacingRight ? 1 : -1;
 
 			HandL.Z = HandR.Z = POSE_Z_HAND;
 
-			character.PoseRootY = 0;
-			character.PoseTwist = -1000;
+			Target.PoseRootY = 0;
+			Target.PoseTwist = -1000;
 
 			Head.X += facingSign * A2G;
 			Body.X += facingSign * 2 * A2G;
@@ -877,37 +716,18 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(-facingSign);
 
 			// Final
-			character.HandGrabRotationL = FacingRight ? 90 : 0;
-			character.HandGrabRotationR = FacingRight ? 0 : -90;
+			Target.HandGrabRotationL = FacingRight ? 90 : 0;
+			Target.HandGrabRotationR = FacingRight ? 0 : -90;
 		}
 
 
-		public static void Rolling (Character character) {
+		public static void Rolling () {
 
-			bool FacingRight = character.FacingRight;
-			var Head = character.Head;
-			var Body = character.Body;
-			var Hip = character.Hip;
-			var ShoulderL = character.ShoulderL;
-			var ShoulderR = character.ShoulderR;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
-
-			int arrFrame = character.CurrentAnimationFrame.UMod(24) / 3;
+			int arrFrame = CurrentAnimationFrame.UMod(24) / 3;
 			int facingSign = FacingRight ? 1 : -1;
 			int upsideSign = arrFrame < 2 || arrFrame > 5 ? 1 : -1;
 
-			character.PoseRootY = character.PoseRootY * ROLLING[arrFrame, 0] / 1500;
+			Target.PoseRootY = Target.PoseRootY * ROLLING[arrFrame, 0] / 1500;
 
 			Head.FrontSide = Body.FrontSide = arrFrame < 2 || arrFrame > 5;
 
@@ -977,36 +797,19 @@ namespace AngeliaFramework {
 			}
 
 			// Final
-			character.HandGrabRotationL = LowerArmL.Rotation + Body.Height.Sign() * facingSign * 90;
-			character.HandGrabRotationR = LowerArmR.Rotation + Body.Height.Sign() * facingSign * 90;
+			Target.HandGrabRotationL = LowerArmL.Rotation + Body.Height.Sign() * facingSign * 90;
+			Target.HandGrabRotationR = LowerArmR.Rotation + Body.Height.Sign() * facingSign * 90;
 		}
 
 
-		public static void Rush (Character character) {
+		public static void Rush () {
 
-			bool FacingRight = character.FacingRight;
-			bool FacingFront = character.FacingFront;
-			var Head = character.Head;
-			var Body = character.Body;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
-
-			int aFrame = character.CurrentAnimationFrame.Abs() / 3;
+			int aFrame = CurrentAnimationFrame.Abs() / 3;
 			bool alt = aFrame % 2 == 0;
 			int facingSign = FacingRight ? 1 : -1;
 
-			character.PoseRootY -= aFrame.Clamp(0, 2) * A2G - A2G * 2;
-			character.PoseTwist = -facingSign * 1000;
+			Target.PoseRootY -= aFrame.Clamp(0, 2) * A2G - A2G * 2;
+			Target.PoseTwist = -facingSign * 1000;
 			Head.Height -= A2G;
 			Body.X -= facingSign * A2G / 2;
 
@@ -1074,30 +877,14 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(-facingSign);
 
 			// Final
-			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
+			Target.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			Target.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 		}
 
 
-		public static void Pound (Character character) {
+		public static void Pound () {
 
-			bool FacingRight = character.FacingRight;
-			bool FacingFront = character.FacingFront;
-			var Head = character.Head;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
-
-			bool alt = character.CurrentAnimationFrame % 8 < 4;
+			bool alt = CurrentAnimationFrame % 8 < 4;
 			int facingSign = FacingRight ? 1 : -1;
 
 			HandL.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
@@ -1109,7 +896,7 @@ namespace AngeliaFramework {
 			FootL.Z = FacingFront ? 5 : -5;
 			FootR.Z = FacingFront ? 5 : -5;
 
-			character.PoseRootY = A2G;
+			Target.PoseRootY = A2G;
 
 			Head.X += facingSign * A2G;
 			Head.Y -= A2G;
@@ -1135,32 +922,14 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(-facingSign);
 
 			// Final
-			character.HandGrabRotationL = LowerArmL.Rotation - 90;
-			character.HandGrabRotationR = LowerArmR.Rotation + 90;
+			Target.HandGrabRotationL = LowerArmL.Rotation - 90;
+			Target.HandGrabRotationR = LowerArmR.Rotation + 90;
 		}
 
 
-		public static void Spin (Character character) {
+		public static void Spin () {
 
-			bool FacingRight = character.FacingRight;
-			var Head = character.Head;
-			var Body = character.Body;
-			var ShoulderL = character.ShoulderL;
-			var ShoulderR = character.ShoulderR;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
-
-			int aFrame = character.CurrentAnimationFrame.UMod(8);
+			int aFrame = CurrentAnimationFrame.UMod(8);
 			int pingpong = aFrame < 4 ? aFrame : 8 - aFrame; // 01234321
 			int pingpong2 = pingpong < 2 ? pingpong : 4 - pingpong; // 01210121
 			int facingSign = FacingRight ? 1 : -1;
@@ -1171,7 +940,7 @@ namespace AngeliaFramework {
 				FootR.Z -= 2;
 			}
 
-			character.PoseTwist = (pingpong - 2) * 1000;
+			Target.PoseTwist = (pingpong - 2) * 1000;
 
 			Head.FrontSide = facingFront;
 			Body.FrontSide = facingFront;
@@ -1218,35 +987,21 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(facingFront ? -facingSign : facingSign);
 
 			// Final
-			character.HandGrabRotationL = LowerArmL.Rotation - 90;
-			character.HandGrabRotationR = LowerArmR.Rotation + 90;
+			Target.HandGrabRotationL = LowerArmL.Rotation - 90;
+			Target.HandGrabRotationR = LowerArmR.Rotation + 90;
 		}
 
 
-		public static void Climb (Character character) {
+		public static void Climb () {
 
-			bool FacingFront = character.FacingFront;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
-
-			int frameRate = Mathf.Max(560 / character.ClimbSpeedY.Value.Clamp(1, 1024) / 8, 1);
-			int aFrame = character.CurrentAnimationFrame.UMod(frameRate * 10 - 1) / frameRate;
+			int frameRate = Mathf.Max(560 / Target.ClimbSpeedY.Value.Clamp(1, 1024) / 8, 1);
+			int aFrame = CurrentAnimationFrame.UMod(frameRate * 10 - 1) / frameRate;
 
 			int delayFrame = (aFrame + 1) % 10;
 			if (aFrame >= 5) aFrame = 8 - aFrame;
 			if (delayFrame >= 5) delayFrame = 8 - delayFrame;
 
-			character.PoseRootY -= (aFrame - 2).Abs() * A2G;
+			Target.PoseRootY -= (aFrame - 2).Abs() * A2G;
 
 			// Arm
 			UpperArmL.LimbRotate(((3 - delayFrame) * -35 + 135).Clamp(45, 135), 1000);
@@ -1271,37 +1026,18 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(1);
 
 			// Final
-			character.HandGrabRotationL = LowerArmL.Rotation - 90;
-			character.HandGrabRotationR = LowerArmR.Rotation + 90;
+			Target.HandGrabRotationL = LowerArmL.Rotation - 90;
+			Target.HandGrabRotationR = LowerArmR.Rotation + 90;
 		}
 
 
-		public static void Fly (Character character) {
+		public static void Fly () {
 
-			bool FacingRight = character.FacingRight;
-			var Head = character.Head;
-			var Body = character.Body;
-			var Hip = character.Hip;
-			var ShoulderL = character.ShoulderL;
-			var ShoulderR = character.ShoulderR;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
-
-			int frame = character.CurrentAnimationFrame.UMod(16) / 2;
+			int frame = CurrentAnimationFrame.UMod(16) / 2;
 			int pingpong = frame < 4 ? frame : 8 - frame;
 			int facingSign = FacingRight ? 1 : -1;
 
-			character.PoseRootY = (frame < 6 ? frame / 2 : 8 - frame) * -A2G + 2 * A2G;
+			Target.PoseRootY = (frame < 6 ? frame / 2 : 8 - frame) * -A2G + 2 * A2G;
 
 			Head.Y = 0;
 
@@ -1350,39 +1086,20 @@ namespace AngeliaFramework {
 			FootR.Z = -32;
 
 			// Final
-			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 60;
-			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 60;
+			Target.HandGrabRotationL = LowerArmL.Rotation + facingSign * 60;
+			Target.HandGrabRotationR = LowerArmR.Rotation + facingSign * 60;
 		}
 
 
-		public static void Slide (Character character) {
+		public static void Slide () {
 
-			bool FacingRight = character.FacingRight;
-			bool FacingFront = character.FacingFront;
-			var Head = character.Head;
-			var Body = character.Body;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
-
-			bool alt = (character.CurrentAnimationFrame / 4) % 2 == 0;
+			bool alt = (CurrentAnimationFrame / 4) % 2 == 0;
 			int facingSign = FacingRight ? 1 : -1;
 
 			Head.X -= facingSign * 2 * A2G;
 			Head.Width *= -1;
 
 			Body.X -= facingSign * A2G;
-
-
 
 			if (FacingRight) {
 				UpperLegL.X += A2G;
@@ -1430,31 +1147,16 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(-facingSign);
 
 			// Final
-			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
+			Target.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			Target.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 
 		}
 
 
-		public static void GrabTop (Character character) {
+		public static void GrabTop () {
 
-			bool FacingFront = character.FacingFront;
-			int facingSign = character.FacingRight ? 1 : -1;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
-
-			int loop = Mathf.Max((700 / character.GrabMoveSpeedX.Value.Clamp(1, 1024)) / 4 * 4, 1);
-			int arrFrame = ((character.CurrentAnimationFrame).UMod(loop) / (loop / 4)) % 4;// 0123
+			int loop = Mathf.Max((700 / Target.GrabMoveSpeedX.Value.Clamp(1, 1024)) / 4 * 4, 1);
+			int arrFrame = (CurrentAnimationFrame.UMod(loop) / (loop / 4)) % 4;// 0123
 			int pingpong = arrFrame == 3 ? 1 : arrFrame; // 0121
 			int pingpongAlt = arrFrame == 2 ? 1 : arrFrame == 3 ? 0 : arrFrame + 1; // 1210
 
@@ -1462,8 +1164,7 @@ namespace AngeliaFramework {
 			LowerArmL.Z = LowerArmR.Z = (FacingFront ? 35 : -35);
 			HandL.Z = HandR.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
 
-
-			character.PoseRootY += pingpongAlt * A2G;
+			Target.PoseRootY += pingpongAlt * A2G;
 
 			// Arm
 			UpperArmL.LimbRotate(165 - pingpong * 6, 1500);
@@ -1492,38 +1193,20 @@ namespace AngeliaFramework {
 			FootR.X += pingpongAlt * A2G / 2;
 
 			// Final
-			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
+			Target.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
+			Target.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
 		}
 
 
-		public static void GrabSide (Character character) {
+		public static void GrabSide () {
 
-			bool FacingRight = character.FacingRight;
-			bool FacingFront = character.FacingFront;
-			var Body = character.Body;
-			var ShoulderL = character.ShoulderL;
-			var ShoulderR = character.ShoulderR;
-			var UpperArmL = character.UpperArmL;
-			var UpperArmR = character.UpperArmR;
-			var LowerArmL = character.LowerArmL;
-			var LowerArmR = character.LowerArmR;
-			var HandL = character.HandL;
-			var HandR = character.HandR;
-			var UpperLegL = character.UpperLegL;
-			var UpperLegR = character.UpperLegR;
-			var LowerLegL = character.LowerLegL;
-			var LowerLegR = character.LowerLegR;
-			var FootL = character.FootL;
-			var FootR = character.FootR;
-
-			int loop = Mathf.Max((700 / character.GrabMoveSpeedY.Value.Clamp(1, 1024)) / 4 * 4, 1);
-			int arrFrame = ((character.CurrentAnimationFrame).UMod(loop) / (loop / 4)) % 4;// 0123
+			int loop = Mathf.Max((700 / Target.GrabMoveSpeedY.Value.Clamp(1, 1024)) / 4 * 4, 1);
+			int arrFrame = (CurrentAnimationFrame.UMod(loop) / (loop / 4)) % 4;// 0123
 			int pingpong = arrFrame == 3 ? 1 : arrFrame; // 0121
 			int facingSign = FacingRight ? 1 : -1;
 			int bodyShift = facingSign * (Body.Width.Abs() / 2 - A2G * 2);
 
-			character.PoseRootY -= pingpong * A2G;
+			Target.PoseRootY -= pingpong * A2G;
 
 			Body.X += bodyShift;
 
@@ -1563,8 +1246,8 @@ namespace AngeliaFramework {
 			FootR.LimbRotate(-facingSign);
 
 			// Final
-			character.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
-			character.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
+			Target.HandGrabRotationL = LowerArmL.Rotation + facingSign * 90;
+			Target.HandGrabRotationR = LowerArmR.Rotation + facingSign * 90;
 		}
 
 
