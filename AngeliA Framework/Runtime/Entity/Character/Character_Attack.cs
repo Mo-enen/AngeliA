@@ -53,7 +53,7 @@ namespace AngeliaFramework {
 			} else if (ChargeStartFrame != int.MaxValue) {
 				// Charge Release
 				if (IsAttackCharged) {
-					if (IsAttackAllowedByMovement()) {
+					if (IsAttackAllowedByMovement() && IsAttackAllowedByEquipment()) {
 						Attack();
 					}
 				}
@@ -85,7 +85,7 @@ namespace AngeliaFramework {
 			Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown;
 
 
-		protected bool IsAttackAllowedByMovement () =>
+		protected virtual bool IsAttackAllowedByMovement () =>
 			(AttackInAir || (IsGrounded || InWater || InSand || IsClimbing)) &&
 			(AttackInWater || !InWater) &&
 			(AttackWhenMoving || IntendedX == 0) &&
@@ -99,7 +99,7 @@ namespace AngeliaFramework {
 			(AttackWhenRush || (!IsRushing));
 
 
-		protected virtual int GetAttackBulletIndex () => AttackCombo;
+		protected virtual bool IsAttackAllowedByEquipment () => GetEquippingItem(EquipmentType.Weapon) is not Weapon weapon || weapon.AllowingAttack(this);
 
 
 		#endregion

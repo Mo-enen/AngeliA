@@ -72,13 +72,30 @@ namespace AngeliaFramework {
 
 		protected virtual void OnTakeDamage (ref int damage, Entity sender) {
 
-			ChargeStartFrame = int.MaxValue;
-			MakeInvincible(InvincibleDuration);
+			// Items
+			if (damage > 0) {
 
+				// Equipment
+				for (int i = 0; i < EquipmentTypeCount && damage > 0; i++) {
+					GetEquippingItem((EquipmentType)i)?.OnTakeDamage_FromEquipment(this, sender, ref damage);
+				}
+
+				// Inventory
+				int iCount = GetInventoryCapacity();
+				for (int i = 0; i < iCount && damage > 0; i++) {
+					GetItemFromInventory(i)?.OnTakeDamage_FromInventory(this, sender, ref damage);
+				}
+			}
+
+			// Deal Damage
+			damage = damage.GreaterOrEquelThanZero();
 			HealthPoint = (HealthPoint - damage).Clamp(0, MaxHP);
-			LastDamageFrame = Game.GlobalFrame;
 
 			VelocityX = FacingRight ? -KnockBackSpeed : KnockBackSpeed;
+
+			InvincibleEndFrame = Game.GlobalFrame + InvincibleDuration;
+			LastDamageFrame = Game.GlobalFrame;
+			ChargeStartFrame = int.MaxValue;
 
 		}
 

@@ -1028,6 +1028,8 @@ namespace AngeliaFramework {
 			// Final
 			Target.HandGrabRotationL = LowerArmL.Rotation - 90;
 			Target.HandGrabRotationR = LowerArmR.Rotation + 90;
+			Target.HandGrabScaleL = 1000;
+			Target.HandGrabScaleR = 1000;
 		}
 
 

@@ -153,7 +153,7 @@ namespace AngeliaFramework {
 
 		public void Collect (Player player, bool append = false) {
 
-			if (ItemID == 0) return;
+			if (ItemID == 0 || player is null) return;
 			int invID = player.TypeID;
 			if (!Inventory.HasInventory(invID)) return;
 

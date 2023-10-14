@@ -70,6 +70,10 @@ namespace AngeliaFramework {
 		protected sealed override int PhysicsLayer => Const.LAYER_CHARACTER;
 		protected virtual int Bouncy => 150;
 
+		// Short
+		private static int EquipmentTypeCount => _EquipmentTypeCount > 0 ? _EquipmentTypeCount : (_EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length);
+		private static int _EquipmentTypeCount = 0;
+
 		// Data
 		private static readonly HashSet<int> RenderWithSheetPool = new();
 		private int PassOutFrame = int.MinValue;
@@ -172,6 +176,16 @@ namespace AngeliaFramework {
 				CurrentAnimationFrame = GrowAnimationFrame(CurrentAnimationFrame);
 			}
 
+			// Pipeline
+			FrameUpdate_Particle();
+			FrameUpdate_Items();
+
+			base.FrameUpdate();
+		}
+
+
+		private void FrameUpdate_Particle () {
+
 			if (CharacterState == CharacterState.GamePlay) {
 				// Run Particle
 				if (
@@ -237,9 +251,47 @@ namespace AngeliaFramework {
 				// ++
 				SleepFrame++;
 			}
-
-			base.FrameUpdate();
 		}
+
+
+		private void FrameUpdate_Items () {
+
+			AttackDuration.Override = null;
+			AttackCooldown.Override = null;
+			RepeatAttackWhenHolding.Override = null;
+			int invCapacity = GetInventoryCapacity();
+			if (invCapacity > 0) {
+
+				bool eventAvailable = CharacterState == CharacterState.GamePlay && !FrameTask.HasTask() && !TakingDamage;
+				bool attackStart = eventAvailable && Game.GlobalFrame == LastAttackFrame;
+				bool squatStart = eventAvailable && Game.GlobalFrame == LastSquatFrame;
+
+				// Inventory
+				for (int i = 0; i < invCapacity; i++) {
+					GetItemFromInventory(i)?.OnItemUpdate_FromInventory(this);
+				}
+
+				// Equipment
+				for (int i = 0; i < EquipmentTypeCount; i++) {
+					var item = GetEquippingItem((EquipmentType)i);
+					if (item == null) continue;
+					item.OnItemUpdate_FromEquipment(this);
+					if (attackStart) item.OnAttack(this);
+					if (squatStart) item.OnRepair(this);
+					if (item is Weapon weapon) {
+						AttackDuration.Override = weapon.AttackDuration;
+						AttackCooldown.Override = weapon.AttackCooldown;
+						RepeatAttackWhenHolding.Override = weapon.RepeatAttackWhenHolding;
+					}
+				}
+
+			}
+		}
+
+
+		protected virtual int GetInventoryCapacity () => 0;
+		protected virtual Item GetItemFromInventory (int itemIndex) => null;
+		protected virtual Equipment GetEquippingItem (EquipmentType type) => null;
 
 
 		#endregion

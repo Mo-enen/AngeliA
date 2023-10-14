@@ -36,8 +36,8 @@ namespace AngeliaGame {
 	public class iAxeCursed : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Axe;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-		protected override Cell DrawWeaponSprite (Character character, int x, int y, int grabRotation, int grabScale, AngeSprite sprite, int z) {
-			var cell = base.DrawWeaponSprite(character, x, y, grabRotation, grabScale, sprite, z);
+		protected override Cell DrawWeaponSprite (Character character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
 			AngeUtil.DrawGlitchEffect(cell, Game.GlobalFrame);
 			return cell;
 		}

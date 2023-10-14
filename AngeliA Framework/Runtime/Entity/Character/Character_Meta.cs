@@ -138,7 +138,7 @@ namespace AngeliaFramework {
 		public readonly BuffInt MinimalChargeAttackDuration = new(int.MaxValue);
 		public readonly BuffBool StopMoveOnAttack = new(true);
 		public readonly BuffBool CancelAttackOnJump = new(false);
-		public readonly BuffBool KeepAttackWhenHold = new(false);
+		public readonly BuffBool RepeatAttackWhenHolding = new(false);
 		public readonly BuffBool AttackInAir = new(true);
 		public readonly BuffBool AttackInWater = new(true);
 		public readonly BuffBool AttackWhenMoving = new(true);

@@ -320,9 +320,9 @@ namespace AngeliaFramework {
 			// Try Perform Attack
 			ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_ATTACK, "Attack"));
 			bool attDown = FrameInput.GameKeyDown(Gamekey.Action);
-			bool attHolding = FrameInput.GameKeyHolding(Gamekey.Action) && KeepAttackWhenHold;
+			bool attHolding = FrameInput.GameKeyHolding(Gamekey.Action) && RepeatAttackWhenHolding;
 			if (attDown || attHolding) {
-				if (IsAttackAllowedByMovement()) {
+				if (IsAttackAllowedByMovement() && IsAttackAllowedByEquipment()) {
 					if (AttackCooldownReady(!attDown)) {
 						Attack();
 					} else if (attDown) {
@@ -345,6 +345,7 @@ namespace AngeliaFramework {
 			if (
 				Game.GlobalFrame < AttackRequiringFrame + ATTACK_REQUIRE_GAP &&
 				IsAttackAllowedByMovement() &&
+				IsAttackAllowedByEquipment() &&
 				AttackCooldownReady(false)
 			) {
 				AttackRequiringFrame = int.MinValue;
@@ -522,8 +523,15 @@ namespace AngeliaFramework {
 			base.FrameUpdate();
 			PoseZOffset = oldZ;
 
-			// Items
-			FrameUpdate_Item();
+			// Auto Pick Item
+			if (!FrameTask.HasTask() && !PlayerMenuUI.ShowingUI) {
+				var cells = CellPhysics.OverlapAll(Const.MASK_ITEM, Rect, out int count, null, OperationMode.ColliderAndTrigger);
+				for (int i = 0; i < count; i++) {
+					var cell = cells[i];
+					if (cell.Entity is not ItemHolder holder || !holder.Active) continue;
+					holder.Collect(this, true);
+				}
+			}
 
 			// Bounce when Highlight
 			if ((this as IActionTarget).IsHighlighted) {
@@ -539,83 +547,10 @@ namespace AngeliaFramework {
 		}
 
 
-		private void FrameUpdate_Item () {
-
-			if (!Inventory.HasInventory(TypeID)) return;
-
-			bool eventAvailable = CharacterState == CharacterState.GamePlay && !FrameTask.HasTask() && !TakingDamage;
-			bool attackStart = eventAvailable && Game.GlobalFrame == LastAttackFrame;
-			bool squatStart = eventAvailable && Game.GlobalFrame == LastSquatFrame;
-
-			// Inventory
-			int iCount = Inventory.GetInventoryCapacity(TypeID);
-			for (int i = 0; i < iCount; i++) {
-				int id = Inventory.GetItemAt(TypeID, i);
-				if (id == 0) continue;
-				var item = ItemSystem.GetItem(id);
-				if (item == null) continue;
-				item.Update(this, ItemLocation.Inventory);
-				if (attackStart) item.OnAttack(this, ItemLocation.Inventory);
-				if (squatStart) item.OnRepair(this, ItemLocation.Inventory);
-			}
-
-			// Equipment
-			for (int i = 0; i < EquipmentTypeCount; i++) {
-				int id = Inventory.GetEquipment(TypeID, (EquipmentType)i);
-				if (id == 0) continue;
-				var item = ItemSystem.GetItem(id);
-				if (item == null) continue;
-				item.Update(this, ItemLocation.Equipment);
-				if (attackStart) item.OnAttack(this, ItemLocation.Equipment);
-				if (squatStart) item.OnRepair(this, ItemLocation.Equipment);
-			}
-
-			// Auto Pick Item
-			if (!FrameTask.HasTask() && !PlayerMenuUI.ShowingUI) {
-				var cells = CellPhysics.OverlapAll(Const.MASK_ITEM, Rect, out int count, null, OperationMode.ColliderAndTrigger);
-				for (int i = 0; i < count; i++) {
-					var cell = cells[i];
-					if (cell.Entity is not ItemHolder holder || !holder.Active) continue;
-					holder.Collect(this, true);
-				}
-			}
-		}
-
-
-		// Misc
-		protected override void OnTakeDamage (ref int damage, Entity sender) {
-
-			if (damage <= 0) return;
-
-			// Equipment
-			for (int i = 0; i < EquipmentTypeCount && damage > 0; i++) {
-				int id = Inventory.GetEquipment(TypeID, (EquipmentType)i);
-				if (id == 0) continue;
-				ItemSystem.GetItem(id)?.OnTakeDamage(this, ItemLocation.Equipment, ref damage, sender);
-			}
-
-			// Inventory
-			int iCount = Inventory.GetInventoryCapacity(TypeID);
-			for (int i = 0; i < iCount && damage > 0; i++) {
-				int id = Inventory.GetItemAt(TypeID, i);
-				if (id == 0) continue;
-				ItemSystem.GetItem(id)?.OnTakeDamage(this, ItemLocation.Inventory, ref damage, sender);
-			}
-
-			base.OnTakeDamage(ref damage, sender);
-		}
-
-
-		protected override void OnPoseCalculated () {
-
-			// Equipment
-			for (int i = 0; i < EquipmentTypeCount; i++) {
-				int id = Inventory.GetEquipment(TypeID, (EquipmentType)i);
-				if (id == 0) continue;
-				ItemSystem.GetItem(id)?.PoseAnimationUpdate(this, ItemLocation.Equipment);
-			}
-
-		}
+		// Inventory
+		protected override int GetInventoryCapacity () => Inventory.GetInventoryCapacity(TypeID);
+		protected override Item GetItemFromInventory (int itemIndex) => ItemSystem.GetItem(Inventory.GetItemAt(TypeID, itemIndex));
+		protected override Equipment GetEquippingItem (EquipmentType type) => ItemSystem.GetItem(Inventory.GetEquipment(TypeID, type)) as Equipment;
 
 
 		#endregion

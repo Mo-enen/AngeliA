@@ -295,7 +295,7 @@ namespace AngeliaFramework {
 			PerformPoseAnimation_Movement();
 			PerformPoseAnimation_Handheld();
 			PerformPoseAnimation_Attack();
-			OnPoseCalculated();
+			PoseUpdate_Items();
 
 			Wing.Draw(this, out var wing);
 			if (ShowingTail(wing)) Tail.Draw(this);
@@ -311,6 +311,8 @@ namespace AngeliaFramework {
 			Cloth.DrawFootSuit(this);
 
 			DrawBodyPart(cellIndexStart);
+
+			OnPoseCalculated();
 		}
 
 
@@ -411,7 +413,6 @@ namespace AngeliaFramework {
 			// Make Global Pos Ready
 			CalculateBodypartGlobalPosition();
 
-
 		}
 
 
@@ -438,34 +439,23 @@ namespace AngeliaFramework {
 
 			if (overrideHandHeld) {
 				// Override Handheld
-				switch (EquippingWeaponHeld) {
-					case WeaponHandHeld.DoubleHanded:
-						AnimationLibrary.HandHeld_Double();
-						break;
-					case WeaponHandHeld.Polearm:
-						AnimationLibrary.HandHeld_Polearm();
-						break;
-					case WeaponHandHeld.Bow:
-						AnimationLibrary.HandHeld_Bow();
-						break;
-					case WeaponHandHeld.CrossBow:
-						AnimationLibrary.HandHeld_CrossBow();
-						break;
-					case WeaponHandHeld.Throw:
-						AnimationLibrary.HandHeld_Throw();
-						break;
+				if (
+					EquippingWeaponHeld == WeaponHandHeld.DoubleHanded ||
+					EquippingWeaponHeld == WeaponHandHeld.Bow
+				) {
+					AnimationLibrary.HandHeld_Double_Bow();
+				} else if (EquippingWeaponHeld == WeaponHandHeld.Polearm) {
+					AnimationLibrary.HandHeld_Polearm();
 				}
 				CalculateBodypartGlobalPosition();
 			} else {
 				// Redirect Handheld
-				switch (EquippingWeaponHeld) {
-					case WeaponHandHeld.DoubleHanded:
-					case WeaponHandHeld.Polearm:
-					case WeaponHandHeld.Bow:
-					case WeaponHandHeld.CrossBow:
-					case WeaponHandHeld.Throw:
-						EquippingWeaponHeld = WeaponHandHeld.SingleHanded;
-						break;
+				if (
+					EquippingWeaponHeld == WeaponHandHeld.DoubleHanded ||
+					EquippingWeaponHeld == WeaponHandHeld.Bow ||
+					EquippingWeaponHeld == WeaponHandHeld.Polearm
+				) {
+					EquippingWeaponHeld = WeaponHandHeld.SingleHanded;
 				}
 			}
 
@@ -484,10 +474,10 @@ namespace AngeliaFramework {
 
 		private void PerformPoseAnimation_Attack () {
 
+			if (!IsAttacking) return;
+
 			HandGrabScaleL = FacingRight ? 1000 : -1000;
 			HandGrabScaleR = FacingRight ? 1000 : -1000;
-
-			if (!IsAttacking) return;
 
 			if (
 				StopMoveOnAttack && (
@@ -522,8 +512,12 @@ namespace AngeliaFramework {
 					AnimationLibrary.Attack_Wave();
 					break;
 
-				case WeaponType.Bow:
-					AnimationLibrary.Attack_Bow();
+				case WeaponType.Ranged:
+					if (EquippingWeaponHeld == WeaponHandHeld.Bow) {
+						AnimationLibrary.Attack_Bow();
+					} else {
+						AnimationLibrary.Attack_Firearm();
+					}
 					break;
 
 				case WeaponType.Polearm:
@@ -552,7 +546,19 @@ namespace AngeliaFramework {
 		}
 
 
-		protected virtual void OnPoseCalculated () { }
+		private void PoseUpdate_Items () {
+
+			// Equipment
+			for (int i = 0; i < EquipmentTypeCount; i++) {
+				GetEquippingItem((EquipmentType)i)?.PoseAnimationUpdate_FromEquipment(this);
+			}
+
+			// Inventory
+			int iCount = GetInventoryCapacity();
+			for (int i = 0; i < iCount; i++) {
+				GetItemFromInventory(i)?.PoseAnimationUpdate_FromInventory(this);
+			}
+		}
 
 
 		private void DrawBodyPart (int cellIndexStart) {
@@ -605,6 +611,9 @@ namespace AngeliaFramework {
 			}
 
 		}
+
+
+		protected virtual void OnPoseCalculated () { }
 
 
 		#endregion

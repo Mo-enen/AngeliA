@@ -51,26 +51,31 @@ namespace AngeliaGame {
 	public class iFlailPick : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Polearm;
+		public override int AttackDuration => 24;
 	}
 	public class iChainMace : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 		protected override int ChainLength => Const.CEL * 2 / 9;
 		protected override int ChainLengthAttackGrow => 2000;
+		public override int AttackDuration => 24;
 	}
 	public class iChainSpikeBall : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 		protected override int ChainLengthAttackGrow => 2000;
+		public override int AttackDuration => 24;
 	}
 	public class iChainBarbed : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 		protected override int ChainLengthAttackGrow => 2000;
+		public override int AttackDuration => 24;
 	}
 	public class iChainFist : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 		protected override int ChainLengthAttackGrow => 2000;
+		public override int AttackDuration => 24;
 	}
 }

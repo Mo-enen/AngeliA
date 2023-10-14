@@ -8,7 +8,7 @@ namespace AngeliaFramework {
 
 	public enum EquipmentType { Weapon, BodySuit, Helmet, Shoes, Gloves, Jewelry, }
 
-	
+
 	public abstract class ProgressiveEquipment<P, N> : Equipment where P : Equipment where N : Equipment {
 
 		protected virtual System.Type RepairMaterial => null;
@@ -28,9 +28,8 @@ namespace AngeliaFramework {
 			MaterialAltID = RepairMaterialAlt != null ? RepairMaterialAlt.AngeHash() : 0;
 		}
 
-		public override void OnTakeDamage (Entity holder, ItemLocation location, ref int damage, Entity sender) {
-			base.OnTakeDamage(holder, location, ref damage, sender);
-			if (location != ItemLocation.Equipment) return;
+		public override void OnTakeDamage_FromEquipment (Entity holder, Entity sender, ref int damage) {
+			base.OnTakeDamage_FromEquipment(holder, sender, ref damage);
 			if (PrevEquipmentID != 0 && damage > 0) {
 				Inventory.SetEquipment(holder.TypeID, EquipmentType, PrevEquipmentID);
 				SpawnEquipmentDamageParticle(TypeID, PrevEquipmentID, holder.X, holder.Y);
@@ -38,9 +37,8 @@ namespace AngeliaFramework {
 			}
 		}
 
-		public override void OnRepair (Entity holder, ItemLocation location) {
-			base.OnRepair(holder, location);
-			if (location != ItemLocation.Equipment) return;
+		public override void OnRepair (Entity holder) {
+			base.OnRepair(holder);
 			if (NextEquipmentID == 0) return;
 			// Try 0
 			if (MaterialID != 0) {

@@ -226,7 +226,7 @@ namespace AngeliaFramework {
 
 
 		// Override
-		public static void HandHeld_Double () {
+		public static void HandHeld_Double_Bow () {
 
 			ResetShoulderAndUpperArm();
 
@@ -302,21 +302,6 @@ namespace AngeliaFramework {
 			int deltaRot = (Target.DeltaPositionY / 10).Clamp(-10, 10);
 			Target.HandGrabRotationL = Target.HandGrabRotationR = FacingSign * (80 + deltaRot);
 			Target.HandGrabScaleL = Target.HandGrabScaleR = 1000;
-
-		}
-
-
-		public static void HandHeld_Bow () {
-
-		}
-
-
-		public static void HandHeld_CrossBow () {
-
-		}
-
-
-		public static void HandHeld_Throw () {
 
 		}
 
