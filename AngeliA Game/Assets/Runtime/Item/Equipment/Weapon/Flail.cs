@@ -50,7 +50,7 @@ namespace AngeliaGame {
 	}
 	public class iFlailPick : AutoSpriteFlail {
 		public override WeaponType WeaponType => WeaponType.Flail;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Polearm;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 		public override int AttackDuration => 24;
 	}
 	public class iChainMace : AutoSpriteFlail {

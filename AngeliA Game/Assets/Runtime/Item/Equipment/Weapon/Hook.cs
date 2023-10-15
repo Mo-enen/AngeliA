@@ -7,15 +7,15 @@ using AngeliaFramework;
 namespace AngeliaGame {
 	public class iScytheWood : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Polearm;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 	public class iScytheIron : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Polearm;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 	public class iScytheGold : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Polearm;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 	public class iSickle : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;

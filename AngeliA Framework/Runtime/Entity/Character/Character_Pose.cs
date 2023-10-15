@@ -319,6 +319,9 @@ namespace AngeliaFramework {
 		// Pipeline
 		private void PerformPoseAnimation_Movement () {
 
+			HandGrabScaleL = FacingRight ? 1000 : -1000;
+			HandGrabScaleR = FacingRight ? 1000 : -1000;
+
 			switch (AnimatedPoseType) {
 
 				case CharacterPoseAnimationType.TakingDamage:
@@ -432,8 +435,9 @@ namespace AngeliaFramework {
 				CharacterPoseAnimationType.SquatMove => true,
 				CharacterPoseAnimationType.Pound => true,
 				CharacterPoseAnimationType.Fly => true,
-				CharacterPoseAnimationType.Rush => EquippingWeaponHeld == WeaponHandHeld.Polearm,
-				CharacterPoseAnimationType.Dash => EquippingWeaponHeld == WeaponHandHeld.Polearm,
+				CharacterPoseAnimationType.Rush => EquippingWeaponHeld == WeaponHandHeld.Pole,
+				CharacterPoseAnimationType.Dash => EquippingWeaponHeld == WeaponHandHeld.Pole,
+				CharacterPoseAnimationType.Rolling => EquippingWeaponHeld == WeaponHandHeld.Bow || EquippingWeaponHeld == WeaponHandHeld.Firearm,
 				_ => false,
 			};
 
@@ -441,10 +445,11 @@ namespace AngeliaFramework {
 				// Override Handheld
 				if (
 					EquippingWeaponHeld == WeaponHandHeld.DoubleHanded ||
-					EquippingWeaponHeld == WeaponHandHeld.Bow
+					EquippingWeaponHeld == WeaponHandHeld.Bow ||
+					EquippingWeaponHeld == WeaponHandHeld.Firearm
 				) {
 					AnimationLibrary.HandHeld_Double_Bow();
-				} else if (EquippingWeaponHeld == WeaponHandHeld.Polearm) {
+				} else if (EquippingWeaponHeld == WeaponHandHeld.Pole) {
 					AnimationLibrary.HandHeld_Polearm();
 				}
 				CalculateBodypartGlobalPosition();
@@ -453,14 +458,15 @@ namespace AngeliaFramework {
 				if (
 					EquippingWeaponHeld == WeaponHandHeld.DoubleHanded ||
 					EquippingWeaponHeld == WeaponHandHeld.Bow ||
-					EquippingWeaponHeld == WeaponHandHeld.Polearm
+					EquippingWeaponHeld == WeaponHandHeld.Firearm ||
+					EquippingWeaponHeld == WeaponHandHeld.Pole
 				) {
 					EquippingWeaponHeld = WeaponHandHeld.SingleHanded;
 				}
 			}
 
 			// Fix Grab Rotation for Flail
-			if (EquippingWeaponType == WeaponType.Flail && EquippingWeaponHeld != WeaponHandHeld.Polearm) {
+			if (EquippingWeaponType == WeaponType.Flail && EquippingWeaponHeld != WeaponHandHeld.Pole) {
 				HandGrabRotationL += (
 					HandGrabRotationL.Sign() * -Mathf.Sin(HandGrabRotationL.Abs() * Mathf.Deg2Rad) * 30
 				).RoundToInt();
@@ -476,8 +482,7 @@ namespace AngeliaFramework {
 
 			if (!IsAttacking) return;
 
-			HandGrabScaleL = FacingRight ? 1000 : -1000;
-			HandGrabScaleR = FacingRight ? 1000 : -1000;
+			HandGrabScaleL = HandGrabScaleR = FacingRight ? 1000 : -1000;
 
 			if (
 				StopMoveOnAttack && (
@@ -513,15 +518,15 @@ namespace AngeliaFramework {
 					break;
 
 				case WeaponType.Ranged:
-					if (EquippingWeaponHeld == WeaponHandHeld.Bow) {
-						AnimationLibrary.Attack_Bow();
-					} else {
-						AnimationLibrary.Attack_Firearm();
-					}
+					AnimationLibrary.Attack_Ranged();
 					break;
 
 				case WeaponType.Polearm:
-					AnimationLibrary.Attack_Poke();
+					if (AttackCombo % 2 == 0) {
+						AnimationLibrary.Attack_Poke();
+					} else {
+						AnimationLibrary.Attack_Wave();
+					}
 					break;
 
 				case WeaponType.Hook:
@@ -537,7 +542,7 @@ namespace AngeliaFramework {
 					break;
 
 				case WeaponType.Throwing:
-					AnimationLibrary.Attack_Throw();
+					AnimationLibrary.Attack_Wave();
 					break;
 			}
 

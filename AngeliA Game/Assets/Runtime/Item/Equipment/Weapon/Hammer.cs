@@ -39,7 +39,7 @@ namespace AngeliaGame {
 	}
 	public class iHammerRiceCake : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Polearm;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 	public class iHammerGoatHorn : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
@@ -51,18 +51,18 @@ namespace AngeliaGame {
 	}
 	public class iHammerThunder : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Polearm;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 	public class iHammerMoai : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Polearm;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 	public class iHammerPaladin : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Polearm;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 	public class iHammerRuby : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hammer;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Polearm;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 }

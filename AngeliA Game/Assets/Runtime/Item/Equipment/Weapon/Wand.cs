@@ -15,19 +15,19 @@ namespace AngeliaGame {
 	}
 	public class iStaffFire : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Polearm;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 	public class iStaffWater : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Polearm;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 	public class iStaffLightning : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Polearm;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 	public class iStaffPoision : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Polearm;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 	public class iRitualSkull : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
