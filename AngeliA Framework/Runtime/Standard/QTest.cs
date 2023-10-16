@@ -16,6 +16,7 @@ namespace AngeliaFramework {
 					if (!IntPool.TryGetValue(key, out var value)) {
 						value = (@default, min, max, true);
 						IntPool.Add(key, value);
+						Keys.Add(key);
 					}
 					value.editable = true;
 					return value.value;
@@ -25,6 +26,8 @@ namespace AngeliaFramework {
 					bool editable = false;
 					if (IntPool.TryGetValue(key, out var result)) {
 						editable = result.editable;
+					} else {
+						Keys.Add(key);
 					}
 					IntPool[key] = (value, min, max, editable);
 				}
@@ -34,6 +37,7 @@ namespace AngeliaFramework {
 		public static readonly IntTest Int = new();
 		private static QTest Instance = null;
 		private static readonly Dictionary<string, (int value, int min, int max, bool editable)> IntPool = new();
+		private static readonly List<string> Keys = new();
 		private static readonly GUIStyle PanelStyle = new() { padding = new RectOffset(24, 24, 24, 24), };
 		private Vector2 ScrollPos = default;
 
@@ -43,6 +47,7 @@ namespace AngeliaFramework {
 			EditorApplication.playModeStateChanged += (state) => {
 				if (state == PlayModeStateChange.ExitingPlayMode) {
 					IntPool.Clear();
+					Keys.Clear();
 					Instance = null;
 				}
 			};
@@ -78,7 +83,15 @@ namespace AngeliaFramework {
 			int changingValue = 0;
 			int changingMin = 0;
 			int changingMax = 0;
-			foreach (var (key, (value, min, max, editable)) in IntPool) {
+			foreach (var key in Keys) {
+				if (string.IsNullOrEmpty(key) || !IntPool.ContainsKey(key)) continue;
+				if (key.StartsWith('#')) {
+					// Space
+					EditorGUILayout.LabelField(key);
+					GUILayout.Space(2);
+					continue;
+				}
+				var (value, min, max, editable) = IntPool[key];
 				int newValue;
 				if (editable) {
 					if (min == int.MinValue || max == int.MaxValue) {
@@ -102,6 +115,14 @@ namespace AngeliaFramework {
 				IntPool[changingKey] = (changingValue, changingMin, changingMax, true);
 			}
 			EditorGUIUtility.labelWidth = oldW;
+		}
+
+
+		public static void AddLabel (string label) {
+			label = "#" + label;
+			if (IntPool.ContainsKey(label)) return;
+			IntPool[label] = default;
+			Keys.Add(label);
 		}
 
 

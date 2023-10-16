@@ -36,7 +36,7 @@ namespace AngeliaFramework {
 		public Color32 Color;
 		public Alignment BorderSide;
 		public Vector4Int Shift;
-		public Vector2Int CellToGlobal (int cellX, int cellY) {
+		public Vector2Int LocalToGlobal (int cellX, int cellY) {
 			if (Rotation == 0) {
 				return new Vector2Int(
 					X + cellX - (int)(Width * PivotX),
@@ -56,7 +56,7 @@ namespace AngeliaFramework {
 			result.y += pOffsetY;
 			return result.RoundToInt();
 		}
-		public Vector2Int GlobalToCell (int globalX, int globalY) {
+		public Vector2Int GlobalToLocal (int globalX, int globalY) {
 			if (Rotation == 0) {
 				return new Vector2Int(
 					globalX + (int)(Width * PivotX) - X,
@@ -77,10 +77,10 @@ namespace AngeliaFramework {
 			return result.RoundToInt();
 		}
 		public RectInt GetBounds () {
-			var p0 = CellToGlobal(0, 0);
-			var p1 = CellToGlobal(Width, 0);
-			var p2 = CellToGlobal(Width, Height);
-			var p3 = CellToGlobal(0, Height);
+			var p0 = LocalToGlobal(0, 0);
+			var p1 = LocalToGlobal(Width, 0);
+			var p2 = LocalToGlobal(Width, Height);
+			var p3 = LocalToGlobal(0, Height);
 			var result = new RectInt();
 			result.SetMinMax(
 				Mathf.Min(Mathf.Min(p0.x, p1.x), Mathf.Min(p2.x, p3.x)),
@@ -91,10 +91,25 @@ namespace AngeliaFramework {
 			return result;
 		}
 		public void ReturnPivots () {
-			X -= (Width * PivotX).RoundToInt();
-			Y -= (Height * PivotY).RoundToInt();
+			if (Rotation == 0) {
+				X -= (Width * PivotX).RoundToInt();
+				Y -= (Height * PivotY).RoundToInt();
+			} else {
+				var point = LocalToGlobal(0, 0);
+				X = point.x;
+				Y = point.y;
+			}
 			PivotX = 0;
 			PivotY = 0;
+		}
+		public void RotateAround (int rotation, int pointX, int pointY) {
+			if (rotation == Rotation) return;
+			var localPoint = GlobalToLocal(pointX, pointY);
+			PivotX = (float)localPoint.x / Width;
+			PivotY = (float)localPoint.y / Height;
+			X = pointX;
+			Y = pointY;
+			Rotation += rotation;
 		}
 	}
 

@@ -451,6 +451,8 @@ namespace AngeliaFramework {
 					AnimationLibrary.HandHeld_Double_Bow();
 				} else if (EquippingWeaponHeld == WeaponHandHeld.Pole) {
 					AnimationLibrary.HandHeld_Polearm();
+				} else if (EquippingWeaponHeld == WeaponHandHeld.Float) {
+					AnimationLibrary.HandHeld_Float();
 				}
 				CalculateBodypartGlobalPosition();
 			} else {

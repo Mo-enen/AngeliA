@@ -11,7 +11,7 @@ namespace AngeliaGame {
 	}
 	public class iTheAncientOne : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.NoHandHeld;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
 	}
 	public class iStaffFire : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
@@ -31,31 +31,31 @@ namespace AngeliaGame {
 	}
 	public class iRitualSkull : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.NoHandHeld;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
 	}
 	public class iBambooSlips : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.NoHandHeld;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
 	}
 	public class iRitualRuneCube : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.NoHandHeld;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
 	}
 	public class iGoblinTrophy : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.NoHandHeld;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
 	}
 	public class iMagicOrb : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.NoHandHeld;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
 	}
 	public class iMagicEyeball : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.NoHandHeld;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
 	}
 	public class iMagicPotion : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.NoHandHeld;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
 	}
 	public class iWandStar : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Wand;

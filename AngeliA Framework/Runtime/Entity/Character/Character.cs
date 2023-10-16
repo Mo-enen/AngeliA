@@ -52,7 +52,7 @@ namespace AngeliaFramework {
 		// Api
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
 		public WeaponType EquippingWeaponType { get; set; } = WeaponType.Hand;
-		public WeaponHandHeld EquippingWeaponHeld { get; set; } = WeaponHandHeld.NoHandHeld;
+		public WeaponHandHeld EquippingWeaponHeld { get; set; } = WeaponHandHeld.Float;
 		public bool IsPassOut => HealthPoint == 0;
 		public bool IsFullPassOut => HealthPoint == 0 && Game.GlobalFrame > PassOutFrame + 48;
 		public int SleepFrame { get; private set; } = 0;

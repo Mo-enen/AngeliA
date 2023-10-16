@@ -63,6 +63,6 @@ namespace AngeliaGame {
 	}
 	public class iHookRusty : AutoSpriteWeapon {
 		public override WeaponType WeaponType => WeaponType.Hook;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
 	}
 }

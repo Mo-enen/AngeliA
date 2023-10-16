@@ -517,7 +517,7 @@ namespace AngeliaFramework {
 				EquippingWeaponHeld = weapon.HandHeld;
 			} else {
 				EquippingWeaponType = WeaponType.Hand;
-				EquippingWeaponHeld = WeaponHandHeld.NoHandHeld;
+				EquippingWeaponHeld = WeaponHandHeld.Float;
 			}
 
 			base.FrameUpdate();

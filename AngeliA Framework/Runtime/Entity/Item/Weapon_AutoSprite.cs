@@ -83,8 +83,8 @@ namespace AngeliaFramework {
 				// Attacking
 				int localFrame = Game.GlobalFrame - character.LastAttackFrame;
 				Vector2Int centerPos;
-				var cornerU = mainCell.CellToGlobal(borderL, mainCell.Height - borderU) + offsetUp;
-				var cornerD = mainCell.CellToGlobal(borderL, borderD) + offsetDown;
+				var cornerU = mainCell.LocalToGlobal(borderL, mainCell.Height - borderU) + offsetUp;
+				var cornerD = mainCell.LocalToGlobal(borderL, borderD) + offsetDown;
 				var handPos = (character.FacingRight ? character.HandL : character.HandR).GlobalLerp(0.5f, 0.5f);
 				if (localFrame < character.AttackDuration / 2) {
 					// Pulling
@@ -92,7 +92,7 @@ namespace AngeliaFramework {
 				} else {
 					// Release
 					centerPos = Vector2.Lerp(
-						handPos, mainCell.CellToGlobal(borderL, mainCell.Height / 2),
+						handPos, mainCell.LocalToGlobal(borderL, mainCell.Height / 2),
 						Ease.OutBack((localFrame - character.AttackDuration / 2f) / (character.AttackDuration / 2f))
 					).RoundToInt() + offsetCenter;
 				}
@@ -116,7 +116,7 @@ namespace AngeliaFramework {
 
 			} else {
 				// Holding
-				var point = mainCell.CellToGlobal(borderL + offsetDown.x, borderD + offsetDown.y);
+				var point = mainCell.LocalToGlobal(borderL + offsetDown.x, borderD + offsetDown.y);
 				CellRenderer.Draw(
 					SpriteIdString,
 					point.x, point.y,
@@ -161,7 +161,7 @@ namespace AngeliaFramework {
 			bool climbing = character.AnimatedPoseType == CharacterPoseAnimationType.Climb;
 			int deltaX = character.DeltaPositionX.Clamp(-20, 20);
 			int deltaY = character.DeltaPositionY.Clamp(-30, 30);
-			var point = handleCell.CellToGlobal(handleCell.Width / 2, handleCell.Height);
+			var point = handleCell.LocalToGlobal(handleCell.Width / 2, handleCell.Height);
 			int chainLength = isAttacking ? ChainLength * ChainLengthAttackGrow / 1000 : ChainLength;
 			Vector2Int headPos;
 
@@ -173,7 +173,7 @@ namespace AngeliaFramework {
 					-Const.CEL,
 					Ease.OutBack((float)localFrame / duration)
 				);
-				headPos = handleCell.CellToGlobal(
+				headPos = handleCell.LocalToGlobal(
 					handleCell.Width / 2 + (character.FacingRight ? -swingX : swingX) + headIndex * 96,
 					handleCell.Height + chainLength - headIndex * 16
 				);
@@ -245,15 +245,13 @@ namespace AngeliaFramework {
 
 	public abstract class AutoSpriteWeapon : Weapon {
 
-
 		protected int SpriteID { get; init; }
 
-
+		// MSG
 		public AutoSpriteWeapon () {
 			SpriteID = $"{GetType().AngeName()}.Main".AngeHash();
 			if (!CellRenderer.HasSprite(SpriteID)) SpriteID = 0;
 		}
-
 
 		public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
 
@@ -266,11 +264,25 @@ namespace AngeliaFramework {
 				!CellRenderer.TryGetSprite(SpriteID, out var sprite)
 			) return;
 
+			int grabScaleL = character.HandGrabScaleL;
+			int grabScaleR = character.HandGrabScaleR;
+			int zLeft = character.HandL.Z - 1;
+			int zRight = character.HandR.Z - 1;
+
+			if (character.EquippingWeaponType == WeaponType.Claw) {
+				grabScaleL = grabScaleL * 700 / 1000;
+				grabScaleR = grabScaleR * 700 / 1000;
+				if (CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
+					zLeft = character.HandL.Z + 1;
+					zRight = character.HandR.Z + 1;
+				}
+			}
+
 			// Draw
 			switch (character.EquippingWeaponHeld) {
 
 				default:
-				case WeaponHandHeld.NoHandHeld: {
+				case WeaponHandHeld.Float: {
 					// Floating
 
 
@@ -282,8 +294,8 @@ namespace AngeliaFramework {
 					var center = character.HandR.GlobalLerp(0.5f, 0.5f);
 					DrawWeaponSprite(
 						character,
-						center.x, center.y, character.HandGrabRotationR, character.HandGrabScaleR,
-						sprite, character.HandR.Z - 1
+						center.x, center.y, sprite.GlobalWidth, sprite.GlobalHeight, character.HandGrabRotationR, grabScaleR,
+						sprite, zRight
 					);
 					break;
 				}
@@ -297,9 +309,10 @@ namespace AngeliaFramework {
 						character,
 						(centerL.x + centerR.x) / 2,
 						(centerL.y + centerR.y) / 2,
+						sprite.GlobalWidth, sprite.GlobalHeight,
 						character.HandGrabRotationL,
-						character.HandGrabScaleL, sprite,
-						character.HandR.Z - 1
+						grabScaleL, sprite,
+						zRight
 					);
 					break;
 				}
@@ -311,16 +324,18 @@ namespace AngeliaFramework {
 					DrawWeaponSprite(
 						character,
 						centerL.x, centerL.y,
+						sprite.GlobalWidth, sprite.GlobalHeight,
 						character.HandGrabRotationL,
-						character.HandGrabScaleL, sprite,
-						character.HandL.Z - 1
+						grabScaleL, sprite,
+						zLeft
 					);
 					DrawWeaponSprite(
 						character,
 						centerR.x, centerR.y,
+						sprite.GlobalWidth, sprite.GlobalHeight,
 						character.HandGrabRotationR,
-						character.HandGrabScaleR, sprite,
-						character.HandR.Z - 1
+						grabScaleR, sprite,
+						zRight
 					);
 					break;
 				}
@@ -333,10 +348,11 @@ namespace AngeliaFramework {
 						character,
 						(centerL.x + centerR.x) / 2,
 						(centerL.y + centerR.y) / 2,
+						sprite.GlobalWidth, sprite.GlobalHeight,
 						character.HandGrabRotationR,
-						character.HandGrabScaleR,
+						grabScaleR,
 						sprite,
-						character.HandR.Z - 1
+						zRight
 					);
 					break;
 				}
@@ -364,7 +380,7 @@ namespace AngeliaFramework {
 						DrawWeaponSprite(
 							character, center.x, center.y, width, height,
 							0, character.FacingRight ? 1000 : -1000,
-							sprite, (character.FacingRight ? character.HandR : character.HandL).Z - 1
+							sprite, character.FacingRight ? zRight : zLeft
 						);
 					} else {
 						// Holding
@@ -374,9 +390,10 @@ namespace AngeliaFramework {
 							character,
 							(centerL.x + centerR.x) / 2,
 							(centerL.y + centerR.y) / 2,
+							sprite.GlobalWidth, sprite.GlobalHeight,
 							character.HandGrabRotationL,
-							character.HandGrabScaleL, sprite,
-							character.HandR.Z - 1
+							grabScaleL, sprite,
+							zRight
 						);
 					}
 					break;
@@ -386,8 +403,7 @@ namespace AngeliaFramework {
 
 		}
 
-
-		private Cell DrawWeaponSprite (Character character, int x, int y, int grabRotation, int grabScale, AngeSprite sprite, int z) => DrawWeaponSprite(character, x, y, sprite.GlobalWidth, sprite.GlobalHeight, grabRotation, grabScale, sprite, z);
+		// LGC
 		protected virtual Cell DrawWeaponSprite (Character character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) => CellRenderer.Draw(
 			sprite.GlobalID,
 			x, y,
@@ -396,7 +412,6 @@ namespace AngeliaFramework {
 			height * grabScale.Abs() / 1000,
 			z
 		);
-
 
 	}
 
