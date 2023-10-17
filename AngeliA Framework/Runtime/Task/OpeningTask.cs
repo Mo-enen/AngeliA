@@ -90,7 +90,7 @@ namespace AngeliaFramework {
 						bed.GetTargetOnBed(Player.Selecting);
 						player.SetAsFullAsleep();
 						TargetViewX = player.Rect.CenterX();
-						TargetViewY = player.Y;
+						TargetViewY = player.Y + Stage.ViewRect.height / 2 - Player.GetCameraShiftOffset(Stage.ViewRect.height);
 						SetViewPosition(TargetViewX, TargetViewY + DOLLY_HEIGHT);
 					}
 				}

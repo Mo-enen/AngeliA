@@ -76,7 +76,7 @@ namespace AngeliaFramework {
 			}
 			// Add GameObject
 			SquadRoot = new GameObject("Texture Squad").transform;
-			SquadRoot.SetParent(Game.Current.Camera.transform);
+			SquadRoot.SetParent(Game.Current.GameCamera.transform);
 			SquadRoot.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
 			SquadRoot.localScale = Vector3.one;
 			SquadContainer = new GameObject("Container").transform;
@@ -173,7 +173,7 @@ namespace AngeliaFramework {
 			}
 
 			// Update Renderer
-			float scale = Game.Current.Camera.orthographicSize * 2f / (WorldSize - 1);
+			float scale = Game.Current.GameCamera.orthographicSize * 2f / (WorldSize - 1);
 			float posShiftX = -((centerPos.x + HALF_GLOBAL_MAP).UMod(GLOBAL_MAP) - GLOBAL_MAP) / (float)GLOBAL_MAP * scale;
 			float posShiftY = -((centerPos.y + HALF_GLOBAL_MAP).UMod(GLOBAL_MAP) - GLOBAL_MAP) / (float)GLOBAL_MAP * scale;
 			SquadContainer.localScale = Vector3.one * scale;

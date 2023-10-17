@@ -224,9 +224,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 24e33b33cd190f145abf4a389db01611, type: 3}
   - {fileID: 8300000, guid: fffd48c2cccf0f54ab0054010c3c8221, type: 3}
   - {fileID: 8300000, guid: c9891f86d15ca8f4cbf7fecb644642c5, type: 3}
-  m_AssemblyNames:
-  - AngeliaFrameworkRuntime
-  - AngeliaGame
 --- !u!4 &1185585766
 Transform:
   m_ObjectHideFlags: 0

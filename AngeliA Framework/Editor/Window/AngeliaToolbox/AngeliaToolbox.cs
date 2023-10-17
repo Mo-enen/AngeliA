@@ -177,11 +177,11 @@ namespace AngeliaFramework.Editor {
 				TintEffect.SetTint(Const.WHITE);
 			}
 
-			var cameraRect01 = Game.Current.Camera.rect;
+			var cameraRect01 = Game.Current.GameCamera.rect;
 			var angeCameraRect = CellRenderer.CameraRect;
 			var rect = new Rect();
 			float thickX = 0.0005f;
-			float thickY = 0.0005f * Game.Current.Camera.aspect;
+			float thickY = 0.0005f * Game.Current.GameCamera.aspect;
 			if (GizmosMaterial == null) {
 				GizmosMaterial = new Material(Shader.Find("Angelia/Vertex"));
 			}
@@ -200,7 +200,7 @@ namespace AngeliaFramework.Editor {
 				}
 				if (CellPhysicsCells.Count == CellPhysicsCells.Count) {
 
-					GL.ClearWithSkybox(true, Game.Current.Camera);
+					GL.ClearWithSkybox(true, Game.Current.GameCamera);
 					//GL.PushMatrix();
 					GizmosMaterial.SetPass(0);
 					GL.LoadOrtho();
@@ -249,7 +249,7 @@ namespace AngeliaFramework.Editor {
 			// Bounds
 			if (GizmosIndex == 1) {
 
-				GL.ClearWithSkybox(true, Game.Current.Camera);
+				GL.ClearWithSkybox(true, Game.Current.GameCamera);
 				//GL.PushMatrix();
 				GizmosMaterial.SetPass(0);
 				GL.LoadOrtho();

@@ -7,7 +7,7 @@ namespace AngeliaFramework {
 
 
 
-	public enum WeaponType { Hand, Sword, Axe, Hammer, Flail, Ranged, Polearm, Hook, Claw, Wand, Throwing, }
+	public enum WeaponType { Hand, Sword, Axe, Hammer, Flail, Ranged, Polearm, Hook, Claw, Magic, Throwing, }
 
 	public enum WeaponHandHeld { SingleHanded, DoubleHanded, OneOnEachHand, Pole, Bow, Firearm, Float, }
 

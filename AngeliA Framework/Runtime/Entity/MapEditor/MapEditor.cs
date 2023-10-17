@@ -632,7 +632,7 @@ namespace AngeliaFramework {
 			}
 			if (delta.x != 0 || delta.y != 0) {
 				var cRect = CellRenderer.CameraRect;
-				var uCameraRect = Game.Current.Camera.rect;
+				var uCameraRect = Game.Current.GameCamera.rect;
 				delta.x = (delta.x * cRect.width / (uCameraRect.width * Screen.width)).RoundToInt();
 				delta.y = (delta.y * cRect.height / (uCameraRect.height * Screen.height)).RoundToInt();
 				TargetViewRect.x -= delta.x;
@@ -665,7 +665,7 @@ namespace AngeliaFramework {
 					);
 					int newWidth = newHeight * Const.VIEW_RATIO / 1000;
 
-					float cameraWidth = (int)(TargetViewRect.height * Game.Current.Camera.aspect);
+					float cameraWidth = (int)(TargetViewRect.height * Game.Current.GameCamera.aspect);
 					float cameraHeight = TargetViewRect.height;
 					float cameraX = TargetViewRect.x + (TargetViewRect.width - cameraWidth) / 2f;
 					float cameraY = TargetViewRect.y;

@@ -65,6 +65,7 @@ namespace AngeliaFramework {
 		public int LastGrabFlipDownFrame { get; private set; } = int.MinValue;
 		public int LastGrabCancelFrame { get; private set; } = int.MinValue;
 		public int LastStartRunFrame { get; private set; } = int.MinValue;
+		public int LastFacingChangeFrame { get; private set; } = 0;
 
 		// Movement State
 		public CharacterMovementState MovementState { get; private set; } = CharacterMovementState.Idle;
@@ -286,10 +287,14 @@ namespace AngeliaFramework {
 			if (IsSliding) LastSlidingFrame = frame;
 
 			// Facing Right
+			bool oldFacingRight = FacingRight;
 			if (Game.GlobalFrame <= LockedFacingFrame && !IsSliding && !IsGrabbingSide) {
 				FacingRight = LockedFacingRight;
 			} else if (IntendedX != 0) {
 				FacingRight = IntendedX > 0;
+			}
+			if (FacingRight != oldFacingRight) {
+				LastFacingChangeFrame = Game.GlobalFrame;
 			}
 
 			// Facing Front

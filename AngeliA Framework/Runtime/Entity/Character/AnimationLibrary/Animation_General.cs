@@ -261,7 +261,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void HandHeld_Polearm () {
+		public static void HandHeld_Pole () {
 
 			bool dashing = AnimatedPoseType == CharacterPoseAnimationType.Dash;
 
@@ -307,43 +307,65 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void HandHeld_Float () {
+		public static void HandHeld_Magic_Pole () {
 
+			ResetShoulderAndUpperArm();
 
+			int twistShift = Target.PoseTwist / 50;
+			UpperArmL.LimbRotate((FacingRight ? -42 : 29) - twistShift);
+			UpperArmR.LimbRotate((FacingRight ? -29 : 42) - twistShift);
+			UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1306 : 862) / 1000;
+			UpperArmR.Height = UpperArmR.Height * (FacingRight ? 862 : 1306) / 1000;
 
+			LowerArmL.LimbRotate((FacingRight ? -28 : -48) + twistShift / 2);
+			LowerArmR.LimbRotate((FacingRight ? 48 : 28) + twistShift / 2);
+			LowerArmL.Height = LowerArmL.Height * (FacingRight ? 1592 : 724) / 1000;
+			LowerArmR.Height = LowerArmR.Height * (FacingRight ? 724 : 1592) / 1000;
+
+			HandL.LimbRotate(FacingSign);
+			HandR.LimbRotate(FacingSign);
+
+			// Z
+			int signZ = Body.FrontSide ? 1 : -1;
+			UpperArmL.Z = LowerArmL.Z = signZ * UpperArmL.Z.Abs();
+			UpperArmR.Z = LowerArmR.Z = signZ * UpperArmR.Z.Abs();
+			HandL.Z = signZ * HandL.Z.Abs();
+			HandR.Z = signZ * HandR.Z.Abs();
+
+			// Grab Rotation
+			Target.HandGrabScaleL = Target.HandGrabScaleR = FacingSign * 1000;
+			Target.HandGrabRotationL = Target.HandGrabRotationR = FacingSign * (
+				30 - CurrentAnimationFrame.PingPong(120) / 30
+				+ Target.DeltaPositionY.Clamp(-24, 24) / 5
+			) - Target.DeltaPositionX.Clamp(-24, 24) / 4;
 
 		}
 
 
 		// UTL
-		private static void ResetShoulderAndUpperArm () {
-
-			int bodyBorderL = Target.FacingRight ? Body.Border.left : Body.Border.right;
-			int bodyBorderR = Target.FacingRight ? Body.Border.right : Body.Border.left;
-
-			// Shoulder L
-			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
-			ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
-			ShoulderL.Height = Mathf.Min(ShoulderL.Height, Body.Height);
-			ShoulderL.PivotX = 1000;
-
-			// Shoulder R
-			ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
-			ShoulderR.Y = Body.Y + Body.Height - Body.Border.up;
-			ShoulderR.Height = Mathf.Min(ShoulderR.Height, Body.Height);
-			ShoulderR.PivotX = 1000;
-
-			// Upper Arm
-			UpperArmL.X = ShoulderL.X;
-			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
-			UpperArmL.PivotX = 1000;
-			UpperArmL.Height = UpperArmL.SizeY;
-
-			UpperArmR.X = ShoulderR.X;
-			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
-			UpperArmR.PivotX = 0;
-			UpperArmR.Height = UpperArmR.SizeY;
-
+		private static void ResetShoulderAndUpperArm (bool resetLeft = true, bool resetRight = true) {
+			if (resetLeft) {
+				int bodyBorderL = Target.FacingRight ? Body.Border.left : Body.Border.right;
+				ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
+				ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
+				ShoulderL.Height = Mathf.Min(ShoulderL.Height, Body.Height);
+				ShoulderL.PivotX = 1000;
+				UpperArmL.X = ShoulderL.X;
+				UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
+				UpperArmL.PivotX = 1000;
+				UpperArmL.Height = UpperArmL.SizeY;
+			}
+			if (resetRight) {
+				int bodyBorderR = Target.FacingRight ? Body.Border.right : Body.Border.left;
+				ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
+				ShoulderR.Y = Body.Y + Body.Height - Body.Border.up;
+				ShoulderR.Height = Mathf.Min(ShoulderR.Height, Body.Height);
+				ShoulderR.PivotX = 1000;
+				UpperArmR.X = ShoulderR.X;
+				UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
+				UpperArmR.PivotX = 0;
+				UpperArmR.Height = UpperArmR.SizeY;
+			}
 		}
 
 

@@ -413,6 +413,10 @@ namespace AngeliaFramework {
 					break;
 			}
 
+			// Validate
+			Head.Y = Head.Y.GreaterOrEquel(Body.Y + 1);
+			Body.Height = Body.Height.GreaterOrEquel(1);
+
 			// Make Global Pos Ready
 			CalculateBodypartGlobalPosition();
 
@@ -450,9 +454,11 @@ namespace AngeliaFramework {
 				) {
 					AnimationLibrary.HandHeld_Double_Bow();
 				} else if (EquippingWeaponHeld == WeaponHandHeld.Pole) {
-					AnimationLibrary.HandHeld_Polearm();
-				} else if (EquippingWeaponHeld == WeaponHandHeld.Float) {
-					AnimationLibrary.HandHeld_Float();
+					if (EquippingWeaponType != WeaponType.Magic) {
+						AnimationLibrary.HandHeld_Pole();
+					} else {
+						AnimationLibrary.HandHeld_Magic_Pole();
+					}
 				}
 				CalculateBodypartGlobalPosition();
 			} else {
@@ -539,7 +545,7 @@ namespace AngeliaFramework {
 					AnimationLibrary.Attack_Scratch();
 					break;
 
-				case WeaponType.Wand:
+				case WeaponType.Magic:
 					AnimationLibrary.Attack_Magic();
 					break;
 

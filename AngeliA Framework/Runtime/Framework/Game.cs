@@ -64,7 +64,7 @@ namespace AngeliaFramework {
 				}
 			}
 		}
-		public Camera Camera { get; private set; } = null;
+		public Camera GameCamera { get; private set; } = null;
 
 		// Event
 		public static event System.Action OnGameRestart;
@@ -197,7 +197,7 @@ namespace AngeliaFramework {
 		private void FixedUpdate () {
 			if (!Initialized) Initialize();
 			if (!Initialized || !enabled) return;
-			if (!Camera.enabled) Camera.enabled = true;
+			if (!GameCamera.enabled) GameCamera.enabled = true;
 			if (IsPlaying) {
 				Update_Gameplay();
 			} else {
@@ -229,8 +229,8 @@ namespace AngeliaFramework {
 				Application.wantsToQuit += OnQuit;
 				Initialize_Callback();
 				Initialize_Camera();
-				CellRenderer.Initialize_Rendering(m_SheetTexture, Camera);
-				CellRenderer.Initialize_Text(Camera, m_Fonts);
+				CellRenderer.Initialize_Rendering(m_SheetTexture, GameCamera);
+				CellRenderer.Initialize_Text(GameCamera, m_Fonts);
 				Initialize_Event(true);
 				AudioPlayer.Initialize(m_AudioClips);
 				Debug.unityLogger.logEnabled = Application.isEditor;
@@ -242,7 +242,7 @@ namespace AngeliaFramework {
 				AngeUtil.CreateAngeFolders();
 				RefreshBackgroundTint();
 				Initialize_Event(false);
-				DontDestroyOnLoad(Camera.transform.gameObject);
+				DontDestroyOnLoad(GameCamera.transform.gameObject);
 				DontDestroyOnLoad(gameObject);
 				System.GC.Collect(0, System.GCCollectionMode.Forced);
 				if (m_AutoStartGame) {
@@ -279,32 +279,33 @@ namespace AngeliaFramework {
 
 
 		private void Initialize_Camera () {
-			Camera = Camera.main;
-			if (Camera == null) {
+			GameCamera = Camera.main;
+			if (GameCamera == null) {
 				var rendererRoot = new GameObject("Renderer", typeof(Camera)).transform;
 				rendererRoot.SetParent(null);
 				rendererRoot.tag = "MainCamera";
-				Camera = rendererRoot.GetComponent<Camera>();
+				GameCamera = rendererRoot.GetComponent<Camera>();
 			}
-			Camera.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-			Camera.transform.localScale = Vector3.one;
-			Camera.transform.gameObject.tag = "MainCamera";
-			Camera.clearFlags = CameraClearFlags.Skybox;
-			Camera.backgroundColor = new Color32(0, 0, 0, 0);
-			Camera.cullingMask = -1;
-			Camera.orthographic = true;
-			Camera.orthographicSize = 1f;
-			Camera.nearClipPlane = 0f;
-			Camera.farClipPlane = 1024f;
-			Camera.rect = new Rect(0f, 0f, 1f, 1f);
-			Camera.depth = 0f;
-			Camera.renderingPath = RenderingPath.UsePlayerSettings;
-			Camera.useOcclusionCulling = false;
-			Camera.allowHDR = false;
-			Camera.allowMSAA = false;
-			Camera.allowDynamicResolution = false;
-			Camera.targetDisplay = 0;
-			Camera.enabled = false;
+			GameCamera.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+			GameCamera.transform.localScale = Vector3.one;
+			GameCamera.transform.gameObject.tag = "MainCamera";
+			GameCamera.clearFlags = CameraClearFlags.Skybox;
+			GameCamera.backgroundColor = new Color32(0, 0, 0, 0);
+			GameCamera.cullingMask = -1;
+			GameCamera.orthographic = true;
+			GameCamera.orthographicSize = 1f;
+			GameCamera.nearClipPlane = 0f;
+			GameCamera.farClipPlane = 1024f;
+			GameCamera.rect = new Rect(0f, 0f, 1f, 1f);
+			GameCamera.depth = 0f;
+			GameCamera.renderingPath = RenderingPath.UsePlayerSettings;
+			GameCamera.useOcclusionCulling = false;
+			GameCamera.allowHDR = false;
+			GameCamera.allowMSAA = false;
+			GameCamera.allowDynamicResolution = false;
+			GameCamera.targetDisplay = 0;
+			GameCamera.enabled = true;
+			GameCamera.gameObject.SetActive(false);
 		}
 
 
@@ -361,7 +362,7 @@ namespace AngeliaFramework {
 		private void Update_Gameplay () {
 			try {
 				Stage.Update_View();
-				CellRenderer.CameraUpdate(Camera, Stage.ViewRect);
+				CellRenderer.CameraUpdate(GameCamera, Stage.ViewRect);
 				FrameInput.FrameUpdate(CellRenderer.CameraRect);
 				AudioPlayer.FrameUpdate(IsPausing);
 				CellPhysics.BeginFill(
@@ -376,7 +377,7 @@ namespace AngeliaFramework {
 				OnGameUpdatePauseless?.Invoke();
 				CellRendererGUI.LateUpdate();
 				Update_PauseState();
-				CellRenderer.FrameUpdate(GlobalFrame, Camera);
+				CellRenderer.FrameUpdate(GlobalFrame, GameCamera);
 				if (GlobalFrame % 36000 == 0) RefreshBackgroundTint();
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
@@ -384,14 +385,14 @@ namespace AngeliaFramework {
 
 		private void Update_Pausing () {
 			try {
-				CellRenderer.CameraUpdate(Camera, Stage.ViewRect);
+				CellRenderer.CameraUpdate(GameCamera, Stage.ViewRect);
 				AudioPlayer.FrameUpdate(IsPausing);
 				FrameInput.FrameUpdate(CellRenderer.CameraRect);
 				CellRenderer.BeginDraw(IsPausing);
 				Stage.FrameUpdate(GlobalFrame, Const.ENTITY_LAYER_UI);
 				OnGameUpdatePauseless?.Invoke();
 				Update_PauseState();
-				CellRenderer.FrameUpdate(GlobalFrame, Camera);
+				CellRenderer.FrameUpdate(GlobalFrame, GameCamera);
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
@@ -417,11 +418,13 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public void RestartGame () {
-			Player.Selecting = Stage.PeekOrGetEntity(Player.LastSelectedPlayerID) as Player;
-			RestartGame(Player.Selecting != null ? Player.Selecting.TypeID : typeof(MainPlayer).AngeHash());
-		}
-		public void RestartGame (int playerID) {
+		public void RestartGame (int playerID = 0) {
+
+			// Auto Player ID
+			if (playerID == 0) {
+				Player.Selecting = Stage.PeekOrGetEntity(Player.LastSelectedPlayerID) as Player;
+				playerID = Player.Selecting != null ? Player.Selecting.TypeID : typeof(MainPlayer).AngeHash();
+			}
 
 			// Select Player
 			if (Stage.PeekOrGetEntity(playerID) is Player player) {
@@ -430,6 +433,11 @@ namespace AngeliaFramework {
 
 			// Enable Game
 			if (!enabled) enabled = true;
+
+			// Enable Rendering
+			if (GameCamera != null && !GameCamera.gameObject.activeSelf) {
+				GameCamera.gameObject.SetActive(true);
+			}
 
 			// Event
 			OnGameRestart?.Invoke();

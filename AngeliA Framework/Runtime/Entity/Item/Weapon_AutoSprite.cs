@@ -7,6 +7,7 @@ namespace AngeliaFramework {
 
 
 
+	// Firearm
 	public abstract class AutoSpriteFirearm : AutoSpriteWeapon {
 
 		public sealed override WeaponType WeaponType => WeaponType.Ranged;
@@ -46,7 +47,7 @@ namespace AngeliaFramework {
 	}
 
 
-
+	// Bow
 	public abstract class AutoSpriteBow : AutoSpriteWeapon {
 
 		public sealed override WeaponType WeaponType => WeaponType.Ranged;
@@ -131,7 +132,7 @@ namespace AngeliaFramework {
 	}
 
 
-
+	// Flail
 	public abstract class AutoSpriteFlail : AutoSpriteWeapon {
 
 		private int SpriteIdHead { get; init; }
@@ -243,11 +244,11 @@ namespace AngeliaFramework {
 	}
 
 
+	// Weapon
 	public abstract class AutoSpriteWeapon : Weapon {
 
 		protected int SpriteID { get; init; }
 
-		// MSG
 		public AutoSpriteWeapon () {
 			SpriteID = $"{GetType().AngeName()}.Main".AngeHash();
 			if (!CellRenderer.HasSprite(SpriteID)) SpriteID = 0;
@@ -284,8 +285,26 @@ namespace AngeliaFramework {
 				default:
 				case WeaponHandHeld.Float: {
 					// Floating
-
-
+					const int SHIFT_X = 148;
+					int moveDeltaX = -character.DeltaPositionX * 2;
+					int moveDeltaY = -character.DeltaPositionY;
+					int facingFrame = Game.GlobalFrame - character.LastFacingChangeFrame;
+					if (facingFrame < 30) {
+						moveDeltaX += (int)Mathf.LerpUnclamped(
+							character.FacingRight ? SHIFT_X * 2 : -SHIFT_X * 2, 0,
+							Ease.OutBack(facingFrame / 30f)
+						);
+					}
+					DrawWeaponSprite(
+						character,
+						character.X + (character.FacingRight ? -SHIFT_X : SHIFT_X) + moveDeltaX,
+						character.Y + Const.CEL * character.CharacterHeight / 263 + Game.GlobalFrame.PingPong(240) / 4 + moveDeltaY,
+						sprite.GlobalWidth, sprite.GlobalHeight,
+						0,
+						character.IsAttacking ? grabScaleL : 700,
+						sprite,
+						character.HandL.Z.Abs() + 1
+					);
 					break;
 				}
 
@@ -403,7 +422,6 @@ namespace AngeliaFramework {
 
 		}
 
-		// LGC
 		protected virtual Cell DrawWeaponSprite (Character character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) => CellRenderer.Draw(
 			sprite.GlobalID,
 			x, y,
