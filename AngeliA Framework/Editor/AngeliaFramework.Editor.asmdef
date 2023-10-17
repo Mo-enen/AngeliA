@@ -1,5 +1,5 @@
 {
-    "name": "AngeliaFrameworkEditor",
+    "name": "EdittimeAngeliaFramework",
     "rootNamespace": "AngeliaFramework.Editor",
     "references": [
         "AngeliaFrameworkRuntime"

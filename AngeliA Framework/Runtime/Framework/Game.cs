@@ -82,7 +82,6 @@ namespace AngeliaFramework {
 		[SerializeField, DisableAtRuntime] Font[] m_Fonts = null;
 		[SerializeField, DisableAtRuntime] Texture2D[] m_Cursors = null;
 		[SerializeField, DisableAtRuntime] AudioClip[] m_AudioClips = null;
-		[SerializeField, DisableAtRuntime] string[] m_AssemblyNames = new string[0];
 
 		// Data
 		private bool Initialized = false;
@@ -131,7 +130,6 @@ namespace AngeliaFramework {
 			}
 
 			// Final
-			Editor_LoadAssembly();
 			Editor_ReloadAllMedia();
 			Editor_LoadUniverseVersionFromManifest();
 
@@ -178,21 +176,6 @@ namespace AngeliaFramework {
 			}
 		}
 		public void Editor_SetSheetTexture (Texture2D newTexture) => m_SheetTexture = newTexture;
-		public void Editor_LoadAssembly () {
-			var assemblyList = new List<string> {
-				typeof(Game).Assembly.GetName().Name
-			};
-			var defs = UnityEditor.AssetDatabase.FindAssets("t:AssemblyDefinitionAsset", new string[] { "Assets" });
-			foreach (var guid in defs) {
-				string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
-				var def = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEditorInternal.AssemblyDefinitionAsset>(path);
-				if (def != null) {
-					var dJosn = JsonUtility.FromJson<AssemblyDefinitionAssetJson>(def.ToString());
-					if (dJosn != null) assemblyList.Add(dJosn.name);
-				}
-			}
-			m_AssemblyNames = assemblyList.ToArray();
-		}
 		public Texture2D Editor_GetSheetTexture () => m_SheetTexture;
 #endif
 
@@ -241,6 +224,7 @@ namespace AngeliaFramework {
 			Initialized = true;
 
 			try {
+				Util.InitializeAssembly("angelia");
 				Application.wantsToQuit -= OnQuit;
 				Application.wantsToQuit += OnQuit;
 				Initialize_Callback();
@@ -353,14 +337,6 @@ namespace AngeliaFramework {
 
 
 		private void Initialize_Callback () {
-
-			// Init Assembly
-			Util.ClearAssemblyCache();
-			foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
-				if (m_AssemblyNames.Contains(assembly.GetName().Name)) {
-					Util.AddAssemblyToCache(assembly);
-				}
-			}
 
 			// Add Events
 			AddEvent<OnGameUpdateAttribute>(nameof(OnGameUpdate));

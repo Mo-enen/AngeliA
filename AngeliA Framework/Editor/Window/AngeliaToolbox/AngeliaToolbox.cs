@@ -149,9 +149,6 @@ namespace AngeliaFramework.Editor {
 			RefreshProfilerTime = double.MinValue;
 			GizmosIndex = -1;
 			CellPhysicsCells.Clear();
-			if (mode == PlayModeStateChange.ExitingPlayMode) {
-				Util.ClearAssemblyCache();
-			}
 		}
 
 

@@ -166,10 +166,14 @@ namespace AngeliaFramework {
 			);
 
 
-		public static void AddAssemblyToCache (Assembly assembly) => AllAssembliesCache.Add(assembly);
-		public static void ClearAssemblyCache () {
+		public static void InitializeAssembly (string keyword) {
 			AllAssembliesCache.Clear();
 			_AllTypesCache = null;
+			foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
+				if (assembly.GetName().Name.StartsWith(keyword, System.StringComparison.OrdinalIgnoreCase)) {
+					AllAssembliesCache.Add(assembly);
+				}
+			}
 		}
 
 
