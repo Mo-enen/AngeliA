@@ -986,20 +986,17 @@ namespace AngeliaFramework {
 
 			// Skirt
 			int bodyWidthAbs = Body.Width.Abs();
-			int centerX;
-			int centerY;
-			int width;
 			var legTopL = UpperLegL.GlobalLerp(0.5f, 1f);
 			var legTopR = UpperLegR.GlobalLerp(0.5f, 1f);
 			int left = legTopL.x - UpperLegL.SizeX / 2;
 			int right = legTopR.x + UpperLegR.SizeX / 2;
-			centerX = (left + right) / 2;
-			centerY = (legTopL.y + legTopR.y) / 2;
+			int centerX = (left + right) / 2;
+			int centerY = (legTopL.y + legTopR.y) / 2;
 			bool stretch =
 				AnimatedPoseType != CharacterPoseAnimationType.GrabSide &&
 				AnimatedPoseType != CharacterPoseAnimationType.Dash &&
 				AnimatedPoseType != CharacterPoseAnimationType.Idle;
-			width = Mathf.Max(
+			int width = Mathf.Max(
 				(right - left).Abs(), bodyWidthAbs - Body.Border.left - Body.Border.right
 			);
 			width += sprite.GlobalBorder.horizontal;

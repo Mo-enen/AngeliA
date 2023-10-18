@@ -372,7 +372,7 @@ namespace AngeliaFramework {
 				CellRenderer.BeginDraw(IsPausing);
 				OnGameUpdate?.Invoke();
 				CellRendererGUI.Update(PauselessFrame);
-				for (int i = 0; i < Const.ENTITY_LAYER_COUNT; i++) Stage.FrameUpdate(GlobalFrame, i);
+				Stage.FrameUpdate(GlobalFrame);
 				OnGameUpdateLater?.Invoke();
 				OnGameUpdatePauseless?.Invoke();
 				CellRendererGUI.LateUpdate();

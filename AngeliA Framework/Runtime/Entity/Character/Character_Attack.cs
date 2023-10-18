@@ -52,11 +52,7 @@ namespace AngeliaFramework {
 				if (ChargeStartFrame == int.MaxValue) ChargeStartFrame = Game.GlobalFrame;
 			} else if (ChargeStartFrame != int.MaxValue) {
 				// Charge Release
-				if (IsAttackCharged) {
-					if (IsAttackAllowedByMovement() && IsAttackAllowedByEquipment()) {
-						Attack();
-					}
-				}
+				if (IsAttackCharged) Attack(charged: true);
 				ChargeStartFrame = int.MaxValue;
 			}
 
@@ -71,18 +67,14 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public void Attack () {
+		public void Attack (bool charged = false) {
+			if (!IsAttackAllowedByMovement() || !IsAttackAllowedByEquipment()) return;
 			LastAttackFrame = Game.GlobalFrame;
 			AttackCombo++;
 		}
 
 
 		public void CancelAttack () => LastAttackFrame = int.MinValue;
-
-
-		protected bool AttackCooldownReady (bool isHolding) => isHolding ?
-			Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown + HoldAttackPunish :
-			Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown;
 
 
 		protected virtual bool IsAttackAllowedByMovement () =>

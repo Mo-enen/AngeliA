@@ -6,7 +6,6 @@ using UnityEngine;
 namespace AngeliaFramework {
 
 
-
 	// Firearm
 	public abstract class AutoSpriteFirearm : AutoSpriteWeapon {
 
@@ -310,11 +309,36 @@ namespace AngeliaFramework {
 
 				case WeaponHandHeld.SingleHanded: {
 					// Single 
+					int grabScale = grabScaleR;
+					bool attacking = character.IsAttacking;
+					int grabRotation = character.HandGrabRotationR;
+					int z = zRight;
+					if (character.EquippingWeaponType == WeaponType.Throwing) {
+						if (
+							attacking &&
+							Game.GlobalFrame - character.LastAttackFrame > character.AttackDuration / 6
+						) break;
+						grabScale = 700;
+						z = character.FacingFront ? character.HandR.Z.Abs() + 1 : -character.HandR.Z.Abs() - 1;
+					}
+					// Fix Rotation
+					if (CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
+						if (!attacking) {
+							grabRotation = 0;
+						} else {
+							grabRotation = Util.RemapUnclamped(
+								0, character.AttackDuration,
+								character.FacingRight ? 90 : -90, 0,
+								Game.GlobalFrame - character.LastAttackFrame
+							);
+						}
+					}
+					// Draw
 					var center = character.HandR.GlobalLerp(0.5f, 0.5f);
 					DrawWeaponSprite(
 						character,
-						center.x, center.y, sprite.GlobalWidth, sprite.GlobalHeight, character.HandGrabRotationR, grabScaleR,
-						sprite, zRight
+						center.x, center.y, sprite.GlobalWidth, sprite.GlobalHeight, grabRotation, grabScale,
+						sprite, z
 					);
 					break;
 				}

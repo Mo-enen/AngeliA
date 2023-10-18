@@ -616,10 +616,15 @@ namespace AngeliaFramework {
 
 			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-			Attack_HeadDown(ease01, 200, 300, 0);
-			ResetShoulderAndUpperArm(false, true);
+			Attack_HeadDown(ease01, 200, 300, 300);
+			ResetShoulderAndUpperArm();
 
-			// Upper Arm R
+			// Arm L
+			UpperArmL.LimbRotate((int)(ease01 * 20f));
+			LowerArmL.LimbRotate((int)(ease01 * -5f));
+			HandL.LimbRotate(FacingSign);
+
+			// Arm R
 			UpperArmR.LimbRotate(FacingSign * (int)Mathf.LerpUnclamped(-165, -80, ease01));
 			LowerArmR.LimbRotate(0);
 			HandR.LimbRotate(FacingSign);
@@ -712,23 +717,31 @@ namespace AngeliaFramework {
 			Hip.Y -= bodyOffsetY;
 			Body.Height = Head.Y - Body.Y;
 
+			// Leg Position Y
+			if (bodyOffsetY != 0) {
+				UpperLegL.Y -= bodyOffsetY;
+				UpperLegR.Y -= bodyOffsetY;
+				UpperLegL.Height -= bodyOffsetY;
+				UpperLegR.Height -= bodyOffsetY;
+			}
 		}
 
 
 		private static void Attack_LegShake (float ease01) {
 			if (AnimatedPoseType != CharacterPoseAnimationType.Idle) return;
 			int deltaX = (int)(2f * ease01 * A2G);
+			// Move Leg
 			if (FacingRight) {
 				UpperLegL.X -= deltaX / 2;
 				LowerLegL.X -= deltaX;
 				FootL.X -= deltaX;
-				UpperLegR.X += deltaX / 4;
-				LowerLegR.X += deltaX / 2;
-				FootR.X += deltaX / 2;
+				UpperLegR.X += deltaX / 8;
+				LowerLegR.X += deltaX / 4;
+				FootR.X += deltaX / 4;
 			} else {
-				UpperLegL.X -= deltaX / 4;
-				LowerLegL.X -= deltaX / 2;
-				FootL.X -= deltaX / 2;
+				UpperLegL.X -= deltaX / 8;
+				LowerLegL.X -= deltaX / 4;
+				FootL.X -= deltaX / 4;
 				UpperLegR.X += deltaX / 2;
 				LowerLegR.X += deltaX;
 				FootR.X += deltaX;

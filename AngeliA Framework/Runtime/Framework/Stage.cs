@@ -84,7 +84,7 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int[] ENTITY_CAPACITY = new int[Const.ENTITY_LAYER_COUNT] { 4096, 1024, 128, 64, };
+		private static readonly int[] ENTITY_CAPACITY = new int[Const.ENTITY_LAYER_COUNT] { 4096, 1024, 1024, 128, 64, };
 
 		// Api
 		public static int[] EntityCounts { get; private set; } = new int[Const.ENTITY_LAYER_COUNT];
@@ -236,40 +236,61 @@ namespace AngeliaFramework {
 		}
 
 
-		internal static void FrameUpdate (int globalFrame, int layer) {
+		internal static void FrameUpdate (int globalFrame, int targetLayer = -1) {
 
-			var entities = Entities[layer];
-			int count = EntityCounts[layer];
 			GlobalFrame = globalFrame;
-			count = count.Clamp(0, entities.Length);
 
-			// Remove Inactive and Outside SpawnRect
-			RefreshStagedEntities(layer);
-
-			// Fill Physics
-			for (int index = 0; index < count; index++) {
-				try {
-					entities[index].FillPhysics();
-				} catch (System.Exception ex) { Debug.LogException(ex); }
+			int startLayer = 0;
+			int endLayer = Const.ENTITY_LAYER_COUNT;
+			if (targetLayer >= 0) {
+				startLayer = targetLayer;
+				endLayer = targetLayer + 1;
 			}
 
-			// Before Physics Update
-			for (int index = 0; index < count; index++) {
-				var e = entities[index];
-				if (e.UpdateOutOfRange || e.FrameUpdated || ViewRect.Overlaps(e.GlobalBounds)) {
+			// Remove Inactive and Outside SpawnRect
+			for (int layer = startLayer; layer < endLayer; layer++) {
+				RefreshStagedEntities(layer);
+			}
+
+			// Fill Physics
+			for (int layer = startLayer; layer < endLayer; layer++) {
+				var entities = Entities[layer];
+				int count = EntityCounts[layer];
+				count = count.Clamp(0, entities.Length);
+				for (int index = 0; index < count; index++) {
 					try {
-						e.BeforePhysicsUpdate();
+						entities[index].FillPhysics();
 					} catch (System.Exception ex) { Debug.LogException(ex); }
 				}
 			}
 
+			// Before Physics Update
+			for (int layer = startLayer; layer < endLayer; layer++) {
+				var entities = Entities[layer];
+				int count = EntityCounts[layer];
+				count = count.Clamp(0, entities.Length);
+				for (int index = 0; index < count; index++) {
+					var e = entities[index];
+					if (e.UpdateOutOfRange || e.FrameUpdated || ViewRect.Overlaps(e.GlobalBounds)) {
+						try {
+							e.BeforePhysicsUpdate();
+						} catch (System.Exception ex) { Debug.LogException(ex); }
+					}
+				}
+			}
+
 			// Physics Update
-			for (int index = 0; index < count; index++) {
-				var e = entities[index];
-				if (e.UpdateOutOfRange || e.FrameUpdated || ViewRect.Overlaps(e.GlobalBounds)) {
-					try {
-						e.PhysicsUpdate();
-					} catch (System.Exception ex) { Debug.LogException(ex); }
+			for (int layer = startLayer; layer < endLayer; layer++) {
+				var entities = Entities[layer];
+				int count = EntityCounts[layer];
+				count = count.Clamp(0, entities.Length);
+				for (int index = 0; index < count; index++) {
+					var e = entities[index];
+					if (e.UpdateOutOfRange || e.FrameUpdated || ViewRect.Overlaps(e.GlobalBounds)) {
+						try {
+							e.PhysicsUpdate();
+						} catch (System.Exception ex) { Debug.LogException(ex); }
+					}
 				}
 			}
 
@@ -278,15 +299,20 @@ namespace AngeliaFramework {
 				CellRenderer.CameraShaking || FrameTask.IsTasking<TeleportTask>() ?
 				new Vector4Int(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Vector4Int.Zero
 			);
-			for (int index = 0; index < count; index++) {
-				var e = entities[index];
-				if (e.UpdateOutOfRange || cullCameraRect.Overlaps(e.GlobalBounds)) {
-					try {
-						CellRenderer.SetLayerToDefault();
-						CellRenderer.SetTextLayer(0);
-						e.FrameUpdate();
-						e.FrameUpdated = true;
-					} catch (System.Exception ex) { Debug.LogException(ex); }
+			for (int layer = startLayer; layer < endLayer; layer++) {
+				var entities = Entities[layer];
+				int count = EntityCounts[layer];
+				count = count.Clamp(0, entities.Length);
+				for (int index = 0; index < count; index++) {
+					var e = entities[index];
+					if (e.UpdateOutOfRange || cullCameraRect.Overlaps(e.GlobalBounds)) {
+						try {
+							CellRenderer.SetLayerToDefault();
+							CellRenderer.SetTextLayer(0);
+							e.FrameUpdate();
+							e.FrameUpdated = true;
+						} catch (System.Exception ex) { Debug.LogException(ex); }
+					}
 				}
 			}
 

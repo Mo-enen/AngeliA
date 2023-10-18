@@ -34,9 +34,10 @@ namespace AngeliaFramework {
 		// Entity
 		public const int ENTITY_LAYER_GAME = 0;
 		public const int ENTITY_LAYER_BULLET = 1;
-		public const int ENTITY_LAYER_DECORATE = 2;
-		public const int ENTITY_LAYER_UI = 3;
-		public const int ENTITY_LAYER_COUNT = 4;
+		public const int ENTITY_LAYER_ITEM = 2;
+		public const int ENTITY_LAYER_DECORATE = 3;
+		public const int ENTITY_LAYER_UI = 4;
+		public const int ENTITY_LAYER_COUNT = 5;
 
 		// Physics
 		public const int LAYER_LEVEL = 0;

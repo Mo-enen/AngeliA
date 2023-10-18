@@ -6,7 +6,8 @@ using UnityEngine;
 namespace AngeliaFramework {
 	[EntityAttribute.DontSpawnFromWorld]
 	[EntityAttribute.ExcludeInMapEditor]
-	[EntityAttribute.Capacity(2048, 0)]
+	[EntityAttribute.Capacity(1024, 0)]
+	[EntityAttribute.Layer(Const.ENTITY_LAYER_ITEM)]
 	public class ItemHolder : Entity, IActionTarget {
 
 

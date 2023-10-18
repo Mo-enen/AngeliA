@@ -49,10 +49,10 @@ namespace AngeliaFramework {
 		public static Vector3Int? RespawnUnitPosition { get; set; } = null;
 		public override bool IsChargingAttack =>
 			Selecting == this &&
+			Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown &&
 			!FrameTask.HasTask() &&
 			!LockingInput &&
 			MinimalChargeAttackDuration != int.MaxValue &&
-			AttackCooldownReady(false) &&
 			FrameInput.GameKeyHolding(Gamekey.Action);
 		public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
 		public bool LockingInput { get; private set; } = false;
@@ -67,10 +67,6 @@ namespace AngeliaFramework {
 		public virtual bool JewelryAvailable => true;
 		public virtual bool WeaponAvailable => true;
 		int IDamageReceiver.Team => Const.TEAM_PLAYER;
-
-		// Short
-		private static int EquipmentTypeCount => _EquipmentTypeCount > 0 ? _EquipmentTypeCount : (_EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length);
-		private static int _EquipmentTypeCount = 0;
 
 		// Data
 		private static Player _Selecting = null;
@@ -322,12 +318,10 @@ namespace AngeliaFramework {
 			bool attDown = FrameInput.GameKeyDown(Gamekey.Action);
 			bool attHolding = FrameInput.GameKeyHolding(Gamekey.Action) && RepeatAttackWhenHolding;
 			if (attDown || attHolding) {
-				if (IsAttackAllowedByMovement() && IsAttackAllowedByEquipment()) {
-					if (AttackCooldownReady(!attDown)) {
-						Attack();
-					} else if (attDown) {
-						AttackRequiringFrame = Game.GlobalFrame;
-					}
+				if (Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown + (attDown ? 0 : HoldAttackPunish)) {
+					Attack();
+				} else if (attDown) {
+					AttackRequiringFrame = Game.GlobalFrame;
 				}
 				return;
 			}
@@ -344,9 +338,7 @@ namespace AngeliaFramework {
 			const int ATTACK_REQUIRE_GAP = 12;
 			if (
 				Game.GlobalFrame < AttackRequiringFrame + ATTACK_REQUIRE_GAP &&
-				IsAttackAllowedByMovement() &&
-				IsAttackAllowedByEquipment() &&
-				AttackCooldownReady(false)
+				Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown
 			) {
 				AttackRequiringFrame = int.MinValue;
 				Attack();

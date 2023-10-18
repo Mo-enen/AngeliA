@@ -435,6 +435,7 @@ namespace AngeliaFramework.Editor {
 				static string GetEntityLayerName (int _layer) => _layer switch {
 					Const.ENTITY_LAYER_GAME => "Game",
 					Const.ENTITY_LAYER_BULLET => "Bullet",
+					Const.ENTITY_LAYER_ITEM => "Item",
 					Const.ENTITY_LAYER_DECORATE => "Decorate",
 					Const.ENTITY_LAYER_UI => "UI",
 					_ => "",
