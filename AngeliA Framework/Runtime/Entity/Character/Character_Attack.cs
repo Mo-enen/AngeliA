@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using AngeliaFramework;
-
 using UnityEngine;
 
 
@@ -16,7 +14,9 @@ namespace AngeliaFramework {
 
 		// Api
 		public bool IsAttacking => Game.GlobalFrame < LastAttackFrame + AttackDuration;
-		public bool IsAttackCharged => Game.GlobalFrame - ChargeStartFrame >= MinimalChargeAttackDuration;
+		public int AttackChargedDuration =>
+			Game.GlobalFrame > ChargeStartFrame && Game.GlobalFrame - ChargeStartFrame >= MinimalChargeAttackDuration ?
+			Game.GlobalFrame - ChargeStartFrame : 0;
 		public int LastAttackFrame { get; private set; } = int.MinValue;
 		public int AttackCombo { get; private set; } = -1;
 		public virtual bool IsChargingAttack => false;
@@ -34,13 +34,13 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		public void OnActivated_Attack () {
+		private void OnActivated_Attack () {
 			LastAttackFrame = int.MinValue;
 			ChargeStartFrame = int.MaxValue;
 		}
 
 
-		public void PhysicsUpdate_Attack () {
+		private void PhysicsUpdate_Attack () {
 
 			// Combo Break
 			if (AttackCombo > -1 && Game.GlobalFrame > LastAttackFrame + AttackDuration + AttackCooldown + AttackComboGap) {
@@ -52,7 +52,7 @@ namespace AngeliaFramework {
 				if (ChargeStartFrame == int.MaxValue) ChargeStartFrame = Game.GlobalFrame;
 			} else if (ChargeStartFrame != int.MaxValue) {
 				// Charge Release
-				if (IsAttackCharged) Attack(charged: true);
+				if (AttackChargedDuration > 0) Attack(charged: true);
 				ChargeStartFrame = int.MaxValue;
 			}
 
@@ -92,6 +92,9 @@ namespace AngeliaFramework {
 
 
 		protected virtual bool IsAttackAllowedByEquipment () => GetEquippingItem(EquipmentType.Weapon) is not Weapon weapon || weapon.AllowingAttack(this);
+
+
+		protected virtual void SpawnPunchBullet () => Bullet.SpawnBullet(DefaultPunchBullet.TYPE_ID, this);
 
 
 		#endregion

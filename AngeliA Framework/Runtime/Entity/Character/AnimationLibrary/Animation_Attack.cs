@@ -232,6 +232,8 @@ namespace AngeliaFramework {
 
 		private static void Attack_Wave_SingleHanded (float ease01) {
 
+			bool isThrowing = Target.EquippingWeaponType == WeaponType.Throwing;
+
 			// Left Side
 			if (
 				AnimatedPoseType == CharacterPoseAnimationType.Idle ||
@@ -244,14 +246,16 @@ namespace AngeliaFramework {
 
 			// Upper Arm R
 			UpperArmR.LimbRotate(FacingSign * (int)Mathf.LerpUnclamped(-185, -9, ease01));
-			UpperArmR.Height += A2G;
+			if (!isThrowing) UpperArmR.Height += A2G;
 			LowerArmR.LimbRotate(0);
-			LowerArmR.Height += A2G;
+			if (!isThrowing) LowerArmR.Height += A2G;
 
 			HandL.LimbRotate(FacingSign);
 			HandR.LimbRotate(FacingSign);
-			HandR.Width += HandR.Width.Sign() * A2G;
-			HandR.Height += HandR.Height.Sign() * A2G;
+			if (!isThrowing) {
+				HandR.Width += HandR.Width.Sign() * A2G;
+				HandR.Height += HandR.Height.Sign() * A2G;
+			}
 
 			// Z
 			UpperArmL.Z = LowerArmL.Z = UpperArmL.Z.Abs();

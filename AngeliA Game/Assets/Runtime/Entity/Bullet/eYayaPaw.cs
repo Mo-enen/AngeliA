@@ -27,17 +27,27 @@ namespace AngeliaGame {
 
 
 		// MSG
-		public override void Release (Entity sender, int targetTeam, int speedX, int speedY, int combo, int chargeDuration) {
-			base.Release(sender, targetTeam, speedX, speedY, combo, chargeDuration);
-			if (sender == null) return;
-			SpeedX = 0;
-			SpeedY = 0;
+		public override void OnActivated () {
+			base.OnActivated();
 			Width = 384;
 			Height = 512;
-			FacingRight = speedX > 0;
-			var rect = sender.Rect;
-			X = FacingRight ? rect.xMax : rect.xMin - Width;
-			Y = sender.Y - 1;
+		}
+
+
+		protected override void OnRelease (Entity sender, int targetTeam, int speedX, int speedY, int combo, int chargeDuration) {
+
+			if (sender is not Character character) return;
+
+			FacingRight = character.FacingRight;
+
+			base.OnRelease(sender, targetTeam, 0, 0, combo, chargeDuration);
+
+			// Change Position
+			var senderRect = sender.Rect;
+			X = FacingRight ? senderRect.xMax : senderRect.xMin - Width;
+			Y = senderRect.y - 1;
+
+			// Get Tint from Ground
 			Tint = Const.WHITE;
 			Grounded =
 				CellPhysics.Overlap(Const.MASK_MAP, Rect.Edge(Direction4.Down, 4), out var hit, this) ||

@@ -542,7 +542,11 @@ namespace AngeliaFramework {
 		// Inventory
 		protected override int GetInventoryCapacity () => Inventory.GetInventoryCapacity(TypeID);
 		protected override Item GetItemFromInventory (int itemIndex) => ItemSystem.GetItem(Inventory.GetItemAt(TypeID, itemIndex));
-		protected override Equipment GetEquippingItem (EquipmentType type) => ItemSystem.GetItem(Inventory.GetEquipment(TypeID, type)) as Equipment;
+		protected override Equipment GetEquippingItem (EquipmentType type) {
+			int id = Inventory.GetEquipment(TypeID, type);
+			if (id == 0) return null;
+			return ItemSystem.GetItem(id) as Equipment;
+		}
 
 
 		#endregion

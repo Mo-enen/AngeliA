@@ -53,12 +53,10 @@ namespace AngeliaGame {
 			if (GuaGua == null || !GuaGua.Active) {
 				GuaGua = Summon.CreateSummon<eGuaGua>(this, X, Y);
 			}
-			// Default Attack
-			if (Game.GlobalFrame == LastAttackFrame && Inventory.GetEquipment(TypeID, EquipmentType.Weapon) == 0) {
-				var paw = Stage.SpawnEntity(YAYA_PAW, X, Y) as Bullet;
-				paw?.Release(this, AttackTargetTeam, FacingRight ? 1 : -1, 0, 0, 0);
-			}
 		}
+
+
+		protected override void SpawnPunchBullet () => Bullet.SpawnBullet(YAYA_PAW, this);
 
 
 	}

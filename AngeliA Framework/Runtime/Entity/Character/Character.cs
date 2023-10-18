@@ -178,7 +178,7 @@ namespace AngeliaFramework {
 
 			// Pipeline
 			FrameUpdate_Particle();
-			FrameUpdate_Items();
+			FrameUpdate_Inventory();
 
 			base.FrameUpdate();
 		}
@@ -254,11 +254,12 @@ namespace AngeliaFramework {
 		}
 
 
-		private void FrameUpdate_Items () {
+		private void FrameUpdate_Inventory () {
 
 			AttackDuration.Override = null;
 			AttackCooldown.Override = null;
 			RepeatAttackWhenHolding.Override = null;
+
 			int invCapacity = GetInventoryCapacity();
 			if (invCapacity > 0) {
 
@@ -272,17 +273,26 @@ namespace AngeliaFramework {
 				}
 
 				// Equipment
+				bool equippingWeapon = false;
 				for (int i = 0; i < EquipmentTypeCount; i++) {
-					var item = GetEquippingItem((EquipmentType)i);
+					var type = (EquipmentType)i;
+					var item = GetEquippingItem(type);
 					if (item == null) continue;
 					item.OnItemUpdate_FromEquipment(this);
 					if (attackStart) item.OnAttack(this);
 					if (squatStart) item.OnRepair(this);
 					if (item is Weapon weapon) {
+						equippingWeapon = true;
 						AttackDuration.Override = weapon.AttackDuration;
 						AttackCooldown.Override = weapon.AttackCooldown;
 						RepeatAttackWhenHolding.Override = weapon.RepeatAttackWhenHolding;
+						if (attackStart) Bullet.SpawnBullet(weapon.BulletID, this);
 					}
+				}
+
+				// Spawn Punch Bullet
+				if (attackStart && !equippingWeapon) {
+					SpawnPunchBullet();
 				}
 
 			}
@@ -428,7 +438,7 @@ namespace AngeliaFramework {
 			bool isSquatting = MovementState == CharacterMovementState.SquatIdle || MovementState == CharacterMovementState.SquatMove;
 			if (frame < LastRequireBounceFrame + duration) {
 				bounce = BOUNCE_AMOUNTS[frame - LastRequireBounceFrame];
-				if (!IsAttackCharged && IsChargingAttack) {
+				if (AttackChargedDuration <= 0 && IsChargingAttack) {
 					bounce += (1000 - bounce) / 2;
 				}
 			} else if (isPounding) {

@@ -20,6 +20,7 @@ namespace AngeliaFramework {
 		public abstract WeaponHandHeld HandHeld { get; }
 		public virtual int AttackDuration => 12;
 		public virtual int AttackCooldown => 2;
+		public virtual int BulletID => DefaultBullet.TYPE_ID;
 		public virtual bool RepeatAttackWhenHolding => false;
 
 		public virtual bool AllowingAttack (Character character) => true;

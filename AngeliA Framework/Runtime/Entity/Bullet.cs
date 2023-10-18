@@ -4,13 +4,29 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
+
+	public class DefaultBullet : Bullet {
+		public static readonly int TYPE_ID = typeof(DefaultBullet).AngeHash();
+		protected override int Duration => 30;
+		protected override int Damage => 1;
+	}
+
+
+	public class DefaultPunchBullet : Bullet {
+		public static readonly int TYPE_ID = typeof(DefaultPunchBullet).AngeHash();
+		protected override int Duration => 30;
+		protected override int Damage => 1;
+
+
+	}
+
+
 	[EntityAttribute.Capacity(128)]
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.Layer(Const.ENTITY_LAYER_BULLET)]
 	public abstract class Bullet : Entity {
-
 
 
 		// Api
@@ -26,7 +42,14 @@ namespace AngeliaFramework {
 
 
 		// MSG
-		public virtual void Release (Entity sender, int targetTeam, int speedX, int speedY, int bulletIndex = 0, int chargeDuration = 0) {
+		public override void OnActivated () {
+			base.OnActivated();
+			Width = Const.CEL;
+			Height = Const.CEL;
+		}
+
+
+		protected virtual void OnRelease (Entity sender, int targetTeam, int speedX, int speedY, int bulletIndex = 0, int chargeDuration = 0) {
 			Sender = sender;
 			var sourceRect = sender.Rect;
 			X = sourceRect.CenterX() - Width / 2;
@@ -85,6 +108,33 @@ namespace AngeliaFramework {
 
 
 		// Api
+		public static Bullet SpawnBullet (int bulletID, Character sender) {
+			if (sender == null) return null;
+			return SpawnBullet(
+				bulletID,
+				sender.FacingRight ? sender.X + sender.Width / 2 : sender.X - sender.Width / 2,
+				sender.Y + sender.Height / 2,
+				0, 0,
+				sender, sender.AttackTargetTeam, sender.AttackCombo, sender.AttackChargedDuration
+			);
+		}
+		public static Bullet SpawnBullet (
+			int bulletID, int originX, int originY, int speedX, int speedY,
+			Entity sender, int targetTeam, int combo = 0, int chargedDuration = 0
+		) {
+			if (sender == null) return null;
+			var bullet = Stage.SpawnEntity(bulletID, originX, originY) as Bullet;
+			bullet.X -= bullet.Width / 2;
+			bullet.Y -= bullet.Height / 2;
+			bullet?.OnRelease(
+				sender, targetTeam,
+				speedX, speedY,
+				combo, chargedDuration
+			);
+			return bullet;
+		}
+
+
 		protected virtual void OnHit (IDamageReceiver receiver) {
 			if (receiver == null) {
 				Active = false;

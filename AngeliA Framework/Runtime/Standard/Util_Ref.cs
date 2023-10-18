@@ -138,7 +138,8 @@ namespace AngeliaFramework {
 			get {
 				if (_AllTypesCache == null) {
 #if UNITY_EDITOR
-					if (!UnityEditor.EditorApplication.isPlaying && AllAssembliesCache.Count == 0) {
+					if (!UnityEditor.EditorApplication.isPlaying) {
+						AllAssembliesCache.Clear();
 						AllAssembliesCache.AddRange(System.AppDomain.CurrentDomain.GetAssemblies());
 					}
 #endif
