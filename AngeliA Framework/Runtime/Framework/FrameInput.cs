@@ -148,9 +148,9 @@ namespace AngeliaFramework {
 
 		// Short
 		private static Camera MainCamera => _MainCamera != null ? _MainCamera : (_MainCamera = Camera.main);
+		private static Camera _MainCamera = null;
 
 		// Data
-		private static Camera _MainCamera = null;
 		private static Keyboard Keyboard = null;
 		private static Gamepad Gamepad = null;
 		private static Mouse Mouse = null;
@@ -219,7 +219,7 @@ namespace AngeliaFramework {
 		public static void BeforeGameInitialize () {
 
 			// Load Config
-			var iConfig = AngeUtil.LoadOrCreateJson<InputConfig>(Const.PlayerDataRoot);
+			var iConfig = AngeUtil.LoadOrCreateJson<InputConfig>(Application.persistentDataPath);
 			for (int i = 0; i < 8; i++) {
 				KeyMap[(Gamekey)i] = new Vector2Int(iConfig.KeyboardConfig[i], iConfig.GamepadConfig[i]);
 			}
@@ -300,7 +300,7 @@ namespace AngeliaFramework {
 		private static void Update_Mouse (RectInt cameraRect) {
 			AnyMouseButtonDown = false;
 			AnyMouseButtonHolding = false;
-			if (Mouse != null) {
+			if (Mouse != null && MainCamera != null) {
 				var uCameraRect = MainCamera.rect;
 				var mousePos = Mouse.position.ReadValue();
 				MouseScreenPositionDelta = mousePos.RoundToInt() - MouseScreenPosition;
@@ -736,7 +736,7 @@ namespace AngeliaFramework {
 				(int)GamepadButton.Start,
 				KeyMap[(Gamekey)7].y,
 			},
-		}, Const.PlayerDataRoot, "", true);
+		}, Application.persistentDataPath, "", true);
 
 
 		#endregion

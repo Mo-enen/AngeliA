@@ -34,10 +34,8 @@ namespace AngeliaGame {
 
 			WalkToRunAccumulation.Value = 0;
 			JumpDownThoughOneway.Value = true;
-			FlyAvailable.Value = true;
 			SlideAvailable.Value = true;
 			SlideOnAnyBlock.Value = true;
-			FlyGlideAvailable.Value = false;
 			CharacterHeight = 158;
 
 			MinimalChargeAttackDuration.Value = 42;

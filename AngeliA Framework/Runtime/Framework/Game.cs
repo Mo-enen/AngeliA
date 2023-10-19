@@ -41,6 +41,10 @@ namespace AngeliaFramework {
 				_VSync.Value = value;
 			}
 		}
+		public int CurrentDataSlot {
+			get => _CurrentDataSlot.Value;
+			set => _CurrentDataSlot.Value = value;
+		}
 		public FullscreenMode FullscreenMode {
 			get => (FullscreenMode)_FullscreenMode.Value;
 			set {
@@ -74,7 +78,6 @@ namespace AngeliaFramework {
 		public static event System.Action OnGameUpdatePauseless;
 
 		// Ser
-		[SerializeField, Disable] int m_UniverseVersion = 0;
 		[SerializeField, DisableAtRuntime] bool m_AutoStartGame = true;
 		[SerializeField, DisableAtRuntime] Gradient m_SkyTintTop = null;
 		[SerializeField, DisableAtRuntime] Gradient m_SkyTintBottom = null;
@@ -85,13 +88,13 @@ namespace AngeliaFramework {
 
 		// Data
 		private bool Initialized = false;
-		private bool UniverseReady = false;
 		private int ForceBackgroundTintFrame = int.MinValue;
-		private Coroutine SyncUniverseCor = null;
+		private int? RequireRestartWithPlayerID = null;
 
 		// Saving
 		private readonly SavingInt _GraphicFramerate = new("Game.GraphicFramerate", 60);
 		private readonly SavingInt _FullscreenMode = new("Game.FullscreenMode", 0);
+		private readonly SavingInt _CurrentDataSlot = new("Game.CurrentDataSlot", 0);
 		private readonly SavingBool _VSync = new("Game.VSync", false);
 
 
@@ -131,7 +134,6 @@ namespace AngeliaFramework {
 
 			// Final
 			Editor_ReloadAllMedia();
-			Editor_LoadUniverseVersionFromManifest();
 
 		}
 		private void Update () {
@@ -165,14 +167,6 @@ namespace AngeliaFramework {
 				path = Util.FixPath(path);
 				var fixedDataPath = Util.FixPath(Application.dataPath);
 				return path.StartsWith(fixedDataPath) ? "Assets" + path[fixedDataPath.Length..] : "";
-			}
-		}
-		public void Editor_LoadUniverseVersionFromManifest () {
-			int diskVersion = AngeUtil.LoadUniverseVersionFromManifest(Util.CombinePaths(Const.UniverseRoot, Const.MANIFEST_NAME));
-			if (m_UniverseVersion != diskVersion) {
-				m_UniverseVersion = diskVersion;
-				UnityEditor.EditorUtility.SetDirty(this);
-				UnityEditor.AssetDatabase.SaveAssets();
 			}
 		}
 		public void Editor_SetSheetTexture (Texture2D newTexture) => m_SheetTexture = newTexture;
@@ -219,11 +213,10 @@ namespace AngeliaFramework {
 			}
 			Current = this;
 
-			if (!Initialize_Universe()) return;
-
 			Initialized = true;
 
 			try {
+				AngePath.CurrentDataSlot = CurrentDataSlot;
 				Util.InitializeAssembly("angelia");
 				Application.wantsToQuit -= OnQuit;
 				Application.wantsToQuit += OnQuit;
@@ -246,35 +239,13 @@ namespace AngeliaFramework {
 				DontDestroyOnLoad(gameObject);
 				System.GC.Collect(0, System.GCCollectionMode.Forced);
 				if (m_AutoStartGame) {
-					RestartGame();
+					RestartGameLogic(0);
 				} else {
 					enabled = false;
 				}
 
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 
-		}
-
-
-		private bool Initialize_Universe () {
-
-			if (UniverseReady) return true;
-
-			// Not Android
-			if (Application.platform != RuntimePlatform.Android) {
-				UniverseReady = true;
-				return true;
-			}
-
-			// Android
-#pragma warning disable IDE0074
-			if (SyncUniverseCor == null) {
-#pragma warning restore IDE0074
-				SyncUniverseCor = StartCoroutine(
-					AngeUtil.SyncUniverseFolder(m_UniverseVersion, () => UniverseReady = true)
-				);
-			}
-			return false;
 		}
 
 
@@ -379,6 +350,10 @@ namespace AngeliaFramework {
 				Update_PauseState();
 				CellRenderer.FrameUpdate(GlobalFrame, GameCamera);
 				if (GlobalFrame % 36000 == 0) RefreshBackgroundTint();
+				if (RequireRestartWithPlayerID.HasValue) {
+					RestartGameLogic(RequireRestartWithPlayerID.Value);
+					RequireRestartWithPlayerID = null;
+				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
@@ -418,30 +393,7 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public void RestartGame (int playerID = 0) {
-
-			// Auto Player ID
-			if (playerID == 0) {
-				Player.Selecting = Stage.PeekOrGetEntity(Player.LastSelectedPlayerID) as Player;
-				playerID = Player.Selecting != null ? Player.Selecting.TypeID : typeof(MainPlayer).AngeHash();
-			}
-
-			// Select Player
-			if (Stage.PeekOrGetEntity(playerID) is Player player) {
-				Player.Selecting = player;
-			}
-
-			// Enable Game
-			if (!enabled) enabled = true;
-
-			// Enable Rendering
-			if (GameCamera != null && !GameCamera.gameObject.activeSelf) {
-				GameCamera.gameObject.SetActive(true);
-			}
-
-			// Event
-			OnGameRestart?.Invoke();
-		}
+		public void RestartGame (int playerID = 0) => RequireRestartWithPlayerID = playerID;
 
 
 		public void SetBackgroundTint (Color32 top, Color32 bottom) {
@@ -458,6 +410,36 @@ namespace AngeliaFramework {
 				m_SkyTintTop.Evaluate(time01),
 				m_SkyTintBottom.Evaluate(time01)
 			);
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+		private void RestartGameLogic (int playerID = 0) {
+			// Select Player
+			if (playerID == 0) {
+				Player.Selecting = Stage.PeekOrGetEntity(Player.LastSelectedPlayerID) as Player;
+				playerID = Player.Selecting != null ? Player.Selecting.TypeID : typeof(MainPlayer).AngeHash();
+			}
+			if (Stage.PeekOrGetEntity(playerID) is Player player) {
+				Player.Selecting = player;
+			}
+
+			// Enable
+			if (!enabled) enabled = true;
+			if (GameCamera != null && !GameCamera.gameObject.activeSelf) {
+				GameCamera.gameObject.SetActive(true);
+			}
+			if (!IsPlaying) IsPlaying = true;
+
+			// Event
+			OnGameRestart?.Invoke();
 		}
 
 

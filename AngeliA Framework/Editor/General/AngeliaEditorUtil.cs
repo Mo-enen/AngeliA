@@ -10,7 +10,7 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 
 namespace AngeliaFramework.Editor {
 
-	 
+
 	[System.Serializable]
 	public class AngeSpriteMetaData {
 		public string Name;
@@ -411,28 +411,6 @@ namespace AngeliaFramework.Editor {
 			foreach (var path in Util.EnumerateFiles(rootPath, false, "*.meta")) {
 				File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden);
 			}
-		}
-
-
-		public static void CreateUniverseManifest (string rootPath, bool growVersion = false) {
-			string manifestPath = Util.CombinePaths(rootPath, Const.MANIFEST_NAME);
-			var builder = new StringBuilder();
-			// Load Old Version
-			int diskVersion = AngeUtil.LoadUniverseVersionFromManifest(manifestPath);
-			if (growVersion) diskVersion++;
-			builder.Append(diskVersion.GreaterOrEquelThanZero());
-			builder.Append('\n');
-			// Append Paths
-			rootPath = Util.FixPath(rootPath);
-			foreach (var path in Util.EnumerateFiles(rootPath, false, "*")) {
-				if (Util.GetExtension(path) == ".meta") continue;
-				string _path = Util.FixPath(path);
-				if (_path.Length <= rootPath.Length + 1) continue;
-				_path = _path[(rootPath.Length + 1)..];
-				builder.Append(_path);
-				builder.Append('\n');
-			}
-			Util.TextToFile(builder.ToString(), manifestPath);
 		}
 
 

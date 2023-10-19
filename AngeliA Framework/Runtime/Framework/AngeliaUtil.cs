@@ -43,105 +43,13 @@ namespace AngeliaFramework {
 
 		// Universe
 		public static void CreateAngeFolders () {
-			Util.CreateFolder(Const.UniverseRoot);
-			Util.CreateFolder(Const.LanguageRoot);
-			Util.CreateFolder(Const.BuiltInMapRoot);
-			Util.CreateFolder(Const.UserMapRoot);
-			Util.CreateFolder(Const.DownloadMapRoot);
-			Util.CreateFolder(Const.PlayerDataRoot);
-			Util.CreateFolder(Const.SheetRoot);
-		}
-
-
-		public static int LoadUniverseVersionFromManifest (string manifestPath) {
-			if (!Util.FileExists(manifestPath)) return -1;
-			foreach (string line in Util.ForAllLines(manifestPath)) {
-				if (!string.IsNullOrWhiteSpace(line)) {
-					if (int.TryParse(line, out int diskVersion)) {
-						return diskVersion;
-					}
-				}
-				return -1;
-			}
-			return -1;
-		}
-
-
-		public static IEnumerator SyncUniverseFolder (int gameUniverseVersion, System.Action callback) {
-
-			UnityEngine.Networking.UnityWebRequest request = null;
-			bool isAndroid = Application.platform == RuntimePlatform.Android;
-			string streamingRoot = Util.CombinePaths(Application.streamingAssetsPath, Const.UNIVERSE_NAME);
-			string persistentRoot = Util.CombinePaths(Application.persistentDataPath, Const.UNIVERSE_NAME);
-
-			// Check Version
-			string uniManifestPath = Util.CombinePaths(persistentRoot, Const.MANIFEST_NAME);
-			int diskVersion = LoadUniverseVersionFromManifest(uniManifestPath);
-			if (gameUniverseVersion == diskVersion) {
-				// No Need to Sync
-				callback?.Invoke();
-				yield break;
-			}
-
-			// Load Manifest
-			try {
-				string manifestUrl = Util.CombinePaths(streamingRoot, Const.MANIFEST_NAME);
-				if (!isAndroid) manifestUrl = Util.GetUrl(manifestUrl);
-				request = UnityEngine.Networking.UnityWebRequest.Get(manifestUrl);
-			} catch (System.Exception ex) {
-				Debug.LogException(ex);
-				callback?.Invoke();
-				yield break;
-			}
-
-			yield return request.SendWebRequest();
-
-			// Get Paths
-			string[] pathList = null;
-			try {
-				var handler = request.downloadHandler;
-				if (handler == null) {
-					callback?.Invoke();
-					yield break;
-				}
-				pathList = handler.text.Split('\n');
-			} catch (System.Exception ex) {
-				Debug.LogException(ex);
-				callback?.Invoke();
-				yield break;
-			}
-
-			// Delete Old
-			Util.DeleteFolder(persistentRoot);
-
-			// Copy All Files
-			for (int i = 1; i < pathList.Length; i++) {
-
-				string path = pathList[i];
-				if (string.IsNullOrWhiteSpace(path)) continue;
-
-				try {
-					string url = Util.CombinePaths(streamingRoot, path);
-					if (!isAndroid) url = Util.GetUrl(url);
-					request = UnityEngine.Networking.UnityWebRequest.Get(url);
-				} catch {
-					continue;
-				}
-
-				yield return request.SendWebRequest();
-
-				try {
-					var handler = request.downloadHandler;
-					if (handler == null) continue;
-					string newPath = Util.CombinePaths(persistentRoot, path);
-					Util.ByteToFile(handler.nativeData.ToArray(), newPath);
-				} catch {
-					continue;
-				}
-			}
-
-			// End
-			callback?.Invoke();
+			Util.CreateFolder(AngePath.UniverseRoot);
+			Util.CreateFolder(AngePath.LanguageRoot);
+			Util.CreateFolder(AngePath.BuiltInMapRoot);
+			Util.CreateFolder(AngePath.UserMapRoot);
+			Util.CreateFolder(AngePath.DownloadMapRoot);
+			Util.CreateFolder(AngePath.PlayerDataRoot);
+			Util.CreateFolder(AngePath.SheetRoot);
 		}
 
 

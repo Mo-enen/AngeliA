@@ -427,6 +427,7 @@ namespace AngeliaFramework {
 			}
 		}
 
+
 		// Get
 		public static T GetEntity<T> () where T : Entity => TryGetEntity<T>(out var result) ? result : null;
 		public static Entity GetEntity (int typeID) => TryGetEntity(typeID, out var result) ? result : null;

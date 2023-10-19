@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 
 
@@ -45,12 +43,15 @@ namespace AngeliaFramework {
 		private const string UNLOCK_NAME = "UnlockedItem";
 
 		// Data
-		private static readonly Dictionary<int, ItemData> ItemPool = new();
 		public static readonly Dictionary<Vector4Int, Vector2Int> CombinationPool = new();
+		private static readonly Dictionary<int, ItemData> ItemPool = new();
 		private static bool IsUnlockDirty = false;
+		private static int LoadedSlot = 0;
 
 
 		#endregion
+
+
 
 
 		#region --- MSG ---
@@ -77,7 +78,7 @@ namespace AngeliaFramework {
 			LoadUnlockDataFromFile();
 
 			// Init Combination
-			string comPath = Util.CombinePaths(Const.MetaRoot, "Item Combination.txt");
+			string comPath = Util.CombinePaths(AngePath.MetaRoot, "Item Combination.txt");
 			if (Util.FileExists(comPath)) {
 				foreach (string line in Util.ForAllLines(comPath)) {
 					if (string.IsNullOrEmpty(line)) continue;
@@ -103,6 +104,14 @@ namespace AngeliaFramework {
 			if (IsUnlockDirty) {
 				IsUnlockDirty = false;
 				SaveUnlockDataToFile();
+			}
+		}
+
+
+		[OnGameRestart]
+		public static void OnGameRestart () {
+			if (LoadedSlot != AngePath.CurrentDataSlot) {
+				LoadUnlockDataFromFile();
 			}
 		}
 
@@ -257,7 +266,8 @@ namespace AngeliaFramework {
 
 		// Unlock
 		private static void LoadUnlockDataFromFile () {
-			string unlockPath = Util.CombinePaths(Const.PlayerDataRoot, UNLOCK_NAME);
+			LoadedSlot = AngePath.CurrentDataSlot;
+			string unlockPath = Util.CombinePaths(AngePath.PlayerDataRoot, UNLOCK_NAME);
 			if (Util.FileExists(unlockPath)) {
 				var bytes = Util.FileToByte(unlockPath);
 				for (int i = 0; i < bytes.Length - 3; i += 4) {
@@ -275,7 +285,7 @@ namespace AngeliaFramework {
 
 
 		private static void SaveUnlockDataToFile () {
-			string unlockPath = Util.CombinePaths(Const.PlayerDataRoot, UNLOCK_NAME);
+			string unlockPath = Util.CombinePaths(AngePath.PlayerDataRoot, UNLOCK_NAME);
 			Util.CreateFolder(Util.GetParentPath(unlockPath));
 			var fs = new FileStream(unlockPath, FileMode.Create, FileAccess.Write);
 			foreach (var (id, data) in ItemPool) {

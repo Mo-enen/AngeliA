@@ -92,8 +92,6 @@ namespace AngeliaFramework {
 		public readonly BuffInt ClimbSpeedY = new(18);
 
 		// Fly
-		public readonly BuffBool FlyAvailable = new(false);
-		public readonly BuffBool FlyGlideAvailable = new(true);
 		public readonly BuffInt FlyHeight = new(200);
 		public readonly BuffInt FlyCooldown = new(24);
 		public readonly BuffInt FlyRiseSpeed = new(96);

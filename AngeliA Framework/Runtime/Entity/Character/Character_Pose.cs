@@ -66,7 +66,6 @@ namespace AngeliaFramework {
 		public bool BodyPartsReady => BodyParts != null;
 		public Color32 SkinColor { get; set; } = new(239, 194, 160, 255);
 		public Color32 HairColor { get; set; } = new(51, 51, 51, 255);
-		public bool SpinOnGroundPound { get; set; } = false;
 		public int CharacterHeight { get; set; } = 160; // in CM
 		public int HandGrabRotationL { get; set; } = 0;
 		public int HandGrabRotationR { get; set; } = 0;
@@ -311,8 +310,8 @@ namespace AngeliaFramework {
 			Cloth.DrawFootSuit(this);
 
 			DrawBodyPart(cellIndexStart);
-
 			OnPoseCalculated();
+
 		}
 
 
@@ -593,9 +592,8 @@ namespace AngeliaFramework {
 				if (bodyPart == Head && CellRenderer.TryGetSpriteFromGroup(id, Head.FrontSide ? 0 : 1, out var headSprite, false, true)) {
 					id = headSprite.GlobalID;
 				}
-				if (bodyPart.Border.IsZero) {
-					// General
-					CellRenderer.Draw(
+				if (bodyPart == Body && !bodyPart.Border.IsZero) {
+					CellRenderer.Draw_9Slice(
 						id,
 						X + PoseRootX + bodyPart.X,
 						Y + PoseRootY + bodyPart.Y,
@@ -603,8 +601,7 @@ namespace AngeliaFramework {
 						bodyPart.Tint, bodyPart.Z
 					);
 				} else {
-					// 9 Slice
-					CellRenderer.Draw_9Slice(
+					CellRenderer.Draw(
 						id,
 						X + PoseRootX + bodyPart.X,
 						Y + PoseRootY + bodyPart.Y,
@@ -614,12 +611,12 @@ namespace AngeliaFramework {
 				}
 			}
 
-			// Z Offset
+			// Final
 			PoseZOffset -= 40;
-			if (CellRenderer.GetCells(out var layerCells, out int count)) {
-				int endIndex = Mathf.Min(CellRenderer.GetUsedCellCount(), count);
-				for (int i = cellIndexStart; i < endIndex; i++) {
-					layerCells[i].Z += PoseZOffset;
+			if (CellRenderer.GetCells(out var cells, out int count)) {
+				// Z Offset
+				for (int i = cellIndexStart; i < count; i++) {
+					cells[i].Z += PoseZOffset;
 				}
 			}
 

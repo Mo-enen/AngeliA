@@ -42,12 +42,7 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		public void OnPreprocessBuild (BuildReport report) {
-			Refresh();
-			AngeEditorUtil.CreateUniverseManifest(Const.UniverseRoot, true);
-			var game = Object.FindFirstObjectByType<Game>(FindObjectsInactive.Include);
-			if (game != null) game.Editor_LoadUniverseVersionFromManifest();
-		}
+		public void OnPreprocessBuild (BuildReport report) => Refresh();
 
 
 		[MenuItem("AngeliA/Refresh", false, 0)]
@@ -93,8 +88,8 @@ namespace AngeliaFramework.Editor {
 
 			// Check Sheet not Exist
 			if (
-				!Util.FolderExists(Const.SheetRoot) ||
-				!Util.FileExists(Util.CombinePaths(Const.SheetRoot, $"{nameof(SpriteSheet)}.json"))
+				!Util.FolderExists(AngePath.SheetRoot) ||
+				!Util.FileExists(Util.CombinePaths(AngePath.SheetRoot, $"{nameof(SpriteSheet)}.json"))
 			) {
 				return true;
 			}
@@ -107,12 +102,12 @@ namespace AngeliaFramework.Editor {
 			}
 
 			// Check for Maps
-			foreach (var path in Util.EnumerateFiles(Const.BuiltInMapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
+			foreach (var path in Util.EnumerateFiles(AngePath.BuiltInMapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
 				if (Util.GetModifyDate(path) > lastSyncTickValue) {
 					return true;
 				}
 			}
-			foreach (var path in Util.EnumerateFiles(Const.UserMapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
+			foreach (var path in Util.EnumerateFiles(AngePath.UserMapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
 				if (Util.GetModifyDate(path) > lastSyncTickValue) {
 					return true;
 				}
@@ -203,15 +198,13 @@ namespace AngeliaFramework.Editor {
 			// Meta
 			CreateSpriteEditingMeta(sheetMeta, sheet);
 			// Maps
-			AngeUtil.DeleteAllEmptyMaps(Const.BuiltInMapRoot);
-			AngeUtil.DeleteAllEmptyMaps(Const.UserMapRoot);
-			AngeUtil.DeleteAllEmptyMaps(Const.DownloadMapRoot);
+			AngeUtil.DeleteAllEmptyMaps(AngePath.BuiltInMapRoot);
+			AngeUtil.DeleteAllEmptyMaps(AngePath.UserMapRoot);
+			AngeUtil.DeleteAllEmptyMaps(AngePath.DownloadMapRoot);
 			// Game
 			game.Editor_ReloadAllMedia();
-			game.Editor_LoadUniverseVersionFromManifest();
 			// Final
-			AngeEditorUtil.HideMetaFiles(Const.UniverseRoot);
-			AngeEditorUtil.CreateUniverseManifest(Const.UniverseRoot);
+			AngeEditorUtil.HideMetaFiles(AngePath.UniverseRoot);
 			AssetDatabase.Refresh();
 			EditorSceneManager.SaveOpenScenes();
 		}
@@ -423,7 +416,7 @@ namespace AngeliaFramework.Editor {
 					SetSpritesForSheet(sheet, sheetTexture, sprites.ToArray(), sheetMeta);
 
 					// Save Json
-					AngeUtil.SaveJson(sheet, Const.SheetRoot);
+					AngeUtil.SaveJson(sheet, AngePath.SheetRoot);
 
 					// Save Texture
 					var currentTexture = game.Editor_GetSheetTexture();
@@ -682,7 +675,7 @@ namespace AngeliaFramework.Editor {
 					Metas = list.ToArray(),
 					SheetNames = sheetNames.ToArray(),
 				},
-				Const.SheetRoot
+				AngePath.SheetRoot
 			);
 		}
 

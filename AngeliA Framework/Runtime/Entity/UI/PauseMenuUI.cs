@@ -9,7 +9,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.Capacity(1, 1)]
-	public class PauseMenu : MenuUI {
+	public class PauseMenuUI : MenuUI {
 
 
 
@@ -41,6 +41,7 @@ namespace AngeliaFramework {
 		private static readonly int MENU_SOUND_VOLUME = "Menu.Setting.SoundVolume".AngeHash();
 		private static readonly int MENU_FRAMERATE = "Menu.Setting.Framerate".AngeHash();
 		private static readonly int MENU_LANGUAGE = "Menu.Setting.Language".AngeHash();
+		private static readonly int MENU_DATA_SLOT = "Menu.Setting.DataSlot".AngeHash();
 		private static readonly int MENU_KEYSETTER_SAVE_BACK = "Menu.KeySetter.SaveAndBack".AngeHash();
 		private static readonly int MENU_FULLSCREEN_0 = "Menu.Setting.Fullscreen.0".AngeHash();
 		private static readonly int MENU_FULLSCREEN_1 = "Menu.Setting.Fullscreen.1".AngeHash();
@@ -74,22 +75,21 @@ namespace AngeliaFramework {
 			$"UI.GameKey.{Gamekey.Select}".AngeHash(),
 		};
 
-		// Api
-		public static PauseMenu Instance { get; private set; } = null;
-		public bool QuitMode => Mode == MenuMode.Quit;
-
 		// Data
+		private static PauseMenuUI Instance = null;
 		private readonly Key[] KeyboardKeys = new Key[8];
 		private readonly GamepadButton[] GamepadKeys = new GamepadButton[8];
+		private readonly IntToString MusicVolumeCache = new();
+		private readonly IntToString SoundVolumeCache = new();
+		private readonly IntToString FramerateCache = new();
+		private readonly IntToString DataSlotIndexCache = new("", $"/{AngePath.DATA_SLOT_COUNT}");
+		private readonly CellContent KeySetterLabel = new();
 		private MenuMode Mode = MenuMode.Pause;
 		private MenuMode RequireMode = MenuMode.Pause;
 		private int RecordingKey = -1;
 		private int PauselessFrame = 0;
+		private int RequireNewDataSlot = -1;
 		private bool RecordLock = true;
-		private readonly IntToString MusicVolumeCache = new();
-		private readonly IntToString SoundVolumeCache = new();
-		private readonly IntToString FramerateCache = new();
-		private readonly CellContent KeySetterLabel = new();
 
 
 		#endregion
@@ -100,7 +100,7 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		public PauseMenu () => Instance = this;
+		public PauseMenuUI () => Instance = this;
 
 
 		[OnGameTryingToQuit]
@@ -128,6 +128,8 @@ namespace AngeliaFramework {
 			base.OnActivated();
 			ScreenTint = new(0, 0, 0, 128);
 			BackgroundTint = new(0, 0, 0, 255);
+			RequireNewDataSlot = -1;
+			MaxItemCount = 11;
 		}
 
 
@@ -148,8 +150,17 @@ namespace AngeliaFramework {
 
 		public override void OnInactivated () {
 			base.OnInactivated();
-			if (Game.IsPausing) {
-				Game.IsPlaying = true;
+			// Unpause
+			if (Game.IsPausing) Game.IsPlaying = true;
+			// Set Data Slot
+			if (
+				RequireNewDataSlot >= 0 &&
+				RequireNewDataSlot < AngePath.DATA_SLOT_COUNT &&
+				RequireNewDataSlot != AngePath.CurrentDataSlot
+			) {
+				AngePath.CurrentDataSlot = RequireNewDataSlot;
+				Game.Current.CurrentDataSlot = RequireNewDataSlot;
+				Game.Current.RestartGame();
 			}
 		}
 
@@ -338,11 +349,25 @@ namespace AngeliaFramework {
 				}
 			}
 
+			// Data Slot
+			int settedDataSlot = RequireNewDataSlot < 0 ? AngePath.CurrentDataSlot : RequireNewDataSlot;
+			if (DrawArrowItem(
+				Language.Get(MENU_DATA_SLOT, "Save Data Slot"),
+				CellContent.Get(DataSlotIndexCache.GetString(settedDataSlot + 1)),
+				settedDataSlot > 0, settedDataSlot < AngePath.DATA_SLOT_COUNT, out delta)
+			) {
+				int newIndex = settedDataSlot + delta;
+				newIndex = newIndex.Clamp(0, AngePath.DATA_SLOT_COUNT - 1);
+				if (newIndex != settedDataSlot) {
+					RequireNewDataSlot = newIndex;
+				}
+			}
+
 			// Allow Gamepad
 			if (DrawItem(
-				Language.Get(MENU_ALLOW_GAMEPAD, "Allow Gamepad"),
-				CellContent.Get(FrameInput.AllowGamepad ? Language.Get(UI_YES, "YES") : Language.Get(UI_NO, "NO"))
-			)) {
+			Language.Get(MENU_ALLOW_GAMEPAD, "Allow Gamepad"),
+			CellContent.Get(FrameInput.AllowGamepad ? Language.Get(UI_YES, "YES") : Language.Get(UI_NO, "NO"))
+		)) {
 				FrameInput.AllowGamepad = !FrameInput.AllowGamepad;
 			}
 

@@ -85,7 +85,7 @@ namespace AngeliaFramework.Editor {
 			Application.onBeforeRender -= OnBeforeRender;
 			Application.onBeforeRender += OnBeforeRender;
 
-			AngeEditorUtil.HideMetaFiles(Const.UniverseRoot);
+			AngeEditorUtil.HideMetaFiles(AngePath.UniverseRoot);
 
 			var game = Object.FindFirstObjectByType<Game>(FindObjectsInactive.Include);
 			if (game != null) {
@@ -606,7 +606,7 @@ namespace AngeliaFramework.Editor {
 			root.Query<Button>(className: "Link").ForEach((btn) => {
 				switch (btn.name) {
 					case "Universe":
-						btn.clicked += () => EditorUtility.OpenWithDefaultApp(Const.UniverseRoot);
+						btn.clicked += () => EditorUtility.OpenWithDefaultApp(AngePath.UniverseRoot);
 						break;
 					case "Persis":
 						btn.clicked += () => EditorUtility.OpenWithDefaultApp(Application.persistentDataPath);

@@ -24,13 +24,13 @@ namespace AngeliaFramework {
 		protected virtual bool OnlySpawnWhenUnlocked => true;
 
 		// Short
-		private static string UnlockFolderPath => !string.IsNullOrEmpty(_UnlockFolderPath) ? _UnlockFolderPath : (_UnlockFolderPath = Util.CombinePaths(Const.PlayerDataRoot, "Unlocked CP"));
-		private static string _UnlockFolderPath = "";
+		private static string UnlockFolderPath => Util.CombinePaths(AngePath.PlayerDataRoot, "Unlocked CP");
 		private Vector4Int Border => CellRenderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Vector4Int.Zero;
 
 		// Data
 		private static readonly HashSet<int> UnlockedCheckPoint = new();
 		private static readonly Dictionary<int, int> LinkedId = new();
+		private static int LoadedSlot = 0;
 
 
 		#endregion
@@ -43,12 +43,15 @@ namespace AngeliaFramework {
 
 		[OnGameInitialize(-128)]
 		public static void BeforeGameInitialize () {
-			UnlockedCheckPoint.Clear();
 			LinkedId.Clear();
-			foreach (var path in Util.EnumerateFiles(UnlockFolderPath, true, "*")) {
-				if (int.TryParse(Util.GetNameWithoutExtension(path), out int id)) {
-					UnlockedCheckPoint.TryAdd(id);
-				}
+			LoadUnlockFromFile();
+		}
+
+
+		[OnGameRestart]
+		public static void OnGameRestart () {
+			if (LoadedSlot != AngePath.CurrentDataSlot) {
+				LoadUnlockFromFile();
 			}
 		}
 
@@ -196,6 +199,17 @@ namespace AngeliaFramework {
 
 
 		#region --- LGC ---
+
+
+		private static void LoadUnlockFromFile () {
+			LoadedSlot = AngePath.CurrentDataSlot;
+			UnlockedCheckPoint.Clear();
+			foreach (var path in Util.EnumerateFiles(UnlockFolderPath, true, "*")) {
+				if (int.TryParse(Util.GetNameWithoutExtension(path), out int id)) {
+					UnlockedCheckPoint.TryAdd(id);
+				}
+			}
+		}
 
 
 		#endregion

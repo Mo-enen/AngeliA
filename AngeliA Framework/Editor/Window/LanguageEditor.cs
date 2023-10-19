@@ -218,7 +218,7 @@ namespace AngeliaFramework.Editor {
 			Keys.Clear();
 			Languages.Clear();
 			var keyMap = new Dictionary<string, int>();
-			foreach (var filePath in Util.EnumerateFiles(Const.LanguageRoot, true, $"*.{Const.LANGUAGE_FILE_EXT}")) {
+			foreach (var filePath in Util.EnumerateFiles(AngePath.LanguageRoot, true, $"*.{Const.LANGUAGE_FILE_EXT}")) {
 				string fileName = Util.GetNameWithoutExtension(filePath);
 				string key;
 				if (!System.Enum.TryParse<SystemLanguage>(fileName, false, out var language)) continue;
@@ -238,7 +238,7 @@ namespace AngeliaFramework.Editor {
 
 			// Get Contents
 			Contents = new string[Languages.Count, Keys.Count];
-			foreach (var filePath in Util.EnumerateFiles(Const.LanguageRoot, true, $"*.{Const.LANGUAGE_FILE_EXT}")) {
+			foreach (var filePath in Util.EnumerateFiles(AngePath.LanguageRoot, true, $"*.{Const.LANGUAGE_FILE_EXT}")) {
 				string fileName = Util.GetNameWithoutExtension(filePath);
 				string key, value;
 				if (!System.Enum.TryParse<SystemLanguage>(fileName, true, out var language)) continue;
@@ -263,7 +263,7 @@ namespace AngeliaFramework.Editor {
 			IsDirty = false;
 			for (int lanIndex = 0; lanIndex < Languages.Count; lanIndex++) {
 				var language = Languages[lanIndex];
-				string path = Util.CombinePaths(Const.LanguageRoot, $"{language}.{Const.LANGUAGE_FILE_EXT}");
+				string path = Util.CombinePaths(AngePath.LanguageRoot, $"{language}.{Const.LANGUAGE_FILE_EXT}");
 				if (!Util.FileExists(path)) continue;
 				var builder = new StringBuilder();
 				for (int keyIndex = 0; keyIndex < Keys.Count; keyIndex++) {
@@ -296,7 +296,7 @@ namespace AngeliaFramework.Editor {
 						if (EditorUtil.Dialog(
 							"", $"Delete Language {Util.GetLanguageDisplayName(language)}?\nFile will move to recycle bin.", "Delete", "Cancel"
 						)) {
-							string path = Util.CombinePaths(Const.LanguageRoot, $"{language}.{Const.LANGUAGE_FILE_EXT}");
+							string path = Util.CombinePaths(AngePath.LanguageRoot, $"{language}.{Const.LANGUAGE_FILE_EXT}");
 							EditorUtil.MoveFileToTrash(path);
 						}
 					} else {
@@ -308,7 +308,7 @@ namespace AngeliaFramework.Editor {
 						}
 						Util.TextToFile(
 							builder.ToString(),
-							Util.CombinePaths(Const.LanguageRoot, $"{language}.{Const.LANGUAGE_FILE_EXT}")
+							Util.CombinePaths(AngePath.LanguageRoot, $"{language}.{Const.LANGUAGE_FILE_EXT}")
 						);
 					}
 					EditorApplication.delayCall += () => Load();

@@ -165,7 +165,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool IsPropellerWing (int wingID) => Pool.TryGetValue(wingID, out var wing) && wing.IsPropeller;
+		public static bool IsPropellerWing (int wingID) => wingID != 0 && Pool.TryGetValue(wingID, out var wing) && wing.IsPropeller;
 
 
 	}

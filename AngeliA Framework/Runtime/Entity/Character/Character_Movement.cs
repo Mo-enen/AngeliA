@@ -44,6 +44,9 @@ namespace AngeliaFramework {
 		public int CurrentJumpCount { get; private set; } = 0;
 		public bool FacingRight { get; private set; } = true;
 		public bool FacingFront { get; private set; } = true;
+		public virtual bool SpinOnGroundPound => Wing.IsPropellerWing(WingID);
+		public virtual bool FlyGlideAvailable => WingID != 0 && !Wing.IsPropellerWing(WingID);
+		public virtual bool FlyAvailable => WingID != 0;
 
 		// Frame Cache
 		public int RunningAccumulateFrame { get; set; } = 0;
@@ -559,7 +562,7 @@ namespace AngeliaFramework {
 
 				// Fly
 				case CharacterMovementState.Fly: // Glide
-					if (FlyGlideAvailable.Value) {
+					if (FlyGlideAvailable) {
 						speed = FacingRight ? FlyMoveSpeed : -FlyMoveSpeed;
 						acc = FlyAcceleration;
 						dcc = FlyDeceleration;

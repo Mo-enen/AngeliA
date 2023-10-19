@@ -165,8 +165,12 @@ namespace AngeliaFramework {
 		public override void FrameUpdate () {
 
 			// Render Character
-			bool blinking = IsInvincible && (Game.GlobalFrame - InvincibleEndFrame).UMod(8) < 4;
+			bool blinking = IsInvincible && !TakingDamage && (Game.GlobalFrame - InvincibleEndFrame).UMod(8) < 4;
 			if (!blinking) {
+				bool colorFlash = TakingDamage && (Game.GlobalFrame - LastDamageFrame).UMod(8) < 4;
+				if (colorFlash) CellRenderer.SetLayerToColor();
+				int cellIndexStart = CellRenderer.GetUsedCellCount();
+				// Render
 				CurrentRenderingBounce = GetCurrentRenderingBounce();
 				if (RenderWithSheet) {
 					FrameUpdate_SheetRendering();
@@ -174,6 +178,15 @@ namespace AngeliaFramework {
 					FrameUpdate_PoseRendering();
 				}
 				CurrentAnimationFrame = GrowAnimationFrame(CurrentAnimationFrame);
+				// Color Flash
+				if (colorFlash && CellRenderer.GetCells(out var cells, out int count)) {
+					for (int i = cellIndexStart; i < count; i++) {
+						var cell = cells[i];
+						cell.Color = Const.WHITE;
+						cell.ScaleFrom(1100, X, Y);
+					}
+				}
+				CellRenderer.SetLayerToDefault();
 			}
 
 			// Pipeline

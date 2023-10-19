@@ -18,6 +18,22 @@ namespace AngeliaFramework {
 
 
 
+		#region --- SUB ---
+
+
+		[System.Serializable]
+		private class PlayerGameData {
+			public int HomeUnitPositionX = int.MinValue;
+			public int HomeUnitPositionY = int.MinValue;
+			public int HomeUnitPositionZ = int.MinValue;
+		}
+
+
+		#endregion
+
+
+
+
 		#region --- VAR ---
 
 
@@ -47,6 +63,7 @@ namespace AngeliaFramework {
 		}
 		public static int LastSelectedPlayerID => _LastSelectedPlayerID.Value;
 		public static Vector3Int? RespawnUnitPosition { get; set; } = null;
+		public static Vector3Int? HomeUnitPosition { get; private set; } = null;
 		public override bool IsChargingAttack =>
 			Selecting == this &&
 			Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown &&
@@ -70,6 +87,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private static Player _Selecting = null;
+		private static int LoadedSlot = 0;
 		private int AttackRequiringFrame = int.MinValue;
 		private int LastLeftKeyDown = int.MinValue;
 		private int LastRightKeyDown = int.MinValue;
@@ -86,6 +104,18 @@ namespace AngeliaFramework {
 
 
 		#region --- MSG ---
+
+
+		[OnGameInitialize(0)]
+		public static void OnGameInitialize () => LoadGameDataFromFile();
+
+
+		[OnGameRestart]
+		public static void OnGameRestart () {
+			if (LoadedSlot != AngePath.CurrentDataSlot) {
+				LoadGameDataFromFile();
+			}
+		}
 
 
 		public Player () {
@@ -141,7 +171,7 @@ namespace AngeliaFramework {
 				}
 			}
 
-			// Stop when Not Playing
+			// Stop when Not Selecting/Playing
 			if (Selecting != this || Game.IsPausing) {
 				Stop();
 				return;
@@ -375,8 +405,19 @@ namespace AngeliaFramework {
 
 			// Full Slept
 			if (SleepFrame == FULL_SLEEP_DURATION) {
+
+				// Reset View
 				Stage.SetViewZ(Stage.ViewZ);
 				RespawnUnitPosition = null;
+
+				// UpdateHome Position
+				var newHomePos = new Vector3Int(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
+				if (newHomePos != HomeUnitPosition) {
+					HomeUnitPosition = newHomePos;
+					SaveGameDataToFile();
+				}
+
+				// Restart Game
 				if (RestartOnFullAsleep) {
 					RestartOnFullAsleep = false;
 					Game.Current.RestartGame(TypeID);
@@ -578,6 +619,34 @@ namespace AngeliaFramework {
 			EquipmentType.Jewelry => JewelryAvailable,
 			_ => false,
 		};
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+		private static void LoadGameDataFromFile () {
+			LoadedSlot = AngePath.CurrentDataSlot;
+			var data = AngeUtil.LoadOrCreateJson<PlayerGameData>(AngePath.PlayerDataRoot);
+			HomeUnitPosition =
+				data.HomeUnitPositionX != int.MinValue &&
+				data.HomeUnitPositionY != int.MinValue &&
+				data.HomeUnitPositionZ != int.MinValue ?
+				new(data.HomeUnitPositionX, data.HomeUnitPositionY, data.HomeUnitPositionZ) : null;
+		}
+
+
+		private static void SaveGameDataToFile () {
+			AngeUtil.SaveJson(new PlayerGameData() {
+				HomeUnitPositionX = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.x : int.MinValue,
+				HomeUnitPositionY = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.y : int.MinValue,
+				HomeUnitPositionZ = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.z : int.MinValue,
+			}, AngePath.PlayerDataRoot);
+		}
 
 
 		#endregion

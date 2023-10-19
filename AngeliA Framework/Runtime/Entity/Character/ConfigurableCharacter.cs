@@ -7,17 +7,10 @@ namespace AngeliaFramework {
 	public interface IConfigurableCharacter {
 
 
-
-
-		#region --- SUB ---
-
-
+		// SUB
 		[System.Serializable]
 		public class CharacterConfig {
 
-			public int HomeUnitPositionX = int.MinValue;
-			public int HomeUnitPositionY = int.MinValue;
-			public int HomeUnitPositionZ = int.MinValue;
 			public int CharacterHeight = 160;
 
 			// Body Part
@@ -55,19 +48,24 @@ namespace AngeliaFramework {
 		}
 
 
-		#endregion
-
-
-		private static string ConfigFilePath => !string.IsNullOrEmpty(_ConfigFilePath) ? _ConfigFilePath : (_ConfigFilePath = Util.CombinePaths(Const.PlayerDataRoot, "Character Config"));
-		private static string _ConfigFilePath = "";
-
-
+		// VAR
 		public CharacterConfig Config { get; set; }
-		public Vector3Int? HomeUnitPosition { get; set; }
+		public int LoadedSlot { get; set; }
+		private static string ConfigFilePath => Util.CombinePaths(AngePath.PlayerDataRoot, "Character Config");
 
 
 		// API
+		public sealed void ReloadConfig () {
+			if (LoadedSlot != AngePath.CurrentDataSlot) {
+				LoadConfigFromFile();
+			} else {
+				LoadCharacterFromConfig();
+			}
+		}
+
+
 		public sealed void LoadConfigFromFile () {
+			LoadedSlot = AngePath.CurrentDataSlot;
 			var config = Config;
 			if (config == null) return;
 			string name = GetType().Name;
@@ -85,13 +83,10 @@ namespace AngeliaFramework {
 
 		public sealed void LoadCharacterFromConfig () {
 
-			if (this is not Character character) return;
+			if (this is not Character character || character.RenderWithSheet) return;
 
 			var config = Config;
 
-			HomeUnitPosition = config.HomeUnitPositionX != int.MinValue ? new Vector3Int(
-				config.HomeUnitPositionX, config.HomeUnitPositionY, config.HomeUnitPositionZ
-			) : null;
 			character.CharacterHeight = config.CharacterHeight.Clamp(Const.MIN_CHARACTER_HEIGHT, Const.MAX_CHARACTER_HEIGHT);
 
 			// Bodyparts
@@ -131,28 +126,14 @@ namespace AngeliaFramework {
 			character.SkinColor = Util.IntToColor(config.SkinColor);
 			character.HairColor = Util.IntToColor(config.HairColor);
 
-			// Movement
-			character.FlyAvailable.Value = character.WingID != 0;
-			character.FlyGlideAvailable.Value = character.WingID != 0 && !Wing.IsPropellerWing(character.WingID);
-			character.SpinOnGroundPound = character.WingID != 0 && Wing.IsPropellerWing(character.WingID);
-
 		}
 
 
 		public sealed void SaveCharacterToConfig () {
 
-			if (this is not Character character) return;
+			if (this is not Character character || character.RenderWithSheet) return;
 			var config = Config;
 
-			if (HomeUnitPosition.HasValue) {
-				config.HomeUnitPositionX = HomeUnitPosition.Value.x;
-				config.HomeUnitPositionY = HomeUnitPosition.Value.y;
-				config.HomeUnitPositionZ = HomeUnitPosition.Value.z;
-			} else {
-				config.HomeUnitPositionX = int.MinValue;
-				config.HomeUnitPositionY = int.MinValue;
-				config.HomeUnitPositionZ = int.MinValue;
-			}
 			config.CharacterHeight = character.CharacterHeight.Clamp(Const.MIN_CHARACTER_HEIGHT, Const.MAX_CHARACTER_HEIGHT);
 
 			if (character.BodyPartsReady) {
@@ -183,11 +164,6 @@ namespace AngeliaFramework {
 
 			config.SkinColor = Util.ColorToInt(character.SkinColor);
 			config.HairColor = Util.ColorToInt(character.HairColor);
-
-			// Movement
-			character.FlyAvailable.Value = character.WingID != 0;
-			character.FlyGlideAvailable.Value = character.WingID != 0 && !Wing.IsPropellerWing(character.WingID);
-			character.SpinOnGroundPound = character.WingID != 0 && Wing.IsPropellerWing(character.WingID);
 
 		}
 

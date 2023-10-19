@@ -354,7 +354,7 @@ namespace AngeliaFramework {
 			int speed = FlyMoveSpeed;
 			if (InWater) speed = speed * InWaterSpeedLoseRate / 1000;
 			var flyAim = NavigationAim;
-			if (FlyAvailable.Value) {
+			if (FlyAvailable) {
 				// Can Fly
 				flyAim.x = X.LerpTo(flyAim.x, 100);
 				flyAim.y = Y.LerpTo(flyAim.y, 100);

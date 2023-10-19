@@ -111,6 +111,15 @@ namespace AngeliaFramework {
 			Y = pointY;
 			Rotation += rotation;
 		}
+		public void ScaleFrom (int scale, int pointX, int pointY) {
+			var localPoint = GlobalToLocal(pointX, pointY);
+			PivotX = (float)localPoint.x / Width;
+			PivotY = (float)localPoint.y / Height;
+			X = pointX;
+			Y = pointY;
+			Width = Width * scale / 1000;
+			Height = Height * scale / 1000;
+		}
 	}
 
 
@@ -232,17 +241,18 @@ namespace AngeliaFramework {
 		private static readonly int SKYBOX_TOP = Shader.PropertyToID("_ColorA");
 		private static readonly int SKYBOX_BOTTOM = Shader.PropertyToID("_ColorB");
 		private static readonly Shader SKYBOX_SHADER = Shader.Find("Angelia/Skybox");
-		private static readonly Shader[] RENDERING_SHADERS = new Shader[] {
+		private static readonly Shader[] RENDERING_SHADERS = new Shader[Const.RENDER_LAYER_COUNT] {
 			Shader.Find("Angelia/Lerp"),// Wallpaper
 			Shader.Find("Angelia/Lerp"),// Behind
-			Shader.Find("Angelia/Cell"),// Default
+			Shader.Find("Angelia/Cell"),// Cell(Default)
+			Shader.Find("Angelia/Color"),// Color
 			Shader.Find("Angelia/Mult"),// Mult
 			Shader.Find("Angelia/Add"), // Add
 			Shader.Find("Angelia/Cell"),// UI
 			Shader.Find("Angelia/Cell"),// TopUI
 		};
-		private static readonly int[] RENDER_CAPACITY = { 256, 4096, 4096, 128, 128, 4096, 256, };
-		private static readonly string[] LAYER_NAMES = { "Wallpaper", "Behind", "Default", "Mult", "Add", "UI", "TopUI", };
+		private static readonly int[] RENDER_CAPACITY = new int[Const.RENDER_LAYER_COUNT] { 256, 4096, 4096, 256, 128, 128, 4096, 256, };
+		private static readonly string[] LAYER_NAMES = new string[Const.RENDER_LAYER_COUNT] { "Wallpaper", "Behind", "Default", "Color", "Mult", "Add", "UI", "TopUI", };
 
 		// Api
 		public static RectInt ViewRect { get; private set; } = default;
@@ -289,7 +299,7 @@ namespace AngeliaFramework {
 		// Init
 		public static void Initialize_Rendering (Texture2D sheetTexture, Camera camera) {
 
-			var sheet = AngeUtil.LoadOrCreateJson<SpriteSheet>(Const.SheetRoot);
+			var sheet = AngeUtil.LoadOrCreateJson<SpriteSheet>(AngePath.SheetRoot);
 
 			SheetIDMap.Clear();
 			MetaPool.Clear();
@@ -299,18 +309,18 @@ namespace AngeliaFramework {
 
 			Sprites = sheet.Sprites;
 			Chains = sheet.SpriteChains;
-			Layers = new Layer[RENDERING_SHADERS.Length];
+			Layers = new Layer[Const.RENDER_LAYER_COUNT];
 
 			// Layers
-			for (int i = 0; i < RENDERING_SHADERS.Length; i++) {
+			for (int i = 0; i < Const.RENDER_LAYER_COUNT; i++) {
 				var shader = RENDERING_SHADERS[i];
 				int rCapacity = RENDER_CAPACITY[i.Clamp(0, RENDER_CAPACITY.Length - 1)];
 				Layers[i] = CreateLayer(
 					camera,
 					sheet.GetMaterial(shader, sheetTexture),
 					LAYER_NAMES[i],
-					uiLayer: i == Const.SHADER_UI || i == Const.SHADER_TOP_UI,
-					sortingOrder: i == Const.SHADER_TOP_UI ? 2048 : i,
+					uiLayer: i == Const.RENDER_LAYER_UI || i == Const.RENDER_LAYER_TOP_UI,
+					sortingOrder: i == Const.RENDER_LAYER_TOP_UI ? 2048 : i,
 					rCapacity,
 					textLayer: false
 				);
@@ -810,13 +820,14 @@ namespace AngeliaFramework {
 			}
 		}
 		public static void SetTextLayer (int index) => CurrentTextLayerIndex = index.Clamp(0, TextLayers.Length - 1);
-		public static void SetLayerToWallpaper () => CurrentLayerIndex = Const.SHADER_WALLPAPER;
-		public static void SetLayerToBehind () => CurrentLayerIndex = Const.SHADER_BEHIND;
-		public static void SetLayerToDefault () => CurrentLayerIndex = Const.SHADER_CELL;
-		public static void SetLayerToMultiply () => CurrentLayerIndex = Const.SHADER_MULT;
-		public static void SetLayerToAdditive () => CurrentLayerIndex = Const.SHADER_ADD;
-		public static void SetLayerToUI () => CurrentLayerIndex = Const.SHADER_UI;
-		public static void SetLayerToTopUI () => CurrentLayerIndex = Const.SHADER_TOP_UI;
+		public static void SetLayerToWallpaper () => CurrentLayerIndex = Const.RENDER_LAYER_WALLPAPER;
+		public static void SetLayerToBehind () => CurrentLayerIndex = Const.RENDER_LAYER_BEHIND;
+		public static void SetLayerToDefault () => CurrentLayerIndex = Const.RENDER_LAYER_CELL;
+		public static void SetLayerToColor () => CurrentLayerIndex = Const.RENDER_LAYER_COLOR;
+		public static void SetLayerToMultiply () => CurrentLayerIndex = Const.RENDER_LAYER_MULT;
+		public static void SetLayerToAdditive () => CurrentLayerIndex = Const.RENDER_LAYER_ADD;
+		public static void SetLayerToUI () => CurrentLayerIndex = Const.RENDER_LAYER_UI;
+		public static void SetLayerToTopUI () => CurrentLayerIndex = Const.RENDER_LAYER_TOP_UI;
 
 
 		public static string GetLayerName (int layerIndex) => layerIndex >= 0 && layerIndex < Layers.Length ? Layers[layerIndex].RendererRoot.name : "";
@@ -1290,7 +1301,6 @@ namespace AngeliaFramework {
 				return false;
 			}
 		}
-		public static bool GetUICells (out Cell[] cells, out int count) => GetCells(LayerCount - 1, out cells, out count);
 		public static bool GetTextCells (out Cell[] cells, out int count) => GetTextCells(CurrentTextLayerIndex, out cells, out count);
 		public static bool GetTextCells (int layer, out Cell[] cells, out int count) {
 			if (layer >= 0 && layer < TextLayerCount) {

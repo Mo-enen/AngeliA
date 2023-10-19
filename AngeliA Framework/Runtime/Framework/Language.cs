@@ -25,7 +25,7 @@ namespace AngeliaFramework {
 		public static void Initialize () {
 
 			var allLanguages = new List<SystemLanguage>();
-			foreach (var filePath in Util.EnumerateFiles(Const.LanguageRoot, true, $"*.{Const.LANGUAGE_FILE_EXT}")) {
+			foreach (var filePath in Util.EnumerateFiles(AngePath.LanguageRoot, true, $"*.{Const.LANGUAGE_FILE_EXT}")) {
 				if (System.Enum.TryParse<SystemLanguage>(
 					Util.GetNameWithoutExtension(filePath),
 					out var language)
@@ -69,7 +69,7 @@ namespace AngeliaFramework {
 
 
 		public static bool SetLanguage (SystemLanguage language) {
-			if (LoadFromDisk(Const.LanguageRoot, language)) {
+			if (LoadFromDisk(AngePath.LanguageRoot, language)) {
 				_LanguageID.Value = (int)language;
 				return true;
 			}

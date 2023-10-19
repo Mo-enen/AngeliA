@@ -71,7 +71,7 @@ namespace AngeliaFramework {
 
 
 		[OnGameInitialize(-128)]
-		public static void AfterGameInitialize () {
+		public static void OnGameInitialize () {
 			Front = new WorldSquad();
 			Behind = new WorldSquad();
 		}
@@ -84,8 +84,15 @@ namespace AngeliaFramework {
 		}
 
 
+		[OnGameRestart]
+		public static void OnGameRestart () {
+			Front.ForceReloadDelay();
+			Behind.ForceReloadDelay();
+		}
+
+
 		public WorldSquad () {
-			MapRoot = Const.BuiltInMapRoot;
+			MapRoot = AngePath.BuiltInMapRoot;
 			RequireReload = false;
 			SaveBeforeReload = false;
 		}
@@ -219,7 +226,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public void ReloadDelay () => RequireReload = true;
+		public void ForceReloadDelay () => RequireReload = true;
 
 
 		public void SaveToFile () {
@@ -243,8 +250,8 @@ namespace AngeliaFramework {
 			MapRoot = newRoot;
 			SaveBeforeReload = saveBeforeReload;
 			Channel =
-				newRoot == Const.BuiltInMapRoot ? MapChannel.BuiltIn :
-				newRoot == Const.UserMapRoot ? MapChannel.User : MapChannel.Procedure;
+				newRoot == AngePath.BuiltInMapRoot ? MapChannel.BuiltIn :
+				newRoot == AngePath.UserMapRoot ? MapChannel.User : MapChannel.Procedure;
 			var viewPos = Stage.SpawnRect.CenterInt();
 			LoadSquadFromDisk(
 				viewPos.x.UDivide(Const.MAP * Const.CEL),

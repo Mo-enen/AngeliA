@@ -113,13 +113,15 @@ namespace AngeliaFramework {
 		public static readonly Color32 GREY_42 = new(42, 42, 42, 255);
 		public static readonly Color32 GREY_32 = new(32, 32, 32, 255);
 		public static readonly Color32 GREY_12 = new(12, 12, 12, 255);
-		public const int SHADER_WALLPAPER = 0;
-		public const int SHADER_BEHIND = 1;
-		public const int SHADER_CELL = 2;
-		public const int SHADER_MULT = 3;
-		public const int SHADER_ADD = 4;
-		public const int SHADER_UI = 5;
-		public const int SHADER_TOP_UI = 6;
+		public const int RENDER_LAYER_WALLPAPER = 0;
+		public const int RENDER_LAYER_BEHIND = 1;
+		public const int RENDER_LAYER_CELL = 2;
+		public const int RENDER_LAYER_COLOR = 3;
+		public const int RENDER_LAYER_MULT = 4;
+		public const int RENDER_LAYER_ADD = 5;
+		public const int RENDER_LAYER_UI = 6;
+		public const int RENDER_LAYER_TOP_UI = 7;
+		public const int RENDER_LAYER_COUNT = 8;
 
 		// Cursor
 		public const int CURSOR_HAND = 0;
@@ -164,39 +166,6 @@ namespace AngeliaFramework {
 		public const int MIN_CHARACTER_HEIGHT = 65;
 		public const int MAX_CHARACTER_HEIGHT = 251;
 
-		// Path
-		public const string UNIVERSE_NAME = "Universe";
-		public const string MANIFEST_NAME = "MANIFEST";
-
-		public static string UniverseRoot => _UniverseRoot ??= Util.CombinePaths(
-			Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.streamingAssetsPath,
-			UNIVERSE_NAME
-		);
-		private static string _UniverseRoot = null;
-
-		public static string SheetRoot => _SheetRoot ??= Util.CombinePaths(UniverseRoot, "Sheet");
-		private static string _SheetRoot = null;
-
-		public static string MetaRoot => _MetaRoot ??= Util.CombinePaths(UniverseRoot, "Meta");
-		private static string _MetaRoot = null;
-
-		public static string BuiltInMapRoot => _BuiltInMapRoot ??= Util.CombinePaths(UniverseRoot, "Map");
-		private static string _BuiltInMapRoot = null;
-
-		public static string UserMapRoot => _UserMapRoot ??= Util.CombinePaths(Application.persistentDataPath, "User Map");
-		private static string _UserMapRoot = null;
-
-		public static string ProcedureMapRoot => _ProcedureMapRoot ??= Util.CombinePaths(Application.persistentDataPath, "Procedure Map");
-		private static string _ProcedureMapRoot = null;
-
-		public static string DownloadMapRoot => _DownloadMapRoot ??= Util.CombinePaths(Application.persistentDataPath, "Download Map");
-		private static string _DownloadMapRoot = null;
-
-		public static string LanguageRoot => _LanguageRoot ??= Util.CombinePaths(UniverseRoot, "Language");
-		private static string _LanguageRoot = null;
-
-		public static string PlayerDataRoot => _PlayerDataRoot ??= Util.CombinePaths(Application.persistentDataPath, "Player Data");
-		private static string _PlayerDataRoot = null;
-
+		
 	}
 }

@@ -161,9 +161,9 @@ namespace AngeliaFramework {
 		private string EditingMapRoot {
 			get {
 #if UNITY_EDITOR
-				return Const.BuiltInMapRoot;
+				return AngePath.BuiltInMapRoot;
 #else
-				return Const.UserMapRoot;
+				return AngePath.UserMapRoot;
 #endif
 			}
 		}
@@ -326,8 +326,8 @@ namespace AngeliaFramework {
 			}
 			SaveEditingMeta();
 
-			Squad.SetMapRoot(Const.BuiltInMapRoot, false);
-			SquadBehind.SetMapRoot(Const.BuiltInMapRoot, false);
+			Squad.SetMapRoot(AngePath.BuiltInMapRoot, false);
+			SquadBehind.SetMapRoot(AngePath.BuiltInMapRoot, false);
 			Squad.SpawnEntity = true;
 			SquadBehind.SpawnEntity = true;
 			SquadBehind.BehindAlpha = Const.SQUAD_BEHIND_ALPHA;
@@ -433,7 +433,7 @@ namespace AngeliaFramework {
 			}
 
 			// Fill Sprite Editing Meta
-			var editingMeta = AngeUtil.LoadOrCreateJson<SpriteEditingMeta>(Const.SheetRoot);
+			var editingMeta = AngeUtil.LoadOrCreateJson<SpriteEditingMeta>(AngePath.SheetRoot);
 			if (editingMeta.SheetNames == null || editingMeta.SheetNames.Length == 0) {
 				editingMeta.SheetNames = new string[1] { "" };
 			}

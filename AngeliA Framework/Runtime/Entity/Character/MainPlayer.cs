@@ -16,7 +16,7 @@ namespace AngeliaFramework {
 
 		// Api
 		IConfigurableCharacter.CharacterConfig IConfigurableCharacter.Config { get; set; } = new();
-		Vector3Int? IConfigurableCharacter.HomeUnitPosition { get; set; } = null;
+		int IConfigurableCharacter.LoadedSlot { get; set; } = 0;
 
 
 		#endregion
@@ -31,8 +31,10 @@ namespace AngeliaFramework {
 
 
 		public override void OnActivated () {
+
 			base.OnActivated();
-			(this as IConfigurableCharacter).LoadCharacterFromConfig();
+
+			(this as IConfigurableCharacter).ReloadConfig();
 
 			/////////////////// TEMP //////////////////
 
@@ -50,19 +52,6 @@ namespace AngeliaFramework {
 			AttackWhenRush.Value = true;
 
 			/////////////////// TEMP //////////////////
-
-		}
-
-
-		public override void FrameUpdate () {
-			base.FrameUpdate();
-
-			// Sleep
-			if (SleepFrame == FULL_SLEEP_DURATION) {
-				var configCharacter = this as IConfigurableCharacter;
-				configCharacter.HomeUnitPosition = new Vector3Int(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
-				configCharacter.SaveConfigToFile();
-			}
 
 		}
 

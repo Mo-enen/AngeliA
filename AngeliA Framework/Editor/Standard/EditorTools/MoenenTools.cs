@@ -151,12 +151,12 @@ namespace Moenen.Editor {
 		[MenuItem("AngeliA/Other/Check for Empty Sprites")]
 		public static void EmptySpriteChecker () {
 
-			string sheetPath = Util.CombinePaths(Const.SheetRoot, $"{nameof(SpriteSheet)}.json");
+			string sheetPath = Util.CombinePaths(AngePath.SheetRoot, $"{nameof(SpriteSheet)}.json");
 			if (!Util.FileExists(sheetPath)) {
 				Debug.LogWarning("Sprite sheet not found.");
 				return;
 			}
-			var sheet = AngeUtil.LoadJson<SpriteSheet>(Const.SheetRoot);
+			var sheet = AngeUtil.LoadJson<SpriteSheet>(AngePath.SheetRoot);
 			if (sheet == null) {
 				Debug.LogWarning("Failed to load sprite sheet.");
 				return;
@@ -180,7 +180,7 @@ namespace Moenen.Editor {
 			var pixels = texture.GetPixels32();
 
 			// Name Pool from Editing Meta
-			var editingMeta = AngeUtil.LoadJson<SpriteEditingMeta>(Const.SheetRoot);
+			var editingMeta = AngeUtil.LoadJson<SpriteEditingMeta>(AngePath.SheetRoot);
 			if (editingMeta == null) {
 				Debug.LogWarning("Sprite editing meta not found.");
 				return;

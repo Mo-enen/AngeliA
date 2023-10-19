@@ -340,7 +340,7 @@ namespace AngeliaFramework {
 					ItemLabel.CharSize = fontSize;
 					ItemLabel.Alignment = Alignment.MidMid;
 					CellRendererGUI.Label(ItemLabel, labelRect);
-					
+
 				} else {
 
 					var secLabelRect = labelRect.Shrink(labelRect.width / 2, 0, 0, 0);

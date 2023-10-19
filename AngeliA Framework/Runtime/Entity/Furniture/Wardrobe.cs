@@ -77,9 +77,6 @@ namespace AngeliaFramework {
 			CurrentPatternIndex = 0;
 			ArrowLeftPopFrame = 0;
 			ArrowRightPopFrame = 0;
-			if (Player.Selecting is MainPlayer player) {
-				(player as IConfigurableCharacter).LoadConfigFromFile();
-			}
 			CurrentPatternIndex = GetPlayerSuitIndex(CurrentSuitType);
 		}
 

@@ -144,6 +144,7 @@ namespace AngeliaFramework {
 		public static void OnGameRestart () {
 
 			if (Player.Selecting == null) return;
+
 			bool gotoBed = true;
 
 			// Get Start Position
@@ -152,12 +153,12 @@ namespace AngeliaFramework {
 				// CP Respawn Pos
 				startUnitPosition = Player.RespawnUnitPosition.Value;
 				gotoBed = false;
-			} else if (Player.Selecting is IConfigurableCharacter selectingPlayer && selectingPlayer.HomeUnitPosition.HasValue) {
+			} else if (Player.HomeUnitPosition.HasValue) {
 				// Sleeped Pos
 				startUnitPosition = new Vector3Int(
-					selectingPlayer.HomeUnitPosition.Value.x,
-					selectingPlayer.HomeUnitPosition.Value.y,
-					selectingPlayer.HomeUnitPosition.Value.z
+					Player.HomeUnitPosition.Value.x,
+					Player.HomeUnitPosition.Value.y,
+					Player.HomeUnitPosition.Value.z
 				);
 			} else if (IGlobalPosition.TryGetPosition(Player.Selecting.TypeID, out var mapUnitPosition)) {
 				// Global Map Pos
