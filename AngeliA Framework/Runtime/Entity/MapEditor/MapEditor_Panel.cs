@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using UnityEngine;
-using GeorgeMamaladze;
 
 
 namespace AngeliaFramework {
@@ -227,29 +225,10 @@ namespace AngeliaFramework {
 
 			// Search
 			PaletteTrie = new Trie<PaletteItem>();
-			var builder = new StringBuilder();
-			var finalBuilder = new StringBuilder();
 			foreach (var group in PaletteGroups) {
 				foreach (var item in group.Items) {
 					if (item == null || string.IsNullOrEmpty(item.Name)) continue;
-					// Add String Parts from Name
-					for (int i = 0; i < item.Name.Length; i++) {
-						char c = item.Name[i];
-						if (c != ' ' && c != '_') {
-							builder.Append(c);
-							finalBuilder.Append(c);
-						} else if (builder.Length > 0) {
-							PaletteTrie.Add(builder.ToString().ToLower(), item);
-							builder.Clear();
-						}
-					}
-					if (builder.Length > 0) {
-						PaletteTrie.Add(builder.ToString().ToLower(), item);
-						builder.Clear();
-					}
-					// Add Name
-					PaletteTrie.Add(finalBuilder.ToString().ToLower(), item);
-					finalBuilder.Clear();
+					PaletteTrie.AddForSearching(item.Name, item);
 				}
 			}
 

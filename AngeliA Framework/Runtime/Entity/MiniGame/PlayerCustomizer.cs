@@ -762,7 +762,6 @@ namespace AngeliaFramework {
 			int newHeight = BodyHeightMenuUI(panelRect, player.CharacterHeight);
 			if (newHeight != player.CharacterHeight) {
 				player.CharacterHeight = newHeight;
-				(player as IConfigurableCharacter).SaveConfigToFile();
 			}
 		}
 

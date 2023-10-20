@@ -50,12 +50,14 @@ namespace AngeliaFramework {
 
 
 		public static IEnumerable<string> ForAllLines (string path) {
+			if (!FileExists(path)) yield break;
 			using StreamReader sr = new(path, Encoding.ASCII);
 			while (sr.Peek() >= 0) yield return sr.ReadLine();
 		}
 
 
 		public static IEnumerable<string> ForAllLines (string path, Encoding encoding) {
+			if (!FileExists(path)) yield break;
 			using StreamReader sr = new(path, encoding);
 			while (sr.Peek() >= 0) yield return sr.ReadLine();
 		}

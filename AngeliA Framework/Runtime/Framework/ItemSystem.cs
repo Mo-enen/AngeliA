@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 
@@ -42,11 +43,13 @@ namespace AngeliaFramework {
 		// Const
 		private const string UNLOCK_NAME = "UnlockedItem";
 
+		// Api
+		public static string CombinationFilePath => Util.CombinePaths(AngePath.MetaRoot, "Item Combination.txt");
+
 		// Data
-		public static readonly Dictionary<Vector4Int, Vector2Int> CombinationPool = new();
 		private static readonly Dictionary<int, ItemData> ItemPool = new();
+		private static readonly Dictionary<Vector4Int, Vector2Int> CombinationPool = new();
 		private static bool IsUnlockDirty = false;
-		private static int LoadedSlot = 0;
 
 
 		#endregion
@@ -59,42 +62,9 @@ namespace AngeliaFramework {
 
 		[OnGameInitialize(-128)]
 		public static void BeforeGameInitialize () {
-
-			// Pool
-			ItemPool.Clear();
-			foreach (var type in typeof(Item).AllChildClass()) {
-				if (System.Activator.CreateInstance(type) is not Item item) continue;
-				string angeName = type.AngeName();
-				ItemPool.TryAdd(type.AngeHash(), new(
-					item,
-					$"iName.{angeName}".AngeHash(),
-					$"iDes.{angeName}".AngeHash(),
-					angeName,
-					item.MaxStackCount.Clamp(1, 256)
-				));
-			}
-
-			// Load Unlock Data
+			InitializeItemPool(true);
 			LoadUnlockDataFromFile();
-
-			// Init Combination
-			string comPath = Util.CombinePaths(AngePath.MetaRoot, "Item Combination.txt");
-			if (Util.FileExists(comPath)) {
-				foreach (string line in Util.ForAllLines(comPath)) {
-					if (string.IsNullOrEmpty(line)) continue;
-					var strings = line.Split(',');
-					if (strings == null || strings.Length < 6) continue;
-					if (!int.TryParse(strings[^1], out int count)) continue;
-					AddCombination(
-						!string.IsNullOrEmpty(strings[0]) ? strings[0].AngeHash() : 0,
-						!string.IsNullOrEmpty(strings[1]) ? strings[1].AngeHash() : 0,
-						!string.IsNullOrEmpty(strings[2]) ? strings[2].AngeHash() : 0,
-						!string.IsNullOrEmpty(strings[3]) ? strings[3].AngeHash() : 0,
-						strings[^2].AngeHash(), count
-					);
-				}
-			}
-
+			FillCombinationFromFile(CombinationPool, CombinationFilePath);
 		}
 
 
@@ -108,12 +78,8 @@ namespace AngeliaFramework {
 		}
 
 
-		[OnGameRestart]
-		public static void OnGameRestart () {
-			if (LoadedSlot != AngePath.CurrentDataSlot) {
-				LoadUnlockDataFromFile();
-			}
-		}
+		[OnSlotChanged]
+		public static void OnSlotChanged () => LoadUnlockDataFromFile();
 
 
 		#endregion
@@ -124,6 +90,25 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
+		// Pool
+		public static void InitializeItemPool (bool forceInitialize = false) {
+			if (!forceInitialize && ItemPool.Count > 0) return;
+			ItemPool.Clear();
+			foreach (var type in typeof(Item).AllChildClass()) {
+				if (System.Activator.CreateInstance(type) is not Item item) continue;
+				string angeName = type.AngeName();
+				ItemPool.TryAdd(type.AngeHash(), new(
+					item,
+					$"iName.{angeName}".AngeHash(),
+					$"iDes.{angeName}".AngeHash(),
+					angeName,
+					item.MaxStackCount.Clamp(1, 256)
+				));
+			}
+		}
+
+
+		// Item
 		public static Item GetItem (int id) => ItemPool.TryGetValue(id, out var item) ? item.Item : null;
 		public static string GetItemName (int id) => ItemPool.TryGetValue(id, out var item) ? Language.Get(item.NameID, item.DefaultName) : "";
 		public static string GetItemDescription (int id) => ItemPool.TryGetValue(id, out var item) ? Language.Get(item.DescriptionID) : "";
@@ -140,6 +125,102 @@ namespace AngeliaFramework {
 
 
 		// Combination
+		public static void FillCombinationFromFile (Dictionary<Vector4Int, Vector2Int> pool, string filePath) {
+			pool.Clear();
+			var builder = new StringBuilder();
+			foreach (string line in Util.ForAllLines(filePath)) {
+				if (string.IsNullOrEmpty(line)) continue;
+				builder.Clear();
+				var com = Vector4Int.Zero;
+				int appendingComIndex = 0;
+				bool appendingResultCount = false;
+				int resultID = 0;
+				int resultCount = 1;
+				foreach (var c in line) {
+					if (c == ' ') continue;
+					if (c == '+' || c == '=') {
+						if (builder.Length > 0 && appendingComIndex < 4) {
+							com[appendingComIndex] = builder.ToString().AngeHash();
+							appendingComIndex++;
+						}
+						if (c == '=') {
+							appendingResultCount = true;
+						}
+						builder.Clear();
+					} else {
+						if (appendingResultCount && !char.IsDigit(c)) {
+							appendingResultCount = false;
+							if (builder.Length > 0 && int.TryParse(builder.ToString(), out int _resultCount)) {
+								resultCount = _resultCount;
+							}
+							builder.Clear();
+						}
+						builder.Append(c);
+					}
+				}
+
+				// Result
+				if (builder.Length > 0) {
+					resultID = builder.ToString().AngeHash();
+				}
+
+				// Add to Pool
+				if (com != Vector4Int.Zero && resultCount >= 1 && resultID != 0) {
+					AddCombination(pool, com.x, com.y, com.z, com.w, resultID, resultCount);
+				}
+
+			}
+
+			// Func
+			static void AddCombination (Dictionary<Vector4Int, Vector2Int> pool, int item0, int item1, int item2, int item3, int result, int resultCount = 1) {
+				if (result == 0 || resultCount <= 0) {
+#if UNITY_EDITOR
+					if (result == 0) Debug.LogWarning("Result of combination should not be zero.");
+					if (resultCount == 0) Debug.LogWarning("ResultCount of combination should not be zero.");
+#endif
+					return;
+				}
+				var from = GetSortedCombination(item0, item1, item2, item3);
+#if UNITY_EDITOR
+				if (pool.ContainsKey(from) && UnityEditor.EditorApplication.isPlaying) {
+					Debug.LogError(
+						$"Combination already exists. ({GetItem(pool[from].x).GetType().Name}) & ({GetItem(result).GetType().Name})"
+					);
+				}
+#endif
+				pool[from] = new Vector2Int(result, resultCount);
+			}
+		}
+
+
+		public static void SaveCombinationToFile (Dictionary<Vector4Int, Vector2Int> pool, string filePath) {
+			InitializeItemPool(false);
+			var builder = new StringBuilder();
+			foreach (var (com, result) in pool) {
+				if (
+					result.x == 0 || result.y <= 0 ||
+					!ItemPool.TryGetValue(result.x, out var resultData)
+				) continue;
+				// Com
+				bool hasAppendItem = false;
+				for (int i = 0; i < 4; i++) {
+					int id = com[i];
+					if (id == 0 || !ItemPool.TryGetValue(id, out var itemData)) continue;
+					if (hasAppendItem) builder.Append(" + ");
+					builder.Append(itemData.Item.GetType().AngeName());
+					hasAppendItem = true;
+				}
+				// Result
+				builder.Append(" = ");
+				if (result.y > 1) builder.Append(result.y);
+				builder.Append(resultData.Item.GetType().AngeName());
+				// Final
+				builder.Append('\n');
+			}
+			Util.TextToFile(builder.ToString(), filePath);
+		}
+
+
 		public static bool TryGetCombination (int item0, int item1, int item2, int item3, out int result, out int resultCount) {
 			result = 0;
 			resultCount = 0;
@@ -153,19 +234,19 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void FillAllRelatedCombinations (Vector4Int items, List<Vector4Int> output) {
-			if (items.IsZero) return;
-			bool includeResult = items.Count(0) == 3;
+		public static void FillAllRelatedCombinations (Vector4Int combination, List<Vector4Int> output) {
+			if (combination.IsZero) return;
+			bool includeResult = combination.Count(0) == 3;
 			foreach (var (craft, result) in CombinationPool) {
-				if (includeResult && items.Contains(result.x)) {
+				if (includeResult && combination.Contains(result.x)) {
 					output.Add(craft);
 					continue;
 				}
 				var _craft = craft;
-				if (items.x != 0 && !_craft.Swap(items.x, 0)) continue;
-				if (items.y != 0 && !_craft.Swap(items.y, 0)) continue;
-				if (items.z != 0 && !_craft.Swap(items.z, 0)) continue;
-				if (items.w != 0 && !_craft.Swap(items.w, 0)) continue;
+				if (combination.x != 0 && !_craft.Swap(combination.x, 0)) continue;
+				if (combination.y != 0 && !_craft.Swap(combination.y, 0)) continue;
+				if (combination.z != 0 && !_craft.Swap(combination.z, 0)) continue;
+				if (combination.w != 0 && !_craft.Swap(combination.w, 0)) continue;
 				output.Add(craft);
 			}
 		}
@@ -244,29 +325,8 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		public static void AddCombination (int item0, int item1, int item2, int item3, int result, int resultCount = 1) {
-			if (result == 0 || resultCount <= 0) {
-#if UNITY_EDITOR
-				if (result == 0) Debug.LogWarning("Result of combination should not be zero.");
-				if (resultCount == 0) Debug.LogWarning("ResultCount of combination should not be zero.");
-#endif
-				return;
-			}
-			var from = GetSortedCombination(item0, item1, item2, item3);
-#if UNITY_EDITOR
-			if (CombinationPool.ContainsKey(from) && UnityEditor.EditorApplication.isPlaying) {
-				Debug.LogError(
-					$"Combination already exists. ({GetItem(CombinationPool[from].x).GetType().Name}) & ({GetItem(result).GetType().Name})"
-				);
-			}
-#endif
-			CombinationPool[from] = new Vector2Int(result, resultCount);
-		}
-
-
 		// Unlock
 		private static void LoadUnlockDataFromFile () {
-			LoadedSlot = AngePath.CurrentDataSlot;
 			string unlockPath = Util.CombinePaths(AngePath.PlayerDataRoot, UNLOCK_NAME);
 			if (Util.FileExists(unlockPath)) {
 				var bytes = Util.FileToByte(unlockPath);

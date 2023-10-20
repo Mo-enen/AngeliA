@@ -30,7 +30,6 @@ namespace AngeliaFramework {
 		// Data
 		private static readonly HashSet<int> UnlockedCheckPoint = new();
 		private static readonly Dictionary<int, int> LinkedId = new();
-		private static int LoadedSlot = 0;
 
 
 		#endregion
@@ -42,18 +41,8 @@ namespace AngeliaFramework {
 
 
 		[OnGameInitialize(-128)]
-		public static void BeforeGameInitialize () {
-			LinkedId.Clear();
-			LoadUnlockFromFile();
-		}
-
-
-		[OnGameRestart]
-		public static void OnGameRestart () {
-			if (LoadedSlot != AngePath.CurrentDataSlot) {
-				LoadUnlockFromFile();
-			}
-		}
+		[OnSlotChanged]
+		public static void OnGameInitialize () => LoadUnlockFromFile();
 
 
 		public override void FillPhysics () {
@@ -202,7 +191,6 @@ namespace AngeliaFramework {
 
 
 		private static void LoadUnlockFromFile () {
-			LoadedSlot = AngePath.CurrentDataSlot;
 			UnlockedCheckPoint.Clear();
 			foreach (var path in Util.EnumerateFiles(UnlockFolderPath, true, "*")) {
 				if (int.TryParse(Util.GetNameWithoutExtension(path), out int id)) {

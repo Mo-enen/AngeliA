@@ -26,7 +26,7 @@ namespace AngeliaFramework.Editor {
 		private bool Loaded = false;
 		private string SearchingText = "";
 
-
+		
 		// MSG
 		[MenuItem("AngeliA/Language Editor", false, 22)]
 		public static void OpenWindow () {

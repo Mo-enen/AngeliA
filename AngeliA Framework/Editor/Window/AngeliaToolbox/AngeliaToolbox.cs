@@ -560,6 +560,10 @@ namespace AngeliaFramework.Editor {
 						btn.clicked += () => EditorApplication.ExecuteMenuItem("AngeliA/Map Editor");
 						RuntimeOnlyElements.Add(btn);
 						break;
+					case "Crafting":
+						btn.clicked += () => EditorApplication.ExecuteMenuItem("AngeliA/Crafting Editor");
+						EdittimeOnlyElements.Add(btn);
+						break;
 				}
 			});
 

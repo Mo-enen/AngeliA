@@ -87,7 +87,6 @@ namespace AngeliaFramework {
 
 		// Data
 		private static Player _Selecting = null;
-		private static int LoadedSlot = 0;
 		private int AttackRequiringFrame = int.MinValue;
 		private int LastLeftKeyDown = int.MinValue;
 		private int LastRightKeyDown = int.MinValue;
@@ -107,15 +106,8 @@ namespace AngeliaFramework {
 
 
 		[OnGameInitialize(0)]
+		[OnSlotChanged]
 		public static void OnGameInitialize () => LoadGameDataFromFile();
-
-
-		[OnGameRestart]
-		public static void OnGameRestart () {
-			if (LoadedSlot != AngePath.CurrentDataSlot) {
-				LoadGameDataFromFile();
-			}
-		}
 
 
 		public Player () {
@@ -630,7 +622,6 @@ namespace AngeliaFramework {
 
 
 		private static void LoadGameDataFromFile () {
-			LoadedSlot = AngePath.CurrentDataSlot;
 			var data = AngeUtil.LoadOrCreateJson<PlayerGameData>(AngePath.PlayerDataRoot);
 			HomeUnitPosition =
 				data.HomeUnitPositionX != int.MinValue &&

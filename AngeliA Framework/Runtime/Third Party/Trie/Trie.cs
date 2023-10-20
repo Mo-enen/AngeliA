@@ -3,13 +3,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
-
-namespace GeorgeMamaladze {
+namespace AngeliaFramework {
 
 
 	[Serializable]
 	public class Trie<TValue> : TrieNode<TValue> {
+
+		private readonly StringBuilder Builder = new();
+		private readonly StringBuilder FinalBuilder = new();
+
 		public IEnumerable<TValue> Retrieve (string query) {
 			return Retrieve(query, 0);
 		}
@@ -17,6 +21,34 @@ namespace GeorgeMamaladze {
 		public void Add (string key, TValue value) {
 			Add(key, 0, value);
 		}
+
+		public void AddForSearching (string name, TValue value) {
+
+			Builder.Clear();
+			FinalBuilder.Clear();
+
+			// Add String Parts from Name
+			for (int i = 0; i < name.Length; i++) {
+				char c = name[i];
+				if (c != ' ' && c != '_') {
+					Builder.Append(c);
+					FinalBuilder.Append(c);
+				} else if (Builder.Length > 0) {
+					Add(Builder.ToString().ToLower(), value);
+					Builder.Clear();
+				}
+			}
+			if (Builder.Length > 0) {
+				Add(Builder.ToString().ToLower(), value);
+				Builder.Clear();
+			}
+
+			// Add Whole Name
+			Add(FinalBuilder.ToString().ToLower(), value);
+			FinalBuilder.Clear();
+
+		}
+
 	}
 
 

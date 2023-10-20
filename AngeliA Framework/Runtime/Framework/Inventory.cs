@@ -67,7 +67,6 @@ namespace AngeliaFramework {
 		// Data
 		private static readonly Dictionary<int, InventoryData> Pool = new();
 		private static bool IsPoolDirty = false;
-		private static int LoadedSlot = -1;
 
 
 		#endregion
@@ -79,6 +78,7 @@ namespace AngeliaFramework {
 
 
 		[OnGameInitialize(-65)]
+		[OnSlotChanged]
 		public static void Initialize () => LoadAllFromDisk();
 
 
@@ -93,14 +93,6 @@ namespace AngeliaFramework {
 		[OnGameUpdate]
 		public static void FrameUpdate () {
 			if (IsPoolDirty) SaveAllToDisk();
-		}
-
-
-		[OnGameRestart]
-		public static void OnGameRestart () {
-			if (AngePath.CurrentDataSlot != LoadedSlot) {
-				LoadAllFromDisk();
-			}
 		}
 
 
@@ -380,7 +372,6 @@ namespace AngeliaFramework {
 
 
 		private static void LoadAllFromDisk () {
-			LoadedSlot = AngePath.CurrentDataSlot;
 			IsPoolDirty = false;
 			Pool.Clear();
 			string root = Util.CombinePaths(AngePath.PlayerDataRoot, "Inventory");

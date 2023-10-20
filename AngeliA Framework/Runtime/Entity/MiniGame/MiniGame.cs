@@ -46,7 +46,7 @@ namespace AngeliaFramework {
 		// MSG
 		public override void OnInactivated () {
 			base.OnInactivated();
-			CloseGame();
+			if (IsPlaying) CloseGame();
 		}
 
 
@@ -116,7 +116,7 @@ namespace AngeliaFramework {
 
 
 		protected virtual void CloseGame () {
-			if (IsPlaying && FrameTask.GetCurrentTask() is MiniGameTask task) {
+			if (FrameTask.GetCurrentTask() is MiniGameTask task && task.MiniGame == this) {
 				task.MiniGame = null;
 			}
 		}

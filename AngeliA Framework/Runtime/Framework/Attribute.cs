@@ -38,6 +38,11 @@ namespace AngeliaFramework {
 	public class OnGameTryingToQuitAttribute : System.Attribute { }
 
 
+	[System.AttributeUsage(System.AttributeTargets.Method)]
+	public class OnSlotChangedAttribute : System.Attribute { }
+
+
+
 	// Entity Attribute
 	public static class EntityAttribute {
 

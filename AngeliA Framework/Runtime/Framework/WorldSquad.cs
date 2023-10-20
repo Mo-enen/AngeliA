@@ -84,8 +84,8 @@ namespace AngeliaFramework {
 		}
 
 
-		[OnGameRestart]
-		public static void OnGameRestart () {
+		[OnSlotChanged]
+		public static void OnSlotChanged () {
 			Front.ForceReloadDelay();
 			Behind.ForceReloadDelay();
 		}

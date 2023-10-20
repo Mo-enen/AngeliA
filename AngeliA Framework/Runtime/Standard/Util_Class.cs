@@ -8,15 +8,26 @@ namespace AngeliaFramework {
 
 	[System.Serializable]
 	public struct Vector4Int {
-		
+
 		public static readonly Vector4Int Zero = new(0, 0, 0, 0);
-		public readonly int this[int index] => index switch {
-			0 => x,
-			1 => y,
-			2 => z,
-			3 => w,
-			_ => throw new System.ArgumentOutOfRangeException(),
-		};
+		public int this[int index] {
+			get => index switch {
+				0 => x,
+				1 => y,
+				2 => z,
+				3 => w,
+				_ => throw new System.ArgumentOutOfRangeException(),
+			};
+			set {
+				switch (index) {
+					case 0: x = value; break;
+					case 1: y = value; break;
+					case 2: z = value; break;
+					case 3: w = value; break;
+					default: throw new System.ArgumentOutOfRangeException();
+				}
+			}
+		}
 		public readonly bool IsZero => x == 0 && y == 0 && z == 0 && w == 0;
 		public int left { readonly get => x; set => x = value; }
 		public int right { readonly get => y; set => y = value; }

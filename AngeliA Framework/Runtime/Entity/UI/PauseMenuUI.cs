@@ -159,7 +159,6 @@ namespace AngeliaFramework {
 				RequireNewDataSlot != AngePath.CurrentDataSlot
 			) {
 				AngePath.CurrentDataSlot = RequireNewDataSlot;
-				Game.Current.CurrentDataSlot = RequireNewDataSlot;
 				Game.Current.RestartGame();
 			}
 		}

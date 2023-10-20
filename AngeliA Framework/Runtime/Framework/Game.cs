@@ -41,10 +41,6 @@ namespace AngeliaFramework {
 				_VSync.Value = value;
 			}
 		}
-		public int CurrentDataSlot {
-			get => _CurrentDataSlot.Value;
-			set => _CurrentDataSlot.Value = value;
-		}
 		public FullscreenMode FullscreenMode {
 			get => (FullscreenMode)_FullscreenMode.Value;
 			set {
@@ -76,6 +72,7 @@ namespace AngeliaFramework {
 		public static event System.Action OnGameUpdate;
 		public static event System.Action OnGameUpdateLater;
 		public static event System.Action OnGameUpdatePauseless;
+		public static event System.Action OnSlotChanged;
 
 		// Ser
 		[SerializeField, DisableAtRuntime] bool m_AutoStartGame = true;
@@ -216,7 +213,7 @@ namespace AngeliaFramework {
 			Initialized = true;
 
 			try {
-				AngePath.CurrentDataSlot = CurrentDataSlot;
+				AngePath.CurrentDataSlot = _CurrentDataSlot.Value;
 				Util.InitializeAssembly("angelia");
 				Application.wantsToQuit -= OnQuit;
 				Application.wantsToQuit += OnQuit;
@@ -316,6 +313,7 @@ namespace AngeliaFramework {
 			AddEvent<OnGameUpdatePauselessAttribute>(nameof(OnGameUpdatePauseless));
 			AddEvent<OnGameRestartAttribute>(nameof(OnGameRestart));
 			AddEvent<OnGameTryingToQuitAttribute>(nameof(OnGameTryingToQuit));
+			AddEvent<OnSlotChangedAttribute>(nameof(OnSlotChanged));
 			static void AddEvent<T> (string eventName) where T : System.Attribute {
 				var info = typeof(Game).GetEvent(eventName, BindingFlags.Public | BindingFlags.Static);
 				foreach (var (method, _) in Util.AllStaticMethodWithAttribute<T>()) {
@@ -347,13 +345,9 @@ namespace AngeliaFramework {
 				OnGameUpdateLater?.Invoke();
 				OnGameUpdatePauseless?.Invoke();
 				CellRendererGUI.LateUpdate();
-				Update_PauseState();
 				CellRenderer.FrameUpdate(GlobalFrame, GameCamera);
 				if (GlobalFrame % 36000 == 0) RefreshBackgroundTint();
-				if (RequireRestartWithPlayerID.HasValue) {
-					RestartGameLogic(RequireRestartWithPlayerID.Value);
-					RequireRestartWithPlayerID = null;
-				}
+				Update_GameMechanism();
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
@@ -366,13 +360,14 @@ namespace AngeliaFramework {
 				CellRenderer.BeginDraw(IsPausing);
 				Stage.FrameUpdate(GlobalFrame, Const.ENTITY_LAYER_UI);
 				OnGameUpdatePauseless?.Invoke();
-				Update_PauseState();
 				CellRenderer.FrameUpdate(GlobalFrame, GameCamera);
+				Update_GameMechanism();
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
 
-		private void Update_PauseState () {
+		private void Update_GameMechanism () {
+
 			// Start Key to Switch State
 			if (FrameInput.GameKeyUp(Gamekey.Start)) {
 				if (IsPlaying) {
@@ -381,6 +376,18 @@ namespace AngeliaFramework {
 				} else {
 					IsPlaying = true;
 				}
+			}
+
+			// Restart Game when Required
+			if (RequireRestartWithPlayerID.HasValue) {
+				RestartGameLogic(RequireRestartWithPlayerID.Value);
+				RequireRestartWithPlayerID = null;
+			}
+
+			// Slot Change Check
+			if (_CurrentDataSlot.Value != AngePath.CurrentDataSlot) {
+				_CurrentDataSlot.Value = AngePath.CurrentDataSlot;
+				OnSlotChanged?.Invoke();
 			}
 		}
 
