@@ -157,20 +157,20 @@ namespace AngeliaFramework {
 		private Dictionary<int, MapEditorGizmos> GizmosPool = null;
 
 		// Short
-		private string EditingMapRoot {
+		private MapChannel EditingMapChannel {
 			get {
 #if UNITY_EDITOR
-				return AngePath.BuiltInMapRoot;
+				return MapChannel.BuiltIn;
 #else
-				return AngePath.UserMapRoot;
+				return MapChannel.User;
 #endif
 			}
 		}
+		private WorldSquad Squad => WorldSquad.Front;
+		private WorldSquad SquadBehind => WorldSquad.Behind;
 
 		// Data
 		private PaletteItem SelectingPaletteItem = null;
-		private WorldSquad Squad = null;
-		private WorldSquad SquadBehind = null;
 		private Queue<MapUndoItem> PerformingUndoQueue = null;
 		private Vector3Int PlayerDropPos = default;
 		private RectInt TargetViewRect = default;
@@ -254,19 +254,15 @@ namespace AngeliaFramework {
 		public override void OnActivated () {
 			base.OnActivated();
 
-			string mapRoot = EditingMapRoot;
+			string mapRoot = EditingMapChannel == MapChannel.BuiltIn ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot;
 			AngeUtil.DeleteAllEmptyMaps(mapRoot);
 			PinnedPaletteItems = new();
 			MetaLoaded = false;
 			InitializedFrame = Game.GlobalFrame;
 
 			// Squad
-			Squad = WorldSquad.Front;
-			Squad.SetMapRoot(mapRoot, true);
-			Squad.SpawnEntity = false;
-			SquadBehind = WorldSquad.Behind;
-			SquadBehind.SetMapRoot(mapRoot, false);
-			SquadBehind.SpawnEntity = false;
+			WorldSquad.SpawnEntity = false;
+			WorldSquad.SetMapChannel(EditingMapChannel);
 
 			// Pipeline
 			Active_Pool();
@@ -325,11 +321,9 @@ namespace AngeliaFramework {
 			}
 			SaveEditingMeta();
 
-			Squad.SetMapRoot(AngePath.BuiltInMapRoot, false);
-			SquadBehind.SetMapRoot(AngePath.BuiltInMapRoot, false);
-			Squad.SpawnEntity = true;
-			SquadBehind.SpawnEntity = true;
-			SquadBehind.BehindAlpha = Const.SQUAD_BEHIND_ALPHA;
+			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
+			WorldSquad.SpawnEntity = true;
+			WorldSquad.BehindAlpha = Const.SQUAD_BEHIND_ALPHA;
 
 			IsNavigating = false;
 			SpritePool = null;
@@ -578,11 +572,10 @@ namespace AngeliaFramework {
 			}
 
 			// Squad Behind Tint
-			SquadBehind.BehindAlpha = (byte)((int)Const.SQUAD_BEHIND_ALPHA).MoveTowards(
+			WorldSquad.BehindAlpha = (byte)((int)Const.SQUAD_BEHIND_ALPHA).MoveTowards(
 				PlayingGame ? 64 : 12, 1
 			);
-			Squad.Enable = !IsNavigating;
-			SquadBehind.Enable = !IsNavigating;
+			WorldSquad.Enable = !IsNavigating;
 
 			// Auto Save
 			if (IsDirty && Game.GlobalFrame % 120 == 0 && IsEditing) {
@@ -1005,9 +998,8 @@ namespace AngeliaFramework {
 			}
 
 			// Squad Spawn Entity
-			Squad.SpawnEntity = newPlayingGame;
-			SquadBehind.SpawnEntity = newPlayingGame;
-			Squad.SaveBeforeReload = !newPlayingGame;
+			WorldSquad.SpawnEntity = newPlayingGame;
+			WorldSquad.SaveBeforeReload = !newPlayingGame;
 
 			// Respawn Entities
 			Stage.SetViewZ(Stage.ViewZ);
@@ -1164,7 +1156,8 @@ namespace AngeliaFramework {
 
 		// Meta
 		private void LoadEditingMeta () {
-			var meta = AngeUtil.LoadOrCreateJson<MapEditorMeta>(EditingMapRoot);
+			string mapRoot = EditingMapChannel == MapChannel.BuiltIn ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot;
+			var meta = AngeUtil.LoadOrCreateJson<MapEditorMeta>(mapRoot);
 			if (meta.PinnedPaletteItemID != null) {
 				foreach (var id in meta.PinnedPaletteItemID) {
 					if (PalettePool.TryGetValue(id, out var pal)) {
@@ -1185,9 +1178,10 @@ namespace AngeliaFramework {
 					PinnedIDs.Add(pal.ID);
 				}
 			}
+			string mapRoot = EditingMapChannel == MapChannel.BuiltIn ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot;
 			AngeUtil.SaveJson(new MapEditorMeta() {
 				PinnedPaletteItemID = PinnedIDs.ToArray(),
-			}, EditingMapRoot);
+			}, mapRoot);
 		}
 
 

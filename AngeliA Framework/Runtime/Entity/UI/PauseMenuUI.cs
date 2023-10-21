@@ -41,7 +41,7 @@ namespace AngeliaFramework {
 		private static readonly int MENU_SOUND_VOLUME = "Menu.Setting.SoundVolume".AngeHash();
 		private static readonly int MENU_FRAMERATE = "Menu.Setting.Framerate".AngeHash();
 		private static readonly int MENU_LANGUAGE = "Menu.Setting.Language".AngeHash();
-		private static readonly int MENU_DATA_SLOT = "Menu.Setting.DataSlot".AngeHash();
+		private static readonly int MENU_SAVE_SLOT = "Menu.Setting.SaveSlot".AngeHash();
 		private static readonly int MENU_KEYSETTER_SAVE_BACK = "Menu.KeySetter.SaveAndBack".AngeHash();
 		private static readonly int MENU_FULLSCREEN_0 = "Menu.Setting.Fullscreen.0".AngeHash();
 		private static readonly int MENU_FULLSCREEN_1 = "Menu.Setting.Fullscreen.1".AngeHash();
@@ -82,13 +82,13 @@ namespace AngeliaFramework {
 		private readonly IntToString MusicVolumeCache = new();
 		private readonly IntToString SoundVolumeCache = new();
 		private readonly IntToString FramerateCache = new();
-		private readonly IntToString DataSlotIndexCache = new("", $"/{AngePath.DATA_SLOT_COUNT}");
+		private readonly IntToString SaveSlotIndexCache = new("", $"/{AngePath.SAVE_SLOT_COUNT}");
 		private readonly CellContent KeySetterLabel = new();
 		private MenuMode Mode = MenuMode.Pause;
 		private MenuMode RequireMode = MenuMode.Pause;
 		private int RecordingKey = -1;
 		private int PauselessFrame = 0;
-		private int RequireNewDataSlot = -1;
+		private int RequireNewSaveSlot = -1;
 		private bool RecordLock = true;
 
 
@@ -128,7 +128,7 @@ namespace AngeliaFramework {
 			base.OnActivated();
 			ScreenTint = new(0, 0, 0, 128);
 			BackgroundTint = new(0, 0, 0, 255);
-			RequireNewDataSlot = -1;
+			RequireNewSaveSlot = -1;
 			MaxItemCount = 11;
 		}
 
@@ -152,13 +152,13 @@ namespace AngeliaFramework {
 			base.OnInactivated();
 			// Unpause
 			if (Game.IsPausing) Game.IsPlaying = true;
-			// Set Data Slot
+			// Set Save Slot
 			if (
-				RequireNewDataSlot >= 0 &&
-				RequireNewDataSlot < AngePath.DATA_SLOT_COUNT &&
-				RequireNewDataSlot != AngePath.CurrentDataSlot
+				RequireNewSaveSlot >= 0 &&
+				RequireNewSaveSlot < AngePath.SAVE_SLOT_COUNT &&
+				RequireNewSaveSlot != AngePath.CurrentSaveSlot
 			) {
-				AngePath.CurrentDataSlot = RequireNewDataSlot;
+				AngePath.CurrentSaveSlot = RequireNewSaveSlot;
 				Game.Current.RestartGame();
 			}
 		}
@@ -348,17 +348,17 @@ namespace AngeliaFramework {
 				}
 			}
 
-			// Data Slot
-			int settedDataSlot = RequireNewDataSlot < 0 ? AngePath.CurrentDataSlot : RequireNewDataSlot;
+			// Save Slot
+			int settedSaveSlot = RequireNewSaveSlot < 0 ? AngePath.CurrentSaveSlot : RequireNewSaveSlot;
 			if (DrawArrowItem(
-				Language.Get(MENU_DATA_SLOT, "Save Data Slot"),
-				CellContent.Get(DataSlotIndexCache.GetString(settedDataSlot + 1)),
-				settedDataSlot > 0, settedDataSlot < AngePath.DATA_SLOT_COUNT, out delta)
+				Language.Get(MENU_SAVE_SLOT, "Save Slot"),
+				CellContent.Get(SaveSlotIndexCache.GetString(settedSaveSlot + 1)),
+				settedSaveSlot > 0, settedSaveSlot < AngePath.SAVE_SLOT_COUNT, out delta)
 			) {
-				int newIndex = settedDataSlot + delta;
-				newIndex = newIndex.Clamp(0, AngePath.DATA_SLOT_COUNT - 1);
-				if (newIndex != settedDataSlot) {
-					RequireNewDataSlot = newIndex;
+				int newIndex = settedSaveSlot + delta;
+				newIndex = newIndex.Clamp(0, AngePath.SAVE_SLOT_COUNT - 1);
+				if (newIndex != settedSaveSlot) {
+					RequireNewSaveSlot = newIndex;
 				}
 			}
 

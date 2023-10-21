@@ -297,15 +297,18 @@ namespace AngeliaFramework {
 
 
 		// Init
-		public static void Initialize_Rendering (Texture2D sheetTexture, Camera camera) {
+		public static void Initialize_Rendering (Camera camera) {
 
-			var sheet = AngeUtil.LoadOrCreateJson<SpriteSheet>(AngePath.SheetRoot);
 
 			SheetIDMap.Clear();
 			MetaPool.Clear();
 			SpriteGroupMap.Clear();
 
+			var sheet = AngeUtil.LoadOrCreateJson<SpriteSheet>(AngePath.SheetRoot);
 			if (sheet == null) return;
+
+			var sheetTexture = AngeUtil.LoadSheetTexture();
+			if (sheetTexture == null) return;
 
 			Sprites = sheet.Sprites;
 			Chains = sheet.SpriteChains;

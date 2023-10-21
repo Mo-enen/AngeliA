@@ -74,7 +74,7 @@ namespace AngeliaFramework {
 			if (crafting != CurrentCraftingItems) {
 				CurrentCraftingItems = crafting;
 				DocumentContent.Clear();
-				ItemSystem.FillAllRelatedCombinations(crafting, DocumentContent);
+				ItemSystem.GetRelatedCombinations(crafting, DocumentContent);
 			}
 
 			// Craft Result

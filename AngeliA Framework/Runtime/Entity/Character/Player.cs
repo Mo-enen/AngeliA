@@ -83,6 +83,8 @@ namespace AngeliaFramework {
 		public virtual bool ShoesAvailable => true;
 		public virtual bool JewelryAvailable => true;
 		public virtual bool WeaponAvailable => true;
+		public virtual bool AllowPlayerMenuUI => true;
+		public virtual bool AllowQuickPlayerMenuUI => true;
 		int IDamageReceiver.Team => Const.TEAM_PLAYER;
 
 		// Data
@@ -198,7 +200,7 @@ namespace AngeliaFramework {
 						LockingInput = PlayerMenuUI.ShowingUI || PlayerQuickMenuUI.ShowingUI;
 						Update_Action();
 						Update_Attack();
-						Update_Inventory();
+						Update_InventoryUI();
 					}
 
 					break;
@@ -369,17 +371,24 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_Inventory () {
+		private void Update_InventoryUI () {
+
+			if (!AllowPlayerMenuUI && PlayerMenuUI.ShowingUI) {
+				PlayerMenuUI.CloseMenu();
+			}
+			bool requireHint = false;
 
 			// Quick Menu
-			if (!PlayerMenuUI.ShowingUI && !PlayerQuickMenuUI.ShowingUI && !LockingInput) {
+			if (AllowQuickPlayerMenuUI && !PlayerMenuUI.ShowingUI && !PlayerQuickMenuUI.ShowingUI && !LockingInput) {
 				if (FrameInput.GameKeyDown(Gamekey.Select) || FrameInput.GameKeyDown(Gamekey.Start)) {
 					PlayerQuickMenuUI.OpenMenu();
 				}
+				requireHint = true;
 			}
 
 			// Inventory Menu
 			if (
+				AllowPlayerMenuUI &&
 				!PlayerMenuUI.ShowingUI &&
 				(PlayerQuickMenuUI.ShowingUI || !LockingInput) &&
 				(!PlayerQuickMenuUI.ShowingUI || !PlayerQuickMenuUI.Instance.IsDirty)
@@ -388,7 +397,15 @@ namespace AngeliaFramework {
 					FrameInput.UseGameKey(Gamekey.Select);
 					PlayerMenuUI.OpenMenu();
 				}
-				ControlHintUI.AddHint(Gamekey.Select, Language.Get(HINT_SHOW_MENU, "Show Menu"));
+				requireHint = true;
+			}
+
+			// Hint
+			if (requireHint) {
+				ControlHintUI.AddHint(
+					FrameInput.UsingGamepad ? Gamekey.Start : Gamekey.Select,
+					Language.Get(HINT_SHOW_MENU, "Show Menu")
+				);
 			}
 		}
 

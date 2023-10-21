@@ -42,9 +42,17 @@ namespace AngeliaFramework {
 
 		// Const
 		private const string UNLOCK_NAME = "UnlockedItem";
-
-		// Api
-		public static string CombinationFilePath => Util.CombinePaths(AngePath.MetaRoot, "Item Combination.txt");
+		public const string COMBINATION_FILE_NAME = "Item Combination.txt";
+		private static readonly int[] ITEM_TYPE_ICONS = {
+			"ItemIcon.Weapon".AngeHash(),
+			"ItemIcon.Armor".AngeHash(),
+			"ItemIcon.Helmet".AngeHash(),
+			"ItemIcon.Shoes".AngeHash(),
+			"ItemIcon.Gloves".AngeHash(),
+			"ItemIcon.Jewelry".AngeHash(),
+			"ItemIcon.Food".AngeHash(),
+			"ItemIcon.Item".AngeHash(),
+		};
 
 		// Data
 		private static readonly Dictionary<int, ItemData> ItemPool = new();
@@ -61,10 +69,22 @@ namespace AngeliaFramework {
 
 
 		[OnGameInitialize(-128)]
-		public static void BeforeGameInitialize () {
-			InitializeItemPool(true);
+		internal static void BeforeGameInitialize () {
+
+			ItemPool.Clear();
+			foreach (var type in typeof(Item).AllChildClass()) {
+				if (System.Activator.CreateInstance(type) is not Item item) continue;
+				string angeName = type.AngeName();
+				ItemPool.TryAdd(type.AngeHash(), new(
+					item,
+					$"iName.{angeName}".AngeHash(),
+					$"iDes.{angeName}".AngeHash(),
+					angeName,
+					item.MaxStackCount.Clamp(1, 256)
+				));
+			}
+
 			LoadUnlockDataFromFile();
-			FillCombinationFromFile(CombinationPool, CombinationFilePath);
 		}
 
 
@@ -79,7 +99,16 @@ namespace AngeliaFramework {
 
 
 		[OnSlotChanged]
-		public static void OnSlotChanged () => LoadUnlockDataFromFile();
+		internal static void OnSlotChanged () {
+			LoadUnlockDataFromFile();
+			if (WorldSquad.Channel == MapChannel.User) {
+				LoadCombinationFromFile();
+			}
+		}
+
+
+		[OnMapChannelChanged]
+		internal static void OnMapChannelChanged (MapChannel _) => LoadCombinationFromFile();
 
 
 		#endregion
@@ -88,24 +117,6 @@ namespace AngeliaFramework {
 
 
 		#region --- API ---
-
-
-		// Pool
-		public static void InitializeItemPool (bool forceInitialize = false) {
-			if (!forceInitialize && ItemPool.Count > 0) return;
-			ItemPool.Clear();
-			foreach (var type in typeof(Item).AllChildClass()) {
-				if (System.Activator.CreateInstance(type) is not Item item) continue;
-				string angeName = type.AngeName();
-				ItemPool.TryAdd(type.AngeHash(), new(
-					item,
-					$"iName.{angeName}".AngeHash(),
-					$"iDes.{angeName}".AngeHash(),
-					angeName,
-					item.MaxStackCount.Clamp(1, 256)
-				));
-			}
-		}
 
 
 		// Item
@@ -124,14 +135,28 @@ namespace AngeliaFramework {
 		}
 
 
+		public static int GetItemTypeIcon (int itemID) {
+			int typeIcon = ITEM_TYPE_ICONS[^1];
+			if (IsEquipment(itemID, out var equipmentType)) {
+				// Equipment
+				typeIcon = ITEM_TYPE_ICONS[(int)equipmentType];
+			} else if (IsFood(itemID)) {
+				// Food
+				typeIcon = ITEM_TYPE_ICONS[^2];
+			}
+			return typeIcon;
+		}
+
+
 		// Combination
-		public static void FillCombinationFromFile (Dictionary<Vector4Int, Vector2Int> pool, string filePath) {
-			pool.Clear();
+		public static void LoadCombinationFromFile () {
+			CombinationPool.Clear();
+			string filePath = Util.CombinePaths(AngePath.MetaRoot, COMBINATION_FILE_NAME);
 			var builder = new StringBuilder();
 			foreach (string line in Util.ForAllLines(filePath)) {
 				if (string.IsNullOrEmpty(line)) continue;
 				builder.Clear();
-				var com = Vector4Int.Zero;
+				var com = Vector4Int.zero;
 				int appendingComIndex = 0;
 				bool appendingResultCount = false;
 				int resultID = 0;
@@ -165,38 +190,17 @@ namespace AngeliaFramework {
 				}
 
 				// Add to Pool
-				if (com != Vector4Int.Zero && resultCount >= 1 && resultID != 0) {
-					AddCombination(pool, com.x, com.y, com.z, com.w, resultID, resultCount);
+				if (com != Vector4Int.zero && resultCount >= 1 && resultID != 0) {
+					AddCombination(com.x, com.y, com.z, com.w, resultID, resultCount);
 				}
 
-			}
-
-			// Func
-			static void AddCombination (Dictionary<Vector4Int, Vector2Int> pool, int item0, int item1, int item2, int item3, int result, int resultCount = 1) {
-				if (result == 0 || resultCount <= 0) {
-#if UNITY_EDITOR
-					if (result == 0) Debug.LogWarning("Result of combination should not be zero.");
-					if (resultCount == 0) Debug.LogWarning("ResultCount of combination should not be zero.");
-#endif
-					return;
-				}
-				var from = GetSortedCombination(item0, item1, item2, item3);
-#if UNITY_EDITOR
-				if (pool.ContainsKey(from) && UnityEditor.EditorApplication.isPlaying) {
-					Debug.LogError(
-						$"Combination already exists. ({GetItem(pool[from].x).GetType().Name}) & ({GetItem(result).GetType().Name})"
-					);
-				}
-#endif
-				pool[from] = new Vector2Int(result, resultCount);
 			}
 		}
 
 
-		public static void SaveCombinationToFile (Dictionary<Vector4Int, Vector2Int> pool, string filePath) {
-			InitializeItemPool(false);
+		public static void SaveCombinationToFile () {
 			var builder = new StringBuilder();
-			foreach (var (com, result) in pool) {
+			foreach (var (com, result) in CombinationPool) {
 				if (
 					result.x == 0 || result.y <= 0 ||
 					!ItemPool.TryGetValue(result.x, out var resultData)
@@ -217,7 +221,28 @@ namespace AngeliaFramework {
 				// Final
 				builder.Append('\n');
 			}
+			string filePath = Util.CombinePaths(AngePath.MetaRoot, COMBINATION_FILE_NAME);
 			Util.TextToFile(builder.ToString(), filePath);
+		}
+
+
+		public static void AddCombination (int item0, int item1, int item2, int item3, int result, int resultCount = 1) {
+			if (result == 0 || resultCount <= 0) {
+#if UNITY_EDITOR
+				if (result == 0) Debug.LogWarning("Result of combination should not be zero.");
+				if (resultCount == 0) Debug.LogWarning("ResultCount of combination should not be zero.");
+#endif
+				return;
+			}
+			var from = GetSortedCombination(item0, item1, item2, item3);
+#if UNITY_EDITOR
+			if (CombinationPool.ContainsKey(from) && UnityEditor.EditorApplication.isPlaying) {
+				Debug.LogError(
+					$"Combination already exists. ({GetItem(CombinationPool[from].x).GetType().Name}) & ({GetItem(result).GetType().Name})"
+				);
+			}
+#endif
+			CombinationPool[from] = new Vector2Int(result, resultCount);
 		}
 
 
@@ -234,7 +259,10 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void FillAllRelatedCombinations (Vector4Int combination, List<Vector4Int> output) {
+		public static void ClearCombination () => CombinationPool.Clear();
+
+
+		public static void GetRelatedCombinations (Vector4Int combination, List<Vector4Int> output) {
 			if (combination.IsZero) return;
 			bool includeResult = combination.Count(0) == 3;
 			foreach (var (craft, result) in CombinationPool) {
@@ -272,6 +300,9 @@ namespace AngeliaFramework {
 
 			return new Vector4Int(a, b, c, d);
 		}
+
+
+		public static IEnumerator<KeyValuePair<Vector4Int, Vector2Int>> GetCombinationPoolEnumerator () => CombinationPool.GetEnumerator();
 
 
 		// Equipment
@@ -328,17 +359,16 @@ namespace AngeliaFramework {
 		// Unlock
 		private static void LoadUnlockDataFromFile () {
 			string unlockPath = Util.CombinePaths(AngePath.PlayerDataRoot, UNLOCK_NAME);
-			if (Util.FileExists(unlockPath)) {
-				var bytes = Util.FileToByte(unlockPath);
-				for (int i = 0; i < bytes.Length - 3; i += 4) {
-					int id =
-						(bytes[i + 0]) |
-						(bytes[i + 1] << 8) |
-						(bytes[i + 2] << 16) |
-						(bytes[i + 3] << 24);
-					if (ItemPool.TryGetValue(id, out var data)) {
-						data.Unlocked = true;
-					}
+			if (!Util.FileExists(unlockPath)) return;
+			var bytes = Util.FileToByte(unlockPath);
+			for (int i = 0; i < bytes.Length - 3; i += 4) {
+				int id =
+					(bytes[i + 0]) |
+					(bytes[i + 1] << 8) |
+					(bytes[i + 2] << 16) |
+					(bytes[i + 3] << 24);
+				if (ItemPool.TryGetValue(id, out var data)) {
+					data.Unlocked = true;
 				}
 			}
 		}

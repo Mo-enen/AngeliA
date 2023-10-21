@@ -9,7 +9,7 @@ namespace AngeliaFramework {
 	[System.Serializable]
 	public struct Vector4Int {
 
-		public static readonly Vector4Int Zero = new(0, 0, 0, 0);
+		public static readonly Vector4Int zero = new(0, 0, 0, 0);
 		public int this[int index] {
 			get => index switch {
 				0 => x,

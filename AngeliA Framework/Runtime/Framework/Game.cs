@@ -73,12 +73,12 @@ namespace AngeliaFramework {
 		public static event System.Action OnGameUpdateLater;
 		public static event System.Action OnGameUpdatePauseless;
 		public static event System.Action OnSlotChanged;
+		public static event System.Action OnSlotCreated;
 
 		// Ser
 		[SerializeField, DisableAtRuntime] bool m_AutoStartGame = true;
 		[SerializeField, DisableAtRuntime] Gradient m_SkyTintTop = null;
 		[SerializeField, DisableAtRuntime] Gradient m_SkyTintBottom = null;
-		[SerializeField, DisableAtRuntime, NullAlert] Texture2D m_SheetTexture = null;
 		[SerializeField, DisableAtRuntime] Font[] m_Fonts = null;
 		[SerializeField, DisableAtRuntime] Texture2D[] m_Cursors = null;
 		[SerializeField, DisableAtRuntime] AudioClip[] m_AudioClips = null;
@@ -91,7 +91,7 @@ namespace AngeliaFramework {
 		// Saving
 		private readonly SavingInt _GraphicFramerate = new("Game.GraphicFramerate", 60);
 		private readonly SavingInt _FullscreenMode = new("Game.FullscreenMode", 0);
-		private readonly SavingInt _CurrentDataSlot = new("Game.CurrentDataSlot", 0);
+		private readonly SavingInt _CurrentSaveSlot = new("Game.CurrentSaveSlot", 0);
 		private readonly SavingBool _VSync = new("Game.VSync", false);
 
 
@@ -119,17 +119,6 @@ namespace AngeliaFramework {
 			m_SkyTintTop = skyTop;
 			m_SkyTintBottom = skyBottom;
 
-			// Texture
-			var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-			if (scene.IsValid()) {
-				string texturePath = Util.ChangeExtension(scene.path, "png");
-				if (Util.FileExists(texturePath)) {
-					var texture = UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath);
-					Editor_SetSheetTexture(texture);
-				}
-			}
-
-			// Final
 			Editor_ReloadAllMedia();
 
 		}
@@ -166,8 +155,6 @@ namespace AngeliaFramework {
 				return path.StartsWith(fixedDataPath) ? "Assets" + path[fixedDataPath.Length..] : "";
 			}
 		}
-		public void Editor_SetSheetTexture (Texture2D newTexture) => m_SheetTexture = newTexture;
-		public Texture2D Editor_GetSheetTexture () => m_SheetTexture;
 #endif
 
 
@@ -213,13 +200,13 @@ namespace AngeliaFramework {
 			Initialized = true;
 
 			try {
-				AngePath.CurrentDataSlot = _CurrentDataSlot.Value;
+				AngePath.CurrentSaveSlot = _CurrentSaveSlot.Value;
 				Util.InitializeAssembly("angelia");
 				Application.wantsToQuit -= OnQuit;
 				Application.wantsToQuit += OnQuit;
 				Initialize_Callback();
 				Initialize_Camera();
-				CellRenderer.Initialize_Rendering(m_SheetTexture, GameCamera);
+				CellRenderer.Initialize_Rendering(GameCamera);
 				CellRenderer.Initialize_Text(GameCamera, m_Fonts);
 				Initialize_Event(true);
 				AudioPlayer.Initialize(m_AudioClips);
@@ -306,24 +293,14 @@ namespace AngeliaFramework {
 
 
 		private void Initialize_Callback () {
-
-			// Add Events
-			AddEvent<OnGameUpdateAttribute>(nameof(OnGameUpdate));
-			AddEvent<OnGameUpdateLaterAttribute>(nameof(OnGameUpdateLater));
-			AddEvent<OnGameUpdatePauselessAttribute>(nameof(OnGameUpdatePauseless));
-			AddEvent<OnGameRestartAttribute>(nameof(OnGameRestart));
-			AddEvent<OnGameTryingToQuitAttribute>(nameof(OnGameTryingToQuit));
-			AddEvent<OnSlotChangedAttribute>(nameof(OnSlotChanged));
-			static void AddEvent<T> (string eventName) where T : System.Attribute {
-				var info = typeof(Game).GetEvent(eventName, BindingFlags.Public | BindingFlags.Static);
-				foreach (var (method, _) in Util.AllStaticMethodWithAttribute<T>()) {
-					try {
-						info.AddEventHandler(null, System.Delegate.CreateDelegate(
-							info.EventHandlerType, method
-						));
-					} catch (System.Exception ex) { Debug.LogException(ex); }
-				}
-			}
+			var sender = typeof(Game);
+			Util.LinkEventWithAttribute<OnGameUpdateAttribute>(sender, nameof(OnGameUpdate));
+			Util.LinkEventWithAttribute<OnGameUpdateLaterAttribute>(sender, nameof(OnGameUpdateLater));
+			Util.LinkEventWithAttribute<OnGameUpdatePauselessAttribute>(sender, nameof(OnGameUpdatePauseless));
+			Util.LinkEventWithAttribute<OnGameRestartAttribute>(sender, nameof(OnGameRestart));
+			Util.LinkEventWithAttribute<OnGameTryingToQuitAttribute>(sender, nameof(OnGameTryingToQuit));
+			Util.LinkEventWithAttribute<OnSlotChangedAttribute>(sender, nameof(OnSlotChanged));
+			Util.LinkEventWithAttribute<OnSlotCreatedAttribute>(sender, nameof(OnSlotCreated));
 		}
 
 
@@ -385,8 +362,11 @@ namespace AngeliaFramework {
 			}
 
 			// Slot Change Check
-			if (_CurrentDataSlot.Value != AngePath.CurrentDataSlot) {
-				_CurrentDataSlot.Value = AngePath.CurrentDataSlot;
+			if (_CurrentSaveSlot.Value != AngePath.CurrentSaveSlot) {
+				_CurrentSaveSlot.Value = AngePath.CurrentSaveSlot;
+				if (!Util.FolderExists(AngePath.SaveSlotRoot)) {
+					OnSlotCreated?.Invoke();
+				}
 				OnSlotChanged?.Invoke();
 			}
 		}
@@ -429,6 +409,7 @@ namespace AngeliaFramework {
 
 
 		private void RestartGameLogic (int playerID = 0) {
+
 			// Select Player
 			if (playerID == 0) {
 				Player.Selecting = Stage.PeekOrGetEntity(Player.LastSelectedPlayerID) as Player;

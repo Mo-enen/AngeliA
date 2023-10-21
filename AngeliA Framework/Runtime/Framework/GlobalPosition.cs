@@ -37,7 +37,6 @@ namespace AngeliaFramework {
 		private static readonly CancellationTokenSource CreateMetaFileToken = new();
 		private static Task CreateMetaFileTask = null;
 		private static Vector3Int CreateMetaFilePosCache = default;
-		private static WorldSquad.MapChannel LoadedMapChannel = WorldSquad.MapChannel.BuiltIn;
 
 
 		// MSG
@@ -53,23 +52,12 @@ namespace AngeliaFramework {
 		}
 
 
-		[OnGameUpdate]
-		public static void OnGameUpdate () {
-			if (LoadedMapChannel != WorldSquad.Front.Channel) {
-				LoadedMapChannel = WorldSquad.Front.Channel;
-				ReloadPool();
-			}
-		}
+		[OnMapChannelChanged]
+		public static void OnMapChannelChanged (MapChannel _) => ReloadPool();
 
 
 		// API
-		public static bool TryGetPosition (int id, out Vector3Int globalUnitPosition) {
-			if (LoadedMapChannel != WorldSquad.Front.Channel) {
-				LoadedMapChannel = WorldSquad.Front.Channel;
-				ReloadPool();
-			}
-			return PositionPool.TryGetValue(id, out globalUnitPosition);
-		}
+		public static bool TryGetPosition (int id, out Vector3Int globalUnitPosition) => PositionPool.TryGetValue(id, out globalUnitPosition);
 
 
 		public static void CreateMetaFileFromMapsAsync () {
@@ -91,7 +79,7 @@ namespace AngeliaFramework {
 				}
 			}
 			CreateMetaFileListCache.Clear();
-			var mapFolder = WorldSquad.Front.MapRoot;
+			var mapFolder = WorldSquad.MapRoot;
 			foreach (var path in Util.EnumerateFiles(mapFolder, true, $"*.{Const.MAP_FILE_EXT}")) {
 				if (World.GetWorldPositionFromName(
 					Util.GetNameWithoutExtension(path),
@@ -125,7 +113,7 @@ namespace AngeliaFramework {
 		// LGC
 		private static void ReloadPool (GlobalPositionMeta meta = null) {
 			PositionPool.Clear();
-			meta ??= AngeUtil.LoadOrCreateJson<GlobalPositionMeta>(WorldSquad.Front.MapRoot);
+			meta ??= AngeUtil.LoadOrCreateJson<GlobalPositionMeta>(WorldSquad.MapRoot);
 			if (meta == null || meta.Positions == null) return;
 			foreach (var pos in meta.Positions) {
 				PositionPool.TryAdd(pos.ID, pos.UnitPosition);

@@ -265,7 +265,7 @@ namespace AngeliaFramework {
 		public SpriteGroup[] Groups = new SpriteGroup[0];
 		public SpriteMeta[] Metas = new SpriteMeta[0];
 
-		public Material GetMaterial (Shader shader, Texture2D texture) => new(shader) {
+		public Material GetMaterial (Shader shader, Texture2D texture) => new Material(shader) {
 			name = shader.name,
 			mainTexture = texture,
 			enableInstancing = true,

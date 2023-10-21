@@ -262,7 +262,7 @@ namespace AngeliaFramework {
 
 			// Type Icon
 			CellRenderer.Draw(
-				AngeUtil.GetItemTypeIcon(itemID),
+				ItemSystem.GetItemTypeIcon(itemID),
 				new RectInt(panelRect.x, panelRect.yMax - labelHeight, labelHeight, labelHeight),
 				Const.ORANGE, int.MinValue + 3
 			);

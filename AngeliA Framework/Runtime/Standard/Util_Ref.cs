@@ -11,6 +11,20 @@ namespace AngeliaFramework {
 	public static partial class Util {
 
 
+		// Event/Delegate
+		public static void LinkEventWithAttribute<T> (System.Type sender, string eventName) where T : System.Attribute {
+			var info = sender.GetEvent(eventName, BindingFlags.Public | BindingFlags.Static);
+			if (info == null) return;
+			foreach (var (method, _) in Util.AllStaticMethodWithAttribute<T>()) {
+				try {
+					info.AddEventHandler(null, System.Delegate.CreateDelegate(
+						info.EventHandlerType, method
+					));
+				} catch (System.Exception ex) { Debug.LogException(ex); }
+			}
+		}
+
+
 		// Method
 		public static object InvokeStaticMethod (System.Type type, string methodName, params object[] param) {
 			if (string.IsNullOrEmpty(methodName)) { return null; }

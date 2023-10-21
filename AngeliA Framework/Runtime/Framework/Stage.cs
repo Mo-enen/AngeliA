@@ -297,7 +297,7 @@ namespace AngeliaFramework {
 			// FrameUpdate
 			var cullCameraRect = CellRenderer.CameraRect.Expand(
 				CellRenderer.CameraShaking || FrameTask.IsTasking<TeleportTask>() ?
-				new Vector4Int(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Vector4Int.Zero
+				new Vector4Int(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Vector4Int.zero
 			);
 			for (int layer = startLayer; layer < endLayer; layer++) {
 				var entities = Entities[layer];

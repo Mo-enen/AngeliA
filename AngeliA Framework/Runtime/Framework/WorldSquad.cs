@@ -5,18 +5,16 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
+
+
+	public enum MapChannel { BuiltIn, User, }
+
+
+	[System.AttributeUsage(System.AttributeTargets.Method)]
+	public class OnMapChannelChangedAttribute : System.Attribute { }
+
+
 	public sealed class WorldSquad {
-
-
-
-
-		#region --- SUB ---
-
-
-		public enum MapChannel { BuiltIn, User, Procedure, }
-
-
-		#endregion
 
 
 
@@ -39,16 +37,19 @@ namespace AngeliaFramework {
 		};
 		private static readonly int ENTITY_CODE = "Entity".AngeHash();
 
+		// Event
+		public static event System.Action<MapChannel> OnMapChannelChanged;
+
 		// Api
 		public static WorldSquad Front { get; set; } = null;
 		public static WorldSquad Behind { get; set; } = null;
+		public static MapChannel Channel { get; private set; } = MapChannel.BuiltIn;
+		public static string MapRoot { get; private set; } = "";
+		public static bool Enable { get; set; } = true;
+		public static bool SpawnEntity { get; set; } = true;
+		public static byte BehindAlpha { get; set; } = Const.SQUAD_BEHIND_ALPHA;
+		public static bool SaveBeforeReload { get; set; } = false;
 		public World this[int i, int j] => Worlds[i, j];
-		public bool Enable { get; set; } = true;
-		public bool SpawnEntity { get; set; } = true;
-		public byte BehindAlpha { get; set; } = Const.SQUAD_BEHIND_ALPHA;
-		public string MapRoot { get; private set; } = "";
-		public MapChannel Channel { get; private set; } = MapChannel.BuiltIn;
-		public bool SaveBeforeReload { get; set; } = false;
 
 		// Data
 		private readonly World[,] Worlds = new World[3, 3] { { new(), new(), new() }, { new(), new(), new() }, { new(), new(), new() }, };
@@ -74,13 +75,15 @@ namespace AngeliaFramework {
 		public static void OnGameInitialize () {
 			Front = new WorldSquad();
 			Behind = new WorldSquad();
+			Util.LinkEventWithAttribute<OnMapChannelChangedAttribute>(typeof(WorldSquad), nameof(OnMapChannelChanged));
+			SetMapChannel(MapChannel.BuiltIn);
 		}
 
 
 		[OnGameUpdate]
 		public static void OnGameUpdate () {
-			Front.FrameUpdate(false);
-			Behind.FrameUpdate(true);
+			Front.FrameUpdate();
+			Behind.FrameUpdate();
 		}
 
 
@@ -91,19 +94,13 @@ namespace AngeliaFramework {
 		}
 
 
-		public WorldSquad () {
-			MapRoot = AngePath.BuiltInMapRoot;
-			RequireReload = false;
-			SaveBeforeReload = false;
-		}
-
-
-		private void FrameUpdate (bool isBehind) {
+		private void FrameUpdate () {
 
 			if (!Enable) return;
 
+			bool isBehind = this == Behind;
 			int z = isBehind ? Stage.ViewZ + 1 : Stage.ViewZ;
-			Vector4Int cullingPadding = CellRenderer.CameraShaking || FrameTask.IsTasking<TeleportTask>() ? new Vector4Int(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Vector4Int.Zero;
+			Vector4Int cullingPadding = CellRenderer.CameraShaking || FrameTask.IsTasking<TeleportTask>() ? new Vector4Int(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Vector4Int.zero;
 			if (isBehind) CellRenderer.SetLayerToBehind();
 			var viewPos = Stage.SpawnRect.CenterInt();
 			RectInt unitRect_Entity;
@@ -138,7 +135,7 @@ namespace AngeliaFramework {
 
 			if (RequireReload || !midZone.Contains(viewPos) || z != LoadedZ) {
 				// Reload All Worlds in Squad
-				if (SaveBeforeReload) {
+				if (Channel == MapChannel.User && SaveBeforeReload && !isBehind) {
 					SaveToFile();
 				}
 				LoadSquadFromDisk(
@@ -245,21 +242,31 @@ namespace AngeliaFramework {
 		}
 
 
-		public void SetMapRoot (string newRoot, bool saveBeforeReload) {
-			if (SaveBeforeReload) SaveToFile();
-			MapRoot = newRoot;
-			SaveBeforeReload = saveBeforeReload;
-			Channel =
-				newRoot == AngePath.BuiltInMapRoot ? MapChannel.BuiltIn :
-				newRoot == AngePath.UserMapRoot ? MapChannel.User : MapChannel.Procedure;
+		public static void SetMapChannel (MapChannel newChannel) {
+#if UNITY_EDITOR
+			if (SaveBeforeReload) Front.SaveToFile();
+#else
+			if (Channel == MapChannel.User && SaveBeforeReload) SaveToFile();
+#endif
+			MapRoot = newChannel == MapChannel.BuiltIn ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot;
+			Channel = newChannel;
 			var viewPos = Stage.SpawnRect.CenterInt();
-			LoadSquadFromDisk(
+			Front.LoadSquadFromDisk(
 				viewPos.x.UDivide(Const.MAP * Const.CEL),
 				viewPos.y.UDivide(Const.MAP * Const.CEL),
 				Stage.ViewZ,
-				RequireReload
+				Front.RequireReload
 			);
-			RequireReload = false;
+			Behind.LoadSquadFromDisk(
+				viewPos.x.UDivide(Const.MAP * Const.CEL),
+				viewPos.y.UDivide(Const.MAP * Const.CEL),
+				Stage.ViewZ,
+				Behind.RequireReload
+			);
+			Front.RequireReload = false;
+			Behind.RequireReload = false;
+
+			OnMapChannelChanged?.Invoke(newChannel);
 		}
 
 
@@ -627,7 +634,10 @@ namespace AngeliaFramework {
 					var world = Worlds[i, j];
 					var pos = new Vector3Int(worldX + i - 1, worldY + j - 1, worldZ);
 					if (forceLoad || world.WorldPosition != pos) {
-						world.LoadFromDisk(MapRoot, pos.x, pos.y, pos.z);
+						bool loaded = world.LoadFromDisk(MapRoot, pos.x, pos.y, pos.z);
+						if (!loaded && Channel == MapChannel.BuiltIn) {
+							world.LoadFromDisk(AngePath.ProcedureMapRoot, pos.x, pos.y, pos.z);
+						}
 					}
 				}
 			}

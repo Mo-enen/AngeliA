@@ -187,14 +187,11 @@ namespace AngeliaFramework.Editor {
 
 		public void Refresh () {
 
-			var game = Object.FindFirstObjectByType<Game>(FindObjectsInactive.Include);
-			if (game == null) return;
-
 			AddAlwaysIncludeShaders();
 			AngeUtil.CreateAngeFolders();
 			// Sprite Sheets
 			CreateSprites(out var sheetTexture, out var sheetMeta);
-			var sheet = CreateSheetFromTexture(game, sheetTexture, sheetMeta);
+			var sheet = CreateSheetFromTexture(sheetTexture, sheetMeta);
 			// Meta
 			CreateSpriteEditingMeta(sheetMeta, sheet);
 			// Maps
@@ -202,7 +199,8 @@ namespace AngeliaFramework.Editor {
 			AngeUtil.DeleteAllEmptyMaps(AngePath.UserMapRoot);
 			AngeUtil.DeleteAllEmptyMaps(AngePath.DownloadMapRoot);
 			// Game
-			game.Editor_ReloadAllMedia();
+			var game = Object.FindFirstObjectByType<Game>(FindObjectsInactive.Include);
+			if (game != null) game.Editor_ReloadAllMedia();
 			// Final
 			AngeEditorUtil.HideMetaFiles(AngePath.UniverseRoot);
 			AssetDatabase.Refresh();
@@ -395,7 +393,7 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private SpriteSheet CreateSheetFromTexture (Game game, Texture2D sheetTexture, AngeTextureMeta sheetMeta) {
+		private SpriteSheet CreateSheetFromTexture (Texture2D sheetTexture, AngeTextureMeta sheetMeta) {
 
 			try {
 				var sheet = new SpriteSheet();
@@ -419,24 +417,7 @@ namespace AngeliaFramework.Editor {
 					AngeUtil.SaveJson(sheet, AngePath.SheetRoot);
 
 					// Save Texture
-					var currentTexture = game.Editor_GetSheetTexture();
-					if (currentTexture != null) {
-						string texturePath = AssetDatabase.GetAssetPath(currentTexture);
-						EditorUtility.SetDirty(currentTexture);
-						Util.ByteToFile(sheetTexture.EncodeToPNG(), texturePath);
-					} else {
-						string texturePath = "Assets/SheetTexture.png";
-						var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-						if (scene.IsValid()) {
-							texturePath = Util.ChangeExtension(scene.path, "png");
-						}
-						Util.ByteToFile(sheetTexture.EncodeToPNG(), texturePath);
-						AssetDatabase.SaveAssets();
-						AssetDatabase.Refresh();
-						currentTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath);
-						game.Editor_SetSheetTexture(currentTexture);
-						EditorSceneManager.MarkAllScenesDirty();
-					}
+					Util.ByteToFile(sheetTexture.EncodeToPNG(), AngePath.SheetTexturePath);
 
 					return sheet;
 				}

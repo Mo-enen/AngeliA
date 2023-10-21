@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 
-
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 
 
@@ -28,28 +27,31 @@ namespace AngeliaFramework {
 
 		// Const
 		private const string RULE_TILE_ERROR = "ERROR---";
-		private static readonly int[] ITEM_TYPE_ICONS = {
-			"ItemIcon.Weapon".AngeHash(),
-			"ItemIcon.Armor".AngeHash(),
-			"ItemIcon.Helmet".AngeHash(),
-			"ItemIcon.Shoes".AngeHash(),
-			"ItemIcon.Gloves".AngeHash(),
-			"ItemIcon.Jewelry".AngeHash(),
-			"ItemIcon.Food".AngeHash(),
-			"ItemIcon.Item".AngeHash(),
-		};
 		private static readonly System.Random GlobalRandom = new(2334768);
 
 
-		// Universe
+		// File
 		public static void CreateAngeFolders () {
 			Util.CreateFolder(AngePath.UniverseRoot);
 			Util.CreateFolder(AngePath.LanguageRoot);
-			Util.CreateFolder(AngePath.BuiltInMapRoot);
-			Util.CreateFolder(AngePath.UserMapRoot);
-			Util.CreateFolder(AngePath.DownloadMapRoot);
-			Util.CreateFolder(AngePath.PlayerDataRoot);
 			Util.CreateFolder(AngePath.SheetRoot);
+			Util.CreateFolder(AngePath.MetaRoot);
+			Util.CreateFolder(AngePath.BuiltInMapRoot);
+			Util.CreateFolder(AngePath.DownloadMapRoot);
+			Util.CreateFolder(AngePath.ProcedureMapRoot);
+		}
+
+
+		public static Texture2D LoadSheetTexture () {
+			if (Util.FileExists(AngePath.SheetTexturePath)) {
+				var sheetTexture = new Texture2D(1, 1, TextureFormat.ARGB32, false) {
+					filterMode = FilterMode.Point,
+				};
+				sheetTexture.LoadImage(Util.FileToByte(AngePath.SheetTexturePath), false);
+				return sheetTexture;
+			} else {
+				return null;
+			}
 		}
 
 
@@ -121,22 +123,6 @@ namespace AngeliaFramework {
 		}
 
 
-		public static int GetItemTypeIcon (int itemID) {
-			int typeIcon = ITEM_TYPE_ICONS[^1];
-			if (ItemSystem.IsEquipment(itemID, out var equipmentType)) {
-				// Equipment
-				typeIcon = ITEM_TYPE_ICONS[(int)equipmentType];
-			} else if (ItemSystem.IsFood(itemID)) {
-				// Food
-				typeIcon = ITEM_TYPE_ICONS[^2];
-			}
-			return typeIcon;
-		}
-
-
-		public static string GetGameKeyDisplayName (Gamekey key) => Util.GetKeyDisplayName(FrameInput.GetKeyboardMap(key));
-
-
 		public static IEnumerable<KeyValuePair<Vector4Int, string>> ForEachPlayerCustomizeSpritePattern (string[] patterns, string suffix0, string suffix1 = "", string suffix2 = "", string suffix3 = "") {
 			if (patterns == null || patterns.Length == 0) yield break;
 			foreach (string pat in patterns) {
@@ -156,6 +142,7 @@ namespace AngeliaFramework {
 		}
 
 
+		// Random
 		public static int RandomInt (int min = int.MinValue, int max = int.MaxValue) => GlobalRandom.Next(min, max);
 
 

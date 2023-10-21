@@ -168,15 +168,12 @@ namespace Moenen.Editor {
 				return;
 			}
 
-			var texture = game.Editor_GetSheetTexture();
+			var texture = AngeUtil.LoadSheetTexture();
 			if (texture == null) {
 				Debug.LogWarning("Sheet texture not found.");
 				return;
 			}
 
-			string texturePath = AssetDatabase.GetAssetPath(texture);
-			texture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-			texture.LoadImage(Util.FileToByte(texturePath), false);
 			var pixels = texture.GetPixels32();
 
 			// Name Pool from Editing Meta

@@ -55,7 +55,7 @@ namespace AngeliaFramework {
 
 		// API
 		public sealed void ReloadConfig () {
-			if (LoadedSlot != AngePath.CurrentDataSlot) {
+			if (LoadedSlot != AngePath.CurrentSaveSlot) {
 				LoadConfigFromFile();
 			} else {
 				LoadCharacterFromConfig();
@@ -64,7 +64,7 @@ namespace AngeliaFramework {
 
 
 		public sealed void LoadConfigFromFile () {
-			LoadedSlot = AngePath.CurrentDataSlot;
+			LoadedSlot = AngePath.CurrentSaveSlot;
 			var config = Config;
 			if (config == null) return;
 			string name = GetType().Name;

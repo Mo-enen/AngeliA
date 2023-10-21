@@ -2,6 +2,7 @@
   "dependencies": {
     "com.moenengames.angeliaframework": "file:C:/Data/Unity/AngeliA/AngeliA Framework",
     "com.mukaschultze.fullscreeneditor": "file:C:/Data/Unity/Fullscreen",
-    "com.unity.ide.visualstudio": "2.0.21"
+    "com.unity.ide.visualstudio": "2.0.21",
+    "com.unity.modules.imageconversion": "1.0.0"
   }
 }

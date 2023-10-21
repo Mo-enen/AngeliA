@@ -42,6 +42,9 @@ namespace AngeliaFramework {
 	public class OnSlotChangedAttribute : System.Attribute { }
 
 
+	[System.AttributeUsage(System.AttributeTargets.Method)]
+	public class OnSlotCreatedAttribute : System.Attribute { }
+
 
 	// Entity Attribute
 	public static class EntityAttribute {

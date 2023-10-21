@@ -277,10 +277,10 @@ namespace AngeliaFramework {
 			HighlightingPatternRow = 0;
 			PatternPickerScrollRow = 0;
 			CurrentSubMenu = null;
-			BackButtonHotkeyLabel = $"({AngeUtil.GetGameKeyDisplayName(Gamekey.Jump)})";
+			BackButtonHotkeyLabel = $"({Util.GetKeyDisplayName(FrameInput.GetKeyboardMap(Gamekey.Jump))})";
 			BackButtonHotkeyPadCode = Const.GAMEPAD_JUMP_HINT_CODE;
 		}
-
+		
 
 		protected override void CloseGame () {
 			base.CloseGame();

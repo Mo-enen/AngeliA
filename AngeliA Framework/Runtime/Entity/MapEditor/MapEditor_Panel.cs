@@ -302,18 +302,7 @@ namespace AngeliaFramework {
 					PANEL_Z - 3
 				);
 
-				// Label 
-				if (selecting) {
-					PalGroupLabel.Text = groupName;
-					CellRendererGUI.Label(
-						PalGroupLabel,
-						rect.Shrink(0, 0, Unify(PalGroupLabel.CharSize), 0),
-						out var bounds
-					);
-					CellRenderer.Draw(Const.PIXEL, bounds.Expand(6), Const.BLACK, int.MaxValue);
-				}
-
-				// Hover Highlight
+				// Hovering
 				bool mouseHovering = interactable && mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
 				if (mouseHovering) {
 					CursorSystem.SetCursorAsHand();

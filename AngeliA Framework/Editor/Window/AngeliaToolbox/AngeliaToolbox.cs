@@ -149,6 +149,7 @@ namespace AngeliaFramework.Editor {
 			RefreshProfilerTime = double.MinValue;
 			GizmosIndex = -1;
 			CellPhysicsCells.Clear();
+			RefreshSheetThumbnail();
 		}
 
 
@@ -510,12 +511,10 @@ namespace AngeliaFramework.Editor {
 			if (SheetThumbnail == null) return;
 
 			// Texture
-			Texture2D texture = null;
-			var scene = SceneManager.GetActiveScene();
-			if (scene.IsValid()) {
-				texture = AssetDatabase.LoadAssetAtPath<Texture2D>(Util.ChangeExtension(scene.path, "png"));
+			var texture = SheetThumbnail.image as Texture2D;
+			if (texture == null) {
+				SheetThumbnail.image = texture = AngeUtil.LoadSheetTexture();
 			}
-			SheetThumbnail.image = texture;
 
 			// Label
 			if (texture != null) {
@@ -559,10 +558,6 @@ namespace AngeliaFramework.Editor {
 					case "Map":
 						btn.clicked += () => EditorApplication.ExecuteMenuItem("AngeliA/Map Editor");
 						RuntimeOnlyElements.Add(btn);
-						break;
-					case "Crafting":
-						btn.clicked += () => EditorApplication.ExecuteMenuItem("AngeliA/Crafting Editor");
-						EdittimeOnlyElements.Add(btn);
 						break;
 				}
 			});

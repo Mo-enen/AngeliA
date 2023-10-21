@@ -1,5 +1,4 @@
-﻿Menu.Setting.DataSlot:Save Data Slot
-CtrlHint.Adjust:Adjust
+﻿CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
 CtrlHint.Drop:Drop
@@ -60,6 +59,7 @@ Menu.Pause.MEDTSetting:Editor Setting
 Menu.Pause.QuitEditMessage:Stop Editing Map?
 Menu.Pause.QuitMessage:Quit game now？
 Menu.Setting.AllowGamepad:Allow Gamepad
+Menu.Setting.SaveSlot:Save Slot
 Menu.Setting.Framerate:Framerate
 Menu.Setting.Fullscreen.0:Windowed
 Menu.Setting.Fullscreen.1:Fullscreen
@@ -71,6 +71,7 @@ Menu.Setting.SoundVolume:Sound Volume
 Menu.Setting.UseControlHint:Show Control Hint
 Menu.Setting.UseGamepadHint:Show Bottom Left Gamepad
 Menu.Setting.VSync:V-Sync
+MiniGameCraft:Crafting Editor
 MiniGameGomoku:Gomoku
 MiniGamePong:Pong
 MiniGameTetris:Tetris
