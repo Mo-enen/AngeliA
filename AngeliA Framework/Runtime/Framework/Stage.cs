@@ -183,16 +183,7 @@ namespace AngeliaFramework {
 				EntityPool.TryAdd(id, stack);
 			}
 			// Event
-			var zChangedEventInfo = typeof(Game).GetEvent(
-				nameof(OnViewZChanged), BindingFlags.Public | BindingFlags.Static
-			);
-			foreach (var (method, _) in Util.AllStaticMethodWithAttribute<OnViewZChangedAttribute>()) {
-				try {
-					zChangedEventInfo.AddEventHandler(null, System.Delegate.CreateDelegate(
-						zChangedEventInfo.EventHandlerType, method
-					));
-				} catch (System.Exception ex) { Debug.LogException(ex); }
-			}
+			Util.LinkEventWithAttribute<OnViewZChangedAttribute>(typeof(Stage), nameof(OnViewZChanged));
 		}
 
 

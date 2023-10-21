@@ -159,7 +159,7 @@ namespace AngeliaFramework {
 				RequireNewSaveSlot != AngePath.CurrentSaveSlot
 			) {
 				AngePath.CurrentSaveSlot = RequireNewSaveSlot;
-				Game.Current.RestartGame();
+				Game.RestartGame();
 			}
 		}
 
@@ -292,39 +292,39 @@ namespace AngeliaFramework {
 			}
 
 			// Framerate
-			int currentFramerate = Game.Current.GraphicFramerate;
+			int currentFramerate = Game.GraphicFramerate;
 			if (DrawArrowItem(
 				Language.Get(MENU_FRAMERATE, "Framerate"),
 				CellContent.Get(FramerateCache.GetString(currentFramerate)),
 				currentFramerate > 30, currentFramerate < 120, out delta
 			)) {
-				Game.Current.GraphicFramerate += delta * 30;
+				Game.GraphicFramerate += delta * 30;
 			}
 
 			// VSync
 			if (DrawItem(
 				Language.Get(MENU_VSYNC),
-				CellContent.Get(Game.Current.VSync ? Language.Get(UI_ON, "ON") : Language.Get(UI_OFF, "OFF"))
+				CellContent.Get(Game.VSync ? Language.Get(UI_ON, "ON") : Language.Get(UI_OFF, "OFF"))
 			)) {
-				Game.Current.VSync = !Game.Current.VSync;
+				Game.VSync = !Game.VSync;
 			}
 
 			// Fullscreen
 			if (DrawArrowItem(
 				Language.Get(MENU_FULLSCREEN_LABEL, "Fullscreen"),
 				CellContent.Get(
-					Game.Current.FullscreenMode switch {
+					Game.FullscreenMode switch {
 						FullscreenMode.Window => Language.Get(MENU_FULLSCREEN_0, "Windowed"),
 						FullscreenMode.Fullscreen => Language.Get(MENU_FULLSCREEN_1, "Fullscreen"),
 						FullscreenMode.FullscreenLow => Language.Get(MENU_FULLSCREEN_2, "Fullscreen (Low)"),
 						_ => Language.Get(MENU_FULLSCREEN_0, "Windowed"),
 					}
 				),
-				Game.Current.FullscreenMode != FullscreenMode.Window,
-				Game.Current.FullscreenMode != FullscreenMode.FullscreenLow,
+				Game.FullscreenMode != FullscreenMode.Window,
+				Game.FullscreenMode != FullscreenMode.FullscreenLow,
 				out delta
 			)) {
-				Game.Current.FullscreenMode = (FullscreenMode)((int)Game.Current.FullscreenMode + delta).Clamp(0, 2);
+				Game.FullscreenMode = (FullscreenMode)((int)Game.FullscreenMode + delta).Clamp(0, 2);
 			}
 
 			// Language

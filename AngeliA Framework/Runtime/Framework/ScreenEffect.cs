@@ -45,7 +45,7 @@ namespace AngeliaFramework {
 		[OnGameInitialize(64)]
 		public static void Initialize () {
 
-			var mainCamera = Game.Current.GameCamera;
+			var mainCamera = Game.GameCamera;
 
 			// Get Effects
 			Effects.Clear();

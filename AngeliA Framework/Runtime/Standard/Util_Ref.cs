@@ -147,19 +147,31 @@ namespace AngeliaFramework {
 
 
 		// All Class
+#if UNITY_EDITOR
+		[UnityEditor.InitializeOnLoadMethod]
+		public static void InitializeOnLoadMethod () {
+			UnityEditor.EditorApplication.playModeStateChanged += (state) => {
+				_AllTypesCache = null;
+				if (state == UnityEditor.PlayModeStateChange.ExitingPlayMode) {
+					AllAssembliesCache.Clear();
+				}
+			};
+		}
+#endif
+
+
 		private static readonly List<Assembly> AllAssembliesCache = new();
 		private static System.Type[] AllTypesCache {
 			get {
-				if (_AllTypesCache == null) {
-#if UNITY_EDITOR
-					if (!UnityEditor.EditorApplication.isPlaying) {
-						AllAssembliesCache.Clear();
-						AllAssembliesCache.AddRange(System.AppDomain.CurrentDomain.GetAssemblies());
-					}
-#endif
+				if (_AllTypesCache == null || _AllTypesCache.Length == 0 || _AllTypesCache[0] == null) {
 					var list = new List<System.Type>();
-					foreach (var assembly in AllAssembliesCache)
-						list.AddRange(assembly.GetTypes());
+					if (AllAssembliesCache.Count == 0) {
+						foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies())
+							list.AddRange(assembly.GetTypes());
+					} else {
+						foreach (var assembly in AllAssembliesCache)
+							list.AddRange(assembly.GetTypes());
+					}
 					_AllTypesCache = list.ToArray();
 				}
 				return _AllTypesCache;
@@ -221,6 +233,36 @@ namespace AngeliaFramework {
 			}
 		}
 
+
+		public static void InvokeAllStaticMethodWithAttribute<A> () where A : System.Attribute {
+			var methods = new List<KeyValuePair<MethodInfo, A>>(AllStaticMethodWithAttribute<A>());
+			foreach (var (method, _) in methods) {
+				try {
+					method.Invoke(null, null);
+				} catch (System.Exception ex) { Debug.LogException(ex); }
+			}
+		}
+		public static void InvokeAllStaticMethodWithAttribute<A> (System.Func<KeyValuePair<MethodInfo, A>, bool> predicte) where A : System.Attribute {
+			var methods = new List<KeyValuePair<MethodInfo, A>>(
+				AllStaticMethodWithAttribute<A>().Where(predicte)
+			);
+			foreach (var (method, _) in methods) {
+				try {
+					method.Invoke(null, null);
+				} catch (System.Exception ex) { Debug.LogException(ex); }
+			}
+		}
+		public static void InvokeAllStaticMethodWithAttribute<A> (System.Func<KeyValuePair<MethodInfo, A>, bool> predicte, System.Comparison<KeyValuePair<MethodInfo, A>> comparison) where A : System.Attribute {
+			var methods = new List<KeyValuePair<MethodInfo, A>>(
+				AllStaticMethodWithAttribute<A>().Where(predicte)
+			);
+			methods.Sort(comparison);
+			foreach (var (method, _) in methods) {
+				try {
+					method.Invoke(null, null);
+				} catch (System.Exception ex) { Debug.LogException(ex); }
+			}
+		}
 
 
 	}

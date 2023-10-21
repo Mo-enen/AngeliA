@@ -43,6 +43,7 @@ namespace AngeliaFramework.Editor {
 		private static readonly List<VisualElement> ProfilerProgressBarTints = new();
 		private static readonly VisualElement[] ProfilerEntityBars = new VisualElement[Const.ENTITY_LAYER_COUNT];
 		private static readonly List<PhysicsCell[,,]> CellPhysicsCells = new();
+		private static readonly List<GameObject> CacheRootObjects = new();
 		private static EditorWindow Inspector = null;
 		private static VisualElement GameStarter = null;
 		private static VisualElement Toolbox = null;
@@ -86,11 +87,6 @@ namespace AngeliaFramework.Editor {
 			Application.onBeforeRender += OnBeforeRender;
 
 			AngeEditorUtil.HideMetaFiles(AngePath.UniverseRoot);
-
-			var game = Object.FindFirstObjectByType<Game>(FindObjectsInactive.Include);
-			if (game != null) {
-				Util.SetStaticPropertyValue(typeof(Game), "Current", game);
-			}
 
 		}
 
@@ -167,7 +163,8 @@ namespace AngeliaFramework.Editor {
 
 		private static void OnBeforeRender () {
 
-			if (!EditorApplication.isPlaying) return;
+			if (!EditorApplication.isPlaying || Game.GameCamera == null) return;
+
 			if (GizmosIndex < 0) {
 				ScreenEffect.SetEffectEnable(TintEffect.TYPE_ID, false);
 				return;
@@ -178,11 +175,11 @@ namespace AngeliaFramework.Editor {
 				TintEffect.SetTint(Const.WHITE);
 			}
 
-			var cameraRect01 = Game.Current.GameCamera.rect;
+			var cameraRect01 = Game.GameCamera.rect;
 			var angeCameraRect = CellRenderer.CameraRect;
 			var rect = new Rect();
 			float thickX = 0.0005f;
-			float thickY = 0.0005f * Game.Current.GameCamera.aspect;
+			float thickY = 0.0005f * Game.GameCamera.aspect;
 			if (GizmosMaterial == null) {
 				GizmosMaterial = new Material(Shader.Find("Angelia/Vertex"));
 			}
@@ -201,7 +198,7 @@ namespace AngeliaFramework.Editor {
 				}
 				if (CellPhysicsCells.Count == CellPhysicsCells.Count) {
 
-					GL.ClearWithSkybox(true, Game.Current.GameCamera);
+					GL.ClearWithSkybox(true, Game.GameCamera);
 					//GL.PushMatrix();
 					GizmosMaterial.SetPass(0);
 					GL.LoadOrtho();
@@ -250,8 +247,7 @@ namespace AngeliaFramework.Editor {
 			// Bounds
 			if (GizmosIndex == 1) {
 
-				GL.ClearWithSkybox(true, Game.Current.GameCamera);
-				//GL.PushMatrix();
+				GL.ClearWithSkybox(true, Game.GameCamera);
 				GizmosMaterial.SetPass(0);
 				GL.LoadOrtho();
 				GL.Begin(GL.QUADS);
@@ -330,9 +326,10 @@ namespace AngeliaFramework.Editor {
 		private static void RefreshVisualElement () {
 
 			// Root
+			var currentGame = GetCurrentGameFromSceneRoot();
 			bool isPlaying = EditorApplication.isPlaying;
-			bool showRoot = Selection.activeObject == null && Game.Current != null;
-			bool showGameStarter = Selection.activeObject == null && !isPlaying && Game.Current == null;
+			bool showRoot = Selection.activeObject == null && (isPlaying || currentGame != null);
+			bool showGameStarter = Selection.activeObject == null && !isPlaying && currentGame == null;
 			bool compiling = EditorApplication.isCompiling;
 
 			if (Toolbox != null) {
@@ -687,12 +684,29 @@ namespace AngeliaFramework.Editor {
 
 		// Misc
 		private static void TryAddGameToCurrentScene (System.Type targetType) {
-			if (targetType == null || Game.Current) return;
+			var currentGame = GetCurrentGameFromSceneRoot();
+			if (targetType == null || currentGame != null) return;
 			var game = new GameObject(targetType.Name, targetType);
 			Selection.activeGameObject = game;
 			var scene = SceneManager.GetActiveScene();
 			if (scene.IsValid()) EditorSceneManager.MarkSceneDirty(scene);
 			RefreshVisualElement();
+		}
+
+
+		private static Game GetCurrentGameFromSceneRoot () {
+			var scene = SceneManager.GetActiveScene();
+			if (!scene.IsValid() || scene.rootCount == 0) return null;
+			scene.GetRootGameObjects(CacheRootObjects);
+			Game result = null;
+			foreach (var obj in CacheRootObjects) {
+				if (obj.TryGetComponent<Game>(out var game)) {
+					result = game;
+					break;
+				}
+			}
+			CacheRootObjects.Clear();
+			return result;
 		}
 
 

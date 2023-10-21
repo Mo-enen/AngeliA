@@ -352,7 +352,7 @@ namespace AngeliaFramework {
 			System.GC.Collect(0, System.GCCollectionMode.Forced);
 
 			// Restart Game
-			Game.Current.RestartGame();
+			Game.RestartGame();
 
 		}
 
@@ -624,7 +624,7 @@ namespace AngeliaFramework {
 			}
 			if (delta.x != 0 || delta.y != 0) {
 				var cRect = CellRenderer.CameraRect;
-				var uCameraRect = Game.Current.GameCamera.rect;
+				var uCameraRect = Game.GameCamera.rect;
 				delta.x = (delta.x * cRect.width / (uCameraRect.width * Screen.width)).RoundToInt();
 				delta.y = (delta.y * cRect.height / (uCameraRect.height * Screen.height)).RoundToInt();
 				TargetViewRect.x -= delta.x;
@@ -657,7 +657,7 @@ namespace AngeliaFramework {
 					);
 					int newWidth = newHeight * Const.VIEW_RATIO / 1000;
 
-					float cameraWidth = (int)(TargetViewRect.height * Game.Current.GameCamera.aspect);
+					float cameraWidth = (int)(TargetViewRect.height * Game.GameCamera.aspect);
 					float cameraHeight = TargetViewRect.height;
 					float cameraX = TargetViewRect.x + (TargetViewRect.width - cameraWidth) / 2f;
 					float cameraY = TargetViewRect.y;
@@ -1075,7 +1075,7 @@ namespace AngeliaFramework {
 
 		private void PlayFromStart () {
 			SetEditingMode(true);
-			Game.Current.RestartGame();
+			Game.RestartGame();
 		}
 
 

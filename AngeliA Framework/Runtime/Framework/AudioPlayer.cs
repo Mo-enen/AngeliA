@@ -19,11 +19,13 @@ namespace AngeliaFramework {
 		// Api
 		public static int MusicVolume => _MusicVolume.Value;
 		public static int SoundVolume => _SoundVolume.Value;
+		private static int ProcedureVolume { get; set; } = 1000;
 
 		// Data
 		private static readonly Dictionary<int, AudioClip> AudioMap = new();
 		private static AudioSource MusicSource = null;
 		private static AudioSource[] SoundSources = null;
+		private static bool PrevPausing = false;
 
 		// Saving
 		private static readonly SavingInt _MusicVolume = new("Audio.MusicVolume", 500);
@@ -50,7 +52,7 @@ namespace AngeliaFramework {
 			MusicSource = root.gameObject.AddComponent<AudioSource>();
 			MusicSource.loop = true;
 			MusicSource.playOnAwake = false;
-			MusicSource.volume = GetVolume01(true);
+			MusicSource.volume = GetVolume01(_MusicVolume.Value);
 			MusicSource.pitch = 1f;
 			MusicSource.mute = false;
 			Object.DontDestroyOnLoad(root);
@@ -61,7 +63,7 @@ namespace AngeliaFramework {
 				var source = SoundSources[i] = root.gameObject.AddComponent<AudioSource>();
 				source.loop = false;
 				source.playOnAwake = false;
-				source.volume = GetVolume01(false);
+				source.volume = GetVolume01(_SoundVolume.Value);
 				source.pitch = 1f;
 				source.mute = false;
 			}
@@ -78,6 +80,17 @@ namespace AngeliaFramework {
 
 
 		internal static void FrameUpdate (bool isPausing) {
+
+			// Procedure Volume
+			float musicVolume = GetVolume01(_MusicVolume.Value, ProcedureVolume);
+			float soundVolume = GetVolume01(_SoundVolume.Value, ProcedureVolume);
+			if (MusicSource.volume.NotAlmost(musicVolume)) MusicSource.volume = musicVolume;
+			for (int i = 0; i < SOUND_TRACK_COUNT; i++) {
+				var source = SoundSources[i];
+				if (source.volume.NotAlmost(soundVolume)) source.volume = soundVolume;
+			}
+			ProcedureVolume = 1000;
+
 			// Update for BGM
 			if (
 				MusicSource != null &&
@@ -89,6 +102,12 @@ namespace AngeliaFramework {
 				} else {
 					if (MusicSource.isPlaying) MusicSource.Pause();
 				}
+			}
+
+			// Pause
+			if (isPausing != PrevPausing) {
+				if (!isPausing) PauseAll();
+				PrevPausing = isPausing;
 			}
 		}
 
@@ -131,7 +150,7 @@ namespace AngeliaFramework {
 		public static void SetMusicVolume (int volume) {
 			volume = volume.Clamp(0, 1000);
 			_MusicVolume.Value = volume;
-			MusicSource.volume = GetVolume01(true);
+			MusicSource.volume = GetVolume01(_MusicVolume.Value);
 		}
 
 
@@ -140,7 +159,7 @@ namespace AngeliaFramework {
 
 		// Sound
 		public static void PlaySound (int soundID, float volume = 1f) {
-			volume *= GetVolume01(false);
+			volume *= GetVolume01(_SoundVolume.Value);
 			if (soundID == 0 || volume.LessOrAlmost(0f)) return;
 			if (AudioMap.TryGetValue(soundID, out var clip)) {
 				float maxTime = -1f;
@@ -180,8 +199,9 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private static float GetVolume01 (bool music) {
-			float volume = (music ? _MusicVolume.Value : _SoundVolume.Value) / 1000f;
+		private static float GetVolume01 (int newVolume, int scale = 1000) {
+			float volume = newVolume / 1000f;
+			if (scale != 1000) volume *= scale / 1000f;
 			return volume * volume;
 		}
 

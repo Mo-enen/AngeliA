@@ -142,6 +142,38 @@ namespace AngeliaFramework {
 		}
 
 
+		public static Camera GetOrCreateCamera () {
+			var gameCamera = Camera.main;
+			if (gameCamera == null) {
+				var rendererRoot = new GameObject("Renderer", typeof(Camera)).transform;
+				rendererRoot.SetParent(null);
+				rendererRoot.tag = "MainCamera";
+				gameCamera = rendererRoot.GetComponent<Camera>();
+			}
+			gameCamera.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+			gameCamera.transform.localScale = Vector3.one;
+			gameCamera.transform.gameObject.tag = "MainCamera";
+			gameCamera.clearFlags = CameraClearFlags.Skybox;
+			gameCamera.backgroundColor = new Color32(0, 0, 0, 0);
+			gameCamera.cullingMask = -1;
+			gameCamera.orthographic = true;
+			gameCamera.orthographicSize = 1f;
+			gameCamera.nearClipPlane = 0f;
+			gameCamera.farClipPlane = 1024f;
+			gameCamera.rect = new Rect(0f, 0f, 1f, 1f);
+			gameCamera.depth = 0f;
+			gameCamera.renderingPath = RenderingPath.UsePlayerSettings;
+			gameCamera.useOcclusionCulling = false;
+			gameCamera.allowHDR = false;
+			gameCamera.allowMSAA = false;
+			gameCamera.allowDynamicResolution = false;
+			gameCamera.targetDisplay = 0;
+			gameCamera.enabled = true;
+			gameCamera.gameObject.SetActive(false);
+			return gameCamera;
+		}
+
+
 		// Random
 		public static int RandomInt (int min = int.MinValue, int max = int.MaxValue) => GlobalRandom.Next(min, max);
 

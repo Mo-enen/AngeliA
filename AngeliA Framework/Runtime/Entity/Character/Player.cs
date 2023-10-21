@@ -429,7 +429,7 @@ namespace AngeliaFramework {
 				// Restart Game
 				if (RestartOnFullAsleep) {
 					RestartOnFullAsleep = false;
-					Game.Current.RestartGame(TypeID);
+					Game.RestartGame(TypeID);
 				}
 			}
 
@@ -514,7 +514,7 @@ namespace AngeliaFramework {
 
 			// Reload Game After Player PassOut
 			if (IsFullPassOut && FrameInput.GameKeyDown(Gamekey.Action)) {
-				Game.Current.RestartGame(TypeID);
+				Game.RestartGame(TypeID);
 				FrameInput.UseGameKey(Gamekey.Action);
 			}
 
@@ -612,7 +612,7 @@ namespace AngeliaFramework {
 
 		void IActionTarget.Invoke () {
 			RespawnUnitPosition = null;
-			Game.Current.RestartGame(TypeID);
+			Game.RestartGame(TypeID);
 		}
 
 

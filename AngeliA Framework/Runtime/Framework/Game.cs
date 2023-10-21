@@ -12,7 +12,7 @@ namespace AngeliaFramework {
 
 
 	[ExecuteInEditMode]
-	public sealed partial class Game : MonoBehaviour {
+	public sealed class Game : MonoBehaviour {
 
 
 
@@ -21,27 +21,26 @@ namespace AngeliaFramework {
 
 
 		// Api
-		public static Game Current { get; private set; } = null;
 		public static int GlobalFrame { get; private set; } = 0;
 		public static int SettleFrame => GlobalFrame - Stage.LastSettleFrame;
 		public static int PauselessFrame { get; private set; } = 0;
 		public static bool IsPausing => !IsPlaying;
 		public static bool IsPlaying { get; set; } = true;
-		public int GraphicFramerate {
+		public static int GraphicFramerate {
 			get => _GraphicFramerate.Value.Clamp(30, 120);
 			set {
 				_GraphicFramerate.Value = value.Clamp(30, 120);
 				Application.targetFrameRate = _GraphicFramerate.Value;
 			}
 		}
-		public bool VSync {
+		public static bool VSync {
 			get => _VSync.Value;
 			set {
 				QualitySettings.vSyncCount = value ? 1 : 0;
 				_VSync.Value = value;
 			}
 		}
-		public FullscreenMode FullscreenMode {
+		public static FullscreenMode FullscreenMode {
 			get => (FullscreenMode)_FullscreenMode.Value;
 			set {
 				_FullscreenMode.Value = (int)value;
@@ -64,7 +63,7 @@ namespace AngeliaFramework {
 				}
 			}
 		}
-		public Camera GameCamera { get; private set; } = null;
+		public static Camera GameCamera { get; private set; } = null;
 
 		// Event
 		public static event System.Action OnGameRestart;
@@ -84,15 +83,17 @@ namespace AngeliaFramework {
 		[SerializeField, DisableAtRuntime] AudioClip[] m_AudioClips = null;
 
 		// Data
-		private bool Initialized = false;
-		private int ForceBackgroundTintFrame = int.MinValue;
-		private int? RequireRestartWithPlayerID = null;
+		private static bool Initialized = false;
+		private static int ForceBackgroundTintFrame = int.MinValue;
+		private static int? RequireRestartWithPlayerID = null;
+		private static Gradient SkyTintTop = null;
+		private static Gradient SkyTintBottom = null;
 
 		// Saving
-		private readonly SavingInt _GraphicFramerate = new("Game.GraphicFramerate", 60);
-		private readonly SavingInt _FullscreenMode = new("Game.FullscreenMode", 0);
-		private readonly SavingInt _CurrentSaveSlot = new("Game.CurrentSaveSlot", 0);
-		private readonly SavingBool _VSync = new("Game.VSync", false);
+		private static readonly SavingInt _GraphicFramerate = new("Game.GraphicFramerate", 60);
+		private static readonly SavingInt _FullscreenMode = new("Game.FullscreenMode", 0);
+		private static readonly SavingInt _CurrentSaveSlot = new("Game.CurrentSaveSlot", 0);
+		private static readonly SavingBool _VSync = new("Game.VSync", false);
 
 
 		#endregion
@@ -106,7 +107,6 @@ namespace AngeliaFramework {
 #if UNITY_EDITOR
 		[System.Serializable]
 		private class AssemblyDefinitionAssetJson { public string name; }
-		private void Awake () => Update();
 		private void Reset () {
 
 			var anchor = AngeliaAssetAnchor.Instance;
@@ -121,14 +121,6 @@ namespace AngeliaFramework {
 
 			Editor_ReloadAllMedia();
 
-		}
-		private void Update () {
-			if (UnityEditor.EditorApplication.isPlaying) return;
-			if (Current == null || !Current.gameObject.activeSelf) Current = this;
-			if (Current != this) {
-				Debug.LogWarning("Can't have multiple games at same time.");
-				gameObject.SetActive(false);
-			}
 		}
 		public void Editor_ReloadAllMedia () {
 
@@ -158,13 +150,45 @@ namespace AngeliaFramework {
 #endif
 
 
-		private bool OnQuit () {
-#if UNITY_EDITOR
-			if (UnityEditor.EditorApplication.isPlaying) return true;
-#endif
-			if (IsPausing) {
-				return true;
-			} else {
+		private void Initialize () {
+			try {
+				Initialized = true;
+				AngePath.CurrentSaveSlot = _CurrentSaveSlot.Value;
+				Util.InitializeAssembly("angelia");
+				Util.LinkEventWithAttribute<OnGameUpdateAttribute>(typeof(Game), nameof(OnGameUpdate));
+				Util.LinkEventWithAttribute<OnGameUpdateLaterAttribute>(typeof(Game), nameof(OnGameUpdateLater));
+				Util.LinkEventWithAttribute<OnGameUpdatePauselessAttribute>(typeof(Game), nameof(OnGameUpdatePauseless));
+				Util.LinkEventWithAttribute<OnGameTryingToQuitAttribute>(typeof(Game), nameof(OnGameTryingToQuit));
+				Util.LinkEventWithAttribute<OnGameRestartAttribute>(typeof(Game), nameof(OnGameRestart));
+				Util.LinkEventWithAttribute<OnSlotChangedAttribute>(typeof(Game), nameof(OnSlotChanged));
+				Util.LinkEventWithAttribute<OnSlotCreatedAttribute>(typeof(Game), nameof(OnSlotCreated));
+				Application.wantsToQuit -= OnQuit;
+				Application.wantsToQuit += OnQuit;
+				GameCamera = AngeUtil.GetOrCreateCamera();
+				CellRenderer.Initialize_Rendering(GameCamera);
+				CellRenderer.Initialize_Text(GameCamera, m_Fonts);
+				Util.InvokeAllStaticMethodWithAttribute<OnGameInitialize>(m => m.Value.Order <= 0, (a, b) => a.Value.Order.CompareTo(b.Value.Order));
+				AudioPlayer.Initialize(m_AudioClips);
+				Debug.unityLogger.logEnabled = Application.isEditor;
+				Application.targetFrameRate = Application.isEditor ? 60 : GraphicFramerate;
+				QualitySettings.vSyncCount = _VSync.Value ? 1 : 0;
+				Time.fixedDeltaTime = 1f / 60f;
+				FullscreenMode = (FullscreenMode)_FullscreenMode.Value;
+				SkyTintTop = m_SkyTintTop;
+				SkyTintBottom = m_SkyTintBottom;
+				enabled = m_AutoStartGame;
+				CursorSystem.Initialize(m_Cursors);
+				AngeUtil.CreateAngeFolders();
+				RefreshBackgroundTint();
+				Util.InvokeAllStaticMethodWithAttribute<OnGameInitialize>(m => m.Value.Order > 0, (a, b) => a.Value.Order.CompareTo(b.Value.Order));
+				DontDestroyOnLoad(GameCamera.transform.gameObject);
+				DontDestroyOnLoad(gameObject);
+				System.GC.Collect(0, System.GCCollectionMode.Forced);
+				if (m_AutoStartGame) RestartGameLogic();
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+			// Func
+			static bool OnQuit () {
+				if (IsPausing || Application.isEditor) return true;
 				IsPlaying = false;
 				OnGameTryingToQuit?.Invoke();
 				return false;
@@ -173,202 +197,43 @@ namespace AngeliaFramework {
 
 
 		private void FixedUpdate () {
-			if (!Initialized) Initialize();
-			if (!Initialized || !enabled) return;
-			if (!GameCamera.enabled) GameCamera.enabled = true;
-			if (IsPlaying) {
-				Update_Gameplay();
-			} else {
-				Update_Pausing();
-			}
-			CursorSystem.Update(GlobalFrame);
-			if (!IsPausing) GlobalFrame++;
-			PauselessFrame++;
-		}
-
-
-		// Init
-		private void Initialize () {
-
-			if (Current != null && Current != this) {
-				Debug.LogWarning("Can't have multiple game loaded at the same time.");
-				DestroyImmediate(gameObject, false);
-				return;
-			}
-			Current = this;
-
-			Initialized = true;
-
 			try {
-				AngePath.CurrentSaveSlot = _CurrentSaveSlot.Value;
-				Util.InitializeAssembly("angelia");
-				Application.wantsToQuit -= OnQuit;
-				Application.wantsToQuit += OnQuit;
-				Initialize_Callback();
-				Initialize_Camera();
-				CellRenderer.Initialize_Rendering(GameCamera);
-				CellRenderer.Initialize_Text(GameCamera, m_Fonts);
-				Initialize_Event(true);
-				AudioPlayer.Initialize(m_AudioClips);
-				Debug.unityLogger.logEnabled = Application.isEditor;
-				Application.targetFrameRate = Application.isEditor ? 60 : GraphicFramerate;
-				QualitySettings.vSyncCount = _VSync.Value ? 1 : 0;
-				Time.fixedDeltaTime = 1f / 60f;
-				FullscreenMode = ((FullscreenMode)_FullscreenMode.Value);
-				CursorSystem.Initialize(m_Cursors);
-				AngeUtil.CreateAngeFolders();
-				RefreshBackgroundTint();
-				Initialize_Event(false);
-				DontDestroyOnLoad(GameCamera.transform.gameObject);
-				DontDestroyOnLoad(gameObject);
-				System.GC.Collect(0, System.GCCollectionMode.Forced);
-				if (m_AutoStartGame) {
-					RestartGameLogic(0);
-				} else {
-					enabled = false;
-				}
-
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-
-		}
-
-
-		private void Initialize_Camera () {
-			GameCamera = Camera.main;
-			if (GameCamera == null) {
-				var rendererRoot = new GameObject("Renderer", typeof(Camera)).transform;
-				rendererRoot.SetParent(null);
-				rendererRoot.tag = "MainCamera";
-				GameCamera = rendererRoot.GetComponent<Camera>();
-			}
-			GameCamera.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-			GameCamera.transform.localScale = Vector3.one;
-			GameCamera.transform.gameObject.tag = "MainCamera";
-			GameCamera.clearFlags = CameraClearFlags.Skybox;
-			GameCamera.backgroundColor = new Color32(0, 0, 0, 0);
-			GameCamera.cullingMask = -1;
-			GameCamera.orthographic = true;
-			GameCamera.orthographicSize = 1f;
-			GameCamera.nearClipPlane = 0f;
-			GameCamera.farClipPlane = 1024f;
-			GameCamera.rect = new Rect(0f, 0f, 1f, 1f);
-			GameCamera.depth = 0f;
-			GameCamera.renderingPath = RenderingPath.UsePlayerSettings;
-			GameCamera.useOcclusionCulling = false;
-			GameCamera.allowHDR = false;
-			GameCamera.allowMSAA = false;
-			GameCamera.allowDynamicResolution = false;
-			GameCamera.targetDisplay = 0;
-			GameCamera.enabled = true;
-			GameCamera.gameObject.SetActive(false);
-		}
-
-
-		private void Initialize_Event (bool before) {
-			if (before) {
-
-				// Before Init
-				var methods = new List<KeyValuePair<MethodInfo, OnGameInitialize>>(
-					Util.AllStaticMethodWithAttribute<OnGameInitialize>().Where(m => m.Value.Order <= 0)
-				);
-				methods.Sort((a, b) => a.Value.Order.CompareTo(b.Value.Order));
-				foreach (var (method, _) in methods) {
-					try {
-						method.Invoke(null, null);
-					} catch (System.Exception ex) { Debug.LogException(ex); }
-				}
-
-			} else {
-				var methods = new List<KeyValuePair<MethodInfo, OnGameInitialize>>(
-					Util.AllStaticMethodWithAttribute<OnGameInitialize>().Where(m => m.Value.Order > 0)
-				);
-				methods.Sort((a, b) => a.Value.Order.CompareTo(b.Value.Order));
-				foreach (var (method, _) in methods) {
-					try {
-						method.Invoke(null, null);
-					} catch (System.Exception ex) { Debug.LogException(ex); }
-				}
-			}
-		}
-
-
-		private void Initialize_Callback () {
-			var sender = typeof(Game);
-			Util.LinkEventWithAttribute<OnGameUpdateAttribute>(sender, nameof(OnGameUpdate));
-			Util.LinkEventWithAttribute<OnGameUpdateLaterAttribute>(sender, nameof(OnGameUpdateLater));
-			Util.LinkEventWithAttribute<OnGameUpdatePauselessAttribute>(sender, nameof(OnGameUpdatePauseless));
-			Util.LinkEventWithAttribute<OnGameRestartAttribute>(sender, nameof(OnGameRestart));
-			Util.LinkEventWithAttribute<OnGameTryingToQuitAttribute>(sender, nameof(OnGameTryingToQuit));
-			Util.LinkEventWithAttribute<OnSlotChangedAttribute>(sender, nameof(OnSlotChanged));
-			Util.LinkEventWithAttribute<OnSlotCreatedAttribute>(sender, nameof(OnSlotCreated));
-		}
-
-
-		// Update
-		private void Update_Gameplay () {
-			try {
-				Stage.Update_View();
-				CellRenderer.CameraUpdate(GameCamera, Stage.ViewRect);
-				FrameInput.FrameUpdate(CellRenderer.CameraRect);
-				AudioPlayer.FrameUpdate(IsPausing);
-				CellPhysics.BeginFill(
-					Stage.ViewRect.x - Const.SPAWN_PADDING - Const.LEVEL_SPAWN_PADDING,
-					Stage.ViewRect.y - Const.SPAWN_PADDING - Const.LEVEL_SPAWN_PADDING
-				);
-				CellRenderer.BeginDraw(IsPausing);
-				OnGameUpdate?.Invoke();
-				CellRendererGUI.Update(PauselessFrame);
-				Stage.FrameUpdate(GlobalFrame);
-				OnGameUpdateLater?.Invoke();
-				OnGameUpdatePauseless?.Invoke();
-				CellRendererGUI.LateUpdate();
-				CellRenderer.FrameUpdate(GlobalFrame, GameCamera);
-				if (GlobalFrame % 36000 == 0) RefreshBackgroundTint();
-				Update_GameMechanism();
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-		}
-
-
-		private void Update_Pausing () {
-			try {
-				CellRenderer.CameraUpdate(GameCamera, Stage.ViewRect);
-				AudioPlayer.FrameUpdate(IsPausing);
-				FrameInput.FrameUpdate(CellRenderer.CameraRect);
-				CellRenderer.BeginDraw(IsPausing);
-				Stage.FrameUpdate(GlobalFrame, Const.ENTITY_LAYER_UI);
-				OnGameUpdatePauseless?.Invoke();
-				CellRenderer.FrameUpdate(GlobalFrame, GameCamera);
-				Update_GameMechanism();
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-		}
-
-
-		private void Update_GameMechanism () {
-
-			// Start Key to Switch State
-			if (FrameInput.GameKeyUp(Gamekey.Start)) {
+				if (!Initialized) Initialize();
+				if (!Initialized || !enabled) return;
+				if (!GameCamera.enabled) GameCamera.enabled = true;
 				if (IsPlaying) {
-					IsPlaying = false;
-					AudioPlayer.PauseAll();
+					Stage.Update_View();
+					CellRenderer.CameraUpdate(GameCamera, Stage.ViewRect);
+					FrameInput.FrameUpdate(CellRenderer.CameraRect);
+					AudioPlayer.FrameUpdate(IsPausing);
+					CellPhysics.BeginFill(Stage.ViewRect.x - Const.SPAWN_PADDING - Const.LEVEL_SPAWN_PADDING, Stage.ViewRect.y - Const.SPAWN_PADDING - Const.LEVEL_SPAWN_PADDING);
+					CellRenderer.BeginDraw(IsPausing);
+					OnGameUpdate?.Invoke();
+					CellRendererGUI.Update(PauselessFrame);
+					Stage.FrameUpdate(GlobalFrame);
+					OnGameUpdateLater?.Invoke();
+					CellRendererGUI.LateUpdate();
+					if (GlobalFrame % 36000 == 0) RefreshBackgroundTint();
 				} else {
-					IsPlaying = true;
+					CellRenderer.CameraUpdate(GameCamera, Stage.ViewRect);
+					AudioPlayer.FrameUpdate(IsPausing);
+					FrameInput.FrameUpdate(CellRenderer.CameraRect);
+					CellRenderer.BeginDraw(IsPausing);
+					Stage.FrameUpdate(GlobalFrame, Const.ENTITY_LAYER_UI);
 				}
-			}
-
-			// Restart Game when Required
-			if (RequireRestartWithPlayerID.HasValue) {
-				RestartGameLogic(RequireRestartWithPlayerID.Value);
-				RequireRestartWithPlayerID = null;
-			}
-
-			// Slot Change Check
-			if (_CurrentSaveSlot.Value != AngePath.CurrentSaveSlot) {
-				_CurrentSaveSlot.Value = AngePath.CurrentSaveSlot;
-				if (!Util.FolderExists(AngePath.SaveSlotRoot)) {
-					OnSlotCreated?.Invoke();
+				OnGameUpdatePauseless?.Invoke();
+				CellRenderer.FrameUpdate(GlobalFrame, GameCamera);
+				CursorSystem.Update(GlobalFrame);
+				if (FrameInput.GameKeyUp(Gamekey.Start)) IsPlaying = !IsPlaying;
+				if (RequireRestartWithPlayerID.HasValue) RestartGameLogic(RequireRestartWithPlayerID.Value);
+				if (_CurrentSaveSlot.Value != AngePath.CurrentSaveSlot) {
+					_CurrentSaveSlot.Value = AngePath.CurrentSaveSlot;
+					if (!Util.FolderExists(AngePath.SaveSlotRoot)) OnSlotCreated?.Invoke();
+					OnSlotChanged?.Invoke();
 				}
-				OnSlotChanged?.Invoke();
-			}
+				if (!IsPausing) GlobalFrame++;
+				PauselessFrame++;
+			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
 
@@ -380,22 +245,22 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public void RestartGame (int playerID = 0) => RequireRestartWithPlayerID = playerID;
+		public static void RestartGame (int playerID = 0) => RequireRestartWithPlayerID = playerID;
 
 
-		public void SetBackgroundTint (Color32 top, Color32 bottom) {
+		public static void SetBackgroundTint (Color32 top, Color32 bottom) {
 			ForceBackgroundTintFrame = GlobalFrame + 1;
 			CellRenderer.SetBackgroundTint(top, bottom);
 		}
 
 
-		public void RefreshBackgroundTint () {
+		public static void RefreshBackgroundTint () {
 			if (GlobalFrame < ForceBackgroundTintFrame) return;
 			var date = System.DateTime.Now;
 			float time01 = Mathf.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
 			CellRenderer.SetBackgroundTint(
-				m_SkyTintTop.Evaluate(time01),
-				m_SkyTintBottom.Evaluate(time01)
+				SkyTintTop.Evaluate(time01),
+				SkyTintBottom.Evaluate(time01)
 			);
 		}
 
@@ -408,7 +273,9 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private void RestartGameLogic (int playerID = 0) {
+		private static void RestartGameLogic (int playerID = 0) {
+
+			RequireRestartWithPlayerID = null;
 
 			// Select Player
 			if (playerID == 0) {
@@ -420,7 +287,6 @@ namespace AngeliaFramework {
 			}
 
 			// Enable
-			if (!enabled) enabled = true;
 			if (GameCamera != null && !GameCamera.gameObject.activeSelf) {
 				GameCamera.gameObject.SetActive(true);
 			}
