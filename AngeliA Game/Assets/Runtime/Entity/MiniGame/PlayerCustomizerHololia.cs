@@ -53,7 +53,7 @@ namespace AngeliaGame {
 			base.StartGame();
 			// Force ID Changes
 			var player = Player.Selecting;
-			if (player != null) {
+			if (player is IConfigurableCharacter) {
 				player.Head.SetSpriteID("Holo.Head".AngeHash());
 				player.Body.SetSpriteID("Holo.Body".AngeHash());
 				player.Hip.SetSpriteID("Holo.Hip".AngeHash());

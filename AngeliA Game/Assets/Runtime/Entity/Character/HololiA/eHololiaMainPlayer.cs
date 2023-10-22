@@ -21,6 +21,39 @@ namespace AngeliaGame {
 		}
 
 
+		IConfigurableCharacter.CharacterConfig IConfigurableCharacter.CreateNewConfig () => new() {
+
+			Head = "Holo.Head".AngeHash(),
+			Body = "Holo.Body".AngeHash(),
+			Hip = "Holo.Hip".AngeHash(),
+			Shoulder = "Holo.Shoulder".AngeHash(),
+			UpperArm = "Holo.UpperArm".AngeHash(),
+			LowerArm = "Holo.LowerArm".AngeHash(),
+			Hand = "Holo.Hand".AngeHash(),
+			UpperLeg = "Holo.UpperLeg".AngeHash(),
+			LowerLeg = "Holo.LowerLeg".AngeHash(),
+			Foot = "Holo.Foot".AngeHash(),
+
+			CharacterHeight = 160,
+
+			Face = 0,
+			Hair = 0,
+			Ear = 0,
+			Tail = 0,
+			Wing = 0,
+			Horn = 0,
+
+			Suit_Head = 0,
+			Suit_Body = 0,
+			Suit_Hip = 0,
+			Suit_Hand = 0,
+			Suit_Foot = 0,
+
+			SkinColor = -272457473,
+			HairColor = -1,
+
+		};
+
 
 	}
 }

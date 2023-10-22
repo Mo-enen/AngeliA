@@ -31,6 +31,7 @@ namespace AngeliaGame {
 			"#ID 1st",      nameof(RisuFace), nameof(MoonaFace), nameof(IofifteenFace),
 			"#ID 2nd",      nameof(OllieFace), nameof(MelfissaFace), nameof(ReineFace),
 			"#ID 3rd",      nameof(ZetaFace), nameof(KaelaFace), nameof(KoboFace),
+			"#Staff",       nameof(FriendAFace), nameof(NodokaFace), nameof(UiFace),
 		};
 		private static string[] _BodyPart_Hairs = {
 			"",
@@ -50,6 +51,7 @@ namespace AngeliaGame {
 			"#ID 1st",      nameof(RisuHair), nameof(MoonaHair), nameof(IofifteenHair),
 			"#ID 2nd",      nameof(OllieHair), nameof(MelfissaHair), nameof(ReineHair),
 			"#ID 3rd",      nameof(ZetaHair), nameof(KaelaHair), nameof(KoboHair),
+			"#Staff",       nameof(FriendAHair), nameof(NodokaHair), nameof(UiHair),
 		};
 		private static string[] _BodyPart_Ears = {
 			"", nameof(FubukiEar), nameof(MioEar), nameof(OkayuEar), nameof(KoroneEar), nameof(PekoraEar), nameof(BotanEar), nameof(PolkaEar), nameof(RisuEar), nameof(InaEar), nameof(BaeEar), nameof(KoyoriEar), nameof(MocoEar), nameof(FuwaEar),
@@ -73,7 +75,7 @@ namespace AngeliaGame {
 			nameof(SubaruHeadSuit), nameof(FlareHeadSuit), nameof(KanataHeadSuit), nameof(TowaHeadSuit),
 			nameof(LunaHeadSuit), nameof(PolkaHeadSuit), nameof(OllieHeadSuit), nameof(CalliopeHeadSuit), nameof(KiaraHeadSuit),
 			nameof(InaHeadSuit), nameof(AmeHeadSuit), nameof(IRySHeadSuit), nameof(MumeiHeadSuit), nameof(SanaHeadSuit),
-			nameof(KaelaHeadSuit), nameof(BijouHeadSuit),
+			nameof(KaelaHeadSuit), nameof(BijouHeadSuit), nameof(UiHeadSuit),
 		};
 		private static string[] _Suit_BodyShoulderArmArms = {
 			"",
@@ -93,6 +95,7 @@ namespace AngeliaGame {
 			"#ID 1st",      nameof(RisuBodySuit), nameof(MoonaBodySuit), nameof(IofifteenBodySuit),
 			"#ID 2nd",      nameof(OllieBodySuit), nameof(MelfissaBodySuit), nameof(ReineBodySuit),
 			"#ID 3rd",      nameof(ZetaBodySuit), nameof(KaelaBodySuit), nameof(KoboBodySuit),
+			"#Staff",       nameof(FriendABodySuit), nameof(NodokaBodySuit), nameof(UiBodySuit), 
 		};
 		private static string[] _Suit_HipSkirtLegLegs = {
 			"",
@@ -112,6 +115,7 @@ namespace AngeliaGame {
 			"#ID 1st",      nameof(RisuHipSuit), nameof(MoonaHipSuit), nameof(IofifteenHipSuit),
 			"#ID 2nd",      nameof(OllieHipSuit), nameof(MelfissaHipSuit), nameof(ReineHipSuit),
 			"#ID 3rd",      nameof(ZetaHipSuit), nameof(KaelaHipSuit), nameof(KoboHipSuit),
+			"#Staff",       nameof(FriendAHipSuit), nameof(NodokaHipSuit), nameof(UiHipSuit), 
 		};
 		private static string[] _Suit_Foots = {
 			"",
@@ -131,6 +135,7 @@ namespace AngeliaGame {
 			"#ID 1st",      nameof(RisuFootSuit), nameof(MoonaFootSuit), nameof(IofifteenFootSuit),
 			"#ID 2nd",      nameof(OllieFootSuit), nameof(ReineFootSuit),
 			"#ID 3rd",      nameof(ZetaFootSuit), nameof(KaelaFootSuit), nameof(KoboFootSuit),
+			"#Staff",       nameof(FriendAFootSuit), nameof(NodokaFootSuit), nameof(UiFootSuit),
 		};
 		private static string[] _Suit_Hands = {
 			"",

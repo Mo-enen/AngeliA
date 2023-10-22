@@ -165,6 +165,9 @@ namespace AngeliaGame {
 	public class AloeHair : AutoSpriteHair { }
 	public class RushiaHair : AutoSpriteHair { }
 	public class ChrisHair : AutoSpriteHair { }
+	public class FriendAHair : AutoSpriteHair { }
+	public class NodokaHair : AutoSpriteHair { }
+	public class UiHair : AutoSpriteHair { }
 
 
 }

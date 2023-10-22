@@ -591,5 +591,24 @@ namespace AngeliaGame {
 	public class AloeFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
 
+	public class FriendABodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
+	public class FriendAHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
+	public class FriendAFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
+
+
+	public class NodokaBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
+	public class NodokaHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
+	public class NodokaFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
+
+
+	public class UiBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
+	public class UiHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
+	public class UiHeadSuit : AutoSpriteCloth {
+		protected override ClothType ClothType => ClothType.Head;
+		protected override FrontMode Front => FrontMode.Front;
+	}
+	public class UiFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
+
+
 
 }

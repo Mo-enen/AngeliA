@@ -74,3 +74,8 @@ ReineFace
 ZetaFace
 KaelaFace
 KoboFace
+#Staff
+FriendAFace
+NodokaFace
+UiFace
+YagooFace

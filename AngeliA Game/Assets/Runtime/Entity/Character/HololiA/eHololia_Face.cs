@@ -119,6 +119,11 @@ namespace AngeliaGame {
 			DrawSprite(character, GLASS_CODE, new Vector4Int(16, 16, 0, 0));
 		}
 	}
+	public class FriendAFace : AutoSpriteFace { }
+	public class NodokaFace : AutoSpriteFace { }
+	public class UiFace : AutoSpriteFace { }
+
+
 
 
 }

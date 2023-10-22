@@ -75,3 +75,8 @@ ReineHair
 ZetaHair
 KaelaHair
 KoboHair
+#Staff
+FriendAHair
+NodokaHair
+UiHair
+YagooHair
