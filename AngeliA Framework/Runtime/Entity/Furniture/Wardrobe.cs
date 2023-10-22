@@ -83,14 +83,14 @@ namespace AngeliaFramework {
 
 		protected override void OnUiClose () {
 			base.OnUiClose();
-			if (Player.Selecting is MainPlayer player) {
-				(player as IConfigurableCharacter).SaveConfigToFile();
+			if (Player.Selecting is IConfigurableCharacter cPlayer) {
+				cPlayer.SaveConfigToFile();
 			}
 		}
 
 
 		protected override void FrameUpdateUI (RectInt windowRect) {
-			if (Player.Selecting is not MainPlayer) return;
+			if (Player.Selecting is not IConfigurableCharacter) return;
 			var player = Player.Selecting;
 			windowRect.x = player.Rect.CenterX() - windowRect.width / 2;
 			windowRect.y = player.Y + Const.CEL * 2 + Unify(64);
@@ -383,7 +383,7 @@ namespace AngeliaFramework {
 		}
 
 
-		bool IActionTarget.AllowInvoke () => Player.Selecting is MainPlayer && !FrameTask.HasTask();
+		bool IActionTarget.AllowInvoke () => Player.Selecting is IConfigurableCharacter && !FrameTask.HasTask();
 
 
 		#endregion
@@ -415,7 +415,7 @@ namespace AngeliaFramework {
 
 
 		private int GetPlayerSuitIndex (ClothType type) {
-			if (Player.Selecting is not MainPlayer) return -1;
+			if (Player.Selecting is not IConfigurableCharacter) return -1;
 			var suitPatterns = GetPattern(type);
 			int playerPattern = GetPlayerSuitID(type);
 			for (int i = 0; i < suitPatterns.Count; i++) {
@@ -426,7 +426,7 @@ namespace AngeliaFramework {
 
 
 		private int GetPlayerSuitID (ClothType type) {
-			if (Player.Selecting is not MainPlayer player) return 0;
+			var player = Player.Selecting;
 			return type switch {
 				ClothType.Head => player.Suit_Head,
 				ClothType.Body => player.Suit_Body,
@@ -449,7 +449,7 @@ namespace AngeliaFramework {
 
 
 		private void ChangeSuit (ClothType type, int suitID) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			switch (type) {
 				case ClothType.Head:
 					player.Suit_Head = suitID;

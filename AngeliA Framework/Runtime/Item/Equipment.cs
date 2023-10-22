@@ -64,6 +64,7 @@ namespace AngeliaFramework {
 
 
 
+	[EntityAttribute.MapEditorGroup("ItemEquipment")]
 	public abstract class Equipment : Item {
 
 		public static int ItemLostParticleID { get; set; } = 0;

@@ -220,6 +220,16 @@ namespace AngeliaFramework {
 				yield return (target, att);
 			}
 		}
+		public static IEnumerable<(System.Type, A)> AllClassWithAttribute<A> (bool ignoreAbstract = true, bool ignoreInterface = true) where A : System.Attribute {
+			foreach (var target in AllTypesCache.Where(type =>
+				(!ignoreAbstract || !type.IsAbstract) &&
+				(!ignoreInterface || !type.IsInterface))
+			) {
+				var att = target.GetCustomAttribute<A>(false);
+				if (att == null) continue;
+				yield return (target, att);
+			}
+		}
 
 
 		public static IEnumerable<KeyValuePair<MethodInfo, T>> AllStaticMethodWithAttribute<T> () where T : System.Attribute {

@@ -162,7 +162,7 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		bool IActionTarget.AllowInvoke () => Player.Selecting is MainPlayer;
+		bool IActionTarget.AllowInvoke () => Player.Selecting is IConfigurableCharacter;
 
 
 		public PlayerCustomizer () {
@@ -188,7 +188,8 @@ namespace AngeliaFramework {
 
 		protected override void GameUpdate () {
 
-			if (Player.Selecting is not MainPlayer player) return;
+			var player = Player.Selecting;
+			if (player is not IConfigurableCharacter) return;
 
 			// Quit
 			if (FrameInput.GameKeyDown(Gamekey.Select)) {
@@ -267,11 +268,12 @@ namespace AngeliaFramework {
 
 		// Game
 		protected override void StartGame () {
-			if (Player.Selecting is not MainPlayer player) {
+			var player = Player.Selecting;
+			if (player is not IConfigurableCharacter cPlayer) {
 				CloseGame();
 				return;
 			}
-			(player as IConfigurableCharacter).LoadConfigFromFile();
+			cPlayer.LoadConfigFromFile();
 			PlayerFacingRight = player.FacingRight;
 			HighlightingMainIndex = 0;
 			HighlightingPatternRow = 0;
@@ -280,18 +282,18 @@ namespace AngeliaFramework {
 			BackButtonHotkeyLabel = $"({Util.GetKeyDisplayName(FrameInput.GetKeyboardMap(Gamekey.Jump))})";
 			BackButtonHotkeyPadCode = Const.GAMEPAD_JUMP_HINT_CODE;
 		}
-		
+
 
 		protected override void CloseGame () {
 			base.CloseGame();
-			if (Player.Selecting is MainPlayer player) {
-				(player as IConfigurableCharacter).SaveConfigToFile();
+			if (Player.Selecting is IConfigurableCharacter player) {
+				player.SaveConfigToFile();
 			}
 		}
 
 
 		// Rendering
-		private void MainMenuUI (RectInt panelRect, MainPlayer player) {
+		private void MainMenuUI (RectInt panelRect, Character player) {
 
 			int fieldHeight = Unify(60);
 			int fieldPadding = Unify(16);
@@ -375,7 +377,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void EditorUI (RectInt panelRect, MainPlayer player) {
+		private void EditorUI (RectInt panelRect, Character player) {
 
 			// Background
 			CellRenderer.Draw(Const.PIXEL, panelRect, Const.BLACK, EDITOR_BASIC_Z);
@@ -490,7 +492,7 @@ namespace AngeliaFramework {
 
 		// Sub Editor
 		private void SubEditor_Head (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			bool skinColorAvailable = SubMenuAvailable(SubMenuType.SkinColor);
 			if (PatternMenuUI(
 				panelRect, Patterns_Head,
@@ -505,7 +507,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_Body (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			bool skinColorAvailable = SubMenuAvailable(SubMenuType.SkinColor);
 			if (PatternMenuUI(
 				panelRect, Patterns_BodyHip,
@@ -521,7 +523,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_ArmLimb (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			bool skinColorAvailable = SubMenuAvailable(SubMenuType.SkinColor);
 			if (PatternMenuUI(
 				panelRect, Patterns_ShoulderArmArmHand,
@@ -544,7 +546,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_LegLimb (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			bool skinColorAvailable = SubMenuAvailable(SubMenuType.SkinColor);
 			if (PatternMenuUI(
 				panelRect, Patterns_LegLegFoot,
@@ -565,7 +567,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_Face (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Face, Const.WHITE,
@@ -579,7 +581,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_Ear (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Ear, Const.WHITE,
@@ -593,7 +595,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_Tail (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Tail, Const.WHITE,
@@ -607,7 +609,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_Wing (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Wing, Const.WHITE,
@@ -621,7 +623,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_Horn (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Horn, Const.WHITE,
@@ -635,7 +637,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_SuitHead (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Suit_Head, Const.WHITE,
@@ -648,7 +650,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_SuitBody (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Suit_BodyShoulderArmArm, Const.WHITE,
@@ -662,7 +664,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_SuitHand (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Suit_Hand, Const.WHITE,
@@ -675,7 +677,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_SuitLeg (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Suit_HipSkirtLegLeg, Const.WHITE,
@@ -689,7 +691,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_SuitFoot (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Suit_Foot, Const.WHITE,
@@ -702,7 +704,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_Hair (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			bool hairColorAvailable = SubMenuAvailable(SubMenuType.HairColor);
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
@@ -719,7 +721,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_SkinColor (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_ColorSkin, Const.WHITE,
@@ -738,7 +740,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_HairColor (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_ColorHair, Const.WHITE,
@@ -757,7 +759,7 @@ namespace AngeliaFramework {
 
 
 		private void SubEditor_BodyHeight (RectInt panelRect) {
-			var player = Player.Selecting as MainPlayer;
+			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			int newHeight = BodyHeightMenuUI(panelRect, player.CharacterHeight);
 			if (newHeight != player.CharacterHeight) {

@@ -52,16 +52,7 @@ namespace AngeliaFramework {
 		private static readonly int UI_CONTINUE = "UI.Continue".AngeHash();
 
 		// Api
-		public static Player Selecting {
-			get => _Selecting;
-			set {
-				if (value != null) {
-					_LastSelectedPlayerID.Value = value.TypeID;
-				}
-				_Selecting = value;
-			}
-		}
-		public static int LastSelectedPlayerID => _LastSelectedPlayerID.Value;
+		public static Player Selecting { get; set; } = null;
 		public static Vector3Int? RespawnUnitPosition { get; set; } = null;
 		public static Vector3Int? HomeUnitPosition { get; private set; } = null;
 		public override bool IsChargingAttack =>
@@ -88,15 +79,11 @@ namespace AngeliaFramework {
 		int IDamageReceiver.Team => Const.TEAM_PLAYER;
 
 		// Data
-		private static Player _Selecting = null;
 		private int AttackRequiringFrame = int.MinValue;
 		private int LastLeftKeyDown = int.MinValue;
 		private int LastRightKeyDown = int.MinValue;
 		private int LastGroundedY = 0;
 		private int PrevZ = int.MinValue;
-
-		// Saving
-		private static readonly SavingInt _LastSelectedPlayerID = new("Player.SelectingPlayerID", 0);
 
 
 		#endregion
@@ -608,6 +595,19 @@ namespace AngeliaFramework {
 
 
 		public static int GetCameraShiftOffset (int cameraHeight) => cameraHeight * 382 / 1000;
+
+
+		public static bool TryGetDefaultSelectPlayer (out System.Type result) {
+			result = null;
+			int currentPriority = int.MinValue;
+			foreach (var (type, attribute) in Util.AllClassWithAttribute<EntityAttribute.DefaultSelectPlayerAttribute>()) {
+				if ((type == typeof(Player) || type.IsSubclassOf(typeof(Player))) && attribute.Priority >= currentPriority) {
+					result = type;
+					currentPriority = attribute.Priority;
+				}
+			}
+			return result != null;
+		}
 
 
 		void IActionTarget.Invoke () {

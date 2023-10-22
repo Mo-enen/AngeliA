@@ -1,4 +1,5 @@
-﻿CtrlHint.Adjust:调整
+﻿Palette.ItemEquipment:装备
+CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
 CtrlHint.Drop:放下
@@ -59,7 +60,6 @@ Menu.Pause.MEDTSetting:编辑器设置
 Menu.Pause.QuitEditMessage:停止地图编辑？
 Menu.Pause.QuitMessage:是否要退出游戏？
 Menu.Setting.AllowGamepad:允许连接手柄
-Menu.Setting.SaveSlot:存档位
 Menu.Setting.Framerate:帧频率
 Menu.Setting.Fullscreen.0:窗口
 Menu.Setting.Fullscreen.1:全屏
@@ -67,6 +67,7 @@ Menu.Setting.Fullscreen.2:全屏（低清）
 Menu.Setting.Fullscreen.Label:显示
 Menu.Setting.Language:语言
 Menu.Setting.MusicVolume:音乐音量
+Menu.Setting.SaveSlot:存档位
 Menu.Setting.SoundVolume:音效音量
 Menu.Setting.UseControlHint:显示操作提示
 Menu.Setting.UseGamepadHint:显示左下角手柄

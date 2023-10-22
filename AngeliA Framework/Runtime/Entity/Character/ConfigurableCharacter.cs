@@ -54,6 +54,9 @@ namespace AngeliaFramework {
 
 
 		// API
+		public CharacterConfig CreateNewConfig () => new();
+
+
 		public sealed void ReloadConfig () {
 			if (LoadedSlot != AngePath.CurrentSaveSlot) {
 				LoadConfigFromFile();
@@ -65,21 +68,21 @@ namespace AngeliaFramework {
 
 		public sealed void LoadConfigFromFile () {
 			LoadedSlot = AngePath.CurrentSaveSlot;
-			var config = Config;
-			if (config == null) return;
-			string name = GetType().Name;
+			Config ??= CreateNewConfig() ?? new();
+			string name = GetType().AngeName();
 			string path = Util.CombinePaths(AngePath.PlayerDataRoot, "Character Config");
-			bool overrided = AngeUtil.OverrideJson(path, config, name);
-			if (!overrided) Config = new();
+			bool overrided = AngeUtil.OverrideJson(path, Config, name);
+			if (!overrided) Config = CreateNewConfig();
 			LoadCharacterFromConfig();
 		}
 
 
 		public sealed void SaveConfigToFile () {
+			Config ??= CreateNewConfig();
 			if (Config == null) return;
 			SaveCharacterToConfig();
 			string path = Util.CombinePaths(AngePath.PlayerDataRoot, "Character Config");
-			AngeUtil.SaveJson(Config, path, GetType().Name, true);
+			AngeUtil.SaveJson(Config, path, GetType().AngeName(), true);
 		}
 
 

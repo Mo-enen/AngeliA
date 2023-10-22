@@ -225,7 +225,7 @@ namespace AngeliaFramework {
 				CellRenderer.FrameUpdate(GlobalFrame, GameCamera);
 				CursorSystem.Update(GlobalFrame);
 				if (FrameInput.GameKeyUp(Gamekey.Start)) IsPlaying = !IsPlaying;
-				if (RequireRestartWithPlayerID.HasValue) RestartGameLogic(RequireRestartWithPlayerID.Value);
+				if (RequireRestartWithPlayerID.HasValue) RestartGameLogic();
 				if (_CurrentSaveSlot.Value != AngePath.CurrentSaveSlot) {
 					_CurrentSaveSlot.Value = AngePath.CurrentSaveSlot;
 					if (!Util.FolderExists(AngePath.SaveSlotRoot)) OnSlotCreated?.Invoke();
@@ -273,17 +273,20 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private static void RestartGameLogic (int playerID = 0) {
+		private static void RestartGameLogic () {
 
+			// Select New Player
+			int playerID = RequireRestartWithPlayerID ?? 0;
 			RequireRestartWithPlayerID = null;
-
-			// Select Player
-			if (playerID == 0) {
-				Player.Selecting = Stage.PeekOrGetEntity(Player.LastSelectedPlayerID) as Player;
-				playerID = Player.Selecting != null ? Player.Selecting.TypeID : typeof(MainPlayer).AngeHash();
-			}
-			if (Stage.PeekOrGetEntity(playerID) is Player player) {
-				Player.Selecting = player;
+			if (Player.Selecting == null || (playerID != Player.Selecting.TypeID)) {
+				if (playerID == 0) {
+					playerID =
+						Player.Selecting != null ? Player.Selecting.TypeID :
+						Player.TryGetDefaultSelectPlayer(out var defaultPlayer) ? defaultPlayer.AngeHash() : 0;
+				}
+				if (playerID != 0 && Stage.PeekOrGetEntity(playerID) is Player player) {
+					Player.Selecting = player;
+				}
 			}
 
 			// Enable

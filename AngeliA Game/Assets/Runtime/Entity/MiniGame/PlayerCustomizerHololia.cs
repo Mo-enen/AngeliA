@@ -52,7 +52,8 @@ namespace AngeliaGame {
 		protected override void StartGame () {
 			base.StartGame();
 			// Force ID Changes
-			if (Player.Selecting is MainPlayer player) {
+			var player = Player.Selecting;
+			if (player != null) {
 				player.Head.SetSpriteID("Holo.Head".AngeHash());
 				player.Body.SetSpriteID("Holo.Body".AngeHash());
 				player.Hip.SetSpriteID("Holo.Hip".AngeHash());
