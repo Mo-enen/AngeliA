@@ -75,3 +75,7 @@ ReineHipSuit
 ZetaHipSuit
 KaelaHipSuit
 KoboHipSuit
+#Staff
+FriendAHipSuit
+NodokaHipSuit
+UiHipSuit

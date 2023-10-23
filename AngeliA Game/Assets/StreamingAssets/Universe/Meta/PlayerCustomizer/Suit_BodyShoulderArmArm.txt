@@ -75,3 +75,7 @@ ReineBodySuit
 ZetaBodySuit
 KaelaBodySuit
 KoboBodySuit
+#Staff
+FriendABodySuit
+NodokaBodySuit
+UiBodySuit

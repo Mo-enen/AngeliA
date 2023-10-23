@@ -34,23 +34,23 @@ namespace AngeliaGame {
 			LowerLeg = "Holo.LowerLeg".AngeHash(),
 			Foot = "Holo.Foot".AngeHash(),
 
-			CharacterHeight = 160,
+			CharacterHeight = 157,
 
-			Face = 0,
-			Hair = 0,
+			Face = nameof(FriendAFace).AngeHash(),
+			Hair = nameof(FriendAHair).AngeHash(),
 			Ear = 0,
 			Tail = 0,
 			Wing = 0,
 			Horn = 0,
 
 			Suit_Head = 0,
-			Suit_Body = 0,
-			Suit_Hip = 0,
+			Suit_Body = nameof(FriendABodySuit).AngeHash(),
+			Suit_Hip = nameof(FriendAHipSuit).AngeHash(),
 			Suit_Hand = 0,
-			Suit_Foot = 0,
+			Suit_Foot = nameof(FriendAFootSuit).AngeHash(),
 
-			SkinColor = -272457473,
-			HairColor = -1,
+			SkinColor = Util.ColorToInt(new Color32(245, 217, 196, 255)), // #f5d9c4
+			HairColor = Util.ColorToInt(Const.WHITE),
 
 		};
 

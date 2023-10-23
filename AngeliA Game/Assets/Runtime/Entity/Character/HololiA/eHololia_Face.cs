@@ -116,10 +116,20 @@ namespace AngeliaGame {
 		private static readonly int GLASS_CODE = "ChrisSuit.Glass".AngeHash();
 		protected override void DrawFace (Character character) {
 			base.DrawFace(character);
-			DrawSprite(character, GLASS_CODE, new Vector4Int(16, 16, 0, 0));
+			if (character.AnimatedPoseType != CharacterPoseAnimationType.Sleep) {
+				DrawSprite(character, GLASS_CODE, new Vector4Int(16, 16, 0, 0));
+			}
 		}
 	}
-	public class FriendAFace : AutoSpriteFace { }
+	public class FriendAFace : AutoSpriteFace {
+		private static readonly int GLASS_CODE = "FriendASuit.Glass".AngeHash();
+		protected override void DrawFace (Character character) {
+			base.DrawFace(character);
+			if (character.AnimatedPoseType != CharacterPoseAnimationType.Sleep) {
+				DrawSprite(character, GLASS_CODE, new Vector4Int(16, 16, 0, 0));
+			}
+		}
+	}
 	public class NodokaFace : AutoSpriteFace { }
 	public class UiFace : AutoSpriteFace { }
 

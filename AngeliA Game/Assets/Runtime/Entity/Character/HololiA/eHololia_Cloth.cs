@@ -605,7 +605,7 @@ namespace AngeliaGame {
 	public class UiHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class UiHeadSuit : AutoSpriteCloth {
 		protected override ClothType ClothType => ClothType.Head;
-		protected override FrontMode Front => FrontMode.Front;
+		protected override FrontMode Front => FrontMode.Back;
 	}
 	public class UiFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 

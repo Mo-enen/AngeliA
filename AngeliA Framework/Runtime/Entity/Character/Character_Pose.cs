@@ -930,6 +930,7 @@ namespace AngeliaFramework {
 			// Hide Limb
 			if (CellRenderer.TryGetMeta(suitSprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG) {
 				Body.Tint = Const.CLEAR;
+				Hip.Tint = Const.CLEAR;
 			}
 		}
 
@@ -962,13 +963,13 @@ namespace AngeliaFramework {
 					);
 				}
 			}
-			//if (hip.Width < 0) rect.FlipHorizontal();
-			CellRenderer.Draw(sprite.GlobalID, rect, tint, 3);
 
-			// Show/Hide Limb
-			if (!CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) || meta.Tag != Const.SHOW_LIMB_TAG) {
-				hip.Tint = Const.CLEAR;
-			}
+			// Draw
+			CellRenderer.Draw(
+				sprite.GlobalID, rect, tint,
+				CellRenderer.TryGetMeta(spriteID, out var meta) && meta.IsTrigger ? Hip.Z + 4 : Hip.Z + 1
+			);
+
 		}
 
 

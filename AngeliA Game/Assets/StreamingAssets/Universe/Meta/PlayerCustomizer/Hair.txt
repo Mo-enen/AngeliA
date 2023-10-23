@@ -79,4 +79,3 @@ KoboHair
 FriendAHair
 NodokaHair
 UiHair
-YagooHair
