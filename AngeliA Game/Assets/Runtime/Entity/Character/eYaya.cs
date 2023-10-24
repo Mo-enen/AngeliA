@@ -32,15 +32,15 @@ namespace AngeliaGame {
 
 		public eYaya () {
 
-			WalkToRunAccumulation.Value = 0;
-			JumpDownThoughOneway.Value = true;
-			SlideAvailable.Value = true;
-			SlideOnAnyBlock.Value = true;
+			WalkToRunAccumulation.BaseValue = 0;
+			JumpDownThoughOneway.BaseValue = true;
+			SlideAvailable.BaseValue = true;
+			SlideOnAnyBlock.BaseValue = true;
 			CharacterHeight = 158;
 
-			MinimalChargeAttackDuration.Value = 42;
+			MinimalChargeAttackDuration.BaseValue = 42;
 
-			MaxHP.Value = 1;
+			MaxHP.BaseValue = 1;
 
 		}
 

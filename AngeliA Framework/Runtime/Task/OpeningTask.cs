@@ -149,9 +149,9 @@ namespace AngeliaFramework {
 
 			// Get Start Position
 			Vector3Int startUnitPosition;
-			if (Player.RespawnUnitPosition.HasValue) {
+			if (Player.RespawnCpUnitPosition.HasValue) {
 				// CP Respawn Pos
-				startUnitPosition = Player.RespawnUnitPosition.Value;
+				startUnitPosition = Player.RespawnCpUnitPosition.Value;
 				gotoBed = false;
 			} else if (Player.HomeUnitPosition.HasValue) {
 				// Sleeped Pos

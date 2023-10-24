@@ -1,29 +1,7 @@
 using AngeliaFramework;
-using UnityEngine;
 
 
 namespace AngeliaGame {
-
-
-	public class eCheckPointTouchParticle : Particle {
-		public override int Duration => 32;
-		public override bool Loop => false;
-		[OnGameInitialize(64)]
-		public static void Init () {
-			CheckPoint.OnTouchedParticleID = typeof(eCheckPointTouchParticle).AngeHash();
-		}
-		public override void DrawParticle () {
-			if (UserData is not CheckPoint targetCP) return;
-			// Flash
-			if (CellRenderer.TryGetSprite(targetCP.TypeID, out var cpSprite)) {
-				CellRenderer.SetLayerToAdditive();
-				CellRenderer.Draw(cpSprite.GlobalID, targetCP.Rect.Expand(LocalFrame), new Color32(0, 255, 0,
-					(byte)Util.RemapUnclamped(0, Duration, 128, 0, LocalFrame).Clamp(0, 255)
-				));
-				CellRenderer.SetLayerToDefault();
-			}
-		}
-	}
 
 
 	public class eCheckLalynnA : CheckPoint { }
@@ -52,78 +30,31 @@ namespace AngeliaGame {
 	public class eCheckCat : CheckPoint { }
 
 
-	public class eAltarLalynnA : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckLalynnA).AngeHash();
-	}
-	public class eAltarMage : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckMage).AngeHash();
-	}
-	public class eAltarElf : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckElf).AngeHash();
-	}
-	public class eAltarDragon : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckDragon).AngeHash();
-	}
-	public class eAltarTorch : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckTorch).AngeHash();
-	}
-	public class eAltarSlime : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckSlime).AngeHash();
-	}
-	public class eAltarInsect : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckInsect).AngeHash();
-	}
-	public class eAltarOrc : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckOrc).AngeHash();
-	}
-	public class eAltarTako : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckTako).AngeHash();
-	}
-	public class eAltarShark : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckShark).AngeHash();
-	}
-	public class eAltarBone : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckBone).AngeHash();
-	}
-	public class eAltarFootman : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckFootman).AngeHash();
-	}
-	public class eAltarKnight : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckKnight).AngeHash();
-	}
-	public class eAltarJesus : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckJesus).AngeHash();
-	}
-	public class eAltarShield : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckShield).AngeHash();
-	}
-	public class eAltarGamble : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckGamble).AngeHash();
-	}
-	public class eAltarScience : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckScience).AngeHash();
-	}
-	public class eAltarSpider : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckSpider).AngeHash();
-	}
-	public class eAltarStalactite : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckStalactite).AngeHash();
-	}
-	public class eAltarSword : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckSword).AngeHash();
-	}
-	public class eAltarSpace : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckSpace).AngeHash();
-	}
-	public class eAltarMachineGun : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckMachineGun).AngeHash();
-	}
-	public class eAltarKnowledge : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckKnowledge).AngeHash();
-	}
-	public class eAltarCat : CheckAltar {
-		protected override int GetLinkedCheckPointID () => typeof(eCheckCat).AngeHash();
-	}
+
+	[LinkedCheckPoint(typeof(eCheckLalynnA))] public class eAltarLalynnA : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckMage))] public class eAltarMage : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckElf))] public class eAltarElf : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckDragon))] public class eAltarDragon : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckTorch))] public class eAltarTorch : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckSlime))] public class eAltarSlime : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckInsect))] public class eAltarInsect : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckOrc))] public class eAltarOrc : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckTako))] public class eAltarTako : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckShark))] public class eAltarShark : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckBone))] public class eAltarBone : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckFootman))] public class eAltarFootman : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckKnight))] public class eAltarKnight : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckJesus))] public class eAltarJesus : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckShield))] public class eAltarShield : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckGamble))] public class eAltarGamble : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckScience))] public class eAltarScience : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckSpider))] public class eAltarSpider : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckStalactite))] public class eAltarStalactite : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckSword))] public class eAltarSword : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckSpace))] public class eAltarSpace : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckMachineGun))] public class eAltarMachineGun : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckKnowledge))] public class eAltarKnowledge : CheckAltar { }
+	[LinkedCheckPoint(typeof(eCheckCat))] public class eAltarCat : CheckAltar { }
 
 
 }

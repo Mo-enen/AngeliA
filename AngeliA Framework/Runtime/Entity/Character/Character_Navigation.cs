@@ -220,7 +220,7 @@ namespace AngeliaFramework {
 				// Move
 				case NavigationOperateMotion.Move:
 
-					int speed = InWater ? SwimSpeed.Value * InWaterSpeedLoseRate / 1000 : RunSpeed.Value;
+					int speed = InWater ? SwimSpeed * InWaterSpeedLoseRate / 1000 : RunSpeed;
 
 					if (targetX == X) NavMoveDoneX = true;
 					if (targetY == Y) NavMoveDoneY = true;

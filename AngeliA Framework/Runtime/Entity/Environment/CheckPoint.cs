@@ -6,7 +6,7 @@ using UnityEngine;
 namespace AngeliaFramework {
 	[EntityAttribute.Capacity(16)]
 	[EntityAttribute.MapEditorGroup("CheckPoint")]
-	public abstract class CheckPoint : Entity, IActionTarget {
+	public abstract class CheckPoint : Entity {
 
 
 
@@ -14,13 +14,10 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
-		// Const
-		private static readonly int HINT_TELEPORT = "CtrlHint.TeleportCP".AngeHash();
-
 		// Api
+		public static int BackPortalEntityID { get; set; } = 0;
 		public static int OnTouchedParticleID { get; set; } = 0;
-		public static int LastInvokedCheckPointID { get; private set; } = 0;
-		public static Vector3Int LastInvokedCheckPointUnitPosition { get; private set; } = default;
+		public static Vector3Int? TurnBackUnitPosition { get; private set; } = null;
 		protected virtual bool OnlySpawnWhenUnlocked => true;
 
 		// Short
@@ -58,17 +55,33 @@ namespace AngeliaFramework {
 
 
 		public override void PhysicsUpdate () {
+
 			base.PhysicsUpdate();
+
 			if (OnlySpawnWhenUnlocked && !IsUnlocked(TypeID)) return;
 			var player = Player.Selecting;
+
 			if (player == null || !player.Active) return;
-			if (player.Rect.Overlaps(Rect)) {
-				var unitPos = new Vector3Int(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
-				if (!Player.RespawnUnitPosition.HasValue || Player.RespawnUnitPosition != unitPos) {
-					Player.RespawnUnitPosition = unitPos;
-					OnPlayerTouched(unitPos);
-				}
+			var unitPos = new Vector3Int(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
+			bool highlighting = Player.RespawnCpUnitPosition.HasValue && Player.RespawnCpUnitPosition.Value == unitPos;
+
+			// Player Touch Check
+			if (player.Rect.Overlaps(Rect) && !highlighting) {
+				highlighting = true;
+				OnPlayerTouched(unitPos);
+				if (TryGetTurnBackUnitPosition(out var turnBackUnitPos)) TurnBackUnitPosition = turnBackUnitPos;
+				Player.RespawnCpUnitPosition = unitPos;
 			}
+
+			// Spawn Portal
+			if (
+				highlighting &&
+				TurnBackUnitPosition.HasValue &&
+				Stage.GetSpawnedEntityCount(BackPortalEntityID) == 0
+			) {
+				Stage.GetOrAddEntity(BackPortalEntityID, X, Y + Const.CEL * 4);
+			}
+
 		}
 
 
@@ -80,18 +93,9 @@ namespace AngeliaFramework {
 				cell.Shift = Border;
 			} else {
 				// Unlocked
-				var cell = CellRenderer.Draw(TypeID, Rect);
-				// Highlight
-				if ((this as IActionTarget).IsHighlighted) {
-					IActionTarget.HighlightBlink(cell, Direction3.Horizontal, FittingPose.Single);
-					// Hint
-					ControlHintUI.DrawGlobalHint(
-						X, Y + Height + Const.CEL * 2, Gamekey.Action,
-						Language.Get(HINT_TELEPORT, "Teleport to Altar"), true
-					);
-				}
+				CellRenderer.Draw(TypeID, Rect);
 				var unitPos = new Vector3Int(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
-				if (Player.RespawnUnitPosition == unitPos) {
+				if (Player.RespawnCpUnitPosition == unitPos) {
 					DrawActivatedHighlight();
 				}
 			}
@@ -99,15 +103,29 @@ namespace AngeliaFramework {
 
 
 		protected virtual void OnPlayerTouched (Vector3Int unitPos) {
+
+			// Clear Portal
+			if (
+				Stage.GetSpawnedEntityCount(BackPortalEntityID) != 0 &&
+				Stage.TryGetEntity(BackPortalEntityID, out var portal)
+			) {
+				portal.Active = false;
+			}
+
 			// Particle
-			if (Stage.SpawnEntity(
-				OnTouchedParticleID,
-				X + Const.HALF, Y + Const.HALF
-			) is Particle particle) {
+			if (Stage.SpawnEntity(OnTouchedParticleID, X + Const.HALF, Y + Const.HALF) is Particle particle) {
 				particle.Width = Const.CEL * 2;
 				particle.Height = Const.CEL * 2;
 				particle.UserData = this;
 			}
+		}
+
+
+		protected virtual bool TryGetTurnBackUnitPosition (out Vector3Int unitPos) {
+			unitPos = default;
+			return
+				LinkedId.TryGetValue(TypeID, out int linkedID) &&
+				IGlobalPosition.TryGetPosition(linkedID, out unitPos);
 		}
 
 
@@ -129,39 +147,10 @@ namespace AngeliaFramework {
 
 
 		public static void Unlock (int checkPointID) {
-			if (!UnlockedCheckPoint.Contains(checkPointID)) {
-				Util.ByteToFile(new byte[0], Util.CombinePaths(UnlockFolderPath, checkPointID.ToString()));
-				UnlockedCheckPoint.Add(checkPointID);
-			}
+			if (UnlockedCheckPoint.Contains(checkPointID)) return;
+			Util.ByteToFile(new byte[0], Util.CombinePaths(UnlockFolderPath, checkPointID.ToString()));
+			UnlockedCheckPoint.Add(checkPointID);
 		}
-
-
-		public static void ClearLastInvoke () => LastInvokedCheckPointID = 0;
-
-
-		void IActionTarget.Invoke () {
-			if (!IsUnlocked(TypeID)) return;
-			if (!LinkedId.TryGetValue(TypeID, out int linkedID)) return;
-			if (!IGlobalPosition.TryGetPosition(linkedID, out var unitPos)) return;
-			LastInvokedCheckPointID = TypeID;
-			LastInvokedCheckPointUnitPosition = new Vector3Int(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
-			var player = Player.Selecting;
-			var task = TeleportTask.Teleport(
-				player.X, player.Y,
-				unitPos.x.ToGlobal() + Const.HALF,
-				unitPos.y.ToGlobal(),
-				unitPos.z
-			);
-			if (task != null) {
-				task.TeleportEntity = player;
-				task.WaitDuration = 30;
-				task.Duration = 60;
-				task.UseVignette = true;
-			}
-		}
-
-
-		bool IActionTarget.AllowInvoke () => IsUnlocked(TypeID);
 
 
 		protected void DrawActivatedHighlight () {

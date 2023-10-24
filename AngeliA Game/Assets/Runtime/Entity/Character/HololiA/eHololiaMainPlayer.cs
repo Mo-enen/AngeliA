@@ -18,6 +18,25 @@ namespace AngeliaGame {
 		public override void OnActivated () {
 			base.OnActivated();
 			(this as IConfigurableCharacter).ReloadConfig();
+
+
+
+
+			StopMoveOnAttack.BaseValue = false;
+			AttackInAir.BaseValue = true;
+			AttackInWater.BaseValue = true;
+			AttackWhenMoving.BaseValue = true;
+			AttackWhenClimbing.BaseValue = true;
+			AttackWhenFlying.BaseValue = true;
+			AttackWhenRolling.BaseValue = true;
+			AttackWhenSquatting.BaseValue = true;
+			AttackWhenDashing.BaseValue = true;
+			AttackWhenSliding.BaseValue = true;
+			AttackWhenGrabbing.BaseValue = true;
+			AttackWhenRush.BaseValue = true;
+
+
+
 		}
 
 

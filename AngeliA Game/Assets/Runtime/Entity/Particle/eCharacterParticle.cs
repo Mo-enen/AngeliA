@@ -65,6 +65,8 @@ namespace AngeliaGame {
 		public override int Duration => 20;
 		public override bool Loop => false;
 		public override int FramePerSprite => 5;
+		public override int RenderingZ => -1024;
+
 		[OnGameInitialize(64)]
 		public static void Init () {
 			Character.FootstepParticleCode = typeof(eCharacterFootstep).AngeHash();

@@ -1,14 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Reflection;
 using UnityEngine;
 
 
 namespace AngeliaFramework {
+
+
+
+	[System.AttributeUsage(System.AttributeTargets.Class)]
+	public class LinkedCheckPointAttribute : System.Attribute {
+		public System.Type LinkedCheckPoint;
+		public LinkedCheckPointAttribute (System.Type linkedCheckPoint) => LinkedCheckPoint = linkedCheckPoint;
+	}
+
+
+
 	[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
-	[EntityAttribute.Capacity(1)]
-	public abstract class CheckAltar : CheckPoint, IGlobalPosition, IActionTarget {
+	[EntityAttribute.Capacity(1, 1)]
+	public abstract class CheckAltar : CheckPoint, IGlobalPosition {
 
 
 
@@ -17,10 +27,10 @@ namespace AngeliaFramework {
 
 
 		// Api
-		public static int BackPortalEntityID { get; set; } = 0;
 		protected sealed override bool OnlySpawnWhenUnlocked => false;
 
 		// Data
+		private static Vector3Int? _TurnBackUnitPosition = default;
 		private int LinkedCheckPointID { get; init; } = 0;
 
 
@@ -32,7 +42,10 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		public CheckAltar () => LinkedCheckPointID = GetLinkedCheckPointID();
+		public CheckAltar () {
+			var linkedAtt = GetType().GetCustomAttribute<LinkedCheckPointAttribute>();
+			LinkedCheckPointID = linkedAtt != null ? linkedAtt.LinkedCheckPoint.AngeHash() : 0;
+		}
 
 
 		[OnGameInitialize(-64)]
@@ -50,35 +63,17 @@ namespace AngeliaFramework {
 		}
 
 
-		public override void PhysicsUpdate () {
-			base.PhysicsUpdate();
-			if (
-				LastInvokedCheckPointID == LinkedCheckPointID &&
-				Stage.GetSpawnedEntityCount(BackPortalEntityID) == 0
-			) {
-				Stage.SpawnEntity(BackPortalEntityID, X, Y + Const.CEL * 3);
-			}
-		}
-
-
 		protected override void OnPlayerTouched (Vector3Int unitPos) {
+			_TurnBackUnitPosition = Player.RespawnCpUnitPosition;
 			base.OnPlayerTouched(unitPos);
 			Unlock(LinkedCheckPointID);
 		}
 
 
-		#endregion
-
-
-
-
-		#region --- API ---
-
-
-		bool IActionTarget.AllowInvoke () => false;
-
-
-		protected abstract int GetLinkedCheckPointID ();
+		protected override bool TryGetTurnBackUnitPosition (out Vector3Int unitPos) {
+			unitPos = _TurnBackUnitPosition ?? default;
+			return _TurnBackUnitPosition.HasValue;
+		}
 
 
 		#endregion

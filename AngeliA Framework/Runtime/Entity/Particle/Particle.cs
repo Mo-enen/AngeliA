@@ -16,6 +16,7 @@ namespace AngeliaFramework {
 		public abstract bool Loop { get; }
 		public virtual int FramePerSprite { get; }
 		public virtual int Scale => 1000;
+		public virtual int RenderingZ => int.MinValue;
 
 		// Api
 		public Color32 Tint { get; set; } = Const.WHITE;
@@ -45,7 +46,7 @@ namespace AngeliaFramework {
 				if (CellRenderer.TryGetSpriteFromGroup(TypeID, LocalFrame / FramePerSprite, out var sprite, Loop)) {
 					CellRenderer.Draw(
 						sprite.GlobalID, X, Y, sprite.PivotX, sprite.PivotY, Rotation,
-						sprite.GlobalWidth * Scale / 1000, sprite.GlobalHeight * Scale / 1000, Tint
+						sprite.GlobalWidth * Scale / 1000, sprite.GlobalHeight * Scale / 1000, Tint, RenderingZ
 					);
 				}
 			} else {

@@ -117,7 +117,7 @@ namespace AngeliaFramework {
 
 			const int FRAME_LENGTH = 16;
 
-			int loop = Mathf.Max(FRAME_LENGTH * 50 / Target.WalkSpeed.Value.Clamp(1, 100) / FRAME_LENGTH * FRAME_LENGTH, 1);
+			int loop = Mathf.Max(FRAME_LENGTH * 50 / Target.WalkSpeed.FinalValue.Clamp(1, 100) / FRAME_LENGTH * FRAME_LENGTH, 1);
 			int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
 			int currentFrame = (CurrentAnimationFrame + frameRate * 2).UMod(loop) / frameRate * frameRate;
 			int arrFrame = (currentFrame / frameRate) % FRAME_LENGTH;
@@ -164,7 +164,7 @@ namespace AngeliaFramework {
 
 			const int FRAME_LENGTH = 16;
 
-			int loop = Mathf.Max(FRAME_LENGTH * 75 / Target.RunSpeed.Value.Clamp(1, 1024) / FRAME_LENGTH * FRAME_LENGTH, 1);
+			int loop = Mathf.Max(FRAME_LENGTH * 75 / Target.RunSpeed.FinalValue.Clamp(1, 1024) / FRAME_LENGTH * FRAME_LENGTH, 1);
 			int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
 			int currentFrame = (CurrentAnimationFrame + frameRate * 2).UMod(loop) / frameRate * frameRate;
 			int arrFrame = (currentFrame / frameRate) % FRAME_LENGTH;
@@ -382,7 +382,7 @@ namespace AngeliaFramework {
 
 		public static void SwimMove () {
 
-			int loop = Mathf.Max((1200 / Target.SwimSpeed.Value).Clamp(1, 128) / 4 * 4, 1);
+			int loop = Mathf.Max((1200 / Target.SwimSpeed.FinalValue).Clamp(1, 128) / 4 * 4, 1);
 			int frame = CurrentAnimationFrame.UMod(loop) / (loop / 4);
 
 			int frame0121 = frame == 3 ? 1 : frame;
@@ -551,7 +551,7 @@ namespace AngeliaFramework {
 
 			const int FRAME_LENGTH = 16;
 
-			int loop = Mathf.Max(600 / Target.SquatSpeed.Value.Clamp(1, 256) / FRAME_LENGTH * FRAME_LENGTH, 1);
+			int loop = Mathf.Max(600 / Target.SquatSpeed.FinalValue.Clamp(1, 256) / FRAME_LENGTH * FRAME_LENGTH, 1);
 			int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
 			int arrFrame = (CurrentAnimationFrame.UMod(loop) / frameRate) % FRAME_LENGTH;
 			arrFrame = (arrFrame + 4).UMod(FRAME_LENGTH);
@@ -981,7 +981,7 @@ namespace AngeliaFramework {
 
 		public static void Climb () {
 
-			int frameRate = Mathf.Max(560 / Target.ClimbSpeedY.Value.Clamp(1, 1024) / 8, 1);
+			int frameRate = Mathf.Max(560 / Target.ClimbSpeedY.FinalValue.Clamp(1, 1024) / 8, 1);
 			int aFrame = CurrentAnimationFrame.UMod(frameRate * 10 - 1) / frameRate;
 
 			int delayFrame = (aFrame + 1) % 10;
@@ -1142,7 +1142,7 @@ namespace AngeliaFramework {
 
 		public static void GrabTop () {
 
-			int loop = Mathf.Max((700 / Target.GrabMoveSpeedX.Value.Clamp(1, 1024)) / 4 * 4, 1);
+			int loop = Mathf.Max((700 / Target.GrabMoveSpeedX.FinalValue.Clamp(1, 1024)) / 4 * 4, 1);
 			int arrFrame = (CurrentAnimationFrame.UMod(loop) / (loop / 4)) % 4;// 0123
 			int pingpong = arrFrame == 3 ? 1 : arrFrame; // 0121
 			int pingpongAlt = arrFrame == 2 ? 1 : arrFrame == 3 ? 0 : arrFrame + 1; // 1210
@@ -1187,7 +1187,7 @@ namespace AngeliaFramework {
 
 		public static void GrabSide () {
 
-			int loop = Mathf.Max((700 / Target.GrabMoveSpeedY.Value.Clamp(1, 1024)) / 4 * 4, 1);
+			int loop = Mathf.Max((700 / Target.GrabMoveSpeedY.FinalValue.Clamp(1, 1024)) / 4 * 4, 1);
 			int arrFrame = (CurrentAnimationFrame.UMod(loop) / (loop / 4)) % 4;// 0123
 			int pingpong = arrFrame == 3 ? 1 : arrFrame; // 0121
 			int bodyShift = FacingSign * (Body.Width.Abs() / 2 - A2G * 2);

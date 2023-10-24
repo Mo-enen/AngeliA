@@ -127,7 +127,7 @@ namespace AngeliaFramework {
 
 
 		#region --- Attack ---
-
+		
 
 		public readonly BuffInt AttackDuration = new(12);
 		public readonly BuffInt AttackCooldown = new(2);
@@ -137,6 +137,7 @@ namespace AngeliaFramework {
 		public readonly BuffBool StopMoveOnAttack = new(true);
 		public readonly BuffBool CancelAttackOnJump = new(false);
 		public readonly BuffBool RepeatAttackWhenHolding = new(false);
+		public readonly BuffBool LockFacingOnAttack = new(false);
 		public readonly BuffBool AttackInAir = new(true);
 		public readonly BuffBool AttackInWater = new(true);
 		public readonly BuffBool AttackWhenMoving = new(true);

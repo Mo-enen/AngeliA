@@ -446,18 +446,24 @@ namespace AngeliaFramework {
 
 			if (overrideHandHeld) {
 				// Override Handheld
-				if (
-					EquippingWeaponHeld == WeaponHandHeld.DoubleHanded ||
-					EquippingWeaponHeld == WeaponHandHeld.Bow ||
-					EquippingWeaponHeld == WeaponHandHeld.Firearm
-				) {
-					AnimationLibrary.HandHeld_Double_Bow();
-				} else if (EquippingWeaponHeld == WeaponHandHeld.Pole) {
-					if (EquippingWeaponType != WeaponType.Magic) {
-						AnimationLibrary.HandHeld_Pole();
-					} else {
-						AnimationLibrary.HandHeld_Magic_Pole();
-					}
+				switch (EquippingWeaponHeld) {
+					case WeaponHandHeld.DoubleHanded:
+					case WeaponHandHeld.Bow:
+					case WeaponHandHeld.Firearm:
+						AnimationLibrary.HandHeld_Double_Bow_Firearm();
+						break;
+					case WeaponHandHeld.Pole:
+						if (EquippingWeaponType == WeaponType.Magic) {
+							AnimationLibrary.HandHeld_Magic_Pole();
+						} else {
+							AnimationLibrary.HandHeld_Pole();
+						}
+						break;
+					default:
+						if (IsChargingAttack) {
+
+						}
+						break;
 				}
 				CalculateBodypartGlobalPosition();
 			} else {

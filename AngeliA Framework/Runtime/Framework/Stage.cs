@@ -492,8 +492,24 @@ namespace AngeliaFramework {
 		// Composite
 		public static Entity PeekOrGetEntity (int typeID) => PeekEntity(typeID) ?? GetEntity(typeID);
 		public static T PeekOrGetEntity<T> () where T : Entity => PeekEntity<T>() ?? GetEntity<T>();
-		public static Entity GetOrAddEntity (int typeID, int x, int y) => GetEntity(typeID) ?? SpawnEntity(typeID, x, y);
-		public static T GetOrAddEntity<T> (int x, int y) where T : Entity => GetEntity<T>() ?? SpawnEntity<T>(x, y);
+		public static Entity GetOrAddEntity (int typeID, int x, int y) {
+			if (TryGetEntity(typeID, out var entity)) {
+				entity.X = x;
+				entity.Y = y;
+				return entity;
+			} else {
+				return SpawnEntity(typeID, x, y);
+			}
+		}
+		public static T GetOrAddEntity<T> (int x, int y) where T : Entity {
+			if (TryGetEntity<T>(out var entity)) {
+				entity.X = x;
+				entity.Y = y;
+				return entity;
+			} else {
+				return SpawnEntity<T>(x, y);
+			}
+		}
 
 
 		// Misc

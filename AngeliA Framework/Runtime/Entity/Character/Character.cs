@@ -272,6 +272,8 @@ namespace AngeliaFramework {
 			AttackDuration.Override = null;
 			AttackCooldown.Override = null;
 			RepeatAttackWhenHolding.Override = null;
+			MinimalChargeAttackDuration.Override = null;
+			LockFacingOnAttack.Override = null;
 
 			int invCapacity = GetInventoryCapacity();
 			if (invCapacity > 0) {
@@ -285,7 +287,7 @@ namespace AngeliaFramework {
 					GetItemFromInventory(i)?.OnItemUpdate_FromInventory(this);
 				}
 
-				// Equipment
+				// Equipping
 				bool equippingWeapon = false;
 				for (int i = 0; i < EquipmentTypeCount; i++) {
 					var type = (EquipmentType)i;
@@ -299,6 +301,8 @@ namespace AngeliaFramework {
 						AttackDuration.Override = weapon.AttackDuration;
 						AttackCooldown.Override = weapon.AttackCooldown;
 						RepeatAttackWhenHolding.Override = weapon.RepeatAttackWhenHolding;
+						MinimalChargeAttackDuration.Override = weapon.ChargeAttackDuration;
+						LockFacingOnAttack.Override = weapon.LockFacingOnAttack;
 						if (attackStart) Bullet.SpawnBullet(weapon.BulletID, this);
 					}
 				}

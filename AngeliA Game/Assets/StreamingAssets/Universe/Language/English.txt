@@ -1,5 +1,4 @@
-﻿Palette.ItemEquipment:Equipment
-CtrlHint.Adjust:Adjust
+﻿CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
 CtrlHint.Drop:Drop
@@ -21,7 +20,6 @@ CtrlHint.Restart:Restart
 CtrlHint.ShowMenu:Show Menu
 CtrlHint.Skip:Skip
 CtrlHint.SwitchPlayer:Switch Character
-CtrlHint.TeleportCP:Teleport to Altar
 CtrlHint.Throw:Throw
 CtrlHint.Transfer:Transfer
 CtrlHint.Use:Use
@@ -83,6 +81,7 @@ Palette.Collectable:Collectable
 Palette.Entity:Entity
 Palette.Furniture:Furniture
 Palette.Item:Item
+Palette.ItemEquipment:Equipment
 Palette.ItemFood:Food
 Palette.LevelBack:LevelBack
 Palette.LevelFront:LevelFront

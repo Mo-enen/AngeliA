@@ -1,5 +1,4 @@
-﻿Palette.ItemEquipment:装备
-CtrlHint.Adjust:调整
+﻿CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
 CtrlHint.Drop:放下
@@ -21,7 +20,6 @@ CtrlHint.Restart:重新开始
 CtrlHint.ShowMenu:显示菜单
 CtrlHint.Skip:跳过
 CtrlHint.SwitchPlayer:切换角色
-CtrlHint.TeleportCP:传送到祭坛
 CtrlHint.Throw:丢弃
 CtrlHint.Transfer:转移
 CtrlHint.Use:使用
@@ -83,6 +81,7 @@ Palette.Collectable:可收集
 Palette.Entity:实体
 Palette.Furniture:家具
 Palette.Item:物品
+Palette.ItemEquipment:装备
 Palette.ItemFood:食物
 Palette.LevelBack:关卡
 Palette.LevelFront:关卡-前景

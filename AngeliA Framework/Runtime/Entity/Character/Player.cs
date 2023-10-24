@@ -53,14 +53,14 @@ namespace AngeliaFramework {
 
 		// Api
 		public static Player Selecting { get; set; } = null;
-		public static Vector3Int? RespawnUnitPosition { get; set; } = null;
+		public static Vector3Int? RespawnCpUnitPosition { get; set; } = null;
 		public static Vector3Int? HomeUnitPosition { get; private set; } = null;
 		public override bool IsChargingAttack =>
 			Selecting == this &&
-			Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown &&
+			MinimalChargeAttackDuration != int.MaxValue &&
+			Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown + MinimalChargeAttackDuration &&
 			!FrameTask.HasTask() &&
 			!LockingInput &&
-			MinimalChargeAttackDuration != int.MaxValue &&
 			FrameInput.GameKeyHolding(Gamekey.Action);
 		public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
 		public bool LockingInput { get; private set; } = false;
@@ -404,7 +404,7 @@ namespace AngeliaFramework {
 
 				// Reset View
 				Stage.SetViewZ(Stage.ViewZ);
-				RespawnUnitPosition = null;
+				RespawnCpUnitPosition = null;
 
 				// UpdateHome Position
 				var newHomePos = new Vector3Int(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
@@ -611,7 +611,7 @@ namespace AngeliaFramework {
 
 
 		void IActionTarget.Invoke () {
-			RespawnUnitPosition = null;
+			RespawnCpUnitPosition = null;
 			Game.RestartGame(TypeID);
 		}
 

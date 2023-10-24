@@ -992,7 +992,7 @@ namespace AngeliaFramework {
 			DraggingUnitRect = null;
 			MapChest.ClearOpenedMarks();
 			Stage.ClearGlobalAntiSpawn();
-			Player.RespawnUnitPosition = null;
+			Player.RespawnCpUnitPosition = null;
 			if (newPlayingGame) {
 				IGlobalPosition.CreateMetaFileFromMapsAsync();
 			}

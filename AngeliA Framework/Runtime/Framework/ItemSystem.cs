@@ -101,14 +101,14 @@ namespace AngeliaFramework {
 		[OnSlotChanged]
 		internal static void OnSlotChanged () {
 			LoadUnlockDataFromFile();
-			if (WorldSquad.Channel == MapChannel.User) {
-				LoadCombinationFromFile();
-			}
+			LoadCombinationFromFile();
 		}
 
 
 		[OnMapChannelChanged]
-		internal static void OnMapChannelChanged (MapChannel _) => LoadCombinationFromFile();
+		internal static void OnMapChannelChanged (MapChannel _) {
+			LoadCombinationFromFile();
+		}
 
 
 		#endregion
@@ -180,7 +180,7 @@ namespace AngeliaFramework {
 							}
 							builder.Clear();
 						}
-						builder.Append(c);
+						if (c != ' ') builder.Append(c);
 					}
 				}
 
@@ -216,7 +216,10 @@ namespace AngeliaFramework {
 				}
 				// Result
 				builder.Append(" = ");
-				if (result.y > 1) builder.Append(result.y);
+				if (result.y > 1) {
+					builder.Append(result.y);
+					builder.Append(' ');
+				}
 				builder.Append(resultData.Item.GetType().AngeName());
 				// Final
 				builder.Append('\n');

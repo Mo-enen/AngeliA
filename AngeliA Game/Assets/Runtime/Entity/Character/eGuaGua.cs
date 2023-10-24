@@ -13,18 +13,18 @@ namespace AngeliaGame {
 
 
 		public eGuaGua () {
-			MovementWidth.Value = 150;
-			MovementHeight.Value = 150;
-			SquatHeight.Value = 150;
-			DashDuration.Value = 20;
-			WalkToRunAccumulation.Value = 48;
-			JumpSpeed.Value = 69;
-			FirstJumpWithRoll.Value = false;
-			JumpCount.Value = 1;
-			FlyRiseSpeed.Value = 32;
-			MaxHP.Value = 1;
-			FlyAcceleration.Value = 1;
-			FlyDeceleration.Value = 1;
+			MovementWidth.BaseValue = 150;
+			MovementHeight.BaseValue = 150;
+			SquatHeight.BaseValue = 150;
+			DashDuration.BaseValue = 20;
+			WalkToRunAccumulation.BaseValue = 48;
+			JumpSpeed.BaseValue = 69;
+			FirstJumpWithRoll.BaseValue = false;
+			JumpCount.BaseValue = 1;
+			FlyRiseSpeed.BaseValue = 32;
+			MaxHP.BaseValue = 1;
+			FlyAcceleration.BaseValue = 1;
+			FlyDeceleration.BaseValue = 1;
 		}
 
 

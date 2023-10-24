@@ -42,7 +42,10 @@ namespace AngeliaFramework {
 		public int IntendedX { get; private set; } = 0;
 		public int IntendedY { get; private set; } = 0;
 		public int CurrentJumpCount { get; private set; } = 0;
-		public bool FacingRight { get; private set; } = true;
+		public bool FacingRight {
+			get => LockFacingOnAttack && IsAttacking ? AttackStartFacingRight : _FacingRight;
+			set => _FacingRight = value;
+		}
 		public bool FacingFront { get; private set; } = true;
 		public virtual bool SpinOnGroundPound => Wing.IsPropellerWing(WingID);
 		public virtual bool FlyGlideAvailable => WingID != 0 && !Wing.IsPropellerWing(WingID);
@@ -102,6 +105,7 @@ namespace AngeliaFramework {
 		private bool GrabFlipUpLock = true;
 		private bool AllowGrabSideMoveUp = false;
 		private bool LockedFacingRight = true;
+		private bool _FacingRight = true;
 		private int? ClimbPositionCorrect = null;
 		private int LockedFacingFrame = int.MinValue;
 		private int RequireJumpFrame = int.MinValue;
@@ -226,7 +230,7 @@ namespace AngeliaFramework {
 				frame > LastRushFrame + RushDuration + RushStiff
 			) {
 				IsRushing = false;
-				VelocityX = FacingRight ? RushStopSpeed.Value : -RushStopSpeed.Value;
+				VelocityX = FacingRight ? RushStopSpeed : -RushStopSpeed;
 			}
 
 			// Dash
@@ -484,7 +488,7 @@ namespace AngeliaFramework {
 			if (!IntendedDash || !IsGrounded || InSand || IsGrabFlipping) return;
 
 			// Jump Though Oneway
-			if (JumpDownThoughOneway.Value && JumpThoughOnewayCheck()) {
+			if (JumpDownThoughOneway && JumpThoughOnewayCheck()) {
 				PerformMove(0, -Const.HALF, ignoreOneway: true);
 				VelocityY = 0;
 				return;
@@ -549,9 +553,9 @@ namespace AngeliaFramework {
 				case CharacterMovementState.Rush:
 					speed =
 						Game.GlobalFrame > LastRushFrame + RushDuration ? 0 :
-						FacingRight ? RushSpeed.Value : -RushSpeed.Value;
-					acc = RushAcceleration.Value;
-					dcc = RushDeceleration.Value;
+						FacingRight ? RushSpeed : -RushSpeed;
+					acc = RushAcceleration;
+					dcc = RushDeceleration;
 					break;
 
 				// Climb
@@ -755,12 +759,6 @@ namespace AngeliaFramework {
 			LockedFacingFrame = Game.GlobalFrame + duration;
 			LockedFacingRight = facingRight;
 		}
-
-
-#if UNITY_EDITOR
-		public void Editor_SetFacingRight (bool facingRight) => FacingRight = facingRight;
-		public void Editor_SetFacingFront (bool facingFront) => FacingFront = facingFront;
-#endif
 
 
 		#endregion

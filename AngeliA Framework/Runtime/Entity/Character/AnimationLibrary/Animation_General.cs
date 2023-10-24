@@ -226,7 +226,7 @@ namespace AngeliaFramework {
 
 
 		// Override
-		public static void HandHeld_Double_Bow () {
+		public static void HandHeld_Double_Bow_Firearm () {
 
 			ResetShoulderAndUpperArm();
 

@@ -5,84 +5,39 @@ using UnityEngine;
 
 namespace AngeliaFramework {
 
-	public class DefaultBullet : Bullet {
+
+
+	public sealed class DefaultBullet : Bullet {
 		public static readonly int TYPE_ID = typeof(DefaultBullet).AngeHash();
 		protected override int Duration => 30;
 		protected override int Damage => 1;
+		protected override int SpawnWidth => Const.CEL;
+		protected override int SpawnHeight => Const.CEL * 2;
 	}
 
 
-	public class DefaultPunchBullet : Bullet {
+
+	public sealed class DefaultPunchBullet : Bullet {
 		public static readonly int TYPE_ID = typeof(DefaultPunchBullet).AngeHash();
 		protected override int Duration => 30;
 		protected override int Damage => 1;
-
-
+		protected override int SpawnWidth => Const.CEL;
+		protected override int SpawnHeight => Const.CEL * 2;
 	}
 
 
-	[EntityAttribute.Capacity(128)]
-	[EntityAttribute.ExcludeInMapEditor]
-	[EntityAttribute.UpdateOutOfRange]
-	[EntityAttribute.DontDestroyOutOfRange]
-	[EntityAttribute.Layer(Const.ENTITY_LAYER_BULLET)]
-	public abstract class Bullet : Entity {
 
-
-		// Api
-		protected virtual int CollisionMask => Const.MASK_SOLID;
-		protected abstract int Duration { get; }
-		protected abstract int Damage { get; }
-		protected int AttackIndex { get; set; } = 0;
-		protected int AttackChargedDuration { get; set; } = 0;
-		protected int TargetTeam { get; set; } = Const.TEAM_ALL;
-		protected int SpeedX { get; set; } = default;
-		protected int SpeedY { get; set; } = default;
-		protected Entity Sender { get; set; } = null;
-
-
-		// MSG
-		public override void OnActivated () {
-			base.OnActivated();
-			Width = Const.CEL;
-			Height = Const.CEL;
-		}
-
-
-		protected virtual void OnRelease (Entity sender, int targetTeam, int speedX, int speedY, int bulletIndex = 0, int chargeDuration = 0) {
-			Sender = sender;
-			var sourceRect = sender.Rect;
-			X = sourceRect.CenterX() - Width / 2;
-			Y = sourceRect.CenterY() - Height / 2;
-			SpeedX = speedX;
-			SpeedY = speedY;
-			AttackIndex = bulletIndex;
-			AttackChargedDuration = chargeDuration;
-			TargetTeam = targetTeam;
-		}
-
-
+	public abstract class MovableBullet : Bullet {
+		public abstract int SpeedX { get; }
+		public abstract int SpeedY { get; }
+		protected override bool DestroyOnHitEnvironment => true;
+		protected override bool DestroyOnHitReceiver => true;
 		public override void BeforePhysicsUpdate () {
 			base.BeforePhysicsUpdate();
-
-			// Life Check
-			if (Game.GlobalFrame > SpawnFrame + Duration) {
-				Active = false;
-				return;
-			}
-
-			// Collide Check
-			if (CellPhysics.Overlap(CollisionMask, Rect, this)) {
-				OnHit(null);
-			}
-
-			// Move
+			if (!Active) return;
 			X += SpeedX;
 			Y += SpeedY;
-
 		}
-
-
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
 			int stepCount = Mathf.Max(SpeedX.Abs().CeilDivide(Width), SpeedY.Abs().CeilDivide(Height));
@@ -99,6 +54,117 @@ namespace AngeliaFramework {
 				}
 			}
 		}
+	}
+
+
+
+	public abstract class MeleeBullet : Bullet {
+
+		// Api
+		protected override int Duration => 10;
+		protected override int Damage => 1;
+		protected override int SpawnWidth => 384;
+		protected override int SpawnHeight => 512;
+		protected virtual int SmokeParticleID => 0;
+		protected sealed override bool DestroyOnHitEnvironment => false;
+		protected sealed override bool DestroyOnHitReceiver => false;
+		protected sealed override bool OnlyHitReceiverOnce => true;
+
+		// MSG
+		protected override void OnRelease (Entity sender, int targetTeam, int combo, int chargeDuration) {
+			base.OnRelease(sender, targetTeam, combo, chargeDuration);
+			FollowSender();
+			// Smoke Particle
+			if (SmokeParticleID != 0 && GroundCheck(out var tint)) {
+				if (Stage.SpawnEntity(SmokeParticleID, X + Width / 2, Y) is Particle particle) {
+					particle.UserData = tint;
+					particle.Width = sender is Character character && !character.FacingRight ? -1 : 1;
+					particle.Height = 1;
+				}
+			}
+		}
+
+		public override void PhysicsUpdate () {
+			FollowSender();
+			base.PhysicsUpdate();
+		}
+
+		private void FollowSender () {
+			if (Sender is not Character character) return;
+			var characterRect = character.Rect;
+			X = character.FacingRight ? characterRect.xMax : characterRect.xMin - Width;
+			Y = character.Y - 1;
+		}
+
+	}
+
+
+
+	[EntityAttribute.Capacity(128)]
+	[EntityAttribute.ExcludeInMapEditor]
+	[EntityAttribute.UpdateOutOfRange]
+	[EntityAttribute.DontDestroyOutOfRange]
+	[EntityAttribute.Layer(Const.ENTITY_LAYER_BULLET)]
+	public abstract class Bullet : Entity {
+
+
+		// Api
+		protected virtual int CollisionMask => Const.MASK_SOLID;
+		protected abstract int Duration { get; }
+		protected abstract int Damage { get; }
+		protected abstract int SpawnWidth { get; }
+		protected abstract int SpawnHeight { get; }
+		protected virtual bool DestroyOnHitEnvironment => false;
+		protected virtual bool DestroyOnHitReceiver => false;
+		protected virtual bool OnlyHitReceiverOnce => true;
+		protected int AttackIndex { get; set; } = 0;
+		protected int AttackChargedDuration { get; set; } = 0;
+		protected int TargetTeam { get; set; } = Const.TEAM_ALL;
+		protected int HitFrame { get; private set; } = -1;
+		protected Entity Sender { get; set; } = null;
+
+
+		// MSG
+		public override void OnActivated () {
+			base.OnActivated();
+			Width = SpawnWidth;
+			Height = SpawnHeight;
+			HitFrame = -1;
+		}
+
+
+		protected virtual void OnRelease (Entity sender, int targetTeam, int bulletIndex = 0, int chargeDuration = 0) {
+			Sender = sender;
+			var sourceRect = sender.Rect;
+			X = sourceRect.CenterX() - Width / 2;
+			Y = sourceRect.CenterY() - Height / 2;
+			AttackIndex = bulletIndex;
+			AttackChargedDuration = chargeDuration;
+			TargetTeam = targetTeam;
+		}
+
+
+		public override void BeforePhysicsUpdate () {
+			base.BeforePhysicsUpdate();
+
+			// Life Check
+			if (Game.GlobalFrame > SpawnFrame + Duration) {
+				Active = false;
+				return;
+			}
+
+			// Collide Check
+			if (DestroyOnHitEnvironment && CellPhysics.Overlap(CollisionMask, Rect, this)) {
+				Active = false;
+			}
+
+		}
+
+
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
+			HitCheck(Rect);
+		}
 
 
 		public override void FrameUpdate () {
@@ -107,46 +173,33 @@ namespace AngeliaFramework {
 		}
 
 
+		protected virtual void OnHit (IDamageReceiver receiver) {
+			if (receiver == null) return;
+			if (receiver is Entity e && !e.Active) return;
+			receiver.TakeDamage(Damage, Sender);
+			HitFrame = Game.GlobalFrame;
+		}
+
+
 		// Api
 		public static Bullet SpawnBullet (int bulletID, Character sender) {
 			if (sender == null) return null;
-			return SpawnBullet(
-				bulletID,
-				sender.FacingRight ? sender.X + sender.Width / 2 : sender.X - sender.Width / 2,
-				sender.Y + sender.Height / 2,
-				0, 0,
-				sender, sender.AttackTargetTeam, sender.AttackCombo, sender.AttackChargedDuration
-			);
+			var rect = sender.Rect;
+			var bullet = Stage.SpawnEntity(bulletID, rect.x, rect.y) as Bullet;
+			bullet.X = sender.FacingRight ? rect.xMax : rect.x - bullet.Width;
+			bullet?.OnRelease(sender, sender.AttackTargetTeam, sender.AttackCombo, sender.AttackChargedDuration);
+			return bullet;
 		}
-		public static Bullet SpawnBullet (
-			int bulletID, int originX, int originY, int speedX, int speedY,
-			Entity sender, int targetTeam, int combo = 0, int chargedDuration = 0
-		) {
+		public static Bullet SpawnBullet (int bulletID, int x, int y, Entity sender, int targetTeam, int combo = 0, int chargedDuration = 0) {
 			if (sender == null) return null;
-			var bullet = Stage.SpawnEntity(bulletID, originX, originY) as Bullet;
-			bullet.X -= bullet.Width / 2;
-			bullet.Y -= bullet.Height / 2;
-			bullet?.OnRelease(
-				sender, targetTeam,
-				speedX, speedY,
-				combo, chargedDuration
-			);
+			var bullet = Stage.SpawnEntity(bulletID, x, y) as Bullet;
+			bullet?.OnRelease(sender, targetTeam, combo, chargedDuration);
 			return bullet;
 		}
 
 
-		protected virtual void OnHit (IDamageReceiver receiver) {
-			if (receiver == null) {
-				Active = false;
-				return;
-			}
-			if (receiver is Entity e && !e.Active) return;
-			receiver.TakeDamage(Damage, Sender);
-		}
-
-
-		// LGC
-		private void HitCheck (RectInt rect) {
+		protected void HitCheck (RectInt rect) {
+			if (OnlyHitReceiverOnce && HitFrame >= 0 && Game.GlobalFrame > HitFrame) return;
 			var hits = CellPhysics.OverlapAll(
 				CollisionMask, rect, out int count, this, OperationMode.ColliderAndTrigger
 			);
@@ -155,8 +208,20 @@ namespace AngeliaFramework {
 				if (hit.Entity is not IDamageReceiver receiver) continue;
 				if ((receiver.Team & TargetTeam) != receiver.Team) continue;
 				OnHit(receiver);
-				if (!Active) break;
 			}
+			if (DestroyOnHitReceiver && HitFrame >= 0) Active = false;
+		}
+
+
+		protected bool GroundCheck (out Color32 groundTint) {
+			groundTint = Const.WHITE;
+			bool grounded =
+				CellPhysics.Overlap(Const.MASK_MAP, Rect.Edge(Direction4.Down, 4), out var hit, this) ||
+				CellPhysics.Overlap(Const.MASK_MAP, Rect.Edge(Direction4.Down, 4), out hit, this, OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG);
+			if (grounded && CellRenderer.TryGetSprite(hit.SourceID, out var groundSprite)) {
+				groundTint = groundSprite.SummaryTint;
+			}
+			return grounded;
 		}
 
 

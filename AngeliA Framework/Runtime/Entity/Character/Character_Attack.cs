@@ -24,6 +24,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private int ChargeStartFrame = int.MaxValue;
+		private bool AttackStartFacingRight = true;
 
 
 		#endregion
@@ -71,6 +72,7 @@ namespace AngeliaFramework {
 			if (!IsAttackAllowedByMovement() || !IsAttackAllowedByEquipment()) return;
 			LastAttackFrame = Game.GlobalFrame;
 			AttackCombo++;
+			AttackStartFacingRight = _FacingRight;
 		}
 
 
