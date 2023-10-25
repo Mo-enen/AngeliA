@@ -742,7 +742,7 @@ namespace AngeliaFramework {
 		public void Jump () {
 			IntendedJump = true;
 			RequireJumpFrame = Game.GlobalFrame;
-			if (CancelAttackOnJump) CancelAttack();
+			if (CancelAttackOnJump) LastAttackFrame = int.MinValue;
 		}
 
 

@@ -251,7 +251,7 @@ namespace AngeliaFramework {
 			} else {
 				// Attack
 				if (sheet.Attacks.Length > 0) {
-					ani = sheet.Attacks[AttackCombo.Clamp(0, sheet.Attacks.Length - 1)];
+					ani = sheet.Attacks[AttackStyleIndex.Clamp(0, sheet.Attacks.Length - 1)];
 					if (Game.GlobalFrame <= LastAttackFrame) CurrentAnimationFrame = 0;
 				}
 			}

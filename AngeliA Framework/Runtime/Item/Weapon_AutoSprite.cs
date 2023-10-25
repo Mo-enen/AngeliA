@@ -264,8 +264,11 @@ namespace AngeliaFramework {
 				!CellRenderer.TryGetSprite(SpriteID, out var sprite)
 			) return;
 
+			bool attacking = character.IsAttacking;
 			int grabScaleL = character.HandGrabScaleL;
 			int grabScaleR = character.HandGrabScaleR;
+			int twistL = attacking ? character.HandGrabAttackTwistL : 1000;
+			int twistR = attacking ? character.HandGrabAttackTwistR : 1000;
 			int zLeft = character.HandL.Z - 1;
 			int zRight = character.HandR.Z - 1;
 
@@ -298,9 +301,10 @@ namespace AngeliaFramework {
 						character,
 						character.X + (character.FacingRight ? -SHIFT_X : SHIFT_X) + moveDeltaX,
 						character.Y + Const.CEL * character.CharacterHeight / 263 + Game.GlobalFrame.PingPong(240) / 4 + moveDeltaY,
-						sprite.GlobalWidth, sprite.GlobalHeight,
+						sprite.GlobalWidth,
+						sprite.GlobalHeight,
 						0,
-						character.IsAttacking ? grabScaleL : 700,
+						attacking ? grabScaleL : 700,
 						sprite,
 						character.HandL.Z.Abs() + 1
 					);
@@ -310,7 +314,6 @@ namespace AngeliaFramework {
 				case WeaponHandHeld.SingleHanded: {
 					// Single 
 					int grabScale = grabScaleR;
-					bool attacking = character.IsAttacking;
 					int grabRotation = character.HandGrabRotationR;
 					int z = zRight;
 					if (character.EquippingWeaponType == WeaponType.Throwing) {
@@ -337,7 +340,10 @@ namespace AngeliaFramework {
 					var center = character.HandR.GlobalLerp(0.5f, 0.5f);
 					DrawWeaponSprite(
 						character,
-						center.x, center.y, sprite.GlobalWidth, sprite.GlobalHeight, grabRotation, grabScale,
+						center.x, center.y,
+						sprite.GlobalWidth * twistR / 1000,
+						sprite.GlobalHeight,
+						grabRotation, grabScale,
 						sprite, z
 					);
 					break;
@@ -352,7 +358,8 @@ namespace AngeliaFramework {
 						character,
 						(centerL.x + centerR.x) / 2,
 						(centerL.y + centerR.y) / 2,
-						sprite.GlobalWidth, sprite.GlobalHeight,
+						sprite.GlobalWidth * twistR / 1000,
+						sprite.GlobalHeight,
 						character.HandGrabRotationL,
 						grabScaleL, sprite,
 						zRight
@@ -367,7 +374,8 @@ namespace AngeliaFramework {
 					DrawWeaponSprite(
 						character,
 						centerL.x, centerL.y,
-						sprite.GlobalWidth, sprite.GlobalHeight,
+						sprite.GlobalWidth * twistL / 1000,
+						sprite.GlobalHeight,
 						character.HandGrabRotationL,
 						grabScaleL, sprite,
 						zLeft
@@ -375,7 +383,8 @@ namespace AngeliaFramework {
 					DrawWeaponSprite(
 						character,
 						centerR.x, centerR.y,
-						sprite.GlobalWidth, sprite.GlobalHeight,
+						sprite.GlobalWidth * twistR / 1000,
+						sprite.GlobalHeight,
 						character.HandGrabRotationR,
 						grabScaleR, sprite,
 						zRight
@@ -391,7 +400,8 @@ namespace AngeliaFramework {
 						character,
 						(centerL.x + centerR.x) / 2,
 						(centerL.y + centerR.y) / 2,
-						sprite.GlobalWidth, sprite.GlobalHeight,
+						sprite.GlobalWidth * twistR / 1000, 
+						sprite.GlobalHeight,
 						character.HandGrabRotationR,
 						grabScaleR,
 						sprite,
@@ -401,7 +411,7 @@ namespace AngeliaFramework {
 				}
 
 				case WeaponHandHeld.Bow: {
-					if (character.IsAttacking) {
+					if (attacking) {
 						// Attacking
 						var center = (character.FacingRight ? character.HandR : character.HandL).GlobalLerp(0.5f, 0.5f);
 						int width = sprite.GlobalWidth;

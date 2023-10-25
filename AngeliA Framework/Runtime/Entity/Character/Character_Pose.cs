@@ -71,6 +71,8 @@ namespace AngeliaFramework {
 		public int HandGrabRotationR { get; set; } = 0;
 		public int HandGrabScaleL { get; set; } = 1000;
 		public int HandGrabScaleR { get; set; } = 1000;
+		public int HandGrabAttackTwistL { get; set; } = 1000;
+		public int HandGrabAttackTwistR { get; set; } = 1000;
 
 		// BodyPart
 		public BodyPart Head { get; private set; } = null;
@@ -310,7 +312,6 @@ namespace AngeliaFramework {
 			Cloth.DrawFootSuit(this);
 
 			DrawBodyPart(cellIndexStart);
-			OnPoseCalculated();
 
 		}
 
@@ -426,7 +427,7 @@ namespace AngeliaFramework {
 
 			if (IsAttacking) return;
 
-			bool overrideHandHeld = AnimatedPoseType switch {
+			if (AnimatedPoseType switch {
 				CharacterPoseAnimationType.Idle => true,
 				CharacterPoseAnimationType.Walk => true,
 				CharacterPoseAnimationType.Run => true,
@@ -442,9 +443,7 @@ namespace AngeliaFramework {
 				CharacterPoseAnimationType.Dash => EquippingWeaponHeld == WeaponHandHeld.Pole,
 				CharacterPoseAnimationType.Rolling => EquippingWeaponHeld == WeaponHandHeld.Bow || EquippingWeaponHeld == WeaponHandHeld.Firearm,
 				_ => false,
-			};
-
-			if (overrideHandHeld) {
+			}) {
 				// Override Handheld
 				switch (EquippingWeaponHeld) {
 					case WeaponHandHeld.DoubleHanded:
@@ -461,7 +460,7 @@ namespace AngeliaFramework {
 						break;
 					default:
 						if (IsChargingAttack) {
-
+							AnimationLibrary.HandHeld_Charging();
 						}
 						break;
 				}
@@ -496,38 +495,38 @@ namespace AngeliaFramework {
 			if (!IsAttacking) return;
 
 			HandGrabScaleL = HandGrabScaleR = FacingRight ? 1000 : -1000;
+			HandGrabAttackTwistL = HandGrabAttackTwistR = 1000;
 
-			if (
-				StopMoveOnAttack && (
-					AnimatedPoseType == CharacterPoseAnimationType.Walk ||
-					AnimatedPoseType == CharacterPoseAnimationType.Run
-				)
-			) {
-				// Reset
+			if (StopMoveOnAttack && (AnimatedPoseType == CharacterPoseAnimationType.Walk || AnimatedPoseType == CharacterPoseAnimationType.Run)) {
 				ResetPoseToDefault();
 			}
 
-			// Holding Weapon 
 			switch (EquippingWeaponType) {
 				default:
 				case WeaponType.Hand:
-					AnimationLibrary.Attack_Punch();
+					AnimationLibrary.Attack_Hand();
 					break;
 
 				case WeaponType.Sword:
-					AnimationLibrary.Attack_Wave();
-					break;
-
 				case WeaponType.Axe:
-					AnimationLibrary.Attack_Wave();
-					break;
-
 				case WeaponType.Hammer:
-					AnimationLibrary.Attack_Wave();
-					break;
-
 				case WeaponType.Flail:
-					AnimationLibrary.Attack_Wave();
+				case WeaponType.Hook:
+				case WeaponType.Throwing:
+					switch (EquippingWeaponHeld) {
+						case WeaponHandHeld.SingleHanded:
+							AnimationLibrary.Attack_WaveSingleHanded();
+							break;
+						case WeaponHandHeld.DoubleHanded:
+							AnimationLibrary.Attack_WaveDoubleHanded();
+							break;
+						case WeaponHandHeld.OneOnEachHand:
+							AnimationLibrary.Attack_WaveEachHand();
+							break;
+						case WeaponHandHeld.Pole:
+							AnimationLibrary.Attack_WavePolearm();
+							break;
+					}
 					break;
 
 				case WeaponType.Ranged:
@@ -535,15 +534,7 @@ namespace AngeliaFramework {
 					break;
 
 				case WeaponType.Polearm:
-					if (AttackCombo % 2 == 0) {
-						AnimationLibrary.Attack_Poke();
-					} else {
-						AnimationLibrary.Attack_Wave();
-					}
-					break;
-
-				case WeaponType.Hook:
-					AnimationLibrary.Attack_Wave();
+					AnimationLibrary.Attack_Poke();
 					break;
 
 				case WeaponType.Claw:
@@ -554,12 +545,8 @@ namespace AngeliaFramework {
 					AnimationLibrary.Attack_Magic();
 					break;
 
-				case WeaponType.Throwing:
-					AnimationLibrary.Attack_Wave();
-					break;
 			}
 
-			// Final
 			CalculateBodypartGlobalPosition();
 		}
 
@@ -627,9 +614,6 @@ namespace AngeliaFramework {
 			}
 
 		}
-
-
-		protected virtual void OnPoseCalculated () { }
 
 
 		#endregion

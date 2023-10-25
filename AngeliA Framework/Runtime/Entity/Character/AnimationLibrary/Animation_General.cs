@@ -228,6 +228,7 @@ namespace AngeliaFramework {
 		// Override
 		public static void HandHeld_Double_Bow_Firearm () {
 
+			bool isCharging = Target.IsChargingAttack;
 			ResetShoulderAndUpperArm();
 
 			int twistShift = Target.PoseTwist / 50;
@@ -263,6 +264,7 @@ namespace AngeliaFramework {
 
 		public static void HandHeld_Pole () {
 
+			bool isCharging = Target.IsChargingAttack;
 			bool dashing = AnimatedPoseType == CharacterPoseAnimationType.Dash;
 
 			ResetShoulderAndUpperArm();
@@ -309,6 +311,7 @@ namespace AngeliaFramework {
 
 		public static void HandHeld_Magic_Pole () {
 
+			bool isCharging = Target.IsChargingAttack;
 			ResetShoulderAndUpperArm();
 
 			int twistShift = Target.PoseTwist / 50;
@@ -338,6 +341,13 @@ namespace AngeliaFramework {
 				30 - CurrentAnimationFrame.PingPong(120) / 30
 				+ Target.DeltaPositionY.Clamp(-24, 24) / 5
 			) - Target.DeltaPositionX.Clamp(-24, 24) / 4;
+
+		}
+
+
+		public static void HandHeld_Charging () {
+
+
 
 		}
 

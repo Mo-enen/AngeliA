@@ -18,9 +18,10 @@ namespace AngeliaFramework {
 			Game.GlobalFrame > ChargeStartFrame && Game.GlobalFrame - ChargeStartFrame >= MinimalChargeAttackDuration ?
 			Game.GlobalFrame - ChargeStartFrame : 0;
 		public int LastAttackFrame { get; private set; } = int.MinValue;
-		public int AttackCombo { get; private set; } = -1;
-		public virtual bool IsChargingAttack => false;
+		public virtual int AttackStyleIndex { get; private set; } = -1;
 		public virtual int AttackTargetTeam => Const.TEAM_ALL;
+		public virtual bool IsChargingAttack => false;
+		public virtual bool RandomAttackAnimationStyle => true;
 
 		// Data
 		private int ChargeStartFrame = int.MaxValue;
@@ -44,8 +45,8 @@ namespace AngeliaFramework {
 		private void PhysicsUpdate_Attack () {
 
 			// Combo Break
-			if (AttackCombo > -1 && Game.GlobalFrame > LastAttackFrame + AttackDuration + AttackCooldown + AttackComboGap) {
-				AttackCombo = -1;
+			if (!RandomAttackAnimationStyle && AttackStyleIndex > -1 && Game.GlobalFrame > LastAttackFrame + AttackDuration + AttackCooldown + AttackComboGap) {
+				AttackStyleIndex = -1;
 			}
 
 			// Charge
@@ -71,12 +72,11 @@ namespace AngeliaFramework {
 		public void Attack (bool charged = false) {
 			if (!IsAttackAllowedByMovement() || !IsAttackAllowedByEquipment()) return;
 			LastAttackFrame = Game.GlobalFrame;
-			AttackCombo++;
+			AttackStyleIndex = RandomAttackAnimationStyle ?
+				AngeUtil.RandomInt(0, int.MaxValue) :
+				AttackStyleIndex + 1;
 			AttackStartFacingRight = _FacingRight;
 		}
-
-
-		public void CancelAttack () => LastAttackFrame = int.MinValue;
 
 
 		protected virtual bool IsAttackAllowedByMovement () =>

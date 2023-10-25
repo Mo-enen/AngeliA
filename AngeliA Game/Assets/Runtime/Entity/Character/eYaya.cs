@@ -25,6 +25,7 @@ namespace AngeliaGame {
 		// Api
 		public override bool BodySuitAvailable => true;
 		public override bool HelmetAvailable => false;
+		public override int AttackStyleIndex => EquippingWeaponType == WeaponType.Hand ? 1 : base.AttackStyleIndex;
 
 		// Data
 		private eGuaGua GuaGua = null;

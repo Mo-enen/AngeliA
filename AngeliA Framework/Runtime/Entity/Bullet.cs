@@ -187,7 +187,7 @@ namespace AngeliaFramework {
 			var rect = sender.Rect;
 			var bullet = Stage.SpawnEntity(bulletID, rect.x, rect.y) as Bullet;
 			bullet.X = sender.FacingRight ? rect.xMax : rect.x - bullet.Width;
-			bullet?.OnRelease(sender, sender.AttackTargetTeam, sender.AttackCombo, sender.AttackChargedDuration);
+			bullet?.OnRelease(sender, sender.AttackTargetTeam, sender.AttackStyleIndex, sender.AttackChargedDuration);
 			return bullet;
 		}
 		public static Bullet SpawnBullet (int bulletID, int x, int y, Entity sender, int targetTeam, int combo = 0, int chargedDuration = 0) {
