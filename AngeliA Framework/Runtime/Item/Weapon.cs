@@ -12,6 +12,12 @@ namespace AngeliaFramework {
 	public enum WeaponHandHeld { SingleHanded, DoubleHanded, OneOnEachHand, Pole, Bow, Firearm, Float, }
 
 
+	public interface IMeleeWeapon {
+		public int RangeXLeft { get; }
+		public int RangeXRight { get; }
+		public int RangeY { get; }
+	}
+
 
 	public abstract class Weapon : Equipment {
 

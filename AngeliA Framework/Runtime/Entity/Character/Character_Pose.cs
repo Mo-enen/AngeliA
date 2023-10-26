@@ -64,6 +64,7 @@ namespace AngeliaFramework {
 		public int PoseRootY { get; set; } = 0;
 		public int BasicRootY { get; private set; } = 0;
 		public bool BodyPartsReady => BodyParts != null;
+		public bool ShowingTail => AnimatedPoseType != CharacterPoseAnimationType.Fly || !Wing.TryGetWing(WingID, out var wing) || !wing.IsPropeller;
 		public Color32 SkinColor { get; set; } = new(239, 194, 160, 255);
 		public Color32 HairColor { get; set; } = new(51, 51, 51, 255);
 		public int CharacterHeight { get; set; } = 160; // in CM
@@ -298,8 +299,8 @@ namespace AngeliaFramework {
 			PerformPoseAnimation_Attack();
 			PoseUpdate_Items();
 
-			Wing.Draw(this, out var wing);
-			if (ShowingTail(wing)) Tail.Draw(this);
+			Wing.Draw(this);
+			Tail.Draw(this);
 			Face.Draw(this);
 			Hair.Draw(this);
 			Ear.Draw(this);
@@ -497,14 +498,10 @@ namespace AngeliaFramework {
 			HandGrabScaleL = HandGrabScaleR = FacingRight ? 1000 : -1000;
 			HandGrabAttackTwistL = HandGrabAttackTwistR = 1000;
 
-			if (StopMoveOnAttack && (AnimatedPoseType == CharacterPoseAnimationType.Walk || AnimatedPoseType == CharacterPoseAnimationType.Run)) {
-				ResetPoseToDefault();
-			}
-
 			switch (EquippingWeaponType) {
 				default:
 				case WeaponType.Hand:
-					AnimationLibrary.Attack_Hand();
+					Attack_Hand();
 					break;
 
 				case WeaponType.Sword:
@@ -513,36 +510,23 @@ namespace AngeliaFramework {
 				case WeaponType.Flail:
 				case WeaponType.Hook:
 				case WeaponType.Throwing:
-					switch (EquippingWeaponHeld) {
-						case WeaponHandHeld.SingleHanded:
-							AnimationLibrary.Attack_WaveSingleHanded();
-							break;
-						case WeaponHandHeld.DoubleHanded:
-							AnimationLibrary.Attack_WaveDoubleHanded();
-							break;
-						case WeaponHandHeld.OneOnEachHand:
-							AnimationLibrary.Attack_WaveEachHand();
-							break;
-						case WeaponHandHeld.Pole:
-							AnimationLibrary.Attack_WavePolearm();
-							break;
-					}
-					break;
-
-				case WeaponType.Ranged:
-					AnimationLibrary.Attack_Ranged();
+					Attack_Wave();
 					break;
 
 				case WeaponType.Polearm:
-					AnimationLibrary.Attack_Poke();
+					Attack_Polearm();
 					break;
 
 				case WeaponType.Claw:
-					AnimationLibrary.Attack_Scratch();
+					Attack_Scratch();
+					break;
+
+				case WeaponType.Ranged:
+					Attack_Ranged();
 					break;
 
 				case WeaponType.Magic:
-					AnimationLibrary.Attack_Magic();
+					Attack_Magic();
 					break;
 
 			}
@@ -1270,7 +1254,127 @@ namespace AngeliaFramework {
 		}
 
 
-		private bool ShowingTail (Wing wing) => AnimatedPoseType != CharacterPoseAnimationType.Fly || wing == null || !wing.IsPropeller;
+		// Attack Animations
+		private void Attack_Hand () {
+			AttackStyleLoop = 2;
+			switch (AttackStyleIndex % AttackStyleLoop) {
+				default:
+					AnimationLibrary.Attack_Hand_Punch();
+					break;
+				case 1:
+					AnimationLibrary.Attack_Hand_Smash();
+					break;
+			}
+		}
+
+
+		private void Attack_Wave () {
+			switch (EquippingWeaponHeld) {
+
+				// Single Handed
+				case WeaponHandHeld.SingleHanded:
+					AttackStyleLoop = 4;
+					switch (EquippingWeaponType != WeaponType.Throwing ? AttackStyleIndex % AttackStyleLoop : 0) {
+						//switch (3) {
+						default:
+							AnimationLibrary.Attack_WaveSingleHanded_SmashDown();
+							break;
+						case 1:
+							AnimationLibrary.Attack_WaveSingleHanded_SmashUp();
+							break;
+						case 2:
+							AnimationLibrary.Attack_WaveSingleHanded_SlashIn();
+							break;
+						case 3:
+							AnimationLibrary.Attack_WaveSingleHanded_SlashOut();
+							break;
+					}
+					break;
+
+				// Double Handed
+				case WeaponHandHeld.DoubleHanded:
+					AttackStyleLoop = 4;
+					//switch (AttackStyleIndex % AttackStyleLoop) {
+					switch (1) {
+						default:
+							AnimationLibrary.Attack_WaveDoubleHanded_SmashDown();
+							break;
+						case 1:
+							AnimationLibrary.Attack_WaveDoubleHanded_SmashUp();
+							break;
+						case 2:
+							AnimationLibrary.Attack_WaveDoubleHanded_SlashIn();
+							break;
+						case 3:
+							AnimationLibrary.Attack_WaveDoubleHanded_SlashOut();
+							break;
+					}
+					break;
+
+				// Each Hand
+				case WeaponHandHeld.OneOnEachHand:
+					AnimationLibrary.Attack_WaveEachHand();
+					break;
+
+				// Pole
+				case WeaponHandHeld.Pole:
+					AnimationLibrary.Attack_WavePolearm();
+					break;
+			}
+		}
+
+
+		private void Attack_Polearm () {
+			AttackStyleLoop = 2;
+			switch (AttackStyleIndex % AttackStyleLoop) {
+				default:
+					AnimationLibrary.Attack_Poke();
+					break;
+				case 1:
+					AnimationLibrary.Attack_WavePolearm();
+					break;
+			}
+		}
+
+
+		private void Attack_Scratch () {
+			AttackStyleLoop = 2;
+			switch (AttackStyleIndex % AttackStyleLoop) {
+				default:
+					AnimationLibrary.Attack_Scratch_A();
+					break;
+				case 1:
+					AnimationLibrary.Attack_Scratch_B();
+					break;
+			}
+		}
+
+
+		private void Attack_Ranged () {
+			AttackStyleLoop = 1;
+			if (EquippingWeaponHeld == WeaponHandHeld.Bow) {
+				AnimationLibrary.Attack_Bow();
+			} else {
+				AnimationLibrary.Attack_Firearm();
+			}
+		}
+
+
+		private void Attack_Magic () {
+			AttackStyleLoop = 1;
+			switch (EquippingWeaponHeld) {
+				default:
+				case WeaponHandHeld.Float:
+					AnimationLibrary.Attack_Magic_Float();
+					break;
+				case WeaponHandHeld.SingleHanded:
+					AnimationLibrary.Attack_Magic_SingleHanded();
+					break;
+				case WeaponHandHeld.Pole:
+					AnimationLibrary.Attack_Magic_Pole();
+					break;
+			}
+		}
 
 
 		#endregion

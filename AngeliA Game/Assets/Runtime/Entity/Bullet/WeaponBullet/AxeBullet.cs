@@ -8,16 +8,14 @@ namespace AngeliaGame {
 	public class AxeBullet : MeleeBullet {
 		protected override int Duration => 10;
 		protected override int Damage => 1;
-		protected override int SpawnWidth => 384;
-		protected override int SpawnHeight => 512;
-		private static readonly int SMOKE_ID = typeof(QuickSmokeSmallParticle).AngeHash();
-		protected override int SmokeParticleID => SMOKE_ID;
+		//private static readonly int SMOKE_ID = typeof(QuickSmokeSmallParticle).AngeHash();
+		//protected override int SmokeParticleID => SMOKE_ID;
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 
-			//CellRenderer.Draw(Const.PIXEL, Rect, Const.RED, 0);
-
+			CellRenderer.Draw(Const.PIXEL, Rect, new Color32(255, 0, 0, 128), 0);
+			
 		}
 
 

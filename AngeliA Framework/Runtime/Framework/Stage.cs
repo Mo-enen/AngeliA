@@ -323,8 +323,8 @@ namespace AngeliaFramework {
 				if (newZ != ViewZ) {
 					ViewZ = newZ;
 					LocalAntiSpawnHash.Clear();
-					OnViewZChanged?.Invoke();
 				}
+				OnViewZChanged?.Invoke();
 			}
 		}
 

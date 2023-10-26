@@ -6,11 +6,14 @@ using AngeliaFramework;
 
 namespace AngeliaGame {
 
-	public abstract class iAxeWeapon : AutoSpriteWeapon {
+	public abstract class iAxeWeapon : AutoSpriteWeapon, IMeleeWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 		public sealed override WeaponType WeaponType => WeaponType.Axe;
 		public override int BulletID => BULLET_ID;
 		private static readonly int BULLET_ID = typeof(AxeBullet).AngeHash();
+		int IMeleeWeapon.RangeXLeft => 275;
+		int IMeleeWeapon.RangeXRight => 384;
+		int IMeleeWeapon.RangeY => 512;
 	}
 
 	public class iAxeWood : iAxeWeapon { }

@@ -55,7 +55,7 @@ namespace AngeliaGame {
 		}
 
 
-		protected override void SpawnPunchBullet () => Bullet.SpawnBullet(YAYA_PAW, this);
+		protected override void SpawnPunchBullet () => Bullet.SpawnBullet(YAYA_PAW, this, null);
 
 
 	}

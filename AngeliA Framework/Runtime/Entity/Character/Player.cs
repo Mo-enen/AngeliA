@@ -416,20 +416,21 @@ namespace AngeliaFramework {
 				// Restart Game
 				if (RestartOnFullAsleep) {
 					RestartOnFullAsleep = false;
-					Game.RestartGame(TypeID);
+					Game.RestartGame(TypeID, immediately: true);
+					return;
 				}
 			}
 
 			if (FrameTask.HasTask()) return;
 
 			// Dark
-			if (RestartOnFullAsleep && SleepFrame < FULL_SLEEP_DURATION) {
+			if (RestartOnFullAsleep) {
 				int oldLayer = CellRenderer.CurrentLayerIndex;
 				CellRenderer.SetLayerToTopUI();
 				CellRenderer.Draw(
 					Const.PIXEL,
 					CellRenderer.CameraRect.Expand(Const.HALF),
-					new Color32(0, 0, 0, (byte)Util.RemapUnclamped(0, FULL_SLEEP_DURATION, 0, 255, SleepFrame)),
+					new Color32(0, 0, 0, (byte)Util.RemapUnclamped(0, FULL_SLEEP_DURATION, 0, 255, SleepFrame).Clamp(0, 255)),
 					int.MaxValue
 				);
 				CellRenderer.SetLayer(oldLayer);

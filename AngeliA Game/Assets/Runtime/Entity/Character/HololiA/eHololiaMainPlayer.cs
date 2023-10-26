@@ -22,7 +22,7 @@ namespace AngeliaGame {
 
 
 
-			StopMoveOnAttack.BaseValue = false;
+			MovementLoseRateOnAttack.BaseValue = 618;
 			AttackInAir.BaseValue = true;
 			AttackInWater.BaseValue = true;
 			AttackWhenMoving.BaseValue = true;

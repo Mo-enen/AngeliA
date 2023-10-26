@@ -13,6 +13,7 @@ namespace AngeliaFramework {
 		Sleep = 2,
 		Damage = 3,
 		PassOut = 4,
+		Attack = 5,
 	}
 
 
@@ -133,10 +134,16 @@ namespace AngeliaFramework {
 			var head = character.Head;
 			if (spriteGroupID == 0 || head.Tint.a == 0 || !head.FrontSide) return;
 
+			bool attacking =
+				character.IsAttacking &&
+				character.EquippingWeaponType != WeaponType.Magic &&
+				character.EquippingWeaponType != WeaponType.Ranged;
 			if (!CellRenderer.TryGetSpriteFromGroup(
 				spriteGroupID,
-				character.CurrentAnimationFrame / 5,
-				out var sprite, true, true
+				attacking ? (Game.GlobalFrame - character.LastAttackFrame) * 2 / character.AttackDuration : character.CurrentAnimationFrame / 5,
+				out var sprite,
+				loopIndex: !attacking,
+				clampIndex: true
 			)) return;
 
 			int bounce = character.CurrentRenderingBounce;
@@ -179,7 +186,12 @@ namespace AngeliaFramework {
 				faceRect = faceRect.Expand(borderOffset);
 			}
 
-			CellRenderer.Draw_9Slice(sprite.GlobalID, faceRect, Const.WHITE, 33);
+			CellRenderer.Draw_9Slice(
+				sprite.GlobalID,
+				faceRect.CenterX(), faceRect.y, 500, 0, 0, faceRect.width, faceRect.height,
+				Const.WHITE, 33
+			);
+
 		}
 
 
@@ -221,11 +233,22 @@ namespace AngeliaFramework {
 
 
 		protected static CharacterFaceType GetFaceType (Character character) {
-			bool blinking =
+
+			// Attack
+			if (
+				character.IsAttacking &&
+				character.EquippingWeaponType != WeaponType.Magic &&
+				character.EquippingWeaponType != WeaponType.Ranged
+			) return CharacterFaceType.Attack;
+
+			// Blink
+			if (
 				(Game.GlobalFrame + character.TypeID).UMod(360) <= 8 &&
 				character.AnimatedPoseType != CharacterPoseAnimationType.Sleep &&
-				character.AnimatedPoseType != CharacterPoseAnimationType.PassOut;
-			if (blinking) return CharacterFaceType.Blink;
+				character.AnimatedPoseType != CharacterPoseAnimationType.PassOut
+			) return CharacterFaceType.Blink;
+
+			// Other
 			return character.AnimatedPoseType switch {
 				CharacterPoseAnimationType.Sleep => CharacterFaceType.Sleep,
 				CharacterPoseAnimationType.PassOut => CharacterFaceType.PassOut,

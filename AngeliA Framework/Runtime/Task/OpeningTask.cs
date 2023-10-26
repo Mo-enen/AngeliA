@@ -71,6 +71,8 @@ namespace AngeliaFramework {
 					player.SetCharacterState(CharacterState.GamePlay);
 				}
 				SetViewPosition(TargetViewX, TargetViewY + DOLLY_HEIGHT);
+				Stage.ClearGlobalAntiSpawn();
+				Stage.ClearLocalAntiSpawn();
 				Stage.SetViewZ(TargetViewZ);
 			}
 
@@ -94,7 +96,6 @@ namespace AngeliaFramework {
 						SetViewPosition(TargetViewX, TargetViewY + DOLLY_HEIGHT);
 					}
 				}
-				Stage.ClearGlobalAntiSpawn();
 			}
 
 			if (localFrame < SkipFrame) {

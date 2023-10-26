@@ -75,6 +75,9 @@ namespace AngeliaFramework {
 		}
 
 
+		public static bool TryGetWing (int wingID, out Wing wing) => Pool.TryGetValue(wingID, out wing);
+
+
 		public static bool TryGetDefaultWingID (int characterID, out int wingID) => DefaultPool.TryGetValue(characterID, out wingID);
 
 

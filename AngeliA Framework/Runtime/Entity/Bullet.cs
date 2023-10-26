@@ -63,17 +63,45 @@ namespace AngeliaFramework {
 		// Api
 		protected override int Duration => 10;
 		protected override int Damage => 1;
-		protected override int SpawnWidth => 384;
-		protected override int SpawnHeight => 512;
-		protected virtual int SmokeParticleID => 0;
+		protected sealed override int SpawnWidth => _SpawnWidth;
+		protected sealed override int SpawnHeight => _SpawnHeight;
 		protected sealed override bool DestroyOnHitEnvironment => false;
 		protected sealed override bool DestroyOnHitReceiver => false;
 		protected sealed override bool OnlyHitReceiverOnce => true;
+		protected virtual int SmokeParticleID => 0;
+
+		// Data
+		private int _SpawnWidth = 0;
+		private int _SpawnHeight = 0;
 
 		// MSG
-		protected override void OnRelease (Entity sender, int targetTeam, int combo, int chargeDuration) {
-			base.OnRelease(sender, targetTeam, combo, chargeDuration);
+		public override void OnActivated () {
+			_SpawnWidth = 0;
+			_SpawnHeight = 0;
+			Width = 0;
+			Height = 0;
+			base.OnActivated();
+		}
+
+		protected override void OnRelease (Entity sender, Weapon weapon, int targetTeam, int combo, int chargeDuration) {
+
+			base.OnRelease(sender, weapon, targetTeam, combo, chargeDuration);
+
+			// Set Range
+			if (weapon is IMeleeWeapon meleeWeapon) {
+				int rangeX = meleeWeapon.RangeXRight;
+				if (Sender is Character character && !character.FacingRight) {
+					rangeX = meleeWeapon.RangeXLeft;
+				}
+				_SpawnWidth = rangeX;
+				_SpawnHeight = meleeWeapon.RangeY;
+				Width = rangeX;
+				Height = meleeWeapon.RangeY;
+			}
+
+			// Follow
 			FollowSender();
+
 			// Smoke Particle
 			if (SmokeParticleID != 0 && GroundCheck(out var tint)) {
 				if (Stage.SpawnEntity(SmokeParticleID, X + Width / 2, Y) is Particle particle) {
@@ -121,7 +149,7 @@ namespace AngeliaFramework {
 		protected int AttackChargedDuration { get; set; } = 0;
 		protected int TargetTeam { get; set; } = Const.TEAM_ALL;
 		protected int HitFrame { get; private set; } = -1;
-		protected Entity Sender { get; set; } = null;
+		public Entity Sender { get; protected set; } = null;
 
 
 		// MSG
@@ -133,7 +161,7 @@ namespace AngeliaFramework {
 		}
 
 
-		protected virtual void OnRelease (Entity sender, int targetTeam, int bulletIndex = 0, int chargeDuration = 0) {
+		protected virtual void OnRelease (Entity sender, Weapon weapon, int targetTeam, int bulletIndex = 0, int chargeDuration = 0) {
 			Sender = sender;
 			var sourceRect = sender.Rect;
 			X = sourceRect.CenterX() - Width / 2;
@@ -182,18 +210,18 @@ namespace AngeliaFramework {
 
 
 		// Api
-		public static Bullet SpawnBullet (int bulletID, Character sender) {
+		public static Bullet SpawnBullet (int bulletID, Character sender, Weapon weapon) {
 			if (sender == null) return null;
 			var rect = sender.Rect;
 			var bullet = Stage.SpawnEntity(bulletID, rect.x, rect.y) as Bullet;
 			bullet.X = sender.FacingRight ? rect.xMax : rect.x - bullet.Width;
-			bullet?.OnRelease(sender, sender.AttackTargetTeam, sender.AttackStyleIndex, sender.AttackChargedDuration);
+			bullet?.OnRelease(sender, weapon, sender.AttackTargetTeam, sender.AttackStyleIndex, sender.AttackChargedDuration);
 			return bullet;
 		}
-		public static Bullet SpawnBullet (int bulletID, int x, int y, Entity sender, int targetTeam, int combo = 0, int chargedDuration = 0) {
+		public static Bullet SpawnBullet (int bulletID, int x, int y, Entity sender, Weapon weapon, int targetTeam, int combo = 0, int chargedDuration = 0) {
 			if (sender == null) return null;
 			var bullet = Stage.SpawnEntity(bulletID, x, y) as Bullet;
-			bullet?.OnRelease(sender, targetTeam, combo, chargedDuration);
+			bullet?.OnRelease(sender, weapon, targetTeam, combo, chargedDuration);
 			return bullet;
 		}
 

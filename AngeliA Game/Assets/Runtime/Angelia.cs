@@ -151,24 +151,16 @@ namespace AngeliaGame {
 
 
 			string result = "";
-			int currentX = 20;
-			int currentY = 26;
-			var names = ALL_NAMES.Concat(ALL_NAMES1).ToArray();
-			//var names = ALL_NAMES;
+			int currentX = 28;
+			int currentY = 1;
+			//var names = ALL_NAMES.Concat(ALL_NAMES1).ToArray();
+			var names = ALL_NAMES;
 			for (int i = 0; i < names.Length; i++) {
-				string name = names[i];
-
-				result += $"{name}BodySuit.BoobSuit, {currentX + 8}, {currentY + 2}, 5, 3";
-				//result += $"{name}HeadSuit, {currentX + 3 - 20}, {currentY - 26 + 20}, 13, 7, 0, 0, 0, 0\n";
-				//result += $"{name}BodySuit, {currentX + 5 - 20}, {currentY - 26 + 36}, 10, 10, 0, 0, 0, 0\n";
-				//result += $"{name}HipSuit, {currentX + 5 - 20}, {currentY - 26 + 43}, 10, 10, 0, 0, 0, 0\n";
-				//result += $"{name}HandSuit, {currentX + 3 - 20}, {currentY - 26 + 46}, 2, 2, 0, 0, 0, 0\n";
-				//result += $"{name}FootSuit, {currentX + 5 - 20}, {currentY - 26 + 51}, 5, 5, 0, 0, 0, 0\n";
-
-				currentX += 28;
-				if (currentX > 450) {
-					currentX = 20;
-					currentY += 80;
+				result += $"{names[i]}.Face.Attack, {currentX}, {currentY}, 7, 4, 3, 3, 1, 0";
+				currentY += 9;
+				if (currentY > 271) {
+					currentY = 1;
+					currentX = 181;
 				}
 				result += "\n";
 			}

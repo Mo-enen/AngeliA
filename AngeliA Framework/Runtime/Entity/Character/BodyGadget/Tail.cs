@@ -66,8 +66,8 @@ namespace AngeliaFramework {
 		public static void Draw (Character character) => Draw(character, out _);
 		public static void Draw (Character character, out Tail tail) {
 			tail = null;
-			if (
-				character.TailID != 0 &&
+			if (character.TailID != 0 &&
+				character.ShowingTail &&
 				Pool.TryGetValue(character.TailID, out tail)
 			) {
 				tail.DrawTail(character);

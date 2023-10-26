@@ -228,6 +228,7 @@ namespace AngeliaFramework {
 			cloth = null;
 			if (
 				character.Suit_Head != 0 &&
+				character.CharacterState != CharacterState.Sleep &&
 				Pool.TryGetValue(character.Suit_Head, out cloth)
 			) {
 				cloth.DrawHead(character);
@@ -264,6 +265,7 @@ namespace AngeliaFramework {
 			cloth = null;
 			if (
 				character.Suit_Foot != 0 &&
+				character.CharacterState != CharacterState.Sleep &&
 				Pool.TryGetValue(character.Suit_Foot, out cloth)
 			) {
 				cloth.DrawFoot(character);

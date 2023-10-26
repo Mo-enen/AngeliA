@@ -245,7 +245,10 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public static void RestartGame (int playerID = 0) => RequireRestartWithPlayerID = playerID;
+		public static void RestartGame (int playerID = 0, bool immediately = false) {
+			RequireRestartWithPlayerID = playerID;
+			if (immediately) RestartGameLogic();
+		}
 
 
 		public static void SetBackgroundTint (Color32 top, Color32 bottom) {

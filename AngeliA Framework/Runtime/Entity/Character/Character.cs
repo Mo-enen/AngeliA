@@ -134,10 +134,6 @@ namespace AngeliaFramework {
 						// General
 						PhysicsUpdate_Attack();
 						PhysicsUpdate_Movement_GamePlay();
-						// Stop when Attacking
-						if (StopMoveOnAttack && IsAttacking && IsGrounded) {
-							VelocityX = 0;
-						}
 					}
 					break;
 
@@ -303,7 +299,7 @@ namespace AngeliaFramework {
 						RepeatAttackWhenHolding.Override = weapon.RepeatAttackWhenHolding;
 						MinimalChargeAttackDuration.Override = weapon.ChargeAttackDuration;
 						LockFacingOnAttack.Override = weapon.LockFacingOnAttack;
-						if (attackStart) Bullet.SpawnBullet(weapon.BulletID, this);
+						if (attackStart) Bullet.SpawnBullet(weapon.BulletID, this, weapon);
 					}
 				}
 

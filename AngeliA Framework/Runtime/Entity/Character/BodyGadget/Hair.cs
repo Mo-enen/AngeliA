@@ -190,7 +190,7 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(SpriteBF) && !CellRenderer.HasSpriteGroup(SpriteBF)) SpriteBF = 0;
 		}
 
-		protected override Cell[] DrawHair (Character character) => DrawFlowSprite3(character, SpriteFF, SpriteFB, SpriteBF);
+		protected override Cell[] DrawHair (Character character) => DrawFlowSprite(character, SpriteFF, SpriteFB, SpriteBF);
 
 	}
 
@@ -244,162 +244,147 @@ namespace AngeliaFramework {
 		protected abstract Cell[] DrawHair (Character character);
 
 
-		// UTL
-		protected static Cell[] DrawFlowSprite3 (Character character, int spriteFrontF, int spriteFrontB, int spriteBackF) {
+		protected static Cell[] DrawFlowSprite (Character character, int spriteFrontF, int spriteFrontB, int spriteBackF) {
 
 			// Back Hair
 			if (character.Head.FrontSide) {
-				var bCells = DrawSprite(
-					spriteBackF,
-					character, isFrontHair: false,
-					character.HairColor
-				);
-				// Flow
-				if (bCells != null) MakeHairFlow(character, bCells, true);
+				var bCells = DrawSprite(spriteBackF, character, -32);
+				MakeHairFlow(character, bCells, true);
 			}
 
 			// Front Hair
-			var fCells = DrawSprite(
-				character.Head.FrontSide ? spriteFrontF : spriteFrontB,
-				character, isFrontHair: true,
-				character.HairColor
-			);
-
-			// Flow
-			if (fCells != null && fCells.Length == 9) {
+			{
+				var fCells = DrawSprite(character.Head.FrontSide ? spriteFrontF : spriteFrontB, character, 32);
 				MakeHairFlow(character, fCells, false);
+				return fCells;
 			}
 
-			return fCells;
-		}
+			// Func
+			static Cell[] DrawSprite (int spriteID, Character character, int z) {
 
+				if (spriteID == 0) return null;
 
-		protected static Cell[] DrawSprite (int spriteID, Character character, bool isFrontHair, Color32 tint) {
+				var head = character.Head;
 
-			if (spriteID == 0) return null;
+				if (
+					!CellRenderer.TryGetSprite(spriteID, out var hairSprite) &&
+					!CellRenderer.TryGetSpriteFromGroup(spriteID, head.Width > 0 ? 0 : 1, out hairSprite, false, true)
+				) return null;
 
-			var head = character.Head;
+				var headRect = head.GetGlobalRect();
 
-			if (
-				!CellRenderer.TryGetSprite(spriteID, out var hairSprite) &&
-				!CellRenderer.TryGetSpriteFromGroup(spriteID, head.Width > 0 ? 0 : 1, out hairSprite, false, true)
-			) return null;
+				// Expand Rect
+				bool flipX = !head.FrontSide && head.Height < 0;
+				bool flipY = head.Height < 0;
+				int expandLR = hairSprite.PivotX * hairSprite.GlobalWidth / 1000;
+				int expandU = (1000 - hairSprite.PivotY) * hairSprite.GlobalHeight / 1000;
+				var hairRect = new RectInt(
+					headRect.xMin - expandLR,
+					headRect.yMax + expandU - hairSprite.GlobalHeight,
+					headRect.width.Abs() + expandLR * 2,
+					hairSprite.GlobalHeight
+				);
 
-			var headRect = head.GetGlobalRect();
-
-			// Expand Rect
-			bool flipX = !head.FrontSide && head.Height < 0;
-			bool flipY = head.Height < 0;
-			int expandLR = hairSprite.PivotX * hairSprite.GlobalWidth / 1000;
-			int expandU = (1000 - hairSprite.PivotY) * hairSprite.GlobalHeight / 1000;
-			var hairRect = new RectInt(
-				headRect.xMin - expandLR,
-				headRect.yMax + expandU - hairSprite.GlobalHeight,
-				headRect.width.Abs() + expandLR * 2,
-				hairSprite.GlobalHeight
-			);
-
-			// Fix Position Y
-			if (flipY) {
-				// Upside-down
-				if (hairRect.height > headRect.height) {
-					hairRect.y = headRect.yMax + expandU;
-					hairRect.height = headRect.height + expandU + expandU;
+				// Fix Position Y
+				if (flipY) {
+					// Upside-down
+					if (hairRect.height > headRect.height) {
+						hairRect.y = headRect.yMax + expandU;
+						hairRect.height = headRect.height + expandU + expandU;
+					} else {
+						hairRect.y = headRect.y - expandU + hairRect.height;
+					}
+					hairRect.height *= -1;
 				} else {
-					hairRect.y = headRect.y - expandU + hairRect.height;
+					// Normal
+					if (hairRect.y < character.Y) {
+						hairRect.height -= character.Y - hairRect.y;
+						hairRect.y += character.Y - hairRect.y;
+					}
 				}
-				hairRect.height *= -1;
-			} else {
-				// Normal
-				if (hairRect.y < character.Y) {
-					hairRect.height -= character.Y - hairRect.y;
-					hairRect.y += character.Y - hairRect.y;
+
+				// Flip X
+				if (flipX) hairRect.FlipHorizontal();
+
+				// Draw Single Hair
+				if (hairSprite.GlobalBorder.IsZero) {
+					SINGLE_CELL[0] = CellRenderer.Draw(hairSprite.GlobalID, hairRect, character.HairColor, z);
+					return SINGLE_CELL;
+				} else {
+					return CellRenderer.Draw_9Slice(hairSprite.GlobalID, hairRect, character.HairColor, z);
 				}
 			}
+			static void MakeHairFlow (Character character, Cell[] cells, bool strech) {
 
-			// Flip X
-			if (flipX) hairRect.FlipHorizontal();
+				if (
+					cells == null || cells.Length != 9 ||
+					!character.Head.FrontSide ||
+					(cells[3].Height == 0 && cells[6].Height == 0)
+				) return;
 
-			// Draw Single Hair
-			int z = isFrontHair ? 32 : -32;
-			if (hairSprite.GlobalBorder.IsZero) {
-				SINGLE_CELL[0] = CellRenderer.Draw(hairSprite.GlobalID, hairRect, tint, z);
-				return SINGLE_CELL;
-			} else {
-				return CellRenderer.Draw_9Slice(hairSprite.GlobalID, hairRect, tint, z);
-			}
-		}
-
-
-		protected static void MakeHairFlow (Character character, Cell[] cells, bool strech) {
-
-			if (
-				!character.Head.FrontSide ||
-				(cells[3].Height == 0 && cells[6].Height == 0)
-			) return;
-
-			int flowAmountX = 0;
-			int flowAmountY = 0;
-			int basicRootY = character.BasicRootY;
-			switch (character.AnimatedPoseType) {
-				case CharacterPoseAnimationType.SwimMove:
-					flowAmountX = 50;
-					flowAmountY = 10;
-					break;
-				case CharacterPoseAnimationType.Dash:
-					flowAmountX = 100;
-					flowAmountY = 20;
-					break;
-				case CharacterPoseAnimationType.Rush:
-					flowAmountX = 140;
-					flowAmountY = 20;
-					break;
-				case CharacterPoseAnimationType.Walk:
-					if (character.PoseRootY < basicRootY + A2G / 4) {
-						flowAmountX = 30;
-					} else if (character.PoseRootY < basicRootY + A2G / 2) {
+				int flowAmountX = 0;
+				int flowAmountY = 0;
+				int basicRootY = character.BasicRootY;
+				switch (character.AnimatedPoseType) {
+					case CharacterPoseAnimationType.SwimMove:
 						flowAmountX = 50;
-						flowAmountY = 20;
-					} else {
-						flowAmountX = 80;
-						flowAmountY = 30;
-					}
-					break;
-				case CharacterPoseAnimationType.Run:
-					if (character.PoseRootY < basicRootY + A2G / 2) {
-						flowAmountX = 60;
-					} else if (character.PoseRootY < basicRootY + A2G) {
-						flowAmountX = 80;
-						flowAmountY = 30;
-					} else {
+						flowAmountY = 10;
+						break;
+					case CharacterPoseAnimationType.Dash:
 						flowAmountX = 100;
-						flowAmountY = 40;
-					}
-					break;
-			}
-			if (flowAmountX != 0 || flowAmountY != 0) {
-				bool facingRight = character.Head.Width > 0;
-				int leftX = facingRight ? -flowAmountX : flowAmountX / 2;
-				int rightX = facingRight ? -flowAmountX / 2 : flowAmountX;
-				MoveCell(cells[3], leftX / 2, flowAmountY, strech);
-				MoveCell(cells[5], rightX / 2, flowAmountY, strech);
-				MoveCell(cells[6], leftX, flowAmountY, strech);
-				MoveCell(cells[8], rightX, flowAmountY, strech);
-			}
-			static void MoveCell (Cell cell, int amountX, int amountY, bool strech) {
-				if (strech) {
-					int deltaX = Const.CEL * amountX / 1000;
-					cell.ReturnPivots();
-					if (amountX < 0) {
-						cell.X += deltaX;
-						cell.Width -= deltaX;
+						flowAmountY = 20;
+						break;
+					case CharacterPoseAnimationType.Rush:
+						flowAmountX = 140;
+						flowAmountY = 20;
+						break;
+					case CharacterPoseAnimationType.Walk:
+						if (character.PoseRootY < basicRootY + A2G / 4) {
+							flowAmountX = 30;
+						} else if (character.PoseRootY < basicRootY + A2G / 2) {
+							flowAmountX = 50;
+							flowAmountY = 20;
+						} else {
+							flowAmountX = 80;
+							flowAmountY = 30;
+						}
+						break;
+					case CharacterPoseAnimationType.Run:
+						if (character.PoseRootY < basicRootY + A2G / 2) {
+							flowAmountX = 60;
+						} else if (character.PoseRootY < basicRootY + A2G) {
+							flowAmountX = 80;
+							flowAmountY = 30;
+						} else {
+							flowAmountX = 100;
+							flowAmountY = 40;
+						}
+						break;
+				}
+				if (flowAmountX != 0 || flowAmountY != 0) {
+					bool facingRight = character.Head.Width > 0;
+					int leftX = facingRight ? -flowAmountX : flowAmountX / 2;
+					int rightX = facingRight ? -flowAmountX / 2 : flowAmountX;
+					MoveCell(cells[3], leftX / 2, flowAmountY, strech);
+					MoveCell(cells[5], rightX / 2, flowAmountY, strech);
+					MoveCell(cells[6], leftX, flowAmountY, strech);
+					MoveCell(cells[8], rightX, flowAmountY, strech);
+				}
+				static void MoveCell (Cell cell, int amountX, int amountY, bool strech) {
+					if (strech) {
+						int deltaX = Const.CEL * amountX / 1000;
+						cell.ReturnPivots();
+						if (amountX < 0) {
+							cell.X += deltaX;
+							cell.Width -= deltaX;
+						} else {
+							cell.Width += deltaX;
+						}
+						cell.Y += Const.CEL * amountY / 1000;
 					} else {
-						cell.Width += deltaX;
+						cell.X += Const.CEL * amountX / 1000;
+						cell.Y += Const.CEL * amountY / 1000;
 					}
-					cell.Y += Const.CEL * amountY / 1000;
-				} else {
-					cell.X += Const.CEL * amountX / 1000;
-					cell.Y += Const.CEL * amountY / 1000;
 				}
 			}
 		}

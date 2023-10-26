@@ -585,6 +585,13 @@ namespace AngeliaFramework {
 
 			}
 
+			// Speed Lose on Attack
+			int loseRate = MovementLoseRateOnAttack;
+			if (loseRate != 1000 && IsAttacking && IsGrounded) {
+				speed = speed * loseRate / 1000;
+			}
+
+			// Final
 			VelocityX = VelocityX.MoveTowards(speed, acc, dcc);
 
 		}
