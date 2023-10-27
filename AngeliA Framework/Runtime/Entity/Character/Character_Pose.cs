@@ -62,6 +62,7 @@ namespace AngeliaFramework {
 		public int PoseTwist { get; set; } = 0;
 		public int PoseRootX { get; set; } = 0;
 		public int PoseRootY { get; set; } = 0;
+		public int HeadTwist { get; set; } = 0;
 		public int BasicRootY { get; private set; } = 0;
 		public bool BodyPartsReady => BodyParts != null;
 		public bool ShowingTail => AnimatedPoseType != CharacterPoseAnimationType.Fly || !Wing.TryGetWing(WingID, out var wing) || !wing.IsPropeller;
@@ -298,6 +299,7 @@ namespace AngeliaFramework {
 			PerformPoseAnimation_Handheld();
 			PerformPoseAnimation_Attack();
 			PoseUpdate_Items();
+			PoseUpdate_HeadTwist();
 
 			Wing.Draw(this);
 			Tail.Draw(this);
@@ -318,6 +320,203 @@ namespace AngeliaFramework {
 
 
 		// Pipeline
+		private void ResetPoseToDefault () {
+
+			int bounce = CurrentRenderingBounce;
+			int facingSign = FacingRight ? 1 : -1;
+
+			PoseRootX = 0;
+			PoseTwist = 0;
+			HeadTwist = 0;
+
+			foreach (var unit in BodyParts) {
+				unit.Rotation = 0;
+				unit.FrontSide = FacingFront;
+				unit.Tint = SkinColor;
+			}
+
+			// Hip
+			Hip.X = 0;
+			Hip.Y = 0;
+			Hip.Z = POSE_Z_BODY;
+			Hip.Width = facingSign * Hip.SizeX;
+			Hip.PivotX = 500;
+			Hip.PivotY = 0;
+
+			// Body
+			Body.X = 0;
+			Body.Y = Hip.Height;
+			Body.Z = POSE_Z_BODY;
+			Body.Width = facingSign * Body.SizeX;
+			Body.PivotX = 500;
+			Body.PivotY = 0;
+
+			// Character Height
+			int bodyHipSizeY = Body.SizeY + Hip.SizeY;
+			int targetUnitHeight = CharacterHeight * A2G / CM_PER_PX - Head.SizeY;
+			int legRootSize = UpperLegL.SizeY + LowerLegL.SizeY + FootL.SizeY;
+			int defaultCharHeight = bodyHipSizeY + legRootSize;
+			Body.Height = Body.SizeY * targetUnitHeight / defaultCharHeight;
+			Hip.Height = Hip.SizeY * targetUnitHeight / defaultCharHeight;
+			PoseRootY = BasicRootY = legRootSize * targetUnitHeight / defaultCharHeight;
+			int upperLegHeight = UpperLegL.SizeY * PoseRootY / legRootSize;
+			int lowerLegHeight = LowerLegL.SizeY * PoseRootY / legRootSize;
+			int footHeight = FootL.SizeY * PoseRootY / legRootSize;
+			int upperArmHeight = UpperArmL.SizeY * targetUnitHeight / defaultCharHeight;
+			int lowerArmHeight = LowerArmL.SizeY * targetUnitHeight / defaultCharHeight;
+			int bodyBorderL = FacingRight ? Body.Border.left : Body.Border.right;
+			int bodyBorderR = FacingRight ? Body.Border.right : Body.Border.left;
+			int hipBorderL = FacingRight ? Hip.Border.left : Hip.Border.right;
+			int hipBorderR = FacingRight ? Hip.Border.right : Hip.Border.left;
+
+			// Head
+			Head.X = 0;
+			Head.Y = Body.Y + Body.Height;
+			Head.Z = POSE_Z_HEAD;
+			Head.Width = facingSign * Head.SizeX;
+			Head.Height = Head.SizeY;
+			Head.PivotX = 500;
+			Head.PivotY = 0;
+
+			// Bounce
+			if (bounce.Abs() != 1000) {
+				bool reverse = bounce < 0;
+				bounce = bounce.Abs();
+				if (reverse) {
+					Body.Width = Body.Width * bounce / 1000;
+					Body.Height += Body.Height * (1000 - bounce) / 1000;
+					Head.Width = Head.Width * bounce / 1000;
+					Head.Height += Head.Height * (1000 - bounce) / 1000;
+				} else {
+					Body.Width += Body.Width * (1000 - bounce) / 1000;
+					Body.Height = Body.Height * bounce / 1000;
+					Head.Width += Head.Width * (1000 - bounce) / 1000;
+					Head.Height = Head.Height * bounce / 1000;
+				}
+				Head.Y = Body.Y + Body.Height;
+			}
+
+			// Shoulder
+			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
+			ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
+			ShoulderL.Width = ShoulderL.SizeX;
+			ShoulderL.Height = ShoulderL.SizeY;
+			ShoulderL.PivotX = 1000;
+			ShoulderL.PivotY = 1000;
+
+			ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
+			ShoulderR.Y = Body.Y + Body.Height - Body.Border.up;
+			ShoulderR.Width = -ShoulderR.SizeX;
+			ShoulderR.Height = ShoulderR.SizeY;
+			ShoulderR.PivotX = 1000;
+			ShoulderR.PivotY = 1000;
+
+			// Arm
+			UpperArmL.X = ShoulderL.X;
+			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
+			UpperArmL.Z = (FacingFront ? facingSign * POSE_Z_UPPERARM : -POSE_Z_UPPERARM);
+			UpperArmL.Width = UpperArmL.SizeX;
+			UpperArmL.Height = upperArmHeight;
+			UpperArmL.PivotX = 1000;
+			UpperArmL.PivotY = 1000;
+
+			UpperArmR.X = ShoulderR.X;
+			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
+			UpperArmR.Z = (FacingFront ? facingSign * -POSE_Z_UPPERARM : -POSE_Z_UPPERARM);
+			UpperArmR.Width = UpperArmR.SizeX;
+			UpperArmR.Height = upperArmHeight;
+			UpperArmR.PivotX = 0;
+			UpperArmR.PivotY = 1000;
+
+			ShoulderL.Z = UpperArmL.Z - 1;
+			ShoulderR.Z = UpperArmR.Z - 1;
+
+			LowerArmL.X = UpperArmL.X;
+			LowerArmL.Y = UpperArmL.Y - UpperArmL.Height;
+			LowerArmL.Z = (FacingFront ? facingSign * POSE_Z_LOWERARM : -POSE_Z_LOWERARM);
+			LowerArmL.Width = LowerArmL.SizeX;
+			LowerArmL.Height = lowerArmHeight;
+			LowerArmL.PivotX = 1000;
+			LowerArmL.PivotY = 1000;
+
+			LowerArmR.X = UpperArmR.X;
+			LowerArmR.Y = UpperArmR.Y - UpperArmR.Height;
+			LowerArmR.Z = (FacingFront ? facingSign * -POSE_Z_LOWERARM : -POSE_Z_LOWERARM);
+			LowerArmR.Width = LowerArmR.SizeX;
+			LowerArmR.Height = lowerArmHeight;
+			LowerArmR.PivotX = 0;
+			LowerArmR.PivotY = 1000;
+
+			HandL.X = LowerArmL.X;
+			HandL.Y = LowerArmL.Y - LowerArmL.Height;
+			HandL.Z = (FacingFront ? facingSign * POSE_Z_HAND : -POSE_Z_HAND);
+			HandL.Width = HandL.SizeX;
+			HandL.Height = HandL.SizeY;
+			HandL.PivotX = 1000;
+			HandL.PivotY = 1000;
+
+			HandR.X = LowerArmR.X;
+			HandR.Y = LowerArmR.Y - LowerArmR.Height;
+			HandR.Z = (FacingFront ? facingSign * -POSE_Z_HAND : -POSE_Z_HAND);
+			HandR.Width = -HandR.SizeX;
+			HandR.Height = HandR.SizeY;
+			HandR.PivotX = 1000;
+			HandR.PivotY = 1000;
+
+			// Leg
+			UpperLegL.X = Hip.X - Hip.Width.Abs() / 2 + hipBorderL;
+			UpperLegL.Y = Hip.Y;
+			UpperLegL.Z = POSE_Z_UPPERLEG;
+			UpperLegL.Width = UpperLegL.SizeX;
+			UpperLegL.Height = upperLegHeight;
+			UpperLegL.PivotX = 0;
+			UpperLegL.PivotY = 1000;
+
+			UpperLegR.X = Hip.X + Hip.Width.Abs() / 2 - hipBorderR;
+			UpperLegR.Y = Hip.Y;
+			UpperLegR.Z = POSE_Z_UPPERLEG;
+			UpperLegR.Width = UpperLegR.SizeX;
+			UpperLegR.Height = upperLegHeight;
+			UpperLegR.PivotX = 1000;
+			UpperLegR.PivotY = 1000;
+
+			LowerLegL.X = UpperLegL.X;
+			LowerLegL.Y = UpperLegL.Y - UpperLegL.Height;
+			LowerLegL.Z = POSE_Z_LOWERLEG;
+			LowerLegL.Width = LowerLegL.SizeX;
+			LowerLegL.Height = lowerLegHeight;
+			LowerLegL.PivotX = 0;
+			LowerLegL.PivotY = 1000;
+			if (FacingRight) LowerLegL.X -= A2G;
+
+			LowerLegR.X = UpperLegR.X;
+			LowerLegR.Y = UpperLegR.Y - UpperLegR.Height;
+			LowerLegR.Z = POSE_Z_LOWERLEG;
+			LowerLegR.Width = LowerLegR.SizeX;
+			LowerLegR.Height = lowerLegHeight;
+			LowerLegR.PivotX = 1000;
+			LowerLegR.PivotY = 1000;
+			if (!FacingRight) LowerLegR.X += A2G;
+
+			FootL.X = FacingRight ? LowerLegL.X : LowerLegL.X + LowerLegL.SizeX;
+			FootL.Y = LowerLegL.Y - LowerLegL.Height;
+			FootL.Z = POSE_Z_FOOT;
+			FootL.Width = facingSign * FootL.SizeX;
+			FootL.Height = footHeight;
+			FootL.PivotX = 0;
+			FootL.PivotY = 1000;
+
+			FootR.X = FacingRight ? LowerLegR.X - FootR.SizeX : LowerLegR.X;
+			FootR.Y = LowerLegR.Y - LowerLegR.Height;
+			FootR.Z = POSE_Z_FOOT;
+			FootR.Width = facingSign * FootR.SizeX;
+			FootR.Height = footHeight;
+			FootR.PivotX = 0;
+			FootR.PivotY = 1000;
+
+		}
+
+
 		private void PerformPoseAnimation_Movement () {
 
 			HandGrabScaleL = FacingRight ? 1000 : -1000;
@@ -550,6 +749,21 @@ namespace AngeliaFramework {
 		}
 
 
+		private void PoseUpdate_HeadTwist () {
+			if (!Head.FrontSide) {
+				HeadTwist = 0;
+				return;
+			}
+			HeadTwist = QTest.Int["t", 0, -1000, 1000];
+			HeadTwist = HeadTwist.Clamp(-1000, 1000);
+			if (HeadTwist != 0) {
+				Head.Width = Head.Width.Sign() * (Head.Width.Abs() - (Head.Width * HeadTwist).Abs() / 2000);
+				Head.X += Head.Width.Abs() * HeadTwist / 2000;
+				Head.GlobalX = X + PoseRootX + Head.X;
+			}
+		}
+
+
 		private void DrawBodyPart (int cellIndexStart) {
 
 			// Fix Approximately Rotation
@@ -605,651 +819,13 @@ namespace AngeliaFramework {
 
 
 
-		#region --- API ---
-
-
-		public void ResetPoseToDefault () {
-
-			int bounce = CurrentRenderingBounce;
-			int facingSign = FacingRight ? 1 : -1;
-
-			PoseRootX = 0;
-			PoseTwist = 0;
-			foreach (var unit in BodyParts) {
-				unit.Rotation = 0;
-				unit.FrontSide = FacingFront;
-				unit.Tint = SkinColor;
-			}
-
-			// Hip
-			Hip.X = 0;
-			Hip.Y = 0;
-			Hip.Z = POSE_Z_BODY;
-			Hip.Width = facingSign * Hip.SizeX;
-			Hip.PivotX = 500;
-			Hip.PivotY = 0;
-
-			// Body
-			Body.X = 0;
-			Body.Y = Hip.Height;
-			Body.Z = POSE_Z_BODY;
-			Body.Width = facingSign * Body.SizeX;
-			Body.PivotX = 500;
-			Body.PivotY = 0;
-
-			// Character Height
-			int bodyHipSizeY = Body.SizeY + Hip.SizeY;
-			int targetUnitHeight = CharacterHeight * A2G / CM_PER_PX - Head.SizeY;
-			int legRootSize = UpperLegL.SizeY + LowerLegL.SizeY + FootL.SizeY;
-			int defaultCharHeight = bodyHipSizeY + legRootSize;
-			Body.Height = Body.SizeY * targetUnitHeight / defaultCharHeight;
-			Hip.Height = Hip.SizeY * targetUnitHeight / defaultCharHeight;
-			PoseRootY = BasicRootY = legRootSize * targetUnitHeight / defaultCharHeight;
-			int upperLegHeight = UpperLegL.SizeY * PoseRootY / legRootSize;
-			int lowerLegHeight = LowerLegL.SizeY * PoseRootY / legRootSize;
-			int footHeight = FootL.SizeY * PoseRootY / legRootSize;
-			int upperArmHeight = UpperArmL.SizeY * targetUnitHeight / defaultCharHeight;
-			int lowerArmHeight = LowerArmL.SizeY * targetUnitHeight / defaultCharHeight;
-			int bodyBorderL = FacingRight ? Body.Border.left : Body.Border.right;
-			int bodyBorderR = FacingRight ? Body.Border.right : Body.Border.left;
-			int hipBorderL = FacingRight ? Hip.Border.left : Hip.Border.right;
-			int hipBorderR = FacingRight ? Hip.Border.right : Hip.Border.left;
-
-			// Head
-			Head.X = 0;
-			Head.Y = Body.Y + Body.Height;
-			Head.Z = POSE_Z_HEAD;
-			Head.Width = facingSign * Head.SizeX;
-			Head.Height = Head.SizeY;
-			Head.PivotX = 500;
-			Head.PivotY = 0;
-
-			// Bounce
-			if (bounce.Abs() != 1000) {
-				bool reverse = bounce < 0;
-				bounce = bounce.Abs();
-				if (reverse) {
-					Body.Width = Body.Width * bounce / 1000;
-					Body.Height += Body.Height * (1000 - bounce) / 1000;
-					Head.Width = Head.Width * bounce / 1000;
-					Head.Height += Head.Height * (1000 - bounce) / 1000;
-				} else {
-					Body.Width += Body.Width * (1000 - bounce) / 1000;
-					Body.Height = Body.Height * bounce / 1000;
-					Head.Width += Head.Width * (1000 - bounce) / 1000;
-					Head.Height = Head.Height * bounce / 1000;
-				}
-				Head.Y = Body.Y + Body.Height;
-			}
-
-			// Shoulder
-			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
-			ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
-			ShoulderL.Width = ShoulderL.SizeX;
-			ShoulderL.Height = ShoulderL.SizeY;
-			ShoulderL.PivotX = 1000;
-			ShoulderL.PivotY = 1000;
-
-			ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
-			ShoulderR.Y = Body.Y + Body.Height - Body.Border.up;
-			ShoulderR.Width = -ShoulderR.SizeX;
-			ShoulderR.Height = ShoulderR.SizeY;
-			ShoulderR.PivotX = 1000;
-			ShoulderR.PivotY = 1000;
-
-			// Arm
-			UpperArmL.X = ShoulderL.X;
-			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
-			UpperArmL.Z = (FacingFront ? facingSign * POSE_Z_UPPERARM : -POSE_Z_UPPERARM);
-			UpperArmL.Width = UpperArmL.SizeX;
-			UpperArmL.Height = upperArmHeight;
-			UpperArmL.PivotX = 1000;
-			UpperArmL.PivotY = 1000;
-
-			UpperArmR.X = ShoulderR.X;
-			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
-			UpperArmR.Z = (FacingFront ? facingSign * -POSE_Z_UPPERARM : -POSE_Z_UPPERARM);
-			UpperArmR.Width = UpperArmR.SizeX;
-			UpperArmR.Height = upperArmHeight;
-			UpperArmR.PivotX = 0;
-			UpperArmR.PivotY = 1000;
-
-			ShoulderL.Z = UpperArmL.Z - 1;
-			ShoulderR.Z = UpperArmR.Z - 1;
-
-			LowerArmL.X = UpperArmL.X;
-			LowerArmL.Y = UpperArmL.Y - UpperArmL.Height;
-			LowerArmL.Z = (FacingFront ? facingSign * POSE_Z_LOWERARM : -POSE_Z_LOWERARM);
-			LowerArmL.Width = LowerArmL.SizeX;
-			LowerArmL.Height = lowerArmHeight;
-			LowerArmL.PivotX = 1000;
-			LowerArmL.PivotY = 1000;
-
-			LowerArmR.X = UpperArmR.X;
-			LowerArmR.Y = UpperArmR.Y - UpperArmR.Height;
-			LowerArmR.Z = (FacingFront ? facingSign * -POSE_Z_LOWERARM : -POSE_Z_LOWERARM);
-			LowerArmR.Width = LowerArmR.SizeX;
-			LowerArmR.Height = lowerArmHeight;
-			LowerArmR.PivotX = 0;
-			LowerArmR.PivotY = 1000;
-
-			HandL.X = LowerArmL.X;
-			HandL.Y = LowerArmL.Y - LowerArmL.Height;
-			HandL.Z = (FacingFront ? facingSign * POSE_Z_HAND : -POSE_Z_HAND);
-			HandL.Width = HandL.SizeX;
-			HandL.Height = HandL.SizeY;
-			HandL.PivotX = 1000;
-			HandL.PivotY = 1000;
-
-			HandR.X = LowerArmR.X;
-			HandR.Y = LowerArmR.Y - LowerArmR.Height;
-			HandR.Z = (FacingFront ? facingSign * -POSE_Z_HAND : -POSE_Z_HAND);
-			HandR.Width = -HandR.SizeX;
-			HandR.Height = HandR.SizeY;
-			HandR.PivotX = 1000;
-			HandR.PivotY = 1000;
-
-			// Leg
-			UpperLegL.X = Hip.X - Hip.Width.Abs() / 2 + hipBorderL;
-			UpperLegL.Y = Hip.Y;
-			UpperLegL.Z = POSE_Z_UPPERLEG;
-			UpperLegL.Width = UpperLegL.SizeX;
-			UpperLegL.Height = upperLegHeight;
-			UpperLegL.PivotX = 0;
-			UpperLegL.PivotY = 1000;
-
-			UpperLegR.X = Hip.X + Hip.Width.Abs() / 2 - hipBorderR;
-			UpperLegR.Y = Hip.Y;
-			UpperLegR.Z = POSE_Z_UPPERLEG;
-			UpperLegR.Width = UpperLegR.SizeX;
-			UpperLegR.Height = upperLegHeight;
-			UpperLegR.PivotX = 1000;
-			UpperLegR.PivotY = 1000;
-
-			LowerLegL.X = UpperLegL.X;
-			LowerLegL.Y = UpperLegL.Y - UpperLegL.Height;
-			LowerLegL.Z = POSE_Z_LOWERLEG;
-			LowerLegL.Width = LowerLegL.SizeX;
-			LowerLegL.Height = lowerLegHeight;
-			LowerLegL.PivotX = 0;
-			LowerLegL.PivotY = 1000;
-			if (FacingRight) LowerLegL.X -= A2G;
-
-			LowerLegR.X = UpperLegR.X;
-			LowerLegR.Y = UpperLegR.Y - UpperLegR.Height;
-			LowerLegR.Z = POSE_Z_LOWERLEG;
-			LowerLegR.Width = LowerLegR.SizeX;
-			LowerLegR.Height = lowerLegHeight;
-			LowerLegR.PivotX = 1000;
-			LowerLegR.PivotY = 1000;
-			if (!FacingRight) LowerLegR.X += A2G;
-
-			FootL.X = FacingRight ? LowerLegL.X : LowerLegL.X + LowerLegL.SizeX;
-			FootL.Y = LowerLegL.Y - LowerLegL.Height;
-			FootL.Z = POSE_Z_FOOT;
-			FootL.Width = facingSign * FootL.SizeX;
-			FootL.Height = footHeight;
-			FootL.PivotX = 0;
-			FootL.PivotY = 1000;
-
-			FootR.X = FacingRight ? LowerLegR.X - FootR.SizeX : LowerLegR.X;
-			FootR.Y = LowerLegR.Y - LowerLegR.Height;
-			FootR.Z = POSE_Z_FOOT;
-			FootR.Width = facingSign * FootR.SizeX;
-			FootR.Height = footHeight;
-			FootR.PivotX = 0;
-			FootR.PivotY = 1000;
-
-		}
-
-
-		// Cloth
-		public void DrawClothForHead (int spriteID, FrontMode frontMode) {
-
-			if (spriteID == 0) return;
-
-			if (CellRenderer.HasSpriteGroup(spriteID)) {
-				if (Head.FrontSide) {
-					// Front
-					bool front = frontMode != FrontMode.AlwaysBack && frontMode != FrontMode.Back;
-					if (CellRenderer.TryGetSpriteFromGroup(spriteID, 0, out var sprite, false, true)) {
-						bool usePixelShift = Head.FrontSide && Head.Width < 0;
-						if (usePixelShift && CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
-							usePixelShift = false;
-						}
-						AttachClothOn(
-							Head, Direction3.Up, sprite.GlobalID,
-							front ? 34 : -34, flipX: Head.Height < 0, 0,
-							usePixelShift ? (front ? -16 : 16) : 0, 0
-						);
-					}
-				} else {
-					// Back
-					if (CellRenderer.TryGetSpriteFromGroup(spriteID, 1, out var sprite, false, true)) {
-						bool front = frontMode != FrontMode.AlwaysBack && frontMode != FrontMode.Front;
-						bool usePixelShift = Head.FrontSide && Head.Width < 0;
-						if (usePixelShift && CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
-							usePixelShift = false;
-						}
-						AttachClothOn(
-							Head, Direction3.Up, sprite.GlobalID,
-							front ? 34 : -34, flipX: Head.Height < 0, 0,
-							usePixelShift ? (front ? -16 : 16) : 0, 0
-						);
-					}
-				}
-			} else {
-				// Single Sprite
-				bool front = frontMode != FrontMode.AlwaysBack && (
-					frontMode == FrontMode.AlwaysFront ||
-					frontMode == FrontMode.Front == Head.FrontSide
-				);
-				bool usePixelShift = Head.FrontSide && Head.Width < 0;
-				if (usePixelShift && CellRenderer.TryGetMeta(spriteID, out var meta) && meta.IsTrigger) {
-					usePixelShift = false;
-				}
-				AttachClothOn(
-					Head, Direction3.Up, spriteID,
-					front ? 34 : -34, flipX: Head.Height < 0, 0,
-					usePixelShift ? (front ? -16 : 16) : 0, 0
-				);
-			}
-
-		}
-
-
-		public void DrawClothForBody (int spriteGroupId, bool flipWithBody = true) => DrawClothForBody(spriteGroupId, Const.WHITE, flipWithBody);
-		public void DrawClothForBody (int spriteGroupId, Color32 tint, bool flipWithBody = true) {
-
-			if (spriteGroupId == 0) return;
-
-			int groupIndex = !Body.FrontSide ? 3 :
-				PoseTwist.Abs() < 333 ? 0 :
-				(flipWithBody || Body.Width > 0) == (Body.Width > 0 == (PoseTwist < 0)) ? 1 :
-				2;
-			if (!CellRenderer.TryGetSpriteFromGroup(spriteGroupId, groupIndex, out var suitSprite, false, true)) return;
-
-			var rect = new RectInt(
-				Body.GlobalX - Body.Width / 2,
-				Hip.GlobalY,
-				Body.Width,
-				Body.Height + Hip.Height
-			);
-
-			// Border
-			if (!suitSprite.GlobalBorder.IsZero) {
-				if (rect.width > 0) {
-					rect = rect.Expand(
-						suitSprite.GlobalBorder.left,
-						suitSprite.GlobalBorder.right,
-						suitSprite.GlobalBorder.down,
-						suitSprite.GlobalBorder.up
-					);
-				} else {
-					rect = rect.Expand(
-						-suitSprite.GlobalBorder.left,
-						-suitSprite.GlobalBorder.right,
-						suitSprite.GlobalBorder.down,
-						suitSprite.GlobalBorder.up
-					);
-				}
-			}
-
-			// Flip
-			if (!flipWithBody && Body.Width < 0) rect.FlipHorizontal();
-
-			// Draw
-			CellRenderer.Draw(suitSprite.GlobalID, rect, tint, Body.Z + 7);
-
-			// Hide Limb
-			if (CellRenderer.TryGetMeta(suitSprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG) {
-				Body.Tint = Const.CLEAR;
-				Hip.Tint = Const.CLEAR;
-			}
-		}
-
-
-		public void DrawClothForHip (int spriteID) => DrawClothForHip(spriteID, Const.WHITE);
-		public void DrawClothForHip (int spriteID, Color32 tint) {
-
-			if (spriteID == 0) return;
-			if (
-				!CellRenderer.TryGetSpriteFromGroup(spriteID, Body.FrontSide ? 0 : 1, out var sprite, false, true) &&
-				!CellRenderer.TryGetSprite(spriteID, out sprite)
-			) return;
-
-			var hip = Hip;
-			var rect = hip.GetGlobalRect();
-			if (!sprite.GlobalBorder.IsZero) {
-				if (hip.Width > 0) {
-					rect = rect.Expand(
-						sprite.GlobalBorder.left,
-						sprite.GlobalBorder.right,
-						sprite.GlobalBorder.down,
-						sprite.GlobalBorder.up
-					);
-				} else {
-					rect = rect.Expand(
-						sprite.GlobalBorder.right,
-						sprite.GlobalBorder.left,
-						sprite.GlobalBorder.down,
-						sprite.GlobalBorder.up
-					);
-				}
-			}
-
-			// Draw
-			CellRenderer.Draw(
-				sprite.GlobalID, rect, tint,
-				CellRenderer.TryGetMeta(spriteID, out var meta) && meta.IsTrigger ? Hip.Z + 4 : Hip.Z + 1
-			);
-
-		}
-
-
-		public void DrawClothForSkirt (int spriteID) => DrawClothForSkirt(spriteID, Const.WHITE);
-		public void DrawClothForSkirt (int spriteID, Color32 tint) {
-
-			if (spriteID == 0) return;
-			if (
-				!CellRenderer.TryGetSpriteFromGroup(spriteID, Body.FrontSide ? 0 : 1, out var sprite, false, true) &&
-				!CellRenderer.TryGetSprite(spriteID, out sprite)
-			) return;
-
-			// Skirt
-			int bodyWidthAbs = Body.Width.Abs();
-			var legTopL = UpperLegL.GlobalLerp(0.5f, 1f);
-			var legTopR = UpperLegR.GlobalLerp(0.5f, 1f);
-			int left = legTopL.x - UpperLegL.SizeX / 2;
-			int right = legTopR.x + UpperLegR.SizeX / 2;
-			int centerX = (left + right) / 2;
-			int centerY = (legTopL.y + legTopR.y) / 2;
-			bool stretch =
-				AnimatedPoseType != CharacterPoseAnimationType.GrabSide &&
-				AnimatedPoseType != CharacterPoseAnimationType.Dash &&
-				AnimatedPoseType != CharacterPoseAnimationType.Idle;
-			int width = Mathf.Max(
-				(right - left).Abs(), bodyWidthAbs - Body.Border.left - Body.Border.right
-			);
-			width += sprite.GlobalBorder.horizontal;
-			if (stretch) width += Stretch(UpperLegL.Rotation, UpperLegR.Rotation);
-			width += AnimatedPoseType switch {
-				CharacterPoseAnimationType.JumpUp or CharacterPoseAnimationType.JumpDown => 2 * A2G,
-				CharacterPoseAnimationType.Run => A2G / 2,
-				_ => 0,
-			};
-			int shiftY = AnimatedPoseType switch {
-				CharacterPoseAnimationType.Dash => A2G,
-				_ => 0,
-			};
-			int offsetY = sprite.GlobalHeight * (1000 - sprite.PivotY) / 1000 + shiftY;
-			CellRenderer.Draw(
-				sprite.GlobalID,
-				centerX,
-				Body.Height > 0 ? Mathf.Max(centerY + offsetY, Y + sprite.GlobalHeight) : centerY - offsetY,
-				500, 1000, 0,
-				width,
-				Body.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight,
-				tint, Body.Z + 6
-			);
-
-			// Func
-			static int Stretch (int rotL, int rotR) {
-				int result = 0;
-				if (rotL > 0) result += rotL / 2;
-				if (rotR < 0) result += rotR / -2;
-				return result;
-			}
-		}
-
-
-		public void DrawClothForFoot (BodyPart foot, int spriteID) => DrawClothForFoot(foot, spriteID, Const.WHITE);
-		public void DrawClothForFoot (BodyPart foot, int spriteID, Color32 tint) {
-			if (spriteID == 0) return;
-			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
-			var location = foot.GlobalLerp(0f, 0f);
-			int width = Mathf.Max(foot.Width.Abs(), sprite.GlobalWidth);
-			if (sprite.GlobalBorder.IsZero) {
-				CellRenderer.Draw(
-					spriteID, location.x, location.y,
-					0, 0, foot.Rotation,
-					foot.Width.Sign() * width, sprite.GlobalHeight,
-					tint, foot.Z + 1
-				);
-			} else {
-				CellRenderer.Draw_9Slice(
-					spriteID, location.x, location.y,
-					0, 0, foot.Rotation,
-					foot.Width.Sign() * width, sprite.GlobalHeight,
-					tint, foot.Z + 1
-				);
-			}
-			if (!CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) || meta.Tag != Const.SHOW_LIMB_TAG) {
-				foot.Tint = Const.CLEAR;
-			}
-		}
-
-
-		public void DrawArmorForShoulder (int spriteID, int rotationAmount = 700) {
-			if (
-				AnimatedPoseType == CharacterPoseAnimationType.Sleep ||
-				AnimatedPoseType == CharacterPoseAnimationType.PassOut
-			) return;
-			AttachClothOn(
-				UpperArmL, Direction3.Up, spriteID, 36, true,
-				(-UpperArmL.Rotation * rotationAmount / 1000).Clamp(-UpperArmL.Rotation - 30, -UpperArmL.Rotation + 30)
-			);
-			AttachClothOn(
-				UpperArmR, Direction3.Up, spriteID, 36, false,
-				(-UpperArmR.Rotation * rotationAmount / 1000).Clamp(-UpperArmR.Rotation - 30, -UpperArmR.Rotation + 30)
-			);
-		}
-
-
-		public void DrawArmorForLimb (int armSpriteID, int legSpriteID) {
-			AttachClothOn(LowerArmL, Direction3.Up, armSpriteID, LowerArmL.Z + 16, true);
-			AttachClothOn(LowerArmR, Direction3.Up, armSpriteID, LowerArmR.Z + 16, false);
-			AttachClothOn(LowerLegL, Direction3.Up, legSpriteID, LowerLegL.Z + 16, !FacingRight);
-			AttachClothOn(LowerLegR, Direction3.Up, legSpriteID, LowerLegR.Z + 16, !FacingRight);
-		}
-
-
-		public void AttachClothOn (
-			BodyPart bodyPart, Direction3 verticalLocation, int spriteID, int z,
-			bool flipX = false, int localRotation = 0, int shiftPixelX = 0, int shiftPixelY = 0
-		) {
-			if (spriteID == 0) return;
-			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
-			var location = verticalLocation switch {
-				Direction3.Up => bodyPart.GlobalLerp(0.5f, 1f),
-				Direction3.None => bodyPart.GlobalLerp(0.5f, 0.5f),
-				Direction3.Down => bodyPart.GlobalLerp(0.5f, 0f),
-				_ => bodyPart.GlobalLerp(0.5f, 1f),
-			};
-			location.x += shiftPixelX;
-			location.y += shiftPixelY;
-			if (sprite.GlobalBorder.IsZero) {
-				CellRenderer.Draw(
-					sprite.GlobalID,
-					location.x,
-					location.y,
-					sprite.PivotX, sprite.PivotY, bodyPart.Rotation + localRotation,
-					flipX ? -sprite.GlobalWidth : sprite.GlobalWidth,
-					bodyPart.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight,
-					z
-				);
-			} else {
-				CellRenderer.Draw_9Slice(
-					sprite.GlobalID,
-					location.x,
-					location.y,
-					sprite.PivotX, sprite.PivotY, bodyPart.Rotation + localRotation,
-					flipX ? -sprite.GlobalWidth : sprite.GlobalWidth,
-					bodyPart.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight,
-					z
-				);
-			}
-			if (CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG) {
-				bodyPart.Tint = Const.CLEAR;
-			}
-		}
-
-
-		public void CoverClothOn (BodyPart bodyPart, int spriteID, int z, Color32 tint, bool defaultHideLimb = true) {
-			if (spriteID == 0 || !CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
-			if (sprite.GlobalBorder.IsZero) {
-				CellRenderer.Draw(
-					spriteID, bodyPart.GlobalX, bodyPart.GlobalY,
-					bodyPart.PivotX, bodyPart.PivotY, bodyPart.Rotation,
-					bodyPart.Width, bodyPart.Height, tint, z
-				);
-			} else {
-				CellRenderer.Draw_9Slice(
-					spriteID, bodyPart.GlobalX, bodyPart.GlobalY,
-					bodyPart.PivotX, bodyPart.PivotY, bodyPart.Rotation,
-					bodyPart.Width, bodyPart.Height, tint, z
-				);
-			}
-			if (defaultHideLimb) {
-				if (!CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) || meta.Tag != Const.SHOW_LIMB_TAG) {
-					bodyPart.Tint = Const.CLEAR;
-				}
-			} else {
-				if (CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG) {
-					bodyPart.Tint = Const.CLEAR;
-				}
-			}
-		}
-
-
-		public void DrawDoubleClothTailsOnHip (int spriteIdLeft, int spriteIdRight, bool drawOnAllPose = false) {
-
-			if (
-				!drawOnAllPose && (
-					AnimatedPoseType == CharacterPoseAnimationType.Rolling ||
-					AnimatedPoseType == CharacterPoseAnimationType.Sleep ||
-					AnimatedPoseType == CharacterPoseAnimationType.PassOut ||
-					AnimatedPoseType == CharacterPoseAnimationType.Fly
-				)
-			) return;
-
-			var hipRect = Hip.GetGlobalRect();
-			int z = Body.FrontSide ? -39 : 39;
-			bool facingRight = Body.Width > 0;
-			int rotL = facingRight ? 30 : 18;
-			int rotR = facingRight ? -18 : -30;
-			int scaleX = 1000;
-			int scaleY = 1000;
-
-			if (Body.Height < 0) {
-				rotL = 180 - rotL;
-				rotR = -180 + rotR;
-				z = -z;
-			}
-
-			if (AnimatedPoseType == CharacterPoseAnimationType.Dash) scaleY = 500;
-
-			DrawClothTail(spriteIdLeft, hipRect.x + 16, hipRect.y, z, rotL, scaleX, scaleY);
-			DrawClothTail(spriteIdRight, hipRect.xMax - 16, hipRect.y, z, rotR, scaleX, scaleY);
-
-		}
-
-
-		public void DrawClothTail (int spriteID, int globalX, int globalY, int z, int rotation, int scaleX = 1000, int scaleY = 1000, int motionAmount = 1000) {
-
-			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
-
-			int rot = 0;
-
-			// Motion
-			if (motionAmount != 0) {
-				// Idle Rot
-				int animationFrame = (TypeID + Game.GlobalFrame).Abs(); // ※ Intended ※
-				rot += rotation.Sign() * (animationFrame.PingPong(180) / 10 - 9);
-				// Delta Y >> Rot
-				int deltaY = DeltaPositionY;
-				rot -= rotation.Sign() * (deltaY * 2 / 3).Clamp(-20, 20);
-			}
-
-			// Draw
-			CellRenderer.Draw(
-				spriteID,
-				globalX, globalY,
-				sprite.PivotX, sprite.PivotY, rotation + rot,
-				sprite.GlobalWidth * scaleX / 1000,
-				sprite.GlobalHeight * scaleY / 1000,
-				z
-			);
-
-		}
-
-
-		public void DrawCape (int groupID, int motionAmount = 1000) {
-
-			if (
-				AnimatedPoseType == CharacterPoseAnimationType.SquatIdle ||
-				AnimatedPoseType == CharacterPoseAnimationType.SquatMove ||
-				AnimatedPoseType == CharacterPoseAnimationType.Dash ||
-				AnimatedPoseType == CharacterPoseAnimationType.Rolling ||
-				AnimatedPoseType == CharacterPoseAnimationType.Fly ||
-				AnimatedPoseType == CharacterPoseAnimationType.Sleep ||
-				AnimatedPoseType == CharacterPoseAnimationType.PassOut ||
-				groupID == 0 ||
-				!CellRenderer.TryGetSpriteFromGroup(groupID, Body.FrontSide ? 0 : 1, out var sprite, false, true)
-			) return;
-
-			// Draw
-			int height = sprite.GlobalHeight + Body.Height.Abs() - Body.SizeY;
-			var cells = CellRenderer.Draw_9Slice(
-				sprite.GlobalID,
-				Body.GlobalX, Body.GlobalY + Body.Height,
-				500, 1000, 0,
-				sprite.GlobalWidth,
-				Body.Height.Sign() * height,
-				Const.WHITE, Body.FrontSide ? -31 : 31
-			);
-
-			// Flow Motion
-			if (motionAmount != 0) {
-				// X
-				int maxX = 30 * motionAmount / 1000;
-				int offsetX = (-DeltaPositionX * motionAmount / 1000).Clamp(-maxX, maxX);
-				cells[3].X += offsetX / 2;
-				cells[4].X += offsetX / 2;
-				cells[5].X += offsetX / 2;
-				cells[6].X += offsetX;
-				cells[7].X += offsetX;
-				cells[8].X += offsetX;
-				// Y
-				int maxY = 20 * motionAmount / 1000;
-				int offsetAmountY = 1000 + (DeltaPositionY * motionAmount / 10000).Clamp(-maxY, maxY) * 1000 / 20;
-				offsetAmountY = offsetAmountY.Clamp(800, 1200);
-				cells[0].Height = cells[0].Height * offsetAmountY / 1000;
-				cells[1].Height = cells[1].Height * offsetAmountY / 1000;
-				cells[2].Height = cells[2].Height * offsetAmountY / 1000;
-				cells[3].Height = cells[3].Height * offsetAmountY / 1000;
-				cells[4].Height = cells[4].Height * offsetAmountY / 1000;
-				cells[5].Height = cells[5].Height * offsetAmountY / 1000;
-				cells[6].Height = cells[6].Height * offsetAmountY / 1000;
-				cells[7].Height = cells[7].Height * offsetAmountY / 1000;
-				cells[8].Height = cells[8].Height * offsetAmountY / 1000;
-			}
-
-		}
-
-
-		#endregion
-
-
-
-
 		#region --- LGC ---
 
 
 		private void CalculateBodypartGlobalPosition () {
-			foreach (var pose in BodyParts) {
-				pose.GlobalX = X + PoseRootX + pose.X;
-				pose.GlobalY = Y + PoseRootY + pose.Y;
+			foreach (var part in BodyParts) {
+				part.GlobalX = X + PoseRootX + part.X;
+				part.GlobalY = Y + PoseRootY + part.Y;
 			}
 		}
 
@@ -1294,8 +870,8 @@ namespace AngeliaFramework {
 				// Double Handed
 				case WeaponHandHeld.DoubleHanded:
 					AttackStyleLoop = 4;
-					//switch (AttackStyleIndex % AttackStyleLoop) {
-					switch (1) {
+					switch (AttackStyleIndex % AttackStyleLoop) {
+						//switch (1) {
 						default:
 							AnimationLibrary.Attack_WaveDoubleHanded_SmashDown();
 							break;

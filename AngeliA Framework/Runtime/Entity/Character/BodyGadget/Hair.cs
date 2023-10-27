@@ -176,21 +176,24 @@ namespace AngeliaFramework {
 
 	public abstract class AutoSpriteHair : Hair {
 
-		private int SpriteFF { get; init; }
+		private int SpriteFFL { get; init; }
+		private int SpriteFFR { get; init; }
 		private int SpriteFB { get; init; }
 		private int SpriteBF { get; init; }
 
 		public AutoSpriteHair () {
 			string name = (GetType().DeclaringType ?? GetType()).AngeName();
-			SpriteFF = $"{name}.HairFF".AngeHash();
+			SpriteFFL = $"{name}.HairFFL".AngeHash();
+			SpriteFFR = $"{name}.HairFFR".AngeHash();
 			SpriteFB = $"{name}.HairFB".AngeHash();
 			SpriteBF = $"{name}.HairBF".AngeHash();
-			if (!CellRenderer.HasSprite(SpriteFF) && !CellRenderer.HasSpriteGroup(SpriteFF)) SpriteFF = 0;
-			if (!CellRenderer.HasSprite(SpriteFB) && !CellRenderer.HasSpriteGroup(SpriteFB)) SpriteFB = 0;
-			if (!CellRenderer.HasSprite(SpriteBF) && !CellRenderer.HasSpriteGroup(SpriteBF)) SpriteBF = 0;
+			if (!CellRenderer.HasSprite(SpriteFFL)) SpriteFFL = 0;
+			if (!CellRenderer.HasSprite(SpriteFFR)) SpriteFFR = 0;
+			if (!CellRenderer.HasSprite(SpriteFB)) SpriteFB = 0;
+			if (!CellRenderer.HasSprite(SpriteBF)) SpriteBF = 0;
 		}
 
-		protected override Cell[] DrawHair (Character character) => DrawFlowSprite(character, SpriteFF, SpriteFB, SpriteBF);
+		protected override Cell[] DrawHair (Character character) => DrawFlowSprite(character, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF);
 
 	}
 
@@ -200,7 +203,6 @@ namespace AngeliaFramework {
 
 		// Const
 		private const int A2G = Const.CEL / Const.ART_CEL;
-		private static readonly Cell[] SINGLE_CELL = { default };
 
 		// Data
 		private static readonly Dictionary<int, Hair> Pool = new();
@@ -244,32 +246,34 @@ namespace AngeliaFramework {
 		protected abstract Cell[] DrawHair (Character character);
 
 
-		protected static Cell[] DrawFlowSprite (Character character, int spriteFrontF, int spriteFrontB, int spriteBackF) {
+		protected static Cell[] DrawFlowSprite (Character character, int spriteFrontFL, int spriteFrontFR, int spriteFrontB, int spriteBackF) {
 
 			// Back Hair
 			if (character.Head.FrontSide) {
-				var bCells = DrawSprite(spriteBackF, character, -32);
+				var bCells = DrawSprite(spriteBackF, character, -32, out var backHairRect);
+				TwistHair(character, bCells, backHairRect);
 				MakeHairFlow(character, bCells, true);
 			}
 
 			// Front Hair
-			{
-				var fCells = DrawSprite(character.Head.FrontSide ? spriteFrontF : spriteFrontB, character, 32);
-				MakeHairFlow(character, fCells, false);
-				return fCells;
-			}
+			var fCells = DrawSprite(
+				!character.Head.FrontSide ? spriteFrontB :
+				character.Head.Width > 0 ? spriteFrontFR : spriteFrontFL,
+				character, 32, out var hairRect
+			);
+			TwistHair(character, fCells, hairRect);
+			MakeHairFlow(character, fCells, false);
+			return fCells;
 
 			// Func
-			static Cell[] DrawSprite (int spriteID, Character character, int z) {
+			static Cell[] DrawSprite (int spriteID, Character character, int z, out RectInt hairRect) {
 
+				hairRect = default;
 				if (spriteID == 0) return null;
 
 				var head = character.Head;
 
-				if (
-					!CellRenderer.TryGetSprite(spriteID, out var hairSprite) &&
-					!CellRenderer.TryGetSpriteFromGroup(spriteID, head.Width > 0 ? 0 : 1, out hairSprite, false, true)
-				) return null;
+				if (!CellRenderer.TryGetSprite(spriteID, out var hairSprite)) return null;
 
 				var headRect = head.GetGlobalRect();
 
@@ -278,7 +282,7 @@ namespace AngeliaFramework {
 				bool flipY = head.Height < 0;
 				int expandLR = hairSprite.PivotX * hairSprite.GlobalWidth / 1000;
 				int expandU = (1000 - hairSprite.PivotY) * hairSprite.GlobalHeight / 1000;
-				var hairRect = new RectInt(
+				hairRect = new RectInt(
 					headRect.xMin - expandLR,
 					headRect.yMax + expandU - hairSprite.GlobalHeight,
 					headRect.width.Abs() + expandLR * 2,
@@ -306,13 +310,66 @@ namespace AngeliaFramework {
 				// Flip X
 				if (flipX) hairRect.FlipHorizontal();
 
-				// Draw Single Hair
-				if (hairSprite.GlobalBorder.IsZero) {
-					SINGLE_CELL[0] = CellRenderer.Draw(hairSprite.GlobalID, hairRect, character.HairColor, z);
-					return SINGLE_CELL;
+				// Draw Hair
+				return CellRenderer.Draw_9Slice(hairSprite.GlobalID, hairRect, character.HairColor, z);
+
+			}
+			static void TwistHair (Character character, Cell[] cells, RectInt hairRect) {
+				int twist = character.HeadTwist;
+				if (twist == 0 || cells == null || cells.Length != 9 || !character.Head.FrontSide) return;
+				foreach (var cell in cells) cell.ReturnPivots();
+				int offsetX = (hairRect.width * twist).Abs() / 4000;
+				int offsetX2 = offsetX + offsetX;
+				var cell0 = cells[0];
+				var cell1 = cells[1];
+				var cell2 = cells[2];
+				var cell3 = cells[3];
+				var cell4 = cells[4];
+				var cell5 = cells[5];
+				var cell6 = cells[6];
+				var cell7 = cells[7];
+				var cell8 = cells[8];
+				if (twist > 0) {
+					// Twist R
+					cell0.X -= offsetX;
+					cell3.X -= offsetX;
+					cell6.X -= offsetX;
+					cell0.Width = SmartAdd(cell0.Width, offsetX2);
+					cell3.Width = SmartAdd(cell3.Width, offsetX2);
+					cell6.Width = SmartAdd(cell6.Width, offsetX2);
+
+					cell1.X += offsetX;
+					cell4.X += offsetX;
+					cell7.X += offsetX;
+					cell1.Width = SmartAdd(cell1.Width, -offsetX);
+					cell4.Width = SmartAdd(cell4.Width, -offsetX);
+					cell7.Width = SmartAdd(cell7.Width, -offsetX);
+
+					cell2.Width = SmartAdd(cell2.Width, -offsetX);
+					cell5.Width = SmartAdd(cell5.Width, -offsetX);
+					cell8.Width = SmartAdd(cell8.Width, -offsetX);
 				} else {
-					return CellRenderer.Draw_9Slice(hairSprite.GlobalID, hairRect, character.HairColor, z);
+					// Twist L
+					cell0.X += offsetX;
+					cell3.X += offsetX;
+					cell6.X += offsetX;
+					cell0.Width = SmartAdd(cell0.Width, -offsetX);
+					cell3.Width = SmartAdd(cell3.Width, -offsetX);
+					cell6.Width = SmartAdd(cell6.Width, -offsetX);
+
+					cell1.Width = SmartAdd(cell1.Width, -offsetX);
+					cell4.Width = SmartAdd(cell4.Width, -offsetX);
+					cell7.Width = SmartAdd(cell7.Width, -offsetX);
+
+					cell2.X -= offsetX;
+					cell5.X -= offsetX;
+					cell8.X -= offsetX;
+					cell2.Width = SmartAdd(cell2.Width, offsetX2);
+					cell5.Width = SmartAdd(cell5.Width, offsetX2);
+					cell8.Width = SmartAdd(cell8.Width, offsetX2);
 				}
+				static int SmartAdd (int width, int offset) =>
+					width > 0 == offset > 0 || offset.Abs() < width.Abs() ? width + offset : 0;
 			}
 			static void MakeHairFlow (Character character, Cell[] cells, bool strech) {
 

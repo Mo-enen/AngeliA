@@ -57,7 +57,7 @@ namespace AngeliaFramework {
 	public abstract class AutoSpriteFace : Face {
 		private FaceSpriteID SpriteID { get; init; }
 		public AutoSpriteFace () => SpriteID = new((GetType().DeclaringType ?? GetType()).AngeName());
-		protected override void DrawFace (Character character) => DrawSprite(character, SpriteID[GetFaceType(character)]);
+		protected override void DrawFace (Character character) => DrawFaceSprite(character, SpriteID[GetFaceType(character)]);
 	}
 
 
@@ -117,7 +117,7 @@ namespace AngeliaFramework {
 			) {
 				face.DrawFace(character);
 			} else {
-				DrawSprite(character, DefaultSpriteID[GetFaceType(character)]);
+				DrawFaceSprite(character, DefaultSpriteID[GetFaceType(character)]);
 			}
 		}
 
@@ -129,7 +129,7 @@ namespace AngeliaFramework {
 
 
 		// UTL
-		protected static void DrawSprite (Character character, int spriteGroupID, Vector4Int borderOffset = default) {
+		protected static void DrawFaceSprite (Character character, int spriteGroupID, Vector4Int borderOffset = default) {
 
 			var head = character.Head;
 			if (spriteGroupID == 0 || head.Tint.a == 0 || !head.FrontSide) return;
@@ -186,11 +186,24 @@ namespace AngeliaFramework {
 				faceRect = faceRect.Expand(borderOffset);
 			}
 
-			CellRenderer.Draw_9Slice(
+
+			// Draw
+			var cells = CellRenderer.Draw_9Slice(
 				sprite.GlobalID,
 				faceRect.CenterX(), faceRect.y, 500, 0, 0, faceRect.width, faceRect.height,
 				Const.WHITE, 33
 			);
+
+			// Twist
+			int twist = character.HeadTwist;
+			if (cells != null && twist != 0) {
+				int offsetX = faceRect.width * twist / 2000;
+				foreach (var cell in cells) {
+					cell.X += offsetX;
+					cell.Width -= offsetX.Abs() / 2;
+				}
+				CellRenderer.ClampCells(cells, headRect);
+			}
 
 		}
 

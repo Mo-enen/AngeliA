@@ -180,6 +180,14 @@ namespace AngeliaFramework {
 				rotR = (rotR + selfRot).Clamp(-20, 20);
 			}
 
+			// Twist
+			int twist = character.HeadTwist;
+			if (twist != 0) {
+				int offset = A2G * twist.Abs() / 500;
+				expandSizeL.x -= offset;
+				expandSizeR.x -= offset;
+			}
+
 			// Draw
 			if (CellRenderer.TryGetSprite(leftEarID, out var earSpriteL)) {
 				CellRenderer.Draw(

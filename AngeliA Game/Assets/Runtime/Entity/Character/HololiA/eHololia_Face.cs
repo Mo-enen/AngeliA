@@ -117,7 +117,7 @@ namespace AngeliaGame {
 		protected override void DrawFace (Character character) {
 			base.DrawFace(character);
 			if (character.AnimatedPoseType != CharacterPoseAnimationType.Sleep) {
-				DrawSprite(character, GLASS_CODE, new Vector4Int(16, 16, 0, 0));
+				DrawFaceSprite(character, GLASS_CODE, new Vector4Int(16, 16, 0, 0));
 			}
 		}
 	}
@@ -126,7 +126,7 @@ namespace AngeliaGame {
 		protected override void DrawFace (Character character) {
 			base.DrawFace(character);
 			if (character.AnimatedPoseType != CharacterPoseAnimationType.Sleep) {
-				DrawSprite(character, GLASS_CODE, new Vector4Int(16, 16, 0, 0));
+				DrawFaceSprite(character, GLASS_CODE, new Vector4Int(16, 16, 0, 0));
 			}
 		}
 	}

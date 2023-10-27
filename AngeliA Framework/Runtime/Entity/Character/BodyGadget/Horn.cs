@@ -27,7 +27,7 @@ namespace AngeliaFramework {
 			int idL = character.FacingFront ? SpriteIdL : SpriteIdLBack;
 			int idR = character.FacingFront ? SpriteIdR : SpriteIdRBack;
 			DrawHornSprite(
-				character.Head, idL, idR,
+				character, idL, idR,
 				FrontOfHeadL(character), FrontOfHeadR(character),
 				AnchorOnFace,
 				character.FacingFront == character.FacingRight ? 0 : FacingLeftOffsetX
@@ -85,11 +85,12 @@ namespace AngeliaFramework {
 
 		// UTL
 		protected static void DrawHornSprite (
-			BodyPart head, int spriteIdLeft, int spriteIdRight,
+			Character character, int spriteIdLeft, int spriteIdRight,
 			bool frontOfHeadL = true, bool frontOfHeadR = true, bool onFace = false, int offsetX = 0
 		) {
 
 			if (spriteIdLeft == 0 && spriteIdRight == 0) return;
+			var head = character.Head;
 			if (head.Tint.a == 0) return;
 
 			var headRect = head.GetGlobalRect();
@@ -101,13 +102,20 @@ namespace AngeliaFramework {
 				offsetX = -offsetX;
 			}
 
+			// Twist
+			int twist = character.HeadTwist;
+			int twistWidth = 0;
+			if (twist != 0) {
+				twistWidth -= 16 * twist.Abs() / 500;
+			}
+
 			if (CellRenderer.TryGetSprite(spriteIdLeft, out var sprite)) {
 				CellRenderer.Draw(
 					spriteIdLeft,
 					headRect.xMin + offsetX,
 					head.Height > 0 ? headRect.yMax : headRect.yMin,
 					sprite.PivotX, sprite.PivotY, 0,
-					sprite.GlobalWidth * (flipLR ? -1 : 1),
+					sprite.GlobalWidth * (flipLR ? -1 : 1) + twistWidth,
 					head.Height.Sign3() * sprite.GlobalHeight,
 					head.Z + (head.FrontSide == frontOfHeadL ? 34 : -34)
 				);
@@ -119,7 +127,7 @@ namespace AngeliaFramework {
 					headRect.xMax + offsetX,
 					head.Height > 0 ? headRect.yMax : headRect.yMin,
 					sprite.PivotX, sprite.PivotY, 0,
-					sprite.GlobalWidth * (flipLR ? -1 : 1),
+					sprite.GlobalWidth * (flipLR ? -1 : 1) + twistWidth,
 					head.Height.Sign3() * sprite.GlobalHeight,
 					head.Z + (head.FrontSide == frontOfHeadR ? 34 : -34)
 				);
