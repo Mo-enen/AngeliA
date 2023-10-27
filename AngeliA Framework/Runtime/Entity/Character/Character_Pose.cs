@@ -753,14 +753,11 @@ namespace AngeliaFramework {
 			if (!Head.FrontSide) {
 				HeadTwist = 0;
 				return;
-			}
-			HeadTwist = QTest.Int["t", 0, -1000, 1000];
+			} else if (HeadTwist == 0) return;
 			HeadTwist = HeadTwist.Clamp(-1000, 1000);
-			if (HeadTwist != 0) {
-				Head.Width = Head.Width.Sign() * (Head.Width.Abs() - (Head.Width * HeadTwist).Abs() / 2000);
-				Head.X += Head.Width.Abs() * HeadTwist / 2000;
-				Head.GlobalX = X + PoseRootX + Head.X;
-			}
+			Head.Width = Head.Width.Sign() * (Head.Width.Abs() - (Head.Width * HeadTwist).Abs() / 2000);
+			Head.X += Head.Width.Abs() * HeadTwist / 2000;
+			Head.GlobalX = X + PoseRootX + Head.X;
 		}
 
 

@@ -14,7 +14,7 @@ namespace AngeliaGame {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 
-			CellRenderer.Draw(Const.PIXEL, Rect, new Color32(255, 0, 0, 128), 0);
+			//CellRenderer.Draw(Const.PIXEL, Rect, new Color32(255, 0, 0, 128), 0);
 			
 		}
 

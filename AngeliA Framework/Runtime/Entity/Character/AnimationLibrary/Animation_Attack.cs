@@ -321,6 +321,7 @@ namespace AngeliaFramework {
 			ResetShoulderAndUpperArm();
 
 			Target.PoseTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
+			Target.HeadTwist = -FacingSign * (int)(frame01 * 600 - 300);
 
 			// Left Side
 			if (
@@ -372,6 +373,7 @@ namespace AngeliaFramework {
 			ResetShoulderAndUpperArm();
 
 			Target.PoseTwist = FacingSign * (int)(frame01 * 2000 - 1000);
+			Target.HeadTwist = FacingSign * (int)(frame01 * 600 - 300);
 
 			// Left Side
 			if (
