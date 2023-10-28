@@ -928,6 +928,7 @@ namespace AngeliaFramework {
 			}
 
 			Target.PoseTwist = (pingpong - 2) * 1000;
+			Target.HeadTwist = (pingpong - 2) * -300;
 
 			Head.FrontSide = facingFront;
 			Body.FrontSide = facingFront;

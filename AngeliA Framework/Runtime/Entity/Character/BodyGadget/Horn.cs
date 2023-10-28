@@ -110,7 +110,7 @@ namespace AngeliaFramework {
 			}
 
 			if (CellRenderer.TryGetSprite(spriteIdLeft, out var sprite)) {
-				CellRenderer.Draw(
+				var cell = CellRenderer.Draw(
 					spriteIdLeft,
 					headRect.xMin + offsetX,
 					head.Height > 0 ? headRect.yMax : headRect.yMin,
@@ -119,10 +119,14 @@ namespace AngeliaFramework {
 					head.Height.Sign3() * sprite.GlobalHeight,
 					head.Z + (head.FrontSide == frontOfHeadL ? 34 : -34)
 				);
+				if (character.HeadRotation != 0) {
+					cell.RotateAround(character.HeadRotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
+					cell.Y -= character.Head.Height.Abs() * character.HeadRotation.Abs() / 360;
+				}
 			}
 
 			if (CellRenderer.TryGetSprite(spriteIdRight, out sprite)) {
-				CellRenderer.Draw(
+				var cell = CellRenderer.Draw(
 					spriteIdRight,
 					headRect.xMax + offsetX,
 					head.Height > 0 ? headRect.yMax : headRect.yMin,
@@ -131,6 +135,10 @@ namespace AngeliaFramework {
 					head.Height.Sign3() * sprite.GlobalHeight,
 					head.Z + (head.FrontSide == frontOfHeadR ? 34 : -34)
 				);
+				if (character.HeadRotation != 0) {
+					cell.RotateAround(character.HeadRotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
+					cell.Y -= character.Head.Height.Abs() * character.HeadRotation.Abs() / 360;
+				}
 			}
 
 		}

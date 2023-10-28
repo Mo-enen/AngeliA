@@ -6,7 +6,7 @@ using AngeliaFramework;
 
 namespace AngeliaGame {
 
-	public abstract class iAxeWeapon : AutoSpriteWeapon, IMeleeWeapon {
+	public abstract class AxeWeapon : AutoSpriteWeapon, IMeleeWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 		public sealed override WeaponType WeaponType => WeaponType.Axe;
 		public override int BulletID => BULLET_ID;
@@ -14,29 +14,33 @@ namespace AngeliaGame {
 		int IMeleeWeapon.RangeXLeft => 275;
 		int IMeleeWeapon.RangeXRight => 384;
 		int IMeleeWeapon.RangeY => 512;
+		public override int AttackDuration => 12;
+		public override int AttackCooldown => 2;
 	}
 
-	public class iAxeWood : iAxeWeapon { }
-	public class iAxeIron : iAxeWeapon { }
-	public class iAxeGold : iAxeWeapon { }
-	public class iBattleAxe : iAxeWeapon { }
-	public class iErgonomicAxe : iAxeWeapon { }
-	public class iAxeJagged : iAxeWeapon { }
-	public class iAxeOrc : iAxeWeapon { }
-	public class iAxeCursed : iAxeWeapon {
+	public class iAxeWood : AxeWeapon { }
+	public class iAxeIron : AxeWeapon { }
+	public class iAxeGold : AxeWeapon { }
+	public class iBattleAxe : AxeWeapon { }
+	public class iErgonomicAxe : AxeWeapon { }
+	public class iAxeJagged : AxeWeapon { }
+	public class iAxeOrc : AxeWeapon { }
+	public class iAxeCursed : AxeWeapon {
 		protected override Cell DrawWeaponSprite (Character character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
 			AngeUtil.DrawGlitchEffect(cell, Game.GlobalFrame);
 			return cell;
 		}
 	}
-	public class iPickWood : iAxeWeapon { }
-	public class iPickIron : iAxeWeapon { }
-	public class iPickGold : iAxeWeapon { }
-	public class iAxeGreat : iAxeWeapon {
+	public class iPickWood : AxeWeapon { }
+	public class iPickIron : AxeWeapon { }
+	public class iPickGold : AxeWeapon { }
+	public class iAxeGreat : AxeWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override int AttackDuration => 16;
+		public override int AttackCooldown => 3;
 	}
-	public class iAxeButterfly : iAxeWeapon { }
-	public class iAxeBone : iAxeWeapon { }
-	public class iAxeStone : iAxeWeapon { }
+	public class iAxeButterfly : AxeWeapon { }
+	public class iAxeBone : AxeWeapon { }
+	public class iAxeStone : AxeWeapon { }
 }

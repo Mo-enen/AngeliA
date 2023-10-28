@@ -137,7 +137,7 @@ namespace AngeliaFramework {
 		private int SpriteIdHead { get; init; }
 		private int SpriteIdChain { get; init; }
 		protected virtual int ChainLength => Const.CEL * 7 / 9;
-		protected virtual int ChainLengthAttackGrow => 1000;
+		protected virtual int ChainLengthAttackGrow => 500;
 		protected virtual int HeadCount => 1;
 
 		public AutoSpriteFlail () {
@@ -169,10 +169,7 @@ namespace AngeliaFramework {
 				// Attack
 				int localFrame = Game.GlobalFrame - character.LastAttackFrame;
 				int duration = character.AttackDuration;
-				int swingX = Const.CEL.LerpTo(
-					-Const.CEL,
-					Ease.OutBack((float)localFrame / duration)
-				);
+				int swingX = Const.CEL.LerpTo(-Const.CEL, Ease.OutBack((float)localFrame / duration));
 				headPos = handleCell.LocalToGlobal(
 					handleCell.Width / 2 + (character.FacingRight ? -swingX : swingX) + headIndex * 96,
 					handleCell.Height + chainLength - headIndex * 16
@@ -247,6 +244,7 @@ namespace AngeliaFramework {
 	public abstract class AutoSpriteWeapon : Weapon {
 
 		protected int SpriteID { get; init; }
+		protected virtual bool IgnoreGrabTwist => false;
 
 		public AutoSpriteWeapon () {
 			SpriteID = $"{GetType().AngeName()}.Main".AngeHash();
@@ -267,8 +265,8 @@ namespace AngeliaFramework {
 			bool attacking = character.IsAttacking;
 			int grabScaleL = character.HandGrabScaleL;
 			int grabScaleR = character.HandGrabScaleR;
-			int twistL = attacking ? character.HandGrabAttackTwistL : 1000;
-			int twistR = attacking ? character.HandGrabAttackTwistR : 1000;
+			int twistL = attacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistL : 1000;
+			int twistR = attacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistR : 1000;
 			int zLeft = character.HandL.Z - 1;
 			int zRight = character.HandR.Z - 1;
 
@@ -400,7 +398,7 @@ namespace AngeliaFramework {
 						character,
 						(centerL.x + centerR.x) / 2,
 						(centerL.y + centerR.y) / 2,
-						sprite.GlobalWidth * twistR / 1000, 
+						sprite.GlobalWidth * twistR / 1000,
 						sprite.GlobalHeight,
 						character.HandGrabRotationR,
 						grabScaleR,

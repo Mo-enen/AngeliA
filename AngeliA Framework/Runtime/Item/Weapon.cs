@@ -28,6 +28,7 @@ namespace AngeliaFramework {
 		public virtual int AttackCooldown => 2;
 		public virtual int BulletID => DefaultBullet.TYPE_ID;
 		public virtual int ChargeAttackDuration => int.MaxValue;
+		public virtual int? MovementLoseRateOnAttack => null;
 		public virtual bool RepeatAttackWhenHolding => false;
 		public virtual bool LockFacingOnAttack => false;
 

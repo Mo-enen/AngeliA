@@ -194,17 +194,30 @@ namespace AngeliaFramework {
 				Const.WHITE, 33
 			);
 
-			// Twist
-			int twist = character.HeadTwist;
-			if (cells != null && twist != 0) {
-				int offsetX = faceRect.width * twist / 2000;
-				foreach (var cell in cells) {
-					cell.X += offsetX;
-					cell.Width -= offsetX.Abs() / 2;
-				}
-				CellRenderer.ClampCells(cells, headRect);
-			}
+			if (cells != null) {
 
+				// Twist
+				int twist = character.HeadTwist;
+				if (twist != 0) {
+					int offsetX = faceRect.width * twist / 2000;
+					foreach (var cell in cells) {
+						cell.X += offsetX;
+						cell.Width -= offsetX.Abs() / 2;
+					}
+					CellRenderer.ClampCells(cells, headRect);
+				}
+
+				// Rotate
+				int headRot = character.HeadRotation;
+				if (headRot != 0) {
+					var body = character.Body;
+					int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;
+					foreach (var cell in cells) {
+						cell.RotateAround(headRot, body.GlobalX, body.GlobalY + body.Height);
+						cell.Y -= offsetY;
+					}
+				}
+			}
 		}
 
 

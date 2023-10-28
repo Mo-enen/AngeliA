@@ -270,6 +270,7 @@ namespace AngeliaFramework {
 			RepeatAttackWhenHolding.Override = null;
 			MinimalChargeAttackDuration.Override = null;
 			LockFacingOnAttack.Override = null;
+			MovementLoseRateOnAttack.Override = null;
 
 			int invCapacity = GetInventoryCapacity();
 			if (invCapacity > 0) {
@@ -299,6 +300,7 @@ namespace AngeliaFramework {
 						RepeatAttackWhenHolding.Override = weapon.RepeatAttackWhenHolding;
 						MinimalChargeAttackDuration.Override = weapon.ChargeAttackDuration;
 						LockFacingOnAttack.Override = weapon.LockFacingOnAttack;
+						MovementLoseRateOnAttack.Override = weapon.MovementLoseRateOnAttack;
 						if (attackStart) Bullet.SpawnBullet(weapon.BulletID, this, weapon);
 					}
 				}

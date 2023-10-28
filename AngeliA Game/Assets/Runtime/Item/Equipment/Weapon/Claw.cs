@@ -5,64 +5,26 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iClawWood : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Claw;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
+	public abstract class ClawWeapon : AutoSpriteWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Claw;
+		public sealed override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
+		public override int AttackDuration => 10;
+		public override int AttackCooldown => 0;
+		public override int? MovementLoseRateOnAttack => 1000;
 	}
-	public class iClawIron : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Claw;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
-	}
-	public class iClawGold : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Claw;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
-	}
-	public class iMandarinDuckAxe : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Claw;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
-	}
-	public class iClawCat : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Claw;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
-	}
-	public class iClawFox : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Claw;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
-	}
-	public class iKatars : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Claw;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
-	}
-	public class iKatarsTripple : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Claw;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
-	}
-	public class iEmeiPiercer : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Claw;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
-	}
-	public class iBaton : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Claw;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
-	}
-	public class iKnuckleDuster : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Claw;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
-	}
-	public class iEmeiFork : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Claw;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
-	}
-	public class iWuXingHook : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Claw;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
-	}
-	public class iKatarsRuby : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Claw;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
-	}
-	public class iKatarsJagged : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Claw;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
-	}
+	public class iClawWood : ClawWeapon { }
+	public class iClawIron : ClawWeapon { }
+	public class iClawGold : ClawWeapon { }
+	public class iMandarinDuckAxe : ClawWeapon { }
+	public class iClawCat : ClawWeapon { }
+	public class iClawFox : ClawWeapon { }
+	public class iKatars : ClawWeapon { }
+	public class iKatarsTripple : ClawWeapon { }
+	public class iEmeiPiercer : ClawWeapon { }
+	public class iBaton : ClawWeapon { }
+	public class iKnuckleDuster : ClawWeapon { }
+	public class iEmeiFork : ClawWeapon { }
+	public class iWuXingHook : ClawWeapon { }
+	public class iKatarsRuby : ClawWeapon { }
+	public class iKatarsJagged : ClawWeapon { }
 }

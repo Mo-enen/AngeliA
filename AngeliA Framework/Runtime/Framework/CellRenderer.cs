@@ -103,7 +103,7 @@ namespace AngeliaFramework {
 			PivotY = 0;
 		}
 		public void RotateAround (int rotation, int pointX, int pointY) {
-			if (rotation == Rotation) return;
+			if (rotation == Rotation || Width == 0 || Height == 0) return;
 			var localPoint = GlobalToLocal(pointX, pointY);
 			PivotX = (float)localPoint.x / Width;
 			PivotY = (float)localPoint.y / Height;

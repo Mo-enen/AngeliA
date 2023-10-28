@@ -252,7 +252,8 @@ namespace AngeliaFramework {
 			if (character.Head.FrontSide) {
 				var bCells = DrawSprite(spriteBackF, character, -32, out var backHairRect);
 				TwistHair(character, bCells, backHairRect);
-				MakeHairFlow(character, bCells, true);
+				RotateHair(character, bCells);
+				FlowHair(character, bCells, true);
 			}
 
 			// Front Hair
@@ -262,7 +263,8 @@ namespace AngeliaFramework {
 				character, 32, out var hairRect
 			);
 			TwistHair(character, fCells, hairRect);
-			MakeHairFlow(character, fCells, false);
+			RotateHair(character, fCells);
+			FlowHair(character, fCells, false);
 			return fCells;
 
 			// Func
@@ -371,7 +373,17 @@ namespace AngeliaFramework {
 				static int SmartAdd (int width, int offset) =>
 					width > 0 == offset > 0 || offset.Abs() < width.Abs() ? width + offset : 0;
 			}
-			static void MakeHairFlow (Character character, Cell[] cells, bool strech) {
+			static void RotateHair (Character character, Cell[] cells) {
+				int headRot = character.HeadRotation;
+				if (headRot == 0 || cells == null) return;
+				var body = character.Body;
+				int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;
+				foreach (var cell in cells) {
+					cell.RotateAround(headRot, body.GlobalX, body.GlobalY + body.Height);
+					cell.Y -= offsetY;
+				}
+			}
+			static void FlowHair (Character character, Cell[] cells, bool strech) {
 
 				if (
 					cells == null || cells.Length != 9 ||

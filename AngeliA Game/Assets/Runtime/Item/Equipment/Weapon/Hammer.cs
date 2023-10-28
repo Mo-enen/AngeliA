@@ -5,64 +5,36 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iHammerWood : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Hammer;
+	public abstract class HammerWeapon : AutoSpriteWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Hammer;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		protected override bool IgnoreGrabTwist => true;
 	}
-	public class iHammerIron : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Hammer;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iHammerGold : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Hammer;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iMaceRound : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Hammer;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iMaceSkull : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Hammer;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iBaseballBatWood : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Hammer;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iMaceSpiked : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Hammer;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iBian : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Hammer;
+	public class iHammerWood : HammerWeapon { }
+	public class iHammerIron : HammerWeapon { }
+	public class iHammerGold : HammerWeapon { }
+	public class iMaceRound : HammerWeapon { }
+	public class iMaceSkull : HammerWeapon { }
+	public class iBaseballBatWood : HammerWeapon { }
+	public class iMaceSpiked : HammerWeapon { }
+	public class iBian : HammerWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
 	}
-	public class iHammerRiceCake : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Hammer;
+	public class iHammerRiceCake : HammerWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
-	public class iHammerGoatHorn : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Hammer;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iBaseballBatIron : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Hammer;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iHammerThunder : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Hammer;
+	public class iHammerGoatHorn : HammerWeapon { }
+	public class iBaseballBatIron : HammerWeapon { }
+	public class iHammerThunder : HammerWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
-	public class iHammerMoai : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Hammer;
+	public class iHammerMoai : HammerWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
-	public class iHammerPaladin : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Hammer;
+	public class iHammerPaladin : HammerWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
-	public class iHammerRuby : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Hammer;
+	public class iHammerRuby : HammerWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 }

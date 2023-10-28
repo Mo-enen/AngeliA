@@ -179,6 +179,9 @@ namespace AngeliaFramework {
 	public abstract class Cloth {
 
 
+		// Const
+		private static readonly Cell[] SINGLE_CELL = { CellRenderer.EMPTY_CELL };
+
 		// Api
 		public int TypeID { get; init; }
 		protected abstract ClothType ClothType { get; }
@@ -301,7 +304,7 @@ namespace AngeliaFramework {
 			if (spriteID == 0) return;
 			var head = character.Head;
 
-			// Twist
+			// Head Twist
 			int twist = character.HeadTwist;
 			int widthAmount = 1000;
 			if (twist != 0) {
@@ -309,6 +312,7 @@ namespace AngeliaFramework {
 			}
 
 			// Draw
+			Cell[] cells = null;
 			if (CellRenderer.HasSpriteGroup(spriteID)) {
 				if (head.FrontSide) {
 					// Front
@@ -318,7 +322,7 @@ namespace AngeliaFramework {
 						if (usePixelShift && CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
 							usePixelShift = false;
 						}
-						AttachClothOn(
+						cells = AttachClothOn(
 							head, Direction3.Up, sprite.GlobalID,
 							front ? 34 : -34, widthAmount, 1000, flipX: head.Height < 0, 0,
 							usePixelShift ? (front ? -16 : 16) : 0, 0
@@ -332,7 +336,7 @@ namespace AngeliaFramework {
 						if (usePixelShift && CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
 							usePixelShift = false;
 						}
-						AttachClothOn(
+						cells = AttachClothOn(
 							head, Direction3.Up, sprite.GlobalID,
 							front ? 34 : -34, widthAmount, 1000, flipX: head.Height < 0, 0,
 							usePixelShift ? (front ? -16 : 16) : 0, 0
@@ -349,13 +353,20 @@ namespace AngeliaFramework {
 				if (usePixelShift && CellRenderer.TryGetMeta(spriteID, out var meta) && meta.IsTrigger) {
 					usePixelShift = false;
 				}
-				AttachClothOn(
+				cells = AttachClothOn(
 					head, Direction3.Up, spriteID,
 					front ? 34 : -34, widthAmount, 1000, flipX: head.Height < 0, 0,
 					usePixelShift ? (front ? -16 : 16) : 0, 0
 				);
 			}
-
+			// Head Rotate
+			if (cells != null && character.HeadRotation != 0) {
+				int offsetY = character.Head.Height.Abs() * character.HeadRotation.Abs() / 360;
+				foreach (var cell in cells) {
+					cell.RotateAround(character.HeadRotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
+					cell.Y -= offsetY;
+				}
+			}
 		}
 
 
@@ -568,16 +579,16 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void AttachClothOn (
+		public static Cell[] AttachClothOn (
 			BodyPart bodyPart, Direction3 verticalLocation, int spriteID, int z,
 			bool flipX = false, int localRotation = 0, int shiftPixelX = 0, int shiftPixelY = 0
 		) => AttachClothOn(bodyPart, verticalLocation, spriteID, z, 1000, 1000, flipX, localRotation, shiftPixelX, shiftPixelY);
-		public static void AttachClothOn (
+		public static Cell[] AttachClothOn (
 			BodyPart bodyPart, Direction3 verticalLocation, int spriteID, int z,
 			int widthAmount = 1000, int heightAmount = 1000, bool flipX = false, int localRotation = 0, int shiftPixelX = 0, int shiftPixelY = 0
 		) {
-			if (spriteID == 0) return;
-			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
+			if (spriteID == 0) return null;
+			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return null;
 			var location = verticalLocation switch {
 				Direction3.Up => bodyPart.GlobalLerp(0.5f, 1f),
 				Direction3.None => bodyPart.GlobalLerp(0.5f, 0.5f),
@@ -586,8 +597,9 @@ namespace AngeliaFramework {
 			};
 			location.x += shiftPixelX;
 			location.y += shiftPixelY;
+			Cell[] result;
 			if (sprite.GlobalBorder.IsZero) {
-				CellRenderer.Draw(
+				var cell = CellRenderer.Draw(
 					sprite.GlobalID,
 					location.x,
 					location.y,
@@ -596,8 +608,10 @@ namespace AngeliaFramework {
 					(bodyPart.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight) * heightAmount / 1000,
 					z
 				);
+				result = SINGLE_CELL;
+				result[0] = cell;
 			} else {
-				CellRenderer.Draw_9Slice(
+				result = CellRenderer.Draw_9Slice(
 					sprite.GlobalID,
 					location.x,
 					location.y,
@@ -610,6 +624,7 @@ namespace AngeliaFramework {
 			if (CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG) {
 				bodyPart.Tint = Const.CLEAR;
 			}
+			return result;
 		}
 
 
