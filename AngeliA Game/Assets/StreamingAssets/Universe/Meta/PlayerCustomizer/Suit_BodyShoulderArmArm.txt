@@ -47,6 +47,7 @@ KoroneBodySuit
 CalliopeBodySuit
 KiaraBodySuit
 InaBodySuit
+InaCasualBodySuit
 GuraBodySuit
 AmeBodySuit
 #EN Hope

@@ -10,12 +10,13 @@ namespace AngeliaFramework {
 
 	public abstract class AutoSpriteBraidHair : AutoSpriteHair {
 
+		private static readonly Cell[] SINGLE_CELL = new Cell[] { new Cell() };
 		private int BraidL { get; init; }
 		private int BraidR { get; init; }
 		protected virtual bool GetFrontL (Character character) => character.Head.FrontSide;
 		protected virtual bool GetFrontR (Character character) => character.Head.FrontSide;
 		protected virtual int FacingLeftOffsetX => 0;
-		protected virtual bool AllowLimbRotate => false;
+		protected virtual bool UseLimbRotate => false;
 		protected virtual bool ForceBackOnFlow => true;
 		protected virtual int MotionAmount => 618;
 		protected virtual int FlowMotionAmount => 618;
@@ -39,7 +40,19 @@ namespace AngeliaFramework {
 			return cells;
 		}
 
-		private void DrawBraid (Character character, Cell[] cells, bool forceBackOnFlow) {
+		private void DrawBraid (Character character, Cell[] cells, bool forceBackOnFlow) => DrawBraid(character, cells, forceBackOnFlow, BraidL, BraidR, GetFrontL(character), GetFrontR(character), PositionAmountX, PositionAmountY, FacingLeftOffsetX, MotionAmount, FlowMotionAmount, DropMotionAmount, UseLimbRotate);
+
+		public static void DrawBraid (
+			Character character, bool forceBackOnFlow, int braidL, int braidR,
+			bool isFrontL, bool isFrontR, int positionAmountX = 0, int positionAmountY = 0,
+			int facingLeftOffsetX = 0, int motionAmount = 618, int flowMotionAmount = 618, int dropMotionAmount = 200, bool useLimbRotate = false
+		) => DrawBraid(character, null, forceBackOnFlow, braidL, braidR, isFrontL, isFrontR, positionAmountX, positionAmountY, facingLeftOffsetX, motionAmount, flowMotionAmount, dropMotionAmount, useLimbRotate);
+
+		private static void DrawBraid (
+			Character character, Cell[] hairCells, bool forceBackOnFlow, int braidL, int braidR,
+			bool isFrontL, bool isFrontR, int positionAmountX, int positionAmountY,
+			int facingLeftOffsetX, int motionAmount, int flowMotionAmount, int dropMotionAmount, bool useLimbRotate
+		) {
 
 			const int A2G = Const.CEL / Const.ART_CEL;
 
@@ -53,13 +66,13 @@ namespace AngeliaFramework {
 			int hairB;
 			int hairT;
 
-			if (cells != null && cells.Length != 0) {
+			if (hairCells != null && hairCells.Length != 0) {
 				// Based on Hair
-				if (cells.Length >= 9) {
-					var cellTL = cells[0];
-					var cellTR = cells[2];
-					var cellBL = cells[6];
-					var cellBR = cells[8];
+				if (hairCells.Length >= 9) {
+					var cellTL = hairCells[0];
+					var cellTR = hairCells[2];
+					var cellBL = hairCells[6];
+					var cellBR = hairCells[8];
 					hairBL = cellBL.X - (int)(cellBL.Width * cellBL.PivotX);
 					hairBR = cellBR.X - (int)(cellBR.Width * cellBR.PivotX) + cellBR.Width;
 					hairTL = cellTL.X - (int)(cellTL.Width * cellTL.PivotX);
@@ -67,7 +80,7 @@ namespace AngeliaFramework {
 					hairB = cellBL.Y - (int)(cellBL.Height * cellBL.PivotY);
 					hairT = cellTL.Y - (int)(cellTL.Height * cellTL.PivotY) + cellTL.Height;
 				} else {
-					var cell = cells[0];
+					var cell = hairCells[0];
 					hairBL = hairTL = cell.X - (int)(cell.Width * cell.PivotX);
 					hairBR = hairTR = hairBL + cell.Width;
 					hairB = cell.Y - (int)(cell.Height * cell.PivotY);
@@ -85,56 +98,57 @@ namespace AngeliaFramework {
 				hairT = headRect.yMax;
 			}
 
-			int zLeft = GetFrontL(character) ? 33 : -33;
-			int zRight = GetFrontR(character) ? 33 : -33;
+			int zLeft = isFrontL ? 33 : -33;
+			int zRight = isFrontR ? 33 : -33;
 			int lerpL = flipX ? 1000 : 0;
 			int lerpR = flipX ? 0 : 1000;
 			int lerpLY = flipY ? 1000 : 0;
 			int lerpRY = flipY ? 0 : 1000;
-			int l0 = Util.RemapUnclamped(lerpL, lerpR, hairBL, hairBR, PositionAmountX);
-			int l1 = Util.RemapUnclamped(lerpL, lerpR, hairTL, hairTR, PositionAmountX);
-			int r0 = Util.RemapUnclamped(lerpR, lerpL, hairBL, hairBR, PositionAmountX);
-			int r1 = Util.RemapUnclamped(lerpR, lerpL, hairTL, hairTR, PositionAmountX);
-			int l = Util.RemapUnclamped(lerpLY, lerpRY, l0, l1, PositionAmountY);
-			int r = Util.RemapUnclamped(lerpLY, lerpRY, r0, r1, PositionAmountY);
-			int y = Util.RemapUnclamped(lerpLY, lerpRY, hairB, hairT, PositionAmountY);
+			int l0 = Util.RemapUnclamped(lerpL, lerpR, hairBL, hairBR, positionAmountX);
+			int l1 = Util.RemapUnclamped(lerpL, lerpR, hairTL, hairTR, positionAmountX);
+			int r0 = Util.RemapUnclamped(lerpR, lerpL, hairBL, hairBR, positionAmountX);
+			int r1 = Util.RemapUnclamped(lerpR, lerpL, hairTL, hairTR, positionAmountX);
+			int l = Util.RemapUnclamped(lerpLY, lerpRY, l0, l1, positionAmountY);
+			int r = Util.RemapUnclamped(lerpLY, lerpRY, r0, r1, positionAmountY);
+			int y = Util.RemapUnclamped(lerpLY, lerpRY, hairB, hairT, positionAmountY);
 			int rot = 0;
 			int deltaHeight = 0;
 			bool rolling = character.IsRolling;
-			if (!character.FacingRight && FacingLeftOffsetX != 0) {
-				l += FacingLeftOffsetX;
-				r += FacingLeftOffsetX;
+			if (!character.FacingRight && facingLeftOffsetX != 0) {
+				l += facingLeftOffsetX;
+				r += facingLeftOffsetX;
 			}
-			if (MotionAmount != 0) {
-				rot = !flipY ? (character.DeltaPositionX * MotionAmount / 1500).Clamp(-90, 90) : 0;
-				deltaHeight = (character.DeltaPositionY * MotionAmount / 500).Clamp(-4 * A2G, 4 * A2G);
-				int braidFlow = (character.DeltaPositionX * FlowMotionAmount / 1200).Clamp(-30, 30);
-				int motionRotY = ((character.DeltaPositionY * DropMotionAmount) / 1000).Clamp(-70, 0);
+			if (motionAmount != 0) {
+				rot = !flipY ? (character.DeltaPositionX * motionAmount / 1500).Clamp(-90, 90) : 0;
+				deltaHeight = (character.DeltaPositionY * motionAmount / 500).Clamp(-4 * A2G, 4 * A2G);
+				int braidFlow = (character.DeltaPositionX * flowMotionAmount / 1200).Clamp(-30, 30);
+				int motionRotY = ((character.DeltaPositionY * dropMotionAmount) / 1000).Clamp(-70, 0);
 
-				var bcells = DrawBraid(
-					BraidL, l, y, zLeft, 0,
+				var bCells = DrawBraid(
+					braidL, l, y, zLeft, 0,
 					(character.FacingRight ? rot : rot * 2 / 3) - motionRotY,
-					flipX, flipY, deltaHeight, rolling, AllowLimbRotate
+					flipX, flipY, deltaHeight, rolling, useLimbRotate
 				);
-				Flow(bcells, character.FacingRight ? braidFlow : braidFlow / 2, forceBackOnFlow);
+				TwistRotateHair(character, bCells, false);
+				Flow(bCells, character.FacingRight ? braidFlow : braidFlow / 2, forceBackOnFlow);
 
-				bcells = DrawBraid(
-					BraidR, r, y, zRight, 1000,
+				bCells = DrawBraid(
+					braidR, r, y, zRight, 1000,
 					(character.FacingRight ? rot * 2 / 3 : rot) + motionRotY,
-					flipX, flipY, deltaHeight, rolling, AllowLimbRotate
+					flipX, flipY, deltaHeight, rolling, useLimbRotate
 				);
-				Flow(bcells, character.FacingRight ? braidFlow / 2 : braidFlow, forceBackOnFlow);
+				TwistRotateHair(character, bCells, true);
+				Flow(bCells, character.FacingRight ? braidFlow / 2 : braidFlow, forceBackOnFlow);
 
 			} else {
-				DrawBraid(BraidL, l, y, zLeft, 0, rot, flipX, flipY, deltaHeight, rolling, AllowLimbRotate);
-				DrawBraid(BraidR, r, y, zRight, 1000, rot, flipX, flipY, deltaHeight, rolling, AllowLimbRotate);
+				var bCells = DrawBraid(braidL, l, y, zLeft, 0, rot, flipX, flipY, deltaHeight, rolling, useLimbRotate);
+				TwistRotateHair(character, bCells, false);
+				bCells = DrawBraid(braidR, r, y, zRight, 1000, rot, flipX, flipY, deltaHeight, rolling, useLimbRotate);
+				TwistRotateHair(character, bCells, true);
 			}
 
 			// Func
-			static Cell[] DrawBraid (
-				int spriteID, int x, int y, int z,
-				int px, int rot, bool flipX, bool flipY, int deltaHeight, bool rolling, bool allowLimbRotate
-			) {
+			static Cell[] DrawBraid (int spriteID, int x, int y, int z, int px, int rot, bool flipX, bool flipY, int deltaHeight, bool rolling, bool allowLimbRotate) {
 				if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return null;
 				int width = flipX ? -sprite.GlobalWidth : sprite.GlobalWidth;
 				int height = flipY ? -sprite.GlobalHeight : sprite.GlobalHeight;
@@ -148,14 +162,37 @@ namespace AngeliaFramework {
 				}
 				if (!allowLimbRotate) px = 1000 - px;
 				if (sprite.GlobalBorder.IsZero) {
-					CellRenderer.Draw(spriteID, x, y, px, py, rot, width, height, z);
-					return null;
+					SINGLE_CELL[0] = CellRenderer.Draw(spriteID, x, y, px, py, rot, width, height, z);
+					return SINGLE_CELL;
 				} else {
 					return CellRenderer.Draw_9Slice(spriteID, x, y, px, py, rot, width, height, z);
 				}
 			}
+			static void TwistRotateHair (Character character, Cell[] cells, bool isRight) {
+				if (cells == null) return;
+				// Twist
+				int twist = character.HeadTwist;
+				if (twist != 0) {
+					int headCenterX = character.Head.GlobalX;
+					foreach (var cell in cells) {
+						cell.X = cell.X.LerpTo(headCenterX, twist.Abs());
+						cell.Z *= isRight == twist > 0 ? -1 : 1;
+					}
+				}
+				// Rotate
+				int headRot = character.HeadRotation;
+				if (headRot != 0) {
+					var body = character.Body;
+					int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;
+					foreach (var cell in cells) {
+						cell.Rotation -= headRot / 2;
+						cell.RotateAround(headRot, body.GlobalX, body.GlobalY + body.Height);
+						cell.Y -= offsetY;
+					}
+				}
+			}
 			static void Flow (Cell[] cells, int deltaRot, bool forceBackOnFlow) {
-				if (cells == null || deltaRot == 0) return;
+				if (cells == null || cells.Length != 9 || deltaRot == 0) return;
 				// M
 				for (int i = 3; i < 6; i++) {
 					var cell = cells[i];
@@ -198,11 +235,12 @@ namespace AngeliaFramework {
 	}
 
 
-	public abstract class Hair {
+	public abstract class Hair : BodyGadget {
 
 
 		// Const
 		private const int A2G = Const.CEL / Const.ART_CEL;
+		protected override string BaseTypeName => nameof(Hair);
 
 		// Data
 		private static readonly Dictionary<int, Hair> Pool = new();
@@ -210,7 +248,7 @@ namespace AngeliaFramework {
 
 
 		// MSG
-		[OnGameInitialize(-128)]
+		[OnGameInitialize(-127)]
 		public static void BeforeGameInitialize () {
 			Pool.Clear();
 			var charType = typeof(Character);
@@ -241,7 +279,7 @@ namespace AngeliaFramework {
 
 
 		public static bool TryGetDefaultHairID (int characterID, out int hairID) => DefaultPool.TryGetValue(characterID, out hairID);
-
+		public static bool TryGetHair (int hairID, out Hair hair) => Pool.TryGetValue(hairID, out hair);
 
 		protected abstract Cell[] DrawHair (Character character);
 
@@ -378,9 +416,37 @@ namespace AngeliaFramework {
 				if (headRot == 0 || cells == null) return;
 				var body = character.Body;
 				int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;
-				foreach (var cell in cells) {
-					cell.RotateAround(headRot, body.GlobalX, body.GlobalY + body.Height);
-					cell.Y -= offsetY;
+				if (cells.Length == 9) {
+					// 9 Slice
+					foreach (var cell in cells) cell.ReturnPivots(0.5f, 1f);
+
+					RotateCell(cells[0], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
+					RotateCell(cells[1], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
+					RotateCell(cells[2], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
+
+					cells[3].Rotation -= headRot / 3;
+					cells[4].Rotation -= headRot / 3;
+					cells[5].Rotation -= headRot / 3;
+					RotateCell(cells[3], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
+					RotateCell(cells[4], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
+					RotateCell(cells[5], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
+
+					cells[6].Rotation -= headRot / 2;
+					cells[7].Rotation -= headRot / 2;
+					cells[8].Rotation -= headRot / 2;
+					RotateCell(cells[6], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
+					RotateCell(cells[7], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
+					RotateCell(cells[8], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
+				} else {
+					// All Cells
+					foreach (var cell in cells) {
+						RotateCell(cell, headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
+					}
+				}
+				// Func
+				static void RotateCell (Cell _cell, int rotation, int pointX, int pointY, int offsetY) {
+					_cell.RotateAround(rotation, pointX, pointY);
+					_cell.Y -= offsetY;
 				}
 			}
 			static void FlowHair (Character character, Cell[] cells, bool strech) {

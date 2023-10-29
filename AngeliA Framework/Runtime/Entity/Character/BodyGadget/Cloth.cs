@@ -13,12 +13,18 @@ namespace AngeliaFramework {
 
 	public abstract class AutoSpriteCloth : Cloth {
 
+		private static readonly int HEAD_SUIT_SUFFIX = "UI.SuitSuffix.Head".AngeHash();
+		private static readonly int BODY_SUIT_SUFFIX = "UI.SuitSuffix.Body".AngeHash();
+		private static readonly int HIP_SUIT_SUFFIX = "UI.SuitSuffix.Hip".AngeHash();
+		private static readonly int SKIRT_SUIT_SUFFIX = "UI.SuitSuffix.Skirt".AngeHash();
+		private static readonly int HAND_SUIT_SUFFIX = "UI.SuitSuffix.Hand".AngeHash();
+		private static readonly int FOOT_SUIT_SUFFIX = "UI.SuitSuffix.Foot".AngeHash();
+
 		private int SpriteID0 { get; init; }
 		private int SpriteID1 { get; init; }
 		private int SpriteID2 { get; init; }
 		private int SpriteID3 { get; init; }
 		private int SpriteID4 { get; init; }
-
 
 		public AutoSpriteCloth () {
 			string name = (GetType().DeclaringType ?? GetType()).AngeName();
@@ -47,7 +53,6 @@ namespace AngeliaFramework {
 				if (!CellRenderer.HasSprite(SpriteID3) && !CellRenderer.HasSpriteGroup(SpriteID3)) SpriteID3 = 0;
 			}
 		}
-
 
 		protected override void DrawHead (Character character) {
 			if (ClothType != ClothType.Head) return;
@@ -171,6 +176,57 @@ namespace AngeliaFramework {
 			}
 		}
 
+		public string GetDisplayName () {
+
+			string typeName = GetType().AngeName();
+
+			switch (ClothType) {
+				case ClothType.Head:
+					if (typeName.EndsWith("HeadSuit", System.StringComparison.OrdinalIgnoreCase)) {
+						string smartName = typeName.Length > 8 ? typeName[..^8] : typeName;
+						string name = Language.Get($"Pat.{smartName}".AngeHash(), Util.GetDisplayName(smartName));
+						string suffix = Language.Get(HEAD_SUIT_SUFFIX, " Hat");
+						return $"{name}{suffix}";
+					}
+					break;
+				case ClothType.Body:
+					if (typeName.EndsWith("BodySuit", System.StringComparison.OrdinalIgnoreCase)) {
+						string smartName = typeName.Length > 8 ? typeName[..^8] : typeName;
+						string name = Language.Get($"Pat.{smartName}".AngeHash(), Util.GetDisplayName(smartName));
+						string suffix = Language.Get(BODY_SUIT_SUFFIX, " Cloth");
+						return $"{name}{suffix}";
+					}
+					break;
+				case ClothType.Hand:
+					if (typeName.EndsWith("HandSuit", System.StringComparison.OrdinalIgnoreCase)) {
+						string smartName = typeName.Length > 8 ? typeName[..^8] : typeName;
+						string name = Language.Get($"Pat.{smartName}".AngeHash(), Util.GetDisplayName(smartName));
+						string suffix = Language.Get(HAND_SUIT_SUFFIX, " Gloves");
+						return $"{name}{suffix}";
+					}
+					break;
+				case ClothType.Hip:
+					if (typeName.EndsWith("HipSuit", System.StringComparison.OrdinalIgnoreCase)) {
+						string smartName = typeName.Length > 7 ? typeName[..^7] : typeName;
+						string name = Language.Get($"Pat.{smartName}".AngeHash(), Util.GetDisplayName(smartName));
+						string suffix = SpriteID0 != 0 ?
+							Language.Get(HIP_SUIT_SUFFIX, " Pants") :
+							Language.Get(SKIRT_SUIT_SUFFIX, " Skirt");
+						return $"{name}{suffix}";
+					}
+					break;
+				case ClothType.Foot:
+					if (typeName.EndsWith("FootSuit", System.StringComparison.OrdinalIgnoreCase)) {
+						string smartName = typeName.Length > 8 ? typeName[..^8] : typeName;
+						string name = Language.Get($"Pat.{smartName}".AngeHash(), Util.GetDisplayName(smartName));
+						string suffix = Language.Get(FOOT_SUIT_SUFFIX, " Shoes");
+						return $"{name}{suffix}";
+					}
+					break;
+			}
+			return $"{Language.Get($"Pat.{typeName}".AngeHash(), Util.GetDisplayName(typeName))}";
+
+		}
 
 	}
 
@@ -194,7 +250,7 @@ namespace AngeliaFramework {
 
 
 		// MSG
-		[OnGameInitialize(-128)]
+		[OnGameInitialize(-127)]
 		public static void BeforeGameInitialize () {
 			Pool.Clear();
 			var charType = typeof(Character);

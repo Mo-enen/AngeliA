@@ -47,6 +47,7 @@ KoroneHipSuit
 CalliopeHipSuit
 KiaraHipSuit
 InaHipSuit
+InaCasualHipSuit
 GuraHipSuit
 AmeHipSuit
 #EN Hope

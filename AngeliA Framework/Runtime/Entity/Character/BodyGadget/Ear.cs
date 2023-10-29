@@ -39,17 +39,18 @@ namespace AngeliaFramework {
 	}
 
 
-	public abstract class Ear {
+	public abstract class Ear : BodyGadget {
 
 
 		// VAR
 		private const int A2G = Const.CEL / Const.ART_CEL;
 		private static readonly Dictionary<int, Ear> Pool = new();
 		private static readonly Dictionary<int, int> DefaultPool = new();
-
+		private static readonly int DEF_SUFFIX = "".AngeHash();
+		protected override string BaseTypeName => nameof(Ear);
 
 		// MSG
-		[OnGameInitialize(-128)]
+		[OnGameInitialize(-127)]
 		public static void BeforeGameInitialize () {
 			Pool.Clear();
 			var charType = typeof(Character);
@@ -80,7 +81,7 @@ namespace AngeliaFramework {
 
 
 		public static bool TryGetDefaultEarID (int characterID, out int earID) => DefaultPool.TryGetValue(characterID, out earID);
-
+		public static bool TryGetEar (int earID, out Ear ear) => Pool.TryGetValue(earID, out ear);
 
 		protected abstract void DrawEar (Character character);
 

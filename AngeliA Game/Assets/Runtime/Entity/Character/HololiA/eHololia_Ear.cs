@@ -44,6 +44,11 @@ namespace AngeliaGame {
 		protected override bool FrontOfHeadL (Character character) => false;
 		protected override bool FrontOfHeadR (Character character) => false;
 	}
+	public class InaCasualEar : AutoSpriteEar {
+		protected override int FacingLeftOffsetX => 16;
+		protected override bool FrontOfHeadL (Character character) => false;
+		protected override bool FrontOfHeadR (Character character) => false;
+	}
 	public class BaeEar : AutoSpriteEar {
 		protected override int FacingLeftOffsetX => 16;
 	}

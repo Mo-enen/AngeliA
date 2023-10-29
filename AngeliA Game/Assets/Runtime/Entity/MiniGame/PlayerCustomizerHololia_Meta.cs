@@ -44,7 +44,7 @@ namespace AngeliaGame {
 			"#JP 5th",      nameof(LamyHair), nameof(NeneHair), nameof(BotanHair), nameof(PolkaHair),
 			"#JP 6th",      nameof(LaplusHair), nameof(LuiHair), nameof(KoyoriHair), nameof(SakamataHair), nameof(IrohaHair),
 			"#Gamer",       nameof(MioHair), nameof(OkayuHair), nameof(KoroneHair),
-			"#EN Myth",     nameof(CalliopeHair), nameof(KiaraHair), nameof(InaHair), nameof(GuraHair), nameof(AmeHair),
+			"#EN Myth",     nameof(CalliopeHair), nameof(KiaraHair), nameof(InaHair), nameof(InaCasualHair), nameof(GuraHair), nameof(AmeHair),
 			"#EN Hope",     nameof(IRySHair),
 			"#EN Council",  nameof(FaunaHair), nameof(KroniiHair), nameof(MumeiHair), nameof(BaeHair), nameof(SanaHair),
 			"#EN Advent",   nameof(ShioriHair), nameof(BijouHair), nameof(NerissaHair), nameof(FuwaHair), nameof(MocoHair),
@@ -54,7 +54,7 @@ namespace AngeliaGame {
 			"#Staff",       nameof(FriendAHair), nameof(NodokaHair), nameof(UiHair),
 		};
 		private static string[] _BodyPart_Ears = {
-			"", nameof(FubukiEar), nameof(MioEar), nameof(OkayuEar), nameof(KoroneEar), nameof(PekoraEar), nameof(BotanEar), nameof(PolkaEar), nameof(RisuEar), nameof(InaEar), nameof(BaeEar), nameof(KoyoriEar), nameof(MocoEar), nameof(FuwaEar),
+			"", nameof(FubukiEar), nameof(MioEar), nameof(OkayuEar), nameof(KoroneEar), nameof(PekoraEar), nameof(BotanEar), nameof(PolkaEar), nameof(RisuEar), nameof(InaEar), nameof(InaCasualEar), nameof(BaeEar), nameof(KoyoriEar), nameof(MocoEar), nameof(FuwaEar),
 		};
 		private static string[] _BodyPart_Tails = {
 			"", //"AloeTail",
@@ -88,14 +88,14 @@ namespace AngeliaGame {
 			"#JP 5th",      nameof(LamyBodySuit), nameof(NeneBodySuit), nameof(BotanBodySuit), nameof(PolkaBodySuit),
 			"#JP 6th",      nameof(LaplusBodySuit), nameof(LuiBodySuit), nameof(KoyoriBodySuit), nameof(SakamataBodySuit), nameof(IrohaBodySuit),
 			"#Gamer",       nameof(MioBodySuit), nameof(OkayuBodySuit), nameof(KoroneBodySuit),
-			"#EN Myth",     nameof(CalliopeBodySuit), nameof(KiaraBodySuit), nameof(InaBodySuit), nameof(GuraBodySuit), nameof(AmeBodySuit),
+			"#EN Myth",     nameof(CalliopeBodySuit), nameof(KiaraBodySuit), nameof(InaBodySuit), nameof(InaCasualBodySuit), nameof(GuraBodySuit), nameof(AmeBodySuit),
 			"#EN Hope",     nameof(IRySBodySuit),
 			"#EN Council",  nameof(FaunaBodySuit), nameof(KroniiBodySuit), nameof(MumeiBodySuit), nameof(BaeBodySuit), nameof(SanaBodySuit),
 			"#EN Advent",   nameof(ShioriBodySuit), nameof(BijouBodySuit), nameof(NerissaBodySuit), nameof(FuwaBodySuit), nameof(MocoBodySuit),
 			"#ID 1st",      nameof(RisuBodySuit), nameof(MoonaBodySuit), nameof(IofifteenBodySuit),
 			"#ID 2nd",      nameof(OllieBodySuit), nameof(MelfissaBodySuit), nameof(ReineBodySuit),
 			"#ID 3rd",      nameof(ZetaBodySuit), nameof(KaelaBodySuit), nameof(KoboBodySuit),
-			"#Staff",       nameof(FriendABodySuit), nameof(NodokaBodySuit), nameof(UiBodySuit), 
+			"#Staff",       nameof(FriendABodySuit), nameof(NodokaBodySuit), nameof(UiBodySuit),
 		};
 		private static string[] _Suit_HipSkirtLegLegs = {
 			"",
@@ -108,14 +108,14 @@ namespace AngeliaGame {
 			"#JP 5th",      nameof(LamyHipSuit), nameof(NeneHipSuit), nameof(BotanHipSuit), nameof(PolkaHipSuit),
 			"#JP 6th",      nameof(LaplusHipSuit), nameof(LuiHipSuit), nameof(KoyoriHipSuit), nameof(SakamataHipSuit), nameof(IrohaHipSuit),
 			"#Gamer",       nameof(MioHipSuit), nameof(OkayuHipSuit), nameof(KoroneHipSuit),
-			"#EN Myth",     nameof(CalliopeHipSuit), nameof(KiaraHipSuit), nameof(InaHipSuit), nameof(GuraHipSuit), nameof(AmeHipSuit),
+			"#EN Myth",     nameof(CalliopeHipSuit), nameof(KiaraHipSuit), nameof(InaHipSuit), nameof(InaCasualHipSuit), nameof(GuraHipSuit), nameof(AmeHipSuit),
 			"#EN Hope",     nameof(IRySHipSuit),
 			"#EN Council",  nameof(FaunaHipSuit), nameof(KroniiHipSuit), nameof(MumeiHipSuit), nameof(BaeHipSuit), nameof(SanaHipSuit),
 			"#EN Advent",   nameof(ShioriHipSuit), nameof(BijouHipSuit), nameof(NerissaHipSuit), nameof(FuwaHipSuit), nameof(MocoHipSuit),
 			"#ID 1st",      nameof(RisuHipSuit), nameof(MoonaHipSuit), nameof(IofifteenHipSuit),
 			"#ID 2nd",      nameof(OllieHipSuit), nameof(MelfissaHipSuit), nameof(ReineHipSuit),
 			"#ID 3rd",      nameof(ZetaHipSuit), nameof(KaelaHipSuit), nameof(KoboHipSuit),
-			"#Staff",       nameof(FriendAHipSuit), nameof(NodokaHipSuit), nameof(UiHipSuit), 
+			"#Staff",       nameof(FriendAHipSuit), nameof(NodokaHipSuit), nameof(UiHipSuit),
 		};
 		private static string[] _Suit_Foots = {
 			"",
@@ -128,7 +128,7 @@ namespace AngeliaGame {
 			"#JP 5th",      nameof(LamyFootSuit), nameof(NeneFootSuit), nameof(BotanFootSuit), nameof(PolkaFootSuit),
 			"#JP 6th",      nameof(LaplusFootSuit), nameof(LuiFootSuit), nameof(KoyoriFootSuit), nameof(SakamataFootSuit), nameof(IrohaFootSuit),
 			"#Gamer",       nameof(MioFootSuit), nameof(OkayuFootSuit), nameof(KoroneFootSuit),
-			"#EN Myth",     nameof(CalliopeFootSuit), nameof(KiaraFootSuit), nameof(InaFootSuit), nameof(GuraFootSuit), nameof(AmeFootSuit),
+			"#EN Myth",     nameof(CalliopeFootSuit), nameof(KiaraFootSuit), nameof(InaFootSuit), nameof(InaCasualFootSuit), nameof(GuraFootSuit), nameof(AmeFootSuit),
 			"#EN Hope",     nameof(IRySFootSuit),
 			"#EN Council",  nameof(FaunaFootSuit), nameof(KroniiFootSuit), nameof(MumeiFootSuit), nameof(BaeFootSuit), nameof(SanaFootSuit),
 			"#EN Advent",   nameof(ShioriFootSuit), nameof(BijouFootSuit), nameof(NerissaFootSuit), nameof(FuwaFootSuit), nameof(MocoFootSuit),

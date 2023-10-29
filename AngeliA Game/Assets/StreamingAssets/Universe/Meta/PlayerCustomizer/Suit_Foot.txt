@@ -47,6 +47,7 @@ KoroneFootSuit
 CalliopeFootSuit
 KiaraFootSuit
 InaFootSuit
+InaCasualFootSuit
 GuraFootSuit
 AmeFootSuit
 #EN Hope

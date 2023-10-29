@@ -249,8 +249,7 @@ namespace AngeliaFramework {
 			int signZ = Body.FrontSide ? 1 : -1;
 			UpperArmL.Z = LowerArmL.Z = signZ * UpperArmL.Z.Abs();
 			UpperArmR.Z = LowerArmR.Z = signZ * UpperArmR.Z.Abs();
-			HandL.Z = signZ * HandL.Z.Abs();
-			HandR.Z = signZ * HandR.Z.Abs();
+			HandL.Z = HandR.Z = signZ * POSE_Z_HAND;
 
 			// Grab Rotation
 			Target.HandGrabScaleL = Target.HandGrabScaleR = FacingSign * 1000;
@@ -332,8 +331,7 @@ namespace AngeliaFramework {
 			int signZ = Body.FrontSide ? 1 : -1;
 			UpperArmL.Z = LowerArmL.Z = signZ * UpperArmL.Z.Abs();
 			UpperArmR.Z = LowerArmR.Z = signZ * UpperArmR.Z.Abs();
-			HandL.Z = signZ * HandL.Z.Abs();
-			HandR.Z = signZ * HandR.Z.Abs();
+			HandL.Z = HandR.Z = signZ * POSE_Z_HAND;
 
 			// Grab Rotation
 			Target.HandGrabScaleL = Target.HandGrabScaleR = FacingSign * 1000;

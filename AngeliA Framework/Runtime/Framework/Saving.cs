@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using UnityEngine;
 
 
@@ -56,9 +54,7 @@ namespace AngeliaFramework {
 
 		// ABS
 		protected abstract void DeleteKey ();
-
 		protected abstract T GetValueFromPref ();
-
 		protected abstract void SetValueToPref ();
 
 

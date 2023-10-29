@@ -65,7 +65,7 @@ namespace AngeliaFramework {
 	public class DefaultCharacterFace : AutoSpriteFace { }
 
 
-	public abstract class Face {
+	public abstract class Face : BodyGadget {
 
 
 		// VAR
@@ -73,10 +73,10 @@ namespace AngeliaFramework {
 		private static readonly Dictionary<int, Face> Pool = new();
 		private static readonly Dictionary<int, int> DefaultPool = new();
 		private static readonly FaceSpriteID DefaultSpriteID = new("");
-
+		protected override string BaseTypeName => nameof(Face);
 
 		// MSG
-		[OnGameInitialize(-128)]
+		[OnGameInitialize(-127)]
 		public static void BeforeGameInitialize () {
 			Pool.Clear();
 			var CHARACTER_TYPE = typeof(Character);
@@ -123,6 +123,7 @@ namespace AngeliaFramework {
 
 
 		public static bool TryGetDefaultFaceID (int characterID, out int faceID) => DefaultPool.TryGetValue(characterID, out faceID);
+		public static bool TryGetFace (int faceID, out Face face) => Pool.TryGetValue(faceID, out face);
 
 
 		protected abstract void DrawFace (Character character);
@@ -242,19 +243,31 @@ namespace AngeliaFramework {
 
 			// Draw Ears
 			if (!facingRight) (offsetXL, offsetXR) = (-offsetXR, -offsetXL);
-			CellRenderer.Draw(
+			var cellL = CellRenderer.Draw(
 				spriteL,
 				faceRect.x + offsetXL, faceRect.yMax, 1000, 1000, 0,
 				Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, character.SkinColor,
 				facingRight ? 33 : -33
 			);
-			CellRenderer.Draw(
+			var cellR = CellRenderer.Draw(
 				spriteR,
 				faceRect.xMax + offsetXR, faceRect.yMax, 0, 1000, 0,
 				Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, character.SkinColor,
 				facingRight ? -33 : 33
 			);
 
+			// Rotate
+			int headRot = character.HeadRotation;
+			if (headRot != 0) {
+				var body = character.Body;
+				int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;
+
+				cellL.RotateAround(headRot, body.GlobalX, body.GlobalY + body.Height);
+				cellL.Y -= offsetY;
+				cellR.RotateAround(headRot, body.GlobalX, body.GlobalY + body.Height);
+				cellR.Y -= offsetY;
+
+			}
 		}
 
 

@@ -36,16 +36,17 @@ namespace AngeliaFramework {
 	}
 
 
-	public abstract class Tail {
+	public abstract class Tail : BodyGadget {
 
 
 		// Data
 		private static readonly Dictionary<int, Tail> Pool = new();
 		private static readonly Dictionary<int, int> DefaultPool = new();
+		protected override string BaseTypeName => nameof(Tail);
 
 
 		// MSG
-		[OnGameInitialize(-128)]
+		[OnGameInitialize(-127)]
 		public static void BeforeGameInitialize () {
 			Pool.Clear();
 			var charType = typeof(Character);
@@ -76,7 +77,7 @@ namespace AngeliaFramework {
 
 
 		public static bool TryGetDefaultTailID (int characterID, out int tailID) => DefaultPool.TryGetValue(characterID, out tailID);
-
+		public static bool TryGetTail (int tailID, out Tail tail) => Pool.TryGetValue(tailID, out tail);
 
 		protected abstract void DrawTail (Character character);
 

@@ -33,7 +33,7 @@ namespace AngeliaFramework {
 	}
 
 
-	public abstract class Wing {
+	public abstract class Wing : BodyGadget {
 
 
 		// Api
@@ -42,10 +42,11 @@ namespace AngeliaFramework {
 		// Data
 		private static readonly Dictionary<int, Wing> Pool = new();
 		private static readonly Dictionary<int, int> DefaultPool = new();
+		protected override string BaseTypeName => nameof(Wing);
 
 
 		// MSG
-		[OnGameInitialize(-128)]
+		[OnGameInitialize(-127)]
 		public static void BeforeGameInitialize () {
 			Pool.Clear();
 			var charType = typeof(Character);
@@ -75,10 +76,8 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool TryGetWing (int wingID, out Wing wing) => Pool.TryGetValue(wingID, out wing);
-
-
 		public static bool TryGetDefaultWingID (int characterID, out int wingID) => DefaultPool.TryGetValue(characterID, out wingID);
+		public static bool TryGetWing (int wingID, out Wing wing) => Pool.TryGetValue(wingID, out wing);
 
 
 		protected abstract void DrawWing (Character character);

@@ -10,7 +10,7 @@ namespace AngeliaGame {
 	public class SoraHair : AutoSpriteHair { }
 	public class RobocoHair : AutoSpriteHair { }
 	public class MikoHair : AutoSpriteBraidHair {
-		protected override bool AllowLimbRotate => true;
+		protected override bool UseLimbRotate => true;
 	}
 	public class SuiseiHair : AutoSpriteHair { }
 	public class AZKiHair : AutoSpriteHair { }
@@ -18,10 +18,10 @@ namespace AngeliaGame {
 	public class FubukiHair : AutoSpriteHair { }
 	public class MatsuriHair : AutoSpriteHair { }
 	public class AkiHair : AutoSpriteBraidHair {
-		protected override bool AllowLimbRotate => true;
+		protected override bool UseLimbRotate => true;
 	}
 	public class AkaiHair : AutoSpriteBraidHair {
-		protected override bool AllowLimbRotate => true;
+		protected override bool UseLimbRotate => true;
 	}
 	public class AquaHair : AutoSpriteBraidHair {
 		protected override int FacingLeftOffsetX => 16;
@@ -42,7 +42,7 @@ namespace AngeliaGame {
 	public class KoroneHair : AutoSpriteBraidHair {
 		protected override int PositionAmountX => 0;
 		protected override int PositionAmountY => 0;
-		protected override bool AllowLimbRotate => true;
+		protected override bool UseLimbRotate => true;
 	}
 	public class PekoraHair : AutoSpriteBraidHair {
 		protected override int PositionAmountX => 0;
@@ -93,7 +93,7 @@ namespace AngeliaGame {
 		protected override int MotionAmount => 200;
 	}
 	public class MelfissaHair : AutoSpriteBraidHair {
-		protected override bool AllowLimbRotate => true;
+		protected override bool UseLimbRotate => true;
 	}
 	public class ReineHair : AutoSpriteBraidHair {
 		protected override int PositionAmountX => 322;
@@ -107,10 +107,12 @@ namespace AngeliaGame {
 	public class InaHair : AutoSpriteBraidHair {
 		protected override int PositionAmountX => 200;
 		protected override int PositionAmountY => 720;
+		protected override int MotionAmount => 100;
 		protected override bool ForceBackOnFlow => false;
 		protected override bool GetFrontL (Character character) => character.Head.FrontSide;
 		protected override bool GetFrontR (Character character) => character.Head.FrontSide;
 	}
+	public class InaCasualHair : AutoSpriteHair { }
 	public class GuraHair : AutoSpriteBraidHair {
 		protected override int PositionAmountX => 75;
 		protected override int PositionAmountY => 688;
@@ -122,7 +124,7 @@ namespace AngeliaGame {
 	}
 	public class AmeHair : AutoSpriteHair { }
 	public class IRySHair : AutoSpriteBraidHair {
-		protected override bool AllowLimbRotate => true;
+		protected override bool UseLimbRotate => true;
 	}
 	public class FaunaHair : AutoSpriteHair { }
 	public class KroniiHair : AutoSpriteBraidHair {

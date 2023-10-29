@@ -8,6 +8,7 @@ BotanEar
 PolkaEar
 RisuEar
 InaEar
+InaCasualEar
 BaeEar
 KoyoriEar
 MocoEar

@@ -345,6 +345,11 @@ namespace AngeliaGame {
 	public class InaFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
 
+	public class InaCasualBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
+	public class InaCasualHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
+	public class InaCasualFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
+
+
 	public class GuraBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
 	public class GuraHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class GuraFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }

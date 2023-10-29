@@ -58,8 +58,6 @@ namespace AngeliaGame {
 		protected override string[] Colors_Skin => _Colors_Skin;
 		protected override string[] Colors_Hair => _Colors_Hair;
 
-		protected override string PatternRootName => "Pat.Ange";
-
 		protected override bool SubMenuAvailable (SubMenuType type) => type switch {
 			SubMenuType.Head => true,
 			SubMenuType.Body => true,

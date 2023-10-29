@@ -1,4 +1,70 @@
-﻿CtrlHint.Adjust:Adjust
+﻿Pat.Sora:Sora
+Pat.Roboco:Roboco
+Pat.Miko:Miko
+Pat.Suisei:Suisei
+Pat.AZKi:AZKi
+Pat.Mel:Mel
+Pat.Fubuki:Fubuki
+Pat.Matsuri:Matsuri
+Pat.Aki:Aki
+Pat.Akai:Akai
+Pat.Aqua:Aqua
+Pat.Shion:Shion
+Pat.Ayame:Ayame
+Pat.Choco:Choco
+Pat.Subaru:Subaru
+Pat.Mio:Mio
+Pat.Okayu:Okayu
+Pat.Korone:Korone
+Pat.Pekora:Pekora
+Pat.Flare:Flare
+Pat.Noel:Noel
+Pat.Marine:Marine
+Pat.Kanata:Kanata
+Pat.Watame:Watame
+Pat.Towa:Towa
+Pat.Luna:Luna
+Pat.Coco:Coco
+Pat.Lamy:Lamy
+Pat.Nene:Nene
+Pat.Botan:Botan
+Pat.Polka:Polka
+Pat.Risu:Risu
+Pat.Moona:Moona
+Pat.Iofifteen:iofifteen
+Pat.Ollie:Ollie
+Pat.Melfissa:Melfissa
+Pat.Reine:Reine
+Pat.Calliope:Calliope
+Pat.Kiara:Kiara
+Pat.Ina:Ina'nis
+Pat.InaCasual:Casual Ina
+Pat.InaArtist:Artist Ina
+Pat.Gura:Gura
+Pat.Ame:Amelia
+Pat.IRyS:IRyS
+Pat.Fauna:Fauna
+Pat.Kronii:Kronii
+Pat.Mumei:Mumei
+Pat.Bae:Bae
+Pat.Sana:Sana
+Pat.Laplus:Laplus
+Pat.Lui:Lui
+Pat.Koyori:Koyori
+Pat.Sakamata:Sakamata
+Pat.Iroha:Iroha
+Pat.Zeta:Zeta
+Pat.Kaela:Kaela
+Pat.Kobo:Kobo
+Pat.Shiori:Shiori
+Pat.Bijou:Bijou
+Pat.Nerissa:Nerissa
+Pat.Fuwa:Fuwawa
+Pat.Moco:Mococo
+Pat.FriendA:Friend A
+Pat.Nodoka:Nodoka
+Pat.Ui:Shigure Ui
+CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
 CtrlHint.Drop:Drop
@@ -117,6 +183,12 @@ UI.Equipment.Helmet:Helmet
 UI.Equipment.Jewelry:Jewelry
 UI.Equipment.Shoes:Boots
 UI.Equipment.Weapon:Weapon
+UI.GadgetSuffix.Ear: Ear
+UI.GadgetSuffix.Face: Face
+UI.GadgetSuffix.Hair: Hair
+UI.GadgetSuffix.Horn: Horn
+UI.GadgetSuffix.Tail: Tail
+UI.GadgetSuffix.Wing: Wing
 UI.GameKey.Action:Action/Attack
 UI.GameKey.Down:Down
 UI.GameKey.Jump:Cancel/Jump
@@ -144,6 +216,12 @@ UI.Suit.Glove:Gloves
 UI.Suit.Hat:Hat
 UI.Suit.Pants:Pants
 UI.Suit.Shoes:Shoes
+UI.SuitSuffix.Body: Cloth
+UI.SuitSuffix.Foot: Shoes
+UI.SuitSuffix.Hand: Gloves
+UI.SuitSuffix.Head: Hat
+UI.SuitSuffix.Hip: Pants
+UI.SuitSuffix.Skirt: Skirt
 UI.Tetris.ClearedLine:Lines:
 UI.Tetris.Holding:Holding
 UI.Up:Up

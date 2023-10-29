@@ -51,6 +51,7 @@ namespace AngeliaFramework {
 		private const int POSE_Z_BODY = 0;
 		private const int POSE_Z_UPPERARM = 8;
 		private const int POSE_Z_LOWERARM = 16;
+		private const int POSE_Z_HAND_CASUAL = 26;
 		private const int POSE_Z_HAND = 36;
 		private const int POSE_Z_UPPERLEG = 2;
 		private const int POSE_Z_LOWERLEG = 1;
@@ -316,7 +317,6 @@ namespace AngeliaFramework {
 			Cloth.DrawFootSuit(this);
 
 			PoseUpdate_HeadRotate();
-
 			DrawBodyPart(cellIndexStart);
 
 		}
@@ -453,7 +453,7 @@ namespace AngeliaFramework {
 
 			HandL.X = LowerArmL.X;
 			HandL.Y = LowerArmL.Y - LowerArmL.Height;
-			HandL.Z = (FacingFront ? facingSign * POSE_Z_HAND : -POSE_Z_HAND);
+			HandL.Z = (FacingFront && FacingRight ? POSE_Z_HAND : -POSE_Z_HAND_CASUAL);
 			HandL.Width = HandL.SizeX;
 			HandL.Height = HandL.SizeY;
 			HandL.PivotX = 1000;
@@ -461,7 +461,7 @@ namespace AngeliaFramework {
 
 			HandR.X = LowerArmR.X;
 			HandR.Y = LowerArmR.Y - LowerArmR.Height;
-			HandR.Z = (FacingFront ? facingSign * -POSE_Z_HAND : -POSE_Z_HAND);
+			HandR.Z = (FacingFront && !FacingRight ? POSE_Z_HAND : -POSE_Z_HAND_CASUAL);
 			HandR.Width = -HandR.SizeX;
 			HandR.Height = HandR.SizeY;
 			HandR.PivotX = 1000;
@@ -749,8 +749,8 @@ namespace AngeliaFramework {
 
 		private void PoseUpdate_HeadTwist () {
 
-			//HeadTwist = QTest.Int["twist", 0, -1000, 1000];
-			//HeadRotation = QTest.Int["rot", 0, -90, 90];
+			//HeadTwist = QTest.Int["t", 0, -1000, 1000];
+			//HeadRotation = QTest.Int["r", 0, -90, 90];
 
 			if (HeadTwist == 0) return;
 			if (!Head.FrontSide) {

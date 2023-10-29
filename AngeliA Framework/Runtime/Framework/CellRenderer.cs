@@ -102,6 +102,18 @@ namespace AngeliaFramework {
 			PivotX = 0;
 			PivotY = 0;
 		}
+		public void ReturnPivots (float newPivotX, float newPivotY) {
+			if (Rotation == 0) {
+				X -= (Width * (PivotX - newPivotX)).RoundToInt();
+				Y -= (Height * (PivotY - newPivotY)).RoundToInt();
+			} else {
+				var point = LocalToGlobal((int)(newPivotX * Width), (int)(newPivotY * Height));
+				X = point.x;
+				Y = point.y;
+			}
+			PivotX = newPivotX;
+			PivotY = newPivotY;
+		}
 		public void RotateAround (int rotation, int pointX, int pointY) {
 			if (rotation == Rotation || Width == 0 || Height == 0) return;
 			var localPoint = GlobalToLocal(pointX, pointY);

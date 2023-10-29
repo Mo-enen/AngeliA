@@ -38,16 +38,16 @@ namespace AngeliaFramework {
 	}
 
 
-	public abstract class Horn {
+	public abstract class Horn : BodyGadget {
 
 
 		// VAR
 		private static readonly Dictionary<int, Horn> Pool = new();
 		private static readonly Dictionary<int, int> DefaultPool = new();
-
+		protected override string BaseTypeName => nameof(Horn);
 
 		// MSG
-		[OnGameInitialize(-128)]
+		[OnGameInitialize(-127)]
 		public static void BeforeGameInitialize () {
 			Pool.Clear();
 			var charType = typeof(Character);
@@ -78,7 +78,7 @@ namespace AngeliaFramework {
 
 
 		public static bool TryGetDefaultHornID (int characterID, out int hornID) => DefaultPool.TryGetValue(characterID, out hornID);
-
+		public static bool TryGetHorn (int hornID, out Horn horn) => Pool.TryGetValue(hornID, out horn);
 
 		protected abstract void DrawHorn (Character character);
 

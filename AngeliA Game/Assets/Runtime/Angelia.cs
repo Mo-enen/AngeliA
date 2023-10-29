@@ -14,156 +14,101 @@ namespace AngeliaGame {
 
 
 
+		static readonly (string id, string en, string cn)[] NAMES = {
+			("Sora",        "Sora",        "时乃空"),
+			("Roboco",      "Roboco",      "萝卜子"),
+			("Miko",        "Miko",        "樱巫女"),
+			("Suisei",      "Suisei",      "彗星"),
+			("AZKi",        "AZKi",        "AZKi"),
+			("Mel",         "Mel",         "梅露"),
+			("Fubuki",      "Fubuki",      "吹雪"),
+			("Matsuri",     "Matsuri",     "夏色祭"),
+			("Aki",         "Aki",         "亚绮"),
+			("Akai",        "Akai",        "赤井心"),
+			("Aqua",        "Aqua",        "阿库娅"),
+			("Shion",       "Shion",       "诗音"),
+			("Ayame",       "Ayame",       "百鬼绫目"),
+			("Choco",       "Choco",       "巧可"),
+			("Subaru",      "Subaru",      "大空昴"),
+			("Mio",         "Mio",         "大神澪"),
+			("Okayu",       "Okayu",       "小粥"),
+			("Korone",      "Korone",      "沁音"),
+			("Pekora",      "Pekora",      "佩克拉"),
+			("Flare",       "Flare",       "芙蕾雅"),
+			("Noel",        "Noel",        "诺艾尔"),
+			("Marine",      "Marine",      "玛琳"),
+			("Kanata",      "Kanata",      "彼方"),
+			("Watame",      "Watame",      "绵芽"),
+			("Towa",        "Towa",        "常暗"),
+			("Luna",        "Luna",        "璐娜"),
+			("Coco",        "Coco",        "可可"),
+			("Lamy",        "Lamy",        "菈米"),
+			("Nene",        "Nene",        "桃铃音音"),
+			("Botan",       "Botan",       "狮白"),
+			("Polka",       "Polka",       "尾丸"),
+			("Risu",        "Risu",        "栗鼠"),
+			("Moona",       "Moona",       "穆娜"),
+			("Iofifteen",   "iofifteen",   "iofifteen"),
+			("Ollie",       "Ollie",       "奥莉"),
+			("Melfissa",    "Melfissa",    "梅尔菲莎"),
+			("Reine",       "Reine",       "蕾内"),
+			("Calliope",    "Calliope",    "森美声"),
+			("Kiara",       "Kiara",       "琪亚拉"),
+			("Ina",         "Ina'nis",     "一伊那尓栖"),
+			("InaCasual",   "Casual Ina",  "日常伊娜"),
+			("InaArtist",   "Artist Ina",  "画家伊娜"),
+			("Gura",        "Gura",        "古拉"),
+			("Ame",         "Amelia",      "华生"),
+			("IRyS",        "IRyS",        "IRyS"),
+			("Fauna",       "Fauna",       "法娜"),
+			("Kronii",      "Kronii",      "克洛尼"),
+			("Mumei",       "Mumei",       "七诗无名"),
+			("Bae",         "Bae",         "贝尔丝"),
+			("Sana",        "Sana",        "九十九佐命"),
+			("Laplus",      "Laplus",      "拉普"),
+			("Lui",         "Lui",         "琉衣"),
+			("Koyori",      "Koyori",      "小夜璃"),
+			("Sakamata",    "Sakamata",    "沙花叉"),
+			("Iroha",       "Iroha",       "风真"),
+			("Zeta",        "Zeta",        "泽塔"),
+			("Kaela",       "Kaela",       "Kaela"),
+			("Kobo",        "Kobo",        "Kobo"),
+			("Shiori",      "Shiori",      "Shiori"),
+			("Bijou",       "Bijou",       "Bijou"),
+			("Nerissa",     "Nerissa",     "Nerissa"),
+			("Fuwa",        "Fuwawa",      "Fuwawa"),
+			("Moco",        "Mococo",      "Mococo"),
+			("FriendA",     "Friend A",    "友人A"),
+			("Nodoka",      "Nodoka",      "春先和花"),
+			("Ui",          "Shigure Ui",  "羽衣"),
+		};
+		static readonly (string id, string en, string cn)[] MORE_NAMES = {
+			("Chris","Chris", "酷丽丝"),
+			("Rushia","Rushia", "露西娅"),
+			("Aloe","Aloe", "阿萝耶"),
+		};
 
 
 		//[UnityEditor.InitializeOnLoadMethod]
 		public static void Test () {
-
-			string[] ALL_NAMES = {
-				"Sora",
-				"Roboco",
-				"Miko",
-				"Suisei",
-				"AZKi",
-				"Mel",
-				"Fubuki",
-				"Matsuri",
-				"Aki",
-				"Akai",
-				"Aqua",
-				"Shion",
-				"Ayame",
-				"Choco",
-				"Subaru",
-				"Mio",
-				"Okayu",
-				"Korone",
-				"Pekora",
-				"Flare",
-				"Noel",
-				"Marine",
-				"Kanata",
-				"Watame",
-				"Towa",
-				"Luna",
-				"Coco",
-				"Lamy",
-				"Nene",
-				"Botan",
-				"Polka",
-				"Risu",
-				"Moona",
-				"Iofifteen",
-				"Ollie",
-				"Melfissa",
-				"Reine",
-				"Calliope",
-				"Kiara",
-				"Ina",
-				"Gura",
-				"Ame",
-				"IRyS",
-				"Fauna",
-				"Kronii",
-				"Mumei",
-				"Bae",
-				"Sana",
-				"Laplus",
-				"Lui",
-				"Koyori",
-				"Sakamata",
-				"Iroha",
-				"Zeta",
-				"Kaela",
-				"Kobo",
-				"Shiori",
-				"Bijou",
-				"Nerissa",
-				"Fuwa",
-				"Moco",
-			};
-			string[] CN_NAMES = {
-				"时乃空",
-				"萝卜子",
-				"樱巫女",
-				"彗星",
-				"AZKi",
-				"梅露",
-				"吹雪",
-				"夏色祭",
-				"亚绮",
-				"赤井心",
-				"阿库娅",
-				"诗音",
-				"百鬼绫目",
-				"巧可",
-				"大空昴",
-				"大神澪",
-				"小粥",
-				"沁音",
-				"佩克拉",
-				"芙蕾雅",
-				"诺艾尔",
-				"玛琳",
-				"彼方",
-				"绵芽",
-				"常暗",
-				"璐娜",
-				"可可",
-				"菈米",
-				"桃铃音音",
-				"狮白",
-				"尾丸",
-				"Risu",
-				"穆娜",
-				"Iofifteen",
-				"Ollie",
-				"Melfissa",
-				"Reine",
-				"森美声",
-				"琪亚拉",
-				"一伊那尓栖",
-				"古拉",
-				"艾米莉亚",
-				"IRyS",
-				"Fauna",
-				"Kronii",
-				"Mumei",
-				"Bae",
-				"Sana",
-				"拉普",
-				"琉衣",
-				"小夜璃",
-				"沙花叉",
-				"风真",
-				"Zeta",
-				"Kaela",
-				"Kobo",
-				"Shiori",
-				"Bijou",
-				"Nerissa",
-				"Fuwa",
-				"Moco",
-			};
-			string[] ALL_NAMES1 = { "Chris", "Rushia", "Aloe", };
-
-
-
-
 			string result = "";
-			int currentX = 28;
-			int currentY = 1;
-			//var names = ALL_NAMES.Concat(ALL_NAMES1).ToArray();
-			var names = ALL_NAMES;
-			for (int i = 0; i < names.Length; i++) {
-				result += $"{names[i]}.Face.Attack, {currentX}, {currentY}, 7, 4, 3, 3, 1, 0";
-				currentY += 9;
-				if (currentY > 271) {
-					currentY = 1;
-					currentX = 181;
-				}
-				result += "\n";
+			for (int i = 0; i < NAMES.Length; i++) {
+				var (id, en, cn) = NAMES[i];
+
+
+				result += $"Pat.{id}:{en}\n";
+
 			}
+
+			result += "\n\n\n\n";
+
+			for (int i = 0; i < NAMES.Length; i++) {
+				var (id, en, cn) = NAMES[i];
+
+				result += $"Pat.{id}:{cn}\n";
+
+			}
+
 			GUIUtility.systemCopyBuffer = result;
 			Debug.Log(Random.value + " Copy.");
 		}

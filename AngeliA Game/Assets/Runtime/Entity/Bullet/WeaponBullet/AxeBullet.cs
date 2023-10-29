@@ -6,6 +6,7 @@ using AngeliaFramework;
 
 namespace AngeliaGame {
 	public class AxeBullet : MeleeBullet {
+
 		protected override int Duration => 10;
 		protected override int Damage => 1;
 		//private static readonly int SMOKE_ID = typeof(QuickSmokeSmallParticle).AngeHash();
@@ -15,7 +16,7 @@ namespace AngeliaGame {
 			base.FrameUpdate();
 
 			//CellRenderer.Draw(Const.PIXEL, Rect, new Color32(255, 0, 0, 128), 0);
-			
+
 		}
 
 

@@ -47,6 +47,7 @@ KoroneHair
 CalliopeHair
 KiaraHair
 InaHair
+InaCasualHair
 GuraHair
 AmeHair
 #EN Hope

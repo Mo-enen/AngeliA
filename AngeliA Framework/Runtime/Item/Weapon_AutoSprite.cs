@@ -304,7 +304,7 @@ namespace AngeliaFramework {
 						0,
 						attacking ? grabScaleL : 700,
 						sprite,
-						character.HandL.Z.Abs() + 1
+						36
 					);
 					break;
 				}
