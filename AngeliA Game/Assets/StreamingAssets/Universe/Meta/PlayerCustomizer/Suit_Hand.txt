@@ -10,6 +10,7 @@ LaplusHandSuit
 SakamataHandSuit
 InaHandSuit
 InaDressHandSuit
+InaKimonoHandSuit
 KroniiHandSuit
 BaeHandSuit
 SanaHandSuit

@@ -1,4 +1,4 @@
-﻿Pat.InaDress:Dress Ina
+﻿Pat.InaKimono:Kimono Ina
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
@@ -113,6 +113,7 @@ Pat.Gura:Gura
 Pat.Ina:Ina'nis
 Pat.InaArtist:Artist Ina
 Pat.InaCasual:Casual Ina
+Pat.InaDress:Dress Ina
 Pat.Iofifteen:iofifteen
 Pat.Iroha:Iroha
 Pat.IRyS:IRyS

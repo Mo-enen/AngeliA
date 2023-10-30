@@ -50,6 +50,7 @@ InaHipSuit
 InaCasualHipSuit
 InaArtistHipSuit
 InaDressHipSuit
+InaKimonoHipSuit
 GuraHipSuit
 AmeHipSuit
 #EN Hope

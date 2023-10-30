@@ -50,6 +50,7 @@ InaBodySuit
 InaCasualBodySuit
 InaArtistBodySuit
 InaDressBodySuit
+InaKimonoBodySuit
 GuraBodySuit
 AmeBodySuit
 #EN Hope

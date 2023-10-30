@@ -50,6 +50,7 @@ InaHair
 InaCasualHair
 InaArtistHair
 InaDressHair
+InaKimonoHair
 GuraHair
 AmeHair
 #EN Hope

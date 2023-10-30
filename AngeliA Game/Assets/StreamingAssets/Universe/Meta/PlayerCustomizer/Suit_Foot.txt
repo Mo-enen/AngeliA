@@ -50,6 +50,7 @@ InaFootSuit
 InaCasualFootSuit
 InaArtistFootSuit
 InaDressFootSuit
+InaKimonoFootSuit
 GuraFootSuit
 AmeFootSuit
 #EN Hope

@@ -139,8 +139,9 @@ namespace AngeliaGame {
 		protected override bool GetFrontL (Character character) => character.Head.FrontSide;
 		protected override bool GetFrontR (Character character) => character.Head.FrontSide;
 	}
-	public class InaKimonoHair : AutoSpriteHair { }
-
+	public class InaKimonoHair : AutoSpriteHair {
+		protected override int FlowAmountX => 1000;
+	}
 	public class GuraHair : AutoSpriteBraidHair {
 		protected override int PositionAmountX => 75;
 		protected override int PositionAmountY => 688;
