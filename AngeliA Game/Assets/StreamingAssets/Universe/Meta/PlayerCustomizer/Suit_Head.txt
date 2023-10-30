@@ -13,6 +13,8 @@ OllieHeadSuit
 CalliopeHeadSuit
 KiaraHeadSuit
 InaHeadSuit
+InaArtistHeadSuit
+InaDressHeadSuit
 AmeHeadSuit
 IRySHeadSuit
 MumeiHeadSuit

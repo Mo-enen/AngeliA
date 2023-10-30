@@ -48,6 +48,8 @@ CalliopeHipSuit
 KiaraHipSuit
 InaHipSuit
 InaCasualHipSuit
+InaArtistHipSuit
+InaDressHipSuit
 GuraHipSuit
 AmeHipSuit
 #EN Hope

@@ -9,6 +9,7 @@ BotanHandSuit
 LaplusHandSuit
 SakamataHandSuit
 InaHandSuit
+InaDressHandSuit
 KroniiHandSuit
 BaeHandSuit
 SanaHandSuit

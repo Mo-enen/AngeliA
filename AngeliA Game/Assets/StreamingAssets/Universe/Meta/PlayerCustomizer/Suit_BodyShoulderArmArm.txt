@@ -48,6 +48,8 @@ CalliopeBodySuit
 KiaraBodySuit
 InaBodySuit
 InaCasualBodySuit
+InaArtistBodySuit
+InaDressBodySuit
 GuraBodySuit
 AmeBodySuit
 #EN Hope

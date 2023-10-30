@@ -114,8 +114,18 @@ namespace AngeliaFramework {
 		protected override void DrawHand (Character character) {
 			if (ClothType != ClothType.Hand) return;
 			if (SpriteID0 != 0) {
-				CoverClothOn(character.HandL, SpriteID0, character.HandL.Z + 1, Const.WHITE);
-				CoverClothOn(character.HandR, SpriteID0, character.HandR.Z + 1, Const.WHITE);
+				if (CellRenderer.HasSpriteGroup(SpriteID0)) {
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID0, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+						CoverClothOn(character.HandL, spriteL.GlobalID, character.HandL.Z + 1, Const.WHITE);
+					}
+					if (CellRenderer.TryGetSpriteFromGroup(SpriteID0, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+						CoverClothOn(character.HandR, spriteR.GlobalID, character.HandR.Z + 1, Const.WHITE);
+					}
+				} else {
+					CoverClothOn(character.HandL, SpriteID0, character.HandL.Z + 1, Const.WHITE);
+					CoverClothOn(character.HandR, SpriteID0, character.HandR.Z + 1, Const.WHITE);
+				}
+
 			}
 		}
 		protected override void DrawHipSkirtLegLeg (Character character) {

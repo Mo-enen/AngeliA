@@ -46,6 +46,7 @@ KoroneFace
 CalliopeFace
 KiaraFace
 InaFace
+InaArtistFace
 GuraFace
 AmeFace
 #EN Hope

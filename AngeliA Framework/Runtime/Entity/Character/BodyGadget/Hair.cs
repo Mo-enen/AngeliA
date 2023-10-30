@@ -230,7 +230,7 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(SpriteBF)) SpriteBF = 0;
 		}
 
-		protected override Cell[] DrawHair (Character character) => DrawFlowSprite(character, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF);
+		protected override Cell[] DrawHair (Character character) => DrawFlowSprite(character, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF, FlowAmountX, FlowAmountY);
 
 	}
 
@@ -241,6 +241,8 @@ namespace AngeliaFramework {
 		// Const
 		private const int A2G = Const.CEL / Const.ART_CEL;
 		protected override string BaseTypeName => nameof(Hair);
+		protected virtual int FlowAmountX => 500;
+		protected virtual int FlowAmountY => 500;
 
 		// Data
 		private static readonly Dictionary<int, Hair> Pool = new();
@@ -284,14 +286,14 @@ namespace AngeliaFramework {
 		protected abstract Cell[] DrawHair (Character character);
 
 
-		protected static Cell[] DrawFlowSprite (Character character, int spriteFrontFL, int spriteFrontFR, int spriteFrontB, int spriteBackF) {
+		protected static Cell[] DrawFlowSprite (Character character, int spriteFrontFL, int spriteFrontFR, int spriteFrontB, int spriteBackF, int flowAmountX, int flowAmountY) {
 
 			// Back Hair
 			if (character.Head.FrontSide) {
 				var bCells = DrawSprite(spriteBackF, character, -32, out var backHairRect);
+				FlowHair(character, bCells, true, flowAmountX, flowAmountY);
 				TwistHair(character, bCells, backHairRect);
 				RotateHair(character, bCells);
-				FlowHair(character, bCells, true);
 			}
 
 			// Front Hair
@@ -300,9 +302,9 @@ namespace AngeliaFramework {
 				character.Head.Width > 0 ? spriteFrontFR : spriteFrontFL,
 				character, 32, out var hairRect
 			);
+			FlowHair(character, fCells, false, flowAmountX, flowAmountY);
 			TwistHair(character, fCells, hairRect);
 			RotateHair(character, fCells);
-			FlowHair(character, fCells, false);
 			return fCells;
 
 			// Func
@@ -351,8 +353,53 @@ namespace AngeliaFramework {
 				if (flipX) hairRect.FlipHorizontal();
 
 				// Draw Hair
-				return CellRenderer.Draw_9Slice(hairSprite.GlobalID, hairRect, character.HairColor, z);
+				return CellRenderer.Draw_9Slice(
+					hairSprite.GlobalID, 
+					hairRect.CenterX(), hairRect.y + hairRect.height, 
+					500, 1000, 0, 
+					hairRect.width, hairRect.height, 
+					character.HairColor, z
+				);
 
+			}
+			static void FlowHair (Character character, Cell[] cells, bool allCells, int amountX, int amountY) {
+
+				if (
+					cells == null || cells.Length != 9 ||
+					!character.Head.FrontSide ||
+					(cells[3].Height == 0 && cells[6].Height == 0)
+				) return;
+
+				if (amountX != 0 || amountY != 0) {
+
+					// X
+					int maxX = 30 * amountX / 1000;
+					int offsetX = (-character.DeltaPositionX * amountX / 1000).Clamp(-maxX, maxX);
+					cells[3].X += offsetX / 2;
+					cells[5].X += offsetX / 2;
+					cells[6].X += offsetX;
+					cells[8].X += offsetX;
+					if (allCells) {
+						cells[4].X += offsetX / 2;
+						cells[7].X += offsetX;
+					}
+					// Y
+					int maxY = 20 * amountY / 1000;
+					int offsetAmountY = 1000 + (character.DeltaPositionY * amountY / 10000).Clamp(-maxY, maxY) * 50;
+					offsetAmountY = offsetAmountY.Clamp(800, 1200);
+					cells[0].Height = cells[0].Height * offsetAmountY / 1000;
+					cells[2].Height = cells[2].Height * offsetAmountY / 1000;
+					cells[3].Height = cells[3].Height * offsetAmountY / 1000;
+					cells[5].Height = cells[5].Height * offsetAmountY / 1000;
+					cells[6].Height = cells[6].Height * offsetAmountY / 1000;
+					cells[8].Height = cells[8].Height * offsetAmountY / 1000;
+					if (allCells) {
+						cells[1].Height = cells[1].Height * offsetAmountY / 1000;
+						cells[4].Height = cells[4].Height * offsetAmountY / 1000;
+						cells[7].Height = cells[7].Height * offsetAmountY / 1000;
+					}
+
+				}
 			}
 			static void TwistHair (Character character, Cell[] cells, RectInt hairRect) {
 				int twist = character.HeadTwist;
@@ -447,79 +494,6 @@ namespace AngeliaFramework {
 				static void RotateCell (Cell _cell, int rotation, int pointX, int pointY, int offsetY) {
 					_cell.RotateAround(rotation, pointX, pointY);
 					_cell.Y -= offsetY;
-				}
-			}
-			static void FlowHair (Character character, Cell[] cells, bool strech) {
-
-				if (
-					cells == null || cells.Length != 9 ||
-					!character.Head.FrontSide ||
-					(cells[3].Height == 0 && cells[6].Height == 0)
-				) return;
-
-				int flowAmountX = 0;
-				int flowAmountY = 0;
-				int basicRootY = character.BasicRootY;
-				switch (character.AnimatedPoseType) {
-					case CharacterPoseAnimationType.SwimMove:
-						flowAmountX = 50;
-						flowAmountY = 10;
-						break;
-					case CharacterPoseAnimationType.Dash:
-						flowAmountX = 100;
-						flowAmountY = 20;
-						break;
-					case CharacterPoseAnimationType.Rush:
-						flowAmountX = 140;
-						flowAmountY = 20;
-						break;
-					case CharacterPoseAnimationType.Walk:
-						if (character.PoseRootY < basicRootY + A2G / 4) {
-							flowAmountX = 30;
-						} else if (character.PoseRootY < basicRootY + A2G / 2) {
-							flowAmountX = 50;
-							flowAmountY = 20;
-						} else {
-							flowAmountX = 80;
-							flowAmountY = 30;
-						}
-						break;
-					case CharacterPoseAnimationType.Run:
-						if (character.PoseRootY < basicRootY + A2G / 2) {
-							flowAmountX = 60;
-						} else if (character.PoseRootY < basicRootY + A2G) {
-							flowAmountX = 80;
-							flowAmountY = 30;
-						} else {
-							flowAmountX = 100;
-							flowAmountY = 40;
-						}
-						break;
-				}
-				if (flowAmountX != 0 || flowAmountY != 0) {
-					bool facingRight = character.Head.Width > 0;
-					int leftX = facingRight ? -flowAmountX : flowAmountX / 2;
-					int rightX = facingRight ? -flowAmountX / 2 : flowAmountX;
-					MoveCell(cells[3], leftX / 2, flowAmountY, strech);
-					MoveCell(cells[5], rightX / 2, flowAmountY, strech);
-					MoveCell(cells[6], leftX, flowAmountY, strech);
-					MoveCell(cells[8], rightX, flowAmountY, strech);
-				}
-				static void MoveCell (Cell cell, int amountX, int amountY, bool strech) {
-					if (strech) {
-						int deltaX = Const.CEL * amountX / 1000;
-						cell.ReturnPivots();
-						if (amountX < 0) {
-							cell.X += deltaX;
-							cell.Width -= deltaX;
-						} else {
-							cell.Width += deltaX;
-						}
-						cell.Y += Const.CEL * amountY / 1000;
-					} else {
-						cell.X += Const.CEL * amountX / 1000;
-						cell.Y += Const.CEL * amountY / 1000;
-					}
 				}
 			}
 		}

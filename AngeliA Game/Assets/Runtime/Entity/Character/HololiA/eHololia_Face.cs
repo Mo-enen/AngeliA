@@ -68,6 +68,18 @@ namespace AngeliaGame {
 			DrawHumanEar(character, ELF_EAR_L, ELF_EAR_R);
 		}
 	}
+	public class InaArtistFace : AutoSpriteFace {
+		private static readonly int ELF_EAR_L = "ElfEarL".AngeHash();
+		private static readonly int ELF_EAR_R = "ElfEarR".AngeHash();
+		private static readonly int GLASS_CODE = "InaArtistSuit.Glass".AngeHash();
+		protected override void DrawFace (Character character) {
+			base.DrawFace(character);
+			DrawHumanEar(character, ELF_EAR_L, ELF_EAR_R);
+			if (character.AnimatedPoseType != CharacterPoseAnimationType.Sleep) {
+				DrawFaceSprite(character, GLASS_CODE, new Vector4Int(16, 16, 0, 0));
+			}
+		}
+	}
 	public class GuraFace : AutoSpriteFace { }
 	public class AmeFace : AutoSpriteFace { }
 	public class IRySFace : AutoSpriteFace {

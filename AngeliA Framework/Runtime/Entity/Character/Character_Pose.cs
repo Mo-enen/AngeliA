@@ -698,6 +698,10 @@ namespace AngeliaFramework {
 
 			if (!IsAttacking) return;
 
+			if (MovementLoseRateOnAttack == 0) {
+				ResetPoseToDefault();
+			}
+
 			HandGrabScaleL = HandGrabScaleR = FacingRight ? 1000 : -1000;
 			HandGrabAttackTwistL = HandGrabAttackTwistR = 1000;
 

@@ -48,6 +48,8 @@ CalliopeHair
 KiaraHair
 InaHair
 InaCasualHair
+InaArtistHair
+InaDressHair
 GuraHair
 AmeHair
 #EN Hope

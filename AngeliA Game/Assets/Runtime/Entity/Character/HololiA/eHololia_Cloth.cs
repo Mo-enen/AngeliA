@@ -350,6 +350,32 @@ namespace AngeliaGame {
 	public class InaCasualFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
 
 
+	public class InaArtistBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
+	public class InaArtistHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
+	public class InaArtistHeadSuit : AutoSpriteCloth {
+		protected override ClothType ClothType => ClothType.Head;
+		protected override FrontMode Front => FrontMode.Back;
+	}
+	public class InaArtistFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
+
+
+	public class InaDressBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
+	public class InaDressHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
+	public class InaDressHeadSuit : AutoSpriteCloth {
+		protected override ClothType ClothType => ClothType.Head;
+		protected override FrontMode Front => FrontMode.Front;
+	}
+	public class InaDressHandSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hand; }
+	public class InaDressFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
+
+
+	public class InaKimonoBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
+	public class InaKimonoHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
+	public class InaKimonoHandSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hand; }
+	public class InaKimonoFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
+
+
+
 	public class GuraBodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
 	public class GuraHipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
 	public class GuraFootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }

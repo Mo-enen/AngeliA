@@ -48,6 +48,8 @@ CalliopeFootSuit
 KiaraFootSuit
 InaFootSuit
 InaCasualFootSuit
+InaArtistFootSuit
+InaDressFootSuit
 GuraFootSuit
 AmeFootSuit
 #EN Hope
