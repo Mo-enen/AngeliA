@@ -16,6 +16,8 @@ namespace AngeliaGame {
 		int IMeleeWeapon.RangeY => 512;
 		public override int AttackDuration => 12;
 		public override int AttackCooldown => 2;
+		public override int ChargeAttackDuration => 20;
+
 	}
 
 	public class iAxeWood : AxeWeapon { }

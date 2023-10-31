@@ -4,26 +4,28 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public abstract class SpearWeapon : AutoSpriteWeapon {
+	public abstract class PolearmWeapon : AutoSpriteWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Polearm;
 		public sealed override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 		protected override bool IgnoreGrabTwist => true;
 		public override int AttackDuration => 18;
 		public override int AttackCooldown => 2;
 	}
-	public class iSpearWood : SpearWeapon { }
-	public class iSpearIron : SpearWeapon { }
-	public class iSpearGold : SpearWeapon { }
-	public class iTrident : SpearWeapon { }
-	public class iBoStaffWood : SpearWeapon { }
-	public class iBoStaffIron : SpearWeapon { }
-	public class iBoStaffGold : SpearWeapon { }
-	public class iNaginata : SpearWeapon { }
-	public class iHalberd : SpearWeapon { }
-	public class iJi : SpearWeapon { }
-	public class iMonkSpade : SpearWeapon { }
-	public class iManCatcher : SpearWeapon { }
-	public class iSwallow : SpearWeapon { }
-	public class iFork : SpearWeapon { }
-	public class iBrandistock : SpearWeapon { }
+	public class iSpearWood : PolearmWeapon {
+		public override int ChargeAttackDuration => 20;
+	}
+	public class iSpearIron : PolearmWeapon { }
+	public class iSpearGold : PolearmWeapon { }
+	public class iTrident : PolearmWeapon { }
+	public class iBoStaffWood : PolearmWeapon { }
+	public class iBoStaffIron : PolearmWeapon { }
+	public class iBoStaffGold : PolearmWeapon { }
+	public class iNaginata : PolearmWeapon { }
+	public class iHalberd : PolearmWeapon { }
+	public class iJi : PolearmWeapon { }
+	public class iMonkSpade : PolearmWeapon { }
+	public class iManCatcher : PolearmWeapon { }
+	public class iSwallow : PolearmWeapon { }
+	public class iFork : PolearmWeapon { }
+	public class iBrandistock : PolearmWeapon { }
 }

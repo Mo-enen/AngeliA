@@ -5,64 +5,25 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iBoomerang : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Throwing;
+	public abstract class ThrowingWeapon : AutoSpriteWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Throwing;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iNinjaStarHalf : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iNinjaStar : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iKunai : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iChakram : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iThrowingKnife : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iThrowingAxe : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iNeedle : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iChainMaceBall : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iBomb : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iAnchor : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iCrossAxe : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iGrapeBomb : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iTearGas : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iGrenade : AutoSpriteWeapon {
-		public override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+	public class iBoomerang : ThrowingWeapon { }
+	public class iNinjaStarHalf : ThrowingWeapon { }
+	public class iNinjaStar : ThrowingWeapon { }
+	public class iKunai : ThrowingWeapon { }
+	public class iChakram : ThrowingWeapon { }
+	public class iThrowingKnife : ThrowingWeapon { }
+	public class iThrowingAxe : ThrowingWeapon { }
+	public class iNeedle : ThrowingWeapon { }
+	public class iChainMaceBall : ThrowingWeapon { }
+	public class iBomb : ThrowingWeapon { }
+	public class iAnchor : ThrowingWeapon { }
+	public class iCrossAxe : ThrowingWeapon { }
+	public class iGrapeBomb : ThrowingWeapon { }
+	public class iTearGas : ThrowingWeapon { }
+	public class iGrenade : ThrowingWeapon {
+		public override int ChargeAttackDuration => 20;
 	}
 }

@@ -95,7 +95,6 @@ namespace AngeliaFramework {
 
 			InvincibleEndFrame = Game.GlobalFrame + InvincibleDuration;
 			LastDamageFrame = Game.GlobalFrame;
-			ChargeStartFrame = int.MaxValue;
 
 		}
 

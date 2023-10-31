@@ -36,7 +36,6 @@ namespace AngeliaGame {
 			AttackWhenRush.BaseValue = true;
 
 
-
 		}
 
 

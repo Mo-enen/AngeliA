@@ -226,9 +226,35 @@ namespace AngeliaFramework {
 
 
 		// Override
-		public static void HandHeld_Double_Bow_Firearm () {
+		public static void HandHeld_Double () {
+			if (!Target.IsChargingAttack) {
+				HandHeld_DoubleBowFirearm();
+			} else {
+				Attack_WaveDoubleHanded_SmashDown();
+			}
+		}
 
-			bool isCharging = Target.IsChargingAttack;
+
+		public static void HandHeld_Bow () {
+			if (!Target.IsChargingAttack) {
+				HandHeld_DoubleBowFirearm();
+			} else {
+				Attack_Bow();
+			}
+		}
+
+
+		public static void HandHeld_Firearm () {
+			if (!Target.IsChargingAttack) {
+				HandHeld_DoubleBowFirearm();
+			} else {
+				Attack_Firearm();
+			}
+		}
+
+
+		private static void HandHeld_DoubleBowFirearm () {
+
 			ResetShoulderAndUpperArm();
 
 			int twistShift = Target.PoseTwist / 50;
@@ -263,91 +289,104 @@ namespace AngeliaFramework {
 
 		public static void HandHeld_Pole () {
 
-			bool isCharging = Target.IsChargingAttack;
-			bool dashing = AnimatedPoseType == CharacterPoseAnimationType.Dash;
-
-			ResetShoulderAndUpperArm();
-
-			// Upper Arm
-			int twistDelta = Target.PoseTwist / 26;
-			UpperArmL.LimbRotate((FacingRight ? -2 : 14) - twistDelta);
-			UpperArmR.LimbRotate((FacingRight ? -14 : 2) - twistDelta);
-			if (dashing) {
-				UpperArmL.Height /= 3;
-				UpperArmR.Height /= 3;
+			if (Target.IsChargingAttack) {
+				// Charging
+				Attack_WavePolearm_SmashDown();
 			} else {
-				int deltaY = (Target.DeltaPositionY / 5).Clamp(-20, 20);
-				UpperArmL.Height += deltaY;
-				UpperArmR.Height += deltaY;
+				// Normal
+				bool dashing = AnimatedPoseType == CharacterPoseAnimationType.Dash;
+
+				ResetShoulderAndUpperArm();
+
+				// Upper Arm
+				int twistDelta = Target.PoseTwist / 26;
+				UpperArmL.LimbRotate((FacingRight ? -2 : 14) - twistDelta);
+				UpperArmR.LimbRotate((FacingRight ? -14 : 2) - twistDelta);
+				if (dashing) {
+					UpperArmL.Height /= 3;
+					UpperArmR.Height /= 3;
+				} else {
+					int deltaY = (Target.DeltaPositionY / 5).Clamp(-20, 20);
+					UpperArmL.Height += deltaY;
+					UpperArmR.Height += deltaY;
+				}
+
+				// Lower Arm
+				LowerArmL.LimbRotate((FacingRight ? -24 : 43) + twistDelta);
+				LowerArmR.LimbRotate((FacingRight ? -43 : 24) + twistDelta);
+				if (dashing) {
+					LowerArmL.Height /= 3;
+					LowerArmR.Height /= 3;
+				} else {
+					int deltaY = (Target.DeltaPositionY / 10).Clamp(-20, 20);
+					LowerArmL.Height += deltaY;
+					LowerArmR.Height += deltaY;
+				}
+
+				HandL.LimbRotate(FacingSign);
+				HandR.LimbRotate(FacingSign);
+
+				// Z
+				HandL.Z = FrontSign * POSE_Z_HAND;
+				HandR.Z = FrontSign * POSE_Z_HAND;
+
+				// Grab
+				int deltaRot = (Target.DeltaPositionY / 10).Clamp(-10, 10);
+				Target.HandGrabRotationL = Target.HandGrabRotationR = FacingSign * (80 + deltaRot);
+				Target.HandGrabScaleL = Target.HandGrabScaleR = FacingSign * 1000;
+
 			}
-
-			// Lower Arm
-			LowerArmL.LimbRotate((FacingRight ? -24 : 43) + twistDelta);
-			LowerArmR.LimbRotate((FacingRight ? -43 : 24) + twistDelta);
-			if (dashing) {
-				LowerArmL.Height /= 3;
-				LowerArmR.Height /= 3;
-			} else {
-				int deltaY = (Target.DeltaPositionY / 10).Clamp(-20, 20);
-				LowerArmL.Height += deltaY;
-				LowerArmR.Height += deltaY;
-			}
-
-			HandL.LimbRotate(FacingSign);
-			HandR.LimbRotate(FacingSign);
-
-			// Z
-			HandL.Z = FrontSign * POSE_Z_HAND;
-			HandR.Z = FrontSign * POSE_Z_HAND;
-
-			// Grab
-			int deltaRot = (Target.DeltaPositionY / 10).Clamp(-10, 10);
-			Target.HandGrabRotationL = Target.HandGrabRotationR = FacingSign * (80 + deltaRot);
-			Target.HandGrabScaleL = Target.HandGrabScaleR = FacingSign * 1000;
 
 		}
 
 
 		public static void HandHeld_Magic_Pole () {
+			if (Target.IsChargingAttack) {
+				// Charge
+				Attack_Magic_Pole();
+			} else {
+				// Normal
 
-			bool isCharging = Target.IsChargingAttack;
-			ResetShoulderAndUpperArm();
+				ResetShoulderAndUpperArm();
 
-			int twistShift = Target.PoseTwist / 50;
-			UpperArmL.LimbRotate((FacingRight ? -42 : 29) - twistShift);
-			UpperArmR.LimbRotate((FacingRight ? -29 : 42) - twistShift);
-			UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1306 : 862) / 1000;
-			UpperArmR.Height = UpperArmR.Height * (FacingRight ? 862 : 1306) / 1000;
+				int twistShift = Target.PoseTwist / 50;
+				UpperArmL.LimbRotate((FacingRight ? -42 : 29) - twistShift);
+				UpperArmR.LimbRotate((FacingRight ? -29 : 42) - twistShift);
+				UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1306 : 862) / 1000;
+				UpperArmR.Height = UpperArmR.Height * (FacingRight ? 862 : 1306) / 1000;
 
-			LowerArmL.LimbRotate((FacingRight ? -28 : -48) + twistShift / 2);
-			LowerArmR.LimbRotate((FacingRight ? 48 : 28) + twistShift / 2);
-			LowerArmL.Height = LowerArmL.Height * (FacingRight ? 1592 : 724) / 1000;
-			LowerArmR.Height = LowerArmR.Height * (FacingRight ? 724 : 1592) / 1000;
+				LowerArmL.LimbRotate((FacingRight ? -28 : -48) + twistShift / 2);
+				LowerArmR.LimbRotate((FacingRight ? 48 : 28) + twistShift / 2);
+				LowerArmL.Height = LowerArmL.Height * (FacingRight ? 1592 : 724) / 1000;
+				LowerArmR.Height = LowerArmR.Height * (FacingRight ? 724 : 1592) / 1000;
 
-			HandL.LimbRotate(FacingSign);
-			HandR.LimbRotate(FacingSign);
+				HandL.LimbRotate(FacingSign);
+				HandR.LimbRotate(FacingSign);
 
-			// Z
-			int signZ = Body.FrontSide ? 1 : -1;
-			UpperArmL.Z = LowerArmL.Z = signZ * UpperArmL.Z.Abs();
-			UpperArmR.Z = LowerArmR.Z = signZ * UpperArmR.Z.Abs();
-			HandL.Z = HandR.Z = signZ * POSE_Z_HAND;
+				// Z
+				int signZ = Body.FrontSide ? 1 : -1;
+				UpperArmL.Z = LowerArmL.Z = signZ * UpperArmL.Z.Abs();
+				UpperArmR.Z = LowerArmR.Z = signZ * UpperArmR.Z.Abs();
+				HandL.Z = HandR.Z = signZ * POSE_Z_HAND;
 
-			// Grab Rotation
-			Target.HandGrabScaleL = Target.HandGrabScaleR = FacingSign * 1000;
-			Target.HandGrabRotationL = Target.HandGrabRotationR = FacingSign * (
-				30 - CurrentAnimationFrame.PingPong(120) / 30
-				+ Target.DeltaPositionY.Clamp(-24, 24) / 5
-			) - Target.DeltaPositionX.Clamp(-24, 24) / 4;
+				// Grab Rotation
+				Target.HandGrabScaleL = Target.HandGrabScaleR = FacingSign * 1000;
+				Target.HandGrabRotationL = Target.HandGrabRotationR = FacingSign * (
+					30 - CurrentAnimationFrame.PingPong(120) / 30
+					+ Target.DeltaPositionY.Clamp(-24, 24) / 5
+				) - Target.DeltaPositionX.Clamp(-24, 24) / 4;
 
+			}
 		}
 
 
-		public static void HandHeld_Charging () {
+		public static void HandHeld_Magic_Float_Charging () => Attack_Magic_Float();
 
 
+		public static void HandHeld_Charging_EachHand () => Attack_WaveEachHand_SmashDown();
 
-		}
+
+		public static void HandHeld_Charging () => Attack_WaveSingleHanded_SmashDown();
 
 
 		// UTL

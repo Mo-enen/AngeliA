@@ -27,8 +27,10 @@ namespace AngeliaFramework {
 		protected override Cell DrawWeaponSprite (Character character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
 			// Draw Attack
-			if (character.IsAttacking) {
-				int localFrame = (Game.GlobalFrame - character.LastAttackFrame) * SpriteFrameCount / character.AttackDuration;
+			if (character.IsAttacking || character.IsChargingAttack) {
+				int localFrame = character.IsAttacking ?
+					(Game.GlobalFrame - character.LastAttackFrame) * SpriteFrameCount / character.AttackDuration :
+					SpriteFrameCount - 1;
 				if (CellRenderer.TryGetSpriteFromGroup(SpriteIdAttack, localFrame, out var attackSprite, false, true)) {
 					cell.Color = Const.CLEAR;
 					CellRenderer.Draw(
@@ -78,22 +80,23 @@ namespace AngeliaFramework {
 				offsetUp.x = -offsetUp.x;
 				offsetCenter.x = -offsetCenter.x;
 			}
-			if (character.IsAttacking) {
+			if (character.IsAttacking || character.IsChargingAttack) {
 
 				// Attacking
-				int localFrame = Game.GlobalFrame - character.LastAttackFrame;
+				int duration = character.AttackDuration;
+				int localFrame = character.IsAttacking ? Game.GlobalFrame - character.LastAttackFrame : duration / 2 - 1;
 				Vector2Int centerPos;
 				var cornerU = mainCell.LocalToGlobal(borderL, mainCell.Height - borderU) + offsetUp;
 				var cornerD = mainCell.LocalToGlobal(borderL, borderD) + offsetDown;
 				var handPos = (character.FacingRight ? character.HandL : character.HandR).GlobalLerp(0.5f, 0.5f);
-				if (localFrame < character.AttackDuration / 2) {
+				if (localFrame < duration / 2) {
 					// Pulling
 					centerPos = handPos + offsetCenter;
 				} else {
 					// Release
 					centerPos = Vector2.Lerp(
 						handPos, mainCell.LocalToGlobal(borderL, mainCell.Height / 2),
-						Ease.OutBack((localFrame - character.AttackDuration / 2f) / (character.AttackDuration / 2f))
+						Ease.OutBack((localFrame - duration / 2f) / (duration / 2f))
 					).RoundToInt() + offsetCenter;
 				}
 
@@ -134,6 +137,8 @@ namespace AngeliaFramework {
 	// Flail
 	public abstract class AutoSpriteFlail : AutoSpriteWeapon {
 
+		public sealed override WeaponType WeaponType => WeaponType.Flail;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 		private int SpriteIdHead { get; init; }
 		private int SpriteIdChain { get; init; }
 		protected virtual int ChainLength => Const.CEL * 7 / 9;
@@ -148,6 +153,16 @@ namespace AngeliaFramework {
 		}
 
 		protected override Cell DrawWeaponSprite (Character character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+			// Fix Grab Rotation
+			if (character.EquippingWeaponHeld != WeaponHandHeld.Pole) {
+				character.HandGrabRotationL += (
+					character.HandGrabRotationL.Sign() * -Mathf.Sin(character.HandGrabRotationL.Abs() * Mathf.Deg2Rad) * 30
+				).RoundToInt();
+				character.HandGrabRotationR += (
+					character.HandGrabRotationR.Sign() * -Mathf.Sin(character.HandGrabRotationR.Abs() * Mathf.Deg2Rad) * 30
+				).RoundToInt();
+			}
+			// Draw
 			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
 			for (int i = 0; i < HeadCount; i++) {
 				DrawFlailHead(character, cell, i);
@@ -435,12 +450,9 @@ namespace AngeliaFramework {
 						);
 					} else {
 						// Holding
-						var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
-						var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
+						var center = (character.FacingRight ? character.HandR : character.HandL).GlobalLerp(0.5f, 0.5f);
 						DrawWeaponSprite(
-							character,
-							(centerL.x + centerR.x) / 2,
-							(centerL.y + centerR.y) / 2,
+							character, center.x, center.y,
 							sprite.GlobalWidth, sprite.GlobalHeight,
 							character.HandGrabRotationL,
 							grabScaleL, sprite,

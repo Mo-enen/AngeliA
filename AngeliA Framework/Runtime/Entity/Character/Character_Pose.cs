@@ -651,9 +651,13 @@ namespace AngeliaFramework {
 				// Override Handheld
 				switch (EquippingWeaponHeld) {
 					case WeaponHandHeld.DoubleHanded:
+						AnimationLibrary.HandHeld_Double();
+						break;
 					case WeaponHandHeld.Bow:
+						AnimationLibrary.HandHeld_Bow();
+						break;
 					case WeaponHandHeld.Firearm:
-						AnimationLibrary.HandHeld_Double_Bow_Firearm();
+						AnimationLibrary.HandHeld_Firearm();
 						break;
 					case WeaponHandHeld.Pole:
 						if (EquippingWeaponType == WeaponType.Magic) {
@@ -662,10 +666,14 @@ namespace AngeliaFramework {
 							AnimationLibrary.HandHeld_Pole();
 						}
 						break;
+					case WeaponHandHeld.OneOnEachHand:
+						if (IsChargingAttack) AnimationLibrary.HandHeld_Charging_EachHand();
+						break;
+					case WeaponHandHeld.Float:
+						if (IsChargingAttack) AnimationLibrary.HandHeld_Magic_Float_Charging();
+						break;
 					default:
-						if (IsChargingAttack) {
-							AnimationLibrary.HandHeld_Charging();
-						}
+						if (IsChargingAttack) AnimationLibrary.HandHeld_Charging();
 						break;
 				}
 				CalculateBodypartGlobalPosition();
@@ -679,16 +687,6 @@ namespace AngeliaFramework {
 				) {
 					EquippingWeaponHeld = WeaponHandHeld.SingleHanded;
 				}
-			}
-
-			// Fix Grab Rotation for Flail
-			if (EquippingWeaponType == WeaponType.Flail && EquippingWeaponHeld != WeaponHandHeld.Pole) {
-				HandGrabRotationL += (
-					HandGrabRotationL.Sign() * -Mathf.Sin(HandGrabRotationL.Abs() * Mathf.Deg2Rad) * 30
-				).RoundToInt();
-				HandGrabRotationR += (
-					HandGrabRotationR.Sign() * -Mathf.Sin(HandGrabRotationR.Abs() * Mathf.Deg2Rad) * 30
-				).RoundToInt();
 			}
 
 		}
@@ -865,8 +863,11 @@ namespace AngeliaFramework {
 				// Single Handed
 				case WeaponHandHeld.SingleHanded:
 					AttackStyleLoop = 4;
-					style = AttackStyleIndex % AttackStyleLoop;
-					if (EquippingWeaponType == WeaponType.Throwing || EquippingWeaponType == WeaponType.Flail) style = 0;
+					style =
+						LastAttackCharged ||
+						EquippingWeaponType == WeaponType.Throwing ||
+						EquippingWeaponType == WeaponType.Flail ?
+						0 : AttackStyleIndex % AttackStyleLoop;
 					switch (style) {
 						default:
 							AnimationLibrary.Attack_WaveSingleHanded_SmashDown();
@@ -886,8 +887,11 @@ namespace AngeliaFramework {
 				// Double Handed
 				case WeaponHandHeld.DoubleHanded:
 					AttackStyleLoop = 4;
-					style = AttackStyleIndex % AttackStyleLoop;
-					if (EquippingWeaponType == WeaponType.Throwing || EquippingWeaponType == WeaponType.Flail) style = 0;
+					style =
+						LastAttackCharged ||
+						EquippingWeaponType == WeaponType.Throwing ||
+						EquippingWeaponType == WeaponType.Flail ?
+						0 : AttackStyleIndex % AttackStyleLoop;
 					switch (style) {
 						default:
 							AnimationLibrary.Attack_WaveDoubleHanded_SmashDown();
@@ -907,7 +911,7 @@ namespace AngeliaFramework {
 				// Each Hand
 				case WeaponHandHeld.OneOnEachHand:
 					AttackStyleLoop = 4;
-					style = AttackStyleIndex % AttackStyleLoop;
+					style = LastAttackCharged ? 0 : AttackStyleIndex % AttackStyleLoop;
 					switch (style) {
 						default:
 							AnimationLibrary.Attack_WaveEachHand_SmashDown();
@@ -927,8 +931,7 @@ namespace AngeliaFramework {
 				// Pole
 				case WeaponHandHeld.Pole:
 					AttackStyleLoop = 4;
-					style = AttackStyleIndex % AttackStyleLoop;
-					if (EquippingWeaponType == WeaponType.Flail) style = 0;
+					style = LastAttackCharged || EquippingWeaponType == WeaponType.Flail ? 0 : AttackStyleIndex % AttackStyleLoop;
 					switch (style) {
 						default:
 							AnimationLibrary.Attack_WavePolearm_SmashDown();
@@ -950,7 +953,9 @@ namespace AngeliaFramework {
 
 		private void Attack_Polearm () {
 			AttackStyleLoop = 8;
-			switch (AttackStyleIndex % AttackStyleLoop) {
+			int style = LastAttackCharged ? 0 : AttackStyleIndex % AttackStyleLoop;
+			if (LastAttackCharged) style = 4;
+			switch (style) {
 				default:
 					AnimationLibrary.Attack_PokePolearm();
 					break;
@@ -972,7 +977,7 @@ namespace AngeliaFramework {
 
 		private void Attack_Scratch () {
 			AttackStyleLoop = 3;
-			int style = AttackStyleIndex % AttackStyleLoop;
+			int style = LastAttackCharged ? 2 : AttackStyleIndex % AttackStyleLoop;
 			switch (style) {
 				default:
 					AnimationLibrary.Attack_Scratch_In();

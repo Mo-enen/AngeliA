@@ -5,10 +5,12 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iBowWood : AutoSpriteBow { }
+	public class iBowWood : AutoSpriteBow {
+		public override int ChargeAttackDuration => 20;
+	}
 	public class iBowIron : AutoSpriteBow { }
 	public class iBowGold : AutoSpriteBow { }
-	public class iCrossbowWood : AutoSpriteFirearm { }
+	public class iCrossbowWood : AutoSpriteFirearm { public override int ChargeAttackDuration => 20; }
 	public class iCrossbowIron : AutoSpriteFirearm { }
 	public class iCrossbowGold : AutoSpriteFirearm { }
 	public class iBlowgun : AutoSpriteFirearm { }

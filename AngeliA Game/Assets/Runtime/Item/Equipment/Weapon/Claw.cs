@@ -12,7 +12,7 @@ namespace AngeliaGame {
 		public override int AttackCooldown => 0;
 		public override int? MovementLoseRateOnAttack => 1000;
 	}
-	public class iClawWood : ClawWeapon { }
+	public class iClawWood : ClawWeapon { public override int ChargeAttackDuration => 20; }
 	public class iClawIron : ClawWeapon { }
 	public class iClawGold : ClawWeapon { }
 	public class iMandarinDuckAxe : ClawWeapon { }

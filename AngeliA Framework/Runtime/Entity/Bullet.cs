@@ -83,9 +83,9 @@ namespace AngeliaFramework {
 			base.OnActivated();
 		}
 
-		protected override void OnRelease (Entity sender, Weapon weapon, int targetTeam, int combo, int chargeDuration) {
+		protected override void OnRelease (Entity sender, Weapon weapon, int targetTeam, int combo, bool charged) {
 
-			base.OnRelease(sender, weapon, targetTeam, combo, chargeDuration);
+			base.OnRelease(sender, weapon, targetTeam, combo, charged);
 
 			// Set Range
 			if (weapon is IMeleeWeapon meleeWeapon) {
@@ -146,7 +146,7 @@ namespace AngeliaFramework {
 		protected virtual bool DestroyOnHitReceiver => false;
 		protected virtual bool OnlyHitReceiverOnce => true;
 		protected int AttackIndex { get; set; } = 0;
-		protected int AttackChargedDuration { get; set; } = 0;
+		protected bool AttackCharged { get; set; } = false;
 		protected int TargetTeam { get; set; } = Const.TEAM_ALL;
 		protected int HitFrame { get; private set; } = -1;
 		public Entity Sender { get; protected set; } = null;
@@ -161,13 +161,13 @@ namespace AngeliaFramework {
 		}
 
 
-		protected virtual void OnRelease (Entity sender, Weapon weapon, int targetTeam, int bulletIndex = 0, int chargeDuration = 0) {
+		protected virtual void OnRelease (Entity sender, Weapon weapon, int targetTeam, int bulletIndex = 0, bool charged = false) {
 			Sender = sender;
 			var sourceRect = sender.Rect;
 			X = sourceRect.CenterX() - Width / 2;
 			Y = sourceRect.CenterY() - Height / 2;
 			AttackIndex = bulletIndex;
-			AttackChargedDuration = chargeDuration;
+			AttackCharged = charged;
 			TargetTeam = targetTeam;
 		}
 
@@ -215,13 +215,13 @@ namespace AngeliaFramework {
 			var rect = sender.Rect;
 			var bullet = Stage.SpawnEntity(bulletID, rect.x, rect.y) as Bullet;
 			bullet.X = sender.FacingRight ? rect.xMax : rect.x - bullet.Width;
-			bullet?.OnRelease(sender, weapon, sender.AttackTargetTeam, sender.AttackStyleIndex, sender.AttackChargedDuration);
+			bullet?.OnRelease(sender, weapon, sender.AttackTargetTeam, sender.AttackStyleIndex, sender.LastAttackCharged);
 			return bullet;
 		}
-		public static Bullet SpawnBullet (int bulletID, int x, int y, Entity sender, Weapon weapon, int targetTeam, int combo = 0, int chargedDuration = 0) {
+		public static Bullet SpawnBullet (int bulletID, int x, int y, Entity sender, Weapon weapon, int targetTeam, int combo = 0, bool charged = false) {
 			if (sender == null) return null;
 			var bullet = Stage.SpawnEntity(bulletID, x, y) as Bullet;
-			bullet?.OnRelease(sender, weapon, targetTeam, combo, chargedDuration);
+			bullet?.OnRelease(sender, weapon, targetTeam, combo, charged);
 			return bullet;
 		}
 

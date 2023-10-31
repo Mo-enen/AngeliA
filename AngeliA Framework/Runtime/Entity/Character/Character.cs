@@ -453,7 +453,7 @@ namespace AngeliaFramework {
 			bool isSquatting = MovementState == CharacterMovementState.SquatIdle || MovementState == CharacterMovementState.SquatMove;
 			if (frame < LastRequireBounceFrame + duration) {
 				bounce = BOUNCE_AMOUNTS[frame - LastRequireBounceFrame];
-				if (AttackChargedDuration <= 0 && IsChargingAttack) {
+				if (AttackChargeStartFrame.HasValue && Game.GlobalFrame > AttackChargeStartFrame.Value + MinimalChargeAttackDuration) {
 					bounce += (1000 - bounce) / 2;
 				}
 			} else if (isPounding) {

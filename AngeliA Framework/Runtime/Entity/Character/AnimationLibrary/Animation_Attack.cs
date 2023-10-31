@@ -215,20 +215,27 @@ namespace AngeliaFramework {
 		// Single Handed
 		public static void Attack_WaveSingleHanded_SmashDown () {
 
-			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
 			bool isThrowing = Target.EquippingWeaponType == WeaponType.Throwing;
+			float ease01 = isCharging ?
+				1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
+				Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-			Attack_HeadDown(ease01);
-			ResetShoulderAndUpperArm();
-
-			// Left Side
-			if (
-				AnimatedPoseType == CharacterPoseAnimationType.Idle ||
-				AnimatedPoseType == CharacterPoseAnimationType.SquatIdle ||
-				AnimatedPoseType == CharacterPoseAnimationType.SquatMove
-			) {
-				UpperArmL.LimbRotate(-15 - (int)(ease01 * 48), 500);
-				LowerArmL.LimbRotate(-100 + (int)(ease01 * 48));
+			if (isCharging) {
+				Attack_HeadDown(ease01, 100, 800, 1000, 100);
+				ResetShoulderAndUpperArm();
+			} else {
+				Attack_HeadDown(ease01);
+				ResetShoulderAndUpperArm();
+				// Left Side
+				if (
+					AnimatedPoseType == CharacterPoseAnimationType.Idle ||
+					AnimatedPoseType == CharacterPoseAnimationType.SquatIdle ||
+					AnimatedPoseType == CharacterPoseAnimationType.SquatMove
+				) {
+					UpperArmL.LimbRotate(-15 - (int)(ease01 * 48), 500);
+					LowerArmL.LimbRotate(-100 + (int)(ease01 * 48));
+				}
 			}
 
 			// Upper Arm R
@@ -418,9 +425,16 @@ namespace AngeliaFramework {
 		// Double Handed
 		public static void Attack_WaveDoubleHanded_SmashDown () {
 
-			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
+			float ease01 = isCharging ?
+				1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
+				Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-			Attack_HeadDown(ease01);
+			if (isCharging) {
+				Attack_HeadDown(ease01, 100, 800, 1000, 100);
+			} else {
+				Attack_HeadDown(ease01);
+			}
 			ResetShoulderAndUpperArm();
 
 			int upperRotA = (int)Mathf.LerpUnclamped(180, 42, ease01);
@@ -457,7 +471,7 @@ namespace AngeliaFramework {
 
 			// Grab Rotation
 			Target.HandGrabRotationL = Target.HandGrabRotationR =
-				FacingSign * (int)Mathf.LerpUnclamped(-80, 100, ease01);
+				FacingSign * (int)Mathf.LerpUnclamped(-37, 100, ease01);
 			Target.HandGrabScaleL = Target.HandGrabScaleR =
 				FacingSign * (int)Mathf.LerpUnclamped(1100, 1400, ease01);
 
@@ -638,9 +652,16 @@ namespace AngeliaFramework {
 		// Each Hand
 		public static void Attack_WaveEachHand_SmashDown () {
 
-			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
+			float ease01 = isCharging ?
+				1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
+				Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-			Attack_HeadDown(ease01);
+			if (isCharging) {
+				Attack_HeadDown(ease01, 100, 800, 1000, 100);
+			} else {
+				Attack_HeadDown(ease01);
+			}
 			ResetShoulderAndUpperArm();
 
 			UpperArmL.LimbRotate(FacingSign * (int)Mathf.LerpUnclamped(-175, 0, ease01));
@@ -669,7 +690,13 @@ namespace AngeliaFramework {
 			UpperArmR.Z = UpperArmR.Z.Abs();
 			LowerArmL.Z = LowerArmL.Z.Abs();
 			LowerArmR.Z = LowerArmR.Z.Abs();
-			HandR.Z = POSE_Z_HAND;
+			if (isCharging) {
+				HandL.Z = FacingSign * POSE_Z_HAND;
+				HandR.Z = -FacingSign * POSE_Z_HAND;
+			} else {
+				HandL.Z = POSE_Z_HAND;
+				HandR.Z = POSE_Z_HAND;
+			}
 
 			// Grab
 			Target.HandGrabRotationL = FacingSign * (int)Mathf.LerpUnclamped(-70, 110, ease01);
@@ -832,9 +859,16 @@ namespace AngeliaFramework {
 		// Polearm
 		public static void Attack_WavePolearm_SmashDown () {
 
-			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
+			float ease01 = isCharging ?
+				1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
+				Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-			Attack_HeadDown(ease01);
+			if (isCharging) {
+				Attack_HeadDown(ease01, 100, 800, 1000, 100);
+			} else {
+				Attack_HeadDown(ease01);
+			}
 			ResetShoulderAndUpperArm();
 
 			// Upper Arm
@@ -979,7 +1013,10 @@ namespace AngeliaFramework {
 
 		public static void Attack_Bow () {
 
-			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
+			float ease01 = isCharging ?
+				Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
+				Target.LastAttackCharged ? 1f : Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
 			Attack_HeadDown(ease01, 0, 200, -1000, 0);
 			ResetShoulderAndUpperArm();
@@ -992,10 +1029,8 @@ namespace AngeliaFramework {
 			UpperArmL.LimbRotate(FacingRight ? rotUA : -rotUB);
 			UpperArmR.LimbRotate(FacingRight ? rotUB : -rotUA);
 
-			int rotLA = -90 - rotUA;
-			int rotLB = (int)Mathf.LerpUnclamped(0, 0, ease01);
-			LowerArmL.LimbRotate(FacingRight ? rotLA : -rotLB);
-			LowerArmR.LimbRotate(FacingRight ? rotLB : -rotLA);
+			LowerArmL.LimbRotate(FacingRight ? -90 - rotUA : -0);
+			LowerArmR.LimbRotate(FacingRight ? 0 : 90 + rotUA);
 
 			HandL.LimbRotate(FacingSign);
 			HandR.LimbRotate(FacingSign);
@@ -1017,7 +1052,10 @@ namespace AngeliaFramework {
 
 		public static void Attack_Firearm () {
 
-			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
+			float ease01 = isCharging ?
+				Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
+				Target.LastAttackCharged ? 1f : Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
 			Attack_HeadDown(ease01, 0, 200, -1000, 0);
 			ResetShoulderAndUpperArm();
@@ -1211,9 +1249,16 @@ namespace AngeliaFramework {
 
 		public static void Attack_Magic_Float () {
 
-			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
+			float ease01 = isCharging ?
+				1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
+				Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-			Attack_HeadDown(ease01, 200, 300, 0, 300);
+			if (isCharging) {
+				Attack_HeadDown(ease01, 100, 800, 1000, 100);
+			} else {
+				Attack_HeadDown(ease01, 200, 300, 0, 300);
+			}
 			ResetShoulderAndUpperArm(!FacingRight, FacingRight);
 
 			var uArmB = FacingRight ? UpperArmR : UpperArmL;
@@ -1271,22 +1316,34 @@ namespace AngeliaFramework {
 
 		public static void Attack_Magic_Pole () {
 
-			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
+			float ease01 = isCharging ?
+				1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
+				Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-			Attack_HeadDown(ease01, 200, 300, 0, 200);
+			if (isCharging) {
+				Attack_HeadDown(ease01, 100, 800, 1000, 100);
+			} else {
+				Attack_HeadDown(ease01, 200, 300, 0, 200);
+			}
 			ResetShoulderAndUpperArm();
 
 			// Upper Arm
+			float armGrowAmount = isCharging ? 1f - ease01 : ease01;
 			int uRotA = (int)Mathf.LerpUnclamped(-90, 13, ease01);
 			int uRotB = (int)Mathf.LerpUnclamped(-69, 33, ease01);
 			UpperArmL.LimbRotate(FacingRight ? uRotA : -uRotB);
 			UpperArmR.LimbRotate(FacingRight ? uRotB : -uRotA);
+			UpperArmL.Height = (int)(UpperArmL.Height * armGrowAmount * (FacingRight ? 1f : 0.2f));
+			UpperArmR.Height = (int)(UpperArmR.Height * armGrowAmount * (FacingRight ? 0.2f : 1f));
 
 			// Lower Arm
 			int lRotA = (int)Mathf.LerpUnclamped(0, -25, ease01);
 			int lRotB = (int)Mathf.LerpUnclamped(-32, 0, ease01);
 			LowerArmL.LimbRotate(FacingRight ? lRotA : -lRotB);
 			LowerArmR.LimbRotate(FacingRight ? lRotB : -lRotA);
+			LowerArmL.Height = (int)(LowerArmL.Height * armGrowAmount * (FacingRight ? 1f : 0.2f));
+			LowerArmR.Height = (int)(LowerArmR.Height * armGrowAmount * (FacingRight ? 0.2f : 1f));
 
 			// Hand
 			HandL.LimbRotate(FacingSign);

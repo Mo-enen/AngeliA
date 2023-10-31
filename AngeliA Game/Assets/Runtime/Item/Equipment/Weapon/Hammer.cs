@@ -19,6 +19,7 @@ namespace AngeliaGame {
 	public class iMaceSpiked : HammerWeapon { }
 	public class iBian : HammerWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
+		public override int ChargeAttackDuration => 20;
 	}
 	public class iHammerRiceCake : HammerWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
@@ -30,6 +31,7 @@ namespace AngeliaGame {
 	}
 	public class iHammerMoai : HammerWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
+		public override int ChargeAttackDuration => 20;
 	}
 	public class iHammerPaladin : HammerWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
