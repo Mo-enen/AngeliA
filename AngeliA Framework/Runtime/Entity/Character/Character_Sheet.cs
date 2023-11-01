@@ -44,7 +44,7 @@ namespace AngeliaFramework {
 			public int GrabSideMove = 0;
 			public int GrabFlip = 0;
 
-			public int[] Attacks = null;
+			public int Attack = 0;
 
 			// API
 			public AnimationSheet (System.Type characterType) {
@@ -86,7 +86,7 @@ namespace AngeliaFramework {
 				DoorFront = LoadAniCode($"{name}.DoorFront", Idle);
 				DoorBack = LoadAniCode($"{name}.DoorBack", Idle);
 
-				Attacks = GetAniArray($"{name}.Attack");
+				Attack = LoadAniCode($"{name}.Attack");
 
 			}
 
@@ -121,27 +121,11 @@ namespace AngeliaFramework {
 
 
 			private static int LoadAniCode (int code, int failback = 0) {
-				if (CellRenderer.TryGetSpriteChain(code, out _) || CellRenderer.TryGetSprite(code, out _)) {
+				if (CellRenderer.HasSpriteGroup(code) || CellRenderer.HasSprite(code)) {
 					return code;
 				} else {
 					return failback;
 				}
-			}
-
-
-			private static int[] GetAniArray (string keyName) {
-				var result = new List<int>();
-				int code = keyName.AngeHash();
-				if (CellRenderer.TryGetSprite(code, out _, 0)) {
-					result.Add(code);
-				}
-				for (char c = 'A'; c <= 'Z'; c++) {
-					code = $"{keyName}{c}".AngeHash();
-					if (CellRenderer.TryGetSprite(code, out _, 0)) {
-						result.Add(code);
-					} else break;
-				}
-				return result.Count > 0 ? result.ToArray() : null;
 			}
 
 
@@ -250,8 +234,8 @@ namespace AngeliaFramework {
 				ani = sheet.GetMovementCode(this);
 			} else {
 				// Attack
-				if (sheet.Attacks.Length > 0) {
-					ani = sheet.Attacks[AttackStyleIndex.Clamp(0, sheet.Attacks.Length - 1)];
+				if (sheet.Attack != 0) {
+					ani = sheet.Attack;
 					if (Game.GlobalFrame <= LastAttackFrame) CurrentAnimationFrame = 0;
 				}
 			}

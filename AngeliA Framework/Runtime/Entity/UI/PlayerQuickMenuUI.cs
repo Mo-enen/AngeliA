@@ -78,7 +78,7 @@ namespace AngeliaFramework {
 			int invID = Player.Selecting.TypeID;
 			int currentIndex = 0;
 			int equippingID = Inventory.GetEquipment(invID, EquipmentType.Weapon);
-			if (ItemSystem.GetItem(equippingID) is AutoSpriteWeapon equippingItem) {
+			if (ItemSystem.GetItem(equippingID) is Weapon equippingItem) {
 				WeaponList[0] = equippingItem;
 				currentIndex++;
 				WeaponCount++;
@@ -88,7 +88,7 @@ namespace AngeliaFramework {
 				int itemID = Inventory.GetItemAt(invID, i);
 				if (
 					itemID == 0 ||
-					ItemSystem.GetItem(itemID) is not AutoSpriteWeapon weapon
+					ItemSystem.GetItem(itemID) is not Weapon weapon
 				) continue;
 				WeaponList[currentIndex] = weapon;
 				currentIndex++;
@@ -153,11 +153,11 @@ namespace AngeliaFramework {
 
 			// Logic
 			if (FrameInput.GameKeyDownGUI(Gamekey.Left)) {
-				CurrentSlotIndex = (CurrentSlotIndex - 1).Clamp(0, WeaponCount - 1);
+				CurrentSlotIndex = (CurrentSlotIndex - 1).UMod(WeaponCount);
 				IsDirty = true;
 			}
 			if (FrameInput.GameKeyDownGUI(Gamekey.Right)) {
-				CurrentSlotIndex = (CurrentSlotIndex + 1).Clamp(0, WeaponCount - 1);
+				CurrentSlotIndex = (CurrentSlotIndex + 1).UMod(WeaponCount);
 				IsDirty = true;
 			}
 

@@ -8,7 +8,7 @@ namespace AngeliaFramework {
 
 
 		// Data
-		private const int POSE_Z_HAND = 36;
+		public const int POSE_Z_HAND = 36;
 		private static Character Target = null;
 		private static BodyPart Head = null;
 		private static BodyPart Body = null;
@@ -390,31 +390,31 @@ namespace AngeliaFramework {
 
 
 		// UTL
-		private static void ResetShoulderAndUpperArm (bool resetLeft = true, bool resetRight = true) {
+		private static void ResetShoulderAndUpperArm (bool resetLeft = true, bool resetRight = true) => ResetShoulderAndUpperArm(Target, resetLeft, resetRight);
+		public static void ResetShoulderAndUpperArm (Character character, bool resetLeft = true, bool resetRight = true) {
 			if (resetLeft) {
-				int bodyBorderL = Target.FacingRight ? Body.Border.left : Body.Border.right;
-				ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
-				ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
-				ShoulderL.Height = Mathf.Min(ShoulderL.Height, Body.Height);
-				ShoulderL.PivotX = 1000;
-				UpperArmL.X = ShoulderL.X;
-				UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
-				UpperArmL.PivotX = 1000;
-				UpperArmL.Height = UpperArmL.SizeY;
+				int bodyBorderL = character.FacingRight ? character.Body.Border.left : character.Body.Border.right;
+				character.ShoulderL.X = character.Body.X - character.Body.Width.Abs() / 2 + bodyBorderL;
+				character.ShoulderL.Y = character.Body.Y + character.Body.Height - character.Body.Border.up;
+				character.ShoulderL.Height = Mathf.Min(character.ShoulderL.Height, character.Body.Height);
+				character.ShoulderL.PivotX = 1000;
+				character.UpperArmL.X = character.ShoulderL.X;
+				character.UpperArmL.Y = character.ShoulderL.Y - character.ShoulderL.Height + character.ShoulderL.Border.down;
+				character.UpperArmL.PivotX = 1000;
+				character.UpperArmL.Height = character.UpperArmL.SizeY;
 			}
 			if (resetRight) {
-				int bodyBorderR = Target.FacingRight ? Body.Border.right : Body.Border.left;
-				ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
-				ShoulderR.Y = Body.Y + Body.Height - Body.Border.up;
-				ShoulderR.Height = Mathf.Min(ShoulderR.Height, Body.Height);
-				ShoulderR.PivotX = 1000;
-				UpperArmR.X = ShoulderR.X;
-				UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
-				UpperArmR.PivotX = 0;
-				UpperArmR.Height = UpperArmR.SizeY;
+				int bodyBorderR = character.FacingRight ? character.Body.Border.right : character.Body.Border.left;
+				character.ShoulderR.X = character.Body.X + character.Body.Width.Abs() / 2 - bodyBorderR;
+				character.ShoulderR.Y = character.Body.Y + character.Body.Height - character.Body.Border.up;
+				character.ShoulderR.Height = Mathf.Min(character.ShoulderR.Height, character.Body.Height);
+				character.ShoulderR.PivotX = 1000;
+				character.UpperArmR.X = character.ShoulderR.X;
+				character.UpperArmR.Y = character.ShoulderR.Y - character.ShoulderR.Height + character.ShoulderR.Border.down;
+				character.UpperArmR.PivotX = 0;
+				character.UpperArmR.Height = character.UpperArmR.SizeY;
 			}
 		}
-
 
 	}
 }

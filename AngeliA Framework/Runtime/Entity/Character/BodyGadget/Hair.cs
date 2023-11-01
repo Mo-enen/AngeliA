@@ -40,18 +40,25 @@ namespace AngeliaFramework {
 			return cells;
 		}
 
-		private void DrawBraid (Character character, Cell[] cells, bool forceBackOnFlow) => DrawBraid(character, cells, forceBackOnFlow, BraidL, BraidR, GetFrontL(character), GetFrontR(character), PositionAmountX, PositionAmountY, FacingLeftOffsetX, MotionAmount, FlowMotionAmount, DropMotionAmount, UseLimbRotate);
+		private void DrawBraid (Character character, Cell[] cells, bool forceBackOnFlow) => DrawBraid(
+			character, cells, forceBackOnFlow, BraidL, BraidR,
+			GetFrontL(character) ? 33 : -33, GetFrontR(character) ? 33 : -33,
+			PositionAmountX, PositionAmountY, FacingLeftOffsetX, MotionAmount,
+			FlowMotionAmount, DropMotionAmount, UseLimbRotate, 0, 0
+		);
 
 		public static void DrawBraid (
 			Character character, bool forceBackOnFlow, int braidL, int braidR,
-			bool isFrontL, bool isFrontR, int positionAmountX = 0, int positionAmountY = 0,
-			int facingLeftOffsetX = 0, int motionAmount = 618, int flowMotionAmount = 618, int dropMotionAmount = 200, bool useLimbRotate = false
-		) => DrawBraid(character, null, forceBackOnFlow, braidL, braidR, isFrontL, isFrontR, positionAmountX, positionAmountY, facingLeftOffsetX, motionAmount, flowMotionAmount, dropMotionAmount, useLimbRotate);
+			int zLeft, int zRight, int positionAmountX = 0, int positionAmountY = 0,
+			int facingLeftOffsetX = 0, int motionAmount = 618, int flowMotionAmount = 618, int dropMotionAmount = 200, bool useLimbRotate = false,
+			int offsetX = 0, int offsetY = 0
+		) => DrawBraid(character, null, forceBackOnFlow, braidL, braidR, zLeft, zRight, positionAmountX, positionAmountY, facingLeftOffsetX, motionAmount, flowMotionAmount, dropMotionAmount, useLimbRotate, offsetX, offsetY);
 
 		private static void DrawBraid (
 			Character character, Cell[] hairCells, bool forceBackOnFlow, int braidL, int braidR,
-			bool isFrontL, bool isFrontR, int positionAmountX, int positionAmountY,
-			int facingLeftOffsetX, int motionAmount, int flowMotionAmount, int dropMotionAmount, bool useLimbRotate
+			int zLeft, int zRight, int positionAmountX, int positionAmountY,
+			int facingLeftOffsetX, int motionAmount, int flowMotionAmount, int dropMotionAmount, bool useLimbRotate,
+			int offsetX, int offsetY
 		) {
 
 			const int A2G = Const.CEL / Const.ART_CEL;
@@ -98,8 +105,6 @@ namespace AngeliaFramework {
 				hairT = headRect.yMax;
 			}
 
-			int zLeft = isFrontL ? 33 : -33;
-			int zRight = isFrontR ? 33 : -33;
 			int lerpL = flipX ? 1000 : 0;
 			int lerpR = flipX ? 0 : 1000;
 			int lerpLY = flipY ? 1000 : 0;
@@ -125,7 +130,7 @@ namespace AngeliaFramework {
 				int motionRotY = ((character.DeltaPositionY * dropMotionAmount) / 1000).Clamp(-70, 0);
 
 				var bCells = DrawBraid(
-					braidL, l, y, zLeft, 0,
+					braidL, l + offsetX, y + offsetY, zLeft, 0,
 					(character.FacingRight ? rot : rot * 2 / 3) - motionRotY,
 					flipX, flipY, deltaHeight, rolling, useLimbRotate
 				);
@@ -133,7 +138,7 @@ namespace AngeliaFramework {
 				Flow(bCells, character.FacingRight ? braidFlow : braidFlow / 2, forceBackOnFlow);
 
 				bCells = DrawBraid(
-					braidR, r, y, zRight, 1000,
+					braidR, r + offsetX, y + offsetY, zRight, 1000,
 					(character.FacingRight ? rot * 2 / 3 : rot) + motionRotY,
 					flipX, flipY, deltaHeight, rolling, useLimbRotate
 				);
@@ -141,9 +146,9 @@ namespace AngeliaFramework {
 				Flow(bCells, character.FacingRight ? braidFlow / 2 : braidFlow, forceBackOnFlow);
 
 			} else {
-				var bCells = DrawBraid(braidL, l, y, zLeft, 0, rot, flipX, flipY, deltaHeight, rolling, useLimbRotate);
+				var bCells = DrawBraid(braidL, l + offsetX, y + offsetY, zLeft, 0, rot, flipX, flipY, deltaHeight, rolling, useLimbRotate);
 				TwistRotateHair(character, bCells, false);
-				bCells = DrawBraid(braidR, r, y, zRight, 1000, rot, flipX, flipY, deltaHeight, rolling, useLimbRotate);
+				bCells = DrawBraid(braidR, r + offsetX, y + offsetY, zRight, 1000, rot, flipX, flipY, deltaHeight, rolling, useLimbRotate);
 				TwistRotateHair(character, bCells, true);
 			}
 
@@ -354,10 +359,10 @@ namespace AngeliaFramework {
 
 				// Draw Hair
 				return CellRenderer.Draw_9Slice(
-					hairSprite.GlobalID, 
-					hairRect.CenterX(), hairRect.y + hairRect.height, 
-					500, 1000, 0, 
-					hairRect.width, hairRect.height, 
+					hairSprite.GlobalID,
+					hairRect.CenterX(), hairRect.y + hairRect.height,
+					500, 1000, 0,
+					hairRect.width, hairRect.height,
 					character.HairColor, z
 				);
 

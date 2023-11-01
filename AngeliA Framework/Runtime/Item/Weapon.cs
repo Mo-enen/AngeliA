@@ -19,6 +19,7 @@ namespace AngeliaFramework {
 	}
 
 
+	[EntityAttribute.MapEditorGroup("ItemWeapon")]
 	public abstract class Weapon : Equipment {
 
 		public sealed override EquipmentType EquipmentType => EquipmentType.Weapon;

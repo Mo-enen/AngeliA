@@ -834,7 +834,7 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private void CalculateBodypartGlobalPosition () {
+		public void CalculateBodypartGlobalPosition () {
 			foreach (var part in BodyParts) {
 				part.GlobalX = X + PoseRootX + part.X;
 				part.GlobalY = Y + PoseRootY + part.Y;

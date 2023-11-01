@@ -1144,10 +1144,10 @@ namespace AngeliaFramework {
 
 
 		// Sprite Data
-		public static bool TryGetSprite (int globalID, out AngeSprite sprite, int frame = -1) {
-			if (frame < 0) frame = GlobalFrame;
+		public static bool TryGetSprite (int globalID, out AngeSprite sprite) {
+			
 			if (SheetIDMap.TryGetValue(globalID, out var rCell)) {
-				sprite = Sprites[rCell.GetIndex(frame)];
+				sprite = Sprites[rCell.GetIndex(GlobalFrame)];
 				return true;
 			} else {
 				sprite = null;
@@ -1175,16 +1175,6 @@ namespace AngeliaFramework {
 				sprite = null;
 				return index >= 0 && index < ids.Length && TryGetSprite(ids[index], out sprite);
 			} else return TryGetSprite(groupID, out sprite);
-		}
-
-
-		public static bool TryGetSpriteChain (int chainID, out AngeSpriteChain chain) {
-			if (SheetIDMap.TryGetValue(chainID, out var rCell)) {
-				chain = rCell.Chain;
-			} else {
-				chain = null;
-			}
-			return chain != null;
 		}
 
 
