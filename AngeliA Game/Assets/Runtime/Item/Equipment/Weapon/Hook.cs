@@ -5,52 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public abstract class HookWeapon : AutoSpriteWeapon {
-		public sealed override WeaponType WeaponType => WeaponType.Hook;
-	}
-	public class iScytheWood : HookWeapon {
+	public class iScytheWood : AutoSpriteHook {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
-	public class iScytheIron : HookWeapon {
+	public class iScytheIron : AutoSpriteHook {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
-	public class iScytheGold : HookWeapon {
+	public class iScytheGold : AutoSpriteHook {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
-	public class iSickle : HookWeapon {
+	public class iSickle : AutoSpriteHook {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iHookIron : HookWeapon {
+	public class iHookIron : AutoSpriteHook {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
 	}
-	public class iHookGold : HookWeapon {
+	public class iHookGold : AutoSpriteHook {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
 	}
-	public class iHookHand : HookWeapon {
+	public class iHookHand : AutoSpriteHook {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iHookJungle : HookWeapon {
+	public class iHookJungle : AutoSpriteHook {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iHookBone : HookWeapon {
+	public class iHookBone : AutoSpriteHook {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iHookJagged : HookWeapon {
+	public class iHookJagged : AutoSpriteHook {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iHookTripple : HookWeapon {
+	public class iHookTripple : AutoSpriteHook {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iHookBig : HookWeapon {
+	public class iHookBig : AutoSpriteHook {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 	}
-	public class iHookPudge : HookWeapon {
+	public class iHookPudge : AutoSpriteHook {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 	}
-	public class iHookChicken : HookWeapon {
+	public class iHookChicken : AutoSpriteHook {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iHookRusty : HookWeapon {
+	public class iHookRusty : AutoSpriteHook {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
 	}
 }

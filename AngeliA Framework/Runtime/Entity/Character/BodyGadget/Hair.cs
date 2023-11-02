@@ -34,7 +34,7 @@ namespace AngeliaFramework {
 
 		protected override Cell[] DrawHair (Character character) {
 			var cells = base.DrawHair(character);
-			if (BraidL != 0 || BraidR != 0) {
+			if (Game.GlobalFrame > character.HideBraidFrame && (BraidL != 0 || BraidR != 0)) {
 				DrawBraid(character, cells, ForceBackOnFlow);
 			}
 			return cells;

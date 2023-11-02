@@ -5,44 +5,29 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-
-	public abstract class AxeWeapon : AutoSpriteWeapon, IMeleeWeapon {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-		public sealed override WeaponType WeaponType => WeaponType.Axe;
-		public override int BulletID => BULLET_ID;
-		private static readonly int BULLET_ID = typeof(AxeBullet).AngeHash();
-		int IMeleeWeapon.RangeXLeft => 275;
-		int IMeleeWeapon.RangeXRight => 384;
-		int IMeleeWeapon.RangeY => 512;
-		public override int AttackDuration => 12;
-		public override int AttackCooldown => 2;
-		public override int ChargeAttackDuration => 20;
-
-	}
-
-	public class iAxeWood : AxeWeapon { }
-	public class iAxeIron : AxeWeapon { }
-	public class iAxeGold : AxeWeapon { }
-	public class iBattleAxe : AxeWeapon { }
-	public class iErgonomicAxe : AxeWeapon { }
-	public class iAxeJagged : AxeWeapon { }
-	public class iAxeOrc : AxeWeapon { }
-	public class iAxeCursed : AxeWeapon {
+	public class iAxeWood : AutoSpriteAxe { }
+	public class iAxeIron : AutoSpriteAxe { }
+	public class iAxeGold : AutoSpriteAxe { }
+	public class iBattleAxe : AutoSpriteAxe { }
+	public class iErgonomicAxe : AutoSpriteAxe { }
+	public class iAxeJagged : AutoSpriteAxe { }
+	public class iAxeOrc : AutoSpriteAxe { }
+	public class iAxeCursed : AutoSpriteAxe {
 		protected override Cell DrawWeaponSprite (Character character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
 			AngeUtil.DrawGlitchEffect(cell, Game.GlobalFrame);
 			return cell;
 		}
 	}
-	public class iPickWood : AxeWeapon { }
-	public class iPickIron : AxeWeapon { }
-	public class iPickGold : AxeWeapon { }
-	public class iAxeGreat : AxeWeapon {
+	public class iPickWood : AutoSpriteAxe { }
+	public class iPickIron : AutoSpriteAxe { }
+	public class iPickGold : AutoSpriteAxe { }
+	public class iAxeGreat : AutoSpriteAxe {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 		public override int AttackDuration => 16;
 		public override int AttackCooldown => 3;
 	}
-	public class iAxeButterfly : AxeWeapon { }
-	public class iAxeBone : AxeWeapon { }
-	public class iAxeStone : AxeWeapon { }
+	public class iAxeButterfly : AutoSpriteAxe { }
+	public class iAxeBone : AutoSpriteAxe { }
+	public class iAxeStone : AutoSpriteAxe { }
 }

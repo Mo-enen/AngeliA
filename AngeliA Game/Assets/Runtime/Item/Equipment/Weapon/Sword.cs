@@ -5,52 +5,49 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public abstract class SwordWeapon : AutoSpriteWeapon {
-		public sealed override WeaponType WeaponType => WeaponType.Sword;
-	}
-	public class iSwordWood : SwordWeapon {
+	public class iSwordWood : AutoSpriteSword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iSwordIron : SwordWeapon {
+	public class iSwordIron : AutoSpriteSword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iSwordGold : SwordWeapon {
+	public class iSwordGold : AutoSpriteSword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iDagger : SwordWeapon {
+	public class iDagger : AutoSpriteSword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iSwordCrimson : SwordWeapon {
+	public class iSwordCrimson : AutoSpriteSword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 	}
-	public class iSwordScarlet : SwordWeapon {
+	public class iSwordScarlet : AutoSpriteSword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 	}
-	public class iScimitar : SwordWeapon {
+	public class iScimitar : AutoSpriteSword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iSwordPirate : SwordWeapon {
+	public class iSwordPirate : AutoSpriteSword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iSwordAgile : SwordWeapon {
+	public class iSwordAgile : AutoSpriteSword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iScimitarAgile : SwordWeapon {
+	public class iScimitarAgile : AutoSpriteSword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iSwordJagged : SwordWeapon {
+	public class iSwordJagged : AutoSpriteSword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 	}
-	public class iSwordGreat : SwordWeapon {
+	public class iSwordGreat : AutoSpriteSword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 	}
-	public class iSwordDark : SwordWeapon {
+	public class iSwordDark : AutoSpriteSword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 	}
-	public class iSwordCrutch : SwordWeapon {
+	public class iSwordCrutch : AutoSpriteSword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iKnifeGiant : SwordWeapon {
+	public class iKnifeGiant : AutoSpriteSword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 	}
 }

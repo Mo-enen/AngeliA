@@ -5,38 +5,33 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public abstract class HammerWeapon : AutoSpriteWeapon {
-		public sealed override WeaponType WeaponType => WeaponType.Hammer;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-		protected override bool IgnoreGrabTwist => true;
-	}
-	public class iHammerWood : HammerWeapon { }
-	public class iHammerIron : HammerWeapon { }
-	public class iHammerGold : HammerWeapon { }
-	public class iMaceRound : HammerWeapon { }
-	public class iMaceSkull : HammerWeapon { }
-	public class iBaseballBatWood : HammerWeapon { }
-	public class iMaceSpiked : HammerWeapon { }
-	public class iBian : HammerWeapon {
+	public class iHammerWood : AutoSpriteHammer { }
+	public class iHammerIron : AutoSpriteHammer { }
+	public class iHammerGold : AutoSpriteHammer { }
+	public class iMaceRound : AutoSpriteHammer { }
+	public class iMaceSkull : AutoSpriteHammer { }
+	public class iBaseballBatWood : AutoSpriteHammer { }
+	public class iMaceSpiked : AutoSpriteHammer { }
+	public class iBian : AutoSpriteHammer {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
 		public override int ChargeAttackDuration => 20;
 	}
-	public class iHammerRiceCake : HammerWeapon {
+	public class iHammerRiceCake : AutoSpriteHammer {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
-	public class iHammerGoatHorn : HammerWeapon { }
-	public class iBaseballBatIron : HammerWeapon { }
-	public class iHammerThunder : HammerWeapon {
+	public class iHammerGoatHorn : AutoSpriteHammer { }
+	public class iBaseballBatIron : AutoSpriteHammer { }
+	public class iHammerThunder : AutoSpriteHammer {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
-	public class iHammerMoai : HammerWeapon {
+	public class iHammerMoai : AutoSpriteHammer {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 		public override int ChargeAttackDuration => 20;
 	}
-	public class iHammerPaladin : HammerWeapon {
+	public class iHammerPaladin : AutoSpriteHammer {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
-	public class iHammerRuby : HammerWeapon {
+	public class iHammerRuby : AutoSpriteHammer {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 }

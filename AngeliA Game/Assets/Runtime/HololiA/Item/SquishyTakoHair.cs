@@ -5,7 +5,26 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iSquishyTakoHair : Weapon {
+
+
+	public class SquishyTakoHairBullet : MeleeBullet {
+
+
+		public static readonly int TYPE_ID = typeof(SquishyTakoHairBullet).AngeHash();
+		protected override int Duration => 10;
+		protected override int Damage => 1;
+
+		public override void FrameUpdate () {
+			base.FrameUpdate();
+
+		}
+
+
+	}
+
+
+	public class iSquishyTakoHair : Weapon, IMeleeWeapon {
+
 
 
 		// Const
@@ -13,10 +32,19 @@ namespace AngeliaGame {
 		private static readonly int HAIR_R = "SquishyTakoHair.HairR".AngeHash();
 		private static readonly int HAIR_TIP = "SquishyTakoHair.Tip".AngeHash();
 		private static readonly int HAIR_SEG = "SquishyTakoHair.Segment".AngeHash();
+		private static readonly int[] SQUISHY_HAIR_IDS = {
+			typeof(InaDressHair).AngeHash(),
+			typeof(InaArtistHair).AngeHash(),
+			typeof(InaHair).AngeHash(),
+		};
 
 		// Api
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
 		public override WeaponType WeaponType => WeaponType.Claw;
+		public override int BulletID => SquishyTakoHairBullet.TYPE_ID;
+		int IMeleeWeapon.RangeXLeft => 295;
+		int IMeleeWeapon.RangeXRight => 295;
+		int IMeleeWeapon.RangeY => 477;
 
 		// MSG
 		public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
@@ -26,6 +54,18 @@ namespace AngeliaGame {
 				character.AnimatedPoseType == CharacterPoseAnimationType.Sleep ||
 				character.AnimatedPoseType == CharacterPoseAnimationType.PassOut
 			) return;
+
+			// Hide Squichy Braid in Hair
+			foreach (var id in SQUISHY_HAIR_IDS) {
+				if (character.HairID == id) {
+					character.HideBraidFrame = Game.GlobalFrame;
+					break;
+				}
+			}
+
+			// Hand Color Darker
+			character.HandL.Tint = character.HandR.Tint =
+				character.SkinColor.Mult(new Color32(240, 230, 220, 255));
 
 			if (!character.IsAttacking) {
 				// Handheld
@@ -100,7 +140,9 @@ namespace AngeliaGame {
 
 		private static void AttackHair (float ease01, float frame010, Character character, BodyPart hand, bool swing, bool reverseSwing) {
 
-			if (!CellRenderer.TryGetSprite(HAIR_TIP, out var sprite)) return;
+			if (!CellRenderer.TryGetSpriteFromGroup(
+				HAIR_TIP, swing ? ((1.1f - ease01) * 3).RoundToInt() : 0, out var sprite, false, true)
+			) return;
 
 			int facingSign = character.FacingRight ? 1 : -1;
 			int fromX = hand.GlobalX;
@@ -114,14 +156,22 @@ namespace AngeliaGame {
 				toX += facingSign * (int)Mathf.LerpUnclamped(137, -64, ease01) * (reverseSwing ? -1 : 1);
 				toY += (int)Mathf.LerpUnclamped(16, -96, frame010);
 				rot = facingSign * (int)Mathf.LerpUnclamped(-87, 105, ease01) * (reverseSwing ? -1 : 1);
-				width = (int)(width * Mathf.LerpUnclamped(0.7f, 1.2f, ease01));
-				height = (int)(height * Mathf.LerpUnclamped(0.7f, 1.2f, ease01));
+				width = (int)(width * Mathf.LerpUnclamped(0.9f, 1.2f, ease01));
+				height = (int)(height * Mathf.LerpUnclamped(0.9f, 1.2f, ease01));
 			} else {
 				width /= 2;
 				height /= 2;
 				toX += facingSign * (int)Mathf.LerpUnclamped(12, -10, ease01);
 				toY += (int)Mathf.LerpUnclamped(-32, -64, ease01);
 				rot = facingSign * (int)Mathf.LerpUnclamped(-5, 5, ease01);
+			}
+			if (swing) {
+				if (reverseSwing) {
+					width = -width;
+				}
+				if (!character.FacingRight) {
+					width = -width;
+				}
 			}
 
 			// Seg

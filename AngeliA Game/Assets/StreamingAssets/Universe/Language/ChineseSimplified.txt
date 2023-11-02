@@ -1,5 +1,4 @@
-﻿Pat.InaKimono:和服伊娜
-CtrlHint.Adjust:调整
+﻿CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
 CtrlHint.Drop:放下
@@ -114,6 +113,7 @@ Pat.Ina:一伊那尓栖
 Pat.InaArtist:画家伊娜
 Pat.InaCasual:日常伊娜
 Pat.InaDress:礼服伊娜
+Pat.InaKimono:和服伊娜
 Pat.Iofifteen:iofifteen
 Pat.Iroha:风真
 Pat.IRyS:IRyS
@@ -160,7 +160,7 @@ Pat.Ui:羽衣
 Pat.Watame:绵芽
 Pat.Zeta:泽塔
 PlayerCustomizerAngelia:自定义样貌
-PlayerCustomizerHololia:自定义样貌（HololiA）
+PlayerCustomizerHololia:自定义样貌
 UI.Back:返回
 UI.BodyPart.ArmHand:手臂
 UI.BodyPart.Body:身体

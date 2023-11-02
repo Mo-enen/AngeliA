@@ -68,6 +68,7 @@ namespace AngeliaFramework {
 		public int BasicRootY { get; private set; } = 0;
 		public bool BodyPartsReady => BodyParts != null;
 		public bool ShowingTail => AnimatedPoseType != CharacterPoseAnimationType.Fly || !Wing.TryGetWing(WingID, out var wing) || !wing.IsPropeller;
+		public int HideBraidFrame { get; set; } = -1;
 		public Color32 SkinColor { get; set; } = new(239, 194, 160, 255);
 		public Color32 HairColor { get; set; } = new(51, 51, 51, 255);
 		public int CharacterHeight { get; set; } = 160; // in CM
@@ -293,7 +294,6 @@ namespace AngeliaFramework {
 		private void FrameUpdate_PoseRendering () {
 
 			int cellIndexStart = CellRenderer.GetUsedCellCount();
-
 			AnimationLibrary.Begin(this);
 
 			ResetPoseToDefault();

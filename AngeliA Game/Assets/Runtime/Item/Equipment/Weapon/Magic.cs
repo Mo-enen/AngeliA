@@ -5,54 +5,51 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public abstract class MagicWeapon : AutoSpriteWeapon {
-		public sealed override WeaponType WeaponType => WeaponType.Magic;
-	}
-	public class iWand : MagicWeapon {
+	public class iWand : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iTheAncientOne : MagicWeapon {
+	public class iTheAncientOne : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
 		public override int ChargeAttackDuration => 20;
 	}
-	public class iStaffFire : MagicWeapon {
+	public class iStaffFire : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
-	public class iStaffWater : MagicWeapon {
+	public class iStaffWater : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
-	public class iStaffLightning : MagicWeapon {
+	public class iStaffLightning : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
-	public class iStaffPoision : MagicWeapon {
+	public class iStaffPoision : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 		public override int ChargeAttackDuration => 20;
 	}
-	public class iRitualSkull : MagicWeapon {
+	public class iRitualSkull : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
 	}
-	public class iBambooSlips : MagicWeapon {
+	public class iBambooSlips : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
 	}
-	public class iRitualRuneCube : MagicWeapon {
+	public class iRitualRuneCube : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
 	}
-	public class iGoblinTrophy : MagicWeapon {
+	public class iGoblinTrophy : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
 	}
-	public class iMagicOrb : MagicWeapon {
+	public class iMagicOrb : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
 	}
-	public class iMagicEyeball : MagicWeapon {
+	public class iMagicEyeball : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
 	}
-	public class iMagicPotion : MagicWeapon {
+	public class iMagicPotion : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
 	}
-	public class iWandStar : MagicWeapon {
+	public class iWandStar : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iWandFairy : MagicWeapon {
+	public class iWandFairy : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
 }

@@ -6,6 +6,81 @@ using UnityEngine;
 namespace AngeliaFramework {
 
 
+	// Throwing
+	public abstract class AutoSpriteThrowingWeapon : AutoSpriteWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Throwing;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+	}
+
+
+	// Sword
+	public abstract class AutoSpriteSword : AutoSpriteWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Sword;
+		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
+	}
+
+
+	// Polearm
+	public abstract class AutoSpritePolearm : AutoSpriteWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Polearm;
+		public sealed override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
+		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
+		protected override bool IgnoreGrabTwist => true;
+		public override int AttackDuration => 18;
+		public override int AttackCooldown => 2;
+	}
+
+
+	// Magic
+	public abstract class AutoSpriteMagicWeapon : AutoSpriteWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Magic;
+	}
+
+
+	// Hammer
+	public abstract class AutoSpriteHammer : AutoSpriteWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Hammer;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
+		protected override bool IgnoreGrabTwist => true;
+	}
+
+
+	// Claw
+	public abstract class AutoSpriteClaw : AutoSpriteWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Claw;
+		public sealed override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
+		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
+		public override int AttackDuration => 10;
+		public override int AttackCooldown => 0;
+		public override int? MovementLoseRateOnAttack => 1000;
+	}
+
+
+	// Axe
+	public abstract class AutoSpriteAxe : AutoSpriteWeapon, IMeleeWeapon {
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		public sealed override WeaponType WeaponType => WeaponType.Axe;
+		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
+		int IMeleeWeapon.RangeXLeft => 275;
+		int IMeleeWeapon.RangeXRight => 384;
+		int IMeleeWeapon.RangeY => 512;
+		public override int AttackDuration => 12;
+		public override int AttackCooldown => 2;
+		public override int ChargeAttackDuration => 20;
+	}
+
+
+	// Hook
+	public abstract class AutoSpriteHook : AutoSpriteWeapon, IMeleeWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Hook;
+		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
+		public virtual int RangeXLeft => 275;
+		public virtual int RangeXRight => 275;
+		public virtual int RangeY => 432;
+	}
+
+
 	// Firearm
 	public abstract class AutoSpriteFirearm : AutoSpriteWeapon {
 
@@ -139,6 +214,7 @@ namespace AngeliaFramework {
 
 		public sealed override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
 		private int SpriteIdHead { get; init; }
 		private int SpriteIdChain { get; init; }
 		protected virtual int ChainLength => Const.CEL * 7 / 9;
@@ -476,7 +552,6 @@ namespace AngeliaFramework {
 		);
 
 	}
-
 
 
 }

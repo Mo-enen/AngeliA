@@ -1,16 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AngeliaFramework;
 
 
-namespace AngeliaGame {
-	public class AxeBullet : MeleeBullet {
+namespace AngeliaFramework {
+	public class DefaultMeleeBullet : MeleeBullet {
 
+		public static readonly int TYPE_ID = typeof(DefaultMeleeBullet).AngeHash();
 		protected override int Duration => 10;
 		protected override int Damage => 1;
-		//private static readonly int SMOKE_ID = typeof(QuickSmokeSmallParticle).AngeHash();
-		//protected override int SmokeParticleID => SMOKE_ID;
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();

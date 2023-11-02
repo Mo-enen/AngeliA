@@ -5,25 +5,21 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public abstract class ThrowingWeapon : AutoSpriteWeapon {
-		public sealed override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-	public class iBoomerang : ThrowingWeapon { }
-	public class iNinjaStarHalf : ThrowingWeapon { }
-	public class iNinjaStar : ThrowingWeapon { }
-	public class iKunai : ThrowingWeapon { }
-	public class iChakram : ThrowingWeapon { }
-	public class iThrowingKnife : ThrowingWeapon { }
-	public class iThrowingAxe : ThrowingWeapon { }
-	public class iNeedle : ThrowingWeapon { }
-	public class iChainMaceBall : ThrowingWeapon { }
-	public class iBomb : ThrowingWeapon { }
-	public class iAnchor : ThrowingWeapon { }
-	public class iCrossAxe : ThrowingWeapon { }
-	public class iGrapeBomb : ThrowingWeapon { }
-	public class iTearGas : ThrowingWeapon { }
-	public class iGrenade : ThrowingWeapon {
+	public class iBoomerang : AutoSpriteThrowingWeapon { }
+	public class iNinjaStarHalf : AutoSpriteThrowingWeapon { }
+	public class iNinjaStar : AutoSpriteThrowingWeapon { }
+	public class iKunai : AutoSpriteThrowingWeapon { }
+	public class iChakram : AutoSpriteThrowingWeapon { }
+	public class iThrowingKnife : AutoSpriteThrowingWeapon { }
+	public class iThrowingAxe : AutoSpriteThrowingWeapon { }
+	public class iNeedle : AutoSpriteThrowingWeapon { }
+	public class iChainMaceBall : AutoSpriteThrowingWeapon { }
+	public class iBomb : AutoSpriteThrowingWeapon { }
+	public class iAnchor : AutoSpriteThrowingWeapon { }
+	public class iCrossAxe : AutoSpriteThrowingWeapon { }
+	public class iGrapeBomb : AutoSpriteThrowingWeapon { }
+	public class iTearGas : AutoSpriteThrowingWeapon { }
+	public class iGrenade : AutoSpriteThrowingWeapon {
 		public override int ChargeAttackDuration => 20;
 	}
 }
