@@ -50,11 +50,16 @@ namespace AngeliaFramework {
 	public static class EntityAttribute {
 
 
+		// Character
 		[System.AttributeUsage(System.AttributeTargets.Class)]
 		public class DefaultSelectPlayerAttribute : System.Attribute {
 			public int Priority = 0;
 			public DefaultSelectPlayerAttribute (int priority = 0) => Priority = priority;
 		}
+
+
+		[System.AttributeUsage(System.AttributeTargets.Class)]
+		public class RenderWithSheetAttribute : System.Attribute { }
 
 
 		// Map Editor

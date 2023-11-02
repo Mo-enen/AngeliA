@@ -20,18 +20,6 @@ namespace AngeliaFramework {
 
 
 
-		#region --- SUB ---
-
-
-		[System.AttributeUsage(System.AttributeTargets.Class)]
-		public class RenderWithSheetAttribute : System.Attribute { }
-
-
-		#endregion
-
-
-
-
 		#region --- VAR ---
 
 

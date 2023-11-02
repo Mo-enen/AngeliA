@@ -132,7 +132,7 @@ namespace AngeliaFramework {
 			// Sheet Pool
 			RenderWithSheetPool.Clear();
 			foreach (var type in typeof(Character).AllChildClass()) {
-				if (type.GetCustomAttribute<RenderWithSheetAttribute>(true) != null) {
+				if (type.GetCustomAttribute<EntityAttribute.RenderWithSheetAttribute>(true) != null) {
 					RenderWithSheetPool.TryAdd(type.AngeHash());
 				}
 			}

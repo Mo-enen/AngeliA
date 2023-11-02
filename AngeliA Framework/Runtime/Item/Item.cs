@@ -3,14 +3,6 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
-
-
-	[EntityAttribute.MapEditorGroup("ItemFood")]
-	public abstract class Food : Item {
-		public override int MaxStackCount => 16;
-	}
-
-
 	[EntityAttribute.MapEditorGroup("Item")]
 	public abstract class Item : IMapEditorItem {
 

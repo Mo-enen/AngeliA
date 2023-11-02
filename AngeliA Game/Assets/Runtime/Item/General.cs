@@ -62,8 +62,6 @@ namespace AngeliaGame {
 	public class iTrayWood : Item { }
 	public class iCapsule : Item { }
 	public class iLeather : Item { }
-	public class iSucorn : Item { }
-	public class iOruyanke : Item { }
 	public class iRubberDuck : Item { }
 	public class iCrystalBall : Item { }
 	public class iCone : Item { }
@@ -147,7 +145,6 @@ namespace AngeliaGame {
 	public class iGem : Item { }
 	public class iCuteGhost : Item { }
 	public class iTentacle : Item { }
-	public class iTakodachi : Item { }
 	public class iFlowerRed : Item { }
 	public class iFlowerPink : Item { }
 	public class iFlowerYellow : Item { }

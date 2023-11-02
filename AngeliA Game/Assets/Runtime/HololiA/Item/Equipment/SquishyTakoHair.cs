@@ -65,7 +65,7 @@ namespace AngeliaGame {
 
 			// Hand Color Darker
 			character.HandL.Tint = character.HandR.Tint =
-				character.SkinColor.Mult(new Color32(240, 230, 220, 255));
+				character.SkinColor.Mult(new Color32(225, 220, 210, 255));
 
 			if (!character.IsAttacking) {
 				// Handheld

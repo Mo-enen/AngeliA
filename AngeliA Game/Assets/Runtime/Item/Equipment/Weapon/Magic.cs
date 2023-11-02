@@ -8,10 +8,6 @@ namespace AngeliaGame {
 	public class iWand : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
-	public class iTheAncientOne : AutoSpriteMagicWeapon {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;
-		public override int ChargeAttackDuration => 20;
-	}
 	public class iStaffFire : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}

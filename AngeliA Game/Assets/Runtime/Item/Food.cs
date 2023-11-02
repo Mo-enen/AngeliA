@@ -103,7 +103,6 @@ namespace AngeliaGame {
 	public class iGreenTea : Food { }
 	public class iBeer : Food { }
 	public class iMilk : Food { }
-	public class iTakoMilk : Food { }
 	public class iGrapeWine : Food { }
 	public class iAppleWine : Food { }
 	public class iOrangeJuice : Food { }

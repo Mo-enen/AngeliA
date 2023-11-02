@@ -158,7 +158,7 @@ namespace AngeliaFramework {
 		public static void Initialize_Sheet () {
 			AnimationSheetPool.Clear();
 			foreach (var type in typeof(Character).AllChildClass()) {
-				if (type.GetCustomAttribute<RenderWithSheetAttribute>() == null) continue;
+				if (type.GetCustomAttribute<EntityAttribute.RenderWithSheetAttribute>() == null) continue;
 				AnimationSheetPool.Add(type.AngeHash(), new AnimationSheet(type));
 			}
 		}

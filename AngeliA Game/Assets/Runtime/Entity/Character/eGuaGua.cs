@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	[RenderWithSheet]
+	[EntityAttribute.RenderWithSheet]
 	public class eGuaGua : Summon {
 
 
