@@ -6,6 +6,7 @@ using AngeliaFramework;
 
 namespace AngeliaGame {
 	[EntityAttribute.RenderWithSheet]
+	[EntityAttribute.Capacity(1, 0)]
 	public class eGuaGua : Summon {
 
 
@@ -13,6 +14,7 @@ namespace AngeliaGame {
 
 
 		public eGuaGua () {
+			MaxHP.BaseValue = 1;
 			MovementWidth.BaseValue = 150;
 			MovementHeight.BaseValue = 150;
 			SquatHeight.BaseValue = 150;
@@ -22,7 +24,6 @@ namespace AngeliaGame {
 			FirstJumpWithRoll.BaseValue = false;
 			JumpCount.BaseValue = 1;
 			FlyRiseSpeed.BaseValue = 32;
-			MaxHP.BaseValue = 1;
 			FlyAcceleration.BaseValue = 1;
 			FlyDeceleration.BaseValue = 1;
 		}

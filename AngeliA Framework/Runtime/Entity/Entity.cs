@@ -21,6 +21,7 @@ namespace AngeliaFramework {
 		public bool FromWorld => InstanceID.x != int.MinValue;
 		public virtual RectInt Rect => new(X, Y, Width, Height);
 		public RectInt GlobalBounds => LocalBounds.Shift(X, Y);
+		public int InstanceOrder => FromWorld ? 0 : InstanceID.y;
 
 		// Inter
 		internal Vector3Int InstanceID { get; set; } = default;
@@ -30,7 +31,6 @@ namespace AngeliaFramework {
 		internal bool DespawnOutOfRange { get; set; } = true;
 		internal bool UpdateOutOfRange { get; set; } = false;
 		internal int Order { get; set; } = 0;
-
 
 		// MSG
 		public Entity () => TypeID = GetType().AngeHash();

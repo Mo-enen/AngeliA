@@ -189,7 +189,7 @@ namespace AngeliaFramework {
 
 		private void NavUpdate_Movement_Idle () {
 			VelocityX = 0;
-			if (!InWater && !InSand) {
+			if (!InWater && !InSand && !IsInsideGround) {
 				if (CellNavigation.IsGround(Game.GlobalFrame, Stage.ViewRect, X, Y + Const.HALF / 2, out int groundY)) {
 					// Move to Ground
 					VelocityY = groundY - Y;

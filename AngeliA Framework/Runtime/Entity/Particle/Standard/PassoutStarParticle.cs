@@ -1,15 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AngeliaFramework;
 
 
-namespace AngeliaGame {
+namespace AngeliaFramework {
 	public class ePassOutStarParticle : Particle {
 
 
 		// Const
-		private static readonly int STAR_CODE = "PassOut Star".AngeHash();
+		private static readonly int STAR_CODE = "PassOutStar".AngeHash();
 
 		// Api
 		public override int Duration => 66;
@@ -19,12 +18,6 @@ namespace AngeliaGame {
 
 
 		// MSG
-		[OnGameInitialize(64)]
-		public static void Init () {
-			Character.PassOutParticleCode = typeof(ePassOutStarParticle).AngeHash();
-		}
-
-
 		public override void DrawParticle () {
 			var character = Character;
 			if (character == null || !character.Active || character.CharacterState != CharacterState.PassOut) {

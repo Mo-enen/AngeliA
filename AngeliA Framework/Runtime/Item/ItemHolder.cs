@@ -24,7 +24,7 @@ namespace AngeliaFramework {
 		private const int MAX_GRAVITY_SPEED = 64;
 
 		// Api
-		public static int CollectParticleID { get; set; } = 0;
+		public static int CollectParticleID { get; set; } = typeof(ItemCollectParticle).AngeHash();
 		public int ItemID { get; set; } = 0;
 		public int ItemCount { get; set; } = 1;
 		bool IActionTarget.AllowInvokeOnSquat => true;

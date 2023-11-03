@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using AngeliaFramework;
 
 
-namespace AngeliaGame {
+namespace AngeliaFramework {
 	public class eSleepParticle : Particle {
 
 
@@ -16,12 +14,6 @@ namespace AngeliaGame {
 
 		// Data
 		private static int GlobalShift = 0;
-
-
-		[OnGameInitialize(64)]
-		public static void Init () {
-			Character.SleepParticleCode = typeof(eSleepParticle).AngeHash();
-		}
 
 
 		public override void OnActivated () {
@@ -52,10 +44,6 @@ namespace AngeliaGame {
 		public override int Duration => 20;
 		public override bool Loop => false;
 		public override int FramePerSprite => 4;
-		[OnGameInitialize(64)]
-		public static void Init () {
-			Character.SlideParticleCode = typeof(eSlideDust).AngeHash();
-		}
 	}
 
 
@@ -66,12 +54,6 @@ namespace AngeliaGame {
 		public override bool Loop => false;
 		public override int FramePerSprite => 5;
 		public override int RenderingZ => -1024;
-
-		[OnGameInitialize(64)]
-		public static void Init () {
-			Character.FootstepParticleCode = typeof(eCharacterFootstep).AngeHash();
-			Character.DashParticleCode = typeof(eCharacterFootstep).AngeHash();
-		}
 	}
 
 

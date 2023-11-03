@@ -35,6 +35,7 @@ namespace AngeliaFramework.Editor {
 		private const string UNITY_PROGRESS = "unity-progress-bar__progress";
 		private static readonly Color PROFILER_GREEN = new(0.5f, 1f, 0.4f, 0.5f);
 		private static readonly Color PROFILER_RED = new(1f, 0f, 0f, 0.5f);
+		private static readonly string[] ENTITY_LAYER_NAMES = new string[Const.ENTITY_LAYER_COUNT] { "Game", "Character", "Bullet", "Item", "Decorate", "UI", };
 
 		// Data
 		private static readonly Color[] COLLIDER_TINTS = { Const.RED_BETTER, Const.ORANGE_BETTER, Color.yellow, Const.GREEN, Const.CYAN, Const.BLUE, Const.GREY_128, };
@@ -422,7 +423,7 @@ namespace AngeliaFramework.Editor {
 						bar.lowValue = 0;
 						bar.highValue = all;
 						bar.value = use;
-						bar.title = $"<size=10><color=#BBBBBB>{GetEntityLayerName(layer)}</color></size>  {use} / {all}";
+						bar.title = $"<size=10><color=#BBBBBB>{ENTITY_LAYER_NAMES[layer.Clamp(0, ENTITY_LAYER_NAMES.Length - 1)]}</color></size>  {use} / {all}";
 
 						if (ProfilerEntityBars[layer] != null) {
 							ProfilerEntityBars[layer].style.backgroundColor =
@@ -430,14 +431,6 @@ namespace AngeliaFramework.Editor {
 						}
 					}
 				}
-				static string GetEntityLayerName (int _layer) => _layer switch {
-					Const.ENTITY_LAYER_GAME => "Game",
-					Const.ENTITY_LAYER_BULLET => "Bullet",
-					Const.ENTITY_LAYER_ITEM => "Item",
-					Const.ENTITY_LAYER_DECORATE => "Decorate",
-					Const.ENTITY_LAYER_UI => "UI",
-					_ => "",
-				};
 			}
 
 			// Task

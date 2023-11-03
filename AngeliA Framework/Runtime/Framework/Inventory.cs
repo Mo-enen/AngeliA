@@ -313,6 +313,20 @@ namespace AngeliaFramework {
 		}
 
 
+		public static int ItemTotalCount (int inventoryID, int itemID, bool ignoreStack = false) {
+			int result = 0;
+			if (Pool.TryGetValue(inventoryID, out var data)) {
+				int len = Mathf.Min(data.Items.Length, data.Counts.Length);
+				for (int i = 0; i < len; i++) {
+					if (data.Items[i] == itemID) {
+						result += ignoreStack ? 1 : data.Counts[i];
+					}
+				}
+			}
+			return result;
+		}
+
+
 		// Equipment
 		public static int GetEquipment (int inventoryID, EquipmentType type) => Pool.TryGetValue(inventoryID, out var data) && data is PlayerInventoryData pData ? type switch {
 			EquipmentType.Weapon => pData.Weapon,

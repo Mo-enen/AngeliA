@@ -29,10 +29,10 @@ namespace AngeliaFramework {
 		protected override bool PhysicsEnable => base.PhysicsEnable && CharacterState != CharacterState.GamePlay;
 		protected override bool ClampInSpawnRect => Owner == Player.Selecting;
 		public override int AttackTargetTeam => Owner != null ? Owner.AttackTargetTeam : 0;
+		public int OriginItemID { get; set; } = 0;
+		public int InventoryUpdatedFrame { get; set; } = -1;
 
 		// Data
-		private static int GlobalInstanceCount = 0;
-		private int LocalInstanceIndex = 0;
 		private int SummonFrame = int.MinValue;
 		private int PrevZ = int.MinValue;
 		private bool RequireAimRefresh = true;
@@ -51,7 +51,7 @@ namespace AngeliaFramework {
 			Owner = null;
 			NavigationState = CharacterNavigationState.Operation;
 			RequireAimRefresh = true;
-			LocalInstanceIndex = 0;
+			OriginItemID = 0;
 		}
 
 
@@ -64,16 +64,9 @@ namespace AngeliaFramework {
 		}
 
 
-		public override void BeforePhysicsUpdate () {
-			base.BeforePhysicsUpdate();
-			GlobalInstanceCount = 0;
-		}
-
-
 		public override void PhysicsUpdate () {
 
-			LocalInstanceIndex = GlobalInstanceCount;
-			GlobalInstanceCount++;
+			if (!Active) return;
 
 			// Inactive when Owner not Ready
 			if (Owner == null || !Owner.Active) {
@@ -98,6 +91,16 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate () {
 			if (!Active) return;
+			// Check Item Exists
+			if (
+				Owner != null &&
+				OriginItemID != 0 &&
+				Game.GlobalFrame > InventoryUpdatedFrame + 1 &&
+				Inventory.ItemTotalCount(Owner.TypeID, OriginItemID, true) == 0
+			) {
+				Active = false;
+				return;
+			}
 			base.FrameUpdate();
 		}
 
@@ -116,16 +119,17 @@ namespace AngeliaFramework {
 			grounded = false;
 
 			// Scan Frequency Gate
+			int insIndex = InstanceOrder;
 			if (
 				!RequireAimRefresh &&
-				(Game.GlobalFrame + LocalInstanceIndex) % AIM_REFRESH_FREQUENCY != 0 &&
+				(Game.GlobalFrame + insIndex) % AIM_REFRESH_FREQUENCY != 0 &&
 				HasPerformableOperation
 			) return null;
 			RequireAimRefresh = false;
 
 			// Get Aim at Ground
 			var result = new Vector2Int(Owner.X, Owner.Y);
-			int offsetX = Const.CEL * ((LocalInstanceIndex % 12) / 2 + 2) * (LocalInstanceIndex % 2 == 0 ? -1 : 1);
+			int offsetX = Const.CEL * ((insIndex % 12) / 2 + 2) * (insIndex % 2 == 0 ? -1 : 1);
 			int offsetY = NavigationState == CharacterNavigationState.Fly ? Const.CEL : Const.HALF;
 			if (CellNavigation.ExpandTo(
 				Game.GlobalFrame, Stage.ViewRect,

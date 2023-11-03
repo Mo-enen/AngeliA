@@ -84,7 +84,7 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int[] ENTITY_CAPACITY = new int[Const.ENTITY_LAYER_COUNT] { 4096, 1024, 1024, 128, 64, };
+		private static readonly int[] ENTITY_CAPACITY = new int[Const.ENTITY_LAYER_COUNT] { 4096, 512, 1024, 1024, 128, 64, };
 
 		// Api
 		public static int[] EntityCounts { get; private set; } = new int[Const.ENTITY_LAYER_COUNT];
@@ -368,7 +368,7 @@ namespace AngeliaFramework {
 
 
 		// Spawn
-		public static Entity SpawnEntity (int typeID, int x, int y) => SpawnEntityLogic(typeID, x, y, new(int.MinValue, 0));
+		public static Entity SpawnEntity (int typeID, int x, int y) => SpawnEntityLogic(typeID, x, y, new Vector3Int(int.MinValue, 0, 0));
 		public static T SpawnEntity<T> (int x, int y) where T : Entity => SpawnEntityLogic(
 			typeof(T).AngeHash(), x, y, new(int.MinValue, 0)
 		) as T;
@@ -489,6 +489,19 @@ namespace AngeliaFramework {
 		}
 
 
+		public static bool TryGetEntities (int layer, out Entity[] entities, out int count) {
+			if (layer >= 0 && layer < Const.ENTITY_LAYER_COUNT) {
+				count = EntityCounts[layer];
+				entities = Entities[layer];
+				return true;
+			} else {
+				count = 0;
+				entities = null;
+				return false;
+			}
+		}
+
+
 		// Composite
 		public static Entity PeekOrGetEntity (int typeID) => PeekEntity(typeID) ?? GetEntity(typeID);
 		public static T PeekOrGetEntity<T> () where T : Entity => PeekEntity<T>() ?? GetEntity<T>();
@@ -516,6 +529,7 @@ namespace AngeliaFramework {
 		public static bool RequireDrawEntityBehind (int id, int unitX, int unitY, int unitZ) =>
 			EntityPool.TryGetValue(id, out var meta) &&
 			meta.DrawBehind &&
+			!ItemSystem.HasItem(id) &&
 			!GlobalAntiSpawnHash.Contains(new(unitX, unitY, unitZ));
 
 
@@ -624,6 +638,11 @@ namespace AngeliaFramework {
 				}
 				// Init Entity
 				if (entity != null) {
+					if (globalUnitPos.x != int.MinValue) {
+						StagedEntityHash.Add(globalUnitPos);
+					} else {
+						globalUnitPos.y = stack.SpawnedCount;
+					}
 					entity.InstanceID = globalUnitPos;
 					entity.X = x;
 					entity.Y = y;
@@ -633,9 +652,6 @@ namespace AngeliaFramework {
 					entity.OnActivated();
 					entity.FrameUpdated = false;
 					entity.SpawnFrame = GlobalFrame;
-					if (globalUnitPos.x != int.MinValue) {
-						StagedEntityHash.Add(globalUnitPos);
-					}
 					return entity;
 				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }

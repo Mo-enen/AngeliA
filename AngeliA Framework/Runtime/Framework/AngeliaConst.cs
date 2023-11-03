@@ -33,11 +33,12 @@ namespace AngeliaFramework {
 
 		// Entity
 		public const int ENTITY_LAYER_GAME = 0;
-		public const int ENTITY_LAYER_BULLET = 1;
-		public const int ENTITY_LAYER_ITEM = 2;
-		public const int ENTITY_LAYER_DECORATE = 3;
-		public const int ENTITY_LAYER_UI = 4;
-		public const int ENTITY_LAYER_COUNT = 5;
+		public const int ENTITY_LAYER_CHARACTER = 1;
+		public const int ENTITY_LAYER_BULLET = 2;
+		public const int ENTITY_LAYER_ITEM = 3;
+		public const int ENTITY_LAYER_DECORATE = 4;
+		public const int ENTITY_LAYER_UI = 5;
+		public const int ENTITY_LAYER_COUNT = 6;
 
 		// Physics
 		public const int LAYER_LEVEL = 0;
@@ -166,6 +167,6 @@ namespace AngeliaFramework {
 		public const int MIN_CHARACTER_HEIGHT = 65;
 		public const int MAX_CHARACTER_HEIGHT = 251;
 
-		
+
 	}
 }

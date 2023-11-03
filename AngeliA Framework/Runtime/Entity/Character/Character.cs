@@ -15,6 +15,7 @@ namespace AngeliaFramework {
 
 	[EntityAttribute.MapEditorGroup("Character")]
 	[EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
+	[EntityAttribute.Layer(Const.ENTITY_LAYER_CHARACTER)]
 	public abstract partial class Character : Rigidbody {
 
 
@@ -29,13 +30,13 @@ namespace AngeliaFramework {
 		private static readonly int[] BOUNCE_AMOUNTS_BIG = new int[] { 0, -600, -900, -1200, -1400, -1200, -900, -600, 0, };
 
 		// Particle
-		public static int SleepParticleCode { get; set; } = 0;
+		public static int SleepParticleCode { get; set; } = typeof(eSleepParticle).AngeHash();
 		public static int SleepDoneParticleCode { get; set; } = 0;
-		public static int FootstepParticleCode { get; set; } = 0;
-		public static int SlideParticleCode { get; set; } = 0;
-		public static int DashParticleCode { get; set; } = 0;
-		public static int PassOutParticleCode { get; set; } = 0;
-		public static int TeleportParticleCode { get; set; } = 0;
+		public static int FootstepParticleCode { get; set; } = typeof(eCharacterFootstep).AngeHash();
+		public static int SlideParticleCode { get; set; } = typeof(eSlideDust).AngeHash();
+		public static int DashParticleCode { get; set; } = typeof(eCharacterFootstep).AngeHash();
+		public static int PassOutParticleCode { get; set; } = typeof(ePassOutStarParticle).AngeHash();
+		public static int TeleportParticleCode { get; set; } = typeof(AppearSmokeParticle).AngeHash();
 
 		// Api
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;

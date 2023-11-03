@@ -1,19 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AngeliaFramework;
 
 
-namespace AngeliaGame {
+namespace AngeliaFramework {
 	[EntityAttribute.Capacity(16, 0)]
 	[EntityAttribute.ForceSpawn]
 	public class ItemCollectParticle : Particle {
 		public override int Duration => 30;
 		public override bool Loop => false;
-		[OnGameInitialize(64)]
-		public static void AfterGameInitialize () {
-			ItemHolder.CollectParticleID = typeof(ItemCollectParticle).AngeHash();
-		}
 		public override void OnActivated () {
 			base.OnActivated();
 			Width = Const.CEL * 2 / 3;
@@ -40,10 +35,6 @@ namespace AngeliaGame {
 	public class ItemLostParticle : FreeFallParticle {
 		public override int Duration => 120;
 		public override bool Loop => false;
-		[OnGameInitialize(64)]
-		public static void AfterGameInitialize () {
-			Equipment.ItemLostParticleID = typeof(ItemLostParticle).AngeHash();
-		}
 		public override void OnActivated () {
 			base.OnActivated();
 			Width = Const.CEL * 2 / 3;
@@ -69,10 +60,6 @@ namespace AngeliaGame {
 	public class EquipmentBrokeParticle : Particle {
 		public override int Duration => 60;
 		public override bool Loop => false;
-		[OnGameInitialize(64)]
-		public static void AfterGameInitialize () {
-			Equipment.EquipmentBrokeParticleID = typeof(EquipmentBrokeParticle).AngeHash();
-		}
 		public override void OnActivated () {
 			base.OnActivated();
 			Width = Const.CEL * 2 / 3;
@@ -107,10 +94,6 @@ namespace AngeliaGame {
 	public class EquipmentDamageParticle : Particle {
 		public override int Duration => 60;
 		public override bool Loop => false;
-		[OnGameInitialize(64)]
-		public static void AfterGameInitialize () {
-			Equipment.EquipmentDamageParticleID = typeof(EquipmentDamageParticle).AngeHash();
-		}
 		public override void OnActivated () {
 			base.OnActivated();
 			Width = Const.CEL;

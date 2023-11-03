@@ -4,6 +4,19 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
+
+
+	[EntityAttribute.Capacity(16)]
+	public class eDefaultParticle : Particle {
+		public static readonly int TYPE_ID = typeof(eDefaultParticle).AngeHash();
+		public override int Duration => 20;
+		public override bool Loop => false;
+		public override int FramePerSprite => 5;
+	}
+
+
+
+
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.Capacity(512)]
 	[EntityAttribute.UpdateOutOfRange]
@@ -14,7 +27,7 @@ namespace AngeliaFramework {
 		// Abs
 		public abstract int Duration { get; }
 		public abstract bool Loop { get; }
-		public virtual int FramePerSprite { get; }
+		public virtual int FramePerSprite => 5;
 		public virtual int Scale => 1000;
 		public virtual int RenderingZ => int.MinValue;
 

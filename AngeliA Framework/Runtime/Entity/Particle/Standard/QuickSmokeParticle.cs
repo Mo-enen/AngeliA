@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AngeliaFramework;
 
 
-namespace AngeliaGame {
+namespace AngeliaFramework {
 	public class QuickSmokeSmallParticle : Particle {
 		public override int Duration => 10;
 		public override bool Loop => false;

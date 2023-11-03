@@ -67,9 +67,9 @@ namespace AngeliaFramework {
 	[EntityAttribute.MapEditorGroup("ItemEquipment")]
 	public abstract class Equipment : Item {
 
-		public static int ItemLostParticleID { get; set; } = 0;
-		public static int EquipmentBrokeParticleID { get; set; } = 0;
-		public static int EquipmentDamageParticleID { get; set; } = 0;
+		public static int ItemLostParticleID { get; set; } = typeof(ItemLostParticle).AngeHash();
+		public static int EquipmentBrokeParticleID { get; set; } = typeof(EquipmentBrokeParticle).AngeHash();
+		public static int EquipmentDamageParticleID { get; set; } = typeof(EquipmentDamageParticle).AngeHash();
 		public abstract EquipmentType EquipmentType { get; }
 		public sealed override int MaxStackCount => 1;
 

@@ -69,7 +69,7 @@ namespace AngeliaGame {
 
 			if (!character.IsAttacking) {
 				// Handheld
-				Handheld(character);
+				if (character.AnimatedPoseType != CharacterPoseAnimationType.Fly) Handheld(character);
 				// Draw Braids
 				if (character.Head.FrontSide) {
 					AutoSpriteBraidHair.DrawBraid(
