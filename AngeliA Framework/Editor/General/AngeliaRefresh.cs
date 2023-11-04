@@ -189,20 +189,26 @@ namespace AngeliaFramework.Editor {
 
 			AddAlwaysIncludeShaders();
 			AngeUtil.CreateAngeFolders();
+
 			// Sprite Sheets
 			CreateSprites(out var sheetTexture, out var sheetMeta);
 			var sheet = CreateSheetFromTexture(sheetTexture, sheetMeta);
+
 			// Meta
 			CreateSpriteEditingMeta(sheetMeta, sheet);
+
 			// Maps
 			AngeUtil.DeleteAllEmptyMaps(AngePath.BuiltInMapRoot);
 			AngeUtil.DeleteAllEmptyMaps(AngePath.UserMapRoot);
 			AngeUtil.DeleteAllEmptyMaps(AngePath.DownloadMapRoot);
+
 			// Game
 			var game = Object.FindFirstObjectByType<Game>(FindObjectsInactive.Include);
 			if (game != null) game.Editor_ReloadAllMedia();
+
 			// Final
 			AngeEditorUtil.HideMetaFiles(AngePath.UniverseRoot);
+			RefreshEditorSetting();
 			AssetDatabase.Refresh();
 			EditorSceneManager.SaveOpenScenes();
 		}
@@ -658,6 +664,12 @@ namespace AngeliaFramework.Editor {
 				},
 				AngePath.SheetRoot
 			);
+		}
+
+
+		// Misc
+		private void RefreshEditorSetting () {
+			PlayerSettings.colorSpace = ColorSpace.Gamma;
 		}
 
 

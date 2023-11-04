@@ -1,0 +1,81 @@
+#JP 0th
+SoraFace
+RobocoFace
+MikoFace
+SuiseiFace
+AZKiFace
+#JP 1st
+MelFace
+FubukiFace
+MatsuriFace
+AkiFace
+AkaiFace
+#JP 2nd
+AquaFace
+ShionFace
+AyameFace
+ChocoFace
+SubaruFace
+#JP 3rd
+PekoraFace
+FlareFace
+NoelFace
+MarineFace
+#JP 4th
+KanataFace
+WatameFace
+TowaFace
+LunaFace
+CocoFace
+#JP 5th
+LamyFace
+NeneFace
+BotanFace
+PolkaFace
+#JP 6th
+LaplusFace
+LuiFace
+KoyoriFace
+SakamataFace
+IrohaFace
+#Gamer
+MioFace
+OkayuFace
+KoroneFace
+#EN Myth
+CalliopeFace
+KiaraFace
+InaFace
+InaArtistFace
+GuraFace
+AmeFace
+#EN Hope
+IRySFace
+#EN Council
+FaunaFace
+KroniiFace
+MumeiFace
+BaeFace
+SanaFace
+#EN Advent
+ShioriFace
+BijouFace
+NerissaFace
+FuwaFace
+MocoFace
+#ID 1st
+RisuFace
+MoonaFace
+IofifteenFace
+#ID 2nd
+OllieFace
+MelfissaFace
+ReineFace
+#ID 3rd
+ZetaFace
+KaelaFace
+KoboFace
+#Staff
+FriendAFace
+NodokaFace
+UiFace

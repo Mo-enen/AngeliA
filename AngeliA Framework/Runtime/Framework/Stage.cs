@@ -27,6 +27,8 @@ namespace AngeliaFramework {
 				result = a.X.CompareTo(b.X);
 				if (result != 0) return result;
 				result = a.Y.CompareTo(b.Y);
+				if (result != 0) return result;
+				result = a.InstanceOrder.CompareTo(b.InstanceOrder);
 				return result;
 			}
 		}

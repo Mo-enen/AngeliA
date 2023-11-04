@@ -12,8 +12,6 @@ namespace AngeliaGame {
 	public class eCheckSlime : CheckPoint { }
 	public class eCheckInsect : CheckPoint { }
 	public class eCheckOrc : CheckPoint { }
-	public class eCheckTako : CheckPoint { }
-	public class eCheckShark : CheckPoint { }
 	public class eCheckBone : CheckPoint { }
 	public class eCheckFootman : CheckPoint { }
 	public class eCheckKnight : CheckPoint { }
@@ -39,8 +37,6 @@ namespace AngeliaGame {
 	[LinkedCheckPoint(typeof(eCheckSlime))] public class eAltarSlime : CheckAltar { }
 	[LinkedCheckPoint(typeof(eCheckInsect))] public class eAltarInsect : CheckAltar { }
 	[LinkedCheckPoint(typeof(eCheckOrc))] public class eAltarOrc : CheckAltar { }
-	[LinkedCheckPoint(typeof(eCheckTako))] public class eAltarTako : CheckAltar { }
-	[LinkedCheckPoint(typeof(eCheckShark))] public class eAltarShark : CheckAltar { }
 	[LinkedCheckPoint(typeof(eCheckBone))] public class eAltarBone : CheckAltar { }
 	[LinkedCheckPoint(typeof(eCheckFootman))] public class eAltarFootman : CheckAltar { }
 	[LinkedCheckPoint(typeof(eCheckKnight))] public class eAltarKnight : CheckAltar { }

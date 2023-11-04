@@ -1,0 +1,85 @@
+
+#JP 0th
+SoraHair
+RobocoHair
+MikoHair
+SuiseiHair
+AZKiHair
+#JP 1st
+MelHair
+FubukiHair
+MatsuriHair
+AkiHair
+AkaiHair
+#JP 2nd
+AquaHair
+ShionHair
+AyameHair
+ChocoHair
+SubaruHair
+#JP 3rd
+PekoraHair
+FlareHair
+NoelHair
+MarineHair
+#JP 4th
+KanataHair
+WatameHair
+TowaHair
+LunaHair
+CocoHair
+#JP 5th
+LamyHair
+NeneHair
+BotanHair
+PolkaHair
+#JP 6th
+LaplusHair
+LuiHair
+KoyoriHair
+SakamataHair
+IrohaHair
+#Gamer
+MioHair
+OkayuHair
+KoroneHair
+#EN Myth
+CalliopeHair
+KiaraHair
+InaHair
+InaCasualHair
+InaArtistHair
+InaDressHair
+InaKimonoHair
+GuraHair
+AmeHair
+#EN Hope
+IRySHair
+#EN Council
+FaunaHair
+KroniiHair
+MumeiHair
+BaeHair
+SanaHair
+#EN Advent
+ShioriHair
+BijouHair
+NerissaHair
+FuwaHair
+MocoHair
+#ID 1st
+RisuHair
+MoonaHair
+IofifteenHair
+#ID 2nd
+OllieHair
+MelfissaHair
+ReineHair
+#ID 3rd
+ZetaHair
+KaelaHair
+KoboHair
+#Staff
+FriendAHair
+NodokaHair
+UiHair

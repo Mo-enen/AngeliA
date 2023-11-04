@@ -20,12 +20,12 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 1, g: 1, b: 1, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 3
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+  m_SubtractiveShadowColor: {r: 1, g: 1, b: 1, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -35,7 +35,7 @@ RenderSettings:
   m_DefaultReflectionMode: 0
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
-  m_ReflectionIntensity: 1
+  m_ReflectionIntensity: 0
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
   m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da05428af58f0fa4d921db1f278225fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UniverseVersion: 0
+  m_AutoStartGame: 1
   m_SkyTintTop:
     serializedVersion: 2
     key0: {r: 0.078431375, g: 0.08235294, b: 0.12156863, a: 1}
@@ -210,7 +210,6 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 5
     m_NumAlphaKeys: 2
-  m_SheetTexture: {fileID: 2800000, guid: 4056755e6b76d2f41b5866e4efe5fa73, type: 3}
   m_Fonts:
   - {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   m_Cursors:
@@ -218,8 +217,6 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 251783bc0d1b9a642b21a27e979bcb8f, type: 3}
   - {fileID: 2800000, guid: b7c6abdfc00122544b6f1edec7dc2293, type: 3}
   m_AudioClips: []
-  m_AssemblyNames:
-  - AngeliaFrameworkRuntime
 --- !u!4 &1258448088
 Transform:
   m_ObjectHideFlags: 0

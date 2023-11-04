@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Linq;
 using UnityEngine;
 
 
@@ -287,8 +285,10 @@ namespace AngeliaFramework {
 						Player.Selecting != null ? Player.Selecting.TypeID :
 						Player.TryGetDefaultSelectPlayer(out var defaultPlayer) ? defaultPlayer.AngeHash() : 0;
 				}
-				if (playerID != 0 && Stage.PeekOrGetEntity(playerID) is Player player) {
-					Player.Selecting = player;
+				if (playerID != 0) {
+					if (Stage.PeekOrGetEntity(playerID) is Player player) {
+						Player.Selecting = player;
+					}
 				}
 			}
 

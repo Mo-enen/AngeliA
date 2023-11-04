@@ -5,6 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
+	[EntityAttribute.DefaultSelectPlayer]
 	public class eYaya : Player {
 
 
