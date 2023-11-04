@@ -19,7 +19,7 @@ namespace HololiaGame {
 			MaxHP.BaseValue = 1;
 			MovementWidth.BaseValue = 150;
 			MovementHeight.BaseValue = 150;
-			SquatHeight.BaseValue = 150;
+			SquatHeightAmount.BaseValue = 1000;
 			DashAvailable.BaseValue = false;
 			JumpSpeed.BaseValue = 69;
 			JumpCount.BaseValue = 1;

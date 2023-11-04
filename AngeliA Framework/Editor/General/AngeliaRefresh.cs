@@ -207,6 +207,7 @@ namespace AngeliaFramework.Editor {
 			if (game != null) game.Editor_ReloadAllMedia();
 
 			// Final
+			AngeliaToolbox.RefreshSheetThumbnail(true);
 			AngeEditorUtil.HideMetaFiles(AngePath.UniverseRoot);
 			RefreshEditorSetting();
 			AssetDatabase.Refresh();

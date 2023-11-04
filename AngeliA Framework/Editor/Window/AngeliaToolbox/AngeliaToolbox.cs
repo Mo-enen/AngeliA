@@ -200,7 +200,6 @@ namespace AngeliaFramework.Editor {
 				if (CellPhysicsCells.Count == CellPhysicsCells.Count) {
 
 					GL.ClearWithSkybox(true, Game.GameCamera);
-					//GL.PushMatrix();
 					GizmosMaterial.SetPass(0);
 					GL.LoadOrtho();
 					GL.Begin(GL.QUADS);
@@ -241,7 +240,6 @@ namespace AngeliaFramework.Editor {
 					}
 
 					GL.End();
-					//GL.PopMatrix();
 				}
 			}
 
@@ -324,7 +322,7 @@ namespace AngeliaFramework.Editor {
 
 
 		// Refresh
-		private static void RefreshVisualElement () {
+		public static void RefreshVisualElement () {
 
 			// Root
 			var currentGame = GetCurrentGameFromSceneRoot();
@@ -370,7 +368,7 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private static void RefreshProfiler () {
+		public static void RefreshProfiler () {
 
 			// Cell
 			if (ProfilerVE_CellContainer != null) {
@@ -481,7 +479,7 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private static void RefreshVisibility () {
+		public static void RefreshVisibility () {
 
 			if (Inspector == null) return;
 
@@ -496,13 +494,13 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private static void RefreshSheetThumbnail () {
+		public static void RefreshSheetThumbnail (bool forceRefresh = false) {
 
 			if (SheetThumbnail == null) return;
 
 			// Texture
 			var texture = SheetThumbnail.image as Texture2D;
-			if (texture == null) {
+			if (texture == null || forceRefresh) {
 				SheetThumbnail.image = texture = AngeUtil.LoadSheetTexture();
 			}
 

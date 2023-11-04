@@ -9,7 +9,7 @@ namespace AngeliaFramework {
 	public class BuffInt {
 
 		public int FinalValue => Override ?? BaseValue;
-		public int BaseValue { get; set; } = 0;
+		public int BaseValue = 0;
 
 		[System.NonSerialized] public int? Override = null;
 

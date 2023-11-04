@@ -254,9 +254,31 @@ namespace AngeliaFramework {
 			bool flying = CurrentSubMenu.HasValue && CurrentSubMenu.Value == SubMenuType.Wing && player.WingID != 0;
 			player.AnimatedPoseType = flying ? CharacterPoseAnimationType.Fly : CharacterPoseAnimationType.Idle;
 			player.LockFacingRight(PlayerFacingRight);
-			AngeUtil.DrawPoseCharacterAsUI(leftPanelRect.Shrink(Unify(32)), player, Game.GlobalFrame);
+			AngeUtil.DrawPoseCharacterAsUI(
+				leftPanelRect.Shrink(Unify(32)), player, Game.GlobalFrame, out var rectFrom, out var rectTo
+			);
 			if (FrameInput.MouseLeftButtonDown && leftPanelRect.Contains(FrameInput.MouseGlobalPosition)) {
 				PlayerFacingRight = !PlayerFacingRight;
+			}
+
+			// Preview Hitbox
+			if (CurrentSubMenu == SubMenuType.Height) {
+				var characterRect = player.Rect;
+				var hitboxRect = new RectInt();
+				hitboxRect.SetMinMax(
+					Util.RemapUnclamped(rectFrom.xMin, rectFrom.xMax, rectTo.xMin, rectTo.xMax, characterRect.xMin),
+					Util.RemapUnclamped(rectFrom.xMin, rectFrom.xMax, rectTo.xMin, rectTo.xMax, characterRect.xMax),
+					Util.RemapUnclamped(rectFrom.yMin, rectFrom.yMax, rectTo.yMin, rectTo.yMax, characterRect.yMin),
+					Util.RemapUnclamped(rectFrom.yMin, rectFrom.yMax, rectTo.yMin, rectTo.yMax, characterRect.yMax)
+				);
+				CellRenderer.Draw(Const.PIXEL, hitboxRect, new Color32(0, 255, 0, 128), int.MaxValue - 1);
+				//DrawFrame(hitboxRect, 12, 12);
+				//static void DrawFrame (RectInt rect, int thickX, int thickY) {
+				//	CellRenderer.Draw(Const.PIXEL, new RectInt(rect.x - thickX, rect.y - thickY, thickX * 2, rect.height + thickY * 2), Const.GREEN, int.MaxValue - 1);
+				//	CellRenderer.Draw(Const.PIXEL, new RectInt(rect.xMax - thickX, rect.y - thickY, thickX * 2, rect.height + thickY * 2), Const.GREEN, int.MaxValue - 1);
+				//	CellRenderer.Draw(Const.PIXEL, new RectInt(rect.x, rect.y - thickY, rect.width, thickY * 2), Const.GREEN, int.MaxValue - 1);
+				//	CellRenderer.Draw(Const.PIXEL, new RectInt(rect.x, rect.yMax - thickY, rect.width, thickY * 2), Const.GREEN, int.MaxValue - 1);
+				//}
 			}
 
 			// Editor

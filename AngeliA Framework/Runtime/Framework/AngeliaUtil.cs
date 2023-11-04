@@ -277,7 +277,13 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void DrawPoseCharacterAsUI (RectInt rect, Character character, int animationFrame) {
+		public static bool DrawPoseCharacterAsUI (
+			RectInt rect, Character character, int animationFrame,
+			out RectInt globalRect, out RectInt uiRect
+		) {
+
+			globalRect = default;
+			uiRect = default;
 
 			// Draw Player
 			int oldLayerIndex = CellRenderer.CurrentLayerIndex;
@@ -288,8 +294,8 @@ namespace AngeliaFramework {
 			character.FrameUpdate();
 			int cellIndexEnd = CellRenderer.GetUsedCellCount();
 			CellRenderer.SetLayer(oldLayerIndex);
-			if (cellIndexStart == cellIndexEnd) return;
-			if (!CellRenderer.GetCells(layerIndex, out var cells, out int count)) return;
+			if (cellIndexStart == cellIndexEnd) return false;
+			if (!CellRenderer.GetCells(layerIndex, out var cells, out int count)) return false;
 
 			// Get Min Max
 			bool flying = character.AnimatedPoseType == CharacterPoseAnimationType.Fly;
@@ -301,11 +307,12 @@ namespace AngeliaFramework {
 				originalMinY -= Const.HALF;
 				originalMaxY -= Const.HALF;
 			}
+			globalRect.SetMinMax(originalMinX, originalMaxX, originalMinY, originalMaxY);
 
 			// Move Cells
 			int originalWidth = originalMaxX - originalMinX;
 			int originalHeight = originalMaxY - originalMinY;
-			var targetRect = rect.Fit(originalWidth, originalHeight, 500, 0);
+			var targetRect = uiRect = rect.Fit(originalWidth, originalHeight, 500, 0);
 			for (int i = cellIndexStart; i < count && i < cellIndexEnd; i++) {
 				var cell = cells[i];
 				cell.X = targetRect.x + (cell.X - originalMinX) * targetRect.width / originalWidth;
@@ -321,6 +328,8 @@ namespace AngeliaFramework {
 					);
 				}
 			}
+
+			return true;
 
 		}
 

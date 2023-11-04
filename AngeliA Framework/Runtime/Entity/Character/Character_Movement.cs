@@ -42,6 +42,14 @@ namespace AngeliaFramework {
 		public int IntendedX { get; private set; } = 0;
 		public int IntendedY { get; private set; } = 0;
 		public int CurrentJumpCount { get; private set; } = 0;
+		//public int GrowingHeight =>
+		//	CharacterHeight < 90 ? MovementHeight / 2 :
+		//	CharacterHeight < 140 ? MovementHeight * 7 / 10 :
+		//	CharacterHeight < 175 ? MovementHeight :
+		//	CharacterHeight < 190 ? MovementHeight * 13 / 10 :
+		//	CharacterHeight < 220 ? MovementHeight * 3 / 2 :
+		//	MovementHeight * 9 / 5;
+		public int GrowingHeight => MovementHeight * CharacterHeight / 160;
 		public bool FacingRight {
 			get => LockFacingOnAttack && IsAttacking ? AttackStartFacingRight : _FacingRight;
 			set => _FacingRight = value;
@@ -270,7 +278,7 @@ namespace AngeliaFramework {
 			}
 			if (IsGrabbingTop) {
 				Y = grabbingY;
-				Height = GrabTopHeight;
+				Height = GrowingHeight * GrabTopHeightAmount / 1000;
 			}
 			if (IsGrabbingTop || IsGrabbingSide) LastGrabbingFrame = frame;
 
@@ -310,7 +318,12 @@ namespace AngeliaFramework {
 			// Physics
 			int width = InWater ? SwimWidth : MovementWidth;
 			int height = GetCurrentHeight();
-			Hitbox = new(X - width / 2, Y, width, Hitbox.height.MoveTowards(height, Const.CEL / 8, Const.CEL));
+			Hitbox = new RectInt(
+				X - width / 2,
+				Y,
+				width,
+				Hitbox.height.MoveTowards(height, Const.CEL / 8, Const.CEL)
+			);
 			Width = Hitbox.width;
 			Height = Hitbox.height;
 			OffsetX = -width / 2;
@@ -790,15 +803,16 @@ namespace AngeliaFramework {
 
 
 		private int GetCurrentHeight () {
-			if (IsSquatting) return SquatHeight;
-			if (IsRolling) return RollingHeight;
-			if (IsDashing) return DashHeight;
-			if (IsRushing) return RushHeight;
-			if (InWater) return SwimHeight;
-			if (IsFlying) return FlyHeight;
-			if (IsGrabbingTop) return GrabTopHeight;
-			if (IsGrabbingSide) return GrabSideHeight;
-			return MovementHeight;
+			int growingHeight = GrowingHeight;
+			if (IsSquatting) return growingHeight * SquatHeightAmount / 1000;
+			if (IsRolling) return growingHeight * RollingHeightAmount / 1000;
+			if (IsDashing) return growingHeight * DashHeightAmount / 1000;
+			if (IsRushing) return growingHeight * RushHeightAmount / 1000;
+			if (InWater) return growingHeight * SwimHeightAmount / 1000;
+			if (IsFlying) return growingHeight * FlyHeightAmount / 1000;
+			if (IsGrabbingTop) return growingHeight * GrabTopHeightAmount / 1000;
+			if (IsGrabbingSide) return growingHeight * GrabSideHeightAmount / 1000;
+			return growingHeight;
 		}
 
 
@@ -919,7 +933,7 @@ namespace AngeliaFramework {
 				Const.MASK_MAP, rect, out hit, this,
 				OperationMode.ColliderOnly, Const.GRAB_TAG
 			)) {
-				grabbingY = hit.Rect.yMin - GrabTopHeight;
+				grabbingY = hit.Rect.yMin - (GrowingHeight * GrabTopHeightAmount / 1000);
 				return true;
 			}
 			return false;
@@ -985,7 +999,7 @@ namespace AngeliaFramework {
 				// No Block Above
 				if (CellPhysics.Overlap(
 					Const.MASK_MAP,
-					new RectInt(x, Y + GrabTopHeight + Const.CEL + Const.HALF, width, 1),
+					new RectInt(x, Y + (GrowingHeight * GrabTopHeightAmount / 1000) + Const.CEL + Const.HALF, width, 1),
 					this
 				)) return false;
 				return true;

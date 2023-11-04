@@ -1,1 +1,230 @@
-﻿Language.Creator:楠瓜Moenen 
+﻿CtrlHint.Adjust:Adjust
+CtrlHint.Attack:Attack
+CtrlHint.Craft:Craft
+CtrlHint.Drop:Drop
+CtrlHint.EditMap:Edit Map
+CtrlHint.EnterDoor:Enter
+CtrlHint.Equip:Equip
+CtrlHint.HideMenu:Hide Menu
+CtrlHint.HoldToUse:Hold to Use
+CtrlHint.Jump:Jump
+CtrlHint.MEDT.Nav:Overlook
+CtrlHint.MEDT.PlayFromBegin:Play from Start
+CtrlHint.MEDT.SwitchMode.Edit:Back to Edit
+CtrlHint.MEDT.SwitchMode.Play:Play
+CtrlHint.Move:Move
+CtrlHint.PlayerMenu.Take:Take
+CtrlHint.PlayerMenu.TakeUse:Take (Hold to Use)
+CtrlHint.QuitEditing:Stop Editing Map
+CtrlHint.Restart:Restart
+CtrlHint.ShowMenu:Show Menu
+CtrlHint.Skip:Skip
+CtrlHint.SwitchPlayer:Switch Character
+CtrlHint.Throw:Throw
+CtrlHint.Transfer:Transfer
+CtrlHint.Use:Use
+CtrlHint.WakeUp:Wake Up
+CtrlHint.Wardrobe.Type:Suit Type
+Hint.Pong.Move:Move
+Hint.Tetris.Drop:Drop
+Hint.Tetris.Hold:Hold
+Hint.Tetris.Move:Move
+Hint.Tetris.Rotate:Rotate
+iDes.WizardHat:Wizard's Hat
+iName.WizardHat:Wizard Hat
+Language.Creator:楠瓜Moenen
+MEDT.BackgroundOnly:Background Only
+MEDT.CancelDrop:Cancel Drop
+MEDT.Drop:Mouse Left Button to Drop
+MEDT.EntityOnly:Entity Only
+MEDT.LevelOnly:Level Only
+Menu.BackToEdit:Back to Editor
+Menu.Gomoku.Draw:Draw
+Menu.Gomoku.Lose:You Lose
+Menu.Gomoku.Win:You Win !!
+Menu.KeySetter.Gamepad:Gamepad
+Menu.KeySetter.GamepadMessage:Press F1 key to reset
+Menu.KeySetter.Keyboard:Keyboard
+Menu.KeySetter.KeyboardMessage:Press F1 key to reset
+Menu.KeySetter.Record:Press key u want
+Menu.KeySetter.SaveAndBack:Save and Back
+Menu.MEDTSetting.AutoZoom:Auto Zoom
+Menu.MEDTSetting.PlayerDrop:Quick Player Drop
+Menu.MEDTSetting.ShowState:Show State Info
+Menu.MiniGame.QuitMsg:Quit mini game?
+Menu.MiniGame.Restart:Retart Game?
+Menu.Pause.KeySetter:Key Assignment
+Menu.Pause.MEDTSetting:Editor Setting
+Menu.Pause.QuitEditMessage:Stop Editing Map?
+Menu.Pause.QuitMessage:Quit game now？
+Menu.Setting.AllowGamepad:Allow Gamepad
+Menu.Setting.Framerate:Framerate
+Menu.Setting.Fullscreen.0:Windowed
+Menu.Setting.Fullscreen.1:Fullscreen
+Menu.Setting.Fullscreen.2:Fullscreen (Low)
+Menu.Setting.Fullscreen.Label:Display
+Menu.Setting.Language:Language
+Menu.Setting.MusicVolume:Music Volume
+Menu.Setting.SaveSlot:Save Slot
+Menu.Setting.SoundVolume:Sound Volume
+Menu.Setting.UseControlHint:Show Control Hint
+Menu.Setting.UseGamepadHint:Show Bottom Left Gamepad
+Menu.Setting.VSync:V-Sync
+MiniGameCraft:Crafting Editor
+MiniGameGomoku:Gomoku
+MiniGamePong:Pong
+MiniGameTetris:Tetris
+Palette.Background:Background
+Palette.Character:Character
+Palette.CheckPoint:CheckPoint
+Palette.Collectable:Collectable
+Palette.Entity:Entity
+Palette.Furniture:Furniture
+Palette.Item:Item
+Palette.ItemEquipment:Equipment
+Palette.ItemFood:Food
+Palette.LevelBack:LevelBack
+Palette.LevelFront:LevelFront
+Palette.MiniGame:Mini Game
+Palette.Pinned:Pinned
+Palette.Platform:Platform
+Palette.System:System
+Palette.Vegetation:Vegetation
+Palette.Wallpaper:Wallpaper
+Pat.Akai:Akai
+Pat.Aki:Aki
+Pat.Ame:Amelia
+Pat.Aqua:Aqua
+Pat.Ayame:Ayame
+Pat.AZKi:AZKi
+Pat.Bae:Bae
+Pat.Bijou:Bijou
+Pat.Botan:Botan
+Pat.Calliope:Calliope
+Pat.Choco:Choco
+Pat.Coco:Coco
+Pat.Fauna:Fauna
+Pat.Flare:Flare
+Pat.FriendA:Friend A
+Pat.Fubuki:Fubuki
+Pat.Fuwa:Fuwawa
+Pat.Gura:Gura
+Pat.Ina:Ina'nis
+Pat.InaArtist:Artist Ina
+Pat.InaCasual:Casual Ina
+Pat.InaDress:Dress Ina
+Pat.InaKimono:Kimono Ina
+Pat.Iofifteen:iofifteen
+Pat.Iroha:Iroha
+Pat.IRyS:IRyS
+Pat.Kaela:Kaela
+Pat.Kanata:Kanata
+Pat.Kiara:Kiara
+Pat.Kobo:Kobo
+Pat.Korone:Korone
+Pat.Koyori:Koyori
+Pat.Kronii:Kronii
+Pat.Lamy:Lamy
+Pat.Laplus:Laplus
+Pat.Lui:Lui
+Pat.Luna:Luna
+Pat.Marine:Marine
+Pat.Matsuri:Matsuri
+Pat.Mel:Mel
+Pat.Melfissa:Melfissa
+Pat.Miko:Miko
+Pat.Mio:Mio
+Pat.Moco:Mococo
+Pat.Moona:Moona
+Pat.Mumei:Mumei
+Pat.Nene:Nene
+Pat.Nerissa:Nerissa
+Pat.Nodoka:Nodoka
+Pat.Noel:Noel
+Pat.Okayu:Okayu
+Pat.Ollie:Ollie
+Pat.Pekora:Pekora
+Pat.Polka:Polka
+Pat.Reine:Reine
+Pat.Risu:Risu
+Pat.Roboco:Roboco
+Pat.Sakamata:Sakamata
+Pat.Sana:Sana
+Pat.Shion:Shion
+Pat.Shiori:Shiori
+Pat.Sora:Sora
+Pat.Subaru:Subaru
+Pat.Suisei:Suisei
+Pat.Towa:Towa
+Pat.Ui:Shigure Ui
+Pat.Watame:Watame
+Pat.Zeta:Zeta
+PlayerCustomizerAngelia:Customize
+PlayerCustomizerHololia:Customize
+UI.Back:Back
+UI.BodyPart.ArmHand:Arm
+UI.BodyPart.Body:Body
+UI.BodyPart.Ear:Ear
+UI.BodyPart.Face:Face
+UI.BodyPart.Hair:Hair
+UI.BodyPart.HairColor:Hair Color
+UI.BodyPart.Head:Head
+UI.BodyPart.Height:Height
+UI.BodyPart.Horn:Horn
+UI.BodyPart.LegFoot:Leg
+UI.BodyPart.SkinColor:Skin Color
+UI.BodyPart.Tail:Tail
+UI.BodyPart.Wing:Wing
+UI.Cancel:Cancel
+UI.Continue:Continue
+UI.Default:Default
+UI.Down:Down
+UI.Equipment.Bodysuit:Armor
+UI.Equipment.Gloves:Gloves
+UI.Equipment.Helmet:Helmet
+UI.Equipment.Jewelry:Jewelry
+UI.Equipment.Shoes:Boots
+UI.Equipment.Weapon:Weapon
+UI.GadgetSuffix.Ear: Ear
+UI.GadgetSuffix.Face: Face
+UI.GadgetSuffix.Hair: Hair
+UI.GadgetSuffix.Horn: Horn
+UI.GadgetSuffix.Tail: Tail
+UI.GadgetSuffix.Wing: Wing
+UI.GameKey.Action:Action/Attack
+UI.GameKey.Down:Down
+UI.GameKey.Jump:Cancel/Jump
+UI.GameKey.Left:Left
+UI.GameKey.Right:Right
+UI.GameKey.Select:Select
+UI.GameKey.Start:Start
+UI.GameKey.Up:Up
+UI.GameOver:Game Over
+UI.Gomoku.Place:Place
+UI.Gomoku.YouAre:You are:
+UI.Left:Left
+UI.No:No
+UI.None:None
+UI.OFF:OFF
+UI.OK:OK
+UI.ON:ON
+UI.Quit:Quit
+UI.Restart:Restart
+UI.Right:Right
+UI.Save:Save
+UI.Setting:Setting
+UI.Suit.Bodysuit:Cloth
+UI.Suit.Glove:Gloves
+UI.Suit.Hat:Hat
+UI.Suit.Pants:Pants
+UI.Suit.Shoes:Shoes
+UI.SuitSuffix.Body: Cloth
+UI.SuitSuffix.Foot: Shoes
+UI.SuitSuffix.Hand: Gloves
+UI.SuitSuffix.Head: Hat
+UI.SuitSuffix.Hip: Pants
+UI.SuitSuffix.Skirt: Skirt
+UI.Tetris.ClearedLine:Lines:
+UI.Tetris.Holding:Holding
+UI.Up:Up
+UI.Yes:Yes

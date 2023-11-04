@@ -882,7 +882,7 @@ namespace AngeliaFramework {
 						PlayerDropPos.y - Const.CEL * 2,
 						Const.CEL, Const.CEL * 2
 					),
-					player, Game.GlobalFrame
+					player, Game.GlobalFrame, out _, out _
 				);
 				int endIndex = CellRenderer.GetUsedCellCount();
 				// Rotate Cells

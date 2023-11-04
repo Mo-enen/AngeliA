@@ -12,10 +12,19 @@ namespace AngeliaFramework {
 
 
 		public readonly BuffInt MovementWidth = new(150);
-		public readonly BuffInt MovementHeight = new(384);
-		public readonly BuffInt RollingHeight = new(200);
 		public readonly BuffInt KnockbackDeceleration = new(16);
 		public readonly BuffInt PushSpeedLoseRate = new(500);
+
+		// Height
+		public readonly BuffInt MovementHeight = new(384); // Height when Character is 160cm
+		public readonly BuffInt RollingHeightAmount = new(521);
+		public readonly BuffInt DashHeightAmount = new(521);
+		public readonly BuffInt RushHeightAmount = new(1000);
+		public readonly BuffInt SquatHeightAmount = new(521);
+		public readonly BuffInt SwimHeightAmount = new(1000);
+		public readonly BuffInt FlyHeightAmount = new(521);
+		public readonly BuffInt GrabTopHeightAmount = new(947);
+		public readonly BuffInt GrabSideHeightAmount = new(947);
 
 		// Walk
 		public readonly BuffInt WalkSpeed = new(20);
@@ -43,7 +52,6 @@ namespace AngeliaFramework {
 		// Dash
 		public readonly BuffBool DashAvailable = new(true);
 		public readonly BuffBool DashWithRoll = new(false);
-		public readonly BuffInt DashHeight = new(200);
 		public readonly BuffInt DashSpeed = new(42);
 		public readonly BuffInt DashDuration = new(20);
 		public readonly BuffInt DashCooldown = new(4);
@@ -56,7 +64,6 @@ namespace AngeliaFramework {
 		public readonly BuffBool RushInWater = new(true);
 		public readonly BuffBool RushWhenClimb = new(false);
 		public readonly BuffBool RushWhenSquat = new(false);
-		public readonly BuffInt RushHeight = new(384);
 		public readonly BuffInt RushSpeed = new(72);
 		public readonly BuffInt RushStopSpeed = new(8);
 		public readonly BuffInt RushDuration = new(8);
@@ -67,7 +74,6 @@ namespace AngeliaFramework {
 
 		// Squat
 		public readonly BuffBool SquatAvailable = new(true);
-		public readonly BuffInt SquatHeight = new(200);
 		public readonly BuffInt SquatSpeed = new(14);
 		public readonly BuffInt SquatAcceleration = new(48);
 		public readonly BuffInt SquatDeceleration = new(48);
@@ -78,7 +84,6 @@ namespace AngeliaFramework {
 
 		// Swim
 		public readonly BuffInt SwimWidth = new(200);
-		public readonly BuffInt SwimHeight = new(384);
 		public readonly BuffInt InWaterSpeedLoseRate = new(500);
 		public readonly BuffInt SwimSpeed = new(42);
 		public readonly BuffInt SwimJumpSpeed = new(128);
@@ -92,7 +97,6 @@ namespace AngeliaFramework {
 		public readonly BuffInt ClimbSpeedY = new(18);
 
 		// Fly
-		public readonly BuffInt FlyHeight = new(200);
 		public readonly BuffInt FlyCooldown = new(24);
 		public readonly BuffInt FlyRiseSpeed = new(96);
 		public readonly BuffInt FlyGravityRiseRate = new(800);
@@ -115,8 +119,6 @@ namespace AngeliaFramework {
 		public readonly BuffBool GrabFlipThroughDownAvailable = new(true);
 		public readonly BuffBool GrabFlipThroughUpAvailable = new(true);
 		public readonly BuffInt GrabFlipThroughDuration = new(18);
-		public readonly BuffInt GrabTopHeight = new(364);
-		public readonly BuffInt GrabSideHeight = new(364);
 		public readonly BuffInt GrabMoveSpeedX = new(24);
 		public readonly BuffInt GrabMoveSpeedY = new(24);
 
