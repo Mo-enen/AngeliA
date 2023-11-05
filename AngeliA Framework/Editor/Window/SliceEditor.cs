@@ -422,18 +422,19 @@ namespace AngeliaFramework.Editor {
 			var values = line.Split(',');
 			int x = 0, y = 0, w = 0, h = 0, l = 0, r = 0, d = 0, u = 0;
 			name = "";
+
 			if (values.Length > 0) name = values[0];
-			if (values.Length > 1) int.TryParse(values[1], out x);
-			if (values.Length > 2) int.TryParse(values[2], out y);
-			if (values.Length > 3) int.TryParse(values[3], out w);
-			if (values.Length > 4) int.TryParse(values[4], out h);
-			if (values.Length > 5) int.TryParse(values[5], out l);
-			if (values.Length > 6) int.TryParse(values[6], out r);
-			if (values.Length > 7) int.TryParse(values[7], out d);
-			if (values.Length > 8) int.TryParse(values[8], out u);
+			if (values.Length > 1) Util.TryCompute(values[1], out x);
+			if (values.Length > 2) Util.TryCompute(values[2], out y);
+			if (values.Length > 3) Util.TryCompute(values[3], out w);
+			if (values.Length > 4) Util.TryCompute(values[4], out h);
+			if (values.Length > 5) Util.TryCompute(values[5], out l);
+			if (values.Length > 6) Util.TryCompute(values[6], out r);
+			if (values.Length > 7) Util.TryCompute(values[7], out d);
+			if (values.Length > 8) Util.TryCompute(values[8], out u);
 			if (values.Length > 10) {
-				int.TryParse(values[9], out int px);
-				int.TryParse(values[10], out int py);
+				Util.TryCompute(values[9], out int px);
+				Util.TryCompute(values[10], out int py);
 				pivot = new(px, py);
 			} else {
 				pivot = null;

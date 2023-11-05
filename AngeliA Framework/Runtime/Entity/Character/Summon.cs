@@ -145,6 +145,12 @@ namespace AngeliaFramework {
 				grounded = false;
 			}
 
+			// Shift
+			result = new Vector2Int(
+				result.x + (InstanceOrder % 2 == 0 ? 8 : -8) * (InstanceOrder / 2),
+				result.y
+			);
+
 			return result;
 		}
 

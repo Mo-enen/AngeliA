@@ -186,5 +186,19 @@ namespace AngeliaFramework {
 		public static int Char2ToInt (char a, char b) => (a << 16) | (int)b;
 
 
+		// Misc
+		private static readonly System.Data.DataTable DataTable = new();
+		public static bool TryCompute (string expression, out int result) {
+			result = 0;
+			try {
+				if (DataTable.Compute(expression, null) is int intResult) result = intResult;
+				return true;
+			} catch (System.Exception ex) {
+				Debug.LogException(ex);
+				return false;
+			}
+		}
+
+
 	}
 }
