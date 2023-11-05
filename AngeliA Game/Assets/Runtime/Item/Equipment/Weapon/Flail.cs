@@ -5,9 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iFlailWood : AutoSpriteFlail {
-		public override int ChargeAttackDuration => 20;
-	}
+	public class iFlailWood : AutoSpriteFlail {}
 	public class iFlailIron : AutoSpriteFlail { }
 	public class iFlailGold : AutoSpriteFlail { }
 	public class iFlailTriple : AutoSpriteFlail {
@@ -26,7 +24,6 @@ namespace AngeliaGame {
 	public class iFlailPick : AutoSpriteFlail {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 		public override int AttackDuration => 24;
-		public override int ChargeAttackDuration => 20;
 	}
 	public class iChainMace : AutoSpriteFlail {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;

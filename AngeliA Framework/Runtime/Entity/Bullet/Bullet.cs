@@ -93,10 +93,7 @@ namespace AngeliaFramework {
 				if (Sender is Character character && !character.FacingRight) {
 					rangeX = meleeWeapon.RangeXLeft;
 				}
-				_SpawnWidth = rangeX;
-				_SpawnHeight = meleeWeapon.RangeY;
-				Width = rangeX;
-				Height = meleeWeapon.RangeY;
+				SetSpawnSize(rangeX, meleeWeapon.RangeY);
 			}
 
 			// Follow
@@ -117,11 +114,16 @@ namespace AngeliaFramework {
 			base.PhysicsUpdate();
 		}
 
-		private void FollowSender () {
+		public void FollowSender () {
 			if (Sender is not Character character) return;
 			var characterRect = character.Rect;
 			X = character.FacingRight ? characterRect.xMax : characterRect.xMin - Width;
 			Y = character.Y - 1;
+		}
+
+		public void SetSpawnSize (int width, int height) {
+			Width = _SpawnWidth = width;
+			Height = _SpawnHeight = height;
 		}
 
 	}

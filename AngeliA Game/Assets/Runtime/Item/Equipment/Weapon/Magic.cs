@@ -19,7 +19,6 @@ namespace AngeliaGame {
 	}
 	public class iStaffPoision : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
-		public override int ChargeAttackDuration => 20;
 	}
 	public class iRitualSkull : AutoSpriteMagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Float;

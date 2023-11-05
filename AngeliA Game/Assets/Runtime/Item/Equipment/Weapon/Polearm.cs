@@ -4,9 +4,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iSpearWood : AutoSpritePolearm {
-		public override int ChargeAttackDuration => 20;
-	}
+	public class iSpearWood : AutoSpritePolearm { }
 	public class iSpearIron : AutoSpritePolearm { }
 	public class iSpearGold : AutoSpritePolearm { }
 	public class iTrident : AutoSpritePolearm { }

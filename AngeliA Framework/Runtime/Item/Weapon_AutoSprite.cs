@@ -6,54 +6,57 @@ using UnityEngine;
 namespace AngeliaFramework {
 
 
-	// Throwing
-	public abstract class AutoSpriteThrowingWeapon : AutoSpriteWeapon {
-		public sealed override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
-	}
-
-
 	// Sword
-	public abstract class AutoSpriteSword : AutoSpriteWeapon {
+	public abstract class AutoSpriteSword : AutoSpriteWeapon, IMeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Sword;
 		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
+		public virtual int RangeXLeft => 275;
+		public virtual int RangeXRight => 275;
+		public virtual int RangeY => 432;
+
 	}
 
 
 	// Polearm
-	public abstract class AutoSpritePolearm : AutoSpriteWeapon {
+	public abstract class AutoSpritePolearm : AutoSpriteWeapon, IMeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Polearm;
 		public sealed override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
 		protected override bool IgnoreGrabTwist => true;
 		public override int AttackDuration => 18;
 		public override int AttackCooldown => 2;
-	}
+		public virtual int RangeXLeft => 384;
+		public virtual int RangeXRight => 384;
+		public virtual int RangeY => 432;
 
-
-	// Magic
-	public abstract class AutoSpriteMagicWeapon : AutoSpriteWeapon {
-		public sealed override WeaponType WeaponType => WeaponType.Magic;
 	}
 
 
 	// Hammer
-	public abstract class AutoSpriteHammer : AutoSpriteWeapon {
+	public abstract class AutoSpriteHammer : AutoSpriteWeapon, IMeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Hammer;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
 		protected override bool IgnoreGrabTwist => true;
+		public virtual int RangeXLeft => 275;
+		public virtual int RangeXRight => 275;
+		public virtual int RangeY => 432;
+
 	}
 
 
 	// Claw
-	public abstract class AutoSpriteClaw : AutoSpriteWeapon {
+	public abstract class AutoSpriteClaw : AutoSpriteWeapon, IMeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Claw;
 		public sealed override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
 		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
 		public override int AttackDuration => 10;
 		public override int AttackCooldown => 0;
 		public override int? MovementLoseRateOnAttack => 1000;
+		public virtual int RangeXLeft => 275;
+		public virtual int RangeXRight => 275;
+		public virtual int RangeY => 432;
+
 	}
 
 
@@ -62,12 +65,11 @@ namespace AngeliaFramework {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 		public sealed override WeaponType WeaponType => WeaponType.Axe;
 		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
-		int IMeleeWeapon.RangeXLeft => 275;
-		int IMeleeWeapon.RangeXRight => 384;
-		int IMeleeWeapon.RangeY => 512;
 		public override int AttackDuration => 12;
 		public override int AttackCooldown => 2;
-		public override int ChargeAttackDuration => 20;
+		public virtual int RangeXLeft => 275;
+		public virtual int RangeXRight => 384;
+		public virtual int RangeY => 512;
 	}
 
 
@@ -81,136 +83,8 @@ namespace AngeliaFramework {
 	}
 
 
-	// Firearm
-	public abstract class AutoSpriteFirearm : AutoSpriteWeapon {
-
-		public sealed override WeaponType WeaponType => WeaponType.Ranged;
-		public sealed override WeaponHandHeld HandHeld => WeaponHandHeld.Firearm;
-		private int SpriteIdAttack { get; init; }
-		private int SpriteFrameCount { get; init; }
-
-		public AutoSpriteFirearm () {
-			SpriteIdAttack = $"{GetType().AngeName()}.Attack".AngeHash();
-			if (CellRenderer.HasSpriteGroup(SpriteIdAttack, out int length)) {
-				SpriteFrameCount = length;
-			} else {
-				SpriteIdAttack = 0;
-				SpriteFrameCount = 0;
-			}
-		}
-
-		protected override Cell DrawWeaponSprite (Character character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
-			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
-			// Draw Attack
-			if (character.IsAttacking || character.IsChargingAttack) {
-				int localFrame = character.IsAttacking ?
-					(Game.GlobalFrame - character.LastAttackFrame) * SpriteFrameCount / character.AttackDuration :
-					SpriteFrameCount - 1;
-				if (CellRenderer.TryGetSpriteFromGroup(SpriteIdAttack, localFrame, out var attackSprite, false, true)) {
-					cell.Color = Const.CLEAR;
-					CellRenderer.Draw(
-						attackSprite.GlobalID,
-						cell.X, cell.Y, attackSprite.PivotX, attackSprite.PivotY, cell.Rotation,
-						attackSprite.GlobalWidth,
-						character.FacingRight ? attackSprite.GlobalHeight : -attackSprite.GlobalHeight,
-						cell.Z
-					);
-				}
-			}
-			return cell;
-		}
-
-	}
-
-
-	// Bow
-	public abstract class AutoSpriteBow : AutoSpriteWeapon {
-
-		public sealed override WeaponType WeaponType => WeaponType.Ranged;
-		public sealed override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
-		private int SpriteIdString { get; init; }
-
-		public AutoSpriteBow () {
-			SpriteIdString = $"{GetType().AngeName()}.String".AngeHash();
-			if (!CellRenderer.HasSprite(SpriteIdString)) SpriteIdString = 0;
-		}
-
-		protected override Cell DrawWeaponSprite (Character character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
-			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
-			DrawString(character, cell, default, default, default);
-			return cell;
-		}
-
-		protected void DrawString (Character character, Cell mainCell, Vector2Int offsetDown, Vector2Int offsetUp, Vector2Int offsetCenter) {
-			int borderL = 0;
-			int borderD = 0;
-			int borderU = 0;
-			if (CellRenderer.TryGetSprite(SpriteID, out var mainSprite)) {
-				borderL = mainSprite.GlobalBorder.left * mainCell.Width.Sign();
-				borderD = mainSprite.GlobalBorder.down;
-				borderU = mainSprite.GlobalBorder.up;
-			}
-			if (!character.FacingRight) {
-				offsetDown.x = -offsetDown.x;
-				offsetUp.x = -offsetUp.x;
-				offsetCenter.x = -offsetCenter.x;
-			}
-			if (character.IsAttacking || character.IsChargingAttack) {
-
-				// Attacking
-				int duration = character.AttackDuration;
-				int localFrame = character.IsAttacking ? Game.GlobalFrame - character.LastAttackFrame : duration / 2 - 1;
-				Vector2Int centerPos;
-				var cornerU = mainCell.LocalToGlobal(borderL, mainCell.Height - borderU) + offsetUp;
-				var cornerD = mainCell.LocalToGlobal(borderL, borderD) + offsetDown;
-				var handPos = (character.FacingRight ? character.HandL : character.HandR).GlobalLerp(0.5f, 0.5f);
-				if (localFrame < duration / 2) {
-					// Pulling
-					centerPos = handPos + offsetCenter;
-				} else {
-					// Release
-					centerPos = Vector2.Lerp(
-						handPos, mainCell.LocalToGlobal(borderL, mainCell.Height / 2),
-						Ease.OutBack((localFrame - duration / 2f) / (duration / 2f))
-					).RoundToInt() + offsetCenter;
-				}
-
-				// Draw Strings
-				int stringWidth = character.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE;
-				CellRenderer.Draw(
-					SpriteIdString, centerPos.x, centerPos.y, 500, 0,
-					-(int)Quaternion.FromToRotation(
-						Vector3.up, (Vector3)(Vector2)(cornerU - centerPos)
-					).eulerAngles.z,
-					stringWidth, Util.DistanceInt(centerPos, cornerU), mainCell.Z - 1
-				);
-				CellRenderer.Draw(
-					SpriteIdString, centerPos.x, centerPos.y, 500, 0,
-					-(int)Quaternion.FromToRotation(
-						Vector3.up, (Vector3)(Vector2)(cornerD - centerPos)
-					).eulerAngles.z,
-					stringWidth, Util.DistanceInt(centerPos, cornerD), mainCell.Z - 1
-				);
-
-			} else {
-				// Holding
-				var point = mainCell.LocalToGlobal(borderL + offsetDown.x, borderD + offsetDown.y);
-				CellRenderer.Draw(
-					SpriteIdString,
-					point.x, point.y,
-					character.FacingRight ? 0 : 1000, 0, mainCell.Rotation,
-					Const.ORIGINAL_SIZE,
-					mainCell.Height - borderD - borderU - offsetDown.y + offsetUp.y,
-					mainCell.Z - 1
-				);
-			}
-		}
-
-	}
-
-
 	// Flail
-	public abstract class AutoSpriteFlail : AutoSpriteWeapon {
+	public abstract class AutoSpriteFlail : AutoSpriteWeapon, IMeleeWeapon {
 
 		public sealed override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
@@ -220,6 +94,9 @@ namespace AngeliaFramework {
 		protected virtual int ChainLength => Const.CEL * 7 / 9;
 		protected virtual int ChainLengthAttackGrow => 500;
 		protected virtual int HeadCount => 1;
+		public virtual int RangeXLeft => 275;
+		public virtual int RangeXRight => 275;
+		public virtual int RangeY => 432;
 
 		public AutoSpriteFlail () {
 			SpriteIdHead = $"{GetType().AngeName()}.Head".AngeHash();
@@ -326,6 +203,146 @@ namespace AngeliaFramework {
 				}
 			}
 
+		}
+
+	}
+
+
+	// Firearm
+	public abstract class AutoSpriteFirearm : AutoSpriteWeapon {
+
+		public sealed override WeaponType WeaponType => WeaponType.Ranged;
+		public sealed override WeaponHandHeld HandHeld => WeaponHandHeld.Firearm;
+		private int SpriteIdAttack { get; init; }
+		private int SpriteFrameCount { get; init; }
+
+		public AutoSpriteFirearm () {
+			SpriteIdAttack = $"{GetType().AngeName()}.Attack".AngeHash();
+			if (CellRenderer.HasSpriteGroup(SpriteIdAttack, out int length)) {
+				SpriteFrameCount = length;
+			} else {
+				SpriteIdAttack = 0;
+				SpriteFrameCount = 0;
+			}
+		}
+
+		protected override Cell DrawWeaponSprite (Character character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
+			// Draw Attack
+			if (character.IsAttacking || character.IsChargingAttack) {
+				int localFrame = character.IsAttacking ?
+					(Game.GlobalFrame - character.LastAttackFrame) * SpriteFrameCount / character.AttackDuration :
+					SpriteFrameCount - 1;
+				if (CellRenderer.TryGetSpriteFromGroup(SpriteIdAttack, localFrame, out var attackSprite, false, true)) {
+					cell.Color = Const.CLEAR;
+					CellRenderer.Draw(
+						attackSprite.GlobalID,
+						cell.X, cell.Y, attackSprite.PivotX, attackSprite.PivotY, cell.Rotation,
+						attackSprite.GlobalWidth,
+						character.FacingRight ? attackSprite.GlobalHeight : -attackSprite.GlobalHeight,
+						cell.Z
+					);
+				}
+			}
+			return cell;
+		}
+
+	}
+
+	// Throwing
+	public abstract class AutoSpriteThrowingWeapon : AutoSpriteWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Throwing;
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+	}
+
+
+	// Magic
+	public abstract class AutoSpriteMagicWeapon : AutoSpriteWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Magic;
+	}
+
+
+	// Bow
+	public abstract class AutoSpriteBow : AutoSpriteWeapon {
+
+		public sealed override WeaponType WeaponType => WeaponType.Ranged;
+		public sealed override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
+		private int SpriteIdString { get; init; }
+
+		public AutoSpriteBow () {
+			SpriteIdString = $"{GetType().AngeName()}.String".AngeHash();
+			if (!CellRenderer.HasSprite(SpriteIdString)) SpriteIdString = 0;
+		}
+
+		protected override Cell DrawWeaponSprite (Character character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
+			DrawString(character, cell, default, default, default);
+			return cell;
+		}
+
+		protected void DrawString (Character character, Cell mainCell, Vector2Int offsetDown, Vector2Int offsetUp, Vector2Int offsetCenter) {
+			int borderL = 0;
+			int borderD = 0;
+			int borderU = 0;
+			if (CellRenderer.TryGetSprite(SpriteID, out var mainSprite)) {
+				borderL = mainSprite.GlobalBorder.left * mainCell.Width.Sign();
+				borderD = mainSprite.GlobalBorder.down;
+				borderU = mainSprite.GlobalBorder.up;
+			}
+			if (!character.FacingRight) {
+				offsetDown.x = -offsetDown.x;
+				offsetUp.x = -offsetUp.x;
+				offsetCenter.x = -offsetCenter.x;
+			}
+			if (character.IsAttacking || character.IsChargingAttack) {
+
+				// Attacking
+				int duration = character.AttackDuration;
+				int localFrame = character.IsAttacking ? Game.GlobalFrame - character.LastAttackFrame : duration / 2 - 1;
+				Vector2Int centerPos;
+				var cornerU = mainCell.LocalToGlobal(borderL, mainCell.Height - borderU) + offsetUp;
+				var cornerD = mainCell.LocalToGlobal(borderL, borderD) + offsetDown;
+				var handPos = (character.FacingRight ? character.HandL : character.HandR).GlobalLerp(0.5f, 0.5f);
+				if (localFrame < duration / 2) {
+					// Pulling
+					centerPos = handPos + offsetCenter;
+				} else {
+					// Release
+					centerPos = Vector2.Lerp(
+						handPos, mainCell.LocalToGlobal(borderL, mainCell.Height / 2),
+						Ease.OutBack((localFrame - duration / 2f) / (duration / 2f))
+					).RoundToInt() + offsetCenter;
+				}
+
+				// Draw Strings
+				int stringWidth = character.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE;
+				CellRenderer.Draw(
+					SpriteIdString, centerPos.x, centerPos.y, 500, 0,
+					-(int)Quaternion.FromToRotation(
+						Vector3.up, (Vector3)(Vector2)(cornerU - centerPos)
+					).eulerAngles.z,
+					stringWidth, Util.DistanceInt(centerPos, cornerU), mainCell.Z - 1
+				);
+				CellRenderer.Draw(
+					SpriteIdString, centerPos.x, centerPos.y, 500, 0,
+					-(int)Quaternion.FromToRotation(
+						Vector3.up, (Vector3)(Vector2)(cornerD - centerPos)
+					).eulerAngles.z,
+					stringWidth, Util.DistanceInt(centerPos, cornerD), mainCell.Z - 1
+				);
+
+			} else {
+				// Holding
+				var point = mainCell.LocalToGlobal(borderL + offsetDown.x, borderD + offsetDown.y);
+				CellRenderer.Draw(
+					SpriteIdString,
+					point.x, point.y,
+					character.FacingRight ? 0 : 1000, 0, mainCell.Rotation,
+					Const.ORIGINAL_SIZE,
+					mainCell.Height - borderD - borderU - offsetDown.y + offsetUp.y,
+					mainCell.Z - 1
+				);
+			}
 		}
 
 	}

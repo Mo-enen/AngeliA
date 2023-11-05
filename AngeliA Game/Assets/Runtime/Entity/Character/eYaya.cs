@@ -25,27 +25,26 @@ namespace AngeliaGame {
 
 		// Api
 		public override bool BodySuitAvailable => true;
-		public override bool HelmetAvailable => false;
+		public override bool HelmetAvailable => true;
 		public override int AttackStyleIndex => EquippingWeaponType == WeaponType.Hand ? 1 : base.AttackStyleIndex;
 
 		// Data
 		private eGuaGua GuaGua = null;
 
-
+		// MSG
 		public eYaya () {
 
-			WalkToRunAccumulation.BaseValue = 0;
 			JumpDownThoughOneway.BaseValue = true;
 			SlideAvailable.BaseValue = true;
 			SlideOnAnyBlock.BaseValue = true;
 			CharacterHeight = 158;
 
-			MinimalChargeAttackDuration.BaseValue = 42;
-
 			MaxHP.BaseValue = 1;
 
-		}
+			HairColor = Const.WHITE;
+			SkinColor = Const.WHITE;
 
+		}
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
@@ -55,9 +54,11 @@ namespace AngeliaGame {
 			}
 		}
 
-
-		protected override void SpawnPunchBullet () => Bullet.SpawnBullet(YAYA_PAW, this, null);
-
+		protected override void SpawnPunchBullet () {
+			if (Bullet.SpawnBullet(YAYA_PAW, this, null) is MeleeBullet mBullet) {
+				mBullet.SetSpawnSize(384, 486);
+			}
+		}
 
 	}
 }

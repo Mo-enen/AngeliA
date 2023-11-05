@@ -14,7 +14,6 @@ namespace AngeliaGame {
 	public class iMaceSpiked : AutoSpriteHammer { }
 	public class iBian : AutoSpriteHammer {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
-		public override int ChargeAttackDuration => 20;
 	}
 	public class iHammerRiceCake : AutoSpriteHammer {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
@@ -26,7 +25,6 @@ namespace AngeliaGame {
 	}
 	public class iHammerMoai : AutoSpriteHammer {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
-		public override int ChargeAttackDuration => 20;
 	}
 	public class iHammerPaladin : AutoSpriteHammer {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;

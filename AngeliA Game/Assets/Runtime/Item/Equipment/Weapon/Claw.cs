@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public class iClawWood : AutoSpriteClaw { public override int ChargeAttackDuration => 20; }
+	public class iClawWood : AutoSpriteClaw { }
 	public class iClawIron : AutoSpriteClaw { }
 	public class iClawGold : AutoSpriteClaw { }
 	public class iMandarinDuckAxe : AutoSpriteClaw { }

@@ -19,7 +19,5 @@ namespace AngeliaGame {
 	public class iCrossAxe : AutoSpriteThrowingWeapon { }
 	public class iGrapeBomb : AutoSpriteThrowingWeapon { }
 	public class iTearGas : AutoSpriteThrowingWeapon { }
-	public class iGrenade : AutoSpriteThrowingWeapon {
-		public override int ChargeAttackDuration => 20;
-	}
+	public class iGrenade : AutoSpriteThrowingWeapon { }
 }

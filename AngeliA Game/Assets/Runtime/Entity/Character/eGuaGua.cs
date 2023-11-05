@@ -17,7 +17,7 @@ namespace AngeliaGame {
 			MaxHP.BaseValue = 1;
 			MovementWidth.BaseValue = 150;
 			MovementHeight.BaseValue = 150;
-			SquatHeight.BaseValue = 150;
+			SquatHeightAmount.BaseValue = 1000;
 			DashDuration.BaseValue = 20;
 			WalkToRunAccumulation.BaseValue = 48;
 			JumpSpeed.BaseValue = 69;
