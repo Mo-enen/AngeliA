@@ -152,7 +152,7 @@ namespace AngeliaFramework {
 			try {
 				Initialized = true;
 				AngePath.CurrentSaveSlot = _CurrentSaveSlot.Value;
-				Util.InitializeAssembly("angelia");
+				Util.InitializeAssembly("runtime");
 				Util.LinkEventWithAttribute<OnGameUpdateAttribute>(typeof(Game), nameof(OnGameUpdate));
 				Util.LinkEventWithAttribute<OnGameUpdateLaterAttribute>(typeof(Game), nameof(OnGameUpdateLater));
 				Util.LinkEventWithAttribute<OnGameUpdatePauselessAttribute>(typeof(Game), nameof(OnGameUpdatePauseless));

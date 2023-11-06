@@ -45,7 +45,7 @@ namespace AngeliaFramework {
 		}
 		private static int _CurrentSaveSlot = 0;
 
-		public static string SaveSlotRoot => _SaveSlotRoot ??= Util.CombinePaths(Application.persistentDataPath, $"Save Slot {CurrentSaveSlot}");
+		public static string SaveSlotRoot => _SaveSlotRoot ??= Util.CombinePaths(Application.persistentDataPath, $"Save Slot {(char)(CurrentSaveSlot + 'A')}");
 		private static string _SaveSlotRoot = null;
 
 		public static string UserMapRoot => _UserMapRoot ??= Util.CombinePaths(SaveSlotRoot, "User Map");

@@ -32,7 +32,9 @@ namespace AngeliaFramework.Editor {
 		public string[] Paths => new string[] {
 			"Assets",
 			"Packages/com.moenengames.angeliaframework",
+			"Packages/com.moenengames.angeliageneral",
 			"Assets/AngeliA Framework",
+			"Assets/AngeliA General",
 		};
 		public string IgnoreFolders => "";
 		public string IgnoreFiles => "";
@@ -58,7 +60,7 @@ namespace AngeliaFramework.Editor {
 			new ("*.cs", "", true),
 		};
 		public int Order => -1024;
-		public int Column => 3;
+		public int Column => 2;
 		public string GetFolderName (string name) {
 			if (name.Equals("Editor")) {
 				name = "zEditor";

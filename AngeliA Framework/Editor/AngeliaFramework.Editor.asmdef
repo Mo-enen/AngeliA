@@ -1,8 +1,8 @@
 {
-    "name": "EdittimeAngeliaFramework",
+    "name": "Edittime.AngeliaFramework",
     "rootNamespace": "AngeliaFramework.Editor",
     "references": [
-        "AngeliaFrameworkRuntime"
+        "Runtime.AngeliaFramework"
     ],
     "includePlatforms": [
         "Editor"

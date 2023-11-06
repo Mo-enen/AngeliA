@@ -1,0 +1,20 @@
+{
+    "name": "Edittime.AngeliaGeneral",
+    "rootNamespace": "AngeliaGeneral.Editor",
+    "references": [
+        "Runtime.AngeliaFramework",
+        "Edittime.AngeliaFramework",
+        "Runtime.AngeliaGeneral"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

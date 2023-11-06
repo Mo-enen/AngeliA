@@ -1,0 +1,11 @@
+{
+  "name": "com.moenengames.angeliageneral",
+  "displayName": "AngeliA General",
+  "version": "1.0.0",
+  "description": "Shared assets for AngeliA and HololiA.",
+  "type": "tool",
+  "hideInEditor": false,
+  "dependencies": {
+    "com.moenengames.angeliaframework": "1.0.0"
+  }
+}

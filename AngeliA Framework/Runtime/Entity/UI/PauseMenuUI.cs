@@ -82,7 +82,7 @@ namespace AngeliaFramework {
 		private readonly IntToString MusicVolumeCache = new();
 		private readonly IntToString SoundVolumeCache = new();
 		private readonly IntToString FramerateCache = new();
-		private readonly IntToString SaveSlotIndexCache = new("", $"/{AngePath.SAVE_SLOT_COUNT}");
+		private readonly IntToString SaveSlotIndexCache = new();
 		private readonly CellContent KeySetterLabel = new();
 		private MenuMode Mode = MenuMode.Pause;
 		private MenuMode RequireMode = MenuMode.Pause;
@@ -352,7 +352,7 @@ namespace AngeliaFramework {
 			int settedSaveSlot = RequireNewSaveSlot < 0 ? AngePath.CurrentSaveSlot : RequireNewSaveSlot;
 			if (DrawArrowItem(
 				Language.Get(MENU_SAVE_SLOT, "Save Slot"),
-				CellContent.Get(SaveSlotIndexCache.GetString(settedSaveSlot + 1)),
+				CellContent.Get(SaveSlotIndexCache.GetString((char)(settedSaveSlot + 'A'))),
 				settedSaveSlot > 0, settedSaveSlot < AngePath.SAVE_SLOT_COUNT, out delta)
 			) {
 				int newIndex = settedSaveSlot + delta;
