@@ -30,12 +30,12 @@ namespace AngeliaFramework {
 		private static readonly int[] BOUNCE_AMOUNTS_BIG = new int[] { 0, -600, -900, -1200, -1400, -1200, -900, -600, 0, };
 
 		// Particle
-		public static int SleepParticleCode { get; set; } = typeof(eSleepParticle).AngeHash();
+		public static int SleepParticleCode { get; set; } = typeof(SleepParticle).AngeHash();
 		public static int SleepDoneParticleCode { get; set; } = 0;
-		public static int FootstepParticleCode { get; set; } = typeof(eCharacterFootstep).AngeHash();
-		public static int SlideParticleCode { get; set; } = typeof(eSlideDust).AngeHash();
-		public static int DashParticleCode { get; set; } = typeof(eCharacterFootstep).AngeHash();
-		public static int PassOutParticleCode { get; set; } = typeof(ePassOutStarParticle).AngeHash();
+		public static int FootstepParticleCode { get; set; } = typeof(CharacterFootstep).AngeHash();
+		public static int SlideParticleCode { get; set; } = typeof(SlideDust).AngeHash();
+		public static int DashParticleCode { get; set; } = typeof(CharacterFootstep).AngeHash();
+		public static int PassOutParticleCode { get; set; } = typeof(PassOutStarParticle).AngeHash();
 		public static int TeleportParticleCode { get; set; } = typeof(AppearSmokeParticle).AngeHash();
 
 		// Api

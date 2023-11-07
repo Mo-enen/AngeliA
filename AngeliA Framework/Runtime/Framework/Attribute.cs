@@ -135,5 +135,44 @@ namespace AngeliaFramework {
 		}
 
 
+
+		[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = true)]
+		public class ItemCombinationAttribute : System.Attribute {
+			public int ItemA = 0;
+			public int ItemB = 0;
+			public int ItemC = 0;
+			public int ItemD = 0;
+			public int Count = 1;
+			public ItemCombinationAttribute (System.Type itemA, int count = 1) {
+				ItemA = itemA.AngeHash();
+				ItemB = 0;
+				ItemC = 0;
+				ItemD = 0;
+				Count = count;
+			}
+			public ItemCombinationAttribute (System.Type itemA, System.Type itemB, int count = 1) {
+				ItemA = itemA.AngeHash();
+				ItemB = itemB.AngeHash();
+				ItemC = 0;
+				ItemD = 0;
+				Count = count;
+			}
+			public ItemCombinationAttribute (System.Type itemA, System.Type itemB, System.Type itemC, int count = 1) {
+				ItemA = itemA.AngeHash();
+				ItemB = itemB.AngeHash();
+				ItemC = itemC.AngeHash();
+				ItemD = 0;
+				Count = count;
+			}
+			public ItemCombinationAttribute (System.Type itemA, System.Type itemB, System.Type itemC, System.Type itemD, int count = 1) {
+				ItemA = itemA.AngeHash();
+				ItemB = itemB.AngeHash();
+				ItemC = itemC.AngeHash();
+				ItemD = itemD.AngeHash();
+				Count = count;
+			}
+		}
+
+
 	}
 }

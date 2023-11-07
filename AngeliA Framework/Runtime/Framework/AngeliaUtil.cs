@@ -176,8 +176,8 @@ namespace AngeliaFramework {
 
 		// Random
 		public static int RandomInt (int min = int.MinValue, int max = int.MaxValue) => GlobalRandom.Next(min, max);
-
-
+		public static float RandomFloat01 () => (float)GlobalRandom.NextDouble();
+		public static double RandomDouble01 () => GlobalRandom.NextDouble();
 		public static Color32 RandomColor (int minH = 0, int maxH = 360, int minS = 0, int maxS = 100, int minV = 0, int maxV = 100, int minA = 0, int maxA = 255) {
 			var result = Color.HSVToRGB(
 				RandomInt(minH, maxH) / 360f,

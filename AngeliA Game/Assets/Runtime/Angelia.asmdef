@@ -1,9 +1,8 @@
 {
-    "name": "Runtime.Angelia",
+    "name": "Runtime.AngeliaGame",
     "rootNamespace": "AngeliaGame",
     "references": [
-        "Runtime.AngeliaFramework",
-        "Runtime.AngeliaGeneral"
+        "Runtime.AngeliaFramework"
     ],
     "includePlatforms": [
         "Android",

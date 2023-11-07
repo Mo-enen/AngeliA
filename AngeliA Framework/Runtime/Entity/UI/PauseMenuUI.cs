@@ -74,6 +74,7 @@ namespace AngeliaFramework {
 			$"UI.GameKey.{Gamekey.Start}".AngeHash(),
 			$"UI.GameKey.{Gamekey.Select}".AngeHash(),
 		};
+		private readonly string[] SLOT_NAMES = { };
 
 		// Data
 		private static PauseMenuUI Instance = null;
@@ -82,7 +83,6 @@ namespace AngeliaFramework {
 		private readonly IntToString MusicVolumeCache = new();
 		private readonly IntToString SoundVolumeCache = new();
 		private readonly IntToString FramerateCache = new();
-		private readonly IntToString SaveSlotIndexCache = new();
 		private readonly CellContent KeySetterLabel = new();
 		private MenuMode Mode = MenuMode.Pause;
 		private MenuMode RequireMode = MenuMode.Pause;
@@ -100,7 +100,13 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		public PauseMenuUI () => Instance = this;
+		public PauseMenuUI () {
+			Instance = this;
+			SLOT_NAMES = new string[AngePath.SAVE_SLOT_COUNT];
+			for (int i = 0; i < AngePath.SAVE_SLOT_COUNT; i++) {
+				SLOT_NAMES[i] = ((char)(i + 'A')).ToString();
+			}
+		}
 
 
 		[OnGameTryingToQuit]
@@ -352,8 +358,8 @@ namespace AngeliaFramework {
 			int settedSaveSlot = RequireNewSaveSlot < 0 ? AngePath.CurrentSaveSlot : RequireNewSaveSlot;
 			if (DrawArrowItem(
 				Language.Get(MENU_SAVE_SLOT, "Save Slot"),
-				CellContent.Get(SaveSlotIndexCache.GetString((char)(settedSaveSlot + 'A'))),
-				settedSaveSlot > 0, settedSaveSlot < AngePath.SAVE_SLOT_COUNT, out delta)
+				CellContent.Get(SLOT_NAMES[settedSaveSlot]),
+				settedSaveSlot > 0, settedSaveSlot < AngePath.SAVE_SLOT_COUNT - 1, out delta)
 			) {
 				int newIndex = settedSaveSlot + delta;
 				newIndex = newIndex.Clamp(0, AngePath.SAVE_SLOT_COUNT - 1);

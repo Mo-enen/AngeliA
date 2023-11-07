@@ -23,8 +23,8 @@ namespace AngeliaFramework.Editor {
 		}
 		string Title { get; }
 		string[] Paths { get; }
-		string IgnoreFolders { get; } // Use '\n' to split
-		string IgnoreFiles { get; } // Use '\n' to split
+		string IgnoreFolders => ""; // Use '\n' to split
+		string IgnoreFiles => ""; // Use '\n' to split
 		SearchPattern[] SearchPatterns { get; }
 		int Order { get; }
 		int Column { get => 1; }
@@ -330,12 +330,13 @@ namespace AngeliaFramework.Editor {
 					// Ignores
 					var ignoreFolder = new HashSet<string>();
 					var ignoreFile = new HashSet<string>();
+					var ignorePath = new HashSet<string>();
 					foreach (var ig in obj.IgnoreFolders.Split('\n')) ignoreFolder.TryAdd(ig);
 					foreach (var ig in obj.IgnoreFiles.Split('\n')) ignoreFile.TryAdd(ig);
 					// Scripts
 					var scripts = new List<Item>();
 					foreach (var path in obj.Paths) {
-						LoadScripts(scripts, path, ignoreFolder, ignoreFile, obj.SearchPatterns, obj.GetFileName, obj.GetFolderName);
+						LoadScripts(scripts, path, ignoreFolder, ignoreFile, ignorePath, obj.SearchPatterns, obj.GetFileName, obj.GetFolderName);
 					}
 					// Add
 					if (scripts.Count(_item => _item.IsFile) > 0) {
@@ -377,6 +378,7 @@ namespace AngeliaFramework.Editor {
 				List<Item> scripts, string root,
 				HashSet<string> ignoreFolder,
 				HashSet<string> ignoreFile,
+				HashSet<string> ignorePath,
 				IScriptHubConfig.SearchPattern[] searchPats,
 				System.Func<string, string> getFileName,
 				System.Func<string, string> getFolderName
@@ -393,6 +395,7 @@ namespace AngeliaFramework.Editor {
 				void LoadAll (string folderFullPath, int depth, bool addFolderTags, params string[] search) {
 					string folderName = Util.GetNameWithoutExtension(folderFullPath);
 					if (ignoreFolder.Contains(folderName)) return;
+					if (ignorePath.Contains(Util.FixPath(folderFullPath))) return;
 					if (addFolderTags) {
 						if (scripts.Count == 0 || scripts[^1].IsFile) {
 							scripts.Add(new(getFolderName(folderName), null, folderFullPath, false));
@@ -405,6 +408,7 @@ namespace AngeliaFramework.Editor {
 					files.Sort((a, b) => a.Name.CompareTo(b.Name));
 					foreach (var file in files) {
 						if (ignoreFile.Contains(Util.GetNameWithExtension(file.FullName))) continue;
+						if (ignorePath.Contains(Util.FixPath(file.FullName))) continue;
 						string path = $"{root}/{file.FullName[fullRoot.Length..]}";
 						scripts.Add(new(
 							Util.GetDisplayName(getFileName(Util.GetNameWithoutExtension(path))),

@@ -7,7 +7,7 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.MapEditorGroup("Platform")]
-	public class eSnakePath : IMapEditorItem { }
+	public class SnakePath : IMapEditorItem { }
 
 
 
@@ -15,7 +15,7 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int PATH_ID = typeof(eSnakePath).AngeHash();
+		private static readonly int PATH_ID = typeof(SnakePath).AngeHash();
 
 		// Api
 		public abstract int EndBreakDuration { get; }

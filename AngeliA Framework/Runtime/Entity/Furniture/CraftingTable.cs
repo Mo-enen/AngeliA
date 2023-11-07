@@ -380,9 +380,8 @@ namespace AngeliaFramework {
 	public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 
 
-		[OnGameInitialize(64)]
-		public static void AfterGameInitialize () {
-			int invID = typeof(CraftingTable).AngeHash();
+		public CraftingTable () {
+			int invID = GetType().AngeHash();
 			const int TARGET_COUNT = 4;
 			if (Inventory.HasInventory(invID)) {
 				int iCount = Inventory.GetInventoryCapacity(invID);

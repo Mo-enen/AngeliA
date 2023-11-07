@@ -11,14 +11,6 @@
         "com.unity.modules.imageconversion": "1.0.0"
       }
     },
-    "com.moenengames.angeliageneral": {
-      "version": "file:C:/Data/Unity/AngeliA/AngeliA General",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {
-        "com.moenengames.angeliaframework": "1.0.0"
-      }
-    },
     "com.mukaschultze.fullscreeneditor": {
       "version": "file:C:/Data/Unity/Fullscreen",
       "depth": 0,

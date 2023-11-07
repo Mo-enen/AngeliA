@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using UnityEngine;
 
@@ -85,6 +86,9 @@ namespace AngeliaFramework {
 			}
 
 			LoadUnlockDataFromFile();
+			CombinationPool.Clear();
+			LoadCombinationFromFile();
+			LoadCombinationFromCode();
 		}
 
 
@@ -101,13 +105,9 @@ namespace AngeliaFramework {
 		[OnSlotChanged]
 		internal static void OnSlotChanged () {
 			LoadUnlockDataFromFile();
+			CombinationPool.Clear();
 			LoadCombinationFromFile();
-		}
-
-
-		[OnMapChannelChanged]
-		internal static void OnMapChannelChanged (MapChannel _) {
-			LoadCombinationFromFile();
+			LoadCombinationFromCode();
 		}
 
 
@@ -149,87 +149,7 @@ namespace AngeliaFramework {
 
 
 		// Combination
-		public static void LoadCombinationFromFile () {
-			CombinationPool.Clear();
-			string filePath = Util.CombinePaths(AngePath.MetaRoot, COMBINATION_FILE_NAME);
-			var builder = new StringBuilder();
-			foreach (string line in Util.ForAllLines(filePath)) {
-				if (string.IsNullOrEmpty(line)) continue;
-				builder.Clear();
-				var com = Vector4Int.zero;
-				int appendingComIndex = 0;
-				bool appendingResultCount = false;
-				int resultID = 0;
-				int resultCount = 1;
-				foreach (var c in line) {
-					if (c == ' ') continue;
-					if (c == '+' || c == '=') {
-						if (builder.Length > 0 && appendingComIndex < 4) {
-							com[appendingComIndex] = builder.ToString().AngeHash();
-							appendingComIndex++;
-						}
-						if (c == '=') {
-							appendingResultCount = true;
-						}
-						builder.Clear();
-					} else {
-						if (appendingResultCount && !char.IsDigit(c)) {
-							appendingResultCount = false;
-							if (builder.Length > 0 && int.TryParse(builder.ToString(), out int _resultCount)) {
-								resultCount = _resultCount;
-							}
-							builder.Clear();
-						}
-						if (c != ' ') builder.Append(c);
-					}
-				}
-
-				// Result
-				if (builder.Length > 0) {
-					resultID = builder.ToString().AngeHash();
-				}
-
-				// Add to Pool
-				if (com != Vector4Int.zero && resultCount >= 1 && resultID != 0) {
-					AddCombination(com.x, com.y, com.z, com.w, resultID, resultCount);
-				}
-
-			}
-		}
-
-
-		public static void SaveCombinationToFile () {
-			var builder = new StringBuilder();
-			foreach (var (com, result) in CombinationPool) {
-				if (
-					result.x == 0 || result.y <= 0 ||
-					!ItemPool.TryGetValue(result.x, out var resultData)
-				) continue;
-				// Com
-				bool hasAppendItem = false;
-				for (int i = 0; i < 4; i++) {
-					int id = com[i];
-					if (id == 0 || !ItemPool.TryGetValue(id, out var itemData)) continue;
-					if (hasAppendItem) builder.Append(" + ");
-					builder.Append(itemData.Item.GetType().AngeName());
-					hasAppendItem = true;
-				}
-				// Result
-				builder.Append(" = ");
-				if (result.y > 1) {
-					builder.Append(result.y);
-					builder.Append(' ');
-				}
-				builder.Append(resultData.Item.GetType().AngeName());
-				// Final
-				builder.Append('\n');
-			}
-			string filePath = Util.CombinePaths(AngePath.MetaRoot, COMBINATION_FILE_NAME);
-			Util.TextToFile(builder.ToString(), filePath);
-		}
-
-
-		public static void AddCombination (int item0, int item1, int item2, int item3, int result, int resultCount = 1) {
+		public static void AddCombination (int item0, int item1, int item2, int item3, int result, int resultCount) {
 			if (result == 0 || resultCount <= 0) {
 #if UNITY_EDITOR
 				if (result == 0) Debug.LogWarning("Result of combination should not be zero.");
@@ -390,6 +310,81 @@ namespace AngeliaFramework {
 			}
 			fs.Close();
 			fs.Dispose();
+		}
+
+
+		// Combination
+		private static void LoadCombinationFromFile () {
+			string filePath = Util.CombinePaths(AngePath.SaveSlotRoot, COMBINATION_FILE_NAME);
+			if (!Util.FileExists(filePath)) return;
+			var builder = new StringBuilder();
+			foreach (string line in Util.ForAllLines(filePath)) {
+				if (string.IsNullOrEmpty(line)) continue;
+				if (line.StartsWith('#')) continue;
+				builder.Clear();
+				var com = Vector4Int.zero;
+				int appendingComIndex = 0;
+				bool appendingResultCount = false;
+				int resultID = 0;
+				int resultCount = 1;
+				foreach (var c in line) {
+					if (c == ' ') continue;
+					if (c == '+' || c == '=') {
+						if (builder.Length > 0 && appendingComIndex < 4) {
+							com[appendingComIndex] = builder.ToString().AngeHash();
+							appendingComIndex++;
+						}
+						if (c == '=') {
+							appendingResultCount = true;
+						}
+						builder.Clear();
+					} else {
+						if (appendingResultCount && !char.IsDigit(c)) {
+							appendingResultCount = false;
+							if (builder.Length > 0 && int.TryParse(builder.ToString(), out int _resultCount)) {
+								resultCount = _resultCount;
+							}
+							builder.Clear();
+						}
+						if (c != ' ') builder.Append(c);
+					}
+				}
+
+				// Result
+				if (builder.Length > 0) {
+					resultID = builder.ToString().AngeHash();
+				}
+
+				// Add to Pool
+				if (com != Vector4Int.zero && resultCount >= 1 && resultID != 0) {
+					AddCombination(com.x, com.y, com.z, com.w, resultID, resultCount);
+				}
+
+			}
+		}
+
+
+		private static void LoadCombinationFromCode () {
+
+			// Get Ignore
+			var ignore = new HashSet<int>();
+			foreach (var (_, result) in CombinationPool) {
+				ignore.TryAdd(result.x);
+			}
+
+			// Fill Pool from Attribute
+			foreach (var type in typeof(Item).AllChildClass()) {
+				int resultID = type.AngeHash();
+				if (ignore.Contains(resultID)) continue;
+				var iComs = type.GetCustomAttributes<EntityAttribute.ItemCombinationAttribute>(false);
+				if (iComs == null) continue;
+				foreach (var com in iComs) {
+					if (com.Count <= 0) continue;
+					if (com.ItemA == 0 && com.ItemB == 0 && com.ItemC == 0 && com.ItemD == 0) continue;
+					AddCombination(com.ItemA, com.ItemB, com.ItemC, com.ItemD, resultID, com.Count);
+				}
+			}
+
 		}
 
 
