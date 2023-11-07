@@ -50,7 +50,7 @@ namespace AngeliaFramework.Editor {
 			new ("*.cs", "", true),
 		};
 		public int Order => -1024;
-		public int Column => 3;
+		public int Column => 1;
 		public string GetFolderName (string name) {
 			if (name.Equals("Editor")) {
 				name = "zEditor";
@@ -74,7 +74,7 @@ namespace AngeliaFramework.Editor {
 			new ("*.cs", "", true),
 		};
 		public int Order => -1024;
-		public int Column => 2;
+		public int Column => 3;
 	}
 
 

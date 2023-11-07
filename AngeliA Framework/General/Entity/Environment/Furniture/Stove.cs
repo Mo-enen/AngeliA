@@ -24,4 +24,10 @@ namespace AngeliaFramework {
 	public class StoveCabinetC : StoveCabinet { }
 	public class StoveCabinetD : StoveCabinet { }
 
+
+	public abstract class StoveCabinet : OpenableFurniture {
+
+
+
+	}
 }
