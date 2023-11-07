@@ -14,9 +14,15 @@ namespace AngeliaFramework {
 
 
 		[OnGameUpdateLater]
-		public static void Update () {
-			int len = Stage.EntityCounts[Const.ENTITY_LAYER_GAME];
-			var entities = Stage.Entities[Const.ENTITY_LAYER_GAME];
+		public static void OnGameUpdateLater () {
+			PerformDamageCheck(Const.ENTITY_LAYER_GAME);
+			PerformDamageCheck(Const.ENTITY_LAYER_CHARACTER);
+		}
+
+
+		private static void PerformDamageCheck (int entityLayer) {
+			int len = Stage.EntityCounts[entityLayer];
+			var entities = Stage.Entities[entityLayer];
 			for (int i = 0; i < len; i++) {
 				var entity = entities[i];
 				if (entity is not IDamageReceiver receiver) continue;
