@@ -181,10 +181,10 @@ namespace AngeliaFramework {
 			}
 
 			// Door
-			if (EnteringDoor) {
+			if (Teleporting) {
 				LastRequireBounceFrame = int.MinValue;
 				CellRenderer.DrawAnimation(
-					EnterDoorEndFrame > 0 ? sheet.DoorFront : sheet.DoorBack,
+					TeleportEndFrame > 0 ? sheet.DoorFront : sheet.DoorBack,
 					X, Y, 500, 0, 0,
 					FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 					Const.ORIGINAL_SIZE,

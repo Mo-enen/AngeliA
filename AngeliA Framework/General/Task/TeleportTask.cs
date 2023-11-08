@@ -52,7 +52,7 @@ namespace AngeliaFramework {
 				}
 			}
 
-			// Portal Effect
+			// Character Portal Effect
 			if (UsePortalEffect && LocalFrame < WaitDuration && CurrentTeleportEntity is Character character) {
 				float lerp01 = (float)LocalFrame / WaitDuration;
 				int centerX = TeleportFrom.x;
@@ -78,11 +78,11 @@ namespace AngeliaFramework {
 			// Add Squad Effect
 			if (LocalFrame == WaitDuration + 1 && useParallax) {
 				const int PARA = Const.SQUAD_BEHIND_PARALLAX;
-				var effect = TeleportEffect.Instance;
+				var effect = TeleportMapEffect.Instance;
 				effect.Duration = Duration - WaitDuration;
 				effect.Scale = Front ? 1000f / PARA : PARA / 1000f;
 				effect.ToBehind = Front;
-				CellRenderer.RemoveEffect<TeleportEffect>();
+				CellRenderer.RemoveEffect<TeleportMapEffect>();
 				CellRenderer.AddEffect(effect);
 			}
 
@@ -145,9 +145,9 @@ namespace AngeliaFramework {
 
 
 
-	public class TeleportEffect : CellEffect {
+	public class TeleportMapEffect : CellEffect {
 
-		public static readonly TeleportEffect Instance = new();
+		public static readonly TeleportMapEffect Instance = new();
 
 		public float Scale { get; set; } = 1f;
 		public bool ToBehind { get; set; } = true;

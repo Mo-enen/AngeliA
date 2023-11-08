@@ -16,7 +16,7 @@ namespace AngeliaFramework {
 		// Data
 		private static int GlobalShift = 0;
 
-
+		
 		public override void OnActivated () {
 			base.OnActivated();
 			Width = 0;

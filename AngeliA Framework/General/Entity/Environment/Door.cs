@@ -28,11 +28,6 @@ namespace AngeliaFramework {
 
 		// Api
 		protected virtual bool IsFrontDoor => false;
-		protected virtual bool TouchToEnter => false;
-		protected virtual bool UsePortalEffect => false;
-		protected virtual Vector3Int TargetGlobalPosition => new(
-			X + Width / 2, Y, IsFrontDoor ? Stage.ViewZ - 1 : Stage.ViewZ + 1
-		);
 
 		// Data
 		private static bool InputLock = false;
@@ -60,16 +55,13 @@ namespace AngeliaFramework {
 			var player = Player.Selecting;
 			PlayerOverlaps =
 				player != null &&
-				!player.EnteringDoor &&
-				(TouchToEnter || player.IsGrounded) &&
+				!player.Teleporting &&
+				player.IsGrounded &&
 				player.Rect.Overlaps(Rect.Shrink(OVERLAP_SHRINK, OVERLAP_SHRINK, 0, 0));
 
 			// Invoke
 			if (!InputLock && !player.LockingInput && PlayerOverlaps) {
-				if (TouchToEnter || FrameInput.GameKeyHolding(Gamekey.Up)) {
-					if (TouchToEnter) {
-						Stage.MarkAsGlobalAntiSpawn(this);
-					}
+				if (FrameInput.GameKeyHolding(Gamekey.Up)) {
 					Invoke(player);
 				}
 				ControlHintUI.AddHint(Gamekey.Up, Language.Get(HINT_ENTER, "Entre"));
@@ -104,25 +96,20 @@ namespace AngeliaFramework {
 		public virtual bool Invoke (Player player) {
 			if (player == null || FrameTask.HasTask()) return false;
 			int fromX = X + (Width - player.Width) / 2 - player.OffsetX;
-			if (!UsePortalEffect) {
-				player.X = fromX;
-				player.Y = Y;
-			}
+			player.X = fromX;
+			player.Y = Y;
 			player.Stop();
 			var task = TeleportTask.Teleport(
 				fromX, Y + player.Height / 2,
-				TargetGlobalPosition.x, TargetGlobalPosition.y, TargetGlobalPosition.z
+				X + Width / 2, Y, IsFrontDoor ? Stage.ViewZ - 1 : Stage.ViewZ + 1
 			);
 			if (task != null) {
 				task.TeleportEntity = player;
-				task.UsePortalEffect = UsePortalEffect;
-				if (UsePortalEffect) {
-					task.WaitDuration = 30;
-					task.Duration = 60;
-					task.UseVignette = true;
-				}
+				task.UsePortalEffect = false;
 			}
-			player.EnterDoor(task.Duration, IsFrontDoor);
+			player.EnterTeleportState(task.Duration, IsFrontDoor, false);
+			player.VelocityX = 0;
+			player.VelocityY = 0;
 			Open = true;
 			InputLock = true;
 			return true;

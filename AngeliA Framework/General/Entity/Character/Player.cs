@@ -63,7 +63,8 @@ namespace AngeliaFramework {
 			!LockingInput &&
 			FrameInput.GameKeyHolding(Gamekey.Action);
 		public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
-		public bool LockingInput { get; private set; } = false;
+		public bool LockingInput => Game.GlobalFrame <= LockInputFrame;
+		public int LockInputFrame { get; private set; } = -1;
 		public bool RestartOnFullAsleep { get; set; } = false;
 		public int AimViewX { get; private set; } = 0;
 		public int AimViewY { get; private set; } = 0;
@@ -118,7 +119,7 @@ namespace AngeliaFramework {
 		public override void OnActivated () {
 			base.OnActivated();
 			PrevZ = Stage.ViewZ;
-			LockingInput = false;
+			LockInputFrame = -1;
 			TargetActionEntity = null;
 		}
 
@@ -164,6 +165,12 @@ namespace AngeliaFramework {
 
 					bool taskFree = !FrameTask.HasTask();
 
+					if (taskFree) {
+						if (PlayerMenuUI.ShowingUI || PlayerQuickMenuUI.ShowingUI) {
+							LockInput(0);
+						}
+					}
+
 					if (taskFree && !LockingInput) {
 
 						// Move
@@ -184,7 +191,6 @@ namespace AngeliaFramework {
 					}
 
 					if (taskFree) {
-						LockingInput = PlayerMenuUI.ShowingUI || PlayerQuickMenuUI.ShowingUI;
 						Update_Action();
 						Update_Attack();
 						Update_InventoryUI();
@@ -315,7 +321,9 @@ namespace AngeliaFramework {
 				}
 			}
 
-			LockingInput = LockingInput || (TargetActionEntity != null && TargetActionEntity.LockInput);
+			if (!LockingInput && TargetActionEntity != null && TargetActionEntity.LockInput) {
+				LockInput(0);
+			}
 
 		}
 
@@ -629,6 +637,9 @@ namespace AngeliaFramework {
 			EquipmentType.Jewelry => JewelryAvailable,
 			_ => false,
 		};
+
+
+		public void LockInput (int duration = 1) => LockInputFrame = Game.GlobalFrame + duration;
 
 
 		#endregion

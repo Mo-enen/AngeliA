@@ -42,13 +42,6 @@ namespace AngeliaFramework {
 		public int IntendedX { get; private set; } = 0;
 		public int IntendedY { get; private set; } = 0;
 		public int CurrentJumpCount { get; private set; } = 0;
-		//public int GrowingHeight =>
-		//	CharacterHeight < 90 ? MovementHeight / 2 :
-		//	CharacterHeight < 140 ? MovementHeight * 7 / 10 :
-		//	CharacterHeight < 175 ? MovementHeight :
-		//	CharacterHeight < 190 ? MovementHeight * 13 / 10 :
-		//	CharacterHeight < 220 ? MovementHeight * 3 / 2 :
-		//	MovementHeight * 9 / 5;
 		public int GrowingHeight => MovementHeight * CharacterHeight / 160;
 		public bool FacingRight {
 			get => LockFacingOnAttack && IsAttacking ? AttackStartFacingRight : _FacingRight;
@@ -88,6 +81,9 @@ namespace AngeliaFramework {
 		public bool IsGrabFlipping => IsGrabFlippingUp || IsGrabFlippingDown;
 		public bool IsGrabFlippingUp => Game.GlobalFrame < LastGrabFlipUpFrame + Mathf.Max(GrabFlipThroughDuration, 1);
 		public bool IsGrabFlippingDown => Game.GlobalFrame < LastGrabFlipDownFrame + Mathf.Max(GrabFlipThroughDuration, 1);
+		public bool IsMoving => IntendedX != 0;
+		public bool IsWalking => IntendedX != 0 && !ReadyForRun;
+		public bool IsRunning => IntendedX != 0 && ReadyForRun;
 		public bool IsDashing { get; private set; } = false;
 		public bool IsRushing { get; private set; } = false;
 		public bool IsSquatting { get; private set; } = false;
@@ -313,7 +309,7 @@ namespace AngeliaFramework {
 			}
 
 			// Facing Front
-			FacingFront = !IsClimbing && (!EnteringDoor || EnterDoorEndFrame > 0);
+			FacingFront = !IsClimbing && (!Teleporting || TeleportEndFrame > 0);
 
 			// Physics
 			int width = InWater ? SwimWidth : MovementWidth;
@@ -826,10 +822,10 @@ namespace AngeliaFramework {
 			IsGrabbingSide ? CharacterMovementState.GrabSide :
 			IsRushing ? CharacterMovementState.Rush :
 			IsDashing ? CharacterMovementState.Dash :
-			IsSquatting ? (IntendedX != 0 ? CharacterMovementState.SquatMove : CharacterMovementState.SquatIdle) :
-			InWater && !IsGrounded ? (IntendedX != 0 ? CharacterMovementState.SwimMove : CharacterMovementState.SwimIdle) :
+			IsSquatting ? (IsMoving ? CharacterMovementState.SquatMove : CharacterMovementState.SquatIdle) :
+			InWater && !IsGrounded ? (IsMoving ? CharacterMovementState.SwimMove : CharacterMovementState.SwimIdle) :
 			!IsGrounded && !InWater && !InSand && !IsClimbing ? (VelocityY > 0 ? CharacterMovementState.JumpUp : CharacterMovementState.JumpDown) :
-			IntendedX != 0 ? ReadyForRun && !IsInsideGround ? CharacterMovementState.Run : CharacterMovementState.Walk :
+			IsMoving ? ReadyForRun && !IsInsideGround ? CharacterMovementState.Run : CharacterMovementState.Walk :
 			CharacterMovementState.Idle;
 
 
@@ -852,7 +848,7 @@ namespace AngeliaFramework {
 			)) return true;
 
 			// Overlap Check
-			return CellPhysics.Overlap(Const.MASK_LEVEL, rect, null);
+			return CellPhysics.Overlap(Const.MASK_MAP, rect, null);
 		}
 
 

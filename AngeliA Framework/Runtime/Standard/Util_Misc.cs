@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Profiling;
 
 
 namespace AngeliaFramework {
@@ -85,6 +86,7 @@ namespace AngeliaFramework {
 		}
 
 
+		[IgnoredByDeepProfiler]
 		public static void QuickSort<T> (T[] cells, int min, int max, IComparer<T> comparer) where T : class {
 			int lo = min;
 			int hi = max;

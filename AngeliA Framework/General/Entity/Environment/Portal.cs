@@ -8,22 +8,14 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
-	public class PortalFront : Portal {
-		private static readonly int CIRCLE_CODE = "PortalCircle".AngeHash();
-		private static readonly int FLAME_CODE = "PortalFlame".AngeHash();
-		protected override int CircleCode => CIRCLE_CODE;
-		protected override int FlameCode => FLAME_CODE;
-		protected override bool IsFrontDoor => true;
+	public class PortalFront : CircleFlamePortal {
+		protected override Vector3Int TargetGlobalPosition => new(X + Width / 2, Y, Stage.ViewZ - 1);
 	}
 
 
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
-	public class PortalBack : Portal {
-		private static readonly int CIRCLE_CODE = "PortalCircle".AngeHash();
-		private static readonly int FLAME_CODE = "PortalFlame".AngeHash();
-		protected override int CircleCode => CIRCLE_CODE;
-		protected override int FlameCode => FLAME_CODE;
-		protected override bool IsFrontDoor => false;
+	public class PortalBack : CircleFlamePortal {
+		protected override Vector3Int TargetGlobalPosition => new(X + Width / 2, Y, Stage.ViewZ + 1);
 	}
 
 
@@ -31,15 +23,10 @@ namespace AngeliaFramework {
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.DontSpawnFromWorld]
-	public class CheckPointPortal : Portal {
+	public class CheckPointPortal : CircleFlamePortal {
 
 		public static readonly int TYPE_ID = typeof(CheckPointPortal).AngeHash();
-		private static readonly int CIRCLE_CODE = "CheckPointPortalCircle".AngeHash();
-		private static readonly int FLAME_CODE = "CheckPointPortalFlame".AngeHash();
-		protected override int CircleCode => CIRCLE_CODE;
-		protected override int FlameCode => FLAME_CODE;
 		protected override Vector3Int TargetGlobalPosition => (CheckPoint.TurnBackUnitPosition ?? default).ToGlobal() + new Vector3Int(Const.HALF, 0, 0);
-		protected override bool IsFrontDoor => TargetGlobalPosition.z <= Stage.ViewZ;
 		private int InvokeFrame = -1;
 
 
@@ -75,14 +62,12 @@ namespace AngeliaFramework {
 	}
 
 
-	public abstract class Portal : Door {
-
-		protected abstract int CircleCode { get; }
-		protected abstract int FlameCode { get; }
-		protected override bool TouchToEnter => true;
-		protected override bool UsePortalEffect => true;
+	public abstract class CircleFlamePortal : Portal {
+		private static readonly int CIRCLE_CODE = "CheckPointPortalCircle".AngeHash();
+		private static readonly int FLAME_CODE = "CheckPointPortalFlame".AngeHash();
+		protected virtual int CircleCode => CIRCLE_CODE;
+		protected virtual int FlameCode => FLAME_CODE;
 		protected virtual int CircleSize => Const.CEL * 3 / 2;
-
 		public override void OnActivated () {
 			base.OnActivated();
 			int size = CircleSize;
@@ -91,7 +76,6 @@ namespace AngeliaFramework {
 			Width = size;
 			Height = size;
 		}
-
 		public override void FrameUpdate () {
 
 			int centerX = X + Width / 2;
@@ -103,7 +87,6 @@ namespace AngeliaFramework {
 				const int CIRCLE_DURATION = 24;
 				const int CIRCLE_COUNT = 4;
 				int circleFrame = Game.GlobalFrame % CIRCLE_DURATION;
-				bool revertZ = IsFrontDoor != FrameTask.IsTasking<TeleportTask>();
 				for (int i = 0; i < CIRCLE_COUNT; i++) {
 					int size = Util.RemapUnclamped(
 						0, CIRCLE_DURATION,
@@ -112,8 +95,8 @@ namespace AngeliaFramework {
 						circleFrame
 					);
 					size = size * scale / 1000;
-					int rgbA = Util.RemapUnclamped(0, 3, 255, 128, IsFrontDoor ? i : CIRCLE_COUNT - i);
-					int rgbB = Util.RemapUnclamped(0, 3, 255, 128, IsFrontDoor ? i + 1 : CIRCLE_COUNT - i - 1);
+					int rgbA = Util.RemapUnclamped(0, 3, 255, 128, CIRCLE_COUNT - i);
+					int rgbB = Util.RemapUnclamped(0, 3, 255, 128, CIRCLE_COUNT - i - 1);
 					byte rgb = (byte)Mathf.Lerp(rgbA, rgbB, (float)circleFrame / CIRCLE_DURATION);
 					var tint = new Color32(
 						rgb, rgb, rgb,
@@ -123,7 +106,7 @@ namespace AngeliaFramework {
 						circle.GlobalID, centerX, centerY,
 						500, 500, 0,
 						size, size,
-						tint, (revertZ ? -circle.SortingZ : circle.SortingZ) + i
+						tint, circle.SortingZ + i
 					);
 				}
 			}
@@ -144,7 +127,7 @@ namespace AngeliaFramework {
 						flameFrame.PingPong(FLAME_DURATION / 2)
 					);
 					size = size * scale / 1000;
-					var tint = IsFrontDoor ? Const.WHITE : Const.GREY_128;
+					var tint = Const.WHITE;
 					tint.a = (byte)Util.RemapUnclamped(
 						0, FLAME_DURATION / 2,
 						255, 128,
@@ -158,6 +141,52 @@ namespace AngeliaFramework {
 					);
 				}
 			}
+		}
+	}
+
+
+	public abstract class Portal : Entity {
+
+		protected abstract Vector3Int TargetGlobalPosition { get; }
+
+		public override void FillPhysics () {
+			base.FillPhysics();
+			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
+		}
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
+			// Invoke
+			var player = Player.Selecting;
+			if (
+				player != null &&
+				!player.LockingInput &&
+				!player.Teleporting &&
+				player.Rect.Overlaps(Rect)
+			) {
+				Invoke(player);
+			}
+		}
+		public virtual bool Invoke (Player player) {
+			if (player == null || FrameTask.HasTask()) return false;
+			int fromX = X + (Width - player.Width) / 2 - player.OffsetX;
+			player.X = fromX;
+			player.Y = Y;
+			player.Stop();
+			var task = TeleportTask.Teleport(
+				fromX, Y + player.Height / 2,
+				TargetGlobalPosition.x, TargetGlobalPosition.y, TargetGlobalPosition.z
+			);
+			if (task != null) {
+				task.TeleportEntity = player;
+				task.UsePortalEffect = true;
+				task.WaitDuration = 30;
+				task.Duration = 60;
+				task.UseVignette = true;
+			}
+			player.EnterTeleportState(task.Duration, Stage.ViewZ > TargetGlobalPosition.z, true);
+			player.VelocityX = 0;
+			player.VelocityY = 0;
+			return true;
 		}
 
 	}

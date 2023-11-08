@@ -53,6 +53,7 @@ namespace AngeliaFramework {
 		// Data
 		private int IgnoreGroundCheckFrame = int.MinValue;
 		private int IgnoreGravityFrame = int.MinValue;
+		private int IgnorePhysicsFrame = -1;
 		private int PrevX = 0;
 		private int PrevY = 0;
 
@@ -102,8 +103,9 @@ namespace AngeliaFramework {
 			InSand = CellPhysics.Overlap(Const.MASK_MAP & CollisionMask, rect, null, OperationMode.TriggerOnly, Const.QUICKSAND_TAG);
 			IsInsideGround = InsideGroundCheck();
 
-			if (!PhysicsEnable) {
+			if (!PhysicsEnable || Game.GlobalFrame <= IgnorePhysicsFrame) {
 				IsGrounded = GroundedCheck();
+				if (DestroyWhenInsideGround) Active = false;
 				return;
 			}
 
@@ -230,7 +232,7 @@ namespace AngeliaFramework {
 
 		public void PerformMove (int speedX, int speedY, bool ignoreOneway = false, bool ignoreLevel = false) {
 
-			if (!PhysicsEnable) return;
+			if (!PhysicsEnable || Game.GlobalFrame <= IgnorePhysicsFrame) return;
 			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);
 
 			int speedScale = InWater ? WATER_SPEED_LOSE : 1000;
@@ -268,7 +270,10 @@ namespace AngeliaFramework {
 		}
 
 
-		public void IgnoreGravity (int frame = 0) => IgnoreGravityFrame = Game.GlobalFrame + frame;
+		public void IgnoreGravity (int duration = 0) => IgnoreGravityFrame = Game.GlobalFrame + duration;
+
+
+		public void IgnorePhysics (int duration = 1) => IgnorePhysicsFrame = Game.GlobalFrame + duration;
 
 
 		public virtual void Push (int speedX) => PerformMove(speedX, 0);

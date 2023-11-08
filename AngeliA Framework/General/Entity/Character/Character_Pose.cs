@@ -116,6 +116,8 @@ namespace AngeliaFramework {
 		// Data
 		private static readonly Dictionary<int, BodyPartConfig> BodyPartConfigPool = new();
 		private BodyPart[] BodyParts = null;
+		private CharacterPoseAnimationType LockedAnimationType = CharacterPoseAnimationType.Idle;
+		private int LockedAnimationTypeFrame = int.MinValue;
 
 
 		#endregion
@@ -251,43 +253,6 @@ namespace AngeliaFramework {
 			LowerLegR = BodyParts[14];
 			FootL = BodyParts[15];
 			FootR = BodyParts[16];
-		}
-
-
-		private void RenderUpdate_AnimationType () {
-			var poseType = GetCurrentPoseAnimationType(this);
-			if (poseType != AnimatedPoseType) {
-				CurrentAnimationFrame = 0;
-				AnimatedPoseType = poseType;
-			}
-			// Func
-			static CharacterPoseAnimationType GetCurrentPoseAnimationType (Character character) {
-				if (character.EnteringDoor) return CharacterPoseAnimationType.Idle;
-				if (character.TakingDamage) return CharacterPoseAnimationType.TakingDamage;
-				if (character.CharacterState == CharacterState.Sleep) return CharacterPoseAnimationType.Sleep;
-				if (character.CharacterState == CharacterState.PassOut) return CharacterPoseAnimationType.PassOut;
-				if (character.IsRolling) return CharacterPoseAnimationType.Rolling;
-				return character.MovementState switch {
-					CharacterMovementState.Walk => CharacterPoseAnimationType.Walk,
-					CharacterMovementState.Run => CharacterPoseAnimationType.Run,
-					CharacterMovementState.JumpUp => CharacterPoseAnimationType.JumpUp,
-					CharacterMovementState.JumpDown => CharacterPoseAnimationType.JumpDown,
-					CharacterMovementState.SwimIdle => CharacterPoseAnimationType.SwimIdle,
-					CharacterMovementState.SwimMove => CharacterPoseAnimationType.SwimMove,
-					CharacterMovementState.SquatIdle => CharacterPoseAnimationType.SquatIdle,
-					CharacterMovementState.SquatMove => CharacterPoseAnimationType.SquatMove,
-					CharacterMovementState.Dash => CharacterPoseAnimationType.Dash,
-					CharacterMovementState.Rush => CharacterPoseAnimationType.Rush,
-					CharacterMovementState.Pound => character.SpinOnGroundPound ? CharacterPoseAnimationType.Spin : CharacterPoseAnimationType.Pound,
-					CharacterMovementState.Climb => CharacterPoseAnimationType.Climb,
-					CharacterMovementState.Fly => CharacterPoseAnimationType.Fly,
-					CharacterMovementState.Slide => CharacterPoseAnimationType.Slide,
-					CharacterMovementState.GrabTop => CharacterPoseAnimationType.GrabTop,
-					CharacterMovementState.GrabSide => CharacterPoseAnimationType.GrabSide,
-					CharacterMovementState.GrabFlip => CharacterPoseAnimationType.Rolling,
-					_ => CharacterPoseAnimationType.Idle,
-				};
-			}
 		}
 
 

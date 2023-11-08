@@ -45,7 +45,7 @@ namespace AngeliaFramework {
 		public bool IsPassOut => HealthPoint == 0;
 		public bool IsFullPassOut => HealthPoint == 0 && Game.GlobalFrame > PassOutFrame + 48;
 		public int SleepFrame { get; private set; } = 0;
-		public bool EnteringDoor => Game.GlobalFrame < EnterDoorEndFrame.Abs();
+		public bool Teleporting => Game.GlobalFrame < TeleportEndFrame.Abs();
 		public bool RenderWithSheet { get; private set; } = false;
 		public int CurrentAnimationFrame { get; set; } = 0;
 		public int CurrentRenderingBounce { get; private set; } = 1000;
@@ -67,7 +67,8 @@ namespace AngeliaFramework {
 		private static readonly HashSet<int> RenderWithSheetPool = new();
 		private int PassOutFrame = int.MinValue;
 		private int LastRequireBounceFrame = int.MinValue;
-		private int EnterDoorEndFrame = 0;
+		private int TeleportEndFrame = 0;
+		private bool TeleportWithPortal = false;
 
 
 		#endregion
@@ -109,7 +110,10 @@ namespace AngeliaFramework {
 
 			if (IsEmptyHealth) SetCharacterState(CharacterState.PassOut);
 
-			if (EnteringDoor) return;
+			if (Teleporting) {
+				PhysicsUpdate_AnimationType();
+				return;
+			}
 
 			// Behaviour
 			MovementState = CharacterMovementState.Idle;
@@ -142,43 +146,105 @@ namespace AngeliaFramework {
 			}
 			PhysicsUpdate_Movement_After();
 			PhysicsUpdate_Navigation();
-			RenderUpdate_AnimationType();
+			PhysicsUpdate_AnimationType();
 			base.PhysicsUpdate();
 		}
 
 
-		public override void FrameUpdate () {
+		private void PhysicsUpdate_AnimationType () {
+			var poseType = GetCurrentPoseAnimationType(this);
+			if (poseType != AnimatedPoseType) {
+				CurrentAnimationFrame = 0;
+				AnimatedPoseType = poseType;
+			}
+			// Func
+			static CharacterPoseAnimationType GetCurrentPoseAnimationType (Character character) {
+				if (Game.GlobalFrame <= character.LockedAnimationTypeFrame) return character.LockedAnimationType;
+				if (character.Teleporting) return CharacterPoseAnimationType.Idle;
+				if (character.TakingDamage) return CharacterPoseAnimationType.TakingDamage;
+				if (character.CharacterState == CharacterState.Sleep) return CharacterPoseAnimationType.Sleep;
+				if (character.CharacterState == CharacterState.PassOut) return CharacterPoseAnimationType.PassOut;
+				if (character.IsRolling) return CharacterPoseAnimationType.Rolling;
+				return character.MovementState switch {
+					CharacterMovementState.Walk => CharacterPoseAnimationType.Walk,
+					CharacterMovementState.Run => CharacterPoseAnimationType.Run,
+					CharacterMovementState.JumpUp => CharacterPoseAnimationType.JumpUp,
+					CharacterMovementState.JumpDown => CharacterPoseAnimationType.JumpDown,
+					CharacterMovementState.SwimIdle => CharacterPoseAnimationType.SwimIdle,
+					CharacterMovementState.SwimMove => CharacterPoseAnimationType.SwimMove,
+					CharacterMovementState.SquatIdle => CharacterPoseAnimationType.SquatIdle,
+					CharacterMovementState.SquatMove => CharacterPoseAnimationType.SquatMove,
+					CharacterMovementState.Dash => CharacterPoseAnimationType.Dash,
+					CharacterMovementState.Rush => CharacterPoseAnimationType.Rush,
+					CharacterMovementState.Pound => character.SpinOnGroundPound ? CharacterPoseAnimationType.Spin : CharacterPoseAnimationType.Pound,
+					CharacterMovementState.Climb => CharacterPoseAnimationType.Climb,
+					CharacterMovementState.Fly => CharacterPoseAnimationType.Fly,
+					CharacterMovementState.Slide => CharacterPoseAnimationType.Slide,
+					CharacterMovementState.GrabTop => CharacterPoseAnimationType.GrabTop,
+					CharacterMovementState.GrabSide => CharacterPoseAnimationType.GrabSide,
+					CharacterMovementState.GrabFlip => CharacterPoseAnimationType.Rolling,
+					_ => CharacterPoseAnimationType.Idle,
+				};
+			}
+		}
 
-			// Render Character
+
+		public override void FrameUpdate () {
+			if (FrameUpdate_RenderCharacter()) {
+				FrameUpdate_Particle();
+				FrameUpdate_Inventory();
+				base.FrameUpdate();
+			}
+		}
+
+
+		private bool FrameUpdate_RenderCharacter () {
+
 			bool blinking = IsInvincible && !TakingDamage && (Game.GlobalFrame - InvincibleEndFrame).UMod(8) < 4;
-			if (!blinking) {
-				bool colorFlash = TakingDamage && (Game.GlobalFrame - LastDamageFrame).UMod(8) < 4;
-				if (colorFlash) CellRenderer.SetLayerToColor();
-				int cellIndexStart = CellRenderer.GetUsedCellCount();
-				// Render
-				CurrentRenderingBounce = GetCurrentRenderingBounce();
-				if (RenderWithSheet) {
-					FrameUpdate_SheetRendering();
-				} else {
-					FrameUpdate_PoseRendering();
-				}
-				CurrentAnimationFrame = GrowAnimationFrame(CurrentAnimationFrame);
+			if (blinking) return false;
+
+			bool colorFlash = TakingDamage && (Game.GlobalFrame - LastDamageFrame).UMod(8) < 4;
+			if (colorFlash) CellRenderer.SetLayerToColor();
+			int cellIndexStart = CellRenderer.GetUsedCellCount();
+
+			// Render
+			CurrentRenderingBounce = GetCurrentRenderingBounce();
+			if (RenderWithSheet) {
+				FrameUpdate_SheetRendering();
+			} else {
+				FrameUpdate_PoseRendering();
+			}
+			CurrentAnimationFrame = GrowAnimationFrame(CurrentAnimationFrame);
+
+			// Cell Effect
+			if (
+				(colorFlash || (Teleporting && TeleportWithPortal)) &&
+				CellRenderer.GetCells(out var cells, out int count)
+			) {
 				// Color Flash
-				if (colorFlash && CellRenderer.GetCells(out var cells, out int count)) {
+				if (colorFlash) {
 					for (int i = cellIndexStart; i < count; i++) {
 						var cell = cells[i];
 						cell.Color = Const.WHITE;
-						cell.ScaleFrom(1100, X, Y);
 					}
 				}
-				CellRenderer.SetLayerToDefault();
+				// Portal
+				if (Teleporting && TeleportWithPortal) {
+					for (int i = cellIndexStart; i < count; i++) {
+						var cell = cells[i];
+						cell.ScaleFrom(
+							Util.RemapUnclamped(
+								0, 30, 1000, 0,
+								(Game.GlobalFrame - TeleportEndFrame + 60).PingPong(30)
+							), X, Y + Height / 2
+						);
+					}
+				}
 			}
 
-			// Pipeline
-			FrameUpdate_Particle();
-			FrameUpdate_Inventory();
-
-			base.FrameUpdate();
+			// Final
+			CellRenderer.SetLayerToDefault();
+			return true;
 		}
 
 
@@ -318,7 +384,6 @@ namespace AngeliaFramework {
 
 		public virtual void SetCharacterState (CharacterState state) {
 
-
 			if (CharacterState == state) return;
 
 			PassOutFrame = int.MinValue;
@@ -353,10 +418,9 @@ namespace AngeliaFramework {
 		}
 
 
-		public void EnterDoor (int duration, bool front) {
-			EnterDoorEndFrame = (Game.GlobalFrame + duration) * (front ? 1 : -1);
-			VelocityX = 0;
-			VelocityY = 0;
+		public void EnterTeleportState (int duration, bool front, bool withPortal) {
+			TeleportEndFrame = (Game.GlobalFrame + duration) * (front ? 1 : -1);
+			TeleportWithPortal = withPortal;
 		}
 
 
@@ -367,8 +431,15 @@ namespace AngeliaFramework {
 		}
 
 
+		public void LockAnimationType (CharacterPoseAnimationType type, int duration = 1) {
+			LockedAnimationType = type;
+			LockedAnimationTypeFrame = Game.GlobalFrame + duration;
+		}
+
+
 		// Bounce
 		public void Bounce () => LastRequireBounceFrame = Game.GlobalFrame;
+		public void CancelBounce () => LastRequireBounceFrame = int.MinValue;
 
 
 		#endregion
