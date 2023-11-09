@@ -61,14 +61,15 @@ namespace AngeliaFramework {
 
 		// Short
 		private static int EquipmentTypeCount => _EquipmentTypeCount > 0 ? _EquipmentTypeCount : (_EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length);
-		private static int _EquipmentTypeCount = 0;
+		private bool TeleportWithPortal => TeleportDuration < 0;
 
 		// Data
 		private static readonly HashSet<int> RenderWithSheetPool = new();
+		private static int _EquipmentTypeCount = 0;
 		private int PassOutFrame = int.MinValue;
 		private int LastRequireBounceFrame = int.MinValue;
 		private int TeleportEndFrame = 0;
-		private bool TeleportWithPortal = false;
+		private int TeleportDuration = 0;
 
 
 		#endregion
@@ -234,8 +235,8 @@ namespace AngeliaFramework {
 						var cell = cells[i];
 						cell.ScaleFrom(
 							Util.RemapUnclamped(
-								0, 30, 1000, 0,
-								(Game.GlobalFrame - TeleportEndFrame + 60).PingPong(30)
+								0, TeleportDuration.Abs() / 2, 1000, 0,
+								(Game.GlobalFrame - TeleportEndFrame.Abs() + TeleportDuration.Abs()).PingPong(TeleportDuration.Abs() / 2)
 							), X, Y + Height / 2
 						);
 					}
@@ -420,7 +421,7 @@ namespace AngeliaFramework {
 
 		public void EnterTeleportState (int duration, bool front, bool withPortal) {
 			TeleportEndFrame = (Game.GlobalFrame + duration) * (front ? 1 : -1);
-			TeleportWithPortal = withPortal;
+			TeleportDuration = withPortal ? -duration : duration;
 		}
 
 

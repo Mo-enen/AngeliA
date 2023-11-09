@@ -182,8 +182,8 @@ namespace AngeliaFramework {
 				task.WaitDuration = 30;
 				task.Duration = 60;
 				task.UseVignette = true;
+				player.EnterTeleportState(task.Duration, Stage.ViewZ > TargetGlobalPosition.z, true);
 			}
-			player.EnterTeleportState(task.Duration, Stage.ViewZ > TargetGlobalPosition.z, true);
 			player.VelocityX = 0;
 			player.VelocityY = 0;
 			return true;
