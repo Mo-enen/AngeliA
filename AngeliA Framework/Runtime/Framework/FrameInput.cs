@@ -457,19 +457,41 @@ namespace AngeliaFramework {
 				}
 
 				// Check Action/Jump for Mouse
-				if (key == Gamekey.Action || key == Gamekey.Jump) {
-					if (Mouse != null && !state.Holding && !IgnoreMouseToActionJumpForThisFrame) {
-						switch (key) {
-							case Gamekey.Jump:
-								state.Holding = MouseRightButton;
-								break;
-							case Gamekey.Action:
-								state.Holding = MouseLeftButton;
-								break;
-						}
+				if (
+					(key == Gamekey.Action || key == Gamekey.Jump) &&
+					Mouse != null && !state.Holding && !IgnoreMouseToActionJumpForThisFrame
+				) {
+					switch (key) {
+						case Gamekey.Jump:
+							state.Holding = MouseRightButton;
+							break;
+						case Gamekey.Action:
+							state.Holding = MouseLeftButton;
+							break;
 					}
 				}
 
+				// Check Start from ESC and +
+				if (key == Gamekey.Start && !state.Holding) {
+					if (Keyboard != null && Keyboard[Key.Escape].isPressed) {
+						state.Holding = true;
+						UsingGamepad = false;
+					}
+					if (Gamepad != null && Gamepad.startButton.isPressed) {
+						state.Holding = true;
+						UsingGamepad = true;
+					}
+				}
+
+				// Check Select from -
+				if (key == Gamekey.Select && !state.Holding) {
+					if (Gamepad != null && Gamepad.selectButton.isPressed) {
+						state.Holding = true;
+						UsingGamepad = true;
+					}
+				}
+
+				// Refresh Ignore
 				if (state.PrevHolding != state.Holding) {
 					state.Frame = GlobalFrame;
 					state.Ignored = false;
@@ -675,14 +697,12 @@ namespace AngeliaFramework {
 
 
 		public static void SetKeyboardMap (Gamekey gameKey, Key keyboardKey) {
-			if (gameKey == Gamekey.Start) return;
 			var oldValue = KeyMap[gameKey];
 			oldValue.x = (int)keyboardKey;
 			KeyMap[gameKey] = oldValue;
 			SaveInputToDisk();
 		}
 		public static void SetGamepadMap (Gamekey gameKey, GamepadButton gamepadKey) {
-			if (gameKey == Gamekey.Start) return;
 			var oldValue = KeyMap[gameKey];
 			oldValue.y = (int)gamepadKey;
 			KeyMap[gameKey] = oldValue;

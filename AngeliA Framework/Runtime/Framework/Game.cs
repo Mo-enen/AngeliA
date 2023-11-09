@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 namespace AngeliaFramework {
@@ -222,7 +223,7 @@ namespace AngeliaFramework {
 				OnGameUpdatePauseless?.Invoke();
 				CellRenderer.FrameUpdate(GlobalFrame, GameCamera);
 				CursorSystem.Update(GlobalFrame);
-				if (FrameInput.GameKeyUp(Gamekey.Start)) IsPlaying = !IsPlaying;
+				if (FrameInput.GameKeyUp(Gamekey.Start) || FrameInput.KeyboardUp(Key.Escape)) IsPlaying = !IsPlaying;
 				if (RequireRestartWithPlayerID.HasValue) RestartGameLogic();
 				if (_CurrentSaveSlot.Value != AngePath.CurrentSaveSlot) {
 					_CurrentSaveSlot.Value = AngePath.CurrentSaveSlot;

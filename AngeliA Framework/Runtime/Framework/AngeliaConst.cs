@@ -131,18 +131,18 @@ namespace AngeliaFramework {
 		public const int CURSOR_BEAM = 2;
 
 		// Language
-		public static readonly int UI_OK = "UI.OK".AngeHash();
-		public static readonly int UI_YES = "UI.Yes".AngeHash();
-		public static readonly int UI_CANCEL = "UI.Cancel".AngeHash();
-		public static readonly int UI_BACK = "UI.Back".AngeHash();
-		public static readonly int UI_QUIT = "UI.Quit".AngeHash();
-		public static readonly int UI_RESTART = "UI.Restart".AngeHash();
-		public static readonly int UI_GAMEOVER = "UI.GameOver".AngeHash();
-		public static readonly int UI_LEFT = "UI.Left".AngeHash();
-		public static readonly int UI_RIGHT = "UI.Right".AngeHash();
-		public static readonly int UI_DOWN = "UI.Down".AngeHash();
-		public static readonly int UI_UP = "UI.Up".AngeHash();
-		public static readonly int UI_NONE = "UI.None".AngeHash();
+		//public static readonly int UI_OK = "UI.OK".AngeHash();
+		//public static readonly int UI_YES = "UI.Yes".AngeHash();
+		//public static readonly int UI_CANCEL = "UI.Cancel".AngeHash();
+		//public static readonly int UI_BACK = "UI.Back".AngeHash();
+		//public static readonly int UI_QUIT = "UI.Quit".AngeHash();
+		//public static readonly int UI_RESTART = "UI.Restart".AngeHash();
+		//public static readonly int UI_GAMEOVER = "UI.GameOver".AngeHash();
+		//public static readonly int UI_LEFT = "UI.Left".AngeHash();
+		//public static readonly int UI_RIGHT = "UI.Right".AngeHash();
+		//public static readonly int UI_DOWN = "UI.Down".AngeHash();
+		//public static readonly int UI_UP = "UI.Up".AngeHash();
+		//public static readonly int UI_NONE = "UI.None".AngeHash();
 
 		// Gamepad Code
 		public static int GAMEPAD_JUMP_HINT_CODE => GAMEPAD_CODE.TryGetValue(FrameInput.GetGamepadMap(Gamekey.Jump), out int _value0) ? _value0 : 0;

@@ -267,7 +267,7 @@ namespace AngeliaFramework {
 				labelRect.x = stageRect.CenterX() - labelRect.width / 2;
 				labelRect.y = stageRect.CenterY() - labelRect.height / 2;
 				CellRenderer.Draw(Const.PIXEL, labelRect, Const.BLACK, int.MaxValue);
-				CellRendererGUI.Label(CellContent.Get(Language.Get(Const.UI_GAMEOVER, "Game Over")), labelRect);
+				CellRendererGUI.Label(CellContent.Get(Language.Get(UI_GAMEOVER, "Game Over")), labelRect);
 			}
 
 			int blockSize = stageRect.width / WIDTH;
@@ -651,10 +651,10 @@ namespace AngeliaFramework {
 
 		// Menu
 		private void OpenGameOverMenu () => GenericMenuUI.SpawnMenu(
-			Language.Get(Const.UI_GAMEOVER, "Game Over"),
-			Language.Get(Const.UI_OK, "OK"), Const.EmptyMethod,
-			Language.Get(Const.UI_RESTART, "Restart"), StartGame,
-			Language.Get(Const.UI_QUIT, "Quit"), CloseGame
+			Language.Get(UI_GAMEOVER, "Game Over"),
+			Language.Get(UI_OK, "OK"), Const.EmptyMethod,
+			Language.Get(UI_RESTART, "Restart"), StartGame,
+			Language.Get(UI_QUIT, "Quit"), CloseGame
 		);
 
 

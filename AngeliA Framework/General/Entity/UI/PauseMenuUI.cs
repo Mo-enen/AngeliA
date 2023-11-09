@@ -33,6 +33,7 @@ namespace AngeliaFramework {
 		private static readonly int MENU_QUIT_EDIT_MESSAGE = "Menu.Pause.QuitEditMessage".AngeHash();
 		private static readonly int MENU_KEYSETTER_GAMEPAD_MESSAGE = "Menu.KeySetter.GamepadMessage".AngeHash();
 		private static readonly int MENU_KEYSETTER_KEYBOARD_MESSAGE = "Menu.KeySetter.KeyboardMessage".AngeHash();
+		private static readonly int MENU_KEYSETTER_CONFIRM_MESSAGE = "Menu.KeySetter.ConfirmMessage".AngeHash();
 		private static readonly int MENU_KEY_SETTER = "Menu.Pause.KeySetter".AngeHash();
 		private static readonly int MENU_SETTER_KEYBOARD = "Menu.KeySetter.Keyboard".AngeHash();
 		private static readonly int MENU_SETTER_GAMEPAD = "Menu.KeySetter.Gamepad".AngeHash();
@@ -63,7 +64,10 @@ namespace AngeliaFramework {
 		private static readonly int UI_ON = "UI.ON".AngeHash();
 		private static readonly int UI_OFF = "UI.OFF".AngeHash();
 		private static readonly int UI_YES = "UI.Yes".AngeHash();
+		private static readonly int UI_SAVE = "UI.Save".AngeHash();
+		private static readonly int UI_DONT_SAVE = "UI.DontSave".AngeHash();
 		private static readonly int UI_NO = "UI.No".AngeHash();
+		private static readonly int UI_CANCEL = "UI.Cancel".AngeHash();
 		private static readonly int[] GAMEKEY_UI_CODES = new int[8] {
 			$"UI.GameKey.{Gamekey.Left}".AngeHash(),
 			$"UI.GameKey.{Gamekey.Right}".AngeHash(),
@@ -90,6 +94,8 @@ namespace AngeliaFramework {
 		private int PauselessFrame = 0;
 		private int RequireNewSaveSlot = -1;
 		private bool RecordLock = true;
+		private bool RecordDirty = false;
+		private bool KeySetterConfirming = false;
 
 
 		#endregion
@@ -112,7 +118,7 @@ namespace AngeliaFramework {
 		[OnGameTryingToQuit]
 		public static void OnGameTryingToQuit () {
 			Stage.TrySpawnEntity(Instance.TypeID, 0, 0, out _);
-			Instance.SetAsQuitMode();
+			Instance.Mode = Instance.RequireMode = MenuMode.Quit;
 		}
 
 
@@ -122,7 +128,7 @@ namespace AngeliaFramework {
 			if (Game.IsPausing) {
 				if (!Instance.Active) {
 					Stage.TrySpawnEntity(Instance.TypeID, 0, 0, out _);
-					Instance.SetAsPauseMode();
+					Instance.Mode = Instance.RequireMode = MenuMode.Pause;
 				}
 			} else {
 				if (Instance.Active) Instance.Active = false;
@@ -139,21 +145,6 @@ namespace AngeliaFramework {
 		}
 
 
-		public override void FrameUpdate () {
-
-			if (Mode != RequireMode) {
-				Mode = RequireMode;
-				RefreshAnimation();
-			}
-			Interactable = (Mode != MenuMode.Setter_Gamepad && Mode != MenuMode.Setter_Keyboard) || RecordingKey < 0;
-			ContentPadding = new(32, 32, 46, string.IsNullOrEmpty(Message) ? 46 : 23);
-
-			base.FrameUpdate();
-
-			PauselessFrame++;
-		}
-
-
 		public override void OnInactivated () {
 			base.OnInactivated();
 			// Unpause
@@ -167,6 +158,23 @@ namespace AngeliaFramework {
 				AngePath.CurrentSaveSlot = RequireNewSaveSlot;
 				Game.RestartGame();
 			}
+		}
+
+
+		public override void FrameUpdate () {
+
+			if (Mode != RequireMode) {
+				Mode = RequireMode;
+				RefreshAnimation();
+			}
+			Interactable = (Mode != MenuMode.Setter_Gamepad && Mode != MenuMode.Setter_Keyboard) || RecordingKey < 0;
+			ContentPadding = new(32, 32, 46, string.IsNullOrEmpty(Message) ? 46 : 23);
+
+			ControlHintUI.ForceShowHint();
+
+			base.FrameUpdate();
+
+			PauselessFrame++;
 		}
 
 
@@ -255,6 +263,8 @@ namespace AngeliaFramework {
 				SetSelection(0);
 				RecordingKey = -1;
 				RecordLock = true;
+				RecordDirty = false;
+				KeySetterConfirming = false;
 				for (int i = 0; i < KeyboardKeys.Length; i++) {
 					KeyboardKeys[i] = FrameInput.GetKeyboardMap((Gamekey)i);
 				}
@@ -265,6 +275,8 @@ namespace AngeliaFramework {
 				SetSelection(0);
 				RecordingKey = -1;
 				RecordLock = true;
+				RecordDirty = false;
+				KeySetterConfirming = false;
 				for (int i = 0; i < GamepadKeys.Length; i++) {
 					GamepadKeys[i] = FrameInput.GetGamepadMap((Gamekey)i);
 				}
@@ -371,8 +383,8 @@ namespace AngeliaFramework {
 			// Allow Gamepad
 			if (DrawItem(
 			Language.Get(MENU_ALLOW_GAMEPAD, "Allow Gamepad"),
-			CellContent.Get(FrameInput.AllowGamepad ? Language.Get(UI_YES, "YES") : Language.Get(UI_NO, "NO"))
-		)) {
+				CellContent.Get(FrameInput.AllowGamepad ? Language.Get(UI_YES, "YES") : Language.Get(UI_NO, "NO"))
+			)) {
 				FrameInput.AllowGamepad = !FrameInput.AllowGamepad;
 			}
 
@@ -471,9 +483,29 @@ namespace AngeliaFramework {
 
 		private void MenuKeySetter (bool forGamepad) {
 
-			Message = forGamepad ?
-				Language.Get(MENU_KEYSETTER_GAMEPAD_MESSAGE, "Press F1 key to reset") :
-				Language.Get(MENU_KEYSETTER_KEYBOARD_MESSAGE, "Press F1 key to reset");
+			// Confirming
+			if (KeySetterConfirming) {
+				Message = Language.Get(MENU_KEYSETTER_CONFIRM_MESSAGE, "Save the changes?");
+				if (DrawItem(Language.Get(UI_SAVE, "Save"))) {
+					RequireMode = MenuMode.KeySetter;
+					SetSelection(forGamepad ? 1 : 0);
+					SaveKeySetting(forGamepad);
+				}
+				if (DrawItem(Language.Get(UI_DONT_SAVE, "Don't Save"))) {
+					RequireMode = MenuMode.KeySetter;
+					SetSelection(forGamepad ? 1 : 0);
+				}
+				if (DrawItem(Language.Get(UI_CANCEL, "Cancel"))) {
+					KeySetterConfirming = false;
+				}
+				return;
+			}
+
+			// Key Setter
+			Message = Language.Get(
+				forGamepad ? MENU_KEYSETTER_GAMEPAD_MESSAGE : MENU_KEYSETTER_KEYBOARD_MESSAGE,
+				"Press F1 key to reset"
+			);
 
 			// All Game Keys
 			for (int i = 0; i < GAMEKEY_UI_CODES.Length; i++) {
@@ -494,49 +526,46 @@ namespace AngeliaFramework {
 					KeySetterLabel.BackgroundTint = PauselessFrame % 30 > 15 ? Const.GREEN : Const.CLEAR;
 					valueLabel = KeySetterLabel;
 				}
-				bool isStart = i == (int)Gamekey.Start;
-				valueLabel.Tint = isStart ? Const.GREY_128 : Const.WHITE;
+				valueLabel.Tint = Const.WHITE;
 				if (DrawItem(
-					Language.Get(code), valueLabel, isStart ? Const.GREY_128 : Const.WHITE, iconID
-				) && !isStart) {
+					Language.Get(code), valueLabel, Const.WHITE, iconID
+				)) {
 					RecordLock = true;
 					RecordingKey = i;
 				}
 			}
 
-			// Save Back
-			if (
-				DrawItem(Language.Get(MENU_KEYSETTER_SAVE_BACK, "Save and Back")) ||
-				(RecordingKey < 0 && FrameInput.GameKeyDown(Gamekey.Jump))
-			) {
+			// Save & Back
+			if (RecordDirty && DrawItem(Language.Get(MENU_KEYSETTER_SAVE_BACK, "Save and Back"), Const.GREEN)) {
 				RequireMode = MenuMode.KeySetter;
 				SetSelection(forGamepad ? 1 : 0);
-				if (forGamepad) {
-					for (int i = 0; i < GamepadKeys.Length; i++) {
-						FrameInput.SetGamepadMap((Gamekey)i, GamepadKeys[i]);
-					}
-				} else {
-					for (int i = 0; i < KeyboardKeys.Length; i++) {
-						FrameInput.SetKeyboardMap((Gamekey)i, KeyboardKeys[i]);
-					}
-				}
+				SaveKeySetting(forGamepad);
 			}
 
 			// Back
-			if (DrawItem(Language.Get(UI_BACK, "Back")) || FrameInput.GameKeyUp(Gamekey.Start)) {
-				FrameInput.UseGameKey(Gamekey.Start);
-				RequireMode = MenuMode.KeySetter;
-				SetSelection(forGamepad ? 1 : 0);
+			if (
+				DrawItem(Language.Get(UI_BACK, "Back")) ||
+				(RecordingKey < 0 && FrameInput.GameKeyUp(Gamekey.Jump))
+			) {
+				if (RecordDirty) {
+					// Confirm
+					KeySetterConfirming = true;
+				} else {
+					// Just Back
+					RequireMode = MenuMode.KeySetter;
+					SetSelection(forGamepad ? 1 : 0);
+				}
 			}
 
 			// Record
-			if (RecordingKey == (int)Gamekey.Start) RecordingKey = -1;
-
 			if (RecordingKey >= 0 && !RecordLock) {
 				if (forGamepad) {
 					// Gamepad
 					if (FrameInput.TryGetHoldingGamepadButton(out var button)) {
-						if (button != GamepadButton.Start) {
+						if (
+							(button != GamepadButton.Start || RecordingKey == (int)Gamekey.Start) &&
+							(button != GamepadButton.Select || RecordingKey == (int)Gamekey.Select)
+						) {
 							if (GamepadKeys[RecordingKey] != button) {
 								for (int i = 0; i < GamepadKeys.Length; i++) {
 									if (GamepadKeys[i] == button && GamepadKeys[RecordingKey] != button) {
@@ -544,6 +573,7 @@ namespace AngeliaFramework {
 									}
 								}
 								GamepadKeys[RecordingKey] = button;
+								RecordDirty = true;
 							}
 						}
 						RecordingKey = -1;
@@ -555,7 +585,7 @@ namespace AngeliaFramework {
 				} else {
 					// Keyboard
 					if (FrameInput.TryGetHoldingKeyboardKey(out var button)) {
-						if (button != Key.Escape) {
+						if (button != Key.Escape || RecordingKey == (int)Gamekey.Start) {
 							if (KeyboardKeys[RecordingKey] != button) {
 								for (int i = 0; i < KeyboardKeys.Length; i++) {
 									if (KeyboardKeys[i] == button && KeyboardKeys[RecordingKey] != button) {
@@ -563,6 +593,7 @@ namespace AngeliaFramework {
 									}
 								}
 								KeyboardKeys[RecordingKey] = button;
+								RecordDirty = true;
 							}
 						}
 						RecordingKey = -1;
@@ -595,21 +626,29 @@ namespace AngeliaFramework {
 						KeyboardKeys[i] = FrameInput.GetDefaultKeyboardMap((Gamekey)i);
 					}
 				}
+				RecordDirty = false;
 			}
 
+			// Use ESC
+			if (FrameInput.KeyboardUp(Key.Escape) || FrameInput.GameKeyUp(Gamekey.Start)) {
+				FrameInput.UseGameKey(Gamekey.Start);
+				FrameInput.UseKeyboardKey(Key.Escape);
+			}
+
+			// Func
+			static void SaveKeySetting (bool forGamepad) {
+				if (Instance == null) return;
+				if (forGamepad) {
+					for (int i = 0; i < Instance.GamepadKeys.Length; i++) {
+						FrameInput.SetGamepadMap((Gamekey)i, Instance.GamepadKeys[i]);
+					}
+				} else {
+					for (int i = 0; i < Instance.KeyboardKeys.Length; i++) {
+						FrameInput.SetKeyboardMap((Gamekey)i, Instance.KeyboardKeys[i]);
+					}
+				}
+			}
 		}
-
-
-		#endregion
-
-
-
-
-		#region --- API ---
-
-
-		public void SetAsPauseMode () => Mode = RequireMode = MenuMode.Pause;
-		public void SetAsQuitMode () => Mode = RequireMode = MenuMode.Quit;
 
 
 		#endregion

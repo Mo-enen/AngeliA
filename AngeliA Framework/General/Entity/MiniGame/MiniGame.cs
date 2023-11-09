@@ -27,6 +27,13 @@ namespace AngeliaFramework {
 
 		// VAR
 		private static readonly int MENU_QUIT_MINI_GAME = "Menu.MiniGame.QuitMsg".AngeHash();
+		protected static readonly int UI_QUIT = "UI.Quit".AngeHash();
+		protected static readonly int UI_BACK = "UI.Back".AngeHash();
+		protected static readonly int UI_RESTART = "UI.Restart".AngeHash();
+		protected static readonly int UI_NONE = "UI.None".AngeHash();
+		protected static readonly int UI_OK = "UI.OK".AngeHash();
+		protected static readonly int UI_GAMEOVER = "UI.GameOver".AngeHash();
+
 		protected virtual Vector2Int WindowSize => new(1000, 800);
 		protected abstract bool RequireMouseCursor { get; }
 		protected abstract string DisplayName { get; }
@@ -75,7 +82,7 @@ namespace AngeliaFramework {
 							CloseGame();
 						}
 					}
-					ControlHintUI.AddHint(Gamekey.Start, Language.Get(Const.UI_QUIT, "Quit"));
+					ControlHintUI.AddHint(Gamekey.Start, Language.Get(UI_QUIT, "Quit"));
 				}
 				if (RequireMouseCursor) CursorSystem.RequireCursor(-1);
 			}
@@ -132,15 +139,15 @@ namespace AngeliaFramework {
 			if (ShowRestartOption) {
 				GenericMenuUI.SpawnMenu(
 					Language.Get(MENU_QUIT_MINI_GAME, "Quit mini game?"),
-					Language.Get(Const.UI_BACK, "Back"), Const.EmptyMethod,
-					Language.Get(Const.UI_RESTART, "Restart"), StartGame,
-					Language.Get(Const.UI_QUIT, "Quit"), CloseGame
+					Language.Get(UI_BACK, "Back"), Const.EmptyMethod,
+					Language.Get(UI_RESTART, "Restart"), StartGame,
+					Language.Get(UI_QUIT, "Quit"), CloseGame
 				);
 			} else {
 				GenericMenuUI.SpawnMenu(
 					Language.Get(MENU_QUIT_MINI_GAME, "Quit mini game?"),
-					Language.Get(Const.UI_BACK, "Back"), Const.EmptyMethod,
-					Language.Get(Const.UI_QUIT, "Quit"), CloseGame
+					Language.Get(UI_BACK, "Back"), Const.EmptyMethod,
+					Language.Get(UI_QUIT, "Quit"), CloseGame
 				);
 			}
 		}

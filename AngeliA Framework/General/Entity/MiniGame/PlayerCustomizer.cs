@@ -203,7 +203,7 @@ namespace AngeliaFramework {
 				if (FrameInput.GameKeyDown(Gamekey.Jump)) {
 					CurrentSubMenu = null;
 				}
-				ControlHintUI.AddHint(Gamekey.Jump, Language.Get(Const.UI_BACK, "Back"));
+				ControlHintUI.AddHint(Gamekey.Jump, Language.Get(UI_BACK, "Back"));
 			}
 
 			if (!CurrentSubMenu.HasValue) {
@@ -423,7 +423,7 @@ namespace AngeliaFramework {
 					}
 				}
 				CellRendererGUI.Label(
-					CellContent.Get(Language.Get(Const.UI_BACK, "Back"), 28, Alignment.MidMid),
+					CellContent.Get(Language.Get(UI_BACK, "Back"), 28, Alignment.MidMid),
 					buttonRect, out var bounds
 				);
 				CursorSystem.SetCursorAsHand(buttonRect, 1);
@@ -891,7 +891,7 @@ namespace AngeliaFramework {
 					if (isEmpty) {
 						// Empty Name
 						CellRendererGUI.Label(
-							CellContent.Get(Language.Get(Const.UI_NONE, "None"), Const.WHITE),
+							CellContent.Get(Language.Get(UI_NONE, "None"), Const.WHITE),
 							rect.Shift(contentPadding * 2, 0)
 						);
 					} else {

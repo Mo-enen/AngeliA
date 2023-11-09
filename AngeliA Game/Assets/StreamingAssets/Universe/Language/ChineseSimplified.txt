@@ -1,4 +1,5 @@
-﻿CtrlHint.Adjust:调整
+﻿UI.DontSave:不保存
+CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
 CtrlHint.Drop:放下
@@ -42,6 +43,7 @@ Menu.BackToEdit:返回编辑
 Menu.Gomoku.Draw:平局
 Menu.Gomoku.Lose:你输喽，笨蛋
 Menu.Gomoku.Win:你赢啦，耶~~
+Menu.KeySetter.ConfirmMessage:是否保存修改？
 Menu.KeySetter.Gamepad:手柄
 Menu.KeySetter.GamepadMessage:按下F1键重置手柄设置
 Menu.KeySetter.Keyboard:键盘

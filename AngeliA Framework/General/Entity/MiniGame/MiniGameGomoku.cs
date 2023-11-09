@@ -315,15 +315,15 @@ namespace AngeliaFramework {
 		// Menu
 		private void OpenGameOverMenu (bool blackWin) => GenericMenuUI.SpawnMenu(
 			blackWin == PlayerIsBlack ? Language.Get(MENU_GOMOKU_WIN, "You Win") : Language.Get(MENU_GOMOKU_LOSE, "You Lose"),
-			Language.Get(Const.UI_OK, "OK"), Const.EmptyMethod,
-			Language.Get(Const.UI_RESTART, "Restart"), StartGame,
-			Language.Get(Const.UI_QUIT, "Quit"), CloseGame
+			Language.Get(UI_OK, "OK"), Const.EmptyMethod,
+			Language.Get(UI_RESTART, "Restart"), StartGame,
+			Language.Get(UI_QUIT, "Quit"), CloseGame
 		);
 
 
 		private void OpenDrawMenu () => GenericMenuUI.SpawnMenu(
 			Language.Get(MENU_GOMOKU_DRAW, "Tie"),
-			Language.Get(Const.UI_OK, "OK"),
+			Language.Get(UI_OK, "OK"),
 			Const.EmptyMethod
 		);
 

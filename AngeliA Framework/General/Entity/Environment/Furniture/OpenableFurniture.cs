@@ -8,7 +8,6 @@ namespace AngeliaFramework {
 		protected virtual Vector2Int WindowSize => new(800, 600);
 		private static int UiUpdateFrame = -1;
 
-
 		public override void FrameUpdate () {
 			// Close Check
 			if (Open && (Player.Selecting == null || PlayerMenuUI.ShowingUI || FrameTask.HasTask())) {
@@ -57,6 +56,7 @@ namespace AngeliaFramework {
 	public abstract class OpenableFurniture : Furniture, IActionTarget {
 
 
+		private static readonly int UI_CANCEL = "UI.Cancel".AngeHash();
 		public bool Open { get; private set; } = false;
 		bool IActionTarget.LockInput => Open;
 		bool IActionTarget.IsHighlighted => !Open && GetIsHighlighted();
@@ -83,7 +83,7 @@ namespace AngeliaFramework {
 					FrameInput.UseGameKey(Gamekey.Select);
 					FrameInput.UseGameKey(Gamekey.Start);
 				}
-				ControlHintUI.AddHint(Gamekey.Select, Language.Get(Const.UI_CANCEL, "Cancel"), int.MinValue + 1);
+				ControlHintUI.AddHint(Gamekey.Select, Language.Get(UI_CANCEL, "Cancel"), int.MinValue + 1);
 			}
 		}
 
