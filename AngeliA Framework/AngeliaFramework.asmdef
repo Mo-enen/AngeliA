@@ -5,9 +5,7 @@
         "Unity.InputSystem"
     ],
     "includePlatforms": [
-        "Android",
         "Editor",
-        "iOS",
         "WindowsStandalone32",
         "WindowsStandalone64"
     ],
@@ -15,7 +13,8 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "MoonSharp.Interpreter.dll"
+        "MoonSharp.Interpreter.dll",
+        "RiptideNetworking.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],
