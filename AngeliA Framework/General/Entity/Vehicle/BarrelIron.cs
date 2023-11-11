@@ -125,11 +125,13 @@ namespace AngeliaFramework {
 				cDriver.Y = Y + Height;
 				cDriver.RunningAccumulateFrame = -1;
 				cDriver.CancelBounce();
-				cDriver.LockAnimationType(
-					cDriver.IntendedX == 0 ?
-						cDriver.IntendedY < 0 ? CharacterPoseAnimationType.SquatIdle : CharacterPoseAnimationType.Idle :
-						cDriver.IntendedY < 0 ? CharacterPoseAnimationType.SquatMove : CharacterPoseAnimationType.Walk
-				);
+				if (!cDriver.TakingDamage && !cDriver.Teleporting) {
+					cDriver.LockAnimationType(
+						cDriver.IntendedX == 0 ?
+							cDriver.IntendedY < 0 ? CharacterPoseAnimationType.SquatIdle : CharacterPoseAnimationType.Idle :
+							cDriver.IntendedY < 0 ? CharacterPoseAnimationType.SquatMove : CharacterPoseAnimationType.Walk
+					);
+				}
 			} else if (Driver != null) {
 				// Entity
 				Driver.X = X;
@@ -167,7 +169,10 @@ namespace AngeliaFramework {
 
 			// Movement State Check
 			if (characterDriver != null) {
-				if (characterDriver.VelocityY > Mathf.Max(DeltaPositionY, 0)) {
+				if (
+					characterDriver.CharacterState != CharacterState.GamePlay ||
+					characterDriver.VelocityY > Mathf.Max(DeltaPositionY, 0)
+				) {
 					characterDriver = null;
 				} else if (
 					characterDriver.MovementState != CharacterMovementState.Idle &&

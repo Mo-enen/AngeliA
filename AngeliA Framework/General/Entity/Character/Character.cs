@@ -348,7 +348,7 @@ namespace AngeliaFramework {
 					if (item == null) continue;
 					item.OnItemUpdate_FromEquipment(this);
 					if (attackStart) item.OnAttack(this);
-					if (squatStart) item.OnRepair(this);
+					if (squatStart) item.OnSquat(this);
 					if (item is Weapon weapon) {
 						equippingWeapon = true;
 						AttackDuration.Override = weapon.AttackDuration;

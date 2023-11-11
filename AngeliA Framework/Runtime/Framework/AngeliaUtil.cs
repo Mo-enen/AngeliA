@@ -758,6 +758,19 @@ namespace AngeliaFramework {
 
 
 		// AngeliA Hash Code
+		public static int[] GetAngeHashs (System.Type[] types) {
+			if (types == null || types.Length == 0) return new int[0];
+			var results = new int[types.Length];
+			for (int i = 0; i < results.Length; i++) {
+				results[i] = GetAngeHash(types[i]);
+			}
+			return results;
+		}
+
+
+		public static int GetAngeHash (System.Type type) => type != null ? type.AngeName().AngeHash() : 0;
+
+
 		public static int AngeHash (this System.Type type) => type.AngeName().AngeHash();
 
 

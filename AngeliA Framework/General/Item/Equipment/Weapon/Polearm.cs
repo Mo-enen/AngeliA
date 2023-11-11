@@ -6,32 +6,32 @@ using AngeliaFramework;
 namespace AngeliaFramework {
 
 	[EntityAttribute.ItemCombination(typeof(iBoStaffWood), typeof(iDagger), 1)]
-	public class iSpearWood : AutoSpritePolearm { }
+	public class iSpearWood : Polearm { }
 	[EntityAttribute.ItemCombination(typeof(iSpearWood), typeof(iIngotIron), 1)]
-	public class iSpearIron : AutoSpritePolearm { }
+	public class iSpearIron : Polearm { }
 	[EntityAttribute.ItemCombination(typeof(iIngotGold), typeof(iSpearIron), 1)]
-	public class iSpearGold : AutoSpritePolearm { }
+	public class iSpearGold : Polearm { }
 	[EntityAttribute.ItemCombination(typeof(iMagatama), typeof(iMagatama), typeof(iMagatama), typeof(iSpearIron), 1)]
 	[EntityAttribute.ItemCombination(typeof(iRibbon), typeof(iTreeBranch), typeof(iTreeBranch), typeof(iTreeBranch), 1)]
-	public class iBoStaffWood : AutoSpritePolearm { }
+	public class iBoStaffWood : Polearm { }
 	[EntityAttribute.ItemCombination(typeof(iBoStaffWood), typeof(iIngotIron), 1)]
-	public class iBoStaffIron : AutoSpritePolearm { }
+	public class iBoStaffIron : Polearm { }
 	[EntityAttribute.ItemCombination(typeof(iBoStaffIron), typeof(iIngotGold), 1)]
-	public class iBoStaffGold : AutoSpritePolearm { }
+	public class iBoStaffGold : Polearm { }
 	[EntityAttribute.ItemCombination(typeof(iBoStaffWood), typeof(iKnifeGiant), 1)]
-	public class iNaginata : AutoSpritePolearm { }
+	public class iNaginata : Polearm { }
 	[EntityAttribute.ItemCombination(typeof(iAxeWood), typeof(iBoStaffWood), 1)]
-	public class iHalberd : AutoSpritePolearm { }
+	public class iHalberd : Polearm { }
 	[EntityAttribute.ItemCombination(typeof(iBoStaffWood), typeof(iWuXingHook), typeof(iWuXingHook), 1)]
-	public class iJi : AutoSpritePolearm { }
+	public class iJi : Polearm { }
 	[EntityAttribute.ItemCombination(typeof(iAxeWood), typeof(iBoStaffWood), typeof(iWuXingHook), 1)]
-	public class iMonkSpade : AutoSpritePolearm { }
+	public class iMonkSpade : Polearm { }
 	[EntityAttribute.ItemCombination(typeof(iBoStaffWood), typeof(iBolt), typeof(iBolt), typeof(iWuXingHook), 1)]
-	public class iManCatcher : AutoSpritePolearm { }
+	public class iManCatcher : Polearm { }
 	[EntityAttribute.ItemCombination(typeof(iScimitar), typeof(iScimitar), typeof(iBoStaffWood), 1)]
-	public class iSwallow : AutoSpritePolearm { }
+	public class iSwallow : Polearm { }
 	[EntityAttribute.ItemCombination(typeof(iBoStaffWood), typeof(iDagger), typeof(iDagger), 1)]
-	public class iFork : AutoSpritePolearm { }
+	public class iFork : Polearm { }
 	[EntityAttribute.ItemCombination(typeof(iBoStaffWood), typeof(iBolt), typeof(iBolt), typeof(iBolt), 1)]
-	public class iBrandistock : AutoSpritePolearm { }
+	public class iBrandistock : Polearm { }
 }

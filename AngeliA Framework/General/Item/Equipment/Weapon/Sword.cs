@@ -10,63 +10,63 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.ItemCombination(typeof(iItemWoodBoard), typeof(iTreeBranch), typeof(iTreeBranch), typeof(iTreeBranch), 1)]
-	public class iSwordWood : AutoSpriteSword {
+	public class iSwordWood : Sword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iSwordWood), typeof(iIngotIron), 1)]
-	public class iSwordIron : AutoSpriteSword {
+	public class iSwordIron : Sword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iIngotGold), typeof(iSwordIron), 1)]
-	public class iSwordGold : AutoSpriteSword {
+	public class iSwordGold : Sword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iIngotIron), typeof(iTreeBranch), typeof(iTreeBranch), 1)]
-	public class iDagger : AutoSpriteSword {
+	public class iDagger : Sword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iGemRed), typeof(iGemRed), typeof(iGemRed), typeof(iSwordIron), 1)]
-	public class iSwordCrimson : AutoSpriteSword {
+	public class iSwordCrimson : Sword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iRubyRed), typeof(iRubyRed), typeof(iRubyRed), typeof(iSwordIron), 1)]
-	public class iSwordScarlet : AutoSpriteSword {
+	public class iSwordScarlet : Sword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iIngotIron), typeof(iTreeBranch), typeof(iTreeBranch), typeof(iTreeBranch), 1)]
-	public class iScimitar : AutoSpriteSword {
+	public class iScimitar : Sword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iSkull), typeof(iMeatBone), typeof(iMeatBone), typeof(iSwordIron), 1)]
-	public class iSwordPirate : AutoSpriteSword {
+	public class iSwordPirate : Sword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iSwordIron), typeof(iRuneLightning), 1)]
-	public class iSwordAgile : AutoSpriteSword {
+	public class iSwordAgile : Sword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iScimitar), typeof(iRuneLightning), 1)]
-	public class iScimitarAgile : AutoSpriteSword {
+	public class iScimitarAgile : Sword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iComb), typeof(iSwordIron), 1)]
-	public class iSwordJagged : AutoSpriteSword {
+	public class iSwordJagged : Sword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iSwordGold), typeof(iSwordGold), 1)]
-	public class iSwordGreat : AutoSpriteSword {
+	public class iSwordGreat : Sword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iClay), typeof(iGunpowder), typeof(iCharcoal), typeof(iSwordIron), 1)]
-	public class iSwordDark : AutoSpriteSword {
+	public class iSwordDark : Sword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iBoStaffWood), typeof(iSwordIron), 1)]
-	public class iSwordCrutch : AutoSpriteSword {
+	public class iSwordCrutch : Sword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iScimitar), typeof(iScimitar), 1)]
-	public class iKnifeGiant : AutoSpriteSword {
+	public class iKnifeGiant : Sword {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
 	}
 }

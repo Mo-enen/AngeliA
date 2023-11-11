@@ -256,15 +256,26 @@ namespace AngeliaFramework {
 		private static readonly Shader[] RENDERING_SHADERS = new Shader[Const.RENDER_LAYER_COUNT] {
 			Shader.Find("Angelia/Lerp"),// Wallpaper
 			Shader.Find("Angelia/Lerp"),// Behind
-			Shader.Find("Angelia/Cell"),// Cell(Default)
+			Shader.Find("Angelia/Cell"),// Default
 			Shader.Find("Angelia/Color"),// Color
 			Shader.Find("Angelia/Mult"),// Mult
 			Shader.Find("Angelia/Add"), // Add
 			Shader.Find("Angelia/Cell"),// UI
 			Shader.Find("Angelia/Cell"),// TopUI
 		};
-		private static readonly int[] RENDER_CAPACITY = new int[Const.RENDER_LAYER_COUNT] { 256, 4096, 4096, 256, 128, 128, 4096, 256, };
-		private static readonly string[] LAYER_NAMES = new string[Const.RENDER_LAYER_COUNT] { "Wallpaper", "Behind", "Default", "Color", "Mult", "Add", "UI", "TopUI", };
+		private static readonly int[] RENDER_CAPACITY = new int[Const.RENDER_LAYER_COUNT] {
+			256,	// Wallpaper 
+			4096,	// Behind 
+			4096,	// Default 
+			256,	// Color 
+			128,	// Mult 
+			128,	// Add 
+			4096,	// UI 
+			256,	// TopUI 
+		};
+		private static readonly string[] LAYER_NAMES = new string[Const.RENDER_LAYER_COUNT] {
+			"Wallpaper", "Behind", "Default", "Color", "Mult", "Add", "UI", "TopUI",
+		};
 
 		// Api
 		public static RectInt ViewRect { get; private set; } = default;
@@ -1145,7 +1156,7 @@ namespace AngeliaFramework {
 
 		// Sprite Data
 		public static bool TryGetSprite (int globalID, out AngeSprite sprite) {
-			
+
 			if (SheetIDMap.TryGetValue(globalID, out var rCell)) {
 				sprite = Sprites[rCell.GetIndex(GlobalFrame)];
 				return true;

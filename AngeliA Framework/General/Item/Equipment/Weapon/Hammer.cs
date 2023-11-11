@@ -7,45 +7,45 @@ using AngeliaFramework;
 namespace AngeliaFramework {
 
 	[EntityAttribute.ItemCombination(typeof(iStonePolished), typeof(iTreeBranch), 1)]
-	public class iHammerWood : AutoSpriteHammer { }
+	public class iHammerWood : Hammer { }
 	[EntityAttribute.ItemCombination(typeof(iHammerWood), typeof(iIngotIron), 1)]
-	public class iHammerIron : AutoSpriteHammer { }
+	public class iHammerIron : Hammer { }
 	[EntityAttribute.ItemCombination(typeof(iHammerIron), typeof(iIngotGold), 1)]
-	public class iHammerGold : AutoSpriteHammer { }
+	public class iHammerGold : Hammer { }
 	[EntityAttribute.ItemCombination(typeof(iSpikeBall), typeof(iTreeBranch), 1)]
-	public class iMaceRound : AutoSpriteHammer { }
+	public class iMaceRound : Hammer { }
 	[EntityAttribute.ItemCombination(typeof(iSkull), typeof(iTreeBranch), 1)]
-	public class iMaceSkull : AutoSpriteHammer { }
+	public class iMaceSkull : Hammer { }
 	[EntityAttribute.ItemCombination(typeof(iTreeTrunk), typeof(iTreeBranch), typeof(iTreeBranch), 1)]
-	public class iBaseballBatWood : AutoSpriteHammer { }
+	public class iBaseballBatWood : Hammer { }
 	[EntityAttribute.ItemCombination(typeof(iBolt), typeof(iBolt), typeof(iBolt), typeof(iBaseballBatWood), 1)]
-	public class iMaceSpiked : AutoSpriteHammer { }
+	public class iMaceSpiked : Hammer { }
 	[EntityAttribute.ItemCombination(typeof(iIngotIron), typeof(iIngotIron), typeof(iIngotIron), typeof(iBaseballBatWood), 1)]
-	public class iBian : AutoSpriteHammer {
+	public class iBian : Hammer {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
 	}
 	[EntityAttribute.ItemCombination(typeof(iTreeTrunk), typeof(iTreeTrunk), typeof(iTreeTrunk), typeof(iTreeBranch), 1)]
-	public class iHammerRiceCake : AutoSpriteHammer {
+	public class iHammerRiceCake : Hammer {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 	[EntityAttribute.ItemCombination(typeof(iHorn), typeof(iTreeBranch), 1)]
-	public class iHammerGoatHorn : AutoSpriteHammer { }
+	public class iHammerGoatHorn : Hammer { }
 	[EntityAttribute.ItemCombination(typeof(iIngotIron), typeof(iBaseballBatWood), 1)]
-	public class iBaseballBatIron : AutoSpriteHammer { }
+	public class iBaseballBatIron : Hammer { }
 	[EntityAttribute.ItemCombination(typeof(iHammerIron), typeof(iRuneLightning), typeof(iRuneLightning), typeof(iRuneLightning), 1)]
-	public class iHammerThunder : AutoSpriteHammer {
+	public class iHammerThunder : Hammer {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 	[EntityAttribute.ItemCombination(typeof(iStonePolished), typeof(iStonePolished), typeof(iStonePolished), typeof(iHammerWood), 1)]
-	public class iHammerMoai : AutoSpriteHammer {
+	public class iHammerMoai : Hammer {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 	[EntityAttribute.ItemCombination(typeof(iHammerGold), typeof(iIngotGold), 1)]
-	public class iHammerPaladin : AutoSpriteHammer {
+	public class iHammerPaladin : Hammer {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 	[EntityAttribute.ItemCombination(typeof(iHammerGold), typeof(iRubyRed), typeof(iRubyRed), typeof(iRubyRed), 1)]
-	public class iHammerRuby : AutoSpriteHammer {
+	public class iHammerRuby : Hammer {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
 	}
 }
