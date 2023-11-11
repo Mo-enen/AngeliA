@@ -33,9 +33,10 @@ namespace AngeliaGame {
 			////server.SendToAll();
 			//
 			//
-			//var e = System.Net.Dns.GetHostEntry("www.contoso.com");
-			////e.AddressList[0].Address
-			
+			//var e = System.Net.Dns.GetHostEntry("publisher.assetstore.unity3d.com");
+			//foreach (var address in e.AddressList) {
+			//	Debug.Log(address.ToString());
+			//}
 		}
 
 

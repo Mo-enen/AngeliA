@@ -23,6 +23,8 @@ namespace AngeliaFramework.Editor {
 
 		protected override void OnWindowGUI () {
 
+			// Text
+			GUILayout.Label("Text");
 			string newData = EditorGUILayout.TextArea(Data);
 			if (newData != Data) {
 				Data = newData;
@@ -32,8 +34,10 @@ namespace AngeliaFramework.Editor {
 				}
 				if (Hash.Length > 0) Hash.Remove(Hash.Length - 1, 1);
 			}
-
 			MGUI.Space(8);
+
+			// Hash Int
+			GUILayout.Label("Hash");
 			EditorGUILayout.TextArea(Hash);
 
 		}

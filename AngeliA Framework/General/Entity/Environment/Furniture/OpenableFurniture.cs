@@ -75,13 +75,9 @@ namespace AngeliaFramework {
 
 			if (Open) {
 				// Cancel
-				if (
-					FrameInput.GameKeyUp(Gamekey.Select) ||
-					FrameInput.GameKeyUp(Gamekey.Start)
-				) {
+				if (FrameInput.GameKeyUp(Gamekey.Select)) {
 					SetOpen(false);
 					FrameInput.UseGameKey(Gamekey.Select);
-					FrameInput.UseGameKey(Gamekey.Start);
 				}
 				ControlHintUI.AddHint(Gamekey.Select, Language.Get(UI_CANCEL, "Cancel"), int.MinValue + 1);
 			}
