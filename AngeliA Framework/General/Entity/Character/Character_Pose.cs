@@ -298,10 +298,11 @@ namespace AngeliaFramework {
 			HeadTwist = 0;
 			HeadRotation = 0;
 
-			foreach (var unit in BodyParts) {
-				unit.Rotation = 0;
-				unit.FrontSide = FacingFront;
-				unit.Tint = SkinColor;
+			foreach (var bodypart in BodyParts) {
+				bodypart.Rotation = 0;
+				bodypart.FrontSide = FacingFront;
+				bodypart.Tint = SkinColor;
+				bodypart.FullyCovered = false;
 			}
 
 			// Hip
@@ -755,7 +756,7 @@ namespace AngeliaFramework {
 
 			// Draw
 			foreach (var bodyPart in BodyParts) {
-				if (bodyPart.ID == 0 || bodyPart.Tint.a == 0) continue;
+				if (bodyPart.ID == 0 || bodyPart.FullyCovered) continue;
 				int id = bodyPart.ID;
 				if (bodyPart == Head && CellRenderer.TryGetSpriteFromGroup(id, Head.FrontSide ? 0 : 1, out var headSprite, false, true)) {
 					id = headSprite.GlobalID;

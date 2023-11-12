@@ -367,30 +367,29 @@ namespace AngeliaFramework {
 		// Draw
 		public static void DrawClothForHead (Character character, int spriteID, FrontMode frontMode) {
 
-			if (spriteID == 0) return;
 			var head = character.Head;
+			if (spriteID == 0 || head.FullyCovered) return;
 
-			// Head Twist
-			int twist = character.HeadTwist;
+			// Width Amount
 			int widthAmount = 1000;
-			if (twist != 0) {
-				widthAmount -= twist.Abs() / 2;
-			}
+			if (character.HeadTwist != 0) widthAmount -= character.HeadTwist.Abs() / 2;
+			if (head.Height < 0) widthAmount = -widthAmount;
 
 			// Draw
 			Cell[] cells = null;
+			CellRenderer.TryGetMeta(spriteID, out var meta);
 			if (CellRenderer.HasSpriteGroup(spriteID)) {
 				if (head.FrontSide) {
 					// Front
 					bool front = frontMode != FrontMode.AlwaysBack && frontMode != FrontMode.Back;
 					if (CellRenderer.TryGetSpriteFromGroup(spriteID, 0, out var sprite, false, true)) {
 						bool usePixelShift = head.FrontSide && head.Width < 0;
-						if (usePixelShift && CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
+						if (usePixelShift && meta != null && meta.IsTrigger) {
 							usePixelShift = false;
 						}
 						cells = AttachClothOn(
-							head, Direction3.Up, sprite.GlobalID,
-							front ? 34 : -34, widthAmount, 1000, flipX: head.Height < 0, 0,
+							head, sprite, 500, 1000,
+							front ? 34 : -34, widthAmount, 1000, 0,
 							usePixelShift ? (front ? -16 : 16) : 0, 0
 						);
 					}
@@ -399,29 +398,29 @@ namespace AngeliaFramework {
 					if (CellRenderer.TryGetSpriteFromGroup(spriteID, 1, out var sprite, false, true)) {
 						bool front = frontMode != FrontMode.AlwaysBack && frontMode != FrontMode.Front;
 						bool usePixelShift = head.FrontSide && head.Width < 0;
-						if (usePixelShift && CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
+						if (usePixelShift && meta != null && meta.IsTrigger) {
 							usePixelShift = false;
 						}
 						cells = AttachClothOn(
-							head, Direction3.Up, sprite.GlobalID,
-							front ? 34 : -34, widthAmount, 1000, flipX: head.Height < 0, 0,
+							head, sprite, 500, 1000,
+							front ? 34 : -34, widthAmount, 1000, 0,
 							usePixelShift ? (front ? -16 : 16) : 0, 0
 						);
 					}
 				}
-			} else {
+			} else if (CellRenderer.TryGetSprite(spriteID, out var sprite)) {
 				// Single Sprite
 				bool front = frontMode != FrontMode.AlwaysBack && (
 					frontMode == FrontMode.AlwaysFront ||
 					frontMode == FrontMode.Front == head.FrontSide
 				);
 				bool usePixelShift = head.FrontSide && head.Width < 0;
-				if (usePixelShift && CellRenderer.TryGetMeta(spriteID, out var meta) && meta.IsTrigger) {
+				if (usePixelShift && meta != null && meta.IsTrigger) {
 					usePixelShift = false;
 				}
 				cells = AttachClothOn(
-					head, Direction3.Up, spriteID,
-					front ? 34 : -34, widthAmount, 1000, flipX: head.Height < 0, 0,
+					head, sprite, 500, 1000,
+					front ? 34 : -34, widthAmount, 1000, 0,
 					usePixelShift ? (front ? -16 : 16) : 0, 0
 				);
 			}
@@ -439,9 +438,9 @@ namespace AngeliaFramework {
 		public static void DrawClothForBody (Character character, int spriteGroupId, bool flipWithBody = true) => DrawClothForBody(character, spriteGroupId, Const.WHITE, flipWithBody);
 		public static void DrawClothForBody (Character character, int spriteGroupId, Color32 tint, bool flipWithBody = true) {
 
-			if (spriteGroupId == 0) return;
-
 			var body = character.Body;
+			if (spriteGroupId == 0 || body.FullyCovered) return;
+
 			var hip = character.Hip;
 			int poseTwist = character.PoseTwist;
 
@@ -485,8 +484,7 @@ namespace AngeliaFramework {
 
 			// Hide Limb
 			if (CellRenderer.TryGetMeta(suitSprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG) {
-				body.Tint = Const.CLEAR;
-				hip.Tint = Const.CLEAR;
+				body.FullyCovered = true;
 			}
 		}
 
@@ -494,13 +492,13 @@ namespace AngeliaFramework {
 		public static void DrawClothForHip (Character character, int spriteID) => DrawClothForHip(character, spriteID, Const.WHITE);
 		public static void DrawClothForHip (Character character, int spriteID, Color32 tint) {
 
-			if (spriteID == 0) return;
+			var hip = character.Hip;
+			if (spriteID == 0 || hip.FullyCovered) return;
 			if (
 				!CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var sprite, false, true) &&
 				!CellRenderer.TryGetSprite(spriteID, out sprite)
 			) return;
 
-			var hip = character.Hip;
 			var rect = hip.GetGlobalRect();
 			if (!sprite.GlobalBorder.IsZero) {
 				if (hip.Width > 0) {
@@ -532,7 +530,7 @@ namespace AngeliaFramework {
 		public static void DrawClothForSkirt (Character character, int spriteID) => DrawClothForSkirt(character, spriteID, Const.WHITE);
 		public static void DrawClothForSkirt (Character character, int spriteID, Color32 tint) {
 
-			if (spriteID == 0) return;
+			if (spriteID == 0 || character.Hip.FullyCovered) return;
 			if (
 				!CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var sprite, false, true) &&
 				!CellRenderer.TryGetSprite(spriteID, out sprite)
@@ -593,7 +591,7 @@ namespace AngeliaFramework {
 
 		public static void DrawClothForFoot (BodyPart foot, int spriteID) => DrawClothForFoot(foot, spriteID, Const.WHITE);
 		public static void DrawClothForFoot (BodyPart foot, int spriteID, Color32 tint) {
-			if (spriteID == 0) return;
+			if (spriteID == 0 || foot.FullyCovered) return;
 			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
 			var location = foot.GlobalLerp(0f, 0f);
 			int width = Mathf.Max(foot.Width.Abs(), sprite.GlobalWidth);
@@ -613,54 +611,17 @@ namespace AngeliaFramework {
 				);
 			}
 			if (!CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) || meta.Tag != Const.SHOW_LIMB_TAG) {
-				foot.Tint = Const.CLEAR;
+				foot.FullyCovered = true;
 			}
 		}
 
 
-		public static void DrawArmorForShoulder (Character character, int spriteID, int rotationAmount = 700) {
-			var animatedPoseType = character.AnimatedPoseType;
-			var upperArmL = character.UpperArmL;
-			var upperArmR = character.UpperArmR;
-			if (
-				animatedPoseType == CharacterPoseAnimationType.Sleep ||
-				animatedPoseType == CharacterPoseAnimationType.PassOut
-			) return;
-			AttachClothOn(
-				upperArmL, Direction3.Up, spriteID, 36, true,
-				(-upperArmL.Rotation * rotationAmount / 1000).Clamp(-upperArmL.Rotation - 30, -upperArmL.Rotation + 30)
-			);
-			AttachClothOn(
-				upperArmR, Direction3.Up, spriteID, 36, false,
-				(-upperArmR.Rotation * rotationAmount / 1000).Clamp(-upperArmR.Rotation - 30, -upperArmR.Rotation + 30)
-			);
-		}
-
-
-		public static void DrawArmorForLimb (Character character, int armSpriteID, int legSpriteID) {
-			AttachClothOn(character.LowerArmL, Direction3.Up, armSpriteID, character.LowerArmL.Z + 16, true);
-			AttachClothOn(character.LowerArmR, Direction3.Up, armSpriteID, character.LowerArmR.Z + 16, false);
-			AttachClothOn(character.LowerLegL, Direction3.Up, legSpriteID, character.LowerLegL.Z + 16, !character.FacingRight);
-			AttachClothOn(character.LowerLegR, Direction3.Up, legSpriteID, character.LowerLegR.Z + 16, !character.FacingRight);
-		}
-
-
 		public static Cell[] AttachClothOn (
-			BodyPart bodyPart, Direction3 verticalLocation, int spriteID, int z,
-			bool flipX = false, int localRotation = 0, int shiftPixelX = 0, int shiftPixelY = 0
-		) => AttachClothOn(bodyPart, verticalLocation, spriteID, z, 1000, 1000, flipX, localRotation, shiftPixelX, shiftPixelY);
-		public static Cell[] AttachClothOn (
-			BodyPart bodyPart, Direction3 verticalLocation, int spriteID, int z,
-			int widthAmount = 1000, int heightAmount = 1000, bool flipX = false, int localRotation = 0, int shiftPixelX = 0, int shiftPixelY = 0
+			BodyPart bodyPart, AngeSprite sprite, int locationX, int locationY, int z,
+			int widthAmount = 1000, int heightAmount = 1000,
+			int localRotation = 0, int shiftPixelX = 0, int shiftPixelY = 0, bool defaultHideLimb = true
 		) {
-			if (spriteID == 0) return null;
-			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return null;
-			var location = verticalLocation switch {
-				Direction3.Up => bodyPart.GlobalLerp(0.5f, 1f),
-				Direction3.None => bodyPart.GlobalLerp(0.5f, 0.5f),
-				Direction3.Down => bodyPart.GlobalLerp(0.5f, 0f),
-				_ => bodyPart.GlobalLerp(0.5f, 1f),
-			};
+			var location = bodyPart.GlobalLerp(locationX / 1000f, locationY / 1000f);
 			location.x += shiftPixelX;
 			location.y += shiftPixelY;
 			Cell[] result;
@@ -670,7 +631,7 @@ namespace AngeliaFramework {
 					location.x,
 					location.y,
 					sprite.PivotX, sprite.PivotY, bodyPart.Rotation + localRotation,
-					(flipX ? -sprite.GlobalWidth : sprite.GlobalWidth) * widthAmount / 1000,
+					(bodyPart.Width > 0 ? sprite.GlobalWidth : -sprite.GlobalWidth) * widthAmount / 1000,
 					(bodyPart.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight) * heightAmount / 1000,
 					z
 				);
@@ -682,20 +643,26 @@ namespace AngeliaFramework {
 					location.x,
 					location.y,
 					sprite.PivotX, sprite.PivotY, bodyPart.Rotation + localRotation,
-					(flipX ? -sprite.GlobalWidth : sprite.GlobalWidth) * widthAmount / 1000,
+					(bodyPart.Width > 0 ? sprite.GlobalWidth : -sprite.GlobalWidth) * widthAmount / 1000,
 					(bodyPart.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight) * heightAmount / 1000,
 					z
 				);
 			}
-			if (CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG) {
-				bodyPart.Tint = Const.CLEAR;
+			if (defaultHideLimb) {
+				if (!CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) || meta.Tag != Const.SHOW_LIMB_TAG) {
+					bodyPart.FullyCovered = true;
+				}
+			} else {
+				if (CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG) {
+					bodyPart.FullyCovered = true;
+				}
 			}
 			return result;
 		}
 
 
 		public static void CoverClothOn (BodyPart bodyPart, int spriteID, int z, Color32 tint, bool defaultHideLimb = true) {
-			if (spriteID == 0 || !CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
+			if (spriteID == 0 || bodyPart.FullyCovered || !CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
 			if (sprite.GlobalBorder.IsZero) {
 				CellRenderer.Draw(
 					spriteID, bodyPart.GlobalX, bodyPart.GlobalY,
@@ -711,11 +678,11 @@ namespace AngeliaFramework {
 			}
 			if (defaultHideLimb) {
 				if (!CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) || meta.Tag != Const.SHOW_LIMB_TAG) {
-					bodyPart.Tint = Const.CLEAR;
+					bodyPart.FullyCovered = true;
 				}
 			} else {
 				if (CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG) {
-					bodyPart.Tint = Const.CLEAR;
+					bodyPart.FullyCovered = true;
 				}
 			}
 		}

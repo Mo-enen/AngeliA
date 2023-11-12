@@ -6,7 +6,7 @@ using UnityEngine;
 namespace AngeliaFramework {
 
 
-	public enum EquipmentType { Weapon, BodySuit, Helmet, Shoes, Gloves, Jewelry, }
+	public enum EquipmentType { Weapon, Body, Helmet, Shoes, Gloves, Jewelry, }
 
 
 	[EntityAttribute.MapEditorGroup("ItemEquipment")]
@@ -18,6 +18,7 @@ namespace AngeliaFramework {
 		public abstract EquipmentType EquipmentType { get; }
 		public sealed override int MaxStackCount => 1;
 
+		// API
 		public static void SpawnItemLostParticle (int itemID, int x, int y) {
 			if (ItemLostParticleID == 0) return;
 			if (Stage.SpawnEntity(ItemLostParticleID, x, y) is not Particle particle) return;

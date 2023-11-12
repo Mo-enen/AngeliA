@@ -108,7 +108,7 @@ namespace AngeliaFramework {
 		private int ItemInfoScrollPosition = 0;
 		private int PrevCursorIndex = -1;
 		private bool PrevCursorInBottomPanel = true;
-		private EquipmentType EquipFlashType = EquipmentType.BodySuit;
+		private EquipmentType EquipFlashType = EquipmentType.Body;
 		private RectInt TopPanelRect = default;
 		private RectInt BottomPanelRect = default;
 		private Vector3Int FlashingField = new(-1, 0, 0);
@@ -747,7 +747,7 @@ namespace AngeliaFramework {
 			);
 			DrawEquipmentItem(
 				3, interactable && player.BodySuitAvailable, new RectInt(left + width, top - itemHeight * 2, width, itemHeight),
-				EquipmentType.BodySuit, Language.Get(UI_BODYSUIT, "Armor")
+				EquipmentType.Body, Language.Get(UI_BODYSUIT, "Armor")
 			);
 			DrawEquipmentItem(
 				4, interactable && player.WeaponAvailable, new RectInt(left, top - itemHeight * 1, width, itemHeight),

@@ -630,7 +630,7 @@ namespace AngeliaFramework {
 
 		public bool EquipmentAvailable (EquipmentType equipmentType) => equipmentType switch {
 			EquipmentType.Weapon => WeaponAvailable,
-			EquipmentType.BodySuit => BodySuitAvailable,
+			EquipmentType.Body => BodySuitAvailable,
 			EquipmentType.Helmet => HelmetAvailable,
 			EquipmentType.Shoes => ShoesAvailable,
 			EquipmentType.Gloves => GlovesAvailable,

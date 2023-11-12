@@ -51,6 +51,7 @@ namespace AngeliaFramework {
 		public int PivotX;
 		public int PivotY;
 		public bool FrontSide;
+		public bool FullyCovered;
 		public Color32 Tint;
 
 
