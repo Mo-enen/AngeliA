@@ -97,14 +97,20 @@ namespace AngeliaFramework {
 
 
 		public Vector2Int GetLocalCenter () {
-			var result = new Vector2Int(X, Y);
 			var v = Quaternion.Euler(0, 0, -Rotation) * new Vector2(
 				Width / 2f - Width * PivotX / 1000f,
 				Height / 2f - Height * PivotY / 1000f
 			);
-			result.x += (int)v.x;
-			result.y += (int)v.y;
-			return result;
+			return new Vector2Int(X + (int)v.x, Y + (int)v.y);
+		}
+
+
+		public Vector2Int GetGlobalCenter () {
+			var v = Quaternion.Euler(0, 0, -Rotation) * new Vector2(
+				Width / 2f - Width * PivotX / 1000f,
+				Height / 2f - Height * PivotY / 1000f
+			);
+			return new Vector2Int(GlobalX + (int)v.x, GlobalY + (int)v.y);
 		}
 
 

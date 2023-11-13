@@ -47,6 +47,7 @@ namespace AngeliaFramework {
 			this.z = z;
 			this.w = w;
 		}
+		public static Vector4Int Direction (int left, int right, int down, int up) => new(left, right, down, up);
 
 		public static Vector4Int operator * (int b, Vector4Int a) => a * b;
 		public static bool operator == (Vector4Int a, Vector4Int b) => a.Equals(b);

@@ -538,10 +538,10 @@ namespace AngeliaFramework {
 
 			// Final
 			Target.HandGrabRotationL =
-				Target.EquippingWeaponHeld == WeaponHandHeld.OneOnEachHand ? 100 :
+				Target.EquippingWeaponHeld == WeaponHandHeld.OneOnEachHand ? FacingRight ? 80 : -100 :
 				FacingSign * 100;
 			Target.HandGrabRotationR =
-				Target.EquippingWeaponHeld == WeaponHandHeld.OneOnEachHand ? -100 :
+				Target.EquippingWeaponHeld == WeaponHandHeld.OneOnEachHand ? FacingRight ? 100 : -80 :
 				FacingSign * 100;
 
 		}
@@ -613,10 +613,10 @@ namespace AngeliaFramework {
 
 			// Final
 			Target.HandGrabRotationL =
-				Target.EquippingWeaponHeld == WeaponHandHeld.OneOnEachHand ? 100 :
+				Target.EquippingWeaponHeld == WeaponHandHeld.OneOnEachHand ? FacingRight ? 80 : -100 :
 				FacingSign * 100;
 			Target.HandGrabRotationR =
-				Target.EquippingWeaponHeld == WeaponHandHeld.OneOnEachHand ? -100 :
+				Target.EquippingWeaponHeld == WeaponHandHeld.OneOnEachHand ? FacingRight ? 100 : -80 :
 				FacingSign * 100;
 
 		}

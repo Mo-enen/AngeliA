@@ -7,10 +7,14 @@ namespace AngeliaFramework {
 	public abstract class Armor : Equipment {
 
 
+		// SUB
+		protected enum WrapMode { Cover, Attach, }
+
 		// VAR
 		protected virtual System.Type PrevEquipment => null;
 		protected virtual System.Type NextEquipment => null;
 		protected virtual System.Type[] RepairMaterials => null;
+		protected virtual WrapMode WrapingMode => WrapMode.Cover;
 
 		private readonly int[] SpritesID = new int[8];
 		private readonly int PrevEquipmentID;
@@ -93,33 +97,101 @@ namespace AngeliaFramework {
 			int lowerLegID = SpritesID[7];
 
 			// Body
-			if (bodyID != 0 && CellRenderer.TryGetSprite(bodyID, out var bodySprite)) {
-				//Cloth.AttachClothOn(
-				//	character.Body, bodySprite, 500, 1000, character.Body.Z + 10,
-				//	defaultHideLimb: false
-				//);
+			if (bodyID != 0) {
+				if (WrapingMode == WrapMode.Cover) {
+					Cloth.CoverClothOn(character.Body, bodyID, 8);
+				} else if (CellRenderer.TryGetSprite(bodyID, out var bodySprite)) {
+					Cloth.AttachClothOn(character.Body, bodySprite, 500, 1000, 8, defaultHideLimb: false);
+				}
 			}
 
 			// Hip
-			if (hipID != 0) {
-
-
+			if (hipID != 0 && CellRenderer.TryGetSprite(hipID, out var hipSprite)) {
+				Cloth.AttachClothOn(character.Hip, hipSprite, 500, 1000, 8, defaultHideLimb: false);
 			}
 
+			// Shoulder
+			if (shoulderID != 0 && CellRenderer.TryGetSprite(shoulderID, out var shoulderSprite)) {
+				Cloth.AttachClothOn(character.ShoulderL, shoulderSprite, 1000, 1000, 16);
+				Cloth.AttachClothOn(character.ShoulderR, shoulderSprite, 1000, 1000, 16);
+			}
 
+			// Arm
+			if (upperArmID != 0) {
+				Cloth.CoverClothOn(character.UpperArmL, upperArmID, 3);
+				Cloth.CoverClothOn(character.UpperArmR, upperArmID, 3);
+			}
+			if (lowerArmID != 0) {
+				Cloth.CoverClothOn(character.LowerArmL, lowerArmID, 3);
+				Cloth.CoverClothOn(character.LowerArmR, lowerArmID, 3);
+			}
+
+			// Leg
+			if (upperLegID != 0) {
+				Cloth.CoverClothOn(character.UpperLegL, upperLegID, 3);
+				Cloth.CoverClothOn(character.UpperLegR, upperLegID, 3);
+			}
+			if (lowerLegID != 0) {
+				Cloth.CoverClothOn(character.LowerLegL, lowerLegID, 3);
+				Cloth.CoverClothOn(character.LowerLegR, lowerLegID, 3);
+			}
 
 		}
 
 		private void DrawHelmet (Character character) {
 
+			var head = character.Head;
+			int spriteID = SpritesID[head.FrontSide ? 0 : 1];
+			if (spriteID == 0 || !CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
+			Cell[] cells;
+
+			// Draw Helmet
+			if (WrapingMode == WrapMode.Cover) {
+				cells = Cloth.CoverClothOn(
+					head, spriteID, 34 - head.Z, Const.WHITE, false
+				);
+			} else {
+				cells = Cloth.AttachClothOn(
+					head, sprite, 500, 1000, 34 - head.Z, defaultHideLimb: false
+				);
+			}
+
+			// Grow Padding
+			if (!sprite.GlobalBorder.IsZero && cells != null) {
+				var center = head.GetGlobalCenter();
+				int widthAbs = head.Width.Abs();
+				int heightAbs = head.Height.Abs();
+				float scaleX = (widthAbs + sprite.GlobalBorder.horizontal) / (float)widthAbs.GreaterOrEquel(1);
+				float scaleY = (heightAbs + sprite.GlobalBorder.vertical) / (float)heightAbs.GreaterOrEquel(1);
+				foreach (var cell in cells) {
+					cell.ReturnPosition(center.x, center.y);
+					cell.Width = (int)(cell.Width * scaleX);
+					cell.Height = (int)(cell.Height * scaleY);
+				}
+			}
+
+			// Head Rotate
+			if (cells != null && character.HeadRotation != 0) {
+				int offsetY = character.Head.Height.Abs() * character.HeadRotation.Abs() / 360;
+				foreach (var cell in cells) {
+					cell.RotateAround(character.HeadRotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
+					cell.Y -= offsetY;
+				}
+			}
 		}
 
 		private void DrawShoes (Character character) {
-
+			int spriteID = SpritesID[0];
+			if (spriteID == 0) return;
+			Cloth.CoverClothOn(character.FootL, spriteID);
+			Cloth.CoverClothOn(character.FootR, spriteID);
 		}
 
 		private void DrawGloves (Character character) {
-
+			int spriteID = SpritesID[0];
+			if (spriteID == 0) return;
+			Cloth.CoverClothOn(character.HandL, spriteID);
+			Cloth.CoverClothOn(character.HandR, spriteID);
 		}
 
 

@@ -114,6 +114,13 @@ namespace AngeliaFramework {
 			PivotX = newPivotX;
 			PivotY = newPivotY;
 		}
+		public void ReturnPosition (int globalX, int globalY) {
+			var localPoint = GlobalToLocal(globalX, globalY);
+			PivotX = (float)localPoint.x / Width;
+			PivotY = (float)localPoint.y / Height;
+			X = globalX;
+			Y = globalY;
+		}
 		public void RotateAround (int rotation, int pointX, int pointY) {
 			if (rotation == Rotation || Width == 0 || Height == 0) return;
 			var localPoint = GlobalToLocal(pointX, pointY);

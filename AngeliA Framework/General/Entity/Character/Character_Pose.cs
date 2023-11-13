@@ -265,8 +265,8 @@ namespace AngeliaFramework {
 			PerformPoseAnimation_Movement();
 			PerformPoseAnimation_Handheld();
 			PerformPoseAnimation_Attack();
-			PoseUpdate_Items();
 			PoseUpdate_HeadTwist();
+			PoseUpdate_Items();
 
 			Wing.Draw(this);
 			Tail.Draw(this);
