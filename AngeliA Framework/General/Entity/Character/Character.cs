@@ -104,6 +104,44 @@ namespace AngeliaFramework {
 		public override void BeforePhysicsUpdate () {
 			base.BeforePhysicsUpdate();
 			PoseZOffset = 0;
+			BeforeUpdate_BuffValue();
+		}
+
+
+		private void BeforeUpdate_BuffValue () {
+
+			AttackDuration.Override = null;
+			AttackCooldown.Override = null;
+			RepeatAttackWhenHolding.Override = null;
+			MinimalChargeAttackDuration.Override = null;
+			LockFacingOnAttack.Override = null;
+			MovementLoseRateOnAttack.Override = null;
+
+			int invCapacity = GetInventoryCapacity();
+			if (invCapacity > 0) {
+
+				// Inventory
+				for (int i = 0; i < invCapacity; i++) {
+					GetItemFromInventory(i)?.BeforeItemUpdate_FromInventory(this);
+				}
+
+				// Equipping
+				for (int i = 0; i < EquipmentTypeCount; i++) {
+					var type = (EquipmentType)i;
+					var item = GetEquippingItem(type);
+					if (item == null) continue;
+					item.BeforeItemUpdate_FromEquipment(this);
+					if (item is Weapon weapon) {
+						AttackDuration.Override = weapon.AttackDuration;
+						AttackCooldown.Override = weapon.AttackCooldown;
+						RepeatAttackWhenHolding.Override = weapon.RepeatAttackWhenHolding;
+						MinimalChargeAttackDuration.Override = weapon.ChargeAttackDuration;
+						LockFacingOnAttack.Override = weapon.LockFacingOnAttack;
+						MovementLoseRateOnAttack.Override = weapon.MovementLoseRateOnAttack;
+					}
+				}
+			}
+
 		}
 
 
@@ -321,13 +359,6 @@ namespace AngeliaFramework {
 
 		private void FrameUpdate_Inventory () {
 
-			AttackDuration.Override = null;
-			AttackCooldown.Override = null;
-			RepeatAttackWhenHolding.Override = null;
-			MinimalChargeAttackDuration.Override = null;
-			LockFacingOnAttack.Override = null;
-			MovementLoseRateOnAttack.Override = null;
-
 			int invCapacity = GetInventoryCapacity();
 			if (invCapacity > 0) {
 
@@ -351,12 +382,6 @@ namespace AngeliaFramework {
 					if (squatStart) item.OnSquat(this);
 					if (item is Weapon weapon) {
 						equippingWeapon = true;
-						AttackDuration.Override = weapon.AttackDuration;
-						AttackCooldown.Override = weapon.AttackCooldown;
-						RepeatAttackWhenHolding.Override = weapon.RepeatAttackWhenHolding;
-						MinimalChargeAttackDuration.Override = weapon.ChargeAttackDuration;
-						LockFacingOnAttack.Override = weapon.LockFacingOnAttack;
-						MovementLoseRateOnAttack.Override = weapon.MovementLoseRateOnAttack;
 						if (attackStart) Bullet.SpawnBullet(weapon.BulletID, this, weapon);
 					}
 				}

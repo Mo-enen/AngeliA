@@ -30,14 +30,17 @@ namespace AngeliaFramework {
 			string basicName = GetType().AngeName();
 			switch (EquipmentType) {
 				case EquipmentType.Body:
-					SpritesID[0] = $"{basicName}.Body".AngeHash();
-					SpritesID[1] = $"{basicName}.Back".AngeHash();
-					SpritesID[2] = $"{basicName}.Hip".AngeHash();
-					SpritesID[3] = $"{basicName}.Shoulder".AngeHash();
-					SpritesID[4] = $"{basicName}.UpperArm".AngeHash();
-					SpritesID[5] = $"{basicName}.LowerArm".AngeHash();
-					SpritesID[6] = $"{basicName}.UpperLeg".AngeHash();
-					SpritesID[7] = $"{basicName}.LowerLeg".AngeHash();
+					SpritesID[0] = SpritesID[7] = $"{basicName}.Body".AngeHash();
+					SpritesID[1] = $"{basicName}.Hip".AngeHash();
+					SpritesID[2] = $"{basicName}.Shoulder".AngeHash();
+					SpritesID[3] = $"{basicName}.UpperArm".AngeHash();
+					SpritesID[4] = $"{basicName}.LowerArm".AngeHash();
+					SpritesID[5] = $"{basicName}.UpperLeg".AngeHash();
+					SpritesID[6] = $"{basicName}.LowerLeg".AngeHash();
+					if (!CellRenderer.HasSpriteGroup(SpritesID[0])) {
+						SpritesID[0] = $"{basicName}.BodyL".AngeHash();
+						SpritesID[7] = $"{basicName}.BodyR".AngeHash();
+					}
 					break;
 				case EquipmentType.Helmet:
 					SpritesID[0] = $"{basicName}.Main".AngeHash();
@@ -52,7 +55,7 @@ namespace AngeliaFramework {
 			}
 			for (int i = 0; i < SpritesID.Length; i++) {
 				int id = SpritesID[i];
-				if (id != 0 && !CellRenderer.HasSprite(id)) SpritesID[i] = 0;
+				if (id != 0 && !CellRenderer.HasSprite(id) && !CellRenderer.HasSpriteGroup(id)) SpritesID[i] = 0;
 			}
 		}
 
@@ -88,26 +91,38 @@ namespace AngeliaFramework {
 
 		private void DrawBodyArmor (Character character) {
 
-			int bodyID = SpritesID[character.Body.FrontSide ? 0 : 1];
-			int hipID = SpritesID[2];
-			int shoulderID = SpritesID[3];
-			int upperArmID = SpritesID[4];
-			int lowerArmID = SpritesID[5];
-			int upperLegID = SpritesID[6];
-			int lowerLegID = SpritesID[7];
+			int bodyId = SpritesID[0];
+			int bodyIdAlt = SpritesID[7];
+			int hipID = SpritesID[1];
+			int shoulderID = SpritesID[2];
+			int upperArmID = SpritesID[3];
+			int lowerArmID = SpritesID[4];
+			int upperLegID = SpritesID[5];
+			int lowerLegID = SpritesID[6];
 
 			// Body
-			if (bodyID != 0) {
+			if (bodyId != 0 || bodyIdAlt != 0) {
 				if (WrapingMode == WrapMode.Cover) {
-					Cloth.CoverClothOn(character.Body, bodyID, 8);
-				} else if (CellRenderer.TryGetSprite(bodyID, out var bodySprite)) {
-					Cloth.AttachClothOn(character.Body, bodySprite, 500, 1000, 8, defaultHideLimb: false);
+					Cloth.DrawClothForBody(character, bodyId, bodyIdAlt, 8);
+				} else if (CellRenderer.TryGetSprite(bodyId, out var bodySprite)) {
+					Cloth.AttachClothOn(
+						character.Body, bodySprite, 500, 1000, 8,
+						widthAmount: character.Body.Width > 0 ? 1000 : -1000,
+						defaultHideLimb: false
+					);
 				}
 			}
 
 			// Hip
 			if (hipID != 0 && CellRenderer.TryGetSprite(hipID, out var hipSprite)) {
 				Cloth.AttachClothOn(character.Hip, hipSprite, 500, 1000, 8, defaultHideLimb: false);
+			}
+
+			// Cape
+			if (bodyId != 0 && CellRenderer.TryGetSpriteFromGroup(
+				bodyId, character.Body.FrontSide ? 4 : 5, out var capeSprite, false, false
+			)) {
+				Cloth.DrawCape(character, capeSprite);
 			}
 
 			// Shoulder

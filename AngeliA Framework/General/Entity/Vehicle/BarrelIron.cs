@@ -151,19 +151,17 @@ namespace AngeliaFramework {
 
 			// Check for New Driver Join
 			if (characterDriver == null) {
-				int shrinkX = DeltaPositionX.Abs() + 1;
-				if (CellPhysics.GetEntity<Player>(
-					Rect.Shrink(shrinkX, shrinkX, 0, 0).Edge(Direction4.Up, 1),
+				int shrinkX = DeltaPositionX.Abs() + 16;
+				var hits = CellPhysics.OverlapAll(
 					Const.MASK_RIGIDBODY,
-					this
-				) is Player player) {
-					characterDriver = player;
-				} else if (CellPhysics.GetEntity<Character>(
 					Rect.Shrink(shrinkX, shrinkX, 0, 0).Edge(Direction4.Up, 1),
-					Const.MASK_RIGIDBODY,
-					this
-				) is Character driver) {
-					characterDriver = driver;
+					out int count, this
+				);
+				for (int i = 0; i < count; i++) {
+					var hit = hits[i];
+					if (hit.Entity is Character characterHit && characterHit.Y >= Rect.yMax) {
+						characterDriver = characterHit;
+					}
 				}
 			}
 

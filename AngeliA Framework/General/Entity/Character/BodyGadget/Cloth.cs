@@ -29,14 +29,14 @@ namespace AngeliaFramework {
 		public AutoSpriteCloth () {
 			string name = (GetType().DeclaringType ?? GetType()).AngeName();
 			SpriteID0 = $"{name}.{ClothType}Suit".AngeHash();
-			SpriteID4 = 0;
+			SpriteID4 = SpriteID0;
 			if (!CellRenderer.HasSprite(SpriteID0) && !CellRenderer.HasSpriteGroup(SpriteID0)) SpriteID0 = 0;
 			if (ClothType == ClothType.Body) {
 				if (SpriteID0 == 0) {
 					SpriteID0 = $"{name}.BodySuitL".AngeHash();
 					SpriteID4 = $"{name}.BodySuitR".AngeHash();
 					if (!CellRenderer.HasSprite(SpriteID0) && !CellRenderer.HasSpriteGroup(SpriteID0)) SpriteID0 = 0;
-					if (!CellRenderer.HasSprite(SpriteID4) && !CellRenderer.HasSpriteGroup(SpriteID4)) SpriteID4 = 0;
+					if (!CellRenderer.HasSprite(SpriteID4) && !CellRenderer.HasSpriteGroup(SpriteID4)) SpriteID4 = SpriteID0;
 				}
 				SpriteID1 = $"{name}.ShoulderSuit".AngeHash();
 				SpriteID2 = $"{name}.UpperArmSuit".AngeHash();
@@ -62,11 +62,7 @@ namespace AngeliaFramework {
 			if (ClothType != ClothType.Body) return;
 			if (SpriteID0 != 0) {
 				// Body
-				if (SpriteID4 == 0 || character.Body.Width < 0) {
-					DrawClothForBody(character, SpriteID0, SpriteID4 == 0);
-				} else {
-					DrawClothForBody(character, SpriteID4, false);
-				}
+				DrawClothForBody(character, SpriteID0, SpriteID4, 7);
 			}
 			if (SpriteID1 != 0) {
 				// Shoulder
@@ -435,10 +431,12 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void DrawClothForBody (Character character, int spriteGroupId, bool flipWithBody = true) => DrawClothForBody(character, spriteGroupId, Const.WHITE, flipWithBody);
-		public static void DrawClothForBody (Character character, int spriteGroupId, Color32 tint, bool flipWithBody = true) {
+		public static void DrawClothForBody (Character character, int spriteGroupIdLeft, int spriteGroupIdRight, int localZ) {
 
 			var body = character.Body;
+			bool facingRight = body.Width > 0;
+			bool separatedSprite = spriteGroupIdLeft != spriteGroupIdRight;
+			int spriteGroupId = facingRight ? spriteGroupIdRight : spriteGroupIdLeft;
 			if (spriteGroupId == 0 || body.FullyCovered) return;
 
 			var hip = character.Hip;
@@ -446,8 +444,9 @@ namespace AngeliaFramework {
 
 			int groupIndex = !body.FrontSide ? 3 :
 				poseTwist.Abs() < 333 ? 0 :
-				(flipWithBody || body.Width > 0) == (body.Width > 0 == (poseTwist < 0)) ? 1 :
-				2;
+				separatedSprite ?
+					(facingRight == poseTwist < 0 ? 1 : 2) :
+					(facingRight == poseTwist < 0 ? 1 : 2);
 			if (!CellRenderer.TryGetSpriteFromGroup(spriteGroupId, groupIndex, out var suitSprite, false, true)) return;
 
 			var rect = new RectInt(
@@ -477,10 +476,10 @@ namespace AngeliaFramework {
 			}
 
 			// Flip
-			if (!flipWithBody && body.Width < 0) rect.FlipHorizontal();
+			if (separatedSprite && !facingRight) rect.FlipHorizontal();
 
 			// Draw
-			CellRenderer.Draw(suitSprite.GlobalID, rect, tint, body.Z + 7);
+			CellRenderer.Draw(suitSprite.GlobalID, rect, body.Z + localZ);
 
 			// Hide Limb
 			if (CellRenderer.TryGetMeta(suitSprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG) {
@@ -489,8 +488,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void DrawClothForHip (Character character, int spriteID) => DrawClothForHip(character, spriteID, Const.WHITE);
-		public static void DrawClothForHip (Character character, int spriteID, Color32 tint) {
+		public static void DrawClothForHip (Character character, int spriteID) {
 
 			var hip = character.Hip;
 			if (spriteID == 0 || hip.FullyCovered) return;
@@ -520,15 +518,14 @@ namespace AngeliaFramework {
 
 			// Draw
 			CellRenderer.Draw(
-				sprite.GlobalID, rect, tint,
+				sprite.GlobalID, rect,
 				CellRenderer.TryGetMeta(spriteID, out var meta) && meta.IsTrigger ? hip.Z + 4 : hip.Z + 1
 			);
 
 		}
 
 
-		public static void DrawClothForSkirt (Character character, int spriteID) => DrawClothForSkirt(character, spriteID, Const.WHITE);
-		public static void DrawClothForSkirt (Character character, int spriteID, Color32 tint) {
+		public static void DrawClothForSkirt (Character character, int spriteID) {
 
 			var hip = character.Hip;
 			if (spriteID == 0 || hip.FullyCovered) return;
@@ -578,7 +575,7 @@ namespace AngeliaFramework {
 				500, 1000, 0,
 				width,
 				body.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight,
-				tint, z
+				z
 			);
 
 			// Func
@@ -591,24 +588,23 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void DrawClothForFoot (BodyPart foot, int spriteID) => DrawClothForFoot(foot, spriteID, Const.WHITE);
-		public static void DrawClothForFoot (BodyPart foot, int spriteID, Color32 tint) {
+		public static void DrawClothForFoot (BodyPart foot, int spriteID) {
 			if (spriteID == 0 || foot.FullyCovered) return;
 			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
-			var location = foot.GlobalLerp(0f, 1f);
+			var location = foot.GlobalLerp(0f, 0f);
 			if (sprite.GlobalBorder.IsZero) {
 				CellRenderer.Draw(
 					spriteID, location.x, location.y,
-					0, 1000, foot.Rotation,
+					0, 0, foot.Rotation,
 					foot.Width.Sign() * sprite.GlobalWidth, sprite.GlobalHeight,
-					tint, foot.Z + 1
+					foot.Z + 1
 				);
 			} else {
 				CellRenderer.Draw_9Slice(
 					spriteID, location.x, location.y,
-					0, 1000, foot.Rotation,
+					0, 0, foot.Rotation,
 					foot.Width.Sign() * sprite.GlobalWidth, sprite.GlobalHeight,
-					tint, foot.Z + 1
+					foot.Z + 1
 				);
 			}
 			if (!CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) || meta.Tag != Const.SHOW_LIMB_TAG) {
@@ -762,7 +758,6 @@ namespace AngeliaFramework {
 		public static void DrawCape (Character character, int groupID, int motionAmount = 1000) {
 
 			var animatedPoseType = character.AnimatedPoseType;
-			var body = character.Body;
 			if (
 				animatedPoseType == CharacterPoseAnimationType.SquatIdle ||
 				animatedPoseType == CharacterPoseAnimationType.SquatMove ||
@@ -772,8 +767,15 @@ namespace AngeliaFramework {
 				animatedPoseType == CharacterPoseAnimationType.Sleep ||
 				animatedPoseType == CharacterPoseAnimationType.PassOut ||
 				groupID == 0 ||
-				!CellRenderer.TryGetSpriteFromGroup(groupID, body.FrontSide ? 0 : 1, out var sprite, false, true)
+				!CellRenderer.TryGetSpriteFromGroup(groupID, character.Body.FrontSide ? 0 : 1, out var sprite, false, true)
 			) return;
+
+			DrawCape(character, sprite, motionAmount);
+
+		}
+		public static void DrawCape (Character character, AngeSprite sprite, int motionAmount = 1000) {
+
+			var body = character.Body;
 
 			// Draw
 			int height = sprite.GlobalHeight + body.Height.Abs() - body.SizeY;
@@ -811,7 +813,6 @@ namespace AngeliaFramework {
 				cells[7].Height = cells[7].Height * offsetAmountY / 1000;
 				cells[8].Height = cells[8].Height * offsetAmountY / 1000;
 			}
-
 		}
 
 
