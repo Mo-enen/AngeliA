@@ -488,7 +488,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void DrawClothForHip (Character character, int spriteID) {
+		public static void DrawClothForHip (Character character, int spriteID, int localZ = 1) {
 
 			var hip = character.Hip;
 			if (spriteID == 0 || hip.FullyCovered) return;
@@ -516,16 +516,21 @@ namespace AngeliaFramework {
 				}
 			}
 
+			// Limb
+			if (CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG) {
+				hip.FullyCovered = true;
+			}
+
 			// Draw
 			CellRenderer.Draw(
 				sprite.GlobalID, rect,
-				CellRenderer.TryGetMeta(spriteID, out var meta) && meta.IsTrigger ? hip.Z + 4 : hip.Z + 1
+				meta != null && meta.IsTrigger ? hip.Z + localZ + 3 : hip.Z + localZ
 			);
 
 		}
 
 
-		public static void DrawClothForSkirt (Character character, int spriteID) {
+		public static void DrawClothForSkirt (Character character, int spriteID, int localZ = 6) {
 
 			var hip = character.Hip;
 			if (spriteID == 0 || hip.FullyCovered) return;
@@ -567,7 +572,6 @@ namespace AngeliaFramework {
 				_ => 0,
 			};
 			int offsetY = sprite.GlobalHeight * (1000 - sprite.PivotY) / 1000 + shiftY;
-			int z = CellRenderer.TryGetMeta(spriteID, out var meta) && meta.IsTrigger ? hip.Z + 1 : hip.Z + 6;
 			CellRenderer.Draw(
 				sprite.GlobalID,
 				centerX,
@@ -575,8 +579,13 @@ namespace AngeliaFramework {
 				500, 1000, 0,
 				width,
 				body.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight,
-				z
+				z: CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger ? hip.Z + 1 : hip.Z + localZ
 			);
+
+			// Limb
+			if (meta != null && meta.Tag == Const.HIDE_LIMB_TAG) {
+				hip.FullyCovered = true;
+			}
 
 			// Func
 			static int Stretch (int rotL, int rotR) {
@@ -592,18 +601,19 @@ namespace AngeliaFramework {
 			if (spriteID == 0 || foot.FullyCovered) return;
 			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
 			var location = foot.GlobalLerp(0f, 0f);
+			int width = Mathf.Max(foot.Width, sprite.GlobalWidth);
 			if (sprite.GlobalBorder.IsZero) {
 				CellRenderer.Draw(
 					spriteID, location.x, location.y,
 					0, 0, foot.Rotation,
-					foot.Width.Sign() * sprite.GlobalWidth, sprite.GlobalHeight,
+					foot.Width.Sign() * width, sprite.GlobalHeight,
 					foot.Z + 1
 				);
 			} else {
 				CellRenderer.Draw_9Slice(
 					spriteID, location.x, location.y,
 					0, 0, foot.Rotation,
-					foot.Width.Sign() * sprite.GlobalWidth, sprite.GlobalHeight,
+					foot.Width.Sign() * width, sprite.GlobalHeight,
 					foot.Z + 1
 				);
 			}

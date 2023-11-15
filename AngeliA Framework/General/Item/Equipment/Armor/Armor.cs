@@ -7,20 +7,17 @@ namespace AngeliaFramework {
 	public abstract class Armor : Equipment {
 
 
-		// SUB
-		protected enum WrapMode { Cover, Attach, }
-
 		// VAR
 		protected virtual System.Type PrevEquipment => null;
 		protected virtual System.Type NextEquipment => null;
 		protected virtual System.Type[] RepairMaterials => null;
-		protected virtual WrapMode WrapingMode => WrapMode.Cover;
+		protected virtual int Scale => 1000;
 
 		private readonly int[] SpritesID = new int[8];
 		private readonly int PrevEquipmentID;
 		private readonly int NextEquipmentID;
 		private readonly int[] RepairMaterialsID;
-
+		private readonly bool IsSkirt = false;
 
 		// MSG
 		public Armor () {
@@ -30,6 +27,7 @@ namespace AngeliaFramework {
 			string basicName = GetType().AngeName();
 			switch (EquipmentType) {
 				case EquipmentType.Body:
+					IsSkirt = false;
 					SpritesID[0] = SpritesID[7] = $"{basicName}.Body".AngeHash();
 					SpritesID[1] = $"{basicName}.Hip".AngeHash();
 					SpritesID[2] = $"{basicName}.Shoulder".AngeHash();
@@ -40,6 +38,10 @@ namespace AngeliaFramework {
 					if (!CellRenderer.HasSpriteGroup(SpritesID[0])) {
 						SpritesID[0] = $"{basicName}.BodyL".AngeHash();
 						SpritesID[7] = $"{basicName}.BodyR".AngeHash();
+					}
+					if (!CellRenderer.HasSpriteGroup(SpritesID[1]) && !CellRenderer.HasSprite(SpritesID[1])) {
+						SpritesID[1] = $"{basicName}.Skirt".AngeHash();
+						IsSkirt = true;
 					}
 					break;
 				case EquipmentType.Helmet:
@@ -102,20 +104,27 @@ namespace AngeliaFramework {
 
 			// Body
 			if (bodyId != 0 || bodyIdAlt != 0) {
-				if (WrapingMode == WrapMode.Cover) {
+				if (CellRenderer.TryGetMeta(bodyId, out var meta) && meta.IsTrigger) {
+					if (CellRenderer.TryGetSprite(bodyId, out var bodySprite)) {
+						Cloth.AttachClothOn(
+							character.Body, bodySprite, 500, 1000, 8,
+							widthAmount: character.Body.Width > 0 ? Scale : -Scale,
+							heightAmount: Scale,
+							defaultHideLimb: false
+						);
+					}
+				} else {
 					Cloth.DrawClothForBody(character, bodyId, bodyIdAlt, 8);
-				} else if (CellRenderer.TryGetSprite(bodyId, out var bodySprite)) {
-					Cloth.AttachClothOn(
-						character.Body, bodySprite, 500, 1000, 8,
-						widthAmount: character.Body.Width > 0 ? 1000 : -1000,
-						defaultHideLimb: false
-					);
 				}
 			}
 
 			// Hip
-			if (hipID != 0 && CellRenderer.TryGetSprite(hipID, out var hipSprite)) {
-				Cloth.AttachClothOn(character.Hip, hipSprite, 500, 1000, 8, defaultHideLimb: false);
+			if (hipID != 0) {
+				if (IsSkirt) {
+					Cloth.DrawClothForSkirt(character, hipID, 7);
+				} else {
+					Cloth.DrawClothForHip(character, hipID, 2);
+				}
 			}
 
 			// Cape
@@ -161,27 +170,28 @@ namespace AngeliaFramework {
 			Cell[] cells;
 
 			// Draw Helmet
-			if (WrapingMode == WrapMode.Cover) {
+			if (CellRenderer.TryGetMeta(spriteID, out var meta) && meta.IsTrigger) {
+				// Attach
+				cells = Cloth.AttachClothOn(
+					head, sprite, 500, 1000, 34 - head.Z, Scale, Scale, defaultHideLimb: false
+				);
+			} else {
+				// Cover
 				cells = Cloth.CoverClothOn(
 					head, spriteID, 34 - head.Z, Const.WHITE, false
 				);
-			} else {
-				cells = Cloth.AttachClothOn(
-					head, sprite, 500, 1000, 34 - head.Z, defaultHideLimb: false
-				);
-			}
-
-			// Grow Padding
-			if (!sprite.GlobalBorder.IsZero && cells != null) {
-				var center = head.GetGlobalCenter();
-				int widthAbs = head.Width.Abs();
-				int heightAbs = head.Height.Abs();
-				float scaleX = (widthAbs + sprite.GlobalBorder.horizontal) / (float)widthAbs.GreaterOrEquel(1);
-				float scaleY = (heightAbs + sprite.GlobalBorder.vertical) / (float)heightAbs.GreaterOrEquel(1);
-				foreach (var cell in cells) {
-					cell.ReturnPosition(center.x, center.y);
-					cell.Width = (int)(cell.Width * scaleX);
-					cell.Height = (int)(cell.Height * scaleY);
+				// Grow Padding
+				if (!sprite.GlobalBorder.IsZero && cells != null) {
+					var center = head.GetGlobalCenter();
+					int widthAbs = head.Width.Abs();
+					int heightAbs = head.Height.Abs();
+					float scaleX = (widthAbs + sprite.GlobalBorder.horizontal) / (float)widthAbs.GreaterOrEquel(1);
+					float scaleY = (heightAbs + sprite.GlobalBorder.vertical) / (float)heightAbs.GreaterOrEquel(1);
+					foreach (var cell in cells) {
+						cell.ReturnPosition(center.x, center.y);
+						cell.Width = (int)(cell.Width * scaleX);
+						cell.Height = (int)(cell.Height * scaleY);
+					}
 				}
 			}
 
@@ -198,8 +208,8 @@ namespace AngeliaFramework {
 		private void DrawShoes (Character character) {
 			int spriteID = SpritesID[0];
 			if (spriteID == 0) return;
-			Cloth.CoverClothOn(character.FootL, spriteID);
-			Cloth.CoverClothOn(character.FootR, spriteID);
+			Cloth.DrawClothForFoot(character.FootL, spriteID);
+			Cloth.DrawClothForFoot(character.FootR, spriteID);
 		}
 
 		private void DrawGloves (Character character) {

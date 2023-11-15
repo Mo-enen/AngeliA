@@ -13,9 +13,11 @@ namespace AngeliaFramework {
 	}
 	public class iArmorWoodBroken : Armor {
 		protected override System.Type NextEquipment => typeof(iArmorWood);
-		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iTreeStump) };
+		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iTreeStump), typeof(iItemWoodBoard), };
 		public override EquipmentType EquipmentType => EquipmentType.Body;
 	}
+
+
 
 	[EntityAttribute.ItemCombination(typeof(iArmorWood), typeof(iIngotIron), 1)]
 	public class iArmorIron : Armor { public override EquipmentType EquipmentType => EquipmentType.Body; }

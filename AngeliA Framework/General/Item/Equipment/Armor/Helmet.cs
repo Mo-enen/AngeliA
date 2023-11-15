@@ -37,7 +37,10 @@ namespace AngeliaFramework {
 	public class iHelmetFull : Armor { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
 
 	[EntityAttribute.ItemCombination(typeof(iIngotGold), typeof(iIngotGold), typeof(iIngotGold), typeof(iCirclet), 1)]
-	public class iCrown : Armor { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
+	public class iCrown : Armor {
+		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override int Scale => 618;
+	}
 
 	[EntityAttribute.ItemCombination(typeof(iRunePoison), typeof(iHelmetWood), 1)]
 	public class iGasMask : Armor { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
