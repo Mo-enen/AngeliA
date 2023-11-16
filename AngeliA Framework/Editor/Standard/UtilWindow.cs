@@ -20,17 +20,19 @@ namespace AngeliaFramework.Editor {
 
 
 		// API
-		public static void OpenEditor<T> (string title = "") where T : UtilWindow {
+		public static T OpenEditor<T> (string title = "") where T : UtilWindow {
 			var window = GetWindow<T>(true, "", true);
 			window.minSize = new Vector2(256, 256);
 			window.maxSize = new Vector2(1024, 1024);
 			window.titleContent = new GUIContent(title);
+			return window;
 		}
-		public static void OpenEditor<T> (string title, Vector2 minSize, Vector2 maxSize) where T : UtilWindow {
+		public static T OpenEditor<T> (string title, Vector2 minSize, Vector2 maxSize) where T : UtilWindow {
 			var window = GetWindow<T>(true, "", true);
 			window.minSize = minSize;
 			window.maxSize = maxSize;
 			window.titleContent = new GUIContent(title);
+			return window;
 		}
 
 

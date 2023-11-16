@@ -1,5 +1,4 @@
-﻿UI.DontSave:Don't Save
-CtrlHint.Adjust:Adjust
+﻿CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
 CtrlHint.Drop:Drop
@@ -27,6 +26,7 @@ CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
 CtrlHint.Wardrobe.Type:Suit Type
 Hint.Pong.Move:Move
+Hint.Sokoban.Move:Move
 Hint.Tetris.Drop:Drop
 Hint.Tetris.Hold:Hold
 Hint.Tetris.Move:Move
@@ -72,9 +72,10 @@ Menu.Setting.SoundVolume:Sound Volume
 Menu.Setting.UseControlHint:Show Control Hint
 Menu.Setting.UseGamepadHint:Show Bottom Left Gamepad
 Menu.Setting.VSync:V-Sync
-MiniGameCraft:Crafting Editor
+Menu.Sokoban.AllCleared:Congratulations!! All levels has been cleared!
 MiniGameGomoku:Gomoku
 MiniGamePong:Pong
+MiniGameSokoban:Sokoban
 MiniGameTetris:Tetris
 Palette.Background:Background
 Palette.Character:Character
@@ -180,6 +181,7 @@ UI.BodyPart.Wing:Wing
 UI.Cancel:Cancel
 UI.Continue:Continue
 UI.Default:Default
+UI.DontSave:Don't Save
 UI.Down:Down
 UI.Equipment.Bodysuit:Armor
 UI.Equipment.Gloves:Gloves
@@ -215,6 +217,7 @@ UI.Restart:Restart
 UI.Right:Right
 UI.Save:Save
 UI.Setting:Setting
+UI.Sokoban.Level:Level:
 UI.Suit.Bodysuit:Cloth
 UI.Suit.Glove:Gloves
 UI.Suit.Hat:Hat

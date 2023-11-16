@@ -30,6 +30,9 @@ namespace AngeliaFramework {
 	public class BodyPart {
 
 
+		// SUB
+		public enum CoverMode { None, Covered, FullCovered }
+
 		// Api
 		public int ID { get; private set; } = 0;
 		public Vector4Int Border { get; private set; } = default;
@@ -39,6 +42,7 @@ namespace AngeliaFramework {
 		public int SizeY { get; private set; } = Const.CEL;
 		public bool UseLimbFlip { get; init; } = false;
 		public BodyPart LimbParent { get; init; } = null;
+		public bool IsFullCovered => Covered == CoverMode.FullCovered;
 
 		public int GlobalX;
 		public int GlobalY;
@@ -51,7 +55,7 @@ namespace AngeliaFramework {
 		public int PivotX;
 		public int PivotY;
 		public bool FrontSide;
-		public bool FullyCovered;
+		public CoverMode Covered;
 		public Color32 Tint;
 
 

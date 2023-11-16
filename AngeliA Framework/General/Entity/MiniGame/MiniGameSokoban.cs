@@ -1,0 +1,286 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+namespace AngeliaFramework {
+	public class MiniGameSokoban : MiniGame {
+
+
+
+
+		#region --- SUB ---
+
+
+		private enum BlockType { Empty, Wall, Box, BoxInGoal, Goal, }
+
+
+		private class Level {
+			public int Width => Blocks.GetLength(0);
+			public int Height => Blocks.GetLength(1);
+			public BlockType[,] Blocks = new BlockType[0, 0];
+			public Vector2Int StartPosition = default;
+			public Level (params string[] lines) {
+				Blocks = new BlockType[lines[0].Length, lines.Length];
+				for (int y = 0; y < lines.Length; y++) {
+					string line = lines[y];
+					for (int x = 0; x < line.Length; x++) {
+						char c = line[x];
+						Blocks[x, y] = c switch {
+							'#' => BlockType.Wall,
+							'B' => BlockType.Box,
+							'b' => BlockType.BoxInGoal,
+							'.' => BlockType.Goal,
+							'p' => BlockType.Goal,
+							_ => BlockType.Empty,
+						};
+						if (c == 'P' || c == 'p') {
+							StartPosition = new Vector2Int(x, y);
+						}
+					}
+				}
+			}
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- VAR ---
+
+
+		// Const
+		private static readonly int BRICK_CODE = "Sokoban Brick".AngeHash();
+		private static readonly int BACK_CODE = "Sokoban BackGround".AngeHash();
+		private static readonly int BOX_CODE = "Sokoban Box".AngeHash();
+		private static readonly int GOAL_CODE = "Sokoban Goal".AngeHash();
+		private static readonly int PLAYER_CODE = "Sokoban Player".AngeHash();
+		private static readonly Level[] Levels = {
+			new Level("#####  ", "#P  #  ", "# #B###", "# B ..#", "#######"),
+			new Level("##########", "#   .#.###", "# P    B #", "# B# #   #", "# .B   ###", "#####  ###", "##########"),
+			new Level("########", "###  ###", "### B#.#", "#    B #", "#B # B #", "#.   P #", "#  #####", "#..#####", "########"),
+			new Level("##########", "#   ##  ##", "# B   B ##", "##.  # .##", "###.   B #", "### ##   #", "###. P  ##", "###.B B ##", "###  #####", "##########"),
+			new Level("#########", "######  #", "# .P##B #", "#.B.  B #", "#   ### #", "#B# .   #", "#  .#BB #", "#.      #", "#########"),
+			new Level("#########", "##    ###", "# BBB   #", "# B B. .#", "##.P  . #", "#    ...#", "# B     #", "####B  ##", "####  ###", "#########"),
+			new Level("##########", "###     ##", "#  B#P#B##", "# B..   ##", "## ..B  ##", "##....   #", "#### B   #", "####BB B##", "####    ##", "##########"),
+			new Level("##########", "#    #####", "# B   B  #", "# B  . B #", "#  .  PB #", "  .B  B  #", "  .B.B.  #", "##  ... ##", "##########"),
+			new Level("##  ######", "##     ###", "#  BBBB ##", "# B P... #", "##   ... #", "##. . #B##", "# .B  B ##", "# B . #B##", "##  #   ##", "##########"),
+		};
+		private static readonly int MENU_ALL_CLEAR = "Menu.Sokoban.AllCleared".AngeHash();
+		private static readonly int UI_Level = "UI.Sokoban.Level".AngeHash();
+		private static readonly int UI_MOVE = "Hint.Sokoban.Move".AngeHash();
+
+		// Api
+		protected override bool RequireMouseCursor => false;
+		protected override string DisplayName => Language.Get(TypeID, "Sokoban");
+		protected override Vector2Int WindowSize => new(800, 800);
+		private bool Celebrating => CurrentLevel >= Levels.Length || Game.GlobalFrame < LevelClearedFrame + 120;
+
+		// Data
+		private IntToString LevelLabelToString = null;
+		private BlockType[,] Blocks = null;
+		private int CurrentLevel = 0;
+		private int StageWidth = 1;
+		private int StageHeight = 1;
+		private int PlayerX = 0;
+		private int PlayerY = 0;
+		private int LevelClearedFrame = int.MinValue;
+		private bool PlayerFacingRight = true;
+
+
+		#endregion
+
+
+
+
+		#region --- MSG ---
+
+
+		protected override void StartGame () {
+			LoadLevel(0);
+			LevelLabelToString = new(Language.Get(UI_Level, "Level:"));
+		}
+
+
+		protected override void RestartGame () => LoadLevel(CurrentLevel);
+
+
+		protected override void GameUpdate () {
+			if (CurrentLevel >= Levels.Length) {
+				if (FrameInput.AnyKeyDown) ShowAllClearedMenu();
+			}
+			Update_GamePlay();
+			Update_Rendering();
+		}
+
+
+		private void Update_GamePlay () {
+
+			if (Celebrating) return;
+
+			// Next Level Check
+			if (LevelClearedFrame >= 0) {
+				CurrentLevel++;
+				LoadLevel(CurrentLevel);
+				LevelClearedFrame = int.MinValue;
+				if (CurrentLevel >= Levels.Length) ShowAllClearedMenu();
+			}
+
+			// Move
+			bool boxChanged = false;
+			if (FrameInput.GameKeyDown(Gamekey.Down)) {
+				MovePlayer(Direction4.Down, out boxChanged);
+			}
+			if (FrameInput.GameKeyDown(Gamekey.Up)) {
+				MovePlayer(Direction4.Up, out boxChanged);
+			}
+			if (FrameInput.GameKeyDown(Gamekey.Left)) {
+				MovePlayer(Direction4.Left, out boxChanged);
+				PlayerFacingRight = false;
+			}
+			if (FrameInput.GameKeyDown(Gamekey.Right)) {
+				MovePlayer(Direction4.Right, out boxChanged);
+				PlayerFacingRight = true;
+			}
+			if (boxChanged) {
+				// Check Win
+				bool win = true;
+				for (int x = 0; x < StageWidth; x++) {
+					for (int y = 0; y < StageHeight; y++) {
+						if (Blocks[x, y] == BlockType.Goal) {
+							win = false;
+							goto END_CHECK;
+						}
+					}
+				}
+				END_CHECK:;
+				if (win) {
+					LevelClearedFrame = Game.GlobalFrame;
+				}
+			}
+
+			// Hint
+			string hintMove = Language.Get(UI_MOVE, "Move");
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, hintMove);
+			ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, hintMove);
+
+		}
+
+
+		private void Update_Rendering () {
+
+			int barHeight = Unify(30);
+			var windowRect = WindowRect;
+			var stageRect = windowRect.Shrink(Unify(48)).Fit(StageWidth, StageHeight);
+
+			// Draw Background
+			var bgTint = Const.BLACK;
+			if (Celebrating) {
+				bgTint = Color32.LerpUnclamped(
+					Const.BLACK, Const.GREEN, (Game.GlobalFrame - LevelClearedFrame).PingPong(20) / 20f
+				);
+			}
+			CellRenderer.Draw(Const.PIXEL, windowRect.Expand(0, 0, 0, barHeight), bgTint, 0);
+
+			// Draw Label
+			CellRendererGUI.Label(CellContent.Get(LevelLabelToString.GetString(CurrentLevel + 1)), new RectInt(stageRect.x, stageRect.yMax, stageRect.width, barHeight));
+
+			// Draw Stage
+			var blockRect = new RectInt(0, 0, stageRect.width / StageWidth, stageRect.height / StageHeight);
+			for (int x = 0; x < StageWidth; x++) {
+				for (int y = 0; y < StageHeight; y++) {
+					var block = Blocks[x, y];
+					blockRect.x = stageRect.x + x * blockRect.width;
+					blockRect.y = stageRect.y + y * blockRect.height;
+					var tint = block == BlockType.BoxInGoal ? new Color32(140, 255, 140, 255) : Const.WHITE;
+					CellRenderer.Draw(
+						block switch {
+							BlockType.Box => BOX_CODE,
+							BlockType.BoxInGoal => BOX_CODE,
+							BlockType.Goal => GOAL_CODE,
+							BlockType.Wall => BRICK_CODE,
+							_ => BACK_CODE,
+						}, blockRect, tint, 1
+					);
+				}
+			}
+
+			// Draw Player
+			var playerRect = new RectInt(stageRect.x + PlayerX * blockRect.width, stageRect.y + PlayerY * blockRect.height, blockRect.width, blockRect.height);
+			if (!PlayerFacingRight) playerRect.FlipHorizontal();
+			CellRenderer.Draw(PLAYER_CODE, playerRect, 2);
+
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+		private void LoadLevel (int levelIndex) {
+			if (levelIndex < 0 || levelIndex >= Levels.Length) return;
+			CurrentLevel = levelIndex;
+			var level = Levels[levelIndex];
+			Blocks = new BlockType[level.Width, level.Height];
+			System.Array.Copy(level.Blocks, Blocks, level.Blocks.Length);
+			StageWidth = level.Width;
+			StageHeight = level.Height;
+			PlayerX = level.StartPosition.x;
+			PlayerY = level.StartPosition.y;
+			PlayerFacingRight = true;
+		}
+
+
+		private void MovePlayer (Direction4 direction, out bool boxChanged) {
+
+			boxChanged = false;
+			var normal = direction.Normal();
+			int newX = (PlayerX + normal.x).Clamp(0, StageWidth - 1);
+			int newY = (PlayerY + normal.y).Clamp(0, StageHeight - 1);
+			var newBlock = Blocks[newX, newY];
+			if (newX == PlayerX && newY == PlayerY) return;
+			if (newBlock == BlockType.Wall) return;
+
+			// Move
+			if (newBlock == BlockType.Box || newBlock == BlockType.BoxInGoal) {
+				int pushingX = newX + normal.x;
+				int pushingY = newY + normal.y;
+				if (pushingX < 0 || pushingX >= StageWidth || pushingY < 0 || pushingY >= StageHeight) return;
+				var pushingBlock = Blocks[pushingX, pushingY];
+
+				// Check Pushable
+				if (pushingBlock != BlockType.Empty && pushingBlock != BlockType.Goal) return;
+
+				// Push
+				Blocks[newX, newY] = newBlock == BlockType.Box ? BlockType.Empty : BlockType.Goal;
+				Blocks[pushingX, pushingY] = pushingBlock == BlockType.Goal ? BlockType.BoxInGoal : BlockType.Box;
+				boxChanged = true;
+			}
+
+			// Move Player
+			PlayerX = newX;
+			PlayerY = newY;
+
+		}
+
+
+		private void ShowAllClearedMenu () => GenericMenuUI.SpawnMenu(
+			Language.Get(MENU_ALL_CLEAR, "You Win"),
+			Language.Get(UI_OK, "OK"), Const.EmptyMethod,
+			Language.Get(UI_QUIT, "Quit"), CloseGame
+		);
+
+
+		#endregion
+
+
+
+
+	}
+}

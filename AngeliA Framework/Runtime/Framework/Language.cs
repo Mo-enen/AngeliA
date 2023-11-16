@@ -25,9 +25,9 @@ namespace AngeliaFramework {
 		public static void Initialize () {
 
 			var allLanguages = new List<SystemLanguage>();
-			foreach (var filePath in Util.EnumerateFiles(AngePath.LanguageRoot, true, $"*.{Const.LANGUAGE_FILE_EXT}")) {
+			foreach (var folderPath in Util.EnumerateFolders(AngePath.LanguageRoot, true, "*")) {
 				if (System.Enum.TryParse<SystemLanguage>(
-					Util.GetNameWithoutExtension(filePath),
+					Util.GetNameWithoutExtension(folderPath),
 					out var language)
 				) {
 					allLanguages.Add(language);
@@ -79,18 +79,19 @@ namespace AngeliaFramework {
 
 		// LGC
 		private static bool LoadFromDisk (string languageRoot, SystemLanguage language) {
-			string path = Util.CombinePaths(languageRoot, $"{language}.{Const.LANGUAGE_FILE_EXT}");
-			if (!Util.FileExists(path)) return false;
+			string rootPath = Util.CombinePaths(languageRoot, language.ToString());
 			Map.Clear();
 			string key, value;
-			foreach (var line in Util.ForAllLines(path, Encoding.UTF8)) {
-				if (string.IsNullOrWhiteSpace(line)) continue;
-				int colon = line.IndexOf(':');
-				if (colon <= 0) continue;
-				key = line[..colon];
-				value = colon + 1 < line.Length ? line[(colon + 1)..] : "";
-				if (string.IsNullOrWhiteSpace(key)) continue;
-				Map.TryAdd(key.AngeHash(), value.Replace("\\n", "\n"));
+			foreach (var path in Util.EnumerateFiles(rootPath, true, $"*.{Const.LANGUAGE_FILE_EXT}")) {
+				foreach (var line in Util.ForAllLines(path, Encoding.UTF8)) {
+					if (string.IsNullOrWhiteSpace(line)) continue;
+					int colon = line.IndexOf(':');
+					if (colon <= 0) continue;
+					key = line[..colon];
+					value = colon + 1 < line.Length ? line[(colon + 1)..] : "";
+					if (string.IsNullOrWhiteSpace(key)) continue;
+					Map.TryAdd(key.AngeHash(), value.Replace("\\n", "\n"));
+				}
 			}
 			return true;
 		}

@@ -43,7 +43,9 @@ namespace AngeliaFramework {
 	}
 
 	[EntityAttribute.ItemCombination(typeof(iRunePoison), typeof(iHelmetWood), 1)]
-	public class iGasMask : Armor { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
+	public class iGasMask : Armor {
+		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+	}
 
 	[EntityAttribute.ItemCombination(typeof(iHelmetIron), typeof(iHorn), typeof(iHorn), 1)]
 	public class iHelmetViking : Armor { public override EquipmentType EquipmentType => EquipmentType.Helmet; }

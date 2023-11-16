@@ -121,6 +121,7 @@ namespace AngeliaFramework {
 
 		protected abstract void StartGame ();
 
+		protected virtual void RestartGame () => StartGame();
 
 		protected virtual void CloseGame () {
 			if (FrameTask.GetCurrentTask() is MiniGameTask task && task.MiniGame == this) {
@@ -140,7 +141,7 @@ namespace AngeliaFramework {
 				GenericMenuUI.SpawnMenu(
 					Language.Get(MENU_QUIT_MINI_GAME, "Quit mini game?"),
 					Language.Get(UI_BACK, "Back"), Const.EmptyMethod,
-					Language.Get(UI_RESTART, "Restart"), StartGame,
+					Language.Get(UI_RESTART, "Restart"), RestartGame,
 					Language.Get(UI_QUIT, "Quit"), CloseGame
 				);
 			} else {

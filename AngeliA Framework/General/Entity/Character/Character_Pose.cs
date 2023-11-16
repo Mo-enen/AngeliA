@@ -261,7 +261,7 @@ namespace AngeliaFramework {
 			int cellIndexStart = CellRenderer.GetUsedCellCount();
 			AnimationLibrary.Begin(this);
 
-			ResetPoseToDefault();
+			ResetPoseToDefault(false);
 			PerformPoseAnimation_Movement();
 			PerformPoseAnimation_Handheld();
 			PerformPoseAnimation_Attack();
@@ -288,7 +288,7 @@ namespace AngeliaFramework {
 
 
 		// Pipeline
-		private void ResetPoseToDefault () {
+		private void ResetPoseToDefault (bool motionOnly) {
 
 			int bounce = CurrentRenderingBounce;
 			int facingSign = FacingRight ? 1 : -1;
@@ -301,8 +301,10 @@ namespace AngeliaFramework {
 			foreach (var bodypart in BodyParts) {
 				bodypart.Rotation = 0;
 				bodypart.FrontSide = FacingFront;
-				bodypart.Tint = SkinColor;
-				bodypart.FullyCovered = false;
+				if (!motionOnly) {
+					bodypart.Tint = SkinColor;
+					bodypart.Covered = BodyPart.CoverMode.None;
+				}
 			}
 
 			// Hip
@@ -662,9 +664,7 @@ namespace AngeliaFramework {
 
 			if (!IsAttacking) return;
 
-			if (MovementLoseRateOnAttack == 0) {
-				ResetPoseToDefault();
-			}
+			if (MovementLoseRateOnAttack == 0) ResetPoseToDefault(true);
 
 			HandGrabScaleL = HandGrabScaleR = FacingRight ? 1000 : -1000;
 			HandGrabAttackTwistL = HandGrabAttackTwistR = 1000;
@@ -756,7 +756,7 @@ namespace AngeliaFramework {
 
 			// Draw
 			foreach (var bodyPart in BodyParts) {
-				if (bodyPart.ID == 0 || bodyPart.FullyCovered) continue;
+				if (bodyPart.ID == 0 || bodyPart.IsFullCovered) continue;
 				int id = bodyPart.ID;
 				if (bodyPart == Head && CellRenderer.TryGetSpriteFromGroup(id, Head.FrontSide ? 0 : 1, out var headSprite, false, true)) {
 					id = headSprite.GlobalID;

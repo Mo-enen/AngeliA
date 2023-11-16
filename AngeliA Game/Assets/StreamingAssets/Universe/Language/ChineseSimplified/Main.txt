@@ -1,5 +1,4 @@
-﻿UI.DontSave:不保存
-CtrlHint.Adjust:调整
+﻿CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
 CtrlHint.Drop:放下
@@ -27,6 +26,7 @@ CtrlHint.Use:使用
 CtrlHint.WakeUp:起床
 CtrlHint.Wardrobe.Type:服饰类型
 Hint.Pong.Move:移动
+Hint.Sokoban.Move:移动
 Hint.Tetris.Drop:掉落
 Hint.Tetris.Hold:保留
 Hint.Tetris.Move:移动
@@ -72,9 +72,10 @@ Menu.Setting.SoundVolume:音效音量
 Menu.Setting.UseControlHint:显示操作提示
 Menu.Setting.UseGamepadHint:显示左下角手柄
 Menu.Setting.VSync:垂直同步
-MiniGameCraft:物品合成编辑器
+Menu.Sokoban.AllCleared:恭喜通关！
 MiniGameGomoku:五子棋
 MiniGamePong:乓
+MiniGameSokoban:推箱子
 MiniGameTetris:俄罗斯方块
 Palette.Background:背景
 Palette.Character:角色
@@ -180,6 +181,7 @@ UI.BodyPart.Wing:翅膀
 UI.Cancel:取消
 UI.Continue:继续
 UI.Default:默认
+UI.DontSave:不保存
 UI.Down:下
 UI.Equipment.Bodysuit:盔甲
 UI.Equipment.Gloves:手套
@@ -215,6 +217,7 @@ UI.Restart:重新开始
 UI.Right:右
 UI.Save:保存
 UI.Setting:设置
+UI.Sokoban.Level:关卡：
 UI.Suit.Bodysuit:衣服
 UI.Suit.Glove:手套
 UI.Suit.Hat:帽子
