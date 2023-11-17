@@ -86,8 +86,9 @@ namespace AngeliaFramework {
 		private int StageHeight = 1;
 		private int PlayerX = 0;
 		private int PlayerY = 0;
-		private int LevelClearedFrame = int.MinValue;
 		private bool PlayerFacingRight = true;
+		private int LevelClearedFrame = int.MinValue;
+		private int PlayerMovedFrame = int.MinValue;
 
 
 		#endregion
@@ -101,6 +102,9 @@ namespace AngeliaFramework {
 		protected override void StartGame () {
 			LoadLevel(0);
 			LevelLabelToString = new(Language.Get(UI_Level, "Level:"));
+			PlayerMovedFrame = int.MinValue;
+			LevelClearedFrame = int.MinValue;
+			PlayerFacingRight = true;
 		}
 
 
@@ -184,10 +188,10 @@ namespace AngeliaFramework {
 			}
 			CellRenderer.Draw(Const.PIXEL, windowRect.Expand(0, 0, 0, barHeight), bgTint, 0);
 
-			// Draw Label
-			CellRendererGUI.Label(CellContent.Get(LevelLabelToString.GetString(CurrentLevel + 1)), new RectInt(stageRect.x, stageRect.yMax, stageRect.width, barHeight));
+			// Label
+			CellRendererGUI.Label(CellContent.Get(LevelLabelToString.GetString(CurrentLevel + 1)), new RectInt(stageRect.x, stageRect.yMax + barHeight / 10, stageRect.width, barHeight));
 
-			// Draw Stage
+			// Stage
 			var blockRect = new RectInt(0, 0, stageRect.width / StageWidth, stageRect.height / StageHeight);
 			for (int x = 0; x < StageWidth; x++) {
 				for (int y = 0; y < StageHeight; y++) {
@@ -207,9 +211,21 @@ namespace AngeliaFramework {
 				}
 			}
 
-			// Draw Player
+			// Player
 			var playerRect = new RectInt(stageRect.x + PlayerX * blockRect.width, stageRect.y + PlayerY * blockRect.height, blockRect.width, blockRect.height);
 			if (!PlayerFacingRight) playerRect.FlipHorizontal();
+
+			// Player Bounce
+			const int BOUNCE_DURATION = 22;
+			if (Game.GlobalFrame < PlayerMovedFrame + BOUNCE_DURATION) {
+				float lerp01 = Ease.OutBounce((Game.GlobalFrame - PlayerMovedFrame) / (float)BOUNCE_DURATION);
+				int offsetX = (int)Mathf.LerpUnclamped(blockRect.width / 4, 0, lerp01);
+				playerRect.x -= offsetX / 2;
+				playerRect.width += offsetX;
+				playerRect.height -= (int)Mathf.LerpUnclamped(blockRect.height / 5, 0, lerp01);
+			}
+
+			// Draw
 			CellRenderer.Draw(PLAYER_CODE, playerRect, 2);
 
 		}
@@ -233,7 +249,6 @@ namespace AngeliaFramework {
 			StageHeight = level.Height;
 			PlayerX = level.StartPosition.x;
 			PlayerY = level.StartPosition.y;
-			PlayerFacingRight = true;
 		}
 
 
@@ -266,6 +281,7 @@ namespace AngeliaFramework {
 			// Move Player
 			PlayerX = newX;
 			PlayerY = newY;
+			PlayerMovedFrame = Game.GlobalFrame;
 
 		}
 
