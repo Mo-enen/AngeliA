@@ -50,12 +50,13 @@ namespace AngeliaFramework.Editor {
 			public string Path;
 			public Texture2D Icon;
 			public bool IsFile;
-
+			public bool InPackage;
 			public Item (string name, Texture2D icon, string path, bool isFile) {
 				Name = name;
 				Path = path;
 				Icon = icon;
 				IsFile = isFile;
+				InPackage = path.StartsWith("packages", System.StringComparison.OrdinalIgnoreCase);
 			}
 		}
 
@@ -259,6 +260,8 @@ namespace AngeliaFramework.Editor {
 			EditorGUI.DropShadowLabel(MGUI.Rect(0, 24), title, MGUI.CenteredBoldLabel);
 			MGUI.Space(2);
 			string folderName = "";
+			var assetIconColor = new Color32(209, 136, 60, 255);
+			var packIconColor = new Color32(47, 86, 164, 255);
 			for (int i = 0; i < scripts.Length;) {
 				using (new GUILayout.HorizontalScope()) {
 					for (int col = 0; col < column && i < scripts.Length; col++, i++) {
@@ -272,13 +275,15 @@ namespace AngeliaFramework.Editor {
 							if (item.Icon == null && icon != null) item.Icon = icon;
 							var rect = MGUI.Rect((int)(width / column), 22);
 							var iconRect = rect.Shrink(0, rect.width - rect.height, 0, 0);
-							var labelRect = rect.Shrink(rect.height, 0, 0, 0);
+							var itemRect = rect.Shrink(rect.height, 0, 0, 0);
 							GUI.Label(rect, new GUIContent("", name), EditorStyles.toolbarButton);
-							if (icon != null) GUI.DrawTexture(iconRect.Shrink(2).Fit((float)icon.width / icon.height), icon);
-							if (GUI.Button(labelRect, name, Style.LabelStyle)) {
+							if (GUI.Button(rect, GUIContent.none, GUIStyle.none)) {
 								OnItemClick(path);
 							}
-							EditorGUIUtility.AddCursorRect(labelRect, MouseCursor.Link);
+							if (icon != null) GUI.DrawTexture(iconRect.Shrink(2).Fit((float)icon.width / icon.height), icon);
+							GUI.Label(itemRect, name, Style.LabelStyle);
+							EditorGUI.DrawRect(new Rect(rect.x, rect.y + 2, 1, rect.height - 4), item.InPackage ? packIconColor : assetIconColor);
+							EditorGUIUtility.AddCursorRect(rect, MouseCursor.Link);
 						} else if (i < scripts.Length - 1 && scripts[i + 1].IsFile) {
 							// Folder
 							folderName = item.Name;

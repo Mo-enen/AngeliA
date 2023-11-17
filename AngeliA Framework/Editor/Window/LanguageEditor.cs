@@ -152,8 +152,8 @@ namespace AngeliaFramework.Editor {
 				for (int lanIndex = 0; lanIndex < Languages.Count; lanIndex++) {
 					GUI.Label(
 						MGUI.Rect(0, 18),
-						Util.GetLanguageDisplayName(Languages[lanIndex]),
-						MGUI.MiniGreyLabel
+						$"{Util.GetLanguageDisplayName(Languages[lanIndex])} <color=#FFCC00>{Languages[lanIndex].GetAlpha2()}</color>",
+						MGUI.RichMiniGreyLabel
 					);
 					MGUI.Space(2);
 				}
@@ -315,8 +315,8 @@ namespace AngeliaFramework.Editor {
 						if (EditorUtil.Dialog(
 							"", $"Delete Language {Util.GetLanguageDisplayName(language)}?\nFile will move to recycle bin.", "Delete", "Cancel"
 						)) {
-							string path = Util.CombinePaths(AngePath.LanguageRoot, $"{language}.{Const.LANGUAGE_FILE_EXT}");
-							EditorUtil.MoveFileToTrash(path);
+							string path = Util.CombinePaths(AngePath.LanguageRoot, language.ToString());
+							EditorUtil.MoveFileOrFolderToTrash(path, path + ".meta");
 						}
 					} else {
 						// Create
@@ -327,7 +327,7 @@ namespace AngeliaFramework.Editor {
 						}
 						Util.TextToFile(
 							builder.ToString(),
-							Util.CombinePaths(AngePath.LanguageRoot, $"{language}.{Const.LANGUAGE_FILE_EXT}")
+							Util.CombinePaths(AngePath.LanguageRoot, language.ToString(), $"{CurrentTag}.{Const.LANGUAGE_FILE_EXT}")
 						);
 					}
 					EditorApplication.delayCall += () => Load();
@@ -340,13 +340,17 @@ namespace AngeliaFramework.Editor {
 		private void ShowTagMenu () {
 			if (Languages.Count < 1) return;
 			var menu = new GenericMenu();
+			AddTagItem("Main");
 			string folderPath = Util.CombinePaths(AngePath.LanguageRoot, Languages[0].ToString());
 			foreach (string tagFilePath in Util.EnumerateFiles(folderPath, true, $"*.{Const.LANGUAGE_FILE_EXT}")) {
 				string tag = Util.GetNameWithoutExtension(tagFilePath);
-				menu.AddItem(new GUIContent($"{tag}\t"), tag == CurrentTag, () => {
-					if (tag == CurrentTag) return;
+				if (tag != "Main") AddTagItem(tag);
+			}
+			void AddTagItem (string _tag) {
+				menu.AddItem(new GUIContent($"{_tag}\t"), _tag == CurrentTag, () => {
+					if (_tag == CurrentTag) return;
 					if (IsDirty) Save();
-					CurrentTag = tag;
+					CurrentTag = _tag;
 					Load();
 				});
 			}
@@ -411,7 +415,7 @@ namespace AngeliaFramework.Editor {
 				if (!visible) {
 					for (int lanIndex = 0; lanIndex < Languages.Count; lanIndex++) {
 						string con = Contents[lanIndex, i];
-						if (con.Contains(SearchingText, OIC)) {
+						if (!string.IsNullOrEmpty(con) && con.Contains(SearchingText, OIC)) {
 							visible = true;
 							break;
 						}

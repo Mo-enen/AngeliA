@@ -30,12 +30,12 @@
 
 				<ui:GroupBox style="height: 100%; width: 5px;" />
 
-				<!--ui:Button enable-rich-text="false" name="Crafting" focusable="false" class="ToolboxButton" style="width: 50%; height: 100%; padding-left: 12px; flex-direction: row;">
-					<ui:VisualElement name="Icon" style="width: 24px; height: auto; background-image: url(./Image/Crafting.png); -unity-background-scale-mode: scale-to-fit;" />
-					<ui:Label text="Crafting" enable-rich-text="false" style=" height: 100%; width: auto; margin-left: 12px; margin-right: 12px;" />
-				</ui:Button-->
+				<ui:Button enable-rich-text="false" name="Dialogue" focusable="false" class="ToolboxButton" style="width: 50%; height: 100%; padding-left: 12px; flex-direction: row;">
+					<ui:VisualElement name="Icon" style="width: 24px; height: auto; background-image: url(./Image/Dialogue.png); -unity-background-scale-mode: scale-to-fit;" />
+					<ui:Label text="Dialogue" enable-rich-text="false" style=" height: 100%; width: auto; margin-left: 12px; margin-right: 12px;" />
+				</ui:Button>
 
-				<ui:GroupBox style="width: 50%; height: 100%; padding-left: 12px; flex-direction: row;" />
+				<!--ui:GroupBox style="width: 50%; height: 100%; padding-left: 12px; flex-direction: row;" /-->
 
 			</ui:VisualElement> 
 

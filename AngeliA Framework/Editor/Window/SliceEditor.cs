@@ -51,7 +51,7 @@ namespace AngeliaFramework.Editor {
 		#region --- MSG ---
 
 
-		[MenuItem("AngeliA/Slice Editor", false, 26)]
+		[MenuItem("AngeliA/Slice Editor", false, 27)]
 		public static void OpenEditor () {
 			var window = GetWindow<SliceEditor>(true, "Slice Editor", true);
 			window.minSize = new Vector2(256, 256);

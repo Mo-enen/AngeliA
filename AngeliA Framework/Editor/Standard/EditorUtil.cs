@@ -452,6 +452,44 @@ namespace AngeliaFramework.Editor {
 		}
 
 
+		public static void MoveFileOrFolderToTrash (params string[] paths) {
+			string tempFolder = Util.CombinePaths("Assets", GUID.Generate().ToString());
+			Util.CreateFolder(tempFolder);
+			try {
+				var list = new List<string>();
+				// Move to Temp
+				foreach (var path in paths) {
+					try {
+						if (Util.FolderExists(path)) {
+							// Folder
+							string tempPath = Util.CombinePaths(tempFolder, Util.GetNameWithExtension(path));
+							Util.MoveFolder(path, tempPath);
+							list.Add(tempPath);
+						} else if (Util.FileExists(path)) {
+							// File
+							string tempPath = Util.CombinePaths(tempFolder, Util.GetNameWithExtension(path));
+							Util.MoveFile(path, tempPath);
+							list.Add(tempPath);
+						}
+					} catch { }
+				}
+
+				AssetDatabase.Refresh();
+
+				// Move to Trash
+				foreach (var path in list) {
+					try {
+						if (Util.FolderExists(path) || Util.FileExists(path)) {
+							AssetDatabase.MoveAssetToTrash(path);
+						}
+					} catch { }
+				}
+			} catch { }
+			AssetDatabase.DeleteAsset(tempFolder);
+			AssetDatabase.Refresh();
+		}
+
+
 		public static void OpenFileWithCodeEditor (string filePath, int line = -1, int column = -1) {
 			var editor = Unity.CodeEditor.CodeEditor.Editor;
 			if (editor != null && editor.CurrentCodeEditor != null) {

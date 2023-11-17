@@ -1,0 +1,22 @@
+Menu.MiniGame.QuitMsg:Quit mini game?
+Menu.MiniGame.Restart:Retart Game?
+Menu.Sokoban.AllCleared:Congratulations!! All levels has been cleared!
+MiniGameGomoku:Gomoku
+MiniGamePong:Pong
+MiniGameSokoban:Sokoban
+MiniGameTetris:Tetris
+UI.Gomoku.Place:Place
+UI.Gomoku.YouAre:You are:
+Menu.Gomoku.Draw:Draw
+Menu.Gomoku.Lose:You Lose
+Menu.Gomoku.Win:You Win !!
+UI.Sokoban.Level:Level:
+Hint.Pong.Move:Move
+Hint.Sokoban.Move:Move
+Hint.Tetris.Drop:Drop
+Hint.Tetris.Hold:Hold
+Hint.Tetris.Move:Move
+Hint.Tetris.Rotate:Rotate
+UI.Tetris.ClearedLine:Lines:
+UI.Tetris.Holding:Holding
+PlayerCustomizerAngelia:Customize

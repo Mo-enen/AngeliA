@@ -181,10 +181,12 @@ namespace AngeliaFramework {
 
 
 		// Label
-		public static void Label (CellContent content, RectInt rect) => Label(content, rect, out _);
-		public static void Label (CellContent content, RectInt rect, out RectInt bounds) => Label(content, rect, -1, out bounds, out _);
-		public static void Label (CellContent content, RectInt rect, int beamIndex, out RectInt bounds, out RectInt beamRect) {
+		public static void Label (CellContent content, RectInt rect) => Label(content, rect, -1, 0, out _, out _, out _);
+		public static void Label (CellContent content, RectInt rect, out RectInt bounds) => Label(content, rect, -1, 0, out bounds, out _, out _);
+		public static void Label (CellContent content, RectInt rect, int startIndex, out RectInt bounds, out int endIndex) => Label(content, rect, -1, startIndex, out bounds, out _, out endIndex);
+		private static void Label (CellContent content, RectInt rect, int beamIndex, int startIndex, out RectInt bounds, out RectInt beamRect, out int endIndex) {
 
+			endIndex = startIndex;
 			bounds = rect;
 			beamRect = new RectInt(rect.x, rect.y, 1, rect.height);
 			if (!CellRenderer.TextReady) return;
@@ -221,9 +223,10 @@ namespace AngeliaFramework {
 			int minY = int.MaxValue;
 			int maxX = int.MinValue;
 			int maxY = int.MinValue;
-			for (int i = 0; i < count; i++) {
+			for (int i = startIndex; i < count; i++) {
 
 				char c = text[i];
+				endIndex = i;
 				if (c == '\r') continue;
 
 				// Line
@@ -236,10 +239,8 @@ namespace AngeliaFramework {
 					continue;
 				}
 
-				CellRenderer.CharSprite sprite = null;
-
 				// Require Char
-				if (sprite == null && !CellRenderer.RequireChar(c, out sprite)) continue;
+				if (!CellRenderer.RequireChar(c, out var sprite)) continue;
 
 				// Wrap Check for Word
 				if (wrap && i >= nextWrapCheckIndex && !IsLineBreakingChar(c)) {
@@ -290,8 +291,6 @@ namespace AngeliaFramework {
 				firstCharAtLine = false;
 
 			}
-
-
 
 			// Alignment
 			if (hasContent) {
@@ -517,7 +516,7 @@ namespace AngeliaFramework {
 
 			// Draw Text
 			if (!string.IsNullOrEmpty(text.Text)) {
-				Label(text, labelRect, BeamIndex, out _, out beamRect);
+				Label(text, labelRect, BeamIndex, 0, out _, out beamRect, out _);
 			}
 
 			// Draw Beam

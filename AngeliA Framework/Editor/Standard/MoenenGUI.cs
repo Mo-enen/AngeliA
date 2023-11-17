@@ -55,6 +55,12 @@ namespace AngeliaFramework.Editor {
 		};
 		private static GUIStyle _MiniGreyLabel = null;
 
+		public static GUIStyle RichMiniGreyLabel => _RichMiniGreyLabel ??= new GUIStyle(EditorStyles.centeredGreyMiniLabel) {
+			alignment = TextAnchor.MiddleLeft,
+			richText = true,
+		};
+		private static GUIStyle _RichMiniGreyLabel = null;
+
 		public static GUIStyle RichLabel => _RichLabel ??= new GUIStyle(GUI.skin.label) {
 			richText = true,
 		};
@@ -97,7 +103,7 @@ namespace AngeliaFramework.Editor {
 		public static readonly Color HighlightCyan = new Color32(36, 181, 161, 255);
 		public static readonly Color HighlightOrange = new Color32(252, 195, 81, 255);
 
-		
+
 		public static Rect Rect (int w, int h) => GUILayoutUtility.GetRect(w, h, GUILayout.ExpandWidth(w == 0), GUILayout.ExpandHeight(h == 0));
 		public static Rect LastRect () => GUILayoutUtility.GetLastRect();
 		public static Rect AspectRect (float aspect) => GUILayoutUtility.GetAspectRect(aspect);

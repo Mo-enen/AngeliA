@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Linq;
+using System.Globalization;
 using System.IO;
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
+
 
 namespace AngeliaFramework {
 	public static class Extension {
@@ -473,6 +473,11 @@ namespace AngeliaFramework {
 		public static bool IsBottom (this Alignment alignment) => alignment == Alignment.BottomLeft || alignment == Alignment.BottomMid || alignment == Alignment.BottomRight;
 		public static bool IsMidY (this Alignment alignment) => alignment == Alignment.MidLeft || alignment == Alignment.MidMid || alignment == Alignment.MidRight;
 		public static bool IsTop (this Alignment alignment) => alignment == Alignment.TopLeft || alignment == Alignment.TopMid || alignment == Alignment.TopRight;
+
+
+
+		private static readonly Dictionary<int, string> Alpha2Pool = new() { { (int)SystemLanguage.Afrikaans, "af" }, { (int)SystemLanguage.Arabic, "ar" }, { (int)SystemLanguage.Basque, "eu" }, { (int)SystemLanguage.Belarusian, "be" }, { (int)SystemLanguage.Bulgarian, "bg" }, { (int)SystemLanguage.Catalan, "ca" }, { (int)SystemLanguage.Chinese, "zh" }, { (int)SystemLanguage.Czech, "cs" }, { (int)SystemLanguage.Danish, "da" }, { (int)SystemLanguage.Dutch, "nl" }, { (int)SystemLanguage.English, "en" }, { (int)SystemLanguage.Estonian, "et" }, { (int)SystemLanguage.Faroese, "fo" }, { (int)SystemLanguage.Finnish, "fi" }, { (int)SystemLanguage.French, "fr" }, { (int)SystemLanguage.German, "de" }, { (int)SystemLanguage.Greek, "el" }, { (int)SystemLanguage.Hebrew, "he" }, { (int)SystemLanguage.Hungarian, "hu" }, { (int)SystemLanguage.Icelandic, "is" }, { (int)SystemLanguage.Indonesian, "id" }, { (int)SystemLanguage.Italian, "it" }, { (int)SystemLanguage.Japanese, "ja" }, { (int)SystemLanguage.Korean, "ko" }, { (int)SystemLanguage.Latvian, "lv" }, { (int)SystemLanguage.Lithuanian, "lt" }, { (int)SystemLanguage.Norwegian, "no" }, { (int)SystemLanguage.Polish, "pl" }, { (int)SystemLanguage.Portuguese, "pt" }, { (int)SystemLanguage.Romanian, "ro" }, { (int)SystemLanguage.Russian, "ru" }, { (int)SystemLanguage.SerboCroatian, "hr" }, { (int)SystemLanguage.Slovak, "sk" }, { (int)SystemLanguage.Slovenian, "sl" }, { (int)SystemLanguage.Spanish, "es" }, { (int)SystemLanguage.Swedish, "sv" }, { (int)SystemLanguage.Thai, "th" }, { (int)SystemLanguage.Turkish, "tr" }, { (int)SystemLanguage.Ukrainian, "uk" }, { (int)SystemLanguage.Vietnamese, "vi" }, { (int)SystemLanguage.ChineseSimplified, "zh" }, { (int)SystemLanguage.ChineseTraditional, "zh" }, { (int)SystemLanguage.Hindi, "hi" }, };
+		public static string GetAlpha2 (this SystemLanguage language) => Alpha2Pool.TryGetValue((int)language, out string result) ? result : "";
 
 
 		// Enum
