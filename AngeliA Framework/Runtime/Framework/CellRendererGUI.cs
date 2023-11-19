@@ -181,10 +181,10 @@ namespace AngeliaFramework {
 
 
 		// Label
-		public static void Label (CellContent content, RectInt rect) => Label(content, rect, -1, 0, out _, out _, out _);
-		public static void Label (CellContent content, RectInt rect, out RectInt bounds) => Label(content, rect, -1, 0, out bounds, out _, out _);
-		public static void Label (CellContent content, RectInt rect, int startIndex, out RectInt bounds, out int endIndex) => Label(content, rect, -1, startIndex, out bounds, out _, out endIndex);
-		private static void Label (CellContent content, RectInt rect, int beamIndex, int startIndex, out RectInt bounds, out RectInt beamRect, out int endIndex) {
+		public static void Label (CellContent content, RectInt rect) => Label(content, rect, -1, 0, false, out _, out _, out _);
+		public static void Label (CellContent content, RectInt rect, out RectInt bounds) => Label(content, rect, -1, 0, false, out bounds, out _, out _);
+		public static void Label (CellContent content, RectInt rect, int startIndex, bool drawInvisibleChar, out RectInt bounds, out int endIndex) => Label(content, rect, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
+		private static void Label (CellContent content, RectInt rect, int beamIndex, int startIndex, bool drawInvisibleChar, out RectInt bounds, out RectInt beamRect, out int endIndex) {
 
 			endIndex = startIndex;
 			bounds = rect;
@@ -227,7 +227,10 @@ namespace AngeliaFramework {
 
 				char c = text[i];
 				endIndex = i;
-				if (c == '\r') continue;
+				if (c == '\r') {
+					if (drawInvisibleChar) CellRenderer.Draw(Const.PIXEL, default, int.MinValue);
+					continue;
+				}
 
 				// Line
 				if (c == '\n') {
@@ -236,11 +239,15 @@ namespace AngeliaFramework {
 					firstCharAtLine = true;
 					line++;
 					if (clip && line >= maxLineCount) break;
+					if (drawInvisibleChar) CellRenderer.Draw(Const.PIXEL, default, int.MinValue);
 					continue;
 				}
 
 				// Require Char
-				if (!CellRenderer.RequireChar(c, out var sprite)) continue;
+				if (!CellRenderer.RequireChar(c, out var sprite)) {
+					if (drawInvisibleChar) CellRenderer.Draw(Const.PIXEL, default, int.MinValue);
+					continue;
+				}
 
 				// Wrap Check for Word
 				if (wrap && i >= nextWrapCheckIndex && !IsLineBreakingChar(c)) {
@@ -265,6 +272,9 @@ namespace AngeliaFramework {
 					if (clip && line >= maxLineCount) break;
 				}
 				var cell = DrawChar(c, x, y, charSize, charSize, color);
+				if (drawInvisibleChar && cell == EMPTY_CELL) {
+					CellRenderer.Draw(Const.PIXEL, default, int.MinValue);
+				}
 
 				// Beam
 				if (!beamEnd && beamIndex >= 0 && i >= beamIndex) {
@@ -516,7 +526,7 @@ namespace AngeliaFramework {
 
 			// Draw Text
 			if (!string.IsNullOrEmpty(text.Text)) {
-				Label(text, labelRect, BeamIndex, 0, out _, out beamRect, out _);
+				Label(text, labelRect, BeamIndex, 0, false, out _, out beamRect, out _);
 			}
 
 			// Draw Beam

@@ -152,7 +152,7 @@ namespace AngeliaFramework.Editor {
 				for (int lanIndex = 0; lanIndex < Languages.Count; lanIndex++) {
 					GUI.Label(
 						MGUI.Rect(0, 18),
-						$"{Util.GetLanguageDisplayName(Languages[lanIndex])} <color=#FFCC00>{Util.LanguageToIso(Languages[lanIndex])}</color>",
+						$"{Util.GetLanguageDisplayName(Languages[lanIndex])} <color=#CC9900>{Util.LanguageToIso(Languages[lanIndex])}</color>",
 						MGUI.RichMiniGreyLabel
 					);
 					MGUI.Space(2);

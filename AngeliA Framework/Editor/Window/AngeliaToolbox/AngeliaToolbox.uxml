@@ -6,9 +6,12 @@
 		<ui:VisualElement name="ToolboxButtons" style="margin-bottom: 6px;">
 			<ui:VisualElement style="flex-direction: row; justify-content: space-around; align-items: center; height: 51px; padding-top: 3px;">
             
-				<ui:Button name="Refresh" enable-rich-text="false" focusable="false" class="ToolboxButton" style=" width: 50%; height: 100%; padding-left: 12px; flex-direction: row;">
+				<ui:Button name="Refresh" enable-rich-text="false" focusable="false" class="ToolboxButton" style=" width: 45%; height: 100%; padding-left: 12px; flex-direction: row;">
 					<ui:VisualElement name="Icon" style=" width: 24px; height: auto; background-image: url(./Image/Refresh.png); -unity-background-scale-mode: scale-to-fit;" />
-					<ui:Label text="Refresh AngeliA" enable-rich-text="false" style=" height: 100%; width: auto; margin-left: 12px; margin-right: 12px;" />
+					<ui:Label text="Refresh AngeliA" enable-rich-text="false" style=" height: 100%; width: auto; margin-left: 12px;" />
+				</ui:Button>
+
+				<ui:Button name="ForceRefresh" enable-rich-text="false" focusable="false" class="ToolboxButton" style=" width: 5%; height: 100%; flex-direction: row;">
 				</ui:Button>
 
 				<ui:GroupBox style="height: 100%; width: 5px;"/>

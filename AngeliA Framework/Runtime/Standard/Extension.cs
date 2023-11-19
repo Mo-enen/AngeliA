@@ -496,6 +496,7 @@ namespace AngeliaFramework {
 
 
 		// String
+		public static string TrimWhiteForStartAndEnd (this string str) => str.TrimStart(' ', '\t').TrimEnd(' ', '\t');
 		public static string TrimEnd_Numbers (this string str) => str.TrimEnd('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 		public static string TrimEnd_NumbersEmpty (this string str) => str.TrimEnd('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ');
 		public static string TrimEnd_NumbersEmpty_ (this string str) => str.TrimEnd('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', '_');

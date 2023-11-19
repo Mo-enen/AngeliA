@@ -6,7 +6,7 @@ using UnityEditor.Build;
 using UnityEngine;
 using UnityEditor.Build.Reporting;
 using UnityEditor.SceneManagement;
-
+using System.Text;
 
 namespace AngeliaFramework.Editor {
 
@@ -14,7 +14,7 @@ namespace AngeliaFramework.Editor {
 
 	public interface IRefreshEvent {
 		string Message => "Refreshing...";
-		void Refresh ();
+		void Refresh (bool forceRefresh);
 	}
 
 
@@ -42,11 +42,17 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		public void OnPreprocessBuild (BuildReport report) => Refresh();
+		public void OnPreprocessBuild (BuildReport report) => Refresh(true);
 
 
 		[MenuItem("AngeliA/Refresh", false, 0)]
-		public static void Refresh () {
+		public static void RefreshFromMenu () => Refresh(false);
+
+
+		public static void ForceRefresh () => Refresh(true);
+
+
+		public static void Refresh (bool forceRefresh) {
 			try {
 				LastSyncTick.Value = System.DateTime.Now.Ticks.ToString();
 
@@ -54,7 +60,7 @@ namespace AngeliaFramework.Editor {
 				var angeEvent = new AngeliaRefreshEvent();
 				try {
 					EditorUtil.ProgressBar("Refreshing", angeEvent.Message, 0.5f);
-					angeEvent.Refresh();
+					angeEvent.Refresh(forceRefresh);
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 
 				// Events
@@ -62,7 +68,7 @@ namespace AngeliaFramework.Editor {
 					try {
 						if (System.Activator.CreateInstance(type) is IRefreshEvent e) {
 							EditorUtil.ProgressBar("Refreshing", e.Message, 0.5f);
-							e.Refresh();
+							e.Refresh(forceRefresh);
 						}
 					} catch (System.Exception ex) { Debug.LogException(ex); }
 				}
@@ -76,7 +82,9 @@ namespace AngeliaFramework.Editor {
 
 
 		public static void RefreshIfNeed () {
-			if (NeedRefresh()) Refresh();
+			if (NeedRefresh()) {
+				Refresh(false);
+			}
 		}
 
 
@@ -111,6 +119,12 @@ namespace AngeliaFramework.Editor {
 				if (Util.GetFileModifyDate(path) > lastSyncTickValue) {
 					return true;
 				}
+			}
+
+			// Check for Conversations
+			foreach (var path in Util.EnumerateFiles(Application.dataPath, false, $"*.{Const.EDITABLE_CONVERSATION_FILE_EXT}")) {
+				if (Util.GetFileModifyDate(path) != Util.GetFileCreationDate(path)) return true;
+				if (!Util.FolderExists(Util.CombinePaths(AngePath.DialogueRoot, Util.GetNameWithoutExtension(path)))) return true;
 			}
 
 			return false;
@@ -185,9 +199,9 @@ namespace AngeliaFramework.Editor {
 		#region --- MSG ---
 
 
-		public void Refresh () {
+		public void Refresh (bool forceRefresh) {
 
-			AddAlwaysIncludeShaders();
+			if (forceRefresh) AddAlwaysIncludeShaders();
 			AngeUtil.CreateAngeFolders();
 
 			// Sprite Sheets
@@ -208,11 +222,11 @@ namespace AngeliaFramework.Editor {
 
 			// Final
 			AngeliaToolbox.RefreshSheetThumbnail(true);
-			AngeEditorUtil.HideMetaFiles(AngePath.UniverseRoot);
-			TryCompileDialogueFiles();
+			TryCompileDialogueFiles(forceRefresh);
 			RefreshEditorSetting();
 			AssetDatabase.Refresh();
 			EditorSceneManager.SaveOpenScenes();
+			AngeEditorUtil.HideMetaFiles(AngePath.UniverseRoot);
 		}
 
 
@@ -675,22 +689,111 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void TryCompileDialogueFiles () {
+		private void TryCompileDialogueFiles (bool forceCompile) {
+
+			var ignoreDelete = new HashSet<string>();
+
+			// For all Editable Conversation Files
 			foreach (var path in Util.EnumerateFiles(Application.dataPath, false, $"*.{Const.EDITABLE_CONVERSATION_FILE_EXT}")) {
+
+				string globalName = Util.GetNameWithoutExtension(path);
+				string conFolderPath = Util.CombinePaths(AngePath.DialogueRoot, globalName);
+				ignoreDelete.TryAdd(globalName);
+
 				// Check Dirty
 				long modTime = Util.GetFileModifyDate(path);
 				long creationTime = Util.GetFileCreationDate(path);
-
-				if (modTime == creationTime) continue;
-
-				// Compile
-
-				
-				
-
-				// Final
+				if (!forceCompile && modTime == creationTime && Util.FolderExists(conFolderPath)) continue;
 				Util.SetFileModifyDate(path, creationTime);
 
+				// Delete Existing for All Languages
+				Util.DeleteFolder(conFolderPath);
+				Util.CreateFolder(conFolderPath);
+
+				// Compile
+				var builder = new StringBuilder();
+				var currentLanguage = SystemLanguage.English;
+				string currentIso = Util.LanguageToIso(SystemLanguage.English);
+				bool contentFlag0 = false;
+				bool contentFlag1 = false;
+				foreach (string line in Util.ForAllLines(path, Encoding.UTF8)) {
+
+					string trimedLine = line.TrimWhiteForStartAndEnd();
+
+					// Empty
+					if (string.IsNullOrWhiteSpace(trimedLine)) {
+						if (contentFlag1) {
+							contentFlag0 = contentFlag1;
+							contentFlag1 = false;
+						}
+						continue;
+					}
+
+					if (trimedLine[0] == '>') {
+						// Switch Language
+						if (trimedLine.Length > 1 && Util.IsoToLanguage(trimedLine[1..], out var newLanguage) && currentLanguage != newLanguage) {
+							// Make File
+							string targetPath = Util.CombinePaths(
+								conFolderPath,
+								$"{currentIso}.{Const.CONVERSATION_FILE_EXT}"
+							);
+							Util.TextToFile(builder.ToString(), targetPath, Encoding.UTF8);
+							builder.Clear();
+							currentLanguage = newLanguage;
+							currentIso = Util.LanguageToIso(newLanguage);
+						}
+						contentFlag0 = false;
+						contentFlag1 = false;
+					} else {
+						// Line
+						if (trimedLine.StartsWith("\\>")) {
+							trimedLine = trimedLine[1..];
+						}
+						if (trimedLine.Length > 0) {
+							// Add Gap
+							if (trimedLine[0] == '@') {
+								contentFlag0 = false;
+								contentFlag1 = false;
+							} else {
+								if (contentFlag0 && !contentFlag1) {
+									builder.Append('\n');
+								}
+								contentFlag0 = contentFlag1;
+								contentFlag1 = true;
+							}
+							// Append Line
+							if (builder.Length != 0) builder.Append('\n');
+							builder.Append(trimedLine);
+						}
+					}
+				}
+
+				// Make File for Last Language 
+				if (builder.Length != 0) {
+					string targetPath = Util.CombinePaths(
+						conFolderPath,
+						$"{currentIso}.{Const.CONVERSATION_FILE_EXT}"
+					);
+					Util.TextToFile(builder.ToString(), targetPath, Encoding.UTF8);
+					builder.Clear();
+				}
+
+			}
+
+			// Delete Useless Old Files
+			if (ignoreDelete != null) {
+				List<string> deleteList = null;
+				foreach (var path in Util.EnumerateFolders(AngePath.DialogueRoot, true, "*")) {
+					if (ignoreDelete.Contains(Util.GetNameWithoutExtension(path))) continue;
+					deleteList ??= new List<string>();
+					deleteList.Add(path);
+				}
+				if (deleteList != null) {
+					foreach (var path in deleteList) {
+						Util.DeleteFolder(path);
+						Util.DeleteFile(path + ".meta");
+					}
+				}
 			}
 		}
 

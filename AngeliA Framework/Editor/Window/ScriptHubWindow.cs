@@ -248,8 +248,7 @@ namespace AngeliaFramework.Editor {
 			EditorGUI.DropShadowLabel(MGUI.Rect(0, 24), title, MGUI.CenteredBoldLabel);
 			MGUI.Space(2);
 			string folderName = "";
-			var assetIconColor = new Color32(209, 136, 60, 255);
-			var packIconColor = new Color32(47, 86, 164, 255);
+			var assetIconColor = new Color32(209, 136, 60, 128);
 			for (int i = 0; i < scripts.Length;) {
 				using (new GUILayout.HorizontalScope()) {
 					for (int col = 0; col < column && i < scripts.Length; col++, i++) {
@@ -270,7 +269,9 @@ namespace AngeliaFramework.Editor {
 							}
 							if (icon != null) GUI.DrawTexture(iconRect.Shrink(2).Fit((float)icon.width / icon.height), icon);
 							GUI.Label(itemRect, name, Style.LabelStyle);
-							EditorGUI.DrawRect(new Rect(rect.x, rect.y + 2, 1, rect.height - 4), item.InPackage ? packIconColor : assetIconColor);
+							if (!item.InPackage) {
+								EditorGUI.DrawRect(new Rect(rect.x - 1, rect.y + 2, 1, rect.height - 4), assetIconColor);
+							}
 							EditorGUIUtility.AddCursorRect(rect, MouseCursor.Link);
 						} else if (i < scripts.Length - 1 && scripts[i + 1].IsFile) {
 							// Folder

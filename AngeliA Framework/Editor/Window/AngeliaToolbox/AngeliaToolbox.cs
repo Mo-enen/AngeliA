@@ -19,7 +19,7 @@ namespace AngeliaFramework.Editor {
 
 
 		private class Refresh : IRefreshEvent {
-			void IRefreshEvent.Refresh () => RefreshSheetThumbnail();
+			void IRefreshEvent.Refresh (bool forceRefresh) => RefreshSheetThumbnail();
 		}
 
 
@@ -536,7 +536,11 @@ namespace AngeliaFramework.Editor {
 			root.Query<Button>(className: "ToolboxButton").ForEach((btn) => {
 				switch (btn.name) {
 					case "Refresh":
-						btn.clicked += AngeliaRefresh.Refresh;
+						btn.clicked += AngeliaRefresh.RefreshFromMenu;
+						EdittimeOnlyElements.Add(btn);
+						break;
+					case "ForceRefresh":
+						btn.clicked += AngeliaRefresh.ForceRefresh;
 						EdittimeOnlyElements.Add(btn);
 						break;
 					case "Language":
