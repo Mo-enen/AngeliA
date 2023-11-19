@@ -283,10 +283,23 @@ namespace AngeliaFramework {
 		}
 
 
-		public static long GetModifyDate (string path) {
+		public static long GetFileModifyDate (string path) {
 			if (!FileExists(path)) return 0;
-			return File.GetLastWriteTime(path).Ticks;
+			return File.GetLastWriteTime(path).ToFileTime();
 		}
+
+
+		public static long GetFileCreationDate (string path) {
+			if (!FileExists(path)) return 0;
+			return File.GetCreationTime(path).ToFileTime();
+		}
+
+
+		public static void SetFileModifyDate (string path, long fileTime) {
+			if (!FileExists(path)) return;
+			File.SetLastWriteTime(path, System.DateTime.FromFileTime(fileTime));
+		}
+
 
 	}
 }

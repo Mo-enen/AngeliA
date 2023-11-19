@@ -547,10 +547,6 @@ namespace AngeliaFramework.Editor {
 						btn.clicked += () => EditorApplication.ExecuteMenuItem("AngeliA/Map Editor");
 						RuntimeOnlyElements.Add(btn);
 						break;
-					case "Dialogue":
-						btn.clicked += () => EditorApplication.ExecuteMenuItem("AngeliA/Dialogue");
-						EdittimeOnlyElements.Add(btn);
-						break;
 				}
 			});
 

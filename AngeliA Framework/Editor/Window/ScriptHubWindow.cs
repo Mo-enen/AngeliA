@@ -110,7 +110,6 @@ namespace AngeliaFramework.Editor {
 		private WindowStyle Style { get; set; } = null;
 		private HubSearchProvider HubSearch = null;
 		private readonly GUIContent SearchTitleContent = new();
-		private bool ShowHotkeyHint = false;
 		private int RequireBlink = 0;
 
 		// Saving
@@ -151,7 +150,6 @@ namespace AngeliaFramework.Editor {
 			if (!UseSpaceHotkey.Value || EditorApplication.isPlaying) return;
 			if (Current != null) {
 				Current.SearchTitleContent.text = "Script Hub";
-				Current.ShowHotkeyHint = false;
 				Current.OpenSearchWindow();
 			}
 		}
@@ -180,7 +178,6 @@ namespace AngeliaFramework.Editor {
 				);
 			}
 			Current = this;
-			ShowHotkeyHint = false;
 			RequireBlink = 0;
 			ReloadAllScripts();
 		}
@@ -202,40 +199,30 @@ namespace AngeliaFramework.Editor {
 			Style ??= new();
 
 			// Search
-			var oldB = GUI.backgroundColor;
-			GUI.backgroundColor = new Color(1f, 1f, 1f, 0.5f);
-			var sRect = new Rect(2f, 2f, 32f, 32f);
-			if (GUI.Button(sRect, GUIContent.none, GUI.skin.textField)) {
-				SearchTitleContent.text = UseSpaceHotkey.Value ? "Hotkey: Space" : "";
-				ShowHotkeyHint = true;
-				OpenSearchWindow();
-			}
-			GUI.backgroundColor = oldB;
-			GUI.Label(sRect.Shrink(3), Style.SearchContent, MGUI.CenteredLabel);
-			EditorGUIUtility.AddCursorRect(sRect, MouseCursor.Link);
-
-			// Hint
-			if (UseSpaceHotkey.Value && ShowHotkeyHint) {
-				GUI.Label(
-					new Rect(sRect.x, sRect.yMax, 48f, 28f),
-					"hotkey\nSpace",
-					MGUI.MiniGreyLabel
-				);
-			}
+			//var oldB = GUI.backgroundColor;
+			//GUI.backgroundColor = new Color(1f, 1f, 1f, 0.5f);
+			//var sRect = new Rect(2f, 2f, 32f, 32f);
+			//if (GUI.Button(sRect, GUIContent.none, GUI.skin.textField)) {
+			//	SearchTitleContent.text = UseSpaceHotkey.Value ? "Hotkey: Space" : "";
+			//	OpenSearchWindow();
+			//}
+			//GUI.backgroundColor = oldB;
+			//GUI.Label(sRect.Shrink(3), Style.SearchContent, MGUI.CenteredLabel);
+			//EditorGUIUtility.AddCursorRect(sRect, MouseCursor.Link);
 
 			// Reload
-			var rRect = new Rect(position.width - 64f, 2f, 64f, 22f);
-			if (GUI.Button(rRect, "Reload", EditorStyles.linkLabel)) {
-				ReloadAllScripts();
-				RequireBlink = 3;
-			}
-			EditorGUIUtility.AddCursorRect(rRect, MouseCursor.Link);
+			//var rRect = new Rect(0f, 34f, 64f, 22f);
+			//if (GUI.Button(rRect, "Reload", EditorStyles.linkLabel)) {
+			//	ReloadAllScripts();
+			//	RequireBlink = 3;
+			//}
+			//EditorGUIUtility.AddCursorRect(rRect, MouseCursor.Link);
 
 			// Content
 			using var scroll = new GUILayout.ScrollViewScope(ScrollPos);
-			using var _ = new GUILayout.VerticalScope(MGUI.PaddingPanelStyle_6);
+			using var _ = new GUILayout.VerticalScope();
 			ScrollPos = scroll.scrollPosition;
-			var rect = MGUI.Rect((int)EditorGUIUtility.currentViewWidth - 64, 1);
+			var rect = MGUI.Rect((int)EditorGUIUtility.currentViewWidth - 20, 1);
 			if (Event.current.type == EventType.Repaint) {
 				float allColumns = 0;
 				foreach (var c in Columns) allColumns += c;
@@ -243,9 +230,10 @@ namespace AngeliaFramework.Editor {
 			}
 			using var h = new GUILayout.HorizontalScope();
 			MGUI.Rect(0, 1);
+			const int H_GAP = 12;
 			for (int i = 0; i < Scripts.Length; i++) {
-				ScriptListGUI(Scripts[i], Titles[i], (ColumnWidth - 24f).Clamp(64f, 260f) * Columns[i], Columns[i]);
-				MGUI.Space(24);
+				ScriptListGUI(Scripts[i], Titles[i], (ColumnWidth - H_GAP).Clamp(64f, 260f) * Columns[i], Columns[i]);
+				MGUI.Space(H_GAP);
 			}
 			MGUI.Rect(0, 1);
 			MGUI.CancelFocusOnClick(this);
@@ -255,7 +243,7 @@ namespace AngeliaFramework.Editor {
 
 		private void ScriptListGUI (Item[] scripts, string title, float width, int column) {
 			if (scripts == null) return;
-			using var _ = new GUILayout.VerticalScope(GUILayout.Width(width));
+			using var _ = new GUILayout.VerticalScope(GUIStyle.none, GUILayout.Width(width));
 			MGUI.Space(2);
 			EditorGUI.DropShadowLabel(MGUI.Rect(0, 24), title, MGUI.CenteredBoldLabel);
 			MGUI.Space(2);
@@ -485,6 +473,7 @@ namespace AngeliaFramework.Editor {
 
 
 		private void OnItemClick (string path) {
+			path = Util.FixPath(path);
 			if (Event.current.button == 0) {
 				string ex = Util.GetExtension(path);
 				if (ex == ".cs" || ex == ".shader") {

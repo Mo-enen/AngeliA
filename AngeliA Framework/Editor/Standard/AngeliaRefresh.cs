@@ -23,7 +23,7 @@ namespace AngeliaFramework.Editor {
 
 
 
-		private static readonly EditorSavingString LastSyncTick = new("Angelia.LastSyncTick", "0");
+		private static readonly EditorSavingString LastSyncTick = new("AngeRefresh.LastSyncTick", "0");
 		public int callbackOrder => 0;
 
 
@@ -96,19 +96,19 @@ namespace AngeliaFramework.Editor {
 
 			// Check for Ase Files
 			foreach (var filePath in AngeEditorUtil.ForAllAsepriteFiles()) {
-				if (Util.GetModifyDate(filePath) > lastSyncTickValue) {
+				if (Util.GetFileModifyDate(filePath) > lastSyncTickValue) {
 					return true;
 				}
 			}
 
 			// Check for Maps
 			foreach (var path in Util.EnumerateFiles(AngePath.BuiltInMapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
-				if (Util.GetModifyDate(path) > lastSyncTickValue) {
+				if (Util.GetFileModifyDate(path) > lastSyncTickValue) {
 					return true;
 				}
 			}
 			foreach (var path in Util.EnumerateFiles(AngePath.UserMapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
-				if (Util.GetModifyDate(path) > lastSyncTickValue) {
+				if (Util.GetFileModifyDate(path) > lastSyncTickValue) {
 					return true;
 				}
 			}
@@ -209,6 +209,7 @@ namespace AngeliaFramework.Editor {
 			// Final
 			AngeliaToolbox.RefreshSheetThumbnail(true);
 			AngeEditorUtil.HideMetaFiles(AngePath.UniverseRoot);
+			TryCompileDialogueFiles();
 			RefreshEditorSetting();
 			AssetDatabase.Refresh();
 			EditorSceneManager.SaveOpenScenes();
@@ -671,6 +672,26 @@ namespace AngeliaFramework.Editor {
 		// Misc
 		private void RefreshEditorSetting () {
 			PlayerSettings.colorSpace = ColorSpace.Gamma;
+		}
+
+
+		private void TryCompileDialogueFiles () {
+			foreach (var path in Util.EnumerateFiles(Application.dataPath, false, $"*.{Const.EDITABLE_CONVERSATION_FILE_EXT}")) {
+				// Check Dirty
+				long modTime = Util.GetFileModifyDate(path);
+				long creationTime = Util.GetFileCreationDate(path);
+
+				if (modTime == creationTime) continue;
+
+				// Compile
+
+				
+				
+
+				// Final
+				Util.SetFileModifyDate(path, creationTime);
+
+			}
 		}
 
 

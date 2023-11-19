@@ -21,6 +21,16 @@ namespace AngeliaFramework.Editor {
 	}
 
 
+	public class ConversationHub : IScriptHubConfig {
+		public string[] Paths => new string[] { "Assets", };
+		public string Title => "Conversation";
+		public IScriptHubConfig.SearchPattern[] SearchPatterns => new IScriptHubConfig.SearchPattern[]{
+			new ($"*.{Const.EDITABLE_CONVERSATION_FILE_EXT}", "Conversation", true),
+		};
+		public int Order => 1024;
+	}
+
+
 	public class AsepriteHub : IScriptHubConfig {
 		public string[] Paths => new string[] {
 			"Assets",
@@ -33,9 +43,8 @@ namespace AngeliaFramework.Editor {
 		public IScriptHubConfig.SearchPattern[] SearchPatterns => new IScriptHubConfig.SearchPattern[]{
 			new ("*.ase", "Ase", true),
 			new ("*.aseprite", "Aseprite", true),
-			new ("*#aa*.png", "PNG", true),
 		};
-		public int Order => 1;
+		public int Order => 2;
 	}
 
 
@@ -73,7 +82,7 @@ namespace AngeliaFramework.Editor {
 		public IScriptHubConfig.SearchPattern[] SearchPatterns => new IScriptHubConfig.SearchPattern[]{
 			new ("*.cs", "", true),
 		};
-		public int Order => -1024;
+		public int Order => -1023;
 		public int Column => 3;
 	}
 

@@ -29,6 +29,7 @@ namespace AngeliaFramework {
 		// File
 		public const string MAP_FILE_EXT = "ibb";
 		public const string CONVERSATION_FILE_EXT = "txt";
+		public const string EDITABLE_CONVERSATION_FILE_EXT = "conversation";
 		public const string LANGUAGE_FILE_EXT = "txt";
 
 		// Entity
