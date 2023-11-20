@@ -1,4 +1,6 @@
-﻿CtrlHint.Adjust:Adjust
+﻿@CharacterA:Char A
+@CharacterB:Char B
+CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
 CtrlHint.Drop:Drop

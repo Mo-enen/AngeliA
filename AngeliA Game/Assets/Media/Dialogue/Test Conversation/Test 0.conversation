@@ -5,7 +5,6 @@
 
 
 @CharacterA
-
 Hi, 
 I'm interested in learning about the history of Japan. 
 Can you tell me some facts about it?
@@ -13,14 +12,19 @@ Can you tell me some facts about it?
 
 
 @CharacterB
-
-I'm happy to help you with that. Japan is an island nation in East Asia that has a rich and diverse history. Some facts about Japan's history are:
+I'm happy to help you with that. Japan is an island nation in
 #color=#FFCC00
-Japan was first inhabited by hunter-gatherers around 30,000 BCE, who later developed pottery and rice cultivation.
+ East Asia 
 #color
+that has a rich and diverse history. Some facts about Japan's history are:
+
+@CharacterB
+Japan was first inhabited by hunter-gatherers around 30,000 BCE, who later developed pottery and rice cultivation.
+
 #size=150
 Japan was influenced by China and Korea in terms of culture, religion, writing, and technology from the 4th to the 9th centuries CE.
 #size
+
 Japan developed a feudal system of government under the shoguns, or military rulers, from the 12th to the 19th centuries CE. The most famous shogun was Tokugawa Ieyasu, who unified Japan and established the Tokugawa shogunate in 1603.
 Japan opened up to the world and modernized after the Meiji Restoration in 1868, which ended the shogunate and restored the emperor's power. Japan became an imperialist power and fought in several wars, including the Sino-Japanese War, the Russo-Japanese War, and World War II.
 
@@ -28,9 +32,9 @@ Japan opened up to the world and modernized after the Meiji Restoration in 1868,
 Japan was defeated in World War II and occupied by the United States from 1945 to 1952, during which it adopted a new constitution and a democratic system of government. Japan experienced rapid economic growth and became a global leader in technology, industry, and culture in the post-war era.
 #color
 
-
-
 Japan is currently the third-largest economy in the world and a member of the United Nations, the G7, and the G20. Japan is known for its unique culture, such as anime, manga, sushi, karaoke, and video games.
+
+
 
 
 >zhs

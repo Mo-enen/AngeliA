@@ -54,7 +54,7 @@ namespace AngeliaFramework.Editor {
 
 		public static void Refresh (bool forceRefresh) {
 			try {
-				LastSyncTick.Value = System.DateTime.Now.Ticks.ToString();
+				LastSyncTick.Value = System.DateTime.Now.ToFileTime().ToString();
 
 				// Built-In
 				var angeEvent = new AngeliaRefreshEvent();
