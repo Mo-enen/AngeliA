@@ -249,21 +249,23 @@ namespace AngeliaFramework {
 					continue;
 				}
 
+				int realCharSize = (sprite.Advance * charSize).RoundToInt();
+
 				// Wrap Check for Word
 				if (wrap && i >= nextWrapCheckIndex && !IsLineBreakingChar(c)) {
 					if (!WordEnoughToFit(
-						text, charSize, charSpace, i, rect.xMax - x, out int wordLength
+						text, charSize, charSpace, i, rect.xMax - x - realCharSize, out int wordLength
 					) && !firstCharAtLine) {
 						x = rect.x;
 						y -= charSize + lineSpace;
 						line++;
+						firstCharAtLine = true;
 						if (clip && line >= maxLineCount) break;
 					}
-					nextWrapCheckIndex += wordLength;
+					nextWrapCheckIndex += wordLength - 1;
 				}
 
 				// Draw Char
-				int realCharSize = (sprite.Advance * charSize).RoundToInt();
 				if (wrap && x > rect.xMax - realCharSize) {
 					x = rect.x;
 					y -= charSize + lineSpace;
@@ -703,13 +705,11 @@ namespace AngeliaFramework {
 
 
 		private static bool WordEnoughToFit (string content, int charSize, int charSpace, int startIndex, int room, out int wordLength) {
-			int len = content.Length;
 			int index = startIndex;
-			for (; index < len; index++) {
+			for (; index < content.Length; index++) {
 				char c = content[index];
 				if (IsLineBreakingChar(c)) break;
 				if (!CellRenderer.RequireChar(c, out var sprite)) continue;
-				// Room
 				if (room > 0) {
 					room -= (sprite.Advance * charSize).RoundToInt() + charSpace;
 				}

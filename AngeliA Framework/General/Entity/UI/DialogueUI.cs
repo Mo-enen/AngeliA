@@ -10,26 +10,23 @@ namespace AngeliaFramework {
 			CellRenderer.CameraRect.x,
 			CellRenderer.CameraRect.y,
 			CellRenderer.CameraRect.width,
-			Unify(200)
+			Unify(300)
 		);
-		protected override RectInt ContentRect => PanelRect.Shrink(Unify(8 + 200 - 8 - 8), Unify(8), Unify(8), Unify(8));
+		protected override RectInt ContentRect => PanelRect.Shrink(IconRect.width + Unify(28), Unify(12), Unify(12), Unify(36 + NameFontSize));
 		protected override RectInt IconRect {
 			get {
-				var rect = PanelRect.Shrink(Unify(8));
+				var rect = PanelRect.Shrink(Unify(12));
 				rect.width = rect.height;
-				rect.height -= Unify(24);
-				rect.y += Unify(24);
 				return rect;
 			}
 		}
 		protected override RectInt NameRect {
 			get {
-				var rect = PanelRect.Shrink(Unify(8));
-				rect.width = rect.height;
-				rect.height = Unify(24);
-				return rect;
+				var panelRect = PanelRect.Shrink(Unify(12));
+				return new RectInt(panelRect.x + panelRect.height + Unify(12), panelRect.yMax - Unify(30), panelRect.width, Unify(NameFontSize));
 			}
 		}
+		protected override Color32 NameTint => Const.GREY_196;
 
 	}
 
@@ -48,6 +45,10 @@ namespace AngeliaFramework {
 		protected abstract RectInt ContentRect { get; }
 		protected abstract RectInt IconRect { get; }
 		protected abstract RectInt NameRect { get; }
+		protected virtual int NameFontSize => 24;
+		protected virtual int ContentFontSize => 28;
+		protected virtual Color32 NameTint => Const.WHITE;
+		protected virtual Color32 ContentTint => Const.WHITE;
 
 		// Data
 		private int UpdatedFrame = int.MinValue;
@@ -61,7 +62,11 @@ namespace AngeliaFramework {
 			Wrap = true,
 			Clip = true,
 			Alignment = Alignment.TopLeft,
-			CharSize = 28,
+		};
+		private readonly CellContent LabelName = new() {
+			Wrap = false,
+			Clip = false,
+			Alignment = Alignment.MidLeft,
 		};
 
 
@@ -113,15 +118,20 @@ namespace AngeliaFramework {
 
 			// Content
 			LabelContent.Text = Content;
+			LabelContent.CharSize = ContentFontSize;
+			LabelContent.Tint = ContentTint;
 			CellRendererGUI.Label(LabelContent, contentRect, StartIndex, true, out _, out EndIndex);
+
+			// Name
+			LabelName.Text = Language.Get(Identity);
+			LabelName.CharSize = NameFontSize;
+			LabelName.Tint = NameTint;
+			CellRendererGUI.Label(LabelName, nameRect);
 
 			// Icon
 			if (CellRenderer.TryGetSprite(Identity, out var iconSprite)) {
 				CellRenderer.Draw(iconSprite.GlobalID, iconRect.Fit(iconSprite.GlobalWidth, iconSprite.GlobalHeight), 1);
 			}
-
-			// Name
-			CellRendererGUI.Label(CellContent.Get(Language.Get(Identity)), nameRect);
 
 		}
 
