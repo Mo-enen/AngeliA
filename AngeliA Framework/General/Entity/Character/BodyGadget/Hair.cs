@@ -248,7 +248,7 @@ namespace AngeliaFramework {
 		protected override string BaseTypeName => nameof(Hair);
 		protected virtual int FlowAmountX => 500;
 		protected virtual int FlowAmountY => 500;
-
+		
 		// Data
 		private static readonly Dictionary<int, Hair> Pool = new();
 		private static readonly Dictionary<int, int> DefaultPool = new();

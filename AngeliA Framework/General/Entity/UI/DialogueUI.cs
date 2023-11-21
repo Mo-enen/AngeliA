@@ -57,7 +57,6 @@ namespace AngeliaFramework {
 		private string Content = "";
 		private int Identity = 0;
 		private Color32[] Colors = null;
-		private int[] Sizes = null;
 		private readonly CellContent LabelContent = new() {
 			Wrap = true,
 			Clip = true,
@@ -85,7 +84,6 @@ namespace AngeliaFramework {
 			Content = "";
 			Identity = 0;
 			Colors = null;
-			Sizes = null;
 			UpdatedFrame = Game.GlobalFrame;
 		}
 
@@ -120,7 +118,18 @@ namespace AngeliaFramework {
 			LabelContent.Text = Content;
 			LabelContent.CharSize = ContentFontSize;
 			LabelContent.Tint = ContentTint;
+			int cellStartIndex = CellRenderer.GetTextUsedCellCount();
 			CellRendererGUI.Label(LabelContent, contentRect, StartIndex, true, out _, out EndIndex);
+			if (CellRenderer.GetTextCells(out var cells, out int count)) {
+				int index = StartIndex;
+				for (int i = cellStartIndex; i < count; i++) {
+					var cell = cells[i];
+					if (index < Colors.Length) {
+						cell.Color = Colors[index];
+					}
+					index++;
+				}
+			}
 
 			// Name
 			LabelName.Text = Language.Get(Identity);
@@ -147,11 +156,10 @@ namespace AngeliaFramework {
 		public void Update () => UpdatedFrame = Game.GlobalFrame;
 
 
-		public void SetData (string content, int identity, Color32[] colors, int[] sizes) {
+		public void SetData (string content, int identity, Color32[] colors) {
 			Content = content;
 			Identity = identity;
 			Colors = colors;
-			Sizes = sizes;
 		}
 
 

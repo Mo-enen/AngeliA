@@ -17,7 +17,6 @@ namespace AngeliaFramework {
 			public int CharacterID;
 			public string Content;
 			public Color32[] Colors;
-			public int[] Sizes;
 		}
 
 
@@ -58,7 +57,7 @@ namespace AngeliaFramework {
 			if (LoadedSection != CurrentSection) {
 				var section = Sections[CurrentSection];
 				LoadedSection = CurrentSection;
-				DialogueUI.SetData(section.Content, section.CharacterID, section.Colors, section.Sizes);
+				DialogueUI.SetData(section.Content, section.CharacterID, section.Colors);
 			}
 			DialogueUI.Update();
 
@@ -114,11 +113,9 @@ namespace AngeliaFramework {
 			// Load Conversation
 			bool prevLineConfig = false;
 			int currentCharacterID = 0;
-			int currentFontSize = 24;
 			var currentColor = Const.WHITE;
 			var builder = new StringBuilder();
 			var colors = new List<Color32>();
-			var sizes = new List<int>();
 			foreach (string line in Util.ForAllLines(conversationPath, Encoding.UTF8)) {
 
 				// Empty Line
@@ -150,14 +147,6 @@ namespace AngeliaFramework {
 									currentColor = Const.WHITE;
 								}
 								break;
-							case 's':
-								// Size
-								if (equalIndex >= 0 && equalIndex < line.Length - 1 && int.TryParse(line[(equalIndex + 1)..], out int newSize)) {
-									currentFontSize = 24 * newSize / 100;
-								} else {
-									currentFontSize = 24;
-								}
-								break;
 						}
 						break;
 					default:
@@ -177,7 +166,6 @@ namespace AngeliaFramework {
 				builder.Append(content);
 				for (int i = 0; i < content.Length; i++) {
 					colors.Add(currentColor);
-					sizes.Add(currentFontSize);
 				}
 			}
 			void MakeSection () {
@@ -186,14 +174,11 @@ namespace AngeliaFramework {
 						CharacterID = currentCharacterID,
 						Content = builder.ToString(),
 						Colors = colors.ToArray(),
-						Sizes = sizes.ToArray(),
 					});
 				}
 				currentCharacterID = 0;
-				currentFontSize = 24;
 				currentColor = Const.WHITE;
 				colors.Clear();
-				sizes.Clear();
 				builder.Clear();
 			}
 		}

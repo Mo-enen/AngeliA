@@ -718,7 +718,7 @@ namespace AngeliaFramework.Editor {
 				bool contentFlag1 = false;
 				foreach (string line in Util.ForAllLines(path, Encoding.UTF8)) {
 
-					string trimedLine = line.TrimWhiteForStartAndEnd();
+					string trimedLine = line.TrimStart(' ', '\t');
 
 					// Empty
 					if (string.IsNullOrWhiteSpace(trimedLine)) {

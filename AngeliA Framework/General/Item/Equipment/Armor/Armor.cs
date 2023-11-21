@@ -129,7 +129,7 @@ namespace AngeliaFramework {
 
 			// Cape
 			if (bodyId != 0 && CellRenderer.TryGetSpriteFromGroup(
-				bodyId, character.Body.FrontSide ? 4 : 5, out var capeSprite, false, false
+				bodyId, character.Body.FrontSide ? 2 : 3, out var capeSprite, false, false
 			)) {
 				Cloth.DrawCape(character, capeSprite);
 			}

@@ -431,7 +431,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void DrawClothForBody (Character character, int spriteGroupIdLeft, int spriteGroupIdRight, int localZ) {
+		public static void DrawClothForBody (Character character, int spriteGroupIdLeft, int spriteGroupIdRight, int localZ, int shiftTopAmount = 300) {
 
 			var body = character.Body;
 			bool facingRight = body.Width > 0;
@@ -441,12 +441,7 @@ namespace AngeliaFramework {
 
 			var hip = character.Hip;
 			int poseTwist = character.PoseTwist;
-
-			int groupIndex = !body.FrontSide ? 3 :
-				poseTwist.Abs() < 333 ? 0 :
-				separatedSprite ?
-					(facingRight == poseTwist < 0 ? 1 : 2) :
-					(facingRight == poseTwist < 0 ? 1 : 2);
+			int groupIndex = body.FrontSide ? 0 : 1;
 			if (!CellRenderer.TryGetSpriteFromGroup(spriteGroupId, groupIndex, out var suitSprite, false, true)) return;
 
 			var rect = new RectInt(
@@ -479,7 +474,24 @@ namespace AngeliaFramework {
 			if (separatedSprite && !facingRight) rect.FlipHorizontal();
 
 			// Draw
-			CellRenderer.Draw(suitSprite.GlobalID, rect, body.Z + localZ);
+			var cell = CellRenderer.Draw(suitSprite.GlobalID, rect, body.Z + localZ);
+
+			// Twist
+			if (poseTwist != 0 && body.FrontSide && body.Height > 0) {
+				int shiftTop = body.Height * shiftTopAmount / 1000;
+				int shiftX = poseTwist * cell.Width / 2500;
+				var cellL = CellRenderer.Draw(Const.PIXEL, default);
+				cellL.CopyFrom(cell);
+				var cellR = CellRenderer.Draw(Const.PIXEL, default);
+				cellR.CopyFrom(cell);
+				cellL.Shift.up = cellR.Shift.up = shiftTop;
+				cellL.Width += body.Width.Sign() * shiftX;
+				cellL.Shift.right = cellL.Width.Abs() / 2;
+				cellR.Width -= body.Width.Sign() * shiftX;
+				cellR.X = cellL.X + cellL.Width / 2 - cellR.Width / 2;
+				cellR.Shift.left = cellR.Width.Abs() / 2;
+				cell.Shift.down = cell.Height - shiftTop;
+			}
 
 			// Hide Limb
 			body.Covered = CellRenderer.TryGetMeta(suitSprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG ?

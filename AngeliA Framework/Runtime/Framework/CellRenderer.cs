@@ -36,6 +36,21 @@ namespace AngeliaFramework {
 		public Color32 Color;
 		public Alignment BorderSide;
 		public Vector4Int Shift;
+		public void CopyFrom (Cell other) {
+			Index = other.Index;
+			Order = other.Order;
+			X = other.X;
+			Y = other.Y;
+			Z = other.Z;
+			Width = other.Width;
+			Height = other.Height;
+			Rotation = other.Rotation;
+			PivotX = other.PivotX;
+			PivotY = other.PivotY;
+			Color = other.Color;
+			BorderSide = other.BorderSide;
+			Shift = other.Shift;
+		}
 		public Vector2Int LocalToGlobal (int cellX, int cellY) {
 			if (Rotation == 0) {
 				return new Vector2Int(
@@ -283,6 +298,7 @@ namespace AngeliaFramework {
 		private static readonly string[] LAYER_NAMES = new string[Const.RENDER_LAYER_COUNT] {
 			"Wallpaper", "Behind", "Default", "Color", "Mult", "Add", "UI", "TopUI",
 		};
+		private static readonly bool[] DEFAULT_PART_IGNORE = new bool[9] { false, false, false, false, false, false, false, false, false, };
 
 		// Api
 		public static RectInt ViewRect { get; private set; } = default;
@@ -880,18 +896,21 @@ namespace AngeliaFramework {
 
 
 		// Draw
-		public static Cell Draw (int globalID, RectInt rect, int z = int.MinValue) => Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, WHITE, z);
-		public static Cell Draw (int globalID, RectInt rect, Color32 color, int z = int.MinValue) => Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
-		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID, x, y, pivotX, pivotY, rotation, width, height, WHITE, z);
-		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) {
+		public static Cell Draw (int globalID, RectInt rect, int z = int.MinValue) => Draw(globalID, false, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, WHITE, z);
+		public static Cell Draw (int globalID, RectInt rect, Color32 color, int z = int.MinValue) => Draw(globalID, false, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
+		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID, false, x, y, pivotX, pivotY, rotation, width, height, WHITE, z);
+		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) => Draw(globalID, false, x, y, pivotX, pivotY, rotation, width, height, color, z);
+		public static Cell Draw (int globalID, bool forText, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) {
 
 			if (!IsDrawing) return EMPTY_CELL;
-			bool forText = false;
-			if (!SheetIDMap.TryGetValue(globalID, out var rCell)) {
+			CellInfo rCell;
+			if (forText) {
 				var tLayer = TextLayers[CurrentTextLayerIndex];
-				if (tLayer.TextIDMap.TryGetValue(globalID, out rCell)) {
-					forText = true;
-				} else {
+				if (!tLayer.TextIDMap.TryGetValue(globalID, out rCell)) {
+					return EMPTY_CELL;
+				}
+			} else {
+				if (!SheetIDMap.TryGetValue(globalID, out rCell)) {
 					return EMPTY_CELL;
 				}
 			}
@@ -969,7 +988,8 @@ namespace AngeliaFramework {
 			);
 		}
 		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => Draw_9Slice(globalID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, WHITE, z);
-		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) {
+		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => Draw_9Slice(globalID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z);
+		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Color32 color, int z = int.MinValue) {
 
 			Last9SlicedCells[0] = Last9SlicedCells[1] = Last9SlicedCells[2] = EMPTY_CELL;
 			Last9SlicedCells[3] = Last9SlicedCells[4] = Last9SlicedCells[5] = EMPTY_CELL;
@@ -1012,7 +1032,7 @@ namespace AngeliaFramework {
 			if (borderU > 0) {
 				float _py = (borderU - height * (1000 - pivotY) / 1000f) / borderU;
 				// TL
-				if (hasL) {
+				if (hasL && !partIgnore[0]) {
 					var cell = Draw(
 						globalID, x, y, 0, 0,
 						rotation, borderL, borderU, color
@@ -1023,7 +1043,7 @@ namespace AngeliaFramework {
 					Last9SlicedCells[0] = cell;
 				}
 				// TM
-				if (hasM) {
+				if (hasM && !partIgnore[1]) {
 					var cell = Draw(
 						globalID, x, y, 0, 0,
 						rotation, mWidth, borderU, color
@@ -1034,7 +1054,7 @@ namespace AngeliaFramework {
 					Last9SlicedCells[1] = cell;
 				}
 				// TR
-				if (hasR) {
+				if (hasR && !partIgnore[2]) {
 					var cell = Draw(
 						globalID, x, y, 0, 0,
 						rotation, borderR, borderU, color
@@ -1048,7 +1068,7 @@ namespace AngeliaFramework {
 			if (borderD + borderU < height) {
 				float _py = (height * pivotY / 1000f - borderD) / mHeight;
 				// ML
-				if (hasL) {
+				if (hasL && !partIgnore[3]) {
 					var cell = Draw(
 						globalID, x, y, 0, 0,
 						rotation, borderL, mHeight, color
@@ -1059,7 +1079,7 @@ namespace AngeliaFramework {
 					Last9SlicedCells[3] = cell;
 				}
 				// MM
-				if (hasM) {
+				if (hasM && !partIgnore[4]) {
 					var cell = Draw(
 						globalID, x, y, 0, 0,
 						rotation, mWidth, mHeight, color
@@ -1070,7 +1090,7 @@ namespace AngeliaFramework {
 					Last9SlicedCells[4] = cell;
 				}
 				// MR
-				if (hasR) {
+				if (hasR && !partIgnore[5]) {
 					var cell = Draw(
 						globalID, x, y, 0, 0,
 						rotation, borderR, mHeight, color
@@ -1084,7 +1104,7 @@ namespace AngeliaFramework {
 			if (borderD > 0) {
 				float _py = height * pivotY / 1000f / borderD;
 				// DL
-				if (hasL) {
+				if (hasL && !partIgnore[6]) {
 					var cell = Draw(
 						globalID, x, y, 0, 0,
 						rotation, borderL, borderD, color
@@ -1095,7 +1115,7 @@ namespace AngeliaFramework {
 					Last9SlicedCells[6] = cell;
 				}
 				// DM
-				if (hasM) {
+				if (hasM && !partIgnore[7]) {
 					var cell = Draw(
 						globalID, x, y, 0, 0,
 						rotation, mWidth, borderD, color
@@ -1106,7 +1126,7 @@ namespace AngeliaFramework {
 					Last9SlicedCells[7] = cell;
 				}
 				// DR
-				if (hasR) {
+				if (hasR && !partIgnore[8]) {
 					var cell = Draw(
 						globalID, x, y, 0, 0,
 						rotation, borderR, borderD, color

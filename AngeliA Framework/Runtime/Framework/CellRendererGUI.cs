@@ -227,10 +227,7 @@ namespace AngeliaFramework {
 
 				char c = text[i];
 				endIndex = i;
-				if (c == '\r') {
-					if (drawInvisibleChar) CellRenderer.Draw(Const.PIXEL, default, int.MinValue);
-					continue;
-				}
+				if (c == '\r') goto CONTINUE;
 
 				// Line
 				if (c == '\n') {
@@ -239,15 +236,11 @@ namespace AngeliaFramework {
 					firstCharAtLine = true;
 					line++;
 					if (clip && line >= maxLineCount) break;
-					if (drawInvisibleChar) CellRenderer.Draw(Const.PIXEL, default, int.MinValue);
-					continue;
+					goto CONTINUE;
 				}
 
 				// Require Char
-				if (!CellRenderer.RequireChar(c, out var sprite)) {
-					if (drawInvisibleChar) CellRenderer.Draw(Const.PIXEL, default, int.MinValue);
-					continue;
-				}
+				if (!CellRenderer.RequireChar(c, out var sprite)) goto CONTINUE;
 
 				int realCharSize = (sprite.Advance * charSize).RoundToInt();
 
@@ -270,13 +263,10 @@ namespace AngeliaFramework {
 					x = rect.x;
 					y -= charSize + lineSpace;
 					line++;
-					if (char.IsWhiteSpace(c)) continue;
+					if (char.IsWhiteSpace(c)) goto CONTINUE;
 					if (clip && line >= maxLineCount) break;
 				}
-				var cell = DrawChar(c, x, y, charSize, charSize, color);
-				if (drawInvisibleChar && cell == EMPTY_CELL) {
-					CellRenderer.Draw(Const.PIXEL, default, int.MinValue);
-				}
+				var cell = DrawChar(c, x, y, charSize, charSize, color) ?? EMPTY_CELL;
 
 				// Beam
 				if (!beamEnd && beamIndex >= 0 && i >= beamIndex) {
@@ -301,6 +291,18 @@ namespace AngeliaFramework {
 				maxX = Mathf.Max(maxX, cell.X + cell.Width);
 				maxY = Mathf.Max(maxY, cell.Y + cell.Height);
 				firstCharAtLine = false;
+
+				continue;
+
+				CONTINUE:;
+				if (drawInvisibleChar) {
+					int cellCount = CellRenderer.GetTextUsedCellCount() - startCellIndex - 1;
+					int textCount = i - startIndex;
+					int addCount = textCount - cellCount;
+					for (int add = 0; add < addCount; add++) {
+						CellRenderer.Draw(' ', true, 0, 0, 0, 0, 0, 0, 0, color);
+					}
+				}
 
 			}
 
@@ -733,14 +735,14 @@ namespace AngeliaFramework {
 
 		private static Cell DrawChar (char c, int x, int y, int width, int height, Color32 color) {
 
-			if (!CellRenderer.TextReady) return EMPTY_CELL;
+			if (!CellRenderer.TextReady) return null;
 
 			// Require
-			if (!CellRenderer.RequireChar(c, out var sprite)) return EMPTY_CELL;
+			if (!CellRenderer.RequireChar(c, out var sprite)) return null;
 
 			// Draw
-			var cell = CellRenderer.Draw(c, x, y, 0, 0, 0, width, height, color);
-			if (cell.Index < 0) { return cell; }
+			var cell = CellRenderer.Draw(c, true, x, y, 0, 0, 0, width, height, color);
+			if (cell.Index < 0) return cell;
 			var uvOffset = sprite.Offset;
 			cell.X += (int)(cell.Width * uvOffset.x);
 			cell.Y += (int)(cell.Height * uvOffset.y);

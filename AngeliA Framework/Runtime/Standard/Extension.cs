@@ -14,13 +14,14 @@ namespace AngeliaFramework {
 		// Number
 		public static bool GetBit (this ulong value, int index) => (value & (1UL << index)) != 0;
 		public static bool GetBit (this int value, int index) => (value & (1 << index)) != 0;
-
-		public static void SetBitValue (this ref ulong value, int index, bool bitValue) {
+		public static bool GetBit (this ushort value, int index) => (value & (1 << index)) != 0;
+		
+		public static void SetBit (this ref ulong value, int index, bool bitValue) {
 			if (index < 0 || index > 63) return;
 			var val = 1UL << index;
 			value = bitValue ? (value | val) : (value & ~val);
 		}
-		public static void SetBitValue (this ref int value, int index, bool bitValue) {
+		public static void SetBit (this ref int value, int index, bool bitValue) {
 			if (index < 0 || index > 31) return;
 			var val = 1 << index;
 			value = bitValue ? (value | val) : (value & ~val);

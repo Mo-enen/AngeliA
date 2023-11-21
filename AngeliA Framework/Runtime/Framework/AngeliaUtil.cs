@@ -668,14 +668,14 @@ namespace AngeliaFramework {
 			//                         1             2            3
 			if (string.IsNullOrEmpty(str) || str.Length < 8) return 0;
 			int digit = 0;
-			digit.SetBitValue(0, true);
+			digit.SetBit(0, true);
 			for (int i = 0; i < 8; i++) {
 				char c = str[i];
 				if (c < '0' || c > '9') continue;
 				int strNumber = str[i] - '0';
-				digit.SetBitValue(8 + i * 3 + 0, (strNumber / 4) % 2 == 1);
-				digit.SetBitValue(8 + i * 3 + 1, (strNumber / 2) % 2 == 1);
-				digit.SetBitValue(8 + i * 3 + 2, (strNumber / 1) % 2 == 1);
+				digit.SetBit(8 + i * 3 + 0, (strNumber / 4) % 2 == 1);
+				digit.SetBit(8 + i * 3 + 1, (strNumber / 2) % 2 == 1);
+				digit.SetBit(8 + i * 3 + 2, (strNumber / 1) % 2 == 1);
 			}
 			return digit;
 		}
