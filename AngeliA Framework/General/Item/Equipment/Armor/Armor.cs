@@ -4,12 +4,10 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public abstract class Armor : Equipment {
+	public abstract class Armor<P, N> : Equipment where P : Equipment where N : Equipment {
 
 
 		// VAR
-		protected virtual System.Type PrevEquipment => null;
-		protected virtual System.Type NextEquipment => null;
 		protected virtual System.Type[] RepairMaterials => null;
 		protected virtual int Scale => 1000;
 
@@ -21,8 +19,11 @@ namespace AngeliaFramework {
 
 		// MSG
 		public Armor () {
-			PrevEquipmentID = AngeUtil.GetAngeHash(PrevEquipment);
-			NextEquipmentID = AngeUtil.GetAngeHash(NextEquipment);
+			PrevEquipmentID = typeof(P).AngeHash();
+			NextEquipmentID = typeof(N).AngeHash();
+			Debug.Log(TypeID);
+			if (PrevEquipmentID == TypeID) PrevEquipmentID = 0;
+			if (NextEquipmentID == TypeID) NextEquipmentID = 0;
 			RepairMaterialsID = AngeUtil.GetAngeHashs(RepairMaterials);
 			string basicName = GetType().AngeName();
 			switch (EquipmentType) {

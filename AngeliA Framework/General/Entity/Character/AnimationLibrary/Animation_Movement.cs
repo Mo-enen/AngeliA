@@ -119,10 +119,11 @@ namespace AngeliaFramework {
 
 			int loop = Mathf.Max(FRAME_LENGTH * 50 / Target.WalkSpeed.FinalValue.Clamp(1, 100) / FRAME_LENGTH * FRAME_LENGTH, 1);
 			int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
-			int currentFrame = (CurrentAnimationFrame + frameRate * 2).UMod(loop) / frameRate * frameRate;
+			int fixedAnimationFrame = (CurrentAnimationFrame + frameRate * 2).UMod(loop);
+			int currentFrame = fixedAnimationFrame / frameRate * frameRate;
 			int arrFrame = (currentFrame / frameRate) % FRAME_LENGTH;
 
-			if (arrFrame == 0) RollRandomFactor(2);
+			if (fixedAnimationFrame == 0) RollRandomFactor(2);
 
 			float ease = WALK_RUN_EASE[arrFrame];
 			float easeDouble = WALK_RUN_EASE[arrFrame + FRAME_LENGTH];
@@ -168,10 +169,11 @@ namespace AngeliaFramework {
 
 			int loop = Mathf.Max(FRAME_LENGTH * 75 / Target.RunSpeed.FinalValue.Clamp(1, 1024) / FRAME_LENGTH * FRAME_LENGTH, 1);
 			int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
-			int currentFrame = (CurrentAnimationFrame + frameRate * 2).UMod(loop) / frameRate * frameRate;
+			int fixedAnimationFrame = (CurrentAnimationFrame + frameRate * 2).UMod(loop);
+			int currentFrame = fixedAnimationFrame / frameRate * frameRate;
 			int arrFrame = (currentFrame / frameRate) % FRAME_LENGTH;
 
-			if (arrFrame == 0) RollRandomFactor();
+			if (fixedAnimationFrame == 0) RollRandomFactor();
 
 			float ease = WALK_RUN_EASE[arrFrame];
 			float easeDouble = WALK_RUN_EASE[arrFrame + FRAME_LENGTH];
@@ -191,8 +193,8 @@ namespace AngeliaFramework {
 			UpperArmR.LimbRotate(RUN_ROTS[arrFrame, 1] * FacingSign);
 			LowerArmR.Height = LowerArmR.SizeY * 4 / 10;
 
-			LowerArmL.LimbRotate(RUN_ROTS[arrFrame, 2] * FacingSign + (RandomFactor0 - 500) / 30);
-			LowerArmR.LimbRotate(RUN_ROTS[arrFrame, 3] * FacingSign + (RandomFactor1 - 500) / 30);
+			LowerArmL.LimbRotate(RUN_ROTS[arrFrame, 2] * FacingSign + (RandomFactor0 - 500) / 15);
+			LowerArmR.LimbRotate(RUN_ROTS[arrFrame, 3] * FacingSign + (RandomFactor1 - 500) / 15);
 
 			HandL.LimbRotate(FacingRight ? 0 : 1);
 			HandR.LimbRotate(FacingRight ? 0 : 1);
@@ -206,10 +208,10 @@ namespace AngeliaFramework {
 			UpperLegR.Z = 1;
 			UpperLegR.LimbRotate(RUN_ROTS[arrFrame, 5] * FacingSign);
 
-			LowerLegL.LimbRotate(RUN_ROTS[arrFrame, 6] * FacingSign + (RandomFactor2 - 500) / 40);
+			LowerLegL.LimbRotate(RUN_ROTS[arrFrame, 6] * FacingSign + (RandomFactor2 - 500) / 20);
 			LowerLegL.Z = 2;
 
-			LowerLegR.LimbRotate(RUN_ROTS[arrFrame, 7] * FacingSign + (RandomFactor3 - 500) / 40);
+			LowerLegR.LimbRotate(RUN_ROTS[arrFrame, 7] * FacingSign + (RandomFactor3 - 500) / 20);
 			LowerLegR.Z = 2;
 
 			FootL.LimbRotate(-FacingSign);
@@ -230,6 +232,7 @@ namespace AngeliaFramework {
 
 			Target.PoseRootY += A2G;
 			Target.PoseTwist = FacingRight ? -400 : 400;
+			if (CurrentAnimationFrame == 0) RollRandomFactor(2);
 
 			if (alt) {
 				Body.Height += A2G / 4;
@@ -240,8 +243,9 @@ namespace AngeliaFramework {
 			Head.Height += A2G;
 
 			// Arm
-			UpperArmL.LimbRotate(alt ? 65 : 55);
-			UpperArmR.LimbRotate(alt ? -65 : -55);
+			int motionDelta = (Target.DeltaPositionX * 2).Clamp(-30, 30);
+			UpperArmL.LimbRotate((alt ? 65 : 55) + motionDelta + (RandomFactor0 - 1000) / 30);
+			UpperArmR.LimbRotate((alt ? -65 : -55) + motionDelta + (RandomFactor1) / 30);
 
 			LowerArmL.Z = LowerArmL.Z.Abs();
 			LowerArmL.LimbRotate(alt ? -55 : -45, 500);
@@ -288,6 +292,7 @@ namespace AngeliaFramework {
 
 			Target.PoseRootY -= A2G;
 			Target.PoseTwist = FacingRight ? -400 : 400;
+			if (CurrentAnimationFrame == 0) RollRandomFactor(2);
 
 			if (alt) {
 				Body.Height += A2G / 4;
@@ -298,8 +303,9 @@ namespace AngeliaFramework {
 			Head.Height -= A2G;
 
 			// Arm
-			UpperArmL.LimbRotate(alt ? 135 : 125);
-			UpperArmR.LimbRotate(alt ? -125 : -135);
+			int motionDelta = (Target.DeltaPositionX * -2).Clamp(-30, 30);
+			UpperArmL.LimbRotate((alt ? 135 : 125) + motionDelta + (RandomFactor0 - 1000) / 30);
+			UpperArmR.LimbRotate((alt ? -125 : -135) + motionDelta + (RandomFactor1) / 30);
 
 			LowerArmL.Z = LowerArmL.Z.Abs();
 			LowerArmL.LimbRotate(alt ? 35 : 45);
@@ -1029,6 +1035,7 @@ namespace AngeliaFramework {
 
 			int frame = CurrentAnimationFrame.UMod(16) / 2;
 			int pingpong = frame < 4 ? frame : 8 - frame;
+			int motionDelta = (Target.DeltaPositionX * 2).Clamp(-30, 30);
 
 			Target.PoseRootY = (frame < 6 ? frame / 2 : 8 - frame) * -A2G + 2 * A2G;
 
@@ -1044,12 +1051,12 @@ namespace AngeliaFramework {
 
 			UpperArmL.X -= pingpong * A2G / 4;
 			UpperArmL.Y = Head.Y;
-			UpperArmL.LimbRotate(0);
+			UpperArmL.LimbRotate(motionDelta);
 			UpperArmL.Height -= pingpong * A2G / 6;
 
 			UpperArmR.X += pingpong * A2G / 4;
 			UpperArmR.Y = Head.Y;
-			UpperArmR.LimbRotate(0);
+			UpperArmR.LimbRotate(motionDelta);
 			UpperArmR.Height -= pingpong * A2G / 6;
 
 			LowerArmL.LimbRotate(0);
@@ -1065,8 +1072,8 @@ namespace AngeliaFramework {
 			UpperLegR.Y = Head.Y + A2G * 5;
 			UpperLegL.Z = -34;
 			UpperLegR.Z = -34;
-			UpperLegL.LimbRotate(20);
-			UpperLegR.LimbRotate(-20);
+			UpperLegL.LimbRotate(20 + motionDelta / 2);
+			UpperLegR.LimbRotate(-20 + motionDelta / 2);
 
 			LowerLegL.LimbRotate(pingpong * 4 - 20);
 			LowerLegR.LimbRotate(-pingpong * 4 + 20);
