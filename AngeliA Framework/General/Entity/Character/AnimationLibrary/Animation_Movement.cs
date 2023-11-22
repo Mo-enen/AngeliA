@@ -122,6 +122,8 @@ namespace AngeliaFramework {
 			int currentFrame = (CurrentAnimationFrame + frameRate * 2).UMod(loop) / frameRate * frameRate;
 			int arrFrame = (currentFrame / frameRate) % FRAME_LENGTH;
 
+			if (arrFrame == 0) RollRandomFactor(2);
+
 			float ease = WALK_RUN_EASE[arrFrame];
 			float easeDouble = WALK_RUN_EASE[arrFrame + FRAME_LENGTH];
 			int legOffsetX = (int)Mathf.LerpUnclamped(
@@ -135,8 +137,8 @@ namespace AngeliaFramework {
 			UpperArmL.LimbRotate(WALK_ROTS[arrFrame, 0] * FacingSign);
 			UpperArmR.LimbRotate(WALK_ROTS[arrFrame, 1] * FacingSign);
 
-			LowerArmL.LimbRotate(0);
-			LowerArmR.LimbRotate(0);
+			LowerArmL.LimbRotate((RandomFactor0 - 500) / 30);
+			LowerArmR.LimbRotate((RandomFactor1 - 500) / 30);
 
 			HandL.LimbRotate(-FacingSign);
 			HandR.LimbRotate(-FacingSign);
@@ -169,6 +171,8 @@ namespace AngeliaFramework {
 			int currentFrame = (CurrentAnimationFrame + frameRate * 2).UMod(loop) / frameRate * frameRate;
 			int arrFrame = (currentFrame / frameRate) % FRAME_LENGTH;
 
+			if (arrFrame == 0) RollRandomFactor();
+
 			float ease = WALK_RUN_EASE[arrFrame];
 			float easeDouble = WALK_RUN_EASE[arrFrame + FRAME_LENGTH];
 			int legOffsetX = (int)Mathf.LerpUnclamped(
@@ -187,8 +191,8 @@ namespace AngeliaFramework {
 			UpperArmR.LimbRotate(RUN_ROTS[arrFrame, 1] * FacingSign);
 			LowerArmR.Height = LowerArmR.SizeY * 4 / 10;
 
-			LowerArmL.LimbRotate(RUN_ROTS[arrFrame, 2] * FacingSign);
-			LowerArmR.LimbRotate(RUN_ROTS[arrFrame, 3] * FacingSign);
+			LowerArmL.LimbRotate(RUN_ROTS[arrFrame, 2] * FacingSign + (RandomFactor0 - 500) / 30);
+			LowerArmR.LimbRotate(RUN_ROTS[arrFrame, 3] * FacingSign + (RandomFactor1 - 500) / 30);
 
 			HandL.LimbRotate(FacingRight ? 0 : 1);
 			HandR.LimbRotate(FacingRight ? 0 : 1);
@@ -202,10 +206,10 @@ namespace AngeliaFramework {
 			UpperLegR.Z = 1;
 			UpperLegR.LimbRotate(RUN_ROTS[arrFrame, 5] * FacingSign);
 
-			LowerLegL.LimbRotate(RUN_ROTS[arrFrame, 6] * FacingSign);
+			LowerLegL.LimbRotate(RUN_ROTS[arrFrame, 6] * FacingSign + (RandomFactor2 - 500) / 40);
 			LowerLegL.Z = 2;
 
-			LowerLegR.LimbRotate(RUN_ROTS[arrFrame, 7] * FacingSign);
+			LowerLegR.LimbRotate(RUN_ROTS[arrFrame, 7] * FacingSign + (RandomFactor3 - 500) / 40);
 			LowerLegR.Z = 2;
 
 			FootL.LimbRotate(-FacingSign);

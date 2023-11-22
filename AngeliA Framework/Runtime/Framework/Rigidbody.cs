@@ -56,6 +56,7 @@ namespace AngeliaFramework {
 		private int IgnorePhysicsFrame = -1;
 		private int PrevX = 0;
 		private int PrevY = 0;
+		private int PrevPositionUpdateFrame = -1;
 
 
 		#endregion
@@ -87,8 +88,7 @@ namespace AngeliaFramework {
 
 		public override void BeforePhysicsUpdate () {
 			base.BeforePhysicsUpdate();
-			PrevX = X;
-			PrevY = Y;
+			RefreshPrevPosition();
 		}
 
 
@@ -170,30 +170,8 @@ namespace AngeliaFramework {
 				}
 			}
 
-			// Carry
-			int offsetVelX = 0;
-			if (AllowBeingCarryByOtherRigidbody) {
-				int speedLeft = 0;
-				int speedRight = 0;
-				var hits = CellPhysics.OverlapAll(CollisionMask, Rect.Edge(Direction4.Down), out int count, this);
-				for (int i = 0; i < count; i++) {
-					var hit = hits[i];
-					if (hit.Entity is not Rigidbody rig || !rig.CarryOtherRigidbodyOnTop) continue;
-					int deltaX = rig.X - rig.PrevX;
-					if (deltaX.Abs() < rig.VelocityX.Abs()) {
-						deltaX = rig.VelocityX;
-					}
-					if (deltaX < 0) {
-						speedLeft = Mathf.Min(speedLeft, deltaX);
-					} else if (deltaX > 0) {
-						speedRight = Mathf.Max(speedRight, deltaX);
-					}
-				}
-				offsetVelX = speedRight + speedLeft;
-			}
-
 			// Move
-			PerformMove(VelocityX + offsetVelX, VelocityY);
+			PerformMove(VelocityX, VelocityY);
 
 			IsGrounded = GroundedCheck();
 
@@ -222,6 +200,35 @@ namespace AngeliaFramework {
 		}
 
 
+		public override void FrameUpdate () {
+			// Carry
+			if (AllowBeingCarryByOtherRigidbody) {
+				int speedLeft = 0;
+				int speedRight = 0;
+				var hits = CellPhysics.OverlapAll(CollisionMask, Rect.Edge(Direction4.Down), out int count, this);
+				for (int i = 0; i < count; i++) {
+					var hit = hits[i];
+					if (hit.Entity is not Rigidbody rig || !rig.CarryOtherRigidbodyOnTop) continue;
+					int deltaX = rig.X - rig.PrevX;
+					if (deltaX.Abs() < rig.VelocityX.Abs()) {
+						deltaX = rig.VelocityX;
+					}
+					if (deltaX < 0) {
+						speedLeft = Mathf.Min(speedLeft, deltaX);
+					} else if (deltaX > 0) {
+						speedRight = Mathf.Max(speedRight, deltaX);
+					}
+				}
+				int deltaVelX = speedRight + speedLeft;
+				if (deltaVelX != 0) {
+					PerformMove(deltaVelX, 0);
+				}
+			}
+			// Base
+			base.FrameUpdate();
+		}
+
+
 		#endregion
 
 
@@ -233,6 +240,7 @@ namespace AngeliaFramework {
 		public void PerformMove (int speedX, int speedY, bool ignoreOneway = false, bool ignoreLevel = false) {
 
 			if (!PhysicsEnable || Game.GlobalFrame <= IgnorePhysicsFrame) return;
+			RefreshPrevPosition();
 			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);
 
 			int speedScale = InWater ? WATER_SPEED_LOSE : 1000;
@@ -313,6 +321,14 @@ namespace AngeliaFramework {
 					sizeX, sizeY
 				), this
 			);
+		}
+
+
+		private void RefreshPrevPosition () {
+			if (Game.GlobalFrame <= PrevPositionUpdateFrame) return;
+			PrevPositionUpdateFrame = Game.GlobalFrame;
+			PrevX = X;
+			PrevY = Y;
 		}
 
 

@@ -32,6 +32,10 @@ namespace AngeliaFramework {
 		private static int FacingSign = 0;
 		private static int FrontSign = 0;
 		private static int CurrentAnimationFrame = 0;
+		private static int RandomFactor0 = 0;
+		private static int RandomFactor1 = 0;
+		private static int RandomFactor2 = 0;
+		private static int RandomFactor3 = 0;
 		private static CharacterPoseAnimationType AnimatedPoseType;
 
 
@@ -415,6 +419,15 @@ namespace AngeliaFramework {
 				character.UpperArmR.Height = character.UpperArmR.SizeY;
 			}
 		}
+
+
+		private static void RollRandomFactor (int count = 4) {
+			if (count > 0) RandomFactor0 = AngeUtil.RandomInt(0, 1001);
+			if (count > 1) RandomFactor1 = AngeUtil.RandomInt(0, 1001);
+			if (count > 2) RandomFactor2 = AngeUtil.RandomInt(0, 1001);
+			if (count > 3) RandomFactor3 = AngeUtil.RandomInt(0, 1001);
+		}
+
 
 	}
 }

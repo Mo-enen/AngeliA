@@ -45,28 +45,22 @@ namespace AngeliaFramework {
 		protected abstract RectInt ContentRect { get; }
 		protected abstract RectInt IconRect { get; }
 		protected abstract RectInt NameRect { get; }
-		protected virtual int NameFontSize => 24;
-		protected virtual int ContentFontSize => 28;
+		protected virtual int NameFontSize => 28;
+		protected virtual int ContentFontSize => 32;
+		protected virtual int RollingSpeed => 16; // Character per Frame
 		protected virtual Color32 NameTint => Const.WHITE;
 		protected virtual Color32 ContentTint => Const.WHITE;
 
 		// Data
 		private int UpdatedFrame = int.MinValue;
+		private int RolledFrame = int.MinValue;
 		private int StartIndex = 0;
 		private int EndIndex = 0;
-		private string Content = "";
 		private int Identity = 0;
+		private string Content = "";
 		private Color32[] Colors = null;
-		private readonly CellContent LabelContent = new() {
-			Wrap = true,
-			Clip = true,
-			Alignment = Alignment.TopLeft,
-		};
-		private readonly CellContent LabelName = new() {
-			Wrap = false,
-			Clip = false,
-			Alignment = Alignment.MidLeft,
-		};
+		private readonly CellContent LabelName = new() { Alignment = Alignment.MidLeft, };
+		private readonly CellContent LabelContent = new() { Wrap = true, Clip = true, Alignment = Alignment.TopLeft, };
 
 
 		#endregion
@@ -85,6 +79,7 @@ namespace AngeliaFramework {
 			Identity = 0;
 			Colors = null;
 			UpdatedFrame = Game.GlobalFrame;
+			RolledFrame = Game.GlobalFrame;
 		}
 
 
@@ -121,13 +116,19 @@ namespace AngeliaFramework {
 			int cellStartIndex = CellRenderer.GetTextUsedCellCount();
 			CellRendererGUI.Label(LabelContent, contentRect, StartIndex, true, out _, out EndIndex);
 			if (CellRenderer.GetTextCells(out var cells, out int count)) {
-				int index = StartIndex;
+				int charIndex = StartIndex;
+				int visibleIndex = StartIndex + (Game.GlobalFrame - RolledFrame) * RollingSpeed;
 				for (int i = cellStartIndex; i < count; i++) {
 					var cell = cells[i];
-					if (index < Colors.Length) {
-						cell.Color = Colors[index];
+					// Config Tint
+					if (charIndex < Colors.Length) {
+						cell.Color = Colors[charIndex];
 					}
-					index++;
+					// Animation Tint
+					if (charIndex > visibleIndex) {
+						cell.Color = Const.CLEAR;
+					}
+					charIndex++;
 				}
 			}
 
@@ -164,6 +165,7 @@ namespace AngeliaFramework {
 
 
 		public bool Roll () {
+			RolledFrame = Game.GlobalFrame;
 			if (EndIndex >= Content.Length - 1) {
 				// End
 				StartIndex = 0;

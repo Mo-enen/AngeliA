@@ -163,10 +163,21 @@ namespace AngeliaFramework {
 
 			// Func
 			void AppendContent (string content) {
-				builder.Append(content);
-				for (int i = 0; i < content.Length; i++) {
-					colors.Add(currentColor);
+				// Append Missing Color
+				if (colors.Count == 0 && !currentColor.IsSame(Const.WHITE)) {
+					int colorCount = builder.Length;
+					for (int i = 0; i < colorCount; i++) {
+						colors.Add(Const.WHITE);
+					}
 				}
+				// Append Colors for Current Content
+				if (colors.Count != 0 || !currentColor.IsSame(Const.WHITE)) {
+					for (int i = 0; i < content.Length; i++) {
+						colors.Add(currentColor);
+					}
+				}
+				// Append to Builder
+				builder.Append(content);
 			}
 			void MakeSection () {
 				if (builder.Length > 0) {
