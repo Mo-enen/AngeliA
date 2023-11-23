@@ -11,6 +11,10 @@ namespace AngeliaFramework {
 	public class iWand : MagicWeapon {
 		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
 	}
+	[EntityAttribute.ItemCombination(typeof(iWand), typeof(iCrystalBall), 1)]
+	public class WandOrb : MagicWeapon {
+		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+	}
 	[EntityAttribute.ItemCombination(typeof(iBookRed), typeof(iBookBlue), typeof(iTruthOfTheUniverse), typeof(iOracleEye), 1)]
 	[EntityAttribute.ItemCombination(typeof(iRuneFire), typeof(iBookRed), typeof(iRubyRed), typeof(iBoStaffWood), 1)]
 	public class iStaffFire : MagicWeapon {

@@ -17,11 +17,11 @@ namespace AngeliaFramework {
 		private readonly int[] RepairMaterialsID;
 		private readonly bool IsSkirt = false;
 
+
 		// MSG
 		public Armor () {
 			PrevEquipmentID = typeof(P).AngeHash();
 			NextEquipmentID = typeof(N).AngeHash();
-			Debug.Log(TypeID);
 			if (PrevEquipmentID == TypeID) PrevEquipmentID = 0;
 			if (NextEquipmentID == TypeID) NextEquipmentID = 0;
 			RepairMaterialsID = AngeUtil.GetAngeHashs(RepairMaterials);

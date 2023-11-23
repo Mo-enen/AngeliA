@@ -17,6 +17,9 @@ namespace AngeliaFramework.Editor {
 		#region --- VAR ---
 
 
+		private enum SortMode { Original, Name, XY, YX, }
+
+
 		private const double FLASH_DURATION = 2d;
 		private static GUIStyle MasterStyle => _MasterStyle ??= new GUIStyle() {
 			padding = new RectOffset(24, 24, 24, 24),
@@ -39,8 +42,7 @@ namespace AngeliaFramework.Editor {
 		private Vector2Int SliceCreator_Padding = new(1, 1);
 		private bool SliceCreator_Open = false;
 		private bool AddEmptyLineBetween = false;
-		private bool SortWithPositionX = false;
-		private bool SortWithPositionY = false;
+		private SortMode Sort = SortMode.Original;
 
 
 		#endregion
@@ -184,17 +186,11 @@ namespace AngeliaFramework.Editor {
 				SliceLines = LoadSliceLines(CurrentAse);
 				Repaint();
 			}
-			bool newSortWithPositionX = EditorGUI.Toggle(MGUI.Rect(0, 18), "Sort with Position X>Y", SortWithPositionX);
-			if (newSortWithPositionX != SortWithPositionX) {
-				SortWithPositionX = newSortWithPositionX;
-				SortWithPositionY = false;
-				SliceLines = LoadSliceLines(CurrentAse);
-				Repaint();
-			}
-			bool newSortWithPositionY = EditorGUI.Toggle(MGUI.Rect(0, 18), "Sort with Position Y>X", SortWithPositionY);
-			if (newSortWithPositionY != SortWithPositionY) {
-				SortWithPositionY = newSortWithPositionY;
-				SortWithPositionX = false;
+
+			GUILayout.Space(2);
+			var newSort = (SortMode)EditorGUI.EnumPopup(MGUI.Rect(0, 18), "Sort Mode", Sort);
+			if (newSort != Sort) {
+				Sort = newSort;
 				SliceLines = LoadSliceLines(CurrentAse);
 				Repaint();
 			}
@@ -273,22 +269,33 @@ namespace AngeliaFramework.Editor {
 					slices.Add((slice.Name, slice.Slices[0], slice.CheckFlag(AseData.SliceChunk.SliceFlag.HasPivot)));
 				}
 			});
+
 			// Sort
-			if (SortWithPositionX) {
-				slices.Sort((a, b) => {
-					int result = a.data.Y.CompareTo(b.data.Y);
-					if (result == 0) result = a.data.X.CompareTo(b.data.X);
-					if (result == 0) result = a.name.CompareTo(b.name);
-					return result;
-				});
-			} else if (SortWithPositionY) {
-				slices.Sort((a, b) => {
-					int result = a.data.X.CompareTo(b.data.X);
-					if (result == 0) result = a.data.Y.CompareTo(b.data.Y);
-					if (result == 0) result = a.name.CompareTo(b.name);
-					return result;
-				});
+			switch (Sort) {
+				case SortMode.XY:
+					slices.Sort((a, b) => {
+						int result = a.data.X.CompareTo(b.data.X);
+						if (result == 0) result = a.data.Y.CompareTo(b.data.Y);
+						if (result == 0) result = a.name.CompareTo(b.name);
+						return result;
+					});
+					break;
+				case SortMode.YX:
+					slices.Sort((a, b) => {
+						int result = a.data.Y.CompareTo(b.data.Y);
+						if (result == 0) result = a.data.X.CompareTo(b.data.X);
+						if (result == 0) result = a.name.CompareTo(b.name);
+						return result;
+					});
+
+					break;
+				case SortMode.Name:
+					slices.Sort((a, b) => {
+						return a.name.CompareTo(b.name);
+					});
+					break;
 			}
+
 			// Add Line 
 			string prevName = "";
 			if (AddEmptyLineBetween) {

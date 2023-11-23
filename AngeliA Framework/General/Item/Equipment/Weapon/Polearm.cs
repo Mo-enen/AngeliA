@@ -11,6 +11,8 @@ namespace AngeliaFramework {
 	public class iSpearIron : Polearm { }
 	[EntityAttribute.ItemCombination(typeof(iIngotGold), typeof(iSpearIron), 1)]
 	public class iSpearGold : Polearm { }
+	[EntityAttribute.ItemCombination(typeof(iSpearIron), typeof(iIngotIron), 1)]
+	public class iSpearHeavy : Polearm { }
 	[EntityAttribute.ItemCombination(typeof(iMagatama), typeof(iMagatama), typeof(iMagatama), typeof(iSpearIron), 1)]
 	[EntityAttribute.ItemCombination(typeof(iRibbon), typeof(iTreeBranch), typeof(iTreeBranch), typeof(iTreeBranch), 1)]
 	public class iBoStaffWood : Polearm { }
