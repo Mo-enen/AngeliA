@@ -330,7 +330,7 @@ namespace AngeliaFramework {
 		// Equipment
 		public static int GetEquipment (int inventoryID, EquipmentType type) => Pool.TryGetValue(inventoryID, out var data) && data is PlayerInventoryData pData ? type switch {
 			EquipmentType.Weapon => pData.Weapon,
-			EquipmentType.Body => pData.BodySuit,
+			EquipmentType.BodyArmor => pData.BodySuit,
 			EquipmentType.Helmet => pData.Helmet,
 			EquipmentType.Shoes => pData.Shoes,
 			EquipmentType.Gloves => pData.Gloves,
@@ -355,7 +355,7 @@ namespace AngeliaFramework {
 				case EquipmentType.Weapon:
 					pData.Weapon = equipmentID;
 					break;
-				case EquipmentType.Body:
+				case EquipmentType.BodyArmor:
 					pData.BodySuit = equipmentID;
 					break;
 				case EquipmentType.Helmet:

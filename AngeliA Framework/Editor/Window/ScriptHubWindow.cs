@@ -127,8 +127,17 @@ namespace AngeliaFramework.Editor {
 
 
 		[MenuItem("AngeliA/Script Hub", false, 24)]
-		private static void OpenWindow () => GetWindow<ScriptHubWindow>("Script Hub", true, typeof(SceneView));
-
+		private static void OpenWindow () {
+			var window = GetWindow<ScriptHubWindow>("Script Hub", true, typeof(SceneView));
+			if (window != null) {
+				var iconContent = EditorGUIUtility.IconContent("UnityEditor.HierarchyWindow");
+				if (iconContent != null && iconContent.image != null) {
+					window.titleContent = new GUIContent(
+						"Script Hub", iconContent.image
+					);
+				}
+			}
+		}
 
 		[InitializeOnLoadMethod]
 		private static void Init () {

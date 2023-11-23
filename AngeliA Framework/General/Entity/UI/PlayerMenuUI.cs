@@ -63,6 +63,8 @@ namespace AngeliaFramework {
 		// Const
 		private static readonly int FRAME_CODE = "Frame16".AngeHash();
 		private static readonly int ITEM_FRAME_CODE = "UI.ItemFrame".AngeHash();
+		private static readonly int ARMOR_ICON = "ArmorIcon".AngeHash();
+		private static readonly int ARMOR_EMPTY_ICON = "ArmorEmptyIcon".AngeHash();
 		private static readonly int HINT_HIDE_MENU = "CtrlHint.HideMenu".AngeHash();
 		private static readonly int HINT_TAKE = "CtrlHint.PlayerMenu.Take".AngeHash();
 		private static readonly int HINT_DROP = "CtrlHint.Drop".AngeHash();
@@ -108,7 +110,7 @@ namespace AngeliaFramework {
 		private int ItemInfoScrollPosition = 0;
 		private int PrevCursorIndex = -1;
 		private bool PrevCursorInBottomPanel = true;
-		private EquipmentType EquipFlashType = EquipmentType.Body;
+		private EquipmentType EquipFlashType = EquipmentType.BodyArmor;
 		private RectInt TopPanelRect = default;
 		private RectInt BottomPanelRect = default;
 		private Vector3Int FlashingField = new(-1, 0, 0);
@@ -264,12 +266,12 @@ namespace AngeliaFramework {
 			CellRenderer.Draw(
 				ItemSystem.GetItemTypeIcon(itemID),
 				new RectInt(panelRect.x, panelRect.yMax - labelHeight, labelHeight, labelHeight),
-				Const.ORANGE, int.MinValue + 3
+				Const.ORANGE_BETTER, int.MinValue + 3
 			);
 
 			// Name
 			CellRendererGUI.Label(
-				CellContent.Get(ItemSystem.GetItemName(itemID), charSize: 20, alignment: Alignment.MidLeft, tint: Const.ORANGE),
+				CellContent.Get(ItemSystem.GetItemName(itemID), charSize: 20, alignment: Alignment.MidLeft, tint: Const.ORANGE_BETTER),
 				new RectInt(panelRect.x + labelHeight + labelHeight / 4, panelRect.yMax - labelHeight, panelRect.width, labelHeight)
 			);
 
@@ -747,7 +749,7 @@ namespace AngeliaFramework {
 			);
 			DrawEquipmentItem(
 				3, interactable && player.BodySuitAvailable, new RectInt(left + width, top - itemHeight * 2, width, itemHeight),
-				EquipmentType.Body, Language.Get(UI_BODYSUIT, "Armor")
+				EquipmentType.BodyArmor, Language.Get(UI_BODYSUIT, "Armor")
 			);
 			DrawEquipmentItem(
 				4, interactable && player.WeaponAvailable, new RectInt(left, top - itemHeight * 1, width, itemHeight),
@@ -789,8 +791,16 @@ namespace AngeliaFramework {
 
 			// Label
 			CellRendererGUI.Label(
-				CellContent.Get(label, enableTint, 24, Alignment.MidLeft),
-				fieldRect.Shrink(itemRect.width + fieldPadding * 2, 0, 0, 0)
+				CellContent.Get(label, enableTint, 20, Alignment.MidLeft),
+				fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, itemRect.height / 2, 0)
+			);
+
+			// Progressive Icon
+			ItemSystem.DrawItemShortInfo(
+				itemID,
+				fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, 0, itemRect.height / 2),
+				int.MinValue + 3,
+				ARMOR_ICON, ARMOR_EMPTY_ICON
 			);
 
 			// Bottom Line

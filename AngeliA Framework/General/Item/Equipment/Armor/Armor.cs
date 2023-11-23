@@ -4,30 +4,35 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public abstract class Armor<P, N> : Equipment where P : Equipment where N : Equipment {
+	public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipment where N : Equipment {
 
 
 		// VAR
 		protected virtual System.Type[] RepairMaterials => null;
 		protected virtual int Scale => 1000;
+		int IProgressiveItem.Progress { get; set; } = 0;
+		int IProgressiveItem.TotalProgress { get; set; } = 1;
+		int IProgressiveItem.PrevItemID { get; set; } = 0;
+		int IProgressiveItem.NextItemID { get; set; } = 0;
 
 		private readonly int[] SpritesID = new int[8];
-		private readonly int PrevEquipmentID;
-		private readonly int NextEquipmentID;
 		private readonly int[] RepairMaterialsID;
 		private readonly bool IsSkirt = false;
 
 
 		// MSG
 		public Armor () {
-			PrevEquipmentID = typeof(P).AngeHash();
-			NextEquipmentID = typeof(N).AngeHash();
-			if (PrevEquipmentID == TypeID) PrevEquipmentID = 0;
-			if (NextEquipmentID == TypeID) NextEquipmentID = 0;
+			var progItem = this as IProgressiveItem;
+			progItem.PrevItemID = typeof(P).AngeHash();
+			progItem.NextItemID = typeof(N).AngeHash();
+			progItem.Progress = GetProgress(GetType(), out int totalProgressive);
+			progItem.TotalProgress = totalProgressive;
+			if (progItem.PrevItemID == TypeID) progItem.PrevItemID = 0;
+			if (progItem.NextItemID == TypeID) progItem.NextItemID = 0;
 			RepairMaterialsID = AngeUtil.GetAngeHashs(RepairMaterials);
 			string basicName = GetType().AngeName();
 			switch (EquipmentType) {
-				case EquipmentType.Body:
+				case EquipmentType.BodyArmor:
 					IsSkirt = false;
 					SpritesID[0] = SpritesID[7] = $"{basicName}.Body".AngeHash();
 					SpritesID[1] = $"{basicName}.Hip".AngeHash();
@@ -75,7 +80,7 @@ namespace AngeliaFramework {
 
 			// Draw Armor
 			switch (EquipmentType) {
-				case EquipmentType.Body:
+				case EquipmentType.BodyArmor:
 					DrawBodyArmor(character);
 					break;
 				case EquipmentType.Helmet:
@@ -223,9 +228,10 @@ namespace AngeliaFramework {
 
 		public override void OnTakeDamage_FromEquipment (Entity holder, Entity sender, ref int damage) {
 			base.OnTakeDamage_FromEquipment(holder, sender, ref damage);
-			if (PrevEquipmentID != 0 && damage > 0) {
-				Inventory.SetEquipment(holder.TypeID, EquipmentType, PrevEquipmentID);
-				SpawnEquipmentDamageParticle(TypeID, PrevEquipmentID, holder.X, holder.Y);
+			var progItem = this as IProgressiveItem;
+			if (progItem.PrevItemID != 0 && damage > 0) {
+				Inventory.SetEquipment(holder.TypeID, EquipmentType, progItem.PrevItemID);
+				SpawnEquipmentDamageParticle(TypeID, progItem.PrevItemID, holder.X, holder.Y);
 				damage--;
 			}
 		}
@@ -233,7 +239,7 @@ namespace AngeliaFramework {
 
 		public override void OnSquat (Entity holder) {
 			base.OnSquat(holder);
-			if (NextEquipmentID == 0) return;
+			if ((this as IProgressiveItem).NextItemID == 0) return;
 			foreach (var materialID in RepairMaterialsID) {
 				if (OnRepair(holder, materialID)) {
 					break;
@@ -246,9 +252,40 @@ namespace AngeliaFramework {
 			if (materialID == 0) return false;
 			int tookCount = Inventory.FindAndTakeItem(holder.TypeID, materialID, 1);
 			if (tookCount <= 0) return false;
-			Inventory.SetEquipment(holder.TypeID, EquipmentType, NextEquipmentID);
+			Inventory.SetEquipment(holder.TypeID, EquipmentType, (this as IProgressiveItem).NextItemID);
 			SpawnItemLostParticle(materialID, holder.X, holder.Y);
 			return true;
+		}
+
+
+		// LGC
+		private static int GetProgress (System.Type armorType, out int totalProgress) {
+			int progressive = 0;
+			totalProgress = 1;
+			// Backward
+			var type = armorType;
+			for (int safe = 0; safe < 1024; safe++) {
+				var genericArgs = type.BaseType.GenericTypeArguments;
+				if (genericArgs.Length < 2 || genericArgs[0] == type) break;
+				type = genericArgs[0];
+				totalProgress++;
+				progressive++;
+#if UNITY_EDITOR
+				if (safe == 1023) Debug.LogWarning($"Armor {armorType} is having a progressive loop.");
+#endif
+			}
+			// Forward
+			type = armorType;
+			for (int safe = 0; safe < 1024; safe++) {
+				var genericArgs = type.BaseType.GenericTypeArguments;
+				if (genericArgs.Length < 2 || genericArgs[1] == type) break;
+				type = genericArgs[1];
+				totalProgress++;
+#if UNITY_EDITOR
+				if (safe == 1023) Debug.LogWarning($"Armor {armorType} is having a progressive loop.");
+#endif
+			}
+			return progressive;
 		}
 
 

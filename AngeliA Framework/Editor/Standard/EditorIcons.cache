@@ -530,10 +530,10 @@ ChorusFilter Icon
 CircleCollider2D Icon
 CircularToggle_OFF
 CircularToggle_ON
-clear
 Clear
-clear@2x
+clear
 Clear@2x
+clear@2x
 clear_uielements
 clear_uielements@2x
 Clip
@@ -1597,8 +1597,8 @@ d_pulldown@2x
 d_pulldown_uielements
 d_RawImage Icon
 d_RaycastCollider Icon
-d_RayTracingShader Icon
 d_RaytracingShader Icon
+d_RayTracingShader Icon
 d_Record Off
 d_Record Off@2x
 d_Record On
@@ -2119,6 +2119,7 @@ DefaultAsset Icon
 DefaultSlate Icon
 DefaultSorting
 DefaultSorting@2x
+DejaVuSans Atlas
 DejavuSans-MdPB Atlas
 Dependency
 Dependency@2x
@@ -2311,6 +2312,7 @@ FrameCapture On
 FrameCapture On@2x
 FrameCapture@2x
 FreeformLayoutGroup Icon
+FreeSans Atlas
 FreeSans-LrmZ Atlas
 FrictionJoint2D Icon
 Function@x3
@@ -2814,8 +2816,8 @@ Modify@2x
 monologo
 More
 more
-more@2x
 More@2x
+more@2x
 MoreOptions
 MoreOptions@2x
 Motion Icon
@@ -2868,6 +2870,7 @@ NetworkTransformChild Icon
 NetworkTransformVisualizer Icon
 NetworkView Icon
 NextError
+NIRMALA Atlas
 No Wrap
 No Wrap@2x
 node0
@@ -4034,8 +4037,8 @@ TextField@4x
 TextField@8x
 TextFieldDropDown
 TextfieldDropdown
-TextfieldDropdownAct
 TextFieldDropDownAct
+TextfieldDropdownAct
 TextFieldDropDownFocused
 TextFieldDropDownText
 TextMesh Icon
@@ -4093,8 +4096,8 @@ toggle on act@2x
 toggle on focus
 toggle on focus@2x
 toggle on@2x
-Toggle@2x
 toggle@2x
+Toggle@2x
 Toggle@4x
 Toggle@8x
 toggle_bg
@@ -4348,6 +4351,14 @@ UnresolvedVariable
 UnresolvedVariable@2x
 unselected
 unselected@2x
+UnsignedIntegerField
+UnsignedIntegerField@2x
+UnsignedIntegerField@4x
+UnsignedIntegerField@8x
+UnsignedLongField
+UnsignedLongField@2x
+UnsignedLongField@4x
+UnsignedLongField@8x
 UpArrow
 Update-Available
 Update-Available@2x

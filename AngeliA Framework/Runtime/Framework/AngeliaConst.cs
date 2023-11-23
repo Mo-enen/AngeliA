@@ -99,7 +99,7 @@ namespace AngeliaFramework {
 		public static readonly Color32 WHITE_96 = new(255, 255, 255, 96);
 		public static readonly Color32 WHITE_64 = new(255, 255, 255, 64);
 		public static readonly Color32 ORANGE = new(255, 128, 0, 255);
-		public static readonly Color32 ORANGE_BETTER = new(255, 165, 50, 255);
+		public static readonly Color32 ORANGE_BETTER = new(255, 200, 100, 255);
 		public static readonly Color32 BLACK = new(0, 0, 0, 255);
 		public static readonly Color32 RED = new(255, 0, 0, 255);
 		public static readonly Color32 RED_BETTER = new(255, 64, 64, 255);

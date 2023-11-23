@@ -6,7 +6,7 @@ using UnityEngine;
 namespace AngeliaFramework {
 
 
-	public enum EquipmentType { Weapon, Body, Helmet, Shoes, Gloves, Jewelry, }
+	public enum EquipmentType { Weapon, BodyArmor, Helmet, Shoes, Gloves, Jewelry, }
 
 
 	[EntityAttribute.MapEditorGroup("ItemEquipment")]

@@ -148,6 +148,40 @@ namespace AngeliaFramework {
 		}
 
 
+		// UI
+		public static void DrawItemShortInfo (int itemID, RectInt panelRect, int z, int armorIcon, int armorEmptyIcon) {
+
+			if (!ItemPool.TryGetValue(itemID, out var itemData)) return;
+			var item = itemData.Item;
+
+			// Equipment
+			if (item is Equipment equipment) {
+				switch (equipment.EquipmentType) {
+					case EquipmentType.Weapon:
+						break;
+					case EquipmentType.Jewelry:
+						break;
+					case EquipmentType.BodyArmor:
+					case EquipmentType.Helmet:
+					case EquipmentType.Shoes:
+					case EquipmentType.Gloves:
+						if (equipment is IProgressiveItem progItem) {
+							int progress = progItem.Progress;
+							int totalProgress = progItem.TotalProgress;
+							var rect = new RectInt(panelRect.x, panelRect.y, panelRect.height, panelRect.height);
+							for (int i = 0; i < totalProgress - 1; i++) {
+								CellRenderer.Draw(i < progress ? armorIcon : armorEmptyIcon, rect, z);
+								rect.x += rect.width;
+							}
+						}
+						break;
+				}
+			}
+
+
+		}
+
+
 		// Combination
 		public static void AddCombination (int item0, int item1, int item2, int item3, int result, int resultCount) {
 			if (result == 0 || resultCount <= 0) {

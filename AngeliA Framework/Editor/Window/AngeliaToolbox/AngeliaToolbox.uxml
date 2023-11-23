@@ -8,7 +8,7 @@
             
 				<ui:Button name="Refresh" enable-rich-text="false" focusable="false" class="ToolboxButton" style=" width: 45%; height: 100%; padding-left: 12px; flex-direction: row;">
 					<ui:VisualElement name="Icon" style=" width: 24px; height: auto; background-image: url(./Image/Refresh.png); -unity-background-scale-mode: scale-to-fit;" />
-					<ui:Label text="Refresh AngeliA" enable-rich-text="false" style=" height: 100%; width: auto; margin-left: 12px;" />
+					<ui:Label text="Refresh" enable-rich-text="false" style=" height: 100%; width: auto; margin-left: 12px;" />
 				</ui:Button>
 
 				<ui:Button name="ForceRefresh" enable-rich-text="false" focusable="false" class="ToolboxButton" style=" width: 5%; height: 100%; flex-direction: row;">
