@@ -179,11 +179,11 @@ namespace AngeliaFramework {
 				config.HornID = Horn.TryGetDefaultHornID(typeID, out defaultID) ? defaultID : 0;
 
 				// Suit
-				config.SuitHead = Cloth.TryGetDefaultSuitID(typeID, ClothType.Head, out int suitID) ? suitID : 0;
-				config.SuitBody = Cloth.TryGetDefaultSuitID(typeID, ClothType.Body, out suitID) ? suitID : 0;
-				config.SuitHip = Cloth.TryGetDefaultSuitID(typeID, ClothType.Hip, out suitID) ? suitID : 0;
-				config.SuitHand = Cloth.TryGetDefaultSuitID(typeID, ClothType.Hand, out suitID) ? suitID : 0;
-				config.SuitFoot = Cloth.TryGetDefaultSuitID(typeID, ClothType.Foot, out suitID) ? suitID : 0;
+				config.SuitHead = Cloth.TryGetDefaultClothID(typeID, ClothType.Head, out int suitID) ? suitID : 0;
+				config.SuitBody = Cloth.TryGetDefaultClothID(typeID, ClothType.Body, out suitID) ? suitID : 0;
+				config.SuitHip = Cloth.TryGetDefaultClothID(typeID, ClothType.Hip, out suitID) ? suitID : 0;
+				config.SuitHand = Cloth.TryGetDefaultClothID(typeID, ClothType.Hand, out suitID) ? suitID : 0;
+				config.SuitFoot = Cloth.TryGetDefaultClothID(typeID, ClothType.Foot, out suitID) ? suitID : 0;
 
 				// Final
 				BodyPartConfigPool.Add(typeID, config);
@@ -275,11 +275,11 @@ namespace AngeliaFramework {
 			Ear.Draw(this);
 			Horn.Draw(this);
 
-			Cloth.DrawHeadSuit(this);
-			Cloth.DrawBodySuit(this);
-			Cloth.DrawHipSuit(this);
-			Cloth.DrawHandSuit(this);
-			Cloth.DrawFootSuit(this);
+			HeadCloth.DrawClothFromPool(this);
+			BodyCloth.DrawClothFromPool(this);
+			HipCloth.DrawClothFromPool(this);
+			HandCloth.DrawClothFromPool(this);
+			FootCloth.DrawClothFromPool(this);
 
 			PoseUpdate_HeadRotate();
 			DrawBodyPart(cellIndexStart);

@@ -1172,7 +1172,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_Heads, ""))
 				Patterns_Suit_Head.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Cloth.TryGetCloth(pat.x, out cloth) && cloth is AutoSpriteCloth autoCloth ? autoCloth.GetDisplayName() : Util.GetDisplayName(name),
+					DisplayName = Cloth.TryGetCloth(pat.x, out cloth) ? cloth.GetDisplayName() : Util.GetDisplayName(name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Suit_Head.Count == 0,
 				});
@@ -1181,7 +1181,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_BodyShoulderArmArms, ""))
 				Patterns_Suit_BodyShoulderArmArm.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Cloth.TryGetCloth(pat.x, out cloth) && cloth is AutoSpriteCloth autoCloth ? autoCloth.GetDisplayName() : Util.GetDisplayName(name),
+					DisplayName = Cloth.TryGetCloth(pat.x, out cloth) ? cloth.GetDisplayName() : Util.GetDisplayName(name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Suit_BodyShoulderArmArm.Count == 0,
 				});
@@ -1190,7 +1190,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_HipSkirtLegLegs, ""))
 				Patterns_Suit_HipSkirtLegLeg.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Cloth.TryGetCloth(pat.x, out cloth) && cloth is AutoSpriteCloth autoCloth ? autoCloth.GetDisplayName() : Util.GetDisplayName(name),
+					DisplayName = Cloth.TryGetCloth(pat.x, out cloth) ? cloth.GetDisplayName() : Util.GetDisplayName(name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Suit_HipSkirtLegLeg.Count == 0,
 				});
@@ -1199,7 +1199,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_Hands, ""))
 				Patterns_Suit_Hand.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Cloth.TryGetCloth(pat.x, out cloth) && cloth is AutoSpriteCloth autoCloth ? autoCloth.GetDisplayName() : Util.GetDisplayName(name),
+					DisplayName = Cloth.TryGetCloth(pat.x, out cloth) ? cloth.GetDisplayName() : Util.GetDisplayName(name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Suit_Hand.Count == 0,
 				});
@@ -1208,7 +1208,7 @@ namespace AngeliaFramework {
 			foreach (var (pat, name) in AngeUtil.ForEachPlayerCustomizeSpritePattern(Suit_Foots, ""))
 				Patterns_Suit_Foot.Add(new PatternUnit() {
 					Data = pat,
-					DisplayName = Cloth.TryGetCloth(pat.x, out cloth) && cloth is AutoSpriteCloth autoCloth ? autoCloth.GetDisplayName() : Util.GetDisplayName(name),
+					DisplayName = Cloth.TryGetCloth(pat.x, out cloth) ? cloth.GetDisplayName() : Util.GetDisplayName(name),
 					PatternName = name,
 					IsEmpty = string.IsNullOrEmpty(name) && Patterns_Suit_Foot.Count == 0,
 				});

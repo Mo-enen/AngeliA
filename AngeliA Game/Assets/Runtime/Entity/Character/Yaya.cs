@@ -15,9 +15,9 @@ namespace AngeliaGame {
 		public class Tail : AutoSpriteTail { }
 		public class Ear : AutoSpriteEar { }
 		public class Wing : AutoSpriteWing { }
-		public class BodySuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Body; }
-		public class HipSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Hip; }
-		public class FootSuit : AutoSpriteCloth { protected override ClothType ClothType => ClothType.Foot; }
+		public class BodySuit : BodyCloth { }
+		public class HipSuit : HipCloth { }
+		public class FootSuit : FootCloth { }
 
 
 		// Const

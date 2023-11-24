@@ -120,16 +120,16 @@ namespace AngeliaFramework {
 						);
 					}
 				} else {
-					Cloth.DrawClothForBody(character, bodyId, bodyIdAlt, 8);
+					BodyCloth.DrawClothForBody(character, bodyId, bodyIdAlt, 8, 200);
 				}
 			}
 
 			// Hip
 			if (hipID != 0) {
 				if (IsSkirt) {
-					Cloth.DrawClothForSkirt(character, hipID, 7);
+					HipCloth.DrawClothForSkirt(character, hipID, 7);
 				} else {
-					Cloth.DrawClothForHip(character, hipID, 2);
+					HipCloth.DrawClothForHip(character, hipID, 2);
 				}
 			}
 
@@ -137,7 +137,7 @@ namespace AngeliaFramework {
 			if (bodyId != 0 && CellRenderer.TryGetSpriteFromGroup(
 				bodyId, character.Body.FrontSide ? 2 : 3, out var capeSprite, false, false
 			)) {
-				Cloth.DrawCape(character, capeSprite);
+				BodyCloth.DrawCape(character, capeSprite);
 			}
 
 			// Shoulder
@@ -147,26 +147,15 @@ namespace AngeliaFramework {
 			}
 
 			// Arm
-			if (upperArmID != 0) {
-				Cloth.CoverClothOn(character.UpperArmL, upperArmID, 3);
-				Cloth.CoverClothOn(character.UpperArmR, upperArmID, 3);
-			}
-			if (lowerArmID != 0) {
-				Cloth.CoverClothOn(character.LowerArmL, lowerArmID, 3);
-				Cloth.CoverClothOn(character.LowerArmR, lowerArmID, 3);
-			}
+			BodyCloth.DrawClothForUpperArm(character, upperArmID, 3);
+			BodyCloth.DrawClothForLowerArm(character, lowerArmID, 3);
 
 			// Leg
-			if (upperLegID != 0) {
-				Cloth.CoverClothOn(character.UpperLegL, upperLegID, 3);
-				Cloth.CoverClothOn(character.UpperLegR, upperLegID, 3);
-			}
-			if (lowerLegID != 0) {
-				Cloth.CoverClothOn(character.LowerLegL, lowerLegID, 3);
-				Cloth.CoverClothOn(character.LowerLegR, lowerLegID, 3);
-			}
+			HipCloth.DrawClothForUpperLeg(character, upperLegID, 3);
+			HipCloth.DrawClothForLowerLeg(character, lowerLegID, 3);
 
 		}
+
 
 		private void DrawHelmet (Character character) {
 
@@ -211,19 +200,11 @@ namespace AngeliaFramework {
 			}
 		}
 
-		private void DrawShoes (Character character) {
-			int spriteID = SpritesID[0];
-			if (spriteID == 0) return;
-			Cloth.DrawClothForFoot(character.FootL, spriteID);
-			Cloth.DrawClothForFoot(character.FootR, spriteID);
-		}
 
-		private void DrawGloves (Character character) {
-			int spriteID = SpritesID[0];
-			if (spriteID == 0) return;
-			Cloth.CoverClothOn(character.HandL, spriteID);
-			Cloth.CoverClothOn(character.HandR, spriteID);
-		}
+		private void DrawShoes (Character character) => FootCloth.DrawClothForFoot(character, SpritesID[0], 2);
+
+
+		private void DrawGloves (Character character) => HandCloth.DrawClothForHand(character, SpritesID[0], 2);
 
 
 		public override void OnTakeDamage_FromEquipment (Entity holder, Entity sender, ref int damage) {
