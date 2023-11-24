@@ -43,7 +43,12 @@ namespace AngeliaFramework {
 		}
 
 
-		public override void DrawGadget (Character character) => DrawSpriteAsWing(character, SpriteGroupID, IsPropeller, Scale);
+		public override void DrawGadget (Character character) {
+			DrawSpriteAsWing(character, SpriteGroupID, IsPropeller, Scale);
+			if (IsPropeller && character.AnimatedPoseType == CharacterPoseAnimationType.Fly) {
+				character.IgnoreBodyGadget(BodyGadgetType.Tail);
+			}
+		}
 
 
 		public static void DrawSpriteAsWing (Character character, int spriteGroupID, bool isPropeller, int scale = 1000) {

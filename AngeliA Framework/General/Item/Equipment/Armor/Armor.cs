@@ -10,6 +10,12 @@ namespace AngeliaFramework {
 		// VAR
 		protected virtual System.Type[] RepairMaterials => null;
 		protected virtual int Scale => 1000;
+		protected virtual bool HideEar => false;
+		protected virtual bool HideHorn => false;
+		protected virtual bool HideHair => false;
+		protected virtual bool HideTail => false;
+		protected virtual bool HideFace => false;
+		protected virtual bool HideWing => false;
 		int IProgressiveItem.Progress { get; set; } = 0;
 		int IProgressiveItem.TotalProgress { get; set; } = 1;
 		int IProgressiveItem.PrevItemID { get; set; } = 0;
@@ -93,6 +99,14 @@ namespace AngeliaFramework {
 					DrawGloves(character);
 					break;
 			}
+
+			// Hide Gadget
+			if (HideEar) character.IgnoreBodyGadget(BodyGadgetType.Ear);
+			if (HideHorn) character.IgnoreBodyGadget(BodyGadgetType.Horn);
+			if (HideHair) character.IgnoreBodyGadget(BodyGadgetType.Hair);
+			if (HideTail) character.IgnoreBodyGadget(BodyGadgetType.Tail);
+			if (HideFace) character.IgnoreBodyGadget(BodyGadgetType.Face);
+			if (HideWing) character.IgnoreBodyGadget(BodyGadgetType.Wing);
 
 		}
 
@@ -198,6 +212,7 @@ namespace AngeliaFramework {
 					cell.Y -= offsetY;
 				}
 			}
+
 		}
 
 

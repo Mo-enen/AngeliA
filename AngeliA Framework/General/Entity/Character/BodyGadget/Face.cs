@@ -82,7 +82,7 @@ namespace AngeliaFramework {
 		public static void DrawSpriteAsFace (Character character, int spriteGroupID, Vector4Int borderOffset = default) {
 
 			var head = character.Head;
-			if (spriteGroupID == 0 || head.Tint.a == 0 || !head.FrontSide) return;
+			if (spriteGroupID == 0 || head.IsFullCovered || !head.FrontSide) return;
 
 			bool attacking =
 				character.IsAttacking &&

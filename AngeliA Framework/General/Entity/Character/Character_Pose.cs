@@ -112,19 +112,17 @@ namespace AngeliaFramework {
 		public int Suit_Hand { get; set; } = 0;
 		public int Suit_Foot { get; set; } = 0;
 
-		// Short
-		private bool IsTailVisible => AnimatedPoseType != CharacterPoseAnimationType.Fly || !Wing.IsPropellerWing(WingID);
-		private bool IsEarVisible => true;
-		private bool IsHairVisible => true;
-		private bool IsFaceVisible => true;
-		private bool IsHornVisible => true;
-		private bool IsWingVisible => true;
-
 		// Data
 		private static readonly Dictionary<int, BodyPartConfig> BodyPartConfigPool = new();
 		private BodyPart[] BodyParts = null;
 		private CharacterPoseAnimationType LockedAnimationType = CharacterPoseAnimationType.Idle;
 		private int LockedAnimationTypeFrame = int.MinValue;
+		private int IgnoreTailFrame = -1;
+		private int IgnoreEarFrame = -1;
+		private int IgnoreHairFrame = -1;
+		private int IgnoreFaceFrame = -1;
+		private int IgnoreHornFrame = -1;
+		private int IgnoreWingFrame = -1;
 
 
 		#endregion
@@ -205,6 +203,13 @@ namespace AngeliaFramework {
 			RenderWithSheet = RenderWithSheetPool.Contains(TypeID);
 			if (RenderWithSheetPool.Contains(TypeID)) return;
 
+			IgnoreTailFrame = -1;
+			IgnoreEarFrame = -1;
+			IgnoreHairFrame = -1;
+			IgnoreFaceFrame = -1;
+			IgnoreHornFrame = -1;
+			IgnoreWingFrame = -1;
+
 			int len = DEFAULT_BODY_PART_ID.Length;
 			if (BodyParts == null || BodyParts.Length != len) {
 				BodyParts = new BodyPart[len];
@@ -275,12 +280,12 @@ namespace AngeliaFramework {
 			PoseUpdate_HeadTwist();
 			PoseUpdate_Items();
 
-			if (IsWingVisible) Wing.DrawGadgetFromPool(this);
-			if (IsTailVisible) Tail.DrawGadgetFromPool(this);
-			if (IsFaceVisible) Face.DrawGadgetFromPool(this);
-			if (IsHairVisible) Hair.DrawGadgetFromPool(this);
-			if (IsEarVisible) Ear.DrawGadgetFromPool(this);
-			if (IsHornVisible) Horn.DrawGadgetFromPool(this);
+			if (Game.GlobalFrame > IgnoreWingFrame) Wing.DrawGadgetFromPool(this);
+			if (Game.GlobalFrame > IgnoreTailFrame) Tail.DrawGadgetFromPool(this);
+			if (Game.GlobalFrame > IgnoreFaceFrame) Face.DrawGadgetFromPool(this);
+			if (Game.GlobalFrame > IgnoreHairFrame) Hair.DrawGadgetFromPool(this);
+			if (Game.GlobalFrame > IgnoreEarFrame) Ear.DrawGadgetFromPool(this);
+			if (Game.GlobalFrame > IgnoreHornFrame) Horn.DrawGadgetFromPool(this);
 
 			HeadCloth.DrawClothFromPool(this);
 			BodyCloth.DrawClothFromPool(this);
@@ -796,6 +801,38 @@ namespace AngeliaFramework {
 				}
 			}
 
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+		public void IgnoreBodyGadget (BodyGadgetType type, int duration = 1) {
+			switch (type) {
+				case BodyGadgetType.Face:
+					IgnoreFaceFrame = Game.GlobalFrame + duration;
+					break;
+				case BodyGadgetType.Hair:
+					IgnoreHairFrame = Game.GlobalFrame + duration;
+					break;
+				case BodyGadgetType.Ear:
+					IgnoreEarFrame = Game.GlobalFrame + duration;
+					break;
+				case BodyGadgetType.Horn:
+					IgnoreHornFrame = Game.GlobalFrame + duration;
+					break;
+				case BodyGadgetType.Tail:
+					IgnoreTailFrame = Game.GlobalFrame + duration;
+					break;
+				case BodyGadgetType.Wing:
+					IgnoreWingFrame = Game.GlobalFrame + duration;
+					break;
+			}
 		}
 
 

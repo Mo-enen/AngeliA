@@ -73,17 +73,6 @@ namespace AngeliaFramework {
 		}
 
 
-		[OnGameUpdate]
-		public static void OnGameUpdate () {
-			if (FrameInput.KeyboardDown(UnityEngine.InputSystem.Key.Digit1)) {
-				StartConversation<DefaultDialogueUI>("Test 0");
-			}
-			if (FrameInput.KeyboardDown(UnityEngine.InputSystem.Key.Digit2)) {
-				EndConversation();
-			}
-		}
-
-
 		#endregion
 
 

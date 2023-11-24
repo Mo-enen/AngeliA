@@ -9,7 +9,11 @@ namespace AngeliaFramework {
 
 	// Wood
 	[EntityAttribute.ItemCombination(typeof(iTreeStump), typeof(iTreeTrunk), 1)]
-	public class iHelmetWood : Armor<iHelmetWoodBroken, iHelmetWood> { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
+	public class iHelmetWood : Armor<iHelmetWoodBroken, iHelmetWood> {
+		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideEar => true;
+		protected override bool HideHorn => true;
+	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iHelmetWoodBroken : Armor<iHelmetWoodBroken, iHelmetWood> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iTreeStump), typeof(iTreeTrunk), };
@@ -20,7 +24,11 @@ namespace AngeliaFramework {
 
 	// Iron
 	[EntityAttribute.ItemCombination(typeof(iHelmetWood), typeof(iIngotIron), 1)]
-	public class iHelmetIron : Armor<iHelmetIronCracked, iHelmetIron> { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
+	public class iHelmetIron : Armor<iHelmetIronCracked, iHelmetIron> {
+		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideEar => true;
+		protected override bool HideHorn => true;
+	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iHelmetIronCracked : Armor<iHelmetIronBroken, iHelmetIron> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iIngotIron), };
@@ -36,16 +44,24 @@ namespace AngeliaFramework {
 
 	// Gold
 	[EntityAttribute.ItemCombination(typeof(iHelmetIron), typeof(iIngotGold), 1)]
-	public class iHelmetGold : Armor<iHelmetGoldDented, iHelmetGold> { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
+	public class iHelmetGold : Armor<iHelmetGoldDented, iHelmetGold> {
+		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideEar => true;
+		protected override bool HideHorn => true;
+	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iHelmetGoldDented : Armor<iHelmetGoldCracked, iHelmetGold> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iIngotGold), };
 		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideEar => true;
+		protected override bool HideHorn => true;
 	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iHelmetGoldCracked : Armor<iHelmetGoldBroken, iHelmetGoldDented> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iIngotGold), };
 		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideEar => true;
+		protected override bool HideHorn => true;
 	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iHelmetGoldBroken : Armor<iHelmetGoldBroken, iHelmetGoldCracked> {
@@ -57,7 +73,11 @@ namespace AngeliaFramework {
 
 	// Safety
 	[EntityAttribute.ItemCombination(typeof(iHelmetWood), typeof(iCone), 1)]
-	public class iSafetyHelmet : Armor<iSafetyHelmetBroken, iSafetyHelmet> { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
+	public class iSafetyHelmet : Armor<iSafetyHelmetBroken, iSafetyHelmet> {
+		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideEar => true;
+		protected override bool HideHorn => true;
+	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iSafetyHelmetBroken : Armor<iSafetyHelmetBroken, iSafetyHelmet> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iTreeStump), typeof(iTreeTrunk), };
@@ -68,7 +88,11 @@ namespace AngeliaFramework {
 
 	// Pirate
 	[EntityAttribute.ItemCombination(typeof(iSkull), typeof(iMeatBone), typeof(iMeatBone), typeof(iTopHat), 1)]
-	public class iPirateHat : Armor<iPirateHatBroken, iPirateHat> { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
+	public class iPirateHat : Armor<iPirateHatBroken, iPirateHat> {
+		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideEar => true;
+		protected override bool HideHorn => true;
+	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iPirateHatBroken : Armor<iPirateHatBroken, iPirateHat> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iFabric), };
@@ -79,7 +103,11 @@ namespace AngeliaFramework {
 
 	// Wizard
 	[EntityAttribute.ItemCombination(typeof(iRuneCube), typeof(iTopHat), 1)]
-	public class iWizardHat : Armor<iWizardHatBroken, iWizardHat> { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
+	public class iWizardHat : Armor<iWizardHatBroken, iWizardHat> {
+		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideEar => true;
+		protected override bool HideHorn => true;
+	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iWizardHatBroken : Armor<iWizardHatBroken, iWizardHat> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iFabric), };
@@ -90,7 +118,10 @@ namespace AngeliaFramework {
 
 	// TopHat
 	[EntityAttribute.ItemCombination(typeof(iBucketIron), typeof(iFabric), typeof(iRibbon), 1)]
-	public class iTopHat : Armor<iTopHatBroken, iTopHat> { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
+	public class iTopHat : Armor<iTopHatBroken, iTopHat> {
+		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideEar => true;
+	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iTopHatBroken : Armor<iTopHatBroken, iTopHat> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iFabric), };
@@ -101,7 +132,10 @@ namespace AngeliaFramework {
 
 	// Fox
 	[EntityAttribute.ItemCombination(typeof(iItemWoodBoard), typeof(iPaw), typeof(iRope), 1)]
-	public class iFoxMask : Armor<iFoxMaskBroken, iFoxMask> { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
+	public class iFoxMask : Armor<iFoxMaskBroken, iFoxMask> {
+		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideFace => true;
+	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iFoxMaskBroken : Armor<iFoxMaskBroken, iFoxMask> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iItemWoodBoard), };
@@ -123,11 +157,20 @@ namespace AngeliaFramework {
 
 	// Full
 	[EntityAttribute.ItemCombination(typeof(iHelmetIron), typeof(iIngotIron), 1)]
-	public class iHelmetFull : Armor<iHelmetFullCracked, iHelmetFull> { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
+	public class iHelmetFull : Armor<iHelmetFullCracked, iHelmetFull> {
+		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideFace => true;
+		protected override bool HideEar => true;
+		protected override bool HideHair => true;
+		protected override bool HideHorn => true;
+	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iHelmetFullCracked : Armor<iHelmetFullBroken, iHelmetFull> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iIngotIron), };
 		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideEar => true;
+		protected override bool HideHair => true;
+		protected override bool HideHorn => true;
 	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iHelmetFullBroken : Armor<iHelmetFullBroken, iHelmetFullCracked> {
@@ -154,7 +197,10 @@ namespace AngeliaFramework {
 
 	// Gas Mask
 	[EntityAttribute.ItemCombination(typeof(iRunePoison), typeof(iHelmetWood), 1)]
-	public class iGasMask : Armor<iGasMaskBroken, iGasMask> { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
+	public class iGasMask : Armor<iGasMaskBroken, iGasMask> {
+		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideFace => true;
+	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iGasMaskBroken : Armor<iGasMaskBroken, iGasMask> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iRunePoison), };
@@ -165,7 +211,11 @@ namespace AngeliaFramework {
 
 	// Viking
 	[EntityAttribute.ItemCombination(typeof(iHelmetIron), typeof(iHorn), typeof(iHorn), 1)]
-	public class iHelmetViking : Armor<iHelmetVikingCracked, iHelmetViking> { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
+	public class iHelmetViking : Armor<iHelmetVikingCracked, iHelmetViking> {
+		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideEar => true;
+		protected override bool HideHorn => true;
+	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iHelmetVikingCracked : Armor<iHelmetVikingBroken, iHelmetViking> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iIngotIron), };
@@ -180,11 +230,21 @@ namespace AngeliaFramework {
 
 	// Knight
 	[EntityAttribute.ItemCombination(typeof(iHelmetIron), typeof(iHelmetIron), 1)]
-	public class iHelmetKnight : Armor<iHelmetKnightCracked, iHelmetKnight> { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
+	public class iHelmetKnight : Armor<iHelmetKnightCracked, iHelmetKnight> {
+		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideEar => true;
+		protected override bool HideHorn => true;
+		protected override bool HideFace => true;
+		protected override bool HideHair => true;
+	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iHelmetKnightCracked : Armor<iHelmetKnightBroken, iHelmetKnight> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iIngotIron), };
 		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideEar => true;
+		protected override bool HideHorn => true;
+		protected override bool HideFace => true;
+		protected override bool HideHair => true;
 	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iHelmetKnightBroken : Armor<iHelmetKnightBroken, iHelmetKnightCracked> {
@@ -196,7 +256,10 @@ namespace AngeliaFramework {
 
 	// Bandit
 	[EntityAttribute.ItemCombination(typeof(iRope), typeof(iFabric), 1)]
-	public class iHelmetBandit : Armor<iHelmetBanditBroken, iHelmetBandit> { public override EquipmentType EquipmentType => EquipmentType.Helmet; }
+	public class iHelmetBandit : Armor<iHelmetBanditBroken, iHelmetBandit> { 
+		public override EquipmentType EquipmentType => EquipmentType.Helmet;
+		protected override bool HideFace => true;
+	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iHelmetBanditBroken : Armor<iHelmetBanditBroken, iHelmetBandit> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iFabric), };
