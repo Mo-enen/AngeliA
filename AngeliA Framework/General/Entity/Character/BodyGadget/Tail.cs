@@ -5,7 +5,11 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public abstract class AutoSpriteTail : Tail {
+	public abstract class Tail : BodyGadget {
+
+
+		// Data
+		protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Tail;
 		protected int SpriteGroupID { get; init; }
 		protected virtual int LimbGrow => 1000;
 		protected virtual int AngleAmountRoot => 1000;
@@ -17,73 +21,36 @@ namespace AngeliaFramework {
 		protected virtual int FrameDelta => 37;
 		protected virtual int OffsetX => 0;
 		protected virtual int OffsetY => 0;
-		public AutoSpriteTail () {
+
+
+		public Tail () {
 			string name = (GetType().DeclaringType ?? GetType()).AngeName();
 			SpriteGroupID = $"{name}.Tail".AngeHash();
 			if (!CellRenderer.HasSpriteGroup(SpriteGroupID)) SpriteGroupID = 0;
 		}
-		protected override void DrawTail (Character character) {
+
+
+		public static void DrawGadgetFromPool (Character character) {
+			if (character.TailID != 0 && TryGetGadget(character.TailID, out var tail)) {
+				tail.DrawGadget(character);
+			}
+		}
+
+
+		public override void DrawGadget (Character character) {
 			if (
 				character.AnimatedPoseType == CharacterPoseAnimationType.Fly &&
 				character.WingID != 0 &&
 				Wing.IsPropellerWing(character.WingID)
 			) return;
-			DrawSegmentTail(
+			DrawSpriteAsTail(
 				character, SpriteGroupID, Frequency, FrequencyAlt, FrameLen, FrameDelta,
 				AngleAmountRoot, AngleAmountSubsequent, AngleOffset, LimbGrow, OffsetX, OffsetY
 			);
 		}
-	}
 
 
-	public abstract class Tail : BodyGadget {
-
-
-		// Data
-		private static readonly Dictionary<int, Tail> Pool = new();
-		private static readonly Dictionary<int, int> DefaultPool = new();
-		protected override string BaseTypeName => nameof(Tail);
-
-
-		// MSG
-		[OnGameInitialize(-127)]
-		public static void BeforeGameInitialize () {
-			Pool.Clear();
-			var charType = typeof(Character);
-			foreach (var type in typeof(Tail).AllChildClass()) {
-				if (System.Activator.CreateInstance(type) is not Tail tail) continue;
-				int id = type.AngeHash();
-				Pool.TryAdd(id, tail);
-				// Default
-				var dType = type.DeclaringType;
-				if (dType != null && dType.IsSubclassOf(charType)) {
-					DefaultPool.TryAdd(dType.AngeHash(), id);
-				}
-			}
-		}
-
-
-		// API
-		public static void Draw (Character character) => Draw(character, out _);
-		public static void Draw (Character character, out Tail tail) {
-			tail = null;
-			if (character.TailID != 0 &&
-				character.ShowingTail &&
-				Pool.TryGetValue(character.TailID, out tail)
-			) {
-				tail.DrawTail(character);
-			}
-		}
-
-
-		public static bool TryGetDefaultTailID (int characterID, out int tailID) => DefaultPool.TryGetValue(characterID, out tailID);
-		public static bool TryGetTail (int tailID, out Tail tail) => Pool.TryGetValue(tailID, out tail);
-
-		protected abstract void DrawTail (Character character);
-
-
-		// UTL
-		public static void DrawSegmentTail (
+		public static void DrawSpriteAsTail (
 			Character character, int spriteGroupID,
 			int frequency, int frequencyAlt, int frameLen, int frameDelta,
 			int angleAmountRoot, int angleAmountSubsequent, int angleOffset, int limbGrow,

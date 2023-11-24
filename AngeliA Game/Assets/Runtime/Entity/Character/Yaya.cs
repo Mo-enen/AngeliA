@@ -10,11 +10,11 @@ namespace AngeliaGame {
 
 
 		// SUB
-		public class Face : AutoSpriteFace { }
-		public class Hair : AutoSpriteHair { }
-		public class Tail : AutoSpriteTail { }
-		public class Ear : AutoSpriteEar { }
-		public class Wing : AutoSpriteWing { }
+		public class Face : AngeliaFramework.Face { }
+		public class Hair : AngeliaFramework.Hair { }
+		public class Tail : AngeliaFramework.Tail { }
+		public class Ear : AngeliaFramework.Ear { }
+		public class Wing : AngeliaFramework.Wing { }
 		public class BodySuit : BodyCloth { }
 		public class HipSuit : HipCloth { }
 		public class FootSuit : FootCloth { }

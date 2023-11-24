@@ -52,7 +52,7 @@ namespace AngeliaFramework {
 		protected override bool PhysicsEnable => CharacterState != CharacterState.Sleep;
 		protected override int AirDragX => 0;
 		protected override int AirDragY => 0;
-		protected override int GravityRise => Gravity;
+		protected override int Gravity => 5;
 		protected override bool CarryOtherRigidbodyOnTop => false;
 		protected override bool AllowBeingCarryByOtherRigidbody => true;
 		protected sealed override int CollisionMask => IsGrabFlipping ? 0 : Const.MASK_MAP;

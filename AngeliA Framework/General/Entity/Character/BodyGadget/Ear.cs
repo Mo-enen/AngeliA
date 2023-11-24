@@ -5,8 +5,11 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public abstract class AutoSpriteEar : Ear {
+	public abstract class Ear : BodyGadget {
 
+
+		// VAR
+		protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Ear;
 		private int SpriteIdL { get; init; }
 		private int SpriteIdR { get; init; }
 		private int SpriteIdLBack { get; init; }
@@ -14,7 +17,9 @@ namespace AngeliaFramework {
 		protected virtual int FacingLeftOffsetX => 0;
 		protected virtual int MotionAmount => 618;
 
-		public AutoSpriteEar () {
+
+		// MSG
+		public Ear () {
 			string name = (GetType().DeclaringType ?? GetType()).AngeName();
 			SpriteIdL = $"{name}.EarL".AngeHash();
 			SpriteIdR = $"{name}.EarR".AngeHash();
@@ -25,7 +30,16 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(SpriteIdLBack)) SpriteIdLBack = SpriteIdL;
 			if (!CellRenderer.HasSprite(SpriteIdRBack)) SpriteIdRBack = SpriteIdR;
 		}
-		protected override void DrawEar (Character character) => DrawAnimalEar(
+
+
+		public static void DrawGadgetFromPool (Character character) {
+			if (character.EarID != 0 && TryGetGadget(character.EarID, out var ear)) {
+				ear.DrawGadget(character);
+			}
+		}
+
+
+		public override void DrawGadget (Character character) => DrawSpriteAsEar(
 			character,
 			character.Head.FrontSide ? SpriteIdL : SpriteIdLBack,
 			character.Head.FrontSide ? SpriteIdR : SpriteIdRBack,
@@ -33,61 +47,13 @@ namespace AngeliaFramework {
 			character.Head.FrontSide == character.FacingRight ? 0 : FacingLeftOffsetX,
 			MotionAmount, selfMotion: true
 		);
+
+
 		protected virtual bool FrontOfHeadL (Character character) => true;
 		protected virtual bool FrontOfHeadR (Character character) => true;
 
-	}
 
-
-	public abstract class Ear : BodyGadget {
-
-
-		// VAR
-		private const int A2G = Const.CEL / Const.ART_CEL;
-		private static readonly Dictionary<int, Ear> Pool = new();
-		private static readonly Dictionary<int, int> DefaultPool = new();
-		private static readonly int DEF_SUFFIX = "".AngeHash();
-		protected override string BaseTypeName => nameof(Ear);
-
-		// MSG
-		[OnGameInitialize(-127)]
-		public static void BeforeGameInitialize () {
-			Pool.Clear();
-			var charType = typeof(Character);
-			foreach (var type in typeof(Ear).AllChildClass()) {
-				if (System.Activator.CreateInstance(type) is not Ear ear) continue;
-				int id = type.AngeHash();
-				Pool.TryAdd(id, ear);
-				// Default
-				var dType = type.DeclaringType;
-				if (dType != null && dType.IsSubclassOf(charType)) {
-					DefaultPool.TryAdd(dType.AngeHash(), id);
-				}
-			}
-		}
-
-
-		// API
-		public static void Draw (Character character) => Draw(character, out _);
-		public static void Draw (Character character, out Ear ear) {
-			ear = null;
-			if (
-				character.EarID != 0 &&
-				Pool.TryGetValue(character.EarID, out ear)
-			) {
-				ear.DrawEar(character);
-			}
-		}
-
-
-		public static bool TryGetDefaultEarID (int characterID, out int earID) => DefaultPool.TryGetValue(characterID, out earID);
-		public static bool TryGetEar (int earID, out Ear ear) => Pool.TryGetValue(earID, out ear);
-
-		protected abstract void DrawEar (Character character);
-
-
-		// UTL
-		protected static void DrawAnimalEar (
+		public static void DrawSpriteAsEar (
 			Character character, int spriteIdLeft, int spriteIdRight,
 			bool frontOfHeadL = true, bool frontOfHeadR = true, int offsetX = 0,
 			int motionAmount = 1000, bool selfMotion = true
@@ -110,6 +76,7 @@ namespace AngeliaFramework {
 			Vector2Int expandSizeL = default;
 			Vector2Int expandSizeR = default;
 			int z = head.FrontSide ? 33 : -33;
+			const int A2G = Const.CEL / Const.ART_CEL;
 
 			if (character.IsPassOut) headRect.y -= A2G;
 			int basicRootY = character.BasicRootY;

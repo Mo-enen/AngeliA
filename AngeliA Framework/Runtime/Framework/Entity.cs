@@ -28,6 +28,7 @@ namespace AngeliaFramework {
 		internal RectInt LocalBounds { get; set; } = default;
 		internal bool FrameUpdated { get; set; } = false;
 		internal int PhysicsOperationStamp { get; set; } = int.MaxValue;
+		internal bool DestroyOnSquadTransition { get; set; } = true;
 		internal bool DespawnOutOfRange { get; set; } = true;
 		internal bool UpdateOutOfRange { get; set; } = false;
 		internal int Order { get; set; } = 0;

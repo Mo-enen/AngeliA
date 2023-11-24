@@ -8,7 +8,7 @@ namespace AngeliaFramework {
 
 
 
-	public abstract class AutoSpriteBraidHair : AutoSpriteHair {
+	public abstract class BraidHair : Hair {
 
 		private static readonly Cell[] SINGLE_CELL = new Cell[] { new Cell() };
 		private int BraidL { get; init; }
@@ -24,7 +24,7 @@ namespace AngeliaFramework {
 		protected virtual int PositionAmountX => 0;
 		protected virtual int PositionAmountY => 0;
 
-		protected AutoSpriteBraidHair () : base() {
+		protected BraidHair () : base() {
 			string name = (GetType().DeclaringType ?? GetType()).AngeName();
 			BraidL = $"{name}.BraidL".AngeHash();
 			BraidR = $"{name}.BraidR".AngeHash();
@@ -32,12 +32,11 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(BraidR)) BraidR = 0;
 		}
 
-		protected override Cell[] DrawHair (Character character) {
-			var cells = base.DrawHair(character);
+		public override void DrawGadget (Character character) {
+			var cells = DrawSpriteAsHair(character, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF, FlowAmountX, FlowAmountY);
 			if (Game.GlobalFrame > character.HideBraidFrame && (BraidL != 0 || BraidR != 0)) {
 				DrawBraid(character, cells, ForceBackOnFlow);
 			}
-			return cells;
 		}
 
 		private void DrawBraid (Character character, Cell[] cells, bool forceBackOnFlow) => DrawBraid(
@@ -216,14 +215,21 @@ namespace AngeliaFramework {
 	}
 
 
-	public abstract class AutoSpriteHair : Hair {
+	public abstract class Hair : BodyGadget {
 
-		private int SpriteFFL { get; init; }
-		private int SpriteFFR { get; init; }
-		private int SpriteFB { get; init; }
-		private int SpriteBF { get; init; }
 
-		public AutoSpriteHair () {
+		// Const
+		protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Hair;
+		protected virtual int FlowAmountX => 500;
+		protected virtual int FlowAmountY => 500;
+		protected int SpriteFFL { get; init; }
+		protected int SpriteFFR { get; init; }
+		protected int SpriteFB { get; init; }
+		protected int SpriteBF { get; init; }
+
+
+		// API
+		public Hair () {
 			string name = (GetType().DeclaringType ?? GetType()).AngeName();
 			SpriteFFL = $"{name}.HairFFL".AngeHash();
 			SpriteFFR = $"{name}.HairFFR".AngeHash();
@@ -235,63 +241,18 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(SpriteBF)) SpriteBF = 0;
 		}
 
-		protected override Cell[] DrawHair (Character character) => DrawFlowSprite(character, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF, FlowAmountX, FlowAmountY);
 
-	}
-
-
-	public abstract class Hair : BodyGadget {
-
-
-		// Const
-		private const int A2G = Const.CEL / Const.ART_CEL;
-		protected override string BaseTypeName => nameof(Hair);
-		protected virtual int FlowAmountX => 500;
-		protected virtual int FlowAmountY => 500;
-		
-		// Data
-		private static readonly Dictionary<int, Hair> Pool = new();
-		private static readonly Dictionary<int, int> DefaultPool = new();
-
-
-		// MSG
-		[OnGameInitialize(-127)]
-		public static void BeforeGameInitialize () {
-			Pool.Clear();
-			var charType = typeof(Character);
-			foreach (var type in typeof(Hair).AllChildClass()) {
-				if (System.Activator.CreateInstance(type) is not Hair hair) continue;
-				int id = type.AngeHash();
-				Pool.TryAdd(id, hair);
-				// Default
-				var dType = type.DeclaringType;
-				if (dType != null && dType.IsSubclassOf(charType)) {
-					DefaultPool.TryAdd(dType.AngeHash(), id);
-				}
+		public static void DrawGadgetFromPool (Character character) {
+			if (character.HairID != 0 && TryGetGadget(character.HairID, out var hair)) {
+				hair.DrawGadget(character);
 			}
 		}
 
 
-		// API
-		public static void Draw (Character character) => Draw(character, out _);
-		public static void Draw (Character character, out Hair hair) {
-			hair = null;
-			if (
-				character.HairID != 0 &&
-				Pool.TryGetValue(character.HairID, out hair)
-			) {
-				hair.DrawHair(character);
-			}
-		}
+		public override void DrawGadget (Character character) => DrawSpriteAsHair(character, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF, FlowAmountX, FlowAmountY);
 
 
-		public static bool TryGetDefaultHairID (int characterID, out int hairID) => DefaultPool.TryGetValue(characterID, out hairID);
-		public static bool TryGetHair (int hairID, out Hair hair) => Pool.TryGetValue(hairID, out hair);
-
-		protected abstract Cell[] DrawHair (Character character);
-
-
-		protected static Cell[] DrawFlowSprite (Character character, int spriteFrontFL, int spriteFrontFR, int spriteFrontB, int spriteBackF, int flowAmountX, int flowAmountY) {
+		public static Cell[] DrawSpriteAsHair (Character character, int spriteFrontFL, int spriteFrontFR, int spriteFrontB, int spriteBackF, int flowAmountX, int flowAmountY) {
 
 			// Back Hair
 			if (character.Head.FrontSide) {

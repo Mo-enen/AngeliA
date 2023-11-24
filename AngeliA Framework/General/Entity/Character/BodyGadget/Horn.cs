@@ -5,14 +5,20 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public abstract class AutoSpriteHorn : Horn {
+	public abstract class Horn : BodyGadget {
+
+		// VAR
+		protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Horn;
 		private int SpriteIdL { get; init; }
 		private int SpriteIdR { get; init; }
 		private int SpriteIdLBack { get; init; }
 		private int SpriteIdRBack { get; init; }
 		protected virtual bool AnchorOnFace => false;
 		protected virtual int FacingLeftOffsetX => 0;
-		public AutoSpriteHorn () {
+
+
+		// MSG
+		public Horn () {
 			string name = (GetType().DeclaringType ?? GetType()).AngeName();
 			SpriteIdL = $"{name}.HornL".AngeHash();
 			SpriteIdR = $"{name}.HornR".AngeHash();
@@ -23,68 +29,34 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(SpriteIdLBack)) SpriteIdLBack = SpriteIdL;
 			if (!CellRenderer.HasSprite(SpriteIdRBack)) SpriteIdRBack = SpriteIdR;
 		}
-		protected override void DrawHorn (Character character) {
+
+
+		// API
+		public static void DrawGadgetFromPool (Character character) {
+			if (character.HornID != 0 && TryGetGadget(character.HornID, out var horn)) {
+				horn.DrawGadget(character);
+			}
+		}
+
+
+		public override void DrawGadget (Character character) {
 			int idL = character.FacingFront ? SpriteIdL : SpriteIdLBack;
 			int idR = character.FacingFront ? SpriteIdR : SpriteIdRBack;
-			DrawHornSprite(
+			DrawSpriteAsHorn(
 				character, idL, idR,
 				FrontOfHeadL(character), FrontOfHeadR(character),
 				AnchorOnFace,
 				character.FacingFront == character.FacingRight ? 0 : FacingLeftOffsetX
 			);
 		}
+
+
 		protected virtual bool FrontOfHeadL (Character character) => true;
 		protected virtual bool FrontOfHeadR (Character character) => true;
-	}
-
-
-	public abstract class Horn : BodyGadget {
-
-
-		// VAR
-		private static readonly Dictionary<int, Horn> Pool = new();
-		private static readonly Dictionary<int, int> DefaultPool = new();
-		protected override string BaseTypeName => nameof(Horn);
-
-		// MSG
-		[OnGameInitialize(-127)]
-		public static void BeforeGameInitialize () {
-			Pool.Clear();
-			var charType = typeof(Character);
-			foreach (var type in typeof(Horn).AllChildClass()) {
-				if (System.Activator.CreateInstance(type) is not Horn horn) continue;
-				int id = type.AngeHash();
-				Pool.TryAdd(id, horn);
-				// Default
-				var dType = type.DeclaringType;
-				if (dType != null && dType.IsSubclassOf(charType)) {
-					DefaultPool.TryAdd(dType.AngeHash(), id);
-				}
-			}
-		}
-
-
-		// API
-		public static void Draw (Character character) => Draw(character, out _);
-		public static void Draw (Character character, out Horn horn) {
-			horn = null;
-			if (
-				character.HornID != 0 &&
-				Pool.TryGetValue(character.HornID, out horn)
-			) {
-				horn.DrawHorn(character);
-			}
-		}
-
-
-		public static bool TryGetDefaultHornID (int characterID, out int hornID) => DefaultPool.TryGetValue(characterID, out hornID);
-		public static bool TryGetHorn (int hornID, out Horn horn) => Pool.TryGetValue(hornID, out horn);
-
-		protected abstract void DrawHorn (Character character);
 
 
 		// UTL
-		protected static void DrawHornSprite (
+		public static void DrawSpriteAsHorn (
 			Character character, int spriteIdLeft, int spriteIdRight,
 			bool frontOfHeadL = true, bool frontOfHeadR = true, bool onFace = false, int offsetX = 0
 		) {

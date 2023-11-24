@@ -54,83 +54,32 @@ namespace AngeliaFramework {
 	}
 
 
-	public abstract class AutoSpriteFace : Face {
-		private FaceSpriteID SpriteID { get; init; }
-		public AutoSpriteFace () => SpriteID = new((GetType().DeclaringType ?? GetType()).AngeName());
-		protected override void DrawFace (Character character) => DrawFaceSprite(character, SpriteID[GetFaceType(character)]);
-	}
-
-
-
-	public class DefaultCharacterFace : AutoSpriteFace { }
-
-
 	public abstract class Face : BodyGadget {
 
 
 		// VAR
-		private const int A2G = Const.CEL / Const.ART_CEL;
-		private static readonly Dictionary<int, Face> Pool = new();
-		private static readonly Dictionary<int, int> DefaultPool = new();
+		protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Face;
+		private FaceSpriteID SpriteID { get; init; }
 		private static readonly FaceSpriteID DefaultSpriteID = new("");
-		protected override string BaseTypeName => nameof(Face);
-
-		// MSG
-		[OnGameInitialize(-127)]
-		public static void BeforeGameInitialize () {
-			Pool.Clear();
-			var CHARACTER_TYPE = typeof(Character);
-			foreach (var type in typeof(Face).AllChildClass()) {
-				if (System.Activator.CreateInstance(type) is not Face face) continue;
-				int id = type.AngeHash();
-				Pool.TryAdd(id, face);
-				// Default
-				var dType = type.DeclaringType;
-				if (dType != null && dType.IsSubclassOf(CHARACTER_TYPE)) {
-					DefaultPool.TryAdd(dType.AngeHash(), id);
-				}
-			}
-			// Inherit
-			foreach (var cType in CHARACTER_TYPE.AllChildClass()) {
-				int cID = cType.AngeHash();
-				if (DefaultPool.ContainsKey(cID)) continue;
-				var _type = cType.BaseType;
-				while (_type != CHARACTER_TYPE) {
-					int _id = _type.AngeHash(); ;
-					if (DefaultPool.TryGetValue(_id, out int _resultValue)) {
-						DefaultPool.Add(cID, _resultValue);
-						break;
-					}
-					_type = _type.BaseType;
-				}
-			}
-		}
 
 
 		// API
-		public static void Draw (Character character) => Draw(character, out _);
-		public static void Draw (Character character, out Face face) {
-			face = null;
-			if (
-				character.FaceID != 0 &&
-				Pool.TryGetValue(character.FaceID, out face)
-			) {
-				face.DrawFace(character);
+		public Face () => SpriteID = new((GetType().DeclaringType ?? GetType()).AngeName());
+
+
+		public static void DrawGadgetFromPool (Character character) {
+			if (character.FaceID != 0 && TryGetGadget(character.FaceID, out var face)) {
+				face.DrawGadget(character);
 			} else {
-				DrawFaceSprite(character, DefaultSpriteID[GetFaceType(character)]);
+				DrawSpriteAsFace(character, DefaultSpriteID[GetCurrentFaceType(character)]);
 			}
 		}
 
 
-		public static bool TryGetDefaultFaceID (int characterID, out int faceID) => DefaultPool.TryGetValue(characterID, out faceID);
-		public static bool TryGetFace (int faceID, out Face face) => Pool.TryGetValue(faceID, out face);
+		public override void DrawGadget (Character character) => DrawSpriteAsFace(character, SpriteID[GetCurrentFaceType(character)]);
 
 
-		protected abstract void DrawFace (Character character);
-
-
-		// UTL
-		protected static void DrawFaceSprite (Character character, int spriteGroupID, Vector4Int borderOffset = default) {
+		public static void DrawSpriteAsFace (Character character, int spriteGroupID, Vector4Int borderOffset = default) {
 
 			var head = character.Head;
 			if (spriteGroupID == 0 || head.Tint.a == 0 || !head.FrontSide) return;
@@ -150,6 +99,7 @@ namespace AngeliaFramework {
 			int bounce = character.CurrentRenderingBounce;
 			var headRect = head.GetGlobalRect();
 			if (bounce.Abs() != 1000) {
+				const int A2G = Const.CEL / Const.ART_CEL;
 				bool reverse = bounce < 0;
 				bounce = bounce.Abs();
 				int newWidth = (reverse ?
@@ -222,7 +172,7 @@ namespace AngeliaFramework {
 		}
 
 
-		protected static void DrawHumanEar (Character character, int spriteL, int spriteR, int offsetXL = -32, int offsetXR = 0) {
+		public static void DrawSpriteAsHumanEar (Character character, int spriteL, int spriteR, int offsetXL = -32, int offsetXR = 0) {
 
 			// Get Face Rect
 			var head = character.Head;
@@ -271,7 +221,7 @@ namespace AngeliaFramework {
 		}
 
 
-		protected static CharacterFaceType GetFaceType (Character character) {
+		public static CharacterFaceType GetCurrentFaceType (Character character) {
 
 			// Attack
 			if (

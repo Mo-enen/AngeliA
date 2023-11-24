@@ -39,13 +39,13 @@ namespace AngeliaFramework {
 			// Api
 			public int SpawnedCount => InstanceCount - Entities.Count;
 			public Stack<Entity> Entities = null;
+			public System.Type EntityType = null;
 			public RectInt LocalBound = default;
 			public bool DrawBehind = false;
 			public bool DestroyOnSquadTransition = true;
 			public bool DontSpawnFromWorld = false;
 			public bool ForceSpawn = false;
 			public int Capacity = 0;
-			public System.Type EntityType = null;
 			public bool DespawnOutOfRange = true;
 			public bool UpdateOutOfRange = false;
 			public int Order = 0;
@@ -66,6 +66,7 @@ namespace AngeliaFramework {
 			public Entity CreateInstance () {
 				if (System.Activator.CreateInstance(EntityType) is not Entity e) return null;
 				e.Active = false;
+				e.DestroyOnSquadTransition = DestroyOnSquadTransition;
 				e.DespawnOutOfRange = DespawnOutOfRange;
 				e.LocalBounds = LocalBound;
 				e.UpdateOutOfRange = UpdateOutOfRange;
@@ -391,11 +392,11 @@ namespace AngeliaFramework {
 			if (StagedEntityHash.Contains(uPos)) return null;
 			if (GlobalAntiSpawnHash.Contains(uPos)) return null;
 			if (LocalAntiSpawnHash.Contains(uPos)) return null;
-			if (!EntityPool.TryGetValue(typeID, out var eMeta)) return null;
-			if (eMeta.DontSpawnFromWorld) return null;
+			if (!EntityPool.TryGetValue(typeID, out var stack)) return null;
+			if (stack.DontSpawnFromWorld) return null;
 			int x = unitX * Const.CEL;
 			int y = unitY * Const.CEL;
-			if (AntiSpawnRect.Overlaps(eMeta.LocalBound.Shift(x, y))) return null;
+			if (AntiSpawnRect.Overlaps(stack.LocalBound.Shift(x, y))) return null;
 			return SpawnEntityLogic(typeID, x, y, uPos);
 		}
 
@@ -529,8 +530,8 @@ namespace AngeliaFramework {
 
 		// Misc
 		public static bool RequireDrawEntityBehind (int id, int unitX, int unitY, int unitZ) =>
-			EntityPool.TryGetValue(id, out var meta) &&
-			meta.DrawBehind &&
+			EntityPool.TryGetValue(id, out var stack) &&
+			stack.DrawBehind &&
 			!ItemSystem.HasItem(id) &&
 			!GlobalAntiSpawnHash.Contains(new(unitX, unitY, unitZ));
 
@@ -544,10 +545,7 @@ namespace AngeliaFramework {
 				int count = EntityCounts[layer];
 				for (int i = 0; i < count; i++) {
 					var e = entities[i];
-					if (
-						EntityPool.TryGetValue(e.TypeID, out var stack) &&
-						e.DespawnOutOfRange && stack.DestroyOnSquadTransition
-					) {
+					if (e.DespawnOutOfRange && e.DestroyOnSquadTransition) {
 						e.Active = false;
 					}
 				}

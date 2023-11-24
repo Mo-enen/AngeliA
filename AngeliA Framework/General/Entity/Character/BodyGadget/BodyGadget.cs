@@ -3,13 +3,63 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace AngeliaFramework {
+
+
+	public enum BodyGadgetType { Face, Hair, Ear, Horn, Tail, Wing, }
+
+
 	public abstract class BodyGadget {
 
 
-		protected abstract string BaseTypeName { get; }
+		protected abstract BodyGadgetType GadgetType { get; }
+		private static readonly Dictionary<int, BodyGadget> Pool = new();
+		private static readonly Dictionary<int, int[]> DefaultPool = new();
+		private static readonly int BodyGadgetTypeLength = typeof(BodyGadgetType).EnumLength();
+
+
+		// MSG
+		[OnGameInitialize(-127)]
+		public static void BeforeGameInitialize () {
+			Pool.Clear();
+			var charType = typeof(Character);
+			foreach (var type in typeof(BodyGadget).AllChildClass()) {
+				if (System.Activator.CreateInstance(type) is not BodyGadget gadget) continue;
+				// ID
+				int id = type.AngeHash();
+				Pool.TryAdd(id, gadget);
+				// Default
+				var dType = type.DeclaringType;
+				if (dType != null && dType.IsSubclassOf(charType)) {
+					int dTypeID = dType.AngeHash();
+					if (!DefaultPool.TryGetValue(dTypeID, out int[] ids)) {
+						DefaultPool.Add(dTypeID, ids = new int[BodyGadgetTypeLength]);
+					}
+					ids[(int)gadget.GadgetType] = id;
+				}
+			}
+		}
+
+
+		public abstract void DrawGadget (Character character);
+
+
+		// API
+		public static bool TryGetDefaultGadgetID (int characterID, BodyGadgetType type, out int gadgetID) {
+			if (DefaultPool.TryGetValue(characterID, out var gadgetsID)) {
+				gadgetID = gadgetsID[(int)type];
+				return true;
+			} else {
+				gadgetID = 0;
+				return false;
+			}
+		}
+
+
+		public static bool TryGetGadget (int gadgetID, out BodyGadget gadget) => Pool.TryGetValue(gadgetID, out gadget);
+
 
 		public string GetDisplayName () {
-			string baseName = BaseTypeName;
+			string baseName = GadgetType.ToString();
 			string smartTypeName = GetType().AngeName();
 			if (smartTypeName.EndsWith(baseName) && smartTypeName.Length > baseName.Length) {
 				smartTypeName = smartTypeName[..^baseName.Length];
@@ -18,6 +68,7 @@ namespace AngeliaFramework {
 			string suffix = Language.Get($"UI.GadgetSuffix.{baseName}".AngeHash(), $" {baseName}");
 			return $"{Language.Get(smartID, Util.GetDisplayName(smartTypeName))}{suffix}";
 		}
+
 
 	}
 }

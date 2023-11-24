@@ -7,17 +7,22 @@ using UnityEngine;
 namespace AngeliaFramework {
 
 
-	public class AngelWing : AutoSpriteWing { protected override int Scale => 600; }
-	public class DevilWing : AutoSpriteWing { protected override int Scale => 600; }
-	public class PropellerWing : AutoSpriteWing { }
+	public class AngelWing : Wing { protected override int Scale => 600; }
+	public class DevilWing : Wing { protected override int Scale => 600; }
+	public class PropellerWing : Wing { }
 
 
-	public abstract class AutoSpriteWing : Wing {
+	public abstract class Wing : BodyGadget {
+
+
+		protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Wing;
 		private int SpriteGroupID { get; init; }
-		public override bool IsPropeller => _IsPropeller;
+		public bool IsPropeller { get; init; } = false;
 		protected virtual int Scale => 1000;
-		private bool _IsPropeller { get; init; } = false;
-		public AutoSpriteWing () {
+
+
+		// API
+		public Wing () {
 			string name = (GetType().DeclaringType ?? GetType()).AngeName();
 			SpriteGroupID = $"{name}.Wing".AngeHash();
 			if (!CellRenderer.HasSpriteGroup(SpriteGroupID)) SpriteGroupID = 0;
@@ -26,65 +31,22 @@ namespace AngeliaFramework {
 				CellRenderer.TryGetSpriteFromGroup(SpriteGroupID, 0, out var sprite) &&
 				CellRenderer.TryGetMeta(sprite.GlobalID, out var meta)
 			) {
-				_IsPropeller = meta.IsTrigger;
-			}
-		}
-		protected override void DrawWing (Character character) => DrawSprite(character, SpriteGroupID, IsPropeller, Scale);
-	}
-
-
-	public abstract class Wing : BodyGadget {
-
-
-		// Api
-		public virtual bool IsPropeller => false;
-
-		// Data
-		private static readonly Dictionary<int, Wing> Pool = new();
-		private static readonly Dictionary<int, int> DefaultPool = new();
-		protected override string BaseTypeName => nameof(Wing);
-
-
-		// MSG
-		[OnGameInitialize(-127)]
-		public static void BeforeGameInitialize () {
-			Pool.Clear();
-			var charType = typeof(Character);
-			foreach (var type in typeof(Wing).AllChildClass()) {
-				if (System.Activator.CreateInstance(type) is not Wing wing) continue;
-				int id = type.AngeHash();
-				Pool.TryAdd(id, wing);
-				// Default
-				var dType = type.DeclaringType;
-				if (dType != null && dType.IsSubclassOf(charType)) {
-					DefaultPool.TryAdd(dType.AngeHash(), id);
-				}
+				IsPropeller = meta.IsTrigger;
 			}
 		}
 
 
-		// API
-		public static void Draw (Character character) => Draw(character, out _);
-		public static void Draw (Character character, out Wing wing) {
-			wing = null;
-			if (
-				character.WingID != 0 &&
-				Pool.TryGetValue(character.WingID, out wing)
-			) {
-				wing.DrawWing(character);
+		public static void DrawGadgetFromPool (Character character) {
+			if (character.WingID != 0 && TryGetGadget(character.WingID, out var wing)) {
+				wing.DrawGadget(character);
 			}
 		}
 
 
-		public static bool TryGetDefaultWingID (int characterID, out int wingID) => DefaultPool.TryGetValue(characterID, out wingID);
-		public static bool TryGetWing (int wingID, out Wing wing) => Pool.TryGetValue(wingID, out wing);
+		public override void DrawGadget (Character character) => DrawSpriteAsWing(character, SpriteGroupID, IsPropeller, Scale);
 
 
-		protected abstract void DrawWing (Character character);
-
-
-		// UTL
-		public static void DrawSprite (Character character, int spriteGroupID, bool isPropeller, int scale = 1000) {
+		public static void DrawSpriteAsWing (Character character, int spriteGroupID, bool isPropeller, int scale = 1000) {
 			if (
 				spriteGroupID == 0 ||
 				!CellRenderer.HasSpriteGroup(spriteGroupID, out int groupCount) ||
@@ -167,7 +129,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool IsPropellerWing (int wingID) => wingID != 0 && Pool.TryGetValue(wingID, out var wing) && wing.IsPropeller;
+		public static bool IsPropellerWing (int wingID) => wingID != 0 && TryGetGadget(wingID, out var gadget) && gadget is Wing wing && wing.IsPropeller;
 
 
 	}

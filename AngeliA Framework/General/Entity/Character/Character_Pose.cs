@@ -66,8 +66,6 @@ namespace AngeliaFramework {
 		public int HeadTwist { get; set; } = 0;
 		public int HeadRotation { get; set; } = 0;
 		public int BasicRootY { get; private set; } = 0;
-		public bool BodyPartsReady => BodyParts != null;
-		public bool ShowingTail => AnimatedPoseType != CharacterPoseAnimationType.Fly || !Wing.TryGetWing(WingID, out var wing) || !wing.IsPropeller;
 		public int HideBraidFrame { get; set; } = -1;
 		public Color32 SkinColor { get; set; } = new(239, 194, 160, 255);
 		public Color32 HairColor { get; set; } = new(51, 51, 51, 255);
@@ -78,6 +76,7 @@ namespace AngeliaFramework {
 		public int HandGrabScaleR { get; set; } = 1000;
 		public int HandGrabAttackTwistL { get; set; } = 1000;
 		public int HandGrabAttackTwistR { get; set; } = 1000;
+		public bool BodyPartsReady => BodyParts != null;
 
 		// BodyPart
 		public BodyPart Head { get; private set; } = null;
@@ -112,6 +111,14 @@ namespace AngeliaFramework {
 		public int Suit_Hip { get; set; } = 0;
 		public int Suit_Hand { get; set; } = 0;
 		public int Suit_Foot { get; set; } = 0;
+
+		// Short
+		private bool IsTailVisible => AnimatedPoseType != CharacterPoseAnimationType.Fly || !Wing.IsPropellerWing(WingID);
+		private bool IsEarVisible => true;
+		private bool IsHairVisible => true;
+		private bool IsFaceVisible => true;
+		private bool IsHornVisible => true;
+		private bool IsWingVisible => true;
 
 		// Data
 		private static readonly Dictionary<int, BodyPartConfig> BodyPartConfigPool = new();
@@ -171,12 +178,12 @@ namespace AngeliaFramework {
 				}
 
 				// Gadget
-				config.FaceID = Face.TryGetDefaultFaceID(typeID, out int defaultID) ? defaultID : 0;
-				config.HairID = Hair.TryGetDefaultHairID(typeID, out defaultID) ? defaultID : 0;
-				config.EarID = Ear.TryGetDefaultEarID(typeID, out defaultID) ? defaultID : 0;
-				config.TailID = Tail.TryGetDefaultTailID(typeID, out defaultID) ? defaultID : 0;
-				config.WingID = Wing.TryGetDefaultWingID(typeID, out defaultID) ? defaultID : 0;
-				config.HornID = Horn.TryGetDefaultHornID(typeID, out defaultID) ? defaultID : 0;
+				config.FaceID = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Face, out int defaultID) ? defaultID : 0;
+				config.HairID = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Hair, out defaultID) ? defaultID : 0;
+				config.EarID = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Ear, out defaultID) ? defaultID : 0;
+				config.TailID = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Tail, out defaultID) ? defaultID : 0;
+				config.WingID = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Wing, out defaultID) ? defaultID : 0;
+				config.HornID = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Horn, out defaultID) ? defaultID : 0;
 
 				// Suit
 				config.SuitHead = Cloth.TryGetDefaultClothID(typeID, ClothType.Head, out int suitID) ? suitID : 0;
@@ -268,12 +275,12 @@ namespace AngeliaFramework {
 			PoseUpdate_HeadTwist();
 			PoseUpdate_Items();
 
-			Wing.Draw(this);
-			Tail.Draw(this);
-			Face.Draw(this);
-			Hair.Draw(this);
-			Ear.Draw(this);
-			Horn.Draw(this);
+			if (IsWingVisible) Wing.DrawGadgetFromPool(this);
+			if (IsTailVisible) Tail.DrawGadgetFromPool(this);
+			if (IsFaceVisible) Face.DrawGadgetFromPool(this);
+			if (IsHairVisible) Hair.DrawGadgetFromPool(this);
+			if (IsEarVisible) Ear.DrawGadgetFromPool(this);
+			if (IsHornVisible) Horn.DrawGadgetFromPool(this);
 
 			HeadCloth.DrawClothFromPool(this);
 			BodyCloth.DrawClothFromPool(this);

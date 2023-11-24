@@ -204,12 +204,12 @@ namespace AngeliaFramework {
 					for (int j = d; j < u; j++) {
 						int index = (j - worldUnitRect.y) * Const.MAP + (l - worldUnitRect.x);
 						for (int i = l; i < r; i++, index++) {
-							var entity = world.Entity[index];
-							if (entity == 0) continue;
+							var entityID = world.Entity[index];
+							if (entityID == 0) continue;
 							if (!isBehind) {
-								DrawEntity(entity, i, j, z);
-							} else if (Stage.RequireDrawEntityBehind(entity, i, j, z)) {
-								Draw_Behind(entity, i, j, true);
+								DrawEntity(entityID, i, j, z);
+							} else if (Stage.RequireDrawEntityBehind(entityID, i, j, z)) {
+								Draw_Behind(entityID, i, j, true);
 							}
 						}
 					}

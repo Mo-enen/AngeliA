@@ -37,17 +37,15 @@ namespace AngeliaFramework {
 
 		// Override
 		protected abstract int PhysicsLayer { get; }
-		protected virtual bool PhysicsEnable => true;
 		protected virtual int CollisionMask => Const.MASK_SOLID;
+		protected virtual int Gravity => VelocityY <= 0 ? 5 : 3;
 		protected virtual int AirDragX => 3;
 		protected virtual int AirDragY => 0;
-		protected virtual bool DestroyWhenInsideGround => false;
-		protected virtual bool IgnoreRiseGravityShift => false;
 		protected virtual bool AllowBeingCarryByOtherRigidbody => true;
 		protected virtual bool CarryOtherRigidbodyOnTop => true;
+		protected virtual bool PhysicsEnable => true;
+		protected virtual bool DestroyWhenInsideGround => false;
 		public virtual bool AllowBeingPush => true;
-		protected virtual int Gravity => 5;
-		protected virtual int GravityRise => 3;
 		protected virtual int MaxGravitySpeed => 96;
 
 		// Data
@@ -123,9 +121,8 @@ namespace AngeliaFramework {
 			// Gravity
 			if (GravityScale != 0 && Game.GlobalFrame > IgnoreGravityFrame) {
 				int speedScale = InWater ? WATER_SPEED_LOSE : 1000;
-				int gravity = (VelocityY < 0 ? Gravity : GravityRise) * GravityScale / 1000;
 				VelocityY = Mathf.Clamp(
-					VelocityY - gravity,
+					VelocityY - Gravity * GravityScale / 1000,
 					-MaxGravitySpeed * speedScale / 1000,
 					int.MaxValue
 				);
