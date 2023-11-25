@@ -8,6 +8,7 @@ namespace AngeliaFramework {
 
 
 		// Const
+		private static readonly int TYPE_ID = typeof(PassOutStarParticle).AngeHash();
 		private static readonly int STAR_CODE = "PassOutStar".AngeHash();
 
 		// Api
@@ -18,6 +19,17 @@ namespace AngeliaFramework {
 
 
 		// MSG
+		[OnGameInitialize(64)]
+		public static void OnGameInitialize () {
+			Character.OnPassOut += OnPassOut;
+			static void OnPassOut (Character character) {
+				if (Stage.SpawnEntity(TYPE_ID, character.X, character.Y) is Particle particle) {
+					particle.UserData = character;
+				}
+			}
+		}
+
+
 		public override void DrawParticle () {
 			var character = Character;
 			if (character == null || !character.Active || character.CharacterState != CharacterState.PassOut) {

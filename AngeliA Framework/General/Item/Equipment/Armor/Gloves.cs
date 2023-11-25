@@ -9,75 +9,66 @@ namespace AngeliaFramework {
 
 	// Wood
 	[EntityAttribute.ItemCombination(typeof(iTreeTrunk), typeof(iTreeBranch), 1)]
-	public class iGlovesWood : Armor<iGlovesWoodBroken, iGlovesWood> { public override EquipmentType EquipmentType => EquipmentType.Gloves; }
+	public class iGlovesWood : Gloves<iGlovesWoodBroken, iGlovesWood> { }
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesWoodBroken : Armor<iGlovesWoodBroken, iGlovesWood> {
+	public class iGlovesWoodBroken : Gloves<iGlovesWoodBroken, iGlovesWood> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iTreeTrunk), typeof(iTreeBranch), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 
 
 
 	// Iron
 	[EntityAttribute.ItemCombination(typeof(iGlovesWood), typeof(iIngotIron), 1)]
-	public class iGlovesIron : Armor<iGlovesIronCracked, iGlovesIron> { public override EquipmentType EquipmentType => EquipmentType.Gloves; }
+	public class iGlovesIron : Gloves<iGlovesIronCracked, iGlovesIron> { }
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesIronCracked : Armor<iGlovesIronBroken, iGlovesIron> {
+	public class iGlovesIronCracked : Gloves<iGlovesIronBroken, iGlovesIron> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iIngotIron), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesIronBroken : Armor<iGlovesIronBroken, iGlovesIronCracked> {
+	public class iGlovesIronBroken : Gloves<iGlovesIronBroken, iGlovesIronCracked> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iIngotIron), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 
 
 
 	// Gold
 	[EntityAttribute.ItemCombination(typeof(iGlovesIron), typeof(iIngotGold), 1)]
-	public class iGlovesGold : Armor<iGlovesGoldDented, iGlovesGold> { public override EquipmentType EquipmentType => EquipmentType.Gloves; }
+	public class iGlovesGold : Gloves<iGlovesGoldDented, iGlovesGold> { }
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesGoldDented : Armor<iGlovesGoldCracked, iGlovesGold> {
+	public class iGlovesGoldDented : Gloves<iGlovesGoldCracked, iGlovesGold> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iIngotGold), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesGoldCracked : Armor<iGlovesGoldBroken, iGlovesGoldDented> {
+	public class iGlovesGoldCracked : Gloves<iGlovesGoldBroken, iGlovesGoldDented> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iIngotGold), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesGoldBroken : Armor<iGlovesGoldBroken, iGlovesGoldCracked> {
+	public class iGlovesGoldBroken : Gloves<iGlovesGoldBroken, iGlovesGoldCracked> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iIngotGold), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 
 
 
 	// Ski
 	[EntityAttribute.ItemCombination(typeof(iCottonBall), typeof(iGlovesWood), 1)]
-	public class iGlovesSki : Armor<iGlovesSkiBroken, iGlovesSki> { public override EquipmentType EquipmentType => EquipmentType.Gloves; }
+	public class iGlovesSki : Gloves<iGlovesSkiBroken, iGlovesSki> { }
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesSkiBroken : Armor<iGlovesSkiBroken, iGlovesSki> {
+	public class iGlovesSkiBroken : Gloves<iGlovesSkiBroken, iGlovesSki> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iCottonBall), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 
 
 
 	// Machine
 	[EntityAttribute.ItemCombination(typeof(iGlovesIron), typeof(iBolt), typeof(iElectricWire), typeof(iBattery), 1)]
-	public class iGlovesMachine : Armor<iGlovesMachineCracked, iGlovesMachine> { public override EquipmentType EquipmentType => EquipmentType.Gloves; }
+	public class iGlovesMachine : Gloves<iGlovesMachineCracked, iGlovesMachine> { }
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesMachineCracked : Armor<iGlovesMachineBroken, iGlovesMachine> {
+	public class iGlovesMachineCracked : Gloves<iGlovesMachineBroken, iGlovesMachine> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iIngotIron), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesMachineBroken : Armor<iGlovesMachineBroken, iGlovesMachineCracked> {
+	public class iGlovesMachineBroken : Gloves<iGlovesMachineBroken, iGlovesMachineCracked> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iIngotIron), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 
 
@@ -87,125 +78,112 @@ namespace AngeliaFramework {
 	[EntityAttribute.ItemCombination(typeof(iGlovesIron), typeof(iGemGreen), typeof(iGemRed), typeof(iGemBlue), 1)]
 	[EntityAttribute.ItemCombination(typeof(iGlovesIron), typeof(iGemOrange), typeof(iGemGreen), typeof(iGemRed), 1)]
 	[EntityAttribute.ItemCombination(typeof(iGlovesIron), typeof(iGemOrange), typeof(iGemGreen), typeof(iGemBlue), 1)]
-	public class iGlovesGem : Armor<iGlovesGemCracked, iGlovesGem> { public override EquipmentType EquipmentType => EquipmentType.Gloves; }
+	public class iGlovesGem : Gloves<iGlovesGemCracked, iGlovesGem> { }
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesGemCracked : Armor<iGlovesGemBroken, iGlovesGem> {
+	public class iGlovesGemCracked : Gloves<iGlovesGemBroken, iGlovesGem> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iGemRed), typeof(iGemGreen), typeof(iGemBlue), typeof(iGemOrange), typeof(iGem), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesGemBroken : Armor<iGlovesGemBroken, iGlovesGemCracked> {
+	public class iGlovesGemBroken : Gloves<iGlovesGemBroken, iGlovesGemCracked> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iGemRed), typeof(iGemGreen), typeof(iGemBlue), typeof(iGemOrange), typeof(iGem), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 
 
 
 	// Ice
 	[EntityAttribute.ItemCombination(typeof(iRuneWater), typeof(iGlovesGem), 1)]
-	public class iGlovesIce : Armor<iGlovesIceCracked, iGlovesIce> { public override EquipmentType EquipmentType => EquipmentType.Gloves; }
+	public class iGlovesIce : Gloves<iGlovesIceCracked, iGlovesIce> { }
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesIceCracked : Armor<iGlovesIceBroken, iGlovesIce> {
+	public class iGlovesIceCracked : Gloves<iGlovesIceBroken, iGlovesIce> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iRuneWater), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesIceBroken : Armor<iGlovesIceBroken, iGlovesIceCracked> {
+	public class iGlovesIceBroken : Gloves<iGlovesIceBroken, iGlovesIceCracked> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iRuneWater), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 
 
 
 	// Fire
 	[EntityAttribute.ItemCombination(typeof(iRuneFire), typeof(iGlovesGem), 1)]
-	public class iGlovesFire : Armor<iGlovesFireCracked, iGlovesFire> { public override EquipmentType EquipmentType => EquipmentType.Gloves; }
+	public class iGlovesFire : Gloves<iGlovesFireCracked, iGlovesFire> { }
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesFireCracked : Armor<iGlovesFireBroken, iGlovesFire> {
+	public class iGlovesFireCracked : Gloves<iGlovesFireBroken, iGlovesFire> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iRuneFire), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesFireBroken : Armor<iGlovesFireBroken, iGlovesFireCracked> {
+	public class iGlovesFireBroken : Gloves<iGlovesFireBroken, iGlovesFireCracked> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iRuneFire), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 
 
 
 	// Velvet
 	[EntityAttribute.ItemCombination(typeof(iFabric), typeof(iFabric), 1)]
-	public class iGlovesVelvet : Armor<iGlovesVelvetBroken, iGlovesVelvet> { public override EquipmentType EquipmentType => EquipmentType.Gloves; }
+	public class iGlovesVelvet : Gloves<iGlovesVelvetBroken, iGlovesVelvet> { }
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesVelvetBroken : Armor<iGlovesVelvetBroken, iGlovesVelvet> {
+	public class iGlovesVelvetBroken : Gloves<iGlovesVelvetBroken, iGlovesVelvet> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iFabric), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 
 
 
 	// Orc
 	[EntityAttribute.ItemCombination(typeof(iGlovesWood), typeof(iGoblinHead), 1)]
-	public class iGlovesOrc : Armor<iGlovesOrcBroken, iGlovesOrc> { public override EquipmentType EquipmentType => EquipmentType.Gloves; }
+	public class iGlovesOrc : Gloves<iGlovesOrcBroken, iGlovesOrc> { }
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesOrcBroken : Armor<iGlovesOrcBroken, iGlovesOrc> {
+	public class iGlovesOrcBroken : Gloves<iGlovesOrcBroken, iGlovesOrc> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iTreeTrunk), typeof(iTreeBranch), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 
 
 
 	// Boxing
 	[EntityAttribute.ItemCombination(typeof(iCottonBall), typeof(iCottonBall), typeof(iCottonBall), typeof(iGlovesVelvet), 1)]
-	public class iGlovesBoxing : Armor<iGlovesBoxingBroken, iGlovesBoxing> { public override EquipmentType EquipmentType => EquipmentType.Gloves; }
+	public class iGlovesBoxing : Gloves<iGlovesBoxingBroken, iGlovesBoxing> { }
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesBoxingBroken : Armor<iGlovesBoxingBroken, iGlovesBoxing> {
+	public class iGlovesBoxingBroken : Gloves<iGlovesBoxingBroken, iGlovesBoxing> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iCottonBall), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 
 
 
 	// Oven
 	[EntityAttribute.ItemCombination(typeof(iCottonBall), typeof(iGlovesVelvet), 1)]
-	public class iGlovesOven : Armor<iGlovesOvenBroken, iGlovesOven> { public override EquipmentType EquipmentType => EquipmentType.Gloves; }
+	public class iGlovesOven : Gloves<iGlovesOvenBroken, iGlovesOven> { }
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesOvenBroken : Armor<iGlovesOvenBroken, iGlovesOven> {
+	public class iGlovesOvenBroken : Gloves<iGlovesOvenBroken, iGlovesOven> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iCottonBall), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 
 
 
 	// Paladin
 	[EntityAttribute.ItemCombination(typeof(iGlovesVelvet), typeof(iIngotGold), 1)]
-	public class iGlovesPaladin : Armor<iGlovesPaladinBroken, iGlovesPaladin> { public override EquipmentType EquipmentType => EquipmentType.Gloves; }
+	public class iGlovesPaladin : Gloves<iGlovesPaladinBroken, iGlovesPaladin> { }
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesPaladinBroken : Armor<iGlovesPaladinBroken, iGlovesPaladin> {
+	public class iGlovesPaladinBroken : Gloves<iGlovesPaladinBroken, iGlovesPaladin> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iFabric), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 
 
 
 	// Fairy
 	[EntityAttribute.ItemCombination(typeof(iGlovesVelvet), typeof(iCuteGhost), 1)]
-	public class iGlovesFairy : Armor<iGlovesFairyBroken, iGlovesFairy> { public override EquipmentType EquipmentType => EquipmentType.Gloves; }
+	public class iGlovesFairy : Gloves<iGlovesFairyBroken, iGlovesFairy> { }
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesFairyBroken : Armor<iGlovesFairyBroken, iGlovesFairy> {
+	public class iGlovesFairyBroken : Gloves<iGlovesFairyBroken, iGlovesFairy> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iFabric), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 
 
 
 	// Mage
 	[EntityAttribute.ItemCombination(typeof(iGlovesVelvet), typeof(iRuneCube), 1)]
-	public class iGlovesMage : Armor<iGlovesMageBroken, iGlovesMage> { public override EquipmentType EquipmentType => EquipmentType.Gloves; }
+	public class iGlovesMage : Gloves<iGlovesMageBroken, iGlovesMage> { }
 	[EntityAttribute.ExcludeInMapEditor]
-	public class iGlovesMageBroken : Armor<iGlovesMageBroken, iGlovesMage> {
+	public class iGlovesMageBroken : Gloves<iGlovesMageBroken, iGlovesMage> {
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iFabric), };
-		public override EquipmentType EquipmentType => EquipmentType.Gloves;
 	}
 
 

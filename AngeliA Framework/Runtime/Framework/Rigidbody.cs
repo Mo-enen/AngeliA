@@ -20,7 +20,9 @@ namespace AngeliaFramework {
 		private const int QUICK_SAND_JUMP_SPEED = 12;
 
 		// Api
-		public static int WaterSplashParticleID { get; set; } = 0;
+		public delegate void WaterHandler (Rigidbody rig, int x, int y);
+		public static event WaterHandler OnFallIntoWater;
+		public static event WaterHandler OnJumpOutOfWater;
 		public override RectInt Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
 		public bool IsGrounded { get; private set; } = false;
 		public bool IsInsideGround { get; private set; } = false;
@@ -177,12 +179,11 @@ namespace AngeliaFramework {
 			if (AirDragY != 0) VelocityY = VelocityY.MoveTowards(0, AirDragY);
 
 			// Water Splash
-			if (WaterSplashParticleID != 0 && prevInWater != InWater && InWater == VelocityY < 0) {
-				Stage.SpawnEntity(
-					WaterSplashParticleID,
-					X + OffsetX + Width / 2,
-					Y + OffsetY + Height / 2 + (InWater ? 0 : -VelocityY)
-				);
+			if (prevInWater != InWater && InWater == VelocityY < 0) {
+				int waterX = X + OffsetX + Width / 2;
+				int waterY = Y + OffsetY + Height / 2 + (InWater ? 0 : -VelocityY);
+				if (prevInWater) OnJumpOutOfWater?.Invoke(this, waterX, waterY);
+				if (InWater) OnFallIntoWater?.Invoke(this, waterX, waterY);
 			}
 
 			// Sand

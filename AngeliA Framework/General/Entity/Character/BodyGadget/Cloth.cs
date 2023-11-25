@@ -118,6 +118,7 @@ namespace AngeliaFramework {
 		private static readonly int SKIRT_SUIT_SUFFIX = "UI.SuitSuffix.Skirt".AngeHash();
 		protected override string DisplayNameSuffix => SpriteIdSkirt != 0 ? Language.Get(SKIRT_SUIT_SUFFIX, " Skirt") : base.DisplayNameSuffix;
 		protected sealed override ClothType ClothType => ClothType.Hip;
+		protected virtual bool CoverLegs => true;
 		private int SpriteIdHip { get; init; }
 		private int SpriteIdSkirt { get; init; }
 		private int SpriteIdUpperLeg { get; init; }
@@ -142,11 +143,10 @@ namespace AngeliaFramework {
 		}
 
 		public override void Draw (Character character) {
-			DrawClothForHip(character, SpriteIdHip);
-			DrawClothForSkirt(character, SpriteIdSkirt);
+			DrawClothForHip(character, SpriteIdHip, CoverLegs ? 4 : 1);
+			DrawClothForSkirt(character, SpriteIdSkirt, CoverLegs ? 6 : 1);
 			DrawClothForUpperLeg(character, SpriteIdUpperLeg);
 			DrawClothForLowerLeg(character, SpriteIdLowerLeg);
-
 		}
 
 		public static void DrawClothForHip (Character character, int spriteID, int localZ = 1) {
@@ -182,10 +182,7 @@ namespace AngeliaFramework {
 				 BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 
 			// Draw
-			CellRenderer.Draw(
-				sprite.GlobalID, rect,
-				meta != null && meta.IsTrigger ? hip.Z + localZ + 3 : hip.Z + localZ
-			);
+			CellRenderer.Draw(sprite.GlobalID, rect, hip.Z + localZ);
 
 		}
 
@@ -238,11 +235,11 @@ namespace AngeliaFramework {
 				500, 1000, 0,
 				width,
 				body.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight,
-				z: CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger ? hip.Z + 1 : hip.Z + localZ
+				hip.Z + localZ
 			);
 
 			// Limb
-			hip.Covered = meta != null && meta.Tag == Const.HIDE_LIMB_TAG ?
+			hip.Covered = CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG ?
 				BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 
 			// Func
@@ -577,8 +574,11 @@ namespace AngeliaFramework {
 
 		protected sealed override ClothType ClothType => ClothType.Head;
 		protected virtual FrontMode Front => FrontMode.Front;
+		protected virtual bool PixelShiftForLeft => true;
 		private int SpriteID { get; init; } = 0;
 
+
+		// MSG
 		public HeadCloth () {
 			string name = (GetType().DeclaringType ?? GetType()).AngeName();
 			SpriteID = $"{name}.HeadSuit".AngeHash();
@@ -591,9 +591,9 @@ namespace AngeliaFramework {
 			}
 		}
 
-		public override void Draw (Character character) => DrawClothForHead(character, SpriteID, Front);
+		public override void Draw (Character character) => DrawClothForHead(character, SpriteID, Front, PixelShiftForLeft);
 
-		public static void DrawClothForHead (Character character, int spriteGroupID, FrontMode frontMode) {
+		public static void DrawClothForHead (Character character, int spriteGroupID, FrontMode frontMode, bool pixelShiftForLeft) {
 
 			var head = character.Head;
 			if (spriteGroupID == 0 || head.IsFullCovered) return;
@@ -605,16 +605,12 @@ namespace AngeliaFramework {
 
 			// Draw
 			Cell[] cells = null;
-			CellRenderer.TryGetMeta(spriteGroupID, out var meta);
 			if (CellRenderer.HasSpriteGroup(spriteGroupID)) {
 				if (head.FrontSide) {
 					// Front
 					bool front = frontMode != FrontMode.AlwaysBack && frontMode != FrontMode.Back;
 					if (CellRenderer.TryGetSpriteFromGroup(spriteGroupID, 0, out var sprite, false, true)) {
-						bool usePixelShift = head.FrontSide && head.Width < 0;
-						if (usePixelShift && meta != null && meta.IsTrigger) {
-							usePixelShift = false;
-						}
+						bool usePixelShift = pixelShiftForLeft && head.FrontSide && head.Width < 0;
 						cells = AttachClothOn(
 							head, sprite, 500, 1000,
 							(front ? 34 : -34) - head.Z, widthAmount, 1000, 0,
@@ -625,10 +621,7 @@ namespace AngeliaFramework {
 					// Back
 					if (CellRenderer.TryGetSpriteFromGroup(spriteGroupID, 1, out var sprite, false, true)) {
 						bool front = frontMode != FrontMode.AlwaysBack && frontMode != FrontMode.Front;
-						bool usePixelShift = head.FrontSide && head.Width < 0;
-						if (usePixelShift && meta != null && meta.IsTrigger) {
-							usePixelShift = false;
-						}
+						bool usePixelShift = pixelShiftForLeft && head.FrontSide && head.Width < 0;
 						cells = AttachClothOn(
 							head, sprite, 500, 1000,
 							(front ? 34 : -34) - head.Z, widthAmount, 1000, 0,
@@ -642,10 +635,7 @@ namespace AngeliaFramework {
 					frontMode == FrontMode.AlwaysFront ||
 					frontMode == FrontMode.Front == head.FrontSide
 				);
-				bool usePixelShift = head.FrontSide && head.Width < 0;
-				if (usePixelShift && meta != null && meta.IsTrigger) {
-					usePixelShift = false;
-				}
+				bool usePixelShift = pixelShiftForLeft && head.FrontSide && head.Width < 0;
 				cells = AttachClothOn(
 					head, sprite, 500, 1000,
 					(front ? 34 : -34) - head.Z, widthAmount, 1000, 0,

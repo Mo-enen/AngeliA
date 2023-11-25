@@ -371,9 +371,7 @@ namespace AngeliaFramework {
 				// Can't Fly
 				X = flyAim.x;
 				Y = flyAim.y;
-				if (TeleportParticleCode != 0) {
-					Stage.SpawnEntity(TeleportParticleCode, X, Y);
-				}
+				OnTeleport?.Invoke(this);
 				NavigationState = CharacterNavigationState.Idle;
 				MovementState = CharacterMovementState.Idle;
 			}

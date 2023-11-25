@@ -66,7 +66,6 @@ namespace AngeliaFramework {
 		// Api
 		protected virtual int StableVolume => 60;
 		public int Volume { get; set; } = 1000;
-		public static int WaterSplashParticleID { get; set; } = 0;
 
 		// Data
 		private bool IsGrounded = false;
@@ -451,14 +450,6 @@ namespace AngeliaFramework {
 			oldWater.Volume += newWater.Volume;
 			newWater.Volume = 0;
 			newWater.Active = false;
-			// Spawn Particle
-			if (WaterSplashParticleID != 0 && oldWater.IsGrounded) {
-				Stage.SpawnEntity(
-					WaterSplashParticleID,
-					newWater.X + newWater.Width / 2,
-					newWater.Y
-				);
-			}
 			return true;
 		}
 

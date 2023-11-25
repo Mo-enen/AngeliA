@@ -29,23 +29,26 @@ namespace AngeliaFramework {
 		private static readonly int[] BOUNCE_AMOUNTS = new int[] { 500, 200, 100, 50, 25, 50, 100, 200, 500, };
 		private static readonly int[] BOUNCE_AMOUNTS_BIG = new int[] { 0, -600, -900, -1200, -1400, -1200, -900, -600, 0, };
 
-		// Particle
-		public static int SleepParticleCode { get; set; } = typeof(SleepParticle).AngeHash();
-		public static int SleepDoneParticleCode { get; set; } = 0;
-		public static int FootstepParticleCode { get; set; } = typeof(CharacterFootstep).AngeHash();
-		public static int SlideParticleCode { get; set; } = typeof(SlideDust).AngeHash();
-		public static int DashParticleCode { get; set; } = typeof(CharacterFootstep).AngeHash();
-		public static int PassOutParticleCode { get; set; } = typeof(PassOutStarParticle).AngeHash();
-		public static int TeleportParticleCode { get; set; } = typeof(AppearSmokeParticle).AngeHash();
-
 		// Api
+		public delegate void CharacterEventHandler (Character character);
+		public static event CharacterEventHandler OnSleeping;
+		public static event CharacterEventHandler OnSleeped;
+		public static event CharacterEventHandler OnFootStepped;
+		public static event CharacterEventHandler OnDashStepped;
+		public static event CharacterEventHandler OnSlideStepped;
+		public static event CharacterEventHandler OnPassOut;
+		public static event CharacterEventHandler OnTeleport;
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
 		public WeaponType EquippingWeaponType { get; set; } = WeaponType.Hand;
 		public WeaponHandHeld EquippingWeaponHeld { get; set; } = WeaponHandHeld.Float;
 		public bool IsPassOut => HealthPoint == 0;
 		public bool IsFullPassOut => HealthPoint == 0 && Game.GlobalFrame > PassOutFrame + 48;
 		public int SleepFrame { get; private set; } = 0;
-		public bool Teleporting => Game.GlobalFrame < TeleportEndFrame.Abs();
+		public bool Teleporting => Game.GlobalFrame < TeleportEndFrame;
+		public bool TeleportWithPortal => _TeleportDuration < 0;
+		public bool TeleportToFrontSide => _TeleportEndFrame > 0;
+		public int TeleportEndFrame => _TeleportEndFrame.Abs();
+		public int TeleportDuration => _TeleportDuration.Abs();
 		public bool RenderWithSheet { get; private set; } = false;
 		public int CurrentAnimationFrame { get; set; } = 0;
 		public int CurrentRenderingBounce { get; private set; } = 1000;
@@ -59,17 +62,13 @@ namespace AngeliaFramework {
 		protected sealed override int PhysicsLayer => Const.LAYER_CHARACTER;
 		protected virtual int Bouncy => 150;
 
-		// Short
-		private static int EquipmentTypeCount => _EquipmentTypeCount > 0 ? _EquipmentTypeCount : (_EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length);
-		private bool TeleportWithPortal => TeleportDuration < 0;
-
 		// Data
 		private static readonly HashSet<int> RenderWithSheetPool = new();
-		private static int _EquipmentTypeCount = 0;
+		private static int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
 		private int PassOutFrame = int.MinValue;
 		private int LastRequireBounceFrame = int.MinValue;
-		private int TeleportEndFrame = 0;
-		private int TeleportDuration = 0;
+		private int _TeleportEndFrame = 0;
+		private int _TeleportDuration = 0;
 
 
 		#endregion
@@ -229,18 +228,17 @@ namespace AngeliaFramework {
 
 
 		public override void FrameUpdate () {
-			if (FrameUpdate_RenderCharacter()) {
-				FrameUpdate_Particle();
-				FrameUpdate_Inventory();
-				base.FrameUpdate();
-			}
+			FrameUpdate_RenderCharacter();
+			FrameUpdate_Event();
+			FrameUpdate_Inventory();
+			base.FrameUpdate();
 		}
 
 
-		private bool FrameUpdate_RenderCharacter () {
+		private void FrameUpdate_RenderCharacter () {
 
 			bool blinking = IsInvincible && !TakingDamage && (Game.GlobalFrame - InvincibleEndFrame).UMod(8) < 4;
-			if (blinking) return false;
+			if (blinking) return;
 
 			bool colorFlash = TakingDamage && (Game.GlobalFrame - LastDamageFrame).UMod(8) < 4;
 			if (colorFlash) CellRenderer.SetLayerToColor();
@@ -273,8 +271,8 @@ namespace AngeliaFramework {
 						var cell = cells[i];
 						cell.ScaleFrom(
 							Util.RemapUnclamped(
-								0, TeleportDuration.Abs() / 2, 1000, 0,
-								(Game.GlobalFrame - TeleportEndFrame.Abs() + TeleportDuration.Abs()).PingPong(TeleportDuration.Abs() / 2)
+								0, TeleportDuration / 2, 1000, 0,
+								(Game.GlobalFrame - TeleportEndFrame + TeleportDuration).PingPong(TeleportDuration / 2)
 							), X, Y + Height / 2
 						);
 					}
@@ -283,48 +281,37 @@ namespace AngeliaFramework {
 
 			// Final
 			CellRenderer.SetLayerToDefault();
-			return true;
 		}
 
 
-		private void FrameUpdate_Particle () {
+		private void FrameUpdate_Event () {
 
 			if (CharacterState == CharacterState.GamePlay) {
+
+				// Teleport
+				if (TeleportWithPortal && Game.GlobalFrame == TeleportEndFrame - TeleportDuration / 2 + 1) {
+					OnTeleport?.Invoke(this);
+				}
+
 				// Run Particle
 				if (
-					FootstepParticleCode != 0 &&
 					IsGrounded &&
 					LastStartRunFrame >= 0 &&
-					(Game.GlobalFrame - LastStartRunFrame) % 20 == 19 &&
-					Stage.TrySpawnEntity(FootstepParticleCode, X, Y, out var entity) &&
-					entity is Particle particle
+					(Game.GlobalFrame - LastStartRunFrame) % 20 == 19
 				) {
-					if (CellRenderer.TryGetSprite(GroundedID, out var sprite)) {
-						particle.Tint = sprite.SummaryTint;
-					} else {
-						particle.Tint = Const.WHITE;
-					}
+					OnFootStepped?.Invoke(this);
 				}
+
 				// Slide Particle
-				if (SlideParticleCode != 0 && IsSliding && Game.GlobalFrame % 24 == 0) {
-					var rect = Rect;
-					Stage.SpawnEntity(
-						SlideParticleCode, FacingRight ? rect.xMax : rect.xMin, rect.yMin + rect.height * 3 / 4
-					);
+				if (IsSliding && Game.GlobalFrame % 24 == 0) {
+					OnSlideStepped?.Invoke(this);
 				}
+
 				// Dash Particle
-				if (IsGrounded && DashParticleCode != 0 && IsDashing && Game.GlobalFrame % 8 == 0) {
-					if (
-						Stage.TrySpawnEntity(DashParticleCode, X, Y, out var dashEntity) &&
-						dashEntity is Particle dashParticle
-					) {
-						if (CellRenderer.TryGetSprite(GroundedID, out var sprite)) {
-							dashParticle.Tint = sprite.SummaryTint;
-						} else {
-							dashParticle.Tint = Const.WHITE;
-						}
-					}
+				if (IsGrounded && IsDashing && Game.GlobalFrame % 8 == 0) {
+					OnDashStepped?.Invoke(this);
 				}
+
 				// Charging Bounce
 				if (Game.GlobalFrame % 10 == 0 && IsChargingAttack) {
 					Bounce();
@@ -335,21 +322,12 @@ namespace AngeliaFramework {
 			// Sleep
 			if (CharacterState == CharacterState.Sleep) {
 				// ZZZ Particle
-				if (SleepParticleCode != 0 && Game.GlobalFrame % 42 == 0) {
-					Stage.TrySpawnEntity(SleepParticleCode, X, Y + Height / 2, out _);
+				if (Game.GlobalFrame % 42 == 0) {
+					OnSleeping?.Invoke(this);
 				}
 				// Full Sleep Particle
 				if (SleepFrame == FULL_SLEEP_DURATION) {
-					var rect = Rect;
-					if (SleepDoneParticleCode != 0 && Stage.TrySpawnEntity(
-						SleepDoneParticleCode,
-						rect.x + rect.width / 2,
-						rect.y + rect.height / 2,
-						out var sleepParticle
-					)) {
-						sleepParticle.Width = Const.CEL * 2;
-						sleepParticle.Height = Const.CEL * 2;
-					}
+					OnSleeped?.Invoke(this);
 				}
 				// ++
 				SleepFrame++;
@@ -434,9 +412,7 @@ namespace AngeliaFramework {
 
 				case CharacterState.PassOut:
 					PassOutFrame = Game.GlobalFrame;
-					if (PassOutParticleCode != 0 && Stage.SpawnEntity(PassOutParticleCode, X, Y) is Particle particle) {
-						particle.UserData = this;
-					}
+					OnPassOut?.Invoke(this);
 					break;
 
 			}
@@ -445,8 +421,8 @@ namespace AngeliaFramework {
 
 
 		public void EnterTeleportState (int duration, bool front, bool withPortal) {
-			TeleportEndFrame = (Game.GlobalFrame + duration) * (front ? 1 : -1);
-			TeleportDuration = withPortal ? -duration : duration;
+			_TeleportEndFrame = (Game.GlobalFrame + duration) * (front ? 1 : -1);
+			_TeleportDuration = withPortal ? -duration : duration;
 		}
 
 

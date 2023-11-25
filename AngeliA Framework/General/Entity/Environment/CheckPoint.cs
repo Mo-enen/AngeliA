@@ -15,8 +15,9 @@ namespace AngeliaFramework {
 
 
 		// Api
+		public delegate void TouchedHandler (CheckPoint checkPoint, Character target);
+		public static event TouchedHandler OnCheckPointTouched;
 		public static int BackPortalEntityID { get; set; } = 0;
-		public static int OnTouchedParticleID { get; set; } = 0;
 		public static Vector3Int? TurnBackUnitPosition { get; private set; } = null;
 		protected virtual bool OnlySpawnWhenUnlocked => true;
 
@@ -103,7 +104,6 @@ namespace AngeliaFramework {
 
 
 		protected virtual void OnPlayerTouched (Vector3Int unitPos) {
-
 			// Clear Portal
 			if (
 				Stage.GetSpawnedEntityCount(BackPortalEntityID) != 0 &&
@@ -111,13 +111,8 @@ namespace AngeliaFramework {
 			) {
 				portal.Active = false;
 			}
-
 			// Particle
-			if (Stage.SpawnEntity(OnTouchedParticleID, X + Const.HALF, Y + Const.HALF) is Particle particle) {
-				particle.Width = Const.CEL * 2;
-				particle.Height = Const.CEL * 2;
-				particle.UserData = this;
-			}
+			OnCheckPointTouched?.Invoke(this, Player.Selecting);
 		}
 
 
