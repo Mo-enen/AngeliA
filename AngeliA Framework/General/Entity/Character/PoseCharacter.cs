@@ -787,10 +787,9 @@ namespace AngeliaFramework {
 				}
 			}
 
-			// Final
+			// Z Offset
 			PoseZOffset -= 40;
 			if (CellRenderer.GetCells(out var cells, out int count)) {
-				// Z Offset
 				for (int i = cellIndexStart; i < count; i++) {
 					cells[i].Z += PoseZOffset;
 				}

@@ -279,7 +279,7 @@ namespace AngeliaFramework {
 
 
 		public static bool DrawPoseCharacterAsUI (
-			RectInt rect, PoseCharacter character, int animationFrame,
+			RectInt rect, PoseCharacter character, int animationFrame, int z,
 			out RectInt globalRect, out RectInt uiRect
 		) {
 
@@ -316,8 +316,10 @@ namespace AngeliaFramework {
 			int originalWidth = originalMaxX - originalMinX;
 			int originalHeight = originalMaxY - originalMinY;
 			var targetRect = uiRect = rect.Fit(originalWidth, originalHeight, 500, 0);
+			int minZ = int.MaxValue;
 			for (int i = cellIndexStart; i < count && i < cellIndexEnd; i++) {
 				var cell = cells[i];
+				minZ = Mathf.Min(minZ, cell.Z);
 				cell.X = targetRect.x + (cell.X - originalMinX) * targetRect.width / originalWidth;
 				cell.Y = targetRect.y + (cell.Y - originalMinY) * targetRect.height / originalHeight;
 				cell.Width = cell.Width * targetRect.width / originalWidth;
@@ -329,6 +331,14 @@ namespace AngeliaFramework {
 						cell.Shift.down * targetRect.height / originalHeight,
 						cell.Shift.up * targetRect.height / originalHeight
 					);
+				}
+			}
+
+			// Fix Z
+			if (minZ != int.MaxValue) {
+				for (int i = cellIndexStart; i < count && i < cellIndexEnd; i++) {
+					var cell = cells[i];
+					cell.Z = z + cell.Z - minZ;
 				}
 			}
 

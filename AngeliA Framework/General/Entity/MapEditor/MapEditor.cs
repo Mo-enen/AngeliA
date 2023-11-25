@@ -873,7 +873,6 @@ namespace AngeliaFramework {
 			PlayerDropPos.y = PlayerDropPos.y.LerpTo(FrameInput.MouseGlobalPosition.y, 400);
 			PlayerDropPos.z = PlayerDropPos.z.LerpTo(((FrameInput.MouseGlobalPosition.x - PlayerDropPos.x) / 20).Clamp(-45, 45), 300);
 
-
 			// Draw Pose Player
 			player.AnimationType = CharacterAnimationType.Idle;
 			int startIndex = CellRenderer.GetUsedCellCount();
@@ -883,9 +882,10 @@ namespace AngeliaFramework {
 					PlayerDropPos.y - Const.CEL * 2,
 					Const.CEL, Const.CEL * 2
 				),
-				player, Game.GlobalFrame, out _, out _
+				player, Game.GlobalFrame, 0, out _, out _
 			);
 			int endIndex = CellRenderer.GetUsedCellCount();
+
 			// Rotate Cells
 			if (CellRenderer.GetCells(out var cells, out int count)) {
 				for (int i = startIndex; i < endIndex && i < count; i++) {

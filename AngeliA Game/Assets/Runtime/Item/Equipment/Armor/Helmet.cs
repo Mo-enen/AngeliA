@@ -48,12 +48,14 @@ namespace AngeliaFramework {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Cover;
 		protected override bool HideEar => true;
 		protected override bool HideHorn => true;
+		protected override bool HideHair => true;
 	}
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iHelmetGoldDented : Helmet<iHelmetGoldCracked, iHelmetGold> {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Cover;
 		protected override System.Type[] RepairMaterials => new System.Type[] { typeof(iIngotGold), };
 		protected override bool HideEar => true;
+		protected override bool HideHair => true;
 		protected override bool HideHorn => true;
 	}
 	[EntityAttribute.ExcludeInMapEditor]

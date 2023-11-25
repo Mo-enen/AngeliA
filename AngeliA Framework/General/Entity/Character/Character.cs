@@ -240,6 +240,7 @@ namespace AngeliaFramework {
 			bool blinking = IsInvincible && !TakingDamage && (Game.GlobalFrame - InvincibleEndFrame).UMod(8) < 4;
 			if (blinking) return;
 
+			int oldLayerIndex = CellRenderer.CurrentLayerIndex;
 			bool colorFlash = TakingDamage && (Game.GlobalFrame - LastDamageFrame).UMod(8) < 4;
 			if (colorFlash) CellRenderer.SetLayerToColor();
 			int cellIndexStart = CellRenderer.GetUsedCellCount();
@@ -276,7 +277,7 @@ namespace AngeliaFramework {
 			}
 
 			// Final
-			CellRenderer.SetLayerToDefault();
+			CellRenderer.SetLayer(oldLayerIndex);
 		}
 
 

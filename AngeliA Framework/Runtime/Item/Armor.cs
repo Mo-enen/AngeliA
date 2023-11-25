@@ -39,9 +39,7 @@ namespace AngeliaFramework {
 					break;
 				default: {
 					// Cover
-					cells = Cloth.CoverClothOn(
-						head, spriteID, 34 - head.Z, Const.WHITE, false
-					);
+					cells = Cloth.CoverClothOn(head, spriteID, 34 - head.Z, Const.WHITE, false);
 					// Grow Padding
 					if (!sprite.GlobalBorder.IsZero && cells != null) {
 						var center = head.GetGlobalCenter();

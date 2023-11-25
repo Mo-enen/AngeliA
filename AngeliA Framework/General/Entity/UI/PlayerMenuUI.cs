@@ -17,11 +17,13 @@ namespace AngeliaFramework {
 				int INFO_WIDTH = Unify(PlayerMenuUI.INFO_WIDTH);
 				int PADDING = Unify(12);
 				if (CellRenderer.TryGetSpriteFromGroup(AvatarIcon, 0, out var sprite, false, true)) {
-					CellRenderer.Draw(sprite.GlobalID, new RectInt(
-						panelRect.xMax + (PADDING + INFO_WIDTH - ICON_SIZE) / 2,
+					var iconRect = new RectInt(
+						panelRect.x - ICON_SIZE - (PADDING + INFO_WIDTH - ICON_SIZE) / 2,
 						panelRect.y + PADDING,
 						ICON_SIZE, ICON_SIZE
-					), int.MinValue + 16);
+					);
+					CellRenderer.Draw(Const.PIXEL, iconRect.Expand(Unify(12)), Const.BLACK, int.MinValue + 1);
+					CellRenderer.Draw(sprite.GlobalID, iconRect, int.MinValue + 16);
 				}
 			}
 		}
@@ -83,7 +85,7 @@ namespace AngeliaFramework {
 		private const int HOLD_KEY_DURATION = 26;
 		private const int ANIMATION_DURATION = 12;
 		private const int FLASH_PANEL_DURATION = 52;
-		public const int PREVIEW_SIZE = 180;
+		public const int PREVIEW_SIZE = 220;
 		public const int INFO_WIDTH = 180;
 		public const int ITEM_SIZE = 52;
 
@@ -166,7 +168,6 @@ namespace AngeliaFramework {
 			CursorSystem.RequireCursor();
 
 			Update_PanelUI();
-			Update_Preview();
 			Update_InfoUI();
 			Update_MoveCursor();
 			Update_Actions();
@@ -279,15 +280,6 @@ namespace AngeliaFramework {
 				Const.BLACK, int.MinValue + 1
 			);
 
-		}
-
-
-		private void Update_Preview () {
-			if (Partner != null) return;
-			int previewSize = Unify(PREVIEW_SIZE);
-			var panelRect = TopPanelRect.Edge(Direction4.Left, previewSize);
-			CellRenderer.Draw(Const.PIXEL, panelRect.Expand(Unify(WINDOW_PADDING)), Const.BLACK, int.MinValue + 1);
-			AngeUtil.DrawPoseCharacterAsUI(panelRect, Player.Selecting, Player.Selecting.CurrentAnimationFrame, out _, out _);
 		}
 
 
@@ -698,20 +690,29 @@ namespace AngeliaFramework {
 
 			bool interactable = Game.GlobalFrame - SpawnFrame > ANIMATION_DURATION;
 			var player = Player.Selecting;
+			int previewWidth = Unify(PREVIEW_SIZE);
 			int itemHeight = Unify(64);
-			var panelRect = TopPanelRect = GetInventoryRect(itemHeight);
+			int hashContentHeight = Unify(128);
+			var panelRect = TopPanelRect = GetInventoryRect(itemHeight).Expand(
+				previewWidth, 0, 0, hashContentHeight
+			);
 
 			// Background
 			var windowRect = panelRect.Expand(Unify(WINDOW_PADDING));
 			CellRenderer.Draw(Const.PIXEL, windowRect, Const.BLACK, int.MinValue + 1);
 			MouseInPanel = MouseInPanel || windowRect.Contains(FrameInput.MouseGlobalPosition);
 
-			// Background Content
-			CellRenderer.Draw(Const.PIXEL, windowRect, Const.BLACK, int.MinValue + 1);
+			// Preview
+			var previewRect = panelRect.Edge(Direction4.Left, previewWidth).Shift(previewWidth, 0);
+			AngeUtil.DrawPoseCharacterAsUI(previewRect, player, player.CurrentAnimationFrame, 0, out _, out _);
+			if (FrameInput.MouseLeftButtonDown && previewRect.Contains(FrameInput.MouseGlobalPosition)) {
+				player.FacingRight = !player.FacingRight;
+				player.Bounce();
+			}
 
 			// Content
-			int width = panelRect.width / 2;
-			int left = panelRect.x;
+			int width = (panelRect.width - previewWidth) / 2;
+			int left = panelRect.x + previewWidth;
 			int top = panelRect.yMax;
 			DrawEquipmentItem(
 				0, interactable && player.JewelryAvailable, new RectInt(left, top - itemHeight * 3, width, itemHeight),
@@ -737,6 +738,11 @@ namespace AngeliaFramework {
 				5, interactable && player.HelmetAvailable, new RectInt(left + width, top - itemHeight * 1, width, itemHeight),
 				EquipmentType.Helmet, Language.Get(UI_HELMET, "Helmet")
 			);
+
+			// Hashtag
+
+
+
 
 		}
 
