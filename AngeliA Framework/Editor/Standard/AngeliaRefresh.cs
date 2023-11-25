@@ -218,7 +218,7 @@ namespace AngeliaFramework.Editor {
 
 			// Game
 			var game = Object.FindFirstObjectByType<Game>(FindObjectsInactive.Include);
-			if (game != null) game.Editor_ReloadAllMedia();
+			if (game != null) game.Editor_ReloadAllResources();
 
 			// Final
 			AngeliaToolbox.RefreshSheetThumbnail(true);

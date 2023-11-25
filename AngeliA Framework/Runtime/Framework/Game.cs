@@ -104,29 +104,53 @@ namespace AngeliaFramework {
 
 
 #if UNITY_EDITOR
-		[System.Serializable]
-		private class AssemblyDefinitionAssetJson { public string name; }
 		private void Reset () {
+			Editor_ReloadAllConfig();
+			Editor_ReloadAllResources();
+			UnityEditor.EditorUtility.SetDirty(this);
+			UnityEditor.AssetDatabase.SaveAssets();
+		}
+		public void Editor_ReloadAllConfig () {
 
-			var anchor = AngeliaAssetAnchor.Instance;
-			m_Fonts = anchor.Fonts;
-			m_Cursors = anchor.Cursors;
+			// Gradient
 			var skyTop = new Gradient();
 			var skyBottom = new Gradient();
-			skyTop.SetKeys(anchor.SkyTop.colorKeys, anchor.SkyTop.alphaKeys);
-			skyBottom.SetKeys(anchor.SkyBottom.colorKeys, anchor.SkyBottom.alphaKeys);
+			skyTop.SetKeys(
+				new GradientColorKey[] { new GradientColorKey(new Color32(20, 21, 31, 255), 0f), new GradientColorKey(new Color32(32, 57, 76, 255), 0.25f), new GradientColorKey(new Color32(71, 170, 219, 255), 0.5f), new GradientColorKey(new Color32(32, 57, 76, 255), 0.75f), new GradientColorKey(new Color32(20, 21, 31, 255), 1f), },
+				new GradientAlphaKey[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) }
+			);
+			skyBottom.SetKeys(
+				new GradientColorKey[] { new GradientColorKey(new Color32(31, 31, 35, 255), 0f), new GradientColorKey(new Color32(50, 66, 82, 255), 0.25f), new GradientColorKey(new Color32(128, 200, 236, 255), 0.5f), new GradientColorKey(new Color32(50, 66, 82, 255), 0.75f), new GradientColorKey(new Color32(31, 31, 35, 255), 1f), },
+				new GradientAlphaKey[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) }
+			);
 			m_SkyTintTop = skyTop;
 			m_SkyTintBottom = skyBottom;
 
-			Editor_ReloadAllMedia();
-
 		}
-		public void Editor_ReloadAllMedia () {
+		public void Editor_ReloadAllResources () {
+
+			// Fonts
+			var fonts = new List<Font>();
+			foreach (var font in ForAllAssetsWithPath<Font>()) {
+				if (!font.name.Contains("#font", System.StringComparison.OrdinalIgnoreCase)) continue;
+				fonts.Add(font);
+			}
+			fonts.Sort((a, b) => a.name.CompareTo(b.name));
+			fonts.Insert(0, Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"));
+			m_Fonts = fonts.ToArray();
+
+			// Cursors
+			var cursors = new List<Texture2D>();
+			foreach (var texture in ForAllAssetsWithPath<Texture2D>()) {
+				if (!texture.name.Contains("#cursor", System.StringComparison.OrdinalIgnoreCase)) continue;
+				cursors.Add(texture);
+			}
+			cursors.Sort((a, b) => a.name.CompareTo(b.name));
+			m_Cursors = cursors.ToArray();
 
 			// Audio
 			var audioClips = new List<AudioClip>();
-			foreach (var path in Util.EnumerateFiles(Application.dataPath, false, new string[] { "*.mp3", "*.ogg", "*.wav", })) {
-				var clip = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>(RelativePath(path));
+			foreach (var clip in ForAllAssetsWithPath<AudioClip>()) {
 				if (
 					clip == null ||
 					clip.name.Contains("#ignore", System.StringComparison.OrdinalIgnoreCase)
@@ -135,15 +159,12 @@ namespace AngeliaFramework {
 			}
 			m_AudioClips = audioClips.ToArray();
 
-			// Final
-			UnityEditor.EditorUtility.SetDirty(this);
-			UnityEditor.AssetDatabase.SaveAssets();
-
-			// Func
-			static string RelativePath (string path) {
-				path = Util.FixPath(path);
-				var fixedDataPath = Util.FixPath(Application.dataPath);
-				return path.StartsWith(fixedDataPath) ? "Assets" + path[fixedDataPath.Length..] : "";
+		}
+		private static IEnumerable<T> ForAllAssetsWithPath<T> () where T : Object {
+			foreach (var guid in UnityEditor.AssetDatabase.FindAssets($"t:{typeof(T).Name}")) {
+				var _path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+				var obj = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(_path);
+				if (obj is T t) yield return t;
 			}
 		}
 #endif
