@@ -291,8 +291,10 @@ namespace AngeliaFramework {
 			CellRenderer.SetLayerToUI();
 			int layerIndex = CellRenderer.CurrentLayerIndex;
 			int cellIndexStart = CellRenderer.GetUsedCellCount();
+			int oldAniFrame = character.CurrentAnimationFrame;
 			character.CurrentAnimationFrame = animationFrame;
 			character.FrameUpdate();
+			character.CurrentAnimationFrame = oldAniFrame;
 			int cellIndexEnd = CellRenderer.GetUsedCellCount();
 			CellRenderer.SetLayer(oldLayerIndex);
 			if (cellIndexStart == cellIndexEnd) return false;

@@ -7,11 +7,8 @@ using AngeliaFramework;
 namespace AngeliaFramework {
 	public class SkeletonPile : Breakable {
 
-
-		private static readonly int ITEM_CODE = typeof(iSkull).AngeHash();
 		private int ArtworkCode = 0;
 		private RectInt FullRect = default;
-
 
 		public override void OnActivated () {
 			base.OnActivated();
@@ -29,26 +26,15 @@ namespace AngeliaFramework {
 			}
 		}
 
-
 		public override void FillPhysics () {
 			base.FillPhysics();
 			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this);
 		}
 
-
 		public override void FrameUpdate () {
 			CellRenderer.Draw(ArtworkCode, FullRect);
 			AngeUtil.DrawShadow(ArtworkCode, FullRect);
 		}
-
-
-		protected override void OnBreak () {
-			base.OnBreak();
-			if (AngeUtil.RandomInt(0, 32) == 0) {
-				ItemSystem.ItemSpawnItemAtPlayer(ITEM_CODE);
-			}
-		}
-
 
 	}
 }

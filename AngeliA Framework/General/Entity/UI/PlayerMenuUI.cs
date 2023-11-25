@@ -83,6 +83,7 @@ namespace AngeliaFramework {
 		private const int HOLD_KEY_DURATION = 26;
 		private const int ANIMATION_DURATION = 12;
 		private const int FLASH_PANEL_DURATION = 52;
+		public const int PREVIEW_SIZE = 180;
 		public const int INFO_WIDTH = 180;
 		public const int ITEM_SIZE = 52;
 
@@ -107,7 +108,6 @@ namespace AngeliaFramework {
 		private bool RenderingBottomPanel = false;
 		private bool HoveringItemField = false;
 		private int EquipFlashStartFrame = int.MinValue;
-		private int ItemInfoScrollPosition = 0;
 		private int PrevCursorIndex = -1;
 		private bool PrevCursorInBottomPanel = true;
 		private EquipmentType EquipFlashType = EquipmentType.BodyArmor;
@@ -166,7 +166,8 @@ namespace AngeliaFramework {
 			CursorSystem.RequireCursor();
 
 			Update_PanelUI();
-			Update_ItemInfoUI();
+			Update_Preview();
+			Update_InfoUI();
 			Update_MoveCursor();
 			Update_Actions();
 			DrawTakingItemMouseCursor();
@@ -176,7 +177,6 @@ namespace AngeliaFramework {
 			if (CursorIndex != PrevCursorIndex || CursorInBottomPanel != PrevCursorInBottomPanel) {
 				PrevCursorIndex = CursorIndex;
 				PrevCursorInBottomPanel = CursorInBottomPanel;
-				ItemInfoScrollPosition = 0;
 				FrameInput.UseGameKey(Gamekey.Action);
 				FrameInput.UseGameKey(Gamekey.Jump);
 			}
@@ -191,7 +191,7 @@ namespace AngeliaFramework {
 
 			// Bottom Panel
 			RenderingBottomPanel = true;
-			var playerPanelRect = GetMenuPanelRect(Player.INVENTORY_COLUMN, Player.INVENTORY_ROW, ITEM_SIZE, false);
+			var playerPanelRect = GetPanelRect(Player.INVENTORY_COLUMN, Player.INVENTORY_ROW, ITEM_SIZE, false);
 			CellRenderer.Draw(Const.PIXEL, playerPanelRect.Expand(Unify(WINDOW_PADDING)), Const.BLACK, int.MinValue + 1);
 			DrawInventory(Player.Selecting.TypeID, Player.INVENTORY_COLUMN, Player.INVENTORY_ROW, false);
 
@@ -199,7 +199,7 @@ namespace AngeliaFramework {
 			RenderingBottomPanel = false;
 			if (Partner != null) {
 				// Partner Panel
-				var panelRect = GetMenuPanelRect(Partner.Column, Partner.Row, Partner.ItemSize, true);
+				var panelRect = GetPanelRect(Partner.Column, Partner.Row, Partner.ItemSize, true);
 				CellRenderer.Draw(Const.PIXEL, panelRect.Expand(Unify(WINDOW_PADDING)), Const.BLACK, int.MinValue + 1);
 				Partner.MouseInPanel = panelRect.Contains(FrameInput.MouseGlobalPosition);
 				Partner.DrawPanel(panelRect);
@@ -222,45 +222,29 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_ItemInfoUI () {
+		private void Update_InfoUI () {
+
+			int itemID = HoveringItemID;
+			if (itemID == 0 || TakingID != 0) return;
+			if (!CursorInBottomPanel && Partner != null && Partner is not InventoryPartnerUI) return;
 
 			int panelWidth = Unify(INFO_WIDTH);
 			int windowPadding = Unify(WINDOW_PADDING);
+			int labelHeight = Unify(24);
 			var topRootRect = TopPanelRect;
 			var bottomRootRect = BottomPanelRect;
 			var topPanelRect = new RectInt(
-				topRootRect.xMax + windowPadding * 2, topRootRect.y,
+				topRootRect.xMax + windowPadding * 4, topRootRect.y,
 				panelWidth, topRootRect.height
 			);
 			var bottomPanelRect = new RectInt(
-				bottomRootRect.xMax + windowPadding * 2, bottomRootRect.y,
+				bottomRootRect.xMax + windowPadding * 4, bottomRootRect.y,
 				panelWidth, bottomRootRect.height
 			);
-			bool drawTopUI = Partner == null || Partner is InventoryPartnerUI;
-
-			// Background
-			var topWindowRect = topPanelRect.Expand(windowPadding);
-			var bottomWindowRect = bottomPanelRect.Expand(windowPadding);
-			if (drawTopUI) {
-				CellRenderer.Draw(
-					Const.PIXEL, topWindowRect, Const.BLACK, int.MinValue + 1
-				);
-			}
-			CellRenderer.Draw(
-				Const.PIXEL, bottomWindowRect, Const.BLACK, int.MinValue + 1
-			);
+			var panelRect = CursorInBottomPanel ? bottomPanelRect : topPanelRect;
 
 			// Mouse in Panel
-			MouseInPanel = MouseInPanel || topWindowRect.Contains(FrameInput.MouseGlobalPosition) || bottomWindowRect.Contains(FrameInput.MouseGlobalPosition);
-
-			// Content
-			int itemID = HoveringItemID;
-			if (itemID == 0) return;
-			if (!drawTopUI && !CursorInBottomPanel) return;
-
-			var panelRect = CursorInBottomPanel ? bottomPanelRect : topPanelRect;
-			int startIndex = CellRenderer.GetTextUsedCellCount();
-			int labelHeight = Unify(24);
+			MouseInPanel = MouseInPanel || panelRect.Contains(FrameInput.MouseGlobalPosition);
 
 			// Type Icon
 			CellRenderer.Draw(
@@ -270,30 +254,40 @@ namespace AngeliaFramework {
 			);
 
 			// Name
+			var nameRect = new RectInt(panelRect.x + labelHeight + labelHeight / 4, panelRect.yMax - labelHeight, panelRect.width, labelHeight);
 			CellRendererGUI.Label(
 				CellContent.Get(ItemSystem.GetItemName(itemID), charSize: 20, alignment: Alignment.MidLeft, tint: Const.ORANGE_BETTER),
-				new RectInt(panelRect.x + labelHeight + labelHeight / 4, panelRect.yMax - labelHeight, panelRect.width, labelHeight)
+				nameRect
 			);
 
 			// Description
-			CellRendererGUI.ScrollLabel(
+			CellRendererGUI.Label(
 				CellContent.Get(
 					ItemSystem.GetItemDescription(itemID),
 					charSize: 18,
 					alignment: Alignment.TopLeft,
 					wrap: true
 				),
-				panelRect.Shrink(0, 0, 0, labelHeight + Unify(6)),
-				ref ItemInfoScrollPosition
+				panelRect.Shrink(0, 0, 0, labelHeight + Unify(12)),
+				out var desBounds
 			);
-			if (FrameInput.MouseWheelDelta != 0) {
-				ItemInfoScrollPosition -= FrameInput.MouseWheelDelta * labelHeight;
-			}
 
-			// Clamp
-			int endIndex = CellRenderer.GetTextUsedCellCount();
-			CellRenderer.ClampTextCells(panelRect, startIndex, endIndex);
+			// Background
+			CellRenderer.Draw(
+				Const.PIXEL,
+				new RectInt(panelRect.x, desBounds.y, panelRect.width, nameRect.yMax - desBounds.y).Expand(windowPadding),
+				Const.BLACK, int.MinValue + 1
+			);
 
+		}
+
+
+		private void Update_Preview () {
+			if (Partner != null) return;
+			int previewSize = Unify(PREVIEW_SIZE);
+			var panelRect = TopPanelRect.Edge(Direction4.Left, previewSize);
+			CellRenderer.Draw(Const.PIXEL, panelRect.Expand(Unify(WINDOW_PADDING)), Const.BLACK, int.MinValue + 1);
+			AngeUtil.DrawPoseCharacterAsUI(panelRect, Player.Selecting, Player.Selecting.CurrentAnimationFrame, out _, out _);
 		}
 
 
@@ -557,7 +551,7 @@ namespace AngeliaFramework {
 
 			var itemCount = Inventory.GetInventoryCapacity(inventoryID);
 			bool interactable = Game.GlobalFrame - SpawnFrame > ANIMATION_DURATION;
-			var panelRect = GetMenuPanelRect(column, row, ITEM_SIZE, panelOnTop);
+			var panelRect = GetPanelRect(column, row, ITEM_SIZE, panelOnTop);
 			if (panelOnTop) {
 				TopPanelRect = panelRect;
 			} else {
@@ -702,26 +696,10 @@ namespace AngeliaFramework {
 		// Equipment UI
 		private void DrawEquipmentUI () {
 
-			int localAnimationFrame = Game.GlobalFrame - SpawnFrame;
-			bool interactable = localAnimationFrame > ANIMATION_DURATION;
+			bool interactable = Game.GlobalFrame - SpawnFrame > ANIMATION_DURATION;
 			var player = Player.Selecting;
-
-			// Panel Rect
-			int invWidth = Unify(400);
 			int itemHeight = Unify(64);
-			int invHeight = itemHeight * 3;
-			int invY = player.Y + Const.CEL * 2 + Const.HALF + Unify(WINDOW_PADDING);
-			if (localAnimationFrame < ANIMATION_DURATION) {
-				float lerp01 = Ease.OutCirc((float)localAnimationFrame / ANIMATION_DURATION);
-				invY += Mathf.LerpUnclamped(-Unify(86), 0, lerp01).RoundToInt();
-				invWidth -= Mathf.LerpUnclamped(Unify(128), 0, lerp01).RoundToInt();
-			}
-			var panelRect = new RectInt(
-				player.X - (invWidth + Unify(INFO_WIDTH)) / 2,
-				invY, invWidth, invHeight
-			);
-			panelRect.ClampPositionInside(CellRenderer.CameraRect);
-			TopPanelRect = panelRect;
+			var panelRect = TopPanelRect = GetInventoryRect(itemHeight);
 
 			// Background
 			var windowRect = panelRect.Expand(Unify(WINDOW_PADDING));
@@ -772,10 +750,9 @@ namespace AngeliaFramework {
 			bool cancelDown = interactable && FrameInput.GameKeyDown(Gamekey.Jump);
 			var enableTint = Const.WHITE;
 			var equipAvailable = Player.Selecting.EquipmentAvailable(type);
-			if (TakingID != 0 && ItemSystem.IsEquipment(TakingID, out var eqType)) {
-				if (type != eqType) {
-					enableTint.a = 96;
-				}
+			if (TakingID != 0 && ItemSystem.IsEquipment(TakingID, out var takingType) && type != takingType) {
+				enableTint.a = 96;
+				interactable = false;
 			}
 			var itemRect = new RectInt(fieldRect.x, fieldRect.y, fieldRect.height, fieldRect.height);
 
@@ -786,7 +763,7 @@ namespace AngeliaFramework {
 			}
 
 			// Icon
-			if (!equipAvailable) enableTint.a = 96;
+			if (!equipAvailable || !interactable) enableTint.a = 96;
 			DrawItemIcon(itemRect, itemID, enableTint, int.MinValue + 3);
 
 			// Label
@@ -1148,7 +1125,24 @@ namespace AngeliaFramework {
 		}
 
 
-		private RectInt GetMenuPanelRect (int column, int row, int itemSize, bool panelOnTop) {
+		private int CursorWrap (int x, bool fromBottom) {
+			int fromColumn = fromBottom ? Player.INVENTORY_COLUMN : TopPanelColumn;
+			int toColumn = !fromBottom ? Player.INVENTORY_COLUMN : TopPanelColumn;
+			if (fromColumn != toColumn && fromColumn != 0 && toColumn != 0) {
+				x = x * toColumn / fromColumn;
+			}
+			return x.Clamp(0, toColumn - 1);
+		}
+
+
+		private void FlashInventoryField (int index, bool forBottom) {
+			FlashingField.x = index;
+			FlashingField.y = Game.GlobalFrame + FLASH_PANEL_DURATION;
+			FlashingField.z = forBottom ? 0 : 1;
+		}
+
+
+		private RectInt GetPanelRect (int column, int row, int itemSize, bool panelOnTop) {
 			var player = Player.Selecting;
 			int localAnimationFrame = Game.GlobalFrame - SpawnFrame;
 			int uItemSize = Unify(itemSize);
@@ -1165,27 +1159,26 @@ namespace AngeliaFramework {
 				).RoundToInt();
 				invWidth -= Mathf.LerpUnclamped(uItemSize * 4, 0, lerp01).RoundToInt();
 			}
-			int infoOffsetX = !panelOnTop || Partner == null || Partner is InventoryPartnerUI ? Unify(INFO_WIDTH) : 0;
-			var result = new RectInt(invX - (invWidth + infoOffsetX) / 2, invY, invWidth, invHeight);
+			var result = new RectInt(invX - invWidth / 2, invY, invWidth, invHeight);
 			result.ClampPositionInside(CellRenderer.CameraRect);
 			return result;
 		}
 
 
-		private int CursorWrap (int x, bool fromBottom) {
-			int fromColumn = fromBottom ? Player.INVENTORY_COLUMN : TopPanelColumn;
-			int toColumn = !fromBottom ? Player.INVENTORY_COLUMN : TopPanelColumn;
-			if (fromColumn != toColumn && fromColumn != 0 && toColumn != 0) {
-				x = x * toColumn / fromColumn;
+		private RectInt GetInventoryRect (int itemHeight) {
+			var player = Player.Selecting;
+			int localAnimationFrame = Game.GlobalFrame - SpawnFrame;
+			int invWidth = Unify(400);
+			int invHeight = itemHeight * 3;
+			int invY = player.Y + Const.CEL * 2 + Const.HALF + Unify(WINDOW_PADDING);
+			if (localAnimationFrame < ANIMATION_DURATION) {
+				float lerp01 = Ease.OutCirc((float)localAnimationFrame / ANIMATION_DURATION);
+				invY += Mathf.LerpUnclamped(-Unify(86), 0, lerp01).RoundToInt();
+				invWidth -= Mathf.LerpUnclamped(Unify(128), 0, lerp01).RoundToInt();
 			}
-			return x.Clamp(0, toColumn - 1);
-		}
-
-
-		private void FlashInventoryField (int index, bool forBottom) {
-			FlashingField.x = index;
-			FlashingField.y = Game.GlobalFrame + FLASH_PANEL_DURATION;
-			FlashingField.z = forBottom ? 0 : 1;
+			var panelRect = new RectInt(player.X - invWidth / 2 + Unify(PREVIEW_SIZE) / 2, invY, invWidth, invHeight);
+			panelRect.ClampPositionInside(CellRenderer.CameraRect);
+			return panelRect;
 		}
 
 

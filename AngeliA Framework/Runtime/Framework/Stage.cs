@@ -94,9 +94,9 @@ namespace AngeliaFramework {
 		public static Entity[][] Entities { get; private set; } = null;
 		public static RectInt SpawnRect { get; private set; } = default;
 		public static RectInt AntiSpawnRect { get; private set; } = default;
+		public static RectInt ViewRect { get; private set; } = default;
 		public static int LastSettleFrame { get; private set; } = 0;
 		public static int ViewZ { get; private set; } = 0;
-		public static RectInt ViewRect { get; private set; } = default;
 		public static int? DelayingViewX => ViewDelayX.value;
 		public static int? DelayingViewY => ViewDelayY.value;
 		public static int? DelayingViewHeight => ViewDelayHeight.value;

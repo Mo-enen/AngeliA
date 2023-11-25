@@ -20,7 +20,7 @@ namespace AngeliaFramework {
 		public const int SPAWN_PADDING = SPAWN_PADDING_UNIT * CEL;
 		public const int ANTI_SPAWN_PADDING = ANTI_SPAWN_PADDING_UNIT * CEL;
 		public const int SQUAD_BEHIND_PARALLAX = 1300;
-		public const int DEFAULT_HEIGHT = 21 * CEL;
+		public const int DEFAULT_HEIGHT = 26 * CEL;
 		public const int MIN_HEIGHT = 16 * CEL;
 		public const int MAX_HEIGHT = 60 * CEL;
 		public const int VIEW_RATIO = 2000; // width / height * 1000
