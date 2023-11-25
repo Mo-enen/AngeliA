@@ -9,7 +9,7 @@ namespace AngeliaFramework {
 
 		// Data
 		public const int POSE_Z_HAND = 36;
-		private static Character Target = null;
+		private static PoseCharacter Target = null;
 		private static BodyPart Head = null;
 		private static BodyPart Body = null;
 		private static BodyPart Hip = null;
@@ -36,11 +36,11 @@ namespace AngeliaFramework {
 		private static int RandomFactor1 = 0;
 		private static int RandomFactor2 = 0;
 		private static int RandomFactor3 = 0;
-		private static CharacterPoseAnimationType AnimatedPoseType;
+		private static CharacterAnimationType AnimationType;
 
 
 		// API
-		public static void Begin (Character targetCharacter) {
+		public static void Begin (PoseCharacter targetCharacter) {
 			Target = targetCharacter;
 			CurrentAnimationFrame = targetCharacter.CurrentAnimationFrame;
 			Head = targetCharacter.Head;
@@ -62,7 +62,7 @@ namespace AngeliaFramework {
 			FootR = targetCharacter.FootR;
 			FacingRight = targetCharacter.FacingRight;
 			FacingFront = targetCharacter.FacingFront;
-			AnimatedPoseType = targetCharacter.AnimatedPoseType;
+			AnimationType = targetCharacter.AnimationType;
 			FacingSign = FacingRight ? 1 : -1;
 			FrontSign = FacingFront ? 1 : -1;
 		}
@@ -298,7 +298,7 @@ namespace AngeliaFramework {
 				Attack_WavePolearm_SmashDown();
 			} else {
 				// Normal
-				bool dashing = AnimatedPoseType == CharacterPoseAnimationType.Dash;
+				bool dashing = AnimationType == CharacterAnimationType.Dash;
 
 				ResetShoulderAndUpperArm();
 
@@ -395,7 +395,7 @@ namespace AngeliaFramework {
 
 		// UTL
 		private static void ResetShoulderAndUpperArm (bool resetLeft = true, bool resetRight = true) => ResetShoulderAndUpperArm(Target, resetLeft, resetRight);
-		public static void ResetShoulderAndUpperArm (Character character, bool resetLeft = true, bool resetRight = true) {
+		public static void ResetShoulderAndUpperArm (PoseCharacter character, bool resetLeft = true, bool resetRight = true) {
 			if (resetLeft) {
 				int bodyBorderL = character.FacingRight ? character.Body.Border.left : character.Body.Border.right;
 				character.ShoulderL.X = character.Body.X - character.Body.Width.Abs() / 2 + bodyBorderL;

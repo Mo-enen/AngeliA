@@ -105,7 +105,7 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSpriteGroup(SpriteIdChain)) SpriteIdChain = 0;
 		}
 
-		protected override Cell DrawWeaponSprite (Character character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+		protected override Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 			// Fix Grab Rotation
 			if (character.EquippingWeaponHeld != WeaponHandHeld.Pole) {
 				character.HandGrabRotationL += (
@@ -123,10 +123,10 @@ namespace AngeliaFramework {
 			return cell;
 		}
 
-		private void DrawFlailHead (Character character, Cell handleCell, int headIndex) {
+		private void DrawFlailHead (PoseCharacter character, Cell handleCell, int headIndex) {
 
 			bool isAttacking = character.IsAttacking;
-			bool climbing = character.AnimatedPoseType == CharacterPoseAnimationType.Climb;
+			bool climbing = character.AnimationType == CharacterAnimationType.Climb;
 			int deltaX = character.DeltaPositionX.Clamp(-20, 20);
 			int deltaY = character.DeltaPositionY.Clamp(-30, 30);
 			var point = handleCell.LocalToGlobal(handleCell.Width / 2, handleCell.Height);
@@ -226,7 +226,7 @@ namespace AngeliaFramework {
 			}
 		}
 
-		protected override Cell DrawWeaponSprite (Character character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+		protected override Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
 			// Draw Attack
 			if (character.IsAttacking || character.IsChargingAttack) {
@@ -274,13 +274,13 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(SpriteIdString)) SpriteIdString = 0;
 		}
 
-		protected override Cell DrawWeaponSprite (Character character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+		protected override Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
 			DrawString(character, cell, default, default, default);
 			return cell;
 		}
 
-		protected void DrawString (Character character, Cell mainCell, Vector2Int offsetDown, Vector2Int offsetUp, Vector2Int offsetCenter) {
+		protected void DrawString (PoseCharacter character, Cell mainCell, Vector2Int offsetDown, Vector2Int offsetUp, Vector2Int offsetCenter) {
 			int borderL = 0;
 			int borderD = 0;
 			int borderU = 0;

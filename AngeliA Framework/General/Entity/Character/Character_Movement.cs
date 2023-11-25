@@ -42,15 +42,15 @@ namespace AngeliaFramework {
 		public int IntendedX { get; private set; } = 0;
 		public int IntendedY { get; private set; } = 0;
 		public int CurrentJumpCount { get; private set; } = 0;
-		public int GrowingHeight => MovementHeight * CharacterHeight / 160;
 		public bool FacingRight {
 			get => LockFacingOnAttack && IsAttacking ? AttackStartFacingRight : _FacingRight;
 			set => _FacingRight = value;
 		}
 		public bool FacingFront { get; private set; } = true;
-		public virtual bool SpinOnGroundPound => Wing.IsPropellerWing(WingID);
-		public virtual bool FlyGlideAvailable => WingID != 0 && !Wing.IsPropellerWing(WingID);
-		public virtual bool FlyAvailable => WingID != 0;
+		public virtual int GrowingHeight => MovementHeight;
+		public virtual bool SpinOnGroundPound => false;
+		public virtual bool FlyGlideAvailable => false;
+		public virtual bool FlyAvailable => false;
 
 		// Frame Cache
 		public int RunningAccumulateFrame { get; set; } = 0;

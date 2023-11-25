@@ -22,15 +22,15 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(SpriteID) && !CellRenderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
 		}
 
-		public static void DrawClothFromPool (Character character) {
+		public static void DrawClothFromPool (PoseCharacter character) {
 			if (character.Suit_Foot != 0 && character.CharacterState != CharacterState.Sleep && Pool.TryGetValue(character.Suit_Foot, out var cloth)) {
 				cloth.Draw(character);
 			}
 		}
 
-		public override void Draw (Character character) => DrawClothForFoot(character, SpriteID);
+		public override void Draw (PoseCharacter character) => DrawClothForFoot(character, SpriteID);
 
-		public static void DrawClothForFoot (Character character, int spriteID, int localZ = 1) {
+		public static void DrawClothForFoot (PoseCharacter character, int spriteID, int localZ = 1) {
 			if (spriteID == 0) return;
 			if (CellRenderer.HasSpriteGroup(spriteID)) {
 				if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
@@ -86,15 +86,15 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(SpriteID) && !CellRenderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
 		}
 
-		public static void DrawClothFromPool (Character character) {
+		public static void DrawClothFromPool (PoseCharacter character) {
 			if (character.Suit_Hand != 0 && character.CharacterState != CharacterState.Sleep && Pool.TryGetValue(character.Suit_Hand, out var cloth)) {
 				cloth.Draw(character);
 			}
 		}
 
-		public override void Draw (Character character) => DrawClothForHand(character, SpriteID);
+		public override void Draw (PoseCharacter character) => DrawClothForHand(character, SpriteID);
 
-		public static void DrawClothForHand (Character character, int spriteID, int localZ = 1) {
+		public static void DrawClothForHand (PoseCharacter character, int spriteID, int localZ = 1) {
 			if (spriteID == 0) return;
 			if (CellRenderer.HasSpriteGroup(spriteID)) {
 				if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
@@ -136,20 +136,20 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(SpriteIdLowerLeg) && !CellRenderer.HasSpriteGroup(SpriteIdLowerLeg)) SpriteIdLowerLeg = 0;
 		}
 
-		public static void DrawClothFromPool (Character character) {
+		public static void DrawClothFromPool (PoseCharacter character) {
 			if (character.Suit_Hip != 0 && Pool.TryGetValue(character.Suit_Hip, out var cloth)) {
 				cloth.Draw(character);
 			}
 		}
 
-		public override void Draw (Character character) {
+		public override void Draw (PoseCharacter character) {
 			DrawClothForHip(character, SpriteIdHip, CoverLegs ? 4 : 1);
 			DrawClothForSkirt(character, SpriteIdSkirt, CoverLegs ? 6 : 1);
 			DrawClothForUpperLeg(character, SpriteIdUpperLeg);
 			DrawClothForLowerLeg(character, SpriteIdLowerLeg);
 		}
 
-		public static void DrawClothForHip (Character character, int spriteID, int localZ = 1) {
+		public static void DrawClothForHip (PoseCharacter character, int spriteID, int localZ = 1) {
 
 			var hip = character.Hip;
 			if (spriteID == 0 || hip.IsFullCovered) return;
@@ -186,7 +186,7 @@ namespace AngeliaFramework {
 
 		}
 
-		public static void DrawClothForSkirt (Character character, int spriteID, int localZ = 6) {
+		public static void DrawClothForSkirt (PoseCharacter character, int spriteID, int localZ = 6) {
 
 			var hip = character.Hip;
 			if (spriteID == 0 || hip.IsFullCovered) return;
@@ -198,7 +198,7 @@ namespace AngeliaFramework {
 			var body = character.Body;
 			var upperLegL = character.UpperLegL;
 			var upperLegR = character.UpperLegR;
-			var animatedPoseType = character.AnimatedPoseType;
+			var animatedPoseType = character.AnimationType;
 			const int A2G = 16;
 
 			// Skirt
@@ -210,21 +210,21 @@ namespace AngeliaFramework {
 			int centerX = (left + right) / 2;
 			int centerY = (legTopL.y + legTopR.y) / 2;
 			bool stretch =
-				animatedPoseType != CharacterPoseAnimationType.GrabSide &&
-				animatedPoseType != CharacterPoseAnimationType.Dash &&
-				animatedPoseType != CharacterPoseAnimationType.Idle;
+				animatedPoseType != CharacterAnimationType.GrabSide &&
+				animatedPoseType != CharacterAnimationType.Dash &&
+				animatedPoseType != CharacterAnimationType.Idle;
 			int width = Mathf.Max(
 				(right - left).Abs(), bodyWidthAbs - body.Border.left - body.Border.right
 			);
 			width += sprite.GlobalBorder.horizontal;
 			if (stretch) width += Stretch(upperLegL.Rotation, upperLegR.Rotation);
 			width += animatedPoseType switch {
-				CharacterPoseAnimationType.JumpUp or CharacterPoseAnimationType.JumpDown => 2 * A2G,
-				CharacterPoseAnimationType.Run => A2G / 2,
+				CharacterAnimationType.JumpUp or CharacterAnimationType.JumpDown => 2 * A2G,
+				CharacterAnimationType.Run => A2G / 2,
 				_ => 0,
 			};
 			int shiftY = animatedPoseType switch {
-				CharacterPoseAnimationType.Dash => A2G,
+				CharacterAnimationType.Dash => A2G,
 				_ => 0,
 			};
 			int offsetY = sprite.GlobalHeight * (1000 - sprite.PivotY) / 1000 + shiftY;
@@ -251,7 +251,7 @@ namespace AngeliaFramework {
 			}
 		}
 
-		public static void DrawClothForUpperLeg (Character character, int spriteID, int localZ = 1) {
+		public static void DrawClothForUpperLeg (PoseCharacter character, int spriteID, int localZ = 1) {
 			if (spriteID == 0) return;
 			if (CellRenderer.HasSpriteGroup(spriteID)) {
 				if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
@@ -266,7 +266,7 @@ namespace AngeliaFramework {
 			}
 		}
 
-		public static void DrawClothForLowerLeg (Character character, int spriteID, int localZ = 1) {
+		public static void DrawClothForLowerLeg (PoseCharacter character, int spriteID, int localZ = 1) {
 			if (spriteID == 0) return;
 			if (CellRenderer.HasSpriteGroup(spriteID)) {
 				if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
@@ -281,17 +281,17 @@ namespace AngeliaFramework {
 			}
 		}
 
-		public static void DrawDoubleClothTailsOnHip (Character character, int spriteIdLeft, int spriteIdRight, bool drawOnAllPose = false) {
+		public static void DrawDoubleClothTailsOnHip (PoseCharacter character, int spriteIdLeft, int spriteIdRight, bool drawOnAllPose = false) {
 
-			var animatedPoseType = character.AnimatedPoseType;
+			var animatedPoseType = character.AnimationType;
 			var hip = character.Hip;
 			var body = character.Body;
 			if (
 				!drawOnAllPose && (
-					animatedPoseType == CharacterPoseAnimationType.Rolling ||
-					animatedPoseType == CharacterPoseAnimationType.Sleep ||
-					animatedPoseType == CharacterPoseAnimationType.PassOut ||
-					animatedPoseType == CharacterPoseAnimationType.Fly
+					animatedPoseType == CharacterAnimationType.Rolling ||
+					animatedPoseType == CharacterAnimationType.Sleep ||
+					animatedPoseType == CharacterAnimationType.PassOut ||
+					animatedPoseType == CharacterAnimationType.Fly
 				)
 			) return;
 
@@ -309,14 +309,14 @@ namespace AngeliaFramework {
 				z = -z;
 			}
 
-			if (animatedPoseType == CharacterPoseAnimationType.Dash) scaleY = 500;
+			if (animatedPoseType == CharacterAnimationType.Dash) scaleY = 500;
 
 			DrawClothTail(character, spriteIdLeft, hipRect.x + 16, hipRect.y, z, rotL, scaleX, scaleY);
 			DrawClothTail(character, spriteIdRight, hipRect.xMax - 16, hipRect.y, z, rotR, scaleX, scaleY);
 
 		}
 
-		public static void DrawClothTail (Character character, int spriteID, int globalX, int globalY, int z, int rotation, int scaleX = 1000, int scaleY = 1000, int motionAmount = 1000) {
+		public static void DrawClothTail (PoseCharacter character, int spriteID, int globalX, int globalY, int z, int rotation, int scaleX = 1000, int scaleY = 1000, int motionAmount = 1000) {
 
 			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
 
@@ -377,20 +377,20 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(SpriteIdLowerArm) && !CellRenderer.HasSpriteGroup(SpriteIdLowerArm)) SpriteIdLowerArm = 0;
 		}
 
-		public static void DrawClothFromPool (Character character) {
+		public static void DrawClothFromPool (PoseCharacter character) {
 			if (character.Suit_Body != 0 && Pool.TryGetValue(character.Suit_Body, out var cloth)) {
 				cloth.Draw(character);
 			}
 		}
 
-		public override void Draw (Character character) {
+		public override void Draw (PoseCharacter character) {
 			DrawClothForBody(character, SpriteIdFrontL, SpriteIdFrontR, LocalZ, TwistShiftTopAmount);
 			DrawClothForShoulder(character, SpriteIdShoulder);
 			DrawClothForUpperArm(character, SpriteIdUpperArm);
 			DrawClothForLowerArm(character, SpriteIdLowerArm);
 		}
 
-		public static void DrawClothForBody (Character character, int spriteIdFrontL, int spriteIdFrontR, int localZ, int twistShiftTopAmount) {
+		public static void DrawClothForBody (PoseCharacter character, int spriteIdFrontL, int spriteIdFrontR, int localZ, int twistShiftTopAmount) {
 
 			if (spriteIdFrontL == 0 && spriteIdFrontR == 0) return;
 
@@ -460,7 +460,7 @@ namespace AngeliaFramework {
 
 		}
 
-		public static void DrawClothForShoulder (Character character, int spriteID) {
+		public static void DrawClothForShoulder (PoseCharacter character, int spriteID) {
 			if (spriteID == 0) return;
 			if (CellRenderer.HasSpriteGroup(spriteID)) {
 				if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
@@ -475,7 +475,7 @@ namespace AngeliaFramework {
 			}
 		}
 
-		public static void DrawClothForUpperArm (Character character, int spriteID, int localZ = 1) {
+		public static void DrawClothForUpperArm (PoseCharacter character, int spriteID, int localZ = 1) {
 			if (spriteID == 0) return;
 			if (CellRenderer.HasSpriteGroup(spriteID)) {
 				if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
@@ -490,7 +490,7 @@ namespace AngeliaFramework {
 			}
 		}
 
-		public static void DrawClothForLowerArm (Character character, int spriteID, int localZ = 1) {
+		public static void DrawClothForLowerArm (PoseCharacter character, int spriteID, int localZ = 1) {
 			if (spriteID == 0) return;
 			if (CellRenderer.HasSpriteGroup(spriteID)) {
 				if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
@@ -505,17 +505,17 @@ namespace AngeliaFramework {
 			}
 		}
 
-		public static void DrawCape (Character character, int groupID, int motionAmount = 1000) {
+		public static void DrawCape (PoseCharacter character, int groupID, int motionAmount = 1000) {
 
-			var animatedPoseType = character.AnimatedPoseType;
+			var animatedPoseType = character.AnimationType;
 			if (
-				animatedPoseType == CharacterPoseAnimationType.SquatIdle ||
-				animatedPoseType == CharacterPoseAnimationType.SquatMove ||
-				animatedPoseType == CharacterPoseAnimationType.Dash ||
-				animatedPoseType == CharacterPoseAnimationType.Rolling ||
-				animatedPoseType == CharacterPoseAnimationType.Fly ||
-				animatedPoseType == CharacterPoseAnimationType.Sleep ||
-				animatedPoseType == CharacterPoseAnimationType.PassOut ||
+				animatedPoseType == CharacterAnimationType.SquatIdle ||
+				animatedPoseType == CharacterAnimationType.SquatMove ||
+				animatedPoseType == CharacterAnimationType.Dash ||
+				animatedPoseType == CharacterAnimationType.Rolling ||
+				animatedPoseType == CharacterAnimationType.Fly ||
+				animatedPoseType == CharacterAnimationType.Sleep ||
+				animatedPoseType == CharacterAnimationType.PassOut ||
 				groupID == 0 ||
 				!CellRenderer.TryGetSpriteFromGroup(groupID, character.Body.FrontSide ? 0 : 1, out var sprite, false, true)
 			) return;
@@ -524,7 +524,7 @@ namespace AngeliaFramework {
 
 		}
 
-		public static void DrawCape (Character character, AngeSprite sprite, int motionAmount = 1000) {
+		public static void DrawCape (PoseCharacter character, AngeSprite sprite, int motionAmount = 1000) {
 
 			var body = character.Body;
 
@@ -585,15 +585,15 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(SpriteID) && !CellRenderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
 		}
 
-		public static void DrawClothFromPool (Character character) {
+		public static void DrawClothFromPool (PoseCharacter character) {
 			if (character.Suit_Head != 0 && character.CharacterState != CharacterState.Sleep && Pool.TryGetValue(character.Suit_Head, out var cloth)) {
 				cloth.Draw(character);
 			}
 		}
 
-		public override void Draw (Character character) => DrawClothForHead(character, SpriteID, Front, PixelShiftForLeft);
+		public override void Draw (PoseCharacter character) => DrawClothForHead(character, SpriteID, Front, PixelShiftForLeft);
 
-		public static void DrawClothForHead (Character character, int spriteGroupID, FrontMode frontMode, bool pixelShiftForLeft) {
+		public static void DrawClothForHead (PoseCharacter character, int spriteGroupID, FrontMode frontMode, bool pixelShiftForLeft) {
 
 			var head = character.Head;
 			if (spriteGroupID == 0 || head.IsFullCovered) return;
@@ -689,7 +689,7 @@ namespace AngeliaFramework {
 		[OnGameInitialize(-127)]
 		public static void BeforeGameInitialize () {
 			Pool.Clear();
-			var charType = typeof(Character);
+			var charType = typeof(PoseCharacter);
 			foreach (var type in typeof(Cloth).AllChildClass()) {
 				if (System.Activator.CreateInstance(type) is not Cloth cloth) continue;
 				int suitID = type.AngeHash();
@@ -712,7 +712,7 @@ namespace AngeliaFramework {
 
 		public Cloth () => TypeID = GetType().AngeHash();
 
-		public abstract void Draw (Character character);
+		public abstract void Draw (PoseCharacter character);
 
 
 		// Pool

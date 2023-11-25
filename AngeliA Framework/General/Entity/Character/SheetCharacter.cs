@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public abstract partial class Character {
+	public abstract class SheetCharacter : Character {
 
 
 
@@ -164,7 +164,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void FrameUpdate_SheetRendering () {
+		protected override void RenderCharacter () {
 
 			if (!AnimationSheetPool.TryGetValue(TypeID, out var sheet)) return;
 

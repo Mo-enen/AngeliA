@@ -42,17 +42,16 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(SpriteID)) SpriteID = 0;
 		}
 
-		public virtual bool AllowingAttack (Character character) => true;
+		public virtual bool AllowingAttack (PoseCharacter character) => true;
 
 		public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
 
 			base.PoseAnimationUpdate_FromEquipment(holder);
 
 			if (
-				holder is not Character character ||
-				character.RenderWithSheet ||
-				character.AnimatedPoseType == CharacterPoseAnimationType.Sleep ||
-				character.AnimatedPoseType == CharacterPoseAnimationType.PassOut ||
+				holder is not PoseCharacter character ||
+				character.AnimationType == CharacterAnimationType.Sleep ||
+				character.AnimationType == CharacterAnimationType.PassOut ||
 				!CellRenderer.TryGetSprite(SpriteID, out var sprite)
 			) return;
 
@@ -245,7 +244,7 @@ namespace AngeliaFramework {
 
 		}
 
-		protected virtual Cell DrawWeaponSprite (Character character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) => CellRenderer.Draw(
+		protected virtual Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) => CellRenderer.Draw(
 			sprite.GlobalID,
 			x, y,
 			sprite.PivotX, sprite.PivotY, grabRotation,

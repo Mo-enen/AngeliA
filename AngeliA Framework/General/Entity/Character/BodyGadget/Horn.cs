@@ -32,14 +32,14 @@ namespace AngeliaFramework {
 
 
 		// API
-		public static void DrawGadgetFromPool (Character character) {
+		public static void DrawGadgetFromPool (PoseCharacter character) {
 			if (character.HornID != 0 && TryGetGadget(character.HornID, out var horn)) {
 				horn.DrawGadget(character);
 			}
 		}
 
 
-		public override void DrawGadget (Character character) {
+		public override void DrawGadget (PoseCharacter character) {
 			int idL = character.FacingFront ? SpriteIdL : SpriteIdLBack;
 			int idR = character.FacingFront ? SpriteIdR : SpriteIdRBack;
 			DrawSpriteAsHorn(
@@ -51,13 +51,12 @@ namespace AngeliaFramework {
 		}
 
 
-		protected virtual bool FrontOfHeadL (Character character) => true;
-		protected virtual bool FrontOfHeadR (Character character) => true;
+		protected virtual bool FrontOfHeadL (PoseCharacter character) => true;
+		protected virtual bool FrontOfHeadR (PoseCharacter character) => true;
 
 
-		// UTL
 		public static void DrawSpriteAsHorn (
-			Character character, int spriteIdLeft, int spriteIdRight,
+			PoseCharacter character, int spriteIdLeft, int spriteIdRight,
 			bool frontOfHeadL = true, bool frontOfHeadR = true, bool onFace = false, int offsetX = 0
 		) {
 

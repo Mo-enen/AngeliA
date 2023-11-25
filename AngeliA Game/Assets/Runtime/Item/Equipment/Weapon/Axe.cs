@@ -23,7 +23,7 @@ namespace AngeliaFramework {
 	public class iAxeOrc : Axe { }
 	[EntityAttribute.ItemCombination(typeof(iAxeOrc), typeof(iOracleEye), 1)]
 	public class iAxeCursed : Axe {
-		protected override Cell DrawWeaponSprite (Character character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+		protected override Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
 			AngeUtil.DrawGlitchEffect(cell, Game.GlobalFrame);
 			return cell;

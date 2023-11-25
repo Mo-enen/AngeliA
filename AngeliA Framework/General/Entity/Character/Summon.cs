@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AngeliaFramework;
 
 
 namespace AngeliaFramework {
@@ -10,7 +9,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.Capacity(1)]
 	[EntityAttribute.ExcludeInMapEditor]
-	public abstract class Summon : Character, IDamageReceiver {
+	public abstract class Summon : SheetCharacter, IDamageReceiver {
 
 
 

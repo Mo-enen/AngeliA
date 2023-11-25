@@ -67,7 +67,7 @@ namespace AngeliaFramework {
 		public Face () => SpriteID = new((GetType().DeclaringType ?? GetType()).AngeName());
 
 
-		public static void DrawGadgetFromPool (Character character) {
+		public static void DrawGadgetFromPool (PoseCharacter character) {
 			if (character.FaceID != 0 && TryGetGadget(character.FaceID, out var face)) {
 				face.DrawGadget(character);
 			} else {
@@ -76,10 +76,10 @@ namespace AngeliaFramework {
 		}
 
 
-		public override void DrawGadget (Character character) => DrawSpriteAsFace(character, SpriteID[GetCurrentFaceType(character)]);
+		public override void DrawGadget (PoseCharacter character) => DrawSpriteAsFace(character, SpriteID[GetCurrentFaceType(character)]);
 
 
-		public static void DrawSpriteAsFace (Character character, int spriteGroupID, Vector4Int borderOffset = default) {
+		public static void DrawSpriteAsFace (PoseCharacter character, int spriteGroupID, Vector4Int borderOffset = default) {
 
 			var head = character.Head;
 			if (spriteGroupID == 0 || head.IsFullCovered || !head.FrontSide) return;
@@ -172,7 +172,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void DrawSpriteAsHumanEar (Character character, int spriteL, int spriteR, int offsetXL = -32, int offsetXR = 0) {
+		public static void DrawSpriteAsHumanEar (PoseCharacter character, int spriteL, int spriteR, int offsetXL = -32, int offsetXR = 0) {
 
 			// Get Face Rect
 			var head = character.Head;
@@ -221,7 +221,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static CharacterFaceType GetCurrentFaceType (Character character) {
+		public static CharacterFaceType GetCurrentFaceType (PoseCharacter character) {
 
 			// Attack
 			if (
@@ -233,15 +233,15 @@ namespace AngeliaFramework {
 			// Blink
 			if (
 				(Game.GlobalFrame + character.TypeID).UMod(360) <= 8 &&
-				character.AnimatedPoseType != CharacterPoseAnimationType.Sleep &&
-				character.AnimatedPoseType != CharacterPoseAnimationType.PassOut
+				character.AnimationType != CharacterAnimationType.Sleep &&
+				character.AnimationType != CharacterAnimationType.PassOut
 			) return CharacterFaceType.Blink;
 
 			// Other
-			return character.AnimatedPoseType switch {
-				CharacterPoseAnimationType.Sleep => CharacterFaceType.Sleep,
-				CharacterPoseAnimationType.PassOut => CharacterFaceType.PassOut,
-				CharacterPoseAnimationType.TakingDamage => CharacterFaceType.Damage,
+			return character.AnimationType switch {
+				CharacterAnimationType.Sleep => CharacterFaceType.Sleep,
+				CharacterAnimationType.PassOut => CharacterFaceType.PassOut,
+				CharacterAnimationType.TakingDamage => CharacterFaceType.Damage,
 				_ => CharacterFaceType.Normal,
 			};
 		}

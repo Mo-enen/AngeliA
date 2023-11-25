@@ -22,7 +22,7 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(SpriteFront)) SpriteFront = 0;
 			if (!CellRenderer.HasSprite(SpriteBack)) SpriteBack = 0;
 		}
-		protected override void DrawArmor (Character character) {
+		protected override void DrawArmor (PoseCharacter character) {
 
 			var head = character.Head;
 			int spriteID = head.FrontSide ? SpriteFront : SpriteBack;
@@ -111,7 +111,7 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(UpperLegID)) UpperLegID = 0;
 			if (!CellRenderer.HasSprite(LowerLegID)) LowerLegID = 0;
 		}
-		protected override void DrawArmor (Character character) {
+		protected override void DrawArmor (PoseCharacter character) {
 
 			// Body
 			if (BodyId != 0 || BodyIdAlt != 0) {
@@ -161,7 +161,7 @@ namespace AngeliaFramework {
 			SpriteID = $"{basicName}.Main".AngeHash();
 			if (!CellRenderer.HasSprite(SpriteID)) SpriteID = 0;
 		}
-		protected override void DrawArmor (Character character) => HandCloth.DrawClothForHand(character, SpriteID, 2);
+		protected override void DrawArmor (PoseCharacter character) => HandCloth.DrawClothForHand(character, SpriteID, 2);
 	}
 
 
@@ -174,7 +174,7 @@ namespace AngeliaFramework {
 			SpriteID = $"{basicName}.Main".AngeHash();
 			if (!CellRenderer.HasSprite(SpriteID)) SpriteID = 0;
 		}
-		protected override void DrawArmor (Character character) => FootCloth.DrawClothForFoot(character, SpriteID, 2);
+		protected override void DrawArmor (PoseCharacter character) => FootCloth.DrawClothForFoot(character, SpriteID, 2);
 	}
 
 
@@ -243,10 +243,9 @@ namespace AngeliaFramework {
 
 			// Gate
 			if (
-				holder is not Character character ||
-				character.RenderWithSheet ||
-				character.AnimatedPoseType == CharacterPoseAnimationType.Sleep ||
-				character.AnimatedPoseType == CharacterPoseAnimationType.PassOut
+				holder is not PoseCharacter character ||
+				character.AnimationType == CharacterAnimationType.Sleep ||
+				character.AnimationType == CharacterAnimationType.PassOut
 			) return;
 
 			// Draw
@@ -263,7 +262,7 @@ namespace AngeliaFramework {
 		}
 
 
-		protected abstract void DrawArmor (Character character);
+		protected abstract void DrawArmor (PoseCharacter character);
 
 
 		public override void OnTakeDamage_FromEquipment (Entity holder, Entity sender, ref int damage) {

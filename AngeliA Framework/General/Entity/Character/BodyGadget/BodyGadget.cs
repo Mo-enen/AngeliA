@@ -40,7 +40,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public abstract void DrawGadget (Character character);
+		public abstract void DrawGadget (PoseCharacter character);
 
 
 		// API

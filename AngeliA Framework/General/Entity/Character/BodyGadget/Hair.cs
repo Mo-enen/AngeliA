@@ -13,8 +13,8 @@ namespace AngeliaFramework {
 		private static readonly Cell[] SINGLE_CELL = new Cell[] { new Cell() };
 		private int BraidL { get; init; }
 		private int BraidR { get; init; }
-		protected virtual bool GetFrontL (Character character) => character.Head.FrontSide;
-		protected virtual bool GetFrontR (Character character) => character.Head.FrontSide;
+		protected virtual bool GetFrontL (PoseCharacter character) => character.Head.FrontSide;
+		protected virtual bool GetFrontR (PoseCharacter character) => character.Head.FrontSide;
 		protected virtual int FacingLeftOffsetX => 0;
 		protected virtual bool UseLimbRotate => false;
 		protected virtual bool ForceBackOnFlow => true;
@@ -32,14 +32,14 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(BraidR)) BraidR = 0;
 		}
 
-		public override void DrawGadget (Character character) {
+		public override void DrawGadget (PoseCharacter character) {
 			var cells = DrawSpriteAsHair(character, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF, FlowAmountX, FlowAmountY);
 			if (Game.GlobalFrame > character.HideBraidFrame && (BraidL != 0 || BraidR != 0)) {
 				DrawBraid(character, cells, ForceBackOnFlow);
 			}
 		}
 
-		private void DrawBraid (Character character, Cell[] cells, bool forceBackOnFlow) => DrawBraid(
+		private void DrawBraid (PoseCharacter character, Cell[] cells, bool forceBackOnFlow) => DrawBraid(
 			character, cells, forceBackOnFlow, BraidL, BraidR,
 			GetFrontL(character) ? 33 : -33, GetFrontR(character) ? 33 : -33,
 			PositionAmountX, PositionAmountY, FacingLeftOffsetX, MotionAmount,
@@ -47,14 +47,14 @@ namespace AngeliaFramework {
 		);
 
 		public static void DrawBraid (
-			Character character, bool forceBackOnFlow, int braidL, int braidR,
+			PoseCharacter character, bool forceBackOnFlow, int braidL, int braidR,
 			int zLeft, int zRight, int positionAmountX = 0, int positionAmountY = 0,
 			int facingLeftOffsetX = 0, int motionAmount = 618, int flowMotionAmount = 618, int dropMotionAmount = 200, bool useLimbRotate = false,
 			int offsetX = 0, int offsetY = 0
 		) => DrawBraid(character, null, forceBackOnFlow, braidL, braidR, zLeft, zRight, positionAmountX, positionAmountY, facingLeftOffsetX, motionAmount, flowMotionAmount, dropMotionAmount, useLimbRotate, offsetX, offsetY);
 
 		private static void DrawBraid (
-			Character character, Cell[] hairCells, bool forceBackOnFlow, int braidL, int braidR,
+			PoseCharacter character, Cell[] hairCells, bool forceBackOnFlow, int braidL, int braidR,
 			int zLeft, int zRight, int positionAmountX, int positionAmountY,
 			int facingLeftOffsetX, int motionAmount, int flowMotionAmount, int dropMotionAmount, bool useLimbRotate,
 			int offsetX, int offsetY
@@ -172,7 +172,7 @@ namespace AngeliaFramework {
 					return CellRenderer.Draw_9Slice(spriteID, x, y, px, py, rot, width, height, z);
 				}
 			}
-			static void TwistRotateHair (Character character, Cell[] cells, bool isRight) {
+			static void TwistRotateHair (PoseCharacter character, Cell[] cells, bool isRight) {
 				if (cells == null) return;
 				// Twist
 				int twist = character.HeadTwist;
@@ -242,17 +242,17 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void DrawGadgetFromPool (Character character) {
+		public static void DrawGadgetFromPool (PoseCharacter character) {
 			if (character.HairID != 0 && TryGetGadget(character.HairID, out var hair)) {
 				hair.DrawGadget(character);
 			}
 		}
 
 
-		public override void DrawGadget (Character character) => DrawSpriteAsHair(character, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF, FlowAmountX, FlowAmountY);
+		public override void DrawGadget (PoseCharacter character) => DrawSpriteAsHair(character, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF, FlowAmountX, FlowAmountY);
 
 
-		public static Cell[] DrawSpriteAsHair (Character character, int spriteFrontFL, int spriteFrontFR, int spriteFrontB, int spriteBackF, int flowAmountX, int flowAmountY) {
+		public static Cell[] DrawSpriteAsHair (PoseCharacter character, int spriteFrontFL, int spriteFrontFR, int spriteFrontB, int spriteBackF, int flowAmountX, int flowAmountY) {
 
 			// Back Hair
 			if (character.Head.FrontSide) {
@@ -274,7 +274,7 @@ namespace AngeliaFramework {
 			return fCells;
 
 			// Func
-			static Cell[] DrawSprite (int spriteID, Character character, int z, out RectInt hairRect) {
+			static Cell[] DrawSprite (int spriteID, PoseCharacter character, int z, out RectInt hairRect) {
 
 				hairRect = default;
 				if (spriteID == 0) return null;
@@ -328,7 +328,7 @@ namespace AngeliaFramework {
 				);
 
 			}
-			static void FlowHair (Character character, Cell[] cells, bool allCells, int amountX, int amountY) {
+			static void FlowHair (PoseCharacter character, Cell[] cells, bool allCells, int amountX, int amountY) {
 
 				if (
 					cells == null || cells.Length != 9 ||
@@ -367,7 +367,7 @@ namespace AngeliaFramework {
 
 				}
 			}
-			static void TwistHair (Character character, Cell[] cells, RectInt hairRect) {
+			static void TwistHair (PoseCharacter character, Cell[] cells, RectInt hairRect) {
 				int twist = character.HeadTwist;
 				if (twist == 0 || cells == null || cells.Length != 9 || !character.Head.FrontSide) return;
 				foreach (var cell in cells) cell.ReturnPivots();
@@ -424,7 +424,7 @@ namespace AngeliaFramework {
 				static int SmartAdd (int width, int offset) =>
 					width > 0 == offset > 0 || offset.Abs() < width.Abs() ? width + offset : 0;
 			}
-			static void RotateHair (Character character, Cell[] cells) {
+			static void RotateHair (PoseCharacter character, Cell[] cells) {
 				int headRot = character.HeadRotation;
 				if (headRot == 0 || cells == null) return;
 				var body = character.Body;

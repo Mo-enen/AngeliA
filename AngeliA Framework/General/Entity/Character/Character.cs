@@ -41,6 +41,7 @@ namespace AngeliaFramework {
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
 		public WeaponType EquippingWeaponType { get; set; } = WeaponType.Hand;
 		public WeaponHandHeld EquippingWeaponHeld { get; set; } = WeaponHandHeld.Float;
+		public CharacterAnimationType AnimationType { get; set; } = CharacterAnimationType.Idle;
 		public bool IsPassOut => HealthPoint == 0;
 		public bool IsFullPassOut => HealthPoint == 0 && Game.GlobalFrame > PassOutFrame + 48;
 		public int SleepFrame { get; private set; } = 0;
@@ -49,7 +50,6 @@ namespace AngeliaFramework {
 		public bool TeleportToFrontSide => _TeleportEndFrame > 0;
 		public int TeleportEndFrame => _TeleportEndFrame.Abs();
 		public int TeleportDuration => _TeleportDuration.Abs();
-		public bool RenderWithSheet { get; private set; } = false;
 		public int CurrentAnimationFrame { get; set; } = 0;
 		public int CurrentRenderingBounce { get; private set; } = 1000;
 		protected override bool PhysicsEnable => CharacterState != CharacterState.Sleep;
@@ -64,11 +64,13 @@ namespace AngeliaFramework {
 
 		// Data
 		private static readonly HashSet<int> RenderWithSheetPool = new();
-		private static int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
+		protected static int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
+		protected int LastRequireBounceFrame = int.MinValue;
 		private int PassOutFrame = int.MinValue;
-		private int LastRequireBounceFrame = int.MinValue;
 		private int _TeleportEndFrame = 0;
 		private int _TeleportDuration = 0;
+		private CharacterAnimationType LockedAnimationType = CharacterAnimationType.Idle;
+		private int LockedAnimationTypeFrame = int.MinValue;
 
 
 		#endregion
@@ -81,7 +83,6 @@ namespace AngeliaFramework {
 
 		public override void OnActivated () {
 			base.OnActivated();
-			OnActivated_Pose();
 			OnActivated_Movement();
 			OnActivated_Health();
 			OnActivated_Attack();
@@ -102,7 +103,6 @@ namespace AngeliaFramework {
 
 		public override void BeforePhysicsUpdate () {
 			base.BeforePhysicsUpdate();
-			PoseZOffset = 0;
 			BeforeUpdate_BuffValue();
 		}
 
@@ -191,37 +191,37 @@ namespace AngeliaFramework {
 
 		private void PhysicsUpdate_AnimationType () {
 			var poseType = GetCurrentPoseAnimationType(this);
-			if (poseType != AnimatedPoseType) {
+			if (poseType != AnimationType) {
 				CurrentAnimationFrame = 0;
-				AnimatedPoseType = poseType;
+				AnimationType = poseType;
 			}
 			// Func
-			static CharacterPoseAnimationType GetCurrentPoseAnimationType (Character character) {
+			static CharacterAnimationType GetCurrentPoseAnimationType (Character character) {
 				if (Game.GlobalFrame <= character.LockedAnimationTypeFrame) return character.LockedAnimationType;
-				if (character.Teleporting) return CharacterPoseAnimationType.Idle;
-				if (character.TakingDamage) return CharacterPoseAnimationType.TakingDamage;
-				if (character.CharacterState == CharacterState.Sleep) return CharacterPoseAnimationType.Sleep;
-				if (character.CharacterState == CharacterState.PassOut) return CharacterPoseAnimationType.PassOut;
-				if (character.IsRolling) return CharacterPoseAnimationType.Rolling;
+				if (character.Teleporting) return CharacterAnimationType.Idle;
+				if (character.TakingDamage) return CharacterAnimationType.TakingDamage;
+				if (character.CharacterState == CharacterState.Sleep) return CharacterAnimationType.Sleep;
+				if (character.CharacterState == CharacterState.PassOut) return CharacterAnimationType.PassOut;
+				if (character.IsRolling) return CharacterAnimationType.Rolling;
 				return character.MovementState switch {
-					CharacterMovementState.Walk => CharacterPoseAnimationType.Walk,
-					CharacterMovementState.Run => CharacterPoseAnimationType.Run,
-					CharacterMovementState.JumpUp => CharacterPoseAnimationType.JumpUp,
-					CharacterMovementState.JumpDown => CharacterPoseAnimationType.JumpDown,
-					CharacterMovementState.SwimIdle => CharacterPoseAnimationType.SwimIdle,
-					CharacterMovementState.SwimMove => CharacterPoseAnimationType.SwimMove,
-					CharacterMovementState.SquatIdle => CharacterPoseAnimationType.SquatIdle,
-					CharacterMovementState.SquatMove => CharacterPoseAnimationType.SquatMove,
-					CharacterMovementState.Dash => CharacterPoseAnimationType.Dash,
-					CharacterMovementState.Rush => CharacterPoseAnimationType.Rush,
-					CharacterMovementState.Pound => character.SpinOnGroundPound ? CharacterPoseAnimationType.Spin : CharacterPoseAnimationType.Pound,
-					CharacterMovementState.Climb => CharacterPoseAnimationType.Climb,
-					CharacterMovementState.Fly => CharacterPoseAnimationType.Fly,
-					CharacterMovementState.Slide => CharacterPoseAnimationType.Slide,
-					CharacterMovementState.GrabTop => CharacterPoseAnimationType.GrabTop,
-					CharacterMovementState.GrabSide => CharacterPoseAnimationType.GrabSide,
-					CharacterMovementState.GrabFlip => CharacterPoseAnimationType.Rolling,
-					_ => CharacterPoseAnimationType.Idle,
+					CharacterMovementState.Walk => CharacterAnimationType.Walk,
+					CharacterMovementState.Run => CharacterAnimationType.Run,
+					CharacterMovementState.JumpUp => CharacterAnimationType.JumpUp,
+					CharacterMovementState.JumpDown => CharacterAnimationType.JumpDown,
+					CharacterMovementState.SwimIdle => CharacterAnimationType.SwimIdle,
+					CharacterMovementState.SwimMove => CharacterAnimationType.SwimMove,
+					CharacterMovementState.SquatIdle => CharacterAnimationType.SquatIdle,
+					CharacterMovementState.SquatMove => CharacterAnimationType.SquatMove,
+					CharacterMovementState.Dash => CharacterAnimationType.Dash,
+					CharacterMovementState.Rush => CharacterAnimationType.Rush,
+					CharacterMovementState.Pound => character.SpinOnGroundPound ? CharacterAnimationType.Spin : CharacterAnimationType.Pound,
+					CharacterMovementState.Climb => CharacterAnimationType.Climb,
+					CharacterMovementState.Fly => CharacterAnimationType.Fly,
+					CharacterMovementState.Slide => CharacterAnimationType.Slide,
+					CharacterMovementState.GrabTop => CharacterAnimationType.GrabTop,
+					CharacterMovementState.GrabSide => CharacterAnimationType.GrabSide,
+					CharacterMovementState.GrabFlip => CharacterAnimationType.Rolling,
+					_ => CharacterAnimationType.Idle,
 				};
 			}
 		}
@@ -246,11 +246,7 @@ namespace AngeliaFramework {
 
 			// Render
 			CurrentRenderingBounce = GetCurrentRenderingBounce();
-			if (RenderWithSheet) {
-				FrameUpdate_SheetRendering();
-			} else {
-				FrameUpdate_PoseRendering();
-			}
+			RenderCharacter();
 			CurrentAnimationFrame = GrowAnimationFrame(CurrentAnimationFrame);
 
 			// Cell Effect
@@ -373,6 +369,9 @@ namespace AngeliaFramework {
 		}
 
 
+		protected abstract void RenderCharacter ();
+
+
 		protected virtual int GetInventoryCapacity () => 0;
 		protected virtual Item GetItemFromInventory (int itemIndex) => null;
 		protected virtual Equipment GetEquippingItem (EquipmentType type) => null;
@@ -433,7 +432,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public void LockAnimationType (CharacterPoseAnimationType type, int duration = 1) {
+		public void LockAnimationType (CharacterAnimationType type, int duration = 1) {
 			LockedAnimationType = type;
 			LockedAnimationTypeFrame = Game.GlobalFrame + duration;
 		}

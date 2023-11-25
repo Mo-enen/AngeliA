@@ -13,7 +13,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.ForceSpawn]
 	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.DontDrawBehind]
-	public abstract class Player : Character, IGlobalPosition, IDamageReceiver, IActionTarget {
+	public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, IActionTarget {
 
 
 

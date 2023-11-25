@@ -14,16 +14,16 @@ namespace AngeliaFramework {
 			public int CharacterHeight = 160;
 
 			// Body Part
-			public int Head = Character.DEFAULT_BODY_PART_ID[0];
-			public int Body = Character.DEFAULT_BODY_PART_ID[1];
-			public int Hip = Character.DEFAULT_BODY_PART_ID[2];
-			public int Shoulder = Character.DEFAULT_BODY_PART_ID[3];
-			public int UpperArm = Character.DEFAULT_BODY_PART_ID[5];
-			public int LowerArm = Character.DEFAULT_BODY_PART_ID[7];
-			public int Hand = Character.DEFAULT_BODY_PART_ID[9];
-			public int UpperLeg = Character.DEFAULT_BODY_PART_ID[11];
-			public int LowerLeg = Character.DEFAULT_BODY_PART_ID[13];
-			public int Foot = Character.DEFAULT_BODY_PART_ID[15];
+			public int Head = PoseCharacter.DEFAULT_BODY_PART_ID[0];
+			public int Body = PoseCharacter.DEFAULT_BODY_PART_ID[1];
+			public int Hip = PoseCharacter.DEFAULT_BODY_PART_ID[2];
+			public int Shoulder = PoseCharacter.DEFAULT_BODY_PART_ID[3];
+			public int UpperArm = PoseCharacter.DEFAULT_BODY_PART_ID[5];
+			public int LowerArm = PoseCharacter.DEFAULT_BODY_PART_ID[7];
+			public int Hand = PoseCharacter.DEFAULT_BODY_PART_ID[9];
+			public int UpperLeg = PoseCharacter.DEFAULT_BODY_PART_ID[11];
+			public int LowerLeg = PoseCharacter.DEFAULT_BODY_PART_ID[13];
+			public int Foot = PoseCharacter.DEFAULT_BODY_PART_ID[15];
 
 			// Gadget
 			public int Face = 0;
@@ -88,7 +88,7 @@ namespace AngeliaFramework {
 
 		public sealed void LoadCharacterFromConfig () {
 
-			if (this is not Character character || character.RenderWithSheet) return;
+			if (this is not PoseCharacter character) return;
 
 			var config = Config;
 
@@ -136,7 +136,7 @@ namespace AngeliaFramework {
 
 		public sealed void SaveCharacterToConfig () {
 
-			if (this is not Character character || character.RenderWithSheet) return;
+			if (this is not PoseCharacter character) return;
 			var config = Config;
 
 			config.CharacterHeight = character.CharacterHeight.Clamp(Const.MIN_CHARACTER_HEIGHT, Const.MAX_CHARACTER_HEIGHT);

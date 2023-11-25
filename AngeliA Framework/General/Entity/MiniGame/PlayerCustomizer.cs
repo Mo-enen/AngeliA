@@ -252,7 +252,7 @@ namespace AngeliaFramework {
 			int leftPanelWidth = Unify(400);
 			var leftPanelRect = windowRect.Shrink(0, windowRect.width - leftPanelWidth, 0, 0);
 			bool flying = CurrentSubMenu.HasValue && CurrentSubMenu.Value == SubMenuType.Wing && player.WingID != 0;
-			player.AnimatedPoseType = flying ? CharacterPoseAnimationType.Fly : CharacterPoseAnimationType.Idle;
+			player.AnimationType = flying ? CharacterAnimationType.Fly : CharacterAnimationType.Idle;
 			player.LockFacingRight(PlayerFacingRight);
 			AngeUtil.DrawPoseCharacterAsUI(
 				leftPanelRect.Shrink(Unify(32)), player, Game.GlobalFrame, out var rectFrom, out var rectTo
@@ -319,7 +319,7 @@ namespace AngeliaFramework {
 
 
 		// Rendering
-		private void MainMenuUI (RectInt panelRect, Character player) {
+		private void MainMenuUI (RectInt panelRect, Player player) {
 
 			int fieldHeight = Unify(60);
 			int fieldPadding = Unify(16);
@@ -403,7 +403,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void EditorUI (RectInt panelRect, Character player) {
+		private void EditorUI (RectInt panelRect, Player player) {
 
 			// Background
 			CellRenderer.Draw(Const.PIXEL, panelRect, Const.BLACK, EDITOR_BASIC_Z);

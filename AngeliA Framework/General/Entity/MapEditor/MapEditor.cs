@@ -873,32 +873,24 @@ namespace AngeliaFramework {
 			PlayerDropPos.y = PlayerDropPos.y.LerpTo(FrameInput.MouseGlobalPosition.y, 400);
 			PlayerDropPos.z = PlayerDropPos.z.LerpTo(((FrameInput.MouseGlobalPosition.x - PlayerDropPos.x) / 20).Clamp(-45, 45), 300);
 
-			if (!player.RenderWithSheet) {
-				// Draw Pose Player
-				player.AnimatedPoseType = CharacterPoseAnimationType.Idle;
-				int startIndex = CellRenderer.GetUsedCellCount();
-				AngeUtil.DrawPoseCharacterAsUI(
-					new RectInt(
-						PlayerDropPos.x - Const.HALF,
-						PlayerDropPos.y - Const.CEL * 2,
-						Const.CEL, Const.CEL * 2
-					),
-					player, Game.GlobalFrame, out _, out _
-				);
-				int endIndex = CellRenderer.GetUsedCellCount();
-				// Rotate Cells
-				if (CellRenderer.GetCells(out var cells, out int count)) {
-					for (int i = startIndex; i < endIndex && i < count; i++) {
-						cells[i].RotateAround(PlayerDropPos.z, PlayerDropPos.x, PlayerDropPos.y);
-					}
+
+			// Draw Pose Player
+			player.AnimationType = CharacterAnimationType.Idle;
+			int startIndex = CellRenderer.GetUsedCellCount();
+			AngeUtil.DrawPoseCharacterAsUI(
+				new RectInt(
+					PlayerDropPos.x - Const.HALF,
+					PlayerDropPos.y - Const.CEL * 2,
+					Const.CEL, Const.CEL * 2
+				),
+				player, Game.GlobalFrame, out _, out _
+			);
+			int endIndex = CellRenderer.GetUsedCellCount();
+			// Rotate Cells
+			if (CellRenderer.GetCells(out var cells, out int count)) {
+				for (int i = startIndex; i < endIndex && i < count; i++) {
+					cells[i].RotateAround(PlayerDropPos.z, PlayerDropPos.x, PlayerDropPos.y);
 				}
-			} else if (CellRenderer.TryGetSprite(player.TypeID, out var sprite)) {
-				CellRenderer.Draw(
-					sprite.GlobalID, PlayerDropPos.x, PlayerDropPos.y,
-					500, 1000, PlayerDropPos.z,
-					sprite.GlobalWidth, sprite.GlobalHeight,
-					int.MaxValue
-				);
 			}
 
 			if (!QuickPlayerDrop) {

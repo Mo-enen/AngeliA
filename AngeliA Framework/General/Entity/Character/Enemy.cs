@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
-	public abstract class Enemy : Character, IDamageReceiver {
+	public abstract class Enemy : PoseCharacter, IDamageReceiver {
 
 		int IDamageReceiver.Team => Const.TEAM_ENEMY;
 		public override int AttackTargetTeam => Const.TEAM_PLAYER | Const.TEAM_ENVIRONMENT;

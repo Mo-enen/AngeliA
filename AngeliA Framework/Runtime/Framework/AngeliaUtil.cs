@@ -279,7 +279,7 @@ namespace AngeliaFramework {
 
 
 		public static bool DrawPoseCharacterAsUI (
-			RectInt rect, Character character, int animationFrame,
+			RectInt rect, PoseCharacter character, int animationFrame,
 			out RectInt globalRect, out RectInt uiRect
 		) {
 
@@ -301,7 +301,7 @@ namespace AngeliaFramework {
 			if (!CellRenderer.GetCells(layerIndex, out var cells, out int count)) return false;
 
 			// Get Min Max
-			bool flying = character.AnimatedPoseType == CharacterPoseAnimationType.Fly;
+			bool flying = character.AnimationType == CharacterAnimationType.Fly;
 			int originalMinX = character.X - Const.HALF - 16;
 			int originalMinY = character.Y - 16 + (flying ? character.PoseRootY / 2 : 0);
 			int originalMaxX = character.X + Const.HALF + 16;

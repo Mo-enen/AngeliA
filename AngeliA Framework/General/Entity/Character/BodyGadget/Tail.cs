@@ -30,16 +30,16 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void DrawGadgetFromPool (Character character) {
+		public static void DrawGadgetFromPool (PoseCharacter character) {
 			if (character.TailID != 0 && TryGetGadget(character.TailID, out var tail)) {
 				tail.DrawGadget(character);
 			}
 		}
 
 
-		public override void DrawGadget (Character character) {
+		public override void DrawGadget (PoseCharacter character) {
 			if (
-				character.AnimatedPoseType == CharacterPoseAnimationType.Fly &&
+				character.AnimationType == CharacterAnimationType.Fly &&
 				character.WingID != 0 &&
 				Wing.IsPropellerWing(character.WingID)
 			) return;
@@ -51,7 +51,7 @@ namespace AngeliaFramework {
 
 
 		public static void DrawSpriteAsTail (
-			Character character, int spriteGroupID,
+			PoseCharacter character, int spriteGroupID,
 			int frequency, int frequencyAlt, int frameLen, int frameDelta,
 			int angleAmountRoot, int angleAmountSubsequent, int angleOffset, int limbGrow,
 			int offsetX, int offsetY
@@ -63,7 +63,7 @@ namespace AngeliaFramework {
 			if (frameLen <= 0) frameLen = 1;
 
 			int z = character.Body.FrontSide ? -33 : 33;
-			int facingSign = character.FacingRight || character.AnimatedPoseType == CharacterPoseAnimationType.Climb ? 1 : -1;
+			int facingSign = character.FacingRight || character.AnimationType == CharacterAnimationType.Climb ? 1 : -1;
 			int prevX = 0;
 			int prevY = 0;
 			int prevW = 0;
@@ -84,9 +84,9 @@ namespace AngeliaFramework {
 				h = sprite.GlobalHeight;
 				px = 0;
 
-				var animatedPoseType = character.AnimatedPoseType;
+				var animatedPoseType = character.AnimationType;
 
-				if (animatedPoseType == CharacterPoseAnimationType.Fly) {
+				if (animatedPoseType == CharacterAnimationType.Fly) {
 					// Flying
 					h = sprite.GlobalHeight * 2 / 3;
 					if (i == 0) {
@@ -110,8 +110,8 @@ namespace AngeliaFramework {
 					if (i == 0) {
 						// First
 						if (
-							animatedPoseType == CharacterPoseAnimationType.Sleep ||
-							animatedPoseType == CharacterPoseAnimationType.PassOut
+							animatedPoseType == CharacterAnimationType.Sleep ||
+							animatedPoseType == CharacterAnimationType.PassOut
 						) {
 							x = (character.UpperLegL.GlobalX + character.UpperLegR.GlobalX) / 2;
 							y = (character.UpperLegL.GlobalY + character.UpperLegR.GlobalY) / 2;

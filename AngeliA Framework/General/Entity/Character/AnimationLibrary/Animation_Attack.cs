@@ -92,7 +92,7 @@ namespace AngeliaFramework {
 			handAtt.LimbRotate(-FacingSign);
 
 			// Leg
-			if (AnimatedPoseType == CharacterPoseAnimationType.Idle) {
+			if (AnimationType == CharacterAnimationType.Idle) {
 				if (aFrame == 0) {
 					UpperLegL.X -= A2G;
 					UpperLegR.X += A2G;
@@ -181,7 +181,7 @@ namespace AngeliaFramework {
 			HandR.Height += HandR.Height.Sign() * A2G;
 
 			// Leg
-			if (AnimatedPoseType == CharacterPoseAnimationType.Idle) {
+			if (AnimationType == CharacterAnimationType.Idle) {
 				if (aFrame == 0) {
 					UpperLegL.X -= A2G;
 					UpperLegR.X += A2G;
@@ -229,9 +229,9 @@ namespace AngeliaFramework {
 				ResetShoulderAndUpperArm();
 				// Left Side
 				if (
-					AnimatedPoseType == CharacterPoseAnimationType.Idle ||
-					AnimatedPoseType == CharacterPoseAnimationType.SquatIdle ||
-					AnimatedPoseType == CharacterPoseAnimationType.SquatMove
+					AnimationType == CharacterAnimationType.Idle ||
+					AnimationType == CharacterAnimationType.SquatIdle ||
+					AnimationType == CharacterAnimationType.SquatMove
 				) {
 					UpperArmL.LimbRotate(-15 - (int)(ease01 * 48), 500);
 					LowerArmL.LimbRotate(-100 + (int)(ease01 * 48));
@@ -278,9 +278,9 @@ namespace AngeliaFramework {
 
 			// Left Side
 			if (
-				AnimatedPoseType == CharacterPoseAnimationType.Idle ||
-				AnimatedPoseType == CharacterPoseAnimationType.SquatIdle ||
-				AnimatedPoseType == CharacterPoseAnimationType.SquatMove
+				AnimationType == CharacterAnimationType.Idle ||
+				AnimationType == CharacterAnimationType.SquatIdle ||
+				AnimationType == CharacterAnimationType.SquatMove
 			) {
 				UpperArmL.LimbRotate(-15 - (int)(ease01 * 48), 500);
 				LowerArmL.LimbRotate(-100 + (int)(ease01 * 48));
@@ -330,9 +330,9 @@ namespace AngeliaFramework {
 
 			// Left Side
 			if (
-				AnimatedPoseType == CharacterPoseAnimationType.Idle ||
-				AnimatedPoseType == CharacterPoseAnimationType.SquatIdle ||
-				AnimatedPoseType == CharacterPoseAnimationType.SquatMove
+				AnimationType == CharacterAnimationType.Idle ||
+				AnimationType == CharacterAnimationType.SquatIdle ||
+				AnimationType == CharacterAnimationType.SquatMove
 			) {
 				UpperArmL.LimbRotate(15 + (int)(ease01 * 48), 500);
 				LowerArmL.LimbRotate(-100 + (int)(ease01 * 48));
@@ -383,9 +383,9 @@ namespace AngeliaFramework {
 
 			// Left Side
 			if (
-				AnimatedPoseType == CharacterPoseAnimationType.Idle ||
-				AnimatedPoseType == CharacterPoseAnimationType.SquatIdle ||
-				AnimatedPoseType == CharacterPoseAnimationType.SquatMove
+				AnimationType == CharacterAnimationType.Idle ||
+				AnimationType == CharacterAnimationType.SquatIdle ||
+				AnimationType == CharacterAnimationType.SquatMove
 			) {
 				UpperArmL.LimbRotate(15 + (int)(ease01 * 48), 500);
 				LowerArmL.LimbRotate(-100 + (int)(ease01 * 48));
@@ -1389,15 +1389,15 @@ namespace AngeliaFramework {
 			headOffsetX = headOffsetX * headOffsetXAmount / 1000;
 			headOffsetY = headOffsetY * headOffsetYAmount / 1000;
 			if (
-				AnimatedPoseType == CharacterPoseAnimationType.SquatIdle ||
-				AnimatedPoseType == CharacterPoseAnimationType.SquatMove
+				AnimationType == CharacterAnimationType.SquatIdle ||
+				AnimationType == CharacterAnimationType.SquatMove
 			) {
 				headOffsetX /= 2;
 				headOffsetY /= 2;
 				headRotate /= 2;
 			} else if (
-				AnimatedPoseType == CharacterPoseAnimationType.JumpDown ||
-				AnimatedPoseType == CharacterPoseAnimationType.JumpUp
+				AnimationType == CharacterAnimationType.JumpDown ||
+				AnimationType == CharacterAnimationType.JumpUp
 			) {
 				headOffsetX /= 4;
 				headOffsetY /= 4;
@@ -1426,7 +1426,7 @@ namespace AngeliaFramework {
 
 
 		private static void Attack_LegShake (float ease01) {
-			if (AnimatedPoseType != CharacterPoseAnimationType.Idle) return;
+			if (AnimationType != CharacterAnimationType.Idle) return;
 			int deltaX = (int)(2f * ease01 * A2G);
 			// Move Leg
 			if (FacingRight) {

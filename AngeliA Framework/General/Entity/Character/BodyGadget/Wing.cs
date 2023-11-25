@@ -36,22 +36,22 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void DrawGadgetFromPool (Character character) {
+		public static void DrawGadgetFromPool (PoseCharacter character) {
 			if (character.WingID != 0 && TryGetGadget(character.WingID, out var wing)) {
 				wing.DrawGadget(character);
 			}
 		}
 
 
-		public override void DrawGadget (Character character) {
+		public override void DrawGadget (PoseCharacter character) {
 			DrawSpriteAsWing(character, SpriteGroupID, IsPropeller, Scale);
-			if (IsPropeller && character.AnimatedPoseType == CharacterPoseAnimationType.Fly) {
+			if (IsPropeller && character.AnimationType == CharacterAnimationType.Fly) {
 				character.IgnoreBodyGadget(BodyGadgetType.Tail);
 			}
 		}
 
 
-		public static void DrawSpriteAsWing (Character character, int spriteGroupID, bool isPropeller, int scale = 1000) {
+		public static void DrawSpriteAsWing (PoseCharacter character, int spriteGroupID, bool isPropeller, int scale = 1000) {
 			if (
 				spriteGroupID == 0 ||
 				!CellRenderer.HasSpriteGroup(spriteGroupID, out int groupCount) ||
@@ -63,11 +63,11 @@ namespace AngeliaFramework {
 			int xRight = character.UpperLegR.GlobalX;
 			int yRight = character.UpperLegR.GlobalY;
 			int spriteHeight = firstSprite.GlobalHeight * character.Body.Height.Sign() * scale / 1000;
-			var animatedPoseType = character.AnimatedPoseType;
+			var animatedPoseType = character.AnimationType;
 			if (
-				animatedPoseType != CharacterPoseAnimationType.Sleep &&
-				animatedPoseType != CharacterPoseAnimationType.PassOut &&
-				animatedPoseType != CharacterPoseAnimationType.Fly
+				animatedPoseType != CharacterAnimationType.Sleep &&
+				animatedPoseType != CharacterAnimationType.PassOut &&
+				animatedPoseType != CharacterAnimationType.Fly
 			) {
 				var bodyRect = character.Body.GetGlobalRect();
 				xLeft = bodyRect.xMin;
@@ -75,7 +75,7 @@ namespace AngeliaFramework {
 				xRight = bodyRect.xMax;
 				yRight = bodyRect.y;
 			}
-			if (animatedPoseType == CharacterPoseAnimationType.Fly) {
+			if (animatedPoseType == CharacterAnimationType.Fly) {
 				// Flying
 				if (isPropeller) {
 					// Propeller

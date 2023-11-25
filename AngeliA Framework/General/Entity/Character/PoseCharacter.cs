@@ -7,7 +7,7 @@ using UnityEngine;
 namespace AngeliaFramework {
 
 
-	public enum CharacterPoseAnimationType {
+	public enum CharacterAnimationType {
 		Idle = 0, Walk, Run,
 		JumpUp, JumpDown, SwimIdle, SwimMove,
 		SquatIdle, SquatMove, Dash, Rush, Pound,
@@ -16,7 +16,7 @@ namespace AngeliaFramework {
 	}
 
 
-	public abstract partial class Character {
+	public abstract class PoseCharacter : Character {
 
 
 
@@ -59,7 +59,6 @@ namespace AngeliaFramework {
 
 		// Api
 		protected static int PoseZOffset { get; set; } = 0;
-		public CharacterPoseAnimationType AnimatedPoseType { get; set; } = CharacterPoseAnimationType.Idle;
 		public int PoseTwist { get; set; } = 0;
 		public int PoseRootX { get; set; } = 0;
 		public int PoseRootY { get; set; } = 0;
@@ -77,6 +76,10 @@ namespace AngeliaFramework {
 		public int HandGrabAttackTwistL { get; set; } = 1000;
 		public int HandGrabAttackTwistR { get; set; } = 1000;
 		public bool BodyPartsReady => BodyParts != null;
+		public override bool SpinOnGroundPound => Wing.IsPropellerWing(WingID);
+		public override bool FlyGlideAvailable => WingID != 0 && !Wing.IsPropellerWing(WingID);
+		public override bool FlyAvailable => WingID != 0;
+		public override int GrowingHeight => base.GrowingHeight * CharacterHeight / 160;
 
 		// BodyPart
 		public BodyPart Head { get; private set; } = null;
@@ -115,8 +118,6 @@ namespace AngeliaFramework {
 		// Data
 		private static readonly Dictionary<int, BodyPartConfig> BodyPartConfigPool = new();
 		private BodyPart[] BodyParts = null;
-		private CharacterPoseAnimationType LockedAnimationType = CharacterPoseAnimationType.Idle;
-		private int LockedAnimationTypeFrame = int.MinValue;
 		private int IgnoreTailFrame = -1;
 		private int IgnoreEarFrame = -1;
 		private int IgnoreHairFrame = -1;
@@ -136,24 +137,13 @@ namespace AngeliaFramework {
 		[OnGameInitialize(-64)]
 		public static void BeforeGameInitializeLater () {
 
-			// Sheet Pool
-			RenderWithSheetPool.Clear();
-			foreach (var type in typeof(Character).AllChildClass()) {
-				if (type.GetCustomAttribute<EntityAttribute.RenderWithSheetAttribute>(true) != null) {
-					RenderWithSheetPool.TryAdd(type.AngeHash());
-				}
-			}
-
 			// Config Pool
 			BodyPartConfigPool.Clear();
-			foreach (var type in typeof(Character).AllChildClass()) {
+			foreach (var type in typeof(PoseCharacter).AllChildClass()) {
 
 				int typeID = type.AngeHash();
-				if (RenderWithSheetPool.Contains(typeID)) continue;
-
 				string basicName = type.Name;
 				if (basicName[0] == 'e') basicName = basicName[1..];
-
 				int len = DEFAULT_BODY_PART_ID.Length;
 				var config = new BodyPartConfig() {
 					BodyParts = new int[len],
@@ -198,10 +188,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void OnActivated_Pose () {
-
-			RenderWithSheet = RenderWithSheetPool.Contains(TypeID);
-			if (RenderWithSheetPool.Contains(TypeID)) return;
+		public override void OnActivated () {
 
 			IgnoreTailFrame = -1;
 			IgnoreEarFrame = -1;
@@ -265,10 +252,18 @@ namespace AngeliaFramework {
 			LowerLegR = BodyParts[14];
 			FootL = BodyParts[15];
 			FootR = BodyParts[16];
+
+			base.OnActivated();
 		}
 
 
-		private void FrameUpdate_PoseRendering () {
+		public override void BeforePhysicsUpdate () {
+			PoseZOffset = 0;
+			base.BeforePhysicsUpdate();
+		}
+
+
+		protected override void RenderCharacter () {
 
 			int cellIndexStart = CellRenderer.GetUsedCellCount();
 			AnimationLibrary.Begin(this);
@@ -506,93 +501,93 @@ namespace AngeliaFramework {
 			HandGrabScaleL = FacingRight ? 1000 : -1000;
 			HandGrabScaleR = FacingRight ? 1000 : -1000;
 
-			switch (AnimatedPoseType) {
+			switch (AnimationType) {
 
-				case CharacterPoseAnimationType.TakingDamage:
+				case CharacterAnimationType.TakingDamage:
 					AnimationLibrary.Damage();
 					break;
 
-				case CharacterPoseAnimationType.Sleep:
+				case CharacterAnimationType.Sleep:
 					AnimationLibrary.Sleep();
 					break;
 
-				case CharacterPoseAnimationType.PassOut:
+				case CharacterAnimationType.PassOut:
 					AnimationLibrary.PassOut();
 					break;
 
-				case CharacterPoseAnimationType.Dash:
+				case CharacterAnimationType.Dash:
 					AnimationLibrary.Dash();
 					break;
 
-				case CharacterPoseAnimationType.Rolling:
+				case CharacterAnimationType.Rolling:
 					AnimationLibrary.Rolling();
 					break;
 
-				case CharacterPoseAnimationType.Idle:
+				case CharacterAnimationType.Idle:
 					AnimationLibrary.Idle();
 					break;
 
-				case CharacterPoseAnimationType.Walk:
+				case CharacterAnimationType.Walk:
 					AnimationLibrary.Walk();
 					break;
 
-				case CharacterPoseAnimationType.Run:
+				case CharacterAnimationType.Run:
 					AnimationLibrary.Run();
 					break;
 
-				case CharacterPoseAnimationType.JumpUp:
+				case CharacterAnimationType.JumpUp:
 					AnimationLibrary.JumpUp();
 					break;
 
-				case CharacterPoseAnimationType.JumpDown:
+				case CharacterAnimationType.JumpDown:
 					AnimationLibrary.JumpDown();
 					break;
 
-				case CharacterPoseAnimationType.SwimIdle:
+				case CharacterAnimationType.SwimIdle:
 					AnimationLibrary.SwimIdle();
 					break;
 
-				case CharacterPoseAnimationType.SwimMove:
+				case CharacterAnimationType.SwimMove:
 					AnimationLibrary.SwimMove();
 					break;
 
-				case CharacterPoseAnimationType.SquatIdle:
+				case CharacterAnimationType.SquatIdle:
 					AnimationLibrary.SquatIdle();
 					break;
 
-				case CharacterPoseAnimationType.SquatMove:
+				case CharacterAnimationType.SquatMove:
 					AnimationLibrary.SquatMove();
 					break;
 
-				case CharacterPoseAnimationType.Rush:
+				case CharacterAnimationType.Rush:
 					AnimationLibrary.Rush();
 					break;
 
-				case CharacterPoseAnimationType.Pound:
+				case CharacterAnimationType.Pound:
 					AnimationLibrary.Pound();
 					break;
 
-				case CharacterPoseAnimationType.Spin:
+				case CharacterAnimationType.Spin:
 					AnimationLibrary.Spin();
 					break;
 
-				case CharacterPoseAnimationType.Climb:
+				case CharacterAnimationType.Climb:
 					AnimationLibrary.Climb();
 					break;
 
-				case CharacterPoseAnimationType.Fly:
+				case CharacterAnimationType.Fly:
 					AnimationLibrary.Fly();
 					break;
 
-				case CharacterPoseAnimationType.Slide:
+				case CharacterAnimationType.Slide:
 					AnimationLibrary.Slide();
 					break;
 
-				case CharacterPoseAnimationType.GrabTop:
+				case CharacterAnimationType.GrabTop:
 					AnimationLibrary.GrabTop();
 					break;
 
-				case CharacterPoseAnimationType.GrabSide:
+				case CharacterAnimationType.GrabSide:
 					AnimationLibrary.GrabSide();
 					break;
 			}
@@ -611,21 +606,21 @@ namespace AngeliaFramework {
 
 			if (IsAttacking) return;
 
-			if (AnimatedPoseType switch {
-				CharacterPoseAnimationType.Idle => true,
-				CharacterPoseAnimationType.Walk => true,
-				CharacterPoseAnimationType.Run => true,
-				CharacterPoseAnimationType.JumpUp => true,
-				CharacterPoseAnimationType.JumpDown => true,
-				CharacterPoseAnimationType.SwimIdle => true,
-				CharacterPoseAnimationType.SwimMove => true,
-				CharacterPoseAnimationType.SquatIdle => true,
-				CharacterPoseAnimationType.SquatMove => true,
-				CharacterPoseAnimationType.Pound => true,
-				CharacterPoseAnimationType.Fly => true,
-				CharacterPoseAnimationType.Rush => EquippingWeaponHeld == WeaponHandHeld.Pole,
-				CharacterPoseAnimationType.Dash => EquippingWeaponHeld == WeaponHandHeld.Pole,
-				CharacterPoseAnimationType.Rolling => EquippingWeaponHeld == WeaponHandHeld.Bow || EquippingWeaponHeld == WeaponHandHeld.Firearm,
+			if (AnimationType switch {
+				CharacterAnimationType.Idle => true,
+				CharacterAnimationType.Walk => true,
+				CharacterAnimationType.Run => true,
+				CharacterAnimationType.JumpUp => true,
+				CharacterAnimationType.JumpDown => true,
+				CharacterAnimationType.SwimIdle => true,
+				CharacterAnimationType.SwimMove => true,
+				CharacterAnimationType.SquatIdle => true,
+				CharacterAnimationType.SquatMove => true,
+				CharacterAnimationType.Pound => true,
+				CharacterAnimationType.Fly => true,
+				CharacterAnimationType.Rush => EquippingWeaponHeld == WeaponHandHeld.Pole,
+				CharacterAnimationType.Dash => EquippingWeaponHeld == WeaponHandHeld.Pole,
+				CharacterAnimationType.Rolling => EquippingWeaponHeld == WeaponHandHeld.Bow || EquippingWeaponHeld == WeaponHandHeld.Firearm,
 				_ => false,
 			}) {
 				// Override Handheld

@@ -32,14 +32,14 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void DrawGadgetFromPool (Character character) {
+		public static void DrawGadgetFromPool (PoseCharacter character) {
 			if (character.EarID != 0 && TryGetGadget(character.EarID, out var ear)) {
 				ear.DrawGadget(character);
 			}
 		}
 
 
-		public override void DrawGadget (Character character) => DrawSpriteAsEar(
+		public override void DrawGadget (PoseCharacter character) => DrawSpriteAsEar(
 			character,
 			character.Head.FrontSide ? SpriteIdL : SpriteIdLBack,
 			character.Head.FrontSide ? SpriteIdR : SpriteIdRBack,
@@ -49,12 +49,12 @@ namespace AngeliaFramework {
 		);
 
 
-		protected virtual bool FrontOfHeadL (Character character) => true;
-		protected virtual bool FrontOfHeadR (Character character) => true;
+		protected virtual bool FrontOfHeadL (PoseCharacter character) => true;
+		protected virtual bool FrontOfHeadR (PoseCharacter character) => true;
 
 
 		public static void DrawSpriteAsEar (
-			Character character, int spriteIdLeft, int spriteIdRight,
+			PoseCharacter character, int spriteIdLeft, int spriteIdRight,
 			bool frontOfHeadL = true, bool frontOfHeadR = true, int offsetX = 0,
 			int motionAmount = 1000, bool selfMotion = true
 		) {
@@ -91,23 +91,23 @@ namespace AngeliaFramework {
 			expandSizeR.x = (character.DeltaPositionX.Abs() * motionAmountR * A2G / 50).Clamp(-MAX_SHIFT, MAX_SHIFT);
 
 			// Animation
-			switch (character.AnimatedPoseType) {
+			switch (character.AnimationType) {
 
-				case CharacterPoseAnimationType.Pound:
-				case CharacterPoseAnimationType.JumpDown:
-				case CharacterPoseAnimationType.Spin:
+				case CharacterAnimationType.Pound:
+				case CharacterAnimationType.JumpDown:
+				case CharacterAnimationType.Spin:
 					expandSizeL.y += A2G;
 					expandSizeR.y += A2G;
 
 					break;
-				case CharacterPoseAnimationType.JumpUp:
-				case CharacterPoseAnimationType.Sleep:
-				case CharacterPoseAnimationType.PassOut:
+				case CharacterAnimationType.JumpUp:
+				case CharacterAnimationType.Sleep:
+				case CharacterAnimationType.PassOut:
 					expandSizeL.y -= A2G;
 					expandSizeR.y -= A2G;
 					break;
 
-				case CharacterPoseAnimationType.Run:
+				case CharacterAnimationType.Run:
 					if (character.PoseRootY < basicRootY + A2G / 2) {
 						expandSizeL.y -= A2G / 4;
 						expandSizeR.y -= A2G / 4;

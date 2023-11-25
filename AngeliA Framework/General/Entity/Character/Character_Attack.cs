@@ -23,8 +23,8 @@ namespace AngeliaFramework {
 		public virtual bool RandomAttackAnimationStyle => true;
 
 		// Data
-		private int AttackStyleLoop = 1;
-		private bool AttackStartFacingRight = true;
+		protected int AttackStyleLoop = 1;
+		protected bool AttackStartFacingRight = true;
 
 
 		#endregion
@@ -96,7 +96,7 @@ namespace AngeliaFramework {
 			(AttackWhenRush || (!IsRushing));
 
 
-		protected virtual bool IsAttackAllowedByEquipment () => GetEquippingItem(EquipmentType.Weapon) is not Weapon weapon || weapon.AllowingAttack(this);
+		protected virtual bool IsAttackAllowedByEquipment () => GetEquippingItem(EquipmentType.Weapon) is not Weapon weapon || this is not PoseCharacter poseCharacter || weapon.AllowingAttack(poseCharacter);
 
 
 		protected virtual void SpawnPunchBullet () => Bullet.SpawnBullet(DefaultPunchBullet.TYPE_ID, this, null);

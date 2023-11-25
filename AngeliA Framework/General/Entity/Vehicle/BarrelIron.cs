@@ -128,8 +128,8 @@ namespace AngeliaFramework {
 				if (!cDriver.TakingDamage && !cDriver.Teleporting) {
 					cDriver.LockAnimationType(
 						cDriver.IntendedX == 0 ?
-							cDriver.IntendedY < 0 ? CharacterPoseAnimationType.SquatIdle : CharacterPoseAnimationType.Idle :
-							cDriver.IntendedY < 0 ? CharacterPoseAnimationType.SquatMove : CharacterPoseAnimationType.Walk
+							cDriver.IntendedY < 0 ? CharacterAnimationType.SquatIdle : CharacterAnimationType.Idle :
+							cDriver.IntendedY < 0 ? CharacterAnimationType.SquatMove : CharacterAnimationType.Walk
 					);
 				}
 			} else if (Driver != null) {

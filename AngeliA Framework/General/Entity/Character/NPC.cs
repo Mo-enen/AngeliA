@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace AngeliaFramework {
 	[EntityAttribute.Capacity(8)]
-	public abstract class NPC : Character, IDamageReceiver {
+	public abstract class NPC : PoseCharacter, IDamageReceiver {
 
 
 
