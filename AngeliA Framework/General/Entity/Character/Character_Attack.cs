@@ -73,12 +73,13 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public void Attack (bool charged = false) {
-			if (!IsAttackAllowedByMovement() || !IsAttackAllowedByEquipment()) return;
+		public virtual bool Attack (bool charged = false) {
+			if (!IsAttackAllowedByMovement() || !IsAttackAllowedByEquipment()) return false;
 			LastAttackCharged = charged;
 			LastAttackFrame = Game.GlobalFrame;
 			AttackStyleIndex += RandomAttackAnimationStyle ? AngeUtil.RandomInt(1, Mathf.Max(2, AttackStyleLoop)) : 1;
 			AttackStartFacingRight = _FacingRight;
+			return true;
 		}
 
 

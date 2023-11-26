@@ -43,7 +43,6 @@ namespace AngeliaFramework {
 			public int GrabSide = 0;
 			public int GrabSideMove = 0;
 			public int GrabFlip = 0;
-
 			public int Attack = 0;
 
 			// API

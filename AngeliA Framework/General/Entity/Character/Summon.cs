@@ -7,7 +7,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]
-	[EntityAttribute.Capacity(1)]
+	[EntityAttribute.Capacity(128)]
 	[EntityAttribute.ExcludeInMapEditor]
 	public abstract class Summon : SheetCharacter, IDamageReceiver {
 
@@ -18,7 +18,7 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private const int AIM_REFRESH_FREQUENCY = 120;
+		private const int AIM_REFRESH_FREQUENCY = 60;
 
 		// Api
 		public Character Owner { get; set; } = null;
@@ -128,7 +128,13 @@ namespace AngeliaFramework {
 
 			// Get Aim at Ground
 			var result = new Vector2Int(Owner.X, Owner.Y);
-			int offsetX = Const.CEL * ((insIndex % 12) / 2 + 2) * (insIndex % 2 == 0 ? -1 : 1);
+
+			// Freedom Shift
+			const int SHIFT_AMOUNT = Const.CEL * 10;
+			int freeShiftX = Util.QuickRandom(TypeID + (InstanceOrder + (Game.GlobalFrame / 60)) * TypeID) % SHIFT_AMOUNT;
+
+			// Find Available Ground
+			int offsetX = freeShiftX + Const.CEL * ((insIndex % 12) / 2 + 2) * (insIndex % 2 == 0 ? -1 : 1);
 			int offsetY = NavigationState == CharacterNavigationState.Fly ? Const.CEL : Const.HALF;
 			if (CellNavigation.ExpandTo(
 				Game.GlobalFrame, Stage.ViewRect,
@@ -144,7 +150,7 @@ namespace AngeliaFramework {
 				grounded = false;
 			}
 
-			// Shift
+			// Instance Shift
 			result = new Vector2Int(
 				result.x + (InstanceOrder % 2 == 0 ? 8 : -8) * (InstanceOrder / 2),
 				result.y

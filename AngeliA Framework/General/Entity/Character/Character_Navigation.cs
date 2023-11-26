@@ -136,15 +136,15 @@ namespace AngeliaFramework {
 				CurrentNavOperationCount = 0;
 				NavJumpDuration = 0;
 			}
-			int aimSqrtDis = Util.SquareDistance(NavigationAim.x, NavigationAim.y, X, Y);
 
+			// Fly When No Grounded Aim Position
 			if (!NavigationAimGrounded) {
-				// Fly When No Grounded Aim Position
 				NavigationState = CharacterNavigationState.Fly;
 				NavFlyStartFrame = Game.GlobalFrame;
 				return;
 			}
 
+			int aimSqrtDis = Util.SquareDistance(NavigationAim.x, NavigationAim.y, X, Y);
 			switch (NavigationState) {
 
 				case CharacterNavigationState.Idle:

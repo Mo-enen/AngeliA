@@ -63,8 +63,8 @@ namespace AngeliaFramework {
 
 
 	public abstract class CircleFlamePortal : Portal {
-		private static readonly int CIRCLE_CODE = "CheckPointPortalCircle".AngeHash();
-		private static readonly int FLAME_CODE = "CheckPointPortalFlame".AngeHash();
+		private static readonly int CIRCLE_CODE = "PortalCircle".AngeHash();
+		private static readonly int FLAME_CODE = "PortalFlame".AngeHash();
 		protected virtual int CircleCode => CIRCLE_CODE;
 		protected virtual int FlameCode => FLAME_CODE;
 		protected virtual int CircleSize => Const.CEL * 3 / 2;
@@ -87,6 +87,7 @@ namespace AngeliaFramework {
 				const int CIRCLE_DURATION = 24;
 				const int CIRCLE_COUNT = 4;
 				int circleFrame = Game.GlobalFrame % CIRCLE_DURATION;
+				int darkIndex = (Game.GlobalFrame % (CIRCLE_DURATION * CIRCLE_COUNT)) / CIRCLE_DURATION;
 				for (int i = 0; i < CIRCLE_COUNT; i++) {
 					int size = Util.RemapUnclamped(
 						0, CIRCLE_DURATION,
@@ -97,7 +98,9 @@ namespace AngeliaFramework {
 					size = size * scale / 1000;
 					int rgbA = Util.RemapUnclamped(0, 3, 255, 128, CIRCLE_COUNT - i);
 					int rgbB = Util.RemapUnclamped(0, 3, 255, 128, CIRCLE_COUNT - i - 1);
-					byte rgb = (byte)Mathf.Lerp(rgbA, rgbB, (float)circleFrame / CIRCLE_DURATION);
+					byte rgb = i == darkIndex || i == (darkIndex + 1) % CIRCLE_COUNT ?
+						(byte)42 :
+						(byte)Mathf.Lerp(rgbA, rgbB, (float)circleFrame / CIRCLE_DURATION);
 					var tint = new Color32(
 						rgb, rgb, rgb,
 						(byte)(i > 0 ? 255 : Util.RemapUnclamped(0, CIRCLE_DURATION, 0, 400, circleFrame).Clamp(0, 255))
