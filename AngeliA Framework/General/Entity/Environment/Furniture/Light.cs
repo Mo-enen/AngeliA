@@ -35,7 +35,7 @@ namespace AngeliaFramework {
 		}
 
 		public override void FillPhysics () {
-			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
+			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 		}
 
 		public override void FrameUpdate () {

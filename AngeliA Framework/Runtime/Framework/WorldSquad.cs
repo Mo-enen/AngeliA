@@ -10,8 +10,9 @@ namespace AngeliaFramework {
 	public enum MapChannel { BuiltIn, User, }
 
 
-	[System.AttributeUsage(System.AttributeTargets.Method)]
-	public class OnMapChannelChangedAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnMapChannelChangedAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class BeforeLevelRenderedAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class AfterLevelRenderedAttribute : System.Attribute { }
 
 
 	public sealed class WorldSquad {
@@ -39,6 +40,8 @@ namespace AngeliaFramework {
 
 		// Event
 		public static event System.Action<MapChannel> OnMapChannelChanged;
+		public static event System.Action BeforeLevelRendered;
+		public static event System.Action AfterLevelRendered;
 
 		// Api
 		public static WorldSquad Front { get; set; } = null;
@@ -76,14 +79,16 @@ namespace AngeliaFramework {
 			Front = new WorldSquad();
 			Behind = new WorldSquad();
 			Util.LinkEventWithAttribute<OnMapChannelChangedAttribute>(typeof(WorldSquad), nameof(OnMapChannelChanged));
+			Util.LinkEventWithAttribute<BeforeLevelRenderedAttribute>(typeof(WorldSquad), nameof(BeforeLevelRendered));
+			Util.LinkEventWithAttribute<AfterLevelRenderedAttribute>(typeof(WorldSquad), nameof(AfterLevelRendered));
 			SetMapChannel(MapChannel.BuiltIn);
 		}
 
 
 		[OnGameUpdate]
 		public static void OnGameUpdate () {
-			Front.FrameUpdate();
-			Behind.FrameUpdate();
+			Front.DrawAllBlocks(false);
+			Behind.DrawAllBlocks(true);
 		}
 
 
@@ -94,14 +99,17 @@ namespace AngeliaFramework {
 		}
 
 
-		private void FrameUpdate () {
+		private void DrawAllBlocks (bool isBehind) {
 
 			if (!Enable) return;
 
-			bool isBehind = this == Behind;
 			int z = isBehind ? Stage.ViewZ + 1 : Stage.ViewZ;
 			Vector4Int cullingPadding = CellRenderer.CameraShaking || FrameTask.IsTasking<TeleportTask>() ? new Vector4Int(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Vector4Int.zero;
-			if (isBehind) CellRenderer.SetLayerToBehind();
+			if (isBehind) {
+				CellRenderer.SetLayerToBehind();
+			} else {
+				CellRenderer.SetLayerToDefault();
+			}
 			var viewPos = Stage.SpawnRect.CenterInt();
 			RectInt unitRect_Entity;
 			RectInt unitRect_Level;
@@ -148,6 +156,7 @@ namespace AngeliaFramework {
 			}
 
 			// BG-Level
+			if (!isBehind) BeforeLevelRendered?.Invoke();
 			for (int worldI = 0; worldI < 3; worldI++) {
 				for (int worldJ = 0; worldJ < 3; worldJ++) {
 					var world = Worlds[worldI, worldJ];
@@ -185,6 +194,7 @@ namespace AngeliaFramework {
 					}
 				}
 			}
+			if (!isBehind) AfterLevelRendered?.Invoke();
 
 			// Entity
 			for (int worldI = 0; worldI < 3; worldI++) {
@@ -381,7 +391,7 @@ namespace AngeliaFramework {
 			// Collider for Oneway
 			if (CellRenderer.TryGetSprite(id, out var sp) && CellRenderer.TryGetMeta(id, out var meta) && AngeUtil.IsOnewayTag(meta.Tag)) {
 				CellPhysics.FillBlock(
-					Const.LAYER_LEVEL, id,
+					PhysicsLayer.LEVEL, id,
 					new RectInt(
 						unitX * Const.CEL,
 						unitY * Const.CEL,
@@ -410,13 +420,13 @@ namespace AngeliaFramework {
 					isTrigger = meta.IsTrigger;
 					tag = meta.Tag;
 					if (meta.Tag == Const.DAMAGE_TAG) {
-						CellPhysics.FillBlock(Const.LAYER_DAMAGE, id, rect.Expand(1), true, 1);
+						CellPhysics.FillBlock(PhysicsLayer.DAMAGE, id, rect.Expand(1), true, 1);
 					}
 				}
 				rect = rect.Shrink(
 					sp.GlobalBorder.left, sp.GlobalBorder.right, sp.GlobalBorder.down, sp.GlobalBorder.up
 				);
-				CellPhysics.FillBlock(Const.LAYER_LEVEL, id, rect, isTrigger, tag);
+				CellPhysics.FillBlock(PhysicsLayer.LEVEL, id, rect, isTrigger, tag);
 			}
 		}
 

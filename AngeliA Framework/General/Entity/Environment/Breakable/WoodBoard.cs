@@ -7,7 +7,7 @@ namespace AngeliaFramework {
 	public class WoodBoard : BreakableRigidbody, ICombustible {
 		public int BurnedDuration => 30;
 		int ICombustible.BurnStartFrame { get; set; }
-		protected override int PhysicsLayer => Const.LAYER_ENVIRONMENT;
+		protected override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
 		protected override bool DestroyWhenInsideGround => true;
 	}
 }

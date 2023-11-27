@@ -6,7 +6,7 @@ using UnityEngine;
 namespace AngeliaFramework {
 	[EntityAttribute.MapEditorGroup("Furniture")]
 	[EntityAttribute.Capacity(32)]
-	public abstract class Furniture : Entity, IActionTarget {
+	public abstract class Furniture : EnvironmentEntity, IActionTarget {
 
 
 
@@ -41,7 +41,7 @@ namespace AngeliaFramework {
 
 
 		public override void FillPhysics () {
-			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
+			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
 		}
 
 
@@ -53,7 +53,7 @@ namespace AngeliaFramework {
 
 				if (ModuleType != Direction3.None) {
 					Pose = WorldSquad.Front.GetEntityPose(
-						this, ModuleType == Direction3.Horizontal, Const.MASK_ENVIRONMENT,
+						this, ModuleType == Direction3.Horizontal, PhysicsMask.ENVIRONMENT,
 						out var ld, out var ru, OperationMode.ColliderAndTrigger
 					);
 					FurnitureLeftOrDown = ld as Furniture;
@@ -84,13 +84,10 @@ namespace AngeliaFramework {
 			if (Pose == FittingPose.Unknown) return;
 			var sprite = GetSpriteFromPose();
 			if (sprite != null) {
-				// Artwork
 				var cell = CellRenderer.Draw(sprite.GlobalID, RenderingRect);
 				if ((this as IActionTarget).IsHighlighted) {
 					IActionTarget.HighlightBlink(cell, ModuleType, Pose);
 				}
-				// Shadow
-				AngeUtil.DrawShadow(sprite.GlobalID, RenderingRect);
 			}
 		}
 

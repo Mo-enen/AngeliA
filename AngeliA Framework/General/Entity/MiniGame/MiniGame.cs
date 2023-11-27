@@ -22,7 +22,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.Capacity(1, 0)]
 	[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
 	[EntityAttribute.MapEditorGroup("MiniGame")]
-	public abstract class MiniGame : Entity, IActionTarget {
+	public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 
 
 		// VAR
@@ -59,7 +59,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
+			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 		}
 
 
@@ -94,7 +94,6 @@ namespace AngeliaFramework {
 				Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE,
 				allowInvoke ? Const.WHITE : Const.WHITE_96
 			);
-			AngeUtil.DrawShadow(TypeID, cell);
 			var act = this as IActionTarget;
 			if (act.IsHighlighted && !IsPlaying) {
 				IActionTarget.HighlightBlink(cell);

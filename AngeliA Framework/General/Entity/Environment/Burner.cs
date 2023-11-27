@@ -22,7 +22,8 @@ namespace AngeliaFramework {
 	}
 
 
-	public abstract class Burner<F> : Entity where F : Fire {
+
+	public abstract class Burner<F> : EnvironmentEntity where F : Fire {
 
 
 
@@ -83,7 +84,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this);
+			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
 		}
 
 

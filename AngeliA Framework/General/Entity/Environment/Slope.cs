@@ -43,7 +43,7 @@ namespace AngeliaFramework {
 
 
 
-	public abstract class Slope : Entity {
+	public abstract class Slope : EnvironmentEntity {
 
 
 
@@ -54,7 +54,7 @@ namespace AngeliaFramework {
 		// Api
 		public abstract Direction2 DirectionVertical { get; }
 		public abstract Direction2 DirectionHorizontal { get; }
-		public virtual int CollisionMask => Const.MASK_RIGIDBODY;
+		public virtual int CollisionMask => PhysicsMask.RIGIDBODY;
 
 
 		#endregion
@@ -68,11 +68,11 @@ namespace AngeliaFramework {
 		public override void FillPhysics () {
 			base.FillPhysics();
 			CellPhysics.FillEntity(
-				Const.LAYER_ENVIRONMENT, this, true,
+				PhysicsLayer.ENVIRONMENT, this, true,
 				DirectionHorizontal == Direction2.Left ? Const.ONEWAY_RIGHT_TAG : Const.ONEWAY_LEFT_TAG
 			);
 			CellPhysics.FillEntity(
-				Const.LAYER_ENVIRONMENT, this, true,
+				PhysicsLayer.ENVIRONMENT, this, true,
 				DirectionVertical == Direction2.Down ? Const.ONEWAY_UP_TAG : Const.ONEWAY_DOWN_TAG
 			);
 		}

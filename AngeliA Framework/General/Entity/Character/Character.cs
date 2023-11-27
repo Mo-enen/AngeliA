@@ -15,7 +15,7 @@ namespace AngeliaFramework {
 
 	[EntityAttribute.MapEditorGroup("Character")]
 	[EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
-	[EntityAttribute.Layer(Const.ENTITY_LAYER_CHARACTER)]
+	[EntityAttribute.Layer(EntityLayer.CHARACTER)]
 	public abstract partial class Character : Rigidbody {
 
 
@@ -58,8 +58,8 @@ namespace AngeliaFramework {
 		protected override int Gravity => 5;
 		protected override bool CarryOtherRigidbodyOnTop => false;
 		protected override bool AllowBeingCarryByOtherRigidbody => true;
-		protected sealed override int CollisionMask => IsGrabFlipping ? 0 : Const.MASK_MAP;
-		protected sealed override int PhysicsLayer => Const.LAYER_CHARACTER;
+		protected sealed override int CollisionMask => IsGrabFlipping ? 0 : PhysicsMask.MAP;
+		protected sealed override int PhysicalLayer => PhysicsLayer.CHARACTER;
 		protected virtual int Bouncy => 150;
 
 		// Data
@@ -96,7 +96,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			if (CharacterState == CharacterState.GamePlay) {
-				CellPhysics.FillEntity(PhysicsLayer, this, NavigationEnable);
+				CellPhysics.FillEntity(PhysicalLayer, this, NavigationEnable);
 			}
 		}
 

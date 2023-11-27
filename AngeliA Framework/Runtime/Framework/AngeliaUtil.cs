@@ -398,17 +398,15 @@ namespace AngeliaFramework {
 
 
 		// Drawing
-		public static Cell DrawShadow (int id, RectInt rect) => CellRenderer.Draw(
-			id, rect.Shift(-Const.HALF / 2, 0),
-			new Color32(0, 0, 0, 64), -64 * 1024 + 16
-		);
-		public static Cell DrawShadow (int id, Cell positionCell) => CellRenderer.Draw(
-			id, positionCell.X - Const.HALF / 2, positionCell.Y,
-			(int)(positionCell.PivotX * 1000),
-			(int)(positionCell.PivotY * 1000), 0,
-			positionCell.Width, positionCell.Height,
-			new Color32(0, 0, 0, 64), -64 * 1024 + 16
-		);
+		public static Cell DrawEnvironmentShadow (Cell source, int offsetX = -Const.HALF / 2, int offsetY = 0, byte alpha = 64, int z = -64 * 1024 + 16) {
+			var result = CellRenderer.Draw(Const.PIXEL, default);
+			result.CopyFrom(source);
+			result.X += offsetX;
+			result.Y += offsetY;
+			result.Z = z;
+			result.Color = new Color32(0, 0, 0, alpha);
+			return result;
+		}
 
 
 		public static void DrawGlitchEffect (Cell cell, int frame) {

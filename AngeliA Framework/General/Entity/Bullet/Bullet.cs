@@ -134,12 +134,12 @@ namespace AngeliaFramework {
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.DontDestroyOutOfRange]
-	[EntityAttribute.Layer(Const.ENTITY_LAYER_BULLET)]
+	[EntityAttribute.Layer(EntityLayer.BULLET)]
 	public abstract class Bullet : Entity {
 
 
 		// Api
-		protected virtual int CollisionMask => Const.MASK_SOLID;
+		protected virtual int CollisionMask => PhysicsMask.SOLID;
 		protected abstract int Duration { get; }
 		protected abstract int Damage { get; }
 		protected abstract int SpawnWidth { get; }
@@ -246,8 +246,8 @@ namespace AngeliaFramework {
 		protected bool GroundCheck (out Color32 groundTint) {
 			groundTint = Const.WHITE;
 			bool grounded =
-				CellPhysics.Overlap(Const.MASK_MAP, Rect.Edge(Direction4.Down, 4), out var hit, this) ||
-				CellPhysics.Overlap(Const.MASK_MAP, Rect.Edge(Direction4.Down, 4), out hit, this, OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG);
+				CellPhysics.Overlap(PhysicsMask.MAP, Rect.Edge(Direction4.Down, 4), out var hit, this) ||
+				CellPhysics.Overlap(PhysicsMask.MAP, Rect.Edge(Direction4.Down, 4), out hit, this, OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG);
 			if (grounded && CellRenderer.TryGetSprite(hit.SourceID, out var groundSprite)) {
 				groundTint = groundSprite.SummaryTint;
 			}

@@ -34,7 +34,7 @@ namespace AngeliaFramework {
 				UpdatingFrame = Game.GlobalFrame;
 				UpdatingHolder = holder;
 				int itemCount = Inventory.ItemTotalCount(holder.TypeID, TypeID, true);
-				if (itemCount > 0 && Stage.TryGetEntities(Const.ENTITY_LAYER_CHARACTER, out var entities, out int count)) {
+				if (itemCount > 0 && Stage.TryGetEntities(EntityLayer.CHARACTER, out var entities, out int count)) {
 					int currentSummonCount = 0;
 					for (int i = 0; i < count; i++) {
 						if (entities[i] is not Summon summon || summon.Owner != owner || !summon.Active) continue;

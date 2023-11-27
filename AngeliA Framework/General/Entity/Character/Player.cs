@@ -269,7 +269,7 @@ namespace AngeliaFramework {
 				TargetActionEntity = null;
 				Entity eActTarget = null;
 				var hits = CellPhysics.OverlapAll(
-					Const.MASK_ENTITY,
+					PhysicsMask.ENTITY,
 					Rect.Expand(ACTION_SCAN_RANGE, ACTION_SCAN_RANGE, 0, ACTION_SCAN_RANGE),
 					out int count, this,
 					OperationMode.ColliderAndTrigger
@@ -528,7 +528,7 @@ namespace AngeliaFramework {
 		private void PhysicsUpdate_Collect () {
 			if (Selecting != this) return;
 			var hits = CellPhysics.OverlapAll(
-				Const.MASK_ENTITY, Rect, out int count, this, OperationMode.TriggerOnly
+				PhysicsMask.ENTITY, Rect, out int count, this, OperationMode.TriggerOnly
 			);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
@@ -563,7 +563,7 @@ namespace AngeliaFramework {
 
 			// Auto Pick Item
 			if (!FrameTask.HasTask() && !PlayerMenuUI.ShowingUI) {
-				var cells = CellPhysics.OverlapAll(Const.MASK_ITEM, Rect, out int count, null, OperationMode.ColliderAndTrigger);
+				var cells = CellPhysics.OverlapAll(PhysicsMask.ITEM, Rect, out int count, null, OperationMode.ColliderAndTrigger);
 				for (int i = 0; i < count; i++) {
 					var cell = cells[i];
 					if (cell.Entity is not ItemHolder holder || !holder.Active) continue;

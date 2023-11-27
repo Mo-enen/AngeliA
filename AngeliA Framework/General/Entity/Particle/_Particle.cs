@@ -45,7 +45,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.Capacity(512)]
 	[EntityAttribute.UpdateOutOfRange]
-	[EntityAttribute.Layer(Const.ENTITY_LAYER_DECORATE)]
+	[EntityAttribute.Layer(EntityLayer.DECORATE)]
 	public abstract class Particle : Entity {
 
 

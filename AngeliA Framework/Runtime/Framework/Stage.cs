@@ -5,6 +5,13 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
+
+
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnViewZChangedAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class BeforeLayerFrameUpdateAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class AfterLayerFrameUpdateAttribute : System.Attribute { }
+
+
 	public static class Stage {
 
 
@@ -87,10 +94,18 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int[] ENTITY_CAPACITY = new int[Const.ENTITY_LAYER_COUNT] { 4096, 512, 1024, 1024, 128, 64, };
+		private static readonly int[] ENTITY_CAPACITY = new int[EntityLayer.COUNT] {
+			4096,	//GAME
+			512,	//CHARACTER
+			1024,	//ENVIRONMENT 
+			1024,	//BULLET 
+			1024,	//ITEM
+			128,	//DECORATE
+			64,		//UI
+		};
 
 		// Api
-		public static int[] EntityCounts { get; private set; } = new int[Const.ENTITY_LAYER_COUNT];
+		public static int[] EntityCounts { get; private set; } = new int[EntityLayer.COUNT];
 		public static Entity[][] Entities { get; private set; } = null;
 		public static RectInt SpawnRect { get; private set; } = default;
 		public static RectInt AntiSpawnRect { get; private set; } = default;
@@ -103,6 +118,8 @@ namespace AngeliaFramework {
 
 		// Event
 		public static event System.Action OnViewZChanged;
+		public static event System.Action<int> BeforeLayerFrameUpdate;
+		public static event System.Action<int> AfterLayerFrameUpdate;
 
 		// Data
 		private static (int? value, int priority) ViewDelayX = (null, int.MinValue);
@@ -132,8 +149,8 @@ namespace AngeliaFramework {
 				Const.VIEW_RATIO * Mathf.Clamp(Const.DEFAULT_HEIGHT, Const.MIN_HEIGHT, Const.MAX_HEIGHT) / 1000,
 				Mathf.Clamp(Const.DEFAULT_HEIGHT, Const.MIN_HEIGHT, Const.MAX_HEIGHT)
 			);
-			Entities = new Entity[Const.ENTITY_LAYER_COUNT][];
-			for (int i = 0; i < Const.ENTITY_LAYER_COUNT; i++) {
+			Entities = new Entity[EntityLayer.COUNT][];
+			for (int i = 0; i < EntityLayer.COUNT; i++) {
 				Entities[i] = new Entity[ENTITY_CAPACITY[i]];
 			}
 			EntityPool.Clear();
@@ -156,7 +173,7 @@ namespace AngeliaFramework {
 				var att_DontSpawnFromWorld = eType.GetCustomAttribute<EntityAttribute.DontSpawnFromWorld>(true);
 				var att_ForceSpawn = eType.GetCustomAttribute<EntityAttribute.ForceSpawnAttribute>(true);
 				var att_Order = eType.GetCustomAttribute<EntityAttribute.StageOrderAttribute>(true);
-				int layer = att_Layer != null ? att_Layer.Layer.Clamp(0, Const.ENTITY_LAYER_COUNT - 1) : 0;
+				int layer = att_Layer != null ? att_Layer.Layer.Clamp(0, EntityLayer.COUNT - 1) : 0;
 				if (att_Capacity != null) {
 					capacity = att_Capacity.Value.Clamp(1, Entities[layer].Length);
 					preSpawn = att_Capacity.PreSpawn.Clamp(0, Entities[layer].Length);
@@ -187,6 +204,8 @@ namespace AngeliaFramework {
 			}
 			// Event
 			Util.LinkEventWithAttribute<OnViewZChangedAttribute>(typeof(Stage), nameof(OnViewZChanged));
+			Util.LinkEventWithAttribute<BeforeLayerFrameUpdateAttribute>(typeof(Stage), nameof(BeforeLayerFrameUpdate));
+			Util.LinkEventWithAttribute<AfterLayerFrameUpdateAttribute>(typeof(Stage), nameof(AfterLayerFrameUpdate));
 		}
 
 
@@ -230,12 +249,12 @@ namespace AngeliaFramework {
 		}
 
 
-		internal static void FrameUpdate (int globalFrame, int targetLayer = -1) {
+		internal static void UpdateAllEntities (int globalFrame, int targetLayer = -1) {
 
 			GlobalFrame = globalFrame;
 
 			int startLayer = 0;
-			int endLayer = Const.ENTITY_LAYER_COUNT;
+			int endLayer = EntityLayer.COUNT;
 			if (targetLayer >= 0) {
 				startLayer = targetLayer;
 				endLayer = targetLayer + 1;
@@ -297,6 +316,7 @@ namespace AngeliaFramework {
 				var entities = Entities[layer];
 				int count = EntityCounts[layer];
 				count = count.Clamp(0, entities.Length);
+				BeforeLayerFrameUpdate?.Invoke(layer);
 				for (int index = 0; index < count; index++) {
 					var e = entities[index];
 					if (e.UpdateOutOfRange || cullCameraRect.Overlaps(e.GlobalBounds)) {
@@ -308,6 +328,7 @@ namespace AngeliaFramework {
 						} catch (System.Exception ex) { Debug.LogException(ex); }
 					}
 				}
+				AfterLayerFrameUpdate?.Invoke(layer);
 			}
 
 			// Final
@@ -439,7 +460,7 @@ namespace AngeliaFramework {
 
 		public static bool TryGetEntity<E> (out E result) where E : Entity {
 			result = null;
-			for (int layer = 0; layer < Const.ENTITY_LAYER_COUNT; layer++) {
+			for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
 				int count = EntityCounts[layer];
 				var entities = Entities[layer];
 				for (int i = 0; i < count; i++) {
@@ -470,7 +491,7 @@ namespace AngeliaFramework {
 		public static bool TryGetEntityNearby<E> (Vector2Int pos, out E finalTarget) where E : Entity {
 			finalTarget = null;
 			int finalDistance = int.MaxValue;
-			for (int layer = 0; layer < Const.ENTITY_LAYER_COUNT; layer++) {
+			for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
 				int count = EntityCounts[layer];
 				var entities = Entities[layer];
 				for (int i = 0; i < count; i++) {
@@ -493,7 +514,7 @@ namespace AngeliaFramework {
 
 
 		public static bool TryGetEntities (int layer, out Entity[] entities, out int count) {
-			if (layer >= 0 && layer < Const.ENTITY_LAYER_COUNT) {
+			if (layer >= 0 && layer < EntityLayer.COUNT) {
 				count = EntityCounts[layer];
 				entities = Entities[layer];
 				return true;
@@ -540,7 +561,7 @@ namespace AngeliaFramework {
 
 
 		public static void ClearStagedEntities () {
-			for (int layer = 0; layer < Const.ENTITY_LAYER_COUNT; layer++) {
+			for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
 				var entities = Entities[layer];
 				int count = EntityCounts[layer];
 				for (int i = 0; i < count; i++) {

@@ -38,8 +38,8 @@ namespace AngeliaFramework {
 		public int DeltaPositionY => Y - PrevY;
 
 		// Override
-		protected abstract int PhysicsLayer { get; }
-		protected virtual int CollisionMask => Const.MASK_SOLID;
+		protected abstract int PhysicalLayer { get; }
+		protected virtual int CollisionMask => PhysicsMask.SOLID;
 		protected virtual int Gravity => VelocityY <= 0 ? 5 : 3;
 		protected virtual int AirDragX => 3;
 		protected virtual int AirDragY => 0;
@@ -82,7 +82,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(PhysicsLayer, this);
+			CellPhysics.FillEntity(PhysicalLayer, this);
 		}
 
 
@@ -99,8 +99,8 @@ namespace AngeliaFramework {
 
 			bool prevInWater = InWater;
 			bool prevInSand = InSand;
-			InWater = CellPhysics.Overlap(Const.MASK_MAP & CollisionMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, Const.WATER_TAG);
-			InSand = CellPhysics.Overlap(Const.MASK_MAP & CollisionMask, rect, null, OperationMode.TriggerOnly, Const.QUICKSAND_TAG);
+			InWater = CellPhysics.Overlap(PhysicsMask.MAP & CollisionMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, Const.WATER_TAG);
+			InSand = CellPhysics.Overlap(PhysicsMask.MAP & CollisionMask, rect, null, OperationMode.TriggerOnly, Const.QUICKSAND_TAG);
 			IsInsideGround = InsideGroundCheck();
 
 			if (!PhysicsEnable || Game.GlobalFrame <= IgnorePhysicsFrame) {
@@ -246,7 +246,7 @@ namespace AngeliaFramework {
 			speedY = speedY * speedScale / 1000;
 
 			int mask = CollisionMask;
-			if (ignoreLevel) mask &= ~Const.MASK_LEVEL;
+			if (ignoreLevel) mask &= ~PhysicsMask.LEVEL;
 
 			if (ignoreOneway) {
 				pos = CellPhysics.MoveIgnoreOneway(mask, pos, speedX, speedY, new(Width, Height), this);
@@ -312,7 +312,7 @@ namespace AngeliaFramework {
 			int sizeX = Width / 8;
 			int sizeY = Height / 8;
 			return CellPhysics.Overlap(
-				Const.MASK_LEVEL & CollisionMask,
+				PhysicsMask.LEVEL & CollisionMask,
 				new RectInt(
 					X + OffsetX + Width / 2 - sizeX / 2,
 					Y + OffsetY + Height / 2 - sizeY / 2,

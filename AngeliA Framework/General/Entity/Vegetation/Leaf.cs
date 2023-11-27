@@ -24,7 +24,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillBlock(Const.LAYER_ENVIRONMENT, TypeID, Rect, true, Const.ONEWAY_UP_TAG);
+			CellPhysics.FillBlock(PhysicsLayer.ENVIRONMENT, TypeID, Rect, true, Const.ONEWAY_UP_TAG);
 		}
 
 		public override void FrameUpdate () {
@@ -39,7 +39,7 @@ namespace AngeliaFramework {
 		public override void FillPhysics () {
 			base.FillPhysics();
 			CellPhysics.FillBlock(
-				Const.LAYER_ENVIRONMENT, TypeID,
+				PhysicsLayer.ENVIRONMENT, TypeID,
 				Rect.Shrink(0, 0, 0, Height / 2),
 				true, Const.CLIMB_TAG
 			);
@@ -52,7 +52,7 @@ namespace AngeliaFramework {
 
 	[EntityAttribute.MapEditorGroup("Vegetation")]
 	[EntityAttribute.Capacity(256)]
-	public abstract class Leaf : Entity, ICombustible, IDamageReceiver {
+	public abstract class Leaf : EnvironmentEntity, ICombustible, IDamageReceiver {
 
 
 
@@ -95,12 +95,12 @@ namespace AngeliaFramework {
 		}
 
 
-		public override void FillPhysics () => CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
+		public override void FillPhysics () => CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 
 
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
-			CharacterNearby = CellPhysics.HasEntity<Character>(Rect.Expand(Const.CEL), Const.MASK_CHARACTER, null);
+			CharacterNearby = CellPhysics.HasEntity<Character>(Rect.Expand(Const.CEL), PhysicsMask.CHARACTER, null);
 		}
 
 

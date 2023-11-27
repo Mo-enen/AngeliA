@@ -1,9 +1,10 @@
 using UnityEngine;
 
+
 namespace AngeliaFramework {
 
 
-	public abstract class Breakable : Entity, IDamageReceiver {
+	public abstract class BreakableEntity : EnvironmentEntity, IDamageReceiver {
 		public bool TakeDamageFromEnvironment => false;
 		public int Team => Const.TEAM_ENVIRONMENT;
 		void IDamageReceiver.TakeDamage (int damage, Entity sender) {
@@ -14,7 +15,6 @@ namespace AngeliaFramework {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			CellRenderer.Draw(TypeID, Rect);
-			AngeUtil.DrawShadow(TypeID, Rect);
 		}
 		protected virtual void OnBreak () {
 			Stage.MarkAsGlobalAntiSpawn(this);
@@ -23,10 +23,10 @@ namespace AngeliaFramework {
 	}
 
 
-	public abstract class BreakableRigidbody : Rigidbody, IDamageReceiver {
+	public abstract class BreakableRigidbody : EnvironmentRigidbody, IDamageReceiver {
 		public int Team => Const.TEAM_ENVIRONMENT;
 		public bool TakeDamageFromEnvironment => false;
-		protected override int PhysicsLayer => Const.LAYER_ENVIRONMENT;
+		protected override int PhysicalLayer => AngeliaFramework.PhysicsLayer.ENVIRONMENT;
 		protected override bool DestroyWhenInsideGround => true;
 		void IDamageReceiver.TakeDamage (int damage, Entity sender) {
 			if (!Active || damage <= 0) return;
@@ -36,7 +36,6 @@ namespace AngeliaFramework {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			CellRenderer.Draw(TypeID, Rect);
-			AngeUtil.DrawShadow(TypeID, Rect);
 		}
 		protected virtual void OnBreak () {
 			Stage.MarkAsGlobalAntiSpawn(this);

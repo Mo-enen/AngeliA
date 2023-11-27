@@ -20,7 +20,6 @@ namespace AngeliaFramework {
 				if ((this as IActionTarget).IsHighlighted) {
 					IActionTarget.HighlightBlink(cell, ModuleType, Pose);
 				}
-				AngeUtil.DrawShadow(sprite.GlobalID, cell);
 			}
 		}
 

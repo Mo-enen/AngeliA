@@ -107,7 +107,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(IsGrounded ? Const.LAYER_LEVEL : Const.LAYER_ENVIRONMENT, this, true, Const.WATER_TAG);
+			CellPhysics.FillEntity(IsGrounded ? PhysicsLayer.LEVEL : PhysicsLayer.ENVIRONMENT, this, true, Const.WATER_TAG);
 		}
 
 
@@ -130,7 +130,7 @@ namespace AngeliaFramework {
 			// Try Merge
 			if (CellPhysics.GetEntity(
 					TypeID, IsGrounded ? new RectInt(X + Width / 2, Y, 1, 1) : Rect,
-					Const.MASK_MAP, this, OperationMode.TriggerOnly, Const.WATER_TAG
+					PhysicsMask.MAP, this, OperationMode.TriggerOnly, Const.WATER_TAG
 				) is Water overlapWater
 			) {
 				MergeWater(this, overlapWater);
@@ -142,22 +142,22 @@ namespace AngeliaFramework {
 
 				// Get Neighbors
 				WaterLeft = CellPhysics.GetEntity(
-					TypeID, rect.Shift(-Const.CEL, 0), Const.MASK_LEVEL,
+					TypeID, rect.Shift(-Const.CEL, 0), PhysicsMask.LEVEL,
 					this, OperationMode.TriggerOnly, Const.WATER_TAG
 				) as Water;
 
 				WaterRight = CellPhysics.GetEntity(
-					TypeID, rect.Shift(Const.CEL, 0), Const.MASK_LEVEL,
+					TypeID, rect.Shift(Const.CEL, 0), PhysicsMask.LEVEL,
 					this, OperationMode.TriggerOnly, Const.WATER_TAG
 				) as Water;
 
 				WaterDown = CellPhysics.GetEntity(
-					TypeID, rect.Shift(0, -Const.CEL), Const.MASK_LEVEL,
+					TypeID, rect.Shift(0, -Const.CEL), PhysicsMask.LEVEL,
 					this, OperationMode.TriggerOnly, Const.WATER_TAG
 				) as Water;
 
 				WaterUp = CellPhysics.GetEntity(
-					TypeID, rect.Shift(0, Const.CEL), Const.MASK_LEVEL,
+					TypeID, rect.Shift(0, Const.CEL), PhysicsMask.LEVEL,
 					this, OperationMode.TriggerOnly, Const.WATER_TAG
 				) as Water;
 
@@ -176,7 +176,7 @@ namespace AngeliaFramework {
 				const int MAX_SPEED = 48;
 				CurrentSpeed = (CurrentSpeed + GRAVITY).Clamp(0, MAX_SPEED);
 				Y = CellPhysics.MoveImmediately(
-					Const.MASK_LEVEL, new(X, Y), Direction4.Down,
+					PhysicsMask.LEVEL, new(X, Y), Direction4.Down,
 					CurrentSpeed, new(Width, Height), this, true
 				).y;
 				Height = (Height + CurrentSpeed).Clamp(0, Const.CEL);
@@ -213,7 +213,7 @@ namespace AngeliaFramework {
 				// Flow Up
 				if (
 					WaterUp == null &&
-					!CellPhysics.Overlap(Const.MASK_LEVEL, rect.Shift(0, Const.CEL), this)
+					!CellPhysics.Overlap(PhysicsMask.LEVEL, rect.Shift(0, Const.CEL), this)
 				) {
 					RequireTransferUp += (volume - 1000).Clamp(0, 1000);
 				}
@@ -238,13 +238,13 @@ namespace AngeliaFramework {
 				// Flow
 				if (
 					volume > StableVolume && WaterLeft == null &&
-					!CellPhysics.Overlap(Const.MASK_LEVEL, rect.Shift(-Const.CEL, 0), this)
+					!CellPhysics.Overlap(PhysicsMask.LEVEL, rect.Shift(-Const.CEL, 0), this)
 				) {
 					transferL += volume - StableVolume / 2;
 				}
 				if (
 					volume > StableVolume && WaterRight == null &&
-					!CellPhysics.Overlap(Const.MASK_LEVEL, rect.Shift(Const.CEL, 0), this)
+					!CellPhysics.Overlap(PhysicsMask.LEVEL, rect.Shift(Const.CEL, 0), this)
 				) {
 					transferR += volume - StableVolume / 2;
 				}
@@ -464,13 +464,13 @@ namespace AngeliaFramework {
 
 		private bool GroundCheck () {
 			if (IsGrounded && CellPhysics.Overlap(
-				Const.MASK_LEVEL, new RectInt(X + 1, Y - Const.CEL + 1, Const.CEL - 2, Const.CEL - 2),
+				PhysicsMask.LEVEL, new RectInt(X + 1, Y - Const.CEL + 1, Const.CEL - 2, Const.CEL - 2),
 				out var hit, this, OperationMode.TriggerOnly, Const.WATER_TAG
 			) && hit.Entity is Water water && water.IsGrounded) return true;
 			return !CellPhysics.RoomCheck(
-				Const.MASK_LEVEL, Rect, this, Direction4.Down
+				PhysicsMask.LEVEL, Rect, this, Direction4.Down
 			) || !CellPhysics.RoomCheckOneway(
-				Const.MASK_LEVEL, Rect, this, Direction4.Down, true, true
+				PhysicsMask.LEVEL, Rect, this, Direction4.Down, true, true
 			);
 		}
 

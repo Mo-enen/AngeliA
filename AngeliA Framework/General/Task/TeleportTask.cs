@@ -154,17 +154,17 @@ namespace AngeliaFramework {
 
 		public override void Perform (Cell[] cells, int cellCount, int layerIndex) {
 
-			if (layerIndex == Const.RENDER_LAYER_UI || layerIndex == Const.RENDER_LAYER_TOP_UI) return;
+			if (layerIndex == RenderLayer.UI || layerIndex == RenderLayer.TOP_UI) return;
 
 			float z01 = Mathf.InverseLerp(0, Duration, LocalFrame);
 			float z10 = 1f - z01;
 			Vector2Int center = CellRenderer.CameraRect.center.CeilToInt();
 			var scl = Mathf.LerpUnclamped(Scale, 1f, 1f - z10 * z10);
 
-			if (layerIndex == Const.RENDER_LAYER_BEHIND) {
+			if (layerIndex == RenderLayer.BEHIND) {
 				// Behind
 				PerformLogic(cells, center, cellCount, scl, true);
-			} else if (layerIndex != Const.RENDER_LAYER_WALLPAPER) {
+			} else if (layerIndex != RenderLayer.WALLPAPER) {
 				// Front
 				PerformLogic(cells, center, cellCount, scl, false);
 			}

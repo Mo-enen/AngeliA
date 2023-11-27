@@ -43,7 +43,7 @@ namespace AngeliaFramework {
 	}
 
 
-	public abstract class Conveyor : Entity {
+	public abstract class Conveyor : EnvironmentEntity {
 
 
 		// Api
@@ -73,7 +73,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillBlock(Const.LAYER_LEVEL, TypeID, Rect);
+			CellPhysics.FillBlock(PhysicsLayer.LEVEL, TypeID, Rect);
 		}
 
 
@@ -82,7 +82,7 @@ namespace AngeliaFramework {
 			var rect = Rect;
 			rect.y += rect.height;
 			rect.height = 1;
-			var hits = CellPhysics.OverlapAll(Const.MASK_RIGIDBODY, rect, out int count, this);
+			var hits = CellPhysics.OverlapAll(PhysicsMask.RIGIDBODY, rect, out int count, this);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 				if (hit.Entity is Rigidbody rig) {

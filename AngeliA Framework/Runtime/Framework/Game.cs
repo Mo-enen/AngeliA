@@ -9,6 +9,15 @@ namespace AngeliaFramework {
 
 	public enum FullscreenMode { Window = 0, Fullscreen = 1, FullscreenLow = 2, }
 
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitialize : System.Attribute { public int Order; public OnGameInitialize (int order) => Order = order; }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateLaterAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdatePauselessAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameRestartAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameTryingToQuitAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSlotChangedAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSlotCreatedAttribute : System.Attribute { }
+
 
 	[ExecuteInEditMode]
 	public sealed class Game : MonoBehaviour {
@@ -230,7 +239,7 @@ namespace AngeliaFramework {
 					CellRenderer.BeginDraw(IsPausing);
 					OnGameUpdate?.Invoke();
 					CellRendererGUI.Update(PauselessFrame);
-					Stage.FrameUpdate(GlobalFrame);
+					Stage.UpdateAllEntities(GlobalFrame);
 					OnGameUpdateLater?.Invoke();
 					CellRendererGUI.LateUpdate();
 					if (GlobalFrame % 36000 == 0) RefreshBackgroundTint();
@@ -239,7 +248,7 @@ namespace AngeliaFramework {
 					AudioPlayer.FrameUpdate(IsPausing);
 					FrameInput.FrameUpdate(CellRenderer.CameraRect);
 					CellRenderer.BeginDraw(IsPausing);
-					Stage.FrameUpdate(GlobalFrame, Const.ENTITY_LAYER_UI);
+					Stage.UpdateAllEntities(GlobalFrame, EntityLayer.UI);
 				}
 				OnGameUpdatePauseless?.Invoke();
 				CellRenderer.FrameUpdate(GlobalFrame, GameCamera);

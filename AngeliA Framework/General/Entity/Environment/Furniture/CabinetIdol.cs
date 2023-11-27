@@ -21,7 +21,6 @@ namespace AngeliaFramework {
 				TypeID, s_ArtworkIndex.Value, out var sprite, true, true
 			)) {
 				var cell = CellRenderer.Draw(sprite.GlobalID, RenderingRect);
-				AngeUtil.DrawShadow(sprite.GlobalID, cell);
 				if ((this as IActionTarget).IsHighlighted) {
 					IActionTarget.HighlightBlink(cell, ModuleType, Pose);
 				}

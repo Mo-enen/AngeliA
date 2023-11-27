@@ -85,7 +85,7 @@ namespace AngeliaFramework {
 			}
 
 			// Put Out when Hit Water
-			if (CellPhysics.Overlap(Const.MASK_MAP, Rect, this, OperationMode.TriggerOnly, Const.WATER_TAG)) {
+			if (CellPhysics.Overlap(PhysicsMask.MAP, Rect, this, OperationMode.TriggerOnly, Const.WATER_TAG)) {
 				PutOut();
 				Active = false;
 				return;
@@ -220,7 +220,7 @@ namespace AngeliaFramework {
 
 		public void Spread () {
 			var hits = CellPhysics.OverlapAll(
-				Const.MASK_RIGIDBODY,
+				PhysicsMask.RIGIDBODY,
 				Rect.Expand(SpreadRange), out int count,
 				this, OperationMode.ColliderAndTrigger
 			);

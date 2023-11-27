@@ -12,7 +12,7 @@ namespace AngeliaFramework {
 
 		// Api
 		public int Team => Const.TEAM_ENVIRONMENT;
-		protected override int PhysicsLayer => Const.LAYER_ENVIRONMENT;
+		protected override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
 		public override bool AllowBeingPush => false;
 		protected override bool ClearChildVelocityX => false;
 		protected override bool ClearChildVelocityY => false;
@@ -53,7 +53,6 @@ namespace AngeliaFramework {
 				// Normal
 				if (CellRenderer.TryGetSpriteFromGroup(TypeID, 0, out var sprite, false, true)) {
 					CellRenderer.Draw(sprite.GlobalID, Rect);
-					AngeUtil.DrawShadow(sprite.GlobalID, Rect);
 				}
 			} else {
 				// Rolling
@@ -62,7 +61,6 @@ namespace AngeliaFramework {
 					CellRenderer.Draw(
 						sprite.GlobalID, X + Width / 2, Y + Height / 2, 500, 500, RollingRotation, Width, Height
 					);
-					AngeUtil.DrawShadow(sprite.GlobalID, Rect);
 				}
 			}
 		}
@@ -153,7 +151,7 @@ namespace AngeliaFramework {
 			if (characterDriver == null) {
 				int shrinkX = DeltaPositionX.Abs() + 16;
 				var hits = CellPhysics.OverlapAll(
-					Const.MASK_RIGIDBODY,
+					PhysicsMask.RIGIDBODY,
 					Rect.Shrink(shrinkX, shrinkX, 0, 0).Edge(Direction4.Up, 1),
 					out int count, this
 				);

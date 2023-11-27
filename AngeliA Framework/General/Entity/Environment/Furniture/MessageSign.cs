@@ -11,7 +11,7 @@ namespace AngeliaFramework {
 		int ICombustible.BurnStartFrame { get; set; }
 
 		public override void FillPhysics () {
-			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
+			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 		}
 
 	}

@@ -119,7 +119,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
+			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 		}
 
 
@@ -191,7 +191,7 @@ namespace AngeliaFramework {
 			// End by Hit Other Scroll Entity
 			var nextScroll = CellPhysics.GetEntity<CameraAutoScroll>(
 				new RectInt(X + Const.HALF, Y + Const.HALF, 1, 1),
-				Const.MASK_ENVIRONMENT, this, OperationMode.TriggerOnly
+				PhysicsMask.ENVIRONMENT, this, OperationMode.TriggerOnly
 			);
 			if (nextScroll != null && nextScroll.Active) {
 

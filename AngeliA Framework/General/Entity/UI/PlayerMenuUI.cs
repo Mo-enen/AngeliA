@@ -12,20 +12,20 @@ namespace AngeliaFramework {
 		public override void DrawPanel (RectInt panelRect) {
 			PlayerMenuUI.DrawTopInventory(InventoryID, Column, Row);
 			// Icon
-			if (AvatarIcon != 0) {
-				int ICON_SIZE = Unify(96);
-				int INFO_WIDTH = Unify(PlayerMenuUI.INFO_WIDTH);
-				int PADDING = Unify(12);
-				if (CellRenderer.TryGetSpriteFromGroup(AvatarIcon, 0, out var sprite, false, true)) {
-					var iconRect = new RectInt(
-						panelRect.x - ICON_SIZE - (PADDING + INFO_WIDTH - ICON_SIZE) / 2,
-						panelRect.y + PADDING,
-						ICON_SIZE, ICON_SIZE
-					);
-					CellRenderer.Draw(Const.PIXEL, iconRect.Expand(Unify(12)), Const.BLACK, int.MinValue + 1);
-					CellRenderer.Draw(sprite.GlobalID, iconRect, int.MinValue + 16);
-				}
-			}
+			//if (AvatarIcon != 0) {
+			//	int ICON_SIZE = Unify(96);
+			//	int INFO_WIDTH = Unify(PlayerMenuUI.INFO_WIDTH);
+			//	int PADDING = Unify(12);
+			//	if (CellRenderer.TryGetSpriteFromGroup(AvatarIcon, 0, out var sprite, false, true)) {
+			//		var iconRect = new RectInt(
+			//			panelRect.x - ICON_SIZE - (PADDING + INFO_WIDTH - ICON_SIZE) / 2,
+			//			panelRect.y + PADDING,
+			//			ICON_SIZE, ICON_SIZE
+			//		);
+			//		CellRenderer.Draw(Const.PIXEL, iconRect.Expand(Unify(12)), Const.BLACK, int.MinValue + 1);
+			//		CellRenderer.Draw(sprite.GlobalID, iconRect, int.MinValue + 16);
+			//	}
+			//}
 		}
 	}
 

@@ -718,7 +718,7 @@ namespace AngeliaFramework {
 		private void MovementUpdate_Push () {
 			if (VelocityX == 0 || NavigationEnable) return;
 			var hits = CellPhysics.OverlapAll(
-				Const.MASK_ENVIRONMENT,
+				PhysicsMask.ENVIRONMENT,
 				Rect.Shrink(0, 0, 4, 4).Edge(VelocityX < 0 ? Direction4.Left : Direction4.Right),
 				out int count, this
 			);
@@ -844,18 +844,18 @@ namespace AngeliaFramework {
 
 			// Oneway Check
 			if ((IsSquatting || IsDashing) && !CellPhysics.RoomCheckOneway(
-				Const.MASK_LEVEL, rect, this, Direction4.Up, false
+				PhysicsMask.LEVEL, rect, this, Direction4.Up, false
 			)) return true;
 
 			// Overlap Check
-			return CellPhysics.Overlap(Const.MASK_MAP, rect, null);
+			return CellPhysics.Overlap(PhysicsMask.MAP, rect, null);
 		}
 
 
 		private bool ClimbCheck (bool up = false) {
 			if (IsInsideGround) return false;
 			if (CellPhysics.Overlap(
-				Const.MASK_MAP,
+				PhysicsMask.MAP,
 				up ? Rect.Shift(0, ClimbSpeedY) : Rect,
 				this,
 				OperationMode.TriggerOnly,
@@ -864,7 +864,7 @@ namespace AngeliaFramework {
 				return true;
 			}
 			if (CellPhysics.Overlap(
-				Const.MASK_MAP,
+				PhysicsMask.MAP,
 				up ? Rect.Shift(0, ClimbSpeedY) : Rect,
 				out var info,
 				this,
@@ -891,7 +891,7 @@ namespace AngeliaFramework {
 				1, 1
 			);
 			if (SlideOnAnyBlock) {
-				var hits = CellPhysics.OverlapAll(Const.MASK_MAP, rect, out int count, this, OperationMode.ColliderOnly);
+				var hits = CellPhysics.OverlapAll(PhysicsMask.MAP, rect, out int count, this, OperationMode.ColliderOnly);
 				for (int i = 0; i < count; i++) {
 					var hit = hits[i];
 					if (hit.Tag == Const.NO_SLIDE_TAG) continue;
@@ -902,7 +902,7 @@ namespace AngeliaFramework {
 				return false;
 			} else {
 				return CellPhysics.Overlap(
-					Const.MASK_MAP, rect, this, OperationMode.ColliderOnly, Const.SLIDE_TAG
+					PhysicsMask.MAP, rect, this, OperationMode.ColliderOnly, Const.SLIDE_TAG
 				);
 			}
 		}
@@ -923,10 +923,10 @@ namespace AngeliaFramework {
 				height / 2 + GRAB_TOP_CHECK_GAP
 			);
 			if (CellPhysics.Overlap(
-				Const.MASK_MAP, rect, out var hit, this,
+				PhysicsMask.MAP, rect, out var hit, this,
 				OperationMode.ColliderOnly, Const.GRAB_TOP_TAG
 			) || CellPhysics.Overlap(
-				Const.MASK_MAP, rect, out hit, this,
+				PhysicsMask.MAP, rect, out hit, this,
 				OperationMode.ColliderOnly, Const.GRAB_TAG
 			)) {
 				grabbingY = hit.Rect.yMin - (GrowingHeight * GrabTopHeightAmount / 1000);
@@ -961,22 +961,22 @@ namespace AngeliaFramework {
 				(AllowCheck(rectU, Const.GRAB_SIDE_TAG) || AllowCheck(rectU, Const.GRAB_TAG));
 			if (allowGrab) {
 				allowMoveUp = CellPhysics.Overlap(
-					Const.MASK_MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, Const.GRAB_SIDE_TAG
+					PhysicsMask.MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, Const.GRAB_SIDE_TAG
 				) || CellPhysics.Overlap(
-					Const.MASK_MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, Const.GRAB_TAG
+					PhysicsMask.MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, Const.GRAB_TAG
 				);
 			}
 			return allowGrab;
 			// Func
-			bool AllowCheck (RectInt rect, int tag) => CellPhysics.Overlap(Const.MASK_MAP, rect, this, OperationMode.ColliderOnly, tag);
+			bool AllowCheck (RectInt rect, int tag) => CellPhysics.Overlap(PhysicsMask.MAP, rect, this, OperationMode.ColliderOnly, tag);
 		}
 
 
 		private bool JumpThoughOnewayCheck () {
 			var rect = new RectInt(Hitbox.xMin, Hitbox.yMin + 4 - Const.CEL / 4, Hitbox.width, Const.CEL / 4);
-			if (CellPhysics.Overlap(Const.MASK_MAP, rect, this)) return false;
+			if (CellPhysics.Overlap(PhysicsMask.MAP, rect, this)) return false;
 			var hits = CellPhysics.OverlapAll(
-				Const.MASK_MAP, rect, out int count, this,
+				PhysicsMask.MAP, rect, out int count, this,
 				OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG
 			);
 			for (int i = 0; i < count; i++) {
@@ -994,7 +994,7 @@ namespace AngeliaFramework {
 				// Up
 				// No Block Above
 				if (CellPhysics.Overlap(
-					Const.MASK_MAP,
+					PhysicsMask.MAP,
 					new RectInt(x, Y + (GrowingHeight * GrabTopHeightAmount / 1000) + Const.CEL + Const.HALF, width, 1),
 					this
 				)) return false;
@@ -1003,13 +1003,13 @@ namespace AngeliaFramework {
 				// Down
 				// No Block Below
 				if (CellPhysics.Overlap(
-					Const.MASK_MAP,
+					PhysicsMask.MAP,
 					new RectInt(x, Y - Const.CEL - Const.HALF, width, 1),
 					this
 				)) return false;
 				// Standing on Grab-Top Block
 				var hits = CellPhysics.OverlapAll(
-					Const.MASK_MAP,
+					PhysicsMask.MAP,
 					new RectInt(x, Y + 4 - Const.CEL / 4, width, Const.CEL / 4), out int count,
 					this, OperationMode.ColliderOnly, Const.GRAB_TOP_TAG
 				);

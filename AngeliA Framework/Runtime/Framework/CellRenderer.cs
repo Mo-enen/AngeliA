@@ -275,9 +275,10 @@ namespace AngeliaFramework {
 		private static readonly int SKYBOX_TOP = Shader.PropertyToID("_ColorA");
 		private static readonly int SKYBOX_BOTTOM = Shader.PropertyToID("_ColorB");
 		private static readonly Shader SKYBOX_SHADER = Shader.Find("Angelia/Skybox");
-		private static readonly Shader[] RENDERING_SHADERS = new Shader[Const.RENDER_LAYER_COUNT] {
+		private static readonly Shader[] RENDERING_SHADERS = new Shader[RenderLayer.COUNT] {
 			Shader.Find("Angelia/Lerp"),// Wallpaper
 			Shader.Find("Angelia/Lerp"),// Behind
+			Shader.Find("Angelia/Color"),// Shadow
 			Shader.Find("Angelia/Cell"),// Default
 			Shader.Find("Angelia/Color"),// Color
 			Shader.Find("Angelia/Mult"),// Mult
@@ -285,9 +286,10 @@ namespace AngeliaFramework {
 			Shader.Find("Angelia/Cell"),// UI
 			Shader.Find("Angelia/Cell"),// TopUI
 		};
-		private static readonly int[] RENDER_CAPACITY = new int[Const.RENDER_LAYER_COUNT] {
+		private static readonly int[] RENDER_CAPACITY = new int[RenderLayer.COUNT] {
 			256,	// Wallpaper 
 			4096,	// Behind 
+			2048,	// Shadow 
 			4096,	// Default 
 			256,	// Color 
 			128,	// Mult 
@@ -295,8 +297,8 @@ namespace AngeliaFramework {
 			4096,	// UI 
 			256,	// TopUI 
 		};
-		private static readonly string[] LAYER_NAMES = new string[Const.RENDER_LAYER_COUNT] {
-			"Wallpaper", "Behind", "Default", "Color", "Mult", "Add", "UI", "TopUI",
+		private static readonly string[] LAYER_NAMES = new string[RenderLayer.COUNT] {
+			"Wallpaper", "Behind", "Shadow", "Default", "Color", "Mult", "Add", "UI", "TopUI",
 		};
 		private static readonly bool[] DEFAULT_PART_IGNORE = new bool[9] { false, false, false, false, false, false, false, false, false, };
 
@@ -358,18 +360,18 @@ namespace AngeliaFramework {
 
 			Sprites = sheet.Sprites;
 			Chains = sheet.SpriteChains;
-			Layers = new Layer[Const.RENDER_LAYER_COUNT];
+			Layers = new Layer[RenderLayer.COUNT];
 
 			// Layers
-			for (int i = 0; i < Const.RENDER_LAYER_COUNT; i++) {
+			for (int i = 0; i < RenderLayer.COUNT; i++) {
 				var shader = RENDERING_SHADERS[i];
 				int rCapacity = RENDER_CAPACITY[i.Clamp(0, RENDER_CAPACITY.Length - 1)];
 				Layers[i] = CreateLayer(
 					camera,
 					sheet.GetMaterial(shader, sheetTexture),
 					LAYER_NAMES[i],
-					uiLayer: i == Const.RENDER_LAYER_UI || i == Const.RENDER_LAYER_TOP_UI,
-					sortingOrder: i == Const.RENDER_LAYER_TOP_UI ? 2048 : i,
+					uiLayer: i == RenderLayer.UI || i == RenderLayer.TOP_UI,
+					sortingOrder: i == RenderLayer.TOP_UI ? 2048 : i,
 					rCapacity,
 					textLayer: false
 				);
@@ -869,14 +871,15 @@ namespace AngeliaFramework {
 			}
 		}
 		public static void SetTextLayer (int index) => CurrentTextLayerIndex = index.Clamp(0, TextLayers.Length - 1);
-		public static void SetLayerToWallpaper () => CurrentLayerIndex = Const.RENDER_LAYER_WALLPAPER;
-		public static void SetLayerToBehind () => CurrentLayerIndex = Const.RENDER_LAYER_BEHIND;
-		public static void SetLayerToDefault () => CurrentLayerIndex = Const.RENDER_LAYER_CELL;
-		public static void SetLayerToColor () => CurrentLayerIndex = Const.RENDER_LAYER_COLOR;
-		public static void SetLayerToMultiply () => CurrentLayerIndex = Const.RENDER_LAYER_MULT;
-		public static void SetLayerToAdditive () => CurrentLayerIndex = Const.RENDER_LAYER_ADD;
-		public static void SetLayerToUI () => CurrentLayerIndex = Const.RENDER_LAYER_UI;
-		public static void SetLayerToTopUI () => CurrentLayerIndex = Const.RENDER_LAYER_TOP_UI;
+		public static void SetLayerToWallpaper () => CurrentLayerIndex = RenderLayer.WALLPAPER;
+		public static void SetLayerToBehind () => CurrentLayerIndex = RenderLayer.BEHIND;
+		public static void SetLayerToShadow () => CurrentLayerIndex = RenderLayer.SHADOW;
+		public static void SetLayerToDefault () => CurrentLayerIndex = RenderLayer.DEFAULT;
+		public static void SetLayerToColor () => CurrentLayerIndex = RenderLayer.COLOR;
+		public static void SetLayerToMultiply () => CurrentLayerIndex = RenderLayer.MULT;
+		public static void SetLayerToAdditive () => CurrentLayerIndex = RenderLayer.ADD;
+		public static void SetLayerToUI () => CurrentLayerIndex = RenderLayer.UI;
+		public static void SetLayerToTopUI () => CurrentLayerIndex = RenderLayer.TOP_UI;
 
 
 		public static string GetLayerName (int layerIndex) => layerIndex >= 0 && layerIndex < Layers.Length ? Layers[layerIndex].RendererRoot.name : "";

@@ -56,7 +56,7 @@ Shader "Angelia/Color"
 			fixed4 frag(v2f i) : SV_Target
 			{
                 fixed4 tColor = i.color;
-                tColor.a = tex2D(_MainTex, i.uv).a;
+                tColor.a *= tex2D(_MainTex, i.uv).a;
                 return tColor;
 }
 		ENDCG

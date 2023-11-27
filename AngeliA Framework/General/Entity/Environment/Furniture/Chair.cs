@@ -33,7 +33,7 @@ namespace AngeliaFramework {
 			if (!DockedToRight.HasValue) {
 				DockedToRight = !CellPhysics.HasEntity<Table>(
 					Rect.Expand(ColliderBorder).Shift(-Const.CEL, 0).Shrink(1),
-					Const.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
+					PhysicsMask.ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 				);
 			}
 			// Render
@@ -41,10 +41,8 @@ namespace AngeliaFramework {
 				var rect = Rect.Expand(ColliderBorder);
 				if (DockedToRight.HasValue && DockedToRight.Value) {
 					CellRenderer.Draw(sprite.GlobalID, rect);
-					AngeUtil.DrawShadow(sprite.GlobalID, rect);
 				} else {
-					var cell = CellRenderer.Draw(sprite.GlobalID, rect.CenterX(), rect.y, 500, 0, 0, -rect.width, rect.height);
-					AngeUtil.DrawShadow(sprite.GlobalID, cell);
+					CellRenderer.Draw(sprite.GlobalID, rect.CenterX(), rect.y, 500, 0, 0, -rect.width, rect.height);
 				}
 			}
 		}

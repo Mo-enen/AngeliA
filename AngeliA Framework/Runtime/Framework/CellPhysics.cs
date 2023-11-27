@@ -94,7 +94,7 @@ namespace AngeliaFramework {
 
 		[OnGameInitialize(64)]
 		public static void Initialize () {
-			int layerCount = Const.PHYSICS_LAYER_COUNT;
+			int layerCount = PhysicsLayer.COUNT;
 			CellWidth = (Const.VIEW_RATIO * Const.MAX_HEIGHT / 1000) / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
 			CellHeight = (Const.MAX_HEIGHT) / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
 			LayerCount = layerCount;
@@ -358,55 +358,7 @@ namespace AngeliaFramework {
 		}
 
 
-
 		// Move
-		/* MoveSafeLogicNew
-		private static Vector2Int MoveSafeLogicNew (int mask, Vector2Int from, int speedX, int speedY, Vector2Int size, Entity entity, bool ignoreOneway, out bool stopForOnewayX, out bool stopForOnewayY) {
-			const int RIGIDBODY_FAST_SPEED = 32;
-			var _from = from;
-			var result = from;
-			stopForOnewayX = false;
-			stopForOnewayY = false;
-			if (Mathf.Abs(speedX) > RIGIDBODY_FAST_SPEED || Mathf.Abs(speedY) > RIGIDBODY_FAST_SPEED) {
-				string test = "";
-				// Too Fast
-				int maxSpeed = Mathf.Max(speedX.Abs(), speedY.Abs());
-				int stepCount = maxSpeed / RIGIDBODY_FAST_SPEED;
-				if (maxSpeed % RIGIDBODY_FAST_SPEED != 0) stepCount++;
-				Vector2Int _to = default;
-				var _final = new Vector2Int(from.x + speedX, from.y + speedY);
-				for (int step = 0; step < stepCount; step++) {
-					if (step == stepCount - 1) {
-						_to.x = _final.x;
-						_to.y = _final.y;
-					} else {
-						_to.x = Util.RemapUnclamped(0, stepCount, from.x, _final.x, step + 1);
-						_to.y = Util.RemapUnclamped(0, stepCount, from.y, _final.y, step + 1);
-					}
-
-					result = MoveLogic3(mask, _from, _to, size, entity);
-					test += $"{_from}>>{_to}, ";
-					if (result == _from) break;
-					_from = _to;
-				}
-				if (entity is MainPlayer) Debug.Log(test);
-			} else {
-				// Normal
-				result = MoveLogic3(
-					mask, _from,
-					new Vector2Int(_from.x + speedX, _from.y + speedY),
-					size, entity
-				);
-			}
-			if (!ignoreOneway) {
-				result = OnewayCheck(
-					mask, from, result, size, entity,
-					out stopForOnewayX, out stopForOnewayY
-				);
-			}
-			return result;
-		}
-		//*/
 		private static Vector2Int MoveSafeLogic (int mask, Vector2Int from, int speedX, int speedY, Vector2Int size, Entity entity, bool ignoreOneway, out bool stopForOnewayX, out bool stopForOnewayY) {
 			const int RIGIDBODY_FAST_SPEED = 32;
 			var _from = from;

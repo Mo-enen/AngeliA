@@ -33,7 +33,7 @@ namespace AngeliaFramework {
 
 	[EntityAttribute.MapEditorGroup("Vegetation")]
 	[EntityAttribute.Capacity(128)]
-	public abstract class Plant : Entity, ICombustible, IDamageReceiver {
+	public abstract class Plant : EnvironmentEntity, ICombustible, IDamageReceiver {
 
 
 		// Api
@@ -57,7 +57,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
+			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 		}
 
 

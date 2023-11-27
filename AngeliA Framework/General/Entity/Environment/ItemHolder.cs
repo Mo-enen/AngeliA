@@ -7,8 +7,8 @@ namespace AngeliaFramework {
 	[EntityAttribute.DontSpawnFromWorld]
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.Capacity(1024, 0)]
-	[EntityAttribute.Layer(Const.ENTITY_LAYER_ITEM)]
-	public class ItemHolder : Entity, IActionTarget {
+	[EntityAttribute.Layer(EntityLayer.ITEM)]
+	public class ItemHolder : EnvironmentEntity, IActionTarget {
 
 
 
@@ -52,7 +52,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(Const.LAYER_ITEM, this, true);
+			CellPhysics.FillEntity(PhysicsLayer.ITEM, this, true);
 		}
 
 
@@ -67,13 +67,13 @@ namespace AngeliaFramework {
 			// Fall
 			bool grounded =
 				VelocityY <= 0 &&
-				(!CellPhysics.RoomCheck(Const.MASK_MAP, Rect, this, Direction4.Down) ||
-				!CellPhysics.RoomCheckOneway(Const.MASK_MAP, Rect, this, Direction4.Down));
+				(!CellPhysics.RoomCheck(PhysicsMask.MAP, Rect, this, Direction4.Down) ||
+				!CellPhysics.RoomCheckOneway(PhysicsMask.MAP, Rect, this, Direction4.Down));
 			if (!grounded) {
 				if (VelocityY != 0) {
 					var rect = Rect;
 					rect.position = CellPhysics.Move(
-						Const.MASK_MAP, rect.position, 0, VelocityY, rect.size, this, out _, out bool stopY
+						PhysicsMask.MAP, rect.position, 0, VelocityY, rect.size, this, out _, out bool stopY
 					);
 					Y = rect.y;
 					if (stopY) VelocityY = 0;
@@ -90,7 +90,7 @@ namespace AngeliaFramework {
 				if (!MakingRoom) {
 					MakingRoom =
 						(Game.GlobalFrame - SpawnFrame) % 30 == 0 ||
-						CellPhysics.Overlap(Const.MASK_ITEM, makeRoomRect, this, OperationMode.TriggerOnly);
+						CellPhysics.Overlap(PhysicsMask.ITEM, makeRoomRect, this, OperationMode.TriggerOnly);
 				}
 				if (
 					MakingRoom &&
@@ -203,7 +203,7 @@ namespace AngeliaFramework {
 
 		private bool MakeRoomFromItems (RectInt roomRect) {
 			var hits = CellPhysics.OverlapAll(
-				Const.MASK_ITEM, roomRect, out int count,
+				PhysicsMask.ITEM, roomRect, out int count,
 				this, OperationMode.TriggerOnly
 			);
 			int pressureL = 0;
@@ -221,7 +221,7 @@ namespace AngeliaFramework {
 			if (pressureL + pressureR != 0 && pressureL != pressureR) {
 				var rect = Rect;
 				rect.position = CellPhysics.MoveIgnoreOneway(
-					Const.MASK_MAP, rect.position,
+					PhysicsMask.MAP, rect.position,
 					(pressureL - pressureR).Sign3() * 6, 0,
 					rect.size, this
 				);
@@ -234,11 +234,11 @@ namespace AngeliaFramework {
 
 
 		private bool MakeRoomFromSlope (RectInt roomRect) {
-			var slope = CellPhysics.GetEntity<Slope>(roomRect, Const.MASK_MAP, this, OperationMode.TriggerOnly);
+			var slope = CellPhysics.GetEntity<Slope>(roomRect, PhysicsMask.MAP, this, OperationMode.TriggerOnly);
 			if (slope == null) return false;
 			var rect = Rect;
 			rect.position = CellPhysics.MoveIgnoreOneway(
-				Const.MASK_MAP, rect.position,
+				PhysicsMask.MAP, rect.position,
 				slope.DirectionHorizontal == Direction2.Right ? 6 : -6, 0,
 				rect.size, this
 			);

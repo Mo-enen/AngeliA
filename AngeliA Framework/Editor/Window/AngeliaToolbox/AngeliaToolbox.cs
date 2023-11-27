@@ -35,14 +35,14 @@ namespace AngeliaFramework.Editor {
 		private const string UNITY_PROGRESS = "unity-progress-bar__progress";
 		private static readonly Color PROFILER_GREEN = new(0.5f, 1f, 0.4f, 0.5f);
 		private static readonly Color PROFILER_RED = new(1f, 0f, 0f, 0.5f);
-		private static readonly string[] ENTITY_LAYER_NAMES = new string[Const.ENTITY_LAYER_COUNT] { "Game", "Character", "Bullet", "Item", "Decorate", "UI", };
+		private static readonly string[] ENTITY_LAYER_NAMES = new string[EntityLayer.COUNT] { "Game", "Character", "Environment", "Bullet", "Item", "Decorate", "UI", };
 
 		// Data
 		private static readonly Color[] COLLIDER_TINTS = { Const.RED_BETTER, Const.ORANGE_BETTER, Color.yellow, Const.GREEN, Const.CYAN, Const.BLUE, Const.GREY_128, };
 		private static readonly List<VisualElement> EdittimeOnlyElements = new();
 		private static readonly List<VisualElement> RuntimeOnlyElements = new();
 		private static readonly List<VisualElement> ProfilerProgressBarTints = new();
-		private static readonly VisualElement[] ProfilerEntityBars = new VisualElement[Const.ENTITY_LAYER_COUNT];
+		private static readonly VisualElement[] ProfilerEntityBars = new VisualElement[EntityLayer.COUNT];
 		private static readonly List<PhysicsCell[,,]> CellPhysicsCells = new();
 		private static readonly List<GameObject> CacheRootObjects = new();
 		private static EditorWindow Inspector = null;
@@ -108,7 +108,7 @@ namespace AngeliaFramework.Editor {
 				ProfilerVE_CellContainer = null;
 				ProfilerVE_EntityContainer = null;
 				ProfilerVE_TaskContainer = null;
-				for (int i = 0; i < Const.ENTITY_LAYER_COUNT; i++) {
+				for (int i = 0; i < EntityLayer.COUNT; i++) {
 					ProfilerEntityBars[i] = null;
 				}
 
@@ -190,7 +190,7 @@ namespace AngeliaFramework.Editor {
 				if (CellPhysicsCells.Count == 0) {
 					try {
 						var layers = Util.GetStaticFieldValue(typeof(CellPhysics), "Layers") as System.Array;
-						for (int layerIndex = 0; layerIndex < Const.PHYSICS_LAYER_COUNT; layerIndex++) {
+						for (int layerIndex = 0; layerIndex < PhysicsLayer.COUNT; layerIndex++) {
 							var layerObj = layers.GetValue(layerIndex);
 							CellPhysicsCells.Add(Util.GetFieldValue(layerObj, "Cells") as PhysicsCell[,,]);
 						}
@@ -253,7 +253,7 @@ namespace AngeliaFramework.Editor {
 				GL.Color(Const.BLUE);
 
 				try {
-					for (int layer = 0; layer < Const.ENTITY_LAYER_COUNT; layer++) {
+					for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
 						var entities = Stage.Entities[layer];
 						int count = Stage.EntityCounts[layer];
 						for (int i = 0; i < count; i++) {
@@ -409,12 +409,12 @@ namespace AngeliaFramework.Editor {
 			// Entity
 			if (ProfilerVE_EntityContainer != null) {
 				if (ProfilerVE_EntityContainer.childCount == 0) {
-					for (int layer = 0; layer < Const.ENTITY_LAYER_COUNT; layer++) {
+					for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
 						ProfilerVE_EntityContainer.Add(CreateProfilerProgressBar(out ProfilerEntityBars[layer]));
 					}
 				}
 				if (ProfilerVE_EntityContainer.childCount > 0) {
-					for (int layer = 0; layer < Const.ENTITY_LAYER_COUNT; layer++) {
+					for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
 						if (ProfilerVE_EntityContainer.ElementAt(layer) is not ProgressBar bar) continue;
 						int use = Stage.EntityCounts[layer];
 						int all = Stage.Entities[layer].Length;

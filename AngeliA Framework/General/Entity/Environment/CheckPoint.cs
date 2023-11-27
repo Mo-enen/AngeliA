@@ -6,7 +6,7 @@ using UnityEngine;
 namespace AngeliaFramework {
 	[EntityAttribute.Capacity(16)]
 	[EntityAttribute.MapEditorGroup("CheckPoint")]
-	public abstract class CheckPoint : Entity {
+	public abstract class CheckPoint : EnvironmentEntity {
 
 
 
@@ -47,10 +47,10 @@ namespace AngeliaFramework {
 			base.FillPhysics();
 			if (!OnlySpawnWhenUnlocked || IsUnlocked(TypeID)) {
 				// Unlocked
-				CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
+				CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 			}
 			CellPhysics.FillBlock(
-				Const.LAYER_ENVIRONMENT, TypeID, Rect.Shrink(Border), true, Const.ONEWAY_UP_TAG
+				PhysicsLayer.ENVIRONMENT, TypeID, Rect.Shrink(Border), true, Const.ONEWAY_UP_TAG
 			);
 		}
 

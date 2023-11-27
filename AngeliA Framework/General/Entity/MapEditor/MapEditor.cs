@@ -1001,8 +1001,8 @@ namespace AngeliaFramework {
 				// Play >> Edit
 
 				// Despawn Entities from World
-				int count = Stage.EntityCounts[Const.ENTITY_LAYER_GAME];
-				var entities = Stage.Entities[Const.ENTITY_LAYER_GAME];
+				int count = Stage.EntityCounts[EntityLayer.GAME];
+				var entities = Stage.Entities[EntityLayer.GAME];
 				for (int i = 0; i < count; i++) {
 					var e = entities[i];
 					if (e.Active && e.FromWorld) {

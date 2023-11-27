@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public abstract class Vehicle : Rigidbody {
+	public abstract class Vehicle : EnvironmentRigidbody {
 
 
 		// Api

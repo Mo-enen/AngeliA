@@ -5,6 +5,59 @@ using UnityEngine.InputSystem.LowLevel;
 
 
 namespace AngeliaFramework {
+
+
+	public static class RenderLayer {
+		public const int WALLPAPER = 0;
+		public const int BEHIND = 1;
+		public const int SHADOW = 2;
+		public const int DEFAULT = 3;
+		public const int COLOR = 4;
+		public const int MULT = 5;
+		public const int ADD = 6;
+		public const int UI = 7;
+		public const int TOP_UI = 8;
+		public const int COUNT = 9;
+	}
+
+
+	public static class EntityLayer {
+		public const int GAME = 0;
+		public const int CHARACTER = 1;
+		public const int ENVIRONMENT = 2;
+		public const int BULLET = 3;
+		public const int ITEM = 4;
+		public const int DECORATE = 5;
+		public const int UI = 6;
+		public const int COUNT = 7;
+	}
+
+
+	public static class PhysicsLayer {
+		public const int LEVEL = 0;
+		public const int ENVIRONMENT = 1;
+		public const int ITEM = 2;
+		public const int CHARACTER = 3;
+		public const int DAMAGE = 4;
+		public const int COUNT = 5;
+	}
+
+
+	public static class PhysicsMask {
+		public const int NONE = 0;
+		public const int LEVEL = 0b1;
+		public const int ENVIRONMENT = 0b10;
+		public const int ITEM = 0b100;
+		public const int CHARACTER = 0b1000;
+		public const int DAMAGE = 0b10000;
+
+		public const int RIGIDBODY = ENVIRONMENT | CHARACTER;
+		public const int SOLID = LEVEL | ENVIRONMENT | CHARACTER;
+		public const int MAP = LEVEL | ENVIRONMENT;
+		public const int ENTITY = ENVIRONMENT | ITEM | CHARACTER;
+	}
+
+
 	public static class Const {
 
 		public const int CEL = 256;
@@ -31,35 +84,6 @@ namespace AngeliaFramework {
 		public const string CONVERSATION_FILE_EXT = "txt";
 		public const string EDITABLE_CONVERSATION_FILE_EXT = "conversation";
 		public const string LANGUAGE_FILE_EXT = "txt";
-
-		// Entity
-		public const int ENTITY_LAYER_GAME = 0;
-		public const int ENTITY_LAYER_CHARACTER = 1;
-		public const int ENTITY_LAYER_BULLET = 2;
-		public const int ENTITY_LAYER_ITEM = 3;
-		public const int ENTITY_LAYER_DECORATE = 4;
-		public const int ENTITY_LAYER_UI = 5;
-		public const int ENTITY_LAYER_COUNT = 6;
-
-		// Physics
-		public const int LAYER_LEVEL = 0;
-		public const int LAYER_ENVIRONMENT = 1;
-		public const int LAYER_ITEM = 2;
-		public const int LAYER_CHARACTER = 3;
-		public const int LAYER_DAMAGE = 4;
-		public const int PHYSICS_LAYER_COUNT = 5;
-
-		public const int MASK_NONE = 0;
-		public const int MASK_LEVEL = 0b1;
-		public const int MASK_ENVIRONMENT = 0b10;
-		public const int MASK_ITEM = 0b100;
-		public const int MASK_CHARACTER = 0b1000;
-		public const int MASK_DAMAGE = 0b10000;
-
-		public const int MASK_RIGIDBODY = MASK_ENVIRONMENT | MASK_CHARACTER;
-		public const int MASK_SOLID = MASK_LEVEL | MASK_ENVIRONMENT | MASK_CHARACTER;
-		public const int MASK_MAP = MASK_LEVEL | MASK_ENVIRONMENT;
-		public const int MASK_ENTITY = MASK_ENVIRONMENT | MASK_ITEM | MASK_CHARACTER;
 
 		// Tag
 		public static readonly int ONEWAY_UP_TAG = "OnewayUp".AngeHash();
@@ -116,34 +140,11 @@ namespace AngeliaFramework {
 		public static readonly Color32 GREY_32 = new(32, 32, 32, 255);
 		public static readonly Color32 GREY_12 = new(12, 12, 12, 255);
 		public static readonly Color32 SKIN_YELLOW = new(245, 217, 196, 255);
-		public const int RENDER_LAYER_WALLPAPER = 0;
-		public const int RENDER_LAYER_BEHIND = 1;
-		public const int RENDER_LAYER_CELL = 2;
-		public const int RENDER_LAYER_COLOR = 3;
-		public const int RENDER_LAYER_MULT = 4;
-		public const int RENDER_LAYER_ADD = 5;
-		public const int RENDER_LAYER_UI = 6;
-		public const int RENDER_LAYER_TOP_UI = 7;
-		public const int RENDER_LAYER_COUNT = 8;
 
 		// Cursor
 		public const int CURSOR_HAND = 0;
 		public const int CURSOR_MOVE = 1;
 		public const int CURSOR_BEAM = 2;
-
-		// Language
-		//public static readonly int UI_OK = "UI.OK".AngeHash();
-		//public static readonly int UI_YES = "UI.Yes".AngeHash();
-		//public static readonly int UI_CANCEL = "UI.Cancel".AngeHash();
-		//public static readonly int UI_BACK = "UI.Back".AngeHash();
-		//public static readonly int UI_QUIT = "UI.Quit".AngeHash();
-		//public static readonly int UI_RESTART = "UI.Restart".AngeHash();
-		//public static readonly int UI_GAMEOVER = "UI.GameOver".AngeHash();
-		//public static readonly int UI_LEFT = "UI.Left".AngeHash();
-		//public static readonly int UI_RIGHT = "UI.Right".AngeHash();
-		//public static readonly int UI_DOWN = "UI.Down".AngeHash();
-		//public static readonly int UI_UP = "UI.Up".AngeHash();
-		//public static readonly int UI_NONE = "UI.None".AngeHash();
 
 		// Gamepad Code
 		public static int GAMEPAD_JUMP_HINT_CODE => GAMEPAD_CODE.TryGetValue(FrameInput.GetGamepadMap(Gamekey.Jump), out int _value0) ? _value0 : 0;

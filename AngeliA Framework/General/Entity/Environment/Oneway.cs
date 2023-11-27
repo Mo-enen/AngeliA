@@ -24,11 +24,11 @@ namespace AngeliaFramework {
 	}
 
 
-	public abstract class Oneway : Entity {
+	public abstract class Oneway : EnvironmentEntity {
 
 
 		// Const
-		private const int MASK = Const.MASK_CHARACTER | Const.MASK_ENVIRONMENT | Const.MASK_ITEM;
+		private const int MASK = PhysicsMask.ENTITY;
 
 		// Api
 		public abstract Direction4 GateDirection { get; }
@@ -58,7 +58,7 @@ namespace AngeliaFramework {
 
 
 		public override void FillPhysics () {
-			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true, AngeUtil.GetOnewayTag(GateDirection));
+			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, AngeUtil.GetOnewayTag(GateDirection));
 		}
 
 

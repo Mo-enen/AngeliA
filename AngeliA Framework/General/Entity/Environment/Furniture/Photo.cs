@@ -16,13 +16,12 @@ namespace AngeliaFramework {
 		}
 
 		public override void FillPhysics () {
-			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
+			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 		}
 
 		public override void FrameUpdate () {
 			if (CellRenderer.TryGetSpriteFromGroup(TypeID, PhotoIndex, out var sprite, true, false)) {
 				var cell = CellRenderer.Draw(sprite.GlobalID, RenderingRect);
-				AngeUtil.DrawShadow(sprite.GlobalID, RenderingRect);
 				if ((this as IActionTarget).IsHighlighted) {
 					IActionTarget.HighlightBlink(cell, ModuleType, Pose);
 				}

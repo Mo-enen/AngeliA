@@ -38,21 +38,20 @@ namespace AngeliaFramework {
 
 		public static object InvokeMethod (object obj, string methodName, params object[] param) {
 			if (string.IsNullOrEmpty(methodName)) { return null; }
-			//try {
-			param ??= new object[0];
-			var type = obj.GetType();
-			var method = type.GetMethod(
-				methodName,
-				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
-			);
-			if (method == null) {
-				Debug.LogWarning("method is null");
-				return null;
-			}
-			//Debug.Log(method + "\n" + obj + " \n" + param);
-			return method.Invoke(obj, param);
-			//} catch (System.Exception ex) { Debug.LogError(ex); }
-			//return null;
+			try {
+				param ??= new object[0];
+				var type = obj.GetType();
+				var method = type.GetMethod(
+					methodName,
+					BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
+				);
+				if (method == null) {
+					Debug.LogWarning("method is null");
+					return null;
+				}
+				return method.Invoke(obj, param);
+			} catch (System.Exception ex) { Debug.LogError(ex); }
+			return null;
 		}
 
 

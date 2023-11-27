@@ -67,7 +67,6 @@ namespace AngeliaFramework {
 			var act = this as IActionTarget;
 			if (CellRenderer.TryGetSpriteFromGroup(TypeID, Open ? 1 : 0, out var sprite)) {
 				var cell = CellRenderer.Draw(sprite.GlobalID, RenderingRect, act.AllowInvoke() ? Const.WHITE : Const.WHITE_96);
-				AngeUtil.DrawShadow(sprite.GlobalID, RenderingRect);
 				if (act.IsHighlighted) {
 					IActionTarget.HighlightBlink(cell, ModuleType, Pose);
 				}

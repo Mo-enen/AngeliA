@@ -87,7 +87,7 @@ namespace AngeliaFramework {
 
 				// Stop Check
 				if (Head == null && CellPhysics.Overlap(
-					Const.MASK_LEVEL, new(TargetPosition.x + HALF, TargetPosition.y + HALF, 1, 1), null
+					PhysicsMask.LEVEL, new(TargetPosition.x + HALF, TargetPosition.y + HALF, 1, 1), null
 				)) {
 					EndReachingFrame = Game.GlobalFrame;
 				}
@@ -162,7 +162,7 @@ namespace AngeliaFramework {
 			// L
 			for (int x = -Const.HALF; ; x -= Const.CEL) {
 				var snake = CellPhysics.GetEntity<SnakePlatform>(
-					new RectInt(X + x, y, 1, 1), Const.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
+					new RectInt(X + x, y, 1, 1), PhysicsMask.ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 				);
 				if (snake == null) break;
 				snake.PrevTouched = true;
@@ -173,7 +173,7 @@ namespace AngeliaFramework {
 			// R
 			for (int x = Const.CEL + Const.HALF; ; x += Const.CEL) {
 				var snake = CellPhysics.GetEntity<SnakePlatform>(
-					new RectInt(X + x, y, 1, 1), Const.MASK_ENVIRONMENT, this, OperationMode.ColliderAndTrigger
+					new RectInt(X + x, y, 1, 1), PhysicsMask.ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 				);
 				if (snake == null) break;
 				snake.PrevTouched = true;
@@ -200,7 +200,7 @@ namespace AngeliaFramework {
 				int rightX = right.X + right.Width;
 				for (int x = leftX; x < rightX; x += Const.CEL) {
 					var snake = CellPhysics.GetEntity<SnakePlatform>(
-						new RectInt(x, y, 1, 1), Const.MASK_ENVIRONMENT,
+						new RectInt(x, y, 1, 1), PhysicsMask.ENVIRONMENT,
 						null, OperationMode.ColliderAndTrigger
 					);
 					if (snake == null) continue;

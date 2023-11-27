@@ -20,7 +20,7 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
-	public abstract class Door : Entity {
+	public abstract class Door : EnvironmentEntity {
 
 
 		// Const
@@ -45,7 +45,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
+			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 		}
 
 
@@ -83,7 +83,6 @@ namespace AngeliaFramework {
 				sprite.GlobalID, X + Width / 2, Y, 500, 0, 0,
 				Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE
 			);
-			AngeUtil.DrawShadow(sprite.GlobalID, cell);
 
 			// Z Fix
 			if (IsFrontDoor != FrameTask.IsTasking<TeleportTask>()) {

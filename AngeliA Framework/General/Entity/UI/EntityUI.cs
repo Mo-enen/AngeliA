@@ -11,7 +11,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.Capacity(1, 1)]
 	[EntityAttribute.ForceSpawn]
 	[EntityAttribute.StageOrder(1024)]
-	[EntityAttribute.Layer(Const.ENTITY_LAYER_UI)]
+	[EntityAttribute.Layer(EntityLayer.UI)]
 	public abstract class EntityUI : Entity {
 
 		public override void FrameUpdate () {

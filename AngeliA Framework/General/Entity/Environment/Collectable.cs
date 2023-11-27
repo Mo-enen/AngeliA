@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 	[EntityAttribute.MapEditorGroup("Collectable")]
-	public abstract class Collectable : Entity {
+	public abstract class Collectable : EnvironmentEntity {
 
-		
+
 		public override void OnActivated () {
 			base.OnActivated();
 			if (CellRenderer.TryGetSprite(TypeID, out var sprite)) {
@@ -20,7 +20,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
+			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 		}
 
 

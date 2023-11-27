@@ -12,7 +12,7 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.Capacity(256)]
-	public abstract class DonutBlock : Entity {
+	public abstract class DonutBlock : EnvironmentEntity {
 
 
 		// SUB
@@ -46,7 +46,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this);
+			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
 		}
 
 
@@ -57,7 +57,7 @@ namespace AngeliaFramework {
 
 			// Fall Check
 			if (!IsFalling) {
-				IsHolding = !CellPhysics.RoomCheck(Const.MASK_CHARACTER, rect, this, Direction4.Up);
+				IsHolding = !CellPhysics.RoomCheck(PhysicsMask.CHARACTER, rect, this, Direction4.Up);
 				if (IsHolding) {
 					if (!LastHolding) HoldStartFrame = frame;
 					if (frame - HoldStartFrame > HoldDuration) {
@@ -75,8 +75,8 @@ namespace AngeliaFramework {
 				switch (BreakCondition) {
 					case BreakMode.BreakOnCollideGround: {
 						if (
-							!CellPhysics.RoomCheck(Const.MASK_SOLID, rect, this, Direction4.Down) ||
-							!CellPhysics.RoomCheckOneway(Const.MASK_MAP, rect, this, Direction4.Down, true)
+							!CellPhysics.RoomCheck(PhysicsMask.SOLID, rect, this, Direction4.Down) ||
+							!CellPhysics.RoomCheckOneway(PhysicsMask.MAP, rect, this, Direction4.Down, true)
 						) {
 							Break();
 						}

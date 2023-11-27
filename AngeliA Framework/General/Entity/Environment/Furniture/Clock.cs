@@ -26,7 +26,7 @@ namespace AngeliaFramework {
 		protected override Direction3 ModuleType => Direction3.None;
 
 		public override void FillPhysics () {
-			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this, true);
+			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 		}
 
 		public override void FrameUpdate () {

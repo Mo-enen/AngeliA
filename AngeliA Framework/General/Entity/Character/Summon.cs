@@ -171,8 +171,8 @@ namespace AngeliaFramework {
 				return summon;
 			} else {
 				// Find Old
-				var entities = Stage.Entities[Const.ENTITY_LAYER_GAME];
-				int eLen = Stage.EntityCounts[Const.ENTITY_LAYER_GAME];
+				var entities = Stage.Entities[EntityLayer.GAME];
+				int eLen = Stage.EntityCounts[EntityLayer.GAME];
 				int minSpawnFrame = int.MaxValue;
 				Summon old = null;
 				for (int i = 0; i < eLen; i++) {

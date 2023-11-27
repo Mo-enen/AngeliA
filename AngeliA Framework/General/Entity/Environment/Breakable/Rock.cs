@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaFramework {
-	public class Rock : Breakable {
+	public class Rock : BreakableEntity {
 
 		private static readonly int CODE = "Rock".AngeHash();
 		private int ArtworkCode = 0;
@@ -28,12 +28,11 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(Const.LAYER_ENVIRONMENT, this);
+			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
 		}
 
 		public override void FrameUpdate () {
 			CellRenderer.Draw(ArtworkCode, FullRect);
-			AngeUtil.DrawShadow(ArtworkCode, FullRect);
 		}
 
 	}
