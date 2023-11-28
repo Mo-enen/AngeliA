@@ -173,7 +173,7 @@ namespace AngeliaFramework {
 		public static string GetWorldNameFromPosition (int x, int y, int z) => $"{x}_{y}_{z}.{Const.MAP_FILE_EXT}";
 
 
-		public void FillIntoTexture (Texture2D texture) {
+		public void FillIntoTexture (Texture2D texture, bool ignoreItem = true) {
 			if (texture == null) return;
 			if (texture.width != Const.MAP || texture.height != Const.MAP) {
 				Debug.LogWarning($"Texture size must be {Const.MAP} x {Const.MAP}.");
@@ -181,7 +181,9 @@ namespace AngeliaFramework {
 			}
 			const int LEN = Const.MAP * Const.MAP;
 			for (int i = 0; i < LEN; i++) {
-				if (Fill(Entity[i])) continue;
+				if (!ignoreItem || !ItemSystem.HasItem(Entity[i])) {
+					if (Fill(Entity[i])) continue;
+				}
 				if (Fill(Level[i])) continue;
 				if (Fill(Background[i])) continue;
 				FILLING_PIXELS[i] = Const.CLEAR;

@@ -29,24 +29,6 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		private void FrameUpdate_Navigator () {
-			if (IsPlaying || TaskingRoute || DroppingPlayer) {
-				SetNavigating(false);
-				return;
-			}
-			Update_PaletteGroupUI();
-			Update_PaletteContentUI();
-			Update_ToolbarUI();
-			Update_QuickLane();
-			Update_NavHotkey();
-			NavSquad.FrameUpdate(NavPosition);
-			Update_NavGizmos();
-			if (NavSquad.GlobalScale != 1000) {
-				NavSquad.GlobalScale = NavSquad.GlobalScale.LerpTo(1000, 300);
-			}
-		}
-
-
 		private void Update_NavHotkey () {
 
 			// View Z
@@ -78,15 +60,19 @@ namespace AngeliaFramework {
 
 			// Tab
 			if (
-				FrameInput.KeyboardDown(Key.Tab) ||
-				FrameInput.KeyboardDown(Key.Escape) ||
-				FrameInput.KeyboardDown(Key.Space) ||
-				FrameInput.KeyboardDown(Key.Enter)
+				FrameInput.KeyboardUp(Key.Tab) ||
+				FrameInput.KeyboardUp(Key.Escape) ||
+				FrameInput.KeyboardUp(Key.Space) ||
+				FrameInput.KeyboardUp(Key.Enter)
 			) {
 				SetNavigating(!IsNavigating, true);
-				FrameInput.UseAllHoldingKeys();
+				FrameInput.UseKeyboardKey(Key.Escape);
+				FrameInput.UseKeyboardKey(Key.Tab);
+				FrameInput.UseKeyboardKey(Key.Enter);
+				FrameInput.UseGameKey(Gamekey.Start);
+				FrameInput.UseGameKey(Gamekey.Select);
 			}
-			ControlHintUI.AddHint(Key.Escape, Language.Get(UI_CANCEL, "Cancel"));
+			ControlHintUI.AddHint(Key.Tab, Language.Get(UI_CANCEL, "Cancel"));
 
 		}
 

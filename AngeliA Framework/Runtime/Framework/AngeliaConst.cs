@@ -125,12 +125,14 @@ namespace AngeliaFramework {
 		public static readonly Color32 ORANGE = new(255, 128, 0, 255);
 		public static readonly Color32 ORANGE_BETTER = new(255, 200, 100, 255);
 		public static readonly Color32 BLACK = new(0, 0, 0, 255);
+		public static readonly Color32 BLACK_128 = new(0, 0, 0, 128);
 		public static readonly Color32 RED = new(255, 0, 0, 255);
 		public static readonly Color32 RED_BETTER = new(255, 64, 64, 255);
 		public static readonly Color32 GREEN = new(0, 255, 0, 255);
 		public static readonly Color32 CYAN = new(0, 255, 255, 255);
 		public static readonly Color32 BLUE = new(0, 0, 255, 255);
 		public static readonly Color32 CLEAR = new(0, 0, 0, 0);
+		public static readonly Color32 GREY_230 = new(230, 230, 230, 255);
 		public static readonly Color32 GREY_196 = new(196, 196, 196, 255);
 		public static readonly Color32 GREY_128 = new(128, 128, 128, 255);
 		public static readonly Color32 GREY_96 = new(96, 96, 96, 255);

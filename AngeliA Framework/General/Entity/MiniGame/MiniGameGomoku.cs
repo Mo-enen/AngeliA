@@ -99,9 +99,9 @@ namespace AngeliaFramework {
 			if (Winner.HasValue) {
 				if (FrameInput.AnyKeyDown) {
 					if (Winner.Value != GomokuAI.GomokuStone.None) {
-						OpenGameOverMenu(Winner.Value == GomokuAI.GomokuStone.Black);
+						OpenGameOverDialog(Winner.Value == GomokuAI.GomokuStone.Black);
 					} else {
-						OpenDrawMenu();
+						OpenDrawDialog();
 					}
 				}
 				return;
@@ -150,7 +150,7 @@ namespace AngeliaFramework {
 					OnStonePlaced(resultX, resultY);
 				} else {
 					Winner = GomokuAI.GomokuStone.None;
-					OpenDrawMenu();
+					OpenDrawDialog();
 				}
 			}
 
@@ -297,7 +297,7 @@ namespace AngeliaFramework {
 			}
 			if (!hasEmpty) {
 				Winner = GomokuAI.GomokuStone.None;
-				OpenDrawMenu();
+				OpenDrawDialog();
 			}
 		}
 
@@ -313,7 +313,7 @@ namespace AngeliaFramework {
 
 
 		// Menu
-		private void OpenGameOverMenu (bool blackWin) => GenericMenuUI.SpawnMenu(
+		private void OpenGameOverDialog (bool blackWin) => GenericDialogUI.SpawnDialog(
 			blackWin == PlayerIsBlack ? Language.Get(MENU_GOMOKU_WIN, "You Win") : Language.Get(MENU_GOMOKU_LOSE, "You Lose"),
 			Language.Get(UI_OK, "OK"), Const.EmptyMethod,
 			Language.Get(UI_RESTART, "Restart"), StartGame,
@@ -321,7 +321,7 @@ namespace AngeliaFramework {
 		);
 
 
-		private void OpenDrawMenu () => GenericMenuUI.SpawnMenu(
+		private void OpenDrawDialog () => GenericDialogUI.SpawnDialog(
 			Language.Get(MENU_GOMOKU_DRAW, "Tie"),
 			Language.Get(UI_OK, "OK"),
 			Const.EmptyMethod

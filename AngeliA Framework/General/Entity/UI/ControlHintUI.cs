@@ -316,7 +316,7 @@ namespace AngeliaFramework {
 			// Button A
 			if (keyIdA != 0) {
 				CellRenderer.Draw_9Slice(
-					HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up
+					HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
 				);
 				CellRenderer.Draw(keyIdA, rect.Shrink(border), KeyTint);
 			} else {
@@ -325,7 +325,7 @@ namespace AngeliaFramework {
 				int targetWidth = keyBounds.width + border.horizontal;
 				if (rect.width < targetWidth) rect.width = targetWidth;
 				CellRenderer.Draw_9Slice(
-					HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up
+					HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
 				);
 			}
 			rect.x += rect.width + gap;
@@ -336,7 +336,7 @@ namespace AngeliaFramework {
 				rect.width = widthB;
 				if (keyIdB != 0) {
 					CellRenderer.Draw_9Slice(
-						HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up
+						HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
 					);
 					CellRenderer.Draw(keyIdB, rect.Shrink(border), KeyTint);
 				} else {
@@ -345,7 +345,7 @@ namespace AngeliaFramework {
 					int targetWidth = keyBounds.width + border.horizontal;
 					if (rect.width < targetWidth) rect.width = targetWidth;
 					CellRenderer.Draw_9Slice(
-						HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up
+						HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
 					);
 				}
 				rect.x += rect.width + gap;

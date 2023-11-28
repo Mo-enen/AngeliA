@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public class GenericMenuUI : MenuUI {
+	public class GenericDialogUI : MenuUI {
 
 
 		// SUB
@@ -51,22 +51,10 @@ namespace AngeliaFramework {
 
 
 		// API
-		public static void SpawnMenu (
-			string message,
-			string label, System.Action action
-		) => SpawnMenu(message, label, action, null, null, null, null);
-		public static void SpawnMenu (
-			string message,
-			string labelA, System.Action actionA,
-			string labelB, System.Action actionB
-		) => SpawnMenu(message, labelA, actionA, labelB, actionB, null, null);
-		public static void SpawnMenu (
-			string message,
-			string labelA, System.Action actionA,
-			string labelB, System.Action actionB,
-			string labelC, System.Action actionC
-		) {
-			var menu = Stage.SpawnEntity<GenericMenuUI>(0, 0);
+		public static void SpawnDialog (string message, string label, System.Action action) => SpawnDialog(message, label, action, null, null, null, null);
+		public static void SpawnDialog (string message, string labelA, System.Action actionA, string labelB, System.Action actionB) => SpawnDialog(message, labelA, actionA, labelB, actionB, null, null);
+		public static void SpawnDialog (string message, string labelA, System.Action actionA, string labelB, System.Action actionB, string labelC, System.Action actionC) {
+			var menu = Stage.SpawnEntity<GenericDialogUI>(0, 0);
 			if (menu == null) return;
 			menu.Message = message;
 			menu.OptionA.Label = labelA;
@@ -76,7 +64,6 @@ namespace AngeliaFramework {
 			menu.OptionB.Action = actionB;
 			menu.OptionC.Action = actionC;
 		}
-
 
 
 	}

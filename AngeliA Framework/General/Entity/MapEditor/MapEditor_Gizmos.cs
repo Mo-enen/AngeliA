@@ -1,10 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AngeliaFramework;
 
 
 namespace AngeliaFramework {
+
+
+	public abstract class MapEditorGizmos {
+		public static RectInt MapEditorCameraRange { get; internal set; } = default;
+		public abstract System.Type TargetEntity { get; }
+		public virtual bool AlsoForChildClass => true;
+		public virtual bool DrawGizmosOutOfRange => false;
+		public abstract void DrawGizmos (RectInt entityGlobalRect, int entityID);
+		public MapEditorGizmos () { }
+	}
+
+
 	public partial class MapEditor {
 
 
@@ -230,6 +241,7 @@ namespace AngeliaFramework {
 
 
 		private void Update_EntityGizmos () {
+			if (IsPlaying || DroppingPlayer) return;
 			var squad = WorldSquad.Front;
 			var range = CellRenderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
 			MapEditorGizmos.MapEditorCameraRange = range;

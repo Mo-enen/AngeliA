@@ -113,7 +113,7 @@ namespace AngeliaFramework {
 
 		protected override void GameUpdate () {
 			if (CurrentLevel >= Levels.Length) {
-				if (FrameInput.AnyKeyDown) ShowAllClearedMenu();
+				if (FrameInput.AnyKeyDown) ShowAllClearedDialog();
 			}
 			Update_GamePlay();
 			Update_Rendering();
@@ -129,7 +129,7 @@ namespace AngeliaFramework {
 				CurrentLevel++;
 				LoadLevel(CurrentLevel);
 				LevelClearedFrame = int.MinValue;
-				if (CurrentLevel >= Levels.Length) ShowAllClearedMenu();
+				if (CurrentLevel >= Levels.Length) ShowAllClearedDialog();
 			}
 
 			// Move
@@ -286,7 +286,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void ShowAllClearedMenu () => GenericMenuUI.SpawnMenu(
+		private void ShowAllClearedDialog () => GenericDialogUI.SpawnDialog(
 			Language.Get(MENU_ALL_CLEAR, "You Win"),
 			Language.Get(UI_OK, "OK"), Const.EmptyMethod,
 			Language.Get(UI_QUIT, "Quit"), CloseGame

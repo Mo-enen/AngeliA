@@ -46,8 +46,8 @@ namespace AngeliaFramework {
 		);
 		protected bool IsPlaying => FrameTask.GetCurrentTask() is MiniGameTask task && task.MiniGame == this;
 		protected bool ShowingMenu => MenuEntity != null && MenuEntity.Active;
-		private GenericMenuUI MenuEntity => _MenuEntity ??= Stage.PeekOrGetEntity<GenericMenuUI>();
-		private GenericMenuUI _MenuEntity = null;
+		private GenericDialogUI MenuEntity => _MenuEntity ??= Stage.PeekOrGetEntity<GenericDialogUI>();
+		private GenericDialogUI _MenuEntity = null;
 
 
 		// MSG
@@ -77,7 +77,7 @@ namespace AngeliaFramework {
 					if (FrameInput.GameKeyUp(Gamekey.Start)) {
 						FrameInput.UseGameKey(Gamekey.Start);
 						if (RequireQuitConfirm) {
-							OpenQuitMenu();
+							OpenQuitDialog();
 						} else {
 							CloseGame();
 						}
@@ -135,16 +135,16 @@ namespace AngeliaFramework {
 
 
 		// LGC
-		private void OpenQuitMenu () {
+		private void OpenQuitDialog () {
 			if (ShowRestartOption) {
-				GenericMenuUI.SpawnMenu(
+				GenericDialogUI.SpawnDialog(
 					Language.Get(MENU_QUIT_MINI_GAME, "Quit mini game?"),
 					Language.Get(UI_BACK, "Back"), Const.EmptyMethod,
 					Language.Get(UI_RESTART, "Restart"), RestartGame,
 					Language.Get(UI_QUIT, "Quit"), CloseGame
 				);
 			} else {
-				GenericMenuUI.SpawnMenu(
+				GenericDialogUI.SpawnDialog(
 					Language.Get(MENU_QUIT_MINI_GAME, "Quit mini game?"),
 					Language.Get(UI_BACK, "Back"), Const.EmptyMethod,
 					Language.Get(UI_QUIT, "Quit"), CloseGame

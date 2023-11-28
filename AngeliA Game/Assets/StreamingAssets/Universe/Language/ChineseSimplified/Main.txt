@@ -1,4 +1,5 @@
-﻿CtrlHint.Adjust:调整
+﻿Menu.MEDT.NewGroupName:新收藏夹
+CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
 CtrlHint.Drop:放下
@@ -39,6 +40,9 @@ Menu.KeySetter.Keyboard:键盘
 Menu.KeySetter.KeyboardMessage:按下F1键重置键盘设置
 Menu.KeySetter.Record:按想要的按键
 Menu.KeySetter.SaveAndBack:保存并返回
+Menu.MEDT.AddToGroup:添加到
+Menu.MEDT.AddToNewGroup:添加到新的收藏夹
+Menu.MEDT.CreateGroup:新建收藏夹
 Menu.MEDTSetting.AutoZoom:自动缩放
 Menu.MEDTSetting.PlayerDrop:快速放下玩家
 Menu.MEDTSetting.ShowState:显示状态信息
@@ -71,7 +75,6 @@ Palette.ItemFood:食物
 Palette.LevelBack:关卡
 Palette.LevelFront:关卡-前景
 Palette.MiniGame:迷你游戏
-Palette.Pinned:收藏
 Palette.Platform:平台
 Palette.System:系统
 Palette.Vegetation:植被

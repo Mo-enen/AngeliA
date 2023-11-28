@@ -254,7 +254,7 @@ namespace AngeliaFramework {
 					renderer.gameObject.SetActive(true);
 					if (unit.WorldPos == pos) continue;
 					if (FillingWorld.LoadFromDisk(WorldSquad.MapRoot, pos.x, pos.y, pos.z)) {
-						FillingWorld.FillIntoTexture(unit.Texture);
+						FillingWorld.FillIntoTexture(unit.Texture, ignoreItem: true);
 					} else {
 						renderer.gameObject.SetActive(false);
 					}

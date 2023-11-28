@@ -11,16 +11,6 @@ namespace AngeliaFramework {
 	public interface IMapEditorItem { }
 
 
-	public abstract class MapEditorGizmos {
-		public static RectInt MapEditorCameraRange { get; internal set; } = default;
-		public abstract System.Type TargetEntity { get; }
-		public virtual bool AlsoForChildClass => true;
-		public virtual bool DrawGizmosOutOfRange => false;
-		public abstract void DrawGizmos (RectInt entityGlobalRect, int entityID);
-		public MapEditorGizmos () { }
-	}
-
-
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.Capacity(1, 0)]
@@ -69,20 +59,50 @@ namespace AngeliaFramework {
 		}
 
 
-		private class PinnedItemComparer : IComparer<PaletteItem> {
-			public static PinnedItemComparer Instance = new();
-			public List<PaletteGroup> Groups = null;
-			public int Compare (PaletteItem a, PaletteItem b) {
-				int result = Groups[a.GroupIndex].GroupName.CompareTo(Groups[b.GroupIndex].GroupName);
-				if (result == 0) result = a.Name.CompareTo(b.Name);
-				return result;
-			}
-		}
-
 
 		[System.Serializable]
-		public class MapEditorMeta {
-			public int[] PinnedPaletteItemID = null;
+		private class MapEditorMeta : ISerializationCallbackReceiver {
+
+			[System.Serializable]
+			public class PinnedGroup : ISerializationCallbackReceiver {
+
+				public string GroupName = "";
+				public int Icon = 0;
+				[SerializeField] private int[] PaletteItemIDs = null;
+				[System.NonSerialized] public List<PaletteItem> PaletteItems;
+
+				public void OnAfterDeserialize () {
+					PaletteItems ??= new();
+					if (PaletteItemIDs == null || Instance == null) return;
+					// Items
+					var pool = Instance.PalettePool;
+					foreach (int id in PaletteItemIDs) {
+						if (!pool.TryGetValue(id, out var pal)) continue;
+						PaletteItems.Add(pal);
+					}
+					PaletteItemIDs = null;
+					// Icon
+					if ((Icon == 0 || !CellRenderer.HasSprite(Icon)) && PaletteItems.Count > 0) {
+						Icon = PaletteItems[0].ArtworkID;
+					}
+				}
+
+				public void OnBeforeSerialize () {
+					PaletteItems ??= new();
+					if (PaletteItems == null) return;
+					PaletteItemIDs = new int[PaletteItems.Count];
+					for (int i = 0; i < PaletteItems.Count; i++) {
+						PaletteItemIDs[i] = PaletteItems[i].ID;
+					}
+				}
+
+			}
+
+			public List<PinnedGroup> PinnedGroups;
+
+			public void OnBeforeSerialize () => PinnedGroups ??= new();
+			public void OnAfterDeserialize () => PinnedGroups ??= new();
+
 		}
 
 
@@ -153,9 +173,9 @@ namespace AngeliaFramework {
 		private Trie<PaletteItem> PaletteTrie = null;
 		private List<int> CheckAltarIDs = null;
 		private UndoRedoEcho<MapUndoItem> UndoRedo = null;
-		private List<PaletteItem> PinnedPaletteItems = null;
 		private MapUndoData[] UndoData = null;
 		private Dictionary<int, MapEditorGizmos> GizmosPool = null;
+		private MapEditorMeta EditorMeta = null;
 
 		// Short
 		private MapChannel EditingMapChannel {
@@ -188,7 +208,6 @@ namespace AngeliaFramework {
 		private bool CtrlHolding = false;
 		private bool ShiftHolding = false;
 		private bool AltHolding = false;
-		private bool MetaLoaded = false;
 		private bool IgnoreQuickPlayerDropThisTime = false;
 		private int DropHintWidth = Const.CEL;
 		private int UndoDataIndex = 0;
@@ -257,8 +276,6 @@ namespace AngeliaFramework {
 
 			string mapRoot = EditingMapChannel == MapChannel.BuiltIn ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot;
 			AngeUtil.DeleteAllEmptyMaps(mapRoot);
-			PinnedPaletteItems = new();
-			MetaLoaded = false;
 			InitializedFrame = Game.GlobalFrame;
 
 			// Squad
@@ -268,7 +285,11 @@ namespace AngeliaFramework {
 			// Pipeline
 			Active_Pool();
 			Active_Palette();
-			LoadEditingMeta();
+
+			// Editor Meta
+			EditorMeta = AngeUtil.LoadOrCreateJson<MapEditorMeta>(
+				EditingMapChannel == MapChannel.BuiltIn ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot
+			) ?? new();
 
 			// Cache
 			PastingBuffer = new();
@@ -293,7 +314,6 @@ namespace AngeliaFramework {
 			PanelOffsetX = 0;
 			SearchingText = "";
 			PaletteSearchScrollY = 0;
-			PinnedItemComparer.Instance.Groups = PaletteGroups;
 			NavSquad = new TextureSquad(13);
 			SetNavigating(false);
 			ToolbarOffsetX = 0;
@@ -320,7 +340,11 @@ namespace AngeliaFramework {
 				ApplyPaste();
 				Save();
 			}
-			SaveEditingMeta();
+
+			AngeUtil.SaveJson(
+				EditorMeta,
+				EditingMapChannel == MapChannel.BuiltIn ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot
+			);
 
 			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
 			WorldSquad.SpawnEntity = true;
@@ -344,11 +368,10 @@ namespace AngeliaFramework {
 			MouseDownOutsideBoundary = false;
 			PaletteTrie = null;
 			SearchResult = null;
-			PinnedPaletteItems = null;
-			PinnedItemComparer.Instance.Groups = null;
 			NavSquad?.Dispose();
 			NavSquad = null;
 			CheckAltarIDs = null;
+			EditorMeta = null;
 
 			System.GC.Collect(0, System.GCCollectionMode.Forced);
 
@@ -493,34 +516,39 @@ namespace AngeliaFramework {
 			Update_Misc();
 			Update_ScreenUI();
 			if (!IsNavigating) {
-				FrameUpdate_MapEditor();
-			} else {
-				FrameUpdate_Navigator();
-			}
-		}
-
-
-		private void FrameUpdate_MapEditor () {
-			if (!IsPlaying && !DroppingPlayer) {
+				// Map Editing
 				Update_EntityGizmos();
-			}
-			Update_Mouse();
-			Update_View();
-			Update_Hotkey();
-			Update_DropPlayer();
-			if (string.IsNullOrEmpty(SearchingText)) {
+				Update_Mouse();
+				Update_View();
+				Update_Hotkey();
+				Update_DropPlayer();
 				Update_PaletteGroupUI();
 				Update_PaletteContentUI();
-			} else {
 				Update_PaletteSearchResultUI();
+				Update_PaletteSearchBarUI();
+				Update_ToolbarUI();
+				Update_Grid();
+				Update_DraggingGizmos();
+				Update_PastingGizmos();
+				Update_SelectionGizmos();
+				Update_Cursor();
+			} else {
+				// Navigating
+				if (!IsPlaying && !TaskingRoute && !DroppingPlayer) {
+					Update_PaletteGroupUI();
+					Update_PaletteContentUI();
+					Update_ToolbarUI();
+					Update_QuickLane();
+					Update_NavHotkey();
+					NavSquad.FrameUpdate(NavPosition);
+					Update_NavGizmos();
+					if (NavSquad.GlobalScale != 1000) {
+						NavSquad.GlobalScale = NavSquad.GlobalScale.LerpTo(1000, 300);
+					}
+				} else {
+					SetNavigating(false);
+				}
 			}
-			Update_PaletteSearchBarUI();
-			Update_ToolbarUI();
-			Update_Grid();
-			Update_DraggingGizmos();
-			Update_PastingGizmos();
-			Update_SelectionGizmos();
-			Update_Cursor();
 		}
 
 
@@ -866,6 +894,7 @@ namespace AngeliaFramework {
 		private void Update_DropPlayer () {
 
 			if (IsPlaying || !DroppingPlayer || Player.Selecting == null || TaskingRoute || PerformingUndoQueue.Count != 0) return;
+			if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 
 			var player = Player.Selecting;
 
@@ -989,6 +1018,7 @@ namespace AngeliaFramework {
 			if (newPlayingGame) {
 				IGlobalPosition.CreateMetaFileFromMapsAsync();
 			}
+			if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 
 			// Squad Spawn Entity
 			WorldSquad.SpawnEntity = newPlayingGame;
@@ -1080,6 +1110,7 @@ namespace AngeliaFramework {
 
 
 		private void DrawTooltip (RectInt rect, string tip) {
+			if (GenericPopupUI.ShowingPopup) return;
 			TooltipDuration = rect == TooltipRect ? TooltipDuration + 1 : 0;
 			TooltipRect = rect;
 			if (TooltipDuration <= 60) return;
@@ -1144,37 +1175,6 @@ namespace AngeliaFramework {
 				NavPosition.y = TargetViewRect.y + TargetViewRect.height / 2 + Const.MAP * Const.HALF;
 				NavPosition.z = 0;
 			}
-		}
-
-
-		// Meta
-		private void LoadEditingMeta () {
-			string mapRoot = EditingMapChannel == MapChannel.BuiltIn ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot;
-			var meta = AngeUtil.LoadOrCreateJson<MapEditorMeta>(mapRoot);
-			if (meta.PinnedPaletteItemID != null) {
-				foreach (var id in meta.PinnedPaletteItemID) {
-					if (PalettePool.TryGetValue(id, out var pal)) {
-						pal.Pinned = true;
-						PinnedPaletteItems.Add(pal);
-					}
-				}
-			}
-			MetaLoaded = true;
-		}
-
-
-		private void SaveEditingMeta () {
-			if (!MetaLoaded || PinnedPaletteItems == null) return;
-			var PinnedIDs = new List<int>();
-			foreach (var pal in PinnedPaletteItems) {
-				if (pal.Pinned) {
-					PinnedIDs.Add(pal.ID);
-				}
-			}
-			string mapRoot = EditingMapChannel == MapChannel.BuiltIn ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot;
-			AngeUtil.SaveJson(new MapEditorMeta() {
-				PinnedPaletteItemID = PinnedIDs.ToArray(),
-			}, mapRoot);
 		}
 
 

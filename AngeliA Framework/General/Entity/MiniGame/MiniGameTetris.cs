@@ -164,7 +164,7 @@ namespace AngeliaFramework {
 		private void GamePlayUpdate () {
 
 			if (GameOver) {
-				if (FrameInput.AnyKeyDown) OpenGameOverMenu();
+				if (FrameInput.AnyKeyDown) OpenGameOverDialog();
 				return;
 			}
 
@@ -650,7 +650,7 @@ namespace AngeliaFramework {
 
 
 		// Menu
-		private void OpenGameOverMenu () => GenericMenuUI.SpawnMenu(
+		private void OpenGameOverDialog () => GenericDialogUI.SpawnDialog(
 			Language.Get(UI_GAMEOVER, "Game Over"),
 			Language.Get(UI_OK, "OK"), Const.EmptyMethod,
 			Language.Get(UI_RESTART, "Restart"), StartGame,

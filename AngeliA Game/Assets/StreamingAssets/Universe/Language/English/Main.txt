@@ -1,4 +1,5 @@
-﻿CtrlHint.Adjust:Adjust
+﻿Menu.MEDT.NewGroupName:New List
+CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
 CtrlHint.Drop:Drop
@@ -39,6 +40,9 @@ Menu.KeySetter.Keyboard:Keyboard
 Menu.KeySetter.KeyboardMessage:Press F1 key to reset
 Menu.KeySetter.Record:Press key u want
 Menu.KeySetter.SaveAndBack:Save and Back
+Menu.MEDT.AddToGroup:Add to 
+Menu.MEDT.AddToNewGroup:Add to New List
+Menu.MEDT.CreateGroup:Create List
 Menu.MEDTSetting.AutoZoom:Auto Zoom
 Menu.MEDTSetting.PlayerDrop:Quick Player Drop
 Menu.MEDTSetting.ShowState:Show State Info
@@ -71,7 +75,6 @@ Palette.ItemFood:Food
 Palette.LevelBack:LevelBack
 Palette.LevelFront:LevelFront
 Palette.MiniGame:Mini Game
-Palette.Pinned:Pinned
 Palette.Platform:Platform
 Palette.System:System
 Palette.Vegetation:Vegetation

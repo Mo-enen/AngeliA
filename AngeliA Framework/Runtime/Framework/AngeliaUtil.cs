@@ -388,6 +388,7 @@ namespace AngeliaFramework {
 
 
 		public static void SaveJson<T> (T meta, string rootPath, string name = "", bool prettyPrint = false) {
+			if (meta == null) return;
 			string jsonPath = GetJsonMetaPath<T>(rootPath, name);
 			string data = JsonUtility.ToJson(meta, prettyPrint);
 			Util.TextToFile(data, jsonPath, Encoding.UTF8);
