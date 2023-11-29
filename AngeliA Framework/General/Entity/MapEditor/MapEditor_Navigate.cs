@@ -31,6 +31,8 @@ namespace AngeliaFramework {
 
 		private void Update_NavHotkey () {
 
+			if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog) return;
+
 			// View Z
 			if (CtrlHolding) {
 				if (FrameInput.MouseWheelDelta > 0) {

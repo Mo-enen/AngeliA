@@ -33,7 +33,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private enum PaletteTabType { Pinned = 0, All = 1, }
+		private enum PaletteTabType { Listed = 0, BuiltIn = 1, }
 
 
 		#endregion
@@ -45,6 +45,7 @@ namespace AngeliaFramework {
 
 
 		// Const
+		private static readonly int UI_DEFAULT_LIST_COVER = "PaletteCover.Default".AngeHash();
 		private static readonly int UI_TAB = "UI.Tab".AngeHash();
 		private static readonly int UI_TAB_ICON_PINNED = "UI.PaletteTab.PinnedIcon".AngeHash();
 		private static readonly int UI_TAB_ICON_ALL = "UI.PaletteTab.AllIcon".AngeHash();
@@ -57,10 +58,12 @@ namespace AngeliaFramework {
 		private static readonly int BRUSH_ICON = "Icon Brush".AngeHash();
 		private static readonly int UI_TAB_PINNED = "UI.PaletteTab.Pinned".AngeHash();
 		private static readonly int UI_TAB_ALL = "UI.PaletteTab.All".AngeHash();
-		private static readonly int MENU_PALETTE_ADD_TO_GROUP = "Menu.MEDT.AddToGroup".AngeHash();
-		private static readonly int MENU_PALETTE_ADD_TO_NEW_GROUP = "Menu.MEDT.AddToNewGroup".AngeHash();
-		private static readonly int MENU_PALETTE_CREATE_GROUP = "Menu.MEDT.CreateGroup".AngeHash();
-		private static readonly int MENU_PALETTE_NEW_GROUP_NAME = "Menu.MEDT.NewGroupName".AngeHash();
+		private static readonly int MENU_PALETTE_ADD_TO_LIST = "Menu.MEDT.AddToList".AngeHash();
+		private static readonly int MENU_PALETTE_REMOVE_FROM_LIST = "Menu.MEDT.RemoveFromList".AngeHash();
+		private static readonly int MENU_PALETTE_CREATE_LIST = "Menu.MEDT.CreateList".AngeHash();
+		private static readonly int MENU_PALETTE_DELETE_LIST = "Menu.MEDT.DeleteList".AngeHash();
+		private static readonly int MENU_PALETTE_DELETE_LIST_MSG = "Menu.MEDT.DeleteListMSG".AngeHash();
+		private static readonly int MENU_PALETTE_SET_LIST_COVER = "Menu.MEDT.SetAsListCover".AngeHash();
 		private const int TOOL_BAR_HEIGHT = 54;
 
 		// UI
@@ -69,9 +72,9 @@ namespace AngeliaFramework {
 
 		// Data
 		private RectInt PaletteGroupPanelRect = default;
-		private PaletteTabType CurrentPaletteTab = PaletteTabType.All;
+		private PaletteTabType CurrentPaletteTab = PaletteTabType.BuiltIn;
 		private int SelectingPaletteGroupIndex = 0;
-		private int SelectingPinnedGroupIndex = 0;
+		private int SelectingPaletteListIndex = 0;
 		private int PaletteScrollY = 0;
 		private int PaletteSearchScrollY = 0;
 		private int QuickLaneScrollY = 0;
@@ -88,7 +91,7 @@ namespace AngeliaFramework {
 
 		private void Active_Palette () {
 
-			CurrentPaletteTab = PaletteTabType.All;
+			CurrentPaletteTab = PaletteTabType.BuiltIn;
 			PaletteGroups = new();
 			PalettePool = new();
 			int spriteCount = CellRenderer.SpriteCount;
@@ -253,7 +256,7 @@ namespace AngeliaFramework {
 			if (!string.IsNullOrEmpty(SearchingText)) return;
 
 			SelectingPaletteGroupIndex = SelectingPaletteGroupIndex.Clamp(0, PaletteGroups.Count - 1);
-			SelectingPinnedGroupIndex = SelectingPinnedGroupIndex.Clamp(0, EditorMeta.PinnedGroups.Count - 1);
+			SelectingPaletteListIndex = SelectingPaletteListIndex.Clamp(0, EditorMeta.PinnedLists.Count - 1);
 
 			if (PanelRect.xMax <= CellRenderer.CameraRect.x) return;
 
@@ -264,8 +267,8 @@ namespace AngeliaFramework {
 			int TAB_SIZE = Unify(40);
 
 			// Calculate Group Rect
-			bool showingAll = CurrentPaletteTab == PaletteTabType.All;
-			int groupCount = showingAll ? PaletteGroups.Count : EditorMeta.PinnedGroups.Count;
+			bool showingBuiltIn = CurrentPaletteTab == PaletteTabType.BuiltIn;
+			int groupCount = showingBuiltIn ? PaletteGroups.Count : EditorMeta.PinnedLists.Count;
 			int groupColumnCount = (PanelRect.width - ITEM_GAP * 2) / (ITEM_SIZE + ITEM_GAP);
 			int groupRowCount = groupCount / groupColumnCount + (groupCount % groupColumnCount != 0 ? 1 : 0);
 			int groupPanelHeight = groupRowCount * (ITEM_SIZE + ITEM_GAP);
@@ -281,6 +284,7 @@ namespace AngeliaFramework {
 				var tabRect = new RectInt(
 					groupRect.x + i * groupRect.width / 2, groupRect.y, groupRect.width / 2, TAB_SIZE
 				);
+				bool tabInteractable = !GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog;
 
 				// Button
 				CellRenderer.Draw_9Slice(
@@ -288,7 +292,7 @@ namespace AngeliaFramework {
 					tabBorder, tabBorder, tabBorder, tabBorder,
 					selecting ? Const.GREY_128 : Const.GREY_64, PANEL_Z - 5
 				);
-				if (!GenericPopupUI.ShowingPopup) CursorSystem.SetCursorAsHand(tabRect);
+				if (tabInteractable) CursorSystem.SetCursorAsHand(tabRect);
 
 				// Highlight
 				if (selecting) {
@@ -305,7 +309,7 @@ namespace AngeliaFramework {
 				// Label
 				CellRendererGUI.Label(
 					CellContent.Get(
-						i == 0 ? Language.Get(UI_TAB_PINNED, "Pinned") : Language.Get(UI_TAB_ALL, "All"),
+						i == 0 ? Language.Get(UI_TAB_PINNED, "List") : Language.Get(UI_TAB_ALL, "All"),
 						Const.WHITE,
 						alignment: Alignment.MidMid, charSize: 22
 					),
@@ -314,13 +318,13 @@ namespace AngeliaFramework {
 
 				// Icon
 				CellRenderer.Draw(
-					i == (int)PaletteTabType.Pinned ? UI_TAB_ICON_PINNED : UI_TAB_ICON_ALL,
-					labelBounds.Edge(Direction4.Left, labelBounds.height).Shift(-labelBounds.height / 2, 0),
+					i == (int)PaletteTabType.Listed ? UI_TAB_ICON_PINNED : UI_TAB_ICON_ALL,
+					labelBounds.Edge(Direction4.Left, labelBounds.height).Shift(-labelBounds.height / 3, 0),
 					Const.WHITE, PANEL_Z - 4
 				);
 
 				// Click
-				if (FrameInput.MouseLeftButtonDown && tabRect.Contains(FrameInput.MouseGlobalPosition)) {
+				if (tabInteractable && FrameInput.MouseLeftButtonDown && tabRect.Contains(FrameInput.MouseGlobalPosition)) {
 					CurrentPaletteTab = (PaletteTabType)i;
 				}
 			}
@@ -339,12 +343,14 @@ namespace AngeliaFramework {
 
 			for (int i = 0; i < groupCount; i++) {
 
-				int selectingIndex = showingAll ? SelectingPaletteGroupIndex : SelectingPinnedGroupIndex;
+				int selectingIndex = showingBuiltIn ? SelectingPaletteGroupIndex : SelectingPaletteListIndex;
 				bool selecting = i == selectingIndex;
-				int coverID = showingAll ? PaletteGroups[i].CoverID : EditorMeta.PinnedGroups[i].Icon;
-
+				int coverID = showingBuiltIn ? PaletteGroups[i].CoverID : EditorMeta.PinnedLists[i].Icon;
+				if (coverID == 0) coverID = UI_DEFAULT_LIST_COVER;
 				rect.x = offsetX + (i % groupColumnCount) * (ITEM_SIZE + ITEM_GAP);
 				rect.y = groupRect.yMax - ITEM_SIZE - (i / groupColumnCount) * (ITEM_SIZE + ITEM_GAP);
+
+				bool mouseHovering = interactable && mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
 
 				// Button
 				if (selecting) {
@@ -362,7 +368,6 @@ namespace AngeliaFramework {
 					);
 				}
 
-
 				// Cover
 				CellRenderer.Draw(
 					coverID,
@@ -371,30 +376,47 @@ namespace AngeliaFramework {
 					PANEL_Z - 3
 				);
 
-				// Hovering
-				bool mouseHovering = interactable && mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
+				// Tooltip
 				if (mouseHovering) {
-					if (!GenericPopupUI.ShowingPopup) CursorSystem.SetCursorAsHand();
-					if (showingAll) {
+					if (!GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog) CursorSystem.SetCursorAsHand();
+					if (showingBuiltIn) {
 						var group = PaletteGroups[i];
 						DrawTooltip(rect, Language.Get(group.DisplayNameID, group.GroupName));
 					} else {
-						var group = EditorMeta.PinnedGroups[i];
-						DrawTooltip(rect, group.GroupName);
+						var list = EditorMeta.PinnedLists[i];
+						if (list.Icon != 0) {
+							DrawTooltip(rect, PalettePool.TryGetValue(list.Icon, out var pal) ? pal.Name : "");
+						}
 					}
 				}
 
 				// Click
-				if (mouseHovering && FrameInput.MouseLeftButtonDown) {
-					if (showingAll) {
-						// Select from All
-						SelectingPaletteGroupIndex = i;
-					} else {
-						// Select from Pinned
-						SelectingPinnedGroupIndex = i;
+				if (mouseHovering) {
+					if (FrameInput.MouseLeftButtonDown) {
+						FrameInput.UseMouseKey(0);
+						// Left
+						if (showingBuiltIn) {
+							// Select from BuiltIn
+							SelectingPaletteGroupIndex = i;
+						} else {
+							// Select from List
+							SelectingPaletteListIndex = i;
+						}
+						PaletteScrollY = 0;
+					} else if (FrameInput.MouseRightButtonDown) {
+						FrameInput.UseMouseKey(1);
+						// Right
+						if (!showingBuiltIn) {
+							ShowPaletteListMenu(EditorMeta.PinnedLists[i]);
+						}
 					}
-					PaletteScrollY = 0;
 				}
+			}
+
+			// Click on Empty
+			if (!showingBuiltIn && FrameInput.MouseRightButtonDown && groupRect.Contains(FrameInput.MouseGlobalPosition)) {
+				FrameInput.UseMouseKey(1);
+				ShowPaletteListMenu(null);
 			}
 
 		}
@@ -404,20 +426,20 @@ namespace AngeliaFramework {
 
 			if (!string.IsNullOrEmpty(SearchingText)) return;
 
-			bool showingAll = CurrentPaletteTab == PaletteTabType.All;
+			// BG
+			CellRenderer.Draw(Const.PIXEL, PanelRect, Const.BLACK, PANEL_Z - 14);
+
+			// Gate
+			bool showingAll = CurrentPaletteTab == PaletteTabType.BuiltIn;
 			if (showingAll) {
 				if (SelectingPaletteGroupIndex < 0 || SelectingPaletteGroupIndex >= PaletteGroups.Count) return;
 			} else {
-				if (SelectingPinnedGroupIndex < 0 || SelectingPinnedGroupIndex >= EditorMeta.PinnedGroups.Count) return;
+				if (SelectingPaletteListIndex < 0 || SelectingPaletteListIndex >= EditorMeta.PinnedLists.Count) return;
 			}
 
 			var items = showingAll ?
 				PaletteGroups[SelectingPaletteGroupIndex].Items :
-				EditorMeta.PinnedGroups[SelectingPinnedGroupIndex].PaletteItems;
-
-			// BG
-			CellRenderer.Draw(Const.PIXEL, PanelRect, Const.BLACK, PANEL_Z - 14);
-
+				EditorMeta.PinnedLists[SelectingPaletteListIndex].Items;
 			int ITEM_SIZE = Unify(46);
 			int ITEM_GAP = Unify(3);
 			int PADDING = Unify(6);
@@ -488,7 +510,7 @@ namespace AngeliaFramework {
 				bool mouseHovering = interactable && mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
 				if (mouseHovering) {
 					CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32, PANEL_Z - 13);
-					if (!GenericPopupUI.ShowingPopup) CursorSystem.SetCursorAsHand();
+					if (!GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog) CursorSystem.SetCursorAsHand();
 					DrawTooltip(rect, pal.Name);
 				}
 
@@ -716,7 +738,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_QuickLane () {
+		private void Update_NavQuickLane () {
 
 			int BUTTON_BORDER = Unify(6);
 			int BUTTON_PADDING = Unify(6);
@@ -820,47 +842,69 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private void ShowPinnedGroupMenu (MapEditorMeta.PinnedGroup group) {
+		private void ShowPaletteListMenu (MapEditorMeta.PinnedList list) {
 
+			GenericPopupUI.BeginPopup();
 
-
+			if (list != null) {
+				// Click on List
+				// Delete List
+				GenericPopupUI.AddItem(Language.Get(MENU_PALETTE_DELETE_LIST, "Delete List"), () =>
+					GenericDialogUI.SpawnDialog(
+						$"{Language.Get(MENU_PALETTE_DELETE_LIST_MSG, "Delete List ")} \"{(PalettePool.TryGetValue(list.Icon, out var pal) ? pal.Name : "")}\"?",
+						Language.Get(UI_DELETE, "Delete"), () => EditorMeta.PinnedLists.Remove(list),
+						Language.Get(UI_CANCEL, "Cancel"), Const.EmptyMethod
+				), enabled: EditorMeta.PinnedLists.Count > 1);
+			} else {
+				// Click on Empty
+				// Create List
+				GenericPopupUI.AddItem(Language.Get(MENU_PALETTE_CREATE_LIST, "Create List"), () => {
+					EditorMeta.PinnedLists.Add(new MapEditorMeta.PinnedList() {
+						Icon = UI_DEFAULT_LIST_COVER,
+						Items = new List<PaletteItem>(),
+					});
+				});
+			}
 		}
 
 
 		private void ShowPaletteItemMenu (PaletteItem pal) {
 
+			if (pal == null) return;
+
 			GenericPopupUI.BeginPopup();
 
-			if (pal == null) {
-				// Click on Empty
-				GenericPopupUI.AddItem(Language.Get(MENU_PALETTE_CREATE_GROUP, "Create List"), () => {
-					//MENU_PALETTE_NEW_GROUP_NAME
+			// Add to Lists
+			for (int i = 0; i < EditorMeta.PinnedLists.Count; i++) {
+				var list = EditorMeta.PinnedLists[i];
+				bool hasItem = list.Items.Contains(pal);
+				GenericPopupUI.AddItem(
+					!hasItem ?
+						Language.Get(MENU_PALETTE_ADD_TO_LIST, "Add to List:") :
+						Language.Get(MENU_PALETTE_REMOVE_FROM_LIST, "Remove from List:"),
+					list.Icon, Direction2.Right,
+					() => {
+						if (!hasItem) {
+							if (list.Items.Count == 0) list.Icon = pal.ArtworkID;
+							list.Items.Add(pal);
+						} else {
+							list.Items.Remove(pal);
+						}
+					}, true, hasItem
+				);
+			}
 
-
-
-				});
-			} else {
-				// Click on Item
-				for (int i = 0; i < EditorMeta.PinnedGroups.Count; i++) {
-					var group = EditorMeta.PinnedGroups[i];
-					bool hasItem = group.PaletteItems.Contains(pal);
+			if (CurrentPaletteTab == PaletteTabType.Listed) {
+				if (SelectingPaletteListIndex >= 0 && SelectingPaletteListIndex < EditorMeta.PinnedLists.Count) {
+					var selectingList = EditorMeta.PinnedLists[SelectingPaletteListIndex];
+					// Cover Icon
+					GenericPopupUI.AddSeparator();
 					GenericPopupUI.AddItem(
-						$"{Language.Get(MENU_PALETTE_ADD_TO_GROUP, "Add to ")} {group.GroupName}",
-						() => {
-
-
-						}, true, hasItem
+						Language.Get(MENU_PALETTE_SET_LIST_COVER, "Set as List Cover"), () => {
+							selectingList.Icon = pal.ArtworkID;
+						}, selectingList.Icon != pal.ArtworkID
 					);
 				}
-				if (EditorMeta.PinnedGroups.Count > 0) {
-					GenericPopupUI.AddItem("", null);
-				}
-				GenericPopupUI.AddItem(Language.Get(MENU_PALETTE_ADD_TO_NEW_GROUP, "Add to New List"), () => {
-					//MENU_PALETTE_NEW_GROUP_NAME
-
-
-
-				});
 			}
 
 		}

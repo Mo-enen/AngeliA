@@ -204,9 +204,10 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_Cursor () {
+		private void Update_DrawCursor () {
 
 			if (IsPlaying || DroppingPlayer || CtrlHolding || CellRendererGUI.IsTyping) return;
+			if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog) return;
 			if (MouseInSelection || MouseOutsideBoundary || MouseDownOutsideBoundary || DraggingUnitRect.HasValue) return;
 			if (FrameInput.AnyMouseButtonHolding && MouseDownInSelection) return;
 

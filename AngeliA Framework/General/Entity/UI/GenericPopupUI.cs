@@ -15,6 +15,8 @@ namespace AngeliaFramework {
 
 		private class Item {
 			public string Label;
+			public int Icon;
+			public Direction2 IconPosition;
 			public bool Checked;
 			public bool Enabled;
 			public System.Action Action;
@@ -87,38 +89,49 @@ namespace AngeliaFramework {
 				return;
 			}
 
+			int separatorCount = 0;
+			for (int i = 0; i < ItemCount; i++) {
+				if (string.IsNullOrEmpty(Items[i].Label)) separatorCount++;
+			}
 			int panelWidth = Unify(200);
 			int itemHeight = Unify(30);
+			int separatorHeight = Unify(6);
 			var panelRect = new RectInt(
 				CellRenderer.CameraRect.x + OffsetX,
 				CellRenderer.CameraRect.y + OffsetY,
-				panelWidth, itemHeight * ItemCount
+				panelWidth,
+				itemHeight * (ItemCount - separatorCount) + separatorHeight * separatorCount
 			);
-			if (OffsetY > CellRenderer.CameraRect.CenterY()) {
+			if (CellRenderer.CameraRect.y + OffsetY > CellRenderer.CameraRect.CenterY()) {
 				panelRect.y -= itemHeight * ItemCount;
 			}
 			panelRect.ClampPositionInside(CellRenderer.CameraRect);
 
-			// BG
-			CellRenderer.Draw(
-				Const.PIXEL, panelRect.Expand(Unify(8)), new Color32(249, 249, 249, 255), int.MaxValue - 2
-			);
-
 			// Items
+			Cell highlightCell = null;
 			int textStart = CellRenderer.GetTextUsedCellCount();
 			int indent = Unify(42);
-			var rect = new RectInt(panelRect.x, 0, panelRect.width, itemHeight);
+			var rect = new RectInt(panelRect.x, panelRect.yMax, panelRect.width, itemHeight);
 			int checkShrink = itemHeight / 6;
+			int maxWidth = panelWidth;
+			int iconPadding = Unify(4);
 			for (int i = 0; i < ItemCount; i++) {
 
 				var item = Items[i];
-				rect.y = panelRect.yMax - (i + 1) * itemHeight;
-				var tint = item.Enabled ? Const.BLACK : Const.BLACK_128;
+				bool isSeparator = string.IsNullOrEmpty(item.Label);
+				rect.y -= isSeparator ? separatorHeight : itemHeight;
 
-				if (!string.IsNullOrEmpty(item.Label)) {
+				if (isSeparator) {
+					// Separator
+					CellRenderer.Draw(
+						LINE_CODE, new(rect.x, rect.y + separatorHeight / 4, rect.width, separatorHeight / 2),
+						new Color32(0, 0, 0, 32), int.MaxValue
+					);
+				} else {
 					// Item
+					var tint = item.Enabled ? Const.BLACK : Const.BLACK_128;
 
-					// Check
+					// Check Mark
 					if (item.Checked) {
 						CellRenderer.Draw(
 							CHECK_CODE, new RectInt(rect.x, rect.y, rect.height, rect.height).Shrink(checkShrink),
@@ -127,26 +140,46 @@ namespace AngeliaFramework {
 					}
 
 					// Label
-					CellRendererGUI.Label(CellContent.Get(item.Label, tint, 20, Alignment.MidLeft), rect.Shrink(indent, 0, 0, 0));
+					CellRendererGUI.Label(
+						CellContent.Get(item.Label, tint, 20, Alignment.MidLeft),
+						rect.Shrink(indent, 0, 0, 0),
+						out var labelBounds
+					);
+					maxWidth = Mathf.Max(
+						maxWidth,
+						labelBounds.width + indent * 4 / 3 + (item.Icon != 0 ? iconPadding + rect.height : 0)
+					);
+
+					// Icon
+					if (item.Icon != 0) {
+						int iconSize = rect.height;
+						var iconRect = new RectInt(
+							item.IconPosition == Direction2.Left ? labelBounds.x - iconSize - iconPadding : labelBounds.xMax + iconPadding,
+							rect.y, iconSize, iconSize
+						);
+						CellRenderer.Draw(item.Icon, iconRect, int.MaxValue);
+					}
 
 					// Highlight
-					bool hover = item.Enabled && rect.Contains(FrameInput.MouseGlobalPosition);
-					if (hover) {
-						CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_230, int.MaxValue - 1);
+					bool hover = rect.Contains(FrameInput.MouseGlobalPosition);
+					if (hover && item.Enabled) {
+						highlightCell = CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_230, int.MaxValue - 1);
 					}
 
 					// Click
-					if (hover && FrameInput.MouseLeftButtonDown) {
+					if (hover && item.Enabled && FrameInput.MouseLeftButtonDown) {
 						item.Action?.Invoke();
 					}
-
-				} else {
-					// Line
-					int shrink = rect.height / 2 + Unify(2);
-					CellRenderer.Draw(LINE_CODE, rect.Shrink(0, 0, shrink, shrink), Const.GREY_230, int.MaxValue);
 				}
 
 			}
+			panelRect.width = Mathf.Max(panelRect.width, maxWidth);
+			if (highlightCell != null) highlightCell.Width = panelRect.width;
+
+			// BG
+			CellRenderer.Draw(
+				Const.PIXEL, panelRect.Expand(Unify(8)), new Color32(249, 249, 249, 255), int.MaxValue - 2
+			);
 
 			// Clamp Text
 			int textEnd = CellRenderer.GetTextUsedCellCount();
@@ -180,10 +213,18 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void AddItem (string label, System.Action action, bool enabled = true, bool @checked = false) {
+		public static void AddSeparator () => AddItem("", Const.EmptyMethod, true, false);
+
+
+		public static void AddItem (string label, System.Action action, bool enabled = true, bool @checked = false) => AddItem(label, 0, default, action, enabled, @checked);
+
+
+		public static void AddItem (string label, int icon, Direction2 iconPosition, System.Action action, bool enabled = true, bool @checked = false) {
 			if (Instance == null || Instance.ItemCount >= Instance.Items.Length - 1) return;
 			var item = Instance.Items[Instance.ItemCount];
 			item.Label = label;
+			item.Icon = icon;
+			item.IconPosition = iconPosition;
 			item.Action = action;
 			item.Enabled = enabled;
 			item.Checked = @checked;
@@ -194,15 +235,6 @@ namespace AngeliaFramework {
 		public static void ClosePopup () {
 			if (Instance != null) Instance.Active = false;
 		}
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
 
 
 		#endregion

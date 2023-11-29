@@ -64,44 +64,43 @@ namespace AngeliaFramework {
 		private class MapEditorMeta : ISerializationCallbackReceiver {
 
 			[System.Serializable]
-			public class PinnedGroup : ISerializationCallbackReceiver {
+			public class PinnedList : ISerializationCallbackReceiver {
 
-				public string GroupName = "";
 				public int Icon = 0;
 				[SerializeField] private int[] PaletteItemIDs = null;
-				[System.NonSerialized] public List<PaletteItem> PaletteItems;
+				[System.NonSerialized] public List<PaletteItem> Items;
 
 				public void OnAfterDeserialize () {
-					PaletteItems ??= new();
+					Items ??= new();
 					if (PaletteItemIDs == null || Instance == null) return;
 					// Items
 					var pool = Instance.PalettePool;
 					foreach (int id in PaletteItemIDs) {
 						if (!pool.TryGetValue(id, out var pal)) continue;
-						PaletteItems.Add(pal);
+						Items.Add(pal);
 					}
 					PaletteItemIDs = null;
 					// Icon
-					if ((Icon == 0 || !CellRenderer.HasSprite(Icon)) && PaletteItems.Count > 0) {
-						Icon = PaletteItems[0].ArtworkID;
+					if ((Icon == 0 || !CellRenderer.HasSprite(Icon)) && Items.Count > 0) {
+						Icon = Items[0].ArtworkID;
 					}
 				}
 
 				public void OnBeforeSerialize () {
-					PaletteItems ??= new();
-					if (PaletteItems == null) return;
-					PaletteItemIDs = new int[PaletteItems.Count];
-					for (int i = 0; i < PaletteItems.Count; i++) {
-						PaletteItemIDs[i] = PaletteItems[i].ID;
+					Items ??= new();
+					if (Items == null) return;
+					PaletteItemIDs = new int[Items.Count];
+					for (int i = 0; i < Items.Count; i++) {
+						PaletteItemIDs[i] = Items[i].ID;
 					}
 				}
 
 			}
 
-			public List<PinnedGroup> PinnedGroups;
+			public List<PinnedList> PinnedLists;
 
-			public void OnBeforeSerialize () => PinnedGroups ??= new();
-			public void OnAfterDeserialize () => PinnedGroups ??= new();
+			public void OnBeforeSerialize () => PinnedLists ??= new();
+			public void OnAfterDeserialize () => PinnedLists ??= new();
 
 		}
 
@@ -139,6 +138,7 @@ namespace AngeliaFramework {
 		private static readonly int HINT_MEDT_PLAY_FROM_BEGIN = "CtrlHint.MEDT.PlayFromBegin".AngeHash();
 		private static readonly int HINT_MEDT_NAV = "CtrlHint.MEDT.Nav".AngeHash();
 		private static readonly int UI_CANCEL = "UI.Cancel".AngeHash();
+		private static readonly int UI_DELETE = "UI.Delete".AngeHash();
 
 		// Api
 		public static MapEditor Instance { get; private set; } = null;
@@ -531,14 +531,14 @@ namespace AngeliaFramework {
 				Update_DraggingGizmos();
 				Update_PastingGizmos();
 				Update_SelectionGizmos();
-				Update_Cursor();
+				Update_DrawCursor();
 			} else {
 				// Navigating
 				if (!IsPlaying && !TaskingRoute && !DroppingPlayer) {
 					Update_PaletteGroupUI();
 					Update_PaletteContentUI();
 					Update_ToolbarUI();
-					Update_QuickLane();
+					Update_NavQuickLane();
 					Update_NavHotkey();
 					NavSquad.FrameUpdate(NavPosition);
 					Update_NavGizmos();
@@ -554,23 +554,36 @@ namespace AngeliaFramework {
 
 		private void Update_Misc () {
 
+			// Cursor
 			if (!IsPlaying) CursorSystem.RequireCursor(int.MinValue);
 
+			// Undo
 			if (PerformingUndoQueue.Count > 0) {
 				if (PerformWaitingUndoRedo(PerformingUndoQueue.Peek())) {
 					PerformingUndoQueue.Dequeue();
 				}
 			}
 
+			// Search
 			if (IsPlaying || DroppingPlayer) {
 				CellRendererGUI.CancelTyping();
 				SearchingText = "";
 				SearchResult.Clear();
 			}
+
+			// Cache
 			TaskingRoute = FrameTask.HasTask();
 			CtrlHolding = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.RightCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
 			ShiftHolding = FrameInput.KeyboardHolding(Key.LeftShift) || FrameInput.KeyboardHolding(Key.RightShift);
 			AltHolding = FrameInput.KeyboardHolding(Key.LeftAlt) || FrameInput.KeyboardHolding(Key.RightAlt);
+
+			// List
+			if (EditorMeta.PinnedLists.Count == 0) {
+				EditorMeta.PinnedLists.Add(new MapEditorMeta.PinnedList() {
+					Icon = UI_DEFAULT_LIST_COVER,
+					Items = new List<PaletteItem>(),
+				});
+			}
 
 			// Panel Rect
 			PanelRect.width = Unify(PANEL_WIDTH);
@@ -718,6 +731,7 @@ namespace AngeliaFramework {
 		private void Update_Hotkey () {
 
 			if (TaskingRoute || PerformingUndoQueue.Count != 0 || CellRendererGUI.IsTyping) return;
+			if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog) return;
 
 			// Cancel Drop
 			if (!CtrlHolding && IsEditing && DroppingPlayer) {

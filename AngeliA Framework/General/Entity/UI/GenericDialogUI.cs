@@ -4,6 +4,7 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
+	[EntityAttribute.StageOrder(-1024)]
 	public class GenericDialogUI : MenuUI {
 
 
@@ -14,13 +15,20 @@ namespace AngeliaFramework {
 		}
 
 
+		// Api
+		public static bool ShowingDialog => Instance != null && Instance.Active;
+
 		// Data
+		private static GenericDialogUI Instance;
 		private readonly Option OptionA = new();
 		private readonly Option OptionB = new();
 		private readonly Option OptionC = new();
 
 
 		// MSG
+		public GenericDialogUI () => Instance = this;
+
+
 		public override void OnActivated () {
 			base.OnActivated();
 			ContentPadding = new(32, 32, 46, 12);

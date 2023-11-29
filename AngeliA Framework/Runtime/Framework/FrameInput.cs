@@ -149,6 +149,7 @@ namespace AngeliaFramework {
 		// Short
 		private static Camera MainCamera => _MainCamera != null ? _MainCamera : (_MainCamera = Camera.main);
 		private static Camera _MainCamera = null;
+		private static bool IgnoringInput => Game.GlobalFrame <= IgnoreInputFrame;
 
 		// Data
 		private static Keyboard Keyboard = null;
@@ -202,6 +203,7 @@ namespace AngeliaFramework {
 		private static int DownDownFrame = int.MinValue;
 		private static int UpDownFrame = int.MinValue;
 		private static int? GamepadRightStickAccumulate = null;
+		private static int IgnoreInputFrame = -1;
 
 		// Saving
 		private static readonly SavingBool s_AllowGamepad = new("FrameInput.AllowGamepad", true);
@@ -623,8 +625,9 @@ namespace AngeliaFramework {
 
 
 		// Game Key
-		public static bool GameKeyDown (Gamekey key) => GamekeyStateMap[key].Down && !GamekeyStateMap[key].Ignored;
+		public static bool GameKeyDown (Gamekey key) => !IgnoringInput && GamekeyStateMap[key].Down && !GamekeyStateMap[key].Ignored;
 		public static bool GameKeyDownGUI (Gamekey key) {
+			if (IgnoringInput) return false;
 			var state = GamekeyStateMap[key];
 			if (state.Ignored) return false;
 			if (state.Down) return true;
@@ -634,13 +637,14 @@ namespace AngeliaFramework {
 			}
 			return false;
 		}
-		public static bool GameKeyHolding (Gamekey key) => GamekeyStateMap[key].Holding && !GamekeyStateMap[key].Ignored;
-		public static bool GameKeyUp (Gamekey key) => GamekeyStateMap[key].Up && !GamekeyStateMap[key].Ignored;
+		public static bool GameKeyHolding (Gamekey key) => !IgnoringInput && GamekeyStateMap[key].Holding && !GamekeyStateMap[key].Ignored;
+		public static bool GameKeyUp (Gamekey key) => !IgnoringInput && GamekeyStateMap[key].Up && !GamekeyStateMap[key].Ignored;
 
 
 		// Keyboard Key
-		public static bool KeyboardDown (Key key) => KeyboardStateMap.TryGetValue(key, out var state) && state.Down && !state.Ignored;
+		public static bool KeyboardDown (Key key) => !IgnoringInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Down && !state.Ignored;
 		public static bool KeyboardDownGUI (Key key) {
+			if (IgnoringInput) return false;
 			var state = KeyboardStateMap[key];
 			if (state.Ignored) return false;
 			if (state.Down) return true;
@@ -650,8 +654,8 @@ namespace AngeliaFramework {
 			}
 			return false;
 		}
-		public static bool KeyboardHolding (Key key) => KeyboardStateMap.TryGetValue(key, out var state) && state.Holding && !state.Ignored;
-		public static bool KeyboardUp (Key key) => KeyboardStateMap.TryGetValue(key, out var state) && state.Up && !state.Ignored;
+		public static bool KeyboardHolding (Key key) => !IgnoringInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Holding && !state.Ignored;
+		public static bool KeyboardUp (Key key) => !IgnoringInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Up && !state.Ignored;
 
 
 		// Use
@@ -711,7 +715,7 @@ namespace AngeliaFramework {
 
 
 		// Mouse
-		public static bool MouseButtonHolding (int button) => button switch {
+		public static bool MouseButtonHolding (int button) => !IgnoringInput && button switch {
 			0 => MouseLeftButton,
 			1 => MouseRightButton,
 			2 => MouseMidButton,
@@ -720,11 +724,15 @@ namespace AngeliaFramework {
 
 
 		public static int GetHoldingMouseButton () {
+			if (IgnoringInput) return -1;
 			if (MouseLeftButton) return 0;
 			if (MouseRightButton) return 1;
 			if (MouseMidButton) return 2;
 			return -1;
 		}
+
+
+		public static void IgnoreAllInput (int duration = 1) => IgnoreInputFrame = Game.GlobalFrame + duration;
 
 
 		#endregion

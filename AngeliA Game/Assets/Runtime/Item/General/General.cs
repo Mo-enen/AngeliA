@@ -68,7 +68,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.ItemCombination(typeof(iCottonBall), typeof(iFabric), typeof(iNeedle), 1)]
 	public class iCurseDoll : Item { }
 
-	//[EntityAttribute.ItemCombination(typeof(iAntimatterCookie), 1)]
+	[EntityAttribute.ItemCombination(typeof(iAntimatterCookie), typeof(iCthulhuEye), typeof(iCthulhuMeat), 1)]
 	public class iTruthOfTheUniverse : Item { }
 
 	[EntityAttribute.ItemCombination(typeof(iCookie), typeof(iAntimatter), 1)]
@@ -80,8 +80,8 @@ namespace AngeliaFramework {
 	[EntityAttribute.ItemCombination(typeof(iDice), typeof(iTotemPoison), typeof(iTotemWater), typeof(iTotemLightning), 1)]
 	public class iRuneCube : Item { }
 
-	[EntityAttribute.ItemCombination(typeof(iTentacle), typeof(iEyeBall), typeof(iTotemPoison), typeof(iBookGreen), 1)]
-	public class iOracleEye : Item { }
+	[EntityAttribute.ItemCombination(typeof(iTentacle), typeof(iEyeBall), typeof(iCthulhuMeat), typeof(iBookGreen), 1)]
+	public class iCthulhuEye : Item { }
 
 	[EntityAttribute.ItemCombination(typeof(iBowlingBall), typeof(iBowlingBall), typeof(iIngotIron), 1)]
 	public class iDumbbell : Item { }
@@ -598,10 +598,13 @@ namespace AngeliaFramework {
 	[EntityAttribute.ItemCombination(typeof(iHandbag), typeof(iCapsule), 1)]
 	public class iFirstAidKit : Item { }
 
+	[EntityAttribute.ItemCombination(typeof(iCuteGhost), 4)]
+	[EntityAttribute.ItemCombination(typeof(iBoringGhost), 2)]
+	public class iSoul : Item { }
 
 
 
-
+	public class iCursedSoul : Item { }
 	public class iFist : Item { }
 	public class iBeetle : Item { }
 	public class iGunpowder : Item { }
@@ -616,6 +619,7 @@ namespace AngeliaFramework {
 	public class iGourd : Item { }
 	public class iStar : Item { }
 	public class iCuteGhost : Item { }
+	public class iBoringGhost : Item { }
 	public class iTentacle : Item { }
 	public class iFlowerRed : Item { }
 	public class iFlowerPink : Item { }
@@ -645,6 +649,8 @@ namespace AngeliaFramework {
 	public class iKeyIron : Item { }
 	public class iStone : Item { }
 	public class iFlint : Item { }
+	public class iCthulhuMeat : Item { }
+
 
 
 }

@@ -425,6 +425,8 @@ namespace AngeliaFramework {
 	[EntityAttribute.ItemCombination(typeof(iHoneydew), 2)]
 	public class iHoneydewCut : Food { }
 
+	[EntityAttribute.ItemCombination(typeof(iMilk), typeof(iStrawberryJuice), 1)]
+	public class iBerryMilk : Food { }
 
 
 	public class iBeefRaw : Food { }
@@ -519,7 +521,7 @@ namespace AngeliaFramework {
 	public class iPitaya : Food { }
 	public class iApricot : Food { }
 	public class iHoneydew : Food { }
-	
+
 
 
 }
