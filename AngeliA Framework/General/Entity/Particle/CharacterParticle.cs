@@ -97,4 +97,31 @@ namespace AngeliaFramework {
 
 
 
+	public class JumpParticle : Particle {
+
+		private static readonly int TYPE_ID = typeof(JumpParticle).AngeHash();
+		public override int Duration => 10;
+		public override bool Loop => false;
+		public override int FramePerSprite => 2;
+		public override int RenderingZ => int.MaxValue - 1024;
+		public override int Scale => _Scale;
+		private int _Scale = 1000;
+
+		[OnGameInitialize(64)]
+		public static void OnGameInitialize () {
+			Character.OnJump += OnDoubleJump;
+			static void OnDoubleJump (Character character) {
+				if (Stage.SpawnEntity(TYPE_ID, character.X, character.Y - character.DeltaPositionY) is not JumpParticle particle) return;
+				bool firstJump = character.CurrentJumpCount <= 1;
+				particle._Scale = firstJump ? 618 : 900;
+				if (firstJump && CellRenderer.TryGetSprite(character.GroundedID, out var sprite)) {
+					particle.Tint = sprite.SummaryTint;
+				} else {
+					particle.Tint = Const.WHITE;
+				}
+			}
+		}
+
+	}
+
 }

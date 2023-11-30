@@ -1,5 +1,4 @@
-﻿UI.PaletteTab.Pinned:收藏
-UI.PaletteTab.All:全部
+﻿Menu.MEDT.AddToNewList:加入新列表
 CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
@@ -129,6 +128,8 @@ UI.None:无
 UI.OFF:关闭
 UI.OK:确定
 UI.ON:开启
+UI.PaletteTab.All:全部
+UI.PaletteTab.Pinned:收藏
 UI.Quit:退出
 UI.Restart:重新开始
 UI.Right:右

@@ -34,6 +34,7 @@ namespace AngeliaFramework {
 		public static event CharacterEventHandler OnSleeping;
 		public static event CharacterEventHandler OnSleeped;
 		public static event CharacterEventHandler OnFootStepped;
+		public static event CharacterEventHandler OnJump;
 		public static event CharacterEventHandler OnDashStepped;
 		public static event CharacterEventHandler OnSlideStepped;
 		public static event CharacterEventHandler OnPassOut;
@@ -312,6 +313,10 @@ namespace AngeliaFramework {
 				// Charging Bounce
 				if (Game.GlobalFrame % 10 == 0 && IsChargingAttack) {
 					Bounce();
+				}
+
+				if (Game.GlobalFrame == LastJumpFrame) {
+					OnJump?.Invoke(this);
 				}
 
 			}

@@ -37,6 +37,7 @@ namespace AngeliaFramework {
 
 		// Api
 		public static bool ShowingPopup => Instance != null && Instance.Active;
+		public static int CurrentItemCount => Instance != null ? Instance.ItemCount : 0;
 
 		// Data
 		private static GenericPopupUI Instance;

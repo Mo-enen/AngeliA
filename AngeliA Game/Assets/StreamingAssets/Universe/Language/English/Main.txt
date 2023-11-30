@@ -1,5 +1,4 @@
-﻿UI.PaletteTab.Pinned:List
-UI.PaletteTab.All:All
+﻿Menu.MEDT.AddToNewList:Add to New List
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
@@ -129,6 +128,8 @@ UI.None:None
 UI.OFF:OFF
 UI.OK:OK
 UI.ON:ON
+UI.PaletteTab.All:All
+UI.PaletteTab.Pinned:List
 UI.Quit:Quit
 UI.Restart:Restart
 UI.Right:Right

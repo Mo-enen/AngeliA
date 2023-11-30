@@ -258,12 +258,9 @@ namespace AngeliaFramework {
 		public static void Initialized () {
 			Application.quitting -= OnQuit;
 			Application.quitting += OnQuit;
-		}
-
-
-		private static void OnQuit () {
-			var mapEditor = Stage.PeekOrGetEntity<MapEditor>();
-			if (mapEditor != null && mapEditor.Active) mapEditor.OnInactivated();
+			static void OnQuit () {
+				if (Instance != null && Instance.Active) Instance.OnInactivated();
+			}
 		}
 
 
@@ -549,6 +546,7 @@ namespace AngeliaFramework {
 					SetNavigating(false);
 				}
 			}
+			LateUpdate_Misc();
 		}
 
 
@@ -583,6 +581,9 @@ namespace AngeliaFramework {
 					Icon = UI_DEFAULT_LIST_COVER,
 					Items = new List<PaletteItem>(),
 				});
+			}
+			if (DraggingForReorderPaletteGroup >= 0 && DraggingForReorderPaletteItem >= 0) {
+				DraggingForReorderPaletteGroup = -1;
 			}
 
 			// Panel Rect
@@ -629,6 +630,14 @@ namespace AngeliaFramework {
 				SetNavigating(false);
 			}
 
+		}
+
+
+		private void LateUpdate_Misc () {
+			if (!FrameInput.MouseLeftButton) {
+				DraggingForReorderPaletteItem = -1;
+				DraggingForReorderPaletteGroup = -1;
+			}
 		}
 
 
@@ -751,13 +760,13 @@ namespace AngeliaFramework {
 
 					// Switch Mode
 					if (!CtrlHolding) {
-						if (FrameInput.GameKeyDown(Gamekey.Select)) {
+						if (FrameInput.KeyboardDown(Key.Space)) {
 							IgnoreQuickPlayerDropThisTime = false;
 							StartDropPlayer();
 						}
 						ControlHintUI.AddHint(
-							Gamekey.Select,
-							Language.Get(HINT_MEDT_SWITCH_PLAY, "Play"), 1
+							Key.Space,
+							Language.Get(HINT_MEDT_SWITCH_PLAY, "Play")
 						);
 					}
 
@@ -861,11 +870,12 @@ namespace AngeliaFramework {
 						UndoRedo.Redo();
 					}
 					// Play from Start
-					if (FrameInput.GameKeyDown(Gamekey.Start)) {
+					if (FrameInput.KeyboardDown(Key.Space)) {
 						PlayFromStart();
 						FrameInput.UseAllHoldingKeys();
+						FrameInput.UseGameKey(Gamekey.Start);
 					}
-					ControlHintUI.AddHint(Gamekey.Start, Language.Get(HINT_MEDT_PLAY_FROM_BEGIN, "Play from Start"));
+					ControlHintUI.AddHint(Key.Space, Language.Get(HINT_MEDT_PLAY_FROM_BEGIN, "Play from Start"));
 					// Reset Camera
 					if (FrameInput.KeyboardDown(Key.R)) {
 						ResetCamera();
@@ -895,7 +905,7 @@ namespace AngeliaFramework {
 						FrameInput.UseGameKey(Gamekey.Start);
 					}
 					ControlHintUI.AddHint(
-						Gamekey.Start,
+						Key.Escape,
 						Language.Get(HINT_MEDT_SWITCH_EDIT, "Back to Edit")
 					);
 				}
