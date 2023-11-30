@@ -63,5 +63,10 @@ namespace AngeliaFramework {
 		public static string DownloadMapRoot => _DownloadMapRoot ??= Util.CombinePaths(Application.persistentDataPath, "Download Map");
 		private static string _DownloadMapRoot = null;
 
+		// Temp
+		public static string ProcedureMapTempRoot => _ProcedureMapTempRoot ??= Util.CombinePaths(Application.temporaryCachePath, "Generating Map");
+		private static string _ProcedureMapTempRoot = null;
+
+
 	}
 }

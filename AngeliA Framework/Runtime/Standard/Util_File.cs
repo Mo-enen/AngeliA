@@ -100,14 +100,14 @@ namespace AngeliaFramework {
 		}
 
 
+		public static bool HasFileIn (string path, bool topOnly, string searchPattern) {
+			if (!FolderExists(path)) return false;
+			foreach (var _ in EnumerateFiles(path, topOnly, searchPattern)) return true;
+			return false;
+		}
 		public static bool HasFileIn (string path, bool topOnly, params string[] searchPattern) {
-			if (PathIsFolder(path)) {
-				for (int i = 0; i < searchPattern.Length; i++) {
-					if (new DirectoryInfo(path).GetFiles(searchPattern[i], topOnly ? SearchOption.TopDirectoryOnly : SearchOption.AllDirectories).Length > 0) {
-						return true;
-					}
-				}
-			}
+			if (!FolderExists(path)) return false;
+			foreach (var _ in EnumerateFiles(path, topOnly, searchPattern)) return true;
 			return false;
 		}
 

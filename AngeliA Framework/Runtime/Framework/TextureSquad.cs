@@ -253,7 +253,7 @@ namespace AngeliaFramework {
 					var renderer = SquadContainer.GetChild(j * WorldSize + i);
 					renderer.gameObject.SetActive(true);
 					if (unit.WorldPos == pos) continue;
-					if (FillingWorld.LoadFromDisk(WorldSquad.MapRoot, pos.x, pos.y, pos.z)) {
+					if (FillingWorld.LoadFromDisk(WorldSquad.MapRoot, WorldSquad.Channel.GetLocation(), pos.x, pos.y, pos.z)) {
 						FillingWorld.FillIntoTexture(unit.Texture, ignoreItem: true);
 					} else {
 						renderer.gameObject.SetActive(false);

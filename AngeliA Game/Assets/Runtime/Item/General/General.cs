@@ -401,7 +401,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.ItemCombination(typeof(iMusicNote), typeof(iIngotGold), 1)]
 	public class iBell : Item { }
 
-	[EntityAttribute.ItemCombination(typeof(iLetter), typeof(iMagnet), 1)]
+	[EntityAttribute.ItemCombination(typeof(iLetter), typeof(iMagnet), typeof(iElectricWire), 1)]
 	public class iFloppyDisk : Item { }
 
 	[EntityAttribute.ItemCombination(typeof(iMusicNote), typeof(iRibbon), typeof(iMagnet), 1)]
@@ -494,9 +494,6 @@ namespace AngeliaFramework {
 
 	[EntityAttribute.ItemCombination(typeof(iRunePoison), typeof(iLeaf), 1)]
 	public class iHerb : Item { }
-
-	[EntityAttribute.ItemCombination(typeof(iBookYellow), typeof(iIngotIron), typeof(iElectricWire), typeof(iRuneLightning), 1)]
-	public class iProcessor : Item { }
 
 	[EntityAttribute.ItemCombination(typeof(iTrayWood), typeof(iTrayWood), typeof(iRope), typeof(iTreeBranch), 1)]
 	public class iScales : Item { }
@@ -602,7 +599,11 @@ namespace AngeliaFramework {
 	[EntityAttribute.ItemCombination(typeof(iBoringGhost), 2)]
 	public class iSoul : Item { }
 
+	[EntityAttribute.ItemCombination(typeof(iElectronicChip), typeof(iBookBlue), typeof(iElectricWire), typeof(iIngotIron), 1)]
+	public class iProcessor : Item { }
 
+	[EntityAttribute.ItemCombination(typeof(iBookYellow), typeof(iIngotIron), typeof(iElectricWire), typeof(iFloppyDisk), 1)]
+	public class iElectronicChip : Item { }
 
 	public class iCursedSoul : Item { }
 	public class iFist : Item { }

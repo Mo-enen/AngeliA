@@ -40,6 +40,8 @@ namespace AngeliaFramework {
 			Util.CreateFolder(AngePath.BuiltInMapRoot);
 			Util.CreateFolder(AngePath.DownloadMapRoot);
 			Util.CreateFolder(AngePath.ProcedureMapRoot);
+			Util.DeleteFolder(AngePath.ProcedureMapTempRoot);
+			Util.CreateFolder(AngePath.ProcedureMapTempRoot);
 		}
 
 
@@ -752,7 +754,7 @@ namespace AngeliaFramework {
 			var world = new World();
 			foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{Const.MAP_FILE_EXT}")) {
 				try {
-					if (!world.LoadFromDisk(path)) continue;
+					if (!world.LoadFromDisk(path, MapLocation.Unknown)) continue;
 					if (world.EmptyCheck()) {
 						Util.DeleteFile(path);
 						Util.DeleteFile(path + ".meta");

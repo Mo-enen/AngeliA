@@ -13,6 +13,10 @@ namespace AngeliaFramework {
 		Background = 2,
 	}
 
+	public enum MapLocation {
+		BuiltIn, User, Procedure, Unknown,
+	}
+
 	public class World {
 
 
@@ -22,6 +26,7 @@ namespace AngeliaFramework {
 
 
 		// Api
+		public MapLocation LoadedLocation { get; private set; } = MapLocation.Unknown;
 		public Vector3Int WorldPosition { get; set; } = default;
 		public int[] Background { get; set; } = null;
 		public int[] Level { get; set; } = null;
@@ -70,13 +75,13 @@ namespace AngeliaFramework {
 
 
 		// Load
-		public bool LoadFromDisk (string mapFile) =>
+		public bool LoadFromDisk (string mapFile, MapLocation location) =>
 			GetWorldPositionFromName(Util.GetNameWithoutExtension(mapFile), out var pos) &&
-			LoadFromDiskLogic(mapFile, pos.x, pos.y, pos.z);
+			LoadFromDiskLogic(mapFile, location, pos.x, pos.y, pos.z);
 
 
-		public bool LoadFromDisk (string mapFolder, int worldX, int worldY, int worldZ) => LoadFromDiskLogic(
-			Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ)), worldX, worldY, worldZ
+		public bool LoadFromDisk (string mapFolder, MapLocation location, int worldX, int worldY, int worldZ) => LoadFromDiskLogic(
+			Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ)), location, worldX, worldY, worldZ
 		);
 
 
@@ -206,9 +211,10 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private bool LoadFromDiskLogic (string filePath, int worldX, int worldY, int worldZ) {
+		private bool LoadFromDiskLogic (string filePath, MapLocation location, int worldX, int worldY, int worldZ) {
 
 			bool success = false;
+			LoadedLocation = MapLocation.Unknown;
 
 			lock (FileStreamingLock) {
 
@@ -260,6 +266,7 @@ namespace AngeliaFramework {
 						} catch (System.Exception ex) { Debug.LogException(ex); }
 					}
 					success = true;
+					LoadedLocation = location;
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
 			return success;

@@ -47,6 +47,13 @@ namespace AngeliaFramework {
 		public static WorldSquad Front { get; set; } = null;
 		public static WorldSquad Behind { get; set; } = null;
 		public static MapChannel Channel { get; private set; } = MapChannel.BuiltIn;
+		public static MapLocation CurrentLocation {
+			get {
+				if (Front == null) return MapLocation.Unknown;
+				var world = Front.Worlds[1, 1];
+				return world != null ? world.LoadedLocation : MapLocation.Unknown;
+			}
+		}
 		public static string MapRoot { get; private set; } = "";
 		public static bool Enable { get; set; } = true;
 		public static bool SpawnEntity { get; set; } = true;
@@ -643,11 +650,10 @@ namespace AngeliaFramework {
 				for (int i = 0; i < 3; i++) {
 					var world = Worlds[i, j];
 					var pos = new Vector3Int(worldX + i - 1, worldY + j - 1, worldZ);
-					if (forceLoad || world.WorldPosition != pos) {
-						bool loaded = world.LoadFromDisk(MapRoot, pos.x, pos.y, pos.z);
-						if (!loaded && Channel == MapChannel.BuiltIn) {
-							world.LoadFromDisk(AngePath.ProcedureMapRoot, pos.x, pos.y, pos.z);
-						}
+					if (!forceLoad && world.WorldPosition == pos) continue;
+					bool loaded = world.LoadFromDisk(MapRoot, Channel.GetLocation(), pos.x, pos.y, pos.z);
+					if (!loaded) {
+						world.LoadFromDisk(AngePath.ProcedureMapRoot, MapLocation.Procedure, pos.x, pos.y, pos.z);
 					}
 				}
 			}

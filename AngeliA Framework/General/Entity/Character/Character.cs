@@ -35,6 +35,7 @@ namespace AngeliaFramework {
 		public static event CharacterEventHandler OnSleeped;
 		public static event CharacterEventHandler OnFootStepped;
 		public static event CharacterEventHandler OnJump;
+		public static event CharacterEventHandler OnFly;
 		public static event CharacterEventHandler OnDashStepped;
 		public static event CharacterEventHandler OnSlideStepped;
 		public static event CharacterEventHandler OnPassOut;
@@ -285,40 +286,19 @@ namespace AngeliaFramework {
 		private void FrameUpdate_Event () {
 
 			if (CharacterState == CharacterState.GamePlay) {
-
-				// Teleport
-				if (TeleportWithPortal && Game.GlobalFrame == TeleportEndFrame - TeleportDuration / 2 + 1) {
-					OnTeleport?.Invoke(this);
-				}
-
-				// Run Particle
+				if (
+					TeleportWithPortal && Game.GlobalFrame == TeleportEndFrame - TeleportDuration / 2 + 1
+				) OnTeleport?.Invoke(this);
 				if (
 					IsGrounded &&
 					LastStartRunFrame >= 0 &&
 					(Game.GlobalFrame - LastStartRunFrame) % 20 == 19
-				) {
-					OnFootStepped?.Invoke(this);
-				}
-
-				// Slide Particle
-				if (IsSliding && Game.GlobalFrame % 24 == 0) {
-					OnSlideStepped?.Invoke(this);
-				}
-
-				// Dash Particle
-				if (IsGrounded && IsDashing && Game.GlobalFrame % 8 == 0) {
-					OnDashStepped?.Invoke(this);
-				}
-
-				// Charging Bounce
-				if (Game.GlobalFrame % 10 == 0 && IsChargingAttack) {
-					Bounce();
-				}
-
-				if (Game.GlobalFrame == LastJumpFrame) {
-					OnJump?.Invoke(this);
-				}
-
+				) OnFootStepped?.Invoke(this);
+				if (IsSliding && Game.GlobalFrame % 24 == 0) OnSlideStepped?.Invoke(this);
+				if (IsGrounded && IsDashing && Game.GlobalFrame % 8 == 0) OnDashStepped?.Invoke(this);
+				if (Game.GlobalFrame % 10 == 0 && IsChargingAttack) Bounce();
+				if (Game.GlobalFrame == LastJumpFrame) OnJump?.Invoke(this);
+				if (Game.GlobalFrame == LastFlyFrame) OnFly?.Invoke(this);
 			}
 
 			// Sleep

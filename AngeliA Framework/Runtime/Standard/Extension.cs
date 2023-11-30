@@ -10,12 +10,11 @@ namespace AngeliaFramework {
 	public static class Extension {
 
 
-
 		// Number
 		public static bool GetBit (this ulong value, int index) => (value & (1UL << index)) != 0;
 		public static bool GetBit (this int value, int index) => (value & (1 << index)) != 0;
 		public static bool GetBit (this ushort value, int index) => (value & (1 << index)) != 0;
-		
+
 		public static void SetBit (this ref ulong value, int index, bool bitValue) {
 			if (index < 0 || index > 63) return;
 			var val = 1UL << index;
@@ -474,6 +473,13 @@ namespace AngeliaFramework {
 		public static bool IsBottom (this Alignment alignment) => alignment == Alignment.BottomLeft || alignment == Alignment.BottomMid || alignment == Alignment.BottomRight;
 		public static bool IsMidY (this Alignment alignment) => alignment == Alignment.MidLeft || alignment == Alignment.MidMid || alignment == Alignment.MidRight;
 		public static bool IsTop (this Alignment alignment) => alignment == Alignment.TopLeft || alignment == Alignment.TopMid || alignment == Alignment.TopRight;
+
+
+		public static MapLocation GetLocation (this MapChannel channel) => channel switch {
+			MapChannel.BuiltIn => MapLocation.BuiltIn,
+			MapChannel.User => MapLocation.User,
+			_ => MapLocation.Unknown,
+		};
 
 
 		// Enum

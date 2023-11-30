@@ -109,8 +109,13 @@ namespace AngeliaFramework {
 
 		[OnGameInitialize(64)]
 		public static void OnGameInitialize () {
-			Character.OnJump += OnDoubleJump;
-			static void OnDoubleJump (Character character) {
+			Character.OnJump += OnJumpFly;
+			Character.OnFly += OnJumpFly;
+			static void OnJumpFly (Character character) {
+				if (character.CurrentJumpCount > character.JumpCount + 1) return;
+				// Fly without Rise
+				if (character.CurrentJumpCount > character.JumpCount && character.FlyRiseSpeed <= 0) return;
+				// Spawn Particle
 				if (Stage.SpawnEntity(TYPE_ID, character.X, character.Y - character.DeltaPositionY) is not JumpParticle particle) return;
 				bool firstJump = character.CurrentJumpCount <= 1;
 				particle._Scale = firstJump ? 618 : 900;
