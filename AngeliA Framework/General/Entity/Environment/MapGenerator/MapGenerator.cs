@@ -9,15 +9,10 @@ namespace AngeliaFramework {
 	public abstract class ActionMapGenerator : MapGenerator, IActionTarget {
 
 		private static readonly int HINT_GENERATE = "CtrlHint.MapGenerator.Generate".AngeHash();
+		private static readonly int HINT_REGENERATE = "CtrlHint.MapGenerator.Regenerate".AngeHash();
 		private static readonly int HINT_GENERATING = "CtrlHint.MapGenerator.Generating".AngeHash();
-		private readonly CellContent HintContent = new() {
-			Alignment = Alignment.MidMid,
-			BackgroundTint = Const.BLACK,
-			TightBackground = true,
-			Wrap = false,
-			Clip = false,
-		};
-		protected virtual bool UseGeneratingHint => true;
+		protected virtual bool ShowGeneratingHint => true;
+		private readonly CellContent HintContent = new() { Alignment = Alignment.MidMid, BackgroundTint = Const.BLACK, TightBackground = true, Wrap = false, Clip = false, };
 
 		public override void OnActivated () {
 			base.OnActivated();
@@ -37,11 +32,14 @@ namespace AngeliaFramework {
 				if ((this as IActionTarget).IsHighlighted) {
 					IActionTarget.HighlightBlink(cell, Direction3.None, FittingPose.Single);
 					// Hint
-					ControlHintUI.DrawGlobalHint(X, Y + Const.CEL * 2 + Const.HALF, Gamekey.Action, Language.Get(HINT_GENERATE, "Generate Map"), true);
+					ControlHintUI.DrawGlobalHint(
+						X, Y + Const.CEL * 2 + Const.HALF, Gamekey.Action,
+						HasMapInDisk ? Language.Get(HINT_REGENERATE, "Regenerate Map") : Language.Get(HINT_GENERATE, "Generate Map"), true
+					);
 				}
 			} else {
 				// Generating
-				if (UseGeneratingHint) {
+				if (ShowGeneratingHint) {
 					CellRendererGUI.Label(
 						HintContent.SetText(Language.Get(HINT_GENERATING, "Generating")),
 						new RectInt(X - Const.CEL, Y + Const.CEL * 2, Const.CEL * 3, Const.CEL)

@@ -1,5 +1,4 @@
-﻿CtrlHint.MapGenerator.Generate:Generate Level
-CtrlHint.MapGenerator.Generating:Generating Level
+﻿CtrlHint.MapGenerator.Regenerate:Regenerate Map
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
@@ -10,6 +9,8 @@ CtrlHint.Equip:Equip
 CtrlHint.HideMenu:Hide Menu
 CtrlHint.HoldToUse:Hold to Use
 CtrlHint.Jump:Jump
+CtrlHint.MapGenerator.Generate:Generate Level
+CtrlHint.MapGenerator.Generating:Generating Level
 CtrlHint.MEDT.Nav:Overlook
 CtrlHint.MEDT.PlayFromBegin:Play from Start
 CtrlHint.MEDT.SwitchMode.Edit:Back to Edit
@@ -48,7 +49,7 @@ Menu.MEDT.DeleteList:Delete List
 Menu.MEDT.DeleteListMSG:Delete List 
 Menu.MEDT.RemoveFromList:Remove from List:
 Menu.MEDT.SetAsListCover:Set as List Cover
-Menu.MEDTSetting.AutoZoom:Auto Zoom
+Menu.MEDTSetting.AutoZoom:Fixed Scene Range
 Menu.MEDTSetting.PlayerDrop:Quick Player Drop
 Menu.MEDTSetting.ShowState:Show State Info
 Menu.Pause.KeySetter:Key Assignment
