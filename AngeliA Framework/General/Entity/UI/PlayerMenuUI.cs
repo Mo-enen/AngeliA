@@ -582,11 +582,13 @@ namespace AngeliaFramework {
 			HoveringItemField = HoveringItemField || hovering;
 
 			// Frame
-			int frameBorder = Unify(4);
+			int frameBorder = Unify(1);
 			CellRenderer.Draw_9Slice(
-				frameCode, itemRect,
+				frameCode,
+				itemRect.x,
+				itemRect.y, 0, 0, 0, itemRect.width, itemRect.height,
 				frameBorder, frameBorder, frameBorder, frameBorder,
-				Const.WHITE, int.MinValue + 3
+				Const.SliceIgnoreCenter, Const.WHITE, int.MinValue + 3
 			);
 
 			// Icon

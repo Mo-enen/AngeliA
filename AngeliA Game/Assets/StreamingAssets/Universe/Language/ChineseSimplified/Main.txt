@@ -1,5 +1,4 @@
-﻿CtrlHint.MapGenerator.Regenerate:重新生成关卡
-CtrlHint.Adjust:调整
+﻿CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
 CtrlHint.Drop:放下
@@ -11,6 +10,7 @@ CtrlHint.HoldToUse:长按使用
 CtrlHint.Jump:跳跃
 CtrlHint.MapGenerator.Generate:生成关卡
 CtrlHint.MapGenerator.Generating:正在生成关卡
+CtrlHint.MapGenerator.Regenerate:重新生成关卡
 CtrlHint.MEDT.Nav:俯瞰
 CtrlHint.MEDT.PlayFromBegin:从头开始游戏
 CtrlHint.MEDT.SwitchMode.Edit:返回编辑
@@ -43,7 +43,7 @@ Menu.KeySetter.KeyboardMessage:按下F1键重置键盘设置
 Menu.KeySetter.Record:按想要的按键
 Menu.KeySetter.SaveAndBack:保存并返回
 Menu.MEDT.AddToList:添加到
-Menu.MEDT.AddToNewList:加入新列表
+Menu.MEDT.AddToNewList:添加到新建列表
 Menu.MEDT.CreateList:新建列表
 Menu.MEDT.DeleteList:删除列表
 Menu.MEDT.DeleteListMSG:是否删除列表

@@ -39,9 +39,6 @@ namespace AngeliaFramework {
 			Util.CreateFolder(AngePath.MetaRoot);
 			Util.CreateFolder(AngePath.BuiltInMapRoot);
 			Util.CreateFolder(AngePath.DownloadMapRoot);
-			Util.CreateFolder(AngePath.ProcedureMapRoot);
-			Util.DeleteFolder(AngePath.ProcedureMapTempRoot);
-			Util.CreateFolder(AngePath.ProcedureMapTempRoot);
 		}
 
 

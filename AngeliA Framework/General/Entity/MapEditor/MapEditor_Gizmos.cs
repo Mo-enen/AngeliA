@@ -246,29 +246,22 @@ namespace AngeliaFramework {
 			var squad = WorldSquad.Front;
 			var range = CellRenderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
 			MapEditorGizmos.MapEditorCameraRange = range;
-			DrawWorldGizmos(squad[0, 0], GizmosPool, range);
-			DrawWorldGizmos(squad[0, 1], GizmosPool, range);
-			DrawWorldGizmos(squad[0, 2], GizmosPool, range);
-			DrawWorldGizmos(squad[1, 0], GizmosPool, range);
-			DrawWorldGizmos(squad[1, 1], GizmosPool, range);
-			DrawWorldGizmos(squad[1, 2], GizmosPool, range);
-			DrawWorldGizmos(squad[2, 0], GizmosPool, range);
-			DrawWorldGizmos(squad[2, 1], GizmosPool, range);
-			DrawWorldGizmos(squad[2, 2], GizmosPool, range);
-			// Func
-			static void DrawWorldGizmos (World world, Dictionary<int, MapEditorGizmos> pool, RectInt cameraRange) {
-				int index = 0;
-				var rect = new RectInt(0, 0, Const.CEL, Const.CEL);
-				int worldGlobalX = world.WorldPosition.x * Const.MAP * Const.CEL;
-				int worldGlobalY = world.WorldPosition.y * Const.MAP * Const.CEL;
-				for (int y = 0; y < Const.MAP; y++) {
-					for (int x = 0; x < Const.MAP; x++, index++) {
-						int id = world.Entity[index];
-						if (id == 0 || !pool.TryGetValue(id, out var gizmos)) continue;
-						rect.x = worldGlobalX + x * Const.CEL;
-						rect.y = worldGlobalY + y * Const.CEL;
-						if (gizmos.DrawGizmosOutOfRange || cameraRange.Overlaps(rect)) {
-							gizmos.DrawGizmos(rect, id);
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 3; j++) {
+					var world = squad[i, j];
+					int index = 0;
+					var rect = new RectInt(0, 0, Const.CEL, Const.CEL);
+					int worldGlobalX = world.WorldPosition.x * Const.MAP * Const.CEL;
+					int worldGlobalY = world.WorldPosition.y * Const.MAP * Const.CEL;
+					for (int y = 0; y < Const.MAP; y++) {
+						for (int x = 0; x < Const.MAP; x++, index++) {
+							int id = world.Entity[index];
+							if (id == 0 || !GizmosPool.TryGetValue(id, out var gizmos)) continue;
+							rect.x = worldGlobalX + x * Const.CEL;
+							rect.y = worldGlobalY + y * Const.CEL;
+							if (gizmos.DrawGizmosOutOfRange || range.Overlaps(rect)) {
+								gizmos.DrawGizmos(rect, id);
+							}
 						}
 					}
 				}

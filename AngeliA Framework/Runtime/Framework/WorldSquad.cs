@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 using UnityEngine;
 
 
@@ -62,6 +62,7 @@ namespace AngeliaFramework {
 		public World this[int i, int j] => Worlds[i, j];
 
 		// Data
+		private static string[] ProcedureGeneratorRoots = null;
 		private readonly World[,] Worlds = new World[3, 3] { { new(), new(), new() }, { new(), new(), new() }, { new(), new(), new() }, };
 		private readonly World[,] WorldBuffer = new World[3, 3];
 		private readonly World[] WorldBufferAlt = new World[9];
@@ -83,6 +84,7 @@ namespace AngeliaFramework {
 
 		[OnGameInitialize(-128)]
 		public static void OnGameInitialize () {
+			ProcedureGeneratorRoots = Util.EnumerateFolders(AngePath.ProcedureMapRoot, true, "*").ToArray() ?? new string[0];
 			Front = new WorldSquad();
 			Behind = new WorldSquad();
 			Util.LinkEventWithAttribute<OnMapChannelChangedAttribute>(typeof(WorldSquad), nameof(OnMapChannelChanged));
@@ -651,9 +653,17 @@ namespace AngeliaFramework {
 					var world = Worlds[i, j];
 					var pos = new Vector3Int(worldX + i - 1, worldY + j - 1, worldZ);
 					if (!forceLoad && world.WorldPosition == pos) continue;
-					bool loaded = world.LoadFromDisk(MapRoot, Channel.GetLocation(), pos.x, pos.y, pos.z);
-					if (!loaded) {
-						world.LoadFromDisk(AngePath.ProcedureMapRoot, MapLocation.Procedure, pos.x, pos.y, pos.z);
+					// Load from Current Channel
+					world.LoadFromDisk(
+						MapRoot, Channel.GetLocation(), pos.x, pos.y, pos.z,
+						clearExistData: true
+					);
+					// Load from Procedure
+					foreach (var root in ProcedureGeneratorRoots) {
+						world.LoadFromDisk(
+							root, MapLocation.Procedure, pos.x, pos.y, pos.z,
+							clearExistData: false
+						);
 					}
 				}
 			}

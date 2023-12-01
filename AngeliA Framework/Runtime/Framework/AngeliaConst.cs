@@ -142,6 +142,7 @@ namespace AngeliaFramework {
 		public static readonly Color32 GREY_32 = new(32, 32, 32, 255);
 		public static readonly Color32 GREY_12 = new(12, 12, 12, 255);
 		public static readonly Color32 SKIN_YELLOW = new(245, 217, 196, 255);
+		public static readonly bool[] SliceIgnoreCenter = { false, false, false, false, true, false, false, false, false, };
 
 		// Cursor
 		public const int CURSOR_HAND = 0;

@@ -8,17 +8,16 @@ namespace AngeliaFramework {
 
 	[EntityAttribute.MapEditorGroup("System")]
 	public abstract class SystemEntity : IMapEditorItem { }
-	public abstract class SystemNumber : SystemEntity { }
-	public class Number0 : SystemNumber { }
-	public class Number1 : SystemNumber { }
-	public class Number2 : SystemNumber { }
-	public class Number3 : SystemNumber { }
-	public class Number4 : SystemNumber { }
-	public class Number5 : SystemNumber { }
-	public class Number6 : SystemNumber { }
-	public class Number7 : SystemNumber { }
-	public class Number8 : SystemNumber { }
-	public class Number9 : SystemNumber { }
+	public class Number0 : SystemEntity { }
+	public class Number1 : SystemEntity { }
+	public class Number2 : SystemEntity { }
+	public class Number3 : SystemEntity { }
+	public class Number4 : SystemEntity { }
+	public class Number5 : SystemEntity { }
+	public class Number6 : SystemEntity { }
+	public class Number7 : SystemEntity { }
+	public class Number8 : SystemEntity { }
+	public class Number9 : SystemEntity { }
 
 
 }

@@ -1,24 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
 	public interface IDamageReceiver {
-
 
 		public int Team { get; }
 		public bool TakeDamageFromEnvironment => true;
 
 		void TakeDamage (int damage, Entity sender);
 
-
 		[OnGameUpdateLater]
 		public static void OnGameUpdateLater () {
 			PerformDamageCheck(EntityLayer.GAME);
 			PerformDamageCheck(EntityLayer.CHARACTER);
 		}
-
 
 		private static void PerformDamageCheck (int entityLayer) {
 			int len = Stage.EntityCounts[entityLayer];
@@ -35,7 +31,6 @@ namespace AngeliaFramework {
 				}
 			}
 		}
-
 
 	}
 }

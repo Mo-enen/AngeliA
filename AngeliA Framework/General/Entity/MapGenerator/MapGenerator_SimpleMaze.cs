@@ -4,7 +4,8 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public class SimpleMaze : ActionMapGenerator {
+	public class MapGenerator_SimpleMaze : ActionMapGenerator {
+
 
 		protected override void GenerateMap () {
 
@@ -13,6 +14,7 @@ namespace AngeliaFramework {
 
 
 		}
+
 
 	}
 }

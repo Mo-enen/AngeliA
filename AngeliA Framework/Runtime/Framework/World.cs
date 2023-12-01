@@ -75,14 +75,16 @@ namespace AngeliaFramework {
 
 
 		// Load
-		public bool LoadFromDisk (string mapFile, MapLocation location) =>
+		public bool LoadFromDisk (string mapFile, MapLocation location, bool clearExistData = true) =>
 			GetWorldPositionFromName(Util.GetNameWithoutExtension(mapFile), out var pos) &&
-			LoadFromDiskLogic(mapFile, location, pos.x, pos.y, pos.z);
+			LoadFromDiskLogic(mapFile, location, pos.x, pos.y, pos.z, clearExistData);
 
 
-		public bool LoadFromDisk (string mapFolder, MapLocation location, int worldX, int worldY, int worldZ) => LoadFromDiskLogic(
-			Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ)), location, worldX, worldY, worldZ
-		);
+		public bool LoadFromDisk (string mapFolder, MapLocation location, int worldX, int worldY, int worldZ, bool clearExistData = true) =>
+			LoadFromDiskLogic(
+				Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ)),
+				location, worldX, worldY, worldZ, clearExistData
+			);
 
 
 		public static void ForAllEntities (string filePath, System.Action<int, int, int> callback) {
@@ -211,7 +213,7 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private bool LoadFromDiskLogic (string filePath, MapLocation location, int worldX, int worldY, int worldZ) {
+		private bool LoadFromDiskLogic (string filePath, MapLocation location, int worldX, int worldY, int worldZ, bool clearExistData) {
 
 			bool success = false;
 			LoadedLocation = MapLocation.Unknown;
@@ -220,9 +222,11 @@ namespace AngeliaFramework {
 
 				try {
 
-					System.Array.Clear(Level, 0, Level.Length);
-					System.Array.Clear(Background, 0, Background.Length);
-					System.Array.Clear(Entity, 0, Entity.Length);
+					if (clearExistData) {
+						System.Array.Clear(Level, 0, Level.Length);
+						System.Array.Clear(Background, 0, Background.Length);
+						System.Array.Clear(Entity, 0, Entity.Length);
+					}
 
 					WorldPosition = new(worldX, worldY, worldZ);
 

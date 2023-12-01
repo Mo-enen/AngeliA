@@ -494,7 +494,7 @@ namespace AngeliaFramework {
 			int ITEM_GAP = Unify(3);
 			int PADDING = Unify(6);
 			int COVER_SHRINK = Unify(6);
-			int BORDER = Unify(6);
+			int BORDER = Unify(2);
 			int BORDER_ALT = Unify(2);
 			int SCROLL_BAR_WIDTH = Unify(12);
 			int TOOLBAR_HEIGHT = Unify(TOOL_BAR_HEIGHT * 2);
@@ -578,6 +578,7 @@ namespace AngeliaFramework {
 						SelectingPaletteItem = pal;
 					} else if (FrameInput.MouseRightButtonDown) {
 						FrameInput.UseMouseKey(1);
+						SelectingPaletteItem = pal;
 						ShowPaletteItemMenu(pal);
 					}
 				}
