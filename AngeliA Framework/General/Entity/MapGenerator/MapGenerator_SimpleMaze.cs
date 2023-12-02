@@ -9,8 +9,10 @@ namespace AngeliaFramework {
 
 		protected override void GenerateMap () {
 
-
-
+			int z = Stage.ViewZ;
+			for (int i = 0; i < 256; i++) {
+				ResultWriter.SetBlockAt(i, 0, z, BlockType.Level, typeof(Barrel).AngeHash());
+			}
 
 
 		}

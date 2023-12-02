@@ -31,10 +31,12 @@ namespace AngeliaFramework {
 		public int[] Background { get; set; } = null;
 		public int[] Level { get; set; } = null;
 		public int[] Entity { get; set; } = null;
+		public byte[] ProcedureFlag { get; set; } = null;
 
 		// Data
 		private static readonly Color32[] FILLING_PIXELS = new Color32[Const.MAP * Const.MAP];
 		private static readonly object FileStreamingLock = new();
+		private bool ProcedureInvolved = false;
 
 
 		#endregion
@@ -63,6 +65,7 @@ namespace AngeliaFramework {
 			System.Array.Copy(source.Background, Background, Background.Length);
 			System.Array.Copy(source.Level, Level, Level.Length);
 			System.Array.Copy(source.Entity, Entity, Entity.Length);
+			System.Array.Copy(source.ProcedureFlag, ProcedureFlag, ProcedureFlag.Length);
 		}
 
 
@@ -71,6 +74,8 @@ namespace AngeliaFramework {
 			Level = new int[Const.MAP * Const.MAP];
 			Background = new int[Const.MAP * Const.MAP];
 			Entity = new int[Const.MAP * Const.MAP];
+			ProcedureFlag = new byte[Const.MAP * Const.MAP * 3 / 8];
+			ProcedureInvolved = false;
 		}
 
 
@@ -108,10 +113,10 @@ namespace AngeliaFramework {
 
 
 		// Save
-		public void SaveToDisk (string mapFolder) => SaveToDisk(mapFolder, WorldPosition.x, WorldPosition.y, WorldPosition.z);
+		public void SaveToDisk (string mapFolder, bool ignoreProcedure = true) => SaveToDisk(mapFolder, WorldPosition.x, WorldPosition.y, WorldPosition.z, ignoreProcedure);
 
 
-		public void SaveToDisk (string mapFolder, int worldX, int worldY, int worldZ) {
+		public void SaveToDisk (string mapFolder, int worldX, int worldY, int worldZ, bool ignoreProcedure = true) {
 
 			lock (FileStreamingLock) {
 
@@ -126,6 +131,7 @@ namespace AngeliaFramework {
 					for (int x = 0; x < SIZE; x++) {
 						int id = Level[y * SIZE + x];
 						if (id == 0) continue;
+						if (ignoreProcedure && CheckProcedureMark(x, y, BlockType.Level)) continue;
 						writer.Write((int)id);
 						writer.Write((byte)(x + SIZE));
 						writer.Write((byte)y);
@@ -137,6 +143,7 @@ namespace AngeliaFramework {
 					for (int x = 0; x < SIZE; x++) {
 						int id = Background[y * SIZE + x];
 						if (id == 0) continue;
+						if (ignoreProcedure && CheckProcedureMark(x, y, BlockType.Background)) continue;
 						writer.Write((int)id);
 						writer.Write((byte)(x + SIZE));
 						writer.Write((byte)(y + SIZE));
@@ -148,6 +155,7 @@ namespace AngeliaFramework {
 					for (int x = 0; x < SIZE; x++) {
 						int id = Entity[y * SIZE + x];
 						if (id == 0) continue;
+						if (ignoreProcedure && CheckProcedureMark(x, y, BlockType.Entity)) continue;
 						writer.Write((int)id);
 						writer.Write((byte)x);
 						writer.Write((byte)y);
@@ -205,6 +213,18 @@ namespace AngeliaFramework {
 		}
 
 
+		public void MarkProcedure (int x, int y, BlockType type, bool flagValue) {
+			int flagIndex = ((int)type * Const.MAP * Const.MAP + y * Const.MAP + x) / 8;
+			byte flag = ProcedureFlag[flagIndex];
+			flag.SetBit(x % 8, flagValue);
+			ProcedureFlag[flagIndex] = flag;
+			if (flagValue) ProcedureInvolved = true;
+		}
+
+
+		public bool CheckProcedureMark (int x, int y, BlockType type) => ProcedureInvolved && ProcedureFlag[((int)type * Const.MAP * Const.MAP + y * Const.MAP + x) / 8].GetBit(x % 8);
+
+
 		#endregion
 
 
@@ -226,6 +246,8 @@ namespace AngeliaFramework {
 						System.Array.Clear(Level, 0, Level.Length);
 						System.Array.Clear(Background, 0, Background.Length);
 						System.Array.Clear(Entity, 0, Entity.Length);
+						System.Array.Clear(ProcedureFlag, 0, ProcedureFlag.Length);
+						ProcedureInvolved = false;
 					}
 
 					WorldPosition = new(worldX, worldY, worldZ);
@@ -236,6 +258,7 @@ namespace AngeliaFramework {
 					using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
 
 					// Load Content
+					bool fromProcedure = location == MapLocation.Procedure;
 					while (reader.NotEnd()) {
 						try {
 							int id = reader.ReadInt32();
@@ -245,7 +268,9 @@ namespace AngeliaFramework {
 								if (y < Const.MAP) {
 									// Entity x y
 									if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
+									if (Entity[y * Const.MAP + x] != 0) continue;
 									Entity[y * Const.MAP + x] = id;
+									MarkProcedure(x, y, BlockType.Entity, fromProcedure);
 								} else {
 									// ?? x yy
 									y -= Const.MAP;
@@ -258,20 +283,26 @@ namespace AngeliaFramework {
 									// Level xx y
 									x -= Const.MAP;
 									if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
+									if (Level[y * Const.MAP + x] != 0) continue;
 									Level[y * Const.MAP + x] = id;
+									MarkProcedure(x, y, BlockType.Level, fromProcedure);
 								} else {
 									// Background xx yy
 									x -= Const.MAP;
 									y -= Const.MAP;
 									if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
+									if (Background[y * Const.MAP + x] != 0) continue;
 									Background[y * Const.MAP + x] = id;
+									MarkProcedure(x, y, BlockType.Background, fromProcedure);
 								}
 							}
 						} catch (System.Exception ex) { Debug.LogException(ex); }
 					}
-					success = true;
-					LoadedLocation = location;
 				} catch (System.Exception ex) { Debug.LogException(ex); }
+
+				// Final
+				success = true;
+				LoadedLocation = location;
 			}
 			return success;
 		}

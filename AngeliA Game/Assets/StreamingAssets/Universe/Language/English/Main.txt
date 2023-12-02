@@ -10,7 +10,6 @@ CtrlHint.HoldToUse:Hold to Use
 CtrlHint.Jump:Jump
 CtrlHint.MapGenerator.Generate:Generate Level
 CtrlHint.MapGenerator.Generating:Generating Level
-CtrlHint.MapGenerator.Regenerate:Regenerate Map
 CtrlHint.MEDT.Nav:Overlook
 CtrlHint.MEDT.PlayFromBegin:Play from Start
 CtrlHint.MEDT.SwitchMode.Edit:Back to Edit

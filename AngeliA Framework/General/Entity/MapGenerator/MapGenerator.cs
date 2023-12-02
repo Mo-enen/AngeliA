@@ -15,7 +15,7 @@ namespace AngeliaFramework {
 
 
 
-
+		
 		#region --- SUB ---
 
 
@@ -63,9 +63,9 @@ namespace AngeliaFramework {
 
 		[OnGameInitialize(-256)]
 		public static void OnGameInitialize () {
-			Util.DeleteFile(AngePath.ProcedureMapRoot);
+			Util.DeleteFolder(AngePath.ProcedureMapRoot);
 			Util.CreateFolder(AngePath.ProcedureMapRoot);
-			Util.DeleteFile(AngePath.ProcedureMapTempRoot);
+			Util.DeleteFolder(AngePath.ProcedureMapTempRoot);
 			Util.CreateFolder(AngePath.ProcedureMapTempRoot);
 			foreach (var type in typeof(MapGenerator).AllChildClass()) {
 				Util.CreateFolder(Util.CombinePaths(AngePath.ProcedureMapRoot, type.Name));
@@ -77,6 +77,12 @@ namespace AngeliaFramework {
 		public MapGenerator () {
 			MapRoot = Util.CombinePaths(AngePath.ProcedureMapRoot, GetType().Name);
 			TempMapRoot = Util.CombinePaths(AngePath.ProcedureMapTempRoot, GetType().Name);
+			_HasMapInDisk = null;
+		}
+
+
+		public override void OnActivated () {
+			base.OnActivated();
 			_HasMapInDisk = null;
 		}
 
@@ -98,26 +104,39 @@ namespace AngeliaFramework {
 
 
 		public void Generate () {
-			SampleReader = new WorldStream(WorldSquad.MapRoot, WorldSquad.Channel.GetLocation(), @readonly: true);
-			ResultWriter = new WorldStream(TempMapRoot, MapLocation.Procedure, @readonly: false);
 			try {
-				_HasMapInDisk = null;
+				BeforeMapGenerate();
+
+				SampleReader = new WorldStream(WorldSquad.MapRoot, WorldSquad.Channel.GetLocation(), @readonly: true, isProcedure: true);
+				ResultWriter = new WorldStream(TempMapRoot, MapLocation.Procedure, @readonly: false, isProcedure: true);
+
 				Util.DeleteFolder(TempMapRoot);
 				Util.CreateFolder(TempMapRoot);
-				// Magic Start
+
+				_HasMapInDisk = false;
 				GenerateMap();
-				// Magic End
+				_HasMapInDisk = null;
+
+				SampleReader.Dispose();
+				ResultWriter.Dispose();
+
 				Util.DeleteFolder(MapRoot);
 				Util.MoveFolder(TempMapRoot, MapRoot);
 				WorldSquad.Front.ForceReloadDelay();
 				WorldSquad.Behind.ForceReloadDelay();
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-			SampleReader.Dispose();
-			ResultWriter.Dispose();
+
+				AfterMapGenerate();
+			} catch (System.Exception ex) {
+				SampleReader?.Clear();
+				ResultWriter?.Clear();
+				Debug.LogException(ex);
+			}
 		}
 
 
 		protected abstract void GenerateMap ();
+		protected virtual void BeforeMapGenerate () { }
+		protected virtual void AfterMapGenerate () { }
 
 
 		#endregion

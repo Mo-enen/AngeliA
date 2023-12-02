@@ -11,6 +11,42 @@ namespace AngeliaFramework {
 	public interface IMapEditorItem { }
 
 
+	[System.Serializable]
+	public class SpriteEditingMeta {
+		[System.Serializable]
+		public class Meta {
+			public int GlobalID {
+				get => I;
+				set => I = value;
+			}
+			public string RealName {
+				get => R;
+				set => R = value;
+			}
+			public int SheetNameIndex {
+				get => S;
+				set => S = value;
+			}
+			public SheetType SheetType {
+				get => T;
+				set => T = value;
+			}
+			public GroupType GroupType {
+				get => C;
+				set => C = value;
+			}
+
+			[SerializeField] private int I;
+			[SerializeField] private string R;
+			[SerializeField] private int S;
+			[SerializeField] private SheetType T;
+			[SerializeField] private GroupType C;
+		}
+		public Meta[] Metas = null;
+		public string[] SheetNames = null;
+	}
+
+
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.Capacity(1, 0)]
@@ -187,8 +223,6 @@ namespace AngeliaFramework {
 #endif
 			}
 		}
-		private WorldSquad Squad => WorldSquad.Front;
-		private WorldSquad SquadBehind => WorldSquad.Behind;
 
 		// Data
 		private PaletteItem SelectingPaletteItem = null;
@@ -509,7 +543,7 @@ namespace AngeliaFramework {
 
 		// Update
 		public override void UpdateUI () {
-			if (Active == false || Game.IsPausing || Squad == null || Game.GlobalFrame < InitializedFrame + 2) return;
+			if (Active == false || Game.IsPausing || WorldSquad.Front == null || Game.GlobalFrame < InitializedFrame + 2) return;
 			Update_Misc();
 			Update_ScreenUI();
 			if (!IsNavigating) {
@@ -1127,9 +1161,9 @@ namespace AngeliaFramework {
 
 
 		private void Save () {
-			if (PlayingGame || Squad == null) return;
+			if (PlayingGame || WorldSquad.Front == null) return;
 			IsDirty = false;
-			Squad.SaveToFile();
+			WorldSquad.Front.SaveToFile();
 		}
 
 
@@ -1220,7 +1254,7 @@ namespace AngeliaFramework {
 					int index = (startIndex + dataLength) % DATA_LEN;
 					ref var data = ref UndoData[index];
 					data.Step = CURRENT_STEP;
-					var triID = Squad.GetTriBlockAt(i, j);
+					var triID = WorldSquad.Front.GetTriBlockAt(i, j);
 					data.EntityID = triID.x;
 					data.LevelID = triID.y;
 					data.BackgroundID = triID.z;
@@ -1285,7 +1319,7 @@ namespace AngeliaFramework {
 				int index = (item.DataIndex + i) % UndoData.Length;
 				var data = UndoData[index];
 				if (data.Step != item.Step) break;
-				Squad.SetBlockAt(
+				WorldSquad.Front.SetBlockAt(
 					data.UnitX, data.UnitY,
 					data.EntityID, data.LevelID, data.BackgroundID
 				);

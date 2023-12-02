@@ -613,9 +613,6 @@ namespace AngeliaFramework {
 
 
 		private static Entity SpawnEntityLogic (int typeID, int x, int y, Vector3Int globalUnitPos) {
-#if UNITY_EDITOR
-			if (!UnityEditor.EditorApplication.isPlaying) return null;
-#endif
 			try {
 				if (
 					globalUnitPos.x != int.MinValue &&

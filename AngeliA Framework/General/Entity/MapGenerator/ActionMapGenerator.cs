@@ -14,7 +14,6 @@ namespace AngeliaFramework {
 
 		// Const
 		private static readonly int HINT_GENERATE = "CtrlHint.MapGenerator.Generate".AngeHash();
-		private static readonly int HINT_REGENERATE = "CtrlHint.MapGenerator.Regenerate".AngeHash();
 		private static readonly int HINT_GENERATING = "CtrlHint.MapGenerator.Generating".AngeHash();
 
 		// Api
@@ -52,10 +51,7 @@ namespace AngeliaFramework {
 				if ((this as IActionTarget).IsHighlighted) {
 					IActionTarget.HighlightBlink(cell, Direction3.None, FittingPose.Single);
 					// Hint
-					ControlHintUI.DrawGlobalHint(
-						X, Y + Const.CEL * 2 + Const.HALF, Gamekey.Action,
-						HasMapInDisk ? Language.Get(HINT_REGENERATE, "Regenerate Map") : Language.Get(HINT_GENERATE, "Generate Map"), true
-					);
+					ControlHintUI.DrawGlobalHint(X, Y + Const.CEL * 2 + Const.HALF, Gamekey.Action, Language.Get(HINT_GENERATE, "Generate Map"), true);
 				}
 			} else {
 				// Generating
@@ -69,7 +65,27 @@ namespace AngeliaFramework {
 		}
 
 
+		protected override void AfterMapGenerate () {
+			base.AfterMapGenerate();
+			RemoveEntrancePortal();
+			SpawnEntrancePortal();
+		}
+
+
 		protected virtual Cell DrawArtwork () => CellRenderer.Draw(TypeID, Rect);
+
+
+		protected virtual void RemoveEntrancePortal () {
+			var cells = CellPhysics.OverlapAll(
+				PhysicsMask.ENVIRONMENT, Rect.Shift(0, Const.CEL * 2), out int count, this, OperationMode.TriggerOnly
+			);
+			for (int i = 0; i < count; i++) {
+				if (cells[i].Entity is Portal portal) portal.Active = false;
+			}
+		}
+
+
+		protected virtual void SpawnEntrancePortal () => Stage.SpawnEntity<PortalBack>(X, Y + Const.CEL * 3);
 
 
 		void IActionTarget.Invoke () => GenerateAsync();

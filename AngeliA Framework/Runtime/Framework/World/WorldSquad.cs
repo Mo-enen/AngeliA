@@ -331,43 +331,6 @@ namespace AngeliaFramework {
 		}
 
 
-		public void SetBlockAt (int unitX, int unitY, int entityID, int levelID, int backgroundID) {
-			var position00 = Worlds[0, 0].WorldPosition;
-			int worldX = unitX.UDivide(Const.MAP) - position00.x;
-			int worldY = unitY.UDivide(Const.MAP) - position00.y;
-			if (!worldX.InRange(0, 2) || !worldY.InRange(0, 2)) return;
-			var world = Worlds[worldX, worldY];
-			int localX = unitX - world.WorldPosition.x * Const.MAP;
-			int localY = unitY - world.WorldPosition.y * Const.MAP;
-			world.Entity[localY * Const.MAP + localX] = entityID;
-			world.Level[localY * Const.MAP + localX] = levelID;
-			world.Background[localY * Const.MAP + localX] = backgroundID;
-		}
-
-
-		public void SetBlockAt (int unitX, int unitY, BlockType type, int newID) {
-			var position00 = Worlds[0, 0].WorldPosition;
-			int worldX = unitX.UDivide(Const.MAP) - position00.x;
-			int worldY = unitY.UDivide(Const.MAP) - position00.y;
-			if (!worldX.InRange(0, 2) || !worldY.InRange(0, 2)) return;
-			var world = Worlds[worldX, worldY];
-			int localX = unitX - world.WorldPosition.x * Const.MAP;
-			int localY = unitY - world.WorldPosition.y * Const.MAP;
-			switch (type) {
-				default: throw new System.NotImplementedException();
-				case BlockType.Entity:
-					world.Entity[localY * Const.MAP + localX] = newID;
-					break;
-				case BlockType.Level:
-					world.Level[localY * Const.MAP + localX] = newID;
-					break;
-				case BlockType.Background:
-					world.Background[localY * Const.MAP + localX] = newID;
-					break;
-			}
-		}
-
-
 		public bool FindBlock (int id, int unitX, int unitY, Direction4 direction, BlockType type, out int resultX, out int resultY) {
 			resultX = default;
 			resultY = default;
@@ -388,6 +351,47 @@ namespace AngeliaFramework {
 				unitY += delta.y;
 			}
 			return false;
+		}
+
+
+		public void SetBlockAt (int unitX, int unitY, int entityID, int levelID, int backgroundID, bool asProcedure = false) {
+			var position00 = Worlds[0, 0].WorldPosition;
+			int worldX = unitX.UDivide(Const.MAP) - position00.x;
+			int worldY = unitY.UDivide(Const.MAP) - position00.y;
+			if (!worldX.InRange(0, 2) || !worldY.InRange(0, 2)) return;
+			var world = Worlds[worldX, worldY];
+			int localX = unitX - world.WorldPosition.x * Const.MAP;
+			int localY = unitY - world.WorldPosition.y * Const.MAP;
+			world.Entity[localY * Const.MAP + localX] = entityID;
+			world.Level[localY * Const.MAP + localX] = levelID;
+			world.Background[localY * Const.MAP + localX] = backgroundID;
+			world.MarkProcedure(localX, localY, BlockType.Background, asProcedure);
+			world.MarkProcedure(localX, localY, BlockType.Level, asProcedure);
+			world.MarkProcedure(localX, localY, BlockType.Entity, asProcedure);
+		}
+
+
+		public void SetBlockAt (int unitX, int unitY, BlockType type, int newID, bool asProcedure = false) {
+			var position00 = Worlds[0, 0].WorldPosition;
+			int worldX = unitX.UDivide(Const.MAP) - position00.x;
+			int worldY = unitY.UDivide(Const.MAP) - position00.y;
+			if (!worldX.InRange(0, 2) || !worldY.InRange(0, 2)) return;
+			var world = Worlds[worldX, worldY];
+			int localX = unitX - world.WorldPosition.x * Const.MAP;
+			int localY = unitY - world.WorldPosition.y * Const.MAP;
+			world.MarkProcedure(localX, localY, type, asProcedure);
+			switch (type) {
+				default: throw new System.NotImplementedException();
+				case BlockType.Entity:
+					world.Entity[localY * Const.MAP + localX] = newID;
+					break;
+				case BlockType.Level:
+					world.Level[localY * Const.MAP + localX] = newID;
+					break;
+				case BlockType.Background:
+					world.Background[localY * Const.MAP + localX] = newID;
+					break;
+			}
 		}
 
 
@@ -512,6 +516,8 @@ namespace AngeliaFramework {
 				return true;
 			}
 		}
+
+
 		public bool ReadSystemNumber (int globalUnitX, int globalUnitY, Direction4 direction, out int number) {
 
 			number = 0;

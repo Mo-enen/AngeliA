@@ -27,7 +27,7 @@ namespace AngeliaFramework {
 		// Const
 		private const float UV_SCALE = 10000000f;
 
-		// Short-Api
+		// Api
 		public Rect UvRect => Rect.MinMaxRect(UvBottomLeft.x, UvBottomLeft.y, UvTopRight.x, UvTopRight.y);
 		public Vector2 BottomRight {
 			get {
@@ -93,31 +93,7 @@ namespace AngeliaFramework {
 			}
 		}
 
-		// Ser-Api
-		//[SerializeField] int[] i = new int[20];
-		//int a { get => i[0]; set => i[0] = value; } // GlobalID
-		//int b { get => i[1]; set => i[1] = value; } // MetaIndex
-		//int c { get => i[2]; set => i[2] = value; } // GlobalWidth
-		//int d { get => i[3]; set => i[3] = value; } // GlobalHeight
-		//int e { get => i[4]; set => i[4] = value; } // SortingZ
-		//int f { get => i[5]; set => i[5] = value; } // SummaryTint
-		//int g { get => i[6]; set => i[6] = value; } // PivotX
-		//int h { get => i[7]; set => i[7] = value; } // PivotY
-
-		//int i { get => i[8]; set => i[8] = value; } // GlobalBorder L
-		//int j { get => i[9]; set => i[9] = value; } // GlobalBorder R
-		//int k { get => i[10]; set => i[10] = value; } // GlobalBorder D
-		//int l { get => i[11]; set => i[11] = value; } // GlobalBorder U
-
-		//int m { get => i[12]; set => i[12] = value; } // UvBorder L
-		//int n { get => i[13]; set => i[13] = value; } // UvBorder R
-		//int o { get => i[14]; set => i[14] = value; } // UvBorder D
-		//int p { get => i[15]; set => i[15] = value; } // UvBorder U
-
-		//int q { get => i[16]; set => i[16] = value; } // UvBottomLeft L
-		//int r { get => i[17]; set => i[17] = value; } // UvBottomLeft D
-		//int s { get => i[18]; set => i[18] = value; } // UvTopRight R
-		//int t { get => i[19]; set => i[19] = value; } // UvTopRight U
+		// Ser
 		[SerializeField] int a; // GlobalID
 		[SerializeField] int b; // MetaIndex
 		[SerializeField] int c; // GlobalWidth

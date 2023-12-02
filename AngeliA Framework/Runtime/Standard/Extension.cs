@@ -14,6 +14,7 @@ namespace AngeliaFramework {
 		public static bool GetBit (this ulong value, int index) => (value & (1UL << index)) != 0;
 		public static bool GetBit (this int value, int index) => (value & (1 << index)) != 0;
 		public static bool GetBit (this ushort value, int index) => (value & (1 << index)) != 0;
+		public static bool GetBit (this byte value, int index) => (value & (1 << index)) != 0;
 
 		public static void SetBit (this ref ulong value, int index, bool bitValue) {
 			if (index < 0 || index > 63) return;
@@ -24,6 +25,11 @@ namespace AngeliaFramework {
 			if (index < 0 || index > 31) return;
 			var val = 1 << index;
 			value = bitValue ? (value | val) : (value & ~val);
+		}
+		public static void SetBit (this ref byte value, int index, bool bitValue) {
+			if (index < 0 || index > 7) return;
+			var val = 1 << index;
+			value = (byte)(bitValue ? (value | val) : (value & ~val));
 		}
 
 		public static bool Almost (this float a, float b) => Mathf.Approximately(a, b);

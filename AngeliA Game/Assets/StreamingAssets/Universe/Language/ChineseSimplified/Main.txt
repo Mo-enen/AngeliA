@@ -10,7 +10,6 @@ CtrlHint.HoldToUse:长按使用
 CtrlHint.Jump:跳跃
 CtrlHint.MapGenerator.Generate:生成关卡
 CtrlHint.MapGenerator.Generating:正在生成关卡
-CtrlHint.MapGenerator.Regenerate:重新生成关卡
 CtrlHint.MEDT.Nav:俯瞰
 CtrlHint.MEDT.PlayFromBegin:从头开始游戏
 CtrlHint.MEDT.SwitchMode.Edit:返回编辑
