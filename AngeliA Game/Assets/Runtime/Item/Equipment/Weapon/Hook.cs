@@ -9,62 +9,62 @@ namespace AngeliaFramework {
 
 	[EntityAttribute.ItemCombination(typeof(iScimitar), typeof(iTreeBranch), 1)]
 	public class iScytheWood : Hook {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
+		public override WeaponHandheld Handheld => WeaponHandheld.Pole;
 	}
 	[EntityAttribute.ItemCombination(typeof(iScytheWood), typeof(iIngotIron), 1)]
 	public class iScytheIron : Hook {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
+		public override WeaponHandheld Handheld => WeaponHandheld.Pole;
 	}
 	[EntityAttribute.ItemCombination(typeof(iScytheIron), typeof(iIngotGold), 1)]
 	public class iScytheGold : Hook {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
+		public override WeaponHandheld Handheld => WeaponHandheld.Pole;
 	}
 	[EntityAttribute.ItemCombination(typeof(iIronHook), typeof(iTreeBranch), 1)]
 	public class iSickle : Hook {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iIronHook), typeof(iWuXingHook), 1)]
 	public class iHookIron : Hook {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
+		public override WeaponHandheld Handheld => WeaponHandheld.OneOnEachHand;
 	}
 	[EntityAttribute.ItemCombination(typeof(iHookIron), typeof(iIngotGold), 1)]
 	public class iHookGold : Hook {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
+		public override WeaponHandheld Handheld => WeaponHandheld.OneOnEachHand;
 	}
 	[EntityAttribute.ItemCombination(typeof(iIronHook), typeof(iIngotIron), 1)]
 	public class iHookHand : Hook {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iIronHook), typeof(iTreeBranch), typeof(iTreeBranch), 1)]
 	public class iHookJungle : Hook {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iChain), typeof(iMeatBone), typeof(iTreeBranch), 1)]
 	public class iHookBone : Hook {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iComb), typeof(iSickle), 1)]
 	public class iHookJagged : Hook {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iIronHook), typeof(iIronHook), typeof(iIronHook), 1)]
 	public class iHookTripple : Hook {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iSickle), typeof(iSickle), 1)]
 	public class iHookBig : Hook {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.DoubleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iIronHook), typeof(iIronHook), typeof(iSickle), 1)]
 	public class iHookPudge : Hook {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.DoubleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iSickle), typeof(iErgonomicAxe), 1)]
 	public class iHookChicken : Hook {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 	}
 	[EntityAttribute.ItemCombination(typeof(iRuneWater), typeof(iHookIron), typeof(iSalt), typeof(iRuneLightning), 1)]
 	public class iHookRusty : Hook {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
+		public override WeaponHandheld Handheld => WeaponHandheld.OneOnEachHand;
 	}
 }

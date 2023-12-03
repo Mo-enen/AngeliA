@@ -21,10 +21,8 @@ namespace AngeliaFramework {
 		public virtual int AttackTargetTeam => Const.TEAM_ALL;
 		public virtual bool IsChargingAttack => false;
 		public virtual bool RandomAttackAnimationStyle => true;
-
-		// Data
-		protected int AttackStyleLoop = 1;
-		protected bool AttackStartFacingRight = true;
+		public int AttackStyleLoop { get; set; } = 1;
+		public bool AttackStartFacingRight { get; set; } = true;
 
 
 		#endregion

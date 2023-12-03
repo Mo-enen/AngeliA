@@ -4,15 +4,21 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public static partial class AnimationLibrary {
 
-
-
-
-		#region --- Hand ---
-
-
-		public static void Attack_Hand_Punch () {
+	public class PoseAttack_Hand : PoseAnimation {
+		public override void Animate (PoseCharacter character) {
+			base.Animate(character);
+			character.AttackStyleLoop = 2;
+			switch (character.AttackStyleIndex % character.AttackStyleLoop) {
+				case 0:
+					Punch();
+					break;
+				case 1:
+					Smash();
+					break;
+			}
+		}
+		private static void Punch () {
 
 			int aFrame = (Game.GlobalFrame - Target.LastAttackFrame).UDivide(5);
 			if (aFrame >= 4) return;
@@ -113,9 +119,7 @@ namespace AngeliaFramework {
 			Target.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
 			Target.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
 		}
-
-
-		public static void Attack_Hand_Smash () {
+		private static void Smash () {
 
 			int aFrame = (Game.GlobalFrame - Target.LastAttackFrame).UDivide(5);
 			if (aFrame >= 4) return;
@@ -202,18 +206,106 @@ namespace AngeliaFramework {
 			Target.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
 			Target.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
 		}
+	}
 
+	public class PoseAttack_Wave : PoseAnimation {
+		public override void Animate (PoseCharacter character) {
+			base.Animate(character);
+			int style;
+			var handheld = character.EquippingWeaponHeld;
+			var weaponType = character.EquippingWeaponType;
+			switch (handheld) {
 
-		#endregion
+				// Single Handed
+				case WeaponHandheld.SingleHanded:
+					character.AttackStyleLoop = 4;
+					style =
+						character.LastAttackCharged ||
+						weaponType == WeaponType.Throwing ||
+						weaponType == WeaponType.Flail ?
+						0 : character.AttackStyleIndex % character.AttackStyleLoop;
+					switch (style) {
+						default:
+							SingleHanded_SmashDown();
+							break;
+						case 1:
+							SingleHanded_SmashUp();
+							break;
+						case 2:
+							SingleHanded_SlashIn();
+							break;
+						case 3:
+							SingleHanded_SlashOut();
+							break;
+					}
+					break;
 
+				// Double Handed
+				case WeaponHandheld.DoubleHanded:
+					character.AttackStyleLoop = 4;
+					style =
+						character.LastAttackCharged ||
+						weaponType == WeaponType.Throwing ||
+						weaponType == WeaponType.Flail ?
+						0 : character.AttackStyleIndex % character.AttackStyleLoop;
+					switch (style) {
+						default:
+							DoubleHanded_SmashDown();
+							break;
+						case 1:
+							DoubleHanded_SmashUp();
+							break;
+						case 2:
+							DoubleHanded_SlashIn();
+							break;
+						case 3:
+							DoubleHanded_SlashOut();
+							break;
+					}
+					break;
 
+				// Each Hand
+				case WeaponHandheld.OneOnEachHand:
+					character.AttackStyleLoop = 4;
+					style = character.LastAttackCharged ? 0 : character.AttackStyleIndex % character.AttackStyleLoop;
+					switch (style) {
+						default:
+							EachHand_SmashDown();
+							break;
+						case 1:
+							EachHand_SmashUp();
+							break;
+						case 2:
+							EachHand_SlashIn();
+							break;
+						case 3:
+							EachHand_SlashOut();
+							break;
+					}
+					break;
 
-
-		#region --- Wave ---
-
-
-		// Single Handed
-		public static void Attack_WaveSingleHanded_SmashDown () {
+				// Pole
+				case WeaponHandheld.Pole:
+					character.AttackStyleLoop = 4;
+					style = character.LastAttackCharged || character.EquippingWeaponType == WeaponType.Flail ? 0 : character.AttackStyleIndex % character.AttackStyleLoop;
+					switch (style) {
+						default:
+							Polearm_SmashDown();
+							break;
+						case 1:
+							Polearm_SmashUp();
+							break;
+						case 2:
+							Polearm_SlashIn();
+							break;
+						case 3:
+							Polearm_SlashOut();
+							break;
+					}
+					break;
+			}
+		}
+		private static void SingleHanded_SmashDown () {
 
 			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
 			bool isThrowing = Target.EquippingWeaponType == WeaponType.Throwing;
@@ -222,10 +314,10 @@ namespace AngeliaFramework {
 				Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
 			if (isCharging) {
-				Attack_HeadDown(ease01, 100, 800, 1000, 100);
+				AttackHeadDown(ease01, 100, 800, 1000, 100);
 				ResetShoulderAndUpperArm();
 			} else {
-				Attack_HeadDown(ease01);
+				AttackHeadDown(ease01);
 				ResetShoulderAndUpperArm();
 				// Left Side
 				if (
@@ -252,7 +344,7 @@ namespace AngeliaFramework {
 			}
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Grab
 			Target.HandGrabRotationL = Target.HandGrabRotationR =
@@ -267,13 +359,11 @@ namespace AngeliaFramework {
 			LowerArmR.Z = LowerArmR.Z.Abs();
 			HandR.Z = POSE_Z_HAND;
 		}
-
-
-		public static void Attack_WaveSingleHanded_SmashUp () {
+		private static void SingleHanded_SmashUp () {
 
 			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-			Attack_HeadDown(1f - ease01 + 0.5f, -100, 500, 500);
+			AttackHeadDown(1f - ease01 + 0.5f, -100, 500, 500);
 			ResetShoulderAndUpperArm();
 
 			// Left Side
@@ -299,7 +389,7 @@ namespace AngeliaFramework {
 			HandR.Height += HandR.Height.Sign() * A2G;
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Grab
 			Target.HandGrabRotationL = Target.HandGrabRotationR =
@@ -314,15 +404,13 @@ namespace AngeliaFramework {
 			LowerArmR.Z = LowerArmR.Z.Abs();
 			HandR.Z = POSE_Z_HAND;
 		}
-
-
-		public static void Attack_WaveSingleHanded_SlashIn () {
+		private static void SingleHanded_SlashIn () {
 
 			float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
 			float ease01 = Ease.OutBack(frame01);
 			float ease010 = Mathf.PingPong(ease01 * 2f, 1f);
 
-			Attack_HeadDown(ease01, 1400, 500, 500);
+			AttackHeadDown(ease01, 1400, 500, 500);
 			ResetShoulderAndUpperArm();
 
 			Target.PoseTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
@@ -350,7 +438,7 @@ namespace AngeliaFramework {
 			HandR.Height += HandR.Height.Sign() * A2G;
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Grab
 			Target.HandGrabRotationL = Target.HandGrabRotationR =
@@ -367,15 +455,13 @@ namespace AngeliaFramework {
 			LowerArmR.Z = (frame01 < 0.5f ? -1 : 1) * LowerArmR.Z.Abs();
 			HandR.Z = POSE_Z_HAND;
 		}
-
-
-		public static void Attack_WaveSingleHanded_SlashOut () {
+		private static void SingleHanded_SlashOut () {
 
 			float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
 			float ease01 = Ease.OutBack(frame01);
 			float ease010 = Mathf.PingPong(ease01 * 2f, 1f);
 
-			Attack_HeadDown(ease01, -500, 500, 500, -1000);
+			AttackHeadDown(ease01, -500, 500, 500, -1000);
 			ResetShoulderAndUpperArm();
 
 			Target.PoseTwist = FacingSign * (int)(frame01 * 2000 - 1000);
@@ -403,7 +489,7 @@ namespace AngeliaFramework {
 			HandR.Height += HandR.Height.Sign() * A2G;
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Grab
 			Target.HandGrabRotationL = Target.HandGrabRotationR =
@@ -420,10 +506,7 @@ namespace AngeliaFramework {
 			LowerArmR.Z = (frame01 < 0.5f ? -1 : 1) * LowerArmR.Z.Abs();
 			HandR.Z = POSE_Z_HAND;
 		}
-
-
-		// Double Handed
-		public static void Attack_WaveDoubleHanded_SmashDown () {
+		private static void DoubleHanded_SmashDown () {
 
 			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
 			float ease01 = isCharging ?
@@ -431,9 +514,9 @@ namespace AngeliaFramework {
 				Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
 			if (isCharging) {
-				Attack_HeadDown(ease01, 100, 800, 1000, 100);
+				AttackHeadDown(ease01, 100, 800, 1000, 100);
 			} else {
-				Attack_HeadDown(ease01);
+				AttackHeadDown(ease01);
 			}
 			ResetShoulderAndUpperArm();
 
@@ -467,7 +550,7 @@ namespace AngeliaFramework {
 			HandR.Height += HandR.Height.Sign() * A2G;
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Grab Rotation
 			Target.HandGrabRotationL = Target.HandGrabRotationR =
@@ -483,13 +566,11 @@ namespace AngeliaFramework {
 			HandL.Z = POSE_Z_HAND;
 			HandR.Z = POSE_Z_HAND;
 		}
-
-
-		public static void Attack_WaveDoubleHanded_SmashUp () {
+		private static void DoubleHanded_SmashUp () {
 
 			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-			Attack_HeadDown(1f - ease01 + 0.5f, -200, 500, 500);
+			AttackHeadDown(1f - ease01 + 0.5f, -200, 500, 500);
 			ResetShoulderAndUpperArm();
 
 			int upperRotA = (int)Mathf.LerpUnclamped(42, 180, ease01);
@@ -522,7 +603,7 @@ namespace AngeliaFramework {
 			HandR.Height += HandR.Height.Sign() * A2G;
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Grab Rotation
 			Target.HandGrabRotationL = Target.HandGrabRotationR =
@@ -538,15 +619,13 @@ namespace AngeliaFramework {
 			HandL.Z = POSE_Z_HAND;
 			HandR.Z = POSE_Z_HAND;
 		}
-
-
-		public static void Attack_WaveDoubleHanded_SlashIn () {
+		private static void DoubleHanded_SlashIn () {
 
 			float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
 			float ease01 = Ease.OutBack(frame01);
 			float ease010 = Mathf.PingPong(ease01 * 2f, 1f);
 
-			Attack_HeadDown(ease01, 1400, 500, 500);
+			AttackHeadDown(ease01, 1400, 500, 500);
 			ResetShoulderAndUpperArm();
 
 			Target.PoseTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
@@ -575,7 +654,7 @@ namespace AngeliaFramework {
 			HandR.Height += HandR.Height.Sign() * A2G;
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Grab Rotation
 			Target.HandGrabRotationL = Target.HandGrabRotationR =
@@ -593,15 +672,13 @@ namespace AngeliaFramework {
 			HandL.Z = POSE_Z_HAND;
 			HandR.Z = POSE_Z_HAND;
 		}
-
-
-		public static void Attack_WaveDoubleHanded_SlashOut () {
+		private static void DoubleHanded_SlashOut () {
 
 			float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
 			float ease01 = Ease.OutBack(frame01);
 			float ease010 = Mathf.PingPong(ease01 * 2f, 1f);
 
-			Attack_HeadDown(ease01, -500, 500, 500);
+			AttackHeadDown(ease01, -500, 500, 500);
 			ResetShoulderAndUpperArm();
 
 			Target.PoseTwist = FacingSign * (int)(frame01 * 2000 - 1000);
@@ -629,7 +706,7 @@ namespace AngeliaFramework {
 			HandR.Height += HandR.Height.Sign() * A2G;
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Grab Rotation
 			Target.HandGrabRotationL = Target.HandGrabRotationR =
@@ -647,10 +724,7 @@ namespace AngeliaFramework {
 			HandL.Z = POSE_Z_HAND;
 			HandR.Z = POSE_Z_HAND;
 		}
-
-
-		// Each Hand
-		public static void Attack_WaveEachHand_SmashDown () {
+		private static void EachHand_SmashDown () {
 
 			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
 			float ease01 = isCharging ?
@@ -658,9 +732,9 @@ namespace AngeliaFramework {
 				Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
 			if (isCharging) {
-				Attack_HeadDown(ease01, 100, 800, 1000, 100);
+				AttackHeadDown(ease01, 100, 800, 1000, 100);
 			} else {
-				Attack_HeadDown(ease01);
+				AttackHeadDown(ease01);
 			}
 			ResetShoulderAndUpperArm();
 
@@ -683,7 +757,7 @@ namespace AngeliaFramework {
 			HandR.Height += HandR.Height.Sign() * A2G;
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Z
 			UpperArmL.Z = UpperArmL.Z.Abs();
@@ -705,15 +779,13 @@ namespace AngeliaFramework {
 			Target.HandGrabScaleR = FacingSign * (int)Mathf.LerpUnclamped(1100, 1400, ease01);
 
 		}
-
-
-		public static void Attack_WaveEachHand_SmashUp () {
+		private static void EachHand_SmashUp () {
 
 			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 			float easeL = FacingRight ? ease01 : ease01 - 0.1f;
 			float easeR = FacingRight ? ease01 - 0.1f : ease01;
 
-			Attack_HeadDown(1f - ease01 + 0.5f, -100, 500, 500);
+			AttackHeadDown(1f - ease01 + 0.5f, -100, 500, 500);
 			ResetShoulderAndUpperArm();
 
 			// Upper Arm
@@ -736,7 +808,7 @@ namespace AngeliaFramework {
 			HandR.Height += HandR.Height.Sign() * A2G;
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Z
 			UpperArmL.Z = UpperArmL.Z.Abs();
@@ -751,15 +823,13 @@ namespace AngeliaFramework {
 			Target.HandGrabScaleL = Target.HandGrabScaleR = FacingSign * (int)Mathf.LerpUnclamped(1000, 1300, ease01);
 
 		}
-
-
-		public static void Attack_WaveEachHand_SlashIn () {
+		private static void EachHand_SlashIn () {
 
 			float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
 			float ease01 = Ease.OutBack(frame01);
 			float ease010 = Mathf.PingPong(ease01 * 2f, 1f);
 
-			Attack_HeadDown(ease01, 1400, 500, 500);
+			AttackHeadDown(ease01, 1400, 500, 500);
 			ResetShoulderAndUpperArm();
 
 			Target.PoseTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
@@ -785,7 +855,7 @@ namespace AngeliaFramework {
 			HandR.Height += HandR.Height.Sign() * A2G;
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Z
 			UpperArmL.Z = UpperArmL.Z.Abs();
@@ -802,15 +872,13 @@ namespace AngeliaFramework {
 			Target.HandGrabAttackTwistL = Target.HandGrabAttackTwistR =
 				(int)Mathf.LerpUnclamped(600, 200, frame01);
 		}
-
-
-		public static void Attack_WaveEachHand_SlashOut () {
+		private static void EachHand_SlashOut () {
 
 			float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
 			float ease01 = Ease.OutBack(frame01);
 			float ease010 = Mathf.PingPong(ease01 * 2f, 1f);
 
-			Attack_HeadDown(ease01, -500, 500, 500);
+			AttackHeadDown(ease01, -500, 500, 500);
 			ResetShoulderAndUpperArm();
 
 			Target.PoseTwist = FacingSign * (int)(frame01 * 2000 - 1000);
@@ -836,7 +904,7 @@ namespace AngeliaFramework {
 			HandR.Height += HandR.Height.Sign() * A2G;
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Z
 			UpperArmL.Z = UpperArmL.Z.Abs();
@@ -854,10 +922,7 @@ namespace AngeliaFramework {
 				(int)Mathf.LerpUnclamped(600, 200, frame01);
 
 		}
-
-
-		// Polearm
-		public static void Attack_WavePolearm_SmashDown () {
+		private static void Polearm_SmashDown () {
 
 			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
 			float ease01 = isCharging ?
@@ -865,9 +930,9 @@ namespace AngeliaFramework {
 				Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
 			if (isCharging) {
-				Attack_HeadDown(ease01, 100, 800, 1000, 100);
+				AttackHeadDown(ease01, 100, 800, 1000, 100);
 			} else {
-				Attack_HeadDown(ease01);
+				AttackHeadDown(ease01);
 			}
 			ResetShoulderAndUpperArm();
 
@@ -888,7 +953,7 @@ namespace AngeliaFramework {
 			HandR.LimbRotate(FacingSign);
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Grab
 			Target.HandGrabRotationL = Target.HandGrabRotationR =
@@ -904,13 +969,11 @@ namespace AngeliaFramework {
 			HandR.Z = POSE_Z_HAND;
 
 		}
-
-
-		public static void Attack_WavePolearm_SmashUp () {
+		private static void Polearm_SmashUp () {
 
 			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-			Attack_HeadDown(1f - ease01 + 0.5f, -100, 500, 500);
+			AttackHeadDown(1f - ease01 + 0.5f, -100, 500, 500);
 			ResetShoulderAndUpperArm();
 
 			// Upper Arm
@@ -930,7 +993,7 @@ namespace AngeliaFramework {
 			HandR.LimbRotate(FacingSign);
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Grab
 			Target.HandGrabRotationL = Target.HandGrabRotationR =
@@ -946,27 +1009,40 @@ namespace AngeliaFramework {
 			HandR.Z = POSE_Z_HAND;
 
 		}
+		private static void Polearm_SlashIn () => DoubleHanded_SlashIn();
+		private static void Polearm_SlashOut () => DoubleHanded_SlashOut();
 
+	}
 
-		public static void Attack_WavePolearm_SlashIn () => Attack_WaveDoubleHanded_SlashIn();
-
-
-		public static void Attack_WavePolearm_SlashOut () => Attack_WaveDoubleHanded_SlashOut();
-
-
-		#endregion
-
-
-
-
-		#region --- Poke ---
-
-
-		public static void Attack_PokePolearm () {
+	public class PoseAttack_Polearm : PoseAnimation {
+		public override void Animate (PoseCharacter character) {
+			base.Animate(character);
+			character.AttackStyleLoop = 8;
+			int style = character.LastAttackCharged ? 0 : character.AttackStyleIndex % character.AttackStyleLoop;
+			if (character.LastAttackCharged) style = 4;
+			switch (style) {
+				default:
+					Poke();
+					break;
+				case 4:
+					SmashDown();
+					break;
+				case 5:
+					SmashUp();
+					break;
+				case 6:
+					SlashIn();
+					break;
+				case 7:
+					SlashOut();
+					break;
+			}
+		}
+		public static void Poke () {
 
 			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-			Attack_HeadDown(ease01, 300, 300, 1000, 100);
+			AttackHeadDown(ease01, 300, 300, 1000, 100);
 			ResetShoulderAndUpperArm();
 
 			// Upper Arm
@@ -988,7 +1064,7 @@ namespace AngeliaFramework {
 			HandR.LimbRotate(FacingSign);
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Z
 			UpperArmL.Z = LowerArmL.Z = FrontSign * UpperArmL.Z.Abs();
@@ -1001,24 +1077,367 @@ namespace AngeliaFramework {
 				FacingSign * (int)Mathf.LerpUnclamped(1000, 1200, ease01);
 
 		}
+		private static void SmashDown () {
 
+			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
+			float ease01 = isCharging ?
+				1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
+				Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-		#endregion
+			if (isCharging) {
+				AttackHeadDown(ease01, 100, 800, 1000, 100);
+			} else {
+				AttackHeadDown(ease01);
+			}
+			ResetShoulderAndUpperArm();
 
+			// Upper Arm
+			int uRotA = (int)Mathf.LerpUnclamped(-130, 63, ease01);
+			int uRotB = (int)Mathf.LerpUnclamped(-79, 43, ease01);
+			UpperArmL.LimbRotate(FacingRight ? uRotA : -uRotB);
+			UpperArmR.LimbRotate(FacingRight ? uRotB : -uRotA);
 
+			// Lower Arm
+			int lRotA = (int)Mathf.LerpUnclamped(0, -75, ease01);
+			int lRotB = (int)Mathf.LerpUnclamped(-98, 0, ease01);
+			LowerArmL.LimbRotate(FacingRight ? lRotA : -lRotB);
+			LowerArmR.LimbRotate(FacingRight ? lRotB : -lRotA);
 
+			// Hand
+			HandL.LimbRotate(FacingSign);
+			HandR.LimbRotate(FacingSign);
 
-		#region --- Ranged ---
+			// Leg
+			AttackLegShake(ease01);
 
+			// Grab
+			Target.HandGrabRotationL = Target.HandGrabRotationR =
+				FacingSign * (int)Mathf.LerpUnclamped(-58, 107, ease01);
+			Target.HandGrabScaleL = Target.HandGrabScaleR =
+				FacingSign * (int)Mathf.LerpUnclamped(1100, 1400, ease01);
 
-		public static void Attack_Bow () {
+			// Z
+			UpperArmL.Z = UpperArmL.Z.Abs();
+			LowerArmL.Z = LowerArmL.Z.Abs();
+			UpperArmR.Z = UpperArmR.Z.Abs();
+			LowerArmR.Z = LowerArmR.Z.Abs();
+			HandR.Z = POSE_Z_HAND;
+
+		}
+		private static void SmashUp () {
+
+			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+
+			AttackHeadDown(1f - ease01 + 0.5f, -100, 500, 500);
+			ResetShoulderAndUpperArm();
+
+			// Upper Arm
+			int uRotA = (int)Mathf.LerpUnclamped(63, -130, ease01);
+			int uRotB = (int)Mathf.LerpUnclamped(43, -79, ease01);
+			UpperArmL.LimbRotate(FacingRight ? uRotA : -uRotB);
+			UpperArmR.LimbRotate(FacingRight ? uRotB : -uRotA);
+
+			// Lower Arm
+			int lRotA = (int)Mathf.LerpUnclamped(-75, 0, ease01);
+			int lRotB = (int)Mathf.LerpUnclamped(0, -98, ease01);
+			LowerArmL.LimbRotate(FacingRight ? lRotA : -lRotB);
+			LowerArmR.LimbRotate(FacingRight ? lRotB : -lRotA);
+
+			// Hand
+			HandL.LimbRotate(FacingSign);
+			HandR.LimbRotate(FacingSign);
+
+			// Leg
+			AttackLegShake(ease01);
+
+			// Grab
+			Target.HandGrabRotationL = Target.HandGrabRotationR =
+				FacingSign * (int)Mathf.LerpUnclamped(130, 10, ease01);
+			Target.HandGrabScaleL = Target.HandGrabScaleR =
+				FacingSign * (int)Mathf.LerpUnclamped(1000, 1300, ease01);
+
+			// Z
+			UpperArmL.Z = UpperArmL.Z.Abs();
+			LowerArmL.Z = LowerArmL.Z.Abs();
+			UpperArmR.Z = UpperArmR.Z.Abs();
+			LowerArmR.Z = LowerArmR.Z.Abs();
+			HandR.Z = POSE_Z_HAND;
+
+		}
+		private static void SlashIn () {
+
+			float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
+			float ease01 = Ease.OutBack(frame01);
+			float ease010 = Mathf.PingPong(ease01 * 2f, 1f);
+
+			AttackHeadDown(ease01, 1400, 500, 500);
+			ResetShoulderAndUpperArm();
+
+			Target.PoseTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
+			Target.HeadTwist = -FacingSign * (int)(frame01 * 500 - 250);
+
+			// Upper Arm
+			int upperRotA = (int)Mathf.LerpUnclamped(-100, 65, ease01);
+			int upperRotB = (int)Mathf.LerpUnclamped(-47, 77, ease01);
+
+			UpperArmL.LimbRotate(FacingRight ? upperRotA : -upperRotB);
+			UpperArmR.LimbRotate(FacingRight ? upperRotB : -upperRotA);
+			UpperArmL.Height = (int)(UpperArmL.Height * Mathf.LerpUnclamped(1.2f, 0.1f, ease010));
+			UpperArmR.Height = (int)(UpperArmR.Height * Mathf.LerpUnclamped(1.2f, 0.1f, ease010));
+
+			LowerArmL.LimbRotate(0);
+			LowerArmR.LimbRotate(0);
+			LowerArmL.Height = (int)(LowerArmL.Height * Mathf.LerpUnclamped(1.2f, 0.1f, ease010));
+			LowerArmR.Height = (int)(LowerArmR.Height * Mathf.LerpUnclamped(1.2f, 0.1f, ease010));
+
+			HandL.LimbRotate(FacingSign);
+			HandL.Width += HandL.Width.Sign() * A2G;
+			HandL.Height += HandL.Height.Sign() * A2G;
+
+			HandR.LimbRotate(FacingSign);
+			HandR.Width += HandR.Width.Sign() * A2G;
+			HandR.Height += HandR.Height.Sign() * A2G;
+
+			// Leg
+			AttackLegShake(ease01);
+
+			// Grab Rotation
+			Target.HandGrabRotationL = Target.HandGrabRotationR =
+				FacingSign * (int)Mathf.LerpUnclamped(71, 248, ease01);
+			Target.HandGrabScaleL = Target.HandGrabScaleR =
+				FacingSign * (int)Mathf.LerpUnclamped(1300, 100, ease010);
+			Target.HandGrabAttackTwistL = Target.HandGrabAttackTwistR =
+				(int)Mathf.LerpUnclamped(600, 200, frame01);
+
+			// Z
+			UpperArmL.Z = UpperArmL.Z.Abs();
+			UpperArmR.Z = UpperArmR.Z.Abs();
+			LowerArmL.Z = LowerArmL.Z.Abs();
+			LowerArmR.Z = LowerArmR.Z.Abs();
+			HandL.Z = POSE_Z_HAND;
+			HandR.Z = POSE_Z_HAND;
+		}
+		private static void SlashOut () {
+
+			float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
+			float ease01 = Ease.OutBack(frame01);
+			float ease010 = Mathf.PingPong(ease01 * 2f, 1f);
+
+			AttackHeadDown(ease01, -500, 500, 500);
+			ResetShoulderAndUpperArm();
+
+			Target.PoseTwist = FacingSign * (int)(frame01 * 2000 - 1000);
+			Target.HeadTwist = FacingSign * (int)(frame01 * 500 - 250);
+
+			int upperRotA = (int)Mathf.LerpUnclamped(-171, 49, ease01);
+			int upperRotB = (int)Mathf.LerpUnclamped(-100, 39, ease01);
+
+			UpperArmL.LimbRotate(FacingRight ? -upperRotA : upperRotB);
+			UpperArmR.LimbRotate(FacingRight ? -upperRotB : upperRotA);
+			UpperArmL.Height = (int)(UpperArmL.Height * Mathf.LerpUnclamped(1.2f, 0.1f, ease010));
+			UpperArmR.Height = (int)(UpperArmR.Height * Mathf.LerpUnclamped(1.2f, 0.1f, ease010));
+
+			LowerArmL.LimbRotate(0);
+			LowerArmR.LimbRotate(0);
+			LowerArmL.Height = (int)(LowerArmL.Height * Mathf.LerpUnclamped(1.2f, 0.1f, ease010));
+			LowerArmR.Height = (int)(LowerArmR.Height * Mathf.LerpUnclamped(1.2f, 0.1f, ease010));
+
+			HandL.LimbRotate(FacingSign);
+			HandL.Width += HandL.Width.Sign() * A2G;
+			HandL.Height += HandL.Height.Sign() * A2G;
+
+			HandR.LimbRotate(FacingSign);
+			HandR.Width += HandR.Width.Sign() * A2G;
+			HandR.Height += HandR.Height.Sign() * A2G;
+
+			// Leg
+			AttackLegShake(ease01);
+
+			// Grab Rotation
+			Target.HandGrabRotationL = Target.HandGrabRotationR =
+				FacingSign * (int)Mathf.LerpUnclamped(297, 128, ease01);
+			Target.HandGrabScaleL = Target.HandGrabScaleR =
+				FacingSign * (int)Mathf.LerpUnclamped(1300, 100, ease010);
+			Target.HandGrabAttackTwistL = Target.HandGrabAttackTwistR =
+				(int)Mathf.LerpUnclamped(600, 200, frame01);
+
+			// Z
+			UpperArmL.Z = UpperArmL.Z.Abs();
+			UpperArmR.Z = UpperArmR.Z.Abs();
+			LowerArmL.Z = LowerArmL.Z.Abs();
+			LowerArmR.Z = LowerArmR.Z.Abs();
+			HandL.Z = POSE_Z_HAND;
+			HandR.Z = POSE_Z_HAND;
+		}
+	}
+
+	public class PoseAttack_Scratch : PoseAnimation {
+		public override void Animate (PoseCharacter character) {
+			base.Animate(character);
+			character.AttackStyleLoop = 3;
+			int style = character.LastAttackCharged ? 2 : character.AttackStyleIndex % character.AttackStyleLoop;
+			switch (style) {
+				default:
+					ScratchIn();
+					break;
+				case 1:
+					ScratchOut();
+					break;
+				case 2:
+					ScratchUp();
+					break;
+			}
+		}
+		private static void ScratchIn () {
+
+			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+			AttackHeadDown(ease01, 1000, 500, 500);
+			ResetShoulderAndUpperArm();
+
+			// Arm
+			int rotUA = (int)Mathf.LerpUnclamped(6, 137, ease01);
+			int rotUB = (int)Mathf.LerpUnclamped(-46, 90, ease01);
+			UpperArmL.LimbRotate(FacingRight ? rotUA : -rotUB);
+			UpperArmR.LimbRotate(FacingRight ? rotUB : -rotUA);
+			UpperArmL.Height = UpperArmL.Height * (FacingRight ? 500 : 1200) / 1000;
+			UpperArmR.Height = UpperArmR.Height * (FacingRight ? 1200 : 500) / 1000;
+
+			int rotLA = (int)Mathf.LerpUnclamped(-12, -180, ease01);
+			int rotLB = (int)Mathf.LerpUnclamped(-24, 27, ease01);
+			LowerArmL.LimbRotate(FacingRight ? rotLA : -rotLB);
+			LowerArmR.LimbRotate(FacingRight ? rotLB : -rotLA);
+			LowerArmL.Height = LowerArmL.Height * (FacingRight ? 500 : 1200) / 1000;
+			LowerArmR.Height = LowerArmR.Height * (FacingRight ? 1200 : 500) / 1000;
+			HandL.LimbRotate(FacingSign);
+			HandR.LimbRotate(FacingSign);
+
+			// Leg
+			AttackLegShake(ease01);
+
+			// Grab Rotation
+			int rotA = (int)Mathf.LerpUnclamped(101, 69, ease01);
+			int rotB = (int)Mathf.LerpUnclamped(54, 94, ease01);
+
+			Target.HandGrabRotationL = LowerArmL.Rotation + (FacingRight ? rotA : -rotB);
+			Target.HandGrabRotationR = LowerArmR.Rotation + (FacingRight ? rotB : -rotA);
+			Target.HandGrabScaleL = FacingRight ? 700 : -1300;
+			Target.HandGrabScaleR = FacingRight ? 1300 : -700;
+
+			// Z
+			UpperArmL.Z = -FacingSign * FrontSign * UpperArmL.Z.Abs();
+			UpperArmR.Z = FacingSign * FrontSign * UpperArmR.Z.Abs();
+			LowerArmL.Z = -FacingSign * FrontSign * LowerArmL.Z.Abs();
+			LowerArmR.Z = FacingSign * FrontSign * LowerArmR.Z.Abs();
+			HandL.Z = -FacingSign * POSE_Z_HAND;
+			HandR.Z = FacingSign * POSE_Z_HAND;
+
+		}
+		private static void ScratchOut () {
+
+			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+			AttackHeadDown(ease01, 1000, 500, 500);
+			ResetShoulderAndUpperArm();
+
+			// Arm
+			int rotUA = (int)Mathf.LerpUnclamped(137, -46, ease01);
+			int rotUB = (int)Mathf.LerpUnclamped(-44, 35, ease01);
+			UpperArmL.LimbRotate(FacingRight ? rotUA : -rotUB);
+			UpperArmR.LimbRotate(FacingRight ? rotUB : -rotUA);
+			UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1200 : 500) / 1000;
+			UpperArmR.Height = UpperArmR.Height * (FacingRight ? 500 : 1200) / 1000;
+
+			int rotLA = (int)Mathf.LerpUnclamped(-180, -45, ease01);
+			int rotLB = (int)Mathf.LerpUnclamped(23, 46, ease01);
+			LowerArmL.LimbRotate(FacingRight ? rotLA : -rotLB);
+			LowerArmR.LimbRotate(FacingRight ? rotLB : -rotLA);
+			LowerArmL.Height = LowerArmL.Height * (FacingRight ? 1200 : 500) / 1000;
+			LowerArmR.Height = LowerArmR.Height * (FacingRight ? 500 : 1200) / 1000;
+
+			HandL.LimbRotate(FacingSign);
+			HandR.LimbRotate(FacingSign);
+
+			// Leg
+			AttackLegShake(ease01);
+
+			// Grab Rotation
+			int rotA = (int)Mathf.LerpUnclamped(93, 72, ease01);
+			int rotB = (int)Mathf.LerpUnclamped(94, 54, ease01);
+			Target.HandGrabRotationL = LowerArmL.Rotation + (FacingRight ? rotA : -rotB);
+			Target.HandGrabRotationR = LowerArmR.Rotation + (FacingRight ? rotB : -rotA);
+			Target.HandGrabScaleL = FacingRight ? 1300 : -700;
+			Target.HandGrabScaleR = FacingRight ? 700 : -1300;
+
+			// Z
+			UpperArmL.Z = FacingSign * FrontSign * UpperArmL.Z.Abs();
+			UpperArmR.Z = -FacingSign * FrontSign * UpperArmR.Z.Abs();
+			LowerArmL.Z = FacingSign * FrontSign * LowerArmL.Z.Abs();
+			LowerArmR.Z = -FacingSign * FrontSign * LowerArmR.Z.Abs();
+			HandL.Z = FacingSign * POSE_Z_HAND;
+			HandR.Z = -FacingSign * POSE_Z_HAND;
+
+		}
+		private static void ScratchUp () {
+
+			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+			AttackHeadDown(1f - ease01 + 0.5f, -500, 500, 500);
+			ResetShoulderAndUpperArm();
+
+			// Arm
+			int rotUA = (int)Mathf.LerpUnclamped(-82, 137, ease01);
+			int rotUB = (int)Mathf.LerpUnclamped(-69, 142, ease01);
+			UpperArmL.LimbRotate(FacingRight ? rotUA : -rotUB);
+			UpperArmR.LimbRotate(FacingRight ? rotUB : -rotUA);
+			UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1200 : 500) / 1000;
+			UpperArmR.Height = UpperArmR.Height * (FacingRight ? 500 : 1200) / 1000;
+
+			int rotLA = (int)Mathf.LerpUnclamped(-36, 0, ease01);
+			int rotLB = (int)Mathf.LerpUnclamped(-39, 0, ease01);
+			LowerArmL.LimbRotate(FacingRight ? rotLA : -rotLB);
+			LowerArmR.LimbRotate(FacingRight ? rotLB : -rotLA);
+			LowerArmL.Height = LowerArmL.Height * (FacingRight ? 1200 : 500) / 1000;
+			LowerArmR.Height = LowerArmR.Height * (FacingRight ? 500 : 1200) / 1000;
+
+			HandL.LimbRotate(FacingSign);
+			HandR.LimbRotate(FacingSign);
+
+			// Leg
+			AttackLegShake(ease01);
+
+			// Grab
+			Target.HandGrabRotationL = UpperArmL.Rotation + FacingSign * 90;
+			Target.HandGrabRotationR = UpperArmR.Rotation + FacingSign * 90;
+			Target.HandGrabScaleL = FacingSign * 1300;
+			Target.HandGrabScaleR = FacingSign * 1300;
+
+			// Z
+			UpperArmL.Z = FacingSign * FrontSign * UpperArmL.Z.Abs();
+			UpperArmR.Z = -FacingSign * FrontSign * UpperArmR.Z.Abs();
+			LowerArmL.Z = FacingSign * FrontSign * LowerArmL.Z.Abs();
+			LowerArmR.Z = -FacingSign * FrontSign * LowerArmR.Z.Abs();
+			HandL.Z = FacingSign * POSE_Z_HAND;
+			HandR.Z = -FacingSign * POSE_Z_HAND;
+
+		}
+	}
+
+	public class PoseAttack_Ranged : PoseAnimation {
+		public override void Animate (PoseCharacter character) {
+			base.Animate(character);
+			character.AttackStyleLoop = 1;
+			if (character.EquippingWeaponHeld == WeaponHandheld.Bow) {
+				Bow();
+			} else {
+				Firearm();
+			}
+		}
+		private static void Bow () {
 
 			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
 			float ease01 = isCharging ?
 				Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
 				Target.LastAttackCharged ? 1f : Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-			Attack_HeadDown(ease01, 0, 200, -1000, 0);
+			AttackHeadDown(ease01, 0, 200, -1000, 0);
 			ResetShoulderAndUpperArm();
 
 			// Upper Arm
@@ -1036,7 +1455,7 @@ namespace AngeliaFramework {
 			HandR.LimbRotate(FacingSign);
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Z
 			UpperArmL.Z = UpperArmR.Z = FrontSign * (POSE_Z_HAND - 2);
@@ -1048,16 +1467,14 @@ namespace AngeliaFramework {
 			Target.HandGrabScaleL = Target.HandGrabScaleR = 1000;
 
 		}
-
-
-		public static void Attack_Firearm () {
+		private static void Firearm () {
 
 			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
 			float ease01 = isCharging ?
 				Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
 				Target.LastAttackCharged ? 1f : Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-			Attack_HeadDown(ease01, 0, 200, -1000, 0);
+			AttackHeadDown(ease01, 0, 200, -1000, 0);
 			ResetShoulderAndUpperArm();
 
 			// Upper Arm
@@ -1081,7 +1498,7 @@ namespace AngeliaFramework {
 			HandR.LimbRotate(FacingSign);
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 			// Z
 			UpperArmL.Z = UpperArmR.Z = FrontSign * (POSE_Z_HAND - 2);
@@ -1093,161 +1510,26 @@ namespace AngeliaFramework {
 			Target.HandGrabScaleL = Target.HandGrabScaleR = 1000;
 
 		}
+	}
 
-
-		#endregion
-
-
-
-
-		#region --- Scratch ---
-
-
-		public static void Attack_Scratch_In () {
-
-			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
-			Attack_HeadDown(ease01, 1000, 500, 500);
-			ResetShoulderAndUpperArm();
-
-			// Arm
-			int rotUA = (int)Mathf.LerpUnclamped(6, 137, ease01);
-			int rotUB = (int)Mathf.LerpUnclamped(-46, 90, ease01);
-			UpperArmL.LimbRotate(FacingRight ? rotUA : -rotUB);
-			UpperArmR.LimbRotate(FacingRight ? rotUB : -rotUA);
-			UpperArmL.Height = UpperArmL.Height * (FacingRight ? 500 : 1200) / 1000;
-			UpperArmR.Height = UpperArmR.Height * (FacingRight ? 1200 : 500) / 1000;
-
-			int rotLA = (int)Mathf.LerpUnclamped(-12, -180, ease01);
-			int rotLB = (int)Mathf.LerpUnclamped(-24, 27, ease01);
-			LowerArmL.LimbRotate(FacingRight ? rotLA : -rotLB);
-			LowerArmR.LimbRotate(FacingRight ? rotLB : -rotLA);
-			LowerArmL.Height = LowerArmL.Height * (FacingRight ? 500 : 1200) / 1000;
-			LowerArmR.Height = LowerArmR.Height * (FacingRight ? 1200 : 500) / 1000;
-			HandL.LimbRotate(FacingSign);
-			HandR.LimbRotate(FacingSign);
-
-			// Leg
-			Attack_LegShake(ease01);
-
-			// Grab Rotation
-			int rotA = (int)Mathf.LerpUnclamped(101, 69, ease01);
-			int rotB = (int)Mathf.LerpUnclamped(54, 94, ease01);
-
-			Target.HandGrabRotationL = LowerArmL.Rotation + (FacingRight ? rotA : -rotB);
-			Target.HandGrabRotationR = LowerArmR.Rotation + (FacingRight ? rotB : -rotA);
-			Target.HandGrabScaleL = FacingRight ? 700 : -1300;
-			Target.HandGrabScaleR = FacingRight ? 1300 : -700;
-
-			// Z
-			UpperArmL.Z = -FacingSign * FrontSign * UpperArmL.Z.Abs();
-			UpperArmR.Z = FacingSign * FrontSign * UpperArmR.Z.Abs();
-			LowerArmL.Z = -FacingSign * FrontSign * LowerArmL.Z.Abs();
-			LowerArmR.Z = FacingSign * FrontSign * LowerArmR.Z.Abs();
-			HandL.Z = -FacingSign * POSE_Z_HAND;
-			HandR.Z = FacingSign * POSE_Z_HAND;
-
+	public class PoseAttack_Magic : PoseAnimation {
+		public override void Animate (PoseCharacter character) {
+			base.Animate(character);
+			character.AttackStyleLoop = 1;
+			switch (character.EquippingWeaponHeld) {
+				default:
+				case WeaponHandheld.Float:
+					Float();
+					break;
+				case WeaponHandheld.SingleHanded:
+					SingleHanded();
+					break;
+				case WeaponHandheld.Pole:
+					Pole();
+					break;
+			}
 		}
-
-
-		public static void Attack_Scratch_Out () {
-
-			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
-			Attack_HeadDown(ease01, 1000, 500, 500);
-			ResetShoulderAndUpperArm();
-
-			// Arm
-			int rotUA = (int)Mathf.LerpUnclamped(137, -46, ease01);
-			int rotUB = (int)Mathf.LerpUnclamped(-44, 35, ease01);
-			UpperArmL.LimbRotate(FacingRight ? rotUA : -rotUB);
-			UpperArmR.LimbRotate(FacingRight ? rotUB : -rotUA);
-			UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1200 : 500) / 1000;
-			UpperArmR.Height = UpperArmR.Height * (FacingRight ? 500 : 1200) / 1000;
-
-			int rotLA = (int)Mathf.LerpUnclamped(-180, -45, ease01);
-			int rotLB = (int)Mathf.LerpUnclamped(23, 46, ease01);
-			LowerArmL.LimbRotate(FacingRight ? rotLA : -rotLB);
-			LowerArmR.LimbRotate(FacingRight ? rotLB : -rotLA);
-			LowerArmL.Height = LowerArmL.Height * (FacingRight ? 1200 : 500) / 1000;
-			LowerArmR.Height = LowerArmR.Height * (FacingRight ? 500 : 1200) / 1000;
-
-			HandL.LimbRotate(FacingSign);
-			HandR.LimbRotate(FacingSign);
-
-			// Leg
-			Attack_LegShake(ease01);
-
-			// Grab Rotation
-			int rotA = (int)Mathf.LerpUnclamped(93, 72, ease01);
-			int rotB = (int)Mathf.LerpUnclamped(94, 54, ease01);
-			Target.HandGrabRotationL = LowerArmL.Rotation + (FacingRight ? rotA : -rotB);
-			Target.HandGrabRotationR = LowerArmR.Rotation + (FacingRight ? rotB : -rotA);
-			Target.HandGrabScaleL = FacingRight ? 1300 : -700;
-			Target.HandGrabScaleR = FacingRight ? 700 : -1300;
-
-			// Z
-			UpperArmL.Z = FacingSign * FrontSign * UpperArmL.Z.Abs();
-			UpperArmR.Z = -FacingSign * FrontSign * UpperArmR.Z.Abs();
-			LowerArmL.Z = FacingSign * FrontSign * LowerArmL.Z.Abs();
-			LowerArmR.Z = -FacingSign * FrontSign * LowerArmR.Z.Abs();
-			HandL.Z = FacingSign * POSE_Z_HAND;
-			HandR.Z = -FacingSign * POSE_Z_HAND;
-
-		}
-
-
-		public static void Attack_Scratch_Up () {
-
-			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
-			Attack_HeadDown(1f - ease01 + 0.5f, -500, 500, 500);
-			ResetShoulderAndUpperArm();
-
-			// Arm
-			int rotUA = (int)Mathf.LerpUnclamped(-82, 137, ease01);
-			int rotUB = (int)Mathf.LerpUnclamped(-69, 142, ease01);
-			UpperArmL.LimbRotate(FacingRight ? rotUA : -rotUB);
-			UpperArmR.LimbRotate(FacingRight ? rotUB : -rotUA);
-			UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1200 : 500) / 1000;
-			UpperArmR.Height = UpperArmR.Height * (FacingRight ? 500 : 1200) / 1000;
-
-			int rotLA = (int)Mathf.LerpUnclamped(-36, 0, ease01);
-			int rotLB = (int)Mathf.LerpUnclamped(-39, 0, ease01);
-			LowerArmL.LimbRotate(FacingRight ? rotLA : -rotLB);
-			LowerArmR.LimbRotate(FacingRight ? rotLB : -rotLA);
-			LowerArmL.Height = LowerArmL.Height * (FacingRight ? 1200 : 500) / 1000;
-			LowerArmR.Height = LowerArmR.Height * (FacingRight ? 500 : 1200) / 1000;
-
-			HandL.LimbRotate(FacingSign);
-			HandR.LimbRotate(FacingSign);
-
-			// Leg
-			Attack_LegShake(ease01);
-
-			// Grab
-			Target.HandGrabRotationL = UpperArmL.Rotation + FacingSign * 90;
-			Target.HandGrabRotationR = UpperArmR.Rotation + FacingSign * 90;
-			Target.HandGrabScaleL = FacingSign * 1300;
-			Target.HandGrabScaleR = FacingSign * 1300;
-
-			// Z
-			UpperArmL.Z = FacingSign * FrontSign * UpperArmL.Z.Abs();
-			UpperArmR.Z = -FacingSign * FrontSign * UpperArmR.Z.Abs();
-			LowerArmL.Z = FacingSign * FrontSign * LowerArmL.Z.Abs();
-			LowerArmR.Z = -FacingSign * FrontSign * LowerArmR.Z.Abs();
-			HandL.Z = FacingSign * POSE_Z_HAND;
-			HandR.Z = -FacingSign * POSE_Z_HAND;
-
-		}
-
-
-		#endregion
-
-
-
-
-		#region --- Magic ---
-
-
-		public static void Attack_Magic_Float () {
+		private static void Float () {
 
 			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
 			float ease01 = isCharging ?
@@ -1255,9 +1537,9 @@ namespace AngeliaFramework {
 				Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
 			if (isCharging) {
-				Attack_HeadDown(ease01, 100, 800, 1000, 100);
+				AttackHeadDown(ease01, 100, 800, 1000, 100);
 			} else {
-				Attack_HeadDown(ease01, 200, 300, 0, 300);
+				AttackHeadDown(ease01, 200, 300, 0, 300);
 			}
 			ResetShoulderAndUpperArm(!FacingRight, FacingRight);
 
@@ -1278,15 +1560,13 @@ namespace AngeliaFramework {
 			Target.HandGrabScaleL = Target.HandGrabScaleR = (int)Mathf.LerpUnclamped(700, 800, ease01);
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 		}
-
-
-		public static void Attack_Magic_SingleHanded () {
+		private static void SingleHanded () {
 
 			float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-			Attack_HeadDown(ease01, 200, 300, 300, 200);
+			AttackHeadDown(ease01, 200, 300, 300, 200);
 			ResetShoulderAndUpperArm();
 
 			// Arm L
@@ -1310,11 +1590,9 @@ namespace AngeliaFramework {
 				FacingSign * (int)Mathf.LerpUnclamped(1000, 1200, ease01);
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 		}
-
-
-		public static void Attack_Magic_Pole () {
+		private static void Pole () {
 
 			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
 			float ease01 = isCharging ?
@@ -1322,9 +1600,9 @@ namespace AngeliaFramework {
 				Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
 			if (isCharging) {
-				Attack_HeadDown(ease01, 100, 800, 1000, 100);
+				AttackHeadDown(ease01, 100, 800, 1000, 100);
 			} else {
-				Attack_HeadDown(ease01, 200, 300, 0, 200);
+				AttackHeadDown(ease01, 200, 300, 0, 200);
 			}
 			ResetShoulderAndUpperArm();
 
@@ -1362,95 +1640,8 @@ namespace AngeliaFramework {
 			HandR.Z = FrontSign * POSE_Z_HAND;
 
 			// Leg
-			Attack_LegShake(ease01);
+			AttackLegShake(ease01);
 
 		}
-
-
-		#endregion
-
-
-
-
-		#region --- UTL ---
-
-
-		private static void Attack_HeadDown (
-			float ease01, int headOffsetXAmount = 1000, int headOffsetYAmount = 1000, int bodyOffsetYAmount = 1000,
-			int headRotateAmount = 1000
-		) {
-
-			// Head Rotate
-			int headRotate = FacingSign * (int)Mathf.LerpUnclamped(-18, 18, ease01) * headRotateAmount / 1000;
-
-			// Head
-			int headOffsetX = FacingSign * (int)((0.75f - ease01) * 10 * A2G) - A2G / 3;
-			int headOffsetY = (int)((0.75f - ease01) * 10 * A2G) - 5 * A2G;
-			headOffsetX = headOffsetX * headOffsetXAmount / 1000;
-			headOffsetY = headOffsetY * headOffsetYAmount / 1000;
-			if (
-				AnimationType == CharacterAnimationType.SquatIdle ||
-				AnimationType == CharacterAnimationType.SquatMove
-			) {
-				headOffsetX /= 2;
-				headOffsetY /= 2;
-				headRotate /= 2;
-			} else if (
-				AnimationType == CharacterAnimationType.JumpDown ||
-				AnimationType == CharacterAnimationType.JumpUp
-			) {
-				headOffsetX /= 4;
-				headOffsetY /= 4;
-				headRotate /= 4;
-			}
-
-			Head.X -= headOffsetX.Clamp(-A2G * 2, A2G * 2);
-			Head.Y = (Head.Y + headOffsetY).GreaterOrEquel(Body.Y + 1);
-			Target.HeadRotation = headRotate;
-
-			// Body
-			int bodyOffsetY = (int)(ease01 * A2G) + A2G * 2;
-			bodyOffsetY = bodyOffsetY * bodyOffsetYAmount / 1000;
-			Body.Y -= bodyOffsetY;
-			Hip.Y -= bodyOffsetY;
-			Body.Height = Head.Y - Body.Y;
-
-			// Leg Position Y
-			if (bodyOffsetY != 0) {
-				UpperLegL.Y -= bodyOffsetY;
-				UpperLegR.Y -= bodyOffsetY;
-				UpperLegL.Height -= bodyOffsetY;
-				UpperLegR.Height -= bodyOffsetY;
-			}
-		}
-
-
-		private static void Attack_LegShake (float ease01) {
-			if (AnimationType != CharacterAnimationType.Idle) return;
-			int deltaX = (int)(2f * ease01 * A2G);
-			// Move Leg
-			if (FacingRight) {
-				UpperLegL.X -= deltaX / 2;
-				LowerLegL.X -= deltaX;
-				FootL.X -= deltaX;
-				UpperLegR.X += deltaX / 8;
-				LowerLegR.X += deltaX / 4;
-				FootR.X += deltaX / 4;
-			} else {
-				UpperLegL.X -= deltaX / 8;
-				LowerLegL.X -= deltaX / 4;
-				FootL.X -= deltaX / 4;
-				UpperLegR.X += deltaX / 2;
-				LowerLegR.X += deltaX;
-				FootR.X += deltaX;
-			}
-		}
-
-
-		#endregion
-
-
-
-
 	}
 }

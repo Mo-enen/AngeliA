@@ -29,37 +29,37 @@ namespace AngeliaFramework {
 	public class iFlailHook : Flail { }
 	[EntityAttribute.ItemCombination(typeof(iChain), typeof(iTreeBranch), typeof(iTreeBranch), 1)]
 	public class iNunchaku : Flail {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
+		public override WeaponHandheld Handheld => WeaponHandheld.OneOnEachHand;
 		protected override int ChainLength => Const.CEL * 2 / 9;
 		protected override int ChainLengthAttackGrow => 2000;
 	}
 	[EntityAttribute.ItemCombination(typeof(iPickWood), typeof(iChain), typeof(iTreeBranch), 1)]
 	public class iFlailPick : Flail {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
+		public override WeaponHandheld Handheld => WeaponHandheld.Pole;
 		public override int AttackDuration => 24;
 	}
 	[EntityAttribute.ItemCombination(typeof(iChain), typeof(iChain), typeof(iMaceSpiked), typeof(iMaceSpiked), 1)]
 	public class iChainMace : Flail {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.DoubleHanded;
 		protected override int ChainLength => Const.CEL * 2 / 9;
 		protected override int ChainLengthAttackGrow => 2000;
 		public override int AttackDuration => 24;
 	}
 	[EntityAttribute.ItemCombination(typeof(iSpikeBall), typeof(iChain), 1)]
 	public class iChainSpikeBall : Flail {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.DoubleHanded;
 		protected override int ChainLengthAttackGrow => 2000;
 		public override int AttackDuration => 24;
 	}
 	[EntityAttribute.ItemCombination(typeof(iBolt), typeof(iBolt), typeof(iBolt), typeof(iChain), 1)]
 	public class iChainBarbed : Flail {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.DoubleHanded;
 		protected override int ChainLengthAttackGrow => 2000;
 		public override int AttackDuration => 24;
 	}
 	[EntityAttribute.ItemCombination(typeof(iFist), typeof(iChain), 1)]
 	public class iChainFist : Flail {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.DoubleHanded;
 		protected override int ChainLengthAttackGrow => 2000;
 		public override int AttackDuration => 24;
 	}

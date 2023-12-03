@@ -37,7 +37,7 @@ namespace AngeliaFramework {
 	public class iPickGold : Axe { }
 	[EntityAttribute.ItemCombination(typeof(iAxeWood), typeof(iAxeWood), 1)]
 	public class iAxeGreat : Axe {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.DoubleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.DoubleHanded;
 		public override int AttackDuration => 16;
 		public override int AttackCooldown => 3;
 	}

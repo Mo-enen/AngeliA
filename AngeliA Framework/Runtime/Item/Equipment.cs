@@ -37,5 +37,11 @@ namespace AngeliaFramework {
 			particle.UserData = new Vector2Int(itemBeforeID, itemAfterID);
 		}
 
+		public virtual int GetOverrideMovementAnimationID (CharacterAnimationType type, Character character) => 0;
+		
+		public virtual int GetOverrideHandheldAnimationID (WeaponHandheld handheld, Character character) => 0;
+		
+		public virtual int GetOverrideAttackAnimationID (WeaponType type, Character character) => 0;
+
 	}
 }

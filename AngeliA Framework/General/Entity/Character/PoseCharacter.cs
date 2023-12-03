@@ -29,6 +29,9 @@ namespace AngeliaFramework {
 		protected const int A2G = Const.CEL / Const.ART_CEL;
 		public static readonly int[] DEFAULT_BODY_PART_ID = { "DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(), };
 		private static readonly string[] BODY_PART_NAME = { "Head", "Body", "Hip", "Shoulder", "Shoulder", "UpperArm", "UpperArm", "LowerArm", "LowerArm", "Hand", "Hand", "UpperLeg", "UpperLeg", "LowerLeg", "LowerLeg", "Foot", "Foot", };
+		private static readonly int[] DEFAULT_POSE_ANIMATION_IDS = { typeof(PoseAnimation_Idle).AngeHash(), typeof(PoseAnimation_Walk).AngeHash(), typeof(PoseAnimation_Run).AngeHash(), typeof(PoseAnimation_JumpUp).AngeHash(), typeof(PoseAnimation_JumpDown).AngeHash(), typeof(PoseAnimation_SwimIdle).AngeHash(), typeof(PoseAnimation_SwimMove).AngeHash(), typeof(PoseAnimation_SquatIdle).AngeHash(), typeof(PoseAnimation_SquatMove).AngeHash(), typeof(PoseAnimation_Dash).AngeHash(), typeof(PoseAnimation_Rush).AngeHash(), typeof(PoseAnimation_Pound).AngeHash(), typeof(PoseAnimation_Climb).AngeHash(), typeof(PoseAnimation_Fly).AngeHash(), typeof(PoseAnimation_Slide).AngeHash(), typeof(PoseAnimation_GrabTop).AngeHash(), typeof(PoseAnimation_GrabSide).AngeHash(), typeof(PoseAnimation_Spin).AngeHash(), typeof(PoseAnimation_Animation_TakingDamage).AngeHash(), typeof(PoseAnimation_Sleep).AngeHash(), typeof(PoseAnimation_PassOut).AngeHash(), typeof(PoseAnimation_Rolling).AngeHash(), };
+		private static readonly int[] DEFAULT_POSE_HANDHELD_IDS = { typeof(PoseHandheld_Single).AngeHash(), typeof(PoseHandheld_Double).AngeHash(), typeof(PoseHandheld_EachHand).AngeHash(), typeof(PoseHandheld_Pole).AngeHash(), typeof(PoseHandheld_MagicPole).AngeHash(), typeof(PoseHandheld_Bow).AngeHash(), typeof(PoseHandheld_Firearm).AngeHash(), typeof(PoseHandheld_Float).AngeHash(), };
+		private static readonly int[] DEFAULT_POSE_ATTACK_IDS = { typeof(PoseAttack_Hand).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Ranged).AngeHash(), typeof(PoseAttack_Polearm).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Scratch).AngeHash(), typeof(PoseAttack_Magic).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), };
 		private const int POSE_Z_HEAD = 10;
 		private const int POSE_Z_BODY = 0;
 		private const int POSE_Z_UPPERARM = 8;
@@ -100,6 +103,9 @@ namespace AngeliaFramework {
 		// Data
 		private static readonly Dictionary<int, BodyPartConfig> BodyPartConfigPool = new();
 		private readonly BodyPart[] BodyParts = null;
+		private readonly int[] PoseAnimationIDs = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
+		private readonly int[] PoseHandheldIDs = { 0, 0, 0, 0, 0, 0, 0, 0, };
+		private readonly int[] PoseAttackIDs = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
 		private int IgnoreTailFrame = -1;
 		private int IgnoreEarFrame = -1;
 		private int IgnoreHairFrame = -1;
@@ -227,6 +233,7 @@ namespace AngeliaFramework {
 			LowerLegR = BodyParts[14];
 			FootL = BodyParts[15];
 			FootR = BodyParts[16];
+
 		}
 
 
@@ -239,12 +246,9 @@ namespace AngeliaFramework {
 		protected override void RenderCharacter () {
 
 			int cellIndexStart = CellRenderer.GetUsedCellCount();
-			AnimationLibrary.Begin(this);
 
 			ResetPoseToDefault(false);
-			PerformPoseAnimation_Movement();
-			PerformPoseAnimation_Handheld();
-			PerformPoseAnimation_Attack();
+			PerformPoseAnimation();
 			PoseUpdate_HeadTwist();
 			PoseUpdate_Items();
 
@@ -469,214 +473,59 @@ namespace AngeliaFramework {
 		}
 
 
-		private void PerformPoseAnimation_Movement () {
+		private void PerformPoseAnimation () {
 
+			// Movement
 			HandGrabScaleL = FacingRight ? 1000 : -1000;
 			HandGrabScaleR = FacingRight ? 1000 : -1000;
-
-			switch (AnimationType) {
-
-				case CharacterAnimationType.TakingDamage:
-					AnimationLibrary.Damage();
-					break;
-
-				case CharacterAnimationType.Sleep:
-					AnimationLibrary.Sleep();
-					break;
-
-				case CharacterAnimationType.PassOut:
-					AnimationLibrary.PassOut();
-					break;
-
-				case CharacterAnimationType.Dash:
-					AnimationLibrary.Dash();
-					break;
-
-				case CharacterAnimationType.Rolling:
-					AnimationLibrary.Rolling();
-					break;
-
-				case CharacterAnimationType.Idle:
-					AnimationLibrary.Idle();
-					break;
-
-				case CharacterAnimationType.Walk:
-					AnimationLibrary.Walk();
-					break;
-
-				case CharacterAnimationType.Run:
-					AnimationLibrary.Run();
-					break;
-
-				case CharacterAnimationType.JumpUp:
-					AnimationLibrary.JumpUp();
-					break;
-
-				case CharacterAnimationType.JumpDown:
-					AnimationLibrary.JumpDown();
-					break;
-
-				case CharacterAnimationType.SwimIdle:
-					AnimationLibrary.SwimIdle();
-					break;
-
-				case CharacterAnimationType.SwimMove:
-					AnimationLibrary.SwimMove();
-					break;
-
-				case CharacterAnimationType.SquatIdle:
-					AnimationLibrary.SquatIdle();
-					break;
-
-				case CharacterAnimationType.SquatMove:
-					AnimationLibrary.SquatMove();
-					break;
-
-				case CharacterAnimationType.Rush:
-					AnimationLibrary.Rush();
-					break;
-
-				case CharacterAnimationType.Pound:
-					AnimationLibrary.Pound();
-					break;
-
-				case CharacterAnimationType.Spin:
-					AnimationLibrary.Spin();
-					break;
-
-				case CharacterAnimationType.Climb:
-					AnimationLibrary.Climb();
-					break;
-
-				case CharacterAnimationType.Fly:
-					AnimationLibrary.Fly();
-					break;
-
-				case CharacterAnimationType.Slide:
-					AnimationLibrary.Slide();
-					break;
-
-				case CharacterAnimationType.GrabTop:
-					AnimationLibrary.GrabTop();
-					break;
-
-				case CharacterAnimationType.GrabSide:
-					AnimationLibrary.GrabSide();
-					break;
-			}
-
-			// Validate
+			PoseAnimation.AnimateFromPool(GetPoseAnimationID(AnimationType), this);
 			Head.Y = Head.Y.GreaterOrEquel(Body.Y + 1);
 			Body.Height = Body.Height.GreaterOrEquel(1);
-
-			// Make Global Pos Ready
 			CalculateBodypartGlobalPosition();
 
-		}
-
-
-		private void PerformPoseAnimation_Handheld () {
-
-			if (IsAttacking) return;
-
-			if (AnimationType switch {
-				CharacterAnimationType.Idle => true,
-				CharacterAnimationType.Walk => true,
-				CharacterAnimationType.Run => true,
-				CharacterAnimationType.JumpUp => true,
-				CharacterAnimationType.JumpDown => true,
-				CharacterAnimationType.SwimIdle => true,
-				CharacterAnimationType.SwimMove => true,
-				CharacterAnimationType.SquatIdle => true,
-				CharacterAnimationType.SquatMove => true,
-				CharacterAnimationType.Pound => true,
-				CharacterAnimationType.Fly => true,
-				CharacterAnimationType.Rush => EquippingWeaponHeld == WeaponHandHeld.Pole,
-				CharacterAnimationType.Dash => EquippingWeaponHeld == WeaponHandHeld.Pole,
-				CharacterAnimationType.Rolling => EquippingWeaponHeld == WeaponHandHeld.Bow || EquippingWeaponHeld == WeaponHandHeld.Firearm,
-				_ => false,
-			}) {
-				// Override Handheld
-				switch (EquippingWeaponHeld) {
-					case WeaponHandHeld.DoubleHanded:
-						AnimationLibrary.HandHeld_Double();
-						break;
-					case WeaponHandHeld.Bow:
-						AnimationLibrary.HandHeld_Bow();
-						break;
-					case WeaponHandHeld.Firearm:
-						AnimationLibrary.HandHeld_Firearm();
-						break;
-					case WeaponHandHeld.Pole:
-						if (EquippingWeaponType == WeaponType.Magic) {
-							AnimationLibrary.HandHeld_Magic_Pole();
-						} else {
-							AnimationLibrary.HandHeld_Pole();
-						}
-						break;
-					case WeaponHandHeld.OneOnEachHand:
-						if (IsChargingAttack) AnimationLibrary.HandHeld_Charging_EachHand();
-						break;
-					case WeaponHandHeld.Float:
-						if (IsChargingAttack) AnimationLibrary.HandHeld_Magic_Float_Charging();
-						break;
-					default:
-						if (IsChargingAttack) AnimationLibrary.HandHeld_Charging();
-						break;
+			// Handheld
+			if (!IsAttacking) {
+				// Normal
+				if (AnimationType switch {
+					CharacterAnimationType.Idle => true,
+					CharacterAnimationType.Walk => true,
+					CharacterAnimationType.Run => true,
+					CharacterAnimationType.JumpUp => true,
+					CharacterAnimationType.JumpDown => true,
+					CharacterAnimationType.SwimIdle => true,
+					CharacterAnimationType.SwimMove => true,
+					CharacterAnimationType.SquatIdle => true,
+					CharacterAnimationType.SquatMove => true,
+					CharacterAnimationType.Pound => true,
+					CharacterAnimationType.Fly => true,
+					CharacterAnimationType.Rush => EquippingWeaponHeld == WeaponHandheld.Pole,
+					CharacterAnimationType.Dash => EquippingWeaponHeld == WeaponHandheld.Pole,
+					CharacterAnimationType.Rolling => EquippingWeaponHeld == WeaponHandheld.Bow || EquippingWeaponHeld == WeaponHandheld.Firearm,
+					_ => false,
+				}) {
+					// Override Handheld
+					PoseAnimation.AnimateFromPool(GetPoseHandheldID(EquippingWeaponHeld), this);
+					CalculateBodypartGlobalPosition();
+				} else {
+					// Redirect Handheld
+					if (
+						EquippingWeaponHeld == WeaponHandheld.DoubleHanded ||
+						EquippingWeaponHeld == WeaponHandheld.Bow ||
+						EquippingWeaponHeld == WeaponHandheld.Firearm ||
+						EquippingWeaponHeld == WeaponHandheld.Pole
+					) {
+						EquippingWeaponHeld = WeaponHandheld.SingleHanded;
+					}
 				}
-				CalculateBodypartGlobalPosition();
 			} else {
-				// Redirect Handheld
-				if (
-					EquippingWeaponHeld == WeaponHandHeld.DoubleHanded ||
-					EquippingWeaponHeld == WeaponHandHeld.Bow ||
-					EquippingWeaponHeld == WeaponHandHeld.Firearm ||
-					EquippingWeaponHeld == WeaponHandHeld.Pole
-				) {
-					EquippingWeaponHeld = WeaponHandHeld.SingleHanded;
-				}
+				// Attacking
+				if (MovementLoseRateOnAttack == 0) ResetPoseToDefault(true);
+				HandGrabScaleL = HandGrabScaleR = FacingRight ? 1000 : -1000;
+				HandGrabAttackTwistL = HandGrabAttackTwistR = 1000;
+				PoseAnimation.AnimateFromPool(GetPoseAttackID(EquippingWeaponType), this);
+				CalculateBodypartGlobalPosition();
 			}
 
-		}
-
-
-		private void PerformPoseAnimation_Attack () {
-
-			if (!IsAttacking) return;
-
-			if (MovementLoseRateOnAttack == 0) ResetPoseToDefault(true);
-
-			HandGrabScaleL = HandGrabScaleR = FacingRight ? 1000 : -1000;
-			HandGrabAttackTwistL = HandGrabAttackTwistR = 1000;
-
-			switch (EquippingWeaponType) {
-				default:
-				case WeaponType.Hand:
-					Attack_Hand();
-					break;
-				case WeaponType.Sword:
-				case WeaponType.Axe:
-				case WeaponType.Hammer:
-				case WeaponType.Flail:
-				case WeaponType.Hook:
-				case WeaponType.Throwing:
-					Attack_Wave();
-					break;
-				case WeaponType.Polearm:
-					Attack_Polearm();
-					break;
-				case WeaponType.Claw:
-					Attack_Scratch();
-					break;
-				case WeaponType.Ranged:
-					Attack_Ranged();
-					break;
-				case WeaponType.Magic:
-					Attack_Magic();
-					break;
-			}
-
-			CalculateBodypartGlobalPosition();
 		}
 
 
@@ -803,6 +652,55 @@ namespace AngeliaFramework {
 		}
 
 
+		// Animation ID
+		public int GetPoseAnimationID (CharacterAnimationType type) {
+			int result = 0;
+			for (int i = 0; i < EquipmentTypeCount; i++) {
+				var equip = GetEquippingItem((EquipmentType)i);
+				if (equip == null) continue;
+				result = equip.GetOverrideMovementAnimationID(type, this);
+			}
+			if (result == 0) result = PoseAnimationIDs[(int)type];
+			if (result == 0) result = DEFAULT_POSE_ANIMATION_IDS[(int)type];
+			return result;
+		}
+
+
+		public void SetPoseAnimationID (CharacterAnimationType type, int id) => PoseAnimationIDs[(int)type] = id;
+
+
+		public int GetPoseHandheldID (WeaponHandheld handheld) {
+			int result = 0;
+			for (int i = 0; i < EquipmentTypeCount; i++) {
+				var equip = GetEquippingItem((EquipmentType)i);
+				if (equip == null) continue;
+				result = equip.GetOverrideHandheldAnimationID(handheld, this);
+			}
+			if (result == 0) result = PoseHandheldIDs[(int)handheld];
+			if (result == 0) result = DEFAULT_POSE_HANDHELD_IDS[(int)handheld];
+			return result;
+		}
+
+
+		public void SetPoseHandheldID (WeaponHandheld handheld, int id) => PoseHandheldIDs[(int)handheld] = id;
+
+
+		public int GetPoseAttackID (WeaponType type) {
+			int result = 0;
+			for (int i = 0; i < EquipmentTypeCount; i++) {
+				var equip = GetEquippingItem((EquipmentType)i);
+				if (equip == null) continue;
+				result = equip.GetOverrideAttackAnimationID(type, this);
+			}
+			if (result == 0) result = PoseAttackIDs[(int)type];
+			if (result == 0) result = DEFAULT_POSE_ATTACK_IDS[(int)type];
+			return result;
+		}
+
+
+		public void SetPoseAttackID (WeaponType type, int id) => PoseAttackIDs[(int)type] = id;
+
+
 		#endregion
 
 
@@ -811,187 +709,10 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		public void CalculateBodypartGlobalPosition () {
+		private void CalculateBodypartGlobalPosition () {
 			foreach (var part in BodyParts) {
 				part.GlobalX = X + PoseRootX + part.X;
 				part.GlobalY = Y + PoseRootY + part.Y;
-			}
-		}
-
-
-		// Attack Animations
-		private void Attack_Hand () {
-			AttackStyleLoop = 2;
-			switch (AttackStyleIndex % AttackStyleLoop) {
-				default:
-					AnimationLibrary.Attack_Hand_Punch();
-					break;
-				case 1:
-					AnimationLibrary.Attack_Hand_Smash();
-					break;
-			}
-		}
-
-
-		private void Attack_Wave () {
-			int style;
-			switch (EquippingWeaponHeld) {
-
-				// Single Handed
-				case WeaponHandHeld.SingleHanded:
-					AttackStyleLoop = 4;
-					style =
-						LastAttackCharged ||
-						EquippingWeaponType == WeaponType.Throwing ||
-						EquippingWeaponType == WeaponType.Flail ?
-						0 : AttackStyleIndex % AttackStyleLoop;
-					switch (style) {
-						default:
-							AnimationLibrary.Attack_WaveSingleHanded_SmashDown();
-							break;
-						case 1:
-							AnimationLibrary.Attack_WaveSingleHanded_SmashUp();
-							break;
-						case 2:
-							AnimationLibrary.Attack_WaveSingleHanded_SlashIn();
-							break;
-						case 3:
-							AnimationLibrary.Attack_WaveSingleHanded_SlashOut();
-							break;
-					}
-					break;
-
-				// Double Handed
-				case WeaponHandHeld.DoubleHanded:
-					AttackStyleLoop = 4;
-					style =
-						LastAttackCharged ||
-						EquippingWeaponType == WeaponType.Throwing ||
-						EquippingWeaponType == WeaponType.Flail ?
-						0 : AttackStyleIndex % AttackStyleLoop;
-					switch (style) {
-						default:
-							AnimationLibrary.Attack_WaveDoubleHanded_SmashDown();
-							break;
-						case 1:
-							AnimationLibrary.Attack_WaveDoubleHanded_SmashUp();
-							break;
-						case 2:
-							AnimationLibrary.Attack_WaveDoubleHanded_SlashIn();
-							break;
-						case 3:
-							AnimationLibrary.Attack_WaveDoubleHanded_SlashOut();
-							break;
-					}
-					break;
-
-				// Each Hand
-				case WeaponHandHeld.OneOnEachHand:
-					AttackStyleLoop = 4;
-					style = LastAttackCharged ? 0 : AttackStyleIndex % AttackStyleLoop;
-					switch (style) {
-						default:
-							AnimationLibrary.Attack_WaveEachHand_SmashDown();
-							break;
-						case 1:
-							AnimationLibrary.Attack_WaveEachHand_SmashUp();
-							break;
-						case 2:
-							AnimationLibrary.Attack_WaveEachHand_SlashIn();
-							break;
-						case 3:
-							AnimationLibrary.Attack_WaveEachHand_SlashOut();
-							break;
-					}
-					break;
-
-				// Pole
-				case WeaponHandHeld.Pole:
-					AttackStyleLoop = 4;
-					style = LastAttackCharged || EquippingWeaponType == WeaponType.Flail ? 0 : AttackStyleIndex % AttackStyleLoop;
-					switch (style) {
-						default:
-							AnimationLibrary.Attack_WavePolearm_SmashDown();
-							break;
-						case 1:
-							AnimationLibrary.Attack_WavePolearm_SmashUp();
-							break;
-						case 2:
-							AnimationLibrary.Attack_WavePolearm_SlashIn();
-							break;
-						case 3:
-							AnimationLibrary.Attack_WavePolearm_SlashOut();
-							break;
-					}
-					break;
-			}
-		}
-
-
-		private void Attack_Polearm () {
-			AttackStyleLoop = 8;
-			int style = LastAttackCharged ? 0 : AttackStyleIndex % AttackStyleLoop;
-			if (LastAttackCharged) style = 4;
-			switch (style) {
-				default:
-					AnimationLibrary.Attack_PokePolearm();
-					break;
-				case 4:
-					AnimationLibrary.Attack_WavePolearm_SmashDown();
-					break;
-				case 5:
-					AnimationLibrary.Attack_WavePolearm_SmashUp();
-					break;
-				case 6:
-					AnimationLibrary.Attack_WavePolearm_SlashIn();
-					break;
-				case 7:
-					AnimationLibrary.Attack_WavePolearm_SlashOut();
-					break;
-			}
-		}
-
-
-		private void Attack_Scratch () {
-			AttackStyleLoop = 3;
-			int style = LastAttackCharged ? 2 : AttackStyleIndex % AttackStyleLoop;
-			switch (style) {
-				default:
-					AnimationLibrary.Attack_Scratch_In();
-					break;
-				case 1:
-					AnimationLibrary.Attack_Scratch_Out();
-					break;
-				case 2:
-					AnimationLibrary.Attack_Scratch_Up();
-					break;
-			}
-		}
-
-
-		private void Attack_Ranged () {
-			AttackStyleLoop = 1;
-			if (EquippingWeaponHeld == WeaponHandHeld.Bow) {
-				AnimationLibrary.Attack_Bow();
-			} else {
-				AnimationLibrary.Attack_Firearm();
-			}
-		}
-
-
-		private void Attack_Magic () {
-			AttackStyleLoop = 1;
-			switch (EquippingWeaponHeld) {
-				default:
-				case WeaponHandHeld.Float:
-					AnimationLibrary.Attack_Magic_Float();
-					break;
-				case WeaponHandHeld.SingleHanded:
-					AnimationLibrary.Attack_Magic_SingleHanded();
-					break;
-				case WeaponHandHeld.Pole:
-					AnimationLibrary.Attack_Magic_Pole();
-					break;
 			}
 		}
 

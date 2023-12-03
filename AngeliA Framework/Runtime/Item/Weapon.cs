@@ -9,7 +9,8 @@ namespace AngeliaFramework {
 
 	public enum WeaponType { Hand, Sword, Axe, Hammer, Flail, Ranged, Polearm, Hook, Claw, Magic, Throwing, }
 
-	public enum WeaponHandHeld { SingleHanded, DoubleHanded, OneOnEachHand, Pole, Bow, Firearm, Float, }
+
+	public enum WeaponHandheld { SingleHanded, DoubleHanded, OneOnEachHand, Pole, MagicPole, Bow, Firearm, Float, }
 
 
 	public interface IMeleeWeapon {
@@ -26,7 +27,7 @@ namespace AngeliaFramework {
 		protected int SpriteID { get; init; }
 		public sealed override EquipmentType EquipmentType => EquipmentType.Weapon;
 		public abstract WeaponType WeaponType { get; }
-		public abstract WeaponHandHeld HandHeld { get; }
+		public abstract WeaponHandheld Handheld { get; }
 		public virtual int AttackDuration => 12;
 		public virtual int AttackCooldown => 2;
 		public virtual int BulletID => DefaultBullet.TYPE_ID;
@@ -76,7 +77,7 @@ namespace AngeliaFramework {
 			switch (character.EquippingWeaponHeld) {
 
 				default:
-				case WeaponHandHeld.Float: {
+				case WeaponHandheld.Float: {
 					// Floating
 					const int SHIFT_X = 148;
 					int moveDeltaX = -character.DeltaPositionX * 2;
@@ -102,7 +103,7 @@ namespace AngeliaFramework {
 					break;
 				}
 
-				case WeaponHandHeld.SingleHanded: {
+				case WeaponHandheld.SingleHanded: {
 					// Single 
 					int grabScale = grabScaleR;
 					int grabRotation = character.HandGrabRotationR;
@@ -140,8 +141,8 @@ namespace AngeliaFramework {
 					break;
 				}
 
-				case WeaponHandHeld.DoubleHanded:
-				case WeaponHandHeld.Firearm: {
+				case WeaponHandheld.DoubleHanded:
+				case WeaponHandheld.Firearm: {
 					// Double
 					var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
 					var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
@@ -158,7 +159,7 @@ namespace AngeliaFramework {
 					break;
 				}
 
-				case WeaponHandHeld.OneOnEachHand: {
+				case WeaponHandheld.OneOnEachHand: {
 					// Each Hand
 					var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
 					var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
@@ -183,7 +184,7 @@ namespace AngeliaFramework {
 					break;
 				}
 
-				case WeaponHandHeld.Pole: {
+				case WeaponHandheld.Pole: {
 					// Polearm
 					var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
 					var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
@@ -201,7 +202,7 @@ namespace AngeliaFramework {
 					break;
 				}
 
-				case WeaponHandHeld.Bow: {
+				case WeaponHandheld.Bow: {
 					if (attacking) {
 						// Attacking
 						var center = (character.FacingRight ? character.HandR : character.HandL).GlobalLerp(0.5f, 0.5f);

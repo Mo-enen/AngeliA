@@ -9,7 +9,7 @@ namespace AngeliaFramework {
 
 	public enum FullscreenMode { Window = 0, Fullscreen = 1, FullscreenLow = 2, }
 
-	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitialize : System.Attribute { public int Order; public OnGameInitialize (int order) => Order = order; }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitialize : System.Attribute { public int Order; public OnGameInitialize (int order = 0) => Order = order; }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateLaterAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdatePauselessAttribute : System.Attribute { }
@@ -125,11 +125,23 @@ namespace AngeliaFramework {
 			var skyTop = new Gradient();
 			var skyBottom = new Gradient();
 			skyTop.SetKeys(
-				new GradientColorKey[] { new GradientColorKey(new Color32(20, 21, 31, 255), 0f), new GradientColorKey(new Color32(32, 57, 76, 255), 0.25f), new GradientColorKey(new Color32(71, 170, 219, 255), 0.5f), new GradientColorKey(new Color32(32, 57, 76, 255), 0.75f), new GradientColorKey(new Color32(20, 21, 31, 255), 1f), },
+				new GradientColorKey[] {
+					new GradientColorKey(new Color32(10, 12, 31, 255), 0f),
+					new GradientColorKey(new Color32(13, 49, 76, 255), 0.25f),
+					new GradientColorKey(new Color32(29, 156, 219, 255), 0.5f),
+					new GradientColorKey(new Color32(13, 49, 76, 255), 0.75f),
+					new GradientColorKey(new Color32(10, 12, 31, 255), 1f),
+				},
 				new GradientAlphaKey[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) }
 			);
 			skyBottom.SetKeys(
-				new GradientColorKey[] { new GradientColorKey(new Color32(31, 31, 35, 255), 0f), new GradientColorKey(new Color32(50, 66, 82, 255), 0.25f), new GradientColorKey(new Color32(128, 200, 236, 255), 0.5f), new GradientColorKey(new Color32(50, 66, 82, 255), 0.75f), new GradientColorKey(new Color32(31, 31, 35, 255), 1f), },
+				new GradientColorKey[] {
+					new GradientColorKey(new Color32(10, 12, 31, 255), 0f),
+					new GradientColorKey(new Color32(27, 69, 101, 255), 0.25f),
+					new GradientColorKey(new Color32(52, 171, 230, 255), 0.5f),
+					new GradientColorKey(new Color32(27, 69, 101, 255), 0.75f),
+					new GradientColorKey(new Color32(10, 12, 31, 255), 1f),
+				},
 				new GradientAlphaKey[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) }
 			);
 			m_SkyTintTop = skyTop;

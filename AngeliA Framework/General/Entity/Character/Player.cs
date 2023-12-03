@@ -552,10 +552,10 @@ namespace AngeliaFramework {
 			int equippingID = Inventory.GetEquipment(TypeID, EquipmentType.Weapon);
 			if (equippingID != 0 && ItemSystem.GetItem(equippingID) is Weapon weapon) {
 				EquippingWeaponType = weapon.WeaponType;
-				EquippingWeaponHeld = weapon.HandHeld;
+				EquippingWeaponHeld = weapon.Handheld;
 			} else {
 				EquippingWeaponType = WeaponType.Hand;
-				EquippingWeaponHeld = WeaponHandHeld.Float;
+				EquippingWeaponHeld = WeaponHandheld.Float;
 			}
 
 			base.FrameUpdate();

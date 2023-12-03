@@ -22,11 +22,11 @@ namespace AngeliaFramework {
 	public class iMaceSpiked : Hammer { }
 	[EntityAttribute.ItemCombination(typeof(iIngotIron), typeof(iIngotIron), typeof(iIngotIron), typeof(iBaseballBatWood), 1)]
 	public class iBian : Hammer {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
+		public override WeaponHandheld Handheld => WeaponHandheld.OneOnEachHand;
 	}
 	[EntityAttribute.ItemCombination(typeof(iTreeTrunk), typeof(iTreeTrunk), typeof(iTreeTrunk), typeof(iTreeBranch), 1)]
 	public class iHammerRiceCake : Hammer {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
+		public override WeaponHandheld Handheld => WeaponHandheld.Pole;
 	}
 	[EntityAttribute.ItemCombination(typeof(iHorn), typeof(iTreeBranch), 1)]
 	public class iHammerGoatHorn : Hammer { }
@@ -34,18 +34,18 @@ namespace AngeliaFramework {
 	public class iBaseballBatIron : Hammer { }
 	[EntityAttribute.ItemCombination(typeof(iHammerIron), typeof(iRuneLightning), typeof(iRuneLightning), typeof(iRuneLightning), 1)]
 	public class iHammerThunder : Hammer {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
+		public override WeaponHandheld Handheld => WeaponHandheld.Pole;
 	}
 	[EntityAttribute.ItemCombination(typeof(iStonePolished), typeof(iStonePolished), typeof(iStonePolished), typeof(iHammerWood), 1)]
 	public class iHammerMoai : Hammer {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
+		public override WeaponHandheld Handheld => WeaponHandheld.Pole;
 	}
 	[EntityAttribute.ItemCombination(typeof(iHammerGold), typeof(iIngotGold), 1)]
 	public class iHammerPaladin : Hammer {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
+		public override WeaponHandheld Handheld => WeaponHandheld.Pole;
 	}
 	[EntityAttribute.ItemCombination(typeof(iHammerGold), typeof(iRubyRed), typeof(iRubyRed), typeof(iRubyRed), 1)]
 	public class iHammerRuby : Hammer {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
+		public override WeaponHandheld Handheld => WeaponHandheld.Pole;
 	}
 }

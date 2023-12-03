@@ -20,7 +20,7 @@ namespace AngeliaFramework {
 	// Polearm
 	public abstract class Polearm : Weapon, IMeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Polearm;
-		public sealed override WeaponHandHeld HandHeld => WeaponHandHeld.Pole;
+		public sealed override WeaponHandheld Handheld => WeaponHandheld.Pole;
 		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
 		protected override bool IgnoreGrabTwist => true;
 		public override int AttackDuration => 18;
@@ -35,7 +35,7 @@ namespace AngeliaFramework {
 	// Hammer
 	public abstract class Hammer : Weapon, IMeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Hammer;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
 		protected override bool IgnoreGrabTwist => true;
 		public virtual int RangeXLeft => 275;
@@ -48,7 +48,7 @@ namespace AngeliaFramework {
 	// Claw
 	public abstract class Claw : Weapon, IMeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Claw;
-		public sealed override WeaponHandHeld HandHeld => WeaponHandHeld.OneOnEachHand;
+		public sealed override WeaponHandheld Handheld => WeaponHandheld.OneOnEachHand;
 		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
 		public override int AttackDuration => 10;
 		public override int AttackCooldown => 0;
@@ -62,7 +62,7 @@ namespace AngeliaFramework {
 
 	// Axe
 	public abstract class Axe : Weapon, IMeleeWeapon {
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 		public sealed override WeaponType WeaponType => WeaponType.Axe;
 		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
 		public override int AttackDuration => 12;
@@ -87,7 +87,7 @@ namespace AngeliaFramework {
 	public abstract class Flail : Weapon, IMeleeWeapon {
 
 		public sealed override WeaponType WeaponType => WeaponType.Flail;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
 		private int SpriteIdHead { get; init; }
 		private int SpriteIdChain { get; init; }
@@ -107,7 +107,7 @@ namespace AngeliaFramework {
 
 		protected override Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 			// Fix Grab Rotation
-			if (character.EquippingWeaponHeld != WeaponHandHeld.Pole) {
+			if (character.EquippingWeaponHeld != WeaponHandheld.Pole) {
 				character.HandGrabRotationL += (
 					character.HandGrabRotationL.Sign() * -Mathf.Sin(character.HandGrabRotationL.Abs() * Mathf.Deg2Rad) * 30
 				).RoundToInt();
@@ -212,7 +212,7 @@ namespace AngeliaFramework {
 	public abstract class Firearm : Weapon {
 
 		public sealed override WeaponType WeaponType => WeaponType.Ranged;
-		public sealed override WeaponHandHeld HandHeld => WeaponHandHeld.Firearm;
+		public sealed override WeaponHandheld Handheld => WeaponHandheld.Firearm;
 		private int SpriteIdAttack { get; init; }
 		private int SpriteFrameCount { get; init; }
 
@@ -252,7 +252,7 @@ namespace AngeliaFramework {
 	// Throwing
 	public abstract class ThrowingWeapon : Weapon {
 		public sealed override WeaponType WeaponType => WeaponType.Throwing;
-		public override WeaponHandHeld HandHeld => WeaponHandHeld.SingleHanded;
+		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 	}
 
 
@@ -266,7 +266,7 @@ namespace AngeliaFramework {
 	public abstract class Bow : Weapon {
 
 		public sealed override WeaponType WeaponType => WeaponType.Ranged;
-		public sealed override WeaponHandHeld HandHeld => WeaponHandHeld.Bow;
+		public sealed override WeaponHandheld Handheld => WeaponHandheld.Bow;
 		private int SpriteIdString { get; init; }
 
 		public Bow () {
