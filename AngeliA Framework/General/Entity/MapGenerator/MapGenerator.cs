@@ -15,7 +15,7 @@ namespace AngeliaFramework {
 
 
 
-		
+
 		#region --- SUB ---
 
 
@@ -95,10 +95,21 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public void GenerateAsync () {
-			if (GenerateMapTask != null && !GenerateMapTask.IsCompleted && GenerateMapToken.Token.CanBeCanceled) {
-				GenerateMapToken.Cancel();
+		public static void DeleteAllGeneratedMapFiles () {
+			// Cancel Async
+			foreach (var generator in Stage.ForAllActiveEntities<MapGenerator>()) {
+				generator.CancelAsyncGeneration();
 			}
+			// Delete Files
+			foreach (string path in Util.EnumerateFolders(AngePath.ProcedureMapRoot, true)) {
+				Util.DeleteFolder(path);
+				Util.CreateFolder(path);
+			}
+		}
+
+
+		public void GenerateAsync () {
+			CancelAsyncGeneration();
 			GenerateMapTask = Task.Factory.StartNew(Generate, GenerateMapToken.Token);
 		}
 
@@ -146,6 +157,12 @@ namespace AngeliaFramework {
 
 		#region --- LGC ---
 
+
+		private void CancelAsyncGeneration () {
+			if (GenerateMapTask != null && !GenerateMapTask.IsCompleted && GenerateMapToken.Token.CanBeCanceled) {
+				GenerateMapToken.Cancel();
+			}
+		}
 
 
 		#endregion

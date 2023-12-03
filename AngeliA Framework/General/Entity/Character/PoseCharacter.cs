@@ -27,26 +27,8 @@ namespace AngeliaFramework {
 		// Const
 		private const int CM_PER_PX = 5;
 		protected const int A2G = Const.CEL / Const.ART_CEL;
-		public static readonly int[] DEFAULT_BODY_PART_ID = {
-			"DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(),
-			"DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(),
-			"DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(),
-			"DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(),
-			"DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(),
-			"DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(),
-			"DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(),
-			"DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(),
-		};
-		private static readonly string[] BODY_PART_NAME = {
-			"Head", "Body", "Hip",
-			"Shoulder", "Shoulder",
-			"UpperArm", "UpperArm",
-			"LowerArm", "LowerArm",
-			"Hand", "Hand",
-			"UpperLeg", "UpperLeg",
-			"LowerLeg", "LowerLeg",
-			"Foot", "Foot",
-		};
+		public static readonly int[] DEFAULT_BODY_PART_ID = { "DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(), };
+		private static readonly string[] BODY_PART_NAME = { "Head", "Body", "Hip", "Shoulder", "Shoulder", "UpperArm", "UpperArm", "LowerArm", "LowerArm", "Hand", "Hand", "UpperLeg", "UpperLeg", "LowerLeg", "LowerLeg", "Foot", "Foot", };
 		private const int POSE_Z_HEAD = 10;
 		private const int POSE_Z_BODY = 0;
 		private const int POSE_Z_UPPERARM = 8;
@@ -117,7 +99,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private static readonly Dictionary<int, BodyPartConfig> BodyPartConfigPool = new();
-		private BodyPart[] BodyParts = null;
+		private readonly BodyPart[] BodyParts = null;
 		private int IgnoreTailFrame = -1;
 		private int IgnoreEarFrame = -1;
 		private int IgnoreHairFrame = -1;
@@ -134,8 +116,8 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnGameInitialize(-64)]
-		public static void BeforeGameInitializeLater () {
+		[OnGameInitialize(-65)]
+		public static void OnGameInitialize_Pose () {
 
 			// Config Pool
 			BodyPartConfigPool.Clear();
@@ -188,14 +170,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public override void OnActivated () {
-
-			IgnoreTailFrame = -1;
-			IgnoreEarFrame = -1;
-			IgnoreHairFrame = -1;
-			IgnoreFaceFrame = -1;
-			IgnoreHornFrame = -1;
-			IgnoreWingFrame = -1;
+		public PoseCharacter () {
 
 			int len = DEFAULT_BODY_PART_ID.Length;
 			if (BodyParts == null || BodyParts.Length != len) {
@@ -252,8 +227,6 @@ namespace AngeliaFramework {
 			LowerLegR = BodyParts[14];
 			FootL = BodyParts[15];
 			FootR = BodyParts[16];
-
-			base.OnActivated();
 		}
 
 

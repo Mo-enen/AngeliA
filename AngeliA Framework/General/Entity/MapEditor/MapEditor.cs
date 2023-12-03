@@ -1070,6 +1070,7 @@ namespace AngeliaFramework {
 			DroppingPlayer = false;
 			SelectionUnitRect = null;
 			DraggingUnitRect = null;
+			MapGenerator.DeleteAllGeneratedMapFiles();
 			MapChest.ClearOpenedMarks();
 			Stage.ClearGlobalAntiSpawn();
 			Player.RespawnCpUnitPosition = null;
@@ -1078,9 +1079,11 @@ namespace AngeliaFramework {
 			}
 			if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 
-			// Squad Spawn Entity
+			// Squad  
 			WorldSquad.SpawnEntity = newPlayingGame;
 			WorldSquad.SaveBeforeReload = !newPlayingGame;
+			WorldSquad.Front.ForceReloadDelay();
+			WorldSquad.Behind.ForceReloadDelay();
 
 			// Respawn Entities
 			Stage.SetViewZ(Stage.ViewZ);

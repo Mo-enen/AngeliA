@@ -143,7 +143,7 @@ namespace AngeliaFramework {
 
 
 		[OnGameInitialize(-64)]
-		public static void BeforeGameInitializeLater () {
+		public static void OnGameInitialize () {
 			ViewRect = new(
 				0, 0,
 				Const.VIEW_RATIO * Mathf.Clamp(Const.DEFAULT_HEIGHT, Const.MIN_HEIGHT, Const.MAX_HEIGHT) / 1000,
@@ -522,6 +522,20 @@ namespace AngeliaFramework {
 				count = 0;
 				entities = null;
 				return false;
+			}
+		}
+
+
+		public static IEnumerable<E> ForAllActiveEntities<E> (int entityLayer = -1) where E : Entity {
+			int startLayer = entityLayer < 0 ? 0 : entityLayer;
+			int endLayer = entityLayer < 0 ? EntityLayer.COUNT - 1 : entityLayer;
+			for (int layer = startLayer; layer <= endLayer; layer++) {
+				var entities = Entities[layer];
+				int count = EntityCounts[layer]; ;
+				for (int i = 0; i < count; i++) {
+					var e = entities[i];
+					if (e is E ee && e.Active) yield return ee;
+				}
 			}
 		}
 

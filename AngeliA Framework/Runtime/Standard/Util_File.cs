@@ -136,7 +136,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static IEnumerable<string> EnumerateFolders (string path, bool topOnly, string searchPattern) {
+		public static IEnumerable<string> EnumerateFolders (string path, bool topOnly, string searchPattern = "*") {
 			if (!FolderExists(path)) yield break;
 			var option = topOnly ? SearchOption.TopDirectoryOnly : SearchOption.AllDirectories;
 			foreach (string str in Directory.EnumerateDirectories(path, searchPattern, option)) {
