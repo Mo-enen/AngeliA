@@ -8,7 +8,7 @@ namespace AngeliaFramework {
 
 	// General
 	public class PoseAnimation_Animation_TakingDamage : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			bool alt = CurrentAnimationFrame.UMod(8) >= 4;
@@ -60,7 +60,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAnimation_Sleep : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			bool alt = CurrentAnimationFrame.UMod(120) >= 60;
 
@@ -121,7 +121,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAnimation_PassOut : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			Target.PoseRootY = 0;
@@ -177,7 +177,7 @@ namespace AngeliaFramework {
 
 	// Motion
 	public class PoseAnimation_Idle : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			const int LOOP = 128;
@@ -238,7 +238,7 @@ namespace AngeliaFramework {
 	public class PoseAnimation_Walk : PoseAnimation {
 		private static readonly float[] EASE = { 0f, 0.03125f, 0.125f, 0.28125f, 0.5f, 0.71875f, 0.875f, 0.96875f, 1f, 0.96875f, 0.875f, 0.71875f, 0.5f, 0.28125f, 0.125f, 0.03125f, 0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f, 0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f, };
 		private static readonly int[,] ROTS = { { -20, 20, 25, -25, 0, 0, }, { -17, 17, 21, -25, 0, 0, }, { -15, 15, 17, -27, 30, 20, }, { -7, 7, 17, -15, 45, 10, }, { 0, 0, -5, -5, 60, 0, }, { 7, -7, -5, 7, 75, 0, }, { 15, -15, -27, 17, 90, 0, }, { 17, -17, -26, 21, 45, 0, }, { 20, -20, -25, 25, 0, 0, }, { 17, -17, -26, 21, 10, 15, }, { 15, -15, -27, 17, 20, 30, }, { 7, -7, -15, 7, 10, 45, }, { 0, 0, -5, -5, 0, 60, }, { -7, 7, 5, -10, 0, 75, }, { -15, 15, 17, -27, 0, 90, }, { -17, 17, 21, -26, 0, 45, }, };
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			const int FRAME_LENGTH = 16;
@@ -292,7 +292,7 @@ namespace AngeliaFramework {
 	public class PoseAnimation_Run : PoseAnimation {
 		private static readonly float[] EASE = { 0f, 0.03125f, 0.125f, 0.28125f, 0.5f, 0.71875f, 0.875f, 0.96875f, 1f, 0.96875f, 0.875f, 0.71875f, 0.5f, 0.28125f, 0.125f, 0.03125f, 0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f, 0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f, };
 		private static readonly int[,] ROTS = { { -10, 80, -65, -90, 45, -55, 80, 60, }, { -10, 80, -65, -90, 45, -55, 80, 60, }, { 1, 68, -68, -86, 32, -42, 90, 29, }, { 1, 68, -68, -86, 32, -42, 90, 29, }, { 35, 35, -77, -77, -5, -5, 90, 0, }, { 35, 35, -77, -77, -5, -5, 90, 0, }, { 68, 1, -86, -68, -42, 32, 90, 0, }, { 68, 1, -86, -68, -42, 32, 90, 0, }, { 80, -10, -90, -65, -55, 45, 60, 80, }, { 80, -10, -90, -65, -55, 45, 60, 80, }, { 68, 1, -86, -68, -42, 32, 29, 90, }, { 68, 1, -86, -68, -42, 32, 29, 90, }, { 35, 35, -77, -77, -5, -5, 0, 90, }, { 35, 35, -77, -77, -5, -5, 0, 90, }, { 1, 68, -68, -86, 32, -42, 0, 90, }, { 1, 68, -68, -86, 32, -42, 0, 90, }, };
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			const int FRAME_LENGTH = 16;
@@ -314,7 +314,7 @@ namespace AngeliaFramework {
 			float frame01 = (float)arrFrame / FRAME_LENGTH;
 
 			Target.PoseRootY += (int)((1f - easeDouble) * A2G * 2);
-			Target.PoseTwist = (int)Mathf.LerpUnclamped(1000f, -1000f, frame01 < 0.5f ? frame01 * 2f : 2f - 2f * frame01);
+			Target.BodyTwist = (int)Mathf.LerpUnclamped(1000f, -1000f, frame01 < 0.5f ? frame01 * 2f : 2f - 2f * frame01);
 
 			// Arm
 			UpperArmL.LimbRotate(ROTS[arrFrame, 0] * FacingSign);
@@ -357,13 +357,13 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAnimation_JumpUp : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			bool alt = CurrentAnimationFrame.UMod(8) >= 4;
 
 			Target.PoseRootY += A2G;
-			Target.PoseTwist = FacingRight ? -400 : 400;
+			Target.BodyTwist = FacingRight ? -400 : 400;
 
 			if (alt) {
 				Body.Height += A2G / 4;
@@ -418,13 +418,13 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAnimation_JumpDown : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			bool alt = CurrentAnimationFrame.UMod(8) >= 4;
 
 			Target.PoseRootY -= A2G;
-			Target.PoseTwist = FacingRight ? -400 : 400;
+			Target.BodyTwist = FacingRight ? -400 : 400;
 
 			if (alt) {
 				Body.Height += A2G / 4;
@@ -479,7 +479,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAnimation_SwimIdle : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			int frame0121 = CurrentAnimationFrame.UMod(64) / 16;
@@ -525,7 +525,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAnimation_SwimMove : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			int loop = Mathf.Max((1200 / Target.SwimSpeed.FinalValue).Clamp(1, 128) / 4 * 4, 1);
@@ -534,7 +534,7 @@ namespace AngeliaFramework {
 			int frame0121 = frame == 3 ? 1 : frame;
 			int easeArm = frame * A2G;
 
-			Target.PoseTwist = FacingRight ? 0 : 1000;
+			Target.BodyTwist = FacingRight ? 0 : 1000;
 
 			Head.X = FacingSign * A2G;
 
@@ -603,7 +603,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAnimation_SquatIdle : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			int arrFrame = CurrentAnimationFrame.UMod(64) / 16;
@@ -697,7 +697,7 @@ namespace AngeliaFramework {
 
 	public class PoseAnimation_SquatMove : PoseAnimation {
 		private static readonly float[] EASE = { 0f, 0.03125f, 0.125f, 0.28125f, 0.5f, 0.71875f, 0.875f, 0.96875f, 1f, 0.96875f, 0.875f, 0.71875f, 0.5f, 0.28125f, 0.125f, 0.03125f, 0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f, 0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f, };
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			const int FRAME_LENGTH = 16;
@@ -774,7 +774,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAnimation_Dash : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			int aFrame = CurrentAnimationFrame.UMod(8) / 4;
@@ -783,7 +783,7 @@ namespace AngeliaFramework {
 			HandL.Z = HandR.Z = POSE_Z_HAND;
 
 			Target.PoseRootY = 0;
-			Target.PoseTwist = -1000;
+			Target.BodyTwist = -1000;
 
 			Head.X += FacingSign * A2G;
 			Body.X += FacingSign * 2 * A2G;
@@ -867,7 +867,7 @@ namespace AngeliaFramework {
 
 	public class PoseAnimation_Rolling : PoseAnimation {
 		private static readonly int[,] ROLLING = { { 1450, +100, -000, 0900, 0500, -020, -025, -015, -040, 70, 80, }, { 1200, +450, -000, 0800, 0250, +025, +030, -025, -030, 75, 85, }, { 0850, +800, -000, -800, -100, -160, -150, -145, -125, 80, 90, }, { 0300, +450, -000, -750, -200, -170, -160, -155, -115, 80, 90, }, { 0650, -100, +000, -750, -200, -170, -160, -155, -115, 80, 90, }, { 0850, -450, +000, -800, -100, -160, -150, -145, -125, 80, 90, }, { 0950, -800, +000, 0800, 0250, -065, -065, -025, -030, 75, 85, }, { 1200, -450, +000, 0900, 0750, -040, -045, -015, -040, 70, 80, }, };
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			int arrFrame = CurrentAnimationFrame.UMod(24) / 3;
@@ -949,14 +949,14 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAnimation_Rush : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			int aFrame = CurrentAnimationFrame.Abs() / 3;
 			bool alt = aFrame % 2 == 0;
 
 			Target.PoseRootY -= aFrame.Clamp(0, 2) * A2G - A2G * 2;
-			Target.PoseTwist = -FacingSign * 1000;
+			Target.BodyTwist = -FacingSign * 1000;
 			Head.Height -= A2G;
 			Body.X -= FacingSign * A2G / 2;
 
@@ -1030,7 +1030,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAnimation_Pound : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			bool alt = CurrentAnimationFrame % 8 < 4;
@@ -1076,7 +1076,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAnimation_Climb : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			int frameRate = Mathf.Max(560 / Target.ClimbSpeedY.FinalValue.Clamp(1, 1024) / 8, 1);
@@ -1119,7 +1119,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAnimation_Fly : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			int frame = CurrentAnimationFrame.UMod(16) / 2;
@@ -1181,7 +1181,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAnimation_Slide : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			bool alt = (CurrentAnimationFrame / 4) % 2 == 0;
@@ -1243,7 +1243,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAnimation_GrabTop : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			int loop = Mathf.Max((700 / Target.GrabMoveSpeedX.FinalValue.Clamp(1, 1024)) / 4 * 4, 1);
 			int arrFrame = (CurrentAnimationFrame.UMod(loop) / (loop / 4)) % 4;// 0123
@@ -1289,7 +1289,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAnimation_GrabSide : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			int loop = Mathf.Max((700 / Target.GrabMoveSpeedY.FinalValue.Clamp(1, 1024)) / 4 * 4, 1);
@@ -1343,7 +1343,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAnimation_Spin : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			int aFrame = CurrentAnimationFrame.UMod(8);
@@ -1356,7 +1356,7 @@ namespace AngeliaFramework {
 				FootR.Z -= 2;
 			}
 
-			Target.PoseTwist = (pingpong - 2) * 1000;
+			Target.BodyTwist = (pingpong - 2) * 1000;
 			Target.HeadTwist = (pingpong - 2) * -300;
 
 			Head.FrontSide = facingFront;

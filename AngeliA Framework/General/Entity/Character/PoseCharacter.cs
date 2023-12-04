@@ -26,8 +26,8 @@ namespace AngeliaFramework {
 
 		// Const
 		private const int CM_PER_PX = 5;
-		protected const int A2G = Const.CEL / Const.ART_CEL;
-		public static readonly int[] DEFAULT_BODY_PART_ID = { "DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(), };
+		private const int A2G = Const.CEL / Const.ART_CEL;
+		private static readonly int[] DEFAULT_BODY_PART_ID = { "DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(), };
 		private static readonly string[] BODY_PART_NAME = { "Head", "Body", "Hip", "Shoulder", "Shoulder", "UpperArm", "UpperArm", "LowerArm", "LowerArm", "Hand", "Hand", "UpperLeg", "UpperLeg", "LowerLeg", "LowerLeg", "Foot", "Foot", };
 		private static readonly int[] DEFAULT_POSE_ANIMATION_IDS = { typeof(PoseAnimation_Idle).AngeHash(), typeof(PoseAnimation_Walk).AngeHash(), typeof(PoseAnimation_Run).AngeHash(), typeof(PoseAnimation_JumpUp).AngeHash(), typeof(PoseAnimation_JumpDown).AngeHash(), typeof(PoseAnimation_SwimIdle).AngeHash(), typeof(PoseAnimation_SwimMove).AngeHash(), typeof(PoseAnimation_SquatIdle).AngeHash(), typeof(PoseAnimation_SquatMove).AngeHash(), typeof(PoseAnimation_Dash).AngeHash(), typeof(PoseAnimation_Rush).AngeHash(), typeof(PoseAnimation_Pound).AngeHash(), typeof(PoseAnimation_Climb).AngeHash(), typeof(PoseAnimation_Fly).AngeHash(), typeof(PoseAnimation_Slide).AngeHash(), typeof(PoseAnimation_GrabTop).AngeHash(), typeof(PoseAnimation_GrabSide).AngeHash(), typeof(PoseAnimation_Spin).AngeHash(), typeof(PoseAnimation_Animation_TakingDamage).AngeHash(), typeof(PoseAnimation_Sleep).AngeHash(), typeof(PoseAnimation_PassOut).AngeHash(), typeof(PoseAnimation_Rolling).AngeHash(), };
 		private static readonly int[] DEFAULT_POSE_HANDHELD_IDS = { typeof(PoseHandheld_Single).AngeHash(), typeof(PoseHandheld_Double).AngeHash(), typeof(PoseHandheld_EachHand).AngeHash(), typeof(PoseHandheld_Pole).AngeHash(), typeof(PoseHandheld_MagicPole).AngeHash(), typeof(PoseHandheld_Bow).AngeHash(), typeof(PoseHandheld_Firearm).AngeHash(), typeof(PoseHandheld_Float).AngeHash(), };
@@ -43,23 +43,22 @@ namespace AngeliaFramework {
 		private const int POSE_Z_FOOT = 2;
 
 		// Api
-		protected static int PoseZOffset { get; set; } = 0;
-		public int PoseTwist { get; set; } = 0;
+		protected static int PoseRenderingZOffset { get; set; } = 0;
+		public int BasicRootY { get; private set; } = 0;
 		public int PoseRootX { get; set; } = 0;
 		public int PoseRootY { get; set; } = 0;
 		public int HeadTwist { get; set; } = 0;
-		public int HeadRotation { get; set; } = 0;
-		public int BasicRootY { get; private set; } = 0;
-		public int HideBraidFrame { get; set; } = -1;
-		public Color32 SkinColor { get; set; } = new(239, 194, 160, 255);
-		public Color32 HairColor { get; set; } = new(51, 51, 51, 255);
-		public int CharacterHeight { get; set; } = 160; // in CM
+		public int BodyTwist { get; set; } = 0;
 		public int HandGrabRotationL { get; set; } = 0;
 		public int HandGrabRotationR { get; set; } = 0;
 		public int HandGrabScaleL { get; set; } = 1000;
 		public int HandGrabScaleR { get; set; } = 1000;
 		public int HandGrabAttackTwistL { get; set; } = 1000;
 		public int HandGrabAttackTwistR { get; set; } = 1000;
+		public int HideBraidFrame { get; set; } = -1;
+		public Color32 SkinColor { get; set; } = new(239, 194, 160, 255);
+		public Color32 HairColor { get; set; } = new(51, 51, 51, 255);
+		public int CharacterHeight { get; set; } = 160; // in CM
 		public bool BodyPartsReady => BodyParts != null;
 		public override bool SpinOnGroundPound => Wing.IsPropellerWing(WingID);
 		public override bool FlyGlideAvailable => WingID != 0 && !Wing.IsPropellerWing(WingID);
@@ -238,7 +237,7 @@ namespace AngeliaFramework {
 
 
 		public override void BeforePhysicsUpdate () {
-			PoseZOffset = 0;
+			PoseRenderingZOffset = 0;
 			base.BeforePhysicsUpdate();
 		}
 
@@ -278,9 +277,8 @@ namespace AngeliaFramework {
 			int facingSign = FacingRight ? 1 : -1;
 
 			PoseRootX = 0;
-			PoseTwist = 0;
+			BodyTwist = 0;
 			HeadTwist = 0;
-			HeadRotation = 0;
 
 			foreach (var bodypart in BodyParts) {
 				bodypart.Rotation = 0;
@@ -545,10 +543,6 @@ namespace AngeliaFramework {
 
 
 		private void PoseUpdate_HeadTwist () {
-
-			//HeadTwist = QTest.Int["t", 0, -1000, 1000];
-			//HeadRotation = QTest.Int["r", 0, -90, 90];
-
 			if (HeadTwist == 0) return;
 			if (!Head.FrontSide) {
 				HeadTwist = 0;
@@ -562,10 +556,9 @@ namespace AngeliaFramework {
 
 
 		private void PoseUpdate_HeadRotate () {
-			if (HeadRotation == 0) return;
-			HeadRotation = HeadRotation.Clamp(-90, 90);
-			int offsetY = Head.Height.Abs() * HeadRotation.Abs() / 360;
-			Head.Rotation += HeadRotation;
+			if (Head.Rotation == 0) return;
+			Head.Rotation = Head.Rotation.Clamp(-90, 90);
+			int offsetY = Head.Height.Abs() * Head.Rotation.Abs() / 360;
 			Head.Y -= offsetY;
 			Head.GlobalY -= offsetY;
 		}
@@ -610,10 +603,10 @@ namespace AngeliaFramework {
 			}
 
 			// Z Offset
-			PoseZOffset -= 40;
+			PoseRenderingZOffset -= 40;
 			if (CellRenderer.GetCells(out var cells, out int count)) {
 				for (int i = cellIndexStart; i < count; i++) {
-					cells[i].Z += PoseZOffset;
+					cells[i].Z += PoseRenderingZOffset;
 				}
 			}
 

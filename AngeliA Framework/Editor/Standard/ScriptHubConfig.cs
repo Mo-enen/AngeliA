@@ -25,7 +25,7 @@ namespace AngeliaFramework.Editor {
 		public string[] Paths => new string[] { "Assets", };
 		public string Title => "Conversation";
 		public IScriptHubConfig.SearchPattern[] SearchPatterns => new IScriptHubConfig.SearchPattern[]{
-			new ($"*.{Const.EDITABLE_CONVERSATION_FILE_EXT}", "Conversation", true),
+			new ($"*.{AngePath.EDITABLE_CONVERSATION_FILE_EXT}", "Conversation", true),
 		};
 		public int Order => 1024;
 	}

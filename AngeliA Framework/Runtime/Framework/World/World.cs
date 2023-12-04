@@ -185,7 +185,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static string GetWorldNameFromPosition (int x, int y, int z) => $"{x}_{y}_{z}.{Const.MAP_FILE_EXT}";
+		public static string GetWorldNameFromPosition (int x, int y, int z) => $"{x}_{y}_{z}.{AngePath.MAP_FILE_EXT}";
 
 
 		public void FillIntoTexture (Texture2D texture, bool ignoreItem = true) {

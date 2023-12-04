@@ -82,7 +82,7 @@ namespace AngeliaFramework {
 			string rootPath = Util.CombinePaths(languageRoot, language.ToString());
 			Map.Clear();
 			string key, value;
-			foreach (var path in Util.EnumerateFiles(rootPath, true, $"*.{Const.LANGUAGE_FILE_EXT}")) {
+			foreach (var path in Util.EnumerateFiles(rootPath, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
 				foreach (var line in Util.ForAllLines(path, Encoding.UTF8)) {
 					if (string.IsNullOrWhiteSpace(line)) continue;
 					int colon = line.IndexOf(':');

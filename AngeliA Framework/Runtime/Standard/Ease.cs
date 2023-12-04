@@ -5,6 +5,46 @@ namespace AngeliaFramework {
 	public static class Ease {
 
 
+		public enum EaseType : byte { InLiner, OutLiner, InOutLiner, InQuad, OutQuad, InOutQuad, InCubic, OutCubic, InOutCubic, InQuart, OutQuart, InOutQuart, InQuint, OutQuint, InOutQuint, InSine, OutSine, InOutSine, InCirc, OutCirc, InOutCirc, InElastic, OutElastic, InOutElastic, InExpo, OutExpo, InOutExpo, InBack, OutBack, InOutBack, InBounce, OutBounce, InOutBounce, }
+
+
+		public static float Invoke (EaseType type, float ease) => type switch {
+			EaseType.InLiner => InLiner(ease),
+			EaseType.OutLiner => OutLiner(ease),
+			EaseType.InOutLiner => InOutLiner(ease),
+			EaseType.InQuad => InQuad(ease),
+			EaseType.OutQuad => OutQuad(ease),
+			EaseType.InOutQuad => InOutQuad(ease),
+			EaseType.InCubic => InCubic(ease),
+			EaseType.OutCubic => OutCubic(ease),
+			EaseType.InOutCubic => InOutCubic(ease),
+			EaseType.InQuart => InQuart(ease),
+			EaseType.OutQuart => OutQuart(ease),
+			EaseType.InOutQuart => InOutQuart(ease),
+			EaseType.InQuint => InQuint(ease),
+			EaseType.OutQuint => OutQuint(ease),
+			EaseType.InOutQuint => InOutQuint(ease),
+			EaseType.InSine => InSine(ease),
+			EaseType.OutSine => OutSine(ease),
+			EaseType.InOutSine => InOutSine(ease),
+			EaseType.InCirc => InCirc(ease),
+			EaseType.OutCirc => OutCirc(ease),
+			EaseType.InOutCirc => InOutCirc(ease),
+			EaseType.InElastic => InElastic(ease),
+			EaseType.OutElastic => OutElastic(ease),
+			EaseType.InOutElastic => InOutElastic(ease),
+			EaseType.InExpo => InExpo(ease),
+			EaseType.OutExpo => OutExpo(ease),
+			EaseType.InOutExpo => InOutExpo(ease),
+			EaseType.InBack => InBack(ease),
+			EaseType.OutBack => OutBack(ease),
+			EaseType.InOutBack => InOutBack(ease),
+			EaseType.InBounce => InBounce(ease),
+			EaseType.OutBounce => OutBounce(ease),
+			EaseType.InOutBounce => InOutBounce(ease),
+			_ => 0f,
+		};
+
 
 		public static float InLiner (float x) => x;
 		public static float OutLiner (float x) => 1f - x;

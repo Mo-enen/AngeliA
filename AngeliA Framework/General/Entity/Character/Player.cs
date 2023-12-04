@@ -545,8 +545,8 @@ namespace AngeliaFramework {
 		// Frame Update
 		public override void FrameUpdate () {
 
-			int oldZ = PoseZOffset;
-			if (Selecting == this) PoseZOffset = 40;
+			int oldZ = PoseRenderingZOffset;
+			if (Selecting == this) PoseRenderingZOffset = 40;
 
 			// Equipping
 			int equippingID = Inventory.GetEquipment(TypeID, EquipmentType.Weapon);
@@ -559,7 +559,7 @@ namespace AngeliaFramework {
 			}
 
 			base.FrameUpdate();
-			PoseZOffset = oldZ;
+			PoseRenderingZOffset = oldZ;
 
 			// Auto Pick Item
 			if (!FrameTask.HasTask() && !PlayerMenuUI.ShowingUI) {

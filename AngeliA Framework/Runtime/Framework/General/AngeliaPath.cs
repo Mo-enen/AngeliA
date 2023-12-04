@@ -10,6 +10,13 @@ namespace AngeliaFramework {
 		public const string MANIFEST_NAME = "MANIFEST";
 		public const int SAVE_SLOT_COUNT = 4;
 
+		// Ext
+		public const string MAP_FILE_EXT = "ibb";
+		public const string CONVERSATION_FILE_EXT = "txt";
+		public const string EDITABLE_CONVERSATION_FILE_EXT = "conversation";
+		public const string LANGUAGE_FILE_EXT = "txt";
+		public const string ANIMATION_FILE_EXT = "json";
+
 		// Universe
 		public static string UniverseRoot => _UniverseRoot ??= Util.CombinePaths(Application.streamingAssetsPath, UNIVERSE_NAME);
 		private static string _UniverseRoot = null;
@@ -31,6 +38,9 @@ namespace AngeliaFramework {
 
 		public static string LanguageRoot => _LanguageRoot ??= Util.CombinePaths(UniverseRoot, "Language");
 		private static string _LanguageRoot = null;
+
+		public static string AnimationRoot => _AnimationRoot ??= Util.CombinePaths(UniverseRoot, "Animation");
+		private static string _AnimationRoot = null;
 
 		// Persistent
 		public static int CurrentSaveSlot {

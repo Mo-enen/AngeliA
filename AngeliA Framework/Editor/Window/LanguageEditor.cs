@@ -234,7 +234,7 @@ namespace AngeliaFramework.Editor {
 				if (!System.Enum.TryParse<SystemLanguage>(languageName, false, out var language)) continue;
 				Languages.Add(language);
 				// Add Keys
-				string filePath = Util.CombinePaths(folderPath, $"{CurrentTag}.{Const.LANGUAGE_FILE_EXT}");
+				string filePath = Util.CombinePaths(folderPath, $"{CurrentTag}.{AngePath.LANGUAGE_FILE_EXT}");
 				if (!Util.FileExists(filePath)) continue;
 				string key;
 				foreach (var line in Util.ForAllLines(filePath)) {
@@ -253,7 +253,7 @@ namespace AngeliaFramework.Editor {
 			// Get Contents
 			Contents = new string[Languages.Count, Keys.Count];
 			foreach (var folderPath in Util.EnumerateFolders(AngePath.LanguageRoot, true, "*")) {
-				string filePath = Util.CombinePaths(folderPath, $"{CurrentTag}.{Const.LANGUAGE_FILE_EXT}");
+				string filePath = Util.CombinePaths(folderPath, $"{CurrentTag}.{AngePath.LANGUAGE_FILE_EXT}");
 				if (!Util.FileExists(filePath)) continue;
 				string languageName = Util.GetNameWithoutExtension(folderPath);
 				string key, value;
@@ -283,7 +283,7 @@ namespace AngeliaFramework.Editor {
 
 			for (int lanIndex = 0; lanIndex < Languages.Count; lanIndex++) {
 				var language = Languages[lanIndex];
-				string path = Util.CombinePaths(AngePath.LanguageRoot, language.ToString(), $"{CurrentTag}.{Const.LANGUAGE_FILE_EXT}");
+				string path = Util.CombinePaths(AngePath.LanguageRoot, language.ToString(), $"{CurrentTag}.{AngePath.LANGUAGE_FILE_EXT}");
 				var builder = new StringBuilder();
 				for (int keyIndex = 0; keyIndex < Keys.Count; keyIndex++) {
 					string key = Keys[keyIndex];
@@ -327,7 +327,7 @@ namespace AngeliaFramework.Editor {
 						}
 						Util.TextToFile(
 							builder.ToString(),
-							Util.CombinePaths(AngePath.LanguageRoot, language.ToString(), $"{CurrentTag}.{Const.LANGUAGE_FILE_EXT}")
+							Util.CombinePaths(AngePath.LanguageRoot, language.ToString(), $"{CurrentTag}.{AngePath.LANGUAGE_FILE_EXT}")
 						);
 					}
 					EditorApplication.delayCall += () => Load();
@@ -342,7 +342,7 @@ namespace AngeliaFramework.Editor {
 			var menu = new GenericMenu();
 			AddTagItem("Main");
 			string folderPath = Util.CombinePaths(AngePath.LanguageRoot, Languages[0].ToString());
-			foreach (string tagFilePath in Util.EnumerateFiles(folderPath, true, $"*.{Const.LANGUAGE_FILE_EXT}")) {
+			foreach (string tagFilePath in Util.EnumerateFiles(folderPath, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
 				string tag = Util.GetNameWithoutExtension(tagFilePath);
 				if (tag != "Main") AddTagItem(tag);
 			}
@@ -360,7 +360,7 @@ namespace AngeliaFramework.Editor {
 					if (string.IsNullOrEmpty(newName)) return;
 					if (IsDirty) Save();
 					foreach (var language in Languages) {
-						string filePath = Util.CombinePaths(AngePath.LanguageRoot, language.ToString(), $"{newName}.{Const.LANGUAGE_FILE_EXT}");
+						string filePath = Util.CombinePaths(AngePath.LanguageRoot, language.ToString(), $"{newName}.{AngePath.LANGUAGE_FILE_EXT}");
 						if (!Util.FileExists(filePath)) Util.TextToFile("", filePath);
 					}
 					CurrentTag = newName;
@@ -372,8 +372,8 @@ namespace AngeliaFramework.Editor {
 					string oldTag = CurrentTag;
 					StringWindow.OpenWindow((newName) => {
 						if (oldTag == newName || string.IsNullOrEmpty(newName)) return;
-						string oldFileName = $"{oldTag}.{Const.LANGUAGE_FILE_EXT}";
-						string newFileName = $"{newName}.{Const.LANGUAGE_FILE_EXT}";
+						string oldFileName = $"{oldTag}.{AngePath.LANGUAGE_FILE_EXT}";
+						string newFileName = $"{newName}.{AngePath.LANGUAGE_FILE_EXT}";
 						foreach (var language in Languages) {
 							string folderPath = Util.CombinePaths(AngePath.LanguageRoot, language.ToString());
 							string oldPath = Util.CombinePaths(folderPath, oldFileName);
@@ -391,7 +391,7 @@ namespace AngeliaFramework.Editor {
 						if (targetTag == "Main") return;
 						foreach (var language in Languages) {
 							string folderPath = Util.CombinePaths(AngePath.LanguageRoot, language.ToString());
-							Util.DeleteFile(Util.CombinePaths(folderPath, $"{targetTag}.{Const.LANGUAGE_FILE_EXT}"));
+							Util.DeleteFile(Util.CombinePaths(folderPath, $"{targetTag}.{AngePath.LANGUAGE_FILE_EXT}"));
 						}
 						CurrentTag = "Main";
 						Load();
@@ -428,7 +428,7 @@ namespace AngeliaFramework.Editor {
 
 		private void InitMainTag () {
 			foreach (var folderPath in Util.EnumerateFolders(AngePath.LanguageRoot, true, "*")) {
-				string filePath = Util.CombinePaths(folderPath, $"Main.{Const.LANGUAGE_FILE_EXT}");
+				string filePath = Util.CombinePaths(folderPath, $"Main.{AngePath.LANGUAGE_FILE_EXT}");
 				if (Util.FileExists(filePath)) continue;
 				Util.TextToFile("", filePath);
 			}

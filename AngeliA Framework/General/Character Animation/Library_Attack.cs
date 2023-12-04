@@ -6,7 +6,7 @@ using UnityEngine;
 namespace AngeliaFramework {
 
 	public class PoseAttack_Hand : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			character.AttackStyleLoop = 2;
 			switch (character.AttackStyleIndex % character.AttackStyleLoop) {
@@ -209,7 +209,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAttack_Wave : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			int style;
 			var handheld = character.EquippingWeaponHeld;
@@ -413,7 +413,7 @@ namespace AngeliaFramework {
 			AttackHeadDown(ease01, 1400, 500, 500);
 			ResetShoulderAndUpperArm();
 
-			Target.PoseTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
+			Target.BodyTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
 			Target.HeadTwist = -FacingSign * (int)(frame01 * 500 - 250);
 
 			// Left Side
@@ -464,7 +464,7 @@ namespace AngeliaFramework {
 			AttackHeadDown(ease01, -500, 500, 500, -1000);
 			ResetShoulderAndUpperArm();
 
-			Target.PoseTwist = FacingSign * (int)(frame01 * 2000 - 1000);
+			Target.BodyTwist = FacingSign * (int)(frame01 * 2000 - 1000);
 			Target.HeadTwist = FacingSign * (int)(frame01 * 500 - 250);
 
 			// Left Side
@@ -628,7 +628,7 @@ namespace AngeliaFramework {
 			AttackHeadDown(ease01, 1400, 500, 500);
 			ResetShoulderAndUpperArm();
 
-			Target.PoseTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
+			Target.BodyTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
 			Target.HeadTwist = -FacingSign * (int)(frame01 * 500 - 250);
 
 			// Upper Arm
@@ -681,7 +681,7 @@ namespace AngeliaFramework {
 			AttackHeadDown(ease01, -500, 500, 500);
 			ResetShoulderAndUpperArm();
 
-			Target.PoseTwist = FacingSign * (int)(frame01 * 2000 - 1000);
+			Target.BodyTwist = FacingSign * (int)(frame01 * 2000 - 1000);
 			Target.HeadTwist = FacingSign * (int)(frame01 * 500 - 250);
 
 			int upperRotA = (int)Mathf.LerpUnclamped(-171, 49, ease01);
@@ -832,7 +832,7 @@ namespace AngeliaFramework {
 			AttackHeadDown(ease01, 1400, 500, 500);
 			ResetShoulderAndUpperArm();
 
-			Target.PoseTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
+			Target.BodyTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
 			Target.HeadTwist = -FacingSign * (int)(frame01 * 500 - 250);
 
 			// Upper Arm
@@ -881,7 +881,7 @@ namespace AngeliaFramework {
 			AttackHeadDown(ease01, -500, 500, 500);
 			ResetShoulderAndUpperArm();
 
-			Target.PoseTwist = FacingSign * (int)(frame01 * 2000 - 1000);
+			Target.BodyTwist = FacingSign * (int)(frame01 * 2000 - 1000);
 			Target.HeadTwist = FacingSign * (int)(frame01 * 500 - 250);
 
 			// Upper Arm
@@ -1015,7 +1015,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAttack_Polearm : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			character.AttackStyleLoop = 8;
 			int style = character.LastAttackCharged ? 0 : character.AttackStyleIndex % character.AttackStyleLoop;
@@ -1173,7 +1173,7 @@ namespace AngeliaFramework {
 			AttackHeadDown(ease01, 1400, 500, 500);
 			ResetShoulderAndUpperArm();
 
-			Target.PoseTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
+			Target.BodyTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
 			Target.HeadTwist = -FacingSign * (int)(frame01 * 500 - 250);
 
 			// Upper Arm
@@ -1226,7 +1226,7 @@ namespace AngeliaFramework {
 			AttackHeadDown(ease01, -500, 500, 500);
 			ResetShoulderAndUpperArm();
 
-			Target.PoseTwist = FacingSign * (int)(frame01 * 2000 - 1000);
+			Target.BodyTwist = FacingSign * (int)(frame01 * 2000 - 1000);
 			Target.HeadTwist = FacingSign * (int)(frame01 * 500 - 250);
 
 			int upperRotA = (int)Mathf.LerpUnclamped(-171, 49, ease01);
@@ -1272,7 +1272,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAttack_Scratch : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			character.AttackStyleLoop = 3;
 			int style = character.LastAttackCharged ? 2 : character.AttackStyleIndex % character.AttackStyleLoop;
@@ -1421,7 +1421,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAttack_Ranged : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			character.AttackStyleLoop = 1;
 			if (character.EquippingWeaponHeld == WeaponHandheld.Bow) {
@@ -1513,7 +1513,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseAttack_Magic : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			character.AttackStyleLoop = 1;
 			switch (character.EquippingWeaponHeld) {

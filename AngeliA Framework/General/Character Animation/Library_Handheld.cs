@@ -6,13 +6,13 @@ using UnityEngine;
 namespace AngeliaFramework {
 
 	public class PoseHandheld_Double : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			if (!Target.IsChargingAttack) {
 				// Holding
 				ResetShoulderAndUpperArm();
 
-				int twistShift = Target.PoseTwist / 50;
+				int twistShift = Target.BodyTwist / 50;
 				UpperArmL.LimbRotate((FacingRight ? -42 : 29) - twistShift);
 				UpperArmR.LimbRotate((FacingRight ? -29 : 42) - twistShift);
 				UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1306 : 862) / 1000;
@@ -94,13 +94,13 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseHandheld_Bow : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			if (!Target.IsChargingAttack) {
 				// Holding
 				ResetShoulderAndUpperArm();
 
-				int twistShift = Target.PoseTwist / 50;
+				int twistShift = Target.BodyTwist / 50;
 				UpperArmL.LimbRotate((FacingRight ? -42 : 29) - twistShift);
 				UpperArmR.LimbRotate((FacingRight ? -29 : 42) - twistShift);
 				UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1306 : 862) / 1000;
@@ -163,13 +163,13 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseHandheld_Firearm : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			if (!Target.IsChargingAttack) {
 				// Holding
 				ResetShoulderAndUpperArm();
 
-				int twistShift = Target.PoseTwist / 50;
+				int twistShift = Target.BodyTwist / 50;
 				UpperArmL.LimbRotate((FacingRight ? -42 : 29) - twistShift);
 				UpperArmR.LimbRotate((FacingRight ? -29 : 42) - twistShift);
 				UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1306 : 862) / 1000;
@@ -239,7 +239,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseHandheld_Pole : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
 			if (!Target.IsChargingAttack) {
@@ -249,7 +249,7 @@ namespace AngeliaFramework {
 				ResetShoulderAndUpperArm();
 
 				// Upper Arm
-				int twistDelta = Target.PoseTwist / 26;
+				int twistDelta = Target.BodyTwist / 26;
 				UpperArmL.LimbRotate((FacingRight ? -2 : 14) - twistDelta);
 				UpperArmR.LimbRotate((FacingRight ? -14 : 2) - twistDelta);
 				if (dashing) {
@@ -328,14 +328,14 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseHandheld_MagicPole : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			if (!Target.IsChargingAttack) {
 				// Normal
 
 				ResetShoulderAndUpperArm();
 
-				int twistShift = Target.PoseTwist / 50;
+				int twistShift = Target.BodyTwist / 50;
 				UpperArmL.LimbRotate((FacingRight ? -42 : 29) - twistShift);
 				UpperArmR.LimbRotate((FacingRight ? -29 : 42) - twistShift);
 				UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1306 : 862) / 1000;
@@ -408,7 +408,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseHandheld_EachHand : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			if (Target.IsChargingAttack) {
 				float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
@@ -455,7 +455,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseHandheld_Single : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			if (Target.IsChargingAttack) {
 				// Charging
@@ -498,7 +498,7 @@ namespace AngeliaFramework {
 	}
 
 	public class PoseHandheld_Float : PoseAnimation {
-		public override void Animate (PoseCharacter character) {
+		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			if (Target.IsChargingAttack) {
 				// Charging

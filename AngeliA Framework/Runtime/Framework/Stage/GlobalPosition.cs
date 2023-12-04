@@ -80,7 +80,7 @@ namespace AngeliaFramework {
 			}
 			CreateMetaFileListCache.Clear();
 			var mapFolder = WorldSquad.MapRoot;
-			foreach (var path in Util.EnumerateFiles(mapFolder, true, $"*.{Const.MAP_FILE_EXT}")) {
+			foreach (var path in Util.EnumerateFiles(mapFolder, true, $"*.{AngePath.MAP_FILE_EXT}")) {
 				if (World.GetWorldPositionFromName(
 					Util.GetNameWithoutExtension(path),
 					out CreateMetaFilePosCache

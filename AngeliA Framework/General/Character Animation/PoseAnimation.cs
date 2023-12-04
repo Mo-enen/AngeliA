@@ -4,7 +4,46 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
+	[System.Serializable]
 	public abstract class PoseAnimation {
+
+
+
+
+		#region --- SUB ---
+
+
+		[System.Serializable]
+		public class KeyFrame {
+			public int Frame;
+			public int Value;
+			public Ease.EaseType Ease = AngeliaFramework.Ease.EaseType.InLiner;
+		}
+
+
+		[System.Serializable]
+		public class BodyPartCurve {
+			public KeyFrame[] PositionX;
+			public KeyFrame[] PositionY;
+			public KeyFrame[] PositionZ;
+			public KeyFrame[] Rotation;
+			public KeyFrame[] Twist;
+			public KeyFrame[] ScaleX;
+			public KeyFrame[] ScaleY;
+			public KeyFrame[] AppendWidth;
+			public KeyFrame[] AppendHeight;
+		}
+
+
+		[System.Serializable]
+		public class HandGrabCurve {
+			public KeyFrame[] Rotation;
+			public KeyFrame[] Scale;
+			public KeyFrame[] Twist;
+		}
+
+
+		#endregion
 
 
 
@@ -12,10 +51,29 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
-		// Data
-		private static readonly Dictionary<int, PoseAnimation> Pool = new();
+		// Const
 		protected const int POSE_Z_HAND = 36;
 		protected const int A2G = Const.CEL / Const.ART_CEL;
+
+		// Api-Ser
+		public bool CurveAvailable { get; init; }
+		public BodyPartCurve HeadCurve;
+		public BodyPartCurve BodyCurve;
+		public BodyPartCurve UpperArmCurveL;
+		public BodyPartCurve UpperArmCurveR;
+		public BodyPartCurve LowerArmCurveL;
+		public BodyPartCurve LowerArmCurveR;
+		public BodyPartCurve UpperLegCurveL;
+		public BodyPartCurve UpperLegCurveR;
+		public BodyPartCurve LowerLegCurveL;
+		public BodyPartCurve LowerLegCurveR;
+		public HandGrabCurve HandGrabL;
+		public HandGrabCurve HandGrabR;
+
+		// Data
+		private static readonly Dictionary<int, PoseAnimation> Pool = new();
+
+		// Cache
 		protected static PoseCharacter Target = null;
 		protected static BodyPart Head = null;
 		protected static BodyPart Body = null;
@@ -54,7 +112,7 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnGameInitialize]
+		[OnGameInitialize(-1)]
 		public static void OnGameInitialize () {
 			Pool.Clear();
 			foreach (var type in typeof(PoseAnimation).AllChildClass()) {
@@ -64,6 +122,9 @@ namespace AngeliaFramework {
 		}
 
 
+		public PoseAnimation () => CurveAvailable = LoadFromFile();
+
+
 		public static void AnimateFromPool (int id, PoseCharacter character) {
 			if (Pool.TryGetValue(id, out var result)) {
 				result.Animate(character);
@@ -71,7 +132,13 @@ namespace AngeliaFramework {
 		}
 
 
-		public virtual void Animate (PoseCharacter character) {
+		protected virtual void Animate (PoseCharacter character) {
+			SetAsCurrentTarget(character);
+			AnimateFromCurve(character);
+		}
+
+
+		private void SetAsCurrentTarget (PoseCharacter character) {
 			if (character == Target && character.CurrentAnimationFrame == CurrentAnimationFrame) return;
 			Target = character;
 			CurrentAnimationFrame = character.CurrentAnimationFrame;
@@ -100,6 +167,18 @@ namespace AngeliaFramework {
 		}
 
 
+		private void AnimateFromCurve (PoseCharacter character) {
+			if (!CurveAvailable) return;
+
+			// Body
+
+
+
+
+
+		}
+
+
 		#endregion
 
 
@@ -109,6 +188,9 @@ namespace AngeliaFramework {
 
 
 		public static bool TryGetAnimation (int id, out PoseAnimation result) => Pool.TryGetValue(id, out result);
+
+
+		public static bool TryAddAnimation (int id, PoseAnimation animation) => Pool.TryAdd(id, animation);
 
 
 		protected static void ResetShoulderAndUpperArm (bool resetLeft = true, bool resetRight = true) {
@@ -174,7 +256,7 @@ namespace AngeliaFramework {
 
 			Head.X -= headOffsetX.Clamp(-A2G * 2, A2G * 2);
 			Head.Y = (Head.Y + headOffsetY).GreaterOrEquel(Body.Y + 1);
-			Target.HeadRotation = headRotate;
+			Target.Head.Rotation = headRotate;
 
 			// Body
 			int bodyOffsetY = (int)(ease01 * A2G) + A2G * 2;
@@ -213,6 +295,17 @@ namespace AngeliaFramework {
 				FootR.X += deltaX;
 			}
 		}
+
+
+		// File
+		public bool LoadFromFile () => AngeUtil.OverrideJson(
+			AngePath.AnimationRoot, this, $"{GetType().Name}.{AngePath.ANIMATION_FILE_EXT}"
+		);
+
+
+		public void SaveToFile () => AngeUtil.SaveJson(
+			this, AngePath.AnimationRoot, $"{GetType().Name}.{AngePath.ANIMATION_FILE_EXT}"
+		);
 
 
 		#endregion

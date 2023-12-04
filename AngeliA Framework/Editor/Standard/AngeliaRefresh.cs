@@ -110,19 +110,19 @@ namespace AngeliaFramework.Editor {
 			}
 
 			// Check for Maps
-			foreach (var path in Util.EnumerateFiles(AngePath.BuiltInMapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
+			foreach (var path in Util.EnumerateFiles(AngePath.BuiltInMapRoot, true, $"*.{AngePath.MAP_FILE_EXT}")) {
 				if (Util.GetFileModifyDate(path) > lastSyncTickValue) {
 					return true;
 				}
 			}
-			foreach (var path in Util.EnumerateFiles(AngePath.UserMapRoot, true, $"*.{Const.MAP_FILE_EXT}")) {
+			foreach (var path in Util.EnumerateFiles(AngePath.UserMapRoot, true, $"*.{AngePath.MAP_FILE_EXT}")) {
 				if (Util.GetFileModifyDate(path) > lastSyncTickValue) {
 					return true;
 				}
 			}
 
 			// Check for Conversations
-			foreach (var path in Util.EnumerateFiles(Application.dataPath, false, $"*.{Const.EDITABLE_CONVERSATION_FILE_EXT}")) {
+			foreach (var path in Util.EnumerateFiles(Application.dataPath, false, $"*.{AngePath.EDITABLE_CONVERSATION_FILE_EXT}")) {
 				if (Util.GetFileModifyDate(path) != Util.GetFileCreationDate(path)) return true;
 				if (!Util.FolderExists(Util.CombinePaths(AngePath.DialogueRoot, Util.GetNameWithoutExtension(path)))) return true;
 			}
@@ -694,7 +694,7 @@ namespace AngeliaFramework.Editor {
 			var ignoreDelete = new HashSet<string>();
 
 			// For all Editable Conversation Files
-			foreach (var path in Util.EnumerateFiles(Application.dataPath, false, $"*.{Const.EDITABLE_CONVERSATION_FILE_EXT}")) {
+			foreach (var path in Util.EnumerateFiles(Application.dataPath, false, $"*.{AngePath.EDITABLE_CONVERSATION_FILE_EXT}")) {
 
 				string globalName = Util.GetNameWithoutExtension(path);
 				string conFolderPath = Util.CombinePaths(AngePath.DialogueRoot, globalName);
@@ -735,7 +735,7 @@ namespace AngeliaFramework.Editor {
 							// Make File
 							string targetPath = Util.CombinePaths(
 								conFolderPath,
-								$"{currentIso}.{Const.CONVERSATION_FILE_EXT}"
+								$"{currentIso}.{AngePath.CONVERSATION_FILE_EXT}"
 							);
 							Util.TextToFile(builder.ToString(), targetPath, Encoding.UTF8);
 							builder.Clear();
@@ -772,7 +772,7 @@ namespace AngeliaFramework.Editor {
 				if (builder.Length != 0) {
 					string targetPath = Util.CombinePaths(
 						conFolderPath,
-						$"{currentIso}.{Const.CONVERSATION_FILE_EXT}"
+						$"{currentIso}.{AngePath.CONVERSATION_FILE_EXT}"
 					);
 					Util.TextToFile(builder.ToString(), targetPath, Encoding.UTF8);
 					builder.Clear();

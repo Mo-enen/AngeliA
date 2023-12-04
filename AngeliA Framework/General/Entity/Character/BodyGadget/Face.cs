@@ -159,7 +159,7 @@ namespace AngeliaFramework {
 				}
 
 				// Rotate
-				int headRot = character.HeadRotation;
+				int headRot = character.Head.Rotation;
 				if (headRot != 0) {
 					var body = character.Body;
 					int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;
@@ -207,7 +207,7 @@ namespace AngeliaFramework {
 			);
 
 			// Rotate
-			int headRot = character.HeadRotation;
+			int headRot = character.Head.Rotation;
 			if (headRot != 0) {
 				var body = character.Body;
 				int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;

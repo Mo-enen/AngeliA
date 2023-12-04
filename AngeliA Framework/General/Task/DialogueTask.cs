@@ -85,7 +85,7 @@ namespace AngeliaFramework {
 
 			string conversationPath = Util.CombinePaths(
 				AngePath.DialogueRoot, globalName,
-				$"{Util.LanguageToIso(Language.CurrentLanguage)}.{Const.CONVERSATION_FILE_EXT}"
+				$"{Util.LanguageToIso(Language.CurrentLanguage)}.{AngePath.CONVERSATION_FILE_EXT}"
 			);
 			if (Main == null || FrameTask.HasTask<DialogueTask>() || !Util.FileExists(conversationPath)) return;
 

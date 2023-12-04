@@ -401,7 +401,7 @@ namespace AngeliaFramework {
 			if (spriteGroupId == 0 || body.IsFullCovered) return;
 
 			var hip = character.Hip;
-			int poseTwist = character.PoseTwist;
+			int poseTwist = character.BodyTwist;
 			int groupIndex = body.FrontSide ? 0 : 1;
 			if (!CellRenderer.TryGetSpriteFromGroup(spriteGroupId, groupIndex, out var suitSprite, false, true)) return;
 
@@ -432,13 +432,15 @@ namespace AngeliaFramework {
 			}
 
 			// Flip
-			if (separatedSprite && !facingRight) rect.FlipHorizontal();
+			bool flipX = separatedSprite && !facingRight;
+			if (flipX) rect.FlipHorizontal();
 
 			// Draw
 			var cell = CellRenderer.Draw(suitSprite.GlobalID, rect, body.Z + localZ);
 
 			// Twist
 			if (poseTwist != 0 && body.FrontSide && body.Height > 0) {
+				if (flipX) poseTwist = -poseTwist;
 				int shiftTop = body.Height * twistShiftTopAmount / 1000;
 				int shiftX = poseTwist * cell.Width / 2500;
 				var cellL = CellRenderer.Draw(Const.PIXEL, default);
@@ -643,10 +645,10 @@ namespace AngeliaFramework {
 				);
 			}
 			// Head Rotate
-			if (cells != null && character.HeadRotation != 0) {
-				int offsetY = character.Head.Height.Abs() * character.HeadRotation.Abs() / 360;
+			if (cells != null && character.Head.Rotation != 0) {
+				int offsetY = character.Head.Height.Abs() * character.Head.Rotation.Abs() / 360;
 				foreach (var cell in cells) {
-					cell.RotateAround(character.HeadRotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
+					cell.RotateAround(character.Head.Rotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
 					cell.Y -= offsetY;
 				}
 			}
@@ -773,7 +775,7 @@ namespace AngeliaFramework {
 			return result;
 		}
 
-		
+
 		public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID) => CoverClothOn(bodyPart, spriteID, 1, Const.WHITE, true);
 		public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID, int localZ) => CoverClothOn(bodyPart, spriteID, localZ, Const.WHITE, true);
 		public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID, int localZ, Color32 tint, bool defaultHideLimb = true) {

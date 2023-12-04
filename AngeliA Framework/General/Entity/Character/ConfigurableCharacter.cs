@@ -11,19 +11,21 @@ namespace AngeliaFramework {
 		[System.Serializable]
 		public class CharacterConfig {
 
+			private static readonly int[] DEFAULT_BODY_PART_ID = { "DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(), };
+
 			public int CharacterHeight = 160;
 
 			// Body Part
-			public int Head = PoseCharacter.DEFAULT_BODY_PART_ID[0];
-			public int Body = PoseCharacter.DEFAULT_BODY_PART_ID[1];
-			public int Hip = PoseCharacter.DEFAULT_BODY_PART_ID[2];
-			public int Shoulder = PoseCharacter.DEFAULT_BODY_PART_ID[3];
-			public int UpperArm = PoseCharacter.DEFAULT_BODY_PART_ID[5];
-			public int LowerArm = PoseCharacter.DEFAULT_BODY_PART_ID[7];
-			public int Hand = PoseCharacter.DEFAULT_BODY_PART_ID[9];
-			public int UpperLeg = PoseCharacter.DEFAULT_BODY_PART_ID[11];
-			public int LowerLeg = PoseCharacter.DEFAULT_BODY_PART_ID[13];
-			public int Foot = PoseCharacter.DEFAULT_BODY_PART_ID[15];
+			public int Head = DEFAULT_BODY_PART_ID[0];
+			public int Body = DEFAULT_BODY_PART_ID[1];
+			public int Hip = DEFAULT_BODY_PART_ID[2];
+			public int Shoulder = DEFAULT_BODY_PART_ID[3];
+			public int UpperArm = DEFAULT_BODY_PART_ID[5];
+			public int LowerArm = DEFAULT_BODY_PART_ID[7];
+			public int Hand = DEFAULT_BODY_PART_ID[9];
+			public int UpperLeg = DEFAULT_BODY_PART_ID[11];
+			public int LowerLeg = DEFAULT_BODY_PART_ID[13];
+			public int Foot = DEFAULT_BODY_PART_ID[15];
 
 			// Gadget
 			public int Face = 0;

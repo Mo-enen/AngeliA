@@ -79,12 +79,6 @@ namespace AngeliaFramework {
 		public const int VIEW_RATIO = 2000; // width / height * 1000
 		public const byte SQUAD_BEHIND_ALPHA = 64;
 
-		// File
-		public const string MAP_FILE_EXT = "ibb";
-		public const string CONVERSATION_FILE_EXT = "txt";
-		public const string EDITABLE_CONVERSATION_FILE_EXT = "conversation";
-		public const string LANGUAGE_FILE_EXT = "txt";
-
 		// Tag
 		public static readonly int ONEWAY_UP_TAG = "OnewayUp".AngeHash();
 		public static readonly int ONEWAY_DOWN_TAG = "OnewayDown".AngeHash();

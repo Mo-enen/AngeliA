@@ -33,10 +33,11 @@ namespace AngeliaFramework {
 		// File
 		public static void CreateAngeFolders () {
 			Util.CreateFolder(AngePath.UniverseRoot);
+			Util.CreateFolder(AngePath.SheetRoot);
 			Util.CreateFolder(AngePath.DialogueRoot);
 			Util.CreateFolder(AngePath.LanguageRoot);
-			Util.CreateFolder(AngePath.SheetRoot);
 			Util.CreateFolder(AngePath.MetaRoot);
+			Util.CreateFolder(AngePath.AnimationRoot);
 			Util.CreateFolder(AngePath.BuiltInMapRoot);
 			Util.CreateFolder(AngePath.DownloadMapRoot);
 		}
@@ -362,7 +363,7 @@ namespace AngeliaFramework {
 		public static bool OverrideJson<T> (string rootPath, T target, string name = "") where T : class {
 			if (target == null) return false;
 			try {
-				string jsonPath = GetJsonMetaPath<T>(rootPath, name);
+				string jsonPath = GetJsonPath<T>(rootPath, name);
 				if (Util.FileExists(jsonPath)) {
 					var data = Util.FileToText(jsonPath, Encoding.UTF8);
 					JsonUtility.FromJsonOverwrite(data, target);
@@ -375,7 +376,7 @@ namespace AngeliaFramework {
 
 		public static T LoadJson<T> (string rootPath, string name = "") where T : class {
 			try {
-				string jsonPath = GetJsonMetaPath<T>(rootPath, name);
+				string jsonPath = GetJsonPath<T>(rootPath, name);
 				if (Util.FileExists(jsonPath)) {
 					var data = Util.FileToText(jsonPath, Encoding.UTF8);
 					var target = JsonUtility.FromJson<T>(data);
@@ -386,15 +387,15 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void SaveJson<T> (T meta, string rootPath, string name = "", bool prettyPrint = false) {
-			if (meta == null) return;
-			string jsonPath = GetJsonMetaPath<T>(rootPath, name);
-			string data = JsonUtility.ToJson(meta, prettyPrint);
-			Util.TextToFile(data, jsonPath, Encoding.UTF8);
+		public static void SaveJson<T> (T data, string rootPath, string name = "", bool prettyPrint = false) {
+			if (data == null) return;
+			string jsonPath = GetJsonPath<T>(rootPath, name);
+			string jsonText = JsonUtility.ToJson(data, prettyPrint);
+			Util.TextToFile(jsonText, jsonPath, Encoding.UTF8);
 		}
 
 
-		public static string GetJsonMetaPath<T> (string rootPath, string name = "") => Util.CombinePaths(rootPath, $"{(string.IsNullOrEmpty(name) ? typeof(T).Name : name)}.json");
+		public static string GetJsonPath<T> (string rootPath, string name = "") => Util.CombinePaths(rootPath, $"{(string.IsNullOrEmpty(name) ? typeof(T).Name : name)}.json");
 
 
 		// Drawing
@@ -749,7 +750,7 @@ namespace AngeliaFramework {
 
 		public static void DeleteAllEmptyMaps (string mapRoot) {
 			var world = new World();
-			foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{Const.MAP_FILE_EXT}")) {
+			foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{AngePath.MAP_FILE_EXT}")) {
 				try {
 					if (!world.LoadFromDisk(path, MapLocation.Unknown)) continue;
 					if (world.EmptyCheck()) {
