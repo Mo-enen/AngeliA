@@ -254,6 +254,10 @@ namespace AngeliaFramework {
 			z
 		);
 
+		public virtual int GetOverrideHandheldAnimationID (Character character) => 0;
+
+		public virtual int GetOverrideAttackAnimationID (Character character) => 0;
+
 	}
 
 

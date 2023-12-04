@@ -826,7 +826,7 @@ namespace AngeliaFramework {
 				if (IsEditing) {
 					StartDropPlayer();
 				} else {
-					SetEditingMode(!PlayingGame);
+					SetEditorMode(!PlayingGame);
 				}
 			}
 			CursorSystem.SetCursorAsHand(btnRect);

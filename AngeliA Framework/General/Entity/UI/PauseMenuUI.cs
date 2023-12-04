@@ -241,7 +241,7 @@ namespace AngeliaFramework {
 			// 4-Quit
 			if (mapEditor != null && mapEditor.Active && mapEditor.IsPlaying) {
 				if (DrawItem(Language.Get(MENU_BACK_TO_EDIT, "Back to Editor"))) {
-					mapEditor.SetEditingMode(false);
+					mapEditor.SetEditorMode(false);
 					Game.IsPlaying = true;
 					Active = false;
 					FrameInput.UseAllHoldingKeys();

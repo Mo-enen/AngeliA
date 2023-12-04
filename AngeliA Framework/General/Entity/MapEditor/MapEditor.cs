@@ -213,17 +213,6 @@ namespace AngeliaFramework {
 		private Dictionary<int, MapEditorGizmos> GizmosPool = null;
 		private MapEditorMeta EditorMeta = null;
 
-		// Short
-		private MapChannel EditingMapChannel {
-			get {
-#if UNITY_EDITOR
-				return MapChannel.BuiltIn;
-#else
-				return MapChannel.User;
-#endif
-			}
-		}
-
 		// Data
 		private PaletteItem SelectingPaletteItem = null;
 		private Queue<MapUndoItem> PerformingUndoQueue = null;
@@ -249,8 +238,7 @@ namespace AngeliaFramework {
 		private int PanelOffsetX = 0;
 		private int ToolbarOffsetX = 0;
 		private int InitializedFrame = int.MinValue;
-
-		// UI
+		private readonly MapChannel EditingMapChannel;
 		private readonly CellContent DropHintLabel = new() { BackgroundTint = Const.BLACK, Alignment = Alignment.BottomLeft, Wrap = false, CharSize = 24, };
 		private readonly IntToString StateXLabelToString = new("x:");
 		private readonly IntToString StateYLabelToString = new("y:");
@@ -288,17 +276,16 @@ namespace AngeliaFramework {
 #endif
 
 
-		[OnGameInitialize(64)]
-		public static void Initialized () {
-			Application.quitting -= OnQuit;
-			Application.quitting += OnQuit;
-			static void OnQuit () {
-				if (Instance != null && Instance.Active) Instance.OnInactivated();
-			}
+		[OnGameQuitting]
+		public static void OnGameQuitting () {
+			if (Instance != null && Instance.Active) Instance.OnInactivated();
 		}
 
 
-		public MapEditor () => Instance = this;
+		public MapEditor () {
+			Instance = this;
+			EditingMapChannel = Application.isEditor ? MapChannel.BuiltIn : MapChannel.User;
+		}
 
 
 		// Active
@@ -351,13 +338,22 @@ namespace AngeliaFramework {
 			PerformingUndoQueue = new();
 
 			// Start
-			SetEditingMode(false);
+			if (Game.GlobalFrame == 0) {
+				PlayFromStart();
+			} else {
+				SetEditorMode(false);
+			}
 			if (Player.Selecting != null) {
 				Player.Selecting.Active = false;
 			}
 
 			// View
 			ResetCamera(true);
+
+			// Panel
+			PanelRect.width = Unify(PANEL_WIDTH);
+			PanelOffsetX = -PanelRect.width;
+			PanelRect.x = CellRenderer.CameraRect.x - PanelRect.width;
 
 			System.GC.Collect(0, System.GCCollectionMode.Forced);
 
@@ -934,7 +930,7 @@ namespace AngeliaFramework {
 				if (!CtrlHolding) {
 					if (FrameInput.KeyboardUp(Key.Escape)) {
 						IgnoreQuickPlayerDropThisTime = false;
-						SetEditingMode(false);
+						SetEditorMode(false);
 						FrameInput.UseKeyboardKey(Key.Escape);
 						FrameInput.UseGameKey(Gamekey.Start);
 					}
@@ -1003,7 +999,7 @@ namespace AngeliaFramework {
 					player.Y = PlayerDropPos.y - Const.CEL * 2;
 				}
 				player.SetCharacterState(CharacterState.GamePlay);
-				SetEditingMode(true);
+				SetEditorMode(true);
 			} else {
 				if (player.Active) player.Active = false;
 				Stage.SetViewPositionDelay(
@@ -1062,10 +1058,10 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public void SetEditingMode (bool newPlayingGame) {
+		public void SetEditorMode (bool playMode) {
 
-			if (newPlayingGame) Save();
-			PlayingGame = newPlayingGame;
+			if (playMode) Save();
+			PlayingGame = playMode;
 			SelectingPaletteItem = null;
 			DroppingPlayer = false;
 			SelectionUnitRect = null;
@@ -1074,21 +1070,21 @@ namespace AngeliaFramework {
 			MapChest.ClearOpenedMarks();
 			Stage.ClearGlobalAntiSpawn();
 			Player.RespawnCpUnitPosition = null;
-			if (newPlayingGame) {
+			if (playMode) {
 				IGlobalPosition.CreateMetaFileFromMapsAsync();
 			}
 			if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 
 			// Squad  
-			WorldSquad.SpawnEntity = newPlayingGame;
-			WorldSquad.SaveBeforeReload = !newPlayingGame;
+			WorldSquad.SpawnEntity = playMode;
+			WorldSquad.SaveBeforeReload = !playMode;
 			WorldSquad.Front.ForceReloadDelay();
 			WorldSquad.Behind.ForceReloadDelay();
 
 			// Respawn Entities
 			Stage.SetViewZ(Stage.ViewZ);
 
-			if (!newPlayingGame) {
+			if (!playMode) {
 				// Play >> Edit
 
 				// Despawn Entities from World
@@ -1120,13 +1116,22 @@ namespace AngeliaFramework {
 
 		public static void OpenMapEditorSmoothly () {
 			FrameTask.EndAllTask();
-			FrameTask.AddToLast(FadeOutTask.TYPE_ID, 50);
+			if (Game.GlobalFrame > 0) {
+				// During Gameplay
+				FrameTask.AddToLast(FadeOutTask.TYPE_ID, 50);
+			} else {
+				// On Game Start
+				ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, true);
+				RetroDarkenEffect.SetAmount(1f);
+			}
 			if (FrameTask.AddToLast(SpawnEntityTask.TYPE_ID) is SpawnEntityTask task) {
 				task.EntityID = typeof(MapEditor).AngeHash();
 				task.X = 0;
 				task.Y = 0;
 			}
-			FrameTask.AddToLast(FadeInTask.TYPE_ID, 50);
+			if (Game.GlobalFrame > 0) {
+				FrameTask.AddToLast(FadeInTask.TYPE_ID, 50);
+			}
 		}
 
 
@@ -1158,7 +1163,7 @@ namespace AngeliaFramework {
 
 
 		private void PlayFromStart () {
-			SetEditingMode(true);
+			SetEditorMode(true);
 			Game.RestartGame();
 		}
 

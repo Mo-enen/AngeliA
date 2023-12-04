@@ -654,15 +654,17 @@ namespace AngeliaFramework {
 
 		// Animation ID
 		public int GetPoseAnimationID (CharacterAnimationType type) {
-			int result = 0;
+			// From Equipment
 			for (int i = 0; i < EquipmentTypeCount; i++) {
-				var equip = GetEquippingItem((EquipmentType)i);
-				if (equip == null) continue;
-				result = equip.GetOverrideMovementAnimationID(type, this);
+				if (GetEquippingItem((EquipmentType)i) is not Equipment equip) continue;
+				int equipResult = equip.GetOverrideMovementAnimationID(type, this);
+				if (equipResult != 0) return equipResult;
 			}
-			if (result == 0) result = PoseAnimationIDs[(int)type];
-			if (result == 0) result = DEFAULT_POSE_ANIMATION_IDS[(int)type];
-			return result;
+			// From Character Config
+			int charResult = PoseAnimationIDs[(int)type];
+			if (charResult != 0) return charResult;
+			// From Default
+			return DEFAULT_POSE_ANIMATION_IDS[(int)type];
 		}
 
 
@@ -670,15 +672,16 @@ namespace AngeliaFramework {
 
 
 		public int GetPoseHandheldID (WeaponHandheld handheld) {
-			int result = 0;
-			for (int i = 0; i < EquipmentTypeCount; i++) {
-				var equip = GetEquippingItem((EquipmentType)i);
-				if (equip == null) continue;
-				result = equip.GetOverrideHandheldAnimationID(handheld, this);
+			// From Equipment
+			if (GetEquippingItem(EquipmentType.Weapon) is Weapon weapon) {
+				int equipResult = weapon.GetOverrideHandheldAnimationID(this);
+				if (equipResult != 0) return equipResult;
 			}
-			if (result == 0) result = PoseHandheldIDs[(int)handheld];
-			if (result == 0) result = DEFAULT_POSE_HANDHELD_IDS[(int)handheld];
-			return result;
+			// From Character Config
+			int charResult = PoseHandheldIDs[(int)handheld];
+			if (charResult != 0) return charResult;
+			// From Default
+			return DEFAULT_POSE_HANDHELD_IDS[(int)handheld];
 		}
 
 
@@ -686,15 +689,16 @@ namespace AngeliaFramework {
 
 
 		public int GetPoseAttackID (WeaponType type) {
-			int result = 0;
-			for (int i = 0; i < EquipmentTypeCount; i++) {
-				var equip = GetEquippingItem((EquipmentType)i);
-				if (equip == null) continue;
-				result = equip.GetOverrideAttackAnimationID(type, this);
+			// From Equipment
+			if (GetEquippingItem(EquipmentType.Weapon) is Weapon weapon) {
+				int equipResult = weapon.GetOverrideAttackAnimationID(this);
+				if (equipResult != 0) return equipResult;
 			}
-			if (result == 0) result = PoseAttackIDs[(int)type];
-			if (result == 0) result = DEFAULT_POSE_ATTACK_IDS[(int)type];
-			return result;
+			// From Character Config
+			int charResult = PoseAttackIDs[(int)type];
+			if (charResult != 0) return charResult;
+			// From Default
+			return DEFAULT_POSE_ATTACK_IDS[(int)type];
 		}
 
 

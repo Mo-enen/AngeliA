@@ -15,12 +15,24 @@ namespace AngeliaFramework {
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdatePauselessAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameRestartAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameTryingToQuitAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameQuittingAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSlotChangedAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSlotCreatedAttribute : System.Attribute { }
 
 
 	[ExecuteInEditMode]
 	public sealed class Game : MonoBehaviour {
+
+
+
+
+		#region --- SUB ---
+
+
+		public enum GameStartMode { DoNothing, StartWithGamePlay, StartWithMapEditor, }
+
+
+		#endregion
 
 
 
@@ -76,6 +88,7 @@ namespace AngeliaFramework {
 		// Event
 		public static event System.Action OnGameRestart;
 		public static event System.Action OnGameTryingToQuit;
+		public static event System.Action OnGameQuitting;
 		public static event System.Action OnGameUpdate;
 		public static event System.Action OnGameUpdateLater;
 		public static event System.Action OnGameUpdatePauseless;
@@ -83,7 +96,7 @@ namespace AngeliaFramework {
 		public static event System.Action OnSlotCreated;
 
 		// Ser
-		[SerializeField, DisableAtRuntime] bool m_AutoStartGame = true;
+		[SerializeField, DisableAtRuntime] GameStartMode m_GameStartMode = GameStartMode.StartWithGamePlay;
 		[SerializeField, DisableAtRuntime] Gradient m_SkyTintTop = null;
 		[SerializeField, DisableAtRuntime] Gradient m_SkyTintBottom = null;
 		[SerializeField, DisableAtRuntime] Font[] m_Fonts = null;
@@ -200,11 +213,14 @@ namespace AngeliaFramework {
 				Util.LinkEventWithAttribute<OnGameUpdateLaterAttribute>(typeof(Game), nameof(OnGameUpdateLater));
 				Util.LinkEventWithAttribute<OnGameUpdatePauselessAttribute>(typeof(Game), nameof(OnGameUpdatePauseless));
 				Util.LinkEventWithAttribute<OnGameTryingToQuitAttribute>(typeof(Game), nameof(OnGameTryingToQuit));
+				Util.LinkEventWithAttribute<OnGameQuittingAttribute>(typeof(Game), nameof(OnGameQuitting));
 				Util.LinkEventWithAttribute<OnGameRestartAttribute>(typeof(Game), nameof(OnGameRestart));
 				Util.LinkEventWithAttribute<OnSlotChangedAttribute>(typeof(Game), nameof(OnSlotChanged));
 				Util.LinkEventWithAttribute<OnSlotCreatedAttribute>(typeof(Game), nameof(OnSlotCreated));
-				Application.wantsToQuit -= OnQuit;
-				Application.wantsToQuit += OnQuit;
+				Application.wantsToQuit -= OnTryingToQuit;
+				Application.wantsToQuit += OnTryingToQuit;
+				Application.quitting -= OnGameQuitting;
+				Application.quitting += OnGameQuitting;
 				GameCamera = AngeUtil.GetOrCreateCamera();
 				CellRenderer.Initialize_Rendering(GameCamera);
 				CellRenderer.Initialize_Text(GameCamera, m_Fonts);
@@ -217,7 +233,7 @@ namespace AngeliaFramework {
 				FullscreenMode = (FullscreenMode)_FullscreenMode.Value;
 				SkyTintTop = m_SkyTintTop;
 				SkyTintBottom = m_SkyTintBottom;
-				enabled = m_AutoStartGame;
+				enabled = m_GameStartMode != GameStartMode.DoNothing;
 				CursorSystem.Initialize(m_Cursors);
 				AngeUtil.CreateAngeFolders();
 				RefreshBackgroundTint();
@@ -225,10 +241,11 @@ namespace AngeliaFramework {
 				DontDestroyOnLoad(GameCamera.transform.gameObject);
 				DontDestroyOnLoad(gameObject);
 				System.GC.Collect(0, System.GCCollectionMode.Forced);
-				if (m_AutoStartGame) RestartGameLogic();
+				if (m_GameStartMode == GameStartMode.StartWithGamePlay) RestartGameLogic();
+				if (m_GameStartMode == GameStartMode.StartWithMapEditor) MapEditor.OpenMapEditorSmoothly();
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 			// Func
-			static bool OnQuit () {
+			static bool OnTryingToQuit () {
 				if (IsPausing || Application.isEditor) return true;
 				IsPlaying = false;
 				OnGameTryingToQuit?.Invoke();
