@@ -100,6 +100,10 @@ namespace AngeliaFramework {
 		public static void OnGameInitialize () => LoadGameDataFromFile();
 
 
+		[OnGameRestart]
+		public static void OnGameRestart () => RespawnCpUnitPosition = null;
+
+
 		public Player () {
 			// Inventory
 			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;

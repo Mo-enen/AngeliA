@@ -52,17 +52,6 @@ namespace AngeliaFramework {
 				}
 			}
 
-			// Character Portal Effect
-			if (UsePortalEffect && LocalFrame < WaitDuration && CurrentTeleportEntity is Character character) {
-				float lerp01 = (float)LocalFrame / WaitDuration;
-				int centerX = TeleportFrom.x;
-				int centerY = TeleportFrom.y;
-				int twistOffsetX = (int)((1f - lerp01) * Const.CEL * Mathf.Sin(lerp01 * 360f * Mathf.Deg2Rad));
-				int twistOffsetY = (int)((1f - lerp01) * Const.CEL * Mathf.Cos(lerp01 * 360f * Mathf.Deg2Rad));
-				character.X = centerX + twistOffsetX;
-				character.Y = centerY + twistOffsetY - character.Height / 2;
-			}
-
 			// Teleport
 			if (LocalFrame == WaitDuration) {
 				int offsetX = TeleportFrom.x - Stage.ViewRect.xMin;

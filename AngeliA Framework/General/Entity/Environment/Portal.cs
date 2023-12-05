@@ -10,55 +10,14 @@ namespace AngeliaFramework {
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
 	public class PortalFront : CircleFlamePortal {
 		protected override Vector3Int TargetGlobalPosition => new(X + Width / 2, Y, Stage.ViewZ - 1);
+		protected override bool DontSpawnAfterUsed => true;
 	}
 
 
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
 	public class PortalBack : CircleFlamePortal {
 		protected override Vector3Int TargetGlobalPosition => new(X + Width / 2, Y, Stage.ViewZ + 1);
-	}
-
-
-	[EntityAttribute.Capacity(1)]
-	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
-	[EntityAttribute.ExcludeInMapEditor]
-	[EntityAttribute.DontSpawnFromWorld]
-	public class CheckPointPortal : CircleFlamePortal {
-
-		public static readonly int TYPE_ID = typeof(CheckPointPortal).AngeHash();
-		protected override Vector3Int TargetGlobalPosition => (CheckPoint.TurnBackUnitPosition ?? default).ToGlobal() + new Vector3Int(Const.HALF, 0, 0);
-		private int InvokeFrame = -1;
-
-
-		[OnGameInitialize(64)]
-		public static void Initialize () => CheckPoint.BackPortalEntityID = typeof(CheckPointPortal).AngeHash();
-
-
-		public override void OnActivated () {
-			base.OnActivated();
-			InvokeFrame = -1;
-			if (!CheckPoint.TurnBackUnitPosition.HasValue) Active = false;
-		}
-
-
-		public override void PhysicsUpdate () {
-			base.PhysicsUpdate();
-			if (InvokeFrame >= 0 && Game.GlobalFrame > InvokeFrame + 30) {
-				Active = false;
-				InvokeFrame = -1;
-			}
-		}
-
-
-		public override bool Invoke (Player player) {
-			bool result = base.Invoke(player);
-			if (result) {
-				InvokeFrame = Game.GlobalFrame;
-			}
-			return result;
-		}
-
-
+		protected override bool DontSpawnAfterUsed => true;
 	}
 
 
@@ -68,6 +27,8 @@ namespace AngeliaFramework {
 		protected virtual int CircleCode => CIRCLE_CODE;
 		protected virtual int FlameCode => FLAME_CODE;
 		protected virtual int CircleSize => Const.CEL * 3 / 2;
+		protected int RenderingMinZ { get; private set; } = 0;
+		protected int RenderingMaxZ { get; private set; } = 0;
 		public override void OnActivated () {
 			base.OnActivated();
 			int size = CircleSize;
@@ -81,6 +42,9 @@ namespace AngeliaFramework {
 			int centerX = X + Width / 2;
 			int centerY = Y + Height / 2;
 			int scale = ((Game.GlobalFrame - SpawnFrame) * 30).Clamp(0, 1000);
+
+			RenderingMinZ = int.MaxValue;
+			RenderingMaxZ = int.MinValue;
 
 			// Circle
 			if (CellRenderer.TryGetSprite(CircleCode, out var circle)) {
@@ -105,12 +69,15 @@ namespace AngeliaFramework {
 						rgb, rgb, rgb,
 						(byte)(i > 0 ? 255 : Util.RemapUnclamped(0, CIRCLE_DURATION, 0, 400, circleFrame).Clamp(0, 255))
 					);
+					int z = circle.SortingZ + i;
 					CellRenderer.Draw(
 						circle.GlobalID, centerX, centerY,
 						500, 500, 0,
 						size, size,
-						tint, circle.SortingZ + i
+						tint, z
 					);
+					RenderingMinZ = Mathf.Min(RenderingMinZ, z);
+					RenderingMaxZ = Mathf.Max(RenderingMaxZ, z);
 				}
 			}
 
@@ -136,12 +103,15 @@ namespace AngeliaFramework {
 						255, 128,
 						flameFrame.PingPong(FLAME_DURATION / 2)
 					).Clamp(0, 255);
+					int z = flame.SortingZ + FLAME_COUNT + 1;
 					CellRenderer.Draw(
 						flame.GlobalID, centerX, centerY,
 						flame.PivotX, flame.PivotY, rot,
 						size, size,
-						tint, flame.SortingZ + FLAME_COUNT + 1
+						tint, z
 					);
+					RenderingMinZ = Mathf.Min(RenderingMinZ, z);
+					RenderingMaxZ = Mathf.Max(RenderingMaxZ, z);
 				}
 			}
 		}
@@ -151,6 +121,7 @@ namespace AngeliaFramework {
 	public abstract class Portal : Entity {
 
 		protected abstract Vector3Int TargetGlobalPosition { get; }
+		protected virtual bool DontSpawnAfterUsed => false;
 
 		public override void FillPhysics () {
 			base.FillPhysics();
@@ -171,6 +142,7 @@ namespace AngeliaFramework {
 		}
 		public virtual bool Invoke (Player player) {
 			if (player == null || FrameTask.HasTask()) return false;
+			if (DontSpawnAfterUsed) Stage.MarkAsGlobalAntiSpawn(this);
 			int fromX = X + (Width - player.Width) / 2 - player.OffsetX;
 			player.X = fromX;
 			player.Y = Y;

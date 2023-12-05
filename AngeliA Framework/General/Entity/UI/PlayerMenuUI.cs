@@ -1120,7 +1120,7 @@ namespace AngeliaFramework {
 			int iconShrink = Unify(7);
 			CellRenderer.Draw(
 				id,
-				rect.Shrink(iconShrink).Fit(sprite.GlobalWidth, sprite.GlobalHeight),
+				rect.Shrink(iconShrink).Fit(sprite),
 				tint, z
 			);
 		}

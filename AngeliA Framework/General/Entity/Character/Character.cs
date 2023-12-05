@@ -41,9 +41,9 @@ namespace AngeliaFramework {
 		public static event CharacterEventHandler OnPassOut;
 		public static event CharacterEventHandler OnTeleport;
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
+		public CharacterAnimationType AnimationType { get; set; } = CharacterAnimationType.Idle;
 		public WeaponType EquippingWeaponType { get; set; } = WeaponType.Hand;
 		public WeaponHandheld EquippingWeaponHeld { get; set; } = WeaponHandheld.Float;
-		public CharacterAnimationType AnimationType { get; set; } = CharacterAnimationType.Idle;
 		public bool IsPassOut => HealthPoint == 0;
 		public bool IsFullPassOut => HealthPoint == 0 && Game.GlobalFrame > PassOutFrame + 48;
 		public int SleepFrame { get; private set; } = 0;
@@ -200,7 +200,7 @@ namespace AngeliaFramework {
 			// Func
 			static CharacterAnimationType GetCurrentPoseAnimationType (Character character) {
 				if (Game.GlobalFrame <= character.LockedAnimationTypeFrame) return character.LockedAnimationType;
-				if (character.Teleporting) return CharacterAnimationType.Idle;
+				if (character.Teleporting) return CharacterAnimationType.Rolling;
 				if (character.TakingDamage) return CharacterAnimationType.TakingDamage;
 				if (character.CharacterState == CharacterState.Sleep) return CharacterAnimationType.Sleep;
 				if (character.CharacterState == CharacterState.PassOut) return CharacterAnimationType.PassOut;
@@ -266,13 +266,20 @@ namespace AngeliaFramework {
 				}
 				// Portal
 				if (Teleporting && TeleportWithPortal) {
+					int pointX = X;
+					int pointY = Y + Const.CEL;
+					int localFrame = Game.GlobalFrame - TeleportEndFrame + TeleportDuration;
 					for (int i = cellIndexStart; i < count; i++) {
+						float lerp01 = localFrame.PingPong(TeleportDuration / 2) / (TeleportDuration / 2f);
+						int offsetX = (int)((1f - lerp01) * Const.CEL * Mathf.Sin(lerp01 * 720f * Mathf.Deg2Rad));
+						int offsetY = (int)((1f - lerp01) * Const.CEL * Mathf.Cos(lerp01 * 720f * Mathf.Deg2Rad));
 						var cell = cells[i];
+						cell.X += offsetX;
+						cell.Y += offsetY;
+						cell.RotateAround(localFrame * 720 / TeleportDuration, pointX + offsetX, pointY + offsetY);
 						cell.ScaleFrom(
-							Util.RemapUnclamped(
-								0, TeleportDuration / 2, 1000, 0,
-								(Game.GlobalFrame - TeleportEndFrame + TeleportDuration).PingPong(TeleportDuration / 2)
-							), X, Y + Height / 2
+							Util.RemapUnclamped(0, TeleportDuration / 2, 1000, 0, localFrame.PingPong(TeleportDuration / 2)),
+							pointX + offsetX, pointY + offsetY
 						);
 					}
 				}

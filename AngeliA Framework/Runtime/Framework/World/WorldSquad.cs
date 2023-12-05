@@ -459,10 +459,7 @@ namespace AngeliaFramework {
 					CellRenderer.TryGetSprite(id, out var sprite) ||
 					CellRenderer.TryGetSpriteFromGroup(id, 0, out sprite)
 				) {
-					rect = rect.Fit(
-						sprite.GlobalWidth, sprite.GlobalHeight,
-						sprite.PivotX, sprite.PivotY
-					);
+					rect = rect.Fit(sprite, sprite.PivotX, sprite.PivotY);
 					CellRenderer.Draw(sprite.GlobalID, rect);
 				} else {
 					CellRenderer.Draw(ENTITY_CODE, rect);

@@ -140,7 +140,7 @@ namespace AngeliaFramework {
 
 			// Icon
 			if (CellRenderer.TryGetSprite(Identity, out var iconSprite)) {
-				CellRenderer.Draw(iconSprite.GlobalID, iconRect.Fit(iconSprite.GlobalWidth, iconSprite.GlobalHeight), 1);
+				CellRenderer.Draw(iconSprite.GlobalID, iconRect.Fit(iconSprite), 1);
 			}
 
 		}

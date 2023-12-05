@@ -17,17 +17,15 @@ namespace AngeliaFramework {
 		// Api
 		public delegate void TouchedHandler (CheckPoint checkPoint, Character target);
 		public static event TouchedHandler OnCheckPointTouched;
-		public static int BackPortalEntityID { get; set; } = 0;
-		public static Vector3Int? TurnBackUnitPosition { get; private set; } = null;
-		protected virtual bool OnlySpawnWhenUnlocked => true;
+		public static Vector3Int? LastTriggeredCheckPointUnitPosition { get; private set; } = null;
+		public static int LastTriggeredCheckPointID { get; private set; } = 0;
 
 		// Short
 		private static string UnlockFolderPath => Util.CombinePaths(AngePath.PlayerDataRoot, "Unlocked CP");
-		private Vector4Int Border => CellRenderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Vector4Int.zero;
 
 		// Data
 		private static readonly HashSet<int> UnlockedCheckPoint = new();
-		private static readonly Dictionary<int, int> LinkedId = new();
+		private readonly int LinkedAltarID = 0;
 
 
 		#endregion
@@ -43,14 +41,25 @@ namespace AngeliaFramework {
 		public static void OnGameInitialize () => LoadUnlockFromFile();
 
 
+		[OnGameRestart]
+		public static void OnGameRestart () {
+			LastTriggeredCheckPointUnitPosition = null;
+			LastTriggeredCheckPointID = 0;
+		}
+
+
+		public CheckPoint () => CheckAltar<CheckPoint>.TryGetLinkedID(TypeID, out LinkedAltarID);
+
+
 		public override void FillPhysics () {
 			base.FillPhysics();
-			if (!OnlySpawnWhenUnlocked || IsUnlocked(TypeID)) {
+			if (IsUnlocked(TypeID)) {
 				// Unlocked
 				CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 			}
+			var border = CellRenderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Vector4Int.zero;
 			CellPhysics.FillBlock(
-				PhysicsLayer.ENVIRONMENT, TypeID, Rect.Shrink(Border), true, Const.ONEWAY_UP_TAG
+				PhysicsLayer.ENVIRONMENT, TypeID, Rect.Shrink(border), true, Const.ONEWAY_UP_TAG
 			);
 		}
 
@@ -59,7 +68,7 @@ namespace AngeliaFramework {
 
 			base.PhysicsUpdate();
 
-			if (OnlySpawnWhenUnlocked && !IsUnlocked(TypeID)) return;
+			if (!IsUnlocked(TypeID)) return;
 			var player = Player.Selecting;
 
 			if (player == null || !player.Active) return;
@@ -67,20 +76,35 @@ namespace AngeliaFramework {
 			bool highlighting = Player.RespawnCpUnitPosition.HasValue && Player.RespawnCpUnitPosition.Value == unitPos;
 
 			// Player Touch Check
-			if (player.Rect.Overlaps(Rect) && !highlighting) {
+			if (!highlighting && player.Rect.Overlaps(Rect)) {
 				highlighting = true;
-				OnPlayerTouched(unitPos);
-				if (TryGetTurnBackUnitPosition(out var turnBackUnitPos)) TurnBackUnitPosition = turnBackUnitPos;
+
+				LastTriggeredCheckPointUnitPosition = new Vector3Int(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
+				LastTriggeredCheckPointID = TypeID;
+
+				// Clear Portal
+				if (
+					Stage.GetSpawnedEntityCount(CheckPointPortal.TYPE_ID) != 0 &&
+					Stage.TryGetEntity(CheckPointPortal.TYPE_ID, out var portal)
+				) {
+					portal.Active = false;
+				}
+
+				// Player Respawn
 				Player.RespawnCpUnitPosition = unitPos;
+
+				// Particle
+				OnCheckPointTouched?.Invoke(this, Player.Selecting);
 			}
 
 			// Spawn Portal
 			if (
 				highlighting &&
-				TurnBackUnitPosition.HasValue &&
-				Stage.GetSpawnedEntityCount(BackPortalEntityID) == 0
+				IGlobalPosition.TryGetPosition(LinkedAltarID, out var altarUnitPos) &&
+				Stage.GetSpawnedEntityCount(CheckPointPortal.TYPE_ID) == 0 &&
+				Stage.GetOrAddEntity(CheckPointPortal.TYPE_ID, X, Y + Const.CEL * 4) is CheckPointPortal cpPortal
 			) {
-				Stage.GetOrAddEntity(BackPortalEntityID, X, Y + Const.CEL * 4);
+				cpPortal.SetCheckPoint(LinkedAltarID, altarUnitPos);
 			}
 
 		}
@@ -88,39 +112,18 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (OnlySpawnWhenUnlocked && !IsUnlocked(TypeID)) {
+			if (!IsUnlocked(TypeID)) {
 				// Locked
 				var cell = CellRenderer.Draw(TypeID, Rect);
-				cell.Shift = Border;
+				cell.Shift = CellRenderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Vector4Int.zero;
 			} else {
 				// Unlocked
 				CellRenderer.Draw(TypeID, Rect);
 				var unitPos = new Vector3Int(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 				if (Player.RespawnCpUnitPosition == unitPos) {
-					DrawActivatedHighlight();
+					DrawActivatedHighlight(Rect);
 				}
 			}
-		}
-
-
-		protected virtual void OnPlayerTouched (Vector3Int unitPos) {
-			// Clear Portal
-			if (
-				Stage.GetSpawnedEntityCount(BackPortalEntityID) != 0 &&
-				Stage.TryGetEntity(BackPortalEntityID, out var portal)
-			) {
-				portal.Active = false;
-			}
-			// Particle
-			OnCheckPointTouched?.Invoke(this, Player.Selecting);
-		}
-
-
-		protected virtual bool TryGetTurnBackUnitPosition (out Vector3Int unitPos) {
-			unitPos = default;
-			return
-				LinkedId.TryGetValue(TypeID, out int linkedID) &&
-				IGlobalPosition.TryGetPosition(linkedID, out unitPos);
 		}
 
 
@@ -135,31 +138,25 @@ namespace AngeliaFramework {
 		public static bool IsUnlocked (int id) => UnlockedCheckPoint.Contains(id);
 
 
-		public static void Link (int idA, int idB) {
-			LinkedId.TryAdd(idA, idB);
-			LinkedId.TryAdd(idB, idA);
-		}
-
-
 		public static void Unlock (int checkPointID) {
 			if (UnlockedCheckPoint.Contains(checkPointID)) return;
-			Util.ByteToFile(new byte[0], Util.CombinePaths(UnlockFolderPath, checkPointID.ToString()));
 			UnlockedCheckPoint.Add(checkPointID);
+			Util.ByteToFile(new byte[0], Util.CombinePaths(UnlockFolderPath, checkPointID.ToString()));
 		}
 
 
-		protected void DrawActivatedHighlight () {
+		public static void DrawActivatedHighlight (RectInt targetRect) {
 			const int LINE_COUNT = 4;
 			const int DURATION = 22;
 			int localFrame = Game.GlobalFrame % DURATION;
-			var rect = Rect;
+			var rect = targetRect;
 			var tint = new Color32(128, 255, 128, 255);
 			CellRenderer.SetLayerToAdditive();
 			for (int i = 0; i < LINE_COUNT; i++) {
 				tint.a = (byte)(i == LINE_COUNT - 1 ? Util.RemapUnclamped(0, DURATION, 64, 0, localFrame) : 64);
-				rect.y = Y;
-				rect.height = i * Height / LINE_COUNT;
-				rect.height += Util.RemapUnclamped(0, DURATION, 0, Height / LINE_COUNT, localFrame);
+				rect.y = targetRect.y;
+				rect.height = i * targetRect.height / LINE_COUNT;
+				rect.height += Util.RemapUnclamped(0, DURATION, 0, targetRect.height / LINE_COUNT, localFrame);
 				CellRenderer.Draw("Soft Line H".AngeHash(), rect, tint);
 			}
 			CellRenderer.SetLayerToDefault();

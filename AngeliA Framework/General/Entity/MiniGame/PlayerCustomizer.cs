@@ -435,7 +435,7 @@ namespace AngeliaFramework {
 						hotkeyRect.width = padSprite.GlobalWidth;
 						CellRenderer.Draw(
 							padSprite.GlobalID,
-							hotkeyRect.Fit(padSprite.GlobalWidth, padSprite.GlobalHeight),
+							hotkeyRect.Fit(padSprite),
 							EDITOR_BASIC_Z + 5
 						);
 					}
@@ -883,7 +883,7 @@ namespace AngeliaFramework {
 					if (iconID != 0 && CellRenderer.TryGetSpriteFromGroup(iconID, 0, out var sprite, false, true)) {
 						CellRenderer.Draw(
 							sprite.GlobalID,
-							rect.Shift(contentPadding, 0).Shrink(iconPadding, rect.width + iconPadding * 2 - rect.height, iconPadding, iconPadding).Fit(sprite.GlobalWidth, sprite.GlobalHeight),
+							rect.Shift(contentPadding, 0).Shrink(iconPadding, rect.width + iconPadding * 2 - rect.height, iconPadding, iconPadding).Fit(sprite),
 							iconTint, EDITOR_BASIC_Z + 3
 						);
 					}

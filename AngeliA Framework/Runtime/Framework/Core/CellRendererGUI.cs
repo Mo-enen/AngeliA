@@ -390,7 +390,7 @@ namespace AngeliaFramework {
 			if (icon != 0 && CellRenderer.TryGetSprite(icon, out var iconSprite)) {
 				CellRenderer.Draw(
 					iconSprite.GlobalID,
-					rect.Shrink(iconPadding).Fit(iconSprite.GlobalWidth, iconSprite.GlobalHeight),
+					rect.Shrink(iconPadding).Fit(iconSprite),
 					iconTint, z + 1
 				);
 			}

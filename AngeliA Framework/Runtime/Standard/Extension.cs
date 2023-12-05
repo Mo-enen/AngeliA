@@ -325,6 +325,7 @@ namespace AngeliaFramework {
 
 		// RectInt
 		public static Rect ToRect (this RectInt rect) => new(rect.x, rect.y, rect.width, rect.height);
+		public static RectInt Fit (this RectInt rect, AngeSprite sprite, int pivotX = 500, int pivotY = 500) => rect.Fit(sprite.GlobalWidth, sprite.GlobalHeight, pivotX, pivotY);
 		public static RectInt Fit (this RectInt rect, int aspWidth, int aspHeight, int pivotX = 500, int pivotY = 500) {
 			if (aspWidth * aspHeight == 0) return rect;
 			int sizeX = rect.width;
@@ -486,6 +487,14 @@ namespace AngeliaFramework {
 			MapChannel.User => MapLocation.User,
 			_ => MapLocation.Unknown,
 		};
+
+
+		public static A[] FillWithValue<A> (this A[] arr, A value) {
+			for (int i = 0; i < arr.Length; i++) {
+				arr[i] = value;
+			}
+			return arr;
+		}
 
 
 		// Enum

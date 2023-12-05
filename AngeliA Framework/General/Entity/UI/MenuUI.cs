@@ -366,7 +366,7 @@ namespace AngeliaFramework {
 						if (icon != 0 && CellRenderer.TryGetSprite(icon, out var iconSprite)) {
 							CellRenderer.Draw(
 								icon,
-								secLabelRect.Fit(iconSprite.GlobalWidth, iconSprite.GlobalHeight),
+								secLabelRect.Fit(iconSprite),
 								1
 							);
 						}
@@ -376,7 +376,7 @@ namespace AngeliaFramework {
 						if (icon != 0 && CellRenderer.TryGetSprite(icon, out var iconSprite)) {
 							CellRenderer.Draw(
 								icon,
-								new RectInt(labelBounds.x - labelBounds.height, labelBounds.y, labelBounds.height, labelBounds.height).Fit(iconSprite.GlobalWidth, iconSprite.GlobalHeight),
+								new RectInt(labelBounds.x - labelBounds.height, labelBounds.y, labelBounds.height, labelBounds.height).Fit(iconSprite),
 								1
 							);
 						}

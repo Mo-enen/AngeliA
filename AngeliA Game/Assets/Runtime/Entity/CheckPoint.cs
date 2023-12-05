@@ -31,30 +31,30 @@ namespace AngeliaGame {
 
 
 
-	[LinkedCheckPoint(typeof(CheckLalynnA))] public class AltarLalynnA : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckMage))] public class AltarMage : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckElf))] public class AltarElf : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckDragon))] public class AltarDragon : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckTorch))] public class AltarTorch : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckSlime))] public class AltarSlime : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckInsect))] public class AltarInsect : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckOrc))] public class AltarOrc : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckMelon))] public class AltarMelon : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckCrow))] public class AltarCrow : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckBone))] public class AltarBone : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckFootman))] public class AltarFootman : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckKnight))] public class AltarKnight : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckJesus))] public class AltarJesus : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckShield))] public class AltarShield : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckGamble))] public class AltarGamble : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckScience))] public class AltarScience : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckSpider))] public class AltarSpider : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckStalactite))] public class AltarStalactite : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckSword))] public class AltarSword : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckSpace))] public class AltarSpace : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckMachineGun))] public class AltarMachineGun : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckKnowledge))] public class AltarKnowledge : CheckAltar { }
-	[LinkedCheckPoint(typeof(CheckCat))] public class AltarCat : CheckAltar { }
+	public class AltarLalynnA : CheckAltar<CheckLalynnA> { }
+	public class AltarMage : CheckAltar<CheckMage> { }
+	public class AltarElf : CheckAltar<CheckElf> { }
+	public class AltarDragon : CheckAltar<CheckDragon> { }
+	public class AltarTorch : CheckAltar<CheckTorch> { }
+	public class AltarSlime : CheckAltar<CheckSlime> { }
+	public class AltarInsect : CheckAltar<CheckInsect> { }
+	public class AltarOrc : CheckAltar<CheckOrc> { }
+	public class AltarMelon : CheckAltar<CheckMelon> { }
+	public class AltarCrow : CheckAltar<CheckCrow> { }
+	public class AltarBone : CheckAltar<CheckBone> { }
+	public class AltarFootman : CheckAltar<CheckFootman> { }
+	public class AltarKnight : CheckAltar<CheckKnight> { }
+	public class AltarJesus : CheckAltar<CheckJesus> { }
+	public class AltarShield : CheckAltar<CheckShield> { }
+	public class AltarGamble : CheckAltar<CheckGamble> { }
+	public class AltarScience : CheckAltar<CheckScience> { }
+	public class AltarSpider : CheckAltar<CheckSpider> { }
+	public class AltarStalactite : CheckAltar<CheckStalactite> { }
+	public class AltarSword : CheckAltar<CheckSword> { }
+	public class AltarSpace : CheckAltar<CheckSpace> { }
+	public class AltarMachineGun : CheckAltar<CheckMachineGun> { }
+	public class AltarKnowledge : CheckAltar<CheckKnowledge> { }
+	public class AltarCat : CheckAltar<CheckCat> { }
 
 
 }

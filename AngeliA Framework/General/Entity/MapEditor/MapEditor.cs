@@ -530,7 +530,7 @@ namespace AngeliaFramework {
 			}
 
 			// Check Altar
-			foreach (var type in typeof(CheckAltar).AllChildClass()) {
+			foreach (var type in typeof(CheckAltar<>).AllChildClass()) {
 				CheckAltarIDs.Add(type.AngeHash());
 			}
 

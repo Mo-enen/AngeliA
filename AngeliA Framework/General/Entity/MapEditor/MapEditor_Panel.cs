@@ -379,7 +379,7 @@ namespace AngeliaFramework {
 				if (CellRenderer.TryGetSprite(coverID, out var coverSprite)) {
 					CellRenderer.Draw(
 						coverID,
-						rect.Shrink(BUTTON_BORDER).Shift(0, selecting ? buttonDownShiftY : 0).Fit(coverSprite.GlobalWidth, coverSprite.GlobalHeight),
+						rect.Shrink(BUTTON_BORDER).Shift(0, selecting ? buttonDownShiftY : 0).Fit(coverSprite),
 						selecting ? Const.GREY_196 : Const.WHITE,
 						PANEL_Z - 3
 					);
@@ -546,7 +546,7 @@ namespace AngeliaFramework {
 				if (CellRenderer.TryGetSprite(pal.ArtworkID, out var sprite)) {
 					CellRenderer.Draw(
 						pal.ArtworkID,
-						rect.Shrink(COVER_SHRINK).Fit(sprite.GlobalWidth, sprite.GlobalHeight, sprite.PivotX, sprite.PivotY),
+						rect.Shrink(COVER_SHRINK).Fit(sprite, sprite.PivotX, sprite.PivotY),
 						PANEL_Z - 10
 
 					);
@@ -692,8 +692,7 @@ namespace AngeliaFramework {
 					CellRenderer.Draw(
 						pal.ArtworkID,
 						new RectInt(rect.x, rect.y, itemSize, itemSize).Fit(
-							sprite.GlobalWidth, sprite.GlobalHeight,
-							sprite.PivotX, sprite.PivotY
+							sprite, sprite.PivotX, sprite.PivotY
 						), PANEL_Z - 11
 					);
 				}
