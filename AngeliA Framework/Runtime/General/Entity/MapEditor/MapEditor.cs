@@ -258,24 +258,6 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-#if UNITY_EDITOR
-		[UnityEditor.MenuItem("AngeliA/Map Editor", true)]
-		public static bool OpenFromMenu_V () => UnityEditor.EditorApplication.isPlaying;
-
-
-		[UnityEditor.MenuItem("AngeliA/Map Editor", false, 21)]
-		public static void OpenFromMenu () {
-			if (!UnityEditor.EditorApplication.isPlaying) return;
-			var editor = Instance;
-			if (editor == null || !editor.Active) {
-				OpenMapEditorSmoothly();
-			} else {
-				CloseMapEditorSmoothly();
-			}
-		}
-#endif
-
-
 		[OnGameQuitting]
 		public static void OnGameQuitting () {
 			if (Instance != null && Instance.Active) Instance.OnInactivated();

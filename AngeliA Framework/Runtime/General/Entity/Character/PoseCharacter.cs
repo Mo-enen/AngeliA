@@ -210,8 +210,13 @@ namespace AngeliaFramework {
 				Suit_Foot = config.SuitFoot;
 
 			} else {
+				// Load Default Bodypart
 				for (int i = 0; i < len; i++) {
-					if (BodyParts[i] == null) BodyParts[i] = new();
+					BodyParts[i] = new BodyPart(
+						DEFAULT_BODY_PART_ID[i],
+						i == 9 || i == 10 || i == 15 || i == 16,
+						(i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null
+					);
 				}
 			}
 

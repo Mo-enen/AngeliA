@@ -46,8 +46,8 @@ namespace AngeliaGame {
 
 		}
 
-		public override void FrameUpdate () {
-			base.FrameUpdate();
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
 			// Summon GuaGua
 			if (GuaGua == null || !GuaGua.Active) {
 				GuaGua = Summon.CreateSummon<GuaGua>(this, X, Y);

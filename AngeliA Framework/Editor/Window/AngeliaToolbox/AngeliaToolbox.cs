@@ -332,7 +332,7 @@ namespace AngeliaFramework.Editor {
 			bool compiling = EditorApplication.isCompiling;
 
 			if (Toolbox != null) {
-				Toolbox.style.display = showRoot ? DisplayStyle.Flex : DisplayStyle.None;
+				Toolbox.style.display = !isPlaying && showRoot ? DisplayStyle.Flex : DisplayStyle.None;
 				if (Toolbox.enabledSelf == compiling) {
 					Toolbox.SetEnabled(!compiling);
 				}
@@ -546,10 +546,6 @@ namespace AngeliaFramework.Editor {
 					case "Language":
 						btn.clicked += LanguageEditor.OpenWindow;
 						EdittimeOnlyElements.Add(btn);
-						break;
-					case "Map":
-						btn.clicked += () => EditorApplication.ExecuteMenuItem("AngeliA/Map Editor");
-						RuntimeOnlyElements.Add(btn);
 						break;
 				}
 			});

@@ -20,7 +20,6 @@ namespace AngeliaFramework {
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSlotCreatedAttribute : System.Attribute { }
 
 
-	[ExecuteInEditMode]
 	public sealed class Game : MonoBehaviour {
 
 

@@ -34,7 +34,6 @@ namespace AngeliaFramework.Editor {
 	public static class AngeEditorUtil {
 
 
-		// API
 		public static void FillBlockSummaryColorPool (SpriteSheet sheet, Texture2D texture, Dictionary<int, Color32> pool) {
 			pool.Clear();
 			// Color Pool
@@ -95,7 +94,6 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		// Sheet
 		public static IEnumerable<string> ForAllAsepriteFiles (string ignoreKeyword = "#ignore") {
 			// Packages
 			foreach (string package in EditorUtil.ForAllPackages()) {
@@ -357,70 +355,6 @@ namespace AngeliaFramework.Editor {
 				name = name[..hashIndex];
 			}
 			return name.TrimEnd(' ');
-		}
-
-
-		public static AngeTextureMeta GetImportDataFromTextureAsset (string textureAssetPath) {
-
-			var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(textureAssetPath);
-			if (texture == null) return null;
-			var objs = AssetDatabase.LoadAllAssetsAtPath(textureAssetPath);
-			if (objs == null || objs.Length == 0) return null;
-
-			string tName = Util.GetNameWithoutExtension(textureAssetPath);
-
-			// Sheet Type
-			var sType = SheetType.General;
-			if (
-				tName.Contains("#lv", System.StringComparison.OrdinalIgnoreCase) ||
-				tName.Contains("#level", System.StringComparison.OrdinalIgnoreCase)
-			) {
-				sType = SheetType.Level;
-			} else if (
-				tName.Contains("#bg", System.StringComparison.OrdinalIgnoreCase) ||
-				tName.Contains("#background", System.StringComparison.OrdinalIgnoreCase)
-			) {
-				sType = SheetType.Background;
-			}
-
-			// Sheet Z
-			int sZ = 0;
-			int zIndex = tName.IndexOf("#z=", System.StringComparison.OrdinalIgnoreCase);
-			if (zIndex >= 0 && zIndex < tName.Length) {
-				string numberStr = "";
-				for (int i = zIndex + 3; i < tName.Length; i++) {
-					var c = tName[i];
-					if ((c >= '0' && c <= '9') || c == '-') {
-						numberStr += c.ToString();
-					} else break;
-				}
-				if (int.TryParse(numberStr, out var _number)) {
-					sZ = _number;
-				}
-			}
-
-			// Meta List
-			var metaList = new List<AngeSpriteMetaData>();
-			foreach (var obj in objs) {
-				if (obj is not Sprite sp) continue;
-				metaList.Add(new AngeSpriteMetaData() {
-					Name = sp.name,
-					SheetName = tName,
-					Border = sp.border,
-					AngePivot = new Vector2Int(
-						(int)(sp.pivot.x * 1000f / sp.rect.width),
-						(int)(sp.pivot.y * 1000f / sp.rect.height)
-					),
-					Rect = sp.rect,
-					SheetType = sType,
-					SheetZ = sZ,
-				});
-			}
-			return new AngeTextureMeta() {
-				AngeMetas = metaList.ToArray(),
-				PixelPerUnit = 16,
-				TextureSize = new(texture.width, texture.height),
-			};
 		}
 
 

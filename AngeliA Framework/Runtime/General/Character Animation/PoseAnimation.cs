@@ -10,65 +10,12 @@ namespace AngeliaFramework {
 
 
 
-		#region --- SUB ---
-
-
-		[System.Serializable]
-		public class KeyFrame {
-			public int Frame;
-			public int Value;
-			public Ease.EaseType Ease = AngeliaFramework.Ease.EaseType.InLiner;
-		}
-
-
-		[System.Serializable]
-		public class BodyPartCurve {
-			public KeyFrame[] PositionX;
-			public KeyFrame[] PositionY;
-			public KeyFrame[] PositionZ;
-			public KeyFrame[] Rotation;
-			public KeyFrame[] Twist;
-			public KeyFrame[] ScaleX;
-			public KeyFrame[] ScaleY;
-			public KeyFrame[] AppendWidth;
-			public KeyFrame[] AppendHeight;
-		}
-
-
-		[System.Serializable]
-		public class HandGrabCurve {
-			public KeyFrame[] Rotation;
-			public KeyFrame[] Scale;
-			public KeyFrame[] Twist;
-		}
-
-
-		#endregion
-
-
-
-
 		#region --- VAR ---
 
 
 		// Const
 		protected const int POSE_Z_HAND = 36;
 		protected const int A2G = Const.CEL / Const.ART_CEL;
-
-		// Api-Ser
-		public bool CurveAvailable { get; init; }
-		public BodyPartCurve HeadCurve;
-		public BodyPartCurve BodyCurve;
-		public BodyPartCurve UpperArmCurveL;
-		public BodyPartCurve UpperArmCurveR;
-		public BodyPartCurve LowerArmCurveL;
-		public BodyPartCurve LowerArmCurveR;
-		public BodyPartCurve UpperLegCurveL;
-		public BodyPartCurve UpperLegCurveR;
-		public BodyPartCurve LowerLegCurveL;
-		public BodyPartCurve LowerLegCurveR;
-		public HandGrabCurve HandGrabL;
-		public HandGrabCurve HandGrabR;
 
 		// Data
 		private static readonly Dictionary<int, PoseAnimation> Pool = new();
@@ -122,9 +69,6 @@ namespace AngeliaFramework {
 		}
 
 
-		public PoseAnimation () => CurveAvailable = LoadFromFile();
-
-
 		public static void AnimateFromPool (int id, PoseCharacter character) {
 			if (Pool.TryGetValue(id, out var result)) {
 				result.Animate(character);
@@ -133,12 +77,6 @@ namespace AngeliaFramework {
 
 
 		protected virtual void Animate (PoseCharacter character) {
-			SetAsCurrentTarget(character);
-			AnimateFromCurve(character);
-		}
-
-
-		private void SetAsCurrentTarget (PoseCharacter character) {
 			if (character == Target && character.CurrentAnimationFrame == CurrentAnimationFrame) return;
 			Target = character;
 			CurrentAnimationFrame = character.CurrentAnimationFrame;
@@ -164,30 +102,6 @@ namespace AngeliaFramework {
 			AnimationType = character.AnimationType;
 			FacingSign = FacingRight ? 1 : -1;
 			FrontSign = FacingFront ? 1 : -1;
-		}
-
-
-		private void AnimateFromCurve (PoseCharacter character) {
-			if (!CurveAvailable) return;
-
-			// Body
-
-
-			// Head
-
-
-			// Arm
-
-
-			// Leg
-
-
-			// Limb Rotate
-
-
-
-
-
 		}
 
 
@@ -307,17 +221,6 @@ namespace AngeliaFramework {
 				FootR.X += deltaX;
 			}
 		}
-
-
-		// File
-		public bool LoadFromFile () => AngeUtil.OverrideJson(
-			AngePath.AnimationRoot, this, $"{GetType().Name}.{AngePath.ANIMATION_FILE_EXT}"
-		);
-
-
-		public void SaveToFile () => AngeUtil.SaveJson(
-			this, AngePath.AnimationRoot, $"{GetType().Name}.{AngePath.ANIMATION_FILE_EXT}"
-		);
 
 
 		#endregion

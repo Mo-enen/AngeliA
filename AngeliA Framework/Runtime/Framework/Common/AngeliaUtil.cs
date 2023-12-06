@@ -37,7 +37,6 @@ namespace AngeliaFramework {
 			Util.CreateFolder(AngePath.DialogueRoot);
 			Util.CreateFolder(AngePath.LanguageRoot);
 			Util.CreateFolder(AngePath.MetaRoot);
-			Util.CreateFolder(AngePath.AnimationRoot);
 			Util.CreateFolder(AngePath.BuiltInMapRoot);
 			Util.CreateFolder(AngePath.DownloadMapRoot);
 		}

@@ -288,6 +288,22 @@ namespace AngeliaFramework.Editor {
 		}
 
 
+		public static void HorizontalLine (int thickness = 1) => HorizontalLine(thickness, new Color(0.1367f, 0.1367f, 0.1367f, 1f));
+		public static void HorizontalLine (Color color) => HorizontalLine(1, color);
+		public static void HorizontalLine (int thickness, Color color) {
+			var rect = Rect(0, thickness);
+			EditorGUI.DrawRect(rect, color);
+		}
+
+
+		public static void VerticalLine (int thickness = 1) => VerticalLine(thickness, new Color(0.1367f, 0.1367f, 0.1367f, 1f));
+		public static void VerticalLine (Color color) => VerticalLine(1, color);
+		public static void VerticalLine (int thickness, Color color) {
+			var rect = Rect(thickness, 0);
+			EditorGUI.DrawRect(rect, color);
+		}
+
+
 		public static string BetterTextArea (Rect rect, string text, GUIStyle style = null) {
 			bool preventSelection = Event.current.type != EventType.Repaint;
 			Color oldCursorColor = GUI.skin.settings.cursorColor;

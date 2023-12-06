@@ -75,15 +75,15 @@ namespace AngeliaFramework.Editor {
 	public class AngeliaGeneralHab : IScriptHubConfig {
 		public string Title => "AngeliA General";
 		public string[] Paths => new string[] {
-			"Packages/com.moenengames.angeliaframework/General",
-			"Assets/AngeliA Framework/General",
+			"Packages/com.moenengames.angeliaframework/Runtime/General",
+			"Assets/AngeliA Framework/Runtime/General",
 		};
 		public string IgnoreFolders => "Aseprite\nThird Party\nStandard";
 		public IScriptHubConfig.SearchPattern[] SearchPatterns => new IScriptHubConfig.SearchPattern[]{
 			new ("*.cs", "", true),
 		};
 		public int Order => -1023;
-		public int Column => 3;
+		public int Column => 4;
 	}
 
 
