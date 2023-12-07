@@ -337,7 +337,7 @@ namespace AngeliaFramework {
 			PanelOffsetX = -PanelRect.width;
 			PanelRect.x = CellRenderer.CameraRect.x - PanelRect.width;
 
-			System.GC.Collect(0, System.GCCollectionMode.Forced);
+			System.GC.Collect();
 
 		}
 
@@ -382,7 +382,7 @@ namespace AngeliaFramework {
 			CheckAltarIDs = null;
 			EditorMeta = null;
 
-			System.GC.Collect(0, System.GCCollectionMode.Forced);
+			System.GC.Collect();
 
 			// Restart Game
 			Game.RestartGame();

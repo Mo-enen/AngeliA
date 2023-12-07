@@ -8,8 +8,24 @@ namespace AngeliaFramework {
 	[EntityAttribute.Capacity(16, 0)]
 	[EntityAttribute.ForceSpawn]
 	public class ItemCollectParticle : Particle {
+		private static readonly int TYPE_ID = typeof(ItemCollectParticle).AngeHash();
 		public override int Duration => 30;
 		public override bool Loop => false;
+		[OnGameInitialize]
+		public static void OnGameInitialize () {
+			ItemHolder.OnItemCollected -= OnItemCollected;
+			ItemHolder.OnItemCollected += OnItemCollected;
+			static void OnItemCollected (Entity collector, int itemID, int count) {
+				if (collector == null || itemID == 0 || count == 0) return;
+				if (Stage.SpawnEntity(
+					TYPE_ID,
+					collector.X,
+					collector.Y + Const.CEL * 2
+				) is Particle particle) {
+					particle.UserData = itemID;
+				}
+			}
+		}
 		public override void OnActivated () {
 			base.OnActivated();
 			Width = Const.CEL * 2 / 3;

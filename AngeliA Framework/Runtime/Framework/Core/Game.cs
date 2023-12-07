@@ -16,7 +16,7 @@ namespace AngeliaFramework {
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameRestartAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameTryingToQuitAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameQuittingAttribute : System.Attribute { }
-	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSlotChangedAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSlotChangedAttribute : System.Attribute, IOrderedAttribute { public int Order { get; set; } public OnSlotChangedAttribute (int order = 0) => Order = order; }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSlotCreatedAttribute : System.Attribute { }
 
 
@@ -224,6 +224,7 @@ namespace AngeliaFramework {
 				CellRenderer.Initialize_Rendering(GameCamera);
 				CellRenderer.Initialize_Text(GameCamera, m_Fonts);
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitialize>(m => m.Value.Order <= 0, (a, b) => a.Value.Order.CompareTo(b.Value.Order));
+				OnSlotChanged?.Invoke();
 				AudioPlayer.Initialize(m_AudioClips);
 				Debug.unityLogger.logEnabled = Application.isEditor;
 				Application.targetFrameRate = Application.isEditor ? 60 : GraphicFramerate;
@@ -239,7 +240,7 @@ namespace AngeliaFramework {
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitialize>(m => m.Value.Order > 0, (a, b) => a.Value.Order.CompareTo(b.Value.Order));
 				DontDestroyOnLoad(GameCamera.transform.gameObject);
 				DontDestroyOnLoad(gameObject);
-				System.GC.Collect(0, System.GCCollectionMode.Forced);
+				System.GC.Collect();
 				if (m_GameStartMode == GameStartMode.StartWithGamePlay) RestartGameLogic();
 				if (m_GameStartMode == GameStartMode.StartWithMapEditor) MapEditor.OpenMapEditorSmoothly();
 			} catch (System.Exception ex) { Debug.LogException(ex); }

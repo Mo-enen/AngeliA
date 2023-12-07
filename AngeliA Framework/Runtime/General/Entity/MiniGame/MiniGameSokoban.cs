@@ -52,12 +52,14 @@ namespace AngeliaFramework {
 
 
 		// Const
+		private const int LEVEL_COUNT = 9;
+		private const int IRON_BADGE_COUNT = 3;
 		private static readonly int BRICK_CODE = "Sokoban Brick".AngeHash();
 		private static readonly int BACK_CODE = "Sokoban BackGround".AngeHash();
 		private static readonly int BOX_CODE = "Sokoban Box".AngeHash();
 		private static readonly int GOAL_CODE = "Sokoban Goal".AngeHash();
 		private static readonly int PLAYER_CODE = "Sokoban Player".AngeHash();
-		private static readonly Level[] Levels = {
+		private static readonly Level[] Levels = new Level[LEVEL_COUNT]{
 			new Level("#####  ", "#P  #  ", "# #B###", "# B ..#", "#######"),
 			new Level("##########", "#   .#.###", "# P    B #", "# B# #   #", "# .B   ###", "#####  ###", "##########"),
 			new Level("########", "###  ###", "### B#.#", "#    B #", "#B # B #", "#.   P #", "#  #####", "#..#####", "########"),
@@ -79,6 +81,7 @@ namespace AngeliaFramework {
 		private bool Celebrating => CurrentLevel >= Levels.Length || Game.GlobalFrame < LevelClearedFrame + 120;
 
 		// Data
+		private readonly BadgesSaveData Saving = new(LEVEL_COUNT);
 		private IntToString LevelLabelToString = null;
 		private BlockType[,] Blocks = null;
 		private int CurrentLevel = 0;
@@ -100,6 +103,7 @@ namespace AngeliaFramework {
 
 
 		protected override void StartGame () {
+			LoadGameDataFromFile(Saving);
 			LoadLevel(0);
 			LevelLabelToString = new(Language.Get(UI_Level, "Level:"));
 			PlayerMovedFrame = int.MinValue;
@@ -126,6 +130,12 @@ namespace AngeliaFramework {
 
 			// Next Level Check
 			if (LevelClearedFrame >= 0) {
+				if (Saving.GetBadge(CurrentLevel) <= 0) {
+					int currentBadge = CurrentLevel < IRON_BADGE_COUNT ? 1 : 2;
+					Saving.SetBadge(CurrentLevel, currentBadge);
+					SaveGameDataToFile(Saving);
+					SpawnBadge(currentBadge);
+				}
 				CurrentLevel++;
 				LoadLevel(CurrentLevel);
 				LevelClearedFrame = int.MinValue;
@@ -189,7 +199,10 @@ namespace AngeliaFramework {
 			CellRenderer.Draw(Const.PIXEL, windowRect.Expand(0, 0, 0, barHeight), bgTint, 0);
 
 			// Label
-			CellRendererGUI.Label(CellContent.Get(LevelLabelToString.GetString(CurrentLevel + 1)), new RectInt(stageRect.x, stageRect.yMax + barHeight / 10, stageRect.width, barHeight));
+			CellRendererGUI.Label(
+				CellContent.Get(LevelLabelToString.GetString(CurrentLevel + 1), alignment: Alignment.MidRight),
+				new RectInt(stageRect.x, stageRect.yMax + barHeight / 10, stageRect.width, barHeight)
+			);
 
 			// Stage
 			var blockRect = new RectInt(0, 0, stageRect.width / StageWidth, stageRect.height / StageHeight);
@@ -210,6 +223,9 @@ namespace AngeliaFramework {
 					);
 				}
 			}
+
+			// Badges
+			DrawBadges(Saving, stageRect.x, stageRect.yMax, 2, Unify(36));
 
 			// Player
 			var playerRect = new RectInt(stageRect.x + PlayerX * blockRect.width, stageRect.y + PlayerY * blockRect.height, blockRect.width, blockRect.height);

@@ -25,7 +25,50 @@ namespace AngeliaFramework {
 	public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 
 
-		// VAR
+
+
+		#region --- SUB ---
+
+
+		[System.Serializable]
+		protected class BadgesSaveData : ISerializationCallbackReceiver {
+
+			public int[] Badges;
+			[System.NonSerialized] private readonly int BadgesCount;
+
+			public BadgesSaveData (int badgeCount) {
+				BadgesCount = badgeCount;
+				Valied();
+			}
+			public int GetBadge (int index) => Badges != null && index >= 0 && index < Badges.Length ? Badges[index] : 0;
+			public void SetBadge (int index, int quality) {
+				if (Badges != null && index >= 0 && index < Badges.Length) {
+					Badges[index] = quality;
+				}
+			}
+			public void OnAfterDeserialize () => Valied();
+			public void OnBeforeSerialize () => Valied();
+			private void Valied () {
+				Badges ??= new int[BadgesCount].FillWithValue(0);
+				if (Badges.Length != BadgesCount) {
+					var oldArr = Badges;
+					Badges = new int[BadgesCount].FillWithValue(0);
+					oldArr.CopyTo(Badges, Mathf.Min(BadgesCount, oldArr.Length));
+				}
+			}
+
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- VAR ---
+
+
+		// Const
 		private static readonly int MENU_QUIT_MINI_GAME = "Menu.MiniGame.QuitMsg".AngeHash();
 		protected static readonly int UI_QUIT = "UI.Quit".AngeHash();
 		protected static readonly int UI_BACK = "UI.Back".AngeHash();
@@ -33,7 +76,11 @@ namespace AngeliaFramework {
 		protected static readonly int UI_NONE = "UI.None".AngeHash();
 		protected static readonly int UI_OK = "UI.OK".AngeHash();
 		protected static readonly int UI_GAMEOVER = "UI.GameOver".AngeHash();
+		private static readonly int[] DEFAULT_BADGE_CODES = { "MiniGameBadgeEmpty".AngeHash(), "MiniGameBadgeIron".AngeHash(), "MiniGameBadgeGold".AngeHash(), };
 
+		// Api
+		public delegate void SpawnBadgeHandler (int quality);
+		public static event SpawnBadgeHandler OnBadgeSpawn;
 		protected virtual Vector2Int WindowSize => new(1000, 800);
 		protected abstract bool RequireMouseCursor { get; }
 		protected abstract string DisplayName { get; }
@@ -46,11 +93,20 @@ namespace AngeliaFramework {
 		);
 		protected bool IsPlaying => FrameTask.GetCurrentTask() is MiniGameTask task && task.MiniGame == this;
 		protected bool ShowingMenu => MenuEntity != null && MenuEntity.Active;
+
+		// Short
 		private GenericDialogUI MenuEntity => _MenuEntity ??= Stage.PeekOrGetEntity<GenericDialogUI>();
 		private GenericDialogUI _MenuEntity = null;
 
 
-		// MSG
+		#endregion
+
+
+
+
+		#region --- MSG ---
+
+
 		public override void OnInactivated () {
 			base.OnInactivated();
 			if (IsPlaying) CloseGame();
@@ -106,7 +162,14 @@ namespace AngeliaFramework {
 		protected abstract void GameUpdate ();
 
 
-		// API
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
 		void IActionTarget.Invoke () {
 			if (IsPlaying) return;
 			FrameTask.EndAllTask();
@@ -134,7 +197,40 @@ namespace AngeliaFramework {
 		protected static int ReverseUnify (int value) => CellRendererGUI.ReverseUnify(value);
 
 
-		// LGC
+		// Saving
+		protected bool LoadGameDataFromFile<T> (T data) => AngeUtil.OverrideJson(
+			Util.CombinePaths(AngePath.PlayerDataRoot, "MiniGame"), data, GetType().Name
+		);
+
+
+		protected void SaveGameDataToFile<T> (T data) => AngeUtil.SaveJson(
+			data, Util.CombinePaths(AngePath.PlayerDataRoot, "MiniGame"), GetType().Name
+		);
+
+
+		protected void SpawnBadge (int quality) => OnBadgeSpawn?.Invoke(quality);
+
+
+		protected void DrawBadges (BadgesSaveData data, int x, int y, int z, int badgeSize, int[] spriteIDs = null) {
+			if (data == null || data.Badges == null) return;
+			spriteIDs ??= DEFAULT_BADGE_CODES;
+			var badgeRect = new RectInt(x, y, badgeSize, badgeSize);
+			for (int i = 0; i < data.Badges.Length; i++) {
+				int icon = spriteIDs[data.GetBadge(i).Clamp(0, spriteIDs.Length - 1)];
+				CellRenderer.Draw(icon, badgeRect, z);
+				badgeRect.x += badgeRect.width;
+			}
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
 		private void OpenQuitDialog () {
 			if (ShowRestartOption) {
 				GenericDialogUI.SpawnDialog(
@@ -151,6 +247,11 @@ namespace AngeliaFramework {
 				);
 			}
 		}
+
+
+		#endregion
+
+
 
 
 	}

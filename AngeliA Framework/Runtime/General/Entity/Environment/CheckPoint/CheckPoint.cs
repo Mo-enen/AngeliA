@@ -36,9 +36,8 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnGameInitialize(-128)]
 		[OnSlotChanged]
-		public static void OnGameInitialize () => LoadUnlockFromFile();
+		public static void OnSlotChanged () => LoadUnlockFromFile();
 
 
 		[OnGameRestart]

@@ -7,43 +7,6 @@ using AngeliaFramework;
 namespace AngeliaFramework {
 
 
-	public static class ItemCombinationHelper {
-		[OnSlotCreated]
-		public static void SlotCreated () {
-			// Create Combination File
-			string combineFilePath = Util.CombinePaths(AngePath.SaveSlotRoot, ItemSystem.COMBINATION_FILE_NAME);
-			Util.TextToFile(@"
-#
-# Custom Item Combination Formula
-# 
-#
-# Remove '#' for the lines below will change
-# 'TreeTrunk' to 'ItemCoin' for making chess pieces
-# 
-# Item names can be found in the helper file next to
-# this file
-#
-#
-# ItemCoin + RuneWater + RuneFire = ChessPawn
-# ItemCoin + RuneFire + RuneLightning = ChessKnight
-# ItemCoin + RunePoison + RuneFire = ChessBishop
-# ItemCoin + RuneWater + RuneLightning = ChessRook
-# ItemCoin + RuneWater + RunePoison = ChessQueen
-# ItemCoin + RunePoison + RuneLightning = ChessKing
-#
-#
-#", combineFilePath);
-			// Create Item Name Helper
-			var builder = new StringBuilder();
-			foreach (var type in typeof(Item).AllChildClass()) {
-				builder.AppendLine(type.AngeName());
-			}
-			Util.TextToFile(builder.ToString(), Util.CombinePaths(AngePath.SaveSlotRoot, "Item Name Helper.txt"));
-
-		}
-	}
-
-
 	[EntityAttribute.ItemCombination(typeof(iRuneWater), typeof(iRuneFire), typeof(iTreeTrunk), 1)]
 	public class iChessPawn : Item { }
 
@@ -86,11 +49,33 @@ namespace AngeliaFramework {
 	[EntityAttribute.ItemCombination(typeof(iBowlingBall), typeof(iBowlingBall), typeof(iIngotIron), 1)]
 	public class iDumbbell : Item { }
 
-	[EntityAttribute.ItemCombination(typeof(iMedalGold), typeof(iIngotGold), 1)]
-	public class iBadgeGold : Item { }
+	public class iBadgeGold : Item {
+		private static readonly int TYPE_ID = typeof(iBadgeGold).AngeHash();
+		[OnGameInitialize]
+		public static void OnGameInitialize () {
+			MiniGame.OnBadgeSpawn -= OnBadgeSpawn;
+			MiniGame.OnBadgeSpawn += OnBadgeSpawn;
+			static void OnBadgeSpawn (int quality) {
+				if (quality >= 2) {
+					ItemSystem.GiveItemToPlayer(TYPE_ID, 1);
+				}
+			}
+		}
+	}
 
-	[EntityAttribute.ItemCombination(typeof(iMedalIron), typeof(iIngotIron), 1)]
-	public class iBadgeIron : Item { }
+	public class iBadgeIron : Item {
+		private static readonly int TYPE_ID = typeof(iBadgeIron).AngeHash();
+		[OnGameInitialize]
+		public static void OnGameInitialize () {
+			MiniGame.OnBadgeSpawn -= OnBadgeSpawn;
+			MiniGame.OnBadgeSpawn += OnBadgeSpawn;
+			static void OnBadgeSpawn (int quality) {
+				if (quality <= 1) {
+					ItemSystem.GiveItemToPlayer(TYPE_ID, 1);
+				}
+			}
+		}
+	}
 
 	[EntityAttribute.ItemCombination(typeof(iPotionEmpty), typeof(iPotionEmpty), typeof(iItemSand), 1)]
 	public class iHourglass : Item { }

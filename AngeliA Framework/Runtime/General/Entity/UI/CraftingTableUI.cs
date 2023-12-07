@@ -358,7 +358,7 @@ namespace AngeliaFramework {
 				if (playerID == 0) return;
 				int collectedCount = Inventory.CollectItem(playerID, CombineResultID, CombineResultCount);
 				if (collectedCount < CombineResultCount) {
-					ItemSystem.ItemSpawnItemAtPlayer(CombineResultID, CombineResultCount - collectedCount);
+					ItemSystem.SpawnItemAtPlayer(CombineResultID, CombineResultCount - collectedCount);
 				}
 			}
 

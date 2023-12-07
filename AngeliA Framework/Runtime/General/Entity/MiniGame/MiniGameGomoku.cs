@@ -280,6 +280,9 @@ namespace AngeliaFramework {
 			);
 			if (win != GomokuAI.GomokuStone.None) {
 				Winner = win;
+				if (win == GomokuAI.GomokuStone.Black == PlayerIsBlack) {
+					SpawnBadge(1);
+				}
 			}
 			BlackTurn = !BlackTurn;
 			LastPlacePositionX = x;

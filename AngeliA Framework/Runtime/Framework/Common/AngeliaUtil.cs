@@ -359,7 +359,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool OverrideJson<T> (string rootPath, T target, string name = "") where T : class {
+		public static bool OverrideJson<T> (string rootPath, T target, string name = "") {
 			if (target == null) return false;
 			try {
 				string jsonPath = GetJsonPath<T>(rootPath, name);

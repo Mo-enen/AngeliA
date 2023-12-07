@@ -16,21 +16,6 @@ namespace AngeliaFramework {
 
 
 
-		#region --- SUB ---
-
-
-		[EntityAttribute.MapEditorGroup("MapGenerator")]
-		public class MapGenerator_Room : IMapEditorItem { }
-
-		[EntityAttribute.MapEditorGroup("MapGenerator")]
-		public class MapGenerator_Door : IMapEditorItem { }
-
-
-		#endregion
-
-
-
-
 		#region --- VAR ---
 
 
@@ -38,12 +23,15 @@ namespace AngeliaFramework {
 		public bool IsGenerating => GenerateMapTask != null && GenerateMapTask.Status == TaskStatus.Running;
 		public bool HasMapInDisk {
 			get {
-				if (!_HasMapInDisk.HasValue) _HasMapInDisk = Util.HasFileIn(MapRoot, true, "*");
+				if (!_HasMapInDisk.HasValue || _CheckedSlot != AngePath.CurrentSaveSlot) {
+					_HasMapInDisk = Util.HasFileIn(MapRoot, true, "*");
+					_CheckedSlot = AngePath.CurrentSaveSlot;
+				}
 				return _HasMapInDisk.Value;
 			}
 		}
-		protected string MapRoot { get; init; } = "";
-		protected string TempMapRoot { get; init; } = "";
+		protected string MapRoot => Util.CombinePaths(AngePath.ProcedureMapRoot, GetType().Name);
+		protected string TempMapRoot => Util.CombinePaths(AngePath.ProcedureMapTempRoot, GetType().Name);
 		protected WorldStream SampleReader { get; private set; } = null;
 		protected WorldStream ResultWriter { get; private set; } = null;
 
@@ -51,6 +39,7 @@ namespace AngeliaFramework {
 		private readonly CancellationTokenSource GenerateMapToken = new();
 		private Task GenerateMapTask = null;
 		private bool? _HasMapInDisk = null;
+		private int _CheckedSlot = -1;
 
 
 		#endregion
@@ -61,8 +50,8 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnGameInitialize(-256)]
-		public static void OnGameInitialize () {
+		[OnSlotChanged]
+		public static void OnSlotChanged () {
 			Util.DeleteFolder(AngePath.ProcedureMapRoot);
 			Util.CreateFolder(AngePath.ProcedureMapRoot);
 			Util.DeleteFolder(AngePath.ProcedureMapTempRoot);
@@ -74,11 +63,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public MapGenerator () {
-			MapRoot = Util.CombinePaths(AngePath.ProcedureMapRoot, GetType().Name);
-			TempMapRoot = Util.CombinePaths(AngePath.ProcedureMapTempRoot, GetType().Name);
-			_HasMapInDisk = null;
-		}
+		public MapGenerator () => _HasMapInDisk = null;
 
 
 		public override void OnActivated () {
@@ -117,12 +102,14 @@ namespace AngeliaFramework {
 		public void Generate () {
 			try {
 				BeforeMapGenerate();
+				string mapRoot = MapRoot;
+				string tempMapRoot = TempMapRoot;
 
 				SampleReader = new WorldStream(WorldSquad.MapRoot, WorldSquad.Channel.GetLocation(), @readonly: true, isProcedure: true);
-				ResultWriter = new WorldStream(TempMapRoot, MapLocation.Procedure, @readonly: false, isProcedure: true);
+				ResultWriter = new WorldStream(tempMapRoot, MapLocation.Procedure, @readonly: false, isProcedure: true);
 
-				Util.DeleteFolder(TempMapRoot);
-				Util.CreateFolder(TempMapRoot);
+				Util.DeleteFolder(tempMapRoot);
+				Util.CreateFolder(tempMapRoot);
 
 				_HasMapInDisk = false;
 				GenerateMap();
@@ -131,8 +118,8 @@ namespace AngeliaFramework {
 				SampleReader.Dispose();
 				ResultWriter.Dispose();
 
-				Util.DeleteFolder(MapRoot);
-				Util.MoveFolder(TempMapRoot, MapRoot);
+				Util.DeleteFolder(mapRoot);
+				Util.MoveFolder(tempMapRoot, mapRoot);
 				WorldSquad.Front.ForceReloadDelay();
 				WorldSquad.Behind.ForceReloadDelay();
 

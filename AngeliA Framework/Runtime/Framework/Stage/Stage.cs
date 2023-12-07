@@ -344,10 +344,8 @@ namespace AngeliaFramework {
 				RequireSetViewZ = null;
 				LastSettleFrame = GlobalFrame;
 				ClearStagedEntities();
-				if (newZ != ViewZ) {
-					ViewZ = newZ;
-					LocalAntiSpawnHash.Clear();
-				}
+				LocalAntiSpawnHash.Clear();
+				ViewZ = newZ;
 				OnViewZChanged?.Invoke();
 			}
 		}

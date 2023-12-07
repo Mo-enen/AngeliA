@@ -281,7 +281,7 @@ namespace AngeliaFramework {
 						// Collect
 						int collectCount = Inventory.CollectItem(invID, oldEquipmentID, out _, 1);
 						if (collectCount == 0) {
-							ItemSystem.ItemSpawnItemAtPlayer(oldEquipmentID);
+							ItemSystem.SpawnItemAtPlayer(oldEquipmentID);
 						}
 					}
 				}

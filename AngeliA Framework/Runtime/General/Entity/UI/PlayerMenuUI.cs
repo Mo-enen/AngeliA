@@ -942,7 +942,7 @@ namespace AngeliaFramework {
 						// Collect
 						int collectCount = Inventory.CollectItem(playerInvID, oldEquipmentID, out int collectIndex, 1);
 						if (collectCount == 0) {
-							ItemSystem.ItemSpawnItemAtPlayer(oldEquipmentID);
+							ItemSystem.SpawnItemAtPlayer(oldEquipmentID);
 						} else {
 							FlashInventoryField(collectIndex, true);
 						}
@@ -1103,7 +1103,7 @@ namespace AngeliaFramework {
 
 		private void ThrowTakingToGround () {
 			if (TakingID == 0 || TakingCount == 0) return;
-			ItemSystem.ItemSpawnItemAtPlayer(TakingID, TakingCount);
+			ItemSystem.SpawnItemAtPlayer(TakingID, TakingCount);
 			TakingID = 0;
 			TakingCount = 0;
 		}

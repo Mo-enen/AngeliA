@@ -41,7 +41,7 @@ namespace AngeliaFramework {
 
 
 		[System.Serializable]
-		private class PlayerInventoryData : InventoryData {
+		private class CharacterInventoryData : InventoryData {
 			public int Helmet = 0;
 			public int BodySuit = 0;
 			public int Shoes = 0;
@@ -77,22 +77,16 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnGameInitialize(-65)]
-		[OnSlotChanged]
-		public static void Initialize () => LoadAllFromDisk();
-
-
-		[OnGameInitialize(64)]
-		public static void AfterGameInitialize () {
-			foreach (var (_, data) in Pool) {
-				UpdateItemUnlocked(data);
-			}
+		[OnSlotChanged(1024)]
+		public static void OnSlotChanged () {
+			LoadAllFromDisk();
+			UpdateAllItemUnlocked();
 		}
 
 
 		[OnGameUpdate]
 		public static void FrameUpdate () {
-			if (IsPoolDirty) SaveAllToDisk();
+			if (IsPoolDirty) SaveAllToDisk(false);
 		}
 
 
@@ -116,10 +110,10 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void AddNewPlayerInventoryData (int inventoryID, int itemCount) {
+		public static void AddNewCharacterInventoryData (int inventoryID, int itemCount) {
 			if (itemCount <= 0) return;
 			if (Pool.ContainsKey(inventoryID)) return;
-			Pool.Add(inventoryID, new PlayerInventoryData() {
+			Pool.Add(inventoryID, new CharacterInventoryData() {
 				Items = new int[itemCount],
 				Counts = new int[itemCount],
 				IsDirty = true,
@@ -328,7 +322,7 @@ namespace AngeliaFramework {
 
 
 		// Equipment
-		public static int GetEquipment (int inventoryID, EquipmentType type) => Pool.TryGetValue(inventoryID, out var data) && data is PlayerInventoryData pData ? type switch {
+		public static int GetEquipment (int inventoryID, EquipmentType type) => Pool.TryGetValue(inventoryID, out var data) && data is CharacterInventoryData pData ? type switch {
 			EquipmentType.Weapon => pData.Weapon,
 			EquipmentType.BodyArmor => pData.BodySuit,
 			EquipmentType.Helmet => pData.Helmet,
@@ -343,7 +337,7 @@ namespace AngeliaFramework {
 
 			if (
 				!Pool.TryGetValue(inventoryID, out var data) ||
-				data is not PlayerInventoryData pData
+				data is not CharacterInventoryData pData
 			) return false;
 
 			if (
@@ -401,7 +395,7 @@ namespace AngeliaFramework {
 					if (path.EndsWith(INV_EXT)) {
 						data = JsonUtility.FromJson<InventoryData>(json);
 					} else {
-						data = JsonUtility.FromJson<PlayerInventoryData>(json);
+						data = JsonUtility.FromJson<CharacterInventoryData>(json);
 					}
 					if (data == null || data.Items == null) continue;
 					data.IsDirty = false;
@@ -419,20 +413,25 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void SaveAllToDisk () {
+		private static void SaveAllToDisk (bool forceSave) {
 			IsPoolDirty = false;
 			string root = Util.CombinePaths(AngePath.PlayerDataRoot, "Inventory");
 			foreach (var (id, data) in Pool) {
-				if (!data.IsDirty) continue;
+				if (!forceSave && !data.IsDirty) continue;
 				data.IsDirty = false;
 				// Save Inventory
 				Util.TextToFile(
 					JsonUtility.ToJson(data, false),
-					Util.CombinePaths(
-						root, $"{id}.{(data is PlayerInventoryData ? PLAYER_INV_EXT : INV_EXT)}"
-					)
+					Util.CombinePaths(root, $"{id}.{(data is CharacterInventoryData ? PLAYER_INV_EXT : INV_EXT)}")
 				);
 				// Update Item Unlocked
+				UpdateItemUnlocked(data);
+			}
+		}
+
+
+		private static void UpdateAllItemUnlocked () {
+			foreach (var (_, data) in Pool) {
 				UpdateItemUnlocked(data);
 			}
 		}
@@ -444,7 +443,7 @@ namespace AngeliaFramework {
 				int itemID = data.Items[i];
 				int itemCount = data.Counts[i];
 				if (itemID == 0 || itemCount <= 0) continue;
-				ItemSystem.SetItemUnloced(itemID, true);
+				ItemSystem.SetItemUnlocked(itemID, true);
 			}
 		}
 

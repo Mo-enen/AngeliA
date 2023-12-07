@@ -147,6 +147,13 @@ namespace AngeliaFramework {
 				ServeBall(true);
 			} else if (BallX > 1000 - BALL_SIZE / 2) {
 				ScorePlayer++;
+				if (ScorePlayer % 20 == 0) {
+					if (ScorePlayer % 60 == 0) {
+						SpawnBadge(2);
+					} else {
+						SpawnBadge(1);
+					}
+				}
 				ServeBall(false);
 			}
 

@@ -71,7 +71,6 @@ namespace AngeliaFramework {
 
 		[OnGameInitialize(-128)]
 		internal static void BeforeGameInitialize () {
-
 			ItemPool.Clear();
 			foreach (var type in typeof(Item).AllChildClass()) {
 				if (System.Activator.CreateInstance(type) is not Item item) continue;
@@ -84,11 +83,6 @@ namespace AngeliaFramework {
 					item.MaxStackCount.Clamp(1, 256)
 				));
 			}
-
-			LoadUnlockDataFromFile();
-			CombinationPool.Clear();
-			LoadCombinationFromFile();
-			LoadCombinationFromCode();
 		}
 
 
@@ -102,12 +96,49 @@ namespace AngeliaFramework {
 		}
 
 
-		[OnSlotChanged]
+		[OnSlotChanged(256)]
 		internal static void OnSlotChanged () {
 			LoadUnlockDataFromFile();
 			CombinationPool.Clear();
 			LoadCombinationFromFile();
 			LoadCombinationFromCode();
+		}
+
+
+		[OnSlotCreated]
+		public static void SlotCreated () {
+			// Create Combination File
+			string combineFilePath = Util.CombinePaths(AngePath.ItemSaveDataRoot, COMBINATION_FILE_NAME);
+			Util.TextToFile(@"
+#
+# Custom Item Combination Formula
+# 
+#
+# Remove '#' for the lines below will change
+# 'TreeTrunk' to 'ItemCoin' for making chess pieces
+# 
+# Item names can be found in the helper file next to
+# this file
+#
+# Example:
+#
+# ItemCoin + RuneWater + RuneFire = ChessPawn
+# ItemCoin + RuneFire + RuneLightning = ChessKnight
+# ItemCoin + RunePoison + RuneFire = ChessBishop
+# ItemCoin + RuneWater + RuneLightning = ChessRook
+# ItemCoin + RuneWater + RunePoison = ChessQueen
+# ItemCoin + RunePoison + RuneLightning = ChessKing
+#
+#
+#", combineFilePath);
+
+			// Create Item Name Helper
+			var builder = new StringBuilder();
+			foreach (var type in typeof(Item).AllChildClass()) {
+				builder.AppendLine(type.AngeName());
+			}
+			Util.TextToFile(builder.ToString(), Util.CombinePaths(AngePath.ItemSaveDataRoot, "Item Name Helper.txt"));
+
 		}
 
 
@@ -282,7 +313,7 @@ namespace AngeliaFramework {
 		public static bool IsItemUnlocked (int itemID) => ItemPool.TryGetValue(itemID, out var data) && data.Unlocked;
 
 
-		public static void SetItemUnloced (int itemID, bool unlocked) {
+		public static void SetItemUnlocked (int itemID, bool unlocked) {
 			if (!ItemPool.TryGetValue(itemID, out var data) || data.Unlocked == unlocked) return;
 			data.Unlocked = unlocked;
 			IsUnlockDirty = true;
@@ -290,7 +321,18 @@ namespace AngeliaFramework {
 
 
 		// Spawn 
-		public static void ItemSpawnItemAtPlayer (int itemID, int count = 1) {
+		public static bool GiveItemToPlayer (int itemID, int count = 1) {
+			var player = Player.Selecting;
+			if (player == null) return false;
+			count -= Inventory.CollectItem(player.TypeID, itemID, count);
+			if (count > 0) {
+				SpawnItemAtPlayer(itemID, count);
+			}
+			return true;
+		}
+
+
+		public static void SpawnItemAtPlayer (int itemID, int count = 1) {
 			int x = Player.Selecting != null ? Player.Selecting.Rect.x - Const.CEL : CellRenderer.CameraRect.CenterX();
 			int y = Player.Selecting != null ? Player.Selecting.Y : CellRenderer.CameraRect.CenterY();
 			SpawnItem(itemID, x, y, count);
@@ -317,6 +359,7 @@ namespace AngeliaFramework {
 		private static void LoadUnlockDataFromFile () {
 			string unlockPath = Util.CombinePaths(AngePath.PlayerDataRoot, UNLOCK_NAME);
 			if (!Util.FileExists(unlockPath)) return;
+			foreach (var (_, data) in ItemPool) data.Unlocked = false;
 			var bytes = Util.FileToByte(unlockPath);
 			for (int i = 0; i < bytes.Length - 3; i += 4) {
 				int id =
@@ -349,7 +392,7 @@ namespace AngeliaFramework {
 
 		// Combination
 		private static void LoadCombinationFromFile () {
-			string filePath = Util.CombinePaths(AngePath.SaveSlotRoot, COMBINATION_FILE_NAME);
+			string filePath = Util.CombinePaths(AngePath.ItemSaveDataRoot, COMBINATION_FILE_NAME);
 			if (!Util.FileExists(filePath)) return;
 			var builder = new StringBuilder();
 			foreach (string line in Util.ForAllLines(filePath)) {

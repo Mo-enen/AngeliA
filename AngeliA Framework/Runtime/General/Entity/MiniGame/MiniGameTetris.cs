@@ -591,7 +591,7 @@ namespace AngeliaFramework {
 					clearedLines++;
 				}
 			}
-			ClearedLines += clearedLines;
+			GrowClearedLines(clearedLines);
 		}
 
 
@@ -645,6 +645,20 @@ namespace AngeliaFramework {
 			}
 			if (AutoDropResetCount < 15) {
 				AutoDropFrame = Game.GlobalFrame;
+			}
+		}
+
+
+		private void GrowClearedLines (int grow) {
+			int oldClearedLines = ClearedLines;
+			ClearedLines += grow;
+			// Iron Badge Check
+			if (oldClearedLines <= 50 && ClearedLines > 50) {
+				SpawnBadge(1);
+			}
+			// Hold Badge Check
+			if (oldClearedLines <= 100 && ClearedLines > 100) {
+				SpawnBadge(2);
 			}
 		}
 

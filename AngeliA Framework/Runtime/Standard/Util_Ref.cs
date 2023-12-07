@@ -8,6 +8,11 @@ using System.Linq;
 
 
 namespace AngeliaFramework {
+
+
+	public interface IOrderedAttribute { public int Order { get; } }
+
+
 	public static partial class Util {
 
 
@@ -15,11 +20,21 @@ namespace AngeliaFramework {
 		public static void LinkEventWithAttribute<T> (System.Type sender, string eventName) where T : System.Attribute {
 			var info = sender.GetEvent(eventName, BindingFlags.Public | BindingFlags.Static);
 			if (info == null) return;
-			foreach (var (method, _) in Util.AllStaticMethodWithAttribute<T>()) {
+			// Get List
+			var list = new List<(MethodInfo method, int order)>();
+			foreach (var (method, att) in Util.AllStaticMethodWithAttribute<T>()) {
 				try {
-					info.AddEventHandler(null, System.Delegate.CreateDelegate(
-						info.EventHandlerType, method
-					));
+					int order = 0;
+					if (att is IOrderedAttribute orderAtt) order = orderAtt.Order;
+					list.Add((method, order));
+				} catch (System.Exception ex) { Debug.LogException(ex); }
+			}
+			// Sort 
+			list.Sort((a, b) => a.order.CompareTo(b.order));
+			// Fill List
+			foreach (var (method, _) in list) {
+				try {
+					info.AddEventHandler(null, System.Delegate.CreateDelegate(info.EventHandlerType, method));
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
 		}

@@ -38,8 +38,6 @@ namespace AngeliaFramework {
 
 
 		// Const
-		public const int INVENTORY_COLUMN = 6;
-		public const int INVENTORY_ROW = 3;
 		private const int RUSH_TAPPING_GAP = 16;
 		private const int ACTION_SCAN_RANGE = Const.HALF;
 		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
@@ -95,29 +93,15 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnGameInitialize(0)]
 		[OnSlotChanged]
-		public static void OnGameInitialize () => LoadGameDataFromFile();
+		public static void OnSlotChanged () => LoadGameDataFromFile();
 
 
 		[OnGameRestart]
 		public static void OnGameRestart () => RespawnCpUnitPosition = null;
 
 
-		public Player () {
-			// Inventory
-			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
-			if (Inventory.HasInventory(TypeID)) {
-				int invCount = Inventory.GetInventoryCapacity(TypeID);
-				if (invCount != COUNT) {
-					Inventory.ResizeItems(TypeID, COUNT);
-				}
-			} else {
-				// Create New
-				Inventory.AddNewPlayerInventoryData(TypeID, COUNT);
-			}
-			Inventory.SetUnlockInside(TypeID, true);
-		}
+		public Player () => Inventory.SetUnlockInside(TypeID, true);
 
 
 		public override void OnActivated () {

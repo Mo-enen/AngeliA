@@ -103,6 +103,7 @@ namespace AngeliaFramework {
 
 		[OnSlotChanged]
 		public static void OnSlotChanged () {
+			ProcedureGeneratorRoots = Util.EnumerateFolders(AngePath.ProcedureMapRoot, true, "*").ToArray() ?? new string[0];
 			Front.ForceReloadDelay();
 			Behind.ForceReloadDelay();
 		}

@@ -38,7 +38,7 @@ namespace AngeliaFramework {
 		public static string LanguageRoot => _LanguageRoot ??= Util.CombinePaths(UniverseRoot, "Language");
 		private static string _LanguageRoot = null;
 
-		// Persistent
+		// Persistent-Slot
 		public static int CurrentSaveSlot {
 			get => _CurrentSaveSlot;
 			internal set {
@@ -46,9 +46,9 @@ namespace AngeliaFramework {
 					_CurrentSaveSlot = value;
 					_SaveSlotRoot = null;
 					_UserMapRoot = null;
-					_ProcedureMapRoot = null;
-					_DownloadMapRoot = null;
 					_PlayerDataRoot = null;
+					_ProcedureMapRoot = null;
+					_ItemSaveDataRoot = null;
 				}
 			}
 		}
@@ -63,9 +63,13 @@ namespace AngeliaFramework {
 		public static string PlayerDataRoot => _PlayerDataRoot ??= Util.CombinePaths(SaveSlotRoot, "Player Data");
 		private static string _PlayerDataRoot = null;
 
-		public static string ProcedureMapRoot => _ProcedureMapRoot ??= Util.CombinePaths(Application.persistentDataPath, "Procedure Map");
+		public static string ProcedureMapRoot => _ProcedureMapRoot ??= Util.CombinePaths(SaveSlotRoot, "Procedure Map");
 		private static string _ProcedureMapRoot = null;
 
+		public static string ItemSaveDataRoot => _ItemSaveDataRoot ??= Util.CombinePaths(SaveSlotRoot, "Item");
+		private static string _ItemSaveDataRoot = null;
+
+		// Persistent
 		public static string DownloadMapRoot => _DownloadMapRoot ??= Util.CombinePaths(Application.persistentDataPath, "Download Map");
 		private static string _DownloadMapRoot = null;
 

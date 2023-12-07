@@ -24,7 +24,8 @@ namespace AngeliaFramework {
 		private const int MAX_GRAVITY_SPEED = 64;
 
 		// Api
-		public static int CollectParticleID { get; set; } = typeof(ItemCollectParticle).AngeHash();
+		public delegate void ItemCollectedHandler (Entity collector, int itemID, int count);
+		public static event ItemCollectedHandler OnItemCollected;
 		public int ItemID { get; set; } = 0;
 		public int ItemCount { get; set; } = 1;
 		bool IActionTarget.AllowInvokeOnSquat => true;
@@ -135,7 +136,7 @@ namespace AngeliaFramework {
 		}
 
 
-		void IActionTarget.Invoke () => Collect(Player.Selecting, false);
+		void IActionTarget.Invoke () => Collect(Player.Selecting, onlyAppendExisting: false, ignoreEquipment: false);
 
 
 		#endregion
@@ -152,10 +153,10 @@ namespace AngeliaFramework {
 		}
 
 
-		public void Collect (Player player, bool append = false) {
+		public void Collect (Character character, bool onlyAppendExisting = false, bool ignoreEquipment = true) {
 
-			if (ItemID == 0 || player is null) return;
-			int invID = player.TypeID;
+			if (ItemID == 0 || character is null) return;
+			int invID = character.TypeID;
 			if (!Inventory.HasInventory(invID)) return;
 
 			var item = ItemSystem.GetItem(ItemID);
@@ -163,8 +164,21 @@ namespace AngeliaFramework {
 			int oldItemID = ItemID;
 			int oldCount = ItemCount;
 
+			// Equipment Check
+			if (
+				!onlyAppendExisting &&
+				!ignoreEquipment &&
+				ItemCount > 0 &&
+				ItemSystem.IsEquipment(ItemID, out var equipmentType) &&
+				Inventory.GetEquipment(invID, equipmentType) == 0
+			) {
+				if (Inventory.SetEquipment(invID, equipmentType, ItemID)) {
+					ItemCount--;
+				}
+			}
+
 			// Collect / Append
-			int addCount = append ?
+			int addCount = onlyAppendExisting ?
 				Inventory.FindAndAddItem(invID, ItemID, ItemCount) :
 				Inventory.CollectItem(invID, ItemID, ItemCount);
 			if (addCount > 0) {
@@ -176,19 +190,11 @@ namespace AngeliaFramework {
 				} else {
 					ItemCount = newCount;
 				}
-				item.OnCollect(player);
+				item.OnCollect(character);
 			}
 
 			// Particle Hint
-			if (CollectParticleID != 0 && oldCount != ItemCount) {
-				if (Stage.SpawnEntity(
-					CollectParticleID,
-					player.X,
-					player.Y + Const.CEL * 2
-				) is Particle particle) {
-					particle.UserData = oldItemID;
-				}
-			}
+			OnItemCollected?.Invoke(character, oldItemID, oldCount - ItemCount);
 
 		}
 
