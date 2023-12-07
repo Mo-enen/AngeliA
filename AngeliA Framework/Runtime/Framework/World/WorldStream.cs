@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public sealed class WorldStream : System.IDisposable {
+	public sealed class WorldStream : System.IDisposable, IBlockSquad {
 
 
 

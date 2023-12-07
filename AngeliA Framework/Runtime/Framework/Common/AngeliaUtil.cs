@@ -5,23 +5,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 
-namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
-
 
 namespace AngeliaFramework {
-
-
-	public enum FittingPose {
-		Unknown = 0,
-		Left = 1,
-		Down = 1,
-		Mid = 2,
-		Right = 3,
-		Up = 3,
-		Single = 4,
-	}
-
-
 	public static class AngeUtil {
 
 

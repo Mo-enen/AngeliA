@@ -52,7 +52,7 @@ namespace AngeliaFramework {
 				Pose = FittingPose.Single;
 
 				if (ModuleType != Direction3.None) {
-					Pose = WorldSquad.Front.GetEntityPose(
+					Pose = GetEntityPose(
 						this, ModuleType == Direction3.Horizontal, PhysicsMask.ENVIRONMENT,
 						out var ld, out var ru, OperationMode.ColliderAndTrigger
 					);
@@ -86,7 +86,7 @@ namespace AngeliaFramework {
 			if (sprite != null) {
 				var cell = CellRenderer.Draw(sprite.GlobalID, RenderingRect);
 				if ((this as IActionTarget).IsHighlighted) {
-					IActionTarget.HighlightBlink(cell, ModuleType, Pose);
+					BlinkCellAsFurniture(cell);
 				}
 			}
 		}
@@ -169,6 +169,21 @@ namespace AngeliaFramework {
 				if (f == target) return true;
 			}
 			return false;
+		}
+
+
+		protected void BlinkCellAsFurniture (Cell cell) {
+			float pivotX = 0.5f;
+			if (ModuleType == Direction3.Horizontal) {
+				if (Pose == FittingPose.Left) {
+					pivotX = 1f;
+				} else if (Pose == FittingPose.Right) {
+					pivotX = 0f;
+				}
+			}
+			bool useHorizontal = ModuleType != Direction3.Horizontal || Pose != FittingPose.Mid;
+			bool useVertical = ModuleType != Direction3.Vertical || Pose == FittingPose.Up;
+			IActionTarget.HighlightBlink(cell, pivotX, 0f, useHorizontal, useVertical);
 		}
 
 

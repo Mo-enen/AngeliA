@@ -4,6 +4,16 @@ using UnityEngine;
 
 namespace AngeliaFramework {
 
+	public enum FittingPose {
+		Unknown = 0,
+		Left = 1,
+		Down = 1,
+		Mid = 2,
+		Right = 3,
+		Up = 3,
+		Single = 4,
+	}
+
 
 	[EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 	public abstract class EnvironmentRigidbody : Rigidbody { }
@@ -46,6 +56,39 @@ namespace AngeliaFramework {
 				}
 				CellRenderer.SetLayerToDefault();
 			}
+		}
+
+
+		protected static FittingPose GetEntityPose (int typeID, int unitX, int unitY, bool horizontal) {
+			bool n = WorldSquad.Front.GetBlockAt(horizontal ? unitX - 1 : unitX, horizontal ? unitY : unitY - 1, BlockType.Entity) == typeID;
+			bool p = WorldSquad.Front.GetBlockAt(horizontal ? unitX + 1 : unitX, horizontal ? unitY : unitY + 1, BlockType.Entity) == typeID;
+			return
+				n && p ? FittingPose.Mid :
+				!n && p ? FittingPose.Left :
+				n && !p ? FittingPose.Right :
+				FittingPose.Single;
+		}
+
+
+		protected static FittingPose GetEntityPose (Entity entity, bool horizontal, int mask, out Entity left_down, out Entity right_up, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+			left_down = null;
+			right_up = null;
+			int unitX = entity.X.ToUnit();
+			int unitY = entity.Y.ToUnit();
+			int typeID = entity.TypeID;
+			bool n = WorldSquad.Front.GetBlockAt(horizontal ? unitX - 1 : unitX, horizontal ? unitY : unitY - 1, BlockType.Entity) == typeID;
+			bool p = WorldSquad.Front.GetBlockAt(horizontal ? unitX + 1 : unitX, horizontal ? unitY : unitY + 1, BlockType.Entity) == typeID;
+			if (n) {
+				left_down = CellPhysics.GetEntity(typeID, entity.Rect.Edge(horizontal ? Direction4.Left : Direction4.Down), mask, entity, mode, tag);
+			}
+			if (p) {
+				right_up = CellPhysics.GetEntity(typeID, entity.Rect.Edge(horizontal ? Direction4.Right : Direction4.Up), mask, entity, mode, tag);
+			}
+			return
+				n && p ? FittingPose.Mid :
+				!n && p ? FittingPose.Left :
+				n && !p ? FittingPose.Right :
+				FittingPose.Single;
 		}
 
 

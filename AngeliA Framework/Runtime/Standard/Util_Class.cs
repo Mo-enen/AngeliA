@@ -147,7 +147,7 @@ namespace AngeliaFramework {
 		Vertical = 1,
 	}
 
-
+	
 
 	public enum Direction3 {
 		None = 0,
@@ -167,13 +167,8 @@ namespace AngeliaFramework {
 
 	public enum Direction4 {
 		Up = 0,
-		Top = 0,
-
 		Down = 1,
-		Bottom = 1,
-
 		Left = 2,
-
 		Right = 3,
 	}
 

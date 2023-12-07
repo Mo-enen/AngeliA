@@ -49,7 +49,7 @@ namespace AngeliaFramework {
 			if (!IsGenerating) {
 				// Normal
 				if ((this as IActionTarget).IsHighlighted) {
-					IActionTarget.HighlightBlink(cell, Direction3.None, FittingPose.Single);
+					IActionTarget.HighlightBlink(cell, 0.5f, 0.5f);
 					// Hint
 					ControlHintUI.DrawGlobalHint(X, Y + Const.CEL * 2 + Const.HALF, Gamekey.Action, Language.Get(HINT_GENERATE, "Generate Map"), true);
 				}

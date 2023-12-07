@@ -23,7 +23,7 @@ namespace AngeliaFramework {
 			if (CellRenderer.TryGetSpriteFromGroup(TypeID, PhotoIndex, out var sprite, true, false)) {
 				var cell = CellRenderer.Draw(sprite.GlobalID, RenderingRect);
 				if ((this as IActionTarget).IsHighlighted) {
-					IActionTarget.HighlightBlink(cell, ModuleType, Pose);
+					BlinkCellAsFurniture(cell);
 				}
 			}
 		}

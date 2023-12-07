@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public class BarrelIron : Vehicle, IDamageReceiver {
+	public class BarrelIron : EnvironmentRigidbody, IDamageReceiver {
 
 
 		// Const
@@ -14,14 +14,13 @@ namespace AngeliaFramework {
 		public int Team => Const.TEAM_ENVIRONMENT;
 		protected override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
 		public override bool AllowBeingPush => false;
-		protected override bool ClearChildVelocityX => false;
-		protected override bool ClearChildVelocityY => false;
-		protected override bool ClearChildFacingRight => false;
 
 		// Data
+		private Character Driver = null;
 		private bool Rolling = false;
 		private int RollingSpeed = 0;
 		private int RollingRotation = 0;
+		private bool IsDriving = false;
 
 
 		// MSG
@@ -34,11 +33,14 @@ namespace AngeliaFramework {
 			Width -= SIZE_DELTA;
 			Height -= SIZE_DELTA;
 			X += SIZE_DELTA / 2;
+			Driver = null;
 		}
 
 
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
+			IsDriving = DrivingCheck();
+			if (IsDriving) OnDriving();
 			if (!IsDriving && Rolling && RollingSpeed != 0) {
 				int prevX = X;
 				PerformMove(RollingSpeed, 0);
@@ -92,8 +94,7 @@ namespace AngeliaFramework {
 		}
 
 
-		protected override void OnDriving () {
-			base.OnDriving();
+		private void OnDriving () {
 
 			if (Driver is Player player && player == Player.Selecting) {
 				// Control by Selecting Player
@@ -139,7 +140,7 @@ namespace AngeliaFramework {
 
 
 		// LGC
-		protected override bool DrivingCheck () {
+		private bool DrivingCheck () {
 
 			if (!Rolling) {
 				Driver = null;

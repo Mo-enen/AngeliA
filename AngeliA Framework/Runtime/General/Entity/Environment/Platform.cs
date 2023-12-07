@@ -113,7 +113,7 @@ namespace AngeliaFramework {
 			TouchedByRigidbody = false;
 			PrevX = X;
 			PrevY = Y;
-			Pose = WorldSquad.Front.GetEntityPose(TypeID, X, Y, true);
+			Pose = GetEntityPose(TypeID, X.ToUnit(), Y.ToUnit(), true);
 		}
 
 

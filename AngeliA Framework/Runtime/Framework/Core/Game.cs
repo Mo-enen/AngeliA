@@ -1,11 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-
+namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 
 namespace AngeliaFramework {
-
 
 	public enum FullscreenMode { Window = 0, Fullscreen = 1, FullscreenLow = 2, }
 

@@ -6,16 +6,13 @@ using UnityEngine;
 
 namespace AngeliaFramework {
 
-
 	public enum MapChannel { BuiltIn, User, }
-
 
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnMapChannelChangedAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class BeforeLevelRenderedAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class AfterLevelRenderedAttribute : System.Attribute { }
 
-
-	public sealed class WorldSquad {
+	public sealed class WorldSquad : IBlockSquad {
 
 
 
@@ -24,19 +21,7 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly Dictionary<int, int> SYSTEM_NUMBER_POOL = new(10) {
-			{ typeof(Number0).AngeHash(), 0 },
-			{ typeof(Number1).AngeHash(), 1 },
-			{ typeof(Number2).AngeHash(), 2 },
-			{ typeof(Number3).AngeHash(), 3 },
-			{ typeof(Number4).AngeHash(), 4 },
-			{ typeof(Number5).AngeHash(), 5 },
-			{ typeof(Number6).AngeHash(), 6 },
-			{ typeof(Number7).AngeHash(), 7 },
-			{ typeof(Number8).AngeHash(), 8 },
-			{ typeof(Number9).AngeHash(), 9 },
-		};
-		private static readonly int ENTITY_CODE = "Entity".AngeHash();
+		private static readonly int ENTITY_CODE = typeof(Entity).AngeHash();
 
 		// Event
 		public static event System.Action<MapChannel> OnMapChannelChanged;
@@ -46,6 +31,7 @@ namespace AngeliaFramework {
 		// Api
 		public static WorldSquad Front { get; set; } = null;
 		public static WorldSquad Behind { get; set; } = null;
+		public static IBlockSquad FrontBlockSquad => Front;
 		public static MapChannel Channel { get; private set; } = MapChannel.BuiltIn;
 		public static MapLocation CurrentLocation {
 			get {
@@ -396,6 +382,15 @@ namespace AngeliaFramework {
 		}
 
 
+		int IBlockSquad.GetBlockAt (int unitX, int unitY, int z, BlockType type) => z == Stage.ViewZ ? GetBlockAt(unitX, unitY, type) : 0;
+
+
+		void IBlockSquad.SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) {
+			if (z != Stage.ViewZ) return;
+			SetBlockAt(unitX, unitY, type, newID);
+		}
+
+
 		// Draw
 		private void DrawBackgroundBlock (int id, int unitX, int unitY) {
 			var rect = new RectInt(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
@@ -497,103 +492,6 @@ namespace AngeliaFramework {
 			);
 			tint.a = BehindAlpha;
 			CellRenderer.Draw(sprite.GlobalID, rect, tint, 0);
-		}
-
-
-		// System Number
-		public bool ReadSystemNumber (int globalUnitX, int globalUnitY, out int number) {
-			number = 0;
-			bool hasH = ReadSystemNumber(globalUnitX, globalUnitY, Direction4.Right, out int numberH);
-			bool hasV = ReadSystemNumber(globalUnitX, globalUnitY, Direction4.Down, out int numberV);
-			if (!hasH && !hasV) return false;
-			if (hasH == hasV) {
-				number = Mathf.Max(numberH, numberV);
-				return true;
-			} else {
-				number = hasH ? numberH : numberV;
-				return true;
-			}
-		}
-
-
-		public bool ReadSystemNumber (int globalUnitX, int globalUnitY, Direction4 direction, out int number) {
-
-			number = 0;
-			int digitCount = 0;
-			int x = globalUnitX;
-			int y = globalUnitY;
-			var delta = direction.Normal();
-
-			// Find Start
-			int left = int.MinValue;
-			int down = int.MinValue;
-			while (HasSystemNumber(x, y)) {
-				left = x;
-				down = y;
-				x -= delta.x;
-				y -= delta.y;
-			}
-			if (left == int.MinValue) return false;
-
-			// Get Number
-			x = left;
-			y = down;
-			while (digitCount < 9 && TryGetSystemNumber(x, y, out int digit)) {
-				number *= 10;
-				number += digit;
-				digitCount++;
-				x += delta.x;
-				y += delta.y;
-			}
-			return digitCount > 0;
-		}
-
-
-		public bool HasSystemNumber (int unitX, int unitY) {
-			int id = GetBlockAt(unitX, unitY, BlockType.Entity);
-			return id != 0 && SYSTEM_NUMBER_POOL.ContainsKey(id);
-		}
-
-
-		public bool TryGetSystemNumber (int unitX, int unitY, out int digitValue) {
-			digitValue = 0;
-			int id = GetBlockAt(unitX, unitY, BlockType.Entity);
-			return id != 0 && SYSTEM_NUMBER_POOL.TryGetValue(id, out digitValue);
-		}
-
-
-		// Pose
-		public FittingPose GetEntityPose (Entity entity, bool horizontal) => GetEntityPose(entity.TypeID, entity.X, entity.Y, horizontal);
-		public FittingPose GetEntityPose (int typeID, int globalX, int globalY, bool horizontal) {
-			int unitX = globalX.UDivide(Const.CEL);
-			int unitY = globalY.UDivide(Const.CEL);
-			bool n = GetBlockAt(horizontal ? unitX - 1 : unitX, horizontal ? unitY : unitY - 1, BlockType.Entity) == typeID;
-			bool p = GetBlockAt(horizontal ? unitX + 1 : unitX, horizontal ? unitY : unitY + 1, BlockType.Entity) == typeID;
-			return
-				n && p ? FittingPose.Mid :
-				!n && p ? FittingPose.Left :
-				n && !p ? FittingPose.Right :
-				FittingPose.Single;
-		}
-		public FittingPose GetEntityPose (Entity entity, bool horizontal, int mask, out Entity left_down, out Entity right_up, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
-			left_down = null;
-			right_up = null;
-			int unitX = entity.X.UDivide(Const.CEL);
-			int unitY = entity.Y.UDivide(Const.CEL);
-			int typeID = entity.TypeID;
-			bool n = GetBlockAt(horizontal ? unitX - 1 : unitX, horizontal ? unitY : unitY - 1, BlockType.Entity) == typeID;
-			bool p = GetBlockAt(horizontal ? unitX + 1 : unitX, horizontal ? unitY : unitY + 1, BlockType.Entity) == typeID;
-			if (n) {
-				left_down = CellPhysics.GetEntity(typeID, entity.Rect.Edge(horizontal ? Direction4.Left : Direction4.Down), mask, entity, mode, tag);
-			}
-			if (p) {
-				right_up = CellPhysics.GetEntity(typeID, entity.Rect.Edge(horizontal ? Direction4.Right : Direction4.Up), mask, entity, mode, tag);
-			}
-			return
-				n && p ? FittingPose.Mid :
-				!n && p ? FittingPose.Left :
-				n && !p ? FittingPose.Right :
-				FittingPose.Single;
 		}
 
 

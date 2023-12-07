@@ -70,12 +70,12 @@ namespace AngeliaFramework {
 			// Fire Offset
 			FireFrameOffset = 0;
 			var normal = Direction.Normal();
-			if (WorldSquad.Front.TryGetSystemNumber(
-				(X + 1).ToUnit() + normal.x, (Y + 1).ToUnit() + normal.y, out int fireOffset
+			if (WorldSquad.FrontBlockSquad.TryGetSingleSystemNumber(
+				(X + 1).ToUnit() + normal.x, (Y + 1).ToUnit() + normal.y, Stage.ViewZ, out int fireOffset
 			)) {
 				FireFrameOffset = FireFrequency * fireOffset.Clamp(0, 9) / 10;
-			} else if (WorldSquad.Front.TryGetSystemNumber(
-				(X + 1).ToUnit() - normal.x, (Y + 1).ToUnit() - normal.y, out fireOffset
+			} else if (WorldSquad.FrontBlockSquad.TryGetSingleSystemNumber(
+				(X + 1).ToUnit() - normal.x, (Y + 1).ToUnit() - normal.y, Stage.ViewZ, out fireOffset
 			)) {
 				FireFrameOffset = FireFrequency * fireOffset.Clamp(0, 9) / 10;
 			}

@@ -11,25 +11,25 @@ namespace AngeliaFramework {
 		public Entity[] Passengers { get; set; } = null;
 		public Entity Driver { get; set; } = null;
 		protected sealed override bool CarryOtherRigidbodyOnTop => false;
-		protected virtual bool ClearChildFacingRight => true;
-		protected virtual bool ClearChildVelocityX => true;
-		protected virtual bool ClearChildVelocityY => true;
 		public bool IsDriving { get; private set; } = false;
-		public bool FacingRight { get; private set; } = true;
 
 
 		// MSG
 		public override void OnActivated () {
 			base.OnActivated();
 			IsDriving = false;
-			FacingRight = true;
 		}
 
 
 		public override void BeforePhysicsUpdate () {
 			base.BeforePhysicsUpdate();
-			if (ClearChildVelocityX && ClearChildVelocityY && Driver is Rigidbody rig) {
+			if (Driver is Rigidbody rig) {
 				rig.IgnorePhysics(0);
+			}
+			foreach (var passenger in Passengers) {
+				if (passenger is Rigidbody _pRig) {
+					_pRig.IgnorePhysics(0);
+				}
 			}
 		}
 
@@ -39,21 +39,19 @@ namespace AngeliaFramework {
 			if (IsDriving) {
 				// Drive
 				OnDriving();
-				if (DeltaPositionX != 0) {
-					FacingRight = DeltaPositionX > 0;
-				}
-
 				// Movement
 				base.PhysicsUpdate();
 				int deltaX = DeltaPositionX;
 				int deltaY = DeltaPositionY;
 				if (Driver != null && Driver.Active) {
-					TakingTarget(Driver, deltaX, deltaY);
+					Driver.X += deltaX;
+					Driver.Y += deltaY;
 				}
 				if (Passengers != null) {
 					foreach (var passenger in Passengers) {
 						if (passenger != null && passenger.Active) {
-							TakingTarget(passenger, deltaX, deltaY);
+							passenger.X += deltaX;
+							passenger.Y += deltaY;
 						}
 					}
 				}
@@ -61,19 +59,6 @@ namespace AngeliaFramework {
 			} else {
 				// Not Driving
 				base.PhysicsUpdate();
-			}
-		}
-
-
-		private void TakingTarget (Entity target, int deltaX, int deltaY) {
-			target.X += deltaX;
-			target.Y += deltaY;
-			if (target is Rigidbody rig) {
-				if (ClearChildVelocityX) rig.VelocityX = 0;
-				if (ClearChildVelocityY) rig.VelocityY = 0;
-			}
-			if (ClearChildFacingRight && target is Character character) {
-				character.LockFacingRight(FacingRight);
 			}
 		}
 
