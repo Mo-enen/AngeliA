@@ -216,7 +216,6 @@ namespace AngeliaFramework {
 			public List<Vector3> VertexCache;
 			public List<Vector2> UvCache;
 			public List<Color32> ColorCache;
-
 			public void ZSort (bool fromStart = false) {
 				if (fromStart) SortedIndex = 0;
 				if (SortedIndex < Count - 1) {
@@ -224,38 +223,24 @@ namespace AngeliaFramework {
 					SortedIndex = Count;
 				}
 			}
-
 			public void AbandonZSort () => SortedIndex = Count;
-
 		}
 
 
 		private class CellInfo {
-
-
-			// Api
 			public int Index {
 				get => GetIndex(GlobalFrame);
 				set => _Index = value;
 			}
-
 			public int Length => Chain != null ? Chain.Count : 1;
 			public int LoopStart => Chain != null ? Chain.LoopStart : -1;
-
-			// Ser-Api
 			private int _Index = -1;
 			public AngeSpriteChain Chain = null;
-
-			// API
 			public CellInfo (int index, AngeSpriteChain chain = null) {
 				_Index = index;
 				Chain = chain;
 			}
-
-
 			public int GetIndex (int frame) => Chain != null ? Chain[frame % Chain.Count] : _Index;
-
-
 		}
 
 
@@ -288,7 +273,7 @@ namespace AngeliaFramework {
 		};
 		private static readonly int[] RENDER_CAPACITY = new int[RenderLayer.COUNT] {
 			256,	// Wallpaper 
-			4096,	// Behind 
+			8192,	// Behind 
 			2048,	// Shadow 
 			4096,	// Default 
 			256,	// Color 
@@ -334,14 +319,6 @@ namespace AngeliaFramework {
 		private static int CameraShakeAmount = 1000;
 		private static bool IsPausing = false;
 		private static bool IsDrawing = false;
-
-		// Editor
-#if UNITY_EDITOR
-		public static readonly Dictionary<int, AngeSprite> e_SpritePool = new();
-		public static readonly Dictionary<int, SpriteMeta> e_MetaPool = new();
-		public static readonly Dictionary<int, SpriteGroup> e_GroupPool = new();
-		public static readonly List<Cell> e_Drawing = new();
-#endif
 
 
 		#endregion
@@ -852,30 +829,6 @@ namespace AngeliaFramework {
 
 
 		public static void BeginDraw (bool isPausing) {
-#if UNITY_EDITOR
-			if (!UnityEditor.EditorApplication.isPlaying) {
-				e_Drawing.Clear();
-				if (e_SpritePool.Count == 0) {
-					// Init Editor Pools
-					e_SpritePool.Clear();
-					e_MetaPool.Clear();
-					e_GroupPool.Clear();
-					var sheet = AngeUtil.LoadJson<SpriteSheet>(AngePath.SheetRoot);
-					if (sheet != null) {
-						foreach (var sprite in sheet.Sprites) {
-							e_SpritePool.TryAdd(sprite.GlobalID, sprite);
-							if (sprite.MetaIndex >= 0) {
-								e_MetaPool.TryAdd(sprite.GlobalID, sheet.Metas[sprite.MetaIndex]);
-							}
-						}
-						foreach (var group in sheet.Groups) {
-							e_GroupPool.TryAdd(group.ID, group);
-						}
-					}
-				}
-				return;
-			}
-#endif
 			IsPausing = isPausing;
 			IsDrawing = true;
 			SetLayerToDefault();
@@ -936,43 +889,6 @@ namespace AngeliaFramework {
 		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID, false, x, y, pivotX, pivotY, rotation, width, height, WHITE, z);
 		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) => Draw(globalID, false, x, y, pivotX, pivotY, rotation, width, height, color, z);
 		public static Cell Draw (int globalID, bool forText, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) {
-
-#if UNITY_EDITOR
-			if (!UnityEditor.EditorApplication.isPlaying) {
-				if (e_SpritePool.TryGetValue(globalID, out var sprite)) {
-
-					// Original Size
-					if (width == Const.ORIGINAL_SIZE) {
-						width = sprite.GlobalWidth;
-					} else if (width == Const.ORIGINAL_SIZE_NEGATAVE) {
-						width = -sprite.GlobalWidth;
-					}
-					if (height == Const.ORIGINAL_SIZE) {
-						height = sprite.GlobalHeight;
-					} else if (height == Const.ORIGINAL_SIZE_NEGATAVE) {
-						height = -sprite.GlobalHeight;
-					}
-
-					// Cell
-					e_Drawing.Add(new Cell {
-						Index = globalID,
-						Order = e_Drawing.Count,
-						X = x,
-						Y = y,
-						Width = width,
-						Height = height,
-						Rotation = rotation,
-						PivotX = pivotX / 1000f,
-						PivotY = pivotY / 1000f,
-						Color = color,
-						BorderSide = Alignment.Full,
-						Z = z == int.MinValue ? sprite.SortingZ : z,
-						Shift = Vector4Int.zero,
-					});
-				}
-				return EMPTY_CELL;
-			}
-#endif
 
 			if (!IsDrawing) return EMPTY_CELL;
 
@@ -1253,11 +1169,6 @@ namespace AngeliaFramework {
 
 		// Sprite Data
 		public static bool TryGetSprite (int globalID, out AngeSprite sprite) {
-#if UNITY_EDITOR
-			if (!UnityEditor.EditorApplication.isPlaying) {
-				return e_SpritePool.TryGetValue(globalID, out sprite);
-			}
-#endif
 			if (SheetIDMap.TryGetValue(globalID, out var rCell)) {
 				sprite = Sprites[rCell.GetIndex(GlobalFrame)];
 				return true;
@@ -1270,13 +1181,6 @@ namespace AngeliaFramework {
 
 		public static bool HasSpriteGroup (int groupID) => HasSpriteGroup(groupID, out _);
 		public static bool HasSpriteGroup (int groupID, out int groupLength) {
-#if UNITY_EDITOR
-			if (!UnityEditor.EditorApplication.isPlaying) {
-				bool hasValue = e_GroupPool.TryGetValue(groupID, out var group);
-				groupLength = group != null ? group.SpriteIDs.Length : 0;
-				return hasValue;
-			}
-#endif
 			if (SpriteGroupMap.TryGetValue(groupID, out var values)) {
 				groupLength = values.Length;
 				return true;
@@ -1289,13 +1193,6 @@ namespace AngeliaFramework {
 
 		public static bool TryGetSpriteFromGroup (int groupID, int index, out AngeSprite sprite, bool loopIndex = true, bool clampIndex = true) {
 			int[] ids = null;
-#if UNITY_EDITOR
-			if (!UnityEditor.EditorApplication.isPlaying) {
-				if (e_GroupPool.TryGetValue(groupID, out var group)) {
-					ids = group.SpriteIDs;
-				}
-			}
-#endif
 			if (ids == null && SpriteGroupMap.TryGetValue(groupID, out ids)) {
 				if (loopIndex) index = index.UMod(ids.Length);
 				if (clampIndex) index = index.Clamp(0, ids.Length - 1);
@@ -1305,24 +1202,10 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool TryGetMeta (int globalID, out SpriteMeta meta) {
-#if UNITY_EDITOR
-			if (!UnityEditor.EditorApplication.isPlaying) {
-				return e_MetaPool.TryGetValue(globalID, out meta);
-			}
-#endif
-			return MetaPool.TryGetValue(globalID, out meta);
-		}
+		public static bool TryGetMeta (int globalID, out SpriteMeta meta) => MetaPool.TryGetValue(globalID, out meta);
 
 
-		public static bool HasSprite (int globalID) {
-#if UNITY_EDITOR
-			if (!UnityEditor.EditorApplication.isPlaying) {
-				return e_SpritePool.ContainsKey(globalID);
-			}
-#endif
-			return SheetIDMap.ContainsKey(globalID);
-		}
+		public static bool HasSprite (int globalID) => SheetIDMap.ContainsKey(globalID);
 
 
 		public static AngeSprite GetSpriteAt (int index) => index >= 0 && index < Sprites.Length ? Sprites[index] : null;

@@ -105,7 +105,7 @@ namespace AngeliaFramework {
 				string mapRoot = MapRoot;
 				string tempMapRoot = TempMapRoot;
 
-				SampleReader = new WorldStream(WorldSquad.MapRoot, WorldSquad.Channel.GetLocation(), @readonly: true, isProcedure: true);
+				SampleReader = new WorldStream(WorldSquad.MapRoot, WorldSquad.Channel.GetLocation(), @readonly: true, isProcedure: false);
 				ResultWriter = new WorldStream(tempMapRoot, MapLocation.Procedure, @readonly: false, isProcedure: true);
 
 				Util.DeleteFolder(tempMapRoot);
@@ -122,6 +122,8 @@ namespace AngeliaFramework {
 				Util.MoveFolder(tempMapRoot, mapRoot);
 				WorldSquad.Front.ForceReloadDelay();
 				WorldSquad.Behind.ForceReloadDelay();
+
+				IGlobalPosition.CreateMetaFileFromMaps(mapRoot);
 
 				AfterMapGenerate();
 			} catch (System.Exception ex) {

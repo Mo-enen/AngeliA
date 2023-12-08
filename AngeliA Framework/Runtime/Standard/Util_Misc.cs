@@ -136,11 +136,12 @@ namespace AngeliaFramework {
 		public static bool IsoToLanguage (string iso, out SystemLanguage language) => IsoToLanguagePool.TryGetValue(iso, out language);
 
 
-		public static int QuickRandom (long seed) {
-			const long a = 25214903917;
-			const long c = 11;
-			const long m = 281474976710656;
-			return (int)((a * seed + c) % m % int.MaxValue);
+		public static int QuickRandom (int seed) {
+			seed = (seed * 1103515245 + 12345) % 23456789;
+			seed = (seed * 16807) % 2147483647;
+			seed = (seed ^ (seed >> 16)) % 2147483647;
+			seed = (seed * 2127912213) % 2147483647;
+			return seed;
 		}
 
 

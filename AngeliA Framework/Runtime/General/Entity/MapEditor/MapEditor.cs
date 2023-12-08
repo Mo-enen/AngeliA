@@ -1053,7 +1053,7 @@ namespace AngeliaFramework {
 			Stage.ClearGlobalAntiSpawn();
 			Player.RespawnCpUnitPosition = null;
 			if (playMode) {
-				IGlobalPosition.CreateMetaFileFromMapsAsync();
+				IGlobalPosition.CreateMetaFileFromMapsAsync(WorldSquad.MapRoot);
 			}
 			if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 
@@ -1119,7 +1119,7 @@ namespace AngeliaFramework {
 
 		public static void CloseMapEditorSmoothly () {
 			FrameTask.EndAllTask();
-			IGlobalPosition.CreateMetaFileFromMapsAsync();
+			IGlobalPosition.CreateMetaFileFromMapsAsync(WorldSquad.MapRoot);
 			FrameTask.AddToLast(FadeOutTask.TYPE_ID, 50);
 			FrameTask.AddToLast(DespawnEntityTask.TYPE_ID, Instance);
 		}

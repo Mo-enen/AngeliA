@@ -103,8 +103,7 @@ namespace AngeliaFramework {
 					}
 					var rect = new RectInt(0, 0, Const.CEL, Const.CEL);
 					int endIndex = unitRect.width * unitRect.height;
-					int uiLayerIndex = CellRenderer.LayerCount - 1;
-					int cellRemain = CellRenderer.GetLayerCapacity(uiLayerIndex) - CellRenderer.GetUsedCellCount(uiLayerIndex);
+					int cellRemain = CellRenderer.GetLayerCapacity(RenderLayer.UI) - CellRenderer.GetUsedCellCount(RenderLayer.UI);
 					cellRemain = cellRemain * 9 / 10;
 					int nextStartIndex = 0;
 					if (endIndex - PaintingThumbnailStartIndex > cellRemain) {

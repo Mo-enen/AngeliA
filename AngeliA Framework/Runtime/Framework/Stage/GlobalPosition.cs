@@ -47,7 +47,7 @@ namespace AngeliaFramework {
 			}
 			ReloadPool();
 #if UNITY_EDITOR
-			CreateMetaFileFromMapsAsync();
+			CreateMetaFileFromMapsAsync(AngePath.BuiltInMapRoot);
 #endif
 		}
 
@@ -60,26 +60,25 @@ namespace AngeliaFramework {
 		public static bool TryGetPosition (int id, out Vector3Int globalUnitPosition) => PositionPool.TryGetValue(id, out globalUnitPosition);
 
 
-		public static void CreateMetaFileFromMapsAsync () {
+		public static void CreateMetaFileFromMapsAsync (string mapFolder) {
 			if (CreateMetaFileTask != null && !CreateMetaFileTask.IsCompleted && CreateMetaFileToken.Token.CanBeCanceled) {
 				CreateMetaFileToken.Cancel();
 				CreateMetaFileListCache.Clear();
 			}
 			CreateMetaFileTask = Task.Factory.StartNew(
-				CreateMetaFileFromMaps,
+				() => CreateMetaFileFromMaps(mapFolder),
 				CreateMetaFileToken.Token
 			);
 		}
 
 
-		public static void CreateMetaFileFromMaps () {
+		public static void CreateMetaFileFromMaps (string mapFolder) {
 			if (AllGlobalPositionID.Count == 0) {
 				foreach (var type in typeof(IGlobalPosition).AllClassImplemented()) {
 					AllGlobalPositionID.TryAdd(type.AngeHash());
 				}
 			}
 			CreateMetaFileListCache.Clear();
-			var mapFolder = WorldSquad.MapRoot;
 			foreach (var path in Util.EnumerateFiles(mapFolder, true, $"*.{AngePath.MAP_FILE_EXT}")) {
 				if (World.GetWorldPositionFromName(
 					Util.GetNameWithoutExtension(path),

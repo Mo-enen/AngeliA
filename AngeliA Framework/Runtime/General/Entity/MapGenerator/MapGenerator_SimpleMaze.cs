@@ -14,10 +14,14 @@ namespace AngeliaFramework {
 			//	ResultWriter.SetBlockAt(i, 0, z, BlockType.Level, typeof(Barrel).AngeHash());
 			//}
 
+			foreach (var room in MapGeneratorRoom.ForAllConnectedRooms(
+				SampleReader, X.ToUnit(), Y.ToUnit(), Stage.ViewZ - 1
+			)) {
+
+				Debug.Log("roomid: " + room.ID);
 
 
-
-
+			}
 
 		}
 
