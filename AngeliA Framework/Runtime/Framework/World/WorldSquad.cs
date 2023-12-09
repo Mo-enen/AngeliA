@@ -100,7 +100,7 @@ namespace AngeliaFramework {
 			if (!Enable) return;
 
 			int z = isBehind ? Stage.ViewZ + 1 : Stage.ViewZ;
-			Vector4Int cullingPadding = CellRenderer.CameraShaking || FrameTask.IsTasking<TeleportTask>() ? new Vector4Int(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Vector4Int.zero;
+			Vector4Int cullingPadding = FrameTask.IsTasking<TeleportTask>() ? new Vector4Int(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Vector4Int.zero;
 			if (isBehind) {
 				CellRenderer.SetLayerToBehind();
 			} else {

@@ -149,7 +149,6 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
-
 		private class CellComparer : IComparer<Cell> {
 			public static readonly CellComparer Instance = new();
 			public int Compare (Cell a, Cell b) {
@@ -237,21 +236,20 @@ namespace AngeliaFramework {
 
 		// Const
 		public static readonly Cell EMPTY_CELL = new() { Index = -1 };
-		private const int MAX_CAMERA_SHAKE = 120;
 		private static readonly Color32 WHITE = new(255, 255, 255, 255);
 		private static readonly int SKYBOX_TOP = Shader.PropertyToID("_ColorA");
 		private static readonly int SKYBOX_BOTTOM = Shader.PropertyToID("_ColorB");
 		private static readonly Shader SKYBOX_SHADER = Shader.Find("Angelia/Skybox");
 		private static readonly Shader[] RENDERING_SHADERS = new Shader[RenderLayer.COUNT] {
-			Shader.Find("Angelia/Lerp"),// Wallpaper
-			Shader.Find("Angelia/Lerp"),// Behind
-			Shader.Find("Angelia/Color"),// Shadow
-			Shader.Find("Angelia/Cell"),// Default
-			Shader.Find("Angelia/Color"),// Color
-			Shader.Find("Angelia/Mult"),// Mult
-			Shader.Find("Angelia/Add"), // Add
-			Shader.Find("Angelia/Cell"),// UI
-			Shader.Find("Angelia/Cell"),// TopUI
+			Shader.Find("Angelia/Lerp"),	// Wallpaper
+			Shader.Find("Angelia/Lerp"),	// Behind
+			Shader.Find("Angelia/Color"),	// Shadow
+			Shader.Find("Angelia/Cell"),	// Default
+			Shader.Find("Angelia/Color"),	// Color
+			Shader.Find("Angelia/Mult"),	// Mult
+			Shader.Find("Angelia/Add"),		// Add
+			Shader.Find("Angelia/Cell"),	// UI
+			Shader.Find("Angelia/Cell"),	// TopUI
 		};
 		private static readonly int[] RENDER_CAPACITY = new int[RenderLayer.COUNT] {
 			256,	// Wallpaper 
@@ -281,7 +279,6 @@ namespace AngeliaFramework {
 		public static int TextLayerCount => TextLayers.Length;
 		public static int CurrentLayerIndex { get; private set; } = 0;
 		public static int CurrentTextLayerIndex { get; private set; } = 0;
-		public static bool CameraShaking => GlobalFrame < CameraShakeEndFrame;
 		public static bool TextReady => TextLayers.Length > 0;
 
 		// Data
@@ -289,15 +286,12 @@ namespace AngeliaFramework {
 		private static readonly Dictionary<int, int[]> SpriteGroupMap = new();
 		private static readonly Dictionary<int, SpriteMeta> MetaPool = new();
 		private static readonly Cell[] Last9SlicedCells = new Cell[9];
-		private static readonly System.Random CameraShakeRandom = new(032481);
 		private static AngeSprite[] Sprites = null;
 		private static AngeSpriteChain[] Chains = null;
 		private static Layer[] Layers = new Layer[0];
 		private static TextLayer[] TextLayers = new TextLayer[0];
 		private static Material Skybox = null;
 		private static int GlobalFrame = 0;
-		private static int CameraShakeEndFrame = 0;
-		private static int CameraShakeAmount = 1000;
 		private static bool IsPausing = false;
 		private static bool IsDrawing = false;
 
@@ -555,23 +549,6 @@ namespace AngeliaFramework {
 				var tLayer = TextLayers[layerIndex];
 				tLayer.RendererRoot.localPosition = pos;
 				tLayer.RendererRoot.localScale = scl;
-			}
-
-			// Camera Shake
-			if (GlobalFrame < CameraShakeEndFrame) {
-				float amount = CameraShakeAmount * 0.000013f * Util.Remap(
-					12, 0, 1f, 0f, CameraShakeEndFrame - GlobalFrame
-				);
-				for (int layerIndex = 0; layerIndex < Layers.Length - 1; layerIndex++) {
-					pos *= Util.Remap(
-						-Const.CEL, Const.CEL,
-						1f - amount / 2f, 1f + amount / 2f,
-						CameraShakeRandom.Next(-Const.CEL, Const.CEL)
-					);
-					var layer = Layers[layerIndex];
-					layer.RendererRoot.localPosition = pos;
-					layer.RendererRoot.localScale = scl;
-				}
 			}
 
 			// Update Mesh
@@ -1188,12 +1165,6 @@ namespace AngeliaFramework {
 			if (Skybox == null) return;
 			Skybox.SetColor(SKYBOX_TOP, top);
 			Skybox.SetColor(SKYBOX_BOTTOM, bottom);
-		}
-
-
-		public static void StartCameraShake (int duration, int amount = 1000) {
-			CameraShakeEndFrame = GlobalFrame + duration.Clamp(0, MAX_CAMERA_SHAKE);
-			CameraShakeAmount = amount;
 		}
 
 
