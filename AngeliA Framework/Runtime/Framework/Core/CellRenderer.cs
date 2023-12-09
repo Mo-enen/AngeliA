@@ -303,10 +303,10 @@ namespace AngeliaFramework {
 		public static bool TextReady => TextLayers.Length > 0;
 
 		// Data
-		private static readonly CellEffect[] Effects = new CellEffect[EFFECT_COUNT];
 		private static readonly Dictionary<int, CellInfo> SheetIDMap = new();
 		private static readonly Dictionary<int, int[]> SpriteGroupMap = new();
 		private static readonly Dictionary<int, SpriteMeta> MetaPool = new();
+		private static readonly CellEffect[] Effects = new CellEffect[EFFECT_COUNT];
 		private static readonly Cell[] Last9SlicedCells = new Cell[9];
 		private static readonly System.Random CameraShakeRandom = new(032481);
 		private static AngeSprite[] Sprites = null;

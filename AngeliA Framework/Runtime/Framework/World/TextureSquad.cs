@@ -31,6 +31,7 @@ namespace AngeliaFramework {
 		public int GlobalScale = 1000;
 
 		// Data
+		private static readonly Color32[] FILLING_PIXELS = new Color32[Const.MAP * Const.MAP];
 		private readonly TextureUnit[,] Textures = null;
 		private readonly Texture2D[,] TextureBuffer = null;
 		private readonly Texture2D[] TextureBufferAlt = null;
@@ -254,7 +255,7 @@ namespace AngeliaFramework {
 					renderer.gameObject.SetActive(true);
 					if (unit.WorldPos == pos) continue;
 					if (FillingWorld.LoadFromDisk(WorldSquad.MapRoot, WorldSquad.Channel.GetLocation(), pos.x, pos.y, pos.z)) {
-						FillingWorld.FillIntoTexture(unit.Texture, ignoreItem: true);
+						FillIntoTexture(FillingWorld, unit.Texture, ignoreItem: true);
 					} else {
 						renderer.gameObject.SetActive(false);
 					}
@@ -268,6 +269,31 @@ namespace AngeliaFramework {
 			}
 			// Final
 			LoadedWorldPos = newWorldPos;
+		}
+
+
+		private static void FillIntoTexture (World world, Texture2D texture, bool ignoreItem = true) {
+			if (texture == null) return;
+			if (texture.width != Const.MAP || texture.height != Const.MAP) {
+				Debug.LogWarning($"Texture size must be {Const.MAP} x {Const.MAP}.");
+				return;
+			}
+			const int LEN = Const.MAP * Const.MAP;
+			for (int i = 0; i < LEN; i++) {
+				if (!ignoreItem || !ItemSystem.HasItem(world.Entity[i])) {
+					if (Fill(world.Entity[i])) continue;
+				}
+				if (Fill(world.Level[i])) continue;
+				if (Fill(world.Background[i])) continue;
+				FILLING_PIXELS[i] = Const.CLEAR;
+				bool Fill (int id) {
+					if (id == 0 || !CellRenderer.TryGetSprite(id, out var sprite)) return false;
+					FILLING_PIXELS[i] = sprite.SummaryTint;
+					return true;
+				}
+			}
+			texture.SetPixels32(FILLING_PIXELS);
+			texture.Apply();
 		}
 
 

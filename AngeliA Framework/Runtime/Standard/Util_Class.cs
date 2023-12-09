@@ -5,13 +5,12 @@ using System.Collections.Generic;
 namespace AngeliaFramework {
 
 
-
 	[System.Serializable]
 	public struct Vector4Int {
 
 		public static readonly Vector4Int zero = new(0, 0, 0, 0);
 		public int this[int index] {
-			get => index switch {
+			readonly get => index switch {
 				0 => x,
 				1 => y,
 				2 => z,
@@ -133,7 +132,6 @@ namespace AngeliaFramework {
 
 
 
-	// Enum
 	public enum Direction2 {
 
 		Negative = -1,
@@ -147,7 +145,7 @@ namespace AngeliaFramework {
 		Vertical = 1,
 	}
 
-	
+
 
 	public enum Direction3 {
 		None = 0,

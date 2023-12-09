@@ -31,6 +31,13 @@ namespace AngeliaFramework {
 		}
 
 
+		[System.AttributeUsage(System.AttributeTargets.Class)]
+		public class AlsoKnownAsAttribute : System.Attribute {
+			public string AltName;
+			public AlsoKnownAsAttribute (string atName) => AltName = atName;
+		}
+
+
 		// Misc
 		[System.AttributeUsage(System.AttributeTargets.Class)]
 		public class LayerAttribute : System.Attribute {

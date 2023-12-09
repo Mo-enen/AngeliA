@@ -34,7 +34,7 @@ namespace AngeliaFramework {
 		public byte[] ProcedureFlag { get; set; } = null;
 
 		// Data
-		private static readonly Color32[] FILLING_PIXELS = new Color32[Const.MAP * Const.MAP];
+		private static readonly Dictionary<int, int> RedirectPool = new();
 		private static readonly object FileStreamingLock = new();
 		private bool ProcedureInvolved = false;
 
@@ -45,6 +45,15 @@ namespace AngeliaFramework {
 
 
 		#region --- API ---
+
+
+		[OnGameInitialize(-2048)]
+		public static void OnGameInitialize () {
+			RedirectPool.Clear();
+			foreach (var (type, att) in Util.AllClassWithAttribute<EntityAttribute.AlsoKnownAsAttribute>()) {
+				RedirectPool.TryAdd(att.AltName.AngeHash(), type.AngeHash());
+			}
+		}
 
 
 		public World () : this(new(int.MinValue, int.MinValue)) { }
@@ -188,31 +197,6 @@ namespace AngeliaFramework {
 		public static string GetWorldNameFromPosition (int x, int y, int z) => $"{x}_{y}_{z}.{AngePath.MAP_FILE_EXT}";
 
 
-		public void FillIntoTexture (Texture2D texture, bool ignoreItem = true) {
-			if (texture == null) return;
-			if (texture.width != Const.MAP || texture.height != Const.MAP) {
-				Debug.LogWarning($"Texture size must be {Const.MAP} x {Const.MAP}.");
-				return;
-			}
-			const int LEN = Const.MAP * Const.MAP;
-			for (int i = 0; i < LEN; i++) {
-				if (!ignoreItem || !ItemSystem.HasItem(Entity[i])) {
-					if (Fill(Entity[i])) continue;
-				}
-				if (Fill(Level[i])) continue;
-				if (Fill(Background[i])) continue;
-				FILLING_PIXELS[i] = Const.CLEAR;
-				bool Fill (int id) {
-					if (id == 0 || !CellRenderer.TryGetSprite(id, out var sprite)) return false;
-					FILLING_PIXELS[i] = sprite.SummaryTint;
-					return true;
-				}
-			}
-			texture.SetPixels32(FILLING_PIXELS);
-			texture.Apply();
-		}
-
-
 		public void MarkProcedure (int x, int y, BlockType type, bool flagValue) {
 			int flagIndex = ((int)type * Const.MAP * Const.MAP + y * Const.MAP + x) / 8;
 			byte flag = ProcedureFlag[flagIndex];
@@ -256,6 +240,7 @@ namespace AngeliaFramework {
 
 					using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
 					using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
+					bool hasRedirect = RedirectPool.Count > 0;
 
 					// Load Content
 					bool fromProcedure = location == MapLocation.Procedure;
@@ -269,6 +254,9 @@ namespace AngeliaFramework {
 									// Entity x y
 									if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
 									if (Entity[y * Const.MAP + x] != 0) continue;
+									if (hasRedirect && RedirectPool.TryGetValue(id, out int newID)) {
+										id = newID;
+									}
 									Entity[y * Const.MAP + x] = id;
 									MarkProcedure(x, y, BlockType.Entity, fromProcedure);
 								} else {
