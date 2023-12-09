@@ -13,7 +13,7 @@ namespace AngeliaFramework {
 
 
 		// Data
-		protected readonly Dictionary<int, MapGeneratorRoom> RoomPool = new();
+		protected readonly Dictionary<int, Room> RoomPool = new();
 		
 
 
@@ -29,7 +29,7 @@ namespace AngeliaFramework {
 			base.BeforeMapGenerate();
 			// Get Rooms
 			RoomPool.Clear();
-			foreach (var room in MapGeneratorRoom.ForAllConnectedRooms(SampleReader, X.ToUnit(), Y.ToUnit(), Stage.ViewZ - 1)) {
+			foreach (var room in Room.ForAllConnectedRooms(SampleReader, X.ToUnit(), Y.ToUnit(), Stage.ViewZ - 1)) {
 				RoomPool.TryAdd(room.ID, room);
 			}
 			// Clear Reader

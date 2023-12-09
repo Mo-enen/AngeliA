@@ -14,7 +14,7 @@ namespace AngeliaFramework {
 			//	ResultWriter.SetBlockAt(i, 0, z, BlockType.Level, typeof(Barrel).AngeHash());
 			//}
 
-			foreach (var room in MapGeneratorRoom.ForAllConnectedRooms(
+			foreach (var room in Room.ForAllConnectedRooms(
 				SampleReader, X.ToUnit(), Y.ToUnit(), Stage.ViewZ - 1
 			)) {
 

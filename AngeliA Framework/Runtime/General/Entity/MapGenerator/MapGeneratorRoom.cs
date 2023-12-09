@@ -8,12 +8,12 @@ namespace AngeliaFramework {
 
 	[EntityAttribute.MapEditorGroup("MapGenerator")]
 	public abstract class MapGeneratorElement : IMapEditorItem { }
-	public class MapGenerator_Solid : MapGeneratorElement { }
-	public class MapGenerator_Tunnel : MapGeneratorElement { }
-	public class MapGenerator_Connector : MapGeneratorElement { }
+	[EntityAttribute.AlsoKnownAs("MapGenerator_Solid")] public class RoomWall : MapGeneratorElement { }
+	[EntityAttribute.AlsoKnownAs("MapGenerator_Tunnel")] public class RoomTunnel : MapGeneratorElement { }
+	[EntityAttribute.AlsoKnownAs("MapGenerator_Connector")] public class RoomConnector : MapGeneratorElement { }
 
 
-	public class MapGeneratorRoom {
+	public class Room {
 
 
 
@@ -49,9 +49,9 @@ namespace AngeliaFramework {
 		// Const
 		public const int MAX_WIDTH = 256;
 		public const int MAX_HEIGHT = 128;
-		public static readonly int SOLID_ID = typeof(MapGenerator_Solid).AngeHash();
-		public static readonly int TUNNEL_ID = typeof(MapGenerator_Tunnel).AngeHash();
-		public static readonly int CONNECTOR_ID = typeof(MapGenerator_Connector).AngeHash();
+		public static readonly int SOLID_ID = typeof(RoomWall).AngeHash();
+		public static readonly int TUNNEL_ID = typeof(RoomTunnel).AngeHash();
+		public static readonly int CONNECTOR_ID = typeof(RoomConnector).AngeHash();
 
 		// Api
 		public int EdgeMinX => ContentMinX - 1;
@@ -76,14 +76,14 @@ namespace AngeliaFramework {
 		public int[] Levels { get; init; }
 		public int[] Backgrounds { get; init; }
 		public Tunnel[] Tunnels { get; init; }
-		public MapGeneratorRoom BaseRoom { get; init; }
+		public Room BaseRoom { get; init; }
 
 		// Cache
 		private static readonly List<EntryUnit> EntryPointCache = new();
 		private static readonly List<Vector2Int> EndPointCache = new();
 		private static readonly List<Tunnel> TunnelsCache = new();
 		private static readonly HashSet<Vector2Int> RoomPointCache = new();
-		private static readonly Queue<(Vector2Int point, MapGeneratorRoom baseRoom)> RoomPointQueue = new();
+		private static readonly Queue<(Vector2Int point, Room baseRoom)> RoomPointQueue = new();
 		private static int DynamicID = int.MinValue + 1;
 
 
@@ -95,7 +95,7 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public MapGeneratorRoom (IBlockSquad squad, int roomPointX, int roomPointY, int z, MapGeneratorRoom baseRoom = null) {
+		public Room (IBlockSquad squad, int roomPointX, int roomPointY, int z, Room baseRoom = null) {
 
 			Valid = false;
 			if (!HasValidRoomAt(squad, roomPointX, roomPointY, z, out int id, out int edgeWidth, out int edgeHeight)) return;
@@ -252,7 +252,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static IEnumerable<MapGeneratorRoom> ForAllConnectedRooms (IBlockSquad squad, int unitX, int unitY, int z) {
+		public static IEnumerable<Room> ForAllConnectedRooms (IBlockSquad squad, int unitX, int unitY, int z) {
 			System.Threading.Monitor.Enter(RoomPointCache);
 			System.Threading.Monitor.Enter(EntryPointCache);
 			System.Threading.Monitor.Enter(EndPointCache);
@@ -281,10 +281,10 @@ namespace AngeliaFramework {
 				System.Threading.Monitor.Exit(RoomPointQueue);
 			}
 			// Func
-			static bool TryIterate (IBlockSquad squad, Vector2Int roomPoint, int z, MapGeneratorRoom baseRoom, out MapGeneratorRoom currentRoom) {
+			static bool TryIterate (IBlockSquad squad, Vector2Int roomPoint, int z, Room baseRoom, out Room currentRoom) {
 
 				// Current Room
-				currentRoom = new MapGeneratorRoom(squad, roomPoint.x, roomPoint.y, z, baseRoom);
+				currentRoom = new Room(squad, roomPoint.x, roomPoint.y, z, baseRoom);
 				if (!currentRoom.Valid) return false;
 
 				EntryPointCache.Clear();
