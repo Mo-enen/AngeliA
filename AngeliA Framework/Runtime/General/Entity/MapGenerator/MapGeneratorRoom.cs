@@ -322,17 +322,19 @@ namespace AngeliaFramework {
 					var currentDir = unit.Direction;
 					var currentNormal = unit.Direction.Normal();
 					const int MAX_STEP = 1024;
+					int entityID, forwardEntityID;
 					for (int step = 0; step < MAX_STEP; step++) {
 						// Try Forward
 						var pos = currentPos + currentNormal;
-						int entityID = squad.GetBlockAt(pos.x, pos.y, z, BlockType.Entity);
+						var forwardNormal = currentNormal;
+						entityID = forwardEntityID = squad.GetBlockAt(pos.x, pos.y, z, BlockType.Entity);
 						if (entityID == CONNECTOR_ID) {
 							currentPos = pos;
 							continue;
 						}
 						// Try Turn Left
 						currentDir = currentDir.AntiClockwise();
-						currentNormal = unit.Direction.Normal();
+						currentNormal = currentDir.Normal();
 						pos = currentPos + currentNormal;
 						entityID = squad.GetBlockAt(pos.x, pos.y, z, BlockType.Entity);
 						if (entityID == CONNECTOR_ID) {
@@ -341,7 +343,7 @@ namespace AngeliaFramework {
 						}
 						// Try Turn Right
 						currentDir = currentDir.Opposite();
-						currentNormal = unit.Direction.Normal();
+						currentNormal = currentDir.Normal();
 						pos = currentPos + currentNormal;
 						entityID = squad.GetBlockAt(pos.x, pos.y, z, BlockType.Entity);
 						if (entityID == CONNECTOR_ID) {
@@ -349,8 +351,8 @@ namespace AngeliaFramework {
 							continue;
 						}
 						// Jump Out
-						if (IsRoomEdgeBlock(entityID)) {
-							EndPointCache.Add(pos + currentNormal);
+						if (IsRoomEdgeBlock(forwardEntityID)) {
+							EndPointCache.Add(currentPos + forwardNormal + forwardNormal);
 						}
 					}
 				}
