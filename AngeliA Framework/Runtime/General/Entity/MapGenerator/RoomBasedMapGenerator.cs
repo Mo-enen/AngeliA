@@ -14,6 +14,7 @@ namespace AngeliaFramework {
 
 		// Data
 		protected readonly Dictionary<int, MapGeneratorRoom> RoomPool = new();
+		
 
 
 		#endregion
@@ -28,9 +29,9 @@ namespace AngeliaFramework {
 			base.BeforeMapGenerate();
 			// Get Rooms
 			RoomPool.Clear();
-
-
-
+			foreach (var room in MapGeneratorRoom.ForAllConnectedRooms(SampleReader, X.ToUnit(), Y.ToUnit(), Stage.ViewZ - 1)) {
+				RoomPool.TryAdd(room.ID, room);
+			}
 			// Clear Reader
 			SampleReader.Clear();
 			System.GC.Collect();

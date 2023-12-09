@@ -15,6 +15,7 @@ namespace AngeliaFramework {
 		// Const
 		private static readonly int HINT_GENERATE = "CtrlHint.MapGenerator.Generate".AngeHash();
 		private static readonly int HINT_GENERATING = "CtrlHint.MapGenerator.Generating".AngeHash();
+		private static readonly int HINT_NOTIFY = "Notify.MapGeneratedNotify".AngeHash();
 
 		// Api
 		protected virtual bool ShowGeneratingHint => true;
@@ -45,6 +46,7 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
+
 			var cell = DrawArtwork();
 			if (!IsGenerating) {
 				// Normal
@@ -69,6 +71,7 @@ namespace AngeliaFramework {
 			base.AfterMapGenerate();
 			RemoveEntrancePortal();
 			SpawnEntrancePortal();
+			NotificationUI.SpawnNotification(Language.Get(HINT_NOTIFY, "Map Generated"), TypeID);
 		}
 
 

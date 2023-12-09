@@ -1,4 +1,5 @@
-﻿CtrlHint.Adjust:调整
+﻿Notify.MapGeneratedNotify:关卡已生成
+CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
 CtrlHint.Drop:放下

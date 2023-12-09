@@ -21,10 +21,20 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
-		public class Tunnel {
+		public struct Tunnel {
 			public int LocalIndex;
 			public int Size;
 			public Direction4 Direction;
+		}
+
+
+		public struct EntryUnit {
+			public Vector2Int Point;
+			public Direction4 Direction;
+			public EntryUnit (Vector2Int point, Direction4 direction) {
+				Point = point;
+				Direction = direction;
+			}
 		}
 
 
@@ -66,13 +76,14 @@ namespace AngeliaFramework {
 		public int[] Levels { get; init; }
 		public int[] Backgrounds { get; init; }
 		public Tunnel[] Tunnels { get; init; }
+		public MapGeneratorRoom BaseRoom { get; init; }
 
 		// Cache
-		private static readonly List<(Vector2Int point, Direction4 dir)> EntryPointCache = new();
+		private static readonly List<EntryUnit> EntryPointCache = new();
 		private static readonly List<Vector2Int> EndPointCache = new();
 		private static readonly List<Tunnel> TunnelsCache = new();
 		private static readonly HashSet<Vector2Int> RoomPointCache = new();
-		private static readonly Queue<Vector2Int> RoomPointQueue = new();
+		private static readonly Queue<(Vector2Int point, MapGeneratorRoom baseRoom)> RoomPointQueue = new();
 		private static int DynamicID = int.MinValue + 1;
 
 
@@ -84,7 +95,7 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public MapGeneratorRoom (IBlockSquad squad, int roomPointX, int roomPointY, int z) {
+		public MapGeneratorRoom (IBlockSquad squad, int roomPointX, int roomPointY, int z, MapGeneratorRoom baseRoom = null) {
 
 			Valid = false;
 			if (!HasValidRoomAt(squad, roomPointX, roomPointY, z, out int id, out int edgeWidth, out int edgeHeight)) return;
@@ -106,6 +117,7 @@ namespace AngeliaFramework {
 			EdgeRight = new int[edgeHeight];
 			EdgeDown = new int[edgeWidth];
 			EdgeUp = new int[edgeWidth];
+			BaseRoom = baseRoom;
 
 			// Fill Edges
 			for (int x = 0; x < edgeWidth; x++) {
@@ -247,13 +259,15 @@ namespace AngeliaFramework {
 			System.Threading.Monitor.Enter(RoomPointQueue);
 			if (!SearchRoom(squad, unitX, unitY, z, out var rootPoint)) yield break;
 			try {
+				const int MAX_ROOM_COUNT = 4096;
 				RoomPointCache.Clear();
 				RoomPointQueue.Clear();
 				RoomPointCache.Add(rootPoint);
-				RoomPointQueue.Enqueue(rootPoint);
-				for (int safe = 0; RoomPointQueue.Count > 0 && safe < 2048; safe++) {
-					var point = RoomPointQueue.Dequeue();
-					foreach (var room in FindRooms(squad, point.x, point.y, z)) {
+				RoomPointQueue.Enqueue((rootPoint, null));
+				for (int roomCount = 0; RoomPointQueue.Count > 0 && roomCount < MAX_ROOM_COUNT;) {
+					var (point, baseRoom) = RoomPointQueue.Dequeue();
+					if (TryIterate(squad, point, z, baseRoom, out var room)) {
+						roomCount++;
 						yield return room;
 					}
 				}
@@ -267,13 +281,11 @@ namespace AngeliaFramework {
 				System.Threading.Monitor.Exit(RoomPointQueue);
 			}
 			// Func
-			static IEnumerable<MapGeneratorRoom> FindRooms (IBlockSquad squad, int roomPointX, int roomPointY, int z) {
+			static bool TryIterate (IBlockSquad squad, Vector2Int roomPoint, int z, MapGeneratorRoom baseRoom, out MapGeneratorRoom currentRoom) {
 
 				// Current Room
-				var currentRoom = new MapGeneratorRoom(squad, roomPointX, roomPointY, z);
-				if (!currentRoom.Valid) yield break;
-
-				yield return currentRoom;
+				currentRoom = new MapGeneratorRoom(squad, roomPoint.x, roomPoint.y, z, baseRoom);
+				if (!currentRoom.Valid) return false;
 
 				EntryPointCache.Clear();
 				EndPointCache.Clear();
@@ -281,26 +293,34 @@ namespace AngeliaFramework {
 				// Squad >> Entry Points
 				for (int x = currentRoom.EdgeMinX; x <= currentRoom.EdgeMaxX; x++) {
 					if (squad.GetBlockAt(x, currentRoom.EdgeMinY - 1, z, BlockType.Entity) == CONNECTOR_ID) {
-						EntryPointCache.Add((new(x, currentRoom.EdgeMinY - 1), Direction4.Down));
+						EntryPointCache.Add(new EntryUnit(
+							new(x, currentRoom.EdgeMinY - 1), Direction4.Down
+						));
 					}
 					if (squad.GetBlockAt(x, currentRoom.EdgeMaxY + 1, z, BlockType.Entity) == CONNECTOR_ID) {
-						EntryPointCache.Add((new(x, currentRoom.EdgeMaxY + 1), Direction4.Up));
+						EntryPointCache.Add(new EntryUnit(
+							new(x, currentRoom.EdgeMaxY + 1), Direction4.Up
+						));
 					}
 				}
 				for (int y = currentRoom.EdgeMinY; y <= currentRoom.EdgeMaxY; y++) {
 					if (squad.GetBlockAt(currentRoom.EdgeMinX - 1, y, z, BlockType.Entity) == CONNECTOR_ID) {
-						EntryPointCache.Add((new(currentRoom.EdgeMinX - 1, y), Direction4.Left));
+						EntryPointCache.Add(new EntryUnit(
+							new(currentRoom.EdgeMinX - 1, y), Direction4.Left
+						));
 					}
 					if (squad.GetBlockAt(currentRoom.EdgeMaxX + 1, y, z, BlockType.Entity) == CONNECTOR_ID) {
-						EntryPointCache.Add((new(currentRoom.EdgeMaxX + 1, y), Direction4.Right));
+						EntryPointCache.Add(new EntryUnit(
+							new(currentRoom.EdgeMaxX + 1, y), Direction4.Right
+						));
 					}
 				}
 
 				// Entry Points >> End Points
-				foreach (var (entryPoint, direction) in EntryPointCache) {
-					var currentPos = entryPoint;
-					var currentDir = direction;
-					var currentNormal = direction.Normal();
+				foreach (var unit in EntryPointCache) {
+					var currentPos = unit.Point;
+					var currentDir = unit.Direction;
+					var currentNormal = unit.Direction.Normal();
 					const int MAX_STEP = 1024;
 					for (int step = 0; step < MAX_STEP; step++) {
 						// Try Forward
@@ -312,7 +332,7 @@ namespace AngeliaFramework {
 						}
 						// Try Turn Left
 						currentDir = currentDir.AntiClockwise();
-						currentNormal = direction.Normal();
+						currentNormal = unit.Direction.Normal();
 						pos = currentPos + currentNormal;
 						entityID = squad.GetBlockAt(pos.x, pos.y, z, BlockType.Entity);
 						if (entityID == CONNECTOR_ID) {
@@ -321,7 +341,7 @@ namespace AngeliaFramework {
 						}
 						// Try Turn Right
 						currentDir = currentDir.Opposite();
-						currentNormal = direction.Normal();
+						currentNormal = unit.Direction.Normal();
 						pos = currentPos + currentNormal;
 						entityID = squad.GetBlockAt(pos.x, pos.y, z, BlockType.Entity);
 						if (entityID == CONNECTOR_ID) {
@@ -340,12 +360,13 @@ namespace AngeliaFramework {
 					if (!SearchRoom(squad, endPoint.x, endPoint.y, z, out var _rootPoint)) continue;
 					if (RoomPointCache.Contains(_rootPoint)) continue;
 					RoomPointCache.Add(_rootPoint);
-					RoomPointQueue.Enqueue(_rootPoint);
+					RoomPointQueue.Enqueue((_rootPoint, currentRoom));
 				}
 
 				EntryPointCache.Clear();
 				EndPointCache.Clear();
 
+				return true;
 			}
 		}
 

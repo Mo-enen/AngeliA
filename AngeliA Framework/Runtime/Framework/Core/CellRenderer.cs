@@ -185,7 +185,6 @@ namespace AngeliaFramework {
 		private class Layer {
 			public int Count => Mathf.Min(Cells.Length, FocusedCell >= 0 ? FocusedCell : Cells.Length);
 			public Cell[] Cells;
-			public Material Material;
 			public int CellCount;
 			public int FocusedCell;
 			public int PrevCellCount;
@@ -305,187 +304,22 @@ namespace AngeliaFramework {
 
 
 		// Init
-		public static void Initialize_Rendering (Camera camera) {
+		internal static void Initialize (Transform root, Font[] fonts) {
 
-
-			SheetIDMap.Clear();
-			MetaPool.Clear();
-			SpriteGroupMap.Clear();
-
+			// Load Assets
 			var sheet = AngeUtil.LoadOrCreateJson<SpriteSheet>(AngePath.SheetRoot);
-			if (sheet == null) return;
+			var sheetTexture = AngeUtil.LoadTexture(AngePath.SheetTexturePath);
+			if (sheetTexture == null || sheet == null) return;
 
-			var sheetTexture = AngeUtil.LoadSheetTexture();
-			if (sheetTexture == null) return;
-
-			Sprites = sheet.Sprites;
-			Chains = sheet.SpriteChains;
-			Layers = new Layer[RenderLayer.COUNT];
-
-			// Layers
-			for (int i = 0; i < RenderLayer.COUNT; i++) {
-				var shader = RENDERING_SHADERS[i];
-				int rCapacity = RENDER_CAPACITY[i.Clamp(0, RENDER_CAPACITY.Length - 1)];
-				Layers[i] = CreateLayer(
-					camera,
-					sheet.GetMaterial(shader, sheetTexture),
-					LAYER_NAMES[i],
-					uiLayer: i == RenderLayer.UI || i == RenderLayer.TOP_UI,
-					sortingOrder: i == RenderLayer.TOP_UI ? 2048 : i,
-					rCapacity,
-					textLayer: false
-				);
-			}
-
+			// Skybox
 			if (SKYBOX_SHADER != null) {
 				RenderSettings.skybox = Skybox = new Material(SKYBOX_SHADER);
 			}
 
-			// Add Sprites
-			for (int i = 0; i < sheet.Sprites.Length; i++) {
-				var sp = sheet.Sprites[i];
-				SheetIDMap.TryAdd(sp.GlobalID, new(i));
-				if (sp.MetaIndex >= 0) {
-					MetaPool.TryAdd(sp.GlobalID, sheet.Metas[sp.MetaIndex]);
-				}
-			}
+			// Pipeline
+			InitializePool(sheet);
+			InitializeLayers(root, sheetTexture, fonts);
 
-			// Add Sprite Groups
-			for (int i = 0; i < sheet.Groups.Length; i++) {
-				var group = sheet.Groups[i];
-				if (group != null && group.SpriteIDs != null && group.SpriteIDs.Length > 0) {
-					SpriteGroupMap.TryAdd(group.ID, group.SpriteIDs);
-				}
-			}
-
-			// Add Animated Sprite Chains
-			for (int i = 0; i < sheet.SpriteChains.Length; i++) {
-				var chain = sheet.SpriteChains[i];
-				if (chain.Type != GroupType.Animated || chain.Count == 0) continue;
-				SheetIDMap.TryAdd(chain.ID, new(0, chain));
-			}
-
-			// Add Meta for Chains
-			for (int i = 0; i < sheet.SpriteChains.Length; i++) {
-				var chain = sheet.SpriteChains[i];
-				int id = chain.ID;
-				if (!SheetIDMap.ContainsKey(id)) continue;
-				if (chain.Count > 0) {
-					int index = chain[0];
-					if (index >= 0 && index < sheet.Sprites.Length) {
-						var sp = sheet.Sprites[index];
-						if (sp.MetaIndex >= 0) {
-							MetaPool.TryAdd(id, sheet.Metas[sp.MetaIndex]);
-						}
-					}
-				}
-			}
-
-		}
-
-
-		public static void Initialize_Text (Camera camera, Font[] fonts) {
-
-			const int capacity = 2048;
-			if (fonts == null || fonts.Length == 0) {
-				fonts = new Font[1] { Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf") };
-			}
-
-			if (fonts == null || fonts.Length == 0) return;
-
-			TextLayers = new TextLayer[fonts.Length];
-			for (int i = 0; i < fonts.Length; i++) {
-				var font = fonts[i];
-#pragma warning disable IDE0270
-				if (font == null) font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-#pragma warning restore IDE0270
-				var tLayer = TextLayers[i] = CreateLayer(
-					camera, font.material, font.name,
-					uiLayer: true,
-					sortingOrder: Layers.Length + i,
-					capacity,
-					textLayer: true
-				) as TextLayer;
-				if (font != null) {
-					tLayer.TextFont = font;
-					tLayer.TextSize = font.fontSize.Clamp(42, int.MaxValue);
-					Font.textureRebuilt += (_font) => {
-						if (_font == tLayer.TextFont) tLayer.TextRebuild++;
-					};
-				}
-			}
-		}
-
-
-		private static Layer CreateLayer (Camera camera, Material material, string name, bool uiLayer, int sortingOrder, int renderCapacity, bool textLayer) {
-
-			if (material == null) {
-				material = new Material(Shader.Find("Angelia/Cell"));
-			}
-
-			var tf = new GameObject(name, typeof(MeshFilter), typeof(MeshRenderer)).transform;
-			tf.SetParent(camera.transform);
-			tf.SetAsLastSibling();
-			tf.SetPositionAndRotation(new Vector3(0, 0, 1), Quaternion.identity);
-			tf.localScale = Vector3.one;
-			var filter = tf.GetComponent<MeshFilter>();
-			filter.sharedMesh = new Mesh();
-			var mr = tf.GetComponent<MeshRenderer>();
-			mr.material = material;
-			mr.receiveShadows = false;
-			mr.staticShadowCaster = false;
-			mr.allowOcclusionWhenDynamic = false;
-			mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-			mr.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
-			mr.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
-			mr.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
-			mr.sortingOrder = sortingOrder;
-			var cells = new Cell[renderCapacity];
-			for (int i = 0; i < renderCapacity; i++) {
-				cells[i] = new Cell() {
-					Index = -1,
-					BorderSide = Alignment.Full,
-				};
-			}
-
-			// Create Layer
-			var layer = textLayer ? new TextLayer() : new Layer();
-			layer.Cells = cells;
-			layer.Mesh = filter.sharedMesh;
-			layer.RendererRoot = filter.transform;
-			layer.CellCount = renderCapacity;
-			layer.FocusedCell = 0;
-			layer.VertexCache = new();
-			layer.UvCache = new();
-			layer.ColorCache = new();
-			layer.PrevCellCount = 0;
-			layer.Material = material;
-			layer.SortedIndex = 0;
-			layer.SortingOrder = sortingOrder;
-			layer.Renderer = mr;
-			layer.UiLayer = uiLayer;
-
-			// Init Mesh
-			var tris = new int[renderCapacity * 2 * 3];
-			for (int i = 0; i < renderCapacity; i++) {
-				tris[i * 6 + 0] = i * 4 + 0;
-				tris[i * 6 + 1] = i * 4 + 1;
-				tris[i * 6 + 2] = i * 4 + 2;
-				tris[i * 6 + 3] = i * 4 + 0;
-				tris[i * 6 + 4] = i * 4 + 2;
-				tris[i * 6 + 5] = i * 4 + 3;
-			}
-			layer.VertexCache.AddRange(new Vector3[renderCapacity * 4]);
-			layer.UvCache.AddRange(new Vector2[renderCapacity * 4]);
-			layer.ColorCache.AddRange(new Color32[renderCapacity * 4]);
-			var mesh = filter.sharedMesh;
-			mesh.MarkDynamic();
-			mesh.SetVertices(layer.VertexCache);
-			mesh.SetUVs(0, layer.UvCache);
-			mesh.SetColors(layer.ColorCache);
-			mesh.SetTriangles(tris, 0);
-			mesh.UploadMeshData(false);
-			return layer;
 		}
 
 
@@ -772,21 +606,186 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public static void BeginDraw (bool isPausing) {
-			IsPausing = isPausing;
-			IsDrawing = true;
-			SetLayerToDefault();
-			for (int i = 0; i < Layers.Length; i++) {
-				var layer = Layers[i];
-				if (!isPausing || layer.UiLayer) {
-					layer.FocusedCell = 0;
-					layer.SortedIndex = 0;
+		public static void InitializePool (SpriteSheet sheet) {
+
+			SheetIDMap.Clear();
+			MetaPool.Clear();
+			SpriteGroupMap.Clear();
+			Sprites = sheet.Sprites;
+			Chains = sheet.SpriteChains;
+
+			// Add Sprites
+			for (int i = 0; i < sheet.Sprites.Length; i++) {
+				var sp = sheet.Sprites[i];
+				SheetIDMap.TryAdd(sp.GlobalID, new(i));
+				if (sp.MetaIndex >= 0) {
+					MetaPool.TryAdd(sp.GlobalID, sheet.Metas[sp.MetaIndex]);
 				}
 			}
-			for (int i = 0; i < TextLayers.Length; i++) {
-				var tLayer = TextLayers[i];
-				tLayer.FocusedCell = 0;
-				tLayer.SortedIndex = 0;
+
+			// Add Sprite Groups
+			for (int i = 0; i < sheet.Groups.Length; i++) {
+				var group = sheet.Groups[i];
+				if (group != null && group.SpriteIDs != null && group.SpriteIDs.Length > 0) {
+					SpriteGroupMap.TryAdd(group.ID, group.SpriteIDs);
+				}
+			}
+
+			// Add Animated Sprite Chains
+			for (int i = 0; i < sheet.SpriteChains.Length; i++) {
+				var chain = sheet.SpriteChains[i];
+				if (chain.Type != GroupType.Animated || chain.Count == 0) continue;
+				SheetIDMap.TryAdd(chain.ID, new(0, chain));
+			}
+
+			// Add Meta for Chains
+			for (int i = 0; i < sheet.SpriteChains.Length; i++) {
+				var chain = sheet.SpriteChains[i];
+				int id = chain.ID;
+				if (!SheetIDMap.ContainsKey(id)) continue;
+				if (chain.Count > 0) {
+					int index = chain[0];
+					if (index >= 0 && index < sheet.Sprites.Length) {
+						var sp = sheet.Sprites[index];
+						if (sp.MetaIndex >= 0) {
+							MetaPool.TryAdd(id, sheet.Metas[sp.MetaIndex]);
+						}
+					}
+				}
+			}
+		}
+
+
+		public static void InitializeLayers (Transform root, Texture2D sheetTexture, Font[] fonts) {
+
+			// Clear Root
+			root.DestroyAllChildrenImmediate();
+
+			// Create Layers
+			Layers = new Layer[RenderLayer.COUNT];
+			for (int i = 0; i < RenderLayer.COUNT; i++) {
+				var shader = RENDERING_SHADERS[i];
+				int rCapacity = RENDER_CAPACITY[i.Clamp(0, RENDER_CAPACITY.Length - 1)];
+				Layers[i] = CreateLayer(
+					root,
+					new Material(shader) {
+						name = shader.name,
+						mainTexture = sheetTexture,
+						enableInstancing = true,
+						mainTextureOffset = Vector2.zero,
+						mainTextureScale = Vector2.one,
+						doubleSidedGI = false,
+						renderQueue = 3000,
+					},
+					LAYER_NAMES[i],
+					uiLayer: i == RenderLayer.UI || i == RenderLayer.TOP_UI,
+					sortingOrder: i == RenderLayer.TOP_UI ? 2048 : i,
+					rCapacity,
+					textLayer: false
+				);
+			}
+
+			// Text Layer
+			const int TEXT_CAPACITY = 2048;
+			if (fonts == null || fonts.Length == 0) {
+				fonts = new Font[1] { Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf") };
+			}
+
+			TextLayers = new TextLayer[fonts.Length];
+			for (int i = 0; i < fonts.Length; i++) {
+				if (fonts[i] == null) fonts[i] = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+				var font = fonts[i];
+				if (font == null) continue;
+				var tLayer = TextLayers[i] = CreateLayer(
+					root, font.material, font.name,
+					uiLayer: true,
+					sortingOrder: Layers.Length + i,
+					TEXT_CAPACITY,
+					textLayer: true
+				) as TextLayer;
+				tLayer.TextFont = font;
+				tLayer.TextSize = font.fontSize.Clamp(42, int.MaxValue);
+				Font.textureRebuilt += (_font) => {
+					if (_font == tLayer.TextFont) tLayer.TextRebuild++;
+				};
+			}
+			// Func
+			static Layer CreateLayer (Transform root, Material material, string name, bool uiLayer, int sortingOrder, int renderCapacity, bool textLayer) {
+
+				if (material == null) {
+					material = new Material(Shader.Find("Angelia/Cell"));
+				}
+
+				var tf = new GameObject(name, typeof(MeshFilter), typeof(MeshRenderer)).transform;
+				tf.SetParent(root);
+				tf.SetAsLastSibling();
+				tf.SetPositionAndRotation(new Vector3(0, 0, 1), Quaternion.identity);
+				tf.localScale = Vector3.one;
+				var filter = tf.GetComponent<MeshFilter>();
+				filter.sharedMesh = new Mesh();
+				var mr = tf.GetComponent<MeshRenderer>();
+				mr.material = material;
+				mr.receiveShadows = false;
+				mr.staticShadowCaster = false;
+				mr.allowOcclusionWhenDynamic = false;
+				mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+				mr.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+				mr.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
+				mr.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
+				mr.sortingOrder = sortingOrder;
+				var cells = new Cell[renderCapacity];
+				for (int i = 0; i < renderCapacity; i++) {
+					cells[i] = new Cell() {
+						Index = -1,
+						BorderSide = Alignment.Full,
+					};
+				}
+
+				// Create Layer
+				var layer = textLayer ? new TextLayer() : new Layer();
+				layer.Cells = cells;
+				layer.Mesh = filter.sharedMesh;
+				layer.RendererRoot = filter.transform;
+				layer.CellCount = renderCapacity;
+				layer.FocusedCell = 0;
+				layer.VertexCache = new();
+				layer.UvCache = new();
+				layer.ColorCache = new();
+				layer.PrevCellCount = 0;
+				layer.SortedIndex = 0;
+				layer.SortingOrder = sortingOrder;
+				layer.Renderer = mr;
+				layer.UiLayer = uiLayer;
+
+				// Init Mesh
+				var tris = new int[renderCapacity * 2 * 3];
+				for (int i = 0; i < renderCapacity; i++) {
+					tris[i * 6 + 0] = i * 4 + 0;
+					tris[i * 6 + 1] = i * 4 + 1;
+					tris[i * 6 + 2] = i * 4 + 2;
+					tris[i * 6 + 3] = i * 4 + 0;
+					tris[i * 6 + 4] = i * 4 + 2;
+					tris[i * 6 + 5] = i * 4 + 3;
+				}
+				layer.VertexCache.AddRange(new Vector3[renderCapacity * 4]);
+				layer.UvCache.AddRange(new Vector2[renderCapacity * 4]);
+				layer.ColorCache.AddRange(new Color32[renderCapacity * 4]);
+				var mesh = filter.sharedMesh;
+				mesh.MarkDynamic();
+				mesh.SetVertices(layer.VertexCache);
+				mesh.SetUVs(0, layer.UvCache);
+				mesh.SetColors(layer.ColorCache);
+				mesh.SetTriangles(tris, 0);
+				mesh.UploadMeshData(false);
+				return layer;
+			}
+
+		}
+
+
+		public static void SetTexture (Texture2D texture) {
+			foreach (var layer in Layers) {
+				layer.Renderer.material.mainTexture = texture;
 			}
 		}
 
@@ -828,6 +827,25 @@ namespace AngeliaFramework {
 
 
 		// Draw
+		public static void BeginDraw (bool isPausing) {
+			IsPausing = isPausing;
+			IsDrawing = true;
+			SetLayerToDefault();
+			for (int i = 0; i < Layers.Length; i++) {
+				var layer = Layers[i];
+				if (!isPausing || layer.UiLayer) {
+					layer.FocusedCell = 0;
+					layer.SortedIndex = 0;
+				}
+			}
+			for (int i = 0; i < TextLayers.Length; i++) {
+				var tLayer = TextLayers[i];
+				tLayer.FocusedCell = 0;
+				tLayer.SortedIndex = 0;
+			}
+		}
+
+
 		public static Cell Draw (int globalID, RectInt rect, int z = int.MinValue) => Draw(globalID, false, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, WHITE, z);
 		public static Cell Draw (int globalID, RectInt rect, Color32 color, int z = int.MinValue) => Draw(globalID, false, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
 		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID, false, x, y, pivotX, pivotY, rotation, width, height, WHITE, z);

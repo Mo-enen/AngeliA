@@ -440,6 +440,19 @@ namespace AngeliaFramework {
 			rect.y = rect.y.Clamp(bounds.y, bounds.yMax - rect.height);
 		}
 
+		public static RectInt LerpTo (this RectInt from, RectInt to, int lerpRate) => new(
+			from.x.LerpTo(to.x, lerpRate),
+			from.y.LerpTo(to.y, lerpRate),
+			from.width.LerpTo(to.width, lerpRate),
+			from.height.LerpTo(to.height, lerpRate)
+		);
+		public static RectInt LerpTo (this RectInt from, RectInt to, float lerp) => new(
+			from.x.LerpTo(to.x, lerp),
+			from.y.LerpTo(to.y, lerp),
+			from.width.LerpTo(to.width, lerp),
+			from.height.LerpTo(to.height, lerp)
+		);
+
 
 		// Misc
 		public static bool IsSame (this Color32 a, Color32 b, bool ignoreAlpha = false) => a.r == b.r && a.g == b.g && a.b == b.b && (ignoreAlpha || a.a == b.a);

@@ -206,7 +206,7 @@ namespace AngeliaFramework.Editor {
 				return;
 			}
 
-			var texture = AngeUtil.LoadSheetTexture();
+			var texture = AngeUtil.LoadTexture(AngePath.SheetTexturePath);
 			if (texture == null) {
 				Debug.LogWarning("Sheet texture not found.");
 				return;

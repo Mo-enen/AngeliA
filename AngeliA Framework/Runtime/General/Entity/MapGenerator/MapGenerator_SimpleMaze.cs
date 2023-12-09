@@ -18,8 +18,7 @@ namespace AngeliaFramework {
 				SampleReader, X.ToUnit(), Y.ToUnit(), Stage.ViewZ - 1
 			)) {
 
-				Debug.Log("roomid: " + room.ID);
-
+				Debug.Log("roomid: " + room.ID + " from:" + (room.BaseRoom != null ? room.BaseRoom.ID : int.MinValue));
 
 			}
 

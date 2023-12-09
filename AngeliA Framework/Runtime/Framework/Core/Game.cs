@@ -219,8 +219,7 @@ namespace AngeliaFramework {
 				Application.quitting -= OnGameQuitting;
 				Application.quitting += OnGameQuitting;
 				GameCamera = AngeUtil.GetOrCreateCamera();
-				CellRenderer.Initialize_Rendering(GameCamera);
-				CellRenderer.Initialize_Text(GameCamera, m_Fonts);
+				CellRenderer.Initialize(GameCamera.transform, m_Fonts);
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitialize>(m => m.Value.Order <= 0, (a, b) => a.Value.Order.CompareTo(b.Value.Order));
 				OnSlotChanged?.Invoke();
 				AudioPlayer.Initialize(m_AudioClips);

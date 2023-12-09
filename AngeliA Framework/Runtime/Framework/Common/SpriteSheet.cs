@@ -235,22 +235,10 @@ namespace AngeliaFramework {
 
 	[System.Serializable]
 	public class SpriteSheet {
-
 		public AngeSprite[] Sprites = new AngeSprite[0];
 		public AngeSpriteChain[] SpriteChains = new AngeSpriteChain[0];
 		public SpriteGroup[] Groups = new SpriteGroup[0];
 		public SpriteMeta[] Metas = new SpriteMeta[0];
-
-		public Material GetMaterial (Shader shader, Texture2D texture) => new Material(shader) {
-			name = shader.name,
-			mainTexture = texture,
-			enableInstancing = true,
-			mainTextureOffset = Vector2.zero,
-			mainTextureScale = Vector2.one,
-			doubleSidedGI = false,
-			renderQueue = 3000
-		};
-
 	}
 
 

@@ -501,7 +501,7 @@ namespace AngeliaFramework.Editor {
 			// Texture
 			var texture = SheetThumbnail.image as Texture2D;
 			if (texture == null || forceRefresh) {
-				SheetThumbnail.image = texture = AngeUtil.LoadSheetTexture();
+				SheetThumbnail.image = texture = AngeUtil.LoadTexture(AngePath.SheetTexturePath);
 			}
 
 			// Label
