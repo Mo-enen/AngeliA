@@ -5,23 +5,6 @@ using UnityEngine;
 
 namespace AngeliaFramework {
 
-
-
-	public abstract class CellEffect {
-		public int Duration { get; set; } = 0;
-		protected int LocalFrame { get; private set; } = 0;
-		public int SortedIndex { get; set; } = 0;
-		public CellEffect (int duration = 0) => Duration = duration;
-		public virtual void Start () { LocalFrame = 0; }
-		public abstract void Perform (Cell[] cells, int cellCount, int layerIndex);
-		public bool Next () {
-			LocalFrame++;
-			return LocalFrame < Duration;
-		}
-	}
-
-
-
 	public class Cell {
 		public int Index;
 		public int Order;
@@ -254,7 +237,6 @@ namespace AngeliaFramework {
 
 		// Const
 		public static readonly Cell EMPTY_CELL = new() { Index = -1 };
-		private const int EFFECT_COUNT = 8;
 		private const int MAX_CAMERA_SHAKE = 120;
 		private static readonly Color32 WHITE = new(255, 255, 255, 255);
 		private static readonly int SKYBOX_TOP = Shader.PropertyToID("_ColorA");
@@ -306,7 +288,6 @@ namespace AngeliaFramework {
 		private static readonly Dictionary<int, CellInfo> SheetIDMap = new();
 		private static readonly Dictionary<int, int[]> SpriteGroupMap = new();
 		private static readonly Dictionary<int, SpriteMeta> MetaPool = new();
-		private static readonly CellEffect[] Effects = new CellEffect[EFFECT_COUNT];
 		private static readonly Cell[] Last9SlicedCells = new Cell[9];
 		private static readonly System.Random CameraShakeRandom = new(032481);
 		private static AngeSprite[] Sprites = null;
@@ -548,20 +529,6 @@ namespace AngeliaFramework {
 
 			IsDrawing = false;
 			GlobalFrame = globalFrame;
-
-			// Effect
-			for (int i = 0; i < EFFECT_COUNT; i++) {
-				try {
-					var eff = Effects[i];
-					if (eff == null) continue;
-					for (int layerIndex = 0; layerIndex < Layers.Length; layerIndex++) {
-						var layer = Layers[layerIndex];
-						eff.SortedIndex = layer.SortedIndex;
-						eff.Perform(layer.Cells, layer.Count, layerIndex);
-					}
-					if (!eff.Next()) Effects[i] = null;
-				} catch (System.Exception ex) { Debug.LogException(ex); }
-			}
 
 			// Layer Game Objects
 			var pos = Vector3.zero;
@@ -1212,33 +1179,6 @@ namespace AngeliaFramework {
 
 
 		public static AngeSpriteChain GetChainAt (int index) => Chains[index];
-
-
-		// Cell Effect
-		public static void AddEffect (CellEffect effect) {
-			for (int i = 0; i < EFFECT_COUNT; i++) {
-				if (Effects[i] == null) {
-					Effects[i] = effect;
-					effect.Start();
-					return;
-				}
-			}
-		}
-
-
-		public static void RemoveEffect<T> () where T : CellEffect {
-			for (int i = 0; i < EFFECT_COUNT; i++) {
-				if (Effects[i] is T) Effects[i] = null;
-			}
-		}
-
-
-		public static bool HasEffect<T> () where T : CellEffect {
-			for (int i = 0; i < EFFECT_COUNT; i++) {
-				if (Effects[i] is T) return true;
-			}
-			return false;
-		}
 
 
 		// Misc

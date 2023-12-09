@@ -20,7 +20,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private Entity CurrentTeleportEntity = null;
-		private bool Front = true;
+		private bool ToFront = true;
 		private float VigRound = 0f;
 		private float VigFeather = 1f;
 
@@ -41,7 +41,7 @@ namespace AngeliaFramework {
 			// Start
 			if (LocalFrame == 0) {
 				// Player
-				Front = TeleportTo.z > Stage.ViewZ;
+				ToFront = TeleportTo.z > Stage.ViewZ;
 				// Vig
 				if (useVig) {
 					VigFeather = VignetteEffect.GetFeather();
@@ -65,14 +65,25 @@ namespace AngeliaFramework {
 			}
 
 			// Add Squad Effect
-			if (LocalFrame == WaitDuration + 1 && useParallax) {
+			if (LocalFrame > WaitDuration && useParallax) {
 				const int PARA = Const.SQUAD_BEHIND_PARALLAX;
-				var effect = TeleportMapEffect.Instance;
-				effect.Duration = Duration - WaitDuration;
-				effect.Scale = Front ? 1000f / PARA : PARA / 1000f;
-				effect.ToBehind = Front;
-				CellRenderer.RemoveEffect<TeleportMapEffect>();
-				CellRenderer.AddEffect(effect);
+				float scale = ToFront ? 1000f / PARA : PARA / 1000f;
+				float z10 = 1f - Mathf.InverseLerp(0, Duration, LocalFrame);
+				Vector2Int center = CellRenderer.CameraRect.center.CeilToInt();
+				var lerp = Mathf.LerpUnclamped(scale, 1f, 1f - z10 * z10);
+				if (CellRenderer.GetCells(RenderLayer.BEHIND, out var cells, out int count)) {
+					MapEffectLogic(cells, center, count, scale, lerp, true, ToFront);
+				}
+				for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
+					if (
+						layer == RenderLayer.WALLPAPER ||
+						layer == RenderLayer.UI ||
+						layer == RenderLayer.TOP_UI
+					) continue;
+					if (CellRenderer.GetCells(layer, out cells, out count)) {
+						MapEffectLogic(cells, center, count, scale, lerp, false, ToFront);
+					}
+				}
 			}
 
 			// Update Vig Effect
@@ -130,66 +141,37 @@ namespace AngeliaFramework {
 			return null;
 		}
 
-	}
-
-
-
-	public class TeleportMapEffect : CellEffect {
-
-		public static readonly TeleportMapEffect Instance = new();
-
-		public float Scale { get; set; } = 1f;
-		public bool ToBehind { get; set; } = true;
-
-		public override void Perform (Cell[] cells, int cellCount, int layerIndex) {
-
-			if (layerIndex == RenderLayer.UI || layerIndex == RenderLayer.TOP_UI) return;
-
-			float z01 = Mathf.InverseLerp(0, Duration, LocalFrame);
-			float z10 = 1f - z01;
-			Vector2Int center = CellRenderer.CameraRect.center.CeilToInt();
-			var scl = Mathf.LerpUnclamped(Scale, 1f, 1f - z10 * z10);
-
-			if (layerIndex == RenderLayer.BEHIND) {
-				// Behind
-				PerformLogic(cells, center, cellCount, scl, true);
-			} else if (layerIndex != RenderLayer.WALLPAPER) {
-				// Front
-				PerformLogic(cells, center, cellCount, scl, false);
-			}
-
-		}
-
-		private void PerformLogic (Cell[] cells, Vector2Int center, int count, float scale, bool behind) {
+		// LGC
+		private static void MapEffectLogic (
+			Cell[] cells, Vector2Int center, int count, float scale, float lerp, bool isBehind, bool toBehind
+		) {
 			Color32 c;
 			for (int i = 0; i < count; i++) {
 				var cell = cells[i];
 				c = cell.Color;
-				if (behind) {
-					if (ToBehind) {
-						c.a = (byte)Util.Remap(Scale, 1f, 0, c.a, scale);
+				if (isBehind) {
+					if (toBehind) {
+						c.a = (byte)Util.Remap(scale, 1f, 0, c.a, lerp);
 					} else {
-						c.a = (byte)Util.Remap(Scale, 1f, 255, c.a, scale);
+						c.a = (byte)Util.Remap(scale, 1f, 255, c.a, lerp);
 					}
 				}
 				cell.Color = c;
 				if (cell.Rotation == 0) {
-					cell.X = Mathf.LerpUnclamped(cell.X - cell.PivotX * cell.Width, center.x, 1f - scale).FloorToInt();
-					cell.Y = Mathf.LerpUnclamped(cell.Y - cell.PivotY * cell.Height, center.y, 1f - scale).FloorToInt();
-					cell.Width = cell.Width > 0 ? (cell.Width * scale).CeilToInt() : (cell.Width * scale).FloorToInt();
-					cell.Height = cell.Height > 0 ? (cell.Height * scale).CeilToInt() : (cell.Height * scale).FloorToInt();
+					cell.X = Mathf.LerpUnclamped(cell.X - cell.PivotX * cell.Width, center.x, 1f - lerp).FloorToInt();
+					cell.Y = Mathf.LerpUnclamped(cell.Y - cell.PivotY * cell.Height, center.y, 1f - lerp).FloorToInt();
+					cell.Width = cell.Width > 0 ? (cell.Width * lerp).CeilToInt() : (cell.Width * lerp).FloorToInt();
+					cell.Height = cell.Height > 0 ? (cell.Height * lerp).CeilToInt() : (cell.Height * lerp).FloorToInt();
 					cell.PivotX = 0;
 					cell.PivotY = 0;
 				} else {
-					cell.X = Mathf.LerpUnclamped(cell.X, center.x, 1f - scale).FloorToInt();
-					cell.Y = Mathf.LerpUnclamped(cell.Y, center.y, 1f - scale).FloorToInt();
-					cell.Width = (cell.Width * scale).CeilToInt();
-					cell.Height = (cell.Height * scale).CeilToInt();
+					cell.X = Mathf.LerpUnclamped(cell.X, center.x, 1f - lerp).FloorToInt();
+					cell.Y = Mathf.LerpUnclamped(cell.Y, center.y, 1f - lerp).FloorToInt();
+					cell.Width = (cell.Width * lerp).CeilToInt();
+					cell.Height = (cell.Height * lerp).CeilToInt();
 				}
 			}
 		}
 
 	}
-
-
 }
