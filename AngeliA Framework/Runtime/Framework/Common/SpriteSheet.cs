@@ -92,6 +92,28 @@ namespace AngeliaFramework {
 				t = (int)(value.y * UV_SCALE);
 			}
 		}
+		public string RealName {
+			get => u;
+			set => u = value;
+		}
+		public int SheetNameIndex {
+			get => v;
+			set => v = value;
+		}
+		public SheetType SheetType {
+			get => _SheetType ??= (SheetType)(w & 0b00000011);
+			set {
+				_SheetType = value;
+				w = (byte)((w & 0b00001100) | (int)value);
+			}
+		}
+		public GroupType GroupType {
+			get => _GroupType ??= (GroupType)((w & 0b00001100) >> 2);
+			set {
+				_GroupType = value;
+				w = (byte)((w & 0b00000011) | ((int)value << 2));
+			}
+		}
 
 		// Ser
 		[SerializeField] int a; // GlobalID
@@ -118,11 +140,16 @@ namespace AngeliaFramework {
 		[SerializeField] int s; // UvTopRight R
 		[SerializeField] int t; // UvTopRight U
 
+		[SerializeField] string u;  // Real Name
+		[SerializeField] int v;     // Sheet Name Index
+		[SerializeField] byte w;    // SheetType & GroupType
 
 		// Data
 		[System.NonSerialized] Vector2? _BottomRight = null;
 		[System.NonSerialized] Vector2? _TopLeft = null;
 		[System.NonSerialized] Color32? _SummaryTint = default;
+		[System.NonSerialized] SheetType? _SheetType = null;
+		[System.NonSerialized] GroupType? _GroupType = null;
 
 
 		// API
@@ -239,6 +266,7 @@ namespace AngeliaFramework {
 		public AngeSpriteChain[] SpriteChains = new AngeSpriteChain[0];
 		public SpriteGroup[] Groups = new SpriteGroup[0];
 		public SpriteMeta[] Metas = new SpriteMeta[0];
+		public string[] SheetNames = new string[0];
 	}
 
 

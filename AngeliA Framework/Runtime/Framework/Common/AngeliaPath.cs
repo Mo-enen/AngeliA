@@ -26,7 +26,7 @@ namespace AngeliaFramework {
 		public static string DialogueRoot => _DialogueRoot ??= Util.CombinePaths(UniverseRoot, "Dialogue");
 		private static string _DialogueRoot = null;
 
-		public static string SheetTexturePath => _SheetTexturePath ??= Util.CombinePaths(SheetRoot, "Sheet.png");
+		public static string SheetTexturePath => _SheetTexturePath ??= Util.CombinePaths(SheetRoot, "Texture.png");
 		private static string _SheetTexturePath = null;
 
 		public static string MetaRoot => _MetaRoot ??= Util.CombinePaths(UniverseRoot, "Meta");
@@ -38,7 +38,7 @@ namespace AngeliaFramework {
 		public static string LanguageRoot => _LanguageRoot ??= Util.CombinePaths(UniverseRoot, "Language");
 		private static string _LanguageRoot = null;
 
-		// Persistent-Slot
+		// Slot
 		public static int CurrentSaveSlot {
 			get => _CurrentSaveSlot;
 			internal set {
@@ -48,7 +48,9 @@ namespace AngeliaFramework {
 					_UserMapRoot = null;
 					_PlayerDataRoot = null;
 					_ProcedureMapRoot = null;
-					_ItemSaveDataRoot = null;
+					_DownloadMapRoot = null;
+					_UserSheetRoot = null;
+					_UserSheetTexturePath = null;
 				}
 			}
 		}
@@ -57,21 +59,27 @@ namespace AngeliaFramework {
 		public static string SaveSlotRoot => _SaveSlotRoot ??= Util.CombinePaths(Application.persistentDataPath, $"Save Slot {(char)(CurrentSaveSlot + 'A')}");
 		private static string _SaveSlotRoot = null;
 
-		public static string UserMapRoot => _UserMapRoot ??= Util.CombinePaths(SaveSlotRoot, "User Map");
+		public static string UserMapRoot => _UserMapRoot ??= Util.CombinePaths(SaveSlotRoot, "Map", "User Map");
 		private static string _UserMapRoot = null;
 
-		public static string PlayerDataRoot => _PlayerDataRoot ??= Util.CombinePaths(SaveSlotRoot, "Player Data");
+		public static string PlayerDataRoot => _PlayerDataRoot ??= Util.CombinePaths(SaveSlotRoot, "Data");
 		private static string _PlayerDataRoot = null;
 
-		public static string ProcedureMapRoot => _ProcedureMapRoot ??= Util.CombinePaths(SaveSlotRoot, "Procedure Map");
+		public static string ProcedureMapRoot => _ProcedureMapRoot ??= Util.CombinePaths(SaveSlotRoot, "Map", "Procedure Map");
 		private static string _ProcedureMapRoot = null;
 
-		public static string ItemSaveDataRoot => _ItemSaveDataRoot ??= Util.CombinePaths(SaveSlotRoot, "Item");
-		private static string _ItemSaveDataRoot = null;
+		public static string DownloadMapRoot => _DownloadMapRoot ??= Util.CombinePaths(SaveSlotRoot, "Map", "Download Map");
+		private static string _DownloadMapRoot = null;
+
+		public static string UserSheetRoot => _UserSheetRoot ??= Util.CombinePaths(SaveSlotRoot, "Sheet");
+		private static string _UserSheetRoot = null;
+
+		public static string UserSheetTexturePath => _UserSheetTexturePath ??= Util.CombinePaths(UserSheetRoot, "Texture.png");
+		private static string _UserSheetTexturePath = null;
 
 		// Persistent
-		public static string DownloadMapRoot => _DownloadMapRoot ??= Util.CombinePaths(Application.persistentDataPath, "Download Map");
-		private static string _DownloadMapRoot = null;
+		public static string ItemSaveDataRoot => _ItemSaveDataRoot ??= Util.CombinePaths(Application.persistentDataPath, "Item Customization");
+		private static string _ItemSaveDataRoot = null;
 
 		// Temp
 		public static string ProcedureMapTempRoot => _ProcedureMapTempRoot ??= Util.CombinePaths(Application.temporaryCachePath, "Generating Map");

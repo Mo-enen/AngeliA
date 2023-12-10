@@ -290,6 +290,7 @@ namespace AngeliaFramework {
 		private static Layer[] Layers = new Layer[0];
 		private static TextLayer[] TextLayers = new TextLayer[0];
 		private static Material Skybox = null;
+		private static string[] SheetNames = new string[0];
 		private static int GlobalFrame = 0;
 		private static bool IsPausing = false;
 		private static bool IsDrawing = false;
@@ -613,6 +614,7 @@ namespace AngeliaFramework {
 			SpriteGroupMap.Clear();
 			Sprites = sheet.Sprites;
 			Chains = sheet.SpriteChains;
+			SheetNames = sheet.SheetNames;
 
 			// Add Sprites
 			for (int i = 0; i < sheet.Sprites.Length; i++) {
@@ -1184,6 +1186,9 @@ namespace AngeliaFramework {
 			Skybox.SetColor(SKYBOX_TOP, top);
 			Skybox.SetColor(SKYBOX_BOTTOM, bottom);
 		}
+
+
+		public static string GetSheetName (AngeSprite sprite) => sprite != null && sprite.SheetNameIndex >= 0 && sprite.SheetNameIndex < SheetNames.Length ? SheetNames[sprite.SheetNameIndex] : string.Empty;
 
 
 		// Clamp

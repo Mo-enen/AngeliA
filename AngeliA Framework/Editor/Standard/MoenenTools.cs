@@ -214,20 +214,6 @@ namespace AngeliaFramework.Editor {
 
 			var pixels = texture.GetPixels32();
 
-			// Name Pool from Editing Meta
-			var editingMeta = AngeUtil.LoadJson<SpriteEditingMeta>(AngePath.SheetRoot);
-			if (editingMeta == null) {
-				Debug.LogWarning("Sprite editing meta not found.");
-				return;
-			}
-			var namePool = new Dictionary<int, (string name, string sheetName)>();
-			foreach (var meta in editingMeta.Metas) {
-				namePool.TryAdd(
-					meta.GlobalID,
-					(meta.RealName, editingMeta.SheetNames[meta.SheetNameIndex])
-				);
-			}
-
 			// Check all Sprites
 			var resultList = new List<string>();
 			int textureWidth = texture.width;
@@ -243,8 +229,8 @@ namespace AngeliaFramework.Editor {
 						}
 					}
 				}
-				if (namePool.TryGetValue(sprite.GlobalID, out var nameData)) {
-					resultList.Add($"Sheet: <color=#FFCC00>{nameData.sheetName}</color> Name: <color=#FFCC00>{nameData.name}</color>");
+				if (sprite.SheetNameIndex >= 0 && sprite.SheetNameIndex < sheet.SheetNames.Length) {
+					resultList.Add($"Sheet: <color=#FFCC00>{sheet.SheetNames[sprite.SheetNameIndex]}</color> Name: <color=#FFCC00>{sprite.RealName}</color>");
 				}
 				_PASS:;
 			}

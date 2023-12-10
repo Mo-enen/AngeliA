@@ -286,7 +286,7 @@ namespace AngeliaFramework {
 			particle.Tint = PARTICLE_CLEAR_TINT;
 			particle.SpriteID = spriteID;
 			if (SpritePool.TryGetValue(blockTintId, out var sprite)) {
-				particle.Tint = sprite.Sprite.SummaryTint;
+				particle.Tint = sprite.SummaryTint;
 			}
 		}
 

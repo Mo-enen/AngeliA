@@ -11,42 +11,6 @@ namespace AngeliaFramework {
 	public interface IMapEditorItem { }
 
 
-	[System.Serializable]
-	public class SpriteEditingMeta {
-		[System.Serializable]
-		public class Meta {
-			public int GlobalID {
-				get => I;
-				set => I = value;
-			}
-			public string RealName {
-				get => R;
-				set => R = value;
-			}
-			public int SheetNameIndex {
-				get => S;
-				set => S = value;
-			}
-			public SheetType SheetType {
-				get => T;
-				set => T = value;
-			}
-			public GroupType GroupType {
-				get => C;
-				set => C = value;
-			}
-
-			[SerializeField] private int I;
-			[SerializeField] private string R;
-			[SerializeField] private int S;
-			[SerializeField] private SheetType T;
-			[SerializeField] private GroupType C;
-		}
-		public Meta[] Metas = null;
-		public string[] SheetNames = null;
-	}
-
-
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.Capacity(1, 0)]
@@ -56,16 +20,6 @@ namespace AngeliaFramework {
 
 
 		#region --- SUB ---
-
-
-
-		private class SpriteData {
-			public AngeSprite Sprite = null;
-			public string RealName = "";
-			public string SheetName = "";
-			public GroupType GroupType;
-			public SheetType SheetType;
-		}
 
 
 		private struct BlockBuffer {
@@ -194,7 +148,7 @@ namespace AngeliaFramework {
 		}
 
 		// Pools
-		private Dictionary<int, SpriteData> SpritePool = null;
+		private Dictionary<int, AngeSprite> SpritePool = null;
 		private Dictionary<int, int[]> IdChainPool = null;
 		private Dictionary<int, int> ReversedChainPool = null;
 		private Dictionary<int, string> ChainRulePool = null;
@@ -392,12 +346,12 @@ namespace AngeliaFramework {
 
 		private void Active_Pool () {
 
-			SpritePool = new Dictionary<int, SpriteData>();
-			IdChainPool = new Dictionary<int, int[]>();
-			EntityArtworkRedirectPool = new Dictionary<int, int>();
-			ChainRulePool = new Dictionary<int, string>();
-			ReversedChainPool = new Dictionary<int, int>();
-			GizmosPool = new Dictionary<int, MapEditorGizmos>();
+			SpritePool = new();
+			IdChainPool = new();
+			EntityArtworkRedirectPool = new();
+			ChainRulePool = new();
+			ReversedChainPool = new();
+			GizmosPool = new();
 			CheckAltarIDs = new();
 
 			int spriteCount = CellRenderer.SpriteCount;
@@ -406,9 +360,7 @@ namespace AngeliaFramework {
 			// Sprites
 			for (int i = 0; i < spriteCount; i++) {
 				var sprite = CellRenderer.GetSpriteAt(i);
-				SpritePool.TryAdd(sprite.GlobalID, new SpriteData() {
-					Sprite = sprite,
-				});
+				SpritePool.TryAdd(sprite.GlobalID, sprite);
 			}
 
 			// Chains
@@ -423,13 +375,7 @@ namespace AngeliaFramework {
 				var pivot = Vector2Int.zero;
 				pivot.x = firstSprite.PivotX;
 				pivot.y = firstSprite.PivotY;
-				SpritePool.TryAdd(
-					chain.ID,
-					new SpriteData() {
-						GroupType = chain.Type,
-						Sprite = firstSprite,
-					}
-				);
+				SpritePool.TryAdd(chain.ID, firstSprite);
 
 				// Chain
 				var cIdList = new List<int>();
@@ -456,22 +402,6 @@ namespace AngeliaFramework {
 					ChainRulePool.TryAdd(chain.ID, AngeUtil.GetTileRuleString(chain.ID));
 				}
 
-			}
-
-			// Fill Sprite Editing Meta
-			var editingMeta = AngeUtil.LoadOrCreateJson<SpriteEditingMeta>(AngePath.SheetRoot);
-			if (editingMeta.SheetNames == null || editingMeta.SheetNames.Length == 0) {
-				editingMeta.SheetNames = new string[1] { "" };
-			}
-			foreach (var meta in editingMeta.Metas) {
-				if (SpritePool.TryGetValue(meta.GlobalID, out var spriteData)) {
-					spriteData.RealName = meta.RealName;
-					spriteData.GroupType = meta.GroupType;
-					spriteData.SheetType = meta.SheetType;
-					if (meta.SheetNameIndex >= 0 && meta.SheetNameIndex < editingMeta.SheetNames.Length) {
-						spriteData.SheetName = editingMeta.SheetNames[meta.SheetNameIndex];
-					}
-				}
 			}
 
 			// Entity Artwork Redirect Pool

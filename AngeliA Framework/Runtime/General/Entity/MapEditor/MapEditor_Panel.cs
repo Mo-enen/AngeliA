@@ -117,15 +117,16 @@ namespace AngeliaFramework {
 					case GroupType.Rule:
 					case GroupType.Random:
 					case GroupType.Animated:
-						if (!SpritePool.TryGetValue(sp.GlobalID, out var sData)) break;
+						if (!SpritePool.TryGetValue(sp.GlobalID, out var sprite)) break;
 						CellRenderer.TryGetMeta(sp.GlobalID, out var meta);
-						if (meta == null || (sData.SheetType != SheetType.Background && sData.SheetType != SheetType.Level)) break;
-						if (!groupPool.TryGetValue(sData.SheetName, out var group)) {
-							groupPool.Add(sData.SheetName, group = new PaletteGroup() {
+						if (meta == null || (sprite.SheetType != SheetType.Background && sprite.SheetType != SheetType.Level)) break;
+						string sheetName = CellRenderer.GetSheetName(sprite);
+						if (!groupPool.TryGetValue(sheetName, out var group)) {
+							groupPool.Add(sheetName, group = new PaletteGroup() {
 								Items = new List<PaletteItem>(),
-								GroupName = sData.SheetName,
-								CoverID = $"PaletteCover.{sData.SheetName}".AngeHash(),
-								DisplayNameID = $"Palette.{sData.SheetName}".AngeHash(),
+								GroupName = sheetName,
+								CoverID = $"PaletteCover.{sheetName}".AngeHash(),
+								DisplayNameID = $"Palette.{sheetName}".AngeHash(),
 							});
 						}
 						group.Items.Add(new PaletteItem() {
@@ -136,7 +137,7 @@ namespace AngeliaFramework {
 							0,
 							Name = Util.GetDisplayName(chain.Name),
 							GroupType = chain.Type,
-							BlockType = sData.SheetType == SheetType.Level ? BlockType.Level : BlockType.Background,
+							BlockType = sprite.SheetType == SheetType.Level ? BlockType.Level : BlockType.Background,
 							Chain = chain,
 						});
 						break;
@@ -147,23 +148,24 @@ namespace AngeliaFramework {
 			for (int index = 0; index < spriteCount; index++) {
 				var sp = CellRenderer.GetSpriteAt(index);
 				int id = sp.GlobalID;
-				if (SpritePool.TryGetValue(id, out var sData) && sData.GroupType != GroupType.General) continue;
+				if (SpritePool.TryGetValue(id, out var sprite) && sprite.GroupType != GroupType.General) continue;
 				CellRenderer.TryGetMeta(sp.GlobalID, out var meta);
-				if (meta == null || (sData.SheetType != SheetType.Background && sData.SheetType != SheetType.Level)) continue;
-				if (!groupPool.TryGetValue(sData.SheetName, out var group)) {
-					groupPool.Add(sData.SheetName, group = new PaletteGroup() {
+				if (meta == null || (sprite.SheetType != SheetType.Background && sprite.SheetType != SheetType.Level)) continue;
+				string sheetName = CellRenderer.GetSheetName(sprite);
+				if (!groupPool.TryGetValue(sheetName, out var group)) {
+					groupPool.Add(sheetName, group = new PaletteGroup() {
 						Items = new List<PaletteItem>(),
-						GroupName = sData.SheetName,
-						CoverID = $"PaletteCover.{sData.SheetName}".AngeHash(),
-						DisplayNameID = $"Palette.{sData.SheetName}".AngeHash(),
+						GroupName = sheetName,
+						CoverID = $"PaletteCover.{sheetName}".AngeHash(),
+						DisplayNameID = $"Palette.{sheetName}".AngeHash(),
 					});
 				}
 				group.Items.Add(new PaletteItem() {
 					ID = sp.GlobalID,
 					ArtworkID = sp.GlobalID,
-					Name = Util.GetDisplayName(sData.RealName),
+					Name = Util.GetDisplayName(sprite.RealName),
 					GroupType = GroupType.General,
-					BlockType = sData.SheetType == SheetType.Level ? BlockType.Level : BlockType.Background,
+					BlockType = sprite.SheetType == SheetType.Level ? BlockType.Level : BlockType.Background,
 					Chain = null,
 				});
 			}

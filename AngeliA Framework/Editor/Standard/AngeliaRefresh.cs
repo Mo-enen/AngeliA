@@ -205,11 +205,8 @@ namespace AngeliaFramework.Editor {
 			AngeUtil.CreateAngeFolders();
 
 			// Sprite Sheets
-			CreateSprites(out var sheetTexture, out var sheetMeta);
-			var sheet = CreateSheetFromTexture(sheetTexture, sheetMeta);
-
-			// Meta
-			CreateSpriteEditingMeta(sheetMeta, sheet);
+			CreateSpritesFromAsepriteFiles(out var sheetTexture, out var sheetMeta);
+			CreateSheetAndTexture(sheetTexture, sheetMeta);
 
 			// Maps
 			AngeUtil.DeleteAllEmptyMaps(AngePath.BuiltInMapRoot);
@@ -263,7 +260,7 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void CreateSprites (out Texture2D sheetTexture, out AngeTextureMeta sheetMeta) {
+		private void CreateSpritesFromAsepriteFiles (out Texture2D sheetTexture, out AngeTextureMeta sheetMeta) {
 
 			var spriteSheetNamePool = new Dictionary<string, string>();
 			var textureResults = new List<(Texture2D texture, AngeTextureMeta meta)>();
@@ -415,74 +412,43 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private SpriteSheet CreateSheetFromTexture (Texture2D sheetTexture, AngeTextureMeta sheetMeta) {
+		private void CreateSheetAndTexture (Texture2D sheetTexture, AngeTextureMeta metaData) {
 
-			try {
-				var sheet = new SpriteSheet();
-				if (sheetTexture != null) {
-					var sprites = new List<Sprite>();
+			if (sheetTexture == null) return;
 
-					// Get Sprites
-					for (int i = 0; i < sheetMeta.AngeMetas.Length; i++) {
-						var meta = sheetMeta.AngeMetas[i];
-						var sprite = Sprite.Create(
-							sheetTexture, meta.Rect, (Vector2)meta.AngePivot / 1000f, sheetMeta.PixelPerUnit, 0, SpriteMeshType.FullRect, meta.Border, false
-						);
-						sprite.name = meta.Name;
-						sprites.Add(sprite);
-					}
-
-					// Set Sprites
-					SetSpritesForSheet(sheet, sheetTexture, sprites.ToArray(), sheetMeta);
-
-					// Save Json
-					AngeUtil.SaveJson(sheet, AngePath.SheetRoot);
-
-					// Save Texture
-					Util.ByteToFile(sheetTexture.EncodeToPNG(), AngePath.SheetTexturePath);
-
-					return sheet;
-				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-			return null;
-		}
-
-
-		private void SetSpritesForSheet (SpriteSheet sheet, Texture2D sheetTexture, Sprite[] unitySprites, AngeTextureMeta metaData) {
-
-			sheet.Sprites = null;
-			sheet.SpriteChains = null;
-			if (unitySprites.Length == 0) return;
-
+			var sheet = new SpriteSheet {
+				Sprites = null,
+				SpriteChains = null,
+			};
 			var spriteIDHash = new HashSet<int>();
 			var chainPool = new Dictionary<string, (GroupType type, List<(int globalIndex, int localIndex, bool loopStart)> list)>();
 			var groupHash = new HashSet<string>();
 			var spriteList = new List<AngeSprite>();
 			var metaList = new List<SpriteMeta>();
-
-			float width = unitySprites[0].texture.width;
-			float height = unitySprites[0].texture.height;
-			for (int i = 0; i < unitySprites.Length; i++) {
-				var unitySprite = unitySprites[i];
+			var sheetNames = new List<string>();
+			var sheetNamePool = new Dictionary<string, int>();
+			int width = sheetTexture.width;
+			int height = sheetTexture.height;
+			for (int i = 0; i < metaData.AngeMetas.Length; i++) {
 				var sourceMeta = metaData.AngeMetas[i];
-				var uvBorder = unitySprite.border;
-				uvBorder.x /= unitySprite.rect.width;
-				uvBorder.y /= unitySprite.rect.height;
-				uvBorder.z /= unitySprite.rect.width;
-				uvBorder.w /= unitySprite.rect.height;
+				var uvBorder = sourceMeta.Border;
+				uvBorder.x /= sourceMeta.Rect.width;
+				uvBorder.y /= sourceMeta.Rect.height;
+				uvBorder.z /= sourceMeta.Rect.width;
+				uvBorder.w /= sourceMeta.Rect.height;
 				string realName = AngeEditorUtil.GetBlockHashTags(
-					unitySprite.name, out var groupType,
+					sourceMeta.Name, out var groupType,
 					out bool isTrigger, out int tag, out bool loopStart,
 					out int rule, out bool noCollider, out int offsetZ,
 					out int? pivotX, out int? pivotY
 				);
-				int globalWidth = unitySprite.rect.width.RoundToInt() * Const.CEL / Const.ART_CEL;
-				int globalHeight = unitySprite.rect.height.RoundToInt() * Const.CEL / Const.ART_CEL;
+				int globalWidth = sourceMeta.Rect.width.RoundToInt() * Const.CEL / Const.ART_CEL;
+				int globalHeight = sourceMeta.Rect.height.RoundToInt() * Const.CEL / Const.ART_CEL;
 				var globalBorder = new Vector4Int() {
-					left = Mathf.Clamp((int)(unitySprite.border.x * Const.CEL / Const.ART_CEL), 0, globalWidth),
-					down = Mathf.Clamp((int)(unitySprite.border.y * Const.CEL / Const.ART_CEL), 0, globalHeight),
-					right = Mathf.Clamp((int)(unitySprite.border.z * Const.CEL / Const.ART_CEL), 0, globalWidth),
-					up = Mathf.Clamp((int)(unitySprite.border.w * Const.CEL / Const.ART_CEL), 0, globalHeight),
+					left = Mathf.Clamp((int)(sourceMeta.Border.x * Const.CEL / Const.ART_CEL), 0, globalWidth),
+					down = Mathf.Clamp((int)(sourceMeta.Border.y * Const.CEL / Const.ART_CEL), 0, globalHeight),
+					right = Mathf.Clamp((int)(sourceMeta.Border.z * Const.CEL / Const.ART_CEL), 0, globalWidth),
+					up = Mathf.Clamp((int)(sourceMeta.Border.w * Const.CEL / Const.ART_CEL), 0, globalHeight),
 				};
 				if (noCollider) {
 					globalBorder.left = globalWidth;
@@ -490,19 +456,30 @@ namespace AngeliaFramework.Editor {
 				}
 				int globalID = realName.AngeHash();
 
+				if (!sheetNamePool.TryGetValue(sourceMeta.SheetName, out int sheetNameIndex)) {
+					sheetNameIndex = sheetNames.Count;
+					sheetNamePool.Add(sourceMeta.SheetName, sheetNameIndex);
+					sheetNames.Add(sourceMeta.SheetName);
+				}
+
 				var newSprite = new AngeSprite() {
 					GlobalID = globalID,
-					UvBottomLeft = new(unitySprite.rect.xMin / width, unitySprite.rect.yMin / height),
-					UvTopRight = new(unitySprite.rect.xMax / width, unitySprite.rect.yMax / height),
+					UvBottomLeft = new(sourceMeta.Rect.xMin / width, sourceMeta.Rect.yMin / height),
+					UvTopRight = new(sourceMeta.Rect.xMax / width, sourceMeta.Rect.yMax / height),
 					GlobalWidth = globalWidth,
 					GlobalHeight = globalHeight,
 					UvBorder = uvBorder,// ldru
 					GlobalBorder = globalBorder,
 					MetaIndex = -1,
 					SortingZ = sourceMeta.SheetZ * 1024 + offsetZ,
-					PivotX = pivotX ?? (int)(unitySprite.pivot.x * 1000f / unitySprite.rect.width),
-					PivotY = pivotY ?? (int)(unitySprite.pivot.y * 1000f / unitySprite.rect.height),
+					PivotX = pivotX ?? sourceMeta.AngePivot.x,
+					PivotY = pivotY ?? sourceMeta.AngePivot.y,
+					RealName = AngeEditorUtil.GetBlockRealName(sourceMeta.Name),
+					GroupType = AngeEditorUtil.GetGroupType(sourceMeta.Name),
+					SheetType = sourceMeta.SheetType,
+					SheetNameIndex = sheetNameIndex,
 				};
+
 				bool isOneway = AngeUtil.IsOnewayTag(tag);
 				if (isOneway) isTrigger = true;
 				spriteIDHash.TryAdd(newSprite.GlobalID);
@@ -550,6 +527,7 @@ namespace AngeliaFramework.Editor {
 				}
 
 			}
+			sheet.SheetNames = sheetNames.ToArray();
 
 			// Load Groups
 			var groups = new List<SpriteGroup>();
@@ -621,65 +599,10 @@ namespace AngeliaFramework.Editor {
 				var sprite = sheet.Sprites[i];
 				sprite.SummaryTint = summaryPool.TryGetValue(sprite.GlobalID, out var color) ? color : default;
 			}
-		}
 
-
-		// Meta
-		private void CreateSpriteEditingMeta (AngeTextureMeta sheetMeta, SpriteSheet sheet) {
-
-			var list = new List<SpriteEditingMeta.Meta>();
-
-			// Chains
-			var chainSheetInfoRequirePool = new Dictionary<int, int>();
-			foreach (var chain in sheet.SpriteChains) {
-				if (chain == null || chain.Count == 0) continue;
-				var firstSpriteIndex = chain[0];
-				if (firstSpriteIndex < 0 || firstSpriteIndex >= sheet.Sprites.Length) continue;
-				var firstSprite = sheet.Sprites[firstSpriteIndex];
-				chainSheetInfoRequirePool.TryAdd(firstSprite.GlobalID, list.Count);
-				list.Add(new SpriteEditingMeta.Meta() {
-					GlobalID = chain.ID,
-					RealName = chain.Name,
-					GroupType = chain.Type,
-					SheetNameIndex = 0,
-					SheetType = SheetType.General,
-				});
-			}
-
-			// Sprites
-			var sheetNames = new List<string>();
-			var sheetNamePool = new Dictionary<string, int>();
-			foreach (var metaData in sheetMeta.AngeMetas) {
-				var realName = AngeEditorUtil.GetBlockRealName(metaData.Name);
-				if (!sheetNamePool.TryGetValue(metaData.SheetName, out int sheetNameIndex)) {
-					sheetNameIndex = sheetNames.Count;
-					sheetNamePool.Add(metaData.SheetName, sheetNameIndex);
-					sheetNames.Add(metaData.SheetName);
-				}
-				int id = realName.AngeHash();
-				list.Add(new SpriteEditingMeta.Meta() {
-					GlobalID = id,
-					RealName = realName,
-					SheetNameIndex = sheetNameIndex,
-					GroupType = AngeEditorUtil.GetGroupType(metaData.Name),
-					SheetType = metaData.SheetType,
-				});
-				// Answer Chain Require
-				if (chainSheetInfoRequirePool.TryGetValue(id, out int chainListIndex)) {
-					var chainMeta = list[chainListIndex];
-					chainMeta.SheetNameIndex = sheetNameIndex;
-					chainMeta.SheetType = metaData.SheetType;
-				}
-			}
-
-			// To File
-			AngeUtil.SaveJson(
-				new SpriteEditingMeta() {
-					Metas = list.ToArray(),
-					SheetNames = sheetNames.ToArray(),
-				},
-				AngePath.SheetRoot
-			);
+			// Save to File
+			AngeUtil.SaveJson(sheet, AngePath.SheetRoot);
+			Util.ByteToFile(sheetTexture.EncodeToPNG(), AngePath.SheetTexturePath);
 		}
 
 
