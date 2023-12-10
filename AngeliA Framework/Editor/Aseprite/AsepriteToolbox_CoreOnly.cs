@@ -1,31 +1,25 @@
-﻿namespace AngeliaFramework.Editor {
-	using System.Collections;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Text.RegularExpressions;
-	using UnityEditor;
-	using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using UnityEngine;
 
 
+namespace AngeliaFramework.Editor {
 	public partial class AsepriteToolbox_CoreOnly {
 
-
-		// VAR
 		private const string NAMING_ASE = "{ase}";
 		private const string NAMING_FRAME = "{frame}";
 		private const string NAMING_SLICE = "{slice}";
 		private const string NAMING_TAG = "{tag}";
 		private const string NAMING_COUNT = "{count}";
 
-
-		// API
-		public static List<(Texture2D texture, AngeSpriteMetaData[] sprites)> CreateSprites (string[] assetPaths, string ignoreTag = "") {
+		public static List<(Texture2D texture, FlexSprite[] flexs)> CreateSprites (string[] assetPaths, string ignoreTag = "") {
 
 			bool hasError = false;
 			string errorMsg = "";
 			int successCount = 0;
 			int currentTaskCount = 0;
-			var textureResults = new List<(Texture2D texture, AngeSpriteMetaData[] sprites)>();
+			var textureResults = new List<(Texture2D texture, FlexSprite[] flexs)>();
 
 			// Do Task
 			foreach (var path in assetPaths) {
@@ -99,8 +93,6 @@
 			return textureResults;
 		}
 
-
-		// LGC
 		private static string GetNamingStrategyFormat (string strategy, bool ignoreBrackets) {
 			if (ignoreBrackets) {
 				strategy = new Regex(@"\([^\(]*\)").Replace(strategy, "");
@@ -116,7 +108,6 @@
 			return strategy;
 		}
 
-
 		private static void LogMessage (string message, bool warning) {
 			if (warning) {
 				Debug.LogWarning(message);
@@ -124,7 +115,6 @@
 				Debug.Log(message);
 			}
 		}
-
 
 	}
 }

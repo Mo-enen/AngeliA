@@ -7,20 +7,6 @@ using UnityEngine.InputSystem.LowLevel;
 
 
 namespace AngeliaFramework {
-
-
-	[System.Serializable]
-	public class AngeSpriteMetaData {
-		public string Name;
-		public string SheetName;
-		public int SheetZ;
-		public Rect Rect;
-		public Vector2Int AngePivot;
-		public Vector4 Border;
-		public SheetType SheetType;
-	}
-
-
 	public static class AngeUtil {
 
 
@@ -30,7 +16,7 @@ namespace AngeliaFramework {
 
 
 		// Sheet
-		public static SpriteSheet CreateSpriteSheet (Texture2D sheetTexture, AngeSpriteMetaData[] spriteMetas) {
+		public static SpriteSheet CreateSpriteSheet (Texture2D sheetTexture, FlexSprite[] flexSprites) {
 
 			if (sheetTexture == null) return null;
 
@@ -47,26 +33,26 @@ namespace AngeliaFramework {
 			var sheetNamePool = new Dictionary<string, int>();
 			int width = sheetTexture.width;
 			int height = sheetTexture.height;
-			for (int i = 0; i < spriteMetas.Length; i++) {
-				var sourceMeta = spriteMetas[i];
-				var uvBorder = sourceMeta.Border;
-				uvBorder.x /= sourceMeta.Rect.width;
-				uvBorder.y /= sourceMeta.Rect.height;
-				uvBorder.z /= sourceMeta.Rect.width;
-				uvBorder.w /= sourceMeta.Rect.height;
+			for (int i = 0; i < flexSprites.Length; i++) {
+				var flex = flexSprites[i];
+				var uvBorder = flex.Border;
+				uvBorder.x /= flex.Rect.width;
+				uvBorder.y /= flex.Rect.height;
+				uvBorder.z /= flex.Rect.width;
+				uvBorder.w /= flex.Rect.height;
 				string realName = GetBlockHashTags(
-					sourceMeta.Name, out var groupType,
+					flex.Name, out var groupType,
 					out bool isTrigger, out int tag, out bool loopStart,
 					out int rule, out bool noCollider, out int offsetZ,
 					out int? pivotX, out int? pivotY
 				);
-				int globalWidth = sourceMeta.Rect.width.RoundToInt() * Const.CEL / Const.ART_CEL;
-				int globalHeight = sourceMeta.Rect.height.RoundToInt() * Const.CEL / Const.ART_CEL;
+				int globalWidth = flex.Rect.width.RoundToInt() * Const.CEL / Const.ART_CEL;
+				int globalHeight = flex.Rect.height.RoundToInt() * Const.CEL / Const.ART_CEL;
 				var globalBorder = new Vector4Int() {
-					left = Mathf.Clamp((int)(sourceMeta.Border.x * Const.CEL / Const.ART_CEL), 0, globalWidth),
-					down = Mathf.Clamp((int)(sourceMeta.Border.y * Const.CEL / Const.ART_CEL), 0, globalHeight),
-					right = Mathf.Clamp((int)(sourceMeta.Border.z * Const.CEL / Const.ART_CEL), 0, globalWidth),
-					up = Mathf.Clamp((int)(sourceMeta.Border.w * Const.CEL / Const.ART_CEL), 0, globalHeight),
+					left = Mathf.Clamp((int)(flex.Border.x * Const.CEL / Const.ART_CEL), 0, globalWidth),
+					down = Mathf.Clamp((int)(flex.Border.y * Const.CEL / Const.ART_CEL), 0, globalHeight),
+					right = Mathf.Clamp((int)(flex.Border.z * Const.CEL / Const.ART_CEL), 0, globalWidth),
+					up = Mathf.Clamp((int)(flex.Border.w * Const.CEL / Const.ART_CEL), 0, globalHeight),
 				};
 				if (noCollider) {
 					globalBorder.left = globalWidth;
@@ -74,27 +60,27 @@ namespace AngeliaFramework {
 				}
 				int globalID = realName.AngeHash();
 
-				if (!sheetNamePool.TryGetValue(sourceMeta.SheetName, out int sheetNameIndex)) {
+				if (!sheetNamePool.TryGetValue(flex.SheetName, out int sheetNameIndex)) {
 					sheetNameIndex = sheetNames.Count;
-					sheetNamePool.Add(sourceMeta.SheetName, sheetNameIndex);
-					sheetNames.Add(sourceMeta.SheetName);
+					sheetNamePool.Add(flex.SheetName, sheetNameIndex);
+					sheetNames.Add(flex.SheetName);
 				}
 
 				var newSprite = new AngeSprite() {
 					GlobalID = globalID,
-					UvBottomLeft = new(sourceMeta.Rect.xMin / width, sourceMeta.Rect.yMin / height),
-					UvTopRight = new(sourceMeta.Rect.xMax / width, sourceMeta.Rect.yMax / height),
+					UvBottomLeft = new(flex.Rect.xMin / width, flex.Rect.yMin / height),
+					UvTopRight = new(flex.Rect.xMax / width, flex.Rect.yMax / height),
 					GlobalWidth = globalWidth,
 					GlobalHeight = globalHeight,
 					UvBorder = uvBorder,// ldru
 					GlobalBorder = globalBorder,
 					MetaIndex = -1,
-					SortingZ = sourceMeta.SheetZ * 1024 + offsetZ,
-					PivotX = pivotX ?? sourceMeta.AngePivot.x,
-					PivotY = pivotY ?? sourceMeta.AngePivot.y,
-					RealName = GetBlockRealName(sourceMeta.Name),
+					SortingZ = flex.SheetZ * 1024 + offsetZ,
+					PivotX = pivotX ?? flex.AngePivot.x,
+					PivotY = pivotY ?? flex.AngePivot.y,
+					RealName = GetBlockRealName(flex.Name),
 					GroupType = groupType,
-					SheetType = sourceMeta.SheetType,
+					SheetType = flex.SheetType,
 					SheetNameIndex = sheetNameIndex,
 				};
 
@@ -114,7 +100,7 @@ namespace AngeliaFramework {
 					meta.Tag != 0 ||
 					meta.Rule != 0 ||
 					meta.IsTrigger ||
-					sourceMeta.SheetType != SheetType.General
+					flex.SheetType != SheetType.General
 				) {
 					newSprite.MetaIndex = metaList.Count;
 					metaList.Add(meta);

@@ -19,7 +19,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private Entity CurrentTeleportEntity = null;
-		private bool ToFront = true;
+		private bool ToBehind = true;
 		private float VigRound = 0f;
 		private float VigFeather = 1f;
 
@@ -29,6 +29,14 @@ namespace AngeliaFramework {
 			CurrentTeleportEntity = TeleportEntity;
 			TeleportEntity = null;
 			WaitDuration = WaitDuration.Clamp(0, Duration - 1);
+			ToBehind = TeleportTo.z > Stage.ViewZ;
+			if (UseVignette) {
+				VigFeather = VignetteEffect.GetFeather();
+				VigRound = VignetteEffect.GetRound();
+				ScreenEffect.SetEffectEnable(VignetteEffect.TYPE_ID, true);
+				VignetteEffect.SetFeather(0f);
+				VignetteEffect.SetRound(1f);
+			}
 		}
 
 
@@ -36,20 +44,6 @@ namespace AngeliaFramework {
 
 			bool useVig = UseVignette;
 			bool useParallax = UseParallax;
-
-			// Start
-			if (LocalFrame == 0) {
-				// Player
-				ToFront = TeleportTo.z > Stage.ViewZ;
-				// Vig
-				if (useVig) {
-					VigFeather = VignetteEffect.GetFeather();
-					VigRound = VignetteEffect.GetRound();
-					ScreenEffect.SetEffectEnable(VignetteEffect.TYPE_ID, true);
-					VignetteEffect.SetFeather(0f);
-					VignetteEffect.SetRound(1f);
-				}
-			}
 
 			// Teleport
 			if (LocalFrame == WaitDuration) {
@@ -64,23 +58,26 @@ namespace AngeliaFramework {
 			}
 
 			// Add Squad Effect
-			if (LocalFrame > WaitDuration && useParallax) {
+			if (useParallax && LocalFrame > WaitDuration) {
 				const int PARA = Const.SQUAD_BEHIND_PARALLAX;
-				float scale = ToFront ? 1000f / PARA : PARA / 1000f;
-				float z10 = 1f - Mathf.InverseLerp(0, Duration, LocalFrame);
-				Vector2Int center = CellRenderer.CameraRect.center.CeilToInt();
-				var lerp = Mathf.LerpUnclamped(scale, 1f, 1f - z10 * z10);
+				float scale = ToBehind ? 1000f / PARA : PARA / 1000f;
+				float z01 = Mathf.InverseLerp(WaitDuration, Duration, LocalFrame);
+				float lerp = Mathf.LerpUnclamped(scale, 1f, z01);
+				var center = CellRenderer.CameraRect.center.CeilToInt();
+				// Behind
 				if (CellRenderer.GetCells(RenderLayer.BEHIND, out var cells, out int count)) {
-					MapEffectLogic(cells, center, count, scale, lerp, true, ToFront);
+					MapEffectLogic(cells, center, count, scale, lerp, true, ToBehind);
 				}
+				// Front
 				for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
 					if (
 						layer == RenderLayer.WALLPAPER ||
 						layer == RenderLayer.UI ||
-						layer == RenderLayer.TOP_UI
+						layer == RenderLayer.TOP_UI ||
+						layer == RenderLayer.BEHIND
 					) continue;
 					if (CellRenderer.GetCells(layer, out cells, out count)) {
-						MapEffectLogic(cells, center, count, scale, lerp, false, ToFront);
+						MapEffectLogic(cells, center, count, scale, lerp, false, ToBehind);
 					}
 				}
 			}
@@ -143,28 +140,32 @@ namespace AngeliaFramework {
 		private static void MapEffectLogic (
 			Cell[] cells, Vector2Int center, int count, float scale, float lerp, bool isBehind, bool toBehind
 		) {
-			Color32 c;
+			// Behind Tint
+			if (isBehind) {
+				for (int i = 0; i < count; i++) {
+					var cell = cells[i];
+					var c = cell.Color;
+					if (toBehind) {
+						c.a = (byte)Util.Remap(scale, 1f, 0, c.a, lerp).Clamp(0, 255);
+					} else {
+						c.a = (byte)Util.Remap(scale, 1f, 255, c.a, lerp).Clamp(0, 255);
+					}
+					cell.Color = c;
+				}
+			}
+			// Scale
 			for (int i = 0; i < count; i++) {
 				var cell = cells[i];
-				c = cell.Color;
-				if (isBehind) {
-					if (toBehind) {
-						c.a = (byte)Util.Remap(scale, 1f, 0, c.a, lerp);
-					} else {
-						c.a = (byte)Util.Remap(scale, 1f, 255, c.a, lerp);
-					}
-				}
-				cell.Color = c;
 				if (cell.Rotation == 0) {
-					cell.X = Mathf.LerpUnclamped(cell.X - cell.PivotX * cell.Width, center.x, 1f - lerp).FloorToInt();
-					cell.Y = Mathf.LerpUnclamped(cell.Y - cell.PivotY * cell.Height, center.y, 1f - lerp).FloorToInt();
+					cell.X = Mathf.LerpUnclamped(center.x, cell.X - cell.PivotX * cell.Width, lerp).FloorToInt();
+					cell.Y = Mathf.LerpUnclamped(center.y, cell.Y - cell.PivotY * cell.Height, lerp).FloorToInt();
 					cell.Width = cell.Width > 0 ? (cell.Width * lerp).CeilToInt() : (cell.Width * lerp).FloorToInt();
 					cell.Height = cell.Height > 0 ? (cell.Height * lerp).CeilToInt() : (cell.Height * lerp).FloorToInt();
 					cell.PivotX = 0;
 					cell.PivotY = 0;
 				} else {
-					cell.X = Mathf.LerpUnclamped(cell.X, center.x, 1f - lerp).FloorToInt();
-					cell.Y = Mathf.LerpUnclamped(cell.Y, center.y, 1f - lerp).FloorToInt();
+					cell.X = Mathf.LerpUnclamped(center.x, cell.X, lerp).FloorToInt();
+					cell.Y = Mathf.LerpUnclamped(center.y, cell.Y, lerp).FloorToInt();
 					cell.Width = (cell.Width * lerp).CeilToInt();
 					cell.Height = (cell.Height * lerp).CeilToInt();
 				}

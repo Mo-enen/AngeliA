@@ -16,7 +16,7 @@ namespace AngeliaFramework.Editor {
 		public AseData Ase = null;
 		public string[] NamingStrategy_Texture = new string[] { "", "", };
 		public string[] NamingStrategy_Sprite = new string[] { "", "", };
-		public readonly List<(Texture2D texture, AngeSpriteMetaData[] meta)> TextureResults = new();
+		public readonly List<(Texture2D texture, FlexSprite[] flexs)> TextureResults = new();
 
 
 		// API
@@ -88,8 +88,8 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private List<(Texture2D texture, AngeSpriteMetaData[] meta)> GetTextureList (TaskResult result) {
-			var textureList = new List<(Texture2D, AngeSpriteMetaData[])>();
+		private List<(Texture2D texture, FlexSprite[] flexs)> GetTextureList (TaskResult result) {
+			var textureList = new List<(Texture2D, FlexSprite[])>();
 			var nameStrategy_Texture = NamingStrategy_Texture[result.Frames.Length > 1 ? 1 : 0];
 			var renameMap = new Dictionary<string, byte>();
 			for (int i = 0; i < result.Frames.Length; i++) {
@@ -137,12 +137,12 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private AngeSpriteMetaData[] GetAngeMeta (SpriteMetaData[] metas) {
+		private FlexSprite[] GetAngeMeta (SpriteMetaData[] metas) {
 			AngeEditorUtil.GetAsepriteSheetInfo(Ase, out int sheetZ, out var sheetType, out _, out _);
-			var angeMetas = new AngeSpriteMetaData[metas.Length];
+			var flexs = new FlexSprite[metas.Length];
 			for (int i = 0; i < metas.Length; i++) {
 				var m = metas[i];
-				angeMetas[i] = new AngeSpriteMetaData() {
+				flexs[i] = new FlexSprite() {
 					Border = m.border,
 					Name = m.name,
 					SheetName = AseName,
@@ -152,7 +152,7 @@ namespace AngeliaFramework.Editor {
 					SheetZ = sheetZ,
 				};
 			}
-			return angeMetas;
+			return flexs;
 		}
 
 

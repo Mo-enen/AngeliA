@@ -155,9 +155,9 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private class AngeSpriteMetaDataComparer : IComparer<AngeSpriteMetaData> {
-			public static readonly AngeSpriteMetaDataComparer Instance = new();
-			public int Compare (AngeSpriteMetaData a, AngeSpriteMetaData b) {
+		private class FlexSpriteComparer : IComparer<FlexSprite> {
+			public static readonly FlexSpriteComparer Instance = new();
+			public int Compare (FlexSprite a, FlexSprite b) {
 				int result = ((int)(a.Rect.x)).CompareTo((int)(b.Rect.x));
 				if (result != 0) return result;
 				result = ((int)(a.Rect.y)).CompareTo((int)(b.Rect.y));
@@ -205,7 +205,7 @@ namespace AngeliaFramework.Editor {
 			AngeUtil.CreateAngeFolders();
 
 			// Ase >> Sprite & Texture
-			CreateSpritesFromAsepriteFiles(out var texture, out var sheetMeta);
+			CreateFlexSpritesFromAsepriteFiles(out var texture, out var flexSprites);
 
 			// Texture >> File
 			if (texture != null) {
@@ -213,7 +213,7 @@ namespace AngeliaFramework.Editor {
 			}
 
 			// Sheets
-			var sheet = AngeUtil.CreateSpriteSheet(texture, sheetMeta);
+			var sheet = AngeUtil.CreateSpriteSheet(texture, flexSprites);
 			if (sheet != null) {
 				AngeUtil.SaveJson(sheet, AngePath.SheetRoot);
 			}
@@ -224,8 +224,10 @@ namespace AngeliaFramework.Editor {
 			AngeUtil.DeleteAllEmptyMaps(AngePath.DownloadMapRoot);
 
 			// Game
-			var game = Object.FindFirstObjectByType<Game>(FindObjectsInactive.Include);
-			if (game != null) game.Editor_ReloadAllResources();
+			if (forceRefresh) {
+				var game = Object.FindFirstObjectByType<Game>(FindObjectsInactive.Include);
+				if (game != null) game.Editor_ReloadAllResources();
+			}
 
 			// Final
 			AngeliaToolbox.RefreshSheetThumbnail(true);
@@ -270,10 +272,10 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void CreateSpritesFromAsepriteFiles (out Texture2D sheetTexture, out AngeSpriteMetaData[] spriteMetas) {
+		private void CreateFlexSpritesFromAsepriteFiles (out Texture2D sheetTexture, out FlexSprite[] resultFlexs) {
 
 			var spriteSheetNamePool = new Dictionary<string, string>();
-			var textureResults = new List<(Texture2D texture, AngeSpriteMetaData[] meta)>();
+			var textureResults = new List<(Texture2D texture, FlexSprite[] flexs)>();
 
 			// Create Textures from Ase
 			var asePaths = AngeEditorUtil.ForAllAsepriteFiles().Select(
@@ -291,19 +293,19 @@ namespace AngeliaFramework.Editor {
 
 			// Combine
 			var items = new List<PackingItem>();
-			var overlapList = new List<(AngeSpriteMetaData meta, PackingItem original)>();
-			foreach (var (sourceTexture, sourceMetas) in textureResults) {
+			var overlapList = new List<(FlexSprite flex, PackingItem original)>();
+			foreach (var (sourceTexture, sourceFlexs) in textureResults) {
 				var sourcePixels = sourceTexture.GetPixels32();
 				int sourceWidth = sourceTexture.width;
 				int sourceHeight = sourceTexture.height;
 				string sheetName = sourceTexture.name;
-				System.Array.Sort(sourceMetas, AngeSpriteMetaDataComparer.Instance);
+				System.Array.Sort(sourceFlexs, FlexSpriteComparer.Instance);
 				int prevX = int.MinValue;
 				int prevY = int.MinValue;
 				int prevW = int.MinValue;
 				int prevH = int.MinValue;
 				PackingItem prevItem = null;
-				foreach (var meta in sourceMetas) {
+				foreach (var meta in sourceFlexs) {
 					int x = (int)meta.Rect.x;
 					int y = (int)meta.Rect.y;
 					int w = (int)meta.Rect.width;
@@ -379,7 +381,7 @@ namespace AngeliaFramework.Editor {
 			LastSpriteCount.Value = items.Count;
 
 			// Create Meta
-			var aMetaList = new List<AngeSpriteMetaData>();
+			var resultList = new List<FlexSprite>();
 			float width = sheetTexture.width;
 			float height = sheetTexture.height;
 			for (int i = 0; i < uvs.Length; i++) {
@@ -389,7 +391,7 @@ namespace AngeliaFramework.Editor {
 				if (item.Border.y < 0) item.Border.y = 0;
 				if (item.Border.z < 0) item.Border.z = 0;
 				if (item.Border.w < 0) item.Border.w = 0;
-				aMetaList.Add(new AngeSpriteMetaData() {
+				resultList.Add(new FlexSprite() {
 					Name = item.Name,
 					SheetName = item.SheetName,
 					SheetZ = item.SheetZ,
@@ -405,16 +407,16 @@ namespace AngeliaFramework.Editor {
 				});
 			}
 			for (int i = 0; i < overlapList.Count; i++) {
-				var (meta, original) = overlapList[i];
-				meta.Rect = Rect.MinMaxRect(
+				var (flex, original) = overlapList[i];
+				flex.Rect = Rect.MinMaxRect(
 					original.UvResult.xMin * width,
 					original.UvResult.yMin * height,
 					original.UvResult.xMax * width,
 					original.UvResult.yMax * height
 				);
-				aMetaList.Add(meta);
+				resultList.Add(flex);
 			}
-			spriteMetas = aMetaList.ToArray();
+			resultFlexs = resultList.ToArray();
 		}
 
 

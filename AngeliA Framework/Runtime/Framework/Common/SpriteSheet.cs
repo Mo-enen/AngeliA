@@ -21,6 +21,20 @@ namespace AngeliaFramework {
 	}
 
 
+
+	[System.Serializable]
+	public class FlexSprite {
+		public string Name;
+		public string SheetName;
+		public int SheetZ;
+		public Rect Rect;
+		public Vector2Int AngePivot;
+		public Vector4 Border;
+		public SheetType SheetType;
+	}
+
+
+
 	[System.Serializable]
 	public class AngeSprite {
 

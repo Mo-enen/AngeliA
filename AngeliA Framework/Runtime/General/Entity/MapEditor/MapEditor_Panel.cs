@@ -837,7 +837,7 @@ namespace AngeliaFramework {
 
 		private void Update_NavQuickLane () {
 
-			int BUTTON_BORDER = Unify(6);
+			int BUTTON_BORDER = Unify(2);
 			int BUTTON_PADDING = Unify(6);
 			int ITEM_SIZE = Unify(64) + BUTTON_PADDING;
 			int COLUMN = QuickLaneRect.width / ITEM_SIZE;
