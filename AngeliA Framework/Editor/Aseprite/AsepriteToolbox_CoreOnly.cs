@@ -17,15 +17,15 @@
 		private const string NAMING_TAG = "{tag}";
 		private const string NAMING_COUNT = "{count}";
 
-		
+
 		// API
-		public static List<(Texture2D texture, AngeTextureMeta meta)> CreateSprites (string[] assetPaths, string ignoreTag = "") {
+		public static List<(Texture2D texture, AngeSpriteMetaData[] sprites)> CreateSprites (string[] assetPaths, string ignoreTag = "") {
 
 			bool hasError = false;
 			string errorMsg = "";
 			int successCount = 0;
 			int currentTaskCount = 0;
-			var textureResults = new List<(Texture2D texture, AngeTextureMeta meta)>();
+			var textureResults = new List<(Texture2D texture, AngeSpriteMetaData[] sprites)>();
 
 			// Do Task
 			foreach (var path in assetPaths) {

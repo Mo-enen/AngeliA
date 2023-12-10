@@ -1,19 +1,12 @@
-﻿namespace AngeliaFramework.Editor {
-	using System.Collections;
-	using System.Collections.Generic;
-	using UnityEngine;
-	using UnityEditor;
-	using System.Linq;
-	using static AngeliaFramework.Editor.AngeTextureMeta;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
 
+
+namespace AngeliaFramework.Editor {
 	public class FileCore {
 
-
-		
-
-
-		// Const
-		private const int PixelPerUnit = 16;
 
 		// Data
 		private readonly TaskResult[] Results = null;
@@ -23,7 +16,7 @@
 		public AseData Ase = null;
 		public string[] NamingStrategy_Texture = new string[] { "", "", };
 		public string[] NamingStrategy_Sprite = new string[] { "", "", };
-		public readonly List<(Texture2D texture, AngeTextureMeta meta)> TextureResults = new();
+		public readonly List<(Texture2D texture, AngeSpriteMetaData[] meta)> TextureResults = new();
 
 
 		// API
@@ -95,8 +88,8 @@
 		}
 
 
-		private List<(Texture2D texture, AngeTextureMeta meta)> GetTextureList (TaskResult result) {
-			var textureList = new List<(Texture2D, AngeTextureMeta)>();
+		private List<(Texture2D texture, AngeSpriteMetaData[] meta)> GetTextureList (TaskResult result) {
+			var textureList = new List<(Texture2D, AngeSpriteMetaData[])>();
 			var nameStrategy_Texture = NamingStrategy_Texture[result.Frames.Length > 1 ? 1 : 0];
 			var renameMap = new Dictionary<string, byte>();
 			for (int i = 0; i < result.Frames.Length; i++) {
@@ -138,13 +131,13 @@
 				}
 
 				// Final
-				textureList.Add((texture, GetAngeMeta(texture, frame.Sprites)));
+				textureList.Add((texture, GetAngeMeta(frame.Sprites)));
 			}
 			return textureList;
 		}
 
 
-		private AngeTextureMeta GetAngeMeta (Texture2D texture, SpriteMetaData[] metas) {
+		private AngeSpriteMetaData[] GetAngeMeta (SpriteMetaData[] metas) {
 			AngeEditorUtil.GetAsepriteSheetInfo(Ase, out int sheetZ, out var sheetType, out _, out _);
 			var angeMetas = new AngeSpriteMetaData[metas.Length];
 			for (int i = 0; i < metas.Length; i++) {
@@ -159,11 +152,7 @@
 					SheetZ = sheetZ,
 				};
 			}
-			return new AngeTextureMeta() {
-				PixelPerUnit = PixelPerUnit,
-				AngeMetas = angeMetas,
-				TextureSize = new(texture.width, texture.height),
-			};
+			return angeMetas;
 		}
 
 

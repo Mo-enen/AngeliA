@@ -301,7 +301,7 @@ namespace AngeliaFramework.Editor {
 			if (AddEmptyLineBetween) {
 				for (int i = 0; i < slices.Count; i++) {
 					var (_name, _, _) = slices[i];
-					_name = AngeEditorUtil.GetBlockRealName(_name);
+					_name = AngeUtil.GetBlockRealName(_name);
 					int index = _name.IndexOf('.');
 					if (index >= 0) _name = _name[..index];
 					_name = _name.TrimEnd_NumbersEmpty_();

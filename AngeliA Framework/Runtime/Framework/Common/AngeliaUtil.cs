@@ -7,12 +7,438 @@ using UnityEngine.InputSystem.LowLevel;
 
 
 namespace AngeliaFramework {
+
+
+	[System.Serializable]
+	public class AngeSpriteMetaData {
+		public string Name;
+		public string SheetName;
+		public int SheetZ;
+		public Rect Rect;
+		public Vector2Int AngePivot;
+		public Vector4 Border;
+		public SheetType SheetType;
+	}
+
+
 	public static class AngeUtil {
 
 
 		// Const
 		private const string RULE_TILE_ERROR = "ERROR---";
 		private static readonly System.Random GlobalRandom = new(2334768);
+
+
+		// Sheet
+		public static SpriteSheet CreateSpriteSheet (Texture2D sheetTexture, AngeSpriteMetaData[] spriteMetas) {
+
+			if (sheetTexture == null) return null;
+
+			var sheet = new SpriteSheet {
+				Sprites = null,
+				SpriteChains = null,
+			};
+			var spriteIDHash = new HashSet<int>();
+			var chainPool = new Dictionary<string, (GroupType type, List<(int globalIndex, int localIndex, bool loopStart)> list)>();
+			var groupHash = new HashSet<string>();
+			var spriteList = new List<AngeSprite>();
+			var metaList = new List<SpriteMeta>();
+			var sheetNames = new List<string>();
+			var sheetNamePool = new Dictionary<string, int>();
+			int width = sheetTexture.width;
+			int height = sheetTexture.height;
+			for (int i = 0; i < spriteMetas.Length; i++) {
+				var sourceMeta = spriteMetas[i];
+				var uvBorder = sourceMeta.Border;
+				uvBorder.x /= sourceMeta.Rect.width;
+				uvBorder.y /= sourceMeta.Rect.height;
+				uvBorder.z /= sourceMeta.Rect.width;
+				uvBorder.w /= sourceMeta.Rect.height;
+				string realName = GetBlockHashTags(
+					sourceMeta.Name, out var groupType,
+					out bool isTrigger, out int tag, out bool loopStart,
+					out int rule, out bool noCollider, out int offsetZ,
+					out int? pivotX, out int? pivotY
+				);
+				int globalWidth = sourceMeta.Rect.width.RoundToInt() * Const.CEL / Const.ART_CEL;
+				int globalHeight = sourceMeta.Rect.height.RoundToInt() * Const.CEL / Const.ART_CEL;
+				var globalBorder = new Vector4Int() {
+					left = Mathf.Clamp((int)(sourceMeta.Border.x * Const.CEL / Const.ART_CEL), 0, globalWidth),
+					down = Mathf.Clamp((int)(sourceMeta.Border.y * Const.CEL / Const.ART_CEL), 0, globalHeight),
+					right = Mathf.Clamp((int)(sourceMeta.Border.z * Const.CEL / Const.ART_CEL), 0, globalWidth),
+					up = Mathf.Clamp((int)(sourceMeta.Border.w * Const.CEL / Const.ART_CEL), 0, globalHeight),
+				};
+				if (noCollider) {
+					globalBorder.left = globalWidth;
+					globalBorder.right = globalWidth;
+				}
+				int globalID = realName.AngeHash();
+
+				if (!sheetNamePool.TryGetValue(sourceMeta.SheetName, out int sheetNameIndex)) {
+					sheetNameIndex = sheetNames.Count;
+					sheetNamePool.Add(sourceMeta.SheetName, sheetNameIndex);
+					sheetNames.Add(sourceMeta.SheetName);
+				}
+
+				var newSprite = new AngeSprite() {
+					GlobalID = globalID,
+					UvBottomLeft = new(sourceMeta.Rect.xMin / width, sourceMeta.Rect.yMin / height),
+					UvTopRight = new(sourceMeta.Rect.xMax / width, sourceMeta.Rect.yMax / height),
+					GlobalWidth = globalWidth,
+					GlobalHeight = globalHeight,
+					UvBorder = uvBorder,// ldru
+					GlobalBorder = globalBorder,
+					MetaIndex = -1,
+					SortingZ = sourceMeta.SheetZ * 1024 + offsetZ,
+					PivotX = pivotX ?? sourceMeta.AngePivot.x,
+					PivotY = pivotY ?? sourceMeta.AngePivot.y,
+					RealName = GetBlockRealName(sourceMeta.Name),
+					GroupType = groupType,
+					SheetType = sourceMeta.SheetType,
+					SheetNameIndex = sheetNameIndex,
+				};
+
+				bool isOneway = IsOnewayTag(tag);
+				if (isOneway) isTrigger = true;
+				spriteIDHash.TryAdd(newSprite.GlobalID);
+				spriteList.Add(newSprite);
+
+				var meta = new SpriteMeta() {
+					Tag = tag,
+					Rule = rule,
+					IsTrigger = isTrigger,
+				};
+
+				// Has Meta
+				if (
+					meta.Tag != 0 ||
+					meta.Rule != 0 ||
+					meta.IsTrigger ||
+					sourceMeta.SheetType != SheetType.General
+				) {
+					newSprite.MetaIndex = metaList.Count;
+					metaList.Add(meta);
+				}
+
+				// Group
+				if (
+					!groupHash.Contains(realName) &&
+					!string.IsNullOrEmpty(realName) &&
+					realName[^1] >= '0' && realName[^1] <= '9'
+				) {
+					groupHash.TryAdd(realName.TrimEnd_NumbersEmpty());
+				}
+
+				// Chain
+				if (groupType != GroupType.General) {
+					string key = realName;
+					int endIndex = key.Length - 1;
+					while (endIndex >= 0) {
+						char c = key[endIndex];
+						if (c < '0' || c > '9') break;
+						endIndex--;
+					}
+					key = key[..(endIndex + 1)].TrimEnd(' ');
+					int _index = endIndex < realName.Length - 1 ? int.Parse(realName[(endIndex + 1)..]) : 0;
+					if (!chainPool.ContainsKey(key)) chainPool.Add(key, (groupType, new()));
+					chainPool[key].list.Add((spriteList.Count - 1, _index, loopStart));
+				}
+
+			}
+			sheet.SheetNames = sheetNames.ToArray();
+
+			// Load Groups
+			var groups = new List<SpriteGroup>();
+			foreach (var gName in groupHash) {
+				var sprites = new List<int>();
+				for (int i = 0; ; i++) {
+					int id = $"{gName} {i}".AngeHash();
+					if (spriteIDHash.Contains(id)) {
+						sprites.Add(id);
+					} else break;
+				}
+				if (sprites.Count > 0) {
+					groups.Add(new SpriteGroup() {
+						ID = gName.AngeHash(),
+						SpriteIDs = sprites.ToArray(),
+					});
+				}
+			}
+			sheet.Groups = groups.ToArray();
+
+			// Sort Chain
+			foreach (var (_, (_, list)) in chainPool) list.Sort((a, b) => a.localIndex.CompareTo(b.localIndex));
+
+			// Fix Duration
+			foreach (var (name, (gType, list)) in chainPool) {
+				if (list.Count <= 1) continue;
+				if (gType != GroupType.Animated) continue;
+				for (int i = 0; i < list.Count - 1; i++) {
+					var item = list[i];
+					var (_, nextLocal, _) = list[i + 1];
+					if (nextLocal > item.localIndex + 1) {
+						int _index = i;
+						for (int j = 0; j < nextLocal - item.localIndex - 1; j++) {
+							list.Insert(_index, item);
+							i++;
+						}
+					}
+				}
+			}
+
+			// Final
+			var sChain = new AngeSpriteChain[chainPool.Count];
+			int index = 0;
+			foreach (var pair in chainPool) {
+				var chain = sChain[index] = new AngeSpriteChain() {
+					ID = pair.Key.AngeHash(),
+					Type = pair.Value.type,
+					Name = pair.Key,
+					LoopStart = -1,
+				};
+				var result = chain.Chain = new List<int>();
+				foreach (var (globalIndex, _, _loopStart) in pair.Value.list) {
+					if (_loopStart && chain.LoopStart < 0) {
+						chain.LoopStart = result.Count;
+					}
+					result.Add(globalIndex);
+				}
+				if (chain.LoopStart < 0) chain.LoopStart = 0;
+				index++;
+			}
+			sheet.Sprites = spriteList.ToArray();
+			sheet.SpriteChains = sChain;
+			sheet.Metas = metaList.ToArray();
+
+			// Summary
+			var summaryPool = new Dictionary<int, Color32>();
+			FillBlockSummaryColorPool(sheet, sheetTexture, summaryPool);
+			for (int i = 0; i < sheet.Sprites.Length; i++) {
+				var sprite = sheet.Sprites[i];
+				sprite.SummaryTint = summaryPool.TryGetValue(sprite.GlobalID, out var color) ? color : default;
+			}
+
+			return sheet;
+		}
+
+
+		private static void FillBlockSummaryColorPool (SpriteSheet sheet, Texture2D texture, Dictionary<int, Color32> pool) {
+			pool.Clear();
+			// Color Pool
+			if (sheet == null) return;
+			for (int i = 0; i < sheet.Sprites.Length; i++) {
+				var sp = sheet.Sprites[i];
+				if (pool.ContainsKey(sp.GlobalID)) continue;
+				if (texture == null) continue;
+				var color = GetThumbnailColor(
+					texture,
+					sp.GetTextureRect(texture.width, texture.height)
+				);
+				if (color.IsSame(Const.CLEAR)) continue;
+				pool.Add(sp.GlobalID, color);
+			}
+			foreach (var chain in sheet.SpriteChains) {
+				switch (chain.Type) {
+					case GroupType.Animated:
+						if (pool.ContainsKey(chain.ID)) continue;
+						if (chain.Chain != null && chain.Chain.Count > 0) {
+							int index = chain.Chain[0];
+							if (index < 0 || index >= sheet.Sprites.Length) break;
+							if (pool.TryGetValue(sheet.Sprites[index].GlobalID, out var _color)) {
+								pool.Add(chain.ID, _color);
+							}
+						}
+						break;
+					case GroupType.General:
+					case GroupType.Rule:
+					case GroupType.Random: break;
+					default: throw new System.NotImplementedException();
+				}
+			}
+
+
+			// Func
+			static Color32 GetThumbnailColor (Texture2D texture, RectInt rect) {
+				var CLEAR = new Color32(0, 0, 0, 0);
+				if (texture == null || rect.width <= 0 || rect.height <= 0) return CLEAR;
+				var result = CLEAR;
+				try {
+					var pixels = texture.GetPixels(rect.x, rect.y, rect.width, rect.height);
+					if (pixels == null || pixels.Length == 0) return result;
+					var sum = Vector3.zero;
+					float len = 0;
+					foreach (var pixel in pixels) {
+						if (pixel.a.NotAlmostZero()) {
+							sum.x += pixel.r;
+							sum.y += pixel.g;
+							sum.z += pixel.b;
+							len++;
+						}
+					}
+					return new Color(sum.x / len, sum.y / len, sum.z / len, 1f);
+				} catch (System.Exception ex) { Debug.LogException(ex); }
+				return result;
+			}
+		}
+
+
+		public static string GetBlockRealName (string name) {
+			int hashIndex = name.IndexOf('#');
+			if (hashIndex >= 0) {
+				name = name[..hashIndex];
+			}
+			return name.TrimEnd(' ');
+		}
+
+
+		private static string GetBlockHashTags (
+			string name, out GroupType groupType,
+			out bool isTrigger, out int tag, out bool loopStart,
+			out int rule, out bool noCollider, out int offsetZ,
+			out int? pivotX, out int? pivotY
+		) {
+			isTrigger = false;
+			tag = 0;
+			rule = 0;
+			loopStart = false;
+			noCollider = false;
+			offsetZ = 0;
+			pivotX = null;
+			pivotY = null;
+			groupType = GroupType.General;
+			const System.StringComparison OIC = System.StringComparison.OrdinalIgnoreCase;
+			int hashIndex = name.IndexOf('#');
+			if (hashIndex >= 0) {
+				var hashs = name[hashIndex..].Replace(" ", "").Split('#');
+				foreach (var hashTag in hashs) {
+
+					if (string.IsNullOrWhiteSpace(hashTag)) continue;
+
+					// Bool
+					if (hashTag.Equals("isTrigger", OIC)) {
+						isTrigger = true;
+						continue;
+					}
+
+					// Tag
+					if (hashTag.Equals("OnewayUp", OIC)) { tag = Const.ONEWAY_UP_TAG; continue; }
+					if (hashTag.Equals("OnewayDown", OIC)) { tag = Const.ONEWAY_DOWN_TAG; continue; }
+					if (hashTag.Equals("OnewayLeft", OIC)) { tag = Const.ONEWAY_LEFT_TAG; continue; }
+					if (hashTag.Equals("OnewayRight", OIC)) { tag = Const.ONEWAY_RIGHT_TAG; continue; }
+					if (hashTag.Equals("Climb", OIC)) { tag = Const.CLIMB_TAG; continue; }
+					if (hashTag.Equals("ClimbStable", OIC)) { tag = Const.CLIMB_STABLE_TAG; continue; }
+					if (hashTag.Equals("Quicksand", OIC)) { tag = Const.QUICKSAND_TAG; isTrigger = true; continue; }
+					if (hashTag.Equals("Water", OIC)) { tag = Const.WATER_TAG; isTrigger = true; continue; }
+					if (hashTag.Equals("Damage", OIC)) { tag = Const.DAMAGE_TAG; continue; }
+					if (hashTag.Equals("Slide", OIC)) { tag = Const.SLIDE_TAG; continue; }
+					if (hashTag.Equals("NoSlide", OIC)) { tag = Const.NO_SLIDE_TAG; continue; }
+					if (hashTag.Equals("GrabTop", OIC)) { tag = Const.GRAB_TOP_TAG; continue; }
+					if (hashTag.Equals("GrabSide", OIC)) { tag = Const.GRAB_SIDE_TAG; continue; }
+					if (hashTag.Equals("Grab", OIC)) { tag = Const.GRAB_TAG; continue; }
+					if (hashTag.Equals("ShowLimb", OIC)) { tag = Const.SHOW_LIMB_TAG; continue; }
+					if (hashTag.Equals("HideLimb", OIC)) { tag = Const.HIDE_LIMB_TAG; continue; }
+
+					if (hashTag.Equals("loopStart", OIC)) {
+						loopStart = true;
+						continue;
+					}
+
+					if (hashTag.Equals("noCollider", OIC) || hashTag.Equals("ignoreCollider", OIC)) {
+						noCollider = true;
+						continue;
+					}
+
+					// Bool-Group
+					if (hashTag.Equals("animated", OIC) || hashTag.Equals("ani", OIC)) {
+						groupType = GroupType.Animated;
+						continue;
+					}
+					if (hashTag.Equals("rule", OIC) || hashTag.Equals("rul", OIC)) {
+						groupType = GroupType.Rule;
+						continue;
+					}
+					if (hashTag.Equals("random", OIC) || hashTag.Equals("ran", OIC)) {
+						groupType = GroupType.Random;
+						continue;
+					}
+
+					// Int
+					if (hashTag.StartsWith("tag=", OIC)) {
+						tag = hashTag[4..].AngeHash();
+						continue;
+					}
+
+					if (hashTag.StartsWith("rule=", OIC)) {
+						rule = RuleStringToDigit(hashTag[5..]);
+						groupType = GroupType.Rule;
+						continue;
+					}
+
+					if (hashTag.StartsWith("z=", OIC)) {
+						if (int.TryParse(hashTag[2..], out int _offsetZ)) {
+							offsetZ = _offsetZ;
+						}
+						continue;
+					}
+
+					if (hashTag.StartsWith("pivot", OIC)) {
+
+						switch (hashTag) {
+							case var _ when hashTag.StartsWith("pivotX=", OIC):
+								if (int.TryParse(hashTag[7..], out int _px)) pivotX = _px;
+								continue;
+							case var _ when hashTag.StartsWith("pivotY=", OIC):
+								if (int.TryParse(hashTag[7..], out int _py)) pivotY = _py;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=bottomLeft", OIC):
+								pivotX = 0;
+								pivotY = 0;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=bottomRight", OIC):
+								pivotX = 1000;
+								pivotY = 0;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=bottom", OIC):
+								pivotX = 500;
+								pivotY = 0;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=topLeft", OIC):
+								pivotX = 0;
+								pivotY = 1000;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=topRight", OIC):
+								pivotX = 1000;
+								pivotY = 1000;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=top", OIC):
+								pivotX = 500;
+								pivotY = 1000;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=left", OIC):
+								pivotX = 0;
+								pivotY = 500;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=right", OIC):
+								pivotX = 1000;
+								pivotY = 500;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=center", OIC):
+							case var _ when hashTag.StartsWith("pivot=mid", OIC):
+							case var _ when hashTag.StartsWith("pivot=middle", OIC):
+								pivotX = 500;
+								pivotY = 500;
+								continue;
+						}
+					}
+
+					Debug.LogWarning($"Unknown hash \"{hashTag}\" for {name}");
+
+				}
+				// Trim Name
+				name = name[..hashIndex];
+			}
+			return name.TrimEnd(' ');
+		}
 
 
 		// File

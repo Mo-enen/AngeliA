@@ -204,9 +204,19 @@ namespace AngeliaFramework.Editor {
 			if (forceRefresh) AddAlwaysIncludeShaders();
 			AngeUtil.CreateAngeFolders();
 
-			// Sprite Sheets
-			CreateSpritesFromAsepriteFiles(out var sheetTexture, out var sheetMeta);
-			CreateSheetAndTexture(sheetTexture, sheetMeta);
+			// Ase >> Sprite & Texture
+			CreateSpritesFromAsepriteFiles(out var texture, out var sheetMeta);
+
+			// Texture >> File
+			if (texture != null) {
+				Util.ByteToFile(texture.EncodeToPNG(), AngePath.SheetTexturePath);
+			}
+
+			// Sheets
+			var sheet = AngeUtil.CreateSpriteSheet(texture, sheetMeta);
+			if (sheet != null) {
+				AngeUtil.SaveJson(sheet, AngePath.SheetRoot);
+			}
 
 			// Maps
 			AngeUtil.DeleteAllEmptyMaps(AngePath.BuiltInMapRoot);
@@ -260,10 +270,10 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void CreateSpritesFromAsepriteFiles (out Texture2D sheetTexture, out AngeTextureMeta sheetMeta) {
+		private void CreateSpritesFromAsepriteFiles (out Texture2D sheetTexture, out AngeSpriteMetaData[] spriteMetas) {
 
 			var spriteSheetNamePool = new Dictionary<string, string>();
-			var textureResults = new List<(Texture2D texture, AngeTextureMeta meta)>();
+			var textureResults = new List<(Texture2D texture, AngeSpriteMetaData[] meta)>();
 
 			// Create Textures from Ase
 			var asePaths = AngeEditorUtil.ForAllAsepriteFiles().Select(
@@ -282,18 +292,18 @@ namespace AngeliaFramework.Editor {
 			// Combine
 			var items = new List<PackingItem>();
 			var overlapList = new List<(AngeSpriteMetaData meta, PackingItem original)>();
-			foreach (var (sourceTexture, metaData) in textureResults) {
+			foreach (var (sourceTexture, sourceMetas) in textureResults) {
 				var sourcePixels = sourceTexture.GetPixels32();
 				int sourceWidth = sourceTexture.width;
 				int sourceHeight = sourceTexture.height;
 				string sheetName = sourceTexture.name;
-				System.Array.Sort(metaData.AngeMetas, AngeSpriteMetaDataComparer.Instance);
+				System.Array.Sort(sourceMetas, AngeSpriteMetaDataComparer.Instance);
 				int prevX = int.MinValue;
 				int prevY = int.MinValue;
 				int prevW = int.MinValue;
 				int prevH = int.MinValue;
 				PackingItem prevItem = null;
-				foreach (var meta in metaData.AngeMetas) {
+				foreach (var meta in sourceMetas) {
 					int x = (int)meta.Rect.x;
 					int y = (int)meta.Rect.y;
 					int w = (int)meta.Rect.width;
@@ -334,7 +344,7 @@ namespace AngeliaFramework.Editor {
 					}
 
 					// Check Duplicate
-					int realID = AngeEditorUtil.GetBlockRealName(meta.Name).AngeHash();
+					int realID = AngeUtil.GetBlockRealName(meta.Name).AngeHash();
 					if (!dupHash.Contains(realID)) {
 						dupHash.Add(realID);
 					} else {
@@ -404,205 +414,7 @@ namespace AngeliaFramework.Editor {
 				);
 				aMetaList.Add(meta);
 			}
-			sheetMeta = new AngeTextureMeta() {
-				PixelPerUnit = 16,
-				AngeMetas = aMetaList.ToArray(),
-				TextureSize = new(sheetTexture.width, sheetTexture.height),
-			};
-		}
-
-
-		private void CreateSheetAndTexture (Texture2D sheetTexture, AngeTextureMeta metaData) {
-
-			if (sheetTexture == null) return;
-
-			var sheet = new SpriteSheet {
-				Sprites = null,
-				SpriteChains = null,
-			};
-			var spriteIDHash = new HashSet<int>();
-			var chainPool = new Dictionary<string, (GroupType type, List<(int globalIndex, int localIndex, bool loopStart)> list)>();
-			var groupHash = new HashSet<string>();
-			var spriteList = new List<AngeSprite>();
-			var metaList = new List<SpriteMeta>();
-			var sheetNames = new List<string>();
-			var sheetNamePool = new Dictionary<string, int>();
-			int width = sheetTexture.width;
-			int height = sheetTexture.height;
-			for (int i = 0; i < metaData.AngeMetas.Length; i++) {
-				var sourceMeta = metaData.AngeMetas[i];
-				var uvBorder = sourceMeta.Border;
-				uvBorder.x /= sourceMeta.Rect.width;
-				uvBorder.y /= sourceMeta.Rect.height;
-				uvBorder.z /= sourceMeta.Rect.width;
-				uvBorder.w /= sourceMeta.Rect.height;
-				string realName = AngeEditorUtil.GetBlockHashTags(
-					sourceMeta.Name, out var groupType,
-					out bool isTrigger, out int tag, out bool loopStart,
-					out int rule, out bool noCollider, out int offsetZ,
-					out int? pivotX, out int? pivotY
-				);
-				int globalWidth = sourceMeta.Rect.width.RoundToInt() * Const.CEL / Const.ART_CEL;
-				int globalHeight = sourceMeta.Rect.height.RoundToInt() * Const.CEL / Const.ART_CEL;
-				var globalBorder = new Vector4Int() {
-					left = Mathf.Clamp((int)(sourceMeta.Border.x * Const.CEL / Const.ART_CEL), 0, globalWidth),
-					down = Mathf.Clamp((int)(sourceMeta.Border.y * Const.CEL / Const.ART_CEL), 0, globalHeight),
-					right = Mathf.Clamp((int)(sourceMeta.Border.z * Const.CEL / Const.ART_CEL), 0, globalWidth),
-					up = Mathf.Clamp((int)(sourceMeta.Border.w * Const.CEL / Const.ART_CEL), 0, globalHeight),
-				};
-				if (noCollider) {
-					globalBorder.left = globalWidth;
-					globalBorder.right = globalWidth;
-				}
-				int globalID = realName.AngeHash();
-
-				if (!sheetNamePool.TryGetValue(sourceMeta.SheetName, out int sheetNameIndex)) {
-					sheetNameIndex = sheetNames.Count;
-					sheetNamePool.Add(sourceMeta.SheetName, sheetNameIndex);
-					sheetNames.Add(sourceMeta.SheetName);
-				}
-
-				var newSprite = new AngeSprite() {
-					GlobalID = globalID,
-					UvBottomLeft = new(sourceMeta.Rect.xMin / width, sourceMeta.Rect.yMin / height),
-					UvTopRight = new(sourceMeta.Rect.xMax / width, sourceMeta.Rect.yMax / height),
-					GlobalWidth = globalWidth,
-					GlobalHeight = globalHeight,
-					UvBorder = uvBorder,// ldru
-					GlobalBorder = globalBorder,
-					MetaIndex = -1,
-					SortingZ = sourceMeta.SheetZ * 1024 + offsetZ,
-					PivotX = pivotX ?? sourceMeta.AngePivot.x,
-					PivotY = pivotY ?? sourceMeta.AngePivot.y,
-					RealName = AngeEditorUtil.GetBlockRealName(sourceMeta.Name),
-					GroupType = AngeEditorUtil.GetGroupType(sourceMeta.Name),
-					SheetType = sourceMeta.SheetType,
-					SheetNameIndex = sheetNameIndex,
-				};
-
-				bool isOneway = AngeUtil.IsOnewayTag(tag);
-				if (isOneway) isTrigger = true;
-				spriteIDHash.TryAdd(newSprite.GlobalID);
-				spriteList.Add(newSprite);
-
-				var meta = new SpriteMeta() {
-					Tag = tag,
-					Rule = rule,
-					IsTrigger = isTrigger,
-				};
-
-				// Has Meta
-				if (
-					meta.Tag != 0 ||
-					meta.Rule != 0 ||
-					meta.IsTrigger ||
-					sourceMeta.SheetType != SheetType.General
-				) {
-					newSprite.MetaIndex = metaList.Count;
-					metaList.Add(meta);
-				}
-
-				// Group
-				if (
-					!groupHash.Contains(realName) &&
-					!string.IsNullOrEmpty(realName) &&
-					realName[^1] >= '0' && realName[^1] <= '9'
-				) {
-					groupHash.TryAdd(realName.TrimEnd_NumbersEmpty());
-				}
-
-				// Chain
-				if (groupType != GroupType.General) {
-					string key = realName;
-					int endIndex = key.Length - 1;
-					while (endIndex >= 0) {
-						char c = key[endIndex];
-						if (c < '0' || c > '9') break;
-						endIndex--;
-					}
-					key = key[..(endIndex + 1)].TrimEnd(' ');
-					int _index = endIndex < realName.Length - 1 ? int.Parse(realName[(endIndex + 1)..]) : 0;
-					if (!chainPool.ContainsKey(key)) chainPool.Add(key, (groupType, new()));
-					chainPool[key].list.Add((spriteList.Count - 1, _index, loopStart));
-				}
-
-			}
-			sheet.SheetNames = sheetNames.ToArray();
-
-			// Load Groups
-			var groups = new List<SpriteGroup>();
-			foreach (var gName in groupHash) {
-				var sprites = new List<int>();
-				for (int i = 0; ; i++) {
-					int id = $"{gName} {i}".AngeHash();
-					if (spriteIDHash.Contains(id)) {
-						sprites.Add(id);
-					} else break;
-				}
-				if (sprites.Count > 0) {
-					groups.Add(new SpriteGroup() {
-						ID = gName.AngeHash(),
-						SpriteIDs = sprites.ToArray(),
-					});
-				}
-			}
-			sheet.Groups = groups.ToArray();
-
-			// Sort Chain
-			foreach (var (_, (_, list)) in chainPool) list.Sort((a, b) => a.localIndex.CompareTo(b.localIndex));
-
-			// Fix Duration
-			foreach (var (name, (gType, list)) in chainPool) {
-				if (list.Count <= 1) continue;
-				if (gType != GroupType.Animated) continue;
-				for (int i = 0; i < list.Count - 1; i++) {
-					var item = list[i];
-					var (_, nextLocal, _) = list[i + 1];
-					if (nextLocal > item.localIndex + 1) {
-						int _index = i;
-						for (int j = 0; j < nextLocal - item.localIndex - 1; j++) {
-							list.Insert(_index, item);
-							i++;
-						}
-					}
-				}
-			}
-
-			// Final
-			var sChain = new AngeSpriteChain[chainPool.Count];
-			int index = 0;
-			foreach (var pair in chainPool) {
-				var chain = sChain[index] = new AngeSpriteChain() {
-					ID = pair.Key.AngeHash(),
-					Type = pair.Value.type,
-					Name = pair.Key,
-					LoopStart = -1,
-				};
-				var result = chain.Chain = new List<int>();
-				foreach (var (globalIndex, _, _loopStart) in pair.Value.list) {
-					if (_loopStart && chain.LoopStart < 0) {
-						chain.LoopStart = result.Count;
-					}
-					result.Add(globalIndex);
-				}
-				if (chain.LoopStart < 0) chain.LoopStart = 0;
-				index++;
-			}
-			sheet.Sprites = spriteList.ToArray();
-			sheet.SpriteChains = sChain;
-			sheet.Metas = metaList.ToArray();
-
-			// Summary
-			var summaryPool = new Dictionary<int, Color32>();
-			AngeEditorUtil.FillBlockSummaryColorPool(sheet, sheetTexture, summaryPool);
-			for (int i = 0; i < sheet.Sprites.Length; i++) {
-				var sprite = sheet.Sprites[i];
-				sprite.SummaryTint = summaryPool.TryGetValue(sprite.GlobalID, out var color) ? color : default;
-			}
-
-			// Save to File
-			AngeUtil.SaveJson(sheet, AngePath.SheetRoot);
-			Util.ByteToFile(sheetTexture.EncodeToPNG(), AngePath.SheetTexturePath);
+			spriteMetas = aMetaList.ToArray();
 		}
 
 

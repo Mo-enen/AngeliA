@@ -151,7 +151,6 @@ namespace AngeliaFramework {
 		[System.NonSerialized] SheetType? _SheetType = null;
 		[System.NonSerialized] GroupType? _GroupType = null;
 
-
 		// API
 		public RectInt GetTextureRect (int tWidth, int tHeight) => new(
 			(UvBottomLeft.x * tWidth).RoundToInt(),
