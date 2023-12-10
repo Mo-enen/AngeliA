@@ -1,5 +1,4 @@
-﻿Notify.MapGeneratedNotify:关卡已生成
-CtrlHint.Adjust:调整
+﻿CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
 CtrlHint.Drop:放下
@@ -9,6 +8,7 @@ CtrlHint.Equip:装备
 CtrlHint.HideMenu:隐藏菜单
 CtrlHint.HoldToUse:长按使用
 CtrlHint.Jump:跳跃
+CtrlHint.MapGenerator.Enter:进入关卡
 CtrlHint.MapGenerator.Generate:生成关卡
 CtrlHint.MapGenerator.Generating:正在生成关卡
 CtrlHint.MEDT.Nav:俯瞰
@@ -69,6 +69,7 @@ Menu.Setting.SoundVolume:音效音量
 Menu.Setting.UseControlHint:显示操作提示
 Menu.Setting.UseGamepadHint:显示左下角手柄
 Menu.Setting.VSync:垂直同步
+Notify.MapGeneratedNotify:关卡已生成
 Palette.Background:背景
 Palette.Character:角色
 Palette.CheckPoint:存档点

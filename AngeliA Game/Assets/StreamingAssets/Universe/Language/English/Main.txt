@@ -1,5 +1,4 @@
-﻿Notify.MapGeneratedNotify:Map Generated
-CtrlHint.Adjust:Adjust
+﻿CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
 CtrlHint.Drop:Drop
@@ -9,6 +8,7 @@ CtrlHint.Equip:Equip
 CtrlHint.HideMenu:Hide Menu
 CtrlHint.HoldToUse:Hold to Use
 CtrlHint.Jump:Jump
+CtrlHint.MapGenerator.Enter:Enter Level
 CtrlHint.MapGenerator.Generate:Generate Level
 CtrlHint.MapGenerator.Generating:Generating Level
 CtrlHint.MEDT.Nav:Overlook
@@ -69,6 +69,7 @@ Menu.Setting.SoundVolume:Sound Volume
 Menu.Setting.UseControlHint:Show Control Hint
 Menu.Setting.UseGamepadHint:Show Bottom Left Gamepad
 Menu.Setting.VSync:V-Sync
+Notify.MapGeneratedNotify:Level Generated
 Palette.Background:Background
 Palette.Character:Character
 Palette.CheckPoint:CheckPoint

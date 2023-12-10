@@ -15,7 +15,6 @@ namespace AngeliaFramework {
 		public int Duration { get; set; } = 60;
 		public bool UseVignette { get; set; } = true;
 		public bool UseParallax { get; set; } = true;
-		public bool UsePortalEffect { get; set; } = false;
 		public Entity TeleportEntity { get; set; } = null;
 
 		// Data
@@ -135,7 +134,6 @@ namespace AngeliaFramework {
 				svTask.UseParallax = true;
 				svTask.UseVignette = false;
 				svTask.TeleportEntity = null;
-				svTask.UsePortalEffect = false;
 				return svTask;
 			}
 			return null;

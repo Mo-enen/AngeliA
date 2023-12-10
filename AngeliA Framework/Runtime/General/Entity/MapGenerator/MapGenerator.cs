@@ -14,7 +14,7 @@ namespace AngeliaFramework {
 	public abstract class MapGenerator : Entity {
 
 
-
+		
 
 		#region --- VAR ---
 
@@ -101,12 +101,13 @@ namespace AngeliaFramework {
 
 		public void Generate () {
 			try {
-				BeforeMapGenerate();
 				string mapRoot = MapRoot;
 				string tempMapRoot = TempMapRoot;
 
 				SampleReader = new WorldStream(WorldSquad.MapRoot, WorldSquad.Channel.GetLocation(), @readonly: true, isProcedure: false);
 				ResultWriter = new WorldStream(tempMapRoot, MapLocation.Procedure, @readonly: false, isProcedure: true);
+
+				BeforeMapGenerate();
 
 				Util.DeleteFolder(tempMapRoot);
 				Util.CreateFolder(tempMapRoot);

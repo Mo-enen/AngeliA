@@ -6,16 +6,16 @@ using AngeliaFramework;
 
 namespace AngeliaFramework {
 	public class WoodStoneDoorFront : Door {
-		protected override bool IsFrontDoor => true;
+		public override bool IsFrontDoor => true;
 	}
 	public class WoodStoneDoorBack : Door {
-		protected override bool IsFrontDoor => false;
+		public override bool IsFrontDoor => false;
 	}
 	public class WoodDoorFront : Door {
-		protected override bool IsFrontDoor => true;
+		public override bool IsFrontDoor => true;
 	}
 	public class WoodDoorBack : Door {
-		protected override bool IsFrontDoor => false;
+		public override bool IsFrontDoor => false;
 	}
 
 
@@ -27,7 +27,7 @@ namespace AngeliaFramework {
 		private static readonly int HINT_ENTER = "CtrlHint.EnterDoor".AngeHash();
 
 		// Api
-		protected virtual bool IsFrontDoor => false;
+		public virtual bool IsFrontDoor => false;
 
 		// Data
 		private static bool InputLock = false;
@@ -104,7 +104,6 @@ namespace AngeliaFramework {
 			);
 			if (task != null) {
 				task.TeleportEntity = player;
-				task.UsePortalEffect = false;
 			}
 			player.EnterTeleportState(task.Duration, IsFrontDoor, false);
 			player.VelocityX = 0;

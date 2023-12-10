@@ -13,6 +13,7 @@ namespace AngeliaFramework {
 
 
 		// Const
+		private static readonly int HINT_ENTER = "CtrlHint.MapGenerator.Enter".AngeHash();
 		private static readonly int HINT_GENERATE = "CtrlHint.MapGenerator.Generate".AngeHash();
 		private static readonly int HINT_GENERATING = "CtrlHint.MapGenerator.Generating".AngeHash();
 		private static readonly int HINT_NOTIFY = "Notify.MapGeneratedNotify".AngeHash();
@@ -46,14 +47,17 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-
 			var cell = DrawArtwork();
 			if (!IsGenerating) {
 				// Normal
 				if ((this as IActionTarget).IsHighlighted) {
 					IActionTarget.HighlightBlink(cell, 0.5f, 0.5f);
 					// Hint
-					ControlHintUI.DrawGlobalHint(X, Y + Const.CEL * 2 + Const.HALF, Gamekey.Action, Language.Get(HINT_GENERATE, "Generate Map"), true);
+					ControlHintUI.DrawGlobalHint(
+						X, Y + Const.CEL * 2 + Const.HALF, Gamekey.Action,
+						HasMapInDisk ? Language.Get(HINT_ENTER, "Enter Level") : Language.Get(HINT_GENERATE, "Generate Level"),
+						true
+					);
 				}
 			} else {
 				// Generating
@@ -69,8 +73,6 @@ namespace AngeliaFramework {
 
 		protected override void AfterMapGenerate () {
 			base.AfterMapGenerate();
-			RemoveEntrancePortal();
-			SpawnEntrancePortal();
 			NotificationUI.SpawnNotification(Language.Get(HINT_NOTIFY, "Map Generated"), TypeID);
 		}
 
@@ -78,23 +80,38 @@ namespace AngeliaFramework {
 		protected virtual Cell DrawArtwork () => CellRenderer.Draw(TypeID, Rect);
 
 
-		protected virtual void RemoveEntrancePortal () {
-			var cells = CellPhysics.OverlapAll(
-				PhysicsMask.ENVIRONMENT, Rect.Shift(0, Const.CEL * 2), out int count, this, OperationMode.TriggerOnly
-			);
-			for (int i = 0; i < count; i++) {
-				if (cells[i].Entity is Portal portal) portal.Active = false;
+		void IActionTarget.Invoke () {
+			if (!HasMapInDisk) {
+				GenerateAsync();
+			} else {
+				Enter();
 			}
 		}
 
 
-		protected virtual void SpawnEntrancePortal () => Stage.SpawnEntity<PortalBack>(X, Y + Const.CEL * 3);
+		bool IActionTarget.AllowInvoke () => !IsGenerating;
 
 
-		void IActionTarget.Invoke () => GenerateAsync();
-
-
-		bool IActionTarget.AllowInvoke () => !IsGenerating && !HasMapInDisk;
+		private void Enter () {
+			var player = Player.Selecting;
+			if (player == null || FrameTask.HasTask()) return;
+			int z = Stage.ViewZ + 1;
+			player.Stop();
+			player.VelocityX = 0;
+			player.VelocityY = 0;
+			var task = TeleportTask.Teleport(
+				X + (Width - player.Width) / 2 - player.OffsetX,
+				Y + player.Height / 2,
+				X, Y, z
+			);
+			if (task != null) {
+				task.TeleportEntity = player;
+				task.WaitDuration = 30;
+				task.Duration = 60;
+				task.UseVignette = true;
+				player.EnterTeleportState(task.Duration, Stage.ViewZ > z, false);
+			}
+		}
 
 
 		#endregion

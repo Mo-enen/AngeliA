@@ -153,7 +153,6 @@ namespace AngeliaFramework {
 			);
 			if (task != null) {
 				task.TeleportEntity = player;
-				task.UsePortalEffect = true;
 				task.WaitDuration = 30;
 				task.Duration = 60;
 				task.UseVignette = true;

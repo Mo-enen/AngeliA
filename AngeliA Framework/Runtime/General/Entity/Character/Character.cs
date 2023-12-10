@@ -217,7 +217,7 @@ namespace AngeliaFramework {
 			// Func
 			static CharacterAnimationType GetCurrentPoseAnimationType (Character character) {
 				if (Game.GlobalFrame <= character.LockedAnimationTypeFrame) return character.LockedAnimationType;
-				if (character.Teleporting) return CharacterAnimationType.Rolling;
+				if (character.Teleporting) return character.TeleportWithPortal ? CharacterAnimationType.Rolling : CharacterAnimationType.Idle;
 				if (character.TakingDamage) return CharacterAnimationType.TakingDamage;
 				if (character.CharacterState == CharacterState.Sleep) return CharacterAnimationType.Sleep;
 				if (character.CharacterState == CharacterState.PassOut) return CharacterAnimationType.PassOut;
