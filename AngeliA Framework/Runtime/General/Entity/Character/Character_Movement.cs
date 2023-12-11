@@ -185,14 +185,16 @@ namespace AngeliaFramework {
 			if (!PrevGrounded && IsGrounded) LastGroundFrame = frame;
 			PrevGrounded = IsGrounded;
 
-			// Crash
-			if (OnSlippy && IsGrounded && !IsCrashing && IsRunning) {
+			// Slip
+			if (OnSlippy && IsGrounded && !IsCrashing && IsRunning && !IsSquatting) {
 				if (LastSlippyMoveStartFrame < 0) {
 					LastSlippyMoveStartFrame = Game.GlobalFrame;
 				}
 			} else {
 				LastSlippyMoveStartFrame = int.MinValue;
 			}
+
+			// Crash
 			if (CrashDuration > 0) {
 				if (
 					CrashWhenSlippy &&
@@ -617,6 +619,12 @@ namespace AngeliaFramework {
 					break;
 
 
+			}
+
+			// Slip
+			if (OnSlippy) {
+				acc = SlipAcceleration;
+				dcc = SlipDeceleration;
 			}
 
 			// Speed Lose on Attack

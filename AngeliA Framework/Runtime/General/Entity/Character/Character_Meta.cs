@@ -75,11 +75,13 @@ namespace AngeliaFramework {
 		public readonly BuffInt RushAcceleration = new(12);
 		public readonly BuffInt RushDeceleration = new(4);
 
-		// Crash
+		// Slip & Crash
 		public readonly BuffBool CrashWhenSlippy = new(true);
 		public readonly BuffInt CrashDuration = new(30);
 		public readonly BuffInt CrashRunDurationRequire = new(42);
 		public readonly BuffInt CrashDeceleration = new(1);
+		public readonly BuffInt SlipAcceleration = new(2);
+		public readonly BuffInt SlipDeceleration = new(1);
 
 		// Squat
 		public readonly BuffBool SquatAvailable = new(true);
