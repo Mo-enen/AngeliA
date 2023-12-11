@@ -12,7 +12,6 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.DontDestroyOnSquadTransition]
-	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.Capacity(1, 0)]
 	public sealed partial class MapEditor : EntityUI {
 

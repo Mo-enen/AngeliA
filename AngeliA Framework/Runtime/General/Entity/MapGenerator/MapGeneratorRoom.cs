@@ -27,12 +27,11 @@ namespace AngeliaFramework {
 		}
 		public string PrintTree () {
 
-			int indent = 0;
 			var builder = new StringBuilder();
-			AppendTree(this, builder, indent, 0);
+			AppendTree(this, builder, 0);
 			return builder.ToString();
 
-			static void AppendTree (RoomNode node, StringBuilder builder, int indent, int indentAlt) {
+			static void AppendTree (RoomNode node, StringBuilder builder, int indent) {
 
 				// Room ID
 				if (node.Room != null) {
@@ -50,11 +49,8 @@ namespace AngeliaFramework {
 
 				// Children
 				for (int i = 0; i < node.Children.Count; i++) {
-					builder.Append(new string(' ', indentAlt));
-					builder.Append(new string('│', indent - indentAlt));
-					bool lastChild = i == node.Children.Count - 1;
-					builder.Append(lastChild ? '└' : '├');
-					AppendTree(node.Children[i], builder, indent + 1, lastChild ? indentAlt + 1 : indentAlt);
+					builder.Append(new string('\t', indent));
+					AppendTree(node.Children[i], builder, indent + 1);
 				}
 			}
 		}
@@ -78,7 +74,7 @@ namespace AngeliaFramework {
 	public class Room {
 
 		public struct Tunnel {
-			public int LocalIndex;
+			public int Index;
 			public int Size;
 			public Direction4 Direction;
 		}

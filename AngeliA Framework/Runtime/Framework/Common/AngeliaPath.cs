@@ -7,7 +7,6 @@ namespace AngeliaFramework {
 	public static class AngePath {
 
 		public const string UNIVERSE_NAME = "Universe";
-		public const string MANIFEST_NAME = "MANIFEST";
 		public const int SAVE_SLOT_COUNT = 4;
 
 		// Ext

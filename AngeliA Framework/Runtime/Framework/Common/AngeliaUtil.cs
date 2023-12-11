@@ -435,7 +435,17 @@ namespace AngeliaFramework {
 			Util.CreateFolder(AngePath.LanguageRoot);
 			Util.CreateFolder(AngePath.MetaRoot);
 			Util.CreateFolder(AngePath.BuiltInMapRoot);
+		}
+
+
+		[OnSlotCreated]
+		public static void CreateSlotFolders () {
+			Util.CreateFolder(AngePath.SaveSlotRoot);
+			Util.CreateFolder(AngePath.UserMapRoot);
+			Util.CreateFolder(AngePath.PlayerDataRoot);
+			Util.CreateFolder(AngePath.ProcedureMapRoot);
 			Util.CreateFolder(AngePath.DownloadMapRoot);
+			Util.CreateFolder(AngePath.UserSheetRoot);
 		}
 
 

@@ -28,18 +28,20 @@ namespace AngeliaFramework {
 
 		private struct EntryUnit {
 			public Vector2Int Point;
-			public Direction4 Direction;
-			public EntryUnit (Vector2Int point, Direction4 direction) {
+			public Direction4 IterateDirection;
+			public Direction4 RoomDirection;
+			public EntryUnit (Vector2Int point, Direction4 iterateStartDirection, Direction4 roomDirection) {
 				Point = point;
-				Direction = direction;
+				IterateDirection = iterateStartDirection;
+				RoomDirection = roomDirection;
 			}
 		}
 
 
-		private struct RoomTarget {
+		private struct RoomSearchRequire {
 			public Vector2Int Point;
 			public RoomNode BaseNode;
-			public RoomTarget (Vector2Int point, RoomNode baseNode) {
+			public RoomSearchRequire (Vector2Int point, RoomNode baseNode) {
 				Point = point;
 				BaseNode = baseNode;
 			}
@@ -66,10 +68,12 @@ namespace AngeliaFramework {
 		protected RoomNode RootNode = null;
 
 		// Cache
-		private static readonly HashSet<Vector2Int> RoomPointCache = new();
 		private static readonly List<EntryUnit> EntryPointCache = new();
-		private static readonly List<Vector2Int> EndPointCache = new();
-		private static readonly Queue<RoomTarget> TargetQueue = new();
+		private static readonly List<EntryUnit> EndPointCache = new();
+		private static readonly Queue<EntryUnit> EntryRequireQueue = new();
+		private static readonly HashSet<Vector2Int> EntryRequireHash = new();
+		private static readonly Queue<RoomSearchRequire> SearchRequireQueue = new();
+		private static readonly HashSet<Vector2Int> SearchRequireHash = new();
 		private static readonly List<Room.Tunnel> TunnelsCache = new();
 		private static readonly List<Room.Door> DoorsCache = new();
 		private static readonly Dictionary<int, DoorInfo> DoorPool = new();
@@ -179,7 +183,7 @@ namespace AngeliaFramework {
 						if (i == _edge.Length || _edge[i] == SOLID_ID) {
 							if (currentSize > 0) {
 								TunnelsCache.Add(new Room.Tunnel() {
-									LocalIndex = i - currentSize,
+									Index = i - currentSize,
 									Size = currentSize,
 									Direction = _dir,
 								});
@@ -298,22 +302,26 @@ namespace AngeliaFramework {
 
 
 		public static RoomNode ForAllConnectedRooms (IBlockSquad squad, int unitX, int unitY, int z, System.Action<Room> onRoomLoaded = null) {
-			System.Threading.Monitor.Enter(RoomPointCache);
+			System.Threading.Monitor.Enter(SearchRequireHash);
+			System.Threading.Monitor.Enter(EntryRequireHash);
 			System.Threading.Monitor.Enter(EntryPointCache);
 			System.Threading.Monitor.Enter(EndPointCache);
-			System.Threading.Monitor.Enter(TargetQueue);
-			RoomPointCache.Clear();
+			System.Threading.Monitor.Enter(SearchRequireQueue);
+			System.Threading.Monitor.Enter(EntryRequireQueue);
+			SearchRequireHash.Clear();
+			EntryRequireHash.Clear();
 			EntryPointCache.Clear();
 			EndPointCache.Clear();
-			TargetQueue.Clear();
+			SearchRequireQueue.Clear();
+			EntryRequireQueue.Clear();
 			var rootNode = new RoomNode(null, null);
 			try {
 				if (SearchForRoom(squad, unitX, unitY, z, out var rootPoint)) {
 					const int MAX_ROOM_COUNT = 4096;
-					RoomPointCache.Add(rootPoint);
-					TargetQueue.Enqueue(new RoomTarget(rootPoint, rootNode));
-					for (int roomCount = 0; TargetQueue.Count > 0 && roomCount < MAX_ROOM_COUNT; roomCount++) {
-						var target = TargetQueue.Dequeue();
+					SearchRequireHash.Add(rootPoint);
+					SearchRequireQueue.Enqueue(new RoomSearchRequire(rootPoint, rootNode));
+					for (int roomCount = 0; SearchRequireQueue.Count > 0 && roomCount < MAX_ROOM_COUNT; roomCount++) {
+						var target = SearchRequireQueue.Dequeue();
 						Iterate(squad, target.Point, z, target.BaseNode, out Room resultRoom);
 						if (onRoomLoaded != null && resultRoom != null) {
 							onRoomLoaded.Invoke(resultRoom);
@@ -322,14 +330,18 @@ namespace AngeliaFramework {
 					if (rootNode.Children.Count > 0) rootNode = rootNode.Children[0];
 				}
 			} finally {
-				RoomPointCache.Clear();
+				EntryRequireHash.Clear();
+				SearchRequireHash.Clear();
 				EntryPointCache.Clear();
 				EndPointCache.Clear();
-				TargetQueue.Clear();
-				System.Threading.Monitor.Exit(RoomPointCache);
+				SearchRequireQueue.Clear();
+				EntryRequireQueue.Clear();
+				System.Threading.Monitor.Exit(EntryRequireHash);
+				System.Threading.Monitor.Exit(SearchRequireHash);
 				System.Threading.Monitor.Exit(EntryPointCache);
 				System.Threading.Monitor.Exit(EndPointCache);
-				System.Threading.Monitor.Exit(TargetQueue);
+				System.Threading.Monitor.Exit(SearchRequireQueue);
+				System.Threading.Monitor.Exit(EntryRequireQueue);
 			}
 			return rootNode;
 			// Func
@@ -364,80 +376,102 @@ namespace AngeliaFramework {
 				for (int x = resultRoom.EdgeMinX; x <= resultRoom.EdgeMaxX; x++) {
 					if (squad.GetBlockAt(x, resultRoom.EdgeMinY - 1, z, BlockType.Entity) == CONNECTOR_ID) {
 						EntryPointCache.Add(new EntryUnit(
-							new(x, resultRoom.EdgeMinY - 1), Direction4.Down
+							new(x, resultRoom.EdgeMinY - 1), Direction4.Down, Direction4.Down
 						));
 					}
 					if (squad.GetBlockAt(x, resultRoom.EdgeMaxY + 1, z, BlockType.Entity) == CONNECTOR_ID) {
 						EntryPointCache.Add(new EntryUnit(
-							new(x, resultRoom.EdgeMaxY + 1), Direction4.Up
+							new(x, resultRoom.EdgeMaxY + 1), Direction4.Up, Direction4.Up
 						));
 					}
 				}
 				for (int y = resultRoom.EdgeMinY; y <= resultRoom.EdgeMaxY; y++) {
 					if (squad.GetBlockAt(resultRoom.EdgeMinX - 1, y, z, BlockType.Entity) == CONNECTOR_ID) {
 						EntryPointCache.Add(new EntryUnit(
-							new(resultRoom.EdgeMinX - 1, y), Direction4.Left
+							new(resultRoom.EdgeMinX - 1, y), Direction4.Left, Direction4.Left
 						));
 					}
 					if (squad.GetBlockAt(resultRoom.EdgeMaxX + 1, y, z, BlockType.Entity) == CONNECTOR_ID) {
 						EntryPointCache.Add(new EntryUnit(
-							new(resultRoom.EdgeMaxX + 1, y), Direction4.Right
+							new(resultRoom.EdgeMaxX + 1, y), Direction4.Right, Direction4.Right
 						));
 					}
 				}
 
 				// Entry Points >> End Points
+				EntryRequireQueue.Clear();
+				EntryRequireHash.Clear();
 				foreach (var unit in EntryPointCache) {
-					var currentPos = unit.Point;
-					var currentDir = unit.Direction;
-					var currentNormal = unit.Direction.Normal();
-					const int MAX_STEP = 1024;
-					int entityID, forwardEntityID;
-					for (int step = 0; step < MAX_STEP; step++) {
-						// Try Forward
-						var pos = currentPos + currentNormal;
-						var forwardNormal = currentNormal;
-						entityID = forwardEntityID = squad.GetBlockAt(pos.x, pos.y, z, BlockType.Entity);
-						if (entityID == CONNECTOR_ID) {
-							currentPos = pos;
-							continue;
-						}
-						// Try Turn Left
-						currentDir = currentDir.AntiClockwise();
-						currentNormal = currentDir.Normal();
-						pos = currentPos + currentNormal;
-						entityID = squad.GetBlockAt(pos.x, pos.y, z, BlockType.Entity);
-						if (entityID == CONNECTOR_ID) {
-							currentPos = pos;
-							continue;
-						}
-						// Try Turn Right
-						currentDir = currentDir.Opposite();
-						currentNormal = currentDir.Normal();
-						pos = currentPos + currentNormal;
-						entityID = squad.GetBlockAt(pos.x, pos.y, z, BlockType.Entity);
-						if (entityID == CONNECTOR_ID) {
-							currentPos = pos;
-							continue;
-						}
-						// Jump Out
-						if (IsRoomEdgeBlock(forwardEntityID)) {
-							EndPointCache.Add(currentPos + forwardNormal + forwardNormal);
+					if (EntryRequireHash.Contains(unit.Point)) continue;
+					EntryRequireQueue.Enqueue(unit);
+					EntryRequireHash.Add(unit.Point);
+				}
+				const int MAX_CONNECTOR_STEP = 1024;
+				for (int safe = 0; EntryRequireQueue.Count > 0 && safe < MAX_CONNECTOR_STEP; safe++) {
+					var unit = EntryRequireQueue.Dequeue();
+					IterateConnector(squad, unit, z);
+					static void IterateConnector (IBlockSquad squad, EntryUnit unit, int z) {
+						const int MAX_STEP = 1024;
+						int entityID;
+						var pos = unit.Point;
+						var forward = unit.IterateDirection.Normal();
+						var left = unit.IterateDirection.AntiClockwise().Normal();
+						var right = unit.IterateDirection.Clockwise().Normal();
+						for (int step = 0; step < MAX_STEP; step++) {
+							entityID = squad.GetBlockAt(pos.x, pos.y, z, BlockType.Entity);
+							if (entityID == CONNECTOR_ID) {
+								// Turn Left
+								var leftPoint = pos + left;
+								int leftID = squad.GetBlockAt(leftPoint.x, leftPoint.y, z, BlockType.Entity);
+								if (leftID == CONNECTOR_ID && !EntryRequireHash.Contains(leftPoint)) {
+									EntryRequireHash.Add(leftPoint);
+									EntryRequireQueue.Enqueue(new EntryUnit() {
+										Point = leftPoint,
+										IterateDirection = unit.IterateDirection.AntiClockwise(),
+										RoomDirection = unit.RoomDirection,
+									});
+								}
+								// Turn Right
+								var rightPoint = pos + right;
+								int rightID = squad.GetBlockAt(rightPoint.x, rightPoint.y, z, BlockType.Entity);
+								if (rightID == CONNECTOR_ID && !EntryRequireHash.Contains(rightPoint)) {
+									EntryRequireHash.Add(rightPoint);
+									EntryRequireQueue.Enqueue(new EntryUnit() {
+										Point = rightPoint,
+										IterateDirection = unit.IterateDirection.Clockwise(),
+										RoomDirection = unit.RoomDirection,
+									});
+								}
+								// Iter
+								pos += forward;
+							} else {
+								// Jump Out
+								if (IsRoomEdgeBlock(entityID)) {
+									EndPointCache.Add(new EntryUnit() {
+										Point = pos + forward,
+										IterateDirection = unit.IterateDirection,
+										RoomDirection = unit.RoomDirection,
+									});
+								}
+								break;
+							}
 						}
 					}
 				}
 
 				// End Points >> Room Points
 				foreach (var endPoint in EndPointCache) {
-					if (!SearchForRoom(squad, endPoint.x, endPoint.y, z, out var _rootPoint)) continue;
-					if (RoomPointCache.Contains(_rootPoint)) continue;
-					RoomPointCache.Add(_rootPoint);
-					TargetQueue.Enqueue(new RoomTarget(_rootPoint, currentNode));
+					if (!SearchForRoom(squad, endPoint.Point.x, endPoint.Point.y, z, out var _rootPoint)) continue;
+					if (SearchRequireHash.Contains(_rootPoint)) continue;
+					SearchRequireHash.Add(_rootPoint);
+					SearchRequireQueue.Enqueue(new RoomSearchRequire(_rootPoint, currentNode));
 				}
 
 				// Finish
 				EntryPointCache.Clear();
 				EndPointCache.Clear();
+				EntryRequireQueue.Clear();
+				EntryRequireHash.Clear();
 			}
 		}
 
