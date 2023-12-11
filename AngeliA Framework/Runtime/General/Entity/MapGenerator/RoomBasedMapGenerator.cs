@@ -30,21 +30,12 @@ namespace AngeliaFramework {
 			public Vector2Int Point;
 			public Direction4 IterateDirection;
 			public Direction4 RoomDirection;
-			public EntryUnit (Vector2Int point, Direction4 iterateStartDirection, Direction4 roomDirection) {
-				Point = point;
-				IterateDirection = iterateStartDirection;
-				RoomDirection = roomDirection;
-			}
 		}
 
 
 		private struct RoomSearchRequire {
 			public Vector2Int Point;
 			public RoomNode BaseNode;
-			public RoomSearchRequire (Vector2Int point, RoomNode baseNode) {
-				Point = point;
-				BaseNode = baseNode;
-			}
 		}
 
 
@@ -102,14 +93,19 @@ namespace AngeliaFramework {
 		protected override void BeforeMapGenerate () {
 			base.BeforeMapGenerate();
 			RoomPool.Clear();
-			try {
-				RootNode = ForAllConnectedRooms(
-					SampleReader, X.ToUnit(), Y.ToUnit(), Stage.ViewZ - 1,
-					(_room) => RoomPool.TryAdd(_room.ID, _room)
-				);
-				Debug.Log(RootNode.PrintTree());
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+			RootNode = ForAllConnectedRooms(
+				SampleReader, X.ToUnit(), Y.ToUnit(), Stage.ViewZ - 1,
+				(_room) => RoomPool.TryAdd(_room.ID, _room)
+			);
+			Debug.Log(RootNode.PrintTree());
+		}
+
+
+		protected override void AfterMapGenerate () {
+			base.AfterMapGenerate();
 			SampleReader.Clear();
+			RoomPool.Clear();
+			RootNode = null;
 			System.GC.Collect();
 		}
 
@@ -132,8 +128,6 @@ namespace AngeliaFramework {
 				ID = id != int.MinValue ? id : DynamicID--,
 				ContentMinX = roomPointX + 1,
 				ContentMinY = roomPointY + 1,
-				ContentMaxX = roomPointX + 1 + width - 1,
-				ContentMaxY = roomPointY + 1 + height - 1,
 				ContentWidth = width,
 				ContentHeight = height,
 				Entities = new int[width * height],
@@ -209,7 +203,7 @@ namespace AngeliaFramework {
 						DoorsCache.Add(new Room.Door() {
 							X = i % width,
 							Y = i / width,
-							FrontDoor = doorInfo.FrontDoor,
+							Front = doorInfo.FrontDoor,
 						});
 					}
 				}
@@ -319,7 +313,10 @@ namespace AngeliaFramework {
 				if (SearchForRoom(squad, unitX, unitY, z, out var rootPoint)) {
 					const int MAX_ROOM_COUNT = 4096;
 					SearchRequireHash.Add(rootPoint);
-					SearchRequireQueue.Enqueue(new RoomSearchRequire(rootPoint, rootNode));
+					SearchRequireQueue.Enqueue(new RoomSearchRequire() {
+						Point = rootPoint,
+						BaseNode = rootNode,
+					});
 					for (int roomCount = 0; SearchRequireQueue.Count > 0 && roomCount < MAX_ROOM_COUNT; roomCount++) {
 						var target = SearchRequireQueue.Dequeue();
 						Iterate(squad, target.Point, z, target.BaseNode, out Room resultRoom);
@@ -354,12 +351,16 @@ namespace AngeliaFramework {
 				// Meta Room
 				if (resultRoom.ContentWidth == 1 && resultRoom.ContentHeight == 1) {
 					if (baseNode != null && !baseNode.Meta.ContainsKey(resultRoom.ID)) {
-						baseNode.Meta.Add(resultRoom.ID, new RoomMeta(
-							resultRoom.ID,
-							resultRoom.Entities[0],
-							resultRoom.Levels[0],
-							resultRoom.Backgrounds[0]
-						));
+						baseNode.Meta.Add(resultRoom.ID, new Cubicle() {
+							ID = resultRoom.ID,
+							ContentMinX = resultRoom.ContentMinX,
+							ContentMinY = resultRoom.ContentMinY,
+							ContentWidth = resultRoom.ContentWidth,
+							ContentHeight = resultRoom.ContentHeight,
+							Entities = resultRoom.Entities,
+							Levels = resultRoom.Levels,
+							Backgrounds = resultRoom.Backgrounds,
+						});
 					}
 					resultRoom = null;
 					return;
@@ -375,26 +376,34 @@ namespace AngeliaFramework {
 				// Squad >> Entry Points
 				for (int x = resultRoom.EdgeMinX; x <= resultRoom.EdgeMaxX; x++) {
 					if (squad.GetBlockAt(x, resultRoom.EdgeMinY - 1, z, BlockType.Entity) == CONNECTOR_ID) {
-						EntryPointCache.Add(new EntryUnit(
-							new(x, resultRoom.EdgeMinY - 1), Direction4.Down, Direction4.Down
-						));
+						EntryPointCache.Add(new EntryUnit() {
+							Point = new(x, resultRoom.EdgeMinY - 1),
+							IterateDirection = Direction4.Down,
+							RoomDirection = Direction4.Down,
+						});
 					}
 					if (squad.GetBlockAt(x, resultRoom.EdgeMaxY + 1, z, BlockType.Entity) == CONNECTOR_ID) {
-						EntryPointCache.Add(new EntryUnit(
-							new(x, resultRoom.EdgeMaxY + 1), Direction4.Up, Direction4.Up
-						));
+						EntryPointCache.Add(new EntryUnit() {
+							Point = new(x, resultRoom.EdgeMaxY + 1),
+							IterateDirection = Direction4.Up,
+							RoomDirection = Direction4.Up,
+						});
 					}
 				}
 				for (int y = resultRoom.EdgeMinY; y <= resultRoom.EdgeMaxY; y++) {
 					if (squad.GetBlockAt(resultRoom.EdgeMinX - 1, y, z, BlockType.Entity) == CONNECTOR_ID) {
-						EntryPointCache.Add(new EntryUnit(
-							new(resultRoom.EdgeMinX - 1, y), Direction4.Left, Direction4.Left
-						));
+						EntryPointCache.Add(new EntryUnit() {
+							Point = new(resultRoom.EdgeMinX - 1, y),
+							IterateDirection = Direction4.Left,
+							RoomDirection = Direction4.Left,
+						});
 					}
 					if (squad.GetBlockAt(resultRoom.EdgeMaxX + 1, y, z, BlockType.Entity) == CONNECTOR_ID) {
-						EntryPointCache.Add(new EntryUnit(
-							new(resultRoom.EdgeMaxX + 1, y), Direction4.Right, Direction4.Right
-						));
+						EntryPointCache.Add(new EntryUnit() {
+							Point = new(resultRoom.EdgeMaxX + 1, y),
+							IterateDirection = Direction4.Right,
+							RoomDirection = Direction4.Right,
+						});
 					}
 				}
 
@@ -464,7 +473,10 @@ namespace AngeliaFramework {
 					if (!SearchForRoom(squad, endPoint.Point.x, endPoint.Point.y, z, out var _rootPoint)) continue;
 					if (SearchRequireHash.Contains(_rootPoint)) continue;
 					SearchRequireHash.Add(_rootPoint);
-					SearchRequireQueue.Enqueue(new RoomSearchRequire(_rootPoint, currentNode));
+					SearchRequireQueue.Enqueue(new RoomSearchRequire() {
+						Point = _rootPoint,
+						BaseNode = currentNode,
+					});
 				}
 
 				// Finish

@@ -9,16 +9,16 @@ namespace AngeliaFramework {
 
 	[EntityAttribute.MapEditorGroup("MapGenerator")]
 	public abstract class MapGeneratorElement : IMapEditorItem { }
-	[EntityAttribute.AlsoKnownAs("MapGenerator_Solid")] public class RoomWall : MapGeneratorElement { }
-	[EntityAttribute.AlsoKnownAs("MapGenerator_Tunnel")] public class RoomTunnel : MapGeneratorElement { }
-	[EntityAttribute.AlsoKnownAs("MapGenerator_Connector")] public class RoomConnector : MapGeneratorElement { }
+	public class RoomWall : MapGeneratorElement { }
+	public class RoomTunnel : MapGeneratorElement { }
+	public class RoomConnector : MapGeneratorElement { }
 
 
 	public class RoomNode {
 		public Room Room { get; init; }
 		public RoomNode Base { get; init; }
 		public List<RoomNode> Children { get; init; }
-		public Dictionary<int, RoomMeta> Meta { get; init; }
+		public Dictionary<int, Cubicle> Meta { get; init; }
 		public RoomNode (Room room, RoomNode baseNode) {
 			Room = room;
 			Base = baseNode;
@@ -57,21 +57,21 @@ namespace AngeliaFramework {
 	}
 
 
-	public class RoomMeta {
+	public class Cubicle {
 		public int ID;
-		public int EntityID;
-		public int LevelID;
-		public int BackgroundID;
-		public RoomMeta (int id, int entityID, int levelID, int backgroundID) {
-			ID = id;
-			EntityID = entityID;
-			LevelID = levelID;
-			BackgroundID = backgroundID;
-		}
+		public int ContentMinX;
+		public int ContentMinY;
+		public int ContentWidth;
+		public int ContentHeight;
+		public int[] Entities;
+		public int[] Levels;
+		public int[] Backgrounds;
+		public int ContentMaxX => ContentMinX + ContentWidth - 1;
+		public int ContentMaxY => ContentMinY + ContentHeight - 1;
 	}
 
 
-	public class Room {
+	public class Room : Cubicle {
 
 		public struct Tunnel {
 			public int Index;
@@ -82,7 +82,7 @@ namespace AngeliaFramework {
 		public struct Door {
 			public int X;
 			public int Y;
-			public bool FrontDoor;
+			public bool Front;
 		}
 
 		public int EdgeMinX => ContentMinX - 1;
@@ -92,22 +92,20 @@ namespace AngeliaFramework {
 		public int EdgeWidth => ContentWidth + 2;
 		public int EdgeHeight => ContentHeight + 2;
 
-		public int ID;
-		public int ContentMinX;
-		public int ContentMinY;
-		public int ContentMaxX;
-		public int ContentMaxY;
-		public int ContentWidth;
-		public int ContentHeight;
 		public int[] EdgeLeft;
 		public int[] EdgeRight;
 		public int[] EdgeDown;
 		public int[] EdgeUp;
-		public int[] Entities;
-		public int[] Levels;
-		public int[] Backgrounds;
 		public Tunnel[] Tunnels;
 		public Door[] Doors;
+
+		public int[] GetEdge (Direction4 direction) => direction switch {
+			Direction4.Up => EdgeUp,
+			Direction4.Down => EdgeDown,
+			Direction4.Left => EdgeLeft,
+			Direction4.Right => EdgeRight,
+			_ => EdgeDown,
+		};
 
 		public override string ToString () => $"<color=#FFCC33>{ID}</color> {ContentWidth}×{ContentHeight}{(Tunnels.Length > 0 ? " " + new string('t', Tunnels.Length) : "")}{(Doors.Length > 0 ? " " + new string('d', Doors.Length) : "")}";
 
