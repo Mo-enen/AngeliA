@@ -53,6 +53,7 @@ namespace AngeliaFramework {
 				holder is not PoseCharacter character ||
 				character.AnimationType == CharacterAnimationType.Sleep ||
 				character.AnimationType == CharacterAnimationType.PassOut ||
+				character.AnimationType == CharacterAnimationType.Crash ||
 				!CellRenderer.TryGetSprite(SpriteID, out var sprite)
 			) return;
 

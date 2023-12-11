@@ -233,6 +233,7 @@ namespace AngeliaFramework {
 					CharacterMovementState.SquatMove => CharacterAnimationType.SquatMove,
 					CharacterMovementState.Dash => CharacterAnimationType.Dash,
 					CharacterMovementState.Rush => CharacterAnimationType.Rush,
+					CharacterMovementState.Crash => CharacterAnimationType.Crash,
 					CharacterMovementState.Pound => character.SpinOnGroundPound ? CharacterAnimationType.Spin : CharacterAnimationType.Pound,
 					CharacterMovementState.Climb => CharacterAnimationType.Climb,
 					CharacterMovementState.Fly => CharacterAnimationType.Fly,

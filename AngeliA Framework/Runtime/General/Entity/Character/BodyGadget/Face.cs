@@ -14,6 +14,7 @@ namespace AngeliaFramework {
 		Damage = 3,
 		PassOut = 4,
 		Attack = 5,
+		Suffer = 6,
 	}
 
 
@@ -241,6 +242,7 @@ namespace AngeliaFramework {
 			return character.AnimationType switch {
 				CharacterAnimationType.Sleep => CharacterFaceType.Sleep,
 				CharacterAnimationType.PassOut => CharacterFaceType.PassOut,
+				CharacterAnimationType.Crash => CharacterFaceType.Suffer,
 				CharacterAnimationType.TakingDamage => CharacterFaceType.Damage,
 				_ => CharacterFaceType.Normal,
 			};

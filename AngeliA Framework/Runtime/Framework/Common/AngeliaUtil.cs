@@ -315,6 +315,7 @@ namespace AngeliaFramework {
 					if (hashTag.Equals("ClimbStable", OIC)) { tag = Const.CLIMB_STABLE_TAG; continue; }
 					if (hashTag.Equals("Quicksand", OIC)) { tag = Const.QUICKSAND_TAG; isTrigger = true; continue; }
 					if (hashTag.Equals("Water", OIC)) { tag = Const.WATER_TAG; isTrigger = true; continue; }
+					if (hashTag.Equals("Slip", OIC)) { tag = Const.SLIP_TAG; continue; }
 					if (hashTag.Equals("Damage", OIC)) { tag = Const.DAMAGE_TAG; continue; }
 					if (hashTag.Equals("Slide", OIC)) { tag = Const.SLIDE_TAG; continue; }
 					if (hashTag.Equals("NoSlide", OIC)) { tag = Const.NO_SLIDE_TAG; continue; }

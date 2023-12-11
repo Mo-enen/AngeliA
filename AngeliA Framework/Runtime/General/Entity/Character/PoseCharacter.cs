@@ -10,7 +10,7 @@ namespace AngeliaFramework {
 	public enum CharacterAnimationType {
 		Idle = 0, Walk, Run,
 		JumpUp, JumpDown, SwimIdle, SwimMove,
-		SquatIdle, SquatMove, Dash, Rush, Pound,
+		SquatIdle, SquatMove, Dash, Rush, Crash, Pound,
 		Climb, Fly, Slide, GrabTop, GrabSide, Spin,
 		TakingDamage, Sleep, PassOut, Rolling,
 	}
@@ -29,7 +29,7 @@ namespace AngeliaFramework {
 		private const int A2G = Const.CEL / Const.ART_CEL;
 		private static readonly int[] DEFAULT_BODY_PART_ID = { "DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(), };
 		private static readonly string[] BODY_PART_NAME = { "Head", "Body", "Hip", "Shoulder", "Shoulder", "UpperArm", "UpperArm", "LowerArm", "LowerArm", "Hand", "Hand", "UpperLeg", "UpperLeg", "LowerLeg", "LowerLeg", "Foot", "Foot", };
-		private static readonly int[] DEFAULT_POSE_ANIMATION_IDS = { typeof(PoseAnimation_Idle).AngeHash(), typeof(PoseAnimation_Walk).AngeHash(), typeof(PoseAnimation_Run).AngeHash(), typeof(PoseAnimation_JumpUp).AngeHash(), typeof(PoseAnimation_JumpDown).AngeHash(), typeof(PoseAnimation_SwimIdle).AngeHash(), typeof(PoseAnimation_SwimMove).AngeHash(), typeof(PoseAnimation_SquatIdle).AngeHash(), typeof(PoseAnimation_SquatMove).AngeHash(), typeof(PoseAnimation_Dash).AngeHash(), typeof(PoseAnimation_Rush).AngeHash(), typeof(PoseAnimation_Pound).AngeHash(), typeof(PoseAnimation_Climb).AngeHash(), typeof(PoseAnimation_Fly).AngeHash(), typeof(PoseAnimation_Slide).AngeHash(), typeof(PoseAnimation_GrabTop).AngeHash(), typeof(PoseAnimation_GrabSide).AngeHash(), typeof(PoseAnimation_Spin).AngeHash(), typeof(PoseAnimation_Animation_TakingDamage).AngeHash(), typeof(PoseAnimation_Sleep).AngeHash(), typeof(PoseAnimation_PassOut).AngeHash(), typeof(PoseAnimation_Rolling).AngeHash(), };
+		private static readonly int[] DEFAULT_POSE_ANIMATION_IDS = { typeof(PoseAnimation_Idle).AngeHash(), typeof(PoseAnimation_Walk).AngeHash(), typeof(PoseAnimation_Run).AngeHash(), typeof(PoseAnimation_JumpUp).AngeHash(), typeof(PoseAnimation_JumpDown).AngeHash(), typeof(PoseAnimation_SwimIdle).AngeHash(), typeof(PoseAnimation_SwimMove).AngeHash(), typeof(PoseAnimation_SquatIdle).AngeHash(), typeof(PoseAnimation_SquatMove).AngeHash(), typeof(PoseAnimation_Dash).AngeHash(), typeof(PoseAnimation_Rush).AngeHash(), typeof(PoseAnimation_Crash).AngeHash(), typeof(PoseAnimation_Pound).AngeHash(), typeof(PoseAnimation_Climb).AngeHash(), typeof(PoseAnimation_Fly).AngeHash(), typeof(PoseAnimation_Slide).AngeHash(), typeof(PoseAnimation_GrabTop).AngeHash(), typeof(PoseAnimation_GrabSide).AngeHash(), typeof(PoseAnimation_Spin).AngeHash(), typeof(PoseAnimation_Animation_TakingDamage).AngeHash(), typeof(PoseAnimation_Sleep).AngeHash(), typeof(PoseAnimation_PassOut).AngeHash(), typeof(PoseAnimation_Rolling).AngeHash(), };
 		private static readonly int[] DEFAULT_POSE_HANDHELD_IDS = { typeof(PoseHandheld_Single).AngeHash(), typeof(PoseHandheld_Double).AngeHash(), typeof(PoseHandheld_EachHand).AngeHash(), typeof(PoseHandheld_Pole).AngeHash(), typeof(PoseHandheld_MagicPole).AngeHash(), typeof(PoseHandheld_Bow).AngeHash(), typeof(PoseHandheld_Firearm).AngeHash(), typeof(PoseHandheld_Float).AngeHash(), };
 		private static readonly int[] DEFAULT_POSE_ATTACK_IDS = { typeof(PoseAttack_Hand).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Ranged).AngeHash(), typeof(PoseAttack_Polearm).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Scratch).AngeHash(), typeof(PoseAttack_Magic).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), };
 		private const int POSE_Z_HEAD = 10;
@@ -102,7 +102,7 @@ namespace AngeliaFramework {
 		// Data
 		private static readonly Dictionary<int, BodyPartConfig> BodyPartConfigPool = new();
 		private readonly BodyPart[] BodyParts = null;
-		private readonly int[] PoseAnimationIDs = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
+		private readonly int[] PoseAnimationIDs = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
 		private readonly int[] PoseHandheldIDs = { 0, 0, 0, 0, 0, 0, 0, 0, };
 		private readonly int[] PoseAttackIDs = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
 		private int IgnoreTailFrame = -1;

@@ -28,6 +28,7 @@ namespace AngeliaFramework {
 		public bool IsInsideGround { get; private set; } = false;
 		public bool InWater { get; private set; } = false;
 		public bool InSand { get; private set; } = false;
+		public bool OnSlippy { get; private set; } = false;
 		public int VelocityX { get; set; } = 0;
 		public int VelocityY { get; set; } = 0;
 		public int OffsetX { get; protected set; } = 0;
@@ -71,6 +72,7 @@ namespace AngeliaFramework {
 			base.OnActivated();
 			InSand = false;
 			InWater = false;
+			OnSlippy = false;
 			VelocityX = 0;
 			VelocityY = 0;
 			IgnoreGroundCheckFrame = int.MinValue;
@@ -99,8 +101,10 @@ namespace AngeliaFramework {
 
 			bool prevInWater = InWater;
 			bool prevInSand = InSand;
-			InWater = CellPhysics.Overlap(PhysicsMask.MAP & CollisionMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, Const.WATER_TAG);
-			InSand = CellPhysics.Overlap(PhysicsMask.MAP & CollisionMask, rect, null, OperationMode.TriggerOnly, Const.QUICKSAND_TAG);
+			int checkingMask = PhysicsMask.MAP & CollisionMask;
+			InWater = CellPhysics.Overlap(checkingMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, Const.WATER_TAG);
+			InSand = !InWater && CellPhysics.Overlap(checkingMask, rect, null, OperationMode.TriggerOnly, Const.QUICKSAND_TAG);
+			OnSlippy = !InWater && !InSand && CellPhysics.Overlap(checkingMask, rect.Edge(Direction4.Down), this, OperationMode.ColliderOnly, Const.SLIP_TAG);
 			IsInsideGround = InsideGroundCheck();
 
 			if (!PhysicsEnable || Game.GlobalFrame <= IgnorePhysicsFrame) {

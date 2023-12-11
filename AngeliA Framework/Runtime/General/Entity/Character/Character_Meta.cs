@@ -13,7 +13,6 @@ namespace AngeliaFramework {
 
 		public readonly BuffInt MovementWidth = new(150);
 		public readonly BuffInt KnockbackDeceleration = new(16);
-		public readonly BuffInt PushSpeedLoseRate = new(500);
 
 		// Height
 		public readonly BuffInt MovementHeight = new(384); // Height when Character is 160cm
@@ -38,6 +37,10 @@ namespace AngeliaFramework {
 		public readonly BuffInt RunAcceleration = new(3);
 		public readonly BuffInt RunBrakeAcceleration = new(30);
 		public readonly BuffInt RunDeceleration = new(4);
+
+		// Push
+		public readonly BuffBool PushAvailable = new(true);
+		public readonly BuffInt PushSpeed = new(10);
 
 		// Jump
 		public readonly BuffInt JumpSpeed = new(73);
@@ -71,6 +74,12 @@ namespace AngeliaFramework {
 		public readonly BuffInt RushCooldown = new(2);
 		public readonly BuffInt RushAcceleration = new(12);
 		public readonly BuffInt RushDeceleration = new(4);
+
+		// Crash
+		public readonly BuffBool CrashWhenSlippy = new(true);
+		public readonly BuffInt CrashDuration = new(30);
+		public readonly BuffInt CrashRunDurationRequire = new(42);
+		public readonly BuffInt CrashDeceleration = new(1);
 
 		// Squat
 		public readonly BuffBool SquatAvailable = new(true);
@@ -151,6 +160,7 @@ namespace AngeliaFramework {
 		public readonly BuffBool AttackWhenSliding = new(false);
 		public readonly BuffBool AttackWhenGrabbing = new(false);
 		public readonly BuffBool AttackWhenRush = new(false);
+		public readonly BuffBool AttackWhenPounding = new(false);
 
 
 		#endregion

@@ -82,6 +82,7 @@ namespace AngeliaFramework {
 
 
 		protected virtual bool IsAttackAllowedByMovement () =>
+			!IsCrashing &&
 			(AttackInAir || (IsGrounded || InWater || InSand || IsClimbing)) &&
 			(AttackInWater || !InWater) &&
 			(AttackWhenMoving || IntendedX == 0) &&
@@ -92,7 +93,8 @@ namespace AngeliaFramework {
 			(AttackWhenDashing || !IsDashing) &&
 			(AttackWhenSliding || !IsSliding) &&
 			(AttackWhenGrabbing || (!IsGrabbingTop && !IsGrabbingSide)) &&
-			(AttackWhenRush || (!IsRushing));
+			(AttackWhenPounding || !IsPounding) &&
+			(AttackWhenRush || !IsRushing);
 
 
 		protected virtual bool IsAttackAllowedByEquipment () => GetEquippingItem(EquipmentType.Weapon) is not Weapon weapon || this is not PoseCharacter poseCharacter || weapon.AllowingAttack(poseCharacter);

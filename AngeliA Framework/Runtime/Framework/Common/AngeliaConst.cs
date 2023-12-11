@@ -88,6 +88,7 @@ namespace AngeliaFramework {
 		public static readonly int CLIMB_STABLE_TAG = "ClimbStable".AngeHash();
 		public static readonly int QUICKSAND_TAG = "Quicksand".AngeHash();
 		public static readonly int WATER_TAG = "Water".AngeHash();
+		public static readonly int SLIP_TAG = "Slip".AngeHash();
 		public static readonly int DAMAGE_TAG = "Damage".AngeHash();
 		public static readonly int SLIDE_TAG = "Slide".AngeHash();
 		public static readonly int NO_SLIDE_TAG = "NoSlide".AngeHash();

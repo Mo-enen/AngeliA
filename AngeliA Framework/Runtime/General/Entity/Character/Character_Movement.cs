@@ -9,9 +9,8 @@ namespace AngeliaFramework {
 	public enum CharacterMovementState {
 		Idle = 0,
 		Walk, Run, JumpUp, JumpDown,
-		SwimIdle, SwimMove,
-		SquatIdle, SquatMove,
-		Dash, Rush, Pound, Climb, Fly, Slide, GrabTop, GrabSide, GrabFlip,
+		SwimIdle, SwimMove, SquatIdle, SquatMove,
+		Dash, Rush, Crash, Pound, Climb, Fly, Slide, GrabTop, GrabSide, GrabFlip,
 	}
 
 
@@ -62,6 +61,8 @@ namespace AngeliaFramework {
 		public int LastClimbFrame { get; private set; } = int.MinValue;
 		public int LastDashFrame { get; private set; } = int.MinValue;
 		public int LastRushFrame { get; private set; } = int.MinValue;
+		public int LastCrashFrame { get; private set; } = int.MinValue;
+		public int LastSlippyMoveStartFrame { get; private set; } = int.MinValue;
 		public int LastSquatFrame { get; private set; } = int.MinValue;
 		public int LastSquattingFrame { get; private set; } = int.MinValue;
 		public int LastPoundingFrame { get; private set; } = int.MinValue;
@@ -86,6 +87,7 @@ namespace AngeliaFramework {
 		public bool IsRunning => IntendedX != 0 && ReadyForRun;
 		public bool IsDashing { get; private set; } = false;
 		public bool IsRushing { get; private set; } = false;
+		public bool IsCrashing { get; private set; } = false;
 		public bool IsSquatting { get; private set; } = false;
 		public bool IsPounding { get; private set; } = false;
 		public bool IsClimbing { get; private set; } = false;
@@ -157,7 +159,6 @@ namespace AngeliaFramework {
 				}
 			}
 			MovementUpdate_ClipCorrect();
-			MovementUpdate_Push();
 		}
 
 
@@ -184,6 +185,27 @@ namespace AngeliaFramework {
 			if (!PrevGrounded && IsGrounded) LastGroundFrame = frame;
 			PrevGrounded = IsGrounded;
 
+			// Crash
+			if (OnSlippy && IsGrounded && !IsCrashing && IsRunning) {
+				if (LastSlippyMoveStartFrame < 0) {
+					LastSlippyMoveStartFrame = Game.GlobalFrame;
+				}
+			} else {
+				LastSlippyMoveStartFrame = int.MinValue;
+			}
+			if (CrashDuration > 0) {
+				if (
+					CrashWhenSlippy &&
+					((LastSlippyMoveStartFrame >= 0 && frame > LastSlippyMoveStartFrame + CrashRunDurationRequire) ||
+					(OnSlippy && IsGrounded && IsRushing))
+				) {
+					LastCrashFrame = frame;
+				}
+				IsCrashing = frame >= LastCrashFrame && frame < LastCrashFrame + CrashDuration;
+			} else if (IsCrashing) {
+				IsCrashing = false;
+			}
+
 			// In/Out Water
 			if (PrevInWater != InWater) {
 				LastDashFrame = int.MinValue;
@@ -201,7 +223,7 @@ namespace AngeliaFramework {
 
 			// Climb
 			ClimbPositionCorrect = null;
-			if (ClimbAvailable && !IsRushing) {
+			if (ClimbAvailable && !IsRushing && !IsCrashing) {
 				if (HoldingJump && CurrentJumpCount > 0 && VelocityY > 0) {
 					IsClimbing = false;
 				} else {
@@ -219,7 +241,7 @@ namespace AngeliaFramework {
 
 			// Rush
 			if (
-				IntendedRush && RushAvailable &&
+				IntendedRush && RushAvailable && !IsCrashing &&
 				frame > LastRushFrame + RushDuration + RushStiff + RushCooldown &&
 				RushEnvironmentCheck()
 			) {
@@ -228,18 +250,14 @@ namespace AngeliaFramework {
 				LastRushFrame = frame;
 				VelocityY = 0;
 			}
-
-			if (
-				IsRushing &&
-				frame > LastRushFrame + RushDuration + RushStiff
-			) {
+			if (IsRushing && frame > LastRushFrame + RushDuration + RushStiff) {
 				IsRushing = false;
 				VelocityX = FacingRight ? RushStopSpeed : -RushStopSpeed;
 			}
 
 			// Dash
 			IsDashing =
-				DashAvailable && DashSpeed > 0 &&
+				DashAvailable && DashSpeed > 0 && !IsCrashing &&
 				!IsClimbing && !IsInsideGround && !IsRushing && frame < LastDashFrame + DashDuration;
 			if (IsDashing && IntendedY != -1) {
 				// Stop when Dashing Without Holding Down
@@ -250,7 +268,7 @@ namespace AngeliaFramework {
 
 			// Squat
 			bool squatting =
-				SquatAvailable && IsGrounded && !IsClimbing && !InSand && !IsInsideGround &&
+				SquatAvailable && IsGrounded && !IsClimbing && !InSand && !IsInsideGround && !IsCrashing &&
 				((!IsDashing && !IsRushing && IntendedY < 0) || ForceSquatCheck());
 			if (!IsSquatting && squatting) LastSquatFrame = frame;
 			if (squatting) LastSquattingFrame = frame;
@@ -258,7 +276,7 @@ namespace AngeliaFramework {
 
 			// Pound
 			IsPounding =
-				PoundAvailable && !IsGrounded && !IsGrabbingSide && !IsGrabbingTop &&
+				PoundAvailable && !IsGrounded && !IsGrabbingSide && !IsGrabbingTop && !IsCrashing &&
 				!IsClimbing && !InWater && !IsDashing && !IsRushing && !IsInsideGround &&
 				(IsPounding ? IntendedY < 0 : IntendedPound);
 			if (IsPounding) LastPoundingFrame = frame;
@@ -299,13 +317,13 @@ namespace AngeliaFramework {
 
 			// Facing Right
 			bool oldFacingRight = FacingRight;
-			if (Game.GlobalFrame <= LockedFacingFrame && !IsSliding && !IsGrabbingSide) {
+			if (frame <= LockedFacingFrame && !IsSliding && !IsGrabbingSide) {
 				FacingRight = LockedFacingRight;
 			} else if (IntendedX != 0) {
 				FacingRight = IntendedX > 0;
 			}
 			if (FacingRight != oldFacingRight) {
-				LastFacingChangeFrame = Game.GlobalFrame;
+				LastFacingChangeFrame = frame;
 			}
 
 			// Facing Front
@@ -567,6 +585,13 @@ namespace AngeliaFramework {
 					dcc = RushDeceleration;
 					break;
 
+				// Crash
+				case CharacterMovementState.Crash:
+					speed = 0;
+					acc = int.MaxValue;
+					dcc = CrashDeceleration;
+					break;
+
 				// Climb
 				case CharacterMovementState.Climb:
 					speed = ClimbPositionCorrect.HasValue ? 0 : IntendedX * ClimbSpeedX;
@@ -600,9 +625,30 @@ namespace AngeliaFramework {
 				speed = speed * loseRate / 1000;
 			}
 
+			// Push
+			if (PushAvailable && !IsCrashing && IntendedX != 0 && speed != 0 && !NavigationEnable) {
+				var hits = CellPhysics.OverlapAll(
+				PhysicsMask.ENVIRONMENT,
+				Rect.Shrink(0, 0, 4, 4).Edge(IntendedX < 0 ? Direction4.Left : Direction4.Right),
+				out int count, this
+			);
+				bool pushing = false;
+				int pushSpeed = IntendedX * PushSpeed;
+				for (int i = 0; i < count; i++) {
+					var hit = hits[i];
+					if (hit.Entity is not Rigidbody rig || !rig.AllowBeingPush) continue;
+					rig.Push(pushSpeed);
+					pushing = true;
+				}
+				if (pushing) {
+					speed = pushSpeed;
+					acc = int.MaxValue;
+					dcc = int.MaxValue;
+				}
+			}
+
 			// Final
 			VelocityX = VelocityX.MoveTowards(speed, acc, dcc);
-
 		}
 
 
@@ -715,26 +761,6 @@ namespace AngeliaFramework {
 		}
 
 
-		private void MovementUpdate_Push () {
-			if (VelocityX == 0 || NavigationEnable) return;
-			var hits = CellPhysics.OverlapAll(
-				PhysicsMask.ENVIRONMENT,
-				Rect.Shrink(0, 0, 4, 4).Edge(VelocityX < 0 ? Direction4.Left : Direction4.Right),
-				out int count, this
-			);
-			bool pushing = false;
-			for (int i = 0; i < count; i++) {
-				var hit = hits[i];
-				if (hit.Entity is not Rigidbody rig || !rig.AllowBeingPush) continue;
-				rig.Push(VelocityX * PushSpeedLoseRate / 1000);
-				pushing = true;
-			}
-			if (pushing) {
-				VelocityX = VelocityX * PushSpeedLoseRate / 1000;
-			}
-		}
-
-
 		#endregion
 
 
@@ -763,12 +789,9 @@ namespace AngeliaFramework {
 
 
 		public void Dash () => IntendedDash = true;
-
-
 		public void Pound () => IntendedPound = true;
-
-
 		public void Rush () => IntendedRush = true;
+		public void Crash () => LastCrashFrame = Game.GlobalFrame;
 
 
 		public void LockFacingRight (bool facingRight, int duration = 1) {
@@ -813,6 +836,7 @@ namespace AngeliaFramework {
 
 
 		private CharacterMovementState GetCurrentMovementState () =>
+			IsCrashing ? CharacterMovementState.Crash :
 			IsFlying ? CharacterMovementState.Fly :
 			IsClimbing ? CharacterMovementState.Climb :
 			IsPounding ? CharacterMovementState.Pound :
@@ -881,7 +905,7 @@ namespace AngeliaFramework {
 		private bool SlideCheck () {
 			if (
 				!SlideAvailable || IsGrounded || IsClimbing || IsDashing || IsGrabbingTop || IsGrabbingSide ||
-				InWater || IsSquatting || IsPounding ||
+				InWater || IsSquatting || IsPounding || IsCrashing ||
 				Game.GlobalFrame < LastJumpFrame + SLIDE_JUMP_CANCEL ||
 				IntendedX == 0 || VelocityY > -SlideDropSpeed
 			) return false;
@@ -911,7 +935,7 @@ namespace AngeliaFramework {
 		private bool GrabTopCheck (out int grabbingY) {
 			grabbingY = 0;
 			if (
-				!GrabTopAvailable || IsInsideGround || IsGrounded ||
+				!GrabTopAvailable || IsInsideGround || IsGrounded || IsCrashing ||
 				IsClimbing || IsDashing || InWater || IsSquatting || IsGrabFlipping
 			) return false;
 			if (Game.GlobalFrame < LastGrabCancelFrame + GRAB_DROP_CANCEL) return false;
@@ -939,7 +963,7 @@ namespace AngeliaFramework {
 		private bool GrabSideCheck (out bool allowMoveUp) {
 			allowMoveUp = false;
 			if (
-				!GrabSideAvailable || IsInsideGround || IsGrounded || IsClimbing || IsDashing ||
+				!GrabSideAvailable || IsInsideGround || IsGrounded || IsClimbing || IsDashing || IsCrashing ||
 				InWater || IsSquatting || IsGrabFlipping ||
 				Game.GlobalFrame < LastJumpFrame + GRAB_JUMP_CANCEL
 			) return false;
