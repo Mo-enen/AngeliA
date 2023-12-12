@@ -42,6 +42,7 @@ namespace AngeliaFramework {
 		public static event CharacterEventHandler OnSlideStepped;
 		public static event CharacterEventHandler OnPassOut;
 		public static event CharacterEventHandler OnTeleport;
+		public static event CharacterEventHandler OnCrash;
 		public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
 		public CharacterAnimationType AnimationType { get; set; } = CharacterAnimationType.Idle;
 		public WeaponType EquippingWeaponType { get; set; } = WeaponType.Hand;
@@ -324,6 +325,7 @@ namespace AngeliaFramework {
 				if (Game.GlobalFrame % 10 == 0 && IsChargingAttack) Bounce();
 				if (Game.GlobalFrame == LastJumpFrame) OnJump?.Invoke(this);
 				if (Game.GlobalFrame == LastFlyFrame) OnFly?.Invoke(this);
+				if (Game.GlobalFrame == LastCrashFrame) OnCrash?.Invoke(this);
 			}
 
 			// Sleep

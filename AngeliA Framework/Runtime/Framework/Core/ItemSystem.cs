@@ -43,7 +43,6 @@ namespace AngeliaFramework {
 
 		// Const
 		private const string UNLOCK_NAME = "UnlockedItem";
-		public const string COMBINATION_FILE_NAME = "Item Combination.txt";
 		private static readonly int[] ITEM_TYPE_ICONS = {
 			"ItemIcon.Weapon".AngeHash(),
 			"ItemIcon.Armor".AngeHash(),
@@ -83,6 +82,10 @@ namespace AngeliaFramework {
 					item.MaxStackCount.Clamp(1, 256)
 				));
 			}
+			// Combination
+			CombinationPool.Clear();
+			LoadCombinationFromFile();
+			LoadCombinationFromCode();
 		}
 
 
@@ -97,49 +100,7 @@ namespace AngeliaFramework {
 
 
 		[OnSlotChanged(256)]
-		internal static void OnSlotChanged () {
-			LoadUnlockDataFromFile();
-			CombinationPool.Clear();
-			LoadCombinationFromFile();
-			LoadCombinationFromCode();
-		}
-
-
-		[OnSlotCreated]
-		public static void SlotCreated () {
-			// Create Combination File
-			string combineFilePath = Util.CombinePaths(AngePath.ItemSaveDataRoot, COMBINATION_FILE_NAME);
-			Util.TextToFile(@"
-#
-# Custom Item Combination Formula
-# 
-#
-# Remove '#' for the lines below will change
-# 'TreeTrunk' to 'ItemCoin' for making chess pieces
-# 
-# Item names can be found in the helper file next to
-# this file
-#
-# Example:
-#
-# ItemCoin + RuneWater + RuneFire = ChessPawn
-# ItemCoin + RuneFire + RuneLightning = ChessKnight
-# ItemCoin + RunePoison + RuneFire = ChessBishop
-# ItemCoin + RuneWater + RuneLightning = ChessRook
-# ItemCoin + RuneWater + RunePoison = ChessQueen
-# ItemCoin + RunePoison + RuneLightning = ChessKing
-#
-#
-#", combineFilePath);
-
-			// Create Item Name Helper
-			var builder = new StringBuilder();
-			foreach (var type in typeof(Item).AllChildClass()) {
-				builder.AppendLine(type.AngeName());
-			}
-			Util.TextToFile(builder.ToString(), Util.CombinePaths(AngePath.ItemSaveDataRoot, "Item Name Helper.txt"));
-
-		}
+		internal static void OnSlotChanged () => LoadUnlockDataFromFile();
 
 
 		#endregion
@@ -392,11 +353,12 @@ namespace AngeliaFramework {
 
 		// Combination
 		private static void LoadCombinationFromFile () {
-			string filePath = Util.CombinePaths(AngePath.ItemSaveDataRoot, COMBINATION_FILE_NAME);
+			string filePath = Util.CombinePaths(AngePath.ItemSaveDataRoot, AngePath.COMBINATION_FILE_NAME);
 			if (!Util.FileExists(filePath)) return;
 			var builder = new StringBuilder();
-			foreach (string line in Util.ForAllLines(filePath)) {
-				if (string.IsNullOrEmpty(line)) continue;
+			foreach (string _line in Util.ForAllLines(filePath)) {
+				if (string.IsNullOrEmpty(_line)) continue;
+				string line = _line.TrimWhiteForStartAndEnd();
 				if (line.StartsWith('#')) continue;
 				builder.Clear();
 				var com = Vector4Int.zero;

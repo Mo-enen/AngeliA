@@ -10,6 +10,10 @@ namespace AngeliaFramework {
 		public static void OnGameInitialize () {
 			Unlock(typeof(ProcedureCheckPoint).AngeHash());
 		}
+		protected override bool TryGetAltarPosition (out Vector3Int altarUnitPos) {
+			altarUnitPos = default;
+			return false;
+		}
 	}
 
 
@@ -109,7 +113,7 @@ namespace AngeliaFramework {
 			// Spawn Portal
 			if (
 				highlighting &&
-				IGlobalPosition.TryGetPosition(LinkedAltarID, out var altarUnitPos) &&
+				TryGetAltarPosition(out var altarUnitPos) &&
 				Stage.GetSpawnedEntityCount(CheckPointPortal.TYPE_ID) == 0 &&
 				Stage.GetOrAddEntity(CheckPointPortal.TYPE_ID, X, Y + Const.CEL * 4) is CheckPointPortal cpPortal
 			) {
@@ -170,6 +174,9 @@ namespace AngeliaFramework {
 			}
 			CellRenderer.SetLayerToDefault();
 		}
+
+
+		protected virtual bool TryGetAltarPosition (out Vector3Int altarUnitPos) => IGlobalPosition.TryGetPosition(LinkedAltarID, out altarUnitPos);
 
 
 		#endregion

@@ -619,7 +619,7 @@ namespace AngeliaFramework {
 			// Add Sprites
 			for (int i = 0; i < sheet.Sprites.Length; i++) {
 				var sp = sheet.Sprites[i];
-				SheetIDMap.TryAdd(sp.GlobalID, new(i));
+				SheetIDMap.TryAdd(sp.GlobalID, new CellInfo(i));
 				if (sp.MetaIndex >= 0) {
 					MetaPool.TryAdd(sp.GlobalID, sheet.Metas[sp.MetaIndex]);
 				}

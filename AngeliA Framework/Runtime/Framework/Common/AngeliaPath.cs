@@ -7,6 +7,7 @@ namespace AngeliaFramework {
 	public static class AngePath {
 
 		public const string UNIVERSE_NAME = "Universe";
+		public const string COMBINATION_FILE_NAME = "Item Combination.txt";
 		public const int SAVE_SLOT_COUNT = 4;
 
 		// Ext
@@ -48,8 +49,6 @@ namespace AngeliaFramework {
 					_PlayerDataRoot = null;
 					_ProcedureMapRoot = null;
 					_DownloadMapRoot = null;
-					_UserSheetRoot = null;
-					_UserSheetTexturePath = null;
 				}
 			}
 		}
@@ -69,12 +68,6 @@ namespace AngeliaFramework {
 
 		public static string DownloadMapRoot => _DownloadMapRoot ??= Util.CombinePaths(SaveSlotRoot, "Map", "Download Map");
 		private static string _DownloadMapRoot = null;
-
-		public static string UserSheetRoot => _UserSheetRoot ??= Util.CombinePaths(SaveSlotRoot, "Sheet");
-		private static string _UserSheetRoot = null;
-
-		public static string UserSheetTexturePath => _UserSheetTexturePath ??= Util.CombinePaths(UserSheetRoot, "Texture.png");
-		private static string _UserSheetTexturePath = null;
 
 		// Persistent
 		public static string ItemSaveDataRoot => _ItemSaveDataRoot ??= Util.CombinePaths(Application.persistentDataPath, "Item Customization");

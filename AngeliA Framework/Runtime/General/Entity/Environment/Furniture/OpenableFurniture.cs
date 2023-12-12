@@ -71,7 +71,7 @@ namespace AngeliaFramework {
 					BlinkCellAsFurniture(cell);
 				}
 			}
-
+			
 			if (Open) {
 				// Cancel
 				if (FrameInput.GameKeyUp(Gamekey.Select)) {

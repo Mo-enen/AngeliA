@@ -446,7 +446,6 @@ namespace AngeliaFramework {
 			Util.CreateFolder(AngePath.PlayerDataRoot);
 			Util.CreateFolder(AngePath.ProcedureMapRoot);
 			Util.CreateFolder(AngePath.DownloadMapRoot);
-			Util.CreateFolder(AngePath.UserSheetRoot);
 		}
 
 

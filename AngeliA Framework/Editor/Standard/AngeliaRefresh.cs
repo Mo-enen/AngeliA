@@ -230,6 +230,7 @@ namespace AngeliaFramework.Editor {
 			}
 
 			// Final
+			CreateItemCombinationFiles();
 			AngeliaToolbox.RefreshSheetThumbnail(true);
 			TryCompileDialogueFiles(forceRefresh);
 			RefreshEditorSetting();
@@ -532,6 +533,43 @@ namespace AngeliaFramework.Editor {
 					}
 				}
 			}
+		}
+
+
+		private void CreateItemCombinationFiles () {
+
+			// Create Combination File
+			string combineFilePath = Util.CombinePaths(AngePath.ItemSaveDataRoot, AngePath.COMBINATION_FILE_NAME);
+			Util.TextToFile(@"
+#
+# Custom Item Combination Formula
+# 
+#
+# Remove '#' for the lines below will change
+# 'TreeTrunk' to 'ItemCoin' for making chess pieces
+# 
+# Item names can be found in the helper file next to
+# this file
+#
+# Example:
+#
+# ItemCoin + RuneWater + RuneFire = ChessPawn
+# ItemCoin + RuneFire + RuneLightning = ChessKnight
+# ItemCoin + RunePoison + RuneFire = ChessBishop
+# ItemCoin + RuneWater + RuneLightning = ChessRook
+# ItemCoin + RuneWater + RunePoison = ChessQueen
+# ItemCoin + RunePoison + RuneLightning = ChessKing
+#
+#
+#", combineFilePath);
+
+			// Create Item Name Helper
+			var builder = new StringBuilder();
+			foreach (var type in typeof(Item).AllChildClass()) {
+				builder.AppendLine(type.AngeName());
+			}
+			Util.TextToFile(builder.ToString(), Util.CombinePaths(AngePath.ItemSaveDataRoot, "Item Name Helper.txt"));
+
 		}
 
 
