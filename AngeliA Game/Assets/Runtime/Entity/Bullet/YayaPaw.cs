@@ -15,7 +15,7 @@ namespace AngeliaGame {
 		private static readonly int[] PAW_SIZE = new int[] { 1200, 1600, 1800, 1400, 1000 };
 		private static readonly int[] PAW_ROT = new int[] { -30, -15, 0, 15, 30, };
 		private static readonly int SMOKE_ID = typeof(QuickSmokeBigParticle).AngeHash();
-		protected override int SmokeParticleID => SMOKE_ID;
+		public override int SmokeParticleID => SMOKE_ID;
 
 		// MSG
 		public override void FrameUpdate () {

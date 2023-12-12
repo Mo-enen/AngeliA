@@ -7,96 +7,89 @@ namespace AngeliaFramework {
 
 
 	// Sword
-	public abstract class Sword : Weapon, IMeleeWeapon {
+	public abstract class Sword : MeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Sword;
-		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
-		public virtual int RangeXLeft => 275;
-		public virtual int RangeXRight => 275;
-		public virtual int RangeY => 432;
+		public override int RangeXLeft => 275;
+		public override int RangeXRight => 275;
+		public override int RangeY => 432;
 
 	}
 
 
 	// Polearm
-	public abstract class Polearm : Weapon, IMeleeWeapon {
+	public abstract class Polearm : MeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Polearm;
 		public sealed override WeaponHandheld Handheld => WeaponHandheld.Pole;
-		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
 		protected override bool IgnoreGrabTwist => true;
 		public override int AttackDuration => 18;
 		public override int AttackCooldown => 2;
-		public virtual int RangeXLeft => 384;
-		public virtual int RangeXRight => 384;
-		public virtual int RangeY => 432;
+		public override int RangeXLeft => 384;
+		public override int RangeXRight => 384;
+		public override int RangeY => 432;
 
 	}
 
 
 	// Hammer
-	public abstract class Hammer : Weapon, IMeleeWeapon {
+	public abstract class Hammer : MeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Hammer;
 		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
-		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
 		protected override bool IgnoreGrabTwist => true;
-		public virtual int RangeXLeft => 275;
-		public virtual int RangeXRight => 275;
-		public virtual int RangeY => 432;
+		public override int RangeXLeft => 275;
+		public override int RangeXRight => 275;
+		public override int RangeY => 432;
 
 	}
 
 
 	// Claw
-	public abstract class Claw : Weapon, IMeleeWeapon {
+	public abstract class Claw : MeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Claw;
 		public sealed override WeaponHandheld Handheld => WeaponHandheld.OneOnEachHand;
-		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
 		public override int AttackDuration => 10;
 		public override int AttackCooldown => 0;
 		public override int? MovementLoseRateOnAttack => 1000;
-		public virtual int RangeXLeft => 275;
-		public virtual int RangeXRight => 275;
-		public virtual int RangeY => 432;
+		public override int RangeXLeft => 275;
+		public override int RangeXRight => 275;
+		public override int RangeY => 432;
 
 	}
 
 
 	// Axe
-	public abstract class Axe : Weapon, IMeleeWeapon {
+	public abstract class Axe : MeleeWeapon {
 		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 		public sealed override WeaponType WeaponType => WeaponType.Axe;
-		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
 		public override int AttackDuration => 12;
 		public override int AttackCooldown => 2;
-		public virtual int RangeXLeft => 275;
-		public virtual int RangeXRight => 384;
-		public virtual int RangeY => 512;
+		public override int RangeXLeft => 275;
+		public override int RangeXRight => 384;
+		public override int RangeY => 512;
 	}
 
 
 	// Hook
-	public abstract class Hook : Weapon, IMeleeWeapon {
+	public abstract class Hook : MeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Hook;
-		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
-		public virtual int RangeXLeft => 275;
-		public virtual int RangeXRight => 275;
-		public virtual int RangeY => 432;
+		public override int RangeXLeft => 275;
+		public override int RangeXRight => 275;
+		public override int RangeY => 432;
 	}
 
 
 	// Flail
-	public abstract class Flail : Weapon, IMeleeWeapon {
+	public abstract class Flail : MeleeWeapon {
 
 		public sealed override WeaponType WeaponType => WeaponType.Flail;
 		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
-		public override int BulletID => DefaultMeleeBullet.TYPE_ID;
 		private int SpriteIdHead { get; init; }
 		private int SpriteIdChain { get; init; }
 		protected virtual int ChainLength => Const.CEL * 7 / 9;
 		protected virtual int ChainLengthAttackGrow => 500;
 		protected virtual int HeadCount => 1;
-		public virtual int RangeXLeft => 275;
-		public virtual int RangeXRight => 275;
-		public virtual int RangeY => 432;
+		public override int RangeXLeft => 275;
+		public override int RangeXRight => 275;
+		public override int RangeY => 432;
 
 		public Flail () {
 			SpriteIdHead = $"{GetType().AngeName()}.Head".AngeHash();
@@ -250,9 +243,11 @@ namespace AngeliaFramework {
 	}
 
 	// Throwing
-	public abstract class ThrowingWeapon : Weapon {
+	public abstract class ThrowingWeapon : ProjectileWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Throwing;
 		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
+		public override int SpeedX => 46;
+		public override int SpeedY => 0;
 	}
 
 

@@ -332,7 +332,7 @@ namespace AngeliaFramework.Editor {
 			bool compiling = EditorApplication.isCompiling;
 
 			if (Toolbox != null) {
-				Toolbox.style.display = !isPlaying && showRoot ? DisplayStyle.Flex : DisplayStyle.None;
+				Toolbox.style.display = showRoot ? DisplayStyle.Flex : DisplayStyle.None;
 				if (Toolbox.enabledSelf == compiling) {
 					Toolbox.SetEnabled(!compiling);
 				}
@@ -358,10 +358,12 @@ namespace AngeliaFramework.Editor {
 				// Edittime Only
 				foreach (var ve in EdittimeOnlyElements) {
 					ve.SetEnabled(!isPlaying);
+					//ve.style.display = !isPlaying ? DisplayStyle.Flex : DisplayStyle.None;
 				}
 				// Runtime Only
 				foreach (var ve in RuntimeOnlyElements) {
 					ve.SetEnabled(isPlaying);
+					//ve.style.display = isPlaying ? DisplayStyle.Flex : DisplayStyle.None;
 				}
 			}
 

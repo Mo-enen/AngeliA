@@ -96,7 +96,7 @@ namespace AngeliaFramework {
 				}
 			} else {
 				// Create New
-				Inventory.AddNewCharacterInventoryData(TypeID, COUNT);
+				Inventory.AddNewCharacterInventoryData(GetType().AngeName(), COUNT);
 			}
 		}
 
@@ -369,7 +369,7 @@ namespace AngeliaFramework {
 					if (squatStart) item.OnSquat(this);
 					if (item is Weapon weapon) {
 						equippingWeapon = true;
-						if (attackStart) Bullet.SpawnBullet(weapon.BulletID, this, weapon);
+						if (attackStart) weapon.SpawnBullet(this);
 					}
 				}
 

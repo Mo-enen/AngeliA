@@ -13,11 +13,71 @@ namespace AngeliaFramework {
 	public enum WeaponHandheld { SingleHanded, DoubleHanded, OneOnEachHand, Pole, MagicPole, Bow, Firearm, Float, }
 
 
-	public interface IMeleeWeapon {
-		public int RangeXLeft { get; }
-		public int RangeXRight { get; }
-		public int RangeY { get; }
+	public abstract class ProjectileWeapon : Weapon {
+		public abstract int SpeedX { get; }
+		public abstract int SpeedY { get; }
+		protected virtual int ProjectileSpinSpeed => 0;
+		protected virtual int ProjectileStartRotation => 0;
+		protected virtual bool DestroyOnHitEnvironment => true;
+		protected virtual bool StopOnHitEnvironment => false;
+		protected virtual bool DestroyOnHitReceiver => true;
+		private int ProjectileArtworkID { get; init; }
+		public ProjectileWeapon () {
+			ProjectileArtworkID = $"{GetType().AngeName()}.Bullet".AngeHash();
+			if (!CellRenderer.HasSprite(ProjectileArtworkID)) ProjectileArtworkID = 0;
+		}
+		public override void SpawnBullet (Character sender) => SpawnMovableBullet(sender, this, DefaultMovableBullet.TYPE_ID);
+		public static MovableBullet SpawnMovableBullet (Character sender, ProjectileWeapon weapon, int bulletID) {
+			if (SpawnBullet(sender, bulletID) is not MovableBullet bullet) return null;
+			bullet.X = sender.FacingRight ? sender.X : sender.X - bullet.Width;
+			bullet.Y = sender.Y + sender.Height / 2;
+			bullet.Velocity = new Vector2Int(sender.FacingRight ? weapon.SpeedX : -weapon.SpeedX, weapon.SpeedY);
+			bullet.RotateSpeed = weapon.ProjectileSpinSpeed;
+			bullet.ArtworkID = weapon.ProjectileArtworkID;
+			bullet.ArtworkDelay = sender.AttackDuration / 6 + 1;
+			bullet._DestroyOnHitEnvironment = weapon.DestroyOnHitEnvironment;
+			bullet._DestroyOnHitReceiver = weapon.DestroyOnHitReceiver;
+			bullet._StopOnHitEnvironment = weapon.StopOnHitEnvironment;
+			bullet.CurrentRotation = weapon.ProjectileStartRotation;
+			return bullet;
+		}
 	}
+
+
+
+	public abstract class MeleeWeapon : Weapon {
+		public abstract int RangeXLeft { get; }
+		public abstract int RangeXRight { get; }
+		public abstract int RangeY { get; }
+		public override void SpawnBullet (Character sender) => SpawnMeleeBullet(sender, this, DefaultMeleeBullet.TYPE_ID);
+		public static MeleeBullet SpawnMeleeBullet (Character sender, MeleeWeapon weapon, int bulletID) {
+
+			if (SpawnBullet(sender, bulletID) is not MeleeBullet bullet) return null;
+
+			// Set Range
+			int rangeX = weapon.RangeXRight;
+			if (!sender.FacingRight) {
+				rangeX = weapon.RangeXLeft;
+			}
+			bullet.SetSpawnSize(rangeX, weapon.RangeY);
+
+			// Follow
+			bullet.FollowSender();
+
+			// Smoke Particle
+			if (bullet.SmokeParticleID != 0 && bullet.GroundCheck(out var tint)) {
+				if (Stage.SpawnEntity(bullet.SmokeParticleID, bullet.X + bullet.Width / 2, bullet.Y) is Particle particle) {
+					particle.UserData = tint;
+					particle.Width = !sender.FacingRight ? -1 : 1;
+					particle.Height = 1;
+				}
+			}
+
+			return bullet;
+		}
+
+	}
+
 
 
 	[EntityAttribute.MapEditorGroup("ItemWeapon")]
@@ -30,7 +90,6 @@ namespace AngeliaFramework {
 		public abstract WeaponHandheld Handheld { get; }
 		public virtual int AttackDuration => 12;
 		public virtual int AttackCooldown => 2;
-		public virtual int BulletID => DefaultBullet.TYPE_ID;
 		public virtual int ChargeAttackDuration => int.MaxValue;
 		public virtual int? MovementLoseRateOnAttack => null;
 		public virtual bool RepeatAttackWhenHolding => false;
@@ -258,6 +317,22 @@ namespace AngeliaFramework {
 		public virtual int GetOverrideHandheldAnimationID (Character character) => 0;
 
 		public virtual int GetOverrideAttackAnimationID (Character character) => 0;
+
+		public virtual void SpawnBullet (Character sender) => SpawnBullet(sender, DefaultBullet.TYPE_ID);
+
+		public static Bullet SpawnBullet (Character sender, int bulletID) {
+			if (sender == null) return null;
+			var rect = sender.Rect;
+			if (Stage.SpawnEntity(bulletID, rect.x, rect.y) is not Bullet bullet) return null;
+			bullet.Sender = sender;
+			var sourceRect = sender.Rect;
+			bullet.X = sourceRect.CenterX() - bullet.Width / 2;
+			bullet.Y = sourceRect.CenterY() - bullet.Height / 2;
+			bullet.AttackIndex = sender.AttackStyleIndex;
+			bullet.AttackCharged = sender.LastAttackCharged;
+			bullet.TargetTeam = sender.AttackTargetTeam;
+			return bullet;
+		}
 
 	}
 

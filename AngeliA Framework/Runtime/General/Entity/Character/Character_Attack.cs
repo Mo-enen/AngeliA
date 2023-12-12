@@ -100,7 +100,7 @@ namespace AngeliaFramework {
 		protected virtual bool IsAttackAllowedByEquipment () => GetEquippingItem(EquipmentType.Weapon) is not Weapon weapon || this is not PoseCharacter poseCharacter || weapon.AllowingAttack(poseCharacter);
 
 
-		protected virtual void SpawnPunchBullet () => Bullet.SpawnBullet(DefaultPunchBullet.TYPE_ID, this, null);
+		protected virtual void SpawnPunchBullet () => Weapon.SpawnBullet(this, DefaultPunchBullet.TYPE_ID);
 
 
 		#endregion

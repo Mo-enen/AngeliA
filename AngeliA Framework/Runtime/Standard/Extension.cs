@@ -156,6 +156,12 @@ namespace AngeliaFramework {
 			return v;
 		}
 		public static Vector3Int ToVector3Int (this Vector2Int v, int z) => new(v.x, v.y, z);
+		public static Vector2Int MoveTowards (this Vector2Int v, Vector2Int target, int delta) => new(
+			v.x.MoveTowards(target.x, delta), v.y.MoveTowards(target.y, delta)
+		);
+		public static Vector2Int MoveTowards (this Vector2Int v, Vector2Int target, Vector2Int delta) => new(
+			v.x.MoveTowards(target.x, delta.x), v.y.MoveTowards(target.y, delta.y)
+		);
 
 
 		public static bool Almost (this Vector3 a, Vector3 b) => Mathf.Approximately(a.x, b.x) && Mathf.Approximately(a.y, b.y) && Mathf.Approximately(a.z, b.z);

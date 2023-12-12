@@ -18,6 +18,7 @@ namespace AngeliaFramework {
 
 			public int[] Items;
 			public int[] Counts;
+			[System.NonSerialized] public string Name;
 			[System.NonSerialized] public bool UnlockItemInside;
 			[System.NonSerialized] public bool IsDirty;
 
@@ -62,7 +63,7 @@ namespace AngeliaFramework {
 
 		// Const
 		private const string INV_EXT = "inv";
-		private const string PLAYER_INV_EXT = "player";
+		private const string CHAR_INV_EXT = "chr";
 
 		// Data
 		private static readonly Dictionary<int, InventoryData> Pool = new();
@@ -98,8 +99,9 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public static void AddNewInventoryData (int inventoryID, int itemCount) {
+		public static void AddNewInventoryData (string inventoryName, int itemCount) {
 			if (itemCount <= 0) return;
+			int inventoryID = inventoryName.AngeHash();
 			if (Pool.ContainsKey(inventoryID)) return;
 			Pool.Add(inventoryID, new InventoryData() {
 				Items = new int[itemCount],
@@ -110,8 +112,9 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void AddNewCharacterInventoryData (int inventoryID, int itemCount) {
+		public static void AddNewCharacterInventoryData (string inventoryName, int itemCount) {
 			if (itemCount <= 0) return;
+			int inventoryID = inventoryName.AngeHash();
 			if (Pool.ContainsKey(inventoryID)) return;
 			Pool.Add(inventoryID, new CharacterInventoryData() {
 				Items = new int[itemCount],
@@ -384,10 +387,11 @@ namespace AngeliaFramework {
 			Pool.Clear();
 			string root = Util.CombinePaths(AngePath.PlayerDataRoot, "Inventory");
 			if (!Util.FolderExists(root)) return;
-			foreach (var path in Util.EnumerateFiles(root, true, $"*.{INV_EXT}", $"*.{PLAYER_INV_EXT}")) {
+			foreach (var path in Util.EnumerateFiles(root, true, $"*.{INV_EXT}", $"*.{CHAR_INV_EXT}")) {
 				try {
 					string name = Util.GetNameWithoutExtension(path);
-					if (!int.TryParse(name, out int id)) continue;
+					//if (!int.TryParse(name, out int id)) continue;
+					int id = name.AngeHash();
 					if (Pool.ContainsKey(id)) continue;
 					string json = Util.FileToText(path);
 					if (string.IsNullOrEmpty(json)) continue;
@@ -397,8 +401,10 @@ namespace AngeliaFramework {
 					} else {
 						data = JsonUtility.FromJson<CharacterInventoryData>(json);
 					}
-					if (data == null || data.Items == null) continue;
+					if (data == null) continue;
+					data.Items ??= new int[0];
 					data.IsDirty = false;
+					data.Name = name;
 					Pool.TryAdd(id, data);
 					// Valid Item Count
 					for (int i = 0; i < data.Items.Length; i++) {
@@ -416,13 +422,13 @@ namespace AngeliaFramework {
 		private static void SaveAllToDisk (bool forceSave) {
 			IsPoolDirty = false;
 			string root = Util.CombinePaths(AngePath.PlayerDataRoot, "Inventory");
-			foreach (var (id, data) in Pool) {
+			foreach (var (_, data) in Pool) {
 				if (!forceSave && !data.IsDirty) continue;
 				data.IsDirty = false;
 				// Save Inventory
 				Util.TextToFile(
 					JsonUtility.ToJson(data, false),
-					Util.CombinePaths(root, $"{id}.{(data is CharacterInventoryData ? PLAYER_INV_EXT : INV_EXT)}")
+					Util.CombinePaths(root, $"{data.Name}.{(data is CharacterInventoryData ? CHAR_INV_EXT : INV_EXT)}")
 				);
 				// Update Item Unlocked
 				UpdateItemUnlocked(data);

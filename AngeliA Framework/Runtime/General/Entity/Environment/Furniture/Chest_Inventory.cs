@@ -27,7 +27,7 @@ namespace AngeliaFramework {
 					}
 				} else {
 					// Create New Items
-					Inventory.AddNewInventoryData(typeID, targetCount);
+					Inventory.AddNewInventoryData(type.AngeName(), targetCount);
 				}
 			}
 		}

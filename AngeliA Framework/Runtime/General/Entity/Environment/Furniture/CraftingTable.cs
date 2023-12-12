@@ -9,7 +9,7 @@ namespace AngeliaFramework {
 		public int BurnStartFrame { get; set; }
 	}
 
-	
+
 	public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 
 
@@ -24,7 +24,7 @@ namespace AngeliaFramework {
 				}
 			} else {
 				// Create New Items
-				Inventory.AddNewInventoryData(invID, TARGET_COUNT);
+				Inventory.AddNewInventoryData(GetType().AngeName(), TARGET_COUNT);
 			}
 		}
 
