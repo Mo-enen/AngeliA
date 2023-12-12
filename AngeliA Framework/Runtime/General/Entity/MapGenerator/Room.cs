@@ -15,12 +15,20 @@ namespace AngeliaFramework {
 
 
 	public class RoomNode {
+		private class RoomNodeComparer : IComparer<RoomNode> {
+			public static readonly RoomNodeComparer Instance = new();
+			public int Compare (RoomNode a, RoomNode b) {
+				int result = a.Room.TypeID.CompareTo(b.Room.TypeID);
+				if (result == 0) result = a.Room.ID.CompareTo(b.Room.ID);
+				return result;
+			}
+		}
 		public Room Room { get; init; }
 		public RoomNode Base { get; init; }
 		public List<RoomNode> Children { get; init; }
 		public Dictionary<int, Cubicle> Meta { get; init; }
 		public RoomNode (Room room, RoomNode baseNode) {
-			Room = room;
+			Room = room ?? Room.EMPTY;
 			Base = baseNode;
 			Children = new();
 			Meta = new();
@@ -41,8 +49,9 @@ namespace AngeliaFramework {
 				}
 
 				// Meta
-				builder.Append(' ');
+				builder.Append(" <color=#888888FF>");
 				builder.Append(new string('m', node.Meta.Count));
+				builder.Append("</color>");
 
 				// Line
 				builder.AppendLine();
@@ -54,11 +63,18 @@ namespace AngeliaFramework {
 				}
 			}
 		}
+		public void SortAllChildren () {
+			Children.Sort(RoomNodeComparer.Instance);
+			foreach (var child in Children) {
+				child.SortAllChildren();
+			}
+		}
 	}
 
 
 	public class Cubicle {
 		public int ID;
+		public int TypeID;
 		public int ContentMinX;
 		public int ContentMinY;
 		public int ContentWidth;
@@ -72,6 +88,8 @@ namespace AngeliaFramework {
 
 
 	public class Room : Cubicle {
+
+		public static readonly Room EMPTY = new();
 
 		public struct Tunnel {
 			public int Index;
@@ -107,7 +125,7 @@ namespace AngeliaFramework {
 			_ => EdgeDown,
 		};
 
-		public override string ToString () => $"<color=#FFCC33>{ID}</color> {ContentWidth}×{ContentHeight}{(Tunnels.Length > 0 ? " " + new string('t', Tunnels.Length) : "")}{(Doors.Length > 0 ? " " + new string('d', Doors.Length) : "")}";
+		public override string ToString () => $"<color=#FFCC33>{ID}</color> {(TypeID != 0 ? "<size=75%>Ⓣ</size> " : "")}{ContentWidth}×{ContentHeight}<color=#888888FF>{(Tunnels.Length > 0 ? " " + new string('t', Tunnels.Length) : "")}{(Doors.Length > 0 ? " " + new string('d', Doors.Length) : "")}</color>";
 
 	}
 }

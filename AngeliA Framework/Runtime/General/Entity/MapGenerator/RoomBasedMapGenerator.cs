@@ -9,6 +9,10 @@ namespace AngeliaFramework {
 	public class TestGenerator : RoomBasedMapGenerator {
 		protected override void GenerateMap () {
 
+			//for (int i = 0; i < 16; i++) {
+			//	ResultWriter.SetBlockAt(-i, 0, 0, BlockType.Entity, "CheckLalynnA".AngeHash());
+			//}
+
 		}
 	}
 
@@ -120,12 +124,11 @@ namespace AngeliaFramework {
 
 		public static Room LoadRoomAt (IBlockSquad squad, int roomPointX, int roomPointY, int z) {
 
-			if (!HasValidRoomAt(squad, roomPointX, roomPointY, z, out int id, out int edgeWidth, out int edgeHeight)) return null;
+			if (!HasValidRoomAt(squad, roomPointX, roomPointY, z, out int edgeWidth, out int edgeHeight)) return null;
 			int width = edgeWidth - 2;
 			int height = edgeHeight - 2;
 
 			var room = new Room {
-				ID = id != int.MinValue ? id : DynamicID--,
 				ContentMinX = roomPointX + 1,
 				ContentMinY = roomPointY + 1,
 				ContentWidth = width,
@@ -138,6 +141,18 @@ namespace AngeliaFramework {
 				EdgeDown = new int[edgeWidth],
 				EdgeUp = new int[edgeWidth],
 			};
+
+			// Room Quick Info
+			if (squad.ReadSystemNumber(roomPointX, roomPointY - 1, z, Direction4.Right, out int _id)) {
+				// ID
+				room.ID = _id;
+				room.TypeID = 0;
+			} else {
+				// ID
+				room.ID = squad.ReadSystemNumber(roomPointX + 1, roomPointY - 1, z, Direction4.Right, out _id) ? _id : DynamicID--;
+				// Type
+				room.TypeID = squad.GetBlockAt(roomPointX, roomPointY - 1, z);
+			}
 
 			// Fill Edges
 			for (int x = 0; x < edgeWidth; x++) {
@@ -217,16 +232,10 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool HasValidRoomAt (IBlockSquad squad, int roomPointX, int roomPointY, int z, out int id, out int edgeWidth, out int edgeHeight) {
+		public static bool HasValidRoomAt (IBlockSquad squad, int roomPointX, int roomPointY, int z, out int edgeWidth, out int edgeHeight) {
 
 			edgeWidth = default;
 			edgeHeight = default;
-			id = int.MinValue;
-
-			// ID
-			if (squad.ReadSystemNumber(roomPointX, roomPointY - 1, z, Direction4.Right, out int _id)) {
-				id = _id;
-			}
 
 			// Check Edge Down
 			int xMax = roomPointX;
@@ -296,36 +305,40 @@ namespace AngeliaFramework {
 
 
 		public static RoomNode ForAllConnectedRooms (IBlockSquad squad, int unitX, int unitY, int z, System.Action<Room> onRoomLoaded = null) {
+
 			System.Threading.Monitor.Enter(SearchRequireHash);
 			System.Threading.Monitor.Enter(EntryRequireHash);
 			System.Threading.Monitor.Enter(EntryPointCache);
 			System.Threading.Monitor.Enter(EndPointCache);
 			System.Threading.Monitor.Enter(SearchRequireQueue);
 			System.Threading.Monitor.Enter(EntryRequireQueue);
+
 			SearchRequireHash.Clear();
 			EntryRequireHash.Clear();
 			EntryPointCache.Clear();
 			EndPointCache.Clear();
 			SearchRequireQueue.Clear();
 			EntryRequireQueue.Clear();
-			var rootNode = new RoomNode(null, null);
+
 			try {
-				if (SearchForRoom(squad, unitX, unitY, z, out var rootPoint)) {
-					const int MAX_ROOM_COUNT = 4096;
-					SearchRequireHash.Add(rootPoint);
-					SearchRequireQueue.Enqueue(new RoomSearchRequire() {
-						Point = rootPoint,
-						BaseNode = rootNode,
-					});
-					for (int roomCount = 0; SearchRequireQueue.Count > 0 && roomCount < MAX_ROOM_COUNT; roomCount++) {
-						var target = SearchRequireQueue.Dequeue();
-						Iterate(squad, target.Point, z, target.BaseNode, out Room resultRoom);
-						if (onRoomLoaded != null && resultRoom != null) {
-							onRoomLoaded.Invoke(resultRoom);
-						}
+				var rootNode = new RoomNode(null, null);
+				if (!SearchForRoom(squad, unitX, unitY, z, out var rootPoint)) return rootNode;
+				const int MAX_ROOM_COUNT = 4096;
+				SearchRequireHash.Add(rootPoint);
+				SearchRequireQueue.Enqueue(new RoomSearchRequire() {
+					Point = rootPoint,
+					BaseNode = rootNode,
+				});
+				for (int roomCount = 0; SearchRequireQueue.Count > 0 && roomCount < MAX_ROOM_COUNT; roomCount++) {
+					var target = SearchRequireQueue.Dequeue();
+					Iterate(squad, target.Point, z, target.BaseNode, out Room resultRoom);
+					if (onRoomLoaded != null && resultRoom != null) {
+						onRoomLoaded.Invoke(resultRoom);
 					}
-					if (rootNode.Children.Count > 0) rootNode = rootNode.Children[0];
 				}
+				if (rootNode.Children.Count > 0) rootNode = rootNode.Children[0];
+				rootNode.SortAllChildren();
+				return rootNode;
 			} finally {
 				EntryRequireHash.Clear();
 				SearchRequireHash.Clear();
@@ -333,6 +346,7 @@ namespace AngeliaFramework {
 				EndPointCache.Clear();
 				SearchRequireQueue.Clear();
 				EntryRequireQueue.Clear();
+
 				System.Threading.Monitor.Exit(EntryRequireHash);
 				System.Threading.Monitor.Exit(SearchRequireHash);
 				System.Threading.Monitor.Exit(EntryPointCache);
@@ -340,7 +354,7 @@ namespace AngeliaFramework {
 				System.Threading.Monitor.Exit(SearchRequireQueue);
 				System.Threading.Monitor.Exit(EntryRequireQueue);
 			}
-			return rootNode;
+
 			// Func
 			static void Iterate (IBlockSquad squad, Vector2Int roomPoint, int z, RoomNode baseNode, out Room resultRoom) {
 

@@ -57,6 +57,7 @@ namespace AngeliaFramework {
 			public bool UpdateOutOfRange = false;
 			public int Order = 0;
 			public int Layer = 0;
+			public int ProcedureRedirect = 0;
 			private int InstanceCount = 0;
 
 			// API
@@ -173,12 +174,13 @@ namespace AngeliaFramework {
 				var att_DontSpawnFromWorld = eType.GetCustomAttribute<EntityAttribute.DontSpawnFromWorld>(true);
 				var att_ForceSpawn = eType.GetCustomAttribute<EntityAttribute.ForceSpawnAttribute>(true);
 				var att_Order = eType.GetCustomAttribute<EntityAttribute.StageOrderAttribute>(true);
+				var att_RedirectForProcedure = eType.GetCustomAttribute<EntityAttribute.RedirectForProcedureWorldAttribute>(true);
+				var att_IgnoreInProcedure = eType.GetCustomAttribute<EntityAttribute.IgnoreInProcedureWorldAttribute>(true);
 				int layer = att_Layer != null ? att_Layer.Layer.Clamp(0, EntityLayer.COUNT - 1) : 0;
 				if (att_Capacity != null) {
 					capacity = att_Capacity.Value.Clamp(1, Entities[layer].Length);
 					preSpawn = att_Capacity.PreSpawn.Clamp(0, Entities[layer].Length);
 				}
-
 				var stack = new EntityStack() {
 					Entities = new Stack<Entity>(capacity),
 					LocalBound = att_Bound != null ? att_Bound.Value : new(0, 0, Const.CEL, Const.CEL),
@@ -192,6 +194,7 @@ namespace AngeliaFramework {
 					DontSpawnFromWorld = att_DontSpawnFromWorld != null,
 					Order = att_Order != null ? att_Order.Order : 0,
 					Layer = layer,
+					ProcedureRedirect = att_IgnoreInProcedure != null ? 0 : att_RedirectForProcedure != null ? att_RedirectForProcedure.Target.AngeHash() : id,
 				};
 				for (int i = 0; i < preSpawn; i++) {
 					try {
@@ -406,13 +409,18 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Entity SpawnEntityFromWorld (int typeID, int unitX, int unitY, int unitZ) {
+		public static Entity SpawnEntityFromWorld (int typeID, bool procedureFlag, int unitX, int unitY, int unitZ) {
 			var uPos = new Vector3Int(unitX, unitY, unitZ);
 			if (StagedEntityHash.Contains(uPos)) return null;
 			if (GlobalAntiSpawnHash.Contains(uPos)) return null;
 			if (LocalAntiSpawnHash.Contains(uPos)) return null;
 			if (!EntityPool.TryGetValue(typeID, out var stack)) return null;
 			if (stack.DontSpawnFromWorld) return null;
+			if (procedureFlag) {
+				int redirect = stack.ProcedureRedirect;
+				if (redirect == 0) return null;
+				typeID = redirect;
+			}
 			int x = unitX * Const.CEL;
 			int y = unitY * Const.CEL;
 			if (AntiSpawnRect.Overlaps(stack.LocalBound.Shift(x, y))) return null;

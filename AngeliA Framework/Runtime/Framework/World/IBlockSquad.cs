@@ -23,6 +23,13 @@ namespace AngeliaFramework {
 
 		void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID);
 
+		public sealed int GetBlockAt (int unitX, int unitY, int z) {
+			int result = GetBlockAt(unitX, unitY, z, BlockType.Entity);
+			if (result == 0) result = GetBlockAt(unitX, unitY, z, BlockType.Level);
+			if (result == 0) result = GetBlockAt(unitX, unitY, z, BlockType.Background);
+			return result;
+		}
+
 		public sealed bool ReadSystemNumber (int unitX, int unitY, int z, out int number) {
 			number = 0;
 			bool hasH = ReadSystemNumber(unitX, unitY, z, Direction4.Right, out int numberH);

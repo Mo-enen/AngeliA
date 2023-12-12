@@ -208,12 +208,14 @@ namespace AngeliaFramework {
 					int d = Mathf.Max(unitRect_Entity.y, worldUnitRect.y);
 					int u = Mathf.Min(unitRect_Entity.yMax, worldUnitRect.yMax);
 					for (int j = d; j < u; j++) {
-						int index = (j - worldUnitRect.y) * Const.MAP + (l - worldUnitRect.x);
+						int localY = j - worldUnitRect.y;
+						int index = localY * Const.MAP + (l - worldUnitRect.x);
 						for (int i = l; i < r; i++, index++) {
 							var entityID = world.Entity[index];
 							if (entityID == 0) continue;
 							if (!isBehind) {
-								DrawEntity(entityID, i, j, z);
+								bool procedureFlag = world.CheckProcedureMark(i - worldUnitRect.x, localY, BlockType.Entity);
+								DrawEntity(entityID, procedureFlag, i, j, z);
 							} else if (Stage.RequireDrawEntityBehind(entityID, i, j, z)) {
 								Draw_Behind(entityID, i, j, true);
 							}
@@ -440,10 +442,10 @@ namespace AngeliaFramework {
 		}
 
 
-		private void DrawEntity (int id, int unitX, int unitY, int unitZ) {
+		private void DrawEntity (int id, bool procedureFlag, int unitX, int unitY, int unitZ) {
 			if (SpawnEntity) {
 				// Spawn Entity
-				var entity = Stage.SpawnEntityFromWorld(id, unitX, unitY, unitZ);
+				var entity = Stage.SpawnEntityFromWorld(id, procedureFlag, unitX, unitY, unitZ);
 				if (entity is Character ch) {
 					ch.X += ch.Width / 2;
 				}

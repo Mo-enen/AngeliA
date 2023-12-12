@@ -99,13 +99,9 @@ namespace AngeliaFramework {
 		}
 
 
-
 		[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = true)]
 		public class ItemCombinationAttribute : System.Attribute {
-			public int ItemA = 0;
-			public int ItemB = 0;
-			public int ItemC = 0;
-			public int ItemD = 0;
+			public int ItemA = 0; public int ItemB = 0; public int ItemC = 0; public int ItemD = 0;
 			public int Count = 1;
 			public ItemCombinationAttribute (System.Type itemA, int count = 1) {
 				ItemA = itemA.AngeHash();
@@ -135,6 +131,17 @@ namespace AngeliaFramework {
 				ItemD = itemD.AngeHash();
 				Count = count;
 			}
+		}
+
+
+		[System.AttributeUsage(System.AttributeTargets.Class)]
+		public class IgnoreInProcedureWorldAttribute : System.Attribute { }
+
+
+		[System.AttributeUsage(System.AttributeTargets.Class)]
+		public class RedirectForProcedureWorldAttribute : System.Attribute {
+			public System.Type Target;
+			public RedirectForProcedureWorldAttribute (System.Type target) => Target = target;
 		}
 
 

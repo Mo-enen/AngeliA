@@ -14,7 +14,7 @@ namespace AngeliaFramework {
 	public abstract class MapGenerator : Entity {
 
 
-		
+
 
 		#region --- VAR ---
 
@@ -123,6 +123,7 @@ namespace AngeliaFramework {
 				Util.MoveFolder(tempMapRoot, mapRoot);
 				WorldSquad.Front.ForceReloadDelay();
 				WorldSquad.Behind.ForceReloadDelay();
+				Stage.SetViewZ(Stage.ViewZ);
 
 				IGlobalPosition.CreateMetaFileFromMaps(mapRoot);
 

@@ -4,8 +4,18 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
+	[EntityAttribute.ExcludeInMapEditor]
+	public class ProcedureCheckPoint : CheckPoint {
+		[OnSlotChanged(1024)]
+		public static void OnGameInitialize () {
+			Unlock(typeof(ProcedureCheckPoint).AngeHash());
+		}
+	}
+
+
 	[EntityAttribute.Capacity(16)]
 	[EntityAttribute.MapEditorGroup("CheckPoint")]
+	[EntityAttribute.RedirectForProcedureWorld(typeof(ProcedureCheckPoint))]
 	public abstract class CheckPoint : EnvironmentEntity {
 
 
