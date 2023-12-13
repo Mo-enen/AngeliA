@@ -46,6 +46,7 @@ namespace AngeliaFramework {
 			set => _FacingRight = value;
 		}
 		public bool FacingFront { get; private set; } = true;
+		public int FacingSign => FacingRight ? 1 : -1;
 		public virtual int GrowingHeight => MovementHeight;
 		public virtual bool SpinOnGroundPound => false;
 		public virtual bool FlyGlideAvailable => false;

@@ -14,31 +14,26 @@ namespace AngeliaFramework {
 
 
 	public abstract class ProjectileWeapon : Weapon {
-		public abstract int SpeedX { get; }
-		public abstract int SpeedY { get; }
-		protected virtual int ProjectileSpinSpeed => 0;
-		protected virtual int ProjectileStartRotation => 0;
-		protected virtual bool DestroyOnHitEnvironment => true;
-		protected virtual bool StopOnHitEnvironment => false;
-		protected virtual bool DestroyOnHitReceiver => true;
 		private int ProjectileArtworkID { get; init; }
 		public ProjectileWeapon () {
 			ProjectileArtworkID = $"{GetType().AngeName()}.Bullet".AngeHash();
 			if (!CellRenderer.HasSprite(ProjectileArtworkID)) ProjectileArtworkID = 0;
 		}
-		public override void SpawnBullet (Character sender) => SpawnMovableBullet(sender, this, DefaultMovableBullet.TYPE_ID);
+		public override Bullet SpawnBullet (Character sender, int bulletID) => SpawnMovableBullet(sender, this, bulletID != 0 ? bulletID : DefaultMovableBullet.TYPE_ID);
 		public static MovableBullet SpawnMovableBullet (Character sender, ProjectileWeapon weapon, int bulletID) {
-			if (SpawnBullet(sender, bulletID) is not MovableBullet bullet) return null;
+			if (SpawnRawBullet(sender, bulletID) is not MovableBullet bullet) return null;
 			bullet.X = sender.FacingRight ? sender.X : sender.X - bullet.Width;
 			bullet.Y = sender.Y + sender.Height / 2;
-			bullet.Velocity = new Vector2Int(sender.FacingRight ? weapon.SpeedX : -weapon.SpeedX, weapon.SpeedY);
-			bullet.RotateSpeed = weapon.ProjectileSpinSpeed;
 			bullet.ArtworkID = weapon.ProjectileArtworkID;
 			bullet.ArtworkDelay = sender.AttackDuration / 6 + 1;
-			bullet._DestroyOnHitEnvironment = weapon.DestroyOnHitEnvironment;
-			bullet._DestroyOnHitReceiver = weapon.DestroyOnHitReceiver;
-			bullet._StopOnHitEnvironment = weapon.StopOnHitEnvironment;
-			bullet.CurrentRotation = weapon.ProjectileStartRotation;
+			bullet.Velocity = default;
+			bullet.RotateSpeed = 0;
+			bullet.CurrentRotation = 0;
+			bullet.Gravity = 0;
+			bullet._DestroyOnHitEnvironment = true;
+			bullet._DestroyOnHitReceiver = true;
+			bullet._EnvironmentMask = PhysicsMask.SOLID;
+			bullet._ReceiverMask = PhysicsMask.SOLID;
 			return bullet;
 		}
 	}
@@ -49,10 +44,10 @@ namespace AngeliaFramework {
 		public abstract int RangeXLeft { get; }
 		public abstract int RangeXRight { get; }
 		public abstract int RangeY { get; }
-		public override void SpawnBullet (Character sender) => SpawnMeleeBullet(sender, this, DefaultMeleeBullet.TYPE_ID);
+		public override Bullet SpawnBullet (Character sender, int bulletID) => SpawnMeleeBullet(sender, this, bulletID != 0 ? bulletID : DefaultMeleeBullet.TYPE_ID);
 		public static MeleeBullet SpawnMeleeBullet (Character sender, MeleeWeapon weapon, int bulletID) {
 
-			if (SpawnBullet(sender, bulletID) is not MeleeBullet bullet) return null;
+			if (SpawnRawBullet(sender, bulletID) is not MeleeBullet bullet) return null;
 
 			// Set Range
 			int rangeX = weapon.RangeXRight;
@@ -75,7 +70,6 @@ namespace AngeliaFramework {
 
 			return bullet;
 		}
-
 	}
 
 
@@ -318,9 +312,9 @@ namespace AngeliaFramework {
 
 		public virtual int GetOverrideAttackAnimationID (Character character) => 0;
 
-		public virtual void SpawnBullet (Character sender) => SpawnBullet(sender, DefaultBullet.TYPE_ID);
+		public virtual Bullet SpawnBullet (Character sender, int bulletID) => SpawnRawBullet(sender, bulletID != 0 ? bulletID : GeneralBullet.TYPE_ID);
 
-		public static Bullet SpawnBullet (Character sender, int bulletID) {
+		public static Bullet SpawnRawBullet (Character sender, int bulletID) {
 			if (sender == null) return null;
 			var rect = sender.Rect;
 			if (Stage.SpawnEntity(bulletID, rect.x, rect.y) is not Bullet bullet) return null;

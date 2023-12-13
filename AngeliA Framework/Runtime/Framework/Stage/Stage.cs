@@ -586,7 +586,7 @@ namespace AngeliaFramework {
 				int count = EntityCounts[layer];
 				for (int i = 0; i < count; i++) {
 					var e = entities[i];
-					if (e.DespawnOutOfRange && e.DestroyOnSquadTransition) {
+					if (e.DespawnOutOfRange || e.DestroyOnSquadTransition) {
 						e.Active = false;
 					}
 				}

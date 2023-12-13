@@ -75,7 +75,7 @@ namespace AngeliaFramework {
 		private static readonly PhysicsCell[] c_Movement = new PhysicsCell[32];
 		private static readonly PhysicsCell[] c_Oneway = new PhysicsCell[32];
 		private static readonly PhysicsCell[] c_GetEntity = new PhysicsCell[32];
-		private static readonly PhysicsCell[] c_GeneralHits = new PhysicsCell[128];
+		private static readonly PhysicsCell[] c_GeneralHits = new PhysicsCell[1024];
 		private static Layer[] Layers = null;
 		private static Layer CurrentLayer = null;
 		private static uint CurrentFrame = uint.MinValue;

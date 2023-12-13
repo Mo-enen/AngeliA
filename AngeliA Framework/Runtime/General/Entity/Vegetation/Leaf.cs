@@ -51,7 +51,7 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.MapEditorGroup("Vegetation")]
-	[EntityAttribute.Capacity(256)]
+	[EntityAttribute.Capacity(1024)]
 	public abstract class Leaf : EnvironmentEntity, ICombustible, IDamageReceiver {
 
 

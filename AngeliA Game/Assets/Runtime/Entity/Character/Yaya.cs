@@ -55,7 +55,7 @@ namespace AngeliaGame {
 		}
 
 		protected override void SpawnPunchBullet () {
-			if (Weapon.SpawnBullet(this, YAYA_PAW) is MeleeBullet mBullet) {
+			if (Weapon.SpawnRawBullet(this, YAYA_PAW) is MeleeBullet mBullet) {
 				mBullet.SetSpawnSize(384, 486);
 			}
 		}

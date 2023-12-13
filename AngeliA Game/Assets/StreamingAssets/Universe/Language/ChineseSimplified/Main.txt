@@ -1,4 +1,5 @@
-﻿CtrlHint.Adjust:调整
+﻿Palette.ItemWeapon:武器
+CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
 CtrlHint.Drop:放下

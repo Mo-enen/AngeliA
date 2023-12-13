@@ -172,6 +172,13 @@ namespace AngeliaFramework {
 		}
 
 
+		public static bool OverlapRectCircle (int radius, int circleX, int circleY, int minX, int minY, int maxX, int maxY) {
+			int disX = Mathf.Max(minX, Mathf.Min(circleX, maxX)) - circleX;
+			int disY = Mathf.Max(minY, Mathf.Min(circleY, maxY)) - circleY;
+			return (disX * disX + disY * disY) <= radius * radius;
+		}
+
+
 		// Color
 		public static Color32 IntToColor (int i) =>
 			new((byte)(i >> 24), (byte)(i >> 16), (byte)(i >> 8), (byte)(i));

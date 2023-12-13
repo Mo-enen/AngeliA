@@ -51,7 +51,6 @@ namespace AngeliaFramework {
 	[EntityAttribute.ForceSpawn]
 	public class ItemLostParticle : FreeFallParticle {
 		public override int Duration => 120;
-		public override bool Loop => false;
 		public override void OnActivated () {
 			base.OnActivated();
 			Width = Const.CEL * 2 / 3;
@@ -62,12 +61,6 @@ namespace AngeliaFramework {
 			CurrentSpeedX = AngeUtil.RandomInt(32, 48) * (AngeUtil.RandomInt(0, 2) == 0 ? 1 : -1);
 			CurrentSpeedY = 64;
 			RotateSpeed = 6;
-		}
-		public override void FrameUpdate () {
-			base.FrameUpdate();
-			CellRenderer.SetLayerToUI();
-			CellRenderer.Draw((int)UserData, X, Y, 500, 500, Rotation, Width, Height, 0);
-			CellRenderer.SetLayerToDefault();
 		}
 	}
 

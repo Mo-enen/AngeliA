@@ -473,6 +473,28 @@ namespace AngeliaFramework {
 		public static bool IsOnewayTag (int tag) => tag == Const.ONEWAY_UP_TAG || tag == Const.ONEWAY_DOWN_TAG || tag == Const.ONEWAY_LEFT_TAG || tag == Const.ONEWAY_RIGHT_TAG;
 
 
+		public static bool TryGetOnewayDirection (int tag, out Direction4 direction) {
+			if (tag == Const.ONEWAY_LEFT_TAG) {
+				direction = Direction4.Left;
+				return true;
+			}
+			if (tag == Const.ONEWAY_RIGHT_TAG) {
+				direction = Direction4.Right;
+				return true;
+			}
+			if (tag == Const.ONEWAY_DOWN_TAG) {
+				direction = Direction4.Down;
+				return true;
+			}
+			if (tag == Const.ONEWAY_UP_TAG) {
+				direction = Direction4.Up;
+				return true;
+			}
+			direction = default;
+			return false;
+		}
+
+
 		public static void DrawSegmentHealthBar (int x, int y, int heartLeftCode, int heartRightCode, int emptyHeartLeftCode, int emptyHeartRightCode, int dropParticleID, int hp, int maxHP, int prevHP = int.MinValue) {
 
 			const int SIZE = Const.HALF;

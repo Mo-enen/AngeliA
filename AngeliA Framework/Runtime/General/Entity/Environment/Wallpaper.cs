@@ -39,14 +39,23 @@ namespace AngeliaFramework {
 		}
 
 
+		[OnGameUpdate]
+		public static void OnGameUpdate () {
+			if (Current != null && !Current.Active) Current = null;
+		}
+
+
 		public override void BeforePhysicsUpdate () {
 			base.BeforePhysicsUpdate();
-			if (Current != null && !Current.Active) Current = null;
+			if (Current != null && Current.Active && Current.TypeID == TypeID && Current.SpawnFrame <= SpawnFrame) {
+				Active = false;
+			}
 		}
 
 
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
+			if (!Active) return;
 			// Switch Current
 			if (Current != this) {
 				if (Current == null) {

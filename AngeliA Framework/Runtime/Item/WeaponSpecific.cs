@@ -242,12 +242,23 @@ namespace AngeliaFramework {
 
 	}
 
+
 	// Throwing
 	public abstract class ThrowingWeapon : ProjectileWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Throwing;
 		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
-		public override int SpeedX => 46;
-		public override int SpeedY => 0;
+		public override Bullet SpawnBullet (Character sender, int bulletID) {
+			var bullet = base.SpawnBullet(sender, bulletID);
+			if (bullet is MovableBullet mBullet) {
+				mBullet._DestroyOnHitEnvironment = true;
+				mBullet._DestroyOnHitReceiver = true;
+				mBullet.Velocity = new Vector2Int(sender.FacingRight ? 46 : -46, 0);
+				mBullet.RotateSpeed = 0;
+				mBullet.CurrentRotation = 0;
+				mBullet.Gravity = 0;
+			}
+			return bullet;
+		}
 	}
 
 

@@ -114,6 +114,7 @@ namespace AngeliaFramework {
 		}
 
 
+		// Physics Update
 		public override void FillPhysics () {
 			if (CharacterState == CharacterState.GamePlay) {
 				CellPhysics.FillEntity(PhysicalLayer, this, NavigationEnable);
@@ -248,6 +249,7 @@ namespace AngeliaFramework {
 		}
 
 
+		// Frame Update
 		public override void FrameUpdate () {
 			FrameUpdate_RenderCharacter();
 			FrameUpdate_Event();
@@ -314,29 +316,29 @@ namespace AngeliaFramework {
 			if (CharacterState == CharacterState.GamePlay) {
 				if (
 					TeleportWithPortal && Game.GlobalFrame == TeleportEndFrame - TeleportDuration / 2 + 1
-				) OnTeleport?.Invoke(this);
+				) InvokeCharacterEvent(OnTeleport);
 				if (
 					IsGrounded &&
 					LastStartRunFrame >= 0 &&
 					(Game.GlobalFrame - LastStartRunFrame) % 20 == 19
-				) OnFootStepped?.Invoke(this);
-				if (IsSliding && Game.GlobalFrame % 24 == 0) OnSlideStepped?.Invoke(this);
-				if (IsGrounded && IsDashing && Game.GlobalFrame % 8 == 0) OnDashStepped?.Invoke(this);
+				) InvokeCharacterEvent(OnFootStepped);
+				if (IsSliding && Game.GlobalFrame % 24 == 0) InvokeCharacterEvent(OnSlideStepped);
+				if (IsGrounded && IsDashing && Game.GlobalFrame % 8 == 0) InvokeCharacterEvent(OnDashStepped);
 				if (Game.GlobalFrame % 10 == 0 && IsChargingAttack) Bounce();
-				if (Game.GlobalFrame == LastJumpFrame) OnJump?.Invoke(this);
-				if (Game.GlobalFrame == LastFlyFrame) OnFly?.Invoke(this);
-				if (Game.GlobalFrame == LastCrashFrame) OnCrash?.Invoke(this);
+				if (Game.GlobalFrame == LastJumpFrame) InvokeCharacterEvent(OnJump);
+				if (Game.GlobalFrame == LastFlyFrame) InvokeCharacterEvent(OnFly);
+				if (Game.GlobalFrame == LastCrashFrame) InvokeCharacterEvent(OnCrash);
 			}
 
 			// Sleep
 			if (CharacterState == CharacterState.Sleep) {
 				// ZZZ Particle
 				if (Game.GlobalFrame % 42 == 0) {
-					OnSleeping?.Invoke(this);
+					InvokeCharacterEvent(OnSleeping);
 				}
 				// Full Sleep Particle
 				if (SleepFrame == FULL_SLEEP_DURATION) {
-					OnSleeped?.Invoke(this);
+					InvokeCharacterEvent(OnSleeped);
 				}
 				// ++
 				SleepFrame++;
@@ -369,7 +371,7 @@ namespace AngeliaFramework {
 					if (squatStart) item.OnSquat(this);
 					if (item is Weapon weapon) {
 						equippingWeapon = true;
-						if (attackStart) weapon.SpawnBullet(this);
+						if (attackStart) weapon.SpawnBullet(this, 0);
 					}
 				}
 
@@ -382,12 +384,12 @@ namespace AngeliaFramework {
 		}
 
 
+		// Virtual
 		protected abstract void RenderCharacter ();
-
-
 		protected virtual int GetInventoryCapacity () => 0;
 		protected virtual Item GetItemFromInventory (int itemIndex) => null;
 		protected virtual Equipment GetEquippingItem (EquipmentType type) => null;
+		protected virtual void InvokeCharacterEvent (CharacterEventHandler handler) => handler?.Invoke(this);
 
 
 		#endregion
@@ -424,7 +426,7 @@ namespace AngeliaFramework {
 
 				case CharacterState.PassOut:
 					PassOutFrame = Game.GlobalFrame;
-					OnPassOut?.Invoke(this);
+					InvokeCharacterEvent(OnPassOut);
 					break;
 
 			}
