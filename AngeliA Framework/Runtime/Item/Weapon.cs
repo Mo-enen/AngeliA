@@ -62,7 +62,7 @@ namespace AngeliaFramework {
 			// Smoke Particle
 			if (bullet.SmokeParticleID != 0 && bullet.GroundCheck(out var tint)) {
 				if (Stage.SpawnEntity(bullet.SmokeParticleID, bullet.X + bullet.Width / 2, bullet.Y) is Particle particle) {
-					particle.UserData = tint;
+					particle.Tint = tint;
 					particle.Width = !sender.FacingRight ? -1 : 1;
 					particle.Height = 1;
 				}

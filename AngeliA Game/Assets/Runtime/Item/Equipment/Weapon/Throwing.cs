@@ -229,7 +229,7 @@ namespace AngeliaFramework {
 		public override Bullet SpawnBullet (Character sender, int bulletID) {
 			var bullet = base.SpawnBullet(sender, ExplosiveMovableBullet.TYPE_ID);
 			if (bullet is ExplosiveMovableBullet mBullet) {
-				mBullet.Velocity = new Vector2Int(sender.FacingSign * 42, 48);
+				mBullet.Velocity = new Vector2Int(sender.FacingSign * 64, 64);
 				mBullet.Gravity = 5;
 				mBullet.RotateSpeed = sender.FacingSign * 6;
 				mBullet.CurrentRotation = 0;

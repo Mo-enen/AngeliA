@@ -13,7 +13,7 @@ namespace AngeliaFramework {
 			int smokeDuration = Duration - 4;
 			int smokeFrame = (Game.GlobalFrame - SpawnFrame - 4).GreaterOrEquelThanZero();
 			int _smokeFrame = smokeDuration * smokeDuration - (smokeDuration - smokeFrame) * (smokeDuration - smokeFrame);
-			var tint = UserData is Color32 color ? color : Const.WHITE;
+			var tint = Tint;
 			tint.a = (byte)Util.Remap(0, smokeDuration, 512, 0, smokeFrame);
 			var cell = CellRenderer.Draw(
 				TypeID, X, Y,
@@ -35,7 +35,7 @@ namespace AngeliaFramework {
 			int smokeDuration = Duration - 4;
 			int smokeFrame = (Game.GlobalFrame - SpawnFrame - 4).GreaterOrEquelThanZero();
 			int _smokeFrame = smokeDuration * smokeDuration - (smokeDuration - smokeFrame) * (smokeDuration - smokeFrame);
-			var tint = UserData is Color32 color ? color : Const.WHITE;
+			var tint = Tint;
 			tint.a = (byte)Util.Remap(0, smokeDuration, 512, 0, smokeFrame);
 			var cell = CellRenderer.Draw(
 				TypeID, X, Y,

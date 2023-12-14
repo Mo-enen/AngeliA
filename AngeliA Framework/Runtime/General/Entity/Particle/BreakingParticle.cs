@@ -9,7 +9,7 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int TYPE_ID = typeof(BreakingParticle).AngeHash();
+		public static readonly int TYPE_ID = typeof(BreakingParticle).AngeHash();
 
 		// Api
 		public override int Duration => _Duration;

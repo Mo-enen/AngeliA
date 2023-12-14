@@ -64,7 +64,7 @@ namespace AngeliaFramework {
 			// Environment Hit Check
 			if (CellPhysics.Overlap(EnvironmentMask, Rect, Sender)) {
 				if (DestroyOnHitEnvironment) Active = false;
-				SpawnResidue(null, 0);
+				SpawnResidue(null);
 			}
 		}
 
@@ -85,7 +85,7 @@ namespace AngeliaFramework {
 				if (receiver is Entity e && !e.Active) continue;
 				receiver.TakeDamage(Damage, Sender);
 				if (DestroyOnHitReceiver) Active = false;
-				SpawnResidue(receiver, 0);
+				SpawnResidue(receiver);
 			}
 		}
 
@@ -100,7 +100,9 @@ namespace AngeliaFramework {
 			return grounded;
 		}
 
-		protected virtual void SpawnResidue (IDamageReceiver receiver, int artwork) => OnResidueSpawn?.Invoke(this, receiver, artwork);
+		protected virtual void SpawnResidue (IDamageReceiver receiver) => InvokeOnResidueSpawnEvent(this, receiver, 0);
+
+		protected static void InvokeOnResidueSpawnEvent (Bullet bullet, IDamageReceiver receiver, int artworkID) => OnResidueSpawn?.Invoke(bullet, receiver, artworkID);
 
 	}
 }

@@ -12,13 +12,15 @@ namespace AngeliaFramework {
 		protected override int SpawnHeight => Const.CEL;
 		public int Radius { get; set; }
 		public int ExplosionDuration { get; set; }
-		protected override void SpawnResidue (IDamageReceiver receiver, int artwork) {
+		protected override void SpawnResidue (IDamageReceiver receiver) {
 			// Explode
 			if (Active) return;
-			if (Stage.SpawnEntity(GeneralExplosion.TYPE_ID, X + Width / 2, Y + Height / 2) is Explosion exp) {
+			if (Stage.SpawnEntity(Explosion.TYPE_ID, X + Width / 2, Y + Height / 2) is Explosion exp) {
+				exp.Sender = Sender;
 				exp.Damage = _Damage;
 				exp.Radius = Radius;
 				exp.Duration = ExplosionDuration;
+				exp.BreakObjectArtwork = ArtworkID;
 			}
 		}
 	}
@@ -113,7 +115,7 @@ namespace AngeliaFramework {
 				// Collide with Oneway
 				if (collide) {
 					if (DestroyOnHitEnvironment) Active = false;
-					SpawnResidue(null, 0);
+					SpawnResidue(null);
 					break;
 				}
 			}
@@ -154,7 +156,7 @@ namespace AngeliaFramework {
 			}
 		}
 
-		protected override void SpawnResidue (IDamageReceiver receiver, int artwork) => base.SpawnResidue(receiver, ArtworkID);
+		protected override void SpawnResidue (IDamageReceiver receiver) => InvokeOnResidueSpawnEvent(this, receiver, ArtworkID);
 
 	}
 }
