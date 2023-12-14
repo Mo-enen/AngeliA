@@ -15,6 +15,10 @@ namespace AngeliaFramework {
 			base.FrameUpdate();
 			if (!Active) return;
 
+
+
+
+
 			CellRenderer.Draw(CIRCLE, X, Y, 500, 500, 0, Radius * 2, Radius * 2);
 
 		}

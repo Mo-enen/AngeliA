@@ -516,6 +516,9 @@ namespace AngeliaFramework {
 		}
 
 
+		public static int Clamp (this RangeInt range, int value) => Mathf.Clamp(value, range.start, range.end);
+
+
 		// Enum
 		public static int EnumLength (this System.Type @enum) => System.Enum.GetValues(@enum).Length;
 		public static E Next<E> (this E @enum) where E : System.Enum {

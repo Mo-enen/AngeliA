@@ -33,7 +33,7 @@ namespace AngeliaFramework {
 
 		// Api
 		public delegate void BulletEvent (Bullet bullet, IDamageReceiver receiver, int artwork);
-		public static event BulletEvent OnBulletHit;
+		public static event BulletEvent OnResidueSpawn;
 		protected virtual int EnvironmentMask => PhysicsMask.SOLID;
 		protected virtual int ReceiverMask => PhysicsMask.SOLID;
 		protected abstract int Duration { get; }
@@ -64,7 +64,7 @@ namespace AngeliaFramework {
 			// Environment Hit Check
 			if (CellPhysics.Overlap(EnvironmentMask, Rect, Sender)) {
 				if (DestroyOnHitEnvironment) Active = false;
-				OnHit(null, 0);
+				SpawnResidue(null, 0);
 			}
 		}
 
@@ -85,7 +85,7 @@ namespace AngeliaFramework {
 				if (receiver is Entity e && !e.Active) continue;
 				receiver.TakeDamage(Damage, Sender);
 				if (DestroyOnHitReceiver) Active = false;
-				OnHit(receiver, 0);
+				SpawnResidue(receiver, 0);
 			}
 		}
 
@@ -100,7 +100,7 @@ namespace AngeliaFramework {
 			return grounded;
 		}
 
-		protected virtual void OnHit (IDamageReceiver receiver, int artwork) => OnBulletHit?.Invoke(this, receiver, artwork);
+		protected virtual void SpawnResidue (IDamageReceiver receiver, int artwork) => OnResidueSpawn?.Invoke(this, receiver, artwork);
 
 	}
 }

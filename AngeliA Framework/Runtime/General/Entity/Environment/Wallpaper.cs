@@ -47,7 +47,7 @@ namespace AngeliaFramework {
 
 		public override void BeforePhysicsUpdate () {
 			base.BeforePhysicsUpdate();
-			if (Current != null && Current.Active && Current.TypeID == TypeID && Current.SpawnFrame <= SpawnFrame) {
+			if (Current != null && Current.Active && Current.TypeID == TypeID && Current.SpawnFrame < SpawnFrame) {
 				Active = false;
 			}
 		}

@@ -12,7 +12,7 @@ namespace AngeliaFramework {
 		protected override int SpawnHeight => Const.CEL;
 		public int Radius { get; set; }
 		public int ExplosionDuration { get; set; }
-		protected override void OnHit (IDamageReceiver receiver, int artwork) {
+		protected override void SpawnResidue (IDamageReceiver receiver, int artwork) {
 			// Explode
 			if (Active) return;
 			if (Stage.SpawnEntity(GeneralExplosion.TYPE_ID, X + Width / 2, Y + Height / 2) is Explosion exp) {
@@ -49,10 +49,12 @@ namespace AngeliaFramework {
 		public Vector2Int Velocity { get; set; } = default;
 		public Vector2Int AriDrag { get; set; } = default;
 		public int Gravity { get; set; } = 0;
+		public int CurrentRotation { get; set; } = 0;
 		public int RotateSpeed { get; set; } = 0;
+		public int EndRotation { get; set; } = 0;
+		public int EndRotationRange { get; set; } = 180;
 		public int ArtworkID { get; set; } = 0;
 		public int ArtworkDelay { get; set; } = 0;
-		public int CurrentRotation { get; set; } = 0;
 		public int _Damage { get; set; } = 1;
 
 		// MSG
@@ -111,7 +113,7 @@ namespace AngeliaFramework {
 				// Collide with Oneway
 				if (collide) {
 					if (DestroyOnHitEnvironment) Active = false;
-					OnHit(null, 0);
+					SpawnResidue(null, 0);
 					break;
 				}
 			}
@@ -139,16 +141,20 @@ namespace AngeliaFramework {
 			int localFrame = Game.GlobalFrame - SpawnFrame;
 			if (localFrame >= ArtworkDelay && CellRenderer.TryGetSprite(ArtworkID, out var sprite)) {
 				CurrentRotation += RotateSpeed;
+				int width = sprite.GlobalWidth;
+				if (RotateSpeed != 0 && Velocity.x < 0) {
+					width = -width;
+				}
 				CellRenderer.Draw(
 					ArtworkID,
 					X + Width / 2, Y + Height / 2,
 					sprite.PivotX, sprite.PivotY, CurrentRotation,
-					sprite.GlobalWidth, sprite.GlobalHeight
+					width, sprite.GlobalHeight
 				);
 			}
 		}
 
-		protected override void OnHit (IDamageReceiver receiver, int artwork) => base.OnHit(receiver, ArtworkID);
+		protected override void SpawnResidue (IDamageReceiver receiver, int artwork) => base.SpawnResidue(receiver, ArtworkID);
 
 	}
 }

@@ -13,6 +13,7 @@ namespace AngeliaFramework {
 		protected int AirDragX { get; set; } = 3;
 		protected int RotateSpeed { get; set; } = 0;
 		protected int Gravity { get; set; } = 5;
+		protected bool FlipX { get; set; } = false;
 
 		public override void OnActivated () {
 			base.OnActivated();
@@ -20,7 +21,8 @@ namespace AngeliaFramework {
 			CurrentSpeedY = 0;
 			Gravity = 5;
 			AirDragX = 3;
-			RotateSpeed = 0;
+			RotateSpeed = 0; 
+			FlipX = false;
 		}
 
 		public override void PhysicsUpdate () {
@@ -40,7 +42,7 @@ namespace AngeliaFramework {
 			base.FrameUpdate();
 			if (UserData is int id) {
 				CellRenderer.SetLayerToUI();
-				CellRenderer.Draw(id, X, Y, 500, 500, Rotation, Width, Height, 0);
+				CellRenderer.Draw(id, X, Y, 500, 500, Rotation, FlipX ? -Width : Width, Height, 0);
 				CellRenderer.SetLayerToDefault();
 			}
 		}

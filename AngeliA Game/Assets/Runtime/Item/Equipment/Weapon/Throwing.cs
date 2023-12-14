@@ -12,6 +12,8 @@ namespace AngeliaFramework {
 			var bullet = base.SpawnBullet(sender, bulletID);
 			if (bullet is MovableBullet mBullet) {
 				mBullet.RotateSpeed = sender.FacingSign * 24;
+				mBullet.EndRotation = 90;
+				mBullet.EndRotationRange = 20;
 			}
 			return bullet;
 		}
@@ -25,6 +27,8 @@ namespace AngeliaFramework {
 			if (bullet is MovableBullet mBullet) {
 				mBullet.RotateSpeed = sender.FacingSign * 24;
 				mBullet.CurrentRotation = Util.QuickRandom(Game.GlobalFrame).UMod(360);
+				mBullet.EndRotation = 90;
+				mBullet.EndRotationRange = 20;
 			}
 			return bullet;
 		}
@@ -50,6 +54,8 @@ namespace AngeliaFramework {
 			var bullet = base.SpawnBullet(sender, bulletID);
 			if (bullet is MovableBullet mBullet) {
 				mBullet.CurrentRotation = sender.FacingRight ? 90 : -90;
+				mBullet.EndRotation = 90;
+				mBullet.EndRotationRange = 10;
 			}
 			return bullet;
 		}
@@ -78,6 +84,8 @@ namespace AngeliaFramework {
 			var bullet = base.SpawnBullet(sender, bulletID);
 			if (bullet is MovableBullet mBullet) {
 				mBullet.RotateSpeed = sender.FacingSign * 24;
+				mBullet.EndRotation = 90;
+				mBullet.EndRotationRange = 20;
 			}
 			return bullet;
 		}
@@ -90,6 +98,8 @@ namespace AngeliaFramework {
 			var bullet = base.SpawnBullet(sender, bulletID);
 			if (bullet is MovableBullet mBullet) {
 				mBullet.RotateSpeed = sender.FacingSign * 24;
+				mBullet.EndRotation = 90;
+				mBullet.EndRotationRange = 20;
 			}
 			return bullet;
 		}
@@ -102,6 +112,8 @@ namespace AngeliaFramework {
 			var bullet = base.SpawnBullet(sender, bulletID);
 			if (bullet is MovableBullet mBullet) {
 				mBullet.CurrentRotation = sender.FacingRight ? 90 : -90;
+				mBullet.EndRotation = 90;
+				mBullet.EndRotationRange = 0;
 			}
 			return bullet;
 		}
@@ -117,6 +129,8 @@ namespace AngeliaFramework {
 				mBullet._DestroyOnHitEnvironment = true;
 				mBullet.RotateSpeed = sender.FacingSign * 24;
 				mBullet.CurrentRotation = Util.QuickRandom(Game.GlobalFrame).UMod(360);
+				mBullet.EndRotation = 90;
+				mBullet.EndRotationRange = 40;
 			}
 			return bullet;
 		}
@@ -126,10 +140,19 @@ namespace AngeliaFramework {
 	[EntityAttribute.ItemCombination(typeof(iBowlingBall), typeof(iGunpowder), 1)]
 	public class iBomb : ThrowingWeapon {
 		public override Bullet SpawnBullet (Character sender, int bulletID) {
-			var bullet = base.SpawnBullet(sender, bulletID);
-			if (bullet is MovableBullet mBullet) {
+			var bullet = base.SpawnBullet(sender, ExplosiveMovableBullet.TYPE_ID);
+			if (bullet is ExplosiveMovableBullet mBullet) {
 				mBullet.Velocity = new Vector2Int(sender.FacingSign * 42, 48);
 				mBullet.Gravity = 5;
+				mBullet.RotateSpeed = sender.FacingSign * 6;
+				mBullet.CurrentRotation = 0;
+				mBullet._DestroyOnHitEnvironment = true;
+				mBullet._DestroyOnHitReceiver = true;
+				mBullet._EnvironmentMask = PhysicsMask.SOLID;
+				mBullet._ReceiverMask = PhysicsMask.CHARACTER;
+				mBullet._Damage = 1;
+				mBullet.ExplosionDuration = 10;
+				mBullet.Radius = Const.CEL * 3;
 			}
 			return bullet;
 		}
@@ -142,6 +165,8 @@ namespace AngeliaFramework {
 			var bullet = base.SpawnBullet(sender, bulletID);
 			if (bullet is MovableBullet mBullet) {
 				mBullet.CurrentRotation = sender.FacingRight ? 90 : -90;
+				mBullet.EndRotation = 90;
+				mBullet.EndRotationRange = 5;
 			}
 			return bullet;
 		}
@@ -154,6 +179,8 @@ namespace AngeliaFramework {
 			var bullet = base.SpawnBullet(sender, bulletID);
 			if (bullet is MovableBullet mBullet) {
 				mBullet.RotateSpeed = sender.FacingSign * 24;
+				mBullet.EndRotation = 90;
+				mBullet.EndRotationRange = 20;
 			}
 			return bullet;
 		}
@@ -163,12 +190,19 @@ namespace AngeliaFramework {
 	[EntityAttribute.ItemCombination(typeof(iGrapePurple), typeof(iGunpowder), 1)]
 	public class iGrapeBomb : ThrowingWeapon {
 		public override Bullet SpawnBullet (Character sender, int bulletID) {
-			var bullet = base.SpawnBullet(sender, bulletID);
-			if (bullet is MovableBullet mBullet) {
-				mBullet.RotateSpeed = sender.FacingSign * 6;
-				mBullet.CurrentRotation = 0;
+			var bullet = base.SpawnBullet(sender, ExplosiveMovableBullet.TYPE_ID);
+			if (bullet is ExplosiveMovableBullet mBullet) {
 				mBullet.Velocity = new Vector2Int(sender.FacingSign * 42, 48);
 				mBullet.Gravity = 5;
+				mBullet.RotateSpeed = sender.FacingSign * 6;
+				mBullet.CurrentRotation = 0;
+				mBullet._DestroyOnHitEnvironment = true;
+				mBullet._DestroyOnHitReceiver = true;
+				mBullet._EnvironmentMask = PhysicsMask.SOLID;
+				mBullet._ReceiverMask = PhysicsMask.CHARACTER;
+				mBullet._Damage = 1;
+				mBullet.ExplosionDuration = 10;
+				mBullet.Radius = Const.CEL * 3;
 			}
 			return bullet;
 		}
