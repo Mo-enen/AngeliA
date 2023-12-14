@@ -4,13 +4,13 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
+	[EntityAttribute.Layer(EntityLayer.BULLET)]
 	public class Explosion : Entity {
 
 
 
 
 		#region --- VAR ---
-
 
 		// Const
 		public static readonly int TYPE_ID = typeof(Explosion).AngeHash();
@@ -22,21 +22,21 @@ namespace AngeliaFramework {
 		private static readonly int SMOKE_ID = typeof(QuickSmokeBigParticle).AngeHash();
 
 		// Api
-		public int CollisionMask { get; set; }
-		public int Duration { get; set; }
-		public int Damage { get; set; }
-		public int Radius { get; set; }
+		protected virtual int CollisionMask => PhysicsMask.ENTITY;
+		protected virtual int Duration => 10;
+		protected virtual int Damage => 1;
+		protected virtual int Radius => Const.CEL * 2;
+		protected virtual int RingArtwork => ART_RING;
+		protected virtual int FireArtwork => ART_FIRE;
+		protected virtual int WaveArtwork => ART_WAVE;
+		protected virtual int LightArtwork => ART_LIGHT;
+		protected virtual int DarkArtwork => ART_DARK;
+		protected virtual int SmokeParticleID => SMOKE_ID;
+		protected virtual Color32 WaveColor => new(255, 255, 255, 255);
+		protected virtual Color32 RingColor => new(255, 0, 0, 255);
+		protected virtual Color32 FireColor => new(255, 255, 0, 255);
+		public Entity Sender { get; set; } = null;
 		public int BreakObjectArtwork { get; set; }
-		public int RingArtwork { get; set; }
-		public int FireArtwork { get; set; }
-		public int WaveArtwork { get; set; }
-		public int LightArtwork { get; set; }
-		public int DarkArtwork { get; set; }
-		public int SmokeParticleID { get; set; }
-		public Color32 WaveColor { get; set; }
-		public Color32 RingColor { get; set; }
-		public Color32 FireColor { get; set; }
-		public Entity Sender { get; set; }
 
 		// Data
 		private readonly Vector3Int[] FirePos = new Vector3Int[10];
@@ -54,21 +54,9 @@ namespace AngeliaFramework {
 
 		public override void OnActivated () {
 			base.OnActivated();
-			Duration = 10;
-			Damage = 1;
-			Radius = Const.CEL * 2;
-			CollisionMask = PhysicsMask.ENTITY;
-			Exploded = false;
-			WaveColor = new Color32(255, 255, 255, 255);
-			RingColor = new Color32(255, 0, 0, 255);
-			FireColor = new Color32(255, 255, 0, 255);
-			RingArtwork = ART_RING;
-			FireArtwork = ART_FIRE;
-			WaveArtwork = ART_WAVE;
-			LightArtwork = ART_LIGHT;
-			DarkArtwork = ART_DARK;
-			SmokeParticleID = SMOKE_ID;
+			Sender = null;
 			BreakObjectArtwork = 0;
+			Exploded = false;
 			int seed = Game.GlobalFrame;
 			for (int i = 0; i < FirePos.Length; i++) {
 				FirePos[i] = new Vector3Int(

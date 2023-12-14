@@ -8,12 +8,14 @@ namespace AngeliaFramework {
 
 		public override int Duration => 1;
 		public override bool Loop => false;
-		protected int CurrentSpeedX { get; set; } = 0;
-		protected int CurrentSpeedY { get; set; } = 0;
-		protected int AirDragX { get; set; } = 3;
-		protected int RotateSpeed { get; set; } = 0;
-		protected int Gravity { get; set; } = 5;
-		protected bool FlipX { get; set; } = false;
+		public int ArtworkID { get; set; } = 0;
+		public int CurrentSpeedX { get; set; } = 0;
+		public int CurrentSpeedY { get; set; } = 0;
+		public int AirDragX { get; set; } = 3;
+		public int RotateSpeed { get; set; } = 0;
+		public int Gravity { get; set; } = 5;
+		public bool FlipX { get; set; } = false;
+		public bool BlinkInEnd { get; set; } = true;
 
 		public override void OnActivated () {
 			base.OnActivated();
@@ -21,8 +23,10 @@ namespace AngeliaFramework {
 			CurrentSpeedY = 0;
 			Gravity = 5;
 			AirDragX = 3;
-			RotateSpeed = 0; 
+			RotateSpeed = 0;
 			FlipX = false;
+			BlinkInEnd = true;
+			ArtworkID = 0;
 		}
 
 		public override void PhysicsUpdate () {
@@ -40,9 +44,10 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			if (UserData is int id) {
+			if (BlinkInEnd && LocalFrame > Duration / 2 && LocalFrame % 6 < 3) return;
+			if (ArtworkID != 0) {
 				CellRenderer.SetLayerToUI();
-				CellRenderer.Draw(id, X, Y, 500, 500, Rotation, FlipX ? -Width : Width, Height, 0);
+				CellRenderer.Draw(ArtworkID, X, Y, 500, 500, Rotation, FlipX ? -Width : Width, Height, 0);
 				CellRenderer.SetLayerToDefault();
 			}
 		}

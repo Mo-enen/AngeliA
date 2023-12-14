@@ -4,8 +4,8 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public class DefaultMeleeBullet : MeleeBullet {
-		public static readonly int TYPE_ID = typeof(DefaultMeleeBullet).AngeHash();
+	public class GeneralMeleeBullet : MeleeBullet {
+		public static readonly int TYPE_ID = typeof(GeneralMeleeBullet).AngeHash();
 		protected override int Duration => 10;
 		protected override int Damage => 1;
 	}

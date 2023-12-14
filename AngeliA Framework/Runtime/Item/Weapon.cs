@@ -6,55 +6,47 @@ using UnityEngine;
 namespace AngeliaFramework {
 
 
-
 	public enum WeaponType { Hand, Sword, Axe, Hammer, Flail, Ranged, Polearm, Hook, Claw, Magic, Throwing, }
 
 
 	public enum WeaponHandheld { SingleHanded, DoubleHanded, OneOnEachHand, Pole, MagicPole, Bow, Firearm, Float, }
 
 
+	// Projectile
+	public abstract class ProjectileWeapon<B> : ProjectileWeapon where B : MovableBullet {
+		public ProjectileWeapon () => BulletID = typeof(B).AngeHash();
+	}
 	public abstract class ProjectileWeapon : Weapon {
-		private int ProjectileArtworkID { get; init; }
-		public ProjectileWeapon () {
-			ProjectileArtworkID = $"{GetType().AngeName()}.Bullet".AngeHash();
-			if (!CellRenderer.HasSprite(ProjectileArtworkID)) ProjectileArtworkID = 0;
-		}
-		public override Bullet SpawnBullet (Character sender, int bulletID) => SpawnMovableBullet(sender, this, bulletID != 0 ? bulletID : DefaultMovableBullet.TYPE_ID);
-		public static MovableBullet SpawnMovableBullet (Character sender, ProjectileWeapon weapon, int bulletID) {
-			if (SpawnRawBullet(sender, bulletID) is not MovableBullet bullet) return null;
+		public ProjectileWeapon () => BulletID = GeneralMovableBullet.TYPE_ID;
+		public override Bullet SpawnBullet (Character sender) {
+			if (base.SpawnBullet(sender) is not MovableBullet bullet) return null;
 			bullet.X = sender.FacingRight ? sender.X : sender.X - bullet.Width;
 			bullet.Y = sender.Y + sender.Height / 2;
-			bullet.ArtworkID = weapon.ProjectileArtworkID;
-			bullet.ArtworkDelay = sender.AttackDuration / 6 + 1;
-			bullet.Velocity = default;
-			bullet.RotateSpeed = 0;
-			bullet.CurrentRotation = 0;
-			bullet.Gravity = 0;
-			bullet._DestroyOnHitEnvironment = true;
-			bullet._DestroyOnHitReceiver = true;
-			bullet._EnvironmentMask = PhysicsMask.SOLID;
-			bullet._ReceiverMask = PhysicsMask.SOLID;
+			bullet.StartMove(sender.FacingRight);
 			return bullet;
 		}
 	}
 
 
-
+	// Melee
+	public abstract class MeleeWeapon<B> : MeleeWeapon where B : MeleeBullet {
+		public MeleeWeapon () => BulletID = typeof(B).AngeHash();
+	}
 	public abstract class MeleeWeapon : Weapon {
 		public abstract int RangeXLeft { get; }
 		public abstract int RangeXRight { get; }
 		public abstract int RangeY { get; }
-		public override Bullet SpawnBullet (Character sender, int bulletID) => SpawnMeleeBullet(sender, this, bulletID != 0 ? bulletID : DefaultMeleeBullet.TYPE_ID);
-		public static MeleeBullet SpawnMeleeBullet (Character sender, MeleeWeapon weapon, int bulletID) {
+		public MeleeWeapon () => BulletID = GeneralMeleeBullet.TYPE_ID;
+		public override Bullet SpawnBullet (Character sender) {
 
-			if (SpawnRawBullet(sender, bulletID) is not MeleeBullet bullet) return null;
+			if (base.SpawnBullet(sender) is not MeleeBullet bullet) return null;
 
 			// Set Range
-			int rangeX = weapon.RangeXRight;
+			int rangeX = RangeXRight;
 			if (!sender.FacingRight) {
-				rangeX = weapon.RangeXLeft;
+				rangeX = RangeXLeft;
 			}
-			bullet.SetSpawnSize(rangeX, weapon.RangeY);
+			bullet.SetSpawnSize(rangeX, RangeY);
 
 			// Follow
 			bullet.FollowSender();
@@ -73,11 +65,15 @@ namespace AngeliaFramework {
 	}
 
 
-
+	// Weapon
+	public abstract class Weapon<B> : Weapon where B : Bullet {
+		public Weapon () => BulletID = typeof(B).AngeHash();
+	}
 	[EntityAttribute.MapEditorGroup("ItemWeapon")]
 	public abstract class Weapon : Equipment {
 
 		// VAR
+		protected int BulletID { get; set; } = 0;
 		protected int SpriteID { get; init; }
 		public sealed override EquipmentType EquipmentType => EquipmentType.Weapon;
 		public abstract WeaponType WeaponType { get; }
@@ -312,7 +308,10 @@ namespace AngeliaFramework {
 
 		public virtual int GetOverrideAttackAnimationID (Character character) => 0;
 
-		public virtual Bullet SpawnBullet (Character sender, int bulletID) => SpawnRawBullet(sender, bulletID != 0 ? bulletID : GeneralBullet.TYPE_ID);
+		public virtual Bullet SpawnBullet (Character sender) {
+			int bulletID = BulletID != 0 ? BulletID : GeneralBullet.TYPE_ID;
+			return SpawnRawBullet(sender, bulletID);
+		}
 
 		public static Bullet SpawnRawBullet (Character sender, int bulletID) {
 			if (sender == null) return null;
@@ -329,7 +328,5 @@ namespace AngeliaFramework {
 		}
 
 	}
-
-
 
 }

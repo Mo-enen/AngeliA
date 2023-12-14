@@ -17,10 +17,6 @@ namespace AngeliaFramework {
 
 	public sealed class GeneralBullet : Bullet {
 		public static readonly int TYPE_ID = typeof(GeneralBullet).AngeHash();
-		protected override int Duration => 30;
-		protected override int Damage => 1;
-		protected override int SpawnWidth => Const.CEL;
-		protected override int SpawnHeight => Const.CEL * 2;
 	}
 
 
@@ -32,14 +28,12 @@ namespace AngeliaFramework {
 	public abstract class Bullet : Entity {
 
 		// Api
-		public delegate void BulletEvent (Bullet bullet, IDamageReceiver receiver, int artwork);
-		public static event BulletEvent OnResidueSpawn;
 		protected virtual int EnvironmentMask => PhysicsMask.SOLID;
 		protected virtual int ReceiverMask => PhysicsMask.SOLID;
-		protected abstract int Duration { get; }
-		protected abstract int Damage { get; }
-		protected abstract int SpawnWidth { get; }
-		protected abstract int SpawnHeight { get; }
+		protected virtual int Duration => 60;
+		protected virtual int Damage => 1;
+		protected virtual int SpawnWidth => Const.CEL;
+		protected virtual int SpawnHeight => Const.CEL;
 		protected virtual bool DestroyOnHitEnvironment => false;
 		protected virtual bool DestroyOnHitReceiver => false;
 		public Entity Sender { get; set; } = null;
@@ -52,6 +46,7 @@ namespace AngeliaFramework {
 			base.OnActivated();
 			Width = SpawnWidth;
 			Height = SpawnHeight;
+			Sender = null;
 		}
 
 		public override void BeforePhysicsUpdate () {
@@ -63,8 +58,10 @@ namespace AngeliaFramework {
 			}
 			// Environment Hit Check
 			if (CellPhysics.Overlap(EnvironmentMask, Rect, Sender)) {
-				if (DestroyOnHitEnvironment) Active = false;
-				SpawnResidue(null);
+				if (DestroyOnHitEnvironment) {
+					Active = false;
+					SpawnResidue(null);
+				}
 			}
 		}
 
@@ -84,8 +81,10 @@ namespace AngeliaFramework {
 				if ((receiver.Team & TargetTeam) != receiver.Team) continue;
 				if (receiver is Entity e && !e.Active) continue;
 				receiver.TakeDamage(Damage, Sender);
-				if (DestroyOnHitReceiver) Active = false;
-				SpawnResidue(receiver);
+				if (DestroyOnHitReceiver) {
+					Active = false;
+					SpawnResidue(receiver);
+				}
 			}
 		}
 
@@ -100,9 +99,7 @@ namespace AngeliaFramework {
 			return grounded;
 		}
 
-		protected virtual void SpawnResidue (IDamageReceiver receiver) => InvokeOnResidueSpawnEvent(this, receiver, 0);
-
-		protected static void InvokeOnResidueSpawnEvent (Bullet bullet, IDamageReceiver receiver, int artworkID) => OnResidueSpawn?.Invoke(bullet, receiver, artworkID);
+		protected virtual void SpawnResidue (IDamageReceiver receiver) { }
 
 	}
 }

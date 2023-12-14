@@ -7,16 +7,21 @@ namespace AngeliaFramework {
 
 
 	// Sword
+	public abstract class Sword<B> : Sword where B : MeleeBullet {
+		public Sword () => BulletID = typeof(B).AngeHash();
+	}
 	public abstract class Sword : MeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Sword;
 		public override int RangeXLeft => 275;
 		public override int RangeXRight => 275;
 		public override int RangeY => 432;
-
 	}
 
 
 	// Polearm
+	public abstract class Polearm<B> : Polearm where B : MeleeBullet {
+		public Polearm () => BulletID = typeof(B).AngeHash();
+	}
 	public abstract class Polearm : MeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Polearm;
 		public sealed override WeaponHandheld Handheld => WeaponHandheld.Pole;
@@ -31,6 +36,9 @@ namespace AngeliaFramework {
 
 
 	// Hammer
+	public abstract class Hammer<B> : Hammer where B : MeleeBullet {
+		public Hammer () => BulletID = typeof(B).AngeHash();
+	}
 	public abstract class Hammer : MeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Hammer;
 		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
@@ -43,6 +51,9 @@ namespace AngeliaFramework {
 
 
 	// Claw
+	public abstract class Claw<B> : Claw where B : MeleeBullet {
+		public Claw () => BulletID = typeof(B).AngeHash();
+	}
 	public abstract class Claw : MeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Claw;
 		public sealed override WeaponHandheld Handheld => WeaponHandheld.OneOnEachHand;
@@ -57,6 +68,9 @@ namespace AngeliaFramework {
 
 
 	// Axe
+	public abstract class Axe<B> : Axe where B : MeleeBullet {
+		public Axe () => BulletID = typeof(B).AngeHash();
+	}
 	public abstract class Axe : MeleeWeapon {
 		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 		public sealed override WeaponType WeaponType => WeaponType.Axe;
@@ -69,6 +83,9 @@ namespace AngeliaFramework {
 
 
 	// Hook
+	public abstract class Hook<B> : Hook where B : MeleeBullet {
+		public Hook () => BulletID = typeof(B).AngeHash();
+	}
 	public abstract class Hook : MeleeWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Hook;
 		public override int RangeXLeft => 275;
@@ -78,6 +95,9 @@ namespace AngeliaFramework {
 
 
 	// Flail
+	public abstract class Flail<B> : Flail where B : MeleeBullet {
+		public Flail () => BulletID = typeof(B).AngeHash();
+	}
 	public abstract class Flail : MeleeWeapon {
 
 		public sealed override WeaponType WeaponType => WeaponType.Flail;
@@ -202,13 +222,14 @@ namespace AngeliaFramework {
 
 
 	// Firearm
-	public abstract class Firearm : Weapon {
-
+	public abstract class Firearm<B> : Firearm where B : MovableBullet {
+		public Firearm () => BulletID = typeof(B).AngeHash();
+	}
+	public abstract class Firearm : ProjectileWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Ranged;
 		public sealed override WeaponHandheld Handheld => WeaponHandheld.Firearm;
 		private int SpriteIdAttack { get; init; }
 		private int SpriteFrameCount { get; init; }
-
 		public Firearm () {
 			SpriteIdAttack = $"{GetType().AngeName()}.Attack".AngeHash();
 			if (CellRenderer.HasSpriteGroup(SpriteIdAttack, out int length)) {
@@ -218,7 +239,6 @@ namespace AngeliaFramework {
 				SpriteFrameCount = 0;
 			}
 		}
-
 		protected override Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
 			// Draw Attack
@@ -239,37 +259,33 @@ namespace AngeliaFramework {
 			}
 			return cell;
 		}
-
 	}
 
 
 	// Throwing
+	public abstract class ThrowingWeapon<B> : ThrowingWeapon where B : MovableBullet {
+		public ThrowingWeapon () => BulletID = typeof(B).AngeHash();
+	}
 	public abstract class ThrowingWeapon : ProjectileWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Throwing;
 		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
-		public override Bullet SpawnBullet (Character sender, int bulletID) {
-			var bullet = base.SpawnBullet(sender, bulletID);
-			if (bullet is MovableBullet mBullet) {
-				mBullet._DestroyOnHitEnvironment = true;
-				mBullet._DestroyOnHitReceiver = true;
-				mBullet.Velocity = new Vector2Int(sender.FacingRight ? 46 : -46, 0);
-				mBullet.RotateSpeed = 0;
-				mBullet.CurrentRotation = 0;
-				mBullet.Gravity = 0;
-			}
-			return bullet;
-		}
 	}
 
 
 	// Magic
-	public abstract class MagicWeapon : Weapon {
+	public abstract class MagicWeapon<B> : MagicWeapon where B : MovableBullet {
+		public MagicWeapon () => BulletID = typeof(B).AngeHash();
+	}
+	public abstract class MagicWeapon : ProjectileWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Magic;
 	}
 
 
 	// Bow
-	public abstract class Bow : Weapon {
+	public abstract class Bow<B> : Bow where B : MovableBullet {
+		public Bow () => BulletID = typeof(B).AngeHash();
+	}
+	public abstract class Bow : ProjectileWeapon {
 
 		public sealed override WeaponType WeaponType => WeaponType.Ranged;
 		public sealed override WeaponHandheld Handheld => WeaponHandheld.Bow;

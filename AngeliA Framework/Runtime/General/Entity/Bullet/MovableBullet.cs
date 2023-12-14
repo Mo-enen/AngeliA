@@ -4,34 +4,35 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public class ExplosiveMovableBullet : MovableBullet {
-		public static readonly int TYPE_ID = typeof(ExplosiveMovableBullet).AngeHash();
+
+
+	// Explosive
+	public abstract class ExplosiveMovableBullet<Ex> : ExplosiveMovableBullet where Ex : Explosion {
+		protected override int ExplosionID => _ExplosionID;
+		private int _ExplosionID { get; init; }
+		public ExplosiveMovableBullet () => _ExplosionID = typeof(Ex).AngeHash();
+	}
+	public abstract class ExplosiveMovableBullet : MovableBullet {
 		protected override int Duration => 600;
 		protected override int Damage => 0;
 		protected override int SpawnWidth => Const.CEL;
 		protected override int SpawnHeight => Const.CEL;
-		public int Radius { get; set; }
-		public int ExplosionDuration { get; set; }
+		protected virtual int Radius => Const.CEL * 2;
+		protected virtual int ExplosionDuration => 10;
+		protected virtual int ExplosionID => Explosion.TYPE_ID;
 		protected override void SpawnResidue (IDamageReceiver receiver) {
-			// Explode
 			if (Active) return;
-			if (Stage.SpawnEntity(Explosion.TYPE_ID, X + Width / 2, Y + Height / 2) is Explosion exp) {
-				exp.Sender = Sender;
-				exp.Damage = _Damage;
-				exp.Radius = Radius;
-				exp.Duration = ExplosionDuration;
-				exp.BreakObjectArtwork = ArtworkID;
+			if (Stage.SpawnEntity(ExplosionID, X + Width / 2, Y + Height / 2) is Explosion exp) {
+				exp.BreakObjectArtwork = TypeID;
 			}
 		}
 	}
 
 
-	public class DefaultMovableBullet : MovableBullet {
-		public static readonly int TYPE_ID = typeof(DefaultMovableBullet).AngeHash();
-		protected override int Duration => 600;
-		protected override int Damage => 1;
-		protected override int SpawnWidth => Const.CEL;
-		protected override int SpawnHeight => Const.CEL;
+
+	// Movable
+	public sealed class GeneralMovableBullet : MovableBullet {
+		public static readonly int TYPE_ID = typeof(GeneralMovableBullet).AngeHash();
 	}
 
 
@@ -39,25 +40,21 @@ namespace AngeliaFramework {
 	public abstract class MovableBullet : Bullet {
 
 		// Api
-		protected sealed override bool DestroyOnHitEnvironment => _DestroyOnHitEnvironment;
-		protected sealed override bool DestroyOnHitReceiver => _DestroyOnHitReceiver;
-		protected override int EnvironmentMask => _EnvironmentMask;
-		protected override int ReceiverMask => _ReceiverMask;
-		protected override int Damage => _Damage;
-		public bool _DestroyOnHitEnvironment { get; set; } = true;
-		public bool _DestroyOnHitReceiver { get; set; } = true;
-		public int _EnvironmentMask { get; set; } = PhysicsMask.SOLID;
-		public int _ReceiverMask { get; set; } = PhysicsMask.SOLID;
-		public Vector2Int Velocity { get; set; } = default;
-		public Vector2Int AriDrag { get; set; } = default;
-		public int Gravity { get; set; } = 0;
-		public int CurrentRotation { get; set; } = 0;
-		public int RotateSpeed { get; set; } = 0;
-		public int EndRotation { get; set; } = 0;
-		public int EndRotationRange { get; set; } = 180;
-		public int ArtworkID { get; set; } = 0;
-		public int ArtworkDelay { get; set; } = 0;
-		public int _Damage { get; set; } = 1;
+		protected virtual int SpeedX => 42;
+		protected virtual int SpeedY => 0;
+		protected virtual Vector2Int AriDrag => default;
+		protected virtual int Gravity => 0;
+		protected virtual int StartRotation => 0;
+		protected virtual int RotateSpeed => 0;
+		protected virtual int EndRotation => 0;
+		protected virtual int EndRotationRandomRange => 180;
+		protected virtual int ArtworkDelay => 0;
+		protected virtual int ResidueParticleID => 0;
+		public bool FacingRight { get; set; }
+
+		// Data
+		private Vector2Int Velocity;
+		private int Rotation;
 
 		// MSG
 		public override void BeforePhysicsUpdate () {
@@ -141,22 +138,68 @@ namespace AngeliaFramework {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			int localFrame = Game.GlobalFrame - SpawnFrame;
-			if (localFrame >= ArtworkDelay && CellRenderer.TryGetSprite(ArtworkID, out var sprite)) {
-				CurrentRotation += RotateSpeed;
+			if (localFrame >= ArtworkDelay && CellRenderer.TryGetSprite(TypeID, out var sprite)) {
 				int width = sprite.GlobalWidth;
 				if (RotateSpeed != 0 && Velocity.x < 0) {
 					width = -width;
+					Rotation -= RotateSpeed;
+				} else {
+					Rotation += RotateSpeed;
 				}
 				CellRenderer.Draw(
-					ArtworkID,
+					TypeID,
 					X + Width / 2, Y + Height / 2,
-					sprite.PivotX, sprite.PivotY, CurrentRotation,
+					sprite.PivotX, sprite.PivotY, Rotation,
 					width, sprite.GlobalHeight
 				);
 			}
 		}
 
-		protected override void SpawnResidue (IDamageReceiver receiver) => InvokeOnResidueSpawnEvent(this, receiver, ArtworkID);
+		protected override void SpawnResidue (IDamageReceiver receiver) {
+
+			if (ResidueParticleID == 0) return;
+			if (Stage.SpawnEntity(ResidueParticleID, X + Width / 2, Y + Height / 2) is not FreeFallParticle particle) return;
+			if (!CellRenderer.TryGetSprite(TypeID, out var sprite)) return;
+
+			particle.ArtworkID = TypeID;
+			particle.Width = sprite.GlobalWidth;
+			particle.Height = sprite.GlobalHeight;
+
+			if (EndRotationRandomRange == -1) {
+				particle.Rotation = Util.QuickRandom(Game.GlobalFrame).UMod(360);
+			} else if (EndRotationRandomRange == 0) {
+				particle.Rotation = EndRotation;
+			} else {
+				int endDelta = ((Rotation - EndRotation + 180).UMod(360) - 180).Clamp(-EndRotationRandomRange, EndRotationRandomRange);
+				particle.Rotation = EndRotation + endDelta;
+			}
+			if (Velocity.x < 0) {
+				particle.Rotation += 180;
+				particle.FlipX = true;
+			}
+			particle.CurrentSpeedX = -Velocity.x / 2;
+
+			particle.AirDragX = 2;
+			if (receiver == null) {
+				// Environmnet
+				particle.RotateSpeed = 0;
+				particle.CurrentSpeedX = 0;
+				particle.CurrentSpeedY = 0;
+				particle.Gravity = 0;
+			} else {
+				// Receiver
+				particle.RotateSpeed = 12;
+				particle.CurrentSpeedY = 42;
+				particle.Gravity = 5;
+			}
+		}
+
+		// API
+		public void StartMove (bool facingRight) {
+			Velocity.x = facingRight ? SpeedX : -SpeedX;
+			Velocity.y = SpeedY;
+			Rotation = facingRight ? StartRotation : -StartRotation;
+		}
 
 	}
 }

@@ -371,7 +371,7 @@ namespace AngeliaFramework {
 					if (squatStart) item.OnSquat(this);
 					if (item is Weapon weapon) {
 						equippingWeapon = true;
-						if (attackStart) weapon.SpawnBullet(this, 0);
+						if (attackStart) weapon.SpawnBullet(this);
 					}
 				}
 

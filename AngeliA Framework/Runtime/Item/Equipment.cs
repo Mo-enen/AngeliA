@@ -21,8 +21,8 @@ namespace AngeliaFramework {
 		// API
 		public static void SpawnItemLostParticle (int itemID, int x, int y) {
 			if (ItemLostParticleID == 0) return;
-			if (Stage.SpawnEntity(ItemLostParticleID, x, y) is not Particle particle) return;
-			particle.UserData = itemID;
+			if (Stage.SpawnEntity(ItemLostParticleID, x, y) is not FreeFallParticle particle) return;
+			particle.ArtworkID = itemID;
 		}
 
 		public static void SpawnEquipmentBrokeParticle (int itemID, int x, int y) {
@@ -38,6 +38,6 @@ namespace AngeliaFramework {
 		}
 
 		public virtual int GetOverrideMovementAnimationID (CharacterAnimationType type, Character character) => 0;
-		
+
 	}
 }
