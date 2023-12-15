@@ -125,7 +125,7 @@ namespace AngeliaFramework {
 				CellRenderer.SetLayerToUI();
 				CellRenderer.Draw(Const.PIXEL, labelRect, Const.BLACK, int.MaxValue);
 				CellRendererGUI.Label(
-					CellContent.Get(CellRendererGUI.GetNumberCache(ItemCount)), labelRect
+					CellContent.Get(CellRendererGUI.GetNumberCache(ItemCount), 20), labelRect
 				);
 			}
 			CellRenderer.SetLayerToDefault();

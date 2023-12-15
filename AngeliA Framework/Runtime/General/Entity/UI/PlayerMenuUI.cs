@@ -11,21 +11,6 @@ namespace AngeliaFramework {
 		public int AvatarIcon = 0;
 		public override void DrawPanel (RectInt panelRect) {
 			PlayerMenuUI.DrawTopInventory(InventoryID, Column, Row);
-			// Icon
-			//if (AvatarIcon != 0) {
-			//	int ICON_SIZE = Unify(96);
-			//	int INFO_WIDTH = Unify(PlayerMenuUI.INFO_WIDTH);
-			//	int PADDING = Unify(12);
-			//	if (CellRenderer.TryGetSpriteFromGroup(AvatarIcon, 0, out var sprite, false, true)) {
-			//		var iconRect = new RectInt(
-			//			panelRect.x - ICON_SIZE - (PADDING + INFO_WIDTH - ICON_SIZE) / 2,
-			//			panelRect.y + PADDING,
-			//			ICON_SIZE, ICON_SIZE
-			//		);
-			//		CellRenderer.Draw(Const.PIXEL, iconRect.Expand(Unify(12)), Const.BLACK, int.MinValue + 1);
-			//		CellRenderer.Draw(sprite.GlobalID, iconRect, int.MinValue + 16);
-			//	}
-			//}
 		}
 	}
 
@@ -480,12 +465,13 @@ namespace AngeliaFramework {
 			int x = FrameInput.MouseGlobalPosition.x;
 			int y = FrameInput.MouseGlobalPosition.y;
 			int size = Unify(ITEM_SIZE);
+			CellRenderer.SetLayerToTopUI();
 			CellRenderer.Draw(
 				CellRenderer.HasSprite(TakingID) ? TakingID : Const.PIXEL,
 				x, y, 500, 500, Game.GlobalFrame.PingPong(30) - 15,
 				size, size, Const.WHITE, int.MaxValue
 			);
-			DrawItemCount(new RectInt(x, y - size / 2, size / 2, size / 2), TakingCount);
+			CellRenderer.SetLayerToUI();
 		}
 
 
@@ -595,10 +581,8 @@ namespace AngeliaFramework {
 			DrawItemIcon(itemRect, itemID, Const.WHITE, int.MinValue + 4);
 
 			// Count
-			if (TakingID == 0 || cursorIndex != uiIndex) {
-				DrawItemCount(itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3), itemCount);
-			}
-
+			DrawItemCount(itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3), itemCount);
+			
 			// Hover
 			if (hovering) {
 				if (FrameInput.LastActionFromMouse) {
@@ -622,6 +606,7 @@ namespace AngeliaFramework {
 				CellRendererGUI.HighlightCursor(FRAME_CODE, itemRect, int.MinValue + 4);
 				// Taking Item
 				if (TakingID != 0) {
+					CellRenderer.SetLayerToTopUI();
 					CellRenderer.Draw(
 						CellRenderer.HasSprite(TakingID) ? TakingID : Const.PIXEL,
 						itemRect.x + itemRect.width / 2,
@@ -630,8 +615,7 @@ namespace AngeliaFramework {
 						itemRect.width * 3 / 2, itemRect.height * 3 / 2,
 						Const.WHITE, int.MaxValue - 1
 					);
-					int _size = itemRect.width / 2;
-					DrawItemCount(new RectInt(itemRect.xMax - _size, itemRect.y, _size, _size), TakingCount);
+					CellRenderer.SetLayerToUI();
 				}
 			}
 

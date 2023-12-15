@@ -8,7 +8,7 @@ namespace AngeliaFramework {
 
 
 	// Armor Wood
-	[EntityAttribute.ItemCombination(typeof(iTreeStump), typeof(iItemWoodBoard), 1)]
+	[ItemCombination(typeof(iTreeStump), typeof(iItemWoodBoard), 1)]
 	public class iArmorWood : BodyArmor<iArmorWoodBroken, iArmorWood> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iArmorWoodBroken : BodyArmor<iArmorWoodBroken, iArmorWood> {
@@ -18,7 +18,7 @@ namespace AngeliaFramework {
 
 
 	// Armor Iron
-	[EntityAttribute.ItemCombination(typeof(iArmorWood), typeof(iIngotIron), 1)]
+	[ItemCombination(typeof(iArmorWood), typeof(iIngotIron), 1)]
 	public class iArmorIron : BodyArmor<iArmorIronCracked, iArmorIron> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iArmorIronCracked : BodyArmor<iArmorIronBroken, iArmorIron> {
@@ -32,7 +32,7 @@ namespace AngeliaFramework {
 
 
 	// Armor Gold
-	[EntityAttribute.ItemCombination(typeof(iArmorIron), typeof(iIngotGold), 1)]
+	[ItemCombination(typeof(iArmorIron), typeof(iIngotGold), 1)]
 	public class iArmorGold : BodyArmor<iArmorGoldDented, iArmorGold> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iArmorGoldDented : BodyArmor<iArmorGoldCracked, iArmorGold> {
@@ -50,7 +50,7 @@ namespace AngeliaFramework {
 
 
 	// Brave
-	[EntityAttribute.ItemCombination(typeof(iArmorIron), typeof(iFabric), 1)]
+	[ItemCombination(typeof(iArmorIron), typeof(iFabric), 1)]
 	public class iArmorBrave : BodyArmor<iArmorBraveCracked, iArmorBrave> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iArmorBraveCracked : BodyArmor<iArmorBraveBroken, iArmorBrave> {
@@ -64,7 +64,7 @@ namespace AngeliaFramework {
 
 
 	// Skull
-	[EntityAttribute.ItemCombination(typeof(iSkull), typeof(iSkull), typeof(iArmorWood), 1)]
+	[ItemCombination(typeof(iSkull), typeof(iSkull), typeof(iArmorWood), 1)]
 	public class iArmorSkull : BodyArmor<iArmorSkullBroken, iArmorSkull> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iArmorSkullBroken : BodyArmor<iArmorSkullBroken, iArmorSkull> {
@@ -74,7 +74,7 @@ namespace AngeliaFramework {
 
 
 	// Chain Mail
-	[EntityAttribute.ItemCombination(typeof(iArmorIron), typeof(iIngotIron), 1)]
+	[ItemCombination(typeof(iArmorIron), typeof(iIngotIron), 1)]
 	public class iChainMail : BodyArmor<iChainMailCracked, iChainMail> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iChainMailCracked : BodyArmor<iChainMailBroken, iChainMail> {
@@ -88,7 +88,7 @@ namespace AngeliaFramework {
 
 
 	// Clay
-	[EntityAttribute.ItemCombination(typeof(iClay), typeof(iArmorWood), 1)]
+	[ItemCombination(typeof(iClay), typeof(iArmorWood), 1)]
 	public class iArmorClay : BodyArmor<iArmorClayBroken, iArmorClay> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iArmorClayBroken : BodyArmor<iArmorClayBroken, iArmorClay> {
@@ -98,7 +98,7 @@ namespace AngeliaFramework {
 
 
 	// Velvet
-	[EntityAttribute.ItemCombination(typeof(iFabric), typeof(iFabric), typeof(iFabric), typeof(iFabric), 1)]
+	[ItemCombination(typeof(iFabric), typeof(iFabric), typeof(iFabric), typeof(iFabric), 1)]
 	public class iVelvetDress : BodyArmor<iVelvetDressBroken, iVelvetDress> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iVelvetDressBroken : BodyArmor<iVelvetDressBroken, iVelvetDress> {
@@ -108,7 +108,7 @@ namespace AngeliaFramework {
 
 
 	// Cloak 
-	[EntityAttribute.ItemCombination(typeof(iRope), typeof(iFabric), typeof(iFabric), typeof(iFabric), 1)]
+	[ItemCombination(typeof(iRope), typeof(iFabric), typeof(iFabric), typeof(iFabric), 1)]
 	public class iCloak : BodyArmor<iCloakBroken, iCloak> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iCloakBroken : BodyArmor<iCloakBroken, iCloak> {
@@ -118,7 +118,7 @@ namespace AngeliaFramework {
 
 
 	// Knight
-	[EntityAttribute.ItemCombination(typeof(iArmorIron), typeof(iArmorIron), 1)]
+	[ItemCombination(typeof(iArmorIron), typeof(iArmorIron), 1)]
 	public class iArmorKnight : BodyArmor<iArmorKnightCracked, iArmorKnight> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iArmorKnightCracked : BodyArmor<iArmorKnightBroken, iArmorKnight> {
@@ -132,7 +132,7 @@ namespace AngeliaFramework {
 
 
 	// Mage Robe
-	[EntityAttribute.ItemCombination(typeof(iCloak), typeof(iRuneCube), 1)]
+	[ItemCombination(typeof(iCloak), typeof(iRuneCube), 1)]
 	public class iMageRobe : BodyArmor<iMageRobeBroken, iMageRobe> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iMageRobeBroken : BodyArmor<iMageRobeBroken, iMageRobe> {
@@ -141,7 +141,7 @@ namespace AngeliaFramework {
 
 
 	// Leather
-	[EntityAttribute.ItemCombination(typeof(iArmorWood), typeof(iLeather), typeof(iLeather), typeof(iLeather), 1)]
+	[ItemCombination(typeof(iArmorWood), typeof(iLeather), typeof(iLeather), typeof(iLeather), 1)]
 	public class iArmorLeather : BodyArmor<iArmorLeatherBroken, iArmorLeather> { }
 
 	[EntityAttribute.ExcludeInMapEditor]
@@ -151,7 +151,7 @@ namespace AngeliaFramework {
 
 
 	// Studded
-	[EntityAttribute.ItemCombination(typeof(iBolt), typeof(iBolt), typeof(iBolt), typeof(iArmorWood), 1)]
+	[ItemCombination(typeof(iBolt), typeof(iBolt), typeof(iBolt), typeof(iArmorWood), 1)]
 	public class iArmorStudded : BodyArmor<iArmorStuddedBroken, iArmorStudded> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iArmorStuddedBroken : BodyArmor<iArmorStuddedBroken, iArmorStudded> {
@@ -160,7 +160,7 @@ namespace AngeliaFramework {
 
 
 	// Practitioner Robe
-	[EntityAttribute.ItemCombination(typeof(iEar), typeof(iNose), typeof(iFist), typeof(iCloak), 1)]
+	[ItemCombination(typeof(iEar), typeof(iNose), typeof(iFist), typeof(iCloak), 1)]
 	public class iPractitionerRobe : BodyArmor<iPractitionerRobeBroken, iPractitionerRobe> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iPractitionerRobeBroken : BodyArmor<iPractitionerRobeBroken, iPractitionerRobe> {
@@ -170,7 +170,7 @@ namespace AngeliaFramework {
 
 
 	// Paladin
-	[EntityAttribute.ItemCombination(typeof(iArmorBrave), typeof(iIngotGold), 1)]
+	[ItemCombination(typeof(iArmorBrave), typeof(iIngotGold), 1)]
 	public class iArmorPaladin : BodyArmor<iArmorPaladinDented, iArmorPaladin> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iArmorPaladinDented : BodyArmor<iArmorPaladinCracked, iArmorPaladin> {

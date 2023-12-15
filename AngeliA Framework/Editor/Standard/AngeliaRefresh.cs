@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Reflection;
+using UnityEngine;
 using UnityEditor;
 using UnityEditor.Build;
-using UnityEngine;
 using UnityEditor.Build.Reporting;
 using UnityEditor.SceneManagement;
-using System.Text;
+
 
 namespace AngeliaFramework.Editor {
 
@@ -538,9 +540,10 @@ namespace AngeliaFramework.Editor {
 
 		private void CreateItemCombinationFiles () {
 
-			// Create Combination File
+			// Create User Combination Template
 			string combineFilePath = Util.CombinePaths(AngePath.ItemSaveDataRoot, AngePath.COMBINATION_FILE_NAME);
-			Util.TextToFile(@"
+			if (!Util.FileExists(combineFilePath)) {
+				Util.TextToFile(@"
 #
 # Custom Item Combination Formula
 # 
@@ -562,13 +565,70 @@ namespace AngeliaFramework.Editor {
 #
 #
 #", combineFilePath);
+			}
 
 			// Create Item Name Helper
-			var builder = new StringBuilder();
-			foreach (var type in typeof(Item).AllChildClass()) {
-				builder.AppendLine(type.AngeName());
+			string helperPath = Util.CombinePaths(AngePath.ItemSaveDataRoot, "Item Name Helper.txt");
+			if (!Util.FileExists(helperPath)) {
+				var builder = new StringBuilder();
+				foreach (var type in typeof(Item).AllChildClass()) {
+					builder.AppendLine(type.AngeName());
+				}
+				Util.TextToFile(builder.ToString(), helperPath);
 			}
-			Util.TextToFile(builder.ToString(), Util.CombinePaths(AngePath.ItemSaveDataRoot, "Item Name Helper.txt"));
+
+			// Create Built-in Combination File
+			{
+				string builtInPath = Util.CombinePaths(AngePath.MetaRoot, AngePath.COMBINATION_FILE_NAME);
+				var builder = new StringBuilder();
+				foreach (var type in typeof(Item).AllChildClass()) {
+					string result = type.AngeName();
+					var iComs = type.GetCustomAttributes<ItemCombinationAttribute>(false);
+					if (iComs == null) continue;
+					foreach (var com in iComs) {
+						if (com.Count <= 0) continue;
+						if (
+							com.ItemA == null && com.ItemB == null &&
+							com.ItemC == null && com.ItemD == null
+						) continue;
+						if (com.ItemA != null) {
+							if (!com.ConsumeA) builder.Append('^');
+							builder.Append(com.ItemA.AngeName());
+						}
+						if (com.ItemB != null) {
+							builder.Append(' ');
+							builder.Append('+');
+							builder.Append(' ');
+							if (!com.ConsumeB) builder.Append('^');
+							builder.Append(com.ItemB.AngeName());
+						}
+						if (com.ItemC != null) {
+							builder.Append(' ');
+							builder.Append('+');
+							builder.Append(' ');
+							if (!com.ConsumeC) builder.Append('^');
+							builder.Append(com.ItemC.AngeName());
+						}
+						if (com.ItemD != null) {
+							builder.Append(' ');
+							builder.Append('+');
+							builder.Append(' ');
+							if (!com.ConsumeD) builder.Append('^');
+							builder.Append(com.ItemD.AngeName());
+						}
+						builder.Append(' ');
+						builder.Append('=');
+						if (com.Count > 1) {
+							builder.Append(' ');
+							builder.Append(com.Count);
+						}
+						builder.Append(' ');
+						builder.Append(result);
+						builder.Append('\n');
+					}
+				}
+				Util.TextToFile(builder.ToString(), builtInPath);
+			}
 
 		}
 

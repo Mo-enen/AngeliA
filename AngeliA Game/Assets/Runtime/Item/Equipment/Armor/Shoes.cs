@@ -8,7 +8,7 @@ namespace AngeliaFramework {
 
 
 	// Wood
-	[EntityAttribute.ItemCombination(typeof(iTreeStump), typeof(iTreeBranch), 1)]
+	[ItemCombination(typeof(iTreeStump), typeof(iTreeBranch), 1)]
 	public class iShoesWood : Shoes<iShoesWoodBroken, iShoesWood> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iShoesWoodBroken : Shoes<iShoesWoodBroken, iShoesWood> {
@@ -18,7 +18,7 @@ namespace AngeliaFramework {
 
 
 	// Iron
-	[EntityAttribute.ItemCombination(typeof(iShoesWood), typeof(iIngotIron), 1)]
+	[ItemCombination(typeof(iShoesWood), typeof(iIngotIron), 1)]
 	public class iShoesIron : Shoes<iShoesIronCracked, iShoesIron> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iShoesIronCracked : Shoes<iShoesIronBroken, iShoesIron> {
@@ -32,7 +32,7 @@ namespace AngeliaFramework {
 
 
 	// Gold
-	[EntityAttribute.ItemCombination(typeof(iIngotGold), typeof(iShoesIron), 1)]
+	[ItemCombination(typeof(iIngotGold), typeof(iShoesIron), 1)]
 	public class iShoesGold : Shoes<iShoesGoldDented, iShoesGold> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iShoesGoldDented : Shoes<iShoesGoldCracked, iShoesGold> {
@@ -50,7 +50,7 @@ namespace AngeliaFramework {
 
 
 	// Ski
-	[EntityAttribute.ItemCombination(typeof(iCottonBall), typeof(iShoesVelvet), 1)]
+	[ItemCombination(typeof(iCottonBall), typeof(iShoesVelvet), 1)]
 	public class iShoesSki : Shoes<iShoesSkiBroken, iShoesSki> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iShoesSkiBroken : Shoes<iShoesSkiBroken, iShoesSki> {
@@ -60,7 +60,7 @@ namespace AngeliaFramework {
 
 
 	// Wing
-	[EntityAttribute.ItemCombination(typeof(iPropeller), typeof(iShoesWood), 1)]
+	[ItemCombination(typeof(iPropeller), typeof(iShoesWood), 1)]
 	public class iShoesWing : Shoes<iShoesWingBroken, iShoesWing> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iShoesWingBroken : Shoes<iShoesWingBroken, iShoesWing> {
@@ -70,7 +70,7 @@ namespace AngeliaFramework {
 
 
 	// Fairy
-	[EntityAttribute.ItemCombination(typeof(iShoesVelvet), typeof(iCuteGhost), 1)]
+	[ItemCombination(typeof(iShoesVelvet), typeof(iCuteGhost), 1)]
 	public class iShoesFairy : Shoes<iShoesFairyBroken, iShoesFairy> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iShoesFairyBroken : Shoes<iShoesFairyBroken, iShoesFairy> {
@@ -80,7 +80,7 @@ namespace AngeliaFramework {
 
 
 	// Sand
-	[EntityAttribute.ItemCombination(typeof(iShoesVelvet), typeof(iRope), 1)]
+	[ItemCombination(typeof(iShoesVelvet), typeof(iRope), 1)]
 	public class iShoesSand : Shoes<iShoesSandBroken, iShoesSand> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iShoesSandBroken : Shoes<iShoesSandBroken, iShoesSand> {
@@ -90,7 +90,7 @@ namespace AngeliaFramework {
 
 
 	// Velvet
-	[EntityAttribute.ItemCombination(typeof(iFabric), typeof(iFabric), typeof(iFabric), 1)]
+	[ItemCombination(typeof(iFabric), typeof(iFabric), typeof(iFabric), 1)]
 	public class iShoesVelvet : Shoes<iShoesVelvetBroken, iShoesVelvet> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iShoesVelvetBroken : Shoes<iShoesVelvetBroken, iShoesVelvet> {
@@ -100,7 +100,7 @@ namespace AngeliaFramework {
 
 
 	// Mage
-	[EntityAttribute.ItemCombination(typeof(iShoesVelvet), typeof(iRuneCube), 1)]
+	[ItemCombination(typeof(iShoesVelvet), typeof(iRuneCube), 1)]
 	public class iShoesMage : Shoes<iShoesMageBroken, iShoesMage> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iShoesMageBroken : Shoes<iShoesMageBroken, iShoesMage> {
@@ -110,7 +110,7 @@ namespace AngeliaFramework {
 
 
 	// Knight
-	[EntityAttribute.ItemCombination(typeof(iShoesIron), typeof(iShoesIron), 1)]
+	[ItemCombination(typeof(iShoesIron), typeof(iShoesIron), 1)]
 	public class iShoesKnight : Shoes<iShoesKnightCracked, iShoesKnight> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iShoesKnightCracked : Shoes<iShoesKnightBroken, iShoesKnight> {
@@ -124,7 +124,7 @@ namespace AngeliaFramework {
 
 
 	// Hiking
-	[EntityAttribute.ItemCombination(typeof(iShoesVelvet), typeof(iShoesVelvet), 1)]
+	[ItemCombination(typeof(iShoesVelvet), typeof(iShoesVelvet), 1)]
 	public class iShoesHiking : Shoes<iShoesHikingBroken, iShoesHiking> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iShoesHikingBroken : Shoes<iShoesHikingBroken, iShoesHiking> {
@@ -134,7 +134,7 @@ namespace AngeliaFramework {
 
 
 	// Clogs
-	[EntityAttribute.ItemCombination(typeof(iRope), typeof(iShoesWood), 1)]
+	[ItemCombination(typeof(iRope), typeof(iShoesWood), 1)]
 	public class iWoodenClogs : Shoes<iWoodenClogsBroken, iWoodenClogs> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iWoodenClogsBroken : Shoes<iWoodenClogsBroken, iWoodenClogs> {
@@ -144,7 +144,7 @@ namespace AngeliaFramework {
 
 
 	// Paladin
-	[EntityAttribute.ItemCombination(typeof(iShoesVelvet), typeof(iIngotGold), 1)]
+	[ItemCombination(typeof(iShoesVelvet), typeof(iIngotGold), 1)]
 	public class iShoesPaladin : Shoes<iShoesPaladinBroken, iShoesPaladin> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iShoesPaladinBroken : Shoes<iShoesPaladinBroken, iShoesPaladin> {
@@ -154,7 +154,7 @@ namespace AngeliaFramework {
 
 
 	// Studded
-	[EntityAttribute.ItemCombination(typeof(iShoesIron), typeof(iBolt), typeof(iBolt), typeof(iBolt), 1)]
+	[ItemCombination(typeof(iShoesIron), typeof(iBolt), typeof(iBolt), typeof(iBolt), 1)]
 	public class iShoesStudded : Shoes<iShoesStuddedCracked, iShoesStudded> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iShoesStuddedCracked : Shoes<iShoesStuddedBroken, iShoesStudded> {
@@ -168,7 +168,7 @@ namespace AngeliaFramework {
 
 
 	// Spike
-	[EntityAttribute.ItemCombination(typeof(iShoesIron), typeof(iSpikeBall), 1)]
+	[ItemCombination(typeof(iShoesIron), typeof(iSpikeBall), 1)]
 	public class iShoesSpike : Shoes<iShoesSpikeCracked, iShoesSpike> { }
 	[EntityAttribute.ExcludeInMapEditor]
 	public class iShoesSpikeCracked : Shoes<iShoesSpikeBroken, iShoesSpike> {

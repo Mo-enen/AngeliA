@@ -6,13 +6,13 @@ namespace AngeliaFramework.Editor {
 
 
 	public class AssetsScriptHub : IScriptHubConfig {
+		public string Title => UnityEngine.Application.productName;
 		public string[] Paths => new string[] { "Assets", };
 		public string IgnoreFolders =>
 			"Aseprite\n" +
 			"Standard\n" +
 			"AngeliA Framework\n" +
 			"Third Party";
-		public string Title => UnityEngine.Application.productName;
 		public IScriptHubConfig.SearchPattern[] SearchPatterns => new IScriptHubConfig.SearchPattern[]{
 			new ("*.cs", "", true),
 		};
@@ -22,8 +22,8 @@ namespace AngeliaFramework.Editor {
 
 
 	public class ConversationHub : IScriptHubConfig {
-		public string[] Paths => new string[] { "Assets", };
 		public string Title => "Conversation";
+		public string[] Paths => new string[] { "Assets", };
 		public IScriptHubConfig.SearchPattern[] SearchPatterns => new IScriptHubConfig.SearchPattern[]{
 			new ($"*.{AngePath.EDITABLE_CONVERSATION_FILE_EXT}", "Conversation", true),
 		};
@@ -31,15 +31,13 @@ namespace AngeliaFramework.Editor {
 	}
 
 
-	public class AsepriteHub : IScriptHubConfig {
+	public class ArtworkHub : IScriptHubConfig {
+		public string Title => "Artwork";
 		public string[] Paths => new string[] {
 			"Assets",
 			"Packages/com.moenengames.angeliaframework",
 			"Packages/com.moenengames.angeliageneral",
-			"Assets/AngeliA Framework",
-			"Assets/AngeliA General",
 		};
-		public string Title => "Artwork";
 		public IScriptHubConfig.SearchPattern[] SearchPatterns => new IScriptHubConfig.SearchPattern[]{
 			new ("*.ase", "Ase", true),
 			new ("*.aseprite", "Aseprite", true),
@@ -48,13 +46,12 @@ namespace AngeliaFramework.Editor {
 	}
 
 
-	public class AngeliaPackageHab : IScriptHubConfig {
-		public string Title => "AngeliA Framework";
+	public class FrameworkHab : IScriptHubConfig {
+		public string Title => "Framework";
 		public string[] Paths => new string[] {
 			"Packages/com.moenengames.angeliaframework",
-			"Assets/AngeliA Framework",
 		};
-		public string IgnoreFolders => "Aseprite\nThird Party\nStandard\nGeneral";
+		public string IgnoreFolders => "Aseprite\nThird Party\nGeneral\nUtility";
 		public IScriptHubConfig.SearchPattern[] SearchPatterns => new IScriptHubConfig.SearchPattern[]{
 			new ("*.cs", "", true),
 		};
@@ -72,11 +69,10 @@ namespace AngeliaFramework.Editor {
 
 
 
-	public class AngeliaGeneralHab : IScriptHubConfig {
-		public string Title => "AngeliA General";
+	public class GeneralHab : IScriptHubConfig {
+		public string Title => "General";
 		public string[] Paths => new string[] {
 			"Packages/com.moenengames.angeliaframework/Runtime/General",
-			"Assets/AngeliA Framework/Runtime/General",
 		};
 		public string IgnoreFolders => "Aseprite\nThird Party\nStandard";
 		public IScriptHubConfig.SearchPattern[] SearchPatterns => new IScriptHubConfig.SearchPattern[]{

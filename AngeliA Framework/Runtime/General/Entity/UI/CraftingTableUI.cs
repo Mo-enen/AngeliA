@@ -27,6 +27,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private readonly List<Vector4Int> DocumentContent = new();
+		private readonly int[] IgnoreConsumes = { 0, 0, 0, 0, };
 		private Vector4Int CurrentCraftingItems = default;
 		private bool CursorInDoc = false;
 		private bool CursorInResult = false;
@@ -79,10 +80,12 @@ namespace AngeliaFramework {
 
 			// Craft Result
 			if (!ItemSystem.TryGetCombination(
-				invItem0, invItem1, invItem2, invItem3, out CombineResultID, out CombineResultCount
+				invItem0, invItem1, invItem2, invItem3, out CombineResultID, out CombineResultCount,
+				out IgnoreConsumes[0], out IgnoreConsumes[1], out IgnoreConsumes[2], out IgnoreConsumes[3]
 			)) {
 				CombineResultID = 0;
 				CombineResultCount = 0;
+				IgnoreConsumes[0] = IgnoreConsumes[1] = IgnoreConsumes[2] = IgnoreConsumes[3] = 0;
 			}
 
 		}
@@ -235,7 +238,7 @@ namespace AngeliaFramework {
 				var com = DocumentContent[i];
 				lineRect.y = docItemRect.yMax - (i + 1 - DocumentScrollY) * (lineRect.height + linePadding);
 				if (lineRect.yMax < docRect.y) break;
-				bool haveResult = ItemSystem.TryGetCombination(com.x, com.y, com.z, com.w, out int result, out _);
+				bool haveResult = ItemSystem.TryGetCombination(com.x, com.y, com.z, com.w, out int result, out _, out _, out _, out _, out _);
 				if (!haveResult) continue;
 				var iRect = new RectInt(lineRect.xMax, lineRect.y, iconSize, iconSize);
 
@@ -366,6 +369,7 @@ namespace AngeliaFramework {
 			for (int i = 0; i < 4; i++) {
 				int itemID = Inventory.GetItemAt(InventoryID, i, out int count);
 				if (itemID == 0 || count == 0) continue;
+				if (IgnoreConsumes[0] == itemID || IgnoreConsumes[1] == itemID || IgnoreConsumes[2] == itemID || IgnoreConsumes[3] == itemID) continue;
 				count = (count - 1).GreaterOrEquelThanZero();
 				if (count == 0) itemID = 0;
 				Inventory.SetItemAt(InventoryID, i, itemID, count);

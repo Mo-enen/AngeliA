@@ -7,6 +7,34 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
+	[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = true)]
+	public class ItemCombinationAttribute : System.Attribute {
+		public System.Type ItemA = null;
+		public System.Type ItemB = null;
+		public System.Type ItemC = null;
+		public System.Type ItemD = null;
+		public int Count = 1;
+		public bool ConsumeA = true;
+		public bool ConsumeB = true;
+		public bool ConsumeC = true;
+		public bool ConsumeD = true;
+		public ItemCombinationAttribute (System.Type itemA, int count = 1, bool consumeA = true) : this(itemA, null, null, null, count, consumeA, true, true, true) { }
+		public ItemCombinationAttribute (System.Type itemA, System.Type itemB, int count = 1, bool consumeA = true, bool consumeB = true) : this(itemA, itemB, null, null, count, consumeA, consumeB, true, true) { }
+		public ItemCombinationAttribute (System.Type itemA, System.Type itemB, System.Type itemC, int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true) : this(itemA, itemB, itemC, null, count, consumeA, consumeB, consumeC, true) { }
+		public ItemCombinationAttribute (System.Type itemA, System.Type itemB, System.Type itemC, System.Type itemD, int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true) {
+			ItemA = itemA;
+			ItemB = itemB;
+			ItemC = itemC;
+			ItemD = itemD;
+			Count = count;
+			ConsumeA = consumeA;
+			ConsumeB = consumeB;
+			ConsumeC = consumeC;
+			ConsumeD = consumeD;
+		}
+	}
+
+
 	public static class ItemSystem {
 
 
@@ -33,6 +61,16 @@ namespace AngeliaFramework {
 		}
 
 
+		private class CombinationData {
+			public int Result;
+			public int ResultCount;
+			public int IgnoreConsume0;
+			public int IgnoreConsume1;
+			public int IgnoreConsume2;
+			public int IgnoreConsume3;
+		}
+
+
 		#endregion
 
 
@@ -56,7 +94,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private static readonly Dictionary<int, ItemData> ItemPool = new();
-		private static readonly Dictionary<Vector4Int, Vector2Int> CombinationPool = new();
+		private static readonly Dictionary<Vector4Int, CombinationData> CombinationPool = new();
 		private static bool IsUnlockDirty = false;
 
 
@@ -84,8 +122,8 @@ namespace AngeliaFramework {
 			}
 			// Combination
 			CombinationPool.Clear();
-			LoadCombinationFromFile();
-			LoadCombinationFromCode();
+			LoadCombinationFromFile(Util.CombinePaths(AngePath.ItemSaveDataRoot, AngePath.COMBINATION_FILE_NAME));
+			LoadCombinationFromFile(Util.CombinePaths(AngePath.MetaRoot, AngePath.COMBINATION_FILE_NAME));
 		}
 
 
@@ -175,7 +213,12 @@ namespace AngeliaFramework {
 
 
 		// Combination
-		public static void AddCombination (int item0, int item1, int item2, int item3, int result, int resultCount) {
+		public static void AddCombination (
+			int item0, int item1, int item2, int item3,
+			int result, int resultCount,
+			bool consumeA, bool consumeB, bool consumeC, bool consumeD
+		) {
+
 			if (result == 0 || resultCount <= 0) {
 #if UNITY_EDITOR
 				if (result == 0) Debug.LogWarning("Result of combination should not be zero.");
@@ -183,27 +226,44 @@ namespace AngeliaFramework {
 #endif
 				return;
 			}
+
 			var from = GetSortedCombination(item0, item1, item2, item3);
+			if (CombinationPool.ContainsKey(from)) {
 #if UNITY_EDITOR
-			if (CombinationPool.ContainsKey(from) && UnityEditor.EditorApplication.isPlaying) {
-				Debug.LogError(
-					$"Combination already exists. ({GetItem(CombinationPool[from].x).GetType().Name}) & ({GetItem(result).GetType().Name})"
-				);
-			}
+				Debug.LogError($"Combination already exists. ({GetItem(CombinationPool[from].Result).GetType().Name}) & ({GetItem(result).GetType().Name})");
 #endif
-			CombinationPool[from] = new Vector2Int(result, resultCount);
+				return;
+			}
+
+			CombinationPool[from] = new CombinationData() {
+				Result = result,
+				ResultCount = resultCount,
+				IgnoreConsume0 = consumeA ? 0 : item0,
+				IgnoreConsume1 = consumeB ? 0 : item1,
+				IgnoreConsume2 = consumeC ? 0 : item2,
+				IgnoreConsume3 = consumeD ? 0 : item3,
+			};
 		}
 
 
-		public static bool TryGetCombination (int item0, int item1, int item2, int item3, out int result, out int resultCount) {
-			result = 0;
-			resultCount = 0;
+		public static bool TryGetCombination (
+			int item0, int item1, int item2, int item3,
+			out int result, out int resultCount,
+			out int ignoreConsume0, out int ignoreConsume1, out int ignoreConsume2, out int ignoreConsume3
+		) {
 			var from = GetSortedCombination(item0, item1, item2, item3);
 			if (CombinationPool.TryGetValue(from, out var resultValue)) {
-				result = resultValue.x;
-				resultCount = resultValue.y;
+				result = resultValue.Result;
+				resultCount = resultValue.ResultCount;
+				ignoreConsume0 = resultValue.IgnoreConsume0;
+				ignoreConsume1 = resultValue.IgnoreConsume1;
+				ignoreConsume2 = resultValue.IgnoreConsume2;
+				ignoreConsume3 = resultValue.IgnoreConsume3;
 				return true;
 			}
+			result = 0;
+			resultCount = 0;
+			ignoreConsume0 = ignoreConsume1 = ignoreConsume2 = ignoreConsume3 = 0;
 			return false;
 		}
 
@@ -215,7 +275,7 @@ namespace AngeliaFramework {
 			if (combination.IsZero) return;
 			bool includeResult = combination.Count(0) == 3;
 			foreach (var (craft, result) in CombinationPool) {
-				if (includeResult && combination.Contains(result.x)) {
+				if (includeResult && combination.Contains(result.Result)) {
 					output.Add(craft);
 					continue;
 				}
@@ -249,9 +309,6 @@ namespace AngeliaFramework {
 
 			return new Vector4Int(a, b, c, d);
 		}
-
-
-		public static IEnumerator<KeyValuePair<Vector4Int, Vector2Int>> GetCombinationPoolEnumerator () => CombinationPool.GetEnumerator();
 
 
 		// Equipment
@@ -352,8 +409,7 @@ namespace AngeliaFramework {
 
 
 		// Combination
-		private static void LoadCombinationFromFile () {
-			string filePath = Util.CombinePaths(AngePath.ItemSaveDataRoot, AngePath.COMBINATION_FILE_NAME);
+		private static void LoadCombinationFromFile (string filePath) {
 			if (!Util.FileExists(filePath)) return;
 			var builder = new StringBuilder();
 			foreach (string _line in Util.ForAllLines(filePath)) {
@@ -362,6 +418,7 @@ namespace AngeliaFramework {
 				if (line.StartsWith('#')) continue;
 				builder.Clear();
 				var com = Vector4Int.zero;
+				var consume = Vector4Int.zero;
 				int appendingComIndex = 0;
 				bool appendingResultCount = false;
 				int resultID = 0;
@@ -370,6 +427,10 @@ namespace AngeliaFramework {
 					if (c == ' ') continue;
 					if (c == '+' || c == '=') {
 						if (builder.Length > 0 && appendingComIndex < 4) {
+							if (builder[0] == '^') {
+								builder.Remove(0, 1);
+								consume[appendingComIndex] = 1;
+							}
 							com[appendingComIndex] = builder.ToString().AngeHash();
 							appendingComIndex++;
 						}
@@ -396,34 +457,10 @@ namespace AngeliaFramework {
 
 				// Add to Pool
 				if (com != Vector4Int.zero && resultCount >= 1 && resultID != 0) {
-					AddCombination(com.x, com.y, com.z, com.w, resultID, resultCount);
+					AddCombination(com.x, com.y, com.z, com.w, resultID, resultCount, consume[0] == 0, consume[1] == 0, consume[2] == 0, consume[3] == 0);
 				}
 
 			}
-		}
-
-
-		private static void LoadCombinationFromCode () {
-
-			// Get Ignore
-			var ignore = new HashSet<int>();
-			foreach (var (_, result) in CombinationPool) {
-				ignore.TryAdd(result.x);
-			}
-
-			// Fill Pool from Attribute
-			foreach (var type in typeof(Item).AllChildClass()) {
-				int resultID = type.AngeHash();
-				if (ignore.Contains(resultID)) continue;
-				var iComs = type.GetCustomAttributes<EntityAttribute.ItemCombinationAttribute>(false);
-				if (iComs == null) continue;
-				foreach (var com in iComs) {
-					if (com.Count <= 0) continue;
-					if (com.ItemA == 0 && com.ItemB == 0 && com.ItemC == 0 && com.ItemD == 0) continue;
-					AddCombination(com.ItemA, com.ItemB, com.ItemC, com.ItemD, resultID, com.Count);
-				}
-			}
-
 		}
 
 

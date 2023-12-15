@@ -8,7 +8,7 @@ namespace AngeliaFramework {
 
 
 	// Wood
-	[EntityAttribute.ItemCombination(typeof(iTreeStump), typeof(iTreeTrunk), 1)]
+	[ItemCombination(typeof(iTreeStump), typeof(iTreeTrunk), 1)]
 	public class iHelmetWood : Helmet<iHelmetWoodBroken, iHelmetWood> {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Cover;
 		protected override bool HideEar => true;
@@ -23,7 +23,7 @@ namespace AngeliaFramework {
 
 
 	// Iron
-	[EntityAttribute.ItemCombination(typeof(iHelmetWood), typeof(iIngotIron), 1)]
+	[ItemCombination(typeof(iHelmetWood), typeof(iIngotIron), 1)]
 	public class iHelmetIron : Helmet<iHelmetIronCracked, iHelmetIron> {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Cover;
 		protected override bool HideEar => true;
@@ -43,7 +43,7 @@ namespace AngeliaFramework {
 
 
 	// Gold
-	[EntityAttribute.ItemCombination(typeof(iHelmetIron), typeof(iIngotGold), 1)]
+	[ItemCombination(typeof(iHelmetIron), typeof(iIngotGold), 1)]
 	public class iHelmetGold : Helmet<iHelmetGoldDented, iHelmetGold> {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Cover;
 		protected override bool HideEar => true;
@@ -74,7 +74,7 @@ namespace AngeliaFramework {
 
 
 	// Safety
-	[EntityAttribute.ItemCombination(typeof(iHelmetWood), typeof(iCone), 1)]
+	[ItemCombination(typeof(iHelmetWood), typeof(iCone), 1)]
 	public class iSafetyHelmet : Helmet<iSafetyHelmetBroken, iSafetyHelmet> {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 		protected override bool HideEar => true;
@@ -89,7 +89,7 @@ namespace AngeliaFramework {
 
 
 	// Pirate
-	[EntityAttribute.ItemCombination(typeof(iSkull), typeof(iMeatBone), typeof(iMeatBone), typeof(iTopHat), 1)]
+	[ItemCombination(typeof(iSkull), typeof(iMeatBone), typeof(iMeatBone), typeof(iTopHat), 1)]
 	public class iPirateHat : Helmet<iPirateHatBroken, iPirateHat> {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 		protected override bool HideEar => true;
@@ -104,7 +104,7 @@ namespace AngeliaFramework {
 
 
 	// Wizard
-	[EntityAttribute.ItemCombination(typeof(iRuneCube), typeof(iTopHat), 1)]
+	[ItemCombination(typeof(iRuneCube), typeof(iTopHat), 1)]
 	public class iWizardHat : Helmet<iWizardHatBroken, iWizardHat> {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 		protected override bool HideEar => true;
@@ -119,7 +119,7 @@ namespace AngeliaFramework {
 
 
 	// TopHat
-	[EntityAttribute.ItemCombination(typeof(iBucketIron), typeof(iFabric), typeof(iRibbon), 1)]
+	[ItemCombination(typeof(iBucketIron), typeof(iFabric), typeof(iRibbon), 1)]
 	public class iTopHat : Helmet<iTopHatBroken, iTopHat> {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 		protected override bool HideEar => true;
@@ -133,7 +133,7 @@ namespace AngeliaFramework {
 
 
 	// Fox
-	[EntityAttribute.ItemCombination(typeof(iItemWoodBoard), typeof(iPaw), typeof(iRope), 1)]
+	[ItemCombination(typeof(iItemWoodBoard), typeof(iPaw), typeof(iRope), 1)]
 	public class iFoxMask : Helmet<iFoxMaskBroken, iFoxMask> {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 		protected override bool HideFace => true;
@@ -147,7 +147,7 @@ namespace AngeliaFramework {
 
 
 	// Circlet
-	[EntityAttribute.ItemCombination(typeof(iWheel), typeof(iIngotGold), 1)]
+	[ItemCombination(typeof(iWheel), typeof(iIngotGold), 1)]
 	public class iCirclet : Helmet<iCircletBroken, iCirclet> {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 	}
@@ -160,7 +160,7 @@ namespace AngeliaFramework {
 
 
 	// Full
-	[EntityAttribute.ItemCombination(typeof(iHelmetIron), typeof(iIngotIron), 1)]
+	[ItemCombination(typeof(iHelmetIron), typeof(iIngotIron), 1)]
 	public class iHelmetFull : Helmet<iHelmetFullCracked, iHelmetFull> {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Cover;
 		protected override bool HideFace => true;
@@ -185,7 +185,7 @@ namespace AngeliaFramework {
 
 
 	// Crown
-	[EntityAttribute.ItemCombination(typeof(iIngotGold), typeof(iIngotGold), typeof(iIngotGold), typeof(iCirclet), 1)]
+	[ItemCombination(typeof(iIngotGold), typeof(iIngotGold), typeof(iIngotGold), typeof(iCirclet), 1)]
 	public class iCrown : Helmet<iCrownBroken, iCrown> {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 		protected override int Scale => 618;
@@ -200,7 +200,7 @@ namespace AngeliaFramework {
 
 
 	// Gas Mask
-	[EntityAttribute.ItemCombination(typeof(iRunePoison), typeof(iHelmetWood), 1)]
+	[ItemCombination(typeof(iRunePoison), typeof(iHelmetWood), 1)]
 	public class iGasMask : Helmet<iGasMaskBroken, iGasMask> {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 		protected override bool HideFace => true;
@@ -214,7 +214,7 @@ namespace AngeliaFramework {
 
 
 	// Viking
-	[EntityAttribute.ItemCombination(typeof(iHelmetIron), typeof(iHorn), typeof(iHorn), 1)]
+	[ItemCombination(typeof(iHelmetIron), typeof(iHorn), typeof(iHorn), 1)]
 	public class iHelmetViking : Helmet<iHelmetVikingCracked, iHelmetViking> {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 		protected override bool HideEar => true;
@@ -233,7 +233,7 @@ namespace AngeliaFramework {
 
 
 	// Knight
-	[EntityAttribute.ItemCombination(typeof(iHelmetIron), typeof(iHelmetIron), 1)]
+	[ItemCombination(typeof(iHelmetIron), typeof(iHelmetIron), 1)]
 	public class iHelmetKnight : Helmet<iHelmetKnightCracked, iHelmetKnight> {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Cover;
 		protected override bool HideEar => true;
@@ -259,7 +259,7 @@ namespace AngeliaFramework {
 
 
 	// Bandit
-	[EntityAttribute.ItemCombination(typeof(iRope), typeof(iFabric), 1)]
+	[ItemCombination(typeof(iRope), typeof(iFabric), 1)]
 	public class iHelmetBandit : Helmet<iHelmetBanditBroken, iHelmetBandit> {
 		protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 		protected override bool HideFace => true;
