@@ -203,7 +203,7 @@ namespace AngeliaFramework {
 					(OnSlippy && IsGrounded && IsRushing))
 				) {
 					LastCrashFrame = frame;
-					LastRequireBounceFrame = Game.GlobalFrame;
+					IsRushing = false;
 				}
 				IsCrashing = frame >= LastCrashFrame && frame < LastCrashFrame + CrashDuration;
 			} else if (IsCrashing) {
@@ -801,10 +801,7 @@ namespace AngeliaFramework {
 		public void Dash () => IntendedDash = true;
 		public void Pound () => IntendedPound = true;
 		public void Rush () => IntendedRush = true;
-		public void Crash () {
-			LastCrashFrame = Game.GlobalFrame;
-			LastRequireBounceFrame = Game.GlobalFrame;
-		}
+		public void Crash () => LastCrashFrame = Game.GlobalFrame;
 
 
 		public void LockFacingRight (bool facingRight, int duration = 1) {

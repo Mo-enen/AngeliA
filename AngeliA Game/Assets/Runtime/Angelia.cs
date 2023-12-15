@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using AngeliaFramework;
 
-
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
-
-
 
 namespace AngeliaGame {
 
@@ -16,27 +14,11 @@ namespace AngeliaGame {
 
 
 #if UNITY_EDITOR
-
-
-
 		//[UnityEditor.InitializeOnLoadMethod]
 		public static void Test () {
 
-			//Server server = new Server();
-			//server.Start(7777, 10);
-			//
-			//var msg = Message.Create(MessageSendMode.Reliable, 0);
-			////server.SendToAll();
-			//
-			//
-			//var e = System.Net.Dns.GetHostEntry("publisher.assetstore.unity3d.com");
-			//foreach (var address in e.AddressList) {
-			//	Debug.Log(address.ToString());
-			//}
+
 		}
-
-
-
 #endif
 
 	}

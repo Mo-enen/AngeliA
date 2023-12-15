@@ -543,6 +543,8 @@ namespace AngeliaFramework {
 			} else if (!isSquatting && frame.InRangeExclude(LastSquattingFrame, LastSquattingFrame + duration)) {
 				bounce = BOUNCE_AMOUNTS[frame - LastSquattingFrame];
 				reverse = true;
+			} else if (IsCrashing && frame.InRangeExclude(LastCrashFrame, LastCrashFrame + duration)) {
+				bounce = BOUNCE_AMOUNTS_BIG[frame - LastCrashFrame];
 			}
 			if (bounce != 1000) bounce = Util.RemapUnclamped(0, 1000, (1000 - Bouncy).Clamp(0, 999), 1000, bounce);
 			return reverse ? -bounce : bounce;
