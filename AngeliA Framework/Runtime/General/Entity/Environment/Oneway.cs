@@ -28,7 +28,7 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private const int MASK = PhysicsMask.ENTITY;
+		private const int MASK = PhysicsMask.DYNAMIC;
 
 		// Api
 		public abstract Direction4 GateDirection { get; }

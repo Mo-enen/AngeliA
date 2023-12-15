@@ -4,14 +4,10 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public class GeneralMeleeBullet : MeleeBullet {
-		public static readonly int TYPE_ID = typeof(GeneralMeleeBullet).AngeHash();
-		protected override int Duration => 10;
-		protected override int Damage => 1;
-	}
+	public class MeleeBullet : Bullet {
 
-
-	public abstract class MeleeBullet : Bullet {
+		// Const
+		public static readonly int TYPE_ID = typeof(MeleeBullet).AngeHash();
 
 		// Api
 		protected override int Duration => 10;

@@ -54,7 +54,7 @@ namespace AngeliaFramework {
 		// Api
 		public abstract Direction2 DirectionVertical { get; }
 		public abstract Direction2 DirectionHorizontal { get; }
-		public virtual int CollisionMask => PhysicsMask.RIGIDBODY;
+		public virtual int CollisionMask => PhysicsMask.ENTITY;
 
 
 		#endregion

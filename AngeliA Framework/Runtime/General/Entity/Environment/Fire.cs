@@ -220,7 +220,7 @@ namespace AngeliaFramework {
 
 		public void Spread () {
 			var hits = CellPhysics.OverlapAll(
-				PhysicsMask.RIGIDBODY,
+				PhysicsMask.ENTITY,
 				Rect.Expand(SpreadRange), out int count,
 				this, OperationMode.ColliderAndTrigger
 			);

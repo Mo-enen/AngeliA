@@ -15,10 +15,6 @@ namespace AngeliaFramework {
 	}
 
 
-	public sealed class GeneralBullet : Bullet {
-		public static readonly int TYPE_ID = typeof(GeneralBullet).AngeHash();
-	}
-
 
 	[EntityAttribute.Capacity(128)]
 	[EntityAttribute.ExcludeInMapEditor]
@@ -28,8 +24,8 @@ namespace AngeliaFramework {
 	public abstract class Bullet : Entity {
 
 		// Api
-		protected virtual int EnvironmentMask => PhysicsMask.SOLID;
-		protected virtual int ReceiverMask => PhysicsMask.SOLID;
+		protected virtual int EnvironmentMask => PhysicsMask.MAP;
+		protected virtual int ReceiverMask => PhysicsMask.ENTITY;
 		protected virtual int Duration => 60;
 		protected virtual int Damage => 1;
 		protected virtual int SpawnWidth => Const.CEL;

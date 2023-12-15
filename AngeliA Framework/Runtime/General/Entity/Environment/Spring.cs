@@ -74,18 +74,18 @@ namespace AngeliaFramework {
 			if (Horizontal) {
 				// Horizontal
 				if (CellPhysics.Overlap(
-					PhysicsMask.RIGIDBODY, new(X - 1, Y, Const.HALF, Const.CEL), this
+					PhysicsMask.ENTITY, new(X - 1, Y, Const.HALF, Const.CEL), this
 				)) {
 					PerformBounce(Direction4.Left);
 				} else if (CellPhysics.Overlap(
-					PhysicsMask.RIGIDBODY, new(X + Const.HALF, Y, Const.HALF + 1, Const.CEL), this
+					PhysicsMask.ENTITY, new(X + Const.HALF, Y, Const.HALF + 1, Const.CEL), this
 				)) {
 					PerformBounce(Direction4.Right);
 				}
 			} else {
 				// Vertical
 				if (CellPhysics.Overlap(
-					PhysicsMask.RIGIDBODY, new(X, Y + Const.HALF, Const.CEL, Const.HALF + 1), this
+					PhysicsMask.ENTITY, new(X, Y + Const.HALF, Const.CEL, Const.HALF + 1), this
 				)) {
 					PerformBounce(Direction4.Up);
 				}
@@ -125,7 +125,7 @@ namespace AngeliaFramework {
 			);
 			Entity ignore = this;
 			for (int safe = 0; safe < 2048; safe++) {
-				var hits = CellPhysics.OverlapAll(PhysicsMask.RIGIDBODY, globalRect, out int count, ignore);
+				var hits = CellPhysics.OverlapAll(PhysicsMask.ENTITY, globalRect, out int count, ignore);
 				if (count == 0) break;
 				for (int i = 0; i < count; i++) {
 					var hit = hits[i];

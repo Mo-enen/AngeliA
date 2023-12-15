@@ -154,7 +154,7 @@ namespace AngeliaFramework {
 
 		private void Update_Touch () {
 			if (!TouchedByRigidbody || !TouchedByCharacter || !TouchedByPlayer) {
-				var hits = CellPhysics.OverlapAll(PhysicsMask.ENTITY, Rect.Expand(1), out int count, this);
+				var hits = CellPhysics.OverlapAll(PhysicsMask.DYNAMIC, Rect.Expand(1), out int count, this);
 				for (int i = 0; i < count; i++) {
 					var hit = hits[i];
 					if (hit.Rect.y < Y + Height) continue;
@@ -193,7 +193,7 @@ namespace AngeliaFramework {
 			var rect = Rect;
 			var prevRect = rect;
 			prevRect.x = PrevX;
-			var hits = CellPhysics.OverlapAll(PhysicsMask.RIGIDBODY, rect, out int count, this);
+			var hits = CellPhysics.OverlapAll(PhysicsMask.ENTITY, rect, out int count, this);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 				if (hit.Entity is not Rigidbody rig) continue;
@@ -228,7 +228,7 @@ namespace AngeliaFramework {
 			}
 
 			var hits = CellPhysics.OverlapAll(
-				PhysicsMask.RIGIDBODY, rect.Edge(Direction4.Up, 32).Shift(0, -16), out int count,
+				PhysicsMask.ENTITY, rect.Edge(Direction4.Up, 32).Shift(0, -16), out int count,
 				this, OperationMode.ColliderAndTrigger
 			);
 			for (int i = 0; i < count; i++) {
@@ -276,7 +276,7 @@ namespace AngeliaFramework {
 				rect.y = PrevY + prevRect.height;
 				rect.height = Y + Height - rect.y;
 				var hits = CellPhysics.OverlapAll(
-					PhysicsMask.RIGIDBODY, rect, out int count,
+					PhysicsMask.ENTITY, rect, out int count,
 					this, OperationMode.ColliderOnly
 				);
 				for (int i = 0; i < count; i++) {
@@ -291,7 +291,7 @@ namespace AngeliaFramework {
 				}
 				// For Nav Character
 				hits = CellPhysics.OverlapAll(
-					PhysicsMask.RIGIDBODY, rect, out count,
+					PhysicsMask.ENTITY, rect, out count,
 					this, OperationMode.TriggerOnly
 				);
 				for (int i = 0; i < count; i++) {
@@ -310,7 +310,7 @@ namespace AngeliaFramework {
 				// Moving Down
 				prevRect.height += PrevY - Y + 1;
 				var hits = CellPhysics.OverlapAll(
-					PhysicsMask.RIGIDBODY, prevRect, out int count,
+					PhysicsMask.ENTITY, prevRect, out int count,
 					this, OperationMode.ColliderAndTrigger
 				);
 				for (int i = 0; i < count; i++) {

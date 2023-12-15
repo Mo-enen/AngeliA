@@ -12,63 +12,11 @@ namespace AngeliaFramework {
 	public enum WeaponHandheld { SingleHanded, DoubleHanded, OneOnEachHand, Pole, MagicPole, Bow, Firearm, Float, }
 
 
-	// Projectile
-	public abstract class ProjectileWeapon<B> : ProjectileWeapon where B : MovableBullet {
-		public ProjectileWeapon () => BulletID = typeof(B).AngeHash();
-	}
-	public abstract class ProjectileWeapon : Weapon {
-		public ProjectileWeapon () => BulletID = GeneralMovableBullet.TYPE_ID;
-		public override Bullet SpawnBullet (Character sender) {
-			if (base.SpawnBullet(sender) is not MovableBullet bullet) return null;
-			bullet.X = sender.FacingRight ? sender.X : sender.X - bullet.Width;
-			bullet.Y = sender.Y + sender.Height / 2;
-			bullet.StartMove(sender.FacingRight);
-			return bullet;
-		}
-	}
-
-
-	// Melee
-	public abstract class MeleeWeapon<B> : MeleeWeapon where B : MeleeBullet {
-		public MeleeWeapon () => BulletID = typeof(B).AngeHash();
-	}
-	public abstract class MeleeWeapon : Weapon {
-		public abstract int RangeXLeft { get; }
-		public abstract int RangeXRight { get; }
-		public abstract int RangeY { get; }
-		public MeleeWeapon () => BulletID = GeneralMeleeBullet.TYPE_ID;
-		public override Bullet SpawnBullet (Character sender) {
-
-			if (base.SpawnBullet(sender) is not MeleeBullet bullet) return null;
-
-			// Set Range
-			int rangeX = RangeXRight;
-			if (!sender.FacingRight) {
-				rangeX = RangeXLeft;
-			}
-			bullet.SetSpawnSize(rangeX, RangeY);
-
-			// Follow
-			bullet.FollowSender();
-
-			// Smoke Particle
-			if (bullet.SmokeParticleID != 0 && bullet.GroundCheck(out var tint)) {
-				if (Stage.SpawnEntity(bullet.SmokeParticleID, bullet.X + bullet.Width / 2, bullet.Y) is Particle particle) {
-					particle.Tint = tint;
-					particle.Width = !sender.FacingRight ? -1 : 1;
-					particle.Height = 1;
-				}
-			}
-
-			return bullet;
-		}
-	}
-
-
-	// Weapon
 	public abstract class Weapon<B> : Weapon where B : Bullet {
 		public Weapon () => BulletID = typeof(B).AngeHash();
 	}
+
+
 	[EntityAttribute.MapEditorGroup("ItemWeapon")]
 	public abstract class Weapon : Equipment {
 
@@ -308,13 +256,10 @@ namespace AngeliaFramework {
 
 		public virtual int GetOverrideAttackAnimationID (Character character) => 0;
 
-		public virtual Bullet SpawnBullet (Character sender) {
-			int bulletID = BulletID != 0 ? BulletID : GeneralBullet.TYPE_ID;
-			return SpawnRawBullet(sender, bulletID);
-		}
+		public virtual Bullet SpawnBullet (Character sender) => SpawnRawBullet(sender, BulletID);
 
 		public static Bullet SpawnRawBullet (Character sender, int bulletID) {
-			if (sender == null) return null;
+			if (sender == null || bulletID == 0) return null;
 			var rect = sender.Rect;
 			if (Stage.SpawnEntity(bulletID, rect.x, rect.y) is not Bullet bullet) return null;
 			bullet.Sender = sender;
@@ -328,5 +273,4 @@ namespace AngeliaFramework {
 		}
 
 	}
-
 }

@@ -82,7 +82,7 @@ namespace AngeliaFramework {
 			var rect = Rect;
 			rect.y += rect.height;
 			rect.height = 1;
-			var hits = CellPhysics.OverlapAll(PhysicsMask.RIGIDBODY, rect, out int count, this);
+			var hits = CellPhysics.OverlapAll(PhysicsMask.ENTITY, rect, out int count, this);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 				if (hit.Entity is Rigidbody rig) {

@@ -4,9 +4,10 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public abstract class FreeFallParticle : Particle {
+	public class FreeFallParticle : Particle {
 
-		public override int Duration => 1;
+		public static readonly int TYPE_ID = typeof(FreeFallParticle).AngeHash();
+		public override int Duration => 60;
 		public override bool Loop => false;
 		public int ArtworkID { get; set; } = 0;
 		public int CurrentSpeedX { get; set; } = 0;

@@ -51,10 +51,10 @@ namespace AngeliaFramework {
 		public const int CHARACTER = 0b1000;
 		public const int DAMAGE = 0b10000;
 
-		public const int RIGIDBODY = ENVIRONMENT | CHARACTER;
+		public const int ENTITY = ENVIRONMENT | CHARACTER;
+		public const int DYNAMIC = ENVIRONMENT | ITEM | CHARACTER;
 		public const int SOLID = LEVEL | ENVIRONMENT | CHARACTER;
 		public const int MAP = LEVEL | ENVIRONMENT;
-		public const int ENTITY = ENVIRONMENT | ITEM | CHARACTER;
 	}
 
 

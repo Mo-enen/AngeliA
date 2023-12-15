@@ -4,38 +4,6 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-
-
-	// Explosive
-	public abstract class ExplosiveMovableBullet<Ex> : ExplosiveMovableBullet where Ex : Explosion {
-		protected override int ExplosionID => _ExplosionID;
-		private int _ExplosionID { get; init; }
-		public ExplosiveMovableBullet () => _ExplosionID = typeof(Ex).AngeHash();
-	}
-	public abstract class ExplosiveMovableBullet : MovableBullet {
-		protected override int Duration => 600;
-		protected override int Damage => 0;
-		protected override int SpawnWidth => Const.CEL;
-		protected override int SpawnHeight => Const.CEL;
-		protected virtual int Radius => Const.CEL * 2;
-		protected virtual int ExplosionDuration => 10;
-		protected virtual int ExplosionID => Explosion.TYPE_ID;
-		protected override void SpawnResidue (IDamageReceiver receiver) {
-			if (Active) return;
-			if (Stage.SpawnEntity(ExplosionID, X + Width / 2, Y + Height / 2) is Explosion exp) {
-				exp.BreakObjectArtwork = TypeID;
-			}
-		}
-	}
-
-
-
-	// Movable
-	public sealed class GeneralMovableBullet : MovableBullet {
-		public static readonly int TYPE_ID = typeof(GeneralMovableBullet).AngeHash();
-	}
-
-
 	[EntityAttribute.Capacity(4, 0)]
 	public abstract class MovableBullet : Bullet {
 
@@ -50,7 +18,9 @@ namespace AngeliaFramework {
 		protected virtual int EndRotationRandomRange => 180;
 		protected virtual int ArtworkDelay => 0;
 		protected virtual int ResidueParticleID => 0;
-		public bool FacingRight { get; set; }
+		protected override int Duration => 600;
+		protected override bool DestroyOnHitEnvironment => true;
+		protected override bool DestroyOnHitReceiver => true;
 
 		// Data
 		private Vector2Int Velocity;
@@ -157,8 +127,10 @@ namespace AngeliaFramework {
 
 		protected override void SpawnResidue (IDamageReceiver receiver) {
 
-			if (ResidueParticleID == 0) return;
-			if (Stage.SpawnEntity(ResidueParticleID, X + Width / 2, Y + Height / 2) is not FreeFallParticle particle) return;
+			base.SpawnResidue(receiver);
+
+			int particleID = ResidueParticleID != 0 ? ResidueParticleID : FreeFallParticle.TYPE_ID;
+			if (Stage.SpawnEntity(particleID, X + Width / 2, Y + Height / 2) is not FreeFallParticle particle) return;
 			if (!CellRenderer.TryGetSprite(TypeID, out var sprite)) return;
 
 			particle.ArtworkID = TypeID;

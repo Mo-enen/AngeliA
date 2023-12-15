@@ -22,7 +22,7 @@ namespace AngeliaFramework {
 		private static readonly int SMOKE_ID = typeof(QuickSmokeBigParticle).AngeHash();
 
 		// Api
-		protected virtual int CollisionMask => PhysicsMask.ENTITY;
+		protected virtual int CollisionMask => PhysicsMask.DYNAMIC;
 		protected virtual int Duration => 10;
 		protected virtual int Damage => 1;
 		protected virtual int Radius => Const.CEL * 2;
