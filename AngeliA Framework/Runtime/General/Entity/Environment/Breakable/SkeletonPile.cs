@@ -8,7 +8,7 @@ namespace AngeliaFramework {
 	public class SkeletonPile : BreakableEntity {
 
 		private int ArtworkCode = 0;
-		private RectInt FullRect = default;
+		private IRect FullRect = default;
 
 		public override void OnActivated () {
 			base.OnActivated();

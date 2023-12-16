@@ -42,7 +42,7 @@ namespace AngeliaFramework {
 					int id = Inventory.GetItemAt(TypeID, i);
 					if (id == 0) continue;
 					CellRenderer.Draw(
-						id, new RectInt(
+						id, new IRect(
 							itemRect.x + (i % 2) * itemRect.width / 2,
 							itemRect.y + (i / 2) * itemRect.height / 2,
 							itemRect.width / 2,

@@ -16,7 +16,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private TextureSquad NavSquad = null;
-		private Vector3Int NavPosition = default;
+		private Int3 NavPosition = default;
 		private int LastNavigatorStateChangeFrame = int.MinValue;
 		private int NavigationBlockBarLerp = 0;
 
@@ -49,7 +49,7 @@ namespace AngeliaFramework {
 				int cameraHeight = CellRenderer.CameraRect.height;
 				NavPosition.x -= FrameInput.MouseGlobalPositionDelta.x * squadScale / cameraHeight;
 				NavPosition.y -= FrameInput.MouseGlobalPositionDelta.y * squadScale / cameraHeight;
-			} else if (!ShiftHolding && FrameInput.Direction != Vector2Int.zero) {
+			} else if (!ShiftHolding && FrameInput.Direction != Int2.zero) {
 				int speed = Const.MAP * Const.CEL * 2 / NavSquad.WorldSize;
 				NavPosition.x += FrameInput.Direction.x * speed / 1000;
 				NavPosition.y += FrameInput.Direction.y * speed / 1000;
@@ -87,15 +87,15 @@ namespace AngeliaFramework {
 
 			// Black Bar
 			int barWidth = NavigationBlockBarLerp * (cameraRect.width - cameraRect.height) / 2000;
-			CellRenderer.Draw(Const.PIXEL, new RectInt(cameraRect.x, cameraRect.y, barWidth, cameraRect.height), Const.BLACK, -1);
-			CellRenderer.Draw(Const.PIXEL, new RectInt(cameraRect.x + cameraRect.width - barWidth, cameraRect.y, barWidth, cameraRect.height), Const.BLACK, -1);
+			CellRenderer.Draw(Const.PIXEL, new IRect(cameraRect.x, cameraRect.y, barWidth, cameraRect.height), Const.BLACK, -1);
+			CellRenderer.Draw(Const.PIXEL, new IRect(cameraRect.x + cameraRect.width - barWidth, cameraRect.y, barWidth, cameraRect.height), Const.BLACK, -1);
 			NavigationBlockBarLerp = NavigationBlockBarLerp.LerpTo(1000, 200);
 
 			// Camera Rect
 			int height = cameraRect.height * TargetViewRect.height / (NavSquad.WorldSize - 1) / (Const.MAP * Const.CEL);
 			int width = height * cameraRect.width / cameraRect.height;
 			int BORDER = Unify(1);
-			var rect = new RectInt(
+			var rect = new IRect(
 				cameraRect.x + cameraRect.width / 2 - width / 2,
 				cameraRect.y + cameraRect.height / 2 - height / 2,
 				width, height

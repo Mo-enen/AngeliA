@@ -36,7 +36,7 @@ namespace AngeliaFramework {
 			base.FrameUpdate();
 			if (!Active) return;
 			Y += 4;
-			Tint = new Color32(
+			Tint = new Pixel32(
 				255, 255, 255,
 				(byte)Util.RemapUnclamped(0, Duration, 512, 1, LocalFrame).Clamp(0, 255)
 			);
@@ -85,15 +85,15 @@ namespace AngeliaFramework {
 			int deltaY = (int)Mathf.Lerp(-Const.HALF, Const.CEL * 2, ease01).Clamp(0, Const.CEL);
 			int deltaRot = (int)Mathf.Lerp(0, 45, ease01);
 			byte rgb = (byte)Mathf.Lerp(512, 196, ease01).Clamp(0, 255);
-			var tint = new Color32(
+			var tint = new Pixel32(
 				rgb, rgb, rgb,
 				(byte)Mathf.Lerp(512, 0, ease01).Clamp(0, 255)
 			);
 
 			var cellL = CellRenderer.Draw((int)UserData, X - deltaX, Y - deltaY, 500, 500, -deltaRot, Width, Height, tint, 0);
 			var cellR = CellRenderer.Draw((int)UserData, X + deltaX, Y - deltaY, 500, 500, deltaRot, Width, Height, tint, 0);
-			cellL.Shift = new Vector4Int(0, Width / 2, 0, 0);
-			cellR.Shift = new Vector4Int(Width / 2, 0, 0, 0);
+			cellL.Shift = new Int4(0, Width / 2, 0, 0);
+			cellR.Shift = new Int4(Width / 2, 0, 0, 0);
 			CellRenderer.SetLayerToDefault();
 		}
 	}
@@ -121,14 +121,14 @@ namespace AngeliaFramework {
 			int rotation = ease01 < 0.5f ? (int)(ease01 * 30f * (LocalFrame % 2 == 0 ? 1f : -1f)) : 0;
 
 			byte rgb = (byte)Mathf.Lerp(512, 196, ease01).Clamp(0, 255);
-			var tint = new Color32(
+			var tint = new Pixel32(
 				rgb, rgb, rgb,
 				(byte)Mathf.Lerp(512, 0, ease01).Clamp(0, 255)
 			);
 
 			// Draw
 			CellRenderer.Draw(
-				ease01 < 0.5f ? ((Vector2Int)UserData).x : ((Vector2Int)UserData).y,
+				ease01 < 0.5f ? ((Int2)UserData).x : ((Int2)UserData).y,
 				X, Y, 500, 500, rotation,
 				Width + deltaSize, Height + deltaSize,
 				tint, 0

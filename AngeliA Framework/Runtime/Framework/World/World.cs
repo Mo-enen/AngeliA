@@ -27,7 +27,7 @@ namespace AngeliaFramework {
 
 		// Api
 		public MapLocation LoadedLocation { get; private set; } = MapLocation.Unknown;
-		public Vector3Int WorldPosition { get; set; } = default;
+		public Int3 WorldPosition { get; set; } = default;
 		public int[] Background { get; set; } = null;
 		public int[] Level { get; set; } = null;
 		public int[] Entity { get; set; } = null;
@@ -57,7 +57,7 @@ namespace AngeliaFramework {
 
 
 		public World () : this(new(int.MinValue, int.MinValue)) { }
-		public World (Vector3Int pos) => Reset(pos);
+		public World (Int3 pos) => Reset(pos);
 
 
 		public bool EmptyCheck () {
@@ -78,7 +78,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public void Reset (Vector3Int pos) {
+		public void Reset (Int3 pos) {
 			WorldPosition = pos;
 			Level = new int[Const.MAP * Const.MAP];
 			Background = new int[Const.MAP * Const.MAP];
@@ -175,7 +175,7 @@ namespace AngeliaFramework {
 
 
 		// Misc
-		public static bool GetWorldPositionFromName (string fileName, out Vector3Int pos) {
+		public static bool GetWorldPositionFromName (string fileName, out Int3 pos) {
 			pos = default;
 			int _index0 = fileName.IndexOf('_');
 			if (_index0 < 0) return false;

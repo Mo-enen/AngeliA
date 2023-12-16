@@ -67,7 +67,7 @@ namespace AngeliaFramework {
 		}
 
 		// Api
-		protected void ReceiverHitCheck (RectInt rect) {
+		protected void ReceiverHitCheck (IRect rect) {
 			var hits = CellPhysics.OverlapAll(
 				ReceiverMask, rect, out int count, Sender, OperationMode.ColliderAndTrigger
 			);
@@ -84,7 +84,7 @@ namespace AngeliaFramework {
 			}
 		}
 
-		public bool GroundCheck (out Color32 groundTint) {
+		public bool GroundCheck (out Pixel32 groundTint) {
 			groundTint = Const.WHITE;
 			bool grounded =
 				CellPhysics.Overlap(PhysicsMask.MAP, Rect.Edge(Direction4.Down, 4), out var hit, Sender) ||

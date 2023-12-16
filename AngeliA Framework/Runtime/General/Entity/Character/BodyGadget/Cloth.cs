@@ -405,7 +405,7 @@ namespace AngeliaFramework {
 			int groupIndex = body.FrontSide ? 0 : 1;
 			if (!CellRenderer.TryGetSpriteFromGroup(spriteGroupId, groupIndex, out var suitSprite, false, true)) return;
 
-			var rect = new RectInt(
+			var rect = new IRect(
 				body.GlobalX - body.Width / 2,
 				hip.GlobalY,
 				body.Width,
@@ -645,10 +645,10 @@ namespace AngeliaFramework {
 				);
 			}
 			// Head Rotate
-			if (cells != null && character.Head.Rotation != 0) {
-				int offsetY = character.Head.Height.Abs() * character.Head.Rotation.Abs() / 360;
+			if (cells != null && character.HeadRotation != 0) {
+				int offsetY = character.Head.Height.Abs() * character.HeadRotation.Abs() / 360;
 				foreach (var cell in cells) {
-					cell.RotateAround(character.Head.Rotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
+					cell.RotateAround(character.HeadRotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
 					cell.Y -= offsetY;
 				}
 			}
@@ -778,7 +778,7 @@ namespace AngeliaFramework {
 
 		public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID) => CoverClothOn(bodyPart, spriteID, 1, Const.WHITE, true);
 		public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID, int localZ) => CoverClothOn(bodyPart, spriteID, localZ, Const.WHITE, true);
-		public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID, int localZ, Color32 tint, bool defaultHideLimb = true) {
+		public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID, int localZ, Pixel32 tint, bool defaultHideLimb = true) {
 			if (spriteID == 0 || bodyPart.IsFullCovered || !CellRenderer.TryGetSprite(spriteID, out var sprite)) return null;
 			Cell[] result;
 			if (sprite.GlobalBorder.IsZero) {

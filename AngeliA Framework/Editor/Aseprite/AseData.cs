@@ -1,11 +1,12 @@
-﻿namespace AngeliaFramework.Editor {
-	using System.Collections;
-	using System.Collections.Generic;
-	using UnityEngine;
-	using System.IO;
-	using System.Text;
-	using System.Linq;
-	using static AngeliaFramework.Editor.AseData;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.IO;
+using System.Text;
+using AngeliaFramework;
+
+
+namespace AngeliaFramework.Editor {
 
 
 
@@ -43,7 +44,7 @@
 	[System.Serializable]
 	public partial class AseData { // For 2019-3-30 Version
 
-		
+
 
 
 		#region --- VAR ---
@@ -163,17 +164,17 @@
 		}
 
 
-		public Color32[] GetPalette32 () {
+		public AngeliaFramework.Pixel32[] GetPalette32 () {
 			// Get Len
 			int paletteLen = 0;
 			ForAllChunks<PaletteChunk>((chunk, fIndex, cIndex) => {
 				paletteLen = Mathf.Max(paletteLen, (int)chunk.Size);
 			});
 			// Colors
-			var colors = new Color32[paletteLen];
+			var colors = new AngeliaFramework.Pixel32[paletteLen];
 			ForAllChunks<PaletteChunk>((chunk, fIndex, cIndex) => {
 				for (int i = (int)chunk.FromIndex; i <= chunk.ToIndex && i < paletteLen; i++) {
-					var c = new Color32();
+					var c = new Pixel32();
 					var e = chunk.Entries[i - chunk.FromIndex];
 					c.r = e.R;
 					c.g = e.G;
@@ -184,7 +185,7 @@
 			});
 			// Transparent For Indexed
 			if (Header.ColorDepth == 8 && Header.PaletteEntry < paletteLen) {
-				colors[Header.PaletteEntry] = new Color32(0, 0, 0, 0);
+				colors[Header.PaletteEntry] = new Pixel32(0, 0, 0, 0);
 			}
 			return colors;
 		}
@@ -265,7 +266,7 @@
 		}
 
 
-		public Color32[] GetLayerPixels (CelChunk[,] cells, int layerIndex, int frameIndex, Color32[] palette = null) {
+		public Pixel32[] GetLayerPixels (CelChunk[,] cells, int layerIndex, int frameIndex, Pixel32[] palette = null) {
 			int width = Header.Width;
 			int height = Header.Height;
 			if (width <= 0 || height <= 0) return null;
@@ -273,8 +274,8 @@
 			palette ??= colorDepth == 8 ? GetPalette32() : null;
 
 			// New Pixels
-			var pixels = new Color32[width * height];
-			Color32 CLEAR = new(0, 0, 0, 0);
+			var pixels = new Pixel32[width * height];
+			Pixel32 CLEAR = new(0, 0, 0, 0);
 			for (int i = 0; i < pixels.Length; i++) {
 				pixels[i] = CLEAR;
 			}
@@ -285,7 +286,7 @@
 			if (chunk == null) return pixels;
 			int chunkWidth = chunk.Width;
 			int chunkHeight = chunk.Height;
-			Color32[] colors = null;
+			Pixel32[] colors = null;
 			if (chunk.Type == (ushort)CelChunk.CelType.Linked) {
 				if (chunk.FramePosition >= 0 && chunk.FramePosition < frameCount) {
 					var linkedChunk = cells[layerIndex, chunk.FramePosition];
@@ -316,7 +317,7 @@
 		}
 
 
-		public Color32[] GetAllPixels (CelChunk[,] cells, int frameIndex, bool ignoreBackgroundLayer = false, bool visibleLayerOnly = true, Color32[] palette = null, List<LayerChunk> layerChunks = null) {
+		public Pixel32[] GetAllPixels (CelChunk[,] cells, int frameIndex, bool ignoreBackgroundLayer = false, bool visibleLayerOnly = true, Pixel32[] palette = null, List<LayerChunk> layerChunks = null) {
 
 			int width = Header.Width;
 			int height = Header.Height;
@@ -326,8 +327,8 @@
 			palette ??= Header.ColorDepth == 8 ? GetPalette32() : null;
 
 			// New Pixels
-			var pixels = new Color32[width * height];
-			Color32 CLEAR = new(0, 0, 0, 0);
+			var pixels = new Pixel32[width * height];
+			Pixel32 CLEAR = new(0, 0, 0, 0);
 			for (int i = 0; i < pixels.Length; i++) {
 				pixels[i] = CLEAR;
 			}
@@ -340,7 +341,7 @@
 				if (chunk == null) { continue; }
 				int chunkWidth = chunk.Width;
 				int chunkHeight = chunk.Height;
-				Color32[] colors = null;
+				Pixel32[] colors = null;
 				if (chunk.Type == (ushort)CelChunk.CelType.Linked) {
 					if (chunk.FramePosition >= 0 && chunk.FramePosition < frameCount) {
 						var linkedChunk = cells[i, chunk.FramePosition];

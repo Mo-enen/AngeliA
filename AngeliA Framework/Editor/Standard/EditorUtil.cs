@@ -164,7 +164,7 @@ namespace AngeliaFramework.Editor {
 			int length = width * height;
 
 			// Remove Background
-			Color32 CLEAR = new(0, 0, 0, 0);
+			Pixel32 CLEAR = new(0, 0, 0, 0);
 			var stack = new Stack<(int x, int y)>();
 			RemoveColorAt(0, 0);
 			RemoveColorAt(width - 1, 0);
@@ -172,7 +172,7 @@ namespace AngeliaFramework.Editor {
 			RemoveColorAt(width - 1, height - 1);
 
 			// Fix Color Brightness
-			Color32 pixel;
+			Pixel32 pixel;
 			for (int i = 0; i < length; i++) {
 				pixel = pixels[i];
 				if (pixel.a == 0) { continue; }
@@ -192,7 +192,7 @@ namespace AngeliaFramework.Editor {
 			return result;
 
 			// === Func ===
-			bool SameColor (Color32 colorA, Color32 colorB) =>
+			bool SameColor (Pixel32 colorA, Pixel32 colorB) =>
 				colorA.r == colorB.r &&
 				colorA.g == colorB.g &&
 				colorA.b == colorB.b &&
@@ -215,7 +215,7 @@ namespace AngeliaFramework.Editor {
 					AddToStack(x + 1, y + 1, color32);
 				}
 			}
-			void AddToStack (int x, int y, Color32 color32) {
+			void AddToStack (int x, int y, Pixel32 color32) {
 				int i = y * width + x;
 				if (
 					x >= 0 && y >= 0 && x < width && y < height &&

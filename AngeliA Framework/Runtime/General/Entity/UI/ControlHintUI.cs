@@ -23,12 +23,12 @@ namespace AngeliaFramework {
 		private static readonly int ButtonBCode = "GamePad B".AngeHash();
 		private static readonly int ButtonSelectCode = "GamePad Select".AngeHash();
 		private static readonly int ButtonStartCode = "GamePad Start".AngeHash();
-		private static readonly Color32 DirectionTint = new(255, 255, 0, 255);
-		private static readonly Color32 PressingTint = new(0, 255, 0, 255);
-		private static readonly Color32 DarkButtonTint = new(0, 0, 0, 255);
-		private static readonly Color32 ColorfulButtonTint = new(240, 86, 86, 255);
-		private static readonly Color32 LabelTint = Const.WHITE;
-		private static readonly Color32 KeyTint = new(44, 49, 54, 255);
+		private static readonly Pixel32 DirectionTint = new(255, 255, 0, 255);
+		private static readonly Pixel32 PressingTint = new(0, 255, 0, 255);
+		private static readonly Pixel32 DarkButtonTint = new(0, 0, 0, 255);
+		private static readonly Pixel32 ColorfulButtonTint = new(240, 86, 86, 255);
+		private static readonly Pixel32 LabelTint = Const.WHITE;
+		private static readonly Pixel32 KeyTint = new(44, 49, 54, 255);
 		private const int KEYSIZE = 24;
 		private const int GAP = 4;
 		private const int TEXT_SIZE = 21;
@@ -57,7 +57,7 @@ namespace AngeliaFramework {
 			("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1),
 		};
 		private static int CurrentHintOffsetY = 0;
-		private Vector4Int ButtonBorder = default;
+		private Int4 ButtonBorder = default;
 		private int ForceHintFrame = int.MinValue;
 		private int ForceHideGamepadFrame = int.MinValue;
 		private int OffsetResetFrame = int.MinValue;
@@ -104,17 +104,17 @@ namespace AngeliaFramework {
 
 			int x = Unify(6);
 			int y = Unify(6);
-			var rect = new RectInt(x, y, Unify(132), Unify(60));
+			var rect = new IRect(x, y, Unify(132), Unify(60));
 
-			var DPadLeftPosition = new RectInt(Unify(10), Unify(22), Unify(12), Unify(8));
-			var DPadRightPosition = new RectInt(Unify(22), Unify(22), Unify(12), Unify(8));
-			var DPadDownPosition = new RectInt(Unify(18), Unify(14), Unify(8), Unify(12));
-			var DPadUpPosition = new RectInt(Unify(18), Unify(26), Unify(8), Unify(12));
-			var DPadCenterPos = new Vector2Int(Unify(22), Unify(26));
-			var SelectPosition = new RectInt(Unify(44), Unify(20), Unify(12), Unify(4));
-			var StartPosition = new RectInt(Unify(60), Unify(20), Unify(12), Unify(4));
-			var ButtonAPosition = new RectInt(Unify(106), Unify(18), Unify(12), Unify(12));
-			var ButtonBPosition = new RectInt(Unify(86), Unify(18), Unify(12), Unify(12));
+			var DPadLeftPosition = new IRect(Unify(10), Unify(22), Unify(12), Unify(8));
+			var DPadRightPosition = new IRect(Unify(22), Unify(22), Unify(12), Unify(8));
+			var DPadDownPosition = new IRect(Unify(18), Unify(14), Unify(8), Unify(12));
+			var DPadUpPosition = new IRect(Unify(18), Unify(26), Unify(8), Unify(12));
+			var DPadCenterPos = new Int2(Unify(22), Unify(26));
+			var SelectPosition = new IRect(Unify(44), Unify(20), Unify(12), Unify(4));
+			var StartPosition = new IRect(Unify(60), Unify(20), Unify(12), Unify(4));
+			var ButtonAPosition = new IRect(Unify(106), Unify(18), Unify(12), Unify(12));
+			var ButtonBPosition = new IRect(Unify(86), Unify(18), Unify(12), Unify(12));
 
 			var screenRect = CellRenderer.CameraRect;
 
@@ -132,7 +132,7 @@ namespace AngeliaFramework {
 				var nDir = FrameInput.Direction;
 				CellRenderer.Draw(
 					Const.PIXEL, DPadCenterPos.x + x + screenRect.x, DPadCenterPos.y + y + screenRect.y,
-					500, 0, (int)Vector3.SignedAngle(Vector3.up, (Vector2)nDir, Vector3.back),
+					500, 0, (int)Float3.SignedAngle(Float3.up, (Float2)nDir, Float3.back),
 					Unify(3),
 					Unify(nDir.magnitude / 50f),
 					DirectionTint
@@ -286,7 +286,7 @@ namespace AngeliaFramework {
 			border.up = Unify(border.up);
 			int gap = Unify(GAP);
 			int keySize = Unify(KEYSIZE);
-			var rect = new RectInt(x, y, keySize, keySize);
+			var rect = new IRect(x, y, keySize, keySize);
 			int widthA = keySize;
 			int widthB = keySize;
 

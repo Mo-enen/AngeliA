@@ -1,8 +1,11 @@
-﻿namespace AngeliaFramework.Editor {
-	using System.Collections;
-	using System.Collections.Generic;
-	using UnityEditor;
-	using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+using AngeliaFramework;
+
+
+namespace AngeliaFramework.Editor {
 
 
 
@@ -49,7 +52,7 @@
 				return new FrameResult() {
 					Height = 0,
 					Width = 0,
-					Pixels = new Color32[0],
+					Pixels = new Pixel32[0],
 					Sprites = new SpriteMetaData[0],
 					FrameIndex = frameIndex,
 				};
@@ -58,7 +61,7 @@
 			public int FrameIndex;
 			public int Width;
 			public int Height;
-			public Color32[] Pixels;
+			public Pixel32[] Pixels;
 			public SpriteMetaData[] Sprites;
 			public int[] SpriteFrames = null;
 		}

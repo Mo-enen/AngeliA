@@ -64,7 +64,7 @@ namespace AngeliaFramework {
 				if (ShowGeneratingHint) {
 					CellRendererGUI.Label(
 						HintContent.SetText(Language.Get(HINT_GENERATING, "Generating")),
-						new RectInt(X - Const.CEL, Y + Const.CEL * 2, Const.CEL * 3, Const.CEL)
+						new IRect(X - Const.CEL, Y + Const.CEL * 2, Const.CEL * 3, Const.CEL)
 					);
 				}
 			}

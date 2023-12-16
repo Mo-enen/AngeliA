@@ -28,8 +28,8 @@ namespace AngeliaFramework {
 		public string SheetName;
 		public int SheetZ;
 		public Rect Rect;
-		public Vector2Int AngePivot;
-		public Vector4 Border;
+		public Int2 AngePivot;
+		public Float4 Border;
 		public SheetType SheetType;
 	}
 
@@ -43,19 +43,19 @@ namespace AngeliaFramework {
 
 		// Api
 		public Rect UvRect => Rect.MinMaxRect(UvBottomLeft.x, UvBottomLeft.y, UvTopRight.x, UvTopRight.y);
-		public Vector2 BottomRight {
+		public Float2 BottomRight {
 			get {
 				if (!_BottomRight.HasValue) _BottomRight = new(UvTopRight.x, UvBottomLeft.y);
 				return _BottomRight.Value;
 			}
 		}
-		public Vector2 TopLeft {
+		public Float2 TopLeft {
 			get {
 				if (!_TopLeft.HasValue) _TopLeft = new(UvBottomLeft.x, UvTopRight.y);
 				return _TopLeft.Value;
 			}
 		}
-		public Color32 SummaryTint {
+		public Pixel32 SummaryTint {
 			get {
 				if (!_SummaryTint.HasValue) {
 					_SummaryTint = Util.IntToColor(f);
@@ -72,7 +72,7 @@ namespace AngeliaFramework {
 		public int GlobalWidth { get => c; set => c = value; }
 		public int GlobalHeight { get => d; set => d = value; }
 		public int SortingZ { get => e; set => e = value; }
-		public Vector4Int GlobalBorder {
+		public Int4 GlobalBorder {
 			get => new(i, j, k, l);
 			set {
 				i = value.left;
@@ -83,7 +83,7 @@ namespace AngeliaFramework {
 		}
 		public int PivotX { get => g; set => g = value; }
 		public int PivotY { get => h; set => h = value; }
-		public Vector4 UvBorder { // xyzw => ldru
+		public Float4 UvBorder { // xyzw => ldru
 			get => new(m / UV_SCALE, o / UV_SCALE, n / UV_SCALE, p / UV_SCALE);
 			set {
 				m = (int)(value.x * UV_SCALE);
@@ -92,14 +92,14 @@ namespace AngeliaFramework {
 				p = (int)(value.w * UV_SCALE);
 			}
 		}
-		public Vector2 UvBottomLeft {
+		public Float2 UvBottomLeft {
 			get => new(q / UV_SCALE, r / UV_SCALE);
 			set {
 				q = (int)(value.x * UV_SCALE);
 				r = (int)(value.y * UV_SCALE);
 			}
 		}
-		public Vector2 UvTopRight {
+		public Float2 UvTopRight {
 			get => new(s / UV_SCALE, t / UV_SCALE);
 			set {
 				s = (int)(value.x * UV_SCALE);
@@ -159,21 +159,21 @@ namespace AngeliaFramework {
 		[SerializeField] byte w;    // SheetType & GroupType
 
 		// Data
-		[System.NonSerialized] Vector2? _BottomRight = null;
-		[System.NonSerialized] Vector2? _TopLeft = null;
-		[System.NonSerialized] Color32? _SummaryTint = default;
+		[System.NonSerialized] Float2? _BottomRight = null;
+		[System.NonSerialized] Float2? _TopLeft = null;
+		[System.NonSerialized] Pixel32? _SummaryTint = default;
 		[System.NonSerialized] SheetType? _SheetType = null;
 		[System.NonSerialized] GroupType? _GroupType = null;
 
 		// API
-		public RectInt GetTextureRect (int tWidth, int tHeight) => new(
+		public IRect GetTextureRect (int tWidth, int tHeight) => new(
 			(UvBottomLeft.x * tWidth).RoundToInt(),
 			(UvBottomLeft.y * tHeight).RoundToInt(),
 			((UvTopRight.x - UvBottomLeft.x) * tWidth).RoundToInt(),
 			((UvTopRight.y - UvBottomLeft.y) * tHeight).RoundToInt()
 		);
 
-		public void GetSlicedUvBorder (Alignment alignment, out Vector2 bl, out Vector2 br, out Vector2 tl, out Vector2 tr) {
+		public void GetSlicedUvBorder (Alignment alignment, out Float2 bl, out Float2 br, out Float2 tl, out Float2 tr) {
 			bl = UvBottomLeft;
 			br = BottomRight;
 			tl = TopLeft;

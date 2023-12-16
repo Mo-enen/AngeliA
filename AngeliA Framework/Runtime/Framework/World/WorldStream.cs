@@ -32,8 +32,8 @@ namespace AngeliaFramework {
 		private const int END_RELEASE_COUNT = 128;
 
 		// Data
-		private readonly Dictionary<Vector3Int, WorldData> Pool = new();
-		private readonly List<KeyValuePair<Vector3Int, WorldData>> CacheReleaseList = new(START_RELEASE_COUNT);
+		private readonly Dictionary<Int3, WorldData> Pool = new();
+		private readonly List<KeyValuePair<Int3, WorldData>> CacheReleaseList = new(START_RELEASE_COUNT);
 		private readonly string MapRoot;
 		private readonly MapLocation Location;
 		private readonly bool Readonly;
@@ -177,7 +177,7 @@ namespace AngeliaFramework {
 
 
 		private bool TryGetWorldData (int worldX, int worldY, int worldZ, out WorldData worldData, bool createNew = false) {
-			var pos = new Vector3Int(worldX, worldY, worldZ);
+			var pos = new Int3(worldX, worldY, worldZ);
 			if (!Pool.TryGetValue(pos, out worldData)) {
 				worldData = new WorldData {
 					World = new World(pos),

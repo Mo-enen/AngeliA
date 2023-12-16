@@ -13,7 +13,7 @@ namespace AngeliaFramework {
 
 		private static readonly int CLOUD = "Wallpeper.Cloud".AngeHash();
 
-		private readonly Vector3Int[] Positions = new Vector3Int[CLOUD_COUNT];
+		private readonly Int3[] Positions = new Int3[CLOUD_COUNT];
 
 
 		// MSG
@@ -29,7 +29,7 @@ namespace AngeliaFramework {
 		}
 
 
-		protected override void DrawBackground (RectInt backgroundRect) {
+		protected override void DrawBackground (IRect backgroundRect) {
 
 			int windSpeedMin = (Game.GlobalFrame / 1000).PingPong(1, 2);
 			int windSpeedMax = (Game.GlobalFrame / 1000).PingPong(2, 4);

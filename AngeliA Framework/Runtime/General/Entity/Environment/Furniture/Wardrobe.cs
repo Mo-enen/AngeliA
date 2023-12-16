@@ -56,7 +56,7 @@ namespace AngeliaFramework {
 		};
 
 		// API
-		protected override Vector2Int WindowSize => new(200, 200);
+		protected override Int2 WindowSize => new(200, 200);
 		protected override Direction3 ModuleType => Direction3.Vertical;
 		protected abstract string[] Suit_Heads { get; }
 		protected abstract string[] Suit_BodyShoulderArmArms { get; }
@@ -117,7 +117,7 @@ namespace AngeliaFramework {
 		}
 
 
-		protected override void FrameUpdateUI (RectInt windowRect) {
+		protected override void FrameUpdateUI (IRect windowRect) {
 			if (Player.Selecting is not IConfigurableCharacter) return;
 			var player = Player.Selecting;
 			windowRect.x = player.Rect.CenterX() - windowRect.width / 2;
@@ -131,7 +131,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_GameLogic (RectInt windowRect) {
+		private void Update_GameLogic (IRect windowRect) {
 
 			if (FrameInput.LastActionFromMouse && FrameInput.MouseLeftButtonDown) {
 				FrameInput.UseGameKey(Gamekey.Action);
@@ -200,7 +200,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_UiCache (RectInt windowRect) {
+		private void Update_UiCache (IRect windowRect) {
 			WindowPadding = Unify(16);
 			ArrowSize = windowRect.width / 5;
 			ContentIconSize = windowRect.height / SUIT_TYPE_ICONS.Length;
@@ -212,14 +212,14 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_LeftBarUI (RectInt windowRect) {
+		private void Update_LeftBarUI (IRect windowRect) {
 
 			// Bar BG
 			CellRenderer.Draw(
 				Const.PIXEL, windowRect.Edge(Direction4.Left, LeftBarWidth).Expand(WindowPadding, 0, 0, 0), Const.BLACK, z: 0
 			);
 			for (int i = 0; i < SUIT_TYPE_ICONS.Length; i++) {
-				var iconRect = new RectInt(
+				var iconRect = new IRect(
 					windowRect.x - LeftBarWidth,
 					windowRect.yMax - (i + 1) * ContentIconSize,
 					ContentIconSize, ContentIconSize
@@ -248,7 +248,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_ContentUI (RectInt windowRect) {
+		private void Update_ContentUI (IRect windowRect) {
 
 			bool isWearingCurrent =
 				CurrentPlayerSuitIndex == CurrentPatternIndex ||
@@ -281,7 +281,7 @@ namespace AngeliaFramework {
 			}
 
 			// Arrow L
-			var arrowRectL = new RectInt(
+			var arrowRectL = new IRect(
 				windowRect.x - ArrowSize / 2 - ArrowSize / 2,
 				windowRect.CenterY() - ArrowSize / 2,
 				ArrowSize, ArrowSize
@@ -290,19 +290,19 @@ namespace AngeliaFramework {
 			arrowRenderingRectL.FlipHorizontal();
 			CellRenderer.Draw(
 				TRIANGLE_RIGHT, arrowRenderingRectL,
-				new Color32(255, 255, 255, (byte)(CurrentPatternIndex > 0 ? 255 : 64)), 5
+				new Pixel32(255, 255, 255, (byte)(CurrentPatternIndex > 0 ? 255 : 64)), 5
 			);
 			CursorSystem.SetCursorAsHand(arrowRectL);
 
 			// Arrow R
-			var arrowRectR = new RectInt(
+			var arrowRectR = new IRect(
 				windowRect.xMax,
 				windowRect.CenterY() - ArrowSize / 2,
 				ArrowSize, ArrowSize
 			);
 			CellRenderer.Draw(
 				TRIANGLE_RIGHT, arrowRectR.Shift(localPopR, 0),
-				new Color32(255, 255, 255, (byte)(CurrentPatternIndex < CurrentPatternList.Count - 1 ? 255 : 64)), 5
+				new Pixel32(255, 255, 255, (byte)(CurrentPatternIndex < CurrentPatternList.Count - 1 ? 255 : 64)), 5
 			);
 			CursorSystem.SetCursorAsHand(arrowRectR);
 
@@ -326,7 +326,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_ThumbnailListUI (RectInt windowRect) {
+		private void Update_ThumbnailListUI (IRect windowRect) {
 
 			windowRect = windowRect.Expand(Unify(8), Unify(8), 0, 0);
 
@@ -337,7 +337,7 @@ namespace AngeliaFramework {
 			int right = CurrentPatternIndex + EXTEND + 1;
 
 			// BG
-			CellRenderer.Draw(Const.PIXEL, new RectInt(
+			CellRenderer.Draw(Const.PIXEL, new IRect(
 				windowRect.x - WindowPadding / 2 - LeftBarWidth,
 				windowRect.yMax,
 				windowRect.width + WindowPadding + LeftBarWidth,
@@ -345,7 +345,7 @@ namespace AngeliaFramework {
 			), Const.BLACK, 0);
 
 			// Content
-			var rect = new RectInt(0, windowRect.yMax + WindowPadding / 2, SIZE, SIZE);
+			var rect = new IRect(0, windowRect.yMax + WindowPadding / 2, SIZE, SIZE);
 			for (int i = left; i < right; i++) {
 
 				if (i < 0) continue;
@@ -371,12 +371,12 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_LabelsUI (RectInt windowRect) {
+		private void Update_LabelsUI (IRect windowRect) {
 
 			// BG
 			CellRenderer.Draw(
 				Const.PIXEL,
-				new RectInt(
+				new IRect(
 					windowRect.x - LeftBarWidth - WindowPadding,
 					windowRect.y - LabelSize - LabelSize - WindowPadding,
 					windowRect.width + LeftBarWidth + WindowPadding * 2,
@@ -397,15 +397,15 @@ namespace AngeliaFramework {
 			int midWidth = Unify(12);
 			CellRendererGUI.Label(
 				CellContent.Get(IndexLabelLeft.GetString(CurrentPatternIndex + 1), 24, Alignment.MidRight),
-				new RectInt(windowRect.x, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize)
+				new IRect(windowRect.x, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize)
 			);
 			CellRendererGUI.Label(
 				CellContent.Get(IndexLabelRight.GetString(CurrentPatternList.Count), 24, Alignment.MidLeft),
-				new RectInt(windowRect.CenterX() + midWidth / 2, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize)
+				new IRect(windowRect.CenterX() + midWidth / 2, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize)
 			);
 			CellRendererGUI.Label(
 				CellContent.Get("/", 24, Alignment.MidMid),
-				new RectInt(windowRect.CenterX() - midWidth / 2, windowRect.y - LabelSize - LabelSize, midWidth, LabelSize)
+				new IRect(windowRect.CenterX() - midWidth / 2, windowRect.y - LabelSize - LabelSize, midWidth, LabelSize)
 			);
 
 		}

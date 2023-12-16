@@ -86,7 +86,7 @@ namespace AngeliaFramework {
 			var rect = Rect;
 			bool contact = false;
 			const int GAP = 1;
-			RectInt edge = GateDirection switch {
+			IRect edge = GateDirection switch {
 				Direction4.Down => new(rect.x, rect.y - GAP, rect.width, GAP),
 				Direction4.Up => new(rect.x, rect.yMax, rect.width, GAP),
 				Direction4.Left => new(rect.x - GAP, rect.y, GAP, rect.height),

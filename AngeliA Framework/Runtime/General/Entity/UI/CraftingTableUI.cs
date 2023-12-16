@@ -26,9 +26,9 @@ namespace AngeliaFramework {
 		public static readonly CraftingTableUI Instance = new();
 
 		// Data
-		private readonly List<Vector4Int> DocumentContent = new();
+		private readonly List<Int4> DocumentContent = new();
 		private readonly int[] IgnoreConsumes = { 0, 0, 0, 0, };
-		private Vector4Int CurrentCraftingItems = default;
+		private Int4 CurrentCraftingItems = default;
 		private bool CursorInDoc = false;
 		private bool CursorInResult = false;
 		private int CombineResultID = 0;
@@ -45,18 +45,18 @@ namespace AngeliaFramework {
 		}
 
 
-		public override void DrawPanel (RectInt panelRect) {
+		public override void DrawPanel (IRect panelRect) {
 			int sidePanelGap = Unify(64);
 			int docPanelSize = panelRect.height;
 			int resultPanelSize = panelRect.height;
-			var resultRect = new RectInt(panelRect.xMax, panelRect.y, resultPanelSize + sidePanelGap, panelRect.height);
-			var resultItemRect = new RectInt(resultRect.xMax - resultPanelSize, resultRect.y, resultPanelSize, resultPanelSize);
-			var docRect = new RectInt(panelRect.x - docPanelSize - sidePanelGap, panelRect.y, docPanelSize + sidePanelGap, docPanelSize);
-			var docItemRect = new RectInt(panelRect.x - docPanelSize - sidePanelGap, panelRect.y, docPanelSize, docPanelSize);
+			var resultRect = new IRect(panelRect.xMax, panelRect.y, resultPanelSize + sidePanelGap, panelRect.height);
+			var resultItemRect = new IRect(resultRect.xMax - resultPanelSize, resultRect.y, resultPanelSize, resultPanelSize);
+			var docRect = new IRect(panelRect.x - docPanelSize - sidePanelGap, panelRect.y, docPanelSize + sidePanelGap, docPanelSize);
+			var docItemRect = new IRect(panelRect.x - docPanelSize - sidePanelGap, panelRect.y, docPanelSize, docPanelSize);
 			Update_Cache();
 			DocumentPageSize = panelRect.height / Unify(DOC_ITEM_HEIGHT + DOC_ITEM_PADDING);
 			var action = Update_Action(docItemRect, resultItemRect);
-			MouseInPanel = MouseInPanel || new RectInt(docRect.x, panelRect.y, resultRect.xMax - docRect.x, panelRect.height).Contains(FrameInput.MouseGlobalPosition);
+			MouseInPanel = MouseInPanel || new IRect(docRect.x, panelRect.y, resultRect.xMax - docRect.x, panelRect.height).Contains(FrameInput.MouseGlobalPosition);
 			Update_Inventory(panelRect);
 			Update_Documentation(docRect, docItemRect);
 			Update_Result(resultRect, resultItemRect);
@@ -91,7 +91,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private CraftActionType Update_Action (RectInt docItemRect, RectInt resultItemRect) {
+		private CraftActionType Update_Action (IRect docItemRect, IRect resultItemRect) {
 			var action = CraftActionType.None;
 			var menu = PlayerMenuUI.Instance;
 			if (FrameInput.LastActionFromMouse) {
@@ -184,9 +184,9 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_Inventory (RectInt panelRect) {
+		private void Update_Inventory (IRect panelRect) {
 			int itemSize = Unify(ItemSize);
-			var itemRect = new RectInt(0, 0, itemSize, itemSize);
+			var itemRect = new IRect(0, 0, itemSize, itemSize);
 			int padding = Unify(12);
 			int itemBorder = itemSize / 16;
 			bool cursorInInventory = !CursorInResult && !CursorInDoc;
@@ -208,7 +208,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_Documentation (RectInt docRect, RectInt docItemRect) {
+		private void Update_Documentation (IRect docRect, IRect docItemRect) {
 
 			var menu = PlayerMenuUI.Instance;
 
@@ -227,20 +227,20 @@ namespace AngeliaFramework {
 
 			// Content
 			int startIndex = CellRenderer.GetUsedCellCount();
-			var lineRect = new RectInt(docItemRect.x, 0, docItemRect.width, Unify(DOC_ITEM_HEIGHT));
+			var lineRect = new IRect(docItemRect.x, 0, docItemRect.width, Unify(DOC_ITEM_HEIGHT));
 			DocumentScrollY = DocumentScrollY.Clamp(0, DocumentContent.Count);
 			int iconPadding = Unify(4);
 			int linePadding = Unify(DOC_ITEM_PADDING);
 			int iconSize = lineRect.height;
 			int tipID = 0;
-			RectInt tipRect = default;
+			IRect tipRect = default;
 			for (int i = DocumentScrollY; i < DocumentContent.Count; i++) {
 				var com = DocumentContent[i];
 				lineRect.y = docItemRect.yMax - (i + 1 - DocumentScrollY) * (lineRect.height + linePadding);
 				if (lineRect.yMax < docRect.y) break;
 				bool haveResult = ItemSystem.TryGetCombination(com.x, com.y, com.z, com.w, out int result, out _, out _, out _, out _, out _);
 				if (!haveResult) continue;
-				var iRect = new RectInt(lineRect.xMax, lineRect.y, iconSize, iconSize);
+				var iRect = new IRect(lineRect.xMax, lineRect.y, iconSize, iconSize);
 
 				// Draw Result
 				iRect.x -= iconSize;
@@ -253,7 +253,7 @@ namespace AngeliaFramework {
 
 				// Draw Equal Sign
 				iRect.x -= iconSize / 2 + iconPadding;
-				CellRenderer.Draw(EQUAL_CODE, new RectInt(iRect.x, iRect.y + iconSize / 4, iconSize / 2, iconSize / 2), Const.GREY_128, int.MinValue + 4);
+				CellRenderer.Draw(EQUAL_CODE, new IRect(iRect.x, iRect.y + iconSize / 4, iconSize / 2, iconSize / 2), Const.GREY_128, int.MinValue + 4);
 
 				// Draw Combination 
 				for (int j = 3; j >= 0; j--) {
@@ -271,7 +271,7 @@ namespace AngeliaFramework {
 					// Plus Sign
 					if (j > 0) {
 						iRect.x -= iconSize / 2 + iconPadding;
-						CellRenderer.Draw(PLUS_CODE, new RectInt(iRect.x, iRect.y + iconSize / 4, iconSize / 2, iconSize / 2), Const.GREY_128, int.MinValue + 4);
+						CellRenderer.Draw(PLUS_CODE, new IRect(iRect.x, iRect.y + iconSize / 4, iconSize / 2, iconSize / 2), Const.GREY_128, int.MinValue + 4);
 					}
 				}
 
@@ -285,7 +285,7 @@ namespace AngeliaFramework {
 			if (tipID != 0) {
 				CellRendererGUI.Label(
 					CellContent.Get(ItemSystem.GetItemName(tipID), alignment: Alignment.BottomMid),
-					new RectInt(tipRect.x - tipRect.width * 2, tipRect.yMax + tipRect.height / 2, tipRect.width * 5, tipRect.height),
+					new IRect(tipRect.x - tipRect.width * 2, tipRect.yMax + tipRect.height / 2, tipRect.width * 5, tipRect.height),
 					out var tipBounds
 				);
 				CellRenderer.Draw(Const.PIXEL, tipBounds, Const.BLACK, int.MaxValue);
@@ -294,7 +294,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_Result (RectInt resultPanelRect, RectInt resultItemRect) {
+		private void Update_Result (IRect resultPanelRect, IRect resultItemRect) {
 
 			int ARROW_SIZE = Unify(64);
 			var menu = PlayerMenuUI.Instance;
@@ -308,7 +308,7 @@ namespace AngeliaFramework {
 			);
 
 			// Arrow
-			CellRenderer.Draw(ARROW_CODE, new RectInt(
+			CellRenderer.Draw(ARROW_CODE, new IRect(
 				resultItemRect.x - ARROW_SIZE,
 				resultItemRect.y + resultItemRect.height / 2 - ARROW_SIZE / 2,
 				ARROW_SIZE, ARROW_SIZE
@@ -331,7 +331,7 @@ namespace AngeliaFramework {
 				CellRenderer.Draw(CombineResultID, resultItemRect.Shrink(Unify(12)), int.MinValue + 4);
 				if (CombineResultCount > 1) {
 					int countSize = resultItemRect.width / 4;
-					var countRect = new RectInt(
+					var countRect = new IRect(
 						resultItemRect.xMax - countSize,
 						resultItemRect.y,
 						countSize, countSize

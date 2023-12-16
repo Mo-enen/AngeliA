@@ -8,7 +8,7 @@ namespace AngeliaFramework {
 
 
 		// VAR
-		protected static readonly HashSet<Vector3Int> OpenedChest = new();
+		protected static readonly HashSet<Int3> OpenedChest = new();
 		private static readonly System.Random Ran = new(483623528);
 
 

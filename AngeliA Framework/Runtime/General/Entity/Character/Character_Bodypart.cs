@@ -35,7 +35,7 @@ namespace AngeliaFramework {
 
 		// Api
 		public int ID { get; private set; } = 0;
-		public Vector4Int Border { get; private set; } = default;
+		public Int4 Border { get; private set; } = default;
 		public int SpritePivotX { get; private set; } = 0;
 		public int SpritePivotY { get; private set; } = 0;
 		public int SizeX { get; private set; } = Const.CEL;
@@ -56,7 +56,7 @@ namespace AngeliaFramework {
 		public int PivotY;
 		public bool FrontSide;
 		public CoverMode Covered;
-		public Color32 Tint;
+		public Pixel32 Tint;
 
 
 		// API
@@ -93,37 +93,37 @@ namespace AngeliaFramework {
 		}
 
 
-		public RectInt GetGlobalRect () => new(
+		public IRect GetGlobalRect () => new(
 			GlobalX - PivotX * Width / 1000 + (Width > 0 ? 0 : Width),
 			GlobalY - PivotY * Height / 1000 + (Height > 0 ? 0 : Height),
 			Width.Abs(), Height.Abs()
 		);
 
 
-		public Vector2Int GetLocalCenter () {
-			var v = Quaternion.Euler(0, 0, -Rotation) * new Vector2(
+		public Int2 GetLocalCenter () {
+			var v = new Float2(
 				Width / 2f - Width * PivotX / 1000f,
 				Height / 2f - Height * PivotY / 1000f
-			);
-			return new Vector2Int(X + (int)v.x, Y + (int)v.y);
+			).Rotate(-Rotation);
+			return new Int2(X + (int)v.x, Y + (int)v.y);
 		}
 
 
-		public Vector2Int GetGlobalCenter () {
-			var v = Quaternion.Euler(0, 0, -Rotation) * new Vector2(
+		public Int2 GetGlobalCenter () {
+			var v = new Float2(
 				Width / 2f - Width * PivotX / 1000f,
 				Height / 2f - Height * PivotY / 1000f
-			);
-			return new Vector2Int(GlobalX + (int)v.x, GlobalY + (int)v.y);
+			).Rotate(-Rotation);
+			return new Int2(GlobalX + (int)v.x, GlobalY + (int)v.y);
 		}
 
 
-		public Vector2Int GlobalLerp (float x01, float y01) {
-			var result = new Vector2Int(GlobalX, GlobalY);
-			var v = Quaternion.Euler(0, 0, -Rotation) * new Vector2(
+		public Int2 GlobalLerp (float x01, float y01) {
+			var result = new Int2(GlobalX, GlobalY);
+			var v = new Float2(
 				x01 * Width - Width * PivotX / 1000f,
 				y01 * Height - Height * PivotY / 1000f
-			);
+			).Rotate(-Rotation);
 			result.x += (int)v.x;
 			result.y += (int)v.y;
 			return result;

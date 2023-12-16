@@ -109,7 +109,7 @@ namespace AngeliaFramework {
 			base.FrameUpdate();
 			if (!Active) return;
 			// Draw
-			var rect = new RectInt(
+			var rect = new IRect(
 				X + Width / 2 - ITEM_RENDER_SIZE / 2,
 				Y, ITEM_RENDER_SIZE, ITEM_RENDER_SIZE
 			);
@@ -117,7 +117,7 @@ namespace AngeliaFramework {
 			var cell = CellRenderer.Draw(
 				CellRenderer.HasSprite(ItemID) ? ItemID : Const.PIXEL,
 				rect,
-				new Color32(rgb, rgb, rgb, 255)
+				new Pixel32(rgb, rgb, rgb, 255)
 			);
 			// Count
 			if (ItemCount > 1 && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {
@@ -207,7 +207,7 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private bool MakeRoomFromItems (RectInt roomRect) {
+		private bool MakeRoomFromItems (IRect roomRect) {
 			var hits = CellPhysics.OverlapAll(
 				PhysicsMask.ITEM, roomRect, out int count,
 				this, OperationMode.TriggerOnly
@@ -239,7 +239,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private bool MakeRoomFromSlope (RectInt roomRect) {
+		private bool MakeRoomFromSlope (IRect roomRect) {
 			var slope = CellPhysics.GetEntity<Slope>(roomRect, PhysicsMask.MAP, this, OperationMode.TriggerOnly);
 			if (slope == null) return false;
 			var rect = Rect;

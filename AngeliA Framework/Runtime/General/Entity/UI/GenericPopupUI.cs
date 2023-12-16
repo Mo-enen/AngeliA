@@ -97,7 +97,7 @@ namespace AngeliaFramework {
 			int panelWidth = Unify(200);
 			int itemHeight = Unify(30);
 			int separatorHeight = Unify(6);
-			var panelRect = new RectInt(
+			var panelRect = new IRect(
 				CellRenderer.CameraRect.x + OffsetX,
 				CellRenderer.CameraRect.y + OffsetY,
 				panelWidth,
@@ -112,7 +112,7 @@ namespace AngeliaFramework {
 			Cell highlightCell = null;
 			int textStart = CellRenderer.GetTextUsedCellCount();
 			int indent = Unify(42);
-			var rect = new RectInt(panelRect.x, panelRect.yMax, panelRect.width, itemHeight);
+			var rect = new IRect(panelRect.x, panelRect.yMax, panelRect.width, itemHeight);
 			int checkShrink = itemHeight / 6;
 			int maxWidth = panelWidth;
 			int iconPadding = Unify(4);
@@ -126,7 +126,7 @@ namespace AngeliaFramework {
 					// Separator
 					CellRenderer.Draw(
 						LINE_CODE, new(rect.x, rect.y + separatorHeight / 4, rect.width, separatorHeight / 2),
-						new Color32(0, 0, 0, 32), int.MaxValue
+						new Pixel32(0, 0, 0, 32), int.MaxValue
 					);
 				} else {
 					// Item
@@ -135,7 +135,7 @@ namespace AngeliaFramework {
 					// Check Mark
 					if (item.Checked) {
 						CellRenderer.Draw(
-							CHECK_CODE, new RectInt(rect.x, rect.y, rect.height, rect.height).Shrink(checkShrink),
+							CHECK_CODE, new IRect(rect.x, rect.y, rect.height, rect.height).Shrink(checkShrink),
 							tint, int.MaxValue
 						);
 					}
@@ -154,7 +154,7 @@ namespace AngeliaFramework {
 					// Icon
 					if (item.Icon != 0) {
 						int iconSize = rect.height;
-						var iconRect = new RectInt(
+						var iconRect = new IRect(
 							item.IconPosition == Direction2.Left ? labelBounds.x - iconSize - iconPadding : labelBounds.xMax + iconPadding,
 							rect.y, iconSize, iconSize
 						);
@@ -179,7 +179,7 @@ namespace AngeliaFramework {
 
 			// BG
 			CellRenderer.Draw(
-				Const.PIXEL, panelRect.Expand(Unify(8)), new Color32(249, 249, 249, 255), int.MaxValue - 2
+				Const.PIXEL, panelRect.Expand(Unify(8)), new Pixel32(249, 249, 249, 255), int.MaxValue - 2
 			);
 
 			// Clamp Text

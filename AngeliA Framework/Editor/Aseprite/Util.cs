@@ -217,12 +217,12 @@ namespace AngeliaFramework.Editor {
 		#region --- Misc ---
 
 
-		public static bool GetTrimOffset (Color32[] pixels, int width, int height, out int bottom, out int top, out int left, out int right) {
+		public static bool GetTrimOffset (Pixel32[] pixels, int width, int height, out int bottom, out int top, out int left, out int right) {
 			return GetTrimOffset(pixels, width, height, out bottom, out top, out left, out right, 0, 0, width - 1, height - 1);
 		}
 
 
-		public static bool GetTrimOffset (Color32[] pixels, int width, int height, out int bottom, out int top, out int left, out int right, int minX, int minY, int maxX, int maxY) {
+		public static bool GetTrimOffset (Pixel32[] pixels, int width, int height, out int bottom, out int top, out int left, out int right, int minX, int minY, int maxX, int maxY) {
 			bottom = -1;
 			top = -1;
 			left = -1;

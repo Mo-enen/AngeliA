@@ -20,11 +20,11 @@ namespace AngeliaFramework {
 		private static readonly int LINE_H_CODE = "Soft Line H".AngeHash();
 		private static readonly int LINE_V_CODE = "Soft Line V".AngeHash();
 		private static readonly int FRAME_CODE = "Frame16".AngeHash();
-		private static readonly Color32 BACKGROUND_TINT = new(196, 120, 50, 255);
-		private static readonly Color32 GRID_TINT = new(16, 16, 16, 255);
-		private static readonly Color32 BLACK_STONE_TINT = new(16, 16, 16, 255);
-		private static readonly Color32 WHITE_STONE_TINT = new(230, 230, 230, 255);
-		private static readonly Color32 LAST_PLACED = new(255, 255, 0, 255);
+		private static readonly Pixel32 BACKGROUND_TINT = new(196, 120, 50, 255);
+		private static readonly Pixel32 GRID_TINT = new(16, 16, 16, 255);
+		private static readonly Pixel32 BLACK_STONE_TINT = new(16, 16, 16, 255);
+		private static readonly Pixel32 WHITE_STONE_TINT = new(230, 230, 230, 255);
+		private static readonly Pixel32 LAST_PLACED = new(255, 255, 0, 255);
 		private static readonly int GOMOKU_YOU_ARE = "UI.Gomoku.YouAre".AngeHash();
 		private static readonly int GOMOKU_PLACE = "UI.Gomoku.Place".AngeHash();
 		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
@@ -33,7 +33,7 @@ namespace AngeliaFramework {
 		private static readonly int MENU_GOMOKU_DRAW = "Menu.Gomoku.Draw".AngeHash();
 
 		// Api
-		protected override Vector2Int WindowSize => new(618, 618);
+		protected override Int2 WindowSize => new(618, 618);
 		protected override bool RequireMouseCursor => true;
 		protected override string DisplayName => Language.Get(TypeID, "Gomoku");
 
@@ -44,7 +44,7 @@ namespace AngeliaFramework {
 		// Data
 		private readonly GomokuAI.GomokuStone[,] Stones = new GomokuAI.GomokuStone[STAGE_SIZE, STAGE_SIZE];
 		private GomokuAI.GomokuStone? Winner = null;
-		private RectInt StageRect = default;
+		private IRect StageRect = default;
 		private bool BlackTurn = true;
 		private bool PlayerIsBlack = true;
 		private int LastPlaceFrame = int.MinValue;
@@ -175,17 +175,17 @@ namespace AngeliaFramework {
 			HintLabel.Text = Language.Get(GOMOKU_YOU_ARE, "You Are:");
 			CellRendererGUI.Label(
 				HintLabel,
-				new RectInt(boardRect.x, boardRect.yMax - labelHeight, boardRect.width, labelHeight),
+				new IRect(boardRect.x, boardRect.yMax - labelHeight, boardRect.width, labelHeight),
 				out var bounds
 			);
 			CellRenderer.Draw(
 				STONE_CODE,
-				new RectInt(bounds.xMax + Unify(8), boardRect.yMax - labelHeight, labelHeight, labelHeight),
+				new IRect(bounds.xMax + Unify(8), boardRect.yMax - labelHeight, labelHeight, labelHeight),
 				PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT
 			);
 
 			// Grid
-			var gridRect = new RectInt(0, StageRect.y, Unify(GRID_THICKNESS), StageRect.height);
+			var gridRect = new IRect(0, StageRect.y, Unify(GRID_THICKNESS), StageRect.height);
 			for (int x = 0; x < STAGE_SIZE; x++) {
 				gridRect.x = StageRect.x + x * StageCellSize - Unify(GRID_THICKNESS) / 2;
 				CellRenderer.Draw(LINE_V_CODE, gridRect, GRID_TINT);
@@ -258,7 +258,7 @@ namespace AngeliaFramework {
 			// Cursor
 			if (Interactable && PlayerTurn && StageCursorX >= 0 && StageCursorY >= 0) {
 				var (x, y) = StagePos_to_GlobalPos(StageCursorX, StageCursorY);
-				var rect = new RectInt(x - StageCellSize / 2, y - StageCellSize / 2, StageCellSize, StageCellSize);
+				var rect = new IRect(x - StageCellSize / 2, y - StageCellSize / 2, StageCellSize, StageCellSize);
 				CellRenderer.Draw_9Slice(FRAME_CODE, rect, PlayerIsBlack ? Const.BLACK : Const.WHITE);
 			}
 
@@ -448,7 +448,7 @@ namespace AngeliaFramework {
 
 
 		// Data
-		private static readonly List<Vector2Int> RandomPosList = new();
+		private static readonly List<Int2> RandomPosList = new();
 		private static readonly ComboInfo ComboInfoCache = new();
 		private static System.Random Ran = null;
 
@@ -879,7 +879,7 @@ namespace AngeliaFramework {
 			if (RandomPosList.Count == 0) {
 				for (int x = 0; x < size; x++) {
 					for (int y = 0; y < size; y++) {
-						RandomPosList.Add(new Vector2Int(x, y));
+						RandomPosList.Add(new Int2(x, y));
 					}
 				}
 			}

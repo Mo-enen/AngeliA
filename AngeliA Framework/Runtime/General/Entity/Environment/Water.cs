@@ -129,7 +129,7 @@ namespace AngeliaFramework {
 
 			// Try Merge
 			if (CellPhysics.GetEntity(
-					TypeID, IsGrounded ? new RectInt(X + Width / 2, Y, 1, 1) : Rect,
+					TypeID, IsGrounded ? new IRect(X + Width / 2, Y, 1, 1) : Rect,
 					PhysicsMask.MAP, this, OperationMode.TriggerOnly, Const.WATER_TAG
 				) is Water overlapWater
 			) {
@@ -271,7 +271,7 @@ namespace AngeliaFramework {
 
 			if (IsGrounded) {
 				// Grounded
-				var unifyRect = new RectInt(X.ToUnifyGlobal(), Y.ToUnifyGlobal(), Const.CEL, Const.CEL);
+				var unifyRect = new IRect(X.ToUnifyGlobal(), Y.ToUnifyGlobal(), Const.CEL, Const.CEL);
 
 				// Perform Transfer Left
 				if (RequireTransferLeft > 0) {
@@ -405,10 +405,10 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public static Water SpawnWater (int waterID, RectInt sourceRect, Direction4 direction, int volume) {
+		public static Water SpawnWater (int waterID, IRect sourceRect, Direction4 direction, int volume) {
 			const int width = Const.HALF;
 			const int height = Const.HALF;
-			var targetRect = new RectInt(
+			var targetRect = new IRect(
 				direction switch {
 					Direction4.Left => sourceRect.x + sourceRect.width - width,
 					Direction4.Right => sourceRect.x,
@@ -464,7 +464,7 @@ namespace AngeliaFramework {
 
 		private bool GroundCheck () {
 			if (IsGrounded && CellPhysics.Overlap(
-				PhysicsMask.LEVEL, new RectInt(X + 1, Y - Const.CEL + 1, Const.CEL - 2, Const.CEL - 2),
+				PhysicsMask.LEVEL, new IRect(X + 1, Y - Const.CEL + 1, Const.CEL - 2, Const.CEL - 2),
 				out var hit, this, OperationMode.TriggerOnly, Const.WATER_TAG
 			) && hit.Entity is Water water && water.IsGrounded) return true;
 			return !CellPhysics.RoomCheck(

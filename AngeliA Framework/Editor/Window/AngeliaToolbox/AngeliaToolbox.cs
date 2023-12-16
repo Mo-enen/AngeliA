@@ -475,6 +475,7 @@ namespace AngeliaFramework.Editor {
 				VisualElement pVE = null;
 				bar.Query<VisualElement>(className: UNITY_PROGRESS).ForEach((p) => pVE = p);
 				bar.style.marginBottom = 3;
+				bar.style.height = 16;
 				progressVE = pVE;
 				return bar;
 			}
@@ -520,7 +521,7 @@ namespace AngeliaFramework.Editor {
 
 		// Inject
 		private static void InjectAll (EditorWindow inspector) {
-			inspector.minSize = new Vector2(345f, inspector.minSize.y);
+			inspector.minSize = new Float2(345f, inspector.minSize.y);
 			EdittimeOnlyElements.Clear();
 			RuntimeOnlyElements.Clear();
 			InjectProfiler(inspector, "AngeliaProfiler");

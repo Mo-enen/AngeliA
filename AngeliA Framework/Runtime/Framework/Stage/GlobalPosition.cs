@@ -15,12 +15,12 @@ namespace AngeliaFramework {
 				get => i;
 				set => i = value;
 			}
-			public Vector3Int UnitPosition {
+			public Int3 UnitPosition {
 				get => u;
 				set => u = value;
 			}
 			[SerializeField] private int i;
-			[SerializeField] private Vector3Int u;
+			[SerializeField] private Int3 u;
 		}
 
 
@@ -31,12 +31,12 @@ namespace AngeliaFramework {
 
 
 		// Data
-		private static readonly Dictionary<int, Vector3Int> PositionPool = new();
+		private static readonly Dictionary<int, Int3> PositionPool = new();
 		private static readonly List<Position> CreateMetaFileListCache = new();
 		private static readonly HashSet<int> AllGlobalPositionID = new();
 		private static readonly CancellationTokenSource CreateMetaFileToken = new();
 		private static Task CreateMetaFileTask = null;
-		private static Vector3Int CreateMetaFilePosCache = default;
+		private static Int3 CreateMetaFilePosCache = default;
 
 
 		// MSG
@@ -57,7 +57,7 @@ namespace AngeliaFramework {
 
 
 		// API
-		public static bool TryGetPosition (int id, out Vector3Int globalUnitPosition) => PositionPool.TryGetValue(id, out globalUnitPosition);
+		public static bool TryGetPosition (int id, out Int3 globalUnitPosition) => PositionPool.TryGetValue(id, out globalUnitPosition);
 
 
 		public static void CreateMetaFileFromMapsAsync (string mapFolder) {
@@ -99,7 +99,7 @@ namespace AngeliaFramework {
 				if (!AllGlobalPositionID.Contains(id)) return;
 				CreateMetaFileListCache.Add(new Position() {
 					ID = id,
-					UnitPosition = new Vector3Int(
+					UnitPosition = new Int3(
 						CreateMetaFilePosCache.x * Const.MAP + x,
 						CreateMetaFilePosCache.y * Const.MAP + y,
 						CreateMetaFilePosCache.z

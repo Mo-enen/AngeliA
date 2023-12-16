@@ -1,7 +1,10 @@
-﻿namespace AngeliaFramework.Editor {
-	using System.Collections.Generic;
-	using System.Collections;
-	using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Collections;
+using UnityEngine;
+using AngeliaFramework;
+
+
+namespace AngeliaFramework.Editor {
 
 
 
@@ -11,13 +14,13 @@
 
 		public int Width;
 		public int Height;
-		public Color32[] TextureColors;
+		public Pixel32[] TextureColors;
 
 
-		public PackingData (int width, int height, Color32[] colors) {
+		public PackingData (int width, int height, Pixel32[] colors) {
 			Width = width;
 			Height = height;
-			TextureColors = new Color32[Width * Height];
+			TextureColors = new Pixel32[Width * Height];
 			for (int v = 0; v < Height; v++) {
 				for (int u = 0; u < Width; u++) {
 					TextureColors[v * Width + u] = colors[v * width + u];
@@ -52,7 +55,7 @@
 			public int Index;
 			public int X, Y;
 			public int Width, Height;
-			public Color32[] Colors;
+			public Pixel32[] Colors;
 		}
 
 
@@ -98,11 +101,11 @@
 
 
 
-		public static Rect[] PackTextures (out Color32[] colors, out int width, out int height, List<PackingData> packingList, bool sortByIndex, int aimWidth = -1) {
+		public static Rect[] PackTextures (out Pixel32[] colors, out int width, out int height, List<PackingData> packingList, bool sortByIndex, int aimWidth = -1) {
 
 			// Check
 			if (packingList.Count == 0) {
-				colors = new Color32[0];
+				colors = new Pixel32[0];
 				width = 0;
 				height = 0;
 				return new Rect[0];
@@ -188,7 +191,7 @@
 			// Set Texture
 			width = aimSize;
 			height = Mathf.Max(height, aimSize);
-			colors = new Color32[width * height];
+			colors = new Pixel32[width * height];
 
 			// Default Color
 			for (int i = 0; i < colors.Length; i++) {

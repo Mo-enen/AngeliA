@@ -14,9 +14,9 @@ namespace AngeliaFramework {
 
 		private class Tetromino {
 			public bool this[int i, int j, int rot] => Data[i, j, rot.UMod(4)];
-			public Color32 Tint { get; private set; }
+			public Pixel32 Tint { get; private set; }
 			private readonly bool[,,] Data = new bool[4, 4, 4];
-			public Tetromino (ushort shape, ushort shapeR, ushort shape2, ushort shapeL, Color32 tint) {
+			public Tetromino (ushort shape, ushort shapeR, ushort shape2, ushort shapeL, Pixel32 tint) {
 				Tint = tint;
 				for (int rot = 0; rot < 4; rot++) {
 					ushort _shape = rot == 0 ? shape : rot == 1 ? shapeR : rot == 2 ? shape2 : shapeL;
@@ -69,7 +69,7 @@ namespace AngeliaFramework {
 			{ 0,0, -2,0, +1,0, -2,+1, +1,-2, }, // l > 0
 			{ 0,0, +1,0, -2,0, +1,+2, -2,-1, }, // l > 2
 		};
-		private static readonly Color32 GRID_TINT = new(32, 32, 32, 255);
+		private static readonly Pixel32 GRID_TINT = new(32, 32, 32, 255);
 		private static readonly int LINE_H_CODE = "Soft Line H".AngeHash();
 		private static readonly int LINE_V_CODE = "Soft Line V".AngeHash();
 		private static readonly int BLOCK_CODE = "Tetris Block".AngeHash();
@@ -91,7 +91,7 @@ namespace AngeliaFramework {
 		private const int STABILIZE_DELAY = 4;
 
 		// Api
-		protected override Vector2Int WindowSize => new(400, 800);
+		protected override Int2 WindowSize => new(400, 800);
 		protected override bool RequireMouseCursor => false;
 		protected override string DisplayName => Language.Get(TypeID, "Tetris");
 
@@ -263,7 +263,7 @@ namespace AngeliaFramework {
 			CellRenderer.Draw(Const.PIXEL, stageRect, Const.BLACK, int.MinValue + 1);
 
 			if (GameOver) {
-				var labelRect = new RectInt(0, 0, stageRect.width * 2 / 3, stageRect.height / 4);
+				var labelRect = new IRect(0, 0, stageRect.width * 2 / 3, stageRect.height / 4);
 				labelRect.x = stageRect.CenterX() - labelRect.width / 2;
 				labelRect.y = stageRect.CenterY() - labelRect.height / 2;
 				CellRenderer.Draw(Const.PIXEL, labelRect, Const.BLACK, int.MaxValue);
@@ -274,7 +274,7 @@ namespace AngeliaFramework {
 
 			// Grid
 			const int GRID_THICKNESS = 2;
-			var gridRect = new RectInt(0, stageRect.y, Unify(GRID_THICKNESS), stageRect.height);
+			var gridRect = new IRect(0, stageRect.y, Unify(GRID_THICKNESS), stageRect.height);
 			for (int x = 0; x <= WIDTH; x++) {
 				gridRect.x = stageRect.x + x * blockSize - Unify(GRID_THICKNESS) / 2;
 				CellRenderer.Draw(LINE_V_CODE, gridRect, GRID_TINT, 0);
@@ -288,7 +288,7 @@ namespace AngeliaFramework {
 			}
 
 			// Staged Blocks
-			var stageBlockRect = new RectInt(0, 0, blockSize, blockSize);
+			var stageBlockRect = new IRect(0, 0, blockSize, blockSize);
 			for (int i = 0; i < WIDTH; i++) {
 				for (int j = 0; j < STAGE_HEIGHT; j++) {
 					int blockIndex = StagedBlocks[i, j];
@@ -307,7 +307,7 @@ namespace AngeliaFramework {
 				// Current Tetromino
 				var currentTetromino = TETROMINOES[CurrentTetrominoIndex];
 				var tint = currentTetromino.Tint;
-				var currentBlockRect = new RectInt(0, 0, blockSize, blockSize);
+				var currentBlockRect = new IRect(0, 0, blockSize, blockSize);
 				for (int i = 0; i < 4; i++) {
 					for (int j = 0; j < 4; j++) {
 						if (!currentTetromino[i, j, CurrentTetrominoRotation]) continue;
@@ -337,7 +337,7 @@ namespace AngeliaFramework {
 			const int BG_PADDING = 32;
 			int renderedCount = 0;
 			int queueBlockSize = blockSize / 2;
-			var queueRect = new RectInt(0, 0, queueBlockSize, queueBlockSize);
+			var queueRect = new IRect(0, 0, queueBlockSize, queueBlockSize);
 			foreach (int tetIndex in TetrominoQueue) {
 				for (int i = 0; i < 4; i++) {
 					for (int j = 0; j < 4; j++) {
@@ -350,7 +350,7 @@ namespace AngeliaFramework {
 				}
 				CellRenderer.Draw(
 					Const.PIXEL,
-					new RectInt(
+					new IRect(
 						stageRect.xMax + QUEUE_PADDING - BG_PADDING,
 						stageRect.yMax - (renderedCount + 1) * 4 * queueBlockSize,
 						4 * queueBlockSize + BG_PADDING * 2, 4 * queueBlockSize
@@ -364,7 +364,7 @@ namespace AngeliaFramework {
 			if (CurrentHoldingTetrominoIndex >= 0) {
 				const int HOLDING_PADDING = 96;
 				int holdingBlockSize = blockSize / 2;
-				var holdingRect = new RectInt(0, 0, holdingBlockSize, holdingBlockSize);
+				var holdingRect = new IRect(0, 0, holdingBlockSize, holdingBlockSize);
 				var holdingTetromino = TETROMINOES[CurrentHoldingTetrominoIndex];
 				for (int i = 0; i < 4; i++) {
 					for (int j = 0; j < 4; j++) {
@@ -376,7 +376,7 @@ namespace AngeliaFramework {
 				}
 				CellRenderer.Draw(
 					Const.PIXEL,
-					new RectInt(
+					new IRect(
 						stageRect.xMin - 4 * holdingBlockSize - HOLDING_PADDING,
 						stageRect.yMax - 4 * holdingBlockSize,
 						4 * holdingBlockSize,
@@ -387,7 +387,7 @@ namespace AngeliaFramework {
 				// Label
 				CellRendererGUI.Label(
 					CellContent.Get(Language.Get(UI_HOLDING, "Holding"), ReverseUnify(holdingBlockSize)),
-					new RectInt(
+					new IRect(
 						stageRect.xMin - 4 * holdingBlockSize - HOLDING_PADDING,
 						stageRect.yMax - 4 * holdingBlockSize,
 						4 * holdingBlockSize,
@@ -398,7 +398,7 @@ namespace AngeliaFramework {
 
 			// State
 			const int CHAR_SIZE = 20;
-			var stateRect = new RectInt(
+			var stateRect = new IRect(
 				stageRect.xMax + QUEUE_PADDING,
 				stageRect.y,
 				Const.CEL * 2,
@@ -416,7 +416,7 @@ namespace AngeliaFramework {
 			), stateRect, out var lineNumberBounds);
 
 			CellRenderer.Draw(
-				Const.PIXEL, new RectInt(
+				Const.PIXEL, new IRect(
 					lineBounds.x, lineBounds.y,
 					lineNumberBounds.xMax - lineBounds.x, lineBounds.height
 				).Expand(Unify(6)), Const.BLACK, 0

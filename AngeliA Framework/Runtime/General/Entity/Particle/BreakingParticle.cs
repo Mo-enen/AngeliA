@@ -17,7 +17,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private static readonly System.Random Ran = new(2382375);
-		private Vector4Int Shift = default;
+		private Int4 Shift = default;
 		private int _Duration = 180;
 		private int SpriteID = 0;
 		private int SpeedX = 0;
@@ -56,14 +56,14 @@ namespace AngeliaFramework {
 			byte alpha = (byte)Util.RemapUnclamped(0, Duration, 512, 0, Game.GlobalFrame - SpawnFrame).Clamp(0, 255);
 			var cell = CellRenderer.Draw(
 				SpriteID, x, y, px, py, r, Width * 2, Height * 2,
-				new Color32(255, 255, 255, alpha), int.MaxValue
+				new Pixel32(255, 255, 255, alpha), int.MaxValue
 			);
 			cell.Shift = Shift;
 
 		}
 
 
-		public static void SpawnParticles (int spriteID, RectInt rect, bool lightWeight = false) {
+		public static void SpawnParticles (int spriteID, IRect rect, bool lightWeight = false) {
 
 			if (!CellRenderer.HasSprite(spriteID)) {
 				if (CellRenderer.TryGetSpriteFromGroup(spriteID, 0, out var groupSprite, false)) {

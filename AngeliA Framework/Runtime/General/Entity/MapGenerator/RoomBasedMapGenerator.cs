@@ -31,14 +31,14 @@ namespace AngeliaFramework {
 
 
 		private struct EntryUnit {
-			public Vector2Int Point;
+			public Int2 Point;
 			public Direction4 IterateDirection;
 			public Direction4 RoomDirection;
 		}
 
 
 		private struct RoomSearchRequire {
-			public Vector2Int Point;
+			public Int2 Point;
 			public RoomNode BaseNode;
 		}
 
@@ -66,9 +66,9 @@ namespace AngeliaFramework {
 		private static readonly List<EntryUnit> EntryPointCache = new();
 		private static readonly List<EntryUnit> EndPointCache = new();
 		private static readonly Queue<EntryUnit> EntryRequireQueue = new();
-		private static readonly HashSet<Vector2Int> EntryRequireHash = new();
+		private static readonly HashSet<Int2> EntryRequireHash = new();
 		private static readonly Queue<RoomSearchRequire> SearchRequireQueue = new();
-		private static readonly HashSet<Vector2Int> SearchRequireHash = new();
+		private static readonly HashSet<Int2> SearchRequireHash = new();
 		private static readonly List<Room.Tunnel> TunnelsCache = new();
 		private static readonly List<Room.Door> DoorsCache = new();
 		private static readonly Dictionary<int, DoorInfo> DoorPool = new();
@@ -273,7 +273,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool SearchForRoom (IBlockSquad squad, int unitX, int unitY, int z, out Vector2Int roomPoint) {
+		public static bool SearchForRoom (IBlockSquad squad, int unitX, int unitY, int z, out Int2 roomPoint) {
 
 			roomPoint = default;
 			bool roomCaught = false;
@@ -356,7 +356,7 @@ namespace AngeliaFramework {
 			}
 
 			// Func
-			static void Iterate (IBlockSquad squad, Vector2Int roomPoint, int z, RoomNode baseNode, out Room resultRoom) {
+			static void Iterate (IBlockSquad squad, Int2 roomPoint, int z, RoomNode baseNode, out Room resultRoom) {
 
 				// Current
 				resultRoom = LoadRoomAt(squad, roomPoint.x, roomPoint.y, z);

@@ -16,9 +16,9 @@ namespace AngeliaFramework {
 		public int Rotation;
 		public float PivotX;
 		public float PivotY;
-		public Color32 Color;
+		public Pixel32 Color;
 		public Alignment BorderSide;
-		public Vector4Int Shift;
+		public Int4 Shift;
 		public void CopyFrom (Cell other) {
 			Index = other.Index;
 			Order = other.Order;
@@ -34,52 +34,34 @@ namespace AngeliaFramework {
 			BorderSide = other.BorderSide;
 			Shift = other.Shift;
 		}
-		public Vector2Int LocalToGlobal (int cellX, int cellY) {
-			if (Rotation == 0) {
-				return new Vector2Int(
-					X + cellX - (int)(Width * PivotX),
-					Y + cellY - (int)(Height * PivotY)
-				);
-			}
+		public Int2 LocalToGlobal (int localX, int localY) {
 			int pOffsetX = (int)(PivotX * Width);
 			int pOffsetY = (int)(PivotY * Height);
-			cellX -= pOffsetX;
-			cellY -= pOffsetY;
-			Vector2 result = Matrix4x4.TRS(
-				new Vector3(X - pOffsetX, Y - pOffsetY, 0),
-				Quaternion.Euler(0, 0, -Rotation),
-				Vector3.one
-			).MultiplyPoint(new Vector3(cellX, cellY, 0f));
-			result.x += pOffsetX;
-			result.y += pOffsetY;
+			if (Rotation == 0) {
+				return new Int2(X + localX - pOffsetX, Y + localY - pOffsetY);
+			}
+			var globalCellV = new Float2(localX, localY).Rotate(Rotation);
+			var globalPivotV = new Float2(pOffsetX, pOffsetY).Rotate(Rotation);
+			var result = new Float2(X + globalCellV.x - globalPivotV.x, Y + globalCellV.y - globalPivotV.y);
 			return result.RoundToInt();
 		}
-		public Vector2Int GlobalToLocal (int globalX, int globalY) {
-			if (Rotation == 0) {
-				return new Vector2Int(
-					globalX + (int)(Width * PivotX) - X,
-					globalY + (int)(Height * PivotY) - Y
-				);
-			}
+		public Int2 GlobalToLocal (int globalX, int globalY) {
 			int pOffsetX = (int)(PivotX * Width);
 			int pOffsetY = (int)(PivotY * Height);
-			globalX -= pOffsetX;
-			globalY -= pOffsetY;
-			Vector2 result = Matrix4x4.TRS(
-				new Vector3(X - pOffsetX, Y - pOffsetY, 0),
-				Quaternion.Euler(0, 0, -Rotation),
-				Vector3.one
-			).inverse.MultiplyPoint(new Vector3(globalX, globalY, 0f));
-			result.x += pOffsetX;
-			result.y += pOffsetY;
+			if (Rotation == 0) {
+				return new Int2(globalX + pOffsetX - X, globalY + pOffsetY - Y);
+			}
+			var globalPoint = new Float2(pOffsetX, pOffsetY).Rotate(Rotation);
+			var globalOffset = new Float2(globalX - X + globalPoint.x, globalY - Y + globalPoint.y);
+			var result = globalOffset.Rotate(-Rotation);
 			return result.RoundToInt();
 		}
-		public RectInt GetBounds () {
+		public IRect GetBounds () {
 			var p0 = LocalToGlobal(0, 0);
 			var p1 = LocalToGlobal(Width, 0);
 			var p2 = LocalToGlobal(Width, Height);
 			var p3 = LocalToGlobal(0, Height);
-			var result = new RectInt();
+			var result = new IRect();
 			result.SetMinMax(
 				Mathf.Min(Mathf.Min(p0.x, p1.x), Mathf.Min(p2.x, p3.x)),
 				Mathf.Max(Mathf.Max(p0.x, p1.x), Mathf.Max(p2.x, p3.x)),
@@ -120,7 +102,7 @@ namespace AngeliaFramework {
 			Y = globalY;
 		}
 		public void RotateAround (int rotation, int pointX, int pointY) {
-			if (rotation == Rotation || Width == 0 || Height == 0) return;
+			if (rotation == 0 || Width == 0 || Height == 0) return;
 			var localPoint = GlobalToLocal(pointX, pointY);
 			PivotX = (float)localPoint.x / Width;
 			PivotY = (float)localPoint.y / Height;
@@ -163,10 +145,10 @@ namespace AngeliaFramework {
 
 		internal class CharSprite {
 			public int GlobalID;
-			public Vector2 UvBottomLeft;
-			public Vector2 UvBottomRight;
-			public Vector2 UvTopLeft;
-			public Vector2 UvTopRight;
+			public Float2 UvBottomLeft;
+			public Float2 UvBottomRight;
+			public Float2 UvTopLeft;
+			public Float2 UvTopRight;
 			public Rect Offset;
 			public float Advance;
 			public int Rebuild = 0;
@@ -194,9 +176,9 @@ namespace AngeliaFramework {
 			public Transform RendererRoot;
 			public MeshRenderer Renderer;
 			public Mesh Mesh;
-			public List<Vector3> VertexCache;
-			public List<Vector2> UvCache;
-			public List<Color32> ColorCache;
+			public List<UnityEngine.Vector3> VertexCache;
+			public List<UnityEngine.Vector2> UvCache;
+			public List<UnityEngine.Color32> ColorCache;
 			public void ZSort (bool fromStart = false) {
 				if (fromStart) SortedIndex = 0;
 				if (SortedIndex < Count - 1) {
@@ -235,7 +217,7 @@ namespace AngeliaFramework {
 
 		// Const
 		public static readonly Cell EMPTY_CELL = new() { Index = -1 };
-		private static readonly Color32 WHITE = new(255, 255, 255, 255);
+		private static readonly Pixel32 WHITE = new(255, 255, 255, 255);
 		private static readonly int SKYBOX_TOP = Shader.PropertyToID("_ColorA");
 		private static readonly int SKYBOX_BOTTOM = Shader.PropertyToID("_ColorB");
 		private static readonly Shader SKYBOX_SHADER = Shader.Find("Angelia/Skybox");
@@ -267,10 +249,10 @@ namespace AngeliaFramework {
 		private static readonly bool[] DEFAULT_PART_IGNORE = new bool[9] { false, false, false, false, false, false, false, false, false, };
 
 		// Api
-		public static RectInt ViewRect { get; private set; } = default;
-		public static RectInt CameraRect { get; private set; } = default;
-		public static Color32 SkyTintTop { get; private set; } = default;
-		public static Color32 SkyTintBottom { get; private set; } = default;
+		public static IRect ViewRect { get; private set; } = default;
+		public static IRect CameraRect { get; private set; } = default;
+		public static Pixel32 SkyTintTop { get; private set; } = default;
+		public static Pixel32 SkyTintBottom { get; private set; } = default;
 		public static int LastDrawnID { get; private set; } = 0;
 		public static int LayerCount => Layers.Length;
 		public static int SpriteCount => Sprites.Length;
@@ -325,7 +307,7 @@ namespace AngeliaFramework {
 
 
 		// Update
-		internal static void CameraUpdate (Camera camera, RectInt viewRect) {
+		internal static void CameraUpdate (Camera camera, IRect viewRect) {
 
 			ViewRect = viewRect;
 
@@ -341,7 +323,7 @@ namespace AngeliaFramework {
 			}
 
 			// Camera Rect
-			var cRect = new RectInt(
+			var cRect = new IRect(
 				ViewRect.x,
 				ViewRect.y,
 				(int)(ViewRect.height * camera.aspect),
@@ -360,16 +342,16 @@ namespace AngeliaFramework {
 			GlobalFrame = globalFrame;
 
 			// Layer Game Objects
-			var pos = Vector3.zero;
-			var scl = Vector3.one;
+			var pos = Float3.zero;
+			var scl = Float3.one;
 			if (camera != null) {
-				pos = new Vector3(
+				pos = new Float3(
 					-camera.orthographicSize * camera.aspect,
 					-camera.orthographicSize,
 					1f
 				);
 				pos.x -= ((ViewRect.width - CameraRect.width) / 2) * camera.orthographicSize * 2f * camera.aspect / CameraRect.width;
-				scl = new Vector3(
+				scl = new Float3(
 					camera.orthographicSize * 2f / ViewRect.height,
 					camera.orthographicSize * 2f / ViewRect.height,
 					1f
@@ -411,14 +393,14 @@ namespace AngeliaFramework {
 			var cells = layer.Cells;
 			int cellCount = layer.Count;
 
-			Vector3 a = Vector3.zero;
-			Vector3 b = Vector3.zero;
-			Vector3 c = Vector3.zero;
-			Vector3 d = Vector3.zero;
-			Vector2 uv0;
-			Vector2 uv1;
-			Vector2 uv2;
-			Vector2 uv3;
+			Float3 a = Float3.zero;
+			Float3 b = Float3.zero;
+			Float3 c = Float3.zero;
+			Float3 d = Float3.zero;
+			Float2 uv0;
+			Float2 uv1;
+			Float2 uv2;
+			Float2 uv3;
 			int i0, i1, i2, i3;
 			float shiftL;
 			float shiftR;
@@ -483,11 +465,15 @@ namespace AngeliaFramework {
 
 				// Rotation
 				if (cell.Rotation != 0) {
-					var rot = Quaternion.Euler(0, 0, -cell.Rotation);
-					a = rot * a;
-					b = rot * b;
-					c = rot * c;
-					d = rot * d;
+					//var rot = Quaternion.Euler(0, 0, -cell.Rotation);
+					a = a.Rotate(cell.Rotation);
+					b = b.Rotate(cell.Rotation);
+					c = c.Rotate(cell.Rotation);
+					d = d.Rotate(cell.Rotation);
+					//a = rot * a;
+					//b = rot * b;
+					//c = rot * c;
+					//d = rot * d;
 				}
 
 				// Global to View
@@ -579,7 +565,7 @@ namespace AngeliaFramework {
 
 			// Clear Unused
 			if (cellCount < layer.PrevCellCount) {
-				var zero = Vector3.zero;
+				var zero = UnityEngine.Vector3.zero;
 				for (int i = cellCount; i < layer.PrevCellCount; i++) {
 					layer.VertexCache[i * 4 + 0] = zero;
 					layer.VertexCache[i * 4 + 1] = zero;
@@ -674,8 +660,8 @@ namespace AngeliaFramework {
 						name = shader.name,
 						mainTexture = sheetTexture,
 						enableInstancing = true,
-						mainTextureOffset = Vector2.zero,
-						mainTextureScale = Vector2.one,
+						mainTextureOffset = Float2.zero,
+						mainTextureScale = Float2.one,
 						doubleSidedGI = false,
 						renderQueue = 3000,
 					},
@@ -721,8 +707,8 @@ namespace AngeliaFramework {
 				var tf = new GameObject(name, typeof(MeshFilter), typeof(MeshRenderer)).transform;
 				tf.SetParent(root);
 				tf.SetAsLastSibling();
-				tf.SetPositionAndRotation(new Vector3(0, 0, 1), Quaternion.identity);
-				tf.localScale = Vector3.one;
+				tf.SetPositionAndRotation(new Float3(0, 0, 1), default);
+				tf.localScale = Float3.one;
 				var filter = tf.GetComponent<MeshFilter>();
 				filter.sharedMesh = new Mesh();
 				var mr = tf.GetComponent<MeshRenderer>();
@@ -771,7 +757,7 @@ namespace AngeliaFramework {
 				}
 				layer.VertexCache.AddRange(new Vector3[renderCapacity * 4]);
 				layer.UvCache.AddRange(new Vector2[renderCapacity * 4]);
-				layer.ColorCache.AddRange(new Color32[renderCapacity * 4]);
+				layer.ColorCache.AddRange(new UnityEngine.Color32[renderCapacity * 4]);
 				var mesh = filter.sharedMesh;
 				mesh.MarkDynamic();
 				mesh.SetVertices(layer.VertexCache);
@@ -848,11 +834,11 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Cell Draw (int globalID, RectInt rect, int z = int.MinValue) => Draw(globalID, false, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, WHITE, z);
-		public static Cell Draw (int globalID, RectInt rect, Color32 color, int z = int.MinValue) => Draw(globalID, false, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
+		public static Cell Draw (int globalID, IRect rect, int z = int.MinValue) => Draw(globalID, false, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, WHITE, z);
+		public static Cell Draw (int globalID, IRect rect, Pixel32 color, int z = int.MinValue) => Draw(globalID, false, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
 		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID, false, x, y, pivotX, pivotY, rotation, width, height, WHITE, z);
-		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) => Draw(globalID, false, x, y, pivotX, pivotY, rotation, width, height, color, z);
-		public static Cell Draw (int globalID, bool forText, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) {
+		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Pixel32 color, int z = int.MinValue) => Draw(globalID, false, x, y, pivotX, pivotY, rotation, width, height, color, z);
+		public static Cell Draw (int globalID, bool forText, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Pixel32 color, int z = int.MinValue) {
 
 			if (!IsDrawing) return EMPTY_CELL;
 
@@ -911,7 +897,7 @@ namespace AngeliaFramework {
 			cell.PivotY = pivotY / 1000f;
 			cell.Color = color;
 			cell.BorderSide = Alignment.Full;
-			cell.Shift = Vector4Int.zero;
+			cell.Shift = Int4.zero;
 
 			// Final
 			layer.FocusedCell++;
@@ -923,10 +909,10 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Cell[] Draw_9Slice (int globalID, RectInt rect) => Draw_9Slice(globalID, rect, WHITE);
-		public static Cell[] Draw_9Slice (int globalID, RectInt rect, Color32 color, int z = int.MinValue) => Draw_9Slice(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
-		public static Cell[] Draw_9Slice (int globalID, RectInt rect, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => Draw_9Slice(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, WHITE, z);
-		public static Cell[] Draw_9Slice (int globalID, RectInt rect, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => Draw_9Slice(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, color, z);
+		public static Cell[] Draw_9Slice (int globalID, IRect rect) => Draw_9Slice(globalID, rect, WHITE);
+		public static Cell[] Draw_9Slice (int globalID, IRect rect, Pixel32 color, int z = int.MinValue) => Draw_9Slice(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
+		public static Cell[] Draw_9Slice (int globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => Draw_9Slice(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, WHITE, z);
+		public static Cell[] Draw_9Slice (int globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, Pixel32 color, int z = int.MinValue) => Draw_9Slice(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, color, z);
 		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw_9Slice(globalID, x, y, pivotX, pivotY, rotation, width, height, WHITE, z);
 		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color color, int z = int.MinValue) {
 			var border = TryGetSprite(globalID, out var sprite) ? sprite.GlobalBorder : default;
@@ -938,8 +924,8 @@ namespace AngeliaFramework {
 			);
 		}
 		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => Draw_9Slice(globalID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, WHITE, z);
-		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => Draw_9Slice(globalID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z);
-		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Color32 color, int z = int.MinValue) {
+		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Pixel32 color, int z = int.MinValue) => Draw_9Slice(globalID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z);
+		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Pixel32 color, int z = int.MinValue) {
 
 			Last9SlicedCells[0] = Last9SlicedCells[1] = Last9SlicedCells[2] = EMPTY_CELL;
 			Last9SlicedCells[3] = Last9SlicedCells[4] = Last9SlicedCells[5] = EMPTY_CELL;
@@ -1104,12 +1090,12 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Cell DrawAnimation (int chainID, RectInt globalRect, int frame, int loopStart = int.MinValue) => DrawAnimation(chainID, globalRect.x, globalRect.y, 0, 0, 0, globalRect.width, globalRect.height, frame, WHITE, loopStart);
+		public static Cell DrawAnimation (int chainID, IRect globalRect, int frame, int loopStart = int.MinValue) => DrawAnimation(chainID, globalRect.x, globalRect.y, 0, 0, 0, globalRect.width, globalRect.height, frame, WHITE, loopStart);
 		public static Cell DrawAnimation (int chainID, int x, int y, int width, int height, int frame, int loopStart = int.MinValue) => DrawAnimation(chainID, x, y, 0, 0, 0, width, height, frame, WHITE, loopStart);
 		public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int loopStart = int.MinValue) => DrawAnimation(chainID, x, y, pivotX, pivotY, rotation, width, height, frame, WHITE, loopStart);
-		public static Cell DrawAnimation (int chainID, RectInt globalRect, int frame, Color32 color, int loopStart = int.MinValue) => DrawAnimation(chainID, globalRect.x, globalRect.y, 0, 0, 0, globalRect.width, globalRect.height, frame, color, loopStart);
-		public static Cell DrawAnimation (int chainID, int x, int y, int width, int height, int frame, Color32 color, int loopStart = int.MinValue) => DrawAnimation(chainID, x, y, 0, 0, 0, width, height, frame, color, loopStart);
-		public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, Color32 color, int loopStart = int.MinValue) {
+		public static Cell DrawAnimation (int chainID, IRect globalRect, int frame, Pixel32 color, int loopStart = int.MinValue) => DrawAnimation(chainID, globalRect.x, globalRect.y, 0, 0, 0, globalRect.width, globalRect.height, frame, color, loopStart);
+		public static Cell DrawAnimation (int chainID, int x, int y, int width, int height, int frame, Pixel32 color, int loopStart = int.MinValue) => DrawAnimation(chainID, x, y, 0, 0, 0, width, height, frame, color, loopStart);
+		public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, Pixel32 color, int loopStart = int.MinValue) {
 			if (!SheetIDMap.TryGetValue(chainID, out var rCell)) return EMPTY_CELL;
 			int localFrame = GetAnimationFrame(frame, rCell.Length, loopStart == int.MinValue ? rCell.LoopStart : loopStart);
 			var sprite = Sprites[rCell.GetIndex(localFrame)];
@@ -1118,13 +1104,13 @@ namespace AngeliaFramework {
 
 
 		public static Cell[] DrawAnimation_9Slice (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int loopStart = -1) => DrawAnimation_9Slice(chainID, x, y, pivotX, pivotY, rotation, width, height, frame, WHITE, loopStart);
-		public static Cell[] DrawAnimation_9Slice (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, Color32 color, int loopStart = -1) {
+		public static Cell[] DrawAnimation_9Slice (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, Pixel32 color, int loopStart = -1) {
 			if (!SheetIDMap.TryGetValue(chainID, out var rCell)) return Last9SlicedCells;
 			var sprite = Sprites[rCell.GetIndex(GetAnimationFrame(frame, rCell.Length, loopStart))];
 			return Draw_9Slice(sprite.GlobalID, x, y, pivotX, pivotY, rotation, width, height, sprite.GlobalBorder.left, sprite.GlobalBorder.right, sprite.GlobalBorder.down, sprite.GlobalBorder.up, color);
 		}
 		public static Cell[] DrawAnimation_9Slice (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int borderL, int borderR, int borderD, int borderU, int loopStart = -1) => DrawAnimation_9Slice(chainID, x, y, pivotX, pivotY, rotation, width, height, frame, borderL, borderR, borderD, borderU, WHITE, loopStart);
-		public static Cell[] DrawAnimation_9Slice (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int borderL, int borderR, int borderD, int borderU, Color32 color, int loopStart = -1) {
+		public static Cell[] DrawAnimation_9Slice (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int borderL, int borderR, int borderD, int borderU, Pixel32 color, int loopStart = -1) {
 			if (!SheetIDMap.TryGetValue(chainID, out var rCell)) return Last9SlicedCells;
 			var sprite = Sprites[rCell.GetIndex(GetAnimationFrame(frame, rCell.Length, loopStart))];
 			return Draw_9Slice(sprite.GlobalID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, color);
@@ -1179,7 +1165,7 @@ namespace AngeliaFramework {
 
 
 		// Misc
-		public static void SetBackgroundTint (Color32 top, Color32 bottom) {
+		public static void SetBackgroundTint (Pixel32 top, Pixel32 bottom) {
 			SkyTintTop = top;
 			SkyTintBottom = bottom;
 			if (Skybox == null) return;
@@ -1192,13 +1178,13 @@ namespace AngeliaFramework {
 
 
 		// Clamp
-		public static void ClampTextCells (RectInt rect, int startIndex, int endIndex) => ClampCellsLogic(TextLayers[CurrentTextLayerIndex].Cells, rect, startIndex, endIndex);
-		public static void ClampTextCells (int layerIndex, RectInt rect, int startIndex, int endIndex) => ClampCellsLogic(TextLayers[layerIndex].Cells, rect, startIndex, endIndex);
-		public static void ClampCells (RectInt rect, int startIndex, int endIndex) => ClampCellsLogic(Layers[CurrentLayerIndex].Cells, rect, startIndex, endIndex);
-		public static void ClampCells (int layerIndex, RectInt rect, int startIndex, int endIndex) => ClampCellsLogic(Layers[layerIndex].Cells, rect, startIndex, endIndex);
-		public static void ClampCells (Cell[] cells, RectInt rect) => ClampCellsLogic(cells, rect, 0, cells.Length);
-		private static void ClampCellsLogic (Cell[] cells, RectInt rect, int startIndex, int endIndex) {
-			var cellRect = new RectInt();
+		public static void ClampTextCells (IRect rect, int startIndex, int endIndex) => ClampCellsLogic(TextLayers[CurrentTextLayerIndex].Cells, rect, startIndex, endIndex);
+		public static void ClampTextCells (int layerIndex, IRect rect, int startIndex, int endIndex) => ClampCellsLogic(TextLayers[layerIndex].Cells, rect, startIndex, endIndex);
+		public static void ClampCells (IRect rect, int startIndex, int endIndex) => ClampCellsLogic(Layers[CurrentLayerIndex].Cells, rect, startIndex, endIndex);
+		public static void ClampCells (int layerIndex, IRect rect, int startIndex, int endIndex) => ClampCellsLogic(Layers[layerIndex].Cells, rect, startIndex, endIndex);
+		public static void ClampCells (Cell[] cells, IRect rect) => ClampCellsLogic(cells, rect, 0, cells.Length);
+		private static void ClampCellsLogic (Cell[] cells, IRect rect, int startIndex, int endIndex) {
+			var cellRect = new IRect();
 			for (int i = startIndex; i < endIndex; i++) {
 				var cell = cells[i];
 				cellRect.x = cell.X - (int)(cell.Width * cell.PivotX);
@@ -1308,10 +1294,10 @@ namespace AngeliaFramework {
 						if (tLayer.TextFont.GetCharacterInfo(c, out var info, tLayer.TextSize)) {
 							float size = info.size == 0 ? tLayer.TextSize : info.size;
 							charSprite.GlobalID = info.index;
-							charSprite.UvBottomLeft = info.uvBottomLeft;
-							charSprite.UvBottomRight = info.uvBottomRight;
-							charSprite.UvTopLeft = info.uvTopLeft;
-							charSprite.UvTopRight = info.uvTopRight;
+							charSprite.UvBottomLeft = info.uvBottomLeft.ToAngelia();
+							charSprite.UvBottomRight = info.uvBottomRight.ToAngelia();
+							charSprite.UvTopLeft = info.uvTopLeft.ToAngelia();
+							charSprite.UvTopRight = info.uvTopRight.ToAngelia();
 							charSprite.Offset = Rect.MinMaxRect(info.minX / size, info.minY / size, info.maxX / size, info.maxY / size);
 							charSprite.Advance = info.advance / size;
 							charSprite.Rebuild = tLayer.TextRebuild;
@@ -1330,10 +1316,10 @@ namespace AngeliaFramework {
 					tLayer.TextIDMap.Add(c, new CellInfo(tLayer.CharSprites.Count));
 					tLayer.CharSprites.Add(charSprite = new CharSprite() {
 						GlobalID = info.index,
-						UvBottomLeft = info.uvBottomLeft,
-						UvBottomRight = info.uvBottomRight,
-						UvTopLeft = info.uvTopLeft,
-						UvTopRight = info.uvTopRight,
+						UvBottomLeft = info.uvBottomLeft.ToAngelia(),
+						UvBottomRight = info.uvBottomRight.ToAngelia(),
+						UvTopLeft = info.uvTopLeft.ToAngelia(),
+						UvTopRight = info.uvTopRight.ToAngelia(),
 						Offset = Rect.MinMaxRect(info.minX / size, info.minY / size, info.maxX / size, info.maxY / size),
 						Advance = info.advance / size,
 						Rebuild = tLayer.TextRebuild,

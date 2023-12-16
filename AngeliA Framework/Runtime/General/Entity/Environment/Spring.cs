@@ -49,7 +49,7 @@ namespace AngeliaFramework {
 		protected abstract int Power { get; }
 
 		// Short
-		private RectInt FullRect => new(X, Y, Const.CEL, Const.CEL);
+		private IRect FullRect => new(X, Y, Const.CEL, Const.CEL);
 
 		// Data
 		private int LastBounceFrame = int.MinValue;
@@ -95,7 +95,7 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			var tint = (Color32)Color.Lerp(Const.WHITE, RED, Mathf.InverseLerp(RED_LINE_MIN, RED_LINE_MAX, Power));
+			var tint = (Pixel32)Color.Lerp(Const.WHITE, RED, Mathf.InverseLerp(RED_LINE_MIN, RED_LINE_MAX, Power));
 			if (Game.GlobalFrame < LastBounceFrame + BOUNCE_ANI.Length) {
 				CurrentArtworkFrame++;
 			} else {

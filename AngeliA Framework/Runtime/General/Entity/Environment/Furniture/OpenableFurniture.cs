@@ -5,7 +5,7 @@ namespace AngeliaFramework {
 	public abstract class OpenableUiFurniture : OpenableFurniture {
 
 
-		protected virtual Vector2Int WindowSize => new(800, 600);
+		protected virtual Int2 WindowSize => new(800, 600);
 		private static int UiUpdateFrame = -1;
 
 		public override void FrameUpdate () {
@@ -19,7 +19,7 @@ namespace AngeliaFramework {
 				CursorSystem.RequireCursor();
 				var size = WindowSize;
 				CellRenderer.SetLayerToUI();
-				FrameUpdateUI(new RectInt(
+				FrameUpdateUI(new IRect(
 					CellRenderer.CameraRect.CenterX() - Unify(size.x) / 2,
 					CellRenderer.CameraRect.CenterY() - Unify(size.y) / 2,
 					Unify(size.x), Unify(size.y)
@@ -41,7 +41,7 @@ namespace AngeliaFramework {
 		}
 
 
-		protected abstract void FrameUpdateUI (RectInt windowRect);
+		protected abstract void FrameUpdateUI (IRect windowRect);
 		protected virtual void OnUiOpen () { }
 		protected virtual void OnUiClose () { }
 

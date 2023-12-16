@@ -78,16 +78,16 @@ namespace AngeliaFramework {
 		public const int MAX_LEN = 64;
 
 		// Api
-		public static readonly Dictionary<int, Vector3Int> DirectionPool = new() {
-			{ typeof(CameraAutoScrollStop).AngeHash(), new Vector3Int(0, 0, 0) },
-			{ typeof(CameraAutoScrollLeft).AngeHash(), new Vector3Int(-1, 0, -90) },
-			{ typeof(CameraAutoScrollRight).AngeHash(), new Vector3Int(1, 0, 90) },
-			{ typeof(CameraAutoScrollBottom).AngeHash(), new Vector3Int(0, -1, 180) },
-			{ typeof(CameraAutoScrollTop).AngeHash(), new Vector3Int(0, 1, 0) },
-			{ typeof(CameraAutoScrollBottomLeft).AngeHash(), new Vector3Int(-1, -1, -135) },
-			{ typeof(CameraAutoScrollBottomRight).AngeHash(), new Vector3Int(1, -1, 135) },
-			{ typeof(CameraAutoScrollTopLeft).AngeHash(), new Vector3Int(-1, 1, -45) },
-			{ typeof(CameraAutoScrollTopRight).AngeHash(), new Vector3Int(1, 1, 45) },
+		public static readonly Dictionary<int, Int3> DirectionPool = new() {
+			{ typeof(CameraAutoScrollStop).AngeHash(), new Int3(0, 0, 0) },
+			{ typeof(CameraAutoScrollLeft).AngeHash(), new Int3(-1, 0, -90) },
+			{ typeof(CameraAutoScrollRight).AngeHash(), new Int3(1, 0, 90) },
+			{ typeof(CameraAutoScrollBottom).AngeHash(), new Int3(0, -1, 180) },
+			{ typeof(CameraAutoScrollTop).AngeHash(), new Int3(0, 1, 0) },
+			{ typeof(CameraAutoScrollBottomLeft).AngeHash(), new Int3(-1, -1, -135) },
+			{ typeof(CameraAutoScrollBottomRight).AngeHash(), new Int3(1, -1, 135) },
+			{ typeof(CameraAutoScrollTopLeft).AngeHash(), new Int3(-1, 1, -45) },
+			{ typeof(CameraAutoScrollTopRight).AngeHash(), new Int3(1, 1, 45) },
 		};
 		public abstract Direction3 DirectionX { get; }
 		public abstract Direction3 DirectionY { get; }
@@ -95,7 +95,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private static CameraAutoScroll Current = null;
-		private Vector2Int MaxPosition = default;
+		private Int2 MaxPosition = default;
 		private bool IsEntrance = true;
 		private int PlayerPrevX = 0;
 		private int PlayerPrevXUpdateFrame = int.MinValue;
@@ -190,7 +190,7 @@ namespace AngeliaFramework {
 
 			// End by Hit Other Scroll Entity
 			var nextScroll = CellPhysics.GetEntity<CameraAutoScroll>(
-				new RectInt(X + Const.HALF, Y + Const.HALF, 1, 1),
+				new IRect(X + Const.HALF, Y + Const.HALF, 1, 1),
 				PhysicsMask.ENVIRONMENT, this, OperationMode.TriggerOnly
 			);
 			if (nextScroll != null && nextScroll.Active) {
@@ -271,10 +271,10 @@ namespace AngeliaFramework {
 		public static bool CheckEntrance (int globalX, int globalY, Direction3 directionX, Direction3 directionY) {
 
 			if (directionX == Direction3.None && directionY == Direction3.None) return false;
-			var unitPos = new Vector2Int(globalX, globalY).ToUnit();
+			var unitPos = new Int2(globalX, globalY).ToUnit();
 			var squad = WorldSquad.Front;
 
-			var dir = new Vector2Int((int)directionX, (int)directionY);
+			var dir = new Int2((int)directionX, (int)directionY);
 			if (HasPrevTarget(new(-1, -1))) return false;
 			if (HasPrevTarget(new(-1, 0))) return false;
 			if (HasPrevTarget(new(-1, 1))) return false;
@@ -285,7 +285,7 @@ namespace AngeliaFramework {
 			if (HasPrevTarget(new(1, 1))) return false;
 			return true;
 
-			bool HasPrevTarget (Vector2Int direction) {
+			bool HasPrevTarget (Int2 direction) {
 				if (direction == dir) return false;
 				for (int i = 1; i < MAX_LEN; i++) {
 					int x = unitPos.x + direction.x * i;
@@ -317,9 +317,9 @@ namespace AngeliaFramework {
 
 		public override System.Type TargetEntity => typeof(CameraAutoScroll);
 		public override bool DrawGizmosOutOfRange => true;
-		public override void DrawGizmos (RectInt entityGlobalRect, int entityID) {
+		public override void DrawGizmos (IRect entityGlobalRect, int entityID) {
 
-			if (!CameraAutoScroll.DirectionPool.TryGetValue(entityID, out var dir) || (Vector2Int)dir == Vector2Int.zero) return;
+			if (!CameraAutoScroll.DirectionPool.TryGetValue(entityID, out var dir) || (Int2)dir == Int2.zero) return;
 
 			// Entrance
 			if (CameraAutoScroll.CheckEntrance(

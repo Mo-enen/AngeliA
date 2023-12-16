@@ -20,10 +20,10 @@ namespace AngeliaFramework {
 		private bool Modify_BackgroundOnly => ShiftHolding && AltHolding;
 
 		// Data
-		private RectInt? SelectionUnitRect = null;
-		private RectInt? DraggingUnitRect = null;
-		private Vector2Int? MouseDownPosition = null;
-		private RectInt DragBeginSelectionUnitRect = default;
+		private IRect? SelectionUnitRect = null;
+		private IRect? DraggingUnitRect = null;
+		private Int2? MouseDownPosition = null;
+		private IRect DragBeginSelectionUnitRect = default;
 		private readonly System.Random PaintingRan = new(6492763);
 		private int MouseDownButton = -1;
 		private bool MouseMoved = false;
@@ -57,7 +57,7 @@ namespace AngeliaFramework {
 			MouseInSelection = SelectionUnitRect.HasValue && SelectionUnitRect.Value.Contains(mousePos.ToUnit());
 			var cameraRect = CellRenderer.CameraRect.Shrink(1);
 			int panelWidth = Unify(PANEL_WIDTH);
-			var targetPanelRect = new RectInt(
+			var targetPanelRect = new IRect(
 				CellRenderer.CameraRect.x + (IsEditing && !DroppingPlayer && !IsNavigating ? 0 : -panelWidth),
 				CellRenderer.CameraRect.y,
 				panelWidth,
@@ -73,7 +73,7 @@ namespace AngeliaFramework {
 			if (MouseInSelection) {
 				CursorSystem.SetCursorAsMove();
 				if (!Pasting) {
-					DrawModifyFilterLabel(new RectInt(FrameInput.MouseGlobalPosition.x, FrameInput.MouseGlobalPosition.y, 1, 1));
+					DrawModifyFilterLabel(new IRect(FrameInput.MouseGlobalPosition.x, FrameInput.MouseGlobalPosition.y, 1, 1));
 				}
 			}
 
@@ -99,7 +99,7 @@ namespace AngeliaFramework {
 					var mouseUnitPos = mousePos.ToUnit();
 					MouseDragging(mouseDownUnitPos, mouseUnitPos);
 					if (MouseDownButton != 2 && (!MouseDownInSelection || MouseDownButton == 1)) {
-						DraggingUnitRect = new RectInt(
+						DraggingUnitRect = new IRect(
 							Mathf.Min(mouseDownUnitPos.x, mouseUnitPos.x),
 							Mathf.Min(mouseDownUnitPos.y, mouseUnitPos.y),
 							Mathf.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1,
@@ -166,7 +166,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void MouseDragging (Vector2Int mouseDownUnitPos, Vector2Int mouseUnitPos) {
+		private void MouseDragging (Int2 mouseDownUnitPos, Int2 mouseUnitPos) {
 			if (MouseDownInSelection && MouseDownButton == 0 && SelectionUnitRect.HasValue) {
 				var unitRect = SelectionUnitRect.Value;
 				unitRect.x = DragBeginSelectionUnitRect.x + mouseUnitPos.x - mouseDownUnitPos.x;
@@ -176,14 +176,14 @@ namespace AngeliaFramework {
 		}
 
 
-		private void MouseUp_Left (Vector2Int mouseDownUnitPos, Vector2Int mouseUnitPos) {
+		private void MouseUp_Left (Int2 mouseDownUnitPos, Int2 mouseUnitPos) {
 
 			if (MouseDownInSelection || MouseDownOutsideBoundary) return;
 
 			// Paint / Erase
 			ApplyPaste();
 			SelectionUnitRect = null;
-			var unitRect = new RectInt(
+			var unitRect = new IRect(
 				Mathf.Min(mouseDownUnitPos.x, mouseUnitPos.x),
 				Mathf.Min(mouseDownUnitPos.y, mouseUnitPos.y),
 				(Mathf.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1).Clamp(0, Const.MAP),
@@ -256,12 +256,12 @@ namespace AngeliaFramework {
 		}
 
 
-		private void MouseUp_Right (Vector2Int mouseDownUnitPos, Vector2Int mouseUnitPos) {
+		private void MouseUp_Right (Int2 mouseDownUnitPos, Int2 mouseUnitPos) {
 			if (MouseDownOutsideBoundary) return;
 			ApplyPaste();
 			if (MouseMoved) {
 				// Select 
-				SelectionUnitRect = new RectInt(
+				SelectionUnitRect = new IRect(
 					Mathf.Min(mouseDownUnitPos.x, mouseUnitPos.x),
 					Mathf.Min(mouseDownUnitPos.y, mouseUnitPos.y),
 					(Mathf.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1).Clamp(0, Const.MAP),
@@ -288,8 +288,8 @@ namespace AngeliaFramework {
 
 
 		// Move
-		private void MoveSelection (Vector2Int delta) {
-			if (delta == Vector2Int.zero || IsPlaying || DroppingPlayer || IsNavigating || !SelectionUnitRect.HasValue) return;
+		private void MoveSelection (Int2 delta) {
+			if (delta == Int2.zero || IsPlaying || DroppingPlayer || IsNavigating || !SelectionUnitRect.HasValue) return;
 			if (!Pasting) StartPaste(true);
 			SelectionUnitRect = SelectionUnitRect.Value.Shift(delta.x, delta.y);
 		}
@@ -433,7 +433,7 @@ namespace AngeliaFramework {
 
 
 		// Rule
-		private void RedirectForRule (RectInt unitRange) {
+		private void RedirectForRule (IRect unitRange) {
 			unitRange = unitRange.Expand(1);
 			for (int i = unitRange.xMin; i < unitRange.xMax; i++) {
 				for (int j = unitRange.yMin; j < unitRange.yMax; j++) {

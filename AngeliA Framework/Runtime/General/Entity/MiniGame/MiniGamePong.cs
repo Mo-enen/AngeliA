@@ -27,7 +27,7 @@ namespace AngeliaFramework {
 		private const int BALL_SPEED_RATE_FROM_PADDLE = 300;
 
 		// Api
-		protected override Vector2Int WindowSize => new(800, 800);
+		protected override Int2 WindowSize => new(800, 800);
 		protected override bool RequireMouseCursor => false;
 		protected override string DisplayName => Language.Get(TypeID, "Pong");
 
@@ -189,11 +189,11 @@ namespace AngeliaFramework {
 			int scoreY = windowRect.y + windowRect.height - charRectSize;
 			CellRendererGUI.Label(
 				CellContent.Get(PlayerScoreString.GetString(ScorePlayer), 42, Alignment.MidRight),
-				new RectInt(windowRect.x, scoreY, scoreWidth, charRectSize)
+				new IRect(windowRect.x, scoreY, scoreWidth, charRectSize)
 			);
 			CellRendererGUI.Label(
 				CellContent.Get(BotScoreString.GetString(ScoreBot), 42, Alignment.MidLeft),
-				new RectInt(midX + scoreGap, scoreY, scoreWidth, charRectSize)
+				new IRect(midX + scoreGap, scoreY, scoreWidth, charRectSize)
 			);
 
 			// Paddle

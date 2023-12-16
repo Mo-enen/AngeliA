@@ -90,9 +90,9 @@ namespace AngeliaFramework {
 					head.Height.Sign3() * sprite.GlobalHeight,
 					head.Z + (head.FrontSide == frontOfHeadL ? 34 : -34)
 				);
-				if (character.Head.Rotation != 0) {
-					cell.RotateAround(character.Head.Rotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
-					cell.Y -= character.Head.Height.Abs() * character.Head.Rotation.Abs() / 360;
+				if (character.HeadRotation != 0) {
+					cell.RotateAround(character.HeadRotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
+					cell.Y -= character.Head.Height.Abs() * character.HeadRotation.Abs() / 360;
 				}
 			}
 
@@ -106,9 +106,9 @@ namespace AngeliaFramework {
 					head.Height.Sign3() * sprite.GlobalHeight,
 					head.Z + (head.FrontSide == frontOfHeadR ? 34 : -34)
 				);
-				if (character.Head.Rotation != 0) {
-					cell.RotateAround(character.Head.Rotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
-					cell.Y -= character.Head.Height.Abs() * character.Head.Rotation.Abs() / 360;
+				if (character.HeadRotation != 0) {
+					cell.RotateAround(character.HeadRotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
+					cell.Y -= character.Head.Height.Abs() * character.HeadRotation.Abs() / 360;
 				}
 			}
 

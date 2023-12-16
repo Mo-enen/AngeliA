@@ -12,7 +12,7 @@ namespace AngeliaFramework.Editor {
 		private string Data;
 
 		public static void OpenWindow (System.Action<string> onConfirm, string defaultData = "", string title = "", string label = "") {
-			var window = OpenEditor<StringWindow>(title, new Vector2(256, 96), new Vector2(1024, 96));
+			var window = OpenEditor<StringWindow>(title, new Float2(256, 96), new Float2(1024, 96));
 			window.OnConfirm = onConfirm;
 			window.Data = defaultData;
 			window.Label = label;

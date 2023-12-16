@@ -184,7 +184,7 @@ namespace AngeliaFramework {
 					}
 				}
 				// Rotate
-				int headRot = character.Head.Rotation;
+				int headRot = character.HeadRotation;
 				if (headRot != 0) {
 					var body = character.Body;
 					int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;
@@ -274,7 +274,7 @@ namespace AngeliaFramework {
 			return fCells;
 
 			// Func
-			static Cell[] DrawSprite (int spriteID, PoseCharacter character, int z, out RectInt hairRect) {
+			static Cell[] DrawSprite (int spriteID, PoseCharacter character, int z, out IRect hairRect) {
 
 				hairRect = default;
 				if (spriteID == 0) return null;
@@ -290,7 +290,7 @@ namespace AngeliaFramework {
 				bool flipY = head.Height < 0;
 				int expandLR = hairSprite.PivotX * hairSprite.GlobalWidth / 1000;
 				int expandU = (1000 - hairSprite.PivotY) * hairSprite.GlobalHeight / 1000;
-				hairRect = new RectInt(
+				hairRect = new IRect(
 					headRect.xMin - expandLR,
 					headRect.yMax + expandU - hairSprite.GlobalHeight,
 					headRect.width.Abs() + expandLR * 2,
@@ -367,7 +367,7 @@ namespace AngeliaFramework {
 
 				}
 			}
-			static void TwistHair (PoseCharacter character, Cell[] cells, RectInt hairRect) {
+			static void TwistHair (PoseCharacter character, Cell[] cells, IRect hairRect) {
 				int twist = character.HeadTwist;
 				if (twist == 0 || cells == null || cells.Length != 9 || !character.Head.FrontSide) return;
 				foreach (var cell in cells) cell.ReturnPivots();
@@ -425,7 +425,7 @@ namespace AngeliaFramework {
 					width > 0 == offset > 0 || offset.Abs() < width.Abs() ? width + offset : 0;
 			}
 			static void RotateHair (PoseCharacter character, Cell[] cells) {
-				int headRot = character.Head.Rotation;
+				int headRot = character.HeadRotation;
 				if (headRot == 0 || cells == null) return;
 				var body = character.Body;
 				int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;

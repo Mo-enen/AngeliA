@@ -19,7 +19,7 @@ namespace AngeliaFramework {
 		public virtual int RenderingZ => int.MinValue;
 
 		// Api
-		public Color32 Tint { get; set; } = Const.WHITE;
+		public Pixel32 Tint { get; set; } = Const.WHITE;
 		public int LocalFrame => (Game.GlobalFrame - SpawnFrame) % Duration;
 		public int Rotation { get; set; } = 0;
 		public object UserData { get; set; } = null;

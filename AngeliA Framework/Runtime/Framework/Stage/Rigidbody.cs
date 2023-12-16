@@ -23,7 +23,7 @@ namespace AngeliaFramework {
 		public delegate void WaterHandler (Rigidbody rig, int x, int y);
 		public static event WaterHandler OnFallIntoWater;
 		public static event WaterHandler OnJumpOutOfWater;
-		public override RectInt Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
+		public override IRect Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
 		public bool IsGrounded { get; private set; } = false;
 		public bool IsInsideGround { get; private set; } = false;
 		public bool InWater { get; private set; } = false;
@@ -243,7 +243,7 @@ namespace AngeliaFramework {
 
 			if (!PhysicsEnable || Game.GlobalFrame <= IgnorePhysicsFrame) return;
 			RefreshPrevPosition();
-			var pos = new Vector2Int(X + OffsetX, Y + OffsetY);
+			var pos = new Int2(X + OffsetX, Y + OffsetY);
 
 			int speedScale = InWater ? WATER_SPEED_LOSE : 1000;
 			speedX = speedX * speedScale / 1000;
@@ -317,7 +317,7 @@ namespace AngeliaFramework {
 			int sizeY = Height / 8;
 			return CellPhysics.Overlap(
 				PhysicsMask.LEVEL & CollisionMask,
-				new RectInt(
+				new IRect(
 					X + OffsetX + Width / 2 - sizeX / 2,
 					Y + OffsetY + Height / 2 - sizeY / 2,
 					sizeX, sizeY

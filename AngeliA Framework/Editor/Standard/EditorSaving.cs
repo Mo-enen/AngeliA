@@ -107,12 +107,12 @@ namespace AngeliaFramework.Editor {
 
 
 
-	public class EditorSavingVector2Int : EditorSaving<Vector2Int> {
+	public class EditorSavingVector2Int : EditorSaving<Int2> {
 
-		public EditorSavingVector2Int (string key, Vector2Int defaultValue) : base(key, defaultValue) { }
+		public EditorSavingVector2Int (string key, Int2 defaultValue) : base(key, defaultValue) { }
 
-		protected override Vector2Int GetValueFromPref () {
-			return new Vector2Int(
+		protected override Int2 GetValueFromPref () {
+			return new Int2(
 				EditorPrefs.GetInt(Key + ".x", DefaultValue.x),
 				EditorPrefs.GetInt(Key + ".y", DefaultValue.y)
 			);
@@ -123,7 +123,7 @@ namespace AngeliaFramework.Editor {
 			EditorPrefs.SetInt(Key + ".y", Value.y);
 		}
 
-		public static implicit operator Vector2Int (EditorSavingVector2Int value) {
+		public static implicit operator Int2 (EditorSavingVector2Int value) {
 			return value.Value;
 		}
 		protected override void DeleteKey () {
@@ -180,12 +180,12 @@ namespace AngeliaFramework.Editor {
 
 
 
-	public class EditorSavingVector2 : EditorSaving<Vector2> {
+	public class EditorSavingVector2 : EditorSaving<Float2> {
 
-		public EditorSavingVector2 (string key, Vector2 defaultValue) : base(key, defaultValue) { }
+		public EditorSavingVector2 (string key, Float2 defaultValue) : base(key, defaultValue) { }
 
-		protected override Vector2 GetValueFromPref () {
-			return new Vector2(
+		protected override Float2 GetValueFromPref () {
+			return new Float2(
 				EditorPrefs.GetFloat(Key + ".x", DefaultValue.x),
 				EditorPrefs.GetFloat(Key + ".y", DefaultValue.y)
 			);
@@ -196,7 +196,7 @@ namespace AngeliaFramework.Editor {
 			EditorPrefs.SetFloat(Key + ".y", Value.y);
 		}
 
-		public static implicit operator Vector2 (EditorSavingVector2 value) {
+		public static implicit operator Float2 (EditorSavingVector2 value) {
 			return value.Value;
 		}
 		protected override void DeleteKey () {
@@ -208,12 +208,12 @@ namespace AngeliaFramework.Editor {
 
 
 
-	public class EditorSavingVector3 : EditorSaving<Vector3> {
+	public class EditorSavingVector3 : EditorSaving<Float3> {
 
-		public EditorSavingVector3 (string key, Vector3 defaultValue) : base(key, defaultValue) { }
+		public EditorSavingVector3 (string key, Float3 defaultValue) : base(key, defaultValue) { }
 
-		protected override Vector3 GetValueFromPref () {
-			return new Vector3(
+		protected override Float3 GetValueFromPref () {
+			return new Float3(
 				EditorPrefs.GetFloat(Key + ".x", DefaultValue.x),
 				EditorPrefs.GetFloat(Key + ".y", DefaultValue.y),
 				EditorPrefs.GetFloat(Key + ".z", DefaultValue.z)
@@ -226,7 +226,7 @@ namespace AngeliaFramework.Editor {
 			EditorPrefs.SetFloat(Key + ".z", Value.z);
 		}
 
-		public static implicit operator Vector3 (EditorSavingVector3 value) {
+		public static implicit operator Float3 (EditorSavingVector3 value) {
 			return value.Value;
 		}
 		protected override void DeleteKey () {

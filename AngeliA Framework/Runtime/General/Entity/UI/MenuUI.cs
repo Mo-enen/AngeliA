@@ -35,16 +35,16 @@ namespace AngeliaFramework {
 		protected int MessageHeight = 96;
 		protected int MessageFontSize = 22;
 		protected int MaxItemCount = 10;
-		protected Vector4Int ContentPadding = new(32, 32, 46, 46);
-		protected Vector2Int SelectionMarkSize = new(32, 32);
-		protected Vector2Int SelectionArrowMarkSize = new(24, 24);
-		protected Vector2Int MoreMarkSize = new(16, 16);
-		protected Color32 ScreenTint = new(0, 0, 0, 0);
-		protected Color32 BackgroundTint = new(0, 0, 0, 255);
-		protected Color32 SelectionMarkTint = new(255, 255, 255, 255);
-		protected Color32 MoreMarkTint = new(220, 220, 220, 255);
-		protected Color32 MessageTint = new(220, 220, 220, 255);
-		protected Color32 MouseHighlightTint = new(255, 255, 255, 16);
+		protected Int4 ContentPadding = new(32, 32, 46, 46);
+		protected Int2 SelectionMarkSize = new(32, 32);
+		protected Int2 SelectionArrowMarkSize = new(24, 24);
+		protected Int2 MoreMarkSize = new(16, 16);
+		protected Pixel32 ScreenTint = new(0, 0, 0, 0);
+		protected Pixel32 BackgroundTint = new(0, 0, 0, 255);
+		protected Pixel32 SelectionMarkTint = new(255, 255, 255, 255);
+		protected Pixel32 MoreMarkTint = new(220, 220, 220, 255);
+		protected Pixel32 MessageTint = new(220, 220, 220, 255);
+		protected Pixel32 MouseHighlightTint = new(255, 255, 255, 16);
 		protected bool Interactable = true;
 		protected bool AllowMouseClick = true;
 		protected bool QuitOnPressStartOrEscKey = true;
@@ -115,11 +115,11 @@ namespace AngeliaFramework {
 				Unify(ContentPadding.down),
 				Unify(ContentPadding.up)
 			);
-			var moreMarkSize = new Vector2Int(
+			var moreMarkSize = new Int2(
 				Unify(MoreMarkSize.x),
 				Unify(MoreMarkSize.y)
 			);
-			var contentPadding = new Vector4Int(
+			var contentPadding = new Int4(
 				Unify(ContentPadding.x),
 				Unify(ContentPadding.y),
 				Unify(ContentPadding.z),
@@ -150,7 +150,7 @@ namespace AngeliaFramework {
 				MessageLabel.Text = msg;
 				MessageLabel.Tint = tint;
 				MessageLabel.CharSize = MessageFontSize;
-				CellRendererGUI.Label(MessageLabel, new RectInt(
+				CellRendererGUI.Label(MessageLabel, new IRect(
 					windowBounds.x, windowBounds.yMax,
 					windowBounds.width, msgHeight
 				));
@@ -254,22 +254,22 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		protected virtual RectInt GetWindowRect () {
+		protected virtual IRect GetWindowRect () {
 			int w = Unify(WindowWidth);
 			int h = Unify(TargetItemCount * ItemHeight + (TargetItemCount - 1) * ItemGap);
 			int x = (int)(CellRenderer.CameraRect.x + CellRenderer.CameraRect.width / 2 - Unify(WindowWidth) / 2);
 			int y = CellRenderer.CameraRect.y + CellRenderer.CameraRect.height / 2 - h / 2;
-			return new RectInt(x, y, w, h);
+			return new IRect(x, y, w, h);
 		}
 
 
 		// Draw Item
 		protected bool DrawItem (string label, int icon = 0) => DrawItemLogic(label, CellContent.Empty, icon, false, false, Const.WHITE, out _);
-		protected bool DrawItem (string label, Color32 tint, int icon = 0) => DrawItemLogic(label, CellContent.Empty, icon, false, false, tint, out _);
+		protected bool DrawItem (string label, Pixel32 tint, int icon = 0) => DrawItemLogic(label, CellContent.Empty, icon, false, false, tint, out _);
 		protected bool DrawItem (string label, CellContent value, int icon = 0) => DrawItemLogic(label, value, icon, false, false, Const.WHITE, out _);
-		protected bool DrawItem (string label, CellContent value, Color32 tint, int icon = 0) => DrawItemLogic(label, value, icon, false, false, tint, out _);
+		protected bool DrawItem (string label, CellContent value, Pixel32 tint, int icon = 0) => DrawItemLogic(label, value, icon, false, false, tint, out _);
 		protected bool DrawArrowItem (string label, CellContent value, bool leftArrow, bool rightArrow, out int delta, int icon = 0) => DrawItemLogic(label, value, icon, leftArrow, rightArrow, Const.WHITE, out delta);
-		private bool DrawItemLogic (string label, CellContent value, int icon, bool useLeftArrow, bool useRightArrow, Color32 tint, out int delta) {
+		private bool DrawItemLogic (string label, CellContent value, int icon, bool useLeftArrow, bool useRightArrow, Pixel32 tint, out int delta) {
 
 			bool invoke = false;
 			delta = 0;
@@ -295,11 +295,11 @@ namespace AngeliaFramework {
 			int fontSize = FontSize;
 			int itemHeight = Unify(ItemHeight);
 			int itemGap = Unify(ItemGap);
-			var markSize = new Vector2Int(
+			var markSize = new Int2(
 				Unify(SelectionMarkSize.x),
 				Unify(SelectionMarkSize.y)
 			);
-			var selectionMarkSize = new Vector2Int(
+			var selectionMarkSize = new Int2(
 				Unify(SelectionArrowMarkSize.x),
 				Unify(SelectionArrowMarkSize.y)
 			);
@@ -313,13 +313,13 @@ namespace AngeliaFramework {
 			bool mouseHoverArrowL = false;
 			bool mouseHoverArrowR = false;
 
-			var itemRect_Old = new RectInt(windowRect.x, itemY, windowRect.width, itemHeight);
+			var itemRect_Old = new IRect(windowRect.x, itemY, windowRect.width, itemHeight);
 			var itemRect = itemRect_Old.Shrink(markSize.x, markSize.x, 0, 0);
 			itemRect_Old = itemRect_Old.Expand(markSize.x, markSize.x, itemGap / 2, itemGap / 2);
 			if (itemRect.Overlaps(windowRect)) {
 
 				var labelRect = itemRect;
-				RectInt bounds;
+				IRect bounds;
 
 				// Labels
 				if (string.IsNullOrEmpty(value.Text) && icon == 0) {
@@ -376,7 +376,7 @@ namespace AngeliaFramework {
 						if (icon != 0 && CellRenderer.TryGetSprite(icon, out var iconSprite)) {
 							CellRenderer.Draw(
 								icon,
-								new RectInt(labelBounds.x - labelBounds.height, labelBounds.y, labelBounds.height, labelBounds.height).Fit(iconSprite),
+								new IRect(labelBounds.x - labelBounds.height, labelBounds.y, labelBounds.height, labelBounds.height).Fit(iconSprite),
 								1
 							);
 						}
@@ -389,17 +389,17 @@ namespace AngeliaFramework {
 
 					const int HOVER_EXP = 32;
 
-					var rectL = new RectInt(
+					var rectL = new IRect(
 						bounds.xMin - selectionMarkSize.x,
 						labelRect.y + labelRect.height / 2 - selectionMarkSize.y / 2,
 						-selectionMarkSize.x,
 						selectionMarkSize.y
 					);
-					var rectL_H = new RectInt(
+					var rectL_H = new IRect(
 						rectL.x + rectL.width, rectL.y, rectL.width.Abs(), rectL.height
 					).Expand(HOVER_EXP);
 
-					var rectR = new RectInt(
+					var rectR = new IRect(
 						bounds.xMax + selectionMarkSize.x,
 						labelRect.y + labelRect.height / 2 - selectionMarkSize.y / 2,
 						selectionMarkSize.x,
@@ -437,7 +437,7 @@ namespace AngeliaFramework {
 			if (SelectionIndex == ItemCount) {
 				CellRenderer.Draw(
 					SelectionMarkCode,
-					new RectInt(
+					new IRect(
 						itemRect.x - markSize.x + MarkPingPongFrame.PingPong(60),
 						itemRect.y + (itemRect.height - markSize.y) / 2,
 						markSize.x,

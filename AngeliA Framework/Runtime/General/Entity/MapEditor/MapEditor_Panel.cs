@@ -72,7 +72,7 @@ namespace AngeliaFramework {
 		private readonly CellContent PalGroupLabel = new() { Tint = Const.WHITE, Alignment = Alignment.TopMid, CharSize = 20, };
 
 		// Data
-		private RectInt PaletteGroupPanelRect = default;
+		private IRect PaletteGroupPanelRect = default;
 		private PaletteTabType CurrentPaletteTab = PaletteTabType.BuiltIn;
 		private int SelectingPaletteGroupIndex = 0;
 		private int SelectingPaletteListIndex = 0;
@@ -279,7 +279,7 @@ namespace AngeliaFramework {
 			int groupColumnCount = (PanelRect.width - ITEM_GAP * 2) / (ITEM_SIZE + ITEM_GAP);
 			int groupRowCount = groupCount / groupColumnCount + (groupCount % groupColumnCount != 0 ? 1 : 0);
 			int groupPanelHeight = groupRowCount * (ITEM_SIZE + ITEM_GAP);
-			var groupRect = PaletteGroupPanelRect = new RectInt(
+			var groupRect = PaletteGroupPanelRect = new IRect(
 				PanelRect.x, PanelRect.y, PanelRect.width, groupPanelHeight + PANEL_PADDING * 2 + TAB_SIZE
 			);
 
@@ -288,7 +288,7 @@ namespace AngeliaFramework {
 
 				int tabBorder = Unify(10);
 				bool selecting = i == (int)CurrentPaletteTab;
-				var tabRect = new RectInt(
+				var tabRect = new IRect(
 					groupRect.x + i * groupRect.width / 2, groupRect.y, groupRect.width / 2, TAB_SIZE
 				);
 				bool tabInteractable = !GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog;
@@ -345,7 +345,7 @@ namespace AngeliaFramework {
 			groupRect = groupRect.Shrink(PANEL_PADDING);
 			CellRenderer.Draw(Const.PIXEL, groupRect.Expand(PANEL_PADDING), Const.GREY_32, PANEL_Z - 6);
 			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute && !IsNavigating;
-			var rect = new RectInt(0, 0, ITEM_SIZE, ITEM_SIZE);
+			var rect = new IRect(0, 0, ITEM_SIZE, ITEM_SIZE);
 			int offsetX = groupRect.x + (groupRect.width - groupColumnCount * ITEM_SIZE - (groupColumnCount - 1) * ITEM_GAP) / 2;
 			int targetReorderReleaseIndex = -1;
 
@@ -428,7 +428,7 @@ namespace AngeliaFramework {
 
 				// Reorder Target
 				if (DraggingForReorderPaletteGroup >= 0) {
-					var reorderCheckingRect = new RectInt(
+					var reorderCheckingRect = new IRect(
 						rect.x - ITEM_GAP / 2, rect.y - ITEM_GAP / 2,
 						(rect.width + ITEM_GAP) / 2, rect.height + ITEM_GAP
 					);
@@ -505,7 +505,7 @@ namespace AngeliaFramework {
 			const int EXTRA_ROW = 3;
 
 			// Content
-			var contentRect = new RectInt(
+			var contentRect = new IRect(
 				PanelRect.x,
 				PaletteGroupPanelRect.yMax,
 				PanelRect.width,
@@ -524,7 +524,7 @@ namespace AngeliaFramework {
 			int startIndex = (PaletteScrollY * columnCount);
 			int offsetX = contentRect.x + (contentRect.width - columnCount * ITEM_SIZE - (columnCount - 1) * ITEM_GAP) / 2;
 			if (pageRowCount < rowCount + EXTRA_ROW) offsetX -= SCROLL_BAR_WIDTH / 2;
-			var rect = new RectInt(0, 0, ITEM_SIZE, ITEM_SIZE);
+			var rect = new IRect(0, 0, ITEM_SIZE, ITEM_SIZE);
 			for (int index = startIndex; index < items.Count; index++) {
 
 				var pal = items[index];
@@ -587,7 +587,7 @@ namespace AngeliaFramework {
 
 				// Reorder Target
 				if (DraggingForReorderPaletteItem >= 0) {
-					var reorderCheckingRect = new RectInt(
+					var reorderCheckingRect = new IRect(
 						rect.x - ITEM_GAP / 2, rect.y - ITEM_GAP / 2,
 						(rect.width + ITEM_GAP) / 2, rect.height + ITEM_GAP
 					);
@@ -641,7 +641,7 @@ namespace AngeliaFramework {
 
 			// Scroll Bar
 			PaletteScrollY = CellRendererGUI.ScrollBar(
-				new RectInt(
+				new IRect(
 					contentRect.xMax - SCROLL_BAR_WIDTH,
 					contentRect.y,
 					SCROLL_BAR_WIDTH,
@@ -679,7 +679,7 @@ namespace AngeliaFramework {
 				PaletteSearchScrollY = 0;
 			}
 			int pageStartIndex = PaletteSearchScrollY;
-			var rect = new RectInt(
+			var rect = new IRect(
 				searchRect.x,
 				searchRect.yMax - itemSize,
 				searchRect.width,
@@ -693,7 +693,7 @@ namespace AngeliaFramework {
 				if (CellRenderer.TryGetSprite(pal.ArtworkID, out var sprite)) {
 					CellRenderer.Draw(
 						pal.ArtworkID,
-						new RectInt(rect.x, rect.y, itemSize, itemSize).Fit(
+						new IRect(rect.x, rect.y, itemSize, itemSize).Fit(
 							sprite, sprite.PivotX, sprite.PivotY
 						), PANEL_Z - 11
 					);
@@ -738,7 +738,7 @@ namespace AngeliaFramework {
 			CellRenderer.ClampTextCells(searchRect, clampStartIndex, clampEndIndex);
 
 			PaletteSearchScrollY = CellRendererGUI.ScrollBar(
-				new RectInt(
+				new IRect(
 					searchRect.xMax + itemGap,
 					searchRect.y,
 					SCROLL_BAR_WIDTH,
@@ -760,14 +760,14 @@ namespace AngeliaFramework {
 			var panel = ToolbarRect;
 			CellRenderer.Draw(
 				Const.PIXEL,
-				new RectInt(panel.x, panel.y, PanelRect.xMax - panel.x, panel.height),
+				new IRect(panel.x, panel.y, PanelRect.xMax - panel.x, panel.height),
 				Const.GREY_32, PANEL_Z - 6
 			);
 			panel = panel.Shrink(PADDING);
 			int ITEM_SIZE = panel.height;
 
 			// Reset Camera
-			var btnRect = new RectInt(panel.x, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
+			var btnRect = new IRect(panel.x, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 			if (
 				CellRendererGUI.Button(
 					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, REFRESH_ICON,
@@ -779,7 +779,7 @@ namespace AngeliaFramework {
 			CursorSystem.SetCursorAsHand(btnRect);
 
 			// Button Down
-			btnRect = new RectInt(panel.x + ITEM_SIZE, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
+			btnRect = new IRect(panel.x + ITEM_SIZE, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 			if (
 				CellRendererGUI.Button(
 					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, TRIANGLE_DOWN,
@@ -791,7 +791,7 @@ namespace AngeliaFramework {
 			CursorSystem.SetCursorAsHand(btnRect);
 
 			// Button Up
-			btnRect = new RectInt(panel.x + ITEM_SIZE * 2, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
+			btnRect = new IRect(panel.x + ITEM_SIZE * 2, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 			if (
 				CellRendererGUI.Button(
 					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, TRIANGLE_UP,
@@ -803,7 +803,7 @@ namespace AngeliaFramework {
 			CursorSystem.SetCursorAsHand(btnRect);
 
 			// Nav
-			btnRect = new RectInt(panel.x + ITEM_SIZE * 3, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
+			btnRect = new IRect(panel.x + ITEM_SIZE * 3, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 			if (
 				CellRendererGUI.Button(
 					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, IsNavigating ? BRUSH_ICON : MAP_ICON,
@@ -815,7 +815,7 @@ namespace AngeliaFramework {
 			CursorSystem.SetCursorAsHand(btnRect);
 
 			// Play
-			btnRect = new RectInt(panel.x + ITEM_SIZE * 4, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
+			btnRect = new IRect(panel.x + ITEM_SIZE * 4, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 			if (
 				!IsNavigating && !DroppingPlayer &&
 				CellRendererGUI.Button(
@@ -861,7 +861,7 @@ namespace AngeliaFramework {
 				bool interactable = IGlobalPosition.TryGetPosition(id, out var globalUnitPos) && !hasTask;
 
 				// Button
-				var btnRect = new RectInt(
+				var btnRect = new IRect(
 					QuickLaneRect.x + (index % COLUMN) * ITEM_SIZE + offsetX,
 					QuickLaneRect.yMax - ((index / COLUMN) + 1) * ITEM_SIZE,
 					ITEM_SIZE, ITEM_SIZE
@@ -894,7 +894,7 @@ namespace AngeliaFramework {
 
 			int PADDING = Unify(6);
 			int HEIGHT = Unify(TOOL_BAR_HEIGHT);
-			var searchPanel = new RectInt(PanelRect.x, PanelRect.yMax - HEIGHT * 2, PanelRect.width, HEIGHT);
+			var searchPanel = new IRect(PanelRect.x, PanelRect.yMax - HEIGHT * 2, PanelRect.width, HEIGHT);
 			CellRenderer.Draw(Const.PIXEL, searchPanel, Const.GREY_32, PANEL_Z - 6);
 			searchPanel = searchPanel.Shrink(PADDING);
 

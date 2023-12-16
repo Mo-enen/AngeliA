@@ -19,7 +19,7 @@ namespace AngeliaFramework {
 			public int Width => Blocks.GetLength(0);
 			public int Height => Blocks.GetLength(1);
 			public BlockType[,] Blocks = new BlockType[0, 0];
-			public Vector2Int StartPosition = default;
+			public Int2 StartPosition = default;
 			public Level (params string[] lines) {
 				Blocks = new BlockType[lines[0].Length, lines.Length];
 				for (int y = 0; y < lines.Length; y++) {
@@ -35,7 +35,7 @@ namespace AngeliaFramework {
 							_ => BlockType.Empty,
 						};
 						if (c == 'P' || c == 'p') {
-							StartPosition = new Vector2Int(x, y);
+							StartPosition = new Int2(x, y);
 						}
 					}
 				}
@@ -77,7 +77,7 @@ namespace AngeliaFramework {
 		// Api
 		protected override bool RequireMouseCursor => false;
 		protected override string DisplayName => Language.Get(TypeID, "Sokoban");
-		protected override Vector2Int WindowSize => new(800, 800);
+		protected override Int2 WindowSize => new(800, 800);
 		private bool Celebrating => CurrentLevel >= Levels.Length || Game.GlobalFrame < LevelClearedFrame + 120;
 
 		// Data
@@ -192,7 +192,7 @@ namespace AngeliaFramework {
 			// Draw Background
 			var bgTint = Const.BLACK;
 			if (Celebrating) {
-				bgTint = Color32.LerpUnclamped(
+				bgTint = Pixel32.LerpUnclamped(
 					Const.BLACK, Const.GREEN, (Game.GlobalFrame - LevelClearedFrame).PingPong(20) / 20f
 				);
 			}
@@ -201,17 +201,17 @@ namespace AngeliaFramework {
 			// Label
 			CellRendererGUI.Label(
 				CellContent.Get(LevelLabelToString.GetString(CurrentLevel + 1), alignment: Alignment.MidRight),
-				new RectInt(stageRect.x, stageRect.yMax + barHeight / 10, stageRect.width, barHeight)
+				new IRect(stageRect.x, stageRect.yMax + barHeight / 10, stageRect.width, barHeight)
 			);
 
 			// Stage
-			var blockRect = new RectInt(0, 0, stageRect.width / StageWidth, stageRect.height / StageHeight);
+			var blockRect = new IRect(0, 0, stageRect.width / StageWidth, stageRect.height / StageHeight);
 			for (int x = 0; x < StageWidth; x++) {
 				for (int y = 0; y < StageHeight; y++) {
 					var block = Blocks[x, y];
 					blockRect.x = stageRect.x + x * blockRect.width;
 					blockRect.y = stageRect.y + y * blockRect.height;
-					var tint = block == BlockType.BoxInGoal ? new Color32(140, 255, 140, 255) : Const.WHITE;
+					var tint = block == BlockType.BoxInGoal ? new Pixel32(140, 255, 140, 255) : Const.WHITE;
 					CellRenderer.Draw(
 						block switch {
 							BlockType.Box => BOX_CODE,
@@ -228,7 +228,7 @@ namespace AngeliaFramework {
 			DrawBadges(Saving, stageRect.x, stageRect.yMax, 2, Unify(36));
 
 			// Player
-			var playerRect = new RectInt(stageRect.x + PlayerX * blockRect.width, stageRect.y + PlayerY * blockRect.height, blockRect.width, blockRect.height);
+			var playerRect = new IRect(stageRect.x + PlayerX * blockRect.width, stageRect.y + PlayerY * blockRect.height, blockRect.width, blockRect.height);
 			if (!PlayerFacingRight) playerRect.FlipHorizontal();
 
 			// Player Bounce

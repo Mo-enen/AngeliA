@@ -47,7 +47,7 @@ namespace AngeliaFramework {
 			public int SpawnedCount => InstanceCount - Entities.Count;
 			public Stack<Entity> Entities = null;
 			public System.Type EntityType = null;
-			public RectInt LocalBound = default;
+			public IRect LocalBound = default;
 			public bool DrawBehind = false;
 			public bool DestroyOnSquadTransition = true;
 			public bool DontSpawnFromWorld = false;
@@ -108,9 +108,9 @@ namespace AngeliaFramework {
 		// Api
 		public static int[] EntityCounts { get; private set; } = new int[EntityLayer.COUNT];
 		public static Entity[][] Entities { get; private set; } = null;
-		public static RectInt SpawnRect { get; private set; } = default;
-		public static RectInt AntiSpawnRect { get; private set; } = default;
-		public static RectInt ViewRect { get; private set; } = default;
+		public static IRect SpawnRect { get; private set; } = default;
+		public static IRect AntiSpawnRect { get; private set; } = default;
+		public static IRect ViewRect { get; private set; } = default;
 		public static int LastSettleFrame { get; private set; } = 0;
 		public static int ViewZ { get; private set; } = 0;
 		public static int? DelayingViewX => ViewDelayX.value;
@@ -130,9 +130,9 @@ namespace AngeliaFramework {
 		private static int? RequireSetViewZ = null;
 		private static int GlobalFrame = 0;
 		private static readonly Dictionary<int, EntityStack> EntityPool = new();
-		private static readonly HashSet<Vector3Int> StagedEntityHash = new();
-		private static readonly HashSet<Vector3Int> GlobalAntiSpawnHash = new();
-		private static readonly HashSet<Vector3Int> LocalAntiSpawnHash = new();
+		private static readonly HashSet<Int3> StagedEntityHash = new();
+		private static readonly HashSet<Int3> GlobalAntiSpawnHash = new();
+		private static readonly HashSet<Int3> LocalAntiSpawnHash = new();
 
 
 		#endregion
@@ -217,7 +217,7 @@ namespace AngeliaFramework {
 			// Move View Rect
 			if (ViewDelayX.value.HasValue || ViewDelayY.value.HasValue || ViewDelayHeight.value.HasValue) {
 				int targetHeight = (ViewDelayHeight.value ?? ViewRect.height).Clamp(Const.MIN_HEIGHT, Const.MAX_HEIGHT);
-				var viewRectDelay = new RectInt(
+				var viewRectDelay = new IRect(
 					ViewDelayX.value ?? ViewRect.x,
 					ViewDelayY.value ?? ViewRect.y,
 					Const.VIEW_RATIO * targetHeight / 1000,
@@ -313,7 +313,7 @@ namespace AngeliaFramework {
 			// FrameUpdate
 			var cullCameraRect = CellRenderer.CameraRect.Expand(
 				FrameTask.IsTasking<TeleportTask>() ?
-				new Vector4Int(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Vector4Int.zero
+				new Int4(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Int4.zero
 			);
 			for (int layer = startLayer; layer < endLayer; layer++) {
 				var entities = Entities[layer];
@@ -393,7 +393,7 @@ namespace AngeliaFramework {
 
 
 		// Spawn
-		public static Entity SpawnEntity (int typeID, int x, int y) => SpawnEntityLogic(typeID, x, y, new Vector3Int(int.MinValue, 0, 0));
+		public static Entity SpawnEntity (int typeID, int x, int y) => SpawnEntityLogic(typeID, x, y, new Int3(int.MinValue, 0, 0));
 		public static T SpawnEntity<T> (int x, int y) where T : Entity => SpawnEntityLogic(
 			typeof(T).AngeHash(), x, y, new(int.MinValue, 0)
 		) as T;
@@ -410,7 +410,7 @@ namespace AngeliaFramework {
 
 
 		public static Entity SpawnEntityFromWorld (int typeID, bool procedureFlag, int unitX, int unitY, int unitZ) {
-			var uPos = new Vector3Int(unitX, unitY, unitZ);
+			var uPos = new Int3(unitX, unitY, unitZ);
 			if (StagedEntityHash.Contains(uPos)) return null;
 			if (GlobalAntiSpawnHash.Contains(uPos)) return null;
 			if (LocalAntiSpawnHash.Contains(uPos)) return null;
@@ -494,7 +494,7 @@ namespace AngeliaFramework {
 			result = null;
 			return false;
 		}
-		public static bool TryGetEntityNearby<E> (Vector2Int pos, out E finalTarget) where E : Entity {
+		public static bool TryGetEntityNearby<E> (Int2 pos, out E finalTarget) where E : Entity {
 			finalTarget = null;
 			int finalDistance = int.MaxValue;
 			for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
@@ -632,7 +632,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private static Entity SpawnEntityLogic (int typeID, int x, int y, Vector3Int globalUnitPos) {
+		private static Entity SpawnEntityLogic (int typeID, int x, int y, Int3 globalUnitPos) {
 			try {
 				if (
 					globalUnitPos.x != int.MinValue &&

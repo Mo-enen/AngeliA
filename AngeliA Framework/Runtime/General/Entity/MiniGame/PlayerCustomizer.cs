@@ -33,7 +33,7 @@ namespace AngeliaFramework {
 
 			public string DisplayName;
 			public string PatternName;
-			public Vector4Int Data;
+			public Int4 Data;
 			public bool IsEmpty;
 
 		}
@@ -99,7 +99,7 @@ namespace AngeliaFramework {
 		};
 
 		// Api
-		protected override Vector2Int WindowSize => new(1000, 800);
+		protected override Int2 WindowSize => new(1000, 800);
 		protected override bool RequireMouseCursor => true;
 		protected override bool RequireQuitConfirm => false;
 		protected override string DisplayName => Language.Get(TypeID, "Player Maker");
@@ -264,14 +264,14 @@ namespace AngeliaFramework {
 			// Preview Hitbox
 			if (CurrentSubMenu == SubMenuType.Height) {
 				var characterRect = player.Rect;
-				var hitboxRect = new RectInt();
+				var hitboxRect = new IRect();
 				hitboxRect.SetMinMax(
 					Util.RemapUnclamped(rectFrom.xMin, rectFrom.xMax, rectTo.xMin, rectTo.xMax, characterRect.xMin),
 					Util.RemapUnclamped(rectFrom.xMin, rectFrom.xMax, rectTo.xMin, rectTo.xMax, characterRect.xMax),
 					Util.RemapUnclamped(rectFrom.yMin, rectFrom.yMax, rectTo.yMin, rectTo.yMax, characterRect.yMin),
 					Util.RemapUnclamped(rectFrom.yMin, rectFrom.yMax, rectTo.yMin, rectTo.yMax, characterRect.yMax)
 				);
-				CellRenderer.Draw(Const.PIXEL, hitboxRect, new Color32(0, 255, 0, 128), int.MaxValue - 1);
+				CellRenderer.Draw(Const.PIXEL, hitboxRect, new Pixel32(0, 255, 0, 128), int.MaxValue - 1);
 				//DrawFrame(hitboxRect, 12, 12);
 				//static void DrawFrame (RectInt rect, int thickX, int thickY) {
 				//	CellRenderer.Draw(Const.PIXEL, new RectInt(rect.x - thickX, rect.y - thickY, thickX * 2, rect.height + thickY * 2), Const.GREEN, int.MaxValue - 1);
@@ -319,14 +319,14 @@ namespace AngeliaFramework {
 
 
 		// Rendering
-		private void MainMenuUI (RectInt panelRect, Player player) {
+		private void MainMenuUI (IRect panelRect, Player player) {
 
 			int fieldHeight = Unify(60);
 			int fieldPadding = Unify(16);
 			int iconPadding = Unify(8);
 			int panelPadding = Unify(32);
 			int lineSize = Unify(2);
-			var fieldRect = new RectInt(
+			var fieldRect = new IRect(
 				0, 0,
 				panelRect.width / 2 - panelPadding,
 				fieldHeight
@@ -362,7 +362,7 @@ namespace AngeliaFramework {
 				// Bottom Line
 				CellRenderer.Draw(
 					Const.PIXEL,
-					new RectInt(
+					new IRect(
 						fieldRect.x,
 						fieldRect.y - fieldPadding / 2 - lineSize / 2,
 						fieldRect.width, lineSize
@@ -403,7 +403,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void EditorUI (RectInt panelRect, Player player) {
+		private void EditorUI (IRect panelRect, Player player) {
 
 			// Background
 			CellRenderer.Draw(Const.PIXEL, panelRect, Const.BLACK, EDITOR_BASIC_Z);
@@ -414,7 +414,7 @@ namespace AngeliaFramework {
 				int bottomBarHeight = Unify(62);
 
 				// Back Button
-				var buttonRect = new RectInt(panelRect.xMax - backButtonWidth, panelRect.y, backButtonWidth, bottomBarHeight);
+				var buttonRect = new IRect(panelRect.xMax - backButtonWidth, panelRect.y, backButtonWidth, bottomBarHeight);
 				if (buttonRect.Contains(FrameInput.MouseGlobalPosition)) {
 					CellRenderer.Draw(Const.PIXEL, buttonRect, Const.GREY_32, EDITOR_BASIC_Z + 2);
 					if (FrameInput.LastActionFromMouse && FrameInput.MouseLeftButtonDown) {
@@ -429,7 +429,7 @@ namespace AngeliaFramework {
 				CursorSystem.SetCursorAsHand(buttonRect, 1);
 
 				// Hotkey Label
-				var hotkeyRect = new RectInt(bounds.xMax + Unify(16), bounds.y, 1, bounds.height);
+				var hotkeyRect = new IRect(bounds.xMax + Unify(16), bounds.y, 1, bounds.height);
 				if (FrameInput.UsingGamepad) {
 					if (CellRenderer.TryGetSprite(BackButtonHotkeyPadCode, out var padSprite)) {
 						hotkeyRect.width = padSprite.GlobalWidth;
@@ -517,13 +517,13 @@ namespace AngeliaFramework {
 
 
 		// Sub Editor
-		private void SubEditor_Head (RectInt panelRect) {
+		private void SubEditor_Head (IRect panelRect) {
 			var player = Player.Selecting;
 			bool skinColorAvailable = SubMenuAvailable(SubMenuType.SkinColor);
 			if (PatternMenuUI(
 				panelRect, Patterns_Head,
 				skinColorAvailable ? player.SkinColor : Const.WHITE,
-				new Vector4Int(player.Head.ID, 0, 0, 0), out int invokingIndex
+				new Int4(player.Head.ID, 0, 0, 0), out int invokingIndex
 			)) {
 				var pat = Patterns_Head[invokingIndex];
 				player.Head.SetSpriteID(pat.A);
@@ -532,13 +532,13 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_Body (RectInt panelRect) {
+		private void SubEditor_Body (IRect panelRect) {
 			var player = Player.Selecting;
 			bool skinColorAvailable = SubMenuAvailable(SubMenuType.SkinColor);
 			if (PatternMenuUI(
 				panelRect, Patterns_BodyHip,
 				skinColorAvailable ? player.SkinColor : Const.WHITE,
-				new Vector4Int(player.Body.ID, player.Hip.ID, 0, 0), out int invokingIndex
+				new Int4(player.Body.ID, player.Hip.ID, 0, 0), out int invokingIndex
 			)) {
 				var pat = Patterns_BodyHip[invokingIndex];
 				player.Body.SetSpriteID(pat.A);
@@ -548,13 +548,13 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_ArmLimb (RectInt panelRect) {
+		private void SubEditor_ArmLimb (IRect panelRect) {
 			var player = Player.Selecting;
 			bool skinColorAvailable = SubMenuAvailable(SubMenuType.SkinColor);
 			if (PatternMenuUI(
 				panelRect, Patterns_ShoulderArmArmHand,
 				skinColorAvailable ? player.SkinColor : Const.WHITE,
-				new Vector4Int(player.ShoulderL.ID, player.UpperArmL.ID, player.LowerArmL.ID, player.HandL.ID),
+				new Int4(player.ShoulderL.ID, player.UpperArmL.ID, player.LowerArmL.ID, player.HandL.ID),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_ShoulderArmArmHand[invokingIndex];
@@ -571,13 +571,13 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_LegLimb (RectInt panelRect) {
+		private void SubEditor_LegLimb (IRect panelRect) {
 			var player = Player.Selecting;
 			bool skinColorAvailable = SubMenuAvailable(SubMenuType.SkinColor);
 			if (PatternMenuUI(
 				panelRect, Patterns_LegLegFoot,
 				skinColorAvailable ? player.SkinColor : Const.WHITE,
-				new Vector4Int(player.UpperLegL.ID, player.LowerLegL.ID, player.FootL.ID, 0),
+				new Int4(player.UpperLegL.ID, player.LowerLegL.ID, player.FootL.ID, 0),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_LegLegFoot[invokingIndex];
@@ -592,12 +592,12 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_Face (RectInt panelRect) {
+		private void SubEditor_Face (IRect panelRect) {
 			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Face, Const.WHITE,
-				new Vector4Int(player.FaceID, 0, 0, 0),
+				new Int4(player.FaceID, 0, 0, 0),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_Face[invokingIndex];
@@ -606,12 +606,12 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_Ear (RectInt panelRect) {
+		private void SubEditor_Ear (IRect panelRect) {
 			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Ear, Const.WHITE,
-				new Vector4Int(player.EarID, 0, 0, 0),
+				new Int4(player.EarID, 0, 0, 0),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_Ear[invokingIndex];
@@ -620,12 +620,12 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_Tail (RectInt panelRect) {
+		private void SubEditor_Tail (IRect panelRect) {
 			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Tail, Const.WHITE,
-				new Vector4Int(player.TailID, 0, 0, 0),
+				new Int4(player.TailID, 0, 0, 0),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_Tail[invokingIndex];
@@ -634,12 +634,12 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_Wing (RectInt panelRect) {
+		private void SubEditor_Wing (IRect panelRect) {
 			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Wing, Const.WHITE,
-				new Vector4Int(player.WingID, 0, 0, 0),
+				new Int4(player.WingID, 0, 0, 0),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_Wing[invokingIndex];
@@ -648,12 +648,12 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_Horn (RectInt panelRect) {
+		private void SubEditor_Horn (IRect panelRect) {
 			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Horn, Const.WHITE,
-				new Vector4Int(player.HornID, 0, 0, 0),
+				new Int4(player.HornID, 0, 0, 0),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_Horn[invokingIndex];
@@ -662,12 +662,12 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_SuitHead (RectInt panelRect) {
+		private void SubEditor_SuitHead (IRect panelRect) {
 			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Suit_Head, Const.WHITE,
-				new Vector4Int(player.Suit_Head, 0, 0, 0), out int invokingIndex
+				new Int4(player.Suit_Head, 0, 0, 0), out int invokingIndex
 			)) {
 				var pat = Patterns_Suit_Head[invokingIndex];
 				player.Suit_Head = pat.A;
@@ -675,12 +675,12 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_SuitBody (RectInt panelRect) {
+		private void SubEditor_SuitBody (IRect panelRect) {
 			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Suit_BodyShoulderArmArm, Const.WHITE,
-				new Vector4Int(player.Suit_Body, 0, 0, 0),
+				new Int4(player.Suit_Body, 0, 0, 0),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_Suit_BodyShoulderArmArm[invokingIndex];
@@ -689,12 +689,12 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_SuitHand (RectInt panelRect) {
+		private void SubEditor_SuitHand (IRect panelRect) {
 			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Suit_Hand, Const.WHITE,
-				new Vector4Int(player.Suit_Hand, 0, 0, 0), out int invokingIndex
+				new Int4(player.Suit_Hand, 0, 0, 0), out int invokingIndex
 			)) {
 				var pat = Patterns_Suit_Hand[invokingIndex];
 				player.Suit_Hand = pat.A;
@@ -702,12 +702,12 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_SuitLeg (RectInt panelRect) {
+		private void SubEditor_SuitLeg (IRect panelRect) {
 			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Suit_HipSkirtLegLeg, Const.WHITE,
-				new Vector4Int(player.Suit_Hip, 0, 0, 0),
+				new Int4(player.Suit_Hip, 0, 0, 0),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_Suit_HipSkirtLegLeg[invokingIndex];
@@ -716,12 +716,12 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_SuitFoot (RectInt panelRect) {
+		private void SubEditor_SuitFoot (IRect panelRect) {
 			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Suit_Foot, Const.WHITE,
-				new Vector4Int(player.Suit_Foot, 0, 0, 0), out int invokingIndex
+				new Int4(player.Suit_Foot, 0, 0, 0), out int invokingIndex
 			)) {
 				var pat = Patterns_Suit_Foot[invokingIndex];
 				player.Suit_Foot = pat.A;
@@ -729,14 +729,14 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_Hair (RectInt panelRect) {
+		private void SubEditor_Hair (IRect panelRect) {
 			var player = Player.Selecting;
 			bool hairColorAvailable = SubMenuAvailable(SubMenuType.HairColor);
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_Hair,
 				hairColorAvailable ? player.HairColor : Const.WHITE,
-				new Vector4Int(player.HairID, 0, 0, 0),
+				new Int4(player.HairID, 0, 0, 0),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_Hair[invokingIndex];
@@ -746,16 +746,16 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_SkinColor (RectInt panelRect) {
+		private void SubEditor_SkinColor (IRect panelRect) {
 			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_ColorSkin, Const.WHITE,
-				new Vector4Int(player.SkinColor.r, player.SkinColor.g, player.SkinColor.b, int.MinValue + 1),
+				new Int4(player.SkinColor.r, player.SkinColor.g, player.SkinColor.b, int.MinValue + 1),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_ColorSkin[invokingIndex];
-				player.SkinColor = new Color32(
+				player.SkinColor = new Pixel32(
 					(byte)pat.A.Clamp(0, 255),
 					(byte)pat.B.Clamp(0, 255),
 					(byte)pat.C.Clamp(0, 255),
@@ -765,16 +765,16 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_HairColor (RectInt panelRect) {
+		private void SubEditor_HairColor (IRect panelRect) {
 			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			if (PatternMenuUI(
 				panelRect, Patterns_ColorHair, Const.WHITE,
-				new Vector4Int(player.HairColor.r, player.HairColor.g, player.HairColor.b, int.MinValue + 1),
+				new Int4(player.HairColor.r, player.HairColor.g, player.HairColor.b, int.MinValue + 1),
 				out int invokingIndex
 			)) {
 				var pat = Patterns_ColorHair[invokingIndex];
-				player.HairColor = new Color32(
+				player.HairColor = new Pixel32(
 					(byte)pat.A.Clamp(0, 255),
 					(byte)pat.B.Clamp(0, 255),
 					(byte)pat.C.Clamp(0, 255),
@@ -784,7 +784,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SubEditor_BodyHeight (RectInt panelRect) {
+		private void SubEditor_BodyHeight (IRect panelRect) {
 			var player = Player.Selecting;
 			panelRect.height -= Unify(16);
 			int newHeight = BodyHeightMenuUI(panelRect, player.CharacterHeight);
@@ -795,7 +795,7 @@ namespace AngeliaFramework {
 
 
 		// Misc
-		private bool PatternMenuUI (RectInt panelRect, List<PatternUnit> patterns, Color32 iconTint, Vector4Int selectingPattern, out int invokingIndex) {
+		private bool PatternMenuUI (IRect panelRect, List<PatternUnit> patterns, Pixel32 iconTint, Int4 selectingPattern, out int invokingIndex) {
 
 			invokingIndex = 0;
 			int panelPadding = Unify(32);
@@ -810,8 +810,8 @@ namespace AngeliaFramework {
 			var patternRect = panelRect.Shrink(0, scrollBarWidth, 0, 0);
 			int row = patterns.Count;
 			int pageRow = patternRect.height / (itemHeight + padding);
-			var cursorRect = new RectInt(0, 0, 0, 0);
-			var rect = new RectInt(patternRect.x, 0, patternRect.width, itemHeight);
+			var cursorRect = new IRect(0, 0, 0, 0);
+			var rect = new IRect(patternRect.x, 0, patternRect.width, itemHeight);
 			int cellStart = CellRenderer.GetUsedCellCount();
 			int cellTextStart = CellRenderer.GetTextUsedCellCount();
 			if (!FrameInput.LastActionFromMouse) {
@@ -913,7 +913,7 @@ namespace AngeliaFramework {
 					// Color
 					CellRenderer.Draw(
 						Const.PIXEL, rect.Shrink(iconPadding),
-						new Color32(
+						new Pixel32(
 							(byte)pat.x.Clamp(0, 255),
 							(byte)pat.y.Clamp(0, 255),
 							(byte)pat.z.Clamp(0, 255),
@@ -957,7 +957,7 @@ namespace AngeliaFramework {
 
 			// Scroll Bar
 			if (row > pageRow) {
-				var barRect = new RectInt(patternRect.xMax, patternRect.y, scrollBarWidth, patternRect.height);
+				var barRect = new IRect(patternRect.xMax, patternRect.y, scrollBarWidth, patternRect.height);
 				PatternPickerScrollRow = CellRendererGUI.ScrollBar(
 					barRect, EDITOR_BASIC_Z + 3,
 					PatternPickerScrollRow, row, pageRow
@@ -972,7 +972,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private int BodyHeightMenuUI (RectInt panelRect, int playerHeight) {
+		private int BodyHeightMenuUI (IRect panelRect, int playerHeight) {
 
 			// Hotkeys
 			if (FrameInput.GameKeyDownGUI(Gamekey.Down)) {
@@ -993,7 +993,7 @@ namespace AngeliaFramework {
 			);
 
 			// Button Up
-			var btnRectU = new RectInt(panelRect.CenterX() - BUTTON_W / 2, labelBounds.yMax + BUTTON_PADDING, BUTTON_W, BUTTON_H);
+			var btnRectU = new IRect(panelRect.CenterX() - BUTTON_W / 2, labelBounds.yMax + BUTTON_PADDING, BUTTON_W, BUTTON_H);
 			if (CellRendererGUI.Button(
 				btnRectU, BUTTON_CODE, BUTTON_CODE, BUTTON_DOWN_CODE,
 				ICON_UP_CODE, BUTTON_BORDER, 0, EDITOR_BASIC_Z + 5
@@ -1003,7 +1003,7 @@ namespace AngeliaFramework {
 			CursorSystem.SetCursorAsHand(btnRectU);
 
 			// Button Down
-			var btnRectD = new RectInt(panelRect.CenterX() - BUTTON_W / 2, labelBounds.y - BUTTON_PADDING - BUTTON_H, BUTTON_W, BUTTON_H);
+			var btnRectD = new IRect(panelRect.CenterX() - BUTTON_W / 2, labelBounds.y - BUTTON_PADDING - BUTTON_H, BUTTON_W, BUTTON_H);
 			if (CellRendererGUI.Button(
 				btnRectD, BUTTON_CODE, BUTTON_CODE, BUTTON_DOWN_CODE,
 				ICON_DOWN_CODE, BUTTON_BORDER, 0, EDITOR_BASIC_Z + 5
@@ -1216,9 +1216,9 @@ namespace AngeliaFramework {
 			// Skin Color
 			foreach (var colorStr in Colors_Skin) {
 				if (ColorUtility.TryParseHtmlString(colorStr, out var color)) {
-					Color32 color32 = color;
+					Pixel32 color32 = color;
 					Patterns_ColorSkin.Add(new PatternUnit() {
-						Data = new Vector4Int(color32.r, color32.g, color32.b, int.MinValue),
+						Data = new Int4(color32.r, color32.g, color32.b, int.MinValue),
 						IsEmpty = false,
 					});
 				}
@@ -1227,9 +1227,9 @@ namespace AngeliaFramework {
 			// Hair Color
 			foreach (var colorStr in Colors_Hair) {
 				if (ColorUtility.TryParseHtmlString(colorStr, out var color)) {
-					Color32 color32 = color;
+					Pixel32 color32 = color;
 					Patterns_ColorHair.Add(new PatternUnit() {
-						Data = new Vector4Int(color32.r, color32.g, color32.b, int.MinValue),
+						Data = new Int4(color32.r, color32.g, color32.b, int.MinValue),
 						IsEmpty = false,
 					});
 				}
@@ -1243,23 +1243,23 @@ namespace AngeliaFramework {
 			var player = Player.Selecting;
 			var patterns = GetPatterns(type);
 			var selectingPattern = type switch {
-				SubMenuType.Head => new Vector4Int(player.Head.ID, 0, 0, 0),
-				SubMenuType.Body => new Vector4Int(player.Body.ID, player.Hip.ID, 0, 0),
-				SubMenuType.ShoulderArmArmHand => new Vector4Int(player.ShoulderL.ID, player.UpperArmL.ID, player.LowerArmL.ID, player.HandL.ID),
-				SubMenuType.LegLegFoot => new Vector4Int(player.UpperLegL.ID, player.LowerLegL.ID, player.FootL.ID, 0),
-				SubMenuType.Face => new Vector4Int(player.FaceID, 0, 0, 0),
-				SubMenuType.Ear => new Vector4Int(player.EarID, 0, 0, 0),
-				SubMenuType.Tail => new Vector4Int(player.TailID, 0, 0, 0),
-				SubMenuType.Wing => new Vector4Int(player.WingID, 0, 0, 0),
-				SubMenuType.Horn => new Vector4Int(player.HornID, 0, 0, 0),
-				SubMenuType.Suit_Head => new Vector4Int(player.Suit_Head, 0, 0, 0),
-				SubMenuType.Suit_BodyShoulderArmArm => new Vector4Int(player.Suit_Body, 0, 0, 0),
-				SubMenuType.Suit_Hand => new Vector4Int(player.Suit_Hand, 0, 0, 0),
-				SubMenuType.Suit_HipSkirtLegLeg => new Vector4Int(player.Suit_Hip, 0, 0, 0),
-				SubMenuType.Suit_Foot => new Vector4Int(player.Suit_Foot, 0, 0, 0),
-				SubMenuType.Hair => new Vector4Int(player.HairID, 0, 0, 0),
-				SubMenuType.SkinColor => new Vector4Int(player.SkinColor.r, player.SkinColor.g, player.SkinColor.b, int.MinValue + 1),
-				SubMenuType.HairColor => new Vector4Int(player.HairColor.r, player.HairColor.g, player.HairColor.b, int.MinValue + 1),
+				SubMenuType.Head => new Int4(player.Head.ID, 0, 0, 0),
+				SubMenuType.Body => new Int4(player.Body.ID, player.Hip.ID, 0, 0),
+				SubMenuType.ShoulderArmArmHand => new Int4(player.ShoulderL.ID, player.UpperArmL.ID, player.LowerArmL.ID, player.HandL.ID),
+				SubMenuType.LegLegFoot => new Int4(player.UpperLegL.ID, player.LowerLegL.ID, player.FootL.ID, 0),
+				SubMenuType.Face => new Int4(player.FaceID, 0, 0, 0),
+				SubMenuType.Ear => new Int4(player.EarID, 0, 0, 0),
+				SubMenuType.Tail => new Int4(player.TailID, 0, 0, 0),
+				SubMenuType.Wing => new Int4(player.WingID, 0, 0, 0),
+				SubMenuType.Horn => new Int4(player.HornID, 0, 0, 0),
+				SubMenuType.Suit_Head => new Int4(player.Suit_Head, 0, 0, 0),
+				SubMenuType.Suit_BodyShoulderArmArm => new Int4(player.Suit_Body, 0, 0, 0),
+				SubMenuType.Suit_Hand => new Int4(player.Suit_Hand, 0, 0, 0),
+				SubMenuType.Suit_HipSkirtLegLeg => new Int4(player.Suit_Hip, 0, 0, 0),
+				SubMenuType.Suit_Foot => new Int4(player.Suit_Foot, 0, 0, 0),
+				SubMenuType.Hair => new Int4(player.HairID, 0, 0, 0),
+				SubMenuType.SkinColor => new Int4(player.SkinColor.r, player.SkinColor.g, player.SkinColor.b, int.MinValue + 1),
+				SubMenuType.HairColor => new Int4(player.HairColor.r, player.HairColor.g, player.HairColor.b, int.MinValue + 1),
 				_ => default,
 			};
 			if (patterns == null) return false;
@@ -1274,7 +1274,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private static bool IsSamePattern (Vector4Int x, Vector4Int y, bool forColor) {
+		private static bool IsSamePattern (Int4 x, Int4 y, bool forColor) {
 			if (forColor) {
 				return x.x == y.x && x.y == y.y && x.z == y.z;
 			} else {

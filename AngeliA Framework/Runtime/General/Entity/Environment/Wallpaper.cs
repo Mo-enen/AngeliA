@@ -94,7 +94,7 @@ namespace AngeliaFramework {
 		}
 
 
-		protected abstract void DrawBackground (RectInt backgroundRect);
+		protected abstract void DrawBackground (IRect backgroundRect);
 
 
 		#endregion
@@ -105,9 +105,9 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		protected Color32 GetSkyTint (int y) {
+		protected Pixel32 GetSkyTint (int y) {
 			var cameraRect = CellRenderer.CameraRect;
-			return Color32.LerpUnclamped(
+			return Pixel32.LerpUnclamped(
 				CellRenderer.SkyTintBottom, CellRenderer.SkyTintTop,
 				Mathf.InverseLerp(cameraRect.yMin, cameraRect.yMax, y)
 			);

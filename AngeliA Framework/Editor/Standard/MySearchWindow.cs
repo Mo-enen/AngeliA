@@ -13,7 +13,7 @@ namespace AngeliaFramework.Editor {
 	public class MySearchTreeGroupEntry : SearchTreeGroupEntry {
 
 		public int selectedIndex;
-		public Vector2 scroll;
+		public Float2 scroll;
 
 		public MySearchTreeGroupEntry (GUIContent content, int level = 0) : base(content) {
 			base.content = content;
@@ -156,7 +156,7 @@ namespace AngeliaFramework.Editor {
 			float y = Math.Max(context.requestedHeight, 320f);
 			Rect buttonRect = new(context.screenMousePosition.x - num / 2f, context.screenMousePosition.y - 16f, num, 1f);
 			CreateSearchTree();
-			ShowAsDropDown(buttonRect, new Vector2(buttonRect.width, y));
+			ShowAsDropDown(buttonRect, new Float2(buttonRect.width, y));
 			Focus();
 			wantsMouseMove = true;
 		}
@@ -418,7 +418,7 @@ namespace AngeliaFramework.Editor {
 
 		private void ListGUI (SearchTreeEntry[] tree, MySearchTreeGroupEntry parent) {
 			parent.scroll = GUILayout.BeginScrollView(parent.scroll);
-			EditorGUIUtility.SetIconSize(new Vector2(16f, 16f));
+			EditorGUIUtility.SetIconSize(new Float2(16f, 16f));
 			List<SearchTreeEntry> children = GetChildren(tree, parent);
 			Rect rect = default;
 			for (int i = 0; i < children.Count; i++) {
@@ -457,7 +457,7 @@ namespace AngeliaFramework.Editor {
 				}
 			}
 
-			EditorGUIUtility.SetIconSize(Vector2.zero);
+			EditorGUIUtility.SetIconSize(Float2.zero);
 			GUILayout.EndScrollView();
 			if (m_ScrollToSelected && Event.current.type == EventType.Repaint) {
 				m_ScrollToSelected = false;

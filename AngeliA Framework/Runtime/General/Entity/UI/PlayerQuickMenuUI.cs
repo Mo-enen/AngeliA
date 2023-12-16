@@ -188,7 +188,7 @@ namespace AngeliaFramework {
 			// Content
 			int basicX = player.X - CurrentSlotIndex * ITEM_SIZE - ITEM_SIZE / 2;
 			int basicY = player.Y - ITEM_SIZE - PADDING + offsetY - Const.HALF;
-			var rect = new RectInt(0, basicY, ITEM_SIZE, ITEM_SIZE);
+			var rect = new IRect(0, basicY, ITEM_SIZE, ITEM_SIZE);
 			for (int i = 0; i < WeaponCount; i++) {
 
 				var weapon = WeaponList[i];
@@ -209,7 +209,7 @@ namespace AngeliaFramework {
 					NameLabel.Text = ItemSystem.GetItemName(weapon.TypeID);
 					int labelWidth = ITEM_SIZE * 3;
 					int labelHeight = Unify(NameLabel.CharSize + 4);
-					CellRendererGUI.Label(NameLabel, new RectInt(
+					CellRendererGUI.Label(NameLabel, new IRect(
 						rect.CenterX() - labelWidth / 2,
 						rect.y - labelHeight,
 						labelWidth, labelHeight
@@ -290,7 +290,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void DrawItemIcon (RectInt rect, int id, Color32 tint, int z) {
+		private static void DrawItemIcon (IRect rect, int id, Pixel32 tint, int z) {
 			if (id == 0) return;
 			if (!CellRenderer.TryGetSprite(id, out var sprite)) {
 				id = Const.PIXEL;

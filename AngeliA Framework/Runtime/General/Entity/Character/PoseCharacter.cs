@@ -47,6 +47,7 @@ namespace AngeliaFramework {
 		public int BasicRootY { get; private set; } = 0;
 		public int PoseRootX { get; set; } = 0;
 		public int PoseRootY { get; set; } = 0;
+		public int HeadRotation { get; set; } = 0;
 		public int HeadTwist { get; set; } = 0;
 		public int BodyTwist { get; set; } = 0;
 		public int HandGrabRotationL { get; set; } = 0;
@@ -56,8 +57,8 @@ namespace AngeliaFramework {
 		public int HandGrabAttackTwistL { get; set; } = 1000;
 		public int HandGrabAttackTwistR { get; set; } = 1000;
 		public int HideBraidFrame { get; set; } = -1;
-		public Color32 SkinColor { get; set; } = new(239, 194, 160, 255);
-		public Color32 HairColor { get; set; } = new(51, 51, 51, 255);
+		public Pixel32 SkinColor { get; set; } = new(239, 194, 160, 255);
+		public Pixel32 HairColor { get; set; } = new(51, 51, 51, 255);
 		public int CharacterHeight { get; set; } = 160; // in CM
 		public bool BodyPartsReady => BodyParts != null;
 		public override bool SpinOnGroundPound => Wing.IsPropellerWing(WingID);
@@ -284,6 +285,7 @@ namespace AngeliaFramework {
 			PoseRootX = 0;
 			BodyTwist = 0;
 			HeadTwist = 0;
+			HeadRotation = 0;
 
 			foreach (var bodypart in BodyParts) {
 				bodypart.Rotation = 0;
@@ -561,8 +563,8 @@ namespace AngeliaFramework {
 
 
 		private void PoseUpdate_HeadRotate () {
-			if (Head.Rotation == 0) return;
-			Head.Rotation = Head.Rotation.Clamp(-90, 90);
+			if (HeadRotation == 0) return;
+			Head.Rotation = HeadRotation.Clamp(-90, 90);
 			int offsetY = Head.Height.Abs() * Head.Rotation.Abs() / 360;
 			Head.Y -= offsetY;
 			Head.GlobalY -= offsetY;

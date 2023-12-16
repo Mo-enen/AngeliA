@@ -9,16 +9,16 @@ using System.Runtime.CompilerServices;
 namespace AngeliaFramework.Editor {
 	public abstract class CanvasWindow : EditorWindow {
 
-		
+
 		// Override
 		protected virtual bool Enable => true;
 		protected virtual Rect PanelLeft => default;
 		protected virtual Rect PanelRight => default;
-		protected virtual Vector2Int CanvasCellCount => new(128, 128);
+		protected virtual Int2 CanvasCellCount => new(128, 128);
 		protected virtual float ViewPadding => 256f;
-		protected virtual Vector2 ZoomRange => new(1f, 16f);
-		protected virtual Color32 GridTint => new(0, 0, 0, 16);
-		protected virtual Color32 BackgroundTint => new(0, 0, 0, 255);
+		protected virtual Float2 ZoomRange => new(1f, 16f);
+		protected virtual Pixel32 GridTint => new(0, 0, 0, 16);
+		protected virtual Pixel32 BackgroundTint => new(0, 0, 0, 255);
 		protected virtual float StartZoom => 5f;
 		protected virtual float CanvasLerp => 12f;
 		protected virtual bool FitCanvasOnStart => false;
@@ -26,16 +26,16 @@ namespace AngeliaFramework.Editor {
 		protected virtual float MouseDragZoomIntensity => -100f;
 
 		// Short
-		protected Vector2Int CanvasMinPos { get; set; } = default;
-		protected Vector2Int CanvasMaxPos { get; set; } = default;
+		protected Int2 CanvasMinPos { get; set; } = default;
+		protected Int2 CanvasMaxPos { get; set; } = default;
 		protected Rect TargetCanvasRect => _TargetCanvasRect;
 		protected Rect CanvasRect => _CanvasRect;
 		protected bool MouseInPanel { get; private set; } = false;
 		protected int MouseButton { get; private set; } = -1;
 		protected bool MouseHeavyDragged { get; private set; } = false;
 		protected bool MouseDownInPanel { get; set; } = false;
-		protected Vector2 MouseDownPosition_GUI { get; private set; } = default;
-		protected Vector2Int MouseDownPosition_Global { get; private set; } = default;
+		protected Float2 MouseDownPosition_GUI { get; private set; } = default;
+		protected Int2 MouseDownPosition_Global { get; private set; } = default;
 		protected Rect CursorRect { get; private set; } = default;
 		protected float Zoom { get; private set; } = 1f;
 
@@ -202,7 +202,7 @@ namespace AngeliaFramework.Editor {
 					Repaint();
 					break;
 				case EventType.MouseDrag:
-					if (!MouseHeavyDragged && Vector2.Distance(Event.current.mousePosition, MouseDownPosition_GUI) > 12f) {
+					if (!MouseHeavyDragged && Float2.Distance(Event.current.mousePosition, MouseDownPosition_GUI) > 12f) {
 						MouseHeavyDragged = true;
 					}
 					OnMouseDrag();
@@ -224,7 +224,7 @@ namespace AngeliaFramework.Editor {
 
 		private void GUI_Gizmos () {
 			var mousePos = Event.current.mousePosition;
-			var cellSize = CanvasRect.size / CanvasCellCount;
+			var cellSize = new Float2(CanvasRect.width / CanvasCellCount.x, CanvasRect.height / CanvasCellCount.y);
 			var cursorRect = new Rect(
 				(mousePos.x - CanvasRect.x).UFloor(cellSize.x) + CanvasRect.x,
 				(mousePos.y - CanvasRect.y).UFloor(cellSize.y) + CanvasRect.y,
@@ -256,7 +256,7 @@ namespace AngeliaFramework.Editor {
 
 			// Grid
 			if (GridTint.a > 0) {
-				var cellSize = CanvasRect.size / CanvasCellCount;
+				var cellSize = new Float2(CanvasRect.width / CanvasCellCount.x, CanvasRect.height / CanvasCellCount.y);
 				float l = (windowCanvas.xMin - CanvasRect.x).UFloor(cellSize.x) + CanvasRect.x;
 				float r = (windowCanvas.xMax - CanvasRect.x).UCeil(cellSize.x) + CanvasRect.x;
 				float d = (windowCanvas.yMin - CanvasRect.y).UFloor(cellSize.y) + CanvasRect.y;
@@ -277,8 +277,8 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		protected Vector2Int GUI_to_Global (Vector2 guiPos, Rect canvasRect) {
-			var size = canvasRect.size / CanvasCellCount;
+		protected Int2 GUI_to_Global (Float2 guiPos, Rect canvasRect) {
+			var size = new Float2(canvasRect.width / CanvasCellCount.x, canvasRect.height / CanvasCellCount.y);
 			return new(
 				((guiPos.x - canvasRect.x) / size.x).FloorToInt(),
 				-((guiPos.y - canvasRect.y) / size.y).CeilToInt() + CanvasCellCount.y
@@ -286,8 +286,8 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		protected Vector2 Global_to_GUI (Vector2Int globalCellPos, Rect canvasRect) {
-			var size = canvasRect.size / CanvasCellCount;
+		protected Float2 Global_to_GUI (Int2 globalCellPos, Rect canvasRect) {
+			var size = new Float2(canvasRect.width / CanvasCellCount.x, canvasRect.height / CanvasCellCount.y);
 			return new(
 				globalCellPos.x * size.x + canvasRect.x,
 				-(globalCellPos.y - CanvasCellCount.y) * size.y + canvasRect.y
@@ -322,7 +322,7 @@ namespace AngeliaFramework.Editor {
 
 
 		// LGC
-		private void ApplyZoom (float delta, Rect canvasRect, Vector2 pivot) {
+		private void ApplyZoom (float delta, Rect canvasRect, Float2 pivot) {
 			if (!delta.NotAlmostZero()) return;
 			float oldZoom = Zoom;
 			Zoom = (Zoom + delta).Clamp(ZoomRange.x, ZoomRange.y);

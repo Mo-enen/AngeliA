@@ -182,7 +182,7 @@ namespace AngeliaFramework {
 
 			Head.X -= headOffsetX.Clamp(-A2G * 2, A2G * 2);
 			Head.Y = (Head.Y + headOffsetY).GreaterOrEquel(Body.Y + 1);
-			Target.Head.Rotation = headRotate;
+			Target.HeadRotation = headRotate;
 
 			// Body
 			int bodyOffsetY = (int)(ease01 * A2G) + A2G * 2;

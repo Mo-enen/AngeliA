@@ -20,13 +20,13 @@ namespace AngeliaFramework {
 		public int TypeID { get; init; }
 		public int SpawnFrame { get; internal set; } = int.MinValue;
 		public bool FromWorld => InstanceID.x != int.MinValue;
-		public virtual RectInt Rect => new(X, Y, Width, Height);
-		public RectInt GlobalBounds => LocalBounds.Shift(X, Y);
+		public virtual IRect Rect => new(X, Y, Width, Height);
+		public IRect GlobalBounds => LocalBounds.Shift(X, Y);
 		public int InstanceOrder => FromWorld ? 0 : InstanceID.y;
 
 		// Inter
-		internal Vector3Int InstanceID { get; set; } = default;
-		internal RectInt LocalBounds { get; set; } = default;
+		internal Int3 InstanceID { get; set; } = default;
+		internal IRect LocalBounds { get; set; } = default;
 		internal bool FrameUpdated { get; set; } = false;
 		internal int PhysicsOperationStamp { get; set; } = int.MaxValue;
 		internal bool DestroyOnSquadTransition { get; set; } = true;

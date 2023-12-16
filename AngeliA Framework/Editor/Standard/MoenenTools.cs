@@ -30,9 +30,6 @@ namespace AngeliaFramework.Editor {
 		[InitializeOnLoadMethod]
 		public static void EditorInit () {
 
-			// Scene Camera 3D
-			SceneView.duringSceneGui += MoenenSceneCamera3D;
-
 			// Update
 			EditorApplication.update += () => {
 				// Deselect Script File 
@@ -249,39 +246,6 @@ namespace AngeliaFramework.Editor {
 
 
 		#region --- LGC ---
-
-
-		private static void MoenenSceneCamera3D (SceneView sceneView) {
-			// Moenen's Scene Camera
-			if (!sceneView.in2DMode) {
-				switch (Event.current.type) {
-					case EventType.MouseDrag:
-						if (Event.current.button == 1) {
-							// Mosue Right Drag
-							if (!Event.current.alt) {
-								// View Rotate
-								Vector2 del = Event.current.delta * 0.2f;
-								float angle = sceneView.camera.transform.rotation.eulerAngles.x + del.y;
-								angle = angle > 89 && angle < 180 ? 89 : angle;
-								angle = angle > 180 && angle < 271 ? 271 : angle;
-								sceneView.LookAt(
-									sceneView.pivot,
-									Quaternion.Euler(
-										angle,
-										sceneView.camera.transform.rotation.eulerAngles.y + del.x,
-										0f
-									),
-									sceneView.size,
-									sceneView.orthographic,
-									true
-								);
-								Event.current.Use();
-							}
-						}
-						break;
-				}
-			}
-		}
 
 
 		private static string FixedRelativePath (string path) {

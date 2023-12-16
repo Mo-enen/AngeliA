@@ -6,27 +6,27 @@ using UnityEngine;
 namespace AngeliaFramework {
 	public sealed class DefaultDialogueUI : DialogueUI {
 
-		protected override RectInt PanelRect => new(
+		protected override IRect PanelRect => new(
 			CellRenderer.CameraRect.x,
 			CellRenderer.CameraRect.y,
 			CellRenderer.CameraRect.width,
 			Unify(300)
 		);
-		protected override RectInt ContentRect => PanelRect.Shrink(IconRect.width + Unify(28), Unify(12), Unify(12), Unify(36 + NameFontSize));
-		protected override RectInt IconRect {
+		protected override IRect ContentRect => PanelRect.Shrink(IconRect.width + Unify(28), Unify(12), Unify(12), Unify(36 + NameFontSize));
+		protected override IRect IconRect {
 			get {
 				var rect = PanelRect.Shrink(Unify(12));
 				rect.width = rect.height;
 				return rect;
 			}
 		}
-		protected override RectInt NameRect {
+		protected override IRect NameRect {
 			get {
 				var panelRect = PanelRect.Shrink(Unify(12));
-				return new RectInt(panelRect.x + panelRect.height + Unify(12), panelRect.yMax - Unify(30), panelRect.width, Unify(NameFontSize));
+				return new IRect(panelRect.x + panelRect.height + Unify(12), panelRect.yMax - Unify(30), panelRect.width, Unify(NameFontSize));
 			}
 		}
-		protected override Color32 NameTint => Const.GREY_196;
+		protected override Pixel32 NameTint => Const.GREY_196;
 
 	}
 
@@ -41,15 +41,15 @@ namespace AngeliaFramework {
 
 
 		// Api
-		protected abstract RectInt PanelRect { get; }
-		protected abstract RectInt ContentRect { get; }
-		protected abstract RectInt IconRect { get; }
-		protected abstract RectInt NameRect { get; }
+		protected abstract IRect PanelRect { get; }
+		protected abstract IRect ContentRect { get; }
+		protected abstract IRect IconRect { get; }
+		protected abstract IRect NameRect { get; }
 		protected virtual int NameFontSize => 28;
 		protected virtual int ContentFontSize => 32;
 		protected virtual int RollingSpeed => 16; // Character per Frame
-		protected virtual Color32 NameTint => Const.WHITE;
-		protected virtual Color32 ContentTint => Const.WHITE;
+		protected virtual Pixel32 NameTint => Const.WHITE;
+		protected virtual Pixel32 ContentTint => Const.WHITE;
 
 		// Data
 		private int UpdatedFrame = int.MinValue;
@@ -58,7 +58,7 @@ namespace AngeliaFramework {
 		private int EndIndex = 0;
 		private int Identity = 0;
 		private string Content = "";
-		private Color32[] Colors = null;
+		private Pixel32[] Colors = null;
 		private readonly CellContent LabelName = new() { Alignment = Alignment.MidLeft, };
 		private readonly CellContent LabelContent = new() { Wrap = true, Clip = true, Alignment = Alignment.TopLeft, };
 
@@ -157,7 +157,7 @@ namespace AngeliaFramework {
 		public void Update () => UpdatedFrame = Game.GlobalFrame;
 
 
-		public void SetData (string content, int identity, Color32[] colors) {
+		public void SetData (string content, int identity, Pixel32[] colors) {
 			Content = content;
 			Identity = identity;
 			Colors = colors;

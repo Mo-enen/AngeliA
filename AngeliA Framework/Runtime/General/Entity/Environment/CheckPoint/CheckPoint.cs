@@ -10,7 +10,7 @@ namespace AngeliaFramework {
 		public static void OnGameInitialize () {
 			Unlock(typeof(ProcedureCheckPoint).AngeHash());
 		}
-		protected override bool TryGetAltarPosition (out Vector3Int altarUnitPos) {
+		protected override bool TryGetAltarPosition (out Int3 altarUnitPos) {
 			altarUnitPos = default;
 			return false;
 		}
@@ -31,7 +31,7 @@ namespace AngeliaFramework {
 		// Api
 		public delegate void TouchedHandler (CheckPoint checkPoint, Character target);
 		public static event TouchedHandler OnCheckPointTouched;
-		public static Vector3Int? LastTriggeredCheckPointUnitPosition { get; private set; } = null;
+		public static Int3? LastTriggeredCheckPointUnitPosition { get; private set; } = null;
 		public static int LastTriggeredCheckPointID { get; private set; } = 0;
 
 		// Short
@@ -70,7 +70,7 @@ namespace AngeliaFramework {
 				// Unlocked
 				CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 			}
-			var border = CellRenderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Vector4Int.zero;
+			var border = CellRenderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Int4.zero;
 			CellPhysics.FillBlock(
 				PhysicsLayer.ENVIRONMENT, TypeID, Rect.Shrink(border), true, Const.ONEWAY_UP_TAG
 			);
@@ -85,14 +85,14 @@ namespace AngeliaFramework {
 			var player = Player.Selecting;
 
 			if (player == null || !player.Active) return;
-			var unitPos = new Vector3Int(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
+			var unitPos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 			bool highlighting = Player.RespawnCpUnitPosition.HasValue && Player.RespawnCpUnitPosition.Value == unitPos;
 
 			// Player Touch Check
 			if (!highlighting && player.Rect.Overlaps(Rect)) {
 				highlighting = true;
 
-				LastTriggeredCheckPointUnitPosition = new Vector3Int(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
+				LastTriggeredCheckPointUnitPosition = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 				LastTriggeredCheckPointID = TypeID;
 
 				// Clear Portal
@@ -128,11 +128,11 @@ namespace AngeliaFramework {
 			if (!IsUnlocked(TypeID)) {
 				// Locked
 				var cell = CellRenderer.Draw(TypeID, Rect);
-				cell.Shift = CellRenderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Vector4Int.zero;
+				cell.Shift = CellRenderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Int4.zero;
 			} else {
 				// Unlocked
 				CellRenderer.Draw(TypeID, Rect);
-				var unitPos = new Vector3Int(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
+				var unitPos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 				if (Player.RespawnCpUnitPosition == unitPos) {
 					DrawActivatedHighlight(Rect);
 				}
@@ -158,12 +158,12 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void DrawActivatedHighlight (RectInt targetRect) {
+		public static void DrawActivatedHighlight (IRect targetRect) {
 			const int LINE_COUNT = 4;
 			const int DURATION = 22;
 			int localFrame = Game.GlobalFrame % DURATION;
 			var rect = targetRect;
-			var tint = new Color32(128, 255, 128, 255);
+			var tint = new Pixel32(128, 255, 128, 255);
 			CellRenderer.SetLayerToAdditive();
 			for (int i = 0; i < LINE_COUNT; i++) {
 				tint.a = (byte)(i == LINE_COUNT - 1 ? Util.RemapUnclamped(0, DURATION, 64, 0, localFrame) : 64);
@@ -176,7 +176,7 @@ namespace AngeliaFramework {
 		}
 
 
-		protected virtual bool TryGetAltarPosition (out Vector3Int altarUnitPos) => IGlobalPosition.TryGetPosition(LinkedAltarID, out altarUnitPos);
+		protected virtual bool TryGetAltarPosition (out Int3 altarUnitPos) => IGlobalPosition.TryGetPosition(LinkedAltarID, out altarUnitPos);
 
 
 		#endregion

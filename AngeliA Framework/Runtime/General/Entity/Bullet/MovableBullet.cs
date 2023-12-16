@@ -10,7 +10,7 @@ namespace AngeliaFramework {
 		// Api
 		protected virtual int SpeedX => 42;
 		protected virtual int SpeedY => 0;
-		protected virtual Vector2Int AriDrag => default;
+		protected virtual Int2 AriDrag => default;
 		protected virtual int Gravity => 0;
 		protected virtual int StartRotation => 0;
 		protected virtual int RotateSpeed => 0;
@@ -23,7 +23,7 @@ namespace AngeliaFramework {
 		protected override bool DestroyOnHitReceiver => true;
 
 		// Data
-		private Vector2Int Velocity;
+		private Int2 Velocity;
 		private int Rotation;
 
 		// MSG
@@ -35,10 +35,10 @@ namespace AngeliaFramework {
 			X += Velocity.x;
 			Y += Velocity.y;
 			if (AriDrag != default) {
-				Velocity = Velocity.MoveTowards(Vector2Int.zero, AriDrag);
+				Velocity = Velocity.MoveTowards(Int2.zero, AriDrag);
 			}
 			if (Gravity > 0) {
-				Velocity = new Vector2Int(Velocity.x, Velocity.y - Gravity);
+				Velocity = new Int2(Velocity.x, Velocity.y - Gravity);
 			}
 
 			// Out of Range Check

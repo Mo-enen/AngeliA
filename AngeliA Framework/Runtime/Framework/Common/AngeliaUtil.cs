@@ -48,7 +48,7 @@ namespace AngeliaFramework {
 				);
 				int globalWidth = flex.Rect.width.RoundToInt() * Const.CEL / Const.ART_CEL;
 				int globalHeight = flex.Rect.height.RoundToInt() * Const.CEL / Const.ART_CEL;
-				var globalBorder = new Vector4Int() {
+				var globalBorder = new Int4() {
 					left = Mathf.Clamp((int)(flex.Border.x * Const.CEL / Const.ART_CEL), 0, globalWidth),
 					down = Mathf.Clamp((int)(flex.Border.y * Const.CEL / Const.ART_CEL), 0, globalHeight),
 					right = Mathf.Clamp((int)(flex.Border.z * Const.CEL / Const.ART_CEL), 0, globalWidth),
@@ -197,7 +197,7 @@ namespace AngeliaFramework {
 			sheet.Metas = metaList.ToArray();
 
 			// Summary
-			var summaryPool = new Dictionary<int, Color32>();
+			var summaryPool = new Dictionary<int, Pixel32>();
 			FillBlockSummaryColorPool(sheet, sheetTexture, summaryPool);
 			for (int i = 0; i < sheet.Sprites.Length; i++) {
 				var sprite = sheet.Sprites[i];
@@ -208,7 +208,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void FillBlockSummaryColorPool (SpriteSheet sheet, Texture2D texture, Dictionary<int, Color32> pool) {
+		private static void FillBlockSummaryColorPool (SpriteSheet sheet, Texture2D texture, Dictionary<int, Pixel32> pool) {
 			pool.Clear();
 			// Color Pool
 			if (sheet == null) return;
@@ -244,14 +244,14 @@ namespace AngeliaFramework {
 
 
 			// Func
-			static Color32 GetThumbnailColor (Texture2D texture, RectInt rect) {
-				var CLEAR = new Color32(0, 0, 0, 0);
+			static Pixel32 GetThumbnailColor (Texture2D texture, IRect rect) {
+				var CLEAR = new Pixel32(0, 0, 0, 0);
 				if (texture == null || rect.width <= 0 || rect.height <= 0) return CLEAR;
 				var result = CLEAR;
 				try {
 					var pixels = texture.GetPixels(rect.x, rect.y, rect.width, rect.height);
 					if (pixels == null || pixels.Length == 0) return result;
-					var sum = Vector3.zero;
+					var sum = Float3.zero;
 					float len = 0;
 					foreach (var pixel in pixels) {
 						if (pixel.a.NotAlmostZero()) {
@@ -505,7 +505,7 @@ namespace AngeliaFramework {
 			int left = x - SIZE * COLUMN / 4;
 
 			// Draw Hearts
-			var rect = new RectInt(0, 0, SIZE / 2, SIZE);
+			var rect = new IRect(0, 0, SIZE / 2, SIZE);
 			bool isLeft = true;
 			for (int i = 0; i < maxHp; i++) {
 				rect.x = left + (i % COLUMN) * SIZE / 2;
@@ -535,7 +535,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Vector2Int GetFlyingFormation (Vector2Int pos, int column, int instanceIndex) {
+		public static Int2 GetFlyingFormation (Int2 pos, int column, int instanceIndex) {
 
 			int sign = instanceIndex % 2 == 0 ? -1 : 1;
 			int _row = instanceIndex / 2 / column;
@@ -549,15 +549,15 @@ namespace AngeliaFramework {
 		}
 
 
-		public static IEnumerable<KeyValuePair<Vector4Int, string>> ForEachPlayerCustomizeSpritePattern (string[] patterns, string suffix0, string suffix1 = "", string suffix2 = "", string suffix3 = "") {
+		public static IEnumerable<KeyValuePair<Int4, string>> ForEachPlayerCustomizeSpritePattern (string[] patterns, string suffix0, string suffix1 = "", string suffix2 = "", string suffix3 = "") {
 			if (patterns == null || patterns.Length == 0) yield break;
 			foreach (string pat in patterns) {
 				if (string.IsNullOrEmpty(pat)) {
-					yield return new(new Vector4Int(0, 0, 0, 0), "");
+					yield return new(new Int4(0, 0, 0, 0), "");
 				} else if (pat[0] == '#') {
-					yield return new(new Vector4Int(0, 0, 0, 0), pat);
+					yield return new(new Int4(0, 0, 0, 0), pat);
 				} else {
-					yield return new(new Vector4Int(
+					yield return new(new Int4(
 						$"{pat}{suffix0}".AngeHash(),
 						string.IsNullOrEmpty(suffix1) ? 0 : $"{pat}{suffix1}".AngeHash(),
 						string.IsNullOrEmpty(suffix2) ? 0 : $"{pat}{suffix2}".AngeHash(),
@@ -576,11 +576,11 @@ namespace AngeliaFramework {
 				rendererRoot.tag = "MainCamera";
 				gameCamera = rendererRoot.GetComponent<Camera>();
 			}
-			gameCamera.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-			gameCamera.transform.localScale = Vector3.one;
+			gameCamera.transform.SetPositionAndRotation(Float3.zero, default);
+			gameCamera.transform.localScale = Float3.one;
 			gameCamera.transform.gameObject.tag = "MainCamera";
 			gameCamera.clearFlags = CameraClearFlags.Skybox;
-			gameCamera.backgroundColor = new Color32(0, 0, 0, 0);
+			gameCamera.backgroundColor = new Pixel32(0, 0, 0, 0);
 			gameCamera.cullingMask = -1;
 			gameCamera.orthographic = true;
 			gameCamera.orthographicSize = 1f;
@@ -604,7 +604,7 @@ namespace AngeliaFramework {
 		public static int RandomInt (int min = int.MinValue, int max = int.MaxValue) => GlobalRandom.Next(min, max);
 		public static float RandomFloat01 () => (float)GlobalRandom.NextDouble();
 		public static double RandomDouble01 () => GlobalRandom.NextDouble();
-		public static Color32 RandomColor (int minH = 0, int maxH = 360, int minS = 0, int maxS = 100, int minV = 0, int maxV = 100, int minA = 0, int maxA = 255) {
+		public static Pixel32 RandomColor (int minH = 0, int maxH = 360, int minS = 0, int maxS = 100, int minV = 0, int maxV = 100, int minA = 0, int maxA = 255) {
 			var result = Color.HSVToRGB(
 				RandomInt(minH, maxH) / 360f,
 				RandomInt(minS, maxS) / 100f,
@@ -703,10 +703,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool DrawPoseCharacterAsUI (
-			RectInt rect, PoseCharacter character, int animationFrame, int z,
-			out RectInt globalRect, out RectInt uiRect
-		) {
+		public static bool DrawPoseCharacterAsUI (IRect rect, PoseCharacter character, int animationFrame, int z, out IRect globalRect, out IRect uiRect) {
 
 			globalRect = default;
 			uiRect = default;
@@ -750,7 +747,7 @@ namespace AngeliaFramework {
 				cell.Width = cell.Width * targetRect.width / originalWidth;
 				cell.Height = cell.Height * targetRect.height / originalHeight;
 				if (!cell.Shift.IsZero) {
-					cell.Shift = new Vector4Int(
+					cell.Shift = new Int4(
 						cell.Shift.left * targetRect.width / originalWidth,
 						cell.Shift.right * targetRect.width / originalWidth,
 						cell.Shift.down * targetRect.height / originalHeight,
@@ -830,7 +827,7 @@ namespace AngeliaFramework {
 			result.X += offsetX;
 			result.Y += offsetY;
 			result.Z = z;
-			result.Color = new Color32(0, 0, 0, alpha);
+			result.Color = new Pixel32(0, 0, 0, alpha);
 			return result;
 		}
 
@@ -850,7 +847,7 @@ namespace AngeliaFramework {
 			if (frame.UMod(9379) == 0) DrawGlitch(cell, RandomInt(-293, 211), RandomInt(-079, 011), RandomInt(0900, 1700), RandomInt(0900, 1100), RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
 
 			// Func
-			static void DrawGlitch (Cell cell, int offsetX, int offsetY, int scaleX, int scaleY, Color32 color) {
+			static void DrawGlitch (Cell cell, int offsetX, int offsetY, int scaleX, int scaleY, Pixel32 color) {
 
 				var cursedCell = CellRenderer.Draw(Const.PIXEL, default, 0);
 				cursedCell.Index = cell.Index;
@@ -912,7 +909,7 @@ namespace AngeliaFramework {
 		};
 
 
-		public static Vector2Int Normal (this Direction4 dir) => dir switch {
+		public static Int2 Normal (this Direction4 dir) => dir switch {
 			Direction4.Down => new(0, -1),
 			Direction4.Up => new(0, 1),
 			Direction4.Left => new(-1, 0),
@@ -921,7 +918,7 @@ namespace AngeliaFramework {
 		};
 
 
-		public static RectInt Edge (this RectInt rect, Direction4 edge, int thickness = 1) => edge switch {
+		public static IRect Edge (this IRect rect, Direction4 edge, int thickness = 1) => edge switch {
 			Direction4.Up => rect.Shrink(0, 0, rect.height, -thickness),
 			Direction4.Down => rect.Shrink(0, 0, -thickness, rect.height),
 			Direction4.Left => rect.Shrink(-thickness, rect.width, 0, 0),
@@ -1025,35 +1022,35 @@ namespace AngeliaFramework {
 		public static int ToUnifyGlobal (this int globalPos) => globalPos.UDivide(Const.CEL) * Const.CEL;
 
 
-		public static Vector2Int ToUnit (this Vector2Int globalPos) => globalPos.UDivide(Const.CEL);
-		public static Vector2Int ToGlobal (this Vector2Int unitPos) => unitPos * Const.CEL;
-		public static Vector2Int ToUnifyGlobal (this Vector2Int globalPos) => globalPos.ToUnit().ToGlobal();
+		public static Int2 ToUnit (this Int2 globalPos) => globalPos.UDivide(Const.CEL);
+		public static Int2 ToGlobal (this Int2 unitPos) => unitPos * Const.CEL;
+		public static Int2 ToUnifyGlobal (this Int2 globalPos) => globalPos.ToUnit().ToGlobal();
 
-		public static Vector3Int ToUnit (this Vector3Int globalPos) => new(
+		public static Int3 ToUnit (this Int3 globalPos) => new(
 			globalPos.x.UDivide(Const.CEL),
 			globalPos.y.UDivide(Const.CEL),
 			globalPos.z
 		);
-		public static Vector3Int ToGlobal (this Vector3Int unitPos) => new(
+		public static Int3 ToGlobal (this Int3 unitPos) => new(
 			unitPos.x * Const.CEL,
 			unitPos.y * Const.CEL,
 			unitPos.z
 		);
-		public static Vector3Int ToUnifyGlobal (this Vector3Int globalPos) => new(
+		public static Int3 ToUnifyGlobal (this Int3 globalPos) => new(
 			globalPos.x.ToUnit().ToGlobal(),
 			globalPos.y.ToUnit().ToGlobal(),
 			globalPos.z
 		);
 
 
-		public static RectInt ToUnit (this RectInt global) => global.UDivide(Const.CEL);
-		public static RectInt ToGlobal (this RectInt unit) => new(
+		public static IRect ToUnit (this IRect global) => global.UDivide(Const.CEL);
+		public static IRect ToGlobal (this IRect unit) => new(
 			unit.x * Const.CEL,
 			unit.y * Const.CEL,
 			unit.width * Const.CEL,
 			unit.height * Const.CEL
 		);
-		public static RectInt ToUnifyGlobal (this RectInt global) => global.ToUnit().ToGlobal();
+		public static IRect ToUnifyGlobal (this IRect global) => global.ToUnit().ToGlobal();
 
 
 		// Map Editor

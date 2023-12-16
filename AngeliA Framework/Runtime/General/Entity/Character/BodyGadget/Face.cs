@@ -80,7 +80,7 @@ namespace AngeliaFramework {
 		public override void DrawGadget (PoseCharacter character) => DrawSpriteAsFace(character, SpriteID[GetCurrentFaceType(character)]);
 
 
-		public static void DrawSpriteAsFace (PoseCharacter character, int spriteGroupID, Vector4Int borderOffset = default) {
+		public static void DrawSpriteAsFace (PoseCharacter character, int spriteGroupID, Int4 borderOffset = default) {
 
 			var head = character.Head;
 			if (spriteGroupID == 0 || head.IsFullCovered || !head.FrontSide) return;
@@ -160,7 +160,7 @@ namespace AngeliaFramework {
 				}
 
 				// Rotate
-				int headRot = character.Head.Rotation;
+				int headRot = character.HeadRotation;
 				if (headRot != 0) {
 					var body = character.Body;
 					int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;
@@ -208,7 +208,7 @@ namespace AngeliaFramework {
 			);
 
 			// Rotate
-			int headRot = character.Head.Rotation;
+			int headRot = character.HeadRotation;
 			if (headRot != 0) {
 				var body = character.Body;
 				int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;

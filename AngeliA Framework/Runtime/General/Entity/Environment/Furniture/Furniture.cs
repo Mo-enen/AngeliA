@@ -16,7 +16,7 @@ namespace AngeliaFramework {
 
 		// Api
 		protected virtual Direction3 ModuleType => Direction3.None;
-		protected virtual RectInt RenderingRect => Rect.Expand(ColliderBorder);
+		protected virtual IRect RenderingRect => Rect.Expand(ColliderBorder);
 		public Furniture FurnitureLeftOrDown { get; private set; } = null;
 		public Furniture FurnitureRightOrUp { get; private set; } = null;
 		protected RectOffset ColliderBorder { get; } = new();
@@ -106,7 +106,7 @@ namespace AngeliaFramework {
 		bool IActionTarget.AllowInvoke () => false;
 
 
-		protected void DrawClockHands (RectInt rect, int handCode, int thickness, int thicknessSecond) {
+		protected void DrawClockHands (IRect rect, int handCode, int thickness, int thicknessSecond) {
 			var now = System.DateTime.Now;
 			// Sec
 			CellRenderer.Draw(

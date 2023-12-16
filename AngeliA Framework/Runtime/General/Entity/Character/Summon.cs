@@ -112,7 +112,7 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		protected override Vector2Int? GetNavigationAim (out bool grounded) {
+		protected override Int2? GetNavigationAim (out bool grounded) {
 
 			if (Owner == null || !Owner.Active) return base.GetNavigationAim(out grounded);
 			grounded = false;
@@ -127,11 +127,11 @@ namespace AngeliaFramework {
 			RequireAimRefresh = false;
 
 			// Get Aim at Ground
-			var result = new Vector2Int(Owner.X, Owner.Y);
+			var result = new Int2(Owner.X, Owner.Y);
 
 			// Freedom Shift
 			const int SHIFT_AMOUNT = Const.CEL * 10;
-			int freeShiftX = Util.QuickRandom(TypeID + (InstanceOrder + (Game.GlobalFrame / 60)) * TypeID) % SHIFT_AMOUNT;
+			int freeShiftX = Util.QuickRandom(TypeID + (InstanceOrder + (Game.GlobalFrame / 300)) * TypeID) % SHIFT_AMOUNT;
 
 			// Find Available Ground
 			int offsetX = freeShiftX + Const.CEL * ((insIndex % 12) / 2 + 2) * (insIndex % 2 == 0 ? -1 : 1);
@@ -151,7 +151,7 @@ namespace AngeliaFramework {
 			}
 
 			// Instance Shift
-			result = new Vector2Int(
+			result = new Int2(
 				result.x + (InstanceOrder % 2 == 0 ? 8 : -8) * (InstanceOrder / 2),
 				result.y
 			);

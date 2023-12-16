@@ -15,8 +15,8 @@ namespace AngeliaFramework {
 		private static readonly CellContent Temp = new();
 
 		public string Text;
-		public Color32 Tint;
-		public Color32 BackgroundTint;
+		public Pixel32 Tint;
+		public Pixel32 BackgroundTint;
 		public Alignment Alignment;
 		public int CharSize;
 		public int CharSpace;
@@ -63,7 +63,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static CellContent Get (string text, Color32 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
+		public static CellContent Get (string text, Pixel32 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
 			Temp.CharSize = charSize;
 			Temp.Text = text;
 			Temp.Alignment = alignment;
@@ -102,13 +102,13 @@ namespace AngeliaFramework {
 
 		// Data
 		private static readonly StringBuilder TypingBuilder = new();
-		private static RectInt TypingTextFieldRect = default;
+		private static IRect TypingTextFieldRect = default;
 		private static int TypingUpdateFrame = int.MinValue;
 		private static int BeamIndex = 0;
 		private static int BeamLength = 0;
 		private static int BeamBlinkFrame = int.MinValue;
 		private static int PauselessFrame = 0;
-		private static Vector2Int? ScrollBarMouseDownPos = null;
+		private static Int2? ScrollBarMouseDownPos = null;
 
 
 		#endregion
@@ -181,14 +181,14 @@ namespace AngeliaFramework {
 
 
 		// Label
-		public static void Label (CellContent content, RectInt rect) => Label(content, rect, -1, 0, false, out _, out _, out _);
-		public static void Label (CellContent content, RectInt rect, out RectInt bounds) => Label(content, rect, -1, 0, false, out bounds, out _, out _);
-		public static void Label (CellContent content, RectInt rect, int startIndex, bool drawInvisibleChar, out RectInt bounds, out int endIndex) => Label(content, rect, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
-		private static void Label (CellContent content, RectInt rect, int beamIndex, int startIndex, bool drawInvisibleChar, out RectInt bounds, out RectInt beamRect, out int endIndex) {
+		public static void Label (CellContent content, IRect rect) => Label(content, rect, -1, 0, false, out _, out _, out _);
+		public static void Label (CellContent content, IRect rect, out IRect bounds) => Label(content, rect, -1, 0, false, out bounds, out _, out _);
+		public static void Label (CellContent content, IRect rect, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex) => Label(content, rect, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
+		private static void Label (CellContent content, IRect rect, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex) {
 
 			endIndex = startIndex;
 			bounds = rect;
-			beamRect = new RectInt(rect.x, rect.y, 1, rect.height);
+			beamRect = new IRect(rect.x, rect.y, 1, rect.height);
 			if (!CellRenderer.TextReady) return;
 			if (string.IsNullOrEmpty(content.Text)) content.Text = string.Empty;
 
@@ -358,7 +358,7 @@ namespace AngeliaFramework {
 
 
 		// Scroll Label
-		public static void ScrollLabel (CellContent content, RectInt rect, ref int scrollPosition) {
+		public static void ScrollLabel (CellContent content, IRect rect, ref int scrollPosition) {
 			int before = CellRenderer.GetTextUsedCellCount();
 			Label(content, rect, out var bounds);
 			if (bounds.height < rect.height) {
@@ -379,8 +379,8 @@ namespace AngeliaFramework {
 
 
 		// Button
-		public static bool Button (RectInt rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z) => Button(rect, sprite, spriteHover, spriteDown, icon, buttonBorder, iconPadding, z, Const.WHITE, Const.WHITE);
-		public static bool Button (RectInt rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z, Color32 buttonTint, Color32 iconTint) {
+		public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z) => Button(rect, sprite, spriteHover, spriteDown, icon, buttonBorder, iconPadding, z, Const.WHITE, Const.WHITE);
+		public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z, Pixel32 buttonTint, Pixel32 iconTint) {
 			bool hover = rect.Contains(FrameInput.MouseGlobalPosition);
 			bool down = hover && FrameInput.MouseLeftButton;
 			CellRenderer.Draw_9Slice(
@@ -400,19 +400,19 @@ namespace AngeliaFramework {
 
 		// Gizmos
 		public static Cell DrawLine (int fromX, int fromY, int toX, int toY, int thickness = 8, int z = int.MinValue) => DrawLine(fromX, fromY, toX, toY, thickness, Const.WHITE, z);
-		public static Cell DrawLine (int fromX, int fromY, int toX, int toY, int thickness, Color32 tint, int z = int.MinValue) => CellRenderer.Draw(
+		public static Cell DrawLine (int fromX, int fromY, int toX, int toY, int thickness, Pixel32 tint, int z = int.MinValue) => CellRenderer.Draw(
 			Const.PIXEL, fromX, fromY, 500, 0,
-			-Vector2.SignedAngle(Vector2.up, new Vector2(toX - fromX, toY - fromY)).RoundToInt(),
+			-Float2.SignedAngle(Float2.up, new Float2(toX - fromX, toY - fromY)).RoundToInt(),
 			thickness, Util.DistanceInt(fromX, fromY, toX, toY),
 			tint, z
 		);
 
 
 		// Text Field
-		public static string TextField (int controlID, RectInt rect, string text) => TextField(controlID, rect, InputLabel.SetText(text, 24), out _);
-		public static string TextField (int controlID, RectInt rect, string text, out bool changed) => TextField(controlID, rect, InputLabel.SetText(text, 24), out changed);
-		public static string TextField (int controlID, RectInt rect, CellContent text) => TextField(controlID, rect, text, out _);
-		public static string TextField (int controlID, RectInt rect, CellContent text, out bool changed) {
+		public static string TextField (int controlID, IRect rect, string text) => TextField(controlID, rect, InputLabel.SetText(text, 24), out _);
+		public static string TextField (int controlID, IRect rect, string text, out bool changed) => TextField(controlID, rect, InputLabel.SetText(text, 24), out changed);
+		public static string TextField (int controlID, IRect rect, CellContent text) => TextField(controlID, rect, text, out _);
+		public static string TextField (int controlID, IRect rect, CellContent text, out bool changed) {
 
 			changed = false;
 			bool startTyping = false;
@@ -524,7 +524,7 @@ namespace AngeliaFramework {
 			int startCellIndex = CellRenderer.GetTextUsedCellCount();
 			var labelRect = rect.Shrink(Unify(12), 0, 0, 0);
 			int beamShrink = Unify(6);
-			var beamRect = new RectInt(
+			var beamRect = new IRect(
 				labelRect.x, labelRect.y + beamShrink, Unify(2), labelRect.height - beamShrink * 2
 			);
 
@@ -568,7 +568,7 @@ namespace AngeliaFramework {
 						if (cell.X > labelRect.x + labelRect.width || cell.X + cell.Width < labelRect.x) {
 							cell.Color = Const.CLEAR;
 						} else {
-							cell.Color = new Color32(255, 255, 255, 96);
+							cell.Color = new Pixel32(255, 255, 255, 96);
 						}
 					}
 				}
@@ -579,7 +579,7 @@ namespace AngeliaFramework {
 					int beamSelectionEndIndex = Mathf.Max(BeamIndex, BeamIndex + BeamLength);
 					var startCell = cells[(startCellIndex + beamSelectionStartIndex).Clamp(startCellIndex, endCellIndex - 1)];
 					var endCell = cells[(startCellIndex + beamSelectionEndIndex - 1).Clamp(startCellIndex, endCellIndex - 1)];
-					var selectionRect = new RectInt(
+					var selectionRect = new IRect(
 						startCell.X,
 						labelRect.y + beamShrink,
 						endCell.X + endCell.Width - startCell.X,
@@ -624,10 +624,10 @@ namespace AngeliaFramework {
 
 
 		// Scrollbar
-		public static int ScrollBar (RectInt contentRect, int z, int positionRow, int totalSize, int pageSize, int barSpriteId = Const.PIXEL) {
+		public static int ScrollBar (IRect contentRect, int z, int positionRow, int totalSize, int pageSize, int barSpriteId = Const.PIXEL) {
 			if (pageSize >= totalSize) return 0;
 			int barHeight = contentRect.height * pageSize / totalSize;
-			var barRect = new RectInt(
+			var barRect = new IRect(
 				contentRect.x,
 				Util.RemapUnclamped(
 					0, totalSize - pageSize,
@@ -658,7 +658,7 @@ namespace AngeliaFramework {
 			if (FrameInput.MouseLeftButtonDown) {
 				if (hoveringBar) {
 					// Start Drag
-					ScrollBarMouseDownPos = new Vector2Int(
+					ScrollBarMouseDownPos = new Int2(
 						FrameInput.MouseGlobalPosition.y, positionRow
 					);
 				} else if (contentRect.Contains(FrameInput.MouseGlobalPosition)) {
@@ -669,7 +669,7 @@ namespace AngeliaFramework {
 						totalSize - pageSize / 2, -pageSize / 2,
 						mouseY
 					);
-					ScrollBarMouseDownPos = new Vector2Int(mouseY, positionRow);
+					ScrollBarMouseDownPos = new Int2(mouseY, positionRow);
 				}
 			}
 
@@ -678,8 +678,8 @@ namespace AngeliaFramework {
 
 
 		// Highlight
-		public static void HighlightCursor (int spriteID, RectInt rect, int z) => HighlightCursor(spriteID, rect, z, Const.GREEN);
-		public static void HighlightCursor (int spriteID, RectInt rect, int z, Color32 color) {
+		public static void HighlightCursor (int spriteID, IRect rect, int z) => HighlightCursor(spriteID, rect, z, Const.GREEN);
+		public static void HighlightCursor (int spriteID, IRect rect, int z, Pixel32 color) {
 			int border = Unify(4);
 			int thickness = Unify(8);
 			CellRenderer.Draw_9Slice(
@@ -733,7 +733,7 @@ namespace AngeliaFramework {
 			};
 
 
-		private static Cell DrawChar (char c, int x, int y, int width, int height, Color32 color) {
+		private static Cell DrawChar (char c, int x, int y, int width, int height, Pixel32 color) {
 
 			if (!CellRenderer.TextReady) return null;
 

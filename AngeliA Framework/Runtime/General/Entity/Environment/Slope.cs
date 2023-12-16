@@ -104,7 +104,7 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private bool CheckOverlap (RectInt rect, out int distance) {
+		private bool CheckOverlap (IRect rect, out int distance) {
 			distance = 0;
 			int cornerX = DirectionHorizontal == Direction2.Left ? rect.xMax : rect.xMin;
 			if (!cornerX.InRange(Rect.xMin, Rect.xMax)) return false;

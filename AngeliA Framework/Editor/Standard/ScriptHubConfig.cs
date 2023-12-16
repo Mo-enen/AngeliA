@@ -1,18 +1,10 @@
-
-
-
 namespace AngeliaFramework.Editor {
-
 
 
 	public class AssetsScriptHub : IScriptHubConfig {
 		public string Title => UnityEngine.Application.productName;
 		public string[] Paths => new string[] { "Assets", };
-		public string IgnoreFolders =>
-			"Aseprite\n" +
-			"Standard\n" +
-			"AngeliA Framework\n" +
-			"Third Party";
+		public string IgnoreFolders => "Aseprite\nStandard\nAngeliA Framework\nThird Party";
 		public IScriptHubConfig.SearchPattern[] SearchPatterns => new IScriptHubConfig.SearchPattern[]{
 			new ("*.cs", "", true),
 		};
@@ -49,9 +41,10 @@ namespace AngeliaFramework.Editor {
 	public class FrameworkHab : IScriptHubConfig {
 		public string Title => "Framework";
 		public string[] Paths => new string[] {
-			"Packages/com.moenengames.angeliaframework",
+			"Packages/com.moenengames.angeliaframework/Runtime/Framework",
+			"Packages/com.moenengames.angeliaframework/Editor",
 		};
-		public string IgnoreFolders => "Aseprite\nThird Party\nGeneral\nUtility";
+		public string IgnoreFolders => "Aseprite\nThird Party\nStandard";
 		public IScriptHubConfig.SearchPattern[] SearchPatterns => new IScriptHubConfig.SearchPattern[]{
 			new ("*.cs", "", true),
 		};

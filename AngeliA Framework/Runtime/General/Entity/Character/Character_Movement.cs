@@ -37,7 +37,7 @@ namespace AngeliaFramework {
 		private const int CLIP_CORRECT_TOLERANCE = Const.CEL / 4;
 
 		// Api
-		public Vector2Int LastMoveDirection { get; private set; } = default;
+		public Int2 LastMoveDirection { get; private set; } = default;
 		public int IntendedX { get; private set; } = 0;
 		public int IntendedY { get; private set; } = 0;
 		public int CurrentJumpCount { get; private set; } = 0;
@@ -98,7 +98,7 @@ namespace AngeliaFramework {
 		public bool IsGrabbingSide { get; private set; } = false;
 
 		// Data
-		private RectInt Hitbox = default;
+		private IRect Hitbox = default;
 		private bool HoldingJump = false;
 		private bool HoldingJumpForFly = false;
 		private bool PrevHoldingJump = false;
@@ -132,7 +132,7 @@ namespace AngeliaFramework {
 			OffsetX = -MovementWidth / 2;
 			OffsetY = 0;
 			IsFlying = false;
-			Hitbox = new RectInt(X, Y, MovementWidth, MovementHeight);
+			Hitbox = new IRect(X, Y, MovementWidth, MovementHeight);
 			RequireJumpFrame = int.MinValue;
 		}
 
@@ -336,7 +336,7 @@ namespace AngeliaFramework {
 			// Physics
 			int width = InWater ? SwimWidth : MovementWidth;
 			int height = GetCurrentHeight();
-			Hitbox = new RectInt(
+			Hitbox = new IRect(
 				X - width / 2,
 				Y,
 				width,
@@ -739,8 +739,8 @@ namespace AngeliaFramework {
 
 			// Clip Left
 			if (CheckCorrect(
-				new RectInt(rect.xMin, rect.yMax, 1, size),
-				new RectInt(rect.xMin + CLIP_CORRECT_TOLERANCE, rect.yMax, rect.width - CLIP_CORRECT_TOLERANCE, size),
+				new IRect(rect.xMin, rect.yMax, 1, size),
+				new IRect(rect.xMin + CLIP_CORRECT_TOLERANCE, rect.yMax, rect.width - CLIP_CORRECT_TOLERANCE, size),
 				out var hitRect
 			)) {
 				PerformMove(hitRect.xMax - rect.xMin, 0);
@@ -748,15 +748,15 @@ namespace AngeliaFramework {
 
 			// Clip Right
 			if (CheckCorrect(
-				new RectInt(rect.xMin + Width, rect.yMax, 1, size),
-				new RectInt(rect.xMin, rect.yMax, rect.width - CLIP_CORRECT_TOLERANCE, size),
+				new IRect(rect.xMin + Width, rect.yMax, 1, size),
+				new IRect(rect.xMin, rect.yMax, rect.width - CLIP_CORRECT_TOLERANCE, size),
 				out hitRect
 			)) {
 				PerformMove(hitRect.xMin - rect.xMax, 0);
 			}
 
 			// Func
-			bool CheckCorrect (RectInt trueRect, RectInt falseRect, out RectInt hitRect) {
+			bool CheckCorrect (IRect trueRect, IRect falseRect, out IRect hitRect) {
 				if (
 					CellPhysics.Overlap(CollisionMask, trueRect, out var hit, this) &&
 					!CellPhysics.Overlap(CollisionMask, falseRect, this)
@@ -869,7 +869,7 @@ namespace AngeliaFramework {
 			if (IsInsideGround) return false;
 
 			int GAP = Width / 8;
-			var rect = new RectInt(
+			var rect = new IRect(
 				X + OffsetX + GAP,
 				Y + OffsetY + MovementHeight / 2,
 				Width - GAP * 2,
@@ -919,7 +919,7 @@ namespace AngeliaFramework {
 				Game.GlobalFrame < LastJumpFrame + SLIDE_JUMP_CANCEL ||
 				IntendedX == 0 || VelocityY > -SlideDropSpeed
 			) return false;
-			var rect = new RectInt(
+			var rect = new IRect(
 				IntendedX > 0 ? Hitbox.xMax : Hitbox.xMin - 1,
 				Hitbox.y + Hitbox.height / 2,
 				1, 1
@@ -950,7 +950,7 @@ namespace AngeliaFramework {
 			) return false;
 			if (Game.GlobalFrame < LastGrabCancelFrame + GRAB_DROP_CANCEL) return false;
 			int height = MovementHeight;
-			var rect = new RectInt(
+			var rect = new IRect(
 				Hitbox.xMin,
 				Y + height / 2,
 				Hitbox.width,
@@ -978,13 +978,13 @@ namespace AngeliaFramework {
 				Game.GlobalFrame < LastJumpFrame + GRAB_JUMP_CANCEL
 			) return false;
 			if (!IsGrabbingSide && VelocityY > GrabMoveSpeedY / 2) return false;
-			var rectD = new RectInt(
+			var rectD = new IRect(
 				FacingRight ? Hitbox.xMax : Hitbox.xMin - 1,
 				Hitbox.yMin + Hitbox.height / 4,
 				1,
 				Hitbox.height / 4
 			);
-			var rectU = new RectInt(
+			var rectU = new IRect(
 				FacingRight ? Hitbox.xMax : Hitbox.xMin - 1,
 				Hitbox.yMax - Hitbox.height / 4,
 				1,
@@ -1002,12 +1002,12 @@ namespace AngeliaFramework {
 			}
 			return allowGrab;
 			// Func
-			bool AllowCheck (RectInt rect, int tag) => CellPhysics.Overlap(PhysicsMask.MAP, rect, this, OperationMode.ColliderOnly, tag);
+			bool AllowCheck (IRect rect, int tag) => CellPhysics.Overlap(PhysicsMask.MAP, rect, this, OperationMode.ColliderOnly, tag);
 		}
 
 
 		private bool JumpThoughOnewayCheck () {
-			var rect = new RectInt(Hitbox.xMin, Hitbox.yMin + 4 - Const.CEL / 4, Hitbox.width, Const.CEL / 4);
+			var rect = new IRect(Hitbox.xMin, Hitbox.yMin + 4 - Const.CEL / 4, Hitbox.width, Const.CEL / 4);
 			if (CellPhysics.Overlap(PhysicsMask.MAP, rect, this)) return false;
 			var hits = CellPhysics.OverlapAll(
 				PhysicsMask.MAP, rect, out int count, this,
@@ -1029,7 +1029,7 @@ namespace AngeliaFramework {
 				// No Block Above
 				if (CellPhysics.Overlap(
 					PhysicsMask.MAP,
-					new RectInt(x, Y + (GrowingHeight * GrabTopHeightAmount / 1000) + Const.CEL + Const.HALF, width, 1),
+					new IRect(x, Y + (GrowingHeight * GrabTopHeightAmount / 1000) + Const.CEL + Const.HALF, width, 1),
 					this
 				)) return false;
 				return true;
@@ -1038,13 +1038,13 @@ namespace AngeliaFramework {
 				// No Block Below
 				if (CellPhysics.Overlap(
 					PhysicsMask.MAP,
-					new RectInt(x, Y - Const.CEL - Const.HALF, width, 1),
+					new IRect(x, Y - Const.CEL - Const.HALF, width, 1),
 					this
 				)) return false;
 				// Standing on Grab-Top Block
 				var hits = CellPhysics.OverlapAll(
 					PhysicsMask.MAP,
-					new RectInt(x, Y + 4 - Const.CEL / 4, width, Const.CEL / 4), out int count,
+					new IRect(x, Y + 4 - Const.CEL / 4, width, Const.CEL / 4), out int count,
 					this, OperationMode.ColliderOnly, Const.GRAB_TOP_TAG
 				);
 				for (int i = 0; i < count; i++) {

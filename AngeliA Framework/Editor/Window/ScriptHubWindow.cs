@@ -105,7 +105,7 @@ namespace AngeliaFramework.Editor {
 		private Item[][] Scripts = new Item[0][];
 		private string[] Titles = new string[0];
 		private int[] Columns = new int[0];
-		private Vector2 ScrollPos = default;
+		private Float2 ScrollPos = default;
 		private float ColumnWidth = 1f;
 		private WindowStyle Style { get; set; } = null;
 		private HubSearchProvider HubSearch = null;
@@ -138,6 +138,7 @@ namespace AngeliaFramework.Editor {
 				}
 			}
 		}
+
 
 		[InitializeOnLoadMethod]
 		private static void Init () {
@@ -257,7 +258,7 @@ namespace AngeliaFramework.Editor {
 			EditorGUI.DropShadowLabel(MGUI.Rect(0, 24), title, MGUI.CenteredBoldLabel);
 			MGUI.Space(2);
 			string folderName = "";
-			var assetIconColor = new Color32(209, 136, 60, 128);
+			var assetIconColor = new Pixel32(209, 136, 60, 128);
 			for (int i = 0; i < scripts.Length;) {
 				using (new GUILayout.HorizontalScope()) {
 					for (int col = 0; col < column && i < scripts.Length; col++, i++) {
@@ -324,6 +325,7 @@ namespace AngeliaFramework.Editor {
 			roots.Sort((a, b) => a.Order.CompareTo(b.Order));
 
 			// Load All
+			var searchItemCache = new List<List<Item>>();
 			var scriptsList = new List<Item[]>();
 			var titleList = new List<string>();
 			var columnList = new List<int>();
@@ -334,18 +336,20 @@ namespace AngeliaFramework.Editor {
 					var ignoreFolder = new HashSet<string>();
 					var ignoreFile = new HashSet<string>();
 					var ignorePath = new HashSet<string>();
+					var searchCache = new List<Item>();
 					foreach (var ig in obj.IgnoreFolders.Split('\n')) ignoreFolder.TryAdd(ig);
 					foreach (var ig in obj.IgnoreFiles.Split('\n')) ignoreFile.TryAdd(ig);
 					// Scripts
 					var scripts = new List<Item>();
 					foreach (var path in obj.Paths) {
-						LoadScripts(scripts, path, ignoreFolder, ignoreFile, ignorePath, obj.SearchPatterns, obj.GetFileName, obj.GetFolderName);
+						LoadScripts(scripts, path, ignoreFolder, ignoreFile, ignorePath, obj.SearchPatterns, obj.GetFileName, obj.GetFolderName, searchCache);
 					}
 					// Add
 					if (scripts.Count(_item => _item.IsFile) > 0) {
 						scriptsList.Add(scripts.ToArray());
 						titleList.Add(obj.Title);
 						columnList.Add(obj.Column);
+						searchItemCache.Add(searchCache);
 					}
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
@@ -361,11 +365,11 @@ namespace AngeliaFramework.Editor {
 			HubSearch.List.Clear();
 			HubSearch.Items.Clear();
 			HubSearch.List.Add(new MySearchTreeGroupEntry(SearchTitleContent, 0));
-			for (int i = 0; i < Scripts.Length; i++) {
+			for (int i = 0; i < searchItemCache.Count; i++) {
 				HubSearch.List.Add(new MySearchTreeGroupEntry(new GUIContent(Titles[i]), 1));
-				var scripts = Scripts[i];
-				for (int j = 0; j < scripts.Length; j++) {
-					var item = scripts[j];
+				var searchCache = searchItemCache[i];
+				for (int j = 0; j < searchCache.Count; j++) {
+					var item = searchCache[j];
 					if (item.IsFile) {
 						HubSearch.List.Add(new HubSearchEntry(new GUIContent(item.Name)) {
 							Title = Titles[i],
@@ -375,6 +379,20 @@ namespace AngeliaFramework.Editor {
 					}
 				}
 			}
+			//for (int i = 0; i < Scripts.Length; i++) {
+			//	HubSearch.List.Add(new MySearchTreeGroupEntry(new GUIContent(Titles[i]), 1));
+			//	var scripts = Scripts[i];
+			//	for (int j = 0; j < scripts.Length; j++) {
+			//		var item = scripts[j];
+			//		if (item.IsFile) {
+			//			HubSearch.List.Add(new HubSearchEntry(new GUIContent(item.Name)) {
+			//				Title = Titles[i],
+			//				userData = item,
+			//				level = 2,
+			//			});
+			//		}
+			//	}
+			//}
 
 			//  Scripts
 			void LoadScripts (
@@ -384,46 +402,52 @@ namespace AngeliaFramework.Editor {
 				HashSet<string> ignorePath,
 				IScriptHubConfig.SearchPattern[] searchPats,
 				System.Func<string, string> getFileName,
-				System.Func<string, string> getFolderName
+				System.Func<string, string> getFolderName,
+				List<Item> searchCache
 			) {
 				string fullRoot = Path.GetFullPath(root);
 
 				foreach (var pt in searchPats) {
 					if (!string.IsNullOrEmpty(pt.Label)) {
-						scripts.Add(new(pt.Label, null, "", false));
+						scripts.Add(new Item(pt.Label, null, "", false));
 					}
-					LoadAll(fullRoot, 0, pt.ShowTag, pt.Pattern);
+					LoadAll(fullRoot, 0, pt.ShowTag, false, pt.Pattern);
 				}
 
-				void LoadAll (string folderFullPath, int depth, bool addFolderTags, params string[] search) {
+				void LoadAll (string folderFullPath, int depth, bool addFolderTags, bool ignore, params string[] search) {
+
 					string folderName = Util.GetNameWithoutExtension(folderFullPath);
-					if (ignoreFolder.Contains(folderName)) return;
-					if (ignorePath.Contains(Util.FixPath(folderFullPath))) return;
-					if (addFolderTags) {
+
+					ignore = ignore || ignoreFolder.Contains(folderName) || ignorePath.Contains(Util.FixPath(folderFullPath));
+
+					if (!ignore && addFolderTags) {
 						if (scripts.Count == 0 || scripts[^1].IsFile) {
-							scripts.Add(new(getFolderName(folderName), null, folderFullPath, false));
+							scripts.Add(new Item(getFolderName(folderName), null, folderFullPath, false));
 						} else {
-							scripts[^1] = new(getFolderName(folderName), null, folderFullPath, false);
+							scripts[^1] = new Item(getFolderName(folderName), null, folderFullPath, false);
 						}
 					}
 
 					var files = new List<FileInfo>(GetFilesIn(folderFullPath, true, search));
 					files.Sort((a, b) => a.Name.CompareTo(b.Name));
 					foreach (var file in files) {
-						if (ignoreFile.Contains(Util.GetNameWithExtension(file.FullName))) continue;
-						if (ignorePath.Contains(Util.FixPath(file.FullName))) continue;
 						string path = $"{root}/{file.FullName[fullRoot.Length..]}";
-						scripts.Add(new(
+						var item = new Item(
 							Util.GetDisplayName(getFileName(Util.GetNameWithoutExtension(path))),
 							null, path, true
-						));
+						);
+						searchCache.Add(item);
+						if (ignore) continue;
+						if (ignoreFile.Contains(Util.GetNameWithExtension(file.FullName))) continue;
+						if (ignorePath.Contains(Util.FixPath(file.FullName))) continue;
+						scripts.Add(item);
 					}
 
 					// Sub Folders
 					var folders = new List<DirectoryInfo>(GetFoldersIn(folderFullPath, true));
 					folders.Sort((a, b) => getFolderName(a.Name).CompareTo(getFolderName(b.Name)));
 					foreach (var folder in folders) {
-						LoadAll(folder.FullName, depth + 1, addFolderTags, search);
+						LoadAll(folder.FullName, depth + 1, addFolderTags, ignore, search);
 					}
 				}
 			}

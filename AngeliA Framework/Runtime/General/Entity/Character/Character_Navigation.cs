@@ -26,7 +26,7 @@ namespace AngeliaFramework {
 
 		// Api
 		protected CharacterNavigationState NavigationState { get; set; } = CharacterNavigationState.Idle;
-		protected Vector2Int NavigationAim { get; private set; } = default;
+		protected Int2 NavigationAim { get; private set; } = default;
 		protected bool NavigationAimGrounded { get; private set; } = default;
 		protected bool HasPerformableOperation => CurrentNavOperationIndex < CurrentNavOperationCount || CurrentNavOperationCount == 0;
 
@@ -48,7 +48,7 @@ namespace AngeliaFramework {
 		private int NavJumpDuration = 0;
 		private bool NavMoveDoneX = false;
 		private bool NavMoveDoneY = false;
-		private Vector2Int NavJumpFromPosition = default;
+		private Int2 NavJumpFromPosition = default;
 
 
 		#endregion
@@ -391,7 +391,7 @@ namespace AngeliaFramework {
 			NavFlyStartFrame = int.MinValue;
 			CurrentNavOperationIndex = 0;
 			CurrentNavOperationCount = 0;
-			NavigationAim = new Vector2Int(X, Y);
+			NavigationAim = new Int2(X, Y);
 			NavigationAimGrounded = IsGrounded;
 			NavJumpFrame = 0;
 			NavJumpDuration = 0;
@@ -400,7 +400,7 @@ namespace AngeliaFramework {
 		}
 
 
-		protected virtual Vector2Int? GetNavigationAim (out bool grounded) {
+		protected virtual Int2? GetNavigationAim (out bool grounded) {
 			grounded = true;
 			return null;
 		}

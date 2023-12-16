@@ -136,21 +136,21 @@ namespace AngeliaFramework {
 			var skyBottom = new Gradient();
 			skyTop.SetKeys(
 				new GradientColorKey[] {
-					new GradientColorKey(new Color32(10, 12, 31, 255), 0f),
-					new GradientColorKey(new Color32(13, 49, 76, 255), 0.25f),
-					new GradientColorKey(new Color32(29, 156, 219, 255), 0.5f),
-					new GradientColorKey(new Color32(13, 49, 76, 255), 0.75f),
-					new GradientColorKey(new Color32(10, 12, 31, 255), 1f),
+					new GradientColorKey(new Pixel32(10, 12, 31, 255), 0f),
+					new GradientColorKey(new Pixel32(13, 49, 76, 255), 0.25f),
+					new GradientColorKey(new Pixel32(29, 156, 219, 255), 0.5f),
+					new GradientColorKey(new Pixel32(13, 49, 76, 255), 0.75f),
+					new GradientColorKey(new Pixel32(10, 12, 31, 255), 1f),
 				},
 				new GradientAlphaKey[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) }
 			);
 			skyBottom.SetKeys(
 				new GradientColorKey[] {
-					new GradientColorKey(new Color32(10, 12, 31, 255), 0f),
-					new GradientColorKey(new Color32(27, 69, 101, 255), 0.25f),
-					new GradientColorKey(new Color32(52, 171, 230, 255), 0.5f),
-					new GradientColorKey(new Color32(27, 69, 101, 255), 0.75f),
-					new GradientColorKey(new Color32(10, 12, 31, 255), 1f),
+					new GradientColorKey(new Pixel32(10, 12, 31, 255), 0f),
+					new GradientColorKey(new Pixel32(27, 69, 101, 255), 0.25f),
+					new GradientColorKey(new Pixel32(52, 171, 230, 255), 0.5f),
+					new GradientColorKey(new Pixel32(27, 69, 101, 255), 0.75f),
+					new GradientColorKey(new Pixel32(10, 12, 31, 255), 1f),
 				},
 				new GradientAlphaKey[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) }
 			);
@@ -306,7 +306,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void SetBackgroundTint (Color32 top, Color32 bottom) {
+		public static void SetBackgroundTint (Pixel32 top, Pixel32 bottom) {
 			ForceBackgroundTintFrame = GlobalFrame + 1;
 			CellRenderer.SetBackgroundTint(top, bottom);
 		}

@@ -81,12 +81,12 @@ namespace AngeliaFramework {
 		// Api
 		public delegate void SpawnBadgeHandler (int quality);
 		public static event SpawnBadgeHandler OnBadgeSpawn;
-		protected virtual Vector2Int WindowSize => new(1000, 800);
+		protected virtual Int2 WindowSize => new(1000, 800);
 		protected abstract bool RequireMouseCursor { get; }
 		protected abstract string DisplayName { get; }
 		protected virtual bool RequireQuitConfirm => true;
 		protected virtual bool ShowRestartOption => true;
-		protected RectInt WindowRect => new(
+		protected IRect WindowRect => new(
 			CellRenderer.CameraRect.CenterX() - CellRendererGUI.Unify(WindowSize.x) / 2,
 			CellRenderer.CameraRect.CenterY() - CellRendererGUI.Unify(WindowSize.y) / 2,
 			CellRendererGUI.Unify(WindowSize.x), CellRendererGUI.Unify(WindowSize.y)
@@ -214,7 +214,7 @@ namespace AngeliaFramework {
 		protected void DrawBadges (BadgesSaveData data, int x, int y, int z, int badgeSize, int[] spriteIDs = null) {
 			if (data == null || data.Badges == null) return;
 			spriteIDs ??= DEFAULT_BADGE_CODES;
-			var badgeRect = new RectInt(x, y, badgeSize, badgeSize);
+			var badgeRect = new IRect(x, y, badgeSize, badgeSize);
 			for (int i = 0; i < data.Badges.Length; i++) {
 				int icon = spriteIDs[data.GetBadge(i).Clamp(0, spriteIDs.Length - 1)];
 				CellRenderer.Draw(icon, badgeRect, z);

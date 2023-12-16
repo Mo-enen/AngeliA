@@ -26,7 +26,7 @@ namespace AngeliaFramework.Editor {
 		};
 		private static GUIStyle _MasterStyle = null;
 		private static Texture2D AseIcon = null;
-		private Vector2 MasterScrollPos = default;
+		private Float2 MasterScrollPos = default;
 		private AseData CurrentAse = null;
 		private string SliceLines = "";
 		private string AsePath = "";
@@ -36,10 +36,10 @@ namespace AngeliaFramework.Editor {
 		private bool ShowCopyFlash = false;
 		private bool ShowPasteFlash = false;
 		private string SliceCreator_Name = "Slice {x} {y}";
-		private Vector2Int SliceCreator_Start = new(1, 1);
-		private Vector2Int SliceCreator_Size = new(16, 16);
-		private Vector2Int SliceCreator_Count = new(1, 1);
-		private Vector2Int SliceCreator_Padding = new(1, 1);
+		private Int2 SliceCreator_Start = new(1, 1);
+		private Int2 SliceCreator_Size = new(16, 16);
+		private Int2 SliceCreator_Count = new(1, 1);
+		private Int2 SliceCreator_Padding = new(1, 1);
 		private bool SliceCreator_Open = false;
 		private bool AddEmptyLineBetween = false;
 		private SortMode Sort = SortMode.Original;
@@ -56,8 +56,8 @@ namespace AngeliaFramework.Editor {
 		[MenuItem("AngeliA/Slice Editor", false, 28)]
 		public static void OpenEditor () {
 			var window = GetWindow<SliceEditor>(true, "Slice Editor", true);
-			window.minSize = new Vector2(256, 256);
-			window.maxSize = new Vector2(1024, 1024);
+			window.minSize = new Float2(256, 256);
+			window.maxSize = new Float2(1024, 1024);
 			window.AllAses.Clear();
 			foreach (var filePath in AngeEditorUtil.ForAllAsepriteFiles()) {
 				window.AllAses.Add(filePath);
@@ -319,7 +319,7 @@ namespace AngeliaFramework.Editor {
 						_name,
 						_slice.X, _slice.Y, (int)_slice.Width, (int)_slice.Height,
 						_slice.BorderL, _slice.BorderR, _slice.BorderD, _slice.BorderU,
-						_hasPivot ? new Vector2Int(_slice.PivotX, _slice.PivotY) : null
+						_hasPivot ? new Int2(_slice.PivotX, _slice.PivotY) : null
 					));
 				} else {
 					builder.AppendLine();
@@ -369,7 +369,7 @@ namespace AngeliaFramework.Editor {
 			var offset = SliceCreator_Start.Clamped(0, 0);
 			var size = SliceCreator_Size.Clamped(0, 0);
 			var count = SliceCreator_Count.Clamped(0, 0);
-			Color32 color32 = Color.black;
+			Pixel32 color32 = Color.black;
 			string nameFormat = SliceCreator_Name.Replace("{x}", "{0}").Replace("{y}", "{1}").Replace("{i}", "{2}");
 			int index = 0;
 			for (int j = 0; j < count.y; j++) {
@@ -411,7 +411,7 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private static string GetSliceLine (string name, int x, int y, int w, int h, int borderL, int borderR, int borderD, int borderU, Vector2Int? pivot) {
+		private static string GetSliceLine (string name, int x, int y, int w, int h, int borderL, int borderR, int borderD, int borderU, Int2? pivot) {
 			if (pivot.HasValue) {
 				return $"{name}, {x}, {y}, {w}, {h}, {borderL}, {borderR}, {borderD}, {borderU}, {pivot.Value.x}, {pivot.Value.y}";
 			} else {
@@ -420,7 +420,7 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private static bool GetInfoFromSliceLine (string line, out string name, out RectInt rect, out Vector4Int border, out Vector2Int? pivot) {
+		private static bool GetInfoFromSliceLine (string line, out string name, out IRect rect, out Int4 border, out Int2? pivot) {
 			name = "";
 			rect = default;
 			border = default;
@@ -452,7 +452,7 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private static void FillSliceInfoTo (AseData.SliceChunk slice, string name, RectInt rect, Vector4Int border, Vector2Int? pivot) {
+		private static void FillSliceInfoTo (AseData.SliceChunk slice, string name, IRect rect, Int4 border, Int2? pivot) {
 
 
 			border.left = Mathf.Max(border.left, 0);

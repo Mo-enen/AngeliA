@@ -14,7 +14,7 @@ namespace AngeliaFramework {
 
 		private class TextureUnit {
 			public Texture2D Texture;
-			public Vector3Int WorldPos;
+			public Int3 WorldPos;
 		}
 
 
@@ -31,7 +31,7 @@ namespace AngeliaFramework {
 		public int GlobalScale = 1000;
 
 		// Data
-		private static readonly Color32[] FILLING_PIXELS = new Color32[Const.MAP * Const.MAP];
+		private static readonly UnityEngine.Color32[] FILLING_PIXELS = new UnityEngine.Color32[Const.MAP * Const.MAP];
 		private readonly TextureUnit[,] Textures = null;
 		private readonly Texture2D[,] TextureBuffer = null;
 		private readonly Texture2D[] TextureBufferAlt = null;
@@ -39,7 +39,7 @@ namespace AngeliaFramework {
 		private readonly World FillingWorld = null;
 		private readonly Transform SquadRoot = null;
 		private readonly Transform SquadContainer = null;
-		private Vector3Int LoadedWorldPos = default;
+		private Int3 LoadedWorldPos = default;
 
 
 		#endregion
@@ -64,7 +64,7 @@ namespace AngeliaFramework {
 							filterMode = FilterMode.Point,
 							wrapMode = TextureWrapMode.Clamp,
 						},
-						WorldPos = new Vector3Int(int.MaxValue, int.MaxValue, int.MaxValue),
+						WorldPos = new Int3(int.MaxValue, int.MaxValue, int.MaxValue),
 					};
 				}
 			}
@@ -78,18 +78,18 @@ namespace AngeliaFramework {
 			// Add GameObject
 			SquadRoot = new GameObject("Texture Squad").transform;
 			SquadRoot.SetParent(Game.GameCamera.transform);
-			SquadRoot.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-			SquadRoot.localScale = Vector3.one;
+			SquadRoot.SetLocalPositionAndRotation(Float3.zero, default);
+			SquadRoot.localScale = Float3.one;
 			SquadContainer = new GameObject("Container").transform;
 			SquadContainer.SetParent(SquadRoot);
-			SquadContainer.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-			SquadContainer.localScale = Vector3.one;
+			SquadContainer.SetLocalPositionAndRotation(Float3.zero, default);
+			SquadContainer.localScale = Float3.one;
 
 			var mesh = new Mesh();
-			var vertices = new Vector3[4] { new(0, 0), new(0, 1), new(1, 1), new(1, 0), };
-			var uvs = new Vector2[4] { new(0, 0), new(0, 1), new(1, 1), new(1, 0), };
+			var vertices = new UnityEngine.Vector3[4] { new(0, 0), new(0, 1), new(1, 1), new(1, 0), };
+			var uvs = new UnityEngine.Vector2[4] { new(0, 0), new(0, 1), new(1, 1), new(1, 0), };
 			var tris = new int[6] { 0, 1, 2, 0, 2, 3, };
-			var colors = new Color32[4] { Const.WHITE, Const.WHITE, Const.WHITE, Const.WHITE, };
+			var colors = new UnityEngine.Color32[4] { Const.WHITE, Const.WHITE, Const.WHITE, Const.WHITE, };
 			mesh.SetVertices(vertices);
 			mesh.SetTriangles(tris, 0);
 			mesh.SetUVs(0, uvs);
@@ -101,11 +101,8 @@ namespace AngeliaFramework {
 				for (int i = 0; i < worldSize; i++) {
 					var renderer = new GameObject("", typeof(MeshFilter), typeof(MeshRenderer)).transform;
 					renderer.SetParent(SquadContainer);
-					renderer.SetLocalPositionAndRotation(
-						new Vector3(i - worldSize / 2f - 0.5f, j - worldSize / 2f - 0.5f, 1f),
-						Quaternion.identity
-					);
-					renderer.localScale = Vector3.one;
+					renderer.SetLocalPositionAndRotation(new Float3(i - worldSize / 2f - 0.5f, j - worldSize / 2f - 0.5f, 1f), default);
+					renderer.localScale = Float3.one;
 					renderer.SetAsLastSibling();
 					var mr = renderer.GetComponent<MeshRenderer>();
 					mr.receiveShadows = false;
@@ -136,10 +133,10 @@ namespace AngeliaFramework {
 			}
 			LoadedWorldPos.x = int.MinValue;
 			SquadRoot.gameObject.SetActive(true);
-			SquadRoot.localPosition = new Vector3(0f, 0f, 1f);
-			SquadRoot.localScale = Vector3.one;
-			SquadContainer.localPosition = Vector3.zero;
-			SquadContainer.localScale = Vector3.one;
+			SquadRoot.localPosition = new Float3(0f, 0f, 1f);
+			SquadRoot.localScale = Float3.one;
+			SquadContainer.localPosition = Float3.zero;
+			SquadContainer.localScale = Float3.one;
 			int len = SquadContainer.childCount;
 			for (int i = 0; i < len; i++) {
 				SquadContainer.GetChild(i).gameObject.SetActive(false);
@@ -157,12 +154,12 @@ namespace AngeliaFramework {
 		}
 
 
-		public void FrameUpdate (Vector3Int centerPos) {
+		public void FrameUpdate (Int3 centerPos) {
 
 			int GLOBAL_MAP = Const.MAP * Const.CEL;
 			int HALF_GLOBAL_MAP = Const.MAP * Const.HALF;
 
-			var worldPos = new Vector3Int(
+			var worldPos = new Int3(
 				(centerPos.x - WorldSize * GLOBAL_MAP / 2).UDivide(GLOBAL_MAP),
 				(centerPos.y - WorldSize * GLOBAL_MAP / 2).UDivide(GLOBAL_MAP),
 				centerPos.z
@@ -177,9 +174,9 @@ namespace AngeliaFramework {
 			float scale = Game.GameCamera.orthographicSize * 2f / (WorldSize - 1);
 			float posShiftX = -((centerPos.x + HALF_GLOBAL_MAP).UMod(GLOBAL_MAP) - GLOBAL_MAP) / (float)GLOBAL_MAP * scale;
 			float posShiftY = -((centerPos.y + HALF_GLOBAL_MAP).UMod(GLOBAL_MAP) - GLOBAL_MAP) / (float)GLOBAL_MAP * scale;
-			SquadContainer.localScale = Vector3.one * scale;
-			SquadContainer.localPosition = new Vector3(posShiftX, posShiftY, 1f);
-			SquadRoot.localScale = Vector3.one * (GlobalScale / 1000f);
+			SquadContainer.localScale = Float3.one * scale;
+			SquadContainer.localPosition = new Float3(posShiftX, posShiftY, 1f);
+			SquadRoot.localScale = Float3.one * (GlobalScale / 1000f);
 		}
 
 
@@ -191,7 +188,7 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private void ReloadTextures (Vector3Int newWorldPos) {
+		private void ReloadTextures (Int3 newWorldPos) {
 
 			// Clear Buffer
 			for (int i = 0; i < WorldSize; i++) {

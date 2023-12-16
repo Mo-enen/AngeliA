@@ -55,9 +55,9 @@ namespace AngeliaFramework {
 		private bool RequireReload = false;
 		private int LoadedZ = int.MinValue;
 		private int BackgroundBlockSize = Const.CEL;
-		private RectInt CullingCameraRect = default;
-		private RectInt ParallaxRect = default;
-		private RectInt CameraRect = default;
+		private IRect CullingCameraRect = default;
+		private IRect ParallaxRect = default;
+		private IRect CameraRect = default;
 
 
 		#endregion
@@ -100,15 +100,15 @@ namespace AngeliaFramework {
 			if (!Enable) return;
 
 			int z = isBehind ? Stage.ViewZ + 1 : Stage.ViewZ;
-			Vector4Int cullingPadding = FrameTask.IsTasking<TeleportTask>() ? new Vector4Int(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Vector4Int.zero;
+			Int4 cullingPadding = FrameTask.IsTasking<TeleportTask>() ? new Int4(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Int4.zero;
 			if (isBehind) {
 				CellRenderer.SetLayerToBehind();
 			} else {
 				CellRenderer.SetLayerToDefault();
 			}
 			var viewPos = Stage.SpawnRect.CenterInt();
-			RectInt unitRect_Entity;
-			RectInt unitRect_Level;
+			IRect unitRect_Entity;
+			IRect unitRect_Level;
 			CameraRect = CellRenderer.CameraRect;
 			CullingCameraRect = CameraRect.Expand(cullingPadding);
 			const float PARA_01 = Const.SQUAD_BEHIND_PARALLAX / 1000f;
@@ -120,7 +120,7 @@ namespace AngeliaFramework {
 			} else {
 				// Behind
 				BackgroundBlockSize = (Const.CEL / PARA_01).CeilToInt();
-				var parallax = ((Vector2)CameraRect.size * ((PARA_01 - 1f) / 2f)).CeilToInt();
+				var parallax = ((Float2)CameraRect.size * ((PARA_01 - 1f) / 2f)).CeilToInt();
 				ParallaxRect = CameraRect.Expand(parallax.x, parallax.x, parallax.y, parallax.y);
 				var parallaxUnitRect = ParallaxRect.Expand(cullingPadding).ToUnit();
 				parallaxUnitRect.width += 2;
@@ -132,9 +132,9 @@ namespace AngeliaFramework {
 			}
 
 			// View & World
-			var midZone = new RectInt(
-				(Vector2Int)Worlds[1, 1].WorldPosition * Const.MAP * Const.CEL,
-				new Vector2Int(Const.MAP * Const.CEL, Const.MAP * Const.CEL)
+			var midZone = new IRect(
+				(Int2)Worlds[1, 1].WorldPosition * Const.MAP * Const.CEL,
+				new Int2(Const.MAP * Const.CEL, Const.MAP * Const.CEL)
 			).Expand(Const.MAP * Const.HALF);
 
 			if (RequireReload || !midZone.Contains(viewPos) || z != LoadedZ) {
@@ -156,7 +156,7 @@ namespace AngeliaFramework {
 			for (int worldI = 0; worldI < 3; worldI++) {
 				for (int worldJ = 0; worldJ < 3; worldJ++) {
 					var world = Worlds[worldI, worldJ];
-					var worldUnitRect = new RectInt(
+					var worldUnitRect = new IRect(
 						world.WorldPosition.x * Const.MAP,
 						world.WorldPosition.y * Const.MAP,
 						Const.MAP,
@@ -196,7 +196,7 @@ namespace AngeliaFramework {
 			for (int worldI = 0; worldI < 3; worldI++) {
 				for (int worldJ = 0; worldJ < 3; worldJ++) {
 					var world = Worlds[worldI, worldJ];
-					var worldUnitRect = new RectInt(
+					var worldUnitRect = new IRect(
 						world.WorldPosition.x * Const.MAP,
 						world.WorldPosition.y * Const.MAP,
 						Const.MAP,
@@ -279,7 +279,7 @@ namespace AngeliaFramework {
 
 
 		// Get Set Block
-		public Vector3Int GetTriBlockAt (int unitX, int unitY) {
+		public Int3 GetTriBlockAt (int unitX, int unitY) {
 			var position00 = Worlds[0, 0].WorldPosition;
 			int worldX = unitX.UDivide(Const.MAP) - position00.x;
 			int worldY = unitY.UDivide(Const.MAP) - position00.y;
@@ -287,7 +287,7 @@ namespace AngeliaFramework {
 			var world = Worlds[worldX, worldY];
 			int localX = unitX - world.WorldPosition.x * Const.MAP;
 			int localY = unitY - world.WorldPosition.y * Const.MAP;
-			return new Vector3Int(
+			return new Int3(
 				world.Entity[localY * Const.MAP + localX],
 				world.Level[localY * Const.MAP + localX],
 				world.Background[localY * Const.MAP + localX]
@@ -395,7 +395,7 @@ namespace AngeliaFramework {
 
 		// Draw
 		private void DrawBackgroundBlock (int id, int unitX, int unitY) {
-			var rect = new RectInt(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
+			var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 			if (CullingCameraRect.Overlaps(rect)) {
 				CellRenderer.Draw(id, rect);
 			}
@@ -403,7 +403,7 @@ namespace AngeliaFramework {
 			if (CellRenderer.TryGetSprite(id, out var sp) && CellRenderer.TryGetMeta(id, out var meta) && AngeUtil.IsOnewayTag(meta.Tag)) {
 				CellPhysics.FillBlock(
 					PhysicsLayer.LEVEL, id,
-					new RectInt(
+					new IRect(
 						unitX * Const.CEL,
 						unitY * Const.CEL,
 						Const.CEL,
@@ -418,7 +418,7 @@ namespace AngeliaFramework {
 
 
 		private void DrawLevelBlock (int id, int unitX, int unitY, bool behind) {
-			var rect = new RectInt(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
+			var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 			if (CullingCameraRect.Overlaps(rect)) {
 				CellRenderer.Draw(id, rect);
 			}
@@ -451,7 +451,7 @@ namespace AngeliaFramework {
 				}
 			} else {
 				// Draw Entity
-				var rect = new RectInt(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
+				var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 				if (!CullingCameraRect.Overlaps(rect)) return;
 				if (
 					CellRenderer.TryGetSprite(id, out var sprite) ||
@@ -468,7 +468,7 @@ namespace AngeliaFramework {
 
 		private void Draw_Behind (int id, int unitX, int unitY, bool fixRatio) {
 			var cameraRect = CameraRect;
-			var rect = new RectInt(
+			var rect = new IRect(
 				Util.RemapUnclamped(ParallaxRect.xMin, ParallaxRect.xMax, cameraRect.xMin, cameraRect.xMax, unitX * Const.CEL),
 				Util.RemapUnclamped(ParallaxRect.yMin, ParallaxRect.yMax, cameraRect.yMin, cameraRect.yMax, unitY * Const.CEL),
 				BackgroundBlockSize, BackgroundBlockSize
@@ -488,7 +488,7 @@ namespace AngeliaFramework {
 				rect.width = width;
 				rect.height = height;
 			}
-			var tint = Color32.LerpUnclamped(
+			var tint = Pixel32.LerpUnclamped(
 				CellRenderer.SkyTintBottom, CellRenderer.SkyTintTop,
 				Mathf.InverseLerp(cameraRect.yMin, cameraRect.yMax, rect.y + rect.height / 2)
 			);
@@ -555,7 +555,7 @@ namespace AngeliaFramework {
 			for (int j = 0; j < 3; j++) {
 				for (int i = 0; i < 3; i++) {
 					var world = Worlds[i, j];
-					var pos = new Vector3Int(worldX + i - 1, worldY + j - 1, worldZ);
+					var pos = new Int3(worldX + i - 1, worldY + j - 1, worldZ);
 					if (!forceLoad && world.WorldPosition == pos) continue;
 					// Load from Current Channel
 					world.LoadFromDisk(

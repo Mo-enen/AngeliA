@@ -47,8 +47,8 @@ namespace AngeliaFramework {
 			// Music
 			var root = new GameObject("Audio", typeof(AudioListener)).transform;
 			root.SetParent(null);
-			root.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-			root.localScale = Vector3.one;
+			root.SetPositionAndRotation(Float3.zero, default);
+			root.localScale = Float3.one;
 			MusicSource = root.gameObject.AddComponent<AudioSource>();
 			MusicSource.loop = true;
 			MusicSource.playOnAwake = false;

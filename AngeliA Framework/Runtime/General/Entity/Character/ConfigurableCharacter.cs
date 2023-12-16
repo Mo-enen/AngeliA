@@ -43,7 +43,7 @@ namespace AngeliaFramework {
 			public int Suit_Foot = 0;
 
 			// Color
-			public int SkinColor = Util.ColorToInt(new Color32(245, 217, 196, 255)); // #f5d9c4
+			public int SkinColor = Util.ColorToInt(new Pixel32(245, 217, 196, 255)); // #f5d9c4
 			public int HairColor = 858993663;
 
 

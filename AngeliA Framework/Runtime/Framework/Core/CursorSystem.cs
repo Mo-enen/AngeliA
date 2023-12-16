@@ -8,7 +8,7 @@ namespace AngeliaFramework {
 
 
 		// Data
-		private static Vector2[] CursorPivots = null;
+		private static Float2[] CursorPivots = null;
 		private static int CurrentCursorIndex = -1;
 		private static int CursorEndFrame = int.MinValue;
 		private static int CursorPriority = int.MinValue;
@@ -24,41 +24,41 @@ namespace AngeliaFramework {
 #endif
 			Cursors = cursors;
 			if (cursors == null || cursors.Length == 0) {
-				CursorPivots = new Vector2[0];
+				CursorPivots = new Float2[0];
 				return;
 			}
-			CursorPivots = new Vector2[cursors.Length];
+			CursorPivots = new Float2[cursors.Length];
 			for (int i = 0; i < cursors.Length; i++) {
 				var texture = cursors[i];
 				if (texture == null) continue;
-				var pivot = new Vector2(texture.width / 2f, texture.height / 2f);
+				var pivot = new Float2(texture.width / 2f, texture.height / 2f);
 				var oic = System.StringComparison.OrdinalIgnoreCase;
 				switch (texture.name) {
 
 					case var _name when _name.EndsWith("#bottom", oic):
-						pivot = new Vector2(texture.width / 2f, texture.height);
+						pivot = new Float2(texture.width / 2f, texture.height);
 						break;
 					case var _name when _name.EndsWith("#top", oic):
-						pivot = new Vector2(texture.width / 2f, 0);
+						pivot = new Float2(texture.width / 2f, 0);
 						break;
 					case var _name when _name.EndsWith("#left", oic):
-						pivot = new Vector2(0, texture.height / 2f);
+						pivot = new Float2(0, texture.height / 2f);
 						break;
 					case var _name when _name.EndsWith("#right", oic):
-						pivot = new Vector2(texture.width, texture.height / 2f);
+						pivot = new Float2(texture.width, texture.height / 2f);
 						break;
 
 					case var _name when _name.EndsWith("#bottomleft", oic):
-						pivot = new Vector2(0, texture.height);
+						pivot = new Float2(0, texture.height);
 						break;
 					case var _name when _name.EndsWith("#bottomright", oic):
-						pivot = new Vector2(texture.width, texture.height);
+						pivot = new Float2(texture.width, texture.height);
 						break;
 					case var _name when _name.EndsWith("#topleft", oic):
-						pivot = new Vector2(0, 0);
+						pivot = new Float2(0, 0);
 						break;
 					case var _name when _name.EndsWith("#topright", oic):
-						pivot = new Vector2(texture.width, 0);
+						pivot = new Float2(texture.width, 0);
 						break;
 				}
 				CursorPivots[i] = pivot;
@@ -84,7 +84,7 @@ namespace AngeliaFramework {
 					if (CurrentCursorIndex >= 0 && CurrentCursorIndex < Cursors.Length) {
 						var texture = Cursors[CurrentCursorIndex];
 						if (texture == null) return;
-						var pivot = Vector2.zero;
+						var pivot = Float2.zero;
 						if (CurrentCursorIndex < CursorPivots.Length) {
 							pivot = CursorPivots[CurrentCursorIndex];
 						}
@@ -102,7 +102,7 @@ namespace AngeliaFramework {
 		public static void RequireCursor (int priority = -1) => SetCursor(-1, priority);
 
 
-		public static void SetCursor (int cursorIndex, RectInt mouseRange, int priority = 0) {
+		public static void SetCursor (int cursorIndex, IRect mouseRange, int priority = 0) {
 			if (!mouseRange.Contains(FrameInput.MouseGlobalPosition)) return;
 			SetCursor(cursorIndex, priority);
 		}
@@ -121,15 +121,15 @@ namespace AngeliaFramework {
 
 
 		public static void SetCursorAsHand (int priority = 0) => SetCursor(Const.CURSOR_HAND, priority);
-		public static void SetCursorAsHand (RectInt mouseRange, int priority = 0) => SetCursor(Const.CURSOR_HAND, mouseRange, priority);
+		public static void SetCursorAsHand (IRect mouseRange, int priority = 0) => SetCursor(Const.CURSOR_HAND, mouseRange, priority);
 
 
 		public static void SetCursorAsBeam (int priority = 0) => SetCursor(Const.CURSOR_BEAM, priority);
-		public static void SetCursorAsBeam (RectInt mouseRange, int priority = 0) => SetCursor(Const.CURSOR_BEAM, mouseRange, priority);
+		public static void SetCursorAsBeam (IRect mouseRange, int priority = 0) => SetCursor(Const.CURSOR_BEAM, mouseRange, priority);
 
 
 		public static void SetCursorAsMove (int priority = 0) => SetCursor(Const.CURSOR_MOVE, priority);
-		public static void SetCursorAsMove (RectInt mouseRange, int priority = 0) => SetCursor(Const.CURSOR_MOVE, mouseRange, priority);
+		public static void SetCursorAsMove (IRect mouseRange, int priority = 0) => SetCursor(Const.CURSOR_MOVE, mouseRange, priority);
 
 
 	}

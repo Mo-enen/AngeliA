@@ -57,8 +57,8 @@ namespace AngeliaFramework {
 				effect.Material = new Material(shader) {
 					name = shader.name,
 					enableInstancing = true,
-					mainTextureOffset = Vector2.zero,
-					mainTextureScale = Vector2.one,
+					mainTextureOffset = Float2.zero,
+					mainTextureScale = Float2.one,
 					doubleSidedGI = false,
 					renderQueue = 3000
 				};

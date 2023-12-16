@@ -41,7 +41,7 @@ namespace AngeliaFramework {
 		private int FireFrameOffset = 0;
 		private int NextFireSpawnedFrame = int.MinValue;
 		private bool Burning = false;
-		private Color32 FireTint = Const.WHITE;
+		private Pixel32 FireTint = Const.WHITE;
 
 
 		#endregion

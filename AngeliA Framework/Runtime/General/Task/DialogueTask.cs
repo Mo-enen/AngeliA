@@ -16,7 +16,7 @@ namespace AngeliaFramework {
 		private class Section {
 			public int CharacterID;
 			public string Content;
-			public Color32[] Colors;
+			public Pixel32[] Colors;
 		}
 
 
@@ -104,7 +104,7 @@ namespace AngeliaFramework {
 			int currentCharacterID = 0;
 			var currentColor = Const.WHITE;
 			var builder = new StringBuilder();
-			var colors = new List<Color32>();
+			var colors = new List<Pixel32>();
 			foreach (string line in Util.ForAllLines(conversationPath, Encoding.UTF8)) {
 
 				// Empty Line

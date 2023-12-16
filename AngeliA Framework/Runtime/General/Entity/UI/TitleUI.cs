@@ -77,7 +77,7 @@ namespace AngeliaFramework {
 				// Sub Title
 				CellRendererGUI.Label(
 					CellContent.Get(SubTitle, Const.WHITE, 32, Alignment.TopMid),
-					new RectInt(
+					new IRect(
 						cRect.x,
 						bound.y - cRect.height,
 						cRect.width,

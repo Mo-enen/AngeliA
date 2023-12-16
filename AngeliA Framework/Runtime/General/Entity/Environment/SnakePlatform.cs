@@ -23,8 +23,8 @@ namespace AngeliaFramework {
 
 		// Data
 		private Direction4 CurrentDirection = Direction4.Right;
-		private Vector2Int TargetPosition = default;
-		private Vector2Int StartPosition = default;
+		private Int2 TargetPosition = default;
+		private Int2 StartPosition = default;
 		private SnakePlatform Head = null;
 		private bool PrevTouched = false;
 		private int EndReachingFrame = int.MinValue;
@@ -162,7 +162,7 @@ namespace AngeliaFramework {
 			// L
 			for (int x = -Const.HALF; ; x -= Const.CEL) {
 				var snake = CellPhysics.GetEntity<SnakePlatform>(
-					new RectInt(X + x, y, 1, 1), PhysicsMask.ENVIRONMENT, this, OperationMode.ColliderAndTrigger
+					new IRect(X + x, y, 1, 1), PhysicsMask.ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 				);
 				if (snake == null) break;
 				snake.PrevTouched = true;
@@ -173,7 +173,7 @@ namespace AngeliaFramework {
 			// R
 			for (int x = Const.CEL + Const.HALF; ; x += Const.CEL) {
 				var snake = CellPhysics.GetEntity<SnakePlatform>(
-					new RectInt(X + x, y, 1, 1), PhysicsMask.ENVIRONMENT, this, OperationMode.ColliderAndTrigger
+					new IRect(X + x, y, 1, 1), PhysicsMask.ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 				);
 				if (snake == null) break;
 				snake.PrevTouched = true;
@@ -200,7 +200,7 @@ namespace AngeliaFramework {
 				int rightX = right.X + right.Width;
 				for (int x = leftX; x < rightX; x += Const.CEL) {
 					var snake = CellPhysics.GetEntity<SnakePlatform>(
-						new RectInt(x, y, 1, 1), PhysicsMask.ENVIRONMENT,
+						new IRect(x, y, 1, 1), PhysicsMask.ENVIRONMENT,
 						null, OperationMode.ColliderAndTrigger
 					);
 					if (snake == null) continue;

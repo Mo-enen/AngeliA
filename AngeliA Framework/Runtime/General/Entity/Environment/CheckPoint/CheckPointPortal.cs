@@ -10,9 +10,9 @@ namespace AngeliaFramework {
 	[EntityAttribute.DontSpawnFromWorld]
 	public class CheckPointPortal : CircleFlamePortal {
 
-		protected override Vector3Int TargetGlobalPosition => TargetUnitPosition.ToGlobal();
+		protected override Int3 TargetGlobalPosition => TargetUnitPosition.ToGlobal();
 		public static readonly int TYPE_ID = typeof(CheckPointPortal).AngeHash();
-		private Vector3Int TargetUnitPosition;
+		private Int3 TargetUnitPosition;
 		private int TargetCheckPointID;
 		private int InvokeFrame = -1;
 
@@ -37,7 +37,7 @@ namespace AngeliaFramework {
 			// Draw Cp Icon
 			if (CellRenderer.TryGetSprite(TargetCheckPointID, out var sprite)) {
 				const int SIZE = 196;
-				var rect = new RectInt(Rect.CenterX() - SIZE / 2, Rect.CenterY() - SIZE / 2, SIZE, SIZE);
+				var rect = new IRect(Rect.CenterX() - SIZE / 2, Rect.CenterY() - SIZE / 2, SIZE, SIZE);
 				var tint = Color.LerpUnclamped(Const.WHITE_0, Const.WHITE, (Game.GlobalFrame - SpawnFrame).PingPong(60) / 60f);
 				CellRenderer.Draw(TargetCheckPointID, rect.Fit(sprite), tint, RenderingMaxZ + 1);
 			}
@@ -52,7 +52,7 @@ namespace AngeliaFramework {
 		}
 
 		// API
-		public void SetCheckPoint (int checkPointID, Vector3Int unitPosition) {
+		public void SetCheckPoint (int checkPointID, Int3 unitPosition) {
 			TargetUnitPosition = unitPosition;
 			TargetCheckPointID = checkPointID;
 		}

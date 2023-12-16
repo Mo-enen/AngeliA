@@ -32,15 +32,15 @@ namespace AngeliaFramework {
 		protected virtual int LightArtwork => ART_LIGHT;
 		protected virtual int DarkArtwork => ART_DARK;
 		protected virtual int SmokeParticleID => SMOKE_ID;
-		protected virtual Color32 WaveColor => new(255, 255, 255, 255);
-		protected virtual Color32 RingColor => new(255, 0, 0, 255);
-		protected virtual Color32 FireColor => new(255, 255, 0, 255);
+		protected virtual Pixel32 WaveColor => new(255, 255, 255, 255);
+		protected virtual Pixel32 RingColor => new(255, 0, 0, 255);
+		protected virtual Pixel32 FireColor => new(255, 255, 0, 255);
 		public Entity Sender { get; set; } = null;
 		public int BreakObjectArtwork { get; set; }
 
 		// Data
-		private readonly Vector3Int[] FirePos = new Vector3Int[10];
-		private readonly Vector3Int[] SmokePos = new Vector3Int[2];
+		private readonly Int3[] FirePos = new Int3[10];
+		private readonly Int3[] SmokePos = new Int3[2];
 		private bool Exploded = false;
 
 
@@ -59,14 +59,14 @@ namespace AngeliaFramework {
 			Exploded = false;
 			int seed = Game.GlobalFrame;
 			for (int i = 0; i < FirePos.Length; i++) {
-				FirePos[i] = new Vector3Int(
+				FirePos[i] = new Int3(
 					(seed = Util.QuickRandom(seed)).UMod(2000) - 1000,
 					(seed = Util.QuickRandom(seed)).UMod(2000) - 1000,
 					(seed = Util.QuickRandom(seed)).UMod(1000)
 				);
 			}
 			for (int i = 0; i < SmokePos.Length; i++) {
-				SmokePos[i] = new Vector3Int(
+				SmokePos[i] = new Int3(
 					(seed = Util.QuickRandom(seed)).UMod(2000) - 1000,
 					(seed = Util.QuickRandom(seed)).UMod(2000) - 1000,
 					(seed = Util.QuickRandom(seed)).UMod(1000)
@@ -92,7 +92,7 @@ namespace AngeliaFramework {
 				Exploded = true;
 				var hits = CellPhysics.OverlapAll(
 					CollisionMask,
-					new RectInt(X - Radius, Y - Radius, Radius * 2, Radius * 2),
+					new IRect(X - Radius, Y - Radius, Radius * 2, Radius * 2),
 					out int count,
 					null, OperationMode.ColliderAndTrigger
 				);
@@ -140,7 +140,7 @@ namespace AngeliaFramework {
 			// Light
 			if (LightArtwork != 0) {
 				int lightRadius = Radius * 20 / 8;
-				var lightColor = new Color32(255, 255, 255, (byte)Mathf.LerpUnclamped(255, 0, lerp01));
+				var lightColor = new Pixel32(255, 255, 255, (byte)Mathf.LerpUnclamped(255, 0, lerp01));
 				CellRenderer.Draw(
 					LightArtwork, X, Y, 500, 500, 0, lightRadius, lightRadius,
 					lightColor, 1023
@@ -171,7 +171,7 @@ namespace AngeliaFramework {
 
 			// Dark
 			if (DarkArtwork != 0) {
-				var darkColor = new Color32(0, 0, 0, (byte)Mathf.LerpUnclamped(64, 0, lerp01));
+				var darkColor = new Pixel32(0, 0, 0, (byte)Mathf.LerpUnclamped(64, 0, lerp01));
 				int darkRadius = Radius * 22 / 8;
 				CellRenderer.Draw(
 					DarkArtwork, X, Y, 500, 500, 45,
@@ -209,14 +209,14 @@ namespace AngeliaFramework {
 				particle.Y = Y + pos.y * Radius / 2000;
 				particle.Width = particle.X > X ? size : -size;
 				particle.Height = size;
-				particle.Tint = new Color32(12, 12, 12, 32);
+				particle.Tint = new Pixel32(12, 12, 12, 32);
 			}
 		}
 
 
 		protected virtual void SpawnBreakingObject () {
 			if (BreakObjectArtwork == 0) return;
-			BreakingParticle.SpawnParticles(BreakObjectArtwork, new RectInt(X, Y, Const.CEL, Const.CEL));
+			BreakingParticle.SpawnParticles(BreakObjectArtwork, new IRect(X, Y, Const.CEL, Const.CEL));
 		}
 
 

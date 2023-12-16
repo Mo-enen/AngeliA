@@ -55,7 +55,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			var border = CellRenderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Vector4Int.zero;
+			var border = CellRenderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Int4.zero;
 			CellPhysics.FillBlock(
 				PhysicsLayer.ENVIRONMENT, TypeID, Rect.Shrink(border), true, Const.ONEWAY_UP_TAG
 			);
@@ -69,7 +69,7 @@ namespace AngeliaFramework {
 			var player = Player.Selecting;
 
 			if (player == null || !player.Active) return;
-			var unitPos = new Vector3Int(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
+			var unitPos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 			bool highlighting = Player.RespawnCpUnitPosition.HasValue && Player.RespawnCpUnitPosition.Value == unitPos;
 			bool trySpawnPortal = highlighting && CheckPoint.LastTriggeredCheckPointID == LinkedCheckPointID;
 
@@ -104,7 +104,7 @@ namespace AngeliaFramework {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			CellRenderer.Draw(TypeID, Rect);
-			var unitPos = new Vector3Int(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
+			var unitPos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 			if (Player.RespawnCpUnitPosition == unitPos) {
 				CheckPoint.DrawActivatedHighlight(Rect);
 			}

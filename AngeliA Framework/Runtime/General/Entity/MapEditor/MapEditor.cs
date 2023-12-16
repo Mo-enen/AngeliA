@@ -31,7 +31,7 @@ namespace AngeliaFramework {
 
 		// Undo
 		private class MapUndoItem : UndoItem {
-			public RectInt ViewRect;
+			public IRect ViewRect;
 			public int ViewZ;
 			public int DataIndex;
 			public int DataLength;
@@ -114,9 +114,9 @@ namespace AngeliaFramework {
 		private static readonly int TRIANGLE_UP = "Icon TriangleUp".AngeHash();
 		private static readonly int TRIANGLE_DOWN = "Icon TriangleDown".AngeHash();
 		private static readonly int REFRESH_ICON = "Icon Refresh".AngeHash();
-		private static readonly Color32 CURSOR_TINT = new(240, 240, 240, 128);
-		private static readonly Color32 CURSOR_TINT_DARK = new(16, 16, 16, 128);
-		private static readonly Color32 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
+		private static readonly Pixel32 CURSOR_TINT = new(240, 240, 240, 128);
+		private static readonly Pixel32 CURSOR_TINT_DARK = new(16, 16, 16, 128);
+		private static readonly Pixel32 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
 		private static readonly int MEDT_DROP = "MEDT.Drop".AngeHash();
 		private static readonly int MEDT_CANCEL_DROP = "MEDT.CancelDrop".AngeHash();
 		private static readonly int MEDT_ENTITY_ONLY = "MEDT.EntityOnly".AngeHash();
@@ -169,13 +169,13 @@ namespace AngeliaFramework {
 		// Data
 		private PaletteItem SelectingPaletteItem = null;
 		private Queue<MapUndoItem> PerformingUndoQueue = null;
-		private Vector3Int PlayerDropPos = default;
-		private RectInt TargetViewRect = default;
-		private RectInt CopyBufferOriginalUnitRect = default;
-		private RectInt TooltipRect = default;
-		private RectInt PanelRect = default;
-		private RectInt ToolbarRect = default;
-		private RectInt QuickLaneRect = default;
+		private Int3 PlayerDropPos = default;
+		private IRect TargetViewRect = default;
+		private IRect CopyBufferOriginalUnitRect = default;
+		private IRect TooltipRect = default;
+		private IRect PanelRect = default;
+		private IRect ToolbarRect = default;
+		private IRect QuickLaneRect = default;
 		private bool PlayingGame = false;
 		private bool IsNavigating = false;
 		private bool IsDirty = false;
@@ -371,7 +371,7 @@ namespace AngeliaFramework {
 				if (index < 0 || index >= spriteCount) continue;
 
 				var firstSprite = CellRenderer.GetSpriteAt(index);
-				var pivot = Vector2Int.zero;
+				var pivot = Int2.zero;
 				pivot.x = firstSprite.PivotX;
 				pivot.y = firstSprite.PivotY;
 				SpritePool.TryAdd(chain.ID, firstSprite);
@@ -605,7 +605,7 @@ namespace AngeliaFramework {
 			}
 
 			// Move
-			var delta = Vector2Int.zero;
+			var delta = Int2.zero;
 			if (
 				(!FrameInput.MouseMidButtonDown && FrameInput.MouseMidButton) ||
 				(FrameInput.MouseLeftButton && CtrlHolding)
@@ -749,16 +749,16 @@ namespace AngeliaFramework {
 					// Move Selecting Blocks
 					if (SelectionUnitRect.HasValue) {
 						if (FrameInput.KeyboardDownGUI(Key.LeftArrow)) {
-							MoveSelection(Vector2Int.left);
+							MoveSelection(Int2.left);
 						}
 						if (FrameInput.KeyboardDownGUI(Key.RightArrow)) {
-							MoveSelection(Vector2Int.right);
+							MoveSelection(Int2.right);
 						}
 						if (FrameInput.KeyboardDownGUI(Key.DownArrow)) {
-							MoveSelection(Vector2Int.down);
+							MoveSelection(Int2.down);
 						}
 						if (FrameInput.KeyboardDownGUI(Key.UpArrow)) {
-							MoveSelection(Vector2Int.up);
+							MoveSelection(Int2.up);
 						}
 					}
 
@@ -871,7 +871,7 @@ namespace AngeliaFramework {
 			player.AnimationType = CharacterAnimationType.Idle;
 			int startIndex = CellRenderer.GetUsedCellCount();
 			AngeUtil.DrawPoseCharacterAsUI(
-				new RectInt(
+				new IRect(
 					PlayerDropPos.x - Const.HALF,
 					PlayerDropPos.y - Const.CEL * 2,
 					Const.CEL, Const.CEL * 2
@@ -889,7 +889,7 @@ namespace AngeliaFramework {
 
 			if (!QuickPlayerDrop) {
 				DropHintLabel.Text = Language.Get(MEDT_DROP, "Mouse Left Button to Drop");
-				CellRendererGUI.Label(DropHintLabel, new RectInt(
+				CellRendererGUI.Label(DropHintLabel, new IRect(
 					FrameInput.MouseGlobalPosition.x - DropHintWidth / 2,
 					FrameInput.MouseGlobalPosition.y + Const.HALF,
 					DropHintWidth, Const.CEL
@@ -936,7 +936,7 @@ namespace AngeliaFramework {
 				int z = IsNavigating ? NavPosition.z : Stage.ViewZ;
 				CellRendererGUI.Label(
 					CellContent.Get(StateZLabelToString.GetString(z), Const.GREY_196, 22, Alignment.TopRight),
-					new RectInt(cameraRect.xMax - LABEL_WIDTH - PADDING, cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
+					new IRect(cameraRect.xMax - LABEL_WIDTH - PADDING, cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
 					out var boundsZ
 				);
 
@@ -945,14 +945,14 @@ namespace AngeliaFramework {
 					int y = FrameInput.MouseGlobalPosition.y.ToUnit();
 					CellRendererGUI.Label(
 						CellContent.Get(StateYLabelToString.GetString(y), Const.GREY_196, 22, Alignment.TopRight),
-						new RectInt(Mathf.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
+						new IRect(Mathf.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
 						out var boundsY
 					);
 
 					int x = FrameInput.MouseGlobalPosition.x.ToUnit();
 					CellRendererGUI.Label(
 						CellContent.Get(StateXLabelToString.GetString(x), Const.GREY_196, 22, Alignment.TopRight),
-						new RectInt(Mathf.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT)
+						new IRect(Mathf.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT)
 					);
 
 				}
@@ -1086,14 +1086,14 @@ namespace AngeliaFramework {
 		}
 
 
-		private void DrawTooltip (RectInt rect, string tip) {
+		private void DrawTooltip (IRect rect, string tip) {
 			if (GenericPopupUI.ShowingPopup) return;
 			TooltipDuration = rect == TooltipRect ? TooltipDuration + 1 : 0;
 			TooltipRect = rect;
 			if (TooltipDuration <= 60) return;
 			int height = Unify(24);
 			int gap = Unify(6);
-			var tipRect = new RectInt(
+			var tipRect = new IRect(
 				rect.x,
 				Mathf.Max(rect.y - height - Unify(12), CellRenderer.CameraRect.y),
 				rect.width, height
@@ -1156,9 +1156,9 @@ namespace AngeliaFramework {
 
 
 		// Undo
-		private void RegisterUndo_Begin (RectInt unitRange) => RegisterUndoLogic(unitRange, true, false);
-		private void RegisterUndo_End (RectInt unitRange, bool growStep = true) => RegisterUndoLogic(unitRange, false, growStep);
-		private void RegisterUndoLogic (RectInt unitRange, bool begin, bool growStep) {
+		private void RegisterUndo_Begin (IRect unitRange) => RegisterUndoLogic(unitRange, true, false);
+		private void RegisterUndo_End (IRect unitRange, bool growStep = true) => RegisterUndoLogic(unitRange, false, growStep);
+		private void RegisterUndoLogic (IRect unitRange, bool begin, bool growStep) {
 
 			int DATA_LEN = UndoData.Length;
 			int CURRENT_STEP = UndoRedo.CurrentStep;
@@ -1249,7 +1249,7 @@ namespace AngeliaFramework {
 			}
 			if (minX != int.MaxValue) {
 				IsDirty = true;
-				var unitRect = new RectInt(minX, minY, maxX - minX + 1, maxY - minY + 1);
+				var unitRect = new IRect(minX, minY, maxX - minX + 1, maxY - minY + 1);
 				RedirectForRule(unitRect);
 				SpawnBlinkParticle(unitRect.ToGlobal(), 0, FRAME);
 				Save();

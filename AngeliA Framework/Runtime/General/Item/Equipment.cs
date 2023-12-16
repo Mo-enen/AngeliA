@@ -34,7 +34,7 @@ namespace AngeliaFramework {
 		public static void SpawnEquipmentDamageParticle (int itemBeforeID, int itemAfterID, int x, int y) {
 			if (EquipmentDamageParticleID == 0) return;
 			if (Stage.SpawnEntity(EquipmentDamageParticleID, x, y) is not Particle particle) return;
-			particle.UserData = new Vector2Int(itemBeforeID, itemAfterID);
+			particle.UserData = new Int2(itemBeforeID, itemAfterID);
 		}
 
 		public virtual int GetOverrideMovementAnimationID (CharacterAnimationType type, Character character) => 0;

@@ -61,7 +61,7 @@ namespace AngeliaFramework {
 
 		[System.AttributeUsage(System.AttributeTargets.Class)]
 		public class BoundsAttribute : System.Attribute {
-			public RectInt Value;
+			public IRect Value;
 			public BoundsAttribute (int boundX, int boundY, int boundWidth, int boundHeight) => Value = new(boundX, boundY, boundWidth, boundHeight);
 		}
 

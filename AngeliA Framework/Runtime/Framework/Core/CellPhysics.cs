@@ -10,7 +10,7 @@ namespace AngeliaFramework {
 
 		public static readonly PhysicsCell EMPTY = new();
 
-		public RectInt Rect;
+		public IRect Rect;
 		public Entity Entity;
 		public uint Frame;
 		public bool IsTrigger;
@@ -113,14 +113,14 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void FillBlock (int layer, int blockID, RectInt globalRect, bool isTrigger = false, int tag = 0) => FillLogic(layer, blockID, globalRect, null, 0, 0, isTrigger, tag);
+		public static void FillBlock (int layer, int blockID, IRect globalRect, bool isTrigger = false, int tag = 0) => FillLogic(layer, blockID, globalRect, null, 0, 0, isTrigger, tag);
 
 
 		public static void FillEntity (int layer, Entity entity, bool isTrigger = false, int tag = 0) => FillLogic(layer, entity != null ? entity.TypeID : 0, entity.Rect, entity, 0, 0, isTrigger, tag);
 
 
 		// Overlap
-		public static bool Overlap (int mask, RectInt globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+		public static bool Overlap (int mask, IRect globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
 			for (int layerIndex = 0; layerIndex < LayerCount; layerIndex++) {
 				if ((mask & (1 << layerIndex)) == 0) continue;
 				if (OverlapLogic(layerIndex, globalRect, ignore, mode, tag, out _)) return true;
@@ -129,7 +129,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool Overlap (int mask, RectInt globalRect, out PhysicsCell info, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+		public static bool Overlap (int mask, IRect globalRect, out PhysicsCell info, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
 			for (int layerIndex = 0; layerIndex < LayerCount; layerIndex++) {
 				if ((mask & (1 << layerIndex)) == 0) continue;
 				if (OverlapLogic(layerIndex, globalRect, ignore, mode, tag, out info)) return true;
@@ -140,7 +140,7 @@ namespace AngeliaFramework {
 
 
 		public static PhysicsCell[] OverlapAll (
-			int mask, RectInt globalRect, out int count, Entity ignore = null,
+			int mask, IRect globalRect, out int count, Entity ignore = null,
 			OperationMode mode = OperationMode.ColliderOnly, int tag = 0
 		) {
 			count = OverlapAll(c_GeneralHits, mask, globalRect, ignore, mode, tag);
@@ -149,7 +149,7 @@ namespace AngeliaFramework {
 
 
 		private static int OverlapAll (
-			PhysicsCell[] hits, int mask, RectInt globalRect, Entity ignore = null,
+			PhysicsCell[] hits, int mask, IRect globalRect, Entity ignore = null,
 			OperationMode mode = OperationMode.ColliderOnly, int tag = 0
 		) {
 			int count = 0;
@@ -162,7 +162,7 @@ namespace AngeliaFramework {
 
 
 		// Entity
-		public static T GetEntity<T> (RectInt globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) where T : Entity {
+		public static T GetEntity<T> (IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) where T : Entity {
 			int count = OverlapAll(c_GetEntity, mask, globalRect, ignore, mode, tag);
 			for (int i = 0; i < count; i++) {
 				var e = c_GetEntity[i].Entity;
@@ -170,7 +170,7 @@ namespace AngeliaFramework {
 			}
 			return null;
 		}
-		public static Entity GetEntity (System.Type type, RectInt globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+		public static Entity GetEntity (System.Type type, IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
 			int count = OverlapAll(c_GetEntity, mask, globalRect, ignore, mode, tag);
 			for (int i = 0; i < count; i++) {
 				var e = c_GetEntity[i].Entity;
@@ -180,7 +180,7 @@ namespace AngeliaFramework {
 			}
 			return null;
 		}
-		public static Entity GetEntity (int typeID, RectInt globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+		public static Entity GetEntity (int typeID, IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
 			int count = OverlapAll(c_GetEntity, mask, globalRect, ignore, mode, tag);
 			for (int i = 0; i < count; i++) {
 				var e = c_GetEntity[i].Entity;
@@ -190,18 +190,18 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool HasEntity<T> (RectInt globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) where T : Entity => GetEntity<T>(globalRect, mask, ignore, mode, tag) != null;
-		public static bool HasEntity (System.Type type, RectInt globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) => GetEntity(type, globalRect, mask, ignore, mode, tag) != null;
+		public static bool HasEntity<T> (IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) where T : Entity => GetEntity<T>(globalRect, mask, ignore, mode, tag) != null;
+		public static bool HasEntity (System.Type type, IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) => GetEntity(type, globalRect, mask, ignore, mode, tag) != null;
 
 
 		// Room Check
-		public static bool RoomCheck (int mask, RectInt rect, Entity entity, Direction4 direction, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) => RoomCheck(mask, rect, entity, direction, out _, mode, tag);
-		public static bool RoomCheck (int mask, RectInt rect, Entity entity, Direction4 direction, out PhysicsCell hit, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) => !Overlap(mask, rect.Edge(direction), out hit, entity, mode, tag);
+		public static bool RoomCheck (int mask, IRect rect, Entity entity, Direction4 direction, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) => RoomCheck(mask, rect, entity, direction, out _, mode, tag);
+		public static bool RoomCheck (int mask, IRect rect, Entity entity, Direction4 direction, out PhysicsCell hit, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) => !Overlap(mask, rect.Edge(direction), out hit, entity, mode, tag);
 
 
-		public static bool RoomCheckOneway (int mask, RectInt rect, Entity entity, Direction4 direction, bool overlapCheck = false, bool blockOnly = false) =>
+		public static bool RoomCheckOneway (int mask, IRect rect, Entity entity, Direction4 direction, bool overlapCheck = false, bool blockOnly = false) =>
 			RoomCheckOneway(mask, rect, entity, direction, out _, overlapCheck, blockOnly);
-		public static bool RoomCheckOneway (int mask, RectInt rect, Entity entity, Direction4 direction, out PhysicsCell hit, bool overlapCheck = false, bool blockOnly = false) {
+		public static bool RoomCheckOneway (int mask, IRect rect, Entity entity, Direction4 direction, out PhysicsCell hit, bool overlapCheck = false, bool blockOnly = false) {
 			hit = PhysicsCell.EMPTY;
 			bool result = true;
 			var gateDir = direction.Opposite();
@@ -223,20 +223,20 @@ namespace AngeliaFramework {
 
 
 		// Move
-		public static Vector2Int MoveIgnoreOneway (int mask, Vector2Int from, int speedX, int speedY, Vector2Int size, Entity entity) => MoveSafeLogic(mask, from, speedX, speedY, size, entity, true, out _, out _);
+		public static Int2 MoveIgnoreOneway (int mask, Int2 from, int speedX, int speedY, Int2 size, Entity entity) => MoveSafeLogic(mask, from, speedX, speedY, size, entity, true, out _, out _);
 
 
-		public static Vector2Int Move (int mask, Vector2Int from, int speedX, int speedY, Vector2Int size, Entity entity, out bool stopX, out bool stopY) => MoveSafeLogic(mask, from, speedX, speedY, size, entity, false, out stopX, out stopY);
+		public static Int2 Move (int mask, Int2 from, int speedX, int speedY, Int2 size, Entity entity, out bool stopX, out bool stopY) => MoveSafeLogic(mask, from, speedX, speedY, size, entity, false, out stopX, out stopY);
 
 
-		public static Vector2Int MoveImmediately (
-			int mask, Vector2Int from, Direction4 direction, int speed,
-			Vector2Int size, Entity entity, bool ignoreOneway = false
+		public static Int2 MoveImmediately (
+			int mask, Int2 from, Direction4 direction, int speed,
+			Int2 size, Entity entity, bool ignoreOneway = false
 		) {
 			var dir = direction.Normal();
 			var result = MoveLogic(
 				mask, from,
-				new Vector2Int(from.x + dir.x * speed, from.y + dir.y * speed),
+				new Int2(from.x + dir.x * speed, from.y + dir.y * speed),
 				size, entity
 			);
 			if (!ignoreOneway) {
@@ -256,7 +256,7 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private static bool OverlapLogic (int layer, RectInt globalRect, Entity ignore, OperationMode mode, int tag, out PhysicsCell info) {
+		private static bool OverlapLogic (int layer, IRect globalRect, Entity ignore, OperationMode mode, int tag, out PhysicsCell info) {
 			var layerItem = Layers[layer];
 			int l = Mathf.Max(GlobalX_to_CellX(globalRect.xMin) - 1, 0);
 			int d = Mathf.Max(GlobalY_to_CellY(globalRect.yMin) - 1, 0);
@@ -286,7 +286,7 @@ namespace AngeliaFramework {
 
 		private static int OverlapAllLogic (
 			PhysicsCell[] hits, int startIndex, int layer,
-			RectInt globalRect, Entity ignore, OperationMode mode, int tag, bool ignoreStamp
+			IRect globalRect, Entity ignore, OperationMode mode, int tag, bool ignoreStamp
 		) {
 			int count = startIndex;
 			int maxLength = hits.Length;
@@ -321,7 +321,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void FillLogic (int layer, int sourceId, RectInt globalRect, Entity entity, int speedX, int speedY, bool isTrigger, int tag) {
+		private static void FillLogic (int layer, int sourceId, IRect globalRect, Entity entity, int speedX, int speedY, bool isTrigger, int tag) {
 
 			if (globalRect.width > Const.CEL || globalRect.height > Const.CEL) {
 				// Too Large
@@ -359,7 +359,7 @@ namespace AngeliaFramework {
 
 
 		// Move
-		private static Vector2Int MoveSafeLogic (int mask, Vector2Int from, int speedX, int speedY, Vector2Int size, Entity entity, bool ignoreOneway, out bool stopForOnewayX, out bool stopForOnewayY) {
+		private static Int2 MoveSafeLogic (int mask, Int2 from, int speedX, int speedY, Int2 size, Entity entity, bool ignoreOneway, out bool stopForOnewayX, out bool stopForOnewayY) {
 			const int RIGIDBODY_FAST_SPEED = 32;
 			var _from = from;
 			var result = from;
@@ -376,7 +376,7 @@ namespace AngeliaFramework {
 					_speedY -= _sY;
 					result = MoveLogic3(
 						mask, _from,
-						new Vector2Int(_from.x + _sX, _from.y + _sY),
+						new Int2(_from.x + _sX, _from.y + _sY),
 						new(size.x, size.y), entity
 					);
 					if (result == _from) break;
@@ -386,7 +386,7 @@ namespace AngeliaFramework {
 				// Normal
 				result = MoveLogic3(
 					mask, _from,
-					new Vector2Int(_from.x + speedX, _from.y + speedY),
+					new Int2(_from.x + speedX, _from.y + speedY),
 					new(size.x, size.y),
 					entity
 				);
@@ -401,27 +401,27 @@ namespace AngeliaFramework {
 		}
 
 
-		private static Vector2Int MoveLogic3 (int mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) {
+		private static Int2 MoveLogic3 (int mask, Int2 from, Int2 to, Int2 size, Entity entity) {
 			bool moveH = from.x != to.x;
 			bool moveV = from.y != to.y;
 			if (moveH != moveV) {
 				return MoveLogic(mask, from, to, size, entity);
 			} else {
-				var pos = MoveLogic(mask, from, new Vector2Int(from.x, to.y), size, entity);
+				var pos = MoveLogic(mask, from, new Int2(from.x, to.y), size, entity);
 				return MoveLogic(mask, new(from.x, pos.y), new(to.x, pos.y), size, entity);
 			}
 		}
 
 
-		private static Vector2Int MoveLogic (int mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity) {
+		private static Int2 MoveLogic (int mask, Int2 from, Int2 to, Int2 size, Entity entity) {
 			int distance = int.MaxValue;
-			Vector2Int result = to;
-			Vector2Int center = default;
-			Vector2Int ghostH = default;
-			Vector2Int ghostV = default;
+			Int2 result = to;
+			Int2 center = default;
+			Int2 ghostH = default;
+			Int2 ghostV = default;
 
 			int count = 0;
-			var globalRect = new RectInt(to, size);
+			var globalRect = new IRect(to, size);
 			for (int layerIndex = 0; layerIndex < LayerCount; layerIndex++) {
 				if ((mask & (1 << layerIndex)) == 0) continue;
 				count = OverlapAllLogic(c_Movement, count, layerIndex, globalRect, entity, OperationMode.ColliderOnly, 0, true);
@@ -455,7 +455,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private static Vector2Int OnewayCheck (int mask, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out bool stopForOnewayX, out bool stopForOnewayY) {
+		private static Int2 OnewayCheck (int mask, Int2 from, Int2 to, Int2 size, Entity entity, out bool stopForOnewayX, out bool stopForOnewayY) {
 			stopForOnewayX = false;
 			stopForOnewayY = false;
 			int velX = to.x - from.x;
@@ -472,7 +472,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private static bool OnewayCheckLogic (int mask, Direction4 moveDirection, Vector2Int from, Vector2Int to, Vector2Int size, Entity entity, out Vector2Int newPos) {
+		private static bool OnewayCheckLogic (int mask, Direction4 moveDirection, Int2 from, Int2 to, Int2 size, Entity entity, out Int2 newPos) {
 			newPos = to;
 			bool result = false;
 			var gateDir = moveDirection.Opposite();
@@ -497,7 +497,7 @@ namespace AngeliaFramework {
 			}
 			return result;
 			// Func
-			static bool OnewayPassCheck (RectInt onewayRect, Direction4 gateDirection, Vector2Int from, Vector2Int to, Vector2Int size, out Vector2Int newPos) {
+			static bool OnewayPassCheck (IRect onewayRect, Direction4 gateDirection, Int2 from, Int2 to, Int2 size, out Int2 newPos) {
 				newPos = to;
 				var rect = onewayRect;
 				switch (gateDirection) {

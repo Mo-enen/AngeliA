@@ -18,7 +18,7 @@ namespace AngeliaFramework.Editor {
 		static GUIStyle iconPreviewBlack = null;
 		static GUIStyle iconPreviewWhite = null;
 		static string[] ico_list = new string[0];
-		Vector2 scroll;
+		Float2 scroll;
 		int buttonSize = 70;
 		string search = "";
 
@@ -27,7 +27,7 @@ namespace AngeliaFramework.Editor {
 		[MenuItem("AngeliA/Other/Editor Icons", priority = -1001)]
 		public static void EditorIconsOpen () {
 			var w = GetWindow<EditorIcons>(true, "Editor Icons", true);
-			w.minSize = new Vector2(320, 450);
+			w.minSize = new Float2(320, 450);
 		}
 
 
@@ -139,7 +139,7 @@ namespace AngeliaFramework.Editor {
 							minimumMipmapLevel = texture2d.mipmapCount,
 							requestedMipmapLevel = texture2d.mipmapCount,
 						};
-						texture.SetPixels32(new Color32[texture2d.width * texture2d.height]);
+						texture.SetPixels32(new UnityEngine.Color32[texture2d.width * texture2d.height]);
 						texture.Apply();
 						Graphics.CopyTexture(texture2d, 0, 0, texture, 0, 0);
 						ByteToFile(texture.EncodeToPNG(), $"Assets/{iconSelected.tooltip}.png");
@@ -321,10 +321,7 @@ namespace AngeliaFramework.Editor {
 		static void ClearConsole () {
 			try {
 				var assembly = Assembly.GetAssembly(typeof(ActiveEditorTracker));
-				var type = assembly.GetType("UnityEditorInternal.LogEntries");
-				if (type == null) {
-					type = assembly.GetType("UnityEditor.LogEntries");
-				}
+				var type = assembly.GetType("UnityEditorInternal.LogEntries") ?? assembly.GetType("UnityEditor.LogEntries");
 				var method = type.GetMethod("Clear");
 				method.Invoke(new object(), null);
 			} catch { }

@@ -7,11 +7,11 @@ namespace AngeliaFramework {
 
 
 	public abstract class MapEditorGizmos {
-		public static RectInt MapEditorCameraRange { get; internal set; } = default;
+		public static IRect MapEditorCameraRange { get; internal set; } = default;
 		public abstract System.Type TargetEntity { get; }
 		public virtual bool AlsoForChildClass => true;
 		public virtual bool DrawGizmosOutOfRange => false;
-		public abstract void DrawGizmos (RectInt entityGlobalRect, int entityID);
+		public abstract void DrawGizmos (IRect entityGlobalRect, int entityID);
 		public MapEditorGizmos () { }
 	}
 
@@ -28,7 +28,7 @@ namespace AngeliaFramework {
 		private readonly CellContent CursorEraseLabel = new() { CharSize = 24, Alignment = Alignment.MidMid, BackgroundTint = Const.BLACK, };
 
 		// Data
-		private RectInt PaintingThumbnailRect = default;
+		private IRect PaintingThumbnailRect = default;
 		private int PaintingThumbnailStartIndex = 0;
 
 
@@ -44,7 +44,7 @@ namespace AngeliaFramework {
 
 			if (IsPlaying || DroppingPlayer) return;
 
-			var TINT = new Color32(128, 128, 128, 24);
+			var TINT = new Pixel32(128, 128, 128, 24);
 			var cRect = CellRenderer.CameraRect;
 			int l = Mathf.FloorToInt(cRect.xMin.UDivide(Const.CEL)) * Const.CEL;
 			int r = Mathf.CeilToInt(cRect.xMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
@@ -67,7 +67,7 @@ namespace AngeliaFramework {
 			if (IsPlaying || DroppingPlayer || TaskingRoute || CtrlHolding) return;
 
 			// Rect Frame
-			var draggingRect = new RectInt(
+			var draggingRect = new IRect(
 				DraggingUnitRect.Value.x.ToGlobal(),
 				DraggingUnitRect.Value.y.ToGlobal(),
 				DraggingUnitRect.Value.width.ToGlobal(),
@@ -101,7 +101,7 @@ namespace AngeliaFramework {
 						PaintingThumbnailRect = unitRect;
 						PaintingThumbnailStartIndex = 0;
 					}
-					var rect = new RectInt(0, 0, Const.CEL, Const.CEL);
+					var rect = new IRect(0, 0, Const.CEL, Const.CEL);
 					int endIndex = unitRect.width * unitRect.height;
 					int cellRemain = CellRenderer.GetLayerCapacity(RenderLayer.UI) - CellRenderer.GetUsedCellCount(RenderLayer.UI);
 					cellRemain = cellRemain * 9 / 10;
@@ -139,7 +139,7 @@ namespace AngeliaFramework {
 			);
 
 			// Content Thumbnail
-			var rect = new RectInt(0, 0, Const.CEL, Const.CEL);
+			var rect = new IRect(0, 0, Const.CEL, Const.CEL);
 			foreach (var buffer in PastingBuffer) {
 				rect.x = (pastingUnitRect.x + buffer.LocalUnitX).ToGlobal();
 				rect.y = (pastingUnitRect.y + buffer.LocalUnitY).ToGlobal();
@@ -153,7 +153,7 @@ namespace AngeliaFramework {
 			if (!SelectionUnitRect.HasValue) return;
 			if (IsPlaying || DroppingPlayer || TaskingRoute) return;
 
-			var selectionRect = new RectInt(
+			var selectionRect = new IRect(
 				SelectionUnitRect.Value.x.ToGlobal(),
 				SelectionUnitRect.Value.y.ToGlobal(),
 				SelectionUnitRect.Value.width.ToGlobal(),
@@ -164,7 +164,7 @@ namespace AngeliaFramework {
 
 			// Paste Tint
 			if (Pasting) {
-				CellRenderer.Draw(Const.PIXEL, selectionRect, new Color32(0, 128, 255, 32), GIZMOS_Z - 1);
+				CellRenderer.Draw(Const.PIXEL, selectionRect, new Pixel32(0, 128, 255, 32), GIZMOS_Z - 1);
 			}
 
 			// Black Frame
@@ -210,7 +210,7 @@ namespace AngeliaFramework {
 			if (MouseInSelection || MouseOutsideBoundary || MouseDownOutsideBoundary || DraggingUnitRect.HasValue) return;
 			if (FrameInput.AnyMouseButtonHolding && MouseDownInSelection) return;
 
-			var cursorRect = new RectInt(
+			var cursorRect = new IRect(
 				FrameInput.MouseGlobalPosition.x.ToUnifyGlobal(),
 				FrameInput.MouseGlobalPosition.y.ToUnifyGlobal(),
 				Const.CEL, Const.CEL
@@ -249,7 +249,7 @@ namespace AngeliaFramework {
 				for (int j = 0; j < 3; j++) {
 					var world = squad[i, j];
 					int index = 0;
-					var rect = new RectInt(0, 0, Const.CEL, Const.CEL);
+					var rect = new IRect(0, 0, Const.CEL, Const.CEL);
 					int worldGlobalX = world.WorldPosition.x * Const.MAP * Const.CEL;
 					int worldGlobalY = world.WorldPosition.y * Const.MAP * Const.CEL;
 					for (int y = 0; y < Const.MAP; y++) {
@@ -276,8 +276,8 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private void SpawnBlinkParticle (RectInt globalRect, int blockTintId) => SpawnBlinkParticle(globalRect, blockTintId, Const.PIXEL);
-		private void SpawnBlinkParticle (RectInt globalRect, int blockTintId, int spriteID) {
+		private void SpawnBlinkParticle (IRect globalRect, int blockTintId) => SpawnBlinkParticle(globalRect, blockTintId, Const.PIXEL);
+		private void SpawnBlinkParticle (IRect globalRect, int blockTintId, int spriteID) {
 			var particle = Stage.SpawnEntity(MapEditorBlinkParticle.TYPE_ID, 0, 0) as MapEditorBlinkParticle;
 			particle.X = globalRect.x;
 			particle.Y = globalRect.y;
@@ -291,7 +291,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void DrawSpriteGizmos (int artworkID, RectInt rect, bool shrink = false, AngeSprite sprite = null) {
+		private void DrawSpriteGizmos (int artworkID, IRect rect, bool shrink = false, AngeSprite sprite = null) {
 			if (sprite == null && !CellRenderer.TryGetSprite(artworkID, out sprite)) {
 				if (EntityArtworkRedirectPool.TryGetValue(artworkID, out int newID)) {
 					CellRenderer.TryGetSprite(newID, out sprite);
@@ -303,7 +303,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void DrawDottedLineGizmos (int x, int y, int length, bool horizontal, int thickness, int gap, Color32 tint) {
+		private void DrawDottedLineGizmos (int x, int y, int length, bool horizontal, int thickness, int gap, Pixel32 tint) {
 
 			if (gap == 0) return;
 
@@ -344,7 +344,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void DrawCrossLineGizmos (RectInt rect, int thickness, Color32 tint, Color32 shadowTint) {
+		private void DrawCrossLineGizmos (IRect rect, int thickness, Pixel32 tint, Pixel32 shadowTint) {
 			int shiftY = thickness / 2;
 			int shrink = thickness * 2;
 			CellRendererGUI.DrawLine(
@@ -382,24 +382,24 @@ namespace AngeliaFramework {
 		}
 
 
-		private void DrawModifyFilterLabel (RectInt rect) {
+		private void DrawModifyFilterLabel (IRect rect) {
 			if (Modify_EntityOnly) {
 				int height = Unify(CursorEraseLabel.CharSize);
 				CellRendererGUI.Label(
 					CursorEraseLabel.SetText(Language.Get(MEDT_ENTITY_ONLY, "Entity Only")),
-					new RectInt(rect.x + rect.width / 2, rect.y - height, 1, height)
+					new IRect(rect.x + rect.width / 2, rect.y - height, 1, height)
 				);
 			} else if (Modify_LevelOnly) {
 				int height = Unify(CursorEraseLabel.CharSize);
 				CellRendererGUI.Label(
 					CursorEraseLabel.SetText(Language.Get(MEDT_LEVEL_ONLY, "Level Only")),
-					new RectInt(rect.x + rect.width / 2, rect.y - height, 1, height)
+					new IRect(rect.x + rect.width / 2, rect.y - height, 1, height)
 				);
 			} else if (Modify_BackgroundOnly) {
 				int height = Unify(CursorEraseLabel.CharSize);
 				CellRendererGUI.Label(
 					CursorEraseLabel.SetText(Language.Get(MEDT_BG_ONLY, "Background Only")),
-					new RectInt(rect.x + rect.width / 2, rect.y - height, 1, height)
+					new IRect(rect.x + rect.width / 2, rect.y - height, 1, height)
 				);
 			}
 		}

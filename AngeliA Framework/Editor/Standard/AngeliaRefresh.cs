@@ -149,8 +149,8 @@ namespace AngeliaFramework.Editor {
 			public Texture2D Texture;
 			public string Name;
 			public string SheetName;
-			public Vector2Int AngePivot;
-			public Vector4 Border;
+			public Int2 AngePivot;
+			public Float4 Border;
 			public SheetType Type;
 			public int SheetZ;
 			public Rect UvResult;
@@ -323,13 +323,17 @@ namespace AngeliaFramework.Editor {
 					prevH = h;
 					if (x < 0 || y < 0 || x + w > sourceWidth || y + h > sourceHeight) continue;
 					var texture = new Texture2D(w, h, TextureFormat.ARGB32, false);
-					var pixels = new Color32[texture.width * texture.height];
+					var pixels = new Pixel32[texture.width * texture.height];
 					for (int j = 0; j < h; j++) {
 						for (int i = 0; i < w; i++) {
 							pixels[j * w + i] = sourcePixels[(y + j) * sourceWidth + (x + i)];
 						}
 					}
-					texture.SetPixels32(pixels);
+					var unityPixels = new UnityEngine.Color32[pixels.Length];
+					for (int j = 0; j < unityPixels.Length; j++) {
+						unityPixels[j] = pixels[j];
+					}
+					texture.SetPixels32(unityPixels);
 					texture.Apply();
 
 					// Add Packing Item
@@ -360,12 +364,12 @@ namespace AngeliaFramework.Editor {
 
 			// Add "Pixel" to Items
 			var pixelTexture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-			pixelTexture.SetPixels32(new Color32[1] { new Color32(255, 255, 255, 255) });
+			pixelTexture.SetPixels32(new UnityEngine.Color32[1] { new Pixel32(255, 255, 255, 255) });
 			pixelTexture.Apply();
 			items.Add(new PackingItem() {
-				Border = Vector4.zero,
+				Border = Float4.zero,
 				Name = "Pixel",
-				AngePivot = Vector2Int.zero,
+				AngePivot = Int2.zero,
 				SheetName = "(Procedure)",
 				Texture = pixelTexture,
 				Type = SheetType.General,

@@ -12,11 +12,11 @@ namespace AngeliaFramework {
 		// Abs
 		protected virtual uint SpeedX => 0;
 		protected virtual uint SpeedY => 0;
-		protected abstract Vector2Int Distance { get; }
+		protected abstract Int2 Distance { get; }
 
 		// Data
-		private Vector2Int From = default;
-		private Vector2Int To = default;
+		private Int2 From = default;
+		private Int2 To = default;
 		private int DurationX = 0;
 		private int DurationY = 0;
 
@@ -50,14 +50,14 @@ namespace AngeliaFramework {
 
 	[EntityAttribute.Bounds(-Const.CEL * 5 / 2, 0, Const.CEL * 6, Const.CEL)]
 	public class WoodPlatformH : WoodPlatform {
-		protected override Vector2Int Distance => new(Const.CEL * 5, 0);
+		protected override Int2 Distance => new(Const.CEL * 5, 0);
 		protected override uint SpeedX => 8;
 	}
 
 
 	[EntityAttribute.Bounds(0, -Const.CEL * 5 / 2, Const.CEL, Const.CEL * 6)]
 	public class WoodPlatformV : WoodPlatform {
-		protected override Vector2Int Distance => new(0, Const.CEL * 5);
+		protected override Int2 Distance => new(0, Const.CEL * 5);
 		protected override uint SpeedY => 8;
 	}
 

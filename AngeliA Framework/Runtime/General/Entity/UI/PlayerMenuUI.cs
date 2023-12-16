@@ -9,7 +9,7 @@ namespace AngeliaFramework {
 	public sealed class InventoryPartnerUI : PlayerMenuPartnerUI {
 		public static readonly InventoryPartnerUI Instance = new();
 		public int AvatarIcon = 0;
-		public override void DrawPanel (RectInt panelRect) {
+		public override void DrawPanel (IRect panelRect) {
 			PlayerMenuUI.DrawTopInventory(InventoryID, Column, Row);
 		}
 	}
@@ -30,7 +30,7 @@ namespace AngeliaFramework {
 			ItemSize = itemSize;
 		}
 
-		public abstract void DrawPanel (RectInt panelRect);
+		public abstract void DrawPanel (IRect panelRect);
 
 		protected static int Unify (int value) => CellRendererGUI.Unify(value);
 
@@ -98,9 +98,9 @@ namespace AngeliaFramework {
 		private int PrevCursorIndex = -1;
 		private bool PrevCursorInBottomPanel = true;
 		private EquipmentType EquipFlashType = EquipmentType.BodyArmor;
-		private RectInt TopPanelRect = default;
-		private RectInt BottomPanelRect = default;
-		private Vector3Int FlashingField = new(-1, 0, 0);
+		private IRect TopPanelRect = default;
+		private IRect BottomPanelRect = default;
+		private Int3 FlashingField = new(-1, 0, 0);
 
 
 		#endregion
@@ -219,11 +219,11 @@ namespace AngeliaFramework {
 			int labelHeight = Unify(24);
 			var topRootRect = TopPanelRect;
 			var bottomRootRect = BottomPanelRect;
-			var topPanelRect = new RectInt(
+			var topPanelRect = new IRect(
 				topRootRect.xMax + windowPadding * 4, topRootRect.y,
 				panelWidth, topRootRect.height
 			);
-			var bottomPanelRect = new RectInt(
+			var bottomPanelRect = new IRect(
 				bottomRootRect.xMax + windowPadding * 4, bottomRootRect.y,
 				panelWidth, bottomRootRect.height
 			);
@@ -235,12 +235,12 @@ namespace AngeliaFramework {
 			// Type Icon
 			CellRenderer.Draw(
 				ItemSystem.GetItemTypeIcon(itemID),
-				new RectInt(panelRect.x, panelRect.yMax - labelHeight, labelHeight, labelHeight),
+				new IRect(panelRect.x, panelRect.yMax - labelHeight, labelHeight, labelHeight),
 				Const.ORANGE_BETTER, int.MinValue + 3
 			);
 
 			// Name
-			var nameRect = new RectInt(panelRect.x + labelHeight + labelHeight / 4, panelRect.yMax - labelHeight, panelRect.width, labelHeight);
+			var nameRect = new IRect(panelRect.x + labelHeight + labelHeight / 4, panelRect.yMax - labelHeight, panelRect.width, labelHeight);
 			CellRendererGUI.Label(
 				CellContent.Get(ItemSystem.GetItemName(itemID), charSize: 20, alignment: Alignment.MidLeft, tint: Const.ORANGE_BETTER),
 				nameRect
@@ -261,7 +261,7 @@ namespace AngeliaFramework {
 			// Background
 			CellRenderer.Draw(
 				Const.PIXEL,
-				new RectInt(panelRect.x, desBounds.y, panelRect.width, nameRect.yMax - desBounds.y).Expand(windowPadding),
+				new IRect(panelRect.x, desBounds.y, panelRect.width, nameRect.yMax - desBounds.y).Expand(windowPadding),
 				Const.BLACK, int.MinValue + 1
 			);
 
@@ -505,7 +505,7 @@ namespace AngeliaFramework {
 		public static void DrawTopInventory (int inventoryID, int column, int row) => Instance?.DrawInventory(inventoryID, column, row, true);
 
 
-		public static void DrawItemFieldUI (int itemID, int itemCount, int frameCode, RectInt itemRect, bool interactable, int uiIndex) => Instance?.DrawItemField(itemID, itemCount, frameCode, itemRect, interactable, uiIndex);
+		public static void DrawItemFieldUI (int itemID, int itemCount, int frameCode, IRect itemRect, bool interactable, int uiIndex) => Instance?.DrawItemField(itemID, itemCount, frameCode, itemRect, interactable, uiIndex);
 
 
 		public void SetTaking (int takingID, int takingCount = 1) {
@@ -541,7 +541,7 @@ namespace AngeliaFramework {
 
 			// Content
 			int index = 0;
-			var itemRect = new RectInt(0, 0, panelRect.width / column, panelRect.height / row);
+			var itemRect = new IRect(0, 0, panelRect.width / column, panelRect.height / row);
 			for (int j = 0; j < row; j++) {
 				for (int i = 0; i < column; i++, index++) {
 					if (index >= itemCount) {
@@ -558,7 +558,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public void DrawItemField (int itemID, int itemCount, int frameCode, RectInt itemRect, bool interactable, int uiIndex) {
+		public void DrawItemField (int itemID, int itemCount, int frameCode, IRect itemRect, bool interactable, int uiIndex) {
 
 			if (itemCount <= 0) itemID = 0;
 			bool actionHolding = FrameInput.GameKeyHolding(Gamekey.Action);
@@ -640,7 +640,7 @@ namespace AngeliaFramework {
 					Game.GlobalFrame >= ActionKeyDownFrame + 6
 				) {
 					var cell = CellRenderer.Draw(Const.PIXEL, itemRect, Const.GREY_96, int.MinValue + 3);
-					cell.Shift = new Vector4Int(
+					cell.Shift = new Int4(
 						0, 0, 0,
 						Util.RemapUnclamped(
 							ActionKeyDownFrame + 6, ActionKeyDownFrame + HOLD_KEY_DURATION,
@@ -656,7 +656,7 @@ namespace AngeliaFramework {
 				) {
 					if (ItemSystem.CanUseItem(itemID, Player.Selecting)) {
 						var cell = CellRenderer.Draw(Const.PIXEL, itemRect, Const.GREEN, int.MinValue + 3);
-						cell.Shift = new Vector4Int(
+						cell.Shift = new Int4(
 							0, 0, 0,
 							Util.RemapUnclamped(
 								CancelKeyDownFrame + 6, CancelKeyDownFrame + HOLD_KEY_DURATION,
@@ -701,27 +701,27 @@ namespace AngeliaFramework {
 			int left = panelRect.x + previewWidth;
 			int top = panelRect.yMax;
 			DrawEquipmentItem(
-				0, interactable && player.JewelryAvailable, new RectInt(left, top - itemHeight * 3, width, itemHeight),
+				0, interactable && player.JewelryAvailable, new IRect(left, top - itemHeight * 3, width, itemHeight),
 				EquipmentType.Jewelry, Language.Get(UI_JEWELRY, "Jewelry")
 			);
 			DrawEquipmentItem(
-				1, interactable && player.ShoesAvailable, new RectInt(left + width, top - itemHeight * 3, width, itemHeight),
+				1, interactable && player.ShoesAvailable, new IRect(left + width, top - itemHeight * 3, width, itemHeight),
 				EquipmentType.Shoes, Language.Get(UI_SHOES, "Boots")
 			);
 			DrawEquipmentItem(
-				2, interactable && player.GlovesAvailable, new RectInt(left, top - itemHeight * 2, width, itemHeight),
+				2, interactable && player.GlovesAvailable, new IRect(left, top - itemHeight * 2, width, itemHeight),
 				EquipmentType.Gloves, Language.Get(UI_GLOVES, "Gloves")
 			);
 			DrawEquipmentItem(
-				3, interactable && player.BodySuitAvailable, new RectInt(left + width, top - itemHeight * 2, width, itemHeight),
+				3, interactable && player.BodySuitAvailable, new IRect(left + width, top - itemHeight * 2, width, itemHeight),
 				EquipmentType.BodyArmor, Language.Get(UI_BODYSUIT, "Armor")
 			);
 			DrawEquipmentItem(
-				4, interactable && player.WeaponAvailable, new RectInt(left, top - itemHeight * 1, width, itemHeight),
+				4, interactable && player.WeaponAvailable, new IRect(left, top - itemHeight * 1, width, itemHeight),
 				EquipmentType.Weapon, Language.Get(UI_WEAPON, "Weapon")
 			);
 			DrawEquipmentItem(
-				5, interactable && player.HelmetAvailable, new RectInt(left + width, top - itemHeight * 1, width, itemHeight),
+				5, interactable && player.HelmetAvailable, new IRect(left + width, top - itemHeight * 1, width, itemHeight),
 				EquipmentType.Helmet, Language.Get(UI_HELMET, "Helmet")
 			);
 
@@ -733,7 +733,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void DrawEquipmentItem (int index, bool interactable, RectInt rect, EquipmentType type, string label) {
+		private void DrawEquipmentItem (int index, bool interactable, IRect rect, EquipmentType type, string label) {
 
 			int itemID = Inventory.GetEquipment(Player.Selecting.TypeID, type);
 			int fieldPadding = Unify(4);
@@ -746,7 +746,7 @@ namespace AngeliaFramework {
 				enableTint.a = 96;
 				interactable = false;
 			}
-			var itemRect = new RectInt(fieldRect.x, fieldRect.y, fieldRect.height, fieldRect.height);
+			var itemRect = new IRect(fieldRect.x, fieldRect.y, fieldRect.height, fieldRect.height);
 
 			// Item Frame
 			if (equipAvailable) {
@@ -776,7 +776,7 @@ namespace AngeliaFramework {
 			int lineSize = Unify(2);
 			CellRenderer.Draw(
 				Const.PIXEL,
-				new RectInt(
+				new IRect(
 					rect.x + fieldPadding,
 					rect.y - lineSize / 2,
 					rect.width - fieldPadding, lineSize
@@ -791,7 +791,7 @@ namespace AngeliaFramework {
 				Game.GlobalFrame < EquipFlashStartFrame + FLASH_PANEL_DURATION
 			) {
 				CellRenderer.Draw(
-					Const.PIXEL, rect.Shrink(lineSize), new Color32(
+					Const.PIXEL, rect.Shrink(lineSize), new Pixel32(
 						0, 255, 0,
 						(byte)Util.RemapUnclamped(
 							EquipFlashStartFrame, EquipFlashStartFrame + FLASH_PANEL_DURATION,
@@ -1094,7 +1094,7 @@ namespace AngeliaFramework {
 
 
 		// Util
-		private static void DrawItemIcon (RectInt rect, int id, Color32 tint, int z) {
+		private static void DrawItemIcon (IRect rect, int id, Pixel32 tint, int z) {
 			if (id == 0) return;
 			if (!CellRenderer.TryGetSprite(id, out var sprite)) {
 				id = Const.PIXEL;
@@ -1110,7 +1110,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void DrawItemCount (RectInt rect, int number) {
+		private void DrawItemCount (IRect rect, int number) {
 			if (number <= 1) return;
 			CellRenderer.Draw(Const.PIXEL, rect, Const.BLACK, int.MaxValue);
 			CellRendererGUI.Label(CellContent.Get(CellRendererGUI.GetNumberCache(number), Const.WHITE), rect);
@@ -1134,7 +1134,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private RectInt GetPanelRect (int column, int row, int itemSize, bool panelOnTop) {
+		private IRect GetPanelRect (int column, int row, int itemSize, bool panelOnTop) {
 			var player = Player.Selecting;
 			int localAnimationFrame = Game.GlobalFrame - SpawnFrame;
 			int uItemSize = Unify(itemSize);
@@ -1151,13 +1151,13 @@ namespace AngeliaFramework {
 				).RoundToInt();
 				invWidth -= Mathf.LerpUnclamped(uItemSize * 4, 0, lerp01).RoundToInt();
 			}
-			var result = new RectInt(invX - invWidth / 2, invY, invWidth, invHeight);
+			var result = new IRect(invX - invWidth / 2, invY, invWidth, invHeight);
 			result.ClampPositionInside(CellRenderer.CameraRect);
 			return result;
 		}
 
 
-		private RectInt GetInventoryRect (int itemHeight) {
+		private IRect GetInventoryRect (int itemHeight) {
 			var player = Player.Selecting;
 			int localAnimationFrame = Game.GlobalFrame - SpawnFrame;
 			int invWidth = Unify(400);
@@ -1168,7 +1168,7 @@ namespace AngeliaFramework {
 				invY += Mathf.LerpUnclamped(-Unify(86), 0, lerp01).RoundToInt();
 				invWidth -= Mathf.LerpUnclamped(Unify(128), 0, lerp01).RoundToInt();
 			}
-			var panelRect = new RectInt(player.X - invWidth / 2 + Unify(PREVIEW_SIZE) / 2, invY, invWidth, invHeight);
+			var panelRect = new IRect(player.X - invWidth / 2 + Unify(PREVIEW_SIZE) / 2, invY, invWidth, invHeight);
 			panelRect.ClampPositionInside(CellRenderer.CameraRect);
 			return panelRect;
 		}

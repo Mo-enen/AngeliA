@@ -107,8 +107,8 @@ namespace AngeliaFramework {
 		// Data
 		private static OperationCell[,] OperationCells = null;
 		private static BlockCell[,] BlockCells = null;
-		private static Queue<Vector3Int> ExpandQueue = null;
-		private static Queue<Vector3Int> ExpandQueueJump = null;
+		private static Queue<Int3> ExpandQueue = null;
+		private static Queue<Int3> ExpandQueueJump = null;
 		private static uint OperationStamp = 0;
 		private static int CachedFrame = int.MinValue;
 		private static int CellUnitOffsetX = 0;
@@ -152,7 +152,7 @@ namespace AngeliaFramework {
 
 		// Navigate
 		public static int NavigateTo (
-			in Operation[] Operations, int globalFrame, RectInt viewRect,
+			in Operation[] Operations, int globalFrame, IRect viewRect,
 			int fromX, int fromY, int toX, int toY,
 			int jumpIteration = 16
 		) {
@@ -206,8 +206,8 @@ namespace AngeliaFramework {
 			ExpandQueueJump.Clear();
 
 			// First Enqueue
-			ExpandQueue.Enqueue(new Vector3Int(fromCellX, fromCellY, 0));
-			ExpandQueueJump.Enqueue(new Vector3Int(fromCellX, fromCellY, 0));
+			ExpandQueue.Enqueue(new Int3(fromCellX, fromCellY, 0));
+			ExpandQueueJump.Enqueue(new Int3(fromCellX, fromCellY, 0));
 			var firstCell = OperationCells[fromCellX, fromCellY];
 			firstCell.OperationValid = true;
 			firstCell.FromCellX = fromCellX;
@@ -322,7 +322,7 @@ namespace AngeliaFramework {
 
 		// Expand
 		public static bool ExpandTo (
-			int globalFrame, RectInt viewRect, int fromX, int fromY, int toX, int toY, int maxIteration,
+			int globalFrame, IRect viewRect, int fromX, int fromY, int toX, int toY, int maxIteration,
 			out int resultX, out int resultY,
 			bool endInAir = false, IExpandRangeValidator rangeValidator = null
 		) {
@@ -340,7 +340,7 @@ namespace AngeliaFramework {
 			int minSquareDis = int.MaxValue;
 
 			ExpandQueue.Clear();
-			ExpandQueue.Enqueue(new Vector3Int(fromCellX, fromCellY, 0));
+			ExpandQueue.Enqueue(new Int3(fromCellX, fromCellY, 0));
 			OperationCells[fromCellX, fromCellY].OperationValid = true;
 			bool rightFirst = fromX.UMod(Const.CEL) > Const.HALF;
 			bool upFirst = fromY.UMod(Const.CEL) > Const.HALF;
@@ -390,7 +390,7 @@ namespace AngeliaFramework {
 						!GetBlockCell(pos.x - 1, pos.y).IsBlockedRight &&
 						(rangeValidator == null || rangeValidator.Verify(pos.x - 1, pos.y))
 					) {
-						ExpandQueue.Enqueue(new Vector3Int(pos.x - 1, pos.y, pos.z + 1));
+						ExpandQueue.Enqueue(new Int3(pos.x - 1, pos.y, pos.z + 1));
 						_cell.OperationValid = true;
 					}
 				}
@@ -402,7 +402,7 @@ namespace AngeliaFramework {
 						!GetBlockCell(pos.x + 1, pos.y).IsBlockedLeft &&
 						(rangeValidator == null || rangeValidator.Verify(pos.x + 1, pos.y))
 					) {
-						ExpandQueue.Enqueue(new Vector3Int(pos.x + 1, pos.y, pos.z + 1));
+						ExpandQueue.Enqueue(new Int3(pos.x + 1, pos.y, pos.z + 1));
 						_cell.OperationValid = true;
 					}
 				}
@@ -414,7 +414,7 @@ namespace AngeliaFramework {
 						!GetBlockCell(pos.x, pos.y - 1).IsBlockedUp &&
 						(rangeValidator == null || rangeValidator.Verify(pos.x, pos.y - 1))
 					) {
-						ExpandQueue.Enqueue(new Vector3Int(pos.x, pos.y - 1, pos.z + 1));
+						ExpandQueue.Enqueue(new Int3(pos.x, pos.y - 1, pos.z + 1));
 						_cell.OperationValid = true;
 					}
 				}
@@ -426,7 +426,7 @@ namespace AngeliaFramework {
 						!GetBlockCell(pos.x, pos.y + 1).IsBlockedDown &&
 						(rangeValidator == null || rangeValidator.Verify(pos.x, pos.y + 1))
 					) {
-						ExpandQueue.Enqueue(new Vector3Int(pos.x, pos.y + 1, pos.z + 1));
+						ExpandQueue.Enqueue(new Int3(pos.x, pos.y + 1, pos.z + 1));
 						_cell.OperationValid = true;
 					}
 				}
@@ -437,7 +437,7 @@ namespace AngeliaFramework {
 
 
 		// Ground
-		public static bool IsGround (int globalFrame, RectInt viewRect, int globalX, int globalY, out int groundY) {
+		public static bool IsGround (int globalFrame, IRect viewRect, int globalX, int globalY, out int groundY) {
 			GlobalFrame = globalFrame;
 			RefreshFrameCache(viewRect);
 			groundY = globalY;
@@ -460,7 +460,7 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private static void RefreshFrameCache (RectInt viewRect) {
+		private static void RefreshFrameCache (IRect viewRect) {
 			if (CachedFrame == GlobalFrame) return;
 			CachedFrame = GlobalFrame;
 			CellUnitOffsetX = (viewRect.CenterX() - CellWidth * Const.HALF).UDivide(Const.CEL);
@@ -475,7 +475,7 @@ namespace AngeliaFramework {
 
 			int x = (cellX + CellUnitOffsetX) * Const.CEL;
 			int y = (cellY + CellUnitOffsetY) * Const.CEL;
-			var blockRect = new RectInt(x, y, Const.CEL, Const.CEL);
+			var blockRect = new IRect(x, y, Const.CEL, Const.CEL);
 			var centerRect = blockRect.Shrink(16);
 			bool solid = CellPhysics.Overlap(
 				PhysicsMask.MAP, centerRect, out var info
@@ -603,8 +603,8 @@ namespace AngeliaFramework {
 					if (_y != pos.y && blockData.BlockType != BlockType.Liquid) return;
 
 					// Enqueue for Move
-					ExpandQueue.Enqueue(new Vector3Int(_x, _y, pos.z + 1));
-					ExpandQueueJump.Enqueue(new Vector3Int(_x, _y, 0));
+					ExpandQueue.Enqueue(new Int3(_x, _y, pos.z + 1));
+					ExpandQueueJump.Enqueue(new Int3(_x, _y, 0));
 					_cell.OperationValid = true;
 					_cell.OperationValidAlt = true;
 					_cell.FromCellX = pos.x;
@@ -650,8 +650,8 @@ namespace AngeliaFramework {
 					// Ground Check
 					if (IsGroundCell(_x, _y, out _)) {
 						// Enqueue for Move
-						ExpandQueue.Enqueue(new Vector3Int(_x, _y, 0));
-						ExpandQueueJump.Enqueue(new Vector3Int(_x, _y, 0));
+						ExpandQueue.Enqueue(new Int3(_x, _y, 0));
+						ExpandQueueJump.Enqueue(new Int3(_x, _y, 0));
 						_cell.OperationValid = true;
 						_cell.FromCellX = pos.x;
 						_cell.FromCellY = pos.y;
@@ -671,7 +671,7 @@ namespace AngeliaFramework {
 					if (_x != pos.x) newIteration++;
 
 					// Push
-					ExpandQueueJump.Enqueue(new Vector3Int(_x, _y, newIteration));
+					ExpandQueueJump.Enqueue(new Int3(_x, _y, newIteration));
 					_cell.OperationValid = true;
 					_cell.FromCellX = pos.x;
 					_cell.FromCellY = pos.y;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
+using System.Linq;
 
 namespace AngeliaFramework.Editor {
 	public class FileCore {
@@ -49,7 +49,7 @@ namespace AngeliaFramework.Editor {
 				}
 
 				// Pack
-				var textureRects = RectPacking.PackTextures(out Color32[] colors, out int width, out int height, packingList, true);
+				var textureRects = RectPacking.PackTextures(out Pixel32[] colors, out int width, out int height, packingList, true);
 
 				if (colors.Length > 0) {
 					// Fix Sprite Meta
@@ -115,7 +115,11 @@ namespace AngeliaFramework.Editor {
 					alphaIsTransparency = true,
 					wrapMode = TextureWrapMode.Clamp,
 				};
-				texture.SetPixels32(frame.Pixels);
+				var unityPixels = new UnityEngine.Color32[frame.Pixels.Length];
+				for (int j = 0; j < unityPixels.Length; j++) {
+					unityPixels[j] = frame.Pixels[j];
+				}
+				texture.SetPixels32(unityPixels);
 				texture.Apply();
 
 				// Set Sprite Names
@@ -146,7 +150,7 @@ namespace AngeliaFramework.Editor {
 					Border = m.border,
 					Name = m.name,
 					SheetName = AseName,
-					AngePivot = new Vector2Int((int)(m.pivot.x * 1000f), (int)(m.pivot.y * 1000f)),
+					AngePivot = new Int2((int)(m.pivot.x * 1000f), (int)(m.pivot.y * 1000f)),
 					Rect = m.rect,
 					SheetType = sheetType,
 					SheetZ = sheetZ,

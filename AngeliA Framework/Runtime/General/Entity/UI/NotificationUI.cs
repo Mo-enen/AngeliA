@@ -48,12 +48,12 @@ namespace AngeliaFramework {
 			int panelWidth = Unify(500);
 			int panelHeight = Unify(48);
 			CurrentOffsetY = CurrentOffsetY.LerpTo((panelHeight + Unify(30)) * NotificationIndex, 60);
-			var fromRect = new RectInt(
+			var fromRect = new IRect(
 				CellRenderer.CameraRect.CenterX() - panelWidth / 2,
 				CellRenderer.CameraRect.yMax,
 				panelWidth, panelHeight
 			);
-			var toRect = new RectInt(
+			var toRect = new IRect(
 				CellRenderer.CameraRect.CenterX() - panelWidth / 2,
 				CellRenderer.CameraRect.yMax - panelHeight - Unify(24) - CurrentOffsetY,
 				panelWidth, panelHeight
@@ -70,7 +70,7 @@ namespace AngeliaFramework {
 			if (CellRenderer.TryGetSprite(Icon, out var icon)) {
 				CellRenderer.Draw(
 					Icon,
-					new RectInt(panelRect.x, panelRect.y, panelRect.height, panelRect.height).Fit(icon),
+					new IRect(panelRect.x, panelRect.y, panelRect.height, panelRect.height).Fit(icon),
 					int.MaxValue
 				);
 			}

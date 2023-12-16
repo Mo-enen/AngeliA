@@ -46,7 +46,7 @@ namespace AngeliaFramework {
 				CellRenderer.Draw(
 					LIGHT,
 					base.Rect.Expand(Const.CEL),
-					new Color32(brightness, brightness, brightness, 255)
+					new Pixel32(brightness, brightness, brightness, 255)
 				);
 				CellRenderer.SetLayerToDefault();
 			}

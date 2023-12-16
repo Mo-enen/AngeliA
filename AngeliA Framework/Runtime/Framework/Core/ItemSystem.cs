@@ -94,7 +94,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private static readonly Dictionary<int, ItemData> ItemPool = new();
-		private static readonly Dictionary<Vector4Int, CombinationData> CombinationPool = new();
+		private static readonly Dictionary<Int4, CombinationData> CombinationPool = new();
 		private static bool IsUnlockDirty = false;
 
 
@@ -179,7 +179,7 @@ namespace AngeliaFramework {
 
 
 		// UI
-		public static void DrawItemShortInfo (int itemID, RectInt panelRect, int z, int armorIcon, int armorEmptyIcon) {
+		public static void DrawItemShortInfo (int itemID, IRect panelRect, int z, int armorIcon, int armorEmptyIcon) {
 
 			if (!ItemPool.TryGetValue(itemID, out var itemData)) return;
 			var item = itemData.Item;
@@ -198,7 +198,7 @@ namespace AngeliaFramework {
 						if (equipment is IProgressiveItem progItem) {
 							int progress = progItem.Progress;
 							int totalProgress = progItem.TotalProgress;
-							var rect = new RectInt(panelRect.x, panelRect.y, panelRect.height, panelRect.height);
+							var rect = new IRect(panelRect.x, panelRect.y, panelRect.height, panelRect.height);
 							for (int i = 0; i < totalProgress - 1; i++) {
 								CellRenderer.Draw(i < progress ? armorIcon : armorEmptyIcon, rect, z);
 								rect.x += rect.width;
@@ -271,7 +271,7 @@ namespace AngeliaFramework {
 		public static void ClearCombination () => CombinationPool.Clear();
 
 
-		public static void GetRelatedCombinations (Vector4Int combination, List<Vector4Int> output) {
+		public static void GetRelatedCombinations (Int4 combination, List<Int4> output) {
 			if (combination.IsZero) return;
 			bool includeResult = combination.Count(0) == 3;
 			foreach (var (craft, result) in CombinationPool) {
@@ -289,7 +289,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Vector4Int GetSortedCombination (int a, int b, int c, int d) {
+		public static Int4 GetSortedCombination (int a, int b, int c, int d) {
 
 			// Sort for Zero
 			if (a == 0 && b != 0) (a, b) = (b, a);
@@ -307,7 +307,7 @@ namespace AngeliaFramework {
 			if (b != 0 && c != 0 && b > c) (b, c) = (c, b);
 			if (a != 0 && b != 0 && a > b) (a, b) = (b, a);
 
-			return new Vector4Int(a, b, c, d);
+			return new Int4(a, b, c, d);
 		}
 
 
@@ -417,8 +417,8 @@ namespace AngeliaFramework {
 				string line = _line.TrimWhiteForStartAndEnd();
 				if (line.StartsWith('#')) continue;
 				builder.Clear();
-				var com = Vector4Int.zero;
-				var consume = Vector4Int.zero;
+				var com = Int4.zero;
+				var consume = Int4.zero;
 				int appendingComIndex = 0;
 				bool appendingResultCount = false;
 				int resultID = 0;
@@ -456,7 +456,7 @@ namespace AngeliaFramework {
 				}
 
 				// Add to Pool
-				if (com != Vector4Int.zero && resultCount >= 1 && resultID != 0) {
+				if (com != Int4.zero && resultCount >= 1 && resultID != 0) {
 					AddCombination(com.x, com.y, com.z, com.w, resultID, resultCount, consume[0] == 0, consume[1] == 0, consume[2] == 0, consume[3] == 0);
 				}
 

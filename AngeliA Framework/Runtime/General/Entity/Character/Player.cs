@@ -51,8 +51,8 @@ namespace AngeliaFramework {
 
 		// Api
 		public static Player Selecting { get; set; } = null;
-		public static Vector3Int? RespawnCpUnitPosition { get; set; } = null;
-		public static Vector3Int? HomeUnitPosition { get; private set; } = null;
+		public static Int3? RespawnCpUnitPosition { get; set; } = null;
+		public static Int3? HomeUnitPosition { get; private set; } = null;
 		public override bool IsChargingAttack =>
 			Selecting == this &&
 			MinimalChargeAttackDuration != int.MaxValue &&
@@ -403,7 +403,7 @@ namespace AngeliaFramework {
 				RespawnCpUnitPosition = null;
 
 				// UpdateHome Position
-				var newHomePos = new Vector3Int(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
+				var newHomePos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 				if (newHomePos != HomeUnitPosition) {
 					HomeUnitPosition = newHomePos;
 					SaveGameDataToFile();
@@ -426,7 +426,7 @@ namespace AngeliaFramework {
 				CellRenderer.Draw(
 					Const.PIXEL,
 					CellRenderer.CameraRect.Expand(Const.HALF),
-					new Color32(0, 0, 0, (byte)Util.RemapUnclamped(0, FULL_SLEEP_DURATION, 0, 255, SleepFrame).Clamp(0, 255)),
+					new Pixel32(0, 0, 0, (byte)Util.RemapUnclamped(0, FULL_SLEEP_DURATION, 0, 255, SleepFrame).Clamp(0, 255)),
 					int.MaxValue
 				);
 				CellRenderer.SetLayer(oldLayer);

@@ -112,7 +112,7 @@ namespace AngeliaFramework {
 		public static bool UsingLeftStick { get; private set; } = false;
 		public static Direction3 DirectionX { get; private set; } = Direction3.None;
 		public static Direction3 DirectionY { get; private set; } = Direction3.None;
-		public static Vector2Int Direction { get; private set; } = default;
+		public static Int2 Direction { get; private set; } = default;
 		public static bool AllowGamepad {
 			get => s_AllowGamepad.Value;
 			set => s_AllowGamepad.Value = value;
@@ -131,10 +131,10 @@ namespace AngeliaFramework {
 		public static bool AnyMouseButtonHolding { get; private set; } = false;
 
 		// API - Mouse
-		public static Vector2Int MouseScreenPosition { get; private set; } = default;
-		public static Vector2Int MouseScreenPositionDelta { get; private set; } = default;
-		public static Vector2Int MouseGlobalPosition { get; private set; } = default;
-		public static Vector2Int MouseGlobalPositionDelta { get; private set; } = default;
+		public static Int2 MouseScreenPosition { get; private set; } = default;
+		public static Int2 MouseScreenPositionDelta { get; private set; } = default;
+		public static Int2 MouseGlobalPosition { get; private set; } = default;
+		public static Int2 MouseGlobalPositionDelta { get; private set; } = default;
 		public static bool MouseMove { get; private set; } = false;
 		public static bool MouseLeftButton => !MouseLeftState.Ignored && MouseLeftState.Holding;
 		public static bool MouseRightButton => !MouseRightState.Ignored && MouseRightState.Holding;
@@ -184,7 +184,7 @@ namespace AngeliaFramework {
 			{GamepadButton.Select, new() },
 		};
 		private static readonly Dictionary<Key, State> KeyboardStateMap = new();
-		private static readonly Dictionary<Gamekey, Vector2Int> KeyMap = new() {
+		private static readonly Dictionary<Gamekey, Int2> KeyMap = new() {
 			{ Gamekey.Left, new((int)Key.A, (int)GamepadButton.DpadLeft) },
 			{ Gamekey.Right, new((int)Key.D, (int)GamepadButton.DpadRight)},
 			{ Gamekey.Down, new((int)Key.S, (int)GamepadButton.DpadDown)},
@@ -223,9 +223,9 @@ namespace AngeliaFramework {
 			// Load Config
 			var iConfig = AngeUtil.LoadOrCreateJson<InputConfig>(Application.persistentDataPath);
 			for (int i = 0; i < 8; i++) {
-				KeyMap[(Gamekey)i] = new Vector2Int(iConfig.KeyboardConfig[i], iConfig.GamepadConfig[i]);
+				KeyMap[(Gamekey)i] = new Int2(iConfig.KeyboardConfig[i], iConfig.GamepadConfig[i]);
 			}
-			KeyMap[Gamekey.Start] = new Vector2Int((int)Key.Escape, (int)GamepadButton.Start);
+			KeyMap[Gamekey.Start] = new Int2((int)Key.Escape, (int)GamepadButton.Start);
 
 			// Add Keys for Keyboard
 			var values = System.Enum.GetValues(typeof(Key));
@@ -266,7 +266,7 @@ namespace AngeliaFramework {
 		}
 
 
-		internal static void FrameUpdate (RectInt cameraRect) {
+		internal static void FrameUpdate (IRect cameraRect) {
 
 			Gamepad = AllowGamepad ? Gamepad.current : null;
 			Keyboard = Keyboard.current;
@@ -299,16 +299,16 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void Update_Mouse (RectInt cameraRect) {
+		private static void Update_Mouse (IRect cameraRect) {
 			AnyMouseButtonDown = false;
 			AnyMouseButtonHolding = false;
 			if (Mouse != null && MainCamera != null) {
 				var uCameraRect = MainCamera.rect;
-				var mousePos = Mouse.position.ReadValue();
+				var mousePos = Mouse.position.ReadValue().ToAngelia();
 				MouseScreenPositionDelta = mousePos.RoundToInt() - MouseScreenPosition;
 				MouseMove = mousePos.RoundToInt() != MouseScreenPosition;
 				MouseScreenPosition = mousePos.RoundToInt();
-				var newGlobalPos = new Vector2Int(
+				var newGlobalPos = new Int2(
 					Util.RemapUnclamped(
 						uCameraRect.xMin * Screen.width, uCameraRect.xMax * Screen.width,
 						cameraRect.xMin, cameraRect.xMax,
@@ -587,7 +587,7 @@ namespace AngeliaFramework {
 
 			// Normalized Direction
 			UsingLeftStick = false;
-			Vector2 direction = default;
+			Float2 direction = default;
 			float magnitude = 0f;
 			if (Gamepad != null) {
 				direction = Gamepad.leftStick.ReadValue();

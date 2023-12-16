@@ -144,7 +144,7 @@ namespace AngeliaFramework {
 			int deltaY = character.DeltaPositionY.Clamp(-30, 30);
 			var point = handleCell.LocalToGlobal(handleCell.Width / 2, handleCell.Height);
 			int chainLength = isAttacking ? ChainLength * ChainLengthAttackGrow / 1000 : ChainLength;
-			Vector2Int headPos;
+			Int2 headPos;
 
 			if (isAttacking) {
 				// Attack
@@ -157,7 +157,7 @@ namespace AngeliaFramework {
 				);
 			} else {
 				// Hover
-				headPos = new Vector2Int(
+				headPos = new Int2(
 					point.x - deltaX,
 					point.y - chainLength - deltaY
 				);
@@ -183,10 +183,8 @@ namespace AngeliaFramework {
 			if (SpriteIdHead != 0 && CellRenderer.TryGetSprite(SpriteIdHead, out var headSprite)) {
 				int scale = character.HandGrabScaleR;
 				if (climbing && !isAttacking) scale = -scale.Abs();
-				int rot = CellRenderer.TryGetMeta(headSprite.GlobalID, out var meta) && meta.IsTrigger ? -(int)Quaternion.FromToRotation(
-					Vector3.up,
-					new Vector3(point.x - headPos.x, point.y - headPos.y, 0)
-				).eulerAngles.z : 0;
+				int rot = CellRenderer.TryGetMeta(headSprite.GlobalID, out var meta) && meta.IsTrigger ?
+					new Float2(point.x - headPos.x, point.y - headPos.y).GetRotation() : 0;
 				CellRenderer.Draw(
 					headSprite.GlobalID, headPos.x, headPos.y,
 					headSprite.PivotX, headSprite.PivotY, rot,
@@ -198,10 +196,7 @@ namespace AngeliaFramework {
 
 			// Draw Chain
 			if (SpriteIdChain != 0 && CellRenderer.HasSpriteGroup(SpriteIdChain, out int chainCount)) {
-				int rot = -(int)Quaternion.FromToRotation(
-					Vector3.up,
-					new Vector3(point.x - headPos.x, point.y - headPos.y, 0)
-				).eulerAngles.z;
+				int rot = new Float2(point.x - headPos.x, point.y - headPos.y).GetRotation();
 				for (int i = 0; i < chainCount; i++) {
 					if (CellRenderer.TryGetSpriteFromGroup(SpriteIdChain, i, out var chainSprite, false, true)) {
 						CellRenderer.Draw(
@@ -302,7 +297,7 @@ namespace AngeliaFramework {
 			return cell;
 		}
 
-		protected void DrawString (PoseCharacter character, Cell mainCell, Vector2Int offsetDown, Vector2Int offsetUp, Vector2Int offsetCenter) {
+		protected void DrawString (PoseCharacter character, Cell mainCell, Int2 offsetDown, Int2 offsetUp, Int2 offsetCenter) {
 			int borderL = 0;
 			int borderD = 0;
 			int borderU = 0;
@@ -321,7 +316,7 @@ namespace AngeliaFramework {
 				// Attacking
 				int duration = character.AttackDuration;
 				int localFrame = character.IsAttacking ? Game.GlobalFrame - character.LastAttackFrame : duration / 2 - 1;
-				Vector2Int centerPos;
+				Int2 centerPos;
 				var cornerU = mainCell.LocalToGlobal(borderL, mainCell.Height - borderU) + offsetUp;
 				var cornerD = mainCell.LocalToGlobal(borderL, borderD) + offsetDown;
 				var handPos = (character.FacingRight ? character.HandL : character.HandR).GlobalLerp(0.5f, 0.5f);
@@ -330,7 +325,7 @@ namespace AngeliaFramework {
 					centerPos = handPos + offsetCenter;
 				} else {
 					// Release
-					centerPos = Vector2.Lerp(
+					centerPos = Float2.Lerp(
 						handPos, mainCell.LocalToGlobal(borderL, mainCell.Height / 2),
 						Ease.OutBack((localFrame - duration / 2f) / (duration / 2f))
 					).RoundToInt() + offsetCenter;
@@ -340,16 +335,12 @@ namespace AngeliaFramework {
 				int stringWidth = character.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE;
 				CellRenderer.Draw(
 					SpriteIdString, centerPos.x, centerPos.y, 500, 0,
-					-(int)Quaternion.FromToRotation(
-						Vector3.up, (Vector3)(Vector2)(cornerU - centerPos)
-					).eulerAngles.z,
+					(cornerU - centerPos).GetRotation(),
 					stringWidth, Util.DistanceInt(centerPos, cornerU), mainCell.Z - 1
 				);
 				CellRenderer.Draw(
 					SpriteIdString, centerPos.x, centerPos.y, 500, 0,
-					-(int)Quaternion.FromToRotation(
-						Vector3.up, (Vector3)(Vector2)(cornerD - centerPos)
-					).eulerAngles.z,
+					(cornerD - centerPos).GetRotation(),
 					stringWidth, Util.DistanceInt(centerPos, cornerD), mainCell.Z - 1
 				);
 

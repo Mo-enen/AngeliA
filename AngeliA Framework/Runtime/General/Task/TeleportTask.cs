@@ -9,8 +9,8 @@ namespace AngeliaFramework {
 
 		// Api
 		public static readonly int TYPE_ID = typeof(TeleportTask).AngeHash();
-		public Vector2Int TeleportFrom { get; set; } = default;
-		public Vector3Int TeleportTo { get; set; } = default;
+		public Int2 TeleportFrom { get; set; } = default;
+		public Int3 TeleportTo { get; set; } = default;
 		public int WaitDuration { get; set; } = 30;
 		public int Duration { get; set; } = 60;
 		public bool UseVignette { get; set; } = true;
@@ -124,8 +124,8 @@ namespace AngeliaFramework {
 		public static TeleportTask Teleport (int fromX, int fromY, int toX, int toY, int toZ) {
 			if (FrameTask.HasTask()) return null;
 			if (FrameTask.TryAddToLast(TYPE_ID, out var task) && task is TeleportTask svTask) {
-				svTask.TeleportFrom = new Vector2Int(fromX, fromY);
-				svTask.TeleportTo = new Vector3Int(toX, toY, toZ);
+				svTask.TeleportFrom = new Int2(fromX, fromY);
+				svTask.TeleportTo = new Int3(toX, toY, toZ);
 				svTask.WaitDuration = 6;
 				svTask.Duration = 24;
 				svTask.UseParallax = true;
@@ -138,7 +138,7 @@ namespace AngeliaFramework {
 
 		// LGC
 		private static void MapEffectLogic (
-			Cell[] cells, Vector2Int center, int count, float scale, float lerp, bool isBehind, bool toBehind
+			Cell[] cells, Int2 center, int count, float scale, float lerp, bool isBehind, bool toBehind
 		) {
 			// Behind Tint
 			if (isBehind) {
