@@ -82,8 +82,8 @@ namespace AngeliaFramework {
 
 		// Data
 		private static PauseMenuUI Instance = null;
-		private readonly Key[] KeyboardKeys = new Key[8];
-		private readonly GamepadButton[] GamepadKeys = new GamepadButton[8];
+		private readonly KeyboardKey[] KeyboardKeys = new KeyboardKey[8];
+		private readonly GamepadKey[] GamepadKeys = new GamepadKey[8];
 		private readonly IntToString MusicVolumeCache = new();
 		private readonly IntToString SoundVolumeCache = new();
 		private readonly IntToString FramerateCache = new();
@@ -563,8 +563,8 @@ namespace AngeliaFramework {
 					// Gamepad
 					if (FrameInput.TryGetHoldingGamepadButton(out var button)) {
 						if (
-							(button != GamepadButton.Start || RecordingKey == (int)Gamekey.Start) &&
-							(button != GamepadButton.Select || RecordingKey == (int)Gamekey.Select)
+							(button != GamepadKey.Start || RecordingKey == (int)Gamekey.Start) &&
+							(button != GamepadKey.Select || RecordingKey == (int)Gamekey.Select)
 						) {
 							if (GamepadKeys[RecordingKey] != button) {
 								for (int i = 0; i < GamepadKeys.Length; i++) {
@@ -585,7 +585,7 @@ namespace AngeliaFramework {
 				} else {
 					// Keyboard
 					if (FrameInput.TryGetHoldingKeyboardKey(out var button)) {
-						if (button != Key.Escape || RecordingKey == (int)Gamekey.Start) {
+						if (button != KeyboardKey.Escape || RecordingKey == (int)Gamekey.Start) {
 							if (KeyboardKeys[RecordingKey] != button) {
 								for (int i = 0; i < KeyboardKeys.Length; i++) {
 									if (KeyboardKeys[i] == button && KeyboardKeys[RecordingKey] != button) {
@@ -616,7 +616,7 @@ namespace AngeliaFramework {
 			}
 
 			// Reset
-			if (FrameInput.KeyboardDown(Key.F1)) {
+			if (FrameInput.KeyboardDown(KeyboardKey.F1)) {
 				if (forGamepad) {
 					for (int i = 0; i < GamepadKeys.Length; i++) {
 						GamepadKeys[i] = FrameInput.GetDefaultGamepadMap((Gamekey)i);
@@ -630,9 +630,9 @@ namespace AngeliaFramework {
 			}
 
 			// Use ESC
-			if (FrameInput.KeyboardUp(Key.Escape) || FrameInput.GameKeyUp(Gamekey.Start)) {
+			if (FrameInput.KeyboardUp(KeyboardKey.Escape) || FrameInput.GameKeyUp(Gamekey.Start)) {
 				FrameInput.UseGameKey(Gamekey.Start);
-				FrameInput.UseKeyboardKey(Key.Escape);
+				FrameInput.UseKeyboardKey(KeyboardKey.Escape);
 			}
 
 			// Func

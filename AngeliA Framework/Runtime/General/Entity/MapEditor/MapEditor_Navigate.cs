@@ -56,25 +56,25 @@ namespace AngeliaFramework {
 			}
 
 			// Reset Camera
-			if (CtrlHolding && FrameInput.KeyboardDown(Key.R)) {
+			if (CtrlHolding && FrameInput.KeyboardDown(KeyboardKey.R)) {
 				ResetCamera();
 			}
 
 			// Tab
 			if (
-				FrameInput.KeyboardUp(Key.Tab) ||
-				FrameInput.KeyboardUp(Key.Escape) ||
-				FrameInput.KeyboardUp(Key.Space) ||
-				FrameInput.KeyboardUp(Key.Enter)
+				FrameInput.KeyboardUp(KeyboardKey.Tab) ||
+				FrameInput.KeyboardUp(KeyboardKey.Escape) ||
+				FrameInput.KeyboardUp(KeyboardKey.Space) ||
+				FrameInput.KeyboardUp(KeyboardKey.Enter)
 			) {
 				SetNavigating(!IsNavigating, true);
-				FrameInput.UseKeyboardKey(Key.Escape);
-				FrameInput.UseKeyboardKey(Key.Tab);
-				FrameInput.UseKeyboardKey(Key.Enter);
+				FrameInput.UseKeyboardKey(KeyboardKey.Escape);
+				FrameInput.UseKeyboardKey(KeyboardKey.Tab);
+				FrameInput.UseKeyboardKey(KeyboardKey.Enter);
 				FrameInput.UseGameKey(Gamekey.Start);
 				FrameInput.UseGameKey(Gamekey.Select);
 			}
-			ControlHintUI.AddHint(Key.Tab, Language.Get(UI_CANCEL, "Cancel"));
+			ControlHintUI.AddHint(KeyboardKey.Tab, Language.Get(UI_CANCEL, "Cancel"));
 
 		}
 

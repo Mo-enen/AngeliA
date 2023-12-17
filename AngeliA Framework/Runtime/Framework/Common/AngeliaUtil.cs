@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 
 
 namespace AngeliaFramework {
@@ -946,22 +945,22 @@ namespace AngeliaFramework {
 
 
 		public static bool AnyButtonPressed (this Gamepad pad) {
-			if (pad[GamepadButton.DpadUp].isPressed) return true;
-			if (pad[GamepadButton.DpadDown].isPressed) return true;
-			if (pad[GamepadButton.DpadLeft].isPressed) return true;
-			if (pad[GamepadButton.DpadRight].isPressed) return true;
-			if (pad[GamepadButton.North].isPressed) return true;
-			if (pad[GamepadButton.East].isPressed) return true;
-			if (pad[GamepadButton.South].isPressed) return true;
-			if (pad[GamepadButton.West].isPressed) return true;
-			if (pad[GamepadButton.LeftStick].isPressed) return true;
-			if (pad[GamepadButton.RightStick].isPressed) return true;
-			if (pad[GamepadButton.LeftShoulder].isPressed) return true;
-			if (pad[GamepadButton.RightShoulder].isPressed) return true;
-			if (pad[GamepadButton.Start].isPressed) return true;
-			if (pad[GamepadButton.Select].isPressed) return true;
-			if (pad[GamepadButton.LeftTrigger].isPressed) return true;
-			if (pad[GamepadButton.RightTrigger].isPressed) return true;
+			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.DpadUp].isPressed) return true;
+			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.DpadDown].isPressed) return true;
+			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.DpadLeft].isPressed) return true;
+			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.DpadRight].isPressed) return true;
+			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.North].isPressed) return true;
+			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.East].isPressed) return true;
+			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.South].isPressed) return true;
+			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.West].isPressed) return true;
+			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.LeftStick].isPressed) return true;
+			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.RightStick].isPressed) return true;
+			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.LeftShoulder].isPressed) return true;
+			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.RightShoulder].isPressed) return true;
+			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.Start].isPressed) return true;
+			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.Select].isPressed) return true;
+			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.LeftTrigger].isPressed) return true;
+			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.RightTrigger].isPressed) return true;
 			var stickL = pad.leftStick;
 			var stickR = pad.rightStick;
 			return
@@ -970,13 +969,13 @@ namespace AngeliaFramework {
 				stickL.down.isPressed || stickR.down.isPressed ||
 				stickL.up.isPressed || stickR.up.isPressed;
 		}
-		public static bool AnyButtonHolding (this Gamepad pad, out GamepadButton button) {
-			button = GamepadButton.DpadUp;
+		public static bool AnyButtonHolding (this Gamepad pad, out GamepadKey button) {
+			button = GamepadKey.DpadUp;
 			for (int i = 0; i < 16; i++) {
 				if (i == 14) i = 0x20;
 				if (i == 15) i = 33;
-				var btn = (GamepadButton)i;
-				if (pad[btn].isPressed) {
+				var btn = (GamepadKey)i;
+				if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)btn].isPressed) {
 					button = btn;
 					return true;
 				}
@@ -984,32 +983,32 @@ namespace AngeliaFramework {
 			var stickL = pad.leftStick;
 			var stickR = pad.rightStick;
 			if (stickL.left.isPressed || stickR.left.isPressed) {
-				button = GamepadButton.DpadLeft;
+				button = GamepadKey.DpadLeft;
 				return true;
 			}
 			if (stickL.right.isPressed || stickR.right.isPressed) {
-				button = GamepadButton.DpadRight;
+				button = GamepadKey.DpadRight;
 				return true;
 			}
 			if (stickL.down.isPressed || stickR.down.isPressed) {
-				button = GamepadButton.DpadDown;
+				button = GamepadKey.DpadDown;
 				return true;
 			}
 			if (stickL.up.isPressed || stickR.up.isPressed) {
-				button = GamepadButton.DpadUp;
+				button = GamepadKey.DpadUp;
 				return true;
 			}
 			return false;
 		}
 		public static bool AnyKeyPressed (this Keyboard keyboard) => keyboard.anyKey.isPressed;
-		public static bool AnyKeyHolding (this Keyboard keyboard, out Key key) {
-			key = Key.None;
+		public static bool AnyKeyHolding (this Keyboard keyboard, out KeyboardKey key) {
+			key = KeyboardKey.None;
 			if (keyboard.anyKey.isPressed) {
 				var allKeys = keyboard.allKeys;
 				for (int i = 0; i < allKeys.Count; i++) {
 					var k = allKeys[i];
 					if (k.isPressed) {
-						key = k.keyCode;
+						key = (KeyboardKey)k.keyCode;
 						break;
 					}
 				}

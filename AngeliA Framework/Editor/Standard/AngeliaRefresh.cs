@@ -190,7 +190,7 @@ namespace AngeliaFramework.Editor {
 
 
 		public string Message => "Refreshing AngeliA...";
-		public static readonly SavingInt LastSpriteCount = new("AngeRefresh.LastSpriteCount", 0);
+		public static readonly EditorSavingInt LastSpriteCount = new("AngeRefresh.LastSpriteCount", 0);
 
 
 		#endregion

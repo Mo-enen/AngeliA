@@ -512,9 +512,9 @@ namespace AngeliaFramework {
 
 			// Cache
 			TaskingRoute = FrameTask.HasTask();
-			CtrlHolding = FrameInput.KeyboardHolding(Key.LeftCtrl) || FrameInput.KeyboardHolding(Key.RightCtrl) || FrameInput.KeyboardHolding(Key.CapsLock);
-			ShiftHolding = FrameInput.KeyboardHolding(Key.LeftShift) || FrameInput.KeyboardHolding(Key.RightShift);
-			AltHolding = FrameInput.KeyboardHolding(Key.LeftAlt) || FrameInput.KeyboardHolding(Key.RightAlt);
+			CtrlHolding = FrameInput.KeyboardHolding(KeyboardKey.LeftCtrl) || FrameInput.KeyboardHolding(KeyboardKey.RightCtrl) || FrameInput.KeyboardHolding(KeyboardKey.CapsLock);
+			ShiftHolding = FrameInput.KeyboardHolding(KeyboardKey.LeftShift) || FrameInput.KeyboardHolding(KeyboardKey.RightShift);
+			AltHolding = FrameInput.KeyboardHolding(KeyboardKey.LeftAlt) || FrameInput.KeyboardHolding(KeyboardKey.RightAlt);
 
 			// List
 			if (EditorMeta.PinnedLists.Count == 0) {
@@ -685,9 +685,9 @@ namespace AngeliaFramework {
 
 			// Cancel Drop
 			if (!CtrlHolding && IsEditing && DroppingPlayer) {
-				if (FrameInput.KeyboardUp(Key.Escape)) {
+				if (FrameInput.KeyboardUp(KeyboardKey.Escape)) {
 					DroppingPlayer = false;
-					FrameInput.UseKeyboardKey(Key.Escape);
+					FrameInput.UseKeyboardKey(KeyboardKey.Escape);
 					FrameInput.UseGameKey(Gamekey.Start);
 				}
 				ControlHintUI.AddHint(Gamekey.Start, Language.Get(MEDT_CANCEL_DROP, "Cancel Drop"));
@@ -701,18 +701,18 @@ namespace AngeliaFramework {
 
 					// Switch Mode
 					if (!CtrlHolding) {
-						if (FrameInput.KeyboardDown(Key.Space)) {
+						if (FrameInput.KeyboardDown(KeyboardKey.Space)) {
 							IgnoreQuickPlayerDropThisTime = false;
 							StartDropPlayer();
 						}
 						ControlHintUI.AddHint(
-							Key.Space,
+							KeyboardKey.Space,
 							Language.Get(HINT_MEDT_SWITCH_PLAY, "Play")
 						);
 					}
 
 					// Delete
-					if (FrameInput.KeyboardDown(Key.Delete) || FrameInput.KeyboardDown(Key.Backspace)) {
+					if (FrameInput.KeyboardDown(KeyboardKey.Delete) || FrameInput.KeyboardDown(KeyboardKey.Backspace)) {
 						if (Pasting) {
 							CancelPaste();
 						} else if (SelectionUnitRect.HasValue) {
@@ -721,59 +721,59 @@ namespace AngeliaFramework {
 					}
 
 					// Cancel
-					if (FrameInput.KeyboardUp(Key.Escape)) {
+					if (FrameInput.KeyboardUp(KeyboardKey.Escape)) {
 						if (Pasting) {
 							ApplyPaste();
-							FrameInput.UseKeyboardKey(Key.Escape);
+							FrameInput.UseKeyboardKey(KeyboardKey.Escape);
 							FrameInput.UseGameKey(Gamekey.Start);
 						} else if (SelectionUnitRect.HasValue) {
 							SelectionUnitRect = null;
-							FrameInput.UseKeyboardKey(Key.Escape);
+							FrameInput.UseKeyboardKey(KeyboardKey.Escape);
 							FrameInput.UseGameKey(Gamekey.Start);
 						}
 						if (!string.IsNullOrEmpty(SearchingText)) {
 							SearchingText = "";
 							SearchResult.Clear();
-							FrameInput.UseKeyboardKey(Key.Escape);
+							FrameInput.UseKeyboardKey(KeyboardKey.Escape);
 							FrameInput.UseGameKey(Gamekey.Start);
 						}
 					}
 
 					// Nav
-					if (FrameInput.KeyboardDown(Key.Tab)) {
+					if (FrameInput.KeyboardDown(KeyboardKey.Tab)) {
 						SetNavigating(!IsNavigating, true);
 						FrameInput.UseAllHoldingKeys();
 					}
-					ControlHintUI.AddHint(Key.Tab, Language.Get(HINT_MEDT_NAV, "Overlook"));
+					ControlHintUI.AddHint(KeyboardKey.Tab, Language.Get(HINT_MEDT_NAV, "Overlook"));
 
 					// Move Selecting Blocks
 					if (SelectionUnitRect.HasValue) {
-						if (FrameInput.KeyboardDownGUI(Key.LeftArrow)) {
+						if (FrameInput.KeyboardDownGUI(KeyboardKey.LeftArrow)) {
 							MoveSelection(Int2.left);
 						}
-						if (FrameInput.KeyboardDownGUI(Key.RightArrow)) {
+						if (FrameInput.KeyboardDownGUI(KeyboardKey.RightArrow)) {
 							MoveSelection(Int2.right);
 						}
-						if (FrameInput.KeyboardDownGUI(Key.DownArrow)) {
+						if (FrameInput.KeyboardDownGUI(KeyboardKey.DownArrow)) {
 							MoveSelection(Int2.down);
 						}
-						if (FrameInput.KeyboardDownGUI(Key.UpArrow)) {
+						if (FrameInput.KeyboardDownGUI(KeyboardKey.UpArrow)) {
 							MoveSelection(Int2.up);
 						}
 					}
 
 					// System Numbers
 					int targetNumberID = 0;
-					if (FrameInput.KeyboardDown(Key.Digit0)) targetNumberID = typeof(Number0).AngeHash();
-					if (FrameInput.KeyboardDown(Key.Digit1)) targetNumberID = typeof(Number1).AngeHash();
-					if (FrameInput.KeyboardDown(Key.Digit2)) targetNumberID = typeof(Number2).AngeHash();
-					if (FrameInput.KeyboardDown(Key.Digit3)) targetNumberID = typeof(Number3).AngeHash();
-					if (FrameInput.KeyboardDown(Key.Digit4)) targetNumberID = typeof(Number4).AngeHash();
-					if (FrameInput.KeyboardDown(Key.Digit5)) targetNumberID = typeof(Number5).AngeHash();
-					if (FrameInput.KeyboardDown(Key.Digit6)) targetNumberID = typeof(Number6).AngeHash();
-					if (FrameInput.KeyboardDown(Key.Digit7)) targetNumberID = typeof(Number7).AngeHash();
-					if (FrameInput.KeyboardDown(Key.Digit8)) targetNumberID = typeof(Number8).AngeHash();
-					if (FrameInput.KeyboardDown(Key.Digit9)) targetNumberID = typeof(Number9).AngeHash();
+					if (FrameInput.KeyboardDown(KeyboardKey.Digit0)) targetNumberID = typeof(Number0).AngeHash();
+					if (FrameInput.KeyboardDown(KeyboardKey.Digit1)) targetNumberID = typeof(Number1).AngeHash();
+					if (FrameInput.KeyboardDown(KeyboardKey.Digit2)) targetNumberID = typeof(Number2).AngeHash();
+					if (FrameInput.KeyboardDown(KeyboardKey.Digit3)) targetNumberID = typeof(Number3).AngeHash();
+					if (FrameInput.KeyboardDown(KeyboardKey.Digit4)) targetNumberID = typeof(Number4).AngeHash();
+					if (FrameInput.KeyboardDown(KeyboardKey.Digit5)) targetNumberID = typeof(Number5).AngeHash();
+					if (FrameInput.KeyboardDown(KeyboardKey.Digit6)) targetNumberID = typeof(Number6).AngeHash();
+					if (FrameInput.KeyboardDown(KeyboardKey.Digit7)) targetNumberID = typeof(Number7).AngeHash();
+					if (FrameInput.KeyboardDown(KeyboardKey.Digit8)) targetNumberID = typeof(Number8).AngeHash();
+					if (FrameInput.KeyboardDown(KeyboardKey.Digit9)) targetNumberID = typeof(Number9).AngeHash();
 					if (targetNumberID != 0 && PalettePool.TryGetValue(targetNumberID, out var resultPal)) {
 						SelectingPaletteItem = resultPal;
 					}
@@ -783,42 +783,42 @@ namespace AngeliaFramework {
 				// Ctrl + ...
 				if (CtrlHolding && !ShiftHolding) {
 					// Save
-					if (FrameInput.KeyboardDown(Key.S)) {
+					if (FrameInput.KeyboardDown(KeyboardKey.S)) {
 						Save();
 					}
 					// Copy
-					if (FrameInput.KeyboardDown(Key.C)) {
+					if (FrameInput.KeyboardDown(KeyboardKey.C)) {
 						AddSelectionToCopyBuffer(false);
 					}
 					// Cut
-					if (FrameInput.KeyboardDown(Key.X)) {
+					if (FrameInput.KeyboardDown(KeyboardKey.X)) {
 						AddSelectionToCopyBuffer(true);
 					}
 					// Paste
-					if (FrameInput.KeyboardDown(Key.V)) {
+					if (FrameInput.KeyboardDown(KeyboardKey.V)) {
 						StartPasteFromCopyBuffer();
 					}
 					// Undo
-					if (FrameInput.KeyboardDown(Key.Z)) {
+					if (FrameInput.KeyboardDown(KeyboardKey.Z)) {
 						ApplyPaste();
 						SelectionUnitRect = null;
 						UndoRedo.Undo();
 					}
 					// Redo
-					if (FrameInput.KeyboardDown(Key.Y)) {
+					if (FrameInput.KeyboardDown(KeyboardKey.Y)) {
 						ApplyPaste();
 						SelectionUnitRect = null;
 						UndoRedo.Redo();
 					}
 					// Play from Start
-					if (FrameInput.KeyboardDown(Key.Space)) {
+					if (FrameInput.KeyboardDown(KeyboardKey.Space)) {
 						PlayFromStart();
 						FrameInput.UseAllHoldingKeys();
 						FrameInput.UseGameKey(Gamekey.Start);
 					}
-					ControlHintUI.AddHint(Key.Space, Language.Get(HINT_MEDT_PLAY_FROM_BEGIN, "Play from Start"));
+					ControlHintUI.AddHint(KeyboardKey.Space, Language.Get(HINT_MEDT_PLAY_FROM_BEGIN, "Play from Start"));
 					// Reset Camera
-					if (FrameInput.KeyboardDown(Key.R)) {
+					if (FrameInput.KeyboardDown(KeyboardKey.R)) {
 						ResetCamera();
 						FrameInput.UseAllHoldingKeys();
 					}
@@ -839,14 +839,14 @@ namespace AngeliaFramework {
 
 				// Switch Mode
 				if (!CtrlHolding) {
-					if (FrameInput.KeyboardUp(Key.Escape)) {
+					if (FrameInput.KeyboardUp(KeyboardKey.Escape)) {
 						IgnoreQuickPlayerDropThisTime = false;
 						SetEditorMode(false);
-						FrameInput.UseKeyboardKey(Key.Escape);
+						FrameInput.UseKeyboardKey(KeyboardKey.Escape);
 						FrameInput.UseGameKey(Gamekey.Start);
 					}
 					ControlHintUI.AddHint(
-						Key.Escape,
+						KeyboardKey.Escape,
 						Language.Get(HINT_MEDT_SWITCH_EDIT, "Back to Edit")
 					);
 				}

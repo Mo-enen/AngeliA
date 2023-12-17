@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 
 
 namespace AngeliaFramework {
@@ -42,14 +41,14 @@ namespace AngeliaFramework {
 		private class InputConfig : ISerializationCallbackReceiver {
 
 			public int[] KeyboardConfig = {
-				(int)Key.A, (int)Key.D, (int)Key.S, (int)Key.W,
-				(int)Key.L, (int)Key.P, (int)Key.Escape, (int)Key.Space,
+				(int)KeyboardKey.A, (int)KeyboardKey.D, (int)KeyboardKey.S, (int)KeyboardKey.W,
+				(int)KeyboardKey.L, (int)KeyboardKey.P, (int)KeyboardKey.Escape, (int)KeyboardKey.Space,
 			};
 			public int[] GamepadConfig = {
-				(int)GamepadButton.DpadLeft, (int)GamepadButton.DpadRight,
-				(int)GamepadButton.DpadDown, (int)GamepadButton.DpadUp,
-				(int)GamepadButton.East, (int)GamepadButton.South,
-				(int)GamepadButton.Start, (int)GamepadButton.Select,
+				(int)GamepadKey.DpadLeft, (int)GamepadKey.DpadRight,
+				(int)GamepadKey.DpadDown, (int)GamepadKey.DpadUp,
+				(int)GamepadKey.East, (int)GamepadKey.South,
+				(int)GamepadKey.Start, (int)GamepadKey.Select,
 			};
 
 			public void OnAfterDeserialize () => Valid();
@@ -97,14 +96,14 @@ namespace AngeliaFramework {
 
 		// Const
 		private static readonly int[] KEYBOARD_DEFAULT = {
-			(int)Key.A, (int)Key.D, (int)Key.S, (int)Key.W,
-			(int)Key.L, (int)Key.P, (int)Key.Escape, (int)Key.Space,
+			(int)KeyboardKey.A, (int)KeyboardKey.D, (int)KeyboardKey.S, (int)KeyboardKey.W,
+			(int)KeyboardKey.L, (int)KeyboardKey.P, (int)KeyboardKey.Escape, (int)KeyboardKey.Space,
 		};
 		private static readonly int[] GAMEPAD_DEFAULT = {
-			(int)GamepadButton.DpadLeft, (int)GamepadButton.DpadRight,
-			(int)GamepadButton.DpadDown, (int)GamepadButton.DpadUp,
-			(int)GamepadButton.East, (int)GamepadButton.South,
-			(int)GamepadButton.Start, (int)GamepadButton.Select,
+			(int)GamepadKey.DpadLeft, (int)GamepadKey.DpadRight,
+			(int)GamepadKey.DpadDown, (int)GamepadKey.DpadUp,
+			(int)GamepadKey.East, (int)GamepadKey.South,
+			(int)GamepadKey.Start, (int)GamepadKey.Select,
 		};
 
 		// Api
@@ -165,34 +164,34 @@ namespace AngeliaFramework {
 			{ Gamekey.Start, new() },
 			{ Gamekey.Select, new() },
 		};
-		private static readonly Dictionary<GamepadButton, State> GamepadStateMap = new() {
-			{GamepadButton.DpadDown, new() },
-			{GamepadButton.DpadUp, new() },
-			{GamepadButton.DpadLeft, new() },
-			{GamepadButton.DpadRight, new() },
-			{GamepadButton.South, new() },
-			{GamepadButton.North, new() },
-			{GamepadButton.West, new() },
-			{GamepadButton.East, new() },
-			{GamepadButton.LeftShoulder, new() },
-			{GamepadButton.RightShoulder, new() },
-			{GamepadButton.LeftTrigger, new() },
-			{GamepadButton.RightTrigger, new() },
-			{GamepadButton.LeftStick, new() },
-			{GamepadButton.RightStick, new() },
-			{GamepadButton.Start, new() },
-			{GamepadButton.Select, new() },
+		private static readonly Dictionary<GamepadKey, State> GamepadStateMap = new() {
+			{GamepadKey.DpadDown, new() },
+			{GamepadKey.DpadUp, new() },
+			{GamepadKey.DpadLeft, new() },
+			{GamepadKey.DpadRight, new() },
+			{GamepadKey.South, new() },
+			{GamepadKey.North, new() },
+			{GamepadKey.West, new() },
+			{GamepadKey.East, new() },
+			{GamepadKey.LeftShoulder, new() },
+			{GamepadKey.RightShoulder, new() },
+			{GamepadKey.LeftTrigger, new() },
+			{GamepadKey.RightTrigger, new() },
+			{GamepadKey.LeftStick, new() },
+			{GamepadKey.RightStick, new() },
+			{GamepadKey.Start, new() },
+			{GamepadKey.Select, new() },
 		};
-		private static readonly Dictionary<Key, State> KeyboardStateMap = new();
+		private static readonly Dictionary<KeyboardKey, State> KeyboardStateMap = new();
 		private static readonly Dictionary<Gamekey, Int2> KeyMap = new() {
-			{ Gamekey.Left, new((int)Key.A, (int)GamepadButton.DpadLeft) },
-			{ Gamekey.Right, new((int)Key.D, (int)GamepadButton.DpadRight)},
-			{ Gamekey.Down, new((int)Key.S, (int)GamepadButton.DpadDown)},
-			{ Gamekey.Up, new((int)Key.W, (int)GamepadButton.DpadUp)},
-			{ Gamekey.Action, new((int)Key.L, (int)GamepadButton.East)},
-			{ Gamekey.Jump, new((int)Key.P, (int)GamepadButton.South)},
-			{ Gamekey.Start, new((int)Key.Escape, (int)GamepadButton.Start)},
-			{ Gamekey.Select, new((int)Key.Space, (int)GamepadButton.Select)},
+			{ Gamekey.Left, new((int)KeyboardKey.A, (int)GamepadKey.DpadLeft) },
+			{ Gamekey.Right, new((int)KeyboardKey.D, (int)GamepadKey.DpadRight)},
+			{ Gamekey.Down, new((int)KeyboardKey.S, (int)GamepadKey.DpadDown)},
+			{ Gamekey.Up, new((int)KeyboardKey.W, (int)GamepadKey.DpadUp)},
+			{ Gamekey.Action, new((int)KeyboardKey.L, (int)GamepadKey.East)},
+			{ Gamekey.Jump, new((int)KeyboardKey.P, (int)GamepadKey.South)},
+			{ Gamekey.Start, new((int)KeyboardKey.Escape, (int)GamepadKey.Start)},
+			{ Gamekey.Select, new((int)KeyboardKey.Space, (int)GamepadKey.Select)},
 		};
 		private readonly static State MouseLeftState = new();
 		private readonly static State MouseRightState = new();
@@ -225,40 +224,40 @@ namespace AngeliaFramework {
 			for (int i = 0; i < 8; i++) {
 				KeyMap[(Gamekey)i] = new Int2(iConfig.KeyboardConfig[i], iConfig.GamepadConfig[i]);
 			}
-			KeyMap[Gamekey.Start] = new Int2((int)Key.Escape, (int)GamepadButton.Start);
+			KeyMap[Gamekey.Start] = new Int2((int)KeyboardKey.Escape, (int)GamepadKey.Start);
 
 			// Add Keys for Keyboard
-			var values = System.Enum.GetValues(typeof(Key));
+			var values = System.Enum.GetValues(typeof(KeyboardKey));
 			for (int i = 0; i < values.Length; i++) {
-				var key = (Key)values.GetValue(i);
+				var key = (KeyboardKey)values.GetValue(i);
 				switch (key) {
 					default:
 						KeyboardStateMap.TryAdd(key, new());
 						break;
-					case Key.None:
-					case Key.OEM1:
-					case Key.OEM2:
-					case Key.OEM3:
-					case Key.OEM4:
-					case Key.OEM5:
-					case Key.IMESelected:
-					case Key.NumpadEnter:
-					case Key.NumpadDivide:
-					case Key.NumpadMultiply:
-					case Key.NumpadPlus:
-					case Key.NumpadMinus:
-					case Key.NumpadPeriod:
-					case Key.NumpadEquals:
-					case Key.Numpad0:
-					case Key.Numpad1:
-					case Key.Numpad2:
-					case Key.Numpad3:
-					case Key.Numpad4:
-					case Key.Numpad5:
-					case Key.Numpad6:
-					case Key.Numpad7:
-					case Key.Numpad8:
-					case Key.Numpad9:
+					case KeyboardKey.None:
+					case KeyboardKey.OEM1:
+					case KeyboardKey.OEM2:
+					case KeyboardKey.OEM3:
+					case KeyboardKey.OEM4:
+					case KeyboardKey.OEM5:
+					case KeyboardKey.IMESelected:
+					case KeyboardKey.NumpadEnter:
+					case KeyboardKey.NumpadDivide:
+					case KeyboardKey.NumpadMultiply:
+					case KeyboardKey.NumpadPlus:
+					case KeyboardKey.NumpadMinus:
+					case KeyboardKey.NumpadPeriod:
+					case KeyboardKey.NumpadEquals:
+					case KeyboardKey.Numpad0:
+					case KeyboardKey.Numpad1:
+					case KeyboardKey.Numpad2:
+					case KeyboardKey.Numpad3:
+					case KeyboardKey.Numpad4:
+					case KeyboardKey.Numpad5:
+					case KeyboardKey.Numpad6:
+					case KeyboardKey.Numpad7:
+					case KeyboardKey.Numpad8:
+					case KeyboardKey.Numpad9:
 						break;
 				}
 			}
@@ -364,7 +363,7 @@ namespace AngeliaFramework {
 			foreach (var (key, state) in GamepadStateMap) {
 				state.PrevHolding = state.Holding;
 				if (Gamepad != null) {
-					state.Holding = Gamepad[key].isPressed;
+					state.Holding = Gamepad[(UnityEngine.InputSystem.LowLevel.GamepadButton)key].isPressed;
 					if (state.Down) UsingGamepad = true;
 				} else {
 					state.Holding = false;
@@ -430,7 +429,7 @@ namespace AngeliaFramework {
 
 				// Gamepad
 				if (Gamepad != null && Gamepad.enabled) {
-					state.Holding = Gamepad[(GamepadButton)KeyMap[key].y].isPressed;
+					state.Holding = Gamepad[(UnityEngine.InputSystem.LowLevel.GamepadButton)KeyMap[key].y].isPressed;
 					// Stick >> D-Pad
 					if (!state.Holding) {
 						switch (key) {
@@ -454,7 +453,7 @@ namespace AngeliaFramework {
 
 				// Keyboard
 				if (Keyboard != null && !state.Holding) {
-					state.Holding = Keyboard[(Key)KeyMap[key].x].isPressed;
+					state.Holding = Keyboard[(UnityEngine.InputSystem.Key)KeyMap[key].x].isPressed;
 					if (state.Holding) UsingGamepad = false;
 				}
 
@@ -475,7 +474,7 @@ namespace AngeliaFramework {
 
 				// Check Start from ESC and +
 				if (key == Gamekey.Start && !state.Holding) {
-					if (Keyboard != null && Keyboard[Key.Escape].isPressed) {
+					if (Keyboard != null && Keyboard[(UnityEngine.InputSystem.Key)KeyboardKey.Escape].isPressed) {
 						state.Holding = true;
 						UsingGamepad = false;
 					}
@@ -514,7 +513,7 @@ namespace AngeliaFramework {
 			foreach (var (key, state) in KeyboardStateMap) {
 				state.PrevHolding = state.Holding;
 				if (Keyboard != null) {
-					state.Holding = Keyboard[key].isPressed;
+					state.Holding = Keyboard[(UnityEngine.InputSystem.Key)key].isPressed;
 					if (state.Down) UsingGamepad = false;
 				} else {
 					state.Holding = false;
@@ -614,12 +613,12 @@ namespace AngeliaFramework {
 
 
 		// Any Key
-		public static bool TryGetHoldingGamepadButton (out GamepadButton button) {
-			button = GamepadButton.A;
+		public static bool TryGetHoldingGamepadButton (out GamepadKey button) {
+			button = GamepadKey.A;
 			return Gamepad != null && Gamepad.AnyButtonHolding(out button);
 		}
-		public static bool TryGetHoldingKeyboardKey (out Key key) {
-			key = Key.None;
+		public static bool TryGetHoldingKeyboardKey (out KeyboardKey key) {
+			key = KeyboardKey.None;
 			return Keyboard != null && Keyboard.AnyKeyHolding(out key);
 		}
 
@@ -642,8 +641,8 @@ namespace AngeliaFramework {
 
 
 		// Keyboard Key
-		public static bool KeyboardDown (Key key) => !IgnoringInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Down && !state.Ignored;
-		public static bool KeyboardDownGUI (Key key) {
+		public static bool KeyboardDown (KeyboardKey key) => !IgnoringInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Down && !state.Ignored;
+		public static bool KeyboardDownGUI (KeyboardKey key) {
 			if (IgnoringInput) return false;
 			var state = KeyboardStateMap[key];
 			if (state.Ignored) return false;
@@ -654,13 +653,13 @@ namespace AngeliaFramework {
 			}
 			return false;
 		}
-		public static bool KeyboardHolding (Key key) => !IgnoringInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Holding && !state.Ignored;
-		public static bool KeyboardUp (Key key) => !IgnoringInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Up && !state.Ignored;
+		public static bool KeyboardHolding (KeyboardKey key) => !IgnoringInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Holding && !state.Ignored;
+		public static bool KeyboardUp (KeyboardKey key) => !IgnoringInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Up && !state.Ignored;
 
 
 		// Use
 		public static void UseGameKey (Gamekey key) => GamekeyStateMap[key].Ignored = true;
-		public static void UseKeyboardKey (Key key) {
+		public static void UseKeyboardKey (KeyboardKey key) {
 			if (KeyboardStateMap.TryGetValue(key, out var state)) {
 				state.Ignored = true;
 			}
@@ -685,7 +684,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void UnuseKeyboardKey (Key key) {
+		public static void UnuseKeyboardKey (KeyboardKey key) {
 			if (KeyboardStateMap.TryGetValue(key, out var state)) {
 				state.Ignored = false;
 			}
@@ -694,19 +693,19 @@ namespace AngeliaFramework {
 
 
 		// Key Map
-		public static Key GetKeyboardMap (Gamekey key) => (Key)KeyMap[key].x;
-		public static Key GetDefaultKeyboardMap (Gamekey key) => (Key)KEYBOARD_DEFAULT[(int)key];
-		public static GamepadButton GetGamepadMap (Gamekey key) => (GamepadButton)KeyMap[key].y;
-		public static GamepadButton GetDefaultGamepadMap (Gamekey key) => (GamepadButton)GAMEPAD_DEFAULT[(int)key];
+		public static KeyboardKey GetKeyboardMap (Gamekey key) => (KeyboardKey)KeyMap[key].x;
+		public static KeyboardKey GetDefaultKeyboardMap (Gamekey key) => (KeyboardKey)KEYBOARD_DEFAULT[(int)key];
+		public static GamepadKey GetGamepadMap (Gamekey key) => (GamepadKey)KeyMap[key].y;
+		public static GamepadKey GetDefaultGamepadMap (Gamekey key) => (GamepadKey)GAMEPAD_DEFAULT[(int)key];
 
 
-		public static void SetKeyboardMap (Gamekey gameKey, Key keyboardKey) {
+		public static void SetKeyboardMap (Gamekey gameKey, KeyboardKey keyboardKey) {
 			var oldValue = KeyMap[gameKey];
 			oldValue.x = (int)keyboardKey;
 			KeyMap[gameKey] = oldValue;
 			SaveInputToDisk();
 		}
-		public static void SetGamepadMap (Gamekey gameKey, GamepadButton gamepadKey) {
+		public static void SetGamepadMap (Gamekey gameKey, GamepadKey gamepadKey) {
 			var oldValue = KeyMap[gameKey];
 			oldValue.y = (int)gamepadKey;
 			KeyMap[gameKey] = oldValue;
@@ -751,7 +750,7 @@ namespace AngeliaFramework {
 				KeyMap[(Gamekey)3].x,
 				KeyMap[(Gamekey)4].x,
 				KeyMap[(Gamekey)5].x,
-				(int)Key.Escape,
+				(int)KeyboardKey.Escape,
 				KeyMap[(Gamekey)7].x,
 			},
 			GamepadConfig = new int[8] {
@@ -761,7 +760,7 @@ namespace AngeliaFramework {
 				KeyMap[(Gamekey)3].y,
 				KeyMap[(Gamekey)4].y,
 				KeyMap[(Gamekey)5].y,
-				(int)GamepadButton.Start,
+				(int)GamepadKey.Start,
 				KeyMap[(Gamekey)7].y,
 			},
 		}, Application.persistentDataPath, "", true);

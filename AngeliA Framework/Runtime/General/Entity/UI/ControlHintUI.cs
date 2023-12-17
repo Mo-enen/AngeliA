@@ -202,8 +202,8 @@ namespace AngeliaFramework {
 		// API
 		public static void AddHint (Gamekey key, string label, int priority = int.MinValue) => Instance?.AddHintLogic(key, key, label, priority);
 		public static void AddHint (Gamekey keyA, Gamekey keyB, string label, int priority = int.MinValue) => Instance?.AddHintLogic(keyA, keyB, label, priority);
-		internal static void AddHint (Key key, string label) => AddHint(key, key, label);
-		internal static void AddHint (Key keyA, Key keyB, string label) {
+		internal static void AddHint (KeyboardKey key, string label) => AddHint(key, key, label);
+		internal static void AddHint (KeyboardKey keyA, KeyboardKey keyB, string label) {
 			if (Instance == null || !Instance.HintVisible) return;
 			int x =
 				CellRenderer.CameraRect.x +
@@ -221,10 +221,10 @@ namespace AngeliaFramework {
 
 		public static void DrawGlobalHint (int globalX, int globalY, Gamekey key, string label, bool background = false) => Instance?.DrawGamekey(globalX, globalY, key, key, label, background);
 		public static void DrawGlobalHint (int globalX, int globalY, Gamekey keyA, Gamekey keyB, string label, bool background = false) => Instance?.DrawGamekey(globalX, globalY, keyA, keyB, label, background);
-		internal static void DrawGlobalHint (int globalX, int globalY, Key key, string label, bool background = false) => Instance?.DrawKey(globalX, globalY, key, key, label, background);
-		internal static void DrawGlobalHint (int globalX, int globalY, Key keyA, Key keyB, string label, bool background = false) => Instance?.DrawKey(globalX, globalY, keyA, keyB, label, background);
-		internal static void DrawGlobalHint (int globalX, int globalY, GamepadButton key, string label, bool background = false) => Instance?.DrawGamepadButton(globalX, globalY, key, key, label, background);
-		internal static void DrawGlobalHint (int globalX, int globalY, GamepadButton keyA, GamepadButton keyB, string label, bool background = false) => Instance?.DrawGamepadButton(globalX, globalY, keyA, keyB, label, background);
+		internal static void DrawGlobalHint (int globalX, int globalY, KeyboardKey key, string label, bool background = false) => Instance?.DrawKey(globalX, globalY, key, key, label, background);
+		internal static void DrawGlobalHint (int globalX, int globalY, KeyboardKey keyA, KeyboardKey keyB, string label, bool background = false) => Instance?.DrawKey(globalX, globalY, keyA, keyB, label, background);
+		internal static void DrawGlobalHint (int globalX, int globalY, GamepadKey key, string label, bool background = false) => Instance?.DrawGamepadButton(globalX, globalY, key, key, label, background);
+		internal static void DrawGlobalHint (int globalX, int globalY, GamepadKey keyA, GamepadKey keyB, string label, bool background = false) => Instance?.DrawGamepadButton(globalX, globalY, keyA, keyB, label, background);
 
 
 		public static void ForceShowHint (int duration = 1) {
@@ -266,12 +266,12 @@ namespace AngeliaFramework {
 				DrawKey(x, y, FrameInput.GetKeyboardMap(keyA), FrameInput.GetKeyboardMap(keyB), label, background);
 			}
 		}
-		private void DrawGamepadButton (int x, int y, GamepadButton buttonA, GamepadButton buttonB, string label, bool background = false) {
+		private void DrawGamepadButton (int x, int y, GamepadKey buttonA, GamepadKey buttonB, string label, bool background = false) {
 			int keyIdA = Const.GAMEPAD_CODE.TryGetValue(buttonA, out int _value0) ? _value0 : 0;
 			int keyIdB = Const.GAMEPAD_CODE.TryGetValue(buttonB, out int _value1) ? _value1 : 0;
 			DrawKeyLogic(x, y, keyIdA, keyIdB, "", "", label, background);
 		}
-		private void DrawKey (int x, int y, Key keyA, Key keyB, string label, bool background = false) {
+		private void DrawKey (int x, int y, KeyboardKey keyA, KeyboardKey keyB, string label, bool background = false) {
 			DrawKeyLogic(x, y, 0, 0, Util.GetKeyDisplayName(keyA), Util.GetKeyDisplayName(keyB), label, background);
 		}
 		private void DrawKeyLogic (int x, int y, int keyIdA, int keyIdB, string keyTextA, string keyTextB, string label, bool background) {

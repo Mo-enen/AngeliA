@@ -137,10 +137,10 @@ namespace AngeliaFramework {
 			PauselessFrame = pauselessFrame;
 			if (TypingTextFieldID != 0 && FrameInput.AnyKeyHolding) {
 				FrameInput.UseAllHoldingKeys(ignoreMouse: true);
-				FrameInput.UnuseKeyboardKey(Key.LeftArrow);
-				FrameInput.UnuseKeyboardKey(Key.RightArrow);
-				FrameInput.UnuseKeyboardKey(Key.Delete);
-				FrameInput.UnuseKeyboardKey(Key.Escape);
+				FrameInput.UnuseKeyboardKey(KeyboardKey.LeftArrow);
+				FrameInput.UnuseKeyboardKey(KeyboardKey.RightArrow);
+				FrameInput.UnuseKeyboardKey(KeyboardKey.Delete);
+				FrameInput.UnuseKeyboardKey(KeyboardKey.Escape);
 			}
 
 			if (!FrameInput.MouseLeftButton) ScrollBarMouseDownPos = null;
@@ -432,19 +432,19 @@ namespace AngeliaFramework {
 			if (typing) {
 
 				// Clear
-				if (FrameInput.KeyboardUp(Key.Escape)) {
+				if (FrameInput.KeyboardUp(KeyboardKey.Escape)) {
 					if (!string.IsNullOrEmpty(text.Text)) {
 						text.Text = "";
 						changed = true;
 						BeamIndex = 0;
 						CancelTyping();
 					}
-					FrameInput.UseKeyboardKey(Key.Escape);
+					FrameInput.UseKeyboardKey(KeyboardKey.Escape);
 					FrameInput.UseGameKey(Gamekey.Start);
 				}
 
 				// Move Beam
-				if (FrameInput.KeyboardDownGUI(Key.LeftArrow)) {
+				if (FrameInput.KeyboardDownGUI(KeyboardKey.LeftArrow)) {
 					if (BeamLength == 0) {
 						BeamIndex--;
 					} else if (BeamLength < 0) {
@@ -453,7 +453,7 @@ namespace AngeliaFramework {
 					BeamLength = 0;
 					BeamBlinkFrame = PauselessFrame;
 				}
-				if (FrameInput.KeyboardDownGUI(Key.RightArrow)) {
+				if (FrameInput.KeyboardDownGUI(KeyboardKey.RightArrow)) {
 					if (BeamLength == 0) {
 						BeamIndex++;
 					} else if (BeamLength > 0) {
@@ -496,7 +496,7 @@ namespace AngeliaFramework {
 				}
 
 				// Delete
-				if (FrameInput.KeyboardDownGUI(Key.Delete)) {
+				if (FrameInput.KeyboardDownGUI(KeyboardKey.Delete)) {
 					int removeIndex = BeamIndex;
 					if (removeIndex >= 0 && removeIndex < text.Text.Length) {
 						if (BeamLength == 0) {
@@ -507,7 +507,7 @@ namespace AngeliaFramework {
 							changed = true;
 						}
 					}
-					FrameInput.UseKeyboardKey(Key.Delete);
+					FrameInput.UseKeyboardKey(KeyboardKey.Delete);
 				}
 				// Func
 				void RemoveSelection () {

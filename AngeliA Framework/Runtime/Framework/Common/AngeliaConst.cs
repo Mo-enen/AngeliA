@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 
 
@@ -150,21 +149,21 @@ namespace AngeliaFramework {
 
 		// Gamepad Code
 		public static int GAMEPAD_JUMP_HINT_CODE => GAMEPAD_CODE.TryGetValue(FrameInput.GetGamepadMap(Gamekey.Jump), out int _value0) ? _value0 : 0;
-		internal static readonly Dictionary<GamepadButton, int> GAMEPAD_CODE = new() {
-			{ GamepadButton.DpadLeft, "k_Gamepad Left".AngeHash()},
-			{ GamepadButton.DpadRight, "k_Gamepad Right".AngeHash()},
-			{ GamepadButton.DpadUp, "k_Gamepad Up".AngeHash()},
-			{ GamepadButton.DpadDown, "k_Gamepad Down".AngeHash()},
-			{ GamepadButton.South, "k_Gamepad South".AngeHash()},
-			{ GamepadButton.North, "k_Gamepad North".AngeHash()},
-			{ GamepadButton.East, "k_Gamepad East".AngeHash()},
-			{ GamepadButton.West, "k_Gamepad West".AngeHash()},
-			{ GamepadButton.Select, "k_Gamepad Select".AngeHash()},
-			{ GamepadButton.Start, "k_Gamepad Start".AngeHash()},
-			{ GamepadButton.LeftTrigger, "k_Gamepad LeftTrigger".AngeHash()},
-			{ GamepadButton.RightTrigger, "k_Gamepad RightTrigger".AngeHash()},
-			{ GamepadButton.LeftShoulder, "k_Gamepad LeftShoulder".AngeHash()},
-			{ GamepadButton.RightShoulder, "k_Gamepad RightShoulder".AngeHash()},
+		internal static readonly Dictionary<GamepadKey, int> GAMEPAD_CODE = new() {
+			{ GamepadKey.DpadLeft, "k_Gamepad Left".AngeHash()},
+			{ GamepadKey.DpadRight, "k_Gamepad Right".AngeHash()},
+			{ GamepadKey.DpadUp, "k_Gamepad Up".AngeHash()},
+			{ GamepadKey.DpadDown, "k_Gamepad Down".AngeHash()},
+			{ GamepadKey.South, "k_Gamepad South".AngeHash()},
+			{ GamepadKey.North, "k_Gamepad North".AngeHash()},
+			{ GamepadKey.East, "k_Gamepad East".AngeHash()},
+			{ GamepadKey.West, "k_Gamepad West".AngeHash()},
+			{ GamepadKey.Select, "k_Gamepad Select".AngeHash()},
+			{ GamepadKey.Start, "k_Gamepad Start".AngeHash()},
+			{ GamepadKey.LeftTrigger, "k_Gamepad LeftTrigger".AngeHash()},
+			{ GamepadKey.RightTrigger, "k_Gamepad RightTrigger".AngeHash()},
+			{ GamepadKey.LeftShoulder, "k_Gamepad LeftShoulder".AngeHash()},
+			{ GamepadKey.RightShoulder, "k_Gamepad RightShoulder".AngeHash()},
 		};
 
 		// Misc

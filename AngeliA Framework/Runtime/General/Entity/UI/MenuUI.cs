@@ -221,15 +221,15 @@ namespace AngeliaFramework {
 
 			// Use Action
 			if (Interactable) {
-				if (FrameInput.GameKeyDownGUI(Gamekey.Up) || FrameInput.KeyboardDownGUI(Key.UpArrow)) {
+				if (FrameInput.GameKeyDownGUI(Gamekey.Up) || FrameInput.KeyboardDownGUI(KeyboardKey.UpArrow)) {
 					SelectionIndex = (SelectionIndex - 1).Clamp(0, ItemCount - 1);
 					OnSelectionChanged();
 				}
-				if (FrameInput.GameKeyDownGUI(Gamekey.Down) || FrameInput.KeyboardDownGUI(Key.DownArrow)) {
+				if (FrameInput.GameKeyDownGUI(Gamekey.Down) || FrameInput.KeyboardDownGUI(KeyboardKey.DownArrow)) {
 					SelectionIndex = (SelectionIndex + 1).Clamp(0, ItemCount - 1);
 					OnSelectionChanged();
 				}
-				if (QuitOnPressStartOrEscKey && Game.GlobalFrame != ActiveFrame && (FrameInput.GameKeyUp(Gamekey.Start) || FrameInput.KeyboardUp(Key.Escape))) {
+				if (QuitOnPressStartOrEscKey && Game.GlobalFrame != ActiveFrame && (FrameInput.GameKeyUp(Gamekey.Start) || FrameInput.KeyboardUp(KeyboardKey.Escape))) {
 					Active = false;
 					FrameInput.UseAllHoldingKeys();
 				}
@@ -447,13 +447,13 @@ namespace AngeliaFramework {
 				);
 				// Invoke
 				if (Interactable) {
-					if (FrameInput.GameKeyDown(Gamekey.Action) || FrameInput.KeyboardDown(Key.Enter)) {
+					if (FrameInput.GameKeyDown(Gamekey.Action) || FrameInput.KeyboardDown(KeyboardKey.Enter)) {
 						invoke = true;
 					}
-					if (useArrows && (FrameInput.GameKeyDownGUI(Gamekey.Left) || FrameInput.KeyboardDownGUI(Key.LeftArrow))) {
+					if (useArrows && (FrameInput.GameKeyDownGUI(Gamekey.Left) || FrameInput.KeyboardDownGUI(KeyboardKey.LeftArrow))) {
 						delta = -1;
 					}
-					if (useArrows && (FrameInput.GameKeyDownGUI(Gamekey.Right) || FrameInput.KeyboardDownGUI(Key.RightArrow))) {
+					if (useArrows && (FrameInput.GameKeyDownGUI(Gamekey.Right) || FrameInput.KeyboardDownGUI(KeyboardKey.RightArrow))) {
 						delta = 1;
 					}
 				}
