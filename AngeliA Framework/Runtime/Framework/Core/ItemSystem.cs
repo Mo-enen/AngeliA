@@ -339,10 +339,10 @@ namespace AngeliaFramework {
 
 
 		// Spawn 
-		public static bool GiveItemToPlayer (int itemID, int count = 1) {
-			var player = Player.Selecting;
-			if (player == null) return false;
-			count -= Inventory.CollectItem(player.TypeID, itemID, count);
+		public static bool GiveItemToPlayer (int itemID, int count = 1) => GiveItemTo(Player.Selecting, itemID, count);
+		public static bool GiveItemTo (Character target, int itemID, int count = 1) {
+			if (target == null) return false;
+			count -= Inventory.CollectItem(target.TypeID, itemID, count);
 			if (count > 0) {
 				SpawnItemAtPlayer(itemID, count);
 			}
@@ -350,9 +350,10 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void SpawnItemAtPlayer (int itemID, int count = 1) {
-			int x = Player.Selecting != null ? Player.Selecting.Rect.x - Const.CEL : CellRenderer.CameraRect.CenterX();
-			int y = Player.Selecting != null ? Player.Selecting.Y : CellRenderer.CameraRect.CenterY();
+		public static void SpawnItemAtPlayer (int itemID, int count = 1) => SpawnItemAt(Player.Selecting, itemID, count);
+		public static void SpawnItemAt (Character target, int itemID, int count = 1) {
+			int x = target != null ? target.Rect.x - Const.CEL : CellRenderer.CameraRect.CenterX();
+			int y = target != null ? target.Y : CellRenderer.CameraRect.CenterY();
 			SpawnItem(itemID, x, y, count);
 		}
 

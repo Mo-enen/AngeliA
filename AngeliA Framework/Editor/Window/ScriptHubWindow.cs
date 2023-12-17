@@ -10,6 +10,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaFramework.Editor {
+	using Debug = UnityEngine.Debug;
 	public interface IScriptHubConfig {
 		public struct SearchPattern {
 			public string Pattern;

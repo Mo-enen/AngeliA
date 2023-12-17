@@ -11,7 +11,7 @@ using UnityEditor.SceneManagement;
 
 
 namespace AngeliaFramework.Editor {
-
+	using Debug = UnityEngine.Debug;
 
 
 	public interface IRefreshEvent {

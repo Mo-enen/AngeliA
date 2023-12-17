@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -147,8 +146,8 @@ namespace AngeliaFramework {
 		public static void OnGameInitialize () {
 			ViewRect = new(
 				0, 0,
-				Const.VIEW_RATIO * Mathf.Clamp(Const.DEFAULT_HEIGHT, Const.MIN_HEIGHT, Const.MAX_HEIGHT) / 1000,
-				Mathf.Clamp(Const.DEFAULT_HEIGHT, Const.MIN_HEIGHT, Const.MAX_HEIGHT)
+				Const.VIEW_RATIO * Const.DEFAULT_HEIGHT.Clamp(Const.MIN_HEIGHT, Const.MAX_HEIGHT) / 1000,
+				Const.DEFAULT_HEIGHT.Clamp(Const.MIN_HEIGHT, Const.MAX_HEIGHT)
 			);
 			Entities = new Entity[EntityLayer.COUNT][];
 			for (int i = 0; i < EntityLayer.COUNT; i++) {
@@ -182,7 +181,7 @@ namespace AngeliaFramework {
 					preSpawn = att_Capacity.PreSpawn.Clamp(0, Entities[layer].Length);
 				}
 				var stack = new EntityStack() {
-					Entities = new Stack<Entity>(capacity),
+					Entities = new Stack<Entity>(preSpawn),
 					LocalBound = att_Bound != null ? att_Bound.Value : new(0, 0, Const.CEL, Const.CEL),
 					DrawBehind = att_DontDrawBehind == null,
 					DestroyOnSquadTransition = att_DontDestroyOnTran == null,

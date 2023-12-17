@@ -223,7 +223,7 @@ namespace AngeliaFramework {
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitialize>(m => m.Value.Order <= 0, (a, b) => a.Value.Order.CompareTo(b.Value.Order));
 				OnSlotChanged?.Invoke();
 				AudioPlayer.Initialize(m_AudioClips);
-				Debug.unityLogger.logEnabled = Application.isEditor;
+				Debug.SetEnable(Application.isEditor);
 				Application.targetFrameRate = Application.isEditor ? 60 : GraphicFramerate;
 				QualitySettings.vSyncCount = _VSync.Value ? 1 : 0;
 				Time.fixedDeltaTime = 1f / 60f;

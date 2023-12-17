@@ -6,6 +6,7 @@ using UnityEditor;
 
 
 namespace AngeliaFramework.Editor {
+	using Debug = UnityEngine.Debug;
 	public class LanguageEditor : UtilWindow {
 
 

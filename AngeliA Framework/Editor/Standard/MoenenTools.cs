@@ -11,7 +11,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaFramework.Editor {
-
+	using Debug = UnityEngine.Debug;
 	public static class MoenenTools {
 
 

@@ -101,7 +101,7 @@ namespace AngeliaFramework {
 				SampleReader, X.ToUnit(), Y.ToUnit(), Stage.ViewZ - 1,
 				(_room) => RoomPool.TryAdd(_room.ID, _room)
 			);
-			Debug.Log(RootNode.PrintTree());
+			//Debug.Log(RootNode.PrintTree());
 		}
 
 

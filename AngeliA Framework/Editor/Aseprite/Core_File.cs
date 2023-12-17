@@ -5,6 +5,7 @@ using UnityEditor;
 using System.Linq;
 
 namespace AngeliaFramework.Editor {
+	using Debug = UnityEngine.Debug;
 	public class FileCore {
 
 

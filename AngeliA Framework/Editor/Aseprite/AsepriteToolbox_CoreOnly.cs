@@ -5,6 +5,7 @@ using UnityEngine;
 
 
 namespace AngeliaFramework.Editor {
+	using Debug = UnityEngine.Debug;
 	public partial class AsepriteToolbox_CoreOnly {
 
 		private const string NAMING_ASE = "{ase}";

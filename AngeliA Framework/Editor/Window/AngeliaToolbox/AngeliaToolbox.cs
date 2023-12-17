@@ -10,6 +10,7 @@ using UnityEditor;
 
 
 namespace AngeliaFramework.Editor {
+	using Debug = UnityEngine.Debug;
 	public static class AngeliaToolbox {
 
 

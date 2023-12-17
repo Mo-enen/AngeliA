@@ -7,6 +7,7 @@ using System.Text;
 using System.Reflection;
 
 namespace AngeliaFramework.Editor {
+	using Debug = UnityEngine.Debug;
 	public class EditorIcons : EditorWindow {
 
 
