@@ -57,8 +57,8 @@ namespace AngeliaFramework {
 		public int HandGrabAttackTwistL { get; set; } = 1000;
 		public int HandGrabAttackTwistR { get; set; } = 1000;
 		public int HideBraidFrame { get; set; } = -1;
-		public Pixel32 SkinColor { get; set; } = new(239, 194, 160, 255);
-		public Pixel32 HairColor { get; set; } = new(51, 51, 51, 255);
+		public Byte4 SkinColor { get; set; } = new(239, 194, 160, 255);
+		public Byte4 HairColor { get; set; } = new(51, 51, 51, 255);
 		public int CharacterHeight { get; set; } = 160; // in CM
 		public bool BodyPartsReady => BodyParts != null;
 		public override bool SpinOnGroundPound => Wing.IsPropellerWing(WingID);

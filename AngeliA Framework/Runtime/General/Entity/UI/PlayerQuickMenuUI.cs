@@ -290,7 +290,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void DrawItemIcon (IRect rect, int id, Pixel32 tint, int z) {
+		private static void DrawItemIcon (IRect rect, int id, Byte4 tint, int z) {
 			if (id == 0) return;
 			if (!CellRenderer.TryGetSprite(id, out var sprite)) {
 				id = Const.PIXEL;

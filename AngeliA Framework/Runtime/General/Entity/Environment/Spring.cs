@@ -95,7 +95,7 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			var tint = (Pixel32)Color.Lerp(Const.WHITE, RED, Mathf.InverseLerp(RED_LINE_MIN, RED_LINE_MAX, Power));
+			var tint = (Byte4)Color.Lerp(Const.WHITE, RED, Mathf.InverseLerp(RED_LINE_MIN, RED_LINE_MAX, Power));
 			if (Game.GlobalFrame < LastBounceFrame + BOUNCE_ANI.Length) {
 				CurrentArtworkFrame++;
 			} else {

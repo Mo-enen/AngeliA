@@ -44,7 +44,7 @@ namespace AngeliaFramework {
 
 			if (IsPlaying || DroppingPlayer) return;
 
-			var TINT = new Pixel32(128, 128, 128, 24);
+			var TINT = new Byte4(128, 128, 128, 24);
 			var cRect = CellRenderer.CameraRect;
 			int l = Mathf.FloorToInt(cRect.xMin.UDivide(Const.CEL)) * Const.CEL;
 			int r = Mathf.CeilToInt(cRect.xMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
@@ -164,7 +164,7 @@ namespace AngeliaFramework {
 
 			// Paste Tint
 			if (Pasting) {
-				CellRenderer.Draw(Const.PIXEL, selectionRect, new Pixel32(0, 128, 255, 32), GIZMOS_Z - 1);
+				CellRenderer.Draw(Const.PIXEL, selectionRect, new Byte4(0, 128, 255, 32), GIZMOS_Z - 1);
 			}
 
 			// Black Frame
@@ -303,7 +303,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void DrawDottedLineGizmos (int x, int y, int length, bool horizontal, int thickness, int gap, Pixel32 tint) {
+		private void DrawDottedLineGizmos (int x, int y, int length, bool horizontal, int thickness, int gap, Byte4 tint) {
 
 			if (gap == 0) return;
 
@@ -344,7 +344,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void DrawCrossLineGizmos (IRect rect, int thickness, Pixel32 tint, Pixel32 shadowTint) {
+		private void DrawCrossLineGizmos (IRect rect, int thickness, Byte4 tint, Byte4 shadowTint) {
 			int shiftY = thickness / 2;
 			int shrink = thickness * 2;
 			CellRendererGUI.DrawLine(

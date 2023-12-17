@@ -197,7 +197,7 @@ namespace AngeliaFramework {
 			sheet.Metas = metaList.ToArray();
 
 			// Summary
-			var summaryPool = new Dictionary<int, Pixel32>();
+			var summaryPool = new Dictionary<int, Byte4>();
 			FillBlockSummaryColorPool(sheet, sheetTexture, summaryPool);
 			for (int i = 0; i < sheet.Sprites.Length; i++) {
 				var sprite = sheet.Sprites[i];
@@ -208,7 +208,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void FillBlockSummaryColorPool (SpriteSheet sheet, Texture2D texture, Dictionary<int, Pixel32> pool) {
+		private static void FillBlockSummaryColorPool (SpriteSheet sheet, Texture2D texture, Dictionary<int, Byte4> pool) {
 			pool.Clear();
 			// Color Pool
 			if (sheet == null) return;
@@ -244,8 +244,8 @@ namespace AngeliaFramework {
 
 
 			// Func
-			static Pixel32 GetThumbnailColor (Texture2D texture, IRect rect) {
-				var CLEAR = new Pixel32(0, 0, 0, 0);
+			static Byte4 GetThumbnailColor (Texture2D texture, IRect rect) {
+				var CLEAR = new Byte4(0, 0, 0, 0);
 				if (texture == null || rect.width <= 0 || rect.height <= 0) return CLEAR;
 				var result = CLEAR;
 				try {
@@ -316,7 +316,6 @@ namespace AngeliaFramework {
 					if (hashTag.Equals("Quicksand", OIC)) { tag = Const.QUICKSAND_TAG; isTrigger = true; continue; }
 					if (hashTag.Equals("Water", OIC)) { tag = Const.WATER_TAG; isTrigger = true; continue; }
 					if (hashTag.Equals("Slip", OIC)) { tag = Const.SLIP_TAG; continue; }
-					if (hashTag.Equals("Damage", OIC)) { tag = Const.DAMAGE_TAG; continue; }
 					if (hashTag.Equals("Slide", OIC)) { tag = Const.SLIDE_TAG; continue; }
 					if (hashTag.Equals("NoSlide", OIC)) { tag = Const.NO_SLIDE_TAG; continue; }
 					if (hashTag.Equals("GrabTop", OIC)) { tag = Const.GRAB_TOP_TAG; continue; }
@@ -324,6 +323,9 @@ namespace AngeliaFramework {
 					if (hashTag.Equals("Grab", OIC)) { tag = Const.GRAB_TAG; continue; }
 					if (hashTag.Equals("ShowLimb", OIC)) { tag = Const.SHOW_LIMB_TAG; continue; }
 					if (hashTag.Equals("HideLimb", OIC)) { tag = Const.HIDE_LIMB_TAG; continue; }
+					if (hashTag.Equals("Damage", OIC)) { tag = Const.DAMAGE_TAG; continue; }
+					if (hashTag.Equals("ExplosiveDamage", OIC)) { tag = Const.DAMAGE_EXPLOSIVE_TAG; continue; }
+					if (hashTag.Equals("MagicalDamage", OIC)) { tag = Const.DAMAGE_MAGICAL_TAG; continue; }
 
 					if (hashTag.Equals("loopStart", OIC)) {
 						loopStart = true;
@@ -443,7 +445,7 @@ namespace AngeliaFramework {
 		public static void CreateSlotFolders () {
 			Util.CreateFolder(AngePath.SaveSlotRoot);
 			Util.CreateFolder(AngePath.UserMapRoot);
-			Util.CreateFolder(AngePath.PlayerDataRoot);
+			Util.CreateFolder(AngePath.UserDataRoot);
 			Util.CreateFolder(AngePath.ProcedureMapRoot);
 			Util.CreateFolder(AngePath.DownloadMapRoot);
 		}
@@ -580,7 +582,7 @@ namespace AngeliaFramework {
 			gameCamera.transform.localScale = Float3.one;
 			gameCamera.transform.gameObject.tag = "MainCamera";
 			gameCamera.clearFlags = CameraClearFlags.Skybox;
-			gameCamera.backgroundColor = new Pixel32(0, 0, 0, 0);
+			gameCamera.backgroundColor = new Byte4(0, 0, 0, 0);
 			gameCamera.cullingMask = -1;
 			gameCamera.orthographic = true;
 			gameCamera.orthographicSize = 1f;
@@ -604,7 +606,7 @@ namespace AngeliaFramework {
 		public static int RandomInt (int min = int.MinValue, int max = int.MaxValue) => GlobalRandom.Next(min, max);
 		public static float RandomFloat01 () => (float)GlobalRandom.NextDouble();
 		public static double RandomDouble01 () => GlobalRandom.NextDouble();
-		public static Pixel32 RandomColor (int minH = 0, int maxH = 360, int minS = 0, int maxS = 100, int minV = 0, int maxV = 100, int minA = 0, int maxA = 255) {
+		public static Byte4 RandomColor (int minH = 0, int maxH = 360, int minS = 0, int maxS = 100, int minV = 0, int maxV = 100, int minA = 0, int maxA = 255) {
 			var result = Color.HSVToRGB(
 				RandomInt(minH, maxH) / 360f,
 				RandomInt(minS, maxS) / 100f,
@@ -827,7 +829,7 @@ namespace AngeliaFramework {
 			result.X += offsetX;
 			result.Y += offsetY;
 			result.Z = z;
-			result.Color = new Pixel32(0, 0, 0, alpha);
+			result.Color = new Byte4(0, 0, 0, alpha);
 			return result;
 		}
 
@@ -847,7 +849,7 @@ namespace AngeliaFramework {
 			if (frame.UMod(9379) == 0) DrawGlitch(cell, RandomInt(-293, 211), RandomInt(-079, 011), RandomInt(0900, 1700), RandomInt(0900, 1100), RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
 
 			// Func
-			static void DrawGlitch (Cell cell, int offsetX, int offsetY, int scaleX, int scaleY, Pixel32 color) {
+			static void DrawGlitch (Cell cell, int offsetX, int offsetY, int scaleX, int scaleY, Byte4 color) {
 
 				var cursedCell = CellRenderer.Draw(Const.PIXEL, default, 0);
 				cursedCell.Index = cell.Index;

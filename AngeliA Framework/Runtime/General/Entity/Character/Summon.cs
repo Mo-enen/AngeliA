@@ -23,7 +23,7 @@ namespace AngeliaFramework {
 		// Api
 		public Character Owner { get; set; } = null;
 		int IDamageReceiver.Team => Owner != null ? (Owner as IDamageReceiver).Team : Const.TEAM_NEUTRAL;
-		bool IDamageReceiver.TakeDamageFromEnvironment => false;
+		bool IDamageReceiver.TakeDamageFromLevel => false;
 		protected override bool NavigationEnable => CharacterState == CharacterState.GamePlay && Owner != null && Owner.Active;
 		protected override bool PhysicsEnable => base.PhysicsEnable && CharacterState != CharacterState.GamePlay;
 		protected override bool ClampInSpawnRect => Owner == Player.Selecting;

@@ -375,7 +375,7 @@ namespace AngeliaFramework {
 
 		// Unlock
 		private static void LoadUnlockDataFromFile () {
-			string unlockPath = Util.CombinePaths(AngePath.PlayerDataRoot, UNLOCK_NAME);
+			string unlockPath = Util.CombinePaths(AngePath.UserDataRoot, UNLOCK_NAME);
 			if (!Util.FileExists(unlockPath)) return;
 			foreach (var (_, data) in ItemPool) data.Unlocked = false;
 			var bytes = Util.FileToByte(unlockPath);
@@ -393,7 +393,7 @@ namespace AngeliaFramework {
 
 
 		private static void SaveUnlockDataToFile () {
-			string unlockPath = Util.CombinePaths(AngePath.PlayerDataRoot, UNLOCK_NAME);
+			string unlockPath = Util.CombinePaths(AngePath.UserDataRoot, UNLOCK_NAME);
 			Util.CreateFolder(Util.GetParentPath(unlockPath));
 			var fs = new FileStream(unlockPath, FileMode.Create, FileAccess.Write);
 			foreach (var (id, data) in ItemPool) {

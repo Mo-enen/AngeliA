@@ -369,7 +369,7 @@ namespace AngeliaFramework.Editor {
 			var offset = SliceCreator_Start.Clamped(0, 0);
 			var size = SliceCreator_Size.Clamped(0, 0);
 			var count = SliceCreator_Count.Clamped(0, 0);
-			Pixel32 color32 = Color.black;
+			Byte4 color32 = Color.black;
 			string nameFormat = SliceCreator_Name.Replace("{x}", "{0}").Replace("{y}", "{1}").Replace("{i}", "{2}");
 			int index = 0;
 			for (int j = 0; j < count.y; j++) {

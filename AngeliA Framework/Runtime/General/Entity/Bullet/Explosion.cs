@@ -32,9 +32,9 @@ namespace AngeliaFramework {
 		protected virtual int LightArtwork => ART_LIGHT;
 		protected virtual int DarkArtwork => ART_DARK;
 		protected virtual int SmokeParticleID => SMOKE_ID;
-		protected virtual Pixel32 WaveColor => new(255, 255, 255, 255);
-		protected virtual Pixel32 RingColor => new(255, 0, 0, 255);
-		protected virtual Pixel32 FireColor => new(255, 255, 0, 255);
+		protected virtual Byte4 WaveColor => new(255, 255, 255, 255);
+		protected virtual Byte4 RingColor => new(255, 0, 0, 255);
+		protected virtual Byte4 FireColor => new(255, 255, 0, 255);
 		public Entity Sender { get; set; } = null;
 		public int BreakObjectArtwork { get; set; }
 
@@ -101,7 +101,7 @@ namespace AngeliaFramework {
 					if (receiver is Entity e && !e.Active) continue;
 					var hitRect = hits[i].Rect;
 					if (!Util.OverlapRectCircle(Radius, X, Y, hitRect.xMin, hitRect.yMin, hitRect.xMax, hitRect.yMax)) continue;
-					receiver.TakeDamage(Damage, Sender);
+					receiver.TakeDamage(new Damage(Damage, Sender, Const.DAMAGE_EXPLOSIVE_TAG));
 				}
 			}
 		}
@@ -140,7 +140,7 @@ namespace AngeliaFramework {
 			// Light
 			if (LightArtwork != 0) {
 				int lightRadius = Radius * 20 / 8;
-				var lightColor = new Pixel32(255, 255, 255, (byte)Mathf.LerpUnclamped(255, 0, lerp01));
+				var lightColor = new Byte4(255, 255, 255, (byte)Mathf.LerpUnclamped(255, 0, lerp01));
 				CellRenderer.Draw(
 					LightArtwork, X, Y, 500, 500, 0, lightRadius, lightRadius,
 					lightColor, 1023
@@ -171,7 +171,7 @@ namespace AngeliaFramework {
 
 			// Dark
 			if (DarkArtwork != 0) {
-				var darkColor = new Pixel32(0, 0, 0, (byte)Mathf.LerpUnclamped(64, 0, lerp01));
+				var darkColor = new Byte4(0, 0, 0, (byte)Mathf.LerpUnclamped(64, 0, lerp01));
 				int darkRadius = Radius * 22 / 8;
 				CellRenderer.Draw(
 					DarkArtwork, X, Y, 500, 500, 45,
@@ -209,7 +209,7 @@ namespace AngeliaFramework {
 				particle.Y = Y + pos.y * Radius / 2000;
 				particle.Width = particle.X > X ? size : -size;
 				particle.Height = size;
-				particle.Tint = new Pixel32(12, 12, 12, 32);
+				particle.Tint = new Byte4(12, 12, 12, 32);
 			}
 		}
 

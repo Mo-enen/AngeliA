@@ -49,7 +49,7 @@ namespace AngeliaFramework.Editor {
 				}
 
 				// Pack
-				var textureRects = RectPacking.PackTextures(out Pixel32[] colors, out int width, out int height, packingList, true);
+				var textureRects = RectPacking.PackTextures(out Byte4[] colors, out int width, out int height, packingList, true);
 
 				if (colors.Length > 0) {
 					// Fix Sprite Meta

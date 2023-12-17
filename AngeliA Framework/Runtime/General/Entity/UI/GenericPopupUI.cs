@@ -126,7 +126,7 @@ namespace AngeliaFramework {
 					// Separator
 					CellRenderer.Draw(
 						LINE_CODE, new(rect.x, rect.y + separatorHeight / 4, rect.width, separatorHeight / 2),
-						new Pixel32(0, 0, 0, 32), int.MaxValue
+						new Byte4(0, 0, 0, 32), int.MaxValue
 					);
 				} else {
 					// Item
@@ -179,7 +179,7 @@ namespace AngeliaFramework {
 
 			// BG
 			CellRenderer.Draw(
-				Const.PIXEL, panelRect.Expand(Unify(8)), new Pixel32(249, 249, 249, 255), int.MaxValue - 2
+				Const.PIXEL, panelRect.Expand(Unify(8)), new Byte4(249, 249, 249, 255), int.MaxValue - 2
 			);
 
 			// Clamp Text

@@ -426,7 +426,7 @@ namespace AngeliaFramework {
 				CellRenderer.Draw(
 					Const.PIXEL,
 					CellRenderer.CameraRect.Expand(Const.HALF),
-					new Pixel32(0, 0, 0, (byte)Util.RemapUnclamped(0, FULL_SLEEP_DURATION, 0, 255, SleepFrame).Clamp(0, 255)),
+					new Byte4(0, 0, 0, (byte)Util.RemapUnclamped(0, FULL_SLEEP_DURATION, 0, 255, SleepFrame).Clamp(0, 255)),
 					int.MaxValue
 				);
 				CellRenderer.SetLayer(oldLayer);
@@ -639,7 +639,7 @@ namespace AngeliaFramework {
 
 
 		private static void LoadGameDataFromFile () {
-			var data = AngeUtil.LoadOrCreateJson<PlayerGameData>(AngePath.PlayerDataRoot);
+			var data = AngeUtil.LoadOrCreateJson<PlayerGameData>(AngePath.UserDataRoot);
 			HomeUnitPosition =
 				data.HomeUnitPositionX != int.MinValue &&
 				data.HomeUnitPositionY != int.MinValue &&
@@ -653,7 +653,7 @@ namespace AngeliaFramework {
 				HomeUnitPositionX = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.x : int.MinValue,
 				HomeUnitPositionY = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.y : int.MinValue,
 				HomeUnitPositionZ = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.z : int.MinValue,
-			}, AngePath.PlayerDataRoot);
+			}, AngePath.UserDataRoot);
 		}
 
 

@@ -469,8 +469,8 @@ namespace AngeliaFramework {
 
 
 		// Misc
-		public static bool IsSame (this Pixel32 a, Pixel32 b, bool ignoreAlpha = false) => a.r == b.r && a.g == b.g && a.b == b.b && (ignoreAlpha || a.a == b.a);
-		public static Pixel32 Mult (this Pixel32 a, Pixel32 b) {
+		public static bool IsSame (this Byte4 a, Byte4 b, bool ignoreAlpha = false) => a.r == b.r && a.g == b.g && a.b == b.b && (ignoreAlpha || a.a == b.a);
+		public static Byte4 Mult (this Byte4 a, Byte4 b) {
 			a.r = (byte)(a.r * b.r / 255);
 			a.g = (byte)(a.g * b.g / 255);
 			a.b = (byte)(a.b * b.b / 255);

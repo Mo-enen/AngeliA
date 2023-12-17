@@ -4,7 +4,8 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
-	public class Barrel : BreakableRigidbody, ICombustible {
+	public class Barrel : Breakable, ICombustible {
 		int ICombustible.BurnStartFrame { get; set; }
+		protected override bool PhysicsEnable => true;
 	}
 }

@@ -21,6 +21,7 @@ namespace AngeliaFramework {
 		protected override void SpawnResidue (IDamageReceiver receiver) {
 			if (Active) return;
 			if (Stage.SpawnEntity(ExplosionID, X + Width / 2, Y + Height / 2) is Explosion exp) {
+				exp.Sender = Sender;
 				exp.BreakObjectArtwork = TypeID;
 			}
 		}

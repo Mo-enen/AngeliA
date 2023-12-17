@@ -114,9 +114,9 @@ namespace AngeliaFramework {
 		private static readonly int TRIANGLE_UP = "Icon TriangleUp".AngeHash();
 		private static readonly int TRIANGLE_DOWN = "Icon TriangleDown".AngeHash();
 		private static readonly int REFRESH_ICON = "Icon Refresh".AngeHash();
-		private static readonly Pixel32 CURSOR_TINT = new(240, 240, 240, 128);
-		private static readonly Pixel32 CURSOR_TINT_DARK = new(16, 16, 16, 128);
-		private static readonly Pixel32 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
+		private static readonly Byte4 CURSOR_TINT = new(240, 240, 240, 128);
+		private static readonly Byte4 CURSOR_TINT_DARK = new(16, 16, 16, 128);
+		private static readonly Byte4 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
 		private static readonly int MEDT_DROP = "MEDT.Drop".AngeHash();
 		private static readonly int MEDT_CANCEL_DROP = "MEDT.CancelDrop".AngeHash();
 		private static readonly int MEDT_ENTITY_ONLY = "MEDT.EntityOnly".AngeHash();

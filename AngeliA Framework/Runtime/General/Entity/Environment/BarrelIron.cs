@@ -81,15 +81,15 @@ namespace AngeliaFramework {
 		}
 
 
-		void IDamageReceiver.TakeDamage (int damage, Entity sender) {
-			if (damage <= 0) return;
+		void IDamageReceiver.TakeDamage (Damage damage) {
+			if (damage.Amount <= 0) return;
 			if (IsDriving) return;
 			Rolling = true;
 			RollingRotation = 0;
-			if (sender is Character character) {
+			if (damage.Sender is Character character) {
 				RollingSpeed = (character.FacingRight ? 1 : -1) * ROLL_SPEED;
 			} else {
-				RollingSpeed = (Rect.CenterX() - sender.Rect.CenterX()).Sign3() * ROLL_SPEED;
+				RollingSpeed = (Rect.CenterX() - damage.Sender.Rect.CenterX()).Sign3() * ROLL_SPEED;
 			}
 		}
 

@@ -488,7 +488,7 @@ namespace AngeliaFramework {
 				rect.width = width;
 				rect.height = height;
 			}
-			var tint = Pixel32.LerpUnclamped(
+			var tint = Byte4.LerpUnclamped(
 				CellRenderer.SkyTintBottom, CellRenderer.SkyTintTop,
 				Mathf.InverseLerp(cameraRect.yMin, cameraRect.yMax, rect.y + rect.height / 2)
 			);

@@ -28,6 +28,7 @@ namespace AngeliaFramework {
 		protected virtual int ReceiverMask => PhysicsMask.ENTITY;
 		protected virtual int Duration => 60;
 		protected virtual int Damage => 1;
+		protected virtual int DamageType => 0;
 		protected virtual int SpawnWidth => Const.CEL;
 		protected virtual int SpawnHeight => Const.CEL;
 		protected virtual bool DestroyOnHitEnvironment => false;
@@ -76,7 +77,7 @@ namespace AngeliaFramework {
 				if (hit.Entity is not IDamageReceiver receiver) continue;
 				if ((receiver.Team & TargetTeam) != receiver.Team) continue;
 				if (receiver is Entity e && !e.Active) continue;
-				receiver.TakeDamage(Damage, Sender);
+				receiver.TakeDamage(new Damage(Damage, Sender, DamageType));
 				if (DestroyOnHitReceiver) {
 					Active = false;
 					SpawnResidue(receiver);
@@ -84,7 +85,7 @@ namespace AngeliaFramework {
 			}
 		}
 
-		public bool GroundCheck (out Pixel32 groundTint) {
+		public bool GroundCheck (out Byte4 groundTint) {
 			groundTint = Const.WHITE;
 			bool grounded =
 				CellPhysics.Overlap(PhysicsMask.MAP, Rect.Edge(Direction4.Down, 4), out var hit, Sender) ||

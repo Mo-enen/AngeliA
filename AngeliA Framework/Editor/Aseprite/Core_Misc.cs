@@ -52,7 +52,7 @@ namespace AngeliaFramework.Editor {
 				return new FrameResult() {
 					Height = 0,
 					Width = 0,
-					Pixels = new Pixel32[0],
+					Pixels = new Byte4[0],
 					Sprites = new SpriteMetaData[0],
 					FrameIndex = frameIndex,
 				};
@@ -61,7 +61,7 @@ namespace AngeliaFramework.Editor {
 			public int FrameIndex;
 			public int Width;
 			public int Height;
-			public Pixel32[] Pixels;
+			public Byte4[] Pixels;
 			public SpriteMetaData[] Sprites;
 			public int[] SpriteFrames = null;
 		}

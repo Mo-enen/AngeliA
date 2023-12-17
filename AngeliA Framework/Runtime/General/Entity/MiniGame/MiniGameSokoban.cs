@@ -192,7 +192,7 @@ namespace AngeliaFramework {
 			// Draw Background
 			var bgTint = Const.BLACK;
 			if (Celebrating) {
-				bgTint = Pixel32.LerpUnclamped(
+				bgTint = Byte4.LerpUnclamped(
 					Const.BLACK, Const.GREEN, (Game.GlobalFrame - LevelClearedFrame).PingPong(20) / 20f
 				);
 			}
@@ -211,7 +211,7 @@ namespace AngeliaFramework {
 					var block = Blocks[x, y];
 					blockRect.x = stageRect.x + x * blockRect.width;
 					blockRect.y = stageRect.y + y * blockRect.height;
-					var tint = block == BlockType.BoxInGoal ? new Pixel32(140, 255, 140, 255) : Const.WHITE;
+					var tint = block == BlockType.BoxInGoal ? new Byte4(140, 255, 140, 255) : Const.WHITE;
 					CellRenderer.Draw(
 						block switch {
 							BlockType.Box => BOX_CODE,

@@ -5,10 +5,11 @@ using AngeliaFramework;
 
 
 namespace AngeliaFramework {
-	public class SkeletonPile : BreakableEntity {
+	public class SkeletonPile : Breakable {
 
 		private int ArtworkCode = 0;
 		private IRect FullRect = default;
+		protected override bool ReceivePhysicalDamage => false;
 
 		public override void OnActivated () {
 			base.OnActivated();

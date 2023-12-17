@@ -48,12 +48,12 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		void IDamageReceiver.TakeDamage (int damage, Entity sender) {
-			if (!Active || damage <= 0 || HealthPoint <= 0) return;
+		void IDamageReceiver.TakeDamage (Damage damage) {
+			if (!Active || damage.Amount <= 0 || HealthPoint <= 0) return;
 			if (CharacterState != CharacterState.GamePlay || IsInvincible) return;
 			if (InvincibleOnRush && IsRushing) return;
 			if (InvincibleOnDash && IsDashing) return;
-			OnTakeDamage(ref damage, sender);
+			OnTakeDamage(damage.Amount, damage.Sender);
 		}
 
 
@@ -70,21 +70,17 @@ namespace AngeliaFramework {
 		public void MakeInvincible (int duration = 1) => InvincibleEndFrame = Game.GlobalFrame + duration;
 
 
-		protected virtual void OnTakeDamage (ref int damage, Entity sender) {
+		protected virtual void OnTakeDamage (int damage, Entity sender) {
 
-			// Items
-			if (damage > 0) {
+			// Equipment
+			for (int i = 0; i < EquipmentTypeCount && damage > 0; i++) {
+				GetEquippingItem((EquipmentType)i)?.OnTakeDamage_FromEquipment(this, sender, ref damage);
+			}
 
-				// Equipment
-				for (int i = 0; i < EquipmentTypeCount && damage > 0; i++) {
-					GetEquippingItem((EquipmentType)i)?.OnTakeDamage_FromEquipment(this, sender, ref damage);
-				}
-
-				// Inventory
-				int iCount = GetInventoryCapacity();
-				for (int i = 0; i < iCount && damage > 0; i++) {
-					GetItemFromInventory(i)?.OnTakeDamage_FromInventory(this, sender, ref damage);
-				}
+			// Inventory
+			int iCount = GetInventoryCapacity();
+			for (int i = 0; i < iCount && damage > 0; i++) {
+				GetItemFromInventory(i)?.OnTakeDamage_FromInventory(this, sender, ref damage);
 			}
 
 			// Deal Damage

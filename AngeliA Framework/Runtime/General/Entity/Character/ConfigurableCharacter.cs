@@ -43,7 +43,7 @@ namespace AngeliaFramework {
 			public int Suit_Foot = 0;
 
 			// Color
-			public int SkinColor = Util.ColorToInt(new Pixel32(245, 217, 196, 255)); // #f5d9c4
+			public int SkinColor = Util.ColorToInt(new Byte4(245, 217, 196, 255)); // #f5d9c4
 			public int HairColor = 858993663;
 
 
@@ -72,7 +72,7 @@ namespace AngeliaFramework {
 			LoadedSlot = AngePath.CurrentSaveSlot;
 			Config ??= CreateNewConfig() ?? new();
 			string name = GetType().AngeName();
-			string path = Util.CombinePaths(AngePath.PlayerDataRoot, "Character Config");
+			string path = Util.CombinePaths(AngePath.UserDataRoot, "Character Config");
 			bool overrided = AngeUtil.OverrideJson(path, Config, name);
 			if (!overrided) Config = CreateNewConfig();
 			LoadCharacterFromConfig();
@@ -83,7 +83,7 @@ namespace AngeliaFramework {
 			Config ??= CreateNewConfig();
 			if (Config == null) return;
 			SaveCharacterToConfig();
-			string path = Util.CombinePaths(AngePath.PlayerDataRoot, "Character Config");
+			string path = Util.CombinePaths(AngePath.UserDataRoot, "Character Config");
 			AngeUtil.SaveJson(Config, path, GetType().AngeName(), true);
 		}
 

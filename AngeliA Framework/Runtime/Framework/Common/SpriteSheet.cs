@@ -55,7 +55,7 @@ namespace AngeliaFramework {
 				return _TopLeft.Value;
 			}
 		}
-		public Pixel32 SummaryTint {
+		public Byte4 SummaryTint {
 			get {
 				if (!_SummaryTint.HasValue) {
 					_SummaryTint = Util.IntToColor(f);
@@ -161,7 +161,7 @@ namespace AngeliaFramework {
 		// Data
 		[System.NonSerialized] Float2? _BottomRight = null;
 		[System.NonSerialized] Float2? _TopLeft = null;
-		[System.NonSerialized] Pixel32? _SummaryTint = default;
+		[System.NonSerialized] Byte4? _SummaryTint = default;
 		[System.NonSerialized] SheetType? _SheetType = null;
 		[System.NonSerialized] GroupType? _GroupType = null;
 

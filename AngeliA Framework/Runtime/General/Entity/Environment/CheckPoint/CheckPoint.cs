@@ -35,7 +35,7 @@ namespace AngeliaFramework {
 		public static int LastTriggeredCheckPointID { get; private set; } = 0;
 
 		// Short
-		private static string UnlockFolderPath => Util.CombinePaths(AngePath.PlayerDataRoot, "Unlocked CP");
+		private static string UnlockFolderPath => Util.CombinePaths(AngePath.UserDataRoot, "Unlocked CP");
 
 		// Data
 		private static readonly HashSet<int> UnlockedCheckPoint = new();
@@ -163,7 +163,7 @@ namespace AngeliaFramework {
 			const int DURATION = 22;
 			int localFrame = Game.GlobalFrame % DURATION;
 			var rect = targetRect;
-			var tint = new Pixel32(128, 255, 128, 255);
+			var tint = new Byte4(128, 255, 128, 255);
 			CellRenderer.SetLayerToAdditive();
 			for (int i = 0; i < LINE_COUNT; i++) {
 				tint.a = (byte)(i == LINE_COUNT - 1 ? Util.RemapUnclamped(0, DURATION, 64, 0, localFrame) : 64);

@@ -323,7 +323,7 @@ namespace AngeliaFramework.Editor {
 					prevH = h;
 					if (x < 0 || y < 0 || x + w > sourceWidth || y + h > sourceHeight) continue;
 					var texture = new Texture2D(w, h, TextureFormat.ARGB32, false);
-					var pixels = new Pixel32[texture.width * texture.height];
+					var pixels = new Byte4[texture.width * texture.height];
 					for (int j = 0; j < h; j++) {
 						for (int i = 0; i < w; i++) {
 							pixels[j * w + i] = sourcePixels[(y + j) * sourceWidth + (x + i)];
@@ -364,7 +364,7 @@ namespace AngeliaFramework.Editor {
 
 			// Add "Pixel" to Items
 			var pixelTexture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-			pixelTexture.SetPixels32(new UnityEngine.Color32[1] { new Pixel32(255, 255, 255, 255) });
+			pixelTexture.SetPixels32(new UnityEngine.Color32[1] { new Byte4(255, 255, 255, 255) });
 			pixelTexture.Apply();
 			items.Add(new PackingItem() {
 				Border = Float4.zero,

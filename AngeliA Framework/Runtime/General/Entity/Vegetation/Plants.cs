@@ -80,8 +80,8 @@ namespace AngeliaFramework {
 
 
 		// API
-		void IDamageReceiver.TakeDamage (int damage, Entity sender) {
-			if (damage <= 0) return;
+		void IDamageReceiver.TakeDamage (Damage damage) {
+			if (damage.Amount <= 0) return;
 			// Particle
 			int id = TypeID;
 			var rect = Rect;

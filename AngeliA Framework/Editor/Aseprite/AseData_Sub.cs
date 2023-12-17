@@ -745,18 +745,18 @@ namespace AngeliaFramework.Editor {
 			}
 
 
-			public Pixel32[] GetColors32 (ushort colorDepth, Pixel32[] palette = null) {
-				if (Width <= 0 || Height <= 0) { return new Pixel32[0]; }
+			public Byte4[] GetColors32 (ushort colorDepth, Byte4[] palette = null) {
+				if (Width <= 0 || Height <= 0) { return new Byte4[0]; }
 				var rawBytes = GetRawBytes(colorDepth);
-				var colors = new Pixel32[rawBytes.Length / (colorDepth / 8)];
-				if (colors.Length != Width * Height) { return new Pixel32[0]; }
-				palette ??= new Pixel32[0];
+				var colors = new Byte4[rawBytes.Length / (colorDepth / 8)];
+				if (colors.Length != Width * Height) { return new Byte4[0]; }
+				palette ??= new Byte4[0];
 				switch (colorDepth) {
 					default:
 					case 32:
 						for (int i = 0; i < colors.Length; i++) {
 							int _i = (Height - i / Width - 1) * Width + (i % Width);
-							colors[i] = new Pixel32(
+							colors[i] = new Byte4(
 								rawBytes[_i * 4 + 0],
 								rawBytes[_i * 4 + 1],
 								rawBytes[_i * 4 + 2],
@@ -787,14 +787,14 @@ namespace AngeliaFramework.Editor {
 			}
 
 
-			public void SetColors (Pixel32[] colors, ushort colorDepth) {
+			public void SetColors (Byte4[] colors, ushort colorDepth) {
 				if (Width <= 0 || Height <= 0 || colors.Length != Width * Height) { return; }
 				colorDepth /= 8;
 				var bytes = new byte[colors.Length * colorDepth];
 				int height = colors.Length / Width;
 				for (int i = 0; i < colors.Length; i++) {
 					int _i = (height - i / Width - 1) * Width + (i % Width);
-					Pixel32 c = colors[i];
+					Byte4 c = colors[i];
 					for (int j = 0; j < colorDepth; j++) {
 						bytes[_i * colorDepth + j] = c[j];
 					}
@@ -803,7 +803,7 @@ namespace AngeliaFramework.Editor {
 			}
 
 
-			public Pixel32[] GetColorsIn (ushort colorDepth, int aseHeight, Pixel32[] pal, IRect range) {
+			public Byte4[] GetColorsIn (ushort colorDepth, int aseHeight, Byte4[] pal, IRect range) {
 				int x = range.x;
 				int y = range.y;
 				int width = range.width;
@@ -812,7 +812,7 @@ namespace AngeliaFramework.Editor {
 				if (colors.Length == 0) {
 					return null;
 				}
-				var newColors = new Pixel32[width * height];
+				var newColors = new Byte4[width * height];
 				int offsetY = aseHeight - Height - Y;
 				for (int i = 0; i < width; i++) {
 					for (int j = 0; j < height; j++) {
@@ -821,7 +821,7 @@ namespace AngeliaFramework.Editor {
 						if (_i >= 0 && _j >= 0 && _i < Width && _j < Height) {
 							newColors[j * width + i] = colors[_j * Width + _i];
 						} else {
-							newColors[j * width + i] = new Pixel32(0, 0, 0, 0);
+							newColors[j * width + i] = new Byte4(0, 0, 0, 0);
 						}
 					}
 				}

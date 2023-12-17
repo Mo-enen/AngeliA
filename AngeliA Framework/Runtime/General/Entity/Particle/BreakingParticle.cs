@@ -56,7 +56,7 @@ namespace AngeliaFramework {
 			byte alpha = (byte)Util.RemapUnclamped(0, Duration, 512, 0, Game.GlobalFrame - SpawnFrame).Clamp(0, 255);
 			var cell = CellRenderer.Draw(
 				SpriteID, x, y, px, py, r, Width * 2, Height * 2,
-				new Pixel32(255, 255, 255, alpha), int.MaxValue
+				new Byte4(255, 255, 255, alpha), int.MaxValue
 			);
 			cell.Shift = Shift;
 

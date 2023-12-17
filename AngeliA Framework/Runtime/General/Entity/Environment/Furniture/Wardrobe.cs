@@ -290,7 +290,7 @@ namespace AngeliaFramework {
 			arrowRenderingRectL.FlipHorizontal();
 			CellRenderer.Draw(
 				TRIANGLE_RIGHT, arrowRenderingRectL,
-				new Pixel32(255, 255, 255, (byte)(CurrentPatternIndex > 0 ? 255 : 64)), 5
+				new Byte4(255, 255, 255, (byte)(CurrentPatternIndex > 0 ? 255 : 64)), 5
 			);
 			CursorSystem.SetCursorAsHand(arrowRectL);
 
@@ -302,7 +302,7 @@ namespace AngeliaFramework {
 			);
 			CellRenderer.Draw(
 				TRIANGLE_RIGHT, arrowRectR.Shift(localPopR, 0),
-				new Pixel32(255, 255, 255, (byte)(CurrentPatternIndex < CurrentPatternList.Count - 1 ? 255 : 64)), 5
+				new Byte4(255, 255, 255, (byte)(CurrentPatternIndex < CurrentPatternList.Count - 1 ? 255 : 64)), 5
 			);
 			CursorSystem.SetCursorAsHand(arrowRectR);
 

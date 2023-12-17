@@ -15,8 +15,8 @@ namespace AngeliaFramework {
 		private static readonly CellContent Temp = new();
 
 		public string Text;
-		public Pixel32 Tint;
-		public Pixel32 BackgroundTint;
+		public Byte4 Tint;
+		public Byte4 BackgroundTint;
 		public Alignment Alignment;
 		public int CharSize;
 		public int CharSpace;
@@ -63,7 +63,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static CellContent Get (string text, Pixel32 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
+		public static CellContent Get (string text, Byte4 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
 			Temp.CharSize = charSize;
 			Temp.Text = text;
 			Temp.Alignment = alignment;
@@ -380,7 +380,7 @@ namespace AngeliaFramework {
 
 		// Button
 		public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z) => Button(rect, sprite, spriteHover, spriteDown, icon, buttonBorder, iconPadding, z, Const.WHITE, Const.WHITE);
-		public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z, Pixel32 buttonTint, Pixel32 iconTint) {
+		public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z, Byte4 buttonTint, Byte4 iconTint) {
 			bool hover = rect.Contains(FrameInput.MouseGlobalPosition);
 			bool down = hover && FrameInput.MouseLeftButton;
 			CellRenderer.Draw_9Slice(
@@ -400,7 +400,7 @@ namespace AngeliaFramework {
 
 		// Gizmos
 		public static Cell DrawLine (int fromX, int fromY, int toX, int toY, int thickness = 8, int z = int.MinValue) => DrawLine(fromX, fromY, toX, toY, thickness, Const.WHITE, z);
-		public static Cell DrawLine (int fromX, int fromY, int toX, int toY, int thickness, Pixel32 tint, int z = int.MinValue) => CellRenderer.Draw(
+		public static Cell DrawLine (int fromX, int fromY, int toX, int toY, int thickness, Byte4 tint, int z = int.MinValue) => CellRenderer.Draw(
 			Const.PIXEL, fromX, fromY, 500, 0,
 			-Float2.SignedAngle(Float2.up, new Float2(toX - fromX, toY - fromY)).RoundToInt(),
 			thickness, Util.DistanceInt(fromX, fromY, toX, toY),
@@ -568,7 +568,7 @@ namespace AngeliaFramework {
 						if (cell.X > labelRect.x + labelRect.width || cell.X + cell.Width < labelRect.x) {
 							cell.Color = Const.CLEAR;
 						} else {
-							cell.Color = new Pixel32(255, 255, 255, 96);
+							cell.Color = new Byte4(255, 255, 255, 96);
 						}
 					}
 				}
@@ -679,7 +679,7 @@ namespace AngeliaFramework {
 
 		// Highlight
 		public static void HighlightCursor (int spriteID, IRect rect, int z) => HighlightCursor(spriteID, rect, z, Const.GREEN);
-		public static void HighlightCursor (int spriteID, IRect rect, int z, Pixel32 color) {
+		public static void HighlightCursor (int spriteID, IRect rect, int z, Byte4 color) {
 			int border = Unify(4);
 			int thickness = Unify(8);
 			CellRenderer.Draw_9Slice(
@@ -733,7 +733,7 @@ namespace AngeliaFramework {
 			};
 
 
-		private static Cell DrawChar (char c, int x, int y, int width, int height, Pixel32 color) {
+		private static Cell DrawChar (char c, int x, int y, int width, int height, Byte4 color) {
 
 			if (!CellRenderer.TextReady) return null;
 

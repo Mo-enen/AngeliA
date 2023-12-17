@@ -65,7 +65,7 @@ namespace AngeliaFramework {
 					byte rgb = i == darkIndex || i == (darkIndex + 1) % CIRCLE_COUNT ?
 						(byte)42 :
 						(byte)Mathf.Lerp(rgbA, rgbB, (float)circleFrame / CIRCLE_DURATION);
-					var tint = new Pixel32(
+					var tint = new Byte4(
 						rgb, rgb, rgb,
 						(byte)(i > 0 ? 255 : Util.RemapUnclamped(0, CIRCLE_DURATION, 0, 400, circleFrame).Clamp(0, 255))
 					);

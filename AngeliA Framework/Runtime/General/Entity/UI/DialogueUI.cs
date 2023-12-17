@@ -26,7 +26,7 @@ namespace AngeliaFramework {
 				return new IRect(panelRect.x + panelRect.height + Unify(12), panelRect.yMax - Unify(30), panelRect.width, Unify(NameFontSize));
 			}
 		}
-		protected override Pixel32 NameTint => Const.GREY_196;
+		protected override Byte4 NameTint => Const.GREY_196;
 
 	}
 
@@ -48,8 +48,8 @@ namespace AngeliaFramework {
 		protected virtual int NameFontSize => 28;
 		protected virtual int ContentFontSize => 32;
 		protected virtual int RollingSpeed => 16; // Character per Frame
-		protected virtual Pixel32 NameTint => Const.WHITE;
-		protected virtual Pixel32 ContentTint => Const.WHITE;
+		protected virtual Byte4 NameTint => Const.WHITE;
+		protected virtual Byte4 ContentTint => Const.WHITE;
 
 		// Data
 		private int UpdatedFrame = int.MinValue;
@@ -58,7 +58,7 @@ namespace AngeliaFramework {
 		private int EndIndex = 0;
 		private int Identity = 0;
 		private string Content = "";
-		private Pixel32[] Colors = null;
+		private Byte4[] Colors = null;
 		private readonly CellContent LabelName = new() { Alignment = Alignment.MidLeft, };
 		private readonly CellContent LabelContent = new() { Wrap = true, Clip = true, Alignment = Alignment.TopLeft, };
 
@@ -157,7 +157,7 @@ namespace AngeliaFramework {
 		public void Update () => UpdatedFrame = Game.GlobalFrame;
 
 
-		public void SetData (string content, int identity, Pixel32[] colors) {
+		public void SetData (string content, int identity, Byte4[] colors) {
 			Content = content;
 			Identity = identity;
 			Colors = colors;

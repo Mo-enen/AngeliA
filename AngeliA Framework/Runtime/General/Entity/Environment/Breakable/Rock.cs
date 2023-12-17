@@ -5,11 +5,12 @@ using AngeliaFramework;
 
 
 namespace AngeliaFramework {
-	public class Rock : BreakableEntity {
+	public class Rock : Breakable {
 
 		private static readonly int CODE = "Rock".AngeHash();
 		private int ArtworkCode = 0;
 		private IRect FullRect = default;
+		protected override bool ReceivePhysicalDamage => false;
 
 		public override void OnActivated () {
 			base.OnActivated();

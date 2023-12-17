@@ -117,7 +117,7 @@ namespace AngeliaFramework {
 			var cell = CellRenderer.Draw(
 				CellRenderer.HasSprite(ItemID) ? ItemID : Const.PIXEL,
 				rect,
-				new Pixel32(rgb, rgb, rgb, 255)
+				new Byte4(rgb, rgb, rgb, 255)
 			);
 			// Count
 			if (ItemCount > 1 && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {

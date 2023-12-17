@@ -247,7 +247,7 @@ namespace AngeliaFramework {
 
 			// Default Color
 			for (int i = 0; i < colors.Length; i++) {
-				colors[i] = new Pixel32(0, 0, 0, 0);
+				colors[i] = new Byte4(0, 0, 0, 0);
 			}
 
 			// Set Colors

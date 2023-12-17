@@ -105,9 +105,9 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		protected Pixel32 GetSkyTint (int y) {
+		protected Byte4 GetSkyTint (int y) {
 			var cameraRect = CellRenderer.CameraRect;
-			return Pixel32.LerpUnclamped(
+			return Byte4.LerpUnclamped(
 				CellRenderer.SkyTintBottom, CellRenderer.SkyTintTop,
 				Mathf.InverseLerp(cameraRect.yMin, cameraRect.yMax, y)
 			);

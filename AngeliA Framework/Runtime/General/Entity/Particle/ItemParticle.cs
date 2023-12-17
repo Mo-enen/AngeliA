@@ -36,7 +36,7 @@ namespace AngeliaFramework {
 			base.FrameUpdate();
 			if (!Active) return;
 			Y += 4;
-			Tint = new Pixel32(
+			Tint = new Byte4(
 				255, 255, 255,
 				(byte)Util.RemapUnclamped(0, Duration, 512, 1, LocalFrame).Clamp(0, 255)
 			);
@@ -85,7 +85,7 @@ namespace AngeliaFramework {
 			int deltaY = (int)Mathf.Lerp(-Const.HALF, Const.CEL * 2, ease01).Clamp(0, Const.CEL);
 			int deltaRot = (int)Mathf.Lerp(0, 45, ease01);
 			byte rgb = (byte)Mathf.Lerp(512, 196, ease01).Clamp(0, 255);
-			var tint = new Pixel32(
+			var tint = new Byte4(
 				rgb, rgb, rgb,
 				(byte)Mathf.Lerp(512, 0, ease01).Clamp(0, 255)
 			);
@@ -121,7 +121,7 @@ namespace AngeliaFramework {
 			int rotation = ease01 < 0.5f ? (int)(ease01 * 30f * (LocalFrame % 2 == 0 ? 1f : -1f)) : 0;
 
 			byte rgb = (byte)Mathf.Lerp(512, 196, ease01).Clamp(0, 255);
-			var tint = new Pixel32(
+			var tint = new Byte4(
 				rgb, rgb, rgb,
 				(byte)Mathf.Lerp(512, 0, ease01).Clamp(0, 255)
 			);

@@ -20,11 +20,11 @@ namespace AngeliaFramework {
 		private static readonly int LINE_H_CODE = "Soft Line H".AngeHash();
 		private static readonly int LINE_V_CODE = "Soft Line V".AngeHash();
 		private static readonly int FRAME_CODE = "Frame16".AngeHash();
-		private static readonly Pixel32 BACKGROUND_TINT = new(196, 120, 50, 255);
-		private static readonly Pixel32 GRID_TINT = new(16, 16, 16, 255);
-		private static readonly Pixel32 BLACK_STONE_TINT = new(16, 16, 16, 255);
-		private static readonly Pixel32 WHITE_STONE_TINT = new(230, 230, 230, 255);
-		private static readonly Pixel32 LAST_PLACED = new(255, 255, 0, 255);
+		private static readonly Byte4 BACKGROUND_TINT = new(196, 120, 50, 255);
+		private static readonly Byte4 GRID_TINT = new(16, 16, 16, 255);
+		private static readonly Byte4 BLACK_STONE_TINT = new(16, 16, 16, 255);
+		private static readonly Byte4 WHITE_STONE_TINT = new(230, 230, 230, 255);
+		private static readonly Byte4 LAST_PLACED = new(255, 255, 0, 255);
 		private static readonly int GOMOKU_YOU_ARE = "UI.Gomoku.YouAre".AngeHash();
 		private static readonly int GOMOKU_PLACE = "UI.Gomoku.Place".AngeHash();
 		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();

@@ -101,7 +101,7 @@ namespace AngeliaFramework {
 				500, 500,
 				IsHolding ? (Game.GlobalFrame * 4 - HoldStartFrame).PingPong(12) - 6 : 0,
 				Width, Height,
-				IsHolding || IsFalling ? new Pixel32(255, 196, 164, 255) : new Pixel32(255, 255, 255, 255)
+				IsHolding || IsFalling ? new Byte4(255, 196, 164, 255) : new Byte4(255, 255, 255, 255)
 			);
 		}
 

@@ -199,12 +199,12 @@ namespace AngeliaFramework {
 
 		// Saving
 		protected bool LoadGameDataFromFile<T> (T data) => AngeUtil.OverrideJson(
-			Util.CombinePaths(AngePath.PlayerDataRoot, "MiniGame"), data, GetType().Name
+			Util.CombinePaths(AngePath.UserDataRoot, "MiniGame"), data, GetType().Name
 		);
 
 
 		protected void SaveGameDataToFile<T> (T data) => AngeUtil.SaveJson(
-			data, Util.CombinePaths(AngePath.PlayerDataRoot, "MiniGame"), GetType().Name
+			data, Util.CombinePaths(AngePath.UserDataRoot, "MiniGame"), GetType().Name
 		);
 
 

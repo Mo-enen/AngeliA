@@ -271,7 +271,7 @@ namespace AngeliaFramework {
 					Util.RemapUnclamped(rectFrom.yMin, rectFrom.yMax, rectTo.yMin, rectTo.yMax, characterRect.yMin),
 					Util.RemapUnclamped(rectFrom.yMin, rectFrom.yMax, rectTo.yMin, rectTo.yMax, characterRect.yMax)
 				);
-				CellRenderer.Draw(Const.PIXEL, hitboxRect, new Pixel32(0, 255, 0, 128), int.MaxValue - 1);
+				CellRenderer.Draw(Const.PIXEL, hitboxRect, new Byte4(0, 255, 0, 128), int.MaxValue - 1);
 				//DrawFrame(hitboxRect, 12, 12);
 				//static void DrawFrame (RectInt rect, int thickX, int thickY) {
 				//	CellRenderer.Draw(Const.PIXEL, new RectInt(rect.x - thickX, rect.y - thickY, thickX * 2, rect.height + thickY * 2), Const.GREEN, int.MaxValue - 1);
@@ -755,7 +755,7 @@ namespace AngeliaFramework {
 				out int invokingIndex
 			)) {
 				var pat = Patterns_ColorSkin[invokingIndex];
-				player.SkinColor = new Pixel32(
+				player.SkinColor = new Byte4(
 					(byte)pat.A.Clamp(0, 255),
 					(byte)pat.B.Clamp(0, 255),
 					(byte)pat.C.Clamp(0, 255),
@@ -774,7 +774,7 @@ namespace AngeliaFramework {
 				out int invokingIndex
 			)) {
 				var pat = Patterns_ColorHair[invokingIndex];
-				player.HairColor = new Pixel32(
+				player.HairColor = new Byte4(
 					(byte)pat.A.Clamp(0, 255),
 					(byte)pat.B.Clamp(0, 255),
 					(byte)pat.C.Clamp(0, 255),
@@ -795,7 +795,7 @@ namespace AngeliaFramework {
 
 
 		// Misc
-		private bool PatternMenuUI (IRect panelRect, List<PatternUnit> patterns, Pixel32 iconTint, Int4 selectingPattern, out int invokingIndex) {
+		private bool PatternMenuUI (IRect panelRect, List<PatternUnit> patterns, Byte4 iconTint, Int4 selectingPattern, out int invokingIndex) {
 
 			invokingIndex = 0;
 			int panelPadding = Unify(32);
@@ -913,7 +913,7 @@ namespace AngeliaFramework {
 					// Color
 					CellRenderer.Draw(
 						Const.PIXEL, rect.Shrink(iconPadding),
-						new Pixel32(
+						new Byte4(
 							(byte)pat.x.Clamp(0, 255),
 							(byte)pat.y.Clamp(0, 255),
 							(byte)pat.z.Clamp(0, 255),
@@ -1216,7 +1216,7 @@ namespace AngeliaFramework {
 			// Skin Color
 			foreach (var colorStr in Colors_Skin) {
 				if (ColorUtility.TryParseHtmlString(colorStr, out var color)) {
-					Pixel32 color32 = color;
+					Byte4 color32 = color;
 					Patterns_ColorSkin.Add(new PatternUnit() {
 						Data = new Int4(color32.r, color32.g, color32.b, int.MinValue),
 						IsEmpty = false,
@@ -1227,7 +1227,7 @@ namespace AngeliaFramework {
 			// Hair Color
 			foreach (var colorStr in Colors_Hair) {
 				if (ColorUtility.TryParseHtmlString(colorStr, out var color)) {
-					Pixel32 color32 = color;
+					Byte4 color32 = color;
 					Patterns_ColorHair.Add(new PatternUnit() {
 						Data = new Int4(color32.r, color32.g, color32.b, int.MinValue),
 						IsEmpty = false,

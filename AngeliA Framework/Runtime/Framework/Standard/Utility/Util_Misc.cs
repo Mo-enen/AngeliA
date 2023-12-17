@@ -118,7 +118,7 @@ namespace AngeliaFramework {
 						colorList.Add(new(color, (float)i / (count - 1)));
 					}
 				}
-				if (colorList.Count == 0) colorList.Add(new(new Pixel32(71, 170, 219, 255), 0f));
+				if (colorList.Count == 0) colorList.Add(new(new Byte4(71, 170, 219, 255), 0f));
 				gradient = new() {
 					mode = GradientMode.Blend,
 					alphaKeys = new GradientAlphaKey[] { new(1f, 0f) },

@@ -46,7 +46,7 @@ namespace AngeliaFramework {
 					_CurrentSaveSlot = value;
 					_SaveSlotRoot = null;
 					_UserMapRoot = null;
-					_PlayerDataRoot = null;
+					_UserDataRoot = null;
 					_ProcedureMapRoot = null;
 					_DownloadMapRoot = null;
 				}
@@ -57,11 +57,11 @@ namespace AngeliaFramework {
 		public static string SaveSlotRoot => _SaveSlotRoot ??= Util.CombinePaths(Application.persistentDataPath, $"Save Slot {(char)(CurrentSaveSlot + 'A')}");
 		private static string _SaveSlotRoot = null;
 
+		public static string UserDataRoot => _UserDataRoot ??= Util.CombinePaths(SaveSlotRoot, "Data");
+		private static string _UserDataRoot = null;
+
 		public static string UserMapRoot => _UserMapRoot ??= Util.CombinePaths(SaveSlotRoot, "Map", "User Map");
 		private static string _UserMapRoot = null;
-
-		public static string PlayerDataRoot => _PlayerDataRoot ??= Util.CombinePaths(SaveSlotRoot, "Data");
-		private static string _PlayerDataRoot = null;
 
 		public static string ProcedureMapRoot => _ProcedureMapRoot ??= Util.CombinePaths(SaveSlotRoot, "Map", "Procedure Map");
 		private static string _ProcedureMapRoot = null;

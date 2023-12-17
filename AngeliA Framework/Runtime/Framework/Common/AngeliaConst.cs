@@ -89,7 +89,6 @@ namespace AngeliaFramework {
 		public static readonly int QUICKSAND_TAG = "Quicksand".AngeHash();
 		public static readonly int WATER_TAG = "Water".AngeHash();
 		public static readonly int SLIP_TAG = "Slip".AngeHash();
-		public static readonly int DAMAGE_TAG = "Damage".AngeHash();
 		public static readonly int SLIDE_TAG = "Slide".AngeHash();
 		public static readonly int NO_SLIDE_TAG = "NoSlide".AngeHash();
 		public static readonly int GRAB_TOP_TAG = "GrabTop".AngeHash();
@@ -97,6 +96,9 @@ namespace AngeliaFramework {
 		public static readonly int GRAB_TAG = "Grab".AngeHash();
 		public static readonly int SHOW_LIMB_TAG = "ShowLimb".AngeHash();
 		public static readonly int HIDE_LIMB_TAG = "HideLimb".AngeHash();
+		public static readonly int DAMAGE_TAG = "Damage".AngeHash();
+		public static readonly int DAMAGE_EXPLOSIVE_TAG = "ExplosiveDamage".AngeHash();
+		public static readonly int DAMAGE_MAGICAL_TAG = "MagicalDamage".AngeHash();
 
 		// Team
 		public const int TEAM_ENVIRONMENT = 0b1;
@@ -113,32 +115,32 @@ namespace AngeliaFramework {
 		public static readonly int MENU_MORE_CODE = "Menu More Mark".AngeHash();
 		public static readonly int MENU_ARROW_MARK = "Menu Arrow Mark".AngeHash();
 		public static readonly int CIRCLE_16 = "Circle16".AngeHash();
-		public static readonly Pixel32 WHITE = new(255, 255, 255, 255);
-		public static readonly Pixel32 WHITE_128 = new(255, 255, 255, 128);
-		public static readonly Pixel32 WHITE_96 = new(255, 255, 255, 96);
-		public static readonly Pixel32 WHITE_64 = new(255, 255, 255, 64);
-		public static readonly Pixel32 WHITE_0 = new(255, 255, 255, 0);
-		public static readonly Pixel32 ORANGE = new(255, 128, 0, 255);
-		public static readonly Pixel32 ORANGE_BETTER = new(255, 200, 100, 255);
-		public static readonly Pixel32 BLACK = new(0, 0, 0, 255);
-		public static readonly Pixel32 BLACK_128 = new(0, 0, 0, 128);
-		public static readonly Pixel32 BLACK_12 = new(0, 0, 0, 12);
-		public static readonly Pixel32 RED = new(255, 0, 0, 255);
-		public static readonly Pixel32 RED_BETTER = new(255, 64, 64, 255);
-		public static readonly Pixel32 GREEN = new(0, 255, 0, 255);
-		public static readonly Pixel32 CYAN = new(0, 255, 255, 255);
-		public static readonly Pixel32 BLUE = new(0, 0, 255, 255);
-		public static readonly Pixel32 CLEAR = new(0, 0, 0, 0);
-		public static readonly Pixel32 GREY_230 = new(230, 230, 230, 255);
-		public static readonly Pixel32 GREY_196 = new(196, 196, 196, 255);
-		public static readonly Pixel32 GREY_128 = new(128, 128, 128, 255);
-		public static readonly Pixel32 GREY_96 = new(96, 96, 96, 255);
-		public static readonly Pixel32 GREY_64 = new(64, 64, 64, 255);
-		public static readonly Pixel32 GREY_56 = new(56, 56, 56, 255);
-		public static readonly Pixel32 GREY_42 = new(42, 42, 42, 255);
-		public static readonly Pixel32 GREY_32 = new(32, 32, 32, 255);
-		public static readonly Pixel32 GREY_12 = new(12, 12, 12, 255);
-		public static readonly Pixel32 SKIN_YELLOW = new(245, 217, 196, 255);
+		public static readonly Byte4 WHITE = new(255, 255, 255, 255);
+		public static readonly Byte4 WHITE_128 = new(255, 255, 255, 128);
+		public static readonly Byte4 WHITE_96 = new(255, 255, 255, 96);
+		public static readonly Byte4 WHITE_64 = new(255, 255, 255, 64);
+		public static readonly Byte4 WHITE_0 = new(255, 255, 255, 0);
+		public static readonly Byte4 ORANGE = new(255, 128, 0, 255);
+		public static readonly Byte4 ORANGE_BETTER = new(255, 200, 100, 255);
+		public static readonly Byte4 BLACK = new(0, 0, 0, 255);
+		public static readonly Byte4 BLACK_128 = new(0, 0, 0, 128);
+		public static readonly Byte4 BLACK_12 = new(0, 0, 0, 12);
+		public static readonly Byte4 RED = new(255, 0, 0, 255);
+		public static readonly Byte4 RED_BETTER = new(255, 64, 64, 255);
+		public static readonly Byte4 GREEN = new(0, 255, 0, 255);
+		public static readonly Byte4 CYAN = new(0, 255, 255, 255);
+		public static readonly Byte4 BLUE = new(0, 0, 255, 255);
+		public static readonly Byte4 CLEAR = new(0, 0, 0, 0);
+		public static readonly Byte4 GREY_230 = new(230, 230, 230, 255);
+		public static readonly Byte4 GREY_196 = new(196, 196, 196, 255);
+		public static readonly Byte4 GREY_128 = new(128, 128, 128, 255);
+		public static readonly Byte4 GREY_96 = new(96, 96, 96, 255);
+		public static readonly Byte4 GREY_64 = new(64, 64, 64, 255);
+		public static readonly Byte4 GREY_56 = new(56, 56, 56, 255);
+		public static readonly Byte4 GREY_42 = new(42, 42, 42, 255);
+		public static readonly Byte4 GREY_32 = new(32, 32, 32, 255);
+		public static readonly Byte4 GREY_12 = new(12, 12, 12, 255);
+		public static readonly Byte4 SKIN_YELLOW = new(245, 217, 196, 255);
 		public static readonly bool[] SliceIgnoreCenter = { false, false, false, false, true, false, false, false, false, };
 
 		// Cursor

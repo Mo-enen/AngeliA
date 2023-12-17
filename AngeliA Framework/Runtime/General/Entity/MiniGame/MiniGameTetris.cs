@@ -14,9 +14,9 @@ namespace AngeliaFramework {
 
 		private class Tetromino {
 			public bool this[int i, int j, int rot] => Data[i, j, rot.UMod(4)];
-			public Pixel32 Tint { get; private set; }
+			public Byte4 Tint { get; private set; }
 			private readonly bool[,,] Data = new bool[4, 4, 4];
-			public Tetromino (ushort shape, ushort shapeR, ushort shape2, ushort shapeL, Pixel32 tint) {
+			public Tetromino (ushort shape, ushort shapeR, ushort shape2, ushort shapeL, Byte4 tint) {
 				Tint = tint;
 				for (int rot = 0; rot < 4; rot++) {
 					ushort _shape = rot == 0 ? shape : rot == 1 ? shapeR : rot == 2 ? shape2 : shapeL;
@@ -69,7 +69,7 @@ namespace AngeliaFramework {
 			{ 0,0, -2,0, +1,0, -2,+1, +1,-2, }, // l > 0
 			{ 0,0, +1,0, -2,0, +1,+2, -2,-1, }, // l > 2
 		};
-		private static readonly Pixel32 GRID_TINT = new(32, 32, 32, 255);
+		private static readonly Byte4 GRID_TINT = new(32, 32, 32, 255);
 		private static readonly int LINE_H_CODE = "Soft Line H".AngeHash();
 		private static readonly int LINE_V_CODE = "Soft Line V".AngeHash();
 		private static readonly int BLOCK_CODE = "Tetris Block".AngeHash();

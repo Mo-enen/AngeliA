@@ -258,7 +258,7 @@ namespace AngeliaFramework.Editor {
 			EditorGUI.DropShadowLabel(MGUI.Rect(0, 24), title, MGUI.CenteredBoldLabel);
 			MGUI.Space(2);
 			string folderName = "";
-			var assetIconColor = new Pixel32(209, 136, 60, 128);
+			var assetIconColor = new Byte4(209, 136, 60, 128);
 			for (int i = 0; i < scripts.Length;) {
 				using (new GUILayout.HorizontalScope()) {
 					for (int col = 0; col < column && i < scripts.Length; col++, i++) {

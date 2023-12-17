@@ -778,7 +778,7 @@ namespace AngeliaFramework {
 
 		public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID) => CoverClothOn(bodyPart, spriteID, 1, Const.WHITE, true);
 		public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID, int localZ) => CoverClothOn(bodyPart, spriteID, localZ, Const.WHITE, true);
-		public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID, int localZ, Pixel32 tint, bool defaultHideLimb = true) {
+		public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID, int localZ, Byte4 tint, bool defaultHideLimb = true) {
 			if (spriteID == 0 || bodyPart.IsFullCovered || !CellRenderer.TryGetSprite(spriteID, out var sprite)) return null;
 			Cell[] result;
 			if (sprite.GlobalBorder.IsZero) {

@@ -97,11 +97,11 @@ namespace AngeliaFramework.Editor {
 		};
 		private static GUIStyle _CenteredLinkLabel = null;
 
-		public static readonly Color HighlightBlue = new Pixel32(44, 93, 135, 255);
-		public static readonly Color HighlightBlue_Alpha50 = new Pixel32(44, 93, 135, 128);
-		public static readonly Color HighlightBlue_Alpha25 = new Pixel32(44, 93, 135, 64);
-		public static readonly Color HighlightCyan = new Pixel32(36, 181, 161, 255);
-		public static readonly Color HighlightOrange = new Pixel32(252, 195, 81, 255);
+		public static readonly Color HighlightBlue = new Byte4(44, 93, 135, 255);
+		public static readonly Color HighlightBlue_Alpha50 = new Byte4(44, 93, 135, 128);
+		public static readonly Color HighlightBlue_Alpha25 = new Byte4(44, 93, 135, 64);
+		public static readonly Color HighlightCyan = new Byte4(36, 181, 161, 255);
+		public static readonly Color HighlightOrange = new Byte4(252, 195, 81, 255);
 
 
 		public static Rect Rect (int w, int h) => GUILayoutUtility.GetRect(w, h, GUILayout.ExpandWidth(w == 0), GUILayout.ExpandHeight(h == 0));

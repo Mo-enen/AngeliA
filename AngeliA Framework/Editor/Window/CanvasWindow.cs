@@ -17,8 +17,8 @@ namespace AngeliaFramework.Editor {
 		protected virtual Int2 CanvasCellCount => new(128, 128);
 		protected virtual float ViewPadding => 256f;
 		protected virtual Float2 ZoomRange => new(1f, 16f);
-		protected virtual Pixel32 GridTint => new(0, 0, 0, 16);
-		protected virtual Pixel32 BackgroundTint => new(0, 0, 0, 255);
+		protected virtual Byte4 GridTint => new(0, 0, 0, 16);
+		protected virtual Byte4 BackgroundTint => new(0, 0, 0, 255);
 		protected virtual float StartZoom => 5f;
 		protected virtual float CanvasLerp => 12f;
 		protected virtual bool FitCanvasOnStart => false;

@@ -16,7 +16,11 @@ namespace AngeliaFramework {
 		public static void Init () {
 			Rigidbody.OnFallIntoWater += SpawnParticleForRigidbody;
 			Rigidbody.OnJumpOutOfWater += SpawnParticleForRigidbody;
-			static void SpawnParticleForRigidbody (Rigidbody rig, int x, int y) => Stage.SpawnEntity(TYPE_ID, x, y);
+			static void SpawnParticleForRigidbody (Rigidbody rig) => Stage.SpawnEntity(
+				TYPE_ID,
+				rig.X + rig.OffsetX + rig.Width / 2,
+				rig.Y + rig.OffsetY + rig.Height / 2 + (rig.InWater ? 0 : -rig.VelocityY)
+			);
 		}
 	}
 }

@@ -72,7 +72,7 @@ namespace AngeliaFramework {
 		int IDamageReceiver.Team => Const.TEAM_ENVIRONMENT;
 
 		// Data
-		private Pixel32 LeafTint = new(255, 255, 255, 255);
+		private Byte4 LeafTint = new(255, 255, 255, 255);
 		private bool CharacterNearby = false;
 
 
@@ -146,8 +146,8 @@ namespace AngeliaFramework {
 		}
 
 
-		public void TakeDamage (int damage, Entity sender) {
-			if (damage <= 0) return;
+		void IDamageReceiver.TakeDamage (Damage damage) {
+			if (damage.Amount <= 0) return;
 			// Particle
 			int id = TypeID;
 			var rect = Rect;

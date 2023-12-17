@@ -3,12 +3,29 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+
+
+	public struct Damage {
+		public readonly bool IsPhysical => Type == 0 || Type == Const.DAMAGE_TAG;
+		public readonly bool IsExplosive => Type == Const.DAMAGE_EXPLOSIVE_TAG;
+		public readonly bool IsMagical => Type == Const.DAMAGE_MAGICAL_TAG;
+		public int Amount;
+		public int Type;
+		public Entity Sender;
+		public Damage (int amount, Entity sender, int type = 0) {
+			Amount = amount;
+			Sender = sender;
+			Type = type;
+		}
+	}
+
+
 	public interface IDamageReceiver {
 
 		public int Team { get; }
-		public bool TakeDamageFromEnvironment => true;
+		public bool TakeDamageFromLevel => true;
 
-		void TakeDamage (int damage, Entity sender);
+		void TakeDamage (Damage damage);
 
 		[OnGameUpdateLater]
 		public static void DamageUpdateFromLevel () {
@@ -19,13 +36,15 @@ namespace AngeliaFramework {
 				var entities = Stage.Entities[entityLayer];
 				for (int i = 0; i < len; i++) {
 					var entity = entities[i];
-					if (entity is not IDamageReceiver receiver) continue;
+					if (
+						entity is not IDamageReceiver receiver ||
+						!receiver.TakeDamageFromLevel ||
+						receiver.Team == Const.TEAM_ENVIRONMENT
+					) continue;
 					var hits = CellPhysics.OverlapAll(PhysicsMask.DAMAGE, entity.Rect, out int count, entity, OperationMode.ColliderAndTrigger);
 					for (int j = 0; j < count; j++) {
 						var hit = hits[j];
-						if (receiver.TakeDamageFromEnvironment && receiver.Team != Const.TEAM_ENVIRONMENT) {
-							receiver.TakeDamage(hit.Tag, null);
-						}
+						receiver.TakeDamage(new Damage(1, null, hit.Tag));
 					}
 				}
 			}

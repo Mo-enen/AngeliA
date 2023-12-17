@@ -39,12 +39,12 @@ namespace AngeliaFramework {
 		protected Int2 SelectionMarkSize = new(32, 32);
 		protected Int2 SelectionArrowMarkSize = new(24, 24);
 		protected Int2 MoreMarkSize = new(16, 16);
-		protected Pixel32 ScreenTint = new(0, 0, 0, 0);
-		protected Pixel32 BackgroundTint = new(0, 0, 0, 255);
-		protected Pixel32 SelectionMarkTint = new(255, 255, 255, 255);
-		protected Pixel32 MoreMarkTint = new(220, 220, 220, 255);
-		protected Pixel32 MessageTint = new(220, 220, 220, 255);
-		protected Pixel32 MouseHighlightTint = new(255, 255, 255, 16);
+		protected Byte4 ScreenTint = new(0, 0, 0, 0);
+		protected Byte4 BackgroundTint = new(0, 0, 0, 255);
+		protected Byte4 SelectionMarkTint = new(255, 255, 255, 255);
+		protected Byte4 MoreMarkTint = new(220, 220, 220, 255);
+		protected Byte4 MessageTint = new(220, 220, 220, 255);
+		protected Byte4 MouseHighlightTint = new(255, 255, 255, 16);
 		protected bool Interactable = true;
 		protected bool AllowMouseClick = true;
 		protected bool QuitOnPressStartOrEscKey = true;
@@ -265,11 +265,11 @@ namespace AngeliaFramework {
 
 		// Draw Item
 		protected bool DrawItem (string label, int icon = 0) => DrawItemLogic(label, CellContent.Empty, icon, false, false, Const.WHITE, out _);
-		protected bool DrawItem (string label, Pixel32 tint, int icon = 0) => DrawItemLogic(label, CellContent.Empty, icon, false, false, tint, out _);
+		protected bool DrawItem (string label, Byte4 tint, int icon = 0) => DrawItemLogic(label, CellContent.Empty, icon, false, false, tint, out _);
 		protected bool DrawItem (string label, CellContent value, int icon = 0) => DrawItemLogic(label, value, icon, false, false, Const.WHITE, out _);
-		protected bool DrawItem (string label, CellContent value, Pixel32 tint, int icon = 0) => DrawItemLogic(label, value, icon, false, false, tint, out _);
+		protected bool DrawItem (string label, CellContent value, Byte4 tint, int icon = 0) => DrawItemLogic(label, value, icon, false, false, tint, out _);
 		protected bool DrawArrowItem (string label, CellContent value, bool leftArrow, bool rightArrow, out int delta, int icon = 0) => DrawItemLogic(label, value, icon, leftArrow, rightArrow, Const.WHITE, out delta);
-		private bool DrawItemLogic (string label, CellContent value, int icon, bool useLeftArrow, bool useRightArrow, Pixel32 tint, out int delta) {
+		private bool DrawItemLogic (string label, CellContent value, int icon, bool useLeftArrow, bool useRightArrow, Byte4 tint, out int delta) {
 
 			bool invoke = false;
 			delta = 0;
