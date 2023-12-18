@@ -3,6 +3,7 @@
     "com.moenengames.angeliaframework": "file:C:/Data/Unity/AngeliA/AngeliA Framework",
     "com.mukaschultze.fullscreeneditor": "file:C:/Data/Unity/Fullscreen",
     "com.unity.ide.visualstudio": "2.0.22",
+    "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.imageconversion": "1.0.0"
   }
 }

@@ -1175,7 +1175,7 @@ namespace AngeliaFramework {
 			var world = new World();
 			foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{AngePath.MAP_FILE_EXT}")) {
 				try {
-					if (!world.LoadFromDisk(path, MapLocation.Unknown)) continue;
+					if (!world.LoadFromDisk(path)) continue;
 					if (world.EmptyCheck()) {
 						Util.DeleteFile(path);
 						Util.DeleteFile(path + ".meta");

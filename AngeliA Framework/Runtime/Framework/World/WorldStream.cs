@@ -35,9 +35,7 @@ namespace AngeliaFramework {
 		private readonly Dictionary<Int3, WorldData> Pool = new();
 		private readonly List<KeyValuePair<Int3, WorldData>> CacheReleaseList = new(START_RELEASE_COUNT);
 		private readonly string MapRoot;
-		private readonly MapLocation Location;
 		private readonly bool Readonly;
-		private readonly bool IsProcedure;
 		private int CurrentValidMapCount = 0;
 		private int InternalFrame = int.MinValue;
 
@@ -50,12 +48,10 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public WorldStream (string mapRoot, MapLocation location, bool @readonly, bool isProcedure) {
+		public WorldStream (string mapRoot, bool @readonly) {
 			Pool.Clear();
 			MapRoot = mapRoot;
-			Location = location;
 			Readonly = @readonly;
-			IsProcedure = isProcedure;
 			CurrentValidMapCount = 0;
 			InternalFrame = 0;
 		}
@@ -68,7 +64,7 @@ namespace AngeliaFramework {
 			// Save Worlds
 			if (!Readonly) {
 				foreach (var pair in Pool) {
-					pair.Value?.World?.SaveToDisk(MapRoot, ignoreProcedure: false);
+					pair.Value?.World?.SaveToDisk(MapRoot);
 				}
 			}
 			// Clear Pool
@@ -127,7 +123,6 @@ namespace AngeliaFramework {
 				var world = worldData.World;
 				int localX = unitX.UMod(Const.MAP);
 				int localY = unitY.UMod(Const.MAP);
-				world.MarkProcedure(localX, localY, type, IsProcedure);
 				switch (type) {
 					case BlockType.Entity:
 						world.Entity[localY * Const.MAP + localX] = value;
@@ -161,9 +156,6 @@ namespace AngeliaFramework {
 				world.Entity[index] = entity;
 				world.Level[index] = level;
 				world.Background[index] = background;
-				world.MarkProcedure(localX, localY, BlockType.Entity, IsProcedure);
-				world.MarkProcedure(localX, localY, BlockType.Level, IsProcedure);
-				world.MarkProcedure(localX, localY, BlockType.Background, IsProcedure);
 			}
 		}
 
@@ -183,10 +175,10 @@ namespace AngeliaFramework {
 					World = new World(pos),
 					LastReadWriteFrame = InternalFrame++,
 				};
-				bool loaded = worldData.World.LoadFromDisk(MapRoot, Location, worldX, worldY, worldZ, true);
+				bool loaded = worldData.World.LoadFromDisk(MapRoot, worldX, worldY, worldZ);
 				if (!loaded && !createNew) worldData = null;
 				Pool.Add(pos, worldData);
-				if (createNew) worldData.World.SaveToDisk(MapRoot, ignoreProcedure: false);
+				if (createNew) worldData.World.SaveToDisk(MapRoot);
 				if (worldData != null) {
 					CurrentValidMapCount++;
 					TryReleaseOverload();
@@ -203,7 +195,7 @@ namespace AngeliaFramework {
 			CacheReleaseList.Sort((a, b) => b.Value.LastReadWriteFrame.CompareTo(a.Value.LastReadWriteFrame));
 			for (int i = CacheReleaseList.Count - 1; i >= END_RELEASE_COUNT; i--) {
 				if (Pool.Remove(CacheReleaseList[i].Key, out var worldData)) {
-					if (!Readonly) worldData.World.SaveToDisk(MapRoot, ignoreProcedure: false);
+					if (!Readonly) worldData.World.SaveToDisk(MapRoot);
 				}
 				CurrentValidMapCount--;
 			}

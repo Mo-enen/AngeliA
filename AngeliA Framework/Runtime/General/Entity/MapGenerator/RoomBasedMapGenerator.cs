@@ -7,7 +7,7 @@ namespace AngeliaFramework {
 
 
 	public class TestGenerator : RoomBasedMapGenerator {
-		protected override void GenerateMap () {
+		protected override void OnMapGenerate () {
 
 			//for (int i = 0; i < 16; i++) {
 			//	ResultWriter.SetBlockAt(-i, 0, 0, BlockType.Entity, "CheckLalynnA".AngeHash());
@@ -499,6 +499,15 @@ namespace AngeliaFramework {
 				EntryRequireQueue.Clear();
 				EntryRequireHash.Clear();
 			}
+		}
+
+
+		public static void GenerateRoomCollapseMap (IBlockSquad squad, RoomNode rootNode, int unitX, int unitY, int z) {
+
+
+
+
+
 		}
 
 

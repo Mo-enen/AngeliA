@@ -94,20 +94,13 @@ namespace AngeliaFramework {
 		// API
 		public virtual bool Invoke (Player player) {
 			if (player == null || FrameTask.HasTask()) return false;
-			int fromX = X + (Width - player.Width) / 2 - player.OffsetX;
-			player.X = fromX;
-			player.Y = Y;
-			player.Stop();
-			var task = TeleportTask.Teleport(
-				fromX, Y + player.Height / 2,
-				X + Width / 2, Y, IsFrontDoor ? Stage.ViewZ - 1 : Stage.ViewZ + 1
+			TeleportTask.Teleport(
+				X + (Width - player.Width) / 2 - player.OffsetX,
+				Y + player.Height / 2,
+				X + Width / 2,
+				Y,
+				IsFrontDoor ? Stage.ViewZ - 1 : Stage.ViewZ + 1
 			);
-			if (task != null) {
-				task.TeleportEntity = player;
-			}
-			player.EnterTeleportState(task.Duration, IsFrontDoor, false);
-			player.VelocityX = 0;
-			player.VelocityY = 0;
 			Open = true;
 			InputLock = true;
 			return true;

@@ -191,7 +191,6 @@ namespace AngeliaFramework {
 		private int PanelOffsetX = 0;
 		private int ToolbarOffsetX = 0;
 		private int InitializedFrame = int.MinValue;
-		private readonly MapChannel EditingMapChannel;
 		private readonly CellContent DropHintLabel = new() { BackgroundTint = Const.BLACK, Alignment = Alignment.BottomLeft, Wrap = false, CharSize = 24, };
 		private readonly IntToString StateXLabelToString = new("x:");
 		private readonly IntToString StateYLabelToString = new("y:");
@@ -217,23 +216,14 @@ namespace AngeliaFramework {
 		}
 
 
-		public MapEditor () {
-			Instance = this;
-			EditingMapChannel = Application.isEditor ? MapChannel.BuiltIn : MapChannel.User;
-		}
+		public MapEditor () => Instance = this;
 
 
 		// Active
 		public override void OnActivated () {
 			base.OnActivated();
 
-			string mapRoot = EditingMapChannel == MapChannel.BuiltIn ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot;
-			AngeUtil.DeleteAllEmptyMaps(mapRoot);
 			InitializedFrame = Game.GlobalFrame;
-
-			// Squad
-			WorldSquad.SpawnEntity = false;
-			WorldSquad.SetMapChannel(EditingMapChannel);
 
 			// Pipeline
 			Active_Pool();
@@ -241,7 +231,7 @@ namespace AngeliaFramework {
 
 			// Editor Meta
 			EditorMeta = AngeUtil.LoadOrCreateJson<MapEditorMeta>(
-				EditingMapChannel == MapChannel.BuiltIn ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot
+				Application.isEditor ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot
 			) ?? new();
 
 			// Cache
@@ -274,7 +264,8 @@ namespace AngeliaFramework {
 
 			// Start
 			if (Game.GlobalFrame == 0) {
-				PlayFromStart();
+				SetEditorMode(true);
+				Game.RestartGame();
 			} else {
 				SetEditorMode(false);
 			}
@@ -305,9 +296,9 @@ namespace AngeliaFramework {
 
 			AngeUtil.SaveJson(
 				EditorMeta,
-				EditingMapChannel == MapChannel.BuiltIn ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot
+				Application.isEditor ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot
 			);
-
+			AngeUtil.DeleteAllEmptyMaps(WorldSquad.MapRoot);
 			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
 			WorldSquad.SpawnEntity = true;
 			WorldSquad.BehindAlpha = Const.SQUAD_BEHIND_ALPHA;
@@ -812,7 +803,8 @@ namespace AngeliaFramework {
 					}
 					// Play from Start
 					if (FrameInput.KeyboardDown(KeyboardKey.Space)) {
-						PlayFromStart();
+						SetEditorMode(true);
+						Game.RestartGame();
 						FrameInput.UseAllHoldingKeys();
 						FrameInput.UseGameKey(Gamekey.Start);
 					}
@@ -969,33 +961,36 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public void SetEditorMode (bool playMode) {
+		public void SetEditorMode (bool toPlayMode) {
 
-			if (playMode) Save();
-			PlayingGame = playMode;
+			if (toPlayMode) Save();
+			PlayingGame = toPlayMode;
 			SelectingPaletteItem = null;
 			DroppingPlayer = false;
 			SelectionUnitRect = null;
 			DraggingUnitRect = null;
-			MapGenerator.DeleteAllGeneratedMapFiles();
 			MapChest.ClearOpenedMarks();
 			Stage.ClearGlobalAntiSpawn();
 			Player.RespawnCpUnitPosition = null;
-			if (playMode) {
+			if (toPlayMode) {
 				IGlobalPosition.CreateMetaFileFromMapsAsync(WorldSquad.MapRoot);
 			}
 			if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 
 			// Squad  
-			WorldSquad.SpawnEntity = playMode;
-			WorldSquad.SaveBeforeReload = !playMode;
+			var targetChannel = Application.isEditor ? MapChannel.BuiltIn : MapChannel.User;
+			if (WorldSquad.Channel != targetChannel) {
+				WorldSquad.SetMapChannel(targetChannel);
+			}
+			WorldSquad.SpawnEntity = toPlayMode;
+			WorldSquad.SaveBeforeReload = !toPlayMode;
 			WorldSquad.Front.ForceReloadDelay();
 			WorldSquad.Behind.ForceReloadDelay();
 
 			// Respawn Entities
 			Stage.SetViewZ(Stage.ViewZ);
 
-			if (!playMode) {
+			if (!toPlayMode) {
 				// Play >> Edit
 
 				// Despawn Entities from World
@@ -1070,12 +1065,6 @@ namespace AngeliaFramework {
 			PlayerDropPos.z = 0;
 			SelectionUnitRect = null;
 			DraggingUnitRect = null;
-		}
-
-
-		private void PlayFromStart () {
-			SetEditorMode(true);
-			Game.RestartGame();
 		}
 
 

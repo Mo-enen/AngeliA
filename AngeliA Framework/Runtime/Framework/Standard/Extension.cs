@@ -123,7 +123,6 @@ namespace AngeliaFramework {
 			return result;
 		}
 
-
 		public static float LerpWithGap (this float from, float to, float lerp, float gap) => Mathf.Abs(from - to) > gap ? Mathf.LerpUnclamped(from, to, lerp) : to;
 
 
@@ -507,13 +506,6 @@ namespace AngeliaFramework {
 		public static bool IsBottom (this Alignment alignment) => alignment == Alignment.BottomLeft || alignment == Alignment.BottomMid || alignment == Alignment.BottomRight;
 		public static bool IsMidY (this Alignment alignment) => alignment == Alignment.MidLeft || alignment == Alignment.MidMid || alignment == Alignment.MidRight;
 		public static bool IsTop (this Alignment alignment) => alignment == Alignment.TopLeft || alignment == Alignment.TopMid || alignment == Alignment.TopRight;
-
-
-		public static MapLocation GetLocation (this MapChannel channel) => channel switch {
-			MapChannel.BuiltIn => MapLocation.BuiltIn,
-			MapChannel.User => MapLocation.User,
-			_ => MapLocation.Unknown,
-		};
 
 
 		public static A[] FillWithValue<A> (this A[] arr, A value) {

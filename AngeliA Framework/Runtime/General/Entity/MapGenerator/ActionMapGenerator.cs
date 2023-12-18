@@ -82,7 +82,7 @@ namespace AngeliaFramework {
 
 		void IActionTarget.Invoke () {
 			if (!HasMapInDisk) {
-				GenerateAsync();
+				StartGenerateAsync();
 			} else {
 				Enter();
 			}
@@ -94,23 +94,17 @@ namespace AngeliaFramework {
 
 		private void Enter () {
 			var player = Player.Selecting;
-			if (player == null || FrameTask.HasTask()) return;
-			int z = Stage.ViewZ + 1;
-			player.Stop();
-			player.VelocityX = 0;
-			player.VelocityY = 0;
-			var task = TeleportTask.Teleport(
-				X + (Width - player.Width) / 2 - player.OffsetX,
-				Y + player.Height / 2,
-				X, Y, z
+			if (FrameTask.HasTask()) return;
+			TeleportTask.Teleport(
+				player.X + (player.Width - player.Width) / 2 - player.OffsetX,
+				player.Y + player.Height / 2,
+				0, 0, 0,
+				waitDuration: 30,
+				duration: 60,
+				useVignette: true,
+				newChannel: MapChannel.Procedure,
+				channelName: GetType().AngeName()
 			);
-			if (task != null) {
-				task.TeleportEntity = player;
-				task.WaitDuration = 30;
-				task.Duration = 60;
-				task.UseVignette = true;
-				player.EnterTeleportState(task.Duration, Stage.ViewZ > z, false);
-			}
 		}
 
 

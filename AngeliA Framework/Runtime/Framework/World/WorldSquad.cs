@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
 
-	public enum MapChannel { BuiltIn, User, }
+	public enum MapChannel { BuiltIn, User, Procedure, Download, }
 
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnMapChannelChangedAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class BeforeLevelRenderedAttribute : System.Attribute { }
@@ -33,13 +31,6 @@ namespace AngeliaFramework {
 		public static WorldSquad Behind { get; set; } = null;
 		public static IBlockSquad FrontBlockSquad => Front;
 		public static MapChannel Channel { get; private set; } = MapChannel.BuiltIn;
-		public static MapLocation CurrentLocation {
-			get {
-				if (Front == null) return MapLocation.Unknown;
-				var world = Front.Worlds[1, 1];
-				return world != null ? world.LoadedLocation : MapLocation.Unknown;
-			}
-		}
 		public static string MapRoot { get; private set; } = "";
 		public static bool Enable { get; set; } = true;
 		public static bool SpawnEntity { get; set; } = true;
@@ -48,7 +39,6 @@ namespace AngeliaFramework {
 		public World this[int i, int j] => Worlds[i, j];
 
 		// Data
-		private static string[] ProcedureGeneratorRoots = null;
 		private readonly World[,] Worlds = new World[3, 3] { { new(), new(), new() }, { new(), new(), new() }, { new(), new(), new() }, };
 		private readonly World[,] WorldBuffer = new World[3, 3];
 		private readonly World[] WorldBufferAlt = new World[9];
@@ -70,7 +60,6 @@ namespace AngeliaFramework {
 
 		[OnGameInitialize(-128)]
 		public static void OnGameInitialize () {
-			ProcedureGeneratorRoots = Util.EnumerateFolders(AngePath.ProcedureMapRoot, true, "*").ToArray() ?? new string[0];
 			Front = new WorldSquad();
 			Behind = new WorldSquad();
 			Util.LinkEventWithAttribute<OnMapChannelChangedAttribute>(typeof(WorldSquad), nameof(OnMapChannelChanged));
@@ -89,7 +78,6 @@ namespace AngeliaFramework {
 
 		[OnSlotChanged]
 		public static void OnSlotChanged () {
-			ProcedureGeneratorRoots = Util.EnumerateFolders(AngePath.ProcedureMapRoot, true, "*").ToArray() ?? new string[0];
 			Front.ForceReloadDelay();
 			Behind.ForceReloadDelay();
 		}
@@ -163,10 +151,10 @@ namespace AngeliaFramework {
 						Const.MAP
 					);
 					if (!worldUnitRect.Overlaps(unitRect_Level)) continue;
-					int l = Mathf.Max(unitRect_Level.x, worldUnitRect.x);
-					int r = Mathf.Min(unitRect_Level.xMax, worldUnitRect.xMax);
-					int d = Mathf.Max(unitRect_Level.y, worldUnitRect.y);
-					int u = Mathf.Min(unitRect_Level.yMax, worldUnitRect.yMax);
+					int l = System.Math.Max(unitRect_Level.x, worldUnitRect.x);
+					int r = System.Math.Min(unitRect_Level.xMax, worldUnitRect.xMax);
+					int d = System.Math.Max(unitRect_Level.y, worldUnitRect.y);
+					int u = System.Math.Min(unitRect_Level.yMax, worldUnitRect.yMax);
 					for (int j = d; j < u; j++) {
 						int index = (j - worldUnitRect.y) * Const.MAP + (l - worldUnitRect.x);
 						for (int i = l; i < r; i++, index++) {
@@ -203,10 +191,10 @@ namespace AngeliaFramework {
 						Const.MAP
 					);
 					if (!worldUnitRect.Overlaps(unitRect_Entity)) continue;
-					int l = Mathf.Max(unitRect_Entity.x, worldUnitRect.x);
-					int r = Mathf.Min(unitRect_Entity.xMax, worldUnitRect.xMax);
-					int d = Mathf.Max(unitRect_Entity.y, worldUnitRect.y);
-					int u = Mathf.Min(unitRect_Entity.yMax, worldUnitRect.yMax);
+					int l = System.Math.Max(unitRect_Entity.x, worldUnitRect.x);
+					int r = System.Math.Min(unitRect_Entity.xMax, worldUnitRect.xMax);
+					int d = System.Math.Max(unitRect_Entity.y, worldUnitRect.y);
+					int u = System.Math.Min(unitRect_Entity.yMax, worldUnitRect.yMax);
 					for (int j = d; j < u; j++) {
 						int localY = j - worldUnitRect.y;
 						int index = localY * Const.MAP + (l - worldUnitRect.x);
@@ -214,8 +202,7 @@ namespace AngeliaFramework {
 							var entityID = world.Entity[index];
 							if (entityID == 0) continue;
 							if (!isBehind) {
-								bool procedureFlag = world.CheckProcedureMark(i - worldUnitRect.x, localY, BlockType.Entity);
-								DrawEntity(entityID, procedureFlag, i, j, z);
+								DrawEntity(entityID, i, j, z);
 							} else if (Stage.RequireDrawEntityBehind(entityID, i, j, z)) {
 								Draw_Behind(entityID, i, j, true);
 							}
@@ -250,26 +237,31 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void SetMapChannel (MapChannel newChannel) {
-#if UNITY_EDITOR
+		public static void SetMapChannel (MapChannel newChannel, string folderName = "") {
+
 			if (SaveBeforeReload) Front.SaveToFile();
-#else
-			if (Channel == MapChannel.User && SaveBeforeReload) SaveToFile();
-#endif
-			MapRoot = newChannel == MapChannel.BuiltIn ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot;
+
+			MapRoot = newChannel switch {
+				MapChannel.BuiltIn => AngePath.BuiltInMapRoot,
+				MapChannel.User => AngePath.UserMapRoot,
+				MapChannel.Procedure => Util.CombinePaths(AngePath.ProcedureMapRoot, folderName),
+				MapChannel.Download => Util.CombinePaths(AngePath.DownloadMapRoot, folderName),
+				_ => AngePath.BuiltInMapRoot,
+			};
 			Channel = newChannel;
+
 			var viewPos = Stage.SpawnRect.CenterInt();
 			Front.LoadSquadFromDisk(
 				viewPos.x.UDivide(Const.MAP * Const.CEL),
 				viewPos.y.UDivide(Const.MAP * Const.CEL),
 				Stage.ViewZ,
-				Front.RequireReload
+				true
 			);
 			Behind.LoadSquadFromDisk(
 				viewPos.x.UDivide(Const.MAP * Const.CEL),
 				viewPos.y.UDivide(Const.MAP * Const.CEL),
 				Stage.ViewZ,
-				Behind.RequireReload
+				true
 			);
 			Front.RequireReload = false;
 			Behind.RequireReload = false;
@@ -343,7 +335,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public void SetBlockAt (int unitX, int unitY, int entityID, int levelID, int backgroundID, bool asProcedure = false) {
+		public void SetBlockAt (int unitX, int unitY, int entityID, int levelID, int backgroundID) {
 			var position00 = Worlds[0, 0].WorldPosition;
 			int worldX = unitX.UDivide(Const.MAP) - position00.x;
 			int worldY = unitY.UDivide(Const.MAP) - position00.y;
@@ -354,13 +346,10 @@ namespace AngeliaFramework {
 			world.Entity[localY * Const.MAP + localX] = entityID;
 			world.Level[localY * Const.MAP + localX] = levelID;
 			world.Background[localY * Const.MAP + localX] = backgroundID;
-			world.MarkProcedure(localX, localY, BlockType.Background, asProcedure);
-			world.MarkProcedure(localX, localY, BlockType.Level, asProcedure);
-			world.MarkProcedure(localX, localY, BlockType.Entity, asProcedure);
 		}
 
 
-		public void SetBlockAt (int unitX, int unitY, BlockType type, int newID, bool asProcedure = false) {
+		public void SetBlockAt (int unitX, int unitY, BlockType type, int newID) {
 			var position00 = Worlds[0, 0].WorldPosition;
 			int worldX = unitX.UDivide(Const.MAP) - position00.x;
 			int worldY = unitY.UDivide(Const.MAP) - position00.y;
@@ -368,7 +357,6 @@ namespace AngeliaFramework {
 			var world = Worlds[worldX, worldY];
 			int localX = unitX - world.WorldPosition.x * Const.MAP;
 			int localY = unitY - world.WorldPosition.y * Const.MAP;
-			world.MarkProcedure(localX, localY, type, asProcedure);
 			switch (type) {
 				default: throw new System.NotImplementedException();
 				case BlockType.Entity:
@@ -442,10 +430,10 @@ namespace AngeliaFramework {
 		}
 
 
-		private void DrawEntity (int id, bool procedureFlag, int unitX, int unitY, int unitZ) {
+		private void DrawEntity (int id, int unitX, int unitY, int unitZ) {
 			if (SpawnEntity) {
 				// Spawn Entity
-				var entity = Stage.SpawnEntityFromWorld(id, procedureFlag, unitX, unitY, unitZ);
+				var entity = Stage.SpawnEntityFromWorld(id, unitX, unitY, unitZ);
 				if (entity is Character ch) {
 					ch.X += ch.Width / 2;
 				}
@@ -490,8 +478,9 @@ namespace AngeliaFramework {
 			}
 			var tint = Byte4.LerpUnclamped(
 				CellRenderer.SkyTintBottom, CellRenderer.SkyTintTop,
-				Mathf.InverseLerp(cameraRect.yMin, cameraRect.yMax, rect.y + rect.height / 2)
+				Util.InverseLerp(cameraRect.yMin, cameraRect.yMax, rect.y + rect.height / 2)
 			);
+
 			tint.a = BehindAlpha;
 			CellRenderer.Draw(sprite.GlobalID, rect, tint, 0);
 		}
@@ -557,18 +546,7 @@ namespace AngeliaFramework {
 					var world = Worlds[i, j];
 					var pos = new Int3(worldX + i - 1, worldY + j - 1, worldZ);
 					if (!forceLoad && world.WorldPosition == pos) continue;
-					// Load from Current Channel
-					world.LoadFromDisk(
-						MapRoot, Channel.GetLocation(), pos.x, pos.y, pos.z,
-						clearExistData: true
-					);
-					// Load from Procedure
-					foreach (var root in ProcedureGeneratorRoots) {
-						world.LoadFromDisk(
-							root, MapLocation.Procedure, pos.x, pos.y, pos.z,
-							clearExistData: false
-						);
-					}
+					world.LoadFromDisk(MapRoot, pos.x, pos.y, pos.z);
 				}
 			}
 			LoadedZ = worldZ;

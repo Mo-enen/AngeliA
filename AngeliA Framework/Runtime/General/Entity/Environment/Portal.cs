@@ -143,23 +143,12 @@ namespace AngeliaFramework {
 		public virtual bool Invoke (Player player) {
 			if (player == null || FrameTask.HasTask()) return false;
 			if (DontSpawnAfterUsed) Stage.MarkAsGlobalAntiSpawn(this);
-			int fromX = X + (Width - player.Width) / 2 - player.OffsetX;
-			player.X = fromX;
-			player.Y = Y;
-			player.Stop();
-			var task = TeleportTask.Teleport(
-				fromX, Y + player.Height / 2,
-				TargetGlobalPosition.x, TargetGlobalPosition.y, TargetGlobalPosition.z
+			TeleportTask.Teleport(
+				X + (Width - player.Width) / 2 - player.OffsetX,
+				Y + player.Height / 2,
+				TargetGlobalPosition.x, TargetGlobalPosition.y, TargetGlobalPosition.z,
+				waitDuration: 30, duration: 60, useVignette: true
 			);
-			if (task != null) {
-				task.TeleportEntity = player;
-				task.WaitDuration = 30;
-				task.Duration = 60;
-				task.UseVignette = true;
-				player.EnterTeleportState(task.Duration, Stage.ViewZ > TargetGlobalPosition.z, true);
-			}
-			player.VelocityX = 0;
-			player.VelocityY = 0;
 			return true;
 		}
 

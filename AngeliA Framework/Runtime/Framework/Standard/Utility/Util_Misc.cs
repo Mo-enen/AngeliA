@@ -145,6 +145,14 @@ namespace AngeliaFramework {
 		}
 
 
+		public static float InverseLerp (float from, float to, float value) {
+			if (from != to) {
+				return ((value - from) / (to - from)).Clamp01();
+			}
+			return 0f;
+		}
+
+
 	}
 
 

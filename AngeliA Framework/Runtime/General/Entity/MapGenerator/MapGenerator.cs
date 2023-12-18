@@ -93,19 +93,19 @@ namespace AngeliaFramework {
 		}
 
 
-		public void GenerateAsync () {
+		public void StartGenerateAsync () {
 			CancelAsyncGeneration();
-			GenerateMapTask = Task.Factory.StartNew(Generate, GenerateMapToken.Token);
+			GenerateMapTask = Task.Factory.StartNew(StartGenerate, GenerateMapToken.Token);
 		}
 
 
-		public void Generate () {
+		public void StartGenerate () {
 			try {
 				string mapRoot = MapRoot;
 				string tempMapRoot = TempMapRoot;
 
-				SampleReader = new WorldStream(WorldSquad.MapRoot, WorldSquad.Channel.GetLocation(), @readonly: true, isProcedure: false);
-				ResultWriter = new WorldStream(tempMapRoot, MapLocation.Procedure, @readonly: false, isProcedure: true);
+				SampleReader = new WorldStream(WorldSquad.MapRoot, @readonly: true);
+				ResultWriter = new WorldStream(tempMapRoot, @readonly: false);
 
 				BeforeMapGenerate();
 
@@ -113,7 +113,7 @@ namespace AngeliaFramework {
 				Util.CreateFolder(tempMapRoot);
 
 				_HasMapInDisk = false;
-				GenerateMap();
+				OnMapGenerate();
 				_HasMapInDisk = null;
 
 				SampleReader.Dispose();
@@ -136,7 +136,7 @@ namespace AngeliaFramework {
 		}
 
 
-		protected abstract void GenerateMap ();
+		protected abstract void OnMapGenerate ();
 		protected virtual void BeforeMapGenerate () { }
 		protected virtual void AfterMapGenerate () { }
 

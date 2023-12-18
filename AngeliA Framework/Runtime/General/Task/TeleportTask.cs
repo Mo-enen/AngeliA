@@ -8,17 +8,17 @@ namespace AngeliaFramework {
 
 
 		// Api
-		public static readonly int TYPE_ID = typeof(TeleportTask).AngeHash();
+		private static readonly int TYPE_ID = typeof(TeleportTask).AngeHash();
 		public Int2 TeleportFrom { get; set; } = default;
 		public Int3 TeleportTo { get; set; } = default;
 		public int WaitDuration { get; set; } = 30;
 		public int Duration { get; set; } = 60;
 		public bool UseVignette { get; set; } = true;
 		public bool UseParallax { get; set; } = true;
-		public Entity TeleportEntity { get; set; } = null;
 
 		// Data
-		private Entity CurrentTeleportEntity = null;
+		private MapChannel? NewChannel = null;
+		private string ChannelName = "";
 		private bool ToBehind = true;
 		private float VigRound = 0f;
 		private float VigFeather = 1f;
@@ -26,8 +26,6 @@ namespace AngeliaFramework {
 		// MSG
 		public override void OnStart () {
 			base.OnStart();
-			CurrentTeleportEntity = TeleportEntity;
-			TeleportEntity = null;
 			WaitDuration = WaitDuration.Clamp(0, Duration - 1);
 			ToBehind = TeleportTo.z > Stage.ViewZ;
 			if (UseVignette) {
@@ -39,7 +37,6 @@ namespace AngeliaFramework {
 			}
 		}
 
-
 		public override TaskResult FrameUpdate () {
 
 			bool useVig = UseVignette;
@@ -47,13 +44,19 @@ namespace AngeliaFramework {
 
 			// Teleport
 			if (LocalFrame == WaitDuration) {
+				// Channel
+				if (NewChannel.HasValue) {
+					WorldSquad.SetMapChannel(NewChannel.Value, ChannelName);
+				}
+				// Position
 				int offsetX = TeleportFrom.x - Stage.ViewRect.xMin;
 				int offsetY = TeleportFrom.y - Stage.ViewRect.yMin;
 				Stage.SetViewPositionDelay(TeleportTo.x - offsetX, TeleportTo.y - offsetY, 1000, int.MaxValue);
 				Stage.SetViewZ(TeleportTo.z);
-				if (CurrentTeleportEntity != null) {
-					CurrentTeleportEntity.X = TeleportTo.x;
-					CurrentTeleportEntity.Y = TeleportTo.y;
+				var player = Player.Selecting;
+				if (player != null) {
+					player.X = TeleportTo.x;
+					player.Y = TeleportTo.y;
 				}
 			}
 
@@ -121,25 +124,37 @@ namespace AngeliaFramework {
 		}
 
 		// API
-		public static TeleportTask Teleport (int fromX, int fromY, int toX, int toY, int toZ) {
+		public static TeleportTask Teleport (
+			int fromX, int fromY, int toX, int toY, int toZ,
+			int waitDuration = 6, int duration = 24, bool useVignette = false, bool useParallax = true,
+			MapChannel? newChannel = null, string channelName = ""
+		) {
 			if (FrameTask.HasTask()) return null;
 			if (FrameTask.TryAddToLast(TYPE_ID, out var task) && task is TeleportTask svTask) {
 				svTask.TeleportFrom = new Int2(fromX, fromY);
 				svTask.TeleportTo = new Int3(toX, toY, toZ);
-				svTask.WaitDuration = 6;
-				svTask.Duration = 24;
-				svTask.UseParallax = true;
-				svTask.UseVignette = false;
-				svTask.TeleportEntity = null;
+				svTask.WaitDuration = waitDuration;
+				svTask.Duration = duration;
+				svTask.UseParallax = useParallax;
+				svTask.UseVignette = useVignette;
+				svTask.NewChannel = newChannel;
+				svTask.ChannelName = channelName;
+				var player = Player.Selecting;
+				if (player != null) {
+					player.X = fromX;
+					player.Y = fromY;
+					player.Stop();
+					player.EnterTeleportState(svTask.Duration, Stage.ViewZ > toZ, false);
+					player.VelocityX = 0;
+					player.VelocityY = 0;
+				}
 				return svTask;
 			}
 			return null;
 		}
 
 		// LGC
-		private static void MapEffectLogic (
-			Cell[] cells, Int2 center, int count, float scale, float lerp, bool isBehind, bool toBehind
-		) {
+		private static void MapEffectLogic (Cell[] cells, Int2 center, int count, float scale, float lerp, bool isBehind, bool toBehind) {
 			// Behind Tint
 			if (isBehind) {
 				for (int i = 0; i < count; i++) {

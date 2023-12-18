@@ -19,7 +19,6 @@ namespace AngeliaFramework {
 
 	[EntityAttribute.Capacity(16)]
 	[EntityAttribute.MapEditorGroup("CheckPoint")]
-	[EntityAttribute.RedirectForProcedureWorld(typeof(ProcedureCheckPoint))]
 	public abstract class CheckPoint : EnvironmentEntity {
 
 

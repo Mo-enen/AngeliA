@@ -31,13 +31,6 @@ namespace AngeliaFramework {
 		}
 
 
-		[System.AttributeUsage(System.AttributeTargets.Class)]
-		public class AlsoKnownAsAttribute : System.Attribute {
-			public string AltName;
-			public AlsoKnownAsAttribute (string atName) => AltName = atName;
-		}
-
-
 		// Misc
 		[System.AttributeUsage(System.AttributeTargets.Class)]
 		public class LayerAttribute : System.Attribute {
@@ -96,17 +89,6 @@ namespace AngeliaFramework {
 			public StageOrderAttribute (int order) {
 				Order = order;
 			}
-		}
-
-
-		[System.AttributeUsage(System.AttributeTargets.Class)]
-		public class IgnoreInProcedureWorldAttribute : System.Attribute { }
-
-
-		[System.AttributeUsage(System.AttributeTargets.Class)]
-		public class RedirectForProcedureWorldAttribute : System.Attribute {
-			public System.Type Target;
-			public RedirectForProcedureWorldAttribute (System.Type target) => Target = target;
 		}
 
 
