@@ -15,6 +15,8 @@ namespace AngeliaFramework {
 		private static readonly CellContent Temp = new();
 
 		public string Text;
+		public char[] Chars;
+		public bool FromString;
 		public Byte4 Tint;
 		public Byte4 BackgroundTint;
 		public Alignment Alignment;
@@ -28,6 +30,8 @@ namespace AngeliaFramework {
 
 		public CellContent (string text = "") {
 			Text = text;
+			Chars = null;
+			FromString = true;
 			Tint = Const.WHITE;
 			BackgroundTint = Const.CLEAR;
 			Alignment = Alignment.MidMid;
@@ -42,13 +46,17 @@ namespace AngeliaFramework {
 
 		public CellContent SetText (string newText) {
 			Text = newText;
+			Chars = null;
+			FromString = true;
 			return this;
 		}
 
 
 		public CellContent SetText (string newText, int charSize) {
 			Text = newText;
+			Chars = null;
 			CharSize = charSize;
+			FromString = true;
 			return this;
 		}
 
@@ -56,9 +64,11 @@ namespace AngeliaFramework {
 		public static CellContent Get (string text, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
 			Temp.CharSize = charSize;
 			Temp.Text = text;
+			Temp.Chars = null;
 			Temp.Alignment = alignment;
 			Temp.Tint = Const.WHITE;
 			Temp.Wrap = wrap;
+			Temp.FromString = true;
 			return Temp;
 		}
 
@@ -66,9 +76,33 @@ namespace AngeliaFramework {
 		public static CellContent Get (string text, Byte4 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
 			Temp.CharSize = charSize;
 			Temp.Text = text;
+			Temp.Chars = null;
 			Temp.Alignment = alignment;
 			Temp.Tint = tint;
 			Temp.Wrap = wrap;
+			Temp.FromString = true;
+			return Temp;
+		}
+
+
+		public static CellContent Get (char[] chars, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
+			Temp.CharSize = charSize;
+			Temp.Chars = chars;
+			Temp.Alignment = alignment;
+			Temp.Tint = Const.WHITE;
+			Temp.Wrap = wrap;
+			Temp.FromString = false;
+			return Temp;
+		}
+
+
+		public static CellContent Get (char[] chars, Byte4 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
+			Temp.CharSize = charSize;
+			Temp.Chars = chars;
+			Temp.Alignment = alignment;
+			Temp.Tint = tint;
+			Temp.Wrap = wrap;
+			Temp.FromString = false;
 			return Temp;
 		}
 
@@ -192,9 +226,15 @@ namespace AngeliaFramework {
 			if (!CellRenderer.TextReady) return;
 			if (string.IsNullOrEmpty(content.Text)) content.Text = string.Empty;
 
-			CellRenderer.RequestStringForFont(content.Text);
+			if (content.FromString) {
+				CellRenderer.RequestStringForFont(content.Text);
+			} else {
+				CellRenderer.RequestStringForFont(content.Chars);
+			}
 
 			string text = content.Text;
+			char[] chars = content.Chars;
+			int count = content.FromString ? text.Length : chars.Length;
 			int charSize = Unify(content.CharSize);
 			int lineSpace = Unify(content.LineSpace);
 			var color = content.Tint;
@@ -203,15 +243,14 @@ namespace AngeliaFramework {
 			var bgColor = content.BackgroundTint;
 			bool wrap = content.Wrap;
 			bool tightBG = content.TightBackground;
-			bool hasContent = !string.IsNullOrEmpty(text);
+			bool hasContent = count > 0;
 			bool clip = content.Clip;
-			bool beamEnd = beamIndex >= text.Length;
+			bool beamEnd = beamIndex >= count;
 
 			// Draw BG
 			Cell bgCell = bgColor.a > 0 ? CellRenderer.Draw(Const.PIXEL, rect, bgColor) : null;
 
 			// Content
-			int count = text.Length;
 			int maxLineCount = ((float)rect.height / (charSize + lineSpace)).FloorToInt();
 			int line = 0;
 			int x = rect.x;
@@ -225,9 +264,10 @@ namespace AngeliaFramework {
 			int maxY = int.MinValue;
 			for (int i = startIndex; i < count; i++) {
 
-				char c = text[i];
+				char c = content.FromString ? text[i] : chars[i];
 				endIndex = i;
 				if (c == '\r') goto CONTINUE;
+				if (c == '\0') break;
 
 				// Line
 				if (c == '\n') {
@@ -247,7 +287,7 @@ namespace AngeliaFramework {
 				// Wrap Check for Word
 				if (wrap && i >= nextWrapCheckIndex && !IsLineBreakingChar(c)) {
 					if (!WordEnoughToFit(
-						text, charSize, charSpace, i, rect.xMax - x - realCharSize, out int wordLength
+						content, charSize, charSpace, i, rect.xMax - x - realCharSize, out int wordLength
 					) && !firstCharAtLine) {
 						x = rect.x;
 						y -= charSize + lineSpace;
@@ -706,10 +746,11 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private static bool WordEnoughToFit (string content, int charSize, int charSpace, int startIndex, int room, out int wordLength) {
+		private static bool WordEnoughToFit (CellContent content, int charSize, int charSpace, int startIndex, int room, out int wordLength) {
 			int index = startIndex;
-			for (; index < content.Length; index++) {
-				char c = content[index];
+			int count = content.FromString ? content.Text.Length : content.Chars.Length;
+			for (; index < count; index++) {
+				char c = content.FromString ? content.Text[index] : content.Chars[index];
 				if (IsLineBreakingChar(c)) break;
 				if (!CellRenderer.RequireChar(c, out var sprite)) continue;
 				if (room > 0) {

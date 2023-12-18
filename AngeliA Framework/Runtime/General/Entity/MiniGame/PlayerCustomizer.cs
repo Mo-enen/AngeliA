@@ -144,7 +144,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private readonly SubMenuType[] MainMenu = null;
-		private readonly IntToString BodyHeightToString = new("", " cm");
+		private readonly IntToChars BodyHeightToString = new("", " cm");
 		private SubMenuType? CurrentSubMenu = null;
 		private SystemLanguage LoadedLanguage = SystemLanguage.Unknown;
 		private int HighlightingMainIndex = 0;
@@ -989,7 +989,7 @@ namespace AngeliaFramework {
 
 			// Label
 			CellRendererGUI.Label(
-				CellContent.Get(BodyHeightToString.GetString(playerHeight), 52), panelRect, out var labelBounds
+				CellContent.Get(BodyHeightToString.GetChars(playerHeight), 52), panelRect, out var labelBounds
 			);
 
 			// Button Up

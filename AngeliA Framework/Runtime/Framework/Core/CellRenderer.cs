@@ -1341,6 +1341,19 @@ namespace AngeliaFramework {
 		}
 
 
+		internal static void RequestStringForFont (char[] chars) {
+			var tLayer = TextLayers[CurrentTextLayerIndex];
+			var font = tLayer.TextFont;
+			if (font == null) return;
+			for (int i = 0; i < chars.Length; i++) {
+				char c = chars[i];
+				if (font.HasCharacter(c) && !font.GetCharacterInfo(c, out _, tLayer.TextSize)) {
+					font.RequestCharactersInTexture(c.ToString(), tLayer.TextSize);
+				}
+			}
+		}
+
+
 		#endregion
 
 

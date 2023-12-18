@@ -95,10 +95,7 @@ namespace AngeliaFramework {
 		public virtual bool Invoke (Player player) {
 			if (player == null || FrameTask.HasTask()) return false;
 			TeleportTask.Teleport(
-				X + (Width - player.Width) / 2 - player.OffsetX,
-				Y + player.Height / 2,
-				X + Width / 2,
-				Y,
+				X + Width / 2, Y, X + Width / 2, Y,
 				IsFrontDoor ? Stage.ViewZ - 1 : Stage.ViewZ + 1
 			);
 			Open = true;

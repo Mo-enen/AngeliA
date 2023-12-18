@@ -84,9 +84,9 @@ namespace AngeliaFramework {
 		private static PauseMenuUI Instance = null;
 		private readonly KeyboardKey[] KeyboardKeys = new KeyboardKey[8];
 		private readonly GamepadKey[] GamepadKeys = new GamepadKey[8];
-		private readonly IntToString MusicVolumeCache = new();
-		private readonly IntToString SoundVolumeCache = new();
-		private readonly IntToString FramerateCache = new();
+		private readonly IntToChars MusicVolumeCache = new();
+		private readonly IntToChars SoundVolumeCache = new();
+		private readonly IntToChars FramerateCache = new();
 		private readonly CellContent KeySetterLabel = new();
 		private MenuMode Mode = MenuMode.Pause;
 		private MenuMode RequireMode = MenuMode.Pause;
@@ -294,7 +294,7 @@ namespace AngeliaFramework {
 			// Music Volume
 			if (DrawArrowItem(
 				Language.Get(MENU_MUSIC_VOLUME, "Music Volume"),
-				CellContent.Get(MusicVolumeCache.GetString(AudioPlayer.MusicVolume / 100)),
+				CellContent.Get(MusicVolumeCache.GetChars(AudioPlayer.MusicVolume / 100)),
 				AudioPlayer.MusicVolume > 0, AudioPlayer.MusicVolume < 1000, out int delta
 			)) {
 				AudioPlayer.SetMusicVolume(AudioPlayer.MusicVolume + delta * 100);
@@ -303,7 +303,7 @@ namespace AngeliaFramework {
 			// Sound Volume
 			if (DrawArrowItem(
 				Language.Get(MENU_SOUND_VOLUME, "Sound Volume"),
-				CellContent.Get(SoundVolumeCache.GetString(AudioPlayer.SoundVolume / 100)),
+				CellContent.Get(SoundVolumeCache.GetChars(AudioPlayer.SoundVolume / 100)),
 				AudioPlayer.SoundVolume > 0, AudioPlayer.SoundVolume < 1000, out delta
 			)) {
 				AudioPlayer.SetSoundVolume(AudioPlayer.SoundVolume + delta * 100);
@@ -313,7 +313,7 @@ namespace AngeliaFramework {
 			int currentFramerate = Game.GraphicFramerate;
 			if (DrawArrowItem(
 				Language.Get(MENU_FRAMERATE, "Framerate"),
-				CellContent.Get(FramerateCache.GetString(currentFramerate)),
+				CellContent.Get(FramerateCache.GetChars(currentFramerate)),
 				currentFramerate > 30, currentFramerate < 120, out delta
 			)) {
 				Game.GraphicFramerate += delta * 30;

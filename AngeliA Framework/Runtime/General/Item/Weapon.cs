@@ -40,8 +40,6 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSprite(SpriteID)) SpriteID = 0;
 		}
 
-		public virtual bool AllowingAttack (PoseCharacter character) => true;
-
 		public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
 
 			base.PoseAnimationUpdate_FromEquipment(holder);
@@ -251,6 +249,8 @@ namespace AngeliaFramework {
 			height * grabScale.Abs() / 1000,
 			z
 		);
+
+		public virtual bool AllowingAttack (PoseCharacter character) => true;
 
 		public virtual int GetOverrideHandheldAnimationID (Character character) => 0;
 

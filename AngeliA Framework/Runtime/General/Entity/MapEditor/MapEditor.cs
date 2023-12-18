@@ -192,9 +192,9 @@ namespace AngeliaFramework {
 		private int ToolbarOffsetX = 0;
 		private int InitializedFrame = int.MinValue;
 		private readonly CellContent DropHintLabel = new() { BackgroundTint = Const.BLACK, Alignment = Alignment.BottomLeft, Wrap = false, CharSize = 24, };
-		private readonly IntToString StateXLabelToString = new("x:");
-		private readonly IntToString StateYLabelToString = new("y:");
-		private readonly IntToString StateZLabelToString = new("z:");
+		private readonly IntToChars StateXLabelToString = new("x:");
+		private readonly IntToChars StateYLabelToString = new("y:");
+		private readonly IntToChars StateZLabelToString = new("z:");
 
 		// Saving
 		private static readonly SavingBool s_QuickPlayerDrop = new("eMapEditor.QuickPlayerDrop", false);
@@ -927,7 +927,7 @@ namespace AngeliaFramework {
 
 				int z = IsNavigating ? NavPosition.z : Stage.ViewZ;
 				CellRendererGUI.Label(
-					CellContent.Get(StateZLabelToString.GetString(z), Const.GREY_196, 22, Alignment.TopRight),
+					CellContent.Get(StateZLabelToString.GetChars(z), Const.GREY_196, 22, Alignment.TopRight),
 					new IRect(cameraRect.xMax - LABEL_WIDTH - PADDING, cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
 					out var boundsZ
 				);
@@ -936,14 +936,14 @@ namespace AngeliaFramework {
 
 					int y = FrameInput.MouseGlobalPosition.y.ToUnit();
 					CellRendererGUI.Label(
-						CellContent.Get(StateYLabelToString.GetString(y), Const.GREY_196, 22, Alignment.TopRight),
+						CellContent.Get(StateYLabelToString.GetChars(y), Const.GREY_196, 22, Alignment.TopRight),
 						new IRect(Mathf.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
 						out var boundsY
 					);
 
 					int x = FrameInput.MouseGlobalPosition.x.ToUnit();
 					CellRendererGUI.Label(
-						CellContent.Get(StateXLabelToString.GetString(x), Const.GREY_196, 22, Alignment.TopRight),
+						CellContent.Get(StateXLabelToString.GetChars(x), Const.GREY_196, 22, Alignment.TopRight),
 						new IRect(Mathf.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT)
 					);
 

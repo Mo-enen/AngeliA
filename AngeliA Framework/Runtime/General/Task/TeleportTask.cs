@@ -126,7 +126,7 @@ namespace AngeliaFramework {
 		// API
 		public static TeleportTask Teleport (
 			int fromX, int fromY, int toX, int toY, int toZ,
-			int waitDuration = 6, int duration = 24, bool useVignette = false, bool useParallax = true,
+			int waitDuration = 6, int duration = 24, bool useVignette = false, bool useParallax = true, bool withPortal = false,
 			MapChannel? newChannel = null, string channelName = ""
 		) {
 			if (FrameTask.HasTask()) return null;
@@ -144,7 +144,7 @@ namespace AngeliaFramework {
 					player.X = fromX;
 					player.Y = fromY;
 					player.Stop();
-					player.EnterTeleportState(svTask.Duration, Stage.ViewZ > toZ, false);
+					player.EnterTeleportState(svTask.Duration, Stage.ViewZ > toZ, withPortal);
 					player.VelocityX = 0;
 					player.VelocityY = 0;
 				}

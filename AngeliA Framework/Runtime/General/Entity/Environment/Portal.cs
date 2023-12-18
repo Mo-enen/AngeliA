@@ -144,10 +144,12 @@ namespace AngeliaFramework {
 			if (player == null || FrameTask.HasTask()) return false;
 			if (DontSpawnAfterUsed) Stage.MarkAsGlobalAntiSpawn(this);
 			TeleportTask.Teleport(
-				X + (Width - player.Width) / 2 - player.OffsetX,
-				Y + player.Height / 2,
+				X + Width / 2, Y,
 				TargetGlobalPosition.x, TargetGlobalPosition.y, TargetGlobalPosition.z,
-				waitDuration: 30, duration: 60, useVignette: true
+				waitDuration: 30,
+				duration: 60,
+				useVignette: true,
+				withPortal: true
 			);
 			return true;
 		}

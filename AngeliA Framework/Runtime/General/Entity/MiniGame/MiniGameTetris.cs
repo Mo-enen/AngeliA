@@ -99,7 +99,7 @@ namespace AngeliaFramework {
 		private readonly Queue<int> TetrominoQueue = new();
 		private readonly int[,] StagedBlocks = new int[WIDTH, HEIGHT];
 		private readonly int[] SevenBag = { 0, 1, 2, 3, 4, 5, 6 };
-		private readonly IntToString LinesString = new();
+		private readonly IntToChars LinesString = new();
 		private System.Random BagRandom = new();
 		private bool GameOver = false;
 		private bool HoldAvailable = true;
@@ -411,7 +411,7 @@ namespace AngeliaFramework {
 				CHAR_SIZE, Alignment.MidLeft
 			), stateRect, out var lineBounds);
 			CellRendererGUI.Label(CellContent.Get(
-				LinesString.GetString(ClearedLines),
+				LinesString.GetChars(ClearedLines),
 				CHAR_SIZE, Alignment.MidRight
 			), stateRect, out var lineNumberBounds);
 

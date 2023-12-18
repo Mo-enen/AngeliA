@@ -71,8 +71,8 @@ namespace AngeliaFramework {
 		private static readonly List<KeyValuePair<int, string>> Pattern_Foots = new();
 		private static readonly List<KeyValuePair<int, string>> Pattern_Hands = new();
 		private static bool Initialized = false;
-		private readonly IntToString IndexLabelLeft = new();
-		private readonly IntToString IndexLabelRight = new();
+		private readonly IntToChars IndexLabelLeft = new();
+		private readonly IntToChars IndexLabelRight = new();
 		private ClothType CurrentSuitType = ClothType.Head;
 		private int CurrentPatternIndex = 0;
 		private int ArrowLeftPopFrame = 0;
@@ -396,11 +396,11 @@ namespace AngeliaFramework {
 			// Index Label
 			int midWidth = Unify(12);
 			CellRendererGUI.Label(
-				CellContent.Get(IndexLabelLeft.GetString(CurrentPatternIndex + 1), 24, Alignment.MidRight),
+				CellContent.Get(IndexLabelLeft.GetChars(CurrentPatternIndex + 1), 24, Alignment.MidRight),
 				new IRect(windowRect.x, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize)
 			);
 			CellRendererGUI.Label(
-				CellContent.Get(IndexLabelRight.GetString(CurrentPatternList.Count), 24, Alignment.MidLeft),
+				CellContent.Get(IndexLabelRight.GetChars(CurrentPatternList.Count), 24, Alignment.MidLeft),
 				new IRect(windowRect.CenterX() + midWidth / 2, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize)
 			);
 			CellRendererGUI.Label(

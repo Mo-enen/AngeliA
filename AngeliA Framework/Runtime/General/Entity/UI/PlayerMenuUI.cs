@@ -582,7 +582,7 @@ namespace AngeliaFramework {
 
 			// Count
 			DrawItemCount(itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3), itemCount);
-			
+
 			// Hover
 			if (hovering) {
 				if (FrameInput.LastActionFromMouse) {

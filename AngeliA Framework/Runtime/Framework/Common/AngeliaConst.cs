@@ -21,6 +21,9 @@ namespace AngeliaFramework {
 
 
 	public static class EntityLayer {
+		public static readonly string[] LAYER_NAMES = new string[COUNT] {
+			"Game", "Character", "Environment", "Bullet", "Item", "Decorate", "UI",
+		};
 		public const int GAME = 0;
 		public const int CHARACTER = 1;
 		public const int ENVIRONMENT = 2;

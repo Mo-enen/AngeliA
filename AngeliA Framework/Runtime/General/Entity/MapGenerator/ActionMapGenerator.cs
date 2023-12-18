@@ -96,8 +96,8 @@ namespace AngeliaFramework {
 			var player = Player.Selecting;
 			if (FrameTask.HasTask()) return;
 			TeleportTask.Teleport(
-				player.X + (player.Width - player.Width) / 2 - player.OffsetX,
-				player.Y + player.Height / 2,
+				player.X,
+				player.Y,
 				0, 0, 0,
 				waitDuration: 30,
 				duration: 60,

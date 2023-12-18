@@ -35,8 +35,8 @@ namespace AngeliaFramework {
 		private bool ServingBall => Game.GlobalFrame < ServeBallFrame + SERVE_BALL_DURATION;
 
 		// Data
-		private readonly IntToString PlayerScoreString = new();
-		private readonly IntToString BotScoreString = new();
+		private readonly IntToChars PlayerScoreString = new();
+		private readonly IntToChars BotScoreString = new();
 		private int ScorePlayer = 0;
 		private int ScoreBot = 0;
 		private int PlayerPaddleY = 500;
@@ -188,11 +188,11 @@ namespace AngeliaFramework {
 			int scoreWidth = windowRect.width / 2 - scoreGap;
 			int scoreY = windowRect.y + windowRect.height - charRectSize;
 			CellRendererGUI.Label(
-				CellContent.Get(PlayerScoreString.GetString(ScorePlayer), 42, Alignment.MidRight),
+				CellContent.Get(PlayerScoreString.GetChars(ScorePlayer), 42, Alignment.MidRight),
 				new IRect(windowRect.x, scoreY, scoreWidth, charRectSize)
 			);
 			CellRendererGUI.Label(
-				CellContent.Get(BotScoreString.GetString(ScoreBot), 42, Alignment.MidLeft),
+				CellContent.Get(BotScoreString.GetChars(ScoreBot), 42, Alignment.MidLeft),
 				new IRect(midX + scoreGap, scoreY, scoreWidth, charRectSize)
 			);
 

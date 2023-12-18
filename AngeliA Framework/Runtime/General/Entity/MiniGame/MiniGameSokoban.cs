@@ -82,7 +82,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private readonly BadgesSaveData Saving = new(LEVEL_COUNT);
-		private IntToString LevelLabelToString = null;
+		private IntToChars LevelLabelToString = null;
 		private BlockType[,] Blocks = null;
 		private int CurrentLevel = 0;
 		private int StageWidth = 1;
@@ -200,7 +200,7 @@ namespace AngeliaFramework {
 
 			// Label
 			CellRendererGUI.Label(
-				CellContent.Get(LevelLabelToString.GetString(CurrentLevel + 1), alignment: Alignment.MidRight),
+				CellContent.Get(LevelLabelToString.GetChars(CurrentLevel + 1), alignment: Alignment.MidRight),
 				new IRect(stageRect.x, stageRect.yMax + barHeight / 10, stageRect.width, barHeight)
 			);
 

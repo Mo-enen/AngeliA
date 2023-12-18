@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Globalization;
 using System.IO;
 using UnityEngine;
-using Vector2 = AngeliaFramework.Float2;
 
 
 namespace AngeliaFramework {
@@ -137,6 +136,33 @@ namespace AngeliaFramework {
 		}
 
 
+		public static int DigitCount (this int n) {
+			if (n >= 0) {
+				if (n < 10) return 1;
+				if (n < 100) return 2;
+				if (n < 1000) return 3;
+				if (n < 10000) return 4;
+				if (n < 100000) return 5;
+				if (n < 1000000) return 6;
+				if (n < 10000000) return 7;
+				if (n < 100000000) return 8;
+				if (n < 1000000000) return 9;
+				return 10;
+			} else {
+				if (n > -10) return 1;
+				if (n > -100) return 2;
+				if (n > -1000) return 3;
+				if (n > -10000) return 4;
+				if (n > -100000) return 5;
+				if (n > -1000000) return 6;
+				if (n > -10000000) return 7;
+				if (n > -100000000) return 8;
+				if (n > -1000000000) return 9;
+				return 10;
+			}
+		}
+
+
 		// Vector
 		public static void Clamp (this ref Int2 v, int minX, int minY, int maxX, int maxY) {
 			v.x = Mathf.Clamp(v.x, minX, maxX);
@@ -215,8 +241,8 @@ namespace AngeliaFramework {
 				vector.x * sinAngle + vector.y * cosAngle
 			);
 		}
-		public static int GetRotation (this Float2 vector) => (int)System.Math.Atan2(vector.x, vector.y);
-		public static int GetRotation (this Int2 vector) => (int)System.Math.Atan2(vector.x, vector.y);
+		public static int GetRotation (this Float2 vector) => ((float)(System.Math.Atan2(vector.x, vector.y) * Util.Rad2Deg)).RoundToInt();
+		public static int GetRotation (this Int2 vector) => ((float)(System.Math.Atan2(vector.x, vector.y) * Util.Rad2Deg)).RoundToInt();
 
 
 		// Ani
@@ -331,6 +357,7 @@ namespace AngeliaFramework {
 			Mathf.Max(target.xMin, Mathf.Min(rect.xMax, target.xMax)),
 			Mathf.Max(target.yMin, Mathf.Min(rect.yMax, target.yMax))
 		);
+
 		public static Float2 BottomLeft (this Rect rect) => new(rect.xMin, rect.yMin);
 		public static Float2 BottomRight (this Rect rect) => new(rect.xMax, rect.yMin);
 		public static Float2 TopLeft (this Rect rect) => new(rect.xMin, rect.yMax);

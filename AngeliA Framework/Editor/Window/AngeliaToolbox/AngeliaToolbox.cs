@@ -36,7 +36,6 @@ namespace AngeliaFramework.Editor {
 		private const string UNITY_PROGRESS = "unity-progress-bar__progress";
 		private static readonly Color PROFILER_GREEN = new(0.5f, 1f, 0.4f, 0.5f);
 		private static readonly Color PROFILER_RED = new(1f, 0f, 0f, 0.5f);
-		private static readonly string[] ENTITY_LAYER_NAMES = new string[EntityLayer.COUNT] { "Game", "Character", "Environment", "Bullet", "Item", "Decorate", "UI", };
 
 		// Data
 		private static readonly Color[] COLLIDER_TINTS = { Const.RED_BETTER, Const.ORANGE_BETTER, Color.yellow, Const.GREEN, Const.CYAN, Const.BLUE, Const.GREY_128, };
@@ -282,7 +281,6 @@ namespace AngeliaFramework.Editor {
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 
 				GL.End();
-				//GL.PopMatrix();
 
 			}
 
@@ -351,8 +349,8 @@ namespace AngeliaFramework.Editor {
 			}
 
 			// Sheet Thumbnail
-			if (SheetThumbnail != null) SheetThumbnail.style.display = showRoot && !isPlaying ? DisplayStyle.Flex : DisplayStyle.None;
-			if (SheetThumbnailLabel != null) SheetThumbnailLabel.style.display = showRoot && !isPlaying ? DisplayStyle.Flex : DisplayStyle.None;
+			if (SheetThumbnail != null) SheetThumbnail.style.display = showRoot ? DisplayStyle.Flex : DisplayStyle.None;
+			if (SheetThumbnailLabel != null) SheetThumbnailLabel.style.display = showRoot ? DisplayStyle.Flex : DisplayStyle.None;
 
 			// Other
 			if (showRoot) {
@@ -424,8 +422,7 @@ namespace AngeliaFramework.Editor {
 						bar.lowValue = 0;
 						bar.highValue = all;
 						bar.value = use;
-						bar.title = $"<size=10><color=#BBBBBB>{ENTITY_LAYER_NAMES[layer.Clamp(0, ENTITY_LAYER_NAMES.Length - 1)]}</color></size>  {use} / {all}";
-
+						bar.title = $"<size=10><color=#BBBBBB>{EntityLayer.LAYER_NAMES[layer.Clamp(0, EntityLayer.LAYER_NAMES.Length - 1)]}</color></size>  {use} / {all}";
 						if (ProfilerEntityBars[layer] != null) {
 							ProfilerEntityBars[layer].style.backgroundColor =
 								Color.Lerp(PROFILER_GREEN, PROFILER_RED, (float)use / all);
@@ -525,7 +522,7 @@ namespace AngeliaFramework.Editor {
 			inspector.minSize = new Float2(345f, inspector.minSize.y);
 			EdittimeOnlyElements.Clear();
 			RuntimeOnlyElements.Clear();
-			InjectProfiler(inspector, "AngeliaProfiler");
+			//InjectProfiler(inspector, "AngeliaProfiler");
 			InjectToolbox(inspector, "AngeliaToolbox");
 			InjectGameStarter(inspector);
 			RefreshVisibility();
