@@ -25,8 +25,13 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
-		private struct DoorInfo {
-			public bool FrontDoor;
+		private struct TeleInfo {
+			public bool Front;
+			public bool Portal;
+			public TeleInfo (bool front, bool portal) {
+				Front = front;
+				Portal = portal;
+			}
 		}
 
 
@@ -70,8 +75,8 @@ namespace AngeliaFramework {
 		private static readonly Queue<RoomSearchRequire> SearchRequireQueue = new();
 		private static readonly HashSet<Int2> SearchRequireHash = new();
 		private static readonly List<Room.Tunnel> TunnelsCache = new();
-		private static readonly List<Room.Door> DoorsCache = new();
-		private static readonly Dictionary<int, DoorInfo> DoorPool = new();
+		private static readonly List<Room.Teleporter> TelesCache = new();
+		private static readonly Dictionary<int, TeleInfo> TelePool = new();
 		private static int DynamicID = -1;
 
 
@@ -87,9 +92,15 @@ namespace AngeliaFramework {
 		public static void OnGameInitialize () {
 			foreach (var type in typeof(Door).AllChildClass()) {
 				if (System.Activator.CreateInstance(type) is not Door door) continue;
-				DoorPool.TryAdd(type.AngeHash(), new DoorInfo() {
-					FrontDoor = door.IsFrontDoor,
-				});
+				TelePool.TryAdd(type.AngeHash(), new TeleInfo(door.IsFrontDoor, false));
+			}
+			foreach (var type in typeof(PortalFront).AllChildClass()) {
+				if (System.Activator.CreateInstance(type) is not PortalFront portal) continue;
+				TelePool.TryAdd(type.AngeHash(), new TeleInfo(true, true));
+			}
+			foreach (var type in typeof(PortalBack).AllChildClass()) {
+				if (System.Activator.CreateInstance(type) is not PortalBack portal) continue;
+				TelePool.TryAdd(type.AngeHash(), new TeleInfo(false, true));
 			}
 		}
 
@@ -209,23 +220,24 @@ namespace AngeliaFramework {
 			}
 
 			// Doors
-			System.Threading.Monitor.Enter(DoorsCache);
+			System.Threading.Monitor.Enter(TelesCache);
 			try {
-				DoorsCache.Clear();
+				TelesCache.Clear();
 				for (int i = 0; i < room.Entities.Length; i++) {
 					int entityID = room.Entities[i];
-					if (entityID != 0 && DoorPool.TryGetValue(entityID, out var doorInfo)) {
-						DoorsCache.Add(new Room.Door() {
+					if (entityID != 0 && TelePool.TryGetValue(entityID, out var info)) {
+						TelesCache.Add(new Room.Teleporter() {
 							X = i % width,
 							Y = i / width,
-							Front = doorInfo.FrontDoor,
+							Front = info.Front,
+							IsPortal = info.Portal,
 						});
 					}
 				}
-				room.Doors = DoorsCache.ToArray();
+				room.Teleporters = TelesCache.ToArray();
 			} finally {
-				DoorsCache.Clear();
-				System.Threading.Monitor.Exit(DoorsCache);
+				TelesCache.Clear();
+				System.Threading.Monitor.Exit(TelesCache);
 			}
 
 			return room;

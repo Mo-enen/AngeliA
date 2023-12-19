@@ -162,7 +162,7 @@ namespace AngeliaFramework {
 		}
 	}
 
-	public class PoseHandheld_Firearm : PoseAnimation {
+	public class PoseHandheld_Shooting : PoseAnimation {
 		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			if (!Target.IsChargingAttack) {

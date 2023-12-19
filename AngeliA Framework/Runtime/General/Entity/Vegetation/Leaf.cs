@@ -63,6 +63,9 @@ namespace AngeliaFramework {
 		// Const
 		private static readonly int[] LEAF_OFFSET_SEEDS = new int[] { 0, 6, 2, 8, 3, 7, 2, 3, 5, 2, 2, 6, 9, 3, 6, 1, 9, 0, 1, 7, 4, 2, 8, 4, 6, 5, 2, 4, 8, 7, };
 		private const byte LEAF_HIDE_ALPHA = 42;
+		private static readonly int LEAF_ITEM_CODE = typeof(iLeaf).AngeHash();
+		private static readonly int LEAF_LEGEND_ITEM_CODE = typeof(iLeafLegend).AngeHash();
+
 
 		// Virtual
 		protected virtual int LeafCount => 3;
@@ -130,7 +133,13 @@ namespace AngeliaFramework {
 		}
 
 
-		protected virtual void OnBreak () { }
+		protected virtual void OnBreak () {
+			if (AngeUtil.RandomInt() % 3 == 0) {
+				ItemSystem.SpawnItem(LEAF_ITEM_CODE, X, Y);
+			} else if (AngeUtil.RandomInt() % 16384 == 0) {
+				ItemSystem.SpawnItem(LEAF_LEGEND_ITEM_CODE, X, Y);
+			}
+		}
 
 
 		#endregion

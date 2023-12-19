@@ -350,8 +350,8 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void SpawnItemAtPlayer (int itemID, int count = 1) => SpawnItemAt(Player.Selecting, itemID, count);
-		public static void SpawnItemAt (Character target, int itemID, int count = 1) {
+		public static void SpawnItemAtPlayer (int itemID, int count = 1) {
+			var target = Player.Selecting;
 			int x = target != null ? target.Rect.x - Const.CEL : CellRenderer.CameraRect.CenterX();
 			int y = target != null ? target.Y : CellRenderer.CameraRect.CenterY();
 			SpawnItem(itemID, x, y, count);

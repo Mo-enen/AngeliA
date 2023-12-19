@@ -1427,7 +1427,7 @@ namespace AngeliaFramework {
 			if (character.EquippingWeaponHeld == WeaponHandheld.Bow) {
 				Bow();
 			} else {
-				Firearm();
+				Shooting();
 			}
 		}
 		private static void Bow () {
@@ -1467,7 +1467,7 @@ namespace AngeliaFramework {
 			Target.HandGrabScaleL = Target.HandGrabScaleR = 1000;
 
 		}
-		private static void Firearm () {
+		private static void Shooting () {
 
 			bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
 			float ease01 = isCharging ?

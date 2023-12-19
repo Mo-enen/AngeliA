@@ -66,6 +66,7 @@ namespace AngeliaFramework {
 		protected sealed override int CollisionMask => IsGrabFlipping ? 0 : PhysicsMask.MAP;
 		protected sealed override int PhysicalLayer => PhysicsLayer.CHARACTER;
 		protected virtual int Bouncy => 150;
+		protected virtual bool UseInventory => false;
 
 		// Data
 		private static readonly HashSet<int> RenderWithSheetPool = new();
@@ -88,15 +89,17 @@ namespace AngeliaFramework {
 
 		public Character () {
 			// Inventory
-			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
-			if (Inventory.HasInventory(TypeID)) {
-				int invCount = Inventory.GetInventoryCapacity(TypeID);
-				if (invCount != COUNT) {
-					Inventory.ResizeItems(TypeID, COUNT);
+			if (UseInventory) {
+				const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
+				if (Inventory.HasInventory(TypeID)) {
+					int invCount = Inventory.GetInventoryCapacity(TypeID);
+					if (invCount != COUNT) {
+						Inventory.ResizeItems(TypeID, COUNT);
+					}
+				} else {
+					// Create New
+					Inventory.AddNewCharacterInventoryData(GetType().AngeName(), COUNT);
 				}
-			} else {
-				// Create New
-				Inventory.AddNewCharacterInventoryData(GetType().AngeName(), COUNT);
 			}
 		}
 
@@ -130,12 +133,7 @@ namespace AngeliaFramework {
 
 		private void BeforeUpdate_BuffValue () {
 
-			AttackDuration.Override = null;
-			AttackCooldown.Override = null;
-			RepeatAttackWhenHolding.Override = null;
-			MinimalChargeAttackDuration.Override = null;
-			LockFacingOnAttack.Override = null;
-			MovementLoseRateOnAttack.Override = null;
+			Weapon.FillCharacterMeta(this, null);
 
 			int invCapacity = GetInventoryCapacity();
 			if (invCapacity > 0) {
@@ -151,14 +149,7 @@ namespace AngeliaFramework {
 					var item = GetEquippingItem(type);
 					if (item == null) continue;
 					item.BeforeItemUpdate_FromEquipment(this);
-					if (item is Weapon weapon) {
-						AttackDuration.Override = weapon.AttackDuration;
-						AttackCooldown.Override = weapon.AttackCooldown;
-						RepeatAttackWhenHolding.Override = weapon.RepeatAttackWhenHolding;
-						MinimalChargeAttackDuration.Override = weapon.ChargeAttackDuration;
-						LockFacingOnAttack.Override = weapon.LockFacingOnAttack;
-						MovementLoseRateOnAttack.Override = weapon.MovementLoseRateOnAttack;
-					}
+					if (item is Weapon weapon) Weapon.FillCharacterMeta(this, weapon);
 				}
 			}
 
@@ -386,9 +377,8 @@ namespace AngeliaFramework {
 
 		// Virtual
 		protected abstract void RenderCharacter ();
-		protected virtual int GetInventoryCapacity () => 0;
-		protected virtual Item GetItemFromInventory (int itemIndex) => null;
-		protected virtual Equipment GetEquippingItem (EquipmentType type) => null;
+
+
 		protected virtual void InvokeCharacterEvent (CharacterEventHandler handler) => handler?.Invoke(this);
 
 
@@ -398,6 +388,7 @@ namespace AngeliaFramework {
 
 
 		#region --- API ---
+
 
 
 		public virtual void SetCharacterState (CharacterState state) {
@@ -456,6 +447,34 @@ namespace AngeliaFramework {
 		// Bounce
 		public void Bounce () => LastRequireBounceFrame = Game.GlobalFrame;
 		public void CancelBounce () => LastRequireBounceFrame = int.MinValue;
+
+
+		// Inventory
+		public int GetInventoryCapacity () => UseInventory ? Inventory.GetInventoryCapacity(TypeID) : 0;
+
+
+		public int GetItemIDFromInventory (int itemIndex) => GetItemIDFromInventory(itemIndex, out _);
+		public int GetItemIDFromInventory (int itemIndex, out int count) {
+			count = 0;
+			if (!UseInventory) return 0;
+			return Inventory.GetItemAt(TypeID, itemIndex, out count);
+		}
+
+
+		public Item GetItemFromInventory (int itemIndex) => GetItemFromInventory(itemIndex, out _);
+		public Item GetItemFromInventory (int itemIndex, out int count) {
+			count = 0;
+			if (!UseInventory) return null;
+			return ItemSystem.GetItem(Inventory.GetItemAt(TypeID, itemIndex, out count));
+		}
+
+
+		public Equipment GetEquippingItem (EquipmentType type) {
+			if (!UseInventory) return null;
+			int id = Inventory.GetEquipment(TypeID, type);
+			if (id == 0) return null;
+			return ItemSystem.GetItem(id) as Equipment;
+		}
 
 
 		#endregion

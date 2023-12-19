@@ -12,9 +12,17 @@ namespace AngeliaFramework {
 		int PrevItemID { get; set; }
 		int NextItemID { get; set; }
 
-
 	}
 
+
+
+	public abstract class ItemArrow : Item {
+		public int BulletArtworkID { get; init; }
+		public override int MaxStackCount => 512;
+		public ItemArrow () {
+			BulletArtworkID = $"{GetType().AngeName()}.Bullet".AngeHash();
+		}
+	}
 
 
 	public abstract class ItemSummon<T> : Item where T : Summon {

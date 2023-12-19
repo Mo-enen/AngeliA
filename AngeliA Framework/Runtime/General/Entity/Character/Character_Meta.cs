@@ -147,13 +147,22 @@ namespace AngeliaFramework {
 		public readonly BuffInt AttackComboGap = new(12);
 		public readonly BuffInt HoldAttackPunish = new(4);
 		public readonly BuffInt MinimalChargeAttackDuration = new(int.MaxValue);
-		public readonly BuffInt MovementLoseRateOnAttack = new(0);
 		public readonly BuffBool CancelAttackOnJump = new(false);
 		public readonly BuffBool RepeatAttackWhenHolding = new(false);
 		public readonly BuffBool LockFacingOnAttack = new(false);
+
+		public BuffInt CurrentSpeedLoseOnAttack =>
+			IsGrounded && IsWalking ? WalkingSpeedLoseOnAttack :
+			IsGrounded && IsRunning ? RunningSpeedLoseOnAttack :
+			DefaultSpeedLoseOnAttack;
+		public readonly BuffInt DefaultSpeedLoseOnAttack = new(0);
+		public readonly BuffInt WalkingSpeedLoseOnAttack = new(0);
+		public readonly BuffInt RunningSpeedLoseOnAttack = new(0);
+
 		public readonly BuffBool AttackInAir = new(true);
 		public readonly BuffBool AttackInWater = new(true);
-		public readonly BuffBool AttackWhenMoving = new(true);
+		public readonly BuffBool AttackWhenWalking = new(true);
+		public readonly BuffBool AttackWhenRunning = new(true);
 		public readonly BuffBool AttackWhenClimbing = new(false);
 		public readonly BuffBool AttackWhenFlying = new(false);
 		public readonly BuffBool AttackWhenRolling = new(false);

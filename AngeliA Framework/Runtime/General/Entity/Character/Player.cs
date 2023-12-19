@@ -75,6 +75,7 @@ namespace AngeliaFramework {
 		public virtual bool WeaponAvailable => true;
 		public virtual bool AllowPlayerMenuUI => true;
 		public virtual bool AllowQuickPlayerMenuUI => true;
+		protected override bool UseInventory => true;
 		int IDamageReceiver.Team => Const.TEAM_PLAYER;
 
 		// Data
@@ -570,16 +571,6 @@ namespace AngeliaFramework {
 				);
 			}
 
-		}
-
-
-		// Inventory
-		protected override int GetInventoryCapacity () => Inventory.GetInventoryCapacity(TypeID);
-		protected override Item GetItemFromInventory (int itemIndex) => ItemSystem.GetItem(Inventory.GetItemAt(TypeID, itemIndex));
-		protected override Equipment GetEquippingItem (EquipmentType type) {
-			int id = Inventory.GetEquipment(TypeID, type);
-			if (id == 0) return null;
-			return ItemSystem.GetItem(id) as Equipment;
 		}
 
 

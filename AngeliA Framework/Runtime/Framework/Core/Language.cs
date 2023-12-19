@@ -5,12 +5,19 @@ using UnityEngine;
 
 
 namespace AngeliaFramework {
+
+
+	[System.AttributeUsage(System.AttributeTargets.Method)]
+	public class OnLanguageChangedAttribute : System.Attribute { }
+
+
 	public static class Language {
 
 
 		// Api
 		public static int LanguageCount => AllLanguages.Length;
 		public static SystemLanguage CurrentLanguage => (SystemLanguage)_LanguageID.Value;
+		public static event System.Action OnLanguageChanged;
 
 		// Data
 		private static readonly Dictionary<int, string> Map = new();
@@ -23,6 +30,8 @@ namespace AngeliaFramework {
 		// API
 		[OnGameInitialize(-128)]
 		public static void Initialize () {
+
+			Util.LinkEventWithAttribute<OnLanguageChangedAttribute>(typeof(Language), nameof(OnLanguageChanged));
 
 			var allLanguages = new List<SystemLanguage>();
 			foreach (var folderPath in Util.EnumerateFolders(AngePath.LanguageRoot, true, "*")) {
@@ -71,6 +80,7 @@ namespace AngeliaFramework {
 		public static bool SetLanguage (SystemLanguage language) {
 			if (LoadFromDisk(AngePath.LanguageRoot, language)) {
 				_LanguageID.Value = (int)language;
+				OnLanguageChanged();
 				return true;
 			}
 			return false;

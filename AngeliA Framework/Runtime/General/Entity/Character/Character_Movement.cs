@@ -630,9 +630,11 @@ namespace AngeliaFramework {
 			}
 
 			// Speed Lose on Attack
-			int loseRate = MovementLoseRateOnAttack;
-			if (loseRate != 1000 && IsAttacking && IsGrounded) {
-				speed = speed * loseRate / 1000;
+			if (IsAttacking && speed != 0) {
+				int loseRate = CurrentSpeedLoseOnAttack;
+				if (loseRate != 1000) {
+					speed = speed * loseRate / 1000;
+				}
 			}
 
 			// Push

@@ -7,6 +7,23 @@ using AngeliaFramework;
 namespace AngeliaFramework {
 
 
+	[ItemCombination(typeof(iTreeBranchBundle), typeof(iFlint), typeof(iLeaf), 16)]
+	public class iArrowWood : ItemArrow { }
+	[ItemCombination(typeof(iIronWire), typeof(iFlint), typeof(iLeaf), 16)]
+	public class iArrowIron : ItemArrow { }
+	[ItemCombination(typeof(GoldWire), typeof(iFlint), typeof(iLeaf), 16)]
+	public class iArrowGold : ItemArrow { }
+
+
+	[ItemCombination(typeof(iTreeBranchBundle), typeof(iFlint), 16)]
+	public class iBoltsWood : ItemArrow { }
+	[ItemCombination(typeof(iIronWire), typeof(iFlint), 16)]
+	public class iBoltsIron : ItemArrow { }
+	[ItemCombination(typeof(GoldWire), typeof(iFlint), 16)]
+	public class iBoltsGold : ItemArrow { }
+
+
+
 	[ItemCombination(typeof(iRuneWater), typeof(iRuneFire), typeof(iTreeTrunk), 1)]
 	public class iChessPawn : Item { }
 
@@ -504,6 +521,9 @@ namespace AngeliaFramework {
 	[ItemCombination(typeof(iRope), typeof(iIngotIron), 1)]
 	public class iIronWire : Item { }
 
+	[ItemCombination(typeof(iIronWire), typeof(iIngotGold), 1)]
+	public class GoldWire : Item { }
+
 	[ItemCombination(typeof(iIronWire), typeof(iRuneLightning), 1)]
 	public class iElectricWire : Item { }
 
@@ -615,7 +635,9 @@ namespace AngeliaFramework {
 	public class iRuby : Item { }
 	public class iEar : Item { }
 	public class iClay : Item { }
-	public class iLeaf : Item { }
+	public class iLeaf : Item {
+		public override int MaxStackCount => 4096;
+	}
 	public class iSkull : Item { }
 	public class iABC : Item { }
 	public class iGoblinHead : Item { }

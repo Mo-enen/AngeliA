@@ -59,11 +59,12 @@ namespace AngeliaFramework {
 		public sealed override WeaponHandheld Handheld => WeaponHandheld.OneOnEachHand;
 		public override int AttackDuration => 10;
 		public override int AttackCooldown => 0;
-		public override int? MovementLoseRateOnAttack => 1000;
+		public override int? DefaultSpeedLoseOnAttack => 1000;
+		public override int? WalkingSpeedLoseOnAttack => 1000;
+		public override int? RunningSpeedLoseOnAttack => 1000;
 		public override int RangeXLeft => 275;
 		public override int RangeXRight => 275;
 		public override int RangeY => 432;
-
 	}
 
 
@@ -216,16 +217,19 @@ namespace AngeliaFramework {
 	}
 
 
-	// Firearm
-	public abstract class Firearm<B> : Firearm where B : MovableBullet {
-		public Firearm () => BulletID = typeof(B).AngeHash();
+	// Shooting
+	public abstract class Shooting<B, A> : Shooting where B : ArrowBullet where A : Item {
+		public Shooting () {
+			BulletID = typeof(B).AngeHash();
+			ArrowItemID = typeof(A).AngeHash();
+		}
 	}
-	public abstract class Firearm : ProjectileWeapon {
+	public abstract class Shooting : ArrowWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Ranged;
-		public sealed override WeaponHandheld Handheld => WeaponHandheld.Firearm;
+		public sealed override WeaponHandheld Handheld => WeaponHandheld.Shooting;
 		private int SpriteIdAttack { get; init; }
 		private int SpriteFrameCount { get; init; }
-		public Firearm () {
+		public Shooting () {
 			SpriteIdAttack = $"{GetType().AngeName()}.Attack".AngeHash();
 			if (CellRenderer.HasSpriteGroup(SpriteIdAttack, out int length)) {
 				SpriteFrameCount = length;
@@ -277,14 +281,22 @@ namespace AngeliaFramework {
 
 
 	// Bow
-	public abstract class Bow<B> : Bow where B : MovableBullet {
-		public Bow () => BulletID = typeof(B).AngeHash();
+	public abstract class Bow<B, A> : Bow where B : ArrowBullet where A : Item {
+		public Bow () {
+			BulletID = typeof(B).AngeHash();
+			ArrowItemID = typeof(A).AngeHash();
+		}
 	}
-	public abstract class Bow : ProjectileWeapon {
+	public abstract class Bow : ArrowWeapon {
 
 		public sealed override WeaponType WeaponType => WeaponType.Ranged;
 		public sealed override WeaponHandheld Handheld => WeaponHandheld.Bow;
+		public override int AttackCooldown => base.AttackCooldown;
 		private int SpriteIdString { get; init; }
+		public override bool AttackWhenSquatting => true;
+		public override int? DefaultSpeedLoseOnAttack => 1000;
+		public override int? WalkingSpeedLoseOnAttack => 1000;
+		public override int? RunningSpeedLoseOnAttack => 618;
 
 		public Bow () {
 			SpriteIdString = $"{GetType().AngeName()}.String".AngeHash();

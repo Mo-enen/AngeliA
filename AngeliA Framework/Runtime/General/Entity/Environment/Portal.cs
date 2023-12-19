@@ -10,14 +10,14 @@ namespace AngeliaFramework {
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
 	public class PortalFront : CircleFlamePortal {
 		protected override Int3 TargetGlobalPosition => new(X + Width / 2, Y, Stage.ViewZ - 1);
-		protected override bool DontSpawnAfterUsed => true;
+		protected override bool DontSpawnAfterUsed => false;
 	}
 
 
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
 	public class PortalBack : CircleFlamePortal {
 		protected override Int3 TargetGlobalPosition => new(X + Width / 2, Y, Stage.ViewZ + 1);
-		protected override bool DontSpawnAfterUsed => true;
+		protected override bool DontSpawnAfterUsed => false;
 	}
 
 
@@ -122,7 +122,12 @@ namespace AngeliaFramework {
 
 		protected abstract Int3 TargetGlobalPosition { get; }
 		protected virtual bool DontSpawnAfterUsed => false;
+		private int CooldownFrame = 0;
 
+		public override void OnActivated () {
+			base.OnActivated();
+			CooldownFrame = 0;
+		}
 		public override void FillPhysics () {
 			base.FillPhysics();
 			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
@@ -131,17 +136,17 @@ namespace AngeliaFramework {
 			base.PhysicsUpdate();
 			// Invoke
 			var player = Player.Selecting;
-			if (
-				player != null &&
-				!player.LockingInput &&
-				!player.Teleporting &&
-				player.Rect.Overlaps(Rect)
-			) {
-				Invoke(player);
+			if (player != null && player.Rect.Overlaps(Rect)) {
+				if (!player.LockingInput && !player.Teleporting && CooldownFrame > 2) {
+					Invoke();
+				}
+				CooldownFrame = 0;
+			} else {
+				CooldownFrame++;
 			}
 		}
-		public virtual bool Invoke (Player player) {
-			if (player == null || FrameTask.HasTask()) return false;
+		public virtual bool Invoke () {
+			if (FrameTask.HasTask()) return false;
 			if (DontSpawnAfterUsed) Stage.MarkAsGlobalAntiSpawn(this);
 			TeleportTask.Teleport(
 				X + Width / 2, Y,

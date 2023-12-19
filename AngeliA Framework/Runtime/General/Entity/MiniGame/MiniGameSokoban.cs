@@ -82,7 +82,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private readonly BadgesSaveData Saving = new(LEVEL_COUNT);
-		private IntToChars LevelLabelToString = null;
+		private static IntToChars LevelLabelToString = null;
 		private BlockType[,] Blocks = null;
 		private int CurrentLevel = 0;
 		private int StageWidth = 1;
@@ -102,10 +102,15 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
+		[OnLanguageChanged]
+		public static void OnLanguageChanged () {
+			LevelLabelToString = new(Language.Get(UI_Level, "Level:"));
+		}
+
+
 		protected override void StartGame () {
 			LoadGameDataFromFile(Saving);
 			LoadLevel(0);
-			LevelLabelToString = new(Language.Get(UI_Level, "Level:"));
 			PlayerMovedFrame = int.MinValue;
 			LevelClearedFrame = int.MinValue;
 			PlayerFacingRight = true;

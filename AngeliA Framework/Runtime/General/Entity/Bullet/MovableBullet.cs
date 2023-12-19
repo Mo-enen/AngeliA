@@ -16,8 +16,8 @@ namespace AngeliaFramework {
 		protected virtual int RotateSpeed => 0;
 		protected virtual int EndRotation => 0;
 		protected virtual int EndRotationRandomRange => 180;
-		protected virtual int ArtworkDelay => 0;
 		protected virtual int ResidueParticleID => 0;
+		protected virtual int ArtworkID => TypeID;
 		protected override int Duration => 600;
 		protected override bool DestroyOnHitEnvironment => true;
 		protected override bool DestroyOnHitReceiver => true;
@@ -107,20 +107,13 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			int localFrame = Game.GlobalFrame - SpawnFrame;
-			if (localFrame >= ArtworkDelay && CellRenderer.TryGetSprite(TypeID, out var sprite)) {
-				int width = sprite.GlobalWidth;
-				if (RotateSpeed != 0 && Velocity.x < 0) {
-					width = -width;
-					Rotation -= RotateSpeed;
-				} else {
-					Rotation += RotateSpeed;
-				}
+			if (CellRenderer.TryGetSprite(ArtworkID, out var sprite)) {
+				Rotation += Velocity.x.Sign() * RotateSpeed;
 				CellRenderer.Draw(
-					TypeID,
+					ArtworkID,
 					X + Width / 2, Y + Height / 2,
 					sprite.PivotX, sprite.PivotY, Rotation,
-					width, sprite.GlobalHeight
+					Velocity.x.Sign() * sprite.GlobalWidth, sprite.GlobalHeight
 				);
 			}
 		}

@@ -97,10 +97,11 @@ namespace AngeliaFramework {
 			public Direction4 Direction;
 		}
 
-		public struct Door {
+		public struct Teleporter {
 			public int X;
 			public int Y;
 			public bool Front;
+			public bool IsPortal;
 		}
 
 		public int EdgeMinX => ContentMinX - 1;
@@ -115,7 +116,7 @@ namespace AngeliaFramework {
 		public int[] EdgeDown;
 		public int[] EdgeUp;
 		public Tunnel[] Tunnels;
-		public Door[] Doors;
+		public Teleporter[] Teleporters;
 
 		public int[] GetEdge (Direction4 direction) => direction switch {
 			Direction4.Up => EdgeUp,
@@ -125,7 +126,7 @@ namespace AngeliaFramework {
 			_ => EdgeDown,
 		};
 
-		public override string ToString () => $"<color=#FFCC33>{ID}</color> {(TypeID != 0 ? "<size=75%>Ⓣ</size> " : "")}{ContentWidth}×{ContentHeight}<color=#888888FF>{(Tunnels.Length > 0 ? " " + new string('t', Tunnels.Length) : "")}{(Doors.Length > 0 ? " " + new string('d', Doors.Length) : "")}</color>";
+		public override string ToString () => $"<color=#FFCC33>{ID}</color> {(TypeID != 0 ? "<size=75%>Ⓣ</size> " : "")}{ContentWidth}×{ContentHeight}<color=#888888FF>{(Tunnels.Length > 0 ? " " + new string('t', Tunnels.Length) : "")}{(Teleporters.Length > 0 ? " " + new string('d', Teleporters.Length) : "")}</color>";
 
 	}
 }

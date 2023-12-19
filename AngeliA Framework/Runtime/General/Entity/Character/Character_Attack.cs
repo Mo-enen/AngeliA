@@ -83,9 +83,10 @@ namespace AngeliaFramework {
 
 		protected virtual bool IsAttackAllowedByMovement () =>
 			!IsCrashing &&
-			(AttackInAir || (IsGrounded || InWater || InSand || IsClimbing)) &&
+			(AttackInAir || IsGrounded || InWater || InSand || IsClimbing) &&
 			(AttackInWater || !InWater) &&
-			(AttackWhenMoving || IntendedX == 0) &&
+			(AttackWhenWalking || !IsGrounded || !IsWalking) &&
+			(AttackWhenRunning || !IsGrounded || !IsRunning) &&
 			(AttackWhenClimbing || !IsClimbing) &&
 			(AttackWhenFlying || !IsFlying) &&
 			(AttackWhenRolling || !IsRolling) &&

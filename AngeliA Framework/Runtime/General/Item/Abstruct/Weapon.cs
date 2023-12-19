@@ -9,7 +9,7 @@ namespace AngeliaFramework {
 	public enum WeaponType { Hand, Sword, Axe, Hammer, Flail, Ranged, Polearm, Hook, Claw, Magic, Throwing, }
 
 
-	public enum WeaponHandheld { SingleHanded, DoubleHanded, OneOnEachHand, Pole, MagicPole, Bow, Firearm, Float, }
+	public enum WeaponHandheld { SingleHanded, DoubleHanded, OneOnEachHand, Pole, MagicPole, Bow, Shooting, Float, }
 
 
 	public abstract class Weapon<B> : Weapon where B : Bullet {
@@ -21,7 +21,7 @@ namespace AngeliaFramework {
 	public abstract class Weapon : Equipment {
 
 		// VAR
-		protected int BulletID { get; set; } = 0;
+		protected int BulletID { get; init; } = 0;
 		protected int SpriteID { get; init; }
 		public sealed override EquipmentType EquipmentType => EquipmentType.Weapon;
 		public abstract WeaponType WeaponType { get; }
@@ -29,9 +29,24 @@ namespace AngeliaFramework {
 		public virtual int AttackDuration => 12;
 		public virtual int AttackCooldown => 2;
 		public virtual int ChargeAttackDuration => int.MaxValue;
-		public virtual int? MovementLoseRateOnAttack => null;
+		public virtual int? DefaultSpeedLoseOnAttack => null;
+		public virtual int? WalkingSpeedLoseOnAttack => null;
+		public virtual int? RunningSpeedLoseOnAttack => null;
 		public virtual bool RepeatAttackWhenHolding => false;
 		public virtual bool LockFacingOnAttack => false;
+		public virtual bool AttackInAir => true;
+		public virtual bool AttackInWater => true;
+		public virtual bool AttackWhenWalking => true;
+		public virtual bool AttackWhenRunning => true;
+		public virtual bool AttackWhenClimbing => false;
+		public virtual bool AttackWhenFlying => false;
+		public virtual bool AttackWhenRolling => false;
+		public virtual bool AttackWhenSquatting => false;
+		public virtual bool AttackWhenDashing => false;
+		public virtual bool AttackWhenSliding => false;
+		public virtual bool AttackWhenGrabbing => false;
+		public virtual bool AttackWhenRush => false;
+		public virtual bool AttackWhenPounding => false;
 		protected virtual bool IgnoreGrabTwist => false;
 
 		// MSG
@@ -138,7 +153,7 @@ namespace AngeliaFramework {
 				}
 
 				case WeaponHandheld.DoubleHanded:
-				case WeaponHandheld.Firearm: {
+				case WeaponHandheld.Shooting: {
 					// Double
 					var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
 					var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
@@ -270,6 +285,54 @@ namespace AngeliaFramework {
 			bullet.AttackCharged = sender.LastAttackCharged;
 			bullet.TargetTeam = sender.AttackTargetTeam;
 			return bullet;
+		}
+
+		public static void FillCharacterMeta (Character character, Weapon weapon) {
+			if (weapon != null) {
+				character.AttackDuration.Override = weapon.AttackDuration;
+				character.AttackCooldown.Override = weapon.AttackCooldown;
+				character.RepeatAttackWhenHolding.Override = weapon.RepeatAttackWhenHolding;
+				character.MinimalChargeAttackDuration.Override = weapon.ChargeAttackDuration;
+				character.LockFacingOnAttack.Override = weapon.LockFacingOnAttack;
+				character.DefaultSpeedLoseOnAttack.Override = weapon.DefaultSpeedLoseOnAttack;
+				character.WalkingSpeedLoseOnAttack.Override = weapon.WalkingSpeedLoseOnAttack;
+				character.RunningSpeedLoseOnAttack.Override = weapon.RunningSpeedLoseOnAttack;
+				character.AttackInAir.Override = weapon.AttackInAir;
+				character.AttackInWater.Override = weapon.AttackInWater;
+				character.AttackWhenWalking.Override = weapon.AttackWhenWalking;
+				character.AttackWhenRunning.Override = weapon.AttackWhenRunning;
+				character.AttackWhenClimbing.Override = weapon.AttackWhenClimbing;
+				character.AttackWhenFlying.Override = weapon.AttackWhenFlying;
+				character.AttackWhenRolling.Override = weapon.AttackWhenRolling;
+				character.AttackWhenSquatting.Override = weapon.AttackWhenSquatting;
+				character.AttackWhenDashing.Override = weapon.AttackWhenDashing;
+				character.AttackWhenSliding.Override = weapon.AttackWhenSliding;
+				character.AttackWhenGrabbing.Override = weapon.AttackWhenGrabbing;
+				character.AttackWhenRush.Override = weapon.AttackWhenRush;
+				character.AttackWhenPounding.Override = weapon.AttackWhenPounding;
+			} else {
+				character.AttackDuration.Override = null;
+				character.AttackCooldown.Override = null;
+				character.RepeatAttackWhenHolding.Override = null;
+				character.MinimalChargeAttackDuration.Override = null;
+				character.LockFacingOnAttack.Override = null;
+				character.DefaultSpeedLoseOnAttack.Override = null;
+				character.WalkingSpeedLoseOnAttack.Override = null;
+				character.RunningSpeedLoseOnAttack.Override = null;
+				character.AttackInAir.Override = null;
+				character.AttackInWater.Override = null;
+				character.AttackWhenWalking.Override = null;
+				character.AttackWhenRunning.Override = null;
+				character.AttackWhenClimbing.Override = null;
+				character.AttackWhenFlying.Override = null;
+				character.AttackWhenRolling.Override = null;
+				character.AttackWhenSquatting.Override = null;
+				character.AttackWhenDashing.Override = null;
+				character.AttackWhenSliding.Override = null;
+				character.AttackWhenGrabbing.Override = null;
+				character.AttackWhenRush.Override = null;
+				character.AttackWhenPounding.Override = null;
+			}
 		}
 
 	}
