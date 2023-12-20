@@ -9,7 +9,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.Capacity(128)]
 	[EntityAttribute.ExcludeInMapEditor]
-	public abstract class Summon : SheetCharacter, IDamageReceiver {
+	public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 
 
 
@@ -51,6 +51,14 @@ namespace AngeliaFramework {
 			NavigationState = CharacterNavigationState.Operation;
 			RequireAimRefresh = true;
 			OriginItemID = 0;
+		}
+
+
+		public override void FillPhysics () {
+			base.FillPhysics();
+			if (CharacterState == CharacterState.PassOut) {
+				CellPhysics.FillEntity(EntityLayer.CHARACTER, this, true);
+			}
 		}
 
 
@@ -100,7 +108,15 @@ namespace AngeliaFramework {
 				Active = false;
 				return;
 			}
+
+			// Base
 			base.FrameUpdate();
+
+			// Highlight
+			if ((this as IActionTarget).IsHighlighted) {
+				IActionTarget.HighlightBlink(RenderedCell);
+			}
+
 		}
 
 
@@ -198,6 +214,15 @@ namespace AngeliaFramework {
 			}
 			return null;
 		}
+
+
+		void IActionTarget.Invoke () {
+			SetHealth(MaxHP);
+			SetCharacterState(CharacterState.GamePlay);
+		}
+
+
+		bool IActionTarget.AllowInvoke () => CharacterState == CharacterState.PassOut;
 
 
 		#endregion

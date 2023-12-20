@@ -79,10 +79,17 @@ namespace AngeliaFramework {
 	public abstract class Item : IMapEditorItem {
 
 
+		// Api
+		public delegate void ItemHandler (Character character, int item);
+		public delegate void ItemDamageHandler (Character character, int itemFrom, int itemTo);
+		public static event ItemHandler OnItemLost;
+		public static event ItemDamageHandler OnItemDamage;
+		public static event ItemHandler OnItemInsufficient;
 		public virtual int MaxStackCount => 64;
 		public int TypeID { get; init; }
 
 
+		// MSG
 		public Item () => TypeID = GetType().AngeHash();
 
 
@@ -99,6 +106,11 @@ namespace AngeliaFramework {
 		public virtual void OnTakeDamage_FromEquipment (Entity holder, Entity sender, ref int damage) { }
 		public virtual void OnAttack (Entity holder) { }
 		public virtual void OnSquat (Entity holder) { }
+
+		// Callback
+		protected static void InvokeItemLost (Character holder, int itemID) => OnItemLost?.Invoke(holder, itemID);
+		protected static void InvokeOnItemDamage (Character holder, int itemBeforeID, int itemAfterID) => OnItemDamage?.Invoke(holder, itemBeforeID, itemAfterID);
+		protected static void InvokeOnItemInsufficient (Character holder, int itemID) => OnItemInsufficient?.Invoke(holder, itemID);
 
 		// Ground
 		public virtual void OnItemUpdate_FromGround (Entity holder) { }

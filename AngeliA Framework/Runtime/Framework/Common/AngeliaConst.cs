@@ -101,6 +101,7 @@ namespace AngeliaFramework {
 		public static readonly int DAMAGE_TAG = "Damage".AngeHash();
 		public static readonly int DAMAGE_EXPLOSIVE_TAG = "ExplosiveDamage".AngeHash();
 		public static readonly int DAMAGE_MAGICAL_TAG = "MagicalDamage".AngeHash();
+		public static readonly int DAMAGE_POISON_TAG = "PoisonDamage".AngeHash();
 
 		// Team
 		public const int TEAM_ENVIRONMENT = 0b1;
@@ -132,6 +133,9 @@ namespace AngeliaFramework {
 		public static readonly Byte4 GREEN = new(0, 255, 0, 255);
 		public static readonly Byte4 CYAN = new(0, 255, 255, 255);
 		public static readonly Byte4 BLUE = new(0, 0, 255, 255);
+		public static readonly Byte4 PURPLE = new(128, 0, 255, 255);
+		public static readonly Byte4 PINK = new(255, 0, 255, 255);
+		public static readonly Byte4 PURPLE_BETTER = new(176, 94, 196, 255);
 		public static readonly Byte4 CLEAR = new(0, 0, 0, 0);
 		public static readonly Byte4 GREY_230 = new(230, 230, 230, 255);
 		public static readonly Byte4 GREY_196 = new(196, 196, 196, 255);
@@ -152,6 +156,7 @@ namespace AngeliaFramework {
 
 		// Gamepad Code
 		public static int GAMEPAD_JUMP_HINT_CODE => GAMEPAD_CODE.TryGetValue(FrameInput.GetGamepadMap(Gamekey.Jump), out int _value0) ? _value0 : 0;
+
 		internal static readonly Dictionary<GamepadKey, int> GAMEPAD_CODE = new() {
 			{ GamepadKey.DpadLeft, "k_Gamepad Left".AngeHash()},
 			{ GamepadKey.DpadRight, "k_Gamepad Right".AngeHash()},

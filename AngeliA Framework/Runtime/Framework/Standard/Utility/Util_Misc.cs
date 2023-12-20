@@ -156,6 +156,21 @@ namespace AngeliaFramework {
 		}
 
 
+		public static float PingPong (float t, float length) {
+			t = Repeat(t, length * 2f);
+			return length - (t - length).Abs();
+		}
+
+
+		public static float Repeat (float t, float length) => (t - (t / length).FloorToInt() * length).Clamp(0, length);
+
+
+		public static float Lerp (float a, float b, float t) => a + (b - a) * t.Clamp01();
+
+
+		public static float Atan (float x, float y) => (float)System.Math.Atan2(y, x) * Rad2Deg;
+
+
 	}
 
 

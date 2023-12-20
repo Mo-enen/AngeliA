@@ -6,24 +6,6 @@ using AngeliaFramework;
 
 namespace AngeliaFramework {
 
-
-	[ItemCombination(typeof(iTreeBranchBundle), typeof(iFlint), typeof(iLeaf), 16)]
-	public class iArrowWood : ItemArrow { }
-	[ItemCombination(typeof(iIronWire), typeof(iFlint), typeof(iLeaf), 16)]
-	public class iArrowIron : ItemArrow { }
-	[ItemCombination(typeof(GoldWire), typeof(iFlint), typeof(iLeaf), 16)]
-	public class iArrowGold : ItemArrow { }
-
-
-	[ItemCombination(typeof(iTreeBranchBundle), typeof(iFlint), 16)]
-	public class iBoltsWood : ItemArrow { }
-	[ItemCombination(typeof(iIronWire), typeof(iFlint), 16)]
-	public class iBoltsIron : ItemArrow { }
-	[ItemCombination(typeof(GoldWire), typeof(iFlint), 16)]
-	public class iBoltsGold : ItemArrow { }
-
-
-
 	[ItemCombination(typeof(iRuneWater), typeof(iRuneFire), typeof(iTreeTrunk), 1)]
 	public class iChessPawn : Item { }
 

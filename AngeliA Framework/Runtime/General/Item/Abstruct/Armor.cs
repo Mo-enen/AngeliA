@@ -268,7 +268,7 @@ namespace AngeliaFramework {
 			var progItem = this as IProgressiveItem;
 			if (progItem.PrevItemID != 0 && damage > 0) {
 				Inventory.SetEquipment(holder.TypeID, EquipmentType, progItem.PrevItemID);
-				SpawnEquipmentDamageParticle(TypeID, progItem.PrevItemID, holder.X, holder.Y);
+				InvokeOnItemDamage(holder as Character, TypeID, progItem.PrevItemID);
 				damage--;
 			}
 		}
@@ -290,7 +290,7 @@ namespace AngeliaFramework {
 			int tookCount = Inventory.FindAndTakeItem(holder.TypeID, materialID, 1);
 			if (tookCount <= 0) return false;
 			Inventory.SetEquipment(holder.TypeID, EquipmentType, (this as IProgressiveItem).NextItemID);
-			SpawnItemLostParticle(materialID, holder.X, holder.Y);
+			InvokeItemLost(holder as Character, materialID);
 			return true;
 		}
 

@@ -287,6 +287,12 @@ namespace AngeliaFramework {
 			ArrowItemID = typeof(A).AngeHash();
 		}
 	}
+	public abstract class Bow<B> : Bow where B : MovableBullet {
+		public Bow () {
+			BulletID = typeof(B).AngeHash();
+			ArrowItemID = 0;
+		}
+	}
 	public abstract class Bow : ArrowWeapon {
 
 		public sealed override WeaponType WeaponType => WeaponType.Ranged;

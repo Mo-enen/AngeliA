@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using AngeliaFramework;
 
 
 namespace AngeliaFramework {
+	// Collect
 	[EntityAttribute.Capacity(16, 0)]
 	[EntityAttribute.ForceSpawn]
 	public class ItemCollectParticle : Particle {
@@ -47,10 +46,23 @@ namespace AngeliaFramework {
 	}
 
 
+	// Lost
 	[EntityAttribute.Capacity(16, 0)]
 	[EntityAttribute.ForceSpawn]
 	public class ItemLostParticle : FreeFallParticle {
+
+		private static readonly int LOST_TYPE_ID = typeof(ItemLostParticle).AngeHash();
+
 		public override int Duration => 120;
+		[OnGameInitialize]
+		public static void OnGameInitialize () {
+			Item.OnItemLost += OnItemLost;
+			static void OnItemLost (Entity holder, int item) {
+				if (holder == null) return;
+				if (Stage.SpawnEntity(LOST_TYPE_ID, holder.X, holder.Y) is not ItemLostParticle particle) return;
+				particle.ArtworkID = item;
+			}
+		}
 		public override void OnActivated () {
 			base.OnActivated();
 			Width = Const.CEL * 2 / 3;
@@ -65,45 +77,25 @@ namespace AngeliaFramework {
 	}
 
 
-	[EntityAttribute.Capacity(16, 0)]
+	// Damage
+	[EntityAttribute.Capacity(4, 0)]
 	[EntityAttribute.ForceSpawn]
-	public class EquipmentBrokeParticle : Particle {
+	public class ItemDamageParticle : Particle {
+		private static readonly int TYPE_ID = typeof(ItemDamageParticle).AngeHash();
 		public override int Duration => 60;
 		public override bool Loop => false;
-		public override void OnActivated () {
-			base.OnActivated();
-			Width = Const.CEL * 2 / 3;
-			Height = Const.CEL * 2 / 3;
-			Y += Const.CEL * 4;
+		private int ItemBeforeID = 0;
+		private int ItemAfterID = 0;
+		[OnGameInitialize]
+		public static void OnGameInitialize () {
+			Item.OnItemDamage += OnItemDamage;
+			static void OnItemDamage (Entity holder, int itemBefore, int itemAfter) {
+				if (holder == null || itemBefore == itemAfter) return;
+				if (Stage.SpawnEntity(TYPE_ID, holder.X, holder.Y) is not ItemDamageParticle particle) return;
+				particle.ItemBeforeID = itemBefore;
+				particle.ItemAfterID = itemAfter;
+			}
 		}
-		public override void DrawParticle () {
-			base.DrawParticle();
-			CellRenderer.SetLayerToUI();
-
-			float ease01 = Ease.OutCirc((float)LocalFrame / Duration);
-			int deltaX = (int)Mathf.Lerp(0, Const.CEL, ease01).Clamp(0, Const.HALF);
-			int deltaY = (int)Mathf.Lerp(-Const.HALF, Const.CEL * 2, ease01).Clamp(0, Const.CEL);
-			int deltaRot = (int)Mathf.Lerp(0, 45, ease01);
-			byte rgb = (byte)Mathf.Lerp(512, 196, ease01).Clamp(0, 255);
-			var tint = new Byte4(
-				rgb, rgb, rgb,
-				(byte)Mathf.Lerp(512, 0, ease01).Clamp(0, 255)
-			);
-
-			var cellL = CellRenderer.Draw((int)UserData, X - deltaX, Y - deltaY, 500, 500, -deltaRot, Width, Height, tint, 0);
-			var cellR = CellRenderer.Draw((int)UserData, X + deltaX, Y - deltaY, 500, 500, deltaRot, Width, Height, tint, 0);
-			cellL.Shift = new Int4(0, Width / 2, 0, 0);
-			cellR.Shift = new Int4(Width / 2, 0, 0, 0);
-			CellRenderer.SetLayerToDefault();
-		}
-	}
-
-
-	[EntityAttribute.Capacity(16, 0)]
-	[EntityAttribute.ForceSpawn]
-	public class EquipmentDamageParticle : Particle {
-		public override int Duration => 60;
-		public override bool Loop => false;
 		public override void OnActivated () {
 			base.OnActivated();
 			Width = Const.CEL;
@@ -116,19 +108,19 @@ namespace AngeliaFramework {
 			CellRenderer.SetLayerToUI();
 
 			float ease01 = Ease.OutCirc((float)LocalFrame / Duration);
-			float ease010 = Mathf.PingPong(ease01, 0.5f) * 2f;
-			int deltaSize = (int)Mathf.Lerp(Const.CEL, -Const.CEL, ease010).Clamp(-Const.HALF / 4, 0);
+			float ease010 = Util.PingPong(ease01, 0.5f) * 2f;
+			int deltaSize = (int)Util.Lerp(Const.CEL, -Const.CEL, ease010).Clamp(-Const.HALF / 4, 0);
 			int rotation = ease01 < 0.5f ? (int)(ease01 * 30f * (LocalFrame % 2 == 0 ? 1f : -1f)) : 0;
 
-			byte rgb = (byte)Mathf.Lerp(512, 196, ease01).Clamp(0, 255);
+			byte rgb = (byte)Util.Lerp(512, 196, ease01).Clamp(0, 255);
 			var tint = new Byte4(
 				rgb, rgb, rgb,
-				(byte)Mathf.Lerp(512, 0, ease01).Clamp(0, 255)
+				(byte)Util.Lerp(512, 0, ease01).Clamp(0, 255)
 			);
 
 			// Draw
 			CellRenderer.Draw(
-				ease01 < 0.5f ? ((Int2)UserData).x : ((Int2)UserData).y,
+				ease01 < 0.5f ? ItemBeforeID : ItemAfterID,
 				X, Y, 500, 500, rotation,
 				Width + deltaSize, Height + deltaSize,
 				tint, 0
@@ -136,4 +128,63 @@ namespace AngeliaFramework {
 			CellRenderer.SetLayerToDefault();
 		}
 	}
+
+
+	// Insufficient
+	[EntityAttribute.Capacity(1, 0)]
+	[EntityAttribute.ForceSpawn]
+	public class ItemInsufficientParticle : Particle {
+		private static readonly int TYPE_ID = typeof(ItemInsufficientParticle).AngeHash();
+		public override int Duration => 60;
+		public override bool Loop => false;
+		private int ItemID = 0;
+		private Entity Holder = null;
+		[OnGameInitialize]
+		public static void OnGameInitialize () {
+			Item.OnItemInsufficient += OnItemInsufficient;
+			static void OnItemInsufficient (Entity holder, int item) {
+				if (holder == null) return;
+				if (Stage.SpawnEntity(TYPE_ID, holder.X, holder.Y) is not ItemInsufficientParticle particle) return;
+				particle.ItemID = item;
+				particle.Holder = holder;
+			}
+		}
+		public override void OnActivated () {
+			base.OnActivated();
+			Width = Const.CEL * 2 / 3;
+			Height = Const.CEL * 2 / 3;
+		}
+		public override void DrawParticle () {
+			base.DrawParticle();
+
+			if (Holder == null) return;
+			X = Holder.X;
+			Y = Holder.Y;
+
+			CellRenderer.SetLayerToUI();
+
+			float lerp01 = (float)LocalFrame / Duration;
+			float ease01 = Ease.OutExpo(lerp01);
+			int deltaX = (int)Util.Lerp(-Const.HALF / 2, Const.HALF / 2, Util.PingPong(ease01 * 4.5f, 1f));
+			const int deltaY = Const.CEL * 2 + Const.HALF;
+			byte alpha = (byte)Util.Lerp(1024, 0, lerp01).Clamp(0, 255);
+
+			// Draw
+			CellRenderer.Draw(
+				ItemID,
+				X + deltaX, Y + deltaY, 500, 500, 0,
+				Width, Height,
+				new Byte4(255, 255, 255, alpha), 0
+			);
+			CellRenderer.Draw(
+				Const.PIXEL,
+				X + deltaX, Y + deltaY, 500, 500, 0,
+				Width * 10 / 8, Height * 10 / 8,
+				new Byte4(255, 64, 64, alpha), -1
+			);
+			CellRenderer.SetLayerToDefault();
+		}
+	}
+
+
 }

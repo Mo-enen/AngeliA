@@ -6,7 +6,7 @@ using AngeliaFramework;
 namespace AngeliaFramework {
 	public class AppearSmokeParticle : Particle {
 
-		private static readonly int TYPE_ID = typeof(AppearSmokeParticle).AngeHash();
+		public static readonly int TYPE_ID = typeof(AppearSmokeParticle).AngeHash();
 		public override int Duration => 24;
 		public override bool Loop => false;
 		public override int RenderingZ => int.MaxValue - 1;

@@ -12,30 +12,8 @@ namespace AngeliaFramework {
 	[EntityAttribute.MapEditorGroup("ItemEquipment")]
 	public abstract class Equipment : Item {
 
-		public static int ItemLostParticleID { get; set; } = typeof(ItemLostParticle).AngeHash();
-		public static int EquipmentBrokeParticleID { get; set; } = typeof(EquipmentBrokeParticle).AngeHash();
-		public static int EquipmentDamageParticleID { get; set; } = typeof(EquipmentDamageParticle).AngeHash();
 		public abstract EquipmentType EquipmentType { get; }
 		public sealed override int MaxStackCount => 1;
-
-		// API
-		public static void SpawnItemLostParticle (int itemID, int x, int y) {
-			if (ItemLostParticleID == 0) return;
-			if (Stage.SpawnEntity(ItemLostParticleID, x, y) is not FreeFallParticle particle) return;
-			particle.ArtworkID = itemID;
-		}
-
-		public static void SpawnEquipmentBrokeParticle (int itemID, int x, int y) {
-			if (EquipmentBrokeParticleID == 0) return;
-			if (Stage.SpawnEntity(EquipmentBrokeParticleID, x, y) is not Particle particle) return;
-			particle.UserData = itemID;
-		}
-
-		public static void SpawnEquipmentDamageParticle (int itemBeforeID, int itemAfterID, int x, int y) {
-			if (EquipmentDamageParticleID == 0) return;
-			if (Stage.SpawnEntity(EquipmentDamageParticleID, x, y) is not Particle particle) return;
-			particle.UserData = new Int2(itemBeforeID, itemAfterID);
-		}
 
 		public virtual int GetOverrideMovementAnimationID (CharacterAnimationType type, Character character) => 0;
 

@@ -140,6 +140,9 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
+		// Api
+		protected Cell RenderedCell { get; private set; } = null;
+
 		// Data
 		private static readonly Dictionary<int, AnimationSheet> AnimationSheetPool = new();
 		private int CurrentSheetAni = 0;
@@ -193,24 +196,26 @@ namespace AngeliaFramework {
 			}
 
 			// Draw
+			RenderedCell = null;
 			switch (CharacterState) {
+				default:
 				case CharacterState.GamePlay:
-					var cell = DrawSheetBody(sheet);
-					BounceCellForSheet(cell, CurrentRenderingBounce);
+					RenderedCell = DrawSheetBody(sheet);
+					BounceCellForSheet(RenderedCell, CurrentRenderingBounce);
 					break;
 				case CharacterState.Sleep:
-					var sleepCell = CellRenderer.DrawAnimation(
+					RenderedCell = CellRenderer.DrawAnimation(
 						sheet.Sleep, X, Y, 500, 0, 0,
 						Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, Game.GlobalFrame
 					);
 					if (CellRenderer.TryGetSprite(sheet.Sleep, out var sleepSprite)) {
 						if (sleepSprite.GlobalBorder.down > 0) {
-							sleepCell.Y -= sleepSprite.GlobalBorder.down;
+							RenderedCell.Y -= sleepSprite.GlobalBorder.down;
 						}
 					}
 					break;
 				case CharacterState.PassOut:
-					CellRenderer.DrawAnimation(
+					RenderedCell = CellRenderer.DrawAnimation(
 						sheet.PassOut,
 						X, Y,
 						500, 0, 0,
@@ -246,17 +251,14 @@ namespace AngeliaFramework {
 			}
 
 			// Draw
-			int pivotX = 500;
-			int pivotY = 0;
 			if (CellRenderer.TryGetSprite(ani, out var sprite)) {
-				pivotX = sprite.PivotX;
-				pivotY = sprite.PivotY;
+				return CellRenderer.DrawAnimation(
+					ani, X, Y, sprite.PivotX, sprite.PivotY, 0,
+					FacingRight || IsClimbing || IsPounding ? sprite.GlobalWidth : -sprite.GlobalWidth,
+					sprite.GlobalHeight, CurrentAnimationFrame
+				);
 			}
-			return CellRenderer.DrawAnimation(
-				ani, X, Y, pivotX, pivotY, 0,
-				FacingRight || IsClimbing || IsPounding ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE, Const.ORIGINAL_SIZE,
-				CurrentAnimationFrame
-			);
+			return CellRenderer.EMPTY_CELL;
 		}
 
 

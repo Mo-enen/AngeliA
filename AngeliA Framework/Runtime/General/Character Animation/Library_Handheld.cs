@@ -18,6 +18,8 @@ namespace AngeliaFramework {
 				UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1306 : 862) / 1000;
 				UpperArmR.Height = UpperArmR.Height * (FacingRight ? 862 : 1306) / 1000;
 
+				LowerArmL.Height = LowerArmL.SizeY;
+				LowerArmR.Height = LowerArmR.SizeY;
 				LowerArmL.LimbRotate((FacingRight ? -28 : -48) + twistShift / 2);
 				LowerArmR.LimbRotate((FacingRight ? 48 : 28) + twistShift / 2);
 				LowerArmL.Height = LowerArmL.Height * (FacingRight ? 1592 : 724) / 1000;
@@ -106,6 +108,8 @@ namespace AngeliaFramework {
 				UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1306 : 862) / 1000;
 				UpperArmR.Height = UpperArmR.Height * (FacingRight ? 862 : 1306) / 1000;
 
+				LowerArmL.Height = LowerArmL.SizeY;
+				LowerArmR.Height = LowerArmR.SizeY;
 				LowerArmL.LimbRotate((FacingRight ? -28 : -48) + twistShift / 2);
 				LowerArmR.LimbRotate((FacingRight ? 48 : 28) + twistShift / 2);
 				LowerArmL.Height = LowerArmL.Height * (FacingRight ? 1592 : 724) / 1000;

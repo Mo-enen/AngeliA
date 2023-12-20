@@ -8,23 +8,22 @@ namespace AngeliaFramework {
 	public abstract class MovableBullet : Bullet {
 
 		// Api
-		protected virtual int SpeedX => 42;
-		protected virtual int SpeedY => 0;
-		protected virtual Int2 AriDrag => default;
-		protected virtual int Gravity => 0;
-		protected virtual int StartRotation => 0;
-		protected virtual int RotateSpeed => 0;
-		protected virtual int EndRotation => 0;
-		protected virtual int EndRotationRandomRange => 180;
-		protected virtual int ResidueParticleID => 0;
-		protected virtual int ArtworkID => TypeID;
+		public virtual int SpeedX => 42;
+		public virtual int SpeedY => 0;
+		public virtual Int2 AriDrag => default;
+		public virtual int Gravity => 0;
+		public virtual int StartRotation => 0;
+		public virtual int RotateSpeed => 0;
+		public virtual int EndRotation => 0;
+		public virtual int EndRotationRandomRange => 180;
+		public virtual int ResidueParticleID => 0;
+		public virtual int ArtworkID => TypeID;
+		public virtual int Scale => 1000;
 		protected override int Duration => 600;
 		protected override bool DestroyOnHitEnvironment => true;
 		protected override bool DestroyOnHitReceiver => true;
-
-		// Data
-		private Int2 Velocity;
-		private int Rotation;
+		public int CurrentRotation { get; set; }
+		public Int2 Velocity { get; set; }
 
 		// MSG
 		public override void BeforePhysicsUpdate () {
@@ -108,12 +107,13 @@ namespace AngeliaFramework {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			if (CellRenderer.TryGetSprite(ArtworkID, out var sprite)) {
-				Rotation += Velocity.x.Sign() * RotateSpeed;
+				CurrentRotation += Velocity.x.Sign() * RotateSpeed;
 				CellRenderer.Draw(
 					ArtworkID,
 					X + Width / 2, Y + Height / 2,
-					sprite.PivotX, sprite.PivotY, Rotation,
-					Velocity.x.Sign() * sprite.GlobalWidth, sprite.GlobalHeight
+					sprite.PivotX, sprite.PivotY, CurrentRotation,
+					Velocity.x.Sign() * sprite.GlobalWidth * Scale / 1000,
+					sprite.GlobalHeight * Scale / 1000
 				);
 			}
 		}
@@ -124,18 +124,23 @@ namespace AngeliaFramework {
 
 			int particleID = ResidueParticleID != 0 ? ResidueParticleID : FreeFallParticle.TYPE_ID;
 			if (Stage.SpawnEntity(particleID, X + Width / 2, Y + Height / 2) is not FreeFallParticle particle) return;
-			if (!CellRenderer.TryGetSprite(TypeID, out var sprite)) return;
 
-			particle.ArtworkID = TypeID;
-			particle.Width = sprite.GlobalWidth;
-			particle.Height = sprite.GlobalHeight;
+			particle.ArtworkID = ArtworkID;
+
+			if (CellRenderer.TryGetSprite(ArtworkID, out var sprite)) {
+				particle.Width = sprite.GlobalWidth;
+				particle.Height = sprite.GlobalHeight;
+			} else {
+				particle.Width = Const.HALF;
+				particle.Height = Const.HALF;
+			}
 
 			if (EndRotationRandomRange == -1) {
 				particle.Rotation = Util.QuickRandom(Game.GlobalFrame).UMod(360);
 			} else if (EndRotationRandomRange == 0) {
 				particle.Rotation = EndRotation;
 			} else {
-				int endDelta = ((Rotation - EndRotation + 180).UMod(360) - 180).Clamp(-EndRotationRandomRange, EndRotationRandomRange);
+				int endDelta = ((CurrentRotation - EndRotation + 180).UMod(360) - 180).Clamp(-EndRotationRandomRange, EndRotationRandomRange);
 				particle.Rotation = EndRotation + endDelta;
 			}
 			if (Velocity.x < 0) {
@@ -161,9 +166,8 @@ namespace AngeliaFramework {
 
 		// API
 		public void StartMove (bool facingRight) {
-			Velocity.x = facingRight ? SpeedX : -SpeedX;
-			Velocity.y = SpeedY;
-			Rotation = facingRight ? StartRotation : -StartRotation;
+			Velocity = new Int2(facingRight ? SpeedX : -SpeedX, SpeedY);
+			CurrentRotation = facingRight ? StartRotation : -StartRotation;
 		}
 
 	}

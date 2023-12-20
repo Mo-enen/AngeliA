@@ -4,42 +4,52 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 	public abstract class ArrowWeapon<A> : ArrowWeapon where A : Item {
-		public ArrowWeapon () {
-			ArrowItemID = typeof(A).AngeHash();
-		}
+		public ArrowWeapon () => ArrowItemID = typeof(A).AngeHash();
 	}
 	public abstract class ArrowWeapon : ProjectileWeapon {
 
 		public virtual int ArrowCountInOneShot => 1;
+		public virtual int AngleSpeed => 0;
 		protected int ArrowItemID { get; init; }
 
-		public override bool AllowingAttack (PoseCharacter character) => FindAmmo(character, out _, out _) && base.AllowingAttack(character);
-
-		protected bool FindAmmo (Character character, out int index, out int count) {
-			index = -1;
-			count = 0;
-			if (ArrowItemID == 0) return false;
-			int capacity = character.GetInventoryCapacity();
-			for (int i = 0; i < capacity; i++) {
-				int id = character.GetItemIDFromInventory(i, out count);
-				index = i;
-				if (id == ArrowItemID) return true;
-			}
-			index = -1;
-			count = 0;
-			return false;
-		}
-
 		public override Bullet SpawnBullet (Character sender) {
-			if (ArrowItemID == 0) return null;
-			int takenCount = Inventory.FindAndTakeItem(sender.TypeID, ArrowItemID, ArrowCountInOneShot);
-			if (takenCount == 0) return null;
+
+			// Take Arrow
+			int takenCount = ArrowCountInOneShot;
+			if (ArrowItemID != 0) {
+				// Item Arrow
+				takenCount = Inventory.FindAndTakeItem(sender.TypeID, ArrowItemID, ArrowCountInOneShot);
+				if (takenCount == 0) {
+					// Hint
+					InvokeOnItemInsufficient(sender, ArrowItemID);
+					return null;
+				}
+			}
+
+			// Spawn Bullet
 			Bullet result = null;
 			for (int i = 0; i < takenCount; i++) {
+
 				result = base.SpawnBullet(sender);
-				if (result is ArrowBullet aBullet) {
-					aBullet.ArrowItemID = ArrowItemID;
-					aBullet.ArrowArtworkID = ItemSystem.GetItem(ArrowItemID) is ItemArrow aItem ? aItem.BulletArtworkID : 0;
+
+				// Arrow Bullet
+				if (ArrowItemID != 0) {
+					if (result is ArrowBullet aBullet) {
+						var item = ItemSystem.GetItem(ArrowItemID);
+						aBullet.ArrowItemID = ArrowItemID;
+						aBullet.ArrowArtworkID = item is ItemArrow aItem ? aItem.BulletArtworkID : item.TypeID;
+					}
+				}
+
+				// Movable Bullet
+				if (result is MovableBullet mBullet) {
+					if (AngleSpeed != 0) {
+						int deltaAngle = (int)Util.Atan(mBullet.SpeedX, mBullet.SpeedY);
+						int offset = (i % 2 == 0 ? 1 : -1) * ((i + 1) / 2);
+						mBullet.CurrentRotation += offset * deltaAngle;
+						mBullet.Velocity = new Int2(mBullet.Velocity.x, mBullet.Velocity.y + offset * AngleSpeed);
+						mBullet.Y += offset * mBullet.Height / ArrowCountInOneShot;
+					}
 				}
 			}
 			return result;
