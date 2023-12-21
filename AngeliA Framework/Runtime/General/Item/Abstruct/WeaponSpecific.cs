@@ -303,6 +303,7 @@ namespace AngeliaFramework {
 		public override int? DefaultSpeedLoseOnAttack => 1000;
 		public override int? WalkingSpeedLoseOnAttack => 1000;
 		public override int? RunningSpeedLoseOnAttack => 618;
+		protected override int BulletDelay => 500;
 
 		public Bow () {
 			SpriteIdString = $"{GetType().AngeName()}.String".AngeHash();

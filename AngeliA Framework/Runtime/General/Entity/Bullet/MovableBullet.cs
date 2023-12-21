@@ -107,12 +107,17 @@ namespace AngeliaFramework {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			if (CellRenderer.TryGetSprite(ArtworkID, out var sprite)) {
-				CurrentRotation += Velocity.x.Sign() * RotateSpeed;
+				int facingSign = Velocity.x.Sign();
+				CurrentRotation += facingSign * RotateSpeed;
+				int signedPivotX = facingSign > 0 ? sprite.PivotX : 1000 - sprite.PivotX;
 				CellRenderer.Draw(
 					ArtworkID,
-					X + Width / 2, Y + Height / 2,
-					sprite.PivotX, sprite.PivotY, CurrentRotation,
-					Velocity.x.Sign() * sprite.GlobalWidth * Scale / 1000,
+					X + Width * signedPivotX / 1000,
+					Y + Height * sprite.PivotY / 1000,
+					sprite.PivotX,
+					sprite.PivotY,
+					CurrentRotation,
+					facingSign * sprite.GlobalWidth * Scale / 1000,
 					sprite.GlobalHeight * Scale / 1000
 				);
 			}

@@ -176,9 +176,9 @@ namespace AngeliaFramework {
 			public Transform RendererRoot;
 			public MeshRenderer Renderer;
 			public Mesh Mesh;
-			public List<UnityEngine.Vector3> VertexCache;
-			public List<UnityEngine.Vector2> UvCache;
-			public List<UnityEngine.Color32> ColorCache;
+			public List<Vector3> VertexCache;
+			public List<Vector2> UvCache;
+			public List<Color32> ColorCache;
 			public void ZSort (bool fromStart = false) {
 				if (fromStart) SortedIndex = 0;
 				if (SortedIndex < Count - 1) {
@@ -203,7 +203,7 @@ namespace AngeliaFramework {
 				_Index = index;
 				Chain = chain;
 			}
-			public int GetIndex (int frame) => Chain != null ? Chain[frame % Chain.Count] : _Index;
+			public int GetIndex (int frame) => Chain != null ? Chain[GetAnimationFrame(frame, Chain.Count, LoopStart).Clamp(0, Chain.Count - 1)] : _Index;
 		}
 
 
@@ -757,7 +757,7 @@ namespace AngeliaFramework {
 				}
 				layer.VertexCache.AddRange(new Vector3[renderCapacity * 4]);
 				layer.UvCache.AddRange(new Vector2[renderCapacity * 4]);
-				layer.ColorCache.AddRange(new UnityEngine.Color32[renderCapacity * 4]);
+				layer.ColorCache.AddRange(new Color32[renderCapacity * 4]);
 				var mesh = filter.sharedMesh;
 				mesh.MarkDynamic();
 				mesh.SetVertices(layer.VertexCache);

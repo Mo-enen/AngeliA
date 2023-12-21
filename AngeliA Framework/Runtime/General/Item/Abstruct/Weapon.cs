@@ -26,6 +26,7 @@ namespace AngeliaFramework {
 		public sealed override EquipmentType EquipmentType => EquipmentType.Weapon;
 		public abstract WeaponType WeaponType { get; }
 		public abstract WeaponHandheld Handheld { get; }
+		protected virtual int BulletDelay => 0;
 		public virtual int AttackDuration => 12;
 		public virtual int AttackCooldown => 2;
 		public virtual int ChargeAttackDuration => int.MaxValue;
@@ -334,6 +335,8 @@ namespace AngeliaFramework {
 				character.AttackWhenPounding.Override = null;
 			}
 		}
+
+		public int GetBulletDelayFrame (Character character) => character.AttackDuration * BulletDelay / 1000;
 
 	}
 }

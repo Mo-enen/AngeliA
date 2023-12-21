@@ -111,8 +111,20 @@ namespace AngeliaFramework {
 		public class BowMageBullet : MovableBullet {
 			public override int SpeedX => 96;
 			protected override void SpawnResidue (IDamageReceiver receiver) {
-				if (Stage.SpawnEntity(AppearSmokeParticle.TYPE_ID, X + Width / 2, Y + Height / 2) is AppearSmokeParticle particle) {
-					particle.Tint = Const.PURPLE_BETTER;
+				if (Stage.SpawnEntity(AppearSmokeParticle.TYPE_ID, X + Width / 2, Y + Height / 2) is AppearSmokeParticle particle0) {
+					particle0.Tint = new(246, 196, 255, 255);
+					particle0.X += Util.QuickRandom(Game.GlobalFrame * 181).UMod(Const.HALF) - Const.HALF / 2;
+					particle0.Y += Util.QuickRandom(Game.GlobalFrame * 832).UMod(Const.HALF) - Const.HALF / 2;
+					particle0.Rotation = Util.QuickRandom(Game.GlobalFrame * 163).UMod(360);
+					particle0._Scale = Util.QuickRandom(Game.GlobalFrame * 4116).UMod(800) + 300;
+				}
+				if (Stage.SpawnEntity(AppearSmokeParticle.TYPE_ID, X + Width / 2, Y + Height / 2) is AppearSmokeParticle particle1) {
+					particle1.Tint = Const.WHITE;
+					particle1.X += Util.QuickRandom(Game.GlobalFrame * 125).UMod(Const.HALF) - Const.HALF / 2;
+					particle1.Y += Util.QuickRandom(Game.GlobalFrame * 67).UMod(Const.HALF) - Const.HALF / 2;
+					particle1.Rotation = Util.QuickRandom(Game.GlobalFrame * 127).UMod(360);
+					particle1._Scale = Util.QuickRandom(Game.GlobalFrame * 9).UMod(800) + 300;
+					particle1._RenderingZ = Util.QuickRandom(Game.GlobalFrame * 12) % 2 == 0 ? int.MaxValue : int.MaxValue - 2;
 				}
 			}
 		}

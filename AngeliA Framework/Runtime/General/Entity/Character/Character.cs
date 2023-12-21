@@ -343,7 +343,7 @@ namespace AngeliaFramework {
 			if (invCapacity > 0) {
 
 				bool eventAvailable = CharacterState == CharacterState.GamePlay && !FrameTask.HasTask() && !TakingDamage;
-				bool attackStart = eventAvailable && Game.GlobalFrame == LastAttackFrame;
+				int attackLocalFrame = eventAvailable && IsAttacking ? Game.GlobalFrame - LastAttackFrame : -1;
 				bool squatStart = eventAvailable && Game.GlobalFrame == LastSquatFrame;
 
 				// Inventory
@@ -358,16 +358,16 @@ namespace AngeliaFramework {
 					var item = GetEquippingItem(type);
 					if (item == null) continue;
 					item.OnItemUpdate_FromEquipment(this);
-					if (attackStart) item.OnAttack(this);
+					if (attackLocalFrame == 0) item.OnAttack(this);
 					if (squatStart) item.OnSquat(this);
 					if (item is Weapon weapon) {
 						equippingWeapon = true;
-						if (attackStart) weapon.SpawnBullet(this);
+						if (attackLocalFrame == weapon.GetBulletDelayFrame(this)) weapon.SpawnBullet(this);
 					}
 				}
 
 				// Spawn Punch Bullet
-				if (attackStart && !equippingWeapon) {
+				if (attackLocalFrame == 0 && !equippingWeapon) {
 					SpawnPunchBullet();
 				}
 
