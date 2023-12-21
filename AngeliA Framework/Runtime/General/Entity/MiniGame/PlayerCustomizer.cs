@@ -146,7 +146,6 @@ namespace AngeliaFramework {
 		private readonly SubMenuType[] MainMenu = null;
 		private readonly IntToChars BodyHeightToString = new("", " cm");
 		private SubMenuType? CurrentSubMenu = null;
-		private SystemLanguage LoadedLanguage = SystemLanguage.Unknown;
 		private int HighlightingMainIndex = 0;
 		private int HighlightingPatternRow = 0;
 		private int PatternPickerScrollRow = 0;
@@ -296,9 +295,7 @@ namespace AngeliaFramework {
 				CloseGame();
 				return;
 			}
-			if (LoadedLanguage != Language.CurrentLanguage) {
-				LoadPatternsFromFile();
-			}
+			LoadPatternsFromFile();
 			cPlayer.LoadConfigFromFile();
 			PlayerFacingRight = player.FacingRight;
 			HighlightingMainIndex = 0;
@@ -315,6 +312,25 @@ namespace AngeliaFramework {
 			if (Player.Selecting is IConfigurableCharacter player) {
 				player.SaveConfigToFile();
 			}
+			// Clear Patterns
+			Patterns_Head.Clear();
+			Patterns_BodyHip.Clear();
+			Patterns_Face.Clear();
+			Patterns_Face.Clear();
+			Patterns_Hair.Clear();
+			Patterns_Ear.Clear();
+			Patterns_Tail.Clear();
+			Patterns_Wing.Clear();
+			Patterns_Horn.Clear();
+			Patterns_ShoulderArmArmHand.Clear();
+			Patterns_LegLegFoot.Clear();
+			Patterns_Suit_Head.Clear();
+			Patterns_Suit_BodyShoulderArmArm.Clear();
+			Patterns_Suit_HipSkirtLegLeg.Clear();
+			Patterns_Suit_Hand.Clear();
+			Patterns_Suit_Foot.Clear();
+			Patterns_ColorSkin.Clear();
+			Patterns_ColorHair.Clear();
 		}
 
 
@@ -1050,8 +1066,6 @@ namespace AngeliaFramework {
 
 
 		private void LoadPatternsFromFile () {
-
-			LoadedLanguage = Language.CurrentLanguage;
 
 			Patterns_Head.Clear();
 			Patterns_BodyHip.Clear();

@@ -356,7 +356,7 @@ namespace AngeliaFramework {
 			}
 			if (DrawArrowItem(
 				Language.Get(MENU_LANGUAGE, "Language"),
-				CellContent.Get(Util.GetLanguageDisplayName(Language.CurrentLanguage)),
+				CellContent.Get(Language.CurrentLanguageDisplayName),
 				currentLanguageIndex > 0, currentLanguageIndex < Language.LanguageCount - 1, out delta)
 			) {
 				int newIndex = currentLanguageIndex + delta;

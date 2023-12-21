@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using UnityEngine;
+using System.Globalization;
+using System.Linq;
+//using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -15,16 +17,17 @@ namespace AngeliaFramework {
 
 
 		// Api
-		public static int LanguageCount => AllLanguages.Length;
-		public static SystemLanguage CurrentLanguage => (SystemLanguage)_LanguageID.Value;
 		public static event System.Action OnLanguageChanged;
+		public static int LanguageCount => AllLanguages.Length;
+		public static string CurrentLanguage => _LoadedLanguage.Value;
+		public static string CurrentLanguageDisplayName { get; private set; } = "";
 
 		// Data
 		private static readonly Dictionary<int, string> Map = new();
-		private static SystemLanguage[] AllLanguages = new SystemLanguage[0];
+		private static string[] AllLanguages = new string[0];
 
 		// Saving
-		private static readonly SavingInt _LanguageID = new("Game.LanguageID", -1);
+		private static readonly SavingString _LoadedLanguage = new("Game.Language", "");
 
 
 		// API
@@ -33,37 +36,19 @@ namespace AngeliaFramework {
 
 			Util.LinkEventWithAttribute<OnLanguageChangedAttribute>(typeof(Language), nameof(OnLanguageChanged));
 
-			var allLanguages = new List<SystemLanguage>();
+			// Get All Language from Disk
+			var allLanguages = new List<string>();
 			foreach (var folderPath in Util.EnumerateFolders(AngePath.LanguageRoot, true, "*")) {
-				if (System.Enum.TryParse<SystemLanguage>(
-					Util.GetNameWithoutExtension(folderPath),
-					out var language)
-				) {
-					allLanguages.Add(language);
-				}
+				allLanguages.Add(Util.GetNameWithoutExtension(folderPath));
 			}
 			AllLanguages = allLanguages.ToArray();
 
 			// Load Current Language
-			var targetLanguage = _LanguageID.Value < 0 ? Application.systemLanguage : (SystemLanguage)_LanguageID.Value;
+			var targetLanguage = string.IsNullOrEmpty(_LoadedLanguage.Value) ?
+				CultureInfo.InstalledUICulture.TwoLetterISOLanguageName :
+				_LoadedLanguage.Value;
 			if (!SetLanguage(targetLanguage)) {
-				// Failback
-				switch (targetLanguage) {
-					case SystemLanguage.Chinese:
-					case SystemLanguage.ChineseTraditional:
-						if (!SetLanguage(SystemLanguage.ChineseSimplified)) {
-							SetLanguage(SystemLanguage.English);
-						}
-						break;
-					case SystemLanguage.ChineseSimplified:
-						if (!SetLanguage(SystemLanguage.ChineseTraditional)) {
-							SetLanguage(SystemLanguage.English);
-						}
-						break;
-					default:
-						SetLanguage(SystemLanguage.English);
-						break;
-				}
+				SetLanguage("en");
 			}
 		}
 
@@ -74,12 +59,13 @@ namespace AngeliaFramework {
 		public static bool Has (int id) => Map.ContainsKey(id);
 
 
-		public static SystemLanguage GetLanguageAt (int index) => AllLanguages[index];
+		public static string GetLanguageAt (int index) => AllLanguages[index];
 
 
-		public static bool SetLanguage (SystemLanguage language) {
+		public static bool SetLanguage (string language) {
 			if (LoadFromDisk(AngePath.LanguageRoot, language)) {
-				_LanguageID.Value = (int)language;
+				_LoadedLanguage.Value = language;
+				CurrentLanguageDisplayName = Util.GetLanguageDisplayName(language, out string disName) ? disName : language;
 				OnLanguageChanged();
 				return true;
 			}
@@ -88,8 +74,8 @@ namespace AngeliaFramework {
 
 
 		// LGC
-		private static bool LoadFromDisk (string languageRoot, SystemLanguage language) {
-			string rootPath = Util.CombinePaths(languageRoot, language.ToString());
+		private static bool LoadFromDisk (string languageRoot, string language) {
+			string rootPath = Util.CombinePaths(languageRoot, language);
 			Map.Clear();
 			string key, value;
 			foreach (var path in Util.EnumerateFiles(rootPath, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {

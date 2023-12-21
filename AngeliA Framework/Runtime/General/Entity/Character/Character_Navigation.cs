@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using AngeliaFramework;
 
 
 namespace AngeliaFramework {
@@ -280,7 +278,7 @@ namespace AngeliaFramework {
 							NavJumpFrame
 						);
 						if (NavJumpDuration > 3) {
-							int deltaY = Mathf.Abs(NavJumpFrame - NavJumpDuration / 2);
+							int deltaY = Util.Abs(NavJumpFrame - NavJumpDuration / 2);
 							int arc = (Util.DistanceInt(
 								NavJumpFromPosition.x,
 								NavJumpFromPosition.y,

@@ -1,8 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using AngeliaFramework;
-using System.Reflection;
 
 
 namespace AngeliaFramework {
@@ -277,8 +274,8 @@ namespace AngeliaFramework {
 					// Comparer X Distance
 					int _dis =
 						X >= hit.Rect.xMin && X <= hit.Rect.xMax ? 0 :
-						X > hit.Rect.xMax ? Mathf.Abs(X - hit.Rect.xMax) :
-						Mathf.Abs(X - hit.Rect.xMin);
+						X > hit.Rect.xMax ? Util.Abs(X - hit.Rect.xMax) :
+						Util.Abs(X - hit.Rect.xMin);
 					if (_dis < dis) {
 						dis = _dis;
 						TargetActionEntity = act;

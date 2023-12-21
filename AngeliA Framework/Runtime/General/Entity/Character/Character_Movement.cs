@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -81,8 +80,8 @@ namespace AngeliaFramework {
 		public bool ReadyForRun => RunningAccumulateFrame >= WalkToRunAccumulation;
 		public bool IsRolling => !InWater && !IsPounding && !IsFlying && !IsRushing && ((FirstJumpWithRoll && CurrentJumpCount > 0) || (SubsequentJumpWithRoll && CurrentJumpCount > 1) || (DashWithRoll && IsDashing));
 		public bool IsGrabFlipping => IsGrabFlippingUp || IsGrabFlippingDown;
-		public bool IsGrabFlippingUp => Game.GlobalFrame < LastGrabFlipUpFrame + Mathf.Max(GrabFlipThroughDuration, 1);
-		public bool IsGrabFlippingDown => Game.GlobalFrame < LastGrabFlipDownFrame + Mathf.Max(GrabFlipThroughDuration, 1);
+		public bool IsGrabFlippingUp => Game.GlobalFrame < LastGrabFlipUpFrame + Util.Max(GrabFlipThroughDuration, 1);
+		public bool IsGrabFlippingDown => Game.GlobalFrame < LastGrabFlipDownFrame + Util.Max(GrabFlipThroughDuration, 1);
 		public bool IsMoving => IntendedX != 0;
 		public bool IsWalking => IntendedX != 0 && !ReadyForRun;
 		public bool IsRunning => IntendedX != 0 && ReadyForRun;
@@ -451,7 +450,7 @@ namespace AngeliaFramework {
 					if (IntendedJump || frame < RequireJumpFrame + JUMP_REQUIRE_TOLERANCE) {
 						// Perform Jump
 						CurrentJumpCount++;
-						VelocityY = Mathf.Max(InWater ? SwimJumpSpeed : JumpSpeed, VelocityY);
+						VelocityY = Util.Max(InWater ? SwimJumpSpeed : JumpSpeed, VelocityY);
 						if (IsGrabbingSide) {
 							X += FacingRight ? -6 : 6;
 						} else if (IsGrabbingTop) {
@@ -479,7 +478,7 @@ namespace AngeliaFramework {
 							IsDashing = false;
 							LastFlyFrame = frame;
 							if (CurrentJumpCount <= JumpCount) {
-								VelocityY = Mathf.Max(FlyRiseSpeed, VelocityY);
+								VelocityY = Util.Max(FlyRiseSpeed, VelocityY);
 							}
 							CurrentJumpCount++;
 							IntendedJump = false;
@@ -698,7 +697,7 @@ namespace AngeliaFramework {
 				// Fly
 				case CharacterMovementState.Fly:
 					GravityScale = VelocityY > 0 ? FlyGravityRiseRate : FlyGravityFallRate;
-					VelocityY = Mathf.Max(VelocityY, -FlyFallSpeed);
+					VelocityY = Util.Max(VelocityY, -FlyFallSpeed);
 					break;
 
 				// Slide
@@ -724,7 +723,7 @@ namespace AngeliaFramework {
 				// Grab Flip
 				case CharacterMovementState.GrabFlip:
 					GravityScale = 0;
-					VelocityY = (MovementHeight + Const.CEL + 12) / Mathf.Max(GrabFlipThroughDuration, 1) + 1;
+					VelocityY = (MovementHeight + Const.CEL + 12) / Util.Max(GrabFlipThroughDuration, 1) + 1;
 					if (!IsGrabFlippingUp) VelocityY *= -1;
 					break;
 

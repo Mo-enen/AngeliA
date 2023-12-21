@@ -456,8 +456,7 @@ namespace AngeliaFramework.Editor {
 
 				// Compile
 				var builder = new StringBuilder();
-				var currentLanguage = SystemLanguage.English;
-				string currentIso = Util.LanguageToIso(SystemLanguage.English);
+				string currentIso = "en";
 				bool contentFlag0 = false;
 				bool contentFlag1 = false;
 				foreach (string line in Util.ForAllLines(path, Encoding.UTF8)) {
@@ -475,7 +474,8 @@ namespace AngeliaFramework.Editor {
 
 					if (trimedLine[0] == '>') {
 						// Switch Language
-						if (trimedLine.Length > 1 && Util.IsoToLanguage(trimedLine[1..], out var newLanguage) && currentLanguage != newLanguage) {
+						string iso = trimedLine[1..];
+						if (trimedLine.Length > 1 && iso.Length == 2 && currentIso != iso) {
 							// Make File
 							string targetPath = Util.CombinePaths(
 								conFolderPath,
@@ -483,8 +483,7 @@ namespace AngeliaFramework.Editor {
 							);
 							Util.TextToFile(builder.ToString(), targetPath, Encoding.UTF8);
 							builder.Clear();
-							currentLanguage = newLanguage;
-							currentIso = Util.LanguageToIso(newLanguage);
+							currentIso = iso;
 						}
 						contentFlag0 = false;
 						contentFlag1 = false;
