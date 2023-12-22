@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 
 namespace AngeliaFramework {
@@ -12,13 +13,14 @@ namespace AngeliaFramework {
 
 
 
-		[System.Serializable]
-		private class InventoryData {
-			public int[] Items;
-			public int[] Counts;
-			[System.NonSerialized] public string Name;
-			[System.NonSerialized] public bool UnlockItemInside;
-			[System.NonSerialized] public bool IsDirty;
+		[JsonObject(MemberSerialization.OptIn)]
+		private class InventoryData : IJsonSerializationCallback {
+			[JsonProperty] public int[] Items;
+			[JsonProperty] public int[] Counts;
+			public string Name;
+			public bool UnlockItemInside;
+			public bool IsDirty;
+
 			public void Valid () {
 				Items ??= new int[0];
 				Counts ??= new int[Items.Length];
@@ -30,18 +32,21 @@ namespace AngeliaFramework {
 					Counts = newCounts;
 				}
 			}
+			void IJsonSerializationCallback.OnAfterLoadedFromDisk () => Valid();
+			void IJsonSerializationCallback.OnBeforeSaveToDisk () => Valid();
+
 		}
 
 
 
-		[System.Serializable]
+		[JsonObject(MemberSerialization.OptIn)]
 		private class CharacterInventoryData : InventoryData {
-			public int Helmet = 0;
-			public int BodySuit = 0;
-			public int Shoes = 0;
-			public int Weapon = 0;
-			public int Gloves = 0;
-			public int Jewelry = 0;
+			[JsonProperty] public int Helmet = 0;
+			[JsonProperty] public int BodySuit = 0;
+			[JsonProperty] public int Shoes = 0;
+			[JsonProperty] public int Weapon = 0;
+			[JsonProperty] public int Gloves = 0;
+			[JsonProperty] public int Jewelry = 0;
 		}
 
 
@@ -387,12 +392,11 @@ namespace AngeliaFramework {
 					if (Pool.ContainsKey(id)) continue;
 					InventoryData data;
 					if (path.EndsWith(INV_EXT)) {
-						data = AngeUtil.LoadOrCreateJsonFromPath<InventoryData>(path);
+						data = JsonUtil.LoadOrCreateJsonFromPath<InventoryData>(path);
 					} else {
-						data = AngeUtil.LoadOrCreateJsonFromPath<CharacterInventoryData>(path);
+						data = JsonUtil.LoadOrCreateJsonFromPath<CharacterInventoryData>(path);
 					}
 					if (data == null) continue;
-					data.Valid();
 					data.IsDirty = false;
 					data.Name = name;
 					Pool.TryAdd(id, data);
@@ -417,7 +421,7 @@ namespace AngeliaFramework {
 				data.IsDirty = false;
 				// Save Inventory
 				string path = Util.CombinePaths(root, $"{data.Name}.{(data is CharacterInventoryData ? CHAR_INV_EXT : INV_EXT)}");
-				AngeUtil.SaveJsonToPath(data, path, false);
+				JsonUtil.SaveJsonToPath(data, path, false);
 				// Update Item Unlocked
 				UpdateItemUnlocked(data);
 			}

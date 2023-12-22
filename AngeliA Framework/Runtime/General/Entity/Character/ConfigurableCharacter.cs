@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 
 namespace AngeliaFramework {
@@ -7,43 +8,43 @@ namespace AngeliaFramework {
 
 
 		// SUB
-		[System.Serializable]
+		[JsonObject(MemberSerialization.OptIn)]
 		public class CharacterConfig {
 
 			private static readonly int[] DEFAULT_BODY_PART_ID = { "DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(), };
 
-			public int CharacterHeight = 160;
+			[JsonProperty] public int CharacterHeight = 160;
 
 			// Body Part
-			public int Head = DEFAULT_BODY_PART_ID[0];
-			public int Body = DEFAULT_BODY_PART_ID[1];
-			public int Hip = DEFAULT_BODY_PART_ID[2];
-			public int Shoulder = DEFAULT_BODY_PART_ID[3];
-			public int UpperArm = DEFAULT_BODY_PART_ID[5];
-			public int LowerArm = DEFAULT_BODY_PART_ID[7];
-			public int Hand = DEFAULT_BODY_PART_ID[9];
-			public int UpperLeg = DEFAULT_BODY_PART_ID[11];
-			public int LowerLeg = DEFAULT_BODY_PART_ID[13];
-			public int Foot = DEFAULT_BODY_PART_ID[15];
+			[JsonProperty] public int Head = DEFAULT_BODY_PART_ID[0];
+			[JsonProperty] public int Body = DEFAULT_BODY_PART_ID[1];
+			[JsonProperty] public int Hip = DEFAULT_BODY_PART_ID[2];
+			[JsonProperty] public int Shoulder = DEFAULT_BODY_PART_ID[3];
+			[JsonProperty] public int UpperArm = DEFAULT_BODY_PART_ID[5];
+			[JsonProperty] public int LowerArm = DEFAULT_BODY_PART_ID[7];
+			[JsonProperty] public int Hand = DEFAULT_BODY_PART_ID[9];
+			[JsonProperty] public int UpperLeg = DEFAULT_BODY_PART_ID[11];
+			[JsonProperty] public int LowerLeg = DEFAULT_BODY_PART_ID[13];
+			[JsonProperty] public int Foot = DEFAULT_BODY_PART_ID[15];
 
 			// Gadget
-			public int Face = 0;
-			public int Hair = 0;
-			public int Ear = 0;
-			public int Tail = 0;
-			public int Wing = 0;
-			public int Horn = 0;
+			[JsonProperty] public int Face = 0;
+			[JsonProperty] public int Hair = 0;
+			[JsonProperty] public int Ear = 0;
+			[JsonProperty] public int Tail = 0;
+			[JsonProperty] public int Wing = 0;
+			[JsonProperty] public int Horn = 0;
 
 			// Suit
-			public int Suit_Head = 0;
-			public int Suit_Body = 0;
-			public int Suit_Hip = 0;
-			public int Suit_Hand = 0;
-			public int Suit_Foot = 0;
+			[JsonProperty] public int Suit_Head = 0;
+			[JsonProperty] public int Suit_Body = 0;
+			[JsonProperty] public int Suit_Hip = 0;
+			[JsonProperty] public int Suit_Hand = 0;
+			[JsonProperty] public int Suit_Foot = 0;
 
 			// Color
-			public int SkinColor = Util.ColorToInt(new Byte4(245, 217, 196, 255)); // #f5d9c4
-			public int HairColor = 858993663;
+			[JsonProperty] public int SkinColor = Util.ColorToInt(new Byte4(245, 217, 196, 255)); // #f5d9c4
+			[JsonProperty] public int HairColor = 858993663;
 
 
 		}
@@ -72,7 +73,7 @@ namespace AngeliaFramework {
 			Config ??= CreateNewConfig() ?? new();
 			string name = GetType().AngeName();
 			string path = Util.CombinePaths(AngePath.UserDataRoot, "Character Config");
-			bool overrided = AngeUtil.OverrideJson(path, Config, name);
+			bool overrided = JsonUtil.OverrideJson(path, Config, name);
 			if (!overrided) Config = CreateNewConfig();
 			LoadCharacterFromConfig();
 		}
@@ -83,7 +84,7 @@ namespace AngeliaFramework {
 			if (Config == null) return;
 			SaveCharacterToConfig();
 			string path = Util.CombinePaths(AngePath.UserDataRoot, "Character Config");
-			AngeUtil.SaveJson(Config, path, GetType().AngeName(), prettyPrint: true);
+			JsonUtil.SaveJson(Config, path, GetType().AngeName(), prettyPrint: true);
 		}
 
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 
 
@@ -30,25 +31,27 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
-		[System.Serializable]
-		protected class BadgesSaveData : ISerializationCallbackReceiver {
+		[JsonObject(MemberSerialization.OptIn)]
+		protected class BadgesSaveData : IJsonSerializationCallback {
 
-			public int[] Badges;
-			[System.NonSerialized] private readonly int BadgesCount;
+			[JsonProperty] public int[] Badges;
+			private readonly int BadgesCount;
 
 			public BadgesSaveData (int badgeCount) {
 				BadgesCount = badgeCount;
-				Valied();
+				Valid();
 			}
+
 			public int GetBadge (int index) => Badges != null && index >= 0 && index < Badges.Length ? Badges[index] : 0;
 			public void SetBadge (int index, int quality) {
 				if (Badges != null && index >= 0 && index < Badges.Length) {
 					Badges[index] = quality;
 				}
 			}
-			public void OnAfterDeserialize () => Valied();
-			public void OnBeforeSerialize () => Valied();
-			private void Valied () {
+
+			void IJsonSerializationCallback.OnAfterLoadedFromDisk () => Valid();
+			void IJsonSerializationCallback.OnBeforeSaveToDisk () => Valid();
+			private void Valid () {
 				Badges ??= new int[BadgesCount].FillWithValue(0);
 				if (Badges.Length != BadgesCount) {
 					var oldArr = Badges;
@@ -198,12 +201,12 @@ namespace AngeliaFramework {
 
 
 		// Saving
-		protected bool LoadGameDataFromFile<T> (T data) => AngeUtil.OverrideJson(
+		protected bool LoadGameDataFromFile<T> (T data) => JsonUtil.OverrideJson(
 			Util.CombinePaths(AngePath.UserDataRoot, "MiniGame"), data, GetType().Name
 		);
 
 
-		protected void SaveGameDataToFile<T> (T data) => AngeUtil.SaveJson(
+		protected void SaveGameDataToFile<T> (T data) => JsonUtil.SaveJson(
 			data, Util.CombinePaths(AngePath.UserDataRoot, "MiniGame"), GetType().Name
 		);
 

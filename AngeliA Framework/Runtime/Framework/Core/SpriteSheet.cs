@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Newtonsoft.Json;
 
 
 namespace AngeliaFramework {
@@ -22,12 +22,11 @@ namespace AngeliaFramework {
 
 
 
-	[System.Serializable]
 	public class FlexSprite {
 		public string Name;
 		public string SheetName;
 		public int SheetZ;
-		public Rect Rect;
+		public FRect Rect;
 		public Int2 AngePivot;
 		public Float4 Border;
 		public SheetType SheetType;
@@ -35,14 +34,14 @@ namespace AngeliaFramework {
 
 
 
-	[System.Serializable]
+	[JsonObject(MemberSerialization.OptIn)]
 	public class AngeSprite {
 
 		// Const
 		private const float UV_SCALE = 10000000f;
 
-		// Api
-		public Rect UvRect => Rect.MinMaxRect(UvBottomLeft.x, UvBottomLeft.y, UvTopRight.x, UvTopRight.y);
+		// Api 
+		public FRect UvRect => FRect.MinMaxRect(UvBottomLeft.x, UvBottomLeft.y, UvTopRight.x, UvTopRight.y);
 		public Float2 BottomRight {
 			get {
 				if (!_BottomRight.HasValue) _BottomRight = new(UvTopRight.x, UvBottomLeft.y);
@@ -130,40 +129,40 @@ namespace AngeliaFramework {
 		}
 
 		// Ser
-		[SerializeField] int a; // GlobalID
-		[SerializeField] int b; // MetaIndex
-		[SerializeField] int c; // GlobalWidth
-		[SerializeField] int d; // GlobalHeight
-		[SerializeField] int e; // SortingZ
-		[SerializeField] int f; // SummaryTint
-		[SerializeField] int g; // PivotX
-		[SerializeField] int h; // PivotY
+		[JsonProperty] int a; // GlobalID
+		[JsonProperty] int b; // MetaIndex
+		[JsonProperty] int c; // GlobalWidth
+		[JsonProperty] int d; // GlobalHeight
+		[JsonProperty] int e; // SortingZ
+		[JsonProperty] int f; // SummaryTint
+		[JsonProperty] int g; // PivotX
+		[JsonProperty] int h; // PivotY
 
-		[SerializeField] int i; // GlobalBorder L
-		[SerializeField] int j; // GlobalBorder R
-		[SerializeField] int k; // GlobalBorder D
-		[SerializeField] int l; // GlobalBorder U
+		[JsonProperty] int i; // GlobalBorder L
+		[JsonProperty] int j; // GlobalBorder R
+		[JsonProperty] int k; // GlobalBorder D
+		[JsonProperty] int l; // GlobalBorder U
 
-		[SerializeField] int m; // UvBorder L
-		[SerializeField] int n; // UvBorder R
-		[SerializeField] int o; // UvBorder D
-		[SerializeField] int p; // UvBorder U
+		[JsonProperty] int m; // UvBorder L
+		[JsonProperty] int n; // UvBorder R
+		[JsonProperty] int o; // UvBorder D
+		[JsonProperty] int p; // UvBorder U
 
-		[SerializeField] int q; // UvBottomLeft L
-		[SerializeField] int r; // UvBottomLeft D
-		[SerializeField] int s; // UvTopRight R
-		[SerializeField] int t; // UvTopRight U
+		[JsonProperty] int q; // UvBottomLeft L
+		[JsonProperty] int r; // UvBottomLeft D
+		[JsonProperty] int s; // UvTopRight R
+		[JsonProperty] int t; // UvTopRight U
 
-		[SerializeField] string u;  // Real Name
-		[SerializeField] int v;     // Sheet Name Index
-		[SerializeField] byte w;    // SheetType & GroupType
+		[JsonProperty] string u;  // Real Name
+		[JsonProperty] int v;     // Sheet Name Index
+		[JsonProperty] byte w;    // SheetType & GroupType
 
 		// Data
-		[System.NonSerialized] Float2? _BottomRight = null;
-		[System.NonSerialized] Float2? _TopLeft = null;
-		[System.NonSerialized] Byte4? _SummaryTint = default;
-		[System.NonSerialized] SheetType? _SheetType = null;
-		[System.NonSerialized] GroupType? _GroupType = null;
+		private Float2? _BottomRight = null;
+		private Float2? _TopLeft = null;
+		private Byte4? _SummaryTint = default;
+		private SheetType? _SheetType = null;
+		private GroupType? _GroupType = null;
 
 		// API
 		public IRect GetTextureRect (int tWidth, int tHeight) => new(
@@ -183,18 +182,18 @@ namespace AngeliaFramework {
 				case Alignment.TopLeft:
 				case Alignment.TopMid:
 				case Alignment.TopRight:
-					bl.y = br.y = Mathf.LerpUnclamped(TopLeft.y, UvBottomLeft.y, UvBorder.w);
+					bl.y = br.y = Util.LerpUnclamped(TopLeft.y, UvBottomLeft.y, UvBorder.w);
 					break;
 				case Alignment.MidLeft:
 				case Alignment.MidMid:
 				case Alignment.MidRight:
-					tl.y = tr.y = Mathf.LerpUnclamped(TopLeft.y, UvBottomLeft.y, UvBorder.w);
-					bl.y = br.y = Mathf.LerpUnclamped(UvBottomLeft.y, TopLeft.y, UvBorder.y);
+					tl.y = tr.y = Util.LerpUnclamped(TopLeft.y, UvBottomLeft.y, UvBorder.w);
+					bl.y = br.y = Util.LerpUnclamped(UvBottomLeft.y, TopLeft.y, UvBorder.y);
 					break;
 				case Alignment.BottomLeft:
 				case Alignment.BottomMid:
 				case Alignment.BottomRight:
-					tl.y = tr.y = Mathf.LerpUnclamped(UvBottomLeft.y, TopLeft.y, UvBorder.y);
+					tl.y = tr.y = Util.LerpUnclamped(UvBottomLeft.y, TopLeft.y, UvBorder.y);
 					break;
 			}
 			// X
@@ -202,18 +201,18 @@ namespace AngeliaFramework {
 				case Alignment.TopLeft:
 				case Alignment.MidLeft:
 				case Alignment.BottomLeft:
-					br.x = tr.x = Mathf.LerpUnclamped(UvBottomLeft.x, BottomRight.x, UvBorder.x);
+					br.x = tr.x = Util.LerpUnclamped(UvBottomLeft.x, BottomRight.x, UvBorder.x);
 					break;
 				case Alignment.TopMid:
 				case Alignment.MidMid:
 				case Alignment.BottomMid:
-					br.x = tr.x = Mathf.LerpUnclamped(BottomRight.x, UvBottomLeft.x, UvBorder.z);
-					bl.x = tl.x = Mathf.LerpUnclamped(UvBottomLeft.x, BottomRight.x, UvBorder.x);
+					br.x = tr.x = Util.LerpUnclamped(BottomRight.x, UvBottomLeft.x, UvBorder.z);
+					bl.x = tl.x = Util.LerpUnclamped(UvBottomLeft.x, BottomRight.x, UvBorder.x);
 					break;
 				case Alignment.TopRight:
 				case Alignment.MidRight:
 				case Alignment.BottomRight:
-					bl.x = tl.x = Mathf.LerpUnclamped(BottomRight.x, UvBottomLeft.x, UvBorder.z);
+					bl.x = tl.x = Util.LerpUnclamped(BottomRight.x, UvBottomLeft.x, UvBorder.z);
 					break;
 			}
 		}
@@ -222,7 +221,7 @@ namespace AngeliaFramework {
 
 
 
-	[System.Serializable]
+	[JsonObject(MemberSerialization.OptIn)]
 	public class AngeSpriteChain {
 
 		public int this[int i] => Chain[i];
@@ -233,11 +232,11 @@ namespace AngeliaFramework {
 		public int LoopStart { get => L; set => L = value; }
 		public List<int> Chain { get => C; set => C = value; }
 
-		[SerializeField] string N;
-		[SerializeField] int I;
-		[SerializeField] GroupType T;
-		[SerializeField] int L = 0;
-		[SerializeField] List<int> C = new(); // Sprite Index in Sheet, Not id
+		[JsonProperty] string N;
+		[JsonProperty] int I;
+		[JsonProperty] GroupType T;
+		[JsonProperty] int L = 0;
+		[JsonProperty] List<int> C = new(); // Sprite Index in Sheet, Not id
 
 		public List<AngeSprite> GetSpriteChain (SpriteSheet sheet) {
 			var result = new List<AngeSprite>();
@@ -250,22 +249,21 @@ namespace AngeliaFramework {
 	}
 
 
-	[System.Serializable]
+	[JsonObject(MemberSerialization.OptIn)]
 	public class SpriteMeta {
 
 		public int Rule { get => R; set => R = value; }
 		public int Tag { get => T; set => T = value; }
 		public bool IsTrigger { get => G; set => G = value; }
 
-		[SerializeField] int T = 0;
-		[SerializeField] int R = 0;
-		[SerializeField] bool G = false;
+		[JsonProperty] int T = 0;
+		[JsonProperty] int R = 0;
+		[JsonProperty] bool G = false;
 
 	}
 
 
 
-	[System.Serializable]
 	public class SpriteGroup {
 		public int ID;
 		public int[] SpriteIDs;
@@ -273,7 +271,6 @@ namespace AngeliaFramework {
 
 
 
-	[System.Serializable]
 	public class SpriteSheet {
 		public AngeSprite[] Sprites = new AngeSprite[0];
 		public AngeSpriteChain[] SpriteChains = new AngeSpriteChain[0];

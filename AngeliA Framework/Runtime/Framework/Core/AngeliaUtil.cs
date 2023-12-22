@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 
 namespace AngeliaFramework {
+
+
 	public static class AngeUtil {
 
 
@@ -587,7 +589,7 @@ namespace AngeliaFramework {
 			gameCamera.orthographicSize = 1f;
 			gameCamera.nearClipPlane = 0f;
 			gameCamera.farClipPlane = 1024f;
-			gameCamera.rect = new Rect(0f, 0f, 1f, 1f);
+			gameCamera.rect = new FRect(0f, 0f, 1f, 1f);
 			gameCamera.depth = 0f;
 			gameCamera.renderingPath = RenderingPath.UsePlayerSettings;
 			gameCamera.useOcclusionCulling = false;
@@ -770,58 +772,6 @@ namespace AngeliaFramework {
 		}
 
 
-		// Json Meta
-		public static string GetJsonPath<T> (string rootPath, string name = "", string ext = "json") => Util.CombinePaths(rootPath, $"{(string.IsNullOrEmpty(name) ? typeof(T).Name : name)}.{ext}");
-
-
-		public static T LoadOrCreateJson<T> (string rootPath, string name = "", string ext = "json") where T : class, new() => LoadOrCreateJsonFromPath<T>(GetJsonPath<T>(rootPath, name, ext));
-		public static T LoadOrCreateJsonFromPath<T> (string jsonPath) where T : class, new() {
-			var result = LoadJsonFromPath<T>(jsonPath);
-			if (result == null) {
-				result = new T();
-				if (result is ISerializationCallbackReceiver ser) {
-					ser.OnAfterDeserialize();
-				}
-			}
-			return result;
-		}
-
-
-		public static T LoadJson<T> (string rootPath, string name = "", string ext = "json") => LoadJsonFromPath<T>(GetJsonPath<T>(rootPath, name, ext));
-		public static T LoadJsonFromPath<T> (string jsonPath) {
-			try {
-				if (Util.FileExists(jsonPath)) {
-					var data = Util.FileToText(jsonPath, Encoding.UTF8);
-					var target = JsonUtility.FromJson<T>(data);
-					if (target != null) return target;
-				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-			return default;
-		}
-
-
-		public static bool OverrideJson<T> (string rootPath, T target, string name = "", string ext = "json") => OverrideJsonFromPath(GetJsonPath<T>(rootPath, name, ext), target);
-		public static bool OverrideJsonFromPath<T> (string jsonPath, T target) {
-			if (target == null) return false;
-			try {
-				if (Util.FileExists(jsonPath)) {
-					var data = Util.FileToText(jsonPath, Encoding.UTF8);
-					JsonUtility.FromJsonOverwrite(data, target);
-					return true;
-				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-			return false;
-		}
-
-
-		public static void SaveJson<T> (T data, string rootPath, string name = "", string ext = "json", bool prettyPrint = false) => SaveJsonToPath<T>(data, GetJsonPath<T>(rootPath, name, ext), prettyPrint);
-		public static void SaveJsonToPath<T> (T data, string jsonPath, bool prettyPrint = false) {
-			if (data == null) return;
-			string jsonText = JsonUtility.ToJson(data, prettyPrint);
-			Util.TextToFile(jsonText, jsonPath, Encoding.UTF8);
-		}
-
-
 		// Drawing
 		public static Cell DrawEnvironmentShadow (Cell source, int offsetX = -Const.HALF / 2, int offsetY = 0, byte alpha = 64, int z = -64 * 1024 + 16) {
 			var result = CellRenderer.Draw(Const.PIXEL, default);
@@ -927,7 +877,7 @@ namespace AngeliaFramework {
 			Direction4.Right => rect.Shrink(rect.width, -thickness, 0, 0),
 			_ => throw new System.NotImplementedException(),
 		};
-		public static Rect Edge (this Rect rect, Direction4 edge, float thickness = 1f) => edge switch {
+		public static FRect Edge (this FRect rect, Direction4 edge, float thickness = 1f) => edge switch {
 			Direction4.Up => rect.Shrink(0, 0, rect.height, -thickness),
 			Direction4.Down => rect.Shrink(0, 0, -thickness, rect.height),
 			Direction4.Left => rect.Shrink(-thickness, rect.width, 0, 0),

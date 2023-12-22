@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using UnityEngine;
-using UnityEditor;
+using AngeliaFramework;
+
+
+[assembly: AngeliA]
+
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 

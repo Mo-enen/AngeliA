@@ -149,7 +149,7 @@ namespace AngeliaFramework {
 			public Float2 UvBottomRight;
 			public Float2 UvTopLeft;
 			public Float2 UvTopRight;
-			public Rect Offset;
+			public FRect Offset;
 			public float Advance;
 			public int Rebuild = 0;
 		}
@@ -290,7 +290,7 @@ namespace AngeliaFramework {
 		internal static void Initialize (Transform root, Font[] fonts) {
 
 			// Load Assets
-			var sheet = AngeUtil.LoadOrCreateJson<SpriteSheet>(AngePath.SheetRoot);
+			var sheet = JsonUtil.LoadOrCreateJson<SpriteSheet>(AngePath.SheetRoot);
 			var sheetTexture = AngeUtil.LoadTexture(AngePath.SheetTexturePath);
 			if (sheetTexture == null || sheet == null) return;
 
@@ -314,11 +314,11 @@ namespace AngeliaFramework {
 			// Ratio
 			float ratio = (float)Screen.width / Screen.height;
 			float maxRatio = (float)ViewRect.width / ViewRect.height;
-			var rect = new Rect(0f, 0f, 1f, 1f);
+			var rect = new FRect(0f, 0f, 1f, 1f);
 			if (ratio > maxRatio) {
-				rect = new Rect(0.5f - 0.5f * maxRatio / ratio, 0f, maxRatio / ratio, 1f);
+				rect = new FRect(0.5f - 0.5f * maxRatio / ratio, 0f, maxRatio / ratio, 1f);
 			}
-			if (camera.rect.NotAlmost(rect)) {
+			if (((FRect)camera.rect).NotAlmost(rect)) {
 				camera.rect = rect;
 			}
 
@@ -1298,7 +1298,7 @@ namespace AngeliaFramework {
 							charSprite.UvBottomRight = info.uvBottomRight.ToAngelia();
 							charSprite.UvTopLeft = info.uvTopLeft.ToAngelia();
 							charSprite.UvTopRight = info.uvTopRight.ToAngelia();
-							charSprite.Offset = Rect.MinMaxRect(info.minX / size, info.minY / size, info.maxX / size, info.maxY / size);
+							charSprite.Offset = FRect.MinMaxRect(info.minX / size, info.minY / size, info.maxX / size, info.maxY / size);
 							charSprite.Advance = info.advance / size;
 							charSprite.Rebuild = tLayer.TextRebuild;
 						} else {
@@ -1320,7 +1320,7 @@ namespace AngeliaFramework {
 						UvBottomRight = info.uvBottomRight.ToAngelia(),
 						UvTopLeft = info.uvTopLeft.ToAngelia(),
 						UvTopRight = info.uvTopRight.ToAngelia(),
-						Offset = Rect.MinMaxRect(info.minX / size, info.minY / size, info.maxX / size, info.maxY / size),
+						Offset = FRect.MinMaxRect(info.minX / size, info.minY / size, info.maxX / size, info.maxY / size),
 						Advance = info.advance / size,
 						Rebuild = tLayer.TextRebuild,
 					});

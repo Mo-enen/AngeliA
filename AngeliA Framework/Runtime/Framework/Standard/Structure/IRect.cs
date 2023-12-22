@@ -158,6 +158,13 @@ namespace AngeliaFramework {
 			max = maxPosition;
 		}
 
+		public static IRect MinMaxRect (int minX, int minY, int maxX, int maxY) => new IRect {
+			xMin = minX,
+			yMin = minY,
+			xMax = maxX,
+			yMax = maxY,
+		};
+
 		public IRect (int xMin, int yMin, int width, int height) {
 			m_XMin = xMin;
 			m_YMin = yMin;

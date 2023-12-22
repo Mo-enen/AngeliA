@@ -161,30 +161,14 @@ namespace AngeliaFramework {
 
 
 		// All Class
-#if UNITY_EDITOR
-		[UnityEditor.InitializeOnLoadMethod]
-		public static void InitializeOnLoadMethod () {
-			UnityEditor.EditorApplication.playModeStateChanged += (state) => {
-				_AllTypesCache = null;
-				if (state == UnityEditor.PlayModeStateChange.ExitingPlayMode) {
-					AllAssembliesCache.Clear();
-				}
-			};
-		}
-#endif
-
-
-		private static readonly List<Assembly> AllAssembliesCache = new();
-		private static System.Type[] AllTypesCache {
+		public static System.Type[] AllTypesCache {
 			get {
-				if (_AllTypesCache == null || _AllTypesCache.Length == 0 || _AllTypesCache[0] == null) {
+				if (_AllTypesCache == null) {
 					var list = new List<System.Type>();
-					if (AllAssembliesCache.Count == 0) {
-						foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies())
+					foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
+						if (assembly.GetCustomAttribute<AngeliAAttribute>() != null) {
 							list.AddRange(assembly.GetTypes());
-					} else {
-						foreach (var assembly in AllAssembliesCache)
-							list.AddRange(assembly.GetTypes());
+						}
 					}
 					_AllTypesCache = list.ToArray();
 				}
@@ -208,15 +192,7 @@ namespace AngeliaFramework {
 			);
 
 
-		public static void InitializeAssembly (string keyword) {
-			AllAssembliesCache.Clear();
-			_AllTypesCache = null;
-			foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
-				if (assembly.GetName().Name.StartsWith(keyword, System.StringComparison.OrdinalIgnoreCase)) {
-					AllAssembliesCache.Add(assembly);
-				}
-			}
-		}
+		public static void ClearAllTypeCache () => _AllTypesCache = null;
 
 
 		// For All Types

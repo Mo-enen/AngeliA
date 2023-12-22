@@ -75,18 +75,7 @@ namespace AngeliaFramework {
 
 
 		// API
-		public static Rect[] UnityPack (out Texture2D result, Texture2D[] textures) {
-			result = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-			var uvs = result.PackTextures(textures, 0);
-			float uvGap = 0.01f / Mathf.Max(result.width, result.height);
-			for (int i = 0; i < uvs.Length; i++) {
-				uvs[i] = uvs[i].Shrink(uvGap);
-			}
-			return uvs;
-		}
-
-
-		public static Rect[] AngeliaPack (out Texture2D result, Texture2D[] textures, int maxTextureWidth = -1) => PackLogic(out result, textures, maxTextureWidth);
+		public static FRect[] AngeliaPack (out Texture2D result, Texture2D[] textures, int maxTextureWidth = -1) => PackLogic(out result, textures, maxTextureWidth);
 
 
 		public static void CharacterPosePack (out Texture2D result, Texture2D[] textures) {
@@ -157,12 +146,12 @@ namespace AngeliaFramework {
 
 
 		// LGC
-		private static Rect[] PackLogic (out Texture2D result, Texture2D[] textures, int maxTextureWidth = -1) {
+		private static FRect[] PackLogic (out Texture2D result, Texture2D[] textures, int maxTextureWidth = -1) {
 
 			// Check
 			if (textures.Length == 0) {
 				result = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-				return new Rect[0];
+				return new FRect[0];
 			}
 
 			// Init
@@ -264,9 +253,9 @@ namespace AngeliaFramework {
 			// Sort
 			float uvGap = 0.01f / Mathf.Max(width, height);
 			items.Sort(new ItemSorter(true));
-			Rect[] uvs = new Rect[items.Count];
+			FRect[] uvs = new FRect[items.Count];
 			for (int i = 0; i < items.Count; i++) {
-				uvs[i] = new Rect(
+				uvs[i] = new FRect(
 					items[i].X / (float)width + uvGap,
 					items[i].Y / (float)height + uvGap,
 					items[i].Width / (float)width - uvGap * 2f,

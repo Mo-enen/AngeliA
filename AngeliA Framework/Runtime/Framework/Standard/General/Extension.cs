@@ -192,10 +192,10 @@ namespace AngeliaFramework {
 
 		public static bool Almost (this Float3 a, Float3 b) => Mathf.Approximately(a.x, b.x) && Mathf.Approximately(a.y, b.y) && Mathf.Approximately(a.z, b.z);
 		public static bool Almost (this Float2 a, Float2 b) => Mathf.Approximately(a.x, b.x) && Mathf.Approximately(a.y, b.y);
-		public static bool Almost (this Rect a, Rect b) => Mathf.Approximately(a.x, b.x) && Mathf.Approximately(a.y, b.y) && Mathf.Approximately(a.width, b.width) && Mathf.Approximately(a.height, b.height);
+		public static bool Almost (this FRect a, FRect b) => Mathf.Approximately(a.x, b.x) && Mathf.Approximately(a.y, b.y) && Mathf.Approximately(a.width, b.width) && Mathf.Approximately(a.height, b.height);
 		public static bool NotAlmost (this Float3 a, Float3 b) => !a.Almost(b);
 		public static bool NotAlmost (this Float2 a, Float2 b) => !a.Almost(b);
-		public static bool NotAlmost (this Rect a, Rect b) => !a.Almost(b);
+		public static bool NotAlmost (this FRect a, FRect b) => !a.Almost(b);
 		public static bool Inside01 (this Float2 v) => Inside(v, 0f, 1f, 0f, 1f);
 		public static bool Inside (this Float2 v, Float2 min, Float2 max) => Inside(v, min.x, max.x, min.y, max.y);
 		public static bool Inside (this Float2 v, float left, float right, float down, float up) => v.x >= left && v.x <= right && v.y >= down && v.y <= up;
@@ -301,22 +301,22 @@ namespace AngeliaFramework {
 
 
 		// Rect
-		public static Rect Shift (this Rect rect, float x, float y) {
+		public static FRect Shift (this FRect rect, float x, float y) {
 			rect.x += x;
 			rect.y += y;
 			return rect;
 		}
-		public static Rect Expand (this Rect rect, float offset) => rect.Expand(offset, offset, offset, offset);
-		public static Rect Expand (this Rect rect, float l, float r, float d, float u) {
+		public static FRect Expand (this FRect rect, float offset) => rect.Expand(offset, offset, offset, offset);
+		public static FRect Expand (this FRect rect, float l, float r, float d, float u) {
 			rect.x -= l;
 			rect.y -= d;
 			rect.width += l + r;
 			rect.height += d + u;
 			return rect;
 		}
-		public static Rect Shrink (this Rect rect, float offset) => rect.Expand(-offset);
-		public static Rect Shrink (this Rect rect, float l, float r, float d, float u) => rect.Expand(-l, -r, -d, -u);
-		public static Rect Fit (this Rect rect, float targetAspect, float pivotX = 0.5f, float pivotY = 0.5f) {
+		public static FRect Shrink (this FRect rect, float offset) => rect.Expand(-offset);
+		public static FRect Shrink (this FRect rect, float l, float r, float d, float u) => rect.Expand(-l, -r, -d, -u);
+		public static FRect Fit (this FRect rect, float targetAspect, float pivotX = 0.5f, float pivotY = 0.5f) {
 			float sizeX = rect.width;
 			float sizeY = rect.height;
 			if (targetAspect > rect.width / rect.height) {
@@ -324,13 +324,13 @@ namespace AngeliaFramework {
 			} else {
 				sizeX = sizeY * targetAspect;
 			}
-			return new Rect(
+			return new FRect(
 				rect.x + Mathf.Abs(rect.width - sizeX) * pivotX,
 				rect.y + Mathf.Abs(rect.height - sizeY) * pivotY,
 				sizeX, sizeY
 			);
 		}
-		public static Rect Envelope (this Rect rect, float targetAspect) {
+		public static FRect Envelope (this FRect rect, float targetAspect) {
 			float sizeX = rect.width;
 			float sizeY = rect.height;
 			if (targetAspect < rect.width / rect.height) {
@@ -338,33 +338,33 @@ namespace AngeliaFramework {
 			} else {
 				sizeX = sizeY * targetAspect;
 			}
-			return new Rect(
+			return new FRect(
 				rect.x - Mathf.Abs(rect.width - sizeX) / 2f,
 				rect.y - Mathf.Abs(rect.height - sizeY) / 2f,
 				sizeX, sizeY
 			);
 		}
-		public static IRect ToRectInt (this Rect rect) => new((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
-		public static void Clamp (this ref Rect rect, Rect target) => rect = Rect.MinMaxRect(
+		public static IRect ToRectInt (this FRect rect) => new((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
+		public static void Clamp (this ref FRect rect, FRect target) => rect = FRect.MinMaxRect(
 			Mathf.Min(target.xMax, Mathf.Max(rect.xMin, target.xMin)),
 			Mathf.Min(target.yMax, Mathf.Max(rect.yMin, target.yMin)),
 			Mathf.Max(target.xMin, Mathf.Min(rect.xMax, target.xMax)),
 			Mathf.Max(target.yMin, Mathf.Min(rect.yMax, target.yMax))
 		);
-		public static Rect GetClamp (this Rect rect, Rect target) => Rect.MinMaxRect(
+		public static FRect GetClamp (this FRect rect, FRect target) => FRect.MinMaxRect(
 			Mathf.Min(target.xMax, Mathf.Max(rect.xMin, target.xMin)),
 			Mathf.Min(target.yMax, Mathf.Max(rect.yMin, target.yMin)),
 			Mathf.Max(target.xMin, Mathf.Min(rect.xMax, target.xMax)),
 			Mathf.Max(target.yMin, Mathf.Min(rect.yMax, target.yMax))
 		);
 
-		public static Float2 BottomLeft (this Rect rect) => new(rect.xMin, rect.yMin);
-		public static Float2 BottomRight (this Rect rect) => new(rect.xMax, rect.yMin);
-		public static Float2 TopLeft (this Rect rect) => new(rect.xMin, rect.yMax);
-		public static Float2 TopRight (this Rect rect) => new(rect.xMax, rect.yMax);
+		public static Float2 BottomLeft (this FRect rect) => new(rect.xMin, rect.yMin);
+		public static Float2 BottomRight (this FRect rect) => new(rect.xMax, rect.yMin);
+		public static Float2 TopLeft (this FRect rect) => new(rect.xMin, rect.yMax);
+		public static Float2 TopRight (this FRect rect) => new(rect.xMax, rect.yMax);
 
 		// RectInt
-		public static Rect ToRect (this IRect rect) => new(rect.x, rect.y, rect.width, rect.height);
+		public static FRect ToRect (this IRect rect) => new(rect.x, rect.y, rect.width, rect.height);
 		public static IRect Fit (this IRect rect, AngeSprite sprite, int pivotX = 500, int pivotY = 500) => rect.Fit(sprite.GlobalWidth, sprite.GlobalHeight, pivotX, pivotY);
 		public static IRect Fit (this IRect rect, int aspWidth, int aspHeight, int pivotX = 500, int pivotY = 500) {
 			if (aspWidth * aspHeight == 0) return rect;

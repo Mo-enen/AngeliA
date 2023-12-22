@@ -18,7 +18,6 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
-		[System.Serializable]
 		private class PlayerGameData {
 			public int HomeUnitPositionX = int.MinValue;
 			public int HomeUnitPositionY = int.MinValue;
@@ -629,7 +628,7 @@ namespace AngeliaFramework {
 
 
 		private static void LoadGameDataFromFile () {
-			var data = AngeUtil.LoadOrCreateJson<PlayerGameData>(AngePath.UserDataRoot);
+			var data = JsonUtil.LoadOrCreateJson<PlayerGameData>(AngePath.UserDataRoot);
 			HomeUnitPosition =
 				data.HomeUnitPositionX != int.MinValue &&
 				data.HomeUnitPositionY != int.MinValue &&
@@ -639,7 +638,7 @@ namespace AngeliaFramework {
 
 
 		private static void SaveGameDataToFile () {
-			AngeUtil.SaveJson(new PlayerGameData() {
+			JsonUtil.SaveJson(new PlayerGameData() {
 				HomeUnitPositionX = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.x : int.MinValue,
 				HomeUnitPositionY = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.y : int.MinValue,
 				HomeUnitPositionZ = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.z : int.MinValue,

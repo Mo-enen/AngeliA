@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 
 
@@ -9,7 +10,7 @@ namespace AngeliaFramework {
 	public interface IGlobalPosition {
 
 
-		[System.Serializable]
+		[JsonObject(MemberSerialization.OptIn)]
 		public class Position {
 			public int ID {
 				get => i;
@@ -19,12 +20,11 @@ namespace AngeliaFramework {
 				get => u;
 				set => u = value;
 			}
-			[SerializeField] private int i;
-			[SerializeField] private Int3 u;
+			[JsonProperty] private int i;
+			[JsonProperty] private Int3 u;
 		}
 
 
-		[System.Serializable]
 		public class GlobalPositionMeta {
 			public Position[] Positions;
 		}
@@ -90,7 +90,7 @@ namespace AngeliaFramework {
 			var meta = new GlobalPositionMeta() {
 				Positions = CreateMetaFileListCache.ToArray(),
 			};
-			AngeUtil.SaveJson(meta, mapFolder);
+			JsonUtil.SaveJson(meta, mapFolder);
 			CreateMetaFileListCache.Clear();
 			CreateMetaFileTask = null;
 			ReloadPool(meta);
@@ -112,7 +112,7 @@ namespace AngeliaFramework {
 		// LGC
 		private static void ReloadPool (GlobalPositionMeta meta = null) {
 			PositionPool.Clear();
-			meta ??= AngeUtil.LoadOrCreateJson<GlobalPositionMeta>(WorldSquad.MapRoot);
+			meta ??= JsonUtil.LoadOrCreateJson<GlobalPositionMeta>(WorldSquad.MapRoot);
 			if (meta == null || meta.Positions == null) return;
 			foreach (var pos in meta.Positions) {
 				PositionPool.TryAdd(pos.ID, pos.UnitPosition);

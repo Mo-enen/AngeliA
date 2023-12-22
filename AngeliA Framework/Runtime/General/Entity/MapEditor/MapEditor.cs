@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using GeorgeMamaladze;
+using Newtonsoft.Json;
 
 
 namespace AngeliaFramework {
@@ -48,19 +48,19 @@ namespace AngeliaFramework {
 		}
 
 
+		[JsonObject(MemberSerialization.OptIn)]
+		private class MapEditorMeta : IJsonSerializationCallback {
 
-		[System.Serializable]
-		private class MapEditorMeta : ISerializationCallbackReceiver {
+			[JsonObject(MemberSerialization.OptIn)]
+			public class PinnedList : IJsonSerializationCallback {
 
-			[System.Serializable]
-			public class PinnedList : ISerializationCallbackReceiver {
+				[JsonProperty] public int Icon = 0;
+				[JsonProperty] private int[] PaletteItemIDs = null;
+				public List<PaletteItem> Items;
 
-				public int Icon = 0;
-				[SerializeField] private int[] PaletteItemIDs = null;
-				[System.NonSerialized] public List<PaletteItem> Items;
-
-				public void OnAfterDeserialize () {
+				void IJsonSerializationCallback.OnAfterLoadedFromDisk () {
 					Items ??= new();
+					Items.Clear();
 					if (PaletteItemIDs == null || Instance == null) return;
 					// Items
 					var pool = Instance.PalettePool;
@@ -75,9 +75,8 @@ namespace AngeliaFramework {
 					}
 				}
 
-				public void OnBeforeSerialize () {
+				void IJsonSerializationCallback.OnBeforeSaveToDisk () {
 					Items ??= new();
-					if (Items == null) return;
 					PaletteItemIDs = new int[Items.Count];
 					for (int i = 0; i < Items.Count; i++) {
 						PaletteItemIDs[i] = Items[i].ID;
@@ -86,11 +85,11 @@ namespace AngeliaFramework {
 
 			}
 
-			public List<PinnedList> PinnedLists;
+			[JsonProperty] public List<PinnedList> PinnedLists;
 
-			public void OnBeforeSerialize () => PinnedLists ??= new();
-			public void OnAfterDeserialize () => PinnedLists ??= new();
-
+			public void Valid () => PinnedLists ??= new();
+			void IJsonSerializationCallback.OnBeforeSaveToDisk () => Valid();
+			void IJsonSerializationCallback.OnAfterLoadedFromDisk () => Valid();
 		}
 
 
@@ -230,7 +229,7 @@ namespace AngeliaFramework {
 			Active_Palette();
 
 			// Editor Meta
-			EditorMeta = AngeUtil.LoadOrCreateJson<MapEditorMeta>(
+			EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(
 				Application.isEditor ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot
 			) ?? new();
 
@@ -294,7 +293,7 @@ namespace AngeliaFramework {
 				Save();
 			}
 
-			AngeUtil.SaveJson(
+			JsonUtil.SaveJson(
 				EditorMeta,
 				Application.isEditor ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot
 			);

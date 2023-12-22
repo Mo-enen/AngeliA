@@ -5,8 +5,6 @@ using System.IO;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
-using AngeliaFramework.Editor;
-using AngeliaFramework;
 
 
 namespace AngeliaFramework.Editor {
@@ -281,7 +279,7 @@ namespace AngeliaFramework.Editor {
 							if (icon != null) GUI.DrawTexture(iconRect.Shrink(2).Fit((float)icon.width / icon.height), icon);
 							GUI.Label(itemRect, name, Style.LabelStyle);
 							if (!item.InPackage) {
-								EditorGUI.DrawRect(new Rect(rect.x - 1, rect.y + 2, 1, rect.height - 4), assetIconColor);
+								EditorGUI.DrawRect(new FRect(rect.x - 1, rect.y + 2, 1, rect.height - 4), assetIconColor);
 							}
 							EditorGUIUtility.AddCursorRect(rect, MouseCursor.Link);
 						} else if (i < scripts.Length - 1 && scripts[i + 1].IsFile) {
@@ -495,7 +493,7 @@ namespace AngeliaFramework.Editor {
 				HubSearch
 			);
 			if (window != null) {
-				window.position = new Rect(
+				window.position = new FRect(
 					position.x,
 					position.y + 20,
 					window.position.width,
@@ -526,7 +524,7 @@ namespace AngeliaFramework.Editor {
 		}
 
 
-		private void OnSearchWindowItemDraw (Rect rect, SearchTreeEntry entry, bool focus) {
+		private void OnSearchWindowItemDraw (FRect rect, SearchTreeEntry entry, bool focus) {
 			Style ??= new();
 			float iconSize = rect.height;
 			// Draw Basic

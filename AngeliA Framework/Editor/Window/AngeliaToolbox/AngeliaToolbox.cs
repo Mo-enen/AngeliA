@@ -178,7 +178,7 @@ namespace AngeliaFramework.Editor {
 
 			var cameraRect01 = Game.GameCamera.rect;
 			var angeCameraRect = CellRenderer.CameraRect;
-			var rect = new Rect();
+			var rect = new FRect();
 			float thickX = 0.0005f;
 			float thickY = 0.0005f * Game.GameCamera.aspect;
 			if (GizmosMaterial == null) {
@@ -285,12 +285,12 @@ namespace AngeliaFramework.Editor {
 			}
 
 
-			static void DrawFrame (Rect rect, float thickX, float thickY, bool cross) {
+			static void DrawFrame (FRect rect, float thickX, float thickY, bool cross) {
 
-				DrawRect(new Rect(rect.x - thickX, rect.y - thickY, thickX * 2f, rect.height + thickY * 2f));
-				DrawRect(new Rect(rect.xMax - thickX, rect.y - thickY, thickX * 2f, rect.height + thickY * 2f));
-				DrawRect(new Rect(rect.x, rect.y - thickY, rect.width, thickY * 2f));
-				DrawRect(new Rect(rect.x, rect.yMax - thickY, rect.width, thickY * 2f));
+				DrawRect(new FRect(rect.x - thickX, rect.y - thickY, thickX * 2f, rect.height + thickY * 2f));
+				DrawRect(new FRect(rect.xMax - thickX, rect.y - thickY, thickX * 2f, rect.height + thickY * 2f));
+				DrawRect(new FRect(rect.x, rect.y - thickY, rect.width, thickY * 2f));
+				DrawRect(new FRect(rect.x, rect.yMax - thickY, rect.width, thickY * 2f));
 				if (cross) {
 					GL.Vertex3(rect.x - thickX, rect.y - thickY, 0.5f);
 					GL.Vertex3(rect.x - thickX, rect.y + thickY, 0.5f);
@@ -302,7 +302,7 @@ namespace AngeliaFramework.Editor {
 					GL.Vertex3(rect.xMax + thickX, rect.y + thickY, 0.5f);
 					GL.Vertex3(rect.xMax + thickX, rect.y - thickY, 0.5f);
 				}
-				static void DrawRect (Rect rect) {
+				static void DrawRect (FRect rect) {
 					GL.Vertex3(rect.x, rect.y, 0.5f);
 					GL.Vertex3(rect.x, rect.yMax, 0.5f);
 					GL.Vertex3(rect.xMax, rect.yMax, 0.5f);
@@ -597,7 +597,7 @@ namespace AngeliaFramework.Editor {
 						btn.clicked += () => EditorUtility.OpenWithDefaultApp(AngePath.UniverseRoot);
 						break;
 					case "Persis":
-						btn.clicked += () => EditorUtility.OpenWithDefaultApp(Application.persistentDataPath);
+						btn.clicked += () => EditorUtility.OpenWithDefaultApp(AngePath.PersistentDataPath);
 						break;
 					case "Project":
 						btn.clicked += () => EditorUtility.OpenWithDefaultApp(Util.GetParentPath(Application.dataPath));

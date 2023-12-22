@@ -37,8 +37,7 @@ namespace AngeliaFramework {
 		}
 
 
-		[System.Serializable]
-		private class InputConfig : ISerializationCallbackReceiver {
+		private class InputConfig : IJsonSerializationCallback {
 
 			public int[] KeyboardConfig = {
 				(int)KeyboardKey.A, (int)KeyboardKey.D, (int)KeyboardKey.S, (int)KeyboardKey.W,
@@ -51,10 +50,7 @@ namespace AngeliaFramework {
 				(int)GamepadKey.Start, (int)GamepadKey.Select,
 			};
 
-			public void OnAfterDeserialize () => Valid();
-			public void OnBeforeSerialize () => Valid();
-
-			private void Valid () {
+			public void Valid () {
 
 				if (KeyboardConfig == null) KEYBOARD_DEFAULT.CopyTo(KeyboardConfig, 0);
 				if (GamepadConfig == null) GAMEPAD_DEFAULT.CopyTo(KeyboardConfig, 0);
@@ -82,6 +78,8 @@ namespace AngeliaFramework {
 				}
 
 			}
+			void IJsonSerializationCallback.OnAfterLoadedFromDisk () => Valid();
+			void IJsonSerializationCallback.OnBeforeSaveToDisk () => Valid();
 
 		}
 
@@ -220,7 +218,7 @@ namespace AngeliaFramework {
 		public static void BeforeGameInitialize () {
 
 			// Load Config
-			var iConfig = AngeUtil.LoadOrCreateJson<InputConfig>(Application.persistentDataPath);
+			var iConfig = JsonUtil.LoadOrCreateJson<InputConfig>(Application.persistentDataPath);
 			for (int i = 0; i < 8; i++) {
 				KeyMap[(Gamekey)i] = new Int2(iConfig.KeyboardConfig[i], iConfig.GamepadConfig[i]);
 			}
@@ -742,7 +740,7 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private static void SaveInputToDisk () => AngeUtil.SaveJson(new InputConfig() {
+		private static void SaveInputToDisk () => JsonUtil.SaveJson(new InputConfig() {
 			KeyboardConfig = new int[8] {
 				KeyMap[(Gamekey)0].x,
 				KeyMap[(Gamekey)1].x,

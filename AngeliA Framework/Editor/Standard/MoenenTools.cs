@@ -65,7 +65,7 @@ namespace AngeliaFramework.Editor {
 			// Project Item GUI
 			EditorApplication.projectWindowItemOnGUI -= ProjectItemGUI;
 			EditorApplication.projectWindowItemOnGUI += ProjectItemGUI;
-			static void ProjectItemGUI (string guid, Rect selectionRect) {
+			static void ProjectItemGUI (string guid, UnityEngine.Rect selectionRect) {
 				selectionRect.width += selectionRect.x;
 				selectionRect.x = 0;
 				if (selectionRect.Contains(Event.current.mousePosition)) {
@@ -191,7 +191,7 @@ namespace AngeliaFramework.Editor {
 				Debug.LogWarning("Sprite sheet not found.");
 				return;
 			}
-			var sheet = AngeUtil.LoadJson<SpriteSheet>(AngePath.SheetRoot);
+			var sheet = JsonUtil.LoadJson<SpriteSheet>(AngePath.SheetRoot);
 			if (sheet == null) {
 				Debug.LogWarning("Failed to load sprite sheet.");
 				return;

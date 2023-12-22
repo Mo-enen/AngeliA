@@ -101,14 +101,14 @@ namespace AngeliaFramework.Editor {
 
 
 
-		public static Rect[] PackTextures (out Byte4[] colors, out int width, out int height, List<PackingData> packingList, bool sortByIndex, int aimWidth = -1) {
+		public static FRect[] PackTextures (out Byte4[] colors, out int width, out int height, List<PackingData> packingList, bool sortByIndex, int aimWidth = -1) {
 
 			// Check
 			if (packingList.Count == 0) {
 				colors = new Byte4[0];
 				width = 0;
 				height = 0;
-				return new Rect[0];
+				return new FRect[0];
 			}
 
 			// Init
@@ -210,9 +210,9 @@ namespace AngeliaFramework.Editor {
 
 			// Sort
 			items.Sort(new ItemSorter(true));
-			Rect[] uvs = new Rect[items.Count];
+			FRect[] uvs = new FRect[items.Count];
 			for (int i = 0; i < items.Count; i++) {
-				uvs[i] = new Rect(
+				uvs[i] = new FRect(
 					items[i].X,
 					items[i].Y,
 					items[i].Width,

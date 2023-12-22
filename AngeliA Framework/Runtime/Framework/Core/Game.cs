@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AngeliaFramework;
+
+
+[assembly: AngeliAAttribute]
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 
@@ -95,12 +99,12 @@ namespace AngeliaFramework {
 		public static event System.Action OnSlotCreated;
 
 		// Ser
-		[SerializeField, DisableAtRuntime] GameStartMode m_GameStartMode = GameStartMode.StartWithGamePlay;
-		[SerializeField, DisableAtRuntime] Gradient m_SkyTintTop = null;
-		[SerializeField, DisableAtRuntime] Gradient m_SkyTintBottom = null;
-		[SerializeField, DisableAtRuntime] Font[] m_Fonts = null;
-		[SerializeField, DisableAtRuntime] Texture2D[] m_Cursors = null;
-		[SerializeField, DisableAtRuntime] AudioClip[] m_AudioClips = null;
+		[SerializeField] GameStartMode m_GameStartMode = GameStartMode.StartWithGamePlay;
+		[SerializeField] Gradient m_SkyTintTop = null;
+		[SerializeField] Gradient m_SkyTintBottom = null;
+		[SerializeField] Font[] m_Fonts = null;
+		[SerializeField] Texture2D[] m_Cursors = null;
+		[SerializeField] AudioClip[] m_AudioClips = null;
 
 		// Data
 		private static bool Initialized = false;
@@ -207,7 +211,6 @@ namespace AngeliaFramework {
 			try {
 				Initialized = true;
 				AngePath.CurrentSaveSlot = _CurrentSaveSlot.Value;
-				Util.InitializeAssembly("runtime");
 				Util.LinkEventWithAttribute<OnGameUpdateAttribute>(typeof(Game), nameof(OnGameUpdate));
 				Util.LinkEventWithAttribute<OnGameUpdateLaterAttribute>(typeof(Game), nameof(OnGameUpdateLater));
 				Util.LinkEventWithAttribute<OnGameUpdatePauselessAttribute>(typeof(Game), nameof(OnGameUpdatePauseless));

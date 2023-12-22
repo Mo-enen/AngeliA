@@ -153,7 +153,7 @@ namespace AngeliaFramework.Editor {
 			public Float4 Border;
 			public SheetType Type;
 			public int SheetZ;
-			public Rect UvResult;
+			public FRect UvResult;
 		}
 
 
@@ -217,7 +217,7 @@ namespace AngeliaFramework.Editor {
 			// Sheets
 			var sheet = AngeUtil.CreateSpriteSheet(texture, flexSprites);
 			if (sheet != null) {
-				AngeUtil.SaveJson(sheet, AngePath.SheetRoot);
+				JsonUtil.SaveJson(sheet, AngePath.SheetRoot);
 			}
 
 			// Maps
@@ -405,7 +405,7 @@ namespace AngeliaFramework.Editor {
 					Border = item.Border,
 					AngePivot = item.AngePivot,
 					SheetType = item.Type,
-					Rect = Rect.MinMaxRect(
+					Rect = FRect.MinMaxRect(
 						uv.xMin * width,
 						uv.yMin * height,
 						uv.xMax * width,
@@ -415,7 +415,7 @@ namespace AngeliaFramework.Editor {
 			}
 			for (int i = 0; i < overlapList.Count; i++) {
 				var (flex, original) = overlapList[i];
-				flex.Rect = Rect.MinMaxRect(
+				flex.Rect = FRect.MinMaxRect(
 					original.UvResult.xMin * width,
 					original.UvResult.yMin * height,
 					original.UvResult.xMax * width,
