@@ -91,15 +91,17 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnSlotChanged]
-		public static void OnSlotChanged () => LoadGameDataFromFile();
+		[OnSlotChanged(2048)]
+		public static void OnSlotChanged () {
+			LoadGameDataFromFile();
+			foreach (var type in typeof(Player).AllChildClass()) {
+				Inventory.SetUnlockInside(type.AngeHash(), true);
+			}
+		}
 
 
 		[OnGameRestart]
 		public static void OnGameRestart () => RespawnCpUnitPosition = null;
-
-
-		public Player () => Inventory.SetUnlockInside(TypeID, true);
 
 
 		public override void OnActivated () {

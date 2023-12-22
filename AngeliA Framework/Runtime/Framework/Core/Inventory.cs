@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -14,16 +13,13 @@ namespace AngeliaFramework {
 
 
 		[System.Serializable]
-		private class InventoryData : ISerializationCallbackReceiver {
-
+		private class InventoryData {
 			public int[] Items;
 			public int[] Counts;
 			[System.NonSerialized] public string Name;
 			[System.NonSerialized] public bool UnlockItemInside;
 			[System.NonSerialized] public bool IsDirty;
-
-			public void OnAfterDeserialize () {
-				UnlockItemInside = false;
+			public void Valid () {
 				Items ??= new int[0];
 				Counts ??= new int[Items.Length];
 				if (Counts.Length != Items.Length) {
@@ -34,9 +30,6 @@ namespace AngeliaFramework {
 					Counts = newCounts;
 				}
 			}
-
-			public void OnBeforeSerialize () { }
-
 		}
 
 
@@ -196,7 +189,7 @@ namespace AngeliaFramework {
 			int itemID = data.Items[itemIndex];
 			if (itemID == 0) return 0;
 			int _count = data.Counts[itemIndex];
-			int delta = Mathf.Min(count, ItemSystem.GetItemMaxStackCount(itemID) - _count);
+			int delta = Util.Min(count, ItemSystem.GetItemMaxStackCount(itemID) - _count);
 			data.Counts[itemIndex] = _count + delta;
 			data.IsDirty = true;
 			IsPoolDirty = true;
@@ -212,7 +205,7 @@ namespace AngeliaFramework {
 			for (int i = 0; i < data.Items.Length; i++) {
 				if (data.Items[i] != targetItemID) continue;
 				int _count = data.Counts[i];
-				int delta = Mathf.Min(count, maxCount - _count);
+				int delta = Util.Min(count, maxCount - _count);
 				data.Counts[i] = _count + delta;
 				count -= delta;
 				if (count <= 0) break;
@@ -233,7 +226,7 @@ namespace AngeliaFramework {
 				data.Items[itemIndex] == 0
 			) return 0;
 			int _count = data.Counts[itemIndex];
-			int delta = Mathf.Min(_count, count).GreaterOrEquelThanZero();
+			int delta = Util.Min(_count, count).GreaterOrEquelThanZero();
 			if (delta == 0) return delta;
 			int newCount = _count - delta;
 			data.Counts[itemIndex] = newCount;
@@ -253,7 +246,7 @@ namespace AngeliaFramework {
 			for (int i = 0; i < data.Items.Length; i++) {
 				if (data.Items[i] != targetItemID) continue;
 				int _count = data.Counts[i];
-				int delta = Mathf.Min(_count, count);
+				int delta = Util.Min(_count, count);
 				_count -= delta;
 				count -= delta;
 				data.Counts[i] = _count;
@@ -281,7 +274,7 @@ namespace AngeliaFramework {
 				int _count = data.Counts[i];
 				if (_count < maxStackCount) {
 					// Append Item
-					int delta = Mathf.Min(count, maxStackCount - _count);
+					int delta = Util.Min(count, maxStackCount - _count);
 					count -= delta;
 					_count += delta;
 					data.Counts[i] = _count;
@@ -297,7 +290,7 @@ namespace AngeliaFramework {
 			for (int i = 0; i < data.Items.Length; i++) {
 				int _item = data.Items[i];
 				if (_item != 0) continue;
-				int delta = Mathf.Min(count, maxStackCount);
+				int delta = Util.Min(count, maxStackCount);
 				count -= delta;
 				data.Items[i] = item;
 				data.Counts[i] = delta;
@@ -313,7 +306,7 @@ namespace AngeliaFramework {
 		public static int ItemTotalCount (int inventoryID, int itemID, bool ignoreStack = false) {
 			int result = 0;
 			if (Pool.TryGetValue(inventoryID, out var data)) {
-				int len = Mathf.Min(data.Items.Length, data.Counts.Length);
+				int len = Util.Min(data.Items.Length, data.Counts.Length);
 				for (int i = 0; i < len; i++) {
 					if (data.Items[i] == itemID) {
 						result += ignoreStack ? 1 : data.Counts[i];
@@ -390,19 +383,16 @@ namespace AngeliaFramework {
 			foreach (var path in Util.EnumerateFiles(root, true, $"*.{INV_EXT}", $"*.{CHAR_INV_EXT}")) {
 				try {
 					string name = Util.GetNameWithoutExtension(path);
-					//if (!int.TryParse(name, out int id)) continue;
 					int id = name.AngeHash();
 					if (Pool.ContainsKey(id)) continue;
-					string json = Util.FileToText(path);
-					if (string.IsNullOrEmpty(json)) continue;
 					InventoryData data;
 					if (path.EndsWith(INV_EXT)) {
-						data = JsonUtility.FromJson<InventoryData>(json);
+						data = AngeUtil.LoadOrCreateJsonFromPath<InventoryData>(path);
 					} else {
-						data = JsonUtility.FromJson<CharacterInventoryData>(json);
+						data = AngeUtil.LoadOrCreateJsonFromPath<CharacterInventoryData>(path);
 					}
 					if (data == null) continue;
-					data.Items ??= new int[0];
+					data.Valid();
 					data.IsDirty = false;
 					data.Name = name;
 					Pool.TryAdd(id, data);
@@ -426,10 +416,8 @@ namespace AngeliaFramework {
 				if (!forceSave && !data.IsDirty) continue;
 				data.IsDirty = false;
 				// Save Inventory
-				Util.TextToFile(
-					JsonUtility.ToJson(data, false),
-					Util.CombinePaths(root, $"{data.Name}.{(data is CharacterInventoryData ? CHAR_INV_EXT : INV_EXT)}")
-				);
+				string path = Util.CombinePaths(root, $"{data.Name}.{(data is CharacterInventoryData ? CHAR_INV_EXT : INV_EXT)}");
+				AngeUtil.SaveJsonToPath(data, path, false);
 				// Update Item Unlocked
 				UpdateItemUnlocked(data);
 			}
@@ -444,7 +432,7 @@ namespace AngeliaFramework {
 
 
 		private static void UpdateItemUnlocked (InventoryData data) {
-			if (data == null) return;
+			if (data == null || !data.UnlockItemInside) return;
 			for (int i = 0; i < data.Items.Length; i++) {
 				int itemID = data.Items[i];
 				int itemCount = data.Counts[i];

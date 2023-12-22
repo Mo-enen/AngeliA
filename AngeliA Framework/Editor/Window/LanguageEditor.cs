@@ -133,12 +133,6 @@ namespace AngeliaFramework.Editor {
 			}
 			EditorGUIUtility.AddCursorRect(MGUI.LastRect(), MouseCursor.Link);
 
-			// Language
-			if (GUI.Button(MGUI.Rect(90, HEIGHT).Expand(0, 1, 0, 0), " Languages", EditorStyles.toolbarPopup)) {
-				ShowLanguageMenu();
-			}
-			EditorGUIUtility.AddCursorRect(MGUI.LastRect(), MouseCursor.Link);
-
 		}
 
 
@@ -295,42 +289,6 @@ namespace AngeliaFramework.Editor {
 				}
 				Util.TextToFile(builder.ToString(), path, Encoding.UTF8);
 			}
-		}
-
-
-		private void ShowLanguageMenu () {
-			//var menu = new GenericMenu();
-			//bool hasItem = false;
-			//foreach (var _language in System.Enum.GetValues(typeof(GameLanguage))) {
-			//	var language = (GameLanguage)_language;
-			//	if (language == GameLanguage.Unknown) continue;
-			//	hasItem = true;
-			//	menu.AddItem(new GUIContent(Util.GetLanguageDisplayName(language)), Languages.Contains(language), () => {
-			//		if (IsDirty) Save();
-			//		if (Languages.Contains(language)) {
-			//			// Delete
-			//			if (EditorUtil.Dialog(
-			//				"", $"Delete Language {Util.GetLanguageDisplayName(language)}?\nFile will move to recycle bin.", "Delete", "Cancel"
-			//			)) {
-			//				string path = Util.CombinePaths(AngePath.LanguageRoot, language.ToString());
-			//				EditorUtil.MoveFileOrFolderToTrash(path, path + ".meta");
-			//			}
-			//		} else {
-			//			// Create
-			//			var builder = new StringBuilder();
-			//			foreach (var key in Keys) {
-			//				builder.Append(key);
-			//				builder.AppendLine(":");
-			//			}
-			//			Util.TextToFile(
-			//				builder.ToString(),
-			//				Util.CombinePaths(AngePath.LanguageRoot, language.ToString(), $"{CurrentTag}.{AngePath.LANGUAGE_FILE_EXT}")
-			//			);
-			//		}
-			//		EditorApplication.delayCall += () => Load();
-			//	});
-			//}
-			//if (hasItem) menu.ShowAsContext();
 		}
 
 

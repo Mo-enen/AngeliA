@@ -8,7 +8,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.Capacity(1024, 0)]
 	[EntityAttribute.Layer(EntityLayer.ITEM)]
-	public class ItemHolder : EnvironmentEntity, IActionTarget {
+	public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 
 
 
@@ -20,19 +20,15 @@ namespace AngeliaFramework {
 		public static readonly int TYPE_ID = typeof(ItemHolder).AngeHash();
 		private const int ITEM_PHYSICS_SIZE = Const.HALF;
 		private const int ITEM_RENDER_SIZE = Const.CEL * 2 / 3;
-		private const int GRAVITY = 5;
-		private const int MAX_GRAVITY_SPEED = 64;
 
 		// Api
 		public delegate void ItemCollectedHandler (Entity collector, int itemID, int count);
 		public static event ItemCollectedHandler OnItemCollected;
+		protected override int PhysicalLayer => PhysicsLayer.ITEM;
+		protected override int CollisionMask => PhysicsMask.MAP;
 		public int ItemID { get; set; } = 0;
 		public int ItemCount { get; set; } = 1;
 		bool IActionTarget.AllowInvokeOnSquat => true;
-
-		// Data
-		private int VelocityY = 0;
-		private bool MakingRoom = false;
 
 
 		#endregion
@@ -47,14 +43,10 @@ namespace AngeliaFramework {
 			base.OnActivated();
 			Width = ITEM_PHYSICS_SIZE;
 			Height = ITEM_PHYSICS_SIZE;
-			MakingRoom = false;
 		}
 
 
-		public override void FillPhysics () {
-			base.FillPhysics();
-			CellPhysics.FillEntity(PhysicsLayer.ITEM, this, true);
-		}
+		public override void FillPhysics () => CellPhysics.FillEntity(PhysicsLayer.ITEM, this, true);
 
 
 		public override void PhysicsUpdate () {
@@ -65,42 +57,26 @@ namespace AngeliaFramework {
 				return;
 			}
 
-			// Fall
-			bool grounded =
-				VelocityY <= 0 &&
-				(!CellPhysics.RoomCheck(PhysicsMask.MAP, Rect, this, Direction4.Down) ||
-				!CellPhysics.RoomCheckOneway(PhysicsMask.MAP, Rect, this, Direction4.Down));
-			if (!grounded) {
-				if (VelocityY != 0) {
-					var rect = Rect;
-					rect.position = CellPhysics.Move(
-						PhysicsMask.MAP, rect.position, 0, VelocityY, rect.size, this, out _, out bool stopY
-					);
-					Y = rect.y;
-					if (stopY) VelocityY = 0;
-				}
-				VelocityY = Mathf.Clamp(VelocityY - GRAVITY, -MAX_GRAVITY_SPEED, MAX_GRAVITY_SPEED);
-				MakingRoom = true;
-			} else {
-				VelocityY = 0;
-			}
-
 			// Make Room
-			if (grounded) {
-				var makeRoomRect = Rect.Expand(Const.HALF / 2, Const.HALF / 2, 0, 0);
-				if (!MakingRoom) {
-					MakingRoom =
-						(Game.GlobalFrame - SpawnFrame) % 30 == 0 ||
-						CellPhysics.Overlap(PhysicsMask.ITEM, makeRoomRect, this, OperationMode.TriggerOnly);
+			if (IsGrounded) {
+				int dir = 0;
+				var hits = CellPhysics.OverlapAll(PhysicsMask.ITEM, Rect, out int count, this, OperationMode.TriggerOnly);
+				for (int i = 0; i < count; i++) {
+					var hit = hits[i];
+					if (hit.Entity == null) continue;
+					if (hit.Rect.x > X) {
+						dir--;
+					} else if (hit.Rect.x < X) {
+						dir++;
+					} else if (hit.Entity.InstanceOrder > InstanceOrder) {
+						dir--;
+					} else {
+						dir++;
+					}
 				}
-				if (
-					MakingRoom &&
-					!MakeRoomFromItems(makeRoomRect) &&
-					!MakeRoomFromSlope(makeRoomRect)
-				) {
-					MakingRoom = false;
+				if (dir != 0) {
+					PerformMove(dir * 4, 0);
 				}
-
 			}
 		}
 
@@ -147,7 +123,7 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public void Jump (int velocity = 96) {
+		public void Jump (int velocity = 42) {
 			VelocityY = velocity;
 			Y += velocity;
 		}
@@ -206,52 +182,6 @@ namespace AngeliaFramework {
 
 		#region --- LGC ---
 
-
-		private bool MakeRoomFromItems (IRect roomRect) {
-			var hits = CellPhysics.OverlapAll(
-				PhysicsMask.ITEM, roomRect, out int count,
-				this, OperationMode.TriggerOnly
-			);
-			int pressureL = 0;
-			int pressureR = 0;
-			for (int i = 0; i < count; i++) {
-				var hit = hits[i];
-				if (hit.Entity is not ItemHolder hitItem) continue;
-				int dis = (hitItem.X - X).Abs();
-				if (hitItem.X > X) {
-					pressureR += roomRect.width - dis;
-				} else {
-					pressureL += roomRect.width - dis;
-				}
-			}
-			if (pressureL + pressureR != 0 && pressureL != pressureR) {
-				var rect = Rect;
-				rect.position = CellPhysics.MoveIgnoreOneway(
-					PhysicsMask.MAP, rect.position,
-					(pressureL - pressureR).Sign3() * 6, 0,
-					rect.size, this
-				);
-				X = rect.x;
-				Y = Mathf.Min(rect.y, Y);
-				return true;
-			}
-			return false;
-		}
-
-
-		private bool MakeRoomFromSlope (IRect roomRect) {
-			var slope = CellPhysics.GetEntity<Slope>(roomRect, PhysicsMask.MAP, this, OperationMode.TriggerOnly);
-			if (slope == null) return false;
-			var rect = Rect;
-			rect.position = CellPhysics.MoveIgnoreOneway(
-				PhysicsMask.MAP, rect.position,
-				slope.DirectionHorizontal == Direction2.Right ? 6 : -6, 0,
-				rect.size, this
-			);
-			X = rect.x;
-			Y = Mathf.Min(rect.y, Y);
-			return true;
-		}
 
 
 		#endregion

@@ -771,8 +771,12 @@ namespace AngeliaFramework {
 
 
 		// Json Meta
-		public static T LoadOrCreateJson<T> (string rootPath, string name = "") where T : class, new() {
-			var result = LoadJson<T>(rootPath, name);
+		public static string GetJsonPath<T> (string rootPath, string name = "", string ext = "json") => Util.CombinePaths(rootPath, $"{(string.IsNullOrEmpty(name) ? typeof(T).Name : name)}.{ext}");
+
+
+		public static T LoadOrCreateJson<T> (string rootPath, string name = "", string ext = "json") where T : class, new() => LoadOrCreateJsonFromPath<T>(GetJsonPath<T>(rootPath, name, ext));
+		public static T LoadOrCreateJsonFromPath<T> (string jsonPath) where T : class, new() {
+			var result = LoadJsonFromPath<T>(jsonPath);
 			if (result == null) {
 				result = new T();
 				if (result is ISerializationCallbackReceiver ser) {
@@ -783,10 +787,23 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool OverrideJson<T> (string rootPath, T target, string name = "") {
+		public static T LoadJson<T> (string rootPath, string name = "", string ext = "json") => LoadJsonFromPath<T>(GetJsonPath<T>(rootPath, name, ext));
+		public static T LoadJsonFromPath<T> (string jsonPath) {
+			try {
+				if (Util.FileExists(jsonPath)) {
+					var data = Util.FileToText(jsonPath, Encoding.UTF8);
+					var target = JsonUtility.FromJson<T>(data);
+					if (target != null) return target;
+				}
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+			return default;
+		}
+
+
+		public static bool OverrideJson<T> (string rootPath, T target, string name = "", string ext = "json") => OverrideJsonFromPath(GetJsonPath<T>(rootPath, name, ext), target);
+		public static bool OverrideJsonFromPath<T> (string jsonPath, T target) {
 			if (target == null) return false;
 			try {
-				string jsonPath = GetJsonPath<T>(rootPath, name);
 				if (Util.FileExists(jsonPath)) {
 					var data = Util.FileToText(jsonPath, Encoding.UTF8);
 					JsonUtility.FromJsonOverwrite(data, target);
@@ -797,28 +814,12 @@ namespace AngeliaFramework {
 		}
 
 
-		public static T LoadJson<T> (string rootPath, string name = "") where T : class {
-			try {
-				string jsonPath = GetJsonPath<T>(rootPath, name);
-				if (Util.FileExists(jsonPath)) {
-					var data = Util.FileToText(jsonPath, Encoding.UTF8);
-					var target = JsonUtility.FromJson<T>(data);
-					if (target != null) return target;
-				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-			return null;
-		}
-
-
-		public static void SaveJson<T> (T data, string rootPath, string name = "", bool prettyPrint = false) {
+		public static void SaveJson<T> (T data, string rootPath, string name = "", string ext = "json", bool prettyPrint = false) => SaveJsonToPath<T>(data, GetJsonPath<T>(rootPath, name, ext), prettyPrint);
+		public static void SaveJsonToPath<T> (T data, string jsonPath, bool prettyPrint = false) {
 			if (data == null) return;
-			string jsonPath = GetJsonPath<T>(rootPath, name);
 			string jsonText = JsonUtility.ToJson(data, prettyPrint);
 			Util.TextToFile(jsonText, jsonPath, Encoding.UTF8);
 		}
-
-
-		public static string GetJsonPath<T> (string rootPath, string name = "") => Util.CombinePaths(rootPath, $"{(string.IsNullOrEmpty(name) ? typeof(T).Name : name)}.json");
 
 
 		// Drawing

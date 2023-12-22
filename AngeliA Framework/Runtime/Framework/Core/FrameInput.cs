@@ -763,7 +763,7 @@ namespace AngeliaFramework {
 				(int)GamepadKey.Start,
 				KeyMap[(Gamekey)7].y,
 			},
-		}, Application.persistentDataPath, "", true);
+		}, Application.persistentDataPath, prettyPrint: true);
 
 
 		#endregion

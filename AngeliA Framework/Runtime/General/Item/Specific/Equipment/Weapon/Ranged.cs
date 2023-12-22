@@ -128,6 +128,7 @@ namespace AngeliaFramework {
 				}
 			}
 		}
+		protected override int BulletPivotY => 618;
 	}
 
 

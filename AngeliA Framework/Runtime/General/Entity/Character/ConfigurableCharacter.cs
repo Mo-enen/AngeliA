@@ -83,7 +83,7 @@ namespace AngeliaFramework {
 			if (Config == null) return;
 			SaveCharacterToConfig();
 			string path = Util.CombinePaths(AngePath.UserDataRoot, "Character Config");
-			AngeUtil.SaveJson(Config, path, GetType().AngeName(), true);
+			AngeUtil.SaveJson(Config, path, GetType().AngeName(), prettyPrint: true);
 		}
 
 
