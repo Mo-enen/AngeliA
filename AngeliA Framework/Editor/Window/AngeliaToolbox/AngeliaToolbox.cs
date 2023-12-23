@@ -87,8 +87,6 @@ namespace AngeliaFramework.Editor {
 			Application.onBeforeRender -= OnBeforeRender;
 			Application.onBeforeRender += OnBeforeRender;
 
-			AngeEditorUtil.HideMetaFiles(AngePath.UniverseRoot);
-
 		}
 
 

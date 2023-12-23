@@ -1,13 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using AngeliaFramework;
-
-
-[assembly: AngeliA]
-
-
-namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 
 
 namespace AngeliaFramework.Editor {
@@ -109,14 +102,6 @@ namespace AngeliaFramework.Editor {
 			z = sheetZ ?? 0;
 			pivotX = _pivotX;
 			pivotY = _pivotY;
-		}
-
-
-		public static void HideMetaFiles (string rootPath) {
-			if (!Util.FolderExists(rootPath)) return;
-			foreach (var path in Util.EnumerateFiles(rootPath, false, "*.meta")) {
-				File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden);
-			}
 		}
 
 

@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
+using System.Text;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 using UnityEditor;
 using UnityEditor.PackageManager;
-using System.Linq;
-using UnityEngine.Rendering;
-using System.Text;
-using UnityEngine.UIElements;
 
 
 
@@ -18,44 +18,6 @@ namespace AngeliaFramework.Editor {
 
 
 		#region --- Path ---
-
-
-		private static string ROOT_PATH = "";
-		private static bool FixPathForIconLoading = true;
-
-
-		public static string GetRootPath (string rootName, string packageName = "") {
-			if (!string.IsNullOrEmpty(ROOT_PATH) && Util.FolderExists(ROOT_PATH)) { return ROOT_PATH; }
-			var paths = AssetDatabase.GetAllAssetPaths();
-			foreach (var path in paths) {
-				if (Util.PathIsFolder(path) && Util.GetNameWithoutExtension(path) == rootName) {
-					ROOT_PATH = FixedRelativePath(path);
-					break;
-				}
-			}
-			if (string.IsNullOrEmpty(ROOT_PATH) && !string.IsNullOrEmpty(packageName)) {
-				ROOT_PATH = "Packages/" + packageName;
-				FixPathForIconLoading = false;
-			}
-			return ROOT_PATH;
-		}
-
-
-		public static Texture2D GetImage (string rootName, string packageName, params string[] imagePath) =>
-			GetAsset<Texture2D>(rootName, packageName, imagePath);
-
-
-		public static T GetAsset<T> (string rootName, string packageName, params string[] assetPath) where T : Object {
-			T result = null;
-			string path = Util.CombinePaths(assetPath);
-			path = Util.CombinePaths(GetRootPath(rootName, packageName), path);
-			if (Util.FileExists(path)) {
-				result = AssetDatabase.LoadAssetAtPath<T>(
-					FixPathForIconLoading ? FixedRelativePath(path) : path
-				);
-			}
-			return result;
-		}
 
 
 		public static string FixedRelativePath (string path, string packageRoot = "") {

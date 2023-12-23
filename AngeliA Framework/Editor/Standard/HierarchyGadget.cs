@@ -1,7 +1,9 @@
-﻿namespace AngeliaFramework.Editor { // v1.2.2
-	using UnityEngine;
-	using UnityEditor;
-	using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+
+
+namespace AngeliaFramework.Editor { // v1.2.2
 
 
 	public class HierarchyGadget {

@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.IO;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEditor.SceneManagement;
+using AngeliaFramework;
+using Debug = UnityEngine.Debug;
+
+
+[assembly: AngeliA]
+
+namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 
 
 namespace AngeliaFramework.Editor {
-	using Debug = UnityEngine.Debug;
 
 
 	public interface IRefreshEvent {
@@ -238,7 +245,7 @@ namespace AngeliaFramework.Editor {
 			RefreshEditorSetting();
 			AssetDatabase.Refresh();
 			EditorSceneManager.SaveOpenScenes();
-			AngeEditorUtil.HideMetaFiles(AngePath.UniverseRoot);
+			HideMetaFiles(AngePath.UniverseRoot);
 		}
 
 
@@ -633,6 +640,14 @@ namespace AngeliaFramework.Editor {
 				Util.TextToFile(builder.ToString(), builtInPath);
 			}
 
+		}
+
+
+		private static void HideMetaFiles (string rootPath) {
+			if (!Util.FolderExists(rootPath)) return;
+			foreach (var path in Util.EnumerateFiles(rootPath, false, "*.meta")) {
+				File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden);
+			}
 		}
 
 
