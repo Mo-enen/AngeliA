@@ -196,12 +196,6 @@ namespace AngeliaFramework.Editor {
 				return;
 			}
 
-			var game = Object.FindFirstObjectByType<Game>(FindObjectsInactive.Include);
-			if (game == null) {
-				Debug.LogWarning("Game not found.");
-				return;
-			}
-
 			var texture = AngeUtil.LoadTexture(AngePath.SheetTexturePath);
 			if (texture == null) {
 				Debug.LogWarning("Sheet texture not found.");

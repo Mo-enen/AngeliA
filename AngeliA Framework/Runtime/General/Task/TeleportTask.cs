@@ -20,21 +20,12 @@ namespace AngeliaFramework {
 		private MapChannel? NewChannel = null;
 		private string ChannelName = "";
 		private bool ToBehind = true;
-		private float VigRound = 0f;
-		private float VigFeather = 1f;
 
 		// MSG
 		public override void OnStart () {
 			base.OnStart();
 			WaitDuration = WaitDuration.Clamp(0, Duration - 1);
 			ToBehind = TeleportTo.z > Stage.ViewZ;
-			if (UseVignette) {
-				VigFeather = VignetteEffect.GetFeather();
-				VigRound = VignetteEffect.GetRound();
-				ScreenEffect.SetEffectEnable(VignetteEffect.TYPE_ID, true);
-				VignetteEffect.SetFeather(0f);
-				VignetteEffect.SetRound(1f);
-			}
 		}
 
 		public override TaskResult FrameUpdate () {
@@ -92,9 +83,9 @@ namespace AngeliaFramework {
 					float radius = Util.RemapUnclamped(0, WaitDuration - 1, 1f, 0f, LocalFrame);
 					float offsetX = Util.RemapUnclamped(cameraRect.xMin, cameraRect.xMax, -1f, 1f, TeleportFrom.x);
 					float offsetY = Util.RemapUnclamped(cameraRect.yMin, cameraRect.yMax, -1f, 1f, TeleportFrom.y);
-					VignetteEffect.SetRadius(radius * radius);
-					VignetteEffect.SetOffsetX(offsetX);
-					VignetteEffect.SetOffsetY(offsetY);
+					//VignetteEffect.SetRadius(radius * radius);
+					//VignetteEffect.SetOffsetX(offsetX);
+					//VignetteEffect.SetOffsetY(offsetY);
 					return TaskResult.Continue;
 				} else if (LocalFrame < Duration) {
 					float t01 = Util.RemapUnclamped(WaitDuration, Duration - 1, 0f, 1f, LocalFrame);
@@ -103,19 +94,13 @@ namespace AngeliaFramework {
 					radius *= 2f;
 					float offsetX = Util.RemapUnclamped(cameraRect.xMin, cameraRect.xMax, -1f, 1f, TeleportTo.x);
 					float offsetY = Util.RemapUnclamped(cameraRect.yMin, cameraRect.yMax, -1f, 1f, TeleportTo.y);
-					VignetteEffect.SetRadius(radius);
-					VignetteEffect.SetFeather(Mathf.Lerp(0f, VigFeather, t01));
-					VignetteEffect.SetRound(Mathf.Lerp(1f, VigRound, t01));
-					VignetteEffect.SetOffsetX(Mathf.Lerp(offsetX, 0f, t01));
-					VignetteEffect.SetOffsetY(Mathf.Lerp(offsetY, 0f, t01));
+					//VignetteEffect.SetRadius(radius);
+					//VignetteEffect.SetFeather(Mathf.Lerp(0f, VigFeather, t01));
+					//VignetteEffect.SetRound(Mathf.Lerp(1f, VigRound, t01));
+					//VignetteEffect.SetOffsetX(Mathf.Lerp(offsetX, 0f, t01));
+					//VignetteEffect.SetOffsetY(Mathf.Lerp(offsetY, 0f, t01));
 					return TaskResult.Continue;
 				} else {
-					VignetteEffect.SetFeather(VigFeather);
-					VignetteEffect.SetOffsetX(0f);
-					VignetteEffect.SetOffsetY(0f);
-					VignetteEffect.SetRound(VigRound);
-					ScreenEffect.SetEffectEnable(VignetteEffect.TYPE_ID, false);
-					VignetteEffect.SetRadius(1f);
 					return TaskResult.End;
 				}
 			} else {

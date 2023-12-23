@@ -33,15 +33,8 @@ namespace AngeliaFramework {
 		public override void OnStart () {
 			base.OnStart();
 			SkipFrame = int.MaxValue;
-			ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, true);
 			PlayerSpawnY = TargetViewY;
 			TargetViewY += Stage.ViewRect.height / 2 - Player.GetCameraShiftOffset(Stage.ViewRect.height);
-		}
-
-
-		public override void OnEnd () {
-			base.OnEnd();
-			ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, false);
 		}
 
 
@@ -54,9 +47,7 @@ namespace AngeliaFramework {
 				if (localFrame < FADE_OUT_DURATION) {
 					var view = Stage.ViewRect;
 					Stage.SetViewPositionDelay(view.x, view.y, 1000, 0);
-					RetroDarkenEffect.SetAmount(Util.Remap(
-						0f, FADE_OUT_DURATION, 0f, 1f, localFrame
-					));
+					CellRenderer.DrawBlackCurtain(localFrame * 1000 / FADE_OUT_DURATION);
 					return TaskResult.Continue;
 				} else {
 					localFrame -= FADE_OUT_DURATION;
@@ -106,11 +97,7 @@ namespace AngeliaFramework {
 				}
 				// Black FadeIn
 				if (localFrame <= BLACK_DURATION) {
-					RetroDarkenEffect.SetAmount(Util.Remap(
-						0f, BLACK_DURATION,
-						1f, 0f,
-						localFrame
-					));
+					CellRenderer.DrawBlackCurtain(1000 - localFrame * 1000 / BLACK_DURATION);
 				}
 				if (localFrame < DURATION) {
 					// Camera Down
@@ -121,12 +108,10 @@ namespace AngeliaFramework {
 					return TaskResult.Continue;
 				} else {
 					// End
-					ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, false);
 					return TaskResult.End;
 				}
 			} else {
 				// Quick
-				ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, false);
 				if (localFrame < SKIP_DURATION + SkipFrame) {
 					SetViewPosition(
 						TargetViewX,

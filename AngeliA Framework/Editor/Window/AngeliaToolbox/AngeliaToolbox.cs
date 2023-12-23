@@ -32,11 +32,6 @@ namespace AngeliaFramework.Editor {
 		#region --- VAR ---
 
 
-		// Const
-		private const string UNITY_PROGRESS = "unity-progress-bar__progress";
-		private static readonly Color PROFILER_GREEN = new(0.5f, 1f, 0.4f, 0.5f);
-		private static readonly Color PROFILER_RED = new(1f, 0f, 0f, 0.5f);
-
 		// Data
 		private static readonly Color[] COLLIDER_TINTS = { Const.RED_BETTER, Const.ORANGE_BETTER, Color.yellow, Const.GREEN, Const.CYAN, Const.BLUE, Const.GREY_128, };
 		private static readonly List<VisualElement> EdittimeOnlyElements = new();
@@ -44,18 +39,11 @@ namespace AngeliaFramework.Editor {
 		private static readonly List<VisualElement> ProfilerProgressBarTints = new();
 		private static readonly VisualElement[] ProfilerEntityBars = new VisualElement[EntityLayer.COUNT];
 		private static readonly List<PhysicsCell[,,]> CellPhysicsCells = new();
-		private static readonly List<GameObject> CacheRootObjects = new();
 		private static EditorWindow Inspector = null;
-		private static VisualElement GameStarter = null;
 		private static VisualElement Toolbox = null;
-		private static VisualElement Profiler = null;
-		private static VisualElement ProfilerVE_CellContainer = null;
-		private static VisualElement ProfilerVE_EntityContainer = null;
-		private static VisualElement ProfilerVE_TaskContainer = null;
 		private static Image SheetThumbnail = null;
 		private static Label SheetThumbnailLabel = null;
 		private static Material GizmosMaterial = null;
-		private static double RefreshProfilerTime = 0f;
 		private static double AutoRefreshTime = 0f;
 		private static bool RequireRefresh = true;
 		private static int GizmosIndex = -1;
@@ -102,10 +90,6 @@ namespace AngeliaFramework.Editor {
 			if (Inspector == null && RequireRefresh) {
 
 				ProfilerProgressBarTints.Clear();
-				GameStarter = null;
-				ProfilerVE_CellContainer = null;
-				ProfilerVE_EntityContainer = null;
-				ProfilerVE_TaskContainer = null;
 				for (int i = 0; i < EntityLayer.COUNT; i++) {
 					ProfilerEntityBars[i] = null;
 				}
@@ -128,12 +112,6 @@ namespace AngeliaFramework.Editor {
 					RequireRefresh = false;
 				}
 
-				// Refresh Profiler
-				if (EditorApplication.isPlaying && time > RefreshProfilerTime + 0.5f) {
-					RefreshProfiler();
-					RefreshProfilerTime = time;
-				}
-
 			}
 
 		}
@@ -141,7 +119,6 @@ namespace AngeliaFramework.Editor {
 
 		private static void PlayModeStateChanged (PlayModeStateChange mode) {
 			RequireRefresh = true;
-			RefreshProfilerTime = double.MinValue;
 			GizmosIndex = -1;
 			CellPhysicsCells.Clear();
 			RefreshSheetThumbnail();
@@ -162,23 +139,14 @@ namespace AngeliaFramework.Editor {
 
 		private static void OnBeforeRender () {
 
-			if (!EditorApplication.isPlaying || Game.GameCamera == null) return;
+			var camera = Camera.main;
+			if (!EditorApplication.isPlaying || camera == null) return;
 
-			if (GizmosIndex < 0) {
-				ScreenEffect.SetEffectEnable(TintEffect.TYPE_ID, false);
-				return;
-			}
-
-			if (!ScreenEffect.GetEffectEnable(TintEffect.TYPE_ID)) {
-				ScreenEffect.SetEffectEnable(TintEffect.TYPE_ID, true);
-				TintEffect.SetTint(Const.WHITE);
-			}
-
-			var cameraRect01 = Game.GameCamera.rect;
+			var cameraRect01 = camera.rect;
 			var angeCameraRect = CellRenderer.CameraRect;
 			var rect = new FRect();
 			float thickX = 0.0005f;
-			float thickY = 0.0005f * Game.GameCamera.aspect;
+			float thickY = 0.0005f * camera.aspect;
 			if (GizmosMaterial == null) {
 				GizmosMaterial = new Material(Shader.Find("Angelia/Vertex"));
 			}
@@ -197,7 +165,7 @@ namespace AngeliaFramework.Editor {
 				}
 				if (CellPhysicsCells.Count == CellPhysicsCells.Count) {
 
-					GL.ClearWithSkybox(true, Game.GameCamera);
+					GL.ClearWithSkybox(true, camera);
 					GizmosMaterial.SetPass(0);
 					GL.LoadOrtho();
 					GL.Begin(GL.QUADS);
@@ -244,7 +212,7 @@ namespace AngeliaFramework.Editor {
 			// Bounds
 			if (GizmosIndex == 1) {
 
-				GL.ClearWithSkybox(true, Game.GameCamera);
+				GL.ClearWithSkybox(true, camera);
 				GizmosMaterial.SetPass(0);
 				GL.LoadOrtho();
 				GL.Begin(GL.QUADS);
@@ -322,10 +290,8 @@ namespace AngeliaFramework.Editor {
 		public static void RefreshVisualElement () {
 
 			// Root
-			var currentGame = GetCurrentGameFromSceneRoot();
 			bool isPlaying = EditorApplication.isPlaying;
-			bool showRoot = Selection.activeObject == null && (isPlaying || currentGame != null);
-			bool showGameStarter = Selection.activeObject == null && !isPlaying && currentGame == null;
+			bool showRoot = Selection.activeObject == null;
 			bool compiling = EditorApplication.isCompiling;
 
 			if (Toolbox != null) {
@@ -333,17 +299,6 @@ namespace AngeliaFramework.Editor {
 				if (Toolbox.enabledSelf == compiling) {
 					Toolbox.SetEnabled(!compiling);
 				}
-			}
-			if (Profiler != null) {
-				Profiler.style.display = showRoot && isPlaying ? DisplayStyle.Flex : DisplayStyle.None;
-				if (Profiler.enabledSelf == compiling) {
-					Profiler.SetEnabled(!compiling);
-				}
-			}
-
-			// Game Starter
-			if (GameStarter != null) {
-				GameStarter.style.display = showGameStarter ? DisplayStyle.Flex : DisplayStyle.None;
 			}
 
 			// Sheet Thumbnail
@@ -355,126 +310,13 @@ namespace AngeliaFramework.Editor {
 				// Edittime Only
 				foreach (var ve in EdittimeOnlyElements) {
 					ve.SetEnabled(!isPlaying);
-					//ve.style.display = !isPlaying ? DisplayStyle.Flex : DisplayStyle.None;
 				}
 				// Runtime Only
 				foreach (var ve in RuntimeOnlyElements) {
 					ve.SetEnabled(isPlaying);
-					//ve.style.display = isPlaying ? DisplayStyle.Flex : DisplayStyle.None;
 				}
 			}
 
-		}
-
-
-		public static void RefreshProfiler () {
-
-			// Cell
-			if (ProfilerVE_CellContainer != null) {
-				int childCount = ProfilerVE_CellContainer.childCount;
-				int layerCount = CellRenderer.LayerCount;
-				if (childCount != layerCount + 1) {
-					// Respawn Child
-					ProfilerVE_CellContainer.Clear();
-					ProfilerProgressBarTints.Clear();
-					for (int i = 0; i < layerCount; i++) {
-						ProfilerVE_CellContainer.Add(CreateProfilerProgressBar(out var progress));
-						ProfilerProgressBarTints.Add(progress);
-					}
-					ProfilerVE_CellContainer.Add(CreateProfilerProgressBar(out var tProgress));
-					ProfilerProgressBarTints.Add(tProgress);
-				}
-				// Refresh Info
-				childCount = ProfilerVE_CellContainer.childCount;
-				for (int i = 0; i < childCount; i++) {
-					if (ProfilerVE_CellContainer.ElementAt(i) is ProgressBar bar) {
-						int use = CellRenderer.GetUsedCellCount(i);
-						int all = CellRenderer.GetLayerCapacity(i);
-						string name = i < CellRenderer.LayerCount ?
-							CellRenderer.GetLayerName(i) :
-							CellRenderer.GetTextLayerName(i - CellRenderer.LayerCount);
-						bar.lowValue = 0;
-						bar.highValue = all;
-						bar.value = use;
-						bar.title = $"<size=10><color=#BBBBBB>{name}</color></size>  {use} / {all}";
-						if (i < ProfilerProgressBarTints.Count) {
-							ProfilerProgressBarTints[i].style.backgroundColor =
-								Color.Lerp(PROFILER_GREEN, PROFILER_RED, (float)use / all);
-						}
-					}
-				}
-			}
-
-			// Entity
-			if (ProfilerVE_EntityContainer != null) {
-				if (ProfilerVE_EntityContainer.childCount == 0) {
-					for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
-						ProfilerVE_EntityContainer.Add(CreateProfilerProgressBar(out ProfilerEntityBars[layer]));
-					}
-				}
-				if (ProfilerVE_EntityContainer.childCount > 0) {
-					for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
-						if (ProfilerVE_EntityContainer.ElementAt(layer) is not ProgressBar bar) continue;
-						int use = Stage.EntityCounts[layer];
-						int all = Stage.Entities[layer].Length;
-						bar.lowValue = 0;
-						bar.highValue = all;
-						bar.value = use;
-						bar.title = $"<size=10><color=#BBBBBB>{EntityLayer.LAYER_NAMES[layer.Clamp(0, EntityLayer.LAYER_NAMES.Length - 1)]}</color></size>  {use} / {all}";
-						if (ProfilerEntityBars[layer] != null) {
-							ProfilerEntityBars[layer].style.backgroundColor =
-								Color.Lerp(PROFILER_GREEN, PROFILER_RED, (float)use / all);
-						}
-					}
-				}
-			}
-
-			// Task
-			if (ProfilerVE_TaskContainer != null) {
-				if (ProfilerVE_TaskContainer.childCount != 1) {
-					ProfilerVE_TaskContainer.Clear();
-					for (int i = 0; i < 1; i++) {
-						var ve = new VisualElement();
-						ve.style.flexDirection = FlexDirection.Column;
-						ve.style.minHeight = 12;
-						ve.style.backgroundColor = new Color(0, 0, 0, 0.06f);
-						ve.style.marginLeft = ve.style.marginRight = 3f;
-						ve.style.paddingLeft = ve.style.paddingRight = 3f;
-						ve.style.paddingBottom = ve.style.paddingTop = 3f;
-						ProfilerVE_TaskContainer.Add(ve);
-					}
-				}
-				var container = ProfilerVE_TaskContainer.ElementAt(0);
-				container.style.width = ProfilerVE_TaskContainer.contentRect.width;
-				int count = FrameTask.GetWaitingTaskCount();
-				var currentTask = FrameTask.GetCurrentTask();
-				if (currentTask != null) count++;
-				if (container.childCount != count) {
-					container.Clear();
-					for (int j = 0; j < count; j++) {
-						container.Add(new Label());
-					}
-				}
-				for (int j = 0; j < count; j++) {
-					var label = container.ElementAt(j) as Label;
-					if (j == 0 && currentTask != null) {
-						label.text = currentTask.GetType().Name;
-					} else {
-						label.text = FrameTask.GetTaskAt(j - 1).GetType().Name;
-					}
-				}
-			}
-
-			// Func
-			static ProgressBar CreateProfilerProgressBar (out VisualElement progressVE) {
-				var bar = new ProgressBar();
-				VisualElement pVE = null;
-				bar.Query<VisualElement>(className: UNITY_PROGRESS).ForEach((p) => pVE = p);
-				bar.style.marginBottom = 3;
-				bar.style.height = 16;
-				progressVE = pVE;
-				return bar;
-			}
 		}
 
 
@@ -520,9 +362,7 @@ namespace AngeliaFramework.Editor {
 			inspector.minSize = new Float2(345f, inspector.minSize.y);
 			EdittimeOnlyElements.Clear();
 			RuntimeOnlyElements.Clear();
-			//InjectProfiler(inspector, "AngeliaProfiler");
 			InjectToolbox(inspector, "AngeliaToolbox");
-			InjectGameStarter(inspector);
 			RefreshVisibility();
 		}
 
@@ -609,95 +449,6 @@ namespace AngeliaFramework.Editor {
 			RefreshSheetThumbnail();
 
 		});
-
-
-		private static void InjectProfiler (EditorWindow inspector, string assetName) => EditorUtil.InjectVisualTreeToEditorWindow(inspector, assetName, (root) => {
-
-			ProfilerVE_CellContainer = null;
-			ProfilerVE_EntityContainer = null;
-			ProfilerVE_TaskContainer = null;
-			Profiler = root;
-			root.Query<VisualElement>(className: "Container").ForEach((ve) => {
-				switch (ve.name) {
-					case "Cell":
-						ProfilerVE_CellContainer = ve;
-						break;
-					case "Entity":
-						ProfilerVE_EntityContainer = ve;
-						break;
-					case "Task":
-						ProfilerVE_TaskContainer = ve;
-						break;
-				}
-			});
-		});
-
-
-		private static void InjectGameStarter (EditorWindow inspector) {
-
-			inspector.rootVisualElement.Insert(0, GameStarter = new VisualElement());
-			GameStarter.style.paddingLeft = 12;
-			GameStarter.style.paddingRight = 12;
-			GameStarter.style.paddingTop = 24;
-
-			// All Buttons
-			bool hasSubClass = false;
-			foreach (var type in typeof(Game).AllChildClass()) {
-				AddButton(type, "ffcc00");
-				hasSubClass = true;
-			}
-			if (!hasSubClass) {
-				AddButton(typeof(Game), "ffcc00");
-			}
-
-			// Func
-			void AddButton (System.Type targetType, string color) {
-				var button = new Button();
-				GameStarter.Add(button);
-				button.text = $"Add <b><size=16><color=#{color}>{targetType.Name}</color></size></b> to Current Scene";
-				button.clicked += () => TryAddGameToCurrentScene(targetType);
-				button.focusable = false;
-				button.style.height = 36;
-				button.style.fontSize = 12;
-				button.style.marginBottom = 1;
-				button.style.marginTop = 1;
-				button.style.paddingLeft = 0;
-				button.style.paddingRight = 0;
-				button.style.paddingBottom = 0;
-				button.style.paddingTop = 0;
-				button.style.borderLeftColor = new Color(0.5f, 0.5f, 0.5f, 1f);
-				button.style.borderRightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
-				button.enableRichText = true;
-			}
-		}
-
-
-		// Misc
-		private static void TryAddGameToCurrentScene (System.Type targetType) {
-			var currentGame = GetCurrentGameFromSceneRoot();
-			if (targetType == null || currentGame != null) return;
-			var game = new GameObject(targetType.Name, targetType);
-			Selection.activeGameObject = game;
-			var scene = SceneManager.GetActiveScene();
-			if (scene.IsValid()) EditorSceneManager.MarkSceneDirty(scene);
-			RefreshVisualElement();
-		}
-
-
-		private static Game GetCurrentGameFromSceneRoot () {
-			var scene = SceneManager.GetActiveScene();
-			if (!scene.IsValid() || scene.rootCount == 0) return null;
-			scene.GetRootGameObjects(CacheRootObjects);
-			Game result = null;
-			foreach (var obj in CacheRootObjects) {
-				if (obj.TryGetComponent<Game>(out var game)) {
-					result = game;
-					break;
-				}
-			}
-			CacheRootObjects.Clear();
-			return result;
-		}
 
 
 		#endregion

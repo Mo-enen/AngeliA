@@ -105,6 +105,7 @@ namespace AngeliaFramework {
 		private const int GIZMOS_Z = int.MaxValue - 64;
 		private const int PANEL_Z = int.MaxValue - 16;
 		private const int PANEL_WIDTH = 300;
+		private static readonly int TYPE_ID = typeof(MapEditor).AngeHash();
 		private static readonly int LINE_V = "Soft Line V".AngeHash();
 		private static readonly int LINE_H = "Soft Line H".AngeHash();
 		private static readonly int FRAME = "Frame16".AngeHash();
@@ -265,6 +266,7 @@ namespace AngeliaFramework {
 			if (Game.GlobalFrame == 0) {
 				SetEditorMode(true);
 				Game.RestartGame();
+				CellRenderer.DrawBlackCurtain(1000);
 			} else {
 				SetEditorMode(false);
 			}
@@ -606,9 +608,8 @@ namespace AngeliaFramework {
 			}
 			if (delta.x != 0 || delta.y != 0) {
 				var cRect = CellRenderer.CameraRect;
-				var uCameraRect = Game.GameCamera.rect;
-				delta.x = (delta.x * cRect.width / (uCameraRect.width * Screen.width)).RoundToInt();
-				delta.y = (delta.y * cRect.height / (uCameraRect.height * Screen.height)).RoundToInt();
+				delta.x = (delta.x * cRect.width / (CellRenderer.CameraRestrictionRate * Screen.width)).RoundToInt();
+				delta.y = delta.y * cRect.height / Screen.height;
 				TargetViewRect.x -= delta.x;
 				TargetViewRect.y -= delta.y;
 			}
@@ -639,7 +640,7 @@ namespace AngeliaFramework {
 					);
 					int newWidth = newHeight * Const.VIEW_RATIO / 1000;
 
-					float cameraWidth = (int)(TargetViewRect.height * Game.GameCamera.aspect);
+					float cameraWidth = TargetViewRect.height * CellRenderer.CameraRect.width / CellRenderer.CameraRect.height;
 					float cameraHeight = TargetViewRect.height;
 					float cameraX = TargetViewRect.x + (TargetViewRect.width - cameraWidth) / 2f;
 					float cameraY = TargetViewRect.y;
@@ -1019,23 +1020,25 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void OpenMapEditorSmoothly () {
+		public static void OpenMapEditorSmoothly (bool fade = true) {
 			FrameTask.EndAllTask();
-			if (Game.GlobalFrame > 0) {
+			if (fade) {
 				// During Gameplay
 				FrameTask.AddToLast(FadeOutTask.TYPE_ID, 50);
+				if (FrameTask.AddToLast(SpawnEntityTask.TYPE_ID) is SpawnEntityTask task) {
+					task.EntityID = typeof(MapEditor).AngeHash();
+					task.X = 0;
+					task.Y = 0;
+				}
+				FrameTask.AddToLast(FadeInTask.TYPE_ID, 50);
 			} else {
 				// On Game Start
-				ScreenEffect.SetEffectEnable(RetroDarkenEffect.TYPE_ID, true);
-				RetroDarkenEffect.SetAmount(1f);
-			}
-			if (FrameTask.AddToLast(SpawnEntityTask.TYPE_ID) is SpawnEntityTask task) {
-				task.EntityID = typeof(MapEditor).AngeHash();
-				task.X = 0;
-				task.Y = 0;
-			}
-			if (Game.GlobalFrame > 0) {
-				FrameTask.AddToLast(FadeInTask.TYPE_ID, 50);
+				CellRenderer.DrawBlackCurtain(1000);
+				if (FrameTask.AddToLast(SpawnEntityTask.TYPE_ID) is SpawnEntityTask task) {
+					task.EntityID = typeof(MapEditor).AngeHash();
+					task.X = 0;
+					task.Y = 0;
+				}
 			}
 		}
 

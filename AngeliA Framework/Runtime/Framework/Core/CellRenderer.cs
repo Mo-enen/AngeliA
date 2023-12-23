@@ -251,6 +251,7 @@ namespace AngeliaFramework {
 		// Api
 		public static IRect ViewRect { get; private set; } = default;
 		public static IRect CameraRect { get; private set; } = default;
+		public static float CameraRestrictionRate { get; private set; } = 1f;
 		public static Byte4 SkyTintTop { get; private set; } = default;
 		public static Byte4 SkyTintBottom { get; private set; } = default;
 		public static int LastDrawnID { get; private set; } = 0;
@@ -287,7 +288,9 @@ namespace AngeliaFramework {
 
 
 		// Init
-		internal static void Initialize (Transform root, Font[] fonts) {
+		internal static void Initialize (Font[] fonts) {
+
+			var root = Camera.main.transform;
 
 			// Load Assets
 			var sheet = JsonUtil.LoadOrCreateJson<SpriteSheet>(AngePath.SheetRoot);
@@ -307,7 +310,7 @@ namespace AngeliaFramework {
 
 
 		// Update
-		internal static void CameraUpdate (Camera camera, IRect viewRect) {
+		internal static void CameraUpdate (IRect viewRect) {
 
 			ViewRect = viewRect;
 
@@ -317,16 +320,19 @@ namespace AngeliaFramework {
 			var rect = new FRect(0f, 0f, 1f, 1f);
 			if (ratio > maxRatio) {
 				rect = new FRect(0.5f - 0.5f * maxRatio / ratio, 0f, maxRatio / ratio, 1f);
+				CameraRestrictionRate = maxRatio / ratio;
+			} else {
+				CameraRestrictionRate = 1f;
 			}
-			if (((FRect)camera.rect).NotAlmost(rect)) {
-				camera.rect = rect;
+			if (Game.CameraScreenLocacion.NotAlmost(rect)) {
+				Game.CameraScreenLocacion = rect;
 			}
 
 			// Camera Rect
 			var cRect = new IRect(
 				ViewRect.x,
 				ViewRect.y,
-				(int)(ViewRect.height * camera.aspect),
+				(int)(ViewRect.height * Game.CameraAspect),
 				ViewRect.height
 			);
 			int cOffsetX = (ViewRect.width - cRect.width) / 2;
@@ -336,27 +342,27 @@ namespace AngeliaFramework {
 		}
 
 
-		internal static void FrameUpdate (int globalFrame, Camera camera) {
+		internal static void FrameUpdate () {
 
+			int globalFrame = Game.GlobalFrame;
 			IsDrawing = false;
 			GlobalFrame = globalFrame;
+			float orthographicSize = Game.CameraOrthographicSize;
+			float aspect = Game.CameraAspect;
 
 			// Layer Game Objects
-			var pos = Float3.zero;
-			var scl = Float3.one;
-			if (camera != null) {
-				pos = new Float3(
-					-camera.orthographicSize * camera.aspect,
-					-camera.orthographicSize,
-					1f
-				);
-				pos.x -= ((ViewRect.width - CameraRect.width) / 2) * camera.orthographicSize * 2f * camera.aspect / CameraRect.width;
-				scl = new Float3(
-					camera.orthographicSize * 2f / ViewRect.height,
-					camera.orthographicSize * 2f / ViewRect.height,
-					1f
-				);
-			}
+			var pos = new Float3(
+				-orthographicSize * aspect,
+				-orthographicSize,
+				1f
+			);
+			pos.x -= ((ViewRect.width - CameraRect.width) / 2) * orthographicSize * 2f * aspect / CameraRect.width;
+			var scl = new Float3(
+				orthographicSize * 2f / ViewRect.height,
+				orthographicSize * 2f / ViewRect.height,
+				1f
+			);
+
 			for (int layerIndex = 0; layerIndex < Layers.Length; layerIndex++) {
 				var layer = Layers[layerIndex];
 				layer.RendererRoot.localPosition = pos;
@@ -1114,6 +1120,19 @@ namespace AngeliaFramework {
 			if (!SheetIDMap.TryGetValue(chainID, out var rCell)) return Last9SlicedCells;
 			var sprite = Sprites[rCell.GetIndex(GetAnimationFrame(frame, rCell.Length, loopStart))];
 			return Draw_9Slice(sprite.GlobalID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, color);
+		}
+
+
+		public static void DrawBlackCurtain (int amount) {
+			int oldLayer = CurrentLayerIndex;
+			SetLayerToTopUI();
+			Draw(
+				Const.PIXEL,
+				CameraRect.Expand(Const.HALF),
+				new Byte4(0, 0, 0, (byte)Util.RemapUnclamped(0, 1000, 0, 255, amount).Clamp(0, 255)),
+				int.MaxValue
+			);
+			SetLayer(oldLayer);
 		}
 
 

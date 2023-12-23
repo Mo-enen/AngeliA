@@ -248,7 +248,6 @@ namespace AngeliaFramework {
 
 		private void Update_Action () {
 
-			if (CharacterState != CharacterState.GamePlay) return;
 			if (TakingDamage || FrameTask.HasTask()) return;
 
 			// Search for Active Trigger
@@ -394,6 +393,8 @@ namespace AngeliaFramework {
 
 		private void Update_Sleep () {
 
+			TargetActionEntity = null;
+
 			// Full Slept
 			if (SleepFrame == FULL_SLEEP_DURATION) {
 
@@ -420,15 +421,7 @@ namespace AngeliaFramework {
 
 			// Dark
 			if (RestartOnFullAsleep) {
-				int oldLayer = CellRenderer.CurrentLayerIndex;
-				CellRenderer.SetLayerToTopUI();
-				CellRenderer.Draw(
-					Const.PIXEL,
-					CellRenderer.CameraRect.Expand(Const.HALF),
-					new Byte4(0, 0, 0, (byte)Util.RemapUnclamped(0, FULL_SLEEP_DURATION, 0, 255, SleepFrame).Clamp(0, 255)),
-					int.MaxValue
-				);
-				CellRenderer.SetLayer(oldLayer);
+				CellRenderer.DrawBlackCurtain(SleepFrame * 1000 / FULL_SLEEP_DURATION);
 			}
 
 			// Wake up on Press Action

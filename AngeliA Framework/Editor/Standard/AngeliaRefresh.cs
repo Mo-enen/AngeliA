@@ -232,12 +232,6 @@ namespace AngeliaFramework.Editor {
 			AngeUtil.DeleteAllEmptyMaps(AngePath.UserMapRoot);
 			AngeUtil.DeleteAllEmptyMaps(AngePath.DownloadMapRoot);
 
-			// Game
-			if (forceRefresh) {
-				var game = Object.FindFirstObjectByType<Game>(FindObjectsInactive.Include);
-				if (game != null) game.Editor_ReloadAllResources();
-			}
-
 			// Final
 			CreateItemCombinationFiles();
 			AngeliaToolbox.RefreshSheetThumbnail(true);
@@ -262,21 +256,6 @@ namespace AngeliaFramework.Editor {
 					}
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
-			// Effect Shaders
-			var temp = new GameObject {
-				hideFlags = HideFlags.HideAndDontSave,
-			};
-			try {
-				foreach (var type in typeof(AngeliaScreenEffect).AllChildClass()) {
-					var effect = temp.AddComponent(type) as AngeliaScreenEffect;
-					if (effect == null) continue;
-					var shader = effect.GetShader();
-					if (shader == null) continue;
-					EditorUtil.AddAlwaysIncludedShader(shader.name);
-				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-			Object.DestroyImmediate(temp, false);
-
 			// Final
 			AssetDatabase.SaveAssets();
 		}

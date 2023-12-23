@@ -4,16 +4,17 @@ using UnityEngine;
 using AngeliaFramework;
 
 
-[assembly: AngeliAAttribute]
+[assembly: AngeliA]
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 
 
 namespace AngeliaFramework {
 
+
 	public enum FullscreenMode { Window = 0, Fullscreen = 1, FullscreenLow = 2, }
 
-	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitialize : System.Attribute { public int Order; public OnGameInitialize (int order = 0) => Order = order; }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitializeAttribute : System.Attribute { public int Order; public OnGameInitializeAttribute (int order = 0) => Order = order; }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateLaterAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdatePauselessAttribute : System.Attribute { }
@@ -24,18 +25,18 @@ namespace AngeliaFramework {
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSlotCreatedAttribute : System.Attribute { }
 
 
-	public sealed class Game : MonoBehaviour {
+	[System.Serializable]
+	public class GameConfiguration {
+		public bool StartGameWithMapEditor = false;
+		public Font[] Fonts = null;
+		public Texture2D[] Cursors = null;
+		public AudioClip[] AudioClips = null;
+		public ColorGradient SkyTintTop = null;
+		public ColorGradient SkyTintBottom = null;
+	}
 
 
-
-
-		#region --- SUB ---
-
-
-		public enum GameStartMode { DoNothing, StartWithGamePlay, StartWithMapEditor, }
-
-
-		#endregion
+	public abstract class Game {
 
 
 
@@ -53,13 +54,13 @@ namespace AngeliaFramework {
 			get => _GraphicFramerate.Value.Clamp(30, 120);
 			set {
 				_GraphicFramerate.Value = value.Clamp(30, 120);
-				Application.targetFrameRate = _GraphicFramerate.Value;
+				Instance?.SetTargetFramerate(_GraphicFramerate.Value);
 			}
 		}
 		public static bool VSync {
 			get => _VSync.Value;
 			set {
-				QualitySettings.vSyncCount = value ? 1 : 0;
+				Instance.SetVSync(value);
 				_VSync.Value = value;
 			}
 		}
@@ -67,26 +68,15 @@ namespace AngeliaFramework {
 			get => (FullscreenMode)_FullscreenMode.Value;
 			set {
 				_FullscreenMode.Value = (int)value;
-				switch (value) {
-					case FullscreenMode.Window:
-						Screen.SetResolution(
-							Display.main.systemWidth * 2 / 3, Display.main.systemHeight * 2 / 3, false
-						);
-						break;
-					case FullscreenMode.Fullscreen:
-						Screen.SetResolution(
-							Display.main.systemWidth, Display.main.systemHeight, true
-						);
-						break;
-					case FullscreenMode.FullscreenLow:
-						Screen.SetResolution(
-							Display.main.systemWidth / 2, Display.main.systemHeight / 2, true
-						);
-						break;
-				}
+				Instance.SetFullscreenMode(value);
 			}
 		}
-		public static Camera GameCamera { get; private set; } = null;
+		public static FRect CameraScreenLocacion {
+			get => Instance.GetCameraScreenLocacion();
+			set => Instance.SetCameraScreenLocacion(value);
+		}
+		public static float CameraAspect => Instance.GetCameraAspect();
+		public static float CameraOrthographicSize => Instance.GetCameraOrthographicSize();
 
 		// Event
 		public static event System.Action OnGameRestart;
@@ -98,20 +88,11 @@ namespace AngeliaFramework {
 		public static event System.Action OnSlotChanged;
 		public static event System.Action OnSlotCreated;
 
-		// Ser
-		[SerializeField] GameStartMode m_GameStartMode = GameStartMode.StartWithGamePlay;
-		[SerializeField] Gradient m_SkyTintTop = null;
-		[SerializeField] Gradient m_SkyTintBottom = null;
-		[SerializeField] Font[] m_Fonts = null;
-		[SerializeField] Texture2D[] m_Cursors = null;
-		[SerializeField] AudioClip[] m_AudioClips = null;
-
 		// Data
-		private static bool Initialized = false;
+		private static Game Instance = null;
 		private static int ForceBackgroundTintFrame = int.MinValue;
 		private static int? RequireRestartWithPlayerID = null;
-		private static Gradient SkyTintTop = null;
-		private static Gradient SkyTintBottom = null;
+		private GameConfiguration Config { get; init; } = new();
 
 		// Saving
 		private static readonly SavingInt _GraphicFramerate = new("Game.GraphicFramerate", 60);
@@ -128,88 +109,10 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-#if UNITY_EDITOR
-		private void Reset () {
-			Editor_ReloadAllConfig();
-			Editor_ReloadAllResources();
-			UnityEditor.EditorUtility.SetDirty(this);
-			UnityEditor.AssetDatabase.SaveAssets();
-		}
-		public void Editor_ReloadAllConfig () {
-
-			// Gradient
-			var skyTop = new Gradient();
-			var skyBottom = new Gradient();
-			skyTop.SetKeys(
-				new GradientColorKey[] {
-					new GradientColorKey(new Byte4(10, 12, 31, 255), 0f),
-					new GradientColorKey(new Byte4(13, 49, 76, 255), 0.25f),
-					new GradientColorKey(new Byte4(29, 156, 219, 255), 0.5f),
-					new GradientColorKey(new Byte4(13, 49, 76, 255), 0.75f),
-					new GradientColorKey(new Byte4(10, 12, 31, 255), 1f),
-				},
-				new GradientAlphaKey[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) }
-			);
-			skyBottom.SetKeys(
-				new GradientColorKey[] {
-					new GradientColorKey(new Byte4(10, 12, 31, 255), 0f),
-					new GradientColorKey(new Byte4(27, 69, 101, 255), 0.25f),
-					new GradientColorKey(new Byte4(52, 171, 230, 255), 0.5f),
-					new GradientColorKey(new Byte4(27, 69, 101, 255), 0.75f),
-					new GradientColorKey(new Byte4(10, 12, 31, 255), 1f),
-				},
-				new GradientAlphaKey[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) }
-			);
-			m_SkyTintTop = skyTop;
-			m_SkyTintBottom = skyBottom;
-
-		}
-		public void Editor_ReloadAllResources () {
-
-			// Fonts
-			var fonts = new List<Font>();
-			foreach (var font in ForAllAssetsWithPath<Font>()) {
-				if (!font.name.Contains("#font", System.StringComparison.OrdinalIgnoreCase)) continue;
-				fonts.Add(font);
-			}
-			fonts.Sort((a, b) => a.name.CompareTo(b.name));
-			fonts.Insert(0, Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"));
-			m_Fonts = fonts.ToArray();
-
-			// Cursors
-			var cursors = new List<Texture2D>();
-			foreach (var texture in ForAllAssetsWithPath<Texture2D>()) {
-				if (!texture.name.Contains("#cursor", System.StringComparison.OrdinalIgnoreCase)) continue;
-				cursors.Add(texture);
-			}
-			cursors.Sort((a, b) => a.name.CompareTo(b.name));
-			m_Cursors = cursors.ToArray();
-
-			// Audio
-			var audioClips = new List<AudioClip>();
-			foreach (var clip in ForAllAssetsWithPath<AudioClip>()) {
-				if (
-					clip == null ||
-					clip.name.Contains("#ignore", System.StringComparison.OrdinalIgnoreCase)
-				) continue;
-				audioClips.Add(clip);
-			}
-			m_AudioClips = audioClips.ToArray();
-
-		}
-		private static IEnumerable<T> ForAllAssetsWithPath<T> () where T : Object {
-			foreach (var guid in UnityEditor.AssetDatabase.FindAssets($"t:{typeof(T).Name}")) {
-				var _path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
-				var obj = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(_path);
-				if (obj is T t) yield return t;
-			}
-		}
-#endif
-
-
-		private void Initialize () {
+		public Game (GameConfiguration config) {
 			try {
-				Initialized = true;
+				Instance = this;
+				Config = config;
 				AngePath.CurrentSaveSlot = _CurrentSaveSlot.Value;
 				Util.LinkEventWithAttribute<OnGameUpdateAttribute>(typeof(Game), nameof(OnGameUpdate));
 				Util.LinkEventWithAttribute<OnGameUpdateLaterAttribute>(typeof(Game), nameof(OnGameUpdateLater));
@@ -223,28 +126,21 @@ namespace AngeliaFramework {
 				Application.wantsToQuit += OnTryingToQuit;
 				Application.quitting -= OnGameQuitting;
 				Application.quitting += OnGameQuitting;
-				GameCamera = AngeUtil.GetOrCreateCamera();
-				CellRenderer.Initialize(GameCamera.transform, m_Fonts);
-				Util.InvokeAllStaticMethodWithAttribute<OnGameInitialize>(m => m.Value.Order <= 0, (a, b) => a.Value.Order.CompareTo(b.Value.Order));
+				CellRenderer.Initialize(Config.Fonts);
+				Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>(m => m.Value.Order <= 0, (a, b) => a.Value.Order.CompareTo(b.Value.Order));
 				OnSlotChanged?.Invoke();
-				AudioPlayer.Initialize(m_AudioClips);
+				AudioPlayer.Initialize(Config.AudioClips);
 				Debug.SetEnable(Application.isEditor);
 				Application.targetFrameRate = Application.isEditor ? 60 : GraphicFramerate;
 				QualitySettings.vSyncCount = _VSync.Value ? 1 : 0;
 				Time.fixedDeltaTime = 1f / 60f;
 				FullscreenMode = (FullscreenMode)_FullscreenMode.Value;
-				SkyTintTop = m_SkyTintTop;
-				SkyTintBottom = m_SkyTintBottom;
-				enabled = m_GameStartMode != GameStartMode.DoNothing;
-				CursorSystem.Initialize(m_Cursors);
+				CursorSystem.Initialize(Config.Cursors);
 				AngeUtil.CreateAngeFolders();
 				RefreshBackgroundTint();
-				Util.InvokeAllStaticMethodWithAttribute<OnGameInitialize>(m => m.Value.Order > 0, (a, b) => a.Value.Order.CompareTo(b.Value.Order));
-				DontDestroyOnLoad(GameCamera.transform.gameObject);
-				DontDestroyOnLoad(gameObject);
+				Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>(m => m.Value.Order > 0, (a, b) => a.Value.Order.CompareTo(b.Value.Order));
 				System.GC.Collect();
-				if (m_GameStartMode == GameStartMode.StartWithGamePlay) RestartGameLogic();
-				if (m_GameStartMode == GameStartMode.StartWithMapEditor) MapEditor.OpenMapEditorSmoothly();
+				if (Config.StartGameWithMapEditor) { MapEditor.OpenMapEditorSmoothly(false); } else { RestartGameLogic(); }
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 			// Func
 			static bool OnTryingToQuit () {
@@ -256,14 +152,11 @@ namespace AngeliaFramework {
 		}
 
 
-		private void FixedUpdate () {
+		public void Update () {
 			try {
-				if (!Initialized) Initialize();
-				if (!Initialized || !enabled) return;
-				if (!GameCamera.enabled) GameCamera.enabled = true;
 				if (IsPlaying) {
 					Stage.Update_View();
-					CellRenderer.CameraUpdate(GameCamera, Stage.ViewRect);
+					CellRenderer.CameraUpdate(Stage.ViewRect);
 					FrameInput.FrameUpdate(CellRenderer.CameraRect);
 					AudioPlayer.FrameUpdate(IsPausing);
 					CellPhysics.BeginFill(Stage.ViewRect.x - Const.SPAWN_PADDING - Const.LEVEL_SPAWN_PADDING, Stage.ViewRect.y - Const.SPAWN_PADDING - Const.LEVEL_SPAWN_PADDING);
@@ -275,14 +168,14 @@ namespace AngeliaFramework {
 					CellRendererGUI.LateUpdate();
 					if (GlobalFrame % 36000 == 0) RefreshBackgroundTint();
 				} else {
-					CellRenderer.CameraUpdate(GameCamera, Stage.ViewRect);
+					CellRenderer.CameraUpdate(Stage.ViewRect);
 					AudioPlayer.FrameUpdate(IsPausing);
 					FrameInput.FrameUpdate(CellRenderer.CameraRect);
 					CellRenderer.BeginDraw(IsPausing);
 					Stage.UpdateAllEntities(GlobalFrame, EntityLayer.UI);
 				}
 				OnGameUpdatePauseless?.Invoke();
-				CellRenderer.FrameUpdate(GlobalFrame, GameCamera);
+				CellRenderer.FrameUpdate();
 				CursorSystem.Update(GlobalFrame);
 				if (FrameInput.GameKeyUp(Gamekey.Start)) IsPlaying = !IsPlaying;
 				if (RequireRestartWithPlayerID.HasValue) RestartGameLogic();
@@ -311,21 +204,33 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void SetBackgroundTint (Byte4 top, Byte4 bottom) {
+		public void SetBackgroundTint (Byte4 top, Byte4 bottom) {
 			ForceBackgroundTintFrame = GlobalFrame + 1;
 			CellRenderer.SetBackgroundTint(top, bottom);
 		}
 
 
-		public static void RefreshBackgroundTint () {
+		public void RefreshBackgroundTint () {
 			if (GlobalFrame < ForceBackgroundTintFrame) return;
 			var date = System.DateTime.Now;
-			float time01 = Mathf.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
+			float time01 = Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
 			CellRenderer.SetBackgroundTint(
-				SkyTintTop.Evaluate(time01),
-				SkyTintBottom.Evaluate(time01)
+				Config.SkyTintTop.Evaluate(time01),
+				Config.SkyTintBottom.Evaluate(time01)
 			);
 		}
+
+
+		// System
+		public abstract void SetTargetFramerate (int targetFramerate);
+		public abstract void SetVSync (bool vsync);
+		public abstract void SetFullscreenMode (FullscreenMode mode);
+
+		// Camera
+		public abstract FRect GetCameraScreenLocacion ();
+		public abstract void SetCameraScreenLocacion (FRect rect);
+		public abstract float GetCameraAspect ();
+		public abstract float GetCameraOrthographicSize ();
 
 
 		#endregion
@@ -355,9 +260,6 @@ namespace AngeliaFramework {
 			}
 
 			// Enable
-			if (GameCamera != null && !GameCamera.gameObject.activeSelf) {
-				GameCamera.gameObject.SetActive(true);
-			}
 			if (!IsPlaying) IsPlaying = true;
 
 			// Event

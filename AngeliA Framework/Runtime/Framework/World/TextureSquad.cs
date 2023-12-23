@@ -39,6 +39,7 @@ namespace AngeliaFramework {
 		private readonly World FillingWorld = null;
 		private readonly Transform SquadRoot = null;
 		private readonly Transform SquadContainer = null;
+		private readonly Camera GameCamera = null;
 		private Int3 LoadedWorldPos = default;
 
 
@@ -51,6 +52,8 @@ namespace AngeliaFramework {
 
 
 		public TextureSquad (int worldSize) {
+			GameCamera = Camera.main;
+			if (GameCamera == null) return;
 			WorldSize = worldSize;
 			LoadedWorldPos = new(int.MinValue, int.MinValue, int.MinValue);
 			Textures = new TextureUnit[worldSize, worldSize];
@@ -77,7 +80,7 @@ namespace AngeliaFramework {
 			}
 			// Add GameObject
 			SquadRoot = new GameObject("Texture Squad").transform;
-			SquadRoot.SetParent(Game.GameCamera.transform);
+			SquadRoot.SetParent(GameCamera.transform);
 			SquadRoot.SetLocalPositionAndRotation(Float3.zero, default);
 			SquadRoot.localScale = Float3.one;
 			SquadContainer = new GameObject("Container").transform;
@@ -150,11 +153,14 @@ namespace AngeliaFramework {
 
 
 		public void Dispose () {
+			if (SquadRoot == null) return;
 			Object.DestroyImmediate(SquadRoot.gameObject, false);
 		}
 
 
 		public void FrameUpdate (Int3 centerPos) {
+
+			if (GameCamera == null) return;
 
 			int GLOBAL_MAP = Const.MAP * Const.CEL;
 			int HALF_GLOBAL_MAP = Const.MAP * Const.HALF;
@@ -171,7 +177,7 @@ namespace AngeliaFramework {
 			}
 
 			// Update Renderer
-			float scale = Game.GameCamera.orthographicSize * 2f / (WorldSize - 1);
+			float scale = GameCamera.orthographicSize * 2f / (WorldSize - 1);
 			float posShiftX = -((centerPos.x + HALF_GLOBAL_MAP).UMod(GLOBAL_MAP) - GLOBAL_MAP) / (float)GLOBAL_MAP * scale;
 			float posShiftY = -((centerPos.y + HALF_GLOBAL_MAP).UMod(GLOBAL_MAP) - GLOBAL_MAP) / (float)GLOBAL_MAP * scale;
 			SquadContainer.localScale = Float3.one * scale;
