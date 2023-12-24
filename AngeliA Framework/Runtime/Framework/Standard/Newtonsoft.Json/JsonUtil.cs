@@ -43,7 +43,7 @@ namespace AngeliaFramework {
 						return target;
 					}
 				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+			} catch (System.Exception ex) { Game.LogException(ex); }
 			return default;
 		}
 
@@ -60,7 +60,7 @@ namespace AngeliaFramework {
 					}
 					return true;
 				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+			} catch (System.Exception ex) { Game.LogException(ex); }
 			return false;
 		}
 

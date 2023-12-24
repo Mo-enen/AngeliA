@@ -9,6 +9,11 @@ namespace AngeliaFramework {
 		public const float Rad2Deg = 57.29578f;
 		public const float Deg2Rad = PI / 180f;
 		public const float PI = 3.14159274F;
+		public static readonly float Epsilon = (IsFlushToZeroEnabled ? FloatMinNormal : FloatMinDenormal);
+		public static float FloatMinNormal = 1.17549435E-38f;
+		public static float FloatMinDenormal = float.Epsilon;
+		public static bool IsFlushToZeroEnabled = FloatMinDenormal == 0f;
+
 
 		// Language
 		private static readonly Dictionary<string, string> IsoToDisplayName = new() { { "af", "Afrikaans" }, { "am", "አማርኛ" }, { "ar", "العربية" }, { "as", "অসমীয়া" }, { "az", "azərbaycan" }, { "be", "беларуская" }, { "bg", "български" }, { "bn", "বাংলা" }, { "bo", "བོད་སྐད་" }, { "br", "brezhoneg" }, { "bs", "bosanski" }, { "ca", "català" }, { "cs", "čeština" }, { "cy", "Cymraeg" }, { "da", "dansk" }, { "de", "Deutsch" }, { "el", "Ελληνικά" }, { "en", "English" }, { "es", "español" }, { "et", "eesti" }, { "eu", "euskara" }, { "fa", "فارسی" }, { "ff", "Pulaar" }, { "fi", "suomi" }, { "fo", "føroyskt" }, { "fr", "français" }, { "fy", "West-Frysk" }, { "ga", "Gaeilge" }, { "gd", "Gàidhlig" }, { "gl", "galego" }, { "gu", "ગુજરાતી" }, { "ha", "Hausa" }, { "he", "עברית" }, { "hi", "हिन्दी" }, { "hr", "hrvatski" }, { "hu", "magyar" }, { "hy", "հայերեն" }, { "id", "Indonesia" }, { "ig", "Igbo" }, { "ii", "ꆈꌠꉙ" }, { "is", "íslenska" }, { "it", "italiano" }, { "iv", "Invariant" }, { "ja", "日本語" }, { "ka", "ქართული" }, { "kk", "қазақ тілі" }, { "kl", "kalaallisut" }, { "km", "ខ្មែរ" }, { "kn", "ಕನ್ನಡ" }, { "ko", "한국어" }, { "ky", "кыргызча" }, { "lb", "Lëtzebuergesch" }, { "lo", "ລາວ" }, { "lt", "lietuvių" }, { "lv", "latviešu" }, { "mk", "македонски" }, { "ml", "മലയാളം" }, { "mn", "монгол" }, { "mr", "मराठी" }, { "ms", "Bahasa Melayu" }, { "mt", "Malti" }, { "my", "မြန်မာ" }, { "nb", "norsk" }, { "ne", "नेपाली" }, { "nl", "Nederlands" }, { "nn", "nynorsk" }, { "om", "Oromoo" }, { "or", "ଓଡ଼ିଆ" }, { "pa", "ਪੰਜਾਬੀ" }, { "pl", "polski" }, { "ps", "پښتو" }, { "pt", "português" }, { "rm", "rumantsch" }, { "ro", "română" }, { "ru", "русский" }, { "rw", "Kinyarwanda" }, { "se", "davvisámegiella" }, { "si", "සිංහල" }, { "sk", "slovenčina" }, { "sl", "slovenščina" }, { "so", "Soomaali" }, { "sq", "shqip" }, { "sr", "српски" }, { "st", "Sesotho" }, { "sv", "svenska" }, { "sw", "Kiswahili" }, { "ta", "தமிழ்" }, { "te", "తెలుగు" }, { "tg", "Тоҷикӣ" }, { "th", "ไทย" }, { "ti", "ትግርኛ" }, { "tk", "türkmençe" }, { "tn", "Setswana" }, { "tr", "Türkçe" }, { "ts", "Xitsonga" }, { "tt", "татар" }, { "ug", "ئۇيغۇرچە" }, { "uk", "українська" }, { "ur", "اردو" }, { "uz", "o‘zbek" }, { "vi", "Tiếng Việt" }, { "xh", "isiXhosa" }, { "yo", "Èdè Yorùbá" }, { "zh", "中文" }, { "zu", "isiZulu" }, };
@@ -133,9 +138,14 @@ namespace AngeliaFramework {
 		public static float Atan (float x, float y) => (float)System.Math.Atan2(y, x) * Rad2Deg;
 		public static int Min (int a, int b) => (a < b) ? a : b;
 		public static int Max (int a, int b) => (a > b) ? a : b;
+		public static float Min (float a, float b) => (a < b) ? a : b;
+		public static float Max (float a, float b) => (a > b) ? a : b;
 		public static float Sin (float f) => (float)System.Math.Sin(f * Rad2Deg);
 		public static float Cos (float f) => (float)System.Math.Cos(f * Rad2Deg);
 		public static int Abs (int value) => value > 0 ? value : -value;
+		public static float Abs (float value) => value > 0f ? value : -value;
+		public static bool Approximately (float a, float b) => Abs(b - a) < Max(1E-06f * Max(Abs(a), Abs(b)), Epsilon * 8f);
+
 
 	}
 

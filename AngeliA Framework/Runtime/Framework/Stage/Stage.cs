@@ -196,7 +196,7 @@ namespace AngeliaFramework {
 						var e = stack.CreateInstance();
 						if (e == null) break;
 						stack.Entities.Push(e);
-					} catch (System.Exception ex) { Debug.LogException(ex); }
+					} catch (System.Exception ex) { Game.LogException(ex); }
 				}
 				EntityPool.TryAdd(id, stack);
 			}
@@ -271,7 +271,7 @@ namespace AngeliaFramework {
 				for (int index = 0; index < count; index++) {
 					try {
 						entities[index].FillPhysics();
-					} catch (System.Exception ex) { Debug.LogException(ex); }
+					} catch (System.Exception ex) { Game.LogException(ex); }
 				}
 			}
 
@@ -285,7 +285,7 @@ namespace AngeliaFramework {
 					if (e.UpdateOutOfRange || e.FrameUpdated || ViewRect.Overlaps(e.GlobalBounds)) {
 						try {
 							e.BeforePhysicsUpdate();
-						} catch (System.Exception ex) { Debug.LogException(ex); }
+						} catch (System.Exception ex) { Game.LogException(ex); }
 					}
 				}
 			}
@@ -300,7 +300,7 @@ namespace AngeliaFramework {
 					if (e.UpdateOutOfRange || e.FrameUpdated || ViewRect.Overlaps(e.GlobalBounds)) {
 						try {
 							e.PhysicsUpdate();
-						} catch (System.Exception ex) { Debug.LogException(ex); }
+						} catch (System.Exception ex) { Game.LogException(ex); }
 					}
 				}
 			}
@@ -323,7 +323,7 @@ namespace AngeliaFramework {
 							CellRenderer.SetTextLayer(0);
 							e.FrameUpdate();
 							e.FrameUpdated = true;
-						} catch (System.Exception ex) { Debug.LogException(ex); }
+						} catch (System.Exception ex) { Game.LogException(ex); }
 					}
 				}
 				AfterLayerFrameUpdate?.Invoke(layer);
@@ -630,7 +630,7 @@ namespace AngeliaFramework {
 				) return null;
 				if (!EntityPool.TryGetValue(typeID, out var eMeta)) {
 #if UNITY_EDITOR
-					if (typeID != 0 && !EntityPool.ContainsKey(typeID)) Debug.LogWarning($"Invalid Entity Type ID {typeID}");
+					if (typeID != 0 && !EntityPool.ContainsKey(typeID)) Game.LogWarning($"Invalid Entity Type ID {typeID}");
 #endif
 					return null;
 				}
@@ -682,7 +682,7 @@ namespace AngeliaFramework {
 					entity.SpawnFrame = GlobalFrame;
 					return entity;
 				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+			} catch (System.Exception ex) { Game.LogException(ex); }
 			return null;
 		}
 
@@ -691,7 +691,7 @@ namespace AngeliaFramework {
 			entity.Active = false;
 			try {
 				entity.OnInactivated();
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+			} catch (System.Exception ex) { Game.LogException(ex); }
 			entity.FrameUpdated = false;
 			StagedEntityHash.Remove(entity.InstanceID);
 			if (meta == null && EntityPool.TryGetValue(entity.TypeID, out meta)) {

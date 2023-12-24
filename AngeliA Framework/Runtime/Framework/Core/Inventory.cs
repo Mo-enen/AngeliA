@@ -408,7 +408,7 @@ namespace AngeliaFramework {
 							data.Items[i] = 0;
 						}
 					}
-				} catch (System.Exception ex) { Debug.LogException(ex); }
+				} catch (System.Exception ex) { Game.LogException(ex); }
 			}
 		}
 

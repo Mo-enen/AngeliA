@@ -14,8 +14,16 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 namespace AngeliaGame {
 	public class GamePerformerForUnity : MonoBehaviour {
 
-		[SerializeField] GameConfiguration Config = new();
+
+		// Ser
+		[SerializeField] GameConfiguration m_Config = new();
+		[SerializeField] ColorGradient m_SkyTintTop = new();
+		[SerializeField] ColorGradient m_SkyTintBottom = new();
+		[SerializeField] Font[] m_Fonts = null;
+
+		// Data
 		private GameForUnity UnityGame = null;
+
 
 #if UNITY_EDITOR
 		[UnityEditor.InitializeOnLoadMethod]
@@ -25,7 +33,7 @@ namespace AngeliaGame {
 			};
 		}
 		private void Reset () {
-			Config = new();
+			m_Config = new();
 			Editor_ReloadAllConfig();
 			Editor_ReloadAllResources();
 			UnityEditor.EditorUtility.SetDirty(this);
@@ -47,8 +55,8 @@ namespace AngeliaGame {
 				new ColorGradient.Data(new Byte4(27, 69, 101, 255), 0.75f),
 				new ColorGradient.Data(new Byte4(10, 12, 31, 255), 1f)
 			);
-			Config.SkyTintTop = skyTop;
-			Config.SkyTintBottom = skyBottom;
+			m_SkyTintTop = skyTop;
+			m_SkyTintBottom = skyBottom;
 		}
 		public void Editor_ReloadAllResources () {
 
@@ -60,7 +68,7 @@ namespace AngeliaGame {
 			}
 			fonts.Sort((a, b) => a.name.CompareTo(b.name));
 			fonts.Insert(0, Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"));
-			Config.Fonts = fonts.ToArray();
+			m_Fonts = fonts.ToArray();
 
 			// Cursors
 			var cursors = new List<Texture2D>();
@@ -69,7 +77,7 @@ namespace AngeliaGame {
 				cursors.Add(texture);
 			}
 			cursors.Sort((a, b) => a.name.CompareTo(b.name));
-			Config.Cursors = cursors.ToArray();
+			m_Config.Cursors = cursors.ToArray();
 
 			// Audio
 			var audioClips = new List<AudioClip>();
@@ -80,7 +88,7 @@ namespace AngeliaGame {
 				) continue;
 				audioClips.Add(clip);
 			}
-			Config.AudioClips = audioClips.ToArray();
+			m_Config.AudioClips = audioClips.ToArray();
 
 		}
 		private static IEnumerable<T> ForAllAssetsWithPath<T> () where T : Object {
@@ -92,59 +100,19 @@ namespace AngeliaGame {
 		}
 #endif
 
+
 		private void FixedUpdate () {
 			if (UnityGame == null) {
-				// Init
-				GetOrCreateCamera();
-				UnityGame = new GameForUnity(Config);
-				DontDestroyOnLoad(UnityGame.UnityCamera.transform.gameObject);
-				DontDestroyOnLoad(gameObject);
+				UnityGame = new GameForUnity {
+					Fonts = m_Fonts,
+				};
+				UnityGame.Initialize();
+				Game.SkyTintTop = m_SkyTintTop;
+				Game.SkyTintBottom = m_SkyTintBottom;
 			}
-			// Update
 			UnityGame.Update();
 		}
 
-		private void Initialize_Debug () {
-			AngeliaFramework.Debug.OnLog += UnityEngine.Debug.Log;
-			AngeliaFramework.Debug.OnLogWarning += UnityEngine.Debug.LogWarning;
-			AngeliaFramework.Debug.OnLogError += UnityEngine.Debug.LogError;
-			AngeliaFramework.Debug.OnLogException += UnityEngine.Debug.LogException;
-			AngeliaFramework.Debug.OnSetEnable += SetEnable;
-			AngeliaFramework.Debug.OnGetEnable += GetEnable;
-			static void SetEnable (bool enable) => UnityEngine.Debug.unityLogger.logEnabled = enable;
-			static bool GetEnable () => UnityEngine.Debug.unityLogger.logEnabled;
-		}
-
-		private static Camera GetOrCreateCamera () {
-			var gameCamera = Camera.main;
-			if (gameCamera == null) {
-				var rendererRoot = new GameObject("Renderer", typeof(Camera)).transform;
-				rendererRoot.SetParent(null);
-				rendererRoot.tag = "MainCamera";
-				gameCamera = rendererRoot.GetComponent<Camera>();
-			}
-			gameCamera.transform.SetPositionAndRotation(Float3.zero, default);
-			gameCamera.transform.localScale = Float3.one;
-			gameCamera.transform.gameObject.tag = "MainCamera";
-			gameCamera.clearFlags = CameraClearFlags.Skybox;
-			gameCamera.backgroundColor = new Byte4(0, 0, 0, 0);
-			gameCamera.cullingMask = -1;
-			gameCamera.orthographic = true;
-			gameCamera.orthographicSize = 1f;
-			gameCamera.nearClipPlane = 0f;
-			gameCamera.farClipPlane = 1024f;
-			gameCamera.rect = new FRect(0f, 0f, 1f, 1f);
-			gameCamera.depth = 0f;
-			gameCamera.renderingPath = RenderingPath.UsePlayerSettings;
-			gameCamera.useOcclusionCulling = false;
-			gameCamera.allowHDR = false;
-			gameCamera.allowMSAA = false;
-			gameCamera.allowDynamicResolution = false;
-			gameCamera.targetDisplay = 0;
-			gameCamera.enabled = true;
-			gameCamera.gameObject.SetActive(true);
-			return gameCamera;
-		}
 
 	}
 }

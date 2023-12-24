@@ -17,7 +17,7 @@ namespace AngeliaFramework {
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitializeAttribute : System.Attribute { public int Order; public OnGameInitializeAttribute (int order = 0) => Order = order; }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateLaterAttribute : System.Attribute { }
-	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdatePauselessAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdatePauselessAttribute : System.Attribute, IOrderedAttribute { public int Order { get; set; } public OnGameUpdatePauselessAttribute (int order = 0) => Order = order; }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameRestartAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameTryingToQuitAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameQuittingAttribute : System.Attribute { }
@@ -27,16 +27,12 @@ namespace AngeliaFramework {
 
 	[System.Serializable]
 	public class GameConfiguration {
-		public bool StartGameWithMapEditor = false;
-		public Font[] Fonts = null;
 		public Texture2D[] Cursors = null;
 		public AudioClip[] AudioClips = null;
-		public ColorGradient SkyTintTop = null;
-		public ColorGradient SkyTintBottom = null;
 	}
 
 
-	public abstract class Game {
+	public abstract partial class Game {
 
 
 
@@ -50,33 +46,8 @@ namespace AngeliaFramework {
 		public static int PauselessFrame { get; private set; } = 0;
 		public static bool IsPausing => !IsPlaying;
 		public static bool IsPlaying { get; set; } = true;
-		public static int GraphicFramerate {
-			get => _GraphicFramerate.Value.Clamp(30, 120);
-			set {
-				_GraphicFramerate.Value = value.Clamp(30, 120);
-				Instance?.SetTargetFramerate(_GraphicFramerate.Value);
-			}
-		}
-		public static bool VSync {
-			get => _VSync.Value;
-			set {
-				Instance.SetVSync(value);
-				_VSync.Value = value;
-			}
-		}
-		public static FullscreenMode FullscreenMode {
-			get => (FullscreenMode)_FullscreenMode.Value;
-			set {
-				_FullscreenMode.Value = (int)value;
-				Instance.SetFullscreenMode(value);
-			}
-		}
-		public static FRect CameraScreenLocacion {
-			get => Instance.GetCameraScreenLocacion();
-			set => Instance.SetCameraScreenLocacion(value);
-		}
-		public static float CameraAspect => Instance.GetCameraAspect();
-		public static float CameraOrthographicSize => Instance.GetCameraOrthographicSize();
+		public static ColorGradient SkyTintTop { get; set; } = null;
+		public static ColorGradient SkyTintBottom { get; set; } = null;
 
 		// Event
 		public static event System.Action OnGameRestart;
@@ -109,11 +80,13 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		public Game (GameConfiguration config) {
+		public virtual void Initialize () {
 			try {
+
 				Instance = this;
-				Config = config;
+
 				AngePath.CurrentSaveSlot = _CurrentSaveSlot.Value;
+
 				Util.LinkEventWithAttribute<OnGameUpdateAttribute>(typeof(Game), nameof(OnGameUpdate));
 				Util.LinkEventWithAttribute<OnGameUpdateLaterAttribute>(typeof(Game), nameof(OnGameUpdateLater));
 				Util.LinkEventWithAttribute<OnGameUpdatePauselessAttribute>(typeof(Game), nameof(OnGameUpdatePauseless));
@@ -122,15 +95,17 @@ namespace AngeliaFramework {
 				Util.LinkEventWithAttribute<OnGameRestartAttribute>(typeof(Game), nameof(OnGameRestart));
 				Util.LinkEventWithAttribute<OnSlotChangedAttribute>(typeof(Game), nameof(OnSlotChanged));
 				Util.LinkEventWithAttribute<OnSlotCreatedAttribute>(typeof(Game), nameof(OnSlotCreated));
+
 				Application.wantsToQuit -= OnTryingToQuit;
 				Application.wantsToQuit += OnTryingToQuit;
 				Application.quitting -= OnGameQuitting;
 				Application.quitting += OnGameQuitting;
-				CellRenderer.Initialize(Config.Fonts);
+
+				CellRenderer.Initialize();
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>(m => m.Value.Order <= 0, (a, b) => a.Value.Order.CompareTo(b.Value.Order));
 				OnSlotChanged?.Invoke();
 				AudioPlayer.Initialize(Config.AudioClips);
-				Debug.SetEnable(Application.isEditor);
+				SetDebugEnable(GetIsEdittime());
 				Application.targetFrameRate = Application.isEditor ? 60 : GraphicFramerate;
 				QualitySettings.vSyncCount = _VSync.Value ? 1 : 0;
 				Time.fixedDeltaTime = 1f / 60f;
@@ -139,8 +114,8 @@ namespace AngeliaFramework {
 				AngeUtil.CreateAngeFolders();
 				RefreshBackgroundTint();
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>(m => m.Value.Order > 0, (a, b) => a.Value.Order.CompareTo(b.Value.Order));
+				RestartGameLogic();
 				System.GC.Collect();
-				if (Config.StartGameWithMapEditor) { MapEditor.OpenMapEditorSmoothly(false); } else { RestartGameLogic(); }
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 			// Func
 			static bool OnTryingToQuit () {
@@ -152,7 +127,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public void Update () {
+		public virtual void Update () {
 			try {
 				if (IsPlaying) {
 					Stage.Update_View();
@@ -175,8 +150,6 @@ namespace AngeliaFramework {
 					Stage.UpdateAllEntities(GlobalFrame, EntityLayer.UI);
 				}
 				OnGameUpdatePauseless?.Invoke();
-				CellRenderer.FrameUpdate();
-				CursorSystem.Update(GlobalFrame);
 				if (FrameInput.GameKeyUp(Gamekey.Start)) IsPlaying = !IsPlaying;
 				if (RequireRestartWithPlayerID.HasValue) RestartGameLogic();
 				if (_CurrentSaveSlot.Value != AngePath.CurrentSaveSlot) {
@@ -204,33 +177,21 @@ namespace AngeliaFramework {
 		}
 
 
-		public void SetBackgroundTint (Byte4 top, Byte4 bottom) {
+		public static void SetBackgroundTint (Byte4 top, Byte4 bottom) {
 			ForceBackgroundTintFrame = GlobalFrame + 1;
 			CellRenderer.SetBackgroundTint(top, bottom);
 		}
 
 
-		public void RefreshBackgroundTint () {
+		public static void RefreshBackgroundTint () {
 			if (GlobalFrame < ForceBackgroundTintFrame) return;
 			var date = System.DateTime.Now;
 			float time01 = Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
 			CellRenderer.SetBackgroundTint(
-				Config.SkyTintTop.Evaluate(time01),
-				Config.SkyTintBottom.Evaluate(time01)
+				SkyTintTop.Evaluate(time01),
+				SkyTintBottom.Evaluate(time01)
 			);
 		}
-
-
-		// System
-		public abstract void SetTargetFramerate (int targetFramerate);
-		public abstract void SetVSync (bool vsync);
-		public abstract void SetFullscreenMode (FullscreenMode mode);
-
-		// Camera
-		public abstract FRect GetCameraScreenLocacion ();
-		public abstract void SetCameraScreenLocacion (FRect rect);
-		public abstract float GetCameraAspect ();
-		public abstract float GetCameraOrthographicSize ();
 
 
 		#endregion

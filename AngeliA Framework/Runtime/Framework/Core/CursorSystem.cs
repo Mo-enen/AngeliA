@@ -13,7 +13,6 @@ namespace AngeliaFramework {
 		private static int CursorEndFrame = int.MinValue;
 		private static int CursorPriority = int.MinValue;
 		private static Texture2D[] Cursors = null;
-		private static int GlobalFrame = 0;
 
 
 		// API
@@ -66,9 +65,9 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void Update (int globalFrame) {
-			GlobalFrame = globalFrame;
-			if (CursorEndFrame != int.MinValue && globalFrame > CursorEndFrame) {
+		[OnGameUpdatePauseless(4097)]
+		public static void OnGameUpdatePauseless () {
+			if (CursorEndFrame != int.MinValue && Game.GlobalFrame > CursorEndFrame) {
 				// No Cursor
 				CursorPriority = int.MinValue;
 				CursorEndFrame = int.MinValue;
@@ -111,7 +110,7 @@ namespace AngeliaFramework {
 			priority++; // for int.Min 
 			if (priority < CursorPriority) return;
 			CursorPriority = priority;
-			CursorEndFrame = GlobalFrame + 1;
+			CursorEndFrame = Game.GlobalFrame + 1;
 			if (cursorIndex < 0 || cursorIndex >= Cursors.Length) {
 				CurrentCursorIndex = -1;
 			} else {

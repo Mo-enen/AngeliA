@@ -5,16 +5,14 @@ using UnityEngine;
 
 
 namespace AngeliaGame {
-	public sealed class GameForUnity : Game {
-
+	public sealed partial class GameForUnity : Game {
 
 
 
 		#region --- VAR ---
 
 
-		// Api
-		public Camera UnityCamera { get; init; }
+		private static GameForUnity InstanceUnity = null;
 
 
 		#endregion
@@ -25,9 +23,14 @@ namespace AngeliaGame {
 		#region --- MSG ---
 
 
-		public GameForUnity (GameConfiguration config) : base(config) {
-			UnityCamera = Camera.main;
+		public override void Initialize () {
+			BeforeGameInitialize_Rendering();
+			base.Initialize();
+			if (Application.isEditor) MapEditor.OpenMapEditorSmoothly(false);
 		}
+
+
+		public GameForUnity () => InstanceUnity = this;
 
 
 		#endregion
@@ -39,9 +42,10 @@ namespace AngeliaGame {
 
 
 		// System
-		public override void SetTargetFramerate (int targetFramerate) => Application.targetFrameRate = targetFramerate;
-		public override void SetVSync (bool vsync) => QualitySettings.vSyncCount = vsync ? 1 : 0;
-		public override void SetFullscreenMode (FullscreenMode mode) {
+		protected override bool GetIsEdittime () => Application.isEditor;
+		protected override void SetGraphicFramerate (int targetFramerate) => Application.targetFrameRate = targetFramerate;
+		protected override void SetVSync (bool vsync) => QualitySettings.vSyncCount = vsync ? 1 : 0;
+		protected override void SetFullscreenMode (FullscreenMode mode) {
 			switch (mode) {
 				case FullscreenMode.Window:
 					Screen.SetResolution(
@@ -60,12 +64,19 @@ namespace AngeliaGame {
 					break;
 			}
 		}
+		protected override int GetScreenWidth () => Screen.width;
+		protected override int GetScreenHeight () => Screen.height;
 
-		// Camera
-		public override FRect GetCameraScreenLocacion () => UnityCamera.rect;
-		public override void SetCameraScreenLocacion (FRect rect) => UnityCamera.rect = rect;
-		public override float GetCameraAspect () => UnityCamera.aspect;
-		public override float GetCameraOrthographicSize () => UnityCamera.orthographicSize;
+		// Debug
+		protected override void DebugLog (object target) => Debug.Log(target);
+		protected override void DebugLogWarning (object target) => Debug.LogWarning(target);
+		protected override void DebugLogError (object target) => Debug.LogError(target);
+		protected override void DebugLogException (System.Exception ex) => Debug.LogException(ex);
+		protected override void SetDebugLoggerEnable (bool enable) => Debug.unityLogger.logEnabled = enable;
+		protected override bool GetDebugLoggerEnable () => Debug.unityLogger.logEnabled;
+
+		// Sheet
+		protected override object LoadSheetTextureFromDisk () => AngeUtilUnity.LoadTexture(AngePath.SheetTexturePath);
 
 
 		#endregion
@@ -74,6 +85,8 @@ namespace AngeliaGame {
 
 
 		#region --- LGC ---
+
+
 
 
 

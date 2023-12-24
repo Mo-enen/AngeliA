@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using GeorgeMamaladze;
 using Newtonsoft.Json;
 
@@ -231,7 +230,7 @@ namespace AngeliaFramework {
 
 			// Editor Meta
 			EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(
-				Application.isEditor ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot
+				Game.IsEdittime ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot
 			) ?? new();
 
 			// Cache
@@ -295,10 +294,7 @@ namespace AngeliaFramework {
 				Save();
 			}
 
-			JsonUtil.SaveJson(
-				EditorMeta,
-				Application.isEditor ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot
-			);
+			JsonUtil.SaveJson(EditorMeta, Game.IsEdittime ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot);
 			AngeUtil.DeleteAllEmptyMaps(WorldSquad.MapRoot);
 			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
 			WorldSquad.SpawnEntity = true;
@@ -608,8 +604,10 @@ namespace AngeliaFramework {
 			}
 			if (delta.x != 0 || delta.y != 0) {
 				var cRect = CellRenderer.CameraRect;
-				delta.x = (delta.x * cRect.width / (CellRenderer.CameraRestrictionRate * Screen.width)).RoundToInt();
-				delta.y = delta.y * cRect.height / Screen.height;
+				//Game.Log(CellRenderer.CameraRestrictionRate);
+
+				delta.x = (delta.x * cRect.width / (CellRenderer.CameraRestrictionRate * Game.ScreenWidth)).RoundToInt();
+				delta.y = delta.y * cRect.height / Game.ScreenHeight;
 				TargetViewRect.x -= delta.x;
 				TargetViewRect.y -= delta.y;
 			}
@@ -645,11 +643,11 @@ namespace AngeliaFramework {
 					float cameraX = TargetViewRect.x + (TargetViewRect.width - cameraWidth) / 2f;
 					float cameraY = TargetViewRect.y;
 
-					float mousePosX01 = wheelDelta != 0 ? Mathf.InverseLerp(0f, Screen.width, FrameInput.MouseScreenPosition.x) : 0.5f;
-					float mousePosY01 = wheelDelta != 0 ? Mathf.InverseLerp(0f, Screen.height, FrameInput.MouseScreenPosition.y) : 0.5f;
+					float mousePosX01 = wheelDelta != 0 ? Util.InverseLerp(0f, Game.ScreenWidth, FrameInput.MouseScreenPosition.x) : 0.5f;
+					float mousePosY01 = wheelDelta != 0 ? Util.InverseLerp(0f, Game.ScreenHeight, FrameInput.MouseScreenPosition.y) : 0.5f;
 
-					float pivotX = Mathf.LerpUnclamped(cameraX, cameraX + cameraWidth, mousePosX01);
-					float pivotY = Mathf.LerpUnclamped(cameraY, cameraY + cameraHeight, mousePosY01);
+					float pivotX = Util.LerpUnclamped(cameraX, cameraX + cameraWidth, mousePosX01);
+					float pivotY = Util.LerpUnclamped(cameraY, cameraY + cameraHeight, mousePosY01);
 					float newCameraWidth = cameraWidth * newWidth / TargetViewRect.width;
 					float newCameraHeight = cameraHeight * newHeight / TargetViewRect.height;
 
@@ -937,14 +935,14 @@ namespace AngeliaFramework {
 					int y = FrameInput.MouseGlobalPosition.y.ToUnit();
 					CellRendererGUI.Label(
 						CellContent.Get(StateYLabelToString.GetChars(y), Const.GREY_196, 22, Alignment.TopRight),
-						new IRect(Mathf.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
+						new IRect(Util.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
 						out var boundsY
 					);
 
 					int x = FrameInput.MouseGlobalPosition.x.ToUnit();
 					CellRendererGUI.Label(
 						CellContent.Get(StateXLabelToString.GetChars(x), Const.GREY_196, 22, Alignment.TopRight),
-						new IRect(Mathf.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT)
+						new IRect(Util.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT)
 					);
 
 				}
@@ -978,7 +976,7 @@ namespace AngeliaFramework {
 			if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 
 			// Squad  
-			var targetChannel = Application.isEditor ? MapChannel.BuiltIn : MapChannel.User;
+			var targetChannel = Game.IsEdittime ? MapChannel.BuiltIn : MapChannel.User;
 			if (WorldSquad.Channel != targetChannel) {
 				WorldSquad.SetMapChannel(targetChannel);
 			}
@@ -1086,7 +1084,7 @@ namespace AngeliaFramework {
 			int gap = Unify(6);
 			var tipRect = new IRect(
 				rect.x,
-				Mathf.Max(rect.y - height - Unify(12), CellRenderer.CameraRect.y),
+				Util.Max(rect.y - height - Unify(12), CellRenderer.CameraRect.y),
 				rect.width, height
 			);
 			TooltipLabel.Text = tip;
@@ -1233,10 +1231,10 @@ namespace AngeliaFramework {
 					data.UnitX, data.UnitY,
 					data.EntityID, data.LevelID, data.BackgroundID
 				);
-				minX = Mathf.Min(minX, data.UnitX);
-				minY = Mathf.Min(minY, data.UnitY);
-				maxX = Mathf.Max(maxX, data.UnitX);
-				maxY = Mathf.Max(maxY, data.UnitY);
+				minX = Util.Min(minX, data.UnitX);
+				minY = Util.Min(minY, data.UnitY);
+				maxX = Util.Max(maxX, data.UnitX);
+				maxY = Util.Max(maxY, data.UnitY);
 			}
 			if (minX != int.MaxValue) {
 				IsDirty = true;

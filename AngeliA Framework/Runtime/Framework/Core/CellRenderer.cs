@@ -56,20 +56,6 @@ namespace AngeliaFramework {
 			var result = globalOffset.Rotate(-Rotation);
 			return result.RoundToInt();
 		}
-		public IRect GetBounds () {
-			var p0 = LocalToGlobal(0, 0);
-			var p1 = LocalToGlobal(Width, 0);
-			var p2 = LocalToGlobal(Width, Height);
-			var p3 = LocalToGlobal(0, Height);
-			var result = new IRect();
-			result.SetMinMax(
-				Mathf.Min(Mathf.Min(p0.x, p1.x), Mathf.Min(p2.x, p3.x)),
-				Mathf.Max(Mathf.Max(p0.x, p1.x), Mathf.Max(p2.x, p3.x)),
-				Mathf.Min(Mathf.Min(p0.y, p1.y), Mathf.Min(p2.y, p3.y)),
-				Mathf.Max(Mathf.Max(p0.y, p1.y), Mathf.Max(p2.y, p3.y))
-			);
-			return result;
-		}
 		public void ReturnPivots () {
 			if (Rotation == 0) {
 				X -= (Width * PivotX).RoundToInt();
@@ -143,7 +129,7 @@ namespace AngeliaFramework {
 		}
 
 
-		internal class CharSprite {
+		public class CharSprite {
 			public int GlobalID;
 			public Float2 UvBottomLeft;
 			public Float2 UvBottomRight;
@@ -156,7 +142,6 @@ namespace AngeliaFramework {
 
 
 		private class TextLayer : Layer {
-			public Font TextFont = null;
 			public int TextSize = 30;
 			public int TextRebuild = 1;
 			public readonly Dictionary<int, CellInfo> TextIDMap = new();
@@ -165,20 +150,15 @@ namespace AngeliaFramework {
 
 
 		private class Layer {
-			public int Count => Mathf.Min(Cells.Length, FocusedCell >= 0 ? FocusedCell : Cells.Length);
+			public int Count => Util.Min(Cells.Length, FocusedCell >= 0 ? FocusedCell : Cells.Length);
 			public Cell[] Cells;
+			public string Name;
 			public int CellCount;
 			public int FocusedCell;
 			public int PrevCellCount;
 			public int SortedIndex;
 			public int SortingOrder;
 			public bool UiLayer;
-			public Transform RendererRoot;
-			public MeshRenderer Renderer;
-			public Mesh Mesh;
-			public List<Vector3> VertexCache;
-			public List<Vector2> UvCache;
-			public List<Color32> ColorCache;
 			public void ZSort (bool fromStart = false) {
 				if (fromStart) SortedIndex = 0;
 				if (SortedIndex < Count - 1) {
@@ -192,7 +172,7 @@ namespace AngeliaFramework {
 
 		private class CellInfo {
 			public int Index {
-				get => GetIndex(GlobalFrame);
+				get => GetIndex(Game.GlobalFrame);
 				set => _Index = value;
 			}
 			public int Length => Chain != null ? Chain.Count : 1;
@@ -221,17 +201,6 @@ namespace AngeliaFramework {
 		private static readonly int SKYBOX_TOP = Shader.PropertyToID("_ColorA");
 		private static readonly int SKYBOX_BOTTOM = Shader.PropertyToID("_ColorB");
 		private static readonly Shader SKYBOX_SHADER = Shader.Find("Angelia/Skybox");
-		private static readonly Shader[] RENDERING_SHADERS = new Shader[RenderLayer.COUNT] {
-			Shader.Find("Angelia/Lerp"),	// Wallpaper
-			Shader.Find("Angelia/Lerp"),	// Behind
-			Shader.Find("Angelia/Color"),	// Shadow
-			Shader.Find("Angelia/Cell"),	// Default
-			Shader.Find("Angelia/Color"),	// Color
-			Shader.Find("Angelia/Mult"),	// Mult
-			Shader.Find("Angelia/Add"),		// Add
-			Shader.Find("Angelia/Cell"),	// UI
-			Shader.Find("Angelia/Cell"),	// TopUI
-		};
 		private static readonly int[] RENDER_CAPACITY = new int[RenderLayer.COUNT] {
 			256,	// Wallpaper 
 			8192,	// Behind 
@@ -268,13 +237,12 @@ namespace AngeliaFramework {
 		private static readonly Dictionary<int, int[]> SpriteGroupMap = new();
 		private static readonly Dictionary<int, SpriteMeta> MetaPool = new();
 		private static readonly Cell[] Last9SlicedCells = new Cell[9];
+		private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
+		private static TextLayer[] TextLayers = new TextLayer[0];
 		private static AngeSprite[] Sprites = null;
 		private static AngeSpriteChain[] Chains = null;
-		private static Layer[] Layers = new Layer[0];
-		private static TextLayer[] TextLayers = new TextLayer[0];
 		private static Material Skybox = null;
 		private static string[] SheetNames = new string[0];
-		private static int GlobalFrame = 0;
 		private static bool IsPausing = false;
 		private static bool IsDrawing = false;
 
@@ -288,14 +256,11 @@ namespace AngeliaFramework {
 
 
 		// Init
-		internal static void Initialize (Font[] fonts) {
-
-			var root = Camera.main.transform;
+		internal static void Initialize () {
 
 			// Load Assets
 			var sheet = JsonUtil.LoadOrCreateJson<SpriteSheet>(AngePath.SheetRoot);
-			var sheetTexture = AngeUtil.LoadTexture(AngePath.SheetTexturePath);
-			if (sheetTexture == null || sheet == null) return;
+			if (sheet == null) return;
 
 			// Skybox
 			if (SKYBOX_SHADER != null) {
@@ -304,7 +269,7 @@ namespace AngeliaFramework {
 
 			// Pipeline
 			InitializePool(sheet);
-			InitializeLayers(root, sheetTexture, fonts);
+			InitializeLayers();
 
 		}
 
@@ -312,11 +277,9 @@ namespace AngeliaFramework {
 		// Update
 		internal static void CameraUpdate (IRect viewRect) {
 
-			ViewRect = viewRect;
-
 			// Ratio
 			float ratio = (float)Screen.width / Screen.height;
-			float maxRatio = (float)ViewRect.width / ViewRect.height;
+			float maxRatio = (float)viewRect.width / viewRect.height;
 			var rect = new FRect(0f, 0f, 1f, 1f);
 			if (ratio > maxRatio) {
 				rect = new FRect(0.5f - 0.5f * maxRatio / ratio, 0f, maxRatio / ratio, 1f);
@@ -330,264 +293,34 @@ namespace AngeliaFramework {
 
 			// Camera Rect
 			var cRect = new IRect(
-				ViewRect.x,
-				ViewRect.y,
-				(int)(ViewRect.height * Game.CameraAspect),
-				ViewRect.height
+				viewRect.x,
+				viewRect.y,
+				(int)(viewRect.height * Game.CameraAspect),
+				viewRect.height
 			);
-			int cOffsetX = (ViewRect.width - cRect.width) / 2;
+			int cOffsetX = (viewRect.width - cRect.width) / 2;
 			cRect.x += cOffsetX;
 			CameraRect = cRect;
+			ViewRect = viewRect;
 
 		}
 
 
-		internal static void FrameUpdate () {
-
-			int globalFrame = Game.GlobalFrame;
+		[OnGameUpdatePauseless(4096)]
+		internal static void OnGameUpdatePauseless () {
 			IsDrawing = false;
-			GlobalFrame = globalFrame;
-			float orthographicSize = Game.CameraOrthographicSize;
-			float aspect = Game.CameraAspect;
-
-			// Layer Game Objects
-			var pos = new Float3(
-				-orthographicSize * aspect,
-				-orthographicSize,
-				1f
-			);
-			pos.x -= ((ViewRect.width - CameraRect.width) / 2) * orthographicSize * 2f * aspect / CameraRect.width;
-			var scl = new Float3(
-				orthographicSize * 2f / ViewRect.height,
-				orthographicSize * 2f / ViewRect.height,
-				1f
-			);
-
-			for (int layerIndex = 0; layerIndex < Layers.Length; layerIndex++) {
-				var layer = Layers[layerIndex];
-				layer.RendererRoot.localPosition = pos;
-				layer.RendererRoot.localScale = scl;
-			}
-			for (int layerIndex = 0; layerIndex < TextLayers.Length; layerIndex++) {
-				var tLayer = TextLayers[layerIndex];
-				tLayer.RendererRoot.localPosition = pos;
-				tLayer.RendererRoot.localScale = scl;
-			}
-
-			// Update Mesh
 			try {
 				for (int i = 0; i < Layers.Length; i++) {
-					UpdateLayer(Layers[i]);
+					var layer = Layers[i];
+					layer.ZSort();
+					Game.InvokeLayerUpdate(i, false, layer.Cells, ref layer.PrevCellCount);
 				}
 				for (int i = 0; i < TextLayers.Length; i++) {
-					UpdateLayer(TextLayers[i]);
+					var layer = TextLayers[i];
+					layer.ZSort();
+					Game.InvokeLayerUpdate(i, true, layer.Cells, ref layer.PrevCellCount);
 				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }
-
-		}
-
-
-		private static void UpdateLayer (Layer layer) {
-
-			var textLayer = layer as TextLayer;
-
-			// Z-Sort
-			layer.ZSort();
-
-			// Mesh
-			var mesh = layer.Mesh;
-			var cells = layer.Cells;
-			int cellCount = layer.Count;
-
-			Float3 a = Float3.zero;
-			Float3 b = Float3.zero;
-			Float3 c = Float3.zero;
-			Float3 d = Float3.zero;
-			Float2 uv0;
-			Float2 uv1;
-			Float2 uv2;
-			Float2 uv3;
-			int i0, i1, i2, i3;
-			float shiftL;
-			float shiftR;
-			float shiftD;
-			float shiftU;
-
-			for (int i = 0; i < cellCount; i++) {
-
-				var cell = cells[i];
-
-				if (cell.Index < 0) continue;
-				if (textLayer != null && cell.Index >= textLayer.CharSprites.Count) continue;
-
-				bool shifted = !cell.Shift.IsZero;
-				if (shifted) {
-					shiftL = ((float)cell.Shift.left / cell.Width.Abs()).Clamp01();
-					shiftR = ((float)cell.Shift.right / cell.Width.Abs()).Clamp01();
-					shiftD = ((float)cell.Shift.down / cell.Height.Abs()).Clamp01();
-					shiftU = ((float)cell.Shift.up / cell.Height.Abs()).Clamp01();
-				} else {
-					shiftL = 0;
-					shiftR = 0;
-					shiftD = 0;
-					shiftU = 0;
-				}
-
-				// Position
-				// b c
-				// a d
-				float pX = cell.Width * cell.PivotX;
-				float pY = cell.Height * cell.PivotY;
-				if (pX.NotAlmostZero()) {
-					a.x = -pX;
-					b.x = -pX;
-					c.x = cell.Width - pX;
-					d.x = cell.Width - pX;
-				} else {
-					a.x = 0;
-					b.x = 0;
-					c.x = cell.Width;
-					d.x = cell.Width;
-				}
-				if (pY.NotAlmostZero()) {
-					a.y = -pY;
-					b.y = cell.Height - pY;
-					c.y = cell.Height - pY;
-					d.y = -pY;
-				} else {
-					a.y = 0;
-					b.y = cell.Height;
-					c.y = cell.Height;
-					d.y = 0;
-				}
-
-				// Shift Pos
-				if (shifted) {
-					a.x = b.x = Mathf.Lerp(a.x, d.x, shiftL);
-					c.x = d.x = Mathf.Lerp(d.x, a.x, shiftR);
-					a.y = d.y = Mathf.Lerp(a.y, b.y, shiftD);
-					b.y = c.y = Mathf.Lerp(b.y, a.y, shiftU);
-				}
-
-				// Rotation
-				if (cell.Rotation != 0) {
-					//var rot = Quaternion.Euler(0, 0, -cell.Rotation);
-					a = a.Rotate(cell.Rotation);
-					b = b.Rotate(cell.Rotation);
-					c = c.Rotate(cell.Rotation);
-					d = d.Rotate(cell.Rotation);
-					//a = rot * a;
-					//b = rot * b;
-					//c = rot * c;
-					//d = rot * d;
-				}
-
-				// Global to View
-				a.x += cell.X - ViewRect.x;
-				a.y += cell.Y - ViewRect.y;
-				b.x += cell.X - ViewRect.x;
-				b.y += cell.Y - ViewRect.y;
-				c.x += cell.X - ViewRect.x;
-				c.y += cell.Y - ViewRect.y;
-				d.x += cell.X - ViewRect.x;
-				d.y += cell.Y - ViewRect.y;
-
-				i0 = i * 4 + 0;
-				i1 = i * 4 + 1;
-				i2 = i * 4 + 2;
-				i3 = i * 4 + 3;
-
-				// UV
-				if (textLayer == null) {
-					var aSprite = Sprites[cell.Index];
-					if (cell.BorderSide == Alignment.Full) {
-						// Normal
-						uv0 = aSprite.UvBottomLeft;
-						uv1 = aSprite.TopLeft;
-						uv2 = aSprite.UvTopRight;
-						uv3 = aSprite.BottomRight;
-					} else {
-						// 9 Slice
-						aSprite.GetSlicedUvBorder(cell.BorderSide, out var bl, out var br, out var tl, out var tr);
-						uv0 = bl;
-						uv1 = tl;
-						uv2 = tr;
-						uv3 = br;
-					}
-				} else {
-					// For Text
-					var tSprite = textLayer.CharSprites[cell.Index];
-					uv0 = tSprite.UvBottomLeft;
-					uv1 = tSprite.UvTopLeft;
-					uv2 = tSprite.UvTopRight;
-					uv3 = tSprite.UvBottomRight;
-				}
-
-				// Shift UV
-				if (shifted) {
-					if (textLayer == null) {
-						uv0.x = uv1.x = Mathf.Lerp(uv0.x, uv3.x, shiftL);
-						uv2.x = uv3.x = Mathf.Lerp(uv3.x, uv0.x, shiftR);
-						uv0.y = uv3.y = Mathf.Lerp(uv0.y, uv1.y, shiftD);
-						uv1.y = uv2.y = Mathf.Lerp(uv1.y, uv0.y, shiftU);
-					} else {
-						float minUvX = Mathf.Min(Mathf.Min(uv0.x, uv1.x), Mathf.Min(uv2.x, uv3.x));
-						float maxUvX = Mathf.Max(Mathf.Max(uv0.x, uv1.x), Mathf.Max(uv2.x, uv3.x));
-						float minUvY = Mathf.Min(Mathf.Min(uv0.y, uv1.y), Mathf.Min(uv2.y, uv3.y));
-						float maxUvY = Mathf.Max(Mathf.Max(uv0.y, uv1.y), Mathf.Max(uv2.y, uv3.y));
-						if (Mathf.Approximately(uv0.x, uv1.x)) {
-							uv0.x = uv1.x = Mathf.Lerp(minUvX, maxUvX, shiftL);
-							uv2.x = uv3.x = Mathf.Lerp(maxUvX, minUvX, shiftR);
-							uv0.y = uv3.y = Mathf.Lerp(maxUvY, minUvY, shiftD);
-							uv1.y = uv2.y = Mathf.Lerp(minUvY, maxUvY, shiftU);
-						} else {
-							uv0.x = uv3.x = Mathf.Lerp(minUvX, maxUvX, shiftD);
-							uv2.x = uv1.x = Mathf.Lerp(maxUvX, minUvX, shiftU);
-							uv0.y = uv1.y = Mathf.Lerp(maxUvY, minUvY, shiftL);
-							uv3.y = uv2.y = Mathf.Lerp(minUvY, maxUvY, shiftR);
-						}
-					}
-				}
-
-				// Pos
-				layer.VertexCache[i0] = a;
-				layer.VertexCache[i1] = b;
-				layer.VertexCache[i2] = c;
-				layer.VertexCache[i3] = d;
-
-				// UV
-				layer.UvCache[i0] = uv0;
-				layer.UvCache[i1] = uv1;
-				layer.UvCache[i2] = uv2;
-				layer.UvCache[i3] = uv3;
-
-				// Color
-				layer.ColorCache[i0] = cell.Color;
-				layer.ColorCache[i1] = cell.Color;
-				layer.ColorCache[i2] = cell.Color;
-				layer.ColorCache[i3] = cell.Color;
-
-			}
-
-			// Clear Unused
-			if (cellCount < layer.PrevCellCount) {
-				var zero = UnityEngine.Vector3.zero;
-				for (int i = cellCount; i < layer.PrevCellCount; i++) {
-					layer.VertexCache[i * 4 + 0] = zero;
-					layer.VertexCache[i * 4 + 1] = zero;
-					layer.VertexCache[i * 4 + 2] = zero;
-					layer.VertexCache[i * 4 + 3] = zero;
-				}
-			}
-			layer.PrevCellCount = cellCount;
-
-			// Cache >> Mesh
-			mesh.SetVertices(layer.VertexCache);
-			mesh.SetUVs(0, layer.UvCache);
-			mesh.SetColors(layer.ColorCache);
-			mesh.RecalculateBounds();
-			mesh.RecalculateNormals();
-			mesh.UploadMeshData(false);
 		}
 
 
@@ -650,83 +383,38 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void InitializeLayers (Transform root, Texture2D sheetTexture, Font[] fonts) {
-
-			// Clear Root
-			root.DestroyAllChildrenImmediate();
+		public static void InitializeLayers () {
 
 			// Create Layers
-			Layers = new Layer[RenderLayer.COUNT];
 			for (int i = 0; i < RenderLayer.COUNT; i++) {
-				var shader = RENDERING_SHADERS[i];
-				int rCapacity = RENDER_CAPACITY[i.Clamp(0, RENDER_CAPACITY.Length - 1)];
-				Layers[i] = CreateLayer(
-					root,
-					new Material(shader) {
-						name = shader.name,
-						mainTexture = sheetTexture,
-						enableInstancing = true,
-						mainTextureOffset = Float2.zero,
-						mainTextureScale = Float2.one,
-						doubleSidedGI = false,
-						renderQueue = 3000,
-					},
-					LAYER_NAMES[i],
-					uiLayer: i == RenderLayer.UI || i == RenderLayer.TOP_UI,
-					sortingOrder: i == RenderLayer.TOP_UI ? 2048 : i,
-					rCapacity,
-					textLayer: false
-				);
+				int capacity = RENDER_CAPACITY[i.Clamp(0, RENDER_CAPACITY.Length - 1)];
+				string name = LAYER_NAMES[i];
+				int order = i == RenderLayer.TOP_UI ? 2048 : i;
+				bool uiLayer = i == RenderLayer.UI || i == RenderLayer.TOP_UI;
+				Layers[i] = CreateLayer(name, uiLayer, order, capacity, textLayer: false);
+				Game.InvokeOnRenderingLayerCreated(i, name, order, capacity);
 			}
 
 			// Text Layer
+			int textLayerCount = Game.TextLayerCount;
 			const int TEXT_CAPACITY = 2048;
-			if (fonts == null || fonts.Length == 0) {
-				fonts = new Font[1] { Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf") };
-			}
-
-			TextLayers = new TextLayer[fonts.Length];
-			for (int i = 0; i < fonts.Length; i++) {
-				if (fonts[i] == null) fonts[i] = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-				var font = fonts[i];
-				if (font == null) continue;
+			TextLayers = new TextLayer[textLayerCount];
+			for (int i = 0; i < textLayerCount; i++) {
+				string name = Game.GetTextLayerNameAt(i);
+				int sortingOrder = Layers.Length + i;
 				var tLayer = TextLayers[i] = CreateLayer(
-					root, font.material, font.name,
+					name,
 					uiLayer: true,
-					sortingOrder: Layers.Length + i,
+					sortingOrder,
 					TEXT_CAPACITY,
 					textLayer: true
 				) as TextLayer;
-				tLayer.TextFont = font;
-				tLayer.TextSize = font.fontSize.Clamp(42, int.MaxValue);
-				Font.textureRebuilt += (_font) => {
-					if (_font == tLayer.TextFont) tLayer.TextRebuild++;
-				};
+				tLayer.TextSize = Game.GetFontSizeAt(i).Clamp(42, int.MaxValue);
+				Game.InvokeOnTextLayerCreated(i, name, sortingOrder, TEXT_CAPACITY);
 			}
+
 			// Func
-			static Layer CreateLayer (Transform root, Material material, string name, bool uiLayer, int sortingOrder, int renderCapacity, bool textLayer) {
-
-				if (material == null) {
-					material = new Material(Shader.Find("Angelia/Cell"));
-				}
-
-				var tf = new GameObject(name, typeof(MeshFilter), typeof(MeshRenderer)).transform;
-				tf.SetParent(root);
-				tf.SetAsLastSibling();
-				tf.SetPositionAndRotation(new Float3(0, 0, 1), default);
-				tf.localScale = Float3.one;
-				var filter = tf.GetComponent<MeshFilter>();
-				filter.sharedMesh = new Mesh();
-				var mr = tf.GetComponent<MeshRenderer>();
-				mr.material = material;
-				mr.receiveShadows = false;
-				mr.staticShadowCaster = false;
-				mr.allowOcclusionWhenDynamic = false;
-				mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-				mr.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
-				mr.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
-				mr.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
-				mr.sortingOrder = sortingOrder;
+			static Layer CreateLayer (string name, bool uiLayer, int sortingOrder, int renderCapacity, bool textLayer) {
 				var cells = new Cell[renderCapacity];
 				for (int i = 0; i < renderCapacity; i++) {
 					cells[i] = new Cell() {
@@ -734,53 +422,18 @@ namespace AngeliaFramework {
 						BorderSide = Alignment.Full,
 					};
 				}
-
-				// Create Layer
 				var layer = textLayer ? new TextLayer() : new Layer();
+				layer.Name = name;
 				layer.Cells = cells;
-				layer.Mesh = filter.sharedMesh;
-				layer.RendererRoot = filter.transform;
 				layer.CellCount = renderCapacity;
 				layer.FocusedCell = 0;
-				layer.VertexCache = new();
-				layer.UvCache = new();
-				layer.ColorCache = new();
 				layer.PrevCellCount = 0;
 				layer.SortedIndex = 0;
 				layer.SortingOrder = sortingOrder;
-				layer.Renderer = mr;
 				layer.UiLayer = uiLayer;
-
-				// Init Mesh
-				var tris = new int[renderCapacity * 2 * 3];
-				for (int i = 0; i < renderCapacity; i++) {
-					tris[i * 6 + 0] = i * 4 + 0;
-					tris[i * 6 + 1] = i * 4 + 1;
-					tris[i * 6 + 2] = i * 4 + 2;
-					tris[i * 6 + 3] = i * 4 + 0;
-					tris[i * 6 + 4] = i * 4 + 2;
-					tris[i * 6 + 5] = i * 4 + 3;
-				}
-				layer.VertexCache.AddRange(new Vector3[renderCapacity * 4]);
-				layer.UvCache.AddRange(new Vector2[renderCapacity * 4]);
-				layer.ColorCache.AddRange(new Color32[renderCapacity * 4]);
-				var mesh = filter.sharedMesh;
-				mesh.MarkDynamic();
-				mesh.SetVertices(layer.VertexCache);
-				mesh.SetUVs(0, layer.UvCache);
-				mesh.SetColors(layer.ColorCache);
-				mesh.SetTriangles(tris, 0);
-				mesh.UploadMeshData(false);
 				return layer;
 			}
 
-		}
-
-
-		public static void SetTexture (Texture2D texture) {
-			foreach (var layer in Layers) {
-				layer.Renderer.material.mainTexture = texture;
-			}
 		}
 
 
@@ -804,9 +457,8 @@ namespace AngeliaFramework {
 		public static void SetLayerToTopUI () => CurrentLayerIndex = RenderLayer.TOP_UI;
 
 
-		public static string GetLayerName (int layerIndex) => layerIndex >= 0 && layerIndex < Layers.Length ? Layers[layerIndex].RendererRoot.name : "";
-		public static string GetTextLayerName () => GetTextLayerName(CurrentTextLayerIndex);
-		public static string GetTextLayerName (int layerIndex) => layerIndex >= 0 && layerIndex < TextLayers.Length ? TextLayers[layerIndex].RendererRoot.name : "";
+		public static string GetLayerName (int layerIndex) => layerIndex >= 0 && layerIndex < Layers.Length ? Layers[layerIndex].Name : "";
+		public static string GetTextLayerName (int layerIndex) => layerIndex >= 0 && layerIndex < TextLayers.Length ? TextLayers[layerIndex].Name : "";
 
 
 		public static int GetUsedCellCount () => GetUsedCellCount(CurrentLayerIndex);
@@ -868,7 +520,7 @@ namespace AngeliaFramework {
 
 			if (!forText) {
 
-				var sprite = Sprites[rCell.GetIndex(GlobalFrame)];
+				var sprite = Sprites[rCell.GetIndex(Game.GlobalFrame)];
 
 				// Original Size
 				if (width == Const.ORIGINAL_SIZE) {
@@ -920,7 +572,7 @@ namespace AngeliaFramework {
 		public static Cell[] Draw_9Slice (int globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => Draw_9Slice(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, WHITE, z);
 		public static Cell[] Draw_9Slice (int globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, Byte4 color, int z = int.MinValue) => Draw_9Slice(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, color, z);
 		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw_9Slice(globalID, x, y, pivotX, pivotY, rotation, width, height, WHITE, z);
-		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color color, int z = int.MinValue) {
+		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) {
 			var border = TryGetSprite(globalID, out var sprite) ? sprite.GlobalBorder : default;
 			return Draw_9Slice(
 				globalID, x, y, pivotX, pivotY, rotation, width, height,
@@ -1139,7 +791,7 @@ namespace AngeliaFramework {
 		// Sprite Data
 		public static bool TryGetSprite (int globalID, out AngeSprite sprite) {
 			if (SheetIDMap.TryGetValue(globalID, out var rCell)) {
-				sprite = Sprites[rCell.GetIndex(GlobalFrame)];
+				sprite = Sprites[rCell.GetIndex(Game.GlobalFrame)];
 				return true;
 			} else {
 				sprite = null;
@@ -1181,6 +833,12 @@ namespace AngeliaFramework {
 
 
 		public static AngeSpriteChain GetChainAt (int index) => Chains[index];
+
+
+		public static CharSprite GetCharSprite (int layerIndex, int spriteIndex) => TextLayers[layerIndex].CharSprites[spriteIndex];
+
+
+		public static int GetCharSpriteCount (int layerIndex) => TextLayers[layerIndex].CharSprites.Count;
 
 
 		// Misc

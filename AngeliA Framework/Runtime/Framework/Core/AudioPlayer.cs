@@ -55,7 +55,6 @@ namespace AngeliaFramework {
 			MusicSource.volume = GetVolume01(_MusicVolume.Value);
 			MusicSource.pitch = 1f;
 			MusicSource.mute = false;
-			Object.DontDestroyOnLoad(root);
 
 			// Sound
 			SoundSources = new AudioSource[SOUND_TRACK_COUNT];
