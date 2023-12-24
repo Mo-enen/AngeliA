@@ -68,11 +68,13 @@ namespace AngeliaFramework {
 			}
 
 			// Fill Map
-			foreach (var clip in audioClips) {
-				int id = clip.name.AngeHash();
-				if (!AudioMap.ContainsKey(id)) {
-					AudioMap.Add(id, clip);
-				} else Debug.LogError($"[Audio] Audio clip {clip.name} id already exists.");
+			if (audioClips != null) {
+				foreach (var clip in audioClips) {
+					int id = clip.name.AngeHash();
+					if (!AudioMap.ContainsKey(id)) {
+						AudioMap.Add(id, clip);
+					} else Debug.LogError($"[Audio] Audio clip {clip.name} id already exists.");
+				}
 			}
 
 		}

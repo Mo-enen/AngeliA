@@ -280,7 +280,7 @@ namespace AngeliaFramework {
 				}
 
 				// Require Char
-				if (!CellRenderer.RequireChar(c, out var sprite)) goto CONTINUE;
+				if (!CellRenderer.RequireCharForPool(c, out var sprite)) goto CONTINUE;
 
 				int realCharSize = (sprite.Advance * charSize).RoundToInt();
 
@@ -752,7 +752,7 @@ namespace AngeliaFramework {
 			for (; index < count; index++) {
 				char c = content.FromString ? content.Text[index] : content.Chars[index];
 				if (IsLineBreakingChar(c)) break;
-				if (!CellRenderer.RequireChar(c, out var sprite)) continue;
+				if (!CellRenderer.RequireCharForPool(c, out var sprite)) continue;
 				if (room > 0) {
 					room -= (sprite.Advance * charSize).RoundToInt() + charSpace;
 				}
@@ -779,7 +779,7 @@ namespace AngeliaFramework {
 			if (!CellRenderer.TextReady) return null;
 
 			// Require
-			if (!CellRenderer.RequireChar(c, out var sprite)) return null;
+			if (!CellRenderer.RequireCharForPool(c, out var sprite)) return null;
 
 			// Draw
 			var cell = CellRenderer.Draw(c, true, x, y, 0, 0, 0, width, height, color);

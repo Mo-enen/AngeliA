@@ -53,21 +53,23 @@ namespace AngeliaFramework {
 			base.PhysicsUpdate();
 			const int OVERLAP_SHRINK = Const.CEL / 8;
 			var player = Player.Selecting;
-			PlayerOverlaps =
-				player != null &&
-				!player.Teleporting &&
-				player.IsGrounded &&
-				player.Rect.Overlaps(Rect.Shrink(OVERLAP_SHRINK, OVERLAP_SHRINK, 0, 0));
+			if (player != null) {
+				PlayerOverlaps =
+					player != null &&
+					!player.Teleporting &&
+					player.IsGrounded &&
+					player.Rect.Overlaps(Rect.Shrink(OVERLAP_SHRINK, OVERLAP_SHRINK, 0, 0));
 
-			// Invoke
-			if (!InputLock && !player.LockingInput && PlayerOverlaps) {
-				if (FrameInput.GameKeyHolding(Gamekey.Up)) {
-					Invoke(player);
+				// Invoke
+				if (!InputLock && !player.LockingInput && PlayerOverlaps) {
+					if (FrameInput.GameKeyHolding(Gamekey.Up)) {
+						Invoke(player);
+					}
+					ControlHintUI.AddHint(Gamekey.Up, Language.Get(HINT_ENTER, "Entre"));
 				}
-				ControlHintUI.AddHint(Gamekey.Up, Language.Get(HINT_ENTER, "Entre"));
-			}
-			if (InputLock && !FrameInput.GameKeyHolding(Gamekey.Up)) {
-				InputLock = false;
+				if (InputLock && !FrameInput.GameKeyHolding(Gamekey.Up)) {
+					InputLock = false;
+				}
 			}
 		}
 

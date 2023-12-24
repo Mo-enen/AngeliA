@@ -65,8 +65,7 @@ namespace AngeliaFramework {
 		}
 
 
-		[OnGameUpdatePauseless(4097)]
-		public static void OnGameUpdatePauseless () {
+		public static void FrameUpdate () {
 			if (CursorEndFrame != int.MinValue && Game.GlobalFrame > CursorEndFrame) {
 				// No Cursor
 				CursorPriority = int.MinValue;

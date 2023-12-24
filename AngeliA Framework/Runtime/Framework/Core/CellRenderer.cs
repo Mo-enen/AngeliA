@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -198,9 +197,6 @@ namespace AngeliaFramework {
 		// Const
 		public static readonly Cell EMPTY_CELL = new() { Index = -1 };
 		private static readonly Byte4 WHITE = new(255, 255, 255, 255);
-		private static readonly int SKYBOX_TOP = Shader.PropertyToID("_ColorA");
-		private static readonly int SKYBOX_BOTTOM = Shader.PropertyToID("_ColorB");
-		private static readonly Shader SKYBOX_SHADER = Shader.Find("Angelia/Skybox");
 		private static readonly int[] RENDER_CAPACITY = new int[RenderLayer.COUNT] {
 			256,	// Wallpaper 
 			8192,	// Behind 
@@ -241,7 +237,6 @@ namespace AngeliaFramework {
 		private static TextLayer[] TextLayers = new TextLayer[0];
 		private static AngeSprite[] Sprites = null;
 		private static AngeSpriteChain[] Chains = null;
-		private static Material Skybox = null;
 		private static string[] SheetNames = new string[0];
 		private static bool IsPausing = false;
 		private static bool IsDrawing = false;
@@ -257,20 +252,10 @@ namespace AngeliaFramework {
 
 		// Init
 		internal static void Initialize () {
-
-			// Load Assets
-			var sheet = JsonUtil.LoadOrCreateJson<SpriteSheet>(AngePath.SheetRoot);
+			var sheet = Game.LoadSpriteSheet();
 			if (sheet == null) return;
-
-			// Skybox
-			if (SKYBOX_SHADER != null) {
-				RenderSettings.skybox = Skybox = new Material(SKYBOX_SHADER);
-			}
-
-			// Pipeline
 			InitializePool(sheet);
 			InitializeLayers();
-
 		}
 
 
@@ -278,7 +263,7 @@ namespace AngeliaFramework {
 		internal static void CameraUpdate (IRect viewRect) {
 
 			// Ratio
-			float ratio = (float)Screen.width / Screen.height;
+			float ratio = (float)Game.ScreenWidth / Game.ScreenHeight;
 			float maxRatio = (float)viewRect.width / viewRect.height;
 			var rect = new FRect(0f, 0f, 1f, 1f);
 			if (ratio > maxRatio) {
@@ -306,21 +291,24 @@ namespace AngeliaFramework {
 		}
 
 
-		[OnGameUpdatePauseless(4096)]
-		internal static void OnGameUpdatePauseless () {
+		internal static void FrameUpdate () {
 			IsDrawing = false;
 			try {
 				for (int i = 0; i < Layers.Length; i++) {
 					var layer = Layers[i];
 					layer.ZSort();
-					Game.InvokeLayerUpdate(i, false, layer.Cells, ref layer.PrevCellCount);
+					int prevCellCount = layer.PrevCellCount;
+					Game.InvokeLayerUpdate(i, false, layer.Cells, layer.Count, ref prevCellCount);
+					layer.PrevCellCount = prevCellCount;
 				}
 				for (int i = 0; i < TextLayers.Length; i++) {
 					var layer = TextLayers[i];
 					layer.ZSort();
-					Game.InvokeLayerUpdate(i, true, layer.Cells, ref layer.PrevCellCount);
+					int prevCellCount = layer.PrevCellCount;
+					Game.InvokeLayerUpdate(i, true, layer.Cells, layer.Count, ref prevCellCount);
+					layer.PrevCellCount = prevCellCount;
 				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+			} catch (System.Exception ex) { Game.LogException(ex); }
 		}
 
 
@@ -842,16 +830,10 @@ namespace AngeliaFramework {
 
 
 		// Misc
-		public static void SetBackgroundTint (Byte4 top, Byte4 bottom) {
-			SkyTintTop = top;
-			SkyTintBottom = bottom;
-			if (Skybox == null) return;
-			Skybox.SetColor(SKYBOX_TOP, top);
-			Skybox.SetColor(SKYBOX_BOTTOM, bottom);
-		}
-
-
 		public static string GetSheetName (AngeSprite sprite) => sprite != null && sprite.SheetNameIndex >= 0 && sprite.SheetNameIndex < SheetNames.Length ? SheetNames[sprite.SheetNameIndex] : string.Empty;
+
+
+		public static void AddTextRebuild (int layerIndex) => TextLayers[layerIndex].TextRebuild++;
 
 
 		// Clamp
@@ -957,78 +939,48 @@ namespace AngeliaFramework {
 
 
 		// Text Logic
-		internal static bool RequireChar (char c, out CharSprite charSprite) {
+		internal static bool RequireCharForPool (char c, out CharSprite charSprite) {
 			charSprite = null;
 			var tLayer = TextLayers[CurrentTextLayerIndex];
-			if (tLayer.TextIDMap.TryGetValue(c, out var cInfo)) {
-				if (cInfo.Index < 0) {
+			if (tLayer.TextIDMap.TryGetValue(c, out var cellInfo)) {
+				if (cellInfo.Index < 0) {
 					// No CharInfo for this Char
 					return false;
 				} else {
-					charSprite = tLayer.CharSprites[cInfo.Index];
+					charSprite = tLayer.CharSprites[cellInfo.Index];
 					if (charSprite.Rebuild != tLayer.TextRebuild) {
 						// Need Cache Again
-						if (tLayer.TextFont.GetCharacterInfo(c, out var info, tLayer.TextSize)) {
-							float size = info.size == 0 ? tLayer.TextSize : info.size;
-							charSprite.GlobalID = info.index;
-							charSprite.UvBottomLeft = info.uvBottomLeft.ToAngelia();
-							charSprite.UvBottomRight = info.uvBottomRight.ToAngelia();
-							charSprite.UvTopLeft = info.uvTopLeft.ToAngelia();
-							charSprite.UvTopRight = info.uvTopRight.ToAngelia();
-							charSprite.Offset = FRect.MinMaxRect(info.minX / size, info.minY / size, info.maxX / size, info.maxY / size);
-							charSprite.Advance = info.advance / size;
-							charSprite.Rebuild = tLayer.TextRebuild;
-						} else {
-							cInfo.Index = -1;
+						Game.FillCharSprite(CurrentTextLayerIndex, c, tLayer.TextSize, tLayer.TextRebuild, charSprite, out bool filled);
+						if (!filled) {
+							cellInfo.Index = -1;
 						}
 					}
 					return true;
 				}
 			} else {
 				// Require Char from Font
-				if (tLayer.TextFont.GetCharacterInfo(c, out var info, tLayer.TextSize)) {
+				charSprite = Game.FillCharSprite(CurrentTextLayerIndex, c, tLayer.TextSize, tLayer.TextRebuild, null, out bool filled);
+				if (filled && charSprite != null) {
 					// Got Info
-					float size = info.size == 0 ? tLayer.TextSize : info.size;
-
 					tLayer.TextIDMap.Add(c, new CellInfo(tLayer.CharSprites.Count));
-					tLayer.CharSprites.Add(charSprite = new CharSprite() {
-						GlobalID = info.index,
-						UvBottomLeft = info.uvBottomLeft.ToAngelia(),
-						UvBottomRight = info.uvBottomRight.ToAngelia(),
-						UvTopLeft = info.uvTopLeft.ToAngelia(),
-						UvTopRight = info.uvTopRight.ToAngelia(),
-						Offset = FRect.MinMaxRect(info.minX / size, info.minY / size, info.maxX / size, info.maxY / size),
-						Advance = info.advance / size,
-						Rebuild = tLayer.TextRebuild,
-					});
-					return true;
+					tLayer.CharSprites.Add(charSprite);
 				} else {
 					// No Info
 					tLayer.TextIDMap.Add(c, new CellInfo(-1));
-					return false;
 				}
+				return filled;
 			}
 		}
 
 
-		internal static void RequestStringForFont (string content) {
-			var tLayer = TextLayers[CurrentTextLayerIndex];
-			if (tLayer.TextFont == null) return;
-			tLayer.TextFont.RequestCharactersInTexture(content, tLayer.TextSize);
-		}
+		internal static void RequestStringForFont (string content) => Game.RequestStringForFont(
+			CurrentTextLayerIndex, TextLayers[CurrentTextLayerIndex].TextSize, content
+		);
 
 
-		internal static void RequestStringForFont (char[] chars) {
-			var tLayer = TextLayers[CurrentTextLayerIndex];
-			var font = tLayer.TextFont;
-			if (font == null) return;
-			for (int i = 0; i < chars.Length; i++) {
-				char c = chars[i];
-				if (font.HasCharacter(c) && !font.GetCharacterInfo(c, out _, tLayer.TextSize)) {
-					font.RequestCharactersInTexture(c.ToString(), tLayer.TextSize);
-				}
-			}
-		}
+		internal static void RequestStringForFont (char[] content) => Game.RequestStringForFont(
+			CurrentTextLayerIndex, TextLayers[CurrentTextLayerIndex].TextSize, content
+		);
 
 
 		#endregion

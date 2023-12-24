@@ -1,0 +1,21 @@
+{
+    "name": "AngeliaForUnity.Editor",
+    "rootNamespace": "AngeliaForUnity.Editor",
+    "references": [
+        "Runtime.AngeliaFramework",
+        "AngeliaForUnity"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "zlib.net.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
