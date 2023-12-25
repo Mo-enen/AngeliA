@@ -105,13 +105,10 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		protected Byte4 GetSkyTint (int y) {
-			var cameraRect = CellRenderer.CameraRect;
-			return Byte4.LerpUnclamped(
-				CellRenderer.SkyTintBottom, CellRenderer.SkyTintTop,
-				Mathf.InverseLerp(cameraRect.yMin, cameraRect.yMax, y)
-			);
-		}
+		protected Byte4 GetSkyTint (int y) => Byte4.LerpUnclamped(
+			Game.SkyTintBottomColor, Game.SkyTintTopColor,
+			Mathf.InverseLerp(CellRenderer.CameraRect.yMin, CellRenderer.CameraRect.yMax, y)
+		);
 
 
 		#endregion

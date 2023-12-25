@@ -21,11 +21,6 @@ namespace AngeliaFramework {
 		// Const
 		private static readonly int ENTITY_CODE = typeof(Entity).AngeHash();
 
-		// Event
-		public static event System.Action<MapChannel> OnMapChannelChanged;
-		public static event System.Action BeforeLevelRendered;
-		public static event System.Action AfterLevelRendered;
-
 		// Api
 		public static WorldSquad Front { get; set; } = null;
 		public static WorldSquad Behind { get; set; } = null;
@@ -42,6 +37,9 @@ namespace AngeliaFramework {
 		private readonly World[,] Worlds = new World[3, 3] { { new(), new(), new() }, { new(), new(), new() }, { new(), new(), new() }, };
 		private readonly World[,] WorldBuffer = new World[3, 3];
 		private readonly World[] WorldBufferAlt = new World[9];
+		private static event System.Action<MapChannel> OnMapChannelChanged;
+		private static event System.Action BeforeLevelRendered;
+		private static event System.Action AfterLevelRendered;
 		private bool RequireReload = false;
 		private int LoadedZ = int.MinValue;
 		private int BackgroundBlockSize = Const.CEL;
@@ -477,7 +475,7 @@ namespace AngeliaFramework {
 				rect.height = height;
 			}
 			var tint = Byte4.LerpUnclamped(
-				CellRenderer.SkyTintBottom, CellRenderer.SkyTintTop,
+				Game.SkyTintBottomColor, Game.SkyTintTopColor,
 				Util.InverseLerp(cameraRect.yMin, cameraRect.yMax, rect.y + rect.height / 2)
 			);
 

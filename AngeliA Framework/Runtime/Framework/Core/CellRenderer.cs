@@ -217,8 +217,6 @@ namespace AngeliaFramework {
 		public static IRect ViewRect { get; private set; } = default;
 		public static IRect CameraRect { get; private set; } = default;
 		public static float CameraRestrictionRate { get; private set; } = 1f;
-		public static Byte4 SkyTintTop { get; private set; } = default;
-		public static Byte4 SkyTintBottom { get; private set; } = default;
 		public static int LastDrawnID { get; private set; } = 0;
 		public static int LayerCount => Layers.Length;
 		public static int SpriteCount => Sprites.Length;

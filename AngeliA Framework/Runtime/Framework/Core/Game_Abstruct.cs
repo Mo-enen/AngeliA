@@ -43,6 +43,10 @@ namespace AngeliaFramework {
 		public static int ScreenHeight => Instance.GetScreenHeight();
 		protected abstract int GetScreenHeight ();
 
+		// Listener
+		protected abstract void AddGameTryingToQuitListener (System.Func<bool> callback);
+		protected abstract void AddGameQuittingListener (System.Action callback);
+
 		// Debug
 		public static void Log (object target) => Instance?.DebugLog(target);
 		protected abstract void DebugLog (object target);
@@ -116,10 +120,11 @@ namespace AngeliaFramework {
 
 		public static void SetBackgroundTint (Byte4 top, Byte4 bottom) {
 			ForceBackgroundTintFrame = GlobalFrame + 1;
+			SkyTintTopColor = top;
+			SkyTintBottomColor = bottom;
 			Instance.SetSkyboxTint(top, bottom);
 		}
 		protected abstract void SetSkyboxTint (Byte4 top, Byte4 bottom);
-
 
 
 	}

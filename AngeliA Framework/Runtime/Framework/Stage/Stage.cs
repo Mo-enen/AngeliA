@@ -115,15 +115,13 @@ namespace AngeliaFramework {
 		public static int? DelayingViewY => ViewDelayY.value;
 		public static int? DelayingViewHeight => ViewDelayHeight.value;
 
-		// Event
-		public static event System.Action OnViewZChanged;
-		public static event System.Action<int> BeforeLayerFrameUpdate;
-		public static event System.Action<int> AfterLayerFrameUpdate;
-
 		// Data
 		private static (int? value, int priority) ViewDelayX = (null, int.MinValue);
 		private static (int? value, int priority) ViewDelayY = (null, int.MinValue);
 		private static (int? value, int priority) ViewDelayHeight = (null, int.MinValue);
+		private static event System.Action OnViewZChanged;
+		private static event System.Action<int> BeforeLayerFrameUpdate;
+		private static event System.Action<int> AfterLayerFrameUpdate;
 		private static int ViewLerpRate = 1000;
 		private static int? RequireSetViewZ = null;
 		private static int GlobalFrame = 0;

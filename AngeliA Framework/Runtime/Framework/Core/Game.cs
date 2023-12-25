@@ -46,18 +46,20 @@ namespace AngeliaFramework {
 		public static int PauselessFrame { get; private set; } = 0;
 		public static bool IsPausing => !IsPlaying;
 		public static bool IsPlaying { get; set; } = true;
+		public static Byte4 SkyTintTopColor { get; private set; }
+		public static Byte4 SkyTintBottomColor { get; private set; }
 		public ColorGradient SkyTintTop { get; set; } = null;
 		public ColorGradient SkyTintBottom { get; set; } = null;
 
 		// Event
-		public static event System.Action OnGameRestart;
-		public static event System.Action OnGameTryingToQuit;
-		public static event System.Action OnGameQuitting;
-		public static event System.Action OnGameUpdate;
-		public static event System.Action OnGameUpdateLater;
-		public static event System.Action OnGameUpdatePauseless;
-		public static event System.Action OnSlotChanged;
-		public static event System.Action OnSlotCreated;
+		private static event System.Action OnGameRestart;
+		private static event System.Action OnGameTryingToQuit;
+		private static event System.Action OnGameQuitting;
+		private static event System.Action OnGameUpdate;
+		private static event System.Action OnGameUpdateLater;
+		private static event System.Action OnGameUpdatePauseless;
+		private static event System.Action OnSlotChanged;
+		private static event System.Action OnSlotCreated;
 
 		// Data
 		private static Game Instance = null;
@@ -96,10 +98,8 @@ namespace AngeliaFramework {
 				Util.LinkEventWithAttribute<OnSlotChangedAttribute>(typeof(Game), nameof(OnSlotChanged));
 				Util.LinkEventWithAttribute<OnSlotCreatedAttribute>(typeof(Game), nameof(OnSlotCreated));
 
-				Application.wantsToQuit -= OnTryingToQuit;
-				Application.wantsToQuit += OnTryingToQuit;
-				Application.quitting -= OnGameQuitting;
-				Application.quitting += OnGameQuitting;
+				AddGameTryingToQuitListener(OnTryingToQuit);
+				AddGameQuittingListener(OnGameQuitting);
 
 				CellRenderer.Initialize();
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>(m => m.Value.Order <= 0, (a, b) => a.Value.Order.CompareTo(b.Value.Order));
@@ -163,9 +163,6 @@ namespace AngeliaFramework {
 				if (!IsPausing) GlobalFrame++;
 				PauselessFrame++;
 			} catch (System.Exception ex) { Debug.LogException(ex); }
-
-			Log(Player.Selecting);
-
 		}
 
 
@@ -187,7 +184,7 @@ namespace AngeliaFramework {
 			if (GlobalFrame < ForceBackgroundTintFrame) return;
 			var date = System.DateTime.Now;
 			float time01 = Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
-			Instance.SetSkyboxTint(
+			SetBackgroundTint(
 				Instance.SkyTintTop.Evaluate(time01),
 				Instance.SkyTintBottom.Evaluate(time01)
 			);

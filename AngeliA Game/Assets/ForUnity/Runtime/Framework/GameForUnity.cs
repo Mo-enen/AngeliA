@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using AngeliaFramework;
@@ -70,6 +71,14 @@ namespace AngeliaForUnity {
 		}
 		protected override int GetScreenWidth () => Screen.width;
 		protected override int GetScreenHeight () => Screen.height;
+		protected override void AddGameQuittingListener (Action callback) {
+			Application.quitting -= callback;
+			Application.quitting += callback;
+		}
+		protected override void AddGameTryingToQuitListener (Func<bool> callback) {
+			Application.wantsToQuit -= callback;
+			Application.wantsToQuit += callback;
+		}
 
 		// Debug
 		protected override void DebugLog (object target) => Debug.Log(target);

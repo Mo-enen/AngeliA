@@ -17,12 +17,12 @@ namespace AngeliaFramework {
 
 
 		// Api
-		public static event System.Action OnLanguageChanged;
 		public static int LanguageCount => AllLanguages.Length;
 		public static string CurrentLanguage => _LoadedLanguage.Value;
 		public static string CurrentLanguageDisplayName { get; private set; } = "";
 
 		// Data
+		private static event System.Action OnLanguageChanged;
 		private static readonly Dictionary<int, string> Map = new();
 		private static string[] AllLanguages = new string[0];
 

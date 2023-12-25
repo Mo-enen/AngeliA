@@ -18,7 +18,9 @@ namespace AngeliaFramework {
 
 		// Event/Delegate
 		public static void LinkEventWithAttribute<T> (System.Type sender, string eventName) where T : System.Attribute {
-			var info = sender.GetEvent(eventName, BindingFlags.Public | BindingFlags.Static);
+			var info = sender.GetEvent(
+				eventName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
+			);
 			if (info == null) return;
 			// Get List
 			var list = new List<(MethodInfo method, int order)>();
@@ -34,7 +36,9 @@ namespace AngeliaFramework {
 			// Fill List
 			foreach (var (method, _) in list) {
 				try {
-					info.AddEventHandler(null, System.Delegate.CreateDelegate(info.EventHandlerType, method));
+					var addMethod = info.GetAddMethod(true);
+					var del = System.Delegate.CreateDelegate(info.EventHandlerType, method);
+					addMethod.Invoke(null, new object[] { del });
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
 		}

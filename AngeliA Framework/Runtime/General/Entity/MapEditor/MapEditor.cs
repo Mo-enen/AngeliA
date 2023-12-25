@@ -51,13 +51,13 @@ namespace AngeliaFramework {
 		private class MapEditorMeta : IJsonSerializationCallback {
 
 			[JsonObject(MemberSerialization.OptIn)]
-			public class PinnedList : IJsonSerializationCallback {
+			public class PinnedList {
 
 				[JsonProperty] public int Icon = 0;
 				[JsonProperty] private int[] PaletteItemIDs = null;
 				public List<PaletteItem> Items;
 
-				void IJsonSerializationCallback.OnAfterLoadedFromDisk () {
+				public void OnAfterLoadedFromDisk () {
 					Items ??= new();
 					Items.Clear();
 					if (PaletteItemIDs == null || Instance == null) return;
@@ -74,7 +74,7 @@ namespace AngeliaFramework {
 					}
 				}
 
-				void IJsonSerializationCallback.OnBeforeSaveToDisk () {
+				public void OnBeforeSaveToDisk () {
 					Items ??= new();
 					PaletteItemIDs = new int[Items.Count];
 					for (int i = 0; i < Items.Count; i++) {
@@ -86,9 +86,18 @@ namespace AngeliaFramework {
 
 			[JsonProperty] public List<PinnedList> PinnedLists;
 
-			public void Valid () => PinnedLists ??= new();
-			void IJsonSerializationCallback.OnBeforeSaveToDisk () => Valid();
-			void IJsonSerializationCallback.OnAfterLoadedFromDisk () => Valid();
+			void IJsonSerializationCallback.OnBeforeSaveToDisk () {
+				PinnedLists ??= new();
+				foreach (var list in PinnedLists) {
+					list.OnBeforeSaveToDisk();
+				}
+			}
+			void IJsonSerializationCallback.OnAfterLoadedFromDisk () {
+				PinnedLists ??= new();
+				foreach (var list in PinnedLists) {
+					list.OnAfterLoadedFromDisk();
+				}
+			}
 		}
 
 
