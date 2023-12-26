@@ -1,5 +1,16 @@
 namespace AngeliaFramework {
 
+	public enum Gamekey {
+		Left = 0,
+		Right = 1,
+		Down = 2,
+		Up = 3,
+		Action = 4,
+		Jump = 5,
+		Start = 6,
+		Select = 7,
+	}
+
 	public enum GamepadKey {
 		DpadUp = 0,
 		DpadDown = 1,

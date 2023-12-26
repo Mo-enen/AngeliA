@@ -613,16 +613,21 @@ namespace AngeliaFramework {
 
 			// Reset
 			if (FrameInput.KeyboardDown(KeyboardKey.F1)) {
+				bool changed = false;
 				if (forGamepad) {
 					for (int i = 0; i < GamepadKeys.Length; i++) {
-						GamepadKeys[i] = FrameInput.GetDefaultGamepadMap((Gamekey)i);
+						var defaultKey = FrameInput.GetDefaultGamepadMap((Gamekey)i);
+						changed = changed || GamepadKeys[i] != defaultKey;
+						GamepadKeys[i] = defaultKey;
 					}
 				} else {
 					for (int i = 0; i < KeyboardKeys.Length; i++) {
-						KeyboardKeys[i] = FrameInput.GetDefaultKeyboardMap((Gamekey)i);
+						var defaultKey = FrameInput.GetDefaultKeyboardMap((Gamekey)i);
+						changed = changed || KeyboardKeys[i] != defaultKey;
+						KeyboardKeys[i] = defaultKey;
 					}
 				}
-				RecordDirty = false;
+				RecordDirty = changed;
 			}
 
 			// Use ESC

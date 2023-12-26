@@ -1,22 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 
 
 namespace AngeliaFramework {
-
-	public enum Gamekey {
-		Left = 0,
-		Right = 1,
-		Down = 2,
-		Up = 3,
-		Action = 4,
-		Jump = 5,
-		Start = 6,
-		Select = 7,
-	}
-
 	public static class FrameInput {
 
 
@@ -147,9 +133,6 @@ namespace AngeliaFramework {
 		private static bool IgnoringInput => Game.GlobalFrame <= IgnoreInputFrame;
 
 		// Data
-		private static Keyboard Keyboard = null;
-		private static Gamepad Gamepad = null;
-		private static Mouse Mouse = null;
 		private static readonly Dictionary<Gamekey, State> GamekeyStateMap = new() {
 			{ Gamekey.Left, new() },
 			{ Gamekey.Right, new() },
@@ -199,6 +182,7 @@ namespace AngeliaFramework {
 		private static int UpDownFrame = int.MinValue;
 		private static int? GamepadRightStickAccumulate = null;
 		private static int IgnoreInputFrame = -1;
+		private static KeyboardKey[] AllKeyboardKeys = new KeyboardKey[0];
 
 		// Saving
 		private static readonly SavingBool s_AllowGamepad = new("FrameInput.AllowGamepad", true);
@@ -224,8 +208,10 @@ namespace AngeliaFramework {
 
 			// Add Keys for Keyboard
 			var values = System.Enum.GetValues(typeof(KeyboardKey));
+			AllKeyboardKeys = new KeyboardKey[values.Length];
 			for (int i = 0; i < values.Length; i++) {
 				var key = (KeyboardKey)values.GetValue(i);
+				AllKeyboardKeys[i] = key;
 				switch (key) {
 					default:
 						KeyboardStateMap.TryAdd(key, new());
@@ -263,15 +249,15 @@ namespace AngeliaFramework {
 
 		internal static void FrameUpdate (IRect cameraRect) {
 
-			Gamepad = AllowGamepad ? Gamepad.current : null;
-			Keyboard = Keyboard.current;
-			Mouse = Mouse.current;
+			bool gamepadAvailable = AllowGamepad && Game.IsGamepadAvailable;
+			bool keyboardAvailable = Game.IsKeyboardAvailable;
+			bool mouseAvailable = Game.IsMouseAvailable;
 
-			Update_Mouse(cameraRect);
-			Update_Gamepad();
-			Update_GameKey();
-			Update_Keyboard();
-			Update_Direction();
+			Update_Mouse(cameraRect, mouseAvailable);
+			Update_Gamepad(gamepadAvailable);
+			Update_GameKey(gamepadAvailable, keyboardAvailable, mouseAvailable);
+			Update_Keyboard(keyboardAvailable);
+			Update_Direction(gamepadAvailable);
 
 			AnyKeyDown = AnyGamepadButtonDown || AnyKeyboardKeyDown || AnyGamekeyDown || AnyMouseButtonDown;
 			AnyKeyHolding = AnyGamepadButtonHolding || AnyKeyboardKeyHolding || AnyGamekeyHolding || AnyMouseButtonHolding;
@@ -294,16 +280,15 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void Update_Mouse (IRect cameraRect) {
+		private static void Update_Mouse (IRect cameraRect, bool available) {
 			AnyMouseButtonDown = false;
 			AnyMouseButtonHolding = false;
-			if (Mouse != null) {
+			if (available) {
 				var uCameraRect = Game.CameraScreenLocacion;
-				var mouseValue = Mouse.position.ReadValue();
-				var mousePos = new Float2(mouseValue.x, mouseValue.y);
-				MouseScreenPositionDelta = mousePos.RoundToInt() - MouseScreenPosition;
-				MouseMove = mousePos.RoundToInt() != MouseScreenPosition;
-				MouseScreenPosition = mousePos.RoundToInt();
+				var mousePos = Game.MouseScreenPosition;
+				MouseScreenPositionDelta = mousePos - MouseScreenPosition;
+				MouseMove = mousePos != MouseScreenPosition;
+				MouseScreenPosition = mousePos;
 				var newGlobalPos = new Int2(
 					Util.RemapUnclamped(
 						uCameraRect.xMin * Game.ScreenWidth, uCameraRect.xMax * Game.ScreenWidth,
@@ -319,13 +304,11 @@ namespace AngeliaFramework {
 				MouseGlobalPositionDelta = newGlobalPos - MouseGlobalPosition;
 				MouseGlobalPosition = newGlobalPos;
 
-				RefreshState(MouseLeftState, Mouse.leftButton.isPressed);
-				RefreshState(MouseRightState, Mouse.rightButton.isPressed);
-				RefreshState(MouseMidState, Mouse.middleButton.isPressed);
+				RefreshState(MouseLeftState, Game.IsMouseLeftHolding);
+				RefreshState(MouseRightState, Game.IsMouseRightHolding);
+				RefreshState(MouseMidState, Game.IsMouseMidHolding);
 
-				float scroll = Mouse.scroll.ReadValue().y;
-				int scrollDelta = scroll.Abs() < 0.1f ? 0 : scroll > 0f ? 1 : -1;
-				MouseWheelDelta = scrollDelta;
+				MouseWheelDelta = Game.MouseScrollDelta;
 
 			} else {
 				MouseScreenPositionDelta = default;
@@ -354,13 +337,13 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void Update_Gamepad () {
+		private static void Update_Gamepad (bool available) {
 			AnyGamepadButtonDown = false;
 			AnyGamepadButtonHolding = false;
 			foreach (var (key, state) in GamepadStateMap) {
 				state.PrevHolding = state.Holding;
-				if (Gamepad != null) {
-					state.Holding = Gamepad[(GamepadButton)key].isPressed;
+				if (available) {
+					state.Holding = Game.IsGamepadKeyHolding(key);
 					if (state.Down) UsingGamepad = true;
 				} else {
 					state.Holding = false;
@@ -378,9 +361,9 @@ namespace AngeliaFramework {
 			// Mouse Wheel from Right Stick
 			if (MouseWheelDelta == 0) {
 				int acc = 0;
-				if (Gamepad != null) {
-					if (Gamepad.rightStick.down.IsPressed()) acc = -1;
-					if (Gamepad.rightStick.up.IsPressed()) acc = 1;
+				if (available) {
+					if (Game.IsGamepadRightStickHolding(Direction4.Down)) acc = -1;
+					if (Game.IsGamepadRightStickHolding(Direction4.Up)) acc = 1;
 				}
 				if (acc != 0) {
 					if (
@@ -404,43 +387,43 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void Update_GameKey () {
+		private static void Update_GameKey (bool gamepadAvailable, bool keyboardAvailable, bool mouseAvailable) {
 
 			AnyGamekeyDown = false;
 			AnyGamekeyHolding = false;
 
-			RefreshState(Gamekey.Left);
-			RefreshState(Gamekey.Right);
-			RefreshState(Gamekey.Down);
-			RefreshState(Gamekey.Up);
-			RefreshState(Gamekey.Action);
-			RefreshState(Gamekey.Jump);
-			RefreshState(Gamekey.Start);
-			RefreshState(Gamekey.Select);
+			RefreshState(Gamekey.Left, gamepadAvailable, keyboardAvailable, mouseAvailable);
+			RefreshState(Gamekey.Right, gamepadAvailable, keyboardAvailable, mouseAvailable);
+			RefreshState(Gamekey.Down, gamepadAvailable, keyboardAvailable, mouseAvailable);
+			RefreshState(Gamekey.Up, gamepadAvailable, keyboardAvailable, mouseAvailable);
+			RefreshState(Gamekey.Action, gamepadAvailable, keyboardAvailable, mouseAvailable);
+			RefreshState(Gamekey.Jump, gamepadAvailable, keyboardAvailable, mouseAvailable);
+			RefreshState(Gamekey.Start, gamepadAvailable, keyboardAvailable, mouseAvailable);
+			RefreshState(Gamekey.Select, gamepadAvailable, keyboardAvailable, mouseAvailable);
 
-			static void RefreshState (Gamekey key) {
+			static void RefreshState (Gamekey key, bool gamepadAvailable, bool keyboardAvailable, bool mouseAvailable) {
 
 				var state = GamekeyStateMap[key];
 				state.PrevHolding = state.Holding;
 				state.Holding = false;
 
 				// Gamepad
-				if (Gamepad != null && Gamepad.enabled) {
-					state.Holding = Gamepad[(GamepadButton)KeyMap[key].y].isPressed;
+				if (gamepadAvailable) {
+					state.Holding = Game.IsGamepadKeyHolding((GamepadKey)KeyMap[key].y);
 					// Stick >> D-Pad
 					if (!state.Holding) {
 						switch (key) {
 							case Gamekey.Left:
-								state.Holding = Gamepad.leftStick.left.isPressed;
+								state.Holding = Game.IsGamepadLeftStickHolding(Direction4.Left);
 								break;
 							case Gamekey.Right:
-								state.Holding = Gamepad.leftStick.right.isPressed;
+								state.Holding = Game.IsGamepadLeftStickHolding(Direction4.Right);
 								break;
 							case Gamekey.Down:
-								state.Holding = Gamepad.leftStick.down.isPressed;
+								state.Holding = Game.IsGamepadLeftStickHolding(Direction4.Down);
 								break;
 							case Gamekey.Up:
-								state.Holding = Gamepad.leftStick.up.isPressed;
+								state.Holding = Game.IsGamepadLeftStickHolding(Direction4.Up);
 								break;
 						}
 					}
@@ -449,15 +432,15 @@ namespace AngeliaFramework {
 				}
 
 				// Keyboard
-				if (Keyboard != null && !state.Holding) {
-					state.Holding = Keyboard[(Key)KeyMap[key].x].isPressed;
+				if (keyboardAvailable && !state.Holding) {
+					state.Holding = Game.IsKeyboardKeyHolding((KeyboardKey)KeyMap[key].x);
 					if (state.Holding) UsingGamepad = false;
 				}
 
 				// Check Action/Jump for Mouse
 				if (
 					(key == Gamekey.Action || key == Gamekey.Jump) &&
-					Mouse != null && !state.Holding && !IgnoreMouseToActionJumpForThisFrame
+					mouseAvailable && !state.Holding && !IgnoreMouseToActionJumpForThisFrame
 				) {
 					switch (key) {
 						case Gamekey.Jump:
@@ -471,19 +454,19 @@ namespace AngeliaFramework {
 
 				// Check Start from ESC and +
 				if (key == Gamekey.Start && !state.Holding) {
-					if (Keyboard != null && Keyboard[(Key)KeyboardKey.Escape].isPressed) {
+					if (keyboardAvailable && Game.IsKeyboardKeyHolding(KeyboardKey.Escape)) {
 						state.Holding = true;
 						UsingGamepad = false;
 					}
-					if (Gamepad != null && Gamepad.startButton.isPressed) {
+					if (gamepadAvailable && Game.IsGamepadKeyHolding(GamepadKey.Start)) {
 						state.Holding = true;
 						UsingGamepad = true;
 					}
 				}
 
 				// Check Select from -
-				if (key == Gamekey.Select && !state.Holding) {
-					if (Gamepad != null && Gamepad.selectButton.isPressed) {
+				if (gamepadAvailable && key == Gamekey.Select && !state.Holding) {
+					if (Game.IsGamepadKeyHolding(GamepadKey.Select)) {
 						state.Holding = true;
 						UsingGamepad = true;
 					}
@@ -504,13 +487,13 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void Update_Keyboard () {
+		private static void Update_Keyboard (bool keyboardAvailable) {
 			AnyKeyboardKeyDown = false;
 			AnyKeyboardKeyHolding = false;
 			foreach (var (key, state) in KeyboardStateMap) {
 				state.PrevHolding = state.Holding;
-				if (Keyboard != null) {
-					state.Holding = Keyboard[(Key)key].isPressed;
+				if (keyboardAvailable) {
+					state.Holding = Game.IsKeyboardKeyHolding(key);
 					if (state.Down) UsingGamepad = false;
 				} else {
 					state.Holding = false;
@@ -528,7 +511,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void Update_Direction () {
+		private static void Update_Direction (bool gamepadAvailable) {
 
 			DirectionX = Direction3.None;
 			DirectionY = Direction3.None;
@@ -585,8 +568,8 @@ namespace AngeliaFramework {
 			UsingLeftStick = false;
 			Float2 direction = default;
 			float magnitude = 0f;
-			if (Gamepad != null) {
-				var value = Gamepad.leftStick.ReadValue();
+			if (gamepadAvailable) {
+				var value = Game.GamepadLeftStickDirection;
 				direction = new Float2(value.x, value.y);
 				magnitude = direction.magnitude;
 			}
@@ -613,11 +596,11 @@ namespace AngeliaFramework {
 		// Any Key
 		public static bool TryGetHoldingGamepadButton (out GamepadKey button) {
 			button = GamepadKey.A;
-			return Gamepad != null && SearchAnyGamepadButtonHolding(Gamepad, out button);
+			return Game.IsGamepadAvailable && SearchAnyGamepadButtonHolding(out button);
 		}
 		public static bool TryGetHoldingKeyboardKey (out KeyboardKey key) {
 			key = KeyboardKey.None;
-			return Keyboard != null && SearchAnyKeyboardKeyHolding(Keyboard, out key);
+			return Game.IsKeyboardAvailable && SearchAnyKeyboardKeyHolding(out key);
 		}
 
 
@@ -764,32 +747,30 @@ namespace AngeliaFramework {
 		}, AngePath.PersistentDataPath, prettyPrint: true);
 
 
-		private static bool SearchAnyGamepadButtonHolding (Gamepad pad, out GamepadKey button) {
+		private static bool SearchAnyGamepadButtonHolding (out GamepadKey button) {
 			button = GamepadKey.DpadUp;
 			for (int i = 0; i < 16; i++) {
 				if (i == 14) i = 0x20;
 				if (i == 15) i = 33;
 				var btn = (GamepadKey)i;
-				if (pad[(GamepadButton)btn].isPressed) {
+				if (Game.IsGamepadKeyHolding(btn)) {
 					button = btn;
 					return true;
 				}
 			}
-			var stickL = pad.leftStick;
-			var stickR = pad.rightStick;
-			if (stickL.left.isPressed || stickR.left.isPressed) {
+			if (Game.IsGamepadLeftStickHolding(Direction4.Left)) {
 				button = GamepadKey.DpadLeft;
 				return true;
 			}
-			if (stickL.right.isPressed || stickR.right.isPressed) {
+			if (Game.IsGamepadLeftStickHolding(Direction4.Right)) {
 				button = GamepadKey.DpadRight;
 				return true;
 			}
-			if (stickL.down.isPressed || stickR.down.isPressed) {
+			if (Game.IsGamepadLeftStickHolding(Direction4.Down)) {
 				button = GamepadKey.DpadDown;
 				return true;
 			}
-			if (stickL.up.isPressed || stickR.up.isPressed) {
+			if (Game.IsGamepadLeftStickHolding(Direction4.Up)) {
 				button = GamepadKey.DpadUp;
 				return true;
 			}
@@ -797,18 +778,14 @@ namespace AngeliaFramework {
 		}
 
 
-		private static bool SearchAnyKeyboardKeyHolding (Keyboard keyboard, out KeyboardKey key) {
+		private static bool SearchAnyKeyboardKeyHolding (out KeyboardKey key) {
 			key = KeyboardKey.None;
-			if (keyboard.anyKey.isPressed) {
-				var allKeys = keyboard.allKeys;
-				for (int i = 0; i < allKeys.Count; i++) {
-					var k = allKeys[i];
-					if (k.isPressed) {
-						key = (KeyboardKey)k.keyCode;
-						break;
-					}
+			for (int i = 0; i < AllKeyboardKeys.Length; i++) {
+				var k = AllKeyboardKeys[i];
+				if (Game.IsKeyboardKeyHolding(k)) {
+					key = k;
+					return true;
 				}
-				return true;
 			}
 			return false;
 		}
