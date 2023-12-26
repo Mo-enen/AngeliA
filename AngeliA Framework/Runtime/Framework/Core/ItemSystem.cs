@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Text;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -221,8 +219,8 @@ namespace AngeliaFramework {
 
 			if (result == 0 || resultCount <= 0) {
 #if UNITY_EDITOR
-				if (result == 0) Debug.LogWarning("Result of combination should not be zero.");
-				if (resultCount == 0) Debug.LogWarning("ResultCount of combination should not be zero.");
+				if (result == 0) Game.LogWarning("Result of combination should not be zero.");
+				if (resultCount == 0) Game.LogWarning("ResultCount of combination should not be zero.");
 #endif
 				return;
 			}
@@ -230,7 +228,7 @@ namespace AngeliaFramework {
 			var from = GetSortedCombination(item0, item1, item2, item3);
 			if (CombinationPool.ContainsKey(from)) {
 #if UNITY_EDITOR
-				Debug.LogError($"Combination already exists. ({GetItem(CombinationPool[from].Result).GetType().Name}) & ({GetItem(result).GetType().Name})");
+				Game.LogError($"Combination already exists. ({GetItem(CombinationPool[from].Result).GetType().Name}) & ({GetItem(result).GetType().Name})");
 #endif
 				return;
 			}

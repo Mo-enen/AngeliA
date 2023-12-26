@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using AngeliaFramework;
 
 
 namespace AngeliaFramework {
@@ -49,7 +47,7 @@ namespace AngeliaFramework {
 
 				if (x >= left && x <= right) {
 					int size = Util.RemapUnclamped(0, 100000, minSize, maxSize, pos.z);
-					size = (int)Mathf.LerpUnclamped(size / 9f, size, pos.y / 100000f);
+					size = (int)Util.LerpUnclamped(size / 9f, size, pos.y / 100000f);
 					int targetAlpha = pos.y > 30000 ? 24 : 12;
 					tint.a = (byte)Util.RemapUnclamped(0, 1000, 0, targetAlpha, Amount);
 					CellRenderer.Draw(

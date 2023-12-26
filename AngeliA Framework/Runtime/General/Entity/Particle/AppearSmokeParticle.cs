@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using AngeliaFramework;
 
 
 namespace AngeliaFramework {
@@ -15,7 +14,7 @@ namespace AngeliaFramework {
 		public int _RenderingZ { get; set; } = int.MaxValue - 1;
 		public int _Scale { get; set; } = 1000;
 
-		[OnGameInitialize(64)]
+		[OnGameInitializeLater(64)]
 		public static void OnGameInitialize () {
 			Character.OnTeleport += OnTeleport;
 			static void OnTeleport (Character character) {

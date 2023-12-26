@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -88,7 +87,7 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnGameInitialize]
+		[OnGameInitializeLater]
 		public static void OnGameInitialize () {
 			foreach (var type in typeof(Door).AllChildClass()) {
 				if (System.Activator.CreateInstance(type) is not Door door) continue;

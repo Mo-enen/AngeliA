@@ -10,7 +10,7 @@ namespace AngeliaFramework {
 		private static readonly int TYPE_ID = typeof(ItemCollectParticle).AngeHash();
 		public override int Duration => 30;
 		public override bool Loop => false;
-		[OnGameInitialize]
+		[OnGameInitializeLater]
 		public static void OnGameInitialize () {
 			ItemHolder.OnItemCollected -= OnItemCollected;
 			ItemHolder.OnItemCollected += OnItemCollected;
@@ -54,7 +54,7 @@ namespace AngeliaFramework {
 		private static readonly int LOST_TYPE_ID = typeof(ItemLostParticle).AngeHash();
 
 		public override int Duration => 120;
-		[OnGameInitialize]
+		[OnGameInitializeLater]
 		public static void OnGameInitialize () {
 			Item.OnItemLost += OnItemLost;
 			static void OnItemLost (Entity holder, int item) {
@@ -86,7 +86,7 @@ namespace AngeliaFramework {
 		public override bool Loop => false;
 		private int ItemBeforeID = 0;
 		private int ItemAfterID = 0;
-		[OnGameInitialize]
+		[OnGameInitializeLater]
 		public static void OnGameInitialize () {
 			Item.OnItemDamage += OnItemDamage;
 			static void OnItemDamage (Entity holder, int itemBefore, int itemAfter) {
@@ -139,7 +139,7 @@ namespace AngeliaFramework {
 		public override bool Loop => false;
 		private int ItemID = 0;
 		private Entity Holder = null;
-		[OnGameInitialize]
+		[OnGameInitializeLater]
 		public static void OnGameInitialize () {
 			Item.OnItemInsufficient += OnItemInsufficient;
 			static void OnItemInsufficient (Entity holder, int item) {

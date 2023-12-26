@@ -1,8 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using AngeliaFramework;
-using UnityEngine.InputSystem;
 
 
 namespace AngeliaFramework {
@@ -89,7 +86,7 @@ namespace AngeliaFramework {
 				}
 			} else if (FrameInput.MouseButtonHolding(MouseDownButton)) {
 				// Mouse Holding
-				bool newMouseMoved = MouseMoved || Util.SquareDistance(mousePos, MouseDownPosition.Value) > Mathf.Clamp(Unify(15) * Unify(15), 0, 220 * 220);
+				bool newMouseMoved = MouseMoved || Util.SquareDistance(mousePos, MouseDownPosition.Value) > Util.Clamp(Unify(15) * Unify(15), 0, 220 * 220);
 				if (MouseMoved != newMouseMoved) {
 					MouseMoved = newMouseMoved;
 					MouseDragBegin();
@@ -100,10 +97,10 @@ namespace AngeliaFramework {
 					MouseDragging(mouseDownUnitPos, mouseUnitPos);
 					if (MouseDownButton != 2 && (!MouseDownInSelection || MouseDownButton == 1)) {
 						DraggingUnitRect = new IRect(
-							Mathf.Min(mouseDownUnitPos.x, mouseUnitPos.x),
-							Mathf.Min(mouseDownUnitPos.y, mouseUnitPos.y),
-							Mathf.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1,
-							Mathf.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1
+							Util.Min(mouseDownUnitPos.x, mouseUnitPos.x),
+							Util.Min(mouseDownUnitPos.y, mouseUnitPos.y),
+							Util.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1,
+							Util.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1
 						);
 					}
 				}
@@ -184,10 +181,10 @@ namespace AngeliaFramework {
 			ApplyPaste();
 			SelectionUnitRect = null;
 			var unitRect = new IRect(
-				Mathf.Min(mouseDownUnitPos.x, mouseUnitPos.x),
-				Mathf.Min(mouseDownUnitPos.y, mouseUnitPos.y),
-				(Mathf.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1).Clamp(0, Const.MAP),
-				(Mathf.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1).Clamp(0, Const.MAP)
+				Util.Min(mouseDownUnitPos.x, mouseUnitPos.x),
+				Util.Min(mouseDownUnitPos.y, mouseUnitPos.y),
+				(Util.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1).Clamp(0, Const.MAP),
+				(Util.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1).Clamp(0, Const.MAP)
 			);
 			bool paint = SelectingPaletteItem != null;
 			bool undoRegistered = false;
@@ -262,10 +259,10 @@ namespace AngeliaFramework {
 			if (MouseMoved) {
 				// Select 
 				SelectionUnitRect = new IRect(
-					Mathf.Min(mouseDownUnitPos.x, mouseUnitPos.x),
-					Mathf.Min(mouseDownUnitPos.y, mouseUnitPos.y),
-					(Mathf.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1).Clamp(0, Const.MAP),
-					(Mathf.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1).Clamp(0, Const.MAP)
+					Util.Min(mouseDownUnitPos.x, mouseUnitPos.x),
+					Util.Min(mouseDownUnitPos.y, mouseUnitPos.y),
+					(Util.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1).Clamp(0, Const.MAP),
+					(Util.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1).Clamp(0, Const.MAP)
 				);
 				SelectingPaletteItem = null;
 			} else {

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 
@@ -127,7 +126,7 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		[OnGameInitialize(64)]
+		[OnGameInitializeLater(64)]
 		public static void Initialize () {
 			CellWidth = (Const.VIEW_RATIO * Const.MAX_HEIGHT / 1000) / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
 			CellHeight = (Const.MAX_HEIGHT) / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;

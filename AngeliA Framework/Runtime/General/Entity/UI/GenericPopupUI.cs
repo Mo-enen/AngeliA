@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -146,7 +145,7 @@ namespace AngeliaFramework {
 						rect.Shrink(indent, 0, 0, 0),
 						out var labelBounds
 					);
-					maxWidth = Mathf.Max(
+					maxWidth = Util.Max(
 						maxWidth,
 						labelBounds.width + indent * 4 / 3 + (item.Icon != 0 ? iconPadding + rect.height : 0)
 					);
@@ -174,7 +173,7 @@ namespace AngeliaFramework {
 				}
 
 			}
-			panelRect.width = Mathf.Max(panelRect.width, maxWidth);
+			panelRect.width = Util.Max(panelRect.width, maxWidth);
 			if (highlightCell != null) highlightCell.Width = panelRect.width;
 
 			// BG

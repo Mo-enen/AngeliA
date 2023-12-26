@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 
 namespace AngeliaFramework {
@@ -50,10 +49,10 @@ namespace AngeliaFramework {
 				int globalWidth = flex.Rect.width.RoundToInt() * Const.CEL / Const.ART_CEL;
 				int globalHeight = flex.Rect.height.RoundToInt() * Const.CEL / Const.ART_CEL;
 				var globalBorder = new Int4() {
-					left = Mathf.Clamp((int)(flex.Border.x * Const.CEL / Const.ART_CEL), 0, globalWidth),
-					down = Mathf.Clamp((int)(flex.Border.y * Const.CEL / Const.ART_CEL), 0, globalHeight),
-					right = Mathf.Clamp((int)(flex.Border.z * Const.CEL / Const.ART_CEL), 0, globalWidth),
-					up = Mathf.Clamp((int)(flex.Border.w * Const.CEL / Const.ART_CEL), 0, globalHeight),
+					left = Util.Clamp((int)(flex.Border.x * Const.CEL / Const.ART_CEL), 0, globalWidth),
+					down = Util.Clamp((int)(flex.Border.y * Const.CEL / Const.ART_CEL), 0, globalHeight),
+					right = Util.Clamp((int)(flex.Border.z * Const.CEL / Const.ART_CEL), 0, globalWidth),
+					up = Util.Clamp((int)(flex.Border.w * Const.CEL / Const.ART_CEL), 0, globalHeight),
 				};
 				if (noCollider) {
 					globalBorder.left = globalWidth;
@@ -262,8 +261,8 @@ namespace AngeliaFramework {
 							len++;
 						}
 					}
-					return new Color(sum.x / len, sum.y / len, sum.z / len, 1f);
-				} catch (System.Exception ex) { Debug.LogException(ex); }
+					return new Byte4((byte)(sum.x * 255f / len), (byte)(sum.y * 255f / len), (byte)(sum.z * 255f / len), 255);
+				} catch (System.Exception ex) { Game.LogException(ex); }
 				return result;
 			}
 		}
@@ -421,7 +420,7 @@ namespace AngeliaFramework {
 						}
 					}
 
-					Debug.LogWarning($"Unknown hash \"{hashTag}\" for {name}");
+					Game.LogWarning($"Unknown hash \"{hashTag}\" for {name}");
 
 				}
 				// Trim Name
@@ -494,7 +493,7 @@ namespace AngeliaFramework {
 			const int COLUMN = 4;
 			const int MAX = 8;
 
-			int maxHp = Mathf.Min(maxHP, MAX);
+			int maxHp = Util.Min(maxHP, MAX);
 			int left = x - SIZE * COLUMN / 4;
 
 			// Draw Hearts
@@ -599,8 +598,8 @@ namespace AngeliaFramework {
 				if (bigRot || useFlip) {
 					targetWidth = -targetWidth;
 				} else {
-					targetX -= (int)(Mathf.Cos(targetRotation * Mathf.Deg2Rad) * targetWidth);
-					targetY += (int)(Mathf.Sin(targetRotation * Mathf.Deg2Rad) * targetWidth);
+					targetX -= (int)(Util.Cos(targetRotation * Util.Deg2Rad) * targetWidth);
+					targetY += (int)(Util.Sin(targetRotation * Util.Deg2Rad) * targetWidth);
 				}
 			}
 
@@ -629,14 +628,14 @@ namespace AngeliaFramework {
 
 			// Rotate
 			targetRotation = parentRotation + rotation;
-			targetX = parentX - (int)(Mathf.Sin(parentRotation * Mathf.Deg2Rad) * parentHeight);
-			targetY = parentY - (int)(Mathf.Cos(parentRotation * Mathf.Deg2Rad) * parentHeight);
+			targetX = parentX - (int)(Util.Sin(parentRotation * Util.Deg2Rad) * parentHeight);
+			targetY = parentY - (int)(Util.Cos(parentRotation * Util.Deg2Rad) * parentHeight);
 			targetPivotX = rotation > 0 != bigRot ? 1000 : 0;
 			if (parentWidth < 0 != targetPivotX > 500) {
 				int pWidth = parentWidth.Abs();
 				int sign = targetPivotX > 500 ? -1 : 1;
-				targetX -= (int)(Mathf.Cos(parentRotation * Mathf.Deg2Rad) * pWidth) * sign;
-				targetY += (int)(Mathf.Sin(parentRotation * Mathf.Deg2Rad) * pWidth) * sign;
+				targetX -= (int)(Util.Cos(parentRotation * Util.Deg2Rad) * pWidth) * sign;
+				targetY += (int)(Util.Sin(parentRotation * Util.Deg2Rad) * pWidth) * sign;
 			}
 
 			// Flip
@@ -645,8 +644,8 @@ namespace AngeliaFramework {
 				if (bigRot || useFlip) {
 					targetWidth = -targetWidth;
 				} else {
-					targetX -= (int)(Mathf.Cos(targetRotation * Mathf.Deg2Rad) * targetWidth);
-					targetY += (int)(Mathf.Sin(targetRotation * Mathf.Deg2Rad) * targetWidth);
+					targetX -= (int)(Util.Cos(targetRotation * Util.Deg2Rad) * targetWidth);
+					targetY += (int)(Util.Sin(targetRotation * Util.Deg2Rad) * targetWidth);
 				}
 			}
 
@@ -702,7 +701,7 @@ namespace AngeliaFramework {
 			int minZ = int.MaxValue;
 			for (int i = cellIndexStart; i < count && i < cellIndexEnd; i++) {
 				var cell = cells[i];
-				minZ = Mathf.Min(minZ, cell.Z);
+				minZ = Util.Min(minZ, cell.Z);
 				cell.X = targetRect.x + (cell.X - originalMinX) * targetRect.width / originalWidth;
 				cell.Y = targetRect.y + (cell.Y - originalMinY) * targetRect.height / originalHeight;
 				cell.Width = cell.Width * targetRect.width / originalWidth;
@@ -853,80 +852,6 @@ namespace AngeliaFramework {
 		};
 
 
-		public static bool AnyButtonPressed (this Gamepad pad) {
-			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.DpadUp].isPressed) return true;
-			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.DpadDown].isPressed) return true;
-			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.DpadLeft].isPressed) return true;
-			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.DpadRight].isPressed) return true;
-			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.North].isPressed) return true;
-			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.East].isPressed) return true;
-			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.South].isPressed) return true;
-			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.West].isPressed) return true;
-			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.LeftStick].isPressed) return true;
-			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.RightStick].isPressed) return true;
-			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.LeftShoulder].isPressed) return true;
-			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.RightShoulder].isPressed) return true;
-			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.Start].isPressed) return true;
-			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.Select].isPressed) return true;
-			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.LeftTrigger].isPressed) return true;
-			if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)GamepadKey.RightTrigger].isPressed) return true;
-			var stickL = pad.leftStick;
-			var stickR = pad.rightStick;
-			return
-				stickL.left.isPressed || stickR.left.isPressed ||
-				stickL.right.isPressed || stickR.right.isPressed ||
-				stickL.down.isPressed || stickR.down.isPressed ||
-				stickL.up.isPressed || stickR.up.isPressed;
-		}
-		public static bool AnyButtonHolding (this Gamepad pad, out GamepadKey button) {
-			button = GamepadKey.DpadUp;
-			for (int i = 0; i < 16; i++) {
-				if (i == 14) i = 0x20;
-				if (i == 15) i = 33;
-				var btn = (GamepadKey)i;
-				if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)btn].isPressed) {
-					button = btn;
-					return true;
-				}
-			}
-			var stickL = pad.leftStick;
-			var stickR = pad.rightStick;
-			if (stickL.left.isPressed || stickR.left.isPressed) {
-				button = GamepadKey.DpadLeft;
-				return true;
-			}
-			if (stickL.right.isPressed || stickR.right.isPressed) {
-				button = GamepadKey.DpadRight;
-				return true;
-			}
-			if (stickL.down.isPressed || stickR.down.isPressed) {
-				button = GamepadKey.DpadDown;
-				return true;
-			}
-			if (stickL.up.isPressed || stickR.up.isPressed) {
-				button = GamepadKey.DpadUp;
-				return true;
-			}
-			return false;
-		}
-		public static bool AnyKeyPressed (this Keyboard keyboard) => keyboard.anyKey.isPressed;
-		public static bool AnyKeyHolding (this Keyboard keyboard, out KeyboardKey key) {
-			key = KeyboardKey.None;
-			if (keyboard.anyKey.isPressed) {
-				var allKeys = keyboard.allKeys;
-				for (int i = 0; i < allKeys.Count; i++) {
-					var k = allKeys[i];
-					if (k.isPressed) {
-						key = (KeyboardKey)k.keyCode;
-						break;
-					}
-				}
-				return true;
-			}
-			return false;
-		}
-
-
 		public static int ToUnit (this int globalPos) => globalPos.UDivide(Const.CEL);
 		public static int ToGlobal (this int unitPos) => unitPos * Const.CEL;
 		public static int ToUnifyGlobal (this int globalPos) => globalPos.UDivide(Const.CEL) * Const.CEL;
@@ -1074,7 +999,7 @@ namespace AngeliaFramework {
 					if (jumpOut) break;
 					lastIndex = i;
 				}
-				if (resultIndex != lastIndex) resultIndex = Random.Range(resultIndex, lastIndex + 1);
+				if (resultIndex != lastIndex) resultIndex = AngeUtil.RandomInt(resultIndex, lastIndex + 1);
 				return resultIndex;
 			}
 		}
@@ -1089,7 +1014,7 @@ namespace AngeliaFramework {
 						Util.DeleteFile(path);
 						Util.DeleteFile(path + ".meta");
 					}
-				} catch (System.Exception ex) { Debug.LogException(ex); }
+				} catch (System.Exception ex) { Game.LogException(ex); }
 			}
 		}
 

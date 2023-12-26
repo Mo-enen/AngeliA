@@ -5,11 +5,11 @@ namespace AngeliaFramework {
 
 
 	[System.AttributeUsage(System.AttributeTargets.Assembly)]
-	public class AngeliAAttribute : UnityEngine.PropertyAttribute { }
+	public class AngeliAAttribute : System.Attribute { }
 
 
 	[System.AttributeUsage(System.AttributeTargets.Assembly)]
-	public class AngeliaGameTitleAttribute : UnityEngine.PropertyAttribute {
+	public class AngeliaGameTitleAttribute : System.Attribute {
 		public string Title;
 		public AngeliaGameTitleAttribute (string title) => Title = title;
 		public static string GetTitle () {
@@ -23,7 +23,7 @@ namespace AngeliaFramework {
 
 
 	[System.AttributeUsage(System.AttributeTargets.Assembly)]
-	public class AngeliaGameDeveloperAttribute : UnityEngine.PropertyAttribute {
+	public class AngeliaGameDeveloperAttribute : System.Attribute {
 		public string Developer;
 		public AngeliaGameDeveloperAttribute (string developer) => Developer = developer;
 		public static string GetDeveloper () {

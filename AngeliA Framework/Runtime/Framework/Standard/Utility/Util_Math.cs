@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -43,7 +42,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static int MaxAbs (int a, int b) => Mathf.Abs(a) > Mathf.Abs(b) ? a : b;
+		public static int MaxAbs (int a, int b) => Abs(a) > Abs(b) ? a : b;
 
 
 		// Geo
@@ -65,9 +64,9 @@ namespace AngeliaFramework {
 			float y0 = point.y;
 			float y1 = a.y;
 			float y2 = b.y;
-			return Mathf.Abs(
+			return Abs(
 				(x2 - x1) * (y1 - y0) - (x1 - x0) * (y2 - y1)
-			) / Mathf.Sqrt(
+			) / Sqrt(
 				(x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)
 			);
 		}
@@ -173,8 +172,8 @@ namespace AngeliaFramework {
 
 
 		public static bool OverlapRectCircle (int radius, int circleX, int circleY, int minX, int minY, int maxX, int maxY) {
-			int disX = Mathf.Max(minX, Mathf.Min(circleX, maxX)) - circleX;
-			int disY = Mathf.Max(minY, Mathf.Min(circleY, maxY)) - circleY;
+			int disX = Max(minX, Min(circleX, maxX)) - circleX;
+			int disY = Max(minY, Min(circleY, maxY)) - circleY;
 			return (disX * disX + disY * disY) <= radius * radius;
 		}
 
@@ -200,8 +199,7 @@ namespace AngeliaFramework {
 			try {
 				if (DataTable.Compute(expression, null) is int intResult) result = intResult;
 				return true;
-			} catch (System.Exception ex) {
-				Debug.LogException(ex);
+			} catch {
 				return false;
 			}
 		}

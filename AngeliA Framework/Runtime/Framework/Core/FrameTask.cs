@@ -1,7 +1,6 @@
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -74,7 +73,7 @@ namespace AngeliaFramework {
 					try {
 						result = CurrentTask.FrameUpdate();
 					} catch (System.Exception ex) {
-						Debug.LogException(ex);
+						Game.LogException(ex);
 						result = TaskResult.End;
 					}
 					if (CurrentTask != null) {
@@ -82,7 +81,7 @@ namespace AngeliaFramework {
 						if (result == TaskResult.End) {
 							try {
 								CurrentTask.OnEnd();
-							} catch (System.Exception ex) { Debug.LogException(ex); }
+							} catch (System.Exception ex) { Game.LogException(ex); }
 							CurrentTask = null;
 						}
 					}

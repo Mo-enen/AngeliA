@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Globalization;
 using System.IO;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -32,10 +30,10 @@ namespace AngeliaFramework {
 			value = (byte)(bitValue ? (value | val) : (value & ~val));
 		}
 
-		public static bool Almost (this float a, float b) => Mathf.Approximately(a, b);
-		public static bool AlmostZero (this float a) => Mathf.Approximately(a, 0f);
-		public static bool NotAlmost (this float a, float b) => !Mathf.Approximately(a, b);
-		public static bool NotAlmostZero (this float a) => !Mathf.Approximately(a, 0f);
+		public static bool Almost (this float a, float b) => Util.Approximately(a, b);
+		public static bool AlmostZero (this float a) => Util.Approximately(a, 0f);
+		public static bool NotAlmost (this float a, float b) => !Util.Approximately(a, b);
+		public static bool NotAlmostZero (this float a) => !Util.Approximately(a, 0f);
 		public static bool GreaterOrAlmost (this float a, float b) => a > b || a.Almost(b);
 		public static bool LessOrAlmost (this float a, float b) => a < b || a.Almost(b);
 
@@ -55,7 +53,7 @@ namespace AngeliaFramework {
 			value % step == 0 ? value :
 			value > 0 ? value - (value % step) :
 			value - (value % step) - step;
-		public static int Distance (this int value, int target) => Mathf.Abs(value - target);
+		public static int Distance (this int value, int target) => Util.Abs(value - target);
 
 		public static int CeilDivide (this int value, int target) => value / target + (value % target == 0 ? 0 : 1);
 
@@ -76,15 +74,8 @@ namespace AngeliaFramework {
 			value > 0 ? value - (value % gap) :
 			value - (value % gap) - gap;
 
-		public static int Clamp (this int a, int min, int max) {
-			//if (min > max) (min, max) = (max, min);
-			return a < min ? min : a > max ? max : a;
-		}
-		public static float Clamp (this float a, float min, float max) {
-			//if (min > max) (min, max) = (max, min);
-			return a < min ? min : a > max ? max : a;
-		}
-
+		public static int Clamp (this int a, int min, int max) => a < min ? min : a > max ? max : a;
+		public static float Clamp (this float a, float min, float max) => a < min ? min : a > max ? max : a;
 		public static float Clamp01 (this float value) => value < 0f ? 0f : value > 1f ? 1f : value;
 
 		public static int GreaterOrEquel (this int value, int target) => value > target ? value : target;
@@ -97,13 +88,13 @@ namespace AngeliaFramework {
 		public static int Sign3 (this int i) => i == 0 ? 0 : i > 0 ? 1 : -1;
 
 		public static int MoveTowards (this int current, int target, int maxDelta) {
-			if (Mathf.Abs(target - current) <= maxDelta) {
+			if (Util.Abs(target - current) <= maxDelta) {
 				return target;
 			}
 			return current + (target - current).Sign() * maxDelta;
 		}
 		public static int MoveTowards (this int current, int target, int positiveDelta, int negativeDelta) => current.MoveTowards(
-			target, Mathf.Abs(target) > Mathf.Abs(current) ? positiveDelta : negativeDelta
+			target, Util.Abs(target) > Util.Abs(current) ? positiveDelta : negativeDelta
 		);
 
 
@@ -122,17 +113,17 @@ namespace AngeliaFramework {
 			return result;
 		}
 
-		public static float LerpWithGap (this float from, float to, float lerp, float gap) => Mathf.Abs(from - to) > gap ? Mathf.LerpUnclamped(from, to, lerp) : to;
+		public static float LerpWithGap (this float from, float to, float lerp, float gap) => Util.Abs(from - to) > gap ? Util.LerpUnclamped(from, to, lerp) : to;
 
 
 		public static int PingPong (this int value, int length) {
 			value = value.UMod(length * 2);
-			return length - Mathf.Abs(value - length);
+			return length - Util.Abs(value - length);
 		}
 		public static int PingPong (this int value, int min, int max) {
 			int length = max - min;
 			value = value.UMod(length * 2);
-			return length - Mathf.Abs(value - length) + min;
+			return length - Util.Abs(value - length) + min;
 		}
 
 
@@ -165,12 +156,12 @@ namespace AngeliaFramework {
 
 		// Vector
 		public static void Clamp (this ref Int2 v, int minX, int minY, int maxX, int maxY) {
-			v.x = Mathf.Clamp(v.x, minX, maxX);
-			v.y = Mathf.Clamp(v.y, minY, maxY);
+			v.x = Util.Clamp(v.x, minX, maxX);
+			v.y = Util.Clamp(v.y, minY, maxY);
 		}
 		public static void Clamp (this ref Float2 v, float minX, float minY, float maxX, float maxY) {
-			v.x = Mathf.Clamp(v.x, minX, maxX);
-			v.y = Mathf.Clamp(v.y, minY, maxY);
+			v.x = Util.Clamp(v.x, minX, maxX);
+			v.y = Util.Clamp(v.y, minY, maxY);
 		}
 		public static Int2 UDivide (this Int2 v, int gap) {
 			v.x = v.x.UDivide(gap);
@@ -190,9 +181,9 @@ namespace AngeliaFramework {
 		);
 
 
-		public static bool Almost (this Float3 a, Float3 b) => Mathf.Approximately(a.x, b.x) && Mathf.Approximately(a.y, b.y) && Mathf.Approximately(a.z, b.z);
-		public static bool Almost (this Float2 a, Float2 b) => Mathf.Approximately(a.x, b.x) && Mathf.Approximately(a.y, b.y);
-		public static bool Almost (this FRect a, FRect b) => Mathf.Approximately(a.x, b.x) && Mathf.Approximately(a.y, b.y) && Mathf.Approximately(a.width, b.width) && Mathf.Approximately(a.height, b.height);
+		public static bool Almost (this Float3 a, Float3 b) => Util.Approximately(a.x, b.x) && Util.Approximately(a.y, b.y) && Util.Approximately(a.z, b.z);
+		public static bool Almost (this Float2 a, Float2 b) => Util.Approximately(a.x, b.x) && Util.Approximately(a.y, b.y);
+		public static bool Almost (this FRect a, FRect b) => Util.Approximately(a.x, b.x) && Util.Approximately(a.y, b.y) && Util.Approximately(a.width, b.width) && Util.Approximately(a.height, b.height);
 		public static bool NotAlmost (this Float3 a, Float3 b) => !a.Almost(b);
 		public static bool NotAlmost (this Float2 a, Float2 b) => !a.Almost(b);
 		public static bool NotAlmost (this FRect a, FRect b) => !a.Almost(b);
@@ -200,26 +191,18 @@ namespace AngeliaFramework {
 		public static bool Inside (this Float2 v, Float2 min, Float2 max) => Inside(v, min.x, max.x, min.y, max.y);
 		public static bool Inside (this Float2 v, float left, float right, float down, float up) => v.x >= left && v.x <= right && v.y >= down && v.y <= up;
 		public static Int2 RoundToInt (this Float2 v) => new(
-			Mathf.RoundToInt(v.x),
-			Mathf.RoundToInt(v.y)
+			Util.RoundToInt(v.x),
+			Util.RoundToInt(v.y)
 		);
 		public static Int2 CeilToInt (this Float2 v) => new(
-			Mathf.CeilToInt(v.x),
-			Mathf.CeilToInt(v.y)
+			Util.CeilToInt(v.x),
+			Util.CeilToInt(v.y)
 		);
 		public static Int2 FloorToInt (this Float2 v) => new(
-			Mathf.FloorToInt(v.x),
-			Mathf.FloorToInt(v.y)
+			Util.FloorToInt(v.x),
+			Util.FloorToInt(v.y)
 		);
 		public static bool AlmostZero (this Float4 value) => value.x.AlmostZero() && value.y.AlmostZero() && value.z.AlmostZero() && value.w.AlmostZero();
-
-
-
-		public static Float2 ToAngelia (this UnityEngine.Vector2 v) => new(v.x, v.y);
-		public static Float3 ToAngelia (this UnityEngine.Vector3 v) => new(v.x, v.y, v.z);
-		public static Float4 ToAngelia (this UnityEngine.Vector4 v) => new(v.x, v.y, v.z, v.w);
-		public static Int2 ToAngelia (this UnityEngine.Vector2Int v) => new(v.x, v.y);
-		public static Int3 ToAngelia (this UnityEngine.Vector3Int v) => new(v.x, v.y, v.z);
 
 
 		public static Float3 Rotate (this Float3 vector, float angle) {
@@ -243,61 +226,6 @@ namespace AngeliaFramework {
 		}
 		public static int GetRotation (this Float2 vector) => ((float)(System.Math.Atan2(vector.x, vector.y) * Util.Rad2Deg)).RoundToInt();
 		public static int GetRotation (this Int2 vector) => ((float)(System.Math.Atan2(vector.x, vector.y) * Util.Rad2Deg)).RoundToInt();
-
-
-		// Ani
-		public static float Duration (this AnimationCurve curve) {
-			if (curve.length <= 1) { return 0f; }
-			return curve.keys[curve.length - 1].time - curve.keys[0].time;
-		}
-
-
-		// Transform
-		public static void DestroyAllChildrenImmediate (this Transform target) {
-			int childCount = target.childCount;
-			for (int i = 0; i < childCount; i++) {
-				Object.DestroyImmediate(target.GetChild(0).gameObject, false);
-			}
-		}
-
-		public static bool IsChildOf (this Transform tf, Transform root) {
-			while (tf != null && tf != root) {
-				tf = tf.parent;
-			}
-			return tf == root;
-		}
-
-		public static void SetHideFlagForAllChildren (this Transform target, HideFlags flag) {
-			target.gameObject.hideFlags = flag;
-			foreach (Transform t in target) {
-				SetHideFlagForAllChildren(t, flag);
-			}
-		}
-
-		public static int LengthInt (this Int2 v) => Util.DistanceInt(v.x, v.y, 0, 0);
-
-
-		// Coroutine
-		public static Coroutine StartBetterCoroutine (this MonoBehaviour beh, IEnumerator routine, System.Action onFinished = null) => beh.StartBetterCoroutine(routine, (ex) => onFinished?.Invoke());
-		public static Coroutine StartBetterCoroutine (this MonoBehaviour beh, IEnumerator routine, System.Action<System.Exception> onFinished = null) {
-			return beh.StartCoroutine(Coroutine(routine, onFinished));
-			static IEnumerator Coroutine (IEnumerator routine, System.Action<System.Exception> onFinished) {
-				while (true) {
-					bool done;
-					try {
-						done = routine.MoveNext();
-					} catch (System.Exception ex) {
-						Debug.LogException(ex);
-						onFinished?.Invoke(ex);
-						yield break;
-					}
-					if (done) {
-						yield return routine.Current;
-					} else { break; }
-				}
-				onFinished?.Invoke(null);
-			}
-		}
 
 
 		// Rect
@@ -325,8 +253,8 @@ namespace AngeliaFramework {
 				sizeX = sizeY * targetAspect;
 			}
 			return new FRect(
-				rect.x + Mathf.Abs(rect.width - sizeX) * pivotX,
-				rect.y + Mathf.Abs(rect.height - sizeY) * pivotY,
+				rect.x + Util.Abs(rect.width - sizeX) * pivotX,
+				rect.y + Util.Abs(rect.height - sizeY) * pivotY,
 				sizeX, sizeY
 			);
 		}
@@ -339,23 +267,23 @@ namespace AngeliaFramework {
 				sizeX = sizeY * targetAspect;
 			}
 			return new FRect(
-				rect.x - Mathf.Abs(rect.width - sizeX) / 2f,
-				rect.y - Mathf.Abs(rect.height - sizeY) / 2f,
+				rect.x - Util.Abs(rect.width - sizeX) / 2f,
+				rect.y - Util.Abs(rect.height - sizeY) / 2f,
 				sizeX, sizeY
 			);
 		}
 		public static IRect ToRectInt (this FRect rect) => new((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
 		public static void Clamp (this ref FRect rect, FRect target) => rect = FRect.MinMaxRect(
-			Mathf.Min(target.xMax, Mathf.Max(rect.xMin, target.xMin)),
-			Mathf.Min(target.yMax, Mathf.Max(rect.yMin, target.yMin)),
-			Mathf.Max(target.xMin, Mathf.Min(rect.xMax, target.xMax)),
-			Mathf.Max(target.yMin, Mathf.Min(rect.yMax, target.yMax))
+			Util.Min(target.xMax, Util.Max(rect.xMin, target.xMin)),
+			Util.Min(target.yMax, Util.Max(rect.yMin, target.yMin)),
+			Util.Max(target.xMin, Util.Min(rect.xMax, target.xMax)),
+			Util.Max(target.yMin, Util.Min(rect.yMax, target.yMax))
 		);
 		public static FRect GetClamp (this FRect rect, FRect target) => FRect.MinMaxRect(
-			Mathf.Min(target.xMax, Mathf.Max(rect.xMin, target.xMin)),
-			Mathf.Min(target.yMax, Mathf.Max(rect.yMin, target.yMin)),
-			Mathf.Max(target.xMin, Mathf.Min(rect.xMax, target.xMax)),
-			Mathf.Max(target.yMin, Mathf.Min(rect.yMax, target.yMax))
+			Util.Min(target.xMax, Util.Max(rect.xMin, target.xMin)),
+			Util.Min(target.yMax, Util.Max(rect.yMin, target.yMin)),
+			Util.Max(target.xMin, Util.Min(rect.xMax, target.xMax)),
+			Util.Max(target.yMin, Util.Min(rect.yMax, target.yMax))
 		);
 
 		public static Float2 BottomLeft (this FRect rect) => new(rect.xMin, rect.yMin);
@@ -376,8 +304,8 @@ namespace AngeliaFramework {
 				sizeX = sizeY * aspWidth / aspHeight;
 			}
 			return new IRect(
-				rect.x + Mathf.Abs(rect.width - sizeX) * pivotX / 1000,
-				rect.y + Mathf.Abs(rect.height - sizeY) * pivotY / 1000,
+				rect.x + Util.Abs(rect.width - sizeX) * pivotX / 1000,
+				rect.y + Util.Abs(rect.height - sizeY) * pivotY / 1000,
 				sizeX, sizeY
 			);
 		}
@@ -389,7 +317,7 @@ namespace AngeliaFramework {
 			rect.height += d + u;
 			return rect;
 		}
-		public static IRect Expand (this IRect rect, RectOffset offset) {
+		public static IRect Expand (this IRect rect, IRectOffset offset) {
 			rect.x -= offset.left;
 			rect.y -= offset.bottom;
 			rect.width += offset.horizontal;
@@ -405,7 +333,7 @@ namespace AngeliaFramework {
 		}
 		public static IRect Shrink (this IRect rect, int offset) => rect.Expand(-offset);
 		public static IRect Shrink (this IRect rect, int l, int r, int d, int u) => rect.Expand(-l, -r, -d, -u);
-		public static IRect Shrink (this IRect rect, RectOffset offset) {
+		public static IRect Shrink (this IRect rect, IRectOffset offset) {
 			rect.x += offset.left;
 			rect.y += offset.bottom;
 			rect.width -= offset.horizontal;
@@ -513,9 +441,9 @@ namespace AngeliaFramework {
 		public static bool NotEnd (this BinaryReader reader) => reader.BaseStream.Position < reader.BaseStream.Length;
 
 
-		public static bool IsZero (this RectOffset value) => value.left == 0 && value.right == 0 && value.top == 0 && value.bottom == 0;
-		public static bool IsNotZero (this RectOffset value) => value.left != 0 || value.right != 0 || value.top != 0 || value.bottom != 0;
-		public static void SetToZero (this RectOffset value) => value.left = value.right = value.top = value.bottom = 0;
+		public static bool IsZero (this IRectOffset value) => value.left == 0 && value.right == 0 && value.top == 0 && value.bottom == 0;
+		public static bool IsNotZero (this IRectOffset value) => value.left != 0 || value.right != 0 || value.top != 0 || value.bottom != 0;
+		public static void SetToZero (this IRectOffset value) => value.left = value.right = value.top = value.bottom = 0;
 
 
 		public static Direction4? GetDirection (this Gamekey key) => key switch {
@@ -543,7 +471,9 @@ namespace AngeliaFramework {
 		}
 
 
-		public static int Clamp (this RangeInt range, int value) => Mathf.Clamp(value, range.start, range.end);
+		public static void AddRange<T, V> (this Dictionary<T, V> map, IEnumerable<KeyValuePair<T, V>> values) {
+			foreach (var (k, v) in values) map.TryAdd(k, v);
+		}
 
 
 		// Enum

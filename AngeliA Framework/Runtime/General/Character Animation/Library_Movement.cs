@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -243,7 +242,7 @@ namespace AngeliaFramework {
 
 			const int FRAME_LENGTH = 16;
 
-			int loop = Mathf.Max(FRAME_LENGTH * 50 / Target.WalkSpeed.FinalValue.Clamp(1, 100) / FRAME_LENGTH * FRAME_LENGTH, 1);
+			int loop = Util.Max(FRAME_LENGTH * 50 / Target.WalkSpeed.FinalValue.Clamp(1, 100) / FRAME_LENGTH * FRAME_LENGTH, 1);
 			int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
 			int fixedAnimationFrame = (CurrentAnimationFrame + frameRate * 2).UMod(loop);
 			int currentFrame = fixedAnimationFrame / frameRate * frameRate;
@@ -253,7 +252,7 @@ namespace AngeliaFramework {
 
 			float ease = EASE[arrFrame];
 			float easeDouble = EASE[arrFrame + FRAME_LENGTH];
-			int legOffsetX = (int)Mathf.LerpUnclamped(
+			int legOffsetX = (int)Util.LerpUnclamped(
 				0f, (Body.SizeX - Body.Border.horizontal - UpperLegL.SizeX) * 0.7f,
 				FacingRight ? ease : 1f - ease
 			);
@@ -297,7 +296,7 @@ namespace AngeliaFramework {
 
 			const int FRAME_LENGTH = 16;
 
-			int loop = Mathf.Max(FRAME_LENGTH * 75 / Target.RunSpeed.FinalValue.Clamp(1, 1024) / FRAME_LENGTH * FRAME_LENGTH, 1);
+			int loop = Util.Max(FRAME_LENGTH * 75 / Target.RunSpeed.FinalValue.Clamp(1, 1024) / FRAME_LENGTH * FRAME_LENGTH, 1);
 			int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
 			int fixedAnimationFrame = (CurrentAnimationFrame + frameRate * 2).UMod(loop);
 			int currentFrame = fixedAnimationFrame / frameRate * frameRate;
@@ -307,14 +306,14 @@ namespace AngeliaFramework {
 
 			float ease = EASE[arrFrame];
 			float easeDouble = EASE[arrFrame + FRAME_LENGTH];
-			int legOffsetX = (int)Mathf.LerpUnclamped(
+			int legOffsetX = (int)Util.LerpUnclamped(
 				0f, (Body.SizeX - Body.Border.horizontal - UpperLegL.SizeX) * 0.9f,
 				FacingRight ? ease : 1f - ease
 			);
 			float frame01 = (float)arrFrame / FRAME_LENGTH;
 
 			Target.PoseRootY += (int)((1f - easeDouble) * A2G * 2);
-			Target.BodyTwist = (int)Mathf.LerpUnclamped(1000f, -1000f, frame01 < 0.5f ? frame01 * 2f : 2f - 2f * frame01);
+			Target.BodyTwist = (int)Util.LerpUnclamped(1000f, -1000f, frame01 < 0.5f ? frame01 * 2f : 2f - 2f * frame01);
 
 			// Arm
 			UpperArmL.LimbRotate(ROTS[arrFrame, 0] * FacingSign);
@@ -528,7 +527,7 @@ namespace AngeliaFramework {
 		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
-			int loop = Mathf.Max((1200 / Target.SwimSpeed.FinalValue).Clamp(1, 128) / 4 * 4, 1);
+			int loop = Util.Max((1200 / Target.SwimSpeed.FinalValue).Clamp(1, 128) / 4 * 4, 1);
 			int frame = CurrentAnimationFrame.UMod(loop) / (loop / 4);
 
 			int frame0121 = frame == 3 ? 1 : frame;
@@ -661,11 +660,11 @@ namespace AngeliaFramework {
 			// Leg
 			LowerLegL.Height -= A2G;
 			LowerLegL.X = UpperLegL.X + (FacingRight ? -A2G : 0);
-			LowerLegL.Y = Mathf.Max(UpperLegL.Y - UpperLegL.Height, Body.Y - above + LowerLegL.Height);
+			LowerLegL.Y = Util.Max(UpperLegL.Y - UpperLegL.Height, Body.Y - above + LowerLegL.Height);
 
 			LowerLegR.Height -= A2G;
 			LowerLegR.X = UpperLegR.X + (FacingRight ? 0 : A2G);
-			LowerLegR.Y = Mathf.Max(UpperLegR.Y - UpperLegR.Height, Body.Y - above + LowerLegR.Height);
+			LowerLegR.Y = Util.Max(UpperLegR.Y - UpperLegR.Height, Body.Y - above + LowerLegR.Height);
 
 			FootL.X = FacingRight ? LowerLegL.X : LowerLegL.X + LowerLegL.SizeX;
 			FootR.X = FacingRight ? LowerLegR.X - FootR.SizeX : LowerLegR.X;
@@ -702,7 +701,7 @@ namespace AngeliaFramework {
 
 			const int FRAME_LENGTH = 16;
 
-			int loop = Mathf.Max(600 / Target.SquatSpeed.FinalValue.Clamp(1, 256) / FRAME_LENGTH * FRAME_LENGTH, 1);
+			int loop = Util.Max(600 / Target.SquatSpeed.FinalValue.Clamp(1, 256) / FRAME_LENGTH * FRAME_LENGTH, 1);
 			int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
 			int arrFrame = (CurrentAnimationFrame.UMod(loop) / frameRate) % FRAME_LENGTH;
 			arrFrame = (arrFrame + 4).UMod(FRAME_LENGTH);
@@ -750,11 +749,11 @@ namespace AngeliaFramework {
 
 			LowerLegL.Height -= A2G;
 			LowerLegL.X = UpperLegL.X + (FacingRight ? -A2G : 0);
-			LowerLegL.Y = Mathf.Max(UpperLegL.Y - UpperLegL.Height, Body.Y - above + LowerLegL.Height);
+			LowerLegL.Y = Util.Max(UpperLegL.Y - UpperLegL.Height, Body.Y - above + LowerLegL.Height);
 
 			LowerLegR.Height -= A2G;
 			LowerLegR.X = UpperLegR.X + (FacingRight ? 0 : A2G);
-			LowerLegR.Y = Mathf.Max(UpperLegR.Y - UpperLegR.Height, Body.Y - above + LowerLegR.Height);
+			LowerLegR.Y = Util.Max(UpperLegR.Y - UpperLegR.Height, Body.Y - above + LowerLegR.Height);
 
 			FootL.X = FacingRight ? LowerLegL.X : LowerLegL.X + LowerLegL.SizeX;
 			FootL.Y = FootL.Height - above;
@@ -1134,7 +1133,7 @@ namespace AngeliaFramework {
 		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
-			int frameRate = Mathf.Max(560 / Target.ClimbSpeedY.FinalValue.Clamp(1, 1024) / 8, 1);
+			int frameRate = Util.Max(560 / Target.ClimbSpeedY.FinalValue.Clamp(1, 1024) / 8, 1);
 			int aFrame = CurrentAnimationFrame.UMod(frameRate * 10 - 1) / frameRate;
 
 			int delayFrame = (aFrame + 1) % 10;
@@ -1300,7 +1299,7 @@ namespace AngeliaFramework {
 	public class PoseAnimation_GrabTop : PoseAnimation {
 		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
-			int loop = Mathf.Max((700 / Target.GrabMoveSpeedX.FinalValue.Clamp(1, 1024)) / 4 * 4, 1);
+			int loop = Util.Max((700 / Target.GrabMoveSpeedX.FinalValue.Clamp(1, 1024)) / 4 * 4, 1);
 			int arrFrame = (CurrentAnimationFrame.UMod(loop) / (loop / 4)) % 4;// 0123
 			int pingpong = arrFrame == 3 ? 1 : arrFrame; // 0121
 			int pingpongAlt = arrFrame == 2 ? 1 : arrFrame == 3 ? 0 : arrFrame + 1; // 1210
@@ -1347,7 +1346,7 @@ namespace AngeliaFramework {
 		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 
-			int loop = Mathf.Max((700 / Target.GrabMoveSpeedY.FinalValue.Clamp(1, 1024)) / 4 * 4, 1);
+			int loop = Util.Max((700 / Target.GrabMoveSpeedY.FinalValue.Clamp(1, 1024)) / 4 * 4, 1);
 			int arrFrame = (CurrentAnimationFrame.UMod(loop) / (loop / 4)) % 4;// 0123
 			int pingpong = arrFrame == 3 ? 1 : arrFrame; // 0121
 			int bodyShift = FacingSign * (Body.Width.Abs() / 2 - A2G * 2);

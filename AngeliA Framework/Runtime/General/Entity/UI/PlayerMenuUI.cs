@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -311,12 +310,12 @@ namespace AngeliaFramework {
 
 			// Left
 			if (FrameInput.GameKeyDownGUI(Gamekey.Left)) {
-				x = Mathf.Max(x - 1, 0);
+				x = Util.Max(x - 1, 0);
 			}
 
 			// Right
 			if (FrameInput.GameKeyDownGUI(Gamekey.Right)) {
-				x = Mathf.Min(x + 1, column - 1);
+				x = Util.Min(x + 1, column - 1);
 			}
 
 			// Down
@@ -328,11 +327,11 @@ namespace AngeliaFramework {
 					} else {
 						x = CursorWrap(x, false);
 					}
-					y = Player.INVENTORY_ROW - 1;
-					column = Player.INVENTORY_COLUMN;
-					row = Player.INVENTORY_ROW;
+					y = Character.INVENTORY_ROW - 1;
+					column = Character.INVENTORY_COLUMN;
+					row = Character.INVENTORY_ROW;
 				} else {
-					y = Mathf.Max(y - 1, 0);
+					y = Util.Max(y - 1, 0);
 				}
 			}
 
@@ -349,7 +348,7 @@ namespace AngeliaFramework {
 					column = TopPanelColumn;
 					row = TopPanelRow;
 				} else {
-					y = Mathf.Min(y + 1, row - 1);
+					y = Util.Min(y + 1, row - 1);
 				}
 			}
 
@@ -1146,10 +1145,10 @@ namespace AngeliaFramework {
 				player.Y - invHeight - Const.HALF - Unify(WINDOW_PADDING);
 			if (localAnimationFrame < ANIMATION_DURATION) {
 				float lerp01 = Ease.OutCirc((float)localAnimationFrame / ANIMATION_DURATION);
-				invY += Mathf.LerpUnclamped(
+				invY += Util.LerpUnclamped(
 					panelOnTop ? -Unify(86) : Unify(86), 0, lerp01
 				).RoundToInt();
-				invWidth -= Mathf.LerpUnclamped(uItemSize * 4, 0, lerp01).RoundToInt();
+				invWidth -= Util.LerpUnclamped(uItemSize * 4, 0, lerp01).RoundToInt();
 			}
 			var result = new IRect(invX - invWidth / 2, invY, invWidth, invHeight);
 			result.ClampPositionInside(CellRenderer.CameraRect);
@@ -1165,8 +1164,8 @@ namespace AngeliaFramework {
 			int invY = player.Y + Const.CEL * 2 + Const.HALF + Unify(WINDOW_PADDING);
 			if (localAnimationFrame < ANIMATION_DURATION) {
 				float lerp01 = Ease.OutCirc((float)localAnimationFrame / ANIMATION_DURATION);
-				invY += Mathf.LerpUnclamped(-Unify(86), 0, lerp01).RoundToInt();
-				invWidth -= Mathf.LerpUnclamped(Unify(128), 0, lerp01).RoundToInt();
+				invY += Util.LerpUnclamped(-Unify(86), 0, lerp01).RoundToInt();
+				invWidth -= Util.LerpUnclamped(Unify(128), 0, lerp01).RoundToInt();
 			}
 			var panelRect = new IRect(player.X - invWidth / 2 + Unify(PREVIEW_SIZE) / 2, invY, invWidth, invHeight);
 			panelRect.ClampPositionInside(CellRenderer.CameraRect);

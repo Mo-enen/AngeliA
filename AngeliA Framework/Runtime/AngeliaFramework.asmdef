@@ -1,5 +1,5 @@
 {
-    "name": "Runtime.AngeliaFramework",
+    "name": "AngeliaFramework",
     "rootNamespace": "AngeliaFramework",
     "references": [
         "Unity.InputSystem"

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -70,7 +69,7 @@ namespace AngeliaFramework {
 
 		protected override void StartGame () {
 			BlackTurn = true;
-			PlayerIsBlack = Random.value > 0.5f;
+			PlayerIsBlack = AngeUtil.RandomFloat01() > 0.5f;
 			System.Array.Clear(Stones, 0, Stones.Length);
 			LastPlaceFrame = Game.GlobalFrame;
 			Winner = null;

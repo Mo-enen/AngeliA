@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using AngeliaFramework;
 
 
 namespace AngeliaFramework {
@@ -96,7 +94,7 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			int aFrame = (Game.GlobalFrame * Mathf.Abs(MoveSpeed) / 16).UMod(8);
+			int aFrame = (Game.GlobalFrame * Util.Abs(MoveSpeed) / 16).UMod(8);
 			if (MoveSpeed > 0) aFrame = 7 - aFrame;
 			if (CellRenderer.TryGetSpriteFromGroup(
 				Pose switch {

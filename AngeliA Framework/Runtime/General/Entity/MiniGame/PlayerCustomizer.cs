@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -1229,24 +1228,21 @@ namespace AngeliaFramework {
 
 			// Skin Color
 			foreach (var colorStr in Colors_Skin) {
-				if (ColorUtility.TryParseHtmlString(colorStr, out var color)) {
-					Byte4 color32 = color;
-					Patterns_ColorSkin.Add(new PatternUnit() {
-						Data = new Int4(color32.r, color32.g, color32.b, int.MinValue),
-						IsEmpty = false,
-					});
-				}
+				var dColor = System.Drawing.ColorTranslator.FromHtml(colorStr);
+				Patterns_ColorSkin.Add(new PatternUnit() {
+					Data = new Int4(dColor.R, dColor.G, dColor.B, int.MinValue),
+					IsEmpty = false,
+				});
 			}
 
 			// Hair Color
 			foreach (var colorStr in Colors_Hair) {
-				if (ColorUtility.TryParseHtmlString(colorStr, out var color)) {
-					Byte4 color32 = color;
-					Patterns_ColorHair.Add(new PatternUnit() {
-						Data = new Int4(color32.r, color32.g, color32.b, int.MinValue),
-						IsEmpty = false,
-					});
-				}
+				var dColor = System.Drawing.ColorTranslator.FromHtml(colorStr);
+				Patterns_ColorHair.Add(new PatternUnit() {
+					Data = new Int4(dColor.R, dColor.G, dColor.B, int.MinValue),
+					IsEmpty = false,
+				});
+
 			}
 
 		}

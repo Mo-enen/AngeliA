@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using UnityEngine;
-using System.Reflection.Emit;
-using System.ComponentModel;
 using System.Linq;
 
 
@@ -29,7 +26,7 @@ namespace AngeliaFramework {
 					int order = 0;
 					if (att is IOrderedAttribute orderAtt) order = orderAtt.Order;
 					list.Add((method, order));
-				} catch (System.Exception ex) { Debug.LogException(ex); }
+				} catch (System.Exception ex) { Game.LogException(ex); }
 			}
 			// Sort 
 			list.Sort((a, b) => a.order.CompareTo(b.order));
@@ -39,7 +36,7 @@ namespace AngeliaFramework {
 					var addMethod = info.GetAddMethod(true);
 					var del = System.Delegate.CreateDelegate(info.EventHandlerType, method);
 					addMethod.Invoke(null, new object[] { del });
-				} catch (System.Exception ex) { Debug.LogException(ex); }
+				} catch (System.Exception ex) { Game.LogException(ex); }
 			}
 		}
 
@@ -50,7 +47,7 @@ namespace AngeliaFramework {
 			try {
 				var method = type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
 				return method?.Invoke(null, param);
-			} catch (System.Exception ex) { Debug.LogError(ex); }
+			} catch (System.Exception ex) { Game.LogError(ex); }
 			return null;
 		}
 
@@ -65,11 +62,11 @@ namespace AngeliaFramework {
 					BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
 				);
 				if (method == null) {
-					Debug.LogWarning("method is null");
+					Game.LogWarning("method is null");
 					return null;
 				}
 				return method.Invoke(obj, param);
-			} catch (System.Exception ex) { Debug.LogError(ex); }
+			} catch (System.Exception ex) { Game.LogError(ex); }
 			return null;
 		}
 
@@ -250,7 +247,7 @@ namespace AngeliaFramework {
 			foreach (var (method, _) in methods) {
 				try {
 					method.Invoke(null, null);
-				} catch (System.Exception ex) { Debug.LogException(ex); }
+				} catch (System.Exception ex) { Game.LogException(ex); }
 			}
 		}
 		public static void InvokeAllStaticMethodWithAttribute<A> (System.Func<KeyValuePair<MethodInfo, A>, bool> predicte) where A : System.Attribute {
@@ -260,18 +257,16 @@ namespace AngeliaFramework {
 			foreach (var (method, _) in methods) {
 				try {
 					method.Invoke(null, null);
-				} catch (System.Exception ex) { Debug.LogException(ex); }
+				} catch (System.Exception ex) { Game.LogException(ex); }
 			}
 		}
-		public static void InvokeAllStaticMethodWithAttribute<A> (System.Func<KeyValuePair<MethodInfo, A>, bool> predicte, System.Comparison<KeyValuePair<MethodInfo, A>> comparison) where A : System.Attribute {
-			var methods = new List<KeyValuePair<MethodInfo, A>>(
-				AllStaticMethodWithAttribute<A>().Where(predicte)
-			);
+		public static void InvokeAllStaticMethodWithAttribute<A> (System.Comparison<KeyValuePair<MethodInfo, A>> comparison) where A : System.Attribute {
+			var methods = new List<KeyValuePair<MethodInfo, A>>(AllStaticMethodWithAttribute<A>());
 			methods.Sort(comparison);
 			foreach (var (method, _) in methods) {
 				try {
 					method.Invoke(null, null);
-				} catch (System.Exception ex) { Debug.LogException(ex); }
+				} catch (System.Exception ex) { Game.LogException(ex); }
 			}
 		}
 

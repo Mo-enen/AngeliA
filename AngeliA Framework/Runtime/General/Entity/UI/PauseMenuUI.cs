@@ -1,8 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 
 
 namespace AngeliaFramework {
@@ -230,8 +227,7 @@ namespace AngeliaFramework {
 			}
 
 			// 3-Map Editor Setting
-			var mapEditor = MapEditor.Instance;
-			if (mapEditor != null && mapEditor.Active) {
+			if (MapEditor.IsPlaying || MapEditor.IsEditing) {
 				if (DrawItem(Language.Get(MENU_MEDT_SETTING, "Editor Setting"))) {
 					RequireMode = MenuMode.EditorSetting;
 					SetSelection(0);
@@ -239,9 +235,9 @@ namespace AngeliaFramework {
 			}
 
 			// 4-Quit
-			if (mapEditor != null && mapEditor.Active && mapEditor.IsPlaying) {
+			if (MapEditor.IsPlaying) {
 				if (DrawItem(Language.Get(MENU_BACK_TO_EDIT, "Back to Editor"))) {
-					mapEditor.SetEditorMode(false);
+					MapEditor.Instance.SetEditorMode(false);
 					Game.IsPlaying = true;
 					Active = false;
 					FrameInput.UseAllHoldingKeys();
@@ -294,19 +290,19 @@ namespace AngeliaFramework {
 			// Music Volume
 			if (DrawArrowItem(
 				Language.Get(MENU_MUSIC_VOLUME, "Music Volume"),
-				CellContent.Get(MusicVolumeCache.GetChars(AudioPlayer.MusicVolume / 100)),
-				AudioPlayer.MusicVolume > 0, AudioPlayer.MusicVolume < 1000, out int delta
+				CellContent.Get(MusicVolumeCache.GetChars(Game.MusicVolume / 100)),
+				Game.MusicVolume > 0, Game.MusicVolume < 1000, out int delta
 			)) {
-				AudioPlayer.SetMusicVolume(AudioPlayer.MusicVolume + delta * 100);
+				Game.SetMusicVolume(Game.MusicVolume + delta * 100);
 			}
 
 			// Sound Volume
 			if (DrawArrowItem(
 				Language.Get(MENU_SOUND_VOLUME, "Sound Volume"),
-				CellContent.Get(SoundVolumeCache.GetChars(AudioPlayer.SoundVolume / 100)),
-				AudioPlayer.SoundVolume > 0, AudioPlayer.SoundVolume < 1000, out delta
+				CellContent.Get(SoundVolumeCache.GetChars(Game.SoundVolume / 100)),
+				Game.SoundVolume > 0, Game.SoundVolume < 1000, out delta
 			)) {
-				AudioPlayer.SetSoundVolume(AudioPlayer.SoundVolume + delta * 100);
+				Game.SetSoundVolume(Game.SoundVolume + delta * 100);
 			}
 
 			// Framerate
@@ -471,7 +467,7 @@ namespace AngeliaFramework {
 					FrameInput.UseAllHoldingKeys();
 					MapEditor.CloseMapEditorSmoothly();
 				} else {
-					Application.Quit();
+					Game.QuitApplication();
 #if UNITY_EDITOR
 					UnityEditor.EditorApplication.isPlaying = false;
 #endif

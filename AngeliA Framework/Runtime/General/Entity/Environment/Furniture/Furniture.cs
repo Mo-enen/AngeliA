@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -19,7 +18,7 @@ namespace AngeliaFramework {
 		protected virtual IRect RenderingRect => Rect.Expand(ColliderBorder);
 		public Furniture FurnitureLeftOrDown { get; private set; } = null;
 		public Furniture FurnitureRightOrUp { get; private set; } = null;
-		protected RectOffset ColliderBorder { get; } = new();
+		protected IRectOffset ColliderBorder { get; } = new(0, 0, 0, 0);
 		protected FittingPose Pose { get; private set; } = FittingPose.Unknown;
 		bool IActionTarget.IsHighlighted => GetIsHighlighted();
 
@@ -130,7 +129,7 @@ namespace AngeliaFramework {
 
 
 		protected void DrawClockPendulum (int artCodeLeg, int artCodeHead, int x, int y, int length, int thickness, int headSize, int maxRot, int deltaX = 0) {
-			float t11 = Mathf.Sin(Game.GlobalFrame * 6 * Mathf.Deg2Rad);
+			float t11 = Util.Sin(Game.GlobalFrame * 6 * Util.Deg2Rad);
 			int rot = (t11 * maxRot).RoundToInt();
 			int dX = -(t11 * deltaX).RoundToInt();
 			// Leg

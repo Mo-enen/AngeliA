@@ -1,6 +1,3 @@
-using UnityEngine;
-
-
 namespace AngeliaFramework {
 
 
@@ -117,7 +114,7 @@ namespace AngeliaFramework {
 				distance = cornerY - (Rect.yMax - (cornerX - Rect.x));
 			}
 			bool underTarget = distance < 0;
-			distance = Mathf.Abs(distance);
+			distance = Util.Abs(distance);
 			return (DirectionVertical == Direction2.Up) == underTarget;
 		}
 
@@ -140,12 +137,12 @@ namespace AngeliaFramework {
 					if ((DirectionHorizontal == Direction2.Left) == (target.VelocityX > 0)) {
 						// Walk Toward
 						target.Y += DirectionVertical == Direction2.Down ?
-							-Mathf.Abs(target.VelocityX) :
-							Mathf.Abs(target.VelocityX);
+							-Util.Abs(target.VelocityX) :
+							Util.Abs(target.VelocityX);
 						target.VelocityY = 0;
 					} else {
 						// Walk Away
-						target.Y -= Mathf.Abs(target.VelocityX);
+						target.Y -= Util.Abs(target.VelocityX);
 						target.VelocityY = 0;
 					}
 				}

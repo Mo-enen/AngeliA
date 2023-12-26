@@ -1,12 +1,11 @@
 {
-    "name": "Runtime.AngeliaGame",
+    "name": "AngeliaGame",
     "rootNamespace": "AngeliaGame",
     "references": [
-        "Runtime.AngeliaFramework"
+        "AngeliaFramework"
     ],
     "includePlatforms": [
         "Editor",
-        "WindowsStandalone32",
         "WindowsStandalone64"
     ],
     "excludePlatforms": [],

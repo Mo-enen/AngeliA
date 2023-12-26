@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -92,7 +91,7 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		[OnGameInitialize(64)]
+		[OnGameInitializeLater(64)]
 		public static void Initialize () {
 			int layerCount = PhysicsLayer.COUNT;
 			CellWidth = (Const.VIEW_RATIO * Const.MAX_HEIGHT / 1000) / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
@@ -258,10 +257,10 @@ namespace AngeliaFramework {
 
 		private static bool OverlapLogic (int layer, IRect globalRect, Entity ignore, OperationMode mode, int tag, out PhysicsCell info) {
 			var layerItem = Layers[layer];
-			int l = Mathf.Max(GlobalX_to_CellX(globalRect.xMin) - 1, 0);
-			int d = Mathf.Max(GlobalY_to_CellY(globalRect.yMin) - 1, 0);
-			int r = Mathf.Min(GlobalX_to_CellX(globalRect.xMax - 1) + 1, CellWidth - 1);
-			int u = Mathf.Min(GlobalY_to_CellY(globalRect.yMax - 1) + 1, CellHeight - 1);
+			int l = Util.Max(GlobalX_to_CellX(globalRect.xMin) - 1, 0);
+			int d = Util.Max(GlobalY_to_CellY(globalRect.yMin) - 1, 0);
+			int r = Util.Min(GlobalX_to_CellX(globalRect.xMax - 1) + 1, CellWidth - 1);
+			int u = Util.Min(GlobalY_to_CellY(globalRect.yMax - 1) + 1, CellHeight - 1);
 			bool useCollider = mode == OperationMode.ColliderOnly || mode == OperationMode.ColliderAndTrigger;
 			bool useTrigger = mode == OperationMode.TriggerOnly || mode == OperationMode.ColliderAndTrigger;
 			for (int j = d; j <= u; j++) {
@@ -292,10 +291,10 @@ namespace AngeliaFramework {
 			int maxLength = hits.Length;
 			if (count >= maxLength) { return maxLength; }
 			var layerItem = Layers[layer];
-			int l = Mathf.Max(GlobalX_to_CellX(globalRect.xMin) - 1, 0);
-			int d = Mathf.Max(GlobalY_to_CellY(globalRect.yMin) - 1, 0);
-			int r = Mathf.Min(GlobalX_to_CellX(globalRect.xMax - 1) + 1, CellWidth - 1);
-			int u = Mathf.Min(GlobalY_to_CellY(globalRect.yMax - 1) + 1, CellHeight - 1);
+			int l = Util.Max(GlobalX_to_CellX(globalRect.xMin) - 1, 0);
+			int d = Util.Max(GlobalY_to_CellY(globalRect.yMin) - 1, 0);
+			int r = Util.Min(GlobalX_to_CellX(globalRect.xMax - 1) + 1, CellWidth - 1);
+			int u = Util.Min(GlobalY_to_CellY(globalRect.yMax - 1) + 1, CellHeight - 1);
 			bool useCollider = mode == OperationMode.ColliderOnly || mode == OperationMode.ColliderAndTrigger;
 			bool useTrigger = mode == OperationMode.TriggerOnly || mode == OperationMode.ColliderAndTrigger;
 			int entityStamp = GlobalOperationStamp++;
@@ -326,9 +325,9 @@ namespace AngeliaFramework {
 			if (globalRect.width > Const.CEL || globalRect.height > Const.CEL) {
 				// Too Large
 				for (int y = globalRect.yMin; y < globalRect.yMax; y += Const.CEL) {
-					int _height = Mathf.Min(Const.CEL, globalRect.yMax - y);
+					int _height = Util.Min(Const.CEL, globalRect.yMax - y);
 					for (int x = globalRect.xMin; x < globalRect.xMax; x += Const.CEL) {
-						FillLogic(layer, sourceId, new(x, y, Mathf.Min(Const.CEL, globalRect.xMax - x), _height), entity, speedX, speedY, isTrigger, tag);
+						FillLogic(layer, sourceId, new(x, y, Util.Min(Const.CEL, globalRect.xMax - x), _height), entity, speedX, speedY, isTrigger, tag);
 					}
 				}
 				return;
@@ -365,13 +364,14 @@ namespace AngeliaFramework {
 			var result = from;
 			stopForOnewayX = false;
 			stopForOnewayY = false;
-			if (Mathf.Abs(speedX) > RIGIDBODY_FAST_SPEED || Mathf.Abs(speedY) > RIGIDBODY_FAST_SPEED) {
+			
+			if (Util.Abs(speedX) > RIGIDBODY_FAST_SPEED || Util.Abs(speedY) > RIGIDBODY_FAST_SPEED) {
 				// Too Fast
 				int _speedX = speedX;
 				int _speedY = speedY;
 				while (_speedX != 0 || _speedY != 0) {
-					int _sX = Mathf.Clamp(_speedX, -RIGIDBODY_FAST_SPEED, RIGIDBODY_FAST_SPEED);
-					int _sY = Mathf.Clamp(_speedY, -RIGIDBODY_FAST_SPEED, RIGIDBODY_FAST_SPEED);
+					int _sX = Util.Clamp(_speedX, -RIGIDBODY_FAST_SPEED, RIGIDBODY_FAST_SPEED);
+					int _sY = Util.Clamp(_speedY, -RIGIDBODY_FAST_SPEED, RIGIDBODY_FAST_SPEED);
 					_speedX -= _sX;
 					_speedY -= _sY;
 					result = MoveLogic3(

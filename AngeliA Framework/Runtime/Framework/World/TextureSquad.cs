@@ -278,7 +278,7 @@ namespace AngeliaFramework {
 		private static void FillIntoTexture (World world, Texture2D texture, bool ignoreItem = true) {
 			if (texture == null) return;
 			if (texture.width != Const.MAP || texture.height != Const.MAP) {
-				Debug.LogWarning($"Texture size must be {Const.MAP} x {Const.MAP}.");
+				Game.LogWarning($"Texture size must be {Const.MAP} x {Const.MAP}.");
 				return;
 			}
 			const int LEN = Const.MAP * Const.MAP;

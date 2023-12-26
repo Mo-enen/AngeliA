@@ -282,8 +282,8 @@ namespace AngeliaFramework {
 					int localFrame = Game.GlobalFrame - TeleportEndFrame + TeleportDuration;
 					for (int i = cellIndexStart; i < count; i++) {
 						float lerp01 = localFrame.PingPong(TeleportDuration / 2) / (TeleportDuration / 2f);
-						int offsetX = (int)((1f - lerp01) * Const.CEL * Util.Sin(lerp01 * 720f));
-						int offsetY = (int)((1f - lerp01) * Const.CEL * Util.Cos(lerp01 * 720f));
+						int offsetX = (int)((1f - lerp01) * Const.CEL * Util.Sin(lerp01 * 720f * Util.Deg2Rad));
+						int offsetY = (int)((1f - lerp01) * Const.CEL * Util.Cos(lerp01 * 720f * Util.Deg2Rad));
 						var cell = cells[i];
 						cell.X += offsetX;
 						cell.Y += offsetY;

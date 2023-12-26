@@ -249,8 +249,9 @@ namespace AngeliaFramework {
 
 
 		// Init
+		[OnGameInitialize(int.MinValue)]
 		internal static void Initialize () {
-			var sheet = Game.LoadSpriteSheet();
+			var sheet = JsonUtil.LoadOrCreateJson<SpriteSheet>(AngePath.SheetRoot);
 			if (sheet == null) return;
 			InitializePool(sheet);
 			InitializeLayers();
@@ -296,14 +297,14 @@ namespace AngeliaFramework {
 					var layer = Layers[i];
 					layer.ZSort();
 					int prevCellCount = layer.PrevCellCount;
-					Game.InvokeLayerUpdate(i, false, layer.Cells, layer.Count, ref prevCellCount);
+					Game.OnLayerUpdate(i, false, layer.Cells, layer.Count, ref prevCellCount);
 					layer.PrevCellCount = prevCellCount;
 				}
 				for (int i = 0; i < TextLayers.Length; i++) {
 					var layer = TextLayers[i];
 					layer.ZSort();
 					int prevCellCount = layer.PrevCellCount;
-					Game.InvokeLayerUpdate(i, true, layer.Cells, layer.Count, ref prevCellCount);
+					Game.OnLayerUpdate(i, true, layer.Cells, layer.Count, ref prevCellCount);
 					layer.PrevCellCount = prevCellCount;
 				}
 			} catch (System.Exception ex) { Game.LogException(ex); }
@@ -378,7 +379,7 @@ namespace AngeliaFramework {
 				int order = i == RenderLayer.TOP_UI ? 2048 : i;
 				bool uiLayer = i == RenderLayer.UI || i == RenderLayer.TOP_UI;
 				Layers[i] = CreateLayer(name, uiLayer, order, capacity, textLayer: false);
-				Game.InvokeOnRenderingLayerCreated(i, name, order, capacity);
+				Game.OnRenderingLayerCreated(i, name, order, capacity);
 			}
 
 			// Text Layer
@@ -386,7 +387,7 @@ namespace AngeliaFramework {
 			const int TEXT_CAPACITY = 2048;
 			TextLayers = new TextLayer[textLayerCount];
 			for (int i = 0; i < textLayerCount; i++) {
-				string name = Game.GetTextLayerNameAt(i);
+				string name = Game.GetTextLayerName(i);
 				int sortingOrder = Layers.Length + i;
 				var tLayer = TextLayers[i] = CreateLayer(
 					name,
@@ -395,8 +396,8 @@ namespace AngeliaFramework {
 					TEXT_CAPACITY,
 					textLayer: true
 				) as TextLayer;
-				tLayer.TextSize = Game.GetFontSizeAt(i).Clamp(42, int.MaxValue);
-				Game.InvokeOnTextLayerCreated(i, name, sortingOrder, TEXT_CAPACITY);
+				tLayer.TextSize = Game.GetFontSize(i).Clamp(42, int.MaxValue);
+				Game.OnTextLayerCreated(i, name, sortingOrder, TEXT_CAPACITY);
 			}
 
 			// Func

@@ -366,7 +366,7 @@ namespace AngeliaForUnity.Editor {
 			// Pack
 			var textures = new Texture2D[items.Count];
 			for (int i = 0; i < textures.Length; i++) textures[i] = items[i].Texture;
-			var uvs = AngeliaRectPacking.AngeliaPack(out sheetTexture, textures, 16384);
+			var uvs = AngeliaRectPacking.Pack(out sheetTexture, textures, 16384);
 			for (int i = 0; i < items.Count; i++) {
 				items[i].UvResult = uvs[i];
 			}

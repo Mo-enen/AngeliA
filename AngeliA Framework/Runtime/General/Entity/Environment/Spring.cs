@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -39,9 +38,6 @@ namespace AngeliaFramework {
 
 		// Const
 		private static readonly int[] BOUNCE_ANI = new int[] { 0, 1, 2, 3, 3, 3, 3, 2, 2, 1, 1, 0, };
-		private static readonly Color RED = new(1f, 0.25f, 0.1f);
-		private const int RED_LINE_MIN = 196;
-		private const int RED_LINE_MAX = 512;
 
 		// Api
 		protected override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
@@ -95,7 +91,6 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			var tint = (Byte4)Color.Lerp(Const.WHITE, RED, Mathf.InverseLerp(RED_LINE_MIN, RED_LINE_MAX, Power));
 			if (Game.GlobalFrame < LastBounceFrame + BOUNCE_ANI.Length) {
 				CurrentArtworkFrame++;
 			} else {
@@ -107,7 +102,7 @@ namespace AngeliaFramework {
 					sprite.GlobalID,
 					X + Const.HALF, Y,
 					500, 0, 0,
-					Const.CEL, Const.CEL, tint
+					Const.CEL, Const.CEL, Const.WHITE
 				);
 			}
 		}

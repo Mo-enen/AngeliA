@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -55,8 +54,8 @@ namespace AngeliaFramework {
 			if (useParallax && LocalFrame > WaitDuration) {
 				const int PARA = Const.SQUAD_BEHIND_PARALLAX;
 				float scale = ToBehind ? 1000f / PARA : PARA / 1000f;
-				float z01 = Mathf.InverseLerp(WaitDuration, Duration, LocalFrame);
-				float lerp = Mathf.LerpUnclamped(scale, 1f, z01);
+				float z01 = Util.InverseLerp(WaitDuration, Duration, LocalFrame);
+				float lerp = Util.LerpUnclamped(scale, 1f, z01);
 				var center = CellRenderer.CameraRect.center.CeilToInt();
 				// Behind
 				if (CellRenderer.GetCells(RenderLayer.BEHIND, out var cells, out int count)) {
@@ -157,15 +156,15 @@ namespace AngeliaFramework {
 			for (int i = 0; i < count; i++) {
 				var cell = cells[i];
 				if (cell.Rotation == 0) {
-					cell.X = Mathf.LerpUnclamped(center.x, cell.X - cell.PivotX * cell.Width, lerp).FloorToInt();
-					cell.Y = Mathf.LerpUnclamped(center.y, cell.Y - cell.PivotY * cell.Height, lerp).FloorToInt();
+					cell.X = Util.LerpUnclamped(center.x, cell.X - cell.PivotX * cell.Width, lerp).FloorToInt();
+					cell.Y = Util.LerpUnclamped(center.y, cell.Y - cell.PivotY * cell.Height, lerp).FloorToInt();
 					cell.Width = cell.Width > 0 ? (cell.Width * lerp).CeilToInt() : (cell.Width * lerp).FloorToInt();
 					cell.Height = cell.Height > 0 ? (cell.Height * lerp).CeilToInt() : (cell.Height * lerp).FloorToInt();
 					cell.PivotX = 0;
 					cell.PivotY = 0;
 				} else {
-					cell.X = Mathf.LerpUnclamped(center.x, cell.X, lerp).FloorToInt();
-					cell.Y = Mathf.LerpUnclamped(center.y, cell.Y, lerp).FloorToInt();
+					cell.X = Util.LerpUnclamped(center.x, cell.X, lerp).FloorToInt();
+					cell.Y = Util.LerpUnclamped(center.y, cell.Y, lerp).FloorToInt();
 					cell.Width = (cell.Width * lerp).CeilToInt();
 					cell.Height = (cell.Height * lerp).CeilToInt();
 				}

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -8,7 +7,7 @@ namespace AngeliaFramework {
 		private static readonly int TYPE_ID = typeof(CheckPointTouchParticle).AngeHash();
 		public override int Duration => 32;
 		public override bool Loop => false;
-		[OnGameInitialize(64)]
+		[OnGameInitializeLater(64)]
 		public static void Init () {
 			CheckPoint.OnCheckPointTouched += SpawnParticleForCheckPoint;
 			static void SpawnParticleForCheckPoint (CheckPoint checkPoint, Character target) {

@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using AngeliaFramework;
 
 
 namespace AngeliaFramework {
@@ -64,7 +62,7 @@ namespace AngeliaFramework {
 					int rgbB = Util.RemapUnclamped(0, 3, 255, 128, CIRCLE_COUNT - i - 1);
 					byte rgb = i == darkIndex || i == (darkIndex + 1) % CIRCLE_COUNT ?
 						(byte)42 :
-						(byte)Mathf.Lerp(rgbA, rgbB, (float)circleFrame / CIRCLE_DURATION);
+						(byte)Util.Lerp(rgbA, rgbB, (float)circleFrame / CIRCLE_DURATION);
 					var tint = new Byte4(
 						rgb, rgb, rgb,
 						(byte)(i > 0 ? 255 : Util.RemapUnclamped(0, CIRCLE_DURATION, 0, 400, circleFrame).Clamp(0, 255))
@@ -76,8 +74,8 @@ namespace AngeliaFramework {
 						size, size,
 						tint, z
 					);
-					RenderingMinZ = Mathf.Min(RenderingMinZ, z);
-					RenderingMaxZ = Mathf.Max(RenderingMaxZ, z);
+					RenderingMinZ = Util.Min(RenderingMinZ, z);
+					RenderingMaxZ = Util.Max(RenderingMaxZ, z);
 				}
 			}
 
@@ -110,8 +108,8 @@ namespace AngeliaFramework {
 						size, size,
 						tint, z
 					);
-					RenderingMinZ = Mathf.Min(RenderingMinZ, z);
-					RenderingMaxZ = Mathf.Max(RenderingMaxZ, z);
+					RenderingMinZ = Util.Min(RenderingMinZ, z);
+					RenderingMaxZ = Util.Max(RenderingMaxZ, z);
 				}
 			}
 		}

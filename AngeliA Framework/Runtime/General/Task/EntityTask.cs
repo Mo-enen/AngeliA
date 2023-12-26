@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+
+
 namespace AngeliaFramework {
 	public class SpawnEntityTask : TaskItem {
 		public static readonly int TYPE_ID = typeof(SpawnEntityTask).AngeHash();

@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using AngeliaFramework;
 
 
 namespace AngeliaFramework {
@@ -12,7 +10,7 @@ namespace AngeliaFramework {
 
 		public override void OnActivated () {
 			base.OnActivated();
-			PhotoIndex = Random.Range(0, int.MaxValue);
+			PhotoIndex = AngeUtil.RandomInt(0, int.MaxValue);
 		}
 
 		public override void FillPhysics () {

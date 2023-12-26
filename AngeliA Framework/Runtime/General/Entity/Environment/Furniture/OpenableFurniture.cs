@@ -1,6 +1,3 @@
-using UnityEngine;
-
-
 namespace AngeliaFramework {
 	public abstract class OpenableUiFurniture : OpenableFurniture {
 

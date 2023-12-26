@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -104,7 +102,7 @@ namespace AngeliaFramework {
 						);
 					}
 				} else {
-					int ANGLE_DELTA = (int)Mathf.LerpUnclamped(
+					int ANGLE_DELTA = (int)Util.LerpUnclamped(
 						-42, -3, Game.GlobalFrame.PingPong(frequencyAlt) / (float)frequencyAlt
 					);
 					if (i == 0) {
@@ -125,7 +123,7 @@ namespace AngeliaFramework {
 						MAX_ANGLE = MAX_ANGLE * angleAmountRoot / 1000;
 						ANGLE_DELTA = ANGLE_DELTA * angleAmountRoot / 1000;
 						int angle = (Util.Remap(0, count - 1, MIN_ANGLE, MAX_ANGLE, i) + angleOffset) * facingSign;
-						int targetRot = (int)Mathf.LerpUnclamped(
+						int targetRot = (int)Util.LerpUnclamped(
 							-angle + ANGLE_DELTA * facingSign,
 							angle + ANGLE_DELTA * facingSign,
 							Ease.InOutQuart(
@@ -142,7 +140,7 @@ namespace AngeliaFramework {
 						int MAX_ANGLE = 62 * angleAmountSubsequent / 1000;
 						ANGLE_DELTA = ANGLE_DELTA * angleAmountSubsequent / 1000;
 						int angle = Util.Remap(0, count - 1, MIN_ANGLE, MAX_ANGLE, i) * facingSign;
-						int targetRot = (int)Mathf.LerpUnclamped(
+						int targetRot = (int)Util.LerpUnclamped(
 							-angle + ANGLE_DELTA * facingSign,
 							angle + ANGLE_DELTA * facingSign,
 							Ease.InOutQuart(

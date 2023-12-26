@@ -1,8 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using AngeliaFramework;
-using UnityEngine;
-using Rigidbody = AngeliaFramework.Rigidbody;
 
 namespace AngeliaFramework {
 	[EntityAttribute.Capacity(16)]
@@ -12,7 +9,7 @@ namespace AngeliaFramework {
 		public override int Duration => 20;
 		public override bool Loop => false;
 		public override int FramePerSprite => 3;
-		[OnGameInitialize(64)]
+		[OnGameInitializeLater(64)]
 		public static void Init () {
 			Rigidbody.OnFallIntoWater += SpawnParticleForRigidbody;
 			Rigidbody.OnJumpOutOfWater += SpawnParticleForRigidbody;

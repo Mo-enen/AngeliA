@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -38,7 +37,7 @@ namespace AngeliaFramework {
 			if (CellRenderer.TryGetSprite(TargetCheckPointID, out var sprite)) {
 				const int SIZE = 196;
 				var rect = new IRect(Rect.CenterX() - SIZE / 2, Rect.CenterY() - SIZE / 2, SIZE, SIZE);
-				var tint = Color.LerpUnclamped(Const.WHITE_0, Const.WHITE, (Game.GlobalFrame - SpawnFrame).PingPong(60) / 60f);
+				var tint = Byte4.LerpUnclamped(Const.WHITE_0, Const.WHITE, (Game.GlobalFrame - SpawnFrame).PingPong(60) / 60f);
 				CellRenderer.Draw(TargetCheckPointID, rect.Fit(sprite), tint, RenderingMaxZ + 1);
 			}
 		}

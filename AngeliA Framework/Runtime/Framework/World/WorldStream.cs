@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -112,7 +111,7 @@ namespace AngeliaFramework {
 		public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int value) {
 			if (Readonly) {
 #if UNITY_EDITOR
-				Debug.LogError("Can not write block data when the world stream is readonly.");
+				Game.LogError("Can not write block data when the world stream is readonly.");
 #endif
 				return;
 			}
@@ -141,7 +140,7 @@ namespace AngeliaFramework {
 		public void SetBlocksAt (int unitX, int unitY, int z, int entity, int level, int background) {
 			if (Readonly) {
 #if UNITY_EDITOR
-				Debug.LogError("Can not write block data when the world stream is readonly.");
+				Game.LogError("Can not write block data when the world stream is readonly.");
 #endif
 				return;
 			}

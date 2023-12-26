@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -36,7 +35,7 @@ namespace AngeliaFramework {
 			bool hasV = ReadSystemNumber(unitX, unitY, z, Direction4.Down, out int numberV);
 			if (!hasH && !hasV) return false;
 			if (hasH == hasV) {
-				number = Mathf.Max(numberH, numberV);
+				number = Util.Max(numberH, numberV);
 				return true;
 			} else {
 				number = hasH ? numberH : numberV;

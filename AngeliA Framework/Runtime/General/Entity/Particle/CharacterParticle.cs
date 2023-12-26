@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using AngeliaFramework;
 
 
 namespace AngeliaFramework {
@@ -15,7 +13,7 @@ namespace AngeliaFramework {
 		public override bool Loop => true;
 		public Character Character => UserData as Character;
 
-		[OnGameInitialize(64)]
+		[OnGameInitializeLater(64)]
 		public static void OnGameInitialize () {
 			Character.OnPassOut += OnPassOut;
 			static void OnPassOut (Character character) {
@@ -50,12 +48,12 @@ namespace AngeliaFramework {
 
 			int x = Util.Remap(
 				-1f, 1f, centerX - rangeX, centerX + rangeX,
-				Mathf.Cos(Util.Remap(0, Duration, 0f, 360f, posFrame) * Mathf.Deg2Rad)
+				Util.Cos(Util.Remap(0, Duration, 0f, 360f, posFrame) * Util.Deg2Rad)
 			).RoundToInt();
 
 			int y = Util.Remap(
 				-1f, 1f, centerY - rangeY, centerY + rangeY,
-				Mathf.Sin(Util.Remap(0, Duration, 0f, 360f, posFrame) * Mathf.Deg2Rad)
+				Util.Sin(Util.Remap(0, Duration, 0f, 360f, posFrame) * Util.Deg2Rad)
 			).RoundToInt();
 
 			int size = Util.Remap(
@@ -83,7 +81,7 @@ namespace AngeliaFramework {
 		private static int GlobalShift = 0;
 
 
-		[OnGameInitialize(64)]
+		[OnGameInitializeLater(64)]
 		public static void OnGameInitialize () {
 			Character.OnSleeping += OnSleeping;
 			static void OnSleeping (Character character) {
@@ -121,7 +119,7 @@ namespace AngeliaFramework {
 		public override int Duration => 20;
 		public override bool Loop => false;
 		public override int FramePerSprite => 4;
-		[OnGameInitialize(64)]
+		[OnGameInitializeLater(64)]
 		public static void OnGameInitialize () {
 			Character.OnSlideStepped += OnSlideStepped;
 			static void OnSlideStepped (Character character) {
@@ -144,7 +142,7 @@ namespace AngeliaFramework {
 		public override int FramePerSprite => 5;
 		public override int RenderingZ => -1024;
 
-		[OnGameInitialize(64)]
+		[OnGameInitializeLater(64)]
 		public static void OnGameInitialize () {
 			Character.OnFootStepped += OnFootStepped;
 			Character.OnDashStepped += OnFootStepped;
@@ -175,7 +173,7 @@ namespace AngeliaFramework {
 		public override int Scale => _Scale;
 		private int _Scale = 1000;
 
-		[OnGameInitialize(64)]
+		[OnGameInitializeLater(64)]
 		public static void OnGameInitialize () {
 			Character.OnJump += OnJumpFly;
 			Character.OnFly += OnJumpFly;

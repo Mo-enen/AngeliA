@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -168,7 +167,7 @@ namespace AngeliaFramework {
 			if (characterDriver != null) {
 				if (
 					characterDriver.CharacterState != CharacterState.GamePlay ||
-					characterDriver.VelocityY > Mathf.Max(DeltaPositionY, 0)
+					characterDriver.VelocityY > Util.Max(DeltaPositionY, 0)
 				) {
 					characterDriver = null;
 				} else if (

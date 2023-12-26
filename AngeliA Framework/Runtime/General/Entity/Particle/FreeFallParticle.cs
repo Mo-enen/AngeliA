@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -33,7 +32,7 @@ namespace AngeliaFramework {
 		public override void PhysicsUpdate () {
 			base.PhysicsUpdate();
 			CurrentSpeedX = CurrentSpeedX.MoveTowards(0, AirDragX);
-			CurrentSpeedY = Mathf.Max(CurrentSpeedY - Gravity, -96);
+			CurrentSpeedY = Util.Max(CurrentSpeedY - Gravity, -96);
 			X += CurrentSpeedX;
 			Y += CurrentSpeedY;
 			Rotation += RotateSpeed;

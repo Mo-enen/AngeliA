@@ -1,6 +1,5 @@
 using System;
 
-
 namespace AngeliaFramework {
 	public static class AngePath {
 
@@ -16,6 +15,9 @@ namespace AngeliaFramework {
 		public const string LANGUAGE_FILE_EXT = "txt";
 
 		// System
+		public static string ApplicationDataPath => _ApplicationDataPath ??= Environment.CurrentDirectory;
+		private static string _ApplicationDataPath = null;
+
 		public static string PersistentDataPath => _PersistentDataPath ??= Util.CombinePaths(
 			Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
 			AngeliaGameDeveloperAttribute.GetDeveloper(),
@@ -32,7 +34,7 @@ namespace AngeliaFramework {
 		private static string _TempDataPath = null;
 
 		// Universe
-		public static string UniverseRoot => _UniverseRoot ??= Util.CombinePaths(Environment.CurrentDirectory, UNIVERSE_NAME);
+		public static string UniverseRoot => _UniverseRoot ??= Util.CombinePaths(ApplicationDataPath, UNIVERSE_NAME);
 		private static string _UniverseRoot = null;
 
 		public static string SheetRoot => _SheetRoot ??= Util.CombinePaths(UniverseRoot, "Sheet");
@@ -94,29 +96,6 @@ namespace AngeliaFramework {
 		// Temp
 		public static string ProcedureMapTempRoot => _ProcedureMapTempRoot ??= Util.CombinePaths(TempDataPath, "Generating Map");
 		private static string _ProcedureMapTempRoot = null;
-
-
-		// Windows
-		//[DllImport("shell32.dll")]
-		//static extern int SHGetKnownFolderPath ([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr pszPath);
-
-		//public static string GetFolderLocalLow () {
-		//	var pszPath = IntPtr.Zero;
-		//	try {
-		//		Guid localLowId = new("A520A1A4-1780-4FF6-BD18-167343C5AF16");
-		//		var hr = SHGetKnownFolderPath(localLowId, 0, IntPtr.Zero, out pszPath);
-		//		if (hr < 0) {
-		//			throw Marshal.GetExceptionForHR(hr);
-		//		}
-		//		return Marshal.PtrToStringAuto(pszPath);
-		//	} catch {
-		//		return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "Low";
-		//	} finally {
-		//		if (pszPath != IntPtr.Zero) {
-		//			Marshal.FreeCoTaskMem(pszPath);
-		//		}
-		//	}
-		//}
 
 
 	}

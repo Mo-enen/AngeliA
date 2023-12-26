@@ -140,11 +140,19 @@ namespace AngeliaFramework {
 		public static int Max (int a, int b) => (a > b) ? a : b;
 		public static float Min (float a, float b) => (a < b) ? a : b;
 		public static float Max (float a, float b) => (a > b) ? a : b;
-		public static float Sin (float f) => (float)System.Math.Sin(f * Rad2Deg);
-		public static float Cos (float f) => (float)System.Math.Cos(f * Rad2Deg);
+		public static float Sin (float f) => (float)System.Math.Sin(f);
+		public static float Cos (float f) => (float)System.Math.Cos(f);
 		public static int Abs (int value) => value > 0 ? value : -value;
 		public static float Abs (float value) => value > 0f ? value : -value;
 		public static bool Approximately (float a, float b) => Abs(b - a) < Max(1E-06f * Max(Abs(a), Abs(b)), Epsilon * 8f);
+		public static int Clamp (int a, int min, int max) => a < min ? min : a > max ? max : a;
+		public static float Clamp (float a, float min, float max) => a < min ? min : a > max ? max : a;
+		public static float Clamp01 (float value) => value < 0f ? 0f : value > 1f ? 1f : value;
+		public static float Pow (float f, float p) => (float)System.Math.Pow(f, p);
+		public static float Sqrt (float f) => (float)System.Math.Sqrt(f);
+		public static int RoundToInt (float value) => (int)System.Math.Round(value);
+		public static int CeilToInt (float value) => (int)System.Math.Ceiling(value);
+		public static int FloorToInt (float value) => (int)System.Math.Floor(value);
 
 
 	}

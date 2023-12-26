@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -123,10 +122,10 @@ namespace AngeliaFramework {
 			// Fix Grab Rotation
 			if (character.EquippingWeaponHeld != WeaponHandheld.Pole) {
 				character.HandGrabRotationL += (
-					character.HandGrabRotationL.Sign() * -Mathf.Sin(character.HandGrabRotationL.Abs() * Mathf.Deg2Rad) * 30
+					character.HandGrabRotationL.Sign() * -Util.Sin(character.HandGrabRotationL.Abs() * Util.Deg2Rad) * 30
 				).RoundToInt();
 				character.HandGrabRotationR += (
-					character.HandGrabRotationR.Sign() * -Mathf.Sin(character.HandGrabRotationR.Abs() * Mathf.Deg2Rad) * 30
+					character.HandGrabRotationR.Sign() * -Util.Sin(character.HandGrabRotationR.Abs() * Util.Deg2Rad) * 30
 				).RoundToInt();
 			}
 			// Draw
@@ -164,13 +163,13 @@ namespace AngeliaFramework {
 				);
 				// Shake
 				const int SHAKE_DURATION = 60;
-				int shakeFrame = Mathf.Min(
+				int shakeFrame = Util.Min(
 					(Game.GlobalFrame - (character.LastEndMoveFrame >= 0 ? character.LastEndMoveFrame : 0)).Clamp(0, SHAKE_DURATION),
 					(Game.GlobalFrame - (character.LastAttackFrame >= 0 ? character.LastAttackFrame : 0)).Clamp(0, SHAKE_DURATION)
 				);
 				if (!climbing && shakeFrame >= 0 && shakeFrame < SHAKE_DURATION) {
 					headPos.x += (
-						Mathf.Cos(shakeFrame / (float)SHAKE_DURATION * 720f * Mathf.Deg2Rad) *
+						Util.Cos(shakeFrame / (float)SHAKE_DURATION * 720f * Util.Deg2Rad) *
 						(SHAKE_DURATION - shakeFrame) * 0.75f
 					).RoundToInt();
 				}

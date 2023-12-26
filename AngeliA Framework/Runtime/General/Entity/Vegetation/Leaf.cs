@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using AngeliaFramework;
 
 
 namespace AngeliaFramework {
@@ -110,7 +108,7 @@ namespace AngeliaFramework {
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			// Leaf
-			LeafTint.a = (byte)Mathf.Lerp(LeafTint.a, CharacterNearby ? LEAF_HIDE_ALPHA : 255, 0.1f);
+			LeafTint.a = (byte)Util.Lerp(LeafTint.a, CharacterNearby ? LEAF_HIDE_ALPHA : 255, 0.1f);
 			int sLen = LEAF_OFFSET_SEEDS.Length;
 			for (int i = 0; i < LeafCount; i++) {
 				int seedX = LEAF_OFFSET_SEEDS[(i + X / Const.CEL).UMod(sLen)];

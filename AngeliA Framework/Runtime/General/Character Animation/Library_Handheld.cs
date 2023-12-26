@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -42,14 +41,14 @@ namespace AngeliaFramework {
 				) - Target.DeltaPositionX.Clamp(-24, 24) / 4;
 			} else {
 				// Charging
-				float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
+				float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
 				AttackHeadDown(ease01, 100, 800, 1000, 100);
 				ResetShoulderAndUpperArm();
 
-				int upperRotA = (int)Mathf.LerpUnclamped(180, 42, ease01);
-				int upperRotB = (int)Mathf.LerpUnclamped(180, 29, ease01);
-				int lowerRotA = (int)Mathf.LerpUnclamped(0, 28, ease01);
-				int lowerRotB = (int)Mathf.LerpUnclamped(-98, 14, ease01);
+				int upperRotA = (int)Util.LerpUnclamped(180, 42, ease01);
+				int upperRotB = (int)Util.LerpUnclamped(180, 29, ease01);
+				int lowerRotA = (int)Util.LerpUnclamped(0, 28, ease01);
+				int lowerRotB = (int)Util.LerpUnclamped(-98, 14, ease01);
 
 				UpperArmL.LimbRotate(FacingRight ? -upperRotA : upperRotB);
 				UpperArmR.LimbRotate(FacingRight ? -upperRotB : upperRotA);
@@ -80,9 +79,9 @@ namespace AngeliaFramework {
 
 				// Grab Rotation
 				Target.HandGrabRotationL = Target.HandGrabRotationR =
-					FacingSign * (int)Mathf.LerpUnclamped(-37, 100, ease01);
+					FacingSign * (int)Util.LerpUnclamped(-37, 100, ease01);
 				Target.HandGrabScaleL = Target.HandGrabScaleR =
-					FacingSign * (int)Mathf.LerpUnclamped(1100, 1400, ease01);
+					FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
 
 				// Z
 				UpperArmL.Z = UpperArmL.Z.Abs();
@@ -132,7 +131,7 @@ namespace AngeliaFramework {
 				) - Target.DeltaPositionX.Clamp(-24, 24) / 4;
 			} else {
 				// Charging
-				float ease01 = Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
+				float ease01 = Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
 
 				AttackHeadDown(ease01, 0, 200, -1000, 0);
 				ResetShoulderAndUpperArm();
@@ -140,8 +139,8 @@ namespace AngeliaFramework {
 				// Upper Arm
 				int rotUA = FacingRight ? UpperArmL.Rotation : -UpperArmR.Rotation;
 				int rotUB = FacingRight ? UpperArmR.Rotation : -UpperArmL.Rotation;
-				rotUA = (int)Mathf.LerpUnclamped(rotUA, 90, ease01);
-				rotUB = (int)Mathf.LerpUnclamped(rotUB, -90, ease01);
+				rotUA = (int)Util.LerpUnclamped(rotUA, 90, ease01);
+				rotUB = (int)Util.LerpUnclamped(rotUB, -90, ease01);
 				UpperArmL.LimbRotate(FacingRight ? rotUA : -rotUB);
 				UpperArmR.LimbRotate(FacingRight ? rotUB : -rotUA);
 
@@ -201,7 +200,7 @@ namespace AngeliaFramework {
 				) - Target.DeltaPositionX.Clamp(-24, 24) / 4;
 			} else {
 				// Charging
-				float ease01 = Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
+				float ease01 = Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
 
 				AttackHeadDown(ease01, 0, 200, -1000, 0);
 				ResetShoulderAndUpperArm();
@@ -209,15 +208,15 @@ namespace AngeliaFramework {
 				// Upper Arm
 				int rotUA = FacingRight ? UpperArmL.Rotation : -UpperArmR.Rotation;
 				int rotUB = FacingRight ? UpperArmR.Rotation : -UpperArmL.Rotation;
-				rotUA = (int)Mathf.LerpUnclamped(rotUA, -90, ease01);
-				rotUB = (int)Mathf.LerpUnclamped(rotUB, -90, ease01);
+				rotUA = (int)Util.LerpUnclamped(rotUA, -90, ease01);
+				rotUB = (int)Util.LerpUnclamped(rotUB, -90, ease01);
 				UpperArmL.LimbRotate(FacingRight ? rotUA : -rotUB);
 				UpperArmR.LimbRotate(FacingRight ? rotUB : -rotUA);
 				UpperArmL.Height += FacingRight ? 2 * A2G : 2 * -A2G;
 				UpperArmR.Height += FacingRight ? 2 * -A2G : 2 * A2G;
 
 				int rotLA = -90 - rotUA;
-				int rotLB = (int)Mathf.LerpUnclamped(0, 0, ease01);
+				int rotLB = (int)Util.LerpUnclamped(0, 0, ease01);
 				LowerArmL.LimbRotate(FacingRight ? rotLA : -rotLB);
 				LowerArmR.LimbRotate(FacingRight ? rotLB : -rotLA);
 				LowerArmL.Height += FacingRight ? A2G : -A2G;
@@ -291,20 +290,20 @@ namespace AngeliaFramework {
 
 			} else {
 				// Charging
-				float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
+				float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
 
 				AttackHeadDown(ease01, 100, 800, 1000, 100);
 				ResetShoulderAndUpperArm();
 
 				// Upper Arm
-				int uRotA = (int)Mathf.LerpUnclamped(-130, 63, ease01);
-				int uRotB = (int)Mathf.LerpUnclamped(-79, 43, ease01);
+				int uRotA = (int)Util.LerpUnclamped(-130, 63, ease01);
+				int uRotB = (int)Util.LerpUnclamped(-79, 43, ease01);
 				UpperArmL.LimbRotate(FacingRight ? uRotA : -uRotB);
 				UpperArmR.LimbRotate(FacingRight ? uRotB : -uRotA);
 
 				// Lower Arm
-				int lRotA = (int)Mathf.LerpUnclamped(0, -75, ease01);
-				int lRotB = (int)Mathf.LerpUnclamped(-98, 0, ease01);
+				int lRotA = (int)Util.LerpUnclamped(0, -75, ease01);
+				int lRotB = (int)Util.LerpUnclamped(-98, 0, ease01);
 				LowerArmL.LimbRotate(FacingRight ? lRotA : -lRotB);
 				LowerArmR.LimbRotate(FacingRight ? lRotB : -lRotA);
 
@@ -317,9 +316,9 @@ namespace AngeliaFramework {
 
 				// Grab
 				Target.HandGrabRotationL = Target.HandGrabRotationR =
-					FacingSign * (int)Mathf.LerpUnclamped(-58, 107, ease01);
+					FacingSign * (int)Util.LerpUnclamped(-58, 107, ease01);
 				Target.HandGrabScaleL = Target.HandGrabScaleR =
-					FacingSign * (int)Mathf.LerpUnclamped(1100, 1400, ease01);
+					FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
 
 				// Z
 				UpperArmL.Z = UpperArmL.Z.Abs();
@@ -368,22 +367,22 @@ namespace AngeliaFramework {
 
 			} else {
 				// Charge
-				float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
+				float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
 				AttackHeadDown(ease01, 100, 800, 1000, 100);
 				ResetShoulderAndUpperArm();
 
 				// Upper Arm
 				float armGrowAmount = 1f - ease01;
-				int uRotA = (int)Mathf.LerpUnclamped(-90, 13, ease01);
-				int uRotB = (int)Mathf.LerpUnclamped(-69, 33, ease01);
+				int uRotA = (int)Util.LerpUnclamped(-90, 13, ease01);
+				int uRotB = (int)Util.LerpUnclamped(-69, 33, ease01);
 				UpperArmL.LimbRotate(FacingRight ? uRotA : -uRotB);
 				UpperArmR.LimbRotate(FacingRight ? uRotB : -uRotA);
 				UpperArmL.Height = (int)(UpperArmL.Height * armGrowAmount * (FacingRight ? 1f : 0.2f));
 				UpperArmR.Height = (int)(UpperArmR.Height * armGrowAmount * (FacingRight ? 0.2f : 1f));
 
 				// Lower Arm
-				int lRotA = (int)Mathf.LerpUnclamped(0, -25, ease01);
-				int lRotB = (int)Mathf.LerpUnclamped(-32, 0, ease01);
+				int lRotA = (int)Util.LerpUnclamped(0, -25, ease01);
+				int lRotB = (int)Util.LerpUnclamped(-32, 0, ease01);
 				LowerArmL.LimbRotate(FacingRight ? lRotA : -lRotB);
 				LowerArmR.LimbRotate(FacingRight ? lRotB : -lRotA);
 				LowerArmL.Height = (int)(LowerArmL.Height * armGrowAmount * (FacingRight ? 1f : 0.2f));
@@ -395,9 +394,9 @@ namespace AngeliaFramework {
 
 				// Grab
 				Target.HandGrabRotationL = Target.HandGrabRotationR =
-					FacingSign * (int)Mathf.LerpUnclamped(-5, 60, ease01);
+					FacingSign * (int)Util.LerpUnclamped(-5, 60, ease01);
 				Target.HandGrabScaleL = Target.HandGrabScaleR =
-					FacingSign * (int)Mathf.LerpUnclamped(1000, 1100, ease01);
+					FacingSign * (int)Util.LerpUnclamped(1000, 1100, ease01);
 
 				// Z
 				UpperArmL.Z = LowerArmL.Z = FrontSign * UpperArmL.Z.Abs();
@@ -415,12 +414,12 @@ namespace AngeliaFramework {
 		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			if (Target.IsChargingAttack) {
-				float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
+				float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
 				AttackHeadDown(ease01, 100, 800, 1000, 100);
 				ResetShoulderAndUpperArm();
 
-				UpperArmL.LimbRotate(FacingSign * (int)Mathf.LerpUnclamped(-175, 0, ease01));
-				UpperArmR.LimbRotate(FacingSign * (int)Mathf.LerpUnclamped(-185, -9, ease01));
+				UpperArmL.LimbRotate(FacingSign * (int)Util.LerpUnclamped(-175, 0, ease01));
+				UpperArmR.LimbRotate(FacingSign * (int)Util.LerpUnclamped(-185, -9, ease01));
 				UpperArmL.Height += A2G;
 				UpperArmR.Height += A2G;
 
@@ -449,10 +448,10 @@ namespace AngeliaFramework {
 				HandR.Z = -FacingSign * POSE_Z_HAND;
 
 				// Grab
-				Target.HandGrabRotationL = FacingSign * (int)Mathf.LerpUnclamped(-70, 110, ease01);
-				Target.HandGrabScaleL = FacingSign * (int)Mathf.LerpUnclamped(1000, 1300, ease01);
-				Target.HandGrabRotationR = FacingSign * (int)Mathf.LerpUnclamped(-80, 100, ease01);
-				Target.HandGrabScaleR = FacingSign * (int)Mathf.LerpUnclamped(1100, 1400, ease01);
+				Target.HandGrabRotationL = FacingSign * (int)Util.LerpUnclamped(-70, 110, ease01);
+				Target.HandGrabScaleL = FacingSign * (int)Util.LerpUnclamped(1000, 1300, ease01);
+				Target.HandGrabRotationR = FacingSign * (int)Util.LerpUnclamped(-80, 100, ease01);
+				Target.HandGrabScaleR = FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
 
 			}
 		}
@@ -464,13 +463,13 @@ namespace AngeliaFramework {
 			if (Target.IsChargingAttack) {
 				// Charging
 				bool isThrowing = Target.EquippingWeaponType == WeaponType.Throwing;
-				float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
+				float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
 
 				AttackHeadDown(ease01, 100, 800, 1000, 100);
 				ResetShoulderAndUpperArm();
 
 				// Upper Arm R
-				UpperArmR.LimbRotate(FacingSign * (int)Mathf.LerpUnclamped(-185, -9, ease01));
+				UpperArmR.LimbRotate(FacingSign * (int)Util.LerpUnclamped(-185, -9, ease01));
 				if (!isThrowing) UpperArmR.Height += A2G;
 				LowerArmR.LimbRotate(0);
 				if (!isThrowing) LowerArmR.Height += A2G;
@@ -487,9 +486,9 @@ namespace AngeliaFramework {
 
 				// Grab
 				Target.HandGrabRotationL = Target.HandGrabRotationR =
-					FacingSign * (int)Mathf.LerpUnclamped(-80, 100, ease01);
+					FacingSign * (int)Util.LerpUnclamped(-80, 100, ease01);
 				Target.HandGrabScaleL = Target.HandGrabScaleR =
-					FacingSign * (int)Mathf.LerpUnclamped(1100, 1400, ease01);
+					FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
 
 				// Z
 				UpperArmL.Z = UpperArmL.Z.Abs();
@@ -506,7 +505,7 @@ namespace AngeliaFramework {
 			base.Animate(character);
 			if (Target.IsChargingAttack) {
 				// Charging
-				float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Mathf.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
+				float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
 				AttackHeadDown(ease01, 100, 800, 1000, 100);
 				ResetShoulderAndUpperArm(!FacingRight, FacingRight);
 
@@ -515,7 +514,7 @@ namespace AngeliaFramework {
 				var handB = FacingRight ? HandR : HandL;
 
 				// Arm Right
-				uArmB.LimbRotate((int)Mathf.LerpUnclamped(FacingSign * -180, FacingSign * -90, ease01));
+				uArmB.LimbRotate((int)Util.LerpUnclamped(FacingSign * -180, FacingSign * -90, ease01));
 				lArmB.LimbRotate((int)((1f - ease01) * -10 * FacingSign));
 				handB.LimbRotate(FacingSign);
 
@@ -524,7 +523,7 @@ namespace AngeliaFramework {
 
 				// Grab
 				Target.HandGrabRotationL = Target.HandGrabRotationR = 0;
-				Target.HandGrabScaleL = Target.HandGrabScaleR = (int)Mathf.LerpUnclamped(700, 800, ease01);
+				Target.HandGrabScaleL = Target.HandGrabScaleR = (int)Util.LerpUnclamped(700, 800, ease01);
 
 				// Leg
 				AttackLegShake(ease01);

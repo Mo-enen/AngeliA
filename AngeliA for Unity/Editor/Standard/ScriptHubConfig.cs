@@ -64,6 +64,27 @@ namespace AngeliaForUnity.Editor {
 	}
 
 
+	public class ForUnityHab : IScriptHubConfig {
+		public string Title => "For Unity";
+		public string[] Paths => new string[] {
+			"Packages/com.moenengames.angeliaforunity",
+		};
+		public string IgnoreFolders => "Aseprite\nThird Party\nStandard";
+		public IScriptHubConfig.SearchPattern[] SearchPatterns => new IScriptHubConfig.SearchPattern[]{
+			new ("*.cs", "", true),
+		};
+		public int Order => -1024;
+		public int Column => 1;
+		public string GetFolderName (string name) {
+			if (name.Equals("Editor")) {
+				name = "zEditor";
+			} else if (name.Equals("Framework")) {
+				name = " Framework";
+			}
+			return name;
+		}
+	}
+
 
 	public class GeneralHab : IScriptHubConfig {
 		public string Title => "General";
@@ -75,7 +96,7 @@ namespace AngeliaForUnity.Editor {
 			new ("*.cs", "", true),
 		};
 		public int Order => -1023;
-		public int Column => 4;
+		public int Column => 3;
 	}
 
 

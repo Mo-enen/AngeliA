@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -131,8 +130,8 @@ namespace AngeliaFramework {
 			float lerp01 = (float)(Game.GlobalFrame - SpawnFrame) / Duration;
 			float ease01Cub = Ease.OutCubic(lerp01);
 			float ease01Ex = Ease.OutExpo(lerp01);
-			int radiusShrink = (int)Mathf.LerpUnclamped(Radius, Radius / 2, ease01Ex);
-			int radiusExpand = (int)Mathf.LerpUnclamped(Radius / 3, Radius * 2, ease01Ex);
+			int radiusShrink = (int)Util.LerpUnclamped(Radius, Radius / 2, ease01Ex);
+			int radiusExpand = (int)Util.LerpUnclamped(Radius / 3, Radius * 2, ease01Ex);
 
 			// Additive
 			CellRenderer.SetLayerToAdditive();
@@ -140,7 +139,7 @@ namespace AngeliaFramework {
 			// Light
 			if (LightArtwork != 0) {
 				int lightRadius = Radius * 20 / 8;
-				var lightColor = new Byte4(255, 255, 255, (byte)Mathf.LerpUnclamped(255, 0, lerp01));
+				var lightColor = new Byte4(255, 255, 255, (byte)Util.LerpUnclamped(255, 0, lerp01));
 				CellRenderer.Draw(
 					LightArtwork, X, Y, 500, 500, 0, lightRadius, lightRadius,
 					lightColor, 1023
@@ -150,7 +149,7 @@ namespace AngeliaFramework {
 			// Wave
 			if (WaveArtwork != 0) {
 				var waveColor = WaveColor;
-				waveColor.a = (byte)Mathf.LerpUnclamped(220, 0, ease01Cub);
+				waveColor.a = (byte)Util.LerpUnclamped(220, 0, ease01Cub);
 				CellRenderer.Draw(
 					WaveArtwork, X, Y, 500, 500, (int)(ease01Ex * 830), radiusExpand, radiusExpand,
 					waveColor, 1024
@@ -160,7 +159,7 @@ namespace AngeliaFramework {
 			// Ring
 			if (RingArtwork != 0) {
 				var ringColor = RingColor;
-				ringColor.a = (byte)Mathf.LerpUnclamped(255, 0, ease01Ex);
+				ringColor.a = (byte)Util.LerpUnclamped(255, 0, ease01Ex);
 				int ringRadius = Radius * 9 / 10;
 				CellRenderer.Draw_9Slice(RingArtwork, X, Y, 500, 500, (int)(ease01Ex * 720), ringRadius, ringRadius, ringColor, 1025);
 			}
@@ -171,7 +170,7 @@ namespace AngeliaFramework {
 
 			// Dark
 			if (DarkArtwork != 0) {
-				var darkColor = new Byte4(0, 0, 0, (byte)Mathf.LerpUnclamped(64, 0, lerp01));
+				var darkColor = new Byte4(0, 0, 0, (byte)Util.LerpUnclamped(64, 0, lerp01));
 				int darkRadius = Radius * 22 / 8;
 				CellRenderer.Draw(
 					DarkArtwork, X, Y, 500, 500, 45,
@@ -182,7 +181,7 @@ namespace AngeliaFramework {
 			// Fire
 			if (FireArtwork != 0) {
 				var fireColor = FireColor;
-				fireColor.a = (byte)(Mathf.LerpUnclamped(512, 0, ease01Ex).Clamp(0, 255));
+				fireColor.a = (byte)(Util.LerpUnclamped(512, 0, ease01Ex).Clamp(0, 255));
 				for (int i = 0; i < FirePos.Length; i++) {
 					var pos = FirePos[i];
 					int radius = i % 2 == 0 ? radiusShrink : radiusExpand;

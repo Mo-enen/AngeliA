@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -60,40 +59,40 @@ namespace AngeliaFramework {
 		public static bool TryGetPosition (int id, out Int3 globalUnitPosition) => PositionPool.TryGetValue(id, out globalUnitPosition);
 
 
-		public static void CreateMetaFileFromMapsAsync (string mapFolder) {
+		public static async void CreateMetaFileFromMapsAsync (string mapFolder) {
 			if (CreateMetaFileTask != null && !CreateMetaFileTask.IsCompleted && CreateMetaFileToken.Token.CanBeCanceled) {
 				CreateMetaFileToken.Cancel();
 				CreateMetaFileListCache.Clear();
 			}
-			CreateMetaFileTask = Task.Factory.StartNew(
-				() => CreateMetaFileFromMaps(mapFolder),
-				CreateMetaFileToken.Token
-			);
+			await Task.Run(() => CreateMetaFileFromMaps(mapFolder), CreateMetaFileToken.Token);
 		}
 
 
 		public static void CreateMetaFileFromMaps (string mapFolder) {
-			if (AllGlobalPositionID.Count == 0) {
-				foreach (var type in typeof(IGlobalPosition).AllClassImplemented()) {
-					AllGlobalPositionID.TryAdd(type.AngeHash());
+			lock (CreateMetaFileListCache) {
+				if (AllGlobalPositionID.Count == 0) {
+					foreach (var type in typeof(IGlobalPosition).AllClassImplemented()) {
+						AllGlobalPositionID.TryAdd(type.AngeHash());
+					}
 				}
-			}
-			CreateMetaFileListCache.Clear();
-			foreach (var path in Util.EnumerateFiles(mapFolder, true, $"*.{AngePath.MAP_FILE_EXT}")) {
-				if (World.GetWorldPositionFromName(
-					Util.GetNameWithoutExtension(path),
-					out CreateMetaFilePosCache
-				)) {
-					World.ForAllEntities(path, AddPosToListCache);
+				CreateMetaFileListCache.Clear();
+				foreach (var path in Util.EnumerateFiles(mapFolder, true, $"*.{AngePath.MAP_FILE_EXT}")) {
+					if (!Util.FileExists(path)) continue;
+					if (World.GetWorldPositionFromName(
+						Util.GetNameWithoutExtension(path),
+						out CreateMetaFilePosCache
+					)) {
+						World.ForAllEntities(path, AddPosToListCache);
+					}
 				}
+				var meta = new GlobalPositionMeta() {
+					Positions = CreateMetaFileListCache.ToArray(),
+				};
+				JsonUtil.SaveJson(meta, mapFolder);
+				CreateMetaFileListCache.Clear();
+				CreateMetaFileTask = null;
+				ReloadPool(meta);
 			}
-			var meta = new GlobalPositionMeta() {
-				Positions = CreateMetaFileListCache.ToArray(),
-			};
-			JsonUtil.SaveJson(meta, mapFolder);
-			CreateMetaFileListCache.Clear();
-			CreateMetaFileTask = null;
-			ReloadPool(meta);
 			// Func
 			static void AddPosToListCache (int id, int x, int y) {
 				if (!AllGlobalPositionID.Contains(id)) return;

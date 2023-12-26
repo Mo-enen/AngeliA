@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -29,7 +27,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private static readonly object FileStreamingLock = new();
-		private static readonly Dictionary<Vector3Int, string> WorldNamePool = new();
+		private static readonly Dictionary<Int3, string> WorldNamePool = new();
 
 
 		#endregion
@@ -173,7 +171,7 @@ namespace AngeliaFramework {
 
 
 		public static string GetWorldNameFromPosition (int x, int y, int z) {
-			var pos = new Vector3Int(x, y, z);
+			var pos = new Int3(x, y, z);
 			if (WorldNamePool.TryGetValue(pos, out string name)) {
 				return name;
 			} else {
@@ -246,9 +244,9 @@ namespace AngeliaFramework {
 									Background[y * Const.MAP + x] = id;
 								}
 							}
-						} catch (System.Exception ex) { Debug.LogException(ex); }
+						} catch (System.Exception ex) { Game.LogException(ex); }
 					}
-				} catch (System.Exception ex) { Debug.LogException(ex); }
+				} catch (System.Exception ex) { Game.LogException(ex); }
 
 				// Final
 				success = true;

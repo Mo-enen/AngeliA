@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.InputSystem;
 
 
@@ -144,8 +143,6 @@ namespace AngeliaFramework {
 		public static int MouseWheelDelta { get; private set; } = 0;
 
 		// Short
-		private static Camera MainCamera => _MainCamera != null ? _MainCamera : (_MainCamera = Camera.main);
-		private static Camera _MainCamera = null;
 		private static bool IgnoringInput => Game.GlobalFrame <= IgnoreInputFrame;
 
 		// Data
@@ -218,7 +215,7 @@ namespace AngeliaFramework {
 		public static void BeforeGameInitialize () {
 
 			// Load Config
-			var iConfig = JsonUtil.LoadOrCreateJson<InputConfig>(Application.persistentDataPath);
+			var iConfig = JsonUtil.LoadOrCreateJson<InputConfig>(AngePath.PersistentDataPath);
 			for (int i = 0; i < 8; i++) {
 				KeyMap[(Gamekey)i] = new Int2(iConfig.KeyboardConfig[i], iConfig.GamepadConfig[i]);
 			}
@@ -279,7 +276,7 @@ namespace AngeliaFramework {
 			AnyKeyHolding = AnyGamepadButtonHolding || AnyKeyboardKeyHolding || AnyGamekeyHolding || AnyMouseButtonHolding;
 
 			// Last From Mouse
-			if (Cursor.visible) {
+			if (Game.CursorVisible) {
 				if (AnyGamepadButtonHolding || AnyKeyboardKeyHolding) {
 					LastActionFromMouse = false;
 				} else if (MouseMove || AnyMouseButtonHolding || MouseWheelDelta != 0) {
@@ -299,20 +296,21 @@ namespace AngeliaFramework {
 		private static void Update_Mouse (IRect cameraRect) {
 			AnyMouseButtonDown = false;
 			AnyMouseButtonHolding = false;
-			if (Mouse != null && MainCamera != null) {
-				var uCameraRect = MainCamera.rect;
-				var mousePos = Mouse.position.ReadValue().ToAngelia();
+			if (Mouse != null) {
+				var uCameraRect = Game.CameraScreenLocacion;
+				var mouseValue = Mouse.position.ReadValue();
+				var mousePos = new Float2(mouseValue.x, mouseValue.y);
 				MouseScreenPositionDelta = mousePos.RoundToInt() - MouseScreenPosition;
 				MouseMove = mousePos.RoundToInt() != MouseScreenPosition;
 				MouseScreenPosition = mousePos.RoundToInt();
 				var newGlobalPos = new Int2(
 					Util.RemapUnclamped(
-						uCameraRect.xMin * Screen.width, uCameraRect.xMax * Screen.width,
+						uCameraRect.xMin * Game.ScreenWidth, uCameraRect.xMax * Game.ScreenWidth,
 						cameraRect.xMin, cameraRect.xMax,
 						mousePos.x
 					).RoundToInt(),
 					Util.RemapUnclamped(
-						uCameraRect.yMin * Screen.height, uCameraRect.yMax * Screen.height,
+						uCameraRect.yMin * Game.ScreenHeight, uCameraRect.yMax * Game.ScreenHeight,
 						cameraRect.yMin, cameraRect.yMax,
 						mousePos.y
 					).RoundToInt()
@@ -613,11 +611,11 @@ namespace AngeliaFramework {
 		// Any Key
 		public static bool TryGetHoldingGamepadButton (out GamepadKey button) {
 			button = GamepadKey.A;
-			return Gamepad != null && Gamepad.AnyButtonHolding(out button);
+			return Gamepad != null && SearchAnyGamepadButtonHolding(Gamepad, out button);
 		}
 		public static bool TryGetHoldingKeyboardKey (out KeyboardKey key) {
 			key = KeyboardKey.None;
-			return Keyboard != null && Keyboard.AnyKeyHolding(out key);
+			return Keyboard != null && SearchAnyKeyboardKeyHolding(Keyboard, out key);
 		}
 
 
@@ -761,7 +759,57 @@ namespace AngeliaFramework {
 				(int)GamepadKey.Start,
 				KeyMap[(Gamekey)7].y,
 			},
-		}, Application.persistentDataPath, prettyPrint: true);
+		}, AngePath.PersistentDataPath, prettyPrint: true);
+
+
+		private static bool SearchAnyGamepadButtonHolding (Gamepad pad, out GamepadKey button) {
+			button = GamepadKey.DpadUp;
+			for (int i = 0; i < 16; i++) {
+				if (i == 14) i = 0x20;
+				if (i == 15) i = 33;
+				var btn = (GamepadKey)i;
+				if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)btn].isPressed) {
+					button = btn;
+					return true;
+				}
+			}
+			var stickL = pad.leftStick;
+			var stickR = pad.rightStick;
+			if (stickL.left.isPressed || stickR.left.isPressed) {
+				button = GamepadKey.DpadLeft;
+				return true;
+			}
+			if (stickL.right.isPressed || stickR.right.isPressed) {
+				button = GamepadKey.DpadRight;
+				return true;
+			}
+			if (stickL.down.isPressed || stickR.down.isPressed) {
+				button = GamepadKey.DpadDown;
+				return true;
+			}
+			if (stickL.up.isPressed || stickR.up.isPressed) {
+				button = GamepadKey.DpadUp;
+				return true;
+			}
+			return false;
+		}
+
+
+		private static bool SearchAnyKeyboardKeyHolding (Keyboard keyboard, out KeyboardKey key) {
+			key = KeyboardKey.None;
+			if (keyboard.anyKey.isPressed) {
+				var allKeys = keyboard.allKeys;
+				for (int i = 0; i < allKeys.Count; i++) {
+					var k = allKeys[i];
+					if (k.isPressed) {
+						key = (KeyboardKey)k.keyCode;
+						break;
+					}
+				}
+				return true;
+			}
+			return false;
+		}
 
 
 		#endregion

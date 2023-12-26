@@ -47,11 +47,6 @@ namespace AngeliaForUnity {
 		private static readonly int SKYBOX_BOTTOM = Shader.PropertyToID("_ColorB");
 		private static readonly Shader SKYBOX_SHADER = Shader.Find("Angelia/Skybox");
 
-		// Api
-		public Camera UnityCamera => _UnityCamera != null ? _UnityCamera : (_UnityCamera = GetOrCreateCamera());
-		private Camera _UnityCamera = null;
-		public Font[] Fonts { get; set; } = new Font[0];
-
 		// Data
 		private RenderingLayerUnity[] RenderingLayers = new RenderingLayerUnity[0];
 		private RenderingLayerUnity[] RenderingTextLayers = new RenderingLayerUnity[0];
@@ -67,19 +62,16 @@ namespace AngeliaForUnity {
 		#region --- MSG ---
 
 
-		private void BeforeGameInitialize_Rendering () {
+		private void InitializeRendering () {
 
 			var root = UnityCamera.transform;
 			root.DestroyAllChildrenImmediate();
-			SheetTexture = LoadSheetTextureFromDisk() as Texture2D;
+			SheetTexture = AngeUtilUnity.LoadTexture(AngePath.SheetTexturePath);
 			if (SKYBOX_SHADER != null) {
 				RenderSettings.skybox = Skybox = new Material(SKYBOX_SHADER);
 			}
 
 			// Layers
-			if (Fonts == null || Fonts.Length == 0) {
-				Fonts = new Font[1] { Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf") };
-			}
 			RenderingLayers = new RenderingLayerUnity[RenderLayer.COUNT];
 			RenderingTextLayers = new RenderingLayerUnity[Fonts.Length];
 			for (int i = 0; i < RenderingTextLayers.Length; i++) {
@@ -101,13 +93,13 @@ namespace AngeliaForUnity {
 
 
 		// Camera
-		protected override FRect GetCameraScreenLocacion () => UnityCamera.rect;
-		protected override void SetCameraScreenLocacion (FRect rect) => UnityCamera.rect = rect;
-		protected override float GetCameraAspect () => UnityCamera.aspect;
-		protected override float GetCameraOrthographicSize () => UnityCamera.orthographicSize;
+		protected override FRect _GetCameraScreenLocacion () => UnityCamera.rect;
+		protected override void _SetCameraScreenLocacion (FRect rect) => UnityCamera.rect = rect;
+		protected override float _GetCameraAspect () => UnityCamera.aspect;
+		protected override float _GetCameraOrthographicSize () => UnityCamera.orthographicSize;
 
 		// Renderer
-		protected override void OnCameraUpdate () {
+		protected override void _OnCameraUpdate () {
 
 			float orthographicSize = CameraOrthographicSize;
 			float aspect = CameraAspect;
@@ -140,7 +132,7 @@ namespace AngeliaForUnity {
 
 		}
 
-		protected override void OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) {
+		protected override void _OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) {
 			RenderingLayers[index] = CreateRenderingLayer(
 				UnityCamera.transform,
 				new Material(RENDERING_SHADERS[index]) {
@@ -157,7 +149,7 @@ namespace AngeliaForUnity {
 				capacity
 			);
 		}
-		protected override void OnTextLayerCreated (int index, string name, int sortingOrder, int capacity) {
+		protected override void _OnTextLayerCreated (int index, string name, int sortingOrder, int capacity) {
 			RenderingTextLayers[index] = CreateRenderingLayer(
 				UnityCamera.transform,
 				Fonts[index].material,
@@ -167,11 +159,11 @@ namespace AngeliaForUnity {
 			);
 		}
 
-		protected override int GetTextLayerCount () => Fonts.Length;
-		protected override string GetTextLayerName (int index) => Fonts[index].name;
-		protected override int GetFontSize (int index) => Fonts[index].fontSize;
+		protected override int _GetTextLayerCount () => Fonts.Length;
+		protected override string _GetTextLayerName (int index) => Fonts[index].name;
+		protected override int _GetFontSize (int index) => Fonts[index].fontSize;
 
-		protected override void OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) {
+		protected override void _OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) {
 
 			var viewRect = CellRenderer.ViewRect;
 			Float3 a = Float3.zero;
@@ -363,7 +355,7 @@ namespace AngeliaForUnity {
 			mesh.UploadMeshData(false);
 		}
 
-		protected override CellRenderer.CharSprite FillInfoToCharSprite (int layerIndex, char c, int textSize, int rebuildVersion, CellRenderer.CharSprite charSprite, out bool filled) {
+		protected override CellRenderer.CharSprite _FillCharSprite (int layerIndex, char c, int textSize, int rebuildVersion, CellRenderer.CharSprite charSprite, out bool filled) {
 			var font = Fonts[layerIndex];
 			if (font.GetCharacterInfo(c, out var info, textSize)) {
 				float size = info.size == 0 ? textSize : info.size;
@@ -383,9 +375,9 @@ namespace AngeliaForUnity {
 			return charSprite;
 		}
 
-		protected override void RequestStringForFontTexture (int layerIndex, int textSize, string content) => Fonts[layerIndex].RequestCharactersInTexture(content, textSize);
+		protected override void _RequestStringForFont (int layerIndex, int textSize, string content) => Fonts[layerIndex].RequestCharactersInTexture(content, textSize);
 
-		protected override void RequestStringForFontTexture (int layerIndex, int textSize, char[] content) {
+		protected override void _RequestStringForFont (int layerIndex, int textSize, char[] content) {
 			var font = Fonts[layerIndex];
 			if (font == null) return;
 			for (int i = 0; i < content.Length; i++) {
@@ -396,7 +388,7 @@ namespace AngeliaForUnity {
 			}
 		}
 
-		protected override void SetSkyboxTint (Byte4 top, Byte4 bottom) {
+		protected override void _SetSkyboxTint (Byte4 top, Byte4 bottom) {
 			if (Skybox == null) return;
 			Skybox.SetColor(SKYBOX_TOP, top);
 			Skybox.SetColor(SKYBOX_BOTTOM, bottom);

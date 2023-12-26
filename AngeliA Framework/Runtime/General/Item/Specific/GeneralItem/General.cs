@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using AngeliaFramework;
 
 
 namespace AngeliaFramework {
@@ -50,7 +48,7 @@ namespace AngeliaFramework {
 
 	public class iBadgeGold : Item {
 		private static readonly int TYPE_ID = typeof(iBadgeGold).AngeHash();
-		[OnGameInitialize]
+		[OnGameInitializeLater]
 		public static void OnGameInitialize () {
 			MiniGame.OnBadgeSpawn -= OnBadgeSpawn;
 			MiniGame.OnBadgeSpawn += OnBadgeSpawn;
@@ -64,7 +62,7 @@ namespace AngeliaFramework {
 
 	public class iBadgeIron : Item {
 		private static readonly int TYPE_ID = typeof(iBadgeIron).AngeHash();
-		[OnGameInitialize]
+		[OnGameInitializeLater]
 		public static void OnGameInitialize () {
 			MiniGame.OnBadgeSpawn -= OnBadgeSpawn;
 			MiniGame.OnBadgeSpawn += OnBadgeSpawn;

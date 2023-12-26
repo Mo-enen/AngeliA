@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -48,7 +47,7 @@ namespace AngeliaFramework {
 				if (spriteID == 0 || foot.IsFullCovered) return;
 				if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
 				var location = foot.GlobalLerp(0f, 0f);
-				int width = Mathf.Max(foot.Width, sprite.GlobalWidth);
+				int width = Util.Max(foot.Width, sprite.GlobalWidth);
 				if (sprite.GlobalBorder.IsZero) {
 					CellRenderer.Draw(
 						spriteID, location.x, location.y,
@@ -213,7 +212,7 @@ namespace AngeliaFramework {
 				animatedPoseType != CharacterAnimationType.GrabSide &&
 				animatedPoseType != CharacterAnimationType.Dash &&
 				animatedPoseType != CharacterAnimationType.Idle;
-			int width = Mathf.Max(
+			int width = Util.Max(
 				(right - left).Abs(), bodyWidthAbs - body.Border.left - body.Border.right
 			);
 			width += sprite.GlobalBorder.horizontal;
@@ -231,7 +230,7 @@ namespace AngeliaFramework {
 			CellRenderer.Draw(
 				sprite.GlobalID,
 				centerX,
-				body.Height > 0 ? Mathf.Max(centerY + offsetY, character.Y + sprite.GlobalHeight) : centerY - offsetY,
+				body.Height > 0 ? Util.Max(centerY + offsetY, character.Y + sprite.GlobalHeight) : centerY - offsetY,
 				500, 1000, 0,
 				width,
 				body.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight,

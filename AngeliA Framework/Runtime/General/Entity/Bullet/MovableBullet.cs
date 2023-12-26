@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -88,7 +87,7 @@ namespace AngeliaFramework {
 		}
 
 		public override void PhysicsUpdate () {
-			int stepCount = Mathf.Max(Velocity.x.Abs().CeilDivide(Width), Velocity.y.Abs().CeilDivide(Height));
+			int stepCount = Util.Max(Velocity.x.Abs().CeilDivide(Width), Velocity.y.Abs().CeilDivide(Height));
 			if (stepCount <= 1) {
 				ReceiverHitCheck(Rect);
 			} else {

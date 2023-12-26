@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -130,8 +129,9 @@ namespace AngeliaFramework {
 						switch (line[1]) {
 							case 'c':
 								// Color
-								if (equalIndex >= 0 && equalIndex < line.Length - 1 && ColorUtility.TryParseHtmlString(line[(equalIndex + 1)..], out var newColor)) {
-									currentColor = newColor;
+								if (equalIndex >= 0 && equalIndex < line.Length - 1) {
+									var dColor = System.Drawing.ColorTranslator.FromHtml(line[(equalIndex + 1)..]);
+									currentColor = new Byte4(dColor.R, dColor.G, dColor.B, 255);
 								} else {
 									currentColor = Const.WHITE;
 								}

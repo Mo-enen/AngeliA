@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-
-
-namespace AngeliaFramework {
+﻿namespace AngeliaFramework {
 	
 
 	public class IntToChars {

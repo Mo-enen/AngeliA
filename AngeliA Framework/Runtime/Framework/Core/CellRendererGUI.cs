@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using UnityEngine;
-using UnityEngine.InputSystem;
 
 
 namespace AngeliaFramework {
@@ -155,12 +153,6 @@ namespace AngeliaFramework {
 
 		[OnGameInitialize(-128)]
 		public static void Initialize () {
-			InputSystem.onDeviceChange -= OnDeviceChange;
-			InputSystem.onDeviceChange += OnDeviceChange;
-			if (Keyboard.current != null) {
-				Keyboard.current.onTextInput -= OnTextInput;
-				Keyboard.current.onTextInput += OnTextInput;
-			}
 			for (int i = 0; i < NUMBER_CACHE.Length; i++) {
 				NUMBER_CACHE[i] = i.ToString();
 			}
@@ -326,10 +318,10 @@ namespace AngeliaFramework {
 
 				// Next
 				x += realCharSize + charSpace;
-				minX = Mathf.Min(minX, cell.X);
-				minY = Mathf.Min(minY, cell.Y);
-				maxX = Mathf.Max(maxX, cell.X + cell.Width);
-				maxY = Mathf.Max(maxY, cell.Y + cell.Height);
+				minX = Util.Min(minX, cell.X);
+				minY = Util.Min(minY, cell.Y);
+				maxX = Util.Max(maxX, cell.X + cell.Width);
+				maxY = Util.Max(maxY, cell.Y + cell.Height);
 				firstCharAtLine = false;
 
 				continue;
@@ -551,7 +543,7 @@ namespace AngeliaFramework {
 				}
 				// Func
 				void RemoveSelection () {
-					int newBeamIndex = Mathf.Min(BeamIndex, BeamIndex + BeamLength);
+					int newBeamIndex = Util.Min(BeamIndex, BeamIndex + BeamLength);
 					text.Text = text.Text.Remove(newBeamIndex, BeamLength.Abs());
 					BeamIndex = newBeamIndex;
 					BeamLength = 0;
@@ -615,8 +607,8 @@ namespace AngeliaFramework {
 
 				// Get Beam Selection Rect
 				if (BeamLength != 0) {
-					int beamSelectionStartIndex = Mathf.Min(BeamIndex, BeamIndex + BeamLength);
-					int beamSelectionEndIndex = Mathf.Max(BeamIndex, BeamIndex + BeamLength);
+					int beamSelectionStartIndex = Util.Min(BeamIndex, BeamIndex + BeamLength);
+					int beamSelectionEndIndex = Util.Max(BeamIndex, BeamIndex + BeamLength);
 					var startCell = cells[(startCellIndex + beamSelectionStartIndex).Clamp(startCellIndex, endCellIndex - 1)];
 					var endCell = cells[(startCellIndex + beamSelectionEndIndex - 1).Clamp(startCellIndex, endCellIndex - 1)];
 					var selectionRect = new IRect(
@@ -738,6 +730,12 @@ namespace AngeliaFramework {
 		}
 
 
+		public static void OnTextInput (char c) {
+			if (c != '\b' && c != '\r' && char.IsControl(c)) return;
+			TypingBuilder.Append(c);
+		}
+
+
 		#endregion
 
 
@@ -790,21 +788,6 @@ namespace AngeliaFramework {
 			cell.Width = (int)(cell.Width * uvOffset.width);
 			cell.Height = (int)(cell.Height * uvOffset.height);
 			return cell;
-		}
-
-
-		// MSG
-		private static void OnDeviceChange (InputDevice device, InputDeviceChange change) {
-			if (device is Keyboard && Keyboard.current != null) {
-				Keyboard.current.onTextInput -= OnTextInput;
-				Keyboard.current.onTextInput += OnTextInput;
-			}
-		}
-
-
-		private static void OnTextInput (char c) {
-			if (c != '\b' && c != '\r' && char.IsControl(c)) return;
-			TypingBuilder.Append(c);
 		}
 
 

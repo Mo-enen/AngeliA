@@ -1,14 +1,23 @@
 {
   "dependencies": {
+    "com.moenengames.angeliaforunity": {
+      "version": "file:C:/Data/Unity/AngeliA/AngeliA for Unity",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.moenengames.angeliaframework": "1.0.0",
+        "com.unity.modules.imageconversion": "1.0.0",
+        "com.unity.modules.audio": "1.0.0",
+        "com.unity.modules.unitywebrequestaudio": "1.0.0",
+        "com.unity.inputsystem": "1.0.0"
+      }
+    },
     "com.moenengames.angeliaframework": {
       "version": "file:C:/Data/Unity/AngeliA/AngeliA Framework",
       "depth": 0,
       "source": "local",
       "dependencies": {
-        "com.unity.inputsystem": "1.0.0",
-        "com.unity.modules.audio": "1.0.0",
-        "com.unity.modules.unitywebrequest": "1.0.0",
-        "com.unity.modules.imageconversion": "1.0.0"
+        "com.unity.inputsystem": "1.0.0"
       }
     },
     "com.mukaschultze.fullscreeneditor": {
@@ -52,12 +61,6 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
-    },
-    "com.unity.modules.accessibility": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
     },
     "com.unity.modules.audio": {
       "version": "1.0.0",
@@ -111,6 +114,15 @@
       "depth": 1,
       "source": "builtin",
       "dependencies": {}
+    },
+    "com.unity.modules.unitywebrequestaudio": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.audio": "1.0.0"
+      }
     }
   }
 }

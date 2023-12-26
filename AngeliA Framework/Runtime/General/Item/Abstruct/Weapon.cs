@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -96,7 +95,7 @@ namespace AngeliaFramework {
 					int moveDeltaY = -character.DeltaPositionY;
 					int facingFrame = Game.GlobalFrame - character.LastFacingChangeFrame;
 					if (facingFrame < 30) {
-						moveDeltaX += (int)Mathf.LerpUnclamped(
+						moveDeltaX += (int)Util.LerpUnclamped(
 							character.FacingRight ? SHIFT_X * 2 : -SHIFT_X * 2, 0,
 							Ease.OutBack(facingFrame / 30f)
 						);
@@ -225,13 +224,13 @@ namespace AngeliaFramework {
 							if (localFrame < character.AttackDuration / 2) {
 								// Pulling
 								float ease01 = Ease.OutQuad(localFrame / (character.AttackDuration / 2f));
-								width += Mathf.LerpUnclamped(0, width * 2 / 3, ease01).RoundToInt();
-								height -= Mathf.LerpUnclamped(0, height / 2, ease01).RoundToInt();
+								width += Util.LerpUnclamped(0, width * 2 / 3, ease01).RoundToInt();
+								height -= Util.LerpUnclamped(0, height / 2, ease01).RoundToInt();
 							} else {
 								// Release
 								float ease01 = Ease.OutQuad((localFrame - character.AttackDuration / 2f) / (character.AttackDuration / 2f));
-								width += Mathf.LerpUnclamped(width * 2 / 3, 0, ease01).RoundToInt();
-								height -= Mathf.LerpUnclamped(height / 2, 0, ease01).RoundToInt();
+								width += Util.LerpUnclamped(width * 2 / 3, 0, ease01).RoundToInt();
+								height -= Util.LerpUnclamped(height / 2, 0, ease01).RoundToInt();
 							}
 						}
 						DrawWeaponSprite(

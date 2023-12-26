@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -133,7 +132,7 @@ namespace AngeliaFramework {
 				oldBallX < 1000 - fixedPaddleX && BallX >= 1000 - fixedPaddleX &&
 				BallY > BotPaddleY - fixedPaddleLen / 2 && BallY < BotPaddleY + fixedPaddleLen / 2
 			) {
-				botPaddleSpeed = Random.Range(-PADDLE_SPEED * 2, PADDLE_SPEED * 2);
+				botPaddleSpeed = AngeUtil.RandomInt(-PADDLE_SPEED * 2, PADDLE_SPEED * 2);
 				BotPaddleY += botPaddleSpeed;
 				BotPaddleY = BotPaddleY.Clamp(PADDLE_LEN / 2, 1000 - PADDLE_LEN / 2);
 				BallVelocityX = -BallVelocityX.Abs();
@@ -235,7 +234,7 @@ namespace AngeliaFramework {
 
 		private void ServeBall (bool right) {
 			BallVelocityX = right ? SERVE_BALL_SPEED_X : -SERVE_BALL_SPEED_X;
-			BallVelocityY = Random.Range(-SERVE_BALL_SPEED_Y, SERVE_BALL_SPEED_Y);
+			BallVelocityY = AngeUtil.RandomInt(-SERVE_BALL_SPEED_Y, SERVE_BALL_SPEED_Y);
 			ServeBallFrame = Game.GlobalFrame;
 		}
 

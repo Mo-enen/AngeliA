@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
-using UnityEngine;
+//using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -48,13 +48,13 @@ namespace AngeliaFramework {
 					if (RoomHeight[i] >= item.Height) {
 						// fit
 						currentFitWidth++;
-						maxRoomY = Mathf.Max(maxRoomY, Height - RoomHeight[i]);
+						maxRoomY = Util.Max(maxRoomY, Height - RoomHeight[i]);
 						if (currentFitWidth >= item.Width) {
 							item.Y = Y + maxRoomY;
 							item.X = i - currentFitWidth + 1;
 							// set width height
-							width = Mathf.Max(width, item.X + item.Width);
-							height = Mathf.Max(height, item.Y + item.Height);
+							width = Util.Max(width, item.X + item.Width);
+							height = Util.Max(height, item.Y + item.Height);
 							// Set room height
 							for (int j = item.X; j < item.X + item.Width; j++) {
 								RoomHeight[j] = Height - maxRoomY - item.Height;
@@ -75,74 +75,7 @@ namespace AngeliaFramework {
 
 
 		// API
-		public static FRect[] AngeliaPack (out Texture2D result, Texture2D[] textures, int maxTextureWidth = -1) => PackLogic(out result, textures, maxTextureWidth);
-
-
-		public static void CharacterPosePack (out Texture2D result, Texture2D[] textures) {
-			// Check
-			if (textures.Length == 0) {
-				result = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-				return;
-			}
-
-			// Get Width Height
-			int currentX = 0;
-			int currentY = 0;
-			int currentHeight = 0;
-			int maxWidth = 0;
-			int maxHeight;
-			for (int i = 0; i < textures.Length; i++) {
-				var tex = textures[i];
-				if (tex != null) {
-					// Texture
-					currentHeight = Mathf.Max(currentHeight, tex.height);
-					maxWidth = Mathf.Max(maxWidth, currentX + tex.width);
-					currentX += tex.width;
-				} else {
-					// Wrap
-					currentY += currentHeight;
-					currentX = 0;
-					currentHeight = 0;
-				}
-			}
-			maxHeight = currentY;
-
-			// Fill Colors
-			currentX = 0;
-			currentY = 0;
-			currentHeight = 0;
-
-			var colors = new UnityEngine.Color32[maxWidth * maxHeight];
-			for (int i = 0; i < textures.Length; i++) {
-				var tex = textures[i];
-				if (tex != null) {
-					// Texture
-					var pixels = tex.GetPixels32();
-					int w = tex.width;
-					int h = tex.height;
-					for (int x = 0; x < w; x++) {
-						for (int y = 0; y < h; y++) {
-							colors[(currentY + y) * maxWidth + (currentX + x)] = pixels[y * w + x];
-						}
-					}
-					currentHeight = Mathf.Max(currentHeight, tex.height);
-					currentX += tex.width;
-				} else {
-					// Wrap
-					currentY += currentHeight;
-					currentX = 0;
-					currentHeight = 0;
-				}
-			}
-
-			// Create Texture
-			result = new Texture2D(maxWidth, maxHeight, TextureFormat.RGBA32, false) {
-				filterMode = FilterMode.Point,
-				wrapMode = TextureWrapMode.Clamp,
-			};
-			result.SetPixels32(colors);
-			result.Apply();
-		}
+		public static FRect[] Pack (out Texture2D result, Texture2D[] textures, int maxTextureWidth = -1) => PackLogic(out result, textures, maxTextureWidth);
 
 
 		// LGC
@@ -169,14 +102,14 @@ namespace AngeliaFramework {
 					Texture = _texture,
 				});
 				allArea += items[i].Width * items[i].Height;
-				maxItemWidth = Mathf.Max(maxItemWidth, items[i].Width);
+				maxItemWidth = Util.Max(maxItemWidth, items[i].Width);
 			}
 			int aimSize = 16;
 			while (aimSize < maxItemWidth || aimSize * aimSize < allArea * 1.1f) {
 				aimSize *= 2;
 			}
 			//aimSize /= 2;
-			aimSize = Mathf.Clamp(aimSize, maxItemWidth, maxTextureWidth > maxItemWidth ? maxTextureWidth : int.MaxValue);
+			aimSize = Util.Clamp(aimSize, maxItemWidth, maxTextureWidth > maxItemWidth ? maxTextureWidth : int.MaxValue);
 
 			// Sort
 			items.Sort(new ItemSorter(false));
@@ -232,7 +165,7 @@ namespace AngeliaFramework {
 
 			// Set Texture
 			width = aimSize;
-			var colors = new UnityEngine.Color32[width * height];
+			var colors = new Color32[width * height];
 
 			// Default Color
 			for (int i = 0; i < colors.Length; i++) {
@@ -251,7 +184,7 @@ namespace AngeliaFramework {
 			}
 
 			// Sort
-			float uvGap = 0.01f / Mathf.Max(width, height);
+			float uvGap = 0.01f / Util.Max(width, height);
 			items.Sort(new ItemSorter(true));
 			FRect[] uvs = new FRect[items.Count];
 			for (int i = 0; i < items.Count; i++) {
@@ -265,9 +198,6 @@ namespace AngeliaFramework {
 
 			// Result
 			result = new Texture2D(width, height, TextureFormat.RGBA32, false) {
-#if UNITY_EDITOR
-				alphaIsTransparency = true,
-#endif
 				filterMode = FilterMode.Point,
 			};
 			result.SetPixels32(colors);

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -131,7 +130,7 @@ namespace AngeliaFramework {
 			} catch (System.Exception ex) {
 				SampleReader?.Clear();
 				ResultWriter?.Clear();
-				Debug.LogException(ex);
+				Game.LogException(ex);
 			}
 		}
 

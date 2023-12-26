@@ -40,7 +40,7 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnGameInitialize(1024)]
+		[OnGameInitializeLater(1024)]
 		public static void OnGameInitialize () {
 			TextUsages = new BarData[CellRenderer.TextLayerCount];
 			for (int i = 0; i < RenderingUsages.Length; i++) {

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -125,7 +124,7 @@ namespace AngeliaFramework {
 				int bodyBorderL = character.FacingRight ? character.Body.Border.left : character.Body.Border.right;
 				character.ShoulderL.X = character.Body.X - character.Body.Width.Abs() / 2 + bodyBorderL;
 				character.ShoulderL.Y = character.Body.Y + character.Body.Height - character.Body.Border.up;
-				character.ShoulderL.Height = Mathf.Min(character.ShoulderL.Height, character.Body.Height);
+				character.ShoulderL.Height = Util.Min(character.ShoulderL.Height, character.Body.Height);
 				character.ShoulderL.PivotX = 1000;
 				character.UpperArmL.X = character.ShoulderL.X;
 				character.UpperArmL.Y = character.ShoulderL.Y - character.ShoulderL.Height + character.ShoulderL.Border.down;
@@ -136,7 +135,7 @@ namespace AngeliaFramework {
 				int bodyBorderR = character.FacingRight ? character.Body.Border.right : character.Body.Border.left;
 				character.ShoulderR.X = character.Body.X + character.Body.Width.Abs() / 2 - bodyBorderR;
 				character.ShoulderR.Y = character.Body.Y + character.Body.Height - character.Body.Border.up;
-				character.ShoulderR.Height = Mathf.Min(character.ShoulderR.Height, character.Body.Height);
+				character.ShoulderR.Height = Util.Min(character.ShoulderR.Height, character.Body.Height);
 				character.ShoulderR.PivotX = 1000;
 				character.UpperArmR.X = character.ShoulderR.X;
 				character.UpperArmR.Y = character.ShoulderR.Y - character.ShoulderR.Height + character.ShoulderR.Border.down;
@@ -157,7 +156,7 @@ namespace AngeliaFramework {
 		protected static void AttackHeadDown (float ease01, int headOffsetXAmount = 1000, int headOffsetYAmount = 1000, int bodyOffsetYAmount = 1000, int headRotateAmount = 1000) {
 
 			// Head Rotate
-			int headRotate = FacingSign * (int)Mathf.LerpUnclamped(-18, 18, ease01) * headRotateAmount / 1000;
+			int headRotate = FacingSign * (int)Util.LerpUnclamped(-18, 18, ease01) * headRotateAmount / 1000;
 
 			// Head
 			int headOffsetX = FacingSign * (int)((0.75f - ease01) * 10 * A2G) - A2G / 3;

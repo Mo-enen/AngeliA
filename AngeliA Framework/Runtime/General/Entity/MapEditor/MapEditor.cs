@@ -139,8 +139,8 @@ namespace AngeliaFramework {
 
 		// Api
 		public static MapEditor Instance { get; private set; } = null;
-		public bool IsEditing => Active && !PlayingGame;
-		public bool IsPlaying => Active && PlayingGame;
+		public static bool IsEditing => Instance != null && Instance.Active && !Instance.PlayingGame;
+		public static bool IsPlaying => Instance != null && Instance.Active && Instance.PlayingGame;
 		public bool QuickPlayerDrop {
 			get => s_QuickPlayerDrop.Value && !IgnoreQuickPlayerDropThisTime;
 			set => s_QuickPlayerDrop.Value = value;

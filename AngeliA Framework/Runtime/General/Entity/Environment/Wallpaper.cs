@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -107,7 +106,7 @@ namespace AngeliaFramework {
 
 		protected Byte4 GetSkyTint (int y) => Byte4.LerpUnclamped(
 			Game.SkyTintBottomColor, Game.SkyTintTopColor,
-			Mathf.InverseLerp(CellRenderer.CameraRect.yMin, CellRenderer.CameraRect.yMax, y)
+			Util.InverseLerp(CellRenderer.CameraRect.yMin, CellRenderer.CameraRect.yMax, y)
 		);
 
 

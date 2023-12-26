@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -74,16 +73,16 @@ namespace AngeliaFramework {
 			const int GAP = Const.CEL;
 			switch (Direction) {
 				case Direction4.Down:
-					TargetMaxY = Mathf.Min(TargetMaxY ?? int.MaxValue, Y + Const.HALF + GAP);
+					TargetMaxY = Util.Min(TargetMaxY ?? int.MaxValue, Y + Const.HALF + GAP);
 					break;
 				case Direction4.Up:
-					TargetMinY = Mathf.Max(TargetMinY ?? int.MinValue, Y + Const.HALF - GAP);
+					TargetMinY = Util.Max(TargetMinY ?? int.MinValue, Y + Const.HALF - GAP);
 					break;
 				case Direction4.Left:
-					TargetMaxX = Mathf.Min(TargetMaxX ?? int.MaxValue, X + Const.HALF + GAP);
+					TargetMaxX = Util.Min(TargetMaxX ?? int.MaxValue, X + Const.HALF + GAP);
 					break;
 				case Direction4.Right:
-					TargetMinX = Mathf.Max(TargetMinX ?? int.MinValue, X + Const.HALF - GAP);
+					TargetMinX = Util.Max(TargetMinX ?? int.MinValue, X + Const.HALF - GAP);
 					break;
 			}
 
@@ -118,12 +117,12 @@ namespace AngeliaFramework {
 					Stage.SetViewXDelay(cameraRect.x + viewOffsetX, 96, 0);
 				}
 			} else if (TargetMinX.HasValue) {
-				cameraRect.x = Mathf.Max(cameraRect.x, TargetMinX.Value);
+				cameraRect.x = Util.Max(cameraRect.x, TargetMinX.Value);
 				if (cameraRect.x != oldX) {
 					Stage.SetViewXDelay(cameraRect.x + viewOffsetX, 96, 0);
 				}
 			} else if (TargetMaxX.HasValue) {
-				cameraRect.x = Mathf.Min(cameraRect.x, TargetMaxX.Value - cameraRect.width);
+				cameraRect.x = Util.Min(cameraRect.x, TargetMaxX.Value - cameraRect.width);
 				if (cameraRect.x != oldX) {
 					Stage.SetViewXDelay(cameraRect.x + viewOffsetX, 96, 0);
 				}
@@ -141,12 +140,12 @@ namespace AngeliaFramework {
 					Stage.SetViewYDelay(cameraRect.y, 96, 0);
 				}
 			} else if (TargetMinY.HasValue) {
-				cameraRect.y = Mathf.Max(cameraRect.y, TargetMinY.Value);
+				cameraRect.y = Util.Max(cameraRect.y, TargetMinY.Value);
 				if (cameraRect.y != oldY) {
 					Stage.SetViewYDelay(cameraRect.y, 96, 0);
 				}
 			} else if (TargetMaxY.HasValue) {
-				cameraRect.y = Mathf.Min(cameraRect.y, TargetMaxY.Value - cameraRect.height);
+				cameraRect.y = Util.Min(cameraRect.y, TargetMaxY.Value - cameraRect.height);
 				if (cameraRect.y != oldY) {
 					Stage.SetViewYDelay(cameraRect.y, 96, 0);
 				}

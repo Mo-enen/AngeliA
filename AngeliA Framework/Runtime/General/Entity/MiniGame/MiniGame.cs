@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -56,7 +55,7 @@ namespace AngeliaFramework {
 				if (Badges.Length != BadgesCount) {
 					var oldArr = Badges;
 					Badges = new int[BadgesCount].FillWithValue(0);
-					oldArr.CopyTo(Badges, Mathf.Min(BadgesCount, oldArr.Length));
+					oldArr.CopyTo(Badges, Util.Min(BadgesCount, oldArr.Length));
 				}
 			}
 

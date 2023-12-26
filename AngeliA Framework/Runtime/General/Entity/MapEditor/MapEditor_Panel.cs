@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using GeorgeMamaladze;
 
 
@@ -853,7 +852,7 @@ namespace AngeliaFramework {
 			if (FrameInput.MouseWheelDelta != 0) QuickLaneScrollY -= FrameInput.MouseWheelDelta;
 
 			// Content
-			QuickLaneScrollY = QuickLaneScrollY.Clamp(0, Mathf.Max(ROW - pageLineCount + 3, 0));
+			QuickLaneScrollY = QuickLaneScrollY.Clamp(0, Util.Max(ROW - pageLineCount + 3, 0));
 			int index = 0;
 			for (int i = QuickLaneScrollY * COLUMN; i < CheckAltarIDs.Count; i++, index++) {
 

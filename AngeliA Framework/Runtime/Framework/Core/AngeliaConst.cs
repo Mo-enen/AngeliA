@@ -152,6 +152,7 @@ namespace AngeliaFramework {
 		public const int CURSOR_HAND = 0;
 		public const int CURSOR_MOVE = 1;
 		public const int CURSOR_BEAM = 2;
+		public const int CURSOR_COUNT = 3;
 
 		// Gamepad Code
 		public static int GAMEPAD_JUMP_HINT_CODE => GAMEPAD_CODE.TryGetValue(FrameInput.GetGamepadMap(Gamekey.Jump), out int _value0) ? _value0 : 0;

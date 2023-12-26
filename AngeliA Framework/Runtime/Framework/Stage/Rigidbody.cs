@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -127,7 +126,7 @@ namespace AngeliaFramework {
 			// Gravity
 			if (GravityScale != 0 && Game.GlobalFrame > IgnoreGravityFrame) {
 				int speedScale = InWater ? WATER_SPEED_LOSE : 1000;
-				VelocityY = Mathf.Clamp(
+				VelocityY = Util.Clamp(
 					VelocityY - Gravity * GravityScale / 1000,
 					-MaxGravitySpeed * speedScale / 1000,
 					int.MaxValue
@@ -147,8 +146,8 @@ namespace AngeliaFramework {
 							break;
 						}
 						VelocityX = VelocityX < 0 ?
-							Mathf.Max(VelocityX, hitRig.VelocityX.LessOrEquelThanZero()) :
-							Mathf.Min(VelocityX, hitRig.VelocityX.GreaterOrEquelThanZero());
+							Util.Max(VelocityX, hitRig.VelocityX.LessOrEquelThanZero()) :
+							Util.Min(VelocityX, hitRig.VelocityX.GreaterOrEquelThanZero());
 						if (VelocityX == 0) break;
 					}
 				}
@@ -166,8 +165,8 @@ namespace AngeliaFramework {
 							break;
 						}
 						VelocityY = VelocityY < 0 ?
-							Mathf.Max(VelocityY, hitRig.VelocityY.LessOrEquelThanZero()) :
-							Mathf.Min(VelocityY, hitRig.VelocityY.GreaterOrEquelThanZero());
+							Util.Max(VelocityY, hitRig.VelocityY.LessOrEquelThanZero()) :
+							Util.Min(VelocityY, hitRig.VelocityY.GreaterOrEquelThanZero());
 						if (VelocityY == 0) break;
 					}
 				}
@@ -190,7 +189,7 @@ namespace AngeliaFramework {
 
 			// Sand
 			if (prevInSand && !InSand && VelocityY > 0) {
-				VelocityY = Mathf.Max(VelocityY, QUICK_SAND_JUMPOUT_SPEED);
+				VelocityY = Util.Max(VelocityY, QUICK_SAND_JUMPOUT_SPEED);
 			}
 			if (InSand) {
 				VelocityX = VelocityX.Clamp(-QUICK_SAND_MAX_RUN_SPEED, QUICK_SAND_MAX_RUN_SPEED);
@@ -214,9 +213,9 @@ namespace AngeliaFramework {
 						deltaX = rig.VelocityX;
 					}
 					if (deltaX < 0) {
-						speedLeft = Mathf.Min(speedLeft, deltaX);
+						speedLeft = Util.Min(speedLeft, deltaX);
 					} else if (deltaX > 0) {
-						speedRight = Mathf.Max(speedRight, deltaX);
+						speedRight = Util.Max(speedRight, deltaX);
 					}
 				}
 				int deltaVelX = speedRight + speedLeft;

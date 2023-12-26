@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -46,10 +45,10 @@ namespace AngeliaFramework {
 
 			var TINT = new Byte4(128, 128, 128, 24);
 			var cRect = CellRenderer.CameraRect;
-			int l = Mathf.FloorToInt(cRect.xMin.UDivide(Const.CEL)) * Const.CEL;
-			int r = Mathf.CeilToInt(cRect.xMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
-			int d = Mathf.FloorToInt(cRect.yMin.UDivide(Const.CEL)) * Const.CEL;
-			int u = Mathf.CeilToInt(cRect.yMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
+			int l = Util.FloorToInt(cRect.xMin.UDivide(Const.CEL)) * Const.CEL;
+			int r = Util.CeilToInt(cRect.xMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
+			int d = Util.FloorToInt(cRect.yMin.UDivide(Const.CEL)) * Const.CEL;
+			int u = Util.CeilToInt(cRect.yMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
 			int size = cRect.height / 512;
 			for (int y = d; y <= u; y += Const.CEL) {
 				CellRenderer.Draw(LINE_H, l, y - size / 2, 0, 0, 0, r - l, size, TINT, int.MinValue + 1);

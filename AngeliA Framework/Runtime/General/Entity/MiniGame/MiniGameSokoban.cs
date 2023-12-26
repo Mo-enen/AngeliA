@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -240,10 +239,10 @@ namespace AngeliaFramework {
 			const int BOUNCE_DURATION = 22;
 			if (Game.GlobalFrame < PlayerMovedFrame + BOUNCE_DURATION) {
 				float lerp01 = Ease.OutBounce((Game.GlobalFrame - PlayerMovedFrame) / (float)BOUNCE_DURATION);
-				int offsetX = (int)Mathf.LerpUnclamped(blockRect.width / 4, 0, lerp01);
+				int offsetX = (int)Util.LerpUnclamped(blockRect.width / 4, 0, lerp01);
 				playerRect.x -= offsetX / 2;
 				playerRect.width += offsetX;
-				playerRect.height -= (int)Mathf.LerpUnclamped(blockRect.height / 5, 0, lerp01);
+				playerRect.height -= (int)Util.LerpUnclamped(blockRect.height / 5, 0, lerp01);
 			}
 
 			// Draw

@@ -7,124 +7,179 @@ namespace AngeliaFramework {
 
 
 		// System
-		public static bool IsEdittime => Instance.GetIsEdittime();
-		protected abstract bool GetIsEdittime ();
+		public static bool IsEdittime => Instance._GetIsEdittime();
+		protected abstract bool _GetIsEdittime ();
 
 		internal static int GraphicFramerate {
 			get => _GraphicFramerate.Value.Clamp(30, 120);
 			set {
 				_GraphicFramerate.Value = value.Clamp(30, 120);
-				Instance.SetGraphicFramerate(_GraphicFramerate.Value);
+				Instance._SetGraphicFramerate(_GraphicFramerate.Value);
 			}
 		}
-		protected abstract void SetGraphicFramerate (int framerate);
+		protected abstract void _SetGraphicFramerate (int framerate);
 
 		internal static bool VSync {
 			get => _VSync.Value;
 			set {
-				Instance.SetVSync(value);
+				Instance._SetVSync(value);
 				_VSync.Value = value;
 			}
 		}
-		protected abstract void SetVSync (bool vsync);
+		protected abstract void _SetVSync (bool vsync);
 
 		internal static FullscreenMode FullscreenMode {
 			get => (FullscreenMode)_FullscreenMode.Value;
 			set {
 				_FullscreenMode.Value = (int)value;
-				Instance.SetFullscreenMode(value);
+				Instance._SetFullscreenMode(value);
 			}
 		}
-		protected abstract void SetFullscreenMode (FullscreenMode mode);
+		protected abstract void _SetFullscreenMode (FullscreenMode mode);
 
-		public static int ScreenWidth => Instance.GetScreenWidth();
-		protected abstract int GetScreenWidth ();
+		public static int ScreenWidth => Instance._GetScreenWidth();
+		protected abstract int _GetScreenWidth ();
 
-		public static int ScreenHeight => Instance.GetScreenHeight();
-		protected abstract int GetScreenHeight ();
+		public static int ScreenHeight => Instance._GetScreenHeight();
+		protected abstract int _GetScreenHeight ();
+
+		public static void QuitApplication () => Instance._QuitApplication();
+		protected abstract void _QuitApplication ();
+
+		protected abstract IEnumerable<KeyValuePair<int, object>> _ForAllAudioClips ();
+
 
 		// Listener
-		protected abstract void AddGameTryingToQuitListener (System.Func<bool> callback);
-		protected abstract void AddGameQuittingListener (System.Action callback);
+		protected abstract void _AddGameQuittingListener (System.Action callback);
+		protected abstract void _AddGameTryingToQuitListener (System.Func<bool> callback);
+		protected abstract void _AddTextInputListener (System.Action<char> callback);
+
 
 		// Debug
-		public static void Log (object target) => Instance?.DebugLog(target);
-		protected abstract void DebugLog (object target);
+		public static void Log (object target) => Instance?._Log(target);
+		protected abstract void _Log (object target);
 
-		public static void LogWarning (object target) => Instance?.DebugLogWarning(target);
-		protected abstract void DebugLogWarning (object target);
+		public static void LogWarning (object target) => Instance?._LogWarning(target);
+		protected abstract void _LogWarning (object target);
 
-		public static void LogError (object target) => Instance?.DebugLogError(target);
-		protected abstract void DebugLogError (object target);
+		public static void LogError (object target) => Instance?._LogError(target);
+		protected abstract void _LogError (object target);
 
-		public static void LogException (System.Exception ex) => Instance?.DebugLogException(ex);
-		protected abstract void DebugLogException (System.Exception ex);
+		public static void LogException (System.Exception ex) => Instance?._LogException(ex);
+		protected abstract void _LogException (System.Exception ex);
 
-		internal static void SetDebugEnable (bool enable) => Instance?.SetDebugLoggerEnable(enable);
-		protected abstract void SetDebugLoggerEnable (bool enable);
+		internal static void SetDebugEnable (bool enable) => Instance?._SetDebugEnable(enable);
+		protected abstract void _SetDebugEnable (bool enable);
 
-		internal static bool GetDebugEnable () => Instance != null && Instance.GetDebugLoggerEnable();
-		protected abstract bool GetDebugLoggerEnable ();
+		internal static bool GetDebugEnable () => Instance != null && Instance._GetDebugEnable();
+		protected abstract bool _GetDebugEnable ();
 
 
 		// Camera
 		internal static FRect CameraScreenLocacion {
-			get => Instance.GetCameraScreenLocacion();
-			set => Instance.SetCameraScreenLocacion(value);
+			get => Instance._GetCameraScreenLocacion();
+			set => Instance._SetCameraScreenLocacion(value);
 		}
-		protected abstract FRect GetCameraScreenLocacion ();
-		protected abstract void SetCameraScreenLocacion (FRect rect);
+		protected abstract FRect _GetCameraScreenLocacion ();
+		protected abstract void _SetCameraScreenLocacion (FRect rect);
 
-		public static float CameraAspect => Instance.GetCameraAspect();
-		protected abstract float GetCameraAspect ();
+		public static float CameraAspect => Instance._GetCameraAspect();
+		protected abstract float _GetCameraAspect ();
 
-		public static float CameraOrthographicSize => Instance.GetCameraOrthographicSize();
-		protected abstract float GetCameraOrthographicSize ();
+		public static float CameraOrthographicSize => Instance._GetCameraOrthographicSize();
+		protected abstract float _GetCameraOrthographicSize ();
 
 
 		// Render
-		internal static void InvokeOnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) => Instance.OnRenderingLayerCreated(index, name, sortingOrder, capacity);
-		protected abstract void OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity);
+		internal static void OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) => Instance._OnRenderingLayerCreated(index, name, sortingOrder, capacity);
+		protected abstract void _OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity);
 
-		internal static void InvokeOnTextLayerCreated (int index, string name, int sortingOrder, int capacity) => Instance.OnTextLayerCreated(index, name, sortingOrder, capacity);
-		protected abstract void OnTextLayerCreated (int index, string name, int sortingOrder, int capacity);
+		internal static void OnTextLayerCreated (int index, string name, int sortingOrder, int capacity) => Instance._OnTextLayerCreated(index, name, sortingOrder, capacity);
+		protected abstract void _OnTextLayerCreated (int index, string name, int sortingOrder, int capacity);
 
-		protected abstract void OnCameraUpdate ();
+		protected abstract void _OnCameraUpdate ();
 
-		internal static void InvokeLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) => Instance.OnLayerUpdate(layerIndex, isTextLayer, cells, cellCount, ref prevCellCount);
-		protected abstract void OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount);
+		internal static void OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) => Instance._OnLayerUpdate(layerIndex, isTextLayer, cells, cellCount, ref prevCellCount);
+		protected abstract void _OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount);
 
-		public static SpriteSheet LoadSpriteSheet () => Instance.LoadSheetFromDisk();
-		protected virtual SpriteSheet LoadSheetFromDisk () => JsonUtil.LoadOrCreateJson<SpriteSheet>(AngePath.SheetRoot);
+		public static int TextLayerCount => Instance._GetTextLayerCount();
+		protected abstract int _GetTextLayerCount ();
 
-		public static object LoadSheetTexture () => Instance.LoadSheetTextureFromDisk();
-		protected abstract object LoadSheetTextureFromDisk ();
+		internal static string GetTextLayerName (int index) => Instance._GetTextLayerName(index);
+		protected abstract string _GetTextLayerName (int index);
 
-		public static int TextLayerCount => Instance.GetTextLayerCount();
-		protected abstract int GetTextLayerCount ();
+		internal static int GetFontSize (int index) => Instance._GetFontSize(index);
+		protected abstract int _GetFontSize (int index);
 
-		internal static string GetTextLayerNameAt (int index) => Instance.GetTextLayerName(index);
-		protected abstract string GetTextLayerName (int index);
+		internal static CellRenderer.CharSprite FillCharSprite (int layerIndex, char c, int textSize, int rebuildVersion, CellRenderer.CharSprite charSprite, out bool filled) => Instance._FillCharSprite(layerIndex, c, textSize, rebuildVersion, charSprite, out filled);
+		protected abstract CellRenderer.CharSprite _FillCharSprite (int layerIndex, char c, int textSize, int rebuildVersion, CellRenderer.CharSprite charSprite, out bool filled);
 
-		internal static int GetFontSizeAt (int index) => Instance.GetFontSize(index);
-		protected abstract int GetFontSize (int index);
+		internal static void RequestStringForFont (int layerIndex, int textSize, string content) => Instance._RequestStringForFont(layerIndex, textSize, content);
+		protected abstract void _RequestStringForFont (int layerIndex, int textSize, string content);
 
-		internal static CellRenderer.CharSprite FillCharSprite (int layerIndex, char c, int textSize, int rebuildVersion, CellRenderer.CharSprite charSprite, out bool filled) => Instance.FillInfoToCharSprite(layerIndex, c, textSize, rebuildVersion, charSprite, out filled);
-		protected abstract CellRenderer.CharSprite FillInfoToCharSprite (int layerIndex, char c, int textSize, int rebuildVersion, CellRenderer.CharSprite charSprite, out bool filled);
+		internal static void RequestStringForFont (int layerIndex, int textSize, char[] content) => Instance._RequestStringForFont(layerIndex, textSize, content);
+		protected abstract void _RequestStringForFont (int layerIndex, int textSize, char[] content);
 
-		internal static void RequestStringForFont (int layerIndex, int textSize, string content) => Instance.RequestStringForFontTexture(layerIndex, textSize, content);
-		protected abstract void RequestStringForFontTexture (int layerIndex, int textSize, string content);
-
-		internal static void RequestStringForFont (int layerIndex, int textSize, char[] content) => Instance.RequestStringForFontTexture(layerIndex, textSize, content);
-		protected abstract void RequestStringForFontTexture (int layerIndex, int textSize, char[] content);
-
-		public static void SetBackgroundTint (Byte4 top, Byte4 bottom) {
+		public static void SetSkyboxTint (Byte4 top, Byte4 bottom) {
 			ForceBackgroundTintFrame = GlobalFrame + 1;
 			SkyTintTopColor = top;
 			SkyTintBottomColor = bottom;
-			Instance.SetSkyboxTint(top, bottom);
+			Instance._SetSkyboxTint(top, bottom);
 		}
-		protected abstract void SetSkyboxTint (Byte4 top, Byte4 bottom);
+		protected abstract void _SetSkyboxTint (Byte4 top, Byte4 bottom);
+
+
+		// Music
+		public static void PlayMusic (int id) => Instance._PlayMusic(id);
+		protected abstract void _PlayMusic (int id);
+
+		public static void StopMusic () => Instance._StopMusic();
+		protected abstract void _StopMusic ();
+
+		public static void PauseMusic () => Instance._PauseMusic();
+		protected abstract void _PauseMusic ();
+
+		public static void UnPauseMusic () => Instance._UnPauseMusic();
+		protected abstract void _UnPauseMusic ();
+
+		internal static void SetMusicVolume (int volume) {
+			_MusicVolume.Value = volume;
+			Instance._SetMusicVolume(volume);
+		}
+		protected abstract void _SetMusicVolume (int volume);
+
+		internal static bool IsMusicPlaying => Instance._IsMusicPlaying();
+		protected abstract bool _IsMusicPlaying ();
+
+		// Sound
+		internal static void PlaySound (int id, float volume) => Instance._PlaySound(id, volume);
+		protected abstract void _PlaySound (int id, float volume);
+
+		internal static void StopAllSounds () => Instance._StopAllSounds();
+		protected abstract void _StopAllSounds ();
+
+		internal static void SetSoundVolume (int volume) {
+			_SoundVolume.Value = volume;
+			Instance._SetSoundVolume(volume);
+		}
+		protected abstract void _SetSoundVolume (int volume);
+
+
+		// Cursor
+		public static void ShowCursor () => Instance._ShowCursor();
+		protected abstract void _ShowCursor ();
+
+		public static void HideCursor () => Instance._HideCursor();
+		protected abstract void _HideCursor ();
+
+		public static bool CursorVisible => Instance._CursorVisible();
+		protected abstract bool _CursorVisible ();
+
+		public static void SetCursor (int index) => Instance._SetCursor(index);
+		protected abstract void _SetCursor (int index);
+
+		public static void SetCursorToNormal () => Instance._SetCursorToNormal();
+		protected abstract void _SetCursorToNormal ();
 
 
 	}

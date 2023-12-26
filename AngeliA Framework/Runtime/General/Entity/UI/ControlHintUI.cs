@@ -1,8 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 
 
 namespace AngeliaFramework {
@@ -70,7 +67,7 @@ namespace AngeliaFramework {
 
 
 		// MSG
-		[OnGameInitialize(64)]
+		[OnGameInitializeLater(64)]
 		public static void Initialize () => Stage.SpawnEntity<ControlHintUI>(0, 0);
 
 
@@ -360,9 +357,9 @@ namespace AngeliaFramework {
 				HintLabel, rect, out var bounds
 			);
 			if (bgCell != null) {
-				bgCell.Y = Mathf.Min(bgCell.Y, bounds.y - BG_PADDING_Y);
-				bgCell.Width = Mathf.Max(bgCell.Width, bounds.xMax - bgCell.X + BG_PADDING_X);
-				bgCell.Height = Mathf.Max(bgCell.Height, bounds.yMax - bgCell.Y + BG_PADDING_Y);
+				bgCell.Y = Util.Min(bgCell.Y, bounds.y - BG_PADDING_Y);
+				bgCell.Width = Util.Max(bgCell.Width, bounds.xMax - bgCell.X + BG_PADDING_X);
+				bgCell.Height = Util.Max(bgCell.Height, bounds.yMax - bgCell.Y + BG_PADDING_Y);
 			}
 
 			CellRenderer.SetLayer(oldLayer);

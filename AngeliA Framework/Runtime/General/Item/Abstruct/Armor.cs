@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -217,7 +216,7 @@ namespace AngeliaFramework {
 					totalProgress++;
 					progressive++;
 #if UNITY_EDITOR
-					if (safe == 1023) Debug.LogWarning($"Armor {armorType} is having a progressive loop.");
+					if (safe == 1023) Game.LogWarning($"Armor {armorType} is having a progressive loop.");
 #endif
 				}
 				// Forward
@@ -228,7 +227,7 @@ namespace AngeliaFramework {
 					type = genericArgs[1];
 					totalProgress++;
 #if UNITY_EDITOR
-					if (safe == 1023) Debug.LogWarning($"Armor {armorType} is having a progressive loop.");
+					if (safe == 1023) Game.LogWarning($"Armor {armorType} is having a progressive loop.");
 #endif
 				}
 				return progressive;
