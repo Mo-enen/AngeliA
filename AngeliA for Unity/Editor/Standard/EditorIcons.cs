@@ -20,7 +20,7 @@ namespace AngeliaForUnity.Editor {
 		static GUIStyle iconPreviewBlack = null;
 		static GUIStyle iconPreviewWhite = null;
 		static string[] ico_list = new string[0];
-		Float2 scroll;
+		Vector2 scroll;
 		int buttonSize = 70;
 		string search = "";
 
@@ -29,7 +29,7 @@ namespace AngeliaForUnity.Editor {
 		[MenuItem("AngeliA/Other/Editor Icons", priority = -1001)]
 		public static void EditorIconsOpen () {
 			var w = GetWindow<EditorIcons>(true, "Editor Icons", true);
-			w.minSize = new Float2(320, 450);
+			w.minSize = new Vector2(320, 450);
 		}
 
 

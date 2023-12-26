@@ -259,10 +259,6 @@ namespace AngeliaFramework {
 			return string.Format("({0}, {1}, {2})", x.ToString(format, formatProvider), y.ToString(format, formatProvider), z.ToString(format, formatProvider));
 		}
 
-#if UNITY_2017_1_OR_NEWER
-		public static implicit operator UnityEngine.Vector3Int (Int3 v) => new(v.x, v.y, v.z);
-		public static implicit operator Int3 (UnityEngine.Vector3Int v) => new(v.x, v.y, v.z);
-#endif
 
 	}
 

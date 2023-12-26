@@ -11,13 +11,13 @@ namespace AngeliaForUnity.Editor {
 
 		// Override
 		protected virtual bool Enable => true;
-		protected virtual FRect PanelLeft => default;
-		protected virtual FRect PanelRight => default;
-		protected virtual Int2 CanvasCellCount => new(128, 128);
+		protected virtual Rect PanelLeft => default;
+		protected virtual Rect PanelRight => default;
+		protected virtual Vector2Int CanvasCellCount => new(128, 128);
 		protected virtual float ViewPadding => 256f;
-		protected virtual Float2 ZoomRange => new(1f, 16f);
-		protected virtual Byte4 GridTint => new(0, 0, 0, 16);
-		protected virtual Byte4 BackgroundTint => new(0, 0, 0, 255);
+		protected virtual Vector2 ZoomRange => new(1f, 16f);
+		protected virtual Color32 GridTint => new(0, 0, 0, 16);
+		protected virtual Color32 BackgroundTint => new(0, 0, 0, 255);
 		protected virtual float StartZoom => 5f;
 		protected virtual float CanvasLerp => 12f;
 		protected virtual bool FitCanvasOnStart => false;
@@ -25,23 +25,23 @@ namespace AngeliaForUnity.Editor {
 		protected virtual float MouseDragZoomIntensity => -100f;
 
 		// Short
-		protected Int2 CanvasMinPos { get; set; } = default;
-		protected Int2 CanvasMaxPos { get; set; } = default;
-		protected FRect TargetCanvasRect => _TargetCanvasRect;
-		protected FRect CanvasRect => _CanvasRect;
+		protected Vector2Int CanvasMinPos { get; set; } = default;
+		protected Vector2Int CanvasMaxPos { get; set; } = default;
+		protected Rect TargetCanvasRect => _TargetCanvasRect;
+		protected Rect CanvasRect => _CanvasRect;
 		protected bool MouseInPanel { get; private set; } = false;
 		protected int MouseButton { get; private set; } = -1;
 		protected bool MouseHeavyDragged { get; private set; } = false;
 		protected bool MouseDownInPanel { get; set; } = false;
-		protected Float2 MouseDownPosition_GUI { get; private set; } = default;
-		protected Int2 MouseDownPosition_Global { get; private set; } = default;
-		protected FRect CursorRect { get; private set; } = default;
+		protected Vector2 MouseDownPosition_GUI { get; private set; } = default;
+		protected Vector2Int MouseDownPosition_Global { get; private set; } = default;
+		protected Rect CursorRect { get; private set; } = default;
 		protected float Zoom { get; private set; } = 1f;
 
 		// Data
-		private FRect _TargetCanvasRect = default;
-		private FRect _CanvasRect = default;
-		private FRect GuiWindowRect = default;
+		private Rect _TargetCanvasRect = default;
+		private Rect _CanvasRect = default;
+		private Rect GuiWindowRect = default;
 		private double PrevTime = double.MinValue;
 		private float DeltaTime = 1f;
 		private bool CanvasInitialized = false;
@@ -138,7 +138,7 @@ namespace AngeliaForUnity.Editor {
 
 			using var _v = new GUILayout.VerticalScope(GUILayout.ExpandWidth(true));
 
-			var windowCanvas = new FRect(0, 0, position.width, position.height).Shrink(PanelLeft.width, PanelRight.width, 0, 0);
+			var windowCanvas = new Rect(0, 0, position.width, position.height).Shrink(PanelLeft.width, PanelRight.width, 0, 0);
 			var canvasRect = windowCanvas.Fit((float)CanvasCellCount.x / CanvasCellCount.y);
 			GuiWindowRect = windowCanvas;
 			Zoom = Zoom.Clamp(ZoomRange.x, ZoomRange.y);
@@ -201,7 +201,7 @@ namespace AngeliaForUnity.Editor {
 					Repaint();
 					break;
 				case EventType.MouseDrag:
-					if (!MouseHeavyDragged && Float2.Distance(Event.current.mousePosition, MouseDownPosition_GUI) > 12f) {
+					if (!MouseHeavyDragged && Vector2.Distance(Event.current.mousePosition, MouseDownPosition_GUI) > 12f) {
 						MouseHeavyDragged = true;
 					}
 					OnMouseDrag();
@@ -223,8 +223,8 @@ namespace AngeliaForUnity.Editor {
 
 		private void GUI_Gizmos () {
 			var mousePos = Event.current.mousePosition;
-			var cellSize = new Float2(CanvasRect.width / CanvasCellCount.x, CanvasRect.height / CanvasCellCount.y);
-			var cursorRect = new FRect(
+			var cellSize = new Vector2(CanvasRect.width / CanvasCellCount.x, CanvasRect.height / CanvasCellCount.y);
+			var cursorRect = new Rect(
 				(mousePos.x - CanvasRect.x).UFloor(cellSize.x) + CanvasRect.x,
 				(mousePos.y - CanvasRect.y).UFloor(cellSize.y) + CanvasRect.y,
 				cellSize.x, cellSize.y
@@ -246,7 +246,7 @@ namespace AngeliaForUnity.Editor {
 		// API
 		protected void DrawBackground () {
 
-			var windowCanvas = new FRect(0, 0, position.width, position.height).Shrink(PanelLeft.width, PanelRight.width, 0, 0);
+			var windowCanvas = new Rect(0, 0, position.width, position.height).Shrink(PanelLeft.width, PanelRight.width, 0, 0);
 
 			// BG
 			if (BackgroundTint.a > 0) {
@@ -255,7 +255,7 @@ namespace AngeliaForUnity.Editor {
 
 			// Grid
 			if (GridTint.a > 0) {
-				var cellSize = new Float2(CanvasRect.width / CanvasCellCount.x, CanvasRect.height / CanvasCellCount.y);
+				var cellSize = new Vector2(CanvasRect.width / CanvasCellCount.x, CanvasRect.height / CanvasCellCount.y);
 				float l = (windowCanvas.xMin - CanvasRect.x).UFloor(cellSize.x) + CanvasRect.x;
 				float r = (windowCanvas.xMax - CanvasRect.x).UCeil(cellSize.x) + CanvasRect.x;
 				float d = (windowCanvas.yMin - CanvasRect.y).UFloor(cellSize.y) + CanvasRect.y;
@@ -276,8 +276,8 @@ namespace AngeliaForUnity.Editor {
 		}
 
 
-		protected Int2 GUI_to_Global (Float2 guiPos, FRect canvasRect) {
-			var size = new Float2(canvasRect.width / CanvasCellCount.x, canvasRect.height / CanvasCellCount.y);
+		protected Vector2Int GUI_to_Global (Vector2 guiPos, Rect canvasRect) {
+			var size = new Vector2(canvasRect.width / CanvasCellCount.x, canvasRect.height / CanvasCellCount.y);
 			return new(
 				((guiPos.x - canvasRect.x) / size.x).FloorToInt(),
 				-((guiPos.y - canvasRect.y) / size.y).CeilToInt() + CanvasCellCount.y
@@ -285,8 +285,8 @@ namespace AngeliaForUnity.Editor {
 		}
 
 
-		protected Float2 Global_to_GUI (Int2 globalCellPos, FRect canvasRect) {
-			var size = new Float2(canvasRect.width / CanvasCellCount.x, canvasRect.height / CanvasCellCount.y);
+		protected Vector2 Global_to_GUI (Vector2Int globalCellPos, Rect canvasRect) {
+			var size = new Vector2(canvasRect.width / CanvasCellCount.x, canvasRect.height / CanvasCellCount.y);
 			return new(
 				globalCellPos.x * size.x + canvasRect.x,
 				-(globalCellPos.y - CanvasCellCount.y) * size.y + canvasRect.y
@@ -295,7 +295,7 @@ namespace AngeliaForUnity.Editor {
 
 
 		protected void FitView () {
-			var windowCanvas = new FRect(0, 0, position.width, position.height).Shrink(PanelLeft.width, PanelRight.width, 0, 0);
+			var windowCanvas = new Rect(0, 0, position.width, position.height).Shrink(PanelLeft.width, PanelRight.width, 0, 0);
 			var canvasRect = windowCanvas.Fit((float)CanvasCellCount.x / CanvasCellCount.y);
 			_TargetCanvasRect = _CanvasRect = canvasRect;
 			Zoom = Mathf.Min(
@@ -310,7 +310,7 @@ namespace AngeliaForUnity.Editor {
 
 		// Canvas
 		protected void MoveCanvasTo (float x, float y, float zoom) {
-			var windowCanvas = new FRect(0, 0, position.width, position.height).Shrink(PanelLeft.width, PanelRight.width, 0, 0);
+			var windowCanvas = new Rect(0, 0, position.width, position.height).Shrink(PanelLeft.width, PanelRight.width, 0, 0);
 			var canvasRect = windowCanvas.Fit((float)CanvasCellCount.x / CanvasCellCount.y);
 			_TargetCanvasRect.x = _CanvasRect.x = x;
 			_TargetCanvasRect.y = _CanvasRect.y = y;
@@ -321,7 +321,7 @@ namespace AngeliaForUnity.Editor {
 
 
 		// LGC
-		private void ApplyZoom (float delta, FRect canvasRect, Float2 pivot) {
+		private void ApplyZoom (float delta, Rect canvasRect, Vector2 pivot) {
 			if (!delta.NotAlmostZero()) return;
 			float oldZoom = Zoom;
 			Zoom = (Zoom + delta).Clamp(ZoomRange.x, ZoomRange.y);

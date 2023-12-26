@@ -26,7 +26,7 @@ namespace AngeliaForUnity.Editor {
 		};
 		private static GUIStyle _MasterStyle = null;
 		private static Texture2D AseIcon = null;
-		private Float2 MasterScrollPos = default;
+		private Vector2 MasterScrollPos = default;
 		private AseData CurrentAse = null;
 		private string SliceLines = "";
 		private string AsePath = "";
@@ -36,10 +36,10 @@ namespace AngeliaForUnity.Editor {
 		private bool ShowCopyFlash = false;
 		private bool ShowPasteFlash = false;
 		private string SliceCreator_Name = "Slice {x} {y}";
-		private Int2 SliceCreator_Start = new(1, 1);
-		private Int2 SliceCreator_Size = new(16, 16);
-		private Int2 SliceCreator_Count = new(1, 1);
-		private Int2 SliceCreator_Padding = new(1, 1);
+		private Vector2Int SliceCreator_Start = new(1, 1);
+		private Vector2Int SliceCreator_Size = new(16, 16);
+		private Vector2Int SliceCreator_Count = new(1, 1);
+		private Vector2Int SliceCreator_Padding = new(1, 1);
 		private bool SliceCreator_Open = false;
 		private bool AddEmptyLineBetween = false;
 		private SortMode Sort = SortMode.Original;
@@ -56,8 +56,8 @@ namespace AngeliaForUnity.Editor {
 		[MenuItem("AngeliA/Slice Editor", false, 28)]
 		public static void OpenEditor () {
 			var window = GetWindow<SliceEditor>(true, "Slice Editor", true);
-			window.minSize = new Float2(256, 256);
-			window.maxSize = new Float2(1024, 1024);
+			window.minSize = new Vector2(256, 256);
+			window.maxSize = new Vector2(1024, 1024);
 			window.AllAses.Clear();
 			foreach (var filePath in AngeEditorUtil.ForAllAsepriteFiles()) {
 				window.AllAses.Add(filePath);
@@ -369,7 +369,7 @@ namespace AngeliaForUnity.Editor {
 			var offset = SliceCreator_Start.Clamped(0, 0);
 			var size = SliceCreator_Size.Clamped(0, 0);
 			var count = SliceCreator_Count.Clamped(0, 0);
-			Byte4 color32 = Color.black;
+			Color32 color32 = Color.black;
 			string nameFormat = SliceCreator_Name.Replace("{x}", "{0}").Replace("{y}", "{1}").Replace("{i}", "{2}");
 			int index = 0;
 			for (int j = 0; j < count.y; j++) {

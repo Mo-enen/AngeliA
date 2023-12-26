@@ -195,7 +195,7 @@ namespace AngeliaForUnity.Editor {
 
 			// Default Color
 			for (int i = 0; i < colors.Length; i++) {
-				colors[i] = Color.clear;
+				colors[i] = new Byte4(0, 0, 0, 0);
 			}
 
 			// Set Colors

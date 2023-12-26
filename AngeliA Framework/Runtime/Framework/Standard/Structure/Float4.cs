@@ -304,10 +304,6 @@ namespace AngeliaFramework {
 			return Dot(this, this);
 		}
 
-#if UNITY_2017_1_OR_NEWER
-		public static implicit operator UnityEngine.Vector4 (Float4 v) => new(v.x, v.y, v.z, v.w);
-		public static implicit operator Float4 (UnityEngine.Vector4 v) => new(v.x, v.y, v.z, v.w);
-#endif
 
 	}
 }

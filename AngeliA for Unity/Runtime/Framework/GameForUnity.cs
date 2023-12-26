@@ -22,7 +22,7 @@ namespace AngeliaForUnity {
 		public Font[] Fonts { get; init; } = new Font[0];
 		public AudioClip[] AudioClips { get; init; } = new AudioClip[0];
 		public Texture2D[] Cursors { get; init; } = new Texture2D[0];
-		public Float2[] CursorPivots { get; init; } = new Float2[0];
+		public Vector2[] CursorPivots { get; init; } = new Vector2[0];
 
 		// Data
 		private static GameForUnity InstanceUnity = null;

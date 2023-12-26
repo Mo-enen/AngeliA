@@ -366,12 +366,5 @@ namespace AngeliaFramework {
 		}
 
 
-
-#if UNITY_2017_1_OR_NEWER
-		public static implicit operator UnityEngine.Vector2 (Float2 v) => new(v.x, v.y);
-		public static implicit operator Float2 (UnityEngine.Vector2 v) => new(v.x, v.y);
-#endif
-
-
 	}
 }

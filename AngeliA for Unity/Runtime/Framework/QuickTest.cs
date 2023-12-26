@@ -39,7 +39,7 @@ namespace AngeliaFramework {
 		private static readonly Dictionary<string, (int value, int min, int max, bool editable)> IntPool = new();
 		private static readonly List<string> Keys = new();
 		private static readonly GUIStyle PanelStyle = new() { padding = new RectOffset(24, 24, 24, 24), };
-		private Float2 ScrollPos = default;
+		private Vector2 ScrollPos = default;
 
 
 		[InitializeOnLoadMethod]
@@ -59,7 +59,7 @@ namespace AngeliaFramework {
 			if (Instance == null) {
 				var oldFocus = focusedWindow;
 				Instance = GetWindow<QTest>(true, "QTest", false);
-				Instance.minSize = new Float2(320, 240);
+				Instance.minSize = new Vector2(320, 240);
 				if (oldFocus != null) {
 					FocusWindowIfItsOpen(oldFocus.GetType());
 				}

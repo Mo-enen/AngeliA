@@ -221,8 +221,14 @@ namespace AngeliaForUnity.Editor {
 			}
 
 			// Sheets
-			var sheet = AngeUtil.CreateSpriteSheet(texture, flexSprites);
+			var sheet = AngeUtil.CreateSpriteSheet(texture.width, texture.height, flexSprites);
 			if (sheet != null) {
+				var pixels = texture.GetPixels32();
+				var bytePixels = new Byte4[pixels.Length];
+				for (int i = 0; i < bytePixels.Length; i++) {
+					bytePixels[i] = pixels[i].ToAngelia();
+				}
+				AngeUtil.FillSummaryForSheet(sheet, texture.width, texture.height, bytePixels);
 				JsonUtil.SaveJson(sheet, AngePath.SheetRoot);
 			}
 
@@ -311,14 +317,10 @@ namespace AngeliaForUnity.Editor {
 					var pixels = new Byte4[texture.width * texture.height];
 					for (int j = 0; j < h; j++) {
 						for (int i = 0; i < w; i++) {
-							pixels[j * w + i] = sourcePixels[(y + j) * sourceWidth + (x + i)];
+							pixels[j * w + i] = sourcePixels[(y + j) * sourceWidth + (x + i)].ToAngelia();
 						}
 					}
-					var unityPixels = new UnityEngine.Color32[pixels.Length];
-					for (int j = 0; j < unityPixels.Length; j++) {
-						unityPixels[j] = pixels[j];
-					}
-					texture.SetPixels32(unityPixels);
+					texture.SetPixels32(pixels.ToUnity());
 					texture.Apply();
 
 					// Add Packing Item
@@ -349,7 +351,7 @@ namespace AngeliaForUnity.Editor {
 
 			// Add "Pixel" to Items
 			var pixelTexture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-			pixelTexture.SetPixels32(new UnityEngine.Color32[1] { new Byte4(255, 255, 255, 255) });
+			pixelTexture.SetPixels32(new Color32[1] { new Color32(255, 255, 255, 255) });
 			pixelTexture.Apply();
 			items.Add(new PackingItem() {
 				Border = Float4.zero,
@@ -364,13 +366,27 @@ namespace AngeliaForUnity.Editor {
 			items.Sort(PackingItemComparer.Instance);
 
 			// Pack
-			var textures = new Texture2D[items.Count];
-			for (int i = 0; i < textures.Length; i++) textures[i] = items[i].Texture;
-			var uvs = AngeliaRectPacking.Pack(out sheetTexture, textures, 16384);
+			var textures = new AngeliaRectPacking.TextureData[items.Count];
+			for (int i = 0; i < textures.Length; i++) {
+				var sourceTexture = items[i].Texture;
+				var pixels32 = sourceTexture.GetPixels32();
+				var pixels = new Byte4[pixels32.Length];
+				for (int j = 0; j < pixels.Length; j++) {
+					pixels[j] = pixels32[j].ToAngelia();
+				}
+				textures[i] = new AngeliaRectPacking.TextureData(
+					sourceTexture.width, sourceTexture.height, pixels
+				);
+			}
+
+			var uvs = AngeliaRectPacking.Pack(out var sheetTextureData, textures, 16384);
 			for (int i = 0; i < items.Count; i++) {
 				items[i].UvResult = uvs[i];
 			}
 			LastSpriteCount.Value = items.Count;
+			sheetTexture = new Texture2D(sheetTextureData.Width, sheetTextureData.Height, TextureFormat.ARGB32, false);
+			sheetTexture.SetPixels32(sheetTextureData.Pixels.ToUnity());
+			sheetTexture.Apply();
 
 			// Create Meta
 			var resultList = new List<FlexSprite>();

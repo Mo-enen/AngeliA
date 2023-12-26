@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
 
 namespace AngeliaFramework {
@@ -323,7 +324,7 @@ namespace AngeliaFramework {
 				RefreshState(MouseMidState, Mouse.middleButton.isPressed);
 
 				float scroll = Mouse.scroll.ReadValue().y;
-				int scrollDelta = scroll.AlmostZero() ? 0 : scroll > 0f ? 1 : -1;
+				int scrollDelta = scroll.Abs() < 0.1f ? 0 : scroll > 0f ? 1 : -1;
 				MouseWheelDelta = scrollDelta;
 
 			} else {
@@ -359,7 +360,7 @@ namespace AngeliaFramework {
 			foreach (var (key, state) in GamepadStateMap) {
 				state.PrevHolding = state.Holding;
 				if (Gamepad != null) {
-					state.Holding = Gamepad[(UnityEngine.InputSystem.LowLevel.GamepadButton)key].isPressed;
+					state.Holding = Gamepad[(GamepadButton)key].isPressed;
 					if (state.Down) UsingGamepad = true;
 				} else {
 					state.Holding = false;
@@ -425,7 +426,7 @@ namespace AngeliaFramework {
 
 				// Gamepad
 				if (Gamepad != null && Gamepad.enabled) {
-					state.Holding = Gamepad[(UnityEngine.InputSystem.LowLevel.GamepadButton)KeyMap[key].y].isPressed;
+					state.Holding = Gamepad[(GamepadButton)KeyMap[key].y].isPressed;
 					// Stick >> D-Pad
 					if (!state.Holding) {
 						switch (key) {
@@ -449,7 +450,7 @@ namespace AngeliaFramework {
 
 				// Keyboard
 				if (Keyboard != null && !state.Holding) {
-					state.Holding = Keyboard[(UnityEngine.InputSystem.Key)KeyMap[key].x].isPressed;
+					state.Holding = Keyboard[(Key)KeyMap[key].x].isPressed;
 					if (state.Holding) UsingGamepad = false;
 				}
 
@@ -470,7 +471,7 @@ namespace AngeliaFramework {
 
 				// Check Start from ESC and +
 				if (key == Gamekey.Start && !state.Holding) {
-					if (Keyboard != null && Keyboard[(UnityEngine.InputSystem.Key)KeyboardKey.Escape].isPressed) {
+					if (Keyboard != null && Keyboard[(Key)KeyboardKey.Escape].isPressed) {
 						state.Holding = true;
 						UsingGamepad = false;
 					}
@@ -509,7 +510,7 @@ namespace AngeliaFramework {
 			foreach (var (key, state) in KeyboardStateMap) {
 				state.PrevHolding = state.Holding;
 				if (Keyboard != null) {
-					state.Holding = Keyboard[(UnityEngine.InputSystem.Key)key].isPressed;
+					state.Holding = Keyboard[(Key)key].isPressed;
 					if (state.Down) UsingGamepad = false;
 				} else {
 					state.Holding = false;
@@ -585,7 +586,8 @@ namespace AngeliaFramework {
 			Float2 direction = default;
 			float magnitude = 0f;
 			if (Gamepad != null) {
-				direction = Gamepad.leftStick.ReadValue();
+				var value = Gamepad.leftStick.ReadValue();
+				direction = new Float2(value.x, value.y);
 				magnitude = direction.magnitude;
 			}
 			if (magnitude < 0.05f) {
@@ -768,7 +770,7 @@ namespace AngeliaFramework {
 				if (i == 14) i = 0x20;
 				if (i == 15) i = 33;
 				var btn = (GamepadKey)i;
-				if (pad[(UnityEngine.InputSystem.LowLevel.GamepadButton)btn].isPressed) {
+				if (pad[(GamepadButton)btn].isPressed) {
 					button = btn;
 					return true;
 				}

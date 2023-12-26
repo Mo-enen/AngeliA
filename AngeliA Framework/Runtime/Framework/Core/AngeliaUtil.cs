@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using UnityEngine;
 
 
 namespace AngeliaFramework {
@@ -16,9 +15,9 @@ namespace AngeliaFramework {
 
 
 		// Sheet
-		public static SpriteSheet CreateSpriteSheet (Texture2D sheetTexture, FlexSprite[] flexSprites) {
+		public static SpriteSheet CreateSpriteSheet (int textureWidth, int textureHeight, FlexSprite[] flexSprites) {
 
-			if (sheetTexture == null) return null;
+			if (textureWidth == 0 || textureHeight == 0) return null;
 
 			var sheet = new SpriteSheet {
 				Sprites = null,
@@ -31,8 +30,6 @@ namespace AngeliaFramework {
 			var metaList = new List<SpriteMeta>();
 			var sheetNames = new List<string>();
 			var sheetNamePool = new Dictionary<string, int>();
-			int width = sheetTexture.width;
-			int height = sheetTexture.height;
 			for (int i = 0; i < flexSprites.Length; i++) {
 				var flex = flexSprites[i];
 				var uvBorder = flex.Border;
@@ -68,8 +65,8 @@ namespace AngeliaFramework {
 
 				var newSprite = new AngeSprite() {
 					GlobalID = globalID,
-					UvBottomLeft = new(flex.Rect.xMin / width, flex.Rect.yMin / height),
-					UvTopRight = new(flex.Rect.xMax / width, flex.Rect.yMax / height),
+					UvBottomLeft = new(flex.Rect.xMin / textureWidth, flex.Rect.yMin / textureHeight),
+					UvTopRight = new(flex.Rect.xMax / textureWidth, flex.Rect.yMax / textureHeight),
 					GlobalWidth = globalWidth,
 					GlobalHeight = globalHeight,
 					UvBorder = uvBorder,// ldru
@@ -195,30 +192,21 @@ namespace AngeliaFramework {
 			sheet.Sprites = spriteList.ToArray();
 			sheet.SpriteChains = sChain;
 			sheet.Metas = metaList.ToArray();
-
-			// Summary
-			var summaryPool = new Dictionary<int, Byte4>();
-			FillBlockSummaryColorPool(sheet, sheetTexture, summaryPool);
-			for (int i = 0; i < sheet.Sprites.Length; i++) {
-				var sprite = sheet.Sprites[i];
-				sprite.SummaryTint = summaryPool.TryGetValue(sprite.GlobalID, out var color) ? color : default;
-			}
-
 			return sheet;
 		}
 
 
-		private static void FillBlockSummaryColorPool (SpriteSheet sheet, Texture2D texture, Dictionary<int, Byte4> pool) {
-			pool.Clear();
-			// Color Pool
+		public static void FillSummaryForSheet (SpriteSheet sheet, int textureWidth, int textureHeight, Byte4[] pixels) {
+
 			if (sheet == null) return;
+
+			// Color Pool
+			var pool = new Dictionary<int, Byte4>();
 			for (int i = 0; i < sheet.Sprites.Length; i++) {
 				var sp = sheet.Sprites[i];
 				if (pool.ContainsKey(sp.GlobalID)) continue;
-				if (texture == null) continue;
 				var color = GetThumbnailColor(
-					texture,
-					sp.GetTextureRect(texture.width, texture.height)
+					pixels, textureWidth, sp.GetTextureRect(textureWidth, textureHeight)
 				);
 				if (color.IsSame(Const.CLEAR)) continue;
 				pool.Add(sp.GlobalID, color);
@@ -242,23 +230,33 @@ namespace AngeliaFramework {
 				}
 			}
 
+			// Set Values
+			for (int i = 0; i < sheet.Sprites.Length; i++) {
+				var sprite = sheet.Sprites[i];
+				sprite.SummaryTint = pool.TryGetValue(sprite.GlobalID, out var color) ? color : default;
+			}
 
 			// Func
-			static Byte4 GetThumbnailColor (Texture2D texture, IRect rect) {
+			static Byte4 GetThumbnailColor (Byte4[] pixels, int width, IRect rect) {
 				var CLEAR = new Byte4(0, 0, 0, 0);
-				if (texture == null || rect.width <= 0 || rect.height <= 0) return CLEAR;
+				if (rect.width <= 0 || rect.height <= 0) return CLEAR;
 				var result = CLEAR;
 				try {
-					var pixels = texture.GetPixels(rect.x, rect.y, rect.width, rect.height);
-					if (pixels == null || pixels.Length == 0) return result;
 					var sum = Float3.zero;
 					float len = 0;
-					foreach (var pixel in pixels) {
-						if (pixel.a.NotAlmostZero()) {
-							sum.x += pixel.r;
-							sum.y += pixel.g;
-							sum.z += pixel.b;
-							len++;
+					int l = rect.x;
+					int r = rect.xMax;
+					int d = rect.y;
+					int u = rect.yMax;
+					for (int x = l; x < r; x++) {
+						for (int y = d; y < u; y++) {
+							var pixel = pixels[y * width + x];
+							if (pixel.a != 0) {
+								sum.x += pixel.r / 255f;
+								sum.y += pixel.g / 255f;
+								sum.z += pixel.b / 255f;
+								len++;
+							}
 						}
 					}
 					return new Byte4((byte)(sum.x * 255f / len), (byte)(sum.y * 255f / len), (byte)(sum.z * 255f / len), 255);
@@ -565,12 +563,12 @@ namespace AngeliaFramework {
 		public static float RandomFloat01 () => (float)GlobalRandom.NextDouble();
 		public static double RandomDouble01 () => GlobalRandom.NextDouble();
 		public static Byte4 RandomColor (int minH = 0, int maxH = 360, int minS = 0, int maxS = 100, int minV = 0, int maxV = 100, int minA = 0, int maxA = 255) {
-			var result = Color.HSVToRGB(
+			var result = Util.HsvToRgb(
 				RandomInt(minH, maxH) / 360f,
 				RandomInt(minS, maxS) / 100f,
 				RandomInt(minV, maxV) / 100f
 			);
-			result.a = RandomInt(minA, maxA) / 255f;
+			result.a = (byte)RandomInt(minA, maxA);
 			return result;
 		}
 

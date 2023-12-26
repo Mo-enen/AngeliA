@@ -629,7 +629,7 @@ namespace AngeliaForUnity.Editor {
 			public struct Pixel {
 
 				public byte this[int index] {
-					get {
+					readonly get {
 						return index == 0 ? r : index == 1 ? g : index == 2 ? b : a;
 					}
 					set {
@@ -746,18 +746,18 @@ namespace AngeliaForUnity.Editor {
 			}
 
 
-			public Byte4[] GetColors32 (ushort colorDepth, Byte4[] palette = null) {
-				if (Width <= 0 || Height <= 0) { return new Byte4[0]; }
+			public Color32[] GetColors32 (ushort colorDepth, Color32[] palette = null) {
+				if (Width <= 0 || Height <= 0) { return new Color32[0]; }
 				var rawBytes = GetRawBytes(colorDepth);
-				var colors = new Byte4[rawBytes.Length / (colorDepth / 8)];
-				if (colors.Length != Width * Height) { return new Byte4[0]; }
-				palette ??= new Byte4[0];
+				var colors = new Color32[rawBytes.Length / (colorDepth / 8)];
+				if (colors.Length != Width * Height) { return new Color32[0]; }
+				palette ??= new Color32[0];
 				switch (colorDepth) {
 					default:
 					case 32:
 						for (int i = 0; i < colors.Length; i++) {
 							int _i = (Height - i / Width - 1) * Width + (i % Width);
-							colors[i] = new Byte4(
+							colors[i] = new Color32(
 								rawBytes[_i * 4 + 0],
 								rawBytes[_i * 4 + 1],
 								rawBytes[_i * 4 + 2],
@@ -804,7 +804,7 @@ namespace AngeliaForUnity.Editor {
 			}
 
 
-			public Byte4[] GetColorsIn (ushort colorDepth, int aseHeight, Byte4[] pal, IRect range) {
+			public Color32[] GetColorsIn (ushort colorDepth, int aseHeight, Color32[] pal, RectInt range) {
 				int x = range.x;
 				int y = range.y;
 				int width = range.width;
@@ -813,7 +813,7 @@ namespace AngeliaForUnity.Editor {
 				if (colors.Length == 0) {
 					return null;
 				}
-				var newColors = new Byte4[width * height];
+				var newColors = new Color32[width * height];
 				int offsetY = aseHeight - Height - Y;
 				for (int i = 0; i < width; i++) {
 					for (int j = 0; j < height; j++) {
@@ -822,7 +822,7 @@ namespace AngeliaForUnity.Editor {
 						if (_i >= 0 && _j >= 0 && _i < Width && _j < Height) {
 							newColors[j * width + i] = colors[_j * Width + _i];
 						} else {
-							newColors[j * width + i] = new Byte4(0, 0, 0, 0);
+							newColors[j * width + i] = new Color32(0, 0, 0, 0);
 						}
 					}
 				}

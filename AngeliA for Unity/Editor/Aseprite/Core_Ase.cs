@@ -148,9 +148,10 @@ namespace AngeliaForUnity.Editor {
 			});
 
 			// Final
+
 			return new TaskResult.FrameResult() {
 				FrameIndex = frameIndex,
-				Pixels = pixels,
+				Pixels = pixels.ToAngelia(),
 				Sprites = sprites.ToArray(),
 				Width = width,
 				Height = height,

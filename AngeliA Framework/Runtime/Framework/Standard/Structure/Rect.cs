@@ -281,10 +281,6 @@ namespace AngeliaFramework {
 			return string.Format("(x:{0}, y:{1}, width:{2}, height:{3})", x.ToString(format, formatProvider), y.ToString(format, formatProvider), width.ToString(format, formatProvider), height.ToString(format, formatProvider));
 		}
 
-#if UNITY_2017_1_OR_NEWER
-		public static implicit operator UnityEngine.Rect (FRect v) => new(v.x, v.y, v.width, v.height);
-		public static implicit operator FRect (UnityEngine.Rect v) => new(v.x, v.y, v.width, v.height);
-#endif
 
 	}
 }

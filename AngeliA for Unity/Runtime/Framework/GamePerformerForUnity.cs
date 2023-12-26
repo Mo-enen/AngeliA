@@ -14,7 +14,7 @@ namespace AngeliaForUnity {
 		[SerializeField] Font[] m_Fonts = null;
 		[SerializeField] AudioClip[] m_AudioClips = null;
 		[SerializeField] Texture2D[] m_Cursors = null;
-		[SerializeField] Float2[] m_CursorPivots = null;
+		[SerializeField] Vector2[] m_CursorPivots = null;
 
 		// Data
 		public static GamePerformerForUnity Instance = null;
@@ -75,36 +75,36 @@ namespace AngeliaForUnity {
 			m_Cursors = cursors.ToArray();
 
 			// Cursor Pivots
-			m_CursorPivots = new Float2[m_Cursors.Length];
+			m_CursorPivots = new Vector2[m_Cursors.Length];
 			for (int i = 0; i < m_CursorPivots.Length; i++) {
 				var texture = m_Cursors[i];
-				var pivot = new Float2(texture.width / 2f, texture.height / 2f);
+				var pivot = new Vector2(texture.width / 2f, texture.height / 2f);
 				var oic = System.StringComparison.OrdinalIgnoreCase;
 				switch (texture.name) {
 					case var _name when _name.EndsWith("#bottom", oic):
-						pivot = new Float2(texture.width / 2f, texture.height);
+						pivot = new Vector2(texture.width / 2f, texture.height);
 						break;
 					case var _name when _name.EndsWith("#top", oic):
-						pivot = new Float2(texture.width / 2f, 0);
+						pivot = new Vector2(texture.width / 2f, 0);
 						break;
 					case var _name when _name.EndsWith("#left", oic):
-						pivot = new Float2(0, texture.height / 2f);
+						pivot = new Vector2(0, texture.height / 2f);
 						break;
 					case var _name when _name.EndsWith("#right", oic):
-						pivot = new Float2(texture.width, texture.height / 2f);
+						pivot = new Vector2(texture.width, texture.height / 2f);
 						break;
 
 					case var _name when _name.EndsWith("#bottomleft", oic):
-						pivot = new Float2(0, texture.height);
+						pivot = new Vector2(0, texture.height);
 						break;
 					case var _name when _name.EndsWith("#bottomright", oic):
-						pivot = new Float2(texture.width, texture.height);
+						pivot = new Vector2(texture.width, texture.height);
 						break;
 					case var _name when _name.EndsWith("#topleft", oic):
-						pivot = new Float2(0, 0);
+						pivot = new Vector2(0, 0);
 						break;
 					case var _name when _name.EndsWith("#topright", oic):
-						pivot = new Float2(texture.width, 0);
+						pivot = new Vector2(texture.width, 0);
 						break;
 				}
 				m_CursorPivots[i] = pivot;

@@ -55,7 +55,7 @@ namespace AngeliaForUnity.Editor {
 						AngeEditorUtil.GetAsepriteSheetInfo(data, out _, out _, out var pivotX, out var pivotY);
 						var results = new AseCore(data) {
 							AseName = name,
-							UserPivot = new Float2(
+							UserPivot = new Vector2(
 								pivotX.HasValue ? pivotX.Value / 1000f : 0.5f,
 								pivotY.HasValue ? pivotY.Value / 1000f : 0.5f
 							),

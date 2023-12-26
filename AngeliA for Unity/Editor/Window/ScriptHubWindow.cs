@@ -105,7 +105,7 @@ namespace AngeliaForUnity.Editor {
 		private Item[][] Scripts = new Item[0][];
 		private string[] Titles = new string[0];
 		private int[] Columns = new int[0];
-		private Float2 ScrollPos = default;
+		private Vector2 ScrollPos = default;
 		private float ColumnWidth = 1f;
 		private WindowStyle Style { get; set; } = null;
 		private HubSearchProvider HubSearch = null;
@@ -208,26 +208,6 @@ namespace AngeliaForUnity.Editor {
 
 			Style ??= new();
 
-			// Search
-			//var oldB = GUI.backgroundColor;
-			//GUI.backgroundColor = new Color(1f, 1f, 1f, 0.5f);
-			//var sRect = new Rect(2f, 2f, 32f, 32f);
-			//if (GUI.Button(sRect, GUIContent.none, GUI.skin.textField)) {
-			//	SearchTitleContent.text = UseSpaceHotkey.Value ? "Hotkey: Space" : "";
-			//	OpenSearchWindow();
-			//}
-			//GUI.backgroundColor = oldB;
-			//GUI.Label(sRect.Shrink(3), Style.SearchContent, MGUI.CenteredLabel);
-			//EditorGUIUtility.AddCursorRect(sRect, MouseCursor.Link);
-
-			// Reload
-			//var rRect = new Rect(0f, 34f, 64f, 22f);
-			//if (GUI.Button(rRect, "Reload", EditorStyles.linkLabel)) {
-			//	ReloadAllScripts();
-			//	RequireBlink = 3;
-			//}
-			//EditorGUIUtility.AddCursorRect(rRect, MouseCursor.Link);
-
 			// Content
 			using var scroll = new GUILayout.ScrollViewScope(ScrollPos);
 			using var _ = new GUILayout.VerticalScope();
@@ -258,7 +238,7 @@ namespace AngeliaForUnity.Editor {
 			EditorGUI.DropShadowLabel(MGUI.Rect(0, 24), title, MGUI.CenteredBoldLabel);
 			MGUI.Space(2);
 			string folderName = "";
-			var assetIconColor = new Byte4(209, 136, 60, 128);
+			var assetIconColor = new Color32(209, 136, 60, 128);
 			for (int i = 0; i < scripts.Length;) {
 				using (new GUILayout.HorizontalScope()) {
 					for (int col = 0; col < column && i < scripts.Length; col++, i++) {
@@ -280,7 +260,7 @@ namespace AngeliaForUnity.Editor {
 							if (icon != null) GUI.DrawTexture(iconRect.Shrink(2).Fit((float)icon.width / icon.height), icon);
 							GUI.Label(itemRect, name, Style.LabelStyle);
 							if (!item.InPackage) {
-								EditorGUI.DrawRect(new FRect(rect.x - 1, rect.y + 2, 1, rect.height - 4), assetIconColor);
+								EditorGUI.DrawRect(new Rect(rect.x - 1, rect.y + 2, 1, rect.height - 4), assetIconColor);
 							}
 							EditorGUIUtility.AddCursorRect(rect, MouseCursor.Link);
 						} else if (i < scripts.Length - 1 && scripts[i + 1].IsFile) {
@@ -494,7 +474,7 @@ namespace AngeliaForUnity.Editor {
 				HubSearch
 			);
 			if (window != null) {
-				window.position = new FRect(
+				window.position = new Rect(
 					position.x,
 					position.y + 20,
 					window.position.width,
@@ -525,7 +505,7 @@ namespace AngeliaForUnity.Editor {
 		}
 
 
-		private void OnSearchWindowItemDraw (FRect rect, SearchTreeEntry entry, bool focus) {
+		private void OnSearchWindowItemDraw (Rect rect, SearchTreeEntry entry, bool focus) {
 			Style ??= new();
 			float iconSize = rect.height;
 			// Draw Basic

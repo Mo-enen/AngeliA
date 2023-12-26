@@ -1,19 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-
+using System.Runtime.InteropServices;
 
 namespace AngeliaFramework {
 	public static partial class Util {
 
 
+		[StructLayout(LayoutKind.Sequential, Size = 1)]
+		public struct MathfInternal {
+			public static volatile float FloatMinNormal = 1.17549435E-38f;
+			public static volatile float FloatMinDenormal = float.Epsilon;
+			public static bool IsFlushToZeroEnabled = FloatMinDenormal == 0f;
+		}
+
 		public const float Rad2Deg = 57.29578f;
 		public const float Deg2Rad = PI / 180f;
 		public const float PI = 3.14159274F;
-		public static readonly float Epsilon = (IsFlushToZeroEnabled ? FloatMinNormal : FloatMinDenormal);
-		public static float FloatMinNormal = 1.17549435E-38f;
-		public static float FloatMinDenormal = float.Epsilon;
-		public static bool IsFlushToZeroEnabled = FloatMinDenormal == 0f;
-
+		public static readonly float Epsilon = MathfInternal.IsFlushToZeroEnabled ? MathfInternal.FloatMinNormal : MathfInternal.FloatMinDenormal;
 
 		// Language
 		private static readonly Dictionary<string, string> IsoToDisplayName = new() { { "af", "Afrikaans" }, { "am", "አማርኛ" }, { "ar", "العربية" }, { "as", "অসমীয়া" }, { "az", "azərbaycan" }, { "be", "беларуская" }, { "bg", "български" }, { "bn", "বাংলা" }, { "bo", "བོད་སྐད་" }, { "br", "brezhoneg" }, { "bs", "bosanski" }, { "ca", "català" }, { "cs", "čeština" }, { "cy", "Cymraeg" }, { "da", "dansk" }, { "de", "Deutsch" }, { "el", "Ελληνικά" }, { "en", "English" }, { "es", "español" }, { "et", "eesti" }, { "eu", "euskara" }, { "fa", "فارسی" }, { "ff", "Pulaar" }, { "fi", "suomi" }, { "fo", "føroyskt" }, { "fr", "français" }, { "fy", "West-Frysk" }, { "ga", "Gaeilge" }, { "gd", "Gàidhlig" }, { "gl", "galego" }, { "gu", "ગુજરાતી" }, { "ha", "Hausa" }, { "he", "עברית" }, { "hi", "हिन्दी" }, { "hr", "hrvatski" }, { "hu", "magyar" }, { "hy", "հայերեն" }, { "id", "Indonesia" }, { "ig", "Igbo" }, { "ii", "ꆈꌠꉙ" }, { "is", "íslenska" }, { "it", "italiano" }, { "iv", "Invariant" }, { "ja", "日本語" }, { "ka", "ქართული" }, { "kk", "қазақ тілі" }, { "kl", "kalaallisut" }, { "km", "ខ្មែរ" }, { "kn", "ಕನ್ನಡ" }, { "ko", "한국어" }, { "ky", "кыргызча" }, { "lb", "Lëtzebuergesch" }, { "lo", "ລາວ" }, { "lt", "lietuvių" }, { "lv", "latviešu" }, { "mk", "македонски" }, { "ml", "മലയാളം" }, { "mn", "монгол" }, { "mr", "मराठी" }, { "ms", "Bahasa Melayu" }, { "mt", "Malti" }, { "my", "မြန်မာ" }, { "nb", "norsk" }, { "ne", "नेपाली" }, { "nl", "Nederlands" }, { "nn", "nynorsk" }, { "om", "Oromoo" }, { "or", "ଓଡ଼ିଆ" }, { "pa", "ਪੰਜਾਬੀ" }, { "pl", "polski" }, { "ps", "پښتو" }, { "pt", "português" }, { "rm", "rumantsch" }, { "ro", "română" }, { "ru", "русский" }, { "rw", "Kinyarwanda" }, { "se", "davvisámegiella" }, { "si", "සිංහල" }, { "sk", "slovenčina" }, { "sl", "slovenščina" }, { "so", "Soomaali" }, { "sq", "shqip" }, { "sr", "српски" }, { "st", "Sesotho" }, { "sv", "svenska" }, { "sw", "Kiswahili" }, { "ta", "தமிழ்" }, { "te", "తెలుగు" }, { "tg", "Тоҷикӣ" }, { "th", "ไทย" }, { "ti", "ትግርኛ" }, { "tk", "türkmençe" }, { "tn", "Setswana" }, { "tr", "Türkçe" }, { "ts", "Xitsonga" }, { "tt", "татар" }, { "ug", "ئۇيغۇرچە" }, { "uk", "українська" }, { "ur", "اردو" }, { "uz", "o‘zbek" }, { "vi", "Tiếng Việt" }, { "xh", "isiXhosa" }, { "yo", "Èdè Yorùbá" }, { "zh", "中文" }, { "zu", "isiZulu" }, };
@@ -153,6 +156,112 @@ namespace AngeliaFramework {
 		public static int RoundToInt (float value) => (int)System.Math.Round(value);
 		public static int CeilToInt (float value) => (int)System.Math.Ceiling(value);
 		public static int FloorToInt (float value) => (int)System.Math.Floor(value);
+
+
+		public static Byte4 HsvToRgb (float h, float s, float v) {
+			Float3 result = new(1f, 1f, 1f);
+			if (s == 0f) {
+				result.x = v;
+				result.y = v;
+				result.z = v;
+			} else if (v == 0f) {
+				result.x = 0f;
+				result.y = 0f;
+				result.z = 0f;
+			} else {
+				result.x = 0f;
+				result.y = 0f;
+				result.z = 0f;
+				float num = h * 6f;
+				int num2 = FloorToInt(num);
+				float num3 = num - num2;
+				float num4 = v * (1f - s);
+				float num5 = v * (1f - s * num3);
+				float num6 = v * (1f - s * (1f - num3));
+				switch (num2) {
+					case 0:
+						result.x = v;
+						result.y = num6;
+						result.z = num4;
+						break;
+					case 1:
+						result.x = num5;
+						result.y = v;
+						result.z = num4;
+						break;
+					case 2:
+						result.x = num4;
+						result.y = v;
+						result.z = num6;
+						break;
+					case 3:
+						result.x = num4;
+						result.y = num5;
+						result.z = v;
+						break;
+					case 4:
+						result.x = num6;
+						result.y = num4;
+						result.z = v;
+						break;
+					case 5:
+						result.x = v;
+						result.y = num4;
+						result.z = num5;
+						break;
+					case 6:
+						result.x = v;
+						result.y = num6;
+						result.z = num4;
+						break;
+					case -1:
+						result.x = v;
+						result.y = num4;
+						result.z = num5;
+						break;
+				}
+
+				result.x = Clamp01(result.x);
+				result.y = Clamp01(result.y);
+				result.z = Clamp01(result.z);
+
+			}
+
+			return new Byte4((byte)(result.x * 255), (byte)(result.y * 255), (byte)(result.z * 255), 255);
+		}
+		public static void RGBToHSV (Byte4 rgbColor, out float h, out float s, out float v) {
+			if (rgbColor.b > rgbColor.g && rgbColor.b > rgbColor.r) {
+				Helper(4f, rgbColor.b, rgbColor.r, rgbColor.g, out h, out s, out v);
+			} else if (rgbColor.g > rgbColor.r) {
+				Helper(2f, rgbColor.g, rgbColor.b, rgbColor.r, out h, out s, out v);
+			} else {
+				Helper(0f, rgbColor.r, rgbColor.g, rgbColor.b, out h, out s, out v);
+			}
+			// Func
+			static void Helper (float offset, float dominantcolor, float colorone, float colortwo, out float H, out float S, out float V) {
+				V = dominantcolor;
+				if (V != 0f) {
+					float num;
+					num = ((!(colorone > colortwo)) ? colorone : colortwo);
+					float num2 = V - num;
+					if (num2 != 0f) {
+						S = num2 / V;
+						H = offset + (colorone - colortwo) / num2;
+					} else {
+						S = 0f;
+						H = offset + (colorone - colortwo);
+					}
+
+					H /= 6f;
+					if (H < 0f) {
+						H += 1f;
+					}
+				} else {
+					S = 0f;
+					H = 0f;
+				}
+			}
+		}
 
 
 	}

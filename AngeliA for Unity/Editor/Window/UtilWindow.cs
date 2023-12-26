@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using AngeliaFramework;
 using UnityEngine;
 using UnityEditor;
 
@@ -15,7 +14,7 @@ namespace AngeliaForUnity.Editor {
 		};
 		private static GUIStyle _MasterStyle = null;
 
-		private Float2 MasterScrollPos = default;
+		private Vector2 MasterScrollPos = default;
 		protected virtual bool ScrollHorizontal => false;
 		protected virtual bool ScrollVertical => true;
 
@@ -23,12 +22,12 @@ namespace AngeliaForUnity.Editor {
 		// API
 		public static T OpenEditor<T> (string title = "") where T : UtilWindow {
 			var window = GetWindow<T>(true, "", true);
-			window.minSize = new Float2(256, 256);
-			window.maxSize = new Float2(1024, 1024);
+			window.minSize = new Vector2(256, 256);
+			window.maxSize = new Vector2(1024, 1024);
 			window.titleContent = new GUIContent(title);
 			return window;
 		}
-		public static T OpenEditor<T> (string title, Float2 minSize, Float2 maxSize) where T : UtilWindow {
+		public static T OpenEditor<T> (string title, Vector2 minSize, Vector2 maxSize) where T : UtilWindow {
 			var window = GetWindow<T>(true, "", true);
 			window.minSize = minSize;
 			window.maxSize = maxSize;

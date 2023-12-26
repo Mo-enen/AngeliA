@@ -16,8 +16,8 @@ namespace AngeliaForUnity.Editor {
 		[MenuItem("AngeliA/Other/Ange Hash")]
 		public static void OpenWindow () {
 			var window = GetWindow<AngeHashWindow>(true, "Ange Hash", true);
-			window.minSize = new Float2(256, 256);
-			window.maxSize = new Float2(512, 2048);
+			window.minSize = new Vector2(256, 256);
+			window.maxSize = new Vector2(512, 2048);
 			window.Data = "";
 			window.Hash = "";
 		}

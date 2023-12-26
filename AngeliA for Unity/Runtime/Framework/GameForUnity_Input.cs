@@ -39,7 +39,7 @@ namespace AngeliaForUnity {
 		protected override void _SetCursor (int index) {
 			var texture = Cursors[index];
 			if (texture == null) return;
-			var pivot = Float2.zero;
+			var pivot = Vector2.zero;
 			if (index < CursorPivots.Length) {
 				pivot = CursorPivots[index];
 			}

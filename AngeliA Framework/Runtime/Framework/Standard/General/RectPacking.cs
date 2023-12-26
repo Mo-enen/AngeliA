@@ -1,11 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
-//using UnityEngine;
 
 
 namespace AngeliaFramework {
 	public static class AngeliaRectPacking {
 
+
+
+		public class TextureData {
+			public int Width;
+			public int Height;
+			public Byte4[] Pixels;
+			public TextureData (int width, int height, Byte4[] pixels) {
+				Width = width;
+				Height = height;
+				Pixels = pixels;
+			}
+		}
 
 
 		private class ItemSorter : IComparer<Item> {
@@ -28,7 +39,7 @@ namespace AngeliaFramework {
 			public int Index;
 			public int X, Y;
 			public int Width, Height;
-			public Texture2D Texture;
+			public TextureData Texture;
 		}
 
 
@@ -75,15 +86,15 @@ namespace AngeliaFramework {
 
 
 		// API
-		public static FRect[] Pack (out Texture2D result, Texture2D[] textures, int maxTextureWidth = -1) => PackLogic(out result, textures, maxTextureWidth);
+		public static FRect[] Pack (out TextureData result, TextureData[] textures, int maxTextureWidth = -1) => PackLogic(out result, textures, maxTextureWidth);
 
 
 		// LGC
-		private static FRect[] PackLogic (out Texture2D result, Texture2D[] textures, int maxTextureWidth = -1) {
+		private static FRect[] PackLogic (out TextureData result, TextureData[] textures, int maxTextureWidth = -1) {
 
 			// Check
 			if (textures.Length == 0) {
-				result = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+				result = new TextureData(1, 1, new Byte4[1]);
 				return new FRect[0];
 			}
 
@@ -93,8 +104,8 @@ namespace AngeliaFramework {
 			List<Item> items = new();
 			for (int i = 0; i < textures.Length; i++) {
 				var _texture = textures[i];
-				int w = _texture.width;
-				int h = _texture.height;
+				int w = _texture.Width;
+				int h = _texture.Height;
 				items.Add(new Item() {
 					Index = i,
 					Width = w,
@@ -165,7 +176,7 @@ namespace AngeliaFramework {
 
 			// Set Texture
 			width = aimSize;
-			var colors = new Color32[width * height];
+			var colors = new Byte4[width * height];
 
 			// Default Color
 			for (int i = 0; i < colors.Length; i++) {
@@ -175,7 +186,7 @@ namespace AngeliaFramework {
 			// Set Colors
 			for (int i = 0; i < items.Count; i++) {
 				var item = items[i];
-				var itemColors = item.Texture.GetPixels32();
+				var itemColors = item.Texture.Pixels;
 				for (int x = 0; x < item.Width; x++) {
 					for (int y = 0; y < item.Height; y++) {
 						colors[(y + item.Y) * width + x + item.X] = itemColors[y * item.Width + x];
@@ -196,13 +207,8 @@ namespace AngeliaFramework {
 				);
 			}
 
-			// Result
-			result = new Texture2D(width, height, TextureFormat.RGBA32, false) {
-				filterMode = FilterMode.Point,
-			};
-			result.SetPixels32(colors);
-			result.Apply();
-
+			// Finish
+			result = new TextureData(width, height, colors);
 			return uvs;
 		}
 

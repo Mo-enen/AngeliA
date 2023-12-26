@@ -233,10 +233,6 @@ namespace AngeliaFramework {
 			return m_XMin == other.m_XMin && m_YMin == other.m_YMin && m_Width == other.m_Width && m_Height == other.m_Height;
 		}
 
-#if UNITY_2017_1_OR_NEWER
-		public static implicit operator UnityEngine.RectInt (IRect a) => new(a.x, a.y, a.width, a.height);
-		public static implicit operator IRect (UnityEngine.RectInt a) => new(a.x, a.y, a.width, a.height);
-#endif
 
 	}
 }

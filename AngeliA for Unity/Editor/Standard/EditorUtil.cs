@@ -127,7 +127,7 @@ namespace AngeliaForUnity.Editor {
 			int length = width * height;
 
 			// Remove Background
-			Byte4 CLEAR = new(0, 0, 0, 0);
+			Color32 CLEAR = new(0, 0, 0, 0);
 			var stack = new Stack<(int x, int y)>();
 			RemoveColorAt(0, 0);
 			RemoveColorAt(width - 1, 0);
@@ -135,7 +135,7 @@ namespace AngeliaForUnity.Editor {
 			RemoveColorAt(width - 1, height - 1);
 
 			// Fix Color Brightness
-			Byte4 pixel;
+			Color32 pixel;
 			for (int i = 0; i < length; i++) {
 				pixel = pixels[i];
 				if (pixel.a == 0) { continue; }
@@ -155,7 +155,7 @@ namespace AngeliaForUnity.Editor {
 			return result;
 
 			// === Func ===
-			bool SameColor (Byte4 colorA, Byte4 colorB) =>
+			bool SameColor (Color32 colorA, Color32 colorB) =>
 				colorA.r == colorB.r &&
 				colorA.g == colorB.g &&
 				colorA.b == colorB.b &&
@@ -178,7 +178,7 @@ namespace AngeliaForUnity.Editor {
 					AddToStack(x + 1, y + 1, color32);
 				}
 			}
-			void AddToStack (int x, int y, Byte4 color32) {
+			void AddToStack (int x, int y, Color32 color32) {
 				int i = y * width + x;
 				if (
 					x >= 0 && y >= 0 && x < width && y < height &&

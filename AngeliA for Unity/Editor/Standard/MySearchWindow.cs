@@ -14,7 +14,7 @@ namespace AngeliaForUnity.Editor {
 	public class MySearchTreeGroupEntry : SearchTreeGroupEntry {
 
 		public int selectedIndex;
-		public Float2 scroll;
+		public Vector2 scroll;
 
 		public MySearchTreeGroupEntry (GUIContent content, int level = 0) : base(content) {
 			base.content = content;
@@ -42,7 +42,7 @@ namespace AngeliaForUnity.Editor {
 			public GUIStyle leftArrow = "ArrowNavigationLeft";
 		}
 
-		public delegate void DrawHandler (FRect rect, SearchTreeEntry entry, bool focus);
+		public delegate void DrawHandler (Rect rect, SearchTreeEntry entry, bool focus);
 		public DrawHandler OnItemDraw { get; set; } = null;
 		public float ItemHeight = 20f;
 
@@ -155,9 +155,9 @@ namespace AngeliaForUnity.Editor {
 			m_Context = context;
 			float num = Math.Max(context.requestedWidth, 240f);
 			float y = Math.Max(context.requestedHeight, 320f);
-			FRect buttonRect = new(context.screenMousePosition.x - num / 2f, context.screenMousePosition.y - 16f, num, 1f);
+			Rect buttonRect = new(context.screenMousePosition.x - num / 2f, context.screenMousePosition.y - 16f, num, 1f);
 			CreateSearchTree();
-			ShowAsDropDown(buttonRect, new Float2(buttonRect.width, y));
+			ShowAsDropDown(buttonRect, new Vector2(buttonRect.width, y));
 			Focus();
 			wantsMouseMove = true;
 		}
@@ -203,7 +203,7 @@ namespace AngeliaForUnity.Editor {
 
 			s_Styles ??= new Styles();
 
-			GUI.Label(new FRect(0f, 0f, position.width, position.height), GUIContent.none, s_Styles.background);
+			GUI.Label(new Rect(0f, 0f, position.width, position.height), GUIContent.none, s_Styles.background);
 			if (s_DirtyList) {
 				CreateSearchTree();
 			}
@@ -211,7 +211,7 @@ namespace AngeliaForUnity.Editor {
 			HandleKeyboard();
 			GUILayout.Space(7f);
 			EditorGUI.FocusTextInControl("ComponentSearch");
-			FRect rect = GUILayoutUtility.GetRect(10f, 20f);
+			var rect = GUILayoutUtility.GetRect(10f, 20f);
 			rect.x += 8f;
 			rect.width -= 16f;
 			GUI.SetNextControlName("ComponentSearch");
@@ -375,18 +375,18 @@ namespace AngeliaForUnity.Editor {
 
 		private void ListGUI (SearchTreeEntry[] tree, float anim, MySearchTreeGroupEntry parent, MySearchTreeGroupEntry grandParent) {
 			anim = Mathf.Floor(anim) + Mathf.SmoothStep(0f, 1f, Mathf.Repeat(anim, 1f));
-			FRect screenRect = position;
+			var screenRect = position;
 			screenRect.x = position.width * (1f - anim) + 1f;
 			screenRect.y = 30f;
 			screenRect.height -= 30f;
 			screenRect.width -= 2f;
 			GUILayout.BeginArea(screenRect);
-			FRect rect = GUILayoutUtility.GetRect(10f, 25f);
+			var rect = GUILayoutUtility.GetRect(10f, 25f);
 			string text = parent.name;
 			GUI.Label(rect, text, s_Styles.header);
 			if (grandParent != null) {
 				float num = (rect.height - s_Styles.leftArrow.fixedHeight) / 2f;
-				var rect2 = new FRect(rect.x + s_Styles.leftArrow.margin.left, rect.y + num, s_Styles.leftArrow.fixedWidth, s_Styles.leftArrow.fixedHeight);
+				var rect2 = new Rect(rect.x + s_Styles.leftArrow.margin.left, rect.y + num, s_Styles.leftArrow.fixedWidth, s_Styles.leftArrow.fixedHeight);
 				if (Event.current.type == EventType.Repaint) {
 					s_Styles.leftArrow.Draw(rect2, isHover: false, isActive: false, on: false, hasKeyboardFocus: false);
 				}
@@ -419,12 +419,12 @@ namespace AngeliaForUnity.Editor {
 
 		private void ListGUI (SearchTreeEntry[] tree, MySearchTreeGroupEntry parent) {
 			parent.scroll = GUILayout.BeginScrollView(parent.scroll);
-			EditorGUIUtility.SetIconSize(new Float2(16f, 16f));
+			EditorGUIUtility.SetIconSize(new Vector2(16f, 16f));
 			List<SearchTreeEntry> children = GetChildren(tree, parent);
-			FRect rect = default;
+			Rect rect = default;
 			for (int i = 0; i < children.Count; i++) {
 				SearchTreeEntry searchTreeEntry = children[i];
-				FRect rect2 = GUILayoutUtility.GetRect(16f, ItemHeight, GUILayout.ExpandWidth(expand: true));
+				var rect2 = GUILayoutUtility.GetRect(16f, ItemHeight, GUILayout.ExpandWidth(expand: true));
 				if ((Event.current.type == EventType.MouseMove || Event.current.type == EventType.MouseDown) && parent.selectedIndex != i && rect2.Contains(Event.current.mousePosition)) {
 					parent.selectedIndex = i;
 					Repaint();
@@ -446,7 +446,7 @@ namespace AngeliaForUnity.Editor {
 					}
 					if (isGroup) {
 						float num = (rect2.height - s_Styles.rightArrow.fixedHeight) / 2f;
-						var rect3 = new FRect(rect2.xMax - s_Styles.rightArrow.fixedWidth - (float)s_Styles.rightArrow.margin.right, rect2.y + num, s_Styles.rightArrow.fixedWidth, s_Styles.rightArrow.fixedHeight);
+						var rect3 = new Rect(rect2.xMax - s_Styles.rightArrow.fixedWidth - (float)s_Styles.rightArrow.margin.right, rect2.y + num, s_Styles.rightArrow.fixedWidth, s_Styles.rightArrow.fixedHeight);
 						s_Styles.rightArrow.Draw(rect3, isHover: false, isActive: false, on: false, hasKeyboardFocus: false);
 					}
 				}
@@ -458,11 +458,11 @@ namespace AngeliaForUnity.Editor {
 				}
 			}
 
-			EditorGUIUtility.SetIconSize(Float2.zero);
+			EditorGUIUtility.SetIconSize(Vector2.zero);
 			GUILayout.EndScrollView();
 			if (m_ScrollToSelected && Event.current.type == EventType.Repaint) {
 				m_ScrollToSelected = false;
-				FRect lastRect = GUILayoutUtility.GetLastRect();
+				var lastRect = GUILayoutUtility.GetLastRect();
 				if (rect.yMax - lastRect.height > parent.scroll.y) {
 					parent.scroll.y = rect.yMax - lastRect.height;
 					Repaint();

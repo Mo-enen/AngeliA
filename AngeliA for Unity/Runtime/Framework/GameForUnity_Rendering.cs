@@ -93,8 +93,8 @@ namespace AngeliaForUnity {
 
 
 		// Camera
-		protected override FRect _GetCameraScreenLocacion () => UnityCamera.rect;
-		protected override void _SetCameraScreenLocacion (FRect rect) => UnityCamera.rect = rect;
+		protected override FRect _GetCameraScreenLocacion () => UnityCamera.rect.ToAngelia();
+		protected override void _SetCameraScreenLocacion (FRect rect) => UnityCamera.rect = rect.ToUnity();
 		protected override float _GetCameraAspect () => UnityCamera.aspect;
 		protected override float _GetCameraOrthographicSize () => UnityCamera.orthographicSize;
 
@@ -103,7 +103,7 @@ namespace AngeliaForUnity {
 
 			float orthographicSize = CameraOrthographicSize;
 			float aspect = CameraAspect;
-			var pos = new Float3(
+			var pos = new Vector3(
 				-orthographicSize * aspect,
 				-orthographicSize,
 				1f
@@ -111,7 +111,7 @@ namespace AngeliaForUnity {
 			var cameraRect = CellRenderer.CameraRect;
 			var viewRect = CellRenderer.ViewRect;
 			pos.x -= ((viewRect.width - cameraRect.width) / 2) * orthographicSize * 2f * aspect / cameraRect.width;
-			var scl = new Float3(
+			var scl = new Vector3(
 				orthographicSize * 2f / viewRect.height,
 				orthographicSize * 2f / viewRect.height,
 				1f
@@ -139,8 +139,8 @@ namespace AngeliaForUnity {
 					name = name,
 					mainTexture = SheetTexture,
 					enableInstancing = true,
-					mainTextureOffset = Float2.zero,
-					mainTextureScale = Float2.one,
+					mainTextureOffset = Vector2.zero,
+					mainTextureScale = Vector2.one,
 					doubleSidedGI = false,
 					renderQueue = 3000,
 				},
@@ -166,10 +166,10 @@ namespace AngeliaForUnity {
 		protected override void _OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) {
 
 			var viewRect = CellRenderer.ViewRect;
-			Float3 a = Float3.zero;
-			Float3 b = Float3.zero;
-			Float3 c = Float3.zero;
-			Float3 d = Float3.zero;
+			var a = Float3.zero;
+			var b = Float3.zero;
+			var c = Float3.zero;
+			var d = Float3.zero;
 			Float2 uv0;
 			Float2 uv1;
 			Float2 uv2;
@@ -314,22 +314,22 @@ namespace AngeliaForUnity {
 				}
 
 				// Pos
-				layer.VertexCache[i0] = a;
-				layer.VertexCache[i1] = b;
-				layer.VertexCache[i2] = c;
-				layer.VertexCache[i3] = d;
+				layer.VertexCache[i0] = a.ToUnity();
+				layer.VertexCache[i1] = b.ToUnity();
+				layer.VertexCache[i2] = c.ToUnity();
+				layer.VertexCache[i3] = d.ToUnity();
 
 				// UV
-				layer.UvCache[i0] = uv0;
-				layer.UvCache[i1] = uv1;
-				layer.UvCache[i2] = uv2;
-				layer.UvCache[i3] = uv3;
+				layer.UvCache[i0] = uv0.ToUnity();
+				layer.UvCache[i1] = uv1.ToUnity();
+				layer.UvCache[i2] = uv2.ToUnity();
+				layer.UvCache[i3] = uv3.ToUnity();
 
 				// Color
-				layer.ColorCache[i0] = cell.Color;
-				layer.ColorCache[i1] = cell.Color;
-				layer.ColorCache[i2] = cell.Color;
-				layer.ColorCache[i3] = cell.Color;
+				layer.ColorCache[i0] = cell.Color.ToUnityColor32();
+				layer.ColorCache[i1] = cell.Color.ToUnityColor32();
+				layer.ColorCache[i2] = cell.Color.ToUnityColor32();
+				layer.ColorCache[i3] = cell.Color.ToUnityColor32();
 
 			}
 
@@ -390,8 +390,8 @@ namespace AngeliaForUnity {
 
 		protected override void _SetSkyboxTint (Byte4 top, Byte4 bottom) {
 			if (Skybox == null) return;
-			Skybox.SetColor(SKYBOX_TOP, top);
-			Skybox.SetColor(SKYBOX_BOTTOM, bottom);
+			Skybox.SetColor(SKYBOX_TOP, top.ToUnityColor());
+			Skybox.SetColor(SKYBOX_BOTTOM, bottom.ToUnityColor());
 		}
 
 		#endregion
@@ -410,17 +410,17 @@ namespace AngeliaForUnity {
 				rendererRoot.tag = "MainCamera";
 				gameCamera = rendererRoot.GetComponent<Camera>();
 			}
-			gameCamera.transform.SetPositionAndRotation(Float3.zero, default);
-			gameCamera.transform.localScale = Float3.one;
+			gameCamera.transform.SetPositionAndRotation(Vector3.zero, default);
+			gameCamera.transform.localScale = Vector3.one;
 			gameCamera.transform.gameObject.tag = "MainCamera";
 			gameCamera.clearFlags = CameraClearFlags.Skybox;
-			gameCamera.backgroundColor = new Byte4(0, 0, 0, 0);
+			gameCamera.backgroundColor = new Color(0, 0, 0, 0);
 			gameCamera.cullingMask = -1;
 			gameCamera.orthographic = true;
 			gameCamera.orthographicSize = 1f;
 			gameCamera.nearClipPlane = 0f;
 			gameCamera.farClipPlane = 1024f;
-			gameCamera.rect = new FRect(0f, 0f, 1f, 1f);
+			gameCamera.rect = new Rect(0f, 0f, 1f, 1f);
 			gameCamera.depth = 0f;
 			gameCamera.renderingPath = RenderingPath.UsePlayerSettings;
 			gameCamera.useOcclusionCulling = false;
@@ -443,8 +443,8 @@ namespace AngeliaForUnity {
 			var tf = new GameObject(name, typeof(MeshFilter), typeof(MeshRenderer)).transform;
 			tf.SetParent(root);
 			tf.SetAsLastSibling();
-			tf.SetPositionAndRotation(new Float3(0, 0, 1), default);
-			tf.localScale = Float3.one;
+			tf.SetPositionAndRotation(new Vector3(0, 0, 1), default);
+			tf.localScale = Vector3.one;
 			var filter = tf.GetComponent<MeshFilter>();
 			filter.sharedMesh = new Mesh();
 			var mr = tf.GetComponent<MeshRenderer>();

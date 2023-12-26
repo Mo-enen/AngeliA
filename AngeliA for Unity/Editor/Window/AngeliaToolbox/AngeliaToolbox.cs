@@ -33,7 +33,7 @@ namespace AngeliaForUnity.Editor {
 
 
 		// Data
-		private static readonly Color[] COLLIDER_TINTS = { Const.RED_BETTER, Const.ORANGE_BETTER, Color.yellow, Const.GREEN, Const.CYAN, Const.BLUE, Const.GREY_128, };
+		private static readonly Color[] COLLIDER_TINTS = { Const.RED_BETTER.ToUnityColor(), Const.ORANGE_BETTER.ToUnityColor(), Color.yellow, Const.GREEN.ToUnityColor(), Const.CYAN.ToUnityColor(), Const.BLUE.ToUnityColor(), Const.GREY_128.ToUnityColor(), };
 		private static readonly List<VisualElement> EdittimeOnlyElements = new();
 		private static readonly List<VisualElement> RuntimeOnlyElements = new();
 		private static readonly List<VisualElement> ProfilerProgressBarTints = new();
@@ -196,7 +196,7 @@ namespace AngeliaForUnity.Editor {
 											0, angeCameraRect.height, 0, cameraRect01.height, cell.Rect.height
 										);
 
-										if (rect.Overlaps(cameraRect01)) {
+										if (rect.Overlaps(cameraRect01.ToAngelia())) {
 											DrawFrame(rect, thickX, thickY, !cell.IsTrigger);
 										}
 									}
@@ -216,7 +216,7 @@ namespace AngeliaForUnity.Editor {
 				GizmosMaterial.SetPass(0);
 				GL.LoadOrtho();
 				GL.Begin(GL.QUADS);
-				GL.Color(Const.BLUE);
+				GL.Color(Const.BLUE.ToUnityColor());
 
 				try {
 					for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
@@ -359,7 +359,7 @@ namespace AngeliaForUnity.Editor {
 
 		// Inject
 		private static void InjectAll (EditorWindow inspector) {
-			inspector.minSize = new Float2(345f, inspector.minSize.y);
+			inspector.minSize = new Vector2(345f, inspector.minSize.y);
 			EdittimeOnlyElements.Clear();
 			RuntimeOnlyElements.Clear();
 			InjectToolbox(inspector, "AngeliaToolbox");

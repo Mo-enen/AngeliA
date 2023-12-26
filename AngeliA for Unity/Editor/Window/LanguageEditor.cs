@@ -33,8 +33,8 @@ namespace AngeliaForUnity.Editor {
 		[MenuItem("AngeliA/Language Editor", false, 22)]
 		public static void OpenWindow () {
 			var window = GetWindow<LanguageEditor>(true, "Language", true);
-			window.minSize = new Float2(512, 256);
-			window.maxSize = new Float2(1600, 1024);
+			window.minSize = new Vector2(512, 256);
+			window.maxSize = new Vector2(1600, 1024);
 		}
 
 

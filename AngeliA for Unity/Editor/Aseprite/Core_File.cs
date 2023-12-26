@@ -116,9 +116,9 @@ namespace AngeliaForUnity.Editor {
 					alphaIsTransparency = true,
 					wrapMode = TextureWrapMode.Clamp,
 				};
-				var unityPixels = new UnityEngine.Color32[frame.Pixels.Length];
+				var unityPixels = new Color32[frame.Pixels.Length];
 				for (int j = 0; j < unityPixels.Length; j++) {
-					unityPixels[j] = frame.Pixels[j];
+					unityPixels[j] = frame.Pixels[j].ToUnityColor32();
 				}
 				texture.SetPixels32(unityPixels);
 				texture.Apply();
@@ -148,11 +148,11 @@ namespace AngeliaForUnity.Editor {
 			for (int i = 0; i < metas.Length; i++) {
 				var m = metas[i];
 				flexs[i] = new FlexSprite() {
-					Border = m.border,
+					Border = m.border.ToAngelia(),
 					Name = m.name,
 					SheetName = AseName,
 					AngePivot = new Int2((int)(m.pivot.x * 1000f), (int)(m.pivot.y * 1000f)),
-					Rect = m.rect,
+					Rect = m.rect.ToAngelia(),
 					SheetType = sheetType,
 					SheetZ = sheetZ,
 				};

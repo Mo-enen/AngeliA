@@ -89,15 +89,6 @@ namespace AngeliaFramework {
 			return string.Format("RGBA({0}, {1}, {2}, {3})", r.ToString(format, formatProvider), g.ToString(format, formatProvider), b.ToString(format, formatProvider), a.ToString(format, formatProvider));
 		}
 
-#if UNITY_2017_1_OR_NEWER
-		public static implicit operator Byte4 (UnityEngine.Color c) {
-			return new Byte4((byte)Math.Round(c.r.Clamp01() * 255f), (byte)Math.Round(c.g.Clamp01() * 255f), (byte)Math.Round(c.b.Clamp01() * 255f), (byte)Math.Round(c.a.Clamp01() * 255f));
-		}
-		public static implicit operator UnityEngine.Color (Byte4 c) {
-			return new UnityEngine.Color((float)(int)c.r / 255f, (float)(int)c.g / 255f, (float)(int)c.b / 255f, (float)(int)c.a / 255f);
-		}
-		public static implicit operator Byte4 (UnityEngine.Color32 c) => new(c.r, c.g, c.b, c.a);
-		public static implicit operator UnityEngine.Color32 (Byte4 c) => new(c.r, c.g, c.b, c.a);
-#endif
+
 	}
 }

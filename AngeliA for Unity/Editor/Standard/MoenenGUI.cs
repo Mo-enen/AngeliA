@@ -100,16 +100,16 @@ namespace AngeliaForUnity.Editor {
 		};
 		private static GUIStyle _CenteredLinkLabel = null;
 
-		public static readonly Color HighlightBlue = new Byte4(44, 93, 135, 255);
-		public static readonly Color HighlightBlue_Alpha50 = new Byte4(44, 93, 135, 128);
-		public static readonly Color HighlightBlue_Alpha25 = new Byte4(44, 93, 135, 64);
-		public static readonly Color HighlightCyan = new Byte4(36, 181, 161, 255);
-		public static readonly Color HighlightOrange = new Byte4(252, 195, 81, 255);
+		public static readonly Color HighlightBlue = new Color32(44, 93, 135, 255);
+		public static readonly Color HighlightBlue_Alpha50 = new Color32(44, 93, 135, 128);
+		public static readonly Color HighlightBlue_Alpha25 = new Color32(44, 93, 135, 64);
+		public static readonly Color HighlightCyan = new Color32(36, 181, 161, 255);
+		public static readonly Color HighlightOrange = new Color32(252, 195, 81, 255);
 
 
-		public static FRect Rect (int w, int h) => GUILayoutUtility.GetRect(w, h, GUILayout.ExpandWidth(w == 0), GUILayout.ExpandHeight(h == 0));
-		public static FRect LastRect () => GUILayoutUtility.GetLastRect();
-		public static FRect AspectRect (float aspect) => GUILayoutUtility.GetAspectRect(aspect);
+		public static Rect Rect (int w, int h) => GUILayoutUtility.GetRect(w, h, GUILayout.ExpandWidth(w == 0), GUILayout.ExpandHeight(h == 0));
+		public static Rect LastRect () => GUILayoutUtility.GetLastRect();
+		public static Rect AspectRect (float aspect) => GUILayoutUtility.GetAspectRect(aspect);
 		public static void Space (int space = 4) => GUILayout.Space(space);
 		public static bool Fold (string label, ref bool open) {
 			open = EditorGUILayout.Foldout(open, label, true);
@@ -126,8 +126,8 @@ namespace AngeliaForUnity.Editor {
 			EditorGUIUtility.AddCursorRect(LastRect(), cursor);
 		}
 
-		public static bool DownButton (FRect rect, string label, GUIStyle style = null) => DownButton(rect, new GUIContent(label), style);
-		public static bool DownButton (FRect rect, GUIContent label, GUIStyle style = null) {
+		public static bool DownButton (Rect rect, string label, GUIStyle style = null) => DownButton(rect, new GUIContent(label), style);
+		public static bool DownButton (Rect rect, GUIContent label, GUIStyle style = null) {
 			style ??= GUI.skin.button;
 			bool down = Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition);
 			GUI.Button(rect, label, style);
@@ -136,7 +136,7 @@ namespace AngeliaForUnity.Editor {
 			}
 			return down;
 		}
-		public static bool IconButton (FRect rect, string label, Texture icon, float iconSize = -1, float iconShiftX = 0f, GUIStyle style = null, GUIStyle labelStyle = null) {
+		public static bool IconButton (Rect rect, string label, Texture icon, float iconSize = -1, float iconShiftX = 0f, GUIStyle style = null, GUIStyle labelStyle = null) {
 			if (iconSize < 0) iconSize = rect.height;
 			bool click = GUI.Button(rect, GUIContent.none, style ?? GUI.skin.button);
 			GUI.Label(rect.Shrink(iconSize, 0, 0, 0), label, labelStyle ?? CenteredLabel);
@@ -145,13 +145,13 @@ namespace AngeliaForUnity.Editor {
 			if (icon != null) GUI.DrawTexture(rect, icon, ScaleMode.ScaleToFit);
 			return click;
 		}
-		public static void FrameGUI (FRect rect, float thickness, Color color) {
+		public static void FrameGUI (Rect rect, float thickness, Color color) {
 			EditorGUI.DrawRect(rect.Expand(0, 0, thickness - rect.height, 0), color);
 			EditorGUI.DrawRect(rect.Expand(0, 0, 0, thickness - rect.height), color);
 			EditorGUI.DrawRect(rect.Expand(thickness - rect.width, 0, -thickness, -thickness), color);
 			EditorGUI.DrawRect(rect.Expand(0, thickness - rect.width, -thickness, -thickness), color);
 		}
-		public static void CornerFrameGUI (FRect rect, float thickness, Float2 size, Color color) {
+		public static void CornerFrameGUI (Rect rect, float thickness, Float2 size, Color color) {
 
 			// TL
 			EditorGUI.DrawRect(new(rect.xMin, rect.yMax, size.x, thickness), color);
@@ -171,13 +171,13 @@ namespace AngeliaForUnity.Editor {
 
 
 		}
-		public static void DottedFrameGUI (FRect rect, float thickness, float dotSize, Color colorA, Color colorB) {
+		public static void DottedFrameGUI (Rect rect, float thickness, float dotSize, Color colorA, Color colorB) {
 			DottedLine(rect.Expand(0, 0, thickness - rect.height, 0), dotSize, colorA, colorB, true);
 			DottedLine(rect.Expand(0, 0, 0, thickness - rect.height), dotSize, colorA, colorB, true);
 			DottedLine(rect.Expand(thickness - rect.width, 0, -thickness, -thickness), dotSize, colorA, colorB, false);
 			DottedLine(rect.Expand(0, thickness - rect.width, -thickness, -thickness), dotSize, colorA, colorB, false);
 		}
-		public static int PageList (int pageIndex, int pageSize, int itemCount, System.Action<int, FRect> itemGUI, bool showIndex = true, System.Action<int, int> moreButtons = null) {
+		public static int PageList (int pageIndex, int pageSize, int itemCount, System.Action<int, Rect> itemGUI, bool showIndex = true, System.Action<int, int> moreButtons = null) {
 
 			const int HEIGHT = 18;
 			const int BUTTON_HEIGHT = 22;
@@ -198,7 +198,7 @@ namespace AngeliaForUnity.Editor {
 						var _rect = Rect(24, HEIGHT);
 
 						// BG
-						var bgRect = new FRect(_rect.x, _rect.y, bgWidth, HEIGHT);
+						var bgRect = new Rect(_rect.x, _rect.y, bgWidth, HEIGHT);
 						EditorGUI.DrawRect(
 							bgRect,
 							index % 2 == 0 ? Color.clear : new Color(0f, 0f, 0f, 0.1f)
@@ -241,18 +241,18 @@ namespace AngeliaForUnity.Editor {
 
 			return pageIndex;
 		}
-		public static bool Link (FRect rect, string link, GUIStyle style = null) {
+		public static bool Link (Rect rect, string link, GUIStyle style = null) {
 			bool click = GUI.Button(rect, link, style ?? EditorStyles.linkLabel);
 			EditorGUIUtility.AddCursorRect(rect, MouseCursor.Link);
 			return click;
 		}
-		public static bool Link (FRect rect, GUIContent link, GUIStyle style = null, string tooltip = "") {
+		public static bool Link (Rect rect, GUIContent link, GUIStyle style = null, string tooltip = "") {
 			link.tooltip = tooltip;
 			bool click = GUI.Button(rect, link, style ?? EditorStyles.linkLabel);
 			EditorGUIUtility.AddCursorRect(rect, MouseCursor.Link);
 			return click;
 		}
-		public static void CrossLineGUI (FRect rect, float thickness, Color color) {
+		public static void CrossLineGUI (Rect rect, float thickness, Color color) {
 			float length = Mathf.Sqrt(rect.width * rect.width + rect.height * rect.height);
 			float angle = Mathf.Atan2(rect.width, rect.height) * Mathf.Rad2Deg;
 			var oldM = GUI.matrix;
@@ -263,7 +263,7 @@ namespace AngeliaForUnity.Editor {
 			EditorGUI.DrawRect(new(rect.x, rect.yMax, length, thickness), color);
 			GUI.matrix = oldM;
 		}
-		public static void DottedLine (FRect rect, float dotSize, Color colorA, Color colorB, bool horizontal) {
+		public static void DottedLine (Rect rect, float dotSize, Color colorA, Color colorB, bool horizontal) {
 			if (dotSize < 1f) dotSize = 1f;
 			var _rect = rect;
 			_rect.width = horizontal ? dotSize : _rect.width;
@@ -307,7 +307,7 @@ namespace AngeliaForUnity.Editor {
 		}
 
 
-		public static string BetterTextArea (FRect rect, string text, GUIStyle style = null) {
+		public static string BetterTextArea (Rect rect, string text, GUIStyle style = null) {
 			bool preventSelection = Event.current.type != EventType.Repaint;
 			Color oldCursorColor = GUI.skin.settings.cursorColor;
 			if (preventSelection) GUI.skin.settings.cursorColor = new Color(0, 0, 0, 0);

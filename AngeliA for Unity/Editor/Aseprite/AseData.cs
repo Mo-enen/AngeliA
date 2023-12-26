@@ -164,17 +164,17 @@ namespace AngeliaForUnity.Editor {
 		}
 
 
-		public AngeliaFramework.Byte4[] GetPalette32 () {
+		public Color32[] GetPalette32 () {
 			// Get Len
 			int paletteLen = 0;
 			ForAllChunks<PaletteChunk>((chunk, fIndex, cIndex) => {
 				paletteLen = Mathf.Max(paletteLen, (int)chunk.Size);
 			});
 			// Colors
-			var colors = new AngeliaFramework.Byte4[paletteLen];
+			var colors = new Color32[paletteLen];
 			ForAllChunks<PaletteChunk>((chunk, fIndex, cIndex) => {
 				for (int i = (int)chunk.FromIndex; i <= chunk.ToIndex && i < paletteLen; i++) {
-					var c = new Byte4();
+					var c = new Color32();
 					var e = chunk.Entries[i - chunk.FromIndex];
 					c.r = e.R;
 					c.g = e.G;
@@ -185,7 +185,7 @@ namespace AngeliaForUnity.Editor {
 			});
 			// Transparent For Indexed
 			if (Header.ColorDepth == 8 && Header.PaletteEntry < paletteLen) {
-				colors[Header.PaletteEntry] = new Byte4(0, 0, 0, 0);
+				colors[Header.PaletteEntry] = new Color32(0, 0, 0, 0);
 			}
 			return colors;
 		}
@@ -266,7 +266,7 @@ namespace AngeliaForUnity.Editor {
 		}
 
 
-		public Byte4[] GetLayerPixels (CelChunk[,] cells, int layerIndex, int frameIndex, Byte4[] palette = null) {
+		public Color32[] GetLayerPixels (CelChunk[,] cells, int layerIndex, int frameIndex, Color32[] palette = null) {
 			int width = Header.Width;
 			int height = Header.Height;
 			if (width <= 0 || height <= 0) return null;
@@ -274,8 +274,8 @@ namespace AngeliaForUnity.Editor {
 			palette ??= colorDepth == 8 ? GetPalette32() : null;
 
 			// New Pixels
-			var pixels = new Byte4[width * height];
-			Byte4 CLEAR = new(0, 0, 0, 0);
+			var pixels = new Color32[width * height];
+			Color32 CLEAR = new(0, 0, 0, 0);
 			for (int i = 0; i < pixels.Length; i++) {
 				pixels[i] = CLEAR;
 			}
@@ -286,7 +286,7 @@ namespace AngeliaForUnity.Editor {
 			if (chunk == null) return pixels;
 			int chunkWidth = chunk.Width;
 			int chunkHeight = chunk.Height;
-			Byte4[] colors = null;
+			Color32[] colors = null;
 			if (chunk.Type == (ushort)CelChunk.CelType.Linked) {
 				if (chunk.FramePosition >= 0 && chunk.FramePosition < frameCount) {
 					var linkedChunk = cells[layerIndex, chunk.FramePosition];
@@ -317,7 +317,7 @@ namespace AngeliaForUnity.Editor {
 		}
 
 
-		public Byte4[] GetAllPixels (CelChunk[,] cells, int frameIndex, bool ignoreBackgroundLayer = false, bool visibleLayerOnly = true, Byte4[] palette = null, List<LayerChunk> layerChunks = null) {
+		public Color32[] GetAllPixels (CelChunk[,] cells, int frameIndex, bool ignoreBackgroundLayer = false, bool visibleLayerOnly = true, Color32[] palette = null, List<LayerChunk> layerChunks = null) {
 
 			int width = Header.Width;
 			int height = Header.Height;
@@ -327,8 +327,8 @@ namespace AngeliaForUnity.Editor {
 			palette ??= Header.ColorDepth == 8 ? GetPalette32() : null;
 
 			// New Pixels
-			var pixels = new Byte4[width * height];
-			Byte4 CLEAR = new(0, 0, 0, 0);
+			var pixels = new Color32[width * height];
+			Color32 CLEAR = new(0, 0, 0, 0);
 			for (int i = 0; i < pixels.Length; i++) {
 				pixels[i] = CLEAR;
 			}
@@ -341,7 +341,7 @@ namespace AngeliaForUnity.Editor {
 				if (chunk == null) { continue; }
 				int chunkWidth = chunk.Width;
 				int chunkHeight = chunk.Height;
-				Byte4[] colors = null;
+				Color32[] colors = null;
 				if (chunk.Type == (ushort)CelChunk.CelType.Linked) {
 					if (chunk.FramePosition >= 0 && chunk.FramePosition < frameCount) {
 						var linkedChunk = cells[i, chunk.FramePosition];
