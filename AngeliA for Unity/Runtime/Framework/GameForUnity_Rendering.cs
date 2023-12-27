@@ -83,7 +83,7 @@ namespace AngeliaForUnity {
 			}
 
 			// Pixel Renderer
-			UnityCamera.gameObject.AddComponent<PixelRenderer>();
+			UnityCamera.gameObject.AddComponent<GLRenderer>();
 
 		}
 
@@ -101,6 +101,7 @@ namespace AngeliaForUnity {
 		protected override void _SetCameraScreenLocacion (FRect rect) => UnityCamera.rect = rect.ToUnity();
 		protected override float _GetCameraAspect () => UnityCamera.aspect;
 		protected override float _GetCameraOrthographicSize () => UnityCamera.orthographicSize;
+
 
 		// Renderer
 		protected override void _OnCameraUpdate () {
@@ -398,7 +399,25 @@ namespace AngeliaForUnity {
 			Skybox.SetColor(SKYBOX_BOTTOM, bottom.ToUnityColor());
 		}
 
-		protected override void _DrawRect (IRect rect, Byte4 color) => PixelRenderer.Draw(rect.ToUnity(), color.ToUnityColor32());
+		protected override void _DrawRect (IRect rect, Byte4 color) => GLRenderer.DrawRect(rect.ToUnity(), color.ToUnityColor32());
+
+		protected override void _DrawTexture (IRect rect, object texture) => GLRenderer.DrawTexture(rect.ToUnity(), texture as Texture2D);
+
+		protected override object _GetTextureFromPixels (Byte4[] pixels, int width, int height) {
+			var texture = new Texture2D(width, height, TextureFormat.ARGB32, false) {
+				filterMode = FilterMode.Point,
+			};
+			texture.SetPixels32(pixels.ToUnity());
+			texture.Apply();
+			return texture;
+		}
+
+		protected override void _FillPixelsIntoTexture (Byte4[] pixels, object texture) {
+			if (texture is not Texture2D texture2d) return;
+			if (pixels.Length != texture2d.width * texture2d.height) return;
+			texture2d.SetPixels32(pixels.ToUnity());
+			texture2d.Apply();
+		}
 
 
 		#endregion

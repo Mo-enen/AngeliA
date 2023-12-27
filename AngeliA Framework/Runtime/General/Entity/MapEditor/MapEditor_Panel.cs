@@ -753,7 +753,6 @@ namespace AngeliaFramework {
 		private void Update_ToolbarUI () {
 
 			if (IsPlaying) return;
-			if (PanelRect.xMax <= CellRenderer.CameraRect.x) return;
 
 			int PADDING = Unify(6);
 			int BUTTON_BORDER = Unify(6);
@@ -762,7 +761,7 @@ namespace AngeliaFramework {
 			var panel = ToolbarRect;
 			CellRenderer.Draw(
 				Const.PIXEL,
-				new IRect(panel.x, panel.y, PanelRect.xMax - panel.x, panel.height),
+				panel,
 				Const.GREY_32, PANEL_Z - 6
 			);
 			panel = panel.Shrink(PADDING);

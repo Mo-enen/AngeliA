@@ -11,11 +11,13 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
+		// Const
+		private const int NAV_WORLD_SIZE = 13;
+
 		// Data
-		private TextureSquad NavSquad = null;
 		private Int3 NavPosition = default;
 		private int LastNavigatorStateChangeFrame = int.MinValue;
-		private int NavigationBlockBarLerp = 0;
+		private int NavGlobalScale = 1000;
 
 
 		#endregion
@@ -42,12 +44,12 @@ namespace AngeliaFramework {
 
 			// Move
 			if (FrameInput.AnyMouseButtonHolding) {
-				int squadScale = (NavSquad.WorldSize - 1) * Const.MAP * Const.CEL;
+				int squadScale = (NAV_WORLD_SIZE - 1) * Const.MAP * Const.CEL;
 				int cameraHeight = CellRenderer.CameraRect.height;
 				NavPosition.x -= FrameInput.MouseGlobalPositionDelta.x * squadScale / cameraHeight;
 				NavPosition.y -= FrameInput.MouseGlobalPositionDelta.y * squadScale / cameraHeight;
 			} else if (!ShiftHolding && FrameInput.Direction != Int2.zero) {
-				int speed = Const.MAP * Const.CEL * 2 / NavSquad.WorldSize;
+				int speed = Const.MAP * Const.CEL * 2 / NAV_WORLD_SIZE;
 				NavPosition.x += FrameInput.Direction.x * speed / 1000;
 				NavPosition.y += FrameInput.Direction.y * speed / 1000;
 			}
@@ -76,20 +78,21 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_NavGizmos () {
+		private void Update_NavPixels () {
 
-			if (!IsNavigating) return;
+
+
+
+
+		}
+
+
+		private void Update_NavGizmos () {
 
 			var cameraRect = CellRenderer.CameraRect;
 
-			// Black Bar
-			int barWidth = NavigationBlockBarLerp * (cameraRect.width - cameraRect.height) / 2000;
-			CellRenderer.Draw(Const.PIXEL, new IRect(cameraRect.x, cameraRect.y, barWidth, cameraRect.height), Const.BLACK, -1);
-			CellRenderer.Draw(Const.PIXEL, new IRect(cameraRect.x + cameraRect.width - barWidth, cameraRect.y, barWidth, cameraRect.height), Const.BLACK, -1);
-			NavigationBlockBarLerp = NavigationBlockBarLerp.LerpTo(1000, 200);
-
 			// Camera Rect
-			int height = cameraRect.height * TargetViewRect.height / (NavSquad.WorldSize - 1) / (Const.MAP * Const.CEL);
+			int height = cameraRect.height * TargetViewRect.height / (NAV_WORLD_SIZE - 1) / (Const.MAP * Const.CEL);
 			int width = height * cameraRect.width / cameraRect.height;
 			int BORDER = Unify(1);
 			var rect = new IRect(
@@ -97,16 +100,16 @@ namespace AngeliaFramework {
 				cameraRect.y + cameraRect.height / 2 - height / 2,
 				width, height
 			).Shrink(width * PanelRect.width / cameraRect.width, 0, 0, 0);
-			if (NavSquad.GlobalScale != 1000) {
-				int newWidth = rect.width * NavSquad.GlobalScale / 1000;
-				int newHeight = rect.height * NavSquad.GlobalScale / 1000;
+			if (NavGlobalScale != 1000) {
+				int newWidth = rect.width * NavGlobalScale / 1000;
+				int newHeight = rect.height * NavGlobalScale / 1000;
 				rect.x -= (newWidth - rect.width) / 2;
 				rect.y -= (newHeight - rect.height) / 2;
 				rect.width = newWidth;
 				rect.height = newHeight;
 			}
-			CellRenderer.Draw_9Slice(FRAME, rect, BORDER, BORDER, BORDER, BORDER, Const.WHITE);
-			CellRenderer.Draw_9Slice(FRAME, rect.Expand(BORDER), BORDER, BORDER, BORDER, BORDER, Const.BLACK);
+			Game.DrawFrame(rect, Const.WHITE, BORDER);
+			Game.DrawFrame(rect.Expand(BORDER), Const.BLACK, BORDER);
 
 			// Click Camera Rect
 			bool hoverRect = rect.Contains(FrameInput.MouseGlobalPosition);
@@ -154,11 +157,7 @@ namespace AngeliaFramework {
 				}
 			}
 			if (navigating) {
-				NavSquad.Enable();
-				NavSquad.GlobalScale = (NavSquad.WorldSize - 1) * 1000;
-				NavigationBlockBarLerp = 0;
-			} else {
-				NavSquad.Disable();
+				NavGlobalScale = (NAV_WORLD_SIZE - 1) * 1000;
 			}
 			MouseDownPosition = null;
 			SelectionUnitRect = null;

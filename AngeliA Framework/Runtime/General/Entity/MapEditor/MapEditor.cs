@@ -265,7 +265,6 @@ namespace AngeliaFramework {
 			PanelOffsetX = 0;
 			SearchingText = "";
 			PaletteSearchScrollY = 0;
-			NavSquad = new TextureSquad(13);
 			SetNavigating(false);
 			ToolbarOffsetX = 0;
 			PerformingUndoQueue = new();
@@ -327,8 +326,6 @@ namespace AngeliaFramework {
 			MouseDownOutsideBoundary = false;
 			PaletteTrie = null;
 			SearchResult = null;
-			NavSquad?.Dispose();
-			NavSquad = null;
 			CheckAltarIDs = null;
 			EditorMeta = null;
 
@@ -477,10 +474,10 @@ namespace AngeliaFramework {
 					Update_ToolbarUI();
 					Update_NavQuickLane();
 					Update_NavHotkey();
-					NavSquad.FrameUpdate(NavPosition);
+					Update_NavPixels();
 					Update_NavGizmos();
-					if (NavSquad.GlobalScale != 1000) {
-						NavSquad.GlobalScale = NavSquad.GlobalScale.LerpTo(1000, 300);
+					if (NavGlobalScale != 1000) {
+						NavGlobalScale = NavGlobalScale.LerpTo(1000, 300);
 					}
 				} else {
 					SetNavigating(false);

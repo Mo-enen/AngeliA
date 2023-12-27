@@ -130,8 +130,24 @@ namespace AngeliaFramework {
 		}
 		protected abstract void _SetSkyboxTint (Byte4 top, Byte4 bottom);
 
+		public static void DrawFrame (IRect rect, Byte4 color, int thickness) {
+			Instance._DrawRect(rect.EdgeInside(Direction4.Down, thickness), color);
+			Instance._DrawRect(rect.EdgeInside(Direction4.Up, thickness), color);
+			Instance._DrawRect(rect.EdgeInside(Direction4.Left, thickness), color);
+			Instance._DrawRect(rect.EdgeInside(Direction4.Right, thickness), color);
+		}
 		public static void DrawRect (IRect rect, Byte4 color) => Instance._DrawRect(rect, color);
 		protected abstract void _DrawRect (IRect rect, Byte4 color);
+
+		public static void DrawTexture (IRect rect, object texture) => Instance._DrawTexture(rect, texture);
+		protected abstract void _DrawTexture (IRect rect, object texture);
+
+		public static object GetTextureFromPixels (Byte4[] pixels, int width, int height) => Instance._GetTextureFromPixels(pixels, width, height);
+		protected abstract object _GetTextureFromPixels (Byte4[] pixels, int width, int height);
+
+		public static void FillPixelsIntoTexture (Byte4[] pixels, object texture) => Instance._FillPixelsIntoTexture(pixels, texture);
+		protected abstract void _FillPixelsIntoTexture (Byte4[] pixels, object texture);
+
 
 		// Music
 		public static void PlayMusic (int id) => Instance._PlayMusic(id);
@@ -154,6 +170,7 @@ namespace AngeliaFramework {
 
 		internal static bool IsMusicPlaying => Instance._IsMusicPlaying();
 		protected abstract bool _IsMusicPlaying ();
+
 
 		// Sound
 		internal static void PlaySound (int id, float volume) => Instance._PlaySound(id, volume);
@@ -184,6 +201,7 @@ namespace AngeliaFramework {
 
 		public static void SetCursorToNormal () => Instance._SetCursorToNormal();
 		protected abstract void _SetCursorToNormal ();
+
 
 		// Mouse
 		internal static bool IsMouseAvailable => Instance._IsMouseAvailable();
