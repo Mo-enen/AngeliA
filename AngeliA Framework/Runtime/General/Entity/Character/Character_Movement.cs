@@ -640,7 +640,7 @@ namespace AngeliaFramework {
 			if (PushAvailable && !IsCrashing && IntendedX != 0 && speed != 0 && !NavigationEnable) {
 				var hits = CellPhysics.OverlapAll(
 				PhysicsMask.ENVIRONMENT,
-				Rect.Shrink(0, 0, 4, 4).Edge(IntendedX < 0 ? Direction4.Left : Direction4.Right),
+				Rect.Shrink(0, 0, 4, 4).EdgeOutside(IntendedX < 0 ? Direction4.Left : Direction4.Right),
 				out int count, this
 			);
 				bool pushing = false;

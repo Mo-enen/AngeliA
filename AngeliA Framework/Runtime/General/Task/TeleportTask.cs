@@ -51,7 +51,7 @@ namespace AngeliaFramework {
 			}
 
 			// Add Squad Effect
-			if (useParallax && LocalFrame > WaitDuration) {
+			if (useParallax && LocalFrame > WaitDuration+1) {
 				const int PARA = Const.SQUAD_BEHIND_PARALLAX;
 				float scale = ToBehind ? 1000f / PARA : PARA / 1000f;
 				float z01 = Util.InverseLerp(WaitDuration, Duration, LocalFrame);

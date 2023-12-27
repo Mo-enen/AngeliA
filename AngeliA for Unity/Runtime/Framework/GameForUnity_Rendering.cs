@@ -81,6 +81,10 @@ namespace AngeliaForUnity {
 					if (_font == Fonts[layerIndex]) CellRenderer.AddTextRebuild(layerIndex);
 				};
 			}
+
+			// Pixel Renderer
+			UnityCamera.gameObject.AddComponent<PixelRenderer>();
+
 		}
 
 
@@ -393,6 +397,9 @@ namespace AngeliaForUnity {
 			Skybox.SetColor(SKYBOX_TOP, top.ToUnityColor());
 			Skybox.SetColor(SKYBOX_BOTTOM, bottom.ToUnityColor());
 		}
+
+		protected override void _DrawRect (IRect rect, Byte4 color) => PixelRenderer.Draw(rect.ToUnity(), color.ToUnityColor32());
+
 
 		#endregion
 

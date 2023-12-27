@@ -87,8 +87,8 @@ namespace AngeliaFramework {
 		public bool GroundCheck (out Byte4 groundTint) {
 			groundTint = Const.WHITE;
 			bool grounded =
-				CellPhysics.Overlap(PhysicsMask.MAP, Rect.Edge(Direction4.Down, 4), out var hit, Sender) ||
-				CellPhysics.Overlap(PhysicsMask.MAP, Rect.Edge(Direction4.Down, 4), out hit, Sender, OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG);
+				CellPhysics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out var hit, Sender) ||
+				CellPhysics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out hit, Sender, OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG);
 			if (grounded && CellRenderer.TryGetSprite(hit.SourceID, out var groundSprite)) {
 				groundTint = groundSprite.SummaryTint;
 			}

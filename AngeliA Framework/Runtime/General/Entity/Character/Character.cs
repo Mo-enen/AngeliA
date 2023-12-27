@@ -389,7 +389,6 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-
 		public virtual void SetCharacterState (CharacterState state) {
 
 			if (CharacterState == state) return;

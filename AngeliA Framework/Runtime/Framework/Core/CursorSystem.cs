@@ -9,7 +9,8 @@ namespace AngeliaFramework {
 
 
 		// API
-		public static void FrameUpdate () {
+		[OnGameUpdatePauseless(64)]
+		internal static void FrameUpdate () {
 			if (CursorEndFrame != int.MinValue && Game.GlobalFrame > CursorEndFrame) {
 				// No Cursor
 				CursorPriority = int.MinValue;

@@ -68,6 +68,7 @@ namespace AngeliaFramework {
 		internal static int PositionY { get; private set; } = 0;
 		internal static int CellWidth { get; private set; } = 1;
 		internal static int CellHeight { get; private set; } = 1;
+		internal static uint CurrentFrame { get; private set; } = uint.MinValue;
 
 		// Data
 		private static readonly PhysicsCell[] c_RoomOneway = new PhysicsCell[32];
@@ -77,7 +78,6 @@ namespace AngeliaFramework {
 		private static readonly PhysicsCell[] c_GeneralHits = new PhysicsCell[1024];
 		private static Layer[] Layers = null;
 		private static Layer CurrentLayer = null;
-		private static uint CurrentFrame = uint.MinValue;
 		private static int CurrentLayerEnum = -1;
 		private static int LayerCount = 0;
 		private static int GlobalOperationStamp = int.MinValue;
@@ -105,9 +105,10 @@ namespace AngeliaFramework {
 
 
 		// Fill
-		internal static void BeginFill (int positionX, int positionY) {
-			PositionX = positionX;
-			PositionY = positionY;
+		[OnGameUpdate(-1024)]
+		internal static void BeginFill () {
+			PositionX = Stage.ViewRect.x - Const.SPAWN_PADDING - Const.LEVEL_SPAWN_PADDING;
+			PositionY = Stage.ViewRect.y - Const.SPAWN_PADDING - Const.LEVEL_SPAWN_PADDING;
 			CurrentFrame++;
 		}
 
@@ -195,7 +196,7 @@ namespace AngeliaFramework {
 
 		// Room Check
 		public static bool RoomCheck (int mask, IRect rect, Entity entity, Direction4 direction, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) => RoomCheck(mask, rect, entity, direction, out _, mode, tag);
-		public static bool RoomCheck (int mask, IRect rect, Entity entity, Direction4 direction, out PhysicsCell hit, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) => !Overlap(mask, rect.Edge(direction), out hit, entity, mode, tag);
+		public static bool RoomCheck (int mask, IRect rect, Entity entity, Direction4 direction, out PhysicsCell hit, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) => !Overlap(mask, rect.EdgeOutside(direction), out hit, entity, mode, tag);
 
 
 		public static bool RoomCheckOneway (int mask, IRect rect, Entity entity, Direction4 direction, bool overlapCheck = false, bool blockOnly = false) =>
@@ -206,7 +207,7 @@ namespace AngeliaFramework {
 			var gateDir = direction.Opposite();
 			int count = OverlapAll(
 				c_RoomOneway,
-				mask, rect.Edge(direction), entity, OperationMode.TriggerOnly,
+				mask, rect.EdgeOutside(direction), entity, OperationMode.TriggerOnly,
 				AngeUtil.GetOnewayTag(gateDir)
 			);
 			for (int i = 0; i < count; i++) {
@@ -364,7 +365,7 @@ namespace AngeliaFramework {
 			var result = from;
 			stopForOnewayX = false;
 			stopForOnewayY = false;
-			
+
 			if (Util.Abs(speedX) > RIGIDBODY_FAST_SPEED || Util.Abs(speedY) > RIGIDBODY_FAST_SPEED) {
 				// Too Fast
 				int _speedX = speedX;

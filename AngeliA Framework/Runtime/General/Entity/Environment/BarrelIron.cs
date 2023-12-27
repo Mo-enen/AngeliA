@@ -152,7 +152,7 @@ namespace AngeliaFramework {
 				int shrinkX = DeltaPositionX.Abs() + 16;
 				var hits = CellPhysics.OverlapAll(
 					PhysicsMask.ENTITY,
-					Rect.Shrink(shrinkX, shrinkX, 0, 0).Edge(Direction4.Up, 1),
+					Rect.Shrink(shrinkX, shrinkX, 0, 0).EdgeOutside(Direction4.Up, 1),
 					out int count, this
 				);
 				for (int i = 0; i < count; i++) {

@@ -215,7 +215,7 @@ namespace AngeliaFramework {
 
 			// Bar BG
 			CellRenderer.Draw(
-				Const.PIXEL, windowRect.Edge(Direction4.Left, LeftBarWidth).Expand(WindowPadding, 0, 0, 0), Const.BLACK, z: 0
+				Const.PIXEL, windowRect.EdgeOutside(Direction4.Left, LeftBarWidth).Expand(WindowPadding, 0, 0, 0), Const.BLACK, z: 0
 			);
 			for (int i = 0; i < SUIT_TYPE_ICONS.Length; i++) {
 				var iconRect = new IRect(
@@ -388,7 +388,7 @@ namespace AngeliaFramework {
 			if (CurrentPattern != int.MinValue) {
 				CellRendererGUI.Label(
 					CellContent.Get(CurrentDisplayName, Const.WHITE),
-					windowRect.Edge(Direction4.Down, LabelSize)
+					windowRect.EdgeOutside(Direction4.Down, LabelSize)
 				);
 			}
 

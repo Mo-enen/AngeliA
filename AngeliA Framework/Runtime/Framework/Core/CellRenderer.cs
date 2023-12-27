@@ -236,7 +236,6 @@ namespace AngeliaFramework {
 		private static AngeSprite[] Sprites = null;
 		private static AngeSpriteChain[] Chains = null;
 		private static string[] SheetNames = new string[0];
-		private static bool IsPausing = false;
 		private static bool IsDrawing = false;
 
 
@@ -259,7 +258,10 @@ namespace AngeliaFramework {
 
 
 		// Update
-		internal static void CameraUpdate (IRect viewRect) {
+		[OnGameUpdate(-2048)]
+		internal static void CameraUpdate () {
+
+			var viewRect = Stage.ViewRect;
 
 			// Ratio
 			float ratio = (float)Game.ScreenWidth / Game.ScreenHeight;
@@ -290,6 +292,14 @@ namespace AngeliaFramework {
 		}
 
 
+		[OnGameUpdatePauseless(-2048)]
+		internal static void PausingUpdate () {
+			if (Game.IsPlaying) return;
+			CameraUpdate();
+		}
+
+
+		[OnGameUpdatePauseless(32)]
 		internal static void FrameUpdate () {
 			IsDrawing = false;
 			try {
@@ -460,13 +470,13 @@ namespace AngeliaFramework {
 
 
 		// Draw
-		public static void BeginDraw (bool isPausing) {
-			IsPausing = isPausing;
+		[OnGameUpdate(-512)]
+		public static void BeginDraw () {
 			IsDrawing = true;
 			SetLayerToDefault();
 			for (int i = 0; i < Layers.Length; i++) {
 				var layer = Layers[i];
-				if (!isPausing || layer.UiLayer) {
+				if (Game.IsPlaying || layer.UiLayer) {
 					layer.FocusedCell = 0;
 					layer.SortedIndex = 0;
 				}
@@ -476,6 +486,13 @@ namespace AngeliaFramework {
 				tLayer.FocusedCell = 0;
 				tLayer.SortedIndex = 0;
 			}
+		}
+
+
+		[OnGameUpdatePauseless(-512)]
+		public static void UpdatePausing () {
+			if (Game.IsPlaying) return;
+			BeginDraw();
 		}
 
 
@@ -501,7 +518,7 @@ namespace AngeliaFramework {
 			var layer = forText ?
 				TextLayers[CurrentTextLayerIndex.Clamp(0, TextLayers.Length - 1)] :
 				Layers[CurrentLayerIndex.Clamp(0, Layers.Length - 1)];
-			if (IsPausing && !layer.UiLayer) return EMPTY_CELL;
+			if (Game.IsPausing && !layer.UiLayer) return EMPTY_CELL;
 			if (layer.FocusedCell < 0) return EMPTY_CELL;
 			var cell = layer.Cells[layer.FocusedCell];
 

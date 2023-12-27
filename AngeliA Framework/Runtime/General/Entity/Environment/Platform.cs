@@ -226,7 +226,7 @@ namespace AngeliaFramework {
 			}
 
 			var hits = CellPhysics.OverlapAll(
-				PhysicsMask.DYNAMIC, rect.Edge(Direction4.Up, 32).Shift(0, -16), out int count,
+				PhysicsMask.DYNAMIC, rect.EdgeOutside(Direction4.Up, 32).Shift(0, -16), out int count,
 				this, OperationMode.ColliderAndTrigger
 			);
 			for (int i = 0; i < count; i++) {

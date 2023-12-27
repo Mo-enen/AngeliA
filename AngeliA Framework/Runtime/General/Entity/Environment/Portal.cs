@@ -22,8 +22,10 @@ namespace AngeliaFramework {
 	public abstract class CircleFlamePortal : Portal {
 		private static readonly int CIRCLE_CODE = "PortalCircle".AngeHash();
 		private static readonly int FLAME_CODE = "PortalFlame".AngeHash();
+		private static readonly int LIGHT_CODE = "PortalLight".AngeHash();
 		protected virtual int CircleCode => CIRCLE_CODE;
 		protected virtual int FlameCode => FLAME_CODE;
+		protected virtual int LightCode => LIGHT_CODE;
 		protected virtual int CircleSize => Const.CEL * 3 / 2;
 		protected int RenderingMinZ { get; private set; } = 0;
 		protected int RenderingMaxZ { get; private set; } = 0;
@@ -43,6 +45,28 @@ namespace AngeliaFramework {
 
 			RenderingMinZ = int.MaxValue;
 			RenderingMaxZ = int.MinValue;
+
+			// Light
+			if (CellRenderer.TryGetSprite(LightCode, out var light)) {
+				int lightSize = CircleSize;
+				if (!light.GlobalBorder.IsZero) {
+					lightSize += CircleSize * light.GlobalBorder.horizontal / light.GlobalWidth;
+				}
+				lightSize += (int)Util.PingPong(Game.GlobalFrame, 36);
+				var tint = new Byte4(255, 255, 255, (byte)(Util.PingPong(Game.GlobalFrame, 36) * 2 + 90).Clamp(0, 255));
+				CellRenderer.SetLayerToAdditive();
+				CellRenderer.Draw(
+					light.GlobalID, centerX, centerY,
+					500, 500, (Game.GlobalFrame * 6).UMod(360),
+					lightSize, lightSize, tint
+				);
+				CellRenderer.Draw(
+					light.GlobalID, centerX, centerY,
+					500, 500, (Game.GlobalFrame * -4).UMod(360),
+					lightSize * 19 / 20, lightSize * 19 / 20, tint
+				);
+				CellRenderer.SetLayerToDefault();
+			}
 
 			// Circle
 			if (CellRenderer.TryGetSprite(CircleCode, out var circle)) {

@@ -303,7 +303,7 @@ namespace AngeliaFramework {
 				// Highlight
 				if (selecting) {
 					var cells = CellRenderer.Draw_9Slice(
-						UI_TAB, tabRect.Edge(Direction4.Up, tabBorder).Shift(0, -tabBorder),
+						UI_TAB, tabRect.EdgeOutside(Direction4.Up, tabBorder).Shift(0, -tabBorder),
 						tabBorder, tabBorder, 0, tabBorder,
 						new(225, 171, 48, 255), PANEL_Z - 4
 					);
@@ -325,7 +325,7 @@ namespace AngeliaFramework {
 				// Icon
 				CellRenderer.Draw(
 					i == (int)PaletteTabType.Listed ? UI_TAB_ICON_PINNED : UI_TAB_ICON_ALL,
-					labelBounds.Edge(Direction4.Left, labelBounds.height).Shift(-labelBounds.height / 3, 0),
+					labelBounds.EdgeOutside(Direction4.Left, labelBounds.height).Shift(-labelBounds.height / 3, 0),
 					Const.WHITE, PANEL_Z - 4
 				);
 
@@ -476,6 +476,7 @@ namespace AngeliaFramework {
 		private void Update_PaletteContentUI () {
 
 			if (!string.IsNullOrEmpty(SearchingText)) return;
+			if (PanelRect.xMax <= CellRenderer.CameraRect.x) return;
 
 			// BG
 			CellRenderer.Draw(Const.PIXEL, PanelRect, Const.BLACK, PANEL_Z - 14);
@@ -654,6 +655,7 @@ namespace AngeliaFramework {
 		private void Update_PaletteSearchResultUI () {
 
 			if (IsPlaying || DroppingPlayer || string.IsNullOrEmpty(SearchingText)) return;
+			if (PanelRect.xMax <= CellRenderer.CameraRect.x) return;
 			CellRenderer.Draw(Const.PIXEL, PanelRect, Const.BLACK, PANEL_Z - 14);
 			if (SearchResult.Count == 0) return;
 
@@ -751,6 +753,7 @@ namespace AngeliaFramework {
 		private void Update_ToolbarUI () {
 
 			if (IsPlaying) return;
+			if (PanelRect.xMax <= CellRenderer.CameraRect.x) return;
 
 			int PADDING = Unify(6);
 			int BUTTON_BORDER = Unify(6);

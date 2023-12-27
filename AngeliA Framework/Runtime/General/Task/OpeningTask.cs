@@ -67,7 +67,7 @@ namespace AngeliaFramework {
 			}
 
 			// Frame 2
-			if (localFrame == 2) {
+			if (localFrame == 3) {
 				var player = Player.Selecting;
 				if (player != null) {
 					if (!player.Active) {

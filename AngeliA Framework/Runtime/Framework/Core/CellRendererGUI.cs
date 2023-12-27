@@ -139,7 +139,6 @@ namespace AngeliaFramework {
 		private static int BeamIndex = 0;
 		private static int BeamLength = 0;
 		private static int BeamBlinkFrame = int.MinValue;
-		private static int PauselessFrame = 0;
 		private static Int2? ScrollBarMouseDownPos = null;
 
 
@@ -159,8 +158,8 @@ namespace AngeliaFramework {
 		}
 
 
-		internal static void Update (int pauselessFrame) {
-			PauselessFrame = pauselessFrame;
+		[OnGameUpdate(1023)]
+		internal static void Update () {
 			if (TypingTextFieldID != 0 && FrameInput.AnyKeyHolding) {
 				FrameInput.UseAllHoldingKeys(ignoreMouse: true);
 				FrameInput.UnuseKeyboardKey(KeyboardKey.LeftArrow);
@@ -168,12 +167,11 @@ namespace AngeliaFramework {
 				FrameInput.UnuseKeyboardKey(KeyboardKey.Delete);
 				FrameInput.UnuseKeyboardKey(KeyboardKey.Escape);
 			}
-
 			if (!FrameInput.MouseLeftButton) ScrollBarMouseDownPos = null;
-
 		}
 
 
+		[OnGameUpdateLater(4096)]
 		internal static void LateUpdate () {
 
 			if (TypingBuilder.Length > 0) TypingBuilder.Clear();
@@ -182,7 +180,7 @@ namespace AngeliaFramework {
 			if (TypingTextFieldID != 0) {
 				if (
 					(FrameInput.AnyMouseButtonDown && !TypingTextFieldRect.Contains(FrameInput.MouseGlobalPosition)) ||
-					PauselessFrame > TypingUpdateFrame
+					Game.PauselessFrame > TypingUpdateFrame
 				) {
 					CancelTyping();
 				}
@@ -454,7 +452,7 @@ namespace AngeliaFramework {
 			// Start Typing
 			if (FrameInput.MouseLeftButtonDown && mouseInRect) {
 				TypingTextFieldID = controlID;
-				BeamBlinkFrame = PauselessFrame;
+				BeamBlinkFrame = Game.PauselessFrame;
 				startTyping = true;
 				mouseDragging = false;
 			}
@@ -483,7 +481,7 @@ namespace AngeliaFramework {
 						BeamIndex += BeamLength;
 					}
 					BeamLength = 0;
-					BeamBlinkFrame = PauselessFrame;
+					BeamBlinkFrame = Game.PauselessFrame;
 				}
 				if (FrameInput.KeyboardDownGUI(KeyboardKey.RightArrow)) {
 					if (BeamLength == 0) {
@@ -492,13 +490,13 @@ namespace AngeliaFramework {
 						BeamIndex += BeamLength;
 					}
 					BeamLength = 0;
-					BeamBlinkFrame = PauselessFrame;
+					BeamBlinkFrame = Game.PauselessFrame;
 				}
 
 				BeamIndex = BeamIndex.Clamp(0, text.Text.Length);
 				BeamLength = BeamLength.Clamp(-BeamIndex, text.Text.Length - BeamIndex);
 				TypingTextFieldRect = rect;
-				TypingUpdateFrame = PauselessFrame;
+				TypingUpdateFrame = Game.PauselessFrame;
 
 				for (int i = 0; i < TypingBuilder.Length; i++) {
 					char c = TypingBuilder[i];
@@ -550,7 +548,7 @@ namespace AngeliaFramework {
 				}
 			}
 
-			if (changed) BeamBlinkFrame = PauselessFrame;
+			if (changed) BeamBlinkFrame = Game.PauselessFrame;
 
 			// Rendering
 			int startCellIndex = CellRenderer.GetTextUsedCellCount();
@@ -567,7 +565,7 @@ namespace AngeliaFramework {
 
 			// Draw Beam
 			Cell beamCell = null;
-			if (typing && (PauselessFrame - BeamBlinkFrame) % 56 < 28) {
+			if (typing && (Game.PauselessFrame - BeamBlinkFrame) % 56 < 28) {
 				beamRect.y = labelRect.y + beamShrink;
 				beamRect.height = labelRect.height - beamShrink * 2;
 				beamCell = CellRenderer.Draw(Const.PIXEL, beamRect, Const.WHITE, int.MaxValue);

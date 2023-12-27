@@ -825,7 +825,14 @@ namespace AngeliaFramework {
 		};
 
 
-		public static IRect Edge (this IRect rect, Direction4 edge, int thickness = 1) => edge switch {
+		public static IRect EdgeInside (this IRect rect, Direction4 edge, int thickness = 1) => edge switch {
+			Direction4.Up => rect.Shrink(0, 0, rect.height - thickness, 0),
+			Direction4.Down => rect.Shrink(0, 0, 0, rect.height - thickness),
+			Direction4.Left => rect.Shrink(0, rect.width - thickness, 0, 0),
+			Direction4.Right => rect.Shrink(rect.width - thickness, 0, 0, 0),
+			_ => throw new System.NotImplementedException(),
+		};
+		public static IRect EdgeOutside (this IRect rect, Direction4 edge, int thickness = 1) => edge switch {
 			Direction4.Up => rect.Shrink(0, 0, rect.height, -thickness),
 			Direction4.Down => rect.Shrink(0, 0, -thickness, rect.height),
 			Direction4.Left => rect.Shrink(-thickness, rect.width, 0, 0),

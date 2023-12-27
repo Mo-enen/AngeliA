@@ -103,7 +103,7 @@ namespace AngeliaFramework {
 			int checkingMask = PhysicsMask.MAP & CollisionMask;
 			InWater = CellPhysics.Overlap(checkingMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, Const.WATER_TAG);
 			InSand = !InWater && CellPhysics.Overlap(checkingMask, rect, null, OperationMode.TriggerOnly, Const.QUICKSAND_TAG);
-			OnSlippy = !InWater && !InSand && CellPhysics.Overlap(checkingMask, rect.Edge(Direction4.Down), this, OperationMode.ColliderOnly, Const.SLIP_TAG);
+			OnSlippy = !InWater && !InSand && CellPhysics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderOnly, Const.SLIP_TAG);
 			IsInsideGround = InsideGroundCheck();
 
 			if (!PhysicsEnable || Game.GlobalFrame <= IgnorePhysicsFrame) {
@@ -138,7 +138,7 @@ namespace AngeliaFramework {
 				if (!CellPhysics.RoomCheckOneway(CollisionMask, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left, true)) {
 					VelocityX = 0;
 				} else {
-					var hits = CellPhysics.OverlapAll(CollisionMask, rect.Edge(VelocityX > 0 ? Direction4.Right : Direction4.Left), out int count, this);
+					var hits = CellPhysics.OverlapAll(CollisionMask, rect.EdgeOutside(VelocityX > 0 ? Direction4.Right : Direction4.Left), out int count, this);
 					for (int i = 0; i < count; i++) {
 						var hit = hits[i];
 						if (hit.Entity is not Rigidbody hitRig) {
@@ -157,7 +157,7 @@ namespace AngeliaFramework {
 				if (!CellPhysics.RoomCheckOneway(CollisionMask, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down, true)) {
 					VelocityY = 0;
 				} else {
-					var hits = CellPhysics.OverlapAll(CollisionMask, rect.Edge(VelocityY > 0 ? Direction4.Up : Direction4.Down), out int count, this);
+					var hits = CellPhysics.OverlapAll(CollisionMask, rect.EdgeOutside(VelocityY > 0 ? Direction4.Up : Direction4.Down), out int count, this);
 					for (int i = 0; i < count; i++) {
 						var hit = hits[i];
 						if (hit.Entity is not Rigidbody hitRig) {
@@ -204,7 +204,7 @@ namespace AngeliaFramework {
 			if (AllowBeingCarryByOtherRigidbody) {
 				int speedLeft = 0;
 				int speedRight = 0;
-				var hits = CellPhysics.OverlapAll(CollisionMask, Rect.Edge(Direction4.Down), out int count, this);
+				var hits = CellPhysics.OverlapAll(CollisionMask, Rect.EdgeOutside(Direction4.Down), out int count, this);
 				for (int i = 0; i < count; i++) {
 					var hit = hits[i];
 					if (hit.Entity is not Rigidbody rig || !rig.CarryOtherRigidbodyOnTop) continue;

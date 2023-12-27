@@ -16,13 +16,13 @@ namespace AngeliaFramework {
 
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitializeAttribute : System.Attribute { public int Order; public OnGameInitializeAttribute (int order = 0) => Order = order; }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitializeLaterAttribute : System.Attribute { public int Order; public OnGameInitializeLaterAttribute (int order = 0) => Order = order; }
-	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateAttribute : System.Attribute { }
-	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateLaterAttribute : System.Attribute { }
-	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdatePauselessAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateAttribute : OrderedAttribute { public OnGameUpdateAttribute (int order = 0) : base(order) { } }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateLaterAttribute : OrderedAttribute { public OnGameUpdateLaterAttribute (int order = 0) : base(order) { } }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdatePauselessAttribute : OrderedAttribute { public OnGameUpdatePauselessAttribute (int order = 0) : base(order) { } }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameRestartAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameTryingToQuitAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameQuittingAttribute : System.Attribute { }
-	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSlotChangedAttribute : System.Attribute, IOrderedAttribute { public int Order { get; set; } public OnSlotChangedAttribute (int order = 0) => Order = order; }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSlotChangedAttribute : OrderedAttribute { public OnSlotChangedAttribute (int order = 0) : base(order) { } }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSlotCreatedAttribute : System.Attribute { }
 
 
@@ -107,6 +107,8 @@ namespace AngeliaFramework {
 		public virtual void Initialize () {
 			try {
 
+				GlobalFrame = 0;
+
 				AngePath.CurrentSaveSlot = _CurrentSaveSlot.Value;
 
 				Util.LinkEventWithAttribute<OnGameUpdateAttribute>(typeof(Game), nameof(OnGameUpdate));
@@ -133,7 +135,6 @@ namespace AngeliaFramework {
 				_SetSoundVolume(SoundVolume);
 
 				AngeUtil.CreateAngeFolders();
-				RefreshBackgroundTint();
 
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeLaterAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
 
@@ -155,37 +156,31 @@ namespace AngeliaFramework {
 
 		public virtual void Update () {
 			try {
+
+				// Update Callbacks
 				if (IsPlaying) {
-					Stage.Update_View();
-					CellRenderer.CameraUpdate(Stage.ViewRect);
-					FrameInput.FrameUpdate(CellRenderer.CameraRect);
-					CellPhysics.BeginFill(Stage.ViewRect.x - Const.SPAWN_PADDING - Const.LEVEL_SPAWN_PADDING, Stage.ViewRect.y - Const.SPAWN_PADDING - Const.LEVEL_SPAWN_PADDING);
-					CellRenderer.BeginDraw(IsPausing);
 					OnGameUpdate?.Invoke();
-					CellRendererGUI.Update(PauselessFrame);
-					Stage.UpdateAllEntities(GlobalFrame);
 					OnGameUpdateLater?.Invoke();
-					CellRendererGUI.LateUpdate();
-					if (GlobalFrame % 36000 == 0) RefreshBackgroundTint();
-				} else {
-					CellRenderer.CameraUpdate(Stage.ViewRect);
-					FrameInput.FrameUpdate(CellRenderer.CameraRect);
-					CellRenderer.BeginDraw(IsPausing);
-					Stage.UpdateAllEntities(GlobalFrame, EntityLayer.UI);
 				}
 				OnGameUpdatePauseless?.Invoke();
-				_OnCameraUpdate();
-				CellRenderer.FrameUpdate();
-				CursorSystem.FrameUpdate();
+
+				// Switch Between Play and Pause
 				if (FrameInput.GameKeyUp(Gamekey.Start)) IsPlaying = !IsPlaying;
+
+				// Answer Game Restart Require
 				if (RequireRestartWithPlayerID.HasValue) RestartGameLogic();
+
+				// Slot Change Detect
 				if (_CurrentSaveSlot.Value != AngePath.CurrentSaveSlot) {
 					_CurrentSaveSlot.Value = AngePath.CurrentSaveSlot;
 					if (!Util.FolderExists(AngePath.SaveSlotRoot)) OnSlotCreated?.Invoke();
 					OnSlotChanged?.Invoke();
 				}
+
+				// Grow Frame
 				if (!IsPausing) GlobalFrame++;
 				PauselessFrame++;
+
 			} catch (System.Exception ex) { LogException(ex); }
 		}
 
@@ -201,17 +196,6 @@ namespace AngeliaFramework {
 		public static void RestartGame (int playerID = 0, bool immediately = false) {
 			RequireRestartWithPlayerID = playerID;
 			if (immediately) RestartGameLogic();
-		}
-
-
-		public static void RefreshBackgroundTint () {
-			if (GlobalFrame < ForceBackgroundTintFrame) return;
-			var date = System.DateTime.Now;
-			float time01 = Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
-			SetSkyboxTint(
-				Instance.SkyTintTop.Evaluate(time01),
-				Instance.SkyTintBottom.Evaluate(time01)
-			);
 		}
 
 
@@ -263,6 +247,18 @@ namespace AngeliaFramework {
 			float fVolume = volume / 1000f;
 			if (scale != 1000) fVolume *= scale / 1000f;
 			return fVolume * fVolume;
+		}
+
+
+		[OnGameUpdateLater]
+		internal static void RefreshBackgroundTint () {
+			if (GlobalFrame % 36000 != 0 || GlobalFrame < ForceBackgroundTintFrame) return;
+			var date = System.DateTime.Now;
+			float time01 = Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
+			SetSkyboxTint(
+				Instance.SkyTintTop.Evaluate(time01),
+				Instance.SkyTintBottom.Evaluate(time01)
+			);
 		}
 
 

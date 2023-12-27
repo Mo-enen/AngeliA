@@ -33,7 +33,6 @@ namespace AngeliaForUnity.Editor {
 
 
 		// Data
-		private static readonly Color[] COLLIDER_TINTS = { Const.RED_BETTER.ToUnityColor(), Const.ORANGE_BETTER.ToUnityColor(), Color.yellow, Const.GREEN.ToUnityColor(), Const.CYAN.ToUnityColor(), Const.BLUE.ToUnityColor(), Const.GREY_128.ToUnityColor(), };
 		private static readonly List<VisualElement> EdittimeOnlyElements = new();
 		private static readonly List<VisualElement> RuntimeOnlyElements = new();
 		private static readonly List<VisualElement> ProfilerProgressBarTints = new();
@@ -43,10 +42,8 @@ namespace AngeliaForUnity.Editor {
 		private static VisualElement Toolbox = null;
 		private static Image SheetThumbnail = null;
 		private static Label SheetThumbnailLabel = null;
-		private static Material GizmosMaterial = null;
 		private static double AutoRefreshTime = 0f;
 		private static bool RequireRefresh = true;
-		private static int GizmosIndex = -1;
 
 
 		#endregion
@@ -71,9 +68,6 @@ namespace AngeliaForUnity.Editor {
 
 			EditorSceneManager.sceneOpened -= OnSceneOpened;
 			EditorSceneManager.sceneOpened += OnSceneOpened;
-
-			Application.onBeforeRender -= OnBeforeRender;
-			Application.onBeforeRender += OnBeforeRender;
 
 		}
 
@@ -119,7 +113,6 @@ namespace AngeliaForUnity.Editor {
 
 		private static void PlayModeStateChanged (PlayModeStateChange mode) {
 			RequireRefresh = true;
-			GizmosIndex = -1;
 			CellPhysicsCells.Clear();
 			RefreshSheetThumbnail();
 		}
@@ -134,147 +127,6 @@ namespace AngeliaForUnity.Editor {
 		private static void OnSceneOpened (Scene scene, OpenSceneMode mode) {
 			RefreshVisibility();
 			RefreshSheetThumbnail();
-		}
-
-
-		private static void OnBeforeRender () {
-
-			var camera = Camera.main;
-			if (!EditorApplication.isPlaying || camera == null) return;
-
-			var cameraRect01 = camera.rect;
-			var angeCameraRect = CellRenderer.CameraRect;
-			var rect = new FRect();
-			float thickX = 0.0005f;
-			float thickY = 0.0005f * camera.aspect;
-			if (GizmosMaterial == null) {
-				GizmosMaterial = new Material(Shader.Find("Angelia/Vertex"));
-			}
-
-			// Colliders
-			if (GizmosIndex == 0) {
-				if (CellPhysicsCells.Count == 0) {
-					try {
-						var layers = Util.GetStaticFieldValue(typeof(CellPhysics), "Layers") as System.Array;
-						for (int layerIndex = 0; layerIndex < PhysicsLayer.COUNT; layerIndex++) {
-							var layerObj = layers.GetValue(layerIndex);
-							CellPhysicsCells.Add(Util.GetFieldValue(layerObj, "Cells") as PhysicsCell[,,]);
-						}
-					} catch (System.Exception ex) { Debug.LogException(ex); }
-					if (CellPhysicsCells.Count == 0) CellPhysicsCells.Add(null);
-				}
-				if (CellPhysicsCells.Count == CellPhysicsCells.Count) {
-
-					GL.ClearWithSkybox(true, camera);
-					GizmosMaterial.SetPass(0);
-					GL.LoadOrtho();
-					GL.Begin(GL.QUADS);
-
-					for (int layer = 0; layer < CellPhysicsCells.Count; layer++) {
-						try {
-							var cells = CellPhysicsCells[layer];
-							int cellWidth = cells.GetLength(0);
-							int cellHeight = cells.GetLength(1);
-							int celDepth = cells.GetLength(2);
-							GL.Color(COLLIDER_TINTS[layer.Clamp(0, COLLIDER_TINTS.Length - 1)]);
-							for (int y = 0; y < cellHeight; y++) {
-								for (int x = 0; x < cellWidth; x++) {
-									for (int d = 0; d < celDepth; d++) {
-										var cell = cells[x, y, d];
-										if (cell.Frame != Game.GlobalFrame) { break; }
-
-										rect.x = Util.RemapUnclamped(
-											angeCameraRect.x, angeCameraRect.xMax, cameraRect01.x, cameraRect01.xMax, cell.Rect.x
-										);
-										rect.y = Util.RemapUnclamped(
-											angeCameraRect.y, angeCameraRect.yMax, cameraRect01.y, cameraRect01.yMax, cell.Rect.y
-										);
-										rect.width = Util.RemapUnclamped(
-											0, angeCameraRect.width, 0, cameraRect01.width, cell.Rect.width
-										);
-										rect.height = Util.RemapUnclamped(
-											0, angeCameraRect.height, 0, cameraRect01.height, cell.Rect.height
-										);
-
-										if (rect.Overlaps(cameraRect01.ToAngelia())) {
-											DrawFrame(rect, thickX, thickY, !cell.IsTrigger);
-										}
-									}
-								}
-							}
-						} catch (System.Exception ex) { Debug.LogException(ex); }
-					}
-
-					GL.End();
-				}
-			}
-
-			// Bounds
-			if (GizmosIndex == 1) {
-
-				GL.ClearWithSkybox(true, camera);
-				GizmosMaterial.SetPass(0);
-				GL.LoadOrtho();
-				GL.Begin(GL.QUADS);
-				GL.Color(Const.BLUE.ToUnityColor());
-
-				try {
-					for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
-						var entities = Stage.Entities[layer];
-						int count = Stage.EntityCounts[layer];
-						for (int i = 0; i < count; i++) {
-							var e = entities[i];
-							if (!e.Active) continue;
-
-							var bounds = e.GlobalBounds;
-
-							rect.x = Util.RemapUnclamped(
-								angeCameraRect.x, angeCameraRect.xMax, cameraRect01.x, cameraRect01.xMax, bounds.x
-							);
-							rect.y = Util.RemapUnclamped(
-								angeCameraRect.y, angeCameraRect.yMax, cameraRect01.y, cameraRect01.yMax, bounds.y
-							);
-							rect.width = Util.RemapUnclamped(
-								0, angeCameraRect.width, 0, cameraRect01.width, bounds.width
-							);
-							rect.height = Util.RemapUnclamped(
-								0, angeCameraRect.height, 0, cameraRect01.height, bounds.height
-							);
-
-							DrawFrame(rect, thickX, thickY, false);
-						}
-					}
-				} catch (System.Exception ex) { Debug.LogException(ex); }
-
-				GL.End();
-
-			}
-
-
-			static void DrawFrame (FRect rect, float thickX, float thickY, bool cross) {
-
-				DrawRect(new FRect(rect.x - thickX, rect.y - thickY, thickX * 2f, rect.height + thickY * 2f));
-				DrawRect(new FRect(rect.xMax - thickX, rect.y - thickY, thickX * 2f, rect.height + thickY * 2f));
-				DrawRect(new FRect(rect.x, rect.y - thickY, rect.width, thickY * 2f));
-				DrawRect(new FRect(rect.x, rect.yMax - thickY, rect.width, thickY * 2f));
-				if (cross) {
-					GL.Vertex3(rect.x - thickX, rect.y - thickY, 0.5f);
-					GL.Vertex3(rect.x - thickX, rect.y + thickY, 0.5f);
-					GL.Vertex3(rect.xMax + thickX, rect.yMax + thickY, 0.5f);
-					GL.Vertex3(rect.xMax + thickX, rect.yMax - thickY, 0.5f);
-
-					GL.Vertex3(rect.x - thickX, rect.yMax - thickY, 0.5f);
-					GL.Vertex3(rect.x - thickX, rect.yMax + thickY, 0.5f);
-					GL.Vertex3(rect.xMax + thickX, rect.y + thickY, 0.5f);
-					GL.Vertex3(rect.xMax + thickX, rect.y - thickY, 0.5f);
-				}
-				static void DrawRect (FRect rect) {
-					GL.Vertex3(rect.x, rect.y, 0.5f);
-					GL.Vertex3(rect.x, rect.yMax, 0.5f);
-					GL.Vertex3(rect.xMax, rect.yMax, 0.5f);
-					GL.Vertex3(rect.xMax, rect.y, 0.5f);
-				}
-			}
 		}
 
 
@@ -417,14 +269,6 @@ namespace AngeliaForUnity.Editor {
 						btn.clicked += () => EditorApplication.ExecuteMenuItem("AngeliA/Other/Ange Hash");
 						break;
 
-					case "Collider":
-						btn.clicked += () => GizmosIndex = GizmosIndex == 0 ? -1 : 0;
-						RuntimeOnlyElements.Add(btn);
-						break;
-					case "Bound":
-						btn.clicked += () => GizmosIndex = GizmosIndex == 1 ? -1 : 1;
-						RuntimeOnlyElements.Add(btn);
-						break;
 				}
 			});
 

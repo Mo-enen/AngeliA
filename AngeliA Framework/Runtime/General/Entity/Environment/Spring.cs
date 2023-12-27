@@ -125,7 +125,7 @@ namespace AngeliaFramework {
 				for (int i = 0; i < count; i++) {
 					var hit = hits[i];
 					if (hit.Entity is not Rigidbody rig) continue;
-					globalRect = hit.Entity.Rect.Edge(BounceSide, THRESHOLD);
+					globalRect = hit.Entity.Rect.EdgeOutside(BounceSide, THRESHOLD);
 					ignore = hit.Entity;
 					PerformBounce(rig);
 					break;

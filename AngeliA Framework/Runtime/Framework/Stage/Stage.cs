@@ -124,7 +124,6 @@ namespace AngeliaFramework {
 		private static event System.Action<int> AfterLayerFrameUpdate;
 		private static int ViewLerpRate = 1000;
 		private static int? RequireSetViewZ = null;
-		private static int GlobalFrame = 0;
 		private static readonly Dictionary<int, EntityStack> EntityPool = new();
 		private static readonly HashSet<Int3> StagedEntityHash = new();
 		private static readonly HashSet<Int3> GlobalAntiSpawnHash = new();
@@ -205,6 +204,7 @@ namespace AngeliaFramework {
 		}
 
 
+		[OnGameUpdate(-4096)]
 		internal static void Update_View () {
 
 			// Move View Rect
@@ -245,9 +245,34 @@ namespace AngeliaFramework {
 		}
 
 
-		internal static void UpdateAllEntities (int globalFrame, int targetLayer = -1) {
+		[OnGameUpdateLater(-4096)]
+		internal static void UpdateAllEntities () {
 
-			GlobalFrame = globalFrame;
+			// Update All Layers
+			UpdateEntitiesForLayer(-1);
+
+			// Z Change
+			if (RequireSetViewZ.HasValue) {
+				int newZ = RequireSetViewZ.Value;
+				RequireSetViewZ = null;
+				LastSettleFrame = Game.GlobalFrame;
+				ClearStagedEntities();
+				LocalAntiSpawnHash.Clear();
+				ViewZ = newZ;
+				OnViewZChanged?.Invoke();
+			}
+
+		}
+
+
+		[OnGameUpdatePauseless]
+		internal static void UpdateUiEntitiesOnPause () {
+			if (Game.IsPlaying) return;
+			UpdateEntitiesForLayer(EntityLayer.UI);
+		}
+
+
+		private static void UpdateEntitiesForLayer (int targetLayer) {
 
 			int startLayer = 0;
 			int endLayer = EntityLayer.COUNT;
@@ -329,21 +354,6 @@ namespace AngeliaFramework {
 
 			// Final
 			AntiSpawnRect = ViewRect.Expand(Const.ANTI_SPAWN_PADDING);
-		}
-
-
-		[OnGameUpdate]
-		public static void OnGameUpdate () {
-			// Z Change
-			if (RequireSetViewZ.HasValue) {
-				int newZ = RequireSetViewZ.Value;
-				RequireSetViewZ = null;
-				LastSettleFrame = GlobalFrame;
-				ClearStagedEntities();
-				LocalAntiSpawnHash.Clear();
-				ViewZ = newZ;
-				OnViewZChanged?.Invoke();
-			}
 		}
 
 
@@ -677,7 +687,7 @@ namespace AngeliaFramework {
 					entity.Active = true;
 					entity.OnActivated();
 					entity.FrameUpdated = false;
-					entity.SpawnFrame = GlobalFrame;
+					entity.SpawnFrame = Game.GlobalFrame;
 					return entity;
 				}
 			} catch (System.Exception ex) { Game.LogException(ex); }

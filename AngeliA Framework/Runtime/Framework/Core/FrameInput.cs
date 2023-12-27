@@ -247,7 +247,10 @@ namespace AngeliaFramework {
 		}
 
 
-		internal static void FrameUpdate (IRect cameraRect) {
+		[OnGameUpdate(-2048)]
+		internal static void FrameUpdate () {
+
+			IRect cameraRect = CellRenderer.CameraRect;
 
 			bool gamepadAvailable = AllowGamepad && Game.IsGamepadAvailable;
 			bool keyboardAvailable = Game.IsKeyboardAvailable;
@@ -277,6 +280,13 @@ namespace AngeliaFramework {
 			GlobalFrame++;
 			IgnoreMouseToActionJumpForThisFrame = false;
 
+		}
+
+
+		[OnGameUpdatePauseless(-1024)]
+		internal static void UpdatePausing () {
+			if (Game.IsPlaying) return;
+			FrameUpdate();
 		}
 
 

@@ -457,11 +457,13 @@ namespace AngeliaFramework {
 				Update_View();
 				Update_Hotkey();
 				Update_DropPlayer();
+
 				Update_PaletteGroupUI();
 				Update_PaletteContentUI();
 				Update_PaletteSearchResultUI();
 				Update_PaletteSearchBarUI();
 				Update_ToolbarUI();
+
 				Update_Grid();
 				Update_DraggingGizmos();
 				Update_PastingGizmos();
@@ -869,6 +871,7 @@ namespace AngeliaFramework {
 			// Draw Pose Player
 			player.AnimationType = CharacterAnimationType.Idle;
 			int startIndex = CellRenderer.GetUsedCellCount();
+			player.IgnoreInventory();
 			AngeUtil.DrawPoseCharacterAsUI(
 				new IRect(
 					PlayerDropPos.x - Const.HALF,

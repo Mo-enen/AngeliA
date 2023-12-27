@@ -71,7 +71,7 @@ namespace AngeliaFramework {
 		public virtual bool WeaponAvailable => true;
 		public virtual bool AllowPlayerMenuUI => true;
 		public virtual bool AllowQuickPlayerMenuUI => true;
-		protected override bool UseInventory => true;
+		protected override bool UseInventory => Game.GlobalFrame > IgnoreInventoryFrame;
 		int IDamageReceiver.Team => Const.TEAM_PLAYER;
 
 		// Data
@@ -80,6 +80,7 @@ namespace AngeliaFramework {
 		private int LastRightKeyDown = int.MinValue;
 		private int LastGroundedY = 0;
 		private int PrevZ = int.MinValue;
+		private int IgnoreInventoryFrame = int.MinValue;
 
 
 		#endregion
@@ -611,6 +612,9 @@ namespace AngeliaFramework {
 
 
 		public void LockInput (int duration = 1) => LockInputFrame = Game.GlobalFrame + duration;
+
+
+		public void IgnoreInventory (int duration = 1) => IgnoreInventoryFrame = Game.GlobalFrame + duration;
 
 
 		#endregion

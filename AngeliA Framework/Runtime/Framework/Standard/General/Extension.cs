@@ -469,6 +469,12 @@ namespace AngeliaFramework {
 			}
 			return arr;
 		}
+		public static A[] FillWithNewValue<A> (this A[] arr) where A : new() {
+			for (int i = 0; i < arr.Length; i++) {
+				arr[i] = new A();
+			}
+			return arr;
+		}
 
 
 		public static void AddRange<T, V> (this Dictionary<T, V> map, IEnumerable<KeyValuePair<T, V>> values) {

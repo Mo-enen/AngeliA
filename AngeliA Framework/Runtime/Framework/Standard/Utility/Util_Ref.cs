@@ -7,7 +7,10 @@ using System.Linq;
 namespace AngeliaFramework {
 
 
-	public interface IOrderedAttribute { public int Order { get; } }
+	public abstract class OrderedAttribute : System.Attribute {
+		public int Order { get; init; }
+		public OrderedAttribute (int order) => Order = order;
+	}
 
 
 	public static partial class Util {
@@ -24,7 +27,7 @@ namespace AngeliaFramework {
 			foreach (var (method, att) in Util.AllStaticMethodWithAttribute<T>()) {
 				try {
 					int order = 0;
-					if (att is IOrderedAttribute orderAtt) order = orderAtt.Order;
+					if (att is OrderedAttribute orderAtt) order = orderAtt.Order;
 					list.Add((method, order));
 				} catch (System.Exception ex) { Game.LogException(ex); }
 			}

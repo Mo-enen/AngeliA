@@ -688,7 +688,7 @@ namespace AngeliaFramework {
 			MouseInPanel = MouseInPanel || windowRect.Contains(FrameInput.MouseGlobalPosition);
 
 			// Preview
-			var previewRect = panelRect.Edge(Direction4.Left, previewWidth).Shift(previewWidth, 0);
+			var previewRect = panelRect.EdgeOutside(Direction4.Left, previewWidth).Shift(previewWidth, 0);
 			AngeUtil.DrawPoseCharacterAsUI(previewRect, player, player.CurrentAnimationFrame, 0, out _, out _);
 			if (FrameInput.MouseLeftButtonDown && previewRect.Contains(FrameInput.MouseGlobalPosition)) {
 				player.FacingRight = !player.FacingRight;

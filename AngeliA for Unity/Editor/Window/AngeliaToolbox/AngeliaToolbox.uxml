@@ -41,9 +41,6 @@
 				<ui:Button enable-rich-text="false" tooltip="Slice Editor" focusable="false" name="SliceEditor" class="SmallButton" style="height: 18px; width: 18px; cursor: url(./Image/HandCursor.png); background-color: rgba(255, 255, 255, 0); background-image: url(./Image/Slice.png); -unity-background-scale-mode: scale-to-fit; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 3px; margin-right: 3px; margin-top: 0; margin-bottom: 0; " />
 				<ui:Button enable-rich-text="false" tooltip="Ange Hash" focusable="false" name="AngeHash" class="SmallButton" style="height: 18px; width: 18px; cursor: url(./Image/HandCursor.png); background-color: rgba(255, 255, 255, 0); background-image: url(./Image/Hash.png); -unity-background-scale-mode: scale-to-fit; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 3px; margin-right: 3px; margin-top: 0; margin-bottom: 0; " />
 				
-				<ui:Button enable-rich-text="false" tooltip="Collider" focusable="false" name="Collider" class="SmallButton" style="height: 18px; width: 18px; cursor: url(./Image/HandCursor.png); background-color: rgba(255, 255, 255, 0); background-image: url(./Image/Collider.png); -unity-background-scale-mode: scale-to-fit; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 3px; margin-right: 3px; margin-top: 0; margin-bottom: 0; " />
-				<ui:Button enable-rich-text="false" tooltip="Bounds" focusable="false" name="Bound" class="SmallButton" style="height: 18px; width: 18px; cursor: url(./Image/HandCursor.png); background-color: rgba(255, 255, 255, 0); background-image: url(./Image/Bound.png); -unity-background-scale-mode: scale-to-fit; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 3px; margin-right: 3px; margin-top: 0; margin-bottom: 0; " />
-				
 			</ui:VisualElement>
 
 		</ui:VisualElement>

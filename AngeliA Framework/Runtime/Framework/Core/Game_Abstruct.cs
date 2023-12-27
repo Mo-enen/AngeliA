@@ -97,6 +97,8 @@ namespace AngeliaFramework {
 		internal static void OnTextLayerCreated (int index, string name, int sortingOrder, int capacity) => Instance._OnTextLayerCreated(index, name, sortingOrder, capacity);
 		protected abstract void _OnTextLayerCreated (int index, string name, int sortingOrder, int capacity);
 
+		[OnGameUpdatePauseless(-4096)]
+		internal static void OnCameraUpdate () => Instance._OnCameraUpdate();
 		protected abstract void _OnCameraUpdate ();
 
 		internal static void OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) => Instance._OnLayerUpdate(layerIndex, isTextLayer, cells, cellCount, ref prevCellCount);
@@ -128,6 +130,8 @@ namespace AngeliaFramework {
 		}
 		protected abstract void _SetSkyboxTint (Byte4 top, Byte4 bottom);
 
+		public static void DrawRect (IRect rect, Byte4 color) => Instance._DrawRect(rect, color);
+		protected abstract void _DrawRect (IRect rect, Byte4 color);
 
 		// Music
 		public static void PlayMusic (int id) => Instance._PlayMusic(id);

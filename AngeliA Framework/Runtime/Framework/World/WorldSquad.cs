@@ -67,7 +67,7 @@ namespace AngeliaFramework {
 		}
 
 
-		[OnGameUpdate]
+		[OnGameUpdate(-64)]
 		public static void OnGameUpdate () {
 			Front.DrawAllBlocks(false);
 			Behind.DrawAllBlocks(true);
