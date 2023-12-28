@@ -148,6 +148,8 @@ namespace AngeliaFramework {
 		public static void FillPixelsIntoTexture (Byte4[] pixels, object texture) => Instance._FillPixelsIntoTexture(pixels, texture);
 		protected abstract void _FillPixelsIntoTexture (Byte4[] pixels, object texture);
 
+		public static float CurrentFPS => Instance._GetCurrentFPS();
+		protected abstract float _GetCurrentFPS ();
 
 		// Music
 		public static void PlayMusic (int id) => Instance._PlayMusic(id);

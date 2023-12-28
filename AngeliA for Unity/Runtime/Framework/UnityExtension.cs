@@ -43,11 +43,15 @@ namespace AngeliaForUnity {
 		}
 		public static Color32[] ToUnity (this Byte4[] colors) {
 			var result = new Color32[colors.Length];
-			for (int i = 0; i < result.Length; i++) {
-				result[i] = colors[i].ToUnityColor32();
-			}
+			colors.FillUnity(result);
 			return result;
 		}
+		public static void FillUnity (this Byte4[] colors, Color32[] target) {
+			for (int i = 0; i < target.Length; i++) {
+				target[i] = colors[i].ToUnityColor32();
+			}
+		}
+
 
 		// Rect
 		public static Rect Shift (this Rect rect, float x, float y) {

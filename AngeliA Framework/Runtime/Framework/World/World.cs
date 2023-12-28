@@ -28,6 +28,7 @@ namespace AngeliaFramework {
 		// Data
 		private static readonly object FileStreamingLock = new();
 		private static readonly Dictionary<Int3, string> WorldNamePool = new();
+		private static readonly Byte4[] CacheMapPixels = new Byte4[Const.MAP * Const.MAP];
 
 
 		#endregion
@@ -100,6 +101,34 @@ namespace AngeliaFramework {
 		}
 
 
+		public static void LoadMapIntoTexture (string mapFolder, int worldX, int worldY, int worldZ, object texture) {
+			lock (CacheMapPixels) {
+				lock (FileStreamingLock) {
+					string filePath = Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ));
+					System.Array.Clear(CacheMapPixels, 0, CacheMapPixels.Length);
+					if (!Util.FileExists(filePath)) {
+						Game.FillPixelsIntoTexture(CacheMapPixels, texture);
+						return;
+					}
+					using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+					using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
+					int SIZE = Const.MAP;
+					while (reader.NotEnd()) {
+						int id = reader.ReadInt32();
+						int x = reader.ReadByte();
+						int y = reader.ReadByte();
+						if (CellRenderer.TryGetSprite(id, out var sprite)) {
+							if (x >= SIZE) x -= SIZE;
+							if (y >= SIZE) y -= SIZE;
+							CacheMapPixels[y * SIZE + x] = sprite.SummaryTint;
+						}
+					}
+				}
+				Game.FillPixelsIntoTexture(CacheMapPixels, texture);
+			}
+		}
+
+
 		// Save
 		public void SaveToDisk (string mapFolder) => SaveToDisk(mapFolder, WorldPosition.x, WorldPosition.y, WorldPosition.z);
 
@@ -114,17 +143,6 @@ namespace AngeliaFramework {
 				using var stream = new FileStream(path, FileMode.Create, FileAccess.Write);
 				using var writer = new BinaryWriter(stream, System.Text.Encoding.ASCII);
 
-				// Level
-				for (int y = 0; y < SIZE; y++) {
-					for (int x = 0; x < SIZE; x++) {
-						int id = Level[y * SIZE + x];
-						if (id == 0) continue;
-						writer.Write((int)id);
-						writer.Write((byte)(x + SIZE));
-						writer.Write((byte)y);
-					}
-				}
-
 				// Background
 				for (int y = 0; y < SIZE; y++) {
 					for (int x = 0; x < SIZE; x++) {
@@ -133,6 +151,17 @@ namespace AngeliaFramework {
 						writer.Write((int)id);
 						writer.Write((byte)(x + SIZE));
 						writer.Write((byte)(y + SIZE));
+					}
+				}
+
+				// Level
+				for (int y = 0; y < SIZE; y++) {
+					for (int x = 0; x < SIZE; x++) {
+						int id = Level[y * SIZE + x];
+						if (id == 0) continue;
+						writer.Write((int)id);
+						writer.Write((byte)(x + SIZE));
+						writer.Write((byte)y);
 					}
 				}
 
@@ -178,6 +207,32 @@ namespace AngeliaFramework {
 				string newName = $"{x}_{y}_{z}.{AngePath.MAP_FILE_EXT}";
 				WorldNamePool[pos] = newName;
 				return newName;
+			}
+		}
+
+
+		public void FillMapIntoTexture (object texture) {
+			lock (CacheMapPixels) {
+				int len = Const.MAP * Const.MAP;
+				for (int i = 0; i < len; i++) {
+					int id = Entity[i];
+					if (id != 0 && CellRenderer.TryGetSprite(id, out var sprite)) {
+						CacheMapPixels[i] = sprite.SummaryTint;
+						continue;
+					}
+					id = Level[i];
+					if (id != 0 && CellRenderer.TryGetSprite(id, out sprite)) {
+						CacheMapPixels[i] = sprite.SummaryTint;
+						continue;
+					}
+					id = Background[i];
+					if (id != 0 && CellRenderer.TryGetSprite(id, out sprite)) {
+						CacheMapPixels[i] = sprite.SummaryTint;
+						continue;
+					}
+					CacheMapPixels[i] = Const.CLEAR;
+				}
+				Game.FillPixelsIntoTexture(CacheMapPixels, texture);
 			}
 		}
 

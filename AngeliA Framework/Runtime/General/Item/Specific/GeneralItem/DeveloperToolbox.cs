@@ -273,7 +273,6 @@ namespace AngeliaFramework {
 
 
 		private static void DrawBounds () {
-			int thick = CellRendererGUI.Unify(1);
 			for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
 				var entities = Stage.Entities[layer];
 				int count = Stage.EntityCounts[layer];
@@ -281,10 +280,7 @@ namespace AngeliaFramework {
 					var e = entities[i];
 					if (!e.Active) continue;
 					var bounds = e.GlobalBounds;
-					DrawRect(bounds.EdgeInside(Direction4.Down, thick), Const.BLUE_BETTER, true);
-					DrawRect(bounds.EdgeInside(Direction4.Up, thick), Const.BLUE_BETTER, true);
-					DrawRect(bounds.EdgeInside(Direction4.Left, thick), Const.BLUE_BETTER, false);
-					DrawRect(bounds.EdgeInside(Direction4.Right, thick), Const.BLUE_BETTER, false);
+					DrawRect(bounds, Const.BLUE_BETTER.WithNewA(64), true);
 				}
 			}
 		}

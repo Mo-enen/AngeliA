@@ -47,7 +47,11 @@ namespace AngeliaForUnity {
 		private static readonly int SKYBOX_BOTTOM = Shader.PropertyToID("_ColorB");
 		private static readonly Shader SKYBOX_SHADER = Shader.Find("Angelia/Skybox");
 
+		// Api
+		public float UnityFPS { get; set; } = 1f;
+
 		// Data
+		private static readonly Color32[] CacheFillPixelsForMap = new Color32[Const.MAP * Const.MAP];
 		private RenderingLayerUnity[] RenderingLayers = new RenderingLayerUnity[0];
 		private RenderingLayerUnity[] RenderingTextLayers = new RenderingLayerUnity[0];
 		private Texture2D SheetTexture = null;
@@ -407,17 +411,28 @@ namespace AngeliaForUnity {
 			var texture = new Texture2D(width, height, TextureFormat.ARGB32, false) {
 				filterMode = FilterMode.Point,
 			};
-			texture.SetPixels32(pixels.ToUnity());
-			texture.Apply();
+			if (pixels != null) {
+				texture.SetPixels32(pixels.ToUnity());
+				texture.Apply();
+			}
 			return texture;
 		}
 
 		protected override void _FillPixelsIntoTexture (Byte4[] pixels, object texture) {
 			if (texture is not Texture2D texture2d) return;
 			if (pixels.Length != texture2d.width * texture2d.height) return;
-			texture2d.SetPixels32(pixels.ToUnity());
+			lock (CacheFillPixelsForMap) {
+				if (pixels.Length == CacheFillPixelsForMap.Length) {
+					pixels.FillUnity(CacheFillPixelsForMap);
+					texture2d.SetPixels32(CacheFillPixelsForMap);
+				} else {
+					texture2d.SetPixels32(pixels.ToUnity());
+				}
+			}
 			texture2d.Apply();
 		}
+
+		protected override float _GetCurrentFPS () => UnityFPS;
 
 
 		#endregion

@@ -294,20 +294,40 @@ namespace AngeliaFramework {
 		// RectInt
 		public static FRect ToRect (this IRect rect) => new(rect.x, rect.y, rect.width, rect.height);
 		public static IRect Fit (this IRect rect, AngeSprite sprite, int pivotX = 500, int pivotY = 500) => rect.Fit(sprite.GlobalWidth, sprite.GlobalHeight, pivotX, pivotY);
-		public static IRect Fit (this IRect rect, int aspWidth, int aspHeight, int pivotX = 500, int pivotY = 500) {
-			if (aspWidth * aspHeight == 0) return rect;
+		public static IRect Fit (this IRect rect, int outterWidth, int outterHeight, int pivotX = 500, int pivotY = 500) {
+			if (outterWidth * outterHeight == 0) return rect;
 			int sizeX = rect.width;
 			int sizeY = rect.height;
-			if (aspWidth * rect.height > rect.width * aspHeight) {
-				sizeY = sizeX * aspHeight / aspWidth;
+			if (outterWidth * rect.height > rect.width * outterHeight) {
+				sizeY = sizeX * outterHeight / outterWidth;
 			} else {
-				sizeX = sizeY * aspWidth / aspHeight;
+				sizeX = sizeY * outterWidth / outterHeight;
 			}
 			return new IRect(
 				rect.x + Util.Abs(rect.width - sizeX) * pivotX / 1000,
 				rect.y + Util.Abs(rect.height - sizeY) * pivotY / 1000,
 				sizeX, sizeY
 			);
+		}
+		public static IRect Envelope (this IRect innerRect, int aspWidth, int aspHeight) {
+			if (innerRect.width * innerRect.height == 0) return innerRect;
+			if (innerRect.width * aspHeight > aspWidth * innerRect.height) {
+				int newHeight = aspHeight * innerRect.width / aspWidth;
+				return new IRect(
+					innerRect.x,
+					innerRect.y - (newHeight - innerRect.height) / 2,
+					innerRect.width,
+					newHeight
+				);
+			} else {
+				int newWidth = aspWidth * innerRect.height / aspHeight;
+				return new IRect(
+					innerRect.x - (newWidth - innerRect.width) / 2,
+					innerRect.y,
+					newWidth,
+					innerRect.height
+				);
+			}
 		}
 		public static IRect Expand (this IRect rect, int offset) => rect.Expand(offset, offset, offset, offset);
 		public static IRect Expand (this IRect rect, int l, int r, int d, int u) {
@@ -480,6 +500,9 @@ namespace AngeliaFramework {
 		public static void AddRange<T, V> (this Dictionary<T, V> map, IEnumerable<KeyValuePair<T, V>> values) {
 			foreach (var (k, v) in values) map.TryAdd(k, v);
 		}
+
+
+		public static Byte4 WithNewA (this Byte4 value, byte a) => new(value.r, value.g, value.b, a);
 
 
 		// Enum

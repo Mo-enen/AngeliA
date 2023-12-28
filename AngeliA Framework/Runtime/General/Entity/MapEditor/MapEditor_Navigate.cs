@@ -8,6 +8,21 @@ namespace AngeliaFramework {
 
 
 
+		#region --- SUB ---
+
+
+		private class NavWorldSlot {
+			public int WorldX;
+			public int WorldY;
+			public object Texture;
+		}
+
+
+		#endregion
+
+
+
+
 		#region --- VAR ---
 
 
@@ -15,9 +30,13 @@ namespace AngeliaFramework {
 		private const int NAV_WORLD_SIZE = 13;
 
 		// Data
-		private Int3 NavPosition = default;
+		private readonly NavWorldSlot[,] NavSlots = new NavWorldSlot[NAV_WORLD_SIZE + 1, NAV_WORLD_SIZE + 1];
+		private Int3 NavPosition = default; // Global Pos, Screen Center
 		private int LastNavigatorStateChangeFrame = int.MinValue;
 		private int NavGlobalScale = 1000;
+		private int NavLoadedSlotX = int.MinValue;
+		private int NavLoadedSlotY = int.MinValue;
+		private int NavLoadedSlotZ = int.MinValue;
 
 
 		#endregion
@@ -26,6 +45,21 @@ namespace AngeliaFramework {
 
 
 		#region --- MSG ---
+
+
+		private void Initialize_Nav () {
+			// Create Slots
+			int slotSize = NAV_WORLD_SIZE + 1;
+			for (int i = 0; i < slotSize; i++) {
+				for (int j = 0; j < slotSize; j++) {
+					NavSlots[i, j] = new NavWorldSlot() {
+						WorldX = int.MinValue + i,
+						WorldY = int.MinValue + j,
+						Texture = Game.GetTextureFromPixels(null, Const.MAP, Const.MAP),
+					};
+				}
+			}
+		}
 
 
 		private void Update_NavHotkey () {
@@ -78,11 +112,49 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_NavPixels () {
+		private void Update_NavMapTextureSlots () {
 
+			// Sync
+			int slotSize = NAV_WORLD_SIZE + 1;
+			int targetWorldX = (NavPosition.x.ToUnit() - (slotSize * Const.MAP) / 2).UDivide(Const.MAP);
+			int targetWorldY = (NavPosition.y.ToUnit() - (slotSize * Const.MAP) / 2).UDivide(Const.MAP);
+			int headX = (-targetWorldX).UMod(slotSize);
+			int headY = (-targetWorldY).UMod(slotSize);
+			int z = NavPosition.z;
 
+			// Reload
+			if (NavLoadedSlotZ != z || NavLoadedSlotX != targetWorldX || NavLoadedSlotY != targetWorldY) {
+				string mapFolder = WorldSquad.MapRoot;
+				for (int j = 0; j < slotSize; j++) {
+					for (int i = 0; i < slotSize; i++) {
+						var slot = NavSlots[(i - headX).UMod(slotSize), (j - headY).UMod(slotSize)];
+						int worldX = targetWorldX + i;
+						int worldY = targetWorldY + j;
+						if (NavLoadedSlotZ != z || slot.WorldX != worldX || slot.WorldY != worldY) {
+							slot.WorldX = worldX;
+							slot.WorldY = worldY;
+							World.LoadMapIntoTexture(mapFolder, worldX, worldY, z, slot.Texture);
+						}
+					}
+				}
+				NavLoadedSlotX = targetWorldX;
+				NavLoadedSlotY = targetWorldY;
+				NavLoadedSlotZ = z;
+			}
 
-
+			// Draw
+			var totalRect = CellRenderer.CameraRect.Envelope(1, 1);
+			var rect = new IRect(0, 0, totalRect.width / NAV_WORLD_SIZE, totalRect.height / NAV_WORLD_SIZE);
+			int globalOffsetX = -(NavPosition.x.UMod(Const.CEL * Const.MAP) * rect.width / (Const.CEL * Const.MAP));
+			int globalOffsetY = -(NavPosition.y.UMod(Const.CEL * Const.MAP) * rect.height / (Const.CEL * Const.MAP));
+			for (int j = 0; j < slotSize; j++) {
+				for (int i = 0; i < slotSize; i++) {
+					var slot = NavSlots[i, j];
+					rect.x = globalOffsetX + totalRect.x + (slot.WorldX - targetWorldX) * rect.width;
+					rect.y = globalOffsetY + totalRect.y + (slot.WorldY - targetWorldY) * rect.height;
+					Game.DrawTexture(rect, slot.Texture);
+				}
+			}
 
 		}
 
@@ -92,7 +164,7 @@ namespace AngeliaFramework {
 			var cameraRect = CellRenderer.CameraRect;
 
 			// Camera Rect
-			int height = cameraRect.height * TargetViewRect.height / (NAV_WORLD_SIZE - 1) / (Const.MAP * Const.CEL);
+			int height = cameraRect.height * TargetViewRect.height / NAV_WORLD_SIZE / (Const.MAP * Const.CEL);
 			int width = height * cameraRect.width / cameraRect.height;
 			int BORDER = Unify(1);
 			var rect = new IRect(
@@ -100,6 +172,7 @@ namespace AngeliaFramework {
 				cameraRect.y + cameraRect.height / 2 - height / 2,
 				width, height
 			).Shrink(width * PanelRect.width / cameraRect.width, 0, 0, 0);
+
 			if (NavGlobalScale != 1000) {
 				int newWidth = rect.width * NavGlobalScale / 1000;
 				int newHeight = rect.height * NavGlobalScale / 1000;

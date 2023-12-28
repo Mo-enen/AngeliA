@@ -132,24 +132,28 @@ namespace AngeliaForUnity {
 #endif
 
 
-		private void FixedUpdate () {
-			if (UnityGame == null) {
-				Instance = this;
-				if (m_Fonts == null || m_Fonts.Length == 0) {
-					m_Fonts = new Font[1] { Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf") };
-				}
-				UnityGame = new GameForUnity {
-					SkyTintTop = m_SkyTintTop,
-					SkyTintBottom = m_SkyTintBottom,
-					Fonts = m_Fonts,
-					AudioClips = m_AudioClips,
-					Cursors = m_Cursors,
-					CursorPivots = m_CursorPivots,
-				};
-				UnityGame.Initialize();
+		private void Awake () {
+			if (UnityGame != null) return;
+			Instance = this;
+			if (m_Fonts == null || m_Fonts.Length == 0) {
+				m_Fonts = new Font[1] { Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf") };
 			}
-			UnityGame.Update();
+			UnityGame = new GameForUnity {
+				SkyTintTop = m_SkyTintTop,
+				SkyTintBottom = m_SkyTintBottom,
+				Fonts = m_Fonts,
+				AudioClips = m_AudioClips,
+				Cursors = m_Cursors,
+				CursorPivots = m_CursorPivots,
+			};
+			UnityGame.Initialize();
 		}
+
+
+		private void FixedUpdate () => UnityGame.Update();
+
+
+		private void Update () => UnityGame.UnityFPS = 1f / Mathf.Max(Time.smoothDeltaTime, 0.000001f);
 
 
 	}

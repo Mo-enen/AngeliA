@@ -86,7 +86,7 @@ namespace AngeliaForUnity {
 					rect.width = Util.RemapUnclamped(
 						0, cameraRect.width, 0, targetCameraRect.width, cell.Rect.width
 					);
-					rect.height = Util.RemapUnclamped(
+					rect.height = -Util.RemapUnclamped(
 						0, cameraRect.height, 0, targetCameraRect.height, cell.Rect.height
 					);
 					rect.x = Util.RemapUnclamped(
@@ -94,10 +94,8 @@ namespace AngeliaForUnity {
 					);
 					rect.y = Util.RemapUnclamped(
 						 cameraRect.y, cameraRect.yMax, targetCameraRect.y, targetCameraRect.yMax, cell.Rect.y
-					);
-
+					) - rect.height;
 					Graphics.DrawTexture(rect, cell.Texture);
-
 				}
 			}
 

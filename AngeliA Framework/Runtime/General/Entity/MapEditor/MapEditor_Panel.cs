@@ -91,7 +91,7 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		private void Active_Palette () {
+		private void Initialize_Palette () {
 
 			DraggingForReorderPaletteGroup = -1;
 			DraggingForReorderPaletteItem = -1;
