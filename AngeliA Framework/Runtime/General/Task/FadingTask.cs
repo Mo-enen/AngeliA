@@ -4,7 +4,7 @@ namespace AngeliaFramework {
 		private int Duration => UserData is int i ? i : 20;
 		public override TaskResult FrameUpdate () {
 			CellRenderer.DrawBlackCurtain(1000 - LocalFrame * 1000 / Duration);
-			return LocalFrame < Duration ? TaskResult.Continue : TaskResult.End;
+			return LocalFrame < Duration ? TaskResult.Continue : TaskResult.Follow;
 		}
 	}
 
@@ -14,7 +14,7 @@ namespace AngeliaFramework {
 		private int Duration => UserData is int i ? i : 20;
 		public override TaskResult FrameUpdate () {
 			CellRenderer.DrawBlackCurtain(LocalFrame * 1000 / Duration);
-			return LocalFrame < Duration ? TaskResult.Continue : TaskResult.End;
+			return LocalFrame < Duration ? TaskResult.Continue : TaskResult.Follow;
 		}
 	}
 }

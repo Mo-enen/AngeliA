@@ -94,6 +94,11 @@ namespace GeorgeMamaladze {
 			m_Values.Enqueue(value);
 		}
 
+		public void Clear () {
+			m_Children.Clear();
+			m_Values.Clear();
+		}
+
 	}
 
 

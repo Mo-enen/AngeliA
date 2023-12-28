@@ -19,14 +19,14 @@ namespace AngeliaFramework {
 					e.OnActivated();
 				}
 			}
-			return TaskResult.End;
+			return TaskResult.Follow;
 		}
 	}
 	public class DespawnEntityTask : TaskItem {
 		public static readonly int TYPE_ID = typeof(DespawnEntityTask).AngeHash();
 		public override TaskResult FrameUpdate () {
 			if (UserData is Entity e) e.Active = false;
-			return TaskResult.End;
+			return TaskResult.Follow;
 		}
 	}
 }

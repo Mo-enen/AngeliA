@@ -62,9 +62,8 @@ namespace AngeliaFramework {
 					Items.Clear();
 					if (PaletteItemIDs == null || Instance == null) return;
 					// Items
-					var pool = Instance.PalettePool;
 					foreach (int id in PaletteItemIDs) {
-						if (!pool.TryGetValue(id, out var pal)) continue;
+						if (!Instance.PalettePool.TryGetValue(id, out var pal)) continue;
 						Items.Add(pal);
 					}
 					PaletteItemIDs = null;
@@ -155,24 +154,24 @@ namespace AngeliaFramework {
 		}
 
 		// Pools
-		private Dictionary<int, AngeSprite> SpritePool = null;
-		private Dictionary<int, int[]> IdChainPool = null;
-		private Dictionary<int, int> ReversedChainPool = null;
-		private Dictionary<int, string> ChainRulePool = null;
-		private Dictionary<int, int> EntityArtworkRedirectPool = null;
-		private Dictionary<int, PaletteItem> PalettePool = null;
+		private readonly Dictionary<int, AngeSprite> SpritePool = new();
+		private readonly Dictionary<int, int[]> IdChainPool = new();
+		private readonly Dictionary<int, int> ReversedChainPool = new();
+		private readonly Dictionary<int, string> ChainRulePool = new();
+		private readonly Dictionary<int, int> EntityArtworkRedirectPool = new();
+		private readonly Dictionary<int, PaletteItem> PalettePool = new();
 
 		// Cache List
-		private List<PaletteGroup> PaletteGroups = null;
-		private List<BlockBuffer> PastingBuffer = null;
-		private List<BlockBuffer> CopyBuffer = null;
-		private List<PaletteItem> SearchResult = null;
-		private Trie<PaletteItem> PaletteTrie = null;
-		private List<int> CheckAltarIDs = null;
-		private UndoRedoEcho<MapUndoItem> UndoRedo = null;
-		private MapUndoData[] UndoData = null;
-		private Dictionary<int, MapEditorGizmos> GizmosPool = null;
-		private MapEditorMeta EditorMeta = null;
+		private readonly List<PaletteGroup> PaletteGroups = new();
+		private readonly List<BlockBuffer> PastingBuffer = new();
+		private readonly List<BlockBuffer> CopyBuffer = new();
+		private readonly List<PaletteItem> SearchResult = new();
+		private readonly List<int> CheckAltarIDs = new();
+		private readonly Trie<PaletteItem> PaletteTrie = new();
+		private readonly UndoRedoEcho<MapUndoItem> UndoRedo = null;
+		private readonly MapUndoData[] UndoData = new MapUndoData[131072];
+		private readonly Dictionary<int, MapEditorGizmos> GizmosPool = new();
+		private readonly MapEditorMeta EditorMeta = new();
 
 		// Data
 		private PaletteItem SelectingPaletteItem = null;
@@ -224,7 +223,10 @@ namespace AngeliaFramework {
 		}
 
 
-		public MapEditor () => Instance = this;
+		public MapEditor () {
+			Instance = this;
+			UndoRedo = new(128, OnUndoRedoPerformed, OnUndoRedoPerformed);
+		}
 
 
 		// Active
@@ -238,15 +240,16 @@ namespace AngeliaFramework {
 			Active_Palette();
 
 			// Editor Meta
-			EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(
-				Game.IsEdittime ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot
-			) ?? new();
+			JsonUtil.OverrideJson(
+				Game.IsEdittime ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot,
+				EditorMeta
+			);
 
 			// Cache
-			PastingBuffer = new();
-			CopyBuffer = new();
-			UndoRedo = new UndoRedoEcho<MapUndoItem>(128, OnUndoRedoPerformed, OnUndoRedoPerformed);
-			UndoData = new MapUndoData[131072];
+			PastingBuffer.Clear();
+			CopyBuffer.Clear();
+			UndoRedo.Reset();
+			System.Array.Clear(UndoData, 0, UndoData.Length);
 			DroppingPlayer = false;
 			SelectingPaletteItem = null;
 			MouseDownPosition = null;
@@ -261,7 +264,7 @@ namespace AngeliaFramework {
 			MouseDownOutsideBoundary = false;
 			MouseOutsideBoundary = false;
 			PaletteScrollY = 0;
-			SearchResult = new();
+			SearchResult.Clear();
 			PanelOffsetX = 0;
 			SearchingText = "";
 			PaletteSearchScrollY = 0;
@@ -309,43 +312,42 @@ namespace AngeliaFramework {
 			WorldSquad.BehindAlpha = Const.SQUAD_BEHIND_ALPHA;
 
 			IsNavigating = false;
-			SpritePool = null;
-			IdChainPool = null;
-			EntityArtworkRedirectPool = null;
-			GizmosPool = null;
-			ChainRulePool = null;
-			ReversedChainPool = null;
-			PaletteGroups = null;
-			PalettePool = null;
-			PastingBuffer = null;
-			CopyBuffer = null;
-			UndoRedo = null;
-			UndoData = null;
+			SpritePool.Clear();
+			IdChainPool.Clear();
+			EntityArtworkRedirectPool.Clear();
+			GizmosPool.Clear();
+			ChainRulePool.Clear();
+			ReversedChainPool.Clear();
+			PaletteGroups.Clear();
+			PalettePool.Clear();
+			PastingBuffer.Clear();
+			CopyBuffer.Clear();
+			UndoRedo.Reset();
+			System.Array.Clear(UndoData, 0, UndoData.Length);
 			PerformingUndoQueue = null;
 			IsDirty = false;
 			MouseDownOutsideBoundary = false;
-			PaletteTrie = null;
-			SearchResult = null;
-			CheckAltarIDs = null;
-			EditorMeta = null;
+			PaletteTrie.Clear();
+			SearchResult.Clear();
+			CheckAltarIDs.Clear();
 
 			System.GC.Collect();
 
 			// Restart Game
-			Game.RestartGame();
+			Game.RestartGame(immediately: true);
 
 		}
 
 
 		private void Active_Pool () {
 
-			SpritePool = new();
-			IdChainPool = new();
-			EntityArtworkRedirectPool = new();
-			ChainRulePool = new();
-			ReversedChainPool = new();
-			GizmosPool = new();
-			CheckAltarIDs = new();
+			SpritePool.Clear();
+			IdChainPool.Clear();
+			EntityArtworkRedirectPool.Clear();
+			ChainRulePool.Clear();
+			ReversedChainPool.Clear();
+			GizmosPool.Clear();
+			CheckAltarIDs.Clear();
 
 			int spriteCount = CellRenderer.SpriteCount;
 			int chainCount = CellRenderer.ChainCount;
@@ -1199,7 +1201,7 @@ namespace AngeliaFramework {
 
 		private bool PerformWaitingUndoRedo (MapUndoItem item) {
 			if (item == null || item.DataIndex < 0 || item.DataIndex >= UndoData.Length || item.Step == 0) return true;
-			TargetViewRect = item.ViewRect;
+			Instance.TargetViewRect = item.ViewRect;
 			if (Stage.ViewRect != item.ViewRect || Stage.ViewZ != item.ViewZ) {
 				Stage.SetViewPositionDelay(item.ViewRect.x, item.ViewRect.y, 1000, int.MaxValue);
 				Stage.SetViewSizeDelay(item.ViewRect.height, 1000, int.MaxValue);

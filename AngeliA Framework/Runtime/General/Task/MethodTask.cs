@@ -8,7 +8,7 @@ namespace AngeliaFramework {
 		public System.Action Method = null;
 		public override TaskResult FrameUpdate () {
 			Method?.Invoke();
-			return TaskResult.End;
+			return TaskResult.Follow;
 		}
 	}
 }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace AngeliaFramework {
 
 
-	public enum TaskResult { Continue, End, }
+	public enum TaskResult { Continue, End, Follow, }
 
 
 	public abstract class TaskItem {
@@ -63,13 +63,25 @@ namespace AngeliaFramework {
 
 		[OnGameUpdateLater]
 		internal static void OnGameUpdateLater () {
+			for (int safe = 0; safe < 2048; safe++) {
+				var result = UpdateTask();
+				if (!result.HasValue || result.Value != TaskResult.Follow) {
+					break;
+				}
+			}
+		}
+
+
+		private static TaskResult? UpdateTask () {
+
+			TaskResult? result = null;
+
 			// Update Current
 			if (CurrentTask != null) {
 				if (CurrentTask.LocalFrame == 0) {
 					CurrentTask.OnStart();
 				}
 				if (CurrentTask != null) {
-					TaskResult result;
 					try {
 						result = CurrentTask.FrameUpdate();
 					} catch (System.Exception ex) {
@@ -78,7 +90,7 @@ namespace AngeliaFramework {
 					}
 					if (CurrentTask != null) {
 						CurrentTask.GrowLocalFrame();
-						if (result == TaskResult.End) {
+						if (result == TaskResult.End || result == TaskResult.Follow) {
 							try {
 								CurrentTask.OnEnd();
 							} catch (System.Exception ex) { Game.LogException(ex); }
@@ -87,12 +99,15 @@ namespace AngeliaFramework {
 					}
 				}
 			}
+
 			// Switch to Next
 			if (CurrentTask == null && Tasks.Count > 0) {
 				CurrentTask = Tasks[0].task;
 				CurrentTask.Reset(Tasks[0].data);
 				Tasks.RemoveAt(0);
 			}
+
+			return result;
 		}
 
 

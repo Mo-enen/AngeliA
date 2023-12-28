@@ -96,8 +96,8 @@ namespace AngeliaFramework {
 			DraggingForReorderPaletteGroup = -1;
 			DraggingForReorderPaletteItem = -1;
 			CurrentPaletteTab = PaletteTabType.BuiltIn;
-			PaletteGroups = new();
-			PalettePool = new();
+			PaletteGroups.Clear();
+			PalettePool.Clear();
 			int spriteCount = CellRenderer.SpriteCount;
 			int chainCount = CellRenderer.ChainCount;
 
@@ -246,7 +246,7 @@ namespace AngeliaFramework {
 			}
 
 			// Search
-			PaletteTrie = new Trie<PaletteItem>();
+			PaletteTrie.Clear();
 			foreach (var group in PaletteGroups) {
 				foreach (var item in group.Items) {
 					if (item == null || string.IsNullOrEmpty(item.Name)) continue;

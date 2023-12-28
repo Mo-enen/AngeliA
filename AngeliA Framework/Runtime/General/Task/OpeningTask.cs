@@ -34,6 +34,9 @@ namespace AngeliaFramework {
 			SkipFrame = int.MaxValue;
 			PlayerSpawnY = TargetViewY;
 			TargetViewY += Stage.ViewRect.height / 2 - Player.GetCameraShiftOffset(Stage.ViewRect.height);
+			if (FadeOut) {
+				CellRenderer.DrawBlackCurtain(1000);
+			}
 		}
 
 
@@ -51,6 +54,10 @@ namespace AngeliaFramework {
 				} else {
 					localFrame -= FADE_OUT_DURATION;
 				}
+			}
+
+			if (FadeOut && localFrame < 2) {
+				CellRenderer.DrawBlackCurtain(1000);
 			}
 
 			// Frame 1
