@@ -464,9 +464,6 @@ namespace AngeliaFramework {
 					Update_NavHotkey();
 					Update_NavMapTextureSlots();
 					Update_NavGizmos();
-					if (NavGlobalScale != 1000) {
-						NavGlobalScale = NavGlobalScale.LerpTo(1000, 300);
-					}
 				} else {
 					SetNavigating(false);
 				}
@@ -725,9 +722,9 @@ namespace AngeliaFramework {
 					}
 
 					// Nav
-					if (FrameInput.KeyboardDown(KeyboardKey.Tab)) {
-						SetNavigating(!IsNavigating, true);
-						FrameInput.UseAllHoldingKeys();
+					if (FrameInput.KeyboardUp(KeyboardKey.Tab)) {
+						FrameInput.UseKeyboardKey(KeyboardKey.Tab);
+						SetNavigating(!IsNavigating);
 					}
 					ControlHintUI.AddHint(KeyboardKey.Tab, Language.Get(HINT_MEDT_NAV, "Overlook"));
 

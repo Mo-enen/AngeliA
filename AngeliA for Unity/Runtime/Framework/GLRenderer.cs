@@ -45,32 +45,6 @@ namespace AngeliaForUnity {
 			if (Camera == null) return;
 			var cameraRect = CellRenderer.CameraRect;
 
-			// Rects
-			if (RectCount > 0) {
-				RectMaterial.SetPass(0);
-				GL.LoadOrtho();
-				GL.Begin(GL.QUADS);
-				var rect = new Rect();
-				for (int i = 0; i < RectCount; i++) {
-					try {
-						var cell = Rects[i];
-						GL.Color(cell.Color);
-
-						rect.x = Util.InverseLerp(cameraRect.x, cameraRect.xMax, cell.Rect.x);
-						rect.y = Util.InverseLerp(cameraRect.y, cameraRect.yMax, cell.Rect.y);
-						rect.width = Util.InverseLerp(0, cameraRect.width, cell.Rect.width);
-						rect.height = Util.InverseLerp(0, cameraRect.height, cell.Rect.height);
-
-						GL.Vertex3(rect.x, rect.y, 0.5f);
-						GL.Vertex3(rect.x, rect.yMax, 0.5f);
-						GL.Vertex3(rect.xMax, rect.yMax, 0.5f);
-						GL.Vertex3(rect.xMax, rect.y, 0.5f);
-
-					} catch (System.Exception ex) { Debug.LogException(ex); }
-				}
-				GL.End();
-			}
-
 			// Textures
 			if (TextureCount > 0) {
 				int screenWidth = Screen.width;
@@ -97,6 +71,32 @@ namespace AngeliaForUnity {
 					) - rect.height;
 					Graphics.DrawTexture(rect, cell.Texture);
 				}
+			}
+
+			// Rects
+			if (RectCount > 0) {
+				RectMaterial.SetPass(0);
+				GL.LoadOrtho();
+				GL.Begin(GL.QUADS);
+				var rect = new Rect();
+				for (int i = 0; i < RectCount; i++) {
+					try {
+						var cell = Rects[i];
+						GL.Color(cell.Color);
+
+						rect.x = Util.InverseLerp(cameraRect.x, cameraRect.xMax, cell.Rect.x);
+						rect.y = Util.InverseLerp(cameraRect.y, cameraRect.yMax, cell.Rect.y);
+						rect.width = Util.InverseLerp(0, cameraRect.width, cell.Rect.width);
+						rect.height = Util.InverseLerp(0, cameraRect.height, cell.Rect.height);
+
+						GL.Vertex3(rect.x, rect.y, 0.5f);
+						GL.Vertex3(rect.x, rect.yMax, 0.5f);
+						GL.Vertex3(rect.xMax, rect.yMax, 0.5f);
+						GL.Vertex3(rect.xMax, rect.y, 0.5f);
+
+					} catch (System.Exception ex) { Debug.LogException(ex); }
+				}
+				GL.End();
 			}
 
 		}

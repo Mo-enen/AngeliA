@@ -811,7 +811,7 @@ namespace AngeliaFramework {
 					BUTTON_BORDER, 0, int.MaxValue - 1
 				) && interactable
 			) {
-				SetNavigating(!IsNavigating, true);
+				SetNavigating(!IsNavigating);
 			}
 			CursorSystem.SetCursorAsHand(btnRect);
 

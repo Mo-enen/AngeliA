@@ -200,8 +200,8 @@ namespace AngeliaFramework {
 		private static readonly int[] RENDER_CAPACITY = new int[RenderLayer.COUNT] {
 			256,	// Wallpaper 
 			8192,	// Behind 
-			2048,	// Shadow 
-			4096,	// Default 
+			4096,	// Shadow 
+			8192,	// Default 
 			256,	// Color 
 			128,	// Mult 
 			128,	// Add 

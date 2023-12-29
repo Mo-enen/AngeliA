@@ -32,8 +32,6 @@ namespace AngeliaFramework {
 		// Data
 		private readonly NavWorldSlot[,] NavSlots = new NavWorldSlot[NAV_WORLD_SIZE + 1, NAV_WORLD_SIZE + 1];
 		private Int3 NavPosition = default; // Global Pos, Screen Center
-		private int LastNavigatorStateChangeFrame = int.MinValue;
-		private int NavGlobalScale = 1000;
 		private int NavLoadedSlotX = int.MinValue;
 		private int NavLoadedSlotY = int.MinValue;
 		private int NavLoadedSlotZ = int.MinValue;
@@ -100,7 +98,7 @@ namespace AngeliaFramework {
 				FrameInput.KeyboardUp(KeyboardKey.Space) ||
 				FrameInput.KeyboardUp(KeyboardKey.Enter)
 			) {
-				SetNavigating(!IsNavigating, true);
+				SetNavigating(!IsNavigating);
 				FrameInput.UseKeyboardKey(KeyboardKey.Escape);
 				FrameInput.UseKeyboardKey(KeyboardKey.Tab);
 				FrameInput.UseKeyboardKey(KeyboardKey.Enter);
@@ -143,7 +141,7 @@ namespace AngeliaFramework {
 			}
 
 			// Draw
-			var totalRect = CellRenderer.CameraRect.Envelope(1, 1);
+			var totalRect = (CellRenderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0)).Envelope(1, 1);
 			var rect = new IRect(0, 0, totalRect.width / NAV_WORLD_SIZE, totalRect.height / NAV_WORLD_SIZE);
 			int globalOffsetX = -(NavPosition.x.UMod(Const.CEL * Const.MAP) * rect.width / (Const.CEL * Const.MAP));
 			int globalOffsetY = -(NavPosition.y.UMod(Const.CEL * Const.MAP) * rect.height / (Const.CEL * Const.MAP));
@@ -161,26 +159,26 @@ namespace AngeliaFramework {
 
 		private void Update_NavGizmos () {
 
-			var cameraRect = CellRenderer.CameraRect;
-
 			// Camera Rect
-			int height = cameraRect.height * TargetViewRect.height / NAV_WORLD_SIZE / (Const.MAP * Const.CEL);
-			int width = height * cameraRect.width / cameraRect.height;
-			int BORDER = Unify(1);
+			var cameraRect = CellRenderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
+			var totalRect = cameraRect.Envelope(1, 1);
+			int width, height;
+
+			if (cameraRect.width > cameraRect.height) {
+				width = cameraRect.width * totalRect.width / (NAV_WORLD_SIZE * Const.MAP * Const.CEL);
+				height = width * cameraRect.height / cameraRect.width;
+			} else {
+				height = cameraRect.height * totalRect.height / (NAV_WORLD_SIZE * Const.MAP * Const.CEL);
+				width = height * cameraRect.width / cameraRect.height;
+			}
+
 			var rect = new IRect(
 				cameraRect.x + cameraRect.width / 2 - width / 2,
 				cameraRect.y + cameraRect.height / 2 - height / 2,
 				width, height
-			).Shrink(width * PanelRect.width / cameraRect.width, 0, 0, 0);
+			);
 
-			if (NavGlobalScale != 1000) {
-				int newWidth = rect.width * NavGlobalScale / 1000;
-				int newHeight = rect.height * NavGlobalScale / 1000;
-				rect.x -= (newWidth - rect.width) / 2;
-				rect.y -= (newHeight - rect.height) / 2;
-				rect.width = newWidth;
-				rect.height = newHeight;
-			}
+			int BORDER = Unify(1);
 			Game.DrawFrame(rect, Const.WHITE, BORDER);
 			Game.DrawFrame(rect.Expand(BORDER), Const.BLACK, BORDER);
 
@@ -189,7 +187,7 @@ namespace AngeliaFramework {
 			if (hoverRect) CursorSystem.SetCursorAsHand();
 			if (hoverRect && FrameInput.MouseLeftButtonDown) {
 				FrameInput.UseAllHoldingKeys();
-				SetNavigating(false, true);
+				SetNavigating(false);
 			}
 
 		}
@@ -203,34 +201,25 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private void SetNavigating (bool navigating, bool useFrameLimit = false) {
-			if (useFrameLimit && Game.GlobalFrame < LastNavigatorStateChangeFrame + 30) return;
-			LastNavigatorStateChangeFrame = Game.GlobalFrame;
+		private void SetNavigating (bool navigating) {
 			ApplyPaste();
 			if (IsNavigating != navigating) {
 				IsNavigating = navigating;
-				TargetViewRect.width = TargetViewRect.height * Const.VIEW_RATIO / 1000;
 				if (navigating) {
+					var cameraRect = CellRenderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
 					Save();
-					NavPosition.x = TargetViewRect.x + TargetViewRect.width / 2 + Const.MAP * Const.HALF;
-					NavPosition.y = TargetViewRect.y + TargetViewRect.height / 2 + Const.MAP * Const.HALF;
+					NavLoadedSlotZ = int.MinValue;
+					NavPosition.x = cameraRect.CenterX() + Const.MAP * Const.HALF;
+					NavPosition.y = cameraRect.CenterY() + Const.MAP * Const.HALF;
 					NavPosition.z = Stage.ViewZ;
 				} else {
-					TargetViewRect.x = NavPosition.x - TargetViewRect.width / 2 - Const.MAP * Const.HALF;
+					TargetViewRect.width = TargetViewRect.height * Const.VIEW_RATIO / 1000;
+					TargetViewRect.x = NavPosition.x - (TargetViewRect.width + PanelRect.width) / 2 - Const.MAP * Const.HALF;
 					TargetViewRect.y = NavPosition.y - TargetViewRect.height / 2 - Const.MAP * Const.HALF;
-					int height = Const.MAX_HEIGHT;
-					int width = Const.MAX_HEIGHT * Const.VIEW_RATIO / 1000;
 					Stage.SetViewZ(NavPosition.z);
-					Stage.SetViewPositionDelay(
-						TargetViewRect.x - (width - TargetViewRect.width) / 2,
-						TargetViewRect.y - (height - TargetViewRect.height) / 2,
-						1000, int.MaxValue
-					);
-					Stage.SetViewSizeDelay(height, 1000, int.MaxValue);
+					Stage.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 1000, int.MaxValue);
+					Stage.SetViewSizeDelay(TargetViewRect.height, 1000, int.MaxValue);
 				}
-			}
-			if (navigating) {
-				NavGlobalScale = (NAV_WORLD_SIZE - 1) * 1000;
 			}
 			MouseDownPosition = null;
 			SelectionUnitRect = null;
