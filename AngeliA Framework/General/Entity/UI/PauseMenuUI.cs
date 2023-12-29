@@ -40,6 +40,7 @@ namespace AngeliaFramework {
 		private static readonly int MENU_FRAMERATE = "Menu.Setting.Framerate".AngeHash();
 		private static readonly int MENU_LANGUAGE = "Menu.Setting.Language".AngeHash();
 		private static readonly int MENU_SAVE_SLOT = "Menu.Setting.SaveSlot".AngeHash();
+		private static readonly int MENU_SHOW_FPS = "Menu.Setting.ShowFPS".AngeHash();
 		private static readonly int MENU_KEYSETTER_SAVE_BACK = "Menu.KeySetter.SaveAndBack".AngeHash();
 		private static readonly int MENU_FULLSCREEN_0 = "Menu.Setting.Fullscreen.0".AngeHash();
 		private static readonly int MENU_FULLSCREEN_1 = "Menu.Setting.Fullscreen.1".AngeHash();
@@ -313,6 +314,14 @@ namespace AngeliaFramework {
 				currentFramerate > 30, currentFramerate < 120, out delta
 			)) {
 				Game.GraphicFramerate += delta * 30;
+			}
+
+			// Show FPS 
+			if (DrawItem(
+				Language.Get(MENU_SHOW_FPS),
+				CellContent.Get(Game.ShowFPS ? Language.Get(UI_ON, "ON") : Language.Get(UI_OFF, "OFF"))
+			)) {
+				Game.ShowFPS = !Game.ShowFPS;
 			}
 
 			// VSync

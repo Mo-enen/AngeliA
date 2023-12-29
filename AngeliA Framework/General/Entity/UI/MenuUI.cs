@@ -199,22 +199,34 @@ namespace AngeliaFramework {
 			} else {
 				ScrollY = 0;
 			}
-			int offsetY = MarkPingPongFrame.PingPong(46);
+			IRect markRectD = default;
+			IRect markRectU = default;
 			if (ScrollY > 0) {
 				// U
-				CellRenderer.Draw(MoreItemMarkCode, new(
+				markRectU = new IRect(
 					windowRect.x + (windowRect.width - moreMarkSize.x) / 2,
-					windowRect.yMax + contentPadding.up - moreMarkSize.y - offsetY,
+					windowRect.yMax + contentPadding.up - moreMarkSize.y - MarkPingPongFrame.PingPong(46),
 					moreMarkSize.x, moreMarkSize.y
-				), MoreMarkTint);
+				);
+				CellRenderer.Draw(MoreItemMarkCode, markRectU.Shift(0, MarkPingPongFrame.PingPong(46)), MoreMarkTint);
 			}
 			if (ScrollY < ItemCount - TargetItemCount) {
 				// D
-				CellRenderer.Draw(MoreItemMarkCode, new(
+				markRectD = new IRect(
 					windowRect.x + (windowRect.width - moreMarkSize.x) / 2,
-					windowRect.yMin - contentPadding.down + moreMarkSize.y + offsetY,
+					windowRect.yMin - contentPadding.down + moreMarkSize.y,
 					moreMarkSize.x, -moreMarkSize.y
-				), MoreMarkTint);
+				);
+				CellRenderer.Draw(MoreItemMarkCode, markRectD.Shift(0, MarkPingPongFrame.PingPong(46)), MoreMarkTint);
+			}
+
+			// Click on Mark
+			if (FrameInput.MouseLeftButtonDown) {
+				if (markRectD.Expand(Unify(12)).Contains(FrameInput.MouseGlobalPosition)) {
+					ScrollY++;
+				} else if (markRectU.Expand(Unify(12)).Contains(FrameInput.MouseGlobalPosition)) {
+					ScrollY--;
+				}
 			}
 
 			// Use Action

@@ -9,16 +9,13 @@ namespace AngeliaForUnity {
 
 
 		// Ser
-		[SerializeField] ColorGradient m_SkyTintTop = new();
-		[SerializeField] ColorGradient m_SkyTintBottom = new();
 		[SerializeField] Font[] m_Fonts = null;
 		[SerializeField] AudioClip[] m_AudioClips = null;
 		[SerializeField] Texture2D[] m_Cursors = null;
 		[SerializeField] Vector2[] m_CursorPivots = null;
 
 		// Data
-		public static GamePerformerForUnity Instance = null;
-		private GameForUnity UnityGame = null;
+		private GameForUnity UnityGame;
 
 
 #if UNITY_EDITOR
@@ -29,29 +26,9 @@ namespace AngeliaForUnity {
 			};
 		}
 		private void Reset () {
-			Editor_ReloadAllConfig();
 			Editor_ReloadAllResources();
 			UnityEditor.EditorUtility.SetDirty(this);
 			UnityEditor.AssetDatabase.SaveAssets();
-		}
-		public void Editor_ReloadAllConfig () {
-			// Gradient
-			var skyTop = new ColorGradient(
-				new ColorGradient.Data(new Byte4(10, 12, 31, 255), 0f),
-				new ColorGradient.Data(new Byte4(13, 49, 76, 255), 0.25f),
-				new ColorGradient.Data(new Byte4(29, 156, 219, 255), 0.5f),
-				new ColorGradient.Data(new Byte4(13, 49, 76, 255), 0.75f),
-				new ColorGradient.Data(new Byte4(10, 12, 31, 255), 1f)
-			);
-			var skyBottom = new ColorGradient(
-				new ColorGradient.Data(new Byte4(10, 12, 31, 255), 0f),
-				new ColorGradient.Data(new Byte4(27, 69, 101, 255), 0.25f),
-				new ColorGradient.Data(new Byte4(52, 171, 230, 255), 0.5f),
-				new ColorGradient.Data(new Byte4(27, 69, 101, 255), 0.75f),
-				new ColorGradient.Data(new Byte4(10, 12, 31, 255), 1f)
-			);
-			m_SkyTintTop = skyTop;
-			m_SkyTintBottom = skyBottom;
 		}
 		public void Editor_ReloadAllResources () {
 
@@ -133,14 +110,7 @@ namespace AngeliaForUnity {
 
 
 		private void Awake () {
-			if (UnityGame != null) return;
-			Instance = this;
-			if (m_Fonts == null || m_Fonts.Length == 0) {
-				m_Fonts = new Font[1] { Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf") };
-			}
 			UnityGame = new GameForUnity {
-				SkyTintTop = m_SkyTintTop,
-				SkyTintBottom = m_SkyTintBottom,
 				Fonts = m_Fonts,
 				AudioClips = m_AudioClips,
 				Cursors = m_Cursors,
@@ -150,10 +120,10 @@ namespace AngeliaForUnity {
 		}
 
 
-		private void FixedUpdate () => UnityGame.Update();
+		private void FixedUpdate () => UnityGame.GameUpdate();
 
 
-		private void Update () => UnityGame.UnityFPS = 1f / Mathf.Max(Time.smoothDeltaTime, 0.000001f);
+		private void Update () => UnityGame.GraphicUpdate();
 
 
 	}

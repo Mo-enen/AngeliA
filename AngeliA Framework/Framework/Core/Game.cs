@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using AngeliaFramework;
 
 
@@ -40,6 +41,15 @@ namespace AngeliaFramework {
 		public static int PauselessFrame { get; private set; } = 0;
 		public static bool IsPausing => !IsPlaying;
 		public static bool IsPlaying { get; set; } = true;
+		public static bool ShowFPS {
+			get => _ShowFPS.Value;
+			set {
+				_ShowFPS.Value = value;
+				if (value) {
+					LastGraphicUpdateTime = GameWatch.ElapsedMilliseconds;
+				}
+			}
+		}
 		public static Byte4 SkyTintTopColor { get; private set; }
 		public static Byte4 SkyTintBottomColor { get; private set; }
 		public static int MusicVolume {
@@ -53,14 +63,15 @@ namespace AngeliaFramework {
 		public static float ScaledMusicVolume => GetScaledAudioVolume(_MusicVolume.Value, ProcedureAudioVolume);
 		public static float ScaledSoundVolume => GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
 		public static int ProcedureAudioVolume { get; set; } = 1000;
-		public ColorGradient SkyTintTop { get; init; } = new ColorGradient(
+		public static float CurrentFPS { get; private set; } = 1f;
+		public static ColorGradient SkyTintTop { get; set; } = new ColorGradient(
 				new ColorGradient.Data(new Byte4(10, 12, 31, 255), 0f),
 				new ColorGradient.Data(new Byte4(13, 49, 76, 255), 0.25f),
 				new ColorGradient.Data(new Byte4(29, 156, 219, 255), 0.5f),
 				new ColorGradient.Data(new Byte4(13, 49, 76, 255), 0.75f),
 				new ColorGradient.Data(new Byte4(10, 12, 31, 255), 1f)
 			);
-		public ColorGradient SkyTintBottom { get; init; } = new ColorGradient(
+		public static ColorGradient SkyTintBottom { get; set; } = new ColorGradient(
 			new ColorGradient.Data(new Byte4(10, 12, 31, 255), 0f),
 			new ColorGradient.Data(new Byte4(27, 69, 101, 255), 0.25f),
 			new ColorGradient.Data(new Byte4(52, 171, 230, 255), 0.5f),
@@ -83,12 +94,15 @@ namespace AngeliaFramework {
 		private static readonly Dictionary<int, object> ResourcePool = new();
 		private static int ForceBackgroundTintFrame = int.MinValue;
 		private static int? RequireRestartWithPlayerID = null;
+		private static Stopwatch GameWatch;
+		private static long LastGraphicUpdateTime = 0;
 
 		// Saving
 		private static readonly SavingInt _GraphicFramerate = new("Game.GraphicFramerate", 60);
 		private static readonly SavingInt _FullscreenMode = new("Game.FullscreenMode", 0);
 		private static readonly SavingInt _CurrentSaveSlot = new("Game.CurrentSaveSlot", 0);
 		private static readonly SavingBool _VSync = new("Game.VSync", false);
+		private static readonly SavingBool _ShowFPS = new("Game.ShowFPS", false);
 		private static readonly SavingInt _MusicVolume = new("Audio.MusicVolume", 500);
 		private static readonly SavingInt _SoundVolume = new("Audio.SoundVolume", 1000);
 
@@ -108,6 +122,7 @@ namespace AngeliaFramework {
 			try {
 
 				GlobalFrame = 0;
+				GameWatch = Stopwatch.StartNew();
 
 				AngePath.CurrentSaveSlot = _CurrentSaveSlot.Value;
 
@@ -154,7 +169,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public virtual void Update () {
+		public virtual void GameUpdate () {
 			try {
 
 				// Update Callbacks
@@ -182,6 +197,16 @@ namespace AngeliaFramework {
 				PauselessFrame++;
 
 			} catch (System.Exception ex) { LogException(ex); }
+		}
+
+
+		public virtual void GraphicUpdate () {
+			if (_ShowFPS.Value) {
+				long currentTime = GameWatch.ElapsedMilliseconds;
+				float deltaTime = (currentTime - LastGraphicUpdateTime) / 1000f;
+				LastGraphicUpdateTime = currentTime;
+				CurrentFPS = 1f / Util.Max(deltaTime, 0.000001f);
+			}
 		}
 
 
@@ -256,8 +281,8 @@ namespace AngeliaFramework {
 			var date = System.DateTime.Now;
 			float time01 = Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
 			SetSkyboxTint(
-				Instance.SkyTintTop.Evaluate(time01),
-				Instance.SkyTintBottom.Evaluate(time01)
+				SkyTintTop.Evaluate(time01),
+				SkyTintBottom.Evaluate(time01)
 			);
 		}
 

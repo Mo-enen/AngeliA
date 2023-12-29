@@ -94,41 +94,12 @@ namespace AngeliaFramework {
 		internal static void OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) => Instance._OnRenderingLayerCreated(index, name, sortingOrder, capacity);
 		protected abstract void _OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity);
 
-		internal static void OnTextLayerCreated (int index, string name, int sortingOrder, int capacity) => Instance._OnTextLayerCreated(index, name, sortingOrder, capacity);
-		protected abstract void _OnTextLayerCreated (int index, string name, int sortingOrder, int capacity);
-
 		[OnGameUpdatePauseless(-4096)]
 		internal static void OnCameraUpdate () => Instance._OnCameraUpdate();
 		protected abstract void _OnCameraUpdate ();
 
 		internal static void OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) => Instance._OnLayerUpdate(layerIndex, isTextLayer, cells, cellCount, ref prevCellCount);
 		protected abstract void _OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount);
-
-		public static int TextLayerCount => Instance._GetTextLayerCount();
-		protected abstract int _GetTextLayerCount ();
-
-		internal static string GetTextLayerName (int index) => Instance._GetTextLayerName(index);
-		protected abstract string _GetTextLayerName (int index);
-
-		internal static int GetFontSize (int index) => Instance._GetFontSize(index);
-		protected abstract int _GetFontSize (int index);
-
-		internal static CellRenderer.CharSprite FillCharSprite (int layerIndex, char c, int textSize, int rebuildVersion, CellRenderer.CharSprite charSprite, out bool filled) => Instance._FillCharSprite(layerIndex, c, textSize, rebuildVersion, charSprite, out filled);
-		protected abstract CellRenderer.CharSprite _FillCharSprite (int layerIndex, char c, int textSize, int rebuildVersion, CellRenderer.CharSprite charSprite, out bool filled);
-
-		internal static void RequestStringForFont (int layerIndex, int textSize, string content) => Instance._RequestStringForFont(layerIndex, textSize, content);
-		protected abstract void _RequestStringForFont (int layerIndex, int textSize, string content);
-
-		internal static void RequestStringForFont (int layerIndex, int textSize, char[] content) => Instance._RequestStringForFont(layerIndex, textSize, content);
-		protected abstract void _RequestStringForFont (int layerIndex, int textSize, char[] content);
-
-		public static void SetSkyboxTint (Byte4 top, Byte4 bottom) {
-			ForceBackgroundTintFrame = GlobalFrame + 1;
-			SkyTintTopColor = top;
-			SkyTintBottomColor = bottom;
-			Instance._SetSkyboxTint(top, bottom);
-		}
-		protected abstract void _SetSkyboxTint (Byte4 top, Byte4 bottom);
 
 		public static void DrawFrame (IRect rect, Byte4 color, int thickness) {
 			Instance._DrawRect(rect.EdgeInside(Direction4.Down, thickness), color);
@@ -148,8 +119,37 @@ namespace AngeliaFramework {
 		public static void FillPixelsIntoTexture (Byte4[] pixels, object texture) => Instance._FillPixelsIntoTexture(pixels, texture);
 		protected abstract void _FillPixelsIntoTexture (Byte4[] pixels, object texture);
 
-		public static float CurrentFPS => Instance._GetCurrentFPS();
-		protected abstract float _GetCurrentFPS ();
+		public static void SetSkyboxTint (Byte4 top, Byte4 bottom) {
+			ForceBackgroundTintFrame = GlobalFrame + 1;
+			SkyTintTopColor = top;
+			SkyTintBottomColor = bottom;
+			Instance._SetSkyboxTint(top, bottom);
+		}
+		protected abstract void _SetSkyboxTint (Byte4 top, Byte4 bottom);
+
+
+		// Text
+		internal static void OnTextLayerCreated (int index, string name, int sortingOrder, int capacity) => Instance._OnTextLayerCreated(index, name, sortingOrder, capacity);
+		protected abstract void _OnTextLayerCreated (int index, string name, int sortingOrder, int capacity);
+
+		public static int TextLayerCount => Instance._GetTextLayerCount();
+		protected abstract int _GetTextLayerCount ();
+
+		internal static string GetTextLayerName (int index) => Instance._GetTextLayerName(index);
+		protected abstract string _GetTextLayerName (int index);
+
+		internal static int GetFontSize (int index) => Instance._GetFontSize(index);
+		protected abstract int _GetFontSize (int index);
+
+		internal static CellRenderer.CharSprite FillCharSprite (int layerIndex, char c, int textSize, CellRenderer.CharSprite charSprite, out bool filled) => Instance._FillCharSprite(layerIndex, c, textSize, charSprite, out filled);
+		protected abstract CellRenderer.CharSprite _FillCharSprite (int layerIndex, char c, int textSize, CellRenderer.CharSprite charSprite, out bool filled);
+
+		internal static void RequestStringForFont (int layerIndex, int textSize, string content) => Instance._RequestStringForFont(layerIndex, textSize, content);
+		protected abstract void _RequestStringForFont (int layerIndex, int textSize, string content);
+
+		internal static void RequestStringForFont (int layerIndex, int textSize, char[] content) => Instance._RequestStringForFont(layerIndex, textSize, content);
+		protected abstract void _RequestStringForFont (int layerIndex, int textSize, char[] content);
+
 
 		// Music
 		public static void PlayMusic (int id) => Instance._PlayMusic(id);

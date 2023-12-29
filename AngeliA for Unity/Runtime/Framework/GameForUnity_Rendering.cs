@@ -47,9 +47,6 @@ namespace AngeliaForUnity {
 		private static readonly int SKYBOX_BOTTOM = Shader.PropertyToID("_ColorB");
 		private static readonly Shader SKYBOX_SHADER = Shader.Find("Angelia/Skybox");
 
-		// Api
-		public float UnityFPS { get; set; } = 1f;
-
 		// Data
 		private static readonly Color32[] CacheFillPixelsForMap = new Color32[Const.MAP * Const.MAP];
 		private RenderingLayerUnity[] RenderingLayers = new RenderingLayerUnity[0];
@@ -158,19 +155,6 @@ namespace AngeliaForUnity {
 				capacity
 			);
 		}
-		protected override void _OnTextLayerCreated (int index, string name, int sortingOrder, int capacity) {
-			RenderingTextLayers[index] = CreateRenderingLayer(
-				UnityCamera.transform,
-				Fonts[index].material,
-				name,
-				sortingOrder,
-				capacity
-			);
-		}
-
-		protected override int _GetTextLayerCount () => Fonts.Length;
-		protected override string _GetTextLayerName (int index) => Fonts[index].name;
-		protected override int _GetFontSize (int index) => Fonts[index].fontSize;
 
 		protected override void _OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) {
 
@@ -364,39 +348,6 @@ namespace AngeliaForUnity {
 			mesh.UploadMeshData(false);
 		}
 
-		protected override CellRenderer.CharSprite _FillCharSprite (int layerIndex, char c, int textSize, int rebuildVersion, CellRenderer.CharSprite charSprite, out bool filled) {
-			var font = Fonts[layerIndex];
-			if (font.GetCharacterInfo(c, out var info, textSize)) {
-				float size = info.size == 0 ? textSize : info.size;
-				charSprite ??= new();
-				charSprite.GlobalID = info.index;
-				charSprite.UvBottomLeft = info.uvBottomLeft.ToAngelia();
-				charSprite.UvBottomRight = info.uvBottomRight.ToAngelia();
-				charSprite.UvTopLeft = info.uvTopLeft.ToAngelia();
-				charSprite.UvTopRight = info.uvTopRight.ToAngelia();
-				charSprite.Offset = FRect.MinMaxRect(info.minX / size, info.minY / size, info.maxX / size, info.maxY / size);
-				charSprite.Advance = info.advance / size;
-				charSprite.Rebuild = rebuildVersion;
-				filled = true;
-				return charSprite;
-			}
-			filled = false;
-			return charSprite;
-		}
-
-		protected override void _RequestStringForFont (int layerIndex, int textSize, string content) => Fonts[layerIndex].RequestCharactersInTexture(content, textSize);
-
-		protected override void _RequestStringForFont (int layerIndex, int textSize, char[] content) {
-			var font = Fonts[layerIndex];
-			if (font == null) return;
-			for (int i = 0; i < content.Length; i++) {
-				char c = content[i];
-				if (font.HasCharacter(c) && !font.GetCharacterInfo(c, out _, textSize)) {
-					font.RequestCharactersInTexture(c.ToString(), textSize);
-				}
-			}
-		}
-
 		protected override void _SetSkyboxTint (Byte4 top, Byte4 bottom) {
 			if (Skybox == null) return;
 			Skybox.SetColor(SKYBOX_TOP, top.ToUnityColor());
@@ -432,7 +383,55 @@ namespace AngeliaForUnity {
 			texture2d.Apply();
 		}
 
-		protected override float _GetCurrentFPS () => UnityFPS;
+
+		// Text
+		protected override void _OnTextLayerCreated (int index, string name, int sortingOrder, int capacity) {
+			RenderingTextLayers[index] = CreateRenderingLayer(
+				UnityCamera.transform,
+				Fonts[index].material,
+				name,
+				sortingOrder,
+				capacity
+			);
+		}
+
+		protected override int _GetTextLayerCount () => Fonts.Length;
+
+		protected override string _GetTextLayerName (int index) => Fonts[index].name;
+
+		protected override int _GetFontSize (int index) => Fonts[index].fontSize;
+
+		protected override CellRenderer.CharSprite _FillCharSprite (int layerIndex, char c, int textSize, CellRenderer.CharSprite charSprite, out bool filled) {
+			var font = Fonts[layerIndex];
+			if (font.GetCharacterInfo(c, out var info, textSize)) {
+				float size = info.size == 0 ? textSize : info.size;
+				charSprite ??= new();
+				charSprite.GlobalID = info.index;
+				charSprite.UvBottomLeft = info.uvBottomLeft.ToAngelia();
+				charSprite.UvBottomRight = info.uvBottomRight.ToAngelia();
+				charSprite.UvTopLeft = info.uvTopLeft.ToAngelia();
+				charSprite.UvTopRight = info.uvTopRight.ToAngelia();
+				charSprite.Offset = FRect.MinMaxRect(info.minX / size, info.minY / size, info.maxX / size, info.maxY / size);
+				charSprite.Advance = info.advance / size;
+				filled = true;
+				return charSprite;
+			}
+			filled = false;
+			return charSprite;
+		}
+
+		protected override void _RequestStringForFont (int layerIndex, int textSize, string content) => Fonts[layerIndex].RequestCharactersInTexture(content, textSize);
+
+		protected override void _RequestStringForFont (int layerIndex, int textSize, char[] content) {
+			var font = Fonts[layerIndex];
+			if (font == null) return;
+			for (int i = 0; i < content.Length; i++) {
+				char c = content[i];
+				if (font.HasCharacter(c) && !font.GetCharacterInfo(c, out _, textSize)) {
+					font.RequestCharactersInTexture(c.ToString(), textSize);
+				}
+			}
+		}
 
 
 		#endregion

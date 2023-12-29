@@ -1,4 +1,4 @@
-﻿Palette.ItemWeapon:武器
+﻿Menu.Setting.ShowFPS:显示帧数
 CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
@@ -80,6 +80,7 @@ Palette.Furniture:家具
 Palette.Item:物品
 Palette.ItemEquipment:装备
 Palette.ItemFood:食物
+Palette.ItemWeapon:武器
 Palette.LevelBack:关卡
 Palette.LevelFront:关卡-前景
 Palette.MiniGame:迷你游戏

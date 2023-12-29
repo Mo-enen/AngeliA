@@ -60,6 +60,7 @@ namespace AngeliaFramework {
 		private int OffsetResetFrame = int.MinValue;
 		private readonly CellContent HintLabel = new() { Alignment = Alignment.MidLeft, CharSize = TEXT_SIZE, Tint = LabelTint, };
 		private readonly CellContent KeyLabel = new() { Alignment = Alignment.MidLeft, CharSize = TEXT_SIZE, Tint = KeyTint, };
+		private static float GameFPS = 1f;
 
 		// Saving
 		private static readonly SavingBool ShowGamePadUI = new("Hint.ShowGamePadUI", false);
@@ -69,6 +70,20 @@ namespace AngeliaFramework {
 		// MSG
 		[OnGameInitializeLater(64)]
 		public static void Initialize () => Stage.SpawnEntity<ControlHintUI>(0, 0);
+
+
+		[OnGameUpdatePauseless]
+		public static void OnGameUpdateLater () {
+			if (Game.ShowFPS) {
+				if (Game.PauselessFrame % 6 == 0) {
+					GameFPS = Util.Lerp(GameFPS, Game.CurrentFPS, 0.2f);
+				}
+				CellRendererGUI.Label(
+					CellContent.Get(GameFPS.ToString("0"), 20, Alignment.TopRight),
+					CellRenderer.CameraRect
+				);
+			}
+		}
 
 
 		public ControlHintUI () => Instance = this;

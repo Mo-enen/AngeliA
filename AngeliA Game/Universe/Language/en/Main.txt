@@ -1,4 +1,4 @@
-﻿Palette.ItemWeapon:Weapon
+﻿Menu.Setting.ShowFPS:Show FPS
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
@@ -80,6 +80,7 @@ Palette.Furniture:Furniture
 Palette.Item:Item
 Palette.ItemEquipment:Equipment
 Palette.ItemFood:Food
+Palette.ItemWeapon:Weapon
 Palette.LevelBack:LevelBack
 Palette.LevelFront:LevelFront
 Palette.MiniGame:Mini Game

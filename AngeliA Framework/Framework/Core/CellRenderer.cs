@@ -966,7 +966,8 @@ namespace AngeliaFramework {
 					charSprite = tLayer.CharSprites[cellInfo.Index];
 					if (charSprite.Rebuild != tLayer.TextRebuild) {
 						// Need Cache Again
-						Game.FillCharSprite(CurrentTextLayerIndex, c, tLayer.TextSize, tLayer.TextRebuild, charSprite, out bool filled);
+						charSprite.Rebuild = tLayer.TextRebuild;
+						Game.FillCharSprite(CurrentTextLayerIndex, c, tLayer.TextSize, charSprite, out bool filled);
 						if (!filled) {
 							cellInfo.Index = -1;
 						}
@@ -975,9 +976,10 @@ namespace AngeliaFramework {
 				}
 			} else {
 				// Require Char from Font
-				charSprite = Game.FillCharSprite(CurrentTextLayerIndex, c, tLayer.TextSize, tLayer.TextRebuild, null, out bool filled);
+				charSprite = Game.FillCharSprite(CurrentTextLayerIndex, c, tLayer.TextSize, null, out bool filled);
 				if (filled && charSprite != null) {
 					// Got Info
+					charSprite.Rebuild = tLayer.TextRebuild;
 					tLayer.TextIDMap.Add(c, new CellInfo(tLayer.CharSprites.Count));
 					tLayer.CharSprites.Add(charSprite);
 				} else {

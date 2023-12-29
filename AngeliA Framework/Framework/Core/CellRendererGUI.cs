@@ -67,6 +67,7 @@ namespace AngeliaFramework {
 			Temp.Tint = Const.WHITE;
 			Temp.Wrap = wrap;
 			Temp.FromString = true;
+			Temp.BackgroundTint = default;
 			return Temp;
 		}
 
@@ -79,6 +80,7 @@ namespace AngeliaFramework {
 			Temp.Tint = tint;
 			Temp.Wrap = wrap;
 			Temp.FromString = true;
+			Temp.BackgroundTint = default;
 			return Temp;
 		}
 
@@ -90,6 +92,7 @@ namespace AngeliaFramework {
 			Temp.Tint = Const.WHITE;
 			Temp.Wrap = wrap;
 			Temp.FromString = false;
+			Temp.BackgroundTint = default;
 			return Temp;
 		}
 
@@ -101,6 +104,7 @@ namespace AngeliaFramework {
 			Temp.Tint = tint;
 			Temp.Wrap = wrap;
 			Temp.FromString = false;
+			Temp.BackgroundTint = default;
 			return Temp;
 		}
 
