@@ -354,10 +354,8 @@ namespace AngeliaForUnity {
 			Skybox.SetColor(SKYBOX_BOTTOM, bottom.ToUnityColor());
 		}
 
-		protected override void _DrawRect (IRect rect, Byte4 color) => GLRenderer.DrawRect(rect.ToUnity(), color.ToUnityColor32());
 
-		protected override void _DrawTexture (IRect rect, object texture) => GLRenderer.DrawTexture(rect.ToUnity(), texture as Texture2D);
-
+		// Texture
 		protected override object _GetTextureFromPixels (Byte4[] pixels, int width, int height) {
 			var texture = new Texture2D(width, height, TextureFormat.ARGB32, false) {
 				filterMode = FilterMode.Point,
@@ -368,6 +366,8 @@ namespace AngeliaForUnity {
 			}
 			return texture;
 		}
+
+		protected override Byte4[] _GetPixelsFromTexture (object texture) => (texture as Texture2D).GetPixels32().ToAngelia();
 
 		protected override void _FillPixelsIntoTexture (Byte4[] pixels, object texture) {
 			if (texture is not Texture2D texture2d) return;
@@ -382,6 +382,21 @@ namespace AngeliaForUnity {
 			}
 			texture2d.Apply();
 		}
+
+		protected override Int2 _GetTextureSize (object texture) {
+			var t = texture as Texture2D;
+			return new Int2(t.width, t.height);
+		}
+
+		protected override string _GetTextureName (object texture) => (texture as Texture2D).name;
+
+		protected override void _SaveTextureAsPNGFile (object texture, string path) => Util.ByteToFile((texture as Texture2D).EncodeToPNG(), path);
+
+
+		// GL
+		protected override void _DrawRect (IRect rect, Byte4 color) => GLRenderer.DrawRect(rect.ToUnity(), color.ToUnityColor32());
+
+		protected override void _DrawTexture (IRect rect, object texture) => GLRenderer.DrawTexture(rect.ToUnity(), texture as Texture2D);
 
 
 		// Text

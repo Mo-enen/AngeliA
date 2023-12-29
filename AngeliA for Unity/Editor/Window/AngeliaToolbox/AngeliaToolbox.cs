@@ -16,19 +16,6 @@ namespace AngeliaForUnity.Editor {
 
 
 
-		#region --- SUB ---
-
-
-		private class Refresh : IRefreshEvent {
-			void IRefreshEvent.Refresh (bool forceRefresh) => RefreshSheetThumbnail();
-		}
-
-
-		#endregion
-
-
-
-
 		#region --- VAR ---
 
 
@@ -201,7 +188,7 @@ namespace AngeliaForUnity.Editor {
 			if (texture != null) {
 				var rawBytes = texture.GetRawTextureData();
 				float rawSize = rawBytes.Length / 1024f / 1024f;
-				SheetThumbnailLabel.text = $"{texture.width}×{texture.height}  |  {AngeliaRefreshEvent.LastSpriteCount.Value} Sprites  |  {rawSize:0.00} MB";
+				SheetThumbnailLabel.text = $"{texture.width}×{texture.height}  |  {AngeliaRefresh.LastSpriteCount.Value} Sprites  |  {rawSize:0.00} MB";
 			} else {
 				SheetThumbnailLabel.text = "";
 			}

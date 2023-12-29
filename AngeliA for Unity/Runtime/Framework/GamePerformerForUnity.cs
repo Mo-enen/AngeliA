@@ -15,7 +15,7 @@ namespace AngeliaForUnity {
 		[SerializeField] Vector2[] m_CursorPivots = null;
 
 		// Data
-		private GameForUnity UnityGame;
+		private static GameForUnity UnityGame;
 
 
 #if UNITY_EDITOR
@@ -24,6 +24,7 @@ namespace AngeliaForUnity {
 			UnityEditor.EditorApplication.playModeStateChanged += (state) => {
 				Util.ClearAllTypeCache();
 			};
+			UnityGame = new GameForUnity();
 		}
 		private void Reset () {
 			Editor_ReloadAllResources();

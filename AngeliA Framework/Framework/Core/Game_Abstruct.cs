@@ -101,6 +101,36 @@ namespace AngeliaFramework {
 		internal static void OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) => Instance._OnLayerUpdate(layerIndex, isTextLayer, cells, cellCount, ref prevCellCount);
 		protected abstract void _OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount);
 
+		public static void SetSkyboxTint (Byte4 top, Byte4 bottom) {
+			ForceBackgroundTintFrame = GlobalFrame + 1;
+			SkyTintTopColor = top;
+			SkyTintBottomColor = bottom;
+			Instance._SetSkyboxTint(top, bottom);
+		}
+		protected abstract void _SetSkyboxTint (Byte4 top, Byte4 bottom);
+
+
+		// Texture
+		public static object GetTextureFromPixels (Byte4[] pixels, int width, int height) => Instance._GetTextureFromPixels(pixels, width, height);
+		protected abstract object _GetTextureFromPixels (Byte4[] pixels, int width, int height);
+
+		public static Byte4[] GetPixelsFromTexture (object texture) => Instance._GetPixelsFromTexture(texture);
+		protected abstract Byte4[] _GetPixelsFromTexture (object texture);
+
+		public static void FillPixelsIntoTexture (Byte4[] pixels, object texture) => Instance._FillPixelsIntoTexture(pixels, texture);
+		protected abstract void _FillPixelsIntoTexture (Byte4[] pixels, object texture);
+
+		public static Int2 GetTextureSize (object texture) => Instance._GetTextureSize(texture);
+		protected abstract Int2 _GetTextureSize (object texture);
+
+		public static string GetTextureName (object texture) => Instance._GetTextureName(texture);
+		protected abstract string _GetTextureName (object texture);
+
+		public static void SaveTextureAsPNGFile (object texture, string path) => Instance._SaveTextureAsPNGFile(texture, path);
+		protected abstract void _SaveTextureAsPNGFile (object texture, string path);
+
+
+		// GL
 		public static void DrawFrame (IRect rect, Byte4 color, int thickness) {
 			Instance._DrawRect(rect.EdgeInside(Direction4.Down, thickness), color);
 			Instance._DrawRect(rect.EdgeInside(Direction4.Up, thickness), color);
@@ -112,20 +142,6 @@ namespace AngeliaFramework {
 
 		public static void DrawTexture (IRect rect, object texture) => Instance._DrawTexture(rect, texture);
 		protected abstract void _DrawTexture (IRect rect, object texture);
-
-		public static object GetTextureFromPixels (Byte4[] pixels, int width, int height) => Instance._GetTextureFromPixels(pixels, width, height);
-		protected abstract object _GetTextureFromPixels (Byte4[] pixels, int width, int height);
-
-		public static void FillPixelsIntoTexture (Byte4[] pixels, object texture) => Instance._FillPixelsIntoTexture(pixels, texture);
-		protected abstract void _FillPixelsIntoTexture (Byte4[] pixels, object texture);
-
-		public static void SetSkyboxTint (Byte4 top, Byte4 bottom) {
-			ForceBackgroundTintFrame = GlobalFrame + 1;
-			SkyTintTopColor = top;
-			SkyTintBottomColor = bottom;
-			Instance._SetSkyboxTint(top, bottom);
-		}
-		protected abstract void _SetSkyboxTint (Byte4 top, Byte4 bottom);
 
 
 		// Text

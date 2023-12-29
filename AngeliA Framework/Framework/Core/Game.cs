@@ -36,11 +36,20 @@ namespace AngeliaFramework {
 
 
 		// Api
+		public static Game Instance { get; private set; } = null;
 		public static int GlobalFrame { get; private set; } = 0;
 		public static int SettleFrame => GlobalFrame - Stage.LastSettleFrame;
 		public static int PauselessFrame { get; private set; } = 0;
 		public static bool IsPausing => !IsPlaying;
-		public static bool IsPlaying { get; set; } = true;
+		public static bool IsPlaying {
+			get => _IsPlaying;
+			set {
+				if (_IsPlaying != value) {
+					_IsPlaying = value;
+					if (!value) Game.StopAllSounds();
+				}
+			}
+		}
 		public static bool ShowFPS {
 			get => _ShowFPS.Value;
 			set {
@@ -90,12 +99,12 @@ namespace AngeliaFramework {
 		private static event System.Action OnSlotCreated;
 
 		// Data
-		private static Game Instance = null;
 		private static readonly Dictionary<int, object> ResourcePool = new();
 		private static int ForceBackgroundTintFrame = int.MinValue;
 		private static int? RequireRestartWithPlayerID = null;
-		private static Stopwatch GameWatch;
 		private static long LastGraphicUpdateTime = 0;
+		private static Stopwatch GameWatch;
+		private static bool _IsPlaying = true;
 
 		// Saving
 		private static readonly SavingInt _GraphicFramerate = new("Game.GraphicFramerate", 60);
@@ -275,15 +284,28 @@ namespace AngeliaFramework {
 		}
 
 
-		[OnGameUpdateLater]
-		internal static void RefreshBackgroundTint () {
-			if (GlobalFrame % 36000 != 0 || GlobalFrame < ForceBackgroundTintFrame) return;
-			var date = System.DateTime.Now;
-			float time01 = Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
-			SetSkyboxTint(
-				SkyTintTop.Evaluate(time01),
-				SkyTintBottom.Evaluate(time01)
-			);
+		[OnGameUpdatePauseless]
+		internal static void RefreshGame () {
+
+			// Load or Stop Music
+			bool requireMusic = IsPlaying && MusicVolume > 0 && !MapEditor.IsEditing;
+			if (requireMusic != IsMusicPlaying) {
+				if (requireMusic) {
+					UnPauseMusic();
+				} else {
+					PauseMusic();
+				}
+			}
+
+			// Background Tint
+			if (GlobalFrame % 36000 == 0 && GlobalFrame >= ForceBackgroundTintFrame) {
+				var date = System.DateTime.Now;
+				float time01 = Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
+				SetSkyboxTint(
+					SkyTintTop.Evaluate(time01),
+					SkyTintBottom.Evaluate(time01)
+				);
+			}
 		}
 
 
