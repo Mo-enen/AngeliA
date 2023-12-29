@@ -1,12 +1,9 @@
 {
     "name": "AngeliaFramework",
     "rootNamespace": "AngeliaFramework",
-    "references": [
-        "Unity.InputSystem"
-    ],
+    "references": [],
     "includePlatforms": [
         "Editor",
-        "WindowsStandalone32",
         "WindowsStandalone64"
     ],
     "excludePlatforms": [],
@@ -18,5 +15,5 @@
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": false
+    "noEngineReferences": true
 }

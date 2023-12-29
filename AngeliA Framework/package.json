@@ -4,8 +4,5 @@
   "version": "1.0.0",
   "description": "2D retro game framework developed by Moenen",
   "type": "tool",
-  "hideInEditor": false,
-  "dependencies": {
-    "com.unity.inputsystem": "1.0.0"
-  }
+  "hideInEditor": false
 }

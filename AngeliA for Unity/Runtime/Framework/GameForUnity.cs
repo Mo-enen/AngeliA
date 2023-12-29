@@ -81,7 +81,12 @@ namespace AngeliaForUnity {
 		}
 		protected override int _GetScreenWidth () => Screen.width;
 		protected override int _GetScreenHeight () => Screen.height;
-		protected override void _QuitApplication () => Application.Quit();
+		protected override void _QuitApplication () {
+			Application.Quit();
+#if UNITY_EDITOR
+			UnityEditor.EditorApplication.isPlaying = false;
+#endif
+		}
 
 
 		// Listener

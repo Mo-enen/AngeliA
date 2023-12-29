@@ -468,9 +468,6 @@ namespace AngeliaFramework {
 					MapEditor.CloseMapEditorSmoothly();
 				} else {
 					Game.QuitApplication();
-#if UNITY_EDITOR
-					UnityEditor.EditorApplication.isPlaying = false;
-#endif
 				}
 			}
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
+
 namespace AngeliaFramework {
 	public static partial class Util {
 
@@ -57,7 +58,6 @@ namespace AngeliaFramework {
 		}
 
 
-		[Unity.Profiling.IgnoredByDeepProfiler]
 		public static void QuickSort<T> (T[] cells, int min, int max, IComparer<T> comparer) where T : class {
 			int lo = min;
 			int hi = max;

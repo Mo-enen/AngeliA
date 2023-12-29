@@ -16,9 +16,7 @@
       "version": "file:C:/Data/Unity/AngeliA/AngeliA Framework",
       "depth": 0,
       "source": "local",
-      "dependencies": {
-        "com.unity.inputsystem": "1.0.0"
-      }
+      "dependencies": {}
     },
     "com.mukaschultze.fullscreeneditor": {
       "version": "file:C:/Data/Unity/Fullscreen",
