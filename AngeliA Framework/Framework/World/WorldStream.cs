@@ -82,9 +82,9 @@ namespace AngeliaFramework {
 				worldData.LastReadWriteFrame = InternalFrame++;
 				var world = worldData.World;
 				int index = unitY.UMod(Const.MAP) * Const.MAP + unitX.UMod(Const.MAP);
-				entity = world.Entity[index];
-				level = world.Level[index];
-				background = world.Background[index];
+				entity = world.Entities[index];
+				level = world.Levels[index];
+				background = world.Backgrounds[index];
 			}
 		}
 
@@ -98,10 +98,10 @@ namespace AngeliaFramework {
 				int localX = unitX.UMod(Const.MAP);
 				int localY = unitY.UMod(Const.MAP);
 				return type switch {
-					BlockType.Entity => world.Entity[localY * Const.MAP + localX],
-					BlockType.Level => world.Level[localY * Const.MAP + localX],
-					BlockType.Background => world.Background[localY * Const.MAP + localX],
-					BlockType.Element => world.Element[localY * Const.MAP + localX],
+					BlockType.Entity => world.Entities[localY * Const.MAP + localX],
+					BlockType.Level => world.Levels[localY * Const.MAP + localX],
+					BlockType.Background => world.Backgrounds[localY * Const.MAP + localX],
+					BlockType.Element => world.Elements[localY * Const.MAP + localX],
 					_ => 0,
 				};
 			}
@@ -125,16 +125,16 @@ namespace AngeliaFramework {
 				int localY = unitY.UMod(Const.MAP);
 				switch (type) {
 					case BlockType.Entity:
-						world.Entity[localY * Const.MAP + localX] = value;
+						world.Entities[localY * Const.MAP + localX] = value;
 						break;
 					case BlockType.Level:
-						world.Level[localY * Const.MAP + localX] = value;
+						world.Levels[localY * Const.MAP + localX] = value;
 						break;
 					case BlockType.Background:
-						world.Background[localY * Const.MAP + localX] = value;
+						world.Backgrounds[localY * Const.MAP + localX] = value;
 						break;
 					case BlockType.Element:
-						world.Element[localY * Const.MAP + localX] = value;
+						world.Elements[localY * Const.MAP + localX] = value;
 						break;
 				}
 			}
@@ -156,10 +156,10 @@ namespace AngeliaFramework {
 				int localX = unitX.UMod(Const.MAP);
 				int localY = unitY.UMod(Const.MAP);
 				int index = localY * Const.MAP + localX;
-				world.Entity[index] = entity;
-				world.Level[index] = level;
-				world.Background[index] = background;
-				world.Element[index] = element;
+				world.Entities[index] = entity;
+				world.Levels[index] = level;
+				world.Backgrounds[index] = background;
+				world.Elements[index] = element;
 			}
 		}
 

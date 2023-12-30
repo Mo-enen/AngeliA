@@ -17,12 +17,13 @@ namespace AngeliaFramework {
 		// File
 		public static void CreateAngeFolders () {
 			Util.CreateFolder(AngePath.UniverseRoot);
-			Util.CreateFolder(AngePath.FlexibleUniverseRoot);
 			Util.CreateFolder(AngePath.SheetRoot);
 			Util.CreateFolder(AngePath.DialogueRoot);
 			Util.CreateFolder(AngePath.LanguageRoot);
 			Util.CreateFolder(AngePath.MetaRoot);
 			Util.CreateFolder(AngePath.BuiltInMapRoot);
+			Util.CreateFolder(AngePath.FlexibleUniverseRoot);
+			Util.CreateFolder(AngePath.FlexibleSheetRoot);
 		}
 
 
@@ -527,13 +528,27 @@ namespace AngeliaFramework {
 
 		public static void DeleteAllEmptyMaps (string mapRoot) {
 			var world = new World();
+			lock (World.FILE_STREAMING_LOCK) {
+				foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{AngePath.MAP_FILE_EXT}")) {
+					try {
+						if (!world.LoadFromDisk(path)) continue;
+						if (world.EmptyCheck()) {
+							Util.DeleteFile(path);
+						}
+					} catch (System.Exception ex) { Game.LogException(ex); }
+				}
+			}
+		}
+
+
+		public static void ValidAllMaps (string mapRoot) {
+			var world = new World();
 			foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{AngePath.MAP_FILE_EXT}")) {
-				try {
-					if (!world.LoadFromDisk(path)) continue;
-					if (world.EmptyCheck()) {
-						Util.DeleteFile(path);
-					}
-				} catch (System.Exception ex) { Game.LogException(ex); }
+				if (!world.LoadFromDisk(path)) continue;
+				world.ValidMap(out bool changed);
+				if (changed) {
+					world.SaveToDisk(mapRoot);
+				}
 			}
 		}
 

@@ -6,7 +6,7 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.MapEditorGroup("Platform")]
-	public class SnakePath : IMapEditorItem { }
+	public class SnakePath : IMapItem { }
 
 
 
@@ -146,7 +146,7 @@ namespace AngeliaFramework {
 			var normal = direction.Normal();
 			int unitX = (X + Width / 2).UDivide(Const.CEL) + normal.x;
 			int unitY = (Y + Height / 2).UDivide(Const.CEL) + normal.y;
-			int id = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Entity);
+			int id = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Element);
 			return id == PATH_ID || (!ignoreTypeID && id == TypeID);
 		}
 

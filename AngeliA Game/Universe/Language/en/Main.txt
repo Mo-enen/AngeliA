@@ -1,4 +1,5 @@
-﻿Menu.Setting.ShowFPS:Show FPS
+﻿CtrlHint.EditSheet:Edit Sheet
+CtrlHint.QuitEditingSheet:Quit Editing Sheet
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
@@ -66,6 +67,7 @@ Menu.Setting.Fullscreen.Label:Display
 Menu.Setting.Language:Language
 Menu.Setting.MusicVolume:Music Volume
 Menu.Setting.SaveSlot:Save Slot
+Menu.Setting.ShowFPS:Show FPS
 Menu.Setting.SoundVolume:Sound Volume
 Menu.Setting.UseControlHint:Show Control Hint
 Menu.Setting.UseGamepadHint:Show Bottom Left Gamepad

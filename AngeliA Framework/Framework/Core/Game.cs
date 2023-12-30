@@ -167,6 +167,9 @@ namespace AngeliaFramework {
 
 				RestartGameLogic();
 				System.GC.Collect();
+
+				if (IsEdittime) GlobalEditorUI.OpenEditorSmoothly(MapEditor.TYPE_ID, false);
+
 			} catch (System.Exception ex) { LogException(ex); }
 			// Func
 			static bool OnTryingToQuit () {

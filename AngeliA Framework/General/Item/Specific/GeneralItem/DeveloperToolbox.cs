@@ -36,7 +36,7 @@ namespace AngeliaFramework {
 		private static readonly BarData[] EntityUsages = new BarData[EntityLayer.COUNT];
 		private static BarData[] TextUsages = new BarData[0];
 		private static readonly List<PhysicsCell[,,]> CellPhysicsCells = new();
-		private static int RequireUIFrame = int.MinValue;
+		private static int RequireToolboxFrame = int.MinValue;
 		private static int RequireDataFrame = int.MinValue;
 		private static int DrawColliderFrame = int.MinValue;
 		private static int DrawBoundFrame = int.MinValue;
@@ -82,7 +82,7 @@ namespace AngeliaFramework {
 
 		[OnGameUpdateLater(-4097)]
 		public static void DrawToolboxUI () {
-			if (Game.GlobalFrame > RequireUIFrame + 1) return;
+			if (Game.GlobalFrame > RequireToolboxFrame + 1) return;
 
 			CursorSystem.RequireCursor();
 			int oldLayer = CellRenderer.CurrentLayerIndex;
@@ -131,12 +131,12 @@ namespace AngeliaFramework {
 
 			// Draw Colliders
 			if (Game.GlobalFrame <= DrawColliderFrame + 1) {
-				DrawColliders();
+				ColliderGizmos();
 			}
 
 			// Draw Bounds
 			if (Game.GlobalFrame <= DrawBoundFrame + 1) {
-				DrawBounds();
+				BoundsGizmos();
 			}
 
 		}
@@ -144,7 +144,7 @@ namespace AngeliaFramework {
 
 		public override void OnItemUpdate_FromInventory (Entity holder) {
 			base.OnItemUpdate_FromInventory(holder);
-			RequireUIFrame = Game.GlobalFrame;
+			RequireToolboxFrame = Game.GlobalFrame;
 		}
 
 
@@ -230,7 +230,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void DrawColliders () {
+		private static void ColliderGizmos () {
 			// Init Cells
 			if (CellPhysicsCells.Count == 0) {
 				try {
@@ -259,10 +259,10 @@ namespace AngeliaFramework {
 									var cell = cells[x, y, d];
 									if (cell.Frame != CellPhysics.CurrentFrame) break;
 									if (!cell.Rect.Overlaps(cameraRect)) continue;
-									DrawRect(cell.Rect.EdgeInside(Direction4.Down, thick), tint, true);
-									DrawRect(cell.Rect.EdgeInside(Direction4.Up, thick), tint, true);
-									DrawRect(cell.Rect.EdgeInside(Direction4.Left, thick), tint, false);
-									DrawRect(cell.Rect.EdgeInside(Direction4.Right, thick), tint, false);
+									DrawGizmosRectAsLine(cell.Rect.EdgeInside(Direction4.Down, thick), tint, true);
+									DrawGizmosRectAsLine(cell.Rect.EdgeInside(Direction4.Up, thick), tint, true);
+									DrawGizmosRectAsLine(cell.Rect.EdgeInside(Direction4.Left, thick), tint, false);
+									DrawGizmosRectAsLine(cell.Rect.EdgeInside(Direction4.Right, thick), tint, false);
 								}
 							}
 						}
@@ -272,21 +272,20 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void DrawBounds () {
+		private static void BoundsGizmos () {
 			for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
 				var entities = Stage.Entities[layer];
 				int count = Stage.EntityCounts[layer];
 				for (int i = 0; i < count; i++) {
 					var e = entities[i];
 					if (!e.Active) continue;
-					var bounds = e.GlobalBounds;
-					DrawRect(bounds, Const.BLUE_BETTER.WithNewA(64), true);
+					DrawGizmosRect(e.GlobalBounds, Const.BLUE_BETTER.WithNewA(64));
 				}
 			}
 		}
 
 
-		private static void DrawRect (IRect rect, Byte4 color, bool horizontal) {
+		private static void DrawGizmosRectAsLine (IRect rect, Byte4 color, bool horizontal) {
 			if (!rect.Overlaps(PanelRect)) {
 				Game.DrawRect(rect, color);
 			} else if (horizontal) {
@@ -304,6 +303,32 @@ namespace AngeliaFramework {
 				}
 				if (rect.yMax > PanelRect.yMax) {
 					Game.DrawRect(new IRect(rect.x, PanelRect.yMax, rect.width, rect.yMax - PanelRect.yMax), color);
+				}
+			}
+		}
+
+
+		private static void DrawGizmosRect (IRect rect, Byte4 color) {
+			if (!rect.Overlaps(PanelRect)) {
+				Game.DrawRect(rect, color);
+			} else {
+				// Left Part
+				if (rect.x < PanelRect.x) {
+					Game.DrawRect(rect.Shrink(0, rect.xMax - PanelRect.x, 0, 0), color);
+					rect = rect.Shrink(PanelRect.x - rect.x, 0, 0, 0);
+				}
+				// Right Part
+				if (rect.xMax > PanelRect.xMax) {
+					Game.DrawRect(rect.Shrink(PanelRect.xMax - rect.x, 0, 0, 0), color);
+					rect = rect.Shrink(0, rect.xMax - PanelRect.xMax, 0, 0);
+				}
+				// Bottom Part
+				if (rect.y < PanelRect.y) {
+					Game.DrawRect(rect.Shrink(0, 0, 0, rect.yMax - PanelRect.y), color);
+				}
+				// Top Part
+				if (rect.yMax > PanelRect.yMax) {
+					Game.DrawRect(rect.Shrink(0, 0, PanelRect.yMax - rect.y, 0), color);
 				}
 			}
 		}

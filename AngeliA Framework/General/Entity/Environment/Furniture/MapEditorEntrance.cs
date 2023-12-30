@@ -27,9 +27,9 @@ namespace AngeliaFramework {
 			if (FrameTask.HasTask()) return;
 			bool editing = MapEditor.Instance != null && MapEditor.Instance.Active;
 			if (editing) {
-				MapEditor.CloseMapEditorSmoothly();
+				GlobalEditorUI.CloseEditorSmoothly();
 			} else {
-				MapEditor.OpenMapEditorSmoothly();
+				GlobalEditorUI.OpenEditorSmoothly(MapEditor.TYPE_ID);
 			}
 		}
 

@@ -396,7 +396,7 @@ namespace AngeliaForUnity {
 		// GL
 		protected override void _DrawRect (IRect rect, Byte4 color) => GLRenderer.DrawRect(rect.ToUnity(), color.ToUnityColor32());
 
-		protected override void _DrawTexture (IRect rect, object texture) => GLRenderer.DrawTexture(rect.ToUnity(), texture as Texture2D);
+		protected override void _DrawTexture (IRect rect, FRect uv, object texture) => GLRenderer.DrawTexture(rect.ToUnity(), uv.ToUnity(), texture as Texture2D);
 
 
 		// Text

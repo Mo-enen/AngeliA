@@ -41,7 +41,6 @@ namespace AngeliaForUnity {
 			InitializeAudio();
 			Initialize_Input();
 			base.Initialize();
-			if (Application.isEditor) MapEditor.OpenMapEditorSmoothly(false);
 		}
 
 

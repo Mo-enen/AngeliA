@@ -20,15 +20,17 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
+		// Const
+		public static readonly object FILE_STREAMING_LOCK = new();
+
 		// Api
 		public Int3 WorldPosition { get; set; } = default;
-		public int[] Background { get; set; } = null;
-		public int[] Level { get; set; } = null;
-		public int[] Entity { get; set; } = null;
-		public int[] Element { get; set; } = null;
+		public int[] Backgrounds { get; set; } = null;
+		public int[] Levels { get; set; } = null;
+		public int[] Entities { get; set; } = null;
+		public int[] Elements { get; set; } = null;
 
 		// Data
-		private static readonly object FileStreamingLock = new();
 		private static readonly Dictionary<Int3, string> WorldNamePool = new();
 		private static readonly Byte4[] CacheMapPixels = new Byte4[Const.MAP * Const.MAP];
 
@@ -46,29 +48,29 @@ namespace AngeliaFramework {
 
 
 		public bool EmptyCheck () {
-			foreach (var a in Entity) if (a != 0) return false;
-			foreach (var a in Level) if (a != 0) return false;
-			foreach (var a in Background) if (a != 0) return false;
-			foreach (var a in Element) if (a != 0) return false;
+			foreach (var a in Entities) if (a != 0) return false;
+			foreach (var a in Levels) if (a != 0) return false;
+			foreach (var a in Backgrounds) if (a != 0) return false;
+			foreach (var a in Elements) if (a != 0) return false;
 			return true;
 		}
 
 
 		public void CopyFrom (World source) {
 			WorldPosition = source.WorldPosition;
-			System.Array.Copy(source.Background, Background, Background.Length);
-			System.Array.Copy(source.Level, Level, Level.Length);
-			System.Array.Copy(source.Entity, Entity, Entity.Length);
-			System.Array.Copy(source.Element, Element, Element.Length);
+			System.Array.Copy(source.Backgrounds, Backgrounds, Backgrounds.Length);
+			System.Array.Copy(source.Levels, Levels, Levels.Length);
+			System.Array.Copy(source.Entities, Entities, Entities.Length);
+			System.Array.Copy(source.Elements, Elements, Elements.Length);
 		}
 
 
 		public void Reset (Int3 pos) {
 			WorldPosition = pos;
-			Level = new int[Const.MAP * Const.MAP];
-			Background = new int[Const.MAP * Const.MAP];
-			Entity = new int[Const.MAP * Const.MAP];
-			Element = new int[Const.MAP * Const.MAP];
+			Levels = new int[Const.MAP * Const.MAP];
+			Backgrounds = new int[Const.MAP * Const.MAP];
+			Entities = new int[Const.MAP * Const.MAP];
+			Elements = new int[Const.MAP * Const.MAP];
 		}
 
 
@@ -87,7 +89,7 @@ namespace AngeliaFramework {
 
 		public static void ForAllEntities (string filePath, System.Action<int, int, int> callback) {
 			if (!Util.FileExists(filePath)) return;
-			lock (FileStreamingLock) {
+			lock (FILE_STREAMING_LOCK) {
 				using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
 				using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
 				int SIZE = Const.MAP;
@@ -105,14 +107,14 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void LoadMapIntoTexture (string mapFolder, int worldX, int worldY, int worldZ, object texture) {
+		public static bool LoadMapIntoTexture (string mapFolder, int worldX, int worldY, int worldZ, object texture) {
 			lock (CacheMapPixels) {
-				lock (FileStreamingLock) {
+				lock (FILE_STREAMING_LOCK) {
 					string filePath = Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ));
 					System.Array.Clear(CacheMapPixels, 0, CacheMapPixels.Length);
 					if (!Util.FileExists(filePath)) {
 						Game.FillPixelsIntoTexture(CacheMapPixels, texture);
-						return;
+						return false;
 					}
 					using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
 					using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
@@ -121,6 +123,7 @@ namespace AngeliaFramework {
 						int id = reader.ReadInt32();
 						int x = reader.ReadByte();
 						int y = reader.ReadByte();
+						if (x < SIZE && y >= SIZE) continue;
 						if (CellRenderer.TryGetSprite(id, out var sprite)) {
 							if (x >= SIZE) x -= SIZE;
 							if (y >= SIZE) y -= SIZE;
@@ -129,6 +132,7 @@ namespace AngeliaFramework {
 					}
 				}
 				Game.FillPixelsIntoTexture(CacheMapPixels, texture);
+				return true;
 			}
 		}
 
@@ -139,7 +143,7 @@ namespace AngeliaFramework {
 
 		public void SaveToDisk (string mapFolder, int worldX, int worldY, int worldZ) {
 
-			lock (FileStreamingLock) {
+			lock (FILE_STREAMING_LOCK) {
 
 				// Save
 				const int SIZE = Const.MAP;
@@ -150,7 +154,7 @@ namespace AngeliaFramework {
 				// Background
 				for (int y = 0; y < SIZE; y++) {
 					for (int x = 0; x < SIZE; x++) {
-						int id = Background[y * SIZE + x];
+						int id = Backgrounds[y * SIZE + x];
 						if (id == 0) continue;
 						writer.Write((int)id);
 						writer.Write((byte)(x + SIZE));
@@ -161,7 +165,7 @@ namespace AngeliaFramework {
 				// Level
 				for (int y = 0; y < SIZE; y++) {
 					for (int x = 0; x < SIZE; x++) {
-						int id = Level[y * SIZE + x];
+						int id = Levels[y * SIZE + x];
 						if (id == 0) continue;
 						writer.Write((int)id);
 						writer.Write((byte)(x + SIZE));
@@ -172,7 +176,7 @@ namespace AngeliaFramework {
 				// Entity
 				for (int y = 0; y < SIZE; y++) {
 					for (int x = 0; x < SIZE; x++) {
-						int id = Entity[y * SIZE + x];
+						int id = Entities[y * SIZE + x];
 						if (id == 0) continue;
 						writer.Write((int)id);
 						writer.Write((byte)x);
@@ -183,7 +187,7 @@ namespace AngeliaFramework {
 				// Element
 				for (int y = 0; y < SIZE; y++) {
 					for (int x = 0; x < SIZE; x++) {
-						int id = Element[y * SIZE + x];
+						int id = Elements[y * SIZE + x];
 						if (id == 0) continue;
 						writer.Write((int)id);
 						writer.Write((byte)x);
@@ -231,17 +235,17 @@ namespace AngeliaFramework {
 			lock (CacheMapPixels) {
 				int len = Const.MAP * Const.MAP;
 				for (int i = 0; i < len; i++) {
-					int id = Entity[i];
+					int id = Entities[i];
 					if (id != 0 && CellRenderer.TryGetSprite(id, out var sprite)) {
 						CacheMapPixels[i] = sprite.SummaryTint;
 						continue;
 					}
-					id = Level[i];
+					id = Levels[i];
 					if (id != 0 && CellRenderer.TryGetSprite(id, out sprite)) {
 						CacheMapPixels[i] = sprite.SummaryTint;
 						continue;
 					}
-					id = Background[i];
+					id = Backgrounds[i];
 					if (id != 0 && CellRenderer.TryGetSprite(id, out sprite)) {
 						CacheMapPixels[i] = sprite.SummaryTint;
 						continue;
@@ -249,6 +253,26 @@ namespace AngeliaFramework {
 					CacheMapPixels[i] = Const.CLEAR;
 				}
 				Game.FillPixelsIntoTexture(CacheMapPixels, texture);
+			}
+		}
+
+
+		public void ValidMap (out bool changed) {
+			changed = false;
+			// Entity >><< Element
+			for (int i = 0; i < Entities.Length; i++) {
+				int entityID = Entities[i];
+				int elementID = Elements[i];
+				if (elementID == 0 && entityID != 0 && !Stage.IsValidEntityID(entityID)) {
+					Entities[i] = 0;
+					Elements[i] = entityID;
+					changed = true;
+				}
+				if (entityID == 0 && elementID != 0 && Stage.IsValidEntityID(elementID)) {
+					Elements[i] = 0;
+					Entities[i] = elementID;
+					changed = true;
+				}
 			}
 		}
 
@@ -265,14 +289,14 @@ namespace AngeliaFramework {
 
 			bool success = false;
 
-			lock (FileStreamingLock) {
+			lock (FILE_STREAMING_LOCK) {
 
 				try {
 
-					System.Array.Clear(Level, 0, Level.Length);
-					System.Array.Clear(Background, 0, Background.Length);
-					System.Array.Clear(Entity, 0, Entity.Length);
-					System.Array.Clear(Element, 0, Element.Length);
+					System.Array.Clear(Levels, 0, Levels.Length);
+					System.Array.Clear(Backgrounds, 0, Backgrounds.Length);
+					System.Array.Clear(Entities, 0, Entities.Length);
+					System.Array.Clear(Elements, 0, Elements.Length);
 
 					WorldPosition = new(worldX, worldY, worldZ);
 
@@ -291,29 +315,29 @@ namespace AngeliaFramework {
 								if (y < Const.MAP) {
 									// Entity x y
 									if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-									if (Entity[y * Const.MAP + x] != 0) continue;
-									Entity[y * Const.MAP + x] = id;
+									if (Entities[y * Const.MAP + x] != 0) continue;
+									Entities[y * Const.MAP + x] = id;
 								} else {
 									// Element x yy
 									y -= Const.MAP;
 									if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-									if (Element[y * Const.MAP + x] != 0) continue;
-									Element[y * Const.MAP + x] = id;
+									if (Elements[y * Const.MAP + x] != 0) continue;
+									Elements[y * Const.MAP + x] = id;
 								}
 							} else {
 								if (y < Const.MAP) {
 									// Level xx y
 									x -= Const.MAP;
 									if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-									if (Level[y * Const.MAP + x] != 0) continue;
-									Level[y * Const.MAP + x] = id;
+									if (Levels[y * Const.MAP + x] != 0) continue;
+									Levels[y * Const.MAP + x] = id;
 								} else {
 									// Background xx yy
 									x -= Const.MAP;
 									y -= Const.MAP;
 									if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-									if (Background[y * Const.MAP + x] != 0) continue;
-									Background[y * Const.MAP + x] = id;
+									if (Backgrounds[y * Const.MAP + x] != 0) continue;
+									Backgrounds[y * Const.MAP + x] = id;
 								}
 							}
 						} catch (System.Exception ex) { Game.LogException(ex); }

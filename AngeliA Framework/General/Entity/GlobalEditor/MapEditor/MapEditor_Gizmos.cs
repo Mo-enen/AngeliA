@@ -43,18 +43,22 @@ namespace AngeliaFramework {
 
 			if (IsPlaying || DroppingPlayer) return;
 
-			var TINT = new Byte4(128, 128, 128, 24);
-			var cRect = CellRenderer.CameraRect;
-			int l = Util.FloorToInt(cRect.xMin.UDivide(Const.CEL)) * Const.CEL;
+			var TINT = new Byte4(128, 128, 128, 16);
+			var cRect = CellRenderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
+			int l = Util.FloorToInt(cRect.xMin.UDivide(Const.CEL) + 1) * Const.CEL;
 			int r = Util.CeilToInt(cRect.xMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
 			int d = Util.FloorToInt(cRect.yMin.UDivide(Const.CEL)) * Const.CEL;
 			int u = Util.CeilToInt(cRect.yMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
 			int size = cRect.height / 512;
+			var rect = new IRect(cRect.xMin, 0, r - l, size);
 			for (int y = d; y <= u; y += Const.CEL) {
-				CellRenderer.Draw(LINE_H, l, y - size / 2, 0, 0, 0, r - l, size, TINT, int.MinValue + 1);
+				rect.y = y - size / 2;
+				Game.DrawRect(rect, TINT);
 			}
+			rect = new IRect(0, d, size, u - d);
 			for (int x = l; x <= r; x += Const.CEL) {
-				CellRenderer.Draw(LINE_V, x - size / 2, d, 0, 0, 0, size, u - d, TINT, int.MinValue + 1);
+				rect.x = x - size / 2;
+				Game.DrawRect(rect, TINT);
 			}
 
 		}
@@ -253,7 +257,7 @@ namespace AngeliaFramework {
 					int worldGlobalY = world.WorldPosition.y * Const.MAP * Const.CEL;
 					for (int y = 0; y < Const.MAP; y++) {
 						for (int x = 0; x < Const.MAP; x++, index++) {
-							int id = world.Entity[index];
+							int id = world.Entities[index];
 							if (id == 0 || !GizmosPool.TryGetValue(id, out var gizmos)) continue;
 							rect.x = worldGlobalX + x * Const.CEL;
 							rect.y = worldGlobalY + y * Const.CEL;

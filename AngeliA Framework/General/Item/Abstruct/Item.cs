@@ -76,7 +76,7 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.MapEditorGroup("Item")]
-	public abstract class Item : IMapEditorItem {
+	public abstract class Item : IMapItem {
 
 
 		// Api

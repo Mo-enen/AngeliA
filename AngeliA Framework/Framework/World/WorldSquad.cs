@@ -87,7 +87,6 @@ namespace AngeliaFramework {
 			if (!Enable) return;
 
 			int z = isBehind ? Stage.ViewZ + 1 : Stage.ViewZ;
-			Int4 cullingPadding = FrameTask.IsTasking<TeleportTask>() ? new Int4(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Int4.zero;
 			if (isBehind) {
 				CellRenderer.SetLayerToBehind();
 			} else {
@@ -97,6 +96,7 @@ namespace AngeliaFramework {
 			IRect unitRect_Entity;
 			IRect unitRect_Level;
 			CameraRect = CellRenderer.CameraRect;
+			var cullingPadding = Stage.GetCameraCullingPadding();
 			CullingCameraRect = CameraRect.Expand(cullingPadding);
 			const float PARA_01 = Const.SQUAD_BEHIND_PARALLAX / 1000f;
 
@@ -157,7 +157,7 @@ namespace AngeliaFramework {
 					for (int j = d; j < u; j++) {
 						int index = (j - worldUnitRect.y) * Const.MAP + (l - worldUnitRect.x);
 						for (int i = l; i < r; i++, index++) {
-							var bg = world.Background[index];
+							var bg = world.Backgrounds[index];
 							if (bg != 0) {
 								if (isBehind) {
 									Draw_Behind(bg, i, j, false);
@@ -165,7 +165,7 @@ namespace AngeliaFramework {
 									DrawBackgroundBlock(bg, i, j);
 								}
 							}
-							var lv = world.Level[index];
+							var lv = world.Levels[index];
 							if (lv != 0) {
 								if (isBehind) {
 									Draw_Behind(lv, i, j, false);
@@ -200,7 +200,7 @@ namespace AngeliaFramework {
 						int localY = j - worldUnitRect.y;
 						int index = localY * Const.MAP + (l - worldUnitRect.x);
 						for (int i = l; i < r; i++, index++) {
-							var entityID = world.Entity[index];
+							var entityID = world.Entities[index];
 							if (entityID != 0) {
 								if (!isBehind) {
 									DrawEntity(entityID, i, j, z);
@@ -218,7 +218,7 @@ namespace AngeliaFramework {
 							int localY = j - worldUnitRect.y;
 							int index = localY * Const.MAP + (l - worldUnitRect.x);
 							for (int i = l; i < r; i++, index++) {
-								var elementID = world.Element[index];
+								var elementID = world.Elements[index];
 								if (elementID != 0) {
 									DrawElement(elementID, i, j);
 								}
@@ -297,10 +297,10 @@ namespace AngeliaFramework {
 			int localX = unitX - world.WorldPosition.x * Const.MAP;
 			int localY = unitY - world.WorldPosition.y * Const.MAP;
 			return new Int4(
-				world.Entity[localY * Const.MAP + localX],
-				world.Level[localY * Const.MAP + localX],
-				world.Background[localY * Const.MAP + localX],
-				world.Element[localY * Const.MAP + localX]
+				world.Entities[localY * Const.MAP + localX],
+				world.Levels[localY * Const.MAP + localX],
+				world.Backgrounds[localY * Const.MAP + localX],
+				world.Elements[localY * Const.MAP + localX]
 			);
 		}
 
@@ -323,10 +323,10 @@ namespace AngeliaFramework {
 			int localX = unitX - world.WorldPosition.x * Const.MAP;
 			int localY = unitY - world.WorldPosition.y * Const.MAP;
 			return type switch {
-				BlockType.Entity => world.Entity[localY * Const.MAP + localX],
-				BlockType.Level => world.Level[localY * Const.MAP + localX],
-				BlockType.Background => world.Background[localY * Const.MAP + localX],
-				BlockType.Element => world.Element[localY * Const.MAP + localX],
+				BlockType.Entity => world.Entities[localY * Const.MAP + localX],
+				BlockType.Level => world.Levels[localY * Const.MAP + localX],
+				BlockType.Background => world.Backgrounds[localY * Const.MAP + localX],
+				BlockType.Element => world.Elements[localY * Const.MAP + localX],
 				_ => throw new System.NotImplementedException(),
 			};
 		}
@@ -363,10 +363,10 @@ namespace AngeliaFramework {
 			var world = Worlds[worldX, worldY];
 			int localX = unitX - world.WorldPosition.x * Const.MAP;
 			int localY = unitY - world.WorldPosition.y * Const.MAP;
-			world.Entity[localY * Const.MAP + localX] = entityID;
-			world.Level[localY * Const.MAP + localX] = levelID;
-			world.Background[localY * Const.MAP + localX] = backgroundID;
-			world.Element[localY * Const.MAP + localX] = elementID;
+			world.Entities[localY * Const.MAP + localX] = entityID;
+			world.Levels[localY * Const.MAP + localX] = levelID;
+			world.Backgrounds[localY * Const.MAP + localX] = backgroundID;
+			world.Elements[localY * Const.MAP + localX] = elementID;
 		}
 
 
@@ -381,16 +381,16 @@ namespace AngeliaFramework {
 			switch (type) {
 				default: throw new System.NotImplementedException();
 				case BlockType.Entity:
-					world.Entity[localY * Const.MAP + localX] = newID;
+					world.Entities[localY * Const.MAP + localX] = newID;
 					break;
 				case BlockType.Level:
-					world.Level[localY * Const.MAP + localX] = newID;
+					world.Levels[localY * Const.MAP + localX] = newID;
 					break;
 				case BlockType.Background:
-					world.Background[localY * Const.MAP + localX] = newID;
+					world.Backgrounds[localY * Const.MAP + localX] = newID;
 					break;
 				case BlockType.Element:
-					world.Element[localY * Const.MAP + localX] = newID;
+					world.Elements[localY * Const.MAP + localX] = newID;
 					break;
 			}
 		}

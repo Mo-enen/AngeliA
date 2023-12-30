@@ -140,8 +140,9 @@ namespace AngeliaFramework {
 		public static void DrawRect (IRect rect, Byte4 color) => Instance._DrawRect(rect, color);
 		protected abstract void _DrawRect (IRect rect, Byte4 color);
 
-		public static void DrawTexture (IRect rect, object texture) => Instance._DrawTexture(rect, texture);
-		protected abstract void _DrawTexture (IRect rect, object texture);
+		public static void DrawTexture (IRect rect, object texture) => Instance._DrawTexture(rect, new FRect(0f, 0f, 1f, 1f), texture);
+		public static void DrawTexture (IRect rect, FRect uv, object texture) => Instance._DrawTexture(rect, uv, texture);
+		protected abstract void _DrawTexture (IRect rect, FRect uv, object texture);
 
 
 		// Text

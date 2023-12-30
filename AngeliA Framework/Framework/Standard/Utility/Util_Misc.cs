@@ -135,6 +135,12 @@ namespace AngeliaFramework {
 			}
 			return 0f;
 		}
+		public static float InverseLerpUnclamped (float from, float to, float value) {
+			if (from != to) {
+				return (value - from) / (to - from);
+			}
+			return 0f;
+		}
 		public static float PingPong (float t, float length) {
 			t = Repeat(t, length * 2f);
 			return length - (t - length).Abs();

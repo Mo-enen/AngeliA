@@ -76,13 +76,13 @@ namespace AngeliaFramework {
 		}
 
 		public sealed bool HasSystemNumber (int unitX, int unitY, int z) {
-			int id = GetBlockAt(unitX, unitY, z, BlockType.Entity);
+			int id = GetBlockAt(unitX, unitY, z, BlockType.Element);
 			return id != 0 && SYSTEM_NUMBER_POOL.ContainsKey(id);
 		}
 
 		public sealed bool TryGetSingleSystemNumber (int unitX, int unitY, int z, out int digitValue) {
 			digitValue = 0;
-			int id = GetBlockAt(unitX, unitY, z, BlockType.Entity);
+			int id = GetBlockAt(unitX, unitY, z, BlockType.Element);
 			return id != 0 && SYSTEM_NUMBER_POOL.TryGetValue(id, out digitValue);
 		}
 

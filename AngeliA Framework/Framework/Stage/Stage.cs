@@ -329,10 +329,7 @@ namespace AngeliaFramework {
 			}
 
 			// FrameUpdate
-			var cullCameraRect = CellRenderer.CameraRect.Expand(
-				FrameTask.IsTasking<TeleportTask>() ?
-				new Int4(Const.CEL * 4, Const.CEL * 4, Const.CEL * 4, Const.CEL * 4) : Int4.zero
-			);
+			var cullCameraRect = CellRenderer.CameraRect.Expand(GetCameraCullingPadding());
 			for (int layer = startLayer; layer < endLayer; layer++) {
 				var entities = Entities[layer];
 				int count = EntityCounts[layer];
@@ -447,7 +444,7 @@ namespace AngeliaFramework {
 		}
 
 
-		// Get
+		// Get Entity
 		public static T GetEntity<T> () where T : Entity => TryGetEntity<T>(out var result) ? result : null;
 		public static Entity GetEntity (int typeID) => TryGetEntity(typeID, out var result) ? result : null;
 
@@ -547,6 +544,40 @@ namespace AngeliaFramework {
 		}
 
 
+		public static int GetSpawnedEntityCount (int id) => EntityPool.TryGetValue(id, out var meta) ? meta.SpawnedCount : 0;
+
+
+		// Stage Workflow
+		public static void ClearStagedEntities () {
+			for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
+				var entities = Entities[layer];
+				int count = EntityCounts[layer];
+				for (int i = 0; i < count; i++) {
+					var e = entities[i];
+					if (e.DespawnOutOfRange || e.DestroyOnSquadTransition) {
+						e.Active = false;
+					}
+				}
+				RefreshStagedEntities(layer);
+			}
+			AntiSpawnRect = default;
+		}
+
+
+		public static void DespawnAllEntitiesFromWorld () {
+			for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
+				var entities = Entities[layer];
+				int count = EntityCounts[layer];
+				for (int i = 0; i < count; i++) {
+					var e = entities[i];
+					if (e.Active && e.FromWorld) {
+						e.Active = false;
+					}
+				}
+			}
+		}
+
+
 		// Composite
 		public static Entity PeekOrGetEntity (int typeID) => PeekEntity(typeID) ?? GetEntity(typeID);
 		public static T PeekOrGetEntity<T> () where T : Entity => PeekEntity<T>() ?? GetEntity<T>();
@@ -578,22 +609,9 @@ namespace AngeliaFramework {
 			!GlobalAntiSpawnHash.Contains(new(unitX, unitY, unitZ));
 
 
-		public static int GetSpawnedEntityCount (int id) => EntityPool.TryGetValue(id, out var meta) ? meta.SpawnedCount : 0;
-
-
-		public static void ClearStagedEntities () {
-			for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
-				var entities = Entities[layer];
-				int count = EntityCounts[layer];
-				for (int i = 0; i < count; i++) {
-					var e = entities[i];
-					if (e.DespawnOutOfRange || e.DestroyOnSquadTransition) {
-						e.Active = false;
-					}
-				}
-				RefreshStagedEntities(layer);
-			}
-			AntiSpawnRect = default;
+		public static Int4 GetCameraCullingPadding () {
+			int expand = CellRenderer.CameraRect.width * (Const.SQUAD_BEHIND_PARALLAX - 1000) / 2000;
+			return FrameTask.IsTasking<TeleportTask>() ? new Int4(expand, expand, expand, expand) : Int4.zero;
 		}
 
 

@@ -5,14 +5,7 @@ using Newtonsoft.Json;
 
 
 namespace AngeliaFramework {
-
-
-	public interface IMapEditorItem { }
-
-
-	[EntityAttribute.DontDestroyOnSquadTransition]
-	[EntityAttribute.Capacity(1, 0)]
-	public sealed partial class MapEditor : EntityUI {
+	public sealed partial class MapEditor : GlobalEditorUI {
 
 
 
@@ -110,10 +103,10 @@ namespace AngeliaFramework {
 
 
 		// Const
+		public static readonly int TYPE_ID = typeof(MapEditor).AngeHash();
 		private const int GIZMOS_Z = int.MaxValue - 64;
 		private const int PANEL_Z = int.MaxValue - 16;
 		private const int PANEL_WIDTH = 300;
-		private static readonly int TYPE_ID = typeof(MapEditor).AngeHash();
 		private static readonly int LINE_V = "Soft Line V".AngeHash();
 		private static readonly int LINE_H = "Soft Line H".AngeHash();
 		private static readonly int FRAME = "Frame16".AngeHash();
@@ -138,7 +131,7 @@ namespace AngeliaFramework {
 		private static readonly int UI_DELETE = "UI.Delete".AngeHash();
 
 		// Api
-		public static MapEditor Instance { get; private set; } = null;
+		public new static MapEditor Instance => GlobalEditorUI.Instance as MapEditor;
 		public static bool IsEditing => Instance != null && Instance.Active && !Instance.PlayingGame;
 		public static bool IsPlaying => Instance != null && Instance.Active && Instance.PlayingGame;
 		public bool QuickPlayerDrop {
@@ -218,14 +211,7 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnGameQuitting]
-		public static void OnGameQuitting () {
-			if (Instance != null && Instance.Active) Instance.OnInactivated();
-		}
-
-
 		public MapEditor () {
-			Instance = this;
 			UndoRedo = new(128, OnUndoRedoPerformed, OnUndoRedoPerformed);
 			InitializedFrame = Game.GlobalFrame;
 			EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(
@@ -407,6 +393,7 @@ namespace AngeliaFramework {
 			}
 
 			JsonUtil.SaveJson(EditorMeta, Game.IsEdittime ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot);
+			IGlobalPosition.CreateMetaFileFromMapsAsync(WorldSquad.MapRoot);
 			AngeUtil.DeleteAllEmptyMaps(WorldSquad.MapRoot);
 			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
 			WorldSquad.SpawnEntity = true;
@@ -424,9 +411,6 @@ namespace AngeliaFramework {
 			SearchResult.Clear();
 
 			System.GC.Collect();
-
-			// Restart Game
-			Game.RestartGame(immediately: true);
 
 		}
 
@@ -542,7 +526,7 @@ namespace AngeliaFramework {
 			WorldSquad.BehindAlpha = (byte)((int)Const.SQUAD_BEHIND_ALPHA).MoveTowards(
 				PlayingGame ? 64 : 12, 1
 			);
-			WorldSquad.Enable = !IsNavigating;
+			if (IsEditing) WorldSquad.Enable = !IsNavigating;
 
 			// Auto Save
 			if (IsDirty && Game.GlobalFrame % 120 == 0 && IsEditing) {
@@ -989,14 +973,7 @@ namespace AngeliaFramework {
 				// Play >> Edit
 
 				// Despawn Entities from World
-				int count = Stage.EntityCounts[EntityLayer.GAME];
-				var entities = Stage.Entities[EntityLayer.GAME];
-				for (int i = 0; i < count; i++) {
-					var e = entities[i];
-					if (e.Active && e.FromWorld) {
-						e.Active = false;
-					}
-				}
+				Stage.DespawnAllEntitiesFromWorld();
 
 				// Despawn Player
 				if (Player.Selecting != null) {
@@ -1012,37 +989,6 @@ namespace AngeliaFramework {
 				}
 
 			}
-		}
-
-
-		public static void OpenMapEditorSmoothly (bool fade = true) {
-			FrameTask.EndAllTask();
-			if (fade) {
-				// During Gameplay
-				FrameTask.AddToLast(FadeOutTask.TYPE_ID, 50);
-				if (FrameTask.AddToLast(SpawnEntityTask.TYPE_ID) is SpawnEntityTask task) {
-					task.EntityID = typeof(MapEditor).AngeHash();
-					task.X = 0;
-					task.Y = 0;
-				}
-				FrameTask.AddToLast(FadeInTask.TYPE_ID, 50);
-			} else {
-				// On Game Start
-				CellRenderer.DrawBlackCurtain(1000);
-				if (FrameTask.AddToLast(SpawnEntityTask.TYPE_ID) is SpawnEntityTask task) {
-					task.EntityID = typeof(MapEditor).AngeHash();
-					task.X = 0;
-					task.Y = 0;
-				}
-			}
-		}
-
-
-		public static void CloseMapEditorSmoothly () {
-			FrameTask.EndAllTask();
-			IGlobalPosition.CreateMetaFileFromMapsAsync(WorldSquad.MapRoot);
-			FrameTask.AddToLast(FadeOutTask.TYPE_ID, 50);
-			FrameTask.AddToLast(DespawnEntityTask.TYPE_ID, Instance);
 		}
 
 

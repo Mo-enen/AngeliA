@@ -1,4 +1,5 @@
-﻿Menu.Setting.ShowFPS:显示帧数
+﻿CtrlHint.EditSheet:编辑贴图
+CtrlHint.QuitEditingSheet:退出编辑贴图
 CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
@@ -66,6 +67,7 @@ Menu.Setting.Fullscreen.Label:显示
 Menu.Setting.Language:语言
 Menu.Setting.MusicVolume:音乐音量
 Menu.Setting.SaveSlot:存档位
+Menu.Setting.ShowFPS:显示帧数
 Menu.Setting.SoundVolume:音效音量
 Menu.Setting.UseControlHint:显示操作提示
 Menu.Setting.UseGamepadHint:显示左下角手柄

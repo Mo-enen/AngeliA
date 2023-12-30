@@ -7,7 +7,7 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.MapEditorGroup("MapGenerator")]
-	public abstract class MapGeneratorElement : IMapEditorItem { }
+	public abstract class MapGeneratorElement : IMapItem { }
 	public class RoomWall : MapGeneratorElement { }
 	public class RoomTunnel : MapGeneratorElement { }
 	public class RoomConnector : MapGeneratorElement { }
@@ -81,6 +81,7 @@ namespace AngeliaFramework {
 		public int[] Entities;
 		public int[] Levels;
 		public int[] Backgrounds;
+		public int[] Elements;
 		public int ContentMaxX => ContentMinX + ContentWidth - 1;
 		public int ContentMaxY => ContentMinY + ContentHeight - 1;
 	}

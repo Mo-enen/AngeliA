@@ -13,6 +13,7 @@ namespace AngeliaForUnity {
 		}
 		public struct TextureCell {
 			public RectInt Rect;
+			public Rect UV;
 			public Texture2D Texture;
 		}
 
@@ -69,7 +70,7 @@ namespace AngeliaForUnity {
 					rect.y = Util.RemapUnclamped(
 						 cameraRect.y, cameraRect.yMax, targetCameraRect.y, targetCameraRect.yMax, cell.Rect.y
 					) - rect.height;
-					Graphics.DrawTexture(rect, cell.Texture);
+					Graphics.DrawTexture(rect, cell.Texture, cell.UV, 0, 0, 0, 0);
 				}
 			}
 
@@ -84,10 +85,10 @@ namespace AngeliaForUnity {
 						var cell = Rects[i];
 						GL.Color(cell.Color);
 
-						rect.x = Util.InverseLerp(cameraRect.x, cameraRect.xMax, cell.Rect.x);
-						rect.y = Util.InverseLerp(cameraRect.y, cameraRect.yMax, cell.Rect.y);
-						rect.width = Util.InverseLerp(0, cameraRect.width, cell.Rect.width);
-						rect.height = Util.InverseLerp(0, cameraRect.height, cell.Rect.height);
+						rect.x = Util.InverseLerpUnclamped(cameraRect.x, cameraRect.xMax, cell.Rect.x);
+						rect.y = Util.InverseLerpUnclamped(cameraRect.y, cameraRect.yMax, cell.Rect.y);
+						rect.width = Util.InverseLerpUnclamped(0, cameraRect.width, cell.Rect.width);
+						rect.height = Util.InverseLerpUnclamped(0, cameraRect.height, cell.Rect.height);
 
 						GL.Vertex3(rect.x, rect.y, 0.5f);
 						GL.Vertex3(rect.x, rect.yMax, 0.5f);
@@ -109,9 +110,10 @@ namespace AngeliaForUnity {
 		}
 
 
-		public static void DrawTexture (RectInt rect, Texture2D texture) {
+		public static void DrawTexture (RectInt rect, Texture2D texture) => DrawTexture(rect, new Rect(0, 0, 1, 1), texture);
+		public static void DrawTexture (RectInt rect, Rect uv, Texture2D texture) {
 			if (TextureCount >= Textures.Length) return;
-			Textures[TextureCount] = new TextureCell() { Rect = rect, Texture = texture, };
+			Textures[TextureCount] = new TextureCell() { Rect = rect, UV = uv, Texture = texture, };
 			TextureCount++;
 		}
 

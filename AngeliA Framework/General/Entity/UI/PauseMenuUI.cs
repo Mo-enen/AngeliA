@@ -89,7 +89,6 @@ namespace AngeliaFramework {
 		private MenuMode Mode = MenuMode.Pause;
 		private MenuMode RequireMode = MenuMode.Pause;
 		private int RecordingKey = -1;
-		private int PauselessFrame = 0;
 		private int RequireNewSaveSlot = -1;
 		private bool RecordLock = true;
 		private bool RecordDirty = false;
@@ -172,7 +171,6 @@ namespace AngeliaFramework {
 
 			base.FrameUpdate();
 
-			PauselessFrame++;
 		}
 
 
@@ -474,7 +472,7 @@ namespace AngeliaFramework {
 					Game.IsPlaying = true;
 					Active = false;
 					FrameInput.UseAllHoldingKeys();
-					MapEditor.CloseMapEditorSmoothly();
+					GlobalEditorUI.CloseEditorSmoothly();
 				} else {
 					Game.QuitApplication();
 				}
@@ -523,9 +521,9 @@ namespace AngeliaFramework {
 					iconID = forGamepad && Const.GAMEPAD_CODE.TryGetValue(GamepadKeys[i], out var _value0) ? _value0 : 0;
 				} else {
 					// Recording
-					KeySetterLabel.Tint = PauselessFrame % 30 > 15 ? Const.BLACK : Const.WHITE;
+					KeySetterLabel.Tint = Game.PauselessFrame % 30 > 15 ? Const.BLACK : Const.WHITE;
 					KeySetterLabel.Text = Language.Get(MENU_SETTER_RECORD, "Press key u want");
-					KeySetterLabel.BackgroundTint = PauselessFrame % 30 > 15 ? Const.GREEN : Const.CLEAR;
+					KeySetterLabel.BackgroundTint = Game.PauselessFrame % 30 > 15 ? Const.GREEN : Const.CLEAR;
 					valueLabel = KeySetterLabel;
 				}
 				valueLabel.Tint = Const.WHITE;

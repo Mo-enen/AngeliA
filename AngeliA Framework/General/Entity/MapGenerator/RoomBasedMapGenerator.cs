@@ -111,7 +111,7 @@ namespace AngeliaFramework {
 				SampleReader, X.ToUnit(), Y.ToUnit(), Stage.ViewZ - 1,
 				(_room) => RoomPool.TryAdd(_room.ID, _room)
 			);
-			//Debug.Log(RootNode.PrintTree());
+			Game.Log(RootNode.PrintTree());
 		}
 
 
@@ -146,6 +146,7 @@ namespace AngeliaFramework {
 				Entities = new int[width * height],
 				Levels = new int[width * height],
 				Backgrounds = new int[width * height],
+				Elements = new int[width * height],
 				EdgeLeft = new int[edgeHeight],
 				EdgeRight = new int[edgeHeight],
 				EdgeDown = new int[edgeWidth],
@@ -166,12 +167,12 @@ namespace AngeliaFramework {
 
 			// Fill Edges
 			for (int x = 0; x < edgeWidth; x++) {
-				room.EdgeDown[x] = squad.GetBlockAt(roomPointX + x, roomPointY, z, BlockType.Entity);
-				room.EdgeUp[x] = squad.GetBlockAt(roomPointX + x, roomPointY + edgeHeight - 1, z, BlockType.Entity);
+				room.EdgeDown[x] = squad.GetBlockAt(roomPointX + x, roomPointY, z, BlockType.Element);
+				room.EdgeUp[x] = squad.GetBlockAt(roomPointX + x, roomPointY + edgeHeight - 1, z, BlockType.Element);
 			}
 			for (int y = 0; y < edgeHeight; y++) {
-				room.EdgeLeft[y] = squad.GetBlockAt(roomPointX, roomPointY + y, z, BlockType.Entity);
-				room.EdgeRight[y] = squad.GetBlockAt(roomPointX + edgeWidth - 1, roomPointY + y, z, BlockType.Entity);
+				room.EdgeLeft[y] = squad.GetBlockAt(roomPointX, roomPointY + y, z, BlockType.Element);
+				room.EdgeRight[y] = squad.GetBlockAt(roomPointX + edgeWidth - 1, roomPointY + y, z, BlockType.Element);
 			}
 
 			// Fill Content
@@ -183,6 +184,7 @@ namespace AngeliaFramework {
 					room.Entities[index] = squad.GetBlockAt(_x, _y, z, BlockType.Entity);
 					room.Levels[index] = squad.GetBlockAt(_x, _y, z, BlockType.Level);
 					room.Backgrounds[index] = squad.GetBlockAt(_x, _y, z, BlockType.Background);
+					room.Elements[index] = squad.GetBlockAt(_x, _y, z, BlockType.Element);
 					index++;
 				}
 			}
@@ -251,8 +253,8 @@ namespace AngeliaFramework {
 			// Check Edge Down
 			int xMax = roomPointX;
 			for (int x = 0; x < MAX_WIDTH; x++) {
-				int entityID = squad.GetBlockAt(roomPointX + x, roomPointY, z, BlockType.Entity);
-				if (!IsRoomEdgeBlock(entityID)) break;
+				int id = squad.GetBlockAt(roomPointX + x, roomPointY, z, BlockType.Element);
+				if (!IsRoomEdgeBlock(id)) break;
 				xMax = roomPointX + x;
 			}
 			if (xMax < roomPointX + 2) return false;
@@ -260,22 +262,22 @@ namespace AngeliaFramework {
 			// Check Edge Left
 			int yMax = roomPointY;
 			for (int y = 0; y < MAX_HEIGHT; y++) {
-				int entityID = squad.GetBlockAt(roomPointX, roomPointY + y, z, BlockType.Entity);
-				if (!IsRoomEdgeBlock(entityID)) break;
+				int id = squad.GetBlockAt(roomPointX, roomPointY + y, z, BlockType.Element);
+				if (!IsRoomEdgeBlock(id)) break;
 				yMax = roomPointY + y;
 			}
 			if (yMax < roomPointY + 2) return false;
 
 			// Check Edge Up
 			for (int x = roomPointX; x <= xMax; x++) {
-				int entityID = squad.GetBlockAt(x, yMax, z, BlockType.Entity);
-				if (!IsRoomEdgeBlock(entityID)) return false;
+				int id = squad.GetBlockAt(x, yMax, z, BlockType.Element);
+				if (!IsRoomEdgeBlock(id)) return false;
 			}
 
 			// Check Edge Right
 			for (int y = roomPointY; y <= yMax; y++) {
-				int entityID = squad.GetBlockAt(xMax, y, z, BlockType.Entity);
-				if (!IsRoomEdgeBlock(entityID)) return false;
+				int id = squad.GetBlockAt(xMax, y, z, BlockType.Element);
+				if (!IsRoomEdgeBlock(id)) return false;
 			}
 
 			edgeWidth = xMax - roomPointX + 1;
@@ -291,8 +293,8 @@ namespace AngeliaFramework {
 
 			// Left
 			for (int x = 0; x < MAX_WIDTH; x++) {
-				int entityID = squad.GetBlockAt(unitX - x, unitY, z, BlockType.Entity);
-				if (IsRoomEdgeBlock(entityID)) {
+				int id = squad.GetBlockAt(unitX - x, unitY, z, BlockType.Element);
+				if (IsRoomEdgeBlock(id)) {
 					roomPoint.x = unitX - x;
 					roomCaught = true;
 					break;
@@ -303,8 +305,8 @@ namespace AngeliaFramework {
 			// Down
 			roomCaught = false;
 			for (int y = 0; y < MAX_HEIGHT; y++) {
-				int entityID = squad.GetBlockAt(roomPoint.x, unitY - y, z, BlockType.Entity);
-				if (!IsRoomEdgeBlock(entityID)) {
+				int id = squad.GetBlockAt(roomPoint.x, unitY - y, z, BlockType.Element);
+				if (!IsRoomEdgeBlock(id)) {
 					roomCaught = true;
 					break;
 				}
@@ -400,14 +402,14 @@ namespace AngeliaFramework {
 
 				// Squad >> Entry Points
 				for (int x = resultRoom.EdgeMinX; x <= resultRoom.EdgeMaxX; x++) {
-					if (squad.GetBlockAt(x, resultRoom.EdgeMinY - 1, z, BlockType.Entity) == CONNECTOR_ID) {
+					if (squad.GetBlockAt(x, resultRoom.EdgeMinY - 1, z, BlockType.Element) == CONNECTOR_ID) {
 						EntryPointCache.Add(new EntryUnit() {
 							Point = new(x, resultRoom.EdgeMinY - 1),
 							IterateDirection = Direction4.Down,
 							RoomDirection = Direction4.Down,
 						});
 					}
-					if (squad.GetBlockAt(x, resultRoom.EdgeMaxY + 1, z, BlockType.Entity) == CONNECTOR_ID) {
+					if (squad.GetBlockAt(x, resultRoom.EdgeMaxY + 1, z, BlockType.Element) == CONNECTOR_ID) {
 						EntryPointCache.Add(new EntryUnit() {
 							Point = new(x, resultRoom.EdgeMaxY + 1),
 							IterateDirection = Direction4.Up,
@@ -416,14 +418,14 @@ namespace AngeliaFramework {
 					}
 				}
 				for (int y = resultRoom.EdgeMinY; y <= resultRoom.EdgeMaxY; y++) {
-					if (squad.GetBlockAt(resultRoom.EdgeMinX - 1, y, z, BlockType.Entity) == CONNECTOR_ID) {
+					if (squad.GetBlockAt(resultRoom.EdgeMinX - 1, y, z, BlockType.Element) == CONNECTOR_ID) {
 						EntryPointCache.Add(new EntryUnit() {
 							Point = new(resultRoom.EdgeMinX - 1, y),
 							IterateDirection = Direction4.Left,
 							RoomDirection = Direction4.Left,
 						});
 					}
-					if (squad.GetBlockAt(resultRoom.EdgeMaxX + 1, y, z, BlockType.Entity) == CONNECTOR_ID) {
+					if (squad.GetBlockAt(resultRoom.EdgeMaxX + 1, y, z, BlockType.Element) == CONNECTOR_ID) {
 						EntryPointCache.Add(new EntryUnit() {
 							Point = new(resultRoom.EdgeMaxX + 1, y),
 							IterateDirection = Direction4.Right,
@@ -446,17 +448,17 @@ namespace AngeliaFramework {
 					IterateConnector(squad, unit, z);
 					static void IterateConnector (IBlockSquad squad, EntryUnit unit, int z) {
 						const int MAX_STEP = 1024;
-						int entityID;
+						int id;
 						var pos = unit.Point;
 						var forward = unit.IterateDirection.Normal();
 						var left = unit.IterateDirection.AntiClockwise().Normal();
 						var right = unit.IterateDirection.Clockwise().Normal();
 						for (int step = 0; step < MAX_STEP; step++) {
-							entityID = squad.GetBlockAt(pos.x, pos.y, z, BlockType.Entity);
-							if (entityID == CONNECTOR_ID) {
+							id = squad.GetBlockAt(pos.x, pos.y, z, BlockType.Element);
+							if (id == CONNECTOR_ID) {
 								// Turn Left
 								var leftPoint = pos + left;
-								int leftID = squad.GetBlockAt(leftPoint.x, leftPoint.y, z, BlockType.Entity);
+								int leftID = squad.GetBlockAt(leftPoint.x, leftPoint.y, z, BlockType.Element);
 								if (leftID == CONNECTOR_ID && !EntryRequireHash.Contains(leftPoint)) {
 									EntryRequireHash.Add(leftPoint);
 									EntryRequireQueue.Enqueue(new EntryUnit() {
@@ -467,7 +469,7 @@ namespace AngeliaFramework {
 								}
 								// Turn Right
 								var rightPoint = pos + right;
-								int rightID = squad.GetBlockAt(rightPoint.x, rightPoint.y, z, BlockType.Entity);
+								int rightID = squad.GetBlockAt(rightPoint.x, rightPoint.y, z, BlockType.Element);
 								if (rightID == CONNECTOR_ID && !EntryRequireHash.Contains(rightPoint)) {
 									EntryRequireHash.Add(rightPoint);
 									EntryRequireQueue.Enqueue(new EntryUnit() {
@@ -480,7 +482,7 @@ namespace AngeliaFramework {
 								pos += forward;
 							} else {
 								// Jump Out
-								if (IsRoomEdgeBlock(entityID)) {
+								if (IsRoomEdgeBlock(id)) {
 									EndPointCache.Add(new EntryUnit() {
 										Point = pos + forward,
 										IterateDirection = unit.IterateDirection,

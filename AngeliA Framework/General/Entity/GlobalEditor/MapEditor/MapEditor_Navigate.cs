@@ -14,6 +14,7 @@ namespace AngeliaFramework {
 		private class NavWorldSlot {
 			public int WorldX;
 			public int WorldY;
+			public bool IsEmpty;
 			public object Texture;
 		}
 
@@ -54,6 +55,7 @@ namespace AngeliaFramework {
 						WorldX = int.MinValue + i,
 						WorldY = int.MinValue + j,
 						Texture = Game.GetTextureFromPixels(null, Const.MAP, Const.MAP),
+						IsEmpty = true,
 					};
 				}
 			}
@@ -131,7 +133,7 @@ namespace AngeliaFramework {
 						if (NavLoadedSlotZ != z || slot.WorldX != worldX || slot.WorldY != worldY) {
 							slot.WorldX = worldX;
 							slot.WorldY = worldY;
-							World.LoadMapIntoTexture(mapFolder, worldX, worldY, z, slot.Texture);
+							slot.IsEmpty = !World.LoadMapIntoTexture(mapFolder, worldX, worldY, z, slot.Texture);
 						}
 					}
 				}
@@ -142,15 +144,29 @@ namespace AngeliaFramework {
 
 			// Draw
 			var totalRect = (CellRenderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0)).Envelope(1, 1);
-			var rect = new IRect(0, 0, totalRect.width / NAV_WORLD_SIZE, totalRect.height / NAV_WORLD_SIZE);
-			int globalOffsetX = -(NavPosition.x.UMod(Const.CEL * Const.MAP) * rect.width / (Const.CEL * Const.MAP));
-			int globalOffsetY = -(NavPosition.y.UMod(Const.CEL * Const.MAP) * rect.height / (Const.CEL * Const.MAP));
+			int slotRectWidth = totalRect.width / NAV_WORLD_SIZE;
+			int slotRectHeight = totalRect.height / NAV_WORLD_SIZE;
+			int globalOffsetX = -(NavPosition.x.UMod(Const.CEL * Const.MAP) * slotRectWidth / (Const.CEL * Const.MAP));
+			int globalOffsetY = -(NavPosition.y.UMod(Const.CEL * Const.MAP) * slotRectHeight / (Const.CEL * Const.MAP));
+			var navPanelRect = CellRenderer.CameraRect.EdgeInside(Direction4.Left, PanelRect.width);
 			for (int j = 0; j < slotSize; j++) {
 				for (int i = 0; i < slotSize; i++) {
 					var slot = NavSlots[i, j];
-					rect.x = globalOffsetX + totalRect.x + (slot.WorldX - targetWorldX) * rect.width;
-					rect.y = globalOffsetY + totalRect.y + (slot.WorldY - targetWorldY) * rect.height;
-					Game.DrawTexture(rect, slot.Texture);
+					if (slot.IsEmpty) continue;
+					var rect = new IRect(
+						globalOffsetX + totalRect.x + (slot.WorldX - targetWorldX) * slotRectWidth,
+						globalOffsetY + totalRect.y + (slot.WorldY - targetWorldY) * slotRectHeight,
+						slotRectWidth, slotRectHeight
+					);
+					if (rect.Overlaps(navPanelRect)) {
+						if (rect.xMax > navPanelRect.xMax) {
+							rect = rect.Shrink(navPanelRect.xMax - rect.xMin, 0, 0, 0);
+							var uv = new FRect(1f - (float)rect.width / slotRectWidth, 0f, (float)rect.width / slotRectWidth, 1f);
+							Game.DrawTexture(rect, uv, slot.Texture);
+						}
+					} else {
+						Game.DrawTexture(rect, slot.Texture);
+					}
 				}
 			}
 

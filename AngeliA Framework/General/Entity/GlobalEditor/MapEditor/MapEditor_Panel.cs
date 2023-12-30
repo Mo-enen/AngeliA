@@ -186,7 +186,7 @@ namespace AngeliaFramework {
 					}
 				}
 			};
-			foreach (var type in typeof(IMapEditorItem).AllClassImplemented()) {
+			foreach (var type in typeof(IMapItem).AllClassImplemented()) {
 
 				// Check Exclude Attr
 				var atts = type.GetCustomAttributes(typeof(EntityAttribute.ExcludeInMapEditorAttribute), true);
