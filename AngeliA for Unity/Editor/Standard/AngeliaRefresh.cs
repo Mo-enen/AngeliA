@@ -111,6 +111,15 @@ namespace AngeliaForUnity.Editor {
 				);
 				Util.CopyFolder(universePath, newUniversePath, true, true);
 			}
+			// Copy Flexible Universe
+			string flexUniversePath = AngePath.FlexibleUniverseRoot;
+			if (Util.FolderExists(flexUniversePath)) {
+				string newUniversePath = Util.CombinePaths(
+					Util.GetParentPath(report.summary.outputPath),
+					AngePath.FLEXIBLE_UNIVERSE_NAME
+				);
+				Util.CopyFolder(flexUniversePath, newUniversePath, true, true);
+			}
 		}
 
 

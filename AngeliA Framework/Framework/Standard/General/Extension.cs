@@ -228,6 +228,64 @@ namespace AngeliaFramework {
 		public static int GetRotation (this Int2 vector) => ((float)(System.Math.Atan2(vector.x, vector.y) * Util.Rad2Deg)).RoundToInt();
 
 
+		// Direction
+		public static bool IsHorizontal (this Direction4 dir) => dir == Direction4.Left || dir == Direction4.Right;
+		public static bool IsVertical (this Direction4 dir) => dir == Direction4.Down || dir == Direction4.Up;
+
+
+		public static Direction4 Opposite (this Direction4 dir) => dir switch {
+			Direction4.Down => Direction4.Up,
+			Direction4.Up => Direction4.Down,
+			Direction4.Left => Direction4.Right,
+			Direction4.Right => Direction4.Left,
+			_ => throw new System.NotImplementedException(),
+		};
+
+
+		public static Direction3 Opposite (this Direction3 dir) => dir switch {
+			Direction3.Down => Direction3.Up,
+			Direction3.Up => Direction3.Down,
+			Direction3.None => Direction3.None,
+			_ => throw new System.NotImplementedException(),
+		};
+
+
+		public static Direction4 Clockwise (this Direction4 dir) => dir switch {
+			Direction4.Down => Direction4.Left,
+			Direction4.Left => Direction4.Up,
+			Direction4.Up => Direction4.Right,
+			Direction4.Right => Direction4.Down,
+			_ => throw new System.NotImplementedException(),
+		};
+
+
+		public static Direction4 AntiClockwise (this Direction4 dir) => dir switch {
+			Direction4.Down => Direction4.Right,
+			Direction4.Right => Direction4.Up,
+			Direction4.Up => Direction4.Left,
+			Direction4.Left => Direction4.Down,
+			_ => throw new System.NotImplementedException(),
+		};
+
+
+		public static Int2 Normal (this Direction4 dir) => dir switch {
+			Direction4.Down => new(0, -1),
+			Direction4.Up => new(0, 1),
+			Direction4.Left => new(-1, 0),
+			Direction4.Right => new(1, 0),
+			_ => throw new System.NotImplementedException(),
+		};
+
+
+		public static int GetRotation (this Direction4 dir) => dir switch {
+			Direction4.Up => 0,
+			Direction4.Down => 180,
+			Direction4.Left => -90,
+			Direction4.Right => 90,
+			_ => 0,
+		};
+
+
 		// Rect
 		public static FRect Shift (this FRect rect, float x, float y) {
 			rect.x += x;
@@ -290,6 +348,15 @@ namespace AngeliaFramework {
 		public static Float2 BottomRight (this FRect rect) => new(rect.xMax, rect.yMin);
 		public static Float2 TopLeft (this FRect rect) => new(rect.xMin, rect.yMax);
 		public static Float2 TopRight (this FRect rect) => new(rect.xMax, rect.yMax);
+
+		public static FRect Edge (this FRect rect, Direction4 edge, float thickness = 1f) => edge switch {
+			Direction4.Up => rect.Shrink(0, 0, rect.height, -thickness),
+			Direction4.Down => rect.Shrink(0, 0, -thickness, rect.height),
+			Direction4.Left => rect.Shrink(-thickness, rect.width, 0, 0),
+			Direction4.Right => rect.Shrink(rect.width, -thickness, 0, 0),
+			_ => throw new System.NotImplementedException(),
+		};
+
 
 		// RectInt
 		public static FRect ToRect (this IRect rect) => new(rect.x, rect.y, rect.width, rect.height);
@@ -440,6 +507,21 @@ namespace AngeliaFramework {
 			from.width.LerpTo(to.width, lerp),
 			from.height.LerpTo(to.height, lerp)
 		);
+
+		public static IRect EdgeInside (this IRect rect, Direction4 edge, int thickness = 1) => edge switch {
+			Direction4.Up => rect.Shrink(0, 0, rect.height - thickness, 0),
+			Direction4.Down => rect.Shrink(0, 0, 0, rect.height - thickness),
+			Direction4.Left => rect.Shrink(0, rect.width - thickness, 0, 0),
+			Direction4.Right => rect.Shrink(rect.width - thickness, 0, 0, 0),
+			_ => throw new System.NotImplementedException(),
+		};
+		public static IRect EdgeOutside (this IRect rect, Direction4 edge, int thickness = 1) => edge switch {
+			Direction4.Up => rect.Shrink(0, 0, rect.height, -thickness),
+			Direction4.Down => rect.Shrink(0, 0, -thickness, rect.height),
+			Direction4.Left => rect.Shrink(-thickness, rect.width, 0, 0),
+			Direction4.Right => rect.Shrink(rect.width, -thickness, 0, 0),
+			_ => throw new System.NotImplementedException(),
+		};
 
 
 		// Misc

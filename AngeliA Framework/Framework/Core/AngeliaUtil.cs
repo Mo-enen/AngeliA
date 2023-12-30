@@ -17,6 +17,7 @@ namespace AngeliaFramework {
 		// File
 		public static void CreateAngeFolders () {
 			Util.CreateFolder(AngePath.UniverseRoot);
+			Util.CreateFolder(AngePath.FlexibleUniverseRoot);
 			Util.CreateFolder(AngePath.SheetRoot);
 			Util.CreateFolder(AngePath.DialogueRoot);
 			Util.CreateFolder(AngePath.LanguageRoot);
@@ -372,90 +373,9 @@ namespace AngeliaFramework {
 
 
 		// Extension
-		public static bool IsHorizontal (this Direction4 dir) => dir == Direction4.Left || dir == Direction4.Right;
-		public static bool IsVertical (this Direction4 dir) => dir == Direction4.Down || dir == Direction4.Up;
-
-
-		public static Direction4 Opposite (this Direction4 dir) => dir switch {
-			Direction4.Down => Direction4.Up,
-			Direction4.Up => Direction4.Down,
-			Direction4.Left => Direction4.Right,
-			Direction4.Right => Direction4.Left,
-			_ => throw new System.NotImplementedException(),
-		};
-
-
-		public static Direction3 Opposite (this Direction3 dir) => dir switch {
-			Direction3.Down => Direction3.Up,
-			Direction3.Up => Direction3.Down,
-			Direction3.None => Direction3.None,
-			_ => throw new System.NotImplementedException(),
-		};
-
-
-		public static Direction4 Clockwise (this Direction4 dir) => dir switch {
-			Direction4.Down => Direction4.Left,
-			Direction4.Left => Direction4.Up,
-			Direction4.Up => Direction4.Right,
-			Direction4.Right => Direction4.Down,
-			_ => throw new System.NotImplementedException(),
-		};
-
-
-		public static Direction4 AntiClockwise (this Direction4 dir) => dir switch {
-			Direction4.Down => Direction4.Right,
-			Direction4.Right => Direction4.Up,
-			Direction4.Up => Direction4.Left,
-			Direction4.Left => Direction4.Down,
-			_ => throw new System.NotImplementedException(),
-		};
-
-
-		public static Int2 Normal (this Direction4 dir) => dir switch {
-			Direction4.Down => new(0, -1),
-			Direction4.Up => new(0, 1),
-			Direction4.Left => new(-1, 0),
-			Direction4.Right => new(1, 0),
-			_ => throw new System.NotImplementedException(),
-		};
-
-
-		public static IRect EdgeInside (this IRect rect, Direction4 edge, int thickness = 1) => edge switch {
-			Direction4.Up => rect.Shrink(0, 0, rect.height - thickness, 0),
-			Direction4.Down => rect.Shrink(0, 0, 0, rect.height - thickness),
-			Direction4.Left => rect.Shrink(0, rect.width - thickness, 0, 0),
-			Direction4.Right => rect.Shrink(rect.width - thickness, 0, 0, 0),
-			_ => throw new System.NotImplementedException(),
-		};
-		public static IRect EdgeOutside (this IRect rect, Direction4 edge, int thickness = 1) => edge switch {
-			Direction4.Up => rect.Shrink(0, 0, rect.height, -thickness),
-			Direction4.Down => rect.Shrink(0, 0, -thickness, rect.height),
-			Direction4.Left => rect.Shrink(-thickness, rect.width, 0, 0),
-			Direction4.Right => rect.Shrink(rect.width, -thickness, 0, 0),
-			_ => throw new System.NotImplementedException(),
-		};
-		public static FRect Edge (this FRect rect, Direction4 edge, float thickness = 1f) => edge switch {
-			Direction4.Up => rect.Shrink(0, 0, rect.height, -thickness),
-			Direction4.Down => rect.Shrink(0, 0, -thickness, rect.height),
-			Direction4.Left => rect.Shrink(-thickness, rect.width, 0, 0),
-			Direction4.Right => rect.Shrink(rect.width, -thickness, 0, 0),
-			_ => throw new System.NotImplementedException(),
-		};
-
-
-		public static int GetRotation (this Direction4 dir) => dir switch {
-			Direction4.Up => 0,
-			Direction4.Down => 180,
-			Direction4.Left => -90,
-			Direction4.Right => 90,
-			_ => 0,
-		};
-
-
 		public static int ToUnit (this int globalPos) => globalPos.UDivide(Const.CEL);
 		public static int ToGlobal (this int unitPos) => unitPos * Const.CEL;
 		public static int ToUnifyGlobal (this int globalPos) => globalPos.UDivide(Const.CEL) * Const.CEL;
-
 
 		public static Int2 ToUnit (this Int2 globalPos) => globalPos.UDivide(Const.CEL);
 		public static Int2 ToGlobal (this Int2 unitPos) => unitPos * Const.CEL;

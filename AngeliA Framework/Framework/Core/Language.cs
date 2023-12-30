@@ -63,7 +63,7 @@ namespace AngeliaFramework {
 		public static bool SetLanguage (string language) {
 			if (LoadFromDisk(AngePath.LanguageRoot, language)) {
 				_LoadedLanguage.Value = language;
-				CurrentLanguageDisplayName = Util.GetLanguageDisplayName(language, out string disName) ? disName : language;
+				CurrentLanguageDisplayName = Util.TryGetLanguageDisplayName(language, out string disName) ? disName : language;
 				OnLanguageChanged();
 				return true;
 			}

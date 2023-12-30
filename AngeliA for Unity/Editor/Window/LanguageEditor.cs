@@ -133,6 +133,12 @@ namespace AngeliaForUnity.Editor {
 			}
 			EditorGUIUtility.AddCursorRect(MGUI.LastRect(), MouseCursor.Link);
 
+			// Language
+			if (GUI.Button(MGUI.Rect(90, HEIGHT).Expand(0, 1, 0, 0), " Languages", EditorStyles.toolbarPopup)) {
+				ShowLanguageMenu();
+			}
+			EditorGUIUtility.AddCursorRect(MGUI.LastRect(), MouseCursor.Link);
+
 		}
 
 
@@ -145,9 +151,10 @@ namespace AngeliaForUnity.Editor {
 				GUI.Label(MGUI.Rect(0, 18), "key", MGUI.MiniGreyLabel);
 				MGUI.Space(2);
 				for (int lanIndex = 0; lanIndex < Languages.Count; lanIndex++) {
+					string lan = Languages[lanIndex];
 					GUI.Label(
 						MGUI.Rect(0, 18),
-						$"<color=#CC9900>{Languages[lanIndex]}</color>",
+						$"{Util.GetLanguageDisplayName(lan)} <color=#CC9900>{lan}</color>",
 						MGUI.RichMiniGreyLabel
 					);
 					MGUI.Space(2);
@@ -289,6 +296,40 @@ namespace AngeliaForUnity.Editor {
 				}
 				Util.TextToFile(builder.ToString(), path, Encoding.UTF8);
 			}
+		}
+
+
+		private void ShowLanguageMenu () {
+			var menu = new GenericMenu();
+			bool hasItem = false;
+			foreach (var language in Util.ForAllLanguages()) {
+				hasItem = true;
+				menu.AddItem(new GUIContent(Util.GetLanguageDisplayName(language)), Languages.Contains(language), () => {
+					if (IsDirty) Save();
+					if (Languages.Contains(language)) {
+						// Delete
+						if (EditorUtil.Dialog(
+							"", $"Delete Language {Util.GetLanguageDisplayName(language)}?\nFile will move to recycle bin.", "Delete", "Cancel"
+						)) {
+							string path = Util.CombinePaths(AngePath.LanguageRoot, language.ToString());
+							EditorUtil.MoveFileOrFolderToTrash(path, path + ".meta");
+						}
+					} else {
+						// Create
+						var builder = new StringBuilder();
+						foreach (var key in Keys) {
+							builder.Append(key);
+							builder.AppendLine(":");
+						}
+						Util.TextToFile(
+							builder.ToString(),
+							Util.CombinePaths(AngePath.LanguageRoot, language.ToString(), $"{CurrentTag}.{AngePath.LANGUAGE_FILE_EXT}")
+						);
+					}
+					EditorApplication.delayCall += () => Load();
+				});
+			}
+			if (hasItem) menu.ShowAsContext();
 		}
 
 
