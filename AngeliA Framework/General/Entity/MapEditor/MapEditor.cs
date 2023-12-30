@@ -39,6 +39,7 @@ namespace AngeliaFramework {
 
 		private struct MapUndoData {
 			public int Step;
+			public int ElementID;
 			public int BackgroundID;
 			public int LevelID;
 			public int EntityID;
@@ -409,6 +410,7 @@ namespace AngeliaFramework {
 			AngeUtil.DeleteAllEmptyMaps(WorldSquad.MapRoot);
 			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
 			WorldSquad.SpawnEntity = true;
+			WorldSquad.ShowElement = false;
 			WorldSquad.BehindAlpha = Const.SQUAD_BEHIND_ALPHA;
 
 			IsNavigating = false;
@@ -975,6 +977,7 @@ namespace AngeliaFramework {
 				WorldSquad.SetMapChannel(targetChannel);
 			}
 			WorldSquad.SpawnEntity = toPlayMode;
+			WorldSquad.ShowElement = !toPlayMode;
 			WorldSquad.SaveBeforeReload = !toPlayMode;
 			WorldSquad.Front.ForceReloadDelay();
 			WorldSquad.Behind.ForceReloadDelay();
@@ -1156,10 +1159,11 @@ namespace AngeliaFramework {
 					int index = (startIndex + dataLength) % DATA_LEN;
 					ref var data = ref UndoData[index];
 					data.Step = CURRENT_STEP;
-					var triID = WorldSquad.Front.GetTriBlockAt(i, j);
-					data.EntityID = triID.x;
-					data.LevelID = triID.y;
-					data.BackgroundID = triID.z;
+					var quadID = WorldSquad.Front.GetTriBlockAt(i, j);
+					data.EntityID = quadID.x;
+					data.LevelID = quadID.y;
+					data.BackgroundID = quadID.z;
+					data.ElementID = quadID.w;
 					data.UnitX = i;
 					data.UnitY = j;
 					dataLength++;
@@ -1223,7 +1227,7 @@ namespace AngeliaFramework {
 				if (data.Step != item.Step) break;
 				WorldSquad.Front.SetBlockAt(
 					data.UnitX, data.UnitY,
-					data.EntityID, data.LevelID, data.BackgroundID
+					data.EntityID, data.LevelID, data.BackgroundID, data.ElementID
 				);
 				minX = Util.Min(minX, data.UnitX);
 				minY = Util.Min(minY, data.UnitY);

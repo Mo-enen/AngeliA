@@ -101,6 +101,7 @@ namespace AngeliaFramework {
 					BlockType.Entity => world.Entity[localY * Const.MAP + localX],
 					BlockType.Level => world.Level[localY * Const.MAP + localX],
 					BlockType.Background => world.Background[localY * Const.MAP + localX],
+					BlockType.Element => world.Element[localY * Const.MAP + localX],
 					_ => 0,
 				};
 			}
@@ -132,12 +133,15 @@ namespace AngeliaFramework {
 					case BlockType.Background:
 						world.Background[localY * Const.MAP + localX] = value;
 						break;
+					case BlockType.Element:
+						world.Element[localY * Const.MAP + localX] = value;
+						break;
 				}
 			}
 		}
 
 
-		public void SetBlocksAt (int unitX, int unitY, int z, int entity, int level, int background) {
+		public void SetBlocksAt (int unitX, int unitY, int z, int entity, int level, int background, int element) {
 			if (Readonly) {
 #if UNITY_EDITOR
 				Game.LogError("Can not write block data when the world stream is readonly.");
@@ -155,6 +159,7 @@ namespace AngeliaFramework {
 				world.Entity[index] = entity;
 				world.Level[index] = level;
 				world.Background[index] = background;
+				world.Element[index] = element;
 			}
 		}
 

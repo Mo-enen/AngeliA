@@ -29,6 +29,7 @@ namespace AngeliaFramework {
 		public static string MapRoot { get; private set; } = "";
 		public static bool Enable { get; set; } = true;
 		public static bool SpawnEntity { get; set; } = true;
+		public static bool ShowElement { get; set; } = false;
 		public static byte BehindAlpha { get; set; } = Const.SQUAD_BEHIND_ALPHA;
 		public static bool SaveBeforeReload { get; set; } = false;
 		public World this[int i, int j] => Worlds[i, j];
@@ -178,7 +179,7 @@ namespace AngeliaFramework {
 			}
 			if (!isBehind) AfterLevelRendered?.Invoke();
 
-			// Entity
+			// Entity & Element
 			for (int worldI = 0; worldI < 3; worldI++) {
 				for (int worldJ = 0; worldJ < 3; worldJ++) {
 					var world = Worlds[worldI, worldJ];
@@ -193,16 +194,34 @@ namespace AngeliaFramework {
 					int r = System.Math.Min(unitRect_Entity.xMax, worldUnitRect.xMax);
 					int d = System.Math.Max(unitRect_Entity.y, worldUnitRect.y);
 					int u = System.Math.Min(unitRect_Entity.yMax, worldUnitRect.yMax);
+
+					// Entity
 					for (int j = d; j < u; j++) {
 						int localY = j - worldUnitRect.y;
 						int index = localY * Const.MAP + (l - worldUnitRect.x);
 						for (int i = l; i < r; i++, index++) {
 							var entityID = world.Entity[index];
-							if (entityID == 0) continue;
-							if (!isBehind) {
-								DrawEntity(entityID, i, j, z);
-							} else if (Stage.RequireDrawEntityBehind(entityID, i, j, z)) {
-								Draw_Behind(entityID, i, j, true);
+							if (entityID != 0) {
+								if (!isBehind) {
+									DrawEntity(entityID, i, j, z);
+								} else if (Stage.RequireDrawEntityBehind(entityID, i, j, z)) {
+									Draw_Behind(entityID, i, j, true);
+								}
+							}
+
+						}
+					}
+
+					// Element
+					if (ShowElement && !isBehind) {
+						for (int j = d; j < u; j++) {
+							int localY = j - worldUnitRect.y;
+							int index = localY * Const.MAP + (l - worldUnitRect.x);
+							for (int i = l; i < r; i++, index++) {
+								var elementID = world.Element[index];
+								if (elementID != 0) {
+									DrawElement(elementID, i, j);
+								}
 							}
 						}
 					}
@@ -269,7 +288,7 @@ namespace AngeliaFramework {
 
 
 		// Get Set Block
-		public Int3 GetTriBlockAt (int unitX, int unitY) {
+		public Int4 GetTriBlockAt (int unitX, int unitY) {
 			var position00 = Worlds[0, 0].WorldPosition;
 			int worldX = unitX.UDivide(Const.MAP) - position00.x;
 			int worldY = unitY.UDivide(Const.MAP) - position00.y;
@@ -277,16 +296,18 @@ namespace AngeliaFramework {
 			var world = Worlds[worldX, worldY];
 			int localX = unitX - world.WorldPosition.x * Const.MAP;
 			int localY = unitY - world.WorldPosition.y * Const.MAP;
-			return new Int3(
+			return new Int4(
 				world.Entity[localY * Const.MAP + localX],
 				world.Level[localY * Const.MAP + localX],
-				world.Background[localY * Const.MAP + localX]
+				world.Background[localY * Const.MAP + localX],
+				world.Element[localY * Const.MAP + localX]
 			);
 		}
 
 
 		public int GetBlockAt (int unitX, int unitY) {
-			int id = GetBlockAt(unitX, unitY, BlockType.Entity);
+			int id = GetBlockAt(unitX, unitY, BlockType.Element);
+			if (id == 0) id = GetBlockAt(unitX, unitY, BlockType.Entity);
 			if (id == 0) id = GetBlockAt(unitX, unitY, BlockType.Level);
 			if (id == 0) id = GetBlockAt(unitX, unitY, BlockType.Background);
 			return id;
@@ -305,6 +326,7 @@ namespace AngeliaFramework {
 				BlockType.Entity => world.Entity[localY * Const.MAP + localX],
 				BlockType.Level => world.Level[localY * Const.MAP + localX],
 				BlockType.Background => world.Background[localY * Const.MAP + localX],
+				BlockType.Element => world.Element[localY * Const.MAP + localX],
 				_ => throw new System.NotImplementedException(),
 			};
 		}
@@ -333,7 +355,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public void SetBlockAt (int unitX, int unitY, int entityID, int levelID, int backgroundID) {
+		public void SetBlockAt (int unitX, int unitY, int entityID, int levelID, int backgroundID, int elementID) {
 			var position00 = Worlds[0, 0].WorldPosition;
 			int worldX = unitX.UDivide(Const.MAP) - position00.x;
 			int worldY = unitY.UDivide(Const.MAP) - position00.y;
@@ -344,6 +366,7 @@ namespace AngeliaFramework {
 			world.Entity[localY * Const.MAP + localX] = entityID;
 			world.Level[localY * Const.MAP + localX] = levelID;
 			world.Background[localY * Const.MAP + localX] = backgroundID;
+			world.Element[localY * Const.MAP + localX] = elementID;
 		}
 
 
@@ -365,6 +388,9 @@ namespace AngeliaFramework {
 					break;
 				case BlockType.Background:
 					world.Background[localY * Const.MAP + localX] = newID;
+					break;
+				case BlockType.Element:
+					world.Element[localY * Const.MAP + localX] = newID;
 					break;
 			}
 		}
@@ -448,6 +474,21 @@ namespace AngeliaFramework {
 				} else {
 					CellRenderer.Draw(ENTITY_CODE, rect);
 				}
+			}
+		}
+
+
+		private void DrawElement (int id, int unitX, int unitY) {
+			var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
+			if (!CullingCameraRect.Overlaps(rect)) return;
+			if (
+				CellRenderer.TryGetSprite(id, out var sprite) ||
+				CellRenderer.TryGetSpriteFromGroup(id, 0, out sprite)
+			) {
+				rect = rect.Fit(sprite, sprite.PivotX, sprite.PivotY);
+				CellRenderer.Draw(sprite.GlobalID, rect);
+			} else {
+				CellRenderer.Draw(ENTITY_CODE, rect);
 			}
 		}
 

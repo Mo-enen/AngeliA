@@ -145,6 +145,7 @@ namespace AngeliaFramework {
 					WorldSquad.Front.SetBlockAt(i, j, BlockType.Background, 0);
 					WorldSquad.Front.SetBlockAt(i, j, BlockType.Level, 0);
 					WorldSquad.Front.SetBlockAt(i, j, BlockType.Entity, 0);
+					WorldSquad.Front.SetBlockAt(i, j, BlockType.Element, 0);
 				}
 			}
 			RedirectForRule(unitRect);
@@ -217,7 +218,9 @@ namespace AngeliaFramework {
 						}
 						if (!Modify_BackgroundOnly && !Modify_EntityOnly && !Modify_LevelOnly) {
 							// Normal
-							if (WorldSquad.Front.GetBlockAt(i, j, BlockType.Entity) != 0) {
+							if (WorldSquad.Front.GetBlockAt(i, j, BlockType.Element) != 0) {
+								WorldSquad.Front.SetBlockAt(i, j, BlockType.Element, 0);
+							} else if (WorldSquad.Front.GetBlockAt(i, j, BlockType.Entity) != 0) {
 								WorldSquad.Front.SetBlockAt(i, j, BlockType.Entity, 0);
 							} else if (WorldSquad.Front.GetBlockAt(i, j, BlockType.Level) != 0) {
 								WorldSquad.Front.SetBlockAt(i, j, BlockType.Level, 0);
@@ -229,7 +232,11 @@ namespace AngeliaFramework {
 							if (Modify_BackgroundOnly) {
 								WorldSquad.Front.SetBlockAt(i, j, BlockType.Background, 0);
 							} else if (Modify_EntityOnly) {
-								WorldSquad.Front.SetBlockAt(i, j, BlockType.Entity, 0);
+								if (WorldSquad.Front.GetBlockAt(i, j, BlockType.Element) != 0) {
+									WorldSquad.Front.SetBlockAt(i, j, BlockType.Element, 0);
+								} else {
+									WorldSquad.Front.SetBlockAt(i, j, BlockType.Entity, 0);
+								}
 							} else if (Modify_LevelOnly) {
 								WorldSquad.Front.SetBlockAt(i, j, BlockType.Level, 0);
 							}
@@ -243,6 +250,7 @@ namespace AngeliaFramework {
 						if (!Modify_LevelOnly && !Modify_EntityOnly) WorldSquad.Front.SetBlockAt(i, j, BlockType.Background, 0);
 						if (!Modify_BackgroundOnly && !Modify_EntityOnly) WorldSquad.Front.SetBlockAt(i, j, BlockType.Level, 0);
 						if (!Modify_LevelOnly && !Modify_BackgroundOnly) WorldSquad.Front.SetBlockAt(i, j, BlockType.Entity, 0);
+						if (!Modify_LevelOnly && !Modify_BackgroundOnly) WorldSquad.Front.SetBlockAt(i, j, BlockType.Element, 0);
 					}
 				}
 			}
@@ -307,6 +315,7 @@ namespace AngeliaFramework {
 					AddToList(i, j, BlockType.Background);
 					AddToList(i, j, BlockType.Level);
 					AddToList(i, j, BlockType.Entity);
+					AddToList(i, j, BlockType.Element);
 				}
 			}
 			if (removeOriginal) {
@@ -401,6 +410,7 @@ namespace AngeliaFramework {
 					if (!Modify_EntityOnly && !Modify_LevelOnly) AddToList(i, j, BlockType.Background);
 					if (!Modify_EntityOnly && !Modify_BackgroundOnly) AddToList(i, j, BlockType.Level);
 					if (!Modify_BackgroundOnly && !Modify_LevelOnly) AddToList(i, j, BlockType.Entity);
+					if (!Modify_BackgroundOnly && !Modify_LevelOnly) AddToList(i, j, BlockType.Element);
 				}
 			}
 			if (removeOriginal) {

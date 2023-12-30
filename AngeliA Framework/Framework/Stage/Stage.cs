@@ -530,6 +530,9 @@ namespace AngeliaFramework {
 		}
 
 
+		public static bool IsValidEntityID (int id) => EntityPool.ContainsKey(id);
+
+
 		public static IEnumerable<E> ForAllActiveEntities<E> (int entityLayer = -1) where E : Entity {
 			int startLayer = entityLayer < 0 ? 0 : entityLayer;
 			int endLayer = entityLayer < 0 ? EntityLayer.COUNT - 1 : entityLayer;

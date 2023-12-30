@@ -9,6 +9,7 @@ namespace AngeliaFramework {
 		Entity = 0,
 		Level = 1,
 		Background = 2,
+		Element = 3,
 	}
 
 	public class World {
@@ -24,6 +25,7 @@ namespace AngeliaFramework {
 		public int[] Background { get; set; } = null;
 		public int[] Level { get; set; } = null;
 		public int[] Entity { get; set; } = null;
+		public int[] Element { get; set; } = null;
 
 		// Data
 		private static readonly object FileStreamingLock = new();
@@ -44,10 +46,10 @@ namespace AngeliaFramework {
 
 
 		public bool EmptyCheck () {
-			// Level
 			foreach (var a in Entity) if (a != 0) return false;
 			foreach (var a in Level) if (a != 0) return false;
 			foreach (var a in Background) if (a != 0) return false;
+			foreach (var a in Element) if (a != 0) return false;
 			return true;
 		}
 
@@ -57,6 +59,7 @@ namespace AngeliaFramework {
 			System.Array.Copy(source.Background, Background, Background.Length);
 			System.Array.Copy(source.Level, Level, Level.Length);
 			System.Array.Copy(source.Entity, Entity, Entity.Length);
+			System.Array.Copy(source.Element, Element, Element.Length);
 		}
 
 
@@ -65,6 +68,7 @@ namespace AngeliaFramework {
 			Level = new int[Const.MAP * Const.MAP];
 			Background = new int[Const.MAP * Const.MAP];
 			Entity = new int[Const.MAP * Const.MAP];
+			Element = new int[Const.MAP * Const.MAP];
 		}
 
 
@@ -175,6 +179,18 @@ namespace AngeliaFramework {
 						writer.Write((byte)y);
 					}
 				}
+
+				// Element
+				for (int y = 0; y < SIZE; y++) {
+					for (int x = 0; x < SIZE; x++) {
+						int id = Element[y * SIZE + x];
+						if (id == 0) continue;
+						writer.Write((int)id);
+						writer.Write((byte)x);
+						writer.Write((byte)(y + SIZE));
+					}
+				}
+
 			}
 		}
 
@@ -256,6 +272,7 @@ namespace AngeliaFramework {
 					System.Array.Clear(Level, 0, Level.Length);
 					System.Array.Clear(Background, 0, Background.Length);
 					System.Array.Clear(Entity, 0, Entity.Length);
+					System.Array.Clear(Element, 0, Element.Length);
 
 					WorldPosition = new(worldX, worldY, worldZ);
 
@@ -277,11 +294,11 @@ namespace AngeliaFramework {
 									if (Entity[y * Const.MAP + x] != 0) continue;
 									Entity[y * Const.MAP + x] = id;
 								} else {
-									// ?? x yy
+									// Element x yy
 									y -= Const.MAP;
 									if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-
-
+									if (Element[y * Const.MAP + x] != 0) continue;
+									Element[y * Const.MAP + x] = id;
 								}
 							} else {
 								if (y < Const.MAP) {

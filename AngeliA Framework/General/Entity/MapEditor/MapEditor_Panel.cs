@@ -19,7 +19,7 @@ namespace AngeliaFramework {
 			public int GroupIndex = -1;
 			public string Name = "";
 			public GroupType GroupType = GroupType.General;
-			public BlockType BlockType = BlockType.Entity;
+			public BlockType BlockType { get; set; } = BlockType.Entity;
 			public AngeSpriteChain Chain = null;
 		}
 
@@ -216,7 +216,7 @@ namespace AngeliaFramework {
 					ID = typeId,
 					ArtworkID = artworkTypeID,
 					GroupType = GroupType.General,
-					BlockType = BlockType.Entity,
+					BlockType = Stage.IsValidEntityID(typeId) ? BlockType.Entity : BlockType.Element,
 					Name = Util.GetDisplayName(type.Name.StartsWith('e') || type.Name.StartsWith('i') ? type.Name[1..] : type.Name),
 					Chain = null,
 				});

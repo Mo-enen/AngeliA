@@ -532,7 +532,6 @@ namespace AngeliaFramework {
 					if (!world.LoadFromDisk(path)) continue;
 					if (world.EmptyCheck()) {
 						Util.DeleteFile(path);
-						Util.DeleteFile(path + ".meta");
 					}
 				} catch (System.Exception ex) { Game.LogException(ex); }
 			}
