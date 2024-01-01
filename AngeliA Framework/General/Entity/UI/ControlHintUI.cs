@@ -32,9 +32,6 @@ namespace AngeliaFramework {
 
 		// Api
 		public static ControlHintUI Instance { get; private set; } = null;
-		public int OffsetX { get; set; } = 0;
-		public int OffsetY { get; set; } = 0;
-
 		public static bool UseGamePadHint {
 			get => ShowGamePadUI.Value;
 			set => ShowGamePadUI.Value = value;
@@ -43,6 +40,8 @@ namespace AngeliaFramework {
 			get => ShowControlHint.Value;
 			set => ShowControlHint.Value = value;
 		}
+		public int OffsetX { get; set; } = 0;
+		public int OffsetY { get; set; } = 0;
 
 		// Short
 		private bool GamepadVisible => ShowGamePadUI.Value && Game.PauselessFrame > ForceHideGamepadFrame;
@@ -58,9 +57,11 @@ namespace AngeliaFramework {
 		private int ForceHintFrame = int.MinValue;
 		private int ForceHideGamepadFrame = int.MinValue;
 		private int OffsetResetFrame = int.MinValue;
-		private readonly CellContent HintLabel = new() { Alignment = Alignment.MidLeft, CharSize = TEXT_SIZE, Tint = LabelTint, };
-		private readonly CellContent KeyLabel = new() { Alignment = Alignment.MidLeft, CharSize = TEXT_SIZE, Tint = KeyTint, };
+		private static readonly CellContent HintLabel = new() { Alignment = Alignment.MidLeft, CharSize = TEXT_SIZE, Tint = LabelTint, };
+		private static readonly CellContent KeyLabel = new() { Alignment = Alignment.MidLeft, CharSize = TEXT_SIZE, Tint = KeyTint, };
+		private static readonly CellContent FPSLabel = new() { Alignment = Alignment.TopRight, CharSize = 20, Tint = Const.WHITE, Shadow = Const.BLACK, FromString = false, ShadowOffset = 3, };
 		private static float GameFPS = 1f;
+		private static readonly IntToChars FPS = new();
 
 		// Saving
 		private static readonly SavingBool ShowGamePadUI = new("Hint.ShowGamePadUI", false);
@@ -75,12 +76,20 @@ namespace AngeliaFramework {
 		[OnGameUpdatePauseless]
 		public static void OnGameUpdateLater () {
 			if (Game.ShowFPS) {
-				if (Game.PauselessFrame % 6 == 0) {
-					GameFPS = Util.Lerp(GameFPS, Game.CurrentFPS, 0.2f);
+				if (Game.PauselessFrame % 12 == 0) {
+					GameFPS = Game.CurrentFPS;
 				}
+				int padding = Unify(6);
+				int width = Unify(40);
+				int height = Unify(24);
+				FPSLabel.Chars = FPS.GetChars(GameFPS.RoundToInt());
 				CellRendererGUI.Label(
-					CellContent.Get(GameFPS.ToString("0"), 20, Alignment.TopRight),
-					CellRenderer.CameraRect
+					FPSLabel,
+					new IRect(
+						CellRenderer.CameraRect.xMax - width - padding,
+						CellRenderer.CameraRect.yMax - height - padding,
+						width, height
+					)
 				);
 			}
 		}

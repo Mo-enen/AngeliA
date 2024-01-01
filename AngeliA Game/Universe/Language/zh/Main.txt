@@ -1,10 +1,11 @@
-﻿CtrlHint.EditSheet:编辑贴图
-CtrlHint.QuitEditingSheet:退出编辑贴图
+﻿UI.SheetTab.File:文件
+UI.SheetTab.Palette:颜色
 CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
 CtrlHint.Drop:放下
 CtrlHint.EditMap:编辑地图
+CtrlHint.EditSheet:编辑贴图
 CtrlHint.EnterDoor:进门
 CtrlHint.Equip:装备
 CtrlHint.HideMenu:隐藏菜单
@@ -21,6 +22,7 @@ CtrlHint.Move:移动
 CtrlHint.PlayerMenu.Take:拾取
 CtrlHint.PlayerMenu.TakeUse:拾取（长按使用）
 CtrlHint.QuitEditing:停止地图编辑
+CtrlHint.QuitEditingSheet:退出编辑贴图
 CtrlHint.Restart:重新开始
 CtrlHint.ShowMenu:显示菜单
 CtrlHint.Skip:跳过
@@ -56,7 +58,7 @@ Menu.MEDTSetting.PlayerDrop:快速放下玩家
 Menu.MEDTSetting.ShowState:显示状态信息
 Menu.Pause.KeySetter:按键分配
 Menu.Pause.MEDTSetting:编辑器设置
-Menu.Pause.QuitEditMessage:停止地图编辑？
+Menu.Pause.QuitEditMessage:停止编辑？
 Menu.Pause.QuitMessage:是否要退出游戏？
 Menu.Setting.AllowGamepad:允许连接手柄
 Menu.Setting.Framerate:帧频率
@@ -139,10 +141,13 @@ UI.ON:开启
 UI.PaletteTab.All:全部
 UI.PaletteTab.Pinned:收藏
 UI.Quit:退出
+UI.QuitGame:退出游戏
 UI.Restart:重新开始
 UI.Right:右
 UI.Save:保存
 UI.Setting:设置
+UI.Stop:停止
+UI.StopEdit:停止编辑
 UI.Suit.Bodysuit:衣服
 UI.Suit.Glove:手套
 UI.Suit.Hat:帽子

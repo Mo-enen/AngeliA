@@ -41,55 +41,19 @@ namespace AngeliaFramework {
 		}
 
 
-		[JsonObject(MemberSerialization.OptIn)]
+		private class PinnedList {
+			public int Icon = 0;
+			public List<int> Items = new();
+		}
+
+
 		private class MapEditorMeta : IJsonSerializationCallback {
-
-			[JsonObject(MemberSerialization.OptIn)]
-			public class PinnedList {
-
-				[JsonProperty] public int Icon = 0;
-				[JsonProperty] private int[] PaletteItemIDs = null;
-				public List<PaletteItem> Items;
-
-				public void OnAfterLoadedFromDisk () {
-					Items ??= new();
-					Items.Clear();
-					if (PaletteItemIDs == null || Instance == null) return;
-					// Items
-					foreach (int id in PaletteItemIDs) {
-						if (!Instance.PalettePool.TryGetValue(id, out var pal)) continue;
-						Items.Add(pal);
-					}
-					PaletteItemIDs = null;
-					// Icon
-					if ((Icon == 0 || !CellRenderer.HasSprite(Icon)) && Items.Count > 0) {
-						Icon = Items[0].ArtworkID;
-					}
-				}
-
-				public void OnBeforeSaveToDisk () {
-					Items ??= new();
-					PaletteItemIDs = new int[Items.Count];
-					for (int i = 0; i < Items.Count; i++) {
-						PaletteItemIDs[i] = Items[i].ID;
-					}
-				}
-
-			}
-
-			[JsonProperty] public List<PinnedList> PinnedLists;
-
+			public List<PinnedList> PinnedLists;
 			void IJsonSerializationCallback.OnBeforeSaveToDisk () {
 				PinnedLists ??= new();
-				foreach (var list in PinnedLists) {
-					list.OnBeforeSaveToDisk();
-				}
 			}
 			void IJsonSerializationCallback.OnAfterLoadedFromDisk () {
 				PinnedLists ??= new();
-				foreach (var list in PinnedLists) {
-					list.OnAfterLoadedFromDisk();
-				}
 			}
 		}
 
@@ -132,8 +96,9 @@ namespace AngeliaFramework {
 
 		// Api
 		public new static MapEditor Instance => GlobalEditorUI.Instance as MapEditor;
-		public static bool IsEditing => Instance != null && Instance.Active && !Instance.PlayingGame;
-		public static bool IsPlaying => Instance != null && Instance.Active && Instance.PlayingGame;
+		public new static bool IsActived => Instance != null && Instance.Active;
+		public static bool IsEditing => IsActived && !Instance.PlayingGame;
+		public static bool IsPlaying => IsActived && Instance.PlayingGame;
 		public bool QuickPlayerDrop {
 			get => s_QuickPlayerDrop.Value && !IgnoreQuickPlayerDropThisTime;
 			set => s_QuickPlayerDrop.Value = value;
@@ -176,7 +141,7 @@ namespace AngeliaFramework {
 		private IRect TooltipRect = default;
 		private IRect PanelRect = default;
 		private IRect ToolbarRect = default;
-		private IRect QuickLaneRect = default;
+		private IRect CheckPointLaneRect = default;
 		private bool PlayingGame = false;
 		private bool IsNavigating = false;
 		private bool IsDirty = false;
@@ -485,9 +450,9 @@ namespace AngeliaFramework {
 
 			// List
 			if (EditorMeta.PinnedLists.Count == 0) {
-				EditorMeta.PinnedLists.Add(new MapEditorMeta.PinnedList() {
+				EditorMeta.PinnedLists.Add(new PinnedList() {
 					Icon = UI_DEFAULT_LIST_COVER,
-					Items = new List<PaletteItem>(),
+					Items = new List<int>(),
 				});
 			}
 			if (DraggingForReorderPaletteGroup >= 0 && DraggingForReorderPaletteItem >= 0) {
@@ -509,17 +474,16 @@ namespace AngeliaFramework {
 			ToolbarOffsetX = ToolbarOffsetX.LerpTo(IsPlaying || DroppingPlayer ? -ToolbarRect.width : 0, 200);
 			ToolbarRect.x = CellRenderer.CameraRect.x + ToolbarOffsetX;
 
-			// Quick Lane Rect
-			QuickLaneRect.x = CellRenderer.CameraRect.x;
-			QuickLaneRect.y = CellRenderer.CameraRect.y;
-			QuickLaneRect.width = Unify(PANEL_WIDTH);
-			QuickLaneRect.height = ToolbarRect.y - QuickLaneRect.y;
+			// Check Point Lane Rect
+			CheckPointLaneRect.x = CellRenderer.CameraRect.x;
+			CheckPointLaneRect.y = CellRenderer.CameraRect.y;
+			CheckPointLaneRect.width = Unify(PANEL_WIDTH);
+			CheckPointLaneRect.height = ToolbarRect.y - CheckPointLaneRect.y;
 
 			// Hint
 			if (IsEditing) {
 				ControlHintUI.ForceShowHint();
 				ControlHintUI.ForceHideGamepad();
-				ControlHintUI.ForceOffset(PanelRect.xMax - CellRenderer.CameraRect.x, 0);
 			}
 
 			// Squad Behind Tint
@@ -556,7 +520,7 @@ namespace AngeliaFramework {
 
 			// Playing
 			if (IsPlaying) {
-				int newHeight = Const.DEFAULT_HEIGHT;
+				int newHeight = Const.DEFAULT_VIEW_HEIGHT;
 				var viewRect = Stage.ViewRect;
 				if (viewRect.height != newHeight) {
 					if (Stage.DelayingViewX.HasValue) viewRect.x = Stage.DelayingViewX.Value;
@@ -594,7 +558,7 @@ namespace AngeliaFramework {
 			// Zoom
 			if (AutoZoom) {
 				// Auto
-				int newHeight = Const.DEFAULT_HEIGHT * 3 / 2;
+				int newHeight = Const.DEFAULT_VIEW_HEIGHT * 3 / 2;
 				if (TargetViewRect.height != newHeight) {
 					int newWidth = newHeight * Const.VIEW_RATIO / 1000;
 					TargetViewRect.x -= (newWidth - TargetViewRect.width) / 2;
@@ -613,7 +577,7 @@ namespace AngeliaFramework {
 					TargetViewRect.width = TargetViewRect.height * Const.VIEW_RATIO / 1000;
 
 					int newHeight = (TargetViewRect.height - zoomDelta * TargetViewRect.height / 6000).Clamp(
-						Const.MIN_HEIGHT, Const.MAX_HEIGHT
+						Const.MIN_VIEW_HEIGHT, Const.MAX_VIEW_HEIGHT
 					);
 					int newWidth = newHeight * Const.VIEW_RATIO / 1000;
 
@@ -746,6 +710,13 @@ namespace AngeliaFramework {
 						SelectingPaletteItem = resultPal;
 					}
 
+					// Move Palette Cursor
+					if (FrameInput.KeyboardDownGUI(KeyboardKey.Q)) {
+						MovePaletteCursor(-1);
+					}
+					if (FrameInput.KeyboardDownGUI(KeyboardKey.E)) {
+						MovePaletteCursor(1);
+					}
 				}
 
 				// Ctrl + ...
@@ -1061,7 +1032,7 @@ namespace AngeliaFramework {
 		private void ResetCamera (bool immediately = false) {
 			if (!IsNavigating) {
 				// Editing
-				int viewHeight = Const.DEFAULT_HEIGHT * 3 / 2;
+				int viewHeight = Const.DEFAULT_VIEW_HEIGHT * 3 / 2;
 				int viewWidth = viewHeight * Const.VIEW_RATIO / 1000;
 				TargetViewRect.x = -viewWidth / 2;
 				TargetViewRect.y = -Player.GetCameraShiftOffset(viewHeight);
@@ -1074,7 +1045,7 @@ namespace AngeliaFramework {
 				}
 			} else {
 				// Navigating
-				int viewHeight = Const.DEFAULT_HEIGHT * 3 / 2;
+				int viewHeight = Const.DEFAULT_VIEW_HEIGHT * 3 / 2;
 				int viewWidth = viewHeight * Const.VIEW_RATIO / 1000;
 				TargetViewRect.x = -viewWidth / 2;
 				TargetViewRect.y = -Player.GetCameraShiftOffset(viewHeight);
@@ -1083,6 +1054,39 @@ namespace AngeliaFramework {
 				NavPosition.x = TargetViewRect.x + TargetViewRect.width / 2 + Const.MAP * Const.HALF;
 				NavPosition.y = TargetViewRect.y + TargetViewRect.height / 2 + Const.MAP * Const.HALF;
 				NavPosition.z = 0;
+			}
+		}
+
+
+		private void MovePaletteCursor (int delta) {
+			int index = -1;
+			if (CurrentPaletteTab == PaletteTabType.BuiltIn) {
+				if (SelectingPaletteGroupIndex >= 0 && SelectingPaletteGroupIndex < PaletteGroups.Count) {
+					var group = PaletteGroups[SelectingPaletteGroupIndex];
+					if (group.Items.Count > 0) {
+						index = group.Items.IndexOf(SelectingPaletteItem);
+						if (index >= 0) {
+							index = (index + delta).Clamp(0, group.Items.Count - 1);
+						} else {
+							index = delta > 0 ? 0 : group.Items.Count - 1;
+						}
+					}
+					if (index >= 0) SelectingPaletteItem = group.Items[index];
+				}
+			} else {
+				var lists = EditorMeta.PinnedLists;
+				if (SelectingPaletteListIndex >= 0 && SelectingPaletteListIndex < lists.Count) {
+					var group = lists[SelectingPaletteListIndex];
+					if (group.Items.Count > 0) {
+						index = SelectingPaletteItem != null ? group.Items.IndexOf(SelectingPaletteItem.ID) : -1;
+						if (index >= 0) {
+							index = (index + delta).Clamp(0, group.Items.Count - 1);
+						} else {
+							index = delta > 0 ? 0 : group.Items.Count - 1;
+						}
+					}
+					if (index >= 0 && PalettePool.TryGetValue(group.Items[index], out var _newPal)) SelectingPaletteItem = _newPal;
+				}
 			}
 		}
 

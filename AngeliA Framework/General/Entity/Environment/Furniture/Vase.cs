@@ -8,7 +8,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			if (Pose == FittingPose.Up || Pose == FittingPose.Single) {
-				CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Const.ONEWAY_UP_TAG);
+				CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.ONEWAY_UP_TAG);
 			} else {
 				CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 			}

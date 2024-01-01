@@ -128,8 +128,8 @@ namespace AngeliaFramework {
 
 		[OnGameInitializeLater(64)]
 		public static void Initialize () {
-			CellWidth = (Const.VIEW_RATIO * Const.MAX_HEIGHT / 1000) / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
-			CellHeight = (Const.MAX_HEIGHT) / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
+			CellWidth = (Const.VIEW_RATIO * Const.MAX_VIEW_HEIGHT / 1000) / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
+			CellHeight = (Const.MAX_VIEW_HEIGHT) / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
 			ExpandQueue = new(CellWidth * CellHeight + 1);
 			ExpandQueueJump = new(CellWidth * CellHeight + 1);
 			// Operation
@@ -492,7 +492,7 @@ namespace AngeliaFramework {
 			} else {
 				int platformY = y + Const.CEL;
 				// Liquid Check
-				if (CellPhysics.Overlap(PhysicsMask.MAP, centerRect, null, OperationMode.TriggerOnly, Const.WATER_TAG)) {
+				if (CellPhysics.Overlap(PhysicsMask.MAP, centerRect, null, OperationMode.TriggerOnly, SpriteTag.WATER_TAG)) {
 					cell.BlockType = BlockType.Liquid;
 					platformY = y + Const.HALF;
 				}

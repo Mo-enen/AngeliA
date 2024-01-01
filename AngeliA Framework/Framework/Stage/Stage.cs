@@ -142,8 +142,8 @@ namespace AngeliaFramework {
 		public static void OnGameInitialize () {
 			ViewRect = new(
 				0, 0,
-				Const.VIEW_RATIO * Const.DEFAULT_HEIGHT.Clamp(Const.MIN_HEIGHT, Const.MAX_HEIGHT) / 1000,
-				Const.DEFAULT_HEIGHT.Clamp(Const.MIN_HEIGHT, Const.MAX_HEIGHT)
+				Const.VIEW_RATIO * Const.DEFAULT_VIEW_HEIGHT.Clamp(Const.MIN_VIEW_HEIGHT, Const.MAX_VIEW_HEIGHT) / 1000,
+				Const.DEFAULT_VIEW_HEIGHT.Clamp(Const.MIN_VIEW_HEIGHT, Const.MAX_VIEW_HEIGHT)
 			);
 			Entities = new Entity[EntityLayer.COUNT][];
 			for (int i = 0; i < EntityLayer.COUNT; i++) {
@@ -204,12 +204,18 @@ namespace AngeliaFramework {
 		}
 
 
+		[OnGameRestart]
+		public static void OnGameRestart () {
+			SetViewSizeDelay(Const.DEFAULT_VIEW_HEIGHT, 1000, int.MaxValue);
+		}
+
+
 		[OnGameUpdate(-4096)]
 		internal static void Update_View () {
 
 			// Move View Rect
 			if (ViewDelayX.value.HasValue || ViewDelayY.value.HasValue || ViewDelayHeight.value.HasValue) {
-				int targetHeight = (ViewDelayHeight.value ?? ViewRect.height).Clamp(Const.MIN_HEIGHT, Const.MAX_HEIGHT);
+				int targetHeight = (ViewDelayHeight.value ?? ViewRect.height).Clamp(Const.MIN_VIEW_HEIGHT, Const.MAX_VIEW_HEIGHT);
 				var viewRectDelay = new IRect(
 					ViewDelayX.value ?? ViewRect.x,
 					ViewDelayY.value ?? ViewRect.y,

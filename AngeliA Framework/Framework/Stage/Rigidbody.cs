@@ -101,9 +101,9 @@ namespace AngeliaFramework {
 			bool prevInWater = InWater;
 			bool prevInSand = InSand;
 			int checkingMask = PhysicsMask.MAP & CollisionMask;
-			InWater = CellPhysics.Overlap(checkingMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, Const.WATER_TAG);
-			InSand = !InWater && CellPhysics.Overlap(checkingMask, rect, null, OperationMode.TriggerOnly, Const.QUICKSAND_TAG);
-			OnSlippy = !InWater && !InSand && CellPhysics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderOnly, Const.SLIP_TAG);
+			InWater = CellPhysics.Overlap(checkingMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, SpriteTag.WATER_TAG);
+			InSand = !InWater && CellPhysics.Overlap(checkingMask, rect, null, OperationMode.TriggerOnly, SpriteTag.QUICKSAND_TAG);
+			OnSlippy = !InWater && !InSand && CellPhysics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderOnly, SpriteTag.SLIP_TAG);
 			IsInsideGround = InsideGroundCheck();
 
 			if (!PhysicsEnable || Game.GlobalFrame <= IgnorePhysicsFrame) {

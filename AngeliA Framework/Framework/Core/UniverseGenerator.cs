@@ -628,25 +628,25 @@ namespace AngeliaFramework {
 					}
 
 					// Tag
-					if (hashTag.Equals("OnewayUp", OIC)) { tag = Const.ONEWAY_UP_TAG; continue; }
-					if (hashTag.Equals("OnewayDown", OIC)) { tag = Const.ONEWAY_DOWN_TAG; continue; }
-					if (hashTag.Equals("OnewayLeft", OIC)) { tag = Const.ONEWAY_LEFT_TAG; continue; }
-					if (hashTag.Equals("OnewayRight", OIC)) { tag = Const.ONEWAY_RIGHT_TAG; continue; }
-					if (hashTag.Equals("Climb", OIC)) { tag = Const.CLIMB_TAG; continue; }
-					if (hashTag.Equals("ClimbStable", OIC)) { tag = Const.CLIMB_STABLE_TAG; continue; }
-					if (hashTag.Equals("Quicksand", OIC)) { tag = Const.QUICKSAND_TAG; isTrigger = true; continue; }
-					if (hashTag.Equals("Water", OIC)) { tag = Const.WATER_TAG; isTrigger = true; continue; }
-					if (hashTag.Equals("Slip", OIC)) { tag = Const.SLIP_TAG; continue; }
-					if (hashTag.Equals("Slide", OIC)) { tag = Const.SLIDE_TAG; continue; }
-					if (hashTag.Equals("NoSlide", OIC)) { tag = Const.NO_SLIDE_TAG; continue; }
-					if (hashTag.Equals("GrabTop", OIC)) { tag = Const.GRAB_TOP_TAG; continue; }
-					if (hashTag.Equals("GrabSide", OIC)) { tag = Const.GRAB_SIDE_TAG; continue; }
-					if (hashTag.Equals("Grab", OIC)) { tag = Const.GRAB_TAG; continue; }
-					if (hashTag.Equals("ShowLimb", OIC)) { tag = Const.SHOW_LIMB_TAG; continue; }
-					if (hashTag.Equals("HideLimb", OIC)) { tag = Const.HIDE_LIMB_TAG; continue; }
-					if (hashTag.Equals("Damage", OIC)) { tag = Const.DAMAGE_TAG; continue; }
-					if (hashTag.Equals("ExplosiveDamage", OIC)) { tag = Const.DAMAGE_EXPLOSIVE_TAG; continue; }
-					if (hashTag.Equals("MagicalDamage", OIC)) { tag = Const.DAMAGE_MAGICAL_TAG; continue; }
+					if (hashTag.Equals("OnewayUp", OIC)) { tag = SpriteTag.ONEWAY_UP_TAG; continue; }
+					if (hashTag.Equals("OnewayDown", OIC)) { tag = SpriteTag.ONEWAY_DOWN_TAG; continue; }
+					if (hashTag.Equals("OnewayLeft", OIC)) { tag = SpriteTag.ONEWAY_LEFT_TAG; continue; }
+					if (hashTag.Equals("OnewayRight", OIC)) { tag = SpriteTag.ONEWAY_RIGHT_TAG; continue; }
+					if (hashTag.Equals("Climb", OIC)) { tag = SpriteTag.CLIMB_TAG; continue; }
+					if (hashTag.Equals("ClimbStable", OIC)) { tag = SpriteTag.CLIMB_STABLE_TAG; continue; }
+					if (hashTag.Equals("Quicksand", OIC)) { tag = SpriteTag.QUICKSAND_TAG; isTrigger = true; continue; }
+					if (hashTag.Equals("Water", OIC)) { tag = SpriteTag.WATER_TAG; isTrigger = true; continue; }
+					if (hashTag.Equals("Slip", OIC)) { tag = SpriteTag.SLIP_TAG; continue; }
+					if (hashTag.Equals("Slide", OIC)) { tag = SpriteTag.SLIDE_TAG; continue; }
+					if (hashTag.Equals("NoSlide", OIC)) { tag = SpriteTag.NO_SLIDE_TAG; continue; }
+					if (hashTag.Equals("GrabTop", OIC)) { tag = SpriteTag.GRAB_TOP_TAG; continue; }
+					if (hashTag.Equals("GrabSide", OIC)) { tag = SpriteTag.GRAB_SIDE_TAG; continue; }
+					if (hashTag.Equals("Grab", OIC)) { tag = SpriteTag.GRAB_TAG; continue; }
+					if (hashTag.Equals("ShowLimb", OIC)) { tag = SpriteTag.SHOW_LIMB_TAG; continue; }
+					if (hashTag.Equals("HideLimb", OIC)) { tag = SpriteTag.HIDE_LIMB_TAG; continue; }
+					if (hashTag.Equals("Damage", OIC)) { tag = SpriteTag.DAMAGE_TAG; continue; }
+					if (hashTag.Equals("ExplosiveDamage", OIC)) { tag = SpriteTag.DAMAGE_EXPLOSIVE_TAG; continue; }
+					if (hashTag.Equals("MagicalDamage", OIC)) { tag = SpriteTag.DAMAGE_MAGICAL_TAG; continue; }
 
 					if (hashTag.Equals("loopStart", OIC)) {
 						loopStart = true;
@@ -822,11 +822,6 @@ namespace AngeliaFramework {
 
 
 		#endregion
-
-
-
-
-
 
 
 

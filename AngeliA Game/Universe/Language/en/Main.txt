@@ -1,10 +1,11 @@
-﻿CtrlHint.EditSheet:Edit Sheet
-CtrlHint.QuitEditingSheet:Quit Editing Sheet
+﻿UI.SheetTab.File:File
+UI.SheetTab.Palette:Palette
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
 CtrlHint.Drop:Drop
 CtrlHint.EditMap:Edit Map
+CtrlHint.EditSheet:Edit Sheet
 CtrlHint.EnterDoor:Enter
 CtrlHint.Equip:Equip
 CtrlHint.HideMenu:Hide Menu
@@ -21,6 +22,7 @@ CtrlHint.Move:Move
 CtrlHint.PlayerMenu.Take:Take
 CtrlHint.PlayerMenu.TakeUse:Take (Hold to Use)
 CtrlHint.QuitEditing:Stop Editing Map
+CtrlHint.QuitEditingSheet:Quit Editing Sheet
 CtrlHint.Restart:Restart
 CtrlHint.ShowMenu:Show Menu
 CtrlHint.Skip:Skip
@@ -56,7 +58,7 @@ Menu.MEDTSetting.PlayerDrop:Quick Player Drop
 Menu.MEDTSetting.ShowState:Show State Info
 Menu.Pause.KeySetter:Key Assignment
 Menu.Pause.MEDTSetting:Editor Setting
-Menu.Pause.QuitEditMessage:Stop Editing Map?
+Menu.Pause.QuitEditMessage:Stop Editing?
 Menu.Pause.QuitMessage:Quit game now？
 Menu.Setting.AllowGamepad:Allow Gamepad
 Menu.Setting.Framerate:Framerate
@@ -139,10 +141,13 @@ UI.ON:ON
 UI.PaletteTab.All:All
 UI.PaletteTab.Pinned:List
 UI.Quit:Quit
+UI.QuitGame:Quit Game
 UI.Restart:Restart
 UI.Right:Right
 UI.Save:Save
 UI.Setting:Setting
+UI.Stop:Stop
+UI.StopEdit:Stop Edit
 UI.Suit.Bodysuit:Cloth
 UI.Suit.Glove:Gloves
 UI.Suit.Hat:Hat

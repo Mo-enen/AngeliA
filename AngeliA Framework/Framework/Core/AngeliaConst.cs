@@ -59,6 +59,53 @@ namespace AngeliaFramework {
 	}
 
 
+	public static class SpriteTag {
+
+		public static readonly string ONEWAY_UP_STRING = "OnewayUp";
+		public static readonly string ONEWAY_DOWN_STRING = "OnewayDown";
+		public static readonly string ONEWAY_LEFT_STRING = "OnewayLeft";
+		public static readonly string ONEWAY_RIGHT_STRING = "OnewayRight";
+		public static readonly string CLIMB_STRING = "Climb";
+		public static readonly string CLIMB_STABLE_STRING = "ClimbStable";
+		public static readonly string QUICKSAND_STRING = "Quicksand";
+		public static readonly string WATER_STRING = "Water";
+		public static readonly string SLIP_STRING = "Slip";
+		public static readonly string SLIDE_STRING = "Slide";
+		public static readonly string NO_SLIDE_STRING = "NoSlide";
+		public static readonly string GRAB_TOP_STRING = "GrabTop";
+		public static readonly string GRAB_SIDE_STRING = "GrabSide";
+		public static readonly string GRAB_STRING = "Grab";
+		public static readonly string SHOW_LIMB_STRING = "ShowLimb";
+		public static readonly string HIDE_LIMB_STRING = "HideLimb";
+		public static readonly string DAMAGE_STRING = "Damage";
+		public static readonly string DAMAGE_EXPLOSIVE_STRING = "ExplosiveDamage";
+		public static readonly string DAMAGE_MAGICAL_STRING = "MagicalDamage";
+		public static readonly string DAMAGE_POISON_STRING = "PoisonDamage";
+
+		public static readonly int ONEWAY_UP_TAG = ONEWAY_UP_STRING.AngeHash();
+		public static readonly int ONEWAY_DOWN_TAG = ONEWAY_DOWN_STRING.AngeHash();
+		public static readonly int ONEWAY_LEFT_TAG = ONEWAY_LEFT_STRING.AngeHash();
+		public static readonly int ONEWAY_RIGHT_TAG = ONEWAY_RIGHT_STRING.AngeHash();
+		public static readonly int CLIMB_TAG = CLIMB_STRING.AngeHash();
+		public static readonly int CLIMB_STABLE_TAG = CLIMB_STABLE_STRING.AngeHash();
+		public static readonly int QUICKSAND_TAG = QUICKSAND_STRING.AngeHash();
+		public static readonly int WATER_TAG = WATER_STRING.AngeHash();
+		public static readonly int SLIP_TAG = SLIP_STRING.AngeHash();
+		public static readonly int SLIDE_TAG = SLIDE_STRING.AngeHash();
+		public static readonly int NO_SLIDE_TAG = NO_SLIDE_STRING.AngeHash();
+		public static readonly int GRAB_TOP_TAG = GRAB_TOP_STRING.AngeHash();
+		public static readonly int GRAB_SIDE_TAG = GRAB_SIDE_STRING.AngeHash();
+		public static readonly int GRAB_TAG = GRAB_STRING.AngeHash();
+		public static readonly int SHOW_LIMB_TAG = SHOW_LIMB_STRING.AngeHash();
+		public static readonly int HIDE_LIMB_TAG = HIDE_LIMB_STRING.AngeHash();
+		public static readonly int DAMAGE_TAG = DAMAGE_STRING.AngeHash();
+		public static readonly int DAMAGE_EXPLOSIVE_TAG = DAMAGE_EXPLOSIVE_STRING.AngeHash();
+		public static readonly int DAMAGE_MAGICAL_TAG = DAMAGE_MAGICAL_STRING.AngeHash();
+		public static readonly int DAMAGE_POISON_TAG = DAMAGE_POISON_STRING.AngeHash();
+
+	}
+
+
 	public static class Const {
 
 		public const int CEL = 256;
@@ -74,33 +121,11 @@ namespace AngeliaFramework {
 		public const int SPAWN_PADDING = SPAWN_PADDING_UNIT * CEL;
 		public const int ANTI_SPAWN_PADDING = ANTI_SPAWN_PADDING_UNIT * CEL;
 		public const int SQUAD_BEHIND_PARALLAX = 1300;
-		public const int DEFAULT_HEIGHT = 26 * CEL;
-		public const int MIN_HEIGHT = 16 * CEL;
-		public const int MAX_HEIGHT = 60 * CEL;
+		public const int DEFAULT_VIEW_HEIGHT = 26 * CEL;
+		public const int MIN_VIEW_HEIGHT = 16 * CEL;
+		public const int MAX_VIEW_HEIGHT = 60 * CEL;
 		public const int VIEW_RATIO = 2000; // width / height * 1000
 		public const byte SQUAD_BEHIND_ALPHA = 64;
-
-		// Tag
-		public static readonly int ONEWAY_UP_TAG = "OnewayUp".AngeHash();
-		public static readonly int ONEWAY_DOWN_TAG = "OnewayDown".AngeHash();
-		public static readonly int ONEWAY_LEFT_TAG = "OnewayLeft".AngeHash();
-		public static readonly int ONEWAY_RIGHT_TAG = "OnewayRight".AngeHash();
-		public static readonly int CLIMB_TAG = "Climb".AngeHash();
-		public static readonly int CLIMB_STABLE_TAG = "ClimbStable".AngeHash();
-		public static readonly int QUICKSAND_TAG = "Quicksand".AngeHash();
-		public static readonly int WATER_TAG = "Water".AngeHash();
-		public static readonly int SLIP_TAG = "Slip".AngeHash();
-		public static readonly int SLIDE_TAG = "Slide".AngeHash();
-		public static readonly int NO_SLIDE_TAG = "NoSlide".AngeHash();
-		public static readonly int GRAB_TOP_TAG = "GrabTop".AngeHash();
-		public static readonly int GRAB_SIDE_TAG = "GrabSide".AngeHash();
-		public static readonly int GRAB_TAG = "Grab".AngeHash();
-		public static readonly int SHOW_LIMB_TAG = "ShowLimb".AngeHash();
-		public static readonly int HIDE_LIMB_TAG = "HideLimb".AngeHash();
-		public static readonly int DAMAGE_TAG = "Damage".AngeHash();
-		public static readonly int DAMAGE_EXPLOSIVE_TAG = "ExplosiveDamage".AngeHash();
-		public static readonly int DAMAGE_MAGICAL_TAG = "MagicalDamage".AngeHash();
-		public static readonly int DAMAGE_POISON_TAG = "PoisonDamage".AngeHash();
 
 		// Team
 		public const int TEAM_ENVIRONMENT = 0b1;

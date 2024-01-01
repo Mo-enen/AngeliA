@@ -70,7 +70,7 @@ namespace AngeliaFramework {
 			}
 			var border = CellRenderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Int4.zero;
 			CellPhysics.FillBlock(
-				PhysicsLayer.ENVIRONMENT, TypeID, Rect.Shrink(border), true, Const.ONEWAY_UP_TAG
+				PhysicsLayer.ENVIRONMENT, TypeID, Rect.Shrink(border), true, SpriteTag.ONEWAY_UP_TAG
 			);
 		}
 

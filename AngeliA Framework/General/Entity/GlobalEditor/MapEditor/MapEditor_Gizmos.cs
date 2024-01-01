@@ -41,12 +41,12 @@ namespace AngeliaFramework {
 
 		private void Update_Grid () {
 
-			if (IsPlaying || DroppingPlayer) return;
+			if (IsPlaying || DroppingPlayer || Game.IsPausing || TaskingRoute) return;
 
 			var TINT = new Byte4(128, 128, 128, 16);
 			var cRect = CellRenderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
 			int l = Util.FloorToInt(cRect.xMin.UDivide(Const.CEL) + 1) * Const.CEL;
-			int r = Util.CeilToInt(cRect.xMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
+			int r = Util.CeilToInt(cRect.xMax.UDivide(Const.CEL) + 1) * Const.CEL + Const.CEL;
 			int d = Util.FloorToInt(cRect.yMin.UDivide(Const.CEL)) * Const.CEL;
 			int u = Util.CeilToInt(cRect.yMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
 			int size = cRect.height / 512;

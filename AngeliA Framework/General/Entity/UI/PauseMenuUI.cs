@@ -27,7 +27,6 @@ namespace AngeliaFramework {
 
 		// Const
 		private static readonly int MENU_QUIT_MESSAGE = "Menu.Pause.QuitMessage".AngeHash();
-		private static readonly int MENU_QUIT_EDIT_MESSAGE = "Menu.Pause.QuitEditMessage".AngeHash();
 		private static readonly int MENU_KEYSETTER_GAMEPAD_MESSAGE = "Menu.KeySetter.GamepadMessage".AngeHash();
 		private static readonly int MENU_KEYSETTER_KEYBOARD_MESSAGE = "Menu.KeySetter.KeyboardMessage".AngeHash();
 		private static readonly int MENU_KEYSETTER_CONFIRM_MESSAGE = "Menu.KeySetter.ConfirmMessage".AngeHash();
@@ -58,6 +57,8 @@ namespace AngeliaFramework {
 		private static readonly int UI_CONTINUE = "UI.Continue".AngeHash();
 		private static readonly int UI_SETTING = "UI.Setting".AngeHash();
 		private static readonly int UI_QUIT = "UI.Quit".AngeHash();
+		private static readonly int UI_QUIT_GAME = "UI.QuitGame".AngeHash();
+		private static readonly int UI_STOP_EDIT = "UI.StopEdit".AngeHash();
 		private static readonly int UI_BACK = "UI.Back".AngeHash();
 		private static readonly int UI_ON = "UI.ON".AngeHash();
 		private static readonly int UI_OFF = "UI.OFF".AngeHash();
@@ -66,6 +67,7 @@ namespace AngeliaFramework {
 		private static readonly int UI_DONT_SAVE = "UI.DontSave".AngeHash();
 		private static readonly int UI_NO = "UI.No".AngeHash();
 		private static readonly int UI_CANCEL = "UI.Cancel".AngeHash();
+		private readonly string[] SLOT_NAMES = { };
 		private static readonly int[] GAMEKEY_UI_CODES = new int[8] {
 			$"UI.GameKey.{Gamekey.Left}".AngeHash(),
 			$"UI.GameKey.{Gamekey.Right}".AngeHash(),
@@ -76,7 +78,6 @@ namespace AngeliaFramework {
 			$"UI.GameKey.{Gamekey.Start}".AngeHash(),
 			$"UI.GameKey.{Gamekey.Select}".AngeHash(),
 		};
-		private readonly string[] SLOT_NAMES = { };
 
 		// Data
 		private static PauseMenuUI Instance = null;
@@ -455,27 +456,27 @@ namespace AngeliaFramework {
 
 		private void MenuQuit () {
 
-			bool editingMap = MapEditor.Instance != null && MapEditor.Instance.Active;
+			bool editing = GlobalEditorUI.Instance != null && GlobalEditorUI.Instance.Active;
 
-			Message = editingMap ?
-				Language.Get(MENU_QUIT_EDIT_MESSAGE, "Stop Editing Map?") :
-				Language.Get(MENU_QUIT_MESSAGE, "Quit Game Now?");
+			Message = Language.Get(MENU_QUIT_MESSAGE, "Quit Now?");
 
-			if (DrawItem(Language.Get(UI_BACK, "Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+			// Continue
+			if (DrawItem(Language.Get(UI_CONTINUE, "Continue")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				RequireMode = MenuMode.Pause;
-				var mapEditor = MapEditor.Instance;
-				SetSelection(mapEditor != null && mapEditor.Active ? 4 : 3);
+				SetSelection(1024);
 			}
 
-			if (DrawItem(Language.Get(UI_QUIT, "Quit"), Const.RED_BETTER)) {
-				if (editingMap) {
-					Game.IsPlaying = true;
-					Active = false;
-					FrameInput.UseAllHoldingKeys();
-					GlobalEditorUI.CloseEditorSmoothly();
-				} else {
-					Game.QuitApplication();
-				}
+			// Stop Edit
+			if (editing && DrawItem(Language.Get(UI_STOP_EDIT, "Stop Editing"))) {
+				Game.IsPlaying = true;
+				Active = false;
+				FrameInput.UseAllHoldingKeys();
+				GlobalEditorUI.CloseEditorSmoothly();
+			}
+
+			// Quit Game
+			if (DrawItem(Language.Get(UI_QUIT_GAME, "Quit Game"), Const.RED_BETTER)) {
+				Game.QuitApplication();
 			}
 
 		}

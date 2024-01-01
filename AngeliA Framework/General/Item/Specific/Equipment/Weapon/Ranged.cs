@@ -56,7 +56,7 @@ namespace AngeliaFramework {
 	[ItemCombination(typeof(iRunePoison), typeof(iNeedle), typeof(iTreeBranch), 1)]
 	public class iBlowgun : Shooting<iBlowgun.BlowgunBullet, iPoisonDarts> {
 		public class BlowgunBullet : ArrowBullet {
-			protected override int DamageType => Const.DAMAGE_POISON_TAG;
+			protected override int DamageType => SpriteTag.DAMAGE_POISON_TAG;
 		}
 	}
 

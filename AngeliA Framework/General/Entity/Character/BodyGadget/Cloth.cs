@@ -64,7 +64,7 @@ namespace AngeliaFramework {
 					);
 				}
 
-				foot.Covered = !CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) || meta.Tag != Const.SHOW_LIMB_TAG ?
+				foot.Covered = !CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) || meta.Tag != SpriteTag.SHOW_LIMB_TAG ?
 					BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 
 			}
@@ -177,7 +177,7 @@ namespace AngeliaFramework {
 			}
 
 			// Limb
-			hip.Covered = CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG ?
+			hip.Covered = CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == SpriteTag.HIDE_LIMB_TAG ?
 				 BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 
 			// Draw
@@ -238,7 +238,7 @@ namespace AngeliaFramework {
 			);
 
 			// Limb
-			hip.Covered = CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG ?
+			hip.Covered = CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == SpriteTag.HIDE_LIMB_TAG ?
 				BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 
 			// Func
@@ -456,7 +456,7 @@ namespace AngeliaFramework {
 			}
 
 			// Hide Limb
-			body.Covered = CellRenderer.TryGetMeta(suitSprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG ?
+			body.Covered = CellRenderer.TryGetMeta(suitSprite.GlobalID, out var meta) && meta.Tag == SpriteTag.HIDE_LIMB_TAG ?
 				 BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 
 		}
@@ -765,10 +765,10 @@ namespace AngeliaFramework {
 				);
 			}
 			if (defaultHideLimb) {
-				bodyPart.Covered = !CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) || meta.Tag != Const.SHOW_LIMB_TAG ?
+				bodyPart.Covered = !CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) || meta.Tag != SpriteTag.SHOW_LIMB_TAG ?
 					BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 			} else {
-				bodyPart.Covered = CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG ?
+				bodyPart.Covered = CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == SpriteTag.HIDE_LIMB_TAG ?
 					BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 			}
 			return result;
@@ -795,10 +795,10 @@ namespace AngeliaFramework {
 				);
 			}
 			if (defaultHideLimb) {
-				bodyPart.Covered = !CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) || meta.Tag != Const.SHOW_LIMB_TAG ?
+				bodyPart.Covered = !CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) || meta.Tag != SpriteTag.SHOW_LIMB_TAG ?
 					BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 			} else {
-				bodyPart.Covered = CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == Const.HIDE_LIMB_TAG ?
+				bodyPart.Covered = CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.Tag == SpriteTag.HIDE_LIMB_TAG ?
 					BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 			}
 			return result;

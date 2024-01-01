@@ -15,12 +15,22 @@ namespace AngeliaFramework {
 				get => i;
 				set => i = value;
 			}
-			public Int3 UnitPosition {
-				get => u;
-				set => u = value;
+			public int UnitPositionX {
+				get => x;
+				set => x = value;
+			}
+			public int UnitPositionY {
+				get => y;
+				set => y = value;
+			}
+			public int UnitPositionZ {
+				get => z;
+				set => z = value;
 			}
 			[JsonProperty] private int i;
-			[JsonProperty] private Int3 u;
+			[JsonProperty] private int x;
+			[JsonProperty] private int y;
+			[JsonProperty] private int z;
 		}
 
 
@@ -98,11 +108,9 @@ namespace AngeliaFramework {
 				if (!AllGlobalPositionID.Contains(id)) return;
 				CreateMetaFileListCache.Add(new Position() {
 					ID = id,
-					UnitPosition = new Int3(
-						CreateMetaFilePosCache.x * Const.MAP + x,
-						CreateMetaFilePosCache.y * Const.MAP + y,
-						CreateMetaFilePosCache.z
-					),
+					UnitPositionX = CreateMetaFilePosCache.x * Const.MAP + x,
+					UnitPositionY = CreateMetaFilePosCache.y * Const.MAP + y,
+					UnitPositionZ = CreateMetaFilePosCache.z,
 				});
 			}
 		}
@@ -114,7 +122,7 @@ namespace AngeliaFramework {
 			meta ??= JsonUtil.LoadOrCreateJson<GlobalPositionMeta>(WorldSquad.MapRoot);
 			if (meta == null || meta.Positions == null) return;
 			foreach (var pos in meta.Positions) {
-				PositionPool.TryAdd(pos.ID, pos.UnitPosition);
+				PositionPool.TryAdd(pos.ID, new Int3(pos.UnitPositionX, pos.UnitPositionY, pos.UnitPositionZ));
 			}
 		}
 

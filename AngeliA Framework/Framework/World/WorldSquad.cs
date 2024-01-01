@@ -442,7 +442,7 @@ namespace AngeliaFramework {
 				if (CellRenderer.TryGetMeta(id, out var meta)) {
 					isTrigger = meta.IsTrigger;
 					tag = meta.Tag;
-					if (meta.Tag == Const.DAMAGE_TAG) {
+					if (meta.Tag == SpriteTag.DAMAGE_TAG) {
 						CellPhysics.FillBlock(PhysicsLayer.DAMAGE, id, rect.Expand(1), true, 1);
 					}
 				}
@@ -516,7 +516,7 @@ namespace AngeliaFramework {
 				rect.height = height;
 			}
 			var tint = Byte4.LerpUnclamped(
-				Game.SkyTintBottomColor, Game.SkyTintTopColor,
+				Skybox.SkyTintBottomColor, Skybox.SkyTintTopColor,
 				Util.InverseLerp(cameraRect.yMin, cameraRect.yMax, rect.y + rect.height / 2)
 			);
 

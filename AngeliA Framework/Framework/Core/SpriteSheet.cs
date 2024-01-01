@@ -24,11 +24,11 @@ namespace AngeliaFramework {
 
 	public class FlexSprite {
 		public string Name;
-		public string SheetName;
-		public int SheetZ;
-		public FRect Rect;
 		public Int2 AngePivot;
 		public Float4 Border;
+		public FRect Rect;
+		public int SheetZ;
+		public string SheetName;
 		public SheetType SheetType;
 	}
 

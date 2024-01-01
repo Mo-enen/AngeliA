@@ -162,11 +162,6 @@ namespace AngeliaForUnity.Editor {
 					AngeUtil.DeleteAllEmptyMaps(AngePath.BuiltInMapRoot);
 					AngeUtil.DeleteAllEmptyMaps(AngePath.UserMapRoot);
 					AngeUtil.DeleteAllEmptyMaps(AngePath.DownloadMapRoot);
-					if (forceRefresh) {
-						AngeUtil.ValidAllMaps(AngePath.BuiltInMapRoot);
-						AngeUtil.ValidAllMaps(AngePath.UserMapRoot);
-						AngeUtil.ValidAllMaps(AngePath.DownloadMapRoot);
-					}
 
 					// Final
 					UniverseGenerator.CreateItemCombinationFiles();

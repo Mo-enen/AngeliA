@@ -257,26 +257,6 @@ namespace AngeliaFramework {
 		}
 
 
-		public void ValidMap (out bool changed) {
-			changed = false;
-			// Entity >><< Element
-			for (int i = 0; i < Entities.Length; i++) {
-				int entityID = Entities[i];
-				int elementID = Elements[i];
-				if (elementID == 0 && entityID != 0 && !Stage.IsValidEntityID(entityID)) {
-					Entities[i] = 0;
-					Elements[i] = entityID;
-					changed = true;
-				}
-				if (entityID == 0 && elementID != 0 && Stage.IsValidEntityID(elementID)) {
-					Elements[i] = 0;
-					Entities[i] = elementID;
-					changed = true;
-				}
-			}
-		}
-
-
 		#endregion
 
 

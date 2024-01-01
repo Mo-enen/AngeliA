@@ -83,7 +83,7 @@ namespace AngeliaFramework {
 			}
 
 			// Put Out when Hit Water
-			if (CellPhysics.Overlap(PhysicsMask.MAP, Rect, this, OperationMode.TriggerOnly, Const.WATER_TAG)) {
+			if (CellPhysics.Overlap(PhysicsMask.MAP, Rect, this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG)) {
 				PutOut();
 				Active = false;
 				return;

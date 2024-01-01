@@ -354,6 +354,13 @@ namespace AngeliaForUnity {
 			Skybox.SetColor(SKYBOX_BOTTOM, bottom.ToUnityColor());
 		}
 
+		protected override void _SetTextureForRenderer (object newTexture) {
+			var texture = newTexture as Texture2D;
+			foreach (var layer in RenderingLayers) {
+				layer.Renderer.sharedMaterial.mainTexture = texture;
+			}
+		}
+
 
 		// Texture
 		protected override object _GetTextureFromPixels (Byte4[] pixels, int width, int height) {

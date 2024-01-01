@@ -94,8 +94,8 @@ namespace AngeliaFramework {
 		[OnGameInitializeLater(64)]
 		public static void Initialize () {
 			int layerCount = PhysicsLayer.COUNT;
-			CellWidth = (Const.VIEW_RATIO * Const.MAX_HEIGHT / 1000) / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
-			CellHeight = (Const.MAX_HEIGHT) / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
+			CellWidth = (Const.VIEW_RATIO * Const.MAX_VIEW_HEIGHT / 1000) / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
+			CellHeight = (Const.MAX_VIEW_HEIGHT) / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
 			LayerCount = layerCount;
 			Layers = new Layer[layerCount];
 			for (int i = 0; i < layerCount; i++) {

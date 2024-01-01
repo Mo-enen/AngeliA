@@ -21,10 +21,11 @@ namespace AngeliaFramework {
 		public int CharSize;
 		public int CharSpace;
 		public int LineSpace;
+		public int ShadowOffset;
 		public bool Wrap;
 		public bool Clip;
 		public bool TightBackground;
-
+		public Byte4 Shadow;
 
 		public CellContent (string text = "") {
 			Text = text;
@@ -39,8 +40,8 @@ namespace AngeliaFramework {
 			Wrap = false;
 			Clip = false;
 			TightBackground = true;
+			Shadow = Const.CLEAR;
 		}
-
 
 		public CellContent SetText (string newText) {
 			Text = newText;
@@ -49,7 +50,6 @@ namespace AngeliaFramework {
 			return this;
 		}
 
-
 		public CellContent SetText (string newText, int charSize) {
 			Text = newText;
 			Chars = null;
@@ -57,7 +57,6 @@ namespace AngeliaFramework {
 			FromString = true;
 			return this;
 		}
-
 
 		public static CellContent Get (string text, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
 			Temp.CharSize = charSize;
@@ -68,9 +67,9 @@ namespace AngeliaFramework {
 			Temp.Wrap = wrap;
 			Temp.FromString = true;
 			Temp.BackgroundTint = default;
+			Temp.Shadow = Const.CLEAR;
 			return Temp;
 		}
-
 
 		public static CellContent Get (string text, Byte4 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
 			Temp.CharSize = charSize;
@@ -81,9 +80,9 @@ namespace AngeliaFramework {
 			Temp.Wrap = wrap;
 			Temp.FromString = true;
 			Temp.BackgroundTint = default;
+			Temp.Shadow = Const.CLEAR;
 			return Temp;
 		}
-
 
 		public static CellContent Get (char[] chars, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
 			Temp.CharSize = charSize;
@@ -93,9 +92,9 @@ namespace AngeliaFramework {
 			Temp.Wrap = wrap;
 			Temp.FromString = false;
 			Temp.BackgroundTint = default;
+			Temp.Shadow = Const.CLEAR;
 			return Temp;
 		}
-
 
 		public static CellContent Get (char[] chars, Byte4 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
 			Temp.CharSize = charSize;
@@ -105,9 +104,9 @@ namespace AngeliaFramework {
 			Temp.Wrap = wrap;
 			Temp.FromString = false;
 			Temp.BackgroundTint = default;
+			Temp.Shadow = Const.CLEAR;
 			return Temp;
 		}
-
 
 	}
 
@@ -256,6 +255,7 @@ namespace AngeliaFramework {
 			int minY = int.MaxValue;
 			int maxX = int.MinValue;
 			int maxY = int.MinValue;
+			int shadowOffset = Unify(content.ShadowOffset);
 			for (int i = startIndex; i < count; i++) {
 
 				char c = content.FromString ? text[i] : chars[i];
@@ -301,6 +301,13 @@ namespace AngeliaFramework {
 					if (clip && line >= maxLineCount) break;
 				}
 				var cell = DrawChar(c, x, y, charSize, charSize, color) ?? EMPTY_CELL;
+				if (content.Shadow.a > 0 && shadowOffset != 0) {
+					var shadowCell = CellRenderer.Draw(c, true, 0, 0, 0, 0, 0, 1, 1, Const.WHITE, 0);
+					shadowCell.CopyFrom(cell);
+					shadowCell.Color = content.Shadow;
+					shadowCell.Y -= shadowOffset;
+					shadowCell.Z--;
+				}
 
 				// Beam
 				if (!beamEnd && beamIndex >= 0 && i >= beamIndex) {

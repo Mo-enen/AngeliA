@@ -10,6 +10,9 @@ namespace AngeliaFramework {
 	public static partial class Util {
 
 
+		private static readonly byte[] Byte4Cache = new byte[4];
+
+
 		public static string FileToText (string path) {
 			if (!FileExists(path)) return "";
 			StreamReader sr = File.OpenText(path);
@@ -84,7 +87,28 @@ namespace AngeliaFramework {
 			if (FileExists(path)) {
 				bytes = File.ReadAllBytes(path);
 			}
-			return bytes;
+			return bytes ?? new byte[0];
+		}
+
+
+		public static Byte4[] FileToByte4 (string path) {
+			Byte4[] bytes = null;
+			if (FileExists(path)) {
+				using FileStream fs = new(path, FileMode.Open);
+				using BinaryReader sr = new(fs);
+				bytes = new Byte4[fs.Length / 4];
+				for (int i = 0; i < bytes.Length; i++) {
+					bytes[i] = new Byte4(
+						sr.ReadByte(),
+						sr.ReadByte(),
+						sr.ReadByte(),
+						sr.ReadByte()
+					);
+				}
+				fs.Close();
+				sr.Close();
+			}
+			return bytes ?? new Byte4[0];
 		}
 
 
@@ -94,6 +118,24 @@ namespace AngeliaFramework {
 			FileStream fs = new(path, FileMode.Create, FileAccess.Write);
 			bytes ??= new byte[0];
 			fs.Write(bytes, 0, bytes.Length);
+			fs.Close();
+			fs.Dispose();
+		}
+
+
+		public static void Byte4ToFile (Byte4[] bytes, string path) {
+			string parentPath = GetParentPath(path);
+			CreateFolder(parentPath);
+			FileStream fs = new(path, FileMode.Create, FileAccess.Write);
+			bytes ??= new Byte4[0];
+			for (int i = 0; i < bytes.Length; i++) {
+				var byte4 = bytes[i];
+				Byte4Cache[0] = byte4.x;
+				Byte4Cache[1] = byte4.y;
+				Byte4Cache[2] = byte4.z;
+				Byte4Cache[3] = byte4.w;
+				fs.Write(Byte4Cache, 0, 4);
+			}
 			fs.Close();
 			fs.Dispose();
 		}

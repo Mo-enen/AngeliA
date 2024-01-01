@@ -101,13 +101,11 @@ namespace AngeliaFramework {
 		internal static void OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) => Instance._OnLayerUpdate(layerIndex, isTextLayer, cells, cellCount, ref prevCellCount);
 		protected abstract void _OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount);
 
-		public static void SetSkyboxTint (Byte4 top, Byte4 bottom) {
-			ForceBackgroundTintFrame = GlobalFrame + 1;
-			SkyTintTopColor = top;
-			SkyTintBottomColor = bottom;
-			Instance._SetSkyboxTint(top, bottom);
-		}
+		internal static void SetSkyboxTint (Byte4 top, Byte4 bottom) => Instance._SetSkyboxTint(top, bottom);
 		protected abstract void _SetSkyboxTint (Byte4 top, Byte4 bottom);
+
+		internal static void SetTextureForRenderer (object newTexture) => Instance._SetTextureForRenderer(newTexture);
+		protected abstract void _SetTextureForRenderer (object newTexture);
 
 
 		// Texture

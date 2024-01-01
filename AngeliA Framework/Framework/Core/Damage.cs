@@ -6,9 +6,9 @@ namespace AngeliaFramework {
 
 
 	public struct Damage {
-		public readonly bool IsPhysical => Type == 0 || Type == Const.DAMAGE_TAG;
-		public readonly bool IsExplosive => Type == Const.DAMAGE_EXPLOSIVE_TAG;
-		public readonly bool IsMagical => Type == Const.DAMAGE_MAGICAL_TAG;
+		public readonly bool IsPhysical => Type == 0 || Type == SpriteTag.DAMAGE_TAG;
+		public readonly bool IsExplosive => Type == SpriteTag.DAMAGE_EXPLOSIVE_TAG;
+		public readonly bool IsMagical => Type == SpriteTag.DAMAGE_MAGICAL_TAG;
 		public int Amount;
 		public int Type;
 		public Entity Sender;

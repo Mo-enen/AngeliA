@@ -19,7 +19,7 @@ namespace AngeliaForUnity {
 
 		private Camera Camera;
 		private Material RectMaterial;
-		private static readonly RectCell[] Rects = new RectCell[4096];
+		private static readonly RectCell[] Rects = new RectCell[256 * 256];
 		private static readonly TextureCell[] Textures = new TextureCell[256];
 		private static int RectCount = 0;
 		private static int TextureCount = 0;
@@ -37,6 +37,15 @@ namespace AngeliaForUnity {
 			TextureCount = 0;
 			for (int i = 0; i < Textures.Length; i++) {
 				Textures[i].Texture = null;
+			}
+		}
+
+
+		[OnGameUpdatePauseless]
+		public static void OnGameUpdatePauseless () {
+			if (Game.IsPausing) {
+				RectCount = 0;
+				TextureCount = 0;
 			}
 		}
 

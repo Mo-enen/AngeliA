@@ -105,7 +105,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillEntity(IsGrounded ? PhysicsLayer.LEVEL : PhysicsLayer.ENVIRONMENT, this, true, Const.WATER_TAG);
+			CellPhysics.FillEntity(IsGrounded ? PhysicsLayer.LEVEL : PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.WATER_TAG);
 		}
 
 
@@ -128,7 +128,7 @@ namespace AngeliaFramework {
 			// Try Merge
 			if (CellPhysics.GetEntity(
 					TypeID, IsGrounded ? new IRect(X + Width / 2, Y, 1, 1) : Rect,
-					PhysicsMask.MAP, this, OperationMode.TriggerOnly, Const.WATER_TAG
+					PhysicsMask.MAP, this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
 				) is Water overlapWater
 			) {
 				MergeWater(this, overlapWater);
@@ -141,22 +141,22 @@ namespace AngeliaFramework {
 				// Get Neighbors
 				WaterLeft = CellPhysics.GetEntity(
 					TypeID, rect.Shift(-Const.CEL, 0), PhysicsMask.LEVEL,
-					this, OperationMode.TriggerOnly, Const.WATER_TAG
+					this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
 				) as Water;
 
 				WaterRight = CellPhysics.GetEntity(
 					TypeID, rect.Shift(Const.CEL, 0), PhysicsMask.LEVEL,
-					this, OperationMode.TriggerOnly, Const.WATER_TAG
+					this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
 				) as Water;
 
 				WaterDown = CellPhysics.GetEntity(
 					TypeID, rect.Shift(0, -Const.CEL), PhysicsMask.LEVEL,
-					this, OperationMode.TriggerOnly, Const.WATER_TAG
+					this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
 				) as Water;
 
 				WaterUp = CellPhysics.GetEntity(
 					TypeID, rect.Shift(0, Const.CEL), PhysicsMask.LEVEL,
-					this, OperationMode.TriggerOnly, Const.WATER_TAG
+					this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
 				) as Water;
 
 				// Transfer
@@ -463,7 +463,7 @@ namespace AngeliaFramework {
 		private bool GroundCheck () {
 			if (IsGrounded && CellPhysics.Overlap(
 				PhysicsMask.LEVEL, new IRect(X + 1, Y - Const.CEL + 1, Const.CEL - 2, Const.CEL - 2),
-				out var hit, this, OperationMode.TriggerOnly, Const.WATER_TAG
+				out var hit, this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
 			) && hit.Entity is Water water && water.IsGrounded) return true;
 			return !CellPhysics.RoomCheck(
 				PhysicsMask.LEVEL, Rect, this, Direction4.Down

@@ -66,11 +66,11 @@ namespace AngeliaFramework {
 			base.FillPhysics();
 			CellPhysics.FillEntity(
 				PhysicsLayer.ENVIRONMENT, this, true,
-				DirectionHorizontal == Direction2.Left ? Const.ONEWAY_RIGHT_TAG : Const.ONEWAY_LEFT_TAG
+				DirectionHorizontal == Direction2.Left ? SpriteTag.ONEWAY_RIGHT_TAG : SpriteTag.ONEWAY_LEFT_TAG
 			);
 			CellPhysics.FillEntity(
 				PhysicsLayer.ENVIRONMENT, this, true,
-				DirectionVertical == Direction2.Down ? Const.ONEWAY_UP_TAG : Const.ONEWAY_DOWN_TAG
+				DirectionVertical == Direction2.Down ? SpriteTag.ONEWAY_UP_TAG : SpriteTag.ONEWAY_DOWN_TAG
 			);
 		}
 

@@ -59,8 +59,6 @@ namespace AngeliaFramework {
 				}
 			}
 		}
-		public static Byte4 SkyTintTopColor { get; private set; }
-		public static Byte4 SkyTintBottomColor { get; private set; }
 		public static int MusicVolume {
 			get => _MusicVolume.Value;
 			set => _MusicVolume.Value = value;
@@ -73,20 +71,6 @@ namespace AngeliaFramework {
 		public static float ScaledSoundVolume => GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
 		public static int ProcedureAudioVolume { get; set; } = 1000;
 		public static float CurrentFPS { get; private set; } = 1f;
-		public static ColorGradient SkyTintTop { get; set; } = new ColorGradient(
-				new ColorGradient.Data(new Byte4(10, 12, 31, 255), 0f),
-				new ColorGradient.Data(new Byte4(13, 49, 76, 255), 0.25f),
-				new ColorGradient.Data(new Byte4(29, 156, 219, 255), 0.5f),
-				new ColorGradient.Data(new Byte4(13, 49, 76, 255), 0.75f),
-				new ColorGradient.Data(new Byte4(10, 12, 31, 255), 1f)
-			);
-		public static ColorGradient SkyTintBottom { get; set; } = new ColorGradient(
-			new ColorGradient.Data(new Byte4(10, 12, 31, 255), 0f),
-			new ColorGradient.Data(new Byte4(27, 69, 101, 255), 0.25f),
-			new ColorGradient.Data(new Byte4(52, 171, 230, 255), 0.5f),
-			new ColorGradient.Data(new Byte4(27, 69, 101, 255), 0.75f),
-			new ColorGradient.Data(new Byte4(10, 12, 31, 255), 1f)
-		);
 
 		// Event
 		private static event System.Action OnGameRestart;
@@ -100,7 +84,6 @@ namespace AngeliaFramework {
 
 		// Data
 		private static readonly Dictionary<int, object> ResourcePool = new();
-		private static int ForceBackgroundTintFrame = int.MinValue;
 		private static int? RequireRestartWithPlayerID = null;
 		private static long LastGraphicUpdateTime = 0;
 		private static Stopwatch GameWatch;
@@ -217,7 +200,7 @@ namespace AngeliaFramework {
 				long currentTime = GameWatch.ElapsedMilliseconds;
 				float deltaTime = (currentTime - LastGraphicUpdateTime) / 1000f;
 				LastGraphicUpdateTime = currentTime;
-				CurrentFPS = 1f / Util.Max(deltaTime, 0.000001f);
+				CurrentFPS = Util.LerpUnclamped(CurrentFPS, 1f / Util.Max(deltaTime, 0.000001f), 0.1f);
 			}
 		}
 
@@ -289,7 +272,6 @@ namespace AngeliaFramework {
 
 		[OnGameUpdatePauseless]
 		internal static void RefreshGame () {
-
 			// Load or Stop Music
 			bool requireMusic = IsPlaying && MusicVolume > 0 && !MapEditor.IsEditing;
 			if (requireMusic != IsMusicPlaying) {
@@ -298,16 +280,6 @@ namespace AngeliaFramework {
 				} else {
 					PauseMusic();
 				}
-			}
-
-			// Background Tint
-			if (GlobalFrame % 36000 == 0 && GlobalFrame >= ForceBackgroundTintFrame) {
-				var date = System.DateTime.Now;
-				float time01 = Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
-				SetSkyboxTint(
-					SkyTintTop.Evaluate(time01),
-					SkyTintBottom.Evaluate(time01)
-				);
 			}
 		}
 

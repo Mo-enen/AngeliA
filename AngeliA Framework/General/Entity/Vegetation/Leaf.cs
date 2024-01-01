@@ -22,7 +22,7 @@ namespace AngeliaFramework {
 
 		public override void FillPhysics () {
 			base.FillPhysics();
-			CellPhysics.FillBlock(PhysicsLayer.ENVIRONMENT, TypeID, Rect, true, Const.ONEWAY_UP_TAG);
+			CellPhysics.FillBlock(PhysicsLayer.ENVIRONMENT, TypeID, Rect, true, SpriteTag.ONEWAY_UP_TAG);
 		}
 
 		public override void FrameUpdate () {
@@ -39,7 +39,7 @@ namespace AngeliaFramework {
 			CellPhysics.FillBlock(
 				PhysicsLayer.ENVIRONMENT, TypeID,
 				Rect.Shrink(0, 0, 0, Height / 2),
-				true, Const.CLIMB_TAG
+				true, SpriteTag.CLIMB_TAG
 			);
 		}
 

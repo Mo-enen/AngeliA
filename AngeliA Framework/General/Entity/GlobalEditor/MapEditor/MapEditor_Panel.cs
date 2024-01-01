@@ -489,9 +489,9 @@ namespace AngeliaFramework {
 				if (SelectingPaletteListIndex < 0 || SelectingPaletteListIndex >= EditorMeta.PinnedLists.Count) return;
 			}
 
-			var items = showingBuiltIn ?
-				PaletteGroups[SelectingPaletteGroupIndex].Items :
-				EditorMeta.PinnedLists[SelectingPaletteListIndex].Items;
+			var builtInItems = PaletteGroups[SelectingPaletteGroupIndex].Items;
+			var listItems = EditorMeta.PinnedLists[SelectingPaletteListIndex].Items;
+			int itemCount = showingBuiltIn ? builtInItems.Count : listItems.Count;
 			int ITEM_SIZE = Unify(46);
 			int ITEM_GAP = Unify(3);
 			int PADDING = Unify(6);
@@ -514,8 +514,8 @@ namespace AngeliaFramework {
 			bool mouseInPanel = contentRect.Contains(FrameInput.MouseGlobalPosition);
 			contentRect = contentRect.Shrink(PADDING);
 			int columnCount = contentRect.width / (ITEM_SIZE + ITEM_GAP);
-			int rowCount = items.Count / columnCount + (items.Count % columnCount != 0 ? 1 : 0);
-			int pageRowCount = contentRect.height / (ITEM_SIZE + ITEM_GAP) + (items.Count % columnCount != 0 ? 1 : 0);
+			int rowCount = itemCount / columnCount + (itemCount % columnCount != 0 ? 1 : 0);
+			int pageRowCount = contentRect.height / (ITEM_SIZE + ITEM_GAP) + (itemCount % columnCount != 0 ? 1 : 0);
 			if (pageRowCount > rowCount + EXTRA_ROW) {
 				PaletteScrollY = 0;
 			} else {
@@ -525,9 +525,11 @@ namespace AngeliaFramework {
 			int offsetX = contentRect.x + (contentRect.width - columnCount * ITEM_SIZE - (columnCount - 1) * ITEM_GAP) / 2;
 			if (pageRowCount < rowCount + EXTRA_ROW) offsetX -= SCROLL_BAR_WIDTH / 2;
 			var rect = new IRect(0, 0, ITEM_SIZE, ITEM_SIZE);
-			for (int index = startIndex; index < items.Count; index++) {
+			for (int index = startIndex; index < itemCount; index++) {
 
-				var pal = items[index];
+				var pal =
+					showingBuiltIn ? builtInItems[index] :
+					PalettePool.TryGetValue(listItems[index], out var _listItem) ? _listItem : null;
 				if (pal == null) continue;
 
 				rect.x = offsetX + (index % columnCount) * (ITEM_SIZE + ITEM_GAP);
@@ -612,15 +614,15 @@ namespace AngeliaFramework {
 				targetReorderReleaseIndex != DraggingForReorderPaletteItem &&
 				targetReorderReleaseIndex != DraggingForReorderPaletteItem + 1 &&
 				targetReorderReleaseIndex >= 0 &&
-				targetReorderReleaseIndex <= items.Count &&
+				targetReorderReleaseIndex <= itemCount &&
 				DraggingForReorderPaletteItem >= 0 &&
-				DraggingForReorderPaletteItem < items.Count &&
+				DraggingForReorderPaletteItem < itemCount &&
 				!FrameInput.MouseLeftButton
 			) {
-				var movingItem = items[DraggingForReorderPaletteItem];
-				items.RemoveAt(DraggingForReorderPaletteItem);
+				var movingItem = listItems[DraggingForReorderPaletteItem];
+				listItems.RemoveAt(DraggingForReorderPaletteItem);
 				if (targetReorderReleaseIndex > DraggingForReorderPaletteItem) targetReorderReleaseIndex--;
-				items.Insert(targetReorderReleaseIndex, movingItem);
+				listItems.Insert(targetReorderReleaseIndex, movingItem);
 			}
 
 			// Menu
@@ -841,14 +843,14 @@ namespace AngeliaFramework {
 			int BUTTON_BORDER = Unify(2);
 			int BUTTON_PADDING = Unify(6);
 			int ITEM_SIZE = Unify(64) + BUTTON_PADDING;
-			int COLUMN = QuickLaneRect.width / ITEM_SIZE;
+			int COLUMN = CheckPointLaneRect.width / ITEM_SIZE;
 			int ROW = CheckAltarIDs.Count.CeilDivide(COLUMN);
-			int pageLineCount = QuickLaneRect.height / ITEM_SIZE;
-			int offsetX = (QuickLaneRect.width - COLUMN * ITEM_SIZE) / 2;
+			int pageLineCount = CheckPointLaneRect.height / ITEM_SIZE;
+			int offsetX = (CheckPointLaneRect.width - COLUMN * ITEM_SIZE) / 2;
 			bool hasTask = FrameTask.HasTask();
 
 			// BG
-			CellRenderer.Draw(Const.PIXEL, QuickLaneRect, Const.BLACK, PANEL_Z + 1);
+			CellRenderer.Draw(Const.PIXEL, CheckPointLaneRect, Const.BLACK, PANEL_Z + 1);
 
 			// Scroll
 			if (FrameInput.MouseWheelDelta != 0) QuickLaneScrollY -= FrameInput.MouseWheelDelta;
@@ -863,12 +865,12 @@ namespace AngeliaFramework {
 
 				// Button
 				var btnRect = new IRect(
-					QuickLaneRect.x + (index % COLUMN) * ITEM_SIZE + offsetX,
-					QuickLaneRect.yMax - ((index / COLUMN) + 1) * ITEM_SIZE,
+					CheckPointLaneRect.x + (index % COLUMN) * ITEM_SIZE + offsetX,
+					CheckPointLaneRect.yMax - ((index / COLUMN) + 1) * ITEM_SIZE,
 					ITEM_SIZE, ITEM_SIZE
 				).Shrink(BUTTON_PADDING);
 
-				if (btnRect.yMax < QuickLaneRect.y) break;
+				if (btnRect.yMax < CheckPointLaneRect.y) break;
 
 				if (
 					CellRendererGUI.Button(
@@ -940,7 +942,7 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private void ShowPaletteListMenu (MapEditorMeta.PinnedList list) {
+		private void ShowPaletteListMenu (PinnedList list) {
 
 			GenericPopupUI.BeginPopup();
 
@@ -957,9 +959,9 @@ namespace AngeliaFramework {
 				// Click on Empty
 				// Create List
 				GenericPopupUI.AddItem(Language.Get(MENU_PALETTE_CREATE_LIST, "Create List"), () => {
-					EditorMeta.PinnedLists.Add(new MapEditorMeta.PinnedList() {
+					EditorMeta.PinnedLists.Add(new PinnedList() {
 						Icon = UI_DEFAULT_LIST_COVER,
-						Items = new List<PaletteItem>(),
+						Items = new List<int>(),
 					});
 				});
 			}
@@ -975,7 +977,7 @@ namespace AngeliaFramework {
 			// Add to Lists
 			for (int i = 0; i < EditorMeta.PinnedLists.Count; i++) {
 				var list = EditorMeta.PinnedLists[i];
-				bool hasItem = list.Items.Contains(pal);
+				bool hasItem = list.Items.Contains(pal.ID);
 				GenericPopupUI.AddItem(
 					!hasItem ?
 						Language.Get(MENU_PALETTE_ADD_TO_LIST, "Add to List:") :
@@ -984,9 +986,9 @@ namespace AngeliaFramework {
 					() => {
 						if (!hasItem) {
 							if (list.Items.Count == 0) list.Icon = pal.ArtworkID;
-							list.Items.Add(pal);
+							list.Items.Add(pal.ID);
 						} else {
-							list.Items.Remove(pal);
+							list.Items.Remove(pal.ID);
 							if (list.Items.Count == 0) list.Icon = UI_DEFAULT_LIST_COVER;
 						}
 					}, true, hasItem
@@ -1000,9 +1002,9 @@ namespace AngeliaFramework {
 			// Add to New List
 			GenericPopupUI.AddItem(
 				Language.Get(MENU_PALETTE_ADD_TO_NEW_LIST, "Add to New List"), () => {
-					EditorMeta.PinnedLists.Add(new MapEditorMeta.PinnedList() {
+					EditorMeta.PinnedLists.Add(new PinnedList() {
 						Icon = pal.ArtworkID,
-						Items = new List<PaletteItem>() { pal },
+						Items = new List<int>() { pal.ID },
 					});
 				}
 			);

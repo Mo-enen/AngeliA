@@ -100,7 +100,7 @@ namespace AngeliaFramework {
 					if (receiver is Entity e && !e.Active) continue;
 					var hitRect = hits[i].Rect;
 					if (!Util.OverlapRectCircle(Radius, X, Y, hitRect.xMin, hitRect.yMin, hitRect.xMax, hitRect.yMax)) continue;
-					receiver.TakeDamage(new Damage(Damage, Sender, Const.DAMAGE_EXPLOSIVE_TAG));
+					receiver.TakeDamage(new Damage(Damage, Sender, SpriteTag.DAMAGE_EXPLOSIVE_TAG));
 				}
 			}
 		}

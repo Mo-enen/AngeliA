@@ -250,10 +250,62 @@ namespace AngeliaFramework {
 		// Init
 		[OnGameInitialize(int.MinValue)]
 		internal static void Initialize () {
-			var sheet = JsonUtil.LoadOrCreateJson<SpriteSheet>(AngePath.SheetRoot);
-			if (sheet == null) return;
-			InitializePool(sheet);
+			InitializePool();
 			InitializeLayers();
+		}
+
+
+		private static void InitializeLayers () {
+
+			// Create Layers
+			for (int i = 0; i < RenderLayer.COUNT; i++) {
+				int capacity = RENDER_CAPACITY[i.Clamp(0, RENDER_CAPACITY.Length - 1)];
+				string name = LAYER_NAMES[i];
+				int order = i == RenderLayer.TOP_UI ? 2048 : i;
+				bool uiLayer = i == RenderLayer.UI || i == RenderLayer.TOP_UI;
+				Layers[i] = CreateLayer(name, uiLayer, order, capacity, textLayer: false);
+				Game.OnRenderingLayerCreated(i, name, order, capacity);
+			}
+
+			// Text Layer
+			int textLayerCount = Game.TextLayerCount;
+			const int TEXT_CAPACITY = 2048;
+			TextLayers = new TextLayer[textLayerCount];
+			for (int i = 0; i < textLayerCount; i++) {
+				string name = Game.GetTextLayerName(i);
+				int sortingOrder = Layers.Length + i;
+				var tLayer = TextLayers[i] = CreateLayer(
+					name,
+					uiLayer: true,
+					sortingOrder,
+					TEXT_CAPACITY,
+					textLayer: true
+				) as TextLayer;
+				tLayer.TextSize = Game.GetFontSize(i).Clamp(42, int.MaxValue);
+				Game.OnTextLayerCreated(i, name, sortingOrder, TEXT_CAPACITY);
+			}
+
+			// Func
+			static Layer CreateLayer (string name, bool uiLayer, int sortingOrder, int renderCapacity, bool textLayer) {
+				var cells = new Cell[renderCapacity];
+				for (int i = 0; i < renderCapacity; i++) {
+					cells[i] = new Cell() {
+						Index = -1,
+						BorderSide = Alignment.Full,
+					};
+				}
+				var layer = textLayer ? new TextLayer() : new Layer();
+				layer.Name = name;
+				layer.Cells = cells;
+				layer.CellCount = renderCapacity;
+				layer.FocusedCell = 0;
+				layer.PrevCellCount = 0;
+				layer.SortedIndex = 0;
+				layer.SortingOrder = sortingOrder;
+				layer.UiLayer = uiLayer;
+				return layer;
+			}
+
 		}
 
 
@@ -329,7 +381,10 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public static void InitializePool (SpriteSheet sheet) {
+		public static void InitializePool () {
+
+			var sheet = JsonUtil.LoadOrCreateJson<SpriteSheet>(AngePath.SheetRoot);
+			if (sheet == null) return;
 
 			SheetIDMap.Clear();
 			MetaPool.Clear();
@@ -377,60 +432,6 @@ namespace AngeliaFramework {
 					}
 				}
 			}
-		}
-
-
-		public static void InitializeLayers () {
-
-			// Create Layers
-			for (int i = 0; i < RenderLayer.COUNT; i++) {
-				int capacity = RENDER_CAPACITY[i.Clamp(0, RENDER_CAPACITY.Length - 1)];
-				string name = LAYER_NAMES[i];
-				int order = i == RenderLayer.TOP_UI ? 2048 : i;
-				bool uiLayer = i == RenderLayer.UI || i == RenderLayer.TOP_UI;
-				Layers[i] = CreateLayer(name, uiLayer, order, capacity, textLayer: false);
-				Game.OnRenderingLayerCreated(i, name, order, capacity);
-			}
-
-			// Text Layer
-			int textLayerCount = Game.TextLayerCount;
-			const int TEXT_CAPACITY = 2048;
-			TextLayers = new TextLayer[textLayerCount];
-			for (int i = 0; i < textLayerCount; i++) {
-				string name = Game.GetTextLayerName(i);
-				int sortingOrder = Layers.Length + i;
-				var tLayer = TextLayers[i] = CreateLayer(
-					name,
-					uiLayer: true,
-					sortingOrder,
-					TEXT_CAPACITY,
-					textLayer: true
-				) as TextLayer;
-				tLayer.TextSize = Game.GetFontSize(i).Clamp(42, int.MaxValue);
-				Game.OnTextLayerCreated(i, name, sortingOrder, TEXT_CAPACITY);
-			}
-
-			// Func
-			static Layer CreateLayer (string name, bool uiLayer, int sortingOrder, int renderCapacity, bool textLayer) {
-				var cells = new Cell[renderCapacity];
-				for (int i = 0; i < renderCapacity; i++) {
-					cells[i] = new Cell() {
-						Index = -1,
-						BorderSide = Alignment.Full,
-					};
-				}
-				var layer = textLayer ? new TextLayer() : new Layer();
-				layer.Name = name;
-				layer.Cells = cells;
-				layer.CellCount = renderCapacity;
-				layer.FocusedCell = 0;
-				layer.PrevCellCount = 0;
-				layer.SortedIndex = 0;
-				layer.SortingOrder = sortingOrder;
-				layer.UiLayer = uiLayer;
-				return layer;
-			}
-
 		}
 
 

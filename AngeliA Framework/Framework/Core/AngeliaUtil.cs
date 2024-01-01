@@ -49,31 +49,31 @@ namespace AngeliaFramework {
 
 		public static int GetOnewayTag (Direction4 gateDirection) =>
 		gateDirection switch {
-			Direction4.Down => Const.ONEWAY_DOWN_TAG,
-			Direction4.Up => Const.ONEWAY_UP_TAG,
-			Direction4.Left => Const.ONEWAY_LEFT_TAG,
-			Direction4.Right => Const.ONEWAY_RIGHT_TAG,
-			_ => Const.ONEWAY_UP_TAG,
+			Direction4.Down => SpriteTag.ONEWAY_DOWN_TAG,
+			Direction4.Up => SpriteTag.ONEWAY_UP_TAG,
+			Direction4.Left => SpriteTag.ONEWAY_LEFT_TAG,
+			Direction4.Right => SpriteTag.ONEWAY_RIGHT_TAG,
+			_ => SpriteTag.ONEWAY_UP_TAG,
 		};
 
 
-		public static bool IsOnewayTag (int tag) => tag == Const.ONEWAY_UP_TAG || tag == Const.ONEWAY_DOWN_TAG || tag == Const.ONEWAY_LEFT_TAG || tag == Const.ONEWAY_RIGHT_TAG;
+		public static bool IsOnewayTag (int tag) => tag == SpriteTag.ONEWAY_UP_TAG || tag == SpriteTag.ONEWAY_DOWN_TAG || tag == SpriteTag.ONEWAY_LEFT_TAG || tag == SpriteTag.ONEWAY_RIGHT_TAG;
 
 
 		public static bool TryGetOnewayDirection (int tag, out Direction4 direction) {
-			if (tag == Const.ONEWAY_LEFT_TAG) {
+			if (tag == SpriteTag.ONEWAY_LEFT_TAG) {
 				direction = Direction4.Left;
 				return true;
 			}
-			if (tag == Const.ONEWAY_RIGHT_TAG) {
+			if (tag == SpriteTag.ONEWAY_RIGHT_TAG) {
 				direction = Direction4.Right;
 				return true;
 			}
-			if (tag == Const.ONEWAY_DOWN_TAG) {
+			if (tag == SpriteTag.ONEWAY_DOWN_TAG) {
 				direction = Direction4.Down;
 				return true;
 			}
-			if (tag == Const.ONEWAY_UP_TAG) {
+			if (tag == SpriteTag.ONEWAY_UP_TAG) {
 				direction = Direction4.Up;
 				return true;
 			}
@@ -431,10 +431,11 @@ namespace AngeliaFramework {
 
 		public static string RuleDigitToString (int digit) {
 			// ↖↑↗←→↙↓↘,... 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty NaN=Error
+			//              000        001        010           011       100
 			// eg: "02022020,11111111,01022020,02012020,..."
 			// digit: int32 10000000 000 000 000 000 000 000 000 000
 			//              01234567 890 123 456 789 012 345 678 901
-			//                         1             2            3
+			//              000000000001 111 111 111 222 222 222 233
 			if (!digit.GetBit(0)) return RULE_TILE_ERROR;
 			var builder = new StringBuilder();
 			for (int i = 0; i < 8; i++) {
@@ -450,11 +451,11 @@ namespace AngeliaFramework {
 
 		public static int RuleStringToDigit (string str) {
 			// ↖↑↗←→↙↓↘,... 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty NaN=Error
-			//                       000        001        010           011       100
+			//              000        001        010           011       100
 			// eg: "02022020,11111111,01022020,02012020,..."
 			// digit: int32 10000000 000 000 000 000 000 000 000 000
 			//              01234567 890 123 456 789 012 345 678 901
-			//                         1             2            3
+			//              000000000001 111 111 111 222 222 222 233
 			if (string.IsNullOrEmpty(str) || str.Length < 8) return 0;
 			int digit = 0;
 			digit.SetBit(0, true);
@@ -536,18 +537,6 @@ namespace AngeliaFramework {
 							Util.DeleteFile(path);
 						}
 					} catch (System.Exception ex) { Game.LogException(ex); }
-				}
-			}
-		}
-
-
-		public static void ValidAllMaps (string mapRoot) {
-			var world = new World();
-			foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{AngePath.MAP_FILE_EXT}")) {
-				if (!world.LoadFromDisk(path)) continue;
-				world.ValidMap(out bool changed);
-				if (changed) {
-					world.SaveToDisk(mapRoot);
 				}
 			}
 		}

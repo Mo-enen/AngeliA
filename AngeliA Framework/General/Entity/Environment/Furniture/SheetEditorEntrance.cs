@@ -25,10 +25,10 @@ namespace AngeliaFramework {
 
 		void IActionTarget.Invoke () {
 			if (FrameTask.HasTask()) return;
-			SheetEditor.OpenSheetEditorSmoothly();
+			GlobalEditorUI.OpenEditorSmoothly(SheetEditor.TYPE_ID);
 		}
 
-		bool IActionTarget.AllowInvoke () => !FrameTask.HasTask() && !SheetEditor.IsEditing;
+		bool IActionTarget.AllowInvoke () => !FrameTask.HasTask() && !SheetEditor.IsActived;
 
 	}
 }

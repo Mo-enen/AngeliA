@@ -894,7 +894,7 @@ namespace AngeliaFramework {
 				up ? Rect.Shift(0, ClimbSpeedY) : Rect,
 				this,
 				OperationMode.TriggerOnly,
-				Const.CLIMB_TAG
+				SpriteTag.CLIMB_TAG
 			)) {
 				return true;
 			}
@@ -904,7 +904,7 @@ namespace AngeliaFramework {
 				out var info,
 				this,
 				OperationMode.TriggerOnly,
-				Const.CLIMB_STABLE_TAG
+				SpriteTag.CLIMB_STABLE_TAG
 			)) {
 				ClimbPositionCorrect = info.Rect.CenterInt().x;
 				return true;
@@ -929,15 +929,15 @@ namespace AngeliaFramework {
 				var hits = CellPhysics.OverlapAll(PhysicsMask.MAP, rect, out int count, this, OperationMode.ColliderOnly);
 				for (int i = 0; i < count; i++) {
 					var hit = hits[i];
-					if (hit.Tag == Const.NO_SLIDE_TAG) continue;
-					if (hit.Tag == Const.GRAB_TOP_TAG) continue;
-					if (hit.Tag == Const.GRAB_SIDE_TAG) continue;
+					if (hit.Tag == SpriteTag.NO_SLIDE_TAG) continue;
+					if (hit.Tag == SpriteTag.GRAB_TOP_TAG) continue;
+					if (hit.Tag == SpriteTag.GRAB_SIDE_TAG) continue;
 					return true;
 				}
 				return false;
 			} else {
 				return CellPhysics.Overlap(
-					PhysicsMask.MAP, rect, this, OperationMode.ColliderOnly, Const.SLIDE_TAG
+					PhysicsMask.MAP, rect, this, OperationMode.ColliderOnly, SpriteTag.SLIDE_TAG
 				);
 			}
 		}
@@ -959,10 +959,10 @@ namespace AngeliaFramework {
 			);
 			if (CellPhysics.Overlap(
 				PhysicsMask.MAP, rect, out var hit, this,
-				OperationMode.ColliderOnly, Const.GRAB_TOP_TAG
+				OperationMode.ColliderOnly, SpriteTag.GRAB_TOP_TAG
 			) || CellPhysics.Overlap(
 				PhysicsMask.MAP, rect, out hit, this,
-				OperationMode.ColliderOnly, Const.GRAB_TAG
+				OperationMode.ColliderOnly, SpriteTag.GRAB_TAG
 			)) {
 				grabbingY = hit.Rect.yMin - (GrowingHeight * GrabTopHeightAmount / 1000);
 				return true;
@@ -992,13 +992,13 @@ namespace AngeliaFramework {
 				Hitbox.height / 4
 			);
 			bool allowGrab =
-				(AllowCheck(rectD, Const.GRAB_SIDE_TAG) || AllowCheck(rectD, Const.GRAB_TAG)) &&
-				(AllowCheck(rectU, Const.GRAB_SIDE_TAG) || AllowCheck(rectU, Const.GRAB_TAG));
+				(AllowCheck(rectD, SpriteTag.GRAB_SIDE_TAG) || AllowCheck(rectD, SpriteTag.GRAB_TAG)) &&
+				(AllowCheck(rectU, SpriteTag.GRAB_SIDE_TAG) || AllowCheck(rectU, SpriteTag.GRAB_TAG));
 			if (allowGrab) {
 				allowMoveUp = CellPhysics.Overlap(
-					PhysicsMask.MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, Const.GRAB_SIDE_TAG
+					PhysicsMask.MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, SpriteTag.GRAB_SIDE_TAG
 				) || CellPhysics.Overlap(
-					PhysicsMask.MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, Const.GRAB_TAG
+					PhysicsMask.MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, SpriteTag.GRAB_TAG
 				);
 			}
 			return allowGrab;
@@ -1012,7 +1012,7 @@ namespace AngeliaFramework {
 			if (CellPhysics.Overlap(PhysicsMask.MAP, rect, this)) return false;
 			var hits = CellPhysics.OverlapAll(
 				PhysicsMask.MAP, rect, out int count, this,
-				OperationMode.TriggerOnly, Const.ONEWAY_UP_TAG
+				OperationMode.TriggerOnly, SpriteTag.ONEWAY_UP_TAG
 			);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
@@ -1046,7 +1046,7 @@ namespace AngeliaFramework {
 				var hits = CellPhysics.OverlapAll(
 					PhysicsMask.MAP,
 					new IRect(x, Y + 4 - Const.CEL / 4, width, Const.CEL / 4), out int count,
-					this, OperationMode.ColliderOnly, Const.GRAB_TOP_TAG
+					this, OperationMode.ColliderOnly, SpriteTag.GRAB_TOP_TAG
 				);
 				for (int i = 0; i < count; i++) {
 					var hit = hits[i];
