@@ -205,8 +205,9 @@ namespace AngeliaFramework {
 
 
 		public static void BeginPopup () {
-			if (Instance == null || Instance.Active) return;
+			if (Instance == null) return;
 			Stage.SpawnEntity(Instance.TypeID, 0, 0);
+			if (Instance.Active) Instance.OnInactivated();
 			Instance.ItemCount = 0;
 			Instance.OffsetX = FrameInput.MouseGlobalPosition.x - CellRenderer.CameraRect.x;
 			Instance.OffsetY = FrameInput.MouseGlobalPosition.y - CellRenderer.CameraRect.y;

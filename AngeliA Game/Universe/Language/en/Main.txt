@@ -1,5 +1,4 @@
-﻿UI.SheetTab.File:File
-UI.SheetTab.Palette:Palette
+﻿Menu.SheetEditor.DeleteUnitMSG:Delete unit?
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
@@ -74,6 +73,11 @@ Menu.Setting.SoundVolume:Sound Volume
 Menu.Setting.UseControlHint:Show Control Hint
 Menu.Setting.UseGamepadHint:Show Bottom Left Gamepad
 Menu.Setting.VSync:V-Sync
+Menu.SheetEditor.CreateAtlas:Create Atlas
+Menu.SheetEditor.CreateUnit:Create Sprite
+Menu.SheetEditor.DeleteAtlasMSG:Delete atlas ? This will also delete files inside the atlas.
+Menu.SheetEditor.NewAtlasName:New Atlas
+Menu.SheetEditor.NewSpriteName:New Sprite
 Notify.MapGeneratedNotify:Level Generated
 Palette.Background:Background
 Palette.Character:Character
@@ -146,6 +150,8 @@ UI.Restart:Restart
 UI.Right:Right
 UI.Save:Save
 UI.Setting:Setting
+UI.SheetTab.File:File
+UI.SheetTab.Palette:Palette
 UI.Stop:Stop
 UI.StopEdit:Stop Edit
 UI.Suit.Bodysuit:Cloth

@@ -14,9 +14,9 @@ namespace AngeliaFramework {
 
 
 		// Comparer
-		private class GroupComparer : IComparer<EditalbeGroup> {
-			public static readonly GroupComparer Instance = new();
-			public int Compare (EditalbeGroup a, EditalbeGroup b) => a.Order.CompareTo(b.Order);
+		private class AtlasComparer : IComparer<EditalbeAtlas> {
+			public static readonly AtlasComparer Instance = new();
+			public int Compare (EditalbeAtlas a, EditalbeAtlas b) => a.Order.CompareTo(b.Order);
 		}
 
 
@@ -34,9 +34,10 @@ namespace AngeliaFramework {
 
 		// Data
 		[JsonObject(MemberSerialization.OptIn)]
-		private class EditalbeGroup {
+		private class EditalbeAtlas {
 			public List<EditableUnit> Units = new();
 			public string Guid = "";
+			public bool IsDirty = false;
 			[JsonProperty] public int Order = 0;
 			[JsonProperty] public int SheetZ = 0;
 			[JsonProperty] public string Name = "";
@@ -48,6 +49,7 @@ namespace AngeliaFramework {
 		private class EditableUnit {
 			public List<EditableSprite> Sprites = new();
 			public string Guid = "";
+			public bool IsDirty = false;
 			[JsonProperty] public int Order = 0;
 			[JsonProperty] public string Name = "";
 			[JsonProperty] public GroupType GroupType = GroupType.General;
@@ -66,19 +68,20 @@ namespace AngeliaFramework {
 			[JsonProperty] public int BorderU;
 			[JsonProperty] public int Width;
 			[JsonProperty] public int Height;
-			[JsonProperty] public bool IsTrigger;
-			[JsonProperty] public string RuleString;
-			[JsonProperty] public string TagString;
-			[JsonProperty] public bool LoopStart = false;
+			[JsonProperty] public bool IsTrigger = false;
 			[JsonProperty] public bool NoCollider = false;
+			[JsonProperty] public string TagString = "";
+			[JsonProperty] public string RuleString = "";
+			[JsonProperty] public bool LoopStart = false;
 			[JsonProperty] public int OffsetZ = 0;
 
 			public string Guid = "";
+			public bool IsDirty = false;
 			public Byte4[] Pixels;
 
 			private static readonly StringBuilder NameBuilder = new();
 
-			public string GetFullName (EditalbeGroup group, EditableUnit unit, int index) {
+			public string GetFullName (EditalbeAtlas atlas, EditableUnit unit, int index) {
 
 				NameBuilder.Clear();
 				NameBuilder.Append(unit.Name);
@@ -114,7 +117,7 @@ namespace AngeliaFramework {
 					}
 				}
 
-				if (group.SheetType == SheetType.Level && NoCollider) {
+				if (atlas.SheetType == SheetType.Level && NoCollider) {
 					NameBuilder.Append(" #noCollider");
 				}
 
@@ -143,8 +146,14 @@ namespace AngeliaFramework {
 		public new static bool IsActived => Instance != null && Instance.Active;
 		public new static SheetEditor Instance => GlobalEditorUI.Instance as SheetEditor;
 
+		// Short
+		private EditalbeAtlas SelectingAtlas => SelectingAtlasIndex >= 0 && SelectingAtlasIndex < Atlas.Count ? Atlas[SelectingAtlasIndex] : null;
+		private EditableUnit SelectingUnit => SelectingAtlas != null && SelectingUnitIndex >= 0 && SelectingUnitIndex < SelectingAtlas.Units.Count ? SelectingAtlas.Units[SelectingUnitIndex] : null;
+
 		// Data
-		private readonly List<EditalbeGroup> Groups = new();
+		private readonly List<EditalbeAtlas> Atlas = new();
+		private int SelectingAtlasIndex = 0;
+		private int SelectingUnitIndex = 0;
 		private bool TaskingRoute;
 		private bool CtrlHolding;
 		private bool ShiftHolding;
@@ -168,6 +177,9 @@ namespace AngeliaFramework {
 				Player.Selecting.Active = false;
 			}
 			LoadFromDisk();
+			SelectingAtlasIndex = 0;
+			SelectingUnitIndex = 0;
+			FilePanelScroll = 0;
 			System.GC.Collect();
 		}
 
@@ -176,10 +188,10 @@ namespace AngeliaFramework {
 			base.OnInactivated();
 			WorldSquad.Enable = true;
 			if (IsDirty) {
-				SaveToDisk();
+				SaveToDisk(forceSave: true);
 				Rebuild();
 			}
-			Groups.Clear();
+			Atlas.Clear();
 			System.GC.Collect();
 		}
 
@@ -208,7 +220,7 @@ namespace AngeliaFramework {
 			ControlHintUI.ForceShowHint();
 			ControlHintUI.ForceHideGamepad();
 
-
+			if (IsDirty && Game.GlobalFrame % 600 == 0) SaveToDisk();
 
 		}
 
@@ -248,15 +260,15 @@ namespace AngeliaFramework {
 
 		private void LoadFromDisk () {
 			IsDirty = false;
-			Groups.Clear();
+			Atlas.Clear();
 			// From File
-			foreach (var groupPath in Util.EnumerateFolders(AngePath.FlexibleSheetRoot, true, "*")) {
+			foreach (var atlasPath in Util.EnumerateFolders(AngePath.FlexibleSheetRoot, true, "*")) {
 				// Load Meta
-				string groupMetaPath = Util.CombinePaths(groupPath, "Meta.json");
-				var group = JsonUtil.LoadOrCreateJsonFromPath<EditalbeGroup>(groupMetaPath);
-				group.Guid = Util.GetNameWithExtension(groupPath);
+				string atlasMetaPath = Util.CombinePaths(atlasPath, "Meta.json");
+				var atlas = JsonUtil.LoadOrCreateJsonFromPath<EditalbeAtlas>(atlasMetaPath);
+				atlas.Guid = Util.GetNameWithExtension(atlasPath);
 				// Load Units
-				foreach (var unitPath in Util.EnumerateFolders(groupPath, true, "*")) {
+				foreach (var unitPath in Util.EnumerateFolders(atlasPath, true, "*")) {
 					// Load Meta
 					string unitMetaPath = Util.CombinePaths(unitPath, "Meta.json");
 					var unit = JsonUtil.LoadOrCreateJsonFromPath<EditableUnit>(unitMetaPath);
@@ -275,36 +287,39 @@ namespace AngeliaFramework {
 						unit.Sprites.Add(sprite);
 					}
 					unit.Sprites.Sort(EditableSpriteComparer.Instance);
-					group.Units.Add(unit);
+					atlas.Units.Add(unit);
 				}
-				group.Units.Sort(FlexUnitComparer.Instance);
-				Groups.Add(group);
+				atlas.Units.Sort(FlexUnitComparer.Instance);
+				Atlas.Add(atlas);
 			}
-			Groups.Sort(GroupComparer.Instance);
+			Atlas.Sort(AtlasComparer.Instance);
 		}
 
 
-		private void SaveToDisk () {
+		private void SaveToDisk (bool forceSave = false) {
 			IsDirty = false;
-			for (int groupIndex = 0; groupIndex < Groups.Count; groupIndex++) {
-				// Save Group
-				var group = Groups[groupIndex];
-				group.Order = groupIndex;
-				if (string.IsNullOrWhiteSpace(group.Guid)) group.Guid = System.Guid.NewGuid().ToString();
-				string groupPath = Util.CombinePaths(AngePath.FlexibleSheetRoot, group.Guid);
-				string groupMetaPath = Util.CombinePaths(groupPath, "Meta.json");
-				JsonUtil.SaveJsonToPath(group, groupMetaPath, false);
-				for (int unitIndex = 0; unitIndex < group.Units.Count; unitIndex++) {
+			for (int atlasIndex = 0; atlasIndex < Atlas.Count; atlasIndex++) {
+				// Save Atlas
+				var atlas = Atlas[atlasIndex];
+				if (!atlas.IsDirty && !forceSave) continue;
+				atlas.Order = atlasIndex;
+				if (string.IsNullOrWhiteSpace(atlas.Guid)) atlas.Guid = System.Guid.NewGuid().ToString();
+				string atlasPath = Util.CombinePaths(AngePath.FlexibleSheetRoot, atlas.Guid);
+				string atlasMetaPath = Util.CombinePaths(atlasPath, "Meta.json");
+				JsonUtil.SaveJsonToPath(atlas, atlasMetaPath, false);
+				for (int unitIndex = 0; unitIndex < atlas.Units.Count; unitIndex++) {
 					// Save Unit
-					var unit = group.Units[unitIndex];
+					var unit = atlas.Units[unitIndex];
+					if (!unit.IsDirty && !forceSave) continue;
 					unit.Order = unitIndex;
 					if (string.IsNullOrWhiteSpace(unit.Guid)) unit.Guid = System.Guid.NewGuid().ToString();
-					string unitPath = Util.CombinePaths(groupPath, unit.Guid);
+					string unitPath = Util.CombinePaths(atlasPath, unit.Guid);
 					string unitMetaPath = Util.CombinePaths(unitPath, "Meta.json");
 					JsonUtil.SaveJsonToPath(unit, unitMetaPath, false);
 					for (int spriteIndex = 0; spriteIndex < unit.Sprites.Count; spriteIndex++) {
 						// Save Sprite
 						var sprite = unit.Sprites[spriteIndex];
+						if (!sprite.IsDirty && !forceSave) continue;
 						sprite.Order = spriteIndex;
 						if (string.IsNullOrWhiteSpace(sprite.Guid)) sprite.Guid = System.Guid.NewGuid().ToString();
 						string spritePath = Util.CombinePaths(unitPath, sprite.Guid);
@@ -321,25 +336,27 @@ namespace AngeliaFramework {
 
 		private void Rebuild () {
 
+			if (Atlas.Count == 0) return;
+
 			// Editable >> Flex
 			var tResults = new List<(object texture, FlexSprite[] flexs)>();
 
-			for (int groupIndex = 0; groupIndex < Groups.Count; groupIndex++) {
-				var group = Groups[groupIndex];
-				for (int unitIndex = 0; unitIndex < group.Units.Count; unitIndex++) {
-					var unit = group.Units[unitIndex];
+			for (int atlasIndex = 0; atlasIndex < Atlas.Count; atlasIndex++) {
+				var atlas = Atlas[atlasIndex];
+				for (int unitIndex = 0; unitIndex < atlas.Units.Count; unitIndex++) {
+					var unit = atlas.Units[unitIndex];
 					for (int spriteIndex = 0; spriteIndex < unit.Sprites.Count; spriteIndex++) {
 						var sprite = unit.Sprites[spriteIndex];
 						tResults.Add(
 							(Game.GetTextureFromPixels(sprite.Pixels, sprite.Width, sprite.Height),
 							new FlexSprite[]{ new FlexSprite() {
-								Name = sprite.GetFullName(group, unit, unit.Sprites.Count > 1 ? spriteIndex: -1),
+								Name = sprite.GetFullName(atlas, unit, unit.Sprites.Count > 1 ? spriteIndex: -1),
 								AngePivot = new Int2(sprite.AngePivotX, sprite.AngePivotY),
 								Border = new Float4(sprite.BorderL, sprite.BorderD, sprite.BorderR, sprite.BorderU),
 								Rect = new FRect(0, 0, sprite.Width, sprite.Height),
-								SheetName = group.Name,
-								SheetType = group.SheetType,
-								SheetZ = group.SheetZ,
+								SheetName = atlas.Name,
+								SheetType = atlas.SheetType,
+								SheetZ = atlas.SheetZ,
 							} })
 						);
 					}
@@ -366,6 +383,39 @@ namespace AngeliaFramework {
 			// Init CellRenderer
 			CellRenderer.InitializePool();
 			Game.SetTextureForRenderer(texture);
+
+		}
+
+
+		private void SetDirty (int atlasIndex, int unitIndex, int spriteIndex) {
+			IsDirty = true;
+			if (atlasIndex >= 0 && atlasIndex < Atlas.Count) {
+				var atlas = Atlas[atlasIndex];
+				atlas.IsDirty = true;
+				if (unitIndex >= 0 && unitIndex < atlas.Units.Count) {
+					var unit = atlas.Units[unitIndex];
+					unit.IsDirty = true;
+					if (spriteIndex >= 0 && spriteIndex < unit.Sprites.Count) {
+						var sprite = unit.Sprites[spriteIndex];
+						sprite.IsDirty = true;
+					}
+				}
+			}
+		}
+
+
+		private void SelectAtlas (int newIndex) {
+			if (SelectingAtlasIndex == newIndex) return;
+			SelectingAtlasIndex = newIndex;
+
+
+		}
+
+
+		private void SelectUnit (int newIndex) {
+			if (SelectingUnitIndex == newIndex) return;
+			SelectingUnitIndex = newIndex;
+
 
 		}
 

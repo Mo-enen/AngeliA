@@ -71,14 +71,6 @@ namespace AngeliaFramework {
 		private const int GIZMOS_Z = int.MaxValue - 64;
 		private const int PANEL_Z = int.MaxValue - 16;
 		private const int PANEL_WIDTH = 300;
-		private static readonly int LINE_V = "Soft Line V".AngeHash();
-		private static readonly int LINE_H = "Soft Line H".AngeHash();
-		private static readonly int FRAME = "Frame16".AngeHash();
-		private static readonly int FRAME_HOLLOW = "FrameHollow16".AngeHash();
-		private static readonly int DOTTED_LINE = "DottedLine16".AngeHash();
-		private static readonly int TRIANGLE_UP = "Icon TriangleUp".AngeHash();
-		private static readonly int TRIANGLE_DOWN = "Icon TriangleDown".AngeHash();
-		private static readonly int REFRESH_ICON = "Icon Refresh".AngeHash();
 		private static readonly Byte4 CURSOR_TINT = new(240, 240, 240, 128);
 		private static readonly Byte4 CURSOR_TINT_DARK = new(16, 16, 16, 128);
 		private static readonly Byte4 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
@@ -1188,7 +1180,7 @@ namespace AngeliaFramework {
 				IsDirty = true;
 				var unitRect = new IRect(minX, minY, maxX - minX + 1, maxY - minY + 1);
 				RedirectForRule(unitRect);
-				SpawnBlinkParticle(unitRect.ToGlobal(), 0, FRAME);
+				SpawnBlinkParticle(unitRect.ToGlobal(), 0, BuiltInIcon.FRAME_16);
 				Save();
 			}
 		}

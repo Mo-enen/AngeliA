@@ -188,9 +188,7 @@ namespace AngeliaFramework {
 			return position.x >= xMin && position.y >= yMin && position.x < xMax && position.y < yMax;
 		}
 
-		public readonly bool Overlaps (IRect other) {
-			return other.xMin < xMax && other.xMax > xMin && other.yMin < yMax && other.yMax > yMin;
-		}
+		public readonly bool Overlaps (IRect other) => other.xMin < xMax && other.xMax > xMin && other.yMin < yMax && other.yMax > yMin;
 
 		public override readonly string ToString () {
 			return ToString(null, null);

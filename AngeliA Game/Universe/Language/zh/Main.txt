@@ -1,5 +1,4 @@
-﻿UI.SheetTab.File:文件
-UI.SheetTab.Palette:颜色
+﻿Menu.SheetEditor.DeleteUnitMSG:删除图块？
 CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
@@ -74,6 +73,11 @@ Menu.Setting.SoundVolume:音效音量
 Menu.Setting.UseControlHint:显示操作提示
 Menu.Setting.UseGamepadHint:显示左下角手柄
 Menu.Setting.VSync:垂直同步
+Menu.SheetEditor.CreateAtlas:创建图集
+Menu.SheetEditor.CreateUnit:创建图块
+Menu.SheetEditor.DeleteAtlasMSG:删除图集吗？图集中的图块也会被删除。
+Menu.SheetEditor.NewAtlasName:新图集
+Menu.SheetEditor.NewSpriteName:新图块
 Notify.MapGeneratedNotify:关卡已生成
 Palette.Background:背景
 Palette.Character:角色
@@ -146,6 +150,8 @@ UI.Restart:重新开始
 UI.Right:右
 UI.Save:保存
 UI.Setting:设置
+UI.SheetTab.File:文件
+UI.SheetTab.Palette:颜色
 UI.Stop:停止
 UI.StopEdit:停止编辑
 UI.Suit.Bodysuit:衣服

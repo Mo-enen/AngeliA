@@ -46,12 +46,12 @@ namespace AngeliaFramework {
 		// Const
 		private static readonly int UI_DEFAULT_LIST_COVER = "PaletteCover.Default".AngeHash();
 		private static readonly int UI_TAB = "UI.Tab".AngeHash();
-		private static readonly int UI_TAB_ICON_PINNED = "UI.PaletteTab.PinnedIcon".AngeHash();
-		private static readonly int UI_TAB_ICON_ALL = "UI.PaletteTab.AllIcon".AngeHash();
+		private static readonly int UI_TAB_ICON_PINNED = "Icon.Star".AngeHash();
+		private static readonly int UI_TAB_ICON_ALL = "Icon.Menu".AngeHash();
 		private static readonly int BUTTON_DARK = "UI.DarkButton".AngeHash();
 		private static readonly int BUTTON_DARK_DOWN = "UI.DarkButtonDown".AngeHash();
 		private static readonly int ITEM_FRAME = "UI.ItemFrame".AngeHash();
-		private static readonly int SEARCH_ICON = "MapEditor.SearchIcon".AngeHash();
+		private static readonly int SEARCH_ICON = "Icon.Search".AngeHash();
 		private static readonly int GAMEPAD_ICON = "Icon Gamepad".AngeHash();
 		private static readonly int MAP_ICON = "Icon Map".AngeHash();
 		private static readonly int BRUSH_ICON = "Icon Brush".AngeHash();
@@ -559,7 +559,7 @@ namespace AngeliaFramework {
 				// Selecting
 				if (SelectingPaletteItem == pal) {
 					CellRenderer.Draw_9Slice(
-						FRAME, rect, BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT, Const.GREEN, PANEL_Z - 11
+						BuiltInIcon.FRAME_16, rect, BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT, Const.GREEN, PANEL_Z - 11
 					);
 				}
 
@@ -716,7 +716,7 @@ namespace AngeliaFramework {
 
 				// Selecting Highlight
 				if (pal == SelectingPaletteItem) {
-					CellRenderer.Draw_9Slice(FRAME, rect, Const.GREEN, PANEL_Z - 12);
+					CellRenderer.Draw_9Slice(BuiltInIcon.FRAME_16, rect, Const.GREEN, PANEL_Z - 12);
 				}
 
 				// Click
@@ -773,7 +773,7 @@ namespace AngeliaFramework {
 			var btnRect = new IRect(panel.x, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 			if (
 				CellRendererGUI.Button(
-					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, REFRESH_ICON,
+					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, BuiltInIcon.ICON_REFRESH,
 					BUTTON_BORDER, 0, int.MaxValue - 1
 				) && interactable
 			) {
@@ -785,7 +785,7 @@ namespace AngeliaFramework {
 			btnRect = new IRect(panel.x + ITEM_SIZE, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 			if (
 				CellRendererGUI.Button(
-					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, TRIANGLE_DOWN,
+					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, BuiltInIcon.ICON_TRIANGLE_DOWN,
 					BUTTON_BORDER, 0, int.MaxValue - 1
 				) && interactable
 			) {
@@ -797,7 +797,7 @@ namespace AngeliaFramework {
 			btnRect = new IRect(panel.x + ITEM_SIZE * 2, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 			if (
 				CellRendererGUI.Button(
-					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, TRIANGLE_UP,
+					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, BuiltInIcon.ICON_TRIANGLE_UP,
 					BUTTON_BORDER, 0, int.MaxValue - 1
 				) && interactable
 			) {
@@ -909,7 +909,7 @@ namespace AngeliaFramework {
 			bool mouseInBar = interactable && searchPanel.Contains(FrameInput.MouseGlobalPosition);
 			if (mouseInBar) CursorSystem.SetCursorAsBeam();
 			CellRenderer.Draw_9Slice(
-				FRAME, searchPanel, BORDER, BORDER, BORDER, BORDER, Const.GREY_96, PANEL_Z - 5
+				BuiltInIcon.FRAME_16, searchPanel, BORDER, BORDER, BORDER, BORDER, Const.GREY_96, PANEL_Z - 5
 			);
 
 			// Search Icon

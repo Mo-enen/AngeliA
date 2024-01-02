@@ -79,13 +79,13 @@ namespace AngeliaFramework {
 			int thickness = Unify(1);
 
 			CellRenderer.Draw_9Slice(
-				FRAME, draggingRect.Shrink(thickness),
+				BuiltInIcon.FRAME_16, draggingRect.Shrink(thickness),
 				thickness, thickness, thickness, thickness,
 				Const.BLACK, GIZMOS_Z
 			);
 
 			CellRenderer.Draw_9Slice(
-				FRAME, draggingRect,
+				BuiltInIcon.FRAME_16, draggingRect,
 				thickness, thickness, thickness, thickness,
 				Const.WHITE, GIZMOS_Z
 			);
@@ -136,7 +136,7 @@ namespace AngeliaFramework {
 			int thickness = Unify(1);
 			var frameRect = pastingUnitRect.ToGlobal();
 			CellRenderer.Draw_9Slice(
-				FRAME, frameRect,
+				BuiltInIcon.FRAME_16, frameRect,
 				thickness, thickness, thickness, thickness,
 				Const.WHITE, GIZMOS_Z
 			);
@@ -172,7 +172,7 @@ namespace AngeliaFramework {
 
 			// Black Frame
 			CellRenderer.Draw_9Slice(
-				FRAME, selectionRect,
+				BuiltInIcon.FRAME_16, selectionRect,
 				thickness, thickness, thickness, thickness,
 				Const.BLACK, GIZMOS_Z
 			);
@@ -221,13 +221,13 @@ namespace AngeliaFramework {
 			int thickness = Unify(1);
 
 			CellRenderer.Draw_9Slice(
-				FRAME_HOLLOW, cursorRect.Shrink(thickness),
+				BuiltInIcon.FRAME_HOLLOW_16, cursorRect.Shrink(thickness),
 				thickness, thickness, thickness, thickness,
 				CURSOR_TINT_DARK, GIZMOS_Z
 			);
 
 			CellRenderer.Draw_9Slice(
-				FRAME_HOLLOW, cursorRect,
+				BuiltInIcon.FRAME_HOLLOW_16, cursorRect,
 				thickness, thickness, thickness, thickness,
 				CURSOR_TINT, GIZMOS_Z
 			);
@@ -318,7 +318,7 @@ namespace AngeliaFramework {
 				if (i == stepCount && extraLength == 0) break;
 				if (horizontal) {
 					var cell = CellRenderer.Draw(
-						DOTTED_LINE,
+						BuiltInIcon.DOTTED_LINE_16,
 						x + i * stepLength, y,
 						0, 500, 0,
 						stepLength, thickness,
@@ -330,7 +330,7 @@ namespace AngeliaFramework {
 					}
 				} else {
 					var cell = CellRenderer.Draw(
-						DOTTED_LINE,
+						BuiltInIcon.DOTTED_LINE_16,
 						x, y + i * stepLength,
 						0, 500, -90,
 						stepLength, thickness,
