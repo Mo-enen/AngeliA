@@ -38,7 +38,7 @@ namespace AngeliaFramework {
 
 
 		private static void SetCursor (int cursorIndex, IRect mouseRange, int priority = 0) {
-			if (!mouseRange.Contains(FrameInput.MouseGlobalPosition)) return;
+			if (!mouseRange.MouseInside()) return;
 			SetCursor(cursorIndex, priority);
 		}
 		private static void SetCursor (int cursorIndex, int priority = 0) {

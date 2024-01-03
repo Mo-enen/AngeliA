@@ -157,6 +157,7 @@ namespace AngeliaFramework {
 		public static readonly Byte4 RED_BETTER = new(255, 64, 64, 255);
 		public static readonly Byte4 GREEN = new(0, 255, 0, 255);
 		public static readonly Byte4 CYAN = new(0, 255, 255, 255);
+		public static readonly Byte4 CYAN_BETTER = new(32, 232, 255, 255);
 		public static readonly Byte4 BLUE = new(0, 0, 255, 255);
 		public static readonly Byte4 BLUE_BETTER = new(12, 24, 255, 255);
 		public static readonly Byte4 PURPLE = new(128, 0, 255, 255);

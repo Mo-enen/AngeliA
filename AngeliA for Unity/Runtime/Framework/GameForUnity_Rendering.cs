@@ -364,10 +364,15 @@ namespace AngeliaForUnity {
 
 		// Texture
 		protected override object _GetTextureFromPixels (Byte4[] pixels, int width, int height) {
+			if (width * height == 0) {
+				return new Texture2D(1, 1, TextureFormat.ARGB32, false) {
+					filterMode = FilterMode.Point,
+				};
+			}
 			var texture = new Texture2D(width, height, TextureFormat.ARGB32, false) {
 				filterMode = FilterMode.Point,
 			};
-			if (pixels != null) {
+			if (width * height != 0 && pixels != null && pixels.Length == width * height) {
 				texture.SetPixels32(pixels.ToUnity());
 				texture.Apply();
 			}

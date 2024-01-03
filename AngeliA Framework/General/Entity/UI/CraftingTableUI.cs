@@ -55,7 +55,7 @@ namespace AngeliaFramework {
 			Update_Cache();
 			DocumentPageSize = panelRect.height / Unify(DOC_ITEM_HEIGHT + DOC_ITEM_PADDING);
 			var action = Update_Action(docItemRect, resultItemRect);
-			MouseInPanel = MouseInPanel || new IRect(docRect.x, panelRect.y, resultRect.xMax - docRect.x, panelRect.height).Contains(FrameInput.MouseGlobalPosition);
+			MouseInPanel = MouseInPanel || new IRect(docRect.x, panelRect.y, resultRect.xMax - docRect.x, panelRect.height).MouseInside();
 			Update_Inventory(panelRect);
 			Update_Documentation(docRect, docItemRect);
 			Update_Result(resultRect, resultItemRect);
@@ -95,7 +95,7 @@ namespace AngeliaFramework {
 			var menu = PlayerMenuUI.Instance;
 			if (FrameInput.LastActionFromMouse) {
 				// Result
-				CursorInResult = resultItemRect.Contains(FrameInput.MouseGlobalPosition);
+				CursorInResult = resultItemRect.MouseInside();
 				if (CursorInResult && CombineResultID != 0) {
 					if (FrameInput.MouseLeftButtonDown) {
 						action = CraftActionType.Take;
@@ -104,7 +104,7 @@ namespace AngeliaFramework {
 					}
 				}
 				// Doc
-				CursorInDoc = docItemRect.Contains(FrameInput.MouseGlobalPosition);
+				CursorInDoc = docItemRect.MouseInside();
 				if (CursorInDoc && FrameInput.MouseWheelDelta != 0 && DocumentContent.Count > DocumentPageSize) {
 					// Scroll Doc
 					DocumentScrollY = (DocumentScrollY - FrameInput.MouseWheelDelta).Clamp(
@@ -245,7 +245,7 @@ namespace AngeliaFramework {
 				iRect.x -= iconSize;
 				bool resultUnlocked = ItemSystem.IsItemUnlocked(result);
 				CellRenderer.Draw(resultUnlocked ? result : QUESTION_MARK_CODE, iRect, int.MinValue + 4);
-				if (resultUnlocked && FrameInput.LastActionFromMouse && iRect.Contains(FrameInput.MouseGlobalPosition)) {
+				if (resultUnlocked && FrameInput.LastActionFromMouse && iRect.MouseInside()) {
 					tipID = result;
 					tipRect = iRect;
 				}
@@ -263,7 +263,7 @@ namespace AngeliaFramework {
 					iRect.x -= iconSize + iconPadding;
 					CellRenderer.Draw(unlocked ? id : QUESTION_MARK_CODE, iRect, int.MinValue + 4);
 					// Tip
-					if (unlocked && FrameInput.LastActionFromMouse && iRect.Contains(FrameInput.MouseGlobalPosition)) {
+					if (unlocked && FrameInput.LastActionFromMouse && iRect.MouseInside()) {
 						tipID = id;
 						tipRect = iRect;
 					}

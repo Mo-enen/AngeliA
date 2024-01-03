@@ -186,7 +186,7 @@ namespace AngeliaFramework {
 				// Partner Panel
 				var panelRect = GetPanelRect(Partner.Column, Partner.Row, Partner.ItemSize, true);
 				CellRenderer.Draw(Const.PIXEL, panelRect.Expand(Unify(WINDOW_PADDING)), Const.BLACK, int.MinValue + 1);
-				Partner.MouseInPanel = panelRect.Contains(FrameInput.MouseGlobalPosition);
+				Partner.MouseInPanel = panelRect.MouseInside();
 				Partner.DrawPanel(panelRect);
 				TopPanelRect = panelRect;
 				MouseInPanel = MouseInPanel || Partner.MouseInPanel;
@@ -229,7 +229,7 @@ namespace AngeliaFramework {
 			var panelRect = CursorInBottomPanel ? bottomPanelRect : topPanelRect;
 
 			// Mouse in Panel
-			MouseInPanel = MouseInPanel || panelRect.Contains(FrameInput.MouseGlobalPosition);
+			MouseInPanel = MouseInPanel || panelRect.MouseInside();
 
 			// Type Icon
 			CellRenderer.Draw(
@@ -536,7 +536,7 @@ namespace AngeliaFramework {
 			}
 
 			var windowRect = panelRect.Expand(Unify(WINDOW_PADDING));
-			MouseInPanel = MouseInPanel || windowRect.Contains(FrameInput.MouseGlobalPosition);
+			MouseInPanel = MouseInPanel || windowRect.MouseInside();
 
 			// Content
 			int index = 0;
@@ -562,7 +562,7 @@ namespace AngeliaFramework {
 			if (itemCount <= 0) itemID = 0;
 			bool actionHolding = FrameInput.GameKeyHolding(Gamekey.Action);
 			bool cancelHolding = FrameInput.GameKeyHolding(Gamekey.Jump);
-			bool hovering = interactable && itemRect.Contains(FrameInput.MouseGlobalPosition);
+			bool hovering = interactable && itemRect.MouseInside();
 			int cursorIndex = RenderingBottomPanel == CursorInBottomPanel ? CursorIndex : -1;
 			HoveringItemField = HoveringItemField || hovering;
 
@@ -685,12 +685,12 @@ namespace AngeliaFramework {
 			// Background
 			var windowRect = panelRect.Expand(Unify(WINDOW_PADDING));
 			CellRenderer.Draw(Const.PIXEL, windowRect, Const.BLACK, int.MinValue + 1);
-			MouseInPanel = MouseInPanel || windowRect.Contains(FrameInput.MouseGlobalPosition);
+			MouseInPanel = MouseInPanel || windowRect.MouseInside();
 
 			// Preview
 			var previewRect = panelRect.EdgeOutside(Direction4.Left, previewWidth).Shift(previewWidth, 0);
 			AngeUtil.DrawPoseCharacterAsUI(previewRect, player, player.CurrentAnimationFrame, 0, out _, out _);
-			if (FrameInput.MouseLeftButtonDown && previewRect.Contains(FrameInput.MouseGlobalPosition)) {
+			if (FrameInput.MouseLeftButtonDown && previewRect.MouseInside()) {
 				player.FacingRight = !player.FacingRight;
 				player.Bounce();
 			}
@@ -805,7 +805,7 @@ namespace AngeliaFramework {
 
 			// Highlight
 			if (FrameInput.LastActionFromMouse) {
-				if (interactable && rect.Contains(FrameInput.MouseGlobalPosition)) {
+				if (interactable && rect.MouseInside()) {
 					CursorIndex = index;
 					CursorInBottomPanel = false;
 					CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32, int.MinValue + 1);

@@ -524,6 +524,9 @@ namespace AngeliaFramework {
 		};
 
 
+		public static bool MouseInside (this IRect rect) => rect.Contains(FrameInput.MouseGlobalPosition);
+
+
 		// Misc
 		public static bool IsSame (this Byte4 a, Byte4 b, bool ignoreAlpha = false) => a.r == b.r && a.g == b.g && a.b == b.b && (ignoreAlpha || a.a == b.a);
 		public static Byte4 Mult (this Byte4 a, Byte4 b) {

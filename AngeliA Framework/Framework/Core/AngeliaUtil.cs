@@ -22,8 +22,8 @@ namespace AngeliaFramework {
 			Util.CreateFolder(AngePath.LanguageRoot);
 			Util.CreateFolder(AngePath.MetaRoot);
 			Util.CreateFolder(AngePath.BuiltInMapRoot);
-			Util.CreateFolder(AngePath.FlexibleUniverseRoot);
-			Util.CreateFolder(AngePath.FlexibleSheetRoot);
+			Util.CreateFolder(AngePath.EditableUniverseRoot);
+			Util.CreateFolder(AngePath.EditableSheetRoot);
 		}
 
 

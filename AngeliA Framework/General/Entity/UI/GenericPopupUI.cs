@@ -161,7 +161,7 @@ namespace AngeliaFramework {
 					}
 
 					// Highlight
-					bool hover = rect.Contains(FrameInput.MouseGlobalPosition);
+					bool hover = rect.MouseInside();
 					if (hover && item.Enabled) {
 						highlightCell = CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_230, int.MaxValue - 1);
 					}

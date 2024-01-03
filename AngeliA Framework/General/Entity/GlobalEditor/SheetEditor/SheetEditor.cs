@@ -10,148 +10,23 @@ namespace AngeliaFramework {
 
 
 
-		#region --- SUB ---
-
-
-		// Comparer
-		private class AtlasComparer : IComparer<EditalbeAtlas> {
-			public static readonly AtlasComparer Instance = new();
-			public int Compare (EditalbeAtlas a, EditalbeAtlas b) => a.Order.CompareTo(b.Order);
-		}
-
-
-		private class FlexUnitComparer : IComparer<EditableUnit> {
-			public static readonly FlexUnitComparer Instance = new();
-			public int Compare (EditableUnit a, EditableUnit b) => a.Order.CompareTo(b.Order);
-		}
-
-
-		private class EditableSpriteComparer : IComparer<EditableSprite> {
-			public static readonly EditableSpriteComparer Instance = new();
-			public int Compare (EditableSprite a, EditableSprite b) => a.Order.CompareTo(b.Order);
-		}
-
-
-		// Data
-		[JsonObject(MemberSerialization.OptIn)]
-		private class EditalbeAtlas {
-			public List<EditableUnit> Units = new();
-			public string Guid = "";
-			public bool IsDirty = false;
-			[JsonProperty] public int Order = 0;
-			[JsonProperty] public int SheetZ = 0;
-			[JsonProperty] public string Name = "";
-			[JsonProperty] public SheetType SheetType = SheetType.General;
-		}
-
-
-		[JsonObject(MemberSerialization.OptIn)]
-		private class EditableUnit {
-			public List<EditableSprite> Sprites = new();
-			public string Guid = "";
-			public bool IsDirty = false;
-			[JsonProperty] public int Order = 0;
-			[JsonProperty] public string Name = "";
-			[JsonProperty] public GroupType GroupType = GroupType.General;
-		}
-
-
-		[JsonObject(MemberSerialization.OptIn)]
-		private class EditableSprite {
-
-			[JsonProperty] public int Order;
-			[JsonProperty] public int AngePivotX;
-			[JsonProperty] public int AngePivotY;
-			[JsonProperty] public int BorderL;
-			[JsonProperty] public int BorderR;
-			[JsonProperty] public int BorderD;
-			[JsonProperty] public int BorderU;
-			[JsonProperty] public int Width;
-			[JsonProperty] public int Height;
-			[JsonProperty] public bool IsTrigger = false;
-			[JsonProperty] public bool NoCollider = false;
-			[JsonProperty] public string TagString = "";
-			[JsonProperty] public string RuleString = "";
-			[JsonProperty] public bool LoopStart = false;
-			[JsonProperty] public int OffsetZ = 0;
-
-			public string Guid = "";
-			public bool IsDirty = false;
-			public Byte4[] Pixels;
-
-			private static readonly StringBuilder NameBuilder = new();
-
-			public string GetFullName (EditalbeAtlas atlas, EditableUnit unit, int index) {
-
-				NameBuilder.Clear();
-				NameBuilder.Append(unit.Name);
-				if (index >= 0) {
-					NameBuilder.Append(' ');
-					NameBuilder.Append(index);
-				}
-
-				if (IsTrigger) {
-					NameBuilder.Append(" #isTrigger");
-				}
-
-				if (!string.IsNullOrWhiteSpace(TagString)) {
-					NameBuilder.Append($" #tag={TagString}");
-				}
-
-				if (unit.GroupType != GroupType.General) {
-					switch (unit.GroupType) {
-						case GroupType.Rule:
-							if (!string.IsNullOrWhiteSpace(RuleString)) {
-								NameBuilder.Append($" #rule={RuleString}");
-							}
-							break;
-						case GroupType.Random:
-							NameBuilder.Append(" #ran");
-							break;
-						case GroupType.Animated:
-							NameBuilder.Append(" #ani");
-							if (LoopStart) {
-								NameBuilder.Append(" #loopStart");
-							}
-							break;
-					}
-				}
-
-				if (atlas.SheetType == SheetType.Level && NoCollider) {
-					NameBuilder.Append(" #noCollider");
-				}
-
-				if (OffsetZ != 0) {
-					NameBuilder.Append($" #z={OffsetZ}");
-				}
-
-				return NameBuilder.ToString();
-			}
-
-		}
-
-
-		#endregion
-
-
-
-
 		#region --- VAR ---
 
 
 		// Const
 		public static readonly int TYPE_ID = typeof(SheetEditor).AngeHash();
+		private const int PANEL_WIDTH = 300;
 
 		// Api
 		public new static bool IsActived => Instance != null && Instance.Active;
 		public new static SheetEditor Instance => GlobalEditorUI.Instance as SheetEditor;
 
 		// Short
-		private EditalbeAtlas SelectingAtlas => SelectingAtlasIndex >= 0 && SelectingAtlasIndex < Atlas.Count ? Atlas[SelectingAtlasIndex] : null;
+		private EditableAtlas SelectingAtlas => SelectingAtlasIndex >= 0 && SelectingAtlasIndex < Atlas.Count ? Atlas[SelectingAtlasIndex] : null;
 		private EditableUnit SelectingUnit => SelectingAtlas != null && SelectingUnitIndex >= 0 && SelectingUnitIndex < SelectingAtlas.Units.Count ? SelectingAtlas.Units[SelectingUnitIndex] : null;
 
 		// Data
-		private readonly List<EditalbeAtlas> Atlas = new();
+		private readonly List<EditableAtlas> Atlas = new();
 		private int SelectingAtlasIndex = 0;
 		private int SelectingUnitIndex = 0;
 		private bool TaskingRoute;
@@ -219,6 +94,7 @@ namespace AngeliaFramework {
 
 			ControlHintUI.ForceShowHint();
 			ControlHintUI.ForceHideGamepad();
+			ControlHintUI.ForceOffset(Unify(PANEL_WIDTH), 0);
 
 			if (IsDirty && Game.GlobalFrame % 600 == 0) SaveToDisk();
 
@@ -261,76 +137,17 @@ namespace AngeliaFramework {
 		private void LoadFromDisk () {
 			IsDirty = false;
 			Atlas.Clear();
-			// From File
-			foreach (var atlasPath in Util.EnumerateFolders(AngePath.FlexibleSheetRoot, true, "*")) {
-				// Load Meta
-				string atlasMetaPath = Util.CombinePaths(atlasPath, "Meta.json");
-				var atlas = JsonUtil.LoadOrCreateJsonFromPath<EditalbeAtlas>(atlasMetaPath);
-				atlas.Guid = Util.GetNameWithExtension(atlasPath);
-				// Load Units
-				foreach (var unitPath in Util.EnumerateFolders(atlasPath, true, "*")) {
-					// Load Meta
-					string unitMetaPath = Util.CombinePaths(unitPath, "Meta.json");
-					var unit = JsonUtil.LoadOrCreateJsonFromPath<EditableUnit>(unitMetaPath);
-					unit.Guid = Util.GetNameWithExtension(unitPath);
-					// Load Sprites
-					foreach (var spritePath in Util.EnumerateFolders(unitPath, true, "*")) {
-						// Sprite
-						string jsonPath = Util.CombinePaths(spritePath, "Sprite.json");
-						var sprite = JsonUtil.LoadOrCreateJson<EditableSprite>(jsonPath);
-						sprite.Guid = Util.GetNameWithExtension(spritePath);
-						// Pixels
-						string pixelPath = Util.CombinePaths(spritePath, "Pixels");
-						var pixels = Util.FileToByte4(pixelPath);
-						// Final
-						sprite.Pixels = pixels;
-						unit.Sprites.Add(sprite);
-					}
-					unit.Sprites.Sort(EditableSpriteComparer.Instance);
-					atlas.Units.Add(unit);
-				}
-				atlas.Units.Sort(FlexUnitComparer.Instance);
-				Atlas.Add(atlas);
-			}
-			Atlas.Sort(AtlasComparer.Instance);
+			UniverseGenerator.LoadAtlasFromDisk(AngePath.EditableSheetRoot, Atlas);
 		}
 
 
 		private void SaveToDisk (bool forceSave = false) {
 			IsDirty = false;
-			for (int atlasIndex = 0; atlasIndex < Atlas.Count; atlasIndex++) {
-				// Save Atlas
-				var atlas = Atlas[atlasIndex];
-				if (!atlas.IsDirty && !forceSave) continue;
-				atlas.Order = atlasIndex;
-				if (string.IsNullOrWhiteSpace(atlas.Guid)) atlas.Guid = System.Guid.NewGuid().ToString();
-				string atlasPath = Util.CombinePaths(AngePath.FlexibleSheetRoot, atlas.Guid);
-				string atlasMetaPath = Util.CombinePaths(atlasPath, "Meta.json");
-				JsonUtil.SaveJsonToPath(atlas, atlasMetaPath, false);
-				for (int unitIndex = 0; unitIndex < atlas.Units.Count; unitIndex++) {
-					// Save Unit
-					var unit = atlas.Units[unitIndex];
-					if (!unit.IsDirty && !forceSave) continue;
-					unit.Order = unitIndex;
-					if (string.IsNullOrWhiteSpace(unit.Guid)) unit.Guid = System.Guid.NewGuid().ToString();
-					string unitPath = Util.CombinePaths(atlasPath, unit.Guid);
-					string unitMetaPath = Util.CombinePaths(unitPath, "Meta.json");
-					JsonUtil.SaveJsonToPath(unit, unitMetaPath, false);
-					for (int spriteIndex = 0; spriteIndex < unit.Sprites.Count; spriteIndex++) {
-						// Save Sprite
-						var sprite = unit.Sprites[spriteIndex];
-						if (!sprite.IsDirty && !forceSave) continue;
-						sprite.Order = spriteIndex;
-						if (string.IsNullOrWhiteSpace(sprite.Guid)) sprite.Guid = System.Guid.NewGuid().ToString();
-						string spritePath = Util.CombinePaths(unitPath, sprite.Guid);
-						string spriteMetaPath = Util.CombinePaths(spritePath, "Sprite.json");
-						JsonUtil.SaveJsonToPath(sprite, spriteMetaPath, false);
-						// Save Pixels
-						string pixelPath = Util.CombinePaths(spritePath, "Pixels");
-						Util.Byte4ToFile(sprite.Pixels, pixelPath);
-					}
-				}
+			if (forceSave) {
+				Util.DeleteFolder(AngePath.EditableSheetRoot);
+				Util.CreateFolder(AngePath.EditableSheetRoot);
 			}
+			UniverseGenerator.SaveAtlasToDisk(Atlas, AngePath.EditableSheetRoot, forceSave);
 		}
 
 
@@ -404,17 +221,12 @@ namespace AngeliaFramework {
 		}
 
 
-		private void SelectAtlas (int newIndex) {
-			if (SelectingAtlasIndex == newIndex) return;
-			SelectingAtlasIndex = newIndex;
+		private void SelectUnit (int newAtlasIndex, int newUnitIndex) {
+			if (SelectingAtlasIndex == newAtlasIndex && SelectingUnitIndex == newUnitIndex) return;
+			SelectingAtlasIndex = newAtlasIndex;
+			SelectingUnitIndex = newUnitIndex;
 
 
-		}
-
-
-		private void SelectUnit (int newIndex) {
-			if (SelectingUnitIndex == newIndex) return;
-			SelectingUnitIndex = newIndex;
 
 
 		}

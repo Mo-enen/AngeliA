@@ -229,12 +229,14 @@ namespace AngeliaFramework {
 				uvBorder.y /= flex.Rect.height;
 				uvBorder.z /= flex.Rect.width;
 				uvBorder.w /= flex.Rect.height;
-				string realName = GetBlockHashTags(
-					flex.Name, out var groupType,
-					out bool isTrigger, out int tag, out bool loopStart,
-					out int rule, out bool noCollider, out int offsetZ,
+				GetSpriteInfoFromName(
+					flex.Name, out string realName, out string groupName, out int groupIndex, out var groupType,
+					out bool isTrigger, out string tagStr, out bool loopStart,
+					out string ruleStr, out bool noCollider, out int offsetZ,
 					out int? pivotX, out int? pivotY
 				);
+				int tag = tagStr.AngeHash();
+				int rule = AngeUtil.RuleStringToDigit(ruleStr);
 				int globalWidth = flex.Rect.width.RoundToInt() * Const.CEL / Const.ART_CEL;
 				int globalHeight = flex.Rect.height.RoundToInt() * Const.CEL / Const.ART_CEL;
 				var globalBorder = new Int4() {
@@ -296,27 +298,13 @@ namespace AngeliaFramework {
 				}
 
 				// Group
-				if (
-					!groupHash.Contains(realName) &&
-					!string.IsNullOrEmpty(realName) &&
-					realName[^1] >= '0' && realName[^1] <= '9'
-				) {
-					groupHash.TryAdd(realName.TrimEnd_NumbersEmpty());
-				}
+				groupHash.TryAdd(groupName);
 
 				// Chain
-				if (groupType != GroupType.General) {
-					string key = realName;
-					int endIndex = key.Length - 1;
-					while (endIndex >= 0) {
-						char c = key[endIndex];
-						if (c < '0' || c > '9') break;
-						endIndex--;
-					}
-					key = key[..(endIndex + 1)].TrimEnd(' ');
-					int _index = endIndex < realName.Length - 1 ? int.Parse(realName[(endIndex + 1)..]) : 0;
-					if (!chainPool.ContainsKey(key)) chainPool.Add(key, (groupType, new()));
-					chainPool[key].list.Add((spriteList.Count - 1, _index, loopStart));
+				if (groupType != GroupType.General && groupIndex >= 0) {
+					int _index = groupIndex;
+					if (!chainPool.ContainsKey(groupName)) chainPool.Add(groupName, (groupType, new()));
+					chainPool[groupName].list.Add((spriteList.Count - 1, _index, loopStart));
 				}
 
 			}
@@ -595,18 +583,10 @@ namespace AngeliaFramework {
 		}
 
 
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
-		private static string GetBlockHashTags (string name, out GroupType groupType, out bool isTrigger, out int tag, out bool loopStart, out int rule, out bool noCollider, out int offsetZ, out int? pivotX, out int? pivotY) {
+		public static void GetSpriteInfoFromName (string name, out string realName, out string groupName, out int groupIndex, out GroupType groupType, out bool isTrigger, out string tag, out bool loopStart, out string rule, out bool noCollider, out int offsetZ, out int? pivotX, out int? pivotY) {
 			isTrigger = false;
-			tag = 0;
-			rule = 0;
+			tag = "";
+			rule = "";
 			loopStart = false;
 			noCollider = false;
 			offsetZ = 0;
@@ -628,25 +608,25 @@ namespace AngeliaFramework {
 					}
 
 					// Tag
-					if (hashTag.Equals("OnewayUp", OIC)) { tag = SpriteTag.ONEWAY_UP_TAG; continue; }
-					if (hashTag.Equals("OnewayDown", OIC)) { tag = SpriteTag.ONEWAY_DOWN_TAG; continue; }
-					if (hashTag.Equals("OnewayLeft", OIC)) { tag = SpriteTag.ONEWAY_LEFT_TAG; continue; }
-					if (hashTag.Equals("OnewayRight", OIC)) { tag = SpriteTag.ONEWAY_RIGHT_TAG; continue; }
-					if (hashTag.Equals("Climb", OIC)) { tag = SpriteTag.CLIMB_TAG; continue; }
-					if (hashTag.Equals("ClimbStable", OIC)) { tag = SpriteTag.CLIMB_STABLE_TAG; continue; }
-					if (hashTag.Equals("Quicksand", OIC)) { tag = SpriteTag.QUICKSAND_TAG; isTrigger = true; continue; }
-					if (hashTag.Equals("Water", OIC)) { tag = SpriteTag.WATER_TAG; isTrigger = true; continue; }
-					if (hashTag.Equals("Slip", OIC)) { tag = SpriteTag.SLIP_TAG; continue; }
-					if (hashTag.Equals("Slide", OIC)) { tag = SpriteTag.SLIDE_TAG; continue; }
-					if (hashTag.Equals("NoSlide", OIC)) { tag = SpriteTag.NO_SLIDE_TAG; continue; }
-					if (hashTag.Equals("GrabTop", OIC)) { tag = SpriteTag.GRAB_TOP_TAG; continue; }
-					if (hashTag.Equals("GrabSide", OIC)) { tag = SpriteTag.GRAB_SIDE_TAG; continue; }
-					if (hashTag.Equals("Grab", OIC)) { tag = SpriteTag.GRAB_TAG; continue; }
-					if (hashTag.Equals("ShowLimb", OIC)) { tag = SpriteTag.SHOW_LIMB_TAG; continue; }
-					if (hashTag.Equals("HideLimb", OIC)) { tag = SpriteTag.HIDE_LIMB_TAG; continue; }
-					if (hashTag.Equals("Damage", OIC)) { tag = SpriteTag.DAMAGE_TAG; continue; }
-					if (hashTag.Equals("ExplosiveDamage", OIC)) { tag = SpriteTag.DAMAGE_EXPLOSIVE_TAG; continue; }
-					if (hashTag.Equals("MagicalDamage", OIC)) { tag = SpriteTag.DAMAGE_MAGICAL_TAG; continue; }
+					if (hashTag.Equals("OnewayUp", OIC)) { tag = SpriteTag.ONEWAY_UP_STRING; continue; }
+					if (hashTag.Equals("OnewayDown", OIC)) { tag = SpriteTag.ONEWAY_DOWN_STRING; continue; }
+					if (hashTag.Equals("OnewayLeft", OIC)) { tag = SpriteTag.ONEWAY_LEFT_STRING; continue; }
+					if (hashTag.Equals("OnewayRight", OIC)) { tag = SpriteTag.ONEWAY_RIGHT_STRING; continue; }
+					if (hashTag.Equals("Climb", OIC)) { tag = SpriteTag.CLIMB_STRING; continue; }
+					if (hashTag.Equals("ClimbStable", OIC)) { tag = SpriteTag.CLIMB_STABLE_STRING; continue; }
+					if (hashTag.Equals("Quicksand", OIC)) { tag = SpriteTag.QUICKSAND_STRING; isTrigger = true; continue; }
+					if (hashTag.Equals("Water", OIC)) { tag = SpriteTag.WATER_STRING; isTrigger = true; continue; }
+					if (hashTag.Equals("Slip", OIC)) { tag = SpriteTag.SLIP_STRING; continue; }
+					if (hashTag.Equals("Slide", OIC)) { tag = SpriteTag.SLIDE_STRING; continue; }
+					if (hashTag.Equals("NoSlide", OIC)) { tag = SpriteTag.NO_SLIDE_STRING; continue; }
+					if (hashTag.Equals("GrabTop", OIC)) { tag = SpriteTag.GRAB_TOP_STRING; continue; }
+					if (hashTag.Equals("GrabSide", OIC)) { tag = SpriteTag.GRAB_SIDE_STRING; continue; }
+					if (hashTag.Equals("Grab", OIC)) { tag = SpriteTag.GRAB_STRING; continue; }
+					if (hashTag.Equals("ShowLimb", OIC)) { tag = SpriteTag.SHOW_LIMB_STRING; continue; }
+					if (hashTag.Equals("HideLimb", OIC)) { tag = SpriteTag.HIDE_LIMB_STRING; continue; }
+					if (hashTag.Equals("Damage", OIC)) { tag = SpriteTag.DAMAGE_STRING; continue; }
+					if (hashTag.Equals("ExplosiveDamage", OIC)) { tag = SpriteTag.DAMAGE_EXPLOSIVE_STRING; continue; }
+					if (hashTag.Equals("MagicalDamage", OIC)) { tag = SpriteTag.DAMAGE_MAGICAL_STRING; continue; }
 
 					if (hashTag.Equals("loopStart", OIC)) {
 						loopStart = true;
@@ -674,12 +654,12 @@ namespace AngeliaFramework {
 
 					// Int
 					if (hashTag.StartsWith("tag=", OIC)) {
-						tag = hashTag[4..].AngeHash();
+						tag = hashTag[4..];
 						continue;
 					}
 
 					if (hashTag.StartsWith("rule=", OIC)) {
-						rule = AngeUtil.RuleStringToDigit(hashTag[5..]);
+						rule = hashTag[5..];
 						groupType = GroupType.Rule;
 						continue;
 					}
@@ -747,8 +727,106 @@ namespace AngeliaFramework {
 				// Trim Name
 				name = name[..hashIndex];
 			}
-			return name.TrimEnd(' ');
+
+			// Name and Group
+			realName = name.TrimEnd(' ');
+			groupName = realName.TrimEnd_NumbersEmpty();
+			groupIndex = -1;
+			if (!string.IsNullOrEmpty(realName) && realName[^1] >= '0' && realName[^1] <= '9') {
+				string key = realName;
+				int endIndex = key.Length - 1;
+				while (endIndex >= 0) {
+					char c = key[endIndex];
+					if (c < '0' || c > '9') break;
+					endIndex--;
+				}
+				groupIndex = endIndex < realName.Length - 1 ? int.Parse(realName[(endIndex + 1)..]) : 0;
+			}
+
 		}
+
+
+		// Editable
+		public static void LoadAtlasFromDisk (string rootFolder, List<EditableAtlas> atlasList) {
+			// From File
+			foreach (var atlasPath in Util.EnumerateFolders(rootFolder, true, "*")) {
+				// Load Meta
+				string atlasMetaPath = Util.CombinePaths(atlasPath, "Meta.json");
+				var atlas = JsonUtil.LoadOrCreateJsonFromPath<EditableAtlas>(atlasMetaPath);
+				atlas.Guid = Util.GetNameWithExtension(atlasPath);
+				// Load Units
+				foreach (var unitPath in Util.EnumerateFolders(atlasPath, true, "*")) {
+					// Load Meta
+					string unitMetaPath = Util.CombinePaths(unitPath, "Meta.json");
+					var unit = JsonUtil.LoadOrCreateJsonFromPath<EditableUnit>(unitMetaPath);
+					unit.Guid = Util.GetNameWithExtension(unitPath);
+					unit.GlobalID = unit.Name.AngeHash();
+					// Load Sprites
+					foreach (var spritePath in Util.EnumerateFolders(unitPath, true, "*")) {
+						// Sprite
+						string jsonPath = Util.CombinePaths(spritePath, "Sprite.json");
+						var sprite = JsonUtil.LoadOrCreateJson<EditableSprite>(jsonPath);
+						sprite.Guid = Util.GetNameWithExtension(spritePath);
+						// Pixels
+						string pixelPath = Util.CombinePaths(spritePath, "Pixels");
+						var pixels = Util.FileToByte4(pixelPath);
+						// Final
+						sprite.Pixels = pixels;
+						unit.Sprites.Add(sprite);
+					}
+					unit.Sprites.Sort(EditableSpriteComparer.Instance);
+					atlas.Units.Add(unit);
+				}
+				atlas.Units.Sort(FlexUnitComparer.Instance);
+				atlasList.Add(atlas);
+			}
+			atlasList.Sort(AtlasComparer.Instance);
+		}
+
+
+		public static void SaveAtlasToDisk (List<EditableAtlas> atlasList, string exportFolder, bool forceSave = false) {
+			for (int atlasIndex = 0; atlasIndex < atlasList.Count; atlasIndex++) {
+				// Save Atlas
+				var atlas = atlasList[atlasIndex];
+				if (!atlas.IsDirty && !forceSave) continue;
+				atlas.Order = atlasIndex;
+				if (string.IsNullOrWhiteSpace(atlas.Guid)) atlas.Guid = System.Guid.NewGuid().ToString();
+				string atlasPath = Util.CombinePaths(exportFolder, atlas.Guid);
+				string atlasMetaPath = Util.CombinePaths(atlasPath, "Meta.json");
+				JsonUtil.SaveJsonToPath(atlas, atlasMetaPath, false);
+				for (int unitIndex = 0; unitIndex < atlas.Units.Count; unitIndex++) {
+					// Save Unit
+					var unit = atlas.Units[unitIndex];
+					if (!unit.IsDirty && !forceSave) continue;
+					unit.Order = unitIndex;
+					if (string.IsNullOrWhiteSpace(unit.Guid)) unit.Guid = System.Guid.NewGuid().ToString();
+					string unitPath = Util.CombinePaths(atlasPath, unit.Guid);
+					string unitMetaPath = Util.CombinePaths(unitPath, "Meta.json");
+					JsonUtil.SaveJsonToPath(unit, unitMetaPath, false);
+					for (int spriteIndex = 0; spriteIndex < unit.Sprites.Count; spriteIndex++) {
+						// Save Sprite
+						var sprite = unit.Sprites[spriteIndex];
+						if (!sprite.IsDirty && !forceSave) continue;
+						sprite.Order = spriteIndex;
+						if (string.IsNullOrWhiteSpace(sprite.Guid)) sprite.Guid = System.Guid.NewGuid().ToString();
+						string spritePath = Util.CombinePaths(unitPath, sprite.Guid);
+						string spriteMetaPath = Util.CombinePaths(spritePath, "Sprite.json");
+						JsonUtil.SaveJsonToPath(sprite, spriteMetaPath, false);
+						// Save Pixels
+						string pixelPath = Util.CombinePaths(spritePath, "Pixels");
+						Util.Byte4ToFile(sprite.Pixels, pixelPath);
+					}
+				}
+			}
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
 
 
 		private static void FillSummaryForSheet (SpriteSheet sheet, int textureWidth, int textureHeight, Byte4[] pixels) {

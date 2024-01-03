@@ -222,9 +222,9 @@ namespace AngeliaFramework {
 
 			// Click on Mark
 			if (FrameInput.MouseLeftButtonDown) {
-				if (markRectD.Expand(Unify(12)).Contains(FrameInput.MouseGlobalPosition)) {
+				if (markRectD.Expand(Unify(12)).MouseInside()) {
 					ScrollY++;
-				} else if (markRectU.Expand(Unify(12)).Contains(FrameInput.MouseGlobalPosition)) {
+				} else if (markRectU.Expand(Unify(12)).MouseInside()) {
 					ScrollY--;
 				}
 			}
@@ -338,7 +338,7 @@ namespace AngeliaFramework {
 					var hoverCheckingRect = labelRect.Expand(markSize.x, markSize.x, itemGap / 2, itemGap / 2);
 					bounds = hoverCheckingRect.Shrink(markSize.x * 2, markSize.x * 2, 0, 0);
 					if (!useArrows) {
-						mouseHoverLabel = AllowMouseClick && Interactable && hoverCheckingRect.Contains(FrameInput.MouseGlobalPosition);
+						mouseHoverLabel = AllowMouseClick && Interactable && hoverCheckingRect.MouseInside();
 						if (mouseHoverLabel && FrameInput.LastActionFromMouse) {
 							CellRenderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint, 0);
 						}
@@ -359,7 +359,7 @@ namespace AngeliaFramework {
 
 					// Mouse Highlight
 					if (!useArrows) {
-						mouseHoverLabel = AllowMouseClick && Interactable && hoverCheckingRect.Contains(FrameInput.MouseGlobalPosition);
+						mouseHoverLabel = AllowMouseClick && Interactable && hoverCheckingRect.MouseInside();
 						if (mouseHoverLabel && FrameInput.LastActionFromMouse) {
 							CellRenderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint, 0);
 						}
@@ -419,8 +419,8 @@ namespace AngeliaFramework {
 
 					// Mouse Hover and Highlight
 					if (AllowMouseClick && AllowMouseClick && Interactable) {
-						mouseHoverArrowL = rectL_H.Contains(FrameInput.MouseGlobalPosition);
-						mouseHoverArrowR = rectR_H.Contains(FrameInput.MouseGlobalPosition);
+						mouseHoverArrowL = rectL_H.MouseInside();
+						mouseHoverArrowR = rectR_H.MouseInside();
 					}
 
 					// Draw Hover
@@ -481,7 +481,7 @@ namespace AngeliaFramework {
 					invoke = true;
 				}
 			}
-			if (itemRect_Old.Contains(FrameInput.MouseGlobalPosition) && FrameInput.LastActionFromMouse && SelectionIndex != ItemCount) {
+			if (itemRect_Old.MouseInside() && FrameInput.LastActionFromMouse && SelectionIndex != ItemCount) {
 				SetSelection(ItemCount);
 			}
 

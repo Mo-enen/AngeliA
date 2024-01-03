@@ -1,5 +1,4 @@
 2d-badge-scene-template
-2DTexture@x3
 3d-badge-scene-template
 _Help
 _Help@2x
@@ -13,6 +12,7 @@ account
 account@2x
 Add-Available
 Add-Available@2x
+Advanced@4x
 Advanced@x3
 ageialogo
 AimConstraint Icon
@@ -66,6 +66,7 @@ animationanimated
 animationanimated@2x
 AnimationClip Icon
 AnimationClip On Icon
+AnimationCurve@4x
 animationdopesheetkeyframe
 AnimationEventBackground
 AnimationEventBackground@2x
@@ -107,6 +108,7 @@ AnimatorStateTransition Icon
 animpropdopdown
 animpropdopdown@2x
 AnyStateNode Icon
+Apple Color Emoji Atlas
 Apple iPad Mini 4_Overlay
 Apple iPad Pro 12.9 (2018)_Overlay
 Apple iPhone 8_Overlay
@@ -119,7 +121,7 @@ AreaLight Gizmo
 AreaLight Icon
 Arial Atlas
 Arial Unicode Atlas
-Array@x3
+Array@4x
 arrow-down
 arrow-down@2x
 arrow-left
@@ -166,6 +168,10 @@ AudioMixerSnapshot Icon
 AudioMixerStripBg
 AudioMixerStripBgSelection
 AudioMixerView Icon
+AudioRandomContainer Icon
+AudioRandomContainer On Icon
+AudioResource Icon
+AudioResource On Icon
 AudioReverbFilter Icon
 AudioReverbZone Icon
 AudioSource Gizmo
@@ -206,6 +212,10 @@ bg_HeaderExpanded
 bg_HeaderExpanded@2x
 BillboardAsset Icon
 BillboardRenderer Icon
+Binding
+Binding@2x
+BindingFoldoutIndicator
+BindingFoldoutIndicator@2x
 Blackboard
 BlackboardFieldExposed
 BlackboardFieldPillBackground
@@ -226,7 +236,7 @@ BodySilhouette
 Bold
 Bold@2x
 boo Script Icon
-Boolean@x3
+Boolean@4x
 Border-redstroke
 BottomShadowInwards
 BoundsField
@@ -319,13 +329,18 @@ btn right onact@2x
 btn right@2x
 btn@2x
 BuildAll
-BuilderSample&CanvasImange
 BuildSettings.Android
 BuildSettings.Android On
 BuildSettings.Android On@2x
 BuildSettings.Android.Small
 BuildSettings.Android.Small@2x
 BuildSettings.Android@2x
+BuildSettings.Bratwurst
+BuildSettings.Bratwurst On
+BuildSettings.Bratwurst On@2x
+BuildSettings.Bratwurst.small
+BuildSettings.Bratwurst.small@2x
+BuildSettings.Bratwurst@2x
 BuildSettings.Broadcom
 BuildSettings.DedicatedServer
 BuildSettings.DedicatedServer On
@@ -460,6 +475,8 @@ BuildSettings.XboxOne On@2x
 BuildSettings.XboxOne.Small
 BuildSettings.XboxOne.Small@2x
 BuildSettings.XboxOne@2x
+BuiltIn
+BuiltIn@2x
 builtin_brush_1
 builtin_brush_2
 builtin_brush_3
@@ -530,10 +547,10 @@ ChorusFilter Icon
 CircleCollider2D Icon
 CircularToggle_OFF
 CircularToggle_ON
-Clear
 clear
-Clear@2x
+Clear
 clear@2x
+Clear@2x
 clear_uielements
 clear_uielements@2x
 Clip
@@ -639,7 +656,7 @@ CollabOffline
 CollabProgress
 CollabPull
 CollabPush
-Color@x3
+Color@4x
 color_picker
 color_picker@2x
 ColorField
@@ -687,7 +704,6 @@ CommentTip
 CommentTip@2x
 completed_task
 completed_task@2x
-Component@x3
 CompositeCollider2D Icon
 ComputeShader Icon
 ConfigurableJoint Icon
@@ -717,6 +733,14 @@ ConstantForce Icon
 ConstantForce2D Icon
 ContentSizeFitter Icon
 ControlHighlight
+ConvertersCompatible
+ConvertersCompatible@2x
+ConvertersIncompatible
+ConvertersIncompatible@2x
+ConvertersUnknown
+ConvertersUnknown@2x
+Core_GameObject@4x
+Core_Transform@4x
 CreateAddNew
 CreateAddNew@2x
 CreateNew
@@ -859,6 +883,10 @@ d_AudioMixerController On Icon
 d_AudioMixerGroup Icon
 d_AudioMixerSnapshot Icon
 d_AudioMixerView Icon
+d_AudioRandomContainer Icon
+d_AudioRandomContainer On Icon
+d_AudioResource Icon
+d_AudioResource On Icon
 d_AudioReverbFilter Icon
 d_AudioReverbZone Icon
 d_AudioSource Icon
@@ -1184,8 +1212,16 @@ d_FrameCapture
 d_FrameCapture@2x
 d_FreeformLayoutGroup Icon
 d_FrictionJoint2D Icon
+d_Fullscreen
+d_Fullscreen@2x
+d_FullscreenOn
+d_FullscreenOn@2x
 d_Function@x3
 d_GameObject Icon
+d_GameViewAudio
+d_GameViewAudio On
+d_GameViewAudio On@2x
+d_GameViewAudio@2x
 d_GEAR
 d_GizmosToggle
 d_GizmosToggle On
@@ -1235,6 +1271,10 @@ d_GUISkin On Icon
 d_Halo Icon
 d_Help
 d_Help@2x
+d_Hidden@2x
+d_Hidden@16
+d_Hidden@32
+d_Hidden@64
 d_HierarchyLock
 d_HierarchyLock@2x
 d_HingeJoint Icon
@@ -1284,7 +1324,13 @@ d_Lighting
 d_Lighting@2x
 d_LightingDataAsset Icon
 d_LightingDataAssetParent Icon
+d_LightingPreviewMode
+d_LightingPreviewMode@2x
 d_LightingSettings Icon
+d_LightingVisualization
+d_LightingVisualization@2x
+d_LightingVisualizationColors
+d_LightingVisualizationColors@2x
 d_LightmapEditor.WindowTitle
 d_LightmapEditor.WindowTitle@2x
 d_LightmapParameters Icon
@@ -1301,6 +1347,14 @@ d_ListView
 d_ListView On
 d_ListView On@2x
 d_ListView@2x
+d_Loading@2x
+d_Loading@16
+d_Loading@32
+d_Loading@64
+d_Loading_Failed@2x
+d_Loading_Failed@16
+d_Loading_Failed@32
+d_Loading_Failed@64
 d_LODGroup Icon
 d_LookAtConstraint Icon
 d_MainStageView
@@ -1454,6 +1508,8 @@ d_ParticleShapeTool@3x
 d_ParticleShapeTool@4x
 d_ParticleSystem Icon
 d_ParticleSystemForceField Icon
+d_Pause
+d_Pause@2x
 d_PauseButton
 d_PauseButton On
 d_PauseButton On@2x
@@ -1470,6 +1526,8 @@ d_pick@2x
 d_pick_uielements
 d_pick_uielements@2x
 d_PlatformEffector2D Icon
+d_Play
+d_Play@2x
 d_PlayableDirector Icon
 d_PlayButton
 d_PlayButton On
@@ -1597,8 +1655,8 @@ d_pulldown@2x
 d_pulldown_uielements
 d_RawImage Icon
 d_RaycastCollider Icon
-d_RaytracingShader Icon
 d_RayTracingShader Icon
+d_RaytracingShader Icon
 d_Record Off
 d_Record Off@2x
 d_Record On
@@ -1783,9 +1841,15 @@ d_SignalEmitter Icon
 d_SignalReceiver Icon
 d_Size
 d_SkinnedMeshRenderer Icon
+d_Skip
+d_Skip@2x
 d_Skybox Icon
 d_Slider Icon
 d_SliderJoint2D Icon
+d_SmallClose@2x
+d_SmallClose@16
+d_SmallClose@32
+d_SmallClose@64
 d_Smooth
 d_Smooth_On
 d_SnapIncrement
@@ -1824,6 +1888,8 @@ d_StepButton On@2x
 d_StepButton@2x
 d_StepLeftButton
 d_StepLeftButton-On
+d_Stop
+d_Stop@2x
 d_StopButton
 d_StopButton@2x
 d_StreamingController Icon
@@ -2024,6 +2090,8 @@ d_UnityEditor.VersionControl@2x
 d_UnityLogo
 d_Unlinked
 d_Unlinked@2x
+d_UnlitMode
+d_UnlitMode@2x
 d_Valid
 d_Valid@2x
 d_VariantArrow_Idle
@@ -2047,6 +2115,10 @@ d_ViewToolZoom On@2x
 d_ViewToolZoom@2x
 d_VisibilityOff
 d_VisibilityOn
+d_Visible@2x
+d_Visible@16
+d_Visible@32
+d_Visible@64
 d_VisualEffect Icon
 d_VisualEffectAsset Icon
 d_VisualEffectSubgraphBlock Icon
@@ -2126,6 +2198,7 @@ Dependency@2x
 Deprecated
 Deprecated@2x
 DialArrow_Texture
+Dictionary@4x
 DirectionalLight Gizmo
 DirectionalLight Icon
 DiscLight Gizmo
@@ -2148,7 +2221,6 @@ DotFill
 DotFrame
 DotFrameDotted
 DotSelection
-Double@x3
 DoubleField
 DoubleField@2x
 DoubleField@4x
@@ -2208,8 +2280,11 @@ editicon.sml
 EditorSettings Icon
 Ellipsis
 Ellipsis@2x
+EllipsisMenu
+EllipsisMenu@2x
 endButton
 endButton-On
+Enum@4x
 EnumField
 EnumField@2x
 EnumField@4x
@@ -2232,6 +2307,8 @@ EventSystem Icon
 EventTrigger Icon
 ExclamationMark
 ExclamationMark@2x
+ExecutionInput@4x
+ExecutionOutput@4x
 ExposablePopupBg
 ExposablePopupMenuBg
 Exposure
@@ -2278,6 +2355,7 @@ Flex End@2x
 Flex Start
 Flex Start@2x
 Flex@2x
+Float@4x
 FloatField
 FloatField@2x
 FloatField@4x
@@ -2315,11 +2393,19 @@ FreeformLayoutGroup Icon
 FreeSans Atlas
 FreeSans-LrmZ Atlas
 FrictionJoint2D Icon
+Fullscreen
+Fullscreen@2x
+FullscreenOn
+FullscreenOn@2x
 Function@x3
 GameManager Icon
 GameObject Icon
 GameObject On Icon
-GameObject@x3
+GameObject@4x
+GameViewAudio
+GameViewAudio On
+GameViewAudio On@2x
+GameViewAudio@2x
 gameviewbackground
 gameviewbackground@2x
 GEAR
@@ -2333,6 +2419,7 @@ Google Pixel 5_Overlay
 GoToDashboard
 GoToDashboard@2x
 Gradient-Background
+Gradient@4x
 gradient_down_swatch
 gradient_down_swatch_overlay
 gradient_down_swatch_overlay_on
@@ -2344,7 +2431,9 @@ GradientField@2x
 GradientField@4x
 GradientField@8x
 GraphicRaycaster Icon
-GraphicScript@X3
+Graphics_Cubemap@4x
+Graphics_Material@4x
+Graphics_Mesh@4x
 GreenCheckmark
 GreenCheckmark@2x
 greenLight
@@ -2424,6 +2513,9 @@ helpbox@2x
 Helvetica Atlas
 Hidden
 Hidden@2x
+Hidden@16
+Hidden@32
+Hidden@64
 HierarchyLock
 HierarchyLock@2x
 HighPassFilter Icon
@@ -2464,6 +2556,8 @@ IMGUIContainer@8x
 Import
 Import-Available
 Import-Available@2x
+Import-Button
+Import-Button@2x
 Import@2x
 IN BigTitle
 IN BigTitle inner
@@ -2537,6 +2631,8 @@ Inherited
 Inherited@2x
 Inlined TextField Focus
 Inlined TextField Focus@2x
+InProject
+InProject@2x
 InputField Icon
 InsertionMarker
 Inspector
@@ -2545,9 +2641,9 @@ Installed
 Installed-Selected-Focused
 Installed-Selected-Focused@2x
 Installed@2x
-Integer1@x3
-Integer32@x3
-Integer64@x3
+Integer16@4x
+Integer32@4x
+Integer64@4x
 IntegerField
 IntegerField@2x
 IntegerField@4x
@@ -2569,7 +2665,6 @@ Keyboard
 Keyboard@2x
 KeyboardShortcutsDisabled
 KeyboardShortcutsDisabled@2x
-Keycode@x3
 KnobCShape
 KnobCShapeMini
 Label
@@ -2606,7 +2701,15 @@ Lighting
 Lighting@2x
 LightingDataAsset Icon
 LightingDataAssetParent Icon
+LightingPreviewMode
+LightingPreviewMode On
+LightingPreviewMode On@2x
+LightingPreviewMode@2x
 LightingSettings Icon
+LightingVisualization
+LightingVisualization@2x
+LightingVisualizationColors
+LightingVisualizationColors@2x
 lightmapChecker
 LightmapEditor.WindowTitle
 LightmapEditor.WindowTitle@2x
@@ -2627,6 +2730,7 @@ Link
 Link@2x
 Linked
 Linked@2x
+List@4x
 ListView
 ListView On
 ListView On@2x
@@ -2635,6 +2739,13 @@ ListView@4x
 ListView@8x
 Loading
 Loading@2x
+Loading@16
+Loading@32
+Loading@64
+Loading_Failed@2x
+Loading_Failed@16
+Loading_Failed@32
+Loading_Failed@64
 Locked
 Locked@2x
 LockIcon
@@ -2664,11 +2775,10 @@ MaskField@4x
 MaskField@8x
 Material Icon
 Material On Icon
-Material@x3
 MaterialsMode
 MaterialsMode_On
 MaterialVariant Icon
-Matrix@x3
+Matrix@4x
 me_leftthumb_d
 me_leftthumb_l
 me_leftthumb_prev_d
@@ -2811,8 +2921,6 @@ Mobile@2x
 Mobile@4x
 Mobile@8x
 ModelImporter Icon
-Modify
-Modify@2x
 monologo
 More
 more
@@ -2847,6 +2955,10 @@ MultiSelectFeature@2x
 MuscleClip Icon
 MuteNormal
 MuteON
+MyAssets
+MyAssets@2x
+MyRegistries
+MyRegistries@2x
 Navigation
 NavMeshAgent Icon
 NavMeshData Icon
@@ -2941,6 +3053,7 @@ None
 None@2x
 Normal
 Normal@2x
+NotoColorEmoji Atlas
 NotoSansCJKjp-Bold Atlas
 NotoSansCJKjp-Regular Atlas
 NotoSansCJKkr-Bold Atlas
@@ -3358,7 +3471,7 @@ pulldown focus
 pulldown focus@2x
 pulldown@2x
 pulldown_uielements
-Quaternion@x3
+Quaternion@4x
 Quickstart
 Quickstart@2x
 radio
@@ -3381,7 +3494,6 @@ RawImage
 RawImage Icon
 RawImage@2x
 RaycastCollider Icon
-RaycastHit@x3
 RayTracingShader Icon
 Record Off
 Record Off@2x
@@ -3429,6 +3541,12 @@ Refresh
 Refresh@2x
 RegionBg
 RelativeJoint2D Icon
+Remove
+Remove@2x
+Remove@4
+Remove@4x
+Remove@8
+Remove@8x
 RenderPipelineAsset Icon
 RenderPipelineGlobalSettings Icon
 RenderTexture Icon
@@ -3452,7 +3570,6 @@ RightHandZoomSilhouette
 RightLeg
 Rigidbody Icon
 Rigidbody2D Icon
-RigidBody@x3
 ro_selected_d
 ro_selected_l
 ro_unselected_d
@@ -3671,6 +3788,7 @@ SearchQuery Icon
 SearchQueryAsset Icon
 SearchWindow
 SearchWindow@2x
+SEGUIEMJ Atlas
 Selectable Icon
 selected
 selected@2x
@@ -3681,6 +3799,8 @@ SelectionWindow.Remove@2x
 Selector
 Selector@2x
 SeparatorDot
+Services
+Services@2x
 ServicesWindow-ExternalLink
 ServicesWindow-InfoTooltip
 ServicesWindow-InfoTooltip@2x
@@ -3699,8 +3819,12 @@ Settings@2x
 SettingsIcon
 SettingsIcon@2x
 Shaded
+Shaded On
+Shaded On@2x
 Shaded@2x
 ShadedWireframe
+ShadedWireframe On
+ShadedWireframe On@2x
 ShadedWireframe@2x
 Shader Icon
 ShaderImporter Icon
@@ -3759,6 +3883,8 @@ SignalEmitter Icon
 SignalReceiver Icon
 Size
 SkinnedMeshRenderer Icon
+Skip
+Skip@2x
 Skybox Icon
 Slider
 slider horiz
@@ -3782,6 +3908,10 @@ SliderInt@8x
 SliderJoint2D Icon
 SlowDown
 SlowDown@2x
+SmallClose@2x
+SmallClose@16
+SmallClose@32
+SmallClose@64
 Smooth
 Smooth_On
 SnapIncrement
@@ -3859,6 +3989,8 @@ StepButton On@2x
 StepButton@2x
 StepLeftButton
 StepLeftButton-On
+Stop
+Stop@2x
 StopButton
 StopButton@2x
 StreamingController Icon
@@ -3872,7 +4004,7 @@ stretchscroll horiz thumb
 stretchscroll horiz thumb@2x
 stretchscroll vert thumb
 stretchscroll vert thumb@2x
-String@x3
+String@4x
 StyleSheet Icon
 SubAssetBg
 SubAssetBgCloseEnded
@@ -3947,6 +4079,10 @@ SyncSearch
 SyncSearch On
 SyncSearch On@2x
 SyncSearch@2x
+Tab
+Tab@2x
+Tab@4x
+Tab@8x
 tab_next
 tab_next@2x
 tab_prev
@@ -3964,6 +4100,10 @@ TableView On
 TableView On@2x
 TableView@2x
 TabToFilter
+TabView
+TabView@2x
+TabView@4x
+TabView@8x
 TagField
 TagField@2x
 TagField@4x
@@ -4027,7 +4167,6 @@ TestNormal
 TestPassed
 TestStopwatch
 Text Icon
-Text@x3
 TextAsset Icon
 TextField
 TextField focused
@@ -4035,20 +4174,24 @@ TextField focused@2x
 TextField@2x
 TextField@4x
 TextField@8x
-TextFieldDropDown
 TextfieldDropdown
-TextFieldDropDownAct
+TextFieldDropDown
 TextfieldDropdownAct
+TextFieldDropDownAct
 TextFieldDropDownFocused
 TextFieldDropDownText
 TextMesh Icon
 TextScriptImporter Icon
 Texture Icon
 Texture2D Icon
+Texture2D@4x
 Texture2DArray
 Texture2DArray On
 Texture2DArray On@2x
 Texture2DArray@2x
+Texture2DArray@4x
+Texture3D@4x
+Texture3DArray@4x
 textureChecker
 textureCheckerDark
 textureExternal
@@ -4096,8 +4239,8 @@ toggle on act@2x
 toggle on focus
 toggle on focus@2x
 toggle on@2x
-toggle@2x
 Toggle@2x
+toggle@2x
 Toggle@4x
 Toggle@8x
 toggle_bg
@@ -4122,6 +4265,10 @@ toggle_searcher_preview_off
 toggle_searcher_preview_off@2x
 toggle_searcher_preview_on
 toggle_searcher_preview_on@2x
+ToggleButtonGroup
+ToggleButtonGroup@2x
+ToggleButtonGroup@4x
+ToggleButtonGroup@8x
 ToggleGroup Icon
 ToggleUVOverlay
 ToggleUVOverlay@2x
@@ -4240,7 +4387,6 @@ TrackedPoseDriver Icon
 TrailRenderer Icon
 tranp
 Transform Icon
-Transform@x3
 TransformTool
 TransformTool On
 TransformTool On@2x
@@ -4299,8 +4445,6 @@ TreeView@2x
 TreeView@4x
 TreeView@8x
 TrianglePointingRight15px
-TriggerInput@x3
-TriggerOutput@x3
 TrueTypeFontImporter Icon
 TwoPaneSplitView
 TwoPaneSplitView@2x
@@ -4343,10 +4487,18 @@ UnityEditor.VersionControl
 UnityEditor.VersionControl@2x
 UnityLogo
 UnityLogoLarge
+UnityRegistry
+UnityRegistry@2x
 UnLinked
 UnLinked@2x
+UnlitMode
+UnlitMode On
+UnlitMode On@2x
+UnlitMode@2x
 Unlocked
 Unlocked@2x
+UnresolvedBinding
+UnresolvedBinding@2x
 UnresolvedVariable
 UnresolvedVariable@2x
 unselected
@@ -4382,7 +4534,7 @@ varpin on@2x
 varpin tooltip
 varpin tooltip@2x
 varpin@2x
-Vector2@x3
+Vector2@4x
 Vector2Field
 Vector2Field@2x
 Vector2Field@4x
@@ -4391,7 +4543,7 @@ Vector2IntField
 Vector2IntField@2x
 Vector2IntField@4x
 Vector2IntField@8x
-Vector3@x3
+Vector3@4x
 Vector3Field
 Vector3Field@2x
 Vector3Field@4x
@@ -4400,7 +4552,7 @@ Vector3IntField
 Vector3IntField@2x
 Vector3IntField@4x
 Vector3IntField@8x
-Vector4@x3
+Vector4@4x
 Vector4Field
 Vector4Field@2x
 Vector4Field@4x
@@ -4429,6 +4581,9 @@ VisibilityOff
 VisibilityOn
 Visible
 Visible@2x
+Visible@16
+Visible@32
+Visible@64
 VisualEffect Gizmo
 VisualEffect Icon
 VisualEffectAsset Icon
@@ -4489,6 +4644,8 @@ WindowBottomResize@2x
 WindZone Gizmo
 WindZone Icon
 wireframe
+Wireframe On
+Wireframe On@2x
 wireframe@2x
 Wrap
 Wrap Reverse

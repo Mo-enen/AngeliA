@@ -5,7 +5,7 @@ namespace AngeliaFramework {
 
 
 		public const string UNIVERSE_NAME = "Universe";
-		public const string FLEXIBLE_UNIVERSE_NAME = "Universe Flexible";
+		public const string EDITABLE_UNIVERSE_NAME = "Universe Editable";
 		public const string COMBINATION_FILE_NAME = "Item Combination.txt";
 		public const int SAVE_SLOT_COUNT = 4;
 
@@ -56,12 +56,12 @@ namespace AngeliaFramework {
 		public static string LanguageRoot => _LanguageRoot ??= Util.CombinePaths(UniverseRoot, "Language");
 		private static string _LanguageRoot = null;
 
-		// Flexible Universe
-		public static string FlexibleUniverseRoot => _FlexibleUniverseRoot ??= Util.CombinePaths(ApplicationDataPath, FLEXIBLE_UNIVERSE_NAME);
-		private static string _FlexibleUniverseRoot = null;
+		// Editable Universe
+		public static string EditableUniverseRoot => _EditableUniverseRoot ??= Util.CombinePaths(ApplicationDataPath, EDITABLE_UNIVERSE_NAME);
+		private static string _EditableUniverseRoot = null;
 
-		public static string FlexibleSheetRoot => _FlexibleSheetRoot ??= Util.CombinePaths(FlexibleUniverseRoot, "Sheet");
-		private static string _FlexibleSheetRoot = null;
+		public static string EditableSheetRoot => _EditableSheetRoot ??= Util.CombinePaths(EditableUniverseRoot, "Sheet");
+		private static string _EditableSheetRoot = null;
 
 		// Persistent
 		public static string ItemSaveDataRoot => _ItemSaveDataRoot ??= Util.CombinePaths(PersistentDataPath, "Item Customization");

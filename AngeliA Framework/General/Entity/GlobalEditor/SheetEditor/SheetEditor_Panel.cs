@@ -35,8 +35,12 @@ namespace AngeliaFramework {
 		private static readonly int UI_DELETE = "UI.Delete".AngeHash();
 
 		// Data
+		private static int PopupAtlasIndex = -1;
+		private static int PopupUnitIndex = -1;
 		private PanelType CurrentPanelType = PanelType.File;
 		private int FilePanelScroll = 0;
+		private readonly CellContent ItemLabelContent = new() { Alignment = Alignment.MidLeft, CharSize = 18, Clip = false, Wrap = false, Tint = Const.GREY_230, };
+		private readonly CellContent ItemInputContent = new() { Alignment = Alignment.MidLeft, CharSize = 18, Clip = false, Wrap = false, Tint = Const.GREY_230, };
 
 
 		#endregion
@@ -49,7 +53,7 @@ namespace AngeliaFramework {
 
 		private void Update_Panel () {
 
-			var panelRect = CellRenderer.CameraRect.EdgeInside(Direction4.Left, Unify(300));
+			var panelRect = CellRenderer.CameraRect.EdgeInside(Direction4.Left, Unify(PANEL_WIDTH));
 
 			// BG
 			CellRenderer.Draw(Const.PIXEL, panelRect, Const.BLACK, 0);
@@ -58,10 +62,10 @@ namespace AngeliaFramework {
 
 			switch (CurrentPanelType) {
 				case PanelType.Palette:
-					Update_Panel_Palette(panelRect);
+					Update_PalettePanel(panelRect);
 					break;
 				case PanelType.File:
-					Update_Panel_File(panelRect);
+					Update_FilePanel(panelRect);
 					break;
 			}
 
@@ -121,7 +125,7 @@ namespace AngeliaFramework {
 				);
 
 				// Click
-				if (tabInteractable && FrameInput.MouseLeftButtonDown && tabRect.Contains(FrameInput.MouseGlobalPosition)) {
+				if (tabInteractable && FrameInput.MouseLeftButtonDown && tabRect.MouseInside()) {
 					CurrentPanelType = (PanelType)i;
 				}
 			}
@@ -131,105 +135,112 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_Panel_File (IRect panelRect) {
+		private void Update_FilePanel (IRect panelRect) {
 
 			const int EXTRA_ITEM = 6;
-			int itemHeight = Unify(20);
+			int itemHeight = Unify(24);
+			int itemPadding = Unify(2);
+			int iconShrink = Unify(2);
+			int labelPadding = Unify(6);
 			int scrollBarWidth = Unify(20);
-			var selectingAtlas = SelectingAtlas;
-			int totalItemCount = Atlas.Count + (selectingAtlas != null ? selectingAtlas.Units.Count : 0);
 			int pageItemCount = panelRect.height / itemHeight;
-
-			// Scroll bar
-			FilePanelScroll = CellRendererGUI.ScrollBar(
-				panelRect.EdgeInside(Direction4.Right, scrollBarWidth),
-				z: 1, FilePanelScroll, totalItemCount + EXTRA_ITEM, pageItemCount
-			);
-			FilePanelScroll = FilePanelScroll.Clamp(0, totalItemCount - pageItemCount + EXTRA_ITEM);
 			panelRect = panelRect.Shrink(0, scrollBarWidth, 0, 0);
 
 			// Content
-			int requireSelectAtlas = -2;
+			int requireSelectAtlas = -1;
 			int requireSelectUnit = -1;
 			int contentStartCellIndex = CellRenderer.GetUsedCellCount();
 			int contentStartTextIndex = CellRenderer.GetTextUsedCellCount();
-			var rect = new IRect(0, panelRect.yMax + FilePanelScroll * itemHeight, panelRect.width, itemHeight);
+			int totalItemCount = 0;
+			var rect = new IRect(panelRect.x, panelRect.yMax + FilePanelScroll * itemHeight, panelRect.width, itemHeight);
 			for (int aIndex = 0; aIndex < Atlas.Count; aIndex++) {
 
 				rect.y -= itemHeight;
+				totalItemCount++;
 				bool isSelectingAtlas = aIndex == SelectingAtlasIndex;
 				var atlas = Atlas[aIndex];
 
 				// Draw Atlas
 				if (rect.y <= panelRect.yMax && rect.yMax >= panelRect.y) {
 
-					bool mouseInside = rect.Contains(FrameInput.MouseGlobalPosition);
-
 					// Tri Mark
-					var atlasRect = rect.Shrink(rect.height, 0, 0, 0);
+					var atlasRect = rect.Shrink(rect.height, 0, itemPadding, itemPadding);
+					var triMarkRect = atlasRect.EdgeOutside(Direction4.Left, atlasRect.height);
 					CellRenderer.Draw(
-						isSelectingAtlas ? BuiltInIcon.ICON_TRIANGLE_DOWN : BuiltInIcon.ICON_TRIANGLE_RIGHT,
-						atlasRect.EdgeOutside(Direction4.Left, atlasRect.height),
-						z: 2
+						atlas.Unfold ? BuiltInIcon.ICON_TRIANGLE_DOWN : BuiltInIcon.ICON_TRIANGLE_RIGHT,
+						triMarkRect, Const.GREY_196, z: 2
 					);
+					CursorSystem.SetCursorAsHand(triMarkRect);
 
 					// Icon
 					CellRenderer.Draw(
 						BuiltInIcon.ICON_ATLAS,
 						atlasRect.EdgeInside(Direction4.Left, atlasRect.height),
-						z: 2
+						Const.ORANGE_BETTER, z: 2
 					);
 
 					// Label
-					var labelRect = atlasRect.Shrink(atlasRect.height, 0, 0, 0);
-					if (isSelectingAtlas) {
-						atlas.Name = CellRendererGUI.TextField(3746234, labelRect, atlas.Name, out bool changed);
-						if (changed) {
-							SetDirty(aIndex, -1, -1);
-						}
-					} else {
-						CellRendererGUI.Label(CellContent.Get(atlas.Name, alignment: Alignment.MidLeft), labelRect);
+					var labelRect = atlasRect.Shrink(atlasRect.height + labelPadding, 0, 0, 0);
+					int atlasInputID = 3746234 + aIndex;
+					if (CellRendererGUI.TypingTextFieldID == atlasInputID) {
+						CellRenderer.Draw_9Slice(BuiltInIcon.FRAME_16, labelRect, Const.GREY_128, z: 2);
+					}
+					atlas.Name = CellRendererGUI.TextField(
+						atlasInputID, labelRect, ItemInputContent.SetText(atlas.Name), out bool changed
+					);
+					if (changed) {
+						SetDirty(aIndex, -1, -1);
 					}
 
 					// Highlight
-					if (mouseInside) {
+					if (rect.MouseInside()) {
 						CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_12, z: 1);
 					}
 
-					// Click
-					if (FrameInput.MouseLeftButtonDown && mouseInside) {
-						requireSelectAtlas = isSelectingAtlas ? -1 : aIndex;
+					// Click for Folding
+					if (FrameInput.MouseLeftButtonDown && triMarkRect.MouseInside()) {
+						atlas.Unfold = !atlas.Unfold;
 					}
+
 				}
 
-				if (isSelectingAtlas && selectingAtlas != null) {
+				if (atlas.Unfold) {
 					// Draw Units
-					for (int uIndex = 0; uIndex < selectingAtlas.Units.Count; uIndex++) {
+					for (int uIndex = 0; uIndex < atlas.Units.Count; uIndex++) {
 
 						rect.y -= itemHeight;
+						totalItemCount++;
 						if (rect.y > panelRect.yMax || rect.yMax < panelRect.y) continue;
 
 						var unitRect = rect.Shrink(rect.height * 2, 0, 0, 0);
-						var unit = selectingAtlas.Units[uIndex];
-						bool isSelectingUnit = uIndex == SelectingUnitIndex;
-						bool mouseInside = rect.Contains(FrameInput.MouseGlobalPosition);
+						var unit = atlas.Units[uIndex];
+						bool isSelectingUnit = aIndex == SelectingAtlasIndex && uIndex == SelectingUnitIndex;
+						bool mouseInside = rect.MouseInside();
 
 						// Icon
-						CellRenderer.Draw(
-							BuiltInIcon.ICON_SPRITE,
-							unitRect.EdgeInside(Direction4.Left, unitRect.height),
-							z: 3
-						);
+						int icon = BuiltInIcon.ICON_SPRITE;
+						var iconRect = unitRect.EdgeInside(Direction4.Left, unitRect.height).Shrink(iconShrink);
+						if (CellRenderer.TryGetSpriteFromGroup(unit.GlobalID, 0, out var sprite, false, true)) {
+							icon = sprite.GlobalID;
+							iconRect = iconRect.Fit(sprite);
+						}
+						CellRenderer.Draw(icon, iconRect, z: 3);
 
 						// Label
-						var labelRect = unitRect.Shrink(unitRect.height, 0, 0, 0);
+						var labelRect = unitRect.Shrink(unitRect.height + labelPadding, 0, 0, 0);
 						if (isSelectingUnit) {
-							unit.Name = CellRendererGUI.TextField(3746234, labelRect, unit.Name, out bool changed);
+							int unitInputID = 3746239 + Atlas.Count + uIndex;
+							if (CellRendererGUI.TypingTextFieldID == unitInputID) {
+								CellRenderer.Draw_9Slice(BuiltInIcon.FRAME_16, labelRect, Const.GREY_128, z: 2);
+							}
+							unit.Name = CellRendererGUI.TextField(
+								unitInputID, labelRect, ItemInputContent.SetText(unit.Name), out bool changed
+							);
 							if (changed) {
 								SetDirty(aIndex, uIndex, -1);
 							}
 						} else {
-							CellRendererGUI.Label(CellContent.Get(unit.Name, alignment: Alignment.MidLeft), labelRect);
+							CellRendererGUI.Label(ItemLabelContent.SetText(unit.Name), labelRect);
 						}
 
 						// Highlight
@@ -239,11 +250,12 @@ namespace AngeliaFramework {
 
 						// Selecting Highlight
 						if (isSelectingUnit) {
-							CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN, z: 2);
+							CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_42, z: 2);
 						}
 
 						// Click
 						if (!isSelectingUnit && FrameInput.MouseLeftButtonDown && mouseInside) {
+							requireSelectAtlas = aIndex;
 							requireSelectUnit = uIndex;
 						}
 
@@ -251,9 +263,24 @@ namespace AngeliaFramework {
 				}
 			}
 
+			// Scroll bar
+			if (totalItemCount - pageItemCount + EXTRA_ITEM > 0) {
+				FilePanelScroll = CellRendererGUI.ScrollBar(
+					panelRect.EdgeOutside(Direction4.Right, scrollBarWidth),
+					z: 1, FilePanelScroll, totalItemCount + EXTRA_ITEM, pageItemCount
+				);
+				if (FrameInput.MouseWheelDelta != 0 && panelRect.MouseInside()) {
+					FilePanelScroll -= 2 * FrameInput.MouseWheelDelta;
+				}
+				FilePanelScroll = FilePanelScroll.Clamp(0, totalItemCount - pageItemCount + EXTRA_ITEM);
+			} else {
+				FilePanelScroll = 0;
+			}
+
 			// Selection Change
-			if (requireSelectAtlas >= -1) SelectAtlas(requireSelectAtlas);
-			if (requireSelectUnit >= 0) SelectUnit(requireSelectUnit);
+			if (requireSelectAtlas >= 0 && requireSelectUnit >= 0) {
+				SelectUnit(requireSelectAtlas, requireSelectUnit);
+			}
 
 			// Clamp
 			CellRenderer.ClampCells(panelRect, contentStartCellIndex, CellRenderer.GetUsedCellCount());
@@ -261,7 +288,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Update_Panel_Palette (IRect panelRect) {
+		private void Update_PalettePanel (IRect panelRect) {
 
 		}
 
@@ -280,7 +307,7 @@ namespace AngeliaFramework {
 			// Func
 			static void CreateNewAtlas () {
 				if (Instance == null) return;
-				Instance.Atlas.Insert(0, new EditalbeAtlas() {
+				Instance.Atlas.Insert(0, new EditableAtlas() {
 					Guid = System.Guid.NewGuid().ToString(),
 					Name = Language.Get(UI_MENU_NEW_ATLAS_NAME, "New Atlas"),
 					SheetType = SheetType.General,
@@ -294,13 +321,13 @@ namespace AngeliaFramework {
 
 		private static void ShowAtlasPopup (int atlasIndex) {
 			if (Instance == null || atlasIndex < 0 || atlasIndex >= Instance.Atlas.Count) return;
-			Instance.SelectAtlas(atlasIndex);
+			PopupAtlasIndex = atlasIndex;
 			GenericPopupUI.BeginPopup();
 			GenericPopupUI.AddItem(Language.Get(UI_MENU_CREATE_UNIT, "Create Sprite"), CreateNewUnit);
 			GenericPopupUI.AddItem(Language.Get(UI_DELETE, "Delete"), Delete, enabled: Instance.Atlas.Count > 1);
 			static void CreateNewUnit () {
-				if (Instance == null || Instance.SelectingAtlasIndex < 0 || Instance.SelectingAtlasIndex >= Instance.Atlas.Count) return;
-				var selectingAtlas = Instance.Atlas[Instance.SelectingAtlasIndex];
+				if (Instance == null || PopupAtlasIndex < 0 || PopupAtlasIndex >= Instance.Atlas.Count) return;
+				var selectingAtlas = Instance.Atlas[PopupAtlasIndex];
 				selectingAtlas.Units.Add(new EditableUnit() {
 					Guid = System.Guid.NewGuid().ToString(),
 					Name = Language.Get(UI_MENU_NEW_UNIT_NAME, "New Sprite"),
@@ -315,19 +342,20 @@ namespace AngeliaFramework {
 					Language.Get(UI_CANCEL, "Cancel"), Const.EmptyMethod
 				);
 				static void DeleteNow () {
-					if (Instance.SelectingAtlasIndex < 0 || Instance.SelectingAtlasIndex >= Instance.Atlas.Count) return;
-					Instance.Atlas.RemoveAt(Instance.SelectingAtlasIndex);
+					if (PopupAtlasIndex < 0 || PopupAtlasIndex >= Instance.Atlas.Count) return;
+					Instance.Atlas.RemoveAt(PopupAtlasIndex);
 				}
 			}
 		}
 
 
 		private static void ShowUnitPopup (int atlasIndex, int unitIndex) {
-			if (Instance == null || atlasIndex < 0 || atlasIndex >= Instance.Atlas.Count) return;
+			if (Instance == null) return;
+			if (atlasIndex < 0 || atlasIndex >= Instance.Atlas.Count) return;
 			var atlas = Instance.Atlas[atlasIndex];
 			if (unitIndex < 0 || unitIndex >= atlas.Units.Count) return;
-			Instance.SelectAtlas(atlasIndex);
-			Instance.SelectUnit(unitIndex);
+			PopupAtlasIndex = atlasIndex;
+			PopupUnitIndex = unitIndex;
 			GenericPopupUI.BeginPopup();
 			GenericPopupUI.AddItem(Language.Get(UI_DELETE, "Delete"), Delete);
 			static void Delete () {
@@ -337,10 +365,10 @@ namespace AngeliaFramework {
 					Language.Get(UI_CANCEL, "Cancel"), Const.EmptyMethod
 				);
 				static void DeleteNow () {
-					if (Instance.SelectingAtlasIndex < 0 || Instance.SelectingAtlasIndex >= Instance.Atlas.Count) return;
-					var atlas = Instance.Atlas[Instance.SelectingAtlasIndex];
-					if (Instance.SelectingUnitIndex < 0 || Instance.SelectingUnitIndex >= atlas.Units.Count) return;
-					atlas.Units.RemoveAt(Instance.SelectingUnitIndex);
+					if (PopupAtlasIndex < 0 || PopupAtlasIndex >= Instance.Atlas.Count) return;
+					var atlas = Instance.Atlas[PopupAtlasIndex];
+					if (PopupUnitIndex < 0 || PopupUnitIndex >= atlas.Units.Count) return;
+					atlas.Units.RemoveAt(PopupUnitIndex);
 				}
 			}
 		}

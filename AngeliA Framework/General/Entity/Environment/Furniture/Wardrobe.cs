@@ -179,7 +179,7 @@ namespace AngeliaFramework {
 				FrameInput.UseGameKey(Gamekey.Action);
 			}
 
-			if (FrameInput.LastActionFromMouse && FrameInput.MouseLeftButtonDown && windowRect.Contains(FrameInput.MouseGlobalPosition)) {
+			if (FrameInput.LastActionFromMouse && FrameInput.MouseLeftButtonDown && windowRect.MouseInside()) {
 				// Use Suit
 				ChangeSuit(
 					CurrentSuitType,
@@ -232,7 +232,7 @@ namespace AngeliaFramework {
 					CellRenderer.Draw(Const.PIXEL, iconRect, Const.GREEN, z: 1);
 				}
 				// Mouse
-				if (iconRect.Contains(FrameInput.MouseGlobalPosition)) {
+				if (iconRect.MouseInside()) {
 					// Hover
 					CursorSystem.SetCursorAsHand();
 					// Click
@@ -307,13 +307,13 @@ namespace AngeliaFramework {
 
 			// Mouse Click Arrow
 			if (FrameInput.LastActionFromMouse && FrameInput.MouseLeftButtonDown) {
-				if (arrowRectL.Contains(FrameInput.MouseGlobalPosition)) {
+				if (arrowRectL.MouseInside()) {
 					CurrentPatternIndex = (CurrentPatternIndex - 1).Clamp(0, CurrentPatternList.Count - 1);
 					ArrowLeftPopFrame = Game.GlobalFrame;
 					ArrowRightPopFrame = 0;
 					Update_UiCache(windowRect);
 					FrameInput.UseMouseKey(0);
-				} else if (arrowRectR.Contains(FrameInput.MouseGlobalPosition)) {
+				} else if (arrowRectR.MouseInside()) {
 					CurrentPatternIndex = (CurrentPatternIndex + 1).Clamp(0, CurrentPatternList.Count - 1);
 					ArrowRightPopFrame = Game.GlobalFrame;
 					ArrowLeftPopFrame = 0;

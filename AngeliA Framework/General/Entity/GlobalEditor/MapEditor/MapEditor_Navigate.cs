@@ -199,7 +199,7 @@ namespace AngeliaFramework {
 			Game.DrawFrame(rect.Expand(BORDER), Const.BLACK, BORDER);
 
 			// Click Camera Rect
-			bool hoverRect = rect.Contains(FrameInput.MouseGlobalPosition);
+			bool hoverRect = rect.MouseInside();
 			if (hoverRect) CursorSystem.SetCursorAsHand();
 			if (hoverRect && FrameInput.MouseLeftButtonDown) {
 				FrameInput.UseAllHoldingKeys();

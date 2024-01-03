@@ -111,7 +111,7 @@ namespace AngeliaFramework {
 
 			// Finish
 			CellRenderer.SetLayer(oldLayer);
-			if (FrameInput.MouseLeftButton && PanelRect.Contains(FrameInput.MouseGlobalPosition)) {
+			if (FrameInput.MouseLeftButton && PanelRect.MouseInside()) {
 				FrameInput.UseMouseKey(0);
 				FrameInput.UseGameKey(Gamekey.Action);
 			}

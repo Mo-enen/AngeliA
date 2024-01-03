@@ -182,7 +182,7 @@ namespace AngeliaFramework {
 			// Cancel Typing Text Field
 			if (TypingTextFieldID != 0) {
 				if (
-					(FrameInput.AnyMouseButtonDown && !TypingTextFieldRect.Contains(FrameInput.MouseGlobalPosition)) ||
+					(FrameInput.AnyMouseButtonDown && !TypingTextFieldRect.MouseInside()) ||
 					Game.PauselessFrame > TypingUpdateFrame
 				) {
 					CancelTyping();
@@ -422,7 +422,7 @@ namespace AngeliaFramework {
 		// Button
 		public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z) => Button(rect, sprite, spriteHover, spriteDown, icon, buttonBorder, iconPadding, z, Const.WHITE, Const.WHITE);
 		public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z, Byte4 buttonTint, Byte4 iconTint) {
-			bool hover = rect.Contains(FrameInput.MouseGlobalPosition);
+			bool hover = rect.MouseInside();
 			bool down = hover && FrameInput.MouseLeftButton;
 			CellRenderer.Draw_9Slice(
 				down ? spriteDown : hover ? spriteHover : sprite,
@@ -457,7 +457,7 @@ namespace AngeliaFramework {
 
 			changed = false;
 			bool startTyping = false;
-			bool mouseInRect = rect.Contains(FrameInput.MouseGlobalPosition);
+			bool mouseInRect = rect.MouseInside();
 			bool mouseDragging = FrameInput.MouseLeftButton && mouseInRect;
 
 			// Start Typing
@@ -564,7 +564,7 @@ namespace AngeliaFramework {
 			// Rendering
 			int startCellIndex = CellRenderer.GetTextUsedCellCount();
 			var labelRect = rect.Shrink(Unify(12), 0, 0, 0);
-			int beamShrink = Unify(6);
+			int beamShrink = rect.height / 12;
 			var beamRect = new IRect(
 				labelRect.x, labelRect.y + beamShrink, Unify(2), labelRect.height - beamShrink * 2
 			);
@@ -615,7 +615,7 @@ namespace AngeliaFramework {
 				}
 
 				// Get Beam Selection Rect
-				if (BeamLength != 0) {
+				if (typing && BeamLength != 0) {
 					int beamSelectionStartIndex = Util.Min(BeamIndex, BeamIndex + BeamLength);
 					int beamSelectionEndIndex = Util.Max(BeamIndex, BeamIndex + BeamLength);
 					var startCell = cells[(startCellIndex + beamSelectionStartIndex).Clamp(startCellIndex, endCellIndex - 1)];
@@ -678,7 +678,7 @@ namespace AngeliaFramework {
 				contentRect.width,
 				barHeight
 			);
-			bool hoveringBar = barRect.Contains(FrameInput.MouseGlobalPosition);
+			bool hoveringBar = barRect.MouseInside();
 
 			CellRenderer.Draw(
 				barSpriteId,
@@ -702,7 +702,7 @@ namespace AngeliaFramework {
 					ScrollBarMouseDownPos = new Int2(
 						FrameInput.MouseGlobalPosition.y, positionRow
 					);
-				} else if (contentRect.Contains(FrameInput.MouseGlobalPosition)) {
+				} else if (contentRect.MouseInside()) {
 					// Jump on Click
 					int mouseY = FrameInput.MouseGlobalPosition.y;
 					positionRow = Util.RemapUnclamped(

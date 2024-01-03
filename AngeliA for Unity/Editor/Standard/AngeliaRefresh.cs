@@ -112,11 +112,11 @@ namespace AngeliaForUnity.Editor {
 				Util.CopyFolder(universePath, newUniversePath, true, true);
 			}
 			// Copy Flexible Universe
-			string flexUniversePath = AngePath.FlexibleUniverseRoot;
+			string flexUniversePath = AngePath.EditableUniverseRoot;
 			if (Util.FolderExists(flexUniversePath)) {
 				string newUniversePath = Util.CombinePaths(
 					Util.GetParentPath(report.summary.outputPath),
-					AngePath.FLEXIBLE_UNIVERSE_NAME
+					AngePath.EDITABLE_UNIVERSE_NAME
 				);
 				Util.CopyFolder(flexUniversePath, newUniversePath, true, true);
 			}
@@ -139,8 +139,9 @@ namespace AngeliaForUnity.Editor {
 					AngeUtil.CreateAngeFolders();
 
 					// Aseprite Files >> Flex Sprites & Texture
-					var tResults = AsepriteFiles_to_TextureResult();
+					var tResults = AngeEditorUtil.AsepriteFiles_to_TextureResult();
 
+					// Combine Result Files
 					UniverseGenerator.CombineFlexTextures(
 						tResults, out var sheetTexturePixels, out int textureWidth, out int textureHeight, out var flexSprites
 					);
@@ -196,24 +197,6 @@ namespace AngeliaForUnity.Editor {
 			}
 			// Final
 			AssetDatabase.SaveAssets();
-		}
-
-
-		private static List<(object texture, FlexSprite[] flexs)> AsepriteFiles_to_TextureResult () {
-			var unityResult = AsepriteToolbox_CoreOnly.CreateSprites(AngeEditorUtil.ForAllAsepriteFiles().Select(
-				filePath => {
-					string result = EditorUtil.FixedRelativePath(filePath);
-					if (string.IsNullOrEmpty(result)) {
-						result = filePath;
-					}
-					return result;
-				}
-			).ToArray(), "#ignore");
-			var result = new List<(object texture, FlexSprite[] flexs)>();
-			foreach (var (texture, sprites) in unityResult) {
-				result.Add((texture, sprites));
-			}
-			return result;
 		}
 
 

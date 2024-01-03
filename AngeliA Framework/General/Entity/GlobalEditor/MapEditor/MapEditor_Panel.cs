@@ -330,7 +330,7 @@ namespace AngeliaFramework {
 				);
 
 				// Click
-				if (tabInteractable && FrameInput.MouseLeftButtonDown && tabRect.Contains(FrameInput.MouseGlobalPosition)) {
+				if (tabInteractable && FrameInput.MouseLeftButtonDown && tabRect.MouseInside()) {
 					CurrentPaletteTab = (PaletteTabType)i;
 				}
 			}
@@ -340,7 +340,7 @@ namespace AngeliaFramework {
 			if (CellRenderer.TryGetSprite(BUTTON_DARK, out var sprite) && CellRenderer.TryGetSprite(BUTTON_DARK_DOWN, out var spriteDown)) {
 				buttonDownShiftY = ITEM_SIZE - ITEM_SIZE * sprite.GlobalHeight / spriteDown.GlobalHeight;
 			}
-			bool mouseInPanel = groupRect.Contains(FrameInput.MouseGlobalPosition);
+			bool mouseInPanel = groupRect.MouseInside();
 			groupRect = groupRect.Shrink(PANEL_PADDING);
 			CellRenderer.Draw(Const.PIXEL, groupRect.Expand(PANEL_PADDING), Const.GREY_32, PANEL_Z - 6);
 			bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute && !IsNavigating;
@@ -358,7 +358,7 @@ namespace AngeliaFramework {
 				rect.x = offsetX + (i % groupColumnCount) * (ITEM_SIZE + ITEM_GAP);
 				rect.y = groupRect.yMax - ITEM_SIZE - (i / groupColumnCount) * (ITEM_SIZE + ITEM_GAP);
 
-				bool mouseHovering = mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
+				bool mouseHovering = mouseInPanel && rect.MouseInside();
 
 				// Button
 				if (selecting) {
@@ -431,12 +431,12 @@ namespace AngeliaFramework {
 						rect.x - ITEM_GAP / 2, rect.y - ITEM_GAP / 2,
 						(rect.width + ITEM_GAP) / 2, rect.height + ITEM_GAP
 					);
-					if (reorderCheckingRect.Contains(FrameInput.MouseGlobalPosition)) {
+					if (reorderCheckingRect.MouseInside()) {
 						targetReorderReleaseIndex = i;
 						if (i != DraggingForReorderPaletteGroup) {
 							CellRenderer.Draw(Const.PIXEL, new(rect.x - Unify(2), rect.y, Unify(4), rect.height), Const.GREEN, int.MaxValue);
 						}
-					} else if (reorderCheckingRect.Shift(reorderCheckingRect.width, 0).Contains(FrameInput.MouseGlobalPosition)) {
+					} else if (reorderCheckingRect.Shift(reorderCheckingRect.width, 0).MouseInside()) {
 						targetReorderReleaseIndex = i + 1;
 						if (i != DraggingForReorderPaletteGroup) {
 							CellRenderer.Draw(Const.PIXEL, new(rect.xMax - Unify(2), rect.y, Unify(4), rect.height), Const.GREEN, int.MaxValue);
@@ -447,7 +447,7 @@ namespace AngeliaFramework {
 			}
 
 			// Click on Empty
-			if (!showingBuiltIn && FrameInput.MouseRightButtonDown && groupRect.Contains(FrameInput.MouseGlobalPosition)) {
+			if (!showingBuiltIn && FrameInput.MouseRightButtonDown && groupRect.MouseInside()) {
 				FrameInput.UseMouseKey(1);
 				ShowPaletteListMenu(null);
 			}
@@ -511,7 +511,7 @@ namespace AngeliaFramework {
 				PanelRect.width,
 				PanelRect.yMax - PaletteGroupPanelRect.yMax - TOOLBAR_HEIGHT
 			);
-			bool mouseInPanel = contentRect.Contains(FrameInput.MouseGlobalPosition);
+			bool mouseInPanel = contentRect.MouseInside();
 			contentRect = contentRect.Shrink(PADDING);
 			int columnCount = contentRect.width / (ITEM_SIZE + ITEM_GAP);
 			int rowCount = itemCount / columnCount + (itemCount % columnCount != 0 ? 1 : 0);
@@ -564,7 +564,7 @@ namespace AngeliaFramework {
 				}
 
 				// Hover
-				bool mouseHovering = interactable && mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
+				bool mouseHovering = interactable && mouseInPanel && rect.MouseInside();
 				if (mouseHovering) {
 					CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32, PANEL_Z - 13);
 					if (!GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog) CursorSystem.SetCursorAsHand();
@@ -593,12 +593,12 @@ namespace AngeliaFramework {
 						rect.x - ITEM_GAP / 2, rect.y - ITEM_GAP / 2,
 						(rect.width + ITEM_GAP) / 2, rect.height + ITEM_GAP
 					);
-					if (reorderCheckingRect.Contains(FrameInput.MouseGlobalPosition)) {
+					if (reorderCheckingRect.MouseInside()) {
 						targetReorderReleaseIndex = index;
 						if (index != DraggingForReorderPaletteItem) {
 							CellRenderer.Draw(Const.PIXEL, new(rect.x - Unify(2), rect.y, Unify(4), rect.height), Const.GREEN, int.MaxValue);
 						}
-					} else if (reorderCheckingRect.Shift(reorderCheckingRect.width, 0).Contains(FrameInput.MouseGlobalPosition)) {
+					} else if (reorderCheckingRect.Shift(reorderCheckingRect.width, 0).MouseInside()) {
 						targetReorderReleaseIndex = index + 1;
 						if (index != DraggingForReorderPaletteItem) {
 							CellRenderer.Draw(Const.PIXEL, new(rect.xMax - Unify(2), rect.y, Unify(4), rect.height), Const.GREEN, int.MaxValue);
@@ -626,7 +626,7 @@ namespace AngeliaFramework {
 			}
 
 			// Menu
-			if (FrameInput.MouseRightButtonDown && contentRect.Contains(FrameInput.MouseGlobalPosition)) {
+			if (FrameInput.MouseRightButtonDown && contentRect.MouseInside()) {
 				FrameInput.UseMouseKey(1);
 				ShowPaletteItemMenu(null);
 			}
@@ -634,7 +634,7 @@ namespace AngeliaFramework {
 			// Scroll Wheel
 			if (pageRowCount <= rowCount + EXTRA_ROW) {
 				int wheel = FrameInput.MouseWheelDelta;
-				if (wheel != 0 && contentRect.Contains(FrameInput.MouseGlobalPosition)) {
+				if (wheel != 0 && contentRect.MouseInside()) {
 					PaletteScrollY = (PaletteScrollY - wheel * 2).Clamp(
 						0, rowCount + EXTRA_ROW - pageRowCount
 					);
@@ -665,7 +665,7 @@ namespace AngeliaFramework {
 			int itemSize = Unify(42);
 			int itemGap = Unify(6);
 			var searchRect = PanelRect.Shrink(0, SCROLL_BAR_WIDTH + itemGap, 0, Unify(TOOL_BAR_HEIGHT * 2)).Shrink(Unify(6));
-			bool mouseInPanel = searchRect.Contains(FrameInput.MouseGlobalPosition);
+			bool mouseInPanel = searchRect.MouseInside();
 			bool interactable = !TaskingRoute;
 			int clampStartIndex = CellRenderer.GetTextUsedCellCount();
 			if (mouseInPanel) {
@@ -709,7 +709,7 @@ namespace AngeliaFramework {
 				);
 
 				// Hover
-				bool hover = interactable && mouseInPanel && rect.Contains(FrameInput.MouseGlobalPosition);
+				bool hover = interactable && mouseInPanel && rect.MouseInside();
 				if (hover) {
 					CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32, PANEL_Z - 13);
 				}
@@ -906,7 +906,7 @@ namespace AngeliaFramework {
 			int BORDER = Unify(2);
 			const int SEARCH_ID = 3983472;
 			bool interactable = !TaskingRoute && !IsNavigating;
-			bool mouseInBar = interactable && searchPanel.Contains(FrameInput.MouseGlobalPosition);
+			bool mouseInBar = interactable && searchPanel.MouseInside();
 			if (mouseInBar) CursorSystem.SetCursorAsBeam();
 			CellRenderer.Draw_9Slice(
 				BuiltInIcon.FRAME_16, searchPanel, BORDER, BORDER, BORDER, BORDER, Const.GREY_96, PANEL_Z - 5

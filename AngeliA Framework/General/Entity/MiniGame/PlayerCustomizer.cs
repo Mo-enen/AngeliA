@@ -255,7 +255,7 @@ namespace AngeliaFramework {
 			AngeUtil.DrawPoseCharacterAsUI(
 				leftPanelRect.Shrink(Unify(32)), player, Game.GlobalFrame, 0, out var rectFrom, out var rectTo
 			);
-			if (FrameInput.MouseLeftButtonDown && leftPanelRect.Contains(FrameInput.MouseGlobalPosition)) {
+			if (FrameInput.MouseLeftButtonDown && leftPanelRect.MouseInside()) {
 				PlayerFacingRight = !PlayerFacingRight;
 			}
 
@@ -357,7 +357,7 @@ namespace AngeliaFramework {
 				fieldRect.y = panelRect.yMax - panelPadding - fieldHeight -
 					(i / 2) * (fieldHeight + fieldPadding);
 				string label = Language.Get(MAIN_MENU_LABELS[(int)_menuType], _menuType.ToString());
-				bool mouseInField = fieldRect.Contains(FrameInput.MouseGlobalPosition);
+				bool mouseInField = fieldRect.MouseInside();
 
 				// Icon
 				CellRenderer.Draw(
@@ -430,7 +430,7 @@ namespace AngeliaFramework {
 
 				// Back Button
 				var buttonRect = new IRect(panelRect.xMax - backButtonWidth, panelRect.y, backButtonWidth, bottomBarHeight);
-				if (buttonRect.Contains(FrameInput.MouseGlobalPosition)) {
+				if (buttonRect.MouseInside()) {
 					CellRenderer.Draw(Const.PIXEL, buttonRect, Const.GREY_32, EDITOR_BASIC_Z + 2);
 					if (FrameInput.LastActionFromMouse && FrameInput.MouseLeftButtonDown) {
 						HighlightingMainIndex = (int)CurrentSubMenu.Value;
@@ -941,7 +941,7 @@ namespace AngeliaFramework {
 				// Hovering Highlight
 				if (!isLabel) {
 					if (FrameInput.LastActionFromMouse) {
-						if (rect.Contains(FrameInput.MouseGlobalPosition)) {
+						if (rect.MouseInside()) {
 							CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32, EDITOR_BASIC_Z + 2);
 							HighlightingPatternRow = index;
 							CursorSystem.SetCursorAsHand(1);

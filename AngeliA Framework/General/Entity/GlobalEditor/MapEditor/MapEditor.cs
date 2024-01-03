@@ -476,6 +476,7 @@ namespace AngeliaFramework {
 			if (IsEditing) {
 				ControlHintUI.ForceShowHint();
 				ControlHintUI.ForceHideGamepad();
+				ControlHintUI.ForceOffset(PanelRect.width, 0);
 			}
 
 			// Squad Behind Tint
