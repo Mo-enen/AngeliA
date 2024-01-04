@@ -31,7 +31,6 @@ namespace AngeliaFramework {
 		private static readonly int BTN_BOUND = "DeveloperToolbox.Bound".AngeHash();
 		private static readonly int BTN_PROFILER = "DeveloperToolbox.Profiler".AngeHash();
 		private static readonly int BTN_MAP = "DeveloperToolbox.Map".AngeHash();
-		private static readonly int BTN_SHEET = "DeveloperToolbox.Sheet".AngeHash();
 		private static readonly Byte4[] COLLIDER_TINTS = { Const.RED_BETTER, Const.ORANGE_BETTER, Const.YELLOW, Const.GREEN, Const.CYAN, Const.BLUE, Const.GREY_128, };
 
 		// Data
@@ -310,22 +309,6 @@ namespace AngeliaFramework {
 					GlobalEditorUI.CloseEditorSmoothly();
 				} else {
 					GlobalEditorUI.OpenEditorSmoothly(MapEditor.TYPE_ID);
-				}
-				FrameInput.UseMouseKey(0);
-				FrameInput.UseGameKey(Gamekey.Action);
-			}
-			CursorSystem.SetCursorAsHand(rect);
-			rect.x -= rect.width + padding;
-
-			// Sheet
-			if (SheetEditor.IsActived) {
-				CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN, int.MaxValue - 1);
-			}
-			if (CellRendererGUI.Button(rect, BTN_SHEET, BTN_SHEET, BTN_SHEET, 0, 0, 0, int.MaxValue)) {
-				if (SheetEditor.IsActived) {
-					GlobalEditorUI.CloseEditorSmoothly();
-				} else {
-					GlobalEditorUI.OpenEditorSmoothly(SheetEditor.TYPE_ID);
 				}
 				FrameInput.UseMouseKey(0);
 				FrameInput.UseGameKey(Gamekey.Action);

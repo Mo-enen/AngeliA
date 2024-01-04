@@ -237,8 +237,6 @@ namespace AngeliaFramework {
 		private static AngeSpriteChain[] Chains = null;
 		private static string[] SheetNames = new string[0];
 		private static bool IsDrawing = false;
-		private static bool UsingBuiltInSheet = true;
-		private static bool RequiringUserSheetReload = false;
 
 
 		#endregion
@@ -252,7 +250,6 @@ namespace AngeliaFramework {
 		// Init
 		[OnGameInitialize(int.MinValue)]
 		internal static void Initialize () {
-			UsingBuiltInSheet = true;
 			InitializePool(AngePath.SheetRoot);
 			InitializeLayers();
 		}
@@ -410,13 +407,6 @@ namespace AngeliaFramework {
 
 		[OnGameUpdatePauseless(32)]
 		internal static void FrameUpdate () {
-			// Sheet
-			if (!UsingBuiltInSheet && RequiringUserSheetReload) {
-				RequiringUserSheetReload = false;
-				InitializePool(AngePath.EditableSheetRoot);
-				Game.SetTextureForRenderer(AngePath.EditableTexturePath);
-			}
-			// Draw
 			IsDrawing = false;
 			try {
 				for (int i = 0; i < Layers.Length; i++) {
@@ -434,22 +424,6 @@ namespace AngeliaFramework {
 					layer.PrevCellCount = prevCellCount;
 				}
 			} catch (System.Exception ex) { Game.LogException(ex); }
-		}
-
-
-		[OnMapChannelChanged]
-		internal static void OnMapChannelChanged (MapChannel newChannel) {
-			bool requireBuiltInSheet = newChannel != MapChannel.User;
-			if (requireBuiltInSheet != UsingBuiltInSheet) {
-				UsingBuiltInSheet = requireBuiltInSheet;
-				// Load New Sheet
-				InitializePool(requireBuiltInSheet ? AngePath.SheetRoot : AngePath.EditableSheetRoot);
-				// Load New Texture
-				var texture = Game.LoadTextureFromPNGFile(
-					requireBuiltInSheet ? AngePath.SheetTexturePath : AngePath.EditableTexturePath
-				);
-				Game.SetTextureForRenderer(texture);
-			}
 		}
 
 
@@ -877,9 +851,6 @@ namespace AngeliaFramework {
 
 
 		public static void AddTextRebuild (int layerIndex) => TextLayers[layerIndex].TextRebuild++;
-
-
-		public static void RequireReloadUserSheet () => RequiringUserSheetReload = true;
 
 
 		// Clamp

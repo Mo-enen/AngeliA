@@ -5,7 +5,6 @@ namespace AngeliaFramework {
 
 
 		public const string UNIVERSE_NAME = "Universe";
-		public const string EDITABLE_UNIVERSE_NAME = "Universe Editable";
 		public const string COMBINATION_FILE_NAME = "Item Combination.txt";
 		public const int SAVE_SLOT_COUNT = 4;
 
@@ -63,20 +62,6 @@ namespace AngeliaFramework {
 		// Persistent
 		public static string ItemSaveDataRoot => _ItemSaveDataRoot ??= Util.CombinePaths(PersistentDataPath, "Item Customization");
 		private static string _ItemSaveDataRoot = null;
-
-
-		// Editable
-		public static string EditableUniverseRoot => _EditableUniverseRoot ??= Util.CombinePaths(PersistentDataPath, "Universe Editable");
-		private static string _EditableUniverseRoot = null;
-
-		public static string EditableAtlasRoot => _EditableAtlasRoot ??= Util.CombinePaths(EditableUniverseRoot, "Atlas");
-		private static string _EditableAtlasRoot = null;
-
-		public static string EditableSheetRoot => _EditableSheetRoot ??= Util.CombinePaths(EditableUniverseRoot, "Sheet");
-		private static string _EditableSheetRoot = null;
-
-		public static string EditableTexturePath => _EditableTexturePath ??= Util.CombinePaths(EditableSheetRoot, "Texture.png");
-		private static string _EditableTexturePath = null;
 
 
 		// Slot
