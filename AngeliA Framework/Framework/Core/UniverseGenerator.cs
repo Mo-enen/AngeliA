@@ -753,25 +753,22 @@ namespace AngeliaFramework {
 				// Load Meta
 				string atlasMetaPath = Util.CombinePaths(atlasPath, "Meta.json");
 				var atlas = JsonUtil.LoadOrCreateJsonFromPath<EditableAtlas>(atlasMetaPath);
-				atlas.Guid = Util.GetNameWithExtension(atlasPath);
+				atlas.Name = Util.GetNameWithExtension(atlasPath);
 				// Load Units
 				foreach (var unitPath in Util.EnumerateFolders(atlasPath, true, "*")) {
 					// Load Meta
 					string unitMetaPath = Util.CombinePaths(unitPath, "Meta.json");
 					var unit = JsonUtil.LoadOrCreateJsonFromPath<EditableUnit>(unitMetaPath);
-					unit.Guid = Util.GetNameWithExtension(unitPath);
+					unit.Name = Util.GetNameWithExtension(unitPath);
 					unit.GlobalID = unit.Name.AngeHash();
 					// Load Sprites
 					foreach (var spritePath in Util.EnumerateFolders(unitPath, true, "*")) {
 						// Sprite
 						string jsonPath = Util.CombinePaths(spritePath, "Sprite.json");
 						var sprite = JsonUtil.LoadOrCreateJson<EditableSprite>(jsonPath);
-						sprite.Guid = Util.GetNameWithExtension(spritePath);
-						// Pixels
-						string pixelPath = Util.CombinePaths(spritePath, "Pixels");
-						var pixels = Util.FileToByte4(pixelPath);
-						// Final
-						sprite.Pixels = pixels;
+						if (!int.TryParse(Util.GetNameWithoutExtension(spritePath), out sprite.Order)) {
+							sprite.Order = 0;
+						}
 						unit.Sprites.Add(sprite);
 					}
 					unit.Sprites.Sort(EditableSpriteComparer.Instance);
@@ -785,13 +782,14 @@ namespace AngeliaFramework {
 
 
 		public static void SaveAtlasToDisk (List<EditableAtlas> atlasList, string exportFolder, bool forceSave = false) {
+			Version.GrowVersion(exportFolder);
 			for (int atlasIndex = 0; atlasIndex < atlasList.Count; atlasIndex++) {
 				// Save Atlas
 				var atlas = atlasList[atlasIndex];
 				if (!atlas.IsDirty && !forceSave) continue;
 				atlas.Order = atlasIndex;
-				if (string.IsNullOrWhiteSpace(atlas.Guid)) atlas.Guid = System.Guid.NewGuid().ToString();
-				string atlasPath = Util.CombinePaths(exportFolder, atlas.Guid);
+				if (string.IsNullOrWhiteSpace(atlas.Name)) continue;
+				string atlasPath = Util.CombinePaths(exportFolder, atlas.Name);
 				string atlasMetaPath = Util.CombinePaths(atlasPath, "Meta.json");
 				JsonUtil.SaveJsonToPath(atlas, atlasMetaPath, false);
 				for (int unitIndex = 0; unitIndex < atlas.Units.Count; unitIndex++) {
@@ -799,8 +797,8 @@ namespace AngeliaFramework {
 					var unit = atlas.Units[unitIndex];
 					if (!unit.IsDirty && !forceSave) continue;
 					unit.Order = unitIndex;
-					if (string.IsNullOrWhiteSpace(unit.Guid)) unit.Guid = System.Guid.NewGuid().ToString();
-					string unitPath = Util.CombinePaths(atlasPath, unit.Guid);
+					if (string.IsNullOrWhiteSpace(unit.Name)) continue;
+					string unitPath = Util.CombinePaths(atlasPath, unit.Name);
 					string unitMetaPath = Util.CombinePaths(unitPath, "Meta.json");
 					JsonUtil.SaveJsonToPath(unit, unitMetaPath, false);
 					for (int spriteIndex = 0; spriteIndex < unit.Sprites.Count; spriteIndex++) {
@@ -808,15 +806,83 @@ namespace AngeliaFramework {
 						var sprite = unit.Sprites[spriteIndex];
 						if (!sprite.IsDirty && !forceSave) continue;
 						sprite.Order = spriteIndex;
-						if (string.IsNullOrWhiteSpace(sprite.Guid)) sprite.Guid = System.Guid.NewGuid().ToString();
-						string spritePath = Util.CombinePaths(unitPath, sprite.Guid);
+						string spritePath = Util.CombinePaths(unitPath, sprite.Order.ToString());
 						string spriteMetaPath = Util.CombinePaths(spritePath, "Sprite.json");
 						JsonUtil.SaveJsonToPath(sprite, spriteMetaPath, false);
-						// Save Pixels
-						string pixelPath = Util.CombinePaths(spritePath, "Pixels");
-						Util.Byte4ToFile(sprite.Pixels, pixelPath);
 					}
 				}
+			}
+		}
+
+
+		public static void RebuildSheetAndTextureToDisk (List<EditableAtlas> atlasList, string atlasRoot, string exportSheetRoot, string exportTexturePath) {
+
+			if (atlasList.Count == 0) return;
+
+			// Editable >> Flex
+			var tResults = new List<(object texture, FlexSprite[] flexs)>();
+
+			for (int atlasIndex = 0; atlasIndex < atlasList.Count; atlasIndex++) {
+				var atlas = atlasList[atlasIndex];
+				for (int unitIndex = 0; unitIndex < atlas.Units.Count; unitIndex++) {
+					var unit = atlas.Units[unitIndex];
+					for (int spriteIndex = 0; spriteIndex < unit.Sprites.Count; spriteIndex++) {
+						var sprite = unit.Sprites[spriteIndex];
+						string pixelPath = Util.CombinePaths(atlasRoot, atlas.Name, unit.Name, sprite.Order.ToString(), "Pixels");
+						var pixels = Util.FileToByte4(pixelPath);
+						tResults.Add(
+							(Game.GetTextureFromPixels(pixels, sprite.Width, sprite.Height),
+							new FlexSprite[]{ new FlexSprite() {
+								Name = sprite.GetFullName(atlas, unit, unit.Sprites.Count > 1 ? spriteIndex: -1),
+								AngePivot = new Int2(sprite.AngePivotX, sprite.AngePivotY),
+								Border = new Float4(sprite.BorderL, sprite.BorderD, sprite.BorderR, sprite.BorderU),
+								Rect = new FRect(0, 0, sprite.Width, sprite.Height),
+								SheetName = atlas.Name,
+								SheetType = atlas.SheetType,
+								SheetZ = atlas.SheetZ,
+							} })
+						);
+					}
+				}
+			}
+
+			// Combine Flex
+			CombineFlexTextures(
+				tResults, out var sheetTexturePixels, out int textureWidth, out int textureHeight, out var flexSprites
+			);
+
+			// Flex Sprites >> Sheet
+			var sheet = CreateSpriteSheet(sheetTexturePixels, textureWidth, textureHeight, flexSprites);
+			if (sheet != null) {
+				JsonUtil.SaveJson(sheet, exportSheetRoot);
+				Version.GrowVersion(exportSheetRoot);
+			}
+
+			// Save Texture to File
+			var texture = Game.GetTextureFromPixels(sheetTexturePixels, textureWidth, textureHeight);
+			if (texture != null) {
+				Game.SaveTextureAsPNGFile(texture, exportTexturePath);
+			}
+
+		}
+
+
+		public static void SyncSheet (string sourceSheetRoot, string sourceTexturepath, string targetAtlasRoot) {
+			// Check Version
+			var sourceVersion = JsonUtil.LoadOrCreateJson<Version>(sourceSheetRoot);
+			var targetVersion = JsonUtil.LoadOrCreateJson<Version>(targetAtlasRoot);
+			if (sourceVersion.Value != targetVersion.Value) {
+				// Sync
+				var sourceSheet = JsonUtil.LoadOrCreateJson<SpriteSheet>(sourceSheetRoot);
+				var sourceTexture = Game.LoadTextureFromPNGFile(sourceTexturepath);
+
+
+				// Save to Disk
+
+
+				// Update Version
+				targetVersion.Value = sourceVersion.Value;
+				JsonUtil.SaveJson(targetVersion, targetAtlasRoot);
 			}
 		}
 

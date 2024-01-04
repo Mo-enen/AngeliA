@@ -111,15 +111,6 @@ namespace AngeliaForUnity.Editor {
 				);
 				Util.CopyFolder(universePath, newUniversePath, true, true);
 			}
-			// Copy Flexible Universe
-			string flexUniversePath = AngePath.EditableUniverseRoot;
-			if (Util.FolderExists(flexUniversePath)) {
-				string newUniversePath = Util.CombinePaths(
-					Util.GetParentPath(report.summary.outputPath),
-					AngePath.EDITABLE_UNIVERSE_NAME
-				);
-				Util.CopyFolder(flexUniversePath, newUniversePath, true, true);
-			}
 		}
 
 
@@ -151,6 +142,7 @@ namespace AngeliaForUnity.Editor {
 					var sheet = UniverseGenerator.CreateSpriteSheet(sheetTexturePixels, textureWidth, textureHeight, flexSprites);
 					if (sheet != null) {
 						JsonUtil.SaveJson(sheet, AngePath.SheetRoot);
+						Version.GrowVersion(AngePath.SheetRoot);
 					}
 
 					// Save Texture to File

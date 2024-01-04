@@ -474,12 +474,8 @@ namespace AngeliaFramework {
 
 				// Clear
 				if (FrameInput.KeyboardUp(KeyboardKey.Escape)) {
-					if (!string.IsNullOrEmpty(text.Text)) {
-						text.Text = "";
-						changed = true;
-						BeamIndex = 0;
-						CancelTyping();
-					}
+					BeamIndex = 0;
+					CancelTyping();
 					FrameInput.UseKeyboardKey(KeyboardKey.Escape);
 					FrameInput.UseGameKey(Gamekey.Start);
 				}

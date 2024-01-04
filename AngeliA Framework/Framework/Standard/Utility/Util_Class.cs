@@ -1,5 +1,17 @@
 ﻿namespace AngeliaFramework {
-	
+
+
+	public class Version {
+		public uint Value = 0;
+		public static uint GetVersion (string rootPath) => JsonUtil.LoadOrCreateJson<Version>(rootPath).Value;
+		public static uint GrowVersion (string rootPath) {
+			var data = JsonUtil.LoadOrCreateJson<Version>(rootPath);
+			data.Value++;
+			JsonUtil.SaveJson(data, rootPath);
+			return data.Value;
+		}
+	}
+
 
 	public class IntToChars {
 

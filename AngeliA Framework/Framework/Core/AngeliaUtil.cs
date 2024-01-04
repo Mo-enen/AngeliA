@@ -4,8 +4,6 @@ using System.Text;
 
 
 namespace AngeliaFramework {
-
-
 	public static class AngeUtil {
 
 
@@ -22,8 +20,6 @@ namespace AngeliaFramework {
 			Util.CreateFolder(AngePath.LanguageRoot);
 			Util.CreateFolder(AngePath.MetaRoot);
 			Util.CreateFolder(AngePath.BuiltInMapRoot);
-			Util.CreateFolder(AngePath.EditableUniverseRoot);
-			Util.CreateFolder(AngePath.EditableSheetRoot);
 		}
 
 

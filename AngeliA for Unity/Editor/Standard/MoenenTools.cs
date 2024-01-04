@@ -196,7 +196,7 @@ namespace AngeliaForUnity.Editor {
 				return;
 			}
 
-			var texture = AngeUtilUnity.LoadTexture(AngePath.SheetTexturePath);
+			var texture = Game.LoadTextureFromPNGFile(AngePath.SheetTexturePath) as Texture2D;
 			if (texture == null) {
 				Debug.LogWarning("Sheet texture not found.");
 				return;

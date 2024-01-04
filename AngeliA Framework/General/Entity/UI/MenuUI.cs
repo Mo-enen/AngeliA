@@ -83,6 +83,16 @@ namespace AngeliaFramework {
 		}
 
 
+		public override void BeforePhysicsUpdate () {
+			base.BeforePhysicsUpdate();
+			if (FrameInput.AnyMouseButtonHolding && !Rect.MouseInside()) {
+				FrameInput.UseMouseKey(0);
+				FrameInput.UseMouseKey(1);
+				FrameInput.UseMouseKey(2);
+			}
+		}
+
+
 		public override void UpdateUI () {
 
 			FrameInput.IgnoreMouseToActionJumpForThisFrame = true;

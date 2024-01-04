@@ -237,6 +237,8 @@ namespace AngeliaFramework {
 		private static AngeSpriteChain[] Chains = null;
 		private static string[] SheetNames = new string[0];
 		private static bool IsDrawing = false;
+		private static bool UsingBuiltInSheet = true;
+		private static bool RequiringUserSheetReload = false;
 
 
 		#endregion
@@ -250,8 +252,63 @@ namespace AngeliaFramework {
 		// Init
 		[OnGameInitialize(int.MinValue)]
 		internal static void Initialize () {
-			InitializePool();
+			UsingBuiltInSheet = true;
+			InitializePool(AngePath.SheetRoot);
 			InitializeLayers();
+		}
+
+
+		private static void InitializePool (string sheetRoot) {
+
+			var sheet = JsonUtil.LoadOrCreateJson<SpriteSheet>(sheetRoot);
+			if (sheet == null) return;
+
+			SheetIDMap.Clear();
+			MetaPool.Clear();
+			SpriteGroupMap.Clear();
+			Sprites = sheet.Sprites;
+			Chains = sheet.SpriteChains;
+			SheetNames = sheet.SheetNames;
+
+			// Add Sprites
+			for (int i = 0; i < sheet.Sprites.Length; i++) {
+				var sp = sheet.Sprites[i];
+				SheetIDMap.TryAdd(sp.GlobalID, new CellInfo(i));
+				if (sp.MetaIndex >= 0) {
+					MetaPool.TryAdd(sp.GlobalID, sheet.Metas[sp.MetaIndex]);
+				}
+			}
+
+			// Add Sprite Groups
+			for (int i = 0; i < sheet.Groups.Length; i++) {
+				var group = sheet.Groups[i];
+				if (group != null && group.SpriteIDs != null && group.SpriteIDs.Length > 0) {
+					SpriteGroupMap.TryAdd(group.ID, group.SpriteIDs);
+				}
+			}
+
+			// Add Animated Sprite Chains
+			for (int i = 0; i < sheet.SpriteChains.Length; i++) {
+				var chain = sheet.SpriteChains[i];
+				if (chain.Type != GroupType.Animated || chain.Count == 0) continue;
+				SheetIDMap.TryAdd(chain.ID, new(0, chain));
+			}
+
+			// Add Meta for Chains
+			for (int i = 0; i < sheet.SpriteChains.Length; i++) {
+				var chain = sheet.SpriteChains[i];
+				int id = chain.ID;
+				if (!SheetIDMap.ContainsKey(id)) continue;
+				if (chain.Count > 0) {
+					int index = chain[0];
+					if (index >= 0 && index < sheet.Sprites.Length) {
+						var sp = sheet.Sprites[index];
+						if (sp.MetaIndex >= 0) {
+							MetaPool.TryAdd(id, sheet.Metas[sp.MetaIndex]);
+						}
+					}
+				}
+			}
 		}
 
 
@@ -353,6 +410,13 @@ namespace AngeliaFramework {
 
 		[OnGameUpdatePauseless(32)]
 		internal static void FrameUpdate () {
+			// Sheet
+			if (!UsingBuiltInSheet && RequiringUserSheetReload) {
+				RequiringUserSheetReload = false;
+				InitializePool(AngePath.EditableSheetRoot);
+				Game.SetTextureForRenderer(AngePath.EditableTexturePath);
+			}
+			// Draw
 			IsDrawing = false;
 			try {
 				for (int i = 0; i < Layers.Length; i++) {
@@ -373,66 +437,28 @@ namespace AngeliaFramework {
 		}
 
 
+		[OnMapChannelChanged]
+		internal static void OnMapChannelChanged (MapChannel newChannel) {
+			bool requireBuiltInSheet = newChannel != MapChannel.User;
+			if (requireBuiltInSheet != UsingBuiltInSheet) {
+				UsingBuiltInSheet = requireBuiltInSheet;
+				// Load New Sheet
+				InitializePool(requireBuiltInSheet ? AngePath.SheetRoot : AngePath.EditableSheetRoot);
+				// Load New Texture
+				var texture = Game.LoadTextureFromPNGFile(
+					requireBuiltInSheet ? AngePath.SheetTexturePath : AngePath.EditableTexturePath
+				);
+				Game.SetTextureForRenderer(texture);
+			}
+		}
+
+
 		#endregion
 
 
 
 
 		#region --- API ---
-
-
-		public static void InitializePool () {
-
-			var sheet = JsonUtil.LoadOrCreateJson<SpriteSheet>(AngePath.SheetRoot);
-			if (sheet == null) return;
-
-			SheetIDMap.Clear();
-			MetaPool.Clear();
-			SpriteGroupMap.Clear();
-			Sprites = sheet.Sprites;
-			Chains = sheet.SpriteChains;
-			SheetNames = sheet.SheetNames;
-
-			// Add Sprites
-			for (int i = 0; i < sheet.Sprites.Length; i++) {
-				var sp = sheet.Sprites[i];
-				SheetIDMap.TryAdd(sp.GlobalID, new CellInfo(i));
-				if (sp.MetaIndex >= 0) {
-					MetaPool.TryAdd(sp.GlobalID, sheet.Metas[sp.MetaIndex]);
-				}
-			}
-
-			// Add Sprite Groups
-			for (int i = 0; i < sheet.Groups.Length; i++) {
-				var group = sheet.Groups[i];
-				if (group != null && group.SpriteIDs != null && group.SpriteIDs.Length > 0) {
-					SpriteGroupMap.TryAdd(group.ID, group.SpriteIDs);
-				}
-			}
-
-			// Add Animated Sprite Chains
-			for (int i = 0; i < sheet.SpriteChains.Length; i++) {
-				var chain = sheet.SpriteChains[i];
-				if (chain.Type != GroupType.Animated || chain.Count == 0) continue;
-				SheetIDMap.TryAdd(chain.ID, new(0, chain));
-			}
-
-			// Add Meta for Chains
-			for (int i = 0; i < sheet.SpriteChains.Length; i++) {
-				var chain = sheet.SpriteChains[i];
-				int id = chain.ID;
-				if (!SheetIDMap.ContainsKey(id)) continue;
-				if (chain.Count > 0) {
-					int index = chain[0];
-					if (index >= 0 && index < sheet.Sprites.Length) {
-						var sp = sheet.Sprites[index];
-						if (sp.MetaIndex >= 0) {
-							MetaPool.TryAdd(id, sheet.Metas[sp.MetaIndex]);
-						}
-					}
-				}
-			}
-		}
 
 
 		// Layer
@@ -851,6 +877,9 @@ namespace AngeliaFramework {
 
 
 		public static void AddTextRebuild (int layerIndex) => TextLayers[layerIndex].TextRebuild++;
+
+
+		public static void RequireReloadUserSheet () => RequiringUserSheetReload = true;
 
 
 		// Clamp

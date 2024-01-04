@@ -157,7 +157,6 @@ namespace AngeliaFramework {
 
 				rect.y -= itemHeight;
 				totalItemCount++;
-				bool isSelectingAtlas = aIndex == SelectingAtlasIndex;
 				var atlas = Atlas[aIndex];
 
 				// Draw Atlas
@@ -263,6 +262,10 @@ namespace AngeliaFramework {
 				}
 			}
 
+			// Clamp
+			CellRenderer.ClampCells(panelRect, contentStartCellIndex, CellRenderer.GetUsedCellCount());
+			CellRenderer.ClampTextCells(panelRect, contentStartTextIndex, CellRenderer.GetTextUsedCellCount());
+
 			// Scroll bar
 			if (totalItemCount - pageItemCount + EXTRA_ITEM > 0) {
 				FilePanelScroll = CellRendererGUI.ScrollBar(
@@ -282,9 +285,6 @@ namespace AngeliaFramework {
 				SelectUnit(requireSelectAtlas, requireSelectUnit);
 			}
 
-			// Clamp
-			CellRenderer.ClampCells(panelRect, contentStartCellIndex, CellRenderer.GetUsedCellCount());
-			CellRenderer.ClampTextCells(panelRect, contentStartTextIndex, CellRenderer.GetTextUsedCellCount());
 		}
 
 
@@ -308,7 +308,6 @@ namespace AngeliaFramework {
 			static void CreateNewAtlas () {
 				if (Instance == null) return;
 				Instance.Atlas.Insert(0, new EditableAtlas() {
-					Guid = System.Guid.NewGuid().ToString(),
 					Name = Language.Get(UI_MENU_NEW_ATLAS_NAME, "New Atlas"),
 					SheetType = SheetType.General,
 					SheetZ = 0,
@@ -329,7 +328,6 @@ namespace AngeliaFramework {
 				if (Instance == null || PopupAtlasIndex < 0 || PopupAtlasIndex >= Instance.Atlas.Count) return;
 				var selectingAtlas = Instance.Atlas[PopupAtlasIndex];
 				selectingAtlas.Units.Add(new EditableUnit() {
-					Guid = System.Guid.NewGuid().ToString(),
 					Name = Language.Get(UI_MENU_NEW_UNIT_NAME, "New Sprite"),
 					GroupType = GroupType.General,
 					Sprites = new List<EditableSprite>(),
@@ -343,7 +341,10 @@ namespace AngeliaFramework {
 				);
 				static void DeleteNow () {
 					if (PopupAtlasIndex < 0 || PopupAtlasIndex >= Instance.Atlas.Count) return;
+					var deletingAtlas = Instance.Atlas[PopupAtlasIndex];
 					Instance.Atlas.RemoveAt(PopupAtlasIndex);
+					string path = Util.CombinePaths(AngePath.EditableAtlasRoot, deletingAtlas.Name);
+					Util.DeleteFolder(path);
 				}
 			}
 		}
@@ -368,7 +369,10 @@ namespace AngeliaFramework {
 					if (PopupAtlasIndex < 0 || PopupAtlasIndex >= Instance.Atlas.Count) return;
 					var atlas = Instance.Atlas[PopupAtlasIndex];
 					if (PopupUnitIndex < 0 || PopupUnitIndex >= atlas.Units.Count) return;
+					var deletingUnit = atlas.Units[PopupUnitIndex];
 					atlas.Units.RemoveAt(PopupUnitIndex);
+					string path = Util.CombinePaths(AngePath.EditableAtlasRoot, atlas.Name, deletingUnit.Name);
+					Util.DeleteFolder(path);
 				}
 			}
 		}

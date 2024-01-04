@@ -13,14 +13,14 @@ namespace AngeliaForUnity.Editor {
 
 		[MenuItem("AngeliA/Other/Aseprite to Editable")]
 		public static void AsepriteToEditable () {
-			bool confirmed = EditorUtil.Dialog("Confirm", "Create editable sheet from Aseprite files in project? This will override current editable universe data.", "OK", "Cancel");
-			if (confirmed) {
+			string path = EditorUtility.SaveFolderPanel("Confirm", System.Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory), "New Editable Root");
+			if (!string.IsNullOrEmpty(path)) {
 				EditorUtil.ClearProgressBar();
 				try {
 					EditorUtil.ProgressBar("Processing...", "Ase >> Texture Result", 0.3f);
 					var results = AsepriteFiles_to_TextureResult();
 					EditorUtil.ProgressBar("Processing...", "Texture Result >> Editable Sheet", 0.6f);
-					TextureResult_to_EditableSheet(results, AngePath.EditableSheetRoot);
+					TextureResult_to_EditableSheet(results, path);
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 				EditorUtil.ClearProgressBar();
 			}
@@ -147,12 +147,12 @@ namespace AngeliaForUnity.Editor {
 
 			var atlasList = new List<EditableAtlas>();
 			var groupPoolCache = new Dictionary<string, (GroupType type, List<EditableSprite> list)>();
+			var spritePixelsCache = new Dictionary<EditableSprite, Byte4[]>();
 			foreach (var (texture, flexs) in source) {
 				var pixels = Game.GetPixelsFromTexture(texture);
 				int textureWidth = Game.GetTextureSize(texture).x;
 				// Create and Fill Atlas
 				var atlas = new EditableAtlas() {
-					Guid = System.Guid.NewGuid().ToString(),
 					Name = $"Sheet ({atlasList.Count})",
 					Order = atlasList.Count,
 					SheetType = SheetType.General,
@@ -183,9 +183,7 @@ namespace AngeliaForUnity.Editor {
 					};
 					var eSprite = new EditableSprite() {
 						GlobalID = realName.AngeHash(),
-						Guid = System.Guid.NewGuid().ToString(),
 						IsDirty = false,
-						Pixels = GetPixelsFromFlex(pixels, sourceSprite, textureWidth),
 						Order = 0,
 						AngePivotX = pivotX ?? sourceSprite.AngePivot.x,
 						AngePivotY = pivotY ?? sourceSprite.AngePivot.y,
@@ -202,6 +200,9 @@ namespace AngeliaForUnity.Editor {
 						LoopStart = loopStart,
 						OffsetZ = sourceSprite.SheetZ * 1024 + offsetZ,
 					};
+					spritePixelsCache.Add(
+						eSprite, GetPixelsFromFlex(pixels, sourceSprite, textureWidth)
+					);
 					if (groupIndex >= 0) {
 						// Add Group to Cache
 						if (groupPoolCache.ContainsKey(groupName)) {
@@ -215,7 +216,6 @@ namespace AngeliaForUnity.Editor {
 						// Add General Unit
 						atlas.Units.Add(new EditableUnit() {
 							GroupType = groupType,
-							Guid = System.Guid.NewGuid().ToString(),
 							IsDirty = false,
 							Name = groupName,
 							Order = atlas.Units.Count,
@@ -228,7 +228,6 @@ namespace AngeliaForUnity.Editor {
 					list.Sort((a, b) => a.Order.CompareTo(b.Order));
 					atlas.Units.Add(new EditableUnit() {
 						GroupType = groupType,
-						Guid = System.Guid.NewGuid().ToString(),
 						IsDirty = false,
 						Name = groupName,
 						Order = atlas.Units.Count,
@@ -242,6 +241,17 @@ namespace AngeliaForUnity.Editor {
 
 			// Export
 			UniverseGenerator.SaveAtlasToDisk(atlasList, exportRoot, true);
+
+			// Save Pixels
+			foreach (var atlas in atlasList) {
+				foreach (var unit in atlas.Units) {
+					foreach (var sprite in unit.Sprites) {
+						if (!spritePixelsCache.TryGetValue(sprite, out var pixels)) continue;
+						string path = Util.CombinePaths(exportRoot, atlas.Name, unit.Name, sprite.Order.ToString(), "Pixels");
+						Util.Byte4ToFile(pixels, path);
+					}
+				}
+			}
 
 			// Func
 			static Byte4[] GetPixelsFromFlex (Byte4[] pixels, FlexSprite flex, int textureWidth) {

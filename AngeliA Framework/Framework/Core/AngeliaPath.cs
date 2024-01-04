@@ -9,11 +9,13 @@ namespace AngeliaFramework {
 		public const string COMBINATION_FILE_NAME = "Item Combination.txt";
 		public const int SAVE_SLOT_COUNT = 4;
 
+
 		// Ext
 		public const string MAP_FILE_EXT = "ibb";
 		public const string CONVERSATION_FILE_EXT = "txt";
 		public const string EDITABLE_CONVERSATION_FILE_EXT = "conversation";
 		public const string LANGUAGE_FILE_EXT = "txt";
+
 
 		// System
 		public static string ApplicationDataPath => _ApplicationDataPath ??= Environment.CurrentDirectory;
@@ -33,6 +35,7 @@ namespace AngeliaFramework {
 			AngeliaGameTitleAttribute.GetTitle()
 		);
 		private static string _TempDataPath = null;
+
 
 		// Universe
 		public static string UniverseRoot => _UniverseRoot ??= Util.CombinePaths(ApplicationDataPath, UNIVERSE_NAME);
@@ -56,16 +59,25 @@ namespace AngeliaFramework {
 		public static string LanguageRoot => _LanguageRoot ??= Util.CombinePaths(UniverseRoot, "Language");
 		private static string _LanguageRoot = null;
 
-		// Editable Universe
-		public static string EditableUniverseRoot => _EditableUniverseRoot ??= Util.CombinePaths(ApplicationDataPath, EDITABLE_UNIVERSE_NAME);
-		private static string _EditableUniverseRoot = null;
-
-		public static string EditableSheetRoot => _EditableSheetRoot ??= Util.CombinePaths(EditableUniverseRoot, "Sheet");
-		private static string _EditableSheetRoot = null;
 
 		// Persistent
 		public static string ItemSaveDataRoot => _ItemSaveDataRoot ??= Util.CombinePaths(PersistentDataPath, "Item Customization");
 		private static string _ItemSaveDataRoot = null;
+
+
+		// Editable
+		public static string EditableUniverseRoot => _EditableUniverseRoot ??= Util.CombinePaths(PersistentDataPath, "Universe Editable");
+		private static string _EditableUniverseRoot = null;
+
+		public static string EditableAtlasRoot => _EditableAtlasRoot ??= Util.CombinePaths(EditableUniverseRoot, "Atlas");
+		private static string _EditableAtlasRoot = null;
+
+		public static string EditableSheetRoot => _EditableSheetRoot ??= Util.CombinePaths(EditableUniverseRoot, "Sheet");
+		private static string _EditableSheetRoot = null;
+
+		public static string EditableTexturePath => _EditableTexturePath ??= Util.CombinePaths(EditableSheetRoot, "Texture.png");
+		private static string _EditableTexturePath = null;
+
 
 		// Slot
 		public static int CurrentSaveSlot {
@@ -100,6 +112,7 @@ namespace AngeliaFramework {
 
 		public static string DownloadMapRoot => _DownloadMapRoot ??= Util.CombinePaths(SaveSlotRoot, "Map", "Download Map");
 		private static string _DownloadMapRoot = null;
+
 
 		// Temp
 		public static string ProcedureMapTempRoot => _ProcedureMapTempRoot ??= Util.CombinePaths(TempDataPath, "Generating Map");

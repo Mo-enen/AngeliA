@@ -64,7 +64,11 @@ namespace AngeliaFramework {
 			WorldSquad.Enable = true;
 			if (IsDirty) {
 				SaveToDisk(forceSave: true);
-				Rebuild();
+				UniverseGenerator.RebuildSheetAndTextureToDisk(
+					Atlas, AngePath.EditableAtlasRoot, AngePath.EditableSheetRoot, AngePath.EditableTexturePath
+				);
+				Version.GrowVersion(AngePath.EditableSheetRoot);
+				CellRenderer.RequireReloadUserSheet();
 			}
 			Atlas.Clear();
 			System.GC.Collect();
@@ -137,70 +141,16 @@ namespace AngeliaFramework {
 		private void LoadFromDisk () {
 			IsDirty = false;
 			Atlas.Clear();
-			UniverseGenerator.LoadAtlasFromDisk(AngePath.EditableSheetRoot, Atlas);
+			UniverseGenerator.SyncSheet(
+				AngePath.SheetRoot, AngePath.SheetTexturePath, AngePath.EditableAtlasRoot
+			);
+			UniverseGenerator.LoadAtlasFromDisk(AngePath.EditableAtlasRoot, Atlas);
 		}
 
 
 		private void SaveToDisk (bool forceSave = false) {
 			IsDirty = false;
-			if (forceSave) {
-				Util.DeleteFolder(AngePath.EditableSheetRoot);
-				Util.CreateFolder(AngePath.EditableSheetRoot);
-			}
-			UniverseGenerator.SaveAtlasToDisk(Atlas, AngePath.EditableSheetRoot, forceSave);
-		}
-
-
-		private void Rebuild () {
-
-			if (Atlas.Count == 0) return;
-
-			// Editable >> Flex
-			var tResults = new List<(object texture, FlexSprite[] flexs)>();
-
-			for (int atlasIndex = 0; atlasIndex < Atlas.Count; atlasIndex++) {
-				var atlas = Atlas[atlasIndex];
-				for (int unitIndex = 0; unitIndex < atlas.Units.Count; unitIndex++) {
-					var unit = atlas.Units[unitIndex];
-					for (int spriteIndex = 0; spriteIndex < unit.Sprites.Count; spriteIndex++) {
-						var sprite = unit.Sprites[spriteIndex];
-						tResults.Add(
-							(Game.GetTextureFromPixels(sprite.Pixels, sprite.Width, sprite.Height),
-							new FlexSprite[]{ new FlexSprite() {
-								Name = sprite.GetFullName(atlas, unit, unit.Sprites.Count > 1 ? spriteIndex: -1),
-								AngePivot = new Int2(sprite.AngePivotX, sprite.AngePivotY),
-								Border = new Float4(sprite.BorderL, sprite.BorderD, sprite.BorderR, sprite.BorderU),
-								Rect = new FRect(0, 0, sprite.Width, sprite.Height),
-								SheetName = atlas.Name,
-								SheetType = atlas.SheetType,
-								SheetZ = atlas.SheetZ,
-							} })
-						);
-					}
-				}
-			}
-
-			// Combine Flex
-			UniverseGenerator.CombineFlexTextures(
-				tResults, out var sheetTexturePixels, out int textureWidth, out int textureHeight, out var flexSprites
-			);
-
-			// Flex Sprites >> Sheet
-			var sheet = UniverseGenerator.CreateSpriteSheet(sheetTexturePixels, textureWidth, textureHeight, flexSprites);
-			if (sheet != null) {
-				JsonUtil.SaveJson(sheet, AngePath.SheetRoot);
-			}
-
-			// Save Texture to File
-			var texture = Game.GetTextureFromPixels(sheetTexturePixels, textureWidth, textureHeight);
-			if (texture != null) {
-				Game.SaveTextureAsPNGFile(texture, AngePath.SheetTexturePath);
-			}
-
-			// Init CellRenderer
-			CellRenderer.InitializePool();
-			Game.SetTextureForRenderer(texture);
-
+			UniverseGenerator.SaveAtlasToDisk(Atlas, AngePath.EditableAtlasRoot, forceSave);
 		}
 
 

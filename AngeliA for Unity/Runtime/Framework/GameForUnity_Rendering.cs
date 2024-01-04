@@ -67,7 +67,7 @@ namespace AngeliaForUnity {
 
 			var root = UnityCamera.transform;
 			root.DestroyAllChildrenImmediate();
-			SheetTexture = AngeUtilUnity.LoadTexture(AngePath.SheetTexturePath);
+			SheetTexture = LoadTextureFromPNGFile(AngePath.SheetTexturePath) as Texture2D;
 			if (SKYBOX_SHADER != null) {
 				RenderSettings.skybox = Skybox = new Material(SKYBOX_SHADER);
 			}
@@ -403,6 +403,15 @@ namespace AngeliaForUnity {
 		protected override string _GetTextureName (object texture) => (texture as Texture2D).name;
 
 		protected override void _SaveTextureAsPNGFile (object texture, string path) => Util.ByteToFile((texture as Texture2D).EncodeToPNG(), path);
+
+		protected override object _LoadTextureFromPNGFile (string path) {
+			if (!Util.FileExists(path)) return null;
+			var texture = new Texture2D(1, 1, TextureFormat.ARGB32, false) {
+				filterMode = FilterMode.Point,
+			};
+			texture.LoadImage(Util.FileToByte(path), false);
+			return texture;
+		}
 
 
 		// GL

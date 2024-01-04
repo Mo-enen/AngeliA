@@ -30,12 +30,11 @@ namespace AngeliaFramework {
 	[JsonObject(MemberSerialization.OptIn)]
 	public class EditableAtlas {
 		public List<EditableUnit> Units = new();
-		public string Guid = "";
 		public bool IsDirty = false;
+		public string Name = "";
 		public bool Unfold = false;
 		[JsonProperty] public int Order = 0;
 		[JsonProperty] public int SheetZ = 0;
-		[JsonProperty] public string Name = "";
 		[JsonProperty] public SheetType SheetType = SheetType.General;
 	}
 
@@ -43,11 +42,10 @@ namespace AngeliaFramework {
 	[JsonObject(MemberSerialization.OptIn)]
 	public class EditableUnit {
 		public List<EditableSprite> Sprites = new();
-		public string Guid = "";
 		public int GlobalID = 0;
+		public string Name = "";
 		public bool IsDirty = false;
 		[JsonProperty] public int Order = 0;
-		[JsonProperty] public string Name = "";
 		[JsonProperty] public GroupType GroupType = GroupType.General;
 	}
 
@@ -55,7 +53,6 @@ namespace AngeliaFramework {
 	[JsonObject(MemberSerialization.OptIn)]
 	public class EditableSprite {
 
-		[JsonProperty] public int Order;
 		[JsonProperty] public int GlobalID = 0;
 		[JsonProperty] public int AngePivotX;
 		[JsonProperty] public int AngePivotY;
@@ -72,9 +69,8 @@ namespace AngeliaFramework {
 		[JsonProperty] public bool LoopStart = false;
 		[JsonProperty] public int OffsetZ = 0;
 
-		public string Guid = "";
+		public int Order;
 		public bool IsDirty = false;
-		public Byte4[] Pixels;
 
 		private static readonly StringBuilder NameBuilder = new();
 
