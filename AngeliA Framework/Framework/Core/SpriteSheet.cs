@@ -460,21 +460,4 @@ namespace AngeliaFramework {
 	}
 
 
-
-
-
-
-	public class FlexSprite {
-		public string Name;
-		public Int2 AngePivot;
-		public Float4 Border;
-		public FRect Rect;
-		public int AtlasZ;
-		public string AtlasName;
-		public AtlasType AtlasType;
-	}
-
-
-
-
 }

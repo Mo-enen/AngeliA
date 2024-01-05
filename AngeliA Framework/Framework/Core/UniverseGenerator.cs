@@ -5,6 +5,19 @@ using System.Text;
 
 
 namespace AngeliaFramework {
+
+
+	public class FlexSprite {
+		public string Name;
+		public Int2 AngePivot;
+		public Float4 Border;
+		public FRect Rect;
+		public int AtlasZ;
+		public string AtlasName;
+		public AtlasType AtlasType;
+	}
+
+
 	public static class UniverseGenerator {
 
 
@@ -30,7 +43,7 @@ namespace AngeliaFramework {
 		private class PackingItemComparer : IComparer<PackingItem> {
 			public static readonly PackingItemComparer Instance = new();
 			public int Compare (PackingItem a, PackingItem b) {
-				int result = a.SheetName.CompareTo(b.SheetName);
+				int result = a.AtlasName.CompareTo(b.AtlasName);
 				if (result != 0) return result;
 				return a.Name.CompareTo(b.Name);
 			}
@@ -41,13 +54,13 @@ namespace AngeliaFramework {
 			public int Width;
 			public int Height;
 			public Byte4[] Pixels;
+			public FRect UvResult;
 			public string Name;
-			public string SheetName;
 			public Int2 AngePivot;
 			public Float4 Border;
-			public AtlasType Type;
-			public int SheetZ;
-			public FRect UvResult;
+			public int AtlasZ;
+			public string AtlasName;
+			public AtlasType AtlasType;
 		}
 
 
@@ -107,10 +120,10 @@ namespace AngeliaFramework {
 						Border = meta.Border,
 						Name = meta.Name,
 						AngePivot = meta.AngePivot,
-						SheetName = sheetName,
+						AtlasName = sheetName,
 						Pixels = pixels,
-						Type = meta.AtlasType,
-						SheetZ = meta.AtlasZ,
+						AtlasType = meta.AtlasType,
+						AtlasZ = meta.AtlasZ,
 					});
 					prevItem = items.Count > 0 ? items[^1] : null;
 
@@ -135,10 +148,10 @@ namespace AngeliaFramework {
 				Border = Float4.zero,
 				Name = "Pixel",
 				AngePivot = Int2.zero,
-				SheetName = "(Procedure)",
+				AtlasName = "(Procedure)",
 				Pixels = new Byte4[1] { new Byte4(255, 255, 255, 255) },
-				Type = AtlasType.General,
-				SheetZ = 0,
+				AtlasType = AtlasType.General,
+				AtlasZ = 0,
 			});
 			items.Sort(PackingItemComparer.Instance);
 
@@ -170,11 +183,11 @@ namespace AngeliaFramework {
 				if (item.Border.w < 0) item.Border.w = 0;
 				resultList.Add(new FlexSprite() {
 					Name = item.Name,
-					AtlasName = item.SheetName,
-					AtlasZ = item.SheetZ,
+					AtlasName = item.AtlasName,
+					AtlasZ = item.AtlasZ,
 					Border = item.Border,
 					AngePivot = item.AngePivot,
-					AtlasType = item.Type,
+					AtlasType = item.AtlasType,
 					Rect = FRect.MinMaxRect(
 						uv.xMin * width,
 						uv.yMin * height,
