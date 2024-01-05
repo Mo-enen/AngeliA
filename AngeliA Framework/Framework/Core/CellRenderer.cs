@@ -5,7 +5,8 @@ using System.Collections.Generic;
 namespace AngeliaFramework {
 
 	public class Cell {
-		public int Index;
+		public AngeSprite Sprite;
+		public CharSprite TextSprite;
 		public int Order;
 		public int X;
 		public int Y;
@@ -19,7 +20,8 @@ namespace AngeliaFramework {
 		public Alignment BorderSide;
 		public Int4 Shift;
 		public void CopyFrom (Cell other) {
-			Index = other.Index;
+			Sprite = other.Sprite;
+			TextSprite = other.TextSprite;
 			Order = other.Order;
 			X = other.X;
 			Y = other.Y;
@@ -108,6 +110,18 @@ namespace AngeliaFramework {
 
 
 
+	public class CharSprite {
+		public int GlobalID;
+		public Float2 UvBottomLeft;
+		public Float2 UvBottomRight;
+		public Float2 UvTopLeft;
+		public Float2 UvTopRight;
+		public FRect Offset;
+		public float Advance;
+		public int Rebuild = 0;
+	}
+
+
 	public static partial class CellRenderer {
 
 
@@ -128,23 +142,10 @@ namespace AngeliaFramework {
 		}
 
 
-		public class CharSprite {
-			public int GlobalID;
-			public Float2 UvBottomLeft;
-			public Float2 UvBottomRight;
-			public Float2 UvTopLeft;
-			public Float2 UvTopRight;
-			public FRect Offset;
-			public float Advance;
-			public int Rebuild = 0;
-		}
-
-
 		private class TextLayer : Layer {
 			public int TextSize = 30;
 			public int TextRebuild = 1;
-			public readonly Dictionary<int, CellInfo> TextIDMap = new();
-			public readonly List<CharSprite> CharSprites = new();
+			public readonly Dictionary<int, CharSprite> TextIDMap = new();
 		}
 
 
@@ -169,23 +170,6 @@ namespace AngeliaFramework {
 		}
 
 
-		private class CellInfo {
-			public int Index {
-				get => GetIndex(Game.GlobalFrame);
-				set => _Index = value;
-			}
-			public int Length => Chain != null ? Chain.Count : 1;
-			public int LoopStart => Chain != null ? Chain.LoopStart : -1;
-			private int _Index = -1;
-			public AngeSpriteChain Chain = null;
-			public CellInfo (int index, AngeSpriteChain chain = null) {
-				_Index = index;
-				Chain = chain;
-			}
-			public int GetIndex (int frame) => Chain != null ? Chain[GetAnimationFrame(frame, Chain.Count, LoopStart).Clamp(0, Chain.Count - 1)] : _Index;
-		}
-
-
 		#endregion
 
 
@@ -195,7 +179,7 @@ namespace AngeliaFramework {
 
 
 		// Const
-		public static readonly Cell EMPTY_CELL = new() { Index = -1 };
+		public static readonly Cell EMPTY_CELL = new() { Sprite = null, TextSprite = null, };
 		private static readonly Byte4 WHITE = new(255, 255, 255, 255);
 		private static readonly int[] RENDER_CAPACITY = new int[RenderLayer.COUNT] {
 			256,	// Wallpaper 
@@ -219,23 +203,18 @@ namespace AngeliaFramework {
 		public static float CameraRestrictionRate { get; private set; } = 1f;
 		public static int LastDrawnID { get; private set; } = 0;
 		public static int LayerCount => Layers.Length;
-		public static int SpriteCount => Sprites.Length;
-		public static int ChainCount => Chains.Length;
+		public static int SpriteCount => Sheet.Sprites.Length;
+		public static int GroupCount => Sheet.Groups.Length;
 		public static int TextLayerCount => TextLayers.Length;
 		public static int CurrentLayerIndex { get; private set; } = 0;
 		public static int CurrentTextLayerIndex { get; private set; } = 0;
 		public static bool TextReady => TextLayers.Length > 0;
 
 		// Data
-		private static readonly Dictionary<int, CellInfo> SheetIDMap = new();
-		private static readonly Dictionary<int, int[]> SpriteGroupMap = new();
-		private static readonly Dictionary<int, SpriteMeta> MetaPool = new();
 		private static readonly Cell[] Last9SlicedCells = new Cell[9];
 		private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
+		private static readonly Sheet Sheet = new();
 		private static TextLayer[] TextLayers = new TextLayer[0];
-		private static AngeSprite[] Sprites = null;
-		private static AngeSpriteChain[] Chains = null;
-		private static string[] SheetNames = new string[0];
 		private static bool IsDrawing = false;
 
 
@@ -250,66 +229,10 @@ namespace AngeliaFramework {
 		// Init
 		[OnGameInitialize(int.MinValue)]
 		internal static void Initialize () {
-			InitializePool(AngePath.SheetRoot);
-			InitializeLayers();
-		}
 
-
-		private static void InitializePool (string sheetRoot) {
-
-			var sheet = JsonUtil.LoadOrCreateJson<SpriteSheet>(sheetRoot);
-			if (sheet == null) return;
-
-			SheetIDMap.Clear();
-			MetaPool.Clear();
-			SpriteGroupMap.Clear();
-			Sprites = sheet.Sprites;
-			Chains = sheet.SpriteChains;
-			SheetNames = sheet.SheetNames;
-
-			// Add Sprites
-			for (int i = 0; i < sheet.Sprites.Length; i++) {
-				var sp = sheet.Sprites[i];
-				SheetIDMap.TryAdd(sp.GlobalID, new CellInfo(i));
-				if (sp.MetaIndex >= 0) {
-					MetaPool.TryAdd(sp.GlobalID, sheet.Metas[sp.MetaIndex]);
-				}
-			}
-
-			// Add Sprite Groups
-			for (int i = 0; i < sheet.Groups.Length; i++) {
-				var group = sheet.Groups[i];
-				if (group != null && group.SpriteIDs != null && group.SpriteIDs.Length > 0) {
-					SpriteGroupMap.TryAdd(group.ID, group.SpriteIDs);
-				}
-			}
-
-			// Add Animated Sprite Chains
-			for (int i = 0; i < sheet.SpriteChains.Length; i++) {
-				var chain = sheet.SpriteChains[i];
-				if (chain.Type != GroupType.Animated || chain.Count == 0) continue;
-				SheetIDMap.TryAdd(chain.ID, new(0, chain));
-			}
-
-			// Add Meta for Chains
-			for (int i = 0; i < sheet.SpriteChains.Length; i++) {
-				var chain = sheet.SpriteChains[i];
-				int id = chain.ID;
-				if (!SheetIDMap.ContainsKey(id)) continue;
-				if (chain.Count > 0) {
-					int index = chain[0];
-					if (index >= 0 && index < sheet.Sprites.Length) {
-						var sp = sheet.Sprites[index];
-						if (sp.MetaIndex >= 0) {
-							MetaPool.TryAdd(id, sheet.Metas[sp.MetaIndex]);
-						}
-					}
-				}
-			}
-		}
-
-
-		private static void InitializeLayers () {
+			// Load Sheet
+			Sheet.Clear();
+			JsonUtil.OverrideJson(AngePath.SheetRoot, Sheet);
 
 			// Create Layers
 			for (int i = 0; i < RenderLayer.COUNT; i++) {
@@ -344,7 +267,7 @@ namespace AngeliaFramework {
 				var cells = new Cell[renderCapacity];
 				for (int i = 0; i < renderCapacity; i++) {
 					cells[i] = new Cell() {
-						Index = -1,
+						Sprite = null,
 						BorderSide = Alignment.Full,
 					};
 				}
@@ -359,7 +282,6 @@ namespace AngeliaFramework {
 				layer.UiLayer = uiLayer;
 				return layer;
 			}
-
 		}
 
 
@@ -497,67 +419,78 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Cell Draw (int globalID, IRect rect, int z = int.MinValue) => Draw(globalID, false, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, WHITE, z);
-		public static Cell Draw (int globalID, IRect rect, Byte4 color, int z = int.MinValue) => Draw(globalID, false, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
-		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID, false, x, y, pivotX, pivotY, rotation, width, height, WHITE, z);
-		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) => Draw(globalID, false, x, y, pivotX, pivotY, rotation, width, height, color, z);
-		public static Cell Draw (int globalID, bool forText, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) {
+		public static Cell Draw (int globalID, IRect rect, int z = int.MinValue) => Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, WHITE, z);
+		public static Cell Draw (int globalID, IRect rect, Byte4 color, int z = int.MinValue) => Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
+		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID, x, y, pivotX, pivotY, rotation, width, height, WHITE, z);
+		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) {
 
 			if (!IsDrawing) return EMPTY_CELL;
+			if (!TryGetSprite(globalID, out var sprite)) return EMPTY_CELL;
 
-			CellInfo rCell;
-			if (forText) {
-				var tLayer = TextLayers[CurrentTextLayerIndex];
-				if (!tLayer.TextIDMap.TryGetValue(globalID, out rCell)) {
-					return EMPTY_CELL;
-				}
-			} else {
-				if (!SheetIDMap.TryGetValue(globalID, out rCell)) {
-					return EMPTY_CELL;
-				}
-			}
-			var layer = forText ?
-				TextLayers[CurrentTextLayerIndex.Clamp(0, TextLayers.Length - 1)] :
-				Layers[CurrentLayerIndex.Clamp(0, Layers.Length - 1)];
+			var layer = Layers[CurrentLayerIndex.Clamp(0, Layers.Length - 1)];
 			if (Game.IsPausing && !layer.UiLayer) return EMPTY_CELL;
 			if (layer.FocusedCell < 0) return EMPTY_CELL;
 			var cell = layer.Cells[layer.FocusedCell];
 
-			if (!forText) {
-
-				var sprite = Sprites[rCell.GetIndex(Game.GlobalFrame)];
-
-				// Original Size
-				if (width == Const.ORIGINAL_SIZE) {
-					width = sprite.GlobalWidth;
-				} else if (width == Const.ORIGINAL_SIZE_NEGATAVE) {
-					width = -sprite.GlobalWidth;
-				}
-				if (height == Const.ORIGINAL_SIZE) {
-					height = sprite.GlobalHeight;
-				} else if (height == Const.ORIGINAL_SIZE_NEGATAVE) {
-					height = -sprite.GlobalHeight;
-				}
-
-				// Cell
-				cell.Z = sprite.SortingZ;
-
-			} else {
-				// For Text
-				cell.Z = 0;
+			// Original Size
+			if (width == Const.ORIGINAL_SIZE) {
+				width = sprite.GlobalWidth;
+			} else if (width == Const.ORIGINAL_SIZE_NEGATAVE) {
+				width = -sprite.GlobalWidth;
+			}
+			if (height == Const.ORIGINAL_SIZE) {
+				height = sprite.GlobalHeight;
+			} else if (height == Const.ORIGINAL_SIZE_NEGATAVE) {
+				height = -sprite.GlobalHeight;
 			}
 
-			if (z != int.MinValue) cell.Z = z;
-
-			cell.Index = rCell.Index;
+			// Cell
+			cell.Sprite = sprite;
 			cell.Order = layer.FocusedCell;
 			cell.X = x;
 			cell.Y = y;
+			cell.Z = z != int.MinValue ? z : sprite.SortingZ;
 			cell.Width = width;
 			cell.Height = height;
 			cell.Rotation = rotation;
 			cell.PivotX = pivotX / 1000f;
 			cell.PivotY = pivotY / 1000f;
+			cell.Color = color;
+			cell.BorderSide = Alignment.Full;
+			cell.Shift = Int4.zero;
+
+			// Move Next
+			layer.FocusedCell++;
+			if (layer.FocusedCell >= layer.CellCount) {
+				layer.FocusedCell = -1;
+			}
+			LastDrawnID = globalID;
+			return cell;
+		}
+		public static Cell DrawForText (int globalID, int x, int y, int width, int height, Byte4 color) {
+
+			if (!IsDrawing) return EMPTY_CELL;
+
+			var tLayer = TextLayers[CurrentTextLayerIndex];
+			if (!tLayer.TextIDMap.TryGetValue(globalID, out var tSprite)) {
+				return EMPTY_CELL;
+			}
+
+			var layer = TextLayers[CurrentTextLayerIndex.Clamp(0, TextLayers.Length - 1)];
+			if (Game.IsPausing && !layer.UiLayer) return EMPTY_CELL;
+			if (layer.FocusedCell < 0) return EMPTY_CELL;
+			var cell = layer.Cells[layer.FocusedCell];
+
+			cell.Z = 0;
+			cell.TextSprite = tSprite;
+			cell.Order = layer.FocusedCell;
+			cell.X = x;
+			cell.Y = y;
+			cell.Width = width;
+			cell.Height = height;
+			cell.Rotation = 0;
+			cell.PivotX = 0;
+			cell.PivotY = 0;
 			cell.Color = color;
 			cell.BorderSide = Alignment.Full;
 			cell.Shift = Int4.zero;
@@ -759,24 +692,10 @@ namespace AngeliaFramework {
 		public static Cell DrawAnimation (int chainID, IRect globalRect, int frame, Byte4 color, int loopStart = int.MinValue) => DrawAnimation(chainID, globalRect.x, globalRect.y, 0, 0, 0, globalRect.width, globalRect.height, frame, color, loopStart);
 		public static Cell DrawAnimation (int chainID, int x, int y, int width, int height, int frame, Byte4 color, int loopStart = int.MinValue) => DrawAnimation(chainID, x, y, 0, 0, 0, width, height, frame, color, loopStart);
 		public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, Byte4 color, int loopStart = int.MinValue) {
-			if (!SheetIDMap.TryGetValue(chainID, out var rCell)) return EMPTY_CELL;
-			int localFrame = GetAnimationFrame(frame, rCell.Length, loopStart == int.MinValue ? rCell.LoopStart : loopStart);
-			var sprite = Sprites[rCell.GetIndex(localFrame)];
+			if (!Sheet.GroupPool.TryGetValue(chainID, out var group)) return EMPTY_CELL;
+			int localFrame = GetAnimationFrame(frame, group.Length, loopStart == int.MinValue ? group.LoopStart : loopStart);
+			var sprite = group[localFrame];
 			return Draw(sprite.GlobalID, x, y, pivotX, pivotY, rotation, width, height, color);
-		}
-
-
-		public static Cell[] DrawAnimation_9Slice (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int loopStart = -1) => DrawAnimation_9Slice(chainID, x, y, pivotX, pivotY, rotation, width, height, frame, WHITE, loopStart);
-		public static Cell[] DrawAnimation_9Slice (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, Byte4 color, int loopStart = -1) {
-			if (!SheetIDMap.TryGetValue(chainID, out var rCell)) return Last9SlicedCells;
-			var sprite = Sprites[rCell.GetIndex(GetAnimationFrame(frame, rCell.Length, loopStart))];
-			return Draw_9Slice(sprite.GlobalID, x, y, pivotX, pivotY, rotation, width, height, sprite.GlobalBorder.left, sprite.GlobalBorder.right, sprite.GlobalBorder.down, sprite.GlobalBorder.up, color);
-		}
-		public static Cell[] DrawAnimation_9Slice (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int borderL, int borderR, int borderD, int borderU, int loopStart = -1) => DrawAnimation_9Slice(chainID, x, y, pivotX, pivotY, rotation, width, height, frame, borderL, borderR, borderD, borderU, WHITE, loopStart);
-		public static Cell[] DrawAnimation_9Slice (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int borderL, int borderR, int borderD, int borderU, Byte4 color, int loopStart = -1) {
-			if (!SheetIDMap.TryGetValue(chainID, out var rCell)) return Last9SlicedCells;
-			var sprite = Sprites[rCell.GetIndex(GetAnimationFrame(frame, rCell.Length, loopStart))];
-			return Draw_9Slice(sprite.GlobalID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, color);
 		}
 
 
@@ -794,20 +713,23 @@ namespace AngeliaFramework {
 
 
 		// Sprite Data
-		public static bool TryGetSprite (int globalID, out AngeSprite sprite) {
-			if (SheetIDMap.TryGetValue(globalID, out var rCell)) {
-				sprite = Sprites[rCell.GetIndex(Game.GlobalFrame)];
+		public static bool TryGetSprite (int globalID, out AngeSprite sprite, bool ignoreAnimation = false) {
+			if (Sheet.SpritePool.TryGetValue(globalID, out sprite)) return true;
+			if (!ignoreAnimation && Sheet.GroupPool.TryGetValue(globalID, out var group) && group.Type == GroupType.Animated) {
+				int localFrame = GetAnimationFrame(Game.GlobalFrame, group.Length, group.LoopStart);
+				sprite = group[localFrame];
 				return true;
-			} else {
-				sprite = null;
-				return false;
 			}
+			sprite = null;
+			return false;
 		}
 
 
 		public static bool HasSpriteGroup (int groupID) => HasSpriteGroup(groupID, out _);
+
+
 		public static bool HasSpriteGroup (int groupID, out int groupLength) {
-			if (SpriteGroupMap.TryGetValue(groupID, out var values)) {
+			if (Sheet.GroupPool.TryGetValue(groupID, out var values)) {
 				groupLength = values.Length;
 				return true;
 			} else {
@@ -818,38 +740,30 @@ namespace AngeliaFramework {
 
 
 		public static bool TryGetSpriteFromGroup (int groupID, int index, out AngeSprite sprite, bool loopIndex = true, bool clampIndex = true) {
-			int[] ids = null;
-			if (ids == null && SpriteGroupMap.TryGetValue(groupID, out ids)) {
-				if (loopIndex) index = index.UMod(ids.Length);
-				if (clampIndex) index = index.Clamp(0, ids.Length - 1);
-				sprite = null;
-				return index >= 0 && index < ids.Length && TryGetSprite(ids[index], out sprite);
-			} else return TryGetSprite(groupID, out sprite);
+			if (Sheet.GroupPool.TryGetValue(groupID, out var sprites)) {
+				if (loopIndex) index = index.UMod(sprites.Length);
+				if (clampIndex) index = index.Clamp(0, sprites.Length - 1);
+				if (index >= 0 && index < sprites.Length) {
+					sprite = sprites[index];
+					return true;
+				} else {
+					sprite = null;
+					return false;
+				}
+			} else return TryGetSprite(groupID, out sprite, ignoreAnimation: true);
 		}
 
 
-		public static bool TryGetMeta (int globalID, out SpriteMeta meta) => MetaPool.TryGetValue(globalID, out meta);
+		public static bool HasSprite (int globalID) => Sheet.SpritePool.ContainsKey(globalID);
 
 
-		public static bool HasSprite (int globalID) => SheetIDMap.ContainsKey(globalID);
+		public static AngeSprite GetSpriteAt (int index) => index >= 0 && index < Sheet.Sprites.Length ? Sheet.Sprites[index] : null;
 
 
-		public static AngeSprite GetSpriteAt (int index) => index >= 0 && index < Sprites.Length ? Sprites[index] : null;
-
-
-		public static AngeSpriteChain GetChainAt (int index) => Chains[index];
-
-
-		public static CharSprite GetCharSprite (int layerIndex, int spriteIndex) => TextLayers[layerIndex].CharSprites[spriteIndex];
-
-
-		public static int GetCharSpriteCount (int layerIndex) => TextLayers[layerIndex].CharSprites.Count;
+		public static SpriteGroup GetGroupAt (int index) => index >= 0 && index < Sheet.Groups.Length ? Sheet.Groups[index] : null;
 
 
 		// Misc
-		public static string GetSheetName (AngeSprite sprite) => sprite != null && sprite.SheetNameIndex >= 0 && sprite.SheetNameIndex < SheetNames.Length ? SheetNames[sprite.SheetNameIndex] : string.Empty;
-
-
 		public static void AddTextRebuild (int layerIndex) => TextLayers[layerIndex].TextRebuild++;
 
 
@@ -959,18 +873,20 @@ namespace AngeliaFramework {
 		internal static bool RequireCharForPool (char c, out CharSprite charSprite) {
 			charSprite = null;
 			var tLayer = TextLayers[CurrentTextLayerIndex];
-			if (tLayer.TextIDMap.TryGetValue(c, out var cellInfo)) {
-				if (cellInfo.Index < 0) {
+			if (tLayer.TextIDMap.TryGetValue(c, out var textSprite)) {
+				if (textSprite == null) {
 					// No CharInfo for this Char
 					return false;
 				} else {
-					charSprite = tLayer.CharSprites[cellInfo.Index];
+					charSprite = textSprite;
 					if (charSprite.Rebuild != tLayer.TextRebuild) {
 						// Need Cache Again
 						charSprite.Rebuild = tLayer.TextRebuild;
-						Game.FillCharSprite(CurrentTextLayerIndex, c, tLayer.TextSize, charSprite, out bool filled);
+						Game.FillCharSprite(
+							CurrentTextLayerIndex, c, tLayer.TextSize, charSprite, out bool filled
+						);
 						if (!filled) {
-							cellInfo.Index = -1;
+							tLayer.TextIDMap[c] = null;
 						}
 					}
 					return true;
@@ -981,11 +897,10 @@ namespace AngeliaFramework {
 				if (filled && charSprite != null) {
 					// Got Info
 					charSprite.Rebuild = tLayer.TextRebuild;
-					tLayer.TextIDMap.Add(c, new CellInfo(tLayer.CharSprites.Count));
-					tLayer.CharSprites.Add(charSprite);
+					tLayer.TextIDMap.Add(c, charSprite);
 				} else {
 					// No Info
-					tLayer.TextIDMap.Add(c, new CellInfo(-1));
+					tLayer.TextIDMap.Add(c, null);
 				}
 				return filled;
 			}

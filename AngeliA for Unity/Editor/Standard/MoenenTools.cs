@@ -185,12 +185,12 @@ namespace AngeliaForUnity.Editor {
 		[MenuItem("AngeliA/Other/Check for Empty Sprites")]
 		public static void EmptySpriteChecker () {
 
-			string sheetPath = Util.CombinePaths(AngePath.SheetRoot, $"{nameof(SpriteSheet)}.json");
+			string sheetPath = Util.CombinePaths(AngePath.SheetRoot, $"{nameof(Sheet)}.json");
 			if (!Util.FileExists(sheetPath)) {
 				Debug.LogWarning("Sprite sheet not found.");
 				return;
 			}
-			var sheet = JsonUtil.LoadJson<SpriteSheet>(AngePath.SheetRoot);
+			var sheet = JsonUtil.LoadJson<Sheet>(AngePath.SheetRoot);
 			if (sheet == null) {
 				Debug.LogWarning("Failed to load sprite sheet.");
 				return;
@@ -219,8 +219,8 @@ namespace AngeliaForUnity.Editor {
 						}
 					}
 				}
-				if (sprite.SheetNameIndex >= 0 && sprite.SheetNameIndex < sheet.SheetNames.Length) {
-					resultList.Add($"Sheet: <color=#FFCC00>{sheet.SheetNames[sprite.SheetNameIndex]}</color> Name: <color=#FFCC00>{sprite.RealName}</color>");
+				if (sprite.AtlasIndex >= 0 && sprite.AtlasIndex < sheet.AtlasInfo.Length) {
+					resultList.Add($"Sheet: <color=#FFCC00>{sheet.AtlasInfo[sprite.AtlasIndex].Name}</color> Name: <color=#FFCC00>{sprite.RealName}</color>");
 				}
 				_PASS:;
 			}

@@ -26,10 +26,9 @@ namespace AngeliaFramework {
 			if (!CellRenderer.HasSpriteGroup(SpriteGroupID)) SpriteGroupID = 0;
 			if (
 				SpriteGroupID != 0 &&
-				CellRenderer.TryGetSpriteFromGroup(SpriteGroupID, 0, out var sprite) &&
-				CellRenderer.TryGetMeta(sprite.GlobalID, out var meta)
+				CellRenderer.TryGetSpriteFromGroup(SpriteGroupID, 0, out var sprite)
 			) {
-				IsPropeller = meta.IsTrigger;
+				IsPropeller = sprite.IsTrigger;
 			}
 		}
 

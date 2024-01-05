@@ -295,7 +295,7 @@ namespace AngeliaFramework {
 
 
 		private void DrawSpriteGizmos (int artworkID, IRect rect, bool shrink = false, AngeSprite sprite = null) {
-			if (sprite == null && !CellRenderer.TryGetSprite(artworkID, out sprite)) {
+			if (sprite == null && !CellRenderer.TryGetSpriteFromGroup(artworkID, 0, out sprite)) {
 				if (EntityArtworkRedirectPool.TryGetValue(artworkID, out int newID)) {
 					CellRenderer.TryGetSprite(newID, out sprite);
 				}

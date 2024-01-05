@@ -412,7 +412,7 @@ namespace AngeliaFramework {
 				CellRenderer.Draw(id, rect);
 			}
 			// Collider for Oneway
-			if (CellRenderer.TryGetSprite(id, out var sp) && CellRenderer.TryGetMeta(id, out var meta) && AngeUtil.IsOnewayTag(meta.Tag)) {
+			if (CellRenderer.TryGetSprite(id, out var sp) && AngeUtil.IsOnewayTag(sp.Tag)) {
 				CellPhysics.FillBlock(
 					PhysicsLayer.LEVEL, id,
 					new IRect(
@@ -423,7 +423,7 @@ namespace AngeliaFramework {
 					).Shrink(
 						sp.GlobalBorder.left, sp.GlobalBorder.right, sp.GlobalBorder.down, sp.GlobalBorder.up
 					),
-					true, meta.Tag
+					true, sp.Tag
 				);
 			}
 		}
@@ -437,19 +437,13 @@ namespace AngeliaFramework {
 			if (!behind) {
 				// Collider
 				if (!CellRenderer.TryGetSprite(id, out var sp)) return;
-				bool isTrigger = false;
-				int tag = 0;
-				if (CellRenderer.TryGetMeta(id, out var meta)) {
-					isTrigger = meta.IsTrigger;
-					tag = meta.Tag;
-					if (meta.Tag == SpriteTag.DAMAGE_TAG) {
-						CellPhysics.FillBlock(PhysicsLayer.DAMAGE, id, rect.Expand(1), true, 1);
-					}
+				if (sp.Tag == SpriteTag.DAMAGE_TAG) {
+					CellPhysics.FillBlock(PhysicsLayer.DAMAGE, id, rect.Expand(1), true, 1);
 				}
 				rect = rect.Shrink(
 					sp.GlobalBorder.left, sp.GlobalBorder.right, sp.GlobalBorder.down, sp.GlobalBorder.up
 				);
-				CellPhysics.FillBlock(PhysicsLayer.LEVEL, id, rect, isTrigger, tag);
+				CellPhysics.FillBlock(PhysicsLayer.LEVEL, id, rect, sp.IsTrigger, sp.Tag);
 			}
 		}
 
@@ -500,10 +494,12 @@ namespace AngeliaFramework {
 				Util.RemapUnclamped(ParallaxRect.yMin, ParallaxRect.yMax, cameraRect.yMin, cameraRect.yMax, unitY * Const.CEL),
 				BackgroundBlockSize, BackgroundBlockSize
 			);
+
 			if (
 				!CellRenderer.TryGetSprite(id, out var sprite) &&
 				!CellRenderer.TryGetSpriteFromGroup(id, 0, out sprite)
 			) return;
+
 			if (
 				fixRatio &&
 				(sprite.GlobalWidth != Const.CEL || sprite.GlobalHeight != Const.CEL)

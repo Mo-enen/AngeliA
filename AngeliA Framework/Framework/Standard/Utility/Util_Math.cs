@@ -179,12 +179,8 @@ namespace AngeliaFramework {
 
 
 		// Color
-		public static Byte4 IntToColor (int i) =>
-			new((byte)(i >> 24), (byte)(i >> 16), (byte)(i >> 8), (byte)(i));
-
-
-		public static int ColorToInt (Byte4 color) =>
-			color.r << 24 | color.g << 16 | color.b << 8 | color.a;
+		public static Byte4 IntToColor (int i) => new((byte)(i >> 24), (byte)(i >> 16), (byte)(i >> 8), (byte)(i));
+		public static int ColorToInt (Byte4 color) => color.r << 24 | color.g << 16 | color.b << 8 | color.a;
 
 
 		// Bit

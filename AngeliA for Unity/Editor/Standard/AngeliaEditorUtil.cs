@@ -30,16 +30,16 @@ namespace AngeliaForUnity.Editor {
 		}
 
 
-		public static void GetAsepriteSheetInfo (AseData ase, out int z, out SheetType type, out int? pivotX, out int? pivotY) {
+		public static void GetAsepriteSheetInfo (AseData ase, out int z, out AtlasType type, out int? pivotX, out int? pivotY) {
 			var oic = System.StringComparison.OrdinalIgnoreCase;
-			var sheetType = SheetType.General;
+			var sheetType = AtlasType.General;
 			int? sheetZ = null;
 			int? _pivotX = null;
 			int? _pivotY = null;
 			ase.ForAllChunks<AseData.LayerChunk>((layer, _, _) => {
 
 				if (
-					sheetType != SheetType.General &&
+					sheetType != AtlasType.General &&
 					sheetZ.HasValue &&
 					_pivotX.HasValue &&
 					_pivotY.HasValue
@@ -49,8 +49,8 @@ namespace AngeliaForUnity.Editor {
 
 				// Sheet Type
 				sheetType =
-					layer.Name.Contains("#level", System.StringComparison.OrdinalIgnoreCase) ? SheetType.Level :
-					layer.Name.Contains("#background", System.StringComparison.OrdinalIgnoreCase) ? SheetType.Background :
+					layer.Name.Contains("#level", System.StringComparison.OrdinalIgnoreCase) ? AtlasType.Level :
+					layer.Name.Contains("#background", System.StringComparison.OrdinalIgnoreCase) ? AtlasType.Background :
 					sheetType;
 
 				// Z

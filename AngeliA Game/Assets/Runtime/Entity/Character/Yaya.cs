@@ -39,6 +39,7 @@ namespace AngeliaGame {
 			SlideOnAnyBlock.BaseValue = true;
 			CharacterHeight = 158;
 
+
 			MaxHP.BaseValue = 1;
 
 			HairColor = Const.WHITE;

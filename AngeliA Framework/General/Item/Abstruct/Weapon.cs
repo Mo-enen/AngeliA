@@ -78,7 +78,7 @@ namespace AngeliaFramework {
 			if (character.EquippingWeaponType == WeaponType.Claw) {
 				grabScaleL = grabScaleL * 700 / 1000;
 				grabScaleR = grabScaleR * 700 / 1000;
-				if (CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
+				if (sprite.IsTrigger) {
 					zLeft = character.HandL.Z + 1;
 					zRight = character.HandR.Z + 1;
 				}
@@ -128,7 +128,7 @@ namespace AngeliaFramework {
 						z = character.FacingFront ? character.HandR.Z.Abs() + 1 : -character.HandR.Z.Abs() - 1;
 					}
 					// Fix Rotation
-					if (CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) && meta.IsTrigger) {
+					if (sprite.IsTrigger) {
 						if (!attacking) {
 							grabRotation = 0;
 						} else {
@@ -219,7 +219,7 @@ namespace AngeliaFramework {
 						var center = (character.FacingRight ? character.HandR : character.HandL).GlobalLerp(0.5f, 0.5f);
 						int width = sprite.GlobalWidth;
 						int height = sprite.GlobalHeight;
-						if (!CellRenderer.TryGetMeta(sprite.GlobalID, out var meta) || !meta.IsTrigger) {
+						if (!sprite.IsTrigger) {
 							int localFrame = Game.GlobalFrame - character.LastAttackFrame;
 							if (localFrame < character.AttackDuration / 2) {
 								// Pulling

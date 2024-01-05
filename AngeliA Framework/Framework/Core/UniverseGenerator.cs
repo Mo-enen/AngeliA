@@ -13,6 +13,20 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
+		private class FlexSpriteComparer : IComparer<FlexSprite> {
+			public static readonly FlexSpriteComparer Instance = new();
+			public int Compare (FlexSprite a, FlexSprite b) {
+				int result = ((int)(a.Rect.x)).CompareTo((int)(b.Rect.x));
+				if (result != 0) return result;
+				result = ((int)(a.Rect.y)).CompareTo((int)(b.Rect.y));
+				if (result != 0) return result;
+				result = ((int)(a.Rect.width)).CompareTo((int)(b.Rect.width));
+				if (result != 0) return result;
+				return ((int)(a.Rect.height)).CompareTo((int)(b.Rect.height));
+			}
+		}
+
+
 		private class PackingItemComparer : IComparer<PackingItem> {
 			public static readonly PackingItemComparer Instance = new();
 			public int Compare (PackingItem a, PackingItem b) {
@@ -31,33 +45,10 @@ namespace AngeliaFramework {
 			public string SheetName;
 			public Int2 AngePivot;
 			public Float4 Border;
-			public SheetType Type;
+			public AtlasType Type;
 			public int SheetZ;
 			public FRect UvResult;
 		}
-
-
-		private class FlexSpriteComparer : IComparer<FlexSprite> {
-			public static readonly FlexSpriteComparer Instance = new();
-			public int Compare (FlexSprite a, FlexSprite b) {
-				int result = ((int)(a.Rect.x)).CompareTo((int)(b.Rect.x));
-				if (result != 0) return result;
-				result = ((int)(a.Rect.y)).CompareTo((int)(b.Rect.y));
-				if (result != 0) return result;
-				result = ((int)(a.Rect.width)).CompareTo((int)(b.Rect.width));
-				if (result != 0) return result;
-				return ((int)(a.Rect.height)).CompareTo((int)(b.Rect.height));
-			}
-		}
-
-
-		#endregion
-
-
-
-
-		#region --- VAR ---
-
 
 
 		#endregion
@@ -118,8 +109,8 @@ namespace AngeliaFramework {
 						AngePivot = meta.AngePivot,
 						SheetName = sheetName,
 						Pixels = pixels,
-						Type = meta.SheetType,
-						SheetZ = meta.SheetZ,
+						Type = meta.AtlasType,
+						SheetZ = meta.AtlasZ,
 					});
 					prevItem = items.Count > 0 ? items[^1] : null;
 
@@ -146,7 +137,7 @@ namespace AngeliaFramework {
 				AngePivot = Int2.zero,
 				SheetName = "(Procedure)",
 				Pixels = new Byte4[1] { new Byte4(255, 255, 255, 255) },
-				Type = SheetType.General,
+				Type = AtlasType.General,
 				SheetZ = 0,
 			});
 			items.Sort(PackingItemComparer.Instance);
@@ -179,11 +170,11 @@ namespace AngeliaFramework {
 				if (item.Border.w < 0) item.Border.w = 0;
 				resultList.Add(new FlexSprite() {
 					Name = item.Name,
-					SheetName = item.SheetName,
-					SheetZ = item.SheetZ,
+					AtlasName = item.SheetName,
+					AtlasZ = item.SheetZ,
 					Border = item.Border,
 					AngePivot = item.AngePivot,
-					SheetType = item.Type,
+					AtlasType = item.Type,
 					Rect = FRect.MinMaxRect(
 						uv.xMin * width,
 						uv.yMin * height,
@@ -207,21 +198,21 @@ namespace AngeliaFramework {
 		}
 
 
-		public static SpriteSheet CreateSpriteSheet (Byte4[] texturePixels, int textureWidth, int textureHeight, FlexSprite[] flexSprites) {
+		public static Sheet CreateSpriteSheet (Byte4[] texturePixels, int textureWidth, int textureHeight, FlexSprite[] flexSprites) {
 
 			if (textureWidth == 0 || textureHeight == 0) return null;
 
-			var sheet = new SpriteSheet {
-				Sprites = null,
-				SpriteChains = null,
-			};
+			var sheet = new Sheet();
 			var spriteIDHash = new HashSet<int>();
-			var chainPool = new Dictionary<string, (GroupType type, List<(int globalIndex, int localIndex, bool loopStart)> list)>();
-			var groupHash = new HashSet<string>();
+			var groupPool = new Dictionary<
+				string,
+				(GroupType type, List<(int globalIndex, int localIndex, bool loopStart)> list)
+			>();
 			var spriteList = new List<AngeSprite>();
-			var metaList = new List<SpriteMeta>();
-			var sheetNames = new List<string>();
-			var sheetNamePool = new Dictionary<string, int>();
+			var atlases = new List<AtlasInfo>();
+			var atlasPool = new Dictionary<string, int>(); // Name, Index
+
+			// Load Sprites
 			for (int i = 0; i < flexSprites.Length; i++) {
 				var flex = flexSprites[i];
 				var uvBorder = flex.Border;
@@ -229,7 +220,7 @@ namespace AngeliaFramework {
 				uvBorder.y /= flex.Rect.height;
 				uvBorder.z /= flex.Rect.width;
 				uvBorder.w /= flex.Rect.height;
-				GetSpriteInfoFromName(
+				AngeUtil.GetSpriteInfoFromName(
 					flex.Name, out string realName, out string groupName, out int groupIndex, out var groupType,
 					out bool isTrigger, out string tagStr, out bool loopStart,
 					out string ruleStr, out bool noCollider, out int offsetZ,
@@ -251,10 +242,14 @@ namespace AngeliaFramework {
 				}
 				int globalID = realName.AngeHash();
 
-				if (!sheetNamePool.TryGetValue(flex.SheetName, out int sheetNameIndex)) {
-					sheetNameIndex = sheetNames.Count;
-					sheetNamePool.Add(flex.SheetName, sheetNameIndex);
-					sheetNames.Add(flex.SheetName);
+				if (!atlasPool.TryGetValue(flex.AtlasName, out int atlasIndex)) {
+					atlasIndex = atlases.Count;
+					atlasPool.Add(flex.AtlasName, atlasIndex);
+					atlases.Add(new AtlasInfo() {
+						Name = flex.AtlasName,
+						AtlasZ = flex.AtlasZ,
+						Type = flex.AtlasType,
+					});
 				}
 
 				var newSprite = new AngeSprite() {
@@ -265,75 +260,37 @@ namespace AngeliaFramework {
 					GlobalHeight = globalHeight,
 					UvBorder = uvBorder,// ldru
 					GlobalBorder = globalBorder,
-					MetaIndex = -1,
-					SortingZ = flex.SheetZ * 1024 + offsetZ,
+					SortingZ = flex.AtlasZ * 1024 + offsetZ,
+					LocalZ = offsetZ,
 					PivotX = pivotX ?? flex.AngePivot.x,
 					PivotY = pivotY ?? flex.AngePivot.y,
 					RealName = AngeUtil.GetBlockRealName(flex.Name),
-					GroupType = groupType,
-					SheetType = flex.SheetType,
-					SheetNameIndex = sheetNameIndex,
-				};
-
-				bool isOneway = AngeUtil.IsOnewayTag(tag);
-				if (isOneway) isTrigger = true;
-				spriteIDHash.TryAdd(newSprite.GlobalID);
-				spriteList.Add(newSprite);
-
-				var meta = new SpriteMeta() {
+					AtlasIndex = atlasIndex,
 					Tag = tag,
 					Rule = rule,
 					IsTrigger = isTrigger,
 				};
+				newSprite.Revert();
 
-				// Has Meta
-				if (
-					meta.Tag != 0 ||
-					meta.Rule != 0 ||
-					meta.IsTrigger ||
-					flex.SheetType != SheetType.General
-				) {
-					newSprite.MetaIndex = metaList.Count;
-					metaList.Add(meta);
-				}
+				spriteIDHash.TryAdd(newSprite.GlobalID);
+				spriteList.Add(newSprite);
 
 				// Group
-				groupHash.TryAdd(groupName);
-
-				// Chain
-				if (groupType != GroupType.General && groupIndex >= 0) {
+				if (groupIndex >= 0) {
 					int _index = groupIndex;
-					if (!chainPool.ContainsKey(groupName)) chainPool.Add(groupName, (groupType, new()));
-					chainPool[groupName].list.Add((spriteList.Count - 1, _index, loopStart));
+					if (!groupPool.ContainsKey(groupName)) {
+						groupPool.Add(groupName, (groupType, new()));
+					}
+					groupPool[groupName].list.Add((spriteList.Count - 1, _index, loopStart));
 				}
 
 			}
-			sheet.SheetNames = sheetNames.ToArray();
 
-			// Load Groups
-			var groups = new List<SpriteGroup>();
-			foreach (var gName in groupHash) {
-				var sprites = new List<int>();
-				for (int i = 0; ; i++) {
-					int id = $"{gName} {i}".AngeHash();
-					if (spriteIDHash.Contains(id)) {
-						sprites.Add(id);
-					} else break;
-				}
-				if (sprites.Count > 0) {
-					groups.Add(new SpriteGroup() {
-						ID = gName.AngeHash(),
-						SpriteIDs = sprites.ToArray(),
-					});
-				}
+			// Fix for Ani Group
+			foreach (var (_, (_, list)) in groupPool) {
+				list.Sort((a, b) => a.localIndex.CompareTo(b.localIndex));
 			}
-			sheet.Groups = groups.ToArray();
-
-			// Sort Chain
-			foreach (var (_, (_, list)) in chainPool) list.Sort((a, b) => a.localIndex.CompareTo(b.localIndex));
-
-			// Fix Duration
-			foreach (var (name, (gType, list)) in chainPool) {
+			foreach (var (name, (gType, list)) in groupPool) {
 				if (list.Count <= 1) continue;
 				if (gType != GroupType.Animated) continue;
 				for (int i = 0; i < list.Count - 1; i++) {
@@ -349,29 +306,32 @@ namespace AngeliaFramework {
 				}
 			}
 
-			// Final
-			var sChain = new AngeSpriteChain[chainPool.Count];
-			int index = 0;
-			foreach (var pair in chainPool) {
-				var chain = sChain[index] = new AngeSpriteChain() {
-					ID = pair.Key.AngeHash(),
-					Type = pair.Value.type,
-					Name = pair.Key,
-					LoopStart = -1,
-				};
-				var result = chain.Chain = new List<int>();
-				foreach (var (globalIndex, _, _loopStart) in pair.Value.list) {
-					if (_loopStart && chain.LoopStart < 0) {
-						chain.LoopStart = result.Count;
+			// Load Groups
+			var groups = new List<SpriteGroup>();
+			foreach (var (gName, (type, list)) in groupPool) {
+				var sprites = new List<int>();
+				int loopStart = 0;
+				bool isAni = type == GroupType.Animated;
+				for (int i = 0; i < list.Count; i++) {
+					int spIndex = list[i].globalIndex;
+					if (isAni && list[i].loopStart) {
+						loopStart = i;
 					}
-					result.Add(globalIndex);
+					sprites.Add(spriteList[spIndex].GlobalID);
 				}
-				if (chain.LoopStart < 0) chain.LoopStart = 0;
-				index++;
+				groups.Add(new SpriteGroup() {
+					ID = gName.AngeHash(),
+					SpriteIDs = sprites.ToArray(),
+					Type = type,
+					LoopStart = loopStart,
+				});
 			}
+
+			// Data
 			sheet.Sprites = spriteList.ToArray();
-			sheet.SpriteChains = sChain;
-			sheet.Metas = metaList.ToArray();
+			sheet.Groups = groups.ToArray();
+			sheet.AtlasInfo = atlases.ToArray();
+			sheet.Apply();
 
 			// Fill Summary
 			FillSummaryForSheet(sheet, textureWidth, textureHeight, texturePixels);
@@ -583,169 +543,6 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void GetSpriteInfoFromName (string name, out string realName, out string groupName, out int groupIndex, out GroupType groupType, out bool isTrigger, out string tag, out bool loopStart, out string rule, out bool noCollider, out int offsetZ, out int? pivotX, out int? pivotY) {
-			isTrigger = false;
-			tag = "";
-			rule = "";
-			loopStart = false;
-			noCollider = false;
-			offsetZ = 0;
-			pivotX = null;
-			pivotY = null;
-			groupType = GroupType.General;
-			const System.StringComparison OIC = System.StringComparison.OrdinalIgnoreCase;
-			int hashIndex = name.IndexOf('#');
-			if (hashIndex >= 0) {
-				var hashs = name[hashIndex..].Replace(" ", "").Split('#');
-				foreach (var hashTag in hashs) {
-
-					if (string.IsNullOrWhiteSpace(hashTag)) continue;
-
-					// Bool
-					if (hashTag.Equals("isTrigger", OIC)) {
-						isTrigger = true;
-						continue;
-					}
-
-					// Tag
-					if (hashTag.Equals("OnewayUp", OIC)) { tag = SpriteTag.ONEWAY_UP_STRING; continue; }
-					if (hashTag.Equals("OnewayDown", OIC)) { tag = SpriteTag.ONEWAY_DOWN_STRING; continue; }
-					if (hashTag.Equals("OnewayLeft", OIC)) { tag = SpriteTag.ONEWAY_LEFT_STRING; continue; }
-					if (hashTag.Equals("OnewayRight", OIC)) { tag = SpriteTag.ONEWAY_RIGHT_STRING; continue; }
-					if (hashTag.Equals("Climb", OIC)) { tag = SpriteTag.CLIMB_STRING; continue; }
-					if (hashTag.Equals("ClimbStable", OIC)) { tag = SpriteTag.CLIMB_STABLE_STRING; continue; }
-					if (hashTag.Equals("Quicksand", OIC)) { tag = SpriteTag.QUICKSAND_STRING; isTrigger = true; continue; }
-					if (hashTag.Equals("Water", OIC)) { tag = SpriteTag.WATER_STRING; isTrigger = true; continue; }
-					if (hashTag.Equals("Slip", OIC)) { tag = SpriteTag.SLIP_STRING; continue; }
-					if (hashTag.Equals("Slide", OIC)) { tag = SpriteTag.SLIDE_STRING; continue; }
-					if (hashTag.Equals("NoSlide", OIC)) { tag = SpriteTag.NO_SLIDE_STRING; continue; }
-					if (hashTag.Equals("GrabTop", OIC)) { tag = SpriteTag.GRAB_TOP_STRING; continue; }
-					if (hashTag.Equals("GrabSide", OIC)) { tag = SpriteTag.GRAB_SIDE_STRING; continue; }
-					if (hashTag.Equals("Grab", OIC)) { tag = SpriteTag.GRAB_STRING; continue; }
-					if (hashTag.Equals("ShowLimb", OIC)) { tag = SpriteTag.SHOW_LIMB_STRING; continue; }
-					if (hashTag.Equals("HideLimb", OIC)) { tag = SpriteTag.HIDE_LIMB_STRING; continue; }
-					if (hashTag.Equals("Damage", OIC)) { tag = SpriteTag.DAMAGE_STRING; continue; }
-					if (hashTag.Equals("ExplosiveDamage", OIC)) { tag = SpriteTag.DAMAGE_EXPLOSIVE_STRING; continue; }
-					if (hashTag.Equals("MagicalDamage", OIC)) { tag = SpriteTag.DAMAGE_MAGICAL_STRING; continue; }
-
-					if (hashTag.Equals("loopStart", OIC)) {
-						loopStart = true;
-						continue;
-					}
-
-					if (hashTag.Equals("noCollider", OIC) || hashTag.Equals("ignoreCollider", OIC)) {
-						noCollider = true;
-						continue;
-					}
-
-					// Bool-Group
-					if (hashTag.Equals("animated", OIC) || hashTag.Equals("ani", OIC)) {
-						groupType = GroupType.Animated;
-						continue;
-					}
-					if (hashTag.Equals("rule", OIC) || hashTag.Equals("rul", OIC)) {
-						groupType = GroupType.Rule;
-						continue;
-					}
-					if (hashTag.Equals("random", OIC) || hashTag.Equals("ran", OIC)) {
-						groupType = GroupType.Random;
-						continue;
-					}
-
-					// Int
-					if (hashTag.StartsWith("tag=", OIC)) {
-						tag = hashTag[4..];
-						continue;
-					}
-
-					if (hashTag.StartsWith("rule=", OIC)) {
-						rule = hashTag[5..];
-						groupType = GroupType.Rule;
-						continue;
-					}
-
-					if (hashTag.StartsWith("z=", OIC)) {
-						if (int.TryParse(hashTag[2..], out int _offsetZ)) {
-							offsetZ = _offsetZ;
-						}
-						continue;
-					}
-
-					if (hashTag.StartsWith("pivot", OIC)) {
-
-						switch (hashTag) {
-							case var _ when hashTag.StartsWith("pivotX=", OIC):
-								if (int.TryParse(hashTag[7..], out int _px)) pivotX = _px;
-								continue;
-							case var _ when hashTag.StartsWith("pivotY=", OIC):
-								if (int.TryParse(hashTag[7..], out int _py)) pivotY = _py;
-								continue;
-							case var _ when hashTag.StartsWith("pivot=bottomLeft", OIC):
-								pivotX = 0;
-								pivotY = 0;
-								continue;
-							case var _ when hashTag.StartsWith("pivot=bottomRight", OIC):
-								pivotX = 1000;
-								pivotY = 0;
-								continue;
-							case var _ when hashTag.StartsWith("pivot=bottom", OIC):
-								pivotX = 500;
-								pivotY = 0;
-								continue;
-							case var _ when hashTag.StartsWith("pivot=topLeft", OIC):
-								pivotX = 0;
-								pivotY = 1000;
-								continue;
-							case var _ when hashTag.StartsWith("pivot=topRight", OIC):
-								pivotX = 1000;
-								pivotY = 1000;
-								continue;
-							case var _ when hashTag.StartsWith("pivot=top", OIC):
-								pivotX = 500;
-								pivotY = 1000;
-								continue;
-							case var _ when hashTag.StartsWith("pivot=left", OIC):
-								pivotX = 0;
-								pivotY = 500;
-								continue;
-							case var _ when hashTag.StartsWith("pivot=right", OIC):
-								pivotX = 1000;
-								pivotY = 500;
-								continue;
-							case var _ when hashTag.StartsWith("pivot=center", OIC):
-							case var _ when hashTag.StartsWith("pivot=mid", OIC):
-							case var _ when hashTag.StartsWith("pivot=middle", OIC):
-								pivotX = 500;
-								pivotY = 500;
-								continue;
-						}
-					}
-
-					Game.LogWarning($"Unknown hash \"{hashTag}\" for {name}");
-
-				}
-				// Trim Name
-				name = name[..hashIndex];
-			}
-
-			// Name and Group
-			realName = name.TrimEnd(' ');
-			groupName = realName.TrimEnd_NumbersEmpty();
-			groupIndex = -1;
-			if (!string.IsNullOrEmpty(realName) && realName[^1] >= '0' && realName[^1] <= '9') {
-				string key = realName;
-				int endIndex = key.Length - 1;
-				while (endIndex >= 0) {
-					char c = key[endIndex];
-					if (c < '0' || c > '9') break;
-					endIndex--;
-				}
-				groupIndex = endIndex < realName.Length - 1 ? int.Parse(realName[(endIndex + 1)..]) : 0;
-			}
-
-		}
-
-
 		#endregion
 
 
@@ -754,7 +551,7 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private static void FillSummaryForSheet (SpriteSheet sheet, int textureWidth, int textureHeight, Byte4[] pixels) {
+		private static void FillSummaryForSheet (Sheet sheet, int textureWidth, int textureHeight, Byte4[] pixels) {
 
 			if (sheet == null) return;
 
@@ -769,22 +566,10 @@ namespace AngeliaFramework {
 				if (color.IsSame(Const.CLEAR)) continue;
 				pool.Add(sp.GlobalID, color);
 			}
-			foreach (var chain in sheet.SpriteChains) {
-				switch (chain.Type) {
-					case GroupType.Animated:
-						if (pool.ContainsKey(chain.ID)) continue;
-						if (chain.Chain != null && chain.Chain.Count > 0) {
-							int index = chain.Chain[0];
-							if (index < 0 || index >= sheet.Sprites.Length) break;
-							if (pool.TryGetValue(sheet.Sprites[index].GlobalID, out var _color)) {
-								pool.Add(chain.ID, _color);
-							}
-						}
-						break;
-					case GroupType.General:
-					case GroupType.Rule:
-					case GroupType.Random: break;
-					default: throw new System.NotImplementedException();
+			foreach (var group in sheet.Groups) {
+				if (group.Type == GroupType.Animated) {
+					if (pool.ContainsKey(group.ID) || group.Length == 0) continue;
+					pool.Add(group.ID, group[0].SummaryTint);
 				}
 			}
 
@@ -792,6 +577,7 @@ namespace AngeliaFramework {
 			for (int i = 0; i < sheet.Sprites.Length; i++) {
 				var sprite = sheet.Sprites[i];
 				sprite.SummaryTint = pool.TryGetValue(sprite.GlobalID, out var color) ? color : default;
+				sprite.SummaryTintInt = Util.ColorToInt(sprite.SummaryTint);
 			}
 
 			// Func

@@ -150,11 +150,11 @@ namespace AngeliaForUnity.Editor {
 				flexs[i] = new FlexSprite() {
 					Border = m.border.ToAngelia(),
 					Name = m.name,
-					SheetName = AseName,
+					AtlasName = AseName,
 					AngePivot = new Int2((int)(m.pivot.x * 1000f), (int)(m.pivot.y * 1000f)),
 					Rect = m.rect.ToAngelia(),
-					SheetType = sheetType,
-					SheetZ = sheetZ,
+					AtlasType = sheetType,
+					AtlasZ = sheetZ,
 				};
 			}
 			return flexs;

@@ -191,7 +191,7 @@ namespace AngeliaFramework {
 			CheckAltarIDs.Clear();
 
 			int spriteCount = CellRenderer.SpriteCount;
-			int chainCount = CellRenderer.ChainCount;
+			int chainCount = CellRenderer.GroupCount;
 
 			// Sprites
 			for (int i = 0; i < spriteCount; i++) {
@@ -202,12 +202,10 @@ namespace AngeliaFramework {
 			// Chains
 			for (int i = 0; i < chainCount; i++) {
 
-				var chain = CellRenderer.GetChainAt(i);
-				if (chain.Chain == null || chain.Chain.Count == 0) continue;
-				int index = chain.Chain[0];
-				if (index < 0 || index >= spriteCount) continue;
+				var chain = CellRenderer.GetGroupAt(i);
+				if (chain.Length == 0) continue;
 
-				var firstSprite = CellRenderer.GetSpriteAt(index);
+				var firstSprite = chain[0];
 				var pivot = Int2.zero;
 				pivot.x = firstSprite.PivotX;
 				pivot.y = firstSprite.PivotY;
@@ -215,21 +213,15 @@ namespace AngeliaFramework {
 
 				// Chain
 				var cIdList = new List<int>();
-				foreach (var cIndex in chain.Chain) {
-					if (cIndex >= 0 && cIndex < spriteCount) {
-						cIdList.Add(CellRenderer.GetSpriteAt(cIndex).GlobalID);
-					} else {
-						cIdList.Add(0);
-					}
+				foreach (var sprite in chain.Sprites) {
+					cIdList.Add(sprite.GlobalID);
 				}
 				IdChainPool.TryAdd(chain.ID, cIdList.ToArray());
 
 				// Reversed Chain
-				foreach (var _i in chain.Chain) {
-					if (_i < 0 || _i >= spriteCount) continue;
+				foreach (var sprite in chain.Sprites) {
 					ReversedChainPool.TryAdd(
-						CellRenderer.GetSpriteAt(_i).GlobalID,
-						chain.ID
+						sprite.GlobalID, chain.ID
 					);
 				}
 

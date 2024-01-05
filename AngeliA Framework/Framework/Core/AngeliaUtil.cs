@@ -151,6 +151,172 @@ namespace AngeliaFramework {
 		}
 
 
+		public static void GetSpriteInfoFromName (string name, out string realName, out string groupName, out int groupIndex, out GroupType groupType, out bool isTrigger, out string tag, out bool loopStart, out string rule, out bool noCollider, out int offsetZ, out int? pivotX, out int? pivotY) {
+			isTrigger = false;
+			tag = "";
+			rule = "";
+			loopStart = false;
+			noCollider = false;
+			offsetZ = 0;
+			pivotX = null;
+			pivotY = null;
+			groupType = GroupType.General;
+			const System.StringComparison OIC = System.StringComparison.OrdinalIgnoreCase;
+			int hashIndex = name.IndexOf('#');
+			if (hashIndex >= 0) {
+				var hashs = name[hashIndex..].Replace(" ", "").Split('#');
+				foreach (var hashTag in hashs) {
+
+					if (string.IsNullOrWhiteSpace(hashTag)) continue;
+
+					// Bool
+					if (hashTag.Equals("isTrigger", OIC)) {
+						isTrigger = true;
+						continue;
+					}
+
+					// Tag
+					if (hashTag.Equals("OnewayUp", OIC)) { tag = SpriteTag.ONEWAY_UP_STRING; continue; }
+					if (hashTag.Equals("OnewayDown", OIC)) { tag = SpriteTag.ONEWAY_DOWN_STRING; continue; }
+					if (hashTag.Equals("OnewayLeft", OIC)) { tag = SpriteTag.ONEWAY_LEFT_STRING; continue; }
+					if (hashTag.Equals("OnewayRight", OIC)) { tag = SpriteTag.ONEWAY_RIGHT_STRING; continue; }
+					if (hashTag.Equals("Climb", OIC)) { tag = SpriteTag.CLIMB_STRING; continue; }
+					if (hashTag.Equals("ClimbStable", OIC)) { tag = SpriteTag.CLIMB_STABLE_STRING; continue; }
+					if (hashTag.Equals("Quicksand", OIC)) { tag = SpriteTag.QUICKSAND_STRING; isTrigger = true; continue; }
+					if (hashTag.Equals("Water", OIC)) { tag = SpriteTag.WATER_STRING; isTrigger = true; continue; }
+					if (hashTag.Equals("Slip", OIC)) { tag = SpriteTag.SLIP_STRING; continue; }
+					if (hashTag.Equals("Slide", OIC)) { tag = SpriteTag.SLIDE_STRING; continue; }
+					if (hashTag.Equals("NoSlide", OIC)) { tag = SpriteTag.NO_SLIDE_STRING; continue; }
+					if (hashTag.Equals("GrabTop", OIC)) { tag = SpriteTag.GRAB_TOP_STRING; continue; }
+					if (hashTag.Equals("GrabSide", OIC)) { tag = SpriteTag.GRAB_SIDE_STRING; continue; }
+					if (hashTag.Equals("Grab", OIC)) { tag = SpriteTag.GRAB_STRING; continue; }
+					if (hashTag.Equals("ShowLimb", OIC)) { tag = SpriteTag.SHOW_LIMB_STRING; continue; }
+					if (hashTag.Equals("HideLimb", OIC)) { tag = SpriteTag.HIDE_LIMB_STRING; continue; }
+					if (hashTag.Equals("Damage", OIC)) { tag = SpriteTag.DAMAGE_STRING; continue; }
+					if (hashTag.Equals("ExplosiveDamage", OIC)) { tag = SpriteTag.DAMAGE_EXPLOSIVE_STRING; continue; }
+					if (hashTag.Equals("MagicalDamage", OIC)) { tag = SpriteTag.DAMAGE_MAGICAL_STRING; continue; }
+
+					if (hashTag.Equals("loopStart", OIC)) {
+						loopStart = true;
+						continue;
+					}
+
+					if (hashTag.Equals("noCollider", OIC) || hashTag.Equals("ignoreCollider", OIC)) {
+						noCollider = true;
+						continue;
+					}
+
+					// Bool-Group
+					if (hashTag.Equals("animated", OIC) || hashTag.Equals("ani", OIC)) {
+						groupType = GroupType.Animated;
+						continue;
+					}
+					if (hashTag.Equals("rule", OIC) || hashTag.Equals("rul", OIC)) {
+						groupType = GroupType.Rule;
+						continue;
+					}
+					if (hashTag.Equals("random", OIC) || hashTag.Equals("ran", OIC)) {
+						groupType = GroupType.Random;
+						continue;
+					}
+
+					// Int
+					if (hashTag.StartsWith("tag=", OIC)) {
+						tag = hashTag[4..];
+						continue;
+					}
+
+					if (hashTag.StartsWith("rule=", OIC)) {
+						rule = hashTag[5..];
+						groupType = GroupType.Rule;
+						continue;
+					}
+
+					if (hashTag.StartsWith("z=", OIC)) {
+						if (int.TryParse(hashTag[2..], out int _offsetZ)) {
+							offsetZ = _offsetZ;
+						}
+						continue;
+					}
+
+					if (hashTag.StartsWith("pivot", OIC)) {
+
+						switch (hashTag) {
+							case var _ when hashTag.StartsWith("pivotX=", OIC):
+								if (int.TryParse(hashTag[7..], out int _px)) pivotX = _px;
+								continue;
+							case var _ when hashTag.StartsWith("pivotY=", OIC):
+								if (int.TryParse(hashTag[7..], out int _py)) pivotY = _py;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=bottomLeft", OIC):
+								pivotX = 0;
+								pivotY = 0;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=bottomRight", OIC):
+								pivotX = 1000;
+								pivotY = 0;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=bottom", OIC):
+								pivotX = 500;
+								pivotY = 0;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=topLeft", OIC):
+								pivotX = 0;
+								pivotY = 1000;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=topRight", OIC):
+								pivotX = 1000;
+								pivotY = 1000;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=top", OIC):
+								pivotX = 500;
+								pivotY = 1000;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=left", OIC):
+								pivotX = 0;
+								pivotY = 500;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=right", OIC):
+								pivotX = 1000;
+								pivotY = 500;
+								continue;
+							case var _ when hashTag.StartsWith("pivot=center", OIC):
+							case var _ when hashTag.StartsWith("pivot=mid", OIC):
+							case var _ when hashTag.StartsWith("pivot=middle", OIC):
+								pivotX = 500;
+								pivotY = 500;
+								continue;
+						}
+					}
+
+					Game.LogWarning($"Unknown hash \"{hashTag}\" for {name}");
+
+				}
+				// Trim Name
+				name = name[..hashIndex];
+			}
+
+			// Oneway Always Trigger
+			if (!isTrigger && IsOnewayTag(tag.AngeHash())) isTrigger = true;
+
+			// Name and Group
+			realName = name.TrimEnd(' ');
+			groupName = realName.TrimEnd_NumbersEmpty();
+			groupIndex = -1;
+			if (!string.IsNullOrEmpty(realName) && realName[^1] >= '0' && realName[^1] <= '9') {
+				string key = realName;
+				int endIndex = key.Length - 1;
+				while (endIndex >= 0) {
+					char c = key[endIndex];
+					if (c < '0' || c > '9') break;
+					endIndex--;
+				}
+				groupIndex = endIndex < realName.Length - 1 ? int.Parse(realName[(endIndex + 1)..]) : 0;
+			}
+
+		}
+
+
 		// Random
 		public static int RandomInt (int min = int.MinValue, int max = int.MaxValue) => GlobalRandom.Next(min, max);
 		public static float RandomFloat01 () => (float)GlobalRandom.NextDouble();
@@ -350,7 +516,8 @@ namespace AngeliaFramework {
 			static void DrawGlitch (Cell cell, int offsetX, int offsetY, int scaleX, int scaleY, Byte4 color) {
 
 				var cursedCell = CellRenderer.Draw(Const.PIXEL, default, 0);
-				cursedCell.Index = cell.Index;
+				cursedCell.Sprite = cell.Sprite;
+				cursedCell.TextSprite = cell.TextSprite;
 				cursedCell.X = cell.X;
 				cursedCell.Y = cell.Y;
 				cursedCell.Z = cell.Z + 1;
@@ -411,12 +578,8 @@ namespace AngeliaFramework {
 			var builder = new StringBuilder();
 			for (int i = 0; i < groupLength; i++) {
 				if (CellRenderer.TryGetSpriteFromGroup(groupID, i, out var sp, false, true)) {
-					if (CellRenderer.TryGetMeta(sp.GlobalID, out var meta)) {
-						int ruleDigit = meta.Rule;
-						builder.Append(RuleDigitToString(ruleDigit));
-					} else {
-						builder.Append(RuleDigitToString(0));
-					}
+					int ruleDigit = sp.Rule;
+					builder.Append(RuleDigitToString(ruleDigit));
 				} else {
 					builder.Append(RULE_TILE_ERROR);
 				}

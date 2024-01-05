@@ -183,7 +183,7 @@ namespace AngeliaFramework {
 			if (SpriteIdHead != 0 && CellRenderer.TryGetSprite(SpriteIdHead, out var headSprite)) {
 				int scale = character.HandGrabScaleR;
 				if (climbing && !isAttacking) scale = -scale.Abs();
-				int rot = CellRenderer.TryGetMeta(headSprite.GlobalID, out var meta) && meta.IsTrigger ?
+				int rot = headSprite.IsTrigger ?
 					new Float2(point.x - headPos.x, point.y - headPos.y).GetRotation() : 0;
 				CellRenderer.Draw(
 					headSprite.GlobalID, headPos.x, headPos.y,

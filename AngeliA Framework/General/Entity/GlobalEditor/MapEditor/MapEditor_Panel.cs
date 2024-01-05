@@ -20,7 +20,7 @@ namespace AngeliaFramework {
 			public string Name = "";
 			public GroupType GroupType = GroupType.General;
 			public BlockType BlockType { get; set; } = BlockType.Entity;
-			public AngeSpriteChain Chain = null;
+			public SpriteGroup Group = null;
 		}
 
 
@@ -99,93 +99,81 @@ namespace AngeliaFramework {
 			PaletteGroups.Clear();
 			PalettePool.Clear();
 			int spriteCount = CellRenderer.SpriteCount;
-			int chainCount = CellRenderer.ChainCount;
+			int groupCount = CellRenderer.GroupCount;
+			var palGroupPool = new Dictionary<string, PaletteGroup>();
 
-			// Fill Blocks
-			var groupPool = new Dictionary<string, PaletteGroup>();
+			// For all Sprite Groups
+			for (int index = 0; index < groupCount; index++) {
 
-			// Chain
-			for (int index = 0; index < chainCount; index++) {
+				var chain = CellRenderer.GetGroupAt(index);
+				var firstSprite = chain.Sprites[0];
+				var chainType = chain.Type;
+				var atlasType = firstSprite.Atlas.Type;
+				if (atlasType != AtlasType.Background && atlasType != AtlasType.Level) continue;
+				if (chainType == GroupType.General) continue;
+				if (!SpritePool.TryGetValue(firstSprite.GlobalID, out var sprite)) continue;
 
-				var chain = CellRenderer.GetChainAt(index);
-				var sp = CellRenderer.GetSpriteAt(chain.Chain[0]);
-
-				switch (chain.Type) {
-					default:
-						throw new System.NotImplementedException();
-					case GroupType.Rule:
-					case GroupType.Random:
-					case GroupType.Animated:
-						if (!SpritePool.TryGetValue(sp.GlobalID, out var sprite)) break;
-						CellRenderer.TryGetMeta(sp.GlobalID, out var meta);
-						if (meta == null || (sprite.SheetType != SheetType.Background && sprite.SheetType != SheetType.Level)) break;
-						string sheetName = CellRenderer.GetSheetName(sprite);
-						if (!groupPool.TryGetValue(sheetName, out var group)) {
-							groupPool.Add(sheetName, group = new PaletteGroup() {
-								Items = new List<PaletteItem>(),
-								GroupName = sheetName,
-								CoverID = $"PaletteCover.{sheetName}".AngeHash(),
-								DisplayNameID = $"Palette.{sheetName}".AngeHash(),
-							});
-						}
-						group.Items.Add(new PaletteItem() {
-							ID = chain.ID,
-							ArtworkID =
-								chain.Type == GroupType.Animated ? chain.ID :
-								chain.Count > 0 && chain[0] < spriteCount && chain[0] >= 0 ? CellRenderer.GetSpriteAt(chain[0]).GlobalID :
-							0,
-							Name = Util.GetDisplayName(chain.Name),
-							GroupType = chain.Type,
-							BlockType = sprite.SheetType == SheetType.Level ? BlockType.Level : BlockType.Background,
-							Chain = chain,
-						});
-						break;
+				string atlasName = sprite.Atlas.Name;
+				if (!palGroupPool.TryGetValue(atlasName, out var palGroup)) {
+					palGroupPool.Add(atlasName, palGroup = new PaletteGroup() {
+						Items = new List<PaletteItem>(),
+						GroupName = atlasName,
+						CoverID = $"PaletteCover.{atlasName}".AngeHash(),
+						DisplayNameID = $"Palette.{atlasName}".AngeHash(),
+					});
 				}
+				palGroup.Items.Add(new PaletteItem() {
+					ID = chain.ID,
+					ArtworkID = chain.Type == GroupType.Animated ? chain.ID : firstSprite.GlobalID,
+					Name = Util.GetDisplayName(firstSprite.RealName),
+					GroupType = chain.Type,
+					BlockType = atlasType == AtlasType.Level ? BlockType.Level : BlockType.Background,
+					Group = chain,
+				});
+
 			}
 
-			// General
+			// For all Sprites
 			for (int index = 0; index < spriteCount; index++) {
 				var sp = CellRenderer.GetSpriteAt(index);
 				int id = sp.GlobalID;
-				if (SpritePool.TryGetValue(id, out var sprite) && sprite.GroupType != GroupType.General) continue;
-				CellRenderer.TryGetMeta(sp.GlobalID, out var meta);
-				if (meta == null || (sprite.SheetType != SheetType.Background && sprite.SheetType != SheetType.Level)) continue;
-				string sheetName = CellRenderer.GetSheetName(sprite);
-				if (!groupPool.TryGetValue(sheetName, out var group)) {
-					groupPool.Add(sheetName, group = new PaletteGroup() {
+				var atlasType = sp.Atlas.Type;
+				if (sp.GroupType != GroupType.General) continue;
+				if (atlasType != AtlasType.Background && atlasType != AtlasType.Level) continue;
+				string atlasName = sp.Atlas.Name;
+				if (!palGroupPool.TryGetValue(atlasName, out var group)) {
+					palGroupPool.Add(atlasName, group = new PaletteGroup() {
 						Items = new List<PaletteItem>(),
-						GroupName = sheetName,
-						CoverID = $"PaletteCover.{sheetName}".AngeHash(),
-						DisplayNameID = $"Palette.{sheetName}".AngeHash(),
+						GroupName = atlasName,
+						CoverID = $"PaletteCover.{atlasName}".AngeHash(),
+						DisplayNameID = $"Palette.{atlasName}".AngeHash(),
 					});
 				}
 				group.Items.Add(new PaletteItem() {
 					ID = sp.GlobalID,
 					ArtworkID = sp.GlobalID,
-					Name = Util.GetDisplayName(sprite.RealName),
+					Name = Util.GetDisplayName(sp.RealName),
 					GroupType = GroupType.General,
-					BlockType = sprite.SheetType == SheetType.Level ? BlockType.Level : BlockType.Background,
-					Chain = null,
+					BlockType = atlasType == AtlasType.Level ? BlockType.Level : BlockType.Background,
+					Group = null,
 				});
 			}
 
-			foreach (var pair in groupPool) {
+			foreach (var pair in palGroupPool) {
 				pair.Value.Items.Sort((a, b) => a.Name.CompareTo(b.Name));
 				PaletteGroups.Add(pair.Value);
 			}
 
 			// Fill IMapEditorItem
-			var entityGroupPool = new Dictionary<string, PaletteGroup> {
-				{
-					"Entity",
-					new PaletteGroup() {
-						Items = new List<PaletteItem>(),
-						GroupName = "Entity",
-						DisplayNameID = "Palette.Entity".AngeHash(),
-						CoverID = "PaletteCover.Entity".AngeHash(),
-					}
+			var entityGroupPool = new Dictionary<string, PaletteGroup> {{
+				"Entity",
+				new PaletteGroup() {
+					Items = new List<PaletteItem>(),
+					GroupName = "Entity",
+					DisplayNameID = "Palette.Entity".AngeHash(),
+					CoverID = "PaletteCover.Entity".AngeHash(),
 				}
-			};
+			}};
 			foreach (var type in typeof(IMapItem).AllClassImplemented()) {
 
 				// Check Exclude Attr
@@ -218,7 +206,7 @@ namespace AngeliaFramework {
 					GroupType = GroupType.General,
 					BlockType = Stage.IsValidEntityID(typeId) ? BlockType.Entity : BlockType.Element,
 					Name = Util.GetDisplayName(type.Name.StartsWith('e') || type.Name.StartsWith('i') ? type.Name[1..] : type.Name),
-					Chain = null,
+					Group = null,
 				});
 			}
 			foreach (var (_, group) in entityGroupPool) {
@@ -547,12 +535,11 @@ namespace AngeliaFramework {
 				);
 
 				// Cover
-				if (CellRenderer.TryGetSprite(pal.ArtworkID, out var sprite)) {
+				if (CellRenderer.TryGetSpriteFromGroup(pal.ArtworkID, 0, out var sprite, false, true)) {
 					CellRenderer.Draw(
-						pal.ArtworkID,
+						sprite.GlobalID,
 						rect.Shrink(COVER_SHRINK).Fit(sprite, sprite.PivotX, sprite.PivotY),
 						PANEL_Z - 10
-
 					);
 				}
 

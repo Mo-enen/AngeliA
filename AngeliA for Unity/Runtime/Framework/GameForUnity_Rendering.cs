@@ -172,15 +172,14 @@ namespace AngeliaForUnity {
 			float shiftR;
 			float shiftD;
 			float shiftU;
+
 			var layer = isTextLayer ? RenderingTextLayers[layerIndex] : RenderingLayers[layerIndex];
 
 			for (int i = 0; i < cellCount; i++) {
 
 				var cell = cells[i];
-
-				if (cell.Index < 0) continue;
-				int indexCount = isTextLayer ? CellRenderer.GetCharSpriteCount(layerIndex) : CellRenderer.SpriteCount;
-				if (cell.Index >= indexCount) continue;
+				if (isTextLayer && cell.TextSprite == null) continue;
+				if (!isTextLayer && cell.Sprite == null) continue;
 
 				bool shifted = !cell.Shift.IsZero;
 				if (shifted) {
@@ -256,7 +255,7 @@ namespace AngeliaForUnity {
 
 				// UV
 				if (!isTextLayer) {
-					var aSprite = CellRenderer.GetSpriteAt(cell.Index);
+					var aSprite = cell.Sprite;
 					if (cell.BorderSide == Alignment.Full) {
 						// Normal
 						uv0 = aSprite.UvBottomLeft;
@@ -273,7 +272,7 @@ namespace AngeliaForUnity {
 					}
 				} else {
 					// For Text
-					var tSprite = CellRenderer.GetCharSprite(layerIndex, cell.Index);
+					var tSprite = cell.TextSprite;
 					uv0 = tSprite.UvBottomLeft;
 					uv1 = tSprite.UvTopLeft;
 					uv2 = tSprite.UvTopRight;
@@ -437,7 +436,7 @@ namespace AngeliaForUnity {
 
 		protected override int _GetFontSize (int index) => Fonts[index].fontSize;
 
-		protected override CellRenderer.CharSprite _FillCharSprite (int layerIndex, char c, int textSize, CellRenderer.CharSprite charSprite, out bool filled) {
+		protected override CharSprite _FillCharSprite (int layerIndex, char c, int textSize, CharSprite charSprite, out bool filled) {
 			var font = Fonts[layerIndex];
 			if (font.GetCharacterInfo(c, out var info, textSize)) {
 				float size = info.size == 0 ? textSize : info.size;

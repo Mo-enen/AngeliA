@@ -198,8 +198,8 @@ namespace AngeliaFramework {
 						// Paint
 						if (
 							SelectingPaletteItem.GroupType == GroupType.Random &&
-							SelectingPaletteItem.Chain != null &&
-							IdChainPool.TryGetValue(SelectingPaletteItem.Chain.ID, out var idChain) &&
+							SelectingPaletteItem.Group != null &&
+							IdChainPool.TryGetValue(SelectingPaletteItem.Group.ID, out var idChain) &&
 							idChain.Length > 0
 						) {
 							// Redirect for Random

@@ -151,11 +151,15 @@ namespace AngeliaFramework {
 		public readonly BuffBool RepeatAttackWhenHolding = new(false);
 		public readonly BuffBool LockFacingOnAttack = new(false);
 
-		public BuffInt CurrentSpeedLoseOnAttack =>
-			IsGrounded && IsWalking ? WalkingSpeedLoseOnAttack :
-			IsGrounded && IsRunning ? RunningSpeedLoseOnAttack :
-			DefaultSpeedLoseOnAttack;
+		public BuffInt CurrentSpeedLoseOnAttack => MovementState switch {
+			CharacterMovementState.Walk => WalkingSpeedLoseOnAttack,
+			CharacterMovementState.Run => RunningSpeedLoseOnAttack,
+			CharacterMovementState.JumpDown => AirSpeedLoseOnAttack,
+			CharacterMovementState.JumpUp => AirSpeedLoseOnAttack,
+			_ => DefaultSpeedLoseOnAttack,
+		};
 		public readonly BuffInt DefaultSpeedLoseOnAttack = new(0);
+		public readonly BuffInt AirSpeedLoseOnAttack = new(1000);
 		public readonly BuffInt WalkingSpeedLoseOnAttack = new(0);
 		public readonly BuffInt RunningSpeedLoseOnAttack = new(0);
 

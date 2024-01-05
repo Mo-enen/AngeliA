@@ -159,8 +159,8 @@ namespace AngeliaFramework {
 		internal static int GetFontSize (int index) => Instance._GetFontSize(index);
 		protected abstract int _GetFontSize (int index);
 
-		internal static CellRenderer.CharSprite FillCharSprite (int layerIndex, char c, int textSize, CellRenderer.CharSprite charSprite, out bool filled) => Instance._FillCharSprite(layerIndex, c, textSize, charSprite, out filled);
-		protected abstract CellRenderer.CharSprite _FillCharSprite (int layerIndex, char c, int textSize, CellRenderer.CharSprite charSprite, out bool filled);
+		internal static CharSprite FillCharSprite (int layerIndex, char c, int textSize, CharSprite charSprite, out bool filled) => Instance._FillCharSprite(layerIndex, c, textSize, charSprite, out filled);
+		protected abstract CharSprite _FillCharSprite (int layerIndex, char c, int textSize, CharSprite charSprite, out bool filled);
 
 		internal static void RequestStringForFont (int layerIndex, int textSize, string content) => Instance._RequestStringForFont(layerIndex, textSize, content);
 		protected abstract void _RequestStringForFont (int layerIndex, int textSize, string content);

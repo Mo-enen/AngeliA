@@ -55,7 +55,7 @@ namespace AngeliaForUnity.Editor {
 				// Check Sheet not Exist
 				if (
 					!Util.FolderExists(AngePath.SheetRoot) ||
-					!Util.FileExists(Util.CombinePaths(AngePath.SheetRoot, $"{nameof(SpriteSheet)}.json"))
+					!Util.FileExists(Util.CombinePaths(AngePath.SheetRoot, $"{nameof(Sheet)}.json"))
 				) {
 					goto _Refresh_;
 				}
@@ -142,7 +142,6 @@ namespace AngeliaForUnity.Editor {
 					var sheet = UniverseGenerator.CreateSpriteSheet(sheetTexturePixels, textureWidth, textureHeight, flexSprites);
 					if (sheet != null) {
 						JsonUtil.SaveJson(sheet, AngePath.SheetRoot);
-						Version.GrowVersion(AngePath.SheetRoot);
 					}
 
 					// Save Texture to File
