@@ -203,17 +203,20 @@ namespace AngeliaFramework {
 		public static float CameraRestrictionRate { get; private set; } = 1f;
 		public static int LastDrawnID { get; private set; } = 0;
 		public static int LayerCount => Layers.Length;
-		public static int SpriteCount => Sheet.Sprites.Length;
-		public static int GroupCount => Sheet.Groups.Length;
+		public static int SpriteCount => Sprites.Length;
+		public static int GroupCount => Groups.Length;
 		public static int TextLayerCount => TextLayers.Length;
 		public static int CurrentLayerIndex { get; private set; } = 0;
 		public static int CurrentTextLayerIndex { get; private set; } = 0;
 		public static bool TextReady => TextLayers.Length > 0;
 
 		// Data
+		private static readonly Dictionary<int, AngeSprite> SpritePool = new();
+		private static readonly Dictionary<int, SpriteGroup> GroupPool = new();
+		private static AngeSprite[] Sprites = null;
+		private static SpriteGroup[] Groups = null;
 		private static readonly Cell[] Last9SlicedCells = new Cell[9];
 		private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
-		private static readonly Sheet Sheet = new();
 		private static TextLayer[] TextLayers = new TextLayer[0];
 		private static bool IsDrawing = false;
 
@@ -231,8 +234,24 @@ namespace AngeliaFramework {
 		internal static void Initialize () {
 
 			// Load Sheet
-			Sheet.Clear();
-			JsonUtil.OverrideJson(AngePath.SheetRoot, Sheet);
+			SpritePool.Clear();
+			GroupPool.Clear();
+			var sheet = new Sheet();
+			sheet.LoadFromDisk(AngePath.SheetFilePath);
+			Sprites = sheet.Sprites;
+			Groups = sheet.Groups;
+
+			// Add Sprites
+			for (int i = 0; i < sheet.Sprites.Length; i++) {
+				var sp = sheet.Sprites[i];
+				SpritePool.TryAdd(sp.GlobalID, sheet.Sprites[i]);
+			}
+
+			// Add Sprite Groups
+			for (int i = 0; i < sheet.Groups.Length; i++) {
+				var group = sheet.Groups[i];
+				GroupPool.TryAdd(group.ID, group);
+			}
 
 			// Create Layers
 			for (int i = 0; i < RenderLayer.COUNT; i++) {
@@ -692,7 +711,7 @@ namespace AngeliaFramework {
 		public static Cell DrawAnimation (int chainID, IRect globalRect, int frame, Byte4 color, int loopStart = int.MinValue) => DrawAnimation(chainID, globalRect.x, globalRect.y, 0, 0, 0, globalRect.width, globalRect.height, frame, color, loopStart);
 		public static Cell DrawAnimation (int chainID, int x, int y, int width, int height, int frame, Byte4 color, int loopStart = int.MinValue) => DrawAnimation(chainID, x, y, 0, 0, 0, width, height, frame, color, loopStart);
 		public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, Byte4 color, int loopStart = int.MinValue) {
-			if (!Sheet.GroupPool.TryGetValue(chainID, out var group)) return EMPTY_CELL;
+			if (!GroupPool.TryGetValue(chainID, out var group)) return EMPTY_CELL;
 			int localFrame = GetAnimationFrame(frame, group.Length, loopStart == int.MinValue ? group.LoopStart : loopStart);
 			var sprite = group[localFrame];
 			return Draw(sprite.GlobalID, x, y, pivotX, pivotY, rotation, width, height, color);
@@ -714,8 +733,8 @@ namespace AngeliaFramework {
 
 		// Sprite Data
 		public static bool TryGetSprite (int globalID, out AngeSprite sprite, bool ignoreAnimation = false) {
-			if (Sheet.SpritePool.TryGetValue(globalID, out sprite)) return true;
-			if (!ignoreAnimation && Sheet.GroupPool.TryGetValue(globalID, out var group) && group.Type == GroupType.Animated) {
+			if (SpritePool.TryGetValue(globalID, out sprite)) return true;
+			if (!ignoreAnimation && GroupPool.TryGetValue(globalID, out var group) && group.Type == GroupType.Animated) {
 				int localFrame = GetAnimationFrame(Game.GlobalFrame, group.Length, group.LoopStart);
 				sprite = group[localFrame];
 				return true;
@@ -729,7 +748,7 @@ namespace AngeliaFramework {
 
 
 		public static bool HasSpriteGroup (int groupID, out int groupLength) {
-			if (Sheet.GroupPool.TryGetValue(groupID, out var values)) {
+			if (GroupPool.TryGetValue(groupID, out var values)) {
 				groupLength = values.Length;
 				return true;
 			} else {
@@ -740,7 +759,7 @@ namespace AngeliaFramework {
 
 
 		public static bool TryGetSpriteFromGroup (int groupID, int index, out AngeSprite sprite, bool loopIndex = true, bool clampIndex = true) {
-			if (Sheet.GroupPool.TryGetValue(groupID, out var sprites)) {
+			if (GroupPool.TryGetValue(groupID, out var sprites)) {
 				if (loopIndex) index = index.UMod(sprites.Length);
 				if (clampIndex) index = index.Clamp(0, sprites.Length - 1);
 				if (index >= 0 && index < sprites.Length) {
@@ -754,13 +773,13 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool HasSprite (int globalID) => Sheet.SpritePool.ContainsKey(globalID);
+		public static bool HasSprite (int globalID) => SpritePool.ContainsKey(globalID);
 
 
-		public static AngeSprite GetSpriteAt (int index) => index >= 0 && index < Sheet.Sprites.Length ? Sheet.Sprites[index] : null;
+		public static AngeSprite GetSpriteAt (int index) => index >= 0 && index < Sprites.Length ? Sprites[index] : null;
 
 
-		public static SpriteGroup GetGroupAt (int index) => index >= 0 && index < Sheet.Groups.Length ? Sheet.Groups[index] : null;
+		public static SpriteGroup GetGroupAt (int index) => index >= 0 && index < Groups.Length ? Groups[index] : null;
 
 
 		// Misc

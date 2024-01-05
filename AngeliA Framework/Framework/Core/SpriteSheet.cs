@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.IO;
+using System.Text;
 
 
 namespace AngeliaFramework {
@@ -22,204 +23,439 @@ namespace AngeliaFramework {
 
 
 
-	[JsonObject(MemberSerialization.OptIn)]
 	public class AngeSprite {
+
 		const float UV_SCALE = 10000000f;
+		private static readonly StringBuilder CacheBuilder = new(256);
+
 		public int GlobalID;
+		public string RealName;
+		public int GlobalWidth;
+		public int GlobalHeight;
+		public int PivotX;
+		public int PivotY;
 		public int SortingZ;
-		public FRect UvRect;
-		public Float2 BottomRight;
-		public Float2 TopLeft;
-		public Byte4 SummaryTint;
 		public Int4 GlobalBorder;
-		public Float4 UvBorder; // xyzw => ldru
+
+		public FRect UvRect;
+		public Float2 UvBottomRight;
+		public Float2 UvTopLeft;
 		public Float2 UvBottomLeft;
 		public Float2 UvTopRight;
+		public Float4 UvBorder; // xyzw => ldru
+
+		public int AtlasIndex;
 		public AtlasInfo Atlas;
-		public GroupType GroupType;
+		public Byte4 SummaryTint;
+		public GroupType? GroupType;
 		public bool IsTrigger;
-		[JsonProperty("a")] public int GlobalWidth;
-		[JsonProperty("b")] public int GlobalHeight;
-		[JsonProperty("c")] public int LocalZ;
-		[JsonProperty("d")] public int PivotX;
-		[JsonProperty("e")] public int PivotY;
-		[JsonProperty("f")] public int IsTriggerInt;
-		[JsonProperty("g")] public int SummaryTintInt;
-		[JsonProperty("h")] public int GlobalBorderL;
-		[JsonProperty("i")] public int GlobalBorderR;
-		[JsonProperty("j")] public int GlobalBorderD;
-		[JsonProperty("k")] public int GlobalBorderU;
-		[JsonProperty("l")] public int UvBorderL;
-		[JsonProperty("m")] public int UvBorderR;
-		[JsonProperty("n")] public int UvBorderD;
-		[JsonProperty("o")] public int UvBorderU;
-		[JsonProperty("p")] public int UvBottomLeftL;
-		[JsonProperty("q")] public int UvBottomLeftD;
-		[JsonProperty("r")] public int UvTopRightR;
-		[JsonProperty("s")] public int UvTopRightU;
-		[JsonProperty("t")] public string RealName;
-		[JsonProperty("u")] public int AtlasIndex;
-		[JsonProperty("v")] public int Rule;
-		[JsonProperty("w")] public int Tag;
+		public int Rule;
+		public int Tag;
 
-		public void Apply () {
-			GlobalID = RealName.AngeHash();
-			SortingZ = Atlas.AtlasZ * 1024 + LocalZ;
-			UvRect = FRect.MinMaxRect(UvBottomLeftL / UV_SCALE, UvBottomLeftD / UV_SCALE, UvTopRightR / UV_SCALE, UvTopRightU / UV_SCALE);
-			BottomRight = new(UvTopRightR / UV_SCALE, UvBottomLeftD / UV_SCALE);
-			TopLeft = new(UvBottomLeftL / UV_SCALE, UvTopRightU / UV_SCALE);
-			UvBorder = new(UvBorderL / UV_SCALE, UvBorderD / UV_SCALE, UvBorderR / UV_SCALE, UvBorderU / UV_SCALE);
-			UvBottomLeft = new(UvBottomLeftL / UV_SCALE, UvBottomLeftD / UV_SCALE);
-			UvTopRight = new(UvTopRightR / UV_SCALE, UvTopRightU / UV_SCALE);
-			SummaryTint = Util.IntToColor(SummaryTintInt);
-			GlobalBorder = new(GlobalBorderL, GlobalBorderR, GlobalBorderD, GlobalBorderU);
-			IsTrigger = IsTriggerInt == 1;
+		public void LoadFromBinary_v0 (BinaryReader reader) {
+			uint byteLen = reader.ReadUInt32();
+			long endPos = reader.BaseStream.Position + byteLen;
+			try {
+				// Name
+				int nameLen = reader.ReadByte();
+				CacheBuilder.Clear();
+				for (int i = 0; i < nameLen; i++) {
+					CacheBuilder.Append((char)reader.ReadByte());
+				}
+				RealName = CacheBuilder.ToString();
+
+				// ID
+				GlobalID = RealName.AngeHash();
+
+				// Size
+				GlobalWidth = reader.ReadUInt16();
+				GlobalHeight = reader.ReadUInt16();
+
+				// Pivot
+				PivotX = reader.ReadInt16();
+				PivotY = reader.ReadInt16();
+
+				// Sorting Z
+				SortingZ = reader.ReadInt32();
+
+				// Global Border
+				GlobalBorder = new Int4(
+					reader.ReadUInt16(),
+					reader.ReadUInt16(),
+					reader.ReadUInt16(),
+					reader.ReadUInt16()
+				);
+
+				// UV
+				uint uvMinX = reader.ReadUInt32();
+				uint uvMinY = reader.ReadUInt32();
+				uint uvMaxX = reader.ReadUInt32();
+				uint uvMaxY = reader.ReadUInt32();
+				uint uvBorderL = reader.ReadUInt32();
+				uint uvBorderR = reader.ReadUInt32();
+				uint uvBorderD = reader.ReadUInt32();
+				uint uvBorderU = reader.ReadUInt32();
+
+				UvRect = FRect.MinMaxRect(
+					uvMinX / UV_SCALE, uvMinY / UV_SCALE,
+					uvMaxX / UV_SCALE, uvMaxY / UV_SCALE
+				);
+				UvBottomRight = new(uvMaxX / UV_SCALE, uvMinY / UV_SCALE);
+				UvTopLeft = new(uvMinX / UV_SCALE, uvMaxY / UV_SCALE);
+				UvBottomLeft = new(uvMinX / UV_SCALE, uvMinY / UV_SCALE);
+				UvTopRight = new(uvMaxX / UV_SCALE, uvMaxY / UV_SCALE);
+				UvBorder = new(uvBorderL / UV_SCALE, uvBorderD / UV_SCALE, uvBorderR / UV_SCALE, uvBorderU / UV_SCALE);
+
+				// Atlas Index
+				AtlasIndex = reader.ReadByte();
+
+				// Summary Tint
+				SummaryTint = Util.IntToColor(reader.ReadInt32());
+
+				// IsTrigger
+				IsTrigger = reader.ReadByte() == 1;
+
+				// Rule
+				Rule = reader.ReadInt32();
+
+				// Tag
+				Tag = reader.ReadInt32();
+
+				// Group Type
+				GroupType = null;
+
+			} catch (System.Exception ex) { Game.LogException(ex); }
+			reader.BaseStream.Position = endPos;
 		}
 
-		public void Revert () {
-			UvBottomLeftD = (int)(UvBottomLeft.y * UV_SCALE);
-			UvBottomLeftL = (int)(UvBottomLeft.x * UV_SCALE);
-			UvTopRightU = (int)(UvTopRight.y * UV_SCALE);
-			UvTopRightR = (int)(UvTopRight.x * UV_SCALE);
-			UvBorderL = (int)(UvBorder.x * UV_SCALE);
-			UvBorderR = (int)(UvBorder.z * UV_SCALE);
-			UvBorderD = (int)(UvBorder.y * UV_SCALE);
-			UvBorderU = (int)(UvBorder.w * UV_SCALE);
-			SummaryTintInt = Util.ColorToInt(SummaryTint);
-			GlobalBorderL = GlobalBorder.left;
-			GlobalBorderR = GlobalBorder.right;
-			GlobalBorderD = GlobalBorder.down;
-			GlobalBorderU = GlobalBorder.up;
-			IsTriggerInt = IsTrigger ? 1 : 0;
-		}
+		public void SaveToBinary_v0 (BinaryWriter writer) {
+			long markPos = writer.BaseStream.Position;
+			writer.Write((uint)0);
+			long startPos = writer.BaseStream.Position;
+			try {
 
-		public IRect GetTextureRect (int tWidth, int tHeight) => new(
-			(UvBottomLeft.x * tWidth).RoundToInt(),
-			(UvBottomLeft.y * tHeight).RoundToInt(),
-			((UvTopRight.x - UvBottomLeft.x) * tWidth).RoundToInt(),
-			((UvTopRight.y - UvBottomLeft.y) * tHeight).RoundToInt()
-		);
+				// Name
+				int len = RealName.Length.Clamp(0, 255);
+				writer.Write((byte)len);
+				for (int i = 0; i < len; i++) {
+					writer.Write((byte)RealName[i]);
+				}
 
-		public void GetSlicedUvBorder (Alignment alignment, out Float2 bl, out Float2 br, out Float2 tl, out Float2 tr) {
-			bl = UvBottomLeft;
-			br = BottomRight;
-			tl = TopLeft;
-			tr = UvTopRight;
-			// Y
-			switch (alignment) {
-				case Alignment.TopLeft:
-				case Alignment.TopMid:
-				case Alignment.TopRight:
-					bl.y = br.y = Util.LerpUnclamped(TopLeft.y, UvBottomLeft.y, UvBorder.w);
-					break;
-				case Alignment.MidLeft:
-				case Alignment.MidMid:
-				case Alignment.MidRight:
-					tl.y = tr.y = Util.LerpUnclamped(TopLeft.y, UvBottomLeft.y, UvBorder.w);
-					bl.y = br.y = Util.LerpUnclamped(UvBottomLeft.y, TopLeft.y, UvBorder.y);
-					break;
-				case Alignment.BottomLeft:
-				case Alignment.BottomMid:
-				case Alignment.BottomRight:
-					tl.y = tr.y = Util.LerpUnclamped(UvBottomLeft.y, TopLeft.y, UvBorder.y);
-					break;
-			}
-			// X
-			switch (alignment) {
-				case Alignment.TopLeft:
-				case Alignment.MidLeft:
-				case Alignment.BottomLeft:
-					br.x = tr.x = Util.LerpUnclamped(UvBottomLeft.x, BottomRight.x, UvBorder.x);
-					break;
-				case Alignment.TopMid:
-				case Alignment.MidMid:
-				case Alignment.BottomMid:
-					br.x = tr.x = Util.LerpUnclamped(BottomRight.x, UvBottomLeft.x, UvBorder.z);
-					bl.x = tl.x = Util.LerpUnclamped(UvBottomLeft.x, BottomRight.x, UvBorder.x);
-					break;
-				case Alignment.TopRight:
-				case Alignment.MidRight:
-				case Alignment.BottomRight:
-					bl.x = tl.x = Util.LerpUnclamped(BottomRight.x, UvBottomLeft.x, UvBorder.z);
-					break;
-			}
+				// Size
+				writer.Write((ushort)GlobalWidth);
+				writer.Write((ushort)GlobalHeight);
+
+				// Pivot
+				writer.Write((short)PivotX);
+				writer.Write((short)PivotY);
+
+				// Sorting Z
+				writer.Write((int)SortingZ);
+
+				// Global Border
+				writer.Write((ushort)GlobalBorder.x);
+				writer.Write((ushort)GlobalBorder.y);
+				writer.Write((ushort)GlobalBorder.z);
+				writer.Write((ushort)GlobalBorder.w);
+
+				// UV
+				writer.Write((uint)(UvBottomLeft.x * UV_SCALE).RoundToInt());
+				writer.Write((uint)(UvBottomLeft.y * UV_SCALE).RoundToInt());
+				writer.Write((uint)(UvTopRight.x * UV_SCALE).RoundToInt());
+				writer.Write((uint)(UvTopRight.y * UV_SCALE).RoundToInt());
+				writer.Write((uint)(UvBorder.x * UV_SCALE).RoundToInt());
+				writer.Write((uint)(UvBorder.z * UV_SCALE).RoundToInt());
+				writer.Write((uint)(UvBorder.y * UV_SCALE).RoundToInt());
+				writer.Write((uint)(UvBorder.w * UV_SCALE).RoundToInt());
+
+				// Atlas Index
+				writer.Write((byte)AtlasIndex);
+
+				// Summary Tint
+				writer.Write((int)Util.ColorToInt(SummaryTint));
+
+				// IsTrigger
+				writer.Write((byte)(IsTrigger ? 1 : 0));
+
+				// Rule
+				writer.Write((int)Rule);
+
+				// Tag
+				writer.Write((int)Tag);
+
+			} catch (System.Exception ex) { Game.LogException(ex); }
+			long endPos = writer.BaseStream.Position;
+			writer.BaseStream.Position = markPos;
+			writer.Write((uint)(endPos - startPos));
+			writer.BaseStream.Position = endPos;
 		}
 
 	}
 
 
 
-	[JsonObject(MemberSerialization.OptIn)]
 	public class SpriteGroup {
+
 		public AngeSprite this[int i] => Sprites[i];
 		public int Length => Sprites.Length;
-		[JsonProperty("a")] public int ID;
-		[JsonProperty("b")] public int LoopStart = 0;
-		[JsonProperty("c")] public GroupType Type = GroupType.General;
-		[JsonProperty("d")] public int[] SpriteIDs;
+
+		public int ID;
+		public int LoopStart;
+		public GroupType Type;
+		public int[] SpriteIndexes;
 		public AngeSprite[] Sprites;
-	}
 
+		public void LoadFromBinary_v0 (BinaryReader reader) {
+			uint byteLen = reader.ReadUInt32();
+			long endPos = reader.BaseStream.Position + byteLen;
+			try {
+				// ID
+				ID = reader.ReadInt32();
 
+				// Loop Start
+				LoopStart = reader.ReadInt16();
 
-	[JsonObject(MemberSerialization.OptIn)]
-	public class AtlasInfo {
-		[JsonProperty("a")] public string Name;
-		[JsonProperty("b")] public AtlasType Type;
-		[JsonProperty("c")] public int AtlasZ;
-	}
+				// Group Type
+				Type = (GroupType)reader.ReadByte();
 
+				// Sprite Indexes
+				int len = reader.ReadUInt16();
+				SpriteIndexes = new int[len];
+				for (int i = 0; i < len; i++) {
+					SpriteIndexes[i] = reader.ReadInt32();
+				}
 
-	[JsonObject(MemberSerialization.OptIn)]
-	public class Sheet : IJsonSerializationCallback {
-
-		[JsonProperty] public AngeSprite[] Sprites;
-		[JsonProperty] public SpriteGroup[] Groups;
-		[JsonProperty] public AtlasInfo[] AtlasInfo;
-		public readonly Dictionary<int, AngeSprite> SpritePool = new();
-		public readonly Dictionary<int, SpriteGroup> GroupPool = new();
-
-		public void Clear () {
-			Sprites = new AngeSprite[0];
-			Groups = new SpriteGroup[0];
-			AtlasInfo = new AtlasInfo[0];
-			SpritePool.Clear();
-			GroupPool.Clear();
+			} catch (System.Exception ex) { Game.LogException(ex); }
+			reader.BaseStream.Position = endPos;
 		}
 
-		public void Apply () {
+		public void SaveToBinary_v0 (BinaryWriter writer) {
+			long markPos = writer.BaseStream.Position;
+			writer.Write((uint)0);
+			long startPos = writer.BaseStream.Position;
+			try {
 
-			// Add Sprites
-			for (int i = 0; i < Sprites.Length; i++) {
-				var sp = Sprites[i];
-				sp.Atlas = AtlasInfo[sp.AtlasIndex];
-				sp.Apply();
-				SpritePool.TryAdd(sp.GlobalID, Sprites[i]);
+				// ID
+				writer.Write((int)ID);
+
+				// Loop Start
+				writer.Write((short)LoopStart);
+
+				// Group Type
+				writer.Write((byte)Type);
+
+				// Sprite Indexes
+				writer.Write((ushort)SpriteIndexes.Length);
+				for (int i = 0; i < SpriteIndexes.Length; i++) {
+					writer.Write((int)SpriteIndexes[i]);
+				}
+
+			} catch (System.Exception ex) { Game.LogException(ex); }
+			long endPos = writer.BaseStream.Position;
+			writer.BaseStream.Position = markPos;
+			writer.Write((uint)(endPos - startPos));
+			writer.BaseStream.Position = endPos;
+		}
+
+	}
+
+
+
+	public class AtlasInfo {
+
+		private static readonly StringBuilder CacheBuilder = new(256);
+		public string Name;
+		public AtlasType Type;
+
+		public void LoadFromBinary_v0 (BinaryReader reader) {
+			uint byteLen = reader.ReadUInt32();
+			long endPos = reader.BaseStream.Position + byteLen;
+			try {
+				// Name
+				int nameLen = reader.ReadByte();
+				CacheBuilder.Clear();
+				for (int i = 0; i < nameLen; i++) {
+					CacheBuilder.Append((char)reader.ReadByte());
+				}
+				Name = CacheBuilder.ToString();
+
+				// Type
+				Type = (AtlasType)reader.ReadByte();
+
+			} catch (System.Exception ex) { Game.LogException(ex); }
+			reader.BaseStream.Position = endPos;
+		}
+
+		public void SaveToBinary_v0 (BinaryWriter writer) {
+			long markPos = writer.BaseStream.Position;
+			writer.Write((uint)0);
+			long startPos = writer.BaseStream.Position;
+			try {
+				// Name
+				int len = Name.Length.Clamp(0, 255);
+				writer.Write((byte)len);
+				for (int i = 0; i < len; i++) {
+					writer.Write((byte)Name[i]);
+				}
+
+				// Type
+				writer.Write((byte)Type);
+
+			} catch (System.Exception ex) { Game.LogException(ex); }
+			long endPos = writer.BaseStream.Position;
+			writer.BaseStream.Position = markPos;
+			writer.Write((uint)(endPos - startPos));
+			writer.BaseStream.Position = endPos;
+		}
+
+	}
+
+
+	public class Sheet {
+
+		public AngeSprite[] Sprites;
+		public SpriteGroup[] Groups;
+		public AtlasInfo[] AtlasInfo;
+
+		public void LoadFromDisk (string path) {
+			if (!Util.FileExists(path)) return;
+			using var stream = new FileStream(path, FileMode.Open);
+			using var reader = new BinaryReader(stream);
+			int fileVersion = reader.ReadInt32();
+			switch (fileVersion) {
+				case 0:
+					LoadFromBinary_v0(reader);
+					break;
+				default:
+					Game.LogError($"Can not handle sheet version {fileVersion}. Expect: version-0");
+					break;
 			}
+		}
 
-			// Add Sprite Groups
-			for (int i = 0; i < Groups.Length; i++) {
-				var group = Groups[i];
-				if (group == null) continue;
-				if (group.SpriteIDs != null && group.SpriteIDs.Length > 0) {
-					group.Sprites = new AngeSprite[group.SpriteIDs.Length];
-					for (int j = 0; j < group.SpriteIDs.Length; j++) {
-						int id = group.SpriteIDs[j];
-						if (SpritePool.TryGetValue(id, out var sp)) {
+		public void SaveToDisk (string path) {
+			using var stream = new FileStream(path, FileMode.Create);
+			using var writer = new BinaryWriter(stream);
+			writer.Write((int)0); // File Version
+			SaveToBinary_v0(writer);
+		}
+
+		private void LoadFromBinary_v0 (BinaryReader reader) {
+
+			var stream = reader.BaseStream;
+
+			// Sprites
+			int spriteCount = reader.ReadInt32();
+			int spriteByteLength = reader.ReadInt32();
+			long spriteEndPos = stream.Position + spriteByteLength;
+			Sprites = new AngeSprite[spriteCount];
+			try {
+				for (int i = 0; i < spriteCount; i++) {
+					var sprite = Sprites[i] = new AngeSprite();
+					sprite.LoadFromBinary_v0(reader);
+				}
+			} catch (System.Exception ex) { Game.LogException(ex); }
+			if (stream.Position != spriteEndPos) stream.Position = spriteEndPos;
+
+			// Groups
+			int groupCount = reader.ReadInt32();
+			int groupByteLength = reader.ReadInt32();
+			long groupEndPos = stream.Position + groupByteLength;
+			Groups = new SpriteGroup[groupCount];
+			try {
+				for (int i = 0; i < groupCount; i++) {
+					// Load Group
+					var group = Groups[i] = new SpriteGroup();
+					group.LoadFromBinary_v0(reader);
+					// Apply Sprites
+					if (group.SpriteIndexes != null && group.SpriteIndexes.Length > 0) {
+						group.Sprites = new AngeSprite[group.SpriteIndexes.Length];
+						for (int j = 0; j < group.SpriteIndexes.Length; j++) {
+							int index = group.SpriteIndexes[j];
+							var sp = Sprites[index];
 							sp.GroupType = group.Type;
 							group.Sprites[j] = sp;
 						}
+					} else {
+						group.Sprites = new AngeSprite[0];
 					}
-					GroupPool.TryAdd(group.ID, group);
-				} else {
-					group.Sprites = new AngeSprite[0];
 				}
-			}
+			} catch (System.Exception ex) { Game.LogException(ex); }
+			if (stream.Position != groupEndPos) stream.Position = groupEndPos;
+
+			// Atlas
+			int atlasCount = reader.ReadInt32();
+			int atlasByteLength = reader.ReadInt32();
+			long atlasEndPos = stream.Position + atlasByteLength;
+			AtlasInfo = new AtlasInfo[atlasCount];
+			try {
+				// Load Atlas
+				for (int i = 0; i < atlasCount; i++) {
+					var atlas = AtlasInfo[i] = new AtlasInfo();
+					atlas.LoadFromBinary_v0(reader);
+				}
+				// Apply Sprites
+				for (int i = 0; i < spriteCount; i++) {
+					var sp = Sprites[i];
+					sp.Atlas = AtlasInfo[sp.AtlasIndex];
+				}
+			} catch (System.Exception ex) { Game.LogException(ex); }
+			if (stream.Position != atlasEndPos) stream.Position = atlasEndPos;
+
 		}
 
-		void IJsonSerializationCallback.OnBeforeSaveToDisk () { }
+		private void SaveToBinary_v0 (BinaryWriter writer) {
+			try {
 
-		void IJsonSerializationCallback.OnAfterLoadedFromDisk () => Apply();
+				var stream = writer.BaseStream;
+
+				// Sprites
+				{
+					writer.Write((int)Sprites.Length);
+					long markPos = stream.Position;
+					writer.Write((int)0);
+					long startPos = stream.Position;
+					for (int i = 0; i < Sprites.Length; i++) {
+						Sprites[i].SaveToBinary_v0(writer);
+					}
+					long endPos = stream.Position;
+					stream.Position = markPos;
+					writer.Write((int)(endPos - startPos));
+					stream.Position = endPos;
+				}
+
+				// Groups
+				{
+					writer.Write((int)Groups.Length);
+					long markPos = stream.Position;
+					writer.Write((int)0);
+					long startPos = stream.Position;
+					for (int i = 0; i < Groups.Length; i++) {
+						Groups[i].SaveToBinary_v0(writer);
+					}
+					long endPos = stream.Position;
+					stream.Position = markPos;
+					writer.Write((int)(endPos - startPos));
+					stream.Position = endPos;
+				}
+
+				// Atlas
+				{
+					writer.Write((int)AtlasInfo.Length);
+					long markPos = stream.Position;
+					writer.Write((int)0);
+					long startPos = stream.Position;
+					for (int i = 0; i < AtlasInfo.Length; i++) {
+						AtlasInfo[i].SaveToBinary_v0(writer);
+					}
+					long endPos = stream.Position;
+					stream.Position = markPos;
+					writer.Write((int)(endPos - startPos));
+					stream.Position = endPos;
+				}
+
+			} catch (System.Exception ex) { Game.LogException(ex); }
+
+		}
 
 	}
 

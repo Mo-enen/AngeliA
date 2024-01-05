@@ -185,17 +185,15 @@ namespace AngeliaForUnity.Editor {
 		[MenuItem("AngeliA/Other/Check for Empty Sprites")]
 		public static void EmptySpriteChecker () {
 
-			string sheetPath = Util.CombinePaths(AngePath.SheetRoot, $"{nameof(Sheet)}.json");
+			string sheetPath = AngePath.SheetFilePath;
 			if (!Util.FileExists(sheetPath)) {
 				Debug.LogWarning("Sprite sheet not found.");
 				return;
 			}
-			var sheet = JsonUtil.LoadJson<Sheet>(AngePath.SheetRoot);
-			if (sheet == null) {
-				Debug.LogWarning("Failed to load sprite sheet.");
-				return;
-			}
 
+			var sheet = new Sheet();
+			sheet.LoadFromDisk(sheetPath);
+			
 			var texture = Game.LoadTextureFromPNGFile(AngePath.SheetTexturePath) as Texture2D;
 			if (texture == null) {
 				Debug.LogWarning("Sheet texture not found.");
@@ -209,7 +207,12 @@ namespace AngeliaForUnity.Editor {
 			int textureWidth = texture.width;
 			int textureHeight = texture.height;
 			foreach (var sprite in sheet.Sprites) {
-				var rect = sprite.GetTextureRect(textureWidth, textureHeight);
+				var rect = new IRect(
+					(sprite.UvBottomLeft.x * textureWidth).RoundToInt(),
+					(sprite.UvBottomLeft.y * textureHeight).RoundToInt(),
+					((sprite.UvTopRight.x - sprite.UvBottomLeft.x) * textureWidth).RoundToInt(),
+					((sprite.UvTopRight.y - sprite.UvBottomLeft.y) * textureHeight).RoundToInt()
+				);
 				int xMax = rect.xMax.Clamp(0, textureWidth);
 				int yMax = rect.yMax.Clamp(0, textureHeight);
 				for (int x = rect.x; x < xMax; x++) {

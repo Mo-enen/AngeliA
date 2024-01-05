@@ -43,6 +43,9 @@ namespace AngeliaFramework {
 		public static string SheetRoot => _SheetRoot ??= Util.CombinePaths(UniverseRoot, "Sheet");
 		private static string _SheetRoot = null;
 
+		public static string SheetFilePath => _SheetFilePath ??= Util.CombinePaths(SheetRoot, "Sheet");
+		private static string _SheetFilePath = null;
+
 		public static string DialogueRoot => _DialogueRoot ??= Util.CombinePaths(UniverseRoot, "Dialogue");
 		private static string _DialogueRoot = null;
 

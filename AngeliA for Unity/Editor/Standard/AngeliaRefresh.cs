@@ -53,10 +53,7 @@ namespace AngeliaForUnity.Editor {
 				}
 
 				// Check Sheet not Exist
-				if (
-					!Util.FolderExists(AngePath.SheetRoot) ||
-					!Util.FileExists(Util.CombinePaths(AngePath.SheetRoot, $"{nameof(Sheet)}.json"))
-				) {
+				if (!Util.FileExists(AngePath.SheetFilePath)) {
 					goto _Refresh_;
 				}
 
@@ -140,9 +137,7 @@ namespace AngeliaForUnity.Editor {
 
 					// Flex Sprites >> Sheet
 					var sheet = UniverseGenerator.CreateSpriteSheet(sheetTexturePixels, textureWidth, textureHeight, flexSprites);
-					if (sheet != null) {
-						JsonUtil.SaveJson(sheet, AngePath.SheetRoot);
-					}
+					sheet?.SaveToDisk(AngePath.SheetFilePath);
 
 					// Save Texture to File
 					var texture = Game.GetTextureFromPixels(sheetTexturePixels, textureWidth, textureHeight);

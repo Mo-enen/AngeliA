@@ -259,12 +259,12 @@ namespace AngeliaForUnity {
 					if (cell.BorderSide == Alignment.Full) {
 						// Normal
 						uv0 = aSprite.UvBottomLeft;
-						uv1 = aSprite.TopLeft;
+						uv1 = aSprite.UvTopLeft;
 						uv2 = aSprite.UvTopRight;
-						uv3 = aSprite.BottomRight;
+						uv3 = aSprite.UvBottomRight;
 					} else {
 						// 9 Slice
-						aSprite.GetSlicedUvBorder(cell.BorderSide, out var bl, out var br, out var tl, out var tr);
+						AngeUtil.GetSlicedUvBorder(aSprite, cell.BorderSide, out var bl, out var br, out var tl, out var tr);
 						uv0 = bl;
 						uv1 = tl;
 						uv2 = tr;

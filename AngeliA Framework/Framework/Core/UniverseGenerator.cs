@@ -247,30 +247,37 @@ namespace AngeliaFramework {
 					atlasPool.Add(flex.AtlasName, atlasIndex);
 					atlases.Add(new AtlasInfo() {
 						Name = flex.AtlasName,
-						AtlasZ = flex.AtlasZ,
 						Type = flex.AtlasType,
 					});
 				}
 
+				float uvMinX = flex.Rect.xMin / textureWidth;
+				float uvMinY = flex.Rect.yMin / textureHeight;
+				float uvMaxX = flex.Rect.xMax / textureWidth;
+				float uvMaxY = flex.Rect.yMax / textureHeight;
 				var newSprite = new AngeSprite() {
 					GlobalID = globalID,
-					UvBottomLeft = new(flex.Rect.xMin / textureWidth, flex.Rect.yMin / textureHeight),
-					UvTopRight = new(flex.Rect.xMax / textureWidth, flex.Rect.yMax / textureHeight),
+					UvBottomLeft = new(uvMinX, uvMinY),
+					UvTopRight = new(uvMaxX, uvMaxY),
+					UvBottomRight = new(uvMaxX, uvMinY),
+					UvTopLeft = new(uvMinX, uvMaxY),
 					GlobalWidth = globalWidth,
 					GlobalHeight = globalHeight,
 					UvBorder = uvBorder,// ldru
 					GlobalBorder = globalBorder,
 					SortingZ = flex.AtlasZ * 1024 + offsetZ,
-					LocalZ = offsetZ,
 					PivotX = pivotX ?? flex.AngePivot.x,
 					PivotY = pivotY ?? flex.AngePivot.y,
 					RealName = AngeUtil.GetBlockRealName(flex.Name),
 					AtlasIndex = atlasIndex,
+					Atlas = atlases[atlasIndex],
 					Tag = tag,
 					Rule = rule,
 					IsTrigger = isTrigger,
+					SummaryTint = Const.CLEAR,
+					GroupType = null,
+					UvRect = FRect.MinMaxRect(uvMinX, uvMinY, uvMaxX, uvMaxY),
 				};
-				newSprite.Revert();
 
 				spriteIDHash.TryAdd(newSprite.GlobalID);
 				spriteList.Add(newSprite);
@@ -309,7 +316,7 @@ namespace AngeliaFramework {
 			// Load Groups
 			var groups = new List<SpriteGroup>();
 			foreach (var (gName, (type, list)) in groupPool) {
-				var sprites = new List<int>();
+				var spriteIndexes = new List<int>();
 				int loopStart = 0;
 				bool isAni = type == GroupType.Animated;
 				for (int i = 0; i < list.Count; i++) {
@@ -317,11 +324,12 @@ namespace AngeliaFramework {
 					if (isAni && list[i].loopStart) {
 						loopStart = i;
 					}
-					sprites.Add(spriteList[spIndex].GlobalID);
+					spriteList[spIndex].GroupType = type;
+					spriteIndexes.Add(spIndex);
 				}
 				groups.Add(new SpriteGroup() {
 					ID = gName.AngeHash(),
-					SpriteIDs = sprites.ToArray(),
+					SpriteIndexes = spriteIndexes.ToArray(),
 					Type = type,
 					LoopStart = loopStart,
 				});
@@ -331,10 +339,9 @@ namespace AngeliaFramework {
 			sheet.Sprites = spriteList.ToArray();
 			sheet.Groups = groups.ToArray();
 			sheet.AtlasInfo = atlases.ToArray();
-			sheet.Apply();
 
 			// Fill Summary
-			FillSummaryForSheet(sheet, textureWidth, textureHeight, texturePixels);
+			FillSummaryForSheet(sheet.Sprites, textureWidth, textureHeight, texturePixels);
 
 			return sheet;
 		}
@@ -551,33 +558,28 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private static void FillSummaryForSheet (Sheet sheet, int textureWidth, int textureHeight, Byte4[] pixels) {
-
-			if (sheet == null) return;
+		private static void FillSummaryForSheet (AngeSprite[] sprites, int textureWidth, int textureHeight, Byte4[] pixels) {
 
 			// Color Pool
 			var pool = new Dictionary<int, Byte4>();
-			for (int i = 0; i < sheet.Sprites.Length; i++) {
-				var sp = sheet.Sprites[i];
+			for (int i = 0; i < sprites.Length; i++) {
+				var sp = sprites[i];
 				if (pool.ContainsKey(sp.GlobalID)) continue;
-				var color = GetThumbnailColor(
-					pixels, textureWidth, sp.GetTextureRect(textureWidth, textureHeight)
+				var tRect = new IRect(
+					(sp.UvBottomLeft.x * textureWidth).RoundToInt(),
+					(sp.UvBottomLeft.y * textureHeight).RoundToInt(),
+					((sp.UvTopRight.x - sp.UvBottomLeft.x) * textureWidth).RoundToInt(),
+					((sp.UvTopRight.y - sp.UvBottomLeft.y) * textureHeight).RoundToInt()
 				);
+				var color = GetThumbnailColor(pixels, textureWidth, tRect);
 				if (color.IsSame(Const.CLEAR)) continue;
 				pool.Add(sp.GlobalID, color);
 			}
-			foreach (var group in sheet.Groups) {
-				if (group.Type == GroupType.Animated) {
-					if (pool.ContainsKey(group.ID) || group.Length == 0) continue;
-					pool.Add(group.ID, group[0].SummaryTint);
-				}
-			}
 
 			// Set Values
-			for (int i = 0; i < sheet.Sprites.Length; i++) {
-				var sprite = sheet.Sprites[i];
+			for (int i = 0; i < sprites.Length; i++) {
+				var sprite = sprites[i];
 				sprite.SummaryTint = pool.TryGetValue(sprite.GlobalID, out var color) ? color : default;
-				sprite.SummaryTintInt = Util.ColorToInt(sprite.SummaryTint);
 			}
 
 			// Func
