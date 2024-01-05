@@ -535,9 +535,16 @@ namespace AngeliaFramework {
 				);
 
 				// Cover
-				if (CellRenderer.TryGetSpriteFromGroup(pal.ArtworkID, 0, out var sprite, false, true)) {
+				int drawingID = 0;
+				if (CellRenderer.TryGetSprite(pal.ArtworkID, out var sprite)) {
+					drawingID = sprite.GlobalID;
+				} else if (CellRenderer.TryGetSpriteGroup(pal.ArtworkID, out var group) && group.Length > 0) {
+					sprite = group[0];
+					drawingID = group.Type == GroupType.Animated ? pal.ArtworkID : sprite.GlobalID;
+				}
+				if (drawingID != 0) {
 					CellRenderer.Draw(
-						sprite.GlobalID,
+						drawingID,
 						rect.Shrink(COVER_SHRINK).Fit(sprite, sprite.PivotX, sprite.PivotY),
 						PANEL_Z - 10
 					);

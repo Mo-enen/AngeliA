@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.IO;
 using System.Text;
 
@@ -21,6 +22,23 @@ namespace AngeliaFramework {
 		Animated = 3,
 	}
 
+
+
+	// Sprite
+	public class SpriteCode {
+		public readonly string Name;
+		public readonly int ID;
+		public readonly int Width;
+		public readonly int Height;
+		public SpriteCode (string name, int width, int height) {
+			Name = name;
+			ID = name.AngeHash();
+			Width = width;
+			Height = height;
+		}
+		public static implicit operator SpriteCode ((string str, int width, int height) value) => new(value.str, value.width, value.height);
+		public static implicit operator int (SpriteCode code) => code.ID;
+	}
 
 
 	public class AngeSprite {
@@ -194,6 +212,7 @@ namespace AngeliaFramework {
 
 
 
+	// Group
 	public class SpriteGroup {
 
 		public AngeSprite this[int i] => Sprites[i];
@@ -261,6 +280,7 @@ namespace AngeliaFramework {
 
 
 
+	// Atlas
 	public class AtlasInfo {
 
 		private static readonly StringBuilder CacheBuilder = new(256);
@@ -311,6 +331,8 @@ namespace AngeliaFramework {
 	}
 
 
+
+	// Sheet
 	public class Sheet {
 
 		public AngeSprite[] Sprites;

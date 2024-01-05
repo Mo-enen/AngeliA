@@ -758,6 +758,9 @@ namespace AngeliaFramework {
 		}
 
 
+		public static bool TryGetSpriteGroup (int groupID, out SpriteGroup group) => GroupPool.TryGetValue(groupID, out group);
+
+
 		public static bool TryGetSpriteFromGroup (int groupID, int index, out AngeSprite sprite, bool loopIndex = true, bool clampIndex = true) {
 			if (GroupPool.TryGetValue(groupID, out var sprites)) {
 				if (loopIndex) index = index.UMod(sprites.Length);

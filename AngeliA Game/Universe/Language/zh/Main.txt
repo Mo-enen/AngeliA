@@ -1,5 +1,4 @@
-﻿Menu.SheetEditor.DeleteUnitMSG:删除图块？
-CtrlHint.Adjust:调整
+﻿CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
 CtrlHint.Drop:放下
@@ -37,7 +36,6 @@ MEDT.CancelDrop:取消放下
 MEDT.Drop:鼠标左键放下
 MEDT.EntityOnly:仅实体
 MEDT.LevelOnly:仅关卡
-Menu.BackToEdit:返回编辑
 Menu.KeySetter.ConfirmMessage:是否保存修改？
 Menu.KeySetter.Gamepad:手柄
 Menu.KeySetter.GamepadMessage:按下F1键重置手柄设置
@@ -76,6 +74,7 @@ Menu.Setting.VSync:垂直同步
 Menu.SheetEditor.CreateAtlas:创建图集
 Menu.SheetEditor.CreateUnit:创建图块
 Menu.SheetEditor.DeleteAtlasMSG:删除图集吗？图集中的图块也会被删除。
+Menu.SheetEditor.DeleteUnitMSG:删除图块？
 Menu.SheetEditor.NewAtlasName:新图集
 Menu.SheetEditor.NewSpriteName:新图块
 Notify.MapGeneratedNotify:关卡已生成

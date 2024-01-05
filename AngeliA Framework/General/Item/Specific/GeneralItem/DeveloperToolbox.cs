@@ -318,8 +318,20 @@ namespace AngeliaFramework {
 			rect.x -= rect.width + padding;
 
 			// Sheet
-
-
+			if (SheetEditor.IsActived) {
+				CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN, int.MaxValue - 1);
+			}
+			if (CellRendererGUI.Button(rect, BTN_SHEET, BTN_SHEET, BTN_SHEET, 0, 0, 0, int.MaxValue)) {
+				if (SheetEditor.IsActived) {
+					GlobalEditorUI.CloseEditorSmoothly();
+				} else {
+					GlobalEditorUI.OpenEditorSmoothly(SheetEditor.TYPE_ID);
+				}
+				FrameInput.UseMouseKey(0);
+				FrameInput.UseGameKey(Gamekey.Action);
+			}
+			CursorSystem.SetCursorAsHand(rect);
+			rect.x -= rect.width + padding;
 
 			// Final
 			if (ShowCollider) DrawColliderFrame = Game.GlobalFrame;

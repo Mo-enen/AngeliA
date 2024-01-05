@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using GeorgeMamaladze;
-using Newtonsoft.Json;
 
 
 namespace AngeliaFramework {
@@ -892,10 +891,10 @@ namespace AngeliaFramework {
 
 
 
-		#region --- API ---
+		#region --- LGC ---
 
 
-		public void SetEditorMode (bool toPlayMode) {
+		private void SetEditorMode (bool toPlayMode) {
 
 			if (toPlayMode) Save();
 			PlayingGame = toPlayMode;
@@ -946,14 +945,6 @@ namespace AngeliaFramework {
 
 			}
 		}
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
 
 
 		private void StartDropPlayer () {

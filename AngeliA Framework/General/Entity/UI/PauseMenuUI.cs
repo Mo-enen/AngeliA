@@ -53,7 +53,6 @@ namespace AngeliaFramework {
 		private static readonly int MENU_MEDT_AUTO_ZOOM = "Menu.MEDTSetting.AutoZoom".AngeHash();
 		private static readonly int MENU_MEDT_PLAYER_DROP = "Menu.MEDTSetting.PlayerDrop".AngeHash();
 		private static readonly int MENU_MEDT_STATE = "Menu.MEDTSetting.ShowState".AngeHash();
-		private static readonly int MENU_BACK_TO_EDIT = "Menu.BackToEdit".AngeHash();
 		private static readonly int UI_CONTINUE = "UI.Continue".AngeHash();
 		private static readonly int UI_SETTING = "UI.Setting".AngeHash();
 		private static readonly int UI_QUIT = "UI.Quit".AngeHash();
@@ -235,18 +234,9 @@ namespace AngeliaFramework {
 			}
 
 			// 4-Quit
-			if (MapEditor.IsPlaying) {
-				if (DrawItem(Language.Get(MENU_BACK_TO_EDIT, "Back to Editor"))) {
-					MapEditor.Instance.SetEditorMode(false);
-					Game.IsPlaying = true;
-					Active = false;
-					FrameInput.UseAllHoldingKeys();
-				}
-			} else {
-				if (DrawItem(Language.Get(UI_QUIT, "Quit"), Const.RED_BETTER)) {
-					RequireMode = MenuMode.Quit;
-					SetSelection(0);
-				}
+			if (DrawItem(Language.Get(UI_QUIT, "Quit"), Const.RED_BETTER)) {
+				RequireMode = MenuMode.Quit;
+				SetSelection(0);
 			}
 
 		}

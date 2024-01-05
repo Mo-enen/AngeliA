@@ -1,5 +1,4 @@
-﻿Menu.SheetEditor.DeleteUnitMSG:Delete unit?
-CtrlHint.Adjust:Adjust
+﻿CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
 CtrlHint.Drop:Drop
@@ -37,7 +36,6 @@ MEDT.CancelDrop:Cancel Drop
 MEDT.Drop:Mouse Left Button to Drop
 MEDT.EntityOnly:Entity Only
 MEDT.LevelOnly:Level Only
-Menu.BackToEdit:Back to Editor
 Menu.KeySetter.ConfirmMessage:Save the changes?
 Menu.KeySetter.Gamepad:Gamepad
 Menu.KeySetter.GamepadMessage:Press F1 key to reset
@@ -76,6 +74,7 @@ Menu.Setting.VSync:V-Sync
 Menu.SheetEditor.CreateAtlas:Create Atlas
 Menu.SheetEditor.CreateUnit:Create Sprite
 Menu.SheetEditor.DeleteAtlasMSG:Delete atlas ? This will also delete files inside the atlas.
+Menu.SheetEditor.DeleteUnitMSG:Delete unit?
 Menu.SheetEditor.NewAtlasName:New Atlas
 Menu.SheetEditor.NewSpriteName:New Sprite
 Notify.MapGeneratedNotify:Level Generated

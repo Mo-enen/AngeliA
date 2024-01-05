@@ -178,6 +178,7 @@ namespace AngeliaFramework {
 			Character.OnJump += OnJumpFly;
 			Character.OnFly += OnJumpFly;
 			static void OnJumpFly (Character character) {
+				if (character.InWater || character.InSand) return;
 				if (character.CurrentJumpCount > character.JumpCount + 1) return;
 				// Fly without Rise
 				if (character.CurrentJumpCount > character.JumpCount && character.FlyRiseSpeed <= 0) return;
