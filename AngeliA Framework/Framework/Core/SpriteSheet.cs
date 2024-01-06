@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using System.IO;
 using System.Text;
 
@@ -21,7 +20,6 @@ namespace AngeliaFramework {
 		Random = 2,
 		Animated = 3,
 	}
-
 
 
 	// Sprite
@@ -56,10 +54,6 @@ namespace AngeliaFramework {
 		public Int4 GlobalBorder;
 
 		public FRect UvRect;
-		public Float2 UvBottomRight;
-		public Float2 UvTopLeft;
-		public Float2 UvBottomLeft;
-		public Float2 UvTopRight;
 		public Float4 UvBorder; // xyzw => ldru
 
 		public int AtlasIndex;
@@ -118,10 +112,10 @@ namespace AngeliaFramework {
 					uvMinX / UV_SCALE, uvMinY / UV_SCALE,
 					uvMaxX / UV_SCALE, uvMaxY / UV_SCALE
 				);
-				UvBottomRight = new(uvMaxX / UV_SCALE, uvMinY / UV_SCALE);
-				UvTopLeft = new(uvMinX / UV_SCALE, uvMaxY / UV_SCALE);
-				UvBottomLeft = new(uvMinX / UV_SCALE, uvMinY / UV_SCALE);
-				UvTopRight = new(uvMaxX / UV_SCALE, uvMaxY / UV_SCALE);
+				//UvBottomRight = new(uvMaxX / UV_SCALE, uvMinY / UV_SCALE);
+				//UvTopLeft = new(uvMinX / UV_SCALE, uvMaxY / UV_SCALE);
+				//UvBottomLeft = new(uvMinX / UV_SCALE, uvMinY / UV_SCALE);
+				//UvTopRight = new(uvMaxX / UV_SCALE, uvMaxY / UV_SCALE);
 				UvBorder = new(uvBorderL / UV_SCALE, uvBorderD / UV_SCALE, uvBorderR / UV_SCALE, uvBorderU / UV_SCALE);
 
 				// Atlas Index
@@ -177,10 +171,10 @@ namespace AngeliaFramework {
 				writer.Write((ushort)GlobalBorder.w);
 
 				// UV
-				writer.Write((uint)(UvBottomLeft.x * UV_SCALE).RoundToInt());
-				writer.Write((uint)(UvBottomLeft.y * UV_SCALE).RoundToInt());
-				writer.Write((uint)(UvTopRight.x * UV_SCALE).RoundToInt());
-				writer.Write((uint)(UvTopRight.y * UV_SCALE).RoundToInt());
+				writer.Write((uint)(UvRect.x * UV_SCALE).RoundToInt());
+				writer.Write((uint)(UvRect.y * UV_SCALE).RoundToInt());
+				writer.Write((uint)(UvRect.xMax * UV_SCALE).RoundToInt());
+				writer.Write((uint)(UvRect.yMax * UV_SCALE).RoundToInt());
 				writer.Write((uint)(UvBorder.x * UV_SCALE).RoundToInt());
 				writer.Write((uint)(UvBorder.z * UV_SCALE).RoundToInt());
 				writer.Write((uint)(UvBorder.y * UV_SCALE).RoundToInt());

@@ -537,27 +537,29 @@ namespace AngeliaFramework {
 
 
 		public static void GetSlicedUvBorder (AngeSprite sprite, Alignment alignment, out Float2 bl, out Float2 br, out Float2 tl, out Float2 tr) {
-			bl = sprite.UvBottomLeft;
-			br = sprite.UvBottomRight;
-			tl = sprite.UvTopLeft;
-			tr = sprite.UvTopRight;
+
+			var sourceBL = bl = sprite.UvRect.BottomLeft();
+			var sourceBR = br = sprite.UvRect.BottomRight();
+			var sourceTL = tl = sprite.UvRect.TopLeft();
+			tr = sprite.UvRect.TopRight();
+
 			// Y
 			switch (alignment) {
 				case Alignment.TopLeft:
 				case Alignment.TopMid:
 				case Alignment.TopRight:
-					bl.y = br.y = Util.LerpUnclamped(sprite.UvTopLeft.y, sprite.UvBottomLeft.y, sprite.UvBorder.w);
+					bl.y = br.y = Util.LerpUnclamped(sourceTL.y, sourceBL.y, sprite.UvBorder.w);
 					break;
 				case Alignment.MidLeft:
 				case Alignment.MidMid:
 				case Alignment.MidRight:
-					tl.y = tr.y = Util.LerpUnclamped(sprite.UvTopLeft.y, sprite.UvBottomLeft.y, sprite.UvBorder.w);
-					bl.y = br.y = Util.LerpUnclamped(sprite.UvBottomLeft.y, sprite.UvTopLeft.y, sprite.UvBorder.y);
+					tl.y = tr.y = Util.LerpUnclamped(sourceTL.y, sourceBL.y, sprite.UvBorder.w);
+					bl.y = br.y = Util.LerpUnclamped(sourceBL.y, sourceTL.y, sprite.UvBorder.y);
 					break;
 				case Alignment.BottomLeft:
 				case Alignment.BottomMid:
 				case Alignment.BottomRight:
-					tl.y = tr.y = Util.LerpUnclamped(sprite.UvBottomLeft.y, sprite.UvTopLeft.y, sprite.UvBorder.y);
+					tl.y = tr.y = Util.LerpUnclamped(sourceBL.y, sourceTL.y, sprite.UvBorder.y);
 					break;
 			}
 			// X
@@ -565,18 +567,18 @@ namespace AngeliaFramework {
 				case Alignment.TopLeft:
 				case Alignment.MidLeft:
 				case Alignment.BottomLeft:
-					br.x = tr.x = Util.LerpUnclamped(sprite.UvBottomLeft.x, sprite.UvBottomRight.x, sprite.UvBorder.x);
+					br.x = tr.x = Util.LerpUnclamped(sourceBL.x, sourceBR.x, sprite.UvBorder.x);
 					break;
 				case Alignment.TopMid:
 				case Alignment.MidMid:
 				case Alignment.BottomMid:
-					br.x = tr.x = Util.LerpUnclamped(sprite.UvBottomRight.x, sprite.UvBottomLeft.x, sprite.UvBorder.z);
-					bl.x = tl.x = Util.LerpUnclamped(sprite.UvBottomLeft.x, sprite.UvBottomRight.x, sprite.UvBorder.x);
+					br.x = tr.x = Util.LerpUnclamped(sourceBR.x, sourceBL.x, sprite.UvBorder.z);
+					bl.x = tl.x = Util.LerpUnclamped(sourceBL.x, sourceBR.x, sprite.UvBorder.x);
 					break;
 				case Alignment.TopRight:
 				case Alignment.MidRight:
 				case Alignment.BottomRight:
-					bl.x = tl.x = Util.LerpUnclamped(sprite.UvBottomRight.x, sprite.UvBottomLeft.x, sprite.UvBorder.z);
+					bl.x = tl.x = Util.LerpUnclamped(sourceBR.x, sourceBL.x, sprite.UvBorder.z);
 					break;
 			}
 		}

@@ -3,20 +3,26 @@ using System.Collections;
 
 
 namespace AngeliaFramework {
+
+
+	public class TextureData {
+		public string Name;
+		public int Width;
+		public int Height;
+		public Byte4[] Pixels;
+		public TextureData (int width, int height, Byte4[] pixels, string name = "") {
+			Width = width;
+			Height = height;
+			Pixels = pixels;
+			Name = name;
+		}
+	}
+
+
 	public static class AngeliaRectPacking {
 
 
 
-		public class TextureData {
-			public int Width;
-			public int Height;
-			public Byte4[] Pixels;
-			public TextureData (int width, int height, Byte4[] pixels) {
-				Width = width;
-				Height = height;
-				Pixels = pixels;
-			}
-		}
 
 
 		private class ItemSorter : IComparer<Item> {

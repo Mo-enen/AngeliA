@@ -109,7 +109,7 @@ namespace AngeliaForUnity.Editor {
 		}
 
 
-		public static List<(object texture, FlexSprite[] flexs)> AsepriteFiles_to_TextureResult () {
+		public static List<(TextureData data, UniverseGenerator.FlexSprite[] flexs)> AsepriteFiles_to_TextureResult () {
 			var unityResult = AsepriteToolbox_CoreOnly.CreateSprites(ForAllAsepriteFiles().Select(
 				filePath => {
 					string result = EditorUtil.FixedRelativePath(filePath);
@@ -119,9 +119,9 @@ namespace AngeliaForUnity.Editor {
 					return result;
 				}
 			).ToArray(), "#ignore");
-			var result = new List<(object texture, FlexSprite[] flexs)>();
-			foreach (var (texture, sprites) in unityResult) {
-				result.Add((texture, sprites));
+			var result = new List<(TextureData data, UniverseGenerator.FlexSprite[] flexs)>();
+			foreach (var (data, sprites) in unityResult) {
+				result.Add((data, sprites));
 			}
 			return result;
 		}

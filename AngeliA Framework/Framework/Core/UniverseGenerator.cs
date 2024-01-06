@@ -5,19 +5,6 @@ using System.Text;
 
 
 namespace AngeliaFramework {
-
-
-	public class FlexSprite {
-		public string Name;
-		public Int2 AngePivot;
-		public Float4 Border;
-		public FRect Rect;
-		public int AtlasZ;
-		public string AtlasName;
-		public AtlasType AtlasType;
-	}
-
-
 	public static class UniverseGenerator {
 
 
@@ -50,6 +37,18 @@ namespace AngeliaFramework {
 		}
 
 
+		public class FlexSprite {
+			public string Name;
+			public Int2 AngePivot;
+			public Float4 Border;
+			public FRect Rect;
+			public int AtlasZ;
+			public string AtlasName;
+			public AtlasType AtlasType;
+		}
+
+
+
 		private class PackingItem {
 			public int Width;
 			public int Height;
@@ -72,19 +71,17 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public static void CombineFlexTextures (List<(object texture, FlexSprite[] flexs)> flexTextures, out Byte4[] texturePixels, out int textureWidth, out int textureHeight, out FlexSprite[] resultFlexs) {
+		public static void CombineFlexTextures (List<(TextureData data, FlexSprite[] flexs)> flexTextures, out Byte4[] texturePixels, out int textureWidth, out int textureHeight, out FlexSprite[] resultFlexs) {
 
 			// Combine
 			var items = new List<PackingItem>();
 			var overlapList = new List<(FlexSprite flex, PackingItem original)>();
 			var spriteSheetNamePool = new Dictionary<string, string>();
 			var dupHash = new HashSet<int>();
-			foreach (var (sourceTexture, sourceFlexs) in flexTextures) {
-				var sourcePixels = Game.GetPixelsFromTexture(sourceTexture);
-				var sourceSize = Game.GetTextureSize(sourceTexture);
-				int sourceWidth = sourceSize.x;
-				int sourceHeight = sourceSize.y;
-				string sheetName = Game.GetTextureName(sourceTexture);
+			foreach (var (data, sourceFlexs) in flexTextures) {
+				int sourceWidth = data.Width;
+				int sourceHeight = data.Height;
+				string sheetName = data.Name;
 				System.Array.Sort(sourceFlexs, FlexSpriteComparer.Instance);
 				int prevX = int.MinValue;
 				int prevY = int.MinValue;
@@ -109,7 +106,7 @@ namespace AngeliaFramework {
 					var pixels = new Byte4[w * h];
 					for (int j = 0; j < h; j++) {
 						for (int i = 0; i < w; i++) {
-							pixels[j * w + i] = sourcePixels[(y + j) * sourceWidth + (x + i)];
+							pixels[j * w + i] = data.Pixels[(y + j) * sourceWidth + (x + i)];
 						}
 					}
 
@@ -156,10 +153,10 @@ namespace AngeliaFramework {
 			items.Sort(PackingItemComparer.Instance);
 
 			// Pack
-			var textures = new AngeliaRectPacking.TextureData[items.Count];
+			var textures = new TextureData[items.Count];
 			for (int i = 0; i < textures.Length; i++) {
 				var item = items[i];
-				textures[i] = new AngeliaRectPacking.TextureData(item.Width, item.Height, item.Pixels);
+				textures[i] = new TextureData(item.Width, item.Height, item.Pixels);
 			}
 
 			var uvs = AngeliaRectPacking.Pack(out var sheetTextureData, textures, 16384);
@@ -270,10 +267,10 @@ namespace AngeliaFramework {
 				float uvMaxY = flex.Rect.yMax / textureHeight;
 				var newSprite = new AngeSprite() {
 					GlobalID = globalID,
-					UvBottomLeft = new(uvMinX, uvMinY),
-					UvTopRight = new(uvMaxX, uvMaxY),
-					UvBottomRight = new(uvMaxX, uvMinY),
-					UvTopLeft = new(uvMinX, uvMaxY),
+					//UvBottomLeft = new(uvMinX, uvMinY),
+					//UvTopRight = new(uvMaxX, uvMaxY),
+					//UvBottomRight = new(uvMaxX, uvMinY),
+					//UvTopLeft = new(uvMinX, uvMaxY),
 					GlobalWidth = globalWidth,
 					GlobalHeight = globalHeight,
 					UvBorder = uvBorder,// ldru
@@ -578,11 +575,12 @@ namespace AngeliaFramework {
 			for (int i = 0; i < sprites.Length; i++) {
 				var sp = sprites[i];
 				if (pool.ContainsKey(sp.GlobalID)) continue;
+				;
 				var tRect = new IRect(
-					(sp.UvBottomLeft.x * textureWidth).RoundToInt(),
-					(sp.UvBottomLeft.y * textureHeight).RoundToInt(),
-					((sp.UvTopRight.x - sp.UvBottomLeft.x) * textureWidth).RoundToInt(),
-					((sp.UvTopRight.y - sp.UvBottomLeft.y) * textureHeight).RoundToInt()
+					(sp.UvRect.x * textureWidth).RoundToInt(),
+					(sp.UvRect.y * textureHeight).RoundToInt(),
+					(sp.UvRect.width * textureWidth).RoundToInt(),
+					(sp.UvRect.height * textureHeight).RoundToInt()
 				);
 				var color = GetThumbnailColor(pixels, textureWidth, tRect);
 				if (color.IsSame(Const.CLEAR)) continue;

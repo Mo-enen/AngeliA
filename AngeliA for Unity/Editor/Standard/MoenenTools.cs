@@ -208,10 +208,10 @@ namespace AngeliaForUnity.Editor {
 			int textureHeight = texture.height;
 			foreach (var sprite in sheet.Sprites) {
 				var rect = new IRect(
-					(sprite.UvBottomLeft.x * textureWidth).RoundToInt(),
-					(sprite.UvBottomLeft.y * textureHeight).RoundToInt(),
-					((sprite.UvTopRight.x - sprite.UvBottomLeft.x) * textureWidth).RoundToInt(),
-					((sprite.UvTopRight.y - sprite.UvBottomLeft.y) * textureHeight).RoundToInt()
+					(sprite.UvRect.x * textureWidth).RoundToInt(),
+					(sprite.UvRect.y * textureHeight).RoundToInt(),
+					(sprite.UvRect.width * textureWidth).RoundToInt(),
+					(sprite.UvRect.height * textureHeight).RoundToInt()
 				);
 				int xMax = rect.xMax.Clamp(0, textureWidth);
 				int yMax = rect.yMax.Clamp(0, textureHeight);
