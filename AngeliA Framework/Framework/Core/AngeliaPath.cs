@@ -66,6 +66,9 @@ namespace AngeliaFramework {
 		public static string ItemSaveDataRoot => _ItemSaveDataRoot ??= Util.CombinePaths(PersistentDataPath, "Item Customization");
 		private static string _ItemSaveDataRoot = null;
 
+		public static string UserSheetRoot => _UserSheetRoot ??= Util.CombinePaths(PersistentDataPath, "User Sheet");
+		private static string _UserSheetRoot = null;
+
 
 		// Slot
 		public static int CurrentSaveSlot {

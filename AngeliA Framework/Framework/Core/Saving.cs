@@ -15,7 +15,7 @@ namespace AngeliaFramework {
 		public static bool IsDirty = true;
 
 
-		[OnGameInitialize(-2048)]
+		[OnGameInitialize(int.MinValue)]
 		public static void OnGameInitialize () {
 			SavingPath = Util.CombinePaths(AngePath.UserDataRoot, "Saving.txt");
 			LoadFromFile();

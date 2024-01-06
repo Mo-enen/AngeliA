@@ -211,7 +211,6 @@ namespace AngeliaFramework {
 
 			if (textureWidth == 0 || textureHeight == 0) return null;
 
-			var sheet = new Sheet();
 			var spriteIDHash = new HashSet<int>();
 			var groupPool = new Dictionary<
 				string,
@@ -340,14 +339,9 @@ namespace AngeliaFramework {
 				});
 			}
 
-			// Data
-			sheet.Sprites = spriteList.ToArray();
-			sheet.Groups = groups.ToArray();
-			sheet.AtlasInfo = atlases.ToArray();
-
-			// Fill Summary
+			// Final
+			var sheet = new Sheet(spriteList.ToArray(), groups.ToArray(), atlases.ToArray());
 			FillSummaryForSheet(sheet.Sprites, textureWidth, textureHeight, texturePixels);
-
 			return sheet;
 		}
 

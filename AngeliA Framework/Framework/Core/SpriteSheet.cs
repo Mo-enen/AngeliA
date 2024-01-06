@@ -329,12 +329,28 @@ namespace AngeliaFramework {
 	// Sheet
 	public class Sheet {
 
-		public AngeSprite[] Sprites;
-		public SpriteGroup[] Groups;
-		public AtlasInfo[] AtlasInfo;
+		public bool IsValid => Sprites.Length > 0;
+		public AngeSprite[] Sprites { get; private set; } = System.Array.Empty<AngeSprite>();
+		public SpriteGroup[] Groups { get; private set; } = System.Array.Empty<SpriteGroup>();
+		public AtlasInfo[] AtlasInfo { get; private set; } = System.Array.Empty<AtlasInfo>();
+		public Dictionary<int, AngeSprite> SpritePool { get; } = new();
+		public Dictionary<int, SpriteGroup> GroupPool { get; } = new();
+
+		public Sheet () { }
+		public Sheet (string path) => LoadFromDisk(path);
+		public Sheet (AngeSprite[] sprites, SpriteGroup[] groups, AtlasInfo[] atlasInfo) {
+			Sprites = sprites;
+			Groups = groups;
+			AtlasInfo = atlasInfo;
+			SpritePool.Clear();
+			GroupPool.Clear();
+		}
 
 		public void LoadFromDisk (string path) {
+
 			if (!Util.FileExists(path)) return;
+
+			// Load Data
 			using var stream = new FileStream(path, FileMode.Open);
 			using var reader = new BinaryReader(stream);
 			int fileVersion = reader.ReadInt32();
@@ -346,6 +362,21 @@ namespace AngeliaFramework {
 					Game.LogError($"Can not handle sheet version {fileVersion}. Expect: version-0");
 					break;
 			}
+
+			// Fill Sprites
+			SpritePool.Clear();
+			for (int i = 0; i < Sprites.Length; i++) {
+				var sp = Sprites[i];
+				SpritePool.TryAdd(sp.GlobalID, Sprites[i]);
+			}
+
+			// Fill Groups
+			GroupPool.Clear();
+			for (int i = 0; i < Groups.Length; i++) {
+				var group = Groups[i];
+				GroupPool.TryAdd(group.ID, group);
+			}
+
 		}
 
 		public void SaveToDisk (string path) {

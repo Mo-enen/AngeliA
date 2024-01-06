@@ -191,9 +191,6 @@ namespace AngeliaForUnity.Editor {
 				return;
 			}
 
-			var sheet = new Sheet();
-			sheet.LoadFromDisk(sheetPath);
-			
 			var texture = Game.LoadTextureFromPNGFile(AngePath.SheetTexturePath) as Texture2D;
 			if (texture == null) {
 				Debug.LogWarning("Sheet texture not found.");
@@ -206,6 +203,7 @@ namespace AngeliaForUnity.Editor {
 			var resultList = new List<string>();
 			int textureWidth = texture.width;
 			int textureHeight = texture.height;
+			var sheet = new Sheet(sheetPath);
 			foreach (var sprite in sheet.Sprites) {
 				var rect = new IRect(
 					(sprite.UvRect.x * textureWidth).RoundToInt(),
