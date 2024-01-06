@@ -93,6 +93,10 @@ namespace AngeliaFramework {
 
 		private void Initialize_Palette () {
 
+			CellRenderer.TryGetSprite("Cloud 0".AngeHash(), out var testSP);
+			//Game.Log(testSP.Atlas.Name + " " + testSP.Atlas.Type + " " + testSP.GroupType);
+
+
 			DraggingForReorderPaletteGroup = -1;
 			DraggingForReorderPaletteItem = -1;
 			CurrentPaletteTab = PaletteTabType.BuiltIn;
@@ -110,10 +114,8 @@ namespace AngeliaFramework {
 				var chainType = chain.Type;
 				var atlasType = firstSprite.Atlas.Type;
 				if (atlasType != AtlasType.Background && atlasType != AtlasType.Level) continue;
-				if (chainType == GroupType.General) continue;
-				if (!SpritePool.TryGetValue(firstSprite.GlobalID, out var sprite)) continue;
 
-				string atlasName = sprite.Atlas.Name;
+				string atlasName = firstSprite.Atlas.Name;
 				if (!palGroupPool.TryGetValue(atlasName, out var palGroup)) {
 					palGroupPool.Add(atlasName, palGroup = new PaletteGroup() {
 						Items = new List<PaletteItem>(),
@@ -137,9 +139,11 @@ namespace AngeliaFramework {
 			for (int index = 0; index < spriteCount; index++) {
 				var sp = CellRenderer.GetSpriteAt(index);
 				int id = sp.GlobalID;
+
 				var atlasType = sp.Atlas.Type;
-				if (sp.GroupType != GroupType.General) continue;
 				if (atlasType != AtlasType.Background && atlasType != AtlasType.Level) continue;
+				if (sp.GroupType != GroupType.General) continue;
+
 				string atlasName = sp.Atlas.Name;
 				if (!palGroupPool.TryGetValue(atlasName, out var group)) {
 					palGroupPool.Add(atlasName, group = new PaletteGroup() {

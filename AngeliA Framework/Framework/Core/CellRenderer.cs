@@ -180,21 +180,6 @@ namespace AngeliaFramework {
 
 		// Const
 		public static readonly Cell EMPTY_CELL = new() { Sprite = null, TextSprite = null, };
-		private static readonly Byte4 WHITE = new(255, 255, 255, 255);
-		private static readonly int[] RENDER_CAPACITY = new int[RenderLayer.COUNT] {
-			256,	// Wallpaper 
-			8192,	// Behind 
-			4096,	// Shadow 
-			8192,	// Default 
-			256,	// Color 
-			128,	// Mult 
-			128,	// Add 
-			4096,	// UI 
-			256,	// TopUI 
-		};
-		private static readonly string[] LAYER_NAMES = new string[RenderLayer.COUNT] {
-			"Wallpaper", "Behind", "Shadow", "Default", "Color", "Mult", "Add", "UI", "TopUI",
-		};
 		private static readonly bool[] DEFAULT_PART_IGNORE = new bool[9] { false, false, false, false, false, false, false, false, false, };
 
 		// Api
@@ -212,10 +197,14 @@ namespace AngeliaFramework {
 
 		// Data
 		private static readonly Sheet BuiltInSheet = new();
+		private static readonly Sheet UserSheet = new();
 		private static readonly Cell[] Last9SlicedCells = new Cell[9];
 		private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
 		private static TextLayer[] TextLayers = new TextLayer[0];
 		private static bool IsDrawing = false;
+
+		// Saving
+		private static readonly SavingString UserSheetName = new("CellRenderer.UserSheetName", "");
 
 
 		#endregion
@@ -227,16 +216,13 @@ namespace AngeliaFramework {
 
 
 		// Init
-		[OnGameInitialize(int.MinValue)]
+		[OnGameInitialize(-4096)]
 		internal static void Initialize () {
-
-			// Load Built-in Sheet
-			LoadSheet(AngePath.SheetFilePath);
 
 			// Create Layers
 			for (int i = 0; i < RenderLayer.COUNT; i++) {
-				int capacity = RENDER_CAPACITY[i.Clamp(0, RENDER_CAPACITY.Length - 1)];
-				string name = LAYER_NAMES[i];
+				int capacity = RenderLayer.CAPACITY[i];
+				string name = RenderLayer.NAMES[i];
 				int order = i == RenderLayer.TOP_UI ? 2048 : i;
 				bool uiLayer = i == RenderLayer.UI || i == RenderLayer.TOP_UI;
 				Layers[i] = CreateLayer(name, uiLayer, order, capacity, textLayer: false);
@@ -260,6 +246,16 @@ namespace AngeliaFramework {
 				tLayer.TextSize = Game.GetFontSize(i).Clamp(42, int.MaxValue);
 				Game.OnTextLayerCreated(i, name, sortingOrder, TEXT_CAPACITY);
 			}
+
+			// Load Built-in Sheet
+			BuiltInSheet.LoadFromDisk(AngePath.SheetFilePath);
+
+			// Texture
+			var texture = Game.LoadTextureFromPNGFile(AngePath.BuiltInSheetTexturePath);
+			Game.SetBuiltInTextureForRenderer(texture);
+
+			// Load User Sheet
+			LoadUserSheet(UserSheetName.Value, forceLoad: true);
 
 			// Func
 			static Layer CreateLayer (string name, bool uiLayer, int sortingOrder, int renderCapacity, bool textLayer) {
@@ -356,7 +352,28 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public static void LoadSheet (string filePath) => BuiltInSheet.LoadFromDisk(filePath);
+		public static void LoadUserSheet (string name, bool forceLoad = false) {
+
+			string prevName = UserSheetName.Value;
+			UserSheetName.Value = name;
+			UserSheet.Clear();
+
+			if (string.IsNullOrEmpty(name)) return;
+			if (!forceLoad && name == prevName) return;
+			string sheetFilePath = Util.CombinePaths(AngePath.UserSheetRoot, name, AngePath.SHEET_NAME);
+			if (!Util.FileExists(sheetFilePath)) return;
+			string texturePath = Util.CombinePaths(AngePath.UserSheetRoot, name, AngePath.SHEET_TEXTURE_NAME);
+			if (!Util.FileExists(texturePath)) return;
+
+			// Load Sheet
+			UserSheet.LoadFromDisk(sheetFilePath);
+			UserSheet.ShiftUvToUserSpace();
+
+			// Texture
+			var texture = Game.LoadTextureFromPNGFile(texturePath);
+			Game.SetUserTextureForRenderer(texture);
+
+		}
 
 
 		// Layer
@@ -421,9 +438,9 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Cell Draw (int globalID, IRect rect, int z = int.MinValue) => Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, WHITE, z);
+		public static Cell Draw (int globalID, IRect rect, int z = int.MinValue) => Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, Const.WHITE, z);
 		public static Cell Draw (int globalID, IRect rect, Byte4 color, int z = int.MinValue) => Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
-		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID, x, y, pivotX, pivotY, rotation, width, height, WHITE, z);
+		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID, x, y, pivotX, pivotY, rotation, width, height, Const.WHITE, z);
 		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) {
 
 			if (!IsDrawing) return EMPTY_CELL;
@@ -507,11 +524,11 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Cell[] Draw_9Slice (int globalID, IRect rect) => Draw_9Slice(globalID, rect, WHITE);
+		public static Cell[] Draw_9Slice (int globalID, IRect rect) => Draw_9Slice(globalID, rect, Const.WHITE);
 		public static Cell[] Draw_9Slice (int globalID, IRect rect, Byte4 color, int z = int.MinValue) => Draw_9Slice(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
-		public static Cell[] Draw_9Slice (int globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => Draw_9Slice(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, WHITE, z);
+		public static Cell[] Draw_9Slice (int globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => Draw_9Slice(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, Const.WHITE, z);
 		public static Cell[] Draw_9Slice (int globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, Byte4 color, int z = int.MinValue) => Draw_9Slice(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, color, z);
-		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw_9Slice(globalID, x, y, pivotX, pivotY, rotation, width, height, WHITE, z);
+		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw_9Slice(globalID, x, y, pivotX, pivotY, rotation, width, height, Const.WHITE, z);
 		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) {
 			var border = TryGetSprite(globalID, out var sprite) ? sprite.GlobalBorder : default;
 			return Draw_9Slice(
@@ -521,7 +538,7 @@ namespace AngeliaFramework {
 				color, z
 			);
 		}
-		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => Draw_9Slice(globalID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, WHITE, z);
+		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => Draw_9Slice(globalID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, Const.WHITE, z);
 		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Byte4 color, int z = int.MinValue) => Draw_9Slice(globalID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z);
 		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Byte4 color, int z = int.MinValue) {
 
@@ -688,13 +705,13 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Cell DrawAnimation (int chainID, IRect globalRect, int frame, int loopStart = int.MinValue) => DrawAnimation(chainID, globalRect.x, globalRect.y, 0, 0, 0, globalRect.width, globalRect.height, frame, WHITE, loopStart);
-		public static Cell DrawAnimation (int chainID, int x, int y, int width, int height, int frame, int loopStart = int.MinValue) => DrawAnimation(chainID, x, y, 0, 0, 0, width, height, frame, WHITE, loopStart);
-		public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int loopStart = int.MinValue) => DrawAnimation(chainID, x, y, pivotX, pivotY, rotation, width, height, frame, WHITE, loopStart);
+		public static Cell DrawAnimation (int chainID, IRect globalRect, int frame, int loopStart = int.MinValue) => DrawAnimation(chainID, globalRect.x, globalRect.y, 0, 0, 0, globalRect.width, globalRect.height, frame, Const.WHITE, loopStart);
+		public static Cell DrawAnimation (int chainID, int x, int y, int width, int height, int frame, int loopStart = int.MinValue) => DrawAnimation(chainID, x, y, 0, 0, 0, width, height, frame, Const.WHITE, loopStart);
+		public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int loopStart = int.MinValue) => DrawAnimation(chainID, x, y, pivotX, pivotY, rotation, width, height, frame, Const.WHITE, loopStart);
 		public static Cell DrawAnimation (int chainID, IRect globalRect, int frame, Byte4 color, int loopStart = int.MinValue) => DrawAnimation(chainID, globalRect.x, globalRect.y, 0, 0, 0, globalRect.width, globalRect.height, frame, color, loopStart);
 		public static Cell DrawAnimation (int chainID, int x, int y, int width, int height, int frame, Byte4 color, int loopStart = int.MinValue) => DrawAnimation(chainID, x, y, 0, 0, 0, width, height, frame, color, loopStart);
 		public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, Byte4 color, int loopStart = int.MinValue) {
-			if (!BuiltInSheet.GroupPool.TryGetValue(chainID, out var group)) return EMPTY_CELL;
+			if (!TryGetSpriteGroup(chainID, out var group) || group.Type != GroupType.Animated) return EMPTY_CELL;
 			int localFrame = GetAnimationFrame(frame, group.Length, loopStart == int.MinValue ? group.LoopStart : loopStart);
 			var sprite = group[localFrame];
 			return Draw(sprite.GlobalID, x, y, pivotX, pivotY, rotation, width, height, color);
@@ -715,9 +732,12 @@ namespace AngeliaFramework {
 
 
 		// Sprite Data
-		public static bool TryGetSprite (int globalID, out AngeSprite sprite, bool ignoreAnimation = false) {
-			if (BuiltInSheet.SpritePool.TryGetValue(globalID, out sprite)) return true;
-			if (!ignoreAnimation && BuiltInSheet.GroupPool.TryGetValue(globalID, out var group) && group.Type == GroupType.Animated) {
+		public static bool TryGetSprite (int globalID, out AngeSprite sprite, bool ignoreAnimation = false) =>
+			(UserSheet.NotEmpty && TryGetSprite(UserSheet, globalID, out sprite, ignoreAnimation)) ||
+			TryGetSprite(BuiltInSheet, globalID, out sprite, ignoreAnimation);
+		public static bool TryGetSprite (Sheet sheet, int globalID, out AngeSprite sprite, bool ignoreAnimation = false) {
+			if (sheet.SpritePool.TryGetValue(globalID, out sprite)) return true;
+			if (!ignoreAnimation && sheet.GroupPool.TryGetValue(globalID, out var group) && group.Type == GroupType.Animated) {
 				int localFrame = GetAnimationFrame(Game.GlobalFrame, group.Length, group.LoopStart);
 				sprite = group[localFrame];
 				return true;
@@ -727,11 +747,12 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool HasSpriteGroup (int groupID) => HasSpriteGroup(groupID, out _);
+		public static bool HasSpriteGroup (int groupID) => (UserSheet.NotEmpty && HasSpriteGroup(UserSheet, groupID)) || HasSpriteGroup(BuiltInSheet, groupID);
+		public static bool HasSpriteGroup (Sheet sheet, int groupID) => sheet.GroupPool.ContainsKey(groupID);
 
-
-		public static bool HasSpriteGroup (int groupID, out int groupLength) {
-			if (BuiltInSheet.GroupPool.TryGetValue(groupID, out var values)) {
+		public static bool HasSpriteGroup (int groupID, out int groupLength) => (UserSheet.NotEmpty && HasSpriteGroup(UserSheet, groupID, out groupLength)) || HasSpriteGroup(BuiltInSheet, groupID, out groupLength);
+		public static bool HasSpriteGroup (Sheet sheet, int groupID, out int groupLength) {
+			if (sheet.GroupPool.TryGetValue(groupID, out var values)) {
 				groupLength = values.Length;
 				return true;
 			} else {
@@ -741,11 +762,15 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool TryGetSpriteGroup (int groupID, out SpriteGroup group) => BuiltInSheet.GroupPool.TryGetValue(groupID, out group);
+		public static bool TryGetSpriteGroup (int groupID, out SpriteGroup group) => (UserSheet.NotEmpty && TryGetSpriteGroup(UserSheet, groupID, out group)) || TryGetSpriteGroup(BuiltInSheet, groupID, out group);
+		public static bool TryGetSpriteGroup (Sheet sheet, int groupID, out SpriteGroup group) => sheet.GroupPool.TryGetValue(groupID, out group);
 
 
-		public static bool TryGetSpriteFromGroup (int groupID, int index, out AngeSprite sprite, bool loopIndex = true, bool clampIndex = true) {
-			if (BuiltInSheet.GroupPool.TryGetValue(groupID, out var sprites)) {
+		public static bool TryGetSpriteFromGroup (int groupID, int index, out AngeSprite sprite, bool loopIndex = true, bool clampIndex = true) =>
+			(UserSheet.NotEmpty && TryGetSpriteFromGroup(UserSheet, groupID, index, out sprite, loopIndex, clampIndex)) ||
+			TryGetSpriteFromGroup(BuiltInSheet, groupID, index, out sprite, loopIndex, clampIndex);
+		public static bool TryGetSpriteFromGroup (Sheet sheet, int groupID, int index, out AngeSprite sprite, bool loopIndex = true, bool clampIndex = true) {
+			if (sheet.GroupPool.TryGetValue(groupID, out var sprites)) {
 				if (loopIndex) index = index.UMod(sprites.Length);
 				if (clampIndex) index = index.Clamp(0, sprites.Length - 1);
 				if (index >= 0 && index < sprites.Length) {
@@ -755,11 +780,12 @@ namespace AngeliaFramework {
 					sprite = null;
 					return false;
 				}
-			} else return TryGetSprite(groupID, out sprite, ignoreAnimation: true);
+			} else return TryGetSprite(sheet, groupID, out sprite, ignoreAnimation: true);
 		}
 
 
-		public static bool HasSprite (int globalID) => BuiltInSheet.SpritePool.ContainsKey(globalID);
+		public static bool HasSprite (int globalID) => (UserSheet.NotEmpty && HasSprite(UserSheet, globalID)) || HasSprite(BuiltInSheet, globalID);
+		public static bool HasSprite (Sheet sheet, int globalID) => sheet.SpritePool.ContainsKey(globalID);
 
 
 		public static AngeSprite GetSpriteAt (int index) => index >= 0 && index < BuiltInSheet.Sprites.Length ? BuiltInSheet.Sprites[index] : null;

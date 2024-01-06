@@ -6,6 +6,8 @@ namespace AngeliaFramework {
 
 		public const string UNIVERSE_NAME = "Universe";
 		public const string COMBINATION_FILE_NAME = "Item Combination.txt";
+		public const string SHEET_NAME = "Sheet";
+		public const string SHEET_TEXTURE_NAME = "Texture.png";
 		public const int SAVE_SLOT_COUNT = 4;
 
 
@@ -40,17 +42,17 @@ namespace AngeliaFramework {
 		public static string UniverseRoot => _UniverseRoot ??= Util.CombinePaths(ApplicationDataPath, UNIVERSE_NAME);
 		private static string _UniverseRoot = null;
 
-		public static string SheetRoot => _SheetRoot ??= Util.CombinePaths(UniverseRoot, "Sheet");
+		public static string SheetRoot => _SheetRoot ??= Util.CombinePaths(UniverseRoot, SHEET_NAME);
 		private static string _SheetRoot = null;
 
-		public static string SheetFilePath => _SheetFilePath ??= Util.CombinePaths(SheetRoot, "Sheet");
+		public static string SheetFilePath => _SheetFilePath ??= Util.CombinePaths(SheetRoot, SHEET_NAME);
 		private static string _SheetFilePath = null;
 
 		public static string DialogueRoot => _DialogueRoot ??= Util.CombinePaths(UniverseRoot, "Dialogue");
 		private static string _DialogueRoot = null;
 
-		public static string SheetTexturePath => _SheetTexturePath ??= Util.CombinePaths(SheetRoot, "Texture.png");
-		private static string _SheetTexturePath = null;
+		public static string BuiltInSheetTexturePath => _BuiltInSheetTexturePath ??= Util.CombinePaths(SheetRoot, SHEET_TEXTURE_NAME);
+		private static string _BuiltInSheetTexturePath = null;
 
 		public static string MetaRoot => _MetaRoot ??= Util.CombinePaths(UniverseRoot, "Meta");
 		private static string _MetaRoot = null;

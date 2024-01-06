@@ -3,6 +3,7 @@ Shader "Angelia/Lerp"
 	Properties
 	{
 		[HideInInspector] _MainTex("Texture", 2D) = "white" {}
+		[HideInInspector] _UserTex("Texture", 2D) = "white" {}
 	}
 
 		SubShader
@@ -27,6 +28,7 @@ Shader "Angelia/Lerp"
 
 		#include "UnityCG.cginc"
 		sampler2D _MainTex;
+sampler2D _UserTex;
 
 		struct appdata
 		{
@@ -55,10 +57,21 @@ Shader "Angelia/Lerp"
 
 		fixed4 frag(v2f i) : SV_Target
 		{
-			fixed4 col = tex2D(_MainTex, i.uv);
-			half4 rgb = i.color;
-			rgb.a = col.a;
-			return lerp(rgb, col, i.color.a);
+    if (i.uv.x < 1)
+    {
+        fixed4 col = tex2D(_MainTex, i.uv);
+        half4 rgb = i.color;
+        rgb.a = col.a;
+        return lerp(rgb, col, i.color.a);
+    }
+    else
+    {
+        fixed4 col = tex2D(_UserTex, i.uv);
+        half4 rgb = i.color;
+        rgb.a = col.a;
+        return lerp(rgb, col, i.color.a);
+    }
+			
 		}
 	ENDCG
 	}

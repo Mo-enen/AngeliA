@@ -426,7 +426,7 @@ namespace AngeliaFramework {
 		public override void DrawParticle () {
 			CellRenderer.SetLayerToAdditive();
 			var tint = Tint;
-			tint.a = (byte)((Duration - LocalFrame) * Tint.a / 2 / Duration);
+			tint.a = (byte)((Duration - LocalFrame) * Tint.a / 2 / Duration).Clamp(0, 255);
 			CellRenderer.Draw_9Slice(SpriteID, Rect, tint, int.MaxValue);
 			CellRenderer.SetLayerToDefault();
 		}

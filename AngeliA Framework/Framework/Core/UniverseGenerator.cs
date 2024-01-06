@@ -155,7 +155,7 @@ namespace AngeliaFramework {
 			var textures = new TextureData[items.Count];
 			for (int i = 0; i < textures.Length; i++) {
 				var item = items[i];
-				textures[i] = new TextureData(item.Width, item.Height, item.Pixels);
+				textures[i] = new TextureData(item.Width, item.Height, item.Pixels, item.AtlasName);
 			}
 
 			var uvs = AngeliaRectPacking.Pack(out var sheetTextureData, textures, 16384);
@@ -207,7 +207,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Sheet CreateSpriteSheet (Byte4[] texturePixels, int textureWidth, int textureHeight, FlexSprite[] flexSprites) {
+		public static Sheet CreateSheet (Byte4[] texturePixels, int textureWidth, int textureHeight, FlexSprite[] flexSprites) {
 
 			if (textureWidth == 0 || textureHeight == 0) return null;
 

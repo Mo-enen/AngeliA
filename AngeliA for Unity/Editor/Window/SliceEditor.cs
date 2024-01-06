@@ -59,7 +59,7 @@ namespace AngeliaForUnity.Editor {
 			window.minSize = new Vector2(256, 256);
 			window.maxSize = new Vector2(1024, 1024);
 			window.AllAses.Clear();
-			foreach (var filePath in AngeEditorUtil.ForAllAsepriteFiles()) {
+			foreach (var filePath in AsepriteUtil.ForAllAsepriteFiles()) {
 				window.AllAses.Add(filePath);
 			}
 			window.CopyFlashTime = double.MinValue;

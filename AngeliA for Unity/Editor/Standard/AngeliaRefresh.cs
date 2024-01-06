@@ -58,7 +58,7 @@ namespace AngeliaForUnity.Editor {
 				}
 
 				// Check for Ase Files
-				foreach (var filePath in AngeEditorUtil.ForAllAsepriteFiles()) {
+				foreach (var filePath in AsepriteUtil.ForAllAsepriteFiles()) {
 					if (Util.GetFileModifyDate(filePath) > lastSyncTickValue) {
 						goto _Refresh_;
 					}
@@ -127,7 +127,15 @@ namespace AngeliaForUnity.Editor {
 					AngeUtil.CreateAngeFolders();
 
 					// Aseprite Files >> Flex Sprites & Texture
-					var tResults = AngeEditorUtil.AsepriteFiles_to_TextureResult();
+					var tResults = AsepriteUtil.CreateSprites(AsepriteUtil.ForAllAsepriteFiles().Select(
+						filePath => {
+							string result = EditorUtil.FixedRelativePath(filePath);
+							if (string.IsNullOrEmpty(result)) {
+								result = filePath;
+							}
+							return result;
+						}
+					).ToArray(), "#ignore");
 
 					// Combine Result Files
 					UniverseGenerator.CombineFlexTextures(
@@ -136,13 +144,13 @@ namespace AngeliaForUnity.Editor {
 					LastSpriteCount.Value = flexSprites.Length;
 
 					// Flex Sprites >> Sheet
-					var sheet = UniverseGenerator.CreateSpriteSheet(sheetTexturePixels, textureWidth, textureHeight, flexSprites);
+					var sheet = UniverseGenerator.CreateSheet(sheetTexturePixels, textureWidth, textureHeight, flexSprites);
 					sheet?.SaveToDisk(AngePath.SheetFilePath);
 
 					// Save Texture to File
 					var texture = Game.GetTextureFromPixels(sheetTexturePixels, textureWidth, textureHeight);
 					if (texture != null) {
-						Game.SaveTextureAsPNGFile(texture, AngePath.SheetTexturePath);
+						Game.SaveTextureAsPNGFile(texture, AngePath.BuiltInSheetTexturePath);
 					}
 
 					// Maps

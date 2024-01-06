@@ -33,7 +33,7 @@ namespace AngeliaFramework {
 		public override void OnActivated () {
 			base.OnActivated();
 			WorldSquad.Enable = false;
-			Stage.ClearStagedEntities();
+			Stage.DespawnAllEntitiesFromWorld();
 			if (Player.Selecting != null) Player.Selecting.Active = false;
 			Player.Selecting = null;
 		}

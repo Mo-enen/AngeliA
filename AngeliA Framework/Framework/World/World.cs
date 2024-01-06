@@ -88,8 +88,8 @@ namespace AngeliaFramework {
 
 
 		public static void ForAllEntities (string filePath, System.Action<int, int, int> callback) {
-			if (!Util.FileExists(filePath)) return;
 			lock (FILE_STREAMING_LOCK) {
+				if (!Util.FileExists(filePath)) return;
 				using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
 				using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
 				int SIZE = Const.MAP;

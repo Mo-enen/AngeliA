@@ -46,12 +46,13 @@ namespace AngeliaForUnity {
 		private static readonly int SKYBOX_TOP = Shader.PropertyToID("_ColorA");
 		private static readonly int SKYBOX_BOTTOM = Shader.PropertyToID("_ColorB");
 		private static readonly Shader SKYBOX_SHADER = Shader.Find("Angelia/Skybox");
+		private static readonly int MAIN_TEX_ID = Shader.PropertyToID("_MainTex");
+		private static readonly int USER_TEX_ID = Shader.PropertyToID("_UserTex");
 
 		// Data
 		private static readonly Color32[] CacheFillPixelsForMap = new Color32[Const.MAP * Const.MAP];
 		private RenderingLayerUnity[] RenderingLayers = new RenderingLayerUnity[0];
 		private RenderingLayerUnity[] RenderingTextLayers = new RenderingLayerUnity[0];
-		private Texture2D SheetTexture = null;
 		private Material Skybox = null;
 
 
@@ -67,7 +68,6 @@ namespace AngeliaForUnity {
 
 			var root = UnityCamera.transform;
 			root.DestroyAllChildrenImmediate();
-			SheetTexture = LoadTextureFromPNGFile(AngePath.SheetTexturePath) as Texture2D;
 			if (SKYBOX_SHADER != null) {
 				RenderSettings.skybox = Skybox = new Material(SKYBOX_SHADER);
 			}
@@ -143,7 +143,6 @@ namespace AngeliaForUnity {
 				UnityCamera.transform,
 				new Material(RENDERING_SHADERS[index]) {
 					name = name,
-					mainTexture = SheetTexture,
 					enableInstancing = true,
 					mainTextureOffset = Vector2.zero,
 					mainTextureScale = Vector2.one,
@@ -353,23 +352,33 @@ namespace AngeliaForUnity {
 			Skybox.SetColor(SKYBOX_BOTTOM, bottom.ToUnityColor());
 		}
 
-		protected override void _SetTextureForRenderer (object newTexture) {
-			var texture = newTexture as Texture2D;
+		protected override void _SetBuiltInTextureForRenderer (object texture) {
+			var builtIn = texture as Texture2D;
 			foreach (var layer in RenderingLayers) {
-				layer.Renderer.sharedMaterial.mainTexture = texture;
+				var mat = layer.Renderer.sharedMaterial;
+				mat.SetTexture(MAIN_TEX_ID, builtIn);
 			}
 		}
 
+		protected override void _SetUserTextureForRenderer (object texture) {
+			var user = texture as Texture2D;
+			foreach (var layer in RenderingLayers) {
+				var mat = layer.Renderer.sharedMaterial;
+				mat.SetTexture(USER_TEX_ID, user);
+			}
+		}
 
 		// Texture
 		protected override object _GetTextureFromPixels (Byte4[] pixels, int width, int height) {
 			if (width * height == 0) {
 				return new Texture2D(1, 1, TextureFormat.ARGB32, false) {
 					filterMode = FilterMode.Point,
+					wrapMode = TextureWrapMode.Repeat,
 				};
 			}
 			var texture = new Texture2D(width, height, TextureFormat.ARGB32, false) {
 				filterMode = FilterMode.Point,
+				wrapMode = TextureWrapMode.Repeat,
 			};
 			if (width * height != 0 && pixels != null && pixels.Length == width * height) {
 				texture.SetPixels32(pixels.ToUnity());
@@ -407,6 +416,7 @@ namespace AngeliaForUnity {
 			if (!Util.FileExists(path)) return null;
 			var texture = new Texture2D(1, 1, TextureFormat.ARGB32, false) {
 				filterMode = FilterMode.Point,
+				wrapMode = TextureWrapMode.Repeat,
 			};
 			texture.LoadImage(Util.FileToByte(path), false);
 			return texture;

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEditor;
 using AngeliaFramework;
-
+using System.IO;
 
 namespace AngeliaForUnity.Editor {
 	public class TaskResult {
@@ -14,7 +14,7 @@ namespace AngeliaForUnity.Editor {
 		public SpriteMetaData[] Sprites;
 	}
 
-	public partial class AsepriteToolbox_CoreOnly {
+	public partial class AsepriteUtil {
 
 		public static List<(TextureData data, UniverseGenerator.FlexSprite[] flexs)> CreateSprites (string[] assetPaths, string ignoreTag = "") {
 
@@ -38,10 +38,8 @@ namespace AngeliaForUnity.Editor {
 					string ex = Util.GetExtension(path);
 
 					// Ase Data
-					AseData data = null;
-					if (ex == ".ase" || ex == ".aseprite") {
-						data = AseData.CreateFromBytes(Util.FileToByte(fullPath));
-					}
+					var data = AseData.CreateFromBytes(Util.FileToByte(fullPath));
+
 					if (data != null || data.FrameDatas == null || data.FrameDatas.Count == 0 || data.FrameDatas[0].Chunks == null) {
 
 						bool hasSlice = false;
@@ -54,14 +52,15 @@ namespace AngeliaForUnity.Editor {
 						if (!hasSlice) continue;
 
 						// Result
-						AngeEditorUtil.GetAsepriteSheetInfo(data, out _, out _, out var pivotX, out var pivotY);
+						GetAsepriteSheetInfo(
+							data, out int sheetZ, out var atlasType, out var pivotX, out var pivotY
+						);
 						var result = CreateResult(data, new Vector2(
 							pivotX.HasValue ? pivotX.Value / 1000f : 0.5f,
 							pivotY.HasValue ? pivotY.Value / 1000f : 0.5f
 						), ignoreTag);
 
 						// File
-						AngeEditorUtil.GetAsepriteSheetInfo(data, out int sheetZ, out var atlasType, out _, out _);
 						MakeFiles(result, name, sheetZ, atlasType, out var tResult, out var flexSprites);
 						textureResults.Add((tResult, flexSprites));
 
@@ -82,12 +81,30 @@ namespace AngeliaForUnity.Editor {
 			return textureResults;
 		}
 
+		public static IEnumerable<string> ForAllAsepriteFiles (string ignoreKeyword = "#ignore") {
+			// Packages
+			foreach (string package in EditorUtil.ForAllPackages()) {
+				var packageRoot = Path.GetFullPath(package);
+				foreach (var filePath in Util.EnumerateFiles(packageRoot, false, "*.ase", "*.aseprite")) {
+					string fileName = Util.GetNameWithExtension(filePath);
+					if (fileName.IndexOf(ignoreKeyword, System.StringComparison.OrdinalIgnoreCase) >= 0) continue;
+					yield return filePath;
+				}
+			}
+			// Assets
+			foreach (var filePath in Util.EnumerateFiles("Assets", false, "*.ase", "*.aseprite")) {
+				string fileName = Util.GetNameWithExtension(filePath);
+				if (fileName.IndexOf(ignoreKeyword, System.StringComparison.OrdinalIgnoreCase) >= 0) continue;
+				yield return filePath;
+			}
+		}
+
 		private static void MakeFiles (TaskResult result, string AseName, int sheetZ, AtlasType atlasType, out TextureData TextureResult, out UniverseGenerator.FlexSprite[] SpriteResults) {
 			TextureResult = null;
 			SpriteResults = null;
 			if (result == null) return;
 			// Texture Result
-			TextureResult = new TextureData(result.Width, result.Height, result.Pixels);
+			TextureResult = new TextureData(result.Width, result.Height, result.Pixels, AseName);
 			// Get Sprites
 			var metas = result.Sprites;
 			var flexs = new UniverseGenerator.FlexSprite[metas.Length];
@@ -180,6 +197,84 @@ namespace AngeliaForUnity.Editor {
 				return new();
 			}
 
+		}
+
+		private static void GetAsepriteSheetInfo (AseData ase, out int z, out AtlasType type, out int? pivotX, out int? pivotY) {
+			var oic = System.StringComparison.OrdinalIgnoreCase;
+			var sheetType = AtlasType.General;
+			int? sheetZ = null;
+			int? _pivotX = null;
+			int? _pivotY = null;
+			ase.ForAllChunks<AseData.LayerChunk>((layer, _, _) => {
+
+				if (
+					sheetType != AtlasType.General &&
+					sheetZ.HasValue &&
+					_pivotX.HasValue &&
+					_pivotY.HasValue
+				) return;
+
+				if (!layer.Name.StartsWith("@meta", oic)) return;
+
+				// Sheet Type
+				sheetType =
+					layer.Name.Contains("#level", System.StringComparison.OrdinalIgnoreCase) ? AtlasType.Level :
+					layer.Name.Contains("#background", System.StringComparison.OrdinalIgnoreCase) ? AtlasType.Background :
+					sheetType;
+
+				// Z
+				if (layer.Name.Contains("#z=min", oic)) {
+					sheetZ = int.MinValue / 1024 + 1;
+				} else if (layer.Name.Contains("#z=max", oic)) {
+					sheetZ = int.MaxValue / 1024 - 1;
+				} else {
+					int zIndex = layer.Name.IndexOf("#z=", oic);
+					if (zIndex >= 0 && zIndex + 3 < layer.Name.Length) {
+						zIndex += 3;
+						int end;
+						for (end = zIndex; end < layer.Name.Length; end++) {
+							char c = layer.Name[end];
+							if (c != '-' && (c < '0' || c > '9')) break;
+						}
+						if (zIndex != end && int.TryParse(layer.Name[zIndex..end], out int _z)) {
+							sheetZ = _z;
+						}
+					}
+				}
+
+				// Pivot
+				{
+					int pIndexX = layer.Name.IndexOf("#pivotX=", oic);
+					if (pIndexX >= 0 && pIndexX + 8 < layer.Name.Length) {
+						pIndexX += 8;
+						int end;
+						for (end = pIndexX; end < layer.Name.Length; end++) {
+							char c = layer.Name[end];
+							if (c != '-' && (c < '0' || c > '9')) break;
+						}
+						if (pIndexX != end && int.TryParse(layer.Name[pIndexX..end], out int _px)) {
+							_pivotX = _px;
+						}
+					}
+					int pIndexY = layer.Name.IndexOf("#pivotY=", oic);
+					if (pIndexY >= 0 && pIndexY + 8 < layer.Name.Length) {
+						pIndexY += 8;
+						int end;
+						for (end = pIndexY; end < layer.Name.Length; end++) {
+							char c = layer.Name[end];
+							if (c != '-' && (c < '0' || c > '9')) break;
+						}
+						if (pIndexY != end && int.TryParse(layer.Name[pIndexY..end], out int _py)) {
+							_pivotY = _py;
+						}
+					}
+				}
+
+			});
+			type = sheetType;
+			z = sheetZ ?? 0;
+			pivotX = _pivotX;
+			pivotY = _pivotY;
 		}
 
 	}
