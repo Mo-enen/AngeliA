@@ -48,7 +48,6 @@ namespace AngeliaFramework {
 		}
 
 
-
 		private class PackingItem {
 			public int Width;
 			public int Height;
@@ -267,10 +266,6 @@ namespace AngeliaFramework {
 				float uvMaxY = flex.Rect.yMax / textureHeight;
 				var newSprite = new AngeSprite() {
 					GlobalID = globalID,
-					//UvBottomLeft = new(uvMinX, uvMinY),
-					//UvTopRight = new(uvMaxX, uvMaxY),
-					//UvBottomRight = new(uvMaxX, uvMinY),
-					//UvTopLeft = new(uvMinX, uvMaxY),
 					GlobalWidth = globalWidth,
 					GlobalHeight = globalHeight,
 					UvBorder = uvBorder,// ldru
