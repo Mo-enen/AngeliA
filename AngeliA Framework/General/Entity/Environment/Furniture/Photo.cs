@@ -19,7 +19,7 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate () {
 			if (CellRenderer.TryGetSpriteFromGroup(TypeID, PhotoIndex, out var sprite, true, false)) {
-				var cell = CellRenderer.Draw(sprite.GlobalID, RenderingRect);
+				var cell = CellRenderer.Draw(sprite, RenderingRect);
 				if ((this as IActionTarget).IsHighlighted) {
 					BlinkCellAsFurniture(cell);
 				}

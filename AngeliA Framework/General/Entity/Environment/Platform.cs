@@ -145,7 +145,7 @@ namespace AngeliaFramework {
 				_ => 0,
 			};
 			if (CellRenderer.TryGetSpriteFromGroup(TypeID, index, out var sprite, false, true)) {
-				CellRenderer.Draw(sprite.GlobalID, Rect);
+				CellRenderer.Draw(sprite, Rect);
 			}
 		}
 

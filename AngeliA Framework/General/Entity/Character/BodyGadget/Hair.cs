@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AngeliaFramework {
 
 
-
+	[RequireSprite("{0}.BraidL", "{0}.BraidR")]
 	public abstract class BraidHair : Hair {
 
 		private static readonly Cell[] SINGLE_CELL = new Cell[] { new Cell() };
@@ -164,10 +164,10 @@ namespace AngeliaFramework {
 				}
 				if (!allowLimbRotate) px = 1000 - px;
 				if (sprite.GlobalBorder.IsZero) {
-					SINGLE_CELL[0] = CellRenderer.Draw(spriteID, x, y, px, py, rot, width, height, z);
+					SINGLE_CELL[0] = CellRenderer.Draw(sprite, x, y, px, py, rot, width, height, z);
 					return SINGLE_CELL;
 				} else {
-					return CellRenderer.Draw_9Slice(spriteID, x, y, px, py, rot, width, height, z);
+					return CellRenderer.Draw_9Slice(sprite, x, y, px, py, rot, width, height, z);
 				}
 			}
 			static void TwistRotateHair (PoseCharacter character, Cell[] cells, bool isRight) {
@@ -213,6 +213,7 @@ namespace AngeliaFramework {
 	}
 
 
+	[RequireSprite("{0}.HairFFL", "{0}.HairFFR", "{0}.HairFB", "{0}.HairBF")]
 	public abstract class Hair : BodyGadget {
 
 
@@ -318,7 +319,7 @@ namespace AngeliaFramework {
 
 				// Draw Hair
 				return CellRenderer.Draw_9Slice(
-					hairSprite.GlobalID,
+					hairSprite,
 					hairRect.CenterX(), hairRect.y + hairRect.height,
 					500, 1000, 0,
 					hairRect.width, hairRect.height,

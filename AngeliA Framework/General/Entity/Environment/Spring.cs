@@ -99,7 +99,7 @@ namespace AngeliaFramework {
 			int frame = CurrentArtworkFrame.UMod(BOUNCE_ANI.Length);
 			if (CellRenderer.TryGetSpriteFromGroup(TypeID, BOUNCE_ANI[frame], out var sprite, false, true)) {
 				CellRenderer.Draw(
-					sprite.GlobalID,
+					sprite,
 					X + Const.HALF, Y,
 					500, 0, 0,
 					Const.CEL, Const.CEL, Const.WHITE

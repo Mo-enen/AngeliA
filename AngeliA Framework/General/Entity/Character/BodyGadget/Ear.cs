@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+	[RequireSprite("{0}.EarL", "{0}.EarR", "{0}.EarLB", "{0}.EarRB")]
 	public abstract class Ear : BodyGadget {
 
 
@@ -157,7 +158,7 @@ namespace AngeliaFramework {
 			// Draw
 			if (CellRenderer.TryGetSprite(leftEarID, out var earSpriteL)) {
 				var cell = CellRenderer.Draw(
-					earSpriteL.GlobalID,
+					earSpriteL,
 					headRect.x + shiftL.x + offsetX,
 					(flipY ? headRect.y : headRect.yMax) + shiftL.y,
 					earSpriteL.PivotX, earSpriteL.PivotY, -rotL,
@@ -172,7 +173,7 @@ namespace AngeliaFramework {
 			}
 			if (CellRenderer.TryGetSprite(rightEarID, out var earSpriteR)) {
 				var cell = CellRenderer.Draw(
-					earSpriteR.GlobalID,
+					earSpriteR,
 					headRect.xMax + shiftR.x + offsetX,
 					(flipY ? headRect.y : headRect.yMax) + shiftR.y,
 					earSpriteR.PivotX, earSpriteR.PivotY, rotR,

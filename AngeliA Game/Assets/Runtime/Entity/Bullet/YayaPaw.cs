@@ -36,7 +36,7 @@ namespace AngeliaGame {
 			// Paw
 			if (CellRenderer.TryGetSpriteFromGroup(TypeID, spriteFrame, out var sprite, false, true)) {
 				CellRenderer.Draw(
-					sprite.GlobalID,
+					sprite,
 					X + Width / 2 + (facingRight ? PAW_X[localFrame] : -PAW_X[localFrame]),
 					Y + PAW_Y[localFrame],
 					500, 0, facingRight ? rot : -rot,

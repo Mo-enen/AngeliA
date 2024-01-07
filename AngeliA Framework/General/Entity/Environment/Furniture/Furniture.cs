@@ -83,7 +83,7 @@ namespace AngeliaFramework {
 			if (Pose == FittingPose.Unknown) return;
 			var sprite = GetSpriteFromPose();
 			if (sprite != null) {
-				var cell = CellRenderer.Draw(sprite.GlobalID, RenderingRect);
+				var cell = CellRenderer.Draw(sprite, RenderingRect);
 				if ((this as IActionTarget).IsHighlighted) {
 					BlinkCellAsFurniture(cell);
 				}

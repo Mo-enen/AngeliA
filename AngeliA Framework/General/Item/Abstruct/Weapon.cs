@@ -257,7 +257,7 @@ namespace AngeliaFramework {
 		}
 
 		protected virtual Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) => CellRenderer.Draw(
-			sprite.GlobalID,
+			sprite,
 			x, y,
 			sprite.PivotX, sprite.PivotY, grabRotation,
 			width * grabScale / 1000,

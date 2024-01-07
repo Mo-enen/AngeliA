@@ -53,14 +53,14 @@ namespace AngeliaFramework {
 			if (!Rolling) {
 				// Normal
 				if (CellRenderer.TryGetSpriteFromGroup(TypeID, 0, out var sprite, false, true)) {
-					CellRenderer.Draw(sprite.GlobalID, Rect);
+					CellRenderer.Draw(sprite, Rect);
 				}
 			} else {
 				// Rolling
 				if (CellRenderer.TryGetSpriteFromGroup(TypeID, 1, out var sprite, false, true)) {
 					RollingRotation += RollingSpeed;
 					CellRenderer.Draw(
-						sprite.GlobalID, X + Width / 2, Y + Height / 2, 500, 500, RollingRotation, Width, Height
+						sprite, X + Width / 2, Y + Height / 2, 500, 500, RollingRotation, Width, Height
 					);
 				}
 			}

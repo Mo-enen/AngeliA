@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+	[RequireSprite("{0}.Tail")]
 	public abstract class Tail : BodyGadget {
 
 
@@ -157,9 +158,9 @@ namespace AngeliaFramework {
 
 				// Draw
 				if (sprite.GlobalBorder.IsZero) {
-					CellRenderer.Draw(sprite.GlobalID, x + offsetX, y + offsetY, px, py, r, w, h, z);
+					CellRenderer.Draw(sprite, x + offsetX, y + offsetY, px, py, r, w, h, z);
 				} else {
-					CellRenderer.Draw_9Slice(sprite.GlobalID, x + offsetX, y + offsetY, px, py, r, w, h, z);
+					CellRenderer.Draw_9Slice(sprite, x + offsetX, y + offsetY, px, py, r, w, h, z);
 				}
 
 				// to Next

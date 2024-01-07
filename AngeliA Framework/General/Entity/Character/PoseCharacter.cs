@@ -14,6 +14,7 @@ namespace AngeliaFramework {
 	}
 
 
+	[RequireSprite("{0}.Head 0", "{0}.Head 1", "{0}.Body", "{0}.Foot", "{0}.Hand", "{0}.Hip", "{0}.LowerArm", "{0}.LowerLeg", "{0}.Shoulder", "{0}.UpperArm", "{0}.UpperLeg")]
 	public abstract class PoseCharacter : Character {
 
 
@@ -584,13 +585,9 @@ namespace AngeliaFramework {
 			// Draw
 			foreach (var bodyPart in BodyParts) {
 				if (bodyPart.ID == 0 || bodyPart.IsFullCovered) continue;
-				int id = bodyPart.ID;
-				if (bodyPart == Head && CellRenderer.TryGetSpriteFromGroup(id, Head.FrontSide ? 0 : 1, out var headSprite, false, true)) {
-					id = headSprite.GlobalID;
-				}
-				if (bodyPart == Body && !bodyPart.Border.IsZero) {
-					CellRenderer.Draw_9Slice(
-						id,
+				if (bodyPart == Head && CellRenderer.TryGetSpriteFromGroup(bodyPart.ID, Head.FrontSide ? 0 : 1, out var headSprite, false, true)) {
+					CellRenderer.Draw(
+						headSprite,
 						X + PoseRootX + bodyPart.X,
 						Y + PoseRootY + bodyPart.Y,
 						bodyPart.PivotX, bodyPart.PivotY, bodyPart.Rotation, bodyPart.Width, bodyPart.Height,
@@ -598,13 +595,14 @@ namespace AngeliaFramework {
 					);
 				} else {
 					CellRenderer.Draw(
-						id,
+						bodyPart.ID,
 						X + PoseRootX + bodyPart.X,
 						Y + PoseRootY + bodyPart.Y,
 						bodyPart.PivotX, bodyPart.PivotY, bodyPart.Rotation, bodyPart.Width, bodyPart.Height,
 						bodyPart.Tint, bodyPart.Z
 					);
 				}
+
 			}
 
 			// Z Offset

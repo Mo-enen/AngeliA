@@ -169,13 +169,9 @@ namespace AngeliaFramework {
 
 		public MapEditor () {
 			UndoRedo = new(128, OnUndoRedoPerformed, OnUndoRedoPerformed);
-			InitializedFrame = Game.GlobalFrame;
 			EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(
 				Game.IsEdittime ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot
 			);
-			Initialize_Pool();
-			Initialize_Palette();
-			Initialize_Nav();
 		}
 
 
@@ -279,7 +275,13 @@ namespace AngeliaFramework {
 		// Active
 		public override void OnActivated () {
 			base.OnActivated();
-
+			// Init
+			if (InitializedFrame < 0) {
+				InitializedFrame = Game.GlobalFrame;
+				Initialize_Pool();
+				Initialize_Palette();
+				Initialize_Nav();
+			}
 			// Cache
 			PastingBuffer.Clear();
 			CopyBuffer.Clear();

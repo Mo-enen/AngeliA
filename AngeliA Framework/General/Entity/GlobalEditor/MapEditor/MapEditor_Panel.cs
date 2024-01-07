@@ -371,7 +371,7 @@ namespace AngeliaFramework {
 				// Cover
 				if (CellRenderer.TryGetSprite(coverID, out var coverSprite)) {
 					CellRenderer.Draw(
-						coverID,
+						coverSprite,
 						rect.Shrink(BUTTON_BORDER).Shift(0, selecting ? buttonDownShiftY : 0).Fit(coverSprite),
 						selecting ? Const.GREY_196 : Const.WHITE,
 						PANEL_Z - 3

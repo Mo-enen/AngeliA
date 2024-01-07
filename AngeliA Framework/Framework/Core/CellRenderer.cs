@@ -441,10 +441,13 @@ namespace AngeliaFramework {
 		public static Cell Draw (int globalID, IRect rect, int z = int.MinValue) => Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, Const.WHITE, z);
 		public static Cell Draw (int globalID, IRect rect, Byte4 color, int z = int.MinValue) => Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
 		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID, x, y, pivotX, pivotY, rotation, width, height, Const.WHITE, z);
-		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) {
+		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) => TryGetSprite(globalID, out var sprite) ? Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, color, z) : EMPTY_CELL;
+		public static Cell Draw (AngeSprite sprite, IRect rect, int z = int.MinValue) => Draw(sprite, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, Const.WHITE, z);
+		public static Cell Draw (AngeSprite sprite, IRect rect, Byte4 color, int z = int.MinValue) => Draw(sprite, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
+		public static Cell Draw (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, Const.WHITE, z);
+		public static Cell Draw (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) {
 
-			if (!IsDrawing) return EMPTY_CELL;
-			if (!TryGetSprite(globalID, out var sprite)) return EMPTY_CELL;
+			if (!IsDrawing || sprite == null) return EMPTY_CELL;
 
 			var layer = Layers[CurrentLayerIndex.Clamp(0, Layers.Length - 1)];
 			if (Game.IsPausing && !layer.UiLayer) return EMPTY_CELL;
@@ -483,10 +486,12 @@ namespace AngeliaFramework {
 			if (layer.FocusedCell >= layer.CellCount) {
 				layer.FocusedCell = -1;
 			}
-			LastDrawnID = globalID;
+			LastDrawnID = sprite.GlobalID;
 			return cell;
 		}
-		public static Cell DrawForText (int globalID, int x, int y, int width, int height, Byte4 color) {
+
+
+		public static Cell DrawChar (int globalID, int x, int y, int width, int height, Byte4 color) {
 
 			if (!IsDrawing) return EMPTY_CELL;
 
@@ -532,7 +537,7 @@ namespace AngeliaFramework {
 		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) {
 			var border = TryGetSprite(globalID, out var sprite) ? sprite.GlobalBorder : default;
 			return Draw_9Slice(
-				globalID, x, y, pivotX, pivotY, rotation, width, height,
+				sprite, x, y, pivotX, pivotY, rotation, width, height,
 				border.left, border.right,
 				border.down, border.up,
 				color, z
@@ -541,13 +546,32 @@ namespace AngeliaFramework {
 		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => Draw_9Slice(globalID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, Const.WHITE, z);
 		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Byte4 color, int z = int.MinValue) => Draw_9Slice(globalID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z);
 		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Byte4 color, int z = int.MinValue) {
+			TryGetSprite(globalID, out var sprite);
+			return Draw_9Slice(sprite, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, partIgnore, color, z);
+		}
+		public static Cell[] Draw_9Slice (AngeSprite sprite, IRect rect) => Draw_9Slice(sprite, rect, Const.WHITE);
+		public static Cell[] Draw_9Slice (AngeSprite sprite, IRect rect, Byte4 color, int z = int.MinValue) => Draw_9Slice(sprite, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
+		public static Cell[] Draw_9Slice (AngeSprite sprite, IRect rect, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => Draw_9Slice(sprite, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, Const.WHITE, z);
+		public static Cell[] Draw_9Slice (AngeSprite sprite, IRect rect, int borderL, int borderR, int borderD, int borderU, Byte4 color, int z = int.MinValue) => Draw_9Slice(sprite, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, color, z);
+		public static Cell[] Draw_9Slice (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw_9Slice(sprite, x, y, pivotX, pivotY, rotation, width, height, Const.WHITE, z);
+		public static Cell[] Draw_9Slice (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) {
+			return Draw_9Slice(
+				sprite, x, y, pivotX, pivotY, rotation, width, height,
+				sprite.GlobalBorder.left, sprite.GlobalBorder.right,
+				sprite.GlobalBorder.down, sprite.GlobalBorder.up,
+				color, z
+			);
+		}
+		public static Cell[] Draw_9Slice (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => Draw_9Slice(sprite, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, Const.WHITE, z);
+		public static Cell[] Draw_9Slice (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Byte4 color, int z = int.MinValue) => Draw_9Slice(sprite, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z);
+		public static Cell[] Draw_9Slice (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Byte4 color, int z = int.MinValue) {
 
 			Last9SlicedCells[0] = Last9SlicedCells[1] = Last9SlicedCells[2] = EMPTY_CELL;
 			Last9SlicedCells[3] = Last9SlicedCells[4] = Last9SlicedCells[5] = EMPTY_CELL;
 			Last9SlicedCells[6] = Last9SlicedCells[7] = Last9SlicedCells[8] = EMPTY_CELL;
 
 			// Original Size
-			if (width != 0 && height != 0 && TryGetSprite(globalID, out var sprite)) {
+			if (sprite != null && width != 0 && height != 0) {
 				if (width == Const.ORIGINAL_SIZE) {
 					width = sprite.GlobalWidth;
 				} else if (width == Const.ORIGINAL_SIZE_NEGATAVE) {
@@ -585,7 +609,7 @@ namespace AngeliaFramework {
 				// TL
 				if (hasL && !partIgnore[0]) {
 					var cell = Draw(
-						globalID, x, y, 0, 0,
+						sprite, x, y, 0, 0,
 						rotation, borderL, borderU, color
 					);
 					cell.BorderSide = Alignment.TopLeft;
@@ -596,7 +620,7 @@ namespace AngeliaFramework {
 				// TM
 				if (hasM && !partIgnore[1]) {
 					var cell = Draw(
-						globalID, x, y, 0, 0,
+						sprite, x, y, 0, 0,
 						rotation, mWidth, borderU, color
 					);
 					cell.BorderSide = Alignment.TopMid;
@@ -607,7 +631,7 @@ namespace AngeliaFramework {
 				// TR
 				if (hasR && !partIgnore[2]) {
 					var cell = Draw(
-						globalID, x, y, 0, 0,
+						sprite, x, y, 0, 0,
 						rotation, borderR, borderU, color
 					);
 					cell.PivotX = _px2;
@@ -621,7 +645,7 @@ namespace AngeliaFramework {
 				// ML
 				if (hasL && !partIgnore[3]) {
 					var cell = Draw(
-						globalID, x, y, 0, 0,
+						sprite, x, y, 0, 0,
 						rotation, borderL, mHeight, color
 					);
 					cell.BorderSide = Alignment.MidLeft;
@@ -632,7 +656,7 @@ namespace AngeliaFramework {
 				// MM
 				if (hasM && !partIgnore[4]) {
 					var cell = Draw(
-						globalID, x, y, 0, 0,
+						sprite, x, y, 0, 0,
 						rotation, mWidth, mHeight, color
 					);
 					cell.BorderSide = Alignment.MidMid;
@@ -643,7 +667,7 @@ namespace AngeliaFramework {
 				// MR
 				if (hasR && !partIgnore[5]) {
 					var cell = Draw(
-						globalID, x, y, 0, 0,
+						sprite, x, y, 0, 0,
 						rotation, borderR, mHeight, color
 					);
 					cell.BorderSide = Alignment.MidRight;
@@ -657,7 +681,7 @@ namespace AngeliaFramework {
 				// DL
 				if (hasL && !partIgnore[6]) {
 					var cell = Draw(
-						globalID, x, y, 0, 0,
+						sprite, x, y, 0, 0,
 						rotation, borderL, borderD, color
 					);
 					cell.BorderSide = Alignment.BottomLeft;
@@ -668,7 +692,7 @@ namespace AngeliaFramework {
 				// DM
 				if (hasM && !partIgnore[7]) {
 					var cell = Draw(
-						globalID, x, y, 0, 0,
+						sprite, x, y, 0, 0,
 						rotation, mWidth, borderD, color
 					);
 					cell.BorderSide = Alignment.BottomMid;
@@ -679,7 +703,7 @@ namespace AngeliaFramework {
 				// DR
 				if (hasR && !partIgnore[8]) {
 					var cell = Draw(
-						globalID, x, y, 0, 0,
+						sprite, x, y, 0, 0,
 						rotation, borderR, borderD, color
 					);
 					cell.BorderSide = Alignment.BottomRight;
@@ -714,7 +738,7 @@ namespace AngeliaFramework {
 			if (!TryGetSpriteGroup(chainID, out var group) || group.Type != GroupType.Animated) return EMPTY_CELL;
 			int localFrame = GetAnimationFrame(frame, group.Length, loopStart == int.MinValue ? group.LoopStart : loopStart);
 			var sprite = group[localFrame];
-			return Draw(sprite.GlobalID, x, y, pivotX, pivotY, rotation, width, height, color);
+			return Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, color);
 		}
 
 

@@ -302,7 +302,7 @@ namespace AngeliaFramework {
 			}
 			if (sprite == null) return;
 			if (shrink) rect = rect.Shrink(rect.width * 2 / 10);
-			CellRenderer.Draw(sprite.GlobalID, rect.Fit(sprite, sprite.PivotX, sprite.PivotY), GIZMOS_Z - 2);
+			CellRenderer.Draw(sprite, rect.Fit(sprite, sprite.PivotX, sprite.PivotY), GIZMOS_Z - 2);
 		}
 
 

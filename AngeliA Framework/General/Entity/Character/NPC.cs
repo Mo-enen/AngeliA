@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 	[EntityAttribute.Capacity(8)]
+	[Atlas("NPC")]
 	public abstract class NPC : PoseCharacter, IDamageReceiver {
 
 

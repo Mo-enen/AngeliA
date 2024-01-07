@@ -186,7 +186,7 @@ namespace AngeliaFramework {
 				int rot = headSprite.IsTrigger ?
 					new Float2(point.x - headPos.x, point.y - headPos.y).GetRotation() : 0;
 				CellRenderer.Draw(
-					headSprite.GlobalID, headPos.x, headPos.y,
+					headSprite, headPos.x, headPos.y,
 					headSprite.PivotX, headSprite.PivotY, rot,
 					headSprite.GlobalWidth * scale / 1000,
 					headSprite.GlobalHeight * scale.Abs() / 1000,
@@ -200,7 +200,7 @@ namespace AngeliaFramework {
 				for (int i = 0; i < chainCount; i++) {
 					if (CellRenderer.TryGetSpriteFromGroup(SpriteIdChain, i, out var chainSprite, false, true)) {
 						CellRenderer.Draw(
-							chainSprite.GlobalID,
+							chainSprite,
 							Util.RemapUnclamped(-1, chainCount, point.x, headPos.x, i),
 							Util.RemapUnclamped(-1, chainCount, point.y, headPos.y, i),
 							500, 500, rot,
@@ -247,7 +247,7 @@ namespace AngeliaFramework {
 				if (CellRenderer.TryGetSpriteFromGroup(SpriteIdAttack, localFrame, out var attackSprite, false, true)) {
 					cell.Color = Const.CLEAR;
 					CellRenderer.Draw(
-						attackSprite.GlobalID,
+						attackSprite,
 						cell.X, cell.Y, attackSprite.PivotX, attackSprite.PivotY, cell.Rotation,
 						attackSprite.GlobalWidth,
 						character.FacingRight ? attackSprite.GlobalHeight : -attackSprite.GlobalHeight,

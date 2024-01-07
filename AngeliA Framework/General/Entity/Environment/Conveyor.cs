@@ -105,7 +105,7 @@ namespace AngeliaFramework {
 					_ => 0,
 				}, aFrame, out var sprite, true, true
 			)) {
-				CellRenderer.Draw(sprite.GlobalID, base.Rect);
+				CellRenderer.Draw(sprite, base.Rect);
 			}
 		}
 

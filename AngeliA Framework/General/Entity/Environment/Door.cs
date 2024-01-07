@@ -80,7 +80,7 @@ namespace AngeliaFramework {
 
 			// Draw
 			var cell = CellRenderer.Draw(
-				sprite.GlobalID, X + Width / 2, Y, 500, 0, 0,
+				sprite, X + Width / 2, Y, 500, 0, 0,
 				Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE
 			);
 

@@ -38,9 +38,9 @@ namespace AngeliaFramework {
 			if (CellRenderer.TryGetSpriteFromGroup(TypeID, 0, out var sprite, false, true)) {
 				var rect = Rect.Expand(ColliderBorder);
 				if (DockedToRight.HasValue && DockedToRight.Value) {
-					CellRenderer.Draw(sprite.GlobalID, rect);
+					CellRenderer.Draw(sprite, rect);
 				} else {
-					CellRenderer.Draw(sprite.GlobalID, rect.CenterX(), rect.y, 500, 0, 0, -rect.width, rect.height);
+					CellRenderer.Draw(sprite, rect.CenterX(), rect.y, 500, 0, 0, -rect.width, rect.height);
 				}
 			}
 		}

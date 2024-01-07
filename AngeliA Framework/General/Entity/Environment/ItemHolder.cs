@@ -90,7 +90,7 @@ namespace AngeliaFramework {
 			);
 			byte rgb = (byte)Util.RemapUnclamped(0, 120, 225, 255, Game.GlobalFrame.PingPong(120));
 			var cell = CellRenderer.Draw(
-				CellRenderer.HasSprite(ItemID) ? ItemID : Const.PIXEL,
+				ItemID,
 				rect,
 				new Byte4(rgb, rgb, rgb, 255)
 			);

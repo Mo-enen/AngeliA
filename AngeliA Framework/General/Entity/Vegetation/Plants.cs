@@ -62,15 +62,19 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
-			int id = TypeID;
 			if (ArtworkIndex >= 0 && CellRenderer.TryGetSpriteFromGroup(TypeID, ArtworkIndex, out var sprite, true)) {
-				id = sprite.GlobalID;
+				CellRenderer.Draw(
+					sprite, X + Width / 2, Y,
+					500, 0, 0,
+					Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE
+				);
+			} else {
+				CellRenderer.Draw(
+					TypeID, X + Width / 2, Y,
+					500, 0, 0,
+					Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE
+				);
 			}
-			CellRenderer.Draw(
-				id, X + Width / 2, Y,
-				500, 0, 0,
-				Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE
-			);
 
 		}
 

@@ -56,12 +56,12 @@ namespace AngeliaFramework {
 				var tint = new Byte4(255, 255, 255, (byte)(Util.PingPong(Game.GlobalFrame, 36) * 2 + 90).Clamp(0, 255));
 				CellRenderer.SetLayerToAdditive();
 				CellRenderer.Draw(
-					light.GlobalID, centerX, centerY,
+					light, centerX, centerY,
 					500, 500, (Game.GlobalFrame * 6).UMod(360),
 					lightSize, lightSize, tint
 				);
 				CellRenderer.Draw(
-					light.GlobalID, centerX, centerY,
+					light, centerX, centerY,
 					500, 500, (Game.GlobalFrame * -4).UMod(360),
 					lightSize * 19 / 20, lightSize * 19 / 20, tint
 				);
@@ -93,7 +93,7 @@ namespace AngeliaFramework {
 					);
 					int z = circle.SortingZ + i;
 					CellRenderer.Draw(
-						circle.GlobalID, centerX, centerY,
+						circle, centerX, centerY,
 						500, 500, 0,
 						size, size,
 						tint, z
@@ -127,7 +127,7 @@ namespace AngeliaFramework {
 					).Clamp(0, 255);
 					int z = flame.SortingZ + FLAME_COUNT + 1;
 					CellRenderer.Draw(
-						flame.GlobalID, centerX, centerY,
+						flame, centerX, centerY,
 						flame.PivotX, flame.PivotY, rot,
 						size, size,
 						tint, z

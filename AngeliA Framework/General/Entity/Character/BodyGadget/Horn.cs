@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+	[RequireSprite("{0}.HornL", "{0}.HornR", "{0}.HornLB", "{0}.HornRB")]
 	public abstract class Horn : BodyGadget {
 
 		// VAR
@@ -80,7 +81,7 @@ namespace AngeliaFramework {
 
 			if (CellRenderer.TryGetSprite(spriteIdLeft, out var sprite)) {
 				var cell = CellRenderer.Draw(
-					spriteIdLeft,
+					sprite,
 					headRect.xMin + offsetX,
 					head.Height > 0 ? headRect.yMax : headRect.yMin,
 					sprite.PivotX, sprite.PivotY, 0,
@@ -96,7 +97,7 @@ namespace AngeliaFramework {
 
 			if (CellRenderer.TryGetSprite(spriteIdRight, out sprite)) {
 				var cell = CellRenderer.Draw(
-					spriteIdRight,
+					sprite,
 					headRect.xMax + offsetX,
 					head.Height > 0 ? headRect.yMax : headRect.yMin,
 					sprite.PivotX, sprite.PivotY, 0,

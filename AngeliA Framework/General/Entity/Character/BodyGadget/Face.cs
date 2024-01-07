@@ -53,6 +53,10 @@ namespace AngeliaFramework {
 	}
 
 
+	public sealed class DefaultCharacterFace : Face { }
+
+
+	[RequireSprite("{0}.Face.Attack", "{0}.Face.Blink", "{0}.Face.Damage", "{0}.Face.Normal", "{0}.Face.PassOut", "{0}.Face.Sleep", "{0}.Face.Suffer")]
 	public abstract class Face : BodyGadget {
 
 
@@ -139,7 +143,7 @@ namespace AngeliaFramework {
 
 			// Draw
 			var cells = CellRenderer.Draw_9Slice(
-				sprite.GlobalID,
+				sprite,
 				faceRect.CenterX(), faceRect.y, 500, 0, 0, faceRect.width, faceRect.height,
 				Const.WHITE, 33
 			);

@@ -14,10 +14,6 @@ namespace AngeliaFramework {
 		}
 
 
-		[System.AttributeUsage(System.AttributeTargets.Class)]
-		public class RenderWithSheetAttribute : System.Attribute { }
-
-
 		// Map Editor
 		[System.AttributeUsage(System.AttributeTargets.Class)]
 		public class ExcludeInMapEditorAttribute : System.Attribute { }

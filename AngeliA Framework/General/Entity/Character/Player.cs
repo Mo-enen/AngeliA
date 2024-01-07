@@ -10,6 +10,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.ForceSpawn]
 	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.DontDrawBehind]
+	[Atlas("Player")]
 	public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, IActionTarget {
 
 

@@ -464,7 +464,7 @@ namespace AngeliaFramework {
 					CellRenderer.TryGetSpriteFromGroup(id, 0, out sprite)
 				) {
 					rect = rect.Fit(sprite, sprite.PivotX, sprite.PivotY);
-					CellRenderer.Draw(sprite.GlobalID, rect);
+					CellRenderer.Draw(sprite, rect);
 				} else {
 					CellRenderer.Draw(ENTITY_CODE, rect);
 				}
@@ -517,7 +517,7 @@ namespace AngeliaFramework {
 			);
 
 			tint.a = BehindAlpha;
-			CellRenderer.Draw(sprite.GlobalID, rect, tint, 0);
+			CellRenderer.Draw(sprite, rect, tint, 0);
 		}
 
 

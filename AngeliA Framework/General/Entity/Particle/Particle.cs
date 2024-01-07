@@ -44,7 +44,7 @@ namespace AngeliaFramework {
 				// Artwork ID
 				if (CellRenderer.TryGetSpriteFromGroup(TypeID, LocalFrame / FramePerSprite, out var sprite, Loop)) {
 					CellRenderer.Draw(
-						sprite.GlobalID, X, Y, sprite.PivotX, sprite.PivotY, Rotation,
+						sprite, X, Y, sprite.PivotX, sprite.PivotY, Rotation,
 						sprite.GlobalWidth * Scale / 1000, sprite.GlobalHeight * Scale / 1000, Tint, RenderingZ
 					);
 				}

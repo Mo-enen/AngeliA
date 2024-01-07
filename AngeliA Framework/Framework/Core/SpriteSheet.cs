@@ -23,22 +23,6 @@ namespace AngeliaFramework {
 
 
 	// Sprite
-	public class SpriteCode {
-		public readonly string Name;
-		public readonly int ID;
-		public readonly int Width;
-		public readonly int Height;
-		public SpriteCode (string name, int width, int height) {
-			Name = name;
-			ID = name.AngeHash();
-			Width = width;
-			Height = height;
-		}
-		public static implicit operator SpriteCode ((string str, int width, int height) value) => new(value.str, value.width, value.height);
-		public static implicit operator int (SpriteCode code) => code.ID;
-	}
-
-
 	public class AngeSprite {
 
 		const float UV_SCALE = 10000000f;

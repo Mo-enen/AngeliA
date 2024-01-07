@@ -466,7 +466,7 @@ namespace AngeliaFramework {
 			int size = Unify(ITEM_SIZE);
 			CellRenderer.SetLayerToTopUI();
 			CellRenderer.Draw(
-				CellRenderer.HasSprite(TakingID) ? TakingID : Const.PIXEL,
+				TakingID,
 				x, y, 500, 500, Game.GlobalFrame.PingPong(30) - 15,
 				size, size, Const.WHITE, int.MaxValue
 			);
@@ -607,7 +607,7 @@ namespace AngeliaFramework {
 				if (TakingID != 0) {
 					CellRenderer.SetLayerToTopUI();
 					CellRenderer.Draw(
-						CellRenderer.HasSprite(TakingID) ? TakingID : Const.PIXEL,
+						TakingID,
 						itemRect.x + itemRect.width / 2,
 						itemRect.y + itemRect.height / 2,
 						500, 500, Game.GlobalFrame.PingPong(30) - 15,
@@ -820,7 +820,7 @@ namespace AngeliaFramework {
 					// Taking Item
 					if (TakingID != 0) {
 						CellRenderer.Draw(
-							CellRenderer.HasSprite(TakingID) ? TakingID : Const.PIXEL,
+							TakingID,
 							itemRect.x + itemRect.width / 2,
 							itemRect.y + itemRect.height / 2,
 							500, 500, Game.GlobalFrame.PingPong(30) - 15,

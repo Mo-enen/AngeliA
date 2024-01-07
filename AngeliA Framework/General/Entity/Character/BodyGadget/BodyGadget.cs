@@ -8,6 +8,7 @@ namespace AngeliaFramework {
 	public enum BodyGadgetType { Face, Hair, Ear, Horn, Tail, Wing, }
 
 
+	[RequireSprite("{1}")]
 	public abstract class BodyGadget {
 
 

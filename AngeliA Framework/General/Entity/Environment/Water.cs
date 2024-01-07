@@ -382,8 +382,7 @@ namespace AngeliaFramework {
 					rect = rect.Expand(0, 0, sprite.GlobalBorder.down, 0);
 				}
 				CellRenderer.Draw_9Slice(
-					sprite.GlobalID,
-					rect,
+					sprite, rect,
 					sprite.GlobalBorder.left,
 					sprite.GlobalBorder.right,
 					showBottomBorder ? sprite.GlobalBorder.down : 0,

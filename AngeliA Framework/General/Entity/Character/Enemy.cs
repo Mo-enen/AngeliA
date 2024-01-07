@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+	[Atlas("Enemy")]
 	public abstract class Enemy : PoseCharacter, IDamageReceiver {
 
 		int IDamageReceiver.Team => Const.TEAM_ENEMY;

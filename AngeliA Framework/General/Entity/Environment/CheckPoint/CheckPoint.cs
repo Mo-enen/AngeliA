@@ -18,6 +18,7 @@ namespace AngeliaFramework {
 
 	[EntityAttribute.Capacity(16)]
 	[EntityAttribute.MapEditorGroup("CheckPoint")]
+	[RequireSprite("{1}")]
 	public abstract class CheckPoint : EnvironmentEntity {
 
 
@@ -168,7 +169,7 @@ namespace AngeliaFramework {
 				rect.y = targetRect.y;
 				rect.height = i * targetRect.height / LINE_COUNT;
 				rect.height += Util.RemapUnclamped(0, DURATION, 0, targetRect.height / LINE_COUNT, localFrame);
-				CellRenderer.Draw("Soft Line H".AngeHash(), rect, tint);
+				CellRenderer.Draw(BuiltInIcon.SOFT_LINE_H, rect, tint);
 			}
 			CellRenderer.SetLayerToDefault();
 		}

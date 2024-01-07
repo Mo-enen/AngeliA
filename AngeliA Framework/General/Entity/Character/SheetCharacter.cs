@@ -4,6 +4,7 @@ using System.Reflection;
 
 
 namespace AngeliaFramework {
+	[RequireSprite("{0}.Idle", "{0}.Walk", "{0}.Run", "{0}.JumpU", "{0}.JumpD", "{0}.Roll", "{0}.Dash", "{0}.Rush", "{0}.SquatIdle", "{0}.SquatMove", "{0}.SwimIdle", "{0}.SwimMove", "{0}.SwimDash", "{0}.Pound", "{0}.Climb", "{0}.Fly", "{0}.Slide", "{0}.GrabTop", "{0}.GrabTopMove", "{0}.GrabSide", "{0}.GrabSideMove", "{0}.GrabFlip", "{0}.Sleep", "{0}.Damage", "{0}.PassOut", "{0}.DoorFront", "{0}.DoorBack", "{0}.Attack")]
 	public abstract class SheetCharacter : Character {
 
 
@@ -48,25 +49,20 @@ namespace AngeliaFramework {
 			public AnimationSheet (System.Type characterType) {
 
 				string name = characterType.Name;
-				if (name.StartsWith('e')) name = name[1..];
 
 				Idle = LoadAniCode($"{name}.Idle");
-				if (Idle == 0) Idle = LoadAniCode($"{name}");
 				Walk = LoadAniCode($"{name}.Walk", Idle);
 				Run = LoadAniCode($"{name}.Run", Walk);
-				int jump = LoadAniCode($"{name}.Jump", Idle);
-				JumpU = LoadAniCode($"{name}.JumpU", jump);
-				JumpD = LoadAniCode($"{name}.JumpD", jump);
+				JumpU = LoadAniCode($"{name}.JumpU", Idle);
+				JumpD = LoadAniCode($"{name}.JumpD", Idle);
 				Roll = LoadAniCode($"{name}.Roll", Run);
 				Dash = LoadAniCode($"{name}.Dash", Roll);
 				Rush = LoadAniCode($"{name}.Rush", Dash);
-				int squat = LoadAniCode($"{name}.Squat", Idle);
-				SquatIdle = LoadAniCode($"{name}.SquatIdle", squat);
-				SquatMove = LoadAniCode($"{name}.SquatMove", squat);
-				int swim = LoadAniCode($"{name}.Swim", Run);
-				SwimIdle = LoadAniCode($"{name}.SwimIdle", swim);
-				SwimMove = LoadAniCode($"{name}.SwimMove", swim);
-				SwimDash = LoadAniCode($"{name}.SwimDash", swim);
+				SquatIdle = LoadAniCode($"{name}.SquatIdle", Idle);
+				SquatMove = LoadAniCode($"{name}.SquatMove", Idle);
+				SwimIdle = LoadAniCode($"{name}.SwimIdle", Idle);
+				SwimMove = LoadAniCode($"{name}.SwimMove", Walk);
+				SwimDash = LoadAniCode($"{name}.SwimDash", Run);
 				Pound = LoadAniCode($"{name}.Pound", Idle);
 				Climb = LoadAniCode($"{name}.Climb", Idle);
 				Fly = LoadAniCode($"{name}.Fly", Run);
@@ -76,14 +72,11 @@ namespace AngeliaFramework {
 				GrabSide = LoadAniCode($"{name}.GrabSide", Slide);
 				GrabSideMove = LoadAniCode($"{name}.GrabSideMove", GrabSide);
 				GrabFlip = LoadAniCode($"{name}.GrabFlip", Roll);
-
 				Sleep = LoadAniCode($"{name}.Sleep", Idle);
 				Damaging = LoadAniCode($"{name}.Damage", Idle);
 				PassOut = LoadAniCode($"{name}.PassOut");
-
 				DoorFront = LoadAniCode($"{name}.DoorFront", Idle);
 				DoorBack = LoadAniCode($"{name}.DoorBack", Idle);
-
 				Attack = LoadAniCode($"{name}.Attack");
 
 			}
@@ -159,7 +152,7 @@ namespace AngeliaFramework {
 		public static void Initialize_Sheet () {
 			AnimationSheetPool.Clear();
 			foreach (var type in typeof(Character).AllChildClass()) {
-				if (type.GetCustomAttribute<EntityAttribute.RenderWithSheetAttribute>() == null) continue;
+				if (!type.IsSubclassOf(typeof(SheetCharacter))) continue;
 				AnimationSheetPool.Add(type.AngeHash(), new AnimationSheet(type));
 			}
 		}

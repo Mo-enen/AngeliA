@@ -23,7 +23,7 @@ namespace AngeliaFramework {
 			// Flash
 			if (CellRenderer.TryGetSprite(targetCP.TypeID, out var cpSprite)) {
 				CellRenderer.SetLayerToAdditive();
-				CellRenderer.Draw(cpSprite.GlobalID, targetCP.Rect.Expand(LocalFrame), new Byte4(0, 255, 0,
+				CellRenderer.Draw(cpSprite, targetCP.Rect.Expand(LocalFrame), new Byte4(0, 255, 0,
 					(byte)Util.RemapUnclamped(0, Duration, 128, 0, LocalFrame).Clamp(0, 255)
 				));
 				CellRenderer.SetLayerToDefault();

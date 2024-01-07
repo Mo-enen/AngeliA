@@ -302,7 +302,7 @@ namespace AngeliaFramework {
 				}
 				var cell = DrawChar(c, x, y, charSize, charSize, color) ?? EMPTY_CELL;
 				if (content.Shadow.a > 0 && shadowOffset != 0) {
-					var shadowCell = CellRenderer.DrawForText(c, 0, 0, 1, 1, Const.WHITE);
+					var shadowCell = CellRenderer.DrawChar(c, 0, 0, 1, 1, Const.WHITE);
 					shadowCell.CopyFrom(cell);
 					shadowCell.Color = content.Shadow;
 					shadowCell.Y -= shadowOffset;
@@ -341,7 +341,7 @@ namespace AngeliaFramework {
 					int textCount = i - startIndex;
 					int addCount = textCount - cellCount;
 					for (int add = 0; add < addCount; add++) {
-						CellRenderer.DrawForText(' ', 0, 0, 0, 0, color);
+						CellRenderer.DrawChar(' ', 0, 0, 0, 0, color);
 					}
 				}
 
@@ -430,7 +430,7 @@ namespace AngeliaFramework {
 			);
 			if (icon != 0 && CellRenderer.TryGetSprite(icon, out var iconSprite)) {
 				CellRenderer.Draw(
-					iconSprite.GlobalID,
+					iconSprite,
 					rect.Shrink(iconPadding).Fit(iconSprite),
 					iconTint, z + 1
 				);
@@ -785,7 +785,7 @@ namespace AngeliaFramework {
 			if (!CellRenderer.RequireCharForPool(c, out var sprite)) return null;
 
 			// Draw
-			var cell = CellRenderer.DrawForText(c, x, y, width, height, color);
+			var cell = CellRenderer.DrawChar(c, x, y, width, height, color);
 			if (cell.TextSprite == null) return cell;
 			var uvOffset = sprite.Offset;
 			cell.X += (int)(cell.Width * uvOffset.x);

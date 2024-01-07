@@ -10,6 +10,7 @@ namespace AngeliaFramework {
 	public class PropellerWing : Wing { }
 
 
+	[RequireSprite("{0}.Wing")]
 	public abstract class Wing : BodyGadget {
 
 
@@ -81,7 +82,7 @@ namespace AngeliaFramework {
 						out var sprite, true, true
 					)) {
 						CellRenderer.Draw(
-							sprite.GlobalID,
+							sprite,
 							(xLeft + xRight) / 2,
 							(yLeft + yRight) / 2,
 							firstSprite.PivotX, firstSprite.PivotY, 0,
@@ -94,14 +95,14 @@ namespace AngeliaFramework {
 					// Wings
 					if (CellRenderer.TryGetSpriteFromGroup(spriteGroupID, (character.CurrentAnimationFrame / 6).UMod(groupCount), out var sprite, true, true)) {
 						CellRenderer.Draw(
-							sprite.GlobalID,
+							sprite,
 							xLeft, yLeft, firstSprite.PivotX, firstSprite.PivotY, 0,
 							firstSprite.GlobalWidth * scale / 1000,
 							spriteHeight,
 							z
 						);
 						CellRenderer.Draw(
-							sprite.GlobalID,
+							sprite,
 							xRight, yRight, firstSprite.PivotX, firstSprite.PivotY, 0,
 							-firstSprite.GlobalWidth * scale / 1000,
 							spriteHeight,
@@ -114,14 +115,14 @@ namespace AngeliaFramework {
 				int rot = Game.GlobalFrame.PingPong(120) - 60;
 				rot /= 12;
 				CellRenderer.Draw(
-					firstSprite.GlobalID,
+					firstSprite,
 					xLeft, yLeft, firstSprite.PivotX, firstSprite.PivotY, -rot,
 					firstSprite.GlobalWidth * scale / 1000,
 					spriteHeight,
 					z
 				);
 				CellRenderer.Draw(
-					firstSprite.GlobalID,
+					firstSprite,
 					xRight, yRight, firstSprite.PivotX, firstSprite.PivotY, rot,
 					-firstSprite.GlobalWidth * scale / 1000,
 					spriteHeight,
