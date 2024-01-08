@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+	public class Coin : ItemCollectable<iItemCoin> {
+
+	}
+	
+
 	public abstract class ItemCollectable<TItem> : Collectable where TItem : Item {
 		private int ItemID { get; init; }
 		public ItemCollectable () => ItemID = typeof(TItem).AngeHash();

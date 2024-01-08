@@ -98,6 +98,8 @@ namespace AngeliaFramework {
 	public abstract class Flail<B> : Flail where B : MeleeBullet {
 		public Flail () => BulletID = typeof(B).AngeHash();
 	}
+	[RequireSprite("{0}.Head")]
+	[RequireSprite("{0}.Chain")]
 	public abstract class Flail : MeleeWeapon {
 
 		public sealed override WeaponType WeaponType => WeaponType.Flail;
@@ -223,6 +225,7 @@ namespace AngeliaFramework {
 			ArrowItemID = typeof(A).AngeHash();
 		}
 	}
+	[RequireSprite("{0}.Attack")]
 	public abstract class Shooting : ArrowWeapon {
 		public sealed override WeaponType WeaponType => WeaponType.Ranged;
 		public sealed override WeaponHandheld Handheld => WeaponHandheld.Shooting;
@@ -292,6 +295,7 @@ namespace AngeliaFramework {
 			ArrowItemID = 0;
 		}
 	}
+	[RequireSprite("{0}.String")]
 	public abstract class Bow : ArrowWeapon {
 
 		public sealed override WeaponType WeaponType => WeaponType.Ranged;

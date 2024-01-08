@@ -126,11 +126,11 @@ namespace AngeliaFramework {
 		public static string GetTextureName (object texture) => Instance._GetTextureName(texture);
 		protected abstract string _GetTextureName (object texture);
 
-		public static object LoadTextureFromPNGFile (string path) => Instance._LoadTextureFromPNGFile(path);
-		protected abstract object _LoadTextureFromPNGFile (string path);
+		public static object PngBytesToTexture (byte[] bytes) => Instance._PngBytesToTexture(bytes);
+		protected abstract object _PngBytesToTexture (byte[] bytes);
 
-		public static void SaveTextureAsPNGFile (object texture, string path) => Instance._SaveTextureAsPNGFile(texture, path);
-		protected abstract void _SaveTextureAsPNGFile (object texture, string path);
+		public static byte[] TextureToPngBytes (object texture) => Instance._TextureToPngBytes(texture);
+		protected abstract byte[] _TextureToPngBytes (object texture);
 
 
 		// GL

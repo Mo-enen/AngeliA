@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 	[EntityAttribute.Capacity(4, 0)]
+	[RequireSprite("{0}")]
 	public abstract class MovableBullet : Bullet {
 
 		// Api

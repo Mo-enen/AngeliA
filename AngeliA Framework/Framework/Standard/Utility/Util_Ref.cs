@@ -165,25 +165,40 @@ namespace AngeliaFramework {
 
 
 		// All Class
-		public static System.Type[] AllTypesCache {
+		public static System.Type[] AllTypes {
 			get {
-				if (_AllTypesCache == null) {
+				if (_AllTypes == null) {
 					var list = new List<System.Type>();
 					foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
 						if (assembly.GetCustomAttribute<AngeliAAttribute>() != null) {
 							list.AddRange(assembly.GetTypes());
 						}
 					}
-					_AllTypesCache = list.ToArray();
+					_AllTypes = list.ToArray();
 				}
-				return _AllTypesCache;
+				return _AllTypes;
 			}
 		}
-		private static System.Type[] _AllTypesCache = null;
+		private static System.Type[] _AllTypes = null;
+		public static Assembly[] AllAssemblies {
+			get {
+				if (_AllAssemblies == null) {
+					var list = new List<Assembly>();
+					foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
+						if (assembly.GetCustomAttribute<AngeliAAttribute>() != null) {
+							list.Add(assembly);
+						}
+					}
+					_AllAssemblies = list.ToArray();
+				}
+				return _AllAssemblies;
+			}
+		}
+		public static Assembly[] _AllAssemblies = null;
 
 
 		public static IEnumerable<System.Type> AllChildClass (this System.Type type, bool includeAbstract = false, bool includeInterface = false) {
-			foreach (var t in AllChildClass(type, AllTypesCache, includeAbstract, includeInterface))
+			foreach (var t in AllChildClass(type, AllTypes, includeAbstract, includeInterface))
 				yield return t;
 		}
 		public static IEnumerable<System.Type> AllChildClass (this System.Type type, Assembly assembly, bool includeAbstract = false, bool includeInterface = false) =>
@@ -196,40 +211,42 @@ namespace AngeliaFramework {
 			);
 
 
-		public static void ClearAllTypeCache () => _AllTypesCache = null;
+		public static void ClearAllTypeCache () => _AllTypes = null;
+		public static void ClearAllAssembliesCache () => _AllAssemblies = null;
 
 
 		// For All Types
-		public static IEnumerable<System.Type> AllClassImplemented (this System.Type type, bool includeAbstract = false) => AllTypesCache.Where(
+		public static IEnumerable<System.Type> AllClassImplemented (this System.Type type, bool includeAbstract = false) => AllTypes.Where(
 			t => !t.IsInterface && (includeAbstract || !t.IsAbstract) && type.IsAssignableFrom(t)
 		);
 
 
 		public static IEnumerable<(System.Type, System.Attribute)> AllClassWithAttribute (this System.Type attribute, bool ignoreAbstract = true, bool ignoreInterface = true) {
-			foreach (var target in AllTypesCache.Where(type =>
+			foreach (var target in AllTypes.Where(type =>
 				(!ignoreAbstract || !type.IsAbstract) &&
 				(!ignoreInterface || !type.IsInterface))
 			) {
-				var att = target.GetCustomAttribute(attribute, false);
-				if (att == null) continue;
-				yield return (target, att);
+				foreach (var att in target.GetCustomAttributes(attribute, false)) {
+					yield return (target, att as System.Attribute);
+				}
 			}
 		}
 		public static IEnumerable<(System.Type, A)> AllClassWithAttribute<A> (bool ignoreAbstract = true, bool ignoreInterface = true) where A : System.Attribute {
-			foreach (var target in AllTypesCache.Where(type =>
+			var typeofA = typeof(A);
+			foreach (var target in AllTypes.Where(type =>
 				(!ignoreAbstract || !type.IsAbstract) &&
 				(!ignoreInterface || !type.IsInterface))
 			) {
-				var att = target.GetCustomAttribute<A>(false);
-				if (att == null) continue;
-				yield return (target, att);
+				foreach (var att in target.GetCustomAttributes<A>(false)) {
+					yield return (target, att);
+				}
 			}
 		}
 
 
 		public static IEnumerable<KeyValuePair<MethodInfo, T>> AllStaticMethodWithAttribute<T> () where T : System.Attribute {
 			var flags = BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public;
-			foreach (var method in AllTypesCache.SelectMany(t => t.GetMethods(flags))) {
+			foreach (var method in AllTypes.SelectMany(t => t.GetMethods(flags))) {
 				if (method.GetCustomAttribute<T>(false) is not T att) continue;
 				if (method.DeclaringType.ContainsGenericParameters) {
 					var args = method.DeclaringType.GetGenericArguments();

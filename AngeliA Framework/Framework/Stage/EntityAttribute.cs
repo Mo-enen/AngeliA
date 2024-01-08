@@ -20,9 +20,12 @@ namespace AngeliaFramework {
 
 
 		[System.AttributeUsage(System.AttributeTargets.Class)]
-		public class MapEditorGroupAttribute : System.Attribute {
+		public class MapEditorGroupAttribute : RequireSpriteAttribute {
 			public string GroupName = "";
-			public MapEditorGroupAttribute (string groupName) => GroupName = groupName;
+			public MapEditorGroupAttribute (string groupName) {
+				GroupName = groupName;
+				Names = new string[] { $"PaletteCover.{groupName}", $"Palette.{groupName}" };
+			}
 		}
 
 

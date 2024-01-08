@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+	[RequireSprite("CraftingTableFrame")]
 	public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 
 
@@ -12,13 +13,13 @@ namespace AngeliaFramework {
 		// Const
 		private const int DOC_ITEM_HEIGHT = 32;
 		private const int DOC_ITEM_PADDING = 6;
-		private static readonly int QUESTION_MARK_CODE = "QuestionMark16".AngeHash();
-		private static readonly int PLUS_CODE = "Plus16".AngeHash();
-		private static readonly int EQUAL_CODE = "Equal16".AngeHash();
 		private static readonly int CRAFTING_FRAME_CODE = "CraftingTableFrame".AngeHash();
-		private static readonly int ARROW_CODE = "TriangleRight13".AngeHash();
-		private static readonly int FRAME_CODE = "Frame16".AngeHash();
-		private static readonly int ITEM_FRAME_CODE = "UI.ItemFrame".AngeHash();
+		private static readonly int QUESTION_MARK_CODE = BuiltInIcon.QUESTION_MARK_16;
+		private static readonly int PLUS_CODE = BuiltInIcon.PLUS_16;
+		private static readonly int EQUAL_CODE = BuiltInIcon.EQUAL_16;
+		private static readonly int ARROW_CODE = BuiltInIcon.TRIANGLE_RIGHT_13;
+		private static readonly int FRAME_CODE = BuiltInIcon.FRAME_16;
+		private static readonly int ITEM_FRAME_CODE = BuiltInIcon.UI_ITEM_FRAME;
 		private static readonly int HINT_CRAFT = "CtrlHint.Craft".AngeHash();
 
 		// Api

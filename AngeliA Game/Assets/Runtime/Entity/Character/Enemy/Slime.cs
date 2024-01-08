@@ -5,10 +5,14 @@ using AngeliaFramework;
 
 
 namespace AngeliaGame {
-	public abstract class Slime : Enemy {
+	public class SlimeRed : Slime {
 
+	}
 
+	public abstract class Slime : SheetCharacter, IDamageReceiver {
 
+		int IDamageReceiver.Team => Const.TEAM_ENEMY;
+		bool IDamageReceiver.TakeDamageFromLevel => false;
 
 
 	}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+	[RequireSpriteFromField]
 	public class iDeveloperToolbox : Item {
 
 
@@ -27,11 +28,11 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int BTN_COL = "DeveloperToolbox.Collider".AngeHash();
-		private static readonly int BTN_BOUND = "DeveloperToolbox.Bound".AngeHash();
-		private static readonly int BTN_PROFILER = "DeveloperToolbox.Profiler".AngeHash();
-		private static readonly int BTN_MAP = "DeveloperToolbox.Map".AngeHash();
-		private static readonly int BTN_SHEET = "DeveloperToolbox.Sheet".AngeHash();
+		private static readonly SpriteCode BTN_COL = "DeveloperToolbox.Collider";
+		private static readonly SpriteCode BTN_BOUND = "DeveloperToolbox.Bound";
+		private static readonly SpriteCode BTN_PROFILER = "DeveloperToolbox.Profiler";
+		private static readonly SpriteCode BTN_MAP = "DeveloperToolbox.Map";
+		private static readonly SpriteCode BTN_SHEET = "DeveloperToolbox.Sheet";
 		private static readonly Byte4[] COLLIDER_TINTS = { Const.RED_BETTER, Const.ORANGE_BETTER, Const.YELLOW, Const.GREEN, Const.CYAN, Const.BLUE, Const.GREY_128, };
 
 		// Data

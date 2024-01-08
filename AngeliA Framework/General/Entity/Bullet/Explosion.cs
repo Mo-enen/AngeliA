@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 
+
 namespace AngeliaFramework {
 	[EntityAttribute.Layer(EntityLayer.BULLET)]
+	[RequireSpriteFromField]
 	public class Explosion : Entity {
 
 
@@ -13,11 +15,11 @@ namespace AngeliaFramework {
 
 		// Const
 		public static readonly int TYPE_ID = typeof(Explosion).AngeHash();
-		private static readonly int ART_WAVE = "ExplosionWave".AngeHash();
-		private static readonly int ART_FIRE = "ExplosionFire".AngeHash();
-		private static readonly int ART_RING = "ExplosionRing".AngeHash();
-		private static readonly int ART_LIGHT = "ExplosionLight".AngeHash();
-		private static readonly int ART_DARK = "ExplosionDark".AngeHash();
+		private static readonly SpriteCode ART_WAVE = "ExplosionWave";
+		private static readonly SpriteCode ART_FIRE = "ExplosionFire";
+		private static readonly SpriteCode ART_RING = "ExplosionRing";
+		private static readonly SpriteCode ART_LIGHT = "ExplosionLight";
+		private static readonly SpriteCode ART_DARK = "ExplosionDark";
 		private static readonly int SMOKE_ID = typeof(QuickSmokeBigParticle).AngeHash();
 
 		// Api

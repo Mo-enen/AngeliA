@@ -38,6 +38,7 @@ namespace AngeliaFramework {
 
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.DontDestroyOutOfRange]
+	[RequireSpriteFromField]
 	public class PlayerMenuUI : EntityUI {
 
 
@@ -47,10 +48,10 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int FRAME_CODE = "Frame16".AngeHash();
-		private static readonly int ITEM_FRAME_CODE = "UI.ItemFrame".AngeHash();
-		private static readonly int ARMOR_ICON = "ArmorIcon".AngeHash();
-		private static readonly int ARMOR_EMPTY_ICON = "ArmorEmptyIcon".AngeHash();
+		private static readonly int FRAME_CODE = BuiltInIcon.FRAME_16;
+		private static readonly int ITEM_FRAME_CODE = BuiltInIcon.UI_ITEM_FRAME;
+		private static readonly SpriteCode ARMOR_ICON = "ArmorIcon";
+		private static readonly SpriteCode ARMOR_EMPTY_ICON = "ArmorEmptyIcon";
 		private static readonly int HINT_HIDE_MENU = "CtrlHint.HideMenu".AngeHash();
 		private static readonly int HINT_TAKE = "CtrlHint.PlayerMenu.Take".AngeHash();
 		private static readonly int HINT_DROP = "CtrlHint.Drop".AngeHash();

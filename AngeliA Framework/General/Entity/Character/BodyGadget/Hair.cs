@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AngeliaFramework {
 
 
-	[RequireSprite("{0}.BraidL", "{0}.BraidR")]
+	[RequireSprite("{1}.BraidL", "{1}.BraidR")]
 	public abstract class BraidHair : Hair {
 
 		private static readonly Cell[] SINGLE_CELL = new Cell[] { new Cell() };
@@ -213,7 +213,7 @@ namespace AngeliaFramework {
 	}
 
 
-	[RequireSprite("{0}.HairFFL", "{0}.HairFFR", "{0}.HairFB", "{0}.HairBF")]
+	[RequireSprite("{1}.HairFFL", "{1}.HairFFR", "{1}.HairFB", "{1}.HairBF")]
 	public abstract class Hair : BodyGadget {
 
 

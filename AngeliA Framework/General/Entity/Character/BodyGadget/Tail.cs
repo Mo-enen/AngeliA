@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
-	[RequireSprite("{0}.Tail")]
+	[RequireSprite("{1}.Tail")]
 	public abstract class Tail : BodyGadget {
 
 

@@ -20,9 +20,11 @@ namespace AngeliaFramework {
 	public class LampD : Light { }
 
 
+
+	[RequireSpriteFromField]
 	public abstract class Light : Furniture, ICombustible {
 
-		private static readonly int LIGHT = "Lamp Light 0".AngeHash();
+		private static readonly SpriteCode LIGHT = "Lamp Light";
 		int ICombustible.BurnStartFrame { get; set; }
 		private bool OpenLight = false;
 

@@ -6,6 +6,7 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.MapEditorGroup("Platform")]
+	[RequireSprite("{0}")]
 	public class SnakePath : IMapItem { }
 
 

@@ -6,6 +6,7 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.MapEditorGroup("System")]
+	[RequireSprite("{0}")]
 	public abstract class SystemEntity : IMapItem { }
 	public class Number0 : SystemEntity { }
 	public class Number1 : SystemEntity { }

@@ -16,9 +16,9 @@ namespace AngeliaFramework {
 		private const int GRID_THICKNESS = 2;
 		private const int STAGE_SIZE = 21;
 		private static readonly int STONE_CODE = "Circle16".AngeHash();
-		private static readonly int LINE_H_CODE = "Soft Line H".AngeHash();
+		private static readonly int LINE_H_CODE = BuiltInIcon.SOFT_LINE_H;
 		private static readonly int LINE_V_CODE = "Soft Line V".AngeHash();
-		private static readonly int FRAME_CODE = "Frame16".AngeHash();
+		private static readonly int FRAME_CODE = BuiltInIcon.FRAME_16;
 		private static readonly Byte4 BACKGROUND_TINT = new(196, 120, 50, 255);
 		private static readonly Byte4 GRID_TINT = new(16, 16, 16, 255);
 		private static readonly Byte4 BLACK_STONE_TINT = new(16, 16, 16, 255);

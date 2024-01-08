@@ -3,10 +3,17 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+	public class DefaultParticle : Particle {
+		public override int Duration => 30;
+		public override bool Loop => false;
+	}
+
+
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.Capacity(512)]
 	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.Layer(EntityLayer.DECORATE)]
+	[RequireSprite("{0}")]
 	public abstract class Particle : Entity {
 
 

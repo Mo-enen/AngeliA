@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
-	[Atlas("BuiltIn")]
+	[RequireSpriteFromField]
 	public static class BuiltInIcon {
 
 		public static readonly SpriteCode NPC = "NPC";

@@ -9,6 +9,7 @@ namespace AngeliaFramework {
 	public enum HelmetWearingMode { Attach, Cover, }
 
 
+	[RequireSprite("{0}.Main", "{0}.Back")]
 	public abstract class Helmet<P, N> : Armor<P, N> where P : Equipment where N : Equipment {
 		public sealed override EquipmentType EquipmentType => EquipmentType.Helmet;
 		private int SpriteFront { get; init; } = 0;
@@ -70,6 +71,18 @@ namespace AngeliaFramework {
 
 
 
+	[RequireSprite(
+		"{0}.Body",
+		"{0}.BodyL",
+		"{0}.BodyR",
+		"{0}.Hip",
+		"{0}.Skirt",
+		"{0}.Shoulder",
+		"{0}.UpperArm",
+		"{0}.LowerArm",
+		"{0}.UpperLeg",
+		"{0}.LowerLeg"
+	)]
 	public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N : Equipment {
 		public sealed override EquipmentType EquipmentType => EquipmentType.BodyArmor;
 		private int BodyId { get; init; } = 0;
@@ -125,12 +138,8 @@ namespace AngeliaFramework {
 			}
 
 			// Cape
-			if (BodyId != 0 && CellRenderer.TryGetSpriteFromGroup(
-				BodyId, character.Body.FrontSide ? 2 : 3, out var capeSprite, false, false
-			)) {
-				BodyCloth.DrawCape(character, capeSprite);
-			}
-
+			BodyCloth.DrawCape(character, BodyId);
+		
 			// Shoulder
 			if (ShoulderID != 0 && CellRenderer.TryGetSprite(ShoulderID, out var shoulderSprite)) {
 				Cloth.AttachClothOn(character.ShoulderL, shoulderSprite, 1000, 1000, 16);
@@ -150,6 +159,7 @@ namespace AngeliaFramework {
 
 
 
+	[RequireSprite("{0}.Main")]
 	public abstract class Gloves<P, N> : Armor<P, N> where P : Equipment where N : Equipment {
 		public sealed override EquipmentType EquipmentType => EquipmentType.Gloves;
 		private int SpriteID { get; init; } = 0;
@@ -163,6 +173,7 @@ namespace AngeliaFramework {
 
 
 
+	[RequireSprite("{0}.Main")]
 	public abstract class Shoes<P, N> : Armor<P, N> where P : Equipment where N : Equipment {
 		public sealed override EquipmentType EquipmentType => EquipmentType.Shoes;
 		private int SpriteID { get; init; } = 0;

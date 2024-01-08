@@ -18,7 +18,6 @@ namespace AngeliaFramework {
 
 	[EntityAttribute.Capacity(16)]
 	[EntityAttribute.MapEditorGroup("CheckPoint")]
-	[RequireSprite("{1}")]
 	public abstract class CheckPoint : EnvironmentEntity {
 
 

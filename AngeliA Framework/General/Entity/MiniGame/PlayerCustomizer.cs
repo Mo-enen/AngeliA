@@ -52,7 +52,7 @@ namespace AngeliaFramework {
 		private static readonly int ICON_DOWN_CODE = "Icon TriangleDown".AngeHash();
 		private static readonly int BUTTON_CODE = "UI.DarkButton".AngeHash();
 		private static readonly int BUTTON_DOWN_CODE = "UI.DarkButtonDown".AngeHash();
-		private static readonly int FRAME_CODE = "Frame16".AngeHash();
+		private static readonly int FRAME_CODE = BuiltInIcon.FRAME_16;
 		private static readonly int HINT_USE = "CtrlHint.Use".AngeHash();
 		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
 		private static readonly int SELECTION_MARK = "CheckMark16".AngeHash();

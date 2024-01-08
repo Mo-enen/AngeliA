@@ -15,7 +15,7 @@ namespace AngeliaFramework {
 	}
 
 
-
+	[RequireSprite("{0}.Bullet")]
 	public abstract class ItemArrow : Item {
 		public int BulletArtworkID { get; init; }
 		public override int MaxStackCount => 512;
@@ -76,6 +76,7 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.MapEditorGroup("Item")]
+	[RequireSprite("{0}")]
 	public abstract class Item : IMapItem {
 
 

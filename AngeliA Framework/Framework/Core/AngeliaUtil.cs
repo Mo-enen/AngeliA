@@ -15,7 +15,6 @@ namespace AngeliaFramework {
 		// File
 		public static void CreateAngeFolders () {
 			Util.CreateFolder(AngePath.UniverseRoot);
-			Util.CreateFolder(AngePath.SheetRoot);
 			Util.CreateFolder(AngePath.DialogueRoot);
 			Util.CreateFolder(AngePath.LanguageRoot);
 			Util.CreateFolder(AngePath.MetaRoot);
@@ -314,6 +313,19 @@ namespace AngeliaFramework {
 				groupIndex = endIndex < realName.Length - 1 ? int.Parse(realName[(endIndex + 1)..]) : 0;
 			}
 
+		}
+
+
+		public static IEnumerable<string> ForAllSpriteNameRequirements () {
+			foreach (var name in RequireSpriteFromField.ForAllRequirement()) {
+				yield return name;
+			}
+			foreach (var name in RequireGlobalNameAttribute.ForAllRequirement<RequireGlobalSpriteAttribute>()) {
+				yield return name;
+			}
+			foreach (var name in RequireNameAttribute.ForAllRequirement<RequireSpriteAttribute>()) {
+				yield return name;
+			}
 		}
 
 

@@ -182,63 +182,6 @@ namespace AngeliaForUnity.Editor {
 
 
 
-		[MenuItem("AngeliA/Other/Check for Empty Sprites")]
-		public static void EmptySpriteChecker () {
-
-			string sheetPath = AngePath.SheetFilePath;
-			if (!Util.FileExists(sheetPath)) {
-				Debug.LogWarning("Sprite sheet not found.");
-				return;
-			}
-
-			var texture = Game.LoadTextureFromPNGFile(AngePath.BuiltInSheetTexturePath) as Texture2D;
-			if (texture == null) {
-				Debug.LogWarning("Sheet texture not found.");
-				return;
-			}
-
-			var pixels = texture.GetPixels32();
-
-			// Check all Sprites
-			var resultList = new List<string>();
-			int textureWidth = texture.width;
-			int textureHeight = texture.height;
-			var sheet = new Sheet(sheetPath);
-			foreach (var sprite in sheet.Sprites) {
-				var rect = new IRect(
-					(sprite.UvRect.x * textureWidth).RoundToInt(),
-					(sprite.UvRect.y * textureHeight).RoundToInt(),
-					(sprite.UvRect.width * textureWidth).RoundToInt(),
-					(sprite.UvRect.height * textureHeight).RoundToInt()
-				);
-				int xMax = rect.xMax.Clamp(0, textureWidth);
-				int yMax = rect.yMax.Clamp(0, textureHeight);
-				for (int x = rect.x; x < xMax; x++) {
-					for (int y = rect.y; y < yMax; y++) {
-						if (pixels[y * textureWidth + x].a > 0) {
-							goto _PASS;
-						}
-					}
-				}
-				if (sprite.AtlasIndex >= 0 && sprite.AtlasIndex < sheet.AtlasInfo.Length) {
-					resultList.Add($"Sheet: <color=#FFCC00>{sheet.AtlasInfo[sprite.AtlasIndex].Name}</color> Name: <color=#FFCC00>{sprite.RealName}</color>");
-				}
-				_PASS:;
-			}
-
-			// Log
-			if (resultList.Count == 0) {
-				Debug.Log("No empty sprite found.");
-			} else {
-				Debug.Log($"{resultList.Count} empty sprites found.");
-				foreach (var msg in resultList) {
-					Debug.Log(msg);
-				}
-			}
-
-		}
-
-
 		#region --- LGC ---
 
 

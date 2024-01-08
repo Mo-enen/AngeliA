@@ -8,12 +8,13 @@ namespace AngeliaFramework {
 	// Wood
 	public class ConveyorWoodLeft : ConveyorWood { protected override int MoveSpeed => -12; }
 	public class ConveyorWoodRight : ConveyorWood { protected override int MoveSpeed => 12; }
+	[RequireSpriteFromField]
 	public abstract class ConveyorWood : Conveyor {
 
-		private static readonly int CODE_L = "ConveyorWood Left".AngeHash();
-		private static readonly int CODE_M = "ConveyorWood Mid".AngeHash();
-		private static readonly int CODE_R = "ConveyorWood Right".AngeHash();
-		private static readonly int CODE_S = "ConveyorWood Single".AngeHash();
+		private static readonly SpriteCode CODE_L = "ConveyorWood Left";
+		private static readonly SpriteCode CODE_M = "ConveyorWood Mid";
+		private static readonly SpriteCode CODE_R = "ConveyorWood Right";
+		private static readonly SpriteCode CODE_S = "ConveyorWood Single";
 
 		protected override int ArtCodeLeft => CODE_L;
 		protected override int ArtCodeMid => CODE_M;
@@ -26,12 +27,13 @@ namespace AngeliaFramework {
 	// Iron
 	public class ConveyorIronLeft : ConveyorIron { protected override int MoveSpeed => -24; }
 	public class ConveyorIronRight : ConveyorIron { protected override int MoveSpeed => 24; }
+	[RequireSpriteFromField]
 	public abstract class ConveyorIron : Conveyor {
 
-		private static readonly int CODE_L = "ConveyorIron Left".AngeHash();
-		private static readonly int CODE_M = "ConveyorIron Mid".AngeHash();
-		private static readonly int CODE_R = "ConveyorIron Right".AngeHash();
-		private static readonly int CODE_S = "ConveyorIron Single".AngeHash();
+		private static readonly SpriteCode CODE_L = "ConveyorIron Left";
+		private static readonly SpriteCode CODE_M = "ConveyorIron Mid";
+		private static readonly SpriteCode CODE_R = "ConveyorIron Right";
+		private static readonly SpriteCode CODE_S = "ConveyorIron Single";
 
 		protected override int ArtCodeLeft => CODE_L;
 		protected override int ArtCodeMid => CODE_M;

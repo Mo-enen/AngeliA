@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+	[RequireSpriteFromField]
 	public class MiniGameTetris : MiniGame {
 
 
@@ -69,10 +70,10 @@ namespace AngeliaFramework {
 			{ 0,0, +1,0, -2,0, +1,+2, -2,-1, }, // l > 2
 		};
 		private static readonly Byte4 GRID_TINT = new(32, 32, 32, 255);
-		private static readonly int LINE_H_CODE = "Soft Line H".AngeHash();
-		private static readonly int LINE_V_CODE = "Soft Line V".AngeHash();
-		private static readonly int BLOCK_CODE = "Tetris Block".AngeHash();
-		private static readonly int BLOCK_EMPTY_CODE = "Tetris Block Empty".AngeHash();
+		private static readonly int LINE_H_CODE = BuiltInIcon.SOFT_LINE_H;
+		private static readonly int LINE_V_CODE = BuiltInIcon.SOFT_LINE_V;
+		private static readonly SpriteCode BLOCK_CODE = "Tetris Block";
+		private static readonly SpriteCode BLOCK_EMPTY_CODE = "Tetris Block Empty";
 		private static readonly int UI_HOLDING = "UI.Tetris.Holding".AngeHash();
 		private static readonly int UI_CLR_LINE = "UI.Tetris.ClearedLine".AngeHash();
 		private static readonly int HINT_MOVE = "Hint.Tetris.Move".AngeHash();

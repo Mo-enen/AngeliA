@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
-	[Atlas("Summon")]
 	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]

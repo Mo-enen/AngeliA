@@ -13,7 +13,7 @@ namespace AngeliaFramework {
 
 
 
-	[RequireSprite("{0}.HeadSuit")]
+	[RequireSprite("{1}.HeadSuit")]
 	public abstract class HeadCloth : Cloth {
 
 		protected sealed override ClothType ClothType => ClothType.Head;
@@ -100,7 +100,7 @@ namespace AngeliaFramework {
 
 
 
-	[RequireSprite("{0}.BodySuit 0", "{0}.BodySuit 1", "{0}.ShoulderSuit", "{0}.UpperArmSuit", "{0}.LowerArmSuit")]
+	[RequireSprite("{1}.BodySuit", "{1}.BodySuitL", "{1}.BodySuitR", "{1}.ShoulderSuit", "{1}.UpperArmSuit", "{1}.LowerArmSuit")]
 	public abstract class BodyCloth : Cloth {
 
 		protected sealed override ClothType ClothType => ClothType.Body;
@@ -138,6 +138,7 @@ namespace AngeliaFramework {
 
 		public override void Draw (PoseCharacter character) {
 			DrawClothForBody(character, SpriteIdFrontL, SpriteIdFrontR, LocalZ, TwistShiftTopAmount);
+			DrawCape(character, TypeID);
 			DrawClothForShoulder(character, SpriteIdShoulder);
 			DrawClothForUpperArm(character, SpriteIdUpperArm);
 			DrawClothForLowerArm(character, SpriteIdLowerArm);
@@ -260,72 +261,71 @@ namespace AngeliaFramework {
 			}
 		}
 
-		public static void DrawCape (PoseCharacter character, int groupID, int motionAmount = 1000) {
-
+		public static void DrawCape (PoseCharacter character, int capeID, int motionAmount = 1000) {
+			if (capeID == 0) return;
 			var animatedPoseType = character.AnimationType;
 			if (
+				!CellRenderer.TryGetSpriteFromGroup(capeID, character.Body.FrontSide ? 2 : 3, out var sprite, false, true) ||
 				animatedPoseType == CharacterAnimationType.SquatIdle ||
 				animatedPoseType == CharacterAnimationType.SquatMove ||
 				animatedPoseType == CharacterAnimationType.Dash ||
 				animatedPoseType == CharacterAnimationType.Rolling ||
+				animatedPoseType == CharacterAnimationType.Spin ||
 				animatedPoseType == CharacterAnimationType.Fly ||
 				animatedPoseType == CharacterAnimationType.Sleep ||
-				animatedPoseType == CharacterAnimationType.PassOut ||
-				groupID == 0 ||
-				!CellRenderer.TryGetSpriteFromGroup(groupID, character.Body.FrontSide ? 0 : 1, out var sprite, false, true)
+				animatedPoseType == CharacterAnimationType.PassOut
 			) return;
-
 			DrawCape(character, sprite, motionAmount);
+			// Func
+			static void DrawCape (PoseCharacter character, AngeSprite sprite, int motionAmount = 1000) {
 
-		}
+				var body = character.Body;
 
-		public static void DrawCape (PoseCharacter character, AngeSprite sprite, int motionAmount = 1000) {
+				// Draw
+				int height = sprite.GlobalHeight + body.Height.Abs() - body.SizeY;
+				var cells = CellRenderer.Draw_9Slice(
+					sprite,
+					body.GlobalX, body.GlobalY + body.Height,
+					500, 1000, 0,
+					sprite.GlobalWidth,
+					body.Height.Sign() * height,
+					Const.WHITE, body.FrontSide ? -31 : 31
+				);
 
-			var body = character.Body;
-
-			// Draw
-			int height = sprite.GlobalHeight + body.Height.Abs() - body.SizeY;
-			var cells = CellRenderer.Draw_9Slice(
-				sprite,
-				body.GlobalX, body.GlobalY + body.Height,
-				500, 1000, 0,
-				sprite.GlobalWidth,
-				body.Height.Sign() * height,
-				Const.WHITE, body.FrontSide ? -31 : 31
-			);
-
-			// Flow Motion
-			if (motionAmount != 0) {
-				// X
-				int maxX = 30 * motionAmount / 1000;
-				int offsetX = (-character.DeltaPositionX * motionAmount / 1000).Clamp(-maxX, maxX);
-				cells[3].X += offsetX / 2;
-				cells[4].X += offsetX / 2;
-				cells[5].X += offsetX / 2;
-				cells[6].X += offsetX;
-				cells[7].X += offsetX;
-				cells[8].X += offsetX;
-				// Y
-				int maxY = 20 * motionAmount / 1000;
-				int offsetAmountY = 1000 + (character.DeltaPositionY * motionAmount / 10000).Clamp(-maxY, maxY) * 1000 / 20;
-				offsetAmountY = offsetAmountY.Clamp(800, 1200);
-				cells[0].Height = cells[0].Height * offsetAmountY / 1000;
-				cells[1].Height = cells[1].Height * offsetAmountY / 1000;
-				cells[2].Height = cells[2].Height * offsetAmountY / 1000;
-				cells[3].Height = cells[3].Height * offsetAmountY / 1000;
-				cells[4].Height = cells[4].Height * offsetAmountY / 1000;
-				cells[5].Height = cells[5].Height * offsetAmountY / 1000;
-				cells[6].Height = cells[6].Height * offsetAmountY / 1000;
-				cells[7].Height = cells[7].Height * offsetAmountY / 1000;
-				cells[8].Height = cells[8].Height * offsetAmountY / 1000;
+				// Flow Motion
+				if (motionAmount != 0) {
+					// X
+					int maxX = 30 * motionAmount / 1000;
+					int offsetX = (-character.DeltaPositionX * motionAmount / 1000).Clamp(-maxX, maxX);
+					cells[3].X += offsetX / 2;
+					cells[4].X += offsetX / 2;
+					cells[5].X += offsetX / 2;
+					cells[6].X += offsetX;
+					cells[7].X += offsetX;
+					cells[8].X += offsetX;
+					// Y
+					int maxY = 20 * motionAmount / 1000;
+					int offsetAmountY = 1000 + (character.DeltaPositionY * motionAmount / 10000).Clamp(-maxY, maxY) * 1000 / 20;
+					offsetAmountY = offsetAmountY.Clamp(800, 1200);
+					cells[0].Height = cells[0].Height * offsetAmountY / 1000;
+					cells[1].Height = cells[1].Height * offsetAmountY / 1000;
+					cells[2].Height = cells[2].Height * offsetAmountY / 1000;
+					cells[3].Height = cells[3].Height * offsetAmountY / 1000;
+					cells[4].Height = cells[4].Height * offsetAmountY / 1000;
+					cells[5].Height = cells[5].Height * offsetAmountY / 1000;
+					cells[6].Height = cells[6].Height * offsetAmountY / 1000;
+					cells[7].Height = cells[7].Height * offsetAmountY / 1000;
+					cells[8].Height = cells[8].Height * offsetAmountY / 1000;
+				}
 			}
 		}
+
 
 	}
 
 
 
-	[RequireSprite("{0}.HipSuit", "{0}.SkirtSuit", "{0}.UpperLegSuit", "{0}.LowerLegSuit")]
+	[RequireSprite("{1}.HipSuit", "{1}.SkirtSuit", "{1}.UpperLegSuit", "{1}.LowerLegSuit")]
 	public abstract class HipCloth : Cloth {
 
 		private static readonly int SKIRT_SUIT_SUFFIX = "UI.SuitSuffix.Skirt".AngeHash();
@@ -560,7 +560,7 @@ namespace AngeliaFramework {
 	}
 
 
-	[RequireSprite("{0}.HandSuit")]
+	[RequireSprite("{1}.HandSuit")]
 	public abstract class HandCloth : Cloth {
 
 		protected sealed override ClothType ClothType => ClothType.Hand;
@@ -599,7 +599,7 @@ namespace AngeliaFramework {
 
 
 
-	[RequireSprite("{0}.FootSuit")]
+	[RequireSprite("{1}.FootSuit")]
 	public abstract class FootCloth : Cloth {
 
 		protected sealed override ClothType ClothType => ClothType.Foot;
@@ -663,7 +663,7 @@ namespace AngeliaFramework {
 	}
 
 
-	[RequireSprite("{1}")]
+	[RequireSprite("{2}")]
 	public abstract class Cloth {
 
 

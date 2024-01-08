@@ -53,10 +53,17 @@ namespace AngeliaFramework {
 	}
 
 
-	public sealed class DefaultCharacterFace : Face { }
-
-
-	[RequireSprite("{0}.Face.Attack", "{0}.Face.Blink", "{0}.Face.Damage", "{0}.Face.Normal", "{0}.Face.PassOut", "{0}.Face.Sleep", "{0}.Face.Suffer")]
+	[RequireGlobalSprite(
+		"DefaultCharacterFace",
+		"DefaultCharacterFace.Face.Normal",
+		"DefaultCharacterFace.Face.Blink",
+		"DefaultCharacterFace.Face.Sleep",
+		"DefaultCharacterFace.Face.Attack",
+		"DefaultCharacterFace.Face.Suffer",
+		"DefaultCharacterFace.Face.PassOut",
+		"DefaultCharacterFace.Face.Damage"
+	)]
+	[RequireSprite("{1}.Face.Attack", "{1}.Face.Blink", "{1}.Face.Damage", "{1}.Face.Normal", "{1}.Face.PassOut", "{1}.Face.Sleep", "{1}.Face.Suffer")]
 	public abstract class Face : BodyGadget {
 
 

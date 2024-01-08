@@ -22,6 +22,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.Capacity(1, 0)]
 	[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
 	[EntityAttribute.MapEditorGroup("MiniGame")]
+	[RequireSpriteFromField]
 	public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 
 
@@ -78,7 +79,7 @@ namespace AngeliaFramework {
 		protected static readonly int UI_NONE = "UI.None".AngeHash();
 		protected static readonly int UI_OK = "UI.OK".AngeHash();
 		protected static readonly int UI_GAMEOVER = "UI.GameOver".AngeHash();
-		private static readonly int[] DEFAULT_BADGE_CODES = { "MiniGameBadgeEmpty".AngeHash(), "MiniGameBadgeIron".AngeHash(), "MiniGameBadgeGold".AngeHash(), };
+		private static readonly SpriteCode[] DEFAULT_BADGE_CODES = { "MiniGameBadgeEmpty", "MiniGameBadgeIron", "MiniGameBadgeGold", };
 
 		// Api
 		public delegate void SpawnBadgeHandler (int quality);
@@ -213,7 +214,7 @@ namespace AngeliaFramework {
 		protected void SpawnBadge (int quality) => OnBadgeSpawn?.Invoke(quality);
 
 
-		protected void DrawBadges (BadgesSaveData data, int x, int y, int z, int badgeSize, int[] spriteIDs = null) {
+		protected void DrawBadges (BadgesSaveData data, int x, int y, int z, int badgeSize, SpriteCode[] spriteIDs = null) {
 			if (data == null || data.Badges == null) return;
 			spriteIDs ??= DEFAULT_BADGE_CODES;
 			var badgeRect = new IRect(x, y, badgeSize, badgeSize);

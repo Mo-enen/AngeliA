@@ -19,10 +19,11 @@ namespace AngeliaFramework {
 	}
 
 
+	[RequireSpriteFromField]
 	public abstract class CircleFlamePortal : Portal {
-		private static readonly int CIRCLE_CODE = "PortalCircle".AngeHash();
-		private static readonly int FLAME_CODE = "PortalFlame".AngeHash();
-		private static readonly int LIGHT_CODE = "PortalLight".AngeHash();
+		private static readonly SpriteCode CIRCLE_CODE = "PortalCircle";
+		private static readonly SpriteCode FLAME_CODE = "PortalFlame";
+		private static readonly SpriteCode LIGHT_CODE = "PortalLight";
 		protected virtual int CircleCode => CIRCLE_CODE;
 		protected virtual int FlameCode => FLAME_CODE;
 		protected virtual int LightCode => LIGHT_CODE;
@@ -140,6 +141,7 @@ namespace AngeliaFramework {
 	}
 
 
+	[RequireSprite("{0}")]
 	public abstract class Portal : Entity {
 
 		protected abstract Int3 TargetGlobalPosition { get; }

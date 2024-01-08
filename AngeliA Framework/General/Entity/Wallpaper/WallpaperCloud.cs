@@ -3,14 +3,13 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+	[RequireSpriteFromField]
 	public class WallpaperCloud : Wallpaper {
 
 
 		// VAR
 		private const int CLOUD_COUNT = 64;
-
-		private static readonly int CLOUD = "Wallpeper.Cloud".AngeHash();
-
+		private static readonly SpriteCode CLOUD = "Wallpeper.Cloud";
 		private readonly Int3[] Positions = new Int3[CLOUD_COUNT];
 
 

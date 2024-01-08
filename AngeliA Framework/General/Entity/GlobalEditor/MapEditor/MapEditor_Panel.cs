@@ -5,6 +5,12 @@ using GeorgeMamaladze;
 
 
 namespace AngeliaFramework {
+	[RequireGlobalSprite(
+		"PaletteCover.Background",
+		"PaletteCover.LevelBack",
+		"PaletteCover.LevelFront",
+		"PaletteCover.Default"
+	)]
 	public partial class MapEditor {
 
 
@@ -94,8 +100,6 @@ namespace AngeliaFramework {
 		private void Initialize_Palette () {
 
 			CellRenderer.TryGetSprite("Cloud 0".AngeHash(), out var testSP);
-			//Game.Log(testSP.Atlas.Name + " " + testSP.Atlas.Type + " " + testSP.GroupType);
-
 
 			DraggingForReorderPaletteGroup = -1;
 			DraggingForReorderPaletteItem = -1;
@@ -105,6 +109,8 @@ namespace AngeliaFramework {
 			int spriteCount = CellRenderer.SpriteCount;
 			int groupCount = CellRenderer.GroupCount;
 			var palGroupPool = new Dictionary<string, PaletteGroup>();
+			int[] coverKeywords = { 0, "PaletteCover.Level".AngeHash(), "PaletteCover.Background".AngeHash() };
+			int[] nameKeywords = { 0, "Palette.Level".AngeHash(), "Palette.Background".AngeHash() };
 
 			// For all Sprite Groups
 			for (int index = 0; index < groupCount; index++) {
@@ -120,8 +126,8 @@ namespace AngeliaFramework {
 					palGroupPool.Add(atlasName, palGroup = new PaletteGroup() {
 						Items = new List<PaletteItem>(),
 						GroupName = atlasName,
-						CoverID = $"PaletteCover.{atlasName}".AngeHash(),
-						DisplayNameID = $"Palette.{atlasName}".AngeHash(),
+						CoverID = coverKeywords[(int)atlasType],
+						DisplayNameID = nameKeywords[(int)atlasType],
 					});
 				}
 				palGroup.Items.Add(new PaletteItem() {
@@ -149,8 +155,8 @@ namespace AngeliaFramework {
 					palGroupPool.Add(atlasName, group = new PaletteGroup() {
 						Items = new List<PaletteItem>(),
 						GroupName = atlasName,
-						CoverID = $"PaletteCover.{atlasName}".AngeHash(),
-						DisplayNameID = $"Palette.{atlasName}".AngeHash(),
+						CoverID = coverKeywords[(int)atlasType],
+						DisplayNameID = nameKeywords[(int)atlasType],
 					});
 				}
 				group.Items.Add(new PaletteItem() {

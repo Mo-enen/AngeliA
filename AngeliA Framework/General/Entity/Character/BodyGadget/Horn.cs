@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
-	[RequireSprite("{0}.HornL", "{0}.HornR", "{0}.HornLB", "{0}.HornRB")]
+	[RequireSprite("{1}.HornL", "{1}.HornR", "{1}.HornLB", "{1}.HornRB")]
 	public abstract class Horn : BodyGadget {
 
 		// VAR

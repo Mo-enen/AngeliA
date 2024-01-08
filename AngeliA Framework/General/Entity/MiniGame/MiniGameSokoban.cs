@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+	[RequireSpriteFromField]
 	public class MiniGameSokoban : MiniGame {
 
 
@@ -53,11 +54,11 @@ namespace AngeliaFramework {
 		// Const
 		private const int LEVEL_COUNT = 9;
 		private const int IRON_BADGE_COUNT = 3;
-		private static readonly int BRICK_CODE = "Sokoban Brick".AngeHash();
-		private static readonly int BACK_CODE = "Sokoban BackGround".AngeHash();
-		private static readonly int BOX_CODE = "Sokoban Box".AngeHash();
-		private static readonly int GOAL_CODE = "Sokoban Goal".AngeHash();
-		private static readonly int PLAYER_CODE = "Sokoban Player".AngeHash();
+		private static readonly SpriteCode BRICK_CODE = "Sokoban Brick";
+		private static readonly SpriteCode BACK_CODE = "Sokoban BackGround";
+		private static readonly SpriteCode BOX_CODE = "Sokoban Box";
+		private static readonly SpriteCode GOAL_CODE = "Sokoban Goal";
+		private static readonly SpriteCode PLAYER_CODE = "Sokoban Player";
 		private static readonly Level[] Levels = new Level[LEVEL_COUNT]{
 			new Level("#####  ", "#P  #  ", "# #B###", "# B ..#", "#######"),
 			new Level("##########", "#   .#.###", "# P    B #", "# B# #   #", "# .B   ###", "#####  ###", "##########"),

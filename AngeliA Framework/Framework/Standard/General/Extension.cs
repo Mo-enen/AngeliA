@@ -649,11 +649,21 @@ namespace AngeliaFramework {
 
 
 		// Ref
-		public static IEnumerable<(string name, T value)> AllFields<T> (this object target) {
+		public static IEnumerable<T> ForAllStaticFieldValue<T> (this System.Type type, BindingFlags binding = BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public, bool inherited = true) {
+			var tType = typeof(T);
+			foreach (var field in type.GetFields(binding)) {
+				if (field.FieldType == tType || (inherited && field.FieldType.IsSubclassOf(tType))) {
+					yield return (T)field.GetValue(null);
+				}
+			}
+		}
+
+
+		public static IEnumerable<(string name, T value)> AllFieldsForInstance<T> (this object target, BindingFlags binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static, bool inherited = true) {
 			var type = target.GetType();
 			var tType = typeof(T);
-			foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
-				if (field.FieldType == tType || field.FieldType.IsSubclassOf(tType)) {
+			foreach (var field in type.GetFields(binding)) {
+				if (field.FieldType == tType || (inherited && field.FieldType.IsSubclassOf(tType))) {
 					yield return (field.Name, (T)field.GetValue(target));
 				}
 			}

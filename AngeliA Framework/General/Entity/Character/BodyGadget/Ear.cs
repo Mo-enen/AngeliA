@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
-	[RequireSprite("{0}.EarL", "{0}.EarR", "{0}.EarLB", "{0}.EarRB")]
+	[RequireSprite("{1}.EarL", "{1}.EarR", "{1}.EarLB", "{1}.EarRB")]
 	public abstract class Ear : BodyGadget {
 
 

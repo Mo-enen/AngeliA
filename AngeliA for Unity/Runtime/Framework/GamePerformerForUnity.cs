@@ -23,6 +23,7 @@ namespace AngeliaForUnity {
 		public static void InitializeOnLoadMethod () {
 			UnityEditor.EditorApplication.playModeStateChanged += (state) => {
 				Util.ClearAllTypeCache();
+				Util.ClearAllAssembliesCache();
 			};
 			UnityGame = new GameForUnity();
 		}

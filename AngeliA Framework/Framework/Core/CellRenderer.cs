@@ -248,11 +248,8 @@ namespace AngeliaFramework {
 			}
 
 			// Load Built-in Sheet
-			BuiltInSheet.LoadFromDisk(AngePath.SheetFilePath);
-
-			// Texture
-			var texture = Game.LoadTextureFromPNGFile(AngePath.BuiltInSheetTexturePath);
-			Game.SetBuiltInTextureForRenderer(texture);
+			BuiltInSheet.LoadFromDisk(AngePath.SheetPath);
+			Game.SetBuiltInTextureForRenderer(BuiltInSheet.Texture);
 
 			// Load User Sheet
 			LoadUserSheet(UserSheetName.Value, forceLoad: true);
@@ -354,24 +351,20 @@ namespace AngeliaFramework {
 
 		public static void LoadUserSheet (string name, bool forceLoad = false) {
 
+			if (string.IsNullOrEmpty(name)) return;
+
 			string prevName = UserSheetName.Value;
+			if (!forceLoad && name == prevName) return;
 			UserSheetName.Value = name;
 			UserSheet.Clear();
 
-			if (string.IsNullOrEmpty(name)) return;
-			if (!forceLoad && name == prevName) return;
-			string sheetFilePath = Util.CombinePaths(AngePath.UserSheetRoot, name, AngePath.SHEET_NAME);
+			string sheetFilePath = Util.CombinePaths(AngePath.UserSheetRoot, $"{name}.{AngePath.SHEET_FILE_EXT}");
 			if (!Util.FileExists(sheetFilePath)) return;
-			string texturePath = Util.CombinePaths(AngePath.UserSheetRoot, name, AngePath.SHEET_TEXTURE_NAME);
-			if (!Util.FileExists(texturePath)) return;
 
 			// Load Sheet
 			UserSheet.LoadFromDisk(sheetFilePath);
 			UserSheet.ShiftUvToUserSpace();
-
-			// Texture
-			var texture = Game.LoadTextureFromPNGFile(texturePath);
-			Game.SetUserTextureForRenderer(texture);
+			Game.SetUserTextureForRenderer(UserSheet.Texture);
 
 		}
 

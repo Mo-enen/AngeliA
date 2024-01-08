@@ -22,7 +22,7 @@ namespace AngeliaFramework {
 
 
 
-
+	[RequireSprite("{0}")]
 	public abstract class WaterSource<W> : Entity where W : Water {
 
 
@@ -53,6 +53,7 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.UpdateOutOfRange]
+	[RequireSprite("{0}")]
 	public abstract class Water : Entity {
 
 

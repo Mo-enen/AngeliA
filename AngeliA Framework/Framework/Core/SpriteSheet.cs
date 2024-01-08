@@ -320,16 +320,18 @@ namespace AngeliaFramework {
 		public AngeSprite[] Sprites { get; private set; } = System.Array.Empty<AngeSprite>();
 		public SpriteGroup[] Groups { get; private set; } = System.Array.Empty<SpriteGroup>();
 		public AtlasInfo[] AtlasInfo { get; private set; } = System.Array.Empty<AtlasInfo>();
+		public object Texture { get; private set; } = null;
 		public Dictionary<int, AngeSprite> SpritePool { get; } = new();
 		public Dictionary<int, SpriteGroup> GroupPool { get; } = new();
 
 		// MSG
 		public Sheet () { }
 		public Sheet (string path) => LoadFromDisk(path);
-		public Sheet (AngeSprite[] sprites, SpriteGroup[] groups, AtlasInfo[] atlasInfo) {
+		public Sheet (AngeSprite[] sprites, SpriteGroup[] groups, AtlasInfo[] atlasInfo, object texture) {
 			Sprites = sprites;
 			Groups = groups;
 			AtlasInfo = atlasInfo;
+			Texture = texture;
 			ApplyData();
 			SpritePool.Clear();
 			GroupPool.Clear();
@@ -341,7 +343,7 @@ namespace AngeliaFramework {
 			Clear();
 			if (!Util.FileExists(path)) return;
 
-			// Load Data
+			// Load Meta Data
 			using var stream = new FileStream(path, FileMode.Open);
 			using var reader = new BinaryReader(stream);
 			int fileVersion = reader.ReadInt32();
@@ -352,6 +354,13 @@ namespace AngeliaFramework {
 				default:
 					Game.LogError($"Can not handle sheet version {fileVersion}. Expect: version-0");
 					break;
+			}
+
+			// Load Texture
+			int textureSize = reader.ReadInt32();
+			if (textureSize > 0) {
+				var pngBytes = reader.ReadBytes(textureSize);
+				Texture = Game.PngBytesToTexture(pngBytes);
 			}
 
 			// Apply Instance
@@ -374,8 +383,17 @@ namespace AngeliaFramework {
 		public void SaveToDisk (string path) {
 			using var stream = new FileStream(path, FileMode.Create);
 			using var writer = new BinaryWriter(stream);
+			// Save Meta Data
 			writer.Write((int)0); // File Version
 			SaveToBinary_v0(writer);
+			// Save Texture
+			if (Texture != null) {
+				var pngBytes = Game.TextureToPngBytes(Texture);
+				writer.Write((int)pngBytes.Length);
+				writer.Write(pngBytes);
+			} else {
+				writer.Write((int)0);
+			}
 		}
 
 		public void Clear () {
@@ -384,12 +402,48 @@ namespace AngeliaFramework {
 			Sprites = System.Array.Empty<AngeSprite>();
 			Groups = System.Array.Empty<SpriteGroup>();
 			AtlasInfo = System.Array.Empty<AtlasInfo>();
+			Texture = null;
 		}
 
 		public void ShiftUvToUserSpace () {
 			for (int i = 0; i < Sprites.Length; i++) {
 				Sprites[i].UvRect.x += 1f;
 			}
+		}
+
+		public static object LoadTextureInSheet (string path) {
+			if (!Util.FileExists(path)) return null;
+			object result = null;
+			using var stream = new FileStream(path, FileMode.Open);
+			using var reader = new BinaryReader(stream);
+			int fileVersion = reader.ReadInt32();
+			switch (fileVersion) {
+				default:
+					break;
+				case 0:
+					reader.ReadInt32(); // Sprite Count
+					int spriteByteLength = reader.ReadInt32();
+					stream.Seek(spriteByteLength, SeekOrigin.Current);
+
+					reader.ReadInt32(); // Group Count
+					int groupByteLength = reader.ReadInt32();
+					stream.Seek(groupByteLength, SeekOrigin.Current);
+
+					reader.ReadInt32(); // Atlas Count
+					int atlasByteLength = reader.ReadInt32();
+					stream.Seek(atlasByteLength, SeekOrigin.Current);
+
+					break;
+			}
+
+			// Load Texture
+			int textureSize = reader.ReadInt32();
+			if (textureSize > 0) {
+				var pngBytes = reader.ReadBytes(textureSize);
+				result = Game.PngBytesToTexture(pngBytes);
+			}
+
+			return result;
 		}
 
 		// LGC

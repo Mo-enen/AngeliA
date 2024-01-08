@@ -13,6 +13,23 @@ namespace AngeliaForUnity.Editor {
 
 
 
+		#region --- SUB ---
+
+		[System.Flags]
+		private enum PropertyType {
+			None = 0,
+			Name = 1 << 0,
+			Pos = 1 << 1,
+			Size = 1 << 2,
+			Border = 1 << 3,
+			Pivot = 1 << 4,
+			All = 0b11111,
+		}
+
+		#endregion
+
+
+
 
 		#region --- VAR ---
 
@@ -43,6 +60,8 @@ namespace AngeliaForUnity.Editor {
 		private bool SliceCreator_Open = false;
 		private bool AddEmptyLineBetween = false;
 		private SortMode Sort = SortMode.Original;
+		private PropertyType DisplayingProperty = PropertyType.All;
+		private static readonly StringBuilder LineBuilderCache = new();
 
 
 		#endregion
@@ -195,6 +214,14 @@ namespace AngeliaForUnity.Editor {
 				Repaint();
 			}
 
+			GUILayout.Space(2);
+			var newProp = (PropertyType)EditorGUI.EnumFlagsField(MGUI.Rect(0, 18), "Property", DisplayingProperty);
+			if (newProp != DisplayingProperty) {
+				DisplayingProperty = newProp;
+				SliceLines = LoadSliceLines(CurrentAse);
+				Repaint();
+			}
+
 			// Slice Creator
 			if (MGUI.Fold("Slice Creator", ref SliceCreator_Open)) {
 				using (new EditorGUI.IndentLevelScope()) {
@@ -313,13 +340,24 @@ namespace AngeliaForUnity.Editor {
 			}
 			// Append Line
 			var builder = new StringBuilder();
+			bool hasName = DisplayingProperty.HasFlag(PropertyType.Name);
+			bool hasPos = DisplayingProperty.HasFlag(PropertyType.Pos);
+			bool hasSize = DisplayingProperty.HasFlag(PropertyType.Size);
+			bool hasBorder = DisplayingProperty.HasFlag(PropertyType.Border);
+			bool hasPivot = DisplayingProperty.HasFlag(PropertyType.Pivot);
 			foreach (var (_name, _slice, _hasPivot) in slices) {
 				if (!string.IsNullOrEmpty(_name)) {
 					builder.AppendLine(GetSliceLine(
-						_name,
-						_slice.X, _slice.Y, (int)_slice.Width, (int)_slice.Height,
-						_slice.BorderL, _slice.BorderR, _slice.BorderD, _slice.BorderU,
-						_hasPivot ? new Int2(_slice.PivotX, _slice.PivotY) : null
+						hasName ? _name : null,
+						hasPos ? _slice.X : null,
+						hasPos ? _slice.Y : null,
+						hasSize ? (int)_slice.Width : null,
+						hasSize ? (int)_slice.Height : null,
+						hasBorder ? _slice.BorderL : null,
+						hasBorder ? _slice.BorderR : null,
+						hasBorder ? _slice.BorderD : null,
+						hasBorder ? _slice.BorderU : null,
+						_hasPivot && hasPivot ? new Int2(_slice.PivotX, _slice.PivotY) : null
 					));
 				} else {
 					builder.AppendLine();
@@ -411,12 +449,59 @@ namespace AngeliaForUnity.Editor {
 		}
 
 
-		private static string GetSliceLine (string name, int x, int y, int w, int h, int borderL, int borderR, int borderD, int borderU, Int2? pivot) {
-			if (pivot.HasValue) {
-				return $"{name}, {x}, {y}, {w}, {h}, {borderL}, {borderR}, {borderD}, {borderU}, {pivot.Value.x}, {pivot.Value.y}";
-			} else {
-				return $"{name}, {x}, {y}, {w}, {h}, {borderL}, {borderR}, {borderD}, {borderU}";
+		private static string GetSliceLine (string name, int? x, int? y, int? w, int? h, int? borderL, int? borderR, int? borderD, int? borderU, Int2? pivot) {
+			LineBuilderCache.Clear();
+			bool hasContent = false;
+			if (name != null) {
+				LineBuilderCache.Append(name);
+				hasContent = true;
 			}
+			if (x.HasValue) {
+				if (hasContent) LineBuilderCache.Append(", ");
+				LineBuilderCache.Append(x.Value);
+				hasContent = true;
+			}
+			if (y.HasValue) {
+				if (hasContent) LineBuilderCache.Append(", ");
+				LineBuilderCache.Append(y.Value);
+				hasContent = true;
+			}
+			if (w.HasValue) {
+				if (hasContent) LineBuilderCache.Append(", ");
+				LineBuilderCache.Append(w.Value);
+				hasContent = true;
+			}
+			if (h.HasValue) {
+				if (hasContent) LineBuilderCache.Append(", ");
+				LineBuilderCache.Append(h.Value);
+				hasContent = true;
+			}
+			if (borderL.HasValue) {
+				if (hasContent) LineBuilderCache.Append(", ");
+				LineBuilderCache.Append(borderL.Value);
+				hasContent = true;
+			}
+			if (borderR.HasValue) {
+				if (hasContent) LineBuilderCache.Append(", ");
+				LineBuilderCache.Append(borderR.Value);
+				hasContent = true;
+			}
+			if (borderD.HasValue) {
+				if (hasContent) LineBuilderCache.Append(", ");
+				LineBuilderCache.Append(borderD.Value);
+				hasContent = true;
+			}
+			if (borderU.HasValue) {
+				if (hasContent) LineBuilderCache.Append(", ");
+				LineBuilderCache.Append(borderU.Value);
+				hasContent = true;
+			}
+			if (pivot.HasValue) {
+				if (hasContent) LineBuilderCache.Append(", ");
+				LineBuilderCache.Append(pivot.Value.x);
+				LineBuilderCache.Append(pivot.Value.y);
+			}
+			return LineBuilderCache.ToString();
 		}
 
 

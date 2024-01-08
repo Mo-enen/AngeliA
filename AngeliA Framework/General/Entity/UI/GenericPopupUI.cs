@@ -31,8 +31,8 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int CHECK_CODE = "CheckMark32".AngeHash();
-		private static readonly int LINE_CODE = "Soft Line H".AngeHash();
+		private static readonly int CHECK_CODE = BuiltInIcon.CHECK_MARK_32;
+		private static readonly int LINE_CODE = BuiltInIcon.SOFT_LINE_H;
 
 		// Api
 		public static bool ShowingPopup => Instance != null && Instance.Active;

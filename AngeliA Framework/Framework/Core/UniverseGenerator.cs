@@ -340,7 +340,10 @@ namespace AngeliaFramework {
 			}
 
 			// Final
-			var sheet = new Sheet(spriteList.ToArray(), groups.ToArray(), atlases.ToArray());
+			var sheet = new Sheet(
+				spriteList.ToArray(), groups.ToArray(), atlases.ToArray(), 
+				Game.GetTextureFromPixels(texturePixels, textureWidth, textureHeight)
+			);
 			FillSummaryForSheet(sheet.Sprites, textureWidth, textureHeight, texturePixels);
 			return sheet;
 		}

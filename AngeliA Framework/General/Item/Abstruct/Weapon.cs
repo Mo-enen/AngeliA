@@ -17,6 +17,7 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.MapEditorGroup("ItemWeapon")]
+	[RequireSprite("{0}.Main")]
 	public abstract class Weapon : Equipment {
 
 		// VAR

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+	[RequireSpriteFromField]
 	public class PassOutStarParticle : Particle {
 
 		private static readonly int TYPE_ID = typeof(PassOutStarParticle).AngeHash();
-		private static readonly int STAR_CODE = "PassOutStar".AngeHash();
+		private static readonly SpriteCode STAR_CODE = "PassOutStar";
 
 		public override int Duration => 66;
 		public override int FramePerSprite => 1;

@@ -4,11 +4,13 @@ using System.Collections.Generic;
 namespace AngeliaFramework {
 	public class GrandfatherClockA : GrandfatherClock { }
 	public class GrandfatherClockB : GrandfatherClock { }
+
+	[RequireSpriteFromField]
 	public abstract class GrandfatherClock : Furniture, ICombustible {
 
-		private static readonly int HAND_CODE = "Clock Hand".AngeHash();
-		private static readonly int PENDULUM_LEG_CODE = "Clock Pendulum Leg".AngeHash();
-		private static readonly int PENDULUM_HEAD_CODE = "Clock Pendulum Head".AngeHash();
+		private static readonly SpriteCode HAND_CODE = "Clock Hand";
+		private static readonly SpriteCode PENDULUM_LEG_CODE = "Clock Pendulum Leg";
+		private static readonly SpriteCode PENDULUM_HEAD_CODE = "Clock Pendulum Head";
 
 		protected override Direction3 ModuleType => Direction3.Vertical;
 		int ICombustible.BurnStartFrame { get; set; }

@@ -16,7 +16,6 @@ namespace AngeliaFramework {
 		}
 
 		protected override void SpawnResidue (IDamageReceiver receiver) {
-			//base.SpawnResidue(receiver);
 			if (ArrowItemID != 0) {
 				ItemSystem.SpawnItem(ArrowItemID, X, Y, 1);
 			}

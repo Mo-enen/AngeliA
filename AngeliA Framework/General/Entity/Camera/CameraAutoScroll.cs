@@ -310,8 +310,8 @@ namespace AngeliaFramework {
 
 
 	public class CameraAutoScroll_Gizmos : MapEditorGizmos {
-		private static readonly int TRI = "Triangle13".AngeHash();
-		private static readonly int FRAME = "Frame16".AngeHash();
+		private static readonly int TRI = BuiltInIcon.TRIANGLE_13;
+		private static readonly int FRAME = BuiltInIcon.FRAME_16;
 
 		public override System.Type TargetEntity => typeof(CameraAutoScroll);
 		public override bool DrawGizmosOutOfRange => true;

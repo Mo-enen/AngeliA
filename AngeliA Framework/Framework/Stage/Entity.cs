@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+
 	public interface IMapItem { }
 
 
@@ -10,6 +11,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL)]
 	[EntityAttribute.MapEditorGroup("Entity")]
 	[EntityAttribute.Layer(EntityLayer.GAME)]
+	[RequireGlobalSprite("Entity")]
 	public abstract class Entity : IMapItem {
 
 

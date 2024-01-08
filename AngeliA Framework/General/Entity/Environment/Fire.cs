@@ -19,6 +19,7 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.DontDrawBehind]
+	[RequireSprite("{0}")]
 	public abstract class Fire : Entity {
 
 

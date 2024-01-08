@@ -10,7 +10,7 @@ namespace AngeliaFramework {
 	public class PropellerWing : Wing { }
 
 
-	[RequireSprite("{0}.Wing")]
+	[RequireSprite("{1}.Wing")]
 	public abstract class Wing : BodyGadget {
 
 

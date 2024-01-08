@@ -40,7 +40,7 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int FRAME = "Frame16".AngeHash();
+		private static readonly int FRAME = BuiltInIcon.FRAME_16;
 		private static readonly int TRIANGLE_RIGHT = "TriangleRight13".AngeHash();
 		private static readonly int HINT_ADJUST = "CtrlHint.Adjust".AngeHash();
 		private static readonly int HINT_TYPE = "CtrlHint.Wardrobe.Type".AngeHash();
